@@ -219,10 +219,10 @@ test('does not invent a distance without location and offers walking directions'
   await expect(card.getByRole('button', { name: 'Turn on location to see walking time' })).toBeVisible();
   await expect(card.getByText('64%')).toBeVisible();
   await expect(card.getByText('Price shown in the Bird app')).toBeVisible();
-  // No rental link for this scooter: directions alone, and a footnote that says where to rent.
+  // No rental link for this scooter: directions alone.
   await expect(card.getByRole('link')).toHaveCount(1);
   await expect(card.getByRole('link', { name: 'Directions' })).toHaveAttribute('href', /travelmode=walking/);
-  await expect(card.getByText('Open the Bird app to rent this scooter.')).toBeVisible();
+  await expect(card.locator('.card-footnote')).toHaveCount(0);
   if (await desktopLayout(page)) {
     // On a desktop the card is beside the marker, and the dock keeps the count and the providers.
     await expect(page.getByRole('dialog', { name: 'Bird scooter' })).toBeVisible();
@@ -307,7 +307,8 @@ test('scooter card shows the walk, the battery and a ride estimate whose duratio
   // The app's blue on every provider, never the provider's colour.
   expect(await open.evaluate(element => getComputedStyle(element).backgroundColor)).toBe('rgb(0, 112, 235)');
   await expect(card.getByRole('link', { name: 'Directions' })).toHaveAttribute('href', /destination=47\.3769%2C8\.5417/);
-  await expect(card.getByText('Opens the Lime app. It won’t reserve the scooter.')).toBeVisible();
+  // The card ends with its two buttons.
+  await expect(card.locator('.card-footnote')).toHaveCount(0);
   const accessibility = await new AxeBuilder({ page }).include(await cardSurface(page)).withTags(['wcag2a', 'wcag2aa']).analyze();
   expect(accessibility.violations).toEqual([]);
 
@@ -2429,11 +2430,11 @@ test.describe('on a small phone, or one held on its side', () => {
     const card = page.locator('.sheet .dock-card');
     await expect(card.getByRole('link', { name: 'Open in Lime' })).toBeVisible();
 
-    // Nothing of the card is left to scroll to, down to its last line.
+    // Nothing of the card is left to scroll to, down to its buttons.
     const content = page.locator('.sheet-content');
     await expect.poll(() => content.evaluate(element => element.scrollHeight - element.clientHeight)).toBe(0);
-    const note = card.getByText('Opens the Lime app. It won’t reserve the scooter.');
-    await expect.poll(async () => { const box = (await note.boundingBox())!; return box.y + box.height; }).toBeLessThan(390);
+    const actions = card.locator('.card-actions');
+    await expect.poll(async () => { const box = (await actions.boundingBox())!; return box.y + box.height; }).toBeLessThan(390);
     expect(overlap((await page.locator('.sheet').boundingBox())!, (await page.locator('.search-island').boundingBox())!)).toBe(false);
     // The scooter stood in the middle of the map, where the card now is.
     await expect.poll(() => roomAboveDock(page, marker)).toBeGreaterThanOrEqual(0);

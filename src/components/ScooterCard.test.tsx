@@ -140,7 +140,8 @@ describe('ScooterCard', () => {
     const open = screen.getByRole('link', { name: 'Open in Lime' });
     expect(open).toHaveAttribute('href', 'https://li.me/ride');
     expect(open).toHaveClass('card-action-primary');
-    expect(screen.getByText('Opens the Lime app. It won’t reserve the scooter.')).toBeVisible();
+    // The card ends with its buttons: no line under them.
+    expect(document.querySelector('.card-footnote')).toBeNull();
   });
 
   it('leaves directions alone when there is no way to open the provider app', () => {
@@ -148,7 +149,7 @@ describe('ScooterCard', () => {
 
     expect(screen.getAllByRole('link')).toHaveLength(1);
     expect(screen.getByRole('link', { name: 'Directions' })).toBeVisible();
-    expect(screen.getByText('Open the Lime app to rent this scooter.')).toBeVisible();
+    expect(document.querySelector('.card-footnote')).toBeNull();
   });
 
   it('closes from its own button', () => {

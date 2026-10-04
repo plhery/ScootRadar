@@ -164,7 +164,6 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
           </a>
         )}
       </div>
-      <p className="card-footnote">{t(rentalLink ? 'card.footnote' : 'card.noLink', { name })}</p>
     </div>
   );
 }
