@@ -150,8 +150,6 @@
 "Turn on location to see walking time" = "Attiva la posizione per vedere il tempo a piedi";
 "Directions" = "Indicazioni";
 "Open in %@" = "Apri in %@";
-"Opens the %@ app. It won’t reserve the scooter." = "Apre l’app %@. Non riserva il monopattino.";
-"Open the %@ app to rent this scooter." = "Apri l’app %@ per noleggiare questo monopattino.";
 "≈ %1$@ for %2$lld min" = "≈ %1$@ per %2$lld min";
 "Price shown in the %@ app" = "Prezzo indicato nell’app %@";
 "Ride estimate, %lld minutes. Change duration." = "Stima della corsa, %lld minuti. Modifica la durata.";

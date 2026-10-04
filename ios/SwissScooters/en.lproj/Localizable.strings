@@ -150,8 +150,6 @@
 "Turn on location to see walking time" = "Turn on location to see walking time";
 "Directions" = "Directions";
 "Open in %@" = "Open in %@";
-"Opens the %@ app. It won’t reserve the scooter." = "Opens the %@ app. It won’t reserve the scooter.";
-"Open the %@ app to rent this scooter." = "Open the %@ app to rent this scooter.";
 "≈ %1$@ for %2$lld min" = "≈ %1$@ for %2$lld min";
 "Price shown in the %@ app" = "Price shown in the %@ app";
 "Ride estimate, %lld minutes. Change duration." = "Ride estimate, %lld minutes. Change duration.";

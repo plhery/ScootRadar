@@ -150,8 +150,6 @@
 "Turn on location to see walking time" = "Activer la position pour voir le temps à pied";
 "Directions" = "Itinéraire";
 "Open in %@" = "Ouvrir dans %@";
-"Opens the %@ app. It won’t reserve the scooter." = "Ouvre l’app %@. Ne réserve pas la trottinette.";
-"Open the %@ app to rent this scooter." = "Ouvrez l’app %@ pour louer cette trottinette.";
 "≈ %1$@ for %2$lld min" = "≈ %1$@ pour %2$lld min";
 "Price shown in the %@ app" = "Prix indiqué dans l’app %@";
 "Ride estimate, %lld minutes. Change duration." = "Estimation du trajet, %lld minutes. Modifier la durée.";

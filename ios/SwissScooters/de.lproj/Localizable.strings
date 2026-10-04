@@ -150,8 +150,6 @@
 "Turn on location to see walking time" = "Standort aktivieren, um Gehzeit zu sehen";
 "Directions" = "Route";
 "Open in %@" = "In %@ öffnen";
-"Opens the %@ app. It won’t reserve the scooter." = "Öffnet die %@-App. Reserviert den Scooter nicht.";
-"Open the %@ app to rent this scooter." = "Öffne die %@-App, um diesen Scooter zu mieten.";
 "≈ %1$@ for %2$lld min" = "≈ %1$@ für %2$lld Min.";
 "Price shown in the %@ app" = "Preis in der %@-App";
 "Ride estimate, %lld minutes. Change duration." = "Fahrtkostenschätzung, %lld Minuten. Dauer ändern.";

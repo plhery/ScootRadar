@@ -896,18 +896,6 @@ private struct ScooterCard: View {
                     .dockActionStyle(prominent: true)
                 }
             }
-
-            Text(String(
-                format: scooter.rentalURL == nil
-                    ? String(localized: "Open the %@ app to rent this scooter.")
-                    : String(localized: "Opens the %@ app. It won’t reserve the scooter."),
-                providerName
-            ))
-            .font(.caption2)
-            .foregroundStyle(ScooterPalette.secondaryText)
-            .multilineTextAlignment(.center)
-            .fixedSize(horizontal: false, vertical: true)
-            .frame(maxWidth: .infinity)
         }
     }
 
