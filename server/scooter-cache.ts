@@ -9,6 +9,7 @@ import { fetchRegionalParking } from '../src/lib/parkingFeeds';
 import { FeedScheduler } from './feedScheduler';
 import { createSnapshotServer } from './snapshotServer';
 import { collectSnapshotFeed } from './collectFeed';
+import { createFeedStateLog } from './feedStateLog';
 
 upstreamJsonCache.paceHost('gbfs.api.ridedott.com', 150);
 const snapshotPath = process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json';
@@ -115,7 +116,11 @@ async function discover() {
 setDefinitions(independentCollectableFeeds(), false);
 scheduler.start();
 void discover();
-const persistenceTimer = setInterval(() => void persist(), 5_000);
+const logFeedStates = createFeedStateLog();
+const persistenceTimer = setInterval(() => {
+  if (snapshot) logFeedStates(snapshot.feeds);
+  void persist();
+}, 5_000);
 server.listen(Number(process.env.PORT ?? 3001), '0.0.0.0', () => console.log('Scooter snapshot API listening'));
 for (const signal of ['SIGTERM', 'SIGINT'] as const) {
   process.on(signal, () => {

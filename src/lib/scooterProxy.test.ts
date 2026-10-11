@@ -24,10 +24,19 @@ describe('edge snapshot proxy', () => {
   });
 
   it('returns a retryable 503 when the origin is unavailable', async () => {
-    vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('timeout'));
+    vi.spyOn(globalThis, 'fetch').mockRejectedValue(new DOMException('The operation timed out.', 'TimeoutError'));
+    const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
     const response = await proxyScooterSnapshot(request(), env);
     expect(response.status).toBe(503);
     expect(response.headers.get('Retry-After')).toBe('30');
+    expect(logged.mock.calls.map(([line]) => JSON.parse(line))).toEqual([{ event: 'scooter_origin_failure', error: 'TimeoutError' }]);
+  });
+
+  it('logs the status of an origin error without the request', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({ error: 'Scooter data is temporarily unavailable.' }, { status: 503 }));
+    const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
+    expect((await proxyScooterSnapshot(request(), env)).status).toBe(503);
+    expect(logged.mock.calls.map(([line]) => JSON.parse(line))).toEqual([{ event: 'scooter_origin_failure', status: 503 }]);
   });
 
   it('rejects invalid bounds before any origin call', async () => {

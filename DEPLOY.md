@@ -161,6 +161,15 @@ curl http://localhost:3001/health
 
 The public API has edge rate limiting. The cache server logs feed counts,
 observation ages, and feed failures; it does not log map URLs, coordinates, or caller IPs.
+It also logs `snapshot_feed_state` whenever a feed moves between `ok`, `failing`
+(the previous positions are still served) and `expired` (nothing is served and
+the map says the provider is not sharing data), with the age of its data. That
+includes a feed that expires between two collections without any error. Netcup's
+Alloy keeps these lines in Loki for 30 days under `app="scootradar-cache"`; in
+Grafana: `{app="scootradar-cache", event="snapshot_feed_state"} | json | feed="national:voiscooters.com"`.
+The Worker logs `scooter_origin_failure` with the origin status or error name
+when the map's "temporarily unavailable" banner would show; read it in the
+Worker's Logs in the Cloudflare dashboard.
 
 ## Public launch checklist
 
