@@ -2,8 +2,7 @@ import type { MetadataRoute } from 'next';
 import { DEFAULT_LANDING_LOCALE, LANDING_LOCALES, landingPath } from '@/lib/landingCopy';
 import { LANDING_SNAPSHOT_DATE } from '@/lib/landingSnapshot';
 import { MAP_PATH } from '@/lib/mapAddress';
-
-const SITE = 'https://scooters.plhery.com';
+import { SITE_URL as SITE } from '@/lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // The landing page is one page per language, English at the root, and each names the others.

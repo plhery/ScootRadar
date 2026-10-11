@@ -4,6 +4,7 @@ import { Red_Hat_Display, Red_Hat_Text } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { LANDING_LOCALES, landingLocaleOf, landingPath } from '@/lib/landingCopy';
 import { MOVED_MAP_SCRIPT } from '@/lib/mapAddress';
+import { SITE_URL } from '@/lib/site';
 import '../landing.css';
 
 // One family in two cuts: Display for the headlines and the figures, Text for
@@ -21,7 +22,7 @@ const text = Red_Hat_Text({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://scooters.plhery.com'),
+  metadataBase: new URL(SITE_URL),
   icons: {
     icon: [
       { url: '/icon.svg', type: 'image/svg+xml' },
