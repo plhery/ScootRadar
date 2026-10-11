@@ -5,7 +5,7 @@ set -euo pipefail
 PROJECT_ROOT="$(cd -- "$(dirname -- "$0")/.." && pwd)"
 PROJECT_PATH="$PROJECT_ROOT/ios/ScootRadar.xcodeproj"
 SCHEME="ScootRadar"
-BUNDLE_ID="com.plhery.zurichscooters"
+BUNDLE_ID="com.plhery.scootradar"
 DEVICE_NAME="${SCOOTRADAR_DEVICE_NAME:-}"
 TEMP_ROOT="${TMPDIR:-/tmp}"
 TEMP_ROOT="${TEMP_ROOT%/}"

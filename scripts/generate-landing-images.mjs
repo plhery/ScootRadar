@@ -36,7 +36,7 @@ import sharp from 'sharp';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(root, 'public/landing');
 const SIMULATOR = process.env.SCOOTRADAR_SIMULATOR ?? 'Scooters landing';
-const BUNDLE = 'com.plhery.zurichscooters';
+const BUNDLE = 'com.plhery.scootradar';
 const API = 'https://scootradar.com/api/scooters';
 
 // A public place, not a rider's position: the square in front of Zürich main station.
