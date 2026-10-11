@@ -23,10 +23,15 @@ function luminance(hex: string): number {
 
 const contrast = (a: number, b: number) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
 
-/** Dark or white, whichever reads better on this colour. */
+/** Under this, white can hardly be told from the colour it is written on. */
+const WHITE_STANDS_OUT = 2;
+
+/**
+ * White, as on the badge of an app: every provider's colour carries it. Dark
+ * only on a colour too light for white, such as Bird's in the dark appearance.
+ */
 export function inkOn(color: string): string {
-  const ground = luminance(color);
-  return contrast(ground, luminance(DARK_INK)) >= contrast(ground, luminance(LIGHT_INK)) ? DARK_INK : LIGHT_INK;
+  return contrast(luminance(color), luminance(LIGHT_INK)) >= WHITE_STANDS_OUT ? LIGHT_INK : DARK_INK;
 }
 
 /**

@@ -309,7 +309,7 @@
 
 .scooter-name-selected span {
   color: inherit;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 /* Once, as the first scooters appear: they light up from the visitor outwards, then the names come. */
