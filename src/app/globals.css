@@ -8,12 +8,16 @@
   --hairline: rgba(16, 19, 26, 0.1);
   --page-bg: #eef0f4;
   --top-scrim: rgba(255, 255, 255, 0.28);
-  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-bg: rgba(255, 255, 255, 0.58);
   --glass-edge: rgba(16, 19, 26, 0.08);
+  /* Light catching the top edge of the glass. */
+  --glass-sheen: rgba(255, 255, 255, 0.75);
   --glass-shadow: 0 10px 30px rgba(28, 36, 48, 0.16);
   --sheet-bg: rgba(252, 252, 254, 0.94);
   --grabber-bg: rgba(16, 19, 26, 0.2);
   --raised-bg: #fff;
+  /* What sits on the glass, a little brighter than the glass itself. */
+  --tile-bg: rgba(255, 255, 255, 0.5);
   /* What is written on a filled chip, and its count. */
   --chip-on-ink: #ffffff;
   --chip-on-ink-2: #c5cad3;
@@ -26,7 +30,7 @@
   --ground-name: #7c8596;
   --attribution-bg: rgba(255, 255, 255, 0.85);
   --attribution-ink: #555c64;
-  --map-control-bg: rgba(255, 255, 255, 0.72);
+  --map-control-bg: rgba(255, 255, 255, 0.58);
   --map-control-disabled-bg: rgba(244, 245, 248, 0.8);
   --warning-ink: #895100;
   --warning-bg: rgba(255, 149, 0, 0.14);
@@ -94,10 +98,12 @@ body {
   --top-scrim: rgba(0, 0, 0, 0.28);
   --glass-bg: rgba(16, 19, 26, 0.86);
   --glass-edge: rgba(255, 255, 255, 0.1);
+  --glass-sheen: rgba(255, 255, 255, 0.06);
   --glass-shadow: 0 10px 34px rgba(0, 0, 0, 0.5);
   --sheet-bg: rgba(16, 19, 26, 0.94);
   --grabber-bg: rgba(255, 255, 255, 0.24);
   --raised-bg: #1d2330;
+  --tile-bg: #1d2330;
   --chip-on-ink: #0b0e14;
   --chip-on-ink-2: #4a5262;
   /* Less of the colour of an app on its card: it is bright on the dark panel. */
@@ -141,10 +147,12 @@ body {
     --top-scrim: rgba(0, 0, 0, 0.28);
     --glass-bg: rgba(16, 19, 26, 0.86);
     --glass-edge: rgba(255, 255, 255, 0.1);
+    --glass-sheen: rgba(255, 255, 255, 0.06);
     --glass-shadow: 0 10px 34px rgba(0, 0, 0, 0.5);
     --sheet-bg: rgba(16, 19, 26, 0.94);
     --grabber-bg: rgba(255, 255, 255, 0.24);
     --raised-bg: #1d2330;
+    --tile-bg: #1d2330;
     --chip-on-ink: #0b0e14;
     --chip-on-ink-2: #4a5262;
     /* Less of the colour of an app on its card: it is bright on the dark panel. */
@@ -226,11 +234,12 @@ svg {
 }
 .glass {
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(200%);
+  backdrop-filter: blur(16px) saturate(200%);
   box-shadow:
     var(--glass-shadow),
-    inset 0 0 0 1px var(--glass-edge);
+    inset 0 0 0 1px var(--glass-edge),
+    inset 0 1px 0 var(--glass-sheen);
 }
 .sr-only {
   position: absolute;
@@ -916,7 +925,7 @@ svg {
   padding: 12px 10px 11px 12px;
   border: 1px solid var(--hairline);
   border-radius: 16px;
-  background: var(--raised-bg);
+  background: var(--tile-bg);
 }
 /* One figure alone is a line: the number, then what it measures. */
 .card-figure:only-child {
