@@ -86,6 +86,8 @@ struct ScooterMapView: UIViewRepresentable {
     /// Where distances are counted from: the rider or the searched place,
     /// while it is on the map or near it. Without it every dot looks the same.
     var origin: GeoPoint? = nil
+    /// The names on the map and what VoiceOver reads of it are written in it.
+    var language = ScooterLanguage.current
 
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
@@ -203,6 +205,7 @@ struct ScooterMapView: UIViewRepresentable {
             let isStreetLevel: Bool
             let scaleStep: Int
             let headingStep: Int
+            let language: ScooterLanguage
         }
 
         init(parent: ScooterMapView) {
@@ -485,7 +488,8 @@ struct ScooterMapView: UIViewRepresentable {
                 // Zoomed out, MapKit gathers the scooters into clusters.
                 isStreetLevel: clusteringEnabled == false,
                 scaleStep: Int((log(metresPerPoint) / Self.scaleStep).rounded()),
-                headingStep: Int((mapView.camera.heading / 3).rounded())
+                headingStep: Int((mapView.camera.heading / 3).rounded()),
+                language: parent.language
             )
             guard inputs != appliedLook else { return }
             let previous = appliedLook
@@ -500,6 +504,23 @@ struct ScooterMapView: UIViewRepresentable {
             if previous?.isDark != inputs.isDark {
                 for case let view as ScooterClusterAnnotationView in mapView.annotations.compactMap(mapView.view(for:)) {
                     view.usesDarkArt = inputs.isDark
+                }
+            }
+            if let previous, previous.language != inputs.language {
+                // What VoiceOver reads of the map was written when it was drawn.
+                for annotation in mapView.annotations {
+                    switch mapView.view(for: annotation) {
+                    case let view as ScooterAnnotationView:
+                        view.refreshAppearance()
+                    case let view as ScooterClusterAnnotationView:
+                        view.refreshAccessibility()
+                    case let view?:
+                        if let parking = annotation as? ScooterParkingAnnotation {
+                            Self.describe(view, as: parking.parking)
+                        }
+                    case nil:
+                        break
+                    }
                 }
             }
 
@@ -776,12 +797,7 @@ struct ScooterMapView: UIViewRepresentable {
                 view.canShowCallout = false
                 view.displayPriority = .required
                 view.clusteringIdentifier = nil
-                view.accessibilityLabel = [parking.parking.bayTitle, parking.parking.name]
-                    .filter { !$0.isEmpty }
-                    .joined(separator: ", ")
-                // Whether parking here is mandatory is heard at the marker already.
-                view.accessibilityValue = parking.parking.notice
-                view.accessibilityHint = String(localized: "Shows parking details")
+                Self.describe(view, as: parking.parking)
                 view.accessibilityTraits = .button
                 return view
             }
@@ -830,6 +846,16 @@ struct ScooterMapView: UIViewRepresentable {
             ))
             view.refreshAppearance()
             return view
+        }
+
+        /// What VoiceOver reads of a parking bay.
+        private static func describe(_ view: MKAnnotationView, as parking: ScooterParking) {
+            view.accessibilityLabel = [parking.bayTitle, parking.name]
+                .filter { !$0.isEmpty }
+                .joined(separator: ", ")
+            // Whether parking here is mandatory is heard at the marker already.
+            view.accessibilityValue = parking.notice
+            view.accessibilityHint = String(localized: "Shows parking details")
         }
 
         private static func zoomLevel(on mapView: MKMapView) -> Double {
@@ -1499,6 +1525,13 @@ final class ScooterClusterAnnotationView: MKAnnotationView {
         accessibilityHint = String(localized: "Zooms in to show individual scooters")
     }
 
+    /// Writes what VoiceOver reads of the total again, in the language the
+    /// app is now shown in.
+    func refreshAccessibility() {
+        accessibilityLabel = Self.accessibilityLabel(count: renderedCount, city: renderedCity)
+        accessibilityHint = String(localized: "Zooms in to show individual scooters")
+    }
+
     override func layoutSubviews() {
         super.layoutSubviews()
         CATransaction.begin()
@@ -1578,14 +1611,17 @@ final class ScooterClusterAnnotationView: MKAnnotationView {
     /// map can pick a city; "40 scooters" for any other cluster.
     static func accessibilityLabel(count: Int, city: String?) -> String {
         guard let city, !city.isEmpty else {
-            return String(format: String(localized: "%@ scooters"), count.formatted())
+            return String(
+                format: String(localized: "%@ scooters"),
+                count.formatted(.number.locale(ScooterLanguage.current.locale))
+            )
         }
         if count == 1 {
             return String(format: String(localized: "%@, one scooter"), city)
         }
         return String(
             format: String(localized: "%@, %lld scooters"),
-            locale: .current,
+            locale: ScooterLanguage.current.locale,
             city,
             Int64(count)
         )

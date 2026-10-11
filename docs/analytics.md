@@ -18,7 +18,7 @@ root, the web map was counted under `/`: web views of `/` before that are the ma
 | Lifecycle | `app_open`, `app_install` (PWA), `app_foreground` (iOS) | platform |
 | Search | `search_open`, `search_close`, `search_results`, `search_error`, `search_select`, `search_clear` | result count only (`count` web, `value` iOS) |
 | Filters | `filters_open`, `provider_filter`, `providers_all`, `filters_reset`, `battery_filter` | provider, enabled/result, quick/filter source (web), value |
-| Preferences | `settings_open`, `panel_close`, `map_style`, `language_change` (web) | style (web: the appearance `auto`/`light`/`dark` or the map `calm`/`detailed`; iOS: the appearance `auto`/`light`/`dark` or the map `standard`/`quiet`/`satellite`, in `result`), language |
+| Preferences | `settings_open`, `panel_close`, `map_style`, `language_change` | style (web: the appearance `auto`/`light`/`dark` or the map `calm`/`detailed`; iOS: the appearance `auto`/`light`/`dark` or the map `standard`/`quiet`/`satellite`, in `result`), language (iOS: in `result`) |
 | Location | `locate`, `location_result` | success/denied/unavailable |
 | Map/details | `vehicle_select`, `vehicle_dismiss`, `cluster_select`, `parking_select`, `map_zoom` (web), `compass_reset` (web) | provider; zoom direction |
 | Conversion intent | `directions_open`, `rental_open` | provider, vehicle/parking target |

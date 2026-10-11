@@ -598,6 +598,32 @@ final class ScooterMapModelTests: XCTestCase {
         XCTAssertEqual(unknownModel.appearance, .automatic)
     }
 
+    func testChosenLanguageChangesTheTextAtOnceAndIsKeptWhereIOSReadsIt() {
+        let defaults = isolatedDefaults()
+        let model = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+            locationManager: CLLocationManager(),
+            defaults: defaults
+        )
+        defer { ScooterLanguage.current = .atLaunch }
+        XCTAssertEqual(model.language, .atLaunch)
+
+        model.language = .fr
+        XCTAssertEqual(ScooterLanguage.current, .fr)
+        XCTAssertEqual(AppleMapStyle.quiet.label, "Épuré")
+        XCTAssertEqual(ScooterAppearance.dark.label, "Sombre")
+        XCTAssertEqual(ScooterLanguage.current.locale.language.languageCode?.identifier, "fr")
+        XCTAssertEqual(defaults.stringArray(forKey: "AppleLanguages"), ["fr"])
+
+        model.language = .de
+        XCTAssertEqual(AppleMapStyle.quiet.label, "Ruhig")
+        XCTAssertEqual(ScooterAppearance.dark.label, "Dunkel")
+        // The numbers keep to the region of the iPhone, whichever the language.
+        XCTAssertEqual(ScooterLanguage.current.locale.language.languageCode?.identifier, "de")
+        XCTAssertEqual(ScooterLanguage.current.locale.region, Locale.current.region)
+        XCTAssertEqual(defaults.stringArray(forKey: "AppleLanguages"), ["de"])
+    }
+
     func testRideDurationAndProviderPassesPersistIndependently() {
         let defaults = isolatedDefaults()
         let firstModel = ScooterMapModel(

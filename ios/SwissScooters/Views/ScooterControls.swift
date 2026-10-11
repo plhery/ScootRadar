@@ -337,7 +337,7 @@ struct ScooterControlDock: View {
     /// "22 scooters nearby": the count stands out, and the two are one
     /// text, so a long line wraps like a sentence.
     private func countLine(_ summary: ScooterDockSummary) -> some View {
-        var count = AttributedString(summary.count.formatted(.number))
+        var count = AttributedString(summary.count.formatted(.number.locale(ScooterLanguage.current.locale)))
         count.swiftUI.font = .headline.weight(.bold).monospacedDigit()
         var label = AttributedString(" \(summary.countLabel)")
         label.swiftUI.font = .subheadline.weight(.semibold)
@@ -1437,12 +1437,14 @@ private func providerAccent(_ provider: ScooterProvider?, colorScheme: ColorSche
 enum RidePriceFormatter {
     /// "5.20": the amount without its currency, which the label under a figure names.
     static func amount(minorUnits: Int) -> String {
-        (Decimal(minorUnits) / 100).formatted(.number.precision(.fractionLength(2)))
+        (Decimal(minorUnits) / 100).formatted(
+            .number.precision(.fractionLength(2)).locale(ScooterLanguage.current.locale)
+        )
     }
 
     static func string(minorUnits: Int, currency: String) -> String {
         let formatter = NumberFormatter()
-        formatter.locale = .current
+        formatter.locale = ScooterLanguage.current.locale
         formatter.numberStyle = .currency
         formatter.currencyCode = currency.uppercased()
         formatter.minimumFractionDigits = 2
@@ -1734,8 +1736,8 @@ struct ScooterFilterSheet: View {
     }
 }
 
-/// Settings: how the app and its map look, the rider's passes, and About
-/// with the credits, the privacy choice and the source code.
+/// Settings: how the app and its map look, the language, the rider's passes,
+/// and About with the credits, the privacy choice and the source code.
 struct ScooterSettingsSheet: View {
     @Bindable var model: ScooterMapModel
     @Environment(\.dismiss) private var dismiss
@@ -1766,6 +1768,14 @@ struct ScooterSettingsSheet: View {
                                 MapStylePicture(style: style)
                             }
                         }
+                    }
+                }
+
+                Section("Language") {
+                    // The sheet reads the language here, so its titles are
+                    // written again when another is chosen.
+                    SettingsLanguageTiles(title: String(localized: "Language"), selection: model.language) {
+                        model.language = $0
                     }
                 }
 
@@ -1831,7 +1841,8 @@ struct ScooterSettingsSheet: View {
                     Text("Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter.")
                 }
             }
-            .navigationTitle("Settings")
+            // As a string: a title given as a key stays in the language it was first shown in.
+            .navigationTitle(String(localized: "Settings"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -1840,10 +1851,14 @@ struct ScooterSettingsSheet: View {
             }
             .sensoryFeedback(.selection, trigger: model.appearance)
             .sensoryFeedback(.selection, trigger: model.mapStyle)
+            .sensoryFeedback(.selection, trigger: model.language)
         }
     }
 
     private func passStatus(for provider: ScooterProvider) -> String {
+        // A row is drawn apart from the rest of the sheet: it reads the
+        // language itself to be written again when another is chosen.
+        _ = model.language
         let pass = model.ridePass(for: provider)
         guard pass.enabled else { return String(localized: "Not set") }
         guard pass.isActive(on: .now) else { return String(localized: "Expired") }

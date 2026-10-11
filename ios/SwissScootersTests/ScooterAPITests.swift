@@ -467,25 +467,33 @@ final class AddressSearchModelTests: XCTestCase {
     }
 
     func testSearchLanguageIsTheOneTheAppIsShownIn() async {
-        XCTAssertEqual(SwissAddressSearchModel.searchLanguage(localizations: ["de"]), "de")
-        XCTAssertEqual(SwissAddressSearchModel.searchLanguage(localizations: ["fr", "en"]), "fr")
-        XCTAssertEqual(SwissAddressSearchModel.searchLanguage(localizations: ["it-CH"]), "it")
-        XCTAssertEqual(SwissAddressSearchModel.searchLanguage(localizations: ["en-GB"]), "en")
-        // Anything the search does not answer in is asked for in English.
-        XCTAssertEqual(SwissAddressSearchModel.searchLanguage(localizations: ["es"]), "en")
-        XCTAssertEqual(SwissAddressSearchModel.searchLanguage(localizations: ["Base"]), "en")
-        XCTAssertEqual(SwissAddressSearchModel.searchLanguage(localizations: []), "en")
+        XCTAssertEqual(ScooterLanguage(localizations: ["de"]), .de)
+        XCTAssertEqual(ScooterLanguage(localizations: ["fr", "en"]), .fr)
+        XCTAssertEqual(ScooterLanguage(localizations: ["it-CH"]), .it)
+        XCTAssertEqual(ScooterLanguage(localizations: ["en-GB"]), .en)
+        // Anything the app is not translated into is shown, and searched, in English.
+        XCTAssertEqual(ScooterLanguage(localizations: ["es"]), .en)
+        XCTAssertEqual(ScooterLanguage(localizations: ["Base"]), .en)
+        XCTAssertEqual(ScooterLanguage(localizations: []), .en)
 
         // Left to itself, the model sends the language this run of the app is shown in.
         let shownIn = Bundle.main.preferredLocalizations.first ?? ""
         XCTAssertTrue(["en", "de", "fr", "it"].contains(shownIn), shownIn)
-        let api = StubAddressSearchClient(answers: [.places([zurich])])
+        let api = StubAddressSearchClient(answers: [.places([zurich]), .places([zurich])])
         let model = SwissAddressSearchModel(api: api, debounce: .zero)
         model.query = "Paradeplatz"
-        let settled = await waitUntil { model.status != .searching }
+        var settled = await waitUntil { model.status != .searching }
+        XCTAssertTrue(settled)
+
+        // And the one chosen in Settings from then on.
+        let other: ScooterLanguage = shownIn == "it" ? .fr : .it
+        ScooterLanguage.current = other
+        defer { ScooterLanguage.current = .atLaunch }
+        model.query = "Bellevue"
+        settled = await waitUntil { model.status != .searching }
         XCTAssertTrue(settled)
         let languages = await api.languages
-        XCTAssertEqual(languages, [shownIn])
+        XCTAssertEqual(languages, [shownIn, other.rawValue])
     }
 
     private func waitUntil(_ condition: () async -> Bool) async -> Bool {

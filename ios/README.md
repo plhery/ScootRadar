@@ -94,16 +94,20 @@ with the count in view, or a note when a provider is not sharing data. **Reset**
 is in the header and the button at the bottom says how many scooters the map
 will show.
 
-**Settings.** Two choices as tiles, each under a small picture of what it gives:
-the appearance (Automatic, Light, Dark; Automatic follows the iPhone) and the map
-style (Standard, Quiet, Satellite). Then the passes per provider (free unlock,
-free minutes, optional expiry date), listed for the providers that operate where
-the map is or that already have a pass; and About: map and data credits, Privacy
-with the usage switch and the privacy notice, and the source code on GitHub.
+**Settings.** Three choices as tiles, the first two each under a small picture of
+what it gives: the appearance (Automatic, Light, Dark; Automatic follows the
+iPhone), the map style (Standard, Quiet, Satellite) and the language. Then the
+passes per provider (free unlock, free minutes, optional expiry date), listed
+for the providers that operate where the map is or that already have a pass;
+and About: map and data credits, Privacy with the usage switch and the privacy
+notice, and the source code on GitHub.
 
-The app is translated into English, German, French and Italian. It follows
-Dynamic Type up to the accessibility sizes, labels map markers and search
-results for VoiceOver, and respects Reduce Motion.
+The app is translated into English, German, French and Italian, and starts in
+the first of the iPhone's languages it speaks. A language chosen in Settings
+changes the app's own text at once; what iOS draws, such as the names on the
+map, follows the next time the app opens. The app follows Dynamic Type up to
+the accessibility sizes, labels map markers and search results for VoiceOver,
+and respects Reduce Motion.
 
 ## Data and freshness
 
@@ -131,10 +135,11 @@ There is no refresh button. **Try again** appears only when something failed:
 
 ## What stays on the phone
 
-The filters, the appearance, the map style, the passes, the ride length used
-for price estimates, the usage choice and whether the phone was ever located are
-kept in the app's settings. Your location, the places you searched and the text
-you typed are never stored; recent places live in memory until the app closes.
+The filters, the appearance, the map style, the language, the passes, the ride
+length used for price estimates, the usage choice and whether the phone was
+ever located are kept in the app's settings. Your location, the places you
+searched and the text you typed are never stored; recent places live in memory
+until the app closes.
 
 ## Usage analytics
 

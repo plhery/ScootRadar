@@ -94,7 +94,7 @@ struct Scooter: Identifiable, Hashable, Sendable {
             numberFormatStyle: .number
                 .precision(.fractionLength(0 ... 1))
                 .rounded(rule: .toNearestOrAwayFromZero)
-        ))
+        ).locale(ScooterLanguage.current.locale))
         // A line never breaks between the number and its unit.
         .replacingOccurrences(of: " ", with: "\u{00A0}")
     }
@@ -791,7 +791,7 @@ extension ScooterCityCatalog {
 extension ScooterCity {
     /// The country in the user's language, such as "Germany".
     var countryName: String {
-        Locale.current.localizedString(forRegionCode: countryCode) ?? countryCode
+        ScooterLanguage.current.locale.localizedString(forRegionCode: countryCode) ?? countryCode
     }
 
     /// The city as a place to search from.
@@ -810,7 +810,7 @@ extension ScooterCityDistance {
             width: .abbreviated,
             usage: .asProvided,
             numberFormatStyle: .number.precision(.fractionLength(0))
-        ))
+        ).locale(ScooterLanguage.current.locale))
         // A line never breaks between the number and its unit.
         .replacingOccurrences(of: " ", with: "\u{00A0}")
     }
@@ -994,8 +994,7 @@ struct ScooterDockSummary: Equatable, Sendable {
 enum ScooterPlural {
     /// The language the app's strings are in: "en", "de", "fr" or "it".
     static var language: String {
-        Bundle.main.preferredLocalizations.first
-            .flatMap { Locale(identifier: $0).language.languageCode?.identifier } ?? "en"
+        ScooterLanguage.current.rawValue
     }
 
     /// One takes the singular. In French nothing does as well: "0 trottinette".
@@ -1063,7 +1062,7 @@ enum ScooterDockStatus: Equatable, Sendable {
 
     /// "14:02", the time of day in the user's format.
     static func clockTime(_ date: Date) -> String {
-        date.formatted(date: .omitted, time: .shortened)
+        date.formatted(Date.FormatStyle(date: .omitted, time: .shortened, locale: ScooterLanguage.current.locale))
     }
 
     /// The body of the out-of-date card: "Last update 14:02. You’re offline. Check your connection."
@@ -1103,8 +1102,8 @@ enum ScooterDockNotice: Hashable, Identifiable, Sendable {
         case let .truncated(shown, total):
             String(
                 format: String(localized: "Showing %1$@ of %2$@ — zoom in to see all"),
-                shown.formatted(),
-                total.formatted()
+                shown.formatted(.number.locale(ScooterLanguage.current.locale)),
+                total.formatted(.number.locale(ScooterLanguage.current.locale))
             )
         case .parkingUnavailable:
             String(localized: "Parking bays unavailable right now")

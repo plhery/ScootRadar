@@ -124,7 +124,7 @@ struct ScooterFilterSummary: Equatable, Sendable {
         if hiddenCount == 1 { return String(localized: "1 scooter hidden by your filters") }
         return String(
             format: String(localized: "%lld scooters hidden by your filters"),
-            locale: .current,
+            locale: ScooterLanguage.current.locale,
             Int64(hiddenCount)
         )
     }
@@ -135,7 +135,7 @@ struct ScooterFilterSummary: Equatable, Sendable {
         if !providers.isEmpty {
             parts.append(String(
                 format: String(localized: "%@ only"),
-                ListFormatter.localizedString(byJoining: providers.map(\.name))
+                providers.map(\.name).formatted(.list(type: .and).locale(ScooterLanguage.current.locale))
             ))
         }
         if let minimumBattery {

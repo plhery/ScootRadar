@@ -46,7 +46,8 @@ struct ScooterMapScreen: View {
                     parking: model.mapParking,
                     selectedParkingID: model.selectedParkingID,
                     onParkingSelectionChange: model.selectParking,
-                    origin: model.mapOrigin
+                    origin: model.mapOrigin,
+                    language: model.language
                 )
                 .ignoresSafeArea()
 
@@ -109,6 +110,9 @@ struct ScooterMapScreen: View {
                 .padding(.top, 8)
                 .padding(.horizontal, 12)
                 .zIndex(20)
+                // Made anew in another language: much of what is over the
+                // map is text that was written when it was drawn.
+                .id(model.language)
 
                 VStack {
                     Spacer()
@@ -135,6 +139,7 @@ struct ScooterMapScreen: View {
                 .allowsHitTesting(!searchIsExpanded)
                 .accessibilityHidden(searchIsExpanded)
                 .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: searchIsExpanded)
+                .id(model.language)
 
                 VStack {
                     Spacer()
@@ -162,6 +167,7 @@ struct ScooterMapScreen: View {
                 .allowsHitTesting(!searchIsExpanded)
                 .accessibilityHidden(searchIsExpanded)
                 .animation(reduceMotion ? nil : .snappy(duration: 0.24), value: searchIsExpanded)
+                .id(model.language)
             }
         }
         // Keep the dock anchored to the screen while search dismisses. Otherwise
@@ -206,6 +212,7 @@ struct ScooterMapScreen: View {
         .sensoryFeedback(.selection, trigger: model.selectedScooterID)
         .sensoryFeedback(.selection, trigger: model.selectedParkingID)
         .background(WindowAppearance(style: model.appearance.interfaceStyle))
+        .environment(\.locale, model.language.locale)
     }
 
     /// Only a first load that failed is reported under the search bar; later

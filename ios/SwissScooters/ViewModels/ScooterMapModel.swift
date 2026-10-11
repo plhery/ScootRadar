@@ -159,6 +159,18 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         }
     }
 
+    /// The language the app is shown in. A choice changes the app's own text
+    /// at once, and is kept where iOS reads the app's language at launch,
+    /// which is where the Settings of the iPhone keep the one chosen there.
+    var language = ScooterLanguage.current {
+        didSet {
+            guard oldValue != language else { return }
+            ScooterAnalytics.shared.track("language_change", result: language.rawValue)
+            ScooterLanguage.current = language
+            defaults.set([language.rawValue], forKey: Self.languagesKey)
+        }
+    }
+
     private(set) var rideEstimateMinutes: Int
     private(set) var ridePasses: [ScooterProvider: ProviderRidePass]
 
@@ -213,6 +225,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private static let minimumBatteryKey = "minimum-battery"
     private static let mapStyleKey = "apple-map-style"
     private static let appearanceKey = "appearance"
+    private static let languagesKey = "AppleLanguages"
     private static let enabledProvidersKey = "enabled-providers"
     private static let rideEstimateMinutesKey = "ride-estimate-minutes-v1"
     private static let ridePassesKey = "provider-ride-passes-v1"

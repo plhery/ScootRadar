@@ -38,7 +38,7 @@ final class ScooterAnalytics {
             "website": website, "hostname": "scootradar.com",
             "url": ["/", "/filters", "/settings"].contains(screen) ? screen : "/",
             "title": "Scootradar", "referrer": "", "tag": "ios",
-            "language": Locale.current.identifier.replacingOccurrences(of: "_", with: "-")
+            "language": ScooterLanguage.current.locale.identifier.replacingOccurrences(of: "_", with: "-")
         ]
         if let name {
             var data: [String: Any] = ["platform": "ios"]

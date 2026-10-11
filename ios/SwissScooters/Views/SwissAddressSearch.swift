@@ -655,15 +655,16 @@ final class SwissAddressSearchModel {
     @ObservationIgnored private let debounce: Duration
     /// The longest wait before the one repeat of a search the server refused as one too many.
     @ObservationIgnored private let rateLimitPause: Duration
-    /// Sent with every search, so country names come back in the language on screen.
-    @ObservationIgnored private let language: String
+    /// Sent with every search, so country names come back in the language on
+    /// screen; nil is the language the app is shown in when the search is sent.
+    @ObservationIgnored private let language: String?
     @ObservationIgnored private var searchTask: Task<Void, Never>?
 
     init(
         api: any AddressSearchAPIClient = AddressSearchAPI(),
         debounce: Duration = .milliseconds(350),
         rateLimitPause: Duration = .seconds(3),
-        language: String = SwissAddressSearchModel.searchLanguage()
+        language: String? = nil
     ) {
         self.api = api
         self.debounce = debounce
@@ -731,7 +732,7 @@ final class SwissAddressSearchModel {
     private func search(_ text: String, waitsOutTheLimit: Bool) async throws {
         let results: [AddressSearchResult]
         do {
-            results = try await api.search(query: text, language: language)
+            results = try await api.search(query: text, language: language ?? ScooterLanguage.current.rawValue)
         } catch let AddressSearchAPIError.rateLimited(retryAfter) where waitsOutTheLimit {
             try await Task.sleep(for: min(retryAfter ?? rateLimitPause, rateLimitPause))
             return try await search(text, waitsOutTheLimit: false)
@@ -741,15 +742,5 @@ final class SwissAddressSearchModel {
         ScooterAnalytics.shared.track("search_results", value: results.count)
         status = results.isEmpty ? .noResults : .results(results)
         searchTask = nil
-    }
-
-    /// The language the app is shown in, as the address search takes it: "en",
-    /// "de", "fr" or "it". `localizations` is the bundle's choice among the
-    /// languages the app is translated into, which is where its strings come from.
-    static func searchLanguage(
-        localizations: [String] = Bundle.main.preferredLocalizations
-    ) -> String {
-        let language = localizations.first.flatMap { Locale(identifier: $0).language.languageCode?.identifier }
-        return language.flatMap { ["de", "fr", "it"].contains($0) ? $0 : nil } ?? "en"
     }
 }
