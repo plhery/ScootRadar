@@ -136,10 +136,22 @@ app name and canonical domain are ScootRadar and `scootradar.com`.
 - Netcup tunnel: `b1f36e92-77d5-4c92-846c-28848a492643`; exact hostname rule to
   `http://127.0.0.1:80`, routed by Coolify's proxy.
 
-Deploy this application from Coolify after pushing a tested commit to `main`,
-then wait for `/health` and `/ready` to return 200. For the initial origin-authentication
-migration, follow the Worker-first sequence above.
-Automatic deployment is disabled so backend and edge releases can be ordered.
+A push to `main` deploys this application when it changes a file the cache is
+built from. GitHub sends push events to Coolify's manual GitHub webhook,
+`https://coolify.plhery.com/webhooks/source/github/events/manual`, signed with
+the application's GitHub webhook secret. The application's Watch Paths are
+[`server/deploy-watch-paths.txt`](server/deploy-watch-paths.txt), and
+`server/deployWatchPaths.test.ts` checks that they match every file of the
+bundle; when that list changes, paste it into Coolify too. Coolify matches the
+webhook to the application by repository name, so a renamed repository must be
+renamed in Coolify as well. A push whose every commit message carries
+`[skip cd]` leaves the cache alone. After a deploy, `/health` and `/ready`
+return 200 again.
+
+Workers Builds deploys the website from the same push, a few minutes before the
+cache is ready. When the website needs a cache change first, as the
+origin-authentication migration above did, push the cache change alone, wait
+for `/ready`, then push the rest. A cache can also be deployed by hand from Coolify.
 Coolify remains the source of truth for the application, storage, and resource limits.
 
 The collector schedules each feed independently at most once per minute with
@@ -232,7 +244,7 @@ The Germany/Italy catalog expands the collector to approximately 80 feeds.
 Allocate 1536 MiB to the cache container (local validation peaked around 750 MiB).
 The upstream cache holds 2048 documents to retain hourly metadata across minute
 refreshes. The country catalogs are bundled into both the cache backend and the
-Cloudflare web app; deploy the cache before the web app. City totals rebuild on
+Cloudflare web app, and the same push deploys both. City totals rebuild on
 startup when the catalog adds/removes cities, even if the old hourly cache is fresh.
 
 Dott requests are spaced by 150 ms during collection (below 400/minute), including
