@@ -1,0 +1,39 @@
+import { COVERED_CITIES, type CoveredCountry } from '@/lib/coveredCities';
+
+// The cities the landing page names, by their id in the catalogue. The others
+// of each country are counted, so the page stays right as cities are added.
+const FEATURED: Record<CoveredCountry, string[]> = {
+  CH: ['ch:zurich', 'ch:basel', 'ch:bern', 'ch:winterthur', 'ch:st-gallen', 'ch:zug'],
+  DE: ['de:Berlin', 'de:Hamburg', 'de:München', 'de:Köln', 'de:Frankfurt', 'de:Stuttgart'],
+  FR: ['fr:Lyon', 'fr:Marseille', 'fr:Bordeaux', 'fr:Lille Métropole', 'fr:Grenoble', 'fr:Angers'],
+  IT: ['it:Roma'],
+};
+
+const COUNTRY_ORDER: CoveredCountry[] = ['CH', 'DE', 'FR', 'IT'];
+
+export interface LandingCity {
+  name: string;
+  /** The map, opened on this city. */
+  href: string;
+}
+
+export interface LandingCountryCities {
+  country: CoveredCountry;
+  total: number;
+  featured: LandingCity[];
+  /** How many cities of the country are not named. */
+  more: number;
+}
+
+export const LANDING_CITY_TOTAL = COVERED_CITIES.length;
+
+export function landingCountries(): LandingCountryCities[] {
+  return COUNTRY_ORDER.map(country => {
+    const cities = COVERED_CITIES.filter(city => city.country === country);
+    const featured = FEATURED[country].flatMap(id => {
+      const city = cities.find(candidate => candidate.id === id);
+      return city ? [{ name: city.city, href: `/?origin=${city.center[0]},${city.center[1]}` }] : [];
+    });
+    return { country, total: cities.length, featured, more: cities.length - featured.length };
+  });
+}

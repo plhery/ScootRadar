@@ -303,6 +303,7 @@ export default function ControlSheet({
                 {t('set.credits')}
                 <Icon name="chevron" size={16} strokeWidth={2.2} />
               </button>
+              {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- The notice is loaded as a page of its own, as it always was. */}
               <a href="/privacy">
                 {t('set.privacy')}
                 <Icon name="chevron" size={16} strokeWidth={2.2} />

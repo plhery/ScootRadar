@@ -1,0 +1,421 @@
+import { Fragment, type ComponentProps, type CSSProperties } from 'react';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import StageDepth from '@/components/StageDepth';
+import { PROVIDERS } from '@/generated/providers';
+import type { TranslationKey } from '@/lib/i18n';
+import { LANDING_CITY_TOTAL, landingCountries } from '@/lib/landingCities';
+import {
+  APP_STORE_URL,
+  LANDING_COPY,
+  LANDING_LOCALES,
+  LANGUAGE_NAMES,
+  SOURCE_URL,
+  isLandingLocale,
+  type LandingCopy,
+  type LandingLocale,
+} from '@/lib/landingCopy';
+import {
+  LANDING_NEAREST,
+  LANDING_SCOOTERS_NEARBY,
+  LANDING_SNAPSHOT_DATE,
+  type LandingNearest,
+} from '@/lib/landingSnapshot';
+import { DEFAULT_RIDE_DURATION, RIDE_DURATIONS, formatRidePrice, ridePriceQuote } from '@/lib/ridePrice';
+import type { RidePricing } from '@/lib/types';
+import { formatDistance, walkingMinutes } from '@/lib/walking';
+
+type Props = Readonly<{ params: Promise<{ locale: string }> }>;
+
+const OPEN_GRAPH_LOCALES: Record<LandingLocale, string> = {
+  en: 'en_CH',
+  de: 'de_CH',
+  fr: 'fr_CH',
+  it: 'it_CH',
+};
+
+// The steps of the app's battery filter; the page shows it set to the third.
+const BATTERY_STEPS = [30, 60, 80] as const;
+const BATTERY_STEP_SHOWN = 60;
+
+// Bird's black would vanish on a page this dark: its marker is white on the
+// app's dark map, too.
+const TILE_COLORS: Record<string, string> = { bird: '#f4f5f7' };
+// The one colour of the seven that white letters read better on.
+const WHITE_LETTERS = new Set(['publibike']);
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLandingLocale(locale)) return {};
+
+  const { meta } = LANDING_COPY[locale];
+  const description = meta.description(LANDING_CITY_TOTAL);
+  return {
+    title: meta.title,
+    description,
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        ...Object.fromEntries(LANDING_LOCALES.map(language => [language, `/${language}`])),
+        'x-default': '/en',
+      },
+    },
+    openGraph: {
+      type: 'website',
+      url: `/${locale}`,
+      siteName: 'Scooters',
+      title: meta.title,
+      description,
+      locale: OPEN_GRAPH_LOCALES[locale],
+      images: [{ url: '/icon-512.png', width: 512, height: 512, alt: 'Scooters' }],
+    },
+    twitter: {
+      card: 'summary',
+      title: meta.title,
+      description,
+      images: ['/icon-512.png'],
+    },
+  };
+}
+
+/** Numbers, distances, prices and the date as the app writes them in this language. */
+function formatters(locale: LandingLocale) {
+  const formatNumber = (value: number, options?: Intl.NumberFormatOptions) =>
+    new Intl.NumberFormat(`${locale}-CH`, options).format(value);
+  // The two units of a distance, which none of the four languages spells differently.
+  const t = (key: TranslationKey, values?: Record<string, string | number>) =>
+    `${values?.count} ${key === 'distance.meters' ? 'm' : 'km'}`;
+
+  return {
+    distance: (meters: number) => formatDistance(meters, { t, formatNumber }),
+    price: (pricing: RidePricing) =>
+      formatRidePrice(ridePriceQuote(pricing, DEFAULT_RIDE_DURATION).totalMinorUnits, pricing.currency, locale),
+    date: (day: string) =>
+      new Intl.DateTimeFormat(`${locale}-CH`, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
+        .format(new Date(`${day}T00:00:00Z`)),
+  };
+}
+
+type Formatters = ReturnType<typeof formatters>;
+
+/** What a card says under the name of its provider, one fact at a time. */
+function cardFacts(scooter: LandingNearest, copy: LandingCopy, format: Formatters): string[] {
+  return scooter.shows
+    .flatMap(fact => {
+      switch (fact) {
+        case 'walk':
+          return [copy.card.walk(walkingMinutes(scooter.distanceM))];
+        case 'battery':
+          return scooter.battery === null ? [] : [`${scooter.battery}%`];
+        case 'range':
+          return scooter.rangeM === null ? [] : [copy.card.range(format.distance(scooter.rangeM))];
+        case 'price':
+          return scooter.pricing ? [copy.card.price(format.price(scooter.pricing), DEFAULT_RIDE_DURATION)] : [];
+        case 'bike':
+          return [copy.card.bike];
+      }
+    });
+}
+
+function tileColor(provider: string): string {
+  return TILE_COLORS[provider] ?? PROVIDERS[provider].color;
+}
+
+function Tile({ provider }: { provider: string }) {
+  const { initial } = PROVIDERS[provider];
+  const classes = ['tile', initial.length > 1 && 'tile--wide', WHITE_LETTERS.has(provider) && 'tile--white']
+    .filter(Boolean)
+    .join(' ');
+  return (
+    <span className={classes} aria-hidden="true" style={{ '--c': tileColor(provider) } as CSSProperties}>
+      {initial}
+    </span>
+  );
+}
+
+/** A capture of the iPhone app in its phone. public/landing holds them, sized ahead. */
+function Phone({ src, alt, className, first = false }: {
+  src: string;
+  alt: string;
+  className?: string;
+  /** The picture of the first screen is not left for later. */
+  first?: boolean;
+}) {
+  return (
+    <div className={className ? `phone ${className}` : 'phone'}>
+      <div className="phone-body">
+        {/* eslint-disable-next-line @next/next/no-img-element -- Sized ahead: the Worker has no image optimizer. */}
+        <img
+          src={src}
+          alt={alt}
+          width={780}
+          height={1695}
+          loading={first ? 'eager' : 'lazy'}
+          fetchPriority={first ? 'high' : undefined}
+          decoding="async"
+        />
+      </div>
+    </div>
+  );
+}
+
+/**
+ * A link to the app or to its privacy notice. They are under the other root
+ * layout, so the browser loads them whole: an anchor, not a route change.
+ */
+function AppLink(props: ComponentProps<'a'>) {
+  return <a {...props} />;
+}
+
+function AppleMark() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M16.37 12.6c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.19-1.73-1.36-.14-2.65.8-3.34.8-.69 0-1.75-.78-2.88-.76-1.48.02-2.85.86-3.61 2.19-1.54 2.67-.39 6.62 1.11 8.79.73 1.06 1.6 2.25 2.75 2.21 1.1-.04 1.52-.71 2.85-.71 1.33 0 1.71.71 2.88.69 1.19-.02 1.94-1.08 2.67-2.15.84-1.23 1.19-2.42 1.21-2.48-.03-.01-2.31-.89-2.33-3.54ZM14.2 6.13c.61-.74 1.02-1.76.91-2.78-.88.04-1.94.59-2.57 1.32-.56.65-1.06 1.7-.93 2.7.98.08 1.98-.5 2.59-1.24Z" />
+    </svg>
+  );
+}
+
+function Actions({ copy }: { copy: LandingCopy }) {
+  return (
+    <div className="cta-row">
+      <AppLink className="btn btn--white" href="/">{copy.openMap}</AppLink>
+      {APP_STORE_URL && (
+        <a className="btn btn--line" href={APP_STORE_URL}><AppleMark />{copy.iphoneApp}</a>
+      )}
+    </div>
+  );
+}
+
+export default async function LandingPage({ params }: Props) {
+  const { locale } = await params;
+  if (!isLandingLocale(locale)) notFound();
+
+  const copy = LANDING_COPY[locale];
+  const format = formatters(locale);
+  const picture = (scene: string) => `/landing/${locale}-${scene}.webp`;
+  const nearby = LANDING_SCOOTERS_NEARBY[locale];
+  // The scooter the page follows from the hero down, and the runner-up it is compared with.
+  const [nearest, second] = LANDING_NEAREST;
+  const glow = { '--c': tileColor(nearest.provider) } as CSSProperties;
+  // The providers in the order the page names them: by name, the one with bikes last.
+  const named = [...LANDING_NEAREST].sort(
+    (a, b) =>
+      Number(a.provider === 'publibike') - Number(b.provider === 'publibike') || a.name.localeCompare(b.name),
+  );
+
+  return (
+    <>
+      <header className="top" id="top">
+        <nav className="pill" aria-label={copy.nav.main}>
+          <a className="brand" href="#top">
+            {/* eslint-disable-next-line @next/next/no-img-element -- The icon of the app, an SVG. */}
+            <img src="/icon.svg" alt="" width={30} height={30} />
+            Scooters
+          </a>
+          <a className="pill-link" href="#know">{copy.nav.shows}</a>
+          <a className="pill-link" href="#cities">{copy.nav.cities}</a>
+          <span className="langs" role="group" aria-label={copy.nav.languages}>
+            {LANDING_LOCALES.map(language => (
+              <Link
+                key={language}
+                href={`/${language}`}
+                hrefLang={language}
+                lang={language}
+                prefetch={false}
+                title={LANGUAGE_NAMES[language]}
+                aria-current={language === locale ? 'page' : undefined}
+              >
+                {language.toUpperCase()}
+              </Link>
+            ))}
+          </span>
+          <AppLink className="pill-cta" href="/">{copy.openMap}</AppLink>
+        </nav>
+      </header>
+
+      <main>
+        <section className="hero">
+          <h1 className="display">{copy.hero.title(nearby)}</h1>
+          <p className="lede">{copy.hero.lede}</p>
+          <Actions copy={copy} />
+          <p className="note">{copy.hero.note}</p>
+        </section>
+
+        <StageDepth className="stage" aria-label={copy.hero.stage} style={glow}>
+          <div className="orb orb--near" aria-hidden="true" />
+          <div className="orb orb--night" aria-hidden="true" />
+          <Phone className="stage-phone" src={picture('dark')} alt={copy.hero.alt(nearby)} first />
+          {/* Nearest first. The layout places seven cards: four to the left of the phone, three to its right. */}
+          <ol className="near">
+            {LANDING_NEAREST.map((scooter, index) => (
+              <li
+                className="near-card"
+                key={scooter.provider}
+                style={{ '--c': tileColor(scooter.provider), '--i': index } as CSSProperties}
+              >
+                <Tile provider={scooter.provider} />
+                <span className="near-text">
+                  <span className="near-head">
+                    <span>{scooter.name}</span>
+                    <span className="near-distance">{format.distance(scooter.distanceM)}</span>
+                  </span>
+                  <span className="near-facts">
+                    {cardFacts(scooter, copy, format).map(fact => <span key={fact}>{fact}</span>)}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ol>
+          <p className="caption">{copy.hero.caption(format.date(LANDING_SNAPSHOT_DATE))}</p>
+        </StageDepth>
+
+        <section className="know" id="know">
+          <h2 className="title">{copy.know.title}</h2>
+
+          <div className="bento">
+            <div className="cell cell--wide">
+              <div className="cell-copy">
+                <h3 className="heading">{copy.know.all.title}</h3>
+                <p>{copy.know.all.text}</p>
+                <p className="strong">
+                  {copy.know.all.close(
+                    nearest.name,
+                    format.distance(nearest.distanceM),
+                    second.name,
+                    format.distance(second.distanceM),
+                  )}
+                </p>
+                <ul className="tiles" aria-label={copy.know.all.providers}>
+                  {named.map(scooter => (
+                    <li key={scooter.provider} title={scooter.name}>
+                      <Tile provider={scooter.provider} />
+                      <span className="sr-only">{scooter.name}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="cell-shot">
+                <Phone className="phone--day" src={picture('nearby')} alt={copy.know.all.alt} />
+              </div>
+            </div>
+
+            <div className="cell" style={glow}>
+              <div>
+                <p className="figure figure--near">{format.distance(nearest.distanceM)}</p>
+                <p className="figure-label">{copy.card.walk(walkingMinutes(nearest.distanceM))}</p>
+              </div>
+              <div>
+                <h3>{copy.know.walk.title}</h3>
+                <p>{copy.know.walk.text}</p>
+              </div>
+            </div>
+
+            <div className="cell">
+              <div>
+                <p className="figure figure--charge">{BATTERY_STEP_SHOWN}%+</p>
+                <div className="segments" role="img" aria-label={copy.know.charge.control}>
+                  <span aria-hidden="true">{copy.know.charge.any}</span>
+                  {BATTERY_STEPS.map(step => (
+                    <span key={step} aria-hidden="true" className={step === BATTERY_STEP_SHOWN ? 'is-on' : undefined}>
+                      {step}%+
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3>{copy.know.charge.title}</h3>
+                <p>{copy.know.charge.text}</p>
+              </div>
+            </div>
+
+            {nearest.pricing && (
+              <div className="cell">
+                <div>
+                  <p className="figure figure--price">≈&nbsp;{format.price(nearest.pricing)}</p>
+                  <p className="figure-label">{copy.know.price.ride(nearest.name)}</p>
+                  <div className="chips" role="img" aria-label={copy.know.price.control}>
+                    {RIDE_DURATIONS.map(minutes => (
+                      <span key={minutes} aria-hidden="true" className={minutes === DEFAULT_RIDE_DURATION ? 'is-on' : undefined}>
+                        {copy.know.price.duration(minutes)}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3>{copy.know.price.title}</h3>
+                  <p>{copy.know.price.text}</p>
+                </div>
+              </div>
+            )}
+
+            <div className="cell">
+              <div
+                className="buttons"
+                role="img"
+                aria-label={copy.know.unlock.control(copy.know.unlock.directions, copy.know.unlock.openIn(nearest.name))}
+              >
+                <span aria-hidden="true">{copy.know.unlock.directions}</span>
+                <span aria-hidden="true" className="is-on">{copy.know.unlock.openIn(nearest.name)}</span>
+              </div>
+              <div>
+                <h3>{copy.know.unlock.title}</h3>
+                <p>{copy.know.unlock.text}</p>
+              </div>
+            </div>
+
+            <div className="cell cell--wide cell--looks">
+              <div className="cell-copy">
+                <h3 className="heading">{copy.know.looks.title}</h3>
+                <p>{copy.know.looks.text}</p>
+              </div>
+              <div className="cell-shot cell-shot--pair">
+                <Phone className="phone--day" src={picture('nearby')} alt={copy.know.looks.light} />
+                <Phone className="phone--night" src={picture('dark')} alt={copy.know.looks.dark} />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="cities" id="cities">
+          <div className="cities-copy">
+            <h2 className="title">{copy.cities.title(LANDING_CITY_TOTAL)}</h2>
+            <p className="lede">{copy.cities.lede}</p>
+            <dl className="countries">
+              {landingCountries().map(({ country, total, featured, more }) => (
+                <div className="country" key={country}>
+                  <dt>{copy.cities.countries[country]} <span>{total}</span></dt>
+                  <dd>
+                    {featured.map((city, index) => (
+                      <Fragment key={city.href}>
+                        {index > 0 && ', '}
+                        <a href={city.href}>{city.name}</a>
+                      </Fragment>
+                    ))}
+                    {more > 0 && ` ${copy.cities.more(more)}`}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+          <Phone className="cities-phone" src={picture('overview')} alt={copy.cities.alt} />
+        </section>
+
+        <section className="closing" style={glow}>
+          <div className="orb orb--closing" aria-hidden="true" />
+          <h2 className="display">{copy.closing.title}</h2>
+          <Actions copy={copy} />
+          <p className="note">{copy.closing.note}</p>
+        </section>
+      </main>
+
+      <footer className="footer">
+        <p>{copy.footer.text}</p>
+        <nav aria-label={copy.footer.links}>
+          <AppLink href="/privacy" hrefLang="en">{copy.footer.privacy}</AppLink>
+          <a href={SOURCE_URL}>{copy.footer.source}</a>
+        </nav>
+      </footer>
+    </>
+  );
+}
