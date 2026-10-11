@@ -799,7 +799,7 @@ describe('fetchScooters source health', () => {
 });
 
 describe('feed validation and tariff regressions', () => {
-  it('accepts an eight-minute Swiss observation and expires it ten minutes after observation', async () => {
+  it('accepts an eight-minute Swiss observation and expires it fifteen minutes after observation', async () => {
     const observedAt = Date.now() - 480_000;
     vi.stubGlobal('fetch', vi.fn(async input => {
       const response = nationalResponse(String(input))!;
@@ -810,7 +810,7 @@ describe('feed validation and tariff regressions', () => {
     }));
     const result = await fetchScooters({ ...query, providers: new Set(['lime']) });
     expect(result.vehicles).toHaveLength(1);
-    expect(result.meta).toMatchObject({ stale: false, expiresAt: new Date(observedAt + 600_000).toISOString() });
+    expect(result.meta).toMatchObject({ stale: false, expiresAt: new Date(observedAt + 900_000).toISOString() });
   });
 
   it.each([null, 0, Math.floor((Date.now() - 86400_000) / 1000)])('rejects a missing or expired Swiss status timestamp: %s', async timestamp => {

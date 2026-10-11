@@ -6,7 +6,7 @@ const now = Date.parse('2026-10-04T12:00:00Z');
 afterEach(() => vi.restoreAllMocks());
 
 describe('vehicle timestamp age', () => {
-  it.each([5 * 60_000 + 1, 8 * 60_000, 10 * 60_000])('accepts a source timestamp %i ms old', age => {
+  it.each([5 * 60_000 + 1, 10 * 60_000 + 1, 15 * 60_000])('accepts a source timestamp %i ms old', age => {
     vi.spyOn(Date, 'now').mockReturnValue(now);
     const updatedAt = now - age;
     const feed = { last_updated: updatedAt / 1000, data: { bikes: [] } };
@@ -15,7 +15,7 @@ describe('vehicle timestamp age', () => {
     expect(statusObservedAt({ last_updated: new Date(updatedAt).toISOString() })).toBe(updatedAt);
   });
 
-  it.each([null, 'invalid', (now - 10 * 60_000 - 1) / 1000, (now + 5 * 60_000 + 1) / 1000])(
+  it.each([null, 'invalid', (now - 15 * 60_000 - 1) / 1000, (now + 5 * 60_000 + 1) / 1000])(
     'rejects missing, invalid, expired or excessively future timestamps: %s', last_updated => {
       expect(() => statusObservedAt({ last_updated }, now)).toThrow('Status timestamp is missing or out of date');
     },

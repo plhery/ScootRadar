@@ -117,7 +117,7 @@ feeds for the visible map area only.
 Refreshing is automatic while the app is in front: at the interval the server
 names (a minute, an hour for city totals) or shortly before the data expires,
 and at once when the app returns to the foreground with data that is due.
-Individual scooter positions have a ten-minute maximum age, measured from the
+Individual scooter positions have a fifteen-minute maximum age, measured from the
 source timestamp. Parking availability has its own five-minute expiry.
 There is no refresh button. **Try again** appears only when something failed:
 

@@ -1128,7 +1128,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
     private func scheduleDataExpiry(_ meta: ScooterResponseMetadata?, receivedAt: Date) {
         let observedAt = min(receivedAt, Self.apiDate(meta?.generatedAt) ?? receivedAt)
-        let maximumAge: TimeInterval = meta?.overview == true ? 3 * 3600 : 600
+        let maximumAge: TimeInterval = meta?.overview == true ? 3 * 3600 : 900
         // Scooters past this moment are only cleared once a refresh has failed.
         vehiclesExpireAt = min(Self.apiDate(meta?.expiresAt) ?? .distantFuture,
             observedAt.addingTimeInterval(maximumAge))

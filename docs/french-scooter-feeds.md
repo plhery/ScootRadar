@@ -74,7 +74,7 @@ Total: **15,262 available scooters**, with **0 failed feeds** in the final catal
   flow; Pony links to its scanner. Bird and Lime supplied no vehicle rental links
   in these feeds. Only the supplied, provider-validated links are exposed.
 - **Feed health:** successful HTTP responses can contain abandoned data. The new
-  adapter rejects missing timestamps or data older than ten minutes. An unavailable
+  adapter rejects missing timestamps or data older than fifteen minutes. An unavailable
   city feed does not discard other successful city feeds.
 - **Bounds:** geofencing envelopes have conservative padding; Lime's feeds lack
   geofencing, so reviewed metropolitan bounds are used. These are fetch-routing

@@ -42,9 +42,11 @@ Production collects each system independently every minute on Netcup, with at
 most six systems in flight. Map requests read only the relevant cached systems,
 with no operator requests. The local direct-feed fallback selects by viewport
 and allows four concurrent French systems. Individual scooter positions remain
-usable for at most ten minutes from their source timestamp, including when a
-refresh fails; missing timestamps and older data are rejected. City totals are
-aggregated hourly.
+usable for at most fifteen minutes from their source timestamp, including when a
+refresh fails; missing timestamps and older data are rejected. The national
+platform publishes Voi every eight to nine minutes, about ninety seconds after
+the timestamp it carries, so a shorter limit blanks Voi whenever it is a little
+late. City totals are aggregated hourly.
 
 These endpoints are publicly accessible but do not share one universal license.
 In particular, [Dott's API terms](https://ridedott.com/api-licence/) contain

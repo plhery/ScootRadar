@@ -66,30 +66,30 @@ describe('persistent map snapshots', () => {
     expect(querySnapshot(cached, { ...query, providers: new Set(['pony']) }, 9, now).clusters).toEqual([]);
   });
 
-  it('preserves a failing feed up to ten minutes but never offers older vehicles', () => {
+  it('preserves a failing feed up to fifteen minutes but never offers older vehicles', () => {
     const cached = snapshot([feed({ failed: true, stale: true })]);
     const response = querySnapshot(cached, query, 16, now + 8 * 60_000);
     expect(response.vehicles).toHaveLength(2);
     expect(response.meta).toMatchObject({ partial: true, stale: true,
-      expiresAt: new Date(now + 10 * 60_000).toISOString(), refreshAfterSeconds: 60 });
-    expect(querySnapshot(cached, query, 16, now + 10 * 60_000).vehicles).toHaveLength(2);
+      expiresAt: new Date(now + 15 * 60_000).toISOString(), refreshAfterSeconds: 60 });
+    expect(querySnapshot(cached, query, 16, now + 15 * 60_000).vehicles).toHaveLength(2);
     expect(() => querySnapshot(cached, query, 16, now + VEHICLE_MAX_AGE_MS + 1)).toThrow(ScooterFeedsUnavailableError);
   });
 
   it('reports an unavailable provider without rejecting a successfully collected eight-minute observation', () => {
     const cached = snapshot([
       feed({ observedAt: now - 480_000 }),
-      feed({ id: 'france:voi', provider: 'voi', observedAt: now - 600_001, failed: true, stale: true }),
+      feed({ id: 'france:voi', provider: 'voi', observedAt: now - 900_001, failed: true, stale: true }),
     ]);
     const response = querySnapshot(cached, query, null, now);
     expect(response.vehicles).toHaveLength(2);
     expect(response.meta).toMatchObject({ partial: true, stale: false,
-      failedSources: ['france:voi'], expiresAt: new Date(now + 120_000).toISOString() });
+      failedSources: ['france:voi'], expiresAt: new Date(now + 420_000).toISOString() });
     // The dock would name Voi, which shows nothing here, and say nothing about Dott.
     expect(providersDownNotice(providerHealth({
       meta: response.meta, viewportProviders: ['dott', 'voi'], inView: new Set(['dott']),
     }))).toEqual({ key: 'dock.down.one', values: { name: 'Voi' } });
-    expect(() => querySnapshot(cached, query, 16, now + 120_001)).toThrow(ScooterFeedsUnavailableError);
+    expect(() => querySnapshot(cached, query, 16, now + 420_001)).toThrow(ScooterFeedsUnavailableError);
   });
 
   it('does not confuse an empty operating area with an upstream failure', () => {

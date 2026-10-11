@@ -962,10 +962,10 @@ extension ScooterMapModelTests {
         XCTAssertFalse(healthy.status(at: clock.now).isWarning)
     }
 
-    func testFailedRefreshKeepsScootersForTenMinutesAtMost() async {
+    func testFailedRefreshKeepsScootersForFifteenMinutesAtMost() async {
         let clock = TestClock()
         let generatedAt = clock.now
-        // Even an overly generous server expiry is capped at ten minutes.
+        // Even an overly generous server expiry is capped at fifteen minutes.
         let api = StubScooterAPI(response: timedResponse(generatedAt: generatedAt, expiresIn: 3_600))
         let model = makeModel(api: api, clock: clock)
         model.refresh()
@@ -980,7 +980,7 @@ extension ScooterMapModelTests {
         XCTAssertEqual(model.loadIssue, .refreshFailed(.unavailable, showing: generatedAt))
         XCTAssertEqual(model.mapScooters.count, 1)
 
-        clock.advance(120)
+        clock.advance(420)
         model.autoRefreshIfNeeded()
         let expired = await waitUntil { model.loadIssue == .outOfDate(.unavailable, lastUpdate: generatedAt) && !model.isLoading }
         XCTAssertTrue(expired)

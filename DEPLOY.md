@@ -137,7 +137,7 @@ six concurrent systems and at most two per host. A slow host cannot monopolize
 collection slots. Vehicle results are published immediately, before optional
 parking completes; disk writes and city overview rebuilding are batched every
 five seconds. Discovery/type/pricing metadata lasts an hour. Scooter status feeds
-must carry a timestamp within ten minutes; failed feeds retain vehicles only
+must carry a timestamp within fifteen minutes; failed feeds retain vehicles only
 until that observation expires. Parking availability expires after five minutes.
 Cached metadata is reported as degraded independently and does not prevent live
 vehicle timestamps advancing.
