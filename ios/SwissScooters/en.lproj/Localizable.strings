@@ -80,7 +80,7 @@
 
 // Self-hosted usage analytics
 "Share anonymous usage" = "Share anonymous usage";
-"Helps improve Scooters. No addresses or precise locations are sent." = "Helps improve Scooters. No addresses or precise locations are sent.";
+"Helps improve Scootradar. No addresses or precise locations are sent." = "Helps improve Scootradar. No addresses or precise locations are sent.";
 
 /* UX alignment: search bar */
 "Search city or address" = "Search city or address";
@@ -125,14 +125,14 @@
 "These positions are out of date" = "These positions are out of date";
 "Last update %@." = "Last update %@.";
 "You’re offline. Check your connection." = "You’re offline. Check your connection.";
-"Scooters took too long to respond." = "Scooters took too long to respond.";
-"Scooters is busy right now. Try again in a moment." = "Scooters is busy right now. Try again in a moment.";
-"Scooters is having trouble. Try again in a moment." = "Scooters is having trouble. Try again in a moment.";
+"Scootradar took too long to respond." = "Scootradar took too long to respond.";
+"Scootradar is busy right now. Try again in a moment." = "Scootradar is busy right now. Try again in a moment.";
+"Scootradar is having trouble. Try again in a moment." = "Scootradar is having trouble. Try again in a moment.";
 "Couldn’t load scooters." = "Couldn’t load scooters.";
 
 /* UX alignment: outside coverage and filters with nothing to show */
 "No scooter data here yet" = "No scooter data here yet";
-"Scooters covers selected cities in France, Switzerland, Germany and Italy." = "Scooters covers selected cities in France, Switzerland, Germany and Italy.";
+"Scootradar covers selected cities in France, Switzerland, Germany and Italy." = "Scootradar covers selected cities in France, Switzerland, Germany and Italy.";
 "Closest cities" = "Closest cities";
 "%1$@ · %2$@" = "%1$@ · %2$@";
 "1 scooter hidden by your filters" = "1 scooter hidden by your filters";

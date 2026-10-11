@@ -80,7 +80,7 @@
 
 // Self-hosted usage analytics
 "Share anonymous usage" = "Anonyme Nutzung teilen";
-"Helps improve Scooters. No addresses or precise locations are sent." = "Hilft, Scooters zu verbessern. Adressen und genaue Standorte werden nicht gesendet.";
+"Helps improve Scootradar. No addresses or precise locations are sent." = "Hilft, Scootradar zu verbessern. Adressen und genaue Standorte werden nicht gesendet.";
 
 /* UX alignment: search bar */
 "Search city or address" = "Stadt oder Adresse suchen";
@@ -125,14 +125,14 @@
 "These positions are out of date" = "Diese Positionen sind veraltet";
 "Last update %@." = "Letzte Aktualisierung um %@.";
 "You’re offline. Check your connection." = "Du bist offline. Prüfe deine Verbindung.";
-"Scooters took too long to respond." = "Scooters hat zu lange nicht geantwortet.";
-"Scooters is busy right now. Try again in a moment." = "Scooters ist gerade ausgelastet. Versuche es gleich nochmals.";
-"Scooters is having trouble. Try again in a moment." = "Scooters hat gerade Probleme. Versuche es gleich nochmals.";
+"Scootradar took too long to respond." = "Scootradar hat zu lange nicht geantwortet.";
+"Scootradar is busy right now. Try again in a moment." = "Scootradar ist gerade ausgelastet. Versuche es gleich nochmals.";
+"Scootradar is having trouble. Try again in a moment." = "Scootradar hat gerade Probleme. Versuche es gleich nochmals.";
 "Couldn’t load scooters." = "Scooter konnten nicht geladen werden.";
 
 /* UX alignment: outside coverage and filters with nothing to show */
 "No scooter data here yet" = "Hier gibt es noch keine Scooter-Daten";
-"Scooters covers selected cities in France, Switzerland, Germany and Italy." = "Scooters deckt ausgewählte Städte in Frankreich, der Schweiz, Deutschland und Italien ab.";
+"Scootradar covers selected cities in France, Switzerland, Germany and Italy." = "Scootradar deckt ausgewählte Städte in Frankreich, der Schweiz, Deutschland und Italien ab.";
 "Closest cities" = "Nächstgelegene Städte";
 "%1$@ · %2$@" = "%1$@ · %2$@";
 "1 scooter hidden by your filters" = "1 Scooter durch deine Filter ausgeblendet";

@@ -35,9 +35,9 @@ final class ScooterAnalytics {
     static func payload(_ name: String?, provider: String? = nil, value: Int? = nil,
                         result: String? = nil, target: String? = nil, screen: String = "/") -> [String: Any] {
         var payload: [String: Any] = [
-            "website": website, "hostname": "scooters.plhery.com",
+            "website": website, "hostname": "scootradar.com",
             "url": ["/", "/filters", "/settings"].contains(screen) ? screen : "/",
-            "title": "Scooters", "referrer": "", "tag": "ios",
+            "title": "Scootradar", "referrer": "", "tag": "ios",
             "language": Locale.current.identifier.replacingOccurrences(of: "_", with: "-")
         ]
         if let name {
@@ -71,7 +71,7 @@ final class ScooterAnalytics {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             let os = UIDevice.current.systemVersion.replacingOccurrences(of: ".", with: "_")
             let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
-            request.setValue("Mozilla/5.0 (iPhone; CPU iPhone OS \(os) like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Scooters/\(version)", forHTTPHeaderField: "User-Agent")
+            request.setValue("Mozilla/5.0 (iPhone; CPU iPhone OS \(os) like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Scootradar/\(version)", forHTTPHeaderField: "User-Agent")
             if let cache { request.setValue(cache, forHTTPHeaderField: "x-umami-cache") }
             do {
                 let (data, response) = try await session.data(for: request)

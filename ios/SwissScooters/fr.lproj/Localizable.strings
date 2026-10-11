@@ -80,7 +80,7 @@
 
 // Self-hosted usage analytics
 "Share anonymous usage" = "Partager les données d’utilisation anonymes";
-"Helps improve Scooters. No addresses or precise locations are sent." = "Aide à améliorer Scooters. Aucune adresse ni position précise n’est envoyée.";
+"Helps improve Scootradar. No addresses or precise locations are sent." = "Aide à améliorer Scootradar. Aucune adresse ni position précise n’est envoyée.";
 
 /* UX alignment: search bar */
 "Search city or address" = "Rechercher ville ou adresse";
@@ -125,14 +125,14 @@
 "These positions are out of date" = "Ces positions ne sont plus à jour";
 "Last update %@." = "Dernière actualisation à %@.";
 "You’re offline. Check your connection." = "Vous êtes hors ligne. Vérifiez votre connexion.";
-"Scooters took too long to respond." = "Scooters a mis trop de temps à répondre.";
-"Scooters is busy right now. Try again in a moment." = "Scooters est très sollicité en ce moment. Réessayez dans un instant.";
-"Scooters is having trouble. Try again in a moment." = "Scooters rencontre un problème. Réessayez dans un instant.";
+"Scootradar took too long to respond." = "Scootradar a mis trop de temps à répondre.";
+"Scootradar is busy right now. Try again in a moment." = "Scootradar est très sollicité en ce moment. Réessayez dans un instant.";
+"Scootradar is having trouble. Try again in a moment." = "Scootradar rencontre un problème. Réessayez dans un instant.";
 "Couldn’t load scooters." = "Impossible de charger les trottinettes.";
 
 /* UX alignment: outside coverage and filters with nothing to show */
 "No scooter data here yet" = "Pas encore de données de trottinettes ici";
-"Scooters covers selected cities in France, Switzerland, Germany and Italy." = "Scooters couvre certaines villes de France, de Suisse, d’Allemagne et d’Italie.";
+"Scootradar covers selected cities in France, Switzerland, Germany and Italy." = "Scootradar couvre certaines villes de France, de Suisse, d’Allemagne et d’Italie.";
 "Closest cities" = "Villes les plus proches";
 "%1$@ · %2$@" = "%1$@ · %2$@";
 "1 scooter hidden by your filters" = "1 trottinette masquée par vos filtres";

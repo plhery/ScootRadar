@@ -15,7 +15,7 @@ extension URLSession: ScooterNetworkSession {
 }
 
 actor ScooterAPI: ScooterAPIClient {
-    static let productionBaseURL = URL(string: "https://scooters.plhery.com")!
+    static let productionBaseURL = URL(string: "https://scootradar.com")!
 
     /// The session for the app's own server. A request for scooters carries the
     /// bounds of the map, which give away the rider's position or the place
@@ -117,9 +117,9 @@ enum ScooterLoadFailure: String, CaseIterable, Equatable, Sendable {
     var message: String {
         switch self {
         case .offline: String(localized: "You’re offline. Check your connection.")
-        case .timeout: String(localized: "Scooters took too long to respond.")
-        case .busy: String(localized: "Scooters is busy right now. Try again in a moment.")
-        case .unavailable: String(localized: "Scooters is having trouble. Try again in a moment.")
+        case .timeout: String(localized: "Scootradar took too long to respond.")
+        case .busy: String(localized: "Scootradar is busy right now. Try again in a moment.")
+        case .unavailable: String(localized: "Scootradar is having trouble. Try again in a moment.")
         case .failed: String(localized: "Couldn’t load scooters.")
         }
     }

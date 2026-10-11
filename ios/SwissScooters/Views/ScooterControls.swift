@@ -317,7 +317,7 @@ struct ScooterControlDock: View {
                 systemImage: "map",
                 tint: ScooterPalette.actionText,
                 title: String(localized: "No scooter data here yet"),
-                message: String(localized: "Scooters covers selected cities in France, Switzerland, Germany and Italy.")
+                message: String(localized: "Scootradar covers selected cities in France, Switzerland, Germany and Italy.")
             )
 
             VStack(alignment: .leading, spacing: 8) {
@@ -1602,7 +1602,7 @@ struct ScooterSettingsSheet: View {
 }
 
 enum ScooterLinks {
-    static let privacyNotice = URL(string: "https://scooters.plhery.com/privacy")!
+    static let privacyNotice = URL(string: "https://scootradar.com/privacy")!
     static let sourceCode = URL(string: "https://github.com/plhery/swiss-scooters")!
 }
 
@@ -1618,7 +1618,7 @@ struct ScooterPrivacySettings: View {
                     set: { analyticsDisabled = !$0 }
                 ))
             } footer: {
-                Text("Helps improve Scooters. No addresses or precise locations are sent.")
+                Text("Helps improve Scootradar. No addresses or precise locations are sent.")
             }
 
             Section {

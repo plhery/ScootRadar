@@ -1,9 +1,9 @@
-# Scooters — iOS app
+# Scootradar — iOS app
 
-The SwiftUI and MapKit app for Scooters, for iOS 26 or newer. It shows the same
-live data as [scooters.plhery.com](https://scooters.plhery.com) and is meant to
+The SwiftUI and MapKit app for Scootradar, for iOS 26 or newer. It shows the same
+live data as [scootradar.com](https://scootradar.com) and is meant to
 behave and read like the website, with iOS controls and Liquid Glass. It uses the
-bundle identifier `com.plhery.zurichscooters` and appears as **Scooters** when
+bundle identifier `com.plhery.zurichscooters` and appears as **Scootradar** when
 installed.
 
 ## Run it on your iPhone
@@ -94,8 +94,8 @@ results for VoiceOver, and respects Reduce Motion.
 
 ## Data and freshness
 
-The app reads `https://scooters.plhery.com/api/scooters` for the area on screen
-and `https://scooters.plhery.com/api/geocode` for search, to which it sends the
+The app reads `https://scootradar.com/api/scooters` for the area on screen
+and `https://scootradar.com/api/geocode` for search, to which it sends the
 language it is shown in. The endpoint is set in `Services/ScooterAPI.swift` if a
 local or preview backend is needed.
 

@@ -576,7 +576,7 @@ final class ScooterFilteringTests: XCTestCase {
         XCTAssertTrue(sources.allSatisfy { $0.url.scheme == "https" && !$0.title.isEmpty })
         XCTAssertTrue(sources.contains { $0.url.host() == "data.lillemetropole.fr" })
 
-        XCTAssertEqual(ScooterLinks.privacyNotice.absoluteString, "https://scooters.plhery.com/privacy")
+        XCTAssertEqual(ScooterLinks.privacyNotice.absoluteString, "https://scootradar.com/privacy")
         XCTAssertEqual(ScooterLinks.sourceCode.absoluteString, "https://github.com/plhery/swiss-scooters")
     }
 
