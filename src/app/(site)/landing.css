@@ -1158,20 +1158,20 @@ img {
     }
   }
 
-  .hero .display {
-    animation: rise 0.9s var(--ease-out) both;
+  .hero > * {
+    animation: rise 0.9s var(--ease-out) var(--wait, 0s) both;
   }
 
   .hero .lede {
-    animation: rise 0.9s var(--ease-out) 0.08s both;
+    --wait: 0.08s;
   }
 
   .hero .cta-row {
-    animation: rise 0.9s var(--ease-out) 0.16s both;
+    --wait: 0.16s;
   }
 
   .hero .note {
-    animation: rise 0.9s var(--ease-out) 0.22s both;
+    --wait: 0.22s;
   }
 
   .stage-phone {
@@ -1246,11 +1246,355 @@ img {
     }
   }
 
-  /* Further down, motion follows the scroll: a figure comes on like a sign
-     being switched on, and is lit before it leaves the lower third of the
-     window; a phone rises in its own. Browsers without scroll timelines show
-     both as they end. */
+  /* From here motion follows the scroll, and goes back with it. What is lit
+     comes on as it reaches you: a title from its first letter to its last, a
+     figure like a sign being switched on. What has depth shows it: the stage
+     loosens, a phone rises in its cell. Browsers without scroll timelines show
+     all of it as it ends. */
   @supports (animation-timeline: view()) {
+    /* The first screen gives way: its words dissolve as they leave by the top
+       of the window. */
+    @keyframes leave {
+      to {
+        opacity: 0;
+        scale: 0.97;
+      }
+    }
+
+    .hero > * {
+      animation: rise 0.9s var(--ease-out) var(--wait, 0s) both, leave linear both;
+      animation-timeline: auto, view(block 16px 0%);
+      animation-range: normal, exit 0% exit 100%;
+    }
+
+    /* The phone sinks a little behind the list that overlaps it. */
+    @keyframes sink {
+      to {
+        translate: 0 var(--sink);
+      }
+    }
+
+    .stage-phone .phone-body {
+      --sink: 18px;
+      animation: sink linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100vh;
+    }
+
+    @media (min-width: 1040px) {
+      /* Beside the phone the cards part instead: the nearest ahead of the
+         page, the furthest behind it, and the phone a little ahead of them. */
+      @keyframes part {
+        to {
+          translate: 0 var(--part);
+        }
+      }
+
+      .stage-phone .phone-body {
+        --sink: -18px;
+      }
+
+      .near-card {
+        animation:
+          card-out 1s var(--ease-out) calc(0.7s + var(--i) * 80ms) both,
+          hover-up calc(5.5s + var(--i) * 0.45s) ease-in-out calc(1.9s + var(--i) * 0.3s) infinite alternate,
+          part linear both;
+        animation-timeline: auto, auto, scroll(root);
+        animation-range: normal, normal, 0 110vh;
+        /* Added to the hovering, which moves the same way. */
+        animation-composition: replace, replace, add;
+      }
+
+      .near-card:nth-child(1) { --part: -36px; }
+      .near-card:nth-child(2) { --part: -14px; }
+      .near-card:nth-child(3) { --part: 12px; }
+      .near-card:nth-child(4) { --part: 38px; }
+      .near-card:nth-child(5) { --part: -4px; }
+      .near-card:nth-child(6) { --part: 22px; }
+      .near-card:nth-child(7) { --part: 48px; }
+    }
+
+    @media (min-width: 760px) {
+      /* At the top of the page the bar is only its words; it becomes glass
+         once there is something to pass under it. */
+      @keyframes settle {
+        from {
+          background-color: transparent;
+          box-shadow: inset 0 0 0 1px transparent, 0 14px 40px -18px transparent;
+        }
+      }
+
+      .pill {
+        animation: settle linear both;
+        animation-timeline: scroll(root);
+        animation-range: 0 180px;
+      }
+
+      /* Where the bar stays, the words of the first screen are gone before it is over them. */
+      .hero > * {
+        animation-timeline: auto, view(block 12% 0%);
+      }
+
+      /* Its two links know where you are: each is lit while its part of the
+         page crosses a line a third of the way down the window. */
+      @keyframes here {
+        0%,
+        100% {
+          color: var(--soft);
+          text-shadow: 0 0 0 transparent;
+        }
+
+        4%,
+        96% {
+          color: #ffffff;
+          text-shadow: 0 0 22px rgba(255, 255, 255, 0.5);
+        }
+      }
+
+      body {
+        timeline-scope: --know, --cities;
+      }
+
+      .know {
+        view-timeline: --know block;
+        view-timeline-inset: 33% 66%;
+      }
+
+      .cities {
+        view-timeline: --cities block;
+        view-timeline-inset: 33% 66%;
+      }
+
+      .pill-link {
+        animation: here linear;
+      }
+
+      .pill-link[href='#know'] {
+        animation-timeline: --know;
+      }
+
+      .pill-link[href='#cities'] {
+        animation-timeline: --cities;
+      }
+    }
+
+    /* A title is lit from its first letter to its last on its way up the
+       lower half of the window. */
+    @keyframes light-up {
+      from {
+        background-position-x: 100%;
+      }
+    }
+
+    .know .title,
+    .cities .title,
+    .closing .display {
+      /* Room for what hangs below the last line: the light is the background. */
+      margin-block: -0.14em;
+      padding-block: 0.14em;
+      background: linear-gradient(100deg, var(--text) 44%, #4d525e 56%) 0 0 / 300% 100% no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: light-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 40%;
+    }
+
+    /* A cell settles into the grid as it comes in, the right one of a pair a
+       moment after the left. */
+    @keyframes settle-in {
+      from {
+        opacity: 0.35;
+        scale: 0.965;
+        translate: 0 26px;
+      }
+    }
+
+    .cell {
+      animation: settle-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+
+    @media (min-width: 720px) {
+      .cell:not(.cell--wide):nth-child(odd) {
+        animation-range: entry 14% entry 84%;
+      }
+    }
+
+    /* The providers turn up one after the other. */
+    @keyframes turn-up {
+      from {
+        opacity: 0;
+        scale: 0.6;
+      }
+    }
+
+    .tiles {
+      view-timeline: --tiles block;
+    }
+
+    .tiles li {
+      animation: turn-up linear both;
+      animation-timeline: --tiles;
+      animation-range: cover calc(3% + var(--i) * 2.4%) cover calc(13% + var(--i) * 2.4%);
+    }
+
+    /* The battery filter is set while you look: from any charge to the one
+       the figure above it names. */
+    @keyframes set {
+      to {
+        translate: calc(var(--on) * (100% + 4px)) 0;
+      }
+    }
+
+    @keyframes was-on {
+      from {
+        color: var(--night);
+      }
+
+      40%,
+      to {
+        color: var(--soft);
+      }
+    }
+
+    @keyframes passed {
+      50% {
+        color: var(--night);
+      }
+    }
+
+    @keyframes now-on {
+      from,
+      60% {
+        color: var(--soft);
+      }
+
+      to {
+        color: var(--night);
+      }
+    }
+
+    .segments {
+      position: relative;
+      view-timeline: --segments block;
+    }
+
+    .segments::before {
+      content: '';
+      position: absolute;
+      inset: 4px auto 4px 4px;
+      /* One of four, with the three gaps and the two sides taken off. */
+      width: calc((100% - 20px) / 4);
+      border-radius: 12px;
+      background: var(--text);
+    }
+
+    .segments span {
+      position: relative;
+    }
+
+    .segments .is-on {
+      background: none;
+    }
+
+    .segments::before,
+    .segments span {
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --segments;
+      animation-range: cover 16% cover 44%;
+    }
+
+    .segments::before {
+      animation-name: set;
+    }
+
+    .segments span:first-child {
+      animation-name: was-on;
+    }
+
+    .segments span:not(:first-child):has(~ .is-on) {
+      animation-name: passed;
+    }
+
+    .segments .is-on {
+      animation-name: now-on;
+    }
+
+    /* The line over a country is drawn from the left, and its cities follow. */
+    @keyframes draw {
+      from {
+        scale: 0 1;
+      }
+    }
+
+    @keyframes follow {
+      from {
+        opacity: 0.15;
+        translate: 0 14px;
+      }
+    }
+
+    .country {
+      position: relative;
+      border-color: transparent;
+    }
+
+    .country::before,
+    .country:last-child::after {
+      content: '';
+      position: absolute;
+      inset: -1px 0 auto;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.12);
+      transform-origin: left;
+      animation: draw linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+
+    .country:last-child::after {
+      inset: auto 0 -1px;
+    }
+
+    .country dt,
+    .country dd {
+      animation: follow linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 16%;
+    }
+
+    .country dd {
+      animation-range: entry 0% cover 24%;
+    }
+
+    /* The light behind the last words swells as they come up. */
+    @keyframes swell {
+      from {
+        scale: 0.55;
+      }
+    }
+
+    .closing {
+      view-timeline: --closing block;
+    }
+
+    /* Both are over before the last words are all in the window: the page
+       ends soon after them, however tall the window. */
+    .orb--closing {
+      animation: breathe 6s ease-in-out infinite alternate, swell linear both;
+      animation-timeline: auto, --closing;
+      animation-range: normal, entry 0% entry 100%;
+    }
+
+    .closing .display {
+      animation-timeline: --closing;
+      animation-range: entry 30% entry 90%;
+    }
+
     @keyframes switch-on {
       0% {
         opacity: 0.16;

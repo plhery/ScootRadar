@@ -289,8 +289,8 @@ export default async function LandingPage({ params }: Props) {
                   )}
                 </p>
                 <ul className="tiles" aria-label={copy.know.all.providers}>
-                  {named.map(scooter => (
-                    <li key={scooter.provider} title={scooter.name}>
+                  {named.map((scooter, index) => (
+                    <li key={scooter.provider} title={scooter.name} style={{ '--i': index } as CSSProperties}>
                       <Tile provider={scooter.provider} />
                       <span className="sr-only">{scooter.name}</span>
                     </li>
@@ -316,7 +316,13 @@ export default async function LandingPage({ params }: Props) {
             <div className="cell">
               <div>
                 <p className="figure figure--charge">{BATTERY_STEP_SHOWN}%+</p>
-                <div className="segments" role="img" aria-label={copy.know.charge.control}>
+                <div
+                  className="segments"
+                  role="img"
+                  aria-label={copy.know.charge.control}
+                  // How many steps from "any" the one that is on is: the page slides the control there.
+                  style={{ '--on': BATTERY_STEPS.indexOf(BATTERY_STEP_SHOWN) + 1 } as CSSProperties}
+                >
                   <span aria-hidden="true">{copy.know.charge.any}</span>
                   {BATTERY_STEPS.map(step => (
                     <span key={step} aria-hidden="true" className={step === BATTERY_STEP_SHOWN ? 'is-on' : undefined}>

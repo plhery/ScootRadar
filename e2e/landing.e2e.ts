@@ -167,6 +167,69 @@ test('the landing page is accessible, and its targets are big enough for a finge
   }
 });
 
+/** What the scroll moves, as it is drawn now. */
+const drawn = (page: Page) => page.evaluate(() => {
+  const style = (selector: string, pseudo?: string) => getComputedStyle(document.querySelector(selector)!, pseudo);
+  const offset = (value: string) => (value === 'none' ? 0 : parseFloat(value));
+  return {
+    // How far the battery filter has slid from "any", in its own widths.
+    thumb: style('.segments', '::before').translate,
+    stepLit: style('.segments .is-on').backgroundColor,
+    title: style('.know .title').backgroundPositionX,
+    titleInk: style('.know .title').webkitTextFillColor,
+    lastWords: style('.closing .display').backgroundPositionX,
+    cells: [...document.querySelectorAll('.cell')].map(cell => getComputedStyle(cell).opacity),
+    tiles: [...document.querySelectorAll('.tiles li')].map(tile => getComputedStyle(tile).opacity),
+    phones: [...document.querySelectorAll('.cell-shot .phone, .cities-phone')].map(phone => offset(getComputedStyle(phone).translate.split(' ')[1] ?? 'none')),
+    figures: [...document.querySelectorAll('.cell .figure')].map(figure => getComputedStyle(figure).opacity),
+    bar: style('.pill').backgroundColor,
+  };
+});
+
+test('what follows the scroll starts unlit and ends as the page is at rest', async ({ page }) => {
+  await page.goto('/');
+  test.skip(!(await page.evaluate(() => CSS.supports('animation-timeline: view()'))), 'this browser has no scroll timelines');
+
+  // At the top nothing further down has happened yet.
+  const before = await drawn(page);
+  expect(before.thumb).toBe('0%');
+  expect(before.title).toBe('100%');
+  expect(before.tiles).toEqual(Array(7).fill('0'));
+  expect(Number(before.figures[0])).toBeLessThan(0.3);
+
+  // Each has its own stretch of the page. All of it is over at the bottom, the
+  // last words included, which have the least page left under them.
+  await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }));
+  await expect.poll(async () => (await drawn(page)).lastWords).toBe('0%');
+  const after = await drawn(page);
+  // Two steps on, and the two gaps between them: "60%+".
+  expect(after.thumb).toBe('calc(200% + 8px)');
+  expect(after.title).toBe('0%');
+  expect(after.cells).toEqual(after.cells.map(() => '1'));
+  expect(after.tiles).toEqual(Array(7).fill('1'));
+  expect(after.phones).toEqual(after.phones.map(() => 0));
+  expect(after.figures).toEqual(after.figures.map(() => '1'));
+  if (page.viewportSize()!.width >= 760) {
+    // The bar is glass once the page has moved under it.
+    const clear = /[/,] 0\)$/;
+    expect(before.bar).toMatch(clear);
+    expect(after.bar).not.toMatch(clear);
+  }
+});
+
+test('without motion the landing page is at rest from the start', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  const still = await drawn(page);
+  // The filter is drawn set, by the step itself; the titles are lit; nothing waits for the scroll.
+  expect(still.stepLit).toBe('rgb(244, 245, 247)');
+  expect(still.titleInk).toBe('rgb(244, 245, 247)');
+  expect(still.cells).toEqual(still.cells.map(() => '1'));
+  expect(still.tiles).toEqual(Array(7).fill('1'));
+  expect(still.figures).toEqual(still.figures.map(() => '1'));
+  expect(still.phones).toEqual(still.phones.map(() => 0));
+});
+
 test('the landing page has no page for a language it does not speak', async ({ page }) => {
   expect((await page.goto('/es'))?.status()).toBe(404);
   expect((await page.goto('/de/zurich'))?.status()).toBe(404);
