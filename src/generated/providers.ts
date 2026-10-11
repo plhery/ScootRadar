@@ -16,6 +16,9 @@ const PROVIDER_DEFINITIONS = {
   pony: { name: "Pony", color: "#00a7a0", initial: "P" },
   publibike: { name: "PubliBike / Velospot", color: "#9b59b6", initial: "PB" },
   zeus: { name: "Zeus", color: "#f82519", initial: "Z" },
+  beryl: { name: "Beryl", color: "#00c896", initial: "Be" },
+  ryde: { name: "Ryde", color: "#2f8413", initial: "R" },
+  hoppy: { name: "Hoppy", color: "#22c5aa", initial: "Ho" },
 } as const;
 
 export type ProviderKey = keyof typeof PROVIDER_DEFINITIONS;
@@ -24,21 +27,27 @@ export const PROVIDERS: Record<string, ProviderConfig> = PROVIDER_DEFINITIONS;
 
 export const PROVIDER_KEYS = Object.keys(PROVIDER_DEFINITIONS) as ProviderKey[];
 
+/** The providers the Swiss open data names; the others run scooters only abroad. */
+export const SWISS_PROVIDER_KEYS: readonly ProviderKey[] = ["bolt","bird","dott","hopp","lime","voi","publibike"];
+
 const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: string[] }> = {
+  publibike: {"exact":["velospot"],"prefixes":["publibike"]},
+  beryl: {"prefixes":["beryl"]},
+  hoppy: {"prefixes":["hoppy"]},
   bolt: {"prefixes":["bolt"]},
   bird: {"prefixes":["bird"]},
   dott: {"prefixes":["dott"]},
   hopp: {"prefixes":["hopp"]},
   lime: {"prefixes":["lime"]},
-  voi: {"prefixes":["voi"]},
   pony: {"prefixes":["pony"]},
-  publibike: {"exact":["velospot"],"prefixes":["publibike"]},
   zeus: {"prefixes":["zeus"]},
+  ryde: {"prefixes":["ryde"]},
+  voi: {"prefixes":["voi"]},
 };
 
 export function providerKeyForSystemId(systemId: string): ProviderKey | null {
   const normalized = systemId.toLowerCase();
-  for (const provider of PROVIDER_KEYS) {
+  for (const provider of Object.keys(SYSTEM_ID_MATCHERS) as ProviderKey[]) {
     const matcher = SYSTEM_ID_MATCHERS[provider];
     if (matcher.exact?.includes(normalized)) return provider;
     if (matcher.prefixes?.some(prefix => normalized.startsWith(prefix))) return provider;

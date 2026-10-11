@@ -1,14 +1,20 @@
 import frenchCatalog from '../../data/french-scooter-feeds.json';
 import germanCatalog from '../../data/german-scooter-feeds.json';
 import italianCatalog from '../../data/italian-scooter-feeds.json';
+import belgianCatalog from '../../data/belgian-scooter-feeds.json';
+import norwegianCatalog from '../../data/norwegian-scooter-feeds.json';
+import britishCatalog from '../../data/british-scooter-feeds.json';
 import type { ProviderKey } from '@/generated/providers';
 import type { MapBounds } from '@/lib/types';
 
-export type ScooterCountry = 'FR' | 'DE' | 'IT';
-export const COUNTRY_SOURCES = { FR: 'france', DE: 'germany', IT: 'italy' } as const;
-const COUNTRY_NAMES = { FR: 'France', DE: 'Germany', IT: 'Italy' };
-const COUNTRY_ALIASES = { FR: ['france', 'frankreich', 'francia'],
-  DE: ['germany', 'deutschland', 'allemagne', 'germania'], IT: ['italy', 'italia', 'italie', 'italien'] };
+export type ScooterCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB';
+export const COUNTRY_SOURCES = { FR: 'france', DE: 'germany', IT: 'italy', BE: 'belgium', NO: 'norway', GB: 'uk' } as const;
+export type RegionalSource = typeof COUNTRY_SOURCES[ScooterCountry];
+const COUNTRY_NAMES = { FR: 'France', DE: 'Germany', IT: 'Italy', BE: 'Belgium', NO: 'Norway', GB: 'United Kingdom' };
+const COUNTRY_ALIASES = { FR: ['france', 'frankreich', 'francia', 'frankrijk', 'frankrike'],
+  DE: ['germany', 'deutschland', 'allemagne', 'germania', 'duitsland', 'tyskland'], IT: ['italy', 'italia', 'italie', 'italien'],
+  BE: ['belgium', 'belgien', 'belgique', 'belgio', 'belgie', 'belgia'], NO: ['norway', 'norwegen', 'norvege', 'norvegia', 'noorwegen', 'norge'],
+  GB: ['uk', 'britain', 'england', 'scotland', 'wales', 'angleterre', 'inghilterra', 'engeland', 'storbritannia', 'grossbritannien'] };
 
 export interface ScooterServiceArea {
   city: string;
@@ -29,13 +35,14 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
 export const REGIONAL_SCOOTER_SYSTEMS = [
   ...frenchCatalog.systems.map(system => ({ ...system, country: 'FR' })),
   ...germanCatalog.systems, ...italianCatalog.systems,
+  ...belgianCatalog.systems, ...norwegianCatalog.systems, ...britishCatalog.systems,
 ] as RegionalScooterSystem[];
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {
   return system.areas ?? [system];
 }
 export function regionalSource(system: RegionalScooterSystem) { return COUNTRY_SOURCES[system.country]; }
-export function isRegionalSource(source: string) {
+export function isRegionalSource(source: string): source is RegionalSource {
   return Object.values(COUNTRY_SOURCES).some(value => value === source);
 }
 

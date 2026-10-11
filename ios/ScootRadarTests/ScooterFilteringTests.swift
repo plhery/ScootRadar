@@ -571,7 +571,7 @@ final class ScooterFilteringTests: XCTestCase {
         let sources = ScooterCreditsList.sources
 
         // The sources of the credits list on the web, Lille's parking bays included.
-        XCTAssertEqual(sources.count, 6)
+        XCTAssertEqual(sources.count, 8)
         XCTAssertEqual(Set(sources.map(\.url)).count, sources.count)
         XCTAssertTrue(sources.allSatisfy { $0.url.scheme == "https" && !$0.title.isEmpty })
         XCTAssertTrue(sources.contains { $0.url.host() == "data.lillemetropole.fr" })
@@ -641,7 +641,7 @@ extension ScooterFilteringTests {
             weight: .semibold
         )
 
-        for language in ["en", "de", "fr", "it"] {
+        for language in ["en", "de", "fr", "it", "nl", "nb"] {
             let strings = try XCTUnwrap(
                 Bundle.main.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:))
             )

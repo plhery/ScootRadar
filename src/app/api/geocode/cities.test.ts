@@ -43,9 +43,9 @@ describe('searchCoveredCities', () => {
   });
 
   it('returns five cities at most', () => {
-    // Two initials: every city with a word that starts with a B, twelve of them.
+    // Two initials: every city with a word that starts with a B, eighteen of them.
     expect(names('B B')).toEqual([
-      'Bamberg, Germany', 'Basel, Switzerland', 'Beauvais, France', 'Berlin, Germany', 'Bern, Switzerland',
+      'Bærum, Norway', 'Bamberg, Germany', 'Basel, Switzerland', 'Bath, United Kingdom', 'Beauvais, France',
     ]);
   });
 
@@ -114,7 +114,8 @@ describe('searchCoveredCities', () => {
       expect(names(query), query).toEqual(searchRegionalScooterCities(query).map(city => city.display_name));
     }
     // Swiss cities take their place among them by name.
-    expect(names('St')).toEqual(['St. Gallen, Switzerland', 'Stuttgart, Germany']);
-    expect(searchRegionalScooterCities('St').map(city => city.display_name)).toEqual(['Stuttgart, Germany']);
+    expect(names('St')).toEqual(['St. Gallen, Switzerland', 'Stavanger, Norway', 'Stjørdal, Norway', 'Stuttgart, Germany']);
+    expect(searchRegionalScooterCities('St').map(city => city.display_name))
+      .toEqual(['Stavanger, Norway', 'Stjørdal, Norway', 'Stuttgart, Germany']);
   });
 });

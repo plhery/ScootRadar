@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
 
 const requested = process.argv.find(arg => arg.startsWith('--countries='))?.split('=')[1].split(',') ?? ['FR'];
-const catalogs = { FR: 'french', DE: 'german', IT: 'italian' };
-if (requested.some(country => !catalogs[country])) throw new Error('Use --countries=FR,DE,IT');
+const catalogs = { FR: 'french', DE: 'german', IT: 'italian', BE: 'belgian', NO: 'norwegian', GB: 'british' };
+if (requested.some(country => !catalogs[country])) throw new Error(`Use --countries=${Object.keys(catalogs).join(',')}`);
 // --fail-on=gone fails the run only for an entry its operator no longer serves, as the weekly workflow does.
 const failOn = process.argv.find(arg => arg.startsWith('--fail-on='))?.split('=')[1] ?? 'any';
 if (!['any', 'gone'].includes(failOn)) throw new Error('Use --fail-on=any or --fail-on=gone');
@@ -10,12 +10,14 @@ const catalog = { systems: requested.flatMap(country => JSON.parse(readFileSync(
   new URL(`../data/${catalogs[country]}-scooter-feeds.json`, import.meta.url), 'utf8')).systems.map(system => ({ ...system, country }))) };
 const results = [];
 const headers = { Accept: 'application/json', 'User-Agent': 'scootradar/2.0 (scootradar.com)' };
+// As HOST_HEADERS in src/lib/scooterFeeds.ts: Entur answers only clients that name themselves.
+const hostHeaders = { 'api.entur.io': { 'ET-Client-Name': 'scootradar-map' } };
 // Dott's listing of a country names only the regions it still serves publicly. Its CDN
 // keeps a 404 for hours and an unknown query parameter answers 400: no cache busting.
 const DOTT = 'https://gbfs.api.ridedott.com';
 
 async function json(url) {
-  const response = await fetch(url, { headers, signal: AbortSignal.timeout(15_000) });
+  const response = await fetch(url, { headers: { ...headers, ...hostHeaders[new URL(url).hostname] }, signal: AbortSignal.timeout(15_000) });
   if (!response.ok) {
     // Dott names the error in the body: {"error":"Not Found: ERR_REGION_NOT_FOUND"}.
     const code = (await response.text().catch(() => '')).match(/\bERR_[A-Z_]+\b/)?.[0];
@@ -121,7 +123,11 @@ async function uncataloged(region, feeds) {
   }
 }
 
-const listings = Object.fromEntries(await Promise.all(requested.map(async country => {
+// Norway's Dott comes through Entur, whose manifest stands in for Dott's listing.
+const dottCountries = requested.filter(country => catalog.systems.some(system => (
+  system.country === country && dottRegion(system.discoveryUrl)
+)));
+const listings = Object.fromEntries(await Promise.all(dottCountries.map(async country => {
   try {
     return [country, { regions: await dottListing(country) }];
   } catch (error) {
@@ -136,7 +142,7 @@ await Promise.all(Array.from({ length: 4 }, async () => {
 results.sort((a, b) => a.system.localeCompare(b.system));
 
 const dott = {};
-for (const country of requested) {
+for (const country of dottCountries) {
   const { regions, error } = listings[country];
   if (error) {
     dott[country] = { error };

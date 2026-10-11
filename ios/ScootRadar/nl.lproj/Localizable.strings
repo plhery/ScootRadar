@@ -1,0 +1,208 @@
+"Settings" = "Instellingen";
+"Finding your location…" = "Je locatie bepalen…";
+"scooter" = "deelstep";
+"scooters" = "deelsteps";
+"All" = "Alle";
+"Battery" = "Batterij";
+"Estimated range" = "Geschat bereik";
+"Any" = "Alle";
+"Address data © swisstopo" = "Adresgegevens © swisstopo";
+"Privacy" = "Privacy";
+"Go to my location" = "Naar mijn locatie";
+"Standard" = "Standaard";
+"Quiet" = "Rustig";
+"Satellite" = "Satelliet";
+"Shows scooter details" = "Toont de details van de deelstep";
+"Zooms in to show individual scooters" = "Zoomt in om afzonderlijke deelsteps te tonen";
+"Updated %@" = "Bijgewerkt om %@";
+"%lld percent" = "%lld procent";
+"%@ scooter" = "Deelstep van %@";
+"%@ scooters" = "%@ deelsteps";
+"City or address" = "Stad of adres";
+"Use my location" = "Mijn locatie gebruiken";
+"Finding scooters…" = "Deelsteps zoeken…";
+"Close scooter details" = "Details van de deelstep sluiten";
+
+/* Scooter details */
+"Centers this scooter on the map" = "Zet deze deelstep in het midden van de kaart";
+"%lld%%" = "%lld%%";
+"Done" = "Klaar";
+"Filters" = "Filters";
+"Providers" = "Aanbieders";
+"Show all" = "Alles tonen";
+"%@, %lld scooters" = "%@, %lld deelsteps";
+"Shown" = "Zichtbaar";
+"Hidden" = "Verborgen";
+"Map" = "Kaart";
+"Appearance" = "Weergave";
+"Automatic" = "Automatisch";
+"Light" = "Licht";
+"Dark" = "Donker";
+"Language" = "Taal";
+"Mobility data sources" = "Bronnen van mobiliteitsdata";
+"About" = "Over";
+"Live" = "Live";
+"Filters, active" = "Filters, actief";
+"%lld percent or more" = "%lld procent of meer";
+"All providers" = "Alle aanbieders";
+"Shows only this provider" = "Toont alleen deze aanbieder";
+"Shows all providers" = "Toont alle aanbieders";
+"Hides this provider" = "Verbergt deze aanbieder";
+"Adds this provider" = "Voegt deze aanbieder toe";
+"%@, one scooter" = "%@, één deelstep";
+"≈%lld min walk" = "≈%lld min te voet";
+"One address suggestion" = "Eén adressuggestie";
+"%lld address suggestions" = "%lld adressuggesties";
+
+/* Ride pricing and passes */
+"Pass applied" = "Pass toegepast";
+"Passes" = "Passes";
+"Not set" = "Niet ingesteld";
+"Expired" = "Verlopen";
+"Free unlock" = "Gratis ontgrendelen";
+"%lld free min" = "%lld gratis min";
+"Pass active" = "Pass actief";
+"Pass benefits are used only for estimates. Free-minute balances are not reduced automatically." = "De voordelen van je pass gelden alleen voor schattingen. Je tegoed aan gratis minuten wordt niet automatisch verminderd.";
+"I have a pass" = "Ik heb een pass";
+"Your pass details stay on this iPhone." = "De gegevens van je pass blijven op deze iPhone.";
+"Pass benefits" = "Voordelen van de pass";
+"Free minutes available" = "Beschikbare gratis minuten";
+"Has expiry date" = "Heeft een vervaldatum";
+"Valid through" = "Geldig tot en met";
+"This pass has expired" = "Deze pass is verlopen";
+"Expiry" = "Vervaldatum";
+"Benefits remain active through the end of the selected day." = "De voordelen blijven gelden tot het einde van de gekozen dag.";
+"Pricing can vary. Confirm the final price and pass eligibility in the provider app before riding." = "Prijzen kunnen variëren. Controleer in de app van de aanbieder de eindprijs en of je pass geldt voordat je vertrekt.";
+"%@ pass" = "Pass van %@";
+"French mobility data" = "Franse mobiliteitsdata";
+
+"City totals · refreshed hourly" = "Totalen per stad · elk uur bijgewerkt";
+
+/* Scooter parking */
+"Designated scooter parking." = "Aangewezen parkeerplek voor deelsteps.";
+"Parking" = "Parkeren";
+
+// Self-hosted usage analytics
+"Share anonymous usage" = "Anoniem gebruik delen";
+"Helps improve ScootRadar. No addresses or precise locations are sent." = "Helpt ScootRadar te verbeteren. Er worden geen adressen of precieze locaties verstuurd.";
+
+/* UX alignment: search bar */
+"Search city or address" = "Stad of adres zoeken";
+"Tap to search a city or address" = "Tik om een stad of adres te zoeken";
+"Scooters near this place" = "Deelsteps rond deze plaats";
+"Clear place" = "Plaats wissen";
+"Showing scooters near %@. Search another place." = "Je ziet deelsteps rond %@. Zoek een andere plaats.";
+
+/* UX alignment: search panel */
+"Cancel" = "Annuleren";
+"Recent" = "Recent";
+"Cities with scooters" = "Steden met deelsteps";
+"No data" = "Geen data";
+"Searching…" = "Zoeken…";
+"No places found. Outside Switzerland, search by city." = "Geen plaatsen gevonden. Zoek buiten Zwitserland op stad.";
+"Search isn’t available right now." = "Zoeken is nu niet beschikbaar.";
+"Try again" = "Opnieuw proberen";
+"Clear search" = "Zoekopdracht wissen";
+
+/* UX alignment: dock */
+"scooter nearby" = "deelstep in de buurt";
+"scooters nearby" = "deelsteps in de buurt";
+"scooter on this map" = "deelstep op deze kaart";
+"scooters on this map" = "deelsteps op deze kaart";
+"Waiting for scooter data" = "Wachten op data van de deelsteps";
+"Updated %lld min ago" = "%lld min geleden bijgewerkt";
+"Tap a city to see its scooters." = "Tik op een stad om de deelsteps daar te zien.";
+"Couldn’t refresh · showing %@" = "Bijwerken mislukt · data van %@";
+"You’re offline · showing %@" = "Je bent offline · data van %@";
+"Data delayed · showing %@" = "Data vertraagd · bijgewerkt om %@";
+"%@ isn’t sharing data right now." = "%@ deelt nu geen data.";
+"%1$@ and %2$@ aren’t sharing data right now." = "%1$@ en %2$@ delen nu geen data.";
+"%lld providers aren’t sharing data right now." = "%lld aanbieders delen nu geen data.";
+"Some providers aren’t sharing data right now." = "Sommige aanbieders delen nu geen data.";
+"%@: not sharing data right now" = "%@: deelt nu geen data";
+"Showing %1$@ of %2$@ — zoom in to see all" = "%1$@ van %2$@ getoond — zoom in om alles te zien";
+"Parking bays unavailable right now" = "Parkeerplekken nu niet beschikbaar";
+"Parking bays may be out of date" = "Parkeerplekken zijn mogelijk niet actueel";
+"No scooters here right now. Zoom out or move the map." = "Hier staan nu geen deelsteps. Zoom uit of verschuif de kaart.";
+
+/* UX alignment: refresh and load failures */
+"These positions are out of date" = "Deze posities zijn verouderd";
+"Last update %@." = "Laatst bijgewerkt om %@.";
+"You’re offline. Check your connection." = "Je bent offline. Controleer je verbinding.";
+"ScootRadar took too long to respond." = "ScootRadar reageerde niet op tijd.";
+"ScootRadar is busy right now. Try again in a moment." = "ScootRadar heeft het nu druk. Probeer het zo opnieuw.";
+"ScootRadar is having trouble. Try again in a moment." = "ScootRadar heeft problemen. Probeer het zo opnieuw.";
+"Couldn’t load scooters." = "De deelsteps konden niet worden geladen.";
+
+/* UX alignment: outside coverage and filters with nothing to show */
+"No scooter data here yet" = "Hier is nog geen data over deelsteps";
+"ScootRadar covers selected cities in Belgium, France, Germany, Italy, Norway, Switzerland and the United Kingdom." = "ScootRadar werkt in een selectie van steden in België, Duitsland, Frankrijk, Italië, Noorwegen, het Verenigd Koninkrijk en Zwitserland.";
+"Closest cities" = "Dichtstbijzijnde steden";
+"%1$@ · %2$@" = "%1$@ · %2$@";
+"1 scooter hidden by your filters" = "1 deelstep verborgen door je filters";
+"%lld scooters hidden by your filters" = "%lld deelsteps verborgen door je filters";
+"No scooters match your filters here" = "Hier passen geen deelsteps bij je filters";
+"Show all %lld" = "Alle %lld tonen";
+"Edit filters" = "Filters wijzigen";
+"%@ only" = "Alleen %@";
+"battery %lld%% or more" = "batterij %lld%% of meer";
+
+/* UX alignment: scooter card */
+"≈%1$lld min walk · %2$@" = "≈%1$lld min te voet · %2$@";
+"≈%1$lld min walk from %2$@ · %3$@" = "≈%1$lld min te voet vanaf %2$@ · %3$@";
+"≈%1$lld min walk from %2$@" = "≈%1$lld min te voet vanaf %2$@";
+"Turn on location to see walking time" = "Zet je locatie aan om de tijd te voet te zien";
+"Directions" = "Route";
+"Open in %@" = "Openen in %@";
+"≈ %1$@ for %2$lld min" = "≈ %1$@ voor %2$lld min";
+"Price shown in the %@ app" = "Prijs in de app van %@";
+"Ride estimate, %lld minutes. Change duration." = "Geschatte ritprijs, %lld minuten. Duur wijzigen.";
+"%lld min" = "%lld min";
+
+/* UX alignment: parking bay */
+"%@ parking bay" = "Parkeerplek van %@";
+"You must park in a bay in this zone." = "In deze zone moet je op een aangewezen parkeerplek parkeren.";
+"Check the %@ app before you end your ride." = "Kijk in de app van %@ voordat je je rit beëindigt.";
+"Close parking details" = "Details van de parkeerplek sluiten";
+"Shows parking details" = "Toont de details van de parkeerplek";
+
+/* UX alignment: location */
+"Near me" = "In mijn buurt";
+"Location is off" = "Locatie staat uit";
+"Turn it on in Settings, or search a place instead." = "Zet je locatie aan in Instellingen, of zoek een plaats.";
+"Location is restricted on this device. Search a place instead." = "Locatie is beperkt op dit apparaat. Zoek dan een plaats.";
+"Open Settings" = "Instellingen openen";
+"Search a place" = "Plaats zoeken";
+"Couldn’t find your location." = "Je locatie kon niet worden bepaald.";
+"Dismiss" = "Sluiten";
+
+/* UX alignment: filters sheet */
+"Reset" = "Wissen";
+"Scooters without battery info are hidden while a minimum is set." = "Deelsteps zonder bekend batterijniveau worden verborgen zolang er een minimum is ingesteld.";
+"Not sharing data right now" = "Deelt nu geen data";
+"Show 0 scooters" = "0 deelsteps tonen";
+"Show 1 scooter" = "1 deelstep tonen";
+"Show %lld scooters" = "%lld deelsteps tonen";
+
+/* UX alignment: settings */
+"Map & data credits" = "Kaart- en databronnen";
+"Read the privacy notice" = "Privacyverklaring lezen";
+"Source code on GitHub" = "Broncode op GitHub";
+"Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter." = "De beschikbaarheid wordt automatisch bijgewerkt. Een app van een aanbieder openen reserveert geen deelstep.";
+
+/* Map look: the nearest scooter in the dock, and the figures of the scooter card */
+"to the nearest scooter" = "tot de dichtstbijzijnde deelstep";
+"%1$@, %2$lld min on foot" = "%1$@, %2$lld min te voet";
+"Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details." = "Dichtstbijzijnde deelstep: %1$@, op %2$@, %3$lld min te voet. Details tonen.";
+"min" = "min";
+"on foot" = "te voet";
+"from %@" = "vanaf %@";
+"away" = "afstand";
+"%1$@, %2$lld min" = "%1$@, %2$lld min";
+"battery" = "batterij";
+"range" = "bereik";
+"%1$lld%% battery, %2$@ range" = "%1$lld%% batterij, %2$@ bereik";
+"%lld%% battery" = "%lld%% batterij";
+"%@ range" = "%@ bereik";
+"%1$@ to unlock, then %2$@ a minute" = "%1$@ om te ontgrendelen, daarna %2$@ per minuut";
+"No unlock fee, %@ a minute" = "Geen ontgrendelkosten, %@ per minuut";

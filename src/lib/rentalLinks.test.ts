@@ -40,6 +40,17 @@ describe('rental links', () => {
     expect(safeRentalUri('hopp', 'https://user@app.hopp.bike/launch/1')).toBeNull();
   });
 
+  it('leaves out the IMEI that names a Ryde scooter past its rotating id', () => {
+    expect(normalizeRentalUris('ryde', {
+      ios: 'https://new-web-platform.ryde.vip/app/ios.html?deviceIMEI=860000000000001',
+      android: 'https://new-web-platform.ryde.vip/app/android.html?deviceIMEI=860000000000001',
+    })).toEqual({
+      ios: 'https://new-web-platform.ryde.vip/app/ios.html',
+      android: 'https://new-web-platform.ryde.vip/app/android.html',
+      web: null,
+    });
+  });
+
   it('selects only the link intended for the current mobile platform', () => {
     const ios = 'https://go.ridedott.com/vehicles/1?platform=ios';
     const android = 'https://go.ridedott.com/vehicles/1?platform=android';

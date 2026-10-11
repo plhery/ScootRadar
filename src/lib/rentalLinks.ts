@@ -5,6 +5,8 @@ export type RentalPlatform = 'ios' | 'android' | 'web';
 interface ProviderRentalLinkPolicy {
   schemes: readonly string[];
   httpsHosts: readonly string[];
+  /** Links whose query names the vehicle for good, past the id the feed rotates. */
+  withoutQuery?: boolean;
 }
 
 const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
@@ -44,6 +46,20 @@ const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
     schemes: [],
     httpsHosts: ['zeus.city', 'ridezeus.app.link'],
   },
+  beryl: {
+    schemes: ['beryl-basis'],
+    httpsHosts: ['beryl.app', 'beryl.cc'],
+  },
+  // Ryde's link carries the scooter's IMEI; without it the page still sends the rider to the app.
+  ryde: {
+    schemes: ['rydelink', 'ryde-linking'],
+    httpsHosts: ['ryde.vip'],
+    withoutQuery: true,
+  },
+  hoppy: {
+    schemes: [],
+    httpsHosts: ['ride-hoppy.app.link', 'behoppy.eu'],
+  },
 };
 
 const UNSAFE_CHARACTERS = /[\u0000-\u001f\u007f]/;
@@ -78,6 +94,7 @@ export function safeRentalUri(
     if (scheme === 'https') {
       const hostname = url.hostname.toLowerCase();
       if (url.port || !policy.httpsHosts.some(host => matchesHost(hostname, host))) return null;
+      if (policy.withoutQuery) url.search = '';
       return url.toString();
     }
 

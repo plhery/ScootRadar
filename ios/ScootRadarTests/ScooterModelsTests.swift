@@ -690,11 +690,11 @@ extension ScooterModelsTests {
             ScooterCountContext.onThisMap.label(for: 2, language: "fr"),
             String(localized: "scooters on this map")
         )
-        XCTAssertTrue(["en", "de", "fr", "it"].contains(ScooterPlural.language))
+        XCTAssertTrue(["en", "de", "fr", "it", "nl", "nb"].contains(ScooterPlural.language))
     }
 
     func testPercentagesAndTheShownStateReadAsOnTheWeb() throws {
-        for language in ["en", "de", "fr", "it"] {
+        for language in ["en", "de", "fr", "it", "nl", "nb"] {
             let strings = try XCTUnwrap(
                 Bundle.main.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:))
             )

@@ -4,23 +4,29 @@ import { REGIONAL_SCOOTER_CITIES } from '@/lib/regionalScooterSystems';
 const MAX_CITIES = 5;
 
 /** The languages the apps are shown in; a result's second line is written in the one asked for. */
-export const GEOCODE_LANGUAGES = ['en', 'de', 'fr', 'it'] as const;
+export const GEOCODE_LANGUAGES = ['en', 'de', 'fr', 'it', 'nl', 'nb'] as const;
 export type GeocodeLanguage = typeof GEOCODE_LANGUAGES[number];
 
 // A table rather than Intl.DisplayNames, whose locale data is not a given on the server.
 const COUNTRY_NAMES: Record<CoveredCountry, Record<GeocodeLanguage, string>> = {
-  CH: { en: 'Switzerland', de: 'Schweiz', fr: 'Suisse', it: 'Svizzera' },
-  FR: { en: 'France', de: 'Frankreich', fr: 'France', it: 'Francia' },
-  DE: { en: 'Germany', de: 'Deutschland', fr: 'Allemagne', it: 'Germania' },
-  IT: { en: 'Italy', de: 'Italien', fr: 'Italie', it: 'Italia' },
+  CH: { en: 'Switzerland', de: 'Schweiz', fr: 'Suisse', it: 'Svizzera', nl: 'Zwitserland', nb: 'Sveits' },
+  FR: { en: 'France', de: 'Frankreich', fr: 'France', it: 'Francia', nl: 'Frankrijk', nb: 'Frankrike' },
+  DE: { en: 'Germany', de: 'Deutschland', fr: 'Allemagne', it: 'Germania', nl: 'Duitsland', nb: 'Tyskland' },
+  IT: { en: 'Italy', de: 'Italien', fr: 'Italie', it: 'Italia', nl: 'Italië', nb: 'Italia' },
+  BE: { en: 'Belgium', de: 'Belgien', fr: 'Belgique', it: 'Belgio', nl: 'België', nb: 'Belgia' },
+  NO: { en: 'Norway', de: 'Norwegen', fr: 'Norvège', it: 'Norvegia', nl: 'Noorwegen', nb: 'Norge' },
+  GB: { en: 'United Kingdom', de: 'Vereinigtes Königreich', fr: 'Royaume-Uni', it: 'Regno Unito', nl: 'Verenigd Koninkrijk', nb: 'Storbritannia' },
 };
 
 // Typed beside a city to say which one is meant: "Lindau Deutschland".
 const COUNTRY_WORDS: Record<CoveredCountry, string[]> = {
-  CH: ['switzerland', 'schweiz', 'suisse', 'svizzera'],
-  FR: ['france', 'frankreich', 'francia'],
-  DE: ['germany', 'deutschland', 'allemagne', 'germania'],
+  CH: ['switzerland', 'schweiz', 'suisse', 'svizzera', 'zwitserland', 'sveits'],
+  FR: ['france', 'frankreich', 'francia', 'frankrijk', 'frankrike'],
+  DE: ['germany', 'deutschland', 'allemagne', 'germania', 'duitsland', 'tyskland'],
   IT: ['italy', 'italia', 'italie', 'italien'],
+  BE: ['belgium', 'belgien', 'belgique', 'belgio', 'belgie', 'belgia'],
+  NO: ['norway', 'norwegen', 'norvege', 'norvegia', 'noorwegen', 'norge'],
+  GB: ['uk', 'britain', 'england', 'scotland', 'wales', 'angleterre', 'inghilterra', 'engeland', 'storbritannia', 'grossbritannien'],
 };
 
 // What the Swiss cities are called in the other languages of the app, and how

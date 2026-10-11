@@ -1,0 +1,208 @@
+"Settings" = "Innstillinger";
+"Finding your location…" = "Finner posisjonen din…";
+"scooter" = "elsparkesykkel";
+"scooters" = "elsparkesykler";
+"All" = "Alle";
+"Battery" = "Batteri";
+"Estimated range" = "Anslått rekkevidde";
+"Any" = "Alle";
+"Address data © swisstopo" = "Adressedata © swisstopo";
+"Privacy" = "Personvern";
+"Go to my location" = "Gå til posisjonen min";
+"Standard" = "Standard";
+"Quiet" = "Rolig";
+"Satellite" = "Satellitt";
+"Shows scooter details" = "Viser detaljer om elsparkesykkelen";
+"Zooms in to show individual scooters" = "Zoomer inn for å vise hver enkelt elsparkesykkel";
+"Updated %@" = "Oppdatert kl. %@";
+"%lld percent" = "%lld prosent";
+"%@ scooter" = "Elsparkesykkel fra %@";
+"%@ scooters" = "%@ elsparkesykler";
+"City or address" = "By eller adresse";
+"Use my location" = "Bruk posisjonen min";
+"Finding scooters…" = "Finner elsparkesykler…";
+"Close scooter details" = "Lukk detaljer om elsparkesykkelen";
+
+/* Scooter details */
+"Centers this scooter on the map" = "Sentrerer kartet på denne elsparkesykkelen";
+"%lld%%" = "%lld%%";
+"Done" = "Ferdig";
+"Filters" = "Filtre";
+"Providers" = "Operatører";
+"Show all" = "Vis alle";
+"%@, %lld scooters" = "%@, %lld elsparkesykler";
+"Shown" = "Vist";
+"Hidden" = "Skjult";
+"Map" = "Kart";
+"Appearance" = "Utseende";
+"Automatic" = "Automatisk";
+"Light" = "Lyst";
+"Dark" = "Mørkt";
+"Language" = "Språk";
+"Mobility data sources" = "Kilder til mobilitetsdata";
+"About" = "Om";
+"Live" = "Sanntid";
+"Filters, active" = "Filtre, på";
+"%lld percent or more" = "Minst %lld prosent";
+"All providers" = "Alle operatører";
+"Shows only this provider" = "Viser bare denne operatøren";
+"Shows all providers" = "Viser alle operatører";
+"Hides this provider" = "Skjuler denne operatøren";
+"Adds this provider" = "Legger til denne operatøren";
+"%@, one scooter" = "%@, én elsparkesykkel";
+"≈%lld min walk" = "≈%lld min gange";
+"One address suggestion" = "Ett adresseforslag";
+"%lld address suggestions" = "%lld adresseforslag";
+
+/* Ride pricing and passes */
+"Pass applied" = "Pass medregnet";
+"Passes" = "Pass";
+"Not set" = "Ikke satt opp";
+"Expired" = "Utløpt";
+"Free unlock" = "Gratis opplåsing";
+"%lld free min" = "%lld gratis min";
+"Pass active" = "Pass aktivt";
+"Pass benefits are used only for estimates. Free-minute balances are not reduced automatically." = "Fordelene med passet brukes bare i prisanslagene. Gratisminutter trekkes ikke fra automatisk.";
+"I have a pass" = "Jeg har et pass";
+"Your pass details stay on this iPhone." = "Opplysningene om passet ditt blir på denne iPhonen.";
+"Pass benefits" = "Fordeler med passet";
+"Free minutes available" = "Gratisminutter igjen";
+"Has expiry date" = "Har utløpsdato";
+"Valid through" = "Gyldig til og med";
+"This pass has expired" = "Dette passet er utløpt";
+"Expiry" = "Gyldighet";
+"Benefits remain active through the end of the selected day." = "Fordelene gjelder ut den valgte dagen.";
+"Pricing can vary. Confirm the final price and pass eligibility in the provider app before riding." = "Prisene kan variere. Sjekk endelig pris og om passet gjelder i operatørens app før du kjører.";
+"%@ pass" = "%@-pass";
+"French mobility data" = "Franske mobilitetsdata";
+
+"City totals · refreshed hourly" = "Antall per by · oppdateres hver time";
+
+/* Scooter parking */
+"Designated scooter parking." = "Anvist parkering for elsparkesykler.";
+"Parking" = "Parkering";
+
+// Self-hosted usage analytics
+"Share anonymous usage" = "Del anonym bruksstatistikk";
+"Helps improve ScootRadar. No addresses or precise locations are sent." = "Hjelper med å gjøre ScootRadar bedre. Ingen adresser eller nøyaktige posisjoner sendes.";
+
+/* UX alignment: search bar */
+"Search city or address" = "Søk etter by eller adresse";
+"Tap to search a city or address" = "Trykk for å søke etter en by eller adresse";
+"Scooters near this place" = "Elsparkesykler nær dette stedet";
+"Clear place" = "Fjern sted";
+"Showing scooters near %@. Search another place." = "Viser elsparkesykler nær %@. Søk etter et annet sted.";
+
+/* UX alignment: search panel */
+"Cancel" = "Avbryt";
+"Recent" = "Nylige";
+"Cities with scooters" = "Byer med elsparkesykler";
+"No data" = "Ingen data";
+"Searching…" = "Søker…";
+"No places found. Outside Switzerland, search by city." = "Fant ingen steder. Utenfor Sveits kan du søke etter by.";
+"Search isn’t available right now." = "Søket er ikke tilgjengelig akkurat nå.";
+"Try again" = "Prøv igjen";
+"Clear search" = "Tøm søket";
+
+/* UX alignment: dock */
+"scooter nearby" = "elsparkesykkel i nærheten";
+"scooters nearby" = "elsparkesykler i nærheten";
+"scooter on this map" = "elsparkesykkel på kartet";
+"scooters on this map" = "elsparkesykler på kartet";
+"Waiting for scooter data" = "Venter på data om elsparkesykler";
+"Updated %lld min ago" = "Oppdatert for %lld min siden";
+"Tap a city to see its scooters." = "Trykk på en by for å se elsparkesyklene der.";
+"Couldn’t refresh · showing %@" = "Kunne ikke oppdatere · data fra kl. %@";
+"You’re offline · showing %@" = "Du er frakoblet · data fra kl. %@";
+"Data delayed · showing %@" = "Forsinket · data fra kl. %@";
+"%@ isn’t sharing data right now." = "%@ deler ikke data akkurat nå.";
+"%1$@ and %2$@ aren’t sharing data right now." = "%1$@ og %2$@ deler ikke data akkurat nå.";
+"%lld providers aren’t sharing data right now." = "%lld operatører deler ikke data akkurat nå.";
+"Some providers aren’t sharing data right now." = "Noen operatører deler ikke data akkurat nå.";
+"%@: not sharing data right now" = "%@: deler ikke data akkurat nå";
+"Showing %1$@ of %2$@ — zoom in to see all" = "Viser %1$@ av %2$@ – zoom inn for å se alle";
+"Parking bays unavailable right now" = "Parkeringsplassene kan ikke vises akkurat nå";
+"Parking bays may be out of date" = "Parkeringsplassene kan være utdaterte";
+"No scooters here right now. Zoom out or move the map." = "Ingen elsparkesykler her akkurat nå. Zoom ut eller flytt kartet.";
+
+/* UX alignment: refresh and load failures */
+"These positions are out of date" = "Disse posisjonene er utdaterte";
+"Last update %@." = "Sist oppdatert kl. %@.";
+"You’re offline. Check your connection." = "Du er frakoblet. Sjekk tilkoblingen.";
+"ScootRadar took too long to respond." = "ScootRadar brukte for lang tid på å svare.";
+"ScootRadar is busy right now. Try again in a moment." = "ScootRadar er opptatt akkurat nå. Prøv igjen om litt.";
+"ScootRadar is having trouble. Try again in a moment." = "ScootRadar har problemer. Prøv igjen om litt.";
+"Couldn’t load scooters." = "Kunne ikke laste inn elsparkesykler.";
+
+/* UX alignment: outside coverage and filters with nothing to show */
+"No scooter data here yet" = "Ingen data om elsparkesykler her ennå";
+"ScootRadar covers selected cities in Belgium, France, Germany, Italy, Norway, Switzerland and the United Kingdom." = "ScootRadar dekker utvalgte byer i Belgia, Frankrike, Italia, Norge, Storbritannia, Sveits og Tyskland.";
+"Closest cities" = "Nærmeste byer";
+"%1$@ · %2$@" = "%1$@ · %2$@";
+"1 scooter hidden by your filters" = "1 elsparkesykkel skjult av filtrene dine";
+"%lld scooters hidden by your filters" = "%lld elsparkesykler skjult av filtrene dine";
+"No scooters match your filters here" = "Ingen elsparkesykler her passer til filtrene dine";
+"Show all %lld" = "Vis alle %lld";
+"Edit filters" = "Endre filtre";
+"%@ only" = "Bare %@";
+"battery %lld%% or more" = "minst %lld%% batteri";
+
+/* UX alignment: scooter card */
+"≈%1$lld min walk · %2$@" = "≈%1$lld min gange · %2$@";
+"≈%1$lld min walk from %2$@ · %3$@" = "≈%1$lld min gange fra %2$@ · %3$@";
+"≈%1$lld min walk from %2$@" = "≈%1$lld min gange fra %2$@";
+"Turn on location to see walking time" = "Slå på posisjon for å se gangtid";
+"Directions" = "Veibeskrivelse";
+"Open in %@" = "Åpne i %@";
+"≈ %1$@ for %2$lld min" = "≈ %1$@ for %2$lld min";
+"Price shown in the %@ app" = "Prisen vises i %@-appen";
+"Ride estimate, %lld minutes. Change duration." = "Anslått pris for turen, %lld minutter. Endre varighet.";
+"%lld min" = "%lld min";
+
+/* UX alignment: parking bay */
+"%@ parking bay" = "Parkeringsplass for %@";
+"You must park in a bay in this zone." = "I denne sonen må du parkere på en anvist plass.";
+"Check the %@ app before you end your ride." = "Sjekk %@-appen før du avslutter turen.";
+"Close parking details" = "Lukk parkeringsdetaljer";
+"Shows parking details" = "Viser parkeringsdetaljer";
+
+/* UX alignment: location */
+"Near me" = "Nær meg";
+"Location is off" = "Posisjon er slått av";
+"Turn it on in Settings, or search a place instead." = "Slå den på i Innstillinger, eller søk heller etter et sted.";
+"Location is restricted on this device. Search a place instead." = "Posisjon er begrenset på denne enheten. Søk heller etter et sted.";
+"Open Settings" = "Åpne Innstillinger";
+"Search a place" = "Søk etter et sted";
+"Couldn’t find your location." = "Fant ikke posisjonen din.";
+"Dismiss" = "Lukk";
+
+/* UX alignment: filters sheet */
+"Reset" = "Tilbakestill";
+"Scooters without battery info are hidden while a minimum is set." = "Elsparkesykler uten batteriinfo skjules så lenge et minimum er valgt.";
+"Not sharing data right now" = "Deler ikke data akkurat nå";
+"Show 0 scooters" = "Vis 0 elsparkesykler";
+"Show 1 scooter" = "Vis 1 elsparkesykkel";
+"Show %lld scooters" = "Vis %lld elsparkesykler";
+
+/* UX alignment: settings */
+"Map & data credits" = "Kart- og datakilder";
+"Read the privacy notice" = "Les personvernerklæringen";
+"Source code on GitHub" = "Kildekode på GitHub";
+"Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter." = "Tilgjengeligheten oppdateres automatisk. Å åpne en operatørs app reserverer ikke en elsparkesykkel.";
+
+/* Map look: the nearest scooter in the dock, and the figures of the scooter card */
+"to the nearest scooter" = "til nærmeste elsparkesykkel";
+"%1$@, %2$lld min on foot" = "%1$@, %2$lld min til fots";
+"Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details." = "Nærmeste elsparkesykkel: %1$@, %2$@ unna, %3$lld min til fots. Vis detaljer.";
+"min" = "min";
+"on foot" = "til fots";
+"from %@" = "fra %@";
+"away" = "unna";
+"%1$@, %2$lld min" = "%1$@, %2$lld min";
+"battery" = "batteri";
+"range" = "rekkevidde";
+"%1$lld%% battery, %2$@ range" = "%1$lld%% batteri, %2$@ rekkevidde";
+"%lld%% battery" = "%lld%% batteri";
+"%@ range" = "%@ rekkevidde";
+"%1$@ to unlock, then %2$@ a minute" = "%1$@ for å låse opp, så %2$@ per minutt";
+"No unlock fee, %@ a minute" = "Gratis opplåsing, %@ per minutt";

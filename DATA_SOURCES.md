@@ -142,3 +142,34 @@ routing bounds, except for Zeus, whose zones are a single polygon or span tens
 of kilometres: its bounds enclose where its scooters stood. The map never treats these routing envelopes as legal riding
 or parking boundaries. Native provider filters use the same generated catalog.
 Supported city names and aliases are resolved locally before Swiss address search.
+
+## Belgium, Norway and the United Kingdom
+
+Reviewed catalogs live in `data/belgian-scooter-feeds.json`,
+`data/norwegian-scooter-feeds.json` and `data/british-scooter-feeds.json`.
+Belgium has 5 feeds across 4 cities: Bolt and Dott in Bruxelles, Dott in
+Charleroi, Voi in Antwerpen and Hoppy in Kortrijk. The United Kingdom has 11
+feeds across 18 towns: Beryl, Dott and Bolt. Both come from the operators' own
+public GBFS feeds, found through
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
+[Dott's listings](https://gbfs.api.ridedott.com/public/v2/countries/gb/gbfs.json)
+and [Beryl's index](https://beryl-gbfs-production.web.app/v2_2/gbfs.json).
+
+Norway's 23 feeds across 21 towns (Voi, Ryde, Bolt and Dott) all come from
+[Entur's Mobility API](https://developer.entur.no/docs/open-services/mobility),
+Norway's national access point for shared mobility. Requests identify the app
+with `ET-Client-Name: scootradar-map`, as Entur requires. Entur's
+[terms](https://developer.entur.no/terms-of-service) put all its API responses
+under the [Norwegian licence for Open Government data (NLOD) 2.0](https://data.norge.no/nlod/en/2.0):
+contains data under the Norwegian licence for Open Government data (NLOD)
+distributed by Entur AS. ScootRadar filters that data to available electric
+standing scooters.
+
+Beryl publishes its feeds under
+[CDLA-Permissive-2.0](https://cdla.dev/permissive-2-0/). Bolt's
+[GBFS licence](https://bolt.eu/en/legal/micromobility/security-gbfs-license/)
+allows showing its vehicles, with data no older than fifteen minutes. Dott, Voi
+and Hoppy publish no licence in these feeds. The map's credits list Entur, the
+NLOD and Beryl's licence. See the
+[coverage audit](docs/belgian-norwegian-british-scooter-feeds.md) for the
+systems, the gaps and the recheck command.

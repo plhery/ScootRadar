@@ -471,6 +471,8 @@ final class AddressSearchModelTests: XCTestCase {
         XCTAssertEqual(ScooterLanguage(localizations: ["fr", "en"]), .fr)
         XCTAssertEqual(ScooterLanguage(localizations: ["it-CH"]), .it)
         XCTAssertEqual(ScooterLanguage(localizations: ["en-GB"]), .en)
+        XCTAssertEqual(ScooterLanguage(localizations: ["nl-BE"]), .nl)
+        XCTAssertEqual(ScooterLanguage(localizations: ["nb"]), .nb)
         // Anything the app is not translated into is shown, and searched, in English.
         XCTAssertEqual(ScooterLanguage(localizations: ["es"]), .en)
         XCTAssertEqual(ScooterLanguage(localizations: ["Base"]), .en)
@@ -478,7 +480,7 @@ final class AddressSearchModelTests: XCTestCase {
 
         // Left to itself, the model sends the language this run of the app is shown in.
         let shownIn = Bundle.main.preferredLocalizations.first ?? ""
-        XCTAssertTrue(["en", "de", "fr", "it"].contains(shownIn), shownIn)
+        XCTAssertTrue(["en", "de", "fr", "it", "nl", "nb"].contains(shownIn), shownIn)
         let api = StubAddressSearchClient(answers: [.places([zurich]), .places([zurich])])
         let model = SwissAddressSearchModel(api: api, debounce: .zero)
         model.query = "Paradeplatz"

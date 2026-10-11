@@ -1,5 +1,6 @@
 import { parseScooterQuery } from '@/lib/scooterQuery';
 import { API_CONTENT_SECURITY_POLICY } from '@/lib/contentSecurityPolicy';
+import { skippedSources } from '@/lib/scooterSources';
 
 interface SnapshotProxyEnvironment {
   SCOOTER_SNAPSHOT_API_URL: string;
@@ -25,7 +26,7 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     if (parsed.query.outsideCoverage) return Response.json({
       vehicles: [], clusters: [], providers: {},
       meta: { partial: false, stale: false, failedSources: [],
-        sources: { national: 'skipped', hopp: 'skipped', publibike: 'skipped', france: 'skipped', germany: 'skipped', italy: 'skipped' },
+        sources: skippedSources(),
         generatedAt: new Date().toISOString(), truncated: false, totalVehicles: 0,
         mode: parsed.zoom !== null && parsed.zoom <= 15 ? 'clusters' : 'vehicles',
         zoom: parsed.zoom, availableProviders: [] },

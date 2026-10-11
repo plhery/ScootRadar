@@ -1,19 +1,17 @@
 import { REGIONAL_SCOOTER_SYSTEMS, serviceAreas } from '@/lib/regionalScooterSystems';
 import { SWISS_SCOOTER_AREAS } from '@/lib/feedCoverage';
 import { boundsIntersect } from '@/lib/geo';
-import { PROVIDER_KEYS } from '@/generated/providers';
+import { PROVIDER_KEYS, SWISS_PROVIDER_KEYS } from '@/generated/providers';
 import type { MapBounds } from '@/lib/types';
 
 export const CITY_OVERVIEW_MAX_ZOOM = 10;
-// The Swiss open data names every other provider; these two run no scooters there.
-const ABSENT_FROM_SWITZERLAND = new Set(['pony', 'zeus']);
 
 // Independent of counts and saved filters: empty batteries or a temporary
 // outage must not make a provider switch disappear.
 export function providersForViewport(bounds: MapBounds): string[] {
   const providers = new Set<string>();
   if (SWISS_SCOOTER_AREAS.some(area => boundsIntersect(area.bounds, bounds))) {
-    for (const key of PROVIDER_KEYS) if (!ABSENT_FROM_SWITZERLAND.has(key)) providers.add(key);
+    for (const key of SWISS_PROVIDER_KEYS) providers.add(key);
   }
   for (const system of REGIONAL_SCOOTER_SYSTEMS) {
     if (serviceAreas(system).some(area => boundsIntersect(area.bounds, bounds))) providers.add(system.provider);

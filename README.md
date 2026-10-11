@@ -5,7 +5,7 @@
 <h1 align="center">ScootRadar</h1>
 
 <p align="center">
-  A friendly map for finding shared e-scooters in Switzerland and selected cities in France, Germany and Italy.
+  A friendly map for finding shared e-scooters in Switzerland and selected cities in France, Germany, Belgium, Norway, the United Kingdom and Italy.
 </p>
 
 <p align="center">
@@ -23,9 +23,9 @@
   <img src="docs/scootradar-map.png" width="390" alt="ScootRadar showing fictional demo scooters around Zürich on a phone">
 </p>
 
-ScootRadar puts the shared scooters of nine providers on one map, in an
-installable web app. It speaks German, French, Italian, and English. There is
-also a native SwiftUI app for iPhone.
+ScootRadar puts the shared scooters of twelve providers on one map, in an
+installable web app. It speaks German, French, Italian, Dutch, Norwegian and
+English. There is also a native SwiftUI app for iPhone.
 
 - **Near you.** Tap *Near me*, or search a city or an address, and the dock
   at the bottom of the map counts the scooters nearby and says how fresh the
@@ -44,11 +44,15 @@ also a native SwiftUI app for iPhone.
   its marker, hovering a marker shows a short tip, and `/`, `L`, `+`, `−` and
   `Esc` work from the keyboard.
 
-**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, and Zeus.
+**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde and Hoppy.
 
 French coverage includes 27 verified feeds across 25 cities or operating areas,
 with city-name search. German coverage adds 37 feeds across 38 cities (Dott, Bolt, Hopp, Lime, Voi and Zeus); Italian coverage currently includes Bird in Rome. See the [German/Italian feed audit](docs/german-italian-scooter-feeds.md) for coverage and known gaps. See the [French feed investigation](docs/french-scooter-feeds.md)
 for the city list, live-check command, and source terms to review before deployment.
+Belgium adds 5 feeds across 4 cities (Bolt, Dott, Voi and Hoppy), Norway 23 feeds
+from Entur across 21 towns (Voi, Ryde, Bolt and Dott), and the United Kingdom 11
+feeds across 18 towns (Beryl, Dott and Bolt). See the
+[Belgian, Norwegian and British feed audit](docs/belgian-norwegian-british-scooter-feeds.md).
 
 ## Run it locally
 
@@ -86,7 +90,7 @@ other advisories and any production dependency affected by this advisory.
 Remove the exception when a patched upstream release is available.
 
 Provider metadata shared by the web and iPhone apps is generated from
-`data/providers.json`; the same generator includes Swiss, French, German and Italian service-area
+`data/providers.json`; the same generator includes the service areas of every covered country
 coverage for native provider filters. Run `npm run generate:providers` after
 changing the provider or service-area catalogs.
 The scooter API wire types are generated for both clients from

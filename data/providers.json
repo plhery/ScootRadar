@@ -4,6 +4,7 @@
     "name": "Bolt",
     "color": "#00cc44",
     "initial": "B",
+    "switzerland": true,
     "systemIds": { "prefixes": ["bolt"] }
   },
   {
@@ -11,6 +12,7 @@
     "name": "Bird",
     "color": "#222222",
     "initial": "Bi",
+    "switzerland": true,
     "systemIds": { "prefixes": ["bird"] }
   },
   {
@@ -18,6 +20,7 @@
     "name": "Dott",
     "color": "#ff6600",
     "initial": "D",
+    "switzerland": true,
     "systemIds": { "prefixes": ["dott"] }
   },
   {
@@ -25,6 +28,7 @@
     "name": "Hopp",
     "color": "#00bcd4",
     "initial": "H",
+    "switzerland": true,
     "systemIds": { "prefixes": ["hopp"] }
   },
   {
@@ -32,6 +36,7 @@
     "name": "Lime",
     "color": "#32cd32",
     "initial": "L",
+    "switzerland": true,
     "systemIds": { "prefixes": ["lime"] }
   },
   {
@@ -39,6 +44,7 @@
     "name": "Voi",
     "color": "#ff1493",
     "initial": "V",
+    "switzerland": true,
     "systemIds": { "prefixes": ["voi"] }
   },
   {
@@ -53,6 +59,7 @@
     "name": "PubliBike / Velospot",
     "color": "#9b59b6",
     "initial": "PB",
+    "switzerland": true,
     "systemIds": {
       "exact": ["velospot"],
       "prefixes": ["publibike"]
@@ -64,5 +71,26 @@
     "color": "#f82519",
     "initial": "Z",
     "systemIds": { "prefixes": ["zeus"] }
+  },
+  {
+    "key": "beryl",
+    "name": "Beryl",
+    "color": "#00c896",
+    "initial": "Be",
+    "systemIds": { "prefixes": ["beryl"] }
+  },
+  {
+    "key": "ryde",
+    "name": "Ryde",
+    "color": "#2f8413",
+    "initial": "R",
+    "systemIds": { "prefixes": ["ryde"] }
+  },
+  {
+    "key": "hoppy",
+    "name": "Hoppy",
+    "color": "#22c5aa",
+    "initial": "Ho",
+    "systemIds": { "prefixes": ["hoppy"] }
   }
 ]

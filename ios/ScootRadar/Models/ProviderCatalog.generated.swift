@@ -13,6 +13,9 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     case pony
     case publibike
     case zeus
+    case beryl
+    case ryde
+    case hoppy
 
     var id: String { rawValue }
 
@@ -27,6 +30,9 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .pony: "Pony"
         case .publibike: "PubliBike / Velospot"
         case .zeus: "Zeus"
+        case .beryl: "Beryl"
+        case .ryde: "Ryde"
+        case .hoppy: "Hoppy"
         }
     }
 
@@ -41,6 +47,9 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .pony: "P"
         case .publibike: "PB"
         case .zeus: "Z"
+        case .beryl: "Be"
+        case .ryde: "R"
+        case .hoppy: "Ho"
         }
     }
 
@@ -57,19 +66,25 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .pony: UIColor(red: 0.000000, green: 0.654902, blue: 0.627451, alpha: 1)
         case .publibike: UIColor(red: 0.607843, green: 0.349020, blue: 0.713725, alpha: 1)
         case .zeus: UIColor(red: 0.972549, green: 0.145098, blue: 0.098039, alpha: 1)
+        case .beryl: UIColor(red: 0.000000, green: 0.784314, blue: 0.588235, alpha: 1)
+        case .ryde: UIColor(red: 0.184314, green: 0.517647, blue: 0.074510, alpha: 1)
+        case .hoppy: UIColor(red: 0.133333, green: 0.772549, blue: 0.666667, alpha: 1)
         }
     }
 
     private static let systemIDMatchers: [(provider: ScooterProvider, exact: [String], prefixes: [String])] = [
+        (.publibike, ["velospot"], ["publibike"]),
+        (.beryl, [], ["beryl"]),
+        (.hoppy, [], ["hoppy"]),
         (.bolt, [], ["bolt"]),
         (.bird, [], ["bird"]),
         (.dott, [], ["dott"]),
         (.hopp, [], ["hopp"]),
         (.lime, [], ["lime"]),
-        (.voi, [], ["voi"]),
         (.pony, [], ["pony"]),
-        (.publibike, ["velospot"], ["publibike"]),
         (.zeus, [], ["zeus"]),
+        (.ryde, [], ["ryde"]),
+        (.voi, [], ["voi"]),
     ]
 
     /// The provider behind a feed or system ID such as "lime_zurich", like providerKeyForSystemId on the web.
@@ -180,12 +195,66 @@ enum ScooterProviderCoverage {
         (.zeus, GeoBounds(south: 48.0102, west: 8.4072, north: 48.1116, east: 8.5943)),
         (.zeus, GeoBounds(south: 49.7282, west: 9.8551, north: 49.8351, east: 10.0214)),
         (.bird, GeoBounds(south: 41.6884, west: 12.2183, north: 42.0928, east: 12.7268)),
+        (.bolt, GeoBounds(south: 50.7705, west: 4.2448, north: 50.918, east: 4.4816)),
+        (.dott, GeoBounds(south: 50.7755, west: 4.2508, north: 50.9224, east: 4.4816)),
+        (.dott, GeoBounds(south: 50.3504, west: 4.3494, north: 50.4803, east: 4.5161)),
+        (.hoppy, GeoBounds(south: 50.7643, west: 3.2165, north: 50.8622, east: 3.3118)),
+        (.voi, GeoBounds(south: 51.1544, west: 4.3381, north: 51.2709, east: 4.4885)),
+        (.bolt, GeoBounds(south: 59.8134, west: 10.6189, north: 59.9862, east: 10.9552)),
+        (.dott, GeoBounds(south: 63.4299, west: 10.8165, north: 63.5147, east: 10.997)),
+        (.dott, GeoBounds(south: 63.3797, west: 10.3315, north: 63.4618, east: 10.5549)),
+        (.ryde, GeoBounds(south: 62.425, west: 6.0945, north: 62.4861, east: 6.4232)),
+        (.ryde, GeoBounds(south: 59.1885, west: 10.8815, north: 59.2585, east: 11.0266)),
+        (.ryde, GeoBounds(south: 59.8542, west: 10.6173, north: 59.9788, east: 10.9523)),
+        (.ryde, GeoBounds(south: 59.1153, west: 9.6191, north: 59.1616, east: 9.6952)),
+        (.ryde, GeoBounds(south: 59.0932, west: 10.164, north: 59.1633, east: 10.2922)),
+        (.ryde, GeoBounds(south: 59.261, west: 11.021, north: 59.3078, east: 11.1466)),
+        (.ryde, GeoBounds(south: 59.1385, west: 9.52, north: 59.2656, east: 9.6801)),
+        (.ryde, GeoBounds(south: 58.8788, west: 5.6365, north: 59.0118, east: 5.7765)),
+        (.ryde, GeoBounds(south: 59.2303, west: 10.3765, north: 59.3091, east: 10.4904)),
+        (.ryde, GeoBounds(south: 69.5976, west: 18.8764, north: 69.7169, east: 19.0959)),
+        (.ryde, GeoBounds(south: 63.3387, west: 10.3167, north: 63.461, east: 10.5444)),
+        (.voi, GeoBounds(south: 58.4301, west: 8.6955, north: 58.4883, east: 8.8325)),
+        (.voi, GeoBounds(south: 59.8794, west: 10.4669, north: 59.9558, east: 10.6494)),
+        (.voi, GeoBounds(south: 59.8079, west: 10.3717, north: 59.8793, east: 10.5109)),
+        (.voi, GeoBounds(south: 59.1759, west: 10.872, north: 59.275, east: 11.0299)),
+        (.voi, GeoBounds(south: 59.2598, west: 11.03, north: 59.3076, east: 11.1427)),
+        (.voi, GeoBounds(south: 58.0678, west: 7.754, north: 58.1969, east: 8.1385)),
+        (.voi, GeoBounds(south: 58.2505, west: 7.9539, north: 58.2926, east: 7.9974)),
+        (.voi, GeoBounds(south: 59.8947, west: 11, north: 60.0214, east: 11.106)),
+        (.voi, GeoBounds(south: 59.9032, west: 10.9151, north: 59.9916, east: 10.9999)),
+        (.voi, GeoBounds(south: 59.4038, west: 10.6092, north: 59.4596, east: 10.7152)),
+        (.voi, GeoBounds(south: 59.8219, west: 10.6158, north: 59.9871, east: 10.9574)),
+        (.voi, GeoBounds(south: 58.8765, west: 5.5629, north: 59.0144, east: 5.777)),
+        (.voi, GeoBounds(south: 58.8072, west: 5.6738, north: 58.8764, east: 5.7891)),
+        (.voi, GeoBounds(south: 63.3352, west: 10.306, north: 63.4603, east: 10.5386)),
+        (.beryl, GeoBounds(south: 50.7028, west: -1.915, north: 50.7899, east: -1.7851)),
+        (.beryl, GeoBounds(south: 50.7128, west: -1.785, north: 50.7639, east: -1.6868)),
+        (.beryl, GeoBounds(south: 50.6776, west: -2.0378, north: 50.7942, east: -1.9151)),
+        (.beryl, GeoBounds(south: 50.8081, west: -0.2167, north: 50.8724, east: -0.0935)),
+        (.beryl, GeoBounds(south: 50.1339, west: -5.1335, north: 50.1772, east: -5.0427)),
+        (.beryl, GeoBounds(south: 50.3955, west: -5.1244, north: 50.4283, east: -5.0188)),
+        (.beryl, GeoBounds(south: 50.0795, west: -5.5629, north: 50.1351, east: -5.4533)),
+        (.beryl, GeoBounds(south: 50.2396, west: -5.1299, north: 50.2715, east: -5.0141)),
+        (.beryl, GeoBounds(south: 53.7731, west: -1.6112, north: 53.8524, east: -1.4765)),
+        (.beryl, GeoBounds(south: 52.5913, west: 1.1644, north: 52.6952, east: 1.3887)),
+        (.beryl, GeoBounds(south: 52.5508, west: 1.0968, north: 52.5953, east: 1.1503)),
+        (.beryl, GeoBounds(south: 50.3576, west: -4.1953, north: 50.4207, east: -4.0967)),
+        (.bolt, GeoBounds(south: 53.3314, west: -3.0113, north: 53.4755, east: -2.8194)),
+        (.dott, GeoBounds(south: 51.3473, west: -2.4118, north: 51.4195, east: -2.291)),
+        (.dott, GeoBounds(south: 51.3973, west: -2.7053, north: 51.5499, east: -2.4519)),
+        (.dott, GeoBounds(south: 51.5197, west: -2.4504, north: 51.5649, east: -2.3796)),
+        (.dott, GeoBounds(south: 51.9723, west: -0.8446, north: 52.0904, east: -0.6559)),
+        (.dott, GeoBounds(south: 52.8911, west: -1.2505, north: 53.0217, east: -1.1045)),
     ]
+
+    /// The providers the Swiss open data names; the others run scooters only abroad.
+    static let swissProviders: [ScooterProvider] = [.bolt, .bird, .dott, .hopp, .lime, .voi, .publibike]
 
     static func providers(in viewport: GeoBounds) -> [ScooterProvider] {
         var available = Set<ScooterProvider>()
         if swissAreas.contains(where: { $0.intersects(viewport) }) {
-            available.formUnion(ScooterProvider.allCases.filter { $0 != .pony && $0 != .zeus })
+            available.formUnion(swissProviders)
         }
         for (provider, bounds) in regionalSystems where bounds.intersects(viewport) {
             available.insert(provider)
@@ -202,7 +271,7 @@ enum ScooterProviderCoverage {
 struct ScooterCity: Identifiable, Equatable, Sendable {
     let id: String
     let name: String
-    /// CH, FR, DE or IT.
+    /// CH, FR, DE, IT, BE, NO or GB.
     let countryCode: String
     let center: GeoPoint
     let bounds: GeoBounds
@@ -302,6 +371,49 @@ enum ScooterCityCatalog {
         ScooterCity(id: "de:Villingen-Schwenningen", name: "Villingen-Schwenningen", countryCode: "DE", center: GeoPoint(latitude: 48.0622, longitude: 8.4936), bounds: GeoBounds(south: 48.0102, west: 8.4072, north: 48.1116, east: 8.5943)),
         ScooterCity(id: "de:Würzburg", name: "Würzburg", countryCode: "DE", center: GeoPoint(latitude: 49.7913, longitude: 9.9534), bounds: GeoBounds(south: 49.7282, west: 9.8551, north: 49.8351, east: 10.0214)),
         ScooterCity(id: "it:Roma", name: "Roma", countryCode: "IT", center: GeoPoint(latitude: 41.9028, longitude: 12.4964), bounds: GeoBounds(south: 41.6884, west: 12.2183, north: 42.0928, east: 12.7268)),
+        ScooterCity(id: "be:Bruxelles", name: "Bruxelles", countryCode: "BE", center: GeoPoint(latitude: 50.8467, longitude: 4.3525), bounds: GeoBounds(south: 50.7705, west: 4.2448, north: 50.9224, east: 4.4816)),
+        ScooterCity(id: "be:Charleroi", name: "Charleroi", countryCode: "BE", center: GeoPoint(latitude: 50.4108, longitude: 4.4446), bounds: GeoBounds(south: 50.3504, west: 4.3494, north: 50.4803, east: 4.5161)),
+        ScooterCity(id: "be:Kortrijk", name: "Kortrijk", countryCode: "BE", center: GeoPoint(latitude: 50.8279, longitude: 3.2649), bounds: GeoBounds(south: 50.7643, west: 3.2165, north: 50.8622, east: 3.3118)),
+        ScooterCity(id: "be:Antwerpen", name: "Antwerpen", countryCode: "BE", center: GeoPoint(latitude: 51.2211, longitude: 4.3997), bounds: GeoBounds(south: 51.1544, west: 4.3381, north: 51.2709, east: 4.4885)),
+        ScooterCity(id: "no:Oslo", name: "Oslo", countryCode: "NO", center: GeoPoint(latitude: 59.9109, longitude: 10.7528), bounds: GeoBounds(south: 59.8134, west: 10.6158, north: 59.9871, east: 10.9574)),
+        ScooterCity(id: "no:Stjørdal", name: "Stjørdal", countryCode: "NO", center: GeoPoint(latitude: 63.4714, longitude: 10.9139), bounds: GeoBounds(south: 63.4299, west: 10.8165, north: 63.5147, east: 10.997)),
+        ScooterCity(id: "no:Trondheim", name: "Trondheim", countryCode: "NO", center: GeoPoint(latitude: 63.4304, longitude: 10.3953), bounds: GeoBounds(south: 63.3352, west: 10.306, north: 63.4618, east: 10.5549)),
+        ScooterCity(id: "no:Ålesund", name: "Ålesund", countryCode: "NO", center: GeoPoint(latitude: 62.4712, longitude: 6.1538), bounds: GeoBounds(south: 62.425, west: 6.0945, north: 62.4861, east: 6.4232)),
+        ScooterCity(id: "no:Fredrikstad", name: "Fredrikstad", countryCode: "NO", center: GeoPoint(latitude: 59.209, longitude: 10.9503), bounds: GeoBounds(south: 59.1759, west: 10.872, north: 59.275, east: 11.0299)),
+        ScooterCity(id: "no:Porsgrunn", name: "Porsgrunn", countryCode: "NO", center: GeoPoint(latitude: 59.1411, longitude: 9.6555), bounds: GeoBounds(south: 59.1153, west: 9.6191, north: 59.1616, east: 9.6952)),
+        ScooterCity(id: "no:Sandefjord", name: "Sandefjord", countryCode: "NO", center: GeoPoint(latitude: 59.1301, longitude: 10.2255), bounds: GeoBounds(south: 59.0932, west: 10.164, north: 59.1633, east: 10.2922)),
+        ScooterCity(id: "no:Sarpsborg", name: "Sarpsborg", countryCode: "NO", center: GeoPoint(latitude: 59.2842, longitude: 11.1101), bounds: GeoBounds(south: 59.2598, west: 11.021, north: 59.3078, east: 11.1466)),
+        ScooterCity(id: "no:Skien", name: "Skien", countryCode: "NO", center: GeoPoint(latitude: 59.2075, longitude: 9.6107), bounds: GeoBounds(south: 59.1385, west: 9.52, north: 59.2656, east: 9.6801)),
+        ScooterCity(id: "no:Stavanger", name: "Stavanger", countryCode: "NO", center: GeoPoint(latitude: 58.9701, longitude: 5.7315), bounds: GeoBounds(south: 58.8765, west: 5.5629, north: 59.0144, east: 5.777)),
+        ScooterCity(id: "no:Tønsberg", name: "Tønsberg", countryCode: "NO", center: GeoPoint(latitude: 59.2677, longitude: 10.4081), bounds: GeoBounds(south: 59.2303, west: 10.3765, north: 59.3091, east: 10.4904)),
+        ScooterCity(id: "no:Tromsø", name: "Tromsø", countryCode: "NO", center: GeoPoint(latitude: 69.6514, longitude: 18.9586), bounds: GeoBounds(south: 69.5976, west: 18.8764, north: 69.7169, east: 19.0959)),
+        ScooterCity(id: "no:Arendal", name: "Arendal", countryCode: "NO", center: GeoPoint(latitude: 58.4615, longitude: 8.7663), bounds: GeoBounds(south: 58.4301, west: 8.6955, north: 58.4883, east: 8.8325)),
+        ScooterCity(id: "no:Bærum", name: "Bærum", countryCode: "NO", center: GeoPoint(latitude: 59.8926, longitude: 10.5245), bounds: GeoBounds(south: 59.8794, west: 10.4669, north: 59.9558, east: 10.6494)),
+        ScooterCity(id: "no:Asker", name: "Asker", countryCode: "NO", center: GeoPoint(latitude: 59.8335, longitude: 10.4345), bounds: GeoBounds(south: 59.8079, west: 10.3717, north: 59.8793, east: 10.5109)),
+        ScooterCity(id: "no:Kristiansand", name: "Kristiansand", countryCode: "NO", center: GeoPoint(latitude: 58.1463, longitude: 7.996), bounds: GeoBounds(south: 58.0678, west: 7.754, north: 58.1969, east: 8.1385)),
+        ScooterCity(id: "no:Vennesla", name: "Vennesla", countryCode: "NO", center: GeoPoint(latitude: 58.2688, longitude: 7.9724), bounds: GeoBounds(south: 58.2505, west: 7.9539, north: 58.2926, east: 7.9974)),
+        ScooterCity(id: "no:Lillestrøm", name: "Lillestrøm", countryCode: "NO", center: GeoPoint(latitude: 59.9534, longitude: 11.0452), bounds: GeoBounds(south: 59.8947, west: 11, north: 60.0214, east: 11.106)),
+        ScooterCity(id: "no:Lørenskog", name: "Lørenskog", countryCode: "NO", center: GeoPoint(latitude: 59.9277, longitude: 10.9572), bounds: GeoBounds(south: 59.9032, west: 10.9151, north: 59.9916, east: 10.9999)),
+        ScooterCity(id: "no:Moss", name: "Moss", countryCode: "NO", center: GeoPoint(latitude: 59.432, longitude: 10.6573), bounds: GeoBounds(south: 59.4038, west: 10.6092, north: 59.4596, east: 10.7152)),
+        ScooterCity(id: "no:Sandnes", name: "Sandnes", countryCode: "NO", center: GeoPoint(latitude: 58.8523, longitude: 5.7366), bounds: GeoBounds(south: 58.8072, west: 5.6738, north: 58.8764, east: 5.7891)),
+        ScooterCity(id: "gb:Bournemouth", name: "Bournemouth", countryCode: "GB", center: GeoPoint(latitude: 50.7204, longitude: -1.8796), bounds: GeoBounds(south: 50.7028, west: -1.915, north: 50.7899, east: -1.7851)),
+        ScooterCity(id: "gb:Christchurch", name: "Christchurch", countryCode: "GB", center: GeoPoint(latitude: 50.7354, longitude: -1.7787), bounds: GeoBounds(south: 50.7128, west: -1.785, north: 50.7639, east: -1.6868)),
+        ScooterCity(id: "gb:Poole", name: "Poole", countryCode: "GB", center: GeoPoint(latitude: 50.716, longitude: -1.984), bounds: GeoBounds(south: 50.6776, west: -2.0378, north: 50.7942, east: -1.9151)),
+        ScooterCity(id: "gb:Brighton", name: "Brighton", countryCode: "GB", center: GeoPoint(latitude: 50.8243, longitude: -0.1427), bounds: GeoBounds(south: 50.8081, west: -0.2167, north: 50.8724, east: -0.0935)),
+        ScooterCity(id: "gb:Falmouth", name: "Falmouth", countryCode: "GB", center: GeoPoint(latitude: 50.1531, longitude: -5.0716), bounds: GeoBounds(south: 50.1339, west: -5.1335, north: 50.1772, east: -5.0427)),
+        ScooterCity(id: "gb:Newquay", name: "Newquay", countryCode: "GB", center: GeoPoint(latitude: 50.415, longitude: -5.076), bounds: GeoBounds(south: 50.3955, west: -5.1244, north: 50.4283, east: -5.0188)),
+        ScooterCity(id: "gb:Penzance", name: "Penzance", countryCode: "GB", center: GeoPoint(latitude: 50.1186, longitude: -5.5372), bounds: GeoBounds(south: 50.0795, west: -5.5629, north: 50.1351, east: -5.4533)),
+        ScooterCity(id: "gb:Truro", name: "Truro", countryCode: "GB", center: GeoPoint(latitude: 50.2626, longitude: -5.0508), bounds: GeoBounds(south: 50.2396, west: -5.1299, north: 50.2715, east: -5.0141)),
+        ScooterCity(id: "gb:Leeds", name: "Leeds", countryCode: "GB", center: GeoPoint(latitude: 53.7958, longitude: -1.5471), bounds: GeoBounds(south: 53.7731, west: -1.6112, north: 53.8524, east: -1.4765)),
+        ScooterCity(id: "gb:Norwich", name: "Norwich", countryCode: "GB", center: GeoPoint(latitude: 52.6285, longitude: 1.2925), bounds: GeoBounds(south: 52.5913, west: 1.1644, north: 52.6952, east: 1.3887)),
+        ScooterCity(id: "gb:Wymondham", name: "Wymondham", countryCode: "GB", center: GeoPoint(latitude: 52.5703, longitude: 1.1157), bounds: GeoBounds(south: 52.5508, west: 1.0968, north: 52.5953, east: 1.1503)),
+        ScooterCity(id: "gb:Plymouth", name: "Plymouth", countryCode: "GB", center: GeoPoint(latitude: 50.3705, longitude: -4.1422), bounds: GeoBounds(south: 50.3576, west: -4.1953, north: 50.4207, east: -4.0967)),
+        ScooterCity(id: "gb:Liverpool", name: "Liverpool", countryCode: "GB", center: GeoPoint(latitude: 53.4074, longitude: -2.9776), bounds: GeoBounds(south: 53.3314, west: -3.0113, north: 53.4755, east: -2.8194)),
+        ScooterCity(id: "gb:Bath", name: "Bath", countryCode: "GB", center: GeoPoint(latitude: 51.3814, longitude: -2.359), bounds: GeoBounds(south: 51.3473, west: -2.4118, north: 51.4195, east: -2.291)),
+        ScooterCity(id: "gb:Bristol", name: "Bristol", countryCode: "GB", center: GeoPoint(latitude: 51.4536, longitude: -2.5974), bounds: GeoBounds(south: 51.3973, west: -2.7053, north: 51.5499, east: -2.4519)),
+        ScooterCity(id: "gb:Yate", name: "Yate", countryCode: "GB", center: GeoPoint(latitude: 51.5405, longitude: -2.418), bounds: GeoBounds(south: 51.5197, west: -2.4504, north: 51.5649, east: -2.3796)),
+        ScooterCity(id: "gb:Milton Keynes", name: "Milton Keynes", countryCode: "GB", center: GeoPoint(latitude: 52.0406, longitude: -0.7594), bounds: GeoBounds(south: 51.9723, west: -0.8446, north: 52.0904, east: -0.6559)),
+        ScooterCity(id: "gb:Nottingham", name: "Nottingham", countryCode: "GB", center: GeoPoint(latitude: 52.9529, longitude: -1.1498), bounds: GeoBounds(south: 52.8911, west: -1.2505, north: 53.0217, east: -1.1045)),
     ]
 
     /// Cities by distance from the point to their centre, nearest first.

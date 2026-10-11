@@ -15,7 +15,7 @@ const AT = new Date(2026, 9, 3, 14, 2).getTime();
 
 describe('formatClockTime', () => {
   it('shows hours and minutes on the 24-hour clock in every app language', () => {
-    for (const locale of ['de', 'fr', 'it', 'en'] as const) {
+    for (const locale of ['de', 'fr', 'it', 'nl', 'nb', 'en'] as const) {
       expect(formatClockTime(AT, locale)).toBe('14:02');
     }
     expect(formatClockTime(new Date(2026, 9, 3, 7, 5).getTime(), 'en')).toBe('07:05');
@@ -60,7 +60,7 @@ describe('formatUiText', () => {
 
 describe('isSingular', () => {
   it('is true for one in every app language, and for none only in French', () => {
-    for (const locale of ['en', 'de', 'fr', 'it'] as const) {
+    for (const locale of ['en', 'de', 'fr', 'it', 'nl', 'nb'] as const) {
       expect(isSingular(1, locale)).toBe(true);
       expect(isSingular(2, locale)).toBe(false);
       expect(isSingular(1000, locale)).toBe(false);

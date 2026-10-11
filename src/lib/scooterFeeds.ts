@@ -10,7 +10,8 @@ import {
   SWISS_MOBILITY_BOUNDS,
 } from '@/lib/feedCoverage';
 import { boundsContainPoint, boundsIntersection, haversineM } from '@/lib/geo';
-import { REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas, type RegionalScooterSystem, type ScooterCountry } from '@/lib/regionalScooterSystems';
+import { COUNTRY_SOURCES, REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas, type RegionalScooterSystem, type ScooterCountry } from '@/lib/regionalScooterSystems';
+import { skippedSources, type FeedSourceStatus, type ScooterSource } from '@/lib/scooterSources';
 import { isElectricScooter, type GbfsVehicleType } from '@/lib/scooterTypes';
 import type { MapBounds, Vehicle } from '@/lib/types';
 import { legacyRentalLink, normalizeRentalUris } from '@/lib/rentalLinks';
@@ -166,21 +167,14 @@ export interface FeedQuery {
   outsideCoverage?: boolean;
 }
 
-export type FeedSourceStatus = 'fresh' | 'stale' | 'partial' | 'failed' | 'skipped';
+export type { FeedSourceStatus, ScooterSource } from '@/lib/scooterSources';
 
 export interface ScooterFetchMetadata {
   expiresAt?: string;
   partial: boolean;
   stale: boolean;
   failedSources: string[];
-  sources: {
-    national: FeedSourceStatus;
-    hopp: FeedSourceStatus;
-    publibike: FeedSourceStatus;
-    france: FeedSourceStatus;
-    germany?: FeedSourceStatus;
-    italy?: FeedSourceStatus;
-  };
+  sources: Record<ScooterSource, FeedSourceStatus>;
 }
 
 export interface ScooterFetchResult {
@@ -274,13 +268,22 @@ function sharedMobilityHeaders(): Record<string, string> {
   };
 }
 
+// Entur, Norway's open mobility API, answers only clients that name themselves
+// as "<company>-<application>" (developer.entur.no/docs/getting-started).
+export const HOST_HEADERS: Record<string, Record<string, string>> = {
+  'api.entur.io': { 'ET-Client-Name': 'scootradar-map' },
+};
+
 export async function fetchJson<T>(
   url: string,
   options: { authenticated?: boolean; revalidate: number; validate?: (value: unknown) => void }
 ): Promise<CachedJson<T>> {
-  const headers = options.authenticated
-    ? sharedMobilityHeaders()
-    : { Accept: 'application/json', 'User-Agent': 'scootradar/2.0 (scootradar.com)' };
+  const headers = {
+    ...(options.authenticated
+      ? sharedMobilityHeaders()
+      : { Accept: 'application/json', 'User-Agent': 'scootradar/2.0 (scootradar.com)' }),
+    ...HOST_HEADERS[new URL(url).hostname],
+  };
 
   return upstreamJsonCache.fetch<T>(url, {
     headers,
@@ -1075,12 +1078,13 @@ export async function fetchScooters(query: FeedQuery): Promise<ScooterFetchResul
         partial: false,
         stale: false,
         failedSources: [],
-        sources: { national: 'skipped', hopp: 'skipped', publibike: 'skipped', france: 'skipped', germany: 'skipped', italy: 'skipped' },
+        sources: skippedSources(),
       },
     };
   }
 
-  const [nationalResult, hoppResult, publibikeResult, franceResult, germanyResult, italyResult] = await Promise.allSettled([
+  const countries = Object.keys(COUNTRY_SOURCES) as ScooterCountry[];
+  const [nationalResult, hoppResult, publibikeResult, ...countryResults] = await Promise.allSettled([
     nationalSourceIsRelevant(query)
       ? fetchNationalVehicles({
         ...query,
@@ -1089,19 +1093,15 @@ export async function fetchScooters(query: FeedQuery): Promise<ScooterFetchResul
       : Promise.resolve<SourceVehicles>({ vehicles: [], stale: false, skipped: true }),
     fetchHoppVehicles(query),
     fetchPubliBikeVehicles(query),
-    fetchRegionalVehicles(query, 'FR'),
-    fetchRegionalVehicles(query, 'DE'),
-    fetchRegionalVehicles(query, 'IT'),
+    ...countries.map(country => fetchRegionalVehicles(query, country)),
   ]);
 
-  const sourceResults = [
+  const sourceResults: Array<readonly [ScooterSource, PromiseSettledResult<SourceVehicles>]> = [
     ['national', nationalResult],
     ['hopp', hoppResult],
     ['publibike', publibikeResult],
-    ['france', franceResult],
-    ['germany', germanyResult],
-    ['italy', italyResult],
-  ] as const;
+    ...countries.map((country, index) => [COUNTRY_SOURCES[country], countryResults[index]] as const),
+  ];
   const failedSources: string[] = [];
   let rejectedSourceCount = 0;
   for (const [source, result] of sourceResults) {
@@ -1146,14 +1146,8 @@ export async function fetchScooters(query: FeedQuery): Promise<ScooterFetchResul
     ))
     .sort(compareVehicles);
 
-  const sources = {
-    national: sourceStatus(nationalResult),
-    hopp: sourceStatus(hoppResult),
-    publibike: sourceStatus(publibikeResult),
-    france: sourceStatus(franceResult),
-    germany: sourceStatus(germanyResult),
-    italy: sourceStatus(italyResult),
-  };
+  const sources = Object.fromEntries(sourceResults.map(([source, result]) => [source, sourceStatus(result)])) as
+    Record<ScooterSource, FeedSourceStatus>;
   return {
     vehicles: filtered,
     meta: {

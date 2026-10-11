@@ -446,7 +446,7 @@ struct ScooterControlDock: View {
                 systemImage: "map",
                 tint: ScooterPalette.actionText,
                 title: String(localized: "No scooter data here yet"),
-                message: String(localized: "ScootRadar covers selected cities in France, Switzerland, Germany and Italy.")
+                message: String(localized: "ScootRadar covers selected cities in Belgium, France, Germany, Italy, Norway, Switzerland and the United Kingdom.")
             )
 
             VStack(alignment: .leading, spacing: 8) {
@@ -1942,8 +1942,16 @@ struct ScooterCreditsList: View {
                 url: URL(string: "https://www.mobidata-bw.de/")!
             ),
             Source(
-                title: "DE/IT: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird",
+                title: "DE/IT/BE/UK: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy",
                 url: URL(string: "https://github.com/MobilityData/gbfs")!
+            ),
+            Source(
+                title: "UK: Beryl · CDLA-Permissive-2.0",
+                url: URL(string: "https://cdla.dev/permissive-2-0/")!
+            ),
+            Source(
+                title: "NO: Entur AS · NLOD",
+                url: URL(string: "https://data.norge.no/nlod/en/2.0")!
             ),
             Source(
                 title: String(localized: "Address data © swisstopo"),

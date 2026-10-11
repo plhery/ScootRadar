@@ -290,6 +290,18 @@ enum ScooterRentalLinkPolicy {
             schemes: [],
             httpsHosts: ["zeus.city", "ridezeus.app.link"]
         ),
+        "beryl": ProviderPolicy(
+            schemes: ["beryl-basis"],
+            httpsHosts: ["beryl.app", "beryl.cc"]
+        ),
+        "ryde": ProviderPolicy(
+            schemes: ["rydelink", "ryde-linking"],
+            httpsHosts: ["ryde.vip"]
+        ),
+        "hoppy": ProviderPolicy(
+            schemes: [],
+            httpsHosts: ["ride-hoppy.app.link", "behoppy.eu"]
+        ),
         "publibike": ProviderPolicy(
             schemes: ["publibike", "velospot"],
             httpsHosts: ["publibike.ch", "velospot.info"]
@@ -996,7 +1008,7 @@ struct ScooterDockSummary: Equatable, Sendable {
 
 /// Which form of a counted word a number takes.
 enum ScooterPlural {
-    /// The language the app's strings are in: "en", "de", "fr" or "it".
+    /// The language the app's strings are in: "en", "de", "fr", "it", "nl" or "nb".
     static var language: String {
         ScooterLanguage.current.rawValue
     }

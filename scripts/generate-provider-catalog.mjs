@@ -15,6 +15,9 @@ const regionalSystems = [
   ...readJson('data/french-scooter-feeds.json').systems.map(system => ({ ...system, country: 'FR' })),
   ...readJson('data/german-scooter-feeds.json').systems,
   ...readJson('data/italian-scooter-feeds.json').systems,
+  ...readJson('data/belgian-scooter-feeds.json').systems,
+  ...readJson('data/norwegian-scooter-feeds.json').systems,
+  ...readJson('data/british-scooter-feeds.json').systems,
 ];
 
 function validateCatalog() {
@@ -32,6 +35,9 @@ function validateCatalog() {
     if (!provider.name || !provider.initial || !/^#[0-9a-f]{6}$/i.test(provider.color)) {
       throw new Error(`Invalid display metadata for provider: ${provider.key}`);
     }
+    if (provider.switzerland !== undefined && provider.switzerland !== true) {
+      throw new Error(`Provider ${provider.key}: switzerland is true or left out`);
+    }
     const matchers = provider.systemIds ?? {};
     if (!(matchers.exact?.length || matchers.prefixes?.length)) {
       throw new Error(`Provider ${provider.key} needs a system ID matcher`);
@@ -39,11 +45,15 @@ function validateCatalog() {
   }
 }
 
+// Longest prefixes first, so that "hoppy_be_kortrijk" is Hoppy's and not Hopp's.
+const longestPrefix = provider => Math.max(0, ...(provider.systemIds?.prefixes ?? []).map(prefix => prefix.length));
+const matcherOrder = [...providers].sort((a, b) => longestPrefix(b) - longestPrefix(a));
+
 function typescriptCatalog() {
   const entries = providers.map(provider => (
     `  ${provider.key}: { name: ${JSON.stringify(provider.name)}, color: ${JSON.stringify(provider.color)}, initial: ${JSON.stringify(provider.initial)} },`
   )).join('\n');
-  const matchers = providers.map(provider => (
+  const matchers = matcherOrder.map(provider => (
     `  ${provider.key}: ${JSON.stringify(provider.systemIds ?? {})},`
   )).join('\n');
 
@@ -65,13 +75,16 @@ export const PROVIDERS: Record<string, ProviderConfig> = PROVIDER_DEFINITIONS;
 
 export const PROVIDER_KEYS = Object.keys(PROVIDER_DEFINITIONS) as ProviderKey[];
 
+/** The providers the Swiss open data names; the others run scooters only abroad. */
+export const SWISS_PROVIDER_KEYS: readonly ProviderKey[] = ${JSON.stringify(providers.filter(provider => provider.switzerland).map(provider => provider.key))};
+
 const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: string[] }> = {
 ${matchers}
 };
 
 export function providerKeyForSystemId(systemId: string): ProviderKey | null {
   const normalized = systemId.toLowerCase();
-  for (const provider of PROVIDER_KEYS) {
+  for (const provider of Object.keys(SYSTEM_ID_MATCHERS) as ProviderKey[]) {
     const matcher = SYSTEM_ID_MATCHERS[provider];
     if (matcher.exact?.includes(normalized)) return provider;
     if (matcher.prefixes?.some(prefix => normalized.startsWith(prefix))) return provider;
@@ -92,7 +105,7 @@ function swiftColor(hex) {
 
 function swiftCatalog() {
   const cases = providers.map(provider => `    case ${provider.key}`).join('\n');
-  const matchers = providers.map(provider => (
+  const matchers = matcherOrder.map(provider => (
     `        (.${provider.key}, ${JSON.stringify(provider.systemIds?.exact ?? [])}, ${JSON.stringify(provider.systemIds?.prefixes ?? [])}),`
   )).join('\n');
   const names = providers.map(provider => (
@@ -179,10 +192,13 @@ ${swissAreas.map(area => `        ${swiftBounds(area.bounds)},`).join('\n')}
 ${regionalSystems.flatMap(system => (system.areas ?? [system]).map(area => `        (.${system.provider}, ${swiftBounds(area.bounds)}),`)).join('\n')}
     ]
 
+    /// The providers the Swiss open data names; the others run scooters only abroad.
+    static let swissProviders: [ScooterProvider] = [${providers.filter(provider => provider.switzerland).map(provider => `.${provider.key}`).join(', ')}]
+
     static func providers(in viewport: GeoBounds) -> [ScooterProvider] {
         var available = Set<ScooterProvider>()
         if swissAreas.contains(where: { $0.intersects(viewport) }) {
-            available.formUnion(ScooterProvider.allCases.filter { $0 != .pony && $0 != .zeus })
+            available.formUnion(swissProviders)
         }
         for (provider, bounds) in regionalSystems where bounds.intersects(viewport) {
             available.insert(provider)
@@ -227,7 +243,7 @@ function scooterCities() {
 
 function swiftCities() {
   const cities = scooterCities().map(city => {
-    if (!/^(CH|FR|DE|IT)$/.test(city.country) || !city.center.every(Number.isFinite)) {
+    if (!/^(CH|FR|DE|IT|BE|NO|GB)$/.test(city.country) || !city.center.every(Number.isFinite)) {
       throw new Error(`Invalid covered city: ${city.id}`);
     }
     return `        ScooterCity(id: ${JSON.stringify(city.id)}, name: ${JSON.stringify(city.name)}, countryCode: ${JSON.stringify(city.country)}, ` +
@@ -238,7 +254,7 @@ function swiftCities() {
 struct ScooterCity: Identifiable, Equatable, Sendable {
     let id: String
     let name: String
-    /// CH, FR, DE or IT.
+    /// CH, FR, DE, IT, BE, NO or GB.
     let countryCode: String
     let center: GeoPoint
     let bounds: GeoBounds

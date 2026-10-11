@@ -19,6 +19,8 @@ const LOCALE_LABELS: Record<AppLocale, string> = {
   de: 'Deutsch',
   fr: 'Français',
   it: 'Italiano',
+  nl: 'Nederlands',
+  nb: 'Norsk',
   en: 'English',
 };
 

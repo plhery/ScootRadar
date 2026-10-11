@@ -1,0 +1,565 @@
+{
+  "verifiedOn": "2026-10-11",
+  "catalogSource": "https://api.entur.io/mobility/v2/gbfs/v3/manifest.json",
+  "systems": [
+    {
+      "id": "bolt_no_oslo",
+      "country": "NO",
+      "provider": "bolt",
+      "city": "Oslo",
+      "center": [
+        59.9109,
+        10.7528
+      ],
+      "bounds": {
+        "south": 59.8134,
+        "north": 59.9862,
+        "west": 10.6189,
+        "east": 10.9552
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/boltoslo/gbfs"
+    },
+    {
+      "id": "dott_no_stjordal",
+      "country": "NO",
+      "provider": "dott",
+      "city": "Stjørdal",
+      "center": [
+        63.4714,
+        10.9139
+      ],
+      "bounds": {
+        "south": 63.4299,
+        "north": 63.5147,
+        "west": 10.8165,
+        "east": 10.997
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/dottstjordal/gbfs",
+      "aliases": [
+        "Stjordal",
+        "Stjoerdal"
+      ]
+    },
+    {
+      "id": "dott_no_trondheim",
+      "country": "NO",
+      "provider": "dott",
+      "city": "Trondheim",
+      "center": [
+        63.4304,
+        10.3953
+      ],
+      "bounds": {
+        "south": 63.3797,
+        "north": 63.4618,
+        "west": 10.3315,
+        "east": 10.5549
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/dotttrondheim/gbfs"
+    },
+    {
+      "id": "ryde_no_alesund",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Ålesund",
+      "center": [
+        62.4712,
+        6.1538
+      ],
+      "bounds": {
+        "south": 62.425,
+        "north": 62.4861,
+        "west": 6.0945,
+        "east": 6.4232
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydeaalesund/gbfs",
+      "aliases": [
+        "Alesund",
+        "Aalesund"
+      ]
+    },
+    {
+      "id": "ryde_no_fredrikstad",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Fredrikstad",
+      "center": [
+        59.209,
+        10.9503
+      ],
+      "bounds": {
+        "south": 59.1885,
+        "north": 59.2585,
+        "west": 10.8815,
+        "east": 11.0266
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydefredrikstad/gbfs"
+    },
+    {
+      "id": "ryde_no_oslo",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Oslo",
+      "center": [
+        59.9109,
+        10.7528
+      ],
+      "bounds": {
+        "south": 59.8542,
+        "north": 59.9788,
+        "west": 10.6173,
+        "east": 10.9523
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydeoslo/gbfs"
+    },
+    {
+      "id": "ryde_no_porsgrunn",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Porsgrunn",
+      "center": [
+        59.1411,
+        9.6555
+      ],
+      "bounds": {
+        "south": 59.1153,
+        "north": 59.1616,
+        "west": 9.6191,
+        "east": 9.6952
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydeporsgrunn/gbfs"
+    },
+    {
+      "id": "ryde_no_sandefjord",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Sandefjord",
+      "center": [
+        59.1301,
+        10.2255
+      ],
+      "bounds": {
+        "south": 59.0932,
+        "north": 59.1633,
+        "west": 10.164,
+        "east": 10.2922
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydesandefjord/gbfs"
+    },
+    {
+      "id": "ryde_no_sarpsborg",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Sarpsborg",
+      "center": [
+        59.2842,
+        11.1101
+      ],
+      "bounds": {
+        "south": 59.261,
+        "north": 59.3078,
+        "west": 11.021,
+        "east": 11.1466
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydesarpsborg/gbfs"
+    },
+    {
+      "id": "ryde_no_skien",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Skien",
+      "center": [
+        59.2075,
+        9.6107
+      ],
+      "bounds": {
+        "south": 59.1385,
+        "north": 59.2656,
+        "west": 9.52,
+        "east": 9.6801
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydeskien/gbfs"
+    },
+    {
+      "id": "ryde_no_stavanger",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Stavanger",
+      "center": [
+        58.9701,
+        5.7315
+      ],
+      "bounds": {
+        "south": 58.8788,
+        "north": 59.0118,
+        "west": 5.6365,
+        "east": 5.7765
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydestavanger/gbfs"
+    },
+    {
+      "id": "ryde_no_tonsberg",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Tønsberg",
+      "center": [
+        59.2677,
+        10.4081
+      ],
+      "bounds": {
+        "south": 59.2303,
+        "north": 59.3091,
+        "west": 10.3765,
+        "east": 10.4904
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydetonsberg/gbfs",
+      "aliases": [
+        "Tonsberg",
+        "Toensberg"
+      ]
+    },
+    {
+      "id": "ryde_no_tromso",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Tromsø",
+      "center": [
+        69.6514,
+        18.9586
+      ],
+      "bounds": {
+        "south": 69.5976,
+        "north": 69.7169,
+        "west": 18.8764,
+        "east": 19.0959
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydetromso/gbfs",
+      "aliases": [
+        "Tromso",
+        "Tromsoe"
+      ]
+    },
+    {
+      "id": "ryde_no_trondheim",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Trondheim",
+      "center": [
+        63.4304,
+        10.3953
+      ],
+      "bounds": {
+        "south": 63.3387,
+        "north": 63.461,
+        "west": 10.3167,
+        "east": 10.5444
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydetrondheim/gbfs"
+    },
+    {
+      "id": "voi_no_arendal",
+      "country": "NO",
+      "provider": "voi",
+      "city": "Arendal",
+      "center": [
+        58.4615,
+        8.7663
+      ],
+      "bounds": {
+        "south": 58.4301,
+        "north": 58.4883,
+        "west": 8.6955,
+        "east": 8.8325
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/voiarendal/gbfs"
+    },
+    {
+      "id": "voi_no_baerum_asker",
+      "country": "NO",
+      "provider": "voi",
+      "city": "Bærum / Asker",
+      "center": [
+        59.8926,
+        10.5245
+      ],
+      "bounds": {
+        "south": 59.8079,
+        "north": 59.9558,
+        "west": 10.3717,
+        "east": 10.6494
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/voibaerum/gbfs",
+      "areas": [
+        {
+          "city": "Bærum",
+          "aliases": [
+            "Baerum",
+            "Barum"
+          ],
+          "center": [
+            59.8926,
+            10.5245
+          ],
+          "bounds": {
+            "south": 59.8794,
+            "north": 59.9558,
+            "west": 10.4669,
+            "east": 10.6494
+          }
+        },
+        {
+          "city": "Asker",
+          "center": [
+            59.8335,
+            10.4345
+          ],
+          "bounds": {
+            "south": 59.8079,
+            "north": 59.8793,
+            "west": 10.3717,
+            "east": 10.5109
+          }
+        }
+      ]
+    },
+    {
+      "id": "voi_no_fredrikstad_sarpsborg",
+      "country": "NO",
+      "provider": "voi",
+      "city": "Fredrikstad / Sarpsborg",
+      "center": [
+        59.209,
+        10.9503
+      ],
+      "bounds": {
+        "south": 59.1759,
+        "north": 59.3076,
+        "west": 10.872,
+        "east": 11.1427
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/voifredrikstad/gbfs",
+      "areas": [
+        {
+          "city": "Fredrikstad",
+          "center": [
+            59.209,
+            10.9503
+          ],
+          "bounds": {
+            "south": 59.1759,
+            "north": 59.275,
+            "west": 10.872,
+            "east": 11.0299
+          }
+        },
+        {
+          "city": "Sarpsborg",
+          "center": [
+            59.2842,
+            11.1101
+          ],
+          "bounds": {
+            "south": 59.2598,
+            "north": 59.3076,
+            "west": 11.03,
+            "east": 11.1427
+          }
+        }
+      ]
+    },
+    {
+      "id": "voi_no_kristiansand_vennesla",
+      "country": "NO",
+      "provider": "voi",
+      "city": "Kristiansand / Vennesla",
+      "center": [
+        58.1463,
+        7.996
+      ],
+      "bounds": {
+        "south": 58.0678,
+        "north": 58.2926,
+        "west": 7.754,
+        "east": 8.1385
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/voikristiansand/gbfs",
+      "areas": [
+        {
+          "city": "Kristiansand",
+          "center": [
+            58.1463,
+            7.996
+          ],
+          "bounds": {
+            "south": 58.0678,
+            "north": 58.1969,
+            "west": 7.754,
+            "east": 8.1385
+          }
+        },
+        {
+          "city": "Vennesla",
+          "center": [
+            58.2688,
+            7.9724
+          ],
+          "bounds": {
+            "south": 58.2505,
+            "north": 58.2926,
+            "west": 7.9539,
+            "east": 7.9974
+          }
+        }
+      ]
+    },
+    {
+      "id": "voi_no_lillestrom_lorenskog",
+      "country": "NO",
+      "provider": "voi",
+      "city": "Lillestrøm / Lørenskog",
+      "center": [
+        59.9534,
+        11.0452
+      ],
+      "bounds": {
+        "south": 59.8947,
+        "north": 60.0214,
+        "west": 10.9151,
+        "east": 11.106
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/voilillestrom/gbfs",
+      "areas": [
+        {
+          "city": "Lillestrøm",
+          "aliases": [
+            "Lillestrom",
+            "Lillestroem"
+          ],
+          "center": [
+            59.9534,
+            11.0452
+          ],
+          "bounds": {
+            "south": 59.8947,
+            "north": 60.0214,
+            "west": 11.0,
+            "east": 11.106
+          }
+        },
+        {
+          "city": "Lørenskog",
+          "aliases": [
+            "Lorenskog",
+            "Loerenskog"
+          ],
+          "center": [
+            59.9277,
+            10.9572
+          ],
+          "bounds": {
+            "south": 59.9032,
+            "north": 59.9916,
+            "west": 10.9151,
+            "east": 10.9999
+          }
+        }
+      ]
+    },
+    {
+      "id": "voi_no_moss",
+      "country": "NO",
+      "provider": "voi",
+      "city": "Moss",
+      "center": [
+        59.432,
+        10.6573
+      ],
+      "bounds": {
+        "south": 59.4038,
+        "north": 59.4596,
+        "west": 10.6092,
+        "east": 10.7152
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/voimoss/gbfs"
+    },
+    {
+      "id": "voi_no_oslo",
+      "country": "NO",
+      "provider": "voi",
+      "city": "Oslo",
+      "center": [
+        59.9109,
+        10.7528
+      ],
+      "bounds": {
+        "south": 59.8219,
+        "north": 59.9871,
+        "west": 10.6158,
+        "east": 10.9574
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/voioslo/gbfs"
+    },
+    {
+      "id": "voi_no_stavanger_sandnes",
+      "country": "NO",
+      "provider": "voi",
+      "city": "Stavanger / Sandnes",
+      "center": [
+        58.9701,
+        5.7315
+      ],
+      "bounds": {
+        "south": 58.8072,
+        "north": 59.0144,
+        "west": 5.5629,
+        "east": 5.7891
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/voistavanger/gbfs",
+      "areas": [
+        {
+          "city": "Stavanger",
+          "center": [
+            58.9701,
+            5.7315
+          ],
+          "bounds": {
+            "south": 58.8765,
+            "north": 59.0144,
+            "west": 5.5629,
+            "east": 5.777
+          }
+        },
+        {
+          "city": "Sandnes",
+          "center": [
+            58.8523,
+            5.7366
+          ],
+          "bounds": {
+            "south": 58.8072,
+            "north": 58.8764,
+            "west": 5.6738,
+            "east": 5.7891
+          }
+        }
+      ]
+    },
+    {
+      "id": "voi_no_trondheim",
+      "country": "NO",
+      "provider": "voi",
+      "city": "Trondheim",
+      "center": [
+        63.4304,
+        10.3953
+      ],
+      "bounds": {
+        "south": 63.3352,
+        "north": 63.4603,
+        "west": 10.306,
+        "east": 10.5386
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/voitrondheim/gbfs"
+    }
+  ]
+}

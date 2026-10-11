@@ -14,8 +14,8 @@ function strings(value: unknown, path = ''): [string, string][] {
 }
 
 describe('the languages of the landing page', () => {
-  it('knows its four languages and no other', () => {
-    expect(LANDING_LOCALES).toEqual(['en', 'de', 'fr', 'it']);
+  it('knows its six languages and no other', () => {
+    expect(LANDING_LOCALES).toEqual(['en', 'de', 'fr', 'it', 'nl', 'nb']);
     expect(Object.keys(LANGUAGE_NAMES)).toEqual([...LANDING_LOCALES]);
     expect(isLandingLocale('fr')).toBe(true);
     expect(isLandingLocale('es')).toBe(false);
@@ -23,10 +23,10 @@ describe('the languages of the landing page', () => {
   });
 
   it('has English at the root and the others under their code', () => {
-    expect(LANDING_LOCALES.map(landingPath)).toEqual(['/', '/de', '/fr', '/it']);
+    expect(LANDING_LOCALES.map(landingPath)).toEqual(['/', '/de', '/fr', '/it', '/nl', '/nb']);
     expect(landingLocaleOf(undefined)).toBe('en');
     expect(landingLocaleOf([])).toBe('en');
-    for (const locale of ['de', 'fr', 'it'] as const) expect(landingLocaleOf([locale])).toBe(locale);
+    for (const locale of ['de', 'fr', 'it', 'nl', 'nb'] as const) expect(landingLocaleOf([locale])).toBe(locale);
   });
 
   it('has no second address for English, and none below a language', () => {
@@ -100,6 +100,19 @@ describe('the links of the landing page', () => {
       horoscope: 'https://x-horoscope.com/de/x',
       monkey: 'https://unfollow-monkey.com/de',
       peek: 'https://peektracker.com/de',
+    });
+    // A site without the language leads to its English page.
+    expect(makerLinks('nl')).toEqual({
+      maker: 'https://x.com/plhery',
+      horoscope: 'https://x-horoscope.com/en/x',
+      monkey: 'https://unfollow-monkey.com/nl',
+      peek: 'https://peektracker.com',
+    });
+    expect(makerLinks('nb')).toEqual({
+      maker: 'https://x.com/plhery',
+      horoscope: 'https://x-horoscope.com/en/x',
+      monkey: 'https://unfollow-monkey.com/en',
+      peek: 'https://peektracker.com',
     });
   });
 

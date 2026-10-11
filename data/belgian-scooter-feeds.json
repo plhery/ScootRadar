@@ -1,0 +1,109 @@
+{
+  "verifiedOn": "2026-10-11",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "bolt_be_bruxelles",
+      "country": "BE",
+      "provider": "bolt",
+      "city": "Bruxelles",
+      "center": [
+        50.8467,
+        4.3525
+      ],
+      "bounds": {
+        "south": 50.7705,
+        "north": 50.918,
+        "west": 4.2448,
+        "east": 4.4816
+      },
+      "discoveryUrl": "https://mds.bolt.eu/gbfs/3/336/gbfs",
+      "aliases": [
+        "Brussel",
+        "Brussels",
+        "Brüssel"
+      ]
+    },
+    {
+      "id": "dott_be_bruxelles",
+      "country": "BE",
+      "provider": "dott",
+      "city": "Bruxelles",
+      "center": [
+        50.8467,
+        4.3525
+      ],
+      "bounds": {
+        "south": 50.7755,
+        "north": 50.9224,
+        "west": 4.2508,
+        "east": 4.4816
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/brussels/gbfs.json",
+      "aliases": [
+        "Brussel",
+        "Brussels",
+        "Brüssel"
+      ]
+    },
+    {
+      "id": "dott_be_charleroi",
+      "country": "BE",
+      "provider": "dott",
+      "city": "Charleroi",
+      "center": [
+        50.4108,
+        4.4446
+      ],
+      "bounds": {
+        "south": 50.3504,
+        "north": 50.4803,
+        "west": 4.3494,
+        "east": 4.5161
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/charleroi/gbfs.json"
+    },
+    {
+      "id": "hoppy_be_kortrijk",
+      "country": "BE",
+      "provider": "hoppy",
+      "city": "Kortrijk",
+      "center": [
+        50.8279,
+        3.2649
+      ],
+      "bounds": {
+        "south": 50.7643,
+        "north": 50.8622,
+        "west": 3.2165,
+        "east": 3.3118
+      },
+      "discoveryUrl": "https://hoppy.rideatom.com/gbfs/1542/v3.0/gbfs",
+      "aliases": [
+        "Courtrai"
+      ]
+    },
+    {
+      "id": "voi_be_antwerpen",
+      "country": "BE",
+      "provider": "voi",
+      "city": "Antwerpen",
+      "center": [
+        51.2211,
+        4.3997
+      ],
+      "bounds": {
+        "south": 51.1544,
+        "north": 51.2709,
+        "west": 4.3381,
+        "east": 4.4885
+      },
+      "discoveryUrl": "https://api.voiapp.io/gbfs/be/7a4cb689-a2ee-409d-a5fe-49d2e8d50717/v2/335/gbfs.json",
+      "aliases": [
+        "Antwerp",
+        "Anvers",
+        "Anversa"
+      ]
+    }
+  ]
+}

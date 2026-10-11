@@ -80,6 +80,10 @@
 		B00000000000000000000017 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B00000000000000000000018 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B00000000000000000000019 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B000000000000000000000A0 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B000000000000000000000A1 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B000000000000000000000A2 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B000000000000000000000A3 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B0000000000000000000001A /* SwissAddressSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwissAddressSearch.swift; sourceTree = "<group>"; };
 		B0000000000000000000001B /* AddressSearchAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchAPI.swift; sourceTree = "<group>"; };
 		B0000000000000000000001C /* ProviderCatalog.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderCatalog.generated.swift; sourceTree = "<group>"; };
@@ -215,6 +219,8 @@
 				B00000000000000000000013 /* de */,
 				B00000000000000000000014 /* fr */,
 				B00000000000000000000015 /* it */,
+				B000000000000000000000A0 /* nl */,
+				B000000000000000000000A1 /* nb */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -226,6 +232,8 @@
 				B00000000000000000000017 /* de */,
 				B00000000000000000000018 /* fr */,
 				B00000000000000000000019 /* it */,
+				B000000000000000000000A2 /* nl */,
+				B000000000000000000000A3 /* nb */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -296,6 +304,8 @@
 				de,
 				fr,
 				it,
+				nl,
+				nb,
 				Base,
 			);
 			mainGroup = C00000000000000000000000;

@@ -17,6 +17,6 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 26
-      # Fails when a French, German or Italian catalog entry is gone (HTTP 401, 404 or 410).
+      # Fails when an entry of a country's catalog is gone (HTTP 401, 404 or 410).
       # A paused Dott region (403 ERR_REGION_OFFLINE) and other failures are only in the log.
       - run: npm run check:catalogs -- --fail-on=gone

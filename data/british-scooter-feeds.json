@@ -1,0 +1,371 @@
+{
+  "verifiedOn": "2026-10-11",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "beryl_gb_bournemouth_christchurch_poole",
+      "country": "GB",
+      "provider": "beryl",
+      "city": "Bournemouth / Christchurch / Poole",
+      "center": [
+        50.7204,
+        -1.8796
+      ],
+      "bounds": {
+        "south": 50.6776,
+        "north": 50.7942,
+        "west": -2.0378,
+        "east": -1.6868
+      },
+      "discoveryUrl": "https://beryl-gbfs-production.web.app/v2_2/BCP/gbfs.json",
+      "aliases": [
+        "BCP",
+        "Bournemouth, Christchurch and Poole"
+      ],
+      "areas": [
+        {
+          "city": "Bournemouth",
+          "center": [
+            50.7204,
+            -1.8796
+          ],
+          "bounds": {
+            "south": 50.7028,
+            "north": 50.7899,
+            "west": -1.915,
+            "east": -1.7851
+          },
+          "aliases": [
+            "BCP"
+          ]
+        },
+        {
+          "city": "Christchurch",
+          "center": [
+            50.7354,
+            -1.7787
+          ],
+          "bounds": {
+            "south": 50.7128,
+            "north": 50.7639,
+            "west": -1.785,
+            "east": -1.6868
+          }
+        },
+        {
+          "city": "Poole",
+          "center": [
+            50.716,
+            -1.984
+          ],
+          "bounds": {
+            "south": 50.6776,
+            "north": 50.7942,
+            "west": -2.0378,
+            "east": -1.9151
+          }
+        }
+      ]
+    },
+    {
+      "id": "beryl_gb_brighton",
+      "country": "GB",
+      "provider": "beryl",
+      "city": "Brighton",
+      "center": [
+        50.8243,
+        -0.1427
+      ],
+      "bounds": {
+        "south": 50.8081,
+        "north": 50.8724,
+        "west": -0.2167,
+        "east": -0.0935
+      },
+      "discoveryUrl": "https://beryl-gbfs-production.web.app/v2_2/Brighton/gbfs.json",
+      "aliases": [
+        "Brighton and Hove",
+        "Brighton & Hove",
+        "Hove"
+      ]
+    },
+    {
+      "id": "beryl_gb_cornwall",
+      "country": "GB",
+      "provider": "beryl",
+      "city": "Cornwall",
+      "center": [
+        50.2626,
+        -5.0508
+      ],
+      "bounds": {
+        "south": 50.0795,
+        "north": 50.4283,
+        "west": -5.5629,
+        "east": -5.0141
+      },
+      "discoveryUrl": "https://beryl-gbfs-production.web.app/v2_2/Cornwall/gbfs.json",
+      "areas": [
+        {
+          "city": "Falmouth",
+          "center": [
+            50.1531,
+            -5.0716
+          ],
+          "bounds": {
+            "south": 50.1339,
+            "north": 50.1772,
+            "west": -5.1335,
+            "east": -5.0427
+          },
+          "aliases": [
+            "Penryn"
+          ]
+        },
+        {
+          "city": "Newquay",
+          "center": [
+            50.415,
+            -5.076
+          ],
+          "bounds": {
+            "south": 50.3955,
+            "north": 50.4283,
+            "west": -5.1244,
+            "east": -5.0188
+          }
+        },
+        {
+          "city": "Penzance",
+          "center": [
+            50.1186,
+            -5.5372
+          ],
+          "bounds": {
+            "south": 50.0795,
+            "north": 50.1351,
+            "west": -5.5629,
+            "east": -5.4533
+          },
+          "aliases": [
+            "Newlyn"
+          ]
+        },
+        {
+          "city": "Truro",
+          "center": [
+            50.2626,
+            -5.0508
+          ],
+          "bounds": {
+            "south": 50.2396,
+            "north": 50.2715,
+            "west": -5.1299,
+            "east": -5.0141
+          },
+          "aliases": [
+            "Cornwall"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "beryl_gb_leeds",
+      "country": "GB",
+      "provider": "beryl",
+      "city": "Leeds",
+      "center": [
+        53.7958,
+        -1.5471
+      ],
+      "bounds": {
+        "south": 53.7731,
+        "north": 53.8524,
+        "west": -1.6112,
+        "east": -1.4765
+      },
+      "discoveryUrl": "https://beryl-gbfs-production.web.app/v2_2/Leeds/gbfs.json"
+    },
+    {
+      "id": "beryl_gb_norwich",
+      "country": "GB",
+      "provider": "beryl",
+      "city": "Norwich",
+      "center": [
+        52.6285,
+        1.2925
+      ],
+      "bounds": {
+        "south": 52.5508,
+        "north": 52.6952,
+        "west": 1.0968,
+        "east": 1.3887
+      },
+      "discoveryUrl": "https://beryl-gbfs-production.web.app/v2_2/Norwich/gbfs.json",
+      "areas": [
+        {
+          "city": "Norwich",
+          "center": [
+            52.6285,
+            1.2925
+          ],
+          "bounds": {
+            "south": 52.5913,
+            "north": 52.6952,
+            "west": 1.1644,
+            "east": 1.3887
+          }
+        },
+        {
+          "city": "Wymondham",
+          "center": [
+            52.5703,
+            1.1157
+          ],
+          "bounds": {
+            "south": 52.5508,
+            "north": 52.5953,
+            "west": 1.0968,
+            "east": 1.1503
+          }
+        }
+      ]
+    },
+    {
+      "id": "beryl_gb_plymouth",
+      "country": "GB",
+      "provider": "beryl",
+      "city": "Plymouth",
+      "center": [
+        50.3705,
+        -4.1422
+      ],
+      "bounds": {
+        "south": 50.3576,
+        "north": 50.4207,
+        "west": -4.1953,
+        "east": -4.0967
+      },
+      "discoveryUrl": "https://beryl-gbfs-production.web.app/v2_2/Plymouth/gbfs.json"
+    },
+    {
+      "id": "bolt_gb_liverpool",
+      "country": "GB",
+      "provider": "bolt",
+      "city": "Liverpool",
+      "center": [
+        53.4074,
+        -2.9776
+      ],
+      "bounds": {
+        "south": 53.3314,
+        "north": 53.4755,
+        "west": -3.0113,
+        "east": -2.8194
+      },
+      "discoveryUrl": "https://mds.bolt.eu/gbfs/3/412/gbfs"
+    },
+    {
+      "id": "dott_gb_bath",
+      "country": "GB",
+      "provider": "dott",
+      "city": "Bath",
+      "center": [
+        51.3814,
+        -2.359
+      ],
+      "bounds": {
+        "south": 51.3473,
+        "north": 51.4195,
+        "west": -2.4118,
+        "east": -2.291
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/bath/gbfs.json"
+    },
+    {
+      "id": "dott_gb_bristol",
+      "country": "GB",
+      "provider": "dott",
+      "city": "Bristol",
+      "center": [
+        51.4536,
+        -2.5974
+      ],
+      "bounds": {
+        "south": 51.3973,
+        "north": 51.5649,
+        "west": -2.7053,
+        "east": -2.3796
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/bristol/gbfs.json",
+      "areas": [
+        {
+          "city": "Bristol",
+          "center": [
+            51.4536,
+            -2.5974
+          ],
+          "bounds": {
+            "south": 51.3973,
+            "north": 51.5499,
+            "west": -2.7053,
+            "east": -2.4519
+          }
+        },
+        {
+          "city": "Yate",
+          "center": [
+            51.5405,
+            -2.418
+          ],
+          "bounds": {
+            "south": 51.5197,
+            "north": 51.5649,
+            "west": -2.4504,
+            "east": -2.3796
+          },
+          "aliases": [
+            "Chipping Sodbury"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dott_gb_milton_keynes",
+      "country": "GB",
+      "provider": "dott",
+      "city": "Milton Keynes",
+      "center": [
+        52.0406,
+        -0.7594
+      ],
+      "bounds": {
+        "south": 51.9723,
+        "north": 52.0904,
+        "west": -0.8446,
+        "east": -0.6559
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/milton-keynes/gbfs.json",
+      "aliases": [
+        "MK"
+      ]
+    },
+    {
+      "id": "dott_gb_nottingham",
+      "country": "GB",
+      "provider": "dott",
+      "city": "Nottingham",
+      "center": [
+        52.9529,
+        -1.1498
+      ],
+      "bounds": {
+        "south": 52.8911,
+        "north": 53.0217,
+        "west": -1.2505,
+        "east": -1.1045
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/nottingham/gbfs.json"
+    }
+  ]
+}

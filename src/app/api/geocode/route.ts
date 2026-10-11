@@ -181,6 +181,8 @@ function errorResponse(message: string, status: number, retryAfter?: string) {
   );
 }
 
+const SWISSTOPO_LANGUAGES = ['de', 'fr', 'it', 'en'] as const;
+
 async function geocode(input: GeocodeInput) {
   const typedText = input.query.trim();
   if (typedText.length < 2 || typedText.length > MAX_QUERY_LENGTH) {
@@ -209,7 +211,8 @@ async function geocode(input: GeocodeInput) {
     type: 'locations',
     limit: String(UPSTREAM_RESULT_LIMIT),
     sr: '4326',
-    lang: language,
+    // swisstopo labels in the languages of Switzerland and English only.
+    lang: SWISSTOPO_LANGUAGES.find(code => code === language) ?? 'en',
   }).toString();
 
   try {

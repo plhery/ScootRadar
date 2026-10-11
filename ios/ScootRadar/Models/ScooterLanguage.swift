@@ -6,6 +6,8 @@ enum ScooterLanguage: String, CaseIterable, Identifiable, Sendable {
     case de
     case fr
     case it
+    case nl
+    case nb
     case en
 
     var id: String { rawValue }
@@ -16,6 +18,8 @@ enum ScooterLanguage: String, CaseIterable, Identifiable, Sendable {
         case .de: "Deutsch"
         case .fr: "Français"
         case .it: "Italiano"
+        case .nl: "Nederlands"
+        case .nb: "Norsk"
         case .en: "English"
         }
     }

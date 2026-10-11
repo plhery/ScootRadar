@@ -4,6 +4,7 @@ import { boundsContainPoint, haversineM } from '@/lib/geo';
 import { CITY_OVERVIEW_MAX_ZOOM, providersForViewport } from '@/lib/mapCoverage';
 import { PARKING_MAX_AGE_MS, PARKING_MIN_ZOOM, type ParkingSnapshot } from '@/lib/parking';
 import { scooterResponse } from '@/lib/scooterResponse';
+import { skippedSources } from '@/lib/scooterSources';
 import { ScooterFeedsUnavailableError, type FeedQuery, type ScooterFetchMetadata } from '@/lib/scooterFeeds';
 import type { MapBounds, ScooterCluster, ScooterResponse, Vehicle } from '@/lib/types';
 import { VEHICLE_MAX_AGE_MS } from './dataFreshness';
@@ -46,7 +47,7 @@ export interface MobilitySnapshot {
 
 function emptyHealth(): ScooterFetchMetadata {
   return { partial: false, stale: false, failedSources: [],
-    sources: { national: 'skipped', hopp: 'skipped', publibike: 'skipped', france: 'skipped', germany: 'skipped', italy: 'skipped' } };
+    sources: skippedSources() };
 }
 
 function healthFor(feeds: FeedSnapshot[], now: number): ScooterFetchMetadata {
