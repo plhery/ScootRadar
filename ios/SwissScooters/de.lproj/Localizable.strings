@@ -35,6 +35,9 @@
 "Hidden" = "Ausgeblendet";
 "Map" = "Karte";
 "Appearance" = "Darstellung";
+"Automatic" = "Automatisch";
+"Light" = "Hell";
+"Dark" = "Dunkel";
 "Mobility data sources" = "Mobilitätsdatenquellen";
 "About" = "Über";
 "Live" = "Live";

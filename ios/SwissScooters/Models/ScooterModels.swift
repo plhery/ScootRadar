@@ -571,6 +571,32 @@ extension ScooterAPIResponsePayload {
     }
 }
 
+/// Light, dark, or whichever of the two the iPhone is in.
+enum ScooterAppearance: String, CaseIterable, Identifiable, Sendable {
+    case automatic
+    case light
+    case dark
+
+    var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .automatic: String(localized: "Automatic")
+        case .light: String(localized: "Light")
+        case .dark: String(localized: "Dark")
+        }
+    }
+
+    /// Unspecified leaves the choice to the iPhone.
+    var interfaceStyle: UIUserInterfaceStyle {
+        switch self {
+        case .automatic: .unspecified
+        case .light: .light
+        case .dark: .dark
+        }
+    }
+}
+
 enum AppleMapStyle: String, CaseIterable, Identifiable, Sendable {
     case standard
     case quiet

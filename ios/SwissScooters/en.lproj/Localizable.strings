@@ -35,6 +35,9 @@
 "Hidden" = "Hidden";
 "Map" = "Map";
 "Appearance" = "Appearance";
+"Automatic" = "Automatic";
+"Light" = "Light";
+"Dark" = "Dark";
 "Mobility data sources" = "Mobility data sources";
 "About" = "About";
 "Live" = "Live";

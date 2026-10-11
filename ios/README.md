@@ -94,11 +94,12 @@ with the count in view, or a note when a provider is not sharing data. **Reset**
 is in the header and the button at the bottom says how many scooters the map
 will show.
 
-**Settings.** Map appearance (Standard, Quiet, Satellite); passes per provider
-(free unlock, free minutes, optional expiry date), listed for the providers that
-operate where the map is or that already have a pass; and About: map and data
-credits, Privacy with the usage switch and the privacy notice, and the source
-code on GitHub.
+**Settings.** Two choices as tiles, each under a small picture of what it gives:
+the appearance (Automatic, Light, Dark; Automatic follows the iPhone) and the map
+style (Standard, Quiet, Satellite). Then the passes per provider (free unlock,
+free minutes, optional expiry date), listed for the providers that operate where
+the map is or that already have a pass; and About: map and data credits, Privacy
+with the usage switch and the privacy notice, and the source code on GitHub.
 
 The app is translated into English, German, French and Italian. It follows
 Dynamic Type up to the accessibility sizes, labels map markers and search
@@ -130,10 +131,10 @@ There is no refresh button. **Try again** appears only when something failed:
 
 ## What stays on the phone
 
-The filters, the map appearance, the passes, the ride length used for price
-estimates, the usage choice and whether the phone was ever located are kept in
-the app's settings. Your location, the places you searched and the text you
-typed are never stored; recent places live in memory until the app closes.
+The filters, the appearance, the map style, the passes, the ride length used
+for price estimates, the usage choice and whether the phone was ever located are
+kept in the app's settings. Your location, the places you searched and the text
+you typed are never stored; recent places live in memory until the app closes.
 
 ## Usage analytics
 

@@ -205,6 +205,7 @@ struct ScooterMapScreen: View {
         }
         .sensoryFeedback(.selection, trigger: model.selectedScooterID)
         .sensoryFeedback(.selection, trigger: model.selectedParkingID)
+        .background(WindowAppearance(style: model.appearance.interfaceStyle))
     }
 
     /// Only a first load that failed is reported under the search bar; later
@@ -257,6 +258,32 @@ struct ScooterMapScreen: View {
     private func openLocationSettings() {
         guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
         UIApplication.shared.open(settingsURL)
+    }
+}
+
+/// Light or dark for the whole window, so for the sheets too. SwiftUI's own
+/// preference left the open Settings sheet dark once the choice was back on
+/// Automatic.
+private struct WindowAppearance: UIViewRepresentable {
+    let style: UIUserInterfaceStyle
+
+    func makeUIView(context: Context) -> Probe {
+        Probe()
+    }
+
+    func updateUIView(_ probe: Probe, context: Context) {
+        probe.style = style
+    }
+
+    final class Probe: UIView {
+        var style = UIUserInterfaceStyle.unspecified {
+            didSet { window?.overrideUserInterfaceStyle = style }
+        }
+
+        override func didMoveToWindow() {
+            super.didMoveToWindow()
+            window?.overrideUserInterfaceStyle = style
+        }
     }
 }
 

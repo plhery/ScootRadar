@@ -149,6 +149,16 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         }
     }
 
+    var appearance: ScooterAppearance {
+        didSet {
+            if oldValue != appearance {
+                // Under the name and with the values the web sends.
+                ScooterAnalytics.shared.track("map_style", result: appearance == .automatic ? "auto" : appearance.rawValue)
+            }
+            defaults.set(appearance.rawValue, forKey: Self.appearanceKey)
+        }
+    }
+
     private(set) var rideEstimateMinutes: Int
     private(set) var ridePasses: [ScooterProvider: ProviderRidePass]
 
@@ -202,6 +212,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
     private static let minimumBatteryKey = "minimum-battery"
     private static let mapStyleKey = "apple-map-style"
+    private static let appearanceKey = "appearance"
     private static let enabledProvidersKey = "enabled-providers"
     private static let rideEstimateMinutesKey = "ride-estimate-minutes-v1"
     private static let ridePassesKey = "provider-ride-passes-v1"
@@ -239,6 +250,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         // The quiet ground is what the dots are made for; a style chosen in
         // Settings is kept.
         mapStyle = AppleMapStyle(rawValue: savedStyle ?? "") ?? .quiet
+        appearance = ScooterAppearance(rawValue: defaults.string(forKey: Self.appearanceKey) ?? "") ?? .automatic
 
         let savedEstimateMinutes = defaults.object(
             forKey: Self.rideEstimateMinutesKey

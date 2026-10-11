@@ -21,6 +21,7 @@
 		A00000000000000000000018 /* ScooterMapLook.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000020 /* ScooterMapLook.swift */; };
 		A00000000000000000000019 /* ScooterMarkerArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000021 /* ScooterMarkerArt.swift */; };
 		A0000000000000000000001A /* ScooterMapLookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000022 /* ScooterMapLookTests.swift */; };
+		A0000000000000000000001C /* ScooterSettingsTiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000024 /* ScooterSettingsTiles.swift */; };
 		A0000000000000000000000A /* GeoBoundsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000000C /* GeoBoundsTests.swift */; };
 		A0000000000000000000000B /* ScooterModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000000D /* ScooterModelsTests.swift */; };
 		A0000000000000000000000C /* ScooterFilteringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000000E /* ScooterFilteringTests.swift */; };
@@ -61,6 +62,7 @@
 		B00000000000000000000020 /* ScooterMapLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterMapLook.swift; sourceTree = "<group>"; };
 		B00000000000000000000021 /* ScooterMarkerArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterMarkerArt.swift; sourceTree = "<group>"; };
 		B00000000000000000000022 /* ScooterMapLookTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterMapLookTests.swift; sourceTree = "<group>"; };
+		B00000000000000000000024 /* ScooterSettingsTiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterSettingsTiles.swift; sourceTree = "<group>"; };
 		B0000000000000000000000B /* SwissScootersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwissScootersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0000000000000000000000C /* GeoBoundsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoBoundsTests.swift; sourceTree = "<group>"; };
 		B0000000000000000000000D /* ScooterModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterModelsTests.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				B00000000000000000000005 /* ScooterMapView.swift */,
 				B0000000000000000000001E /* ScooterUserLocationView.swift */,
 				B00000000000000000000006 /* ScooterControls.swift */,
+				B00000000000000000000024 /* ScooterSettingsTiles.swift */,
 				B00000000000000000000021 /* ScooterMarkerArt.swift */,
 				B00000000000000000000007 /* ScooterMapScreen.swift */,
 				B0000000000000000000001A /* SwissAddressSearch.swift */,
@@ -338,6 +341,7 @@
 				A00000000000000000000007 /* ScooterMapScreen.swift in Sources */,
 				A00000000000000000000009 /* ScooterFiltering.swift in Sources */,
 				A00000000000000000000018 /* ScooterMapLook.swift in Sources */,
+				A0000000000000000000001C /* ScooterSettingsTiles.swift in Sources */,
 				A00000000000000000000019 /* ScooterMarkerArt.swift in Sources */,
 				A00000000000000000000012 /* SwissAddressSearch.swift in Sources */,
 				A00000000000000000000013 /* AddressSearchAPI.swift in Sources */,

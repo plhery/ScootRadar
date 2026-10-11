@@ -568,6 +568,36 @@ final class ScooterMapModelTests: XCTestCase {
         XCTAssertEqual(restoredModel.enabledProviders, [.hopp, .publibike])
     }
 
+    func testAppearanceFollowsTheIPhoneUntilOneIsChosenAndIsKept() {
+        let defaults = isolatedDefaults()
+        let firstModel = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+            locationManager: CLLocationManager(),
+            defaults: defaults
+        )
+        XCTAssertEqual(firstModel.appearance, .automatic)
+        XCTAssertEqual(firstModel.appearance.interfaceStyle, .unspecified)
+
+        firstModel.appearance = .dark
+
+        let restoredModel = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+            locationManager: CLLocationManager(),
+            defaults: defaults
+        )
+        XCTAssertEqual(restoredModel.appearance, .dark)
+        XCTAssertEqual(restoredModel.appearance.interfaceStyle, .dark)
+
+        // A value the app no longer knows leaves the choice to the iPhone.
+        defaults.set("sepia", forKey: "appearance")
+        let unknownModel = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+            locationManager: CLLocationManager(),
+            defaults: defaults
+        )
+        XCTAssertEqual(unknownModel.appearance, .automatic)
+    }
+
     func testRideDurationAndProviderPassesPersistIndependently() {
         let defaults = isolatedDefaults()
         let firstModel = ScooterMapModel(
@@ -2479,6 +2509,27 @@ extension ScooterMapModelTests {
         ScooterMapCameraPolicy.setRegionPreservingPerspective(zurichRegion, on: mapView, animated: false)
 
         XCTAssertGreaterThan(mapView.camera.pitch, 20)
+    }
+
+    /// The appearance is the window's, so a sheet over the screen has it too.
+    func testChosenAppearanceIsThatOfTheWholeWindow() async throws {
+        let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
+        let window = try window(showing: ScooterMapScreen(model: model))
+        defer { window.isHidden = true }
+        XCTAssertEqual(window.overrideUserInterfaceStyle, .unspecified)
+
+        model.appearance = .dark
+        let dark = await waitUntil { window.overrideUserInterfaceStyle == .dark }
+        XCTAssertTrue(dark)
+
+        model.appearance = .light
+        let light = await waitUntil { window.overrideUserInterfaceStyle == .light }
+        XCTAssertTrue(light)
+
+        // Automatic gives the choice back to the iPhone.
+        model.appearance = .automatic
+        let automatic = await waitUntil { window.overrideUserInterfaceStyle == .unspecified }
+        XCTAssertTrue(automatic)
     }
 
     /// A window of the size of a phone with the view on screen in it.

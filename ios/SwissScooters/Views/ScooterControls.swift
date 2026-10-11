@@ -1734,8 +1734,8 @@ struct ScooterFilterSheet: View {
     }
 }
 
-/// Settings: how the map looks, the rider's passes, and About with the
-/// credits, the privacy choice and the source code.
+/// Settings: how the app and its map look, the rider's passes, and About
+/// with the credits, the privacy choice and the source code.
 struct ScooterSettingsSheet: View {
     @Bindable var model: ScooterMapModel
     @Environment(\.dismiss) private var dismiss
@@ -1745,13 +1745,28 @@ struct ScooterSettingsSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Map") {
-                    Picker("Appearance", selection: $model.mapStyle) {
-                        ForEach(AppleMapStyle.allCases) { style in
-                            Text(style.label).tag(style)
+                Section("Appearance") {
+                    SettingsTileRow(title: String(localized: "Appearance")) {
+                        ForEach(ScooterAppearance.allCases) { appearance in
+                            SettingsTile(title: appearance.label, isSelected: model.appearance == appearance) {
+                                model.appearance = appearance
+                            } picture: {
+                                AppearancePicture(appearance: appearance)
+                            }
                         }
                     }
-                    .pickerStyle(.segmented)
+                }
+
+                Section("Map") {
+                    SettingsTileRow(title: String(localized: "Map")) {
+                        ForEach(AppleMapStyle.allCases) { style in
+                            SettingsTile(title: style.label, isSelected: model.mapStyle == style) {
+                                model.mapStyle = style
+                            } picture: {
+                                MapStylePicture(style: style)
+                            }
+                        }
+                    }
                 }
 
                 Section {
@@ -1823,6 +1838,8 @@ struct ScooterSettingsSheet: View {
                     Button("Done") { dismiss() }
                 }
             }
+            .sensoryFeedback(.selection, trigger: model.appearance)
+            .sensoryFeedback(.selection, trigger: model.mapStyle)
         }
     }
 
