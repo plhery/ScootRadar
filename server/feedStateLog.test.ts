@@ -48,3 +48,12 @@ it('logs a failed collection while the previous positions are still served', () 
   logStates([feed({ observedAt: now - 20_000, attemptedAt: now + 50_000, failed: true })], now + 50_000);
   expect(JSON.parse(lines[0])).toMatchObject({ state: 'failing', previous: 'ok', observationAgeSeconds: 70 });
 });
+
+it('passes each change and its feed on', () => {
+  const changes: unknown[] = [];
+  const logStates = createFeedStateLog(() => {}, (change, changed) => changes.push([change.state, change.previous, changed.provider]));
+  const now = 1_000_000_000;
+  logStates([feed({ observedAt: now - 20_000, attemptedAt: now - 10_000 })], now);
+  logStates([feed({ observedAt: now - 20_000, attemptedAt: now - 10_000 })], now + VEHICLE_MAX_AGE_MS);
+  expect(changes).toEqual([['expired', 'ok', 'voi']]);
+});

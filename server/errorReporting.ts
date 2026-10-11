@@ -1,0 +1,64 @@
+import * as Sentry from '@sentry/node';
+import type { FeedSnapshot } from '../src/lib/scooterSnapshots';
+import type { FeedStateChange } from './feedStateLog';
+
+const REPORT_INTERVAL_MS = 3600_000;
+const lastReportedAt = new Map<string, number>();
+
+/**
+ * Sentry, enabled only with SENTRY_DSN. Reports never carry the incoming
+ * request: its query holds map bounds and the Worker forwards the visitor's
+ * address in a header. Routine feed failures are not reported, only a feed
+ * that stops being served (see reportFeedExpired); Prometheus and the logs
+ * cover the rest.
+ */
+export function initErrorReporting(env: Record<string, string | undefined> = process.env): boolean {
+  const dsn = env.SENTRY_DSN?.trim();
+  if (!dsn) return false;
+  Sentry.init({
+    dsn,
+    environment: env.SENTRY_ENVIRONMENT?.trim() || env.NODE_ENV || 'development',
+    release: env.SOURCE_COMMIT?.trim() || undefined,
+    dataCollection: { userInfo: false, httpBodies: [], urlQueryParams: false },
+    beforeSend(event) {
+      delete event.request;
+      delete event.user;
+      return event;
+    },
+    // Sentry 11 attaches stack traces to messages, which then arrive as untyped exceptions.
+    attachStacktrace: false,
+    // Otherwise every request to an operator's feed carries Sentry's trace headers.
+    tracePropagationTargets: [],
+  });
+  return true;
+}
+
+/**
+ * An unexpected error. Each `key` is reported at most once an hour, so a
+ * failure that repeats every few seconds (a full disk, say) stays one event
+ * an hour while the logs keep every occurrence.
+ */
+export function reportError(key: string, error: unknown, now = Date.now()) {
+  if (now - (lastReportedAt.get(key) ?? -Infinity) < REPORT_INTERVAL_MS) return;
+  lastReportedAt.set(key, now);
+  Sentry.withScope(scope => {
+    scope.setTag('operation', key.split(':')[0]);
+    scope.setFingerprint(['{{ default }}', key]);
+    Sentry.captureException(error);
+  });
+}
+
+/**
+ * A feed whose positions are no longer served: the map tells people the
+ * provider is not sharing data. One issue per feed; each expiry is an event.
+ */
+export function reportFeedExpired(change: FeedStateChange, feed: FeedSnapshot, lastError: string | undefined) {
+  Sentry.withScope(scope => {
+    scope.setLevel('warning');
+    scope.setFingerprint(['snapshot-feed-expired', feed.id]);
+    scope.setTags({ feed: feed.id, source: feed.source, provider: feed.provider });
+    scope.setContext('feed', { ...change,
+      lastError: feed.failed ? lastError ?? 'unknown' : 'none: the last collection succeeded, and its data has since passed the age limit' });
+    Sentry.captureMessage(`Feed stopped being served: ${feed.id}`);
+  });
+}

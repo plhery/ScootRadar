@@ -30,6 +30,10 @@ encrypted secret, never in `wrangler.jsonc` or source control. No database is re
 credential. Do not put actual credentials in Wrangler `vars`; use encrypted
 Worker secrets if future features require them.
 
+The cache also reads `METRICS_TOKEN` (at least 32 characters in production), which
+opens `/metrics` to Prometheus, and `SENTRY_DSN`, which turns on Sentry. Both are
+optional Coolify secrets; see [docs/OBSERVABILITY.md](docs/OBSERVABILITY.md).
+
 ## Validate locally
 
 ```bash
@@ -60,9 +64,9 @@ For the first release requiring authenticated origin access, use this order:
    requests to the public origin without it must return 401, while requests through
    `https://scootradar.com/api/scooters` must succeed.
 4. Check `/health` for collector liveness and `/ready` for usable live feeds.
-   Alert on `/ready` failures and on `snapshot_health.expiredFeeds` or rising
-   observation ages. Keep the container's restart health check on `/health` so
-   operator outages do not cause a restart loop.
+   Grafana alerts on the cache's metrics (see [docs/OBSERVABILITY.md](docs/OBSERVABILITY.md)).
+   Keep the container's restart health check on `/health` so operator outages do
+   not cause a restart loop.
 
 The origin also limits authenticated clients to 60 requests/minute and bounds
 open API responses. The Worker overwrites the forwarded client IP using
@@ -121,6 +125,9 @@ app name and canonical domain are Scootradar and `scootradar.com`.
 - Origin: `https://scooter-data.plhery.com`, container port 3001.
 - Persistent named volume: `mouc13tsnvylg0v9ee9wp5v5-scooter-snapshots`, mounted at `/data`.
 - Resource limits: 1 CPU, 1536 MiB. No host port is exposed.
+- Network alias `scootradar-cache` on the `coolify` network, where Prometheus scrapes
+  `scootradar-cache:3001/metrics` (job `scootradar-cache`).
+- Secrets: `SCOOTER_SNAPSHOT_API_TOKEN`, `METRICS_TOKEN` and `SENTRY_DSN`.
 - Coolify HTTP health check: `http://127.0.0.1:3001/health`, 15-second start
   period. Use the IPv4 address because the server binds to `0.0.0.0`.
 - Netcup tunnel: `b1f36e92-77d5-4c92-846c-28848a492643`; exact hostname rule to
@@ -169,7 +176,9 @@ Alloy keeps these lines in Loki for 30 days under `app="scootradar-cache"`; in
 Grafana: `{app="scootradar-cache", event="snapshot_feed_state"} | json | feed="national:voiscooters.com"`.
 The Worker logs `scooter_origin_failure` with the origin status or error name
 when the map's "temporarily unavailable" banner would show; read it in the
-Worker's Logs in the Cloudflare dashboard.
+Worker's Logs in the Cloudflare dashboard. The cache's Prometheus metrics, Grafana
+dashboard and alerts, and Sentry reports are described in
+[docs/OBSERVABILITY.md](docs/OBSERVABILITY.md).
 
 ## Public launch checklist
 

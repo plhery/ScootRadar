@@ -7,19 +7,30 @@ import { ScooterFeedsUnavailableError } from '../src/lib/scooterFeeds';
 import { scooterResponseHeaders } from '../src/lib/scooterResponse';
 import { isRegionalSource } from '../src/lib/regionalScooterSystems';
 import { PARKING_MAX_AGE_MS } from '../src/lib/dataFreshness';
+import type { SnapshotMetrics } from './metrics';
+import { reportError } from './errorReporting';
 
 interface ServerOptions {
   snapshot: () => MobilitySnapshot | undefined;
   token?: string;
   production?: boolean;
   version?: string;
+  metrics?: SnapshotMetrics;
+  /** Opens /metrics to this bearer token; it answers 404 without one. */
+  metricsToken?: string;
 }
+
+const ROUTES = new Set(['/api/scooters', '/health', '/ready', '/metrics']);
 
 export function createSnapshotServer(options: ServerOptions) {
   if (options.production && (!options.token || options.token.length < 32)) {
     throw new Error('SCOOTER_SNAPSHOT_API_TOKEN must contain at least 32 characters in production');
   }
+  if (options.production && options.metricsToken && options.metricsToken.length < 32) {
+    throw new Error('METRICS_TOKEN must contain at least 32 characters in production');
+  }
   const tokenHash = options.token ? createHash('sha256').update(`Bearer ${options.token}`).digest() : null;
+  const metricsTokenHash = options.metricsToken ? createHash('sha256').update(`Bearer ${options.metricsToken}`).digest() : null;
   const clients = new Map<string, { count: number; resetAt: number }>();
   let activeResponses = 0;
   function handle(request: IncomingMessage, response: ServerResponse) {
@@ -46,6 +57,14 @@ export function createSnapshotServer(options: ServerOptions) {
         failedParkingFeeds: feeds.filter(feed => isRegionalSource(feed.source) &&
           (!feed.parking || feed.parking.stale || now - feed.parking.observedAt > PARKING_MAX_AGE_MS)).map(feed => feed.id),
         cities: snapshot?.overview.cities.length, version: options.version ?? 'local' }));
+      return;
+    }
+    if (url.pathname === '/metrics' && metricsTokenHash && options.metrics) {
+      if (!timingSafeEqual(metricsTokenHash, createHash('sha256').update(request.headers.authorization ?? '').digest())) {
+        response.writeHead(401, { 'WWW-Authenticate': 'Bearer' }); response.end('{}'); return;
+      }
+      response.writeHead(200, { 'Content-Type': 'text/plain; version=0.0.4; charset=utf-8' });
+      response.end(options.metrics.render(snapshot, now));
       return;
     }
     if (url.pathname !== '/api/scooters') { response.writeHead(404); response.end('{}'); return; }
@@ -75,11 +94,21 @@ export function createSnapshotServer(options: ServerOptions) {
     response.end(JSON.stringify(body));
   }
   const server = createServer((request, response) => {
+    if (options.metrics) {
+      const started = performance.now();
+      // The path only, without its query, and only a known one.
+      const path = (request.url ?? '/').split('?')[0];
+      const route = ROUTES.has(path) ? path : 'other';
+      response.once('finish', () => options.metrics?.recordRequest(route, response.statusCode, (performance.now() - started) / 1000));
+    }
     try { handle(request, response); }
     catch (error) {
       if (response.headersSent) { response.destroy(); return; }
       const unavailable = error instanceof ScooterFeedsUnavailableError;
-      if (!unavailable) console.error('Snapshot request failed', error instanceof Error ? error.name : 'UnknownError');
+      if (!unavailable) {
+        console.error('Snapshot request failed', error instanceof Error ? error.name : 'UnknownError');
+        reportError('request', error);
+      }
       response.writeHead(unavailable ? 503 : 500, { 'Retry-After': '30', 'Cache-Control': 'private, no-store' });
       response.end('{"error":"Scooter data is temporarily unavailable."}');
     }

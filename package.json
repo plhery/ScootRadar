@@ -21,7 +21,8 @@
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
-    "test:contract": "node scripts/check-live-contract.mjs"
+    "test:contract": "node scripts/check-live-contract.mjs",
+    "grafana:sync": "node scripts/sync-grafana.mjs"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "^1.20.8",
@@ -35,6 +36,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
     "@playwright/test": "^1.62.1",
+    "@sentry/node": "11.6.0",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^7.0.0",
     "@testing-library/react": "^16.3.2",

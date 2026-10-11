@@ -7,6 +7,16 @@ import { VEHICLE_MAX_AGE_MS, type FeedSnapshot } from '../src/lib/scooterSnapsho
  */
 export type FeedState = 'ok' | 'failing' | 'expired';
 
+export interface FeedStateChange {
+  event: 'snapshot_feed_state';
+  feed: string;
+  state: FeedState;
+  previous: FeedState;
+  secondsInPrevious: number;
+  observationAgeSeconds: number;
+  attemptAgeSeconds: number;
+}
+
 export function feedState(feed: FeedSnapshot, now: number): FeedState {
   if (now - feed.observedAt > VEHICLE_MAX_AGE_MS) return 'expired';
   return feed.failed ? 'failing' : 'ok';
@@ -18,7 +28,8 @@ export function feedState(feed: FeedSnapshot, now: number): FeedState {
  * passes the age limit: this runs on a timer, not after collections. The first
  * state seen for a feed is its baseline and is not logged.
  */
-export function createFeedStateLog(log: (line: string) => void = console.log) {
+export function createFeedStateLog(log: (line: string) => void = console.log,
+  onChange?: (change: FeedStateChange, feed: FeedSnapshot) => void) {
   const known = new Map<string, { state: FeedState; since: number }>();
   return (feeds: readonly FeedSnapshot[], now = Date.now()) => {
     const seen = new Set<string>();
@@ -31,10 +42,12 @@ export function createFeedStateLog(log: (line: string) => void = console.log) {
       if (previous?.state === state) continue;
       known.set(feed.id, { state, since: now });
       if (!previous) continue;
-      log(JSON.stringify({ event: 'snapshot_feed_state', feed: feed.id, state, previous: previous.state,
+      const change: FeedStateChange = { event: 'snapshot_feed_state', feed: feed.id, state, previous: previous.state,
         secondsInPrevious: Math.round((now - previous.since) / 1000),
         observationAgeSeconds: Math.round((now - feed.observedAt) / 1000),
-        attemptAgeSeconds: Math.round((now - feed.attemptedAt) / 1000) }));
+        attemptAgeSeconds: Math.round((now - feed.attemptedAt) / 1000) };
+      log(JSON.stringify(change));
+      onChange?.(change, feed);
     }
     for (const id of known.keys()) if (!seen.has(id)) known.delete(id);
   };

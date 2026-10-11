@@ -1,3 +1,5 @@
+import { reportError } from './errorReporting';
+
 export interface ScheduledFeed {
   id: string;
   host: string;
@@ -36,6 +38,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
       this.due.set(feed.id, now + this.intervalMs);
       void this.collect(feed).catch(error => {
         console.error('Feed collection failed', feed.id, error instanceof Error ? error.name : 'UnknownError');
+        reportError(`collect:${feed.id}`, error);
       }).finally(() => {
         this.active.delete(feed.id);
         this.pump();

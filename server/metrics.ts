@@ -1,0 +1,121 @@
+import { monitorEventLoopDelay } from 'node:perf_hooks';
+import { PARKING_MAX_AGE_MS } from '../src/lib/dataFreshness';
+import { isRegionalSource } from '../src/lib/regionalScooterSystems';
+import type { MobilitySnapshot } from '../src/lib/scooterSnapshots';
+import { feedState, type FeedState } from './feedStateLog';
+
+interface FeedLabels { id: string; source: string; provider: string }
+type Labels = Record<string, string>;
+
+const FEED_STATES: FeedState[] = ['ok', 'failing', 'expired'];
+
+/**
+ * Prometheus metrics of the snapshot server, in the text exposition format.
+ * Labels hold feed ids, sources, providers, routes and status codes only:
+ * never a map URL, coordinates or a caller's address. Feed states come from
+ * the snapshot at scrape time; collections and requests are counted as they
+ * happen, from zero since the process started.
+ */
+export function createSnapshotMetrics(version = 'local') {
+  const collections = new Map<string, { labels: Labels; ok: number; failed: number; seconds: number }>();
+  const requests = new Map<string, { labels: Labels; count: number }>();
+  const requestSeconds = new Map<string, { count: number; seconds: number }>();
+  let discoveredAt = 0;
+  const eventLoop = monitorEventLoopDelay({ resolution: 20 });
+  eventLoop.enable();
+
+  return {
+    recordCollection(feed: FeedLabels, failed: boolean, seconds: number) {
+      const entry = collections.get(feed.id)
+        ?? { labels: { feed: feed.id, source: feed.source, provider: feed.provider }, ok: 0, failed: 0, seconds: 0 };
+      if (failed) entry.failed++; else entry.ok++;
+      entry.seconds += seconds;
+      collections.set(feed.id, entry);
+    },
+    recordRequest(route: string, status: number, seconds: number) {
+      const key = `${route} ${status}`;
+      const entry = requests.get(key) ?? { labels: { route, status: String(status) }, count: 0 };
+      entry.count++;
+      requests.set(key, entry);
+      const timing = requestSeconds.get(route) ?? { count: 0, seconds: 0 };
+      timing.count++;
+      timing.seconds += seconds;
+      requestSeconds.set(route, timing);
+    },
+    recordDiscovery(at = Date.now()) { discoveredAt = at; },
+    render(snapshot: MobilitySnapshot | undefined, now = Date.now()): string {
+      const out: string[] = [];
+      const metric = (name: string, type: string, help: string, samples: [Labels, number][]) => {
+        out.push(`# HELP ${name} ${help}`, `# TYPE ${name} ${type}`);
+        for (const [labels, value] of samples) out.push(`${name}${formatLabels(labels)} ${value}`);
+      };
+      // As in the feed state log, a feed not attempted yet has no state to speak of.
+      const feeds = (snapshot?.feeds ?? []).filter(feed => !feed.skipped && feed.attemptedAt > 0);
+      const labelsOf = (feed: FeedLabels): Labels => ({ feed: feed.id, source: feed.source, provider: feed.provider });
+
+      metric('scootradar_build_info', 'gauge', 'The running commit.', [[{ version }, 1]]);
+      metric('scootradar_snapshot_updated_timestamp_seconds', 'gauge', 'When a collection last changed the snapshot.',
+        snapshot ? [[{}, seconds(snapshot.updatedAt)]] : []);
+      metric('scootradar_overview_generated_timestamp_seconds', 'gauge', 'When the city totals were last rebuilt.',
+        snapshot ? [[{}, seconds(snapshot.overview.generatedAt)]] : []);
+      metric('scootradar_discovery_success_timestamp_seconds', 'gauge', 'When the feed catalog was last discovered.',
+        discoveredAt ? [[{}, seconds(discoveredAt)]] : []);
+      metric('scootradar_feed_state', 'gauge',
+        'ok: served. failing: the last collection failed, the previous positions are still served. expired: nothing is served and the map says the provider is not sharing data.',
+        feeds.flatMap(feed => {
+          const state = feedState(feed, now);
+          return FEED_STATES.map((candidate): [Labels, number] => [{ ...labelsOf(feed), state: candidate }, candidate === state ? 1 : 0]);
+        }));
+      metric('scootradar_feed_vehicles', 'gauge', 'Vehicles served from the feed, 0 once its data has expired.',
+        feeds.map(feed => [labelsOf(feed), feedState(feed, now) === 'expired' ? 0 : feed.vehicles.length]));
+      metric('scootradar_feed_observation_timestamp_seconds', 'gauge', 'The source timestamp of the positions held for the feed.',
+        feeds.filter(feed => feed.observedAt > 0).map(feed => [labelsOf(feed), seconds(feed.observedAt)]));
+      metric('scootradar_feed_attempt_timestamp_seconds', 'gauge', 'When the feed was last collected, successfully or not.',
+        feeds.map(feed => [labelsOf(feed), seconds(feed.attemptedAt)]));
+      metric('scootradar_feed_parking_up', 'gauge', 'Whether the feed\'s parking availability is fresh, for regional feeds.',
+        feeds.filter(feed => isRegionalSource(feed.source)).map(feed => [labelsOf(feed),
+          feed.parking && !feed.parking.stale && now - feed.parking.observedAt <= PARKING_MAX_AGE_MS ? 1 : 0]));
+      metric('scootradar_feed_collections_total', 'counter', 'Feed collections by outcome.',
+        [...collections.values()].flatMap(entry => [
+          [{ ...entry.labels, outcome: 'ok' }, entry.ok] as [Labels, number],
+          [{ ...entry.labels, outcome: 'failed' }, entry.failed] as [Labels, number]]));
+      metric('scootradar_feed_collection_duration_seconds', 'summary', 'Time spent collecting the feed.', []);
+      for (const entry of collections.values()) {
+        out.push(`scootradar_feed_collection_duration_seconds_sum${formatLabels(entry.labels)} ${round(entry.seconds)}`,
+          `scootradar_feed_collection_duration_seconds_count${formatLabels(entry.labels)} ${entry.ok + entry.failed}`);
+      }
+      metric('scootradar_http_requests_total', 'counter', 'Requests answered, by route and status.',
+        [...requests.values()].map(entry => [entry.labels, entry.count]));
+      metric('scootradar_http_request_duration_seconds', 'summary', 'Time spent answering requests, by route.', []);
+      for (const [route, timing] of requestSeconds) {
+        out.push(`scootradar_http_request_duration_seconds_sum${formatLabels({ route })} ${round(timing.seconds)}`,
+          `scootradar_http_request_duration_seconds_count${formatLabels({ route })} ${timing.count}`);
+      }
+
+      const memory = process.memoryUsage();
+      const cpu = process.cpuUsage();
+      metric('process_start_time_seconds', 'gauge', 'When the process started.',
+        [[{}, Math.round(performance.timeOrigin / 1000)]]);
+      metric('process_cpu_seconds_total', 'counter', 'User and system CPU time spent.', [[{}, round((cpu.user + cpu.system) / 1e6)]]);
+      metric('process_resident_memory_bytes', 'gauge', 'Resident memory size.', [[{}, memory.rss]]);
+      metric('nodejs_heap_used_bytes', 'gauge', 'V8 heap in use.', [[{}, memory.heapUsed]]);
+      // Over the time since the previous scrape.
+      metric('nodejs_eventloop_lag_p99_seconds', 'gauge', 'The 99th percentile of event loop delay.',
+        [[{}, round(eventLoop.percentile(99) / 1e9)]]);
+      metric('nodejs_eventloop_lag_max_seconds', 'gauge', 'The longest event loop delay.', [[{}, round(eventLoop.max / 1e9)]]);
+      eventLoop.reset();
+      return `${out.join('\n')}\n`;
+    },
+  };
+}
+
+export type SnapshotMetrics = ReturnType<typeof createSnapshotMetrics>;
+
+const seconds = (milliseconds: number) => round(milliseconds / 1000);
+const round = (value: number) => Math.round(value * 1000) / 1000;
+
+function formatLabels(labels: Labels): string {
+  const entries = Object.entries(labels);
+  if (!entries.length) return '';
+  return `{${entries.map(([key, value]) => `${key}="${value.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`).join(',')}}`;
+}

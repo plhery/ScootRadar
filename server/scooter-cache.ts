@@ -10,7 +10,10 @@ import { FeedScheduler } from './feedScheduler';
 import { createSnapshotServer } from './snapshotServer';
 import { collectSnapshotFeed } from './collectFeed';
 import { createFeedStateLog } from './feedStateLog';
+import { createSnapshotMetrics } from './metrics';
+import { initErrorReporting, reportError, reportFeedExpired } from './errorReporting';
 
+initErrorReporting();
 upstreamJsonCache.paceHost('gbfs.api.ridedott.com', 150);
 const snapshotPath = process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json';
 let snapshot: MobilitySnapshot | undefined;
@@ -19,12 +22,15 @@ let dirty = false;
 let persisting: Promise<void> | undefined;
 let lastHealthLogAt = 0;
 const records = new Map<string, FeedSnapshot>();
+// The last collection error of each failing feed, for its Sentry report should it expire.
+const lastErrors = new Map<string, string>();
+const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT);
 const regionalSystems = new Map(REGIONAL_SCOOTER_SYSTEMS.map(system => [`${regionalSource(system)}:${system.id}`, system]));
 
 // Validate configuration before doing any network collection.
 const server = createSnapshotServer({ snapshot: () => snapshot,
   token: process.env.SCOOTER_SNAPSHOT_API_TOKEN, production: process.env.NODE_ENV === 'production',
-  version: process.env.SOURCE_COMMIT });
+  version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN });
 try {
   const persisted = JSON.parse(await readFile(snapshotPath, 'utf8')) as MobilitySnapshot;
   if (persisted.version === 1 && Array.isArray(persisted.feeds) && Array.isArray(persisted.overview?.cities)) {
@@ -32,7 +38,10 @@ try {
     for (const feed of persisted.feeds) records.set(feed.id, feed);
   }
 } catch (error) {
-  if ((error as NodeJS.ErrnoException).code !== 'ENOENT') console.error('Snapshot restore failed', error);
+  if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+    console.error('Snapshot restore failed', error);
+    reportError('restore', error);
+  }
 }
 
 function publish() {
@@ -45,7 +54,20 @@ function publish() {
 
 async function collect(definition: CollectableScooterFeed) {
   const system = regionalSystems.get(definition.id);
-  await collectSnapshotFeed(definition, records.get(definition.id), record => {
+  const timed = async () => {
+    const started = performance.now();
+    try {
+      const result = await definition.collect();
+      metrics.recordCollection(definition, false, (performance.now() - started) / 1000);
+      lastErrors.delete(definition.id);
+      return result;
+    } catch (error) {
+      metrics.recordCollection(definition, true, (performance.now() - started) / 1000);
+      lastErrors.set(definition.id, (error instanceof Error ? error.message : String(error)).slice(0, 300));
+      throw error;
+    }
+  };
+  await collectSnapshotFeed({ ...definition, collect: timed }, records.get(definition.id), record => {
     // Removed definitions may still have requests finishing in the background.
     if (stopping || !records.has(definition.id)) return;
     records.set(definition.id, record);
@@ -94,6 +116,7 @@ async function persist() {
     } catch (error) {
       dirty = true;
       console.error('Snapshot persistence failed', error);
+      reportError('persist', error);
     } finally {
       await rm(temporaryPath, { force: true }).catch(() => {});
     }
@@ -107,16 +130,20 @@ async function discover() {
   try {
     const definitions = await discoverCollectableFeeds();
     if (!stopping) setDefinitions(definitions, true);
+    metrics.recordDiscovery();
   } catch (error) {
     retryMs = 60_000;
     console.error('Feed discovery failed; retaining the previous catalog', error);
+    reportError('discovery', error);
   }
   if (!stopping) discoveryTimer = setTimeout(() => void discover(), retryMs);
 }
 setDefinitions(independentCollectableFeeds(), false);
 scheduler.start();
 void discover();
-const logFeedStates = createFeedStateLog();
+const logFeedStates = createFeedStateLog(console.log, (change, feed) => {
+  if (change.state === 'expired') reportFeedExpired(change, feed, lastErrors.get(feed.id));
+});
 const persistenceTimer = setInterval(() => {
   if (snapshot) logFeedStates(snapshot.feeds);
   void persist();
