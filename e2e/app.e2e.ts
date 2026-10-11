@@ -536,7 +536,7 @@ test('an area without scooter data offers the closest cities and makes the one c
   await page.goto('/map?origin=46.7741,8.1558');
   const dock = page.locator('.sheet');
   await expect(dock.getByRole('heading', { name: 'No scooter data here yet' })).toBeVisible();
-  await expect(dock.getByText('ScootRadar covers selected cities in France, Switzerland, Germany and Italy.')).toBeVisible();
+  await expect(dock.getByText('ScootRadar covers selected cities in Belgium, France, Germany, Italy, Norway, Switzerland and the United Kingdom.')).toBeVisible();
   await expect(page.locator('.sheet-count')).toHaveCount(0);
   await expect(page.getByRole('group', { name: 'Filter scooters by provider' })).toHaveCount(0);
   const cities = dock.getByRole('group', { name: 'Closest cities' }).getByRole('button');
@@ -1635,7 +1635,7 @@ test('the settings name the languages, and About leads to the credits, the priva
   expect(await settings.getByRole('heading', { level: 3 }).allTextContents()).toEqual(['Appearance', 'Map', 'Language', 'About']);
 
   const language = settings.getByRole('group', { name: 'Language' });
-  await expect(language.getByRole('button')).toHaveText(['Deutsch', 'Français', 'Italiano', 'English']);
+  await expect(language.getByRole('button')).toHaveText(['Deutsch', 'Français', 'Italiano', 'Nederlands', 'Norsk', 'English']);
   await expect(language.getByRole('button', { name: 'English' })).toHaveAttribute('aria-pressed', 'true');
   await language.getByRole('button', { name: 'Deutsch' }).click();
   const einstellungen = page.getByRole('dialog', { name: 'Einstellungen', exact: true });
@@ -1662,7 +1662,7 @@ test('the settings name the languages, and About leads to the credits, the priva
   await settings.getByRole('button', { name: 'Map & data credits' }).click();
   const credits = page.getByRole('dialog', { name: 'Map & data credits', exact: true });
   await expect(credits.getByRole('heading', { name: 'Map & data credits', level: 2 })).toBeFocused();
-  await expect(credits.getByRole('link')).toHaveCount(8);
+  await expect(credits.getByRole('link')).toHaveCount(10);
   await expect(credits.getByRole('link', { name: '© OpenStreetMap contributors' })).toHaveAttribute('href', 'https://www.openstreetmap.org/copyright');
   await expect(credits.getByRole('link', { name: 'OpenFreeMap © OpenMapTiles' })).toHaveAttribute('href', 'https://openfreemap.org/');
   await expect(credits.getByRole('link', { name: '© swisstopo' })).toHaveAttribute('target', '_blank');

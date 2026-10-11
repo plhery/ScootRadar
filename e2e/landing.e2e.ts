@@ -6,13 +6,15 @@ import { expect, test, type Page } from '@playwright/test';
 // the same security policy.
 
 /** Where each language is. */
-const ADDRESS = { en: '/', de: '/de', fr: '/fr', it: '/it' };
+const ADDRESS = { en: '/', de: '/de', fr: '/fr', it: '/it', nl: '/nl', nb: '/nb' };
 
 const HEADLINES = {
   en: /^There are \d+ scooters around you\.$/,
   de: /^Um dich herum stehen \d+ E-Scooter\.$/,
   fr: /^Il y a \d+ trottinettes autour de vous\.$/,
   it: /^Ci sono \d+ monopattini intorno a te\.$/,
+  nl: /^Er staan \d+ deelsteps om je heen\.$/,
+  nb: /^Det står \d+ elsparkesykler rundt deg\.$/,
 };
 
 // On every page of the site Chromium refuses the preload hint of the first
@@ -42,8 +44,8 @@ for (const [locale, headline] of Object.entries(HEADLINES)) {
     // Seven providers beside the phone, the nearest first.
     const cards = page.locator('.near-card');
     await expect(cards).toHaveCount(7);
-    await expect(cards.first()).toContainText('Bolt');
-    await expect(cards.first()).toContainText('63 m');
+    await expect(cards.first()).toContainText('PubliBike');
+    await expect(cards.first()).toContainText('70 m');
 
     // The pictures further down load as they come into view.
     const pictures = page.locator('main img');
@@ -65,7 +67,7 @@ for (const [locale, headline] of Object.entries(HEADLINES)) {
 test('the landing page changes language from its bar and stays where it is', async ({ page }) => {
   await page.goto('/');
   const languages = page.getByRole('group', { name: 'Language' });
-  await expect(languages.getByRole('link')).toHaveText(['EN', 'DE', 'FR', 'IT']);
+  await expect(languages.getByRole('link')).toHaveText(['EN', 'DE', 'FR', 'IT', 'NL', 'NB']);
   await expect(languages.getByRole('link', { name: 'EN' })).toHaveAttribute('aria-current', 'page');
   for (const [locale, address] of Object.entries(ADDRESS)) {
     await expect(languages.getByRole('link', { name: locale.toUpperCase() })).toHaveAttribute('href', address);
