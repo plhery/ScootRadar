@@ -64,7 +64,8 @@ the dashboard is overwritten: change them here, not in Grafana's UI.
 About 70 of the 146 feeds have been dead for a long time: Dott answers 404 for 67
 German cities and 403 for two French ones, and Bird in Biel, Grenchen and Schaffhausen
 and Velospot publish out-of-date timestamps. Alerting on every expired feed would never
-stop, so the per-feed rule only covers feeds served in the
+stop, and Velospot, which sharedmobility.ch refreshes only now and then, would fire
+every hour or so. So the per-feed rule only covers feeds served more than half of the
 last seven days:
 
 | Rule | Fires when |
@@ -72,7 +73,7 @@ last seven days:
 | Scootradar cache target down | Prometheus cannot scrape the cache for 3 minutes |
 | Scootradar serves no scooters | every feed has expired for 5 minutes |
 | Scootradar collector stalled | no collection has finished for 5 minutes |
-| Scootradar feed stopped | a feed served in the last 7 days has been expired for 10 minutes; one notification per feed |
+| Scootradar feed stopped | a feed served more than half of the last 7 days has been expired for 10 minutes; one notification per feed |
 | Scootradar feed discovery stale | no successful discovery for 2 hours |
 | Scootradar cache restarting | more than three restarts in an hour (a deploy is one) |
 | Scootradar cache memory high | over 1.3 GB for 15 minutes (the limit is 1536 MiB) |
@@ -81,8 +82,9 @@ While the cache cannot be scraped, as for a moment during a deploy, every rule b
 "target down" keeps its last state rather than resolving and firing again.
 
 The default notification policy sends them all to the `telegram-paul` contact point.
-The dashboard's "Not served all week" table lists the dead feeds, which stop alerting
-after a week: silence isn't success. "Oldest positions served" shows feeds coming close
+The dashboard's "Expired, rarely served" table lists the others: silence isn't
+success. A feed that dies stops alerting once it has been dead for half a week, and
+moves to that table. "Oldest positions served" shows feeds coming close
 to the 15-minute limit, as Swiss Voi does with its 8-minute updates published 90
 seconds late.
 

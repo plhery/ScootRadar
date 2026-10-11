@@ -36,13 +36,13 @@
     {
       "uid": "scootradar-feed-stopped",
       "title": "Scootradar feed stopped",
-      "expr": "(max by (feed, source, provider) (scootradar_feed_state{job=\"scootradar-cache\", state=\"expired\"}) == 1) and on (feed) (max by (feed) (max_over_time(scootradar_feed_state{job=\"scootradar-cache\", state=~\"ok|failing\"}[7d:5m])) == 1)",
+      "expr": "(max by (feed, source, provider) (scootradar_feed_state{job=\"scootradar-cache\", state=\"expired\"}) == 1) and on (feed) (avg_over_time((max by (feed) (scootradar_feed_state{job=\"scootradar-cache\", state=~\"ok|failing\"}))[7d:5m]) > 0.5)",
       "for": "10m",
       "severity": "warning",
       "noDataState": "KeepLast",
       "perSeries": true,
       "summary": "{{ $labels.feed }} has not been served for 10 minutes.",
-      "description": "The map says {{ $labels.provider }} is not sharing data where this feed covers. It was served in the last 7 days; feeds dead longer than that are not reported (see the dashboard's \"Not served all week\"). The Sentry issue for the feed in scootradar-cache gives its last error, or says its data aged past the limit without one. Loki: {app=\"scootradar-cache\", event=\"snapshot_feed_state\"} | json | feed=\"{{ $labels.feed }}\"."
+      "description": "The map says {{ $labels.provider }} is not sharing data where this feed covers. It was served more than half of the last 7 days; dead feeds, and feeds such as Velospot that are fresh only now and then, are not reported (see the dashboard's \"Expired, rarely served\"). The Sentry issue for the feed in scootradar-cache gives its last error, or says its data aged past the limit without one. Loki: {app=\"scootradar-cache\", event=\"snapshot_feed_state\"} | json | feed=\"{{ $labels.feed }}\"."
     },
     {
       "uid": "scootradar-discovery-stale",
