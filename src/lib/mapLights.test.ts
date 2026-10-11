@@ -144,6 +144,13 @@ describe('placeNames', () => {
     expect(places.get('voi')).toEqual({ dx: -13 - 80, dy: -NAME_HEIGHT / 2 });
   });
 
+  it('keeps a name off something wider than it is high, such as the credits', () => {
+    const credits = { x: 70, y: 100, half: 65, halfHeight: 13, weight: NAME_WEIGHT };
+    // Beside the scooter the name would lie on the credits: above them it is clear.
+    expect(placeNames([head('voi', 130, 100)], [credits]).get('voi')).toEqual({ dx: 13, dy: -NAME_HEIGHT / 2 });
+    expect(placeNames([head('voi', 100, 100)], [credits]).get('voi')).toEqual({ dx: -40, dy: -7 - 9 - NAME_HEIGHT });
+  });
+
   it('prefers the side that covers the fewest scooters', () => {
     const others = [{ x: 140, y: 100, half: 5, weight: 1 }, { x: 60, y: 100, half: 5, weight: 1 }];
     // Scooters on both sides: above is free.

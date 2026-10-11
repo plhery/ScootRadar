@@ -146,6 +146,8 @@ export interface Obstacle {
   x: number;
   y: number;
   half: number;
+  /** Half its height, where it is not as high as it is wide. */
+  halfHeight?: number;
   weight: number;
 }
 
@@ -222,11 +224,12 @@ export function placeNames(
       if (within) cost += ((box.right - box.left) * (box.bottom - box.top) - covered(box, within)) * NAME_WEIGHT;
       for (const other of placed) cost += covered(box, other) * NAME_WEIGHT;
       for (const obstacle of avoid) {
+        const halfHeight = obstacle.halfHeight ?? obstacle.half;
         cost += covered(box, {
           left: obstacle.x - obstacle.half,
-          top: obstacle.y - obstacle.half,
+          top: obstacle.y - halfHeight,
           right: obstacle.x + obstacle.half,
-          bottom: obstacle.y + obstacle.half,
+          bottom: obstacle.y + halfHeight,
         }) * obstacle.weight;
       }
       if (!best || cost < best.cost) best = { offset, box, cost };

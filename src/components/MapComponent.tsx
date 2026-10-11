@@ -864,9 +864,21 @@ export default function MapComponent({
         const point = map.latLngToContainerPoint([destination.lat, destination.lng]);
         obstacles.push({ x: point.x, y: point.y - 15, half: 19, weight: NAME_WEIGHT });
       }
+      const area = container.getBoundingClientRect();
+      // The credits and the locate button lie on the map.
+      for (const selector of ['.map-attribution', '.fab-stack:not([aria-hidden="true"])']) {
+        const box = document.querySelector(selector)?.getBoundingClientRect();
+        if (!box || box.height === 0) continue;
+        obstacles.push({
+          x: (box.left + box.right) / 2 - area.left,
+          y: (box.top + box.bottom) / 2 - area.top,
+          half: box.width / 2,
+          halfHeight: box.height / 2,
+          weight: NAME_WEIGHT,
+        });
+      }
       names.sort((a, b) => a.order - b.order);
       // What of the map can be seen: under the search bar, and on a phone above the dock.
-      const area = container.getBoundingClientRect();
       const bar = document.querySelector('.search-island')?.getBoundingClientRect();
       const dock = revealAboveDock ? document.querySelector('.sheet')?.getBoundingClientRect() : undefined;
       const places = placeNames(names, obstacles, {
