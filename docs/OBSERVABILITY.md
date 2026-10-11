@@ -61,15 +61,21 @@ The script runs `curl` inside the Grafana container over `ssh netcup`, so the ad
 credentials never leave it. Rules in the group missing from the file are deleted, and
 the dashboard is overwritten: change them here, not in Grafana's UI.
 
-Some feeds have been dead for a long time: Bird in Biel, Grenchen and Schaffhausen
-and Velospot publish out-of-date timestamps. (The 67 German regions Dott stopped
-publishing left the catalog in October 2026. A region Dott pauses, answering 403
-`ERR_REGION_OFFLINE` as Tignes does out of season, is skipped rather than failed, and
-the weekly [catalog check](../.github/workflows/catalog-check.yml) fails when an entry
-is gone.) Alerting on every expired feed would never stop, and Velospot, which
-sharedmobility.ch refreshes only now and then, would fire every hour or so. So the
-per-feed rule only covers feeds served more than half of the
-last seven days:
+The per-feed rule only covers feeds served more than half of the last seven days,
+so a feed that is fresh only now and then does not fire every hour. When it was
+written, about 70 of the 146 feeds never served. Each kind is now handled where it
+arises:
+
+- Dott's German regions, private since September 2026, left the catalog; a region
+  Dott pauses (403 `ERR_REGION_OFFLINE`, as Tignes out of season) is skipped, and the
+  weekly [catalog check](../.github/workflows/catalog-check.yml) fails when an entry
+  is gone.
+- A Swiss system whose positions are over a week old, or never sent, counts as
+  inactive, as Bird in Biel, Grenchen and Schaffhausen.
+- Velospot's copy on sharedmobility.ch, 15 to 75 minutes behind, gave way to the
+  PubliBike app's station list (feed `publibike-stations`).
+
+The alert rules:
 
 | Rule | Fires when |
 | --- | --- |

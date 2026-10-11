@@ -128,6 +128,9 @@ app name and canonical domain are Scootradar and `scootradar.com`.
 - Network alias `scootradar-cache` on the `coolify` network, where Prometheus scrapes
   `scootradar-cache:3001/metrics` (job `scootradar-cache`).
 - Secrets: `SCOOTER_SNAPSHOT_API_TOKEN`, `METRICS_TOKEN` and `SENTRY_DSN`.
+- Custom Docker options `--dns 1.1.1.1 --dns 8.8.8.8`: since 11 October 2026
+  netcup's resolvers answer SERVFAIL for `data.lillemetropole.fr`, Lille's
+  parking inventory, which Cloudflare and Google resolve.
 - Coolify HTTP health check: `http://127.0.0.1:3001/health`, 15-second start
   period. Use the IPv4 address because the server binds to `0.0.0.0`.
 - Netcup tunnel: `b1f36e92-77d5-4c92-846c-28848a492643`; exact hostname rule to
