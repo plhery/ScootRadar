@@ -30,7 +30,7 @@ const METADATA_REVALIDATE_SECONDS = 3600;
 const STATUS_STALE_IF_ERROR_SECONDS = VEHICLE_MAX_AGE_MS / 1000;
 const METADATA_STALE_IF_ERROR_SECONDS = 86400;
 const FETCH_TIMEOUT_MS = 15_000;
-const DEFAULT_AUTH_EMAIL = 'swiss-scooters@plhery.com';
+const DEFAULT_AUTH_EMAIL = 'hello@scootradar.com';
 
 type AvailabilityFlag = boolean | 0 | 1;
 

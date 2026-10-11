@@ -27,7 +27,7 @@ Cloudflare and upstream providers may process limited network or security
 metadata under their own privacy policies. The full user-facing notice is
 published at <https://scootradar.com/privacy>.
 
-Questions: `swiss-scooters@plhery.com`.
+Questions: `hello@scootradar.com`.
 
 ## Usage analytics
 

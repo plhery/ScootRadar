@@ -512,7 +512,7 @@ describe('fetchScooters source health', () => {
   it('loads supported systems from the authenticated national registry', async () => {
     const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       expect(init?.headers).toMatchObject({
-        Authorization: 'swiss-scooters@plhery.com',
+        Authorization: 'hello@scootradar.com',
       });
       const url = String(input);
       const response = nationalResponse(url);

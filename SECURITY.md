@@ -3,7 +3,7 @@
 ## Reporting a vulnerability
 
 Please do not open a public issue for a suspected vulnerability. Email
-`swiss-scooters@plhery.com` with:
+`security@scootradar.com` with:
 
 - the affected route, component, or version;
 - reproduction steps or a proof of concept;

@@ -100,7 +100,7 @@ export default function PrivacyPage() {
 
         <h2>Contact and third parties</h2>
         <p>
-          Questions can be sent to <a href="mailto:swiss-scooters@plhery.com">swiss-scooters@plhery.com</a>.
+          Questions can be sent to <a href="mailto:hello@scootradar.com">hello@scootradar.com</a>.
           Third-party services have their own privacy policies: {' '}
           <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a>, {' '}
           <a href="https://openfreemap.org/privacy/">OpenFreeMap</a>, and {' '}
