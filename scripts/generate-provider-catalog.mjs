@@ -4,7 +4,7 @@ import { dirname, resolve } from 'node:path';
 const root = process.cwd();
 const sourcePath = resolve(root, 'data/providers.json');
 const typescriptPath = resolve(root, 'src/generated/providers.ts');
-const swiftPath = resolve(root, 'ios/SwissScooters/Models/ProviderCatalog.generated.swift');
+const swiftPath = resolve(root, 'ios/ScootRadar/Models/ProviderCatalog.generated.swift');
 const checkOnly = process.argv.includes('--check');
 
 const readJson = path => JSON.parse(readFileSync(resolve(root, path), 'utf8'));

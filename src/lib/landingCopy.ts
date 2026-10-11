@@ -36,7 +36,7 @@ export const LANGUAGE_NAMES: Record<LandingLocale, string> = {
   it: 'Italiano',
 };
 
-export const SOURCE_URL = 'https://github.com/plhery/swiss-scooters';
+export const SOURCE_URL = 'https://github.com/plhery/ScootRadar';
 
 // The App Store page of the iPhone app, once it has one. The buttons that lead
 // to it are left out until then.

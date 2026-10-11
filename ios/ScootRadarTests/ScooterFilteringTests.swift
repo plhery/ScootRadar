@@ -1,6 +1,6 @@
 import MapKit
 import XCTest
-@testable import SwissScooters
+@testable import ScootRadar
 
 final class ScooterFilteringTests: XCTestCase {
     private let viewport = GeoBounds(region: MKCoordinateRegion(
@@ -577,7 +577,7 @@ final class ScooterFilteringTests: XCTestCase {
         XCTAssertTrue(sources.contains { $0.url.host() == "data.lillemetropole.fr" })
 
         XCTAssertEqual(ScooterLinks.privacyNotice.absoluteString, "https://scootradar.com/privacy")
-        XCTAssertEqual(ScooterLinks.sourceCode.absoluteString, "https://github.com/plhery/swiss-scooters")
+        XCTAssertEqual(ScooterLinks.sourceCode.absoluteString, "https://github.com/plhery/ScootRadar")
     }
 
     @MainActor

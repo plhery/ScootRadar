@@ -45,7 +45,7 @@ function secureDocumentResponse(request: Request, response: Response): Response 
     .transform(documentResponse);
 }
 
-const swissScootersWorker = {
+const scootRadarWorker = {
   async fetch(request: Request, env: CloudflareEnv, ctx: ExecutionContext) {
     const redirect = legacyHostRedirect(request) ?? movedMapRedirect(request);
     if (redirect) {
@@ -61,4 +61,4 @@ const swissScootersWorker = {
   },
 };
 
-export default swissScootersWorker;
+export default scootRadarWorker;

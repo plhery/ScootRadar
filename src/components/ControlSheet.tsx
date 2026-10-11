@@ -33,7 +33,7 @@ const MAP_STYLES: { name: MapStyleName; label: TranslationKey }[] = [
   { name: 'detailed', label: 'set.detailed' },
 ];
 
-const SOURCE_CODE_URL = 'https://github.com/plhery/swiss-scooters';
+const SOURCE_CODE_URL = 'https://github.com/plhery/ScootRadar';
 
 interface ControlSheetProps {
   open: boolean;

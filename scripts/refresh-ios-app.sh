@@ -3,22 +3,22 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(cd -- "$(dirname -- "$0")/.." && pwd)"
-PROJECT_PATH="$PROJECT_ROOT/ios/SwissScooters.xcodeproj"
-SCHEME="SwissScooters"
+PROJECT_PATH="$PROJECT_ROOT/ios/ScootRadar.xcodeproj"
+SCHEME="ScootRadar"
 BUNDLE_ID="com.plhery.zurichscooters"
-DEVICE_NAME="${SWISS_SCOOTERS_DEVICE_NAME:-}"
+DEVICE_NAME="${SCOOTRADAR_DEVICE_NAME:-}"
 TEMP_ROOT="${TMPDIR:-/tmp}"
 TEMP_ROOT="${TEMP_ROOT%/}"
-CACHE_ROOT="$HOME/Library/Caches/SwissScootersRefresh"
+CACHE_ROOT="$HOME/Library/Caches/ScootRadarRefresh"
 DERIVED_DATA="$CACHE_ROOT/DerivedData"
 BUILD_LOG="$CACHE_ROOT/refresh.log"
-WORK_DIR="$(mktemp -d "$TEMP_ROOT/swiss-scooters-refresh.XXXXXX")"
+WORK_DIR="$(mktemp -d "$TEMP_ROOT/scootradar-refresh.XXXXXX")"
 PROFILE_DIR="$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"
 PROFILE_BACKUP_DIR="$WORK_DIR/profiles"
 SIGNING_BUILD_SUCCEEDED=0
 
 if [[ -z "$DEVICE_NAME" ]]; then
-  print -u2 "Set SWISS_SCOOTERS_DEVICE_NAME to the iPhone name shown by devicectl."
+  print -u2 "Set SCOOTRADAR_DEVICE_NAME to the iPhone name shown by devicectl."
   exit 1
 fi
 
@@ -33,7 +33,7 @@ notify() {
 }
 
 cleanup() {
-  if [[ -d "$WORK_DIR" && "$WORK_DIR" == "$TEMP_ROOT"/swiss-scooters-refresh.* ]]; then
+  if [[ -d "$WORK_DIR" && "$WORK_DIR" == "$TEMP_ROOT"/scootradar-refresh.* ]]; then
     /bin/rm -rf -- "$WORK_DIR"
   fi
 }
@@ -117,7 +117,7 @@ xcodebuild \
   -quiet \
   build 2>&1 | tee "$BUILD_LOG"
 
-APP_PATH="$DERIVED_DATA/Build/Products/Debug-iphoneos/SwissScooters.app"
+APP_PATH="$DERIVED_DATA/Build/Products/Debug-iphoneos/ScootRadar.app"
 if [[ ! -d "$APP_PATH" ]]; then
   print -u2 "The build succeeded but the app bundle was not found at $APP_PATH"
   exit 1

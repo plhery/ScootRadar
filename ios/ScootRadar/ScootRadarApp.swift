@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct SwissScootersApp: App {
+struct ScootRadarApp: App {
     init() {
         // Earlier versions asked for scooters through the shared session, whose
         // cache kept the map bounds of each request on disk. Nothing uses it now.

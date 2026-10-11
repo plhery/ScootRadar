@@ -144,7 +144,7 @@ if (!folder) grafana('POST', '/api/folders', { uid: alerts.folderUid, title: ale
 if (folderRenamed) grafana('PUT', `/api/folders/${alerts.folderUid}`, { title: alerts.folderTitle, version: folder.version });
 for (const dashboard of dashboardChanges) {
   grafana('POST', '/api/dashboards/db', { dashboard: { ...dashboard, id: null }, folderUid: alerts.folderUid,
-    overwrite: true, message: 'Synced from the swiss-scooters repository' });
+    overwrite: true, message: 'Synced from the ScootRadar repository' });
 }
 for (const uid of toCreate) grafana('POST', '/api/v1/provisioning/alert-rules', desired.get(uid));
 for (const uid of toUpdate) grafana('PUT', `/api/v1/provisioning/alert-rules/${uid}`, desired.get(uid));

@@ -260,7 +260,7 @@ describe('ControlSheet settings', () => {
     settings();
     expect(screen.getByRole('link', { name: 'Privacy notice' })).toHaveAttribute('href', '/privacy');
     const source = screen.getByRole('link', { name: 'Source code on GitHub' });
-    expect(source).toHaveAttribute('href', 'https://github.com/plhery/swiss-scooters');
+    expect(source).toHaveAttribute('href', 'https://github.com/plhery/ScootRadar');
     expect(source).toHaveAttribute('target', '_blank');
     expect(source).toHaveAttribute('rel', 'noreferrer');
   });

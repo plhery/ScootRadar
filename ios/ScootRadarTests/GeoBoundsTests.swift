@@ -1,6 +1,6 @@
 import MapKit
 import XCTest
-@testable import SwissScooters
+@testable import ScootRadar
 
 final class GeoBoundsTests: XCTestCase {
     func testRegionConversionAndContainment() {

@@ -3,7 +3,7 @@ import Foundation
 import MapKit
 import SwiftUI
 import XCTest
-@testable import SwissScooters
+@testable import ScootRadar
 
 @MainActor
 final class ScooterMapModelTests: XCTestCase {
@@ -767,7 +767,7 @@ final class ScooterMapModelTests: XCTestCase {
     }
 
     private func isolatedDefaults() -> UserDefaults {
-        let suiteName = "SwissScootersTests.\(UUID().uuidString)"
+        let suiteName = "ScootRadarTests.\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suiteName)!
         defaults.removePersistentDomain(forName: suiteName)
         return defaults
@@ -2159,7 +2159,7 @@ extension ScooterMapModelTests {
     }
 
     func testRecentPlacesKeepTheLastThreeForThisSessionOnly() throws {
-        let suiteName = "SwissScootersTests.\(UUID().uuidString)"
+        let suiteName = "ScootRadarTests.\(UUID().uuidString)"
         let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
         defaults.removePersistentDomain(forName: suiteName)
         let model = ScooterMapModel(

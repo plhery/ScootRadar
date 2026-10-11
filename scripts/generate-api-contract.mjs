@@ -5,7 +5,7 @@ const root = process.cwd();
 const sourcePath = resolve(root, 'data/scooter-api.schema.json');
 const typescriptPath = resolve(root, 'src/generated/scooterApi.ts');
 const swiftPaths = [
-  resolve(root, 'ios/SwissScooters/Models/ScooterAPIContract.generated.swift'),
+  resolve(root, 'ios/ScootRadar/Models/ScooterAPIContract.generated.swift'),
 ];
 const checkOnly = process.argv.includes('--check');
 const schema = JSON.parse(readFileSync(sourcePath, 'utf8'));

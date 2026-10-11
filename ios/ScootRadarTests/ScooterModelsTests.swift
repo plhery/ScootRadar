@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-@testable import SwissScooters
+@testable import ScootRadar
 
 final class ScooterModelsTests: XCTestCase {
     func testFrenchPonyScooterKeepsItsProviderEuroPricingAndRentalLink() throws {

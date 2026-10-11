@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D00000000000000000000003"
-               BuildableName = "SwissScootersTests.xctest"
-               BlueprintName = "SwissScootersTests"
-               ReferencedContainer = "container:SwissScooters.xcodeproj">
+               BuildableName = "ScootRadarTests.xctest"
+               BlueprintName = "ScootRadarTests"
+               ReferencedContainer = "container:ScootRadar.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -30,9 +30,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D00000000000000000000002"
-               BuildableName = "SwissScooters.app"
-               BlueprintName = "SwissScooters"
-               ReferencedContainer = "container:SwissScooters.xcodeproj">
+               BuildableName = "ScootRadar.app"
+               BlueprintName = "ScootRadar"
+               ReferencedContainer = "container:ScootRadar.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -49,9 +49,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D00000000000000000000003"
-               BuildableName = "SwissScootersTests.xctest"
-               BlueprintName = "SwissScootersTests"
-               ReferencedContainer = "container:SwissScooters.xcodeproj">
+               BuildableName = "ScootRadarTests.xctest"
+               BlueprintName = "ScootRadarTests"
+               ReferencedContainer = "container:ScootRadar.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -70,9 +70,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D00000000000000000000002"
-            BuildableName = "SwissScooters.app"
-            BlueprintName = "SwissScooters"
-            ReferencedContainer = "container:SwissScooters.xcodeproj">
+            BuildableName = "ScootRadar.app"
+            BlueprintName = "ScootRadar"
+            ReferencedContainer = "container:ScootRadar.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -86,9 +86,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D00000000000000000000002"
-            BuildableName = "SwissScooters.app"
-            BlueprintName = "SwissScooters"
-            ReferencedContainer = "container:SwissScooters.xcodeproj">
+            BuildableName = "ScootRadar.app"
+            BlueprintName = "ScootRadar"
+            ReferencedContainer = "container:ScootRadar.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

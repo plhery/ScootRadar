@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		A00000000000000000000017 /* ScooterAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000001F /* ScooterAnalytics.swift */; };
 		A00000000000000000000016 /* ScooterUserLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000001E /* ScooterUserLocationView.swift */; };
-		A00000000000000000000001 /* SwissScootersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000001 /* SwissScootersApp.swift */; };
+		A00000000000000000000001 /* ScootRadarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000001 /* ScootRadarApp.swift */; };
 		A00000000000000000000002 /* ScooterModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000002 /* ScooterModels.swift */; };
 		A00000000000000000000003 /* ScooterAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000003 /* ScooterAPI.swift */; };
 		A00000000000000000000004 /* ScooterMapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000004 /* ScooterMapModel.swift */; };
@@ -43,14 +43,14 @@
 			containerPortal = D00000000000000000000001 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D00000000000000000000002;
-			remoteInfo = SwissScooters;
+			remoteInfo = ScootRadar;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		B0000000000000000000001F /* ScooterAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterAnalytics.swift; sourceTree = "<group>"; };
 		B0000000000000000000001E /* ScooterUserLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterUserLocationView.swift; sourceTree = "<group>"; };
-		B00000000000000000000001 /* SwissScootersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwissScootersApp.swift; sourceTree = "<group>"; };
+		B00000000000000000000001 /* ScootRadarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScootRadarApp.swift; sourceTree = "<group>"; };
 		B00000000000000000000002 /* ScooterModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterModels.swift; sourceTree = "<group>"; };
 		B00000000000000000000003 /* ScooterAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterAPI.swift; sourceTree = "<group>"; };
 		B00000000000000000000004 /* ScooterMapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterMapModel.swift; sourceTree = "<group>"; };
@@ -58,14 +58,14 @@
 		B00000000000000000000006 /* ScooterControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterControls.swift; sourceTree = "<group>"; };
 		B00000000000000000000007 /* ScooterMapScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterMapScreen.swift; sourceTree = "<group>"; };
 		B00000000000000000000008 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B00000000000000000000009 /* SwissScooters.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwissScooters.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B00000000000000000000009 /* ScootRadar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScootRadar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0000000000000000000000A /* ScooterFiltering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterFiltering.swift; sourceTree = "<group>"; };
 		B00000000000000000000020 /* ScooterMapLook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterMapLook.swift; sourceTree = "<group>"; };
 		B00000000000000000000021 /* ScooterMarkerArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterMarkerArt.swift; sourceTree = "<group>"; };
 		B00000000000000000000022 /* ScooterMapLookTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterMapLookTests.swift; sourceTree = "<group>"; };
 		B00000000000000000000023 /* ScooterLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterLanguage.swift; sourceTree = "<group>"; };
 		B00000000000000000000024 /* ScooterSettingsTiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterSettingsTiles.swift; sourceTree = "<group>"; };
-		B0000000000000000000000B /* SwissScootersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwissScootersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B0000000000000000000000B /* ScootRadarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScootRadarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0000000000000000000000C /* GeoBoundsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoBoundsTests.swift; sourceTree = "<group>"; };
 		B0000000000000000000000D /* ScooterModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterModelsTests.swift; sourceTree = "<group>"; };
 		B0000000000000000000000E /* ScooterFilteringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterFilteringTests.swift; sourceTree = "<group>"; };
@@ -108,8 +108,8 @@
 		C00000000000000000000000 = {
 			isa = PBXGroup;
 			children = (
-				C00000000000000000000002 /* SwissScooters */,
-				C00000000000000000000007 /* SwissScootersTests */,
+				C00000000000000000000002 /* ScootRadar */,
+				C00000000000000000000007 /* ScootRadarTests */,
 				C00000000000000000000008 /* Frameworks */,
 				C00000000000000000000001 /* Products */,
 			);
@@ -118,16 +118,16 @@
 		C00000000000000000000001 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B00000000000000000000009 /* SwissScooters.app */,
-				B0000000000000000000000B /* SwissScootersTests.xctest */,
+				B00000000000000000000009 /* ScootRadar.app */,
+				B0000000000000000000000B /* ScootRadarTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C00000000000000000000002 /* SwissScooters */ = {
+		C00000000000000000000002 /* ScootRadar */ = {
 			isa = PBXGroup;
 			children = (
-				B00000000000000000000001 /* SwissScootersApp.swift */,
+				B00000000000000000000001 /* ScootRadarApp.swift */,
 				C00000000000000000000003 /* Models */,
 				C00000000000000000000004 /* Services */,
 				C00000000000000000000005 /* ViewModels */,
@@ -136,7 +136,7 @@
 				C00000000000000000000009 /* Localizable.strings */,
 				C0000000000000000000000A /* InfoPlist.strings */,
 			);
-			path = SwissScooters;
+			path = ScootRadar;
 			sourceTree = "<group>";
 		};
 		C00000000000000000000003 /* Models */ = {
@@ -184,7 +184,7 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		C00000000000000000000007 /* SwissScootersTests */ = {
+		C00000000000000000000007 /* ScootRadarTests */ = {
 			isa = PBXGroup;
 			children = (
 				B0000000000000000000000C /* GeoBoundsTests.swift */,
@@ -194,7 +194,7 @@
 				B00000000000000000000010 /* ScooterMapModelTests.swift */,
 				B00000000000000000000011 /* ScooterAPITests.swift */,
 			);
-			path = SwissScootersTests;
+			path = ScootRadarTests;
 			sourceTree = "<group>";
 		};
 		C00000000000000000000008 /* Frameworks */ = {
@@ -233,9 +233,9 @@
 /* End PBXVariantGroup section */
 
 /* Begin PBXNativeTarget section */
-		D00000000000000000000002 /* SwissScooters */ = {
+		D00000000000000000000002 /* ScootRadar */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = G00000000000000000000002 /* Build configuration list for PBXNativeTarget "SwissScooters" */;
+			buildConfigurationList = G00000000000000000000002 /* Build configuration list for PBXNativeTarget "ScootRadar" */;
 			buildPhases = (
 				E00000000000000000000001 /* Sources */,
 				E00000000000000000000002 /* Frameworks */,
@@ -245,14 +245,14 @@
 			);
 			dependencies = (
 			);
-			name = SwissScooters;
-			productName = SwissScooters;
-			productReference = B00000000000000000000009 /* SwissScooters.app */;
+			name = ScootRadar;
+			productName = ScootRadar;
+			productReference = B00000000000000000000009 /* ScootRadar.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D00000000000000000000003 /* SwissScootersTests */ = {
+		D00000000000000000000003 /* ScootRadarTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = G00000000000000000000003 /* Build configuration list for PBXNativeTarget "SwissScootersTests" */;
+			buildConfigurationList = G00000000000000000000003 /* Build configuration list for PBXNativeTarget "ScootRadarTests" */;
 			buildPhases = (
 				E00000000000000000000004 /* Sources */,
 				E00000000000000000000005 /* Frameworks */,
@@ -263,9 +263,9 @@
 			dependencies = (
 				H00000000000000000000002 /* PBXTargetDependency */,
 			);
-			name = SwissScootersTests;
-			productName = SwissScootersTests;
-			productReference = B0000000000000000000000B /* SwissScootersTests.xctest */;
+			name = ScootRadarTests;
+			productName = ScootRadarTests;
+			productReference = B0000000000000000000000B /* ScootRadarTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -287,7 +287,7 @@
 					};
 				};
 			};
-			buildConfigurationList = G00000000000000000000001 /* Build configuration list for PBXProject "SwissScooters" */;
+			buildConfigurationList = G00000000000000000000001 /* Build configuration list for PBXProject "ScootRadar" */;
 			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -303,8 +303,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D00000000000000000000002 /* SwissScooters */,
-				D00000000000000000000003 /* SwissScootersTests */,
+				D00000000000000000000002 /* ScootRadar */,
+				D00000000000000000000003 /* ScootRadarTests */,
 			);
 		};
 /* End PBXProject section */
@@ -334,7 +334,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A00000000000000000000001 /* SwissScootersApp.swift in Sources */,
+				A00000000000000000000001 /* ScootRadarApp.swift in Sources */,
 				A00000000000000000000002 /* ScooterModels.swift in Sources */,
 				A00000000000000000000003 /* ScooterAPI.swift in Sources */,
 				A00000000000000000000004 /* ScooterMapModel.swift in Sources */,
@@ -373,7 +373,7 @@
 /* Begin PBXTargetDependency section */
 		H00000000000000000000002 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D00000000000000000000002 /* SwissScooters */;
+			target = D00000000000000000000002 /* ScootRadar */;
 			targetProxy = H00000000000000000000001 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -576,7 +576,7 @@
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwissScooters.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SwissScooters";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScootRadar.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ScootRadar";
 			};
 			name = Debug;
 		};
@@ -599,14 +599,14 @@
 				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SwissScooters.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SwissScooters";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScootRadar.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ScootRadar";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		G00000000000000000000001 /* Build configuration list for PBXProject "SwissScooters" */ = {
+		G00000000000000000000001 /* Build configuration list for PBXProject "ScootRadar" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F00000000000000000000001 /* Debug */,
@@ -615,7 +615,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		G00000000000000000000002 /* Build configuration list for PBXNativeTarget "SwissScooters" */ = {
+		G00000000000000000000002 /* Build configuration list for PBXNativeTarget "ScootRadar" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F00000000000000000000003 /* Debug */,
@@ -624,7 +624,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		G00000000000000000000003 /* Build configuration list for PBXNativeTarget "SwissScootersTests" */ = {
+		G00000000000000000000003 /* Build configuration list for PBXNativeTarget "ScootRadarTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F00000000000000000000005 /* Debug */,

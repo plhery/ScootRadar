@@ -28,7 +28,7 @@ Thanks for helping improve ScootRadar.
    npm run test:e2e
    ```
 
-6. If native code changed, run the `SwissScooters` unit-test scheme in Xcode.
+6. If native code changed, run the `ScootRadar` unit-test scheme in Xcode.
 7. Open a pull request using the repository template.
 
 Provider names, colors, marker labels, and upstream system-ID matches live in

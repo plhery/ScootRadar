@@ -8,8 +8,8 @@ installed.
 
 ## Run it on your iPhone
 
-1. Install Xcode 26 or newer and open `SwissScooters.xcodeproj`.
-2. Select the **SwissScooters** target, open **Signing & Capabilities**, and
+1. Install Xcode 26 or newer and open `ScootRadar.xcodeproj`.
+2. Select the **ScootRadar** target, open **Signing & Capabilities**, and
    choose your Personal Team. Change the bundle identifier if Xcode asks for a
    unique one.
 3. Connect the iPhone, enable Developer Mode if prompted, select it as the run
@@ -21,7 +21,7 @@ installed.
 No API keys or third-party packages are required.
 
 To rebuild and reinstall the app on a phone while renewing its free provisioning
-profile, set `SWISS_SCOOTERS_DEVICE_NAME` to the iPhone's name and run the
+profile, set `SCOOTRADAR_DEVICE_NAME` to the iPhone's name and run the
 repository-level `scripts/refresh-ios-app.sh`.
 
 ## What the app shows
@@ -174,15 +174,15 @@ changes when it is rebuilt and reinstalled; a web deployment does not update it.
   English text. A new string needs an entry in all four.
 
 The Xcode project lists its files one by one, so a new Swift file has to be added
-to `SwissScooters.xcodeproj` as well.
+to `ScootRadar.xcodeproj` as well.
 
 ## Tests
 
-`SwissScootersTests` covers the models, the filters, both API clients, the screen
+`ScootRadarTests` covers the models, the filters, both API clients, the screen
 model and that the main states render. Run them in Xcode with **Product › Test**,
 or from the repository root:
 
 ```sh
-xcodebuild test -project ios/SwissScooters.xcodeproj -scheme SwissScooters \
+xcodebuild test -project ios/ScootRadar.xcodeproj -scheme ScootRadar \
   -destination 'platform=iOS Simulator,name=iPhone 17' CODE_SIGNING_ALLOWED=NO
 ```

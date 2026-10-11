@@ -28,7 +28,7 @@ const PNGS = {
   'public/icon-192.png': 192,
   'public/icon-512.png': 512,
   'public/icon-master.png': 1254,
-  'ios/SwissScooters/Assets.xcassets/AppIcon.appiconset/AppIcon.png': 1024,
+  'ios/ScootRadar/Assets.xcassets/AppIcon.appiconset/AppIcon.png': 1024,
 };
 const FAVICON = { file: 'src/app/favicon.ico', sizes: [16, 32, 48] };
 

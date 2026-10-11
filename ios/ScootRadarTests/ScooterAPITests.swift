@@ -1,7 +1,7 @@
 import Foundation
 import MapKit
 import XCTest
-@testable import SwissScooters
+@testable import ScootRadar
 
 final class ScooterAPITests: XCTestCase {
     func testParkingIsDecodedSeparatelyFromVehiclesAndLegacyResponsesStillWork() async throws {

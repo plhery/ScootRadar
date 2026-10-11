@@ -2,7 +2,7 @@ import CoreLocation
 import MapKit
 import UIKit
 import XCTest
-@testable import SwissScooters
+@testable import ScootRadar
 
 final class ScooterMapLookTests: XCTestCase {
     // MARK: Heads

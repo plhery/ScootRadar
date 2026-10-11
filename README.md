@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/plhery/swiss-scooters/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/plhery/swiss-scooters/ci.yml?branch=main&style=flat-square&label=CI" alt="CI status"></a>
+  <a href="https://github.com/plhery/ScootRadar/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/plhery/ScootRadar/ci.yml?branch=main&style=flat-square&label=CI" alt="CI status"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square" alt="MIT license"></a>
   <img src="https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js" alt="Next.js 16">
   <img src="https://img.shields.io/badge/Cloudflare-Workers-f38020?style=flat-square&logo=cloudflare" alt="Cloudflare Workers">
@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/swiss-scooters-map.png" width="390" alt="ScootRadar showing fictional demo scooters around Zürich on a phone">
+  <img src="docs/scootradar-map.png" width="390" alt="ScootRadar showing fictional demo scooters around Zürich on a phone">
 </p>
 
 ScootRadar puts the shared scooters of eight providers on one map, in an
@@ -55,8 +55,8 @@ for the city list, live-check command, and source terms to review before deploym
 You need Node.js 26+ and npm.
 
 ```bash
-git clone https://github.com/plhery/swiss-scooters.git
-cd swiss-scooters
+git clone https://github.com/plhery/ScootRadar.git
+cd ScootRadar
 npm ci
 npm run dev
 ```
@@ -112,8 +112,8 @@ rollback notes.
 
 ## iPhone app
 
-Open `ios/SwissScooters.xcodeproj` in Xcode 26+, choose a development team, and
-run the `SwissScooters` scheme. More details are in [ios/README.md](ios/README.md).
+Open `ios/ScootRadar.xcodeproj` in Xcode 26+, choose a development team, and
+run the `ScootRadar` scheme. More details are in [ios/README.md](ios/README.md).
 
 ## Data, privacy, and contributing
 

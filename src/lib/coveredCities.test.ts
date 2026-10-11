@@ -112,7 +112,7 @@ describe('iOS city catalogue', () => {
   // scripts/generate-provider-catalog.mjs repeats the merge in plain JavaScript;
   // the iOS app must offer exactly the cities the web app does.
   it('is generated with the same cities, in the same order', () => {
-    const swift = readFileSync('ios/SwissScooters/Models/ProviderCatalog.generated.swift', 'utf8');
+    const swift = readFileSync('ios/ScootRadar/Models/ProviderCatalog.generated.swift', 'utf8');
     const text = '("(?:[^"\\\\]|\\\\.)*")';
     const number = '(-?[\\d.]+)';
     const pattern = new RegExp(

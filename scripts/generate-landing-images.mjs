@@ -10,7 +10,7 @@
 // landing": create it once, or name another, by its name or its identifier.
 //
 //   xcrun simctl create "Scooters landing" "iPhone 18 Pro"
-//   SWISS_SCOOTERS_SIMULATOR="iPhone 18 Pro" npm run generate:landing-images
+//   SCOOTRADAR_SIMULATOR="iPhone 18 Pro" npm run generate:landing-images
 //
 // The run builds the app and installs it afresh, so what that simulator held
 // of the app is lost. The app shows the live data, which the server renews
@@ -35,7 +35,7 @@ import sharp from 'sharp';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(root, 'public/landing');
-const SIMULATOR = process.env.SWISS_SCOOTERS_SIMULATOR ?? 'Scooters landing';
+const SIMULATOR = process.env.SCOOTRADAR_SIMULATOR ?? 'Scooters landing';
 const BUNDLE = 'com.plhery.zurichscooters';
 const API = 'https://scootradar.com/api/scooters';
 
@@ -117,8 +117,8 @@ try {
     'xcodebuild',
     [
       'build', '-quiet',
-      '-project', path.join(root, 'ios/SwissScooters.xcodeproj'),
-      '-scheme', 'SwissScooters',
+      '-project', path.join(root, 'ios/ScootRadar.xcodeproj'),
+      '-scheme', 'ScootRadar',
       '-destination', `platform=iOS Simulator,id=${udid}`,
       '-derivedDataPath', derived,
       'CODE_SIGNING_ALLOWED=NO',
@@ -126,7 +126,7 @@ try {
     { maxBuffer: 256 * 1024 * 1024 }
   );
   await simctl('uninstall', udid, BUNDLE).catch(() => {});
-  await simctl('install', udid, path.join(derived, 'Build/Products/Debug-iphonesimulator/SwissScooters.app'));
+  await simctl('install', udid, path.join(derived, 'Build/Products/Debug-iphonesimulator/ScootRadar.app'));
   await simctl(
     'status_bar', udid, 'override',
     '--time', '09:41',

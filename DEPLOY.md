@@ -121,7 +121,7 @@ app name and canonical domain are ScootRadar and `scootradar.com`.
 
 - Coolify project: `wj03x2nl1vvq9pqdnj9a5177` (Swiss Scooters).
 - Application: `mouc13tsnvylg0v9ee9wp5v5` (Scooter feed cache).
-- Repository: `plhery/swiss-scooters`, branch `main`, Dockerfile `/server/Dockerfile`.
+- Repository: `plhery/ScootRadar`, branch `main`, Dockerfile `/server/Dockerfile`.
 - Origin: `https://scooter-data.plhery.com`, container port 3001.
 - Persistent named volume: `mouc13tsnvylg0v9ee9wp5v5-scooter-snapshots`, mounted at `/data`.
 - Resource limits: 1 CPU, 1536 MiB. No host port is exposed.

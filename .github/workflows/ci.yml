@@ -48,8 +48,8 @@ jobs:
       - name: Run iOS tests
         run: >-
           xcodebuild test
-          -project ios/SwissScooters.xcodeproj
-          -scheme SwissScooters
+          -project ios/ScootRadar.xcodeproj
+          -scheme ScootRadar
           -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=latest'
-          -derivedDataPath "$RUNNER_TEMP/SwissScootersDerivedData"
+          -derivedDataPath "$RUNNER_TEMP/ScootRadarDerivedData"
           CODE_SIGNING_ALLOWED=NO

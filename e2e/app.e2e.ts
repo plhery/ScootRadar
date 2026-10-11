@@ -1676,7 +1676,7 @@ test('the settings name the languages, and About leads to the credits, the priva
   await expect(settings.getByRole('button', { name: 'Map & data credits' })).toBeFocused();
 
   const source = settings.getByRole('link', { name: 'Source code on GitHub' });
-  await expect(source).toHaveAttribute('href', 'https://github.com/plhery/swiss-scooters');
+  await expect(source).toHaveAttribute('href', 'https://github.com/plhery/ScootRadar');
   await expect(source).toHaveAttribute('target', '_blank');
 
   // Escape closes the sheet and the keyboard is back where it left.

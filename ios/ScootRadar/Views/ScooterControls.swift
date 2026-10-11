@@ -1881,7 +1881,7 @@ struct ScooterSettingsSheet: View {
 
 enum ScooterLinks {
     static let privacyNotice = URL(string: "https://scootradar.com/privacy")!
-    static let sourceCode = URL(string: "https://github.com/plhery/swiss-scooters")!
+    static let sourceCode = URL(string: "https://github.com/plhery/ScootRadar")!
 }
 
 /// Settings › About › Privacy: the one choice about usage data, and the notice.

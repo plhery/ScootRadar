@@ -71,7 +71,7 @@ Existing operator data terms continue to apply; public access does not replace t
 ```sh
 npm run check:europe
 node scripts/check-french-feeds.mjs --countries=FR,DE,IT --json
-SWISS_SCOOTERS_BASE_URL=http://127.0.0.1:3001 node scripts/check-map-performance.mjs
+SCOOTRADAR_BASE_URL=http://127.0.0.1:3001 node scripts/check-map-performance.mjs
 ```
 
 The checker compares the catalog with Dott's listing of each country, and the

@@ -1,7 +1,7 @@
 import type { AppLocale } from '@/lib/i18n';
 import type { RidePricing } from '@/lib/types';
 
-// The web counterpart of RidePriceEstimator in ios/SwissScooters/Models/ScooterModels.swift,
+// The web counterpart of RidePriceEstimator in ios/ScootRadar/Models/ScooterModels.swift,
 // without ride passes.
 
 export const RIDE_DURATIONS = [5, 10, 15, 20, 30] as const;
