@@ -275,6 +275,7 @@ describe('ControlSheet settings', () => {
     const links = within(credits).getAllByRole('link');
     expect(links.map(link => link.textContent)).toEqual([
       '© OpenStreetMap contributors',
+      'OpenFreeMap © OpenMapTiles',
       'Mobility data CH',
       'France: Dott, Bird, Lime, Voi, Pony',
       'MobiData BW',

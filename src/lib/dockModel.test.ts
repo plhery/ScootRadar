@@ -36,6 +36,7 @@ function input(overrides: Partial<DockInput> = {}): DockInput {
   return {
     count: 22,
     originInViewport: false,
+    nearest: null,
     loading: null,
     failure: null,
     outOfDate: false,
@@ -72,6 +73,32 @@ describe('originInViewport', () => {
   });
 });
 
+describe('dock lead', () => {
+  const nearest = { provider: 'voi', distanceM: 126, place: null };
+
+  it('leads with the nearest scooter while the walk starts on screen', () => {
+    expect(summary({ originInViewport: true, nearest }).lead)
+      .toEqual({ provider: 'voi', name: 'Voi', distanceM: 126, minutes: 2, place: null });
+  });
+
+  it('says which place the walk starts from', () => {
+    expect(summary({ originInViewport: true, nearest: { ...nearest, place: 'Zürich HB' } }).lead?.place).toBe('Zürich HB');
+  });
+
+  it('keeps the count in front when the walk starts off screen, or nowhere', () => {
+    expect(summary({ nearest }).lead).toBeNull();
+    expect(summary({ originInViewport: true }).lead).toBeNull();
+  });
+
+  it('has no nearest scooter when the filters leave none', () => {
+    expect(summary({ originInViewport: true, nearest, count: 0, providerCounts: {} }).lead).toBeNull();
+  });
+
+  it('still counts for a screen reader behind the nearest scooter', () => {
+    expect(summary({ originInViewport: true, nearest }).count.value).toBe(22);
+  });
+});
+
 describe('dock count', () => {
   it('says "nearby" while the origin is in the viewport and "on this map" otherwise', () => {
     expect(summary({ originInViewport: true }).count)
@@ -95,6 +122,7 @@ describe('dock count', () => {
       kind: 'summary',
       phase: 'finding',
       count: { value: null, label: { key: 'dock.finding' } },
+      lead: null,
       status: null,
       retry: false,
       busy: true,

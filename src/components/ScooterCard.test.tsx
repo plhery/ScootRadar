@@ -21,8 +21,17 @@ function renderCard(selection: Partial<SelectedVehicle> = {}, vehicle: Partial<V
   };
   const card = (isLocating: boolean) => <I18nProvider><ScooterCard {...props} locating={isLocating} /></I18nProvider>;
   const view = render(card(locating));
-  return { ...props, setLocating: (isLocating: boolean) => view.rerender(card(isLocating)) };
+  return { ...props, setLocating: (isLocating: boolean) => view.rerender(card(isLocating)), unmount: view.unmount };
 }
+
+const plain = (text: string | null | undefined) => text?.replace(/\s+/g, ' ') ?? null;
+/** The figures of the card: the number with its unit, what it measures, and what a screen reader hears instead. */
+const figures = () => [...document.querySelectorAll('.card-figure')].map(figure => ({
+  value: plain(figure.querySelector('strong')?.textContent),
+  label: plain(figure.querySelector('.card-figure-label')?.textContent),
+  spoken: plain(figure.querySelector('.sr-only')?.textContent),
+}));
+const facts = () => document.querySelector('.card-title p');
 
 beforeEach(() => {
   localStorage.clear();
@@ -75,59 +84,145 @@ describe('ScooterCard', () => {
     expect(screen.queryByText('Finding your location…')).not.toBeInTheDocument();
   });
 
-  it('names the battery and the range for a screen reader, which the icons do not', () => {
+  it('sets the walk, the distance and the price as three figures, and the rest in a line under the name', () => {
     renderCard();
 
-    // Read as "Battery 82%" and "Range 24 km": without the words, "24 km" follows the walking distance unexplained.
-    expect(screen.getByText('82%')).toHaveTextContent(/^Battery 82%$/);
-    expect(screen.getByText('24 km')).toHaveTextContent(/^Range 24 km$/);
-    expect(screen.getByText('Battery')).toHaveClass('sr-only');
-    expect(screen.getByText('Range')).toHaveClass('sr-only');
+    expect(figures()).toEqual([
+      { value: '2min', label: 'on foot', spoken: '≈2 min walk · 126 m' },
+      { value: '126m', label: 'away', spoken: null },
+      { value: '4.50', label: 'CHF, 10 min', spoken: '≈ CHF 4.50 for 10 min' },
+    ]);
+    expect(facts()).toHaveTextContent(/^82% battery, 24 km range$/);
+    expect(screen.getByText('CHF 1.00 to unlock, then CHF 0.35 a minute')).toHaveClass('card-note');
   });
 
-  it.each([['de', 'Akku 82%', 'Reichweite 24 km'], ['fr', 'Batterie 82%', 'Autonomie 24 km'], ['it', 'Batteria 82%', 'Autonomia 24 km']])(
-    'names them in %s',
-    async (locale, battery, range) => {
-      localStorage.setItem('scooters-locale', locale);
-      renderCard();
+  it('says a figure to a screen reader in one sentence instead of its parts', () => {
+    renderCard();
 
-      expect(await screen.findByText(battery.split(' ')[0])).toHaveClass('sr-only');
-      expect(screen.getByText('82%')).toHaveTextContent(battery);
-      expect(screen.getByText('24 km')).toHaveTextContent(range);
+    const [walk, distance, price] = document.querySelectorAll('.card-figure');
+    for (const figure of [walk, price]) {
+      expect(figure).not.toHaveAttribute('aria-hidden');
+      expect(figure.querySelector('strong')).toHaveAttribute('aria-hidden', 'true');
+      expect(figure.querySelector('.card-figure-label')).toHaveAttribute('aria-hidden', 'true');
     }
-  );
+    // The distance is said with the walk.
+    expect(distance).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  it('says where the walk starts under its figure', () => {
+    renderCard({ walk: { distanceM: 1_420, place: 'Zürich HB' } });
+
+    expect(figures().slice(0, 2)).toEqual([
+      { value: '18min', label: 'from Zürich HB', spoken: '≈18 min walk from Zürich HB · 1.4 km' },
+      { value: '1.4km', label: 'away', spoken: null },
+    ]);
+  });
+
+  it('wears the colour and the initial of the provider', () => {
+    renderCard();
+
+    const symbol = document.querySelector('.card-symbol')!;
+    expect(symbol).toHaveTextContent(/^L$/);
+    expect(symbol).toHaveAttribute('aria-hidden', 'true');
+    const card = document.querySelector<HTMLElement>('.scooter-card')!;
+    expect(card.style.getPropertyValue('--provider-color')).toContain('--provider-lime');
+    expect(card.style.getPropertyValue('--provider-ink')).toContain('--provider-lime-ink');
+  });
+
+  it('puts the battery among the figures when there is no price to show', () => {
+    renderCard({}, { pricing: undefined });
+
+    // Read as "Battery 82%": the number alone would follow the distance unexplained.
+    expect(figures()[2]).toEqual({ value: '82%', label: 'battery', spoken: 'Battery 82%' });
+    expect(facts()).toHaveTextContent(/^24 km range$/);
+    expect(screen.getByText('Price shown in the Lime app')).toHaveClass('card-note');
+    expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
+  });
+
+  it('puts the range there when the battery is not known either', () => {
+    renderCard({}, { pricing: undefined, battery: null });
+
+    expect(figures()[2]).toEqual({ value: '24km', label: 'range', spoken: 'Range 24 km' });
+    expect(facts()).toBeNull();
+  });
+
+  it('shows what is known of the scooter itself without a place to walk from', () => {
+    renderCard({ walk: null });
+
+    expect(figures()).toEqual([
+      { value: '82%', label: 'battery', spoken: 'Battery 82%' },
+      { value: '24km', label: 'range', spoken: 'Range 24 km' },
+      { value: '4.50', label: 'CHF, 10 min', spoken: '≈ CHF 4.50 for 10 min' },
+    ]);
+  });
 
   it.each([
-    [82, 'pill-good'],
-    [50, 'pill-good'],
-    [49, 'pill-low'],
-    [20, 'pill-low'],
-    [19, 'pill-critical'],
-    [0, 'pill-critical'],
-  ])('shows a battery of %i%% with its number, coloured as %s', (battery, level) => {
-    renderCard({}, { battery });
+    ['de', ['Akku', 'Reichweite', 'CHF, 10 Min.'], ['Akku 82%', 'Reichweite 24 km']],
+    ['fr', ['de batterie', 'd’autonomie', 'CHF, 10 min'], ['Batterie 82%', 'Autonomie 24 km']],
+    ['it', ['di batteria', 'di autonomia', 'CHF, 10 min'], ['Batteria 82%', 'Autonomia 24 km']],
+  ])('names them in %s', async (locale, labels, spoken) => {
+    localStorage.setItem('scooters-locale', locale);
+    renderCard({ walk: null });
 
-    expect(screen.getByText(`${battery}%`)).toHaveClass('pill', level);
+    await screen.findByText(labels[0]);
+    expect(figures().map(figure => figure.label)).toEqual(labels);
+    expect(figures().slice(0, 2).map(figure => figure.spoken)).toEqual(spoken);
+  });
+
+  it.each([
+    ['de', '2Min.', 'zu Fuss', 'entfernt', '82% Akku, 24 km Reichweite', 'CHF 1.00 zum Entsperren, dann CHF 0.35 pro Minute'],
+    ['fr', '2min', 'à pied', 'de distance', '82 % de batterie, 24 km d’autonomie', '1.00 CHF pour déverrouiller, puis 0.35 CHF par minute'],
+    ['it', '2min', 'a piedi', 'di distanza', '82% di batteria, 24 km di autonomia', 'CHF 1.00 per sbloccare, poi CHF 0.35 al minuto'],
+  ])('writes the walk, the line under the name and the tariff in %s', async (locale, walk, onFoot, away, line, tariff) => {
+    localStorage.setItem('scooters-locale', locale);
+    renderCard();
+
+    await screen.findByText(onFoot);
+    expect(figures().slice(0, 2).map(({ value, label }) => [value, label])).toEqual([[walk, onFoot], ['126m', away]]);
+    expect(plain(facts()?.textContent)).toBe(line);
+    expect(plain(document.querySelector('.card-note')?.textContent)).toBe(tariff);
+  });
+
+  it.each([
+    [82, null],
+    [50, null],
+    [49, 'low'],
+    [20, 'low'],
+    [19, 'critical'],
+    [0, 'critical'],
+  ])('says a battery of %i%% in its colour (%s), among the figures and under the name', (battery, level) => {
+    const among = renderCard({}, { battery, pricing: undefined });
+    expect(document.querySelectorAll('.card-figure')[2].className)
+      .toBe(level ? `card-figure card-figure-${level}` : 'card-figure');
+    among.unmount();
+
+    renderCard({}, { battery });
+    expect(facts()).toHaveTextContent(`${battery}% battery, 24 km range`);
+    expect(facts()?.className ?? '').toBe(level ? `card-facts-${level}` : '');
   });
 
   it('leaves out what the provider does not say', () => {
     renderCard({}, { battery: null, range_m: null });
 
+    expect(facts()).toBeNull();
     expect(screen.queryByText(/%$/)).not.toBeInTheDocument();
     expect(screen.queryByText(/km$/)).not.toBeInTheDocument();
+    expect(figures().map(figure => figure.label)).toEqual(['on foot', 'away', 'CHF, 10 min']);
   });
 
-  it('shows the range', () => {
-    renderCard();
+  it('has no figures at all when nothing is known and there is no place to walk from', () => {
+    renderCard({ walk: null }, { battery: null, range_m: null, pricing: undefined });
 
-    expect(screen.getByText('24 km')).toHaveClass('pill');
+    expect(document.querySelector('.card-figures')).toBeNull();
+    expect(screen.getByText('Price shown in the Lime app')).toBeVisible();
+    expect(screen.getByRole('link', { name: 'Directions' })).toBeVisible();
   });
 
-  it('says that the price is in the provider app when there is no tariff', () => {
-    renderCard({}, { pricing: undefined });
+  it('says so when unlocking costs nothing', () => {
+    renderCard({}, { pricing: { currency: 'CHF', unlock_fee_minor_units: 0, minute_fee_minor_units: 45 } });
 
-    expect(screen.getByText('Price shown in the Lime app')).toHaveClass('pill');
-    expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
+    expect(screen.getByText('No unlock fee, CHF 0.45 a minute')).toHaveClass('card-note');
+    expect(figures()[2].value).toBe('4.50');
   });
 
   it('opens the provider app with the app’s blue button, next to directions', () => {
@@ -171,6 +266,7 @@ describe('ScooterCard', () => {
     try {
       fireEvent.change(picker, { target: { value: '20' } });
       expect(screen.getByText(/for 20 min/)).toHaveTextContent('≈ CHF 8.00 for 20 min');
+      expect(figures()[2]).toMatchObject({ value: '8.00', label: 'CHF, 20 min' });
       expect(screen.getByRole('combobox', { name: 'Ride estimate, 20 minutes. Change duration.' })).toHaveValue('20');
       expect(localStorage.getItem('scooters-ride-minutes')).toBe('20');
     } finally {

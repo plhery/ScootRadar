@@ -7,6 +7,7 @@ import {
   type DockChip,
   type DockChips,
   type DockIssue,
+  type DockLead,
   type DockModel,
   type DockStatus,
 } from '@/lib/dockModel';
@@ -16,6 +17,7 @@ import { formatFilterSummary } from '@/lib/nothingToShow';
 import { providerSurfaceColor } from '@/lib/providerColor';
 import { PROVIDERS } from '@/lib/types';
 import { formatUiText } from '@/lib/uiText';
+import { distanceParts, formatDistance } from '@/lib/walking';
 import Icon from './Icon';
 import ParkingCard, { type SelectedParking } from './ParkingCard';
 import ScooterCard, { type SelectedVehicle } from './ScooterCard';
@@ -44,6 +46,8 @@ interface BottomSheetProps {
   /** Fetches at once; "Try again" exists only where a failure is shown. */
   onRetry: () => void;
   onCitySelect: (city: NearbyCoveredCity) => void;
+  /** Opens the card of the nearest scooter, from the first line of the dock. */
+  onSelectNearest: () => void;
   onLocate: () => void;
   /** The location asked for from a card is on its way. */
   locating?: boolean;
@@ -64,6 +68,47 @@ function StatusText({ status }: { status: DockStatus }) {
       {status.kind === 'failure' && <Icon name="warning" size={13} strokeWidth={2.2} />}
       <span>{formatUiText(status.text, i18n)}</span>
     </div>
+  );
+}
+
+/**
+ * The first line of the dock while the walk starts on screen: how far the
+ * nearest scooter is, whose it is and how long on foot. Pressing it opens its card.
+ */
+function LeadLine({ lead, onSelect }: { lead: DockLead; onSelect: () => void }) {
+  const i18n = useI18n();
+  const { t, formatNumber } = i18n;
+  const distance = distanceParts(lead.distanceM, formatNumber);
+  const values = {
+    name: lead.name,
+    minutes: formatNumber(lead.minutes),
+    distance: formatDistance(lead.distanceM, i18n),
+    ...(lead.place ? { place: lead.place } : {}),
+  };
+  return (
+    <button
+      type="button"
+      className="dock-lead"
+      onClick={tap(onSelect)}
+      aria-label={t(lead.place ? 'dock.lead.ariaFrom' : 'dock.lead.aria', values)}
+    >
+      <span className="dock-lead-figure">
+        {distance.value}
+        <small>{distance.unit}</small>
+      </span>
+      <span className="dock-lead-copy">
+        <span className="dock-lead-label">{t('dock.lead.label')}</span>
+        <span className="dock-lead-detail">
+          <span
+            className="chip-dot"
+            style={{ background: providerSurfaceColor(lead.provider, '#8e8e93') }}
+            aria-hidden="true"
+          />
+          {t(lead.place ? 'dock.lead.detailFrom' : 'dock.lead.detail', values)}
+        </span>
+      </span>
+      <Icon name="chevron" size={18} className="dock-lead-chevron" />
+    </button>
   );
 }
 
@@ -99,7 +144,6 @@ function ProviderChips({ chips, onShowAll, onToggle }: {
         aria-pressed={chips.allSelected}
         aria-label={t('providers.allLabel', { count: formatNumber(chips.allCount) })}
       >
-        <Icon name="grid" size={14} />
         {t('providers.all')}
         <span className="chip-count">{formatNumber(chips.allCount)}</span>
       </button>
@@ -270,6 +314,7 @@ export default function BottomSheet({
   onEditFilters,
   onRetry,
   onCitySelect,
+  onSelectNearest,
   onLocate,
   locating = false,
 }: BottomSheetProps) {
@@ -395,11 +440,15 @@ export default function BottomSheet({
     );
   } else {
     const urgent = dock.status?.kind === 'failure';
+    // The nearest scooter says what "Live" would: the line is kept for what is not as it should be.
+    const calm = dock.status && !urgent && !(dock.lead && dock.status.kind === 'live') ? dock.status : null;
     content = (
       <>
         <div className="sheet-title-row">
           <div className="dock-summary">
-            <div className="sheet-count" aria-live="polite" aria-atomic="true">
+            {dock.lead && <LeadLine lead={dock.lead} onSelect={onSelectNearest} />}
+            {/* With the nearest scooter in front the count is on "All"; a screen reader still hears it change. */}
+            <div className={`sheet-count${dock.lead ? ' sr-only' : ''}`} aria-live="polite" aria-atomic="true">
               {dock.count.value === null ? (
                 <>
                   {dock.phase === 'finding' && <span className="mini-spinner" aria-hidden="true" />}
@@ -414,7 +463,7 @@ export default function BottomSheet({
                 </>
               )}
             </div>
-            {dock.status && !urgent && <StatusText status={dock.status} />}
+            {calm && <StatusText status={calm} />}
             {/* Stays mounted, so that a failure is announced when it appears. */}
             <div role="status">{dock.status && urgent && <StatusText status={dock.status} />}</div>
           </div>

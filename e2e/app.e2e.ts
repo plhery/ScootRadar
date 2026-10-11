@@ -169,6 +169,18 @@ test.beforeEach(async ({ page }) => {
     });
   });
 
+  // The ground of the map: its address from here, and tiles with nothing but the land on them.
+  await page.route('https://tiles.openfreemap.org/planet', route => route.fulfill({
+    contentType: 'application/json',
+    headers: { 'access-control-allow-origin': '*' },
+    body: JSON.stringify({ tiles: ['https://tiles.openfreemap.org/planet/e2e/{z}/{x}/{y}.pbf'] }),
+  }));
+  await page.route('https://tiles.openfreemap.org/planet/e2e/**', route => route.fulfill({
+    contentType: 'application/x-protobuf',
+    headers: { 'access-control-allow-origin': '*' },
+    body: '',
+  }));
+
   await page.route('**/api/scooters?**', async (route) => {
     const zoom = Number(new URL(route.request().url()).searchParams.get('zoom'));
     const response = zoom <= 15
@@ -217,7 +229,9 @@ test('does not invent a distance without location and offers walking directions'
   await expect(card.getByRole('heading', { name: 'Bird' })).toBeVisible();
   await expect(card.getByText(/min walk/)).toHaveCount(0);
   await expect(card.getByRole('button', { name: 'Turn on location to see walking time' })).toBeVisible();
-  await expect(card.getByText('64%')).toBeVisible();
+  // No walk to show: the figures are what is known of the scooter itself.
+  await expect(card.locator('.card-figure strong')).toHaveText(['64%', '10km']);
+  await expect(card.locator('.card-figure-label')).toHaveText(['battery', 'range']);
   await expect(card.getByText('Price shown in the Bird app')).toBeVisible();
   // No rental link for this scooter: directions alone.
   await expect(card.getByRole('link')).toHaveCount(1);
@@ -240,6 +254,35 @@ test('does not invent a distance without location and offers walking directions'
   await card.getByRole('button', { name: 'Close scooter details' }).click();
   await expect(card).toHaveCount(0);
   await expect(page.locator('.sheet-count')).toHaveText(/^3\s*scooters on this map$/);
+});
+
+test('scooters parked on one spot are set apart, and each takes its own press', async ({ page }) => {
+  await page.goto('/map?origin=47.3769,8.5417');
+  const lights = page.locator('.scooter-marker');
+  await expect(lights).toHaveCount(3);
+  // No pile and no number stands in for them.
+  await expect(page.locator('.cluster-marker')).toHaveCount(0);
+  // The three are within two metres of each other: drawn where they are, one would hide the others.
+  await expect(async () => {
+    const drawn = await lights.evaluateAll(elements => elements.map(element => {
+      const box = element.getBoundingClientRect();
+      return { x: box.x + box.width / 2, y: box.y + box.height / 2, size: box.width };
+    }));
+    drawn.forEach((one, index) => drawn.slice(index + 1).forEach(other => {
+      const apart = Math.hypot(one.x - other.x, one.y - other.y);
+      expect(apart).toBeGreaterThanOrEqual(Math.max(one.size, other.size));
+      // They stay around their spot.
+      expect(apart).toBeLessThan(30);
+    }));
+  }).toPass();
+
+  const card = page.locator('.dock-card');
+  for (const name of ['Lime', 'Bird', 'Bolt']) {
+    await page.getByRole('button', { name: `${name} scooter`, exact: true }).locator('.scooter-marker').click();
+    await expect(card.getByRole('heading', { name })).toBeVisible();
+    await card.getByRole('button', { name: 'Close scooter details' }).click();
+    await expect(card).toHaveCount(0);
+  }
 });
 
 test('a tap on the map closes the card, and a card that closed does not open again by itself', async ({ page }) => {
@@ -279,16 +322,31 @@ test('scooter card shows the walk, the battery and a ride estimate whose duratio
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
   // Your location is on screen, so the count says nearby.
   await expect(page.locator('.sheet-count')).toHaveText(/^3\s*scooters nearby$/);
-  // The fixtures share one spot; isolate Lime so that its marker takes the click.
+  // The dock leads with the nearest one: how far, whose, and how long on foot. The count is left to screen readers.
+  const lead = page.locator('.dock-lead');
+  await expect(lead).toHaveAccessibleName(/^Nearest scooter: Lime, \d+ m away, 1 min on foot\. Show details\.$/);
+  await expect(lead.locator('.dock-lead-figure')).toHaveText(/^\d+m$/);
+  await expect(lead.locator('.dock-lead-label')).toHaveText('to the nearest scooter');
+  await expect(lead.locator('.dock-lead-detail')).toHaveText('Lime, 1 min on foot');
+  await expect(page.locator('.sheet-count')).toHaveClass(/sr-only/);
+  expect((await lead.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  // Lime alone, which is remembered below; that line opens its card.
   await page.getByRole('button', { name: 'Lime, 1. Shown.', exact: true }).click();
-  await page.getByRole('button', { name: /^Lime scooter/ }).click();
+  await lead.click();
 
   const card = page.locator('.dock-card');
   await expect(card.getByRole('heading', { name: 'Lime' })).toBeVisible();
-  await expect(card.getByText(/^≈1 min walk · \d+ m$/)).toBeVisible();
-  await expect(card.getByText('82%')).toHaveClass(/pill-good/);
-  await expect(card.getByText('14 km')).toBeVisible();
+  await expect(page.locator('.scooter-marker-selected')).toHaveCount(1);
+  // Three figures: the walk, the distance and what ten minutes cost.
+  await expect(card.locator('.card-figure strong')).toHaveText([/^1min$/, /^\d+m$/, '4.50']);
+  await expect(card.locator('.card-figure-label')).toHaveText(['on foot', 'away', 'CHF, 10 min']);
+  // A screen reader hears the walk as one sentence.
+  await expect(card.getByText(/^≈1 min walk · \d+ m$/)).toHaveCount(1);
+  // The battery and the range are the line under the name; a good battery has no colour of its own.
+  await expect(card.locator('.card-title p')).toHaveText('82% battery, 14 km range');
+  await expect(card.locator('.card-title p')).not.toHaveClass(/card-facts-/);
   // One franc to unlock and 35 centimes a minute.
+  await expect(card.locator('.card-note')).toHaveText(/^CHF\s1\.00 to unlock, then CHF\s0\.35 a minute$/);
   await expect(card.getByText(/for 10 min/)).toHaveText(/^≈ CHF\s4\.50 for 10 min$/);
   const picker = card.getByRole('combobox', { name: 'Ride estimate, 10 minutes. Change duration.' });
   // Measured once the card has settled in: it arrives slightly scaled down.
@@ -299,6 +357,8 @@ test('scooter card shows the walk, the battery and a ride estimate whose duratio
   expect(target!.width).toBeGreaterThanOrEqual(44);
   await picker.selectOption('20');
   await expect(card.getByText(/for 20 min/)).toHaveText(/^≈ CHF\s8\.00 for 20 min$/);
+  await expect(card.locator('.card-figure strong').last()).toHaveText('8.00');
+  await expect(card.locator('.card-figure-label').last()).toHaveText('CHF, 20 min');
   await expect(card.getByRole('combobox', { name: 'Ride estimate, 20 minutes. Change duration.' })).toHaveValue('20');
   expect(await page.evaluate(() => localStorage.getItem('scooters-ride-minutes'))).toBe('20');
 
@@ -751,7 +811,7 @@ test('a load that fails says why under the search bar and recovers with Try agai
   await expect(page.locator('.sheet-count')).toHaveText('Waiting for scooter data');
   await expect(page.getByRole('group', { name: 'Filter scooters by provider' })).toHaveCount(0);
   // That line is all the dock shows: the places kept for notices and a hint are empty and take no room.
-  expect(await page.locator('.sheet-title-row').evaluate(element => getComputedStyle(element).paddingBottom)).toBe('2px');
+  expect(await page.locator('.sheet-title-row').evaluate(element => getComputedStyle(element).paddingBottom)).toBe('0px');
   for (const place of ['.dock-notes', '.dock-hint-status', '.map-status']) {
     expect(await page.locator(place).evaluate(element => element.getBoundingClientRect().height), place).toBe(0);
   }
@@ -1376,17 +1436,24 @@ const look = (page: Page) => page.evaluate(() => {
     ink: value(document.querySelector('.app-shell')!, '--ink'),
     controls: value(document.documentElement, 'color-scheme'),
     page: value(document.body, 'background-color'),
-    tiles: value(document.querySelector('.map-basemap')!, 'filter'),
+    ground: document.querySelector('.leaflet-container')!.getAttribute('data-ground'),
+    detail: document.querySelector('.app-shell')!.getAttribute('data-map'),
     bars: themeColor?.content,
   };
 });
-const LIGHT = { ink: '#1c1c1e', controls: 'normal', page: 'rgb(232, 230, 225)', bars: '#e0ddd8' };
-const DARK = { ink: '#f2f2f7', controls: 'dark', page: 'rgb(28, 28, 30)', bars: '#1c1c1e' };
-const TILES = {
-  calm: 'saturate(0.18) contrast(0.68) brightness(1.22)',
-  calmDark: 'invert(1) hue-rotate(180deg) saturate(0.65) brightness(0.85)',
-  detailed: 'none',
-  detailedDark: 'invert(1) hue-rotate(180deg)',
+/** The colour the ground is drawn in: the land of a tile, which has nothing else on it here. */
+const land = (page: Page) => page.locator('.map-basemap canvas').first().evaluate((canvas: HTMLCanvasElement) => {
+  const [red, green, blue] = canvas.getContext('2d')!.getImageData(canvas.width / 2, canvas.height / 2, 1, 1).data;
+  return `rgb(${red}, ${green}, ${blue})`;
+});
+const LIGHT = { ink: '#10131a', controls: 'normal', page: 'rgb(238, 240, 244)', bars: '#eef0f4' };
+const DARK = { ink: '#f4f5f7', controls: 'dark', page: 'rgb(11, 14, 20)', bars: '#0b0e14' };
+/** The ground follows the appearance, at one of two levels of detail. */
+const GROUND = {
+  calm: { ground: 'day', detail: 'calm' },
+  calmDark: { ground: 'night', detail: 'calm' },
+  detailed: { ground: 'day', detail: 'detailed' },
+  detailedDark: { ground: 'night', detail: 'detailed' },
 };
 
 test('the appearance follows the system until one is chosen, and the map is calm or detailed in both', async ({ page }) => {
@@ -1394,11 +1461,14 @@ test('the appearance follows the system until one is chosen, and the map is calm
   await page.goto('/map');
   await expect(page.locator('.cluster-marker')).toHaveCount(1);
   await expect(page.locator('.map-basemap')).toHaveCount(1);
-  expect(await look(page)).toEqual({ ...LIGHT, tiles: TILES.calm });
+  await expect.poll(() => look(page)).toEqual({ ...LIGHT, ...GROUND.calm });
+  // The ground is drawn in the colours of the appearance.
+  await expect.poll(() => land(page)).toBe(LIGHT.page);
 
   // Automatic: the system decides, also while the page is open.
   await page.emulateMedia({ colorScheme: 'dark' });
-  expect(await look(page)).toEqual({ ...DARK, tiles: TILES.calmDark });
+  await expect.poll(() => look(page)).toEqual({ ...DARK, ...GROUND.calmDark });
+  await expect.poll(() => land(page)).toBe(DARK.page);
   expect(new URL(page.url()).search).toBe('');
 
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
@@ -1412,7 +1482,7 @@ test('the appearance follows the system until one is chosen, and the map is calm
   // Light on a dark system.
   await appearance.getByRole('button', { name: 'Light' }).click();
   await expect(page.locator('.app-shell')).toHaveAttribute('data-theme', 'light');
-  expect(await look(page)).toEqual({ ...LIGHT, tiles: TILES.calm });
+  await expect.poll(() => look(page)).toEqual({ ...LIGHT, ...GROUND.calm });
   await expect.poll(() => new URL(page.url()).search).toBe('?theme=light');
 
   const map = settings.getByRole('group', { name: 'Map' });
@@ -1420,30 +1490,30 @@ test('the appearance follows the system until one is chosen, and the map is calm
   await expect(map.getByRole('button', { name: 'Calm' })).toHaveAttribute('aria-pressed', 'true');
   await map.getByRole('button', { name: 'Detailed' }).click();
   await expect(page.locator('.app-shell')).toHaveAttribute('data-map', 'detailed');
-  expect(await look(page)).toEqual({ ...LIGHT, tiles: TILES.detailed });
+  await expect.poll(() => look(page)).toEqual({ ...LIGHT, ...GROUND.detailed });
   await expect.poll(() => new URL(page.url()).search).toBe('?theme=light&map=detailed');
 
   // Dark on a light system.
   await page.emulateMedia({ colorScheme: 'light' });
   await appearance.getByRole('button', { name: 'Dark' }).click();
   await expect(page.locator('.app-shell')).toHaveAttribute('data-theme', 'dark');
-  expect(await look(page)).toEqual({ ...DARK, tiles: TILES.detailedDark });
+  await expect.poll(() => look(page)).toEqual({ ...DARK, ...GROUND.detailedDark });
   await map.getByRole('button', { name: 'Calm' }).click();
-  expect(await look(page)).toEqual({ ...DARK, tiles: TILES.calmDark });
+  await expect.poll(() => look(page)).toEqual({ ...DARK, ...GROUND.calmDark });
   await expect.poll(() => new URL(page.url()).search).toBe('?theme=dark');
-  // The pictures of the two map styles are inverted with the map.
-  expect(await map.locator('.map-style-preview').first().evaluate(element => getComputedStyle(element).filter)).toBe(TILES.detailedDark);
+  // The pictures of the two map styles are in the colours of the ground.
+  expect(await map.locator('.map-style-preview').first().evaluate(element => getComputedStyle(element).backgroundColor)).toBe(DARK.page);
 
   // The choice comes back with the page, and Automatic leaves nothing in the link.
   await page.reload();
   await expect(page.locator('.map-basemap')).toHaveCount(1);
-  expect(await look(page)).toEqual({ ...DARK, tiles: TILES.calmDark });
+  await expect.poll(() => look(page)).toEqual({ ...DARK, ...GROUND.calmDark });
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
   await expect(appearance.getByRole('button', { name: 'Dark' })).toHaveAttribute('aria-pressed', 'true');
   await appearance.getByRole('button', { name: 'Automatic' }).click();
-  expect(await look(page)).toEqual({ ...LIGHT, tiles: TILES.calm });
+  await expect.poll(() => look(page)).toEqual({ ...LIGHT, ...GROUND.calm });
   await expect.poll(() => new URL(page.url()).search).toBe('');
-  expect(await map.locator('.map-style-preview').first().evaluate(element => getComputedStyle(element).filter)).toBe('none');
+  expect(await map.locator('.map-style-preview').first().evaluate(element => getComputedStyle(element).backgroundColor)).toBe(LIGHT.page);
 });
 
 test.describe('before any script runs', () => {
@@ -1483,7 +1553,7 @@ test('a chosen appearance is on the page before the app starts, under the conten
   });
   const { bars: lightBars, ...light } = LIGHT;
   const { bars: darkBars, ...dark } = DARK;
-  expect([lightBars, darkBars]).toEqual(['#e0ddd8', '#1c1c1e']);
+  expect([lightBars, darkBars]).toEqual(['#eef0f4', '#0b0e14']);
 
   // Nothing chosen: the system's appearance, left to the stylesheet.
   await page.emulateMedia({ colorScheme: 'light' });
@@ -1508,16 +1578,25 @@ test('a chosen appearance is on the page before the app starts, under the conten
 });
 
 test('the tiles are not loaded again when the appearance or the map style changes', async ({ page }) => {
+  const tiles = { asked: 0, answered: 0 };
+  page.on('request', request => { if (request.url().endsWith('.pbf')) tiles.asked += 1; });
+  page.on('requestfinished', request => { if (request.url().endsWith('.pbf')) tiles.answered += 1; });
+  await page.emulateMedia({ colorScheme: 'light' });
   await page.goto('/map');
   await expect(page.locator('.cluster-marker')).toHaveCount(1);
-  // The same layer throughout: only what the stylesheet does to it differs.
+  await expect.poll(() => land(page)).toBe(LIGHT.page);
+  await expect.poll(() => tiles.asked > 0 && tiles.answered === tiles.asked).toBe(true);
+  const loaded = tiles.asked;
+  // The same layer throughout: its tiles are drawn again in other colours.
   await page.locator('.map-basemap').evaluate(element => { element.setAttribute('data-first', 'true'); });
   await page.getByRole('button', { name: 'Settings', exact: true }).click();
   const settings = page.getByRole('dialog', { name: 'Settings', exact: true });
   await settings.getByRole('button', { name: 'Dark', exact: true }).click();
   await settings.getByRole('button', { name: 'Detailed', exact: true }).click();
   await expect(page.locator('.app-shell')).toHaveAttribute('data-map', 'detailed');
+  await expect.poll(() => land(page)).toBe(DARK.page);
   await expect(page.locator('.map-basemap')).toHaveAttribute('data-first', 'true');
+  expect(tiles.asked).toBe(loaded);
 });
 
 test('links and settings saved with the old map style carry over', async ({ page }) => {
@@ -1525,13 +1604,13 @@ test('links and settings saved with the old map style carry over', async ({ page
   await page.goto('/map?tile=dark');
   await expect(page.locator('.map-basemap')).toHaveCount(1);
   await expect.poll(() => new URL(page.url()).search).toBe('?theme=dark');
-  expect(await look(page)).toEqual({ ...DARK, tiles: TILES.calmDark });
+  await expect.poll(() => look(page)).toEqual({ ...DARK, ...GROUND.calmDark });
 
   // "OSM" is the detailed map; its appearance is now the system's.
   await page.goto('/map?tile=osm');
   await expect(page.locator('.map-basemap')).toHaveCount(1);
   await expect.poll(() => new URL(page.url()).search).toBe('?map=detailed');
-  expect(await look(page)).toEqual({ ...LIGHT, tiles: TILES.detailed });
+  await expect.poll(() => look(page)).toEqual({ ...LIGHT, ...GROUND.detailed });
 
   // A home-screen launch has no link: the settings come from the device, here as an older release left them.
   await page.evaluate(() => localStorage.setItem('scooters-params', JSON.stringify({ tile: 'dark', minBattery: '45' })));
@@ -1578,8 +1657,9 @@ test('the settings name the languages, and About leads to the credits, the priva
   await settings.getByRole('button', { name: 'Map & data credits' }).click();
   const credits = page.getByRole('dialog', { name: 'Map & data credits', exact: true });
   await expect(credits.getByRole('heading', { name: 'Map & data credits', level: 2 })).toBeFocused();
-  await expect(credits.getByRole('link')).toHaveCount(7);
+  await expect(credits.getByRole('link')).toHaveCount(8);
   await expect(credits.getByRole('link', { name: '© OpenStreetMap contributors' })).toHaveAttribute('href', 'https://www.openstreetmap.org/copyright');
+  await expect(credits.getByRole('link', { name: 'OpenFreeMap © OpenMapTiles' })).toHaveAttribute('href', 'https://openfreemap.org/');
   await expect(credits.getByRole('link', { name: '© swisstopo' })).toHaveAttribute('target', '_blank');
   await expect(credits.getByRole('link', { name: 'Parking · Métropole Européenne de Lille' })).toBeVisible();
   for (const control of await credits.getByRole('button').or(credits.getByRole('link')).all()) {
@@ -1740,8 +1820,8 @@ test('locating once zooms to the street, turns Near me into the icon button and 
   await expect(locate).toHaveClass(/\bfab\b/);
   await expect(page.locator('.near-me')).toHaveCount(0);
   const box = await locate.boundingBox();
-  expect(box!.width).toBe(50);
-  expect(box!.height).toBe(50);
+  expect(box!.width).toBe(46);
+  expect(box!.height).toBe(46);
   // Only the fact is kept, never the position.
   expect(await page.evaluate(() => JSON.stringify({ ...localStorage }))).not.toContain('47.37');
   expect(await page.evaluate(() => localStorage.getItem('scooters-located-once'))).toBe('1');
@@ -2203,11 +2283,12 @@ test.describe('on a desktop', () => {
     // Without a location there is no walk to tell.
     await bird.hover();
     await expect(tip).toHaveText('Bird · 64%');
-    // Just above the scooter, and never in the way of the pointer.
-    const target = (await bird.boundingBox())!;
+    // Just above the light, which is small inside what can be pressed, and never in the way of the pointer.
+    const target = (await bird.locator('.scooter-marker').boundingBox())!;
     const shown = (await tip.boundingBox())!;
     expect(Math.abs(centre(shown).x - centre(target).x)).toBeLessThanOrEqual(1);
-    expect(shown.y + shown.height).toBeLessThanOrEqual(target.y + 5);
+    expect(shown.y + shown.height).toBeLessThanOrEqual(target.y);
+    expect(shown.y + shown.height).toBeGreaterThan(target.y - 14);
     expect(await tip.evaluate(element => getComputedStyle(element).pointerEvents)).toBe('none');
     await page.mouse.move(640, 620);
     await expect(tip).toBeHidden();
@@ -2363,13 +2444,16 @@ test.describe('on a small phone, or one held on its side', () => {
     await expect(page.locator('.sheet .dock-card').getByRole('heading', { name })).toBeVisible();
     return marker;
   };
-  /** The two buttons of a card: how high each is, and whether the second is under the first. */
+  /** The two buttons of a card: how high each is, and whether one is under the other. */
   const buttons = async (card: ReturnType<Page['locator']>, second: string) => {
     const [directions, open] = [
       (await card.getByRole('link', { name: 'Directions' }).boundingBox())!,
       (await card.getByRole('link', { name: second }).boundingBox())!,
     ];
-    return { heights: [Math.round(directions.height), Math.round(open.height)], stacked: open.y >= directions.y + directions.height };
+    return {
+      heights: [Math.round(directions.height), Math.round(open.height)],
+      stacked: Math.abs(open.y - directions.y) >= Math.min(directions.height, open.height),
+    };
   };
   /** The room between the bottom of a marker and the top of the dock; negative when the dock covers it. */
   const roomAboveDock = async (page: Page, marker: ReturnType<Page['locator']>) => {

@@ -18,16 +18,6 @@
   transition: opacity 0.22s ease;
 }
 
-/* The tiles are the same in every setting; what they go through differs with
-   the map style and the appearance (the --tiles tokens in globals.css). */
-.map-basemap {
-  filter: var(--tiles-calm);
-}
-
-.app-shell[data-map='detailed'] .map-basemap {
-  filter: var(--tiles-detailed);
-}
-
 .parking-marker-wrap {
   display: grid;
   place-items: center;
@@ -62,7 +52,7 @@
   /* Under the dock, which comes before the map in the page and reaches up to here on a small screen. */
   z-index: calc(var(--z-sheet) - 1);
   /* Below the search bar and whatever notice is shown under it. */
-  top: calc(var(--sat) + 88px + var(--notices-h, 0px));
+  top: calc(var(--sat) + 84px + var(--notices-h, 0px));
   right: 12px;
   display: flex;
   flex-direction: column;
@@ -141,42 +131,120 @@
   border: 0;
 }
 
+/* ---------- The scooters, as lights ---------- */
+/* Each scooter is a small light in the colour of its app, at its exact place.
+   MapComponent sizes it (--d), dims it with the distance (--strength) and
+   names the nearest of each app. The ground under it is light or dark. */
+.leaflet-container {
+  --light-ring: #fff;
+}
+
+.leaflet-container[data-ground='night'] {
+  --light-ring: var(--map-bg);
+}
+
 .scooter-marker-wrap {
   display: grid !important;
   place-items: center;
 }
 
-.scooter-marker {
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  box-sizing: border-box;
-  border: 3px solid rgba(255, 255, 255, 0.96);
-  border-radius: 50%;
-  background: var(--marker-color);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(24, 28, 34, 0.28), inset 0 0 0 0.5px rgba(0, 0, 0, 0.12);
-  transform: translateZ(0);
-  transition: transform 0.16s ease, box-shadow 0.16s ease;
+/* The 44 px hold the focus. What is pressed is the light itself: a press beside
+   it goes to the map, which answers with the light nearest to it. */
+.leaflet-marker-pane .scooter-marker-wrap.leaflet-interactive {
+  pointer-events: none;
 }
 
+.scooter-marker-wrap:focus {
+  outline: none;
+}
+
+.scooter-marker {
+  position: relative;
+  width: var(--d, 10px);
+  height: var(--d, 10px);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--marker-color);
+  color: var(--marker-ink, #fff);
+  opacity: var(--strength, 1);
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 0 0 2px var(--light-ring), 0 2px 7px color-mix(in srgb, var(--marker-color) 55%, rgba(16, 19, 26, 0.35));
+  transition: transform 0.16s ease;
+}
+
+/* A little more to press than what is drawn, and never as far as the next light. */
+.scooter-marker::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+}
+
+[data-ground='night'] .scooter-marker {
+  box-shadow:
+    0 0 0 1.5px var(--light-ring),
+    0 0 calc(var(--d, 10px) * 1.5) calc(var(--d, 10px) * 0.3) color-mix(in srgb, var(--marker-color) 62%, transparent);
+}
+
+/* The nearest scooter of its app: ringed in its colour, and named. */
+.scooter-marker.scooter-marker-head {
+  box-shadow:
+    0 0 0 2.5px var(--light-ring),
+    0 0 0 4px var(--marker-color),
+    0 3px 10px 2px color-mix(in srgb, var(--marker-color) 45%, rgba(16, 19, 26, 0.3));
+}
+
+[data-ground='night'] .scooter-marker.scooter-marker-head {
+  box-shadow:
+    0 0 0 2.5px var(--light-ring),
+    0 0 0 4px var(--marker-color),
+    0 0 22px 6px color-mix(in srgb, var(--marker-color) 60%, transparent);
+}
+
+.scooter-marker.scooter-marker-selected {
+  box-shadow:
+    0 0 0 3px var(--light-ring),
+    0 0 0 6px #0a84ff,
+    0 4px 14px 4px color-mix(in srgb, var(--marker-color) 45%, rgba(16, 19, 26, 0.3));
+  animation: light-select 260ms var(--spring);
+}
+
+[data-ground='night'] .scooter-marker.scooter-marker-selected {
+  box-shadow:
+    0 0 0 3px var(--light-ring),
+    0 0 0 6px #0a84ff,
+    0 0 26px 8px color-mix(in srgb, var(--marker-color) 60%, transparent);
+}
+
+/* The initials of the app, once the map is close enough for them to be read. */
 .scooter-marker span {
-  font-size: 10px;
-  font-weight: 750;
+  display: none;
+  font: 800 9px/1 var(--font-display, inherit);
   letter-spacing: -0.02em;
 }
 
-.scooter-marker-wrap:hover .scooter-marker,
-.scooter-marker-wrap:focus .scooter-marker {
-  box-shadow: 0 6px 18px rgba(24, 28, 34, 0.34), inset 0 0 0 0.5px rgba(0, 0, 0, 0.12);
-  transform: scale(1.12);
+.scooter-marker-lettered span {
+  display: block;
 }
 
-.scooter-marker-selected {
-  box-shadow: 0 0 0 5px rgba(10, 132, 255, 0.24), 0 7px 20px rgba(24, 28, 34, 0.36), inset 0 0 0 0.5px rgba(0, 0, 0, 0.12);
-  transform: scale(1.15);
-  animation: marker-select 260ms var(--spring);
+.scooter-marker-lettered.scooter-marker-head span { font-size: 10.5px; }
+.scooter-marker-lettered.scooter-marker-selected span { font-size: 12px; }
+
+.scooter-marker-wrap:focus-visible .scooter-marker {
+  outline: 3px solid rgba(10, 132, 255, 0.8);
+  outline-offset: 5px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .scooter-marker:hover {
+    transform: scale(1.25);
+  }
+}
+
+@keyframes light-select {
+  from { transform: scale(0.7); }
 }
 
 @keyframes marker-select {
@@ -184,79 +252,119 @@
   to { transform: scale(1.15); }
 }
 
-.cluster-marker {
-  position: relative;
-  width: 46px;
-  height: 46px;
+/* The name of the app beside the nearest of its scooters, with the walk to it. */
+.scooter-name {
+  position: absolute;
+  left: 50%;
+  top: 50%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 5px;
   box-sizing: border-box;
-  border: 3px solid rgba(255, 255, 255, 0.96);
+  height: 26px;
+  padding: 0 10px 0 8px;
+  border: 1px solid var(--hairline);
+  border-radius: 13px;
+  background: var(--glass-bg);
+  color: var(--ink);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  font: 700 12px/1 var(--font-text, inherit);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.scooter-name i {
+  width: 7px;
+  height: 7px;
+  margin-right: 1px;
   border-radius: 50%;
-  background: var(--cluster-background);
-  color: #fff;
-  font-weight: 750;
-  font-variant-numeric: tabular-nums;
-  box-shadow: 0 0 0 4px rgba(22, 119, 255, 0.12), 0 5px 15px rgba(24, 28, 34, 0.26);
+  background: var(--marker-color);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--marker-color) 70%, transparent);
+}
+
+.scooter-name b {
+  font-weight: 700;
+}
+
+.scooter-name span {
+  color: var(--ink-2);
+  font-weight: 600;
+}
+
+.scooter-name span:empty,
+.scooter-name-selected i {
+  display: none;
+}
+
+/* The scooter whose card is open: its name in its own colour. */
+.scooter-name-selected {
+  padding-left: 10px;
+  border-color: transparent;
+  background: var(--marker-color);
+  color: var(--marker-ink, #fff);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.scooter-name-selected span {
+  color: inherit;
+  opacity: 0.8;
+}
+
+/* Once, as the first scooters appear: they light up from the visitor outwards, then the names come. */
+@keyframes light-up {
+  from { opacity: 0; transform: scale(0.2); }
+}
+
+@keyframes name-in {
+  from { opacity: 0; }
+}
+
+.leaflet-container[data-intro] .scooter-marker {
+  animation: light-up 620ms var(--spring) var(--light-delay, 0ms) backwards;
+}
+
+.leaflet-container[data-intro] .scooter-name {
+  animation: name-in 320ms ease 900ms backwards;
+}
+
+/* ---------- Further out: how many scooters, and whose ---------- */
+/* A ring in the colours of the apps around the number, glowing in the colour
+   of the app with most of them. */
+.cluster-marker-wrap {
+  display: grid !important;
+  place-items: center;
+}
+
+.cluster-marker {
+  width: var(--cluster-size, 40px);
+  height: var(--cluster-size, 40px);
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  padding: 3px;
+  border-radius: 50%;
+  background: var(--cluster-ring);
+  box-shadow: 0 0 0 2px var(--light-ring), 0 3px 10px color-mix(in srgb, var(--cluster-glow) 40%, rgba(16, 19, 26, 0.3));
   transition: transform 0.16s ease;
 }
 
-.cluster-marker-single {
-  gap: 3px;
+[data-ground='night'] .cluster-marker {
+  box-shadow: 0 0 0 1.5px var(--light-ring), 0 0 18px 3px color-mix(in srgb, var(--cluster-glow) 50%, transparent);
 }
 
-.cluster-single-brand {
-  font-size: 9px;
-  opacity: 0.9;
-}
-
-.cluster-single-count {
-  font-size: 13px;
-}
-
-.cluster-total {
-  width: 27px;
-  height: 27px;
+.cluster-marker span {
+  width: 100%;
+  height: 100%;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: rgba(28, 28, 30, 0.78);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.3);
-  font-size: 12px;
-}
-
-.cluster-provider-list {
-  position: absolute;
-  left: 50%;
-  bottom: -9px;
-  display: flex;
-  gap: 2px;
-  padding: 2px 3px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 2px 7px rgba(24, 28, 34, 0.24);
-  transform: translateX(-50%);
-}
-
-.cluster-provider-list > span {
-  min-width: 13px;
-  height: 13px;
-  display: grid;
-  place-items: center;
-  box-sizing: border-box;
-  padding: 0 2px;
-  border-radius: 999px;
-  background: var(--provider-color);
-  color: #fff;
-  font-size: 7px;
-  font-weight: 800;
-  line-height: 1;
-}
-
-.cluster-provider-list > .cluster-provider-more {
-  background: #6e6e73;
-  font-size: 6px;
+  background: var(--map-bg);
+  color: var(--ink);
+  font: 800 13px/1 var(--font-display, inherit);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 
 .cluster-marker-wrap:hover .cluster-marker,
@@ -346,6 +454,8 @@
   .user-heading-beam,
   .scooter-marker,
   .cluster-marker { transition: none; }
+  .scooter-marker,
+  .scooter-name { animation: none !important; }
 }
 
 /* Touch screens zoom with two fingers, and need the compass only to undo a rotation. */

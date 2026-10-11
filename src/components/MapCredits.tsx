@@ -6,6 +6,7 @@ import { selectionFeedback } from '@/lib/feedback';
 
 const SOURCES = [
   { href: 'https://www.openstreetmap.org/copyright', label: '© OpenStreetMap contributors' },
+  { href: 'https://openfreemap.org/', label: 'OpenFreeMap © OpenMapTiles' },
   { href: 'https://opentransportdata.swiss/en/cookbook/shared-mobility/', label: 'Mobility data CH' },
   { href: 'https://transport.data.gouv.fr/datasets?type=vehicles-sharing', label: 'France: Dott, Bird, Lime, Voi, Pony' },
   { href: 'https://www.mobidata-bw.de/', label: 'MobiData BW' },

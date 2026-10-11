@@ -8,6 +8,7 @@ Notable runtime components include:
 
 - Next.js and React — MIT
 - Leaflet — BSD-2-Clause
+- protomaps-leaflet — BSD-3-Clause
 - OpenNext for Cloudflare — Apache-2.0
 
 Optional platform packages used by the image pipeline may include libvips under

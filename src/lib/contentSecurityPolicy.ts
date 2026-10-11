@@ -1,5 +1,7 @@
 const policy = (directives: string[]): string => `${directives.join('; ')};`;
 
+const MAP_TILES_ORIGIN = 'https://tiles.openfreemap.org';
+
 export function documentContentSecurityPolicy({
   nonce,
   development,
@@ -21,8 +23,9 @@ export function documentContentSecurityPolicy({
     `style-src-elem 'self' ${nonceSource}${development ? " 'unsafe-inline'" : ''}`,
     "style-src-attr 'unsafe-inline'",
     "font-src 'self'",
-    "img-src 'self' data: https://tile.openstreetmap.org",
-    `connect-src 'self'${development ? ' ws: wss:' : ' https://u.plhery.com'}`,
+    "img-src 'self' data:",
+    // The map's vector tiles, which the page draws itself.
+    `connect-src 'self' ${MAP_TILES_ORIGIN}${development ? ' ws: wss:' : ' https://u.plhery.com'}`,
     `worker-src 'self'${development ? ' blob:' : ''}`,
     "child-src 'self'",
     "frame-src 'none'",

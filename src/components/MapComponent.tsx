@@ -4,7 +4,7 @@ import { track } from '@/lib/analytics';
 
 import { prefersReducedMotion, selectionFeedback } from '@/lib/feedback';
 
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode, type RefObject } from 'react';
 import L from 'leaflet';
 import '@tomickigrzegorz/leaflet-rotate';
 import 'leaflet/dist/leaflet.css';
@@ -15,23 +15,109 @@ import type { MapBounds, ParkingLocation, ScooterCluster, Vehicle } from '@/lib/
 import { PROVIDERS } from '@/lib/types';
 import { useI18n, type TranslationKey } from '@/lib/i18n';
 import type { AddressResult } from '@/components/AddressSearch';
+import type { MapStyleName, ThemeName } from '@/lib/clientParams';
 import { haversineM } from '@/lib/geo';
+import {
+  CLOSE_UP_ZOOM,
+  NAME_WEIGHT,
+  fanOut,
+  lightAt,
+  lightDiameter,
+  lightStrength,
+  nearestOfEachProvider,
+  placeNames,
+  type DrawnLight,
+  type LightKind,
+  type NameToPlace,
+  type Obstacle,
+  type Offset,
+} from '@/lib/mapLights';
 import { revealShift } from '@/lib/markerReveal';
 import { stopMapRotation, syncRotationMotion } from '@/lib/mapRotation';
+import { providerInkColor, providerSurfaceColor } from '@/lib/providerColor';
+import {
+  createGroundLayer,
+  groundRules,
+  groundTileUrl,
+  restyleGroundLayer,
+  type GroundLayer,
+  type GroundTheme,
+} from '@/lib/quietGround';
 import { scooterTip } from '@/lib/scooterTip';
+import { walkingMinutes } from '@/lib/walking';
 import './map.css';
 
 type Translate = (key: TranslationKey, values?: Record<string, string | number>) => string;
 type FormatNumber = (value: number, options?: Intl.NumberFormatOptions) => string;
 
-function createScooterIcon(provider: string, selected = false): L.DivIcon {
-  const cfg = PROVIDERS[provider] ?? { color: '#999', initial: '?' };
+// Every scooter starts from the same icon: 44 px to hold the focus, and inside it
+// the light itself, which drawLight() sizes, colours and names.
+const SCOOTER_ICON_HTML = '<div class="scooter-marker"><span aria-hidden="true"></span></div>';
+
+function createScooterIcon(): L.DivIcon {
   return L.divIcon({
     className: 'scooter-marker-wrap',
-    html: `<div class="scooter-marker${selected ? ' scooter-marker-selected' : ''}" style="--marker-color:${cfg.color}"><span>${cfg.initial}</span></div>`,
+    html: SCOOTER_ICON_HTML,
     iconSize: [44, 44],
     iconAnchor: [22, 22],
   });
+}
+
+/** A scooter as it is drawn: a light in the colour of its app. */
+interface Light {
+  key: string;
+  provider: string;
+  distanceM: number | null;
+  kind: LightKind;
+  diameter: number;
+  /** The diameter it has when it is not selected: its place among its neighbours does not change with a tap. */
+  slot: number;
+  strength: number;
+  /** The initials of the app, shown from close up. */
+  lettered: boolean;
+  /** The name beside it, for the nearest of each app and for the selected one; null for the others. */
+  name: { app: string; walk: string | null } | null;
+}
+
+function drawLight(marker: L.Marker, light: Light) {
+  const element = marker.getElement();
+  const dot = element?.querySelector<HTMLElement>('.scooter-marker');
+  if (!element || !dot) return;
+  const cfg = PROVIDERS[light.provider] ?? { color: '#999', initial: '?' };
+  const color = providerSurfaceColor(light.provider, cfg.color);
+  dot.className = [
+    'scooter-marker',
+    light.kind === 'head' && 'scooter-marker-head',
+    light.kind === 'selected' && 'scooter-marker-selected',
+    light.lettered && 'scooter-marker-lettered',
+  ].filter(Boolean).join(' ');
+  dot.style.setProperty('--marker-color', color);
+  dot.style.setProperty('--marker-ink', providerInkColor(light.provider));
+  dot.style.setProperty('--d', `${light.diameter}px`);
+  dot.style.setProperty('--strength', String(light.strength));
+  // Lit from the visitor outwards, the first time scooters are shown.
+  dot.style.setProperty('--light-delay', `${Math.round(Math.min(light.distanceM ?? 0, 900) * 1.5)}ms`);
+  const letters = dot.firstElementChild;
+  if (letters && letters.textContent !== cfg.initial) letters.textContent = cfg.initial;
+
+  let name = element.querySelector<HTMLElement>('.scooter-name');
+  if (!light.name) {
+    name?.remove();
+    return;
+  }
+  if (!name) {
+    // The marker already says all of it to a screen reader.
+    name = document.createElement('span');
+    name.setAttribute('aria-hidden', 'true');
+    for (const part of ['i', 'b', 'span']) name.appendChild(document.createElement(part));
+    element.appendChild(name);
+  }
+  name.className = `scooter-name${light.kind === 'selected' ? ' scooter-name-selected' : ''}`;
+  name.style.setProperty('--marker-color', color);
+  name.style.setProperty('--marker-ink', providerInkColor(light.provider));
+  const [, app, walk] = name.children;
+  if (app.textContent !== light.name.app) app.textContent = light.name.app;
+  if (walk.textContent !== (light.name.walk ?? '')) walk.textContent = light.name.walk ?? '';
 }
 
 function createParkingIcon(provider: string, selected: boolean): L.DivIcon {
@@ -53,12 +139,18 @@ function createDestinationIcon(): L.DivIcon {
   });
 }
 
-const TILE_URL = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-
-const OSM_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>';
-
-// A scooter's disc is 34 px inside the 44 px its marker takes; the hover tip sits just above the disc.
-const MARKER_INSET = 5;
+// The ground is asked for again after these waits when its address cannot be had.
+const GROUND_RETRY_MS = [2_000, 5_000, 15_000, 30_000];
+// Names on the ground are drawn in the system's typeface when the app's own takes longer than this.
+const GROUND_FONT_WAIT_MS = 1_500;
+const DARK_SCHEME = '(prefers-color-scheme: dark)';
+// How far from a scooter a tap, or a click, still means that scooter.
+const TAP_REACH = 22;
+const CLICK_REACH = 14;
+// A name keeps this far from the edges of what can be seen of the map.
+const NAME_EDGE = 6;
+// The lights come on over this long, the first time scooters are shown.
+const INTRO_MS = 1_800;
 // The dock takes 280 ms to grow to the height of a new card.
 const DOCK_SETTLE_MS = 320;
 const TIP_GAP = 8;
@@ -75,7 +167,7 @@ function formatDistance(meters: number, t: Translate, formatNumber: FormatNumber
       });
 }
 
-function createClusterIcon(cluster: ScooterCluster): L.DivIcon {
+function createClusterIcon(cluster: ScooterCluster, count: string): L.DivIcon {
   const providerOrder = Object.keys(PROVIDERS);
   const entries = Object.entries(cluster.providers).sort(([a], [b]) => {
     const aIndex = providerOrder.indexOf(a);
@@ -83,33 +175,25 @@ function createClusterIcon(cluster: ScooterCluster): L.DivIcon {
     return (aIndex < 0 ? providerOrder.length : aIndex) -
       (bIndex < 0 ? providerOrder.length : bIndex);
   });
-  const mixed = entries.length > 1;
+  const colorOf = (provider: string) => providerSurfaceColor(provider, '#999');
 
+  // A ring in the colours of the apps, each with the share of the scooters it has here.
   let progress = 0;
-  const segments = entries.map(([provider, count]) => {
+  const segments = entries.map(([provider, share]) => {
     const start = progress;
-    progress += (count / cluster.count) * 360;
-    return `${PROVIDERS[provider]?.color ?? '#999'} ${start}deg ${progress}deg`;
+    progress += (share / cluster.count) * 360;
+    return `${colorOf(provider)} ${start}deg ${progress}deg`;
   });
-
-  const providerBadges = entries.slice(0, 4).map(([provider]) => {
-    const cfg = PROVIDERS[provider] ?? { color: '#999', initial: '?' };
-    return `<span style="--provider-color:${cfg.color}">${cfg.initial}</span>`;
-  }).join('');
-  const hiddenProviderCount = Math.max(0, entries.length - 4);
-  const primaryProvider = PROVIDERS[entries[0][0]] ?? { color: '#999', initial: '?' };
-  const background = mixed
-    ? `conic-gradient(${segments.join(',')})`
-    : primaryProvider.color;
-  const contents = mixed
-    ? `<span class="cluster-total">${cluster.count}</span><span class="cluster-provider-list">${providerBadges}${hiddenProviderCount ? `<span class="cluster-provider-more">+${hiddenProviderCount}</span>` : ''}</span>`
-    : `<span class="cluster-single-brand">${primaryProvider.initial}</span><span class="cluster-single-count">${cluster.count}</span>`;
+  const largest = entries.reduce<[string, number] | null>((best, entry) => (!best || entry[1] > best[1] ? entry : best), null);
+  const glow = largest ? colorOf(largest[0]) : '#999';
+  const ring = entries.length > 1 ? `conic-gradient(${segments.join(',')})` : glow;
+  const size = cluster.count < 10 ? 34 : cluster.count < 100 ? 40 : cluster.count < 1000 ? 46 : 52;
 
   return L.divIcon({
     className: 'cluster-marker-wrap',
-    html: `<div class="cluster-marker ${mixed ? 'cluster-marker-mixed' : 'cluster-marker-single'}" style="--cluster-background:${background}">${contents}</div>`,
-    iconSize: [46, 46],
-    iconAnchor: [23, 23],
+    html: `<div class="cluster-marker" style="--cluster-ring:${ring};--cluster-glow:${glow};--cluster-size:${size}px"><span>${count}</span></div>`,
+    iconSize: [52, 52],
+    iconAnchor: [26, 26],
   });
 }
 
@@ -214,6 +298,29 @@ interface MapComponentProps {
   zoomStep?: { direction: 1 | -1; version: number };
   /** Receives the way to find a marker while the map is there, for the card in the dock. */
   markerLookupRef?: RefObject<MarkerLookup | null>;
+  /** The appearance of the app, which the ground follows; Automatic is the system's. */
+  theme?: ThemeName;
+  /** Calm names streets and quarters; detailed adds places and house numbers. */
+  mapStyle?: MapStyleName;
+}
+
+function subscribeToScheme(onChange: () => void) {
+  const query = window.matchMedia(DARK_SCHEME);
+  query.addEventListener('change', onChange);
+  return () => query.removeEventListener('change', onChange);
+}
+
+/** The typeface of the app, for the names on the ground, once it is there. */
+function groundFont(container: HTMLElement): { family: string; ready: Promise<unknown> } {
+  const own = getComputedStyle(container).getPropertyValue('--font-text').trim();
+  const family = `${own ? `${own}, ` : ''}system-ui, sans-serif`;
+  const loaded = own && document.fonts
+    ? Promise.all([500, 700].map(weight => document.fonts.load(`${weight} 12px ${own}`)))
+    : Promise.resolve();
+  return {
+    family,
+    ready: Promise.race([loaded, new Promise(resolve => window.setTimeout(resolve, GROUND_FONT_WAIT_MS))]).catch(() => undefined),
+  };
 }
 
 /** The marker of a scooter, by its key, or of a parking bay, by its id, as it is drawn on the map; null when it is not. */
@@ -250,8 +357,12 @@ export default function MapComponent({
   popover = null,
   zoomStep,
   markerLookupRef,
+  theme = 'auto',
+  mapStyle = 'calm',
 }: MapComponentProps) {
   const { t, formatNumber } = useI18n();
+  const systemDark = useSyncExternalStore(subscribeToScheme, () => window.matchMedia(DARK_SCHEME).matches, () => false);
+  const ground: GroundTheme = theme === 'dark' || (theme === 'auto' && systemDark) ? 'night' : 'day';
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const scooterLayerRef = useRef<L.LayerGroup | null>(null);
@@ -268,7 +379,13 @@ export default function MapComponent({
   const markerSignaturesRef = useRef<Map<string, string>>(new Map());
   const vehicleDataRef = useRef<Map<string, Vehicle>>(new Map());
   const parkingDataRef = useRef<Map<string, ParkingLocation>>(new Map());
-  const tileLayerRef = useRef<L.TileLayer | null>(null);
+  const groundLayerRef = useRef<GroundLayer | null>(null);
+  const groundLookRef = useRef({ ground, mapStyle });
+  // The scooters as they are drawn now, and how far each was moved off its neighbours.
+  const lightsRef = useRef<Map<string, Light>>(new Map());
+  const lightOffsetsRef = useRef<Map<string, Offset>>(new Map());
+  const layoutLightsRef = useRef<(() => void) | null>(null);
+  const introducedRef = useRef(false);
   const popoverRef = useRef<HTMLDivElement>(null);
   const tipRef = useRef<HTMLDivElement>(null);
   const initialOriginRef = useRef(origin);
@@ -295,20 +412,29 @@ export default function MapComponent({
     onMapClickRef.current = onMapClick;
   }, [onMapClick]);
 
-  const iconMap = useMemo(() => {
-    const icons: Record<string, L.DivIcon> = {};
-    for (const provider of Object.keys(PROVIDERS)) {
-      icons[provider] = createScooterIcon(provider);
+  const scooterIcon = useMemo(() => createScooterIcon(), []);
+  const hasPopover = popover !== null;
+
+  /** The scooters where they are drawn on the screen now. */
+  const drawnLights = useCallback((): DrawnLight[] => {
+    const map = mapRef.current;
+    if (!map) return [];
+    const drawn: DrawnLight[] = [];
+    for (const [key, light] of lightsRef.current) {
+      const marker = vehicleMarkersRef.current.get(key);
+      if (!marker) continue;
+      const point = map.latLngToContainerPoint(marker.getLatLng());
+      const offset = lightOffsetsRef.current.get(key);
+      drawn.push({ key, x: point.x + (offset?.dx ?? 0), y: point.y + (offset?.dy ?? 0), diameter: light.diameter });
     }
-    return icons;
+    return drawn;
   }, []);
-  const selectedIconMap = useMemo(() => {
-    const icons: Record<string, L.DivIcon> = {};
-    for (const provider of Object.keys(PROVIDERS)) {
-      icons[provider] = createScooterIcon(provider, true);
-    }
-    return icons;
-  }, []);
+
+  /** The scooter a press at this point of the map means, if any. */
+  const lightUnder = useCallback((point: L.Point, reach: number): Vehicle | null => {
+    const key = lightAt(drawnLights(), point.x, point.y, reach);
+    return (key && vehicleDataRef.current.get(key)) || null;
+  }, [drawnLights]);
   const destinationIcon = useMemo(() => createDestinationIcon(), []);
 
   const reportViewport = useCallback((map: L.Map) => {
@@ -331,6 +457,7 @@ export default function MapComponent({
     const clusterMarkers = clusterMarkersRef.current;
     const parkingMarkers = parkingMarkersRef.current;
     const markerSignatures = markerSignaturesRef.current;
+    const lights = lightsRef.current;
 
     const map = L.map(container, {
       center: initialOriginRef.current,
@@ -365,7 +492,19 @@ export default function MapComponent({
     map.on('movestart', () => { movingRef.current = true; });
     map.on('moveend', () => { movingRef.current = false; });
     // Markers keep their clicks to themselves, so this is the map and nothing on it.
-    map.on('click', () => onMapClickRef.current?.());
+    // A light is small: a tap that lands beside one still means it.
+    map.on('click', event => {
+      const reach = window.matchMedia('(pointer: coarse)').matches ? TAP_REACH : CLICK_REACH;
+      const vehicle = lightUnder(event.containerPoint, reach);
+      if (vehicle) onVehicleSelectRef.current(vehicle);
+      else onMapClickRef.current?.();
+    });
+    const layoutLights = () => layoutLightsRef.current?.();
+    // Turning the map moves the scooters around each other, and their names with
+    // them; moving it brings a name to the edge of the screen, or away from it.
+    map.on('rotateend moveend', layoutLights);
+    // Names are measured as they are written: once more when the app's typeface has come.
+    void document.fonts?.ready.then(() => { if (mapRef.current === map) layoutLights(); });
     map.on('zoomend', updateZoom);
     map.on('moveend', updateViewport);
     map.on('rotateend', updateViewport);
@@ -378,6 +517,7 @@ export default function MapComponent({
       map.off('zoomend', updateZoom);
       map.off('moveend', updateViewport);
       map.off('rotateend', updateViewport);
+      map.off('rotateend moveend', layoutLights);
       motionQuery.removeEventListener('change', syncMotion);
       stopMapRotation(map);
       map.remove();
@@ -390,10 +530,13 @@ export default function MapComponent({
       markerSignatures.clear();
       vehicleDataRef.current.clear();
       parkingDataRef.current.clear();
-      tileLayerRef.current = null;
+      lights.clear();
+      lightOffsetsRef.current = new Map();
+      layoutLightsRef.current = null;
       delete container.dataset.zoom;
+      delete container.dataset.intro;
     };
-  }, [initialZoom, reportViewport]);
+  }, [initialZoom, lightUnder, reportViewport]);
 
   // Parking bays open in the dock, as scooters do: a tap selects, the page shows the card.
   useEffect(() => {
@@ -432,29 +575,61 @@ export default function MapComponent({
     }
   }, [readyMap, parking, selectedParkingId, t]);
 
+  // The ground: one layer, drawn here from vector tiles in the colours of the
+  // appearance. Its address is asked for first; until it is known, and whenever
+  // it cannot be had, the map is the plain colour of the land.
   useEffect(() => {
     const map = mapRef.current;
-    if (!readyMap || !map) return;
-
-    tileLayerRef.current?.remove();
-    const layer = L.tileLayer(TILE_URL, {
-      attribution: OSM_ATTRIBUTION,
-      // Calm or detailed, light or dark: the stylesheet filters this one layer.
-      className: 'map-basemap',
-      // Identify the site without sending a shared link's coordinates in Referer.
-      referrerPolicy: 'origin',
-      maxNativeZoom: 19,
-      maxZoom: 22,
-      updateWhenZooming: false,
-      keepBuffer: 2,
-    }).addTo(map);
-    tileLayerRef.current = layer;
+    const container = containerRef.current;
+    if (!readyMap || !map || !container) return;
+    let stopped = false;
+    let timer = 0;
+    let attempt = 0;
+    let layer: GroundLayer | null = null;
+    const font = groundFont(container);
+    const start = () => {
+      groundTileUrl().then(url => {
+        if (stopped) return;
+        const look = groundLookRef.current;
+        layer = createGroundLayer(url, groundRules(look.ground, look.mapStyle, font.family), {
+          attribution: '',
+          className: 'map-basemap',
+          maxZoom: 22,
+          updateWhenZooming: false,
+          keepBuffer: 2,
+          tasks: [font.ready],
+          // The language of the page, for the names on the canvas.
+          lang: document.documentElement.lang || 'en',
+        });
+        layer.addTo(map);
+        groundLayerRef.current = layer;
+      }).catch(() => {
+        if (stopped) return;
+        timer = window.setTimeout(start, GROUND_RETRY_MS[Math.min(attempt, GROUND_RETRY_MS.length - 1)]);
+        attempt += 1;
+      });
+    };
+    start();
 
     return () => {
-      layer.remove();
-      if (tileLayerRef.current === layer) tileLayerRef.current = null;
+      stopped = true;
+      window.clearTimeout(timer);
+      layer?.remove();
+      if (groundLayerRef.current === layer) groundLayerRef.current = null;
     };
   }, [readyMap]);
+
+  // Another appearance or map style draws the same tiles again; none is loaded for it.
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!readyMap || !container) return;
+    container.dataset.ground = ground;
+    const previous = groundLookRef.current;
+    groundLookRef.current = { ground, mapStyle };
+    const layer = groundLayerRef.current;
+    if (!layer || (previous.ground === ground && previous.mapStyle === mapStyle)) return;
+    restyleGroundLayer(layer, groundRules(ground, mapStyle, groundFont(container).family));
+  }, [ground, mapStyle, readyMap]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -505,11 +680,21 @@ export default function MapComponent({
   useEffect(() => {
     const map = mapRef.current;
     const layer = scooterLayerRef.current;
-    if (!readyMap || !map || !layer) return;
+    const container = containerRef.current;
+    if (!readyMap || !map || !layer || !container) return;
 
-    const distanceFor = (vehicle: Vehicle) => distanceOrigin
-      ? haversineM(distanceOrigin[0], distanceOrigin[1], vehicle.lat, vehicle.lng)
-      : null;
+    const closeUp = zoom >= CLOSE_UP_ZOOM;
+    const placed = vehicles.map(vehicle => ({
+      key: vehicleMarkerKey(vehicle),
+      provider: vehicle.provider,
+      vehicle,
+      distanceM: distanceOrigin
+        ? haversineM(distanceOrigin[0], distanceOrigin[1], vehicle.lat, vehicle.lng)
+        : null,
+    }));
+    // The nearest scooter of each app carries the name of the app: that is how the colours are learnt.
+    // Further out, where most scooters are counted in groups, the few shown alone are not the nearest.
+    const heads = clustered ? new Set<string>() : nearestOfEachProvider(placed);
     const labelFor = (vehicle: Vehicle, distanceM: number | null) => {
       const cfg = PROVIDERS[vehicle.provider];
       const name = cfg?.name ?? vehicle.provider;
@@ -521,40 +706,82 @@ export default function MapComponent({
           });
     };
 
-    vehicleDataRef.current = new Map(vehicles.map(vehicle => [vehicleMarkerKey(vehicle), vehicle]));
-    const incomingKeys = new Set(vehicleDataRef.current.keys());
+    vehicleDataRef.current = new Map(placed.map(({ key, vehicle }) => [key, vehicle]));
     for (const [key, marker] of vehicleMarkersRef.current) {
-      if (incomingKeys.has(key)) continue;
+      if (vehicleDataRef.current.has(key)) continue;
       layer.removeLayer(marker);
       vehicleMarkersRef.current.delete(key);
       markerSignaturesRef.current.delete(`v:${key}`);
+      lightsRef.current.delete(key);
     }
-    for (const vehicle of vehicles) {
-      const key = vehicleMarkerKey(vehicle);
-      const distanceM = distanceFor(vehicle);
-      const label = labelFor(vehicle, distanceM);
+    for (const { key, vehicle, distanceM } of placed) {
       const selected = key === selectedVehicleKey;
-      const signature = JSON.stringify([vehicle, selected, distanceM, label, hoverTips]);
+      const head = heads.has(key);
+      const kind: LightKind = selected ? 'selected' : head ? 'head' : 'dot';
+      // Beside a card that stands next to its marker, the name would say it twice.
+      const named = selected ? !hasPopover : head;
+      const light: Light = {
+        key,
+        provider: vehicle.provider,
+        distanceM,
+        kind,
+        diameter: lightDiameter(distanceM, kind, closeUp),
+        slot: lightDiameter(distanceM, head ? 'head' : 'dot', closeUp),
+        strength: lightStrength(distanceM, kind),
+        lettered: closeUp,
+        name: named
+          ? {
+              // "PubliBike / Velospot" is the one name too long for the map.
+              app: (PROVIDERS[vehicle.provider]?.name ?? vehicle.provider).split(' / ')[0],
+              walk: distanceM === null ? null : t('card.duration', { minutes: formatNumber(walkingMinutes(distanceM)) }),
+            }
+          : null,
+      };
+      lightsRef.current.set(key, light);
+      const label = labelFor(vehicle, distanceM);
+      const signature = JSON.stringify([vehicle, light, label, hoverTips]);
       if (markerSignaturesRef.current.get(`v:${key}`) === signature) continue;
       markerSignaturesRef.current.set(`v:${key}`, signature);
-      const icon = selected
-        ? selectedIconMap[vehicle.provider] ?? createScooterIcon(vehicle.provider, true)
-        : iconMap[vehicle.provider] ?? createScooterIcon(vehicle.provider);
+      const zIndexOffset = selected ? 1500 : head ? 1000 : 0;
       const existing = vehicleMarkersRef.current.get(key);
       if (existing) {
         if (!existing.getLatLng().equals([vehicle.lat, vehicle.lng])) existing.setLatLng([vehicle.lat, vehicle.lng]);
-        if (existing.options.icon !== icon) existing.setIcon(icon);
+        if (existing.options.zIndexOffset !== zIndexOffset) existing.setZIndexOffset(zIndexOffset);
         updateMarkerLabel(existing, label, !hoverTips);
+        drawLight(existing, light);
       } else {
-        const marker = onMarkerPress(
-          L.marker([vehicle.lat, vehicle.lng], { icon, riseOnHover: true, title: hoverTips ? '' : label }),
-          () => {
-            const current = vehicleDataRef.current.get(key);
-            if (current) onVehicleSelectRef.current(current);
-          }
-        ).addTo(layer);
+        const marker = L.marker([vehicle.lat, vehicle.lng], {
+          icon: scooterIcon, riseOnHover: true, zIndexOffset, title: hoverTips ? '' : label,
+        });
+        const select = (pressed: Vehicle | null | undefined) => {
+          if (pressed) onVehicleSelectRef.current(pressed);
+        };
+        marker
+          // Where lights touch, the press means the one drawn nearest to it, whichever is on top.
+          .on('click', event => select(
+            lightUnder(map.mouseEventToContainerPoint(event.originalEvent), TAP_REACH) ?? vehicleDataRef.current.get(key)
+          ))
+          .on('keypress', event => {
+            const { key: pressed } = event.originalEvent;
+            if (pressed === 'Enter' || pressed === ' ') select(vehicleDataRef.current.get(key));
+          })
+          // Leaflet makes the icon anew whenever the marker is put on the map.
+          .on('add', () => {
+            const current = lightsRef.current.get(key);
+            if (current) drawLight(marker, current);
+          })
+          .addTo(layer);
         labelMarker(marker, label, !hoverTips);
         vehicleMarkersRef.current.set(key, marker);
+      }
+    }
+
+    // Once, when the first scooters are shown around the visitor.
+    if (!introducedRef.current && distanceOrigin && placed.length > 0) {
+      introducedRef.current = true;
+      if (!prefersReducedMotion()) {
+        container.dataset.intro = 'true';
+        window.setTimeout(() => { delete container.dataset.intro; }, INTRO_MS);
       }
     }
 
@@ -575,11 +802,11 @@ export default function MapComponent({
       const existing = clusterMarkersRef.current.get(cluster.id);
       if (existing) {
         if (!existing.getLatLng().equals(center)) existing.setLatLng(center);
-        existing.setIcon(createClusterIcon(cluster));
+        existing.setIcon(createClusterIcon(cluster, formatNumber(cluster.count)));
         updateMarkerLabel(existing, label);
       } else {
         const marker = onMarkerPress(
-          L.marker(center, { icon: createClusterIcon(cluster), zIndexOffset: 500, title: label }),
+          L.marker(center, { icon: createClusterIcon(cluster, formatNumber(cluster.count)), zIndexOffset: 500, title: label }),
           () => {
             selectionFeedback();
             track('cluster_select');
@@ -592,17 +819,84 @@ export default function MapComponent({
         clusterMarkersRef.current.set(cluster.id, marker);
       }
     }
+
+    // Scooters on one spot are moved apart, then the names are set where they hide the least.
+    const layout = () => {
+      const spots: DrawnLight[] = [];
+      for (const [key, light] of lightsRef.current) {
+        const marker = vehicleMarkersRef.current.get(key);
+        if (!marker) continue;
+        const point = map.latLngToContainerPoint(marker.getLatLng());
+        spots.push({ key, x: point.x, y: point.y, diameter: light.slot });
+      }
+      const offsets = new Map<string, Offset>();
+      for (const [key, offset] of fanOut(spots)) offsets.set(key, { dx: Math.round(offset.dx), dy: Math.round(offset.dy) });
+      lightOffsetsRef.current = offsets;
+
+      const names: (NameToPlace & { element: HTMLElement; order: number })[] = [];
+      const obstacles: Obstacle[] = [];
+      for (const spot of spots) {
+        const light = lightsRef.current.get(spot.key);
+        const element = vehicleMarkersRef.current.get(spot.key)?.getElement();
+        if (!light || !element) continue;
+        const offset = offsets.get(spot.key);
+        const moved = offset ? `${offset.dx}px ${offset.dy}px` : '';
+        if (element.style.translate !== moved) element.style.translate = moved;
+        const x = spot.x + (offset?.dx ?? 0);
+        const y = spot.y + (offset?.dy ?? 0);
+        const name = light.name ? element.querySelector<HTMLElement>('.scooter-name') : null;
+        if (name) {
+          names.push({
+            key: spot.key, x, y, radius: light.diameter / 2, width: name.offsetWidth, element: name,
+            // The selected scooter first, then the nearest.
+            order: light.kind === 'selected' ? -1 : light.distanceM ?? 0,
+          });
+        } else {
+          obstacles.push({ x, y, half: light.diameter / 2, weight: 1 });
+        }
+      }
+      if (userLocation) {
+        const point = map.latLngToContainerPoint(userLocation);
+        obstacles.push({ x: point.x, y: point.y, half: 15, weight: NAME_WEIGHT });
+      }
+      if (destination) {
+        // The pin stands on its point.
+        const point = map.latLngToContainerPoint([destination.lat, destination.lng]);
+        obstacles.push({ x: point.x, y: point.y - 15, half: 19, weight: NAME_WEIGHT });
+      }
+      names.sort((a, b) => a.order - b.order);
+      // What of the map can be seen: under the search bar, and on a phone above the dock.
+      const area = container.getBoundingClientRect();
+      const bar = document.querySelector('.search-island')?.getBoundingClientRect();
+      const dock = revealAboveDock ? document.querySelector('.sheet')?.getBoundingClientRect() : undefined;
+      const places = placeNames(names, obstacles, {
+        left: NAME_EDGE,
+        top: (bar && bar.height > 0 ? bar.bottom - area.top : 0) + NAME_EDGE,
+        right: area.width - NAME_EDGE,
+        bottom: (dock && dock.height > 0 ? dock.top - area.top : area.height) - NAME_EDGE,
+      });
+      for (const name of names) {
+        const place = places.get(name.key);
+        if (place) name.element.style.translate = `${Math.round(place.dx)}px ${Math.round(place.dy)}px`;
+      }
+    };
+    layoutLightsRef.current = layout;
+    layout();
   }, [
     clustered,
     clusters,
+    destination,
     distanceOrigin,
     formatNumber,
+    hasPopover,
     hoverTips,
-    iconMap,
+    lightUnder,
     readyMap,
-    selectedIconMap,
+    revealAboveDock,
+    scooterIcon,
     selectedVehicleKey,
     t,
+    userLocation,
     vehicles,
     zoom,
   ]);
@@ -629,12 +923,13 @@ export default function MapComponent({
         : null;
       tip.textContent = scooterTip(vehicle, distanceM, { t, formatNumber });
       tip.hidden = false;
-      const target = icon.getBoundingClientRect();
+      // The light is small inside the 44 px its marker takes: the tip sits just above the light.
+      const target = (icon.querySelector('.scooter-marker') ?? icon).getBoundingClientRect();
       const centred = target.left + target.width / 2 - tip.offsetWidth / 2;
-      const above = target.top + MARKER_INSET - TIP_GAP - tip.offsetHeight;
+      const above = target.top - TIP_GAP - tip.offsetHeight;
       tip.style.left = `${Math.round(Math.max(TIP_MARGIN, Math.min(centred, window.innerWidth - tip.offsetWidth - TIP_MARGIN)))}px`;
       // Under the scooter where there is no room above it.
-      tip.style.top = `${Math.round(above < TIP_MARGIN ? target.bottom - MARKER_INSET + TIP_GAP : above)}px`;
+      tip.style.top = `${Math.round(above < TIP_MARGIN ? target.bottom + TIP_GAP : above)}px`;
     };
     container.addEventListener('mouseover', show);
     container.addEventListener('mouseleave', hide);
@@ -661,8 +956,6 @@ export default function MapComponent({
     () => markerElement(selectedVehicleKey, selectedParkingId),
     [markerElement, selectedParkingId, selectedVehicleKey]
   );
-  const hasPopover = popover !== null;
-
   // On a phone the card is in the dock, far from the map: it asks for its marker to hand the focus back.
   useEffect(() => {
     if (!markerLookupRef) return;

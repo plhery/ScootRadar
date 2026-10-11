@@ -62,12 +62,18 @@ catalog. French street-address geocoding is not provided.
 
 ## Map tiles
 
-- OpenStreetMap standard raster tiles are used only for interactive views, with
-  visible contributor attribution, browser caching, and a valid referrer.
-- Light and dark themes style the same OpenStreetMap tiles locally, reusing the
-  browser cache. The previous unauthenticated CARTO tiles now require an API key.
-- Zooms above 19 scale the last native tile level without requesting unavailable tiles.
+- The web map is drawn in the browser from [OpenFreeMap](https://openfreemap.org/)
+  vector tiles in the OpenMapTiles schema, which hold OpenStreetMap data. They
+  need no API key and are used only for interactive views, with visible
+  attribution (`© OpenStreetMap contributors`, `OpenFreeMap © OpenMapTiles`),
+  browser caching, and a valid referrer.
+- Day and night, calm and detailed are drawn from the same tiles in the app's
+  own colours (`src/lib/quietGround.ts`), so changing the appearance requests nothing.
+- Tiles are cut up to zoom 14; closer in, the same data is drawn larger.
+- If the tile host cannot be reached the map shows its plain ground colour and
+  tries again; there is no second tile source.
 - The service worker does not bulk-download or create offline tile archives.
+- The iOS app uses Apple Maps.
 
 ## Scooter parking in France, Germany and Italy
 

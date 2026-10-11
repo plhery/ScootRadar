@@ -25,9 +25,11 @@ describe('documentContentSecurityPolicy', () => {
     expect(directive(csp, 'style-src-elem')).toBe(
       "style-src-elem 'self' 'nonce-test-nonce'"
     );
-    expect(directive(csp, 'connect-src')).toBe("connect-src 'self' https://u.plhery.com");
+    // The app's own API, the map's vector tiles and the analytics.
+    expect(directive(csp, 'connect-src')).toBe("connect-src 'self' https://tiles.openfreemap.org https://u.plhery.com");
     expect(directive(csp, 'worker-src')).toBe("worker-src 'self'");
-    expect(directive(csp, 'img-src')).not.toContain('blob:');
+    // The map is drawn by the page: no picture comes from another site.
+    expect(directive(csp, 'img-src')).toBe("img-src 'self' data:");
     expect(directive(csp, 'frame-src')).toBe("frame-src 'none'");
     expect(directive(csp, 'base-uri')).toBe("base-uri 'none'");
     expect(csp).toContain('upgrade-insecure-requests;');
@@ -38,7 +40,7 @@ describe('documentContentSecurityPolicy', () => {
 
     expect(directive(csp, 'script-src')).toContain("'unsafe-eval'");
     expect(directive(csp, 'script-src')).not.toContain("'unsafe-inline'");
-    expect(directive(csp, 'connect-src')).toBe("connect-src 'self' ws: wss:");
+    expect(directive(csp, 'connect-src')).toBe("connect-src 'self' https://tiles.openfreemap.org ws: wss:");
     expect(directive(csp, 'worker-src')).toBe("worker-src 'self' blob:");
     expect(csp).not.toContain('upgrade-insecure-requests');
   });

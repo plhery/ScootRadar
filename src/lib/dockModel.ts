@@ -11,6 +11,7 @@ import {
 import type { ScooterLoading } from '@/lib/scooterDataState';
 import type { MapBounds, ScooterResponseMeta } from '@/lib/types';
 import type { UiText, UiTextFormatter } from '@/lib/uiText';
+import { walkingMinutes } from '@/lib/walking';
 
 const LIVE_MAX_AGE_MS = 90_000;
 const MINUTE_MS = 60_000;
@@ -110,6 +111,16 @@ export function formatCoverageCity({ city, distanceKm }: DockCoverageCity, { t, 
   });
 }
 
+/** The nearest scooter, as the first line of the dock: how far, whose, and how long on foot. */
+export interface DockLead {
+  provider: string;
+  name: string;
+  distanceM: number;
+  minutes: number;
+  /** The searched place the walk starts from; null when it starts from your location. */
+  place: string | null;
+}
+
 export type DockModel =
   /** The scooters were removed. A card with one button, no count and no chips. */
   | { kind: 'outOfDate'; title: UiText; body: UiText[]; action: UiText; busy: boolean }
@@ -134,6 +145,11 @@ export type DockModel =
       phase: 'waiting' | 'finding' | 'ready';
       /** value is null while there is no count to show; then the label is the whole line. */
       count: { value: number | null; label: UiText };
+      /**
+       * The nearest scooter, shown in place of the count while the walk starts
+       * inside the viewport: a tap opens its card. The count is then on "All".
+       */
+      lead: DockLead | null;
       status: DockStatus | null;
       /** Show the "Try again" pill at the right of the header. */
       retry: boolean;
@@ -150,6 +166,11 @@ export interface DockInput {
   count: number;
   /** The origin for walking times (your location or the chosen place) lies inside the viewport. */
   originInViewport: boolean;
+  /**
+   * The scooter shown nearest to that origin, while single scooters are shown;
+   * null further out, where they are counted in groups, and without an origin.
+   */
+  nearest: { provider: string; distanceM: number; place: string | null } | null;
   loading: ScooterLoading | null;
   failure: LoadFailure | null;
   outOfDate: boolean;
@@ -266,6 +287,7 @@ export function dockModel(input: DockInput): DockModel {
     kind: 'summary',
     phase,
     count: { value: null, label: { key: phase === 'waiting' ? 'dock.waiting' : 'dock.finding' } },
+    lead: null,
     status: null,
     retry: false,
     busy,
@@ -323,6 +345,15 @@ export function dockModel(input: DockInput): DockModel {
       // Which counts take the singular depends on the language: French says "0 trottinette".
       label: { key: `dock.${scope}.other`, one: { key: `dock.${scope}.one`, count: input.count } },
     },
+    lead: input.originInViewport && input.nearest && input.count > 0
+      ? {
+          provider: input.nearest.provider,
+          name: PROVIDERS[input.nearest.provider]?.name ?? input.nearest.provider,
+          distanceM: input.nearest.distanceM,
+          minutes: walkingMinutes(input.nearest.distanceM),
+          place: input.nearest.place,
+        }
+      : null,
     ...dockStatus(input),
     busy,
     notices: dockNotices(input, health),

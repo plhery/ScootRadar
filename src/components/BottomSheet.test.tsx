@@ -23,6 +23,7 @@ function input(overrides: Partial<DockInput> = {}): DockInput {
   return {
     count: 5,
     originInViewport: false,
+    nearest: null,
     loading: null,
     failure: null,
     outOfDate: false,
@@ -69,6 +70,7 @@ function renderSheet(overrides: Partial<React.ComponentProps<typeof BottomSheet>
     onEditFilters: vi.fn(),
     onRetry: vi.fn(),
     onCitySelect: vi.fn(),
+    onSelectNearest: vi.fn(),
     onLocate: vi.fn(),
     ...overrides,
   };
@@ -122,6 +124,68 @@ describe('BottomSheet', () => {
   it('keeps the plural for nothing in English', () => {
     renderSheet({ dock: dock({ count: 0, providerCounts: {} }) });
     expect(count()).toHaveTextContent(/^0\s*scooters on this map$/);
+  });
+
+  describe('the nearest scooter', () => {
+    const nearby = { originInViewport: true, nearest: { provider: 'lime', distanceM: 91, place: null } };
+
+    it('leads the dock when the walk starts on screen, and opens its card', () => {
+      const sheet = renderSheet({ dock: dock(nearby) });
+
+      const lead = screen.getByRole('button', { name: 'Nearest scooter: Lime, 91 m away, 2 min on foot. Show details.' });
+      expect(lead.querySelector('.dock-lead-figure')).toHaveTextContent(/^91m$/);
+      expect(lead).toHaveTextContent('to the nearest scooter');
+      expect(lead.querySelector('.dock-lead-detail')).toHaveTextContent(/^Lime, 2 min on foot$/);
+      fireEvent.click(lead);
+      expect(sheet.onSelectNearest).toHaveBeenCalledOnce();
+    });
+
+    it('leaves the count to "All" and to a screen reader, and does not say "Live"', () => {
+      renderSheet({ dock: dock(nearby) });
+
+      expect(count()).toHaveClass('sr-only');
+      expect(count()).toHaveAttribute('aria-live', 'polite');
+      expect(count()).toHaveTextContent(/^5\s*scooters nearby$/);
+      expect(screen.getByRole('button', { name: 'All providers, 5. Show all.' })).toHaveTextContent(/^All\s*5$/);
+      expect(screen.queryByText('Live')).not.toBeInTheDocument();
+    });
+
+    it('still says what is not as it should be', () => {
+      renderSheet({ dock: dock({ ...nearby, lastUpdated: NOW - 4 * 60_000 }) });
+
+      expect(screen.getByRole('button', { name: /^Nearest scooter: Lime/ })).toBeVisible();
+      expect(screen.getByText('Updated 4 min ago')).toBeVisible();
+    });
+
+    it('says which place the walk starts from', () => {
+      renderSheet({ dock: dock({ ...nearby, nearest: { provider: 'bolt', distanceM: 1_420, place: 'Zürich HB' } }) });
+
+      const lead = screen.getByRole('button', {
+        name: 'Nearest scooter to Zürich HB: Bolt, 1.4 km away, 18 min on foot. Show details.',
+      });
+      expect(lead.querySelector('.dock-lead-figure')).toHaveTextContent(/^1\.4km$/);
+      expect(lead.querySelector('.dock-lead-detail')).toHaveTextContent(/^Bolt, 18 min from Zürich HB$/);
+    });
+
+    it.each([
+      ['de', 'Nächster Scooter: Lime, 91 m entfernt, 2 Min. zu Fuss. Details anzeigen.', 'bis zum nächsten Scooter', 'Lime, 2 Min. zu Fuss'],
+      ['fr', 'Trottinette la plus proche : Lime, à 91 m, 2 min à pied. Afficher les détails.', 'Trottinette la plus proche', 'Lime, 2 min à pied'],
+      ['it', 'Monopattino più vicino: Lime, a 91 m, 2 min a piedi. Mostra i dettagli.', 'al monopattino più vicino', 'Lime, 2 min a piedi'],
+    ])('is written in %s', async (locale, name, label, detail) => {
+      localStorage.setItem('scooters-locale', locale);
+      renderSheet({ dock: dock(nearby) });
+
+      const lead = await screen.findByRole('button', { name });
+      expect(lead.querySelector('.dock-lead-label')).toHaveTextContent(label);
+      expect(lead.querySelector('.dock-lead-detail')).toHaveTextContent(detail);
+    });
+
+    it('is not there when the walk starts off screen: the count is', () => {
+      renderSheet({ dock: dock({ nearest: nearby.nearest }) });
+
+      expect(document.querySelector('.dock-lead')).toBeNull();
+      expect(count()).not.toHaveClass('sr-only');
+    });
   });
 
   it('says it is finding scooters on the first load, without a count, status or chips', () => {

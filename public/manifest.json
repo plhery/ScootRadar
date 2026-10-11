@@ -6,8 +6,8 @@
   "start_url": "/map",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#e0ddd8",
-  "theme_color": "#e0ddd8",
+  "background_color": "#eef0f4",
+  "theme_color": "#eef0f4",
   "icons": [
     {
       "src": "/icon-192.png",

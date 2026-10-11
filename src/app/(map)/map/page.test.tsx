@@ -925,8 +925,8 @@ it('renders on the server in the loading state without requesting scooters', () 
   expect(fetcher).not.toHaveBeenCalled();
   // Before any script runs the appearance is the system's.
   expect(html).toContain('data-theme="auto"');
-  expect(html).toContain('<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1c1c1e"/>');
-  expect(html).toContain('<meta name="theme-color" media="(prefers-color-scheme: light)" content="#e0ddd8"/>');
+  expect(html).toContain('<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b0e14"/>');
+  expect(html).toContain('<meta name="theme-color" media="(prefers-color-scheme: light)" content="#eef0f4"/>');
 });
 
 const shell = () => document.querySelector('.app-shell')!;
@@ -972,13 +972,13 @@ it('leaves Automatic to the system, and keeps a chosen appearance and map style 
   // Automatic and calm are what nothing chosen means: the stylesheet follows the system.
   expect(shell()).toHaveAttribute('data-theme', 'auto');
   expect(shell()).toHaveAttribute('data-map', 'calm');
-  expect(themeColors()).toEqual(['#e0ddd8', '#1c1c1e']);
+  expect(themeColors()).toEqual(['#eef0f4', '#0b0e14']);
   expect(window.location.search).toBe('');
 
   fireEvent.click(screen.getByRole('button', { name: 'Appearance dark' }));
   expect(shell()).toHaveAttribute('data-theme', 'dark');
   // A chosen appearance holds whatever the system says.
-  expect(themeColors()).toEqual(['#1c1c1e', '#1c1c1e']);
+  expect(themeColors()).toEqual(['#0b0e14', '#0b0e14']);
   expect(window.location.search).toBe('?theme=dark');
   expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ theme: 'dark' });
 
@@ -989,13 +989,13 @@ it('leaves Automatic to the system, and keeps a chosen appearance and map style 
 
   fireEvent.click(screen.getByRole('button', { name: 'Appearance light' }));
   expect(shell()).toHaveAttribute('data-theme', 'light');
-  expect(themeColors()).toEqual(['#e0ddd8', '#e0ddd8']);
+  expect(themeColors()).toEqual(['#eef0f4', '#eef0f4']);
   expect(window.location.search).toBe('?theme=light&map=detailed');
   expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({ theme: 'light', map: 'detailed' });
 
   fireEvent.click(screen.getByRole('button', { name: 'Appearance auto' }));
   fireEvent.click(screen.getByRole('button', { name: 'Map calm' }));
-  expect(themeColors()).toEqual(['#e0ddd8', '#1c1c1e']);
+  expect(themeColors()).toEqual(['#eef0f4', '#0b0e14']);
   expect(window.location.search).toBe('');
   expect(JSON.parse(localStorage.getItem('scooters-params')!)).toEqual({});
   // Nothing is forced on the page from a script, and nothing is left behind.
@@ -1012,7 +1012,7 @@ it('restores a chosen appearance and map style from the link', async () => {
   await act(async () => vi.advanceTimersByTimeAsync(180));
   expect(shell()).toHaveAttribute('data-theme', 'light');
   expect(shell()).toHaveAttribute('data-map', 'detailed');
-  expect(themeColors()).toEqual(['#e0ddd8', '#e0ddd8']);
+  expect(themeColors()).toEqual(['#eef0f4', '#eef0f4']);
   expect(window.location.search).toBe('?theme=light&map=detailed');
 });
 

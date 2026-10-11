@@ -37,6 +37,16 @@ interface DistanceFormatter {
   formatNumber: (value: number, options?: Intl.NumberFormatOptions) => string;
 }
 
+/** The same figure in two parts, for where the unit is set smaller than the number. */
+export function distanceParts(
+  meters: number,
+  formatNumber: DistanceFormatter['formatNumber'],
+): { value: string; unit: 'm' | 'km' } {
+  return meters < 1000
+    ? { value: formatNumber(Math.round(meters)), unit: 'm' }
+    : { value: formatNumber(meters / 1000, { maximumFractionDigits: 1 }), unit: 'km' };
+}
+
 /** "320 m" below a kilometre; "1.4 km" and "24 km" from there. */
 export function formatDistance(meters: number, { t, formatNumber }: DistanceFormatter): string {
   return meters < 1000

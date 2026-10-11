@@ -64,7 +64,7 @@ const CLOCK_TICK_MS = 30_000;
 const VIEWPORT_FETCH_PADDING = 0.25;
 
 // The colour the browser gives its own bars in each appearance.
-const THEME_COLOR = { light: '#e0ddd8', dark: '#1c1c1e' };
+const THEME_COLOR = { light: '#eef0f4', dark: '#0b0e14' };
 
 const STORAGE_KEY = 'scooters-params';
 const PROVIDERS_STORAGE_KEY = 'scooters-providers';
@@ -456,6 +456,27 @@ export default function Home() {
     return { vehicle, walk: walkEstimate(walkOrigin, vehicle.lat, vehicle.lng) };
   }, [selectedVehicleKey, viewportData.visibleVehicles, walkOrigin]);
 
+  // The scooter that leads the dock: the nearest one shown, while single scooters are.
+  const nearestVehicle = useMemo(() => {
+    if (!walkOrigin || responseMeta?.mode === 'clusters') return null;
+    let nearest: { vehicle: Vehicle; distanceM: number } | null = null;
+    for (const vehicle of viewportData.visibleVehicles) {
+      const distanceM = walkEstimate(walkOrigin, vehicle.lat, vehicle.lng)?.distanceM ?? Infinity;
+      if (!nearest || distanceM < nearest.distanceM) nearest = { vehicle, distanceM };
+    }
+    return nearest;
+  }, [responseMeta?.mode, viewportData.visibleVehicles, walkOrigin]);
+
+  const selectVehicle = (vehicle: Vehicle) => {
+    track('vehicle_select', { provider: vehicle.provider });
+    selectionFeedback();
+    setSelectedParkingId(null);
+    setSelectedVehicleKey(vehicle.vehicle_id
+      ? `${vehicle.provider}:${vehicle.vehicle_id}`
+      : `${vehicle.provider}:${vehicle.lat}:${vehicle.lng}`
+    );
+  };
+
   // What closes a card clears the selection, as in the iOS app: a scooter or a
   // bay that left the view, lost its provider or went with new data does not
   // open again by itself once it is back.
@@ -499,6 +520,11 @@ export default function Home() {
   const dockInput: DockInput = {
     count: viewportData.totalCount,
     originInViewport: originInViewport(walkOrigin?.point ?? null, viewportBounds),
+    nearest: nearestVehicle && {
+      provider: nearestVehicle.vehicle.provider,
+      distanceM: nearestVehicle.distanceM,
+      place: walkOrigin?.place ?? null,
+    },
     loading,
     failure,
     outOfDate,
@@ -706,6 +732,7 @@ export default function Home() {
         onEditFilters={() => openPanel('filters')}
         onRetry={retryLoad}
         onCitySelect={city => { handleCitySelect(city); focusSearchBar(); }}
+        onSelectNearest={() => { if (nearestVehicle) selectVehicle(nearestVehicle.vehicle); }}
         onLocate={handleLocateFromCard}
         locating={locating}
       />
@@ -726,15 +753,7 @@ export default function Home() {
         destination={destination}
         onViewportChange={handleViewportChange}
         selectedVehicleKey={selectedVehicleKey}
-        onVehicleSelect={vehicle => {
-          track('vehicle_select', { provider: vehicle.provider });
-          selectionFeedback();
-          setSelectedParkingId(null);
-          setSelectedVehicleKey(vehicle.vehicle_id
-            ? `${vehicle.provider}:${vehicle.vehicle_id}`
-            : `${vehicle.provider}:${vehicle.lat}:${vehicle.lng}`
-          );
-        }}
+        onVehicleSelect={selectVehicle}
         selectedParkingId={selectedParkingId}
         onParkingSelect={location => {
           track('parking_select', { provider: location.provider });
@@ -748,6 +767,8 @@ export default function Home() {
         popover={popover}
         zoomStep={zoomStep}
         markerLookupRef={markerLookupRef}
+        theme={theme}
+        mapStyle={mapStyle}
       />
 
       {/* One row in the corner of a desktop; on a phone each of the two places itself. */}

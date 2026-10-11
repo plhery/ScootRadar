@@ -1,6 +1,6 @@
 import Analytics from "@/components/Analytics";
 import type { Metadata, Viewport } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Red_Hat_Display, Red_Hat_Text } from "next/font/google";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 import { FIRST_PAINT_THEME_SCRIPT } from "@/lib/firstPaintTheme";
 import { I18nProvider } from "@/lib/i18n";
@@ -9,6 +9,20 @@ import "../globals.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+});
+
+// The typefaces of the landing page: Display for figures and titles, Text for
+// what is read, on the map's own names as well.
+const display = Red_Hat_Display({
+  variable: "--font-display",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const text = Red_Hat_Text({
+  variable: "--font-text",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -62,7 +76,7 @@ export default async function RootLayout({
       <head>
         <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png" />
       </head>
-      <body className={geistSans.variable}>
+      <body className={`${geistSans.variable} ${display.variable} ${text.variable}`}>
         <I18nProvider>{children}</I18nProvider>
         {/* Right after the page it applies to, and before anything is painted: a
             chosen Light or Dark. The same text in every response, so the service
