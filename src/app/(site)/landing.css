@@ -375,7 +375,8 @@ img {
   --py: 0;
   position: relative;
   padding: 48px var(--gutter) 0;
-  overflow: clip;
+  /* The cards come in from the sides; the lights are left to fade out below. */
+  overflow: clip visible;
 }
 
 .orb {
@@ -704,6 +705,8 @@ img {
 /* What the map tells you */
 
 .know {
+  /* Over the lights of the stage, which reach down behind its title. */
+  position: relative;
   padding: clamp(80px, 10vw, 140px) var(--gutter) 0;
 }
 
@@ -869,7 +872,8 @@ img {
   align-items: stretch;
   gap: 0 40px;
   padding: 0;
-  overflow: hidden;
+  /* Clipped, not hidden: what is inside still follows the scroll of the page. */
+  overflow: clip;
 }
 
 .cell-copy {
@@ -916,7 +920,7 @@ img {
   gap: clamp(14px, 2vw, 24px);
   height: clamp(380px, 38vw, 480px);
   padding: clamp(28px, 3.6vw, 48px) 24px 0;
-  overflow: hidden;
+  overflow: clip;
 }
 
 .cell-shot .phone {
