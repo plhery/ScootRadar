@@ -52,10 +52,10 @@ const paths = {
       <circle cx="12" cy="13" r="1" />
     </>
   ),
-  walk: (
+  directions: (
     <>
-      <circle cx="14" cy="4" r="2" />
-      <path d="m7 21 4-7m5 7-2-6-4-3 2-5m-6 5 3-1 3-4 3 5 4 1" />
+      <path d="M5 20v-6a4 4 0 0 1 4-4h10" />
+      <path d="m15 6 4 4-4 4" />
     </>
   ),
   scooter: (

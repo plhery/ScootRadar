@@ -257,7 +257,7 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
           rel="noreferrer"
           onClick={() => { track('directions_open', { provider: vehicle.provider, target: 'vehicle' }); selectionFeedback(); }}
         >
-          <Icon name="walk" size={18} />
+          <Icon name="directions" size={18} />
           {t('card.directions')}
         </a>
       </div>

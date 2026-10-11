@@ -78,7 +78,7 @@ export default function ParkingCard({ selection, onClose }: ParkingCardProps) {
           rel="noreferrer"
           onClick={() => { track('directions_open', { provider: parking.provider, target: 'parking' }); selectionFeedback(); }}
         >
-          <Icon name="walk" size={18} />
+          <Icon name="directions" size={18} />
           {t('card.directions')}
         </a>
       </div>
