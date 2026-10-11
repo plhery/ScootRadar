@@ -5,9 +5,10 @@
 //
 // Each is the landing page in short: its name, the promise of its title in
 // that language (meta.share.title in src/lib/landingCopy.ts), the providers'
-// tiles, and the capture of the dark map that the page opens with. The fonts
-// come from Google Fonts, as next/font fetches them at build time, so this
-// needs the network.
+// tiles, and the capture of the dark map that the page opens with
+// (scripts/generate-landing-images.mjs takes it: draw these after it). The
+// fonts come from Google Fonts, as next/font fetches them at build time, so
+// this needs the network.
 
 import { readFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
@@ -21,19 +22,21 @@ const out = path.join(root, 'public/share');
 const WIDTH = 1200;
 const HEIGHT = 630;
 
-// The words of the page and the name of the site have no imports: they compile on their own.
+// The words of the page, its snapshot and the name of the site import nothing but types: they compile on their own.
 async function load(file) {
   const { code } = await transform(readFileSync(path.join(root, file), 'utf8'), { loader: 'ts', format: 'esm' });
   return import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
 }
 const { LANDING_COPY, LANDING_LOCALES } = await load('src/lib/landingCopy.ts');
+const { LANDING_NEAREST } = await load('src/lib/landingSnapshot.ts');
 const { SITE_NAME } = await load('src/lib/site.ts');
 const providers = JSON.parse(readFileSync(path.join(root, 'data/providers.json'), 'utf8'));
 
-// As on the page: Bird's black would vanish on the night, and PubliBike's
-// purple is the one colour that white letters read better on.
+// As on the page: Bird's black would vanish on the night, so its tile is the
+// light one, and the only one too light for the white initials of the others.
 const TILE_COLORS = { bird: '#f4f5f7' };
-const WHITE_LETTERS = new Set(['publibike']);
+const DARK_LETTERS = new Set(['bird']);
+const tileColor = key => TILE_COLORS[key] ?? providers.find(provider => provider.key === key).color;
 
 const escape = text => text.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 // Inline: a page set from a string may not load files from the disk.
@@ -44,9 +47,9 @@ const asset = file =>
 function page(locale) {
   const copy = LANDING_COPY[locale];
   const tiles = providers
-    .map(({ key, color, initial }) => {
-      const classes = ['tile', initial.length > 1 && 'tile--wide', WHITE_LETTERS.has(key) && 'tile--white'];
-      return `<span class="${classes.filter(Boolean).join(' ')}" style="--c:${TILE_COLORS[key] ?? color}">${escape(initial)}</span>`;
+    .map(({ key, initial }) => {
+      const classes = ['tile', initial.length > 1 && 'tile--wide', DARK_LETTERS.has(key) && 'tile--dark'];
+      return `<span class="${classes.filter(Boolean).join(' ')}" style="--c:${tileColor(key)}">${escape(initial)}</span>`;
     })
     .join('');
   return `<!doctype html>
@@ -69,7 +72,7 @@ function page(locale) {
   }
   .orb { position: absolute; border-radius: 50%; filter: blur(10px); }
   .orb--night { left: 640px; top: -120px; width: 620px; height: 620px; background: radial-gradient(closest-side, rgba(47, 123, 255, 0.34), transparent); }
-  .orb--near { left: 520px; top: 300px; width: 520px; height: 420px; background: radial-gradient(closest-side, rgba(255, 20, 147, 0.26), transparent); }
+  .orb--near { left: 520px; top: 300px; width: 520px; height: 420px; background: radial-gradient(closest-side, color-mix(in srgb, ${tileColor(LANDING_NEAREST[0].provider)} 26%, transparent), transparent); }
   .copy { position: absolute; left: 72px; top: 64px; bottom: 64px; width: 600px; display: flex; flex-direction: column; }
   .brand { display: flex; align-items: center; gap: 14px; font: 800 30px 'Red Hat Display', sans-serif; }
   .brand img { width: 44px; height: 44px; }
@@ -82,13 +85,14 @@ function page(locale) {
   .tiles { display: flex; gap: 10px; margin-top: 36px; }
   .tile {
     display: grid; place-items: center; width: 50px; height: 50px; border-radius: 16px;
-    background: var(--c); color: #090b10; font: 800 20px 'Red Hat Display', sans-serif;
+    background: var(--c); color: #ffffff; font: 800 20px 'Red Hat Display', sans-serif;
   }
   .tile--wide { font-size: 17px; }
-  .tile--white { color: #ffffff; }
+  .tile--dark { color: #10131a; }
   .note { margin: 22px 0 0; font-size: 24px; color: #a3a8b3; }
   .phone { position: absolute; left: 790px; top: 58px; width: 340px; }
-  .phone-body { padding: 11px; border-radius: 58px; background: #1b1f29; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.16), 0 0 140px 30px rgba(47, 123, 255, 0.28); }
+  .phone-body { position: relative; padding: 11px; border-radius: 58px; background: #1b1f29; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.16), 0 0 140px 30px rgba(47, 123, 255, 0.28); }
+  .phone-body::before { content: ''; position: absolute; left: 50%; top: 22px; width: 98px; height: 29px; margin-left: -49px; border-radius: 15px; background: #000000; }
   .phone-body img { display: block; width: 100%; border-radius: 47px; }
 </style>
 </head>
