@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  LANDING_COPY, LANDING_LOCALES, LANGUAGE_NAMES, isLandingLocale, landingLocaleOf, landingPath,
+  LANDING_COPY, LANDING_LOCALES, LANGUAGE_NAMES, isLandingLocale, landingLocaleOf, landingPath, linkedParts,
 } from '@/lib/landingCopy';
 import { PROVIDERS } from '@/generated/providers';
 import { LANDING_NEAREST } from '@/lib/landingSnapshot';
@@ -56,6 +56,36 @@ describe('the languages of the landing page', () => {
 
   it('keeps French punctuation on the line of its word', () => {
     for (const [path, text] of strings(LANDING_COPY.fr)) expect(text, path).not.toMatch(/ [:;?!%]/);
+  });
+});
+
+describe('the links of the landing page', () => {
+  /** The names a sentence gives its links, in order. */
+  const linked = (sentence: string) => linkedParts(sentence).flatMap(({ link }) => link ?? []);
+  /** What is read of a sentence, the words of its links included. */
+  const read = (sentence: string) => linkedParts(sentence).map(({ text }) => text).join('');
+
+  it('cuts a sentence at its links', () => {
+    expect(linkedParts('By the <maker>maker</maker> of <peek>Peek, the tracker</peek>.')).toEqual([
+      { text: 'By the ' },
+      { text: 'maker', link: 'maker' },
+      { text: ' of ' },
+      { text: 'Peek, the tracker', link: 'peek' },
+      { text: '.' },
+    ]);
+    expect(linkedParts('<source>Open source</source>')).toEqual([{ text: 'Open source', link: 'source' }]);
+    expect(linkedParts('No link here.')).toEqual([{ text: 'No link here.' }]);
+  });
+
+  it('links the code where the page ends, and words the link under the first button apart', () => {
+    for (const locale of LANDING_LOCALES) {
+      const { closing, hero } = LANDING_COPY[locale];
+      expect(linked(closing.note), locale).toEqual(['source']);
+      // Nothing is left of a tag that was not closed, or misspelled.
+      expect(read(closing.note), locale).not.toMatch(/[<>]/);
+      // A share picture prints the first note as it is.
+      expect(hero.note, locale).not.toMatch(/[<>]/);
+    }
   });
 });
 

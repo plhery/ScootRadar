@@ -133,6 +133,20 @@ test('the landing page leads to the map, and to the map of a city', async ({ pag
   await expect(page.locator('.app-shell')).toBeVisible();
 });
 
+test('the landing page says it is open source under its first button, with a link to the code', async ({ page }) => {
+  await page.goto('/fr');
+  const code = 'https://github.com/plhery/ScootRadar';
+  const note = page.locator('.hero .note');
+  await expect(note).toHaveText('Gratuit. Sans compte, sans pub. Open source.');
+  await expect(note.getByRole('link', { name: 'Open source' })).toHaveAttribute('href', code);
+  // The mark of GitHub is beside the words, not one of them.
+  await expect(note.locator('svg')).toHaveAttribute('aria-hidden', 'true');
+
+  // And where the page ends: in its last note, and in the footer as before.
+  await expect(page.locator('.closing').getByRole('link', { name: 'open source' })).toHaveAttribute('href', code);
+  await expect(page.getByRole('contentinfo').getByRole('link', { name: 'Code source sur GitHub' })).toHaveAttribute('href', code);
+});
+
 test('a link to the map from when it was at the root still opens the map', async ({ page, request }) => {
   // The Worker answers before any page is rendered, and keeps what the link carries.
   const moved = await request.get('/?origin=47.3769,8.5417&theme=dark', { maxRedirects: 0 });
@@ -176,7 +190,7 @@ test('the landing page is accessible, and its targets are big enough for a finge
   const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
   expect(accessibility.violations).toEqual([]);
 
-  for (const link of await page.locator('.pill a:visible, .btn, .footer a').all()) {
+  for (const link of await page.locator('.pill a:visible, .btn, .note a, .footer a').all()) {
     const box = (await link.boundingBox())!;
     expect(box.height, await link.innerText()).toBeGreaterThanOrEqual(38);
   }

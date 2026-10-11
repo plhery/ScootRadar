@@ -38,6 +38,17 @@ export const LANGUAGE_NAMES: Record<LandingLocale, string> = {
 
 export const SOURCE_URL = 'https://github.com/plhery/ScootRadar';
 
+/** A sentence cut at its links: what it writes as "<name>words</name>" is the words of the link of that name. */
+export function linkedParts(sentence: string): { text: string; link?: string }[] {
+  const parts: { text: string; link?: string }[] = [];
+  let read = 0;
+  for (const tag of sentence.matchAll(/<(\w+)>(.*?)<\/\1>/g)) {
+    parts.push({ text: sentence.slice(read, tag.index) }, { text: tag[2], link: tag[1] });
+    read = tag.index + tag[0].length;
+  }
+  return [...parts, { text: sentence.slice(read) }].filter(part => part.text);
+}
+
 // The App Store page of the iPhone app, once it has one. The buttons that lead
 // to it are left out until then.
 export const APP_STORE_URL = null as string | null;
@@ -58,7 +69,9 @@ export interface LandingCopy {
     /** The number is the one on the capture beside the headline: the scooters in view there. */
     title: (scooters: number) => string;
     lede: string;
+    /** The share picture prints the note; the page ends it with the link to the code, worded here. */
     note: string;
+    openSource: string;
     stage: string;
     alt: (scooters: number) => string;
   };
@@ -108,6 +121,7 @@ export interface LandingCopy {
   };
   /** What people ask a search engine before they find the map, answered. */
   faq: { title: string; items: readonly { question: string; answer: string }[] };
+  /** The note links what it calls "source" to the code. */
   closing: { title: string; note: string };
   footer: { text: string; links: string; privacy: string; source: string };
 }
@@ -130,6 +144,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       title: scooters => `There are ${scooters} scooters around you.`,
       lede: 'ScootRadar puts every shared e-scooter around you on one map, whoever runs it, so the closest way home is the first thing you see.',
       note: 'Free. No account, no ads.',
+      openSource: 'Open source',
       stage: 'ScootRadar by Zürich main station',
       alt: scooters =>
         `The iPhone app at night: the dark streets by Zürich main station, each scooter a dot of light in its provider’s colour, the nearest of each provider named with its walking time, and ${scooters} scooters in view.`,
@@ -223,7 +238,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     closing: {
       title: 'Go and find yours.',
-      note: 'Your location is used on your device and is not stored. The code is open source.',
+      note: 'Your location is used on your device and is not stored. The code is <source>open source</source>.',
     },
     footer: {
       text: 'ScootRadar is independent and not affiliated with the providers; their names are trademarks of their owners. Positions come from the providers’ public data feeds and can be a few minutes old. Prices are estimates; the provider’s app shows the final price.',
@@ -250,6 +265,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       title: scooters => `Um dich herum stehen ${scooters} E-Scooter.`,
       lede: 'ScootRadar zeigt alle E-Scooter in deiner Nähe auf einer Karte, egal von welchem Sharing-Anbieter. So ist der schnellste Weg nach Hause das Erste, was du siehst.',
       note: 'Gratis. Kein Konto, keine Werbung.',
+      openSource: 'Open Source',
       stage: 'Scooter beim Zürcher Hauptbahnhof',
       alt: scooters =>
         `Die iPhone-App bei Nacht: die dunklen Strassen beim Zürcher Hauptbahnhof, jeder Scooter ein Lichtpunkt in der Farbe seines Anbieters, der nächste jedes Anbieters mit Namen und Gehzeit, ${scooters} Scooter im Bild.`,
@@ -343,7 +359,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     closing: {
       title: 'Finde deinen Scooter.',
-      note: 'Dein Standort wird auf deinem Gerät genutzt und nicht gespeichert. Der Code ist Open Source.',
+      note: 'Dein Standort wird auf deinem Gerät genutzt und nicht gespeichert. Der Code ist <source>Open Source</source>.',
     },
     footer: {
       text: 'ScootRadar ist unabhängig und steht in keiner Verbindung zu den Anbietern; deren Namen sind Marken ihrer jeweiligen Inhaber. Die Positionen stammen aus den öffentlichen Datenfeeds der Anbieter und können einige Minuten alt sein. Preise sind Schätzungen; den Endpreis zeigt die App des Anbieters.',
@@ -370,6 +386,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       title: scooters => `Il y a ${scooters} trottinettes autour de vous.`,
       lede: 'ScootRadar réunit sur une seule carte toutes les trottinettes électriques en libre-service autour de vous, quel que soit l’opérateur. Le plus court chemin pour rentrer est ainsi la première chose que vous voyez.',
       note: 'Gratuit. Sans compte, sans pub.',
+      openSource: 'Open source',
       stage: 'Trottinettes près de la gare centrale de Zurich',
       alt: scooters =>
         `L’app iPhone, de nuit : les rues sombres près de la gare centrale de Zurich, chaque trottinette en point lumineux à la couleur de son opérateur, la plus proche de chaque opérateur avec son nom et le temps de marche, et ${scooters} trottinettes à l’écran.`,
@@ -463,7 +480,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     closing: {
       title: 'Trouvez votre trottinette.',
-      note: 'Votre position est utilisée sur votre appareil et n’est pas enregistrée. Le code est open source.',
+      note: 'Votre position est utilisée sur votre appareil et n’est pas enregistrée. Le code est <source>open source</source>.',
     },
     footer: {
       text: 'ScootRadar est indépendant et n’est pas affilié aux opérateurs ; leurs noms sont des marques de leurs propriétaires respectifs. Les positions proviennent des flux de données publics des opérateurs et peuvent dater de quelques minutes. Les prix sont des estimations ; le prix final est celui qu’affiche l’app de l’opérateur.',
@@ -490,6 +507,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       title: scooters => `Ci sono ${scooters} monopattini intorno a te.`,
       lede: 'ScootRadar mette su una sola mappa tutti i monopattini elettrici in sharing intorno a te, di qualunque operatore. Così la strada più breve per tornare a casa è la prima cosa che vedi.',
       note: 'Gratis. Niente account, niente pubblicità.',
+      openSource: 'Open source',
       stage: 'Monopattini vicino alla stazione centrale di Zurigo',
       alt: scooters =>
         `L’app per iPhone di notte: le strade scure vicino alla stazione centrale di Zurigo, ogni monopattino un punto di luce nel colore del suo operatore, il più vicino di ogni operatore con il nome e i minuti a piedi, e ${scooters} monopattini sullo schermo.`,
@@ -583,7 +601,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     closing: {
       title: 'Trova il tuo.',
-      note: 'La tua posizione viene usata sul tuo dispositivo e non viene salvata. Il codice è open source.',
+      note: 'La tua posizione viene usata sul tuo dispositivo e non viene salvata. Il codice è <source>open source</source>.',
     },
     footer: {
       text: 'ScootRadar è un’app indipendente, non affiliata agli operatori; i loro nomi sono marchi dei rispettivi titolari. Le posizioni provengono dai feed di dati pubblici degli operatori e possono risalire a qualche minuto fa. I prezzi sono stime; il prezzo finale è quello dell’app dell’operatore.',
