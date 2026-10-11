@@ -4,7 +4,7 @@ import { Geist } from "next/font/google";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 import { FIRST_PAINT_THEME_SCRIPT } from "@/lib/firstPaintTheme";
 import { I18nProvider } from "@/lib/i18n";
-import "./globals.css";
+import "../globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

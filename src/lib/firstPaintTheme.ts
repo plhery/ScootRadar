@@ -4,7 +4,7 @@
  * frame at once, so that the page does not first show in the appearance of the
  * system. Automatic needs nothing, the stylesheet follows the system by itself.
  *
- * It reads what readUrlParams() in src/app/page.tsx reads, in the same order:
+ * It reads what readUrlParams() in src/app/(map)/page.tsx reads, in the same order:
  * the link when it has parameters, the saved settings otherwise, and "tile=dark"
  * from before appearance and map style were separate. The test keeps the two
  * in step. Written as text because it is not part of any bundle; the Worker
