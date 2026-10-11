@@ -82,15 +82,23 @@ function sortedKeys(value) {
     : Array.isArray(value) ? value.map(sortedKeys) : value;
 }
 
+// What the source decides about a rule; Grafana adds fields of its own to what it stores.
 function comparableRule(rule) {
-  const expression = rule.data.find(entry => entry.refId === 'B')?.model;
   return JSON.stringify(sortedKeys({
     title: rule.title,
-    expr: rule.data.find(entry => entry.refId === 'A')?.model?.expr?.replace(/\s+/g, ' '),
-    datasourceUid: rule.data.find(entry => entry.refId === 'A')?.datasourceUid,
-    condition: expression?.type,
+    condition: rule.condition,
+    data: rule.data.map(entry => ({
+      refId: entry.refId,
+      datasourceUid: entry.datasourceUid,
+      relativeTimeRange: entry.relativeTimeRange,
+      expr: entry.model?.expr?.replace(/\s+/g, ' '),
+      type: entry.model?.type,
+      expression: entry.model?.expression,
+      evaluators: entry.model?.conditions?.map(condition => condition.evaluator),
+    })),
     for: rule.for,
     noDataState: rule.noDataState,
+    execErrState: rule.execErrState,
     annotations: rule.annotations,
     labels: rule.labels,
     isPaused: rule.isPaused,

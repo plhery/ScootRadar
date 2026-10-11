@@ -63,3 +63,12 @@ it('escapes label values', () => {
   const text = createSnapshotMetrics('a"b\\c\nd').render(undefined, now);
   expect(text).toContain('scootradar_build_info{version="a\\"b\\\\c\\nd"} 1');
 });
+
+it('stops counting a feed retired from the catalog', () => {
+  const metrics = createSnapshotMetrics();
+  metrics.recordCollection({ id: 'national:retired', source: 'national', provider: 'voi' }, true, 1);
+  metrics.recordCollection({ id: 'national:voiscooters.com', source: 'national', provider: 'voi' }, false, 1);
+  const text = metrics.render(snapshot([feed({})]), now);
+  expect(text).toContain('feed="national:voiscooters.com"');
+  expect(text).not.toContain('national:retired');
+});

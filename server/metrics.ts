@@ -8,6 +8,7 @@ interface FeedLabels { id: string; source: string; provider: string }
 type Labels = Record<string, string>;
 
 const FEED_STATES: FeedState[] = ['ok', 'failing', 'expired'];
+const EVENT_LOOP_RESOLUTION_MS = 20;
 
 /**
  * Prometheus metrics of the snapshot server, in the text exposition format.
@@ -21,7 +22,7 @@ export function createSnapshotMetrics(version = 'local') {
   const requests = new Map<string, { labels: Labels; count: number }>();
   const requestSeconds = new Map<string, { count: number; seconds: number }>();
   let discoveredAt = 0;
-  const eventLoop = monitorEventLoopDelay({ resolution: 20 });
+  const eventLoop = monitorEventLoopDelay({ resolution: EVENT_LOOP_RESOLUTION_MS });
   eventLoop.enable();
 
   return {
@@ -52,6 +53,11 @@ export function createSnapshotMetrics(version = 'local') {
       // As in the feed state log, a feed not attempted yet has no state to speak of.
       const feeds = (snapshot?.feeds ?? []).filter(feed => !feed.skipped && feed.attemptedAt > 0);
       const labelsOf = (feed: FeedLabels): Labels => ({ feed: feed.id, source: feed.source, provider: feed.provider });
+      // A feed retired from the catalog stops counting.
+      if (snapshot) {
+        const catalog = new Set(snapshot.feeds.map(feed => feed.id));
+        for (const id of collections.keys()) if (!catalog.has(id)) collections.delete(id);
+      }
 
       metric('scootradar_build_info', 'gauge', 'The running commit.', [[{ version }, 1]]);
       metric('scootradar_snapshot_updated_timestamp_seconds', 'gauge', 'When a collection last changed the snapshot.',
@@ -99,10 +105,11 @@ export function createSnapshotMetrics(version = 'local') {
       metric('process_cpu_seconds_total', 'counter', 'User and system CPU time spent.', [[{}, round((cpu.user + cpu.system) / 1e6)]]);
       metric('process_resident_memory_bytes', 'gauge', 'Resident memory size.', [[{}, memory.rss]]);
       metric('nodejs_heap_used_bytes', 'gauge', 'V8 heap in use.', [[{}, memory.heapUsed]]);
-      // Over the time since the previous scrape.
+      // Over the time since the previous scrape. Each sample spans the sampling interval too.
+      const lag = (nanoseconds: number) => round(Math.max(0, nanoseconds / 1e6 - EVENT_LOOP_RESOLUTION_MS) / 1000);
       metric('nodejs_eventloop_lag_p99_seconds', 'gauge', 'The 99th percentile of event loop delay.',
-        [[{}, round(eventLoop.percentile(99) / 1e9)]]);
-      metric('nodejs_eventloop_lag_max_seconds', 'gauge', 'The longest event loop delay.', [[{}, round(eventLoop.max / 1e9)]]);
+        [[{}, lag(eventLoop.percentile(99))]]);
+      metric('nodejs_eventloop_lag_max_seconds', 'gauge', 'The longest event loop delay.', [[{}, lag(eventLoop.max)]]);
       eventLoop.reset();
       return `${out.join('\n')}\n`;
     },

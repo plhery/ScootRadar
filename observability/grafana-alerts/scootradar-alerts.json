@@ -19,7 +19,7 @@
       "expr": "sum(scootradar_feed_state{job=\"scootradar-cache\", state=~\"ok|failing\"}) < bool 1",
       "for": "5m",
       "severity": "critical",
-      "noDataState": "OK",
+      "noDataState": "KeepLast",
       "summary": "Every scooter feed has expired.",
       "description": "The map shows no scooters anywhere and /ready answers 503. Look at the snapshot_feed_failed lines in Loki ({app=\"scootradar-cache\"}): the network, or every operator at once."
     },
@@ -29,7 +29,7 @@
       "expr": "time() - max(scootradar_snapshot_updated_timestamp_seconds{job=\"scootradar-cache\"}) > bool 300",
       "for": "5m",
       "severity": "critical",
-      "noDataState": "OK",
+      "noDataState": "KeepLast",
       "summary": "No feed collection has finished for 5 minutes.",
       "description": "Every collection, successful or not, updates the snapshot, and each feed is collected every minute. The scheduler is stuck: restart the cache (Coolify application mouc13tsnvylg0v9ee9wp5v5) and report what the logs say."
     },
@@ -39,10 +39,10 @@
       "expr": "(max by (feed, source, provider) (scootradar_feed_state{job=\"scootradar-cache\", state=\"expired\"}) == 1) and on (feed) (max by (feed) (max_over_time(scootradar_feed_state{job=\"scootradar-cache\", state=~\"ok|failing\"}[7d:5m])) == 1)",
       "for": "10m",
       "severity": "warning",
-      "noDataState": "OK",
+      "noDataState": "KeepLast",
       "perSeries": true,
       "summary": "{{ $labels.feed }} has not been served for 10 minutes.",
-      "description": "The map says {{ $labels.provider }} is not sharing data where this feed covers. It was served in the last 7 days; feeds dead longer than that are not reported (see the dashboard's \"Not served all week\"). The Sentry issue for the feed in scootradar-cache gives its last error, or says its data aged past the limit without an error, as Voi's 8-minute updates did. Loki: {app=\"scootradar-cache\", event=\"snapshot_feed_state\"} | json | feed=\"{{ $labels.feed }}\"."
+      "description": "The map says {{ $labels.provider }} is not sharing data where this feed covers. It was served in the last 7 days; feeds dead longer than that are not reported (see the dashboard's \"Not served all week\"). The Sentry issue for the feed in scootradar-cache gives its last error, or says its data aged past the limit without one. Loki: {app=\"scootradar-cache\", event=\"snapshot_feed_state\"} | json | feed=\"{{ $labels.feed }}\"."
     },
     {
       "uid": "scootradar-discovery-stale",
@@ -50,9 +50,19 @@
       "expr": "time() - (max(scootradar_discovery_success_timestamp_seconds{job=\"scootradar-cache\"}) or max(process_start_time_seconds{job=\"scootradar-cache\"})) > bool 7200",
       "for": "10m",
       "severity": "warning",
-      "noDataState": "OK",
+      "noDataState": "KeepLast",
       "summary": "The feed catalog has not been discovered for 2 hours.",
       "description": "Discovery runs hourly and retries every minute on failure; the cache keeps its previous catalog meanwhile, so new systems are missing and retired ones stay. The Sentry discovery issue in scootradar-cache has the error."
+    },
+    {
+      "uid": "scootradar-cache-restarting",
+      "title": "Scootradar cache restarting",
+      "expr": "changes(process_start_time_seconds{job=\"scootradar-cache\"}[1h]) > bool 3",
+      "for": "0s",
+      "severity": "warning",
+      "noDataState": "KeepLast",
+      "summary": "The cache has restarted more than three times in an hour.",
+      "description": "A deploy restarts it once. More is a crash loop: killed above its 1536 MiB, or a startup failure. Its last logs are in Loki ({app=\"scootradar-cache\"}) and an exception in Sentry's scootradar-cache project."
     },
     {
       "uid": "scootradar-cache-memory",
@@ -60,7 +70,7 @@
       "expr": "max(process_resident_memory_bytes{job=\"scootradar-cache\"}) > bool 1300000000",
       "for": "15m",
       "severity": "warning",
-      "noDataState": "OK",
+      "noDataState": "KeepLast",
       "summary": "The cache has used over 1.3 GB for 15 minutes.",
       "description": "The container is limited to 1536 MiB and is killed above it. A catalog that grew, or a leak: compare with the feed count on the dashboard."
     }

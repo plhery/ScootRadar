@@ -74,7 +74,11 @@ last seven days:
 | Scootradar collector stalled | no collection has finished for 5 minutes |
 | Scootradar feed stopped | a feed served in the last 7 days has been expired for 10 minutes; one notification per feed |
 | Scootradar feed discovery stale | no successful discovery for 2 hours |
+| Scootradar cache restarting | more than three restarts in an hour (a deploy is one) |
 | Scootradar cache memory high | over 1.3 GB for 15 minutes (the limit is 1536 MiB) |
+
+While the cache cannot be scraped, as for a moment during a deploy, every rule but
+"target down" keeps its last state rather than resolving and firing again.
 
 The default notification policy sends them all to the `telegram-paul` contact point.
 The dashboard's "Not served all week" table lists the dead feeds, which stop alerting
@@ -90,7 +94,8 @@ and user before it is sent: the API's query holds map bounds, and the Worker for
 the visitor's address in a header. Tracing is off.
 
 - **Feed stopped being served**: a warning each time a feed becomes `expired`, one
-  issue per feed (tags `feed`, `source`, `provider`). Its `feed` context has the
+  issue per feed (tags `feed`, `source`, `provider`), at most one event an hour for
+  each, so a feed that keeps expiring between updates stays quiet. Its `feed` context has the
   `snapshot_feed_state` figures and the last collection error, or says that the last
   collection succeeded and its data then aged past the limit.
 - **Unexpected errors**: snapshot restore and persistence, feed discovery, a request

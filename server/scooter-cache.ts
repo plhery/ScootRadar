@@ -80,6 +80,7 @@ function setDefinitions(definitions: CollectableScooterFeed[], retireMissing: bo
   if (retireMissing) {
     const active = new Set(definitions.map(feed => feed.id));
     for (const id of records.keys()) if (!active.has(id)) records.delete(id);
+    for (const id of lastErrors.keys()) if (!active.has(id)) lastErrors.delete(id);
   }
   for (const definition of definitions) if (!records.has(definition.id)) {
     records.set(definition.id, { id: definition.id, source: definition.source, provider: definition.provider,

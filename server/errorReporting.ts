@@ -29,7 +29,16 @@ export function initErrorReporting(env: Record<string, string | undefined> = pro
     attachStacktrace: false,
     // Otherwise every request to an operator's feed carries Sentry's trace headers.
     tracePropagationTargets: [],
+    // Sentry only warns by default; Node exits on an unhandled rejection, and so does the cache.
+    integrations: [Sentry.onUnhandledRejectionIntegration({ mode: 'strict' })],
   });
+  return true;
+}
+
+/** Whether `key` was not reported in the last hour, and now counts as reported. */
+function due(key: string, now: number) {
+  if (now - (lastReportedAt.get(key) ?? -Infinity) < REPORT_INTERVAL_MS) return false;
+  lastReportedAt.set(key, now);
   return true;
 }
 
@@ -39,8 +48,7 @@ export function initErrorReporting(env: Record<string, string | undefined> = pro
  * an hour while the logs keep every occurrence.
  */
 export function reportError(key: string, error: unknown, now = Date.now()) {
-  if (now - (lastReportedAt.get(key) ?? -Infinity) < REPORT_INTERVAL_MS) return;
-  lastReportedAt.set(key, now);
+  if (!due(key, now)) return;
   Sentry.withScope(scope => {
     scope.setTag('operation', key.split(':')[0]);
     scope.setFingerprint(['{{ default }}', key]);
@@ -50,9 +58,11 @@ export function reportError(key: string, error: unknown, now = Date.now()) {
 
 /**
  * A feed whose positions are no longer served: the map tells people the
- * provider is not sharing data. One issue per feed; each expiry is an event.
+ * provider is not sharing data. One issue per feed, with at most one event an
+ * hour, so a feed that keeps expiring between updates stays quiet.
  */
-export function reportFeedExpired(change: FeedStateChange, feed: FeedSnapshot, lastError: string | undefined) {
+export function reportFeedExpired(change: FeedStateChange, feed: FeedSnapshot, lastError: string | undefined, now = Date.now()) {
+  if (!due(`expired:${feed.id}`, now)) return;
   Sentry.withScope(scope => {
     scope.setLevel('warning');
     scope.setFingerprint(['snapshot-feed-expired', feed.id]);
