@@ -1339,12 +1339,11 @@ test('the address search itself finds a typed city with scooter data first, with
   const answer = page.waitForResponse(response => new URL(response.url()).pathname === '/api/geocode');
   await page.getByRole('combobox').fill('Biel');
   expect(await (await answer).json()).toEqual([
-    // The Swiss city before the German one that only starts the same way; display_name stays English for older apps.
+    // display_name stays English for older apps.
     { lat: 47.1368, lng: 7.2468, display_name: 'Biel/Bienne, Switzerland', title: 'Biel/Bienne', subtitle: 'Schweiz', covered: true },
-    { lat: 52.0224, lng: 8.535, display_name: 'Bielefeld, Germany', title: 'Bielefeld', subtitle: 'Deutschland', covered: true },
   ]);
   const options = page.getByRole('listbox', { name: 'Vorschläge' }).getByRole('option');
-  await expect(options).toHaveText(['Biel/BienneSchweiz', 'BielefeldDeutschland']);
+  await expect(options).toHaveText(['Biel/BienneSchweiz']);
 
   // Enter takes the first row, and the map goes to Biel.
   await page.keyboard.press('Enter');

@@ -31,7 +31,7 @@ it('stays quiet about feeds that keep their state, were never attempted or are s
   const logStates = createFeedStateLog(line => lines.push(line));
   const now = 1_000_000_000;
   const feeds = [
-    feed({ id: 'germany:dott_de_kiel', failed: true, attemptedAt: now - 30_000 }),
+    feed({ id: 'germany:dott_de_leipzig', failed: true, attemptedAt: now - 30_000 }),
     feed({ id: 'national:lime_zurich', observedAt: now - 60_000, attemptedAt: now - 30_000 }),
     feed({ id: 'national:placeholder', observedAt: now - VEHICLE_MAX_AGE_MS }),
     feed({ id: 'italy:skipped', skipped: true, attemptedAt: now }),

@@ -5,16 +5,23 @@ Verified 8 September 2026. The audit checked 156 scooter candidates from the
 plus Dott's published country index and selected public Italian alternatives.
 No account credentials or private rider APIs were needed for the enabled feeds.
 
+Rechecked 11 October 2026. In September Dott made its GBFS API private
+([it now requires authentication](https://ridedott.dev/docs/services/gbfs/introduction/)).
+Its public German listing now names 15 regions, and they all still answer. Of
+the 82 German Dott regions enabled on 8 September, 65 answered 404
+(`ERR_REGION_NOT_FOUND`), and Kassel and Lübeck had answered 403
+(`ERR_REGION_OFFLINE`) since late September. Those 67 were removed.
+
 | Country | Operator | Enabled feeds | Coverage |
 | --- | --- | ---: | --- |
-| Germany | Dott | 82 | Including Berlin, München, Hamburg, Köln, Düsseldorf, Bremen, Leipzig and Nürnberg |
+| Germany | Dott | 15 | Aachen, Berlin, Düsseldorf, Essen, Hannover, Heidelberg, Heilbronn, Kaiserslautern, Köln, Langenfeld, Leipzig, München, Münster, Potsdam and Stuttgart |
 | Germany | Bolt | 3 | Karlsruhe, Stuttgart, Reutlingen / Tübingen |
 | Germany | Hopp | 1 | Konstanz |
 | Germany | Lime | 3 | Frankfurt, Wuppertal, Stuttgart / Konstanz |
 | Germany | Voi | 1 | Karlsruhe, Pforzheim, Mannheim, Stuttgart, Tübingen and Reutlingen |
 | Italy | Bird | 1 | Roma |
 
-German coverage contains 86 distinct cities. Italy currently covers Rome only.
+German coverage contains 23 distinct cities. Italy currently covers Rome only.
 The complete reviewed city bounds, public discovery URLs and aliases are in
 [`german-scooter-feeds.json`](../data/german-scooter-feeds.json) and
 [`italian-scooter-feeds.json`](../data/italian-scooter-feeds.json).
@@ -28,8 +35,7 @@ The complete reviewed city bounds, public discovery URLs and aliases are in
 - GBFS discovery links must stay within the reviewed HTTPS city/feed base.
 - German MobiData BW feeds use GBFS 3.0 and localized names. Multi-city feeds
   retain their published city subregions for provider filters and overview counts.
-- Routing envelopes use published geofencing plus small padding. A stray Berlin
-  vehicle in the Gera feed was excluded rather than expanding Gera's service area.
+- Routing envelopes use published geofencing plus small padding.
   Hopp's global geofence is restricted to its reviewed Konstanz area.
 - Parking uses the existing virtual-bay, return-status and geofencing adapter.
   Empty or absent parking data does not imply unrestricted parking.
@@ -39,6 +45,9 @@ The complete reviewed city bounds, public discovery URLs and aliases are in
 
 ## Known gaps
 
+- Dott no longer publishes most German regions, among them Hamburg, Bremen,
+  Nürnberg, Dortmund and Karlsruhe (where Bolt and Voi remain). Dott documents
+  its authenticated feed among its partner integrations.
 - Italian Dott city endpoints returned 404 (`ERR_REGION_NOT_FOUND`, or 403 for
   Catania); the Italy country index contained no city feeds. This is an endpoint
   observation, not proof that Dott no longer operates in those cities.
@@ -64,3 +73,8 @@ npm run check:europe
 node scripts/check-french-feeds.mjs --countries=FR,DE,IT --json
 SWISS_SCOOTERS_BASE_URL=http://127.0.0.1:3001 node scripts/check-map-performance.mjs
 ```
+
+The checker compares the catalog with Dott's listing of each country, and the
+[catalog check workflow](../.github/workflows/catalog-check.yml) runs it every
+Monday. It fails when an entry is gone; see the
+[French recheck notes](french-scooter-feeds.md#recheck).

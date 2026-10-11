@@ -89,7 +89,6 @@ describe('GET /api/geocode', () => {
     expect(response.headers.get('cache-control')).toBe('private, no-store');
     await expect(response.json()).resolves.toEqual([
       { lat: 47.1368, lng: 7.2468, display_name: 'Biel/Bienne, Switzerland', title: 'Biel/Bienne', subtitle: 'Switzerland', covered: true },
-      { lat: 52.0224, lng: 8.535, display_name: 'Bielefeld, Germany', title: 'Bielefeld', subtitle: 'Germany', covered: true },
     ]);
     // The centre of the city, not of its canton or district as swisstopo also offers.
     await expect((await GET(request('Zürich'))).json()).resolves.toEqual([
@@ -127,12 +126,12 @@ describe('GET /api/geocode', () => {
   ])('writes the country of a city in the language asked for (%s)', async (language, germany, switzerland) => {
     vi.stubGlobal('fetch', vi.fn());
     const expected = [
-      { lat: 47.1368, lng: 7.2468, display_name: 'Biel/Bienne, Switzerland', title: 'Biel/Bienne', subtitle: switzerland, covered: true },
-      { lat: 52.0224, lng: 8.535, display_name: 'Bielefeld, Germany', title: 'Bielefeld', subtitle: germany, covered: true },
+      { lat: 52.52, lng: 13.405, display_name: 'Berlin, Germany', title: 'Berlin', subtitle: germany, covered: true },
+      { lat: 46.948, lng: 7.4474, display_name: 'Bern, Switzerland', title: 'Bern', subtitle: switzerland, covered: true },
     ];
 
-    await expect((await GET(request('Biel', language))).json()).resolves.toEqual(expected);
-    await expect((await POST(postRequest('Biel', language))).json()).resolves.toEqual(expected);
+    await expect((await GET(request('Ber', language))).json()).resolves.toEqual(expected);
+    await expect((await POST(postRequest('Ber', language))).json()).resolves.toEqual(expected);
   });
 
   it('asks in English when the language sent is not text', async () => {

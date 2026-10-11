@@ -16,23 +16,23 @@ it('exports the state of every attempted feed as the map sees it', () => {
     vehicle_id: null, deep_link: null, distance_m: null };
   const text = metrics.render(snapshot([
     feed({ vehicles: [vehicle, vehicle] }),
-    feed({ id: 'germany:dott_de_kiel', source: 'germany', provider: 'dott', failed: true, vehicles: [vehicle],
+    feed({ id: 'germany:dott_de_leipzig', source: 'germany', provider: 'dott', failed: true, vehicles: [vehicle],
       observedAt: now - VEHICLE_MAX_AGE_MS - 1_000 }),
     feed({ id: 'national:lime_zurich', provider: 'lime', failed: true }),
     feed({ id: 'italy:never', source: 'italy', attemptedAt: 0, observedAt: 0 }),
     feed({ id: 'national:skipped', skipped: true }),
   ]), now);
   const voi = 'feed="national:voiscooters.com",source="national",provider="voi"';
-  const kiel = 'feed="germany:dott_de_kiel",source="germany",provider="dott"';
+  const leipzig = 'feed="germany:dott_de_leipzig",source="germany",provider="dott"';
   expect(sample(text, `scootradar_feed_state{${voi},state="ok"}`)).toBe('1');
   expect(sample(text, `scootradar_feed_state{${voi},state="expired"}`)).toBe('0');
-  expect(sample(text, `scootradar_feed_state{${kiel},state="expired"}`)).toBe('1');
+  expect(sample(text, `scootradar_feed_state{${leipzig},state="expired"}`)).toBe('1');
   expect(sample(text, 'scootradar_feed_state{feed="national:lime_zurich",source="national",provider="lime",state="failing"}')).toBe('1');
   expect(sample(text, `scootradar_feed_vehicles{${voi}}`)).toBe('2');
   // Expired positions are not served.
-  expect(sample(text, `scootradar_feed_vehicles{${kiel}}`)).toBe('0');
+  expect(sample(text, `scootradar_feed_vehicles{${leipzig}}`)).toBe('0');
   expect(sample(text, `scootradar_feed_observation_timestamp_seconds{${voi}}`)).toBe(String((now - 60_000) / 1000));
-  expect(sample(text, `scootradar_feed_parking_up{${kiel}}`)).toBe('0');
+  expect(sample(text, `scootradar_feed_parking_up{${leipzig}}`)).toBe('0');
   expect(text).not.toContain('italy:never');
   expect(text).not.toContain('national:skipped');
   expect(sample(text, 'scootradar_build_info{version="abc123"}')).toBe('1');

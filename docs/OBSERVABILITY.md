@@ -61,11 +61,14 @@ The script runs `curl` inside the Grafana container over `ssh netcup`, so the ad
 credentials never leave it. Rules in the group missing from the file are deleted, and
 the dashboard is overwritten: change them here, not in Grafana's UI.
 
-About 70 of the 146 feeds have been dead for a long time: Dott answers 404 for 67
-German cities and 403 for two French ones, and Bird in Biel, Grenchen and Schaffhausen
-and Velospot publish out-of-date timestamps. Alerting on every expired feed would never
-stop, and Velospot, which sharedmobility.ch refreshes only now and then, would fire
-every hour or so. So the per-feed rule only covers feeds served more than half of the
+Some feeds have been dead for a long time: Bird in Biel, Grenchen and Schaffhausen
+and Velospot publish out-of-date timestamps. (The 67 German regions Dott stopped
+publishing left the catalog in October 2026. A region Dott pauses, answering 403
+`ERR_REGION_OFFLINE` as Tignes does out of season, is skipped rather than failed, and
+the weekly [catalog check](../.github/workflows/catalog-check.yml) fails when an entry
+is gone.) Alerting on every expired feed would never stop, and Velospot, which
+sharedmobility.ch refreshes only now and then, would fire every hour or so. So the
+per-feed rule only covers feeds served more than half of the
 last seven days:
 
 | Rule | Fires when |

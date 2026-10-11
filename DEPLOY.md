@@ -225,7 +225,7 @@ empty `failedParkingFeeds` list. A French request at zoom 16 includes `parking`
 and `meta.parkingStatus`; zoom 15 and below omit individual parking locations.
 
 
-The Germany/Italy catalog expands the collector to approximately 146 feeds.
+The Germany/Italy catalog expands the collector to approximately 80 feeds.
 Allocate 1536 MiB to the cache container (local validation peaked around 750 MiB).
 The upstream cache holds 2048 documents to retain hourly metadata across minute
 refreshes. The country catalogs are bundled into both the cache backend and the

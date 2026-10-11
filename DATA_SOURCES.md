@@ -121,10 +121,11 @@ e-scooter and e-bike parking](https://www.data.gouv.fr/datasets/espaces-de-stati
 ## Germany and Italy
 
 Reviewed catalogs live in `data/german-scooter-feeds.json` and
-`data/italian-scooter-feeds.json`. Germany has 90 verified feeds across 86 cities:
-Dott, Bolt, Hopp, Lime and Voi. Italy currently has Bird Rome; the other tested
-Italian scooter feeds were empty, stale or unavailable. See the
-[coverage audit](docs/german-italian-scooter-feeds.md).
+`data/italian-scooter-feeds.json`. Germany has 23 verified feeds across 23 cities:
+Dott, Bolt, Hopp, Lime and Voi. Dott made its GBFS private in September 2026; the
+catalog keeps the 15 German regions its public listing still names. Italy currently
+has Bird Rome; the other tested Italian scooter feeds were empty, stale or
+unavailable. See the [coverage audit](docs/german-italian-scooter-feeds.md).
 
 Sources: [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
 [Dott Germany](https://gbfs.api.ridedott.com/public/v2/countries/de/gbfs.json),

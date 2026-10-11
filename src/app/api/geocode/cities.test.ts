@@ -6,10 +6,13 @@ import { searchRegionalScooterCities } from '@/lib/regionalScooterSystems';
 const names = (query: string) => searchCoveredCities(query).map(city => city.display_name);
 
 describe('searchCoveredCities', () => {
-  it('finds a Swiss city with scooter data by its name, before a foreign city that only starts like it', () => {
+  it('finds a city with scooter data by its name, before a city in another country that only starts like it', () => {
     expect(searchCoveredCities('Biel')).toEqual([
       { lat: 47.1368, lng: 7.2468, display_name: 'Biel/Bienne, Switzerland', title: 'Biel/Bienne', subtitle: 'Switzerland', covered: true },
-      { lat: 52.0224, lng: 8.535, display_name: 'Bielefeld, Germany', title: 'Bielefeld', subtitle: 'Germany', covered: true },
+    ]);
+    expect(searchCoveredCities('Roma')).toEqual([
+      { lat: 41.9028, lng: 12.4964, display_name: 'Roma, Italy', title: 'Roma', subtitle: 'Italy', covered: true },
+      { lat: 47.555, lng: 9.39, display_name: 'Romanshorn, Switzerland', title: 'Romanshorn', subtitle: 'Switzerland', covered: true },
     ]);
     expect(names('Bern')).toEqual(['Bern, Switzerland']);
     expect(names('Zürich')).toEqual(['Zürich, Switzerland']);
@@ -31,25 +34,27 @@ describe('searchCoveredCities', () => {
 
   it('lists the cities a few letters could become, a city typed in full first and the others by name', () => {
     expect(names('Ber')).toEqual(['Berlin, Germany', 'Bern, Switzerland']);
-    expect(names('Ro')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland', 'Rorschach, Switzerland', 'Rostock, Germany']);
+    expect(names('Ro')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland', 'Rorschach, Switzerland']);
     expect(names('Rom')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland']);
     expect(names('Roma')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland']);
-    expect(names('Bi')).toEqual(['Biel/Bienne, Switzerland', 'Bielefeld, Germany']);
+    expect(names('He')).toEqual(['Heidelberg, Germany', 'Heilbronn, Germany', 'Hérouville-Saint-Clair, France']);
     expect(searchCoveredCities('B')).toEqual([]);
     expect(searchCoveredCities('a').length).toBe(0);
   });
 
   it('returns five cities at most', () => {
-    expect(names('He')).toEqual([
-      'Heidelberg, Germany', 'Heilbronn, Germany', 'Hennef, Germany', 'Herford, Germany', 'Herne, Germany',
+    // Two initials: every city with a word that starts with a B, ten of them.
+    expect(names('B B')).toEqual([
+      'Basel, Switzerland', 'Beauvais, France', 'Berlin, Germany', 'Bern, Switzerland', 'Biel/Bienne, Switzerland',
     ]);
   });
 
   it('takes a country typed beside the city, in any language of the app', () => {
     expect(names('Biel Schweiz')).toEqual(['Biel/Bienne, Switzerland']);
     expect(names('Biel Suisse')).toEqual(['Biel/Bienne, Switzerland']);
-    expect(names('Biel Germany')).toEqual(['Bielefeld, Germany']);
-    expect(names('Lindau Deutschland')).toEqual(['Lindau, Germany']);
+    expect(names('Ber Germany')).toEqual(['Berlin, Germany']);
+    expect(names('Ber Svizzera')).toEqual(['Bern, Switzerland']);
+    expect(names('Leipzig Deutschland')).toEqual(['Leipzig, Germany']);
     expect(names('Roma Svizzera')).toEqual(['Romanshorn, Switzerland']);
     expect(names('Lyon Italia')).toEqual([]);
     // A country alone names no city.
@@ -59,11 +64,11 @@ describe('searchCoveredCities', () => {
   it('writes the country in the language asked for, and English when none is', () => {
     const lines = (query: string, language?: 'en' | 'de' | 'fr' | 'it') =>
       searchCoveredCities(query, language).map(city => `${city.title} / ${city.subtitle}`);
-    expect(lines('Biel')).toEqual(['Biel/Bienne / Switzerland', 'Bielefeld / Germany']);
-    expect(lines('Biel', 'en')).toEqual(['Biel/Bienne / Switzerland', 'Bielefeld / Germany']);
-    expect(lines('Biel', 'de')).toEqual(['Biel/Bienne / Schweiz', 'Bielefeld / Deutschland']);
-    expect(lines('Biel', 'fr')).toEqual(['Biel/Bienne / Suisse', 'Bielefeld / Allemagne']);
-    expect(lines('Biel', 'it')).toEqual(['Biel/Bienne / Svizzera', 'Bielefeld / Germania']);
+    expect(lines('Ber')).toEqual(['Berlin / Germany', 'Bern / Switzerland']);
+    expect(lines('Ber', 'en')).toEqual(['Berlin / Germany', 'Bern / Switzerland']);
+    expect(lines('Ber', 'de')).toEqual(['Berlin / Deutschland', 'Bern / Schweiz']);
+    expect(lines('Ber', 'fr')).toEqual(['Berlin / Allemagne', 'Bern / Suisse']);
+    expect(lines('Ber', 'it')).toEqual(['Berlin / Germania', 'Bern / Svizzera']);
     expect(lines('Lyon', 'de')).toEqual(['Lyon / Frankreich']);
     expect(lines('Lyon', 'fr')).toEqual(['Lyon / France']);
     expect(lines('Lyon', 'it')).toEqual(['Lyon / Francia']);

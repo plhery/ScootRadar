@@ -5,7 +5,7 @@ import { MAP_PATH } from '@/lib/mapAddress';
 // of each country are counted, so the page stays right as cities are added.
 const FEATURED: Record<CoveredCountry, string[]> = {
   CH: ['ch:zurich', 'ch:basel', 'ch:bern', 'ch:winterthur', 'ch:st-gallen', 'ch:zug'],
-  DE: ['de:Berlin', 'de:Hamburg', 'de:München', 'de:Köln', 'de:Frankfurt', 'de:Stuttgart'],
+  DE: ['de:Berlin', 'de:München', 'de:Köln', 'de:Frankfurt', 'de:Stuttgart', 'de:Düsseldorf'],
   FR: ['fr:Lyon', 'fr:Marseille', 'fr:Bordeaux', 'fr:Lille Métropole', 'fr:Grenoble', 'fr:Angers'],
   IT: ['it:Roma'],
 };
