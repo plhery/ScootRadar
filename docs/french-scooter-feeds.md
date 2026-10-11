@@ -132,6 +132,18 @@ The checker uses four concurrent systems, follows discovery links within each
 reviewed city URL base, verifies status timestamps, and returns a nonzero exit code
 on feed failures. It does not modify the catalog or deploy the application.
 
+Each failure names Dott's error code. An entry whose feed answers 401, 404 or 410
+(Dott: `ERR_REGION_NOT_FOUND`) is **gone** and should leave the catalog. A Dott
+region answering 403 `ERR_REGION_OFFLINE` is **paused**: Dott closes Tignes out
+of season, and Bourgoin-Jallieu has been closed since early October 2026. A paused
+region does not fail the check, and the map treats it as a system without scooters.
+The checker also reads Dott's listing of each country once, names the catalog
+entries it does not list, and the listed regions with scooters the catalog lacks.
+
+`npm run check:catalogs` checks France, Germany and Italy together. The
+[catalog check workflow](../.github/workflows/catalog-check.yml) runs it every
+Monday with `--fail-on=gone`: only a gone entry fails it, so GitHub sends a notice.
+
 The application adapter was also exercised against live feeds for Lyon, Marseille,
 Bordeaux, Angers and Zürich. Both EUR French tariffs and CHF Swiss tariffs were
 preserved where published. No deployment was performed as part of this investigation.
