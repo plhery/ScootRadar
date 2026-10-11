@@ -3,7 +3,7 @@ import { MAP_PATH } from '@/lib/mapAddress';
 // First-party, cookie-free Umami collection. Never accept arbitrary URLs or data.
 export const ANALYTICS_ENDPOINT = 'https://u.plhery.com/api/send';
 export const ANALYTICS_WEBSITE = '6e60b4ab-b4ee-4785-9699-a7f32127b358';
-export const ANALYTICS_HOST = 'scooters.plhery.com';
+export const ANALYTICS_HOST = 'scootradar.com';
 export type AnalyticsEvent =
   | 'search_open' | 'search_close' | 'search_results' | 'search_error' | 'search_select' | 'search_clear'
   | 'filters_open' | 'settings_open' | 'panel_close' | 'provider_filter' | 'providers_all' | 'filters_reset'
@@ -34,12 +34,12 @@ export function analyticsEnabled(): boolean {
 // The pages of the site, with the title each is counted under. The landing
 // page is one per language, English at "/": src/lib/landingCopy.ts.
 const PUBLIC_PAGES = new Map([
-  [MAP_PATH, 'Scooters'],
-  ['/privacy', 'Privacy — Scooters'],
-  ['/', 'About — Scooters'],
-  ['/de', 'About — Scooters'],
-  ['/fr', 'About — Scooters'],
-  ['/it', 'About — Scooters'],
+  [MAP_PATH, 'Scootradar'],
+  ['/privacy', 'Privacy — Scootradar'],
+  ['/', 'About — Scootradar'],
+  ['/de', 'About — Scootradar'],
+  ['/fr', 'About — Scootradar'],
+  ['/it', 'About — Scootradar'],
 ]);
 
 let cache: string | undefined;
@@ -56,7 +56,7 @@ export function track(event?: AnalyticsEvent, data: AnalyticsData = {}): void {
     // Only these public screens exist. Exclude even unknown paths, all query strings and fragments:
     // what is not one of them is counted as the map, which sends every event but the page views.
     url: PUBLIC_PAGES.has(window.location.pathname) ? window.location.pathname : MAP_PATH,
-    title: PUBLIC_PAGES.get(window.location.pathname) ?? 'Scooters',
+    title: PUBLIC_PAGES.get(window.location.pathname) ?? 'Scootradar',
     referrer: '', language: navigator.language, tag: platform,
     ...(event ? { name: event, data: { ...safeAnalyticsData(data), platform } } : {}),
   };

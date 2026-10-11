@@ -1,14 +1,15 @@
 # Cloudflare deployment
 
-Scooters serves its Next.js website and geocoder on Cloudflare Workers
+Scootradar serves its Next.js website and geocoder on Cloudflare Workers
 through OpenNext. The scooter API reads persistent snapshots from a small Node
 service on Netcup, managed by Coolify; user map requests never fetch GBFS feeds.
 
-- Canonical production host: <https://scooters.plhery.com>
-- Legacy compatibility hosts: <https://swiss-scooters.plhery.com> and
-  <https://zurich-scooter.plhery.com>
+- Canonical production host: <https://scootradar.com>, to which
+  `www.scootradar.com` and plain HTTP lead
+- Legacy compatibility hosts: <https://scooters.plhery.com>,
+  <https://swiss-scooters.plhery.com> and <https://zurich-scooter.plhery.com>
 
-Both legacy hosts redirect browser pages to the canonical host while continuing
+The legacy hosts redirect browser pages to the canonical host while continuing
 to serve `/api/*` for older native-app installations. Their `/sw.js` remains
 available on the original origin: it replaces cached web apps with a migration
 worker that clears old app caches and opens the new address.
@@ -57,7 +58,7 @@ For the first release requiring authenticated origin access, use this order:
    origin; this remains compatible with the previous cache release.
 3. Deploy the cache. Its scooter API now requires the Worker credential. Normal
    requests to the public origin without it must return 401, while requests through
-   `https://scooters.plhery.com/api/scooters` must succeed.
+   `https://scootradar.com/api/scooters` must succeed.
 4. Check `/health` for collector liveness and `/ready` for usable live feeds.
    Alert on `/ready` failures and on `snapshot_health.expiredFeeds` or rising
    observation ages. Keep the container's restart health check on `/health` so
@@ -76,12 +77,13 @@ redirect, sends a link to the map as it was at `/` on to `/map`, proxies
 `/api/scooters` to `SCOOTER_SNAPSHOT_API_URL`, and delegates other requests to
 that generated Worker. Every page is prerendered at build
 time and served as built, from the Worker's static assets
-(`open-next.config.ts`): after a deploy, `curl -sI https://scooters.plhery.com/`
+(`open-next.config.ts`): after a deploy, `curl -sI https://scootradar.com/`
 must show `x-nextjs-cache: HIT`. The Worker also drops the parameters of the
 link before a page is looked up (the browser reads them), so every link gets
 the same page and no link's coordinates are written into it. Wrangler
-uploads the bundle and static assets, creates the `scooters.plhery.com`
-custom domain, and keeps both legacy hostnames attached to the same Worker.
+uploads the bundle and static assets, creates the `scootradar.com` and
+`www.scootradar.com` custom domains, and keeps the legacy hostnames attached to
+the same Worker.
 
 The outer Worker applies the document CSP at the Cloudflare boundary. It creates
 a fresh nonce for every HTML response and uses `HTMLRewriter` to attach it to
@@ -109,7 +111,7 @@ Use `npx wrangler versions upload` for non-production branch previews. After a
 GitHub repository or Worker rename, verify the build connection in Cloudflare;
 the repository is identified by GitHub internally, but the target Worker name
 must remain `swiss-scooters`. This is the internal Worker identity; the public
-app name and canonical domain are Scooters and `scooters.plhery.com`.
+app name and canonical domain are Scootradar and `scootradar.com`.
 
 ## Netcup scooter cache
 
@@ -175,7 +177,8 @@ observation ages, and feed failures; it does not log map URLs, coordinates, or c
 8. Monitor latency, `429`, `5xx`, upstream failures, and Worker usage.
 9. Verify the final security headers at the edge. Cloudflare zone-level HSTS
    settings override the application header; change them only after confirming
-   every affected `plhery.com` hostname supports HTTPS.
+   every affected `plhery.com` hostname supports HTTPS. The `scootradar.com`
+   zone has no zone-level HSTS, so the application header applies there.
 
 Cloudflare Access should not protect the canonical hostname. Remove or narrow
 any wildcard Access application only after the checks above pass. The GitHub

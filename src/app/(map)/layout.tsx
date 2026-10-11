@@ -27,7 +27,7 @@ const text = Red_Hat_Text({
 });
 
 // The map is one address in every language; what a search engine reads of it is in English.
-const TITLE = "Live e-scooter map: Lime, Bolt, Bird, Voi, Dott | Scooters";
+const TITLE = "Live e-scooter map: Lime, Bolt, Bird, Voi, Dott | Scootradar";
 const DESCRIPTION =
   "Every shared e-scooter near you on a live map: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony and PubliBike, with battery, walking time and price. Free, no account.";
 // The picture of the English landing page, scripts/generate-share-images.mjs.
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Scooters",
+    title: SITE_NAME,
   },
 };
 

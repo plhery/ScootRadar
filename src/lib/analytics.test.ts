@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { analyticsEnabled, safeAnalyticsData } from './analytics';
 
-const location = { hostname: 'scooters.plhery.com', pathname: '/map', search: '?lat=47.3&lng=8.5', hash: '#private' };
+const location = { hostname: 'scootradar.com', pathname: '/map', search: '?lat=47.3&lng=8.5', hash: '#private' };
 beforeEach(() => {
   vi.resetModules();
   localStorage.clear();
@@ -62,12 +62,12 @@ describe('analytics privacy boundary', () => {
       await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(calls + 1));
       return JSON.parse(fetcher.mock.calls[calls][1].body).payload;
     };
-    expect(await sent('/')).toMatchObject({ url: '/', title: 'About — Scooters' });
-    expect(await sent('/de')).toMatchObject({ url: '/de', title: 'About — Scooters' });
-    expect(await sent('/privacy')).toMatchObject({ url: '/privacy', title: 'Privacy — Scooters' });
-    expect(await sent('/map')).toMatchObject({ url: '/map', title: 'Scooters' });
-    expect(await sent('/es')).toMatchObject({ url: '/map', title: 'Scooters' });
-    expect(await sent('/en/anything')).toMatchObject({ url: '/map', title: 'Scooters' });
+    expect(await sent('/')).toMatchObject({ url: '/', title: 'About — Scootradar' });
+    expect(await sent('/de')).toMatchObject({ url: '/de', title: 'About — Scootradar' });
+    expect(await sent('/privacy')).toMatchObject({ url: '/privacy', title: 'Privacy — Scootradar' });
+    expect(await sent('/map')).toMatchObject({ url: '/map', title: 'Scootradar' });
+    expect(await sent('/es')).toMatchObject({ url: '/map', title: 'Scootradar' });
+    expect(await sent('/en/anything')).toMatchObject({ url: '/map', title: 'Scootradar' });
   });
   it('bounds the queue and survives network failures without retries', async () => {
     const fetcher = vi.fn().mockRejectedValue(new Error('offline'));

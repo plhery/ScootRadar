@@ -1,4 +1,4 @@
-# Scooters analytics
+# Scootradar analytics
 
 Dashboard: https://umami.plhery.com/websites/6e60b4ab-b4ee-4785-9699-a7f32127b358
 
@@ -69,7 +69,7 @@ receives normal IP/user-agent network metadata; Umami derives coarse geography
 and short-lived session/device statistics without storing raw IP addresses.
 See PRIVACY.md and the public privacy page for the user-facing notice.
 
-Web collection runs only on `scooters.plhery.com`, honors DNT/GPC and
+Web collection runs only on `scootradar.com`, honors DNT/GPC and
 `localStorage['umami.disabled']`, and has an opt-out on `/privacy`.
 iOS has an opt-out under Settings › About › Privacy. Simulators, previews and XCTest are disabled;
 launch a simulator with `-analytics-smoke-test` only for an intentional production

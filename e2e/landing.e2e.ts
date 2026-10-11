@@ -87,7 +87,7 @@ test('the landing page changes language from its bar and stays where it is', asy
 
 test('the landing page tells a search engine where each language is', async ({ page }) => {
   await page.goto('/de');
-  const site = 'https://scooters.plhery.com';
+  const site = 'https://scootradar.com';
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `${site}/de`);
   for (const [locale, address] of Object.entries({ ...ADDRESS, 'x-default': '/' })) {
     await expect(page.locator(`link[rel="alternate"][hreflang="${locale}"]`))

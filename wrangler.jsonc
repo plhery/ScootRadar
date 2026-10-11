@@ -6,6 +6,15 @@
   "compatibility_flags": ["nodejs_compat"],
   "routes": [
     {
+      "pattern": "scootradar.com",
+      "custom_domain": true
+    },
+    // Lead to scootradar.com: worker.ts and src/lib/legacyHost.ts.
+    {
+      "pattern": "www.scootradar.com",
+      "custom_domain": true
+    },
+    {
       "pattern": "scooters.plhery.com",
       "custom_domain": true
     },

@@ -3,7 +3,7 @@ import { runInNewContext } from 'node:vm';
 import { describe, expect, it, vi } from 'vitest';
 import { MAP_PATH, MOVED_MAP_SCRIPT, movedMapRedirect } from '@/lib/mapAddress';
 
-const SITE = 'https://scooters.plhery.com';
+const SITE = 'https://scootradar.com';
 
 describe('links to the map as it was at the root', () => {
   it.each([

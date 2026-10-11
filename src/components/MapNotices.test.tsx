@@ -68,9 +68,9 @@ describe('MapNotices', () => {
 
   it.each([
     ['offline', 'You’re offline. Check your connection.'],
-    ['timeout', 'Scooters took too long to respond.'],
-    ['busy', 'Scooters is busy right now. Try again in a moment.'],
-    ['unavailable', 'Scooters is having trouble. Try again in a moment.'],
+    ['timeout', 'Scootradar took too long to respond.'],
+    ['busy', 'Scootradar is busy right now. Try again in a moment.'],
+    ['unavailable', 'Scootradar is having trouble. Try again in a moment.'],
     ['failed', 'Couldn’t load scooters.'],
   ] as const)('explains a %s load failure and offers to try again', (loadFailure, sentence) => {
     const { props } = renderNotices({ loadFailure });

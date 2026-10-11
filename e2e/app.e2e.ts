@@ -536,7 +536,7 @@ test('an area without scooter data offers the closest cities and makes the one c
   await page.goto('/map?origin=46.7741,8.1558');
   const dock = page.locator('.sheet');
   await expect(dock.getByRole('heading', { name: 'No scooter data here yet' })).toBeVisible();
-  await expect(dock.getByText('Scooters covers selected cities in France, Switzerland, Germany and Italy.')).toBeVisible();
+  await expect(dock.getByText('Scootradar covers selected cities in France, Switzerland, Germany and Italy.')).toBeVisible();
   await expect(page.locator('.sheet-count')).toHaveCount(0);
   await expect(page.getByRole('group', { name: 'Filter scooters by provider' })).toHaveCount(0);
   const cities = dock.getByRole('group', { name: 'Closest cities' }).getByRole('button');
@@ -804,7 +804,7 @@ test('a load that fails says why under the search bar and recovers with Try agai
     else await route.fallback();
   });
   await page.goto('/map');
-  const banner = page.getByRole('alert').filter({ hasText: 'Scooters is having trouble. Try again in a moment.' });
+  const banner = page.getByRole('alert').filter({ hasText: 'Scootradar is having trouble. Try again in a moment.' });
   await expect(banner).toBeVisible();
   await expect(page.locator('.cluster-marker')).toHaveCount(0);
   // Nothing has loaded: the dock has no count and no chips to offer.

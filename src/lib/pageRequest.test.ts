@@ -2,7 +2,7 @@
 import { describe, expect, it } from 'vitest';
 import { pageRequest } from '@/lib/pageRequest';
 
-const ORIGIN = 'https://scooters.plhery.com';
+const ORIGIN = 'https://scootradar.com';
 
 describe('the request a page is rendered with', () => {
   it.each([

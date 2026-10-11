@@ -21,12 +21,13 @@ const out = path.join(root, 'public/share');
 const WIDTH = 1200;
 const HEIGHT = 630;
 
-// The words of the page have no imports: they compile on their own.
-const { code } = await transform(readFileSync(path.join(root, 'src/lib/landingCopy.ts'), 'utf8'), {
-  loader: 'ts',
-  format: 'esm',
-});
-const { LANDING_COPY, LANDING_LOCALES } = await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
+// The words of the page and the name of the site have no imports: they compile on their own.
+async function load(file) {
+  const { code } = await transform(readFileSync(path.join(root, file), 'utf8'), { loader: 'ts', format: 'esm' });
+  return import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
+}
+const { LANDING_COPY, LANDING_LOCALES } = await load('src/lib/landingCopy.ts');
+const { SITE_NAME } = await load('src/lib/site.ts');
 const providers = JSON.parse(readFileSync(path.join(root, 'data/providers.json'), 'utf8'));
 
 // As on the page: Bird's black would vanish on the night, and PubliBike's
@@ -95,7 +96,7 @@ function page(locale) {
   <div class="orb orb--night"></div>
   <div class="orb orb--near"></div>
   <div class="copy">
-    <div class="brand"><img src="${asset('icon.svg')}" alt="">Scooters</div>
+    <div class="brand"><img src="${asset('icon.svg')}" alt="">${escape(SITE_NAME)}</div>
     <h1>${escape(copy.meta.share.title)}</h1>
     <div class="tiles">${tiles}</div>
     <p class="note">${escape(copy.hero.note)}</p>

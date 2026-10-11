@@ -18,7 +18,7 @@ function migrationWorker(hostname: string) {
   const cacheStorage = {
     keys: vi.fn().mockResolvedValue([
       'swiss-scooters-app-v5', 'swiss-scooters-assets-v4',
-      'zurich-scooter-app-v1', 'unrelated-cache',
+      'zurich-scooter-app-v1', 'scooters-app-v6', 'unrelated-cache',
     ]),
     delete: vi.fn().mockResolvedValue(true),
   };
@@ -49,7 +49,7 @@ function migrationWorker(hostname: string) {
   };
 }
 
-describe.each(['swiss-scooters.plhery.com', 'zurich-scooter.plhery.com'])('installed app migration: %s', (hostname) => {
+describe.each(['swiss-scooters.plhery.com', 'zurich-scooter.plhery.com', 'scooters.plhery.com'])('installed app migration: %s', (hostname) => {
   it('replaces the old worker without trying to cache a cross-origin app shell', async () => {
     const worker = migrationWorker(hostname);
     await worker.dispatch('install');
@@ -61,10 +61,10 @@ describe.each(['swiss-scooters.plhery.com', 'zurich-scooter.plhery.com'])('insta
     const worker = migrationWorker(hostname);
     await worker.dispatch('activate');
     expect(worker.cacheStorage.delete.mock.calls.map(([name]) => name)).toEqual([
-      'swiss-scooters-app-v5', 'swiss-scooters-assets-v4', 'zurich-scooter-app-v1',
+      'swiss-scooters-app-v5', 'swiss-scooters-assets-v4', 'zurich-scooter-app-v1', 'scooters-app-v6',
     ]);
     expect(worker.clients.claim).toHaveBeenCalledOnce();
-    expect(worker.navigate).toHaveBeenCalledWith('https://scooters.plhery.com/privacy?lang=fr#location');
+    expect(worker.navigate).toHaveBeenCalledWith('https://scootradar.com/privacy?lang=fr#location');
   });
 
   it('redirects subsequent launches without intercepting API requests', async () => {
@@ -74,8 +74,8 @@ describe.each(['swiss-scooters.plhery.com', 'zurich-scooter.plhery.com'])('insta
     });
     const response = respond.mock.calls[0][0] as Response;
     expect(response.status).toBe(308);
-    // The root of these hosts was the map, which has its own address now.
-    expect(response.headers.get('location')).toBe('https://scooters.plhery.com/map?lang=de');
+    // The root of an installed app was the map, which has its own address now.
+    expect(response.headers.get('location')).toBe('https://scootradar.com/map?lang=de');
     for (const mode of ['navigate', 'cors']) {
       const apiResponse = await worker.dispatch('fetch', {
         request: { url: `${worker.origin}/api/scooters`, mode, method: 'GET' },
@@ -99,7 +99,7 @@ describe('the landing page, where the worker of the app is installed', () => {
     });
 
   it('comes from the network and is not kept as the app', async () => {
-    const worker = migrationWorker('scooters.plhery.com');
+    const worker = migrationWorker('scootradar.com');
     const landing = new Response('landing');
     worker.fetch.mockResolvedValue(landing);
     const respond = await visit(worker);
@@ -111,10 +111,10 @@ describe('the landing page, where the worker of the app is installed', () => {
   });
 
   it('gives way to the map without a network, for an app installed while the root was the map', async () => {
-    const worker = migrationWorker('scooters.plhery.com');
+    const worker = migrationWorker('scootradar.com');
     worker.fetch.mockRejectedValue(new TypeError('offline'));
     const response = await (await visit(worker)).mock.calls[0][0] as Response;
     expect(response.status).toBe(302);
-    expect(response.headers.get('location')).toBe('https://scooters.plhery.com/map');
+    expect(response.headers.get('location')).toBe('https://scootradar.com/map');
   });
 });

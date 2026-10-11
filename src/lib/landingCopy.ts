@@ -116,7 +116,7 @@ export interface LandingCopy {
 export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
   en: {
     meta: {
-      title: 'E-scooter map: Lime, Bolt, Bird, Voi, Dott and more | Scooters',
+      title: 'E-scooter map: Lime, Bolt, Bird, Voi, Dott and more | Scootradar',
       description: cities =>
         `Every shared e-scooter near you on one live map: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony and PubliBike. Battery, walking time and price. Free, in ${cities} cities.`,
       share: {
@@ -129,9 +129,9 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     iphoneApp: 'Get the iPhone app',
     hero: {
       title: scooters => `There are ${scooters} scooters around you.`,
-      lede: 'Scooters puts every shared e-scooter around you on one map, whoever runs it, so the closest way home is the first thing you see.',
+      lede: 'Scootradar puts every shared e-scooter around you on one map, whoever runs it, so the closest way home is the first thing you see.',
       note: 'Free. No account, no ads.',
-      stage: 'Scooters by Zürich main station',
+      stage: 'Scootradar by Zürich main station',
       alt: scooters =>
         `The iPhone app at night: a dark map of the streets by Zürich main station, covered in pins with each provider’s initials and colour, and ${scooters} scooters nearby.`,
       caption: date =>
@@ -147,7 +147,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       title: 'Everything you want to know before you start walking.',
       all: {
         title: 'All seven. One map.',
-        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi and PubliBike each have an app that shows only their own fleet. Scooters shows the lot, so the nearest one is simply the nearest one.',
+        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi and PubliBike each have an app that shows only their own fleet. Scootradar shows the lot, so the nearest one is simply the nearest one.',
         close: (first, firstDistance, second, secondDistance) =>
           `Here, a ${first} is ${firstDistance} away and a ${second} is ${secondDistance}. It takes two apps to learn that, or one map.`,
         providers: 'Providers in Zürich',
@@ -196,7 +196,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Is there one app for Lime, Bolt, Bird, Voi and Dott?',
-          answer: 'Scooters is one map for all of them, and for Hopp, Pony and PubliBike too. It shows every shared e-scooter whose provider publishes where it is, so you no longer open one app after another to find the nearest.',
+          answer: 'Scootradar is one map for all of them, and for Hopp, Pony and PubliBike too. It shows every shared e-scooter whose provider publishes where it is, so you no longer open one app after another to find the nearest.',
         },
         {
           question: 'How do I find the nearest e-scooter?',
@@ -207,8 +207,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
           answer: 'It is free, with no account and no ads. You pay only for the ride, to the provider, in its own app.',
         },
         {
-          question: 'Can I unlock or book a scooter with Scooters?',
-          answer: 'No. Tap a scooter, then “Open in …”: the provider’s app opens, and you unlock and pay there as usual. Scooters does not reserve the scooter, so someone may get to it before you.',
+          question: 'Can I unlock or book a scooter with Scootradar?',
+          answer: 'No. Tap a scooter, then “Open in …”: the provider’s app opens, and you unlock and pay there as usual. Scootradar does not reserve the scooter, so someone may get to it before you.',
         },
         {
           question: 'Where do the positions come from, and how fresh are they?',
@@ -219,7 +219,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
           answer: 'No. The map works in the browser of any phone or computer. On a phone you can add it to your home screen, and it opens like an app.',
         },
         {
-          question: 'Does Scooters know where I am?',
+          question: 'Does Scootradar know where I am?',
           answer: 'Your location is used on your device, to centre the map and work out walking times. The server only receives the part of the map you are looking at, and does not store it.',
         },
       ],
@@ -229,7 +229,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       note: 'Your location is used on your device and is not stored. The code is open source.',
     },
     footer: {
-      text: 'Scooters is independent and not affiliated with the providers; their names are trademarks of their owners. Positions come from the providers’ public data feeds and can be a few minutes old. Prices are estimates; the provider’s app shows the final price.',
+      text: 'Scootradar is independent and not affiliated with the providers; their names are trademarks of their owners. Positions come from the providers’ public data feeds and can be a few minutes old. Prices are estimates; the provider’s app shows the final price.',
       links: 'More links',
       privacy: 'Privacy',
       source: 'Source on GitHub',
@@ -238,7 +238,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
 
   de: {
     meta: {
-      title: 'E-Scooter-Karte: Lime, Bolt, Bird, Voi, Dott und mehr | Scooters',
+      title: 'E-Scooter-Karte: Lime, Bolt, Bird, Voi, Dott und mehr | Scootradar',
       description: cities =>
         `Alle E-Scooter und E-Trottinette in deiner Nähe auf einer Live-Karte: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony und PubliBike. Gratis, ohne Konto, in ${cities} Städten.`,
       share: {
@@ -251,7 +251,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     iphoneApp: 'iPhone-App laden',
     hero: {
       title: scooters => `Um dich herum stehen ${scooters} E-Scooter.`,
-      lede: 'Scooters zeigt alle E-Scooter in deiner Nähe auf einer Karte, egal von welchem Sharing-Anbieter. So ist der schnellste Weg nach Hause das Erste, was du siehst.',
+      lede: 'Scootradar zeigt alle E-Scooter in deiner Nähe auf einer Karte, egal von welchem Sharing-Anbieter. So ist der schnellste Weg nach Hause das Erste, was du siehst.',
       note: 'Gratis. Kein Konto, keine Werbung.',
       stage: 'Scooter beim Zürcher Hauptbahnhof',
       alt: scooters =>
@@ -269,7 +269,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       title: 'Alles, was du wissen willst, bevor du losläufst.',
       all: {
         title: 'Alle sieben. Eine Karte.',
-        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi und PubliBike haben je eine eigene App, und jede zeigt nur die eigene Flotte. Scooters zeigt alle. Dann ist der nächste Scooter auch wirklich der nächste.',
+        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi und PubliBike haben je eine eigene App, und jede zeigt nur die eigene Flotte. Scootradar zeigt alle. Dann ist der nächste Scooter auch wirklich der nächste.',
         close: (first, firstDistance, second, secondDistance) =>
           `Hier steht ein ${first} in ${firstDistance} Entfernung und ein ${second} in ${secondDistance}. Dafür brauchst du zwei Apps. Oder eine Karte.`,
         providers: 'Anbieter in Zürich',
@@ -318,7 +318,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Gibt es eine einzige App für Lime, Bolt, Bird, Voi und Dott?',
-          answer: 'Scooters ist eine Karte für alle fünf und auch für Hopp, Pony und PubliBike. Sie zeigt jeden Sharing-E-Scooter, dessen Anbieter den Standort veröffentlicht. So musst du nicht mehr eine App nach der anderen öffnen, um den nächsten zu finden.',
+          answer: 'Scootradar ist eine Karte für alle fünf und auch für Hopp, Pony und PubliBike. Sie zeigt jeden Sharing-E-Scooter, dessen Anbieter den Standort veröffentlicht. So musst du nicht mehr eine App nach der anderen öffnen, um den nächsten zu finden.',
         },
         {
           question: 'Wie finde ich den nächsten E-Scooter oder das nächste E-Trottinett?',
@@ -326,11 +326,11 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         },
         {
           question: 'Ist es gratis? Brauche ich ein Konto?',
-          answer: 'Scooters ist gratis, ohne Konto und ohne Werbung. Du bezahlst nur die Fahrt, direkt beim Anbieter in seiner App.',
+          answer: 'Scootradar ist gratis, ohne Konto und ohne Werbung. Du bezahlst nur die Fahrt, direkt beim Anbieter in seiner App.',
         },
         {
-          question: 'Kann ich mit Scooters einen Scooter entsperren oder reservieren?',
-          answer: 'Nein. Tippe auf einen Scooter, dann auf «In … öffnen»: Die App des Anbieters öffnet sich, und dort entsperrst und bezahlst du wie gewohnt. Scooters reserviert den Scooter nicht, jemand anderes kann also schneller sein.',
+          question: 'Kann ich mit Scootradar einen Scooter entsperren oder reservieren?',
+          answer: 'Nein. Tippe auf einen Scooter, dann auf «In … öffnen»: Die App des Anbieters öffnet sich, und dort entsperrst und bezahlst du wie gewohnt. Scootradar reserviert den Scooter nicht, jemand anderes kann also schneller sein.',
         },
         {
           question: 'Woher stammen die Positionen, und wie aktuell sind sie?',
@@ -341,7 +341,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
           answer: 'Nein. Die Karte läuft im Browser, auf jedem Handy und jedem Computer. Auf dem Handy kannst du sie zum Home-Bildschirm hinzufügen, dann öffnet sie sich wie eine App.',
         },
         {
-          question: 'Weiss Scooters, wo ich bin?',
+          question: 'Weiss Scootradar, wo ich bin?',
           answer: 'Dein Standort wird auf deinem Gerät genutzt, um die Karte zu zentrieren und die Gehzeiten zu berechnen. Der Server erhält nur den Kartenausschnitt, den du gerade ansiehst, und speichert ihn nicht.',
         },
       ],
@@ -351,7 +351,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       note: 'Dein Standort wird auf deinem Gerät genutzt und nicht gespeichert. Der Code ist Open Source.',
     },
     footer: {
-      text: 'Scooters ist unabhängig und steht in keiner Verbindung zu den Anbietern; deren Namen sind Marken ihrer jeweiligen Inhaber. Die Positionen stammen aus den öffentlichen Datenfeeds der Anbieter und können einige Minuten alt sein. Preise sind Schätzungen; den Endpreis zeigt die App des Anbieters.',
+      text: 'Scootradar ist unabhängig und steht in keiner Verbindung zu den Anbietern; deren Namen sind Marken ihrer jeweiligen Inhaber. Die Positionen stammen aus den öffentlichen Datenfeeds der Anbieter und können einige Minuten alt sein. Preise sind Schätzungen; den Endpreis zeigt die App des Anbieters.',
       links: 'Weitere Links',
       privacy: 'Datenschutz',
       source: 'Quellcode auf GitHub',
@@ -360,7 +360,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
 
   fr: {
     meta: {
-      title: 'Carte des trottinettes électriques en libre-service | Scooters',
+      title: 'Carte des trottinettes électriques en libre-service | Scootradar',
       description: cities =>
         `Toutes les trottinettes électriques en libre-service autour de vous sur une carte en direct : Lime, Dott, Bolt, Voi, Bird, Hopp, Pony et PubliBike. Gratuit, sans compte, dans ${cities} villes.`,
       share: {
@@ -373,7 +373,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     iphoneApp: 'Télécharger l’app iPhone',
     hero: {
       title: scooters => `Il y a ${scooters} trottinettes autour de vous.`,
-      lede: 'Scooters réunit sur une seule carte toutes les trottinettes électriques en libre-service autour de vous, quel que soit l’opérateur. Le plus court chemin pour rentrer est ainsi la première chose que vous voyez.',
+      lede: 'Scootradar réunit sur une seule carte toutes les trottinettes électriques en libre-service autour de vous, quel que soit l’opérateur. Le plus court chemin pour rentrer est ainsi la première chose que vous voyez.',
       note: 'Gratuit. Sans compte, sans pub.',
       stage: 'Trottinettes près de la gare centrale de Zurich',
       alt: scooters =>
@@ -391,7 +391,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       title: 'Tout ce que vous voulez savoir avant de vous mettre en route.',
       all: {
         title: 'Les sept. Une seule carte.',
-        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi et PubliBike ont chacun leur app, qui ne montre que leur propre flotte. Scooters montre toutes les flottes : la trottinette la plus proche est donc simplement la plus proche.',
+        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi et PubliBike ont chacun leur app, qui ne montre que leur propre flotte. Scootradar montre toutes les flottes : la trottinette la plus proche est donc simplement la plus proche.',
         close: (first, firstDistance, second, secondDistance) =>
           `Ici, une ${first} est à ${firstDistance} et une ${second} à ${secondDistance}. Pour le savoir, il faut deux apps, ou une seule carte.`,
         providers: 'Opérateurs à Zurich',
@@ -440,7 +440,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Existe-t-il une app qui regroupe Lime, Bolt, Bird, Voi et Dott ?',
-          answer: 'Scooters les réunit tous sur une seule carte, avec en plus Hopp, Pony et PubliBike. Elle montre chaque trottinette électrique en libre-service dont l’opérateur publie la position : plus besoin d’ouvrir les apps une à une pour trouver la plus proche.',
+          answer: 'Scootradar les réunit tous sur une seule carte, avec en plus Hopp, Pony et PubliBike. Elle montre chaque trottinette électrique en libre-service dont l’opérateur publie la position : plus besoin d’ouvrir les apps une à une pour trouver la plus proche.',
         },
         {
           question: 'Comment trouver la trottinette électrique la plus proche ?',
@@ -451,8 +451,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
           answer: 'C’est gratuit, sans compte et sans pub. Vous ne payez que le trajet, à l’opérateur, dans sa propre app.',
         },
         {
-          question: 'Peut-on déverrouiller ou réserver une trottinette avec Scooters ?',
-          answer: 'Non. Touchez une trottinette, puis « Ouvrir dans … » : l’app de l’opérateur s’ouvre, et vous y déverrouillez la trottinette et payez comme d’habitude. Scooters ne la réserve pas ; quelqu’un peut donc la prendre avant vous.',
+          question: 'Peut-on déverrouiller ou réserver une trottinette avec Scootradar ?',
+          answer: 'Non. Touchez une trottinette, puis « Ouvrir dans … » : l’app de l’opérateur s’ouvre, et vous y déverrouillez la trottinette et payez comme d’habitude. Scootradar ne la réserve pas ; quelqu’un peut donc la prendre avant vous.',
         },
         {
           question: 'D’où viennent les positions, et sont-elles à jour ?',
@@ -463,7 +463,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
           answer: 'Non. La carte fonctionne dans le navigateur de n’importe quel téléphone ou ordinateur. Sur un téléphone, vous pouvez l’ajouter à l’écran d’accueil : elle s’ouvre alors comme une app.',
         },
         {
-          question: 'Scooters sait-il où je suis ?',
+          question: 'Scootradar sait-il où je suis ?',
           answer: 'Votre position est utilisée sur votre appareil, pour centrer la carte et calculer les temps de marche. Le serveur ne reçoit que la partie de la carte que vous regardez, et ne la conserve pas.',
         },
       ],
@@ -473,7 +473,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       note: 'Votre position est utilisée sur votre appareil et n’est pas enregistrée. Le code est open source.',
     },
     footer: {
-      text: 'Scooters est indépendant et n’est pas affilié aux opérateurs ; leurs noms sont des marques de leurs propriétaires respectifs. Les positions proviennent des flux de données publics des opérateurs et peuvent dater de quelques minutes. Les prix sont des estimations ; le prix final est celui qu’affiche l’app de l’opérateur.',
+      text: 'Scootradar est indépendant et n’est pas affilié aux opérateurs ; leurs noms sont des marques de leurs propriétaires respectifs. Les positions proviennent des flux de données publics des opérateurs et peuvent dater de quelques minutes. Les prix sont des estimations ; le prix final est celui qu’affiche l’app de l’opérateur.',
       links: 'Autres liens',
       privacy: 'Confidentialité',
       source: 'Code source sur GitHub',
@@ -482,7 +482,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
 
   it: {
     meta: {
-      title: 'Monopattini elettrici in sharing su una sola mappa | Scooters',
+      title: 'Monopattini elettrici in sharing su una sola mappa | Scootradar',
       description: cities =>
         `Tutti i monopattini elettrici in sharing intorno a te su una mappa in tempo reale: Lime, Bolt, Dott, Voi, Bird, Hopp, Pony e PubliBike. Gratis, senza account, in ${cities} città.`,
       share: {
@@ -495,7 +495,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     iphoneApp: 'Scarica l’app per iPhone',
     hero: {
       title: scooters => `Ci sono ${scooters} monopattini intorno a te.`,
-      lede: 'Scooters mette su una sola mappa tutti i monopattini elettrici in sharing intorno a te, di qualunque operatore. Così la strada più breve per tornare a casa è la prima cosa che vedi.',
+      lede: 'Scootradar mette su una sola mappa tutti i monopattini elettrici in sharing intorno a te, di qualunque operatore. Così la strada più breve per tornare a casa è la prima cosa che vedi.',
       note: 'Gratis. Niente account, niente pubblicità.',
       stage: 'Monopattini vicino alla stazione centrale di Zurigo',
       alt: scooters =>
@@ -513,7 +513,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       title: 'Tutto quello che vuoi sapere prima di metterti in cammino.',
       all: {
         title: 'Tutti e sette. Una sola mappa.',
-        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi e PubliBike hanno ciascuno la sua app, che mostra solo la propria flotta. Scooters li mostra tutti: il mezzo più vicino è semplicemente il più vicino.',
+        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi e PubliBike hanno ciascuno la sua app, che mostra solo la propria flotta. Scootradar li mostra tutti: il mezzo più vicino è semplicemente il più vicino.',
         close: (first, firstDistance, second, secondDistance) =>
           `Qui un ${first} è a ${firstDistance} e un ${second} a ${secondDistance}. Per saperlo servono due app, oppure una sola mappa.`,
         providers: 'Operatori a Zurigo',
@@ -562,7 +562,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Esiste un’unica app per Lime, Bolt, Bird, Voi e Dott?',
-          answer: 'Scooters li mette tutti su una sola mappa, insieme a Hopp, Pony e PubliBike. Mostra ogni monopattino elettrico in sharing il cui operatore pubblica la posizione: non serve più aprire un’app dopo l’altra per trovare quello più vicino.',
+          answer: 'Scootradar li mette tutti su una sola mappa, insieme a Hopp, Pony e PubliBike. Mostra ogni monopattino elettrico in sharing il cui operatore pubblica la posizione: non serve più aprire un’app dopo l’altra per trovare quello più vicino.',
         },
         {
           question: 'Come trovo il monopattino elettrico più vicino?',
@@ -573,8 +573,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
           answer: 'È gratis, senza account e senza pubblicità. Paghi solo la corsa, direttamente all’operatore nella sua app.',
         },
         {
-          question: 'Posso sbloccare o prenotare un monopattino con Scooters?',
-          answer: 'No. Tocca un monopattino, poi «Apri in …»: si apre l’app dell’operatore, dove sblocchi e paghi come sempre. Scooters non prenota il monopattino, quindi qualcuno potrebbe prenderlo prima di te.',
+          question: 'Posso sbloccare o prenotare un monopattino con Scootradar?',
+          answer: 'No. Tocca un monopattino, poi «Apri in …»: si apre l’app dell’operatore, dove sblocchi e paghi come sempre. Scootradar non prenota il monopattino, quindi qualcuno potrebbe prenderlo prima di te.',
         },
         {
           question: 'Da dove vengono le posizioni e quanto sono aggiornate?',
@@ -585,7 +585,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
           answer: 'No. La mappa funziona nel browser di qualsiasi telefono o computer. Sul telefono puoi aggiungerla alla schermata Home: da lì si apre come un’app.',
         },
         {
-          question: 'Scooters sa dove mi trovo?',
+          question: 'Scootradar sa dove mi trovo?',
           answer: 'La tua posizione viene usata sul tuo dispositivo, per centrare la mappa e calcolare i tempi a piedi. Il server riceve solo la parte di mappa che stai guardando, e non la salva.',
         },
       ],
@@ -595,7 +595,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       note: 'La tua posizione viene usata sul tuo dispositivo e non viene salvata. Il codice è open source.',
     },
     footer: {
-      text: 'Scooters è un’app indipendente, non affiliata agli operatori; i loro nomi sono marchi dei rispettivi titolari. Le posizioni provengono dai feed di dati pubblici degli operatori e possono risalire a qualche minuto fa. I prezzi sono stime; il prezzo finale è quello dell’app dell’operatore.',
+      text: 'Scootradar è un’app indipendente, non affiliata agli operatori; i loro nomi sono marchi dei rispettivi titolari. Le posizioni provengono dai feed di dati pubblici degli operatori e possono risalire a qualche minuto fa. I prezzi sono stime; il prezzo finale è quello dell’app dell’operatore.',
       links: 'Altri link',
       privacy: 'Privacy',
       source: 'Codice sorgente su GitHub',

@@ -3,8 +3,8 @@ import type { Metadata, Viewport } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Privacy — Scooters',
-  description: 'How Scooters handles location, search, and service data.',
+  title: 'Privacy — Scootradar',
+  description: 'How Scootradar handles location, search, and service data.',
   alternates: { canonical: '/privacy' },
 };
 
@@ -17,20 +17,20 @@ export default function PrivacyPage() {
   return (
     <main className="legal-page">
       <article className="legal-content">
-        <Link className="legal-back" href="/map">← Back to Scooters</Link>
+        <Link className="legal-back" href="/map">← Back to Scootradar</Link>
         <h1>Privacy</h1>
         <p>Last updated: 4 October 2026</p>
 
         <h2>Overview</h2>
         <p>
-          Scooters has no user accounts or advertising. It does not intentionally retain your precise location or address searches.
+          Scootradar has no user accounts or advertising. It does not intentionally retain your precise location or address searches.
         </p>
 
         <h2>Location and map requests</h2>
         <p>
           If you grant location permission, your browser or device provides your position to the
           app. Your position is used on the device to focus the map and calculate distances. The
-          Scooters API receives the visible map bounds needed to find vehicles, but no
+          Scootradar API receives the visible map bounds needed to find vehicles, but no
           separate user-location coordinate. These values are not stored by the application.
         </p>
         <p>
@@ -41,9 +41,9 @@ export default function PrivacyPage() {
 
         <h2>Address search</h2>
         <p>
-          Address search text is sent through the Scooters API, with the language the app is
+          Address search text is sent through the Scootradar API, with the language the app is
           shown in, to the Swiss federal geo.admin.ch service operated by swisstopo. The name of a
-          city in the Scooters catalogue is answered without contacting it. The current app sends
+          city in the Scootradar catalogue is answered without contacting it. The current app sends
           search text in the request body, and instructs browsers and intermediary caches not to
           store the request or response.
         </p>
@@ -51,7 +51,7 @@ export default function PrivacyPage() {
         <h2>Mobility data</h2>
         <p>
           Live vehicle data comes from the Open data platform mobility Switzerland and participating
-          mobility providers. Scooters filters that data to the visible map area and does not
+          mobility providers. Scootradar filters that data to the visible map area and does not
           build a history of vehicle movements.
         </p>
 

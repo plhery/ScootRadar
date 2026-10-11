@@ -1,8 +1,9 @@
 const CACHE_PREFIX = "scooters";
 const LEGACY_CACHE_PREFIXES = ["swiss-scooters", "zurich-scooter"];
-const MOVED_ORIGIN = ["swiss-scooters.plhery.com", "zurich-scooter.plhery.com"].includes(
+// The addresses the app had before: an app installed there is moved here.
+const MOVED_ORIGIN = ["swiss-scooters.plhery.com", "zurich-scooter.plhery.com", "scooters.plhery.com"].includes(
   self.location.hostname
-) ? "https://scooters.plhery.com" : null;
+) ? "https://scootradar.com" : null;
 const APP_CACHE = `${CACHE_PREFIX}-app-v6`;
 const ASSET_CACHE = `${CACHE_PREFIX}-assets-v4`;
 // The map. It was at "/" until the landing page took that place.
@@ -173,7 +174,7 @@ function movedPageUrl(source) {
   if (!MOVED_ORIGIN || url.origin !== self.location.origin || url.pathname.startsWith("/api/")) {
     return null;
   }
-  // These hosts only ever had the map at their root.
+  // Only an installed app has this worker, and where it opens "/" that was the map.
   const path = url.pathname === "/" ? APP_SHELL_PATH : url.pathname;
   return `${MOVED_ORIGIN}${path}${url.search}${url.hash}`;
 }

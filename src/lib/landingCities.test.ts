@@ -20,7 +20,7 @@ describe('the cities of the landing page', () => {
   it('links each to the map, opened there', () => {
     for (const { featured } of landingCountries()) {
       for (const city of featured) {
-        const url = new URL(city.href, 'https://scooters.plhery.com');
+        const url = new URL(city.href, 'https://scootradar.com');
         expect(url.pathname).toBe('/map');
         const { origin } = parseClientParams(url.searchParams);
         expect(origin, city.name).not.toBeNull();

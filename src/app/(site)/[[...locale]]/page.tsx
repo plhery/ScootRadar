@@ -280,7 +280,7 @@ export default async function LandingPage({ params }: Props) {
           <a className="brand" href="#top">
             {/* eslint-disable-next-line @next/next/no-img-element -- The icon of the app, an SVG. */}
             <img src="/icon.svg" alt="" width={30} height={30} />
-            Scooters
+            {SITE_NAME}
           </a>
           <a className="pill-link" href="#know">{copy.nav.shows}</a>
           <a className="pill-link" href="#cities">{copy.nav.cities}</a>

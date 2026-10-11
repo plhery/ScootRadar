@@ -217,7 +217,7 @@ async function geocode(input: GeocodeInput) {
       headers: {
         Accept: 'application/json',
         'Accept-Language': `${language}-CH,${language};q=0.9,en;q=0.6`,
-        'User-Agent': 'scooters/2.0 (scooters.plhery.com)',
+        'User-Agent': 'scootradar/2.0 (scootradar.com)',
       },
       signal: AbortSignal.timeout(GEOCODE_TIMEOUT_MS),
     });

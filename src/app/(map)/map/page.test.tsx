@@ -773,7 +773,7 @@ it('times out a stalled request, says so, and recovers with the next automatic r
   vi.stubGlobal('fetch', fetcher);
   mount();
   await act(async () => vi.advanceTimersByTimeAsync(20_180));
-  expect(screen.getByRole('alert')).toHaveTextContent('Scooters took too long to respond.');
+  expect(screen.getByRole('alert')).toHaveTextContent('Scootradar took too long to respond.');
   await act(async () => vi.advanceTimersByTimeAsync(40_000));
   expect(fetcher).toHaveBeenCalledTimes(2);
   expect(screen.queryByRole('alert')).toBeNull();

@@ -1,6 +1,6 @@
 {
-  "name": "Scooters",
-  "short_name": "Scooters",
+  "name": "Scootradar",
+  "short_name": "Scootradar",
   "description": "Find shared e-scooters in Switzerland and selected cities in France, Germany and Italy",
   "id": "/",
   "start_url": "/map",
