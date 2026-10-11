@@ -2460,6 +2460,38 @@ extension ScooterMapModelTests {
         guard case .scooter = model.dock else { return XCTFail("Expected the scooter card") }
     }
 
+    func testMapOpensFlatAndKeepsTheTiltTheRiderGivesIt() throws {
+        let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
+        let window = try window(showing: ScooterMapScreen(model: model))
+        defer { window.isHidden = true }
+        func map(in view: UIView) -> MKMapView? {
+            (view as? MKMapView) ?? view.subviews.lazy.compactMap(map(in:)).first
+        }
+        let mapView = try XCTUnwrap(map(in: window))
+
+        // Seen from straight above, until two fingers tilt it.
+        XCTAssertEqual(mapView.camera.pitch, 0)
+        XCTAssertTrue(mapView.isPitchEnabled)
+
+        let tilted = mapView.camera.copy() as! MKMapCamera
+        tilted.pitch = 30
+        mapView.setCamera(tilted, animated: false)
+        ScooterMapCameraPolicy.setRegionPreservingPerspective(zurichRegion, on: mapView, animated: false)
+
+        XCTAssertGreaterThan(mapView.camera.pitch, 20)
+    }
+
+    /// A window of the size of a phone with the view on screen in it.
+    private func window(showing view: some View) throws -> UIWindow {
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+        let window = UIWindow(windowScene: scene)
+        window.frame = CGRect(x: 0, y: 0, width: 402, height: 874)
+        window.rootViewController = UIHostingController(rootView: view)
+        window.isHidden = false
+        window.layoutIfNeeded()
+        return window
+    }
+
     func testTopOfTheMapRendersWithoutCrashing() {
         let covered = MapDestination(title: "Zürich HB", point: GeoPoint(latitude: 47.3782, longitude: 8.5402))
         let uncovered = MapDestination(

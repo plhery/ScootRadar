@@ -35,8 +35,9 @@ level, one dot per scooter in its provider's colour, at its exact place, larger
 and brighter the shorter the walk to it. Scooters parked on one spot stand side
 by side. The nearest scooter of each provider carries its name and the walking
 time, and close up a dot is large enough for the provider's initials. Parking
-bays appear as `P` from street level. Tapping a city or a cluster zooms in. A
-new install opens on the **Quiet** map style; a style chosen in Settings is kept.
+bays appear as `P` from street level. Tapping a city or a cluster zooms in. The
+map opens flat, seen from straight above; two fingers tilt it. A new install
+opens on the **Quiet** map style; a style chosen in Settings is kept.
 
 **Locate button.** Until the phone has been located once it is a blue **Near me**
 pill; after that, a round button. Locating zooms the map to about 350 m across.

@@ -81,36 +81,12 @@ final class ScooterFilteringTests: XCTestCase {
     }
 
     @MainActor
-    func testMapOpensWithASubtleThreeDimensionalPitch() {
-        let mapView = MKMapView(frame: CGRect(x: 0, y: 0, width: 390, height: 844))
-        mapView.setRegion(ScooterMapModel.initialRegion, animated: false)
-
-        ScooterMapCameraPolicy.applyOpeningPitch(to: mapView)
-
-        XCTAssertGreaterThan(mapView.camera.pitch, 20)
-        XCTAssertLessThan(mapView.camera.pitch, 40)
-
-        ScooterMapCameraPolicy.setRegionPreservingPerspective(
-            MKCoordinateRegion(
-                center: CLLocationCoordinate2D(latitude: 47.3769, longitude: 8.5417),
-                latitudinalMeters: 850,
-                longitudinalMeters: 850
-            ),
-            on: mapView,
-            animated: false
-        )
-
-        XCTAssertGreaterThan(mapView.camera.pitch, 20)
-    }
-
-    @MainActor
     func testMapStartsWithASizeSoItOpensOnSwitzerland() {
         // A map created without a size drops the region it is given.
         XCTAssertFalse(ScooterMapCameraPolicy.openingFrame.isEmpty)
 
         let mapView = MKMapView(frame: ScooterMapCameraPolicy.openingFrame)
         mapView.setRegion(ScooterMapModel.initialRegion, animated: false)
-        ScooterMapCameraPolicy.applyOpeningPitch(to: mapView)
 
         let center = mapView.camera.centerCoordinate
         XCTAssertEqual(center.latitude, ScooterMapModel.switzerlandCenter.latitude, accuracy: 0.5)
