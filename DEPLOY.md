@@ -1,6 +1,6 @@
 # Cloudflare deployment
 
-Scootradar serves its Next.js website and geocoder on Cloudflare Workers
+ScootRadar serves its Next.js website and geocoder on Cloudflare Workers
 through OpenNext. The scooter API reads persistent snapshots from a small Node
 service on Netcup, managed by Coolify; user map requests never fetch GBFS feeds.
 
@@ -115,7 +115,7 @@ Use `npx wrangler versions upload` for non-production branch previews. After a
 GitHub repository or Worker rename, verify the build connection in Cloudflare;
 the repository is identified by GitHub internally, but the target Worker name
 must remain `swiss-scooters`. This is the internal Worker identity; the public
-app name and canonical domain are Scootradar and `scootradar.com`.
+app name and canonical domain are ScootRadar and `scootradar.com`.
 
 ## Netcup scooter cache
 

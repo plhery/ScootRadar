@@ -1,6 +1,6 @@
 {
   "uid": "scootradar-cache",
-  "title": "Scootradar — Scooter feeds",
+  "title": "ScootRadar — Scooter feeds",
   "description": "The scooter feed cache's Prometheus metrics: which feeds the map serves, collections, the origin API and the process. See docs/OBSERVABILITY.md.",
   "tags": [
     "scootradar"
@@ -163,7 +163,7 @@
       "id": 2,
       "type": "stat",
       "title": "Usual feeds stopped",
-      "description": "Expired now, though served more than half of the last 7 days: what the 'Scootradar feed stopped' alert reports.",
+      "description": "Expired now, though served more than half of the last 7 days: what the 'ScootRadar feed stopped' alert reports.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -659,7 +659,7 @@
       "id": 10,
       "type": "table",
       "title": "Usual feeds stopped",
-      "description": "Expired now, though served more than half of the last 7 days, with the age of the last positions held. The 'Scootradar feed stopped' alert fires after 10 minutes here.",
+      "description": "Expired now, though served more than half of the last 7 days, with the age of the last positions held. The 'ScootRadar feed stopped' alert fires after 10 minutes here.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"

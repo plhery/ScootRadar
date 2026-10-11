@@ -62,12 +62,12 @@ describe('analytics privacy boundary', () => {
       await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(calls + 1));
       return JSON.parse(fetcher.mock.calls[calls][1].body).payload;
     };
-    expect(await sent('/')).toMatchObject({ url: '/', title: 'About — Scootradar' });
-    expect(await sent('/de')).toMatchObject({ url: '/de', title: 'About — Scootradar' });
-    expect(await sent('/privacy')).toMatchObject({ url: '/privacy', title: 'Privacy — Scootradar' });
-    expect(await sent('/map')).toMatchObject({ url: '/map', title: 'Scootradar' });
-    expect(await sent('/es')).toMatchObject({ url: '/map', title: 'Scootradar' });
-    expect(await sent('/en/anything')).toMatchObject({ url: '/map', title: 'Scootradar' });
+    expect(await sent('/')).toMatchObject({ url: '/', title: 'About — ScootRadar' });
+    expect(await sent('/de')).toMatchObject({ url: '/de', title: 'About — ScootRadar' });
+    expect(await sent('/privacy')).toMatchObject({ url: '/privacy', title: 'Privacy — ScootRadar' });
+    expect(await sent('/map')).toMatchObject({ url: '/map', title: 'ScootRadar' });
+    expect(await sent('/es')).toMatchObject({ url: '/map', title: 'ScootRadar' });
+    expect(await sent('/en/anything')).toMatchObject({ url: '/map', title: 'ScootRadar' });
   });
   it('bounds the queue and survives network failures without retries', async () => {
     const fetcher = vi.fn().mockRejectedValue(new Error('offline'));

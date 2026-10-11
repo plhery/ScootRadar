@@ -1,4 +1,4 @@
-# Scootradar analytics
+# ScootRadar analytics
 
 Dashboard: https://umami.plhery.com/websites/6e60b4ab-b4ee-4785-9699-a7f32127b358
 

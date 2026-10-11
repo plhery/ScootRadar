@@ -2,7 +2,7 @@
 
 Last updated: 11 October 2026
 
-Scootradar has no accounts or advertising. It does not intentionally retain precise user locations or address
+ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches.
 
 - With permission, the app uses location coordinates on the device to focus the
@@ -10,7 +10,7 @@ searches.
   find vehicles, not a separate user-location coordinate.
 - Address text is proxied in a non-cacheable request body, with the language
   the app is shown in, to the Swiss federal geo.admin.ch service. The name of a
-  city in the Scootradar catalogue is answered without contacting it.
+  city in the ScootRadar catalogue is answered without contacting it.
 - OpenFreeMap receives normal map tile requests from the user's device, with the website origin as the referrer (no page path or query string). The tiles hold OpenStreetMap data and are drawn on the device.
 - Language, filters, appearance, map style, the ride length chosen for price
   estimates and, in the iOS app, the ride passes entered are stored locally, as is the fact that the device has found its

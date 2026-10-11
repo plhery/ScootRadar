@@ -1,11 +1,11 @@
 {
   "folderUid": "scootradar",
-  "folderTitle": "Scootradar",
-  "ruleGroup": "Scootradar production",
+  "folderTitle": "ScootRadar",
+  "ruleGroup": "ScootRadar production",
   "rules": [
     {
       "uid": "scootradar-cache-down",
-      "title": "Scootradar cache target down",
+      "title": "ScootRadar cache target down",
       "expr": "min(up{job=\"scootradar-cache\"}) < bool 1",
       "for": "3m",
       "severity": "critical",
@@ -15,7 +15,7 @@
     },
     {
       "uid": "scootradar-nothing-served",
-      "title": "Scootradar serves no scooters",
+      "title": "ScootRadar serves no scooters",
       "expr": "sum(scootradar_feed_state{job=\"scootradar-cache\", state=~\"ok|failing\"}) < bool 1",
       "for": "5m",
       "severity": "critical",
@@ -25,7 +25,7 @@
     },
     {
       "uid": "scootradar-collector-stalled",
-      "title": "Scootradar collector stalled",
+      "title": "ScootRadar collector stalled",
       "expr": "time() - max(scootradar_snapshot_updated_timestamp_seconds{job=\"scootradar-cache\"}) > bool 300",
       "for": "5m",
       "severity": "critical",
@@ -35,7 +35,7 @@
     },
     {
       "uid": "scootradar-feed-stopped",
-      "title": "Scootradar feed stopped",
+      "title": "ScootRadar feed stopped",
       "expr": "(max by (feed, source, provider) (scootradar_feed_state{job=\"scootradar-cache\", state=\"expired\"}) == 1) and on (feed) (avg_over_time((max by (feed) (scootradar_feed_state{job=\"scootradar-cache\", state=~\"ok|failing\"}))[7d:5m]) > 0.5)",
       "for": "10m",
       "severity": "warning",
@@ -46,7 +46,7 @@
     },
     {
       "uid": "scootradar-discovery-stale",
-      "title": "Scootradar feed discovery stale",
+      "title": "ScootRadar feed discovery stale",
       "expr": "time() - (max(scootradar_discovery_success_timestamp_seconds{job=\"scootradar-cache\"}) or max(process_start_time_seconds{job=\"scootradar-cache\"})) > bool 7200",
       "for": "10m",
       "severity": "warning",
@@ -56,7 +56,7 @@
     },
     {
       "uid": "scootradar-cache-restarting",
-      "title": "Scootradar cache restarting",
+      "title": "ScootRadar cache restarting",
       "expr": "changes(process_start_time_seconds{job=\"scootradar-cache\"}[1h]) > bool 3",
       "for": "0s",
       "severity": "warning",
@@ -66,7 +66,7 @@
     },
     {
       "uid": "scootradar-cache-memory",
-      "title": "Scootradar cache memory high",
+      "title": "ScootRadar cache memory high",
       "expr": "max(process_resident_memory_bytes{job=\"scootradar-cache\"}) > bool 1300000000",
       "for": "15m",
       "severity": "warning",

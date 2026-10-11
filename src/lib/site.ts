@@ -2,4 +2,4 @@
 // search engines and to the pages a link to it is shared on.
 
 export const SITE_URL = 'https://scootradar.com';
-export const SITE_NAME = 'Scootradar';
+export const SITE_NAME = 'ScootRadar';

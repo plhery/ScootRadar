@@ -1,6 +1,6 @@
 # Data sources and terms
 
-Scootradar does not own the mobility, address, or map data it displays.
+ScootRadar does not own the mobility, address, or map data it displays.
 
 ## Mobility data
 

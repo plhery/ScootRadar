@@ -2656,10 +2656,10 @@ extension ScooterMapModelTests {
     func testTheLoadFailedBannerShowsItsWholeSentenceAtEveryTextSize() throws {
         let german = try XCTUnwrap(Bundle.main.path(forResource: "de", ofType: "lproj").flatMap(Bundle.init(path:)))
         let sentence = german.localizedString(
-            forKey: "Scootradar is busy right now. Try again in a moment.", value: nil, table: nil
+            forKey: "ScootRadar is busy right now. Try again in a moment.", value: nil, table: nil
         )
         let button = german.localizedString(forKey: "Try again", value: nil, table: nil)
-        XCTAssertTrue(sentence.hasPrefix("Scootradar ist"), sentence)
+        XCTAssertTrue(sentence.hasPrefix("ScootRadar ist"), sentence)
 
         // A 375 pt phone leaves the banner 351 pt.
         func height(_ message: String, _ size: DynamicTypeSize) -> CGFloat {

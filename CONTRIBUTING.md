@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping improve Scootradar.
+Thanks for helping improve ScootRadar.
 
 ## Before you start
 

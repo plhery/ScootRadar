@@ -3,8 +3,8 @@ import type { Metadata, Viewport } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Privacy — Scootradar',
-  description: 'How Scootradar handles location, search, and service data.',
+  title: 'Privacy — ScootRadar',
+  description: 'How ScootRadar handles location, search, and service data.',
   alternates: { canonical: '/privacy' },
 };
 
@@ -17,20 +17,20 @@ export default function PrivacyPage() {
   return (
     <main className="legal-page">
       <article className="legal-content">
-        <Link className="legal-back" href="/map">← Back to Scootradar</Link>
+        <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
         <h1>Privacy</h1>
         <p>Last updated: 11 October 2026</p>
 
         <h2>Overview</h2>
         <p>
-          Scootradar has no user accounts or advertising. It does not intentionally retain your precise location or address searches.
+          ScootRadar has no user accounts or advertising. It does not intentionally retain your precise location or address searches.
         </p>
 
         <h2>Location and map requests</h2>
         <p>
           If you grant location permission, your browser or device provides your position to the
           app. Your position is used on the device to focus the map and calculate distances. The
-          Scootradar API receives the visible map bounds needed to find vehicles, but no
+          ScootRadar API receives the visible map bounds needed to find vehicles, but no
           separate user-location coordinate. These values are not stored by the application,
           except in an error report when a request fails (see below).
         </p>
@@ -42,9 +42,9 @@ export default function PrivacyPage() {
 
         <h2>Address search</h2>
         <p>
-          Address search text is sent through the Scootradar API, with the language the app is
+          Address search text is sent through the ScootRadar API, with the language the app is
           shown in, to the Swiss federal geo.admin.ch service operated by swisstopo. The name of a
-          city in the Scootradar catalogue is answered without contacting it. The current app sends
+          city in the ScootRadar catalogue is answered without contacting it. The current app sends
           search text in the request body, and instructs browsers and intermediary caches not to
           store the request or response.
         </p>
@@ -52,7 +52,7 @@ export default function PrivacyPage() {
         <h2>Mobility data</h2>
         <p>
           Live vehicle data comes from the Open data platform mobility Switzerland and participating
-          mobility providers. Scootradar filters that data to the visible map area and does not
+          mobility providers. ScootRadar filters that data to the visible map area and does not
           build a history of vehicle movements.
         </p>
 

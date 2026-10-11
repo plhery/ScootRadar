@@ -34,12 +34,12 @@ export function analyticsEnabled(): boolean {
 // The pages of the site, with the title each is counted under. The landing
 // page is one per language, English at "/": src/lib/landingCopy.ts.
 const PUBLIC_PAGES = new Map([
-  [MAP_PATH, 'Scootradar'],
-  ['/privacy', 'Privacy — Scootradar'],
-  ['/', 'About — Scootradar'],
-  ['/de', 'About — Scootradar'],
-  ['/fr', 'About — Scootradar'],
-  ['/it', 'About — Scootradar'],
+  [MAP_PATH, 'ScootRadar'],
+  ['/privacy', 'Privacy — ScootRadar'],
+  ['/', 'About — ScootRadar'],
+  ['/de', 'About — ScootRadar'],
+  ['/fr', 'About — ScootRadar'],
+  ['/it', 'About — ScootRadar'],
 ]);
 
 let cache: string | undefined;
@@ -56,7 +56,7 @@ export function track(event?: AnalyticsEvent, data: AnalyticsData = {}): void {
     // Only these public screens exist. Exclude even unknown paths, all query strings and fragments:
     // what is not one of them is counted as the map, which sends every event but the page views.
     url: PUBLIC_PAGES.has(window.location.pathname) ? window.location.pathname : MAP_PATH,
-    title: PUBLIC_PAGES.get(window.location.pathname) ?? 'Scootradar',
+    title: PUBLIC_PAGES.get(window.location.pathname) ?? 'ScootRadar',
     referrer: '', language: navigator.language, tag: platform,
     ...(event ? { name: event, data: { ...safeAnalyticsData(data), platform } } : {}),
   };

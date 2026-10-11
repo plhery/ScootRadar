@@ -440,7 +440,7 @@ struct ScooterControlDock: View {
                 systemImage: "map",
                 tint: ScooterPalette.actionText,
                 title: String(localized: "No scooter data here yet"),
-                message: String(localized: "Scootradar covers selected cities in France, Switzerland, Germany and Italy.")
+                message: String(localized: "ScootRadar covers selected cities in France, Switzerland, Germany and Italy.")
             )
 
             VStack(alignment: .leading, spacing: 8) {
@@ -1896,7 +1896,7 @@ struct ScooterPrivacySettings: View {
                     set: { analyticsDisabled = !$0 }
                 ))
             } footer: {
-                Text("Helps improve Scootradar. No addresses or precise locations are sent.")
+                Text("Helps improve ScootRadar. No addresses or precise locations are sent.")
             }
 
             Section {

@@ -117,9 +117,9 @@ enum ScooterLoadFailure: String, CaseIterable, Equatable, Sendable {
     var message: String {
         switch self {
         case .offline: String(localized: "You’re offline. Check your connection.")
-        case .timeout: String(localized: "Scootradar took too long to respond.")
-        case .busy: String(localized: "Scootradar is busy right now. Try again in a moment.")
-        case .unavailable: String(localized: "Scootradar is having trouble. Try again in a moment.")
+        case .timeout: String(localized: "ScootRadar took too long to respond.")
+        case .busy: String(localized: "ScootRadar is busy right now. Try again in a moment.")
+        case .unavailable: String(localized: "ScootRadar is having trouble. Try again in a moment.")
         case .failed: String(localized: "Couldn’t load scooters.")
         }
     }

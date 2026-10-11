@@ -27,7 +27,7 @@ mkdir -p "$CACHE_ROOT" "$PROFILE_BACKUP_DIR"
 notify() {
   /usr/bin/osascript \
     -e 'on run argv' \
-    -e 'display notification (item 1 of argv) with title "Scootradar"' \
+    -e 'display notification (item 1 of argv) with title "ScootRadar"' \
     -e 'end run' \
     "$1" >/dev/null 2>&1 || true
 }
@@ -81,7 +81,7 @@ on_exit() {
 
 trap 'on_exit $?' EXIT
 
-print "Refreshing Scootradar on $DEVICE_NAME…"
+print "Refreshing ScootRadar on $DEVICE_NAME…"
 print "Keep the iPhone unlocked and connected by USB or reachable over Wi-Fi."
 print
 notify "Refresh started. Keep the iPhone unlocked and nearby."
@@ -156,7 +156,7 @@ LAUNCH_OUTPUT="$(xcrun devicectl device process launch --device "$DEVICE_NAME" "
   elif [[ "$LAUNCH_OUTPUT" == *"device was not, or could not be, unlocked"* ]]; then
     print
     print "The app is installed. Unlock the iPhone and open it normally."
-    LAUNCH_NOTE="Unlock the iPhone and open Scootradar."
+    LAUNCH_NOTE="Unlock the iPhone and open ScootRadar."
   else
     print -u2 "The app was installed but could not be launched automatically."
     exit 1

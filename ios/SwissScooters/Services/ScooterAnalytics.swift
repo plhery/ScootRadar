@@ -37,7 +37,7 @@ final class ScooterAnalytics {
         var payload: [String: Any] = [
             "website": website, "hostname": "scootradar.com",
             "url": ["/", "/filters", "/settings"].contains(screen) ? screen : "/",
-            "title": "Scootradar", "referrer": "", "tag": "ios",
+            "title": "ScootRadar", "referrer": "", "tag": "ios",
             "language": ScooterLanguage.current.locale.identifier.replacingOccurrences(of: "_", with: "-")
         ]
         if let name {
@@ -71,7 +71,7 @@ final class ScooterAnalytics {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             let os = UIDevice.current.systemVersion.replacingOccurrences(of: ".", with: "_")
             let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
-            request.setValue("Mozilla/5.0 (iPhone; CPU iPhone OS \(os) like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Scootradar/\(version)", forHTTPHeaderField: "User-Agent")
+            request.setValue("Mozilla/5.0 (iPhone; CPU iPhone OS \(os) like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 ScootRadar/\(version)", forHTTPHeaderField: "User-Agent")
             if let cache { request.setValue(cache, forHTTPHeaderField: "x-umami-cache") }
             do {
                 let (data, response) = try await session.data(for: request)

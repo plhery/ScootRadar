@@ -2,7 +2,7 @@ import { spawnSync } from 'node:child_process';
 import { readFileSync, readdirSync } from 'node:fs';
 
 // Makes production Grafana match observability/: the dashboards in grafana/ and
-// the rule group in grafana-alerts/scootradar-alerts.json, in the Scootradar
+// the rule group in grafana-alerts/scootradar-alerts.json, in the ScootRadar
 // folder. Dry run by default; pass --apply to create, update, and delete.
 // Requests run through curl inside the Grafana container on the Netcup host,
 // so the admin credentials never leave that container.
@@ -86,6 +86,7 @@ function sortedKeys(value) {
 function comparableRule(rule) {
   return JSON.stringify(sortedKeys({
     title: rule.title,
+    ruleGroup: rule.ruleGroup,
     condition: rule.condition,
     data: rule.data.map(entry => ({
       refId: entry.refId,
@@ -109,7 +110,8 @@ function comparableRule(rule) {
 const comparableDashboard = dashboard => JSON.stringify(sortedKeys({ ...dashboard, id: undefined, version: undefined }));
 
 const folder = grafana('GET', `/api/folders/${alerts.folderUid}`, undefined, { allowMissing: true });
-console.log(`folder ${alerts.folderUid}: ${folder ? 'exists' : 'create'}`);
+const folderRenamed = folder && folder.title !== alerts.folderTitle;
+console.log(`folder ${alerts.folderUid}: ${!folder ? 'create' : folderRenamed ? 'rename' : 'exists'}`);
 
 const dashboardChanges = dashboards.filter(dashboard => {
   const live = grafana('GET', `/api/dashboards/uid/${dashboard.uid}`, undefined, { allowMissing: true });
@@ -120,8 +122,10 @@ const dashboardChanges = dashboards.filter(dashboard => {
 });
 
 const desired = new Map(alerts.rules.map(rule => [rule.uid, toProvisionedRule(rule)]));
+// A rule of the source that sits in another group of the folder is live too: a
+// renamed group is an update of its rules, not rules to create.
 const live = new Map(grafana('GET', '/api/v1/provisioning/alert-rules')
-  .filter(rule => rule.folderUID === alerts.folderUid && rule.ruleGroup === alerts.ruleGroup)
+  .filter(rule => rule.folderUID === alerts.folderUid && (rule.ruleGroup === alerts.ruleGroup || desired.has(rule.uid)))
   .map(rule => [rule.uid, rule]));
 const toCreate = [...desired.keys()].filter(uid => !live.has(uid));
 const toUpdate = [...desired.keys()].filter(uid => live.has(uid) && comparableRule(live.get(uid)) !== comparableRule(desired.get(uid)));
@@ -137,6 +141,7 @@ if (!apply) {
 }
 
 if (!folder) grafana('POST', '/api/folders', { uid: alerts.folderUid, title: alerts.folderTitle });
+if (folderRenamed) grafana('PUT', `/api/folders/${alerts.folderUid}`, { title: alerts.folderTitle, version: folder.version });
 for (const dashboard of dashboardChanges) {
   grafana('POST', '/api/dashboards/db', { dashboard: { ...dashboard, id: null }, folderUid: alerts.folderUid,
     overwrite: true, message: 'Synced from the swiss-scooters repository' });

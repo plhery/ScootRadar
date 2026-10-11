@@ -1,6 +1,6 @@
 # Third-party notices
 
-The Scootradar source code is MIT-licensed. Installed dependencies remain
+The ScootRadar source code is MIT-licensed. Installed dependencies remain
 under their own licenses as declared in `package-lock.json` and their package
 metadata.
 

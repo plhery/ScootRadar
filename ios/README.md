@@ -1,9 +1,9 @@
-# Scootradar — iOS app
+# ScootRadar — iOS app
 
-The SwiftUI and MapKit app for Scootradar, for iOS 26 or newer. It shows the same
+The SwiftUI and MapKit app for ScootRadar, for iOS 26 or newer. It shows the same
 live data as [scootradar.com](https://scootradar.com) and is meant to
 behave and read like the website, with iOS controls and Liquid Glass. It uses the
-bundle identifier `com.plhery.zurichscooters` and appears as **Scootradar** when
+bundle identifier `com.plhery.zurichscooters` and appears as **ScootRadar** when
 installed.
 
 ## Run it on your iPhone

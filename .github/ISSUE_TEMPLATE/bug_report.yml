@@ -1,5 +1,5 @@
 name: Bug report
-description: Report a reproducible problem in Swiss Scooters
+description: Report a reproducible problem in ScootRadar
 title: "[Bug]: "
 labels:
   - bug

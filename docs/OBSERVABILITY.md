@@ -4,7 +4,7 @@ The scooter feed cache on Netcup (see [DEPLOY.md](../DEPLOY.md)) reports in four
 places. None of them holds a map URL, coordinates or a visitor's address.
 
 - **Prometheus** scrapes its `/metrics` every 30 seconds. **Grafana** draws them on the
-  "Scootradar — Scooter feeds" dashboard and alerts on them through Telegram.
+  "ScootRadar — Scooter feeds" dashboard and alerts on them through Telegram.
 - **Sentry** (project `scootradar-cache`) gets unexpected errors, plus one event
   each time a feed stops being served.
 - **Loki** keeps its log lines for 30 days under `app="scootradar-cache"`.
@@ -50,7 +50,7 @@ restarts.
 [observability/grafana/scootradar-cache.json](../observability/grafana/scootradar-cache.json)
 is the dashboard; the alert rules are in
 [observability/grafana-alerts/scootradar-alerts.json](../observability/grafana-alerts/scootradar-alerts.json).
-Both go in Grafana's Scootradar folder. After changing either, run:
+Both go in Grafana's ScootRadar folder. After changing either, run:
 
 ```bash
 npm run grafana:sync            # dry run: lists what would change
@@ -79,13 +79,13 @@ The alert rules:
 
 | Rule | Fires when |
 | --- | --- |
-| Scootradar cache target down | Prometheus cannot scrape the cache for 3 minutes |
-| Scootradar serves no scooters | every feed has expired for 5 minutes |
-| Scootradar collector stalled | no collection has finished for 5 minutes |
-| Scootradar feed stopped | a feed served more than half of the last 7 days has been expired for 10 minutes; one notification per feed |
-| Scootradar feed discovery stale | no successful discovery for 2 hours |
-| Scootradar cache restarting | more than three restarts in an hour (a deploy is one) |
-| Scootradar cache memory high | over 1.3 GB for 15 minutes (the limit is 1536 MiB) |
+| ScootRadar cache target down | Prometheus cannot scrape the cache for 3 minutes |
+| ScootRadar serves no scooters | every feed has expired for 5 minutes |
+| ScootRadar collector stalled | no collection has finished for 5 minutes |
+| ScootRadar feed stopped | a feed served more than half of the last 7 days has been expired for 10 minutes; one notification per feed |
+| ScootRadar feed discovery stale | no successful discovery for 2 hours |
+| ScootRadar cache restarting | more than three restarts in an hour (a deploy is one) |
+| ScootRadar cache memory high | over 1.3 GB for 15 minutes (the limit is 1536 MiB) |
 
 While the cache cannot be scraped, as for a moment during a deploy, every rule but
 "target down" keeps its last state rather than resolving and firing again.

@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="public/icon.svg" width="92" alt="Scootradar logo">
+  <img src="public/icon.svg" width="92" alt="ScootRadar logo">
 </p>
 
-<h1 align="center">Scootradar</h1>
+<h1 align="center">ScootRadar</h1>
 
 <p align="center">
   A friendly map for finding shared e-scooters in Switzerland and selected cities in France, Germany and Italy.
@@ -20,10 +20,10 @@
 </p>
 
 <p align="center">
-  <img src="docs/swiss-scooters-map.png" width="390" alt="Scootradar showing fictional demo scooters around Zürich on a phone">
+  <img src="docs/swiss-scooters-map.png" width="390" alt="ScootRadar showing fictional demo scooters around Zürich on a phone">
 </p>
 
-Scootradar puts the shared scooters of eight providers on one map, in an
+ScootRadar puts the shared scooters of eight providers on one map, in an
 installable web app. It speaks German, French, Italian, and English. There is
 also a native SwiftUI app for iPhone.
 
@@ -128,7 +128,7 @@ The app stores no account or location history.
 - [Contributing](CONTRIBUTING.md)
 - [Security](SECURITY.md)
 
-Scootradar is open source under the [MIT License](LICENSE). Come build with us.
+ScootRadar is open source under the [MIT License](LICENSE). Come build with us.
 
 Published operator parking bays appear as **P** markers at street zoom. Tap a bay
 for the provider, published parking requirement and directions. Closed return
