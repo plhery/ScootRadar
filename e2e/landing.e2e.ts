@@ -94,6 +94,13 @@ test('the landing page tells a search engine where each language is', async ({ p
       .toHaveAttribute('href', new RegExp(`^${site}${address === '/' ? '/?' : address}$`));
   }
 
+  // A shared link shows the picture of its language, which is there.
+  const share = page.locator('meta[property="og:image"]');
+  await expect(share).toHaveAttribute('content', `${site}/share/de.png`);
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary_large_image');
+  const picture = await page.request.get('/share/de.png');
+  expect(picture.headers()['content-type']).toBe('image/png');
+
   const listed = await (await page.request.get('/sitemap.xml')).text();
   for (const address of ['/', '/de', '/fr', '/it', '/map', '/privacy']) expect(listed).toContain(`<loc>${site}${address}</loc>`);
   expect(listed).not.toContain(`${site}/en`);

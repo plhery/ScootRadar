@@ -45,7 +45,12 @@ export const APP_STORE_URL = null as string | null;
 export type LandingCountry = 'CH' | 'DE' | 'FR' | 'IT';
 
 export interface LandingCopy {
-  meta: { title: string; description: (cities: number) => string };
+  meta: {
+    title: string;
+    description: (cities: number) => string;
+    /** The picture a shared link shows, public/share/<locale>.png: scripts/generate-share-images.mjs draws it. */
+    share: { title: string; alt: string };
+  };
   nav: { main: string; shows: string; cities: string; languages: string };
   openMap: string;
   iphoneApp: string;
@@ -112,6 +117,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       title: 'E-scooter map: Lime, Bolt, Bird, Voi, Dott and more | Scooters',
       description: cities =>
         `Every shared e-scooter near you on one live map: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony and PubliBike. Battery, walking time and price. Free, in ${cities} cities.`,
+      share: {
+        title: 'Every e-scooter on one map.',
+        alt: 'Every e-scooter on one map: the app at night by Zürich main station, beside the initials of eight providers.',
+      },
     },
     nav: { main: 'Main', shows: 'What it shows', cities: 'Cities', languages: 'Language' },
     openMap: 'Open the map',
@@ -197,6 +206,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       title: 'E-Scooter-Karte: Lime, Bolt, Bird, Voi, Dott und mehr | Scooters',
       description: cities =>
         `Alle E-Scooter und E-Trottinette in deiner Nähe auf einer Live-Karte: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony und PubliBike. Gratis, ohne Konto, in ${cities} Städten.`,
+      share: {
+        title: 'Alle E-Scooter auf einer Karte.',
+        alt: 'Alle E-Scooter auf einer Karte: die App bei Nacht am Zürcher Hauptbahnhof, daneben die Initialen von acht Anbietern.',
+      },
     },
     nav: { main: 'Hauptnavigation', shows: 'Was die Karte zeigt', cities: 'Städte', languages: 'Sprache' },
     openMap: 'Karte öffnen',
@@ -282,6 +295,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       title: 'Carte des trottinettes électriques en libre-service | Scooters',
       description: cities =>
         `Toutes les trottinettes électriques en libre-service autour de vous sur une carte en direct : Lime, Dott, Bolt, Voi, Bird, Hopp, Pony et PubliBike. Gratuit, sans compte, dans ${cities} villes.`,
+      share: {
+        title: 'Toutes les trottinettes sur une seule carte.',
+        alt: 'Toutes les trottinettes sur une seule carte : l’app, de nuit, près de la gare centrale de Zurich, à côté des initiales de huit opérateurs.',
+      },
     },
     nav: { main: 'Navigation principale', shows: 'Ce que montre la carte', cities: 'Villes', languages: 'Langue' },
     openMap: 'Ouvrir la carte',
@@ -367,6 +384,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       title: 'Monopattini elettrici in sharing su una sola mappa | Scooters',
       description: cities =>
         `Tutti i monopattini elettrici in sharing intorno a te su una mappa in tempo reale: Lime, Bolt, Dott, Voi, Bird, Hopp, Pony e PubliBike. Gratis, senza account, in ${cities} città.`,
+      share: {
+        title: 'Tutti i monopattini su una sola mappa.',
+        alt: 'Tutti i monopattini su una sola mappa: l’app di notte vicino alla stazione centrale di Zurigo, accanto alle iniziali di otto operatori.',
+      },
     },
     nav: { main: 'Navigazione principale', shows: 'Cosa mostra la mappa', cities: 'Città', languages: 'Lingua' },
     openMap: 'Apri la mappa',

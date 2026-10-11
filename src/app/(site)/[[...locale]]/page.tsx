@@ -26,6 +26,7 @@ import {
 import { DEFAULT_RIDE_DURATION, RIDE_DURATIONS, formatRidePrice, ridePriceQuote } from '@/lib/ridePrice';
 import type { RidePricing } from '@/lib/types';
 import { MAP_PATH } from '@/lib/mapAddress';
+import { SITE_NAME } from '@/lib/site';
 import { formatDistance, walkingMinutes } from '@/lib/walking';
 
 type Props = Readonly<{ params: Promise<{ locale?: string[] }> }>;
@@ -53,6 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const { meta } = LANDING_COPY[locale];
   const description = meta.description(LANDING_CITY_TOTAL);
+  const share = { url: shareImage(locale), width: 1200, height: 630, alt: meta.share.alt };
   return {
     title: meta.title,
     description,
@@ -66,19 +68,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       type: 'website',
       url: landingPath(locale),
-      siteName: 'Scooters',
+      siteName: SITE_NAME,
       title: meta.title,
       description,
       locale: OPEN_GRAPH_LOCALES[locale],
-      images: [{ url: '/icon-512.png', width: 512, height: 512, alt: 'Scooters' }],
+      images: [share],
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title: meta.title,
       description,
-      images: ['/icon-512.png'],
+      images: [share],
     },
   };
+}
+
+/** The picture of this language a shared link shows: scripts/generate-share-images.mjs draws it. */
+function shareImage(locale: LandingLocale): string {
+  return `/share/${locale}.png`;
 }
 
 /** Numbers, distances, prices and the date as the app writes them in this language. */

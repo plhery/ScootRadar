@@ -10,6 +10,7 @@
     "generate:api-contract": "node scripts/generate-api-contract.mjs",
     "check:api-contract": "node scripts/generate-api-contract.mjs --check",
     "check:dependencies": "node scripts/check-dependency-audit.mjs",
+    "generate:share-images": "node scripts/generate-share-images.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
