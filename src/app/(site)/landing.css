@@ -512,16 +512,12 @@ img {
   height: 40px;
   border-radius: 13px;
   background: var(--c);
-  color: var(--night);
+  color: var(--ink, #ffffff);
   font: 800 16px var(--display);
 }
 
 .tile--wide {
   font-size: 14px;
-}
-
-.tile--white {
-  color: #ffffff;
 }
 
 .near-text {

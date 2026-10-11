@@ -27,6 +27,7 @@ import { DEFAULT_RIDE_DURATION, RIDE_DURATIONS, formatRidePrice, ridePriceQuote 
 import type { RidePricing } from '@/lib/types';
 import { MAP_PATH } from '@/lib/mapAddress';
 import { SITE_NAME, SITE_URL } from '@/lib/site';
+import { inkOn } from '@/lib/providerColor';
 import { formatDistance, walkingMinutes } from '@/lib/walking';
 
 type Props = Readonly<{ params: Promise<{ locale?: string[] }> }>;
@@ -45,8 +46,6 @@ const BATTERY_STEP_SHOWN = 60;
 // Bird's black would vanish on a page this dark: its marker is white on the
 // app's dark map, too.
 const TILE_COLORS: Record<string, string> = { bird: '#f4f5f7' };
-// The one colour of the seven that white letters read better on.
-const WHITE_LETTERS = new Set(['publibike']);
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = landingLocaleOf((await params).locale);
@@ -187,12 +186,15 @@ function tileColor(provider: string): string {
 }
 
 function Tile({ provider }: { provider: string }) {
+/** A provider's tile as the app draws it: white initials, dark only on a colour too light for white. */
   const { initial } = PROVIDERS[provider];
-  const classes = ['tile', initial.length > 1 && 'tile--wide', WHITE_LETTERS.has(provider) && 'tile--white']
-    .filter(Boolean)
-    .join(' ');
+  const color = tileColor(provider);
   return (
-    <span className={classes} aria-hidden="true" style={{ '--c': tileColor(provider) } as CSSProperties}>
+    <span
+      className={initial.length > 1 ? 'tile tile--wide' : 'tile'}
+      aria-hidden="true"
+      style={{ '--c': color, '--ink': inkOn(color) } as CSSProperties}
+    >
       {initial}
     </span>
   );
