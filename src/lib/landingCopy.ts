@@ -55,7 +55,7 @@ export interface LandingCopy {
   openMap: string;
   iphoneApp: string;
   hero: {
-    /** The number is the one on the capture of this language, beside the headline. */
+    /** The number is the one on the capture beside the headline: the scooters in view there. */
     title: (scooters: number) => string;
     lede: string;
     note: string;
@@ -133,7 +133,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       note: 'Free. No account, no ads.',
       stage: 'Scootradar by Zürich main station',
       alt: scooters =>
-        `The iPhone app at night: a dark map of the streets by Zürich main station, covered in pins with each provider’s initials and colour, and ${scooters} scooters nearby.`,
+        `The iPhone app at night: the dark streets by Zürich main station, each scooter a dot of light in its provider’s colour, the nearest of each provider named with its walking time, and ${scooters} scooters in view.`,
       caption: date =>
         `Zürich main station, ${date}: the nearest ride from each of the seven providers there.`,
     },
@@ -151,7 +151,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         close: (first, firstDistance, second, secondDistance) =>
           `Here, a ${first} is ${firstDistance} away and a ${second} is ${secondDistance}. It takes two apps to learn that, or one map.`,
         providers: 'Providers in Zürich',
-        alt: 'The same streets by day, with the pins of every provider on one map.',
+        alt: 'The same streets by day, with the dots of every provider on one map.',
       },
       walk: {
         title: 'Know the walk.',
@@ -189,7 +189,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       lede: 'Shared e-scooters in Switzerland, Germany and France, plus Rome. Where no provider publishes its data, the map says so and points you to the closest cities that have it. Pick a city to open the map there.',
       countries: { CH: 'Switzerland', DE: 'Germany', FR: 'France', IT: 'Italy' },
       more: count => `and ${count} more`,
-      alt: 'The map zoomed out over Europe, with the number of scooters on each city.',
+      alt: 'The map at night, zoomed out over Europe, with the number of scooters on each city.',
     },
     faq: {
       title: 'Before you ask.',
@@ -255,7 +255,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       note: 'Gratis. Kein Konto, keine Werbung.',
       stage: 'Scooter beim Zürcher Hauptbahnhof',
       alt: scooters =>
-        `Die iPhone-App bei Nacht: eine dunkle Karte der Strassen beim Zürcher Hauptbahnhof, voller Markierungen mit den Initialen und der Farbe jedes Anbieters, ${scooters} Scooter in der Nähe.`,
+        `Die iPhone-App bei Nacht: die dunklen Strassen beim Zürcher Hauptbahnhof, jeder Scooter ein Lichtpunkt in der Farbe seines Anbieters, der nächste jedes Anbieters mit Namen und Gehzeit, ${scooters} Scooter im Bild.`,
       caption: date =>
         `Zürich Hauptbahnhof, ${date}: das jeweils nächste Fahrzeug der sieben Anbieter dort.`,
     },
@@ -273,7 +273,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         close: (first, firstDistance, second, secondDistance) =>
           `Hier steht ein ${first} in ${firstDistance} Entfernung und ein ${second} in ${secondDistance}. Dafür brauchst du zwei Apps. Oder eine Karte.`,
         providers: 'Anbieter in Zürich',
-        alt: 'Dieselben Strassen bei Tag, mit den Markierungen aller Anbieter auf einer Karte.',
+        alt: 'Dieselben Strassen bei Tag, mit den Punkten aller Anbieter auf einer Karte.',
       },
       walk: {
         title: 'Wissen, wie weit es ist.',
@@ -311,7 +311,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       lede: 'E-Scooter in der Schweiz, in Deutschland und Frankreich sowie in Rom. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten. Wähle eine Stadt, um die Karte dort zu öffnen.',
       countries: { CH: 'Schweiz', DE: 'Deutschland', FR: 'Frankreich', IT: 'Italien' },
       more: count => `und ${count} weitere`,
-      alt: 'Die Karte, herausgezoomt über Europa, mit der Zahl der Scooter in jeder Stadt.',
+      alt: 'Die Karte bei Nacht, herausgezoomt über Europa, mit der Zahl der Scooter in jeder Stadt.',
     },
     faq: {
       title: 'Bevor du fragst.',
@@ -377,7 +377,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       note: 'Gratuit. Sans compte, sans pub.',
       stage: 'Trottinettes près de la gare centrale de Zurich',
       alt: scooters =>
-        `L’app iPhone, de nuit : une carte sombre des rues près de la gare centrale de Zurich, couverte de repères aux initiales et à la couleur de chaque opérateur, et ${scooters} trottinettes à proximité.`,
+        `L’app iPhone, de nuit : les rues sombres près de la gare centrale de Zurich, chaque trottinette en point lumineux à la couleur de son opérateur, la plus proche de chaque opérateur avec son nom et le temps de marche, et ${scooters} trottinettes à l’écran.`,
       caption: date =>
         `Gare centrale de Zurich, ${date} : le véhicule le plus proche chez chacun des sept opérateurs présents.`,
     },
@@ -395,7 +395,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         close: (first, firstDistance, second, secondDistance) =>
           `Ici, une ${first} est à ${firstDistance} et une ${second} à ${secondDistance}. Pour le savoir, il faut deux apps, ou une seule carte.`,
         providers: 'Opérateurs à Zurich',
-        alt: 'Les mêmes rues de jour, avec les repères de tous les opérateurs sur une seule carte.',
+        alt: 'Les mêmes rues de jour, avec les points de tous les opérateurs sur une seule carte.',
       },
       walk: {
         title: 'Sachez jusqu’où marcher.',
@@ -433,7 +433,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       lede: 'Des trottinettes en libre-service en Suisse, en Allemagne et en France, ainsi qu’à Rome. Là où aucun opérateur ne publie de données, la carte le dit et indique les villes les plus proches qui en ont. Choisissez une ville pour y ouvrir la carte.',
       countries: { CH: 'Suisse', DE: 'Allemagne', FR: 'France', IT: 'Italie' },
       more: count => (count === 1 ? 'et une autre' : `et ${count} autres`),
-      alt: 'La carte à l’échelle de l’Europe, avec le nombre de trottinettes dans chaque ville.',
+      alt: 'La carte de nuit à l’échelle de l’Europe, avec le nombre de trottinettes dans chaque ville.',
     },
     faq: {
       title: 'Vos questions.',
@@ -499,7 +499,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       note: 'Gratis. Niente account, niente pubblicità.',
       stage: 'Monopattini vicino alla stazione centrale di Zurigo',
       alt: scooters =>
-        `L’app per iPhone di notte: una mappa scura delle strade vicino alla stazione centrale di Zurigo, coperta di segnaposto con le iniziali e il colore di ogni operatore, e ${scooters} monopattini nelle vicinanze.`,
+        `L’app per iPhone di notte: le strade scure vicino alla stazione centrale di Zurigo, ogni monopattino un punto di luce nel colore del suo operatore, il più vicino di ogni operatore con il nome e i minuti a piedi, e ${scooters} monopattini sullo schermo.`,
       caption: date =>
         `Stazione centrale di Zurigo, ${date}: per ciascuno dei sette operatori presenti, il mezzo più vicino.`,
     },
@@ -517,7 +517,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         close: (first, firstDistance, second, secondDistance) =>
           `Qui un ${first} è a ${firstDistance} e un ${second} a ${secondDistance}. Per saperlo servono due app, oppure una sola mappa.`,
         providers: 'Operatori a Zurigo',
-        alt: 'Le stesse strade di giorno, con i segnaposto di tutti gli operatori su una sola mappa.',
+        alt: 'Le stesse strade di giorno, con i punti di tutti gli operatori su una sola mappa.',
       },
       walk: {
         title: 'Sai quanto c’è da camminare.',
@@ -555,7 +555,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       lede: 'Monopattini in sharing in Svizzera, Germania e Francia, più Roma. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno. Scegli una città per aprire lì la mappa.',
       countries: { CH: 'Svizzera', DE: 'Germania', FR: 'Francia', IT: 'Italia' },
       more: count => (count === 1 ? 'e un’altra' : `e altre ${count}`),
-      alt: 'La mappa dell’Europa vista da lontano, con il numero di monopattini in ogni città.',
+      alt: 'La mappa dell’Europa vista da lontano, di notte, con il numero di monopattini in ogni città.',
     },
     faq: {
       title: 'Prima che tu lo chieda.',

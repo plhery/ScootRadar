@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import { PROVIDERS } from '@/generated/providers';
-import { LANDING_LOCALES } from '@/lib/landingCopy';
 import { LANDING_NEAREST, LANDING_SCOOTERS_NEARBY, LANDING_SNAPSHOT_DATE } from '@/lib/landingSnapshot';
 
 describe('the snapshot behind the landing page', () => {
@@ -28,8 +27,8 @@ describe('the snapshot behind the landing page', () => {
     }
   });
 
-  it('has a count for the capture of every language, and a day', () => {
-    for (const locale of LANDING_LOCALES) expect(LANDING_SCOOTERS_NEARBY[locale]).toBeGreaterThan(0);
+  it('has the count of its captures, and a day', () => {
+    expect(LANDING_SCOOTERS_NEARBY).toBeGreaterThan(0);
     expect(LANDING_SNAPSHOT_DATE).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     expect(Number.isNaN(Date.parse(LANDING_SNAPSHOT_DATE))).toBe(false);
   });

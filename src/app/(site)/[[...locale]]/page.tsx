@@ -198,7 +198,10 @@ function Tile({ provider }: { provider: string }) {
   );
 }
 
-/** A capture of the iPhone app in its phone. public/landing holds them, sized ahead. */
+/**
+ * A capture of the iPhone app in its phone. public/landing holds them, sized
+ * ahead: scripts/generate-landing-images.mjs takes them.
+ */
 function Phone({ src, alt, className, first = false }: {
   src: string;
   alt: string;
@@ -258,7 +261,7 @@ export default async function LandingPage({ params }: Props) {
   const copy = LANDING_COPY[locale];
   const format = formatters(locale);
   const picture = (scene: string) => `/landing/${locale}-${scene}.webp`;
-  const nearby = LANDING_SCOOTERS_NEARBY[locale];
+  const nearby = LANDING_SCOOTERS_NEARBY;
   // The scooter the page follows from the hero down, and the runner-up it is compared with.
   const [nearest, second] = LANDING_NEAREST;
   const glow = { '--c': tileColor(nearest.provider) } as CSSProperties;

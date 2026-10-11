@@ -434,6 +434,19 @@ img {
   background: #12151c;
 }
 
+/* The island of the phone, which a capture of the screen leaves out of its status bar. */
+.phone-body::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 6.4cqw;
+  width: 29cqw;
+  height: 8.6cqw;
+  margin-left: -14.5cqw;
+  border-radius: 4.3cqw;
+  background: #000000;
+}
+
 .stage-phone {
   --halo: rgba(47, 123, 255, 0.34);
   width: min(300px, 86%);
