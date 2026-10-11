@@ -858,8 +858,10 @@ img {
 }
 
 .buttons span {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   min-height: 64px;
   padding: 8px 12px;
   border-radius: 20px;

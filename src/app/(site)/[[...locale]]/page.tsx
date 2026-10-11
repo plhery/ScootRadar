@@ -2,6 +2,7 @@ import { Fragment, type ComponentProps, type CSSProperties } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import Icon from '@/components/Icon';
 import StageDepth from '@/components/StageDepth';
 import { PROVIDERS } from '@/generated/providers';
 import type { TranslationKey } from '@/lib/i18n';
@@ -26,8 +27,8 @@ import {
 import { DEFAULT_RIDE_DURATION, RIDE_DURATIONS, formatRidePrice, ridePriceQuote } from '@/lib/ridePrice';
 import type { RidePricing } from '@/lib/types';
 import { MAP_PATH } from '@/lib/mapAddress';
-import { SITE_NAME, SITE_URL } from '@/lib/site';
 import { inkOn } from '@/lib/providerColor';
+import { SITE_NAME, SITE_URL } from '@/lib/site';
 import { formatDistance, walkingMinutes } from '@/lib/walking';
 
 type Props = Readonly<{ params: Promise<{ locale?: string[] }> }>;
@@ -185,8 +186,8 @@ function tileColor(provider: string): string {
   return TILE_COLORS[provider] ?? PROVIDERS[provider].color;
 }
 
-function Tile({ provider }: { provider: string }) {
 /** A provider's tile as the app draws it: white initials, dark only on a colour too light for white. */
+function Tile({ provider }: { provider: string }) {
   const { initial } = PROVIDERS[provider];
   const color = tileColor(provider);
   return (
@@ -435,7 +436,7 @@ export default async function LandingPage({ params }: Props) {
                 role="img"
                 aria-label={copy.know.unlock.control(copy.know.unlock.directions, copy.know.unlock.openIn(nearest.name))}
               >
-                <span aria-hidden="true">{copy.know.unlock.directions}</span>
+                <span aria-hidden="true"><Icon name="directions" size={20} />{copy.know.unlock.directions}</span>
                 <span aria-hidden="true" className="is-on">{copy.know.unlock.openIn(nearest.name)}</span>
               </div>
               <div>
