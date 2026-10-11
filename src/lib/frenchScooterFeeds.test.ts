@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { fetchScooters, ScooterFeedsUnavailableError } from '@/lib/scooterFeeds';
+import { fetchScooters, independentCollectableFeeds, ScooterFeedsUnavailableError } from '@/lib/scooterFeeds';
 import { FRENCH_SCOOTER_SYSTEMS, searchFrenchScooterCities } from '@/lib/frenchScooterSystems';
 import { upstreamJsonCache } from '@/lib/upstreamJsonCache';
 import { parseScooterQuery } from '@/lib/scooterQuery';
@@ -8,7 +8,11 @@ import { boundsIntersect } from '@/lib/geo';
 const lyon = { south: 45.72, west: 4.78, north: 45.82, east: 4.90 };
 const angers = { south: 47.42, west: -0.64, north: 47.53, east: -0.46 };
 const marseille = { south: 43.22, west: 5.34, north: 43.36, east: 5.48 };
+const tignes = { south: 45.46, west: 6.89, north: 45.48, east: 6.92 };
 const response = (data: unknown) => new Response(JSON.stringify(data));
+// As Dott words a refusal: {"error":"Forbidden: ERR_REGION_OFFLINE"}.
+const refusal = (status: number, error: string) => new Response(JSON.stringify({ error }), { status });
+const collector = (systemId: string) => independentCollectableFeeds().find(feed => feed.id === `france:${systemId}`)!;
 
 function fixture(
   systemId: string,
@@ -190,6 +194,37 @@ describe('French scooter feeds', () => {
     await expect(fetchScooters({ bounds: lyon, minBattery: 0 })).rejects.toMatchObject({
       failedSources: ['france:dott_fr_lyon'],
     });
+  });
+
+  it.each(['gbfs.json', 'free_bike_status.json'])(
+    'skips a Dott region paused out of season, whose %s answers 403 ERR_REGION_OFFLINE',
+    async file => {
+      const serve = fixture('dott_fr_tignes');
+      vi.stubGlobal('fetch', vi.fn(async (url: RequestInfo | URL) => (
+        String(url).endsWith(`/tignes/${file}`) ? refusal(403, 'Forbidden: ERR_REGION_OFFLINE') : serve(String(url))!
+      )));
+
+      // Like a system without scooters: the map does not say Dott is not sharing data there.
+      const result = await fetchScooters({ bounds: tignes, minBattery: 0 });
+      expect(result.vehicles).toEqual([]);
+      expect(result.meta).toMatchObject({ partial: false, failedSources: [], sources: { france: 'skipped' } });
+      await expect(collector('dott_fr_tignes').collect()).resolves.toEqual({ vehicles: [], stale: false, skipped: true });
+    }
+  );
+
+  it.each([
+    { systemId: 'dott_fr_tignes', bounds: tignes, status: 404, error: 'Not Found: ERR_REGION_NOT_FOUND' },
+    { systemId: 'dott_fr_tignes', bounds: tignes, status: 403, error: 'Forbidden' },
+    { systemId: 'pony_fr_angers', bounds: angers, status: 403, error: 'Forbidden: ERR_REGION_OFFLINE' },
+  ])('still fails $systemId when it answers $status $error', async ({ systemId, bounds, status, error }) => {
+    vi.stubGlobal('fetch', vi.fn(async () => refusal(status, error)));
+    await expect(fetchScooters({ bounds, minBattery: 0 })).rejects.toMatchObject({
+      failedSources: [`france:${systemId}`],
+    });
+    const code = error.split(': ')[1];
+    await expect(collector(systemId).collect()).rejects.toThrow(
+      `GBFS request failed with HTTP ${status}${code ? ` (${code})` : ''}`
+    );
   });
 
   it.each([

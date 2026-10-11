@@ -5,9 +5,10 @@ const DEFAULT_ERROR_RETRY_SECONDS = 15;
 
 type Fetcher = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
 
-class UpstreamHttpError extends Error {
-  constructor(readonly status: number) {
-    super(`GBFS request failed with HTTP ${status}`);
+export class UpstreamHttpError extends Error {
+  /** `code`: the error an operator names in the body, as Dott's {"error":"Forbidden: ERR_REGION_OFFLINE"}. */
+  constructor(readonly status: number, readonly host: string, readonly code?: string) {
+    super(`GBFS request failed with HTTP ${status}${code ? ` (${code})` : ''}`);
     this.name = 'UpstreamHttpError';
   }
 }
@@ -128,7 +129,8 @@ export class UpstreamJsonCache {
         signal: AbortSignal.timeout(options.timeoutMs),
       });
       if (!response.ok) {
-        throw new UpstreamHttpError(response.status);
+        const body = await response.text().catch(() => '');
+        throw new UpstreamHttpError(response.status, new URL(url).hostname, /\bERR_[A-Z_]+\b/.exec(body)?.[0]);
       }
 
       const data = await response.json() as T;

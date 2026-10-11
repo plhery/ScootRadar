@@ -13,7 +13,7 @@ import { boundsContainPoint, boundsIntersection, haversineM } from '@/lib/geo';
 import { REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas, type RegionalScooterSystem, type ScooterCountry } from '@/lib/regionalScooterSystems';
 import type { MapBounds, Vehicle } from '@/lib/types';
 import { legacyRentalLink, normalizeRentalUris } from '@/lib/rentalLinks';
-import { upstreamJsonCache, type CachedJson } from '@/lib/upstreamJsonCache';
+import { upstreamJsonCache, UpstreamHttpError, type CachedJson } from '@/lib/upstreamJsonCache';
 import {
   providerKeyForSystemId,
   type ProviderKey,
@@ -944,7 +944,14 @@ async function fetchRegionalSystemVehicles(
 ): Promise<SourceVehicles> {
   const bounds = boundsIntersection(system.bounds, query.bounds);
   if (!bounds) return { vehicles: [], stale: false, skipped: true };
+  return fetchRegionalSystemFeeds(system, query, bounds).catch(skipPausedDottRegion);
+}
 
+async function fetchRegionalSystemFeeds(
+  system: RegionalScooterSystem,
+  query: FeedQuery,
+  bounds: MapBounds
+): Promise<SourceVehicles> {
   const baseUrl = new URL('.', system.discoveryUrl).toString();
   const discovery = await fetchJson<DiscoveryFeed>(system.discoveryUrl, {
     validate: validateDiscovery,
@@ -985,6 +992,16 @@ async function fetchRegionalSystemVehicles(
     }, pricing).filter(vehicle => serviceAreas(system).some(area => boundsContainPoint(area.bounds, vehicle.lat, vehicle.lng))),
     stale: discovery.stale || types.stale || status.stale,
   };
+}
+
+// Dott pauses a region out of season, as Tignes until the snow, and answers
+// 403 ERR_REGION_OFFLINE until it reopens: no scooters there, not a broken feed.
+function skipPausedDottRegion(error: unknown): SourceVehicles {
+  if (
+    error instanceof UpstreamHttpError && error.status === 403 &&
+    error.host === 'gbfs.api.ridedott.com' && error.code === 'ERR_REGION_OFFLINE'
+  ) return { vehicles: [], stale: false, skipped: true };
+  throw error;
 }
 
 async function fetchRegionalVehicles(query: FeedQuery, country: ScooterCountry): Promise<SourceVehicles> {
