@@ -164,6 +164,8 @@ test('the last line of the landing page names what else its maker makes, in its 
   await page.goto('/');
   await expect(page.locator('.maker')).toHaveText('By the maker of X Horoscope, UnfollowMonkey and the Peek parcel tracker.');
   await expect(page.locator('.maker').getByRole('link', { name: 'Peek parcel tracker' })).toHaveAttribute('href', 'https://peektracker.com');
+  // No guide is written yet, so the footer lists none.
+  await expect(page.getByRole('contentinfo').locator('.guides')).toHaveCount(0);
 });
 
 test('a link to the map from when it was at the root still opens the map', async ({ page, request }) => {

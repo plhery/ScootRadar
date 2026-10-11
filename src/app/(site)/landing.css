@@ -1122,6 +1122,28 @@ img {
   color: #ffffff;
 }
 
+/* The guides, once there are some: their titles, in as many columns as fit. */
+.guides {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.guides h2 {
+  margin: 0 0 4px;
+  font: 800 17px var(--display);
+  color: var(--text);
+}
+
+.guides ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 0 40px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .footer-about {
   display: flex;
   flex-wrap: wrap;

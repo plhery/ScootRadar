@@ -10,6 +10,7 @@ import { LANDING_CITY_TOTAL, landingCountries } from '@/lib/landingCities';
 import {
   APP_STORE_URL,
   LANDING_COPY,
+  LANDING_GUIDES,
   LANDING_LOCALES,
   LANGUAGE_NAMES,
   SOURCE_URL,
@@ -276,6 +277,7 @@ export default async function LandingPage({ params }: Props) {
   const copy = LANDING_COPY[locale];
   const format = formatters(locale);
   const picture = (scene: string) => `/landing/${locale}-${scene}.webp`;
+  const guides = LANDING_GUIDES[locale];
   const nearby = LANDING_SCOOTERS_NEARBY;
   // The scooter the page follows from the hero down, and the runner-up it is compared with.
   const [nearest, second] = LANDING_NEAREST;
@@ -519,6 +521,16 @@ export default async function LandingPage({ params }: Props) {
       </main>
 
       <footer className="footer">
+        {guides.length > 0 && (
+          <nav className="guides" aria-labelledby="guides">
+            <h2 id="guides">{copy.footer.guides}</h2>
+            <ul>
+              {guides.map(guide => (
+                <li key={guide.href}><a href={guide.href}>{guide.title}</a></li>
+              ))}
+            </ul>
+          </nav>
+        )}
         <div className="footer-about">
           <p>{copy.footer.text}</p>
           <nav aria-label={copy.footer.links}>

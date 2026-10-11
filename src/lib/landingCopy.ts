@@ -66,6 +66,16 @@ export function linkedParts(sentence: string): { text: string; link?: string }[]
   return [...parts, { text: sentence.slice(read) }].filter(part => part.text);
 }
 
+/** A guide as the page links to it, in one language. */
+export interface LandingGuide {
+  title: string;
+  href: string;
+}
+
+// The guides of each language, the ones to read first at the top. None is
+// written yet: the footer lists them above its other lines once one is here.
+export const LANDING_GUIDES: Record<LandingLocale, readonly LandingGuide[]> = { en: [], de: [], fr: [], it: [] };
+
 // The App Store page of the iPhone app, once it has one. The buttons that lead
 // to it are left out until then.
 export const APP_STORE_URL = null as string | null;
@@ -145,6 +155,8 @@ export interface LandingCopy {
     links: string;
     privacy: string;
     source: string;
+    /** The heading of the guides, once there are some: LANDING_GUIDES. */
+    guides: string;
     /** The last line, with a link for each name of makerLinks. Peek is called what its own page calls it. */
     maker: string;
   };
@@ -269,6 +281,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       links: 'More links',
       privacy: 'Privacy',
       source: 'Source on GitHub',
+      guides: 'Guides',
       maker: 'By the <maker>maker</maker> of <horoscope>X Horoscope</horoscope>, <monkey>UnfollowMonkey</monkey> and the <peek>Peek parcel tracker</peek>.',
     },
   },
@@ -391,6 +404,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       links: 'Weitere Links',
       privacy: 'Datenschutz',
       source: 'Quellcode auf GitHub',
+      guides: 'Ratgeber',
       maker: 'Vom <maker>Macher</maker> von <horoscope>X Horoscope</horoscope>, <monkey>UnfollowMonkey</monkey> und der <peek>Paketverfolgung Peek</peek>.',
     },
   },
@@ -513,6 +527,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       links: 'Autres liens',
       privacy: 'Confidentialité',
       source: 'Code source sur GitHub',
+      guides: 'Guides',
       maker: 'Par le <maker>créateur</maker> de <horoscope>X Horoscope</horoscope>, d’<monkey>UnfollowMonkey</monkey> et du <peek>suivi de colis Peek</peek>.',
     },
   },
@@ -635,6 +650,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       links: 'Altri link',
       privacy: 'Privacy',
       source: 'Codice sorgente su GitHub',
+      guides: 'Guide',
       maker: 'Dal <maker>creatore</maker> di <horoscope>X Horoscope</horoscope>, di <monkey>UnfollowMonkey</monkey> e di <peek>Peek, l’app per tracciare i pacchi</peek>.',
     },
   },
