@@ -15,6 +15,7 @@ const PROVIDER_DEFINITIONS = {
   voi: { name: "Voi", color: "#ff1493", initial: "V" },
   pony: { name: "Pony", color: "#00a7a0", initial: "P" },
   publibike: { name: "PubliBike / Velospot", color: "#9b59b6", initial: "PB" },
+  zeus: { name: "Zeus", color: "#f82519", initial: "Z" },
 } as const;
 
 export type ProviderKey = keyof typeof PROVIDER_DEFINITIONS;
@@ -32,6 +33,7 @@ const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: str
   voi: {"prefixes":["voi"]},
   pony: {"prefixes":["pony"]},
   publibike: {"exact":["velospot"],"prefixes":["publibike"]},
+  zeus: {"prefixes":["zeus"]},
 };
 
 export function providerKeyForSystemId(systemId: string): ProviderKey | null {

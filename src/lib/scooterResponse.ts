@@ -5,7 +5,7 @@ import type { ScooterResponse, ScooterResponseMeta } from '@/lib/types';
 import { VEHICLE_MAX_AGE_MS } from './dataFreshness';
 
 export const MOBILITY_SOURCE =
-  'Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; France: Dott, Bird, Lime, Voi, Pony GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi GBFS; MobiData BW; Italy: Bird GBFS; Lille parking: Metropole Europeenne de Lille';
+  'Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; France: Dott, Bird, Lime, Voi, Pony GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus GBFS; MobiData BW; Italy: Bird GBFS; Lille parking: Metropole Europeenne de Lille';
 
 export function scooterResponse(
   result: ScooterFetchResult,

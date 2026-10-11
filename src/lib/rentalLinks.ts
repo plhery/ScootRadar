@@ -40,6 +40,10 @@ const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
     schemes: ['co.ponybikes.mercury', 'co.ponybikes.venus'],
     httpsHosts: ['getapony.com'],
   },
+  zeus: {
+    schemes: [],
+    httpsHosts: ['zeus.city', 'ridezeus.app.link'],
+  },
 };
 
 const UNSAFE_CHARACTERS = /[\u0000-\u001f\u007f]/;

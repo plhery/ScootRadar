@@ -1,11 +1,11 @@
 import { serviceAreas, type RegionalScooterSystem } from './regionalScooterSystems';
 import type { ParkingLocation } from './types';
 import { boundsContainPoint } from './geo';
+import { isElectricScooter, type GbfsVehicleType } from './scooterTypes';
 
 export const PARKING_MIN_ZOOM = 16;
 export { PARKING_MAX_AGE_MS } from './dataFreshness';
 export interface ParkingSnapshot { locations: ParkingLocation[]; observedAt: number; stale: boolean }
-interface VehicleType { vehicle_type_id: string; form_factor?: string; propulsion_type?: string }
 interface Station {
   station_id: string; name?: unknown; lat?: number; lon?: number;
   is_virtual_station?: boolean; station_area?: unknown; parking_type?: string;
@@ -16,7 +16,7 @@ interface Rule {
 }
 interface Geometry { type: string; coordinates: number[][][] | number[][][][] }
 interface Zone { geometry: Geometry; properties?: { start?: number | string; end?: number | string; rules?: Rule[] } }
-export interface ParkingTypesFeed { data?: { vehicle_types?: VehicleType[] } }
+export interface ParkingTypesFeed { data?: { vehicle_types?: GbfsVehicleType[] } }
 export interface ParkingStationsFeed { data?: { stations?: Station[] } }
 export interface ParkingStatusFeed { last_updated?: number | string; data?: { stations?: Array<{station_id: string; is_installed?: boolean | number; is_returning?: boolean | number}> } }
 export interface ParkingZonesFeed { data?: { geofencing_zones?: { features?: Zone[] }; global_rules?: Rule[] } }
@@ -49,9 +49,8 @@ function stationName(name: unknown, fallback: string, language: string): string 
 /** Only actual scooter parking infrastructure, never synthetic whole-city stations. */
 export function normalizeParkingLocations(system: RegionalScooterSystem, types: ParkingTypesFeed,
   information: ParkingStationsFeed, geofencing: ParkingZonesFeed, now = Date.now()): ParkingLocation[] {
-  const scooterTypes = (types.data?.vehicle_types ?? []).filter(type =>
-    ['scooter', 'scooter_standing'].includes(type.form_factor ?? '') && type.propulsion_type === 'electric'
-  ).map(type => type.vehicle_type_id);
+  const scooterTypes = (types.data?.vehicle_types ?? []).filter(type => isElectricScooter(type, system.provider))
+    .map(type => type.vehicle_type_id);
   if (!scooterTypes.length) return [];
   const zones = (geofencing.data?.geofencing_zones?.features ?? []).flatMap(zone => {
     if (timestamp(zone.properties?.start, -Infinity) > now || timestamp(zone.properties?.end, Infinity) <= now) return [];

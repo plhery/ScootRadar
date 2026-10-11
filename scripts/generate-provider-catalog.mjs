@@ -182,7 +182,7 @@ ${regionalSystems.flatMap(system => (system.areas ?? [system]).map(area => `    
     static func providers(in viewport: GeoBounds) -> [ScooterProvider] {
         var available = Set<ScooterProvider>()
         if swissAreas.contains(where: { $0.intersects(viewport) }) {
-            available.formUnion(ScooterProvider.allCases.filter { $0 != .pony })
+            available.formUnion(ScooterProvider.allCases.filter { $0 != .pony && $0 != .zeus })
         }
         for (provider, bounds) in regionalSystems where bounds.intersects(viewport) {
             available.insert(provider)

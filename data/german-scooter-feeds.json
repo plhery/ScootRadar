@@ -540,6 +540,314 @@
           }
         }
       ]
+    },
+    {
+      "id": "zeus_de_bamberg",
+      "country": "DE",
+      "provider": "zeus",
+      "city": "Bamberg",
+      "center": [
+        49.8988,
+        10.9028
+      ],
+      "bounds": {
+        "south": 49.8549,
+        "north": 49.9301,
+        "west": 10.83,
+        "east": 10.9481
+      },
+      "discoveryUrl": "https://zeus.city/api/v1/mds/gbfs/bamberg/gbfs.json"
+    },
+    {
+      "id": "zeus_de_donaueschingen",
+      "country": "DE",
+      "provider": "zeus",
+      "city": "Donaueschingen",
+      "center": [
+        47.9531,
+        8.5033
+      ],
+      "bounds": {
+        "south": 47.9204,
+        "north": 47.9818,
+        "west": 8.4496,
+        "east": 8.5362
+      },
+      "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_donaueschingen/gbfs"
+    },
+    {
+      "id": "zeus_de_freiburg",
+      "country": "DE",
+      "provider": "zeus",
+      "city": "Freiburg im Breisgau",
+      "center": [
+        47.999,
+        7.8421
+      ],
+      "bounds": {
+        "south": 47.958,
+        "north": 48.051,
+        "west": 7.7695,
+        "east": 7.9323
+      },
+      "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_freiburg/gbfs",
+      "aliases": [
+        "Freiburg"
+      ]
+    },
+    {
+      "id": "zeus_de_konstanz",
+      "country": "DE",
+      "provider": "zeus",
+      "city": "Konstanz",
+      "center": [
+        47.6779,
+        9.1732
+      ],
+      "bounds": {
+        "south": 47.648,
+        "north": 47.7104,
+        "west": 9.1149,
+        "east": 9.2302
+      },
+      "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_konstanz/gbfs"
+    },
+    {
+      "id": "zeus_de_leimen_walldorf_wiesloch",
+      "country": "DE",
+      "provider": "zeus",
+      "city": "Leimen / Walldorf / Wiesloch",
+      "center": [
+        49.3483,
+        8.6911
+      ],
+      "bounds": {
+        "south": 49.27,
+        "north": 49.44,
+        "west": 8.61,
+        "east": 8.73
+      },
+      "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_leimen_walldorf_wiesloch/gbfs",
+      "areas": [
+        {
+          "city": "Heidelberg",
+          "center": [
+            49.4094,
+            8.6947
+          ],
+          "bounds": {
+            "south": 49.37,
+            "north": 49.44,
+            "west": 8.62,
+            "east": 8.73
+          }
+        },
+        {
+          "city": "Leimen",
+          "aliases": [
+            "Nußloch",
+            "Sandhausen"
+          ],
+          "center": [
+            49.3483,
+            8.6911
+          ],
+          "bounds": {
+            "south": 49.315,
+            "north": 49.37,
+            "west": 8.62,
+            "east": 8.73
+          }
+        },
+        {
+          "city": "Walldorf",
+          "center": [
+            49.3064,
+            8.6428
+          ],
+          "bounds": {
+            "south": 49.27,
+            "north": 49.315,
+            "west": 8.61,
+            "east": 8.67
+          }
+        },
+        {
+          "city": "Wiesloch",
+          "center": [
+            49.2942,
+            8.6986
+          ],
+          "bounds": {
+            "south": 49.27,
+            "north": 49.315,
+            "west": 8.67,
+            "east": 8.73
+          }
+        }
+      ]
+    },
+    {
+      "id": "zeus_de_ludwigsburg",
+      "country": "DE",
+      "provider": "zeus",
+      "city": "Ludwigsburg",
+      "center": [
+        48.8975,
+        9.1922
+      ],
+      "bounds": {
+        "south": 48.8639,
+        "north": 48.9418,
+        "west": 9.0968,
+        "east": 9.2575
+      },
+      "discoveryUrl": "https://zeus.city/api/v1/mds/gbfs/ludwigsburg/gbfs.json"
+    },
+    {
+      "id": "zeus_de_neustadt",
+      "country": "DE",
+      "provider": "zeus",
+      "city": "Neustadt an der Weinstraße",
+      "center": [
+        49.3501,
+        8.1389
+      ],
+      "bounds": {
+        "south": 49.2999,
+        "north": 49.3882,
+        "west": 8.0802,
+        "east": 8.2034
+      },
+      "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_neustadt/gbfs",
+      "aliases": [
+        "Neustadt"
+      ]
+    },
+    {
+      "id": "zeus_de_regensburg",
+      "country": "DE",
+      "provider": "zeus",
+      "city": "Regensburg",
+      "center": [
+        49.0134,
+        12.1016
+      ],
+      "bounds": {
+        "south": 48.9782,
+        "north": 49.0733,
+        "west": 12.0233,
+        "east": 12.1766
+      },
+      "discoveryUrl": "https://zeus.city/api/v1/mds/gbfs/regensburg/gbfs.json"
+    },
+    {
+      "id": "zeus_de_renningen",
+      "country": "DE",
+      "provider": "zeus",
+      "city": "Renningen",
+      "center": [
+        48.7656,
+        8.9347
+      ],
+      "bounds": {
+        "south": 48.7448,
+        "north": 48.8027,
+        "west": 8.8783,
+        "east": 8.9661
+      },
+      "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_renningen_malmsheim/gbfs",
+      "aliases": [
+        "Malmsheim"
+      ]
+    },
+    {
+      "id": "zeus_de_schweinfurt",
+      "country": "DE",
+      "provider": "zeus",
+      "city": "Schweinfurt",
+      "center": [
+        50.0492,
+        10.2194
+      ],
+      "bounds": {
+        "south": 49.9972,
+        "north": 50.096,
+        "west": 10.1714,
+        "east": 10.2795
+      },
+      "discoveryUrl": "https://zeus.city/api/v1/mds/gbfs/schweinfurt/gbfs.json"
+    },
+    {
+      "id": "zeus_de_singen",
+      "country": "DE",
+      "provider": "zeus",
+      "city": "Singen",
+      "center": [
+        47.7594,
+        8.8403
+      ],
+      "bounds": {
+        "south": 47.7258,
+        "north": 47.7938,
+        "west": 8.7975,
+        "east": 8.9068
+      },
+      "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_singen/gbfs"
+    },
+    {
+      "id": "zeus_de_tuttlingen",
+      "country": "DE",
+      "provider": "zeus",
+      "city": "Tuttlingen",
+      "center": [
+        47.9844,
+        8.8167
+      ],
+      "bounds": {
+        "south": 47.9438,
+        "north": 48.0254,
+        "west": 8.7493,
+        "east": 8.8891
+      },
+      "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_tuttlingen/gbfs"
+    },
+    {
+      "id": "zeus_de_villingen_schwenningen",
+      "country": "DE",
+      "provider": "zeus",
+      "city": "Villingen-Schwenningen",
+      "center": [
+        48.0622,
+        8.4936
+      ],
+      "bounds": {
+        "south": 48.0102,
+        "north": 48.1116,
+        "west": 8.4072,
+        "east": 8.5943
+      },
+      "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_villingen_schwenningen/gbfs"
+    },
+    {
+      "id": "zeus_de_wurzburg",
+      "country": "DE",
+      "provider": "zeus",
+      "city": "Würzburg",
+      "center": [
+        49.7913,
+        9.9534
+      ],
+      "bounds": {
+        "south": 49.7282,
+        "north": 49.8351,
+        "west": 9.8551,
+        "east": 10.0214
+      },
+      "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_wurzburg/gbfs",
+      "aliases": [
+        "Wuerzburg"
+      ]
     }
   ]
 }

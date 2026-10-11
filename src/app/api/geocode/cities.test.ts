@@ -43,9 +43,9 @@ describe('searchCoveredCities', () => {
   });
 
   it('returns five cities at most', () => {
-    // Two initials: every city with a word that starts with a B, ten of them.
+    // Two initials: every city with a word that starts with a B, twelve of them.
     expect(names('B B')).toEqual([
-      'Basel, Switzerland', 'Beauvais, France', 'Berlin, Germany', 'Bern, Switzerland', 'Biel/Bienne, Switzerland',
+      'Bamberg, Germany', 'Basel, Switzerland', 'Beauvais, France', 'Berlin, Germany', 'Bern, Switzerland',
     ]);
   });
 

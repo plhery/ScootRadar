@@ -286,6 +286,10 @@ enum ScooterRentalLinkPolicy {
             schemes: ["co.ponybikes.mercury", "co.ponybikes.venus"],
             httpsHosts: ["getapony.com"]
         ),
+        "zeus": ProviderPolicy(
+            schemes: [],
+            httpsHosts: ["zeus.city", "ridezeus.app.link"]
+        ),
         "publibike": ProviderPolicy(
             schemes: ["publibike", "velospot"],
             httpsHosts: ["publibike.ch", "velospot.info"]

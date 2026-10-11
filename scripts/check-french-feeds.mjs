@@ -41,8 +41,10 @@ function feedUrl(entries, names, discoveryUrl) {
   return url;
 }
 
-const scooterTypes = types => new Set(types.data.vehicle_types.filter(type => (
-  ['scooter', 'scooter_standing'].includes(type.form_factor) && type.propulsion_type === 'electric'
+// As src/lib/scooterTypes.ts: Zeus's own feeds call its standing scooters electric_assist.
+const scooterTypes = (types, provider) => new Set(types.data.vehicle_types.filter(type => (
+  ['scooter', 'scooter_standing'].includes(type.form_factor) &&
+  (type.propulsion_type === 'electric' || (type.propulsion_type === 'electric_assist' && provider === 'zeus'))
 )).map(type => type.vehicle_type_id));
 
 const dottRegion = url => {
@@ -69,7 +71,7 @@ async function inspect(system) {
       json(feedUrl(entries, ['vehicle_types'], system.discoveryUrl)),
       json(feedUrl(entries, ['vehicle_status', 'free_bike_status'], system.discoveryUrl)),
     ]);
-    const scooters = scooterTypes(types);
+    const scooters = scooterTypes(types, system.provider);
     const vehicles = status.data?.vehicles ?? status.data?.bikes;
     if (!Array.isArray(vehicles)) throw new Error('Missing vehicle array');
     const updatedAt = typeof status.last_updated === 'number' ? status.last_updated * 1000 : Date.parse(status.last_updated);
@@ -107,7 +109,7 @@ async function dottListing(country) {
 // A region Dott lists that the catalog lacks: worth a review if it has scooters.
 async function uncataloged(region, feeds) {
   try {
-    const scooters = scooterTypes(await json(feeds.vehicle_types));
+    const scooters = scooterTypes(await json(feeds.vehicle_types), 'dott');
     if (scooters.size === 0) return { region, scooters: 0 };
     const status = await json(feeds.free_bike_status);
     const vehicles = status.data?.bikes ?? status.data?.vehicles ?? [];

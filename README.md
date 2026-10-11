@@ -23,7 +23,7 @@
   <img src="docs/scootradar-map.png" width="390" alt="ScootRadar showing fictional demo scooters around Zürich on a phone">
 </p>
 
-ScootRadar puts the shared scooters of eight providers on one map, in an
+ScootRadar puts the shared scooters of nine providers on one map, in an
 installable web app. It speaks German, French, Italian, and English. There is
 also a native SwiftUI app for iPhone.
 
@@ -44,10 +44,10 @@ also a native SwiftUI app for iPhone.
   its marker, hovering a marker shows a short tip, and `/`, `L`, `+`, `−` and
   `Esc` work from the keyboard.
 
-**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, and PubliBike / Velospot.
+**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, and Zeus.
 
 French coverage includes 27 verified feeds across 25 cities or operating areas,
-with city-name search. German coverage adds 23 feeds across 23 cities (Dott, Bolt, Hopp, Lime and Voi); Italian coverage currently includes Bird in Rome. See the [German/Italian feed audit](docs/german-italian-scooter-feeds.md) for coverage and known gaps. See the [French feed investigation](docs/french-scooter-feeds.md)
+with city-name search. German coverage adds 37 feeds across 38 cities (Dott, Bolt, Hopp, Lime, Voi and Zeus); Italian coverage currently includes Bird in Rome. See the [German/Italian feed audit](docs/german-italian-scooter-feeds.md) for coverage and known gaps. See the [French feed investigation](docs/french-scooter-feeds.md)
 for the city list, live-check command, and source terms to review before deployment.
 
 ## Run it locally

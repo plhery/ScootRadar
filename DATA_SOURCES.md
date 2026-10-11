@@ -121,8 +121,8 @@ e-scooter and e-bike parking](https://www.data.gouv.fr/datasets/espaces-de-stati
 ## Germany and Italy
 
 Reviewed catalogs live in `data/german-scooter-feeds.json` and
-`data/italian-scooter-feeds.json`. Germany has 23 verified feeds across 23 cities:
-Dott, Bolt, Hopp, Lime and Voi. Dott made its GBFS private in September 2026; the
+`data/italian-scooter-feeds.json`. Germany has 37 verified feeds across 38 cities:
+Dott, Bolt, Hopp, Lime, Voi and Zeus. Dott made its GBFS private in September 2026; the
 catalog keeps the 15 German regions its public listing still names. Italy currently
 has Bird Rome; the other tested Italian scooter feeds were empty, stale or
 unavailable. See the [coverage audit](docs/german-italian-scooter-feeds.md).
@@ -130,12 +130,15 @@ unavailable. See the [coverage audit](docs/german-italian-scooter-feeds.md).
 Sources: [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
 [Dott Germany](https://gbfs.api.ridedott.com/public/v2/countries/de/gbfs.json),
 [MobiData BW](https://www.mobidata-bw.de/) and the individual public operator feeds.
-MobiData BW supplies the reviewed Bolt, Hopp, Lime and Voi GBFS 3.0 systems;
-its Voi feed covers six Baden-Württemberg cities, not all of Germany.
+MobiData BW supplies the reviewed Bolt, Hopp, Lime and Voi GBFS 3.0 systems and
+ten of the fourteen Zeus systems; its Voi feed covers six Baden-Württemberg
+cities, not all of Germany. Zeus's own feeds supply Bamberg, Ludwigsburg,
+Regensburg and Schweinfurt.
 
 Multi-city feeds are fetched once and routed through separate city envelopes.
 City totals remain country-specific, with one count per vehicle. Published
 geofencing envelopes take precedence over stray vehicle coordinates when setting
-routing bounds. The map never treats these routing envelopes as legal riding
+routing bounds, except for Zeus, whose zones are a single polygon or span tens
+of kilometres: its bounds enclose where its scooters stood. The map never treats these routing envelopes as legal riding
 or parking boundaries. Native provider filters use the same generated catalog.
 Supported city names and aliases are resolved locally before Swiss address search.

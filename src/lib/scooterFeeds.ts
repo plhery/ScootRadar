@@ -11,6 +11,7 @@ import {
 } from '@/lib/feedCoverage';
 import { boundsContainPoint, boundsIntersection, haversineM } from '@/lib/geo';
 import { REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas, type RegionalScooterSystem, type ScooterCountry } from '@/lib/regionalScooterSystems';
+import { isElectricScooter, type GbfsVehicleType } from '@/lib/scooterTypes';
 import type { MapBounds, Vehicle } from '@/lib/types';
 import { legacyRentalLink, normalizeRentalUris } from '@/lib/rentalLinks';
 import { upstreamJsonCache, UpstreamHttpError, type CachedJson } from '@/lib/upstreamJsonCache';
@@ -71,10 +72,7 @@ interface PubliBikeStation {
   available_vehicles?: { count?: number; type?: number }[];
 }
 
-interface VehicleType {
-  vehicle_type_id: string;
-  form_factor?: string;
-  propulsion_type?: string;
+interface VehicleType extends GbfsVehicleType {
   default_pricing_plan_id?: string;
 }
 
@@ -303,13 +301,6 @@ function isUnavailable(value: AvailabilityFlag | undefined): boolean {
   return value === true || value === 1;
 }
 
-function isElectricScooter(type: VehicleType | undefined): boolean {
-  return (
-    (type?.form_factor === 'scooter' || type?.form_factor === 'scooter_standing') &&
-    type.propulsion_type === 'electric'
-  );
-}
-
 function batteryPercent(vehicle: RawVehicle): number | null {
   if (vehicle.hopp_battery_level != null && Number.isFinite(vehicle.hopp_battery_level)) {
     return Math.max(0, Math.min(100, Math.round(vehicle.hopp_battery_level)));
@@ -383,7 +374,7 @@ function filterVehicles(
   const filtered: Vehicle[] = [];
   for (const raw of vehicles) {
     if (isUnavailable(raw.is_disabled) || isUnavailable(raw.is_reserved)) continue;
-    if (!raw.vehicle_type_id || !isElectricScooter(types.get(raw.vehicle_type_id))) continue;
+    if (!raw.vehicle_type_id || !isElectricScooter(types.get(raw.vehicle_type_id), provider)) continue;
 
     const lat = raw.lat;
     const lng = raw.lon ?? raw.lng;
@@ -564,8 +555,8 @@ export function discoveredFeedUrl(
   return trustedFeedUrl(entries.find(entry => entry.name === name)?.url, trustedBaseUrl);
 }
 
-function hasElectricScooter(types: Map<string, VehicleType>): boolean {
-  return [...types.values()].some(isElectricScooter);
+function hasElectricScooter(types: Map<string, VehicleType>, provider: string | null): boolean {
+  return [...types.values()].some(type => isElectricScooter(type, provider));
 }
 
 function spatialFeatures(response: SpatialResponse): SpatialFeature[] {
@@ -674,7 +665,7 @@ async function fetchSystemVehicles(
     revalidate: METADATA_REVALIDATE_SECONDS,
   });
   const typesById = typeMap(types.data);
-  if (!hasElectricScooter(typesById)) {
+  if (!hasElectricScooter(typesById, providerKeyForSystemId(system.id))) {
     return { vehicles: [], stale: discovery.stale || types.stale, skipped: true };
   }
 
@@ -801,7 +792,7 @@ async function fetchHoppVehicles(query: FeedQuery): Promise<SourceVehicles> {
     fetchPricingPlans(pricingUrl, { source: 'hopp' }),
   ]);
   const typesById = typeMap(types.data);
-  if (!hasElectricScooter(typesById)) {
+  if (!hasElectricScooter(typesById, 'hopp')) {
     return { vehicles: [], stale: discovery.stale || types.stale, skipped: true };
   }
 
@@ -970,7 +961,7 @@ async function fetchRegionalSystemFeeds(
     revalidate: METADATA_REVALIDATE_SECONDS,
   });
   const typesById = typeMap(types.data);
-  if (!hasElectricScooter(typesById)) {
+  if (!hasElectricScooter(typesById, system.provider)) {
     return { vehicles: [], stale: discovery.stale || types.stale, skipped: true };
   }
 
@@ -1043,7 +1034,7 @@ async function fetchRegionalVehicles(query: FeedQuery, country: ScooterCountry):
 function nationalSourceIsRelevant(query: FeedQuery): boolean {
   if (!coverageIntersects([SWISS_MOBILITY_BOUNDS], query.bounds)) return false;
   if (!query.providers) return true;
-  return [...query.providers].some(provider => provider !== 'hopp' && provider !== 'pony');
+  return [...query.providers].some(provider => !['hopp', 'pony', 'zeus'].includes(provider));
 }
 
 function sourceStatus(result: PromiseSettledResult<SourceVehicles>): FeedSourceStatus {

@@ -29,13 +29,13 @@ const text = Red_Hat_Text({
 // The map is one address in every language; what a search engine reads of it is in English.
 const TITLE = "Live e-scooter map: Lime, Bolt, Bird, Voi, Dott | ScootRadar";
 const DESCRIPTION =
-  "Every shared e-scooter near you on a live map: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony and PubliBike, with battery, walking time and price. Free, no account.";
+  "Every shared e-scooter near you on a live map: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike and Zeus, with battery, walking time and price. Free, no account.";
 // The picture of the English landing page, scripts/generate-share-images.mjs.
 const SHARE_IMAGE = {
   url: "/share/en.png",
   width: 1200,
   height: 630,
-  alt: "Every e-scooter on one map: the app at night by Zürich main station, beside the initials of eight providers.",
+  alt: "Every e-scooter on one map: the app at night by Zürich main station, beside the initials of nine providers.",
 };
 
 export const metadata: Metadata = {

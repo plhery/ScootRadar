@@ -279,7 +279,7 @@ describe('ControlSheet settings', () => {
       'Mobility data CH',
       'France: Dott, Bird, Lime, Voi, Pony',
       'MobiData BW',
-      'DE/IT: Dott, Bolt, Hopp, Lime, Voi, Bird',
+      'DE/IT: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird',
       '© swisstopo',
       'Parking · Métropole Européenne de Lille',
     ]);

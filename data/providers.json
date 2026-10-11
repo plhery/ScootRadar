@@ -57,5 +57,12 @@
       "exact": ["velospot"],
       "prefixes": ["publibike"]
     }
+  },
+  {
+    "key": "zeus",
+    "name": "Zeus",
+    "color": "#f82519",
+    "initial": "Z",
+    "systemIds": { "prefixes": ["zeus"] }
   }
 ]

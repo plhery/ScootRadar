@@ -2286,10 +2286,10 @@ extension ScooterMapModelTests {
     func testPassesListProvidersHereOrWithAPassAndEveryProviderOtherwise() {
         let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
         model.viewport = GeoBounds(region: zurichRegion)
-        XCTAssertEqual(model.passProviders, ScooterProvider.allCases.filter { $0 != .pony })
+        XCTAssertEqual(model.passProviders, ScooterProvider.allCases.filter { $0 != .pony && $0 != .zeus })
 
         model.setRidePass(ProviderRidePass(enabled: true, freeMinutes: 10), for: .pony)
-        XCTAssertEqual(model.passProviders, ScooterProvider.allCases)
+        XCTAssertEqual(model.passProviders, ScooterProvider.allCases.filter { $0 != .zeus })
 
         // Nobody operates here and no pass is set: every provider is offered.
         model.setRidePass(ProviderRidePass(), for: .pony)

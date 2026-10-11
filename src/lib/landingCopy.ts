@@ -167,10 +167,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'E-scooter map: Lime, Bolt, Bird, Voi, Dott and more | ScootRadar',
       description: cities =>
-        `Every shared e-scooter near you on one live map: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony and PubliBike. Battery, walking time and price. Free, in ${cities} cities.`,
+        `Every shared e-scooter near you on one live map: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike and Zeus. Battery, walking time and price. Free, in ${cities} cities.`,
       share: {
         title: 'Every e-scooter on one map.',
-        alt: 'Every e-scooter on one map: the app at night by Zürich main station, beside the initials of eight providers.',
+        alt: 'Every e-scooter on one map: the app at night by Zürich main station, beside the initials of nine providers.',
       },
     },
     nav: { main: 'Main', shows: 'What it shows', cities: 'Cities', languages: 'Language' },
@@ -244,7 +244,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Is there one app for Lime, Bolt, Bird, Voi and Dott?',
-          answer: 'ScootRadar is one map for all of them, and for Hopp, Pony and PubliBike too. It shows every shared e-scooter whose provider publishes where it is, so you no longer open one app after another to find the nearest.',
+          answer: 'ScootRadar is one map for all of them, and for Hopp, Pony, PubliBike and Zeus too. It shows every shared e-scooter whose provider publishes where it is, so you no longer open one app after another to find the nearest.',
         },
         {
           question: 'How do I find the nearest e-scooter?',
@@ -290,10 +290,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'E-Scooter-Karte: Lime, Bolt, Bird, Voi, Dott und mehr | ScootRadar',
       description: cities =>
-        `Alle E-Scooter und E-Trottinette in deiner Nähe auf einer Live-Karte: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony und PubliBike. Gratis, ohne Konto, in ${cities} Städten.`,
+        `Alle E-Scooter und E-Trottinette in deiner Nähe auf einer Live-Karte: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike und Zeus. Gratis, ohne Konto, in ${cities} Städten.`,
       share: {
         title: 'Alle E-Scooter auf einer Karte.',
-        alt: 'Alle E-Scooter auf einer Karte: die App bei Nacht am Zürcher Hauptbahnhof, daneben die Initialen von acht Anbietern.',
+        alt: 'Alle E-Scooter auf einer Karte: die App bei Nacht am Zürcher Hauptbahnhof, daneben die Initialen von neun Anbietern.',
       },
     },
     nav: { main: 'Hauptnavigation', shows: 'Was die Karte zeigt', cities: 'Städte', languages: 'Sprache' },
@@ -367,7 +367,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Gibt es eine einzige App für Lime, Bolt, Bird, Voi und Dott?',
-          answer: 'ScootRadar ist eine Karte für alle fünf und auch für Hopp, Pony und PubliBike. Sie zeigt jeden Sharing-E-Scooter, dessen Anbieter den Standort veröffentlicht. So musst du nicht mehr eine App nach der anderen öffnen, um den nächsten zu finden.',
+          answer: 'ScootRadar ist eine Karte für alle fünf und auch für Hopp, Pony, PubliBike und Zeus. Sie zeigt jeden Sharing-E-Scooter, dessen Anbieter den Standort veröffentlicht. So musst du nicht mehr eine App nach der anderen öffnen, um den nächsten zu finden.',
         },
         {
           question: 'Wie finde ich den nächsten E-Scooter oder das nächste E-Trottinett?',
@@ -413,10 +413,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'Carte des trottinettes électriques en libre-service | ScootRadar',
       description: cities =>
-        `Toutes les trottinettes électriques en libre-service autour de vous sur une carte en direct : Lime, Dott, Bolt, Voi, Bird, Hopp, Pony et PubliBike. Gratuit, sans compte, dans ${cities} villes.`,
+        `Toutes les trottinettes électriques en libre-service autour de vous sur une carte en direct : Lime, Dott, Bolt, Voi, Bird, Hopp, Pony, PubliBike et Zeus. Gratuit, sans compte, dans ${cities} villes.`,
       share: {
         title: 'Toutes les trottinettes sur une seule carte.',
-        alt: 'Toutes les trottinettes sur une seule carte : l’app, de nuit, près de la gare centrale de Zurich, à côté des initiales de huit opérateurs.',
+        alt: 'Toutes les trottinettes sur une seule carte : l’app, de nuit, près de la gare centrale de Zurich, à côté des initiales de neuf opérateurs.',
       },
     },
     nav: { main: 'Navigation principale', shows: 'Ce que montre la carte', cities: 'Villes', languages: 'Langue' },
@@ -490,7 +490,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Existe-t-il une app qui regroupe Lime, Bolt, Bird, Voi et Dott ?',
-          answer: 'ScootRadar les réunit tous sur une seule carte, avec en plus Hopp, Pony et PubliBike. Elle montre chaque trottinette électrique en libre-service dont l’opérateur publie la position : plus besoin d’ouvrir les apps une à une pour trouver la plus proche.',
+          answer: 'ScootRadar les réunit tous sur une seule carte, avec en plus Hopp, Pony, PubliBike et Zeus. Elle montre chaque trottinette électrique en libre-service dont l’opérateur publie la position : plus besoin d’ouvrir les apps une à une pour trouver la plus proche.',
         },
         {
           question: 'Comment trouver la trottinette électrique la plus proche ?',
@@ -536,10 +536,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'Monopattini elettrici in sharing su una sola mappa | ScootRadar',
       description: cities =>
-        `Tutti i monopattini elettrici in sharing intorno a te su una mappa in tempo reale: Lime, Bolt, Dott, Voi, Bird, Hopp, Pony e PubliBike. Gratis, senza account, in ${cities} città.`,
+        `Tutti i monopattini elettrici in sharing intorno a te su una mappa in tempo reale: Lime, Bolt, Dott, Voi, Bird, Hopp, Pony, PubliBike e Zeus. Gratis, senza account, in ${cities} città.`,
       share: {
         title: 'Tutti i monopattini su una sola mappa.',
-        alt: 'Tutti i monopattini su una sola mappa: l’app di notte vicino alla stazione centrale di Zurigo, accanto alle iniziali di otto operatori.',
+        alt: 'Tutti i monopattini su una sola mappa: l’app di notte vicino alla stazione centrale di Zurigo, accanto alle iniziali di nove operatori.',
       },
     },
     nav: { main: 'Navigazione principale', shows: 'Cosa mostra la mappa', cities: 'Città', languages: 'Lingua' },
@@ -613,7 +613,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Esiste un’unica app per Lime, Bolt, Bird, Voi e Dott?',
-          answer: 'ScootRadar li mette tutti su una sola mappa, insieme a Hopp, Pony e PubliBike. Mostra ogni monopattino elettrico in sharing il cui operatore pubblica la posizione: non serve più aprire un’app dopo l’altra per trovare quello più vicino.',
+          answer: 'ScootRadar li mette tutti su una sola mappa, insieme a Hopp, Pony, PubliBike e Zeus. Mostra ogni monopattino elettrico in sharing il cui operatore pubblica la posizione: non serve più aprire un’app dopo l’altra per trovare quello più vicino.',
         },
         {
           question: 'Come trovo il monopattino elettrico più vicino?',

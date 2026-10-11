@@ -10,7 +10,7 @@ const SOURCES = [
   { href: 'https://opentransportdata.swiss/en/cookbook/shared-mobility/', label: 'Mobility data CH' },
   { href: 'https://transport.data.gouv.fr/datasets?type=vehicles-sharing', label: 'France: Dott, Bird, Lime, Voi, Pony' },
   { href: 'https://www.mobidata-bw.de/', label: 'MobiData BW' },
-  { href: 'https://github.com/MobilityData/gbfs', label: 'DE/IT: Dott, Bolt, Hopp, Lime, Voi, Bird' },
+  { href: 'https://github.com/MobilityData/gbfs', label: 'DE/IT: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird' },
   { href: 'https://www.geo.admin.ch/en/geo-services/geo-services/application-programming-interface-api', label: '© swisstopo' },
   { href: 'https://data.lillemetropole.fr/', label: 'Parking · Métropole Européenne de Lille' },
 ];

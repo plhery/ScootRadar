@@ -12,6 +12,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     case voi
     case pony
     case publibike
+    case zeus
 
     var id: String { rawValue }
 
@@ -25,6 +26,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .voi: "Voi"
         case .pony: "Pony"
         case .publibike: "PubliBike / Velospot"
+        case .zeus: "Zeus"
         }
     }
 
@@ -38,6 +40,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .voi: "V"
         case .pony: "P"
         case .publibike: "PB"
+        case .zeus: "Z"
         }
     }
 
@@ -53,6 +56,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .voi: UIColor(red: 1.000000, green: 0.078431, blue: 0.576471, alpha: 1)
         case .pony: UIColor(red: 0.000000, green: 0.654902, blue: 0.627451, alpha: 1)
         case .publibike: UIColor(red: 0.607843, green: 0.349020, blue: 0.713725, alpha: 1)
+        case .zeus: UIColor(red: 0.972549, green: 0.145098, blue: 0.098039, alpha: 1)
         }
     }
 
@@ -65,6 +69,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         (.voi, [], ["voi"]),
         (.pony, [], ["pony"]),
         (.publibike, ["velospot"], ["publibike"]),
+        (.zeus, [], ["zeus"]),
     ]
 
     /// The provider behind a feed or system ID such as "lime_zurich", like providerKeyForSystemId on the web.
@@ -157,13 +162,30 @@ enum ScooterProviderCoverage {
         (.voi, GeoBounds(south: 48.6983, west: 9.0659, north: 48.8556, east: 9.2723)),
         (.voi, GeoBounds(south: 48.4824, west: 9.0088, north: 48.5647, east: 9.1103)),
         (.voi, GeoBounds(south: 48.4312, west: 9.1335, north: 48.5396, east: 9.2596)),
+        (.zeus, GeoBounds(south: 49.8549, west: 10.83, north: 49.9301, east: 10.9481)),
+        (.zeus, GeoBounds(south: 47.9204, west: 8.4496, north: 47.9818, east: 8.5362)),
+        (.zeus, GeoBounds(south: 47.958, west: 7.7695, north: 48.051, east: 7.9323)),
+        (.zeus, GeoBounds(south: 47.648, west: 9.1149, north: 47.7104, east: 9.2302)),
+        (.zeus, GeoBounds(south: 49.37, west: 8.62, north: 49.44, east: 8.73)),
+        (.zeus, GeoBounds(south: 49.315, west: 8.62, north: 49.37, east: 8.73)),
+        (.zeus, GeoBounds(south: 49.27, west: 8.61, north: 49.315, east: 8.67)),
+        (.zeus, GeoBounds(south: 49.27, west: 8.67, north: 49.315, east: 8.73)),
+        (.zeus, GeoBounds(south: 48.8639, west: 9.0968, north: 48.9418, east: 9.2575)),
+        (.zeus, GeoBounds(south: 49.2999, west: 8.0802, north: 49.3882, east: 8.2034)),
+        (.zeus, GeoBounds(south: 48.9782, west: 12.0233, north: 49.0733, east: 12.1766)),
+        (.zeus, GeoBounds(south: 48.7448, west: 8.8783, north: 48.8027, east: 8.9661)),
+        (.zeus, GeoBounds(south: 49.9972, west: 10.1714, north: 50.096, east: 10.2795)),
+        (.zeus, GeoBounds(south: 47.7258, west: 8.7975, north: 47.7938, east: 8.9068)),
+        (.zeus, GeoBounds(south: 47.9438, west: 8.7493, north: 48.0254, east: 8.8891)),
+        (.zeus, GeoBounds(south: 48.0102, west: 8.4072, north: 48.1116, east: 8.5943)),
+        (.zeus, GeoBounds(south: 49.7282, west: 9.8551, north: 49.8351, east: 10.0214)),
         (.bird, GeoBounds(south: 41.6884, west: 12.2183, north: 42.0928, east: 12.7268)),
     ]
 
     static func providers(in viewport: GeoBounds) -> [ScooterProvider] {
         var available = Set<ScooterProvider>()
         if swissAreas.contains(where: { $0.intersects(viewport) }) {
-            available.formUnion(ScooterProvider.allCases.filter { $0 != .pony })
+            available.formUnion(ScooterProvider.allCases.filter { $0 != .pony && $0 != .zeus })
         }
         for (provider, bounds) in regionalSystems where bounds.intersects(viewport) {
             available.insert(provider)
@@ -264,6 +286,21 @@ enum ScooterCityCatalog {
         ScooterCity(id: "de:Wuppertal", name: "Wuppertal", countryCode: "DE", center: GeoPoint(latitude: 51.2669, longitude: 7.1769), bounds: GeoBounds(south: 51.2053, west: 7.0316, north: 51.314, east: 7.2833)),
         ScooterCity(id: "de:Pforzheim", name: "Pforzheim", countryCode: "DE", center: GeoPoint(latitude: 48.8926, longitude: 8.6946), bounds: GeoBounds(south: 48.83, west: 8.59, north: 48.96, east: 8.81)),
         ScooterCity(id: "de:Mannheim", name: "Mannheim", countryCode: "DE", center: GeoPoint(latitude: 49.4875, longitude: 8.466), bounds: GeoBounds(south: 49.4082, west: 8.3311, north: 49.569, east: 8.589)),
+        ScooterCity(id: "de:Bamberg", name: "Bamberg", countryCode: "DE", center: GeoPoint(latitude: 49.8988, longitude: 10.9028), bounds: GeoBounds(south: 49.8549, west: 10.83, north: 49.9301, east: 10.9481)),
+        ScooterCity(id: "de:Donaueschingen", name: "Donaueschingen", countryCode: "DE", center: GeoPoint(latitude: 47.9531, longitude: 8.5033), bounds: GeoBounds(south: 47.9204, west: 8.4496, north: 47.9818, east: 8.5362)),
+        ScooterCity(id: "de:Freiburg im Breisgau", name: "Freiburg im Breisgau", countryCode: "DE", center: GeoPoint(latitude: 47.999, longitude: 7.8421), bounds: GeoBounds(south: 47.958, west: 7.7695, north: 48.051, east: 7.9323)),
+        ScooterCity(id: "de:Leimen", name: "Leimen", countryCode: "DE", center: GeoPoint(latitude: 49.3483, longitude: 8.6911), bounds: GeoBounds(south: 49.315, west: 8.62, north: 49.37, east: 8.73)),
+        ScooterCity(id: "de:Walldorf", name: "Walldorf", countryCode: "DE", center: GeoPoint(latitude: 49.3064, longitude: 8.6428), bounds: GeoBounds(south: 49.27, west: 8.61, north: 49.315, east: 8.67)),
+        ScooterCity(id: "de:Wiesloch", name: "Wiesloch", countryCode: "DE", center: GeoPoint(latitude: 49.2942, longitude: 8.6986), bounds: GeoBounds(south: 49.27, west: 8.67, north: 49.315, east: 8.73)),
+        ScooterCity(id: "de:Ludwigsburg", name: "Ludwigsburg", countryCode: "DE", center: GeoPoint(latitude: 48.8975, longitude: 9.1922), bounds: GeoBounds(south: 48.8639, west: 9.0968, north: 48.9418, east: 9.2575)),
+        ScooterCity(id: "de:Neustadt an der Weinstraße", name: "Neustadt an der Weinstraße", countryCode: "DE", center: GeoPoint(latitude: 49.3501, longitude: 8.1389), bounds: GeoBounds(south: 49.2999, west: 8.0802, north: 49.3882, east: 8.2034)),
+        ScooterCity(id: "de:Regensburg", name: "Regensburg", countryCode: "DE", center: GeoPoint(latitude: 49.0134, longitude: 12.1016), bounds: GeoBounds(south: 48.9782, west: 12.0233, north: 49.0733, east: 12.1766)),
+        ScooterCity(id: "de:Renningen", name: "Renningen", countryCode: "DE", center: GeoPoint(latitude: 48.7656, longitude: 8.9347), bounds: GeoBounds(south: 48.7448, west: 8.8783, north: 48.8027, east: 8.9661)),
+        ScooterCity(id: "de:Schweinfurt", name: "Schweinfurt", countryCode: "DE", center: GeoPoint(latitude: 50.0492, longitude: 10.2194), bounds: GeoBounds(south: 49.9972, west: 10.1714, north: 50.096, east: 10.2795)),
+        ScooterCity(id: "de:Singen", name: "Singen", countryCode: "DE", center: GeoPoint(latitude: 47.7594, longitude: 8.8403), bounds: GeoBounds(south: 47.7258, west: 8.7975, north: 47.7938, east: 8.9068)),
+        ScooterCity(id: "de:Tuttlingen", name: "Tuttlingen", countryCode: "DE", center: GeoPoint(latitude: 47.9844, longitude: 8.8167), bounds: GeoBounds(south: 47.9438, west: 8.7493, north: 48.0254, east: 8.8891)),
+        ScooterCity(id: "de:Villingen-Schwenningen", name: "Villingen-Schwenningen", countryCode: "DE", center: GeoPoint(latitude: 48.0622, longitude: 8.4936), bounds: GeoBounds(south: 48.0102, west: 8.4072, north: 48.1116, east: 8.5943)),
+        ScooterCity(id: "de:Würzburg", name: "Würzburg", countryCode: "DE", center: GeoPoint(latitude: 49.7913, longitude: 9.9534), bounds: GeoBounds(south: 49.7282, west: 9.8551, north: 49.8351, east: 10.0214)),
         ScooterCity(id: "it:Roma", name: "Roma", countryCode: "IT", center: GeoPoint(latitude: 41.9028, longitude: 12.4964), bounds: GeoBounds(south: 41.6884, west: 12.2183, north: 42.0928, east: 12.7268)),
     ]
 

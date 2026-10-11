@@ -1936,7 +1936,7 @@ struct ScooterCreditsList: View {
                 url: URL(string: "https://www.mobidata-bw.de/")!
             ),
             Source(
-                title: "DE/IT: Dott, Bolt, Hopp, Lime, Voi, Bird",
+                title: "DE/IT: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird",
                 url: URL(string: "https://github.com/MobilityData/gbfs")!
             ),
             Source(

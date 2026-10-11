@@ -35,7 +35,10 @@ describe('German and Italian scooter coverage', () => {
     { id: 'dott_de_berlin', bounds: berlin, country: 'germany', v3: false },
     { id: 'bird_it_rome', bounds: rome, country: 'italy', v3: false },
     { id: 'bolt_de_karlsruhe', bounds: { south: 49, north: 49.02, west: 8.39, east: 8.42 }, country: 'germany', v3: true },
-  ])('reads $id without unrelated country requests', async ({ id, bounds, country, v3 }) => {
+    // Zeus's own feeds call its standing scooters electric_assist.
+    { id: 'zeus_de_regensburg', bounds: { south: 49.01, north: 49.02, west: 12.09, east: 12.11 }, country: 'germany', v3: false,
+      propulsion: 'electric_assist' },
+  ])('reads $id without unrelated country requests', async ({ id, bounds, country, v3, propulsion = 'electric' }) => {
     const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === id)!;
     const base = new URL('.', system.discoveryUrl).toString();
     const statusName = v3 ? 'vehicle_status' : 'free_bike_status';
@@ -47,7 +50,7 @@ describe('German and Italian scooter coverage', () => {
         return response({ data: v3 ? { feeds } : { en: { feeds } } });
       }
       if (url === `${base}vehicle_types.json`) return response({ data: { vehicle_types: [
-        { vehicle_type_id: 'scooter', form_factor: v3 ? 'scooter_standing' : 'scooter', propulsion_type: 'electric' },
+        { vehicle_type_id: 'scooter', form_factor: v3 ? 'scooter_standing' : 'scooter', propulsion_type: propulsion },
         { vehicle_type_id: 'bike', form_factor: 'bicycle', propulsion_type: 'electric_assist' },
       ] } });
       if (url === `${base}${statusName}.json`) return response({ last_updated: v3 ? new Date().toISOString() : Date.now() / 1000,
