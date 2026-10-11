@@ -2596,8 +2596,11 @@ test.describe('on a small phone, or one held on its side', () => {
     // Still the filled button of a device that has not located yet, with its name; only the label is left out.
     await expect(nearMe).toHaveClass(/near-me/);
     await expect(page.locator('.near-me-label')).toBeHidden();
-    const size = (await nearMe.boundingBox())!;
-    expect([Math.round(size.width), Math.round(size.height)]).toEqual([52, 52]);
+    // Once it has come in: it is a hair smaller while it does.
+    await expect.poll(async () => {
+      const size = (await nearMe.boundingBox())!;
+      return [Math.round(size.width), Math.round(size.height)];
+    }).toEqual([52, 52]);
 
     // Location is refused here: the card that says so is not under the button, and neither are the credits.
     await nearMe.click();
