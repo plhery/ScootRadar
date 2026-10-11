@@ -26,7 +26,7 @@ import {
 import { DEFAULT_RIDE_DURATION, RIDE_DURATIONS, formatRidePrice, ridePriceQuote } from '@/lib/ridePrice';
 import type { RidePricing } from '@/lib/types';
 import { MAP_PATH } from '@/lib/mapAddress';
-import { SITE_NAME } from '@/lib/site';
+import { SITE_NAME, SITE_URL } from '@/lib/site';
 import { formatDistance, walkingMinutes } from '@/lib/walking';
 
 type Props = Readonly<{ params: Promise<{ locale?: string[] }> }>;
@@ -86,6 +86,61 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 /** The picture of this language a shared link shows: scripts/generate-share-images.mjs draws it. */
 function shareImage(locale: LandingLocale): string {
   return `/share/${locale}.png`;
+}
+
+/**
+ * What the page tells a search engine in so many words: who publishes it, the
+ * app it leads to, and the questions it answers.
+ */
+function structuredData(locale: LandingLocale, copy: LandingCopy) {
+  const organization = `${SITE_URL}/#organization`;
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': organization,
+        name: SITE_NAME,
+        url: `${SITE_URL}/`,
+        logo: `${SITE_URL}/icon-512.png`,
+        sameAs: [SOURCE_URL],
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE_URL}/#website`,
+        name: SITE_NAME,
+        url: `${SITE_URL}/`,
+        inLanguage: [...LANDING_LOCALES],
+        publisher: { '@id': organization },
+      },
+      {
+        '@type': 'WebApplication',
+        '@id': `${SITE_URL}${MAP_PATH}#app`,
+        name: SITE_NAME,
+        url: `${SITE_URL}${MAP_PATH}`,
+        description: copy.meta.description(LANDING_CITY_TOTAL),
+        applicationCategory: 'TravelApplication',
+        operatingSystem: 'Any',
+        browserRequirements: 'Requires JavaScript',
+        inLanguage: [...LANDING_LOCALES],
+        isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'CHF' },
+        screenshot: `${SITE_URL}/landing/${locale}-dark.webp`,
+        image: `${SITE_URL}${shareImage(locale)}`,
+        publisher: { '@id': organization },
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': `${new URL(landingPath(locale), SITE_URL).href}#faq`,
+        inLanguage: locale,
+        mainEntity: copy.faq.items.map(({ question, answer }) => ({
+          '@type': 'Question',
+          name: question,
+          acceptedAnswer: { '@type': 'Answer', text: answer },
+        })),
+      },
+    ],
+  };
 }
 
 /** Numbers, distances, prices and the date as the app writes them in this language. */
@@ -215,6 +270,11 @@ export default async function LandingPage({ params }: Props) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        // Nothing in it can close the tag: "<" is written as its escape.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(locale, copy)).replace(/</g, '\\u003c') }}
+      />
       <header className="top" id="top">
         <nav className="pill" aria-label={copy.nav.main}>
           <a className="brand" href="#top">
@@ -414,6 +474,18 @@ export default async function LandingPage({ params }: Props) {
             </dl>
           </div>
           <Phone className="cities-phone" src={picture('overview')} alt={copy.cities.alt} />
+        </section>
+
+        <section className="faq" id="faq">
+          <h2 className="title">{copy.faq.title}</h2>
+          <dl className="questions">
+            {copy.faq.items.map(({ question, answer }) => (
+              <div className="question" key={question}>
+                <dt>{question}</dt>
+                <dd>{answer}</dd>
+              </div>
+            ))}
+          </dl>
         </section>
 
         <section className="closing" style={glow}>

@@ -107,6 +107,8 @@ export interface LandingCopy {
     more: (count: number) => string;
     alt: string;
   };
+  /** What people ask a search engine before they find the map, answered. */
+  faq: { title: string; items: readonly { question: string; answer: string }[] };
   closing: { title: string; note: string };
   footer: { text: string; links: string; privacy: string; source: string };
 }
@@ -188,6 +190,39 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       countries: { CH: 'Switzerland', DE: 'Germany', FR: 'France', IT: 'Italy' },
       more: count => `and ${count} more`,
       alt: 'The map zoomed out over Europe, with the number of scooters on each city.',
+    },
+    faq: {
+      title: 'Before you ask.',
+      items: [
+        {
+          question: 'Is there one app for Lime, Bolt, Bird, Voi and Dott?',
+          answer: 'Scooters is one map for all of them, and for Hopp, Pony and PubliBike too. It shows every shared e-scooter whose provider publishes where it is, so you no longer open one app after another to find the nearest.',
+        },
+        {
+          question: 'How do I find the nearest e-scooter?',
+          answer: 'Open the map and tap Near me, or search an address or a city. Each scooter shows its distance and walking time, its battery and range where the provider publishes them, and an estimate of what the ride costs.',
+        },
+        {
+          question: 'Is it free? Do I need an account?',
+          answer: 'It is free, with no account and no ads. You pay only for the ride, to the provider, in its own app.',
+        },
+        {
+          question: 'Can I unlock or book a scooter with Scooters?',
+          answer: 'No. Tap a scooter, then “Open in …”: the provider’s app opens, and you unlock and pay there as usual. Scooters does not reserve the scooter, so someone may get to it before you.',
+        },
+        {
+          question: 'Where do the positions come from, and how fresh are they?',
+          answer: 'From the public data feeds (GBFS) that the providers and public authorities publish. They can be a few minutes old: the map says how old, and tells you when a provider stops sharing its data.',
+        },
+        {
+          question: 'Do I need to install anything?',
+          answer: 'No. The map works in the browser of any phone or computer. On a phone you can add it to your home screen, and it opens like an app.',
+        },
+        {
+          question: 'Does Scooters know where I am?',
+          answer: 'Your location is used on your device, to centre the map and work out walking times. The server only receives the part of the map you are looking at, and does not store it.',
+        },
+      ],
     },
     closing: {
       title: 'Go and find yours.',
@@ -278,6 +313,39 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       more: count => `und ${count} weitere`,
       alt: 'Die Karte, herausgezoomt über Europa, mit der Zahl der Scooter in jeder Stadt.',
     },
+    faq: {
+      title: 'Bevor du fragst.',
+      items: [
+        {
+          question: 'Gibt es eine einzige App für Lime, Bolt, Bird, Voi und Dott?',
+          answer: 'Scooters ist eine Karte für alle fünf und auch für Hopp, Pony und PubliBike. Sie zeigt jeden Sharing-E-Scooter, dessen Anbieter den Standort veröffentlicht. So musst du nicht mehr eine App nach der anderen öffnen, um den nächsten zu finden.',
+        },
+        {
+          question: 'Wie finde ich den nächsten E-Scooter oder das nächste E-Trottinett?',
+          answer: 'Öffne die Karte und tippe auf «In meiner Nähe», oder suche nach einer Adresse oder Stadt. Zu jedem Scooter siehst du Distanz und Gehzeit, Akkustand und Reichweite (sofern der Anbieter sie veröffentlicht) und eine Schätzung, was die Fahrt kostet.',
+        },
+        {
+          question: 'Ist es gratis? Brauche ich ein Konto?',
+          answer: 'Scooters ist gratis, ohne Konto und ohne Werbung. Du bezahlst nur die Fahrt, direkt beim Anbieter in seiner App.',
+        },
+        {
+          question: 'Kann ich mit Scooters einen Scooter entsperren oder reservieren?',
+          answer: 'Nein. Tippe auf einen Scooter, dann auf «In … öffnen»: Die App des Anbieters öffnet sich, und dort entsperrst und bezahlst du wie gewohnt. Scooters reserviert den Scooter nicht, jemand anderes kann also schneller sein.',
+        },
+        {
+          question: 'Woher stammen die Positionen, und wie aktuell sind sie?',
+          answer: 'Aus den öffentlichen Datenfeeds (GBFS) der Anbieter und Behörden. Die Positionen können einige Minuten alt sein: Die Karte zeigt, wie alt sie sind, und meldet, wenn ein Anbieter keine Daten mehr liefert.',
+        },
+        {
+          question: 'Muss ich etwas installieren?',
+          answer: 'Nein. Die Karte läuft im Browser, auf jedem Handy und jedem Computer. Auf dem Handy kannst du sie zum Home-Bildschirm hinzufügen, dann öffnet sie sich wie eine App.',
+        },
+        {
+          question: 'Weiss Scooters, wo ich bin?',
+          answer: 'Dein Standort wird auf deinem Gerät genutzt, um die Karte zu zentrieren und die Gehzeiten zu berechnen. Der Server erhält nur den Kartenausschnitt, den du gerade ansiehst, und speichert ihn nicht.',
+        },
+      ],
+    },
     closing: {
       title: 'Finde deinen Scooter.',
       note: 'Dein Standort wird auf deinem Gerät genutzt und nicht gespeichert. Der Code ist Open Source.',
@@ -367,6 +435,39 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       more: count => (count === 1 ? 'et une autre' : `et ${count} autres`),
       alt: 'La carte à l’échelle de l’Europe, avec le nombre de trottinettes dans chaque ville.',
     },
+    faq: {
+      title: 'Vos questions.',
+      items: [
+        {
+          question: 'Existe-t-il une app qui regroupe Lime, Bolt, Bird, Voi et Dott ?',
+          answer: 'Scooters les réunit tous sur une seule carte, avec en plus Hopp, Pony et PubliBike. Elle montre chaque trottinette électrique en libre-service dont l’opérateur publie la position : plus besoin d’ouvrir les apps une à une pour trouver la plus proche.',
+        },
+        {
+          question: 'Comment trouver la trottinette électrique la plus proche ?',
+          answer: 'Ouvrez la carte et touchez « Près de moi », ou cherchez une adresse ou une ville. Pour chaque trottinette, vous voyez la distance et le temps de marche, la batterie et l’autonomie quand l’opérateur les publie, et une estimation du prix du trajet.',
+        },
+        {
+          question: 'Est-ce gratuit ? Faut-il un compte ?',
+          answer: 'C’est gratuit, sans compte et sans pub. Vous ne payez que le trajet, à l’opérateur, dans sa propre app.',
+        },
+        {
+          question: 'Peut-on déverrouiller ou réserver une trottinette avec Scooters ?',
+          answer: 'Non. Touchez une trottinette, puis « Ouvrir dans … » : l’app de l’opérateur s’ouvre, et vous y déverrouillez la trottinette et payez comme d’habitude. Scooters ne la réserve pas ; quelqu’un peut donc la prendre avant vous.',
+        },
+        {
+          question: 'D’où viennent les positions, et sont-elles à jour ?',
+          answer: 'Des flux de données publics (GBFS) diffusés par les opérateurs et les autorités. Les positions peuvent dater de quelques minutes : la carte indique quand elles ont été actualisées et signale si un opérateur ne partage plus ses données.',
+        },
+        {
+          question: 'Faut-il installer quelque chose ?',
+          answer: 'Non. La carte fonctionne dans le navigateur de n’importe quel téléphone ou ordinateur. Sur un téléphone, vous pouvez l’ajouter à l’écran d’accueil : elle s’ouvre alors comme une app.',
+        },
+        {
+          question: 'Scooters sait-il où je suis ?',
+          answer: 'Votre position est utilisée sur votre appareil, pour centrer la carte et calculer les temps de marche. Le serveur ne reçoit que la partie de la carte que vous regardez, et ne la conserve pas.',
+        },
+      ],
+    },
     closing: {
       title: 'Trouvez votre trottinette.',
       note: 'Votre position est utilisée sur votre appareil et n’est pas enregistrée. Le code est open source.',
@@ -455,6 +556,39 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       countries: { CH: 'Svizzera', DE: 'Germania', FR: 'Francia', IT: 'Italia' },
       more: count => (count === 1 ? 'e un’altra' : `e altre ${count}`),
       alt: 'La mappa dell’Europa vista da lontano, con il numero di monopattini in ogni città.',
+    },
+    faq: {
+      title: 'Prima che tu lo chieda.',
+      items: [
+        {
+          question: 'Esiste un’unica app per Lime, Bolt, Bird, Voi e Dott?',
+          answer: 'Scooters li mette tutti su una sola mappa, insieme a Hopp, Pony e PubliBike. Mostra ogni monopattino elettrico in sharing il cui operatore pubblica la posizione: non serve più aprire un’app dopo l’altra per trovare quello più vicino.',
+        },
+        {
+          question: 'Come trovo il monopattino elettrico più vicino?',
+          answer: 'Apri la mappa e tocca «Vicino a me», oppure cerca un indirizzo o una città. Per ogni monopattino vedi la distanza e il tempo a piedi, la batteria e l’autonomia quando l’operatore le pubblica, e una stima del prezzo della corsa.',
+        },
+        {
+          question: 'È gratis? Serve un account?',
+          answer: 'È gratis, senza account e senza pubblicità. Paghi solo la corsa, direttamente all’operatore nella sua app.',
+        },
+        {
+          question: 'Posso sbloccare o prenotare un monopattino con Scooters?',
+          answer: 'No. Tocca un monopattino, poi «Apri in …»: si apre l’app dell’operatore, dove sblocchi e paghi come sempre. Scooters non prenota il monopattino, quindi qualcuno potrebbe prenderlo prima di te.',
+        },
+        {
+          question: 'Da dove vengono le posizioni e quanto sono aggiornate?',
+          answer: 'Dai feed di dati pubblici (GBFS) diffusi dagli operatori e dalle autorità. Le posizioni possono risalire a qualche minuto fa: la mappa mostra quando sono state aggiornate e avvisa se un operatore smette di condividere i suoi dati.',
+        },
+        {
+          question: 'Devo installare qualcosa?',
+          answer: 'No. La mappa funziona nel browser di qualsiasi telefono o computer. Sul telefono puoi aggiungerla alla schermata Home: da lì si apre come un’app.',
+        },
+        {
+          question: 'Scooters sa dove mi trovo?',
+          answer: 'La tua posizione viene usata sul tuo dispositivo, per centrare la mappa e calcolare i tempi a piedi. Il server riceve solo la parte di mappa che stai guardando, e non la salva.',
+        },
+      ],
     },
     closing: {
       title: 'Trova il tuo.',

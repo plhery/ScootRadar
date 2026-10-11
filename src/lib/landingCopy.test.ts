@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   LANDING_COPY, LANDING_LOCALES, LANGUAGE_NAMES, isLandingLocale, landingLocaleOf, landingPath,
 } from '@/lib/landingCopy';
+import { PROVIDERS } from '@/generated/providers';
 import { LANDING_NEAREST } from '@/lib/landingSnapshot';
 import { DEFAULT_RIDE_DURATION, RIDE_DURATIONS } from '@/lib/ridePrice';
 
@@ -64,6 +65,18 @@ describe('what the landing page says of the snapshot', () => {
     expect(LANDING_NEAREST).toHaveLength(7);
     for (const locale of LANDING_LOCALES) {
       for (const { name } of LANDING_NEAREST) expect(LANDING_COPY[locale].know.all.text, locale).toContain(name);
+    }
+  });
+
+  it('names every provider of the catalogue where it lists them', () => {
+    // The description, and the first question with its answer: what a search brings up.
+    for (const locale of LANDING_LOCALES) {
+      const { meta, faq: { items: [first] } } = LANDING_COPY[locale];
+      for (const { name } of Object.values(PROVIDERS)) {
+        const short = name.split(' / ')[0];
+        expect(meta.description(0), locale).toContain(short);
+        expect(`${first.question} ${first.answer}`, locale).toContain(short);
+      }
     }
   });
 
