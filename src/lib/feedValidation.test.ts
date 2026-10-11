@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { statusObservedAt, validateStationStatus, validateVehicleStatus } from './feedValidation';
+import { isAbandonedStatus, statusObservedAt, validateStationStatus, validateVehicleStatus } from './feedValidation';
 
 const now = Date.parse('2026-10-04T12:00:00Z');
 
@@ -20,6 +20,15 @@ describe('vehicle timestamp age', () => {
       expect(() => statusObservedAt({ last_updated }, now)).toThrow('Status timestamp is missing or out of date');
     },
   );
+
+  it('tells an abandoned feed from a late one', () => {
+    expect(isAbandonedStatus({ last_updated: 0 }, now)).toBe(true);
+    expect(isAbandonedStatus({ last_updated: (now - 7 * 86400_000 - 1) / 1000 }, now)).toBe(true);
+    expect(isAbandonedStatus({ last_updated: (now - 7 * 86400_000) / 1000 }, now)).toBe(false);
+    expect(isAbandonedStatus({ last_updated: (now - 3600_000) / 1000 }, now)).toBe(false);
+    expect(isAbandonedStatus({}, now)).toBe(false);
+    expect(isAbandonedStatus(null, now)).toBe(false);
+  });
 
   it('keeps parking availability limited to five minutes', () => {
     vi.spyOn(Date, 'now').mockReturnValue(now);

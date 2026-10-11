@@ -88,14 +88,6 @@ function areasForName(value: string): string[] {
 export function knownSystemCoverage(systemId: string): MapBounds[] | null {
   const id = systemId.toLowerCase();
 
-  // Velospot does not publish geofencing and its e-scooters are currently
-  // confined to Biel and Locarno even though its bicycle network is national.
-  // The spatial API does not expose those scooters reliably, so retain these
-  // conservative envelopes until upstream adds mode-aware regions.
-  if (id === 'velospot') {
-    return [AREA_BOUNDS.biel, AREA_BOUNDS.locarno];
-  }
-
   // These systems span several regions or do not identify a city in their ID.
   // Their coverage is resolved from system_regions or the spatial API instead.
   if (id === 'voiscooters.com' || id === 'publibike') {
@@ -128,3 +120,6 @@ export function coverageIntersects(bounds: MapBounds[], query: MapBounds): boole
 
 export const HOPP_COVERAGE = AREA_BOUNDS.zurich;
 export const PUBLIBIKE_FREE_FLOATING_COVERAGE = AREA_BOUNDS.zurich;
+// PubliBike's station-based e-scooters are confined to Biel and Locarno, though
+// its bicycle network is national.
+export const PUBLIBIKE_STATION_COVERAGE = [AREA_BOUNDS.biel, AREA_BOUNDS.locarno];

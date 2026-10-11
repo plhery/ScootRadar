@@ -3,6 +3,7 @@ import {
   coverageForRegionNames,
   coverageIntersects,
   knownSystemCoverage,
+  PUBLIBIKE_STATION_COVERAGE,
 } from '@/lib/feedCoverage';
 
 describe('feed coverage routing', () => {
@@ -26,17 +27,14 @@ describe('feed coverage routing', () => {
     expect(knownSystemCoverage('lime_new-city')).toBeNull();
   });
 
-  it('routes Velospot only to its current scooter areas', () => {
-    const velospot = knownSystemCoverage('velospot');
-
-    expect(velospot).not.toBeNull();
-    expect(coverageIntersects(velospot ?? [], {
+  it('routes PubliBike station scooters only to Biel and Locarno', () => {
+    expect(coverageIntersects(PUBLIBIKE_STATION_COVERAGE, {
       south: 46.14,
       west: 8.73,
       north: 46.20,
       east: 8.85,
     })).toBe(true);
-    expect(coverageIntersects(velospot ?? [], zurich)).toBe(false);
+    expect(coverageIntersects(PUBLIBIKE_STATION_COVERAGE, zurich)).toBe(false);
   });
 
   it('normalizes translated and compound region names', () => {

@@ -367,6 +367,50 @@ describe('fetchScooters source health', () => {
     });
   });
 
+  it('turns PubliBike station counts in Biel and Locarno into scooters', async () => {
+    const station = (id: string, latitude: number, longitude: number, scooters: number, out_of_service = false) => ({
+      id, station_type: 4, latitude, longitude, out_of_service,
+      available_vehicles: [{ count: 3, type: 2 }, { count: scooters, type: 5 }],
+    });
+    vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url === 'https://sharedmobility.ch/v2/gbfs') {
+        return jsonResponse({ systems: [{ id: 'velospot', url: 'https://sharedmobility.ch/v2/gbfs/velospot/gbfs' }] });
+      }
+      if (url === 'https://velospot.info/customer/public/api/pbvsng/stations') {
+        return jsonResponse([
+          station('238', 47.1313, 7.2360, 2),
+          station('239', 47.1320, 7.2370, 0),
+          station('240', 47.1330, 7.2380, 4, true),
+          station('241', 47.1340, 7.2390, 5000),
+          station('170', 47.3772, 8.5422, 3),
+          { id: '242', latitude: 47.1350, longitude: 7.2400, out_of_service: false, available_vehicles: [{ count: 1, type: 2 }] },
+        ]);
+      }
+      throw new Error(`Unexpected URL: ${url}`);
+    }));
+
+    const result = await fetchScooters({
+      bounds: { south: 47.12, west: 7.22, north: 47.15, east: 7.26 }, minBattery: 0, providers: new Set(['publibike']),
+    });
+
+    expect(result.vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(['publibike-station:238:1', 'publibike-station:238:2']);
+    expect(result.vehicles[0]).toMatchObject({ provider: 'publibike', lat: 47.1313, lng: 7.2360, battery: null, distance_m: null });
+    expect(result.meta).toMatchObject({ failedSources: [], sources: { national: 'skipped', publibike: 'fresh' } });
+  });
+
+  it('collects PubliBike stations instead of the national Velospot copy', async () => {
+    const { discoverCollectableFeeds } = await import('./scooterFeeds');
+    vi.stubGlobal('fetch', vi.fn(async () => jsonResponse({ systems: [
+      { id: 'velospot', url: 'https://sharedmobility.ch/v2/gbfs/velospot/gbfs' },
+      { id: 'lime_zurich', url: 'https://sharedmobility.ch/v2/gbfs/lime_zurich/gbfs' },
+    ] })));
+    const ids = (await discoverCollectableFeeds()).map(feed => feed.id);
+    expect(ids).toContain('publibike-stations');
+    expect(ids).toContain('national:lime_zurich');
+    expect(ids).not.toContain('national:velospot');
+  });
+
   it('loads only Hopp when it is explicitly requested', async () => {
     const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
       const response = hoppResponse(String(input));
@@ -813,7 +857,7 @@ describe('feed validation and tariff regressions', () => {
     expect(result.meta).toMatchObject({ stale: false, expiresAt: new Date(observedAt + 900_000).toISOString() });
   });
 
-  it.each([null, 0, Math.floor((Date.now() - 86400_000) / 1000)])('rejects a missing or expired Swiss status timestamp: %s', async timestamp => {
+  function stubSwissStatusTimestamp(timestamp: number | null) {
     vi.stubGlobal('fetch', vi.fn(async input => {
       const response = nationalResponse(String(input))!;
       if (String(input).endsWith('/free_bike_status')) {
@@ -821,7 +865,18 @@ describe('feed validation and tariff regressions', () => {
       }
       return response;
     }));
+  }
+
+  it.each([null, Math.floor((Date.now() - 86400_000) / 1000)])('rejects a missing or expired Swiss status timestamp: %s', async timestamp => {
+    stubSwissStatusTimestamp(timestamp);
     await expect(fetchScooters({ ...query, providers: new Set(['lime']) })).rejects.toBeInstanceOf(ScooterFeedsUnavailableError);
+  });
+
+  it.each([0, Math.floor((Date.now() - 40 * 86400_000) / 1000)])('skips a Swiss system that no longer sends positions: %s', async timestamp => {
+    stubSwissStatusTimestamp(timestamp);
+    const result = await fetchScooters({ ...query, providers: new Set(['lime']) });
+    expect(result.vehicles).toEqual([]);
+    expect(result.meta).toMatchObject({ failedSources: [], sources: { national: 'skipped' } });
   });
 
   it('retains the last valid registry when an HTTP 200 response has an invalid shape', async () => {

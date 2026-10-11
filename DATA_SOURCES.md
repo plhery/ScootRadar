@@ -13,17 +13,25 @@ and require raw data to be refreshed at its underlying cadence.
 The app reads GBFS discovery documents instead of assuming endpoint paths,
 requests only systems relevant to the visible area, filters for available
 electric standing scooters, and keeps short-lived stale values for upstream
-resilience.
+resilience. The dataset keeps listing systems after their operator stops
+sending positions; one whose positions are over a week old, or were never
+sent, counts as inactive rather than failing.
 
-Zürich's free-floating PubliBike / Velospot e-scooters are currently absent
-from that national GBFS dataset. For Zürich only, the app supplements it with
-the unauthenticated [`pbvsng/freeFloating` endpoint](https://velospot.info/customer/public/api/pbvsng/freeFloating)
-used by the official PubliBike Velospot app. The endpoint returns an opaque
-vehicle ID and location, but no battery level, range, or rental link. PubliBike
-does not publish a redistribution license for this endpoint; its [API
-documentation](https://api.publibike.ch/v1/static/api.html) directs license
-questions to PubliBike. The response advertises a 500-request limit without
-documenting the time window, so the app caches it for 30 seconds.
+PubliBike / Velospot e-scooters do not come from that dataset, whose copy of
+Velospot runs 15 to 75 minutes behind. The app reads two unauthenticated
+endpoints used by the official PubliBike Velospot app instead:
+
+- In Zürich, [`pbvsng/freeFloating`](https://velospot.info/customer/public/api/pbvsng/freeFloating)
+  returns each free-floating scooter's opaque ID and location, but no battery
+  level, range, or rental link.
+- In Biel and Locarno, where the scooters are docked, [`pbvsng/stations`](https://velospot.info/customer/public/api/pbvsng/stations)
+  returns how many e-scooters each station holds. The map shows that many
+  markers at the station: they are not individual vehicle positions or IDs.
+
+PubliBike does not publish a redistribution license for these endpoints; its
+[API documentation](https://api.publibike.ch/v1/static/api.html) directs
+license questions to PubliBike. Responses advertise a 500-request limit without
+documenting the time window, so the app caches each for 30 seconds.
 
 Provider names remain trademarks of their respective owners. Their appearance
 does not imply endorsement.

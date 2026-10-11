@@ -44,6 +44,18 @@ export function statusObservedAt(value: unknown, now = Date.now(), maximumAgeMs 
   return Math.min(now, updatedAt);
 }
 
+const ABANDONED_STATUS_AGE_MS = 7 * 24 * 3600_000;
+
+/**
+ * A status feed its operator no longer updates: last updated over a week ago,
+ * or never (a zero timestamp). sharedmobility.ch keeps such systems in its
+ * catalogue long after the operator has stopped sending positions.
+ */
+export function isAbandonedStatus(value: unknown, now = Date.now()): boolean {
+  const timestamp = value && typeof value === 'object' ? (value as { last_updated?: unknown }).last_updated : undefined;
+  return typeof timestamp === 'number' && (timestamp === 0 || now - timestamp * 1000 > ABANDONED_STATUS_AGE_MS);
+}
+
 export function validateVehicleStatus(value: unknown): void {
   statusObservedAt(value);
   const data = object(object(value).data);

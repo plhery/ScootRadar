@@ -1,4 +1,4 @@
-import { statusObservedAt, validateDiscovery, validateRegistry, validateTypes, validateVehicleStatus } from './feedValidation';
+import { isAbandonedStatus, statusObservedAt, validateDiscovery, validateRegistry, validateTypes, validateVehicleStatus } from './feedValidation';
 import { VEHICLE_MAX_AGE_MS } from './dataFreshness';
 import {
   coverageForRegionNames,
@@ -6,6 +6,7 @@ import {
   HOPP_COVERAGE,
   knownSystemCoverage,
   PUBLIBIKE_FREE_FLOATING_COVERAGE,
+  PUBLIBIKE_STATION_COVERAGE,
   SWISS_MOBILITY_BOUNDS,
 } from '@/lib/feedCoverage';
 import { boundsContainPoint, boundsIntersection, haversineM } from '@/lib/geo';
@@ -23,7 +24,10 @@ const SPATIAL_IDENTIFY_URL = 'https://api.sharedmobility.ch/v1/sharedmobility/id
 const HOPP_DISCOVERY_URL = 'https://api.hopp.bike/gbfs/ch-zurich/gbfs.json';
 const PUBLIBIKE_FREE_FLOATING_URL =
   'https://velospot.info/customer/public/api/pbvsng/freeFloating';
+const PUBLIBIKE_STATIONS_URL = 'https://velospot.info/customer/public/api/pbvsng/stations';
 const PUBLIBIKE_ESCOOTER_TYPE = 5;
+// Far above any real station; bounds the markers a malformed count can create.
+const PUBLIBIKE_STATION_MAX_SCOOTERS = 50;
 
 const STATUS_REVALIDATE_SECONDS = 30;
 const METADATA_REVALIDATE_SECONDS = 3600;
@@ -57,6 +61,14 @@ interface PubliBikeFreeFloatingVehicle {
   latitude?: number;
   longitude?: number;
   type?: number;
+}
+
+interface PubliBikeStation {
+  id?: string;
+  latitude?: number;
+  longitude?: number;
+  out_of_service?: boolean;
+  available_vehicles?: { count?: number; type?: number }[];
 }
 
 interface VehicleType {
@@ -227,6 +239,9 @@ export function independentCollectableFeeds(): CollectableScooterFeed[] {
     { id: 'publibike', host: new URL(PUBLIBIKE_FREE_FLOATING_URL).hostname, source: 'publibike', provider: 'publibike',
       coverage: [PUBLIBIKE_FREE_FLOATING_COVERAGE],
       collect: () => fetchPubliBikeFreeFloatingVehicles(query) },
+    { id: 'publibike-stations', host: new URL(PUBLIBIKE_STATIONS_URL).hostname, source: 'publibike', provider: 'publibike',
+      coverage: PUBLIBIKE_STATION_COVERAGE,
+      collect: () => fetchPubliBikeStationVehicles(query) },
     ...REGIONAL_SCOOTER_SYSTEMS.map(system => ({
       host: new URL(system.discoveryUrl).hostname,
       id: `${regionalSource(system)}:${system.id}`, source: regionalSource(system), provider: system.provider,
@@ -485,7 +500,9 @@ function registrySystem(systemId: string, systemUrl: string): NationalSystem | n
     if (!url.pathname.endsWith('/gbfs')) return null;
 
     const provider = providerKeyForSystemId(systemId);
-    if (!provider || provider === 'hopp') return null;
+    // Hopp and Velospot come from their own feeds: sharedmobility.ch's copy of
+    // Velospot runs 15 to 75 minutes behind, its snapshots varying by request.
+    if (!provider || provider === 'hopp' || systemId === 'velospot') return null;
 
     const discoveryUrl = url.toString();
     url.pathname = url.pathname.slice(0, -'/gbfs'.length);
@@ -676,12 +693,16 @@ async function fetchSystemVehicles(
 
   const [status, pricingByPlanId] = await Promise.all([
     fetchJson<StatusFeed>(statusUrl, {
-      validate: validateVehicleStatus,
+      validate: value => { if (!isAbandonedStatus(value)) validateVehicleStatus(value); },
       authenticated: true,
       revalidate: STATUS_REVALIDATE_SECONDS,
     }),
     fetchPricingPlans(pricingUrl, { authenticated: true, source: system.id }),
   ]);
+  // An operator that has left the city, or never sends positions, is not failing.
+  if (isAbandonedStatus(status.data)) {
+    return { vehicles: [], stale: discovery.stale || types.stale || coverageStale, skipped: true };
+  }
 
   return {
     observedAt: statusObservedAt(status.data),
@@ -847,6 +868,76 @@ async function fetchPubliBikeFreeFloatingVehicles(
   return { vehicles, stale: result.stale, observedAt: result.fetchedAt };
 }
 
+// The PubliBike app's station list counts the e-scooters docked at each
+// station, without vehicle IDs. Each one becomes a marker at its station,
+// numbered so that a count dropping from 3 to 2 removes only the third.
+async function fetchPubliBikeStationVehicles(
+  query: FeedQuery
+): Promise<SourceVehicles> {
+  if (query.providers && !query.providers.has('publibike')) {
+    return { vehicles: [], stale: false, skipped: true };
+  }
+
+  if (!coverageIntersects(PUBLIBIKE_STATION_COVERAGE, query.bounds)) {
+    return { vehicles: [], stale: false, skipped: true };
+  }
+
+  const result = await fetchJson<unknown>(PUBLIBIKE_STATIONS_URL, {
+    revalidate: STATUS_REVALIDATE_SECONDS,
+  });
+  if (!Array.isArray(result.data)) {
+    throw new Error('PubliBike stations response is not an array');
+  }
+
+  const vehicles: Vehicle[] = [];
+  for (const station of result.data as PubliBikeStation[]) {
+    const lat = station.latitude;
+    const lng = station.longitude;
+    const count = station.available_vehicles?.find(entry => entry.type === PUBLIBIKE_ESCOOTER_TYPE)?.count;
+    if (
+      station.out_of_service !== false ||
+      typeof station.id !== 'string' || station.id.length === 0 ||
+      !Number.isInteger(count) || count! <= 0 || count! > PUBLIBIKE_STATION_MAX_SCOOTERS ||
+      lat == null || lng == null ||
+      !Number.isFinite(lat) || !Number.isFinite(lng) ||
+      !PUBLIBIKE_STATION_COVERAGE.some(bounds => boundsContainPoint(bounds, lat, lng)) ||
+      !boundsContainPoint(query.bounds, lat, lng)
+    ) continue;
+
+    const distance = query.origin
+      ? Math.round(haversineM(query.origin[0], query.origin[1], lat, lng) * 10) / 10
+      : null;
+    for (let index = 1; index <= count!; index++) {
+      vehicles.push({
+        provider: 'publibike',
+        lat,
+        lng,
+        battery: null,
+        range_m: null,
+        vehicle_id: `publibike-station:${station.id}:${index}`,
+        deep_link: null,
+        rental_uris: { ios: null, android: null, web: null },
+        distance_m: distance,
+      });
+    }
+  }
+
+  return { vehicles, stale: result.stale, observedAt: result.fetchedAt };
+}
+
+// Zürich's free-floating scooters and the station scooters of Biel and Locarno
+// come from two endpoints of the same app; their areas do not overlap.
+async function fetchPubliBikeVehicles(query: FeedQuery): Promise<SourceVehicles> {
+  const results = await Promise.all([fetchPubliBikeFreeFloatingVehicles(query), fetchPubliBikeStationVehicles(query)]);
+  const available = results.filter(result => !result.skipped);
+  if (!available.length) return { vehicles: [], stale: false, skipped: true };
+  return {
+    observedAt: Math.min(...available.map(result => result.observedAt ?? Date.now())),
+    vehicles: available.flatMap(result => result.vehicles),
+    stale: available.some(result => result.stale),
+  };
+}
+
 async function fetchRegionalSystemVehicles(
   system: RegionalScooterSystem,
   query: FeedQuery
@@ -989,7 +1080,7 @@ export async function fetchScooters(query: FeedQuery): Promise<ScooterFetchResul
       })
       : Promise.resolve<SourceVehicles>({ vehicles: [], stale: false, skipped: true }),
     fetchHoppVehicles(query),
-    fetchPubliBikeFreeFloatingVehicles(query),
+    fetchPubliBikeVehicles(query),
     fetchRegionalVehicles(query, 'FR'),
     fetchRegionalVehicles(query, 'DE'),
     fetchRegionalVehicles(query, 'IT'),
