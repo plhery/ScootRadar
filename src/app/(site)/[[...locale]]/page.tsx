@@ -267,6 +267,8 @@ export default async function LandingPage({ params }: Props) {
   const nearby = LANDING_SCOOTERS_NEARBY;
   // The scooter the page follows from the hero down, and the runner-up it is compared with.
   const [nearest, second] = LANDING_NEAREST;
+  // Not every provider publishes its rates: the ride is priced on the nearest scooter of one that does.
+  const priced = LANDING_NEAREST.find(scooter => scooter.pricing);
   const glow = { '--c': tileColor(nearest.provider) } as CSSProperties;
   // The providers in the order the page names them: by name, the one with bikes last.
   const named = [...LANDING_NEAREST].sort(
@@ -410,11 +412,11 @@ export default async function LandingPage({ params }: Props) {
               </div>
             </div>
 
-            {nearest.pricing && (
+            {priced?.pricing && (
               <div className="cell">
                 <div>
-                  <p className="figure figure--price">≈&nbsp;{format.price(nearest.pricing)}</p>
-                  <p className="figure-label">{copy.know.price.ride(nearest.name)}</p>
+                  <p className="figure figure--price">≈&nbsp;{format.price(priced.pricing)}</p>
+                  <p className="figure-label">{copy.know.price.ride(priced.name)}</p>
                   <div className="chips" role="img" aria-label={copy.know.price.control}>
                     {RIDE_DURATIONS.map(minutes => (
                       <span key={minutes} aria-hidden="true" className={minutes === DEFAULT_RIDE_DURATION ? 'is-on' : undefined}>

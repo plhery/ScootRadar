@@ -12,10 +12,10 @@ describe('the snapshot behind the landing page', () => {
     expect(distances).toEqual([...distances].sort((a, b) => a - b));
   });
 
-  it('opens on a scooter the page can price and walk to', () => {
+  it('opens on a scooter the page can walk to, and has one it can price', () => {
     const [nearest] = LANDING_NEAREST;
-    expect(nearest.pricing).not.toBeNull();
     expect(nearest.shows).toContain('walk');
+    expect(LANDING_NEAREST.some(scooter => scooter.pricing)).toBe(true);
   });
 
   it('only shows a fact the provider published', () => {
