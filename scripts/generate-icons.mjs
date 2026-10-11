@@ -3,13 +3,12 @@
 //
 //   npm run generate:icons
 //
-// The drawing is the rider's dot on the map, the beam of where they face, and
-// in it the nearest scooter as the map shows it at night. What matters of it
-// stays inside the circle a maskable icon may be cut to.
+// The drawing is a scooter on the night of the map, its deck lit in the blue
+// of the app like a scooter's light there.
 //
 // sharp comes with Next.js; it is not a dependency of its own.
 
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
@@ -17,10 +16,21 @@ import sharp from 'sharp';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const source = path.join(root, 'public/icon.svg');
 
+// A maskable icon may be cut to a circle of four fifths of its width, and the
+// wheels reach past that one. Those files have the scooter smaller, on the
+// same ground: at this scale its outermost point is 391 of the circle's 410 px.
+const MASKABLE_SCALE = 0.88;
+const MARK = '<g id="mark">';
+const drawing = readFileSync(source, 'utf8');
+if (!drawing.includes(MARK)) throw new Error(`public/icon.svg has no ${MARK} to reduce for the maskable icons.`);
+const reduced = Buffer.from(
+  drawing.replace(MARK, `<g id="mark" transform="translate(512 512) scale(${MASKABLE_SCALE}) translate(-512 -512)">`)
+);
+
 // Drawn at twice 1024 px and reduced, so the smallest are averaged, not sampled.
-const drawn = size => sharp(source, { density: 144 }).resize(size, size);
+const drawn = (size, svg = source) => sharp(svg, { density: 144 }).resize(size, size);
 // The drawing covers its square. iOS refuses an icon with transparency.
-const opaque = size => drawn(size).removeAlpha().png({ compressionLevel: 9 }).toBuffer();
+const opaque = (size, svg) => drawn(size, svg).removeAlpha().png({ compressionLevel: 9 }).toBuffer();
 
 const PNGS = {
   'public/icon-32.png': 32,
@@ -29,6 +39,10 @@ const PNGS = {
   'public/icon-512.png': 512,
   'public/icon-master.png': 1254,
   'ios/ScootRadar/Assets.xcassets/AppIcon.appiconset/AppIcon.png': 1024,
+};
+const MASKABLE_PNGS = {
+  'public/icon-maskable-192.png': 192,
+  'public/icon-maskable-512.png': 512,
 };
 const FAVICON = { file: 'src/app/favicon.ico', sizes: [16, 32, 48] };
 
@@ -54,6 +68,10 @@ function ico(pictures) {
 
 for (const [file, size] of Object.entries(PNGS)) {
   writeFileSync(path.join(root, file), await opaque(size));
+  console.log(file);
+}
+for (const [file, size] of Object.entries(MASKABLE_PNGS)) {
+  writeFileSync(path.join(root, file), await opaque(size, reduced));
   console.log(file);
 }
 

@@ -4,27 +4,26 @@
       <stop offset="0" stop-color="#1b2232"/>
       <stop offset="1" stop-color="#1b2232" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="beam" gradientUnits="userSpaceOnUse" x1="290" y1="734" x2="799.12" y2="224.88">
-      <stop offset="0" stop-color="#2f7bff" stop-opacity="0.72"/>
-      <stop offset="1" stop-color="#2f7bff" stop-opacity="0"/>
-    </linearGradient>
     <radialGradient id="glow">
-      <stop offset="0.37" stop-color="#ff1493" stop-opacity="0.62"/>
-      <stop offset="1" stop-color="#ff1493" stop-opacity="0"/>
+      <stop offset="0.28" stop-color="#2f7bff" stop-opacity="0.62"/>
+      <stop offset="1" stop-color="#2f7bff" stop-opacity="0"/>
     </radialGradient>
   </defs>
 
   <rect width="1024" height="1024" fill="#090b10"/>
   <rect width="1024" height="1024" fill="url(#night)"/>
 
-  <path d="M290 734 524.41 53.23A720 720 0 0 1 970.77 499.59Z" fill="url(#beam)"/>
-  <g fill="none" stroke="#f4f5f7" stroke-opacity="0.26" stroke-width="10">
-    <path d="M381.75 488.59A262 262 0 0 1 535.41 642.25"/>
-    <path d="M440.59 331.23A430 430 0 0 1 692.77 583.41"/>
+  <g id="mark">
+    <circle cx="479.38" cy="647.38" r="331.2" fill="url(#glow)"/>
+    <g transform="translate(-68.5 -77.12) scale(2.25)" fill="none" stroke-width="24">
+      <g stroke="#f4f5f7" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="142" cy="346" r="42"/>
+        <circle cx="374" cy="346" r="42"/>
+        <path d="M178 322h124l43-58 15 42"/>
+        <path d="M345 264 311 136"/>
+        <path d="M281 136h47"/>
+      </g>
+      <path d="M207 322h73" stroke="#2f7bff"/>
+    </g>
   </g>
-
-  <circle cx="718" cy="306" r="253.8" fill="url(#glow)"/>
-  <circle cx="718" cy="306" r="94" fill="#ff1493"/>
-
-  <circle cx="290" cy="734" r="62" fill="#2f7bff" stroke="#f4f5f7" stroke-width="26"/>
 </svg>
