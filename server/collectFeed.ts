@@ -14,7 +14,7 @@ export async function collectSnapshotFeed(
     const result = await definition.collect();
     record = { ...base, vehicles: result.vehicles, observedAt: result.observedAt ?? Date.now(),
       attemptedAt: Date.now(), stale: result.stale, failed: false, skipped: result.skipped ?? false,
-      parking: old?.parking };
+      parking: result.skipped ? undefined : old?.parking };
   } catch (error) {
     record = { ...base, vehicles: old?.vehicles ?? [], observedAt: old?.observedAt ?? 0,
       attemptedAt: Date.now(), stale: true, failed: true, skipped: false, parking: old?.parking };
@@ -22,7 +22,8 @@ export async function collectSnapshotFeed(
       error: error instanceof Error ? error.message : String(error) }));
   }
   publish(record);
-  if (!collectParking) return;
+  // A skipped feed, as a region its operator has paused, has no parking either.
+  if (!collectParking || record.skipped) return;
   try {
     record = { ...record, parking: await collectParking() };
   } catch (error) {

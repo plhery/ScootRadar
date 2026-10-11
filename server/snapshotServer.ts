@@ -54,7 +54,7 @@ export function createSnapshotServer(options: ServerOptions) {
         failedFeeds: feeds.filter(feed => !feed.skipped && (feed.failed || now - feed.observedAt > VEHICLE_MAX_AGE_MS)).map(feed => feed.id),
         oldestUsableAgeSeconds: usable.length ? Math.round(Math.max(...usable.map(feed => now - feed.observedAt)) / 1000) : null,
         parkingLocations: feeds.reduce((sum, feed) => sum + (feed.parking?.locations.length ?? 0), 0),
-        failedParkingFeeds: feeds.filter(feed => isRegionalSource(feed.source) &&
+        failedParkingFeeds: feeds.filter(feed => isRegionalSource(feed.source) && !feed.skipped &&
           (!feed.parking || feed.parking.stale || now - feed.parking.observedAt > PARKING_MAX_AGE_MS)).map(feed => feed.id),
         cities: snapshot?.overview.cities.length, version: options.version ?? 'local' }));
       return;

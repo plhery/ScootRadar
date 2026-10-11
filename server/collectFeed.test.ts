@@ -27,3 +27,21 @@ it('publishes fresh status despite stale metadata before optional parking comple
   await pending;
   expect(published).toHaveLength(2);
 });
+
+it('collects no parking for a skipped feed and drops the parking it had', async () => {
+  const now = Date.now();
+  const bounds = { south: 45.4, west: 6.9, north: 45.5, east: 7.0 };
+  const definition = { id: 'france:dott_fr_tignes', provider: 'dott' as const, source: 'france' as const,
+    host: 'test', coverage: [bounds], collect: async () => ({ vehicles: [], stale: false, skipped: true }) };
+  const old: FeedSnapshot = { ...definition, vehicles: [], observedAt: now - 60_000, attemptedAt: now - 60_000,
+    failed: false, skipped: false, stale: false, parking: { locations: [], observedAt: now - 60_000, stale: false } };
+  let parkingRequests = 0;
+  const published: FeedSnapshot[] = [];
+  await collectSnapshotFeed(definition, old, record => published.push(record), async () => {
+    parkingRequests++;
+    return { locations: [], observedAt: now, stale: false };
+  });
+  expect(parkingRequests).toBe(0);
+  expect(published).toHaveLength(1);
+  expect(published[0]).toMatchObject({ skipped: true, parking: undefined });
+});
