@@ -1106,40 +1106,60 @@ img {
 }
 
 .footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px 40px;
-  padding: 32px var(--gutter) 44px;
+  padding: 32px var(--gutter) 36px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 15px;
   line-height: 1.6;
   color: var(--quiet);
 }
 
-.footer p {
-  flex: 1 1 520px;
-  max-width: 760px;
-  margin: 0;
-}
-
-.footer nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 24px;
-}
-
 .footer a {
-  display: flex;
-  align-items: center;
-  min-height: 44px;
   color: var(--soft);
   text-underline-offset: 4px;
 }
 
 .footer a:hover {
   color: #ffffff;
+}
+
+.footer-about {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px 40px;
+}
+
+.footer-about p {
+  flex: 1 1 520px;
+  max-width: 760px;
+  margin: 0;
+}
+
+.footer-about nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 24px;
+}
+
+.footer nav a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+/* The last line: who makes the site, and what else that person makes. Each
+   link is as tall as the ones above it, so a line of them is too. */
+.maker {
+  margin: 24px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-wrap: balance;
+}
+
+.maker a {
+  display: inline-block;
+  padding-block: 8px;
 }
 
 /* Motion. One entrance: the words, then the phone, then the cards leaving it

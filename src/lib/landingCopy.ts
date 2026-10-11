@@ -38,6 +38,23 @@ export const LANGUAGE_NAMES: Record<LandingLocale, string> = {
 
 export const SOURCE_URL = 'https://github.com/plhery/ScootRadar';
 
+/**
+ * Where the last line of the page leads: the other sites of the person who
+ * makes ScootRadar, and that person on X. Each of those sites links to the
+ * others the same way, with plain links a search engine follows, to the address
+ * the site names as canonical for the language (read on 2026-10-11). All three
+ * have the four languages of this page.
+ */
+export function makerLinks(locale: LandingLocale): Readonly<Record<string, string>> {
+  return {
+    maker: 'https://x.com/plhery',
+    horoscope: `https://x-horoscope.com/${locale}/x`,
+    monkey: `https://unfollow-monkey.com/${locale}`,
+    // Peek's English page is the domain itself.
+    peek: locale === DEFAULT_LANDING_LOCALE ? 'https://peektracker.com' : `https://peektracker.com/${locale}`,
+  };
+}
+
 /** A sentence cut at its links: what it writes as "<name>words</name>" is the words of the link of that name. */
 export function linkedParts(sentence: string): { text: string; link?: string }[] {
   const parts: { text: string; link?: string }[] = [];
@@ -123,7 +140,14 @@ export interface LandingCopy {
   faq: { title: string; items: readonly { question: string; answer: string }[] };
   /** The note links what it calls "source" to the code. */
   closing: { title: string; note: string };
-  footer: { text: string; links: string; privacy: string; source: string };
+  footer: {
+    text: string;
+    links: string;
+    privacy: string;
+    source: string;
+    /** The last line, with a link for each name of makerLinks. Peek is called what its own page calls it. */
+    maker: string;
+  };
 }
 
 export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
@@ -245,6 +269,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       links: 'More links',
       privacy: 'Privacy',
       source: 'Source on GitHub',
+      maker: 'By the <maker>maker</maker> of <horoscope>X Horoscope</horoscope>, <monkey>UnfollowMonkey</monkey> and the <peek>Peek parcel tracker</peek>.',
     },
   },
 
@@ -366,6 +391,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       links: 'Weitere Links',
       privacy: 'Datenschutz',
       source: 'Quellcode auf GitHub',
+      maker: 'Vom <maker>Macher</maker> von <horoscope>X Horoscope</horoscope>, <monkey>UnfollowMonkey</monkey> und der <peek>Paketverfolgung Peek</peek>.',
     },
   },
 
@@ -487,6 +513,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       links: 'Autres liens',
       privacy: 'Confidentialité',
       source: 'Code source sur GitHub',
+      maker: 'Par le <maker>créateur</maker> de <horoscope>X Horoscope</horoscope>, d’<monkey>UnfollowMonkey</monkey> et du <peek>suivi de colis Peek</peek>.',
     },
   },
 
@@ -608,6 +635,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       links: 'Altri link',
       privacy: 'Privacy',
       source: 'Codice sorgente su GitHub',
+      maker: 'Dal <maker>creatore</maker> di <horoscope>X Horoscope</horoscope>, di <monkey>UnfollowMonkey</monkey> e di <peek>Peek, l’app per tracciare i pacchi</peek>.',
     },
   },
 };

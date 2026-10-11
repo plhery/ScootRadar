@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  LANDING_COPY, LANDING_LOCALES, LANGUAGE_NAMES, isLandingLocale, landingLocaleOf, landingPath, linkedParts,
+  LANDING_COPY, LANDING_LOCALES, LANGUAGE_NAMES, isLandingLocale, landingLocaleOf, landingPath, linkedParts, makerLinks,
 } from '@/lib/landingCopy';
 import { PROVIDERS } from '@/generated/providers';
 import { LANDING_NEAREST } from '@/lib/landingSnapshot';
@@ -85,6 +85,29 @@ describe('the links of the landing page', () => {
       expect(read(closing.note), locale).not.toMatch(/[<>]/);
       // A share picture prints the first note as it is.
       expect(hero.note, locale).not.toMatch(/[<>]/);
+    }
+  });
+
+  it('leads to the other sites of its maker in the language of the page', () => {
+    expect(makerLinks('en')).toEqual({
+      maker: 'https://x.com/plhery',
+      horoscope: 'https://x-horoscope.com/en/x',
+      monkey: 'https://unfollow-monkey.com/en',
+      peek: 'https://peektracker.com',
+    });
+    expect(makerLinks('de')).toEqual({
+      maker: 'https://x.com/plhery',
+      horoscope: 'https://x-horoscope.com/de/x',
+      monkey: 'https://unfollow-monkey.com/de',
+      peek: 'https://peektracker.com/de',
+    });
+  });
+
+  it('links each of them once in its last line', () => {
+    for (const locale of LANDING_LOCALES) {
+      const { maker } = LANDING_COPY[locale].footer;
+      expect(linked(maker).sort(), locale).toEqual(Object.keys(makerLinks(locale)).sort());
+      expect(read(maker), locale).not.toMatch(/[<>]/);
     }
   });
 });

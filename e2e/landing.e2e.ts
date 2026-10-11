@@ -147,6 +147,25 @@ test('the landing page says it is open source under its first button, with a lin
   await expect(page.getByRole('contentinfo').getByRole('link', { name: 'Code source sur GitHub' })).toHaveAttribute('href', code);
 });
 
+test('the last line of the landing page names what else its maker makes, in its language', async ({ page }) => {
+  await page.goto('/fr');
+  const maker = page.getByRole('contentinfo').locator('.maker');
+  await expect(maker).toHaveText('Par le créateur de X Horoscope, d’UnfollowMonkey et du suivi de colis Peek.');
+  // Each site at its page in French, and the maker on X.
+  for (const [name, address] of Object.entries({
+    créateur: 'https://x.com/plhery',
+    'X Horoscope': 'https://x-horoscope.com/fr/x',
+    UnfollowMonkey: 'https://unfollow-monkey.com/fr',
+    'suivi de colis Peek': 'https://peektracker.com/fr',
+  })) {
+    await expect(maker.getByRole('link', { name, exact: true })).toHaveAttribute('href', address);
+  }
+
+  await page.goto('/');
+  await expect(page.locator('.maker')).toHaveText('By the maker of X Horoscope, UnfollowMonkey and the Peek parcel tracker.');
+  await expect(page.locator('.maker').getByRole('link', { name: 'Peek parcel tracker' })).toHaveAttribute('href', 'https://peektracker.com');
+});
+
 test('a link to the map from when it was at the root still opens the map', async ({ page, request }) => {
   // The Worker answers before any page is rendered, and keeps what the link carries.
   const moved = await request.get('/?origin=47.3769,8.5417&theme=dark', { maxRedirects: 0 });

@@ -16,6 +16,7 @@ import {
   landingLocaleOf,
   landingPath,
   linkedParts,
+  makerLinks,
   type LandingCopy,
   type LandingLocale,
 } from '@/lib/landingCopy';
@@ -518,11 +519,14 @@ export default async function LandingPage({ params }: Props) {
       </main>
 
       <footer className="footer">
-        <p>{copy.footer.text}</p>
-        <nav aria-label={copy.footer.links}>
-          <AppLink href="/privacy" hrefLang="en">{copy.footer.privacy}</AppLink>
-          <a href={SOURCE_URL}>{copy.footer.source}</a>
-        </nav>
+        <div className="footer-about">
+          <p>{copy.footer.text}</p>
+          <nav aria-label={copy.footer.links}>
+            <AppLink href="/privacy" hrefLang="en">{copy.footer.privacy}</AppLink>
+            <a href={SOURCE_URL}>{copy.footer.source}</a>
+          </nav>
+        </div>
+        <p className="maker"><Linked sentence={copy.footer.maker} links={makerLinks(locale)} /></p>
       </footer>
     </>
   );
