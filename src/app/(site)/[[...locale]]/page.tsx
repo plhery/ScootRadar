@@ -12,7 +12,8 @@ import {
   LANDING_LOCALES,
   LANGUAGE_NAMES,
   SOURCE_URL,
-  isLandingLocale,
+  landingLocaleOf,
+  landingPath,
   type LandingCopy,
   type LandingLocale,
 } from '@/lib/landingCopy';
@@ -24,9 +25,10 @@ import {
 } from '@/lib/landingSnapshot';
 import { DEFAULT_RIDE_DURATION, RIDE_DURATIONS, formatRidePrice, ridePriceQuote } from '@/lib/ridePrice';
 import type { RidePricing } from '@/lib/types';
+import { MAP_PATH } from '@/lib/mapAddress';
 import { formatDistance, walkingMinutes } from '@/lib/walking';
 
-type Props = Readonly<{ params: Promise<{ locale: string }> }>;
+type Props = Readonly<{ params: Promise<{ locale?: string[] }> }>;
 
 const OPEN_GRAPH_LOCALES: Record<LandingLocale, string> = {
   en: 'en_CH',
@@ -46,8 +48,8 @@ const TILE_COLORS: Record<string, string> = { bird: '#f4f5f7' };
 const WHITE_LETTERS = new Set(['publibike']);
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale } = await params;
-  if (!isLandingLocale(locale)) return {};
+  const locale = landingLocaleOf((await params).locale);
+  if (!locale) return {};
 
   const { meta } = LANDING_COPY[locale];
   const description = meta.description(LANDING_CITY_TOTAL);
@@ -55,15 +57,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: meta.title,
     description,
     alternates: {
-      canonical: `/${locale}`,
+      canonical: landingPath(locale),
       languages: {
-        ...Object.fromEntries(LANDING_LOCALES.map(language => [language, `/${language}`])),
-        'x-default': '/en',
+        ...Object.fromEntries(LANDING_LOCALES.map(language => [language, landingPath(language)])),
+        'x-default': '/',
       },
     },
     openGraph: {
       type: 'website',
-      url: `/${locale}`,
+      url: landingPath(locale),
       siteName: 'Scooters',
       title: meta.title,
       description,
@@ -179,7 +181,7 @@ function AppleMark() {
 function Actions({ copy }: { copy: LandingCopy }) {
   return (
     <div className="cta-row">
-      <AppLink className="btn btn--white" href="/">{copy.openMap}</AppLink>
+      <AppLink className="btn btn--white" href={MAP_PATH}>{copy.openMap}</AppLink>
       {APP_STORE_URL && (
         <a className="btn btn--line" href={APP_STORE_URL}><AppleMark />{copy.iphoneApp}</a>
       )}
@@ -188,8 +190,8 @@ function Actions({ copy }: { copy: LandingCopy }) {
 }
 
 export default async function LandingPage({ params }: Props) {
-  const { locale } = await params;
-  if (!isLandingLocale(locale)) notFound();
+  const locale = landingLocaleOf((await params).locale);
+  if (!locale) notFound();
 
   const copy = LANDING_COPY[locale];
   const format = formatters(locale);
@@ -219,7 +221,7 @@ export default async function LandingPage({ params }: Props) {
             {LANDING_LOCALES.map(language => (
               <Link
                 key={language}
-                href={`/${language}`}
+                href={landingPath(language)}
                 hrefLang={language}
                 lang={language}
                 prefetch={false}
@@ -230,7 +232,7 @@ export default async function LandingPage({ params }: Props) {
               </Link>
             ))}
           </span>
-          <AppLink className="pill-cta" href="/">{copy.openMap}</AppLink>
+          <AppLink className="pill-cta" href={MAP_PATH}>{copy.openMap}</AppLink>
         </nav>
       </header>
 

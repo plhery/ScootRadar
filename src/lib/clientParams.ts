@@ -12,6 +12,9 @@ export interface ClientParams {
   map: MapStyleName | undefined;
 }
 
+/** What a link to the map can carry. "tile" is the style setting of older links. */
+export const CLIENT_PARAMETERS = ['origin', 'minBattery', 'theme', 'map', 'tile'] as const;
+
 const THEMES = new Set<ThemeName>(['auto', 'light', 'dark']);
 const MAP_STYLES = new Set<MapStyleName>(['calm', 'detailed']);
 

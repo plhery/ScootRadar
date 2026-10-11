@@ -9,6 +9,10 @@ initOpenNextCloudflareForDev();
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  async redirects() {
+    // English is the landing page at the root; its code alone is not a second address for it.
+    return [{ source: '/en', destination: '/', permanent: true }];
+  },
   async headers() {
     return [
       {

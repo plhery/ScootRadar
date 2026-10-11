@@ -13,6 +13,12 @@ describe.each(['zurich-scooter.plhery.com', 'swiss-scooters.plhery.com'])('legac
     );
   });
 
+  it('sends the root, which was the map, to where the map is now', () => {
+    const response = legacyHostRedirect(new Request(`https://${hostname}/?origin=47.37,8.54`));
+
+    expect(response?.headers.get('location')).toBe('https://scooters.plhery.com/map?origin=47.37,8.54');
+  });
+
   it.each(['scooters?lat=47.37&lng=8.54', 'geocode?q=Paris'])('keeps legacy API route %s available for installed clients', (route) => {
     const response = legacyHostRedirect(new Request(
       `https://${hostname}/api/${route}`

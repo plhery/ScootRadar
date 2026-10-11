@@ -197,7 +197,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('normalizes malformed URL settings without breaking the app', async ({ page }) => {
-  await page.goto('/?origin=not-a-coordinate&minBattery=wat&tile=sepia&theme=neon&map=3d');
+  await page.goto('/map?origin=not-a-coordinate&minBattery=wat&tile=sepia&theme=neon&map=3d');
   await expect(page.locator('.leaflet-container')).toBeVisible();
 
   await expect.poll(() => new URL(page.url()).searchParams.has('origin')).toBe(false);
@@ -207,7 +207,7 @@ test('normalizes malformed URL settings without breaking the app', async ({ page
 });
 
 test('does not invent a distance without location and offers walking directions', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/map');
   await focusFixtureArea(page);
   await zoomTo(page, 16);
 
@@ -243,7 +243,7 @@ test('does not invent a distance without location and offers walking directions'
 });
 
 test('a tap on the map closes the card, and a card that closed does not open again by itself', async ({ page }) => {
-  await page.goto('/?origin=47.3769,8.5417');
+  await page.goto('/map?origin=47.3769,8.5417');
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
   const bird = page.getByRole('button', { name: 'Bird scooter', exact: true });
   const card = page.locator('.dock-card');
@@ -273,7 +273,7 @@ test('a tap on the map closes the card, and a card that closed does not open aga
 });
 
 test('scooter card shows the walk, the battery and a ride estimate whose duration is remembered', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/map');
   await allowLocationWithCompass(page, 'granted');
   await page.getByRole('button', { name: 'Near me', exact: true }).click();
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
@@ -329,7 +329,7 @@ test('a refresh that fails keeps the scooters, says so in the dock and recovers 
     if (fail) await route.fulfill({ status: 503, contentType: 'application/json', body: '{}' });
     else await route.fallback();
   });
-  await page.goto('/?origin=47.3769,8.5417');
+  await page.goto('/map?origin=47.3769,8.5417');
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
   await expect(page.locator('.leaflet-container')).toHaveAttribute('data-zoom', '16');
 
@@ -379,7 +379,7 @@ test('a provider that is not sharing data comes first among the providers, dashe
         mode: 'vehicles', totalVehicles: 2, zoom },
     }) });
   });
-  await page.goto('/?origin=47.3769,8.5417');
+  await page.goto('/map?origin=47.3769,8.5417');
   await expect(page.locator('.scooter-marker')).toHaveCount(2);
   await expect(page.getByText('Bird isn’t sharing data right now.')).toBeVisible();
   const desktop = await desktopLayout(page);
@@ -436,7 +436,7 @@ test('one failed feed does not make a provider look down beside its scooters, an
   const filters = page.getByRole('dialog', { name: 'Filters', exact: true });
 
   // City totals: whatever failed, nobody is named, in the dock or in the filters.
-  await page.goto('/');
+  await page.goto('/map');
   await expect(page.getByText('City totals · refreshed hourly')).toBeVisible();
   await expect(providers.getByRole('button', { name: 'Voi, 0. Shown.' })).toBeVisible();
   await expect(page.getByText(/sharing data right now/)).toHaveCount(0);
@@ -447,7 +447,7 @@ test('one failed feed does not make a provider look down beside its scooters, an
   await expect(filters.getByText('Not sharing data right now')).toHaveCount(0);
 
   // In the street: Voi shows nothing and is named; Bird is counted like the others.
-  await page.goto('/?origin=47.3769,8.5417');
+  await page.goto('/map?origin=47.3769,8.5417');
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
   await expect(page.getByText('Voi isn’t sharing data right now.')).toBeVisible();
   await expect(providers.getByRole('button', { name: 'Voi: not sharing data right now' })).toBeVisible();
@@ -473,7 +473,7 @@ test('an area without scooter data offers the closest cities and makes the one c
       meta: { ...scooterResponse.meta, totalVehicles: 0, zoom: Number(url.searchParams.get('zoom')) },
     }) });
   });
-  await page.goto('/?origin=46.7741,8.1558');
+  await page.goto('/map?origin=46.7741,8.1558');
   const dock = page.locator('.sheet');
   await expect(dock.getByRole('heading', { name: 'No scooter data here yet' })).toBeVisible();
   await expect(dock.getByText('Scooters covers selected cities in France, Switzerland, Germany and Italy.')).toBeVisible();
@@ -506,7 +506,7 @@ test('the search bar does not promise scooters near a searched place without sco
       meta: { ...scooterResponse.meta, totalVehicles: 0, zoom: Number(url.searchParams.get('zoom')) },
     }) });
   });
-  await page.goto('/');
+  await page.goto('/map');
   await page.getByRole('button', { name: 'Search city or address' }).click();
   const input = page.getByRole('combobox');
   await input.fill('Lungern');
@@ -526,7 +526,7 @@ test('says how many scooters the filters hide, and shows them again or opens the
     if (!sessionStorage.getItem('seeded')) localStorage.setItem('scooters-providers', JSON.stringify(['hopp']));
     sessionStorage.setItem('seeded', 'true');
   });
-  await page.goto('/?origin=47.3769,8.5417');
+  await page.goto('/map?origin=47.3769,8.5417');
   const dock = page.locator('.sheet');
   await expect(dock.getByRole('heading', { name: '3 scooters hidden by your filters' })).toBeVisible();
   await expect(dock.getByText('Hopp only')).toBeVisible();
@@ -555,7 +555,7 @@ test('an empty covered area keeps the count and the chips and says what to do', 
       meta: { ...scooterResponse.meta, totalVehicles: 0, mode: 'vehicles', zoom },
     }) });
   });
-  await page.goto('/?origin=47.3769,8.5417');
+  await page.goto('/map?origin=47.3769,8.5417');
   await expect(page.locator('.sheet-count')).toHaveText(/^0\s*scooters on this map$/);
   await expect(page.getByText('No scooters here right now. Zoom out or move the map.')).toBeVisible();
   await expect(page.getByRole('button', { name: /^Lime, 0\./ })).toBeVisible();
@@ -567,7 +567,7 @@ test('installs the production service worker and reloads offline', async ({
   browserName,
 }) => {
   test.skip(browserName === 'webkit', 'Playwright WebKit cannot reliably reload while offline');
-  await page.goto('/');
+  await page.goto('/map');
 
   await expect.poll(() => page.evaluate(async () => {
     const registration = await navigator.serviceWorker.ready;
@@ -595,7 +595,7 @@ test('every link gets the same page, without the parameters of the link in it', 
     expect(response.headers()['x-nextjs-cache'], path).toBe('HIT');
     return nonce ? body.replaceAll(nonce, '') : body;
   };
-  const plain = await shell('/');
+  const plain = await shell('/map');
   expect(plain).toContain('class="app-shell"');
   // A render shared between requests that arrive together would hand a visitor
   // the page of someone else's request: a link with coordinates, the router's
@@ -605,13 +605,13 @@ test('every link gets the same page, without the parameters of the link in it', 
   const checked = createHash('sha256').update('1,0,0,0').digest().subarray(0, 12).toString('base64url');
   const rounds = await Promise.all(Array.from({ length: 4 }, async (_, round) => {
     const [first, link, , second, crawler, , third] = await Promise.all([
-      shell('/'),
-      shell(`/?origin=47.3769,8.5417&theme=dark&run=${round}`),
-      shell(`/?origin=47.3769,8.5417&_rsc=${checked}`, router),
-      shell('/'),
-      shell('/?origin=47.3769,8.5417', { 'User-Agent': 'Twitterbot/1.0' }),
-      shell(`/?_rsc=${checked}`, router),
-      shell('/'),
+      shell('/map'),
+      shell(`/map?origin=47.3769,8.5417&theme=dark&run=${round}`),
+      shell(`/map?origin=47.3769,8.5417&_rsc=${checked}`, router),
+      shell('/map'),
+      shell('/map?origin=47.3769,8.5417', { 'User-Agent': 'Twitterbot/1.0' }),
+      shell(`/map?_rsc=${checked}`, router),
+      shell('/map'),
     ]);
     return [first, link, second, crawler, third];
   }));
@@ -619,7 +619,7 @@ test('every link gets the same page, without the parameters of the link in it', 
   expect(plain).not.toContain('47.3769');
   expect(plain).not.toContain('_rsc');
   // What the router is sent says nothing of the link either.
-  const flight = await shell(`/?origin=47.3769,8.5417&_rsc=${checked}`, router);
+  const flight = await shell(`/map?origin=47.3769,8.5417&_rsc=${checked}`, router);
   expect(flight).not.toContain('47.3769');
   expect(flight).not.toContain('class="app-shell"');
 });
@@ -629,11 +629,11 @@ test('opening a link under the service worker does not look like a new version a
   browserName,
 }) => {
   test.skip(browserName === 'webkit', 'service workers are blocked in the WebKit project');
-  await page.goto('/');
+  await page.goto('/map');
   await page.waitForFunction(() => navigator.serviceWorker.controller);
   let loads = 0;
   page.on('request', sent => { if (sent.isNavigationRequest()) loads += 1; });
-  await page.goto('/?theme=dark&map=detailed');
+  await page.goto('/map?theme=dark&map=detailed');
   await expect(page.locator('.app-shell')).toHaveAttribute('data-theme', 'dark');
   // The worker compares the page it is given with the one it kept; a difference reloads at once.
   await page.waitForTimeout(1500);
@@ -643,7 +643,7 @@ test('opening a link under the service worker does not look like a new version a
 
 test('says that location is off under the search bar, stays dismissed and leads to search', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/map');
 
   await expect(page.getByText('Location is off')).toHaveCount(0);
   const nearMe = page.getByRole('button', { name: 'Near me', exact: true });
@@ -683,7 +683,7 @@ test('says that location is off under the search bar, stays dismissed and leads 
 
 test('See how explains how to turn location back on in this browser and on this device', async ({ page, browserName }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/map');
   await page.getByRole('button', { name: 'Near me', exact: true }).click();
   const card = page.getByRole('status').filter({ hasText: 'Location is off' });
   // The help comes before the way around it; the last button dismisses the card.
@@ -743,7 +743,7 @@ test('a load that fails says why under the search bar and recovers with Try agai
     if (fail) await route.fulfill({ status: 503, contentType: 'application/json', body: '{}' });
     else await route.fallback();
   });
-  await page.goto('/');
+  await page.goto('/map');
   const banner = page.getByRole('alert').filter({ hasText: 'Scooters is having trouble. Try again in a moment.' });
   await expect(banner).toBeVisible();
   await expect(page.locator('.cluster-marker')).toHaveCount(0);
@@ -784,7 +784,7 @@ test('a busy Try again keeps its label where motion is reduced, and turns a spin
     label: getComputedStyle(element.querySelector('span')!).opacity,
     spinner: getComputedStyle(element, '::after').content,
   }));
-  await page.goto('/');
+  await page.goto('/map');
   const retry = page.locator('.load-banner').getByRole('button', { name: 'Try again' });
   await expect(retry).toBeVisible();
   fail = false;
@@ -804,7 +804,7 @@ test('a busy Try again keeps its label where motion is reduced, and turns a spin
 });
 
 test('the Tab key goes through the search bar and the dock before the map and its markers', async ({ page, browserName }) => {
-  await page.goto('/?origin=47.3769,8.5417');
+  await page.goto('/map?origin=47.3769,8.5417');
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
   // What a stop of the Tab key belongs to.
   const part = () => page.evaluate(() => {
@@ -840,7 +840,7 @@ test('the Tab key goes through the search bar and the dock before the map and it
 });
 
 test('clusters at zoom 15 and separates scooters above it', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/map');
   const map = page.locator('.leaflet-container');
   await expect(map).toHaveAttribute('data-zoom', '8');
   await expect(page.locator('.cluster-marker')).toHaveCount(1);
@@ -866,7 +866,7 @@ test('city overview drills directly into the city and preserves unchanged marker
         ...(zoom <= 10 ? { overview: true, refreshAfterSeconds: 3600 } : {}) },
     }) });
   });
-  await page.goto('/');
+  await page.goto('/map');
   const marker = page.locator('.cluster-marker-wrap');
   await expect(marker).toHaveCount(1);
   // The dock says what the numbers are and how to get further; no age for hourly totals.
@@ -885,7 +885,7 @@ test('city overview drills directly into the city and preserves unchanged marker
 });
 
 test('French map controls omit Swiss providers while keeping the local operator', async ({ page }) => {
-  await page.goto('/?origin=45.75,4.85');
+  await page.goto('/map?origin=45.75,4.85');
   await expect(page.getByRole('button', { name: /^Dott, / })).toBeVisible();
   await expect(page.getByRole('button', { name: /^PubliBike, / })).toHaveCount(0);
   await expect(page.getByRole('button', { name: /^Hopp, / })).toHaveCount(0);
@@ -896,7 +896,7 @@ for (const city of [
   { name: 'Roma', origin: '41.9028,12.4964', provider: 'Bird' },
 ]) {
   test(`${city.name} offers only its reviewed providers`, async ({ page }) => {
-    await page.goto(`/?origin=${city.origin}`);
+    await page.goto(`/map?origin=${city.origin}`);
     await expect(page.getByRole('button', { name: new RegExp(`^${city.provider}, `) })).toBeVisible();
     await expect(page.getByRole('button', { name: /^PubliBike, / })).toHaveCount(0);
     await expect(page.getByRole('button', { name: /^Pony, / })).toHaveCount(0);
@@ -904,7 +904,7 @@ for (const city of [
 }
 
 test('combines provider filters and resets them together', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/map');
   await focusFixtureArea(page);
   await zoomTo(page, 16);
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
@@ -925,7 +925,7 @@ test('combines provider filters and resets them together', async ({ page }) => {
 
 test('the filters offer battery presets and providers with their counts, and say what the map will show', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/?origin=47.3769,8.5417');
+  await page.goto('/map?origin=47.3769,8.5417');
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
   const filters = page.getByRole('dialog', { name: 'Filters', exact: true });
@@ -998,7 +998,7 @@ test('a battery minimum from an old link snaps down to a preset, and the server 
     const url = new URL(request.url());
     if (url.pathname === '/api/scooters') requested.push(`${url.searchParams.get('zoom')}:${url.searchParams.get('minBattery')}`);
   });
-  await page.goto('/?minBattery=45');
+  await page.goto('/map?minBattery=45');
   await expect.poll(() => new URL(page.url()).searchParams.get('minBattery')).toBe('30');
   await expect(page.locator('.cluster-marker')).toHaveCount(1);
   await expect.poll(() => requested.at(-1)).toBe('8:30');
@@ -1051,7 +1051,7 @@ test('the search bar is a search field until a place is chosen, and shows a loca
   });
   await page.route('**/api/geocode', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify(paradeplatz) }));
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/map');
   const island = page.locator('.search-island');
   const buttons = island.getByRole('button');
 
@@ -1113,7 +1113,7 @@ test('the bar keeps its second line whole beside the clear button in every langu
   };
   for (const width of [390, 320]) {
     await page.setViewportSize({ width, height: 844 });
-    await page.goto('/');
+    await page.goto('/map');
     await page.evaluate(() => localStorage.setItem('scooters-locale', 'en'));
     await page.reload();
     const height = (await island.boundingBox())!.height;
@@ -1143,7 +1143,7 @@ test('the bar keeps its second line whole beside the clear button in every langu
 test('the open search starts on the field and offers your location, recent places and cities with scooters', async ({ page }) => {
   await page.route('**/api/geocode', route => route.fulfill({ contentType: 'application/json', body: '[]' }));
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/map');
   const island = page.locator('.search-island');
   const map = page.locator('.leaflet-container');
   await page.getByRole('button', { name: 'Search city or address' }).click();
@@ -1205,7 +1205,7 @@ test('the open search starts on the field and offers your location, recent place
 test('typing lists places with a second line, tags those without scooter data, and walking times start from the chosen place', async ({ page }) => {
   await page.route('**/api/geocode', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify(paradeplatz) }));
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/map');
   const island = page.locator('.search-island');
   await page.getByRole('button', { name: 'Search city or address' }).click();
   const input = page.getByRole('combobox');
@@ -1265,7 +1265,7 @@ test('typing lists places with a second line, tags those without scooter data, a
 
 test('the address search itself finds a typed city with scooter data first, with its country in the language on screen', async ({ page }) => {
   // Nothing stands in for /api/geocode here: it answers cities with scooter data without asking swisstopo.
-  await page.goto('/');
+  await page.goto('/map');
   await page.evaluate(() => localStorage.setItem('scooters-locale', 'de'));
   await page.reload();
   const island = page.locator('.search-island');
@@ -1298,7 +1298,7 @@ test('the search says that it is searching, that nothing was found, and that it 
     await route.fulfill({ contentType: 'application/json', body: JSON.stringify(answer === 'places' ? paradeplatz : []) });
   });
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/map');
   const island = page.locator('.search-island');
   await page.getByRole('button', { name: 'Search city or address' }).click();
   const input = page.getByRole('combobox');
@@ -1334,7 +1334,7 @@ test('the open search ends above the bottom of a short window and scrolls to wha
   await page.route('**/api/geocode', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify(paradeplatz) }));
   // As little room as a phone on its side leaves above the keyboard.
   await page.setViewportSize({ width: 320, height: 240 });
-  await page.goto('/');
+  await page.goto('/map');
   const island = page.locator('.search-island');
   await page.getByRole('button', { name: 'Search city or address' }).click();
   const cities = island.getByRole('group', { name: 'Cities with scooters' }).getByRole('button');
@@ -1391,7 +1391,7 @@ const TILES = {
 
 test('the appearance follows the system until one is chosen, and the map is calm or detailed in both', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'light' });
-  await page.goto('/');
+  await page.goto('/map');
   await expect(page.locator('.cluster-marker')).toHaveCount(1);
   await expect(page.locator('.map-basemap')).toHaveCount(1);
   expect(await look(page)).toEqual({ ...LIGHT, tiles: TILES.calm });
@@ -1450,7 +1450,7 @@ test.describe('before any script runs', () => {
   test.use({ javaScriptEnabled: false, colorScheme: 'dark' });
 
   test('a dark system gets the dark appearance with the first paint', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/map');
     await expect(page.locator('.app-shell')).toHaveAttribute('data-theme', 'auto');
     await expect(page.locator('.sheet')).toBeVisible();
     expect(await page.evaluate(() => {
@@ -1487,7 +1487,7 @@ test('a chosen appearance is on the page before the app starts, under the conten
 
   // Nothing chosen: the system's appearance, left to the stylesheet.
   await page.emulateMedia({ colorScheme: 'light' });
-  await page.goto('/');
+  await page.goto('/map');
   await expect(page.locator('.sheet')).toBeVisible();
   expect(await firstPaint()).toEqual({ theme: 'auto', ...light });
 
@@ -1499,16 +1499,16 @@ test('a chosen appearance is on the page before the app starts, under the conten
 
   // A link that says Light wins over what is saved, on a dark system too.
   await page.emulateMedia({ colorScheme: 'dark' });
-  await page.goto('/?theme=light');
+  await page.goto('/map?theme=light');
   await expect(page.locator('.sheet')).toBeVisible();
   // That it applies at all shows that the policy let the script through: it carries
   // the nonce of its response, like the app's own scripts.
   expect(await firstPaint()).toEqual({ theme: 'light', ...light });
-  expect((await page.request.get('/')).headers()['content-security-policy']).toMatch(/script-src 'self' 'nonce-[^']+' 'strict-dynamic';/);
+  expect((await page.request.get('/map')).headers()['content-security-policy']).toMatch(/script-src 'self' 'nonce-[^']+' 'strict-dynamic';/);
 });
 
 test('the tiles are not loaded again when the appearance or the map style changes', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/map');
   await expect(page.locator('.cluster-marker')).toHaveCount(1);
   // The same layer throughout: only what the stylesheet does to it differs.
   await page.locator('.map-basemap').evaluate(element => { element.setAttribute('data-first', 'true'); });
@@ -1522,20 +1522,20 @@ test('the tiles are not loaded again when the appearance or the map style change
 
 test('links and settings saved with the old map style carry over', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'light' });
-  await page.goto('/?tile=dark');
+  await page.goto('/map?tile=dark');
   await expect(page.locator('.map-basemap')).toHaveCount(1);
   await expect.poll(() => new URL(page.url()).search).toBe('?theme=dark');
   expect(await look(page)).toEqual({ ...DARK, tiles: TILES.calmDark });
 
   // "OSM" is the detailed map; its appearance is now the system's.
-  await page.goto('/?tile=osm');
+  await page.goto('/map?tile=osm');
   await expect(page.locator('.map-basemap')).toHaveCount(1);
   await expect.poll(() => new URL(page.url()).search).toBe('?map=detailed');
   expect(await look(page)).toEqual({ ...LIGHT, tiles: TILES.detailed });
 
   // A home-screen launch has no link: the settings come from the device, here as an older release left them.
   await page.evaluate(() => localStorage.setItem('scooters-params', JSON.stringify({ tile: 'dark', minBattery: '45' })));
-  await page.goto('/');
+  await page.goto('/map');
   await expect(page.locator('.map-basemap')).toHaveCount(1);
   await expect.poll(() => new URL(page.url()).search).toBe('?minBattery=30&theme=dark');
   expect(await page.evaluate(() => localStorage.getItem('scooters-params'))).toBe('{"minBattery":"30","theme":"dark"}');
@@ -1543,7 +1543,7 @@ test('links and settings saved with the old map style carry over', async ({ page
 
 test('the settings name the languages, and About leads to the credits, the privacy notice and the source code', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/map');
   const trigger = page.getByRole('button', { name: 'Settings', exact: true });
   await trigger.click();
   const settings = page.getByRole('dialog', { name: 'Settings', exact: true });
@@ -1613,7 +1613,7 @@ test('the settings name the languages, and About leads to the credits, the priva
 
 test('the settings fit a small screen and scroll to their last row', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 });
-  await page.goto('/');
+  await page.goto('/map');
   await page.evaluate(() => localStorage.setItem('scooters-locale', 'fr'));
   await page.reload();
   await page.getByRole('button', { name: 'Réglages', exact: true }).click();
@@ -1635,7 +1635,7 @@ test('the settings fit a small screen and scroll to their last row', async ({ pa
 });
 
 test('primary controls have no WCAG A/AA accessibility violations', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/map');
   await expect(page.locator('.sheet')).toBeVisible();
 
   const results = await new AxeBuilder({ page })
@@ -1652,7 +1652,7 @@ test('primary controls have no WCAG A/AA accessibility violations', async ({ pag
 test('reduced motion and narrow screens retain accessible controls', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: 320, height: 640 });
-  await page.goto('/');
+  await page.goto('/map');
   const duration = await page.locator('.sheet').evaluate(element => getComputedStyle(element).transitionDuration);
   expect(duration.split(',').every(value => parseFloat(value) < 0.001)).toBe(true);
   await page.getByRole('button', { name: 'Filters', exact: true }).click();
@@ -1673,7 +1673,7 @@ test('reduced motion and narrow screens retain accessible controls', async ({ pa
 
 test('first launch shows the map at once, a labelled Near me button and compact credits', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/');
+  await page.goto('/map');
   // No card stands between the visitor and the map.
   await expect(page.locator('.cluster-marker')).toHaveCount(1);
   await expect(page.getByRole('dialog')).toHaveCount(0);
@@ -1728,7 +1728,7 @@ test('first launch shows the map at once, a labelled Near me button and compact 
 });
 
 test('locating once zooms to the street, turns Near me into the icon button and is remembered', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/map');
   await allowLocationWithCompass(page, 'granted');
   await page.getByRole('button', { name: 'Near me', exact: true }).click();
   await expect(page.getByRole('img', { name: 'Your live location' })).toBeVisible();
@@ -1773,7 +1773,7 @@ test('locates by itself when location is already granted, without a tap', async 
       value: { query: async () => ({ state: 'granted' }) },
     });
   });
-  await page.goto('/');
+  await page.goto('/map');
   await expect(page.getByRole('img', { name: 'Your live location' })).toBeVisible();
   await expect(page.locator('.leaflet-container')).toHaveAttribute('data-zoom', '17');
   await expect(page.locator('.fab')).toBeEnabled();
@@ -1795,7 +1795,7 @@ test('a visitor who has not granted location is never located without a tap', as
       value: { query: async () => ({ state: 'prompt' }) },
     });
   });
-  await page.goto('/');
+  await page.goto('/map');
   await expect(page.locator('.cluster-marker')).toHaveCount(1);
   await expect(page.getByRole('button', { name: 'Near me', exact: true })).toBeEnabled();
   await expect(page.locator('html')).not.toHaveAttribute('data-locate-requested', 'true');
@@ -1803,7 +1803,7 @@ test('a visitor who has not granted location is never located without a tap', as
 });
 
 test('zoom buttons and the compass show only where they are needed', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/map');
   const zoom = page.locator('.map-zoom-controls');
   const compass = page.locator('.map-compass');
   await expect(page.locator('.cluster-marker')).toHaveCount(1);
@@ -1844,7 +1844,7 @@ test('publishes a standalone privacy notice', async ({ page }) => {
 });
 
 test('compass rotates the map, preserves marker interaction and resets north', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/map');
   await focusFixtureArea(page);
   await zoomTo(page, 16);
   // By class: a compass that is hidden has no role to find it by.
@@ -1890,7 +1890,7 @@ test('compass rotates the map, preserves marker interaction and resets north', a
 
 test('compass honors reduced motion and takes the short route across north', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
+  await page.goto('/map');
   const compass = page.locator('.map-compass');
   await expect(compass).toBeEnabled();
   if (await coarsePointer(page)) {
@@ -1912,7 +1912,7 @@ test('compass honors reduced motion and takes the short route across north', asy
 });
 
 test('phone direction follows compass readings and stays aligned on a rotated map', async ({ page }) => {
-  const response = await page.goto('/');
+  const response = await page.goto('/map');
   expect(response?.headers()['permissions-policy']).toContain('magnetometer=(self)');
   await allowLocationWithCompass(page, 'granted');
   await page.getByRole('button', { name: 'Near me', exact: true }).click();
@@ -1961,7 +1961,7 @@ test('phone direction follows compass readings and stays aligned on a rotated ma
 });
 
 test('denying motion permission keeps location usable without inventing a direction', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/map');
   await allowLocationWithCompass(page, 'denied');
   await page.getByRole('button', { name: 'Near me', exact: true }).click();
   await expect(page.getByRole('img', { name: 'Your live location' })).toBeVisible();
@@ -1978,7 +1978,7 @@ test('denying motion permission keeps location usable without inventing a direct
 
 test('two-finger rotation updates the compass and can be reset', async ({ page, isMobile }) => {
   test.skip(!isMobile, 'Touch rotation is exercised on mobile WebKit.');
-  await page.goto('/');
+  await page.goto('/map');
   const compass = page.locator('.map-compass');
   await expect(compass).toBeEnabled();
   await expect(compass).toBeHidden();
@@ -2001,7 +2001,7 @@ test('parking bays appear at street zoom, open one selection at a time and follo
       meta: { ...scooterResponse.meta, mode: 'vehicles', totalVehicles: 1, zoom },
     }) });
   });
-  await page.goto('/?origin=45.75,4.85');
+  await page.goto('/map?origin=45.75,4.85');
   await expect(page.locator('.leaflet-container')).toHaveAttribute('data-zoom', '16');
   const marker = page.getByRole('button', { name: 'Dott parking: Place test', exact: true });
   await expect(marker).toBeVisible();
@@ -2065,7 +2065,7 @@ test.describe('on a desktop', () => {
   test.skip(({ isMobile }) => isMobile, 'The desktop layout needs a wide window with a mouse.');
 
   test('the providers are a legend under the search bar, one row each, with the behaviour of the chips', async ({ page }) => {
-    await page.goto('/?origin=47.3769,8.5417');
+    await page.goto('/map?origin=47.3769,8.5417');
     await expect(page.locator('.scooter-marker')).toHaveCount(3);
     await expect(page.locator('.sheet-count')).toHaveText(/^3\s*scooters on this map$/);
     const legend = page.getByRole('group', { name: 'Filter scooters by provider' });
@@ -2109,7 +2109,7 @@ test.describe('on a desktop', () => {
   });
 
   test('the card of a scooter opens beside its marker, stays beside it and closes with Escape', async ({ page }) => {
-    await page.goto('/?origin=47.3769,8.5417');
+    await page.goto('/map?origin=47.3769,8.5417');
     await expect(page.locator('.scooter-marker')).toHaveCount(3);
     // The fixtures share one spot; isolate Lime so that its marker takes the click.
     await page.getByRole('button', { name: 'Lime, 1. Shown.', exact: true }).click();
@@ -2190,7 +2190,7 @@ test.describe('on a desktop', () => {
   });
 
   test('a scooter under the pointer says who runs it, how charged it is and how far the walk is', async ({ page }) => {
-    await page.goto('/?origin=47.3769,8.5417');
+    await page.goto('/map?origin=47.3769,8.5417');
     await expect(page.locator('.scooter-marker')).toHaveCount(3);
     await page.getByRole('button', { name: 'Bird, 1. Shown.', exact: true }).click();
     // Once there is a location the marker's name also says how far it is.
@@ -2233,7 +2233,7 @@ test.describe('on a desktop', () => {
   });
 
   test('the keys listed in the corner search, locate, zoom and close', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/map');
     await allowLocationWithCompass(page, 'granted');
     const map = page.locator('.leaflet-container');
     await expect(map).toHaveAttribute('data-zoom', '8');
@@ -2287,7 +2287,7 @@ test.describe('on a desktop', () => {
   });
 
   test('a window made narrower takes the card into the dock, and gives it back when it is wide again', async ({ page }) => {
-    await page.goto('/?origin=47.3769,8.5417');
+    await page.goto('/map?origin=47.3769,8.5417');
     await expect(page.locator('.scooter-marker')).toHaveCount(3);
     await page.getByRole('button', { name: 'Bird, 1. Shown.', exact: true }).click();
     const bird = page.getByRole('button', { name: 'Bird scooter', exact: true });
@@ -2318,7 +2318,7 @@ test.describe('on a desktop', () => {
   });
 
   test('what went wrong is said beside the search bar, clear of the dock', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/map');
     await expect(page.locator('.cluster-marker')).toHaveCount(1);
     await page.getByRole('button', { name: 'Near me', exact: true }).click();
     const notice = page.locator('.map-notices');
@@ -2335,7 +2335,7 @@ test.describe('on a wide touch screen', () => {
   test.use({ viewport: { width: 1024, height: 768 }, hasTouch: true });
 
   test('a tablet keeps the dock at the bottom with its chips and its card', async ({ page }) => {
-    await page.goto('/?origin=47.3769,8.5417');
+    await page.goto('/map?origin=47.3769,8.5417');
     test.skip(!await coarsePointer(page), 'This browser reports a mouse even with a touch screen.');
     expect(await desktopLayout(page)).toBe(false);
     await expect(page.locator('.scooter-marker')).toHaveCount(3);
@@ -2380,7 +2380,7 @@ test.describe('on a small phone, or one held on its side', () => {
   test('a scooter picked just above the dock moves clear of the card that opens over it', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     // The scooters stand some 380 m south of the middle of the map: just above the dock.
-    await page.goto('/?origin=47.38036,8.5417');
+    await page.goto('/map?origin=47.38036,8.5417');
     await expect(page.locator('.scooter-marker')).toHaveCount(3);
     const before = (await page.getByRole('button', { name: 'Bird scooter', exact: true }).boundingBox())!;
     expect(before.y + before.height).toBeLessThan((await page.locator('.sheet').boundingBox())!.y);
@@ -2394,7 +2394,7 @@ test.describe('on a small phone, or one held on its side', () => {
 
   test('a scooter that its card does not cover stays where it is', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/?origin=47.3769,8.5417');
+    await page.goto('/map?origin=47.3769,8.5417');
     await expect(page.locator('.scooter-marker')).toHaveCount(3);
     const marker = await pick(page, 'Bird');
     const before = (await marker.boundingBox())!;
@@ -2405,7 +2405,7 @@ test.describe('on a small phone, or one held on its side', () => {
 
   test('a card opened from the keyboard takes the focus, and hands it back to its scooter when it closes', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/?origin=47.3769,8.5417');
+    await page.goto('/map?origin=47.3769,8.5417');
     await expect(page.locator('.scooter-marker')).toHaveCount(3);
     await page.getByRole('button', { name: 'Bird, 1. Shown.', exact: true }).click();
     const marker = page.getByRole('button', { name: 'Bird scooter', exact: true });
@@ -2424,7 +2424,7 @@ test.describe('on a small phone, or one held on its side', () => {
 
   test('a phone on its side shows a card whole, keeps its scooter in view and gives the open search the corner of the credits', async ({ page }) => {
     await page.setViewportSize({ width: 844, height: 390 });
-    await page.goto('/?origin=47.3769,8.5417');
+    await page.goto('/map?origin=47.3769,8.5417');
     await expect(page.locator('.scooter-marker')).toHaveCount(3);
     const marker = await pick(page, 'Lime');
     const card = page.locator('.sheet .dock-card');
@@ -2454,7 +2454,7 @@ test.describe('on a small phone, or one held on its side', () => {
       { lat: 47.37195, lng: 8.5417, display_name: 'Bürkliplatz', title: 'Bürkliplatz', subtitle: 'Zürich ZH', covered: true },
     ]) }));
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/');
+    await page.goto('/map');
     await page.getByRole('button', { name: 'Search city or address' }).click();
     await page.getByRole('combobox').fill('Bürkliplatz');
     await expect(page.getByRole('option', { name: /^Bürkliplatz/ })).toBeVisible();
@@ -2497,7 +2497,7 @@ test.describe('on a small phone, or one held on its side', () => {
 
   test('a phone on its side shows Near me as its icon alone, clear of the location card and the credits', async ({ page }) => {
     await page.setViewportSize({ width: 844, height: 390 });
-    await page.goto('/');
+    await page.goto('/map');
     // The longest of the four labels.
     await page.evaluate(() => localStorage.setItem('scooters-locale', 'de'));
     await page.reload();
@@ -2527,7 +2527,7 @@ test.describe('on a small phone, or one held on its side', () => {
 
   test('a narrow phone keeps the two buttons of a card on one line each, and the search field is 44 px high', async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 568 });
-    await page.goto('/?origin=47.3769,8.5417');
+    await page.goto('/map?origin=47.3769,8.5417');
     await expect(page.locator('.scooter-marker')).toHaveCount(3);
     await pick(page, 'Lime');
     const card = page.locator('.sheet .dock-card');
@@ -2551,7 +2551,7 @@ test.describe('on a small phone, or one held on its side', () => {
       }) });
     });
     await page.setViewportSize({ width: 320, height: 568 });
-    await page.goto('/?origin=47.3769,8.5417');
+    await page.goto('/map?origin=47.3769,8.5417');
     await page.locator('.scooter-marker-wrap').click();
     const card = page.locator('.sheet .dock-card');
     // "Open in PubliBike / Velospot" is wider than what 320 px leave beside "Directions".
@@ -2578,7 +2578,7 @@ test.describe('on a small phone, or one held on its side', () => {
       }) });
     });
     await page.setViewportSize({ width: 320, height: 568 });
-    await page.goto('/');
+    await page.goto('/map');
     await page.evaluate(() => localStorage.setItem('scooters-locale', 'de'));
     await page.reload();
 

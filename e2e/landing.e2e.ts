@@ -1,8 +1,12 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
-// The landing page, src/app/(site)/[locale]/page.tsx: one page per language
-// beside the app, served by the same Worker under the same security policy.
+// The landing page, src/app/(site)/[[...locale]]/page.tsx: one page per
+// language, English at the root, served by the same Worker as the map and under
+// the same security policy.
+
+/** Where each language is. */
+const ADDRESS = { en: '/', de: '/de', fr: '/fr', it: '/it' };
 
 const HEADLINES = {
   en: /^There are \d+ scooters around you\.$/,
@@ -31,7 +35,7 @@ const overflow = (page: Page) =>
 for (const [locale, headline] of Object.entries(HEADLINES)) {
   test(`the landing page reads in ${locale}, with its pictures and its fonts`, async ({ page }) => {
     const heard = complaints(page);
-    await page.goto(`/${locale}`);
+    await page.goto(ADDRESS[locale as keyof typeof ADDRESS]);
     await expect(page.locator('html')).toHaveAttribute('lang', locale);
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(headline);
 
@@ -59,10 +63,13 @@ for (const [locale, headline] of Object.entries(HEADLINES)) {
 }
 
 test('the landing page changes language from its bar and stays where it is', async ({ page }) => {
-  await page.goto('/en');
+  await page.goto('/');
   const languages = page.getByRole('group', { name: 'Language' });
   await expect(languages.getByRole('link')).toHaveText(['EN', 'DE', 'FR', 'IT']);
   await expect(languages.getByRole('link', { name: 'EN' })).toHaveAttribute('aria-current', 'page');
+  for (const [locale, address] of Object.entries(ADDRESS)) {
+    await expect(languages.getByRole('link', { name: locale.toUpperCase() })).toHaveAttribute('href', address);
+  }
 
   await languages.getByRole('link', { name: 'FR' }).click();
   await expect(page).toHaveURL(/\/fr$/);
@@ -71,26 +78,86 @@ test('the landing page changes language from its bar and stays where it is', asy
   await expect(page.getByRole('group', { name: 'Langue' }).getByRole('link', { name: 'FR' }))
     .toHaveAttribute('aria-current', 'page');
   await expect(page).toHaveTitle(/^Scooters — Les trottinettes/);
+
+  // And back to English, which is the root.
+  await page.getByRole('group', { name: 'Langue' }).getByRole('link', { name: 'EN' }).click();
+  await expect(page).toHaveURL(/:\d+\/$/);
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+});
+
+test('the landing page tells a search engine where each language is', async ({ page }) => {
+  await page.goto('/de');
+  const site = 'https://scooters.plhery.com';
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `${site}/de`);
+  for (const [locale, address] of Object.entries({ ...ADDRESS, 'x-default': '/' })) {
+    await expect(page.locator(`link[rel="alternate"][hreflang="${locale}"]`))
+      .toHaveAttribute('href', new RegExp(`^${site}${address === '/' ? '/?' : address}$`));
+  }
+
+  const listed = await (await page.request.get('/sitemap.xml')).text();
+  for (const address of ['/', '/de', '/fr', '/it', '/map', '/privacy']) expect(listed).toContain(`<loc>${site}${address}</loc>`);
+  expect(listed).not.toContain(`${site}/en`);
 });
 
 test('the landing page leads to the map, and to the map of a city', async ({ page }) => {
-  await page.goto('/en');
+  await page.goto('/');
   for (const open of await page.getByRole('link', { name: 'Open the map' }).all()) {
-    await expect(open).toHaveAttribute('href', '/');
+    await expect(open).toHaveAttribute('href', '/map');
   }
   await expect(page.getByRole('link', { name: 'Open the map' })).toHaveCount(3);
 
   const cities = page.locator('#cities');
   await expect(cities.getByRole('heading', { level: 2 })).toHaveText(/^\d+ cities\.$/);
-  await expect(cities.getByRole('link', { name: 'Zürich', exact: true })).toHaveAttribute('href', /^\/\?origin=47\.\d+,8\.\d+$/);
-  await expect(cities.getByRole('link', { name: 'Roma', exact: true })).toHaveAttribute('href', /^\/\?origin=41\.\d+,12\.\d+$/);
+  await expect(cities.getByRole('link', { name: 'Zürich', exact: true })).toHaveAttribute('href', /^\/map\?origin=47\.\d+,8\.\d+$/);
+  await expect(cities.getByRole('link', { name: 'Roma', exact: true })).toHaveAttribute('href', /^\/map\?origin=41\.\d+,12\.\d+$/);
   await expect(page.getByRole('contentinfo').getByRole('link', { name: 'Privacy' })).toHaveAttribute('href', '/privacy');
+
+  // The map is another document, with its own layout: the link loads it whole.
+  await page.getByRole('link', { name: 'Open the map' }).first().click();
+  await expect(page).toHaveURL(/\/map$/);
+  await expect(page.locator('.app-shell')).toBeVisible();
+});
+
+test('a link to the map from when it was at the root still opens the map', async ({ page, request }) => {
+  // The Worker answers before any page is rendered, and keeps what the link carries.
+  const moved = await request.get('/?origin=47.3769,8.5417&theme=dark', { maxRedirects: 0 });
+  expect(moved.status()).toBe(308);
+  expect(new URL(moved.headers().location).pathname + new URL(moved.headers().location).search)
+    .toBe('/map?origin=47.3769,8.5417&theme=dark');
+
+  await page.goto('/?theme=dark');
+  await expect(page).toHaveURL(/\/map\?theme=dark$/);
+  await expect(page.locator('.app-shell')).toHaveAttribute('data-theme', 'dark');
+
+  // What the map does not read is no reason to leave the landing page.
+  const kept = await request.get('/?utm_source=share', { maxRedirects: 0 });
+  expect(kept.status()).toBe(200);
+});
+
+test('an app installed while the root was the map opens on the map', async ({ page }) => {
+  // What tells an installed app from a visitor, on Android and on iOS.
+  await page.addInitScript(() => {
+    Object.defineProperty(Navigator.prototype, 'standalone', { get: () => true });
+  });
+  await page.goto('/');
+  await expect(page).toHaveURL(/\/map$/);
+  await expect(page.locator('.app-shell')).toBeVisible();
+
+  // The other languages never were the map.
+  await page.goto('/de');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(HEADLINES.de);
+});
+
+test('English has one address', async ({ request }) => {
+  const second = await request.get('/en', { maxRedirects: 0 });
+  expect(second.status()).toBe(308);
+  expect(new URL(second.headers().location, 'http://site').pathname).toBe('/');
 });
 
 test('the landing page is accessible, and its targets are big enough for a finger', async ({ page }) => {
   // At rest: further down, a figure is dim until it has scrolled into view.
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/en');
+  await page.goto('/');
   const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
   expect(accessibility.violations).toEqual([]);
 
@@ -102,6 +169,7 @@ test('the landing page is accessible, and its targets are big enough for a finge
 
 test('the landing page has no page for a language it does not speak', async ({ page }) => {
   expect((await page.goto('/es'))?.status()).toBe(404);
+  expect((await page.goto('/de/zurich'))?.status()).toBe(404);
   expect((await page.goto('/en/zurich'))?.status()).toBe(404);
 });
 
@@ -113,6 +181,6 @@ test.describe('before any script runs', () => {
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(HEADLINES.de);
     await expect(page.locator('.near-card')).toHaveCount(7);
     await expect(page.locator('.stage-phone img')).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Karte öffnen' }).first()).toHaveAttribute('href', '/');
+    await expect(page.getByRole('link', { name: 'Karte öffnen' }).first()).toHaveAttribute('href', '/map');
   });
 });

@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <a href="https://scooters.plhery.com"><strong>Open the live map →</strong></a>
+  <a href="https://scooters.plhery.com/map"><strong>Open the live map →</strong></a>
 </p>
 
 <p align="center">

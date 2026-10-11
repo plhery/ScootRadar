@@ -3,9 +3,11 @@ const LEGACY_CACHE_PREFIXES = ["swiss-scooters", "zurich-scooter"];
 const MOVED_ORIGIN = ["swiss-scooters.plhery.com", "zurich-scooter.plhery.com"].includes(
   self.location.hostname
 ) ? "https://scooters.plhery.com" : null;
-const APP_CACHE = `${CACHE_PREFIX}-app-v5`;
+const APP_CACHE = `${CACHE_PREFIX}-app-v6`;
 const ASSET_CACHE = `${CACHE_PREFIX}-assets-v4`;
-const APP_SHELL_URL = new URL("/", self.location.origin).toString();
+// The map. It was at "/" until the landing page took that place.
+const APP_SHELL_PATH = "/map";
+const APP_SHELL_URL = new URL(APP_SHELL_PATH, self.location.origin).toString();
 const UPDATE_MARKER_URL = new URL(
   "/__pwa-update-pending__",
   self.location.origin
@@ -110,11 +112,20 @@ self.addEventListener("fetch", (event) => {
   if (
     request.mode === "navigate" &&
     url.origin === self.location.origin &&
-    url.pathname === "/"
+    url.pathname === APP_SHELL_PATH
   ) {
     const refresh = refreshAppShell(request, event.preloadResponse);
     event.waitUntil(refresh.then(() => undefined));
     event.respondWith(serveAppShell(refresh));
+    return;
+  }
+
+  if (
+    request.mode === "navigate" &&
+    url.origin === self.location.origin &&
+    url.pathname === "/"
+  ) {
+    event.respondWith(landingPage(request, event.preloadResponse));
     return;
   }
 
@@ -162,7 +173,19 @@ function movedPageUrl(source) {
   if (!MOVED_ORIGIN || url.origin !== self.location.origin || url.pathname.startsWith("/api/")) {
     return null;
   }
-  return `${MOVED_ORIGIN}${url.pathname}${url.search}${url.hash}`;
+  // These hosts only ever had the map at their root.
+  const path = url.pathname === "/" ? APP_SHELL_PATH : url.pathname;
+  return `${MOVED_ORIGIN}${path}${url.search}${url.hash}`;
+}
+
+// The landing page is not kept: it comes from the network. Without one, an app
+// installed while "/" was the map still opens on the map.
+async function landingPage(request, preloadResponse) {
+  try {
+    return (await preloadResponse) ?? (await fetch(request));
+  } catch {
+    return Response.redirect(APP_SHELL_URL, 302);
+  }
 }
 
 async function serveAppShell(refresh) {

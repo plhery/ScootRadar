@@ -1,4 +1,4 @@
-// The words of the landing page, src/app/(site)/[locale]/page.tsx. It is
+// The words of the landing page, src/app/(site)/[[...locale]]/page.tsx. It is
 // rendered on the server only, so none of this reaches the browser as script.
 //
 // The labels of the app the page redraws (the walk, the price, the two buttons,
@@ -11,6 +11,22 @@ export type LandingLocale = (typeof LANDING_LOCALES)[number];
 
 export function isLandingLocale(value: string): value is LandingLocale {
   return (LANDING_LOCALES as readonly string[]).includes(value);
+}
+
+/** The language of the page at "/". The others are under their code. */
+export const DEFAULT_LANDING_LOCALE: LandingLocale = 'en';
+
+export function landingPath(locale: LandingLocale): string {
+  return locale === DEFAULT_LANDING_LOCALE ? '/' : `/${locale}`;
+}
+
+/** The language a path of the site is in, from its segments, if it is the landing page. */
+export function landingLocaleOf(segments: string[] | undefined): LandingLocale | null {
+  if (!segments?.length) return DEFAULT_LANDING_LOCALE;
+
+  const [code, ...rest] = segments;
+  // English has one address, not two.
+  return rest.length === 0 && isLandingLocale(code) && code !== DEFAULT_LANDING_LOCALE ? code : null;
 }
 
 export const LANGUAGE_NAMES: Record<LandingLocale, string> = {

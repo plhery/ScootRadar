@@ -2,7 +2,8 @@ import PageView from '@/components/PageView';
 import type { Metadata, Viewport } from 'next';
 import { Red_Hat_Display, Red_Hat_Text } from 'next/font/google';
 import { notFound } from 'next/navigation';
-import { LANDING_LOCALES, isLandingLocale } from '@/lib/landingCopy';
+import { LANDING_LOCALES, landingLocaleOf, landingPath } from '@/lib/landingCopy';
+import { MOVED_MAP_SCRIPT } from '@/lib/mapAddress';
 import '../landing.css';
 
 // One family in two cuts: Display for the headlines and the figures, Text for
@@ -39,11 +40,11 @@ export const viewport: Viewport = {
 };
 
 // Every page is served as it was built (open-next.config.ts): the four
-// languages exist, and nothing else under this layout does.
+// languages exist, English at "/", and nothing else under this layout does.
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return LANDING_LOCALES.map(locale => ({ locale }));
+  return LANDING_LOCALES.map(locale => ({ locale: landingPath(locale).split('/').filter(Boolean) }));
 }
 
 // A root layout of its own, beside the one of the app: the page has its own
@@ -53,13 +54,17 @@ export default async function LandingLayout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale?: string[] }>;
 }>) {
-  const { locale } = await params;
-  if (!isLandingLocale(locale)) notFound();
+  const locale = landingLocaleOf((await params).locale);
+  if (!locale) notFound();
 
   return (
     <html lang={locale} className={`${display.variable} ${text.variable}`}>
+      <head>
+        {/* The map was at "/" before this page: what still looks for it here is sent on. */}
+        <script dangerouslySetInnerHTML={{ __html: MOVED_MAP_SCRIPT }} />
+      </head>
       <body>
         {children}
         <PageView />

@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { LANDING_COPY, LANDING_LOCALES, LANGUAGE_NAMES, isLandingLocale } from '@/lib/landingCopy';
+import {
+  LANDING_COPY, LANDING_LOCALES, LANGUAGE_NAMES, isLandingLocale, landingLocaleOf, landingPath,
+} from '@/lib/landingCopy';
 import { LANDING_NEAREST } from '@/lib/landingSnapshot';
 import { DEFAULT_RIDE_DURATION, RIDE_DURATIONS } from '@/lib/ridePrice';
 
@@ -17,6 +19,19 @@ describe('the languages of the landing page', () => {
     expect(isLandingLocale('fr')).toBe(true);
     expect(isLandingLocale('es')).toBe(false);
     expect(isLandingLocale('')).toBe(false);
+  });
+
+  it('has English at the root and the others under their code', () => {
+    expect(LANDING_LOCALES.map(landingPath)).toEqual(['/', '/de', '/fr', '/it']);
+    expect(landingLocaleOf(undefined)).toBe('en');
+    expect(landingLocaleOf([])).toBe('en');
+    for (const locale of ['de', 'fr', 'it'] as const) expect(landingLocaleOf([locale])).toBe(locale);
+  });
+
+  it('has no second address for English, and none below a language', () => {
+    expect(landingLocaleOf(['en'])).toBeNull();
+    expect(landingLocaleOf(['es'])).toBeNull();
+    expect(landingLocaleOf(['de', 'zurich'])).toBeNull();
   });
 
   it('says everything in each of them', () => {

@@ -6,9 +6,10 @@ Both clients POST to `https://u.plhery.com/api/send`, using the public website I
 `6e60b4ab-b4ee-4785-9699-a7f32127b358`. No API/admin secret is shipped. The Umami
 admin dashboard remains protected independently of its existing public collector.
 Filter by **Tag** (`web`, `pwa`, `ios`) to compare platforms. Named events also
-carry `platform` in event data. Web page views contain only `/`, `/privacy` or the
-landing page of a language (`/en`, `/de`, `/fr`, `/it`); native screen views use
-`/`, `/filters`, `/settings`.
+carry `platform` in event data. Web page views contain only `/map`, `/privacy` or
+the landing page of a language (`/` for English, `/de`, `/fr`, `/it`); native
+screen views use `/`, `/filters`, `/settings`. Until the landing page took the
+root, the web map was counted under `/`: web views of `/` before that are the map.
 
 ## Event catalog
 

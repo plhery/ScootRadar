@@ -17,7 +17,7 @@ export default function PrivacyPage() {
   return (
     <main className="legal-page">
       <article className="legal-content">
-        <Link className="legal-back" href="/">← Back to Scooters</Link>
+        <Link className="legal-back" href="/map">← Back to Scooters</Link>
         <h1>Privacy</h1>
         <p>Last updated: 4 October 2026</p>
 

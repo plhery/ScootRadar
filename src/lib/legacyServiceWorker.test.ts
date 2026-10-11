@@ -74,7 +74,8 @@ describe.each(['swiss-scooters.plhery.com', 'zurich-scooter.plhery.com'])('insta
     });
     const response = respond.mock.calls[0][0] as Response;
     expect(response.status).toBe(308);
-    expect(response.headers.get('location')).toBe('https://scooters.plhery.com/?lang=de');
+    // The root of these hosts was the map, which has its own address now.
+    expect(response.headers.get('location')).toBe('https://scooters.plhery.com/map?lang=de');
     for (const mode of ['navigate', 'cors']) {
       const apiResponse = await worker.dispatch('fetch', {
         request: { url: `${worker.origin}/api/scooters`, mode, method: 'GET' },
@@ -87,5 +88,33 @@ describe.each(['swiss-scooters.plhery.com', 'zurich-scooter.plhery.com'])('insta
     const worker = migrationWorker(hostname);
     await worker.dispatch('message', { data: { type: 'CHECK_FOR_UPDATE' } });
     expect(worker.fetch).not.toHaveBeenCalled();
+  });
+});
+
+describe('the landing page, where the worker of the app is installed', () => {
+  const visit = (worker: ReturnType<typeof migrationWorker>, preloadResponse?: Promise<Response | undefined>) =>
+    worker.dispatch('fetch', {
+      request: { url: `${worker.origin}/`, mode: 'navigate', method: 'GET' },
+      preloadResponse,
+    });
+
+  it('comes from the network and is not kept as the app', async () => {
+    const worker = migrationWorker('scooters.plhery.com');
+    const landing = new Response('landing');
+    worker.fetch.mockResolvedValue(landing);
+    const respond = await visit(worker);
+    expect(await respond.mock.calls[0][0]).toBe(landing);
+
+    const preloaded = new Response('preloaded');
+    expect(await (await visit(worker, Promise.resolve(preloaded))).mock.calls[0][0]).toBe(preloaded);
+    expect(worker.fetch).toHaveBeenCalledOnce();
+  });
+
+  it('gives way to the map without a network, for an app installed while the root was the map', async () => {
+    const worker = migrationWorker('scooters.plhery.com');
+    worker.fetch.mockRejectedValue(new TypeError('offline'));
+    const response = await (await visit(worker)).mock.calls[0][0] as Response;
+    expect(response.status).toBe(302);
+    expect(response.headers.get('location')).toBe('https://scooters.plhery.com/map');
   });
 });

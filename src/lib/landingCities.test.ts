@@ -21,7 +21,7 @@ describe('the cities of the landing page', () => {
     for (const { featured } of landingCountries()) {
       for (const city of featured) {
         const url = new URL(city.href, 'https://scooters.plhery.com');
-        expect(url.pathname).toBe('/');
+        expect(url.pathname).toBe('/map');
         const { origin } = parseClientParams(url.searchParams);
         expect(origin, city.name).not.toBeNull();
         expect(isPointCovered(origin![0], origin![1]), city.name).toBe(true);

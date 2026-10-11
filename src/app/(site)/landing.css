@@ -1,4 +1,4 @@
-/* The landing page, src/app/(site)/[locale]/page.tsx: the map at night.
+/* The landing page, src/app/(site)/[[...locale]]/page.tsx: the map at night.
    It shares nothing with the app's globals.css; this is its whole stylesheet,
    and it is dark whatever the appearance of the system. */
 

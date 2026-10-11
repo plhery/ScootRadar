@@ -1,3 +1,5 @@
+import { MAP_PATH } from '@/lib/mapAddress';
+
 // First-party, cookie-free Umami collection. Never accept arbitrary URLs or data.
 export const ANALYTICS_ENDPOINT = 'https://u.plhery.com/api/send';
 export const ANALYTICS_WEBSITE = '6e60b4ab-b4ee-4785-9699-a7f32127b358';
@@ -29,11 +31,12 @@ export function analyticsEnabled(): boolean {
   try { return !localStorage.getItem('umami.disabled'); } catch { return false; }
 }
 
-// The pages beside the app, with the title each is counted under. The landing
-// page is one per language: src/lib/landingCopy.ts.
+// The pages of the site, with the title each is counted under. The landing
+// page is one per language, English at "/": src/lib/landingCopy.ts.
 const PUBLIC_PAGES = new Map([
+  [MAP_PATH, 'Scooters'],
   ['/privacy', 'Privacy — Scooters'],
-  ['/en', 'About — Scooters'],
+  ['/', 'About — Scooters'],
   ['/de', 'About — Scooters'],
   ['/fr', 'About — Scooters'],
   ['/it', 'About — Scooters'],
@@ -50,8 +53,9 @@ export function track(event?: AnalyticsEvent, data: AnalyticsData = {}): void {
     (navigator as Navigator & { standalone?: boolean }).standalone ? 'pwa' : 'web';
   const payload = {
     website: ANALYTICS_WEBSITE, hostname: ANALYTICS_HOST,
-    // Only these public screens exist. Exclude even unknown paths, all query strings and fragments.
-    url: PUBLIC_PAGES.has(window.location.pathname) ? window.location.pathname : '/',
+    // Only these public screens exist. Exclude even unknown paths, all query strings and fragments:
+    // what is not one of them is counted as the map, which sends every event but the page views.
+    url: PUBLIC_PAGES.has(window.location.pathname) ? window.location.pathname : MAP_PATH,
     title: PUBLIC_PAGES.get(window.location.pathname) ?? 'Scooters',
     referrer: '', language: navigator.language, tag: platform,
     ...(event ? { name: event, data: { ...safeAnalyticsData(data), platform } } : {}),

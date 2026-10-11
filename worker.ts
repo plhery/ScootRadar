@@ -8,6 +8,7 @@
 import openNextWorker from './.open-next/worker.js';
 import { documentContentSecurityPolicy } from './src/lib/contentSecurityPolicy';
 import { legacyHostRedirect } from './src/lib/legacyHost';
+import { movedMapRedirect } from './src/lib/mapAddress';
 import { pageRequest } from './src/lib/pageRequest';
 import { proxyScooterSnapshot } from './src/lib/scooterProxy';
 
@@ -46,7 +47,7 @@ function secureDocumentResponse(request: Request, response: Response): Response 
 
 const swissScootersWorker = {
   async fetch(request: Request, env: CloudflareEnv, ctx: ExecutionContext) {
-    const redirect = legacyHostRedirect(request);
+    const redirect = legacyHostRedirect(request) ?? movedMapRedirect(request);
     if (redirect) {
       return redirect;
     }

@@ -114,7 +114,7 @@ beforeEach(() => {
   localStorage.clear();
   recentPlaces.clear();
   viewport.bounds = { south: 47.36, west: 8.52, north: 47.39, east: 8.57 };
-  window.history.replaceState(null, '', '/');
+  window.history.replaceState(null, '', '/map');
   vi.spyOn(console, 'error').mockImplementation(() => {});
   vi.stubGlobal('ResizeObserver', class { observe() {} disconnect() {} });
 });
@@ -835,7 +835,7 @@ it('locates by itself when the browser has already granted location, and never o
 
   // A shared link keeps its own place.
   getCurrentPosition.mockClear();
-  window.history.replaceState(null, '', '/?origin=45.75,4.85');
+  window.history.replaceState(null, '', '/map?origin=45.75,4.85');
   mount();
   await act(async () => vi.advanceTimersByTimeAsync(180));
   expect(getCurrentPosition).not.toHaveBeenCalled();
@@ -936,7 +936,7 @@ const themeColors = () => ['light', 'dark'].map(scheme => document.head
 
 it('carries settings from the old tile parameter over to theme and map', async () => {
   vi.stubGlobal('fetch', vi.fn(async () => Response.json(response())));
-  window.history.replaceState(null, '', '/?tile=dark&minBattery=45');
+  window.history.replaceState(null, '', '/map?tile=dark&minBattery=45');
   const first = mount();
   await act(async () => vi.advanceTimersByTimeAsync(180));
   expect(shell()).toHaveAttribute('data-theme', 'dark');
@@ -947,7 +947,7 @@ it('carries settings from the old tile parameter over to theme and map', async (
 
   // A home-screen launch has no URL; the settings come from storage, here in the old format.
   localStorage.setItem('scooters-params', JSON.stringify({ tile: 'osm' }));
-  window.history.replaceState(null, '', '/');
+  window.history.replaceState(null, '', '/map');
   const second = mount();
   await act(async () => vi.advanceTimersByTimeAsync(180));
   // "OSM" was a map style of the light appearance; the appearance is now the system's.
@@ -958,7 +958,7 @@ it('carries settings from the old tile parameter over to theme and map', async (
   second.unmount();
 
   // The old light style is what nothing chosen means today.
-  window.history.replaceState(null, '', '/?tile=light');
+  window.history.replaceState(null, '', '/map?tile=light');
   mount();
   await act(async () => vi.advanceTimersByTimeAsync(180));
   expect(screen.getByTestId('settings')).toHaveTextContent('auto calm');
@@ -1007,7 +1007,7 @@ it('leaves Automatic to the system, and keeps a chosen appearance and map style 
 
 it('restores a chosen appearance and map style from the link', async () => {
   vi.stubGlobal('fetch', vi.fn(async () => Response.json(response())));
-  window.history.replaceState(null, '', '/?theme=light&map=detailed');
+  window.history.replaceState(null, '', '/map?theme=light&map=detailed');
   mount();
   await act(async () => vi.advanceTimersByTimeAsync(180));
   expect(shell()).toHaveAttribute('data-theme', 'light');

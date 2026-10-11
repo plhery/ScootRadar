@@ -15,10 +15,10 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://scooters.plhery.com"),
   title: "Scooters",
   description: "Find shared e-scooters in Switzerland and selected cities in France, Germany and Italy",
-  alternates: { canonical: "/" },
+  alternates: { canonical: "/map" },
   openGraph: {
     type: "website",
-    url: "/",
+    url: "/map",
     siteName: "Scooters",
     title: "Scooters",
     description: "Find shared e-scooters in Switzerland and selected cities in France, Germany and Italy",
