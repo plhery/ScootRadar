@@ -19,7 +19,7 @@ export default function PrivacyPage() {
       <article className="legal-content">
         <Link className="legal-back" href="/map">← Back to Scootradar</Link>
         <h1>Privacy</h1>
-        <p>Last updated: 4 October 2026</p>
+        <p>Last updated: 11 October 2026</p>
 
         <h2>Overview</h2>
         <p>
@@ -31,7 +31,8 @@ export default function PrivacyPage() {
           If you grant location permission, your browser or device provides your position to the
           app. Your position is used on the device to focus the map and calculate distances. The
           Scootradar API receives the visible map bounds needed to find vehicles, but no
-          separate user-location coordinate. These values are not stored by the application.
+          separate user-location coordinate. These values are not stored by the application,
+          except in an error report when a request fails (see below).
         </p>
         <p>
           The map is drawn on your device from OpenStreetMap data, in tiles requested directly from
@@ -98,12 +99,22 @@ export default function PrivacyPage() {
           messages, not precise locations or search text.
         </p>
 
+        <h2>Error reports</h2>
+        <p>
+          When the server fails to answer a map request, an error report is sent to Sentry, in the
+          United States, so we can reproduce the failure. It holds the request URL, with the visible
+          map bounds, zoom level and filters, and the state of the server at the time. It never
+          includes your IP address, request headers or search text. Sentry keeps these reports for
+          up to 90 days.
+        </p>
+
         <h2>Contact and third parties</h2>
         <p>
           Questions can be sent to <a href="mailto:hello@scootradar.com">hello@scootradar.com</a>.
           Third-party services have their own privacy policies: {' '}
           <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a>, {' '}
-          <a href="https://openfreemap.org/privacy/">OpenFreeMap</a>, and {' '}
+          <a href="https://openfreemap.org/privacy/">OpenFreeMap</a>, {' '}
+          <a href="https://sentry.io/privacy/">Sentry</a>, and {' '}
           <a href="https://www.geo.admin.ch/en/data-privacy">geo.admin.ch</a>.
         </p>
       </article>

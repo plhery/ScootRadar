@@ -168,6 +168,7 @@ curl http://localhost:3001/health
 
 The public API has edge rate limiting. The cache server logs feed counts,
 observation ages, and feed failures; it does not log map URLs, coordinates, or caller IPs.
+(A Sentry report of a failed request does keep its URL, never the caller's IP.)
 It also logs `snapshot_feed_state` whenever a feed moves between `ok`, `failing`
 (the previous positions are still served) and `expired` (nothing is served and
 the map says the provider is not sharing data), with the age of its data. That

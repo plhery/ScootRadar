@@ -6,11 +6,11 @@ const REPORT_INTERVAL_MS = 3600_000;
 const lastReportedAt = new Map<string, number>();
 
 /**
- * Sentry, enabled only with SENTRY_DSN. Reports never carry the incoming
- * request: its query holds map bounds and the Worker forwards the visitor's
- * address in a header. Routine feed failures are not reported, only a feed
- * that stops being served (see reportFeedExpired); Prometheus and the logs
- * cover the rest.
+ * Sentry, enabled only with SENTRY_DSN. A failing request keeps its method and
+ * URL, query included: the map bounds, zoom and filters that reproduce it. Its
+ * headers are dropped: they hold the Worker's token and the visitor's address.
+ * Routine feed failures are not reported, only a feed that stops being served
+ * (see reportFeedExpired); Prometheus and the logs cover the rest.
  */
 export function initErrorReporting(env: Record<string, string | undefined> = process.env): boolean {
   const dsn = env.SENTRY_DSN?.trim();
@@ -19,9 +19,13 @@ export function initErrorReporting(env: Record<string, string | undefined> = pro
     dsn,
     environment: env.SENTRY_ENVIRONMENT?.trim() || env.NODE_ENV || 'development',
     release: env.SOURCE_COMMIT?.trim() || undefined,
-    dataCollection: { userInfo: false, httpBodies: [], urlQueryParams: false },
+    dataCollection: { userInfo: false, httpBodies: [] },
+    includeLocalVariables: true,
     beforeSend(event) {
-      delete event.request;
+      if (event.request) {
+        const { method, url, query_string } = event.request;
+        event.request = { method, url, query_string };
+      }
       delete event.user;
       return event;
     },

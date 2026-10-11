@@ -14,16 +14,21 @@ const { initErrorReporting, reportError, reportFeedExpired } = await import('./e
 
 beforeEach(() => vi.clearAllMocks());
 
-it('stays off without a DSN, and never sends the incoming request', () => {
+it('stays off without a DSN, and sends a request\'s URL but never its headers', () => {
   expect(initErrorReporting({})).toBe(false);
   expect(Sentry.init).not.toHaveBeenCalled();
   expect(initErrorReporting({ SENTRY_DSN: 'https://key@o1.ingest.sentry.io/1', NODE_ENV: 'production', SOURCE_COMMIT: 'abc123' })).toBe(true);
   const options = vi.mocked(Sentry.init).mock.calls[0][0]!;
   expect(options).toMatchObject({ environment: 'production', release: 'abc123', tracePropagationTargets: [],
     integrations: [{ name: 'OnUnhandledRejection', options: { mode: 'strict' } }] });
-  const event = { request: { url: '/api/scooters?south=47.3', headers: { 'x-scooter-client-ip': '192.0.2.1' } },
-    user: { ip_address: '192.0.2.1' }, message: 'failed', type: undefined } satisfies ErrorEvent;
-  expect(options.beforeSend!(event, {})).toEqual({ message: 'failed', type: undefined });
+  expect(options).toMatchObject({ includeLocalVariables: true, dataCollection: { userInfo: false } });
+  const event = { request: { method: 'GET', url: 'http://localhost/api/scooters', query_string: 'south=47.3&zoom=16',
+    headers: { 'x-scooter-client-ip': '192.0.2.1', authorization: 'Bearer secret' }, cookies: { a: 'b' } },
+  user: { ip_address: '192.0.2.1' }, message: 'failed', type: undefined } satisfies ErrorEvent;
+  expect(options.beforeSend!(event, {})).toEqual({ message: 'failed', type: undefined,
+    request: { method: 'GET', url: 'http://localhost/api/scooters', query_string: 'south=47.3&zoom=16' } });
+  const withoutRequest = { message: 'failed', type: undefined } satisfies ErrorEvent;
+  expect(options.beforeSend!(withoutRequest, {})).toEqual({ message: 'failed', type: undefined });
 });
 
 it('reports a repeating error once an hour per key', () => {

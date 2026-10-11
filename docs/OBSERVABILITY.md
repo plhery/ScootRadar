@@ -91,9 +91,14 @@ seconds late.
 ## Sentry
 
 The SDK runs only with `SENTRY_DSN`. Its release is the deployed commit
-(`SOURCE_COMMIT`), its environment `NODE_ENV`. Every event loses the incoming request
-and user before it is sent: the API's query holds map bounds, and the Worker forwards
-the visitor's address in a header. Tracing is off.
+(`SOURCE_COMMIT`), its environment `NODE_ENV`. A request that failed keeps its method
+and URL, query included, so its map bounds, zoom and filters reproduce it; its headers
+and the user are dropped before sending, since they hold the Worker's token and the
+visitor's address. The privacy notice (`PRIVACY.md`, `/privacy`) says so: change it
+with this. Stack frames carry their local variables (plain objects one level deep,
+class instances by name only); to read them the SDK opens Node's inspector on a random 127.0.0.1 port
+inside the container, hence the `Debugger listening on ws://127.0.0.1:…` line at
+startup. Tracing is off, and no trace headers go to the operators' feeds.
 
 - **Feed stopped being served**: a warning each time a feed becomes `expired`, one
   issue per feed (tags `feed`, `source`, `provider`), at most one event an hour for

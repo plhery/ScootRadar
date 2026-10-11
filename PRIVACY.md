@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 4 October 2026
+Last updated: 11 October 2026
 
 Scootradar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches.
@@ -22,8 +22,13 @@ searches.
   application's log stream.
 - Structured application error logs contain event names and error messages, not
   precise locations or search text.
+- When the server fails to answer a map request, an error report is sent to
+  Sentry, in the United States, so the failure can be reproduced. It holds the
+  request URL (the visible map bounds, zoom level and filters) and the server's
+  state at the time, never the IP address, request headers or search text.
+  Sentry keeps it for up to 90 days.
 
-Cloudflare and upstream providers may process limited network or security
+Cloudflare, Sentry and upstream providers may process limited network or security
 metadata under their own privacy policies. The full user-facing notice is
 published at <https://scootradar.com/privacy>.
 
