@@ -30,9 +30,13 @@ One screen: a full-screen Apple map, a search bar at the top, a dock at the
 bottom and a locate button above the dock. Filters and Settings open as sheets
 from the search bar.
 
-**Map.** Zoomed out, each city shows its total; closer, clusters; closer still,
-one marker per scooter with the provider's initials. Parking bays appear as `P`
-from street level. Tapping a city or a cluster zooms in.
+**Map.** Zoomed out, each city shows its total; closer, clusters; from street
+level, one dot per scooter in its provider's colour, at its exact place, larger
+and brighter the shorter the walk to it. Scooters parked on one spot stand side
+by side. The nearest scooter of each provider carries its name and the walking
+time, and close up a dot is large enough for the provider's initials. Parking
+bays appear as `P` from street level. Tapping a city or a cluster zooms in. A
+new install opens on the **Quiet** map style; a style chosen in Settings is kept.
 
 **Locate button.** Until the phone has been located once it is a blue **Near me**
 pill; after that, a round button. Locating zooms the map to about 350 m across.
@@ -50,9 +54,12 @@ where no operator shares data; Return chooses the first. Street search works in
 Switzerland; elsewhere, search by city. A chosen place becomes the point walking
 times are measured from, until it is cleared.
 
-**Dock.** The number of scooters nearby or on this map, how fresh the data is
-(**Live**, **Updated 3 min ago**, **City totals · refreshed hourly**), and one
-chip per provider, largest first. The chips remember each rider's own
+**Dock.** At street level, while you or the searched place are on the map, the
+nearest of the scooters in view: how far, whose, and how long on foot. Tapping
+that line opens its card. Otherwise the number of scooters nearby or on this
+map. Under it, how fresh the data is (**Live**, **Updated 3 min ago**, **City
+totals · refreshed hourly**; beside the nearest scooter **Live** is left out),
+and one chip per provider, largest first. The chips remember each rider's own
 combination between launches. When there is nothing to show, the dock says why:
 
 - no operator shares data here: the three closest cities, with their distance;
@@ -64,11 +71,15 @@ A provider is named as not sharing data only when one of its feeds failed, it
 operates in the area on screen and none of its scooters is in view. City totals
 name no one.
 
-**Scooter card.** Selecting a marker replaces the dock with the scooter: provider,
-walking time and distance from you or from the searched place, battery, range, a
-price estimate for a ride of 5 to 30 minutes, **Directions** and **Open in** the
-provider's app. Opening the provider's app does not reserve the scooter. Tapping
-the header centres the scooter in the part of the map the card leaves visible.
+**Scooter card.** Selecting a dot or its name replaces the dock with the scooter:
+the provider and three figures. They are the walking time and the distance from
+you or from the searched place, then the price estimate for a ride of 5 to 30
+minutes, or the battery or the range where there is no price; without a place
+to walk from, the battery, the range and the price. What is not among the
+figures is the line under the name. Under them, **Open in** the provider's app
+and **Directions**. Opening the provider's app does not reserve the scooter.
+Tapping the header centres the scooter in the part of the map the card leaves
+visible.
 
 **Parking bay card.** Selecting a `P` shows the bay, whether parking there is
 required in this zone, and **Directions**.
@@ -136,7 +147,10 @@ changes when it is rebuilt and reinstalled; a web deployment does not update it.
 
 - `Models/` — `ScooterModels.swift` holds the data types and the rules the dock,
   cards and status lines are built from; `ScooterFiltering.swift` the filters and
-  counts. `ProviderCatalog.generated.swift` (providers, service areas, covered
+  counts; `ScooterMapLook.swift` the look of the map as plain rules: the size of
+  a dot, the names and where they stand, scooters on one spot, the nearest
+  scooter of the dock and the figures of the card.
+  `ProviderCatalog.generated.swift` (providers, service areas, covered
   cities) and `ScooterAPIContract.generated.swift` (the API's shape) are written
   by `npm run generate:providers` and `npm run generate:api-contract` from the
   repository's shared data; do not edit them by hand.
@@ -144,7 +158,8 @@ changes when it is rebuilt and reinstalled; a web deployment does not update it.
 - `ViewModels/ScooterMapModel.swift` — the state of the screen: loading and
   refreshing, location, the selection, filters, passes, and what the dock shows.
 - `Views/` — `ScooterMapScreen.swift` lays the screen out; `ScooterMapView.swift`
-  is the MapKit map and its markers; `ScooterControls.swift` the dock, cards,
+  is the MapKit map and its markers, `ScooterMarkerArt.swift` their pictures;
+  `ScooterControls.swift` the dock, cards,
   sheets and notices; `SwissAddressSearch.swift` the search bar and panel.
 - `en.lproj`, `de.lproj`, `fr.lproj`, `it.lproj` — every string, keyed by its
   English text. A new string needs an entry in all four.

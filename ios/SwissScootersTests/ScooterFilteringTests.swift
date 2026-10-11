@@ -200,48 +200,86 @@ final class ScooterFilteringTests: XCTestCase {
     }
 
     @MainActor
-    func testSelectedScooterBubbleGrowsAndReturnsToItsCompactSize() {
-        let view = ScooterAnnotationView(annotation: nil, reuseIdentifier: nil)
+    func testSelectedScooterTakesItsRingAndReturnsToItsDot() {
+        let annotation = ScooterMapAnnotation(scooter: scooter(id: "voi", provider: "voi", battery: 82))
+        let view = ScooterAnnotationView(annotation: annotation, reuseIdentifier: nil)
+        XCTAssertEqual(view.art?.state, .plain)
+        XCTAssertEqual(view.art?.diameter, ScooterMapLook.plainDiameter)
 
+        annotation.look = ScooterMapLook.look(metres: 400, state: .selected, metresPerPoint: 1.07)
+        annotation.pill = ScooterNamePillView.Content(
+            provider: .voi, name: "Voi", time: "5 min", isFilled: true, isDark: false
+        )
+        annotation.pillOrigin = ScooterMapLook.pillOrigin(.right, width: 80, reach: annotation.look.footprint / 2)
+        view.refreshLook(animated: false)
+
+        XCTAssertEqual(view.art?.state, .selected)
+        XCTAssertEqual(view.art?.diameter, 16)
+        XCTAssertEqual(view.zPriority, ScooterAnnotationView.selectedMarkerZPriority)
+        // The name stands beside the dot, clear of its ring, and the marker itself keeps its size.
+        let name = try? XCTUnwrap(view.pillFrame)
+        XCTAssertEqual(name?.height, ScooterMapLook.pillHeight)
+        XCTAssertGreaterThanOrEqual(name?.minX ?? 0, view.bounds.midX + annotation.look.footprint / 2)
         view.setSelected(true, animated: false)
-        XCTAssertEqual(view.transform.a, 1.15, accuracy: 0.001)
-        XCTAssertEqual(view.transform.d, 1.15, accuracy: 0.001)
-
-        view.setSelected(false, animated: false)
         XCTAssertEqual(view.transform, .identity)
+
+        annotation.look = ScooterMapLook.look(metres: 400, state: .plain, metresPerPoint: 1.07)
+        annotation.pill = nil
+        view.setSelected(false, animated: false)
+        view.refreshLook(animated: false)
+
+        XCTAssertEqual(view.art?.state, .plain)
+        XCTAssertEqual(view.art?.diameter, 8)
+        XCTAssertNil(view.pillFrame)
     }
 
     @MainActor
-    func testProviderLettersUpdateWhenScooterAnnotationsAreReused() throws {
+    func testTheDotTakesItsProviderWhenScooterAnnotationsAreReused() {
         let view = ScooterAnnotationView(
             annotation: ScooterMapAnnotation(scooter: scooter(id: "bolt", provider: "bolt", battery: 82)),
             reuseIdentifier: nil
         )
-        let label = try XCTUnwrap(view.subviews.compactMap { $0 as? UILabel }.first)
-        XCTAssertEqual(label.text, "B")
+        XCTAssertEqual(view.art?.provider, .bolt)
+        // The letters are part of the picture, and nothing of it is read out on its own.
+        XCTAssertTrue(view.subviews.isEmpty)
 
-        for (provider, letters) in [("bird", "Bi"), ("publibike", "PB"), ("lime", "L"), ("unknown", "?")] {
+        for (provider, expected) in [("bird", ScooterProvider.bird), ("publibike", .publibike), ("lime", .lime), ("unknown", nil)] {
             view.prepareForReuse()
-            XCTAssertNil(label.text)
-            view.annotation = ScooterMapAnnotation(scooter: scooter(id: provider, provider: provider, battery: 82))
+            XCTAssertNil(view.art)
+            let annotation = ScooterMapAnnotation(scooter: scooter(id: provider, provider: provider, battery: 82))
+            // Close up, where each dot carries its provider's initials.
+            annotation.look = ScooterMapLook.look(metres: nil, state: .plain, metresPerPoint: 0.4)
+            view.annotation = annotation
             view.layoutIfNeeded()
 
-            XCTAssertEqual(label.text, letters)
-            XCTAssertFalse(label.isHidden)
-            XCTAssertFalse(label.isAccessibilityElement)
-            XCTAssertTrue(view.bounds.contains(label.frame))
+            XCTAssertEqual(view.art?.provider, expected)
+            XCTAssertEqual(view.art?.showsInitials, true)
+            XCTAssertEqual(view.art?.diameter, 20)
+            XCTAssertEqual(view.bounds.size, ScooterAnnotationView.markerSize)
         }
     }
 
     @MainActor
-    func testProviderPinsPreferWhiteLetters() {
-        for provider in ScooterProvider.allCases {
-            XCTAssertEqual(
-                ScooterAnnotationView.glyphColor(on: provider.uiColor),
-                .white,
-                "Expected white letters for \(provider.name)"
+    func testProviderInitialsAreWrittenInTheInkOfTheirColour() {
+        let white = UIColor.white
+        for provider in [ScooterProvider.voi, .publibike, .pony] {
+            XCTAssertEqual(ScooterMapLook.ink(on: provider, isDark: false), white, provider.name)
+            XCTAssertEqual(ScooterMapLook.ink(on: provider, isDark: true), white, provider.name)
+        }
+        // White letters are too faint on the bright colours.
+        for provider in [ScooterProvider.lime, .bolt, .hopp, .dott] {
+            XCTAssertLessThan(
+                ScooterMapLook.contrastRatio(between: white, and: provider.uiColor),
+                ScooterMapLook.contrastRatio(
+                    between: ScooterMapLook.ink(on: provider, isDark: false),
+                    and: provider.uiColor
+                ),
+                provider.name
             )
         }
+        // Bird is near black by day and almost white on a dark map.
+        XCTAssertEqual(ScooterMapLook.ink(on: .bird, isDark: false), white)
+        XCTAssertNotEqual(ScooterMapLook.ink(on: .bird, isDark: true), white)
     }
 
     @MainActor
@@ -386,22 +424,18 @@ final class ScooterFilteringTests: XCTestCase {
     }
 
     @MainActor
-    func testBirdMarkerAccentRemainsDistinctAgainstTheDarkMarkerSurface() {
-        let darkTraits = UITraitCollection(userInterfaceStyle: .dark)
-        let surfaceColor = UIColor.secondarySystemBackground.resolvedColor(with: darkTraits)
-        let originalContrast = ScooterAnnotationView.contrastRatio(
+    func testBirdDotRemainsDistinctOnADarkMap() {
+        let ground = ScooterMapLook.darkGround
+        let originalContrast = ScooterMapLook.contrastRatio(
             between: ScooterProvider.bird.uiColor,
-            and: surfaceColor
+            and: ground
         )
 
-        let markerAccent = ScooterAnnotationView.markerAccentColor(
-            ScooterProvider.bird.uiColor,
-            against: surfaceColor
-        )
+        let dot = ScooterMapLook.dotColor(.bird, isDark: true)
 
         XCTAssertLessThan(originalContrast, 3.5)
         XCTAssertGreaterThanOrEqual(
-            ScooterAnnotationView.contrastRatio(between: markerAccent, and: surfaceColor),
+            ScooterMapLook.contrastRatio(between: dot, and: ground),
             3.5
         )
     }

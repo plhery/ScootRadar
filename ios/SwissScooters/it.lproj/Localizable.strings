@@ -185,3 +185,20 @@
 "Read the privacy notice" = "Leggi l’informativa sulla privacy";
 "Source code on GitHub" = "Codice sorgente su GitHub";
 "Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter." = "La disponibilità viene aggiornata automaticamente. Aprire l’app di un operatore non riserva un monopattino.";
+
+/* Map look: the nearest scooter in the dock, and the figures of the scooter card */
+"to the nearest scooter" = "al monopattino più vicino";
+"%1$@, %2$lld min on foot" = "%1$@, %2$lld min a piedi";
+"Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details." = "Monopattino più vicino: %1$@, a %2$@, %3$lld min a piedi. Mostra i dettagli.";
+"min" = "min";
+"on foot" = "a piedi";
+"from %@" = "da %@";
+"away" = "di distanza";
+"%1$@, %2$lld min" = "%1$@, %2$lld min";
+"battery" = "di batteria";
+"range" = "di autonomia";
+"%1$lld%% battery, %2$@ range" = "%1$lld%% di batteria, %2$@ di autonomia";
+"%lld%% battery" = "%lld%% di batteria";
+"%@ range" = "%@ di autonomia";
+"%1$@ to unlock, then %2$@ a minute" = "%1$@ per sbloccare, poi %2$@ al minuto";
+"No unlock fee, %@ a minute" = "Nessun costo di sblocco, %@ al minuto";

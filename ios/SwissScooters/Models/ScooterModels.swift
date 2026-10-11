@@ -83,7 +83,7 @@ struct Scooter: Identifiable, Hashable, Sendable {
 
     /// "320 m" below a kilometre; "1.4 km" and "24 km" from there, as on the
     /// web. The system's rounding for roads would say "300 m" for the same scooter.
-    private static func formattedLength(meters: Double) -> String {
+    static func formattedLength(meters: Double) -> String {
         let length = meters < 1_000
             ? Measurement(value: meters.rounded(), unit: UnitLength.meters)
             : Measurement(value: meters / 1_000, unit: UnitLength.kilometers)
@@ -97,6 +97,14 @@ struct Scooter: Identifiable, Hashable, Sendable {
         ))
         // A line never breaks between the number and its unit.
         .replacingOccurrences(of: " ", with: "\u{00A0}")
+    }
+
+    /// The same length with its number and its unit apart, for a figure whose
+    /// unit is set smaller than its number.
+    static func lengthParts(meters: Double) -> (value: String, unit: String?) {
+        let parts = formattedLength(meters: meters).split(separator: "\u{00A0}", maxSplits: 1)
+        guard parts.count == 2 else { return (formattedLength(meters: meters), nil) }
+        return (String(parts[0]), String(parts[1]))
     }
 }
 
@@ -578,12 +586,28 @@ enum AppleMapStyle: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
-    var mapType: MKMapType {
+    /// The ground under the dots. Quiet is flat and muted, without points of
+    /// interest or traffic, so nothing on it competes with the scooters.
+    var configuration: MKMapConfiguration {
         switch self {
-        case .standard: .standard
-        case .quiet: .mutedStandard
-        case .satellite: .hybrid
+        case .standard:
+            let configuration = MKStandardMapConfiguration(elevationStyle: .flat, emphasisStyle: .default)
+            configuration.pointOfInterestFilter = Self.landmarks
+            return configuration
+        case .quiet:
+            let configuration = MKStandardMapConfiguration(elevationStyle: .flat, emphasisStyle: .muted)
+            configuration.pointOfInterestFilter = .excludingAll
+            configuration.showsTraffic = false
+            return configuration
+        case .satellite:
+            let configuration = MKHybridMapConfiguration(elevationStyle: .flat)
+            configuration.pointOfInterestFilter = Self.landmarks
+            return configuration
         }
+    }
+
+    private static var landmarks: MKPointOfInterestFilter {
+        MKPointOfInterestFilter(including: [.publicTransport, .landmark])
     }
 }
 
@@ -912,6 +936,9 @@ struct ScooterDockSummary: Equatable, Sendable {
     let hint: ScooterDockHint?
     /// Providers after the "All" chip, in display order.
     let chips: [ScooterProviderEntry]
+    /// The nearest scooter in view, which takes the place of the count while
+    /// the rider or the searched place is on the map and no scooter is grouped.
+    var lead: ScooterDockLead? = nil
 
     /// "scooters nearby" or "scooters on this map"; the view renders the number.
     var countLabel: String { countContext.label(for: count) }

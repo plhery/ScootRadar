@@ -185,3 +185,20 @@
 "Read the privacy notice" = "Read the privacy notice";
 "Source code on GitHub" = "Source code on GitHub";
 "Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter." = "Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter.";
+
+/* Map look: the nearest scooter in the dock, and the figures of the scooter card */
+"to the nearest scooter" = "to the nearest scooter";
+"%1$@, %2$lld min on foot" = "%1$@, %2$lld min on foot";
+"Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details." = "Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details.";
+"min" = "min";
+"on foot" = "on foot";
+"from %@" = "from %@";
+"away" = "away";
+"%1$@, %2$lld min" = "%1$@, %2$lld min";
+"battery" = "battery";
+"range" = "range";
+"%1$lld%% battery, %2$@ range" = "%1$lld%% battery, %2$@ range";
+"%lld%% battery" = "%lld%% battery";
+"%@ range" = "%@ range";
+"%1$@ to unlock, then %2$@ a minute" = "%1$@ to unlock, then %2$@ a minute";
+"No unlock fee, %@ a minute" = "No unlock fee, %@ a minute";

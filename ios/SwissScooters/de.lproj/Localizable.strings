@@ -185,3 +185,20 @@
 "Read the privacy notice" = "Datenschutzerklärung lesen";
 "Source code on GitHub" = "Quellcode auf GitHub";
 "Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter." = "Die Verfügbarkeit wird automatisch aktualisiert. Das Öffnen einer Anbieter-App reserviert keinen Scooter.";
+
+/* Map look: the nearest scooter in the dock, and the figures of the scooter card */
+"to the nearest scooter" = "bis zum nächsten Scooter";
+"%1$@, %2$lld min on foot" = "%1$@, %2$lld Min. zu Fuss";
+"Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details." = "Nächster Scooter: %1$@, %2$@ entfernt, %3$lld Min. zu Fuss. Details anzeigen.";
+"min" = "Min.";
+"on foot" = "zu Fuss";
+"from %@" = "ab %@";
+"away" = "entfernt";
+"%1$@, %2$lld min" = "%1$@, %2$lld Min.";
+"battery" = "Akku";
+"range" = "Reichweite";
+"%1$lld%% battery, %2$@ range" = "%1$lld%% Akku, %2$@ Reichweite";
+"%lld%% battery" = "%lld%% Akku";
+"%@ range" = "%@ Reichweite";
+"%1$@ to unlock, then %2$@ a minute" = "%1$@ zum Entsperren, dann %2$@ pro Minute";
+"No unlock fee, %@ a minute" = "Keine Entsperrgebühr, %@ pro Minute";

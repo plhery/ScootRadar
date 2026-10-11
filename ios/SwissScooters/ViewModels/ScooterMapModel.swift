@@ -210,7 +210,6 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// Locating shows about 350 m across, like zoom 17 on the web.
     static let userFocusMeters: CLLocationDistance = 350
     private static let userFocusZoom = 17
-    private static let approximateWalkingMetersPerMinute: CLLocationDistance = 80
 
     override convenience init() {
         self.init(api: ScooterAPI(), locationManager: CLLocationManager(), defaults: .standard)
@@ -237,7 +236,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         minimumBattery = Double(ScooterBatteryFilter.snapped(savedBattery))
 
         let savedStyle = defaults.string(forKey: Self.mapStyleKey)
-        mapStyle = AppleMapStyle(rawValue: savedStyle ?? "") ?? .standard
+        // The quiet ground is what the dots are made for; a style chosen in
+        // Settings is kept.
+        mapStyle = AppleMapStyle(rawValue: savedStyle ?? "") ?? .quiet
 
         let savedEstimateMinutes = defaults.object(
             forKey: Self.rideEstimateMinutesKey
@@ -302,6 +303,36 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             return .userLocation(userLocation)
         }
         return nil
+    }
+
+    /// The origin while it is on the map or within half a map of it. Distances
+    /// from an origin far out of sight say nothing about the scooters shown:
+    /// the dots then keep one size and none is named.
+    var mapOrigin: GeoPoint? {
+        guard let point = activeOrigin?.point, viewport.expanded(by: 0.5).contains(point) else { return nil }
+        return point
+    }
+
+    /// The nearest of the scooters in view, filters applied: the ones the
+    /// count and the chips are of. Only while the place walked from is on the
+    /// map and every scooter has its own dot, as on the web.
+    var dockLead: ScooterDockLead? {
+        ScooterDockLead.nearest(
+            of: mapScooters,
+            from: activeOrigin?.point,
+            in: viewport,
+            grouped: responseMetadata?.mode == "clusters" || ScooterClusteringPolicy.shouldCluster(at: viewportZoom)
+        )
+    }
+
+    /// What the card of a scooter says under its name.
+    func cardContent(for scooter: Scooter) -> ScooterCardContent {
+        ScooterCardContent(
+            scooter: scooter,
+            metres: straightLineDistance(to: scooter),
+            placeTitle: searchedDestination?.title,
+            quote: ridePriceQuote(for: scooter)
+        )
     }
 
     var visibleCount: Int { visibleScooterCount }
@@ -436,7 +467,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             isDelayed: responseMetadata?.stale == true,
             notices: dockNotices,
             hint: hint,
-            chips: dockChips
+            chips: dockChips,
+            lead: isOverview ? nil : dockLead
         ))
     }
 
@@ -521,7 +553,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
     func approximateWalkingMinutes(to scooter: Scooter) -> Int? {
         guard let distance = straightLineDistance(to: scooter), distance.isFinite else { return nil }
-        return max(1, Int(ceil(distance / Self.approximateWalkingMetersPerMinute)))
+        return ScooterMapLook.walkingMinutes(metres: distance)
     }
 
     func approximateWalkingMinutes(to parking: ScooterParking) -> Int? {
@@ -531,7 +563,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             to: GeoPoint(latitude: parking.latitude, longitude: parking.longitude)
         )
         guard distance.isFinite else { return nil }
-        return max(1, Int(ceil(distance / Self.approximateWalkingMetersPerMinute)))
+        return ScooterMapLook.walkingMinutes(metres: distance)
     }
 
     /// The second line of the scooter card: "≈4 min walk · 320 m", or

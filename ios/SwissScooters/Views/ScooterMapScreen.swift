@@ -11,6 +11,8 @@ struct ScooterMapScreen: View {
     @State private var locateButtonHeight: CGFloat = 52
     @State private var topChromeFrame = CGRect.null
     @State private var bottomChromeTop: CGFloat?
+    @State private var locateButtonFrame = CGRect.null
+    @State private var dockFrame = CGRect.null
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -36,13 +38,15 @@ struct ScooterMapScreen: View {
                     selectedScooterID: model.selectedScooterID,
                     interactionExclusionFrame: topChromeFrame,
                     bottomChromeTop: bottomChromeTop,
+                    bottomChromeFrames: [locateButtonFrame, dockFrame],
                     onRegionChange: model.updateViewport,
                     onSelectionChange: model.selectScooter,
                     userHeading: model.userHeading,
                     showsMapCompass: !searchIsExpanded,
                     parking: model.mapParking,
                     selectedParkingID: model.selectedParkingID,
-                    onParkingSelectionChange: model.selectParking
+                    onParkingSelectionChange: model.selectParking,
+                    origin: model.mapOrigin
                 )
                 .ignoresSafeArea()
 
@@ -117,6 +121,7 @@ struct ScooterMapScreen: View {
                                 locateButtonHeight = frame.height
                                 // The map centres a scooter in what this button and the dock leave visible.
                                 bottomChromeTop = frame.minY
+                                locateButtonFrame = frame
                             }
                     }
                     .padding(.trailing, 12)
@@ -144,6 +149,11 @@ struct ScooterMapScreen: View {
                         onEditFilters: { filtersPresented = true },
                         onHeightChange: { dockHeight = $0 }
                     )
+                    .onGeometryChange(for: CGRect.self) { geometry in
+                        geometry.frame(in: .global)
+                    } action: { frame in
+                        dockFrame = frame
+                    }
                     .padding(.horizontal, 10)
                     .padding(.bottom, max(proxy.safeAreaInsets.bottom, 8))
                 }
