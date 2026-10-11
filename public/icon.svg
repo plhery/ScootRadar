@@ -1,13 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="ScootRadar">
-  <rect width="512" height="512" fill="#1c1d1b"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="ScootRadar">
+  <defs>
+    <radialGradient id="night" cx="0.5" cy="0.22" r="0.85">
+      <stop offset="0" stop-color="#1b2232"/>
+      <stop offset="1" stop-color="#1b2232" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="beam" gradientUnits="userSpaceOnUse" x1="290" y1="734" x2="799.12" y2="224.88">
+      <stop offset="0" stop-color="#2f7bff" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#2f7bff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0.37" stop-color="#ff1493" stop-opacity="0.62"/>
+      <stop offset="1" stop-color="#ff1493" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
 
-  <g fill="none" stroke="#f7f1e8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="142" cy="346" r="42" stroke-width="22"/>
-    <circle cx="374" cy="346" r="42" stroke-width="22"/>
-    <path d="M152 322h150l43-58 29 82" stroke-width="22"/>
-    <path d="M345 264 311 136" stroke-width="22"/>
-    <path d="M281 136h47" stroke-width="22"/>
+  <rect width="1024" height="1024" fill="#090b10"/>
+  <rect width="1024" height="1024" fill="url(#night)"/>
+
+  <path d="M290 734 524.41 53.23A720 720 0 0 1 970.77 499.59Z" fill="url(#beam)"/>
+  <g fill="none" stroke="#f4f5f7" stroke-opacity="0.26" stroke-width="10">
+    <path d="M381.75 488.59A262 262 0 0 1 535.41 642.25"/>
+    <path d="M440.59 331.23A430 430 0 0 1 692.77 583.41"/>
   </g>
 
-  <path d="M207 322h73" fill="none" stroke="#c7ff00" stroke-width="22"/>
+  <circle cx="718" cy="306" r="253.8" fill="url(#glow)"/>
+  <circle cx="718" cy="306" r="94" fill="#ff1493"/>
+
+  <circle cx="290" cy="734" r="62" fill="#2f7bff" stroke="#f4f5f7" stroke-width="26"/>
 </svg>

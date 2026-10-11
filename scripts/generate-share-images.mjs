@@ -75,7 +75,7 @@ function page(locale) {
   .orb--near { left: 520px; top: 300px; width: 520px; height: 420px; background: radial-gradient(closest-side, color-mix(in srgb, ${tileColor(LANDING_NEAREST[0].provider)} 26%, transparent), transparent); }
   .copy { position: absolute; left: 72px; top: 64px; bottom: 64px; width: 600px; display: flex; flex-direction: column; }
   .brand { display: flex; align-items: center; gap: 14px; font: 800 30px 'Red Hat Display', sans-serif; }
-  .brand img { width: 44px; height: 44px; }
+  .brand img { width: 44px; height: 44px; border-radius: 12px; }
   h1 {
     margin: auto 0 0;
     font: 800 70px/1 'Red Hat Display', sans-serif;
