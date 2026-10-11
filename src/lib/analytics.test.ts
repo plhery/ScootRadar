@@ -51,6 +51,22 @@ describe('analytics privacy boundary', () => {
     expect(request.body).not.toMatch(/47\.3|8\.5|private|session-cache/);
     expect(body.payload).not.toHaveProperty('id');
   });
+  it('counts each language of the landing page under its own path, and anything unknown under the app', async () => {
+    const fetcher = vi.fn().mockResolvedValue({ ok: true, json: async () => ({}) });
+    vi.stubGlobal('fetch', fetcher);
+    const { track } = await import('./analytics');
+    const sent = async (pathname: string) => {
+      vi.stubGlobal('location', { ...location, pathname });
+      const calls = fetcher.mock.calls.length;
+      track();
+      await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(calls + 1));
+      return JSON.parse(fetcher.mock.calls[calls][1].body).payload;
+    };
+    expect(await sent('/de')).toMatchObject({ url: '/de', title: 'About — Scooters' });
+    expect(await sent('/privacy')).toMatchObject({ url: '/privacy', title: 'Privacy — Scooters' });
+    expect(await sent('/es')).toMatchObject({ url: '/', title: 'Scooters' });
+    expect(await sent('/en/anything')).toMatchObject({ url: '/', title: 'Scooters' });
+  });
   it('bounds the queue and survives network failures without retries', async () => {
     const fetcher = vi.fn().mockRejectedValue(new Error('offline'));
     vi.stubGlobal('fetch', fetcher);

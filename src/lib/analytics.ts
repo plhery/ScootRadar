@@ -29,6 +29,16 @@ export function analyticsEnabled(): boolean {
   try { return !localStorage.getItem('umami.disabled'); } catch { return false; }
 }
 
+// The pages beside the app, with the title each is counted under. The landing
+// page is one per language: src/lib/landingCopy.ts.
+const PUBLIC_PAGES = new Map([
+  ['/privacy', 'Privacy — Scooters'],
+  ['/en', 'About — Scooters'],
+  ['/de', 'About — Scooters'],
+  ['/fr', 'About — Scooters'],
+  ['/it', 'About — Scooters'],
+]);
+
 let cache: string | undefined;
 let disabledByServer = false;
 let pending = 0;
@@ -40,9 +50,9 @@ export function track(event?: AnalyticsEvent, data: AnalyticsData = {}): void {
     (navigator as Navigator & { standalone?: boolean }).standalone ? 'pwa' : 'web';
   const payload = {
     website: ANALYTICS_WEBSITE, hostname: ANALYTICS_HOST,
-    // Only these two public screens exist. Exclude even unknown paths, all query strings and fragments.
-    url: window.location.pathname === '/privacy' ? '/privacy' : '/',
-    title: window.location.pathname === '/privacy' ? 'Privacy — Scooters' : 'Scooters',
+    // Only these public screens exist. Exclude even unknown paths, all query strings and fragments.
+    url: PUBLIC_PAGES.has(window.location.pathname) ? window.location.pathname : '/',
+    title: PUBLIC_PAGES.get(window.location.pathname) ?? 'Scooters',
     referrer: '', language: navigator.language, tag: platform,
     ...(event ? { name: event, data: { ...safeAnalyticsData(data), platform } } : {}),
   };
