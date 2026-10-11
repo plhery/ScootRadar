@@ -445,15 +445,10 @@ enum ScooterMapLook {
     }
 
     /// The colour of what is written on the provider's colour: the initials
-    /// on a dot or on the card's tile, and the name on a filled pill.
+    /// on a dot or on the card's tile, and the name on a filled pill. White,
+    /// as on the badge of an app; dark only on Bird's near white of a dark map.
     static func ink(on provider: ScooterProvider?, isDark: Bool) -> UIColor {
-        switch provider {
-        case .lime, .bolt: UIColor(red: 0.024, green: 0.078, blue: 0.039, alpha: 1)
-        case .hopp: UIColor(red: 0.016, green: 0.086, blue: 0.102, alpha: 1)
-        case .dott: UIColor(red: 0.11, green: 0.043, blue: 0, alpha: 1)
-        case .bird: isDark ? nearBlackInk : .white
-        case .voi, .publibike, .pony, nil: .white
-        }
+        provider == .bird && isDark ? nearBlackInk : .white
     }
 
     static func contrastRatio(between first: UIColor, and second: UIColor) -> Double {

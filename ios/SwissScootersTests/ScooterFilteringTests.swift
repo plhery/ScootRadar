@@ -262,20 +262,9 @@ final class ScooterFilteringTests: XCTestCase {
     @MainActor
     func testProviderInitialsAreWrittenInTheInkOfTheirColour() {
         let white = UIColor.white
-        for provider in [ScooterProvider.voi, .publibike, .pony] {
+        for provider in ScooterProvider.allCases where provider != .bird {
             XCTAssertEqual(ScooterMapLook.ink(on: provider, isDark: false), white, provider.name)
             XCTAssertEqual(ScooterMapLook.ink(on: provider, isDark: true), white, provider.name)
-        }
-        // White letters are too faint on the bright colours.
-        for provider in [ScooterProvider.lime, .bolt, .hopp, .dott] {
-            XCTAssertLessThan(
-                ScooterMapLook.contrastRatio(between: white, and: provider.uiColor),
-                ScooterMapLook.contrastRatio(
-                    between: ScooterMapLook.ink(on: provider, isDark: false),
-                    and: provider.uiColor
-                ),
-                provider.name
-            )
         }
         // Bird is near black by day and almost white on a dark map.
         XCTAssertEqual(ScooterMapLook.ink(on: .bird, isDark: false), white)

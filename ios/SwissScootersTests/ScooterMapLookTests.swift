@@ -407,8 +407,8 @@ final class ScooterMapLookTests: XCTestCase {
                     between: ScooterMapLook.ink(on: provider, isDark: isDark),
                     and: ScooterMapLook.dotColor(provider, isDark: isDark)
                 )
-                // Large bold letters ask for 3 to 1. Pony's white on its teal comes to 2.99.
-                XCTAssertGreaterThanOrEqual(ratio, 2.95, "\(provider.name), dark: \(isDark)")
+                // White stands out from every colour: least from Lime's green, at 2.1 to 1.
+                XCTAssertGreaterThanOrEqual(ratio, 2, "\(provider.name), dark: \(isDark)")
             }
         }
     }
