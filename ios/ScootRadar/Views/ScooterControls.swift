@@ -30,7 +30,7 @@ enum ScooterPalette {
     /// How much black the glass over the map gets in dark appearance, and how
     /// much white in light appearance.
     static let darkGlassTint = 0.62
-    static let lightGlassTint = 0.3
+    static let lightGlassTint = 0.15
     /// Grey for small text and its icons. The system's secondary label is
     /// about 3.5:1 on the light dock and on a light sheet; this is 5:1 there.
     /// In dark appearance it is the system's colour, which is light enough.
@@ -53,14 +53,20 @@ enum ScooterPalette {
         light: UIColor(red: 0.4, green: 0.439, blue: 0.502, alpha: 1),
         dark: UIColor(red: 0.639, green: 0.659, blue: 0.702, alpha: 1)
     )
-    /// What stands out from the dock: a chip, a figure of the card.
+    /// What stands out from the dock: a chip.
     static let dockRaised = adaptive(
         light: .white,
         dark: UIColor(red: 0.086, green: 0.102, blue: 0.141, alpha: 1)
     )
-    /// Under the quiet button of a card.
+    /// What sits on the glass of a card, a figure or the close button: by day
+    /// a little brighter than the glass, so the card still reads as glass.
+    static let dockTile = adaptive(
+        light: UIColor(white: 1, alpha: 0.5),
+        dark: UIColor(red: 0.086, green: 0.102, blue: 0.141, alpha: 1)
+    )
+    /// Under the quiet button of a card. By day a grey veil over the glass.
     static let dockQuietFill = adaptive(
-        light: UIColor(red: 0.945, green: 0.953, blue: 0.969, alpha: 1),
+        light: UIColor(red: 0.4, green: 0.439, blue: 0.502, alpha: 0.17),
         dark: UIColor(red: 0.114, green: 0.137, blue: 0.188, alpha: 1)
     )
     static let dockHairline = adaptive(
@@ -844,7 +850,7 @@ private struct DockCloseButton: View {
                 .font(.system(size: 13, weight: .bold))
                 .foregroundStyle(ScooterPalette.dockQuiet)
                 .frame(width: 40, height: 40)
-                .background(ScooterPalette.dockRaised, in: Circle())
+                .background(ScooterPalette.dockTile, in: Circle())
                 .overlay {
                     Circle().strokeBorder(ScooterPalette.dockHairline, lineWidth: 1)
                 }
@@ -1321,7 +1327,7 @@ private struct CardFigureCell: View {
         }
         .padding(EdgeInsets(top: 12, leading: 12, bottom: 11, trailing: 10))
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(ScooterPalette.dockRaised, in: Self.shape)
+        .background(ScooterPalette.dockTile, in: Self.shape)
         .overlay {
             Self.shape.strokeBorder(ScooterPalette.dockHairline, lineWidth: 1)
         }
