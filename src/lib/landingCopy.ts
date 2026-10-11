@@ -109,9 +109,9 @@ export interface LandingCopy {
 export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
   en: {
     meta: {
-      title: 'Scooters — Shared e-scooters on one map',
+      title: 'E-scooter map: Lime, Bolt, Bird, Voi, Dott and more | Scooters',
       description: cities =>
-        `See the shared e-scooters around you on one map, whichever company runs them: Bolt, Bird, Dott, Hopp, Lime, Voi, Pony and PubliBike. Free, no account, in ${cities} cities.`,
+        `Every shared e-scooter near you on one live map: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony and PubliBike. Battery, walking time and price. Free, in ${cities} cities.`,
     },
     nav: { main: 'Main', shows: 'What it shows', cities: 'Cities', languages: 'Language' },
     openMap: 'Open the map',
@@ -175,7 +175,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} cities.`,
-      lede: 'In Switzerland, Germany and France, plus Rome. Where no provider publishes its data, the map says so and points you to the closest cities that have it. Pick a city to open the map there.',
+      lede: 'Shared e-scooters in Switzerland, Germany and France, plus Rome. Where no provider publishes its data, the map says so and points you to the closest cities that have it. Pick a city to open the map there.',
       countries: { CH: 'Switzerland', DE: 'Germany', FR: 'France', IT: 'Italy' },
       more: count => `and ${count} more`,
       alt: 'The map zoomed out over Europe, with the number of scooters on each city.',
@@ -194,16 +194,16 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
 
   de: {
     meta: {
-      title: 'Scooters – Alle Sharing-Scooter auf einer Karte',
+      title: 'E-Scooter-Karte: Lime, Bolt, Bird, Voi, Dott und mehr | Scooters',
       description: cities =>
-        `Alle Sharing-Scooter in deiner Nähe auf einer Karte, egal von welchem Anbieter: Bolt, Bird, Dott, Hopp, Lime, Voi, Pony und PubliBike. Gratis, ohne Konto, in ${cities} Städten.`,
+        `Alle E-Scooter und E-Trottinette in deiner Nähe auf einer Live-Karte: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony und PubliBike. Gratis, ohne Konto, in ${cities} Städten.`,
     },
     nav: { main: 'Hauptnavigation', shows: 'Was die Karte zeigt', cities: 'Städte', languages: 'Sprache' },
     openMap: 'Karte öffnen',
     iphoneApp: 'iPhone-App laden',
     hero: {
-      title: scooters => `Um dich herum stehen ${scooters} Scooter.`,
-      lede: 'Scooters zeigt alle Sharing-Scooter in deiner Nähe auf einer Karte, egal von welchem Anbieter. So ist der schnellste Weg nach Hause das Erste, was du siehst.',
+      title: scooters => `Um dich herum stehen ${scooters} E-Scooter.`,
+      lede: 'Scooters zeigt alle E-Scooter in deiner Nähe auf einer Karte, egal von welchem Sharing-Anbieter. So ist der schnellste Weg nach Hause das Erste, was du siehst.',
       note: 'Gratis. Kein Konto, keine Werbung.',
       stage: 'Scooter beim Zürcher Hauptbahnhof',
       alt: scooters =>
@@ -260,7 +260,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} Städte.`,
-      lede: 'In der Schweiz, in Deutschland und Frankreich sowie in Rom. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten. Wähle eine Stadt, um die Karte dort zu öffnen.',
+      lede: 'E-Scooter in der Schweiz, in Deutschland und Frankreich sowie in Rom. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten. Wähle eine Stadt, um die Karte dort zu öffnen.',
       countries: { CH: 'Schweiz', DE: 'Deutschland', FR: 'Frankreich', IT: 'Italien' },
       more: count => `und ${count} weitere`,
       alt: 'Die Karte, herausgezoomt über Europa, mit der Zahl der Scooter in jeder Stadt.',
@@ -279,16 +279,16 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
 
   fr: {
     meta: {
-      title: 'Scooters — Les trottinettes en libre-service sur une seule carte',
+      title: 'Carte des trottinettes électriques en libre-service | Scooters',
       description: cities =>
-        `Toutes les trottinettes en libre-service autour de vous sur une seule carte, quel que soit l’opérateur : Bolt, Bird, Dott, Hopp, Lime, Voi, Pony et PubliBike. Gratuit, sans compte, dans ${cities} villes.`,
+        `Toutes les trottinettes électriques en libre-service autour de vous sur une carte en direct : Lime, Dott, Bolt, Voi, Bird, Hopp, Pony et PubliBike. Gratuit, sans compte, dans ${cities} villes.`,
     },
     nav: { main: 'Navigation principale', shows: 'Ce que montre la carte', cities: 'Villes', languages: 'Langue' },
     openMap: 'Ouvrir la carte',
     iphoneApp: 'Télécharger l’app iPhone',
     hero: {
       title: scooters => `Il y a ${scooters} trottinettes autour de vous.`,
-      lede: 'Scooters réunit sur une seule carte toutes les trottinettes en libre-service autour de vous, quel que soit l’opérateur. Le plus court chemin pour rentrer est ainsi la première chose que vous voyez.',
+      lede: 'Scooters réunit sur une seule carte toutes les trottinettes électriques en libre-service autour de vous, quel que soit l’opérateur. Le plus court chemin pour rentrer est ainsi la première chose que vous voyez.',
       note: 'Gratuit. Sans compte, sans pub.',
       stage: 'Trottinettes près de la gare centrale de Zurich',
       alt: scooters =>
@@ -345,7 +345,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} villes.`,
-      lede: 'En Suisse, en Allemagne et en France, ainsi qu’à Rome. Là où aucun opérateur ne publie de données, la carte le dit et indique les villes les plus proches qui en ont. Choisissez une ville pour y ouvrir la carte.',
+      lede: 'Des trottinettes en libre-service en Suisse, en Allemagne et en France, ainsi qu’à Rome. Là où aucun opérateur ne publie de données, la carte le dit et indique les villes les plus proches qui en ont. Choisissez une ville pour y ouvrir la carte.',
       countries: { CH: 'Suisse', DE: 'Allemagne', FR: 'France', IT: 'Italie' },
       more: count => (count === 1 ? 'et une autre' : `et ${count} autres`),
       alt: 'La carte à l’échelle de l’Europe, avec le nombre de trottinettes dans chaque ville.',
@@ -364,16 +364,16 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
 
   it: {
     meta: {
-      title: 'Scooters — Tutti i monopattini in sharing su una sola mappa',
+      title: 'Monopattini elettrici in sharing su una sola mappa | Scooters',
       description: cities =>
-        `Tutti i monopattini in sharing intorno a te su una sola mappa, di qualunque operatore: Bolt, Bird, Dott, Hopp, Lime, Voi, Pony e PubliBike. Gratis, senza account, in ${cities} città.`,
+        `Tutti i monopattini elettrici in sharing intorno a te su una mappa in tempo reale: Lime, Bolt, Dott, Voi, Bird, Hopp, Pony e PubliBike. Gratis, senza account, in ${cities} città.`,
     },
     nav: { main: 'Navigazione principale', shows: 'Cosa mostra la mappa', cities: 'Città', languages: 'Lingua' },
     openMap: 'Apri la mappa',
     iphoneApp: 'Scarica l’app per iPhone',
     hero: {
       title: scooters => `Ci sono ${scooters} monopattini intorno a te.`,
-      lede: 'Scooters mette su una sola mappa tutti i monopattini in sharing intorno a te, di qualunque operatore. Così la strada più breve per tornare a casa è la prima cosa che vedi.',
+      lede: 'Scooters mette su una sola mappa tutti i monopattini elettrici in sharing intorno a te, di qualunque operatore. Così la strada più breve per tornare a casa è la prima cosa che vedi.',
       note: 'Gratis. Niente account, niente pubblicità.',
       stage: 'Monopattini vicino alla stazione centrale di Zurigo',
       alt: scooters =>
@@ -430,7 +430,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} città.`,
-      lede: 'In Svizzera, Germania e Francia, più Roma. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno. Scegli una città per aprire lì la mappa.',
+      lede: 'Monopattini in sharing in Svizzera, Germania e Francia, più Roma. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno. Scegli una città per aprire lì la mappa.',
       countries: { CH: 'Svizzera', DE: 'Germania', FR: 'Francia', IT: 'Italia' },
       more: count => (count === 1 ? 'e un’altra' : `e altre ${count}`),
       alt: 'La mappa dell’Europa vista da lontano, con il numero di monopattini in ogni città.',

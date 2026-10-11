@@ -10,7 +10,7 @@ const ADDRESS = { en: '/', de: '/de', fr: '/fr', it: '/it' };
 
 const HEADLINES = {
   en: /^There are \d+ scooters around you\.$/,
-  de: /^Um dich herum stehen \d+ Scooter\.$/,
+  de: /^Um dich herum stehen \d+ E-Scooter\.$/,
   fr: /^Il y a \d+ trottinettes autour de vous\.$/,
   it: /^Ci sono \d+ monopattini intorno a te\.$/,
 };
@@ -77,7 +77,7 @@ test('the landing page changes language from its bar and stays where it is', asy
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(HEADLINES.fr);
   await expect(page.getByRole('group', { name: 'Langue' }).getByRole('link', { name: 'FR' }))
     .toHaveAttribute('aria-current', 'page');
-  await expect(page).toHaveTitle(/^Scooters — Les trottinettes/);
+  await expect(page).toHaveTitle(/^Carte des trottinettes électriques en libre-service/);
 
   // And back to English, which is the root.
   await page.getByRole('group', { name: 'Langue' }).getByRole('link', { name: 'EN' }).click();
