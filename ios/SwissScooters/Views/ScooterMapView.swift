@@ -3,12 +3,22 @@ import SwiftUI
 import UIKit
 
 enum ScooterMapCameraPolicy {
+    /// The tilt the map opens with, in degrees, so that the buildings stand up
+    /// a little. It is the least MapKit keeps: under 20° it lays the map flat
+    /// again at the first zoom, the rider's or the app's own.
+    static let openingPitch: CGFloat = 20
     /// A map without a size cannot take a region: it lost the opening view of
     /// Switzerland and started out empty. This stands in until the first layout.
     static let openingFrame = CGRect(x: 0, y: 0, width: 390, height: 844)
 
-    /// Moves the map and keeps the tilt and the turn the rider gave it. The
-    /// map opens flat, seen from straight above.
+    @MainActor
+    static func applyOpeningPitch(to mapView: MKMapView) {
+        let camera = mapView.camera
+        camera.pitch = openingPitch
+        mapView.setCamera(camera, animated: false)
+    }
+
+    /// Moves the map and keeps the tilt and the turn it has.
     @MainActor
     static func setRegionPreservingPerspective(
         _ region: MKCoordinateRegion,
@@ -133,6 +143,7 @@ struct ScooterMapView: UIViewRepresentable {
         scooterTapRecognizer.delegate = context.coordinator
         mapView.addGestureRecognizer(scooterTapRecognizer)
         mapView.setRegion(ScooterMapModel.initialRegion, animated: false)
+        ScooterMapCameraPolicy.applyOpeningPitch(to: mapView)
         context.coordinator.installCompass(on: mapView)
         // The dots and the names are drawn for one appearance.
         mapView.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {

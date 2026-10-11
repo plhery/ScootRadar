@@ -2516,7 +2516,7 @@ extension ScooterMapModelTests {
         guard case .scooter = model.dock else { return XCTFail("Expected the scooter card") }
     }
 
-    func testMapOpensFlatAndKeepsTheTiltTheRiderGivesIt() throws {
+    func testMapOpensSlightlyTiltedAndKeepsItsTiltWhenTheAppMovesIt() throws {
         let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
         let window = try window(showing: ScooterMapScreen(model: model))
         defer { window.isHidden = true }
@@ -2525,16 +2525,19 @@ extension ScooterMapModelTests {
         }
         let mapView = try XCTUnwrap(map(in: window))
 
-        // Seen from straight above, until two fingers tilt it.
-        XCTAssertEqual(mapView.camera.pitch, 0)
+        // By the least MapKit keeps: a smaller tilt is flat again after a zoom.
+        XCTAssertEqual(mapView.camera.pitch, 20, accuracy: 0.1)
         XCTAssertTrue(mapView.isPitchEnabled)
 
+        ScooterMapCameraPolicy.setRegionPreservingPerspective(zurichRegion, on: mapView, animated: false)
+        XCTAssertEqual(mapView.camera.pitch, 20, accuracy: 0.1)
+
+        // As it keeps the one two fingers give it.
         let tilted = mapView.camera.copy() as! MKMapCamera
         tilted.pitch = 30
         mapView.setCamera(tilted, animated: false)
         ScooterMapCameraPolicy.setRegionPreservingPerspective(zurichRegion, on: mapView, animated: false)
-
-        XCTAssertGreaterThan(mapView.camera.pitch, 20)
+        XCTAssertEqual(mapView.camera.pitch, 30, accuracy: 0.1)
     }
 
     /// The appearance is the window's, so a sheet over the screen has it too.

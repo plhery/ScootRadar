@@ -87,6 +87,7 @@ final class ScooterFilteringTests: XCTestCase {
 
         let mapView = MKMapView(frame: ScooterMapCameraPolicy.openingFrame)
         mapView.setRegion(ScooterMapModel.initialRegion, animated: false)
+        ScooterMapCameraPolicy.applyOpeningPitch(to: mapView)
 
         let center = mapView.camera.centerCoordinate
         XCTAssertEqual(center.latitude, ScooterMapModel.switzerlandCenter.latitude, accuracy: 0.5)
