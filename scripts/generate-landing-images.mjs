@@ -16,10 +16,10 @@
 // of the app is lost. The app shows the live data, which the server renews
 // about every minute: the pictures by the station are taken right after a
 // renewal, and again if the next one came before the last language opened, so
-// the four languages show the same scooters. The run ends by printing the
+// the six languages show the same scooters. The run ends by printing the
 // nearest scooter of each provider at that moment. Copy them into
 // src/lib/landingSnapshot.ts, with the number on the "All" chip of the dark
-// pictures, or the page contradicts its own phone; that the four pictures do
+// pictures, or the page contradicts its own phone; that the six pictures do
 // carry the same number is for you to see.
 //
 // sharp comes with Next.js; it is not a dependency of its own.
@@ -41,13 +41,14 @@ const API = 'https://scootradar.com/api/scooters';
 
 // A public place, not a rider's position: the square in front of Zürich main station.
 const RIDER = { latitude: 47.3763, longitude: 8.5395 };
-const LOCALES = ['en', 'de', 'fr', 'it'];
+// As LANDING_LOCALES in src/lib/landingCopy.ts.
+const LOCALES = ['en', 'de', 'fr', 'it', 'nl', 'nb'];
 // The page shows a capture in a phone at most 340 px wide: 780 px across is
 // two device pixels per unit, and 1695 down the proportions of an iPhone Pro.
 const PICTURE = { width: 780, height: 1695 };
 // The map, its scooters and their names are drawn three seconds after the app
 // opens, and a change of appearance within one. Longer waits would not fit
-// four languages between two renewals of the data.
+// six languages between two renewals of the data.
 const OPENED_MS = 5_000;
 const APPEARANCE_MS = 2_000;
 
@@ -196,4 +197,4 @@ for (const { provider, lat, lng, battery, range_m: rangeM, pricing = null } of s
 console.log(`The pictures by the station show the data of ${street.meta.generatedAt}.`);
 console.log('The nearest scooter of each provider, the first of which the dock of those pictures names:');
 for (const vehicle of [...nearest.values()].sort((a, b) => a.distanceM - b.distanceM)) console.log(`  ${JSON.stringify(vehicle)}`);
-console.log('Read the scooters in view on the "All" chip of the four dark pictures: it has to be one number.');
+console.log('Read the scooters in view on the "All" chip of the six dark pictures: it has to be one number.');

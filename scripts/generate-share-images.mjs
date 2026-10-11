@@ -37,6 +37,9 @@ const providers = JSON.parse(readFileSync(path.join(root, 'data/providers.json')
 const TILE_COLORS = { bird: '#f4f5f7' };
 const DARK_LETTERS = new Set(['bird']);
 const tileColor = key => TILE_COLORS[key] ?? providers.find(provider => provider.key === key).color;
+// The tiles share the 600 px of the copy in one row, at most 50 px each.
+const TILE_GAP = 8;
+const TILE = Math.min(50, Math.floor((600 + TILE_GAP) / providers.length) - TILE_GAP);
 
 const escape = text => text.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 // Inline: a page set from a string may not load files from the disk.
@@ -82,12 +85,12 @@ function page(locale) {
     letter-spacing: -0.035em;
     text-wrap: balance;
   }
-  .tiles { display: flex; gap: 10px; margin-top: 36px; }
+  .tiles { display: flex; gap: ${TILE_GAP}px; margin-top: 36px; }
   .tile {
-    display: grid; place-items: center; width: 50px; height: 50px; border-radius: 16px;
-    background: var(--c); color: #ffffff; font: 800 20px 'Red Hat Display', sans-serif;
+    display: grid; place-items: center; width: ${TILE}px; height: ${TILE}px; border-radius: ${Math.round(TILE * 0.32)}px;
+    background: var(--c); color: #ffffff; font: 800 ${Math.round(TILE * 0.4)}px 'Red Hat Display', sans-serif;
   }
-  .tile--wide { font-size: 17px; }
+  .tile--wide { font-size: ${Math.round(TILE * 0.34)}px; }
   .tile--dark { color: #10131a; }
   .note { margin: 22px 0 0; font-size: 24px; color: #a3a8b3; }
   .phone { position: absolute; left: 790px; top: 58px; width: 340px; }
