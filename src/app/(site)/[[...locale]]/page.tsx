@@ -21,7 +21,6 @@ import {
 import {
   LANDING_NEAREST,
   LANDING_SCOOTERS_NEARBY,
-  LANDING_SNAPSHOT_DATE,
   type LandingNearest,
 } from '@/lib/landingSnapshot';
 import { DEFAULT_RIDE_DURATION, RIDE_DURATIONS, formatRidePrice, ridePriceQuote } from '@/lib/ridePrice';
@@ -143,7 +142,7 @@ function structuredData(locale: LandingLocale, copy: LandingCopy) {
   };
 }
 
-/** Numbers, distances, prices and the date as the app writes them in this language. */
+/** Numbers, distances and prices as the app writes them in this language. */
 function formatters(locale: LandingLocale) {
   const formatNumber = (value: number, options?: Intl.NumberFormatOptions) =>
     new Intl.NumberFormat(`${locale}-CH`, options).format(value);
@@ -155,9 +154,6 @@ function formatters(locale: LandingLocale) {
     distance: (meters: number) => formatDistance(meters, { t, formatNumber }),
     price: (pricing: RidePricing) =>
       formatRidePrice(ridePriceQuote(pricing, DEFAULT_RIDE_DURATION).totalMinorUnits, pricing.currency, locale),
-    date: (day: string) =>
-      new Intl.DateTimeFormat(`${locale}-CH`, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
-        .format(new Date(`${day}T00:00:00Z`)),
   };
 }
 
@@ -344,7 +340,6 @@ export default async function LandingPage({ params }: Props) {
               </li>
             ))}
           </ol>
-          <p className="caption">{copy.hero.caption(format.date(LANDING_SNAPSHOT_DATE))}</p>
         </StageDepth>
 
         <section className="know" id="know">

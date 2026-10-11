@@ -3,9 +3,9 @@ import type { RidePricing } from '@/lib/types';
 
 // What /api/scooters listed by Zürich main station (47.3763, 8.5395) on the day
 // below: the nearest vehicle of each provider there. The landing page quotes
-// these figures and dates them; nothing on it is live. They are the scooters in
-// its pictures: scripts/generate-landing-images.mjs takes both at once and
-// prints these, so the two change together.
+// these figures; nothing on it is live. They are the scooters in its pictures:
+// scripts/generate-landing-images.mjs takes both at once and prints these, so
+// the two change together.
 
 export type LandingNearestFact = 'walk' | 'battery' | 'range' | 'price' | 'bike';
 

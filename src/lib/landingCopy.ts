@@ -61,7 +61,6 @@ export interface LandingCopy {
     note: string;
     stage: string;
     alt: (scooters: number) => string;
-    caption: (date: string) => string;
   };
   /** What a card beside the phone says under the name of its provider. */
   card: {
@@ -134,8 +133,6 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       stage: 'ScootRadar by Zürich main station',
       alt: scooters =>
         `The iPhone app at night: the dark streets by Zürich main station, each scooter a dot of light in its provider’s colour, the nearest of each provider named with its walking time, and ${scooters} scooters in view.`,
-      caption: date =>
-        `Zürich main station, ${date}: the nearest ride from each of the seven providers there.`,
     },
     card: {
       walk: minutes => `≈${minutes} min walk`,
@@ -256,8 +253,6 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       stage: 'Scooter beim Zürcher Hauptbahnhof',
       alt: scooters =>
         `Die iPhone-App bei Nacht: die dunklen Strassen beim Zürcher Hauptbahnhof, jeder Scooter ein Lichtpunkt in der Farbe seines Anbieters, der nächste jedes Anbieters mit Namen und Gehzeit, ${scooters} Scooter im Bild.`,
-      caption: date =>
-        `Zürich Hauptbahnhof, ${date}: das jeweils nächste Fahrzeug der sieben Anbieter dort.`,
     },
     card: {
       walk: minutes => `≈${minutes} Min. zu Fuss`,
@@ -378,8 +373,6 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       stage: 'Trottinettes près de la gare centrale de Zurich',
       alt: scooters =>
         `L’app iPhone, de nuit : les rues sombres près de la gare centrale de Zurich, chaque trottinette en point lumineux à la couleur de son opérateur, la plus proche de chaque opérateur avec son nom et le temps de marche, et ${scooters} trottinettes à l’écran.`,
-      caption: date =>
-        `Gare centrale de Zurich, ${date} : le véhicule le plus proche chez chacun des sept opérateurs présents.`,
     },
     card: {
       walk: minutes => `≈${minutes} min à pied`,
@@ -500,8 +493,6 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       stage: 'Monopattini vicino alla stazione centrale di Zurigo',
       alt: scooters =>
         `L’app per iPhone di notte: le strade scure vicino alla stazione centrale di Zurigo, ogni monopattino un punto di luce nel colore del suo operatore, il più vicino di ogni operatore con il nome e i minuti a piedi, e ${scooters} monopattini sullo schermo.`,
-      caption: date =>
-        `Stazione centrale di Zurigo, ${date}: per ciascuno dei sette operatori presenti, il mezzo più vicino.`,
     },
     card: {
       walk: minutes => `≈${minutes} min a piedi`,
