@@ -7,7 +7,7 @@ const FEATURED: Record<CoveredCountry, string[]> = {
   CH: ['ch:zurich', 'ch:basel', 'ch:bern', 'ch:winterthur', 'ch:st-gallen', 'ch:zug'],
   DE: ['de:Berlin', 'de:München', 'de:Köln', 'de:Frankfurt', 'de:Stuttgart', 'de:Düsseldorf'],
   FR: ['fr:Lyon', 'fr:Marseille', 'fr:Bordeaux', 'fr:Lille Métropole', 'fr:Grenoble', 'fr:Angers'],
-  IT: ['it:Roma'],
+  IT: ['it:Roma', 'it:Palermo', 'it:Napoli'],
   BE: ['be:Bruxelles', 'be:Antwerpen', 'be:Charleroi', 'be:Kortrijk'],
   NO: ['no:Oslo', 'no:Trondheim', 'no:Stavanger', 'no:Kristiansand', 'no:Bærum', 'no:Tromsø'],
   GB: ['gb:Bristol', 'gb:Liverpool', 'gb:Nottingham', 'gb:Leeds', 'gb:Brighton', 'gb:Bournemouth'],
@@ -16,7 +16,8 @@ const FEATURED: Record<CoveredCountry, string[]> = {
   IS: ['is:Reykjavík', 'is:Reykjanesbær', 'is:Akureyri', 'is:Selfoss', 'is:Akranes', 'is:Vestmannaeyjar'],
 };
 
-const COUNTRY_ORDER: CoveredCountry[] = ['CH', 'DE', 'FR', 'BE', 'NO', 'GB', 'PT', 'ES', 'IS', 'IT'];
+// Switzerland and its neighbours first, then the countries in the order they were added.
+const COUNTRY_ORDER: CoveredCountry[] = ['CH', 'DE', 'FR', 'IT', 'BE', 'NO', 'GB', 'PT', 'ES', 'IS'];
 
 export interface LandingCity {
   name: string;

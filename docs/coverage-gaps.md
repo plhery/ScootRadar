@@ -12,8 +12,6 @@ the work.
 
 | Where | Provider | Scooters | Checked | Notes |
 | --- | --- | ---: | --- | --- |
-| Palermo, Italy | Bird | ~1,280 | 11 Oct 2026 | Same format and licence as Bird Roma |
-| Napoli, Italy | Bird | ~540 | 11 Oct 2026 | Same as above |
 | Basel, Switzerland | Hopp | ~217 | 11 Oct 2026 | sharedmobility.ch has no Hopp. The app reads Hopp for Zürich only (`HOPP_COVERAGE` in `src/lib/feedCoverage.ts`), so this needs a small change |
 | Kloten, Switzerland | Hopp | ~28 | 11 Oct 2026 | Same as above |
 | La Roche-sur-Yon, France | Pony | ~82 | 11 Oct 2026 | Licence Ouverte, through transport.data.gouv.fr. A new city |
@@ -57,13 +55,22 @@ banned shared scooters, and feeds that were empty when checked.
     scooters) were too small or empty.
   - Seventeen Zeus towns were empty.
   - Voi publishes six Baden-Württemberg cities only, through MobiData BW.
-- **Italy** ([guide](german-italian-scooter-feeds.md#known-gaps)): only Bird
-  Roma is covered. Rome's permits for Bird, Dott and Lime were reported to end
-  on 31 October 2026, with a new operator selection under way (not verified).
-  - Dott's Italian regions answer 404 (403 for Catania).
-  - Lime Bari, Napoli, Roma and Verona answer 404.
-  - Bird Firenze and Milano stopped updating.
-  - Zeus Anzio, Augusta and Mazara are empty.
+- **Italy** ([guide](german-italian-scooter-feeds.md#known-gaps)): Bird in
+  Roma, Palermo and Napoli is covered.
+  - Dott (Roma, Milano, Palermo and others) and Lime (Roma, Milano, Palermo)
+    publish no public feed: Dott's 21 Italian regions answer 404, Catania and
+    Alghero 403, and its API now needs authentication. Lime answers 404
+    everywhere. BIT Mobility (Napoli, Bari and others) is behind a login, and
+    RideMovi answers 401.
+  - Bird Milano, Firenze, Torino, Moncalieri, Collegno, Rivoli, Nichelino and
+    Sesto Fiorentino are empty, with a timestamp of 0. Milano revoked Bird's
+    permit in July 2026, over scooters without plates.
+  - Firenze banned shared scooters from 1 April 2026, and BIT's service in
+    Prato ended on 31 December 2025.
+  - Zeus's Italian feeds are stale or empty (Anzio, Augusta, Mazara, Teramo,
+    Modena, Reggio Emilia). Hopp Como held no scooters at night on 13 October
+    2026; check it by day, and add it if it has some.
+  - Helbiz and Link no longer resolve. Cooltra lists mopeds and e-bikes only.
 - **Belgium** ([guide](belgian-norwegian-british-scooter-feeds.md#known-gaps)):
   - Brussels bans shared scooters from 1 January 2027, so Bolt's and Dott's
     feeds there should empty.
@@ -109,8 +116,14 @@ banned shared scooters, and feeds that were empty when checked.
 
 ## Dates to check again
 
-- **31 October 2026:** Rome's operator permits were reported to end. Check
-  that Bird Roma still publishes.
+- **After 26 October 2026:** applications to Rome's new operator selection
+  close. Rome's scooter permits ran from 1 September 2023 to 31 August 2026 and
+  are extended (D.D. QG 1649/2026) for the time the selection needs; the press
+  gives 31 October 2026, the day the bike-sharing permits end. The selection
+  picks up to three scooter operators, who then have 150 days to start
+  ([Roma Servizi per la Mobilità](https://romamobilita.it/eventi-e-news/selezione-operatori-servizi-di-micromobilita-sharing/)).
+  Check that Bird Roma still publishes after both dates, and whether the
+  winners do.
 - **1 December 2026:** the EU's rule on multimodal travel information
   (Delegated Regulation (EU) 2024/490) requires shared-scooter availability on
   each country's national access point for the cities on the main EU transport

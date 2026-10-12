@@ -5,7 +5,7 @@
 <h1 align="center">ScootRadar</h1>
 
 <p align="center">
-  A friendly map for finding shared e-scooters in Switzerland and selected cities in France, Germany, Belgium, Norway, the United Kingdom, Portugal, Spain, Iceland and Italy.
+  A friendly map for finding shared e-scooters in Switzerland and selected cities in France, Germany, Italy, Belgium, Norway, the United Kingdom, Portugal, Spain and Iceland.
 </p>
 
 <p align="center">
@@ -47,7 +47,7 @@ English. There is also a native SwiftUI app for iPhone.
 **Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde and Hoppy.
 
 French coverage includes 27 verified feeds across 25 cities or operating areas,
-with city-name search. German coverage adds 37 feeds across 38 cities (Dott, Bolt, Hopp, Lime, Voi and Zeus); Italian coverage currently includes Bird in Rome. See the [German/Italian feed audit](docs/german-italian-scooter-feeds.md) for coverage and known gaps. See the [French feed investigation](docs/french-scooter-feeds.md)
+with city-name search. German coverage adds 37 feeds across 38 cities (Dott, Bolt, Hopp, Lime, Voi and Zeus); Italy adds 3 Bird feeds, in Roma, Palermo and Napoli. See the [German/Italian feed audit](docs/german-italian-scooter-feeds.md) for coverage and known gaps. See the [French feed investigation](docs/french-scooter-feeds.md)
 for the city list, live-check command, and source terms to review before deployment.
 Belgium adds 6 feeds across 4 cities (Bolt, Dott, Voi, Pony and Hoppy), Norway 23 feeds
 from Entur across 21 towns (Voi, Ryde, Bolt and Dott), and the United Kingdom 11

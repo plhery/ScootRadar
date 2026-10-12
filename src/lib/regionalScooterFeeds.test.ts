@@ -15,7 +15,8 @@ afterEach(() => { upstreamJsonCache.clear(); vi.unstubAllGlobals(); });
 
 describe('German and Italian scooter coverage', () => {
   it.each([['Munich', 'München, Germany'], ['Muenchen Deutschland', 'München, Germany'],
-    ['Koln', 'Köln, Germany'], ['Rome', 'Roma, Italy'], ['Roma Italia', 'Roma, Italy']])('finds %s', (query, name) => {
+    ['Koln', 'Köln, Germany'], ['Rome', 'Roma, Italy'], ['Roma Italia', 'Roma, Italy'], ['Naples', 'Napoli, Italy'],
+    ['Neapel', 'Napoli, Italy'], ['Palerme', 'Palermo, Italy']])('finds %s', (query, name) => {
     expect(searchRegionalScooterCities(query)[0].display_name).toBe(name);
   });
   it('does not silently ignore a conflicting country or expose the aggregate feed as a city', () => {

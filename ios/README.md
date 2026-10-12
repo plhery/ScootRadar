@@ -132,7 +132,8 @@ and `https://scootradar.com/api/geocode` for search, to which it sends the
 language it is shown in. The endpoint is set in `Services/ScooterAPI.swift` if a
 local or preview backend is needed.
 
-The API covers Switzerland and selected cities in France, Germany and Italy.
+The API covers Switzerland and selected cities in France, Germany, Italy, Belgium,
+Norway, the United Kingdom, Portugal, Spain and Iceland.
 Prices are in CHF or EUR where the feed supplies a tariff. The backend loads
 feeds for the visible map area only.
 

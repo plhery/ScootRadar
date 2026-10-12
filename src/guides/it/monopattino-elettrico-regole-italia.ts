@@ -157,7 +157,7 @@ const guide: Guide = {
         'Le autorizzazioni dei tre operatori scadevano il 31 agosto 2026. Il Comune le ha prorogate per il tempo necessario a scegliere i nuovi: secondo la stampa, fino al **31 ottobre 2026**.',
         'Le domande per il nuovo bando si chiudono il **26 ottobre 2026** alle 15. Il Comune sceglierà fino a tre operatori di monopattini per tre anni, e chi vince avrà fino a 150 giorni per avviare il servizio. Il bando premia chi mette su ogni monopattino un casco sbloccabile dall’app.',
         'Al 12 ottobre 2026 non abbiamo trovato annunci su cosa succederà dopo il 31 ottobre: da novembre, controlla l’app prima di uscire.',
-        'ScootRadar mostra a Roma i monopattini Bird: il 12 ottobre 2026 sulla mappa intorno a Roma ce n’erano circa 3.700. Dott e Lime ci sono anche loro, ma sulla mappa non compaiono: li trovi nelle loro app. [Apri la mappa su Roma](map:it:Roma).',
+        'ScootRadar mostra a Roma i monopattini Bird: il 12 ottobre 2026 sulla mappa intorno a Roma ce n’erano circa 3.700. Dott e Lime ci sono anche loro, ma sulla mappa non compaiono: li trovi nelle loro app. [Apri la mappa su Roma](map:it:Roma). In Italia la mappa mostra anche i monopattini Bird di [Palermo](map:it:Palermo) e [Napoli](map:it:Napoli).',
       ],
     },
   ],

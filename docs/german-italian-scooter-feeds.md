@@ -21,6 +21,9 @@ subsets of it; its own Würzburg and Neustadt feeds hold a few scooters on
 depots). Zeus's own Heidelberg feed lies inside MobiData BW's Leimen / Walldorf /
 Wiesloch feed, and its Hemmingen feed inside its Ludwigsburg feed.
 
+Italy grew from Rome to three cities on 13 October 2026, with Bird Palermo and
+Bird Napoli; see [Italy, October 2026](#italy-october-2026).
+
 | Country | Operator | Enabled feeds | Coverage |
 | --- | --- | ---: | --- |
 | Germany | Dott | 15 | Aachen, Berlin, Düsseldorf, Essen, Hannover, Heidelberg, Heilbronn, Kaiserslautern, Köln, Langenfeld, Leipzig, München, Münster, Potsdam and Stuttgart |
@@ -29,9 +32,9 @@ Wiesloch feed, and its Hemmingen feed inside its Ludwigsburg feed.
 | Germany | Lime | 3 | Frankfurt, Wuppertal, Stuttgart / Konstanz |
 | Germany | Voi | 1 | Karlsruhe, Pforzheim, Mannheim, Stuttgart, Tübingen and Reutlingen |
 | Germany | Zeus | 14 | Bamberg, Donaueschingen, Freiburg im Breisgau, Heidelberg / Leimen / Walldorf / Wiesloch, Konstanz, Ludwigsburg, Neustadt an der Weinstraße, Regensburg, Renningen, Schweinfurt, Singen, Tuttlingen, Villingen-Schwenningen and Würzburg |
-| Italy | Bird | 1 | Roma |
+| Italy | Bird | 3 | Roma, Palermo and Napoli |
 
-German coverage contains 38 distinct cities. Italy currently covers Rome only.
+German coverage contains 38 distinct cities, Italian coverage 3.
 The complete reviewed city bounds, public discovery URLs and aliases are in
 [`german-scooter-feeds.json`](../data/german-scooter-feeds.json) and
 [`italian-scooter-feeds.json`](../data/italian-scooter-feeds.json).
@@ -57,23 +60,72 @@ The complete reviewed city bounds, public discovery URLs and aliases are in
   Empty or absent parking data does not imply unrestricted parking.
 - Feed collection is independent of map requests. Overview counts refresh hourly;
   individual scooters refresh with the minute collector. City search recognizes
-  local names and English aliases (for example München/Munich and Roma/Rome).
+  local names and English aliases (for example München/Munich and Napoli/Naples).
+
+## Italy, October 2026
+
+Bird Palermo and Bird Napoli are Bird's own GBFS 2.3 feeds, under the
+`palermo-italy` and `napoli-italy` slugs of `mds.bird.co`; the plain `palermo`
+and `napoli` slugs answer 404. On 13 October 2026, after midnight Rome time,
+each was polled four times, five minutes apart. Palermo listed 1,226 to 1,231
+scooters, 1,214 to 1,219 of them available, and Napoli 542 or 543, with 508 or
+509 available. Every poll was under a minute old. Between polls, about 450 of
+Palermo's positions changed and about 40 of Napoli's, and Bird rotated every
+vehicle id, as it does elsewhere. Every feed URL is https, on the discovery's
+origin and under its directory.
+
+- **Bounds** enclose every zone where Bird's geofencing allows riding, plus
+  0.005° of padding. Palermo publishes 33 zones and Napoli 97, most of them
+  no-ride or no-parking zones. Napoli's riding zones include three detached
+  ones east and west of the city, where no scooter stood during the polls.
+- **Battery** is published for every scooter. There are no rental links, so a
+  scooter's card opens Bird's app, and the pricing list is empty, so no ride
+  estimate is shown, as for Bird in Portugal and Spain.
+- **Licence:** the `license_url` is Bird's 2018 PDF, which answers 404, as in
+  the [Portuguese and Spanish audit](portuguese-spanish-icelandic-scooter-feeds.md#licences).
+- **Palermo's permits:** the city's final ranking
+  ([Determinazione Dirigenziale n. 1874 of 5 February 2025](https://www.comune.palermo.it/wp-content/uploads/2025/02/25a49427-438b-45df-b3bb-483410e652aa.pdf))
+  authorises Link your city Italia, Emtransit (Dott) and Lime for five years,
+  and gave the other operators 20 days to stop. Bird is not among them, yet its
+  feed lists about 1,220 scooters. Bird's other `-italy` slugs (Collegno, Moncalieri,
+  Nichelino, Rivoli, Sesto Fiorentino) are former Link towns, so these may be
+  Link's fleets, now run by Bird. That is not confirmed.
+- **Rome's permits** ran from 1 September 2023 to 31 August 2026. D.D. QG
+  1649/2026 extends them for the time a new selection needs; the press gives
+  31 October 2026, the day Rome's bike-sharing permits end. Applications close
+  on 26 October 2026 at 15:00; the selection picks up to three scooter
+  operators, for three years, who then have 150 days to start
+  ([Roma Servizi per la Mobilità](https://romamobilita.it/eventi-e-news/selezione-operatori-servizi-di-micromobilita-sharing/)).
+- **City rules:** Firenze banned shared scooters from 1 April 2026
+  ([Comune di Firenze](https://www.comune.firenze.it/novita/comunicati/sharing-mobility-dal-1deg-aprile-stop-ai-monopattini-sharing)).
+  Milano revoked Bird's permit in July 2026, over scooters without the plates
+  required since 17 May 2026. BIT's service in Prato ended on 31 December 2025.
+  No Italian city was found to ban renting at night.
 
 ## Known gaps
 
 - Dott no longer publishes most German regions, among them Hamburg, Bremen,
   Nürnberg, Dortmund and Karlsruhe (where Bolt and Voi remain). Dott documents
   its authenticated feed among its partner integrations.
-- Italian Dott city endpoints returned 404 (`ERR_REGION_NOT_FOUND`, or 403 for
-  Catania); the Italy country index contained no city feeds. This is an endpoint
-  observation, not proof that Dott no longer operates in those cities.
-- Lime Bari, Naples, Rome and Verona public endpoints returned 404.
-- Bird Florence, Milan, Munich and Ulm returned abandoned timestamps and were excluded.
+- Dott's 21 Italian city endpoints returned 404 (`ERR_REGION_NOT_FOUND`), and
+  Catania and Alghero 403 (`ERR_REGION_OFFLINE`); the Italy country index
+  contained no city feeds, and Dott's API now needs authentication. Dott still
+  runs in Roma, Milano, Palermo and other cities.
+- Lime's Italian endpoints all returned 404, though Lime runs in Roma, Milano
+  and Palermo.
+- Bird Milano, Firenze, Torino, Moncalieri, Collegno, Rivoli, Nichelino and
+  Sesto Fiorentino were empty, with a timestamp of 0; Bird München and Ulm had
+  abandoned timestamps. None was added.
+- Hopp Como held no scooters at night on 13 October 2026; check it by day.
+- RideMovi's feeds answer 401, and BIT Mobility (Napoli, Bari and others)
+  shows its scooters only after a login. Helbiz's and Link's hosts no longer
+  resolve. Cooltra lists mopeds and e-bikes, no scooters.
 - Zeus's own feeds for Castrop-Rauxel, Duisburg, Friedberg, Gera, Göppingen,
   Hagen, Hattingen, Heilbronn, Herne, Jena, Kempten, Marburg, Pforzheim,
   Reutlingen, Rüsselsheim, Schwäbisch Gmünd and Tübingen held no scooters, and
-  Limburgerhof and Straubing a few; none was added. Its Italian feeds (Anzio,
-  Augusta, Mazara) were empty.
+  Limburgerhof and Straubing a few; none was added. Its Italian feeds were
+  stale or empty: Anzio, Augusta and Mazara listed no available scooter, and
+  Teramo, Modena and Reggio Emilia none at all.
 - German Lime Dresden and Oberhausen contained no available standing scooters;
   the Hamburg and older Stuttgart discovery URLs returned 404.
 - Voi's reviewed German proxy covers six cities in Baden-Württemberg; it is not
@@ -85,8 +137,11 @@ The complete reviewed city bounds, public discovery URLs and aliases are in
 Zeus publishes its own city feeds at `https://zeus.city/api/v1/mds/gbfs/<city>/gbfs.json`.
 [Dott Germany discovery](https://gbfs.api.ridedott.com/public/v2/countries/de/gbfs.json)
 contains repeated feed names for separate cities, so each reviewed city is collected
-independently. [Bird Rome](https://mds.bird.co/gbfs/v2/public/rome/gbfs.json) supplies
-the enabled Italian service. Operator attribution is retained in the map and API.
+independently. Bird's own feeds for
+[Roma](https://mds.bird.co/gbfs/v2/public/rome/gbfs.json),
+[Palermo](https://mds.bird.co/gbfs/v2/public/palermo-italy/gbfs.json) and
+[Napoli](https://mds.bird.co/gbfs/v2/public/napoli-italy/gbfs.json) supply
+the enabled Italian services. Operator attribution is retained in the map and API.
 Existing operator data terms continue to apply; public access does not replace them.
 
 ```sh

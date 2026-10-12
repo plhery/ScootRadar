@@ -1,7 +1,50 @@
 {
-  "verifiedOn": "2026-09-08",
+  "verifiedOn": "2026-10-13",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
+    {
+      "id": "bird_it_napoli",
+      "country": "IT",
+      "provider": "bird",
+      "city": "Napoli",
+      "center": [
+        40.8518,
+        14.2681
+      ],
+      "bounds": {
+        "south": 40.7844,
+        "north": 40.921,
+        "west": 14.1066,
+        "east": 14.3912
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/napoli-italy/gbfs.json",
+      "aliases": [
+        "Naples",
+        "Neapel",
+        "Napels",
+        "Nápoles"
+      ]
+    },
+    {
+      "id": "bird_it_palermo",
+      "country": "IT",
+      "provider": "bird",
+      "city": "Palermo",
+      "center": [
+        38.1157,
+        13.3613
+      ],
+      "bounds": {
+        "south": 38.0876,
+        "north": 38.2158,
+        "west": 13.3064,
+        "east": 13.388
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/palermo-italy/gbfs.json",
+      "aliases": [
+        "Palerme"
+      ]
+    },
     {
       "id": "bird_it_rome",
       "country": "IT",
