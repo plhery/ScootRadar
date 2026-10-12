@@ -7,7 +7,7 @@
 "Estimated range" = "Autonomía estimada";
 "Any" = "Todas";
 "Address data © OpenStreetMap contributors" = "Datos de direcciones © colaboradores de OpenStreetMap";
-"Address data © swisstopo" = "Datos de direcciones © swisstopo";
+"Address search by Geoapify" = "Búsqueda de direcciones con Geoapify";
 "Privacy" = "Privacidad";
 "Go to my location" = "Ir a mi ubicación";
 "Standard" = "Estándar";
@@ -100,7 +100,7 @@
 "Cities with scooters" = "Ciudades con patinetes";
 "No data" = "Sin datos";
 "Searching…" = "Buscando…";
-"No places found. Outside Switzerland, search by city." = "No se ha encontrado ningún lugar. Fuera de Suiza, busca por ciudad.";
+"No places found." = "No se ha encontrado ningún lugar.";
 "Search isn’t available right now." = "La búsqueda no está disponible ahora mismo.";
 "Try again" = "Reintentar";
 "Clear search" = "Borrar búsqueda";

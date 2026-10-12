@@ -92,7 +92,7 @@ describe('toPlace', () => {
     // Ten metres from the centre is another point.
     expect(toPlace({ lat: zurich.center[0] + 0.0001, lng: zurich.center[1], display_name: 'Bahnhofquai 3', covered: true }))
       .not.toHaveProperty('city');
-    // swisstopo's own "Genf", without scooter data.
+    // A search service's own "Genf", without scooter data.
     expect(toPlace({ lat: 46.2046, lng: 6.1425, display_name: 'Genf (GE)', title: 'Genf', subtitle: 'GE', covered: false }))
       .not.toHaveProperty('city');
   });

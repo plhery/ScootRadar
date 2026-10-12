@@ -2007,12 +2007,12 @@ struct ScooterCreditsList: View {
                 url: URL(string: "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop")!
             ),
             Source(
-                title: String(localized: "Address data © OpenStreetMap contributors"),
-                url: URL(string: "https://www.openstreetmap.org/copyright")!
+                title: String(localized: "Address search by Geoapify"),
+                url: URL(string: "https://www.geoapify.com/")!
             ),
             Source(
-                title: String(localized: "Address data © swisstopo"),
-                url: URL(string: "https://www.geo.admin.ch/en/geo-services/geo-services/application-programming-interface-api")!
+                title: String(localized: "Address data © OpenStreetMap contributors"),
+                url: URL(string: "https://www.openstreetmap.org/copyright")!
             ),
             Source(
                 title: String(

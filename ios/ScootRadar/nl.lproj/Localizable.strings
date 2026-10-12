@@ -7,7 +7,7 @@
 "Estimated range" = "Geschat bereik";
 "Any" = "Alle";
 "Address data © OpenStreetMap contributors" = "Adresgegevens © OpenStreetMap-bijdragers";
-"Address data © swisstopo" = "Adresgegevens © swisstopo";
+"Address search by Geoapify" = "Adressen zoeken met Geoapify";
 "Privacy" = "Privacy";
 "Go to my location" = "Naar mijn locatie";
 "Standard" = "Standaard";
@@ -100,7 +100,7 @@
 "Cities with scooters" = "Steden met deelsteps";
 "No data" = "Geen data";
 "Searching…" = "Zoeken…";
-"No places found. Outside Switzerland, search by city." = "Geen plaatsen gevonden. Zoek buiten Zwitserland op stad.";
+"No places found." = "Geen plaatsen gevonden.";
 "Search isn’t available right now." = "Zoeken is nu niet beschikbaar.";
 "Try again" = "Opnieuw proberen";
 "Clear search" = "Zoekopdracht wissen";

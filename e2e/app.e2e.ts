@@ -1338,7 +1338,7 @@ test('typing lists places with a second line, tags those without scooter data, a
 });
 
 test('the address search itself finds a typed city with scooter data first, with its country in the language on screen', async ({ page }) => {
-  // Nothing stands in for /api/geocode here: it answers cities with scooter data without asking swisstopo.
+  // Nothing stands in for /api/geocode here: it answers cities with scooter data without asking a search service.
   await page.goto('/map');
   await page.evaluate(() => localStorage.setItem('scooters-locale', 'de'));
   await page.reload();
@@ -1382,7 +1382,7 @@ test('the search says that it is searching, that nothing was found, and that it 
   await expect(island.getByRole('button', { name: 'Use my location' })).toHaveCount(0);
   answer = 'nothing';
   release();
-  await expect(status).toHaveText('No places found. Outside Switzerland, search by city.');
+  await expect(status).toHaveText('No places found.');
   await expect(island.getByRole('button', { name: 'Try again' })).toHaveCount(0);
 
   answer = 'broken';
@@ -1676,9 +1676,10 @@ test('the settings name the languages, and About leads to the credits, the priva
   // The walking routes come from FOSSGIS's Valhalla, whose terms ask for both: its credit, and a way to fix the map.
   await expect(credits.getByRole('link', { name: 'Walking routes · Valhalla, FOSSGIS' })).toHaveAttribute('href', 'https://routing.openstreetmap.de/about.html');
   await expect(credits.getByRole('link', { name: 'Fix the map · OpenStreetMap' })).toHaveAttribute('href', 'https://www.openstreetmap.org/fixthemap');
-  // Places across Europe come from komoot's Photon.
+  // Places across Europe come from Geoapify, whose free plan asks for its credit, and from komoot's Photon when Geoapify cannot answer.
+  await expect(credits.getByRole('link', { name: 'Search · Geoapify' })).toHaveAttribute('href', 'https://www.geoapify.com/');
+  await expect(credits.getByRole('link', { name: 'Search · Geoapify' })).toHaveAttribute('target', '_blank');
   await expect(credits.getByRole('link', { name: 'Search · Photon, komoot' })).toHaveAttribute('href', 'https://photon.komoot.io/');
-  await expect(credits.getByRole('link', { name: '© swisstopo' })).toHaveAttribute('target', '_blank');
   await expect(credits.getByRole('link', { name: 'Parking · Métropole Européenne de Lille' })).toBeVisible();
   for (const control of await credits.getByRole('button').or(credits.getByRole('link')).all()) {
     expect((await control.boundingBox())!.height).toBeGreaterThanOrEqual(44);
@@ -1816,7 +1817,7 @@ test('first launch shows the map at once, a labelled Near me button and compact 
   expect(await pressedAt(link.x, link.y + 21)).toBe('© OpenStreetMap');
   await infoButton.click();
   await expect(credits).toBeVisible();
-  await expect(credits.getByRole('link', { name: '© swisstopo' })).toBeVisible();
+  await expect(credits.getByRole('link', { name: 'Search · Geoapify' })).toBeVisible();
   await expect(credits.getByRole('link', { name: 'Parking · Métropole Européenne de Lille' })).toBeVisible();
   const expandedAccessibility = await new AxeBuilder({ page }).include('#map-credits').withTags(['wcag2a', 'wcag2aa']).analyze();
   expect(expandedAccessibility.violations).toEqual([]);

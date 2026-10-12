@@ -264,7 +264,7 @@ describe('when there is nothing to list', () => {
     const { input, onSelect } = renderSearch();
     await type(input, 'Xyzzy');
 
-    expect(screen.getByRole('status')).toHaveTextContent(/^No places found\. Outside Switzerland, search by city\.$/);
+    expect(screen.getByRole('status')).toHaveTextContent(/^No places found\.$/);
     expect(screen.queryByRole('button', { name: 'Try again' })).toBeNull();
     expect(input).toHaveAttribute('aria-expanded', 'false');
     // Enter has nothing to choose.

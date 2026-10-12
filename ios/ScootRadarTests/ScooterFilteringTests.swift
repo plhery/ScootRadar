@@ -576,7 +576,9 @@ final class ScooterFilteringTests: XCTestCase {
         XCTAssertEqual(Set(sources.map(\.url)).count, sources.count)
         XCTAssertTrue(sources.allSatisfy { $0.url.scheme == "https" && !$0.title.isEmpty })
         XCTAssertTrue(sources.contains { $0.url.host() == "data.lillemetropole.fr" })
-        // Searched places from Photon are OpenStreetMap data, whose licence asks for this credit.
+        // Searched places come from Geoapify, whose free plan asks for its name to be shown,
+        // and are OpenStreetMap data, whose licence asks for this credit.
+        XCTAssertTrue(sources.contains { $0.url.absoluteString == "https://www.geoapify.com/" })
         XCTAssertTrue(sources.contains { $0.url.absoluteString == "https://www.openstreetmap.org/copyright" })
 
         XCTAssertEqual(ScooterLinks.privacyNotice.absoluteString, "https://scootradar.com/privacy")

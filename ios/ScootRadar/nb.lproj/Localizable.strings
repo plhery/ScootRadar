@@ -7,7 +7,7 @@
 "Estimated range" = "Anslått rekkevidde";
 "Any" = "Alle";
 "Address data © OpenStreetMap contributors" = "Adressedata © OpenStreetMap-bidragsytere";
-"Address data © swisstopo" = "Adressedata © swisstopo";
+"Address search by Geoapify" = "Adressesøk fra Geoapify";
 "Privacy" = "Personvern";
 "Go to my location" = "Gå til posisjonen min";
 "Standard" = "Standard";
@@ -100,7 +100,7 @@
 "Cities with scooters" = "Byer med elsparkesykler";
 "No data" = "Ingen data";
 "Searching…" = "Søker…";
-"No places found. Outside Switzerland, search by city." = "Fant ingen steder. Utenfor Sveits kan du søke etter by.";
+"No places found." = "Fant ingen steder.";
 "Search isn’t available right now." = "Søket er ikke tilgjengelig akkurat nå.";
 "Try again" = "Prøv igjen";
 "Clear search" = "Tøm søket";

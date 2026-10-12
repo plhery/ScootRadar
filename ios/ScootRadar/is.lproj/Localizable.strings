@@ -7,7 +7,7 @@
 "Estimated range" = "Áætluð drægni";
 "Any" = "Allar";
 "Address data © OpenStreetMap contributors" = "Heimilisföng © OpenStreetMap-framlagsaðilar";
-"Address data © swisstopo" = "Heimilisföng © swisstopo";
+"Address search by Geoapify" = "Heimilisfangaleit frá Geoapify";
 "Privacy" = "Persónuvernd";
 "Go to my location" = "Fara á staðsetningu mína";
 "Standard" = "Venjulegt";
@@ -100,7 +100,7 @@
 "Cities with scooters" = "Staðir með rafskútum";
 "No data" = "Engin gögn";
 "Searching…" = "Leitar…";
-"No places found. Outside Switzerland, search by city." = "Ekkert fannst. Utan Sviss geturðu leitað að bæ eða borg.";
+"No places found." = "Ekkert fannst.";
 "Search isn’t available right now." = "Leitin er ekki tiltæk eins og er.";
 "Try again" = "Reyna aftur";
 "Clear search" = "Hreinsa leit";

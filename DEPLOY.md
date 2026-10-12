@@ -108,16 +108,23 @@ location: under real traffic, run a Valhalla of our own). `WALK_ROUTE_API_URL`
 in `vars` is the routing service; only `https://` addresses are used, anything
 else falls back to the FOSSGIS server. See DATA_SOURCES.md.
 
-Address search (`/api/geocode`) asks komoot's public Photon unless
-`PHOTON_API_URL` in `vars` names one of our own; only `https://` addresses are
-used. Ours sits behind Cloudflare Access: store the two halves of an Access
-service token with `npx wrangler secret put PHOTON_ACCESS_CLIENT_ID` and
+Address search (`/api/geocode`) asks Geoapify when the Worker secret
+`GEOAPIFY_API_KEY` is set: store the key with
+`npx wrangler secret put GEOAPIFY_API_KEY`. The free plan allows 3,000 requests
+a day. Geoapify gets five seconds. If it fails or is slower (out of the day's
+requests, key refused or down), the search asks Photon and logs
+`geoapify_fallback`. Without the key, the search asks Photon alone.
+
+Photon is komoot's public one unless `PHOTON_API_URL` in `vars` names one of our
+own; only `https://` addresses are used. Ours sits behind Cloudflare Access:
+store the two halves of an Access service token with
+`npx wrangler secret put PHOTON_ACCESS_CLIENT_ID` and
 `npx wrangler secret put PHOTON_ACCESS_CLIENT_SECRET`. Without both, no token is
 sent. Ours gets three seconds. If it fails or is slower, the search asks the
 public Photon and logs `photon_fallback`; it does not when ours answers 429.
 Before setting `PHOTON_API_URL`, update the privacy notice (PRIVACY.md and
 `src/app/(map)/privacy/page.tsx`), which names komoot as the recipient of
-address text.
+address text when Geoapify cannot answer.
 
 ## Cloudflare Workers Builds
 

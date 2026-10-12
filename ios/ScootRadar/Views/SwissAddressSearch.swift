@@ -373,7 +373,7 @@ struct ScooterSearchPanel: View {
         case let .results(results):
             resultRows(results)
         case .noResults:
-            Text("No places found. Outside Switzerland, search by city.")
+            Text("No places found.")
                 .searchStatusStyle()
         case .failed:
             VStack(alignment: .leading, spacing: 0) {
@@ -529,7 +529,7 @@ struct ScooterSearchPanel: View {
                 Int64(results.count)
             )
         case .noResults:
-            message = String(localized: "No places found. Outside Switzerland, search by city.")
+            message = String(localized: "No places found.")
         case .failed:
             message = String(localized: "Search isn’t available right now.")
         }

@@ -77,7 +77,7 @@ struct AddressSearchResult: Decodable, Equatable, Identifiable, Sendable {
             return (components[0], components.dropFirst().joined(separator: ", "))
         }
 
-        // Swisstopo labels usually look like "Bahnhofstrasse 1 8001 Zürich".
+        // Without commas, the postal code starts the second line: "Bahnhofstrasse 1 8001 Zürich".
         if let postalCode = name.range(of: #"\s+(?:CH-)?\d{4}\s+\p{L}"#, options: .regularExpression) {
             return (
                 String(name[..<postalCode.lowerBound]),

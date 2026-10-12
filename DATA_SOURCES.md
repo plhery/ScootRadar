@@ -65,22 +65,28 @@ for the verified cities, sample counts, excluded feeds, and recheck command.
 ## Address data
 
 Supported city names and aliases are answered from the local, reviewed
-scooter-city catalog. Other places, across Europe, come from
-[Photon](https://photon.komoot.io/), komoot's public geocoder on OpenStreetMap
-data (ODbL, credited with `© OpenStreetMap contributors`). Its use is free
-within reasonable limits and may be throttled; `PHOTON_API_URL` points the
-search at a Photon of our own, with the public one standing in when ours fails
-(see DEPLOY.md). The app sends the map centre, rounded to about a
-kilometre, as a location bias once the map shows a city or less, and restricts
-results to Europe.
+scooter-city catalog, without asking any service. Other places, across Europe,
+come from the Address Autocomplete API of [Geoapify](https://www.geoapify.com/)
+when the Worker secret `GEOAPIFY_API_KEY` is set.
+Geoapify answers from OpenStreetMap data (ODbL, credited with
+`© OpenStreetMap contributors`) and other open sources it names in each answer.
+Its free plan allows commercial use with visible Geoapify and OpenStreetMap
+attribution, which the app displays (`Search · Geoapify`), and 3,000 requests a
+day. The Worker sends the typed text, the language the app is shown in, and,
+once the map shows a city or less, the map centre, rounded to about a
+kilometre, as a location bias (without one, places in Switzerland come first).
+It leaves out places outside Europe, and asks for up to 20 places; the app
+shows 5.
 
-With the map in or near Switzerland, or without a map centre (zoomed out
-further than a city, or an iOS app from before it sent one),
-the federal `geo.admin.ch` SearchServer operated by swisstopo is asked as well.
-Its services are available without registration under FSDI fair-use and
-attribution conditions; the app displays `© swisstopo`. Its official addresses
-and stops come before Photon's Swiss places, which fill in only when swisstopo
-finds nothing that starts with the typed text. The app rate-limits searches.
+When Geoapify fails (the day's requests used up, the key refused, the service
+down or slower than five seconds), or without `GEOAPIFY_API_KEY`, as in a copy
+of this repository run without one, the same search goes to
+[Photon](https://photon.komoot.io/), komoot's public geocoder on OpenStreetMap
+data. Its use is free within reasonable limits and may be throttled;
+`PHOTON_API_URL` points the search at a Photon of our own, with the public one
+standing in when ours fails (see DEPLOY.md). The `X-Geocoding-Data-Source`
+response header names which answered: `Geoapify, OpenStreetMap` or
+`Photon, OpenStreetMap`. The app rate-limits searches.
 
 ## Map tiles
 

@@ -3,71 +3,59 @@ import { BodyTooLargeError, readJsonBody } from '@/lib/readJsonBody';
 import { NextRequest, NextResponse } from 'next/server';
 import { rateLimitAllows } from '@/lib/rateLimit';
 import { isPointCovered } from '@/lib/coveredCities';
-import { boundsContainPoint, haversineM } from '@/lib/geo';
-import type { MapBounds } from '@/lib/types';
+import { haversineM } from '@/lib/geo';
 import { GEOCODE_LANGUAGES, searchCoveredCities, type GeocodeLanguage } from './cities';
 
 const MAX_QUERY_LENGTH = 160;
-// Far more than is returned, so that places with scooter data can be ranked
-// first and a station is found among its own tracks and depots: "Basel SBB" is
-// the twentieth row swisstopo returns for that text.
-const UPSTREAM_RESULT_LIMIT = 30;
 const MAX_RESULTS = 5;
+// One search, however many services it asks.
 const GEOCODE_TIMEOUT_MS = 10_000;
-const GEOADMIN_SEARCH_URL = 'https://api3.geo.admin.ch/rest/services/api/SearchServer';
-// Not places to ride from: the centres of whole cantons and districts, and land parcels.
-const SKIPPED_ORIGINS = new Set(['kantone', 'district', 'parcel']);
-// Motorway exits and interchanges, which read like quarters ("Zürich-West") once their class is dropped.
-const MOTORWAY_CLASS = 'TLM_AUS_EINFAHRT';
-// Public transport stops. A stop a rider can use comes with its transport mode
-// ("train", "bus / tram"); one without is an operating point of the railway: a
-// depot, a junction, a group of tracks ("Basel SBB RB Gr E", "(Spw)", "Cargo GV").
-const STOP_ORIGIN = 'haltestellen';
 
-// Places across Europe, from OpenStreetMap: swisstopo knows Switzerland only.
+// Places across Europe, from OpenStreetMap: Geoapify where GEOAPIFY_API_KEY is
+// set, Photon where it is not or when Geoapify cannot answer (searchPlaces).
+const GEOAPIFY_AUTOCOMPLETE_URL = 'https://api.geoapify.com/v1/geocode/autocomplete';
+// Geoapify answers in about a second, an address with its house number in up to
+// three: one that takes longer leaves Photon the rest of the search's time.
+const GEOAPIFY_TIMEOUT_MS = 5_000;
+// Far more than are shown, so that places with scooter data can be ranked first.
+const GEOAPIFY_RESULT_LIMIT = 20;
+// Geoapify's kinds of place as Photon names them. Not the centres of counties,
+// regions and countries: no place to ride from.
+const GEOAPIFY_TYPES: Record<string, string> = {
+  amenity: 'house',
+  building: 'house',
+  street: 'street',
+  suburb: 'district',
+  district: 'district',
+  city: 'city',
+  postcode: 'other',
+  unknown: 'other',
+};
 // komoot's public Photon, unless PHOTON_API_URL names our own (photonService).
 const PUBLIC_PHOTON_URL = 'https://photon.komoot.io/api/';
 // Our own Photon answers in a fraction of a second: one that takes longer is
-// left for the public one, and the two together take no longer than one search.
+// left for the public one.
 const OWN_PHOTON_TIMEOUT_MS = 3_000;
 const PHOTON_RESULT_LIMIT = 15;
 // The languages Photon names places in; in the others, places keep their local names.
 const PHOTON_LANGUAGES = ['de', 'en', 'fr'] as const;
-// Not the centres of counties, regions and countries, as swisstopo's cantons and districts are left out.
+// Not the centres of counties, regions and countries.
 const PHOTON_LAYERS = ['house', 'street', 'locality', 'district', 'city', 'other'];
-// Where the app has cities: Europe, from the Azores and the Canaries to the North Cape.
-const EUROPE_BBOX = '-32,27,45,72';
+// Where the app has cities: Europe, from the Azores and the Canaries to the North
+// Cape. Photon is asked within it; Geoapify is not, as in a rectangle that large
+// it finds nothing for "Via Roma 10", nor in a list of Europe's countries "Gare de
+// Lyon" near Paris: its places outside are left out instead (europeanPlace).
+const EUROPE = { west: -32, south: 27, east: 45, north: 72 };
 // Distance to the map centre counts for more than prominence: "Bahnhofstrasse 1"
 // near Zürich is the one in Zürich, not the better-known station in Goldau.
 const PHOTON_BIAS_SCALE = '0.1';
-// Switzerland with a margin. With the map centre in it, swisstopo is asked as well; elsewhere Photon alone.
-const SWISSTOPO_AREA: MapBounds = { south: 45.8, west: 5.9, north: 47.85, east: 10.55 };
 // How far a place is from the map centre: within a short ride, within the city around it, or farther.
 const CLOSE_M = 5_000;
 const NEARBY_M = 30_000;
-// swisstopo answers in a few hundred milliseconds, Photon at times in seconds. Once swisstopo
-// has found a place near the map, Photon, which adds places abroad, is waited for this much longer.
-const PHOTON_GRACE_MS = 1_000;
 // A station, its building and its platforms under one name: within this, they are one place.
 const SAME_PLACE_M = 250;
 // Where the house number is written before the street: "10 Rue de Rivoli".
 const NUMBER_FIRST_COUNTRIES = new Set(['FR', 'GB', 'IE', 'LU', 'MC']);
-
-interface GeoAdminResult {
-  attrs?: {
-    lat?: number;
-    lon?: number;
-    x?: number;
-    y?: number;
-    label?: string;
-    origin?: string;
-    objectclass?: string;
-  };
-}
-
-interface GeoAdminResponse {
-  results?: GeoAdminResult[];
-}
 
 interface PhotonFeature {
   geometry?: { coordinates?: unknown };
@@ -76,6 +64,10 @@ interface PhotonFeature {
 
 interface PhotonResponse {
   features?: PhotonFeature[];
+}
+
+interface GeoapifyResponse {
+  results?: unknown[];
 }
 
 interface GeocodeInput {
@@ -97,101 +89,17 @@ interface GeocodePlace {
 interface Candidate {
   place: GeocodePlace;
   rank: number;
-  kind: RankedAs;
+}
+
+/** The places one service found, and the credit for them. */
+interface Found {
+  source: string;
+  candidates: Candidate[];
 }
 
 type UpstreamFailure = 'rateLimited' | 'timedOut' | 'unavailable' | 'invalid';
 
-const HTML_ENTITIES: Record<string, string> = {
-  '&amp;': '&',
-  '&lt;': '<',
-  '&gt;': '>',
-  '&quot;': '"',
-  '&#39;': "'",
-};
-
-const LAYER_PREFIX = /^(?:haltestellen|address|gazetteer)_\s*/i;
-const CANTONS = '[A-Z]{2}(?:,\\s*[A-Z]{2})*';
-const LOCATED_IN = new RegExp(`^\\((${CANTONS})\\)\\s*-\\s*(.+)$`);
-const BRACKETED_CANTONS = new RegExp(`\\((${CANTONS})\\)`, 'g');
-const CANTON_SUFFIX = /^(.*\S)\s*\(([A-Z]{2})\)$/;
-
-// display_name: decoded by app versions that predate title and subtitle. Keep as is.
-function plainTextLabel(value: string): string {
-  return value
-    .replace(/<[^>]*>/g, '')
-    .replace(LAYER_PREFIX, '')
-    .replace(/&(amp|lt|gt|quot|#39);/g, entity => HTML_ENTITIES[entity] ?? entity)
-    .trim();
-}
-
-function plainText(html: string): string {
-  return html
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&(amp|lt|gt|quot|#39);/g, entity => HTML_ENTITIES[entity] ?? entity)
-    .replace(/\s+/g, ' ')
-    .trim()
-    .replace(LAYER_PREFIX, '');
-}
-
-// "(OW) - Lungern" → "Lungern OW", "(ZH)" → "ZH", no separators left at the edges.
-function tidyRemainder(text: string): string {
-  const located = text.match(LOCATED_IN);
-  if (located) {
-    const cantons = located[1].replace(/,\s*/g, ', ');
-    // Large places list every municipality they touch; the canton says enough.
-    if (located[2].includes(',')) return cantons;
-    const place = located[2].match(CANTON_SUFFIX);
-    return place ? `${place[1]} ${place[2]}` : `${located[2]} ${cantons}`;
-  }
-  return text
-    // Places across the border have no canton: "() - Triesenberg".
-    .replace(/\(\s*\)/g, '')
-    .replace(BRACKETED_CANTONS, '$1')
-    .replace(/^[\s,;:·–—-]+|[\s,;:·–—-]+$/g, '');
-}
-
-/**
- * Splits a swisstopo label, e.g. `Paradeplatz 2 <b>8001 Zürich</b>`, into two display lines.
- * `category` is what the label had in <i>: a feature class, or the transport mode of a stop.
- */
-function placeLines(label: string, origin: string | undefined, displayName: string) {
-  let category = '';
-  let bold = '';
-  const outside = plainText(label
-    .replace(/<i\b[^>]*>([\s\S]*?)<\/i>/gi, (_, text: string) => { category += ` ${text}`; return ' '; })
-    .replace(/<b\b[^>]*>([\s\S]*?)<\/b>/gi, (_, text: string) => { bold += ` ${text}`; return ' '; }));
-  category = plainText(category);
-  // Bilingual towns are named twice: "Fribourg|Freiburg".
-  bold = plainText(origin === 'gazetteer' ? bold.split('|')[0] : bold);
-
-  if (!bold) return { title: outside || category || displayName.replace(/\s+/g, ' '), subtitle: '', category };
-
-  if (origin === 'address') {
-    // The street is outside the bold locality; "#" stands in for a missing house number.
-    const street = outside.replace(/\s*#$/, '');
-    return street ? { title: street, subtitle: bold, category } : { title: bold, subtitle: '', category };
-  }
-
-  let title = origin === 'zipcode' ? bold.replace(/^(\d{4})\s*-\s*(?=\S)/, '$1 ') : bold;
-  let subtitle = tidyRemainder(outside);
-  // The <i> part is a feature class for gazetteer names ("Building") but the
-  // transport mode for stops ("train"), which is worth a line.
-  if (!subtitle && origin !== 'gazetteer' && category) {
-    subtitle = category[0].toUpperCase() + category.slice(1);
-  }
-  // Municipalities arrive as "<b>Lausanne (VD)</b>".
-  const municipality = subtitle ? null : title.match(CANTON_SUFFIX);
-  if (municipality) {
-    title = municipality[1];
-    subtitle = municipality[2];
-  }
-  // "<b>Gossau ZH</b> (ZH) - Gossau (ZH)" would say the same thing twice.
-  return { title, subtitle: subtitle === title ? '' : subtitle, category };
-}
-
-// Letters swisstopo does not read: it takes "Bahnhofstraße" apart at the ß and
-// answers with boundary stones. Swiss addresses are written without them.
+// Letters written two ways: "Bahnhofstraße" and "Bahnhofstrasse" are one street.
 const LIGATURES: Record<string, string> = { 'ß': 'ss', 'ẞ': 'SS', 'œ': 'oe', 'Œ': 'OE', 'æ': 'ae', 'Æ': 'AE' };
 
 function withoutLigatures(text: string): string {
@@ -208,42 +116,27 @@ function searchWords(text: string): string[] {
     .replace(/([aou])e/g, '$1').split(/[^a-z0-9]+/).filter(Boolean);
 }
 
-// From this rank on a place is a last resort, shown only when nothing better was found.
-const LAST_RESORT_RANK = 19;
-
-interface RankedAs {
-  /** A town or city, first when typed by its name. */
-  town: boolean;
-  /** A stop without a transport mode. */
-  operatingPoint: boolean;
-  /** Found by text inside its words, as swisstopo finds "Uettligenfeld" for "Genf". */
-  insideWords: boolean;
-  /** ISO 3166 code of the country the place is in. */
-  country: string;
-}
-
 /** How a place ranks for what was typed; lower comes first. */
-function placeRank(typed: string[], place: GeocodePlace, kind: RankedAs, near: [number, number] | null): number {
+function placeRank(typed: string[], place: GeocodePlace, town: boolean, country: string, near: [number, number] | null): number {
   const title = searchWords(place.title);
   // In any order: "Flughafen Zürich" names "Zürich Flughafen".
   const named = title.length === typed.length && [...title].sort().join(' ') === [...typed].sort().join(' ');
   const words = [...title, ...searchWords(place.subtitle)];
   const atWordStart = typed.every(word => words.some(candidate => candidate.startsWith(word)));
-  // Photon matches whole words: what it found by another of its names is no typing mistake,
-  // and a town found so, typed in full, was typed by that name: "Milano" for Milan.
-  const namedOtherwise = !kind.insideWords && !atWordStart && title.length === typed.length;
+  // What the services found by another of its names is no typing mistake, and a
+  // town found so, typed in full, was typed by that name: "Milano" for Milan. Not
+  // by a number: Geoapify finds Pompei for "8004", the start of its postcode.
+  const namedOtherwise = !atWordStart && title.length === typed.length && !typed.some(word => /\d/.test(word));
   // A town typed by its name is what was asked for, with scooter data or without.
-  if (kind.town && (named || namedOtherwise)) return 0;
-  // The last resorts: the railway's operating points, then what has the text only inside its words.
-  const resort = !atWordStart && kind.insideWords ? 2 : kind.operatingPoint ? 1 : 0;
+  if (town && (named || namedOtherwise)) return 0;
   const match = named ? 0 : atWordStart ? 1 : 2;
   // Near the map centre first, then with scooter data, then named as typed: each outweighs those after it.
-  return 1 + resort * (LAST_RESORT_RANK - 1) + remoteness(place, kind.country, near) * 6 + (place.covered ? 0 : 3) + match;
+  return 1 + remoteness(place, country, near) * 6 + (place.covered ? 0 : 3) + match;
 }
 
 /** How far a place is from what the map shows: within a short ride of its centre, in the city around it, or farther. */
 function remoteness(place: GeocodePlace, country: string, near: [number, number] | null): 0 | 1 | 2 {
-  // Without a map centre, as in the iOS app and on the first view of the map, Switzerland is near.
+  // Without a map centre, as in iOS apps from before they sent one, Switzerland is near.
   if (!near) return country === 'CH' ? 0 : 1;
   const distance = haversineM(near[0], near[1], place.lat, place.lng);
   return distance <= CLOSE_M ? 0 : distance <= NEARBY_M ? 1 : 2;
@@ -262,25 +155,17 @@ function errorResponse(message: string, status: number, retryAfter?: string) {
   );
 }
 
-const SWISSTOPO_LANGUAGES = ['de', 'fr', 'it', 'en'] as const;
-
 type Upstream<T> = { ok: true; value: T } | { ok: false; failure: UpstreamFailure };
 
 function validCoordinate(lat: number, lng: number): boolean {
   return Number.isFinite(lat) && lat >= -90 && lat <= 90 && Number.isFinite(lng) && lng >= -180 && lng <= 180;
 }
 
-async function fetchJson(
-  url: URL,
-  headers: Record<string, string> = {},
-  signal?: AbortSignal,
-  timeoutMs = GEOCODE_TIMEOUT_MS
-): Promise<Upstream<unknown>> {
-  const timeout = AbortSignal.timeout(timeoutMs);
+async function fetchJson(url: URL, headers: Record<string, string>, timeoutMs: number): Promise<Upstream<unknown>> {
   try {
     const response = await fetch(url, {
       headers: { Accept: 'application/json', 'User-Agent': 'scootradar/2.0 (scootradar.com)', ...headers },
-      signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
+      signal: AbortSignal.timeout(Math.max(0, timeoutMs)),
     });
     if (response.status === 429) return { ok: false, failure: 'rateLimited' };
     if (!response.ok) return { ok: false, failure: 'unavailable' };
@@ -291,52 +176,14 @@ async function fetchJson(
   }
 }
 
-async function searchSwisstopo(
-  query: string,
-  language: GeocodeLanguage,
-  typed: string[],
-  near: [number, number] | null
-): Promise<Upstream<Candidate[]>> {
-  const url = new URL(GEOADMIN_SEARCH_URL);
-  url.search = new URLSearchParams({
-    searchText: query,
-    type: 'locations',
-    limit: String(UPSTREAM_RESULT_LIMIT),
-    sr: '4326',
-    // swisstopo labels in the languages of Switzerland and English only.
-    lang: SWISSTOPO_LANGUAGES.find(code => code === language) ?? 'en',
-  }).toString();
-
-  const answer = await fetchJson(url, { 'Accept-Language': `${language}-CH,${language};q=0.9,en;q=0.6` });
-  if (!answer.ok) return answer;
-  const results = (answer.value as GeoAdminResponse | null)?.results;
-  if (!Array.isArray(results)) return { ok: false, failure: 'invalid' };
-
-  const seen = new Set<string>();
-  const candidates = results.flatMap(result => {
-    const attrs = result?.attrs;
-    const origin = attrs?.origin;
-    // Rows a rider would not choose.
-    if (SKIPPED_ORIGINS.has(origin ?? '') || attrs?.objectclass?.toUpperCase() === MOTORWAY_CLASS) return [];
-    const lat = Number(attrs?.lat ?? attrs?.y);
-    const lng = Number(attrs?.lon ?? attrs?.x);
-    const label = typeof attrs?.label === 'string' ? attrs.label : '';
-    const displayName = plainTextLabel(label);
-    if (!validCoordinate(lat, lng) || !displayName) return [];
-    const { title, subtitle, category } = placeLines(label, origin, displayName);
-    // swisstopo lists some places more than once (a town as municipality and as
-    // place name, for instance); rows that read the same would look like a bug.
-    const key = JSON.stringify([title, subtitle]);
-    if (seen.has(key)) return [];
-    seen.add(key);
-    // After the town "Baden / AG", a feature in it that is also just called
-    // "Baden / Baden AG" (its airfield, its treatment plant) reads like the town again.
-    if (origin === 'gg25' && subtitle) seen.add(JSON.stringify([title, `${title} ${subtitle}`]));
-    const place = { lat, lng, display_name: displayName, title, subtitle, covered: isPointCovered(lat, lng) };
-    const kind = { town: origin === 'gg25', operatingPoint: origin === STOP_ORIGIN && !category, insideWords: true, country: 'CH' };
-    return [{ place, rank: placeRank(typed, place, kind, near), kind }];
-  });
-  return { ok: true, value: candidates };
+/** The Worker's settings; none outside it. */
+async function workerSettings(): Promise<Record<string, unknown>> {
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    return env as CloudflareEnv & Record<string, unknown>;
+  } catch {
+    return {};
+  }
 }
 
 function text(value: unknown): string {
@@ -381,62 +228,20 @@ interface PhotonService {
 
 /** Our own Photon where PHOTON_API_URL names one over HTTPS, with the Access
     token where both of its halves are set; komoot's public instance otherwise. */
-async function photonService(): Promise<PhotonService | null> {
-  try {
-    const { env } = await getCloudflareContext({ async: true });
-    const settings = env as CloudflareEnv & Record<string, unknown>;
-    const url = settings.PHOTON_API_URL;
-    if (typeof url !== 'string' || !url.startsWith('https://')) return null;
-    const id = settings.PHOTON_ACCESS_CLIENT_ID;
-    const secret = settings.PHOTON_ACCESS_CLIENT_SECRET;
-    const headers: Record<string, string> = typeof id === 'string' && id && typeof secret === 'string' && secret
-      ? { 'CF-Access-Client-Id': id, 'CF-Access-Client-Secret': secret }
-      : {};
-    return { url, headers };
-  } catch {
-    // Outside the Worker: the public service.
-    return null;
-  }
+function photonService(settings: Record<string, unknown>): PhotonService | null {
+  const url = settings.PHOTON_API_URL;
+  if (typeof url !== 'string' || !url.startsWith('https://')) return null;
+  const id = settings.PHOTON_ACCESS_CLIENT_ID;
+  const secret = settings.PHOTON_ACCESS_CLIENT_SECRET;
+  const headers: Record<string, string> = typeof id === 'string' && id && typeof secret === 'string' && secret
+    ? { 'CF-Access-Client-Id': id, 'CF-Access-Client-Secret': secret }
+    : {};
+  return { url, headers };
 }
 
-async function searchPhoton(
-  query: string,
-  language: GeocodeLanguage,
-  typed: string[],
-  near: [number, number] | null,
-  signal: AbortSignal
-): Promise<Upstream<Candidate[]>> {
-  const params = new URLSearchParams({
-    q: query,
-    limit: String(PHOTON_RESULT_LIMIT),
-    lang: PHOTON_LANGUAGES.find(code => code === language) ?? 'default',
-    bbox: EUROPE_BBOX,
-  });
-  for (const layer of PHOTON_LAYERS) params.append('layer', layer);
-  if (near) {
-    params.set('lat', String(near[0]));
-    params.set('lon', String(near[1]));
-    params.set('location_bias_scale', PHOTON_BIAS_SCALE);
-  }
-  const ask = (service: string, headers: Record<string, string> = {}, timeoutMs?: number) => {
-    const url = new URL(service);
-    url.search = params.toString();
-    return fetchJson(url, headers, signal, timeoutMs);
-  };
-
-  const own = await photonService();
-  let answer = own ? await ask(own.url, own.headers, OWN_PHOTON_TIMEOUT_MS) : await ask(PUBLIC_PHOTON_URL);
-  // Ours down, restarting on a new database, slow or refusing an expired
-  // token: the public one stands in. Not when the search no longer waits for it.
-  if (own && !answer.ok && answer.failure !== 'rateLimited' && !signal.aborted) {
-    console.warn(JSON.stringify({ event: 'photon_fallback', failure: answer.failure }));
-    answer = await ask(PUBLIC_PHOTON_URL, {}, GEOCODE_TIMEOUT_MS - OWN_PHOTON_TIMEOUT_MS);
-  }
-  if (!answer.ok) return answer;
-  const features = (answer.value as PhotonResponse | null)?.features;
-  if (!Array.isArray(features)) return { ok: false, failure: 'invalid' };
-
-  const candidates = features.flatMap(feature => {
+/** Photon's places, in its order, as rows ranked for what was typed. */
+function photonCandidates(features: PhotonFeature[], typed: string[], near: [number, number] | null): Candidate[] {
+  return features.flatMap(feature => {
     const coordinates = feature?.geometry?.coordinates;
     const [lng, lat] = Array.isArray(coordinates) && coordinates.every(value => typeof value === 'number') ? coordinates : [NaN, NaN];
     const properties = feature?.properties && typeof feature.properties === 'object' ? feature.properties : {};
@@ -451,10 +256,140 @@ async function searchPhoton(
       subtitle,
       covered: isPointCovered(lat, lng),
     };
-    const kind = { town: properties.type === 'city', operatingPoint: false, insideWords: false, country: text(properties.countrycode).toUpperCase() };
-    return [{ place, rank: placeRank(typed, place, kind, near), kind }];
+    // Not a town Geoapify found for a near miss of its name: "Rheinwald" for "Rheinfall".
+    const town = properties.type === 'city' && properties.nearMiss !== true;
+    return [{ place, rank: placeRank(typed, place, town, text(properties.countrycode).toUpperCase(), near) }];
   });
-  return { ok: true, value: candidates };
+}
+
+async function searchPhoton(
+  query: string,
+  language: GeocodeLanguage,
+  typed: string[],
+  near: [number, number] | null,
+  own: PhotonService | null,
+  deadline: number
+): Promise<Upstream<Found>> {
+  const params = new URLSearchParams({
+    q: query,
+    limit: String(PHOTON_RESULT_LIMIT),
+    lang: PHOTON_LANGUAGES.find(code => code === language) ?? 'default',
+    bbox: [EUROPE.west, EUROPE.south, EUROPE.east, EUROPE.north].join(','),
+  });
+  for (const layer of PHOTON_LAYERS) params.append('layer', layer);
+  if (near) {
+    params.set('lat', String(near[0]));
+    params.set('lon', String(near[1]));
+    params.set('location_bias_scale', PHOTON_BIAS_SCALE);
+  }
+  const ask = (service: string, headers: Record<string, string>, timeoutMs: number) => {
+    const url = new URL(service);
+    url.search = params.toString();
+    return fetchJson(url, headers, timeoutMs);
+  };
+  const timeLeft = () => deadline - Date.now();
+
+  let answer = own
+    ? await ask(own.url, own.headers, Math.min(OWN_PHOTON_TIMEOUT_MS, timeLeft()))
+    : await ask(PUBLIC_PHOTON_URL, {}, timeLeft());
+  // Ours down, restarting on a new database, slow or refusing an expired
+  // token: the public one stands in. Not with what ours turned away as too many.
+  if (own && !answer.ok && answer.failure !== 'rateLimited') {
+    console.warn(JSON.stringify({ event: 'photon_fallback', failure: answer.failure }));
+    answer = await ask(PUBLIC_PHOTON_URL, {}, timeLeft());
+  }
+  if (!answer.ok) return answer;
+  const features = (answer.value as PhotonResponse | null)?.features;
+  if (!Array.isArray(features)) return { ok: false, failure: 'invalid' };
+  return { ok: true, value: { source: 'Photon, OpenStreetMap', candidates: photonCandidates(features, typed, near) } };
+}
+
+function europeanPlace(lat: unknown, lng: unknown): boolean {
+  return typeof lat === 'number' && typeof lng === 'number' &&
+    lat >= EUROPE.south && lat <= EUROPE.north && lng >= EUROPE.west && lng <= EUROPE.east;
+}
+
+/** A Geoapify place as Photon describes one, to be shown and ranked alike. */
+function photonFeature(result: Record<string, unknown>): PhotonFeature | null {
+  const type = GEOAPIFY_TYPES[text(result.result_type)];
+  if (!type || !europeanPlace(result.lat, result.lon)) return null;
+  // A quarter and a postcode are named in their own fields.
+  const name = text(result.name)
+    || (type === 'district' ? text(result.suburb) || text(result.district) : '')
+    || (result.result_type === 'postcode' ? text(result.postcode) : '');
+  // How sure Geoapify is that the place bears all of what was typed: under one, a near miss.
+  const confidence = result.rank && typeof result.rank === 'object' ? (result.rank as Record<string, unknown>).confidence : undefined;
+  return {
+    geometry: { coordinates: [result.lon, result.lat] },
+    properties: {
+      type,
+      name,
+      street: result.street,
+      housenumber: result.housenumber,
+      postcode: result.postcode,
+      city: result.city,
+      district: result.suburb ?? result.district,
+      county: result.county,
+      state: result.state,
+      country: result.country,
+      countrycode: result.country_code,
+      nearMiss: typeof confidence === 'number' && confidence < 1,
+    },
+  };
+}
+
+async function searchGeoapify(
+  query: string,
+  language: GeocodeLanguage,
+  typed: string[],
+  near: [number, number] | null,
+  key: string
+): Promise<Upstream<Found>> {
+  const params = new URLSearchParams({
+    text: query,
+    // Geoapify names places in every language of the app.
+    lang: language,
+    limit: String(GEOAPIFY_RESULT_LIMIT),
+    // Without a map centre, as in iOS apps from before they sent one, Switzerland is near.
+    bias: near ? `proximity:${near[1]},${near[0]}` : 'countrycode:ch',
+    format: 'json',
+    apiKey: key,
+  });
+  // A number alone is a postcode, which Geoapify finds only when asked for one:
+  // otherwise it answers with the quarters around it, and towns whose postcodes start with it.
+  if (/^\d+$/.test(query)) params.set('type', 'postcode');
+  const url = new URL(GEOAPIFY_AUTOCOMPLETE_URL);
+  url.search = params.toString();
+
+  const answer = await fetchJson(url, {}, GEOAPIFY_TIMEOUT_MS);
+  if (!answer.ok) return answer;
+  const results = (answer.value as GeoapifyResponse | null)?.results;
+  if (!Array.isArray(results)) return { ok: false, failure: 'invalid' };
+  const features = results.flatMap(result => {
+    const feature = result && typeof result === 'object' ? photonFeature(result as Record<string, unknown>) : null;
+    return feature ? [feature] : [];
+  });
+  return { ok: true, value: { source: 'Geoapify, OpenStreetMap', candidates: photonCandidates(features, typed, near) } };
+}
+
+/** Places across Europe: from Geoapify where the Worker has its key, from Photon
+    where it has none or when Geoapify cannot answer, all within one search's time. */
+async function searchPlaces(
+  query: string,
+  language: GeocodeLanguage,
+  typed: string[],
+  near: [number, number] | null
+): Promise<Upstream<Found>> {
+  const deadline = Date.now() + GEOCODE_TIMEOUT_MS;
+  const settings = await workerSettings();
+  const key = text(settings.GEOAPIFY_API_KEY);
+  if (key) {
+    const found = await searchGeoapify(query, language, typed, near, key);
+    if (found.ok) return found;
+    // Out of credits for the day, the key refused, down or slow: Photon stands in.
+    console.warn(JSON.stringify({ event: 'geoapify_fallback', failure: found.failure }));
+  }
+  return searchPhoton(query, language, typed, near, photonService(settings), deadline);
 }
 
 /** Two rows for one place: the same two lines, or the same name close by. */
@@ -478,14 +413,12 @@ async function geocode(input: GeocodeInput) {
   if (typedText.length < 2 || typedText.length > MAX_QUERY_LENGTH) {
     return errorResponse('Address search must contain between 2 and 160 characters.', 400);
   }
-  // "Bahnhofstraße 5" is searched, and ranked, as "Bahnhofstrasse 5".
-  const query = withoutLigatures(typedText);
 
   // The language the app is shown in: for the labels of places and for the countries of cities.
   const requestedLanguage = input.requestedLanguage.toLowerCase();
   const language = GEOCODE_LANGUAGES.find(code => code === requestedLanguage) ?? 'en';
   // A city with scooter data is found by its name alone, before and without a geocoding service.
-  const cities = searchCoveredCities(query, language);
+  const cities = searchCoveredCities(withoutLigatures(typedText), language);
   if (cities.length) {
     return NextResponse.json(cities, {
       headers: {
@@ -496,41 +429,23 @@ async function geocode(input: GeocodeInput) {
   }
 
   const { near } = input;
-  const typed = searchWords(query);
-  // swisstopo knows Switzerland only: it is asked when the map is there, or when the app does not say where it is.
-  const askSwisstopo = near === null || boundsContainPoint(SWISSTOPO_AREA, near[0], near[1]);
-  const swissSearch = askSwisstopo ? searchSwisstopo(query, language, typed, near) : null;
-  const photon = new AbortController();
-  // Photon reads ß itself, and is asked with the text as typed.
-  const europeSearch = searchPhoton(typedText, language, typed, near, photon.signal);
-  const swiss = await swissSearch;
-  const foundNear = swiss?.ok && swiss.value.some(({ place, rank }) => rank < LAST_RESORT_RANK && remoteness(place, 'CH', near) < 2);
-  const grace = foundNear ? setTimeout(() => photon.abort(), PHOTON_GRACE_MS) : undefined;
-  const europe = await europeSearch;
-  clearTimeout(grace);
-  if (!swiss?.ok && !europe.ok) return failureResponse(swiss && !swiss.ok ? swiss.failure : europe.failure);
+  // Geoapify and Photon read ß themselves, and are asked with the text as typed.
+  const found = await searchPlaces(typedText, language, searchWords(typedText), near);
+  if (!found.ok) return failureResponse(found.failure);
 
-  const places = swiss?.ok ? [...swiss.value] : [];
-  for (const candidate of europe.ok ? europe.value : []) {
-    // swisstopo has every Swiss town, by its official name: Photon's would be the same town again.
-    if (swiss?.ok && candidate.kind.town && candidate.kind.country === 'CH') continue;
-    // A street comes in pieces, a station with its building, platforms and stops,
-    // and swisstopo may have listed the place already: one row each.
+  const places: Candidate[] = [];
+  for (const candidate of found.value.candidates) {
+    // A street comes in pieces, a station with its building, platforms and stops: one row each.
     if (places.some(({ place }) => samePlace(place, candidate.place))) continue;
     places.push(candidate);
   }
-  // Stable: each service's ranking is kept among the places of one rank, swisstopo's first.
+  // Stable: the service's ranking is kept among the places of one rank.
   places.sort((a, b) => a.rank - b.rank);
-  // Operating points are for someone who typed one by its name, matches inside
-  // words for a typing mistake: both only when nothing better was found.
-  const better = places.filter(({ rank }) => rank < LAST_RESORT_RANK);
-  const shown = better.length > 0 ? better : places;
 
-  return NextResponse.json(shown.slice(0, MAX_RESULTS).map(({ place }) => place), {
+  return NextResponse.json(places.slice(0, MAX_RESULTS).map(({ place }) => place), {
     headers: {
       'Cache-Control': 'private, no-store',
-      'X-Geocoding-Data-Source': [swiss?.ok && 'swisstopo geo.admin.ch', europe.ok && 'Photon, OpenStreetMap']
-        .filter(Boolean).join(', '),
+      'X-Geocoding-Data-Source': found.value.source,
     },
   });
 }
