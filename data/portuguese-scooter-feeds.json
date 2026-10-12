@@ -1,0 +1,310 @@
+{
+  "verifiedOn": "2026-10-12",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "bird_pt_almada",
+      "country": "PT",
+      "provider": "bird",
+      "city": "Almada",
+      "center": [
+        38.6831,
+        -9.1576
+      ],
+      "bounds": {
+        "south": 38.6051,
+        "north": 38.6941,
+        "west": -9.2506,
+        "east": -9.1394
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/provider/bird/almada-portugal/gbfs.json",
+      "areas": [
+        {
+          "city": "Almada",
+          "center": [
+            38.6831,
+            -9.1576
+          ],
+          "bounds": {
+            "south": 38.6461,
+            "north": 38.6941,
+            "west": -9.205,
+            "east": -9.1394
+          }
+        },
+        {
+          "city": "Costa da Caparica",
+          "aliases": [
+            "Caparica"
+          ],
+          "center": [
+            38.6445,
+            -9.2336
+          ],
+          "bounds": {
+            "south": 38.6051,
+            "north": 38.6795,
+            "west": -9.2506,
+            "east": -9.2051
+          }
+        }
+      ]
+    },
+    {
+      "id": "bird_pt_cascais",
+      "country": "PT",
+      "provider": "bird",
+      "city": "Cascais",
+      "center": [
+        38.6969,
+        -9.4204
+      ],
+      "bounds": {
+        "south": 38.6716,
+        "north": 38.7592,
+        "west": -9.4824,
+        "east": -9.3048
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/cascais/gbfs.json",
+      "aliases": [
+        "Estoril",
+        "Parede",
+        "Carcavelos"
+      ]
+    },
+    {
+      "id": "bird_pt_coimbra",
+      "country": "PT",
+      "provider": "bird",
+      "city": "Coimbra",
+      "center": [
+        40.2112,
+        -8.4291
+      ],
+      "bounds": {
+        "south": 40.179,
+        "north": 40.2378,
+        "west": -8.4718,
+        "east": -8.3837
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/provider/bird/coimbra-portugal/gbfs.json"
+    },
+    {
+      "id": "bird_pt_lisboa",
+      "country": "PT",
+      "provider": "bird",
+      "city": "Lisboa",
+      "center": [
+        38.7078,
+        -9.1366
+      ],
+      "bounds": {
+        "south": 38.6868,
+        "north": 38.7951,
+        "west": -9.2341,
+        "east": -9.0842
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/lisbon/gbfs.json",
+      "aliases": [
+        "Lisbon",
+        "Lisbonne",
+        "Lissabon",
+        "Lisbona"
+      ]
+    },
+    {
+      "id": "bird_pt_maia",
+      "country": "PT",
+      "provider": "bird",
+      "city": "Maia",
+      "center": [
+        41.233,
+        -8.6222
+      ],
+      "bounds": {
+        "south": 41.1957,
+        "north": 41.2748,
+        "west": -8.6761,
+        "east": -8.5498
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/provider/bird/maia-portugal/gbfs.json"
+    },
+    {
+      "id": "bird_pt_matosinhos",
+      "country": "PT",
+      "provider": "bird",
+      "city": "Matosinhos",
+      "center": [
+        41.1807,
+        -8.6822
+      ],
+      "bounds": {
+        "south": 41.1675,
+        "north": 41.2315,
+        "west": -8.7233,
+        "east": -8.5906
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/matosinhos/gbfs.json",
+      "aliases": [
+        "Leça da Palmeira",
+        "Leca da Palmeira"
+      ]
+    },
+    {
+      "id": "bird_pt_oeiras",
+      "country": "PT",
+      "provider": "bird",
+      "city": "Oeiras",
+      "center": [
+        38.6926,
+        -9.3123
+      ],
+      "bounds": {
+        "south": 38.6708,
+        "north": 38.7512,
+        "west": -9.3567,
+        "east": -9.2033
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/provider/bird/oeiras-portugal/gbfs.json",
+      "aliases": [
+        "Paço de Arcos",
+        "Paco de Arcos",
+        "Algés",
+        "Alges",
+        "Carnaxide"
+      ]
+    },
+    {
+      "id": "bird_pt_olhao",
+      "country": "PT",
+      "provider": "bird",
+      "city": "Olhão",
+      "center": [
+        37.027,
+        -7.8411
+      ],
+      "bounds": {
+        "south": 37.0174,
+        "north": 37.0559,
+        "west": -7.8629,
+        "east": -7.8152
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/provider/bird/olhao-portugal/gbfs.json",
+      "aliases": [
+        "Olhao"
+      ]
+    },
+    {
+      "id": "bird_pt_portimao",
+      "country": "PT",
+      "provider": "bird",
+      "city": "Portimão",
+      "center": [
+        37.1376,
+        -8.5368
+      ],
+      "bounds": {
+        "south": 37.1099,
+        "north": 37.1623,
+        "west": -8.6041,
+        "east": -8.5214
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/provider/bird/portimao-portugal/gbfs.json",
+      "aliases": [
+        "Portimao",
+        "Praia da Rocha"
+      ]
+    },
+    {
+      "id": "bird_pt_porto",
+      "country": "PT",
+      "provider": "bird",
+      "city": "Porto",
+      "center": [
+        41.1502,
+        -8.6103
+      ],
+      "bounds": {
+        "south": 41.1351,
+        "north": 41.1868,
+        "west": -8.6946,
+        "east": -8.5741
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/porto/gbfs.json",
+      "aliases": [
+        "Oporto"
+      ]
+    },
+    {
+      "id": "lime_pt_almada",
+      "country": "PT",
+      "provider": "lime",
+      "city": "Almada",
+      "center": [
+        38.6831,
+        -9.1576
+      ],
+      "bounds": {
+        "south": 38.6033,
+        "north": 38.69,
+        "west": -9.2516,
+        "east": -9.1425
+      },
+      "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/almada/gbfs.json",
+      "areas": [
+        {
+          "city": "Almada",
+          "center": [
+            38.6831,
+            -9.1576
+          ],
+          "bounds": {
+            "south": 38.6549,
+            "north": 38.69,
+            "west": -9.205,
+            "east": -9.1425
+          }
+        },
+        {
+          "city": "Costa da Caparica",
+          "aliases": [
+            "Caparica"
+          ],
+          "center": [
+            38.6445,
+            -9.2336
+          ],
+          "bounds": {
+            "south": 38.6033,
+            "north": 38.6798,
+            "west": -9.2516,
+            "east": -9.2051
+          }
+        }
+      ]
+    },
+    {
+      "id": "lime_pt_lisboa",
+      "country": "PT",
+      "provider": "lime",
+      "city": "Lisboa",
+      "center": [
+        38.7078,
+        -9.1366
+      ],
+      "bounds": {
+        "south": 38.6874,
+        "north": 38.7991,
+        "west": -9.234,
+        "east": -9.0836
+      },
+      "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/lisbon/gbfs.json",
+      "aliases": [
+        "Lisbon",
+        "Lisbonne",
+        "Lissabon",
+        "Lisbona"
+      ]
+    }
+  ]
+}

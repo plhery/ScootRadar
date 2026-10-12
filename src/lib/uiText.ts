@@ -28,12 +28,14 @@ export function formatClockTime(time: number, locale: AppLocale): string {
 }
 
 /**
- * Whether a count takes the singular in this language: 1 in all four, and 0 as
- * well in French ("0 trottinette"). The logic that picks a sentence does not
- * know the language, so this is decided where the sentence is written.
+ * Whether a count takes the singular in this language: 1 in all of them, 0 as
+ * well in French ("0 trottinette"), and 21, 31, 101 and so on in Icelandic. The
+ * logic that picks a sentence does not know the language, so this is decided
+ * where the sentence is written.
  */
 export function isSingular(count: number, locale: AppLocale): boolean {
-  return new Intl.PluralRules(locale).select(count) === 'one';
+  // Plain "pt" follows Brazil, where 0 is singular too; the app is written for Portugal.
+  return new Intl.PluralRules(locale === 'pt' ? 'pt-PT' : locale).select(count) === 'one';
 }
 
 export function formatUiText(text: UiText, { locale, t, formatNumber }: UiTextFormatter): string {

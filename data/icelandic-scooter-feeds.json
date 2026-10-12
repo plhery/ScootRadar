@@ -1,0 +1,399 @@
+{
+  "verifiedOn": "2026-10-12",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "hopp_is_akranes",
+      "country": "IS",
+      "provider": "hopp",
+      "city": "Akranes",
+      "center": [
+        64.3171,
+        -22.0834
+      ],
+      "bounds": {
+        "south": 64.3078,
+        "north": 64.333,
+        "west": -22.1074,
+        "east": -22.0223
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/is-akranes/gbfs.json"
+    },
+    {
+      "id": "hopp_is_akureyri",
+      "country": "IS",
+      "provider": "hopp",
+      "city": "Akureyri",
+      "center": [
+        65.6826,
+        -18.0913
+      ],
+      "bounds": {
+        "south": 65.6486,
+        "north": 65.71,
+        "west": -18.1687,
+        "east": -18.0277
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/is-akureyri/gbfs.json"
+    },
+    {
+      "id": "hopp_is_borgarnes",
+      "country": "IS",
+      "provider": "hopp",
+      "city": "Borgarnes",
+      "center": [
+        64.5383,
+        -21.9202
+      ],
+      "bounds": {
+        "south": 64.5283,
+        "north": 64.563,
+        "west": -21.9425,
+        "east": -21.8808
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/is-borgarnes/gbfs.json"
+    },
+    {
+      "id": "hopp_is_dalvik",
+      "country": "IS",
+      "provider": "hopp",
+      "city": "Dalvík",
+      "center": [
+        65.9711,
+        -18.5304
+      ],
+      "bounds": {
+        "south": 65.9611,
+        "north": 65.983,
+        "west": -18.5579,
+        "east": -18.5043
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/is-dalvik/gbfs.json",
+      "aliases": [
+        "Dalvik"
+      ]
+    },
+    {
+      "id": "hopp_is_husavik",
+      "country": "IS",
+      "provider": "hopp",
+      "city": "Húsavík",
+      "center": [
+        66.0433,
+        -17.341
+      ],
+      "bounds": {
+        "south": 66.0289,
+        "north": 66.0549,
+        "west": -17.3699,
+        "east": -17.316
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/is-husavik/gbfs.json",
+      "aliases": [
+        "Husavik"
+      ]
+    },
+    {
+      "id": "hopp_is_olafsvik",
+      "country": "IS",
+      "provider": "hopp",
+      "city": "Snæfellsbær",
+      "center": [
+        64.8959,
+        -23.7084
+      ],
+      "bounds": {
+        "south": 64.8836,
+        "north": 64.9305,
+        "west": -23.9007,
+        "east": -23.6805
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/is-olafsvik/gbfs.json",
+      "areas": [
+        {
+          "city": "Ólafsvík",
+          "aliases": [
+            "Olafsvik",
+            "Snæfellsbær",
+            "Snaefellsbaer"
+          ],
+          "center": [
+            64.8959,
+            -23.7084
+          ],
+          "bounds": {
+            "south": 64.8836,
+            "north": 64.9001,
+            "west": -23.7189,
+            "east": -23.6805
+          }
+        },
+        {
+          "city": "Hellissandur",
+          "aliases": [
+            "Rif"
+          ],
+          "center": [
+            64.9172,
+            -23.8825
+          ],
+          "bounds": {
+            "south": 64.9091,
+            "north": 64.9305,
+            "west": -23.9007,
+            "east": -23.801
+          }
+        }
+      ]
+    },
+    {
+      "id": "hopp_is_reykjanesbaer",
+      "country": "IS",
+      "provider": "hopp",
+      "city": "Reykjanesbær",
+      "center": [
+        63.9833,
+        -22.5561
+      ],
+      "bounds": {
+        "south": 63.9551,
+        "north": 64.0761,
+        "west": -22.7256,
+        "east": -22.3458
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/is-reykjanesbaer/gbfs.json",
+      "areas": [
+        {
+          "city": "Reykjanesbær",
+          "aliases": [
+            "Reykjanesbaer",
+            "Keflavík",
+            "Keflavik",
+            "Njarðvík",
+            "Njardvik"
+          ],
+          "center": [
+            63.9833,
+            -22.5561
+          ],
+          "bounds": {
+            "south": 63.9551,
+            "north": 64.0158,
+            "west": -22.636,
+            "east": -22.4649
+          }
+        },
+        {
+          "city": "Sandgerði",
+          "aliases": [
+            "Sandgerdi",
+            "Suðurnesjabær",
+            "Sudurnesjabaer"
+          ],
+          "center": [
+            64.0388,
+            -22.7059
+          ],
+          "bounds": {
+            "south": 64.0228,
+            "north": 64.0496,
+            "west": -22.7256,
+            "east": -22.6789
+          }
+        },
+        {
+          "city": "Garður",
+          "aliases": [
+            "Gardur"
+          ],
+          "center": [
+            64.0704,
+            -22.6512
+          ],
+          "bounds": {
+            "south": 64.0635,
+            "north": 64.0761,
+            "west": -22.6826,
+            "east": -22.634
+          }
+        },
+        {
+          "city": "Vogar",
+          "center": [
+            63.9832,
+            -22.3874
+          ],
+          "bounds": {
+            "south": 63.969,
+            "north": 63.9868,
+            "west": -22.3931,
+            "east": -22.3458
+          }
+        }
+      ]
+    },
+    {
+      "id": "hopp_is_reykjavik",
+      "country": "IS",
+      "provider": "hopp",
+      "city": "Reykjavík",
+      "center": [
+        64.146,
+        -21.9422
+      ],
+      "bounds": {
+        "south": 64.0284,
+        "north": 64.1917,
+        "west": -22.0287,
+        "east": -21.6403
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/reykjavik/gbfs.json",
+      "aliases": [
+        "Reykjavik",
+        "Kópavogur",
+        "Kopavogur",
+        "Hafnarfjörður",
+        "Hafnarfjordur",
+        "Garðabær",
+        "Gardabaer",
+        "Mosfellsbær",
+        "Mosfellsbaer",
+        "Seltjarnarnes"
+      ]
+    },
+    {
+      "id": "hopp_is_saudarkrokur",
+      "country": "IS",
+      "provider": "hopp",
+      "city": "Sauðárkrókur",
+      "center": [
+        65.7443,
+        -19.6386
+      ],
+      "bounds": {
+        "south": 65.7279,
+        "north": 65.7643,
+        "west": -19.6659,
+        "east": -19.6194
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/is-saudarkrokur/gbfs.json",
+      "aliases": [
+        "Saudarkrokur",
+        "Skagafjörður",
+        "Skagafjordur"
+      ]
+    },
+    {
+      "id": "hopp_is_selfoss",
+      "country": "IS",
+      "provider": "hopp",
+      "city": "Selfoss",
+      "center": [
+        63.9368,
+        -21.0035
+      ],
+      "bounds": {
+        "south": 63.9058,
+        "north": 63.9574,
+        "west": -21.0713,
+        "east": -20.9586
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/is-selfoss/gbfs.json",
+      "aliases": [
+        "Árborg",
+        "Arborg"
+      ]
+    },
+    {
+      "id": "hopp_is_siglufjordur",
+      "country": "IS",
+      "provider": "hopp",
+      "city": "Siglufjörður",
+      "center": [
+        66.1505,
+        -18.9096
+      ],
+      "bounds": {
+        "south": 66.1348,
+        "north": 66.1645,
+        "west": -18.9351,
+        "east": -18.8873
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/is-siglufjordur/gbfs.json",
+      "aliases": [
+        "Siglufjordur",
+        "Fjallabyggð",
+        "Fjallabyggd"
+      ]
+    },
+    {
+      "id": "hopp_is_stykkisholmur",
+      "country": "IS",
+      "provider": "hopp",
+      "city": "Stykkishólmur",
+      "center": [
+        65.0743,
+        -22.7303
+      ],
+      "bounds": {
+        "south": 65.0584,
+        "north": 65.0856,
+        "west": -22.762,
+        "east": -22.7041
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/is-stykkisholmur/gbfs.json",
+      "aliases": [
+        "Stykkisholmur"
+      ]
+    },
+    {
+      "id": "hopp_is_vestmannaeyjar",
+      "country": "IS",
+      "provider": "hopp",
+      "city": "Vestmannaeyjar",
+      "center": [
+        63.4401,
+        -20.2786
+      ],
+      "bounds": {
+        "south": 63.4233,
+        "north": 63.454,
+        "west": -20.3143,
+        "east": -20.2472
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/is-vestmannaeyjar/gbfs.json",
+      "aliases": [
+        "Heimaey",
+        "Westman Islands",
+        "Îles Vestmann",
+        "Iles Vestmann",
+        "Westmännerinseln",
+        "Westmaennerinseln",
+        "Isole Vestmann",
+        "Westmaneilanden"
+      ]
+    },
+    {
+      "id": "hopp_is_vik",
+      "country": "IS",
+      "provider": "hopp",
+      "city": "Vík",
+      "center": [
+        63.4188,
+        -19.0055
+      ],
+      "bounds": {
+        "south": 63.4101,
+        "north": 63.4284,
+        "west": -19.029,
+        "east": -18.9801
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/is-vik/gbfs.json",
+      "aliases": [
+        "Vik",
+        "Vík í Mýrdal",
+        "Vik i Myrdal"
+      ]
+    }
+  ]
+}

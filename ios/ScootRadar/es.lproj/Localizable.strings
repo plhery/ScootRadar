@@ -1,0 +1,210 @@
+"Settings" = "Ajustes";
+"Finding your location…" = "Buscando tu ubicación…";
+"scooter" = "patinete";
+"scooters" = "patinetes";
+"All" = "Todos";
+"Battery" = "Batería";
+"Estimated range" = "Autonomía estimada";
+"Any" = "Todas";
+"Address data © swisstopo" = "Datos de direcciones © swisstopo";
+"Privacy" = "Privacidad";
+"Go to my location" = "Ir a mi ubicación";
+"Standard" = "Estándar";
+"Quiet" = "Sencillo";
+"Satellite" = "Satélite";
+"Shows scooter details" = "Muestra los detalles del patinete";
+"Zooms in to show individual scooters" = "Acerca el mapa para mostrar cada patinete";
+"Updated %@" = "Actualizado a las %@";
+"%lld percent" = "%lld por ciento";
+"%@ scooter" = "Patinete de %@";
+"%@ scooters" = "%@ patinetes";
+"City or address" = "Ciudad o dirección";
+"Use my location" = "Usar mi ubicación";
+"Finding scooters…" = "Buscando patinetes…";
+"Close scooter details" = "Cerrar detalles del patinete";
+
+/* Scooter details */
+"Centers this scooter on the map" = "Centra el mapa en este patinete";
+"%lld%%" = "%lld%%";
+"Done" = "OK";
+"Filters" = "Filtros";
+"Providers" = "Operadores";
+"Show all" = "Mostrar todos";
+"%@, %lld scooters" = "%@, %lld patinetes";
+"Shown" = "Visible";
+"Hidden" = "Oculto";
+"Map" = "Mapa";
+"Appearance" = "Aspecto";
+"Automatic" = "Automático";
+"Light" = "Claro";
+"Dark" = "Oscuro";
+"Language" = "Idioma";
+"Mobility data sources" = "Fuentes de datos de movilidad";
+"About" = "Información";
+"Live" = "En directo";
+"Filters, active" = "Filtros activos";
+"%lld percent or more" = "%lld por ciento o más";
+"All providers" = "Todos los operadores";
+"Shows only this provider" = "Muestra solo este operador";
+"Shows all providers" = "Muestra todos los operadores";
+"Hides this provider" = "Oculta este operador";
+"Adds this provider" = "Añade este operador";
+"%@, one scooter" = "%@, un patinete";
+"≈%lld min walk" = "≈%lld min a pie";
+"One address suggestion" = "Una sugerencia de dirección";
+"%lld address suggestions" = "%lld sugerencias de dirección";
+
+/* Ride pricing and passes */
+"Pass applied" = "Bono aplicado";
+"Passes" = "Bonos";
+"Not set" = "Sin configurar";
+"Expired" = "Caducado";
+"Free unlock" = "Desbloqueo gratis";
+"%lld free min" = "%lld min gratis";
+"Pass active" = "Bono activo";
+"Pass benefits are used only for estimates. Free-minute balances are not reduced automatically." = "Las ventajas del bono solo se usan para las estimaciones. El saldo de minutos gratis no se descuenta automáticamente.";
+"I have a pass" = "Tengo un bono";
+"Your pass details stay on this iPhone." = "Los datos de tu bono se quedan en este iPhone.";
+"Pass benefits" = "Ventajas del bono";
+"Free minutes available" = "Minutos gratis disponibles";
+"Has expiry date" = "Tiene fecha de caducidad";
+"Valid through" = "Válido hasta";
+"This pass has expired" = "Este bono ha caducado";
+"Expiry" = "Caducidad";
+"Benefits remain active through the end of the selected day." = "Las ventajas siguen activas hasta el final del día elegido.";
+"Pricing can vary. Confirm the final price and pass eligibility in the provider app before riding." = "Los precios pueden variar. Antes de salir, confirma en la app del operador el precio final y si puedes usar tu bono.";
+"%@ pass" = "Bono de %@";
+"French mobility data" = "Datos de movilidad de Francia";
+
+"City totals · refreshed hourly" = "Totales por ciudad · se actualizan cada hora";
+
+/* Scooter parking */
+"Designated scooter parking." = "Aparcamiento habilitado para patinetes.";
+"Parking" = "Aparcamiento";
+
+// Self-hosted usage analytics
+"Share anonymous usage" = "Compartir datos de uso anónimos";
+"Helps improve ScootRadar. No addresses or precise locations are sent." = "Ayuda a mejorar ScootRadar. No se envían direcciones ni ubicaciones precisas.";
+
+/* UX alignment: search bar */
+"Search city or address" = "Buscar ciudad o dirección";
+"Tap to search a city or address" = "Toca para buscar una ciudad o dirección";
+"Scooters near this place" = "Patinetes cerca de este lugar";
+"Clear place" = "Quitar lugar";
+"Showing scooters near %@. Search another place." = "Patinetes cerca de %@. Buscar otro lugar.";
+
+/* UX alignment: search panel */
+"Cancel" = "Cancelar";
+"Recent" = "Recientes";
+"Cities with scooters" = "Ciudades con patinetes";
+"No data" = "Sin datos";
+"Searching…" = "Buscando…";
+"No places found. Outside Switzerland, search by city." = "No se ha encontrado ningún lugar. Fuera de Suiza, busca por ciudad.";
+"Search isn’t available right now." = "La búsqueda no está disponible ahora mismo.";
+"Try again" = "Reintentar";
+"Clear search" = "Borrar búsqueda";
+
+/* UX alignment: dock */
+"scooter nearby" = "patinete cerca";
+"scooters nearby" = "patinetes cerca";
+"scooter on this map" = "patinete en este mapa";
+"scooters on this map" = "patinetes en este mapa";
+"Waiting for scooter data" = "Esperando datos de patinetes";
+"Updated %lld min ago" = "Actualizado hace %lld min";
+"Tap a city to see its scooters." = "Toca una ciudad para ver sus patinetes.";
+"Couldn’t refresh · showing %@" = "No se ha podido actualizar · datos de las %@";
+"You’re offline · showing %@" = "Sin conexión · datos de las %@";
+"Data delayed · showing %@" = "Datos con retraso · actualizados a las %@";
+"%@ isn’t sharing data right now." = "%@ no comparte datos ahora mismo.";
+"%1$@ and %2$@ aren’t sharing data right now." = "%1$@ y %2$@ no comparten datos ahora mismo.";
+"%lld providers aren’t sharing data right now." = "%lld operadores no comparten datos ahora mismo.";
+"Some providers aren’t sharing data right now." = "Algunos operadores no comparten datos ahora mismo.";
+"%@: not sharing data right now" = "%@: no comparte datos ahora mismo";
+"Showing %1$@ of %2$@ — zoom in to see all" = "Se muestran %1$@ de %2$@: acerca el mapa para verlos todos";
+"Parking bays unavailable right now" = "Zonas de aparcamiento no disponibles ahora mismo";
+"Parking bays may be out of date" = "Puede que las zonas de aparcamiento no estén actualizadas";
+"Night ban in %1$@: no scooter rentals until %2$@" = "Prohibición nocturna en %1$@: no se alquilan patinetes hasta las %2$@";
+"Night ban in %1$@: you can rent it from %2$@" = "Prohibición nocturna en %1$@: puedes alquilarlo a partir de las %2$@";
+"No scooters here right now. Zoom out or move the map." = "Ahora mismo no hay patinetes aquí. Aleja o mueve el mapa.";
+
+/* UX alignment: refresh and load failures */
+"These positions are out of date" = "Estas posiciones no están actualizadas";
+"Last update %@." = "Última actualización a las %@.";
+"You’re offline. Check your connection." = "No tienes conexión. Comprueba tu red.";
+"ScootRadar took too long to respond." = "ScootRadar ha tardado demasiado en responder.";
+"ScootRadar is busy right now. Try again in a moment." = "ScootRadar está saturado. Inténtalo de nuevo en un momento.";
+"ScootRadar is having trouble. Try again in a moment." = "ScootRadar está teniendo problemas. Inténtalo de nuevo en un momento.";
+"Couldn’t load scooters." = "No se han podido cargar los patinetes.";
+
+/* UX alignment: outside coverage and filters with nothing to show */
+"No scooter data here yet" = "Aún no hay datos de patinetes aquí";
+"ScootRadar covers selected cities in Belgium, France, Germany, Iceland, Italy, Norway, Portugal, Spain, Switzerland and the United Kingdom." = "ScootRadar cubre algunas ciudades de Alemania, Bélgica, España, Francia, Islandia, Italia, Noruega, Portugal, el Reino Unido y Suiza.";
+"Closest cities" = "Ciudades más cercanas";
+"%1$@ · %2$@" = "%1$@ · %2$@";
+"1 scooter hidden by your filters" = "1 patinete oculto por tus filtros";
+"%lld scooters hidden by your filters" = "%lld patinetes ocultos por tus filtros";
+"No scooters match your filters here" = "Aquí no hay patinetes que coincidan con tus filtros";
+"Show all %lld" = "Mostrar todos (%lld)";
+"Edit filters" = "Editar filtros";
+"%@ only" = "Solo %@";
+"battery %lld%% or more" = "batería del %lld%% o más";
+
+/* UX alignment: scooter card */
+"≈%1$lld min walk · %2$@" = "≈%1$lld min a pie · %2$@";
+"≈%1$lld min walk from %2$@ · %3$@" = "≈%1$lld min a pie desde %2$@ · %3$@";
+"≈%1$lld min walk from %2$@" = "≈%1$lld min a pie desde %2$@";
+"Turn on location to see walking time" = "Activa la ubicación para ver el tiempo a pie";
+"Directions" = "Cómo llegar";
+"Open in %@" = "Abrir en %@";
+"≈ %1$@ for %2$lld min" = "≈ %1$@ por %2$lld min";
+"Price shown in the %@ app" = "Precio indicado en la app de %@";
+"Ride estimate, %lld minutes. Change duration." = "Precio estimado del trayecto, %lld minutos. Cambiar duración.";
+"%lld min" = "%lld min";
+
+/* UX alignment: parking bay */
+"%@ parking bay" = "Aparcamiento de %@";
+"You must park in a bay in this zone." = "En esta zona tienes que dejar el patinete en un aparcamiento habilitado.";
+"Check the %@ app before you end your ride." = "Consulta la app de %@ antes de terminar el trayecto.";
+"Close parking details" = "Cerrar detalles del aparcamiento";
+"Shows parking details" = "Muestra los detalles del aparcamiento";
+
+/* UX alignment: location */
+"Near me" = "Cerca de mí";
+"Location is off" = "Ubicación desactivada";
+"Turn it on in Settings, or search a place instead." = "Actívala en Ajustes o busca un lugar.";
+"Location is restricted on this device. Search a place instead." = "La ubicación está restringida en este dispositivo. Busca un lugar.";
+"Open Settings" = "Abrir Ajustes";
+"Search a place" = "Buscar un lugar";
+"Couldn’t find your location." = "No se ha podido encontrar tu ubicación.";
+"Dismiss" = "Cerrar";
+
+/* UX alignment: filters sheet */
+"Reset" = "Restablecer";
+"Scooters without battery info are hidden while a minimum is set." = "Mientras haya un mínimo fijado, se ocultan los patinetes sin datos de batería.";
+"Not sharing data right now" = "No comparte datos ahora mismo";
+"Show 0 scooters" = "Mostrar 0 patinetes";
+"Show 1 scooter" = "Mostrar 1 patinete";
+"Show %lld scooters" = "Mostrar %lld patinetes";
+
+/* UX alignment: settings */
+"Map & data credits" = "Créditos del mapa y los datos";
+"Read the privacy notice" = "Leer la política de privacidad";
+"Source code on GitHub" = "Código fuente en GitHub";
+"Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter." = "La disponibilidad se actualiza automáticamente. Abrir la app de un operador no reserva el patinete.";
+
+/* Map look: the nearest scooter in the dock, and the figures of the scooter card */
+"to the nearest scooter" = "hasta el patinete más cercano";
+"%1$@, %2$lld min on foot" = "%1$@, %2$lld min a pie";
+"Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details." = "Patinete más cercano: %1$@, a %2$@, %3$lld min a pie. Ver detalles.";
+"min" = "min";
+"on foot" = "a pie";
+"from %@" = "desde %@";
+"away" = "de distancia";
+"%1$@, %2$lld min" = "%1$@, %2$lld min";
+"battery" = "de batería";
+"range" = "de autonomía";
+"%1$lld%% battery, %2$@ range" = "%1$lld %% de batería, %2$@ de autonomía";
+"%lld%% battery" = "%lld %% de batería";
+"%@ range" = "%@ de autonomía";
+"%1$@ to unlock, then %2$@ a minute" = "%1$@ por el desbloqueo y %2$@ por minuto";
+"No unlock fee, %@ a minute" = "Desbloqueo gratis, %@ por minuto";

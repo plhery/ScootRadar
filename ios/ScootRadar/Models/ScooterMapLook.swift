@@ -588,7 +588,7 @@ struct ScooterCardContent: Equatable, Sendable {
         let price = quote.map { quote in
             ScooterCardFigure(
                 kind: .price,
-                value: RidePriceFormatter.amount(minorUnits: quote.totalMinorUnits),
+                value: RidePriceFormatter.amount(minorUnits: quote.totalMinorUnits, currency: quote.currency),
                 unit: nil,
                 label: String(
                     format: String(localized: "%1$@, %2$lld min"),

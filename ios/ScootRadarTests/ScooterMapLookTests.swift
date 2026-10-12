@@ -478,7 +478,7 @@ final class ScooterMapLookTests: XCTestCase {
         XCTAssertEqual(content.figures[1].value, "60")
         XCTAssertEqual(content.figures[1].unit, "m")
         XCTAssertEqual(content.figures[1].label, "away")
-        XCTAssertEqual(content.figures[2].value, RidePriceFormatter.amount(minorUnits: 520))
+        XCTAssertEqual(content.figures[2].value, RidePriceFormatter.amount(minorUnits: 520, currency: "CHF"))
         XCTAssertNil(content.figures[2].unit)
         XCTAssertEqual(content.figures[2].label, "CHF, 10 min")
         XCTAssertEqual(content.facts, "80% battery, \(scooter.formattedRange!) range")
@@ -548,7 +548,7 @@ final class ScooterMapLookTests: XCTestCase {
             metres: 60,
             quote: RidePriceEstimator.quote(pricing: pricing, durationMinutes: 10, pass: pass)
         )
-        XCTAssertEqual(withPass.figures[2].value, RidePriceFormatter.amount(minorUnits: 210))
+        XCTAssertEqual(withPass.figures[2].value, RidePriceFormatter.amount(minorUnits: 210, currency: "CHF"))
         // The note keeps the provider's tariff and says a pass lowers the figure.
         XCTAssertEqual(withPass.note, "\(price(100)) to unlock, then \(price(42)) a minute · Pass applied")
     }

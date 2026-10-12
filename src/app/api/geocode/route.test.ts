@@ -118,10 +118,12 @@ describe('GET /api/geocode', () => {
     ['de', 'Deutschland', 'Schweiz'],
     ['fr', 'Allemagne', 'Suisse'],
     ['it', 'Germania', 'Svizzera'],
+    ['es', 'Alemania', 'Suiza'],
+    ['is', 'Þýskaland', 'Sviss'],
     ['en', 'Germany', 'Switzerland'],
     // Upper case is the same language; a language the apps are not shown in gets English.
     ['DE', 'Deutschland', 'Schweiz'],
-    ['es', 'Germany', 'Switzerland'],
+    ['sv', 'Germany', 'Switzerland'],
     [undefined, 'Germany', 'Switzerland'],
   ])('writes the country of a city in the language asked for (%s)', async (language, germany, switzerland) => {
     vi.stubGlobal('fetch', vi.fn());

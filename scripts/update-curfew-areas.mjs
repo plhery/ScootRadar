@@ -4,7 +4,8 @@ import { resolve } from 'node:path';
 // Fills the areas of data/rental-curfews.json with each town's boundary,
 // simplified to within TOLERANCE_M: Norwegian municipalities from Kartverket
 // (CC BY 4.0), British local authority districts from the ONS (Open Government
-// Licence v3.0). Pieces smaller than MIN_AREA_KM2 (skerries, most islands) are
+// Licence v3.0), Portuguese municipalities from the Direção-Geral do Território's
+// CAOP (CC BY 4.0). Pieces smaller than MIN_AREA_KM2 (skerries, most islands) are
 // left out. Run it after adding a curfew, then npm run generate:providers.
 
 const TOLERANCE_M = 100;
@@ -67,16 +68,31 @@ function simplifyRing(ring) {
 // December 2018 districts: Bournemouth, Christchurch and Poole merged the year after.
 const ONS_DISTRICTS = 'https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/LAD_December_2018_Boundaries_UK_BGC_2022/FeatureServer/0/query';
 
+// Each source's URL for an id, and where its answer keeps the geometry.
+const BOUNDARIES = {
+  kartverket: {
+    url: id => `https://ws.geonorge.no/kommuneinfo/v1/kommuner/${id}/omrade?utkoordsys=4258`,
+    geometry: body => body.omrade,
+  },
+  ons: {
+    url: id => `${ONS_DISTRICTS}?where=${encodeURIComponent(`lad18cd='${id}'`)}&returnGeometry=true&outSR=4326&f=geojson`,
+    geometry: body => body.features?.[0]?.geometry,
+  },
+  // Mainland municipalities by DICO, reprojected by the server to lon/lat.
+  caop: {
+    url: id => `https://ogcapi.dgterritorio.gov.pt/collections/municipios/items/${id}?f=json`,
+    geometry: body => body.geometry,
+  },
+};
+
 /** The boundary as GeoJSON polygons of [lng, lat] rings. */
 async function boundary({ source, id }) {
-  if (source !== 'kartverket' && source !== 'ons') throw new Error(`Unknown boundary source: ${source}`);
-  const url = source === 'kartverket'
-    ? `https://ws.geonorge.no/kommuneinfo/v1/kommuner/${id}/omrade?utkoordsys=4258`
-    : `${ONS_DISTRICTS}?where=${encodeURIComponent(`lad18cd='${id}'`)}&returnGeometry=true&outSR=4326&f=geojson`;
-  const response = await fetch(url);
+  const reader = BOUNDARIES[source];
+  if (!reader) throw new Error(`Unknown boundary source: ${source}`);
+  const response = await fetch(reader.url(id));
   if (!response.ok) throw new Error(`${source} ${id} answered ${response.status}`);
   const body = await response.json();
-  const geometry = source === 'kartverket' ? body.omrade : body.features?.[0]?.geometry;
+  const geometry = reader.geometry(body);
   if (!geometry) throw new Error(`${source} ${id} has no boundary`);
   return geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.coordinates;
 }

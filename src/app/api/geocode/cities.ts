@@ -4,29 +4,36 @@ import { REGIONAL_SCOOTER_CITIES } from '@/lib/regionalScooterSystems';
 const MAX_CITIES = 5;
 
 /** The languages the apps are shown in; a result's second line is written in the one asked for. */
-export const GEOCODE_LANGUAGES = ['en', 'de', 'fr', 'it', 'nl', 'nb'] as const;
+export const GEOCODE_LANGUAGES = ['en', 'de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is'] as const;
 export type GeocodeLanguage = typeof GEOCODE_LANGUAGES[number];
 
 // A table rather than Intl.DisplayNames, whose locale data is not a given on the server.
 const COUNTRY_NAMES: Record<CoveredCountry, Record<GeocodeLanguage, string>> = {
-  CH: { en: 'Switzerland', de: 'Schweiz', fr: 'Suisse', it: 'Svizzera', nl: 'Zwitserland', nb: 'Sveits' },
-  FR: { en: 'France', de: 'Frankreich', fr: 'France', it: 'Francia', nl: 'Frankrijk', nb: 'Frankrike' },
-  DE: { en: 'Germany', de: 'Deutschland', fr: 'Allemagne', it: 'Germania', nl: 'Duitsland', nb: 'Tyskland' },
-  IT: { en: 'Italy', de: 'Italien', fr: 'Italie', it: 'Italia', nl: 'Italië', nb: 'Italia' },
-  BE: { en: 'Belgium', de: 'Belgien', fr: 'Belgique', it: 'Belgio', nl: 'België', nb: 'Belgia' },
-  NO: { en: 'Norway', de: 'Norwegen', fr: 'Norvège', it: 'Norvegia', nl: 'Noorwegen', nb: 'Norge' },
-  GB: { en: 'United Kingdom', de: 'Vereinigtes Königreich', fr: 'Royaume-Uni', it: 'Regno Unito', nl: 'Verenigd Koninkrijk', nb: 'Storbritannia' },
+  CH: { en: 'Switzerland', de: 'Schweiz', fr: 'Suisse', it: 'Svizzera', nl: 'Zwitserland', nb: 'Sveits', pt: 'Suíça', es: 'Suiza', is: 'Sviss' },
+  FR: { en: 'France', de: 'Frankreich', fr: 'France', it: 'Francia', nl: 'Frankrijk', nb: 'Frankrike', pt: 'França', es: 'Francia', is: 'Frakkland' },
+  DE: { en: 'Germany', de: 'Deutschland', fr: 'Allemagne', it: 'Germania', nl: 'Duitsland', nb: 'Tyskland', pt: 'Alemanha', es: 'Alemania', is: 'Þýskaland' },
+  IT: { en: 'Italy', de: 'Italien', fr: 'Italie', it: 'Italia', nl: 'Italië', nb: 'Italia', pt: 'Itália', es: 'Italia', is: 'Ítalía' },
+  BE: { en: 'Belgium', de: 'Belgien', fr: 'Belgique', it: 'Belgio', nl: 'België', nb: 'Belgia', pt: 'Bélgica', es: 'Bélgica', is: 'Belgía' },
+  NO: { en: 'Norway', de: 'Norwegen', fr: 'Norvège', it: 'Norvegia', nl: 'Noorwegen', nb: 'Norge', pt: 'Noruega', es: 'Noruega', is: 'Noregur' },
+  GB: { en: 'United Kingdom', de: 'Vereinigtes Königreich', fr: 'Royaume-Uni', it: 'Regno Unito', nl: 'Verenigd Koninkrijk', nb: 'Storbritannia', pt: 'Reino Unido', es: 'Reino Unido', is: 'Bretland' },
+  PT: { en: 'Portugal', de: 'Portugal', fr: 'Portugal', it: 'Portogallo', nl: 'Portugal', nb: 'Portugal', pt: 'Portugal', es: 'Portugal', is: 'Portúgal' },
+  ES: { en: 'Spain', de: 'Spanien', fr: 'Espagne', it: 'Spagna', nl: 'Spanje', nb: 'Spania', pt: 'Espanha', es: 'España', is: 'Spánn' },
+  IS: { en: 'Iceland', de: 'Island', fr: 'Islande', it: 'Islanda', nl: 'IJsland', nb: 'Island', pt: 'Islândia', es: 'Islandia', is: 'Ísland' },
 };
 
 // Typed beside a city to say which one is meant: "Lindau Deutschland".
 const COUNTRY_WORDS: Record<CoveredCountry, string[]> = {
-  CH: ['switzerland', 'schweiz', 'suisse', 'svizzera', 'zwitserland', 'sveits'],
-  FR: ['france', 'frankreich', 'francia', 'frankrijk', 'frankrike'],
-  DE: ['germany', 'deutschland', 'allemagne', 'germania', 'duitsland', 'tyskland'],
+  CH: ['switzerland', 'schweiz', 'suisse', 'svizzera', 'zwitserland', 'sveits', 'suica', 'suiza', 'sviss'],
+  FR: ['france', 'frankreich', 'francia', 'frankrijk', 'frankrike', 'franca', 'frakkland'],
+  DE: ['germany', 'deutschland', 'allemagne', 'germania', 'duitsland', 'tyskland', 'alemanha', 'alemania', 'thyskaland'],
   IT: ['italy', 'italia', 'italie', 'italien'],
-  BE: ['belgium', 'belgien', 'belgique', 'belgio', 'belgie', 'belgia'],
-  NO: ['norway', 'norwegen', 'norvege', 'norvegia', 'noorwegen', 'norge'],
-  GB: ['uk', 'britain', 'england', 'scotland', 'wales', 'angleterre', 'inghilterra', 'engeland', 'storbritannia', 'grossbritannien'],
+  BE: ['belgium', 'belgien', 'belgique', 'belgio', 'belgie', 'belgia', 'belgica'],
+  NO: ['norway', 'norwegen', 'norvege', 'norvegia', 'noorwegen', 'norge', 'noruega', 'noregur'],
+  GB: ['uk', 'britain', 'england', 'scotland', 'wales', 'angleterre', 'inghilterra', 'engeland', 'storbritannia', 'grossbritannien',
+    'inglaterra', 'bretland'],
+  PT: ['portugal', 'portogallo'],
+  ES: ['spain', 'spanien', 'espagne', 'spagna', 'spanje', 'spania', 'espanha', 'espana', 'spann'],
+  IS: ['iceland', 'island', 'islande', 'islanda', 'ijsland', 'islandia'],
 };
 
 // What the Swiss cities are called in the other languages of the app, and how
@@ -42,9 +49,13 @@ const SWISS_ALIASES: Record<string, string[]> = {
   'ch:zurich': ['Zuerich', 'Zurigo'],
 };
 
+// The letters no accent can be stripped from are spelled out, so "Tromso",
+// "Baerum" and "Isafjordur" find Tromsø, Bærum and Ísafjörður.
+const SPELLED_OUT: Record<string, string> = { ß: 'ss', æ: 'ae', ø: 'o', œ: 'oe', þ: 'th', ð: 'd' };
+
 function normalize(value: string): string {
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-    .replaceAll('ß', 'ss').replace(/[^a-z0-9]+/g, ' ').trim();
+    .replace(/[ßæøœþð]/g, letter => SPELLED_OUT[letter]).replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
 const REGIONAL_ALIASES = new Map(REGIONAL_SCOOTER_CITIES.map(city => [city.id, city.aliases ?? []]));

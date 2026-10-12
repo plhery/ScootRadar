@@ -147,13 +147,16 @@ Supported city names and aliases are resolved locally before Swiss address searc
 
 Reviewed catalogs live in `data/belgian-scooter-feeds.json`,
 `data/norwegian-scooter-feeds.json` and `data/british-scooter-feeds.json`.
-Belgium has 5 feeds across 4 cities: Bolt and Dott in Bruxelles, Dott in
-Charleroi, Voi in Antwerpen and Hoppy in Kortrijk. The United Kingdom has 11
+Belgium has 6 feeds across 4 cities: Bolt and Dott in Bruxelles, Dott and Pony
+in Charleroi, Voi in Antwerpen and Hoppy in Kortrijk. The United Kingdom has 11
 feeds across 18 towns: Beryl, Dott and Bolt. Both come from the operators' own
 public GBFS feeds, found through
 [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
-[Dott's listings](https://gbfs.api.ridedott.com/public/v2/countries/gb/gbfs.json)
-and [Beryl's index](https://beryl-gbfs-production.web.app/v2_2/gbfs.json).
+[Dott's listings](https://gbfs.api.ridedott.com/public/v2/countries/gb/gbfs.json),
+[Beryl's index](https://beryl-gbfs-production.web.app/v2_2/gbfs.json) and, for
+Pony, Belgium's national access point
+[transportdata.be](https://transportdata.be/dataset/pony_charleroi), which
+lists its feed with the key the URL needs.
 
 Norway's 23 feeds across 21 towns (Voi, Ryde, Bolt and Dott) all come from
 [Entur's Mobility API](https://developer.entur.no/docs/open-services/mobility),
@@ -168,17 +171,42 @@ standing scooters.
 Beryl publishes its feeds under
 [CDLA-Permissive-2.0](https://cdla.dev/permissive-2-0/). Bolt's
 [GBFS licence](https://bolt.eu/en/legal/micromobility/security-gbfs-license/)
-allows showing its vehicles, with data no older than fifteen minutes. Dott, Voi
-and Hoppy publish no licence in these feeds. The map's credits list Entur, the
-NLOD and Beryl's licence. See the
+allows showing its vehicles, with data no older than fifteen minutes.
+transportdata.be marks Pony's dataset open, under attribution. Dott, Voi and
+Hoppy publish no licence in these feeds. The map's credits list Entur, the
+NLOD, Beryl's licence and Pony's dataset. See the
 [coverage audit](docs/belgian-norwegian-british-scooter-feeds.md) for the
 systems, the gaps and the recheck command.
 
 Night bans on renting, in `data/rental-curfews.json`, come from each town's
-rules: Lovdata for Norway, the council or the operator for Britain. Their areas
-are municipal boundaries from Kartverket under
-[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) and local authority
+rules: Lovdata for Norway, the council or the operator for Britain, the
+municipal regulation for Matosinhos in Portugal. Their areas are municipal
+boundaries from Kartverket under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), local authority
 districts from the ONS under the
 [Open Government Licence v3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)
-(contains OS data © Crown copyright and database right 2018). The credits list
-both.
+(contains OS data © Crown copyright and database right 2018) and Portuguese
+municipalities from the Direção-Geral do Território's
+[CAOP](https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop)
+under CC BY 4.0 (Informação geográfica cedida pela Direção-Geral do
+Território). The credits list all three.
+
+## Portugal, Spain and Iceland
+
+Reviewed catalogs live in `data/portuguese-scooter-feeds.json`,
+`data/spanish-scooter-feeds.json` and `data/icelandic-scooter-feeds.json`.
+Portugal has 12 feeds across 11 cities (Bird and Lime), Spain 8 across 10
+(Bird and Hopp) and Iceland 14 across 18 (Hopp). All come from the operators'
+own public GBFS feeds, found through
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv).
+
+Bird's feeds link a
+[data licence](https://web.archive.org/web/20260516143232/https://www.bird.co/gbfs-data-license-agreement/)
+that now answers 404; its last copy allows showing Bird's vehicles, credited
+to Bird, with data no older than fifteen minutes. Lime's
+[GBFS terms](https://www.li.me/legal/public-gbfs-terms) allow public display
+only where local law requires it and data no older than ten minutes, as in
+France and Germany. Hopp links its privacy policy, not a licence. The map's
+credits name all three. See the
+[coverage audit](docs/portuguese-spanish-icelandic-scooter-feeds.md) for the
+systems, the gaps and the recheck command.

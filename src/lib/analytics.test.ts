@@ -66,7 +66,8 @@ describe('analytics privacy boundary', () => {
     expect(await sent('/de')).toMatchObject({ url: '/de', title: 'About — ScootRadar' });
     expect(await sent('/privacy')).toMatchObject({ url: '/privacy', title: 'Privacy — ScootRadar' });
     expect(await sent('/map')).toMatchObject({ url: '/map', title: 'ScootRadar' });
-    expect(await sent('/es')).toMatchObject({ url: '/map', title: 'ScootRadar' });
+    expect(await sent('/is')).toMatchObject({ url: '/is', title: 'About — ScootRadar' });
+    expect(await sent('/sv')).toMatchObject({ url: '/map', title: 'ScootRadar' });
     expect(await sent('/en/anything')).toMatchObject({ url: '/map', title: 'ScootRadar' });
   });
   it('bounds the queue and survives network failures without retries', async () => {

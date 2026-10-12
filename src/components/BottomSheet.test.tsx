@@ -396,7 +396,7 @@ describe('BottomSheet', () => {
     }) });
 
     expect(screen.getByRole('heading', { name: 'No scooter data here yet' })).toBeVisible();
-    expect(screen.getByText('ScootRadar covers selected cities in Belgium, France, Germany, Italy, Norway, Switzerland and the United Kingdom.')).toBeVisible();
+    expect(screen.getByText('ScootRadar covers selected cities in Belgium, France, Germany, Iceland, Italy, Norway, Portugal, Spain, Switzerland and the United Kingdom.')).toBeVisible();
     expect(count()).not.toBeInTheDocument();
     const cities = within(screen.getByRole('group', { name: 'Closest cities' })).getAllByRole('button');
     expect(cities).toHaveLength(3);

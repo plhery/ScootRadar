@@ -40,6 +40,11 @@ const PUBLIC_PAGES = new Map([
   ['/de', 'About — ScootRadar'],
   ['/fr', 'About — ScootRadar'],
   ['/it', 'About — ScootRadar'],
+  ['/nl', 'About — ScootRadar'],
+  ['/nb', 'About — ScootRadar'],
+  ['/pt', 'About — ScootRadar'],
+  ['/es', 'About — ScootRadar'],
+  ['/is', 'About — ScootRadar'],
 ]);
 
 let cache: string | undefined;

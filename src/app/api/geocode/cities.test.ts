@@ -34,10 +34,14 @@ describe('searchCoveredCities', () => {
 
   it('lists the cities a few letters could become, a city typed in full first and the others by name', () => {
     expect(names('Ber')).toEqual(['Berlin, Germany', 'Bern, Switzerland']);
-    expect(names('Ro')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland', 'Rorschach, Switzerland']);
+    // Portimão by its beach, Praia da Rocha.
+    expect(names('Ro')).toEqual(['Portimão, Portugal', 'Roma, Italy', 'Romanshorn, Switzerland', 'Rorschach, Switzerland']);
     expect(names('Rom')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland']);
     expect(names('Roma')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland']);
-    expect(names('He')).toEqual(['Heidelberg, Germany', 'Heilbronn, Germany', 'Hérouville-Saint-Clair, France']);
+    // Vestmannaeyjar by its island, Heimaey.
+    expect(names('He')).toEqual([
+      'Heidelberg, Germany', 'Heilbronn, Germany', 'Hellissandur, Iceland', 'Hérouville-Saint-Clair, France', 'Vestmannaeyjar, Iceland',
+    ]);
     expect(searchCoveredCities('B')).toEqual([]);
     expect(searchCoveredCities('a').length).toBe(0);
   });
@@ -114,8 +118,8 @@ describe('searchCoveredCities', () => {
       expect(names(query), query).toEqual(searchRegionalScooterCities(query).map(city => city.display_name));
     }
     // Swiss cities take their place among them by name.
-    expect(names('St')).toEqual(['St. Gallen, Switzerland', 'Stavanger, Norway', 'Stjørdal, Norway', 'Stuttgart, Germany']);
+    expect(names('St')).toEqual(['St. Gallen, Switzerland', 'Stavanger, Norway', 'Stjørdal, Norway', 'Stuttgart, Germany', 'Stykkishólmur, Iceland']);
     expect(searchRegionalScooterCities('St').map(city => city.display_name))
-      .toEqual(['Stavanger, Norway', 'Stjørdal, Norway', 'Stuttgart, Germany']);
+      .toEqual(['Stavanger, Norway', 'Stjørdal, Norway', 'Stuttgart, Germany', 'Stykkishólmur, Iceland']);
   });
 });

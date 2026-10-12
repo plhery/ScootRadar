@@ -273,8 +273,8 @@ img {
 }
 
 .langs a {
+  flex: 1 1 0;
   justify-content: center;
-  min-width: 56px;
   border-radius: 11px;
 }
 
@@ -304,7 +304,8 @@ img {
   box-shadow: 0 8px 30px -10px rgba(255, 255, 255, 0.6);
 }
 
-/* From a tablet up the bar is one row, and it stays with you down the page. */
+/* From a tablet up the bar is one row, and it stays with you down the page.
+   Its links to the sections wait for room beside the nine languages. */
 @media (min-width: 760px) {
   .top {
     position: sticky;
@@ -316,7 +317,7 @@ img {
 
   .pill {
     display: flex;
-    gap: 0 22px;
+    gap: 0 16px;
     width: auto;
     padding: 6px 8px 6px 14px;
     background: color-mix(in srgb, var(--raised) 78%, transparent);
@@ -331,10 +332,6 @@ img {
     scroll-margin-top: 96px;
   }
 
-  .pill .pill-link {
-    display: flex;
-  }
-
   .brand {
     padding-right: 8px;
   }
@@ -347,7 +344,8 @@ img {
   }
 
   .langs a {
-    min-width: 44px;
+    flex: none;
+    min-width: 36px;
     min-height: 38px;
   }
 
@@ -361,6 +359,16 @@ img {
 
   .pill-cta {
     padding: 0 18px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .pill {
+    gap: 0 22px;
+  }
+
+  .pill .pill-link {
+    display: flex;
   }
 }
 

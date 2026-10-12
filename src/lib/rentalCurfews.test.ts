@@ -9,6 +9,8 @@ const TONSBERG: [number, number] = [59.2675, 10.4076];
 const TROMSO: [number, number] = [69.6492, 18.9553];
 const BRIGHTON: [number, number] = [50.8225, -0.1372];
 const POOLE: [number, number] = [50.715, -1.9872];
+const MATOSINHOS: [number, number] = [41.1844, -8.6963];
+const PORTO: [number, number] = [41.1496, -8.611];
 const at = (iso: string) => Date.parse(iso);
 
 describe('activeCurfew', () => {
@@ -63,6 +65,13 @@ describe('activeCurfew', () => {
     expect(activeCurfew(BRIGHTON, at('2026-10-12T23:30:00Z'))).toEqual({ city: 'Brighton', until: at('2026-10-13T04:00:00Z') });
     expect(activeCurfew(BRIGHTON, at('2026-10-12T22:30:00Z'))).toBeNull();
     expect(activeCurfew(POOLE, at('2026-10-12T21:30:00Z'))).toEqual({ city: 'Poole', until: at('2026-10-13T04:00:00Z') });
+  });
+
+  it('reads Matosinhos in Lisbon time, and stops at Porto', () => {
+    // 22:00 in Matosinhos, summer time, until 06:00; Porto lets scooters rent all night.
+    expect(activeCurfew(MATOSINHOS, at('2026-10-12T20:59:00Z'))).toBeNull();
+    expect(activeCurfew(MATOSINHOS, at('2026-10-12T21:00:00Z'))).toEqual({ city: 'Matosinhos', until: at('2026-10-13T05:00:00Z') });
+    expect(activeCurfew(PORTO, at('2026-10-12T23:00:00Z'))).toBeNull();
   });
 
   it('stops at the edge of Oslo, and needs a place', () => {

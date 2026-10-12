@@ -84,6 +84,12 @@
 		B000000000000000000000A1 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B000000000000000000000A2 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B000000000000000000000A3 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B000000000000000000000A4 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B000000000000000000000A5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B000000000000000000000A6 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B000000000000000000000A7 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B000000000000000000000A8 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B000000000000000000000A9 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B0000000000000000000001A /* SwissAddressSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwissAddressSearch.swift; sourceTree = "<group>"; };
 		B0000000000000000000001B /* AddressSearchAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchAPI.swift; sourceTree = "<group>"; };
 		B0000000000000000000001C /* ProviderCatalog.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderCatalog.generated.swift; sourceTree = "<group>"; };
@@ -221,6 +227,9 @@
 				B00000000000000000000015 /* it */,
 				B000000000000000000000A0 /* nl */,
 				B000000000000000000000A1 /* nb */,
+				B000000000000000000000A4 /* pt */,
+				B000000000000000000000A5 /* es */,
+				B000000000000000000000A6 /* is */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -234,6 +243,9 @@
 				B00000000000000000000019 /* it */,
 				B000000000000000000000A2 /* nl */,
 				B000000000000000000000A3 /* nb */,
+				B000000000000000000000A7 /* pt */,
+				B000000000000000000000A8 /* es */,
+				B000000000000000000000A9 /* is */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -306,6 +318,9 @@
 				it,
 				nl,
 				nb,
+				pt,
+				es,
+				is,
 				Base,
 			);
 			mainGroup = C00000000000000000000000;

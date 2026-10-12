@@ -13,6 +13,7 @@ its directory. No account credentials or private rider APIs are used.
 | --- | --- | ---: | --- | ---: |
 | Belgium | Bolt | 1 | Bruxelles | 2,750 |
 | Belgium | Dott | 2 | Bruxelles, Charleroi | 3,750 |
+| Belgium | Pony | 1 | Charleroi | 220 |
 | Belgium | Voi | 1 | Antwerpen | 925 |
 | Belgium | Hoppy | 1 | Kortrijk | 200 |
 | Norway | Voi | 9 | Oslo, Bærum / Asker, Lillestrøm / Lørenskog, Trondheim, Stavanger / Sandnes, Kristiansand / Vennesla, Arendal, Moss, Fredrikstad / Sarpsborg | 13,850 |
@@ -54,6 +55,13 @@ feeds are routed per town. The bounds, discovery URLs and aliases are in
   public GBFS elsewhere. The cost is two to five minutes of extra delay.
   `check:europe` skips the Dott listing for Norway, because Entur's manifest is
   the source there.
+- **Pony** publishes Charleroi and Liège on Belgium's national access point,
+  [transportdata.be](https://transportdata.be/dataset/pony_charleroi), with
+  the key each feed URL needs (added 12 October 2026). The key in MobilityData's
+  registry answers 400. Pony's discovery file lists its feeds under
+  `/v1/Charleroi/en/`, not the `/v1/charleroi/fr/` the access point names, so
+  the catalog uses the address the file gives, to keep the same-directory
+  rule. Most of its scooters stand in Pony's parking zones, as in France.
 - **Beryl** regenerates its feeds every eight to ten minutes, despite a
   declared ttl of 120 s. It was 5–12 minutes old on every read, which leaves
   about three minutes before the fifteen-minute cut-off. Its vehicles carry
@@ -137,6 +145,8 @@ stays open at night.
 - **Dott** publishes no `license_url` in Belgium or the UK. Its
   [API licence](https://ridedott.com/api-licence/) raises the same open
   question as in France, Germany and Italy.
+- **Pony:** transportdata.be marks both of its datasets open, under "Other
+  (Attribution)". The credits name Pony and the access point.
 - **Voi** (Antwerpen) and **Hoppy** publish no licence in their feeds.
 
 ## Known gaps
@@ -145,7 +155,8 @@ stays open at night.
   - Brussels bans shared e-scooters from 1 January 2027, when Bolt's and
     Dott's permits end ([La Libre, 11 June 2026](https://www.lalibre.be/belgique/mobilite/2026/06/11/grand-changement-dans-le-secteur-de-la-mobilite-bruxelles-interdit-les-trottinettes-partagees-sur-son-territoire-IRS4BZDEPFFS3H6MJT23AUASK4/)).
     Their Brussels feeds should empty then.
-  - Pony (Brussels, Liège, Charleroi) answers 400 to the key in the registry.
+  - Pony's Liège feed held 2 scooters on 12 October 2026, so it is left out.
+    Pony publishes no feed for Brussels.
   - Lime Brussels and Kortrijk, Dott Ghent and Mons, and Bolt Ghent publish
     e-bikes only.
   - Lime Antwerp answers 404.

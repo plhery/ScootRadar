@@ -64,6 +64,23 @@
       "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/charleroi/gbfs.json"
     },
     {
+      "id": "pony_be_charleroi",
+      "country": "BE",
+      "provider": "pony",
+      "city": "Charleroi",
+      "center": [
+        50.4108,
+        4.4446
+      ],
+      "bounds": {
+        "south": 50.369,
+        "north": 50.4817,
+        "west": 4.3459,
+        "east": 4.5118
+      },
+      "discoveryUrl": "https://gbfs.getapony.com/v1/Charleroi/en/gbfs.json?key=AIzaSyA2roqgVo5gwx28uHcK4zr413B2fTsCkrU"
+    },
+    {
       "id": "hoppy_be_kortrijk",
       "country": "BE",
       "provider": "hoppy",

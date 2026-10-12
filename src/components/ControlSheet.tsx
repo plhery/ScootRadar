@@ -21,6 +21,9 @@ const LOCALE_LABELS: Record<AppLocale, string> = {
   it: 'Italiano',
   nl: 'Nederlands',
   nb: 'Norsk',
+  pt: 'Português',
+  es: 'Español',
+  is: 'Íslenska',
   en: 'English',
 };
 

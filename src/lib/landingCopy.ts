@@ -4,9 +4,14 @@
 // The labels of the app the page redraws (the walk, the price, the two buttons,
 // the battery filter) are worded as src/lib/i18n.tsx words them. German is
 // written the Swiss way, as the app is: "ss", never "ß". French has a no-break
-// space before a colon, a semicolon and a percent sign.
+// space before a colon, a semicolon and a percent sign. Portuguese is written
+// the European way, with the 1990 spelling, and speaks to the reader in the
+// third person, never with "você". Spanish is written as in Spain, with « »
+// and a no-break space before a percent sign. Icelandic calls a shared
+// e-scooter a "rafskúta", as Hopp does, and keeps a name it cannot decline out
+// of a preposition's reach: "frá: {place}", "{name}-appið".
 
-export const LANDING_LOCALES = ['en', 'de', 'fr', 'it', 'nl', 'nb'] as const;
+export const LANDING_LOCALES = ['en', 'de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is'] as const;
 export type LandingLocale = (typeof LANDING_LOCALES)[number];
 
 export function isLandingLocale(value: string): value is LandingLocale {
@@ -36,6 +41,9 @@ export const LANGUAGE_NAMES: Record<LandingLocale, string> = {
   it: 'Italiano',
   nl: 'Nederlands',
   nb: 'Norsk',
+  pt: 'Português',
+  es: 'Español',
+  is: 'Íslenska',
 };
 
 export const SOURCE_URL = 'https://github.com/plhery/ScootRadar';
@@ -80,13 +88,15 @@ export interface LandingGuide {
 
 // The guides of each language, the ones to read first at the top. None is
 // written yet: the footer lists them above its other lines once one is here.
-export const LANDING_GUIDES: Record<LandingLocale, readonly LandingGuide[]> = { en: [], de: [], fr: [], it: [], nl: [], nb: [] };
+export const LANDING_GUIDES: Record<LandingLocale, readonly LandingGuide[]> = {
+  en: [], de: [], fr: [], it: [], nl: [], nb: [], pt: [], es: [], is: [],
+};
 
 // The App Store page of the iPhone app, once it has one. The buttons that lead
 // to it are left out until then.
 export const APP_STORE_URL = null as string | null;
 
-export type LandingCountry = 'CH' | 'DE' | 'FR' | 'IT' | 'BE' | 'NO' | 'GB';
+export type LandingCountry = 'CH' | 'DE' | 'FR' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS';
 
 export interface LandingCopy {
   meta: {
@@ -233,15 +243,18 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
       looks: {
         title: 'Light by day. Dark by night.',
-        text: 'The map follows your device’s appearance, or you pick one and keep it. In English, German, French, Italian, Dutch or Norwegian.',
+        text: 'The map follows your device’s appearance, or you pick one and keep it. In English, German, French, Italian, Dutch, Norwegian, Portuguese, Spanish or Icelandic.',
         light: 'The map in its light appearance.',
         dark: 'The same map in its dark appearance.',
       },
     },
     cities: {
       title: cities => `${cities} cities.`,
-      lede: 'Shared e-scooters in Switzerland, Germany, France, Belgium, Norway and the United Kingdom, plus Rome. Where no provider publishes its data, the map says so and points you to the closest cities that have it. Pick a city to open the map there.',
-      countries: { CH: 'Switzerland', DE: 'Germany', FR: 'France', IT: 'Italy', BE: 'Belgium', NO: 'Norway', GB: 'United Kingdom' },
+      lede: 'Shared e-scooters in Switzerland, Germany, France, Belgium, Norway, the United Kingdom, Portugal, Spain and Iceland, plus Rome. Where no provider publishes its data, the map says so and points you to the closest cities that have it. Pick a city to open the map there.',
+      countries: {
+        CH: 'Switzerland', DE: 'Germany', FR: 'France', IT: 'Italy', BE: 'Belgium', NO: 'Norway', GB: 'United Kingdom',
+        PT: 'Portugal', ES: 'Spain', IS: 'Iceland',
+      },
       more: count => `and ${count} more`,
       alt: 'The map at night, zoomed out over Europe, with the number of scooters on each city.',
     },
@@ -356,15 +369,18 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
       looks: {
         title: 'Hell bei Tag. Dunkel bei Nacht.',
-        text: 'Die Karte folgt dem Erscheinungsbild deines Geräts, oder du wählst eines und bleibst dabei. Auf Deutsch, Englisch, Französisch, Italienisch, Niederländisch oder Norwegisch.',
+        text: 'Die Karte folgt dem Erscheinungsbild deines Geräts, oder du wählst eines und bleibst dabei. Auf Deutsch, Englisch, Französisch, Italienisch, Niederländisch, Norwegisch, Portugiesisch, Spanisch oder Isländisch.',
         light: 'Die Karte im hellen Erscheinungsbild.',
         dark: 'Dieselbe Karte im dunklen Erscheinungsbild.',
       },
     },
     cities: {
       title: cities => `${cities} Städte.`,
-      lede: 'E-Scooter in der Schweiz, in Deutschland, Frankreich, Belgien, Norwegen und im Vereinigten Königreich sowie in Rom. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten. Wähle eine Stadt, um die Karte dort zu öffnen.',
-      countries: { CH: 'Schweiz', DE: 'Deutschland', FR: 'Frankreich', IT: 'Italien', BE: 'Belgien', NO: 'Norwegen', GB: 'Vereinigtes Königreich' },
+      lede: 'E-Scooter in der Schweiz, in Deutschland, Frankreich, Belgien, Norwegen, im Vereinigten Königreich, in Portugal, Spanien und Island sowie in Rom. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten. Wähle eine Stadt, um die Karte dort zu öffnen.',
+      countries: {
+        CH: 'Schweiz', DE: 'Deutschland', FR: 'Frankreich', IT: 'Italien', BE: 'Belgien', NO: 'Norwegen', GB: 'Vereinigtes Königreich',
+        PT: 'Portugal', ES: 'Spanien', IS: 'Island',
+      },
       more: count => `und ${count} weitere`,
       alt: 'Die Karte bei Nacht, herausgezoomt über Europa, mit der Zahl der Scooter in jeder Stadt.',
     },
@@ -479,15 +495,18 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
       looks: {
         title: 'Claire le jour. Sombre la nuit.',
-        text: 'La carte suit l’apparence de votre appareil, ou vous en choisissez une et vous la gardez. En français, allemand, italien, anglais, néerlandais ou norvégien.',
+        text: 'La carte suit l’apparence de votre appareil, ou vous en choisissez une et vous la gardez. En français, allemand, italien, anglais, néerlandais, norvégien, portugais, espagnol ou islandais.',
         light: 'La carte en mode clair.',
         dark: 'La même carte en mode sombre.',
       },
     },
     cities: {
       title: cities => `${cities} villes.`,
-      lede: 'Des trottinettes en libre-service en Suisse, en Allemagne, en France, en Belgique, en Norvège et au Royaume-Uni, ainsi qu’à Rome. Là où aucun opérateur ne publie de données, la carte le dit et indique les villes les plus proches qui en ont. Choisissez une ville pour y ouvrir la carte.',
-      countries: { CH: 'Suisse', DE: 'Allemagne', FR: 'France', IT: 'Italie', BE: 'Belgique', NO: 'Norvège', GB: 'Royaume-Uni' },
+      lede: 'Des trottinettes en libre-service en Suisse, en Allemagne, en France, en Belgique, en Norvège, au Royaume-Uni, au Portugal, en Espagne et en Islande, ainsi qu’à Rome. Là où aucun opérateur ne publie de données, la carte le dit et indique les villes les plus proches qui en ont. Choisissez une ville pour y ouvrir la carte.',
+      countries: {
+        CH: 'Suisse', DE: 'Allemagne', FR: 'France', IT: 'Italie', BE: 'Belgique', NO: 'Norvège', GB: 'Royaume-Uni',
+        PT: 'Portugal', ES: 'Espagne', IS: 'Islande',
+      },
       more: count => (count === 1 ? 'et une autre' : `et ${count} autres`),
       alt: 'La carte de nuit à l’échelle de l’Europe, avec le nombre de trottinettes dans chaque ville.',
     },
@@ -602,15 +621,18 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
       looks: {
         title: 'Chiara di giorno. Scura di notte.',
-        text: 'La mappa segue l’aspetto del tuo dispositivo, oppure ne scegli uno e lo tieni. In italiano, tedesco, francese, inglese, olandese o norvegese.',
+        text: 'La mappa segue l’aspetto del tuo dispositivo, oppure ne scegli uno e lo tieni. In italiano, tedesco, francese, inglese, olandese, norvegese, portoghese, spagnolo o islandese.',
         light: 'La mappa con l’aspetto chiaro.',
         dark: 'La stessa mappa con l’aspetto scuro.',
       },
     },
     cities: {
       title: cities => `${cities} città.`,
-      lede: 'Monopattini in sharing in Svizzera, Germania, Francia, Belgio, Norvegia e Regno Unito, più Roma. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno. Scegli una città per aprire lì la mappa.',
-      countries: { CH: 'Svizzera', DE: 'Germania', FR: 'Francia', IT: 'Italia', BE: 'Belgio', NO: 'Norvegia', GB: 'Regno Unito' },
+      lede: 'Monopattini in sharing in Svizzera, Germania, Francia, Belgio, Norvegia, Regno Unito, Portogallo, Spagna e Islanda, più Roma. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno. Scegli una città per aprire lì la mappa.',
+      countries: {
+        CH: 'Svizzera', DE: 'Germania', FR: 'Francia', IT: 'Italia', BE: 'Belgio', NO: 'Norvegia', GB: 'Regno Unito',
+        PT: 'Portogallo', ES: 'Spagna', IS: 'Islanda',
+      },
       more: count => (count === 1 ? 'e un’altra' : `e altre ${count}`),
       alt: 'La mappa dell’Europa vista da lontano, di notte, con il numero di monopattini in ogni città.',
     },
@@ -725,14 +747,14 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
       looks: {
         title: 'Lyst om dagen. Mørkt om natten.',
-        text: 'Kartet følger utseendet på enheten din, eller du velger ett og beholder det. På norsk, engelsk, tysk, fransk, italiensk eller nederlandsk.',
+        text: 'Kartet følger utseendet på enheten din, eller du velger ett og beholder det. På norsk, engelsk, tysk, fransk, italiensk, nederlandsk, portugisisk, spansk eller islandsk.',
         light: 'Kartet med lyst utseende.',
         dark: 'Det samme kartet med mørkt utseende.',
       },
     },
     cities: {
       title: cities => `${cities} byer.`,
-      lede: 'Elsparkesykler til leie i Sveits, Tyskland, Frankrike, Belgia, Norge og Storbritannia, pluss Roma. Der ingen operatør publiserer data, sier kartet ifra og peker deg til de nærmeste byene som har det. Velg en by for å åpne kartet der.',
+      lede: 'Elsparkesykler til leie i Sveits, Tyskland, Frankrike, Belgia, Norge, Storbritannia, Portugal, Spania og Island, pluss Roma. Der ingen operatør publiserer data, sier kartet ifra og peker deg til de nærmeste byene som har det. Velg en by for å åpne kartet der.',
       countries: {
         CH: 'Sveits',
         DE: 'Tyskland',
@@ -741,6 +763,9 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         BE: 'Belgia',
         NO: 'Norge',
         GB: 'Storbritannia',
+        PT: 'Portugal',
+        ES: 'Spania',
+        IS: 'Island',
       },
       more: count => (count === 1 ? 'og én til' : `og ${count} til`),
       alt: 'Kartet om natten, zoomet ut over Europa, med antall elsparkesykler i hver by.',
@@ -856,14 +881,14 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
       looks: {
         title: 'Licht overdag. Donker ’s nachts.',
-        text: 'De kaart volgt de weergave van je apparaat, of je kiest er zelf een en houdt die. In het Nederlands, Engels, Duits, Frans, Italiaans of Noors.',
+        text: 'De kaart volgt de weergave van je apparaat, of je kiest er zelf een en houdt die. In het Nederlands, Engels, Duits, Frans, Italiaans, Noors, Portugees, Spaans of IJslands.',
         light: 'De kaart in lichte weergave.',
         dark: 'Dezelfde kaart in donkere weergave.',
       },
     },
     cities: {
       title: cities => `${cities} steden.`,
-      lede: 'Deelsteps in Zwitserland, Duitsland, Frankrijk, België, Noorwegen en het Verenigd Koninkrijk, en ook in Rome. Waar geen enkele aanbieder zijn data publiceert, zegt de kaart dat en krijg je de dichtstbijzijnde steden die wel data hebben. Kies een stad om de kaart daar te openen.',
+      lede: 'Deelsteps in Zwitserland, Duitsland, Frankrijk, België, Noorwegen, het Verenigd Koninkrijk, Portugal, Spanje en IJsland, en ook in Rome. Waar geen enkele aanbieder zijn data publiceert, zegt de kaart dat en krijg je de dichtstbijzijnde steden die wel data hebben. Kies een stad om de kaart daar te openen.',
       countries: {
         CH: 'Zwitserland',
         DE: 'Duitsland',
@@ -872,6 +897,9 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         BE: 'België',
         NO: 'Noorwegen',
         GB: 'Verenigd Koninkrijk',
+        PT: 'Portugal',
+        ES: 'Spanje',
+        IS: 'IJsland',
       },
       more: count => (count === 1 ? 'en nog één' : `en nog ${count}`),
       alt: 'De kaart ’s nachts, uitgezoomd over Europa, met het aantal deelsteps op elke stad.',
@@ -920,6 +948,392 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       source: 'Broncode op GitHub',
       guides: 'Gidsen',
       maker: 'Door de <maker>maker</maker> van <horoscope>X Horoscope</horoscope>, <monkey>UnfollowMonkey</monkey> en de <peek>pakkettracker Peek</peek>.',
+    },
+  },
+  pt: {
+    meta: {
+      title: 'Mapa de trotinetes elétricas: Lime, Bolt, Bird, Voi, Dott e mais | ScootRadar',
+      description: cities =>
+        `Todas as trotinetes elétricas partilhadas perto de si num mapa em tempo real: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde e Hoppy. Grátis, sem conta, em ${cities} cidades.`,
+      share: {
+        title: 'Todas as trotinetes num só mapa.',
+        alt: 'Todas as trotinetes num só mapa: a app à noite junto à estação central de Zurique, ao lado das iniciais de doze operadores.',
+      },
+    },
+    nav: { main: 'Navegação principal', shows: 'O que o mapa mostra', cities: 'Cidades', languages: 'Idioma' },
+    openMap: 'Abrir o mapa',
+    iphoneApp: 'Descarregar a app para iPhone',
+    hero: {
+      title: scooters => (scooters === 1 ? 'Há uma trotinete à sua volta.' : `Há ${scooters} trotinetes à sua volta.`),
+      lede: 'O ScootRadar reúne num só mapa todas as trotinetes elétricas partilhadas à sua volta, seja qual for o operador. Assim, o caminho mais curto para casa é a primeira coisa que vê.',
+      note: 'Grátis. Sem conta, sem anúncios.',
+      openSource: 'Código aberto',
+      stage: 'O ScootRadar junto à estação central de Zurique',
+      alt: scooters =>
+        `A app para iPhone à noite: as ruas escuras junto à estação central de Zurique, cada trotinete um ponto de luz na cor do seu operador, a mais próxima de cada operador com o nome e o tempo a pé, e ${scooters} trotinetes à vista.`,
+    },
+    card: {
+      walk: minutes => `≈${minutes} min a pé`,
+      range: distance => `${distance} de autonomia`,
+      price: (price, minutes) => `≈ ${price} por ${minutes} min`,
+      bike: 'Uma bicicleta, para variar',
+    },
+    know: {
+      title: 'Tudo o que quer saber antes de se pôr a caminho.',
+      all: {
+        title: 'Os sete. Um só mapa.',
+        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi e PubliBike têm cada um a sua app, que só mostra a própria frota. O ScootRadar mostra as frotas todas juntas: a trotinete mais próxima é mesmo a mais próxima.',
+        close: (first, firstDistance, second, secondDistance) =>
+          `Aqui, há uma ${first} a ${firstDistance} e uma ${second} a ${secondDistance}. Para saber isto, são precisas duas apps. Ou um mapa.`,
+        providers: 'Operadores em Zurique',
+        alt: 'As mesmas ruas de dia, com os pontos de todos os operadores num só mapa.',
+      },
+      walk: {
+        title: 'Saiba quanto tem de andar.',
+        text: 'A distância e o tempo a pé a partir de onde está, ou de uma morada que pesquise.',
+      },
+      charge: {
+        title: 'Esqueça as descarregadas.',
+        text: 'Cada trotinete mostra a bateria e a autonomia restante quando o operador as publica. Defina um mínimo e o mapa só mostra as trotinetes que o atingem; as que não têm informação de bateria ficam ocultas.',
+        any: 'Qualquer',
+        control: 'O filtro de bateria, definido para 60% ou mais',
+      },
+      price: {
+        title: 'O preço, antes de se decidir.',
+        text: 'Uma estimativa com base nas tarifas publicadas pelo operador, para a viagem que tem em mente: de 5 a 30 minutos. O preço final é o que aparece na app do operador.',
+        ride: name => `${name}, para uma viagem de dez minutos`,
+        duration: minutes => `${minutes} min`,
+        control: 'A duração da viagem, definida para 10 minutos',
+      },
+      unlock: {
+        title: 'Um toque até à app certa.',
+        text: 'Um botão abre a app do próprio operador, onde desbloqueia e paga como sempre. Abrir a app não reserva a trotinete.',
+        directions: 'Itinerário',
+        openIn: name => `Abrir em ${name}`,
+        control: (directions, openIn) => `Os dois botões de uma trotinete: ${directions} e ${openIn}`,
+      },
+      looks: {
+        title: 'Claro de dia. Escuro à noite.',
+        text: 'O mapa segue o aspeto do seu dispositivo, ou fica com o que escolher. Em português, inglês, alemão, francês, italiano, neerlandês, norueguês, espanhol ou islandês.',
+        light: 'O mapa com o aspeto claro.',
+        dark: 'O mesmo mapa com o aspeto escuro.',
+      },
+    },
+    cities: {
+      title: cities => (cities === 1 ? '1 cidade.' : `${cities} cidades.`),
+      lede: 'Trotinetes elétricas partilhadas na Suíça, na Alemanha, em França, na Bélgica, na Noruega, no Reino Unido, em Portugal, em Espanha e na Islândia, e ainda em Roma. Onde nenhum operador publica os dados, o mapa avisa e indica-lhe as cidades mais próximas que os têm. Escolha uma cidade para abrir lá o mapa.',
+      countries: {
+        CH: 'Suíça', DE: 'Alemanha', FR: 'França', IT: 'Itália', BE: 'Bélgica', NO: 'Noruega', GB: 'Reino Unido',
+        PT: 'Portugal', ES: 'Espanha', IS: 'Islândia',
+      },
+      more: count => (count === 1 ? 'e mais uma' : `e mais ${count}`),
+      alt: 'O mapa à noite, a mostrar toda a Europa, com o número de trotinetes de cada cidade.',
+    },
+    faq: {
+      title: 'Antes que pergunte.',
+      items: [
+        {
+          question: 'Existe uma app que junte Lime, Bolt, Bird, Voi e Dott?',
+          answer: 'O ScootRadar reúne-as todas num só mapa, e ainda Hopp, Pony, PubliBike, Zeus, Beryl, Ryde e Hoppy. Mostra todas as trotinetes elétricas partilhadas cujo operador publica a localização, para que deixe de abrir uma app atrás da outra à procura da mais próxima.',
+        },
+        {
+          question: 'Como encontro a trotinete elétrica mais próxima?',
+          answer: 'Abra o mapa e toque em “Perto de mim”, ou pesquise uma morada ou uma cidade. Cada trotinete mostra a distância e o tempo a pé, a bateria e a autonomia quando o operador as publica, e uma estimativa do preço da viagem.',
+        },
+        {
+          question: 'É grátis? Preciso de uma conta?',
+          answer: 'É grátis, sem conta e sem anúncios. Só paga a viagem, diretamente ao operador, na app dele.',
+        },
+        {
+          question: 'Posso desbloquear ou reservar uma trotinete com o ScootRadar?',
+          answer: 'Não. Toque numa trotinete e depois em “Abrir em …”: abre-se a app do operador, onde desbloqueia e paga como sempre. O ScootRadar não reserva a trotinete, por isso alguém pode chegar lá antes de si.',
+        },
+        {
+          question: 'De onde vêm as posições, e quão recentes são?',
+          answer: 'Dos dados abertos (GBFS) que os operadores e as autoridades publicam. As posições podem ter alguns minutos de atraso: o mapa indica a hora da última atualização e avisa quando um operador deixa de partilhar os dados.',
+        },
+        {
+          question: 'Preciso de instalar alguma coisa?',
+          answer: 'Não. O mapa funciona no navegador de qualquer telemóvel ou computador. No telemóvel, pode adicioná-lo ao ecrã principal, e passa a abrir como uma app.',
+        },
+        {
+          question: 'O ScootRadar sabe onde estou?',
+          answer: 'A sua localização é usada no seu dispositivo, para centrar o mapa e calcular os tempos a pé. O servidor só recebe a parte do mapa que está a ver, e não a guarda.',
+        },
+      ],
+    },
+    closing: {
+      title: 'Encontre a sua.',
+      note: 'A sua localização é usada no seu dispositivo e não é guardada. O ScootRadar é de <source>código aberto</source>.',
+    },
+    footer: {
+      text: 'O ScootRadar é independente e não tem qualquer ligação aos operadores; os nomes destes são marcas dos respetivos titulares. As posições vêm dos dados abertos dos operadores e podem ter alguns minutos de atraso. Os preços são estimativas; o preço final é o que aparece na app do operador.',
+      links: 'Mais ligações',
+      privacy: 'Privacidade',
+      source: 'Código-fonte no GitHub',
+      guides: 'Guias',
+      maker: 'Do <maker>criador</maker> do <horoscope>X Horoscope</horoscope>, do <monkey>UnfollowMonkey</monkey> e do <peek>Peek, para seguir encomendas</peek>.',
+    },
+  },
+  es: {
+    meta: {
+      title: 'Mapa de patinetes eléctricos: Lime, Bolt, Bird, Voi, Dott y más | ScootRadar',
+      description: cities =>
+        `Todos los patinetes eléctricos de alquiler cerca de ti, en tiempo real y en un solo mapa: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde y Hoppy. Gratis, sin registro, en ${cities} ciudades.`,
+      share: {
+        title: 'Todos los patinetes en un solo mapa.',
+        alt: 'Todos los patinetes en un solo mapa: la app de noche junto a la estación central de Zúrich, con las iniciales de doce operadores al lado.',
+      },
+    },
+    nav: { main: 'Navegación principal', shows: 'Qué muestra el mapa', cities: 'Ciudades', languages: 'Idioma' },
+    openMap: 'Abrir el mapa',
+    iphoneApp: 'Descargar la app para iPhone',
+    hero: {
+      title: scooters => (scooters === 1 ? 'Hay un patinete a tu alrededor.' : `Hay ${scooters} patinetes a tu alrededor.`),
+      lede: 'ScootRadar reúne en un solo mapa todos los patinetes eléctricos compartidos que tienes alrededor, sea cual sea el operador. Así, el camino más rápido a casa es lo primero que ves.',
+      note: 'Gratis. Sin registro, sin anuncios.',
+      openSource: 'Código abierto',
+      stage: 'Patinetes junto a la estación central de Zúrich',
+      alt: scooters =>
+        `La app para iPhone de noche: las calles oscuras junto a la estación central de Zúrich, cada patinete un punto de luz del color de su operador, el más cercano de cada operador con su nombre y el tiempo a pie, y ${scooters === 1 ? 'un patinete' : `${scooters} patinetes`} en pantalla.`,
+    },
+    card: {
+      walk: minutes => `≈${minutes} min a pie`,
+      range: distance => `${distance} de autonomía`,
+      price: (price, minutes) => `≈ ${price} por ${minutes} min`,
+      bike: 'Una bici, para variar',
+    },
+    know: {
+      title: 'Todo lo que quieres saber antes de echar a andar.',
+      all: {
+        title: 'Los siete. Un solo mapa.',
+        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi y PubliBike tienen cada uno su app, y cada app solo muestra su propia flota. ScootRadar las muestra todas, así que el más cercano es, sin más, el más cercano.',
+        close: (first, firstDistance, second, secondDistance) =>
+          `Aquí, un ${first} está a ${firstDistance} y un ${second}, a ${secondDistance}. Para saberlo hacen falta dos apps, o un solo mapa.`,
+        providers: 'Operadores en Zúrich',
+        alt: 'Las mismas calles de día, con los puntos de todos los operadores en un solo mapa.',
+      },
+      walk: {
+        title: 'Cuánto hay que andar.',
+        text: 'La distancia y el tiempo a pie desde donde estás, o desde una dirección que busques.',
+      },
+      charge: {
+        title: 'Sáltate los descargados.',
+        text: 'Cada patinete muestra su batería y la autonomía que le queda cuando su operador las publica. Fija un mínimo y el mapa solo deja los patinetes que llegan a él; los que no tienen datos de batería se ocultan.',
+        any: 'Todas',
+        control: 'El filtro de batería, fijado en el 60 % o más',
+      },
+      price: {
+        title: 'El precio, antes de decidirte.',
+        text: 'Una estimación según las tarifas que publica el operador, para el trayecto que tienes en mente: de 5 a 30 minutos. El precio final lo muestra la app del operador.',
+        ride: name => `${name}, para un trayecto de diez minutos`,
+        duration: minutes => `${minutes} min`,
+        control: 'La duración del trayecto, fijada en 10 minutos',
+      },
+      unlock: {
+        title: 'La app correcta, con un toque.',
+        text: 'Se abre la app del propio operador, donde desbloqueas y pagas como siempre. Abrirla no reserva el patinete.',
+        directions: 'Cómo llegar',
+        openIn: name => `Abrir en ${name}`,
+        control: (directions, openIn) => `Los dos botones que aparecen con cada patinete: ${directions} y ${openIn}`,
+      },
+      looks: {
+        title: 'Claro de día. Oscuro de noche.',
+        text: 'El mapa sigue el aspecto de tu dispositivo, o eliges uno y te quedas con él. En español, inglés, alemán, francés, italiano, neerlandés, noruego, portugués o islandés.',
+        light: 'El mapa en modo claro.',
+        dark: 'El mismo mapa en modo oscuro.',
+      },
+    },
+    cities: {
+      title: cities => (cities === 1 ? '1 ciudad.' : `${cities} ciudades.`),
+      lede: 'Patinetes eléctricos compartidos en Suiza, Alemania, Francia, Bélgica, Noruega, el Reino Unido, Portugal, España e Islandia, además de Roma. Donde ningún operador publica sus datos, el mapa te lo dice y te indica las ciudades más cercanas que sí los tienen. Elige una ciudad para abrir allí el mapa.',
+      countries: {
+        CH: 'Suiza', DE: 'Alemania', FR: 'Francia', IT: 'Italia', BE: 'Bélgica', NO: 'Noruega', GB: 'Reino Unido',
+        PT: 'Portugal', ES: 'España', IS: 'Islandia',
+      },
+      more: count => (count === 1 ? 'y otra más' : `y ${count} más`),
+      alt: 'El mapa de noche, alejado sobre Europa, con el número de patinetes de cada ciudad.',
+    },
+    faq: {
+      title: 'Antes de que lo preguntes.',
+      items: [
+        {
+          question: '¿Hay una sola app para Lime, Bolt, Bird, Voi y Dott?',
+          answer: 'ScootRadar es un único mapa para todos ellos, y también para Hopp, Pony, PubliBike, Zeus, Beryl, Ryde y Hoppy. Muestra cada patinete eléctrico compartido cuyo operador publica dónde está, para que no tengas que abrir una app tras otra hasta dar con el más cercano.',
+        },
+        {
+          question: '¿Cómo encuentro un patinete eléctrico de alquiler cerca de mí?',
+          answer: 'Abre el mapa y toca «Cerca de mí», o busca una dirección o una ciudad. Cada patinete muestra la distancia y el tiempo a pie, la batería y la autonomía si el operador las publica, y una estimación de lo que cuesta el trayecto.',
+        },
+        {
+          question: '¿Es gratis? ¿Hay que registrarse?',
+          answer: 'Es gratis, sin registro y sin anuncios. Solo pagas el trayecto, al operador y en su propia app.',
+        },
+        {
+          question: '¿Puedo desbloquear o reservar un patinete con ScootRadar?',
+          answer: 'No. Toca un patinete y luego «Abrir en …»: se abre la app del operador, donde desbloqueas y pagas como siempre. ScootRadar no reserva el patinete, así que alguien podría cogerlo antes que tú.',
+        },
+        {
+          question: '¿De dónde salen las posiciones de los patinetes? ¿Están actualizadas?',
+          answer: 'De los datos abiertos (GBFS) que publican los operadores y las administraciones. Pueden tener unos minutos de retraso: el mapa indica de cuándo son y te avisa si un operador deja de compartir sus datos.',
+        },
+        {
+          question: '¿Tengo que instalar algo?',
+          answer: 'No. El mapa funciona en el navegador de cualquier móvil u ordenador. En el móvil puedes añadirlo a la pantalla de inicio y se abre como una app.',
+        },
+        {
+          question: '¿Sabe ScootRadar dónde estoy?',
+          answer: 'Tu ubicación se usa en tu dispositivo, para centrar el mapa y calcular los tiempos a pie. El servidor solo recibe la parte del mapa que estás mirando, y no la guarda.',
+        },
+      ],
+    },
+    closing: {
+      title: 'Ve a por el tuyo.',
+      note: 'Tu ubicación se usa en tu dispositivo y no se guarda. Es <source>código abierto</source>.',
+    },
+    footer: {
+      text: 'ScootRadar es independiente y no está vinculado a los operadores; sus nombres son marcas de sus respectivos titulares. Las posiciones proceden de los datos abiertos de los operadores y pueden tener unos minutos de retraso. Los precios son estimaciones; el precio final lo muestra la app del operador.',
+      links: 'Más enlaces',
+      privacy: 'Privacidad',
+      source: 'Código fuente en GitHub',
+      guides: 'Guías',
+      maker: 'Del <maker>creador</maker> de <horoscope>X Horoscope</horoscope>, <monkey>UnfollowMonkey</monkey> y <peek>Peek, la app de seguimiento de paquetes</peek>.',
+    },
+  },
+  is: {
+    meta: {
+      title: 'Rafskútur á einu korti: Hopp, Lime, Bolt, Voi, Dott og fleiri | ScootRadar',
+      description: cities =>
+        `Allar rafskútur (rafhlaupahjól) til leigu nálægt þér, á einu korti í rauntíma: Hopp, Lime, Bolt, Bird, Voi, Dott, Pony, PubliBike, Zeus, Beryl, Ryde og Hoppy. Ókeypis og án skráningar, á ${cities} ${cities % 10 === 1 && cities % 100 !== 11 ? 'stað' : 'stöðum'}.`,
+      share: {
+        title: 'Allar rafskútur á einu korti.',
+        alt: 'Allar rafskútur á einu korti: appið að nóttu til við aðallestarstöðina í Zürich, við hlið upphafsstafa tólf fyrirtækja.',
+      },
+    },
+    nav: { main: 'Aðalvalmynd', shows: 'Hvað kortið sýnir', cities: 'Staðir', languages: 'Tungumál' },
+    openMap: 'Opna kortið',
+    iphoneApp: 'Sækja iPhone-appið',
+    hero: {
+      title: scooters =>
+        scooters % 10 === 1 && scooters % 100 !== 11
+          ? `Í kringum þig er ${scooters} rafskúta.`
+          : `Í kringum þig eru ${scooters} rafskútur.`,
+      lede: 'ScootRadar sýnir allar rafskútur til leigu í kringum þig á einu korti, sama frá hvaða fyrirtæki þær eru. Þannig er stysta leiðin heim það fyrsta sem þú sérð.',
+      note: 'Ókeypis. Engin skráning, engar auglýsingar.',
+      openSource: 'Opinn hugbúnaður',
+      stage: 'ScootRadar við aðallestarstöðina í Zürich',
+      alt: scooters =>
+        `iPhone-appið að nóttu til: dimmar götur við aðallestarstöðina í Zürich, hver rafskúta ljósdepill í lit fyrirtækis síns, sú næsta frá hverju fyrirtæki merkt með nafni og göngutíma, og ${scooters} ${scooters % 10 === 1 && scooters % 100 !== 11 ? 'rafskúta' : 'rafskútur'} á skjánum.`,
+    },
+    card: {
+      walk: minutes => `≈${minutes} mín. gangur`,
+      range: distance => `${distance} drægni`,
+      price: (price, minutes) => `≈ ${price} fyrir ${minutes} mín.`,
+      bike: 'Hjól, til tilbreytingar',
+    },
+    know: {
+      title: 'Allt sem þú vilt vita áður en þú leggur af stað.',
+      all: {
+        title: 'Öll sjö. Eitt kort.',
+        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi og PubliBike hafa hvert sitt app, sem sýnir aðeins eigin flota. ScootRadar sýnir þá alla, svo næsta rafskúta er einfaldlega sú næsta.',
+        close: (first, firstDistance, second, secondDistance) =>
+          `Hér er ${first}-rafskúta í ${firstDistance} fjarlægð og ${second}-rafskúta í ${secondDistance}. Það þarf tvö öpp til að komast að því, eða eitt kort.`,
+        providers: 'Fyrirtæki í Zürich',
+        alt: 'Sömu götur að degi til, með deplum allra fyrirtækjanna á einu korti.',
+      },
+      walk: {
+        title: 'Gangan á hreinu.',
+        text: 'Fjarlægð og göngutími þaðan sem þú ert, eða frá heimilisfangi sem þú leitar að.',
+      },
+      charge: {
+        title: 'Slepptu þeim rafmagnslausu.',
+        text: 'Rafskúta sýnir hleðslu og drægni sem eftir er þegar fyrirtækið birtir þær upplýsingar. Veldu lágmark og kortið sýnir aðeins þær rafskútur sem ná því; þær sem vantar upplýsingar um hleðslu eru faldar.',
+        any: 'Allar',
+        control: 'Hleðslusían, stillt á 60% eða meira',
+      },
+      price: {
+        title: 'Verðið, áður en þú ákveður þig.',
+        text: 'Áætlun út frá birtri verðskrá fyrirtækisins, fyrir ferðina sem þú hefur í huga: 5 til 30 mínútur. Endanlegt verð sérðu í appi fyrirtækisins.',
+        ride: name => `${name}, fyrir tíu mínútna ferð`,
+        duration: minutes => `${minutes} mín.`,
+        control: 'Lengd ferðar, stillt á 10 mínútur',
+      },
+      unlock: {
+        title: 'Beint í rétta appið.',
+        text: 'Hnappurinn opnar app fyrirtækisins, þar sem þú aflæsir rafskútunni og borgar eins og venjulega. Hún er ekki tekin frá þótt appið sé opnað.',
+        directions: 'Leiðarlýsing',
+        openIn: name => `Opna ${name}-appið`,
+        control: (directions, openIn) => `Hnapparnir tveir fyrir hverja rafskútu: ${directions} og ${openIn}`,
+      },
+      looks: {
+        title: 'Ljóst á daginn. Dökkt á nóttunni.',
+        text: 'Kortið fylgir útliti tækisins, eða þú velur ljóst eða dökkt og heldur þig við það. Á íslensku, ensku, þýsku, frönsku, ítölsku, hollensku, norsku, portúgölsku eða spænsku.',
+        light: 'Kortið í ljósu útliti.',
+        dark: 'Sama kortið í dökku útliti.',
+      },
+    },
+    cities: {
+      title: cities => `${cities} ${cities % 10 === 1 && cities % 100 !== 11 ? 'staður' : 'staðir'}.`,
+      lede: 'Rafskútur til leigu á Íslandi og Spáni, í Sviss, Þýskalandi, Frakklandi, Belgíu, Noregi, Bretlandi og Portúgal, og líka í Róm. Þar sem ekkert fyrirtæki birtir gögn segir kortið frá því og bendir þér á næstu staði sem hafa þau. Veldu stað til að opna kortið þar.',
+      countries: {
+        CH: 'Sviss',
+        DE: 'Þýskaland',
+        FR: 'Frakkland',
+        IT: 'Ítalía',
+        BE: 'Belgía',
+        NO: 'Noregur',
+        GB: 'Bretland',
+        PT: 'Portúgal',
+        ES: 'Spánn',
+        IS: 'Ísland',
+      },
+      more: count => `og ${count} til viðbótar`,
+      alt: 'Kortið að nóttu til, yfir allri Evrópu, með tölu sem sýnir hve margar rafskútur eru á hverjum stað.',
+    },
+    faq: {
+      title: 'Áður en þú spyrð.',
+      items: [
+        {
+          question: 'Er til eitt app fyrir Hopp, Lime, Bolt, Voi og Dott?',
+          answer: 'ScootRadar er eitt kort fyrir þau öll, og líka fyrir Bird, Pony, PubliBike, Zeus, Beryl, Ryde og Hoppy. Það sýnir allar rafskútur til leigu sem fyrirtækin birta staðsetningu á, svo þú þarft ekki lengur að opna eitt appið á fætur öðru til að finna þá næstu.',
+        },
+        {
+          question: 'Hvernig finn ég næstu rafskútu eða næsta rafhlaupahjól?',
+          answer: 'Opnaðu kortið og ýttu á „Nálægt mér“, eða leitaðu að heimilisfangi eða bæ. Við hverja rafskútu sérðu fjarlægð og göngutíma, hleðslu og drægni ef fyrirtækið birtir þær upplýsingar, og áætlun um hvað ferðin kostar.',
+        },
+        {
+          question: 'Er þetta ókeypis? Þarf ég að skrá mig?',
+          answer: 'Það er ókeypis, án skráningar og án auglýsinga. Þú borgar aðeins fyrir ferðina, og það gerirðu í appi fyrirtækisins.',
+        },
+        {
+          question: 'Get ég aflæst eða tekið frá rafskútu með ScootRadar?',
+          answer: 'Nei. Ýttu á rafskútu og svo á hnappinn sem opnar app fyrirtækisins: þar aflæsir þú henni og borgar eins og venjulega. ScootRadar tekur rafskútuna ekki frá, svo einhver annar gæti orðið á undan þér.',
+        },
+        {
+          question: 'Hvaðan koma staðsetningarnar og hversu nýjar eru þær?',
+          answer: 'Úr opnum gagnastraumum (GBFS) sem fyrirtækin og opinberir aðilar birta. Þær geta verið nokkurra mínútna gamlar: kortið segir hversu gamlar þær eru og lætur þig vita þegar fyrirtæki hættir að deila gögnum sínum.',
+        },
+        {
+          question: 'Þarf ég að setja eitthvað upp?',
+          answer: 'Nei. Kortið virkar í vafra í hvaða síma eða tölvu sem er. Í síma geturðu sett það á heimaskjáinn og þá opnast það eins og app.',
+        },
+        {
+          question: 'Veit ScootRadar hvar ég er?',
+          answer: 'Staðsetningin þín er notuð í tækinu þínu, til að miðja kortið og reikna út göngutíma. Netþjónninn fær aðeins þann hluta kortsins sem þú ert að skoða og geymir hann ekki.',
+        },
+      ],
+    },
+    closing: {
+      title: 'Farðu og finndu þína.',
+      note: 'Staðsetningin þín er notuð í tækinu þínu og er ekki geymd. Kóðinn er <source>opinn</source>.',
+    },
+    footer: {
+      text: 'ScootRadar er óháð þjónusta, ótengd fyrirtækjunum; nöfn þeirra eru vörumerki eigenda sinna. Staðsetningar koma úr opnum gagnastraumum fyrirtækjanna og geta verið nokkurra mínútna gamlar. Verð eru áætluð; endanlegt verð sérðu í appi fyrirtækisins.',
+      links: 'Fleiri tenglar',
+      privacy: 'Persónuvernd',
+      source: 'Frumkóði á GitHub',
+      guides: 'Leiðarvísar',
+      maker: 'Frá <maker>höfundi</maker> <horoscope>X Horoscope</horoscope>, <monkey>UnfollowMonkey</monkey> og <peek>pakkarakningarappsins Peek</peek>.',
     },
   },
 };

@@ -44,11 +44,14 @@ export function formatRidePrice(minorUnits: number, currency: string, locale: Ap
   const amount = minorUnits / 100;
   const code = currency.toUpperCase();
   try {
+    // Two decimals, or none for a currency that has no cents: "ISK 350".
+    const digits = new Intl.NumberFormat('en', { style: 'currency', currency: code })
+      .resolvedOptions().maximumFractionDigits === 0 ? 0 : 2;
     return new Intl.NumberFormat(`${locale}-CH`, {
       style: 'currency',
       currency: code,
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      minimumFractionDigits: digits,
+      maximumFractionDigits: digits,
     }).format(amount);
   } catch {
     // Not a currency code Intl accepts.

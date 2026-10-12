@@ -11,9 +11,12 @@ const FEATURED: Record<CoveredCountry, string[]> = {
   BE: ['be:Bruxelles', 'be:Antwerpen', 'be:Charleroi', 'be:Kortrijk'],
   NO: ['no:Oslo', 'no:Trondheim', 'no:Stavanger', 'no:Kristiansand', 'no:Bærum', 'no:Tromsø'],
   GB: ['gb:Bristol', 'gb:Liverpool', 'gb:Nottingham', 'gb:Leeds', 'gb:Brighton', 'gb:Bournemouth'],
+  PT: ['pt:Lisboa', 'pt:Porto', 'pt:Cascais', 'pt:Almada', 'pt:Matosinhos', 'pt:Oeiras'],
+  ES: ['es:Gijón', 'es:Getafe', 'es:Torrevieja', 'es:Playa de las Américas', 'es:Jávea', 'es:Pilar de la Horadada'],
+  IS: ['is:Reykjavík', 'is:Reykjanesbær', 'is:Akureyri', 'is:Selfoss', 'is:Akranes', 'is:Vestmannaeyjar'],
 };
 
-const COUNTRY_ORDER: CoveredCountry[] = ['CH', 'DE', 'FR', 'BE', 'NO', 'GB', 'IT'];
+const COUNTRY_ORDER: CoveredCountry[] = ['CH', 'DE', 'FR', 'BE', 'NO', 'GB', 'PT', 'ES', 'IS', 'IT'];
 
 export interface LandingCity {
   name: string;

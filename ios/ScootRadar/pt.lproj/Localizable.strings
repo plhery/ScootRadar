@@ -1,0 +1,210 @@
+"Settings" = "Definições";
+"Finding your location…" = "A obter a sua localização…";
+"scooter" = "trotinete";
+"scooters" = "trotinetes";
+"All" = "Todos";
+"Battery" = "Bateria";
+"Estimated range" = "Autonomia estimada";
+"Any" = "Qualquer";
+"Address data © swisstopo" = "Dados de moradas © swisstopo";
+"Privacy" = "Privacidade";
+"Go to my location" = "Ir para a minha localização";
+"Standard" = "Padrão";
+"Quiet" = "Simples";
+"Satellite" = "Satélite";
+"Shows scooter details" = "Mostra os detalhes da trotinete";
+"Zooms in to show individual scooters" = "Amplia para mostrar cada trotinete";
+"Updated %@" = "Atualizado às %@";
+"%lld percent" = "%lld por cento";
+"%@ scooter" = "Trotinete %@";
+"%@ scooters" = "%@ trotinetes";
+"City or address" = "Cidade ou morada";
+"Use my location" = "Usar a minha localização";
+"Finding scooters…" = "A procurar trotinetes…";
+"Close scooter details" = "Fechar detalhes da trotinete";
+
+/* Scooter details */
+"Centers this scooter on the map" = "Centra o mapa nesta trotinete";
+"%lld%%" = "%lld%%";
+"Done" = "OK";
+"Filters" = "Filtros";
+"Providers" = "Operadores";
+"Show all" = "Mostrar todas";
+"%@, %lld scooters" = "%@, %lld trotinetes";
+"Shown" = "Visível";
+"Hidden" = "Oculto";
+"Map" = "Mapa";
+"Appearance" = "Aspeto";
+"Automatic" = "Automático";
+"Light" = "Claro";
+"Dark" = "Escuro";
+"Language" = "Idioma";
+"Mobility data sources" = "Fontes de dados de mobilidade";
+"About" = "Acerca de";
+"Live" = "Em direto";
+"Filters, active" = "Filtros ativos";
+"%lld percent or more" = "%lld por cento ou mais";
+"All providers" = "Todos os operadores";
+"Shows only this provider" = "Mostra apenas este operador";
+"Shows all providers" = "Mostra todos os operadores";
+"Hides this provider" = "Oculta este operador";
+"Adds this provider" = "Adiciona este operador";
+"%@, one scooter" = "%@, uma trotinete";
+"≈%lld min walk" = "≈%lld min a pé";
+"One address suggestion" = "Uma sugestão de morada";
+"%lld address suggestions" = "%lld sugestões de moradas";
+
+/* Ride pricing and passes */
+"Pass applied" = "Passe aplicado";
+"Passes" = "Passes";
+"Not set" = "Não definido";
+"Expired" = "Expirado";
+"Free unlock" = "Desbloqueio grátis";
+"%lld free min" = "%lld min grátis";
+"Pass active" = "Passe ativo";
+"Pass benefits are used only for estimates. Free-minute balances are not reduced automatically." = "As vantagens do passe só entram nas estimativas. O saldo de minutos grátis não é descontado automaticamente.";
+"I have a pass" = "Tenho um passe";
+"Your pass details stay on this iPhone." = "Os dados do seu passe ficam neste iPhone.";
+"Pass benefits" = "Vantagens do passe";
+"Free minutes available" = "Minutos grátis disponíveis";
+"Has expiry date" = "Tem data de validade";
+"Valid through" = "Válido até";
+"This pass has expired" = "Este passe expirou";
+"Expiry" = "Validade";
+"Benefits remain active through the end of the selected day." = "As vantagens mantêm-se ativas até ao fim do dia selecionado.";
+"Pricing can vary. Confirm the final price and pass eligibility in the provider app before riding." = "Os preços podem variar. Antes de partir, confirme na app do operador o preço final e se o passe se aplica.";
+"%@ pass" = "Passe %@";
+"French mobility data" = "Dados de mobilidade franceses";
+
+"City totals · refreshed hourly" = "Totais por cidade · atualizados de hora a hora";
+
+/* Scooter parking */
+"Designated scooter parking." = "Estacionamento designado para trotinetes.";
+"Parking" = "Estacionamento";
+
+// Self-hosted usage analytics
+"Share anonymous usage" = "Partilhar dados de utilização anónimos";
+"Helps improve ScootRadar. No addresses or precise locations are sent." = "Ajuda a melhorar o ScootRadar. Não são enviadas moradas nem localizações exatas.";
+
+/* UX alignment: search bar */
+"Search city or address" = "Pesquisar cidade ou morada";
+"Tap to search a city or address" = "Toque para pesquisar uma cidade ou morada";
+"Scooters near this place" = "Trotinetes perto deste local";
+"Clear place" = "Limpar local";
+"Showing scooters near %@. Search another place." = "A mostrar trotinetes perto de %@. Pesquisar outro local.";
+
+/* UX alignment: search panel */
+"Cancel" = "Cancelar";
+"Recent" = "Recentes";
+"Cities with scooters" = "Cidades com trotinetes";
+"No data" = "Sem dados";
+"Searching…" = "A pesquisar…";
+"No places found. Outside Switzerland, search by city." = "Nenhum local encontrado. Fora da Suíça, pesquise por cidade.";
+"Search isn’t available right now." = "A pesquisa não está disponível de momento.";
+"Try again" = "Tentar novamente";
+"Clear search" = "Limpar pesquisa";
+
+/* UX alignment: dock */
+"scooter nearby" = "trotinete por perto";
+"scooters nearby" = "trotinetes por perto";
+"scooter on this map" = "trotinete nesta zona";
+"scooters on this map" = "trotinetes nesta zona";
+"Waiting for scooter data" = "À espera dos dados das trotinetes";
+"Updated %lld min ago" = "Atualizado há %lld min";
+"Tap a city to see its scooters." = "Toque numa cidade para ver as trotinetes que lá estão.";
+"Couldn’t refresh · showing %@" = "Não foi possível atualizar · dados das %@";
+"You’re offline · showing %@" = "Está offline · dados das %@";
+"Data delayed · showing %@" = "Dados com atraso · atualizados às %@";
+"%@ isn’t sharing data right now." = "%@ não está a partilhar dados de momento.";
+"%1$@ and %2$@ aren’t sharing data right now." = "%1$@ e %2$@ não estão a partilhar dados de momento.";
+"%lld providers aren’t sharing data right now." = "%lld operadores não estão a partilhar dados de momento.";
+"Some providers aren’t sharing data right now." = "Alguns operadores não estão a partilhar dados de momento.";
+"%@: not sharing data right now" = "%@: não partilha dados de momento";
+"Showing %1$@ of %2$@ — zoom in to see all" = "A mostrar %1$@ de %2$@ — amplie para ver todas";
+"Parking bays unavailable right now" = "Locais de estacionamento indisponíveis de momento";
+"Parking bays may be out of date" = "Os locais de estacionamento podem estar desatualizados";
+"Night ban in %1$@: no scooter rentals until %2$@" = "Proibição noturna em %1$@: sem aluguer de trotinetes até às %2$@";
+"Night ban in %1$@: you can rent it from %2$@" = "Proibição noturna em %1$@: pode alugá-la a partir das %2$@";
+"No scooters here right now. Zoom out or move the map." = "Não há trotinetes aqui de momento. Reduza o zoom ou mova o mapa.";
+
+/* UX alignment: refresh and load failures */
+"These positions are out of date" = "Estas posições estão desatualizadas";
+"Last update %@." = "Última atualização às %@.";
+"You’re offline. Check your connection." = "Está offline. Verifique a sua ligação à internet.";
+"ScootRadar took too long to respond." = "O ScootRadar demorou demasiado a responder.";
+"ScootRadar is busy right now. Try again in a moment." = "O ScootRadar está sobrecarregado de momento. Tente novamente daqui a pouco.";
+"ScootRadar is having trouble. Try again in a moment." = "O ScootRadar está com problemas. Tente novamente daqui a pouco.";
+"Couldn’t load scooters." = "Não foi possível carregar as trotinetes.";
+
+/* UX alignment: outside coverage and filters with nothing to show */
+"No scooter data here yet" = "Ainda não há dados de trotinetes aqui";
+"ScootRadar covers selected cities in Belgium, France, Germany, Iceland, Italy, Norway, Portugal, Spain, Switzerland and the United Kingdom." = "O ScootRadar abrange algumas cidades da Alemanha, da Bélgica, de Espanha, de França, da Islândia, de Itália, da Noruega, de Portugal, do Reino Unido e da Suíça.";
+"Closest cities" = "Cidades mais próximas";
+"%1$@ · %2$@" = "%1$@ · %2$@";
+"1 scooter hidden by your filters" = "1 trotinete oculta pelos seus filtros";
+"%lld scooters hidden by your filters" = "%lld trotinetes ocultas pelos seus filtros";
+"No scooters match your filters here" = "Nenhuma trotinete nesta zona corresponde aos seus filtros";
+"Show all %lld" = "Mostrar todas as %lld";
+"Edit filters" = "Editar filtros";
+"%@ only" = "Apenas %@";
+"battery %lld%% or more" = "bateria a partir de %lld%%";
+
+/* UX alignment: scooter card */
+"≈%1$lld min walk · %2$@" = "≈%1$lld min a pé · %2$@";
+"≈%1$lld min walk from %2$@ · %3$@" = "≈%1$lld min a pé desde %2$@ · %3$@";
+"≈%1$lld min walk from %2$@" = "≈%1$lld min a pé desde %2$@";
+"Turn on location to see walking time" = "Ative a localização para ver o tempo a pé";
+"Directions" = "Itinerário";
+"Open in %@" = "Abrir em %@";
+"≈ %1$@ for %2$lld min" = "≈ %1$@ por %2$lld min";
+"Price shown in the %@ app" = "Preço indicado na app %@";
+"Ride estimate, %lld minutes. Change duration." = "Estimativa da viagem, %lld minutos. Alterar a duração.";
+"%lld min" = "%lld min";
+
+/* UX alignment: parking bay */
+"%@ parking bay" = "Estacionamento %@";
+"You must park in a bay in this zone." = "Nesta zona, tem de estacionar num local designado.";
+"Check the %@ app before you end your ride." = "Consulte a app %@ antes de terminar a viagem.";
+"Close parking details" = "Fechar detalhes do estacionamento";
+"Shows parking details" = "Mostra os detalhes do estacionamento";
+
+/* UX alignment: location */
+"Near me" = "Perto de mim";
+"Location is off" = "Localização desativada";
+"Turn it on in Settings, or search a place instead." = "Ative-a nas Definições ou pesquise antes um local.";
+"Location is restricted on this device. Search a place instead." = "A localização está restrita neste dispositivo. Pesquise antes um local.";
+"Open Settings" = "Abrir Definições";
+"Search a place" = "Pesquisar um local";
+"Couldn’t find your location." = "Não foi possível encontrar a sua localização.";
+"Dismiss" = "Fechar";
+
+/* UX alignment: filters sheet */
+"Reset" = "Repor";
+"Scooters without battery info are hidden while a minimum is set." = "As trotinetes sem informação de bateria ficam ocultas enquanto houver um mínimo definido.";
+"Not sharing data right now" = "Não partilha dados de momento";
+"Show 0 scooters" = "Mostrar 0 trotinetes";
+"Show 1 scooter" = "Mostrar 1 trotinete";
+"Show %lld scooters" = "Mostrar %lld trotinetes";
+
+/* UX alignment: settings */
+"Map & data credits" = "Créditos do mapa e dos dados";
+"Read the privacy notice" = "Ler o aviso de privacidade";
+"Source code on GitHub" = "Código-fonte no GitHub";
+"Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter." = "A disponibilidade é atualizada automaticamente. Abrir a app de um operador não reserva nenhuma trotinete.";
+
+/* Map look: the nearest scooter in the dock, and the figures of the scooter card */
+"to the nearest scooter" = "até à trotinete mais próxima";
+"%1$@, %2$lld min on foot" = "%1$@, %2$lld min a pé";
+"Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details." = "Trotinete mais próxima: %1$@, a %2$@, %3$lld min a pé. Mostrar detalhes.";
+"min" = "min";
+"on foot" = "a pé";
+"from %@" = "desde %@";
+"away" = "de distância";
+"%1$@, %2$lld min" = "%1$@, %2$lld min";
+"battery" = "de bateria";
+"range" = "de autonomia";
+"%1$lld%% battery, %2$@ range" = "%1$lld%% de bateria, %2$@ de autonomia";
+"%lld%% battery" = "%lld%% de bateria";
+"%@ range" = "%@ de autonomia";
+"%1$@ to unlock, then %2$@ a minute" = "%1$@ para desbloquear, depois %2$@ por minuto";
+"No unlock fee, %@ a minute" = "Sem taxa de desbloqueio, %@ por minuto";

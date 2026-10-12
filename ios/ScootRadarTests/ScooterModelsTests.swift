@@ -716,13 +716,16 @@ extension ScooterModelsTests {
 
         // French counts nothing in the singular: "0 trottinette à proximité".
         XCTAssertEqual([0, 1, 2].map { ScooterPlural.isSingular($0, language: "fr") }, [true, true, false])
-        for language in ["en", "de", "it"] {
+        for language in ["en", "de", "it", "pt", "es", "is"] {
             XCTAssertEqual(
                 [0, 1, 2].map { ScooterPlural.isSingular($0, language: language) },
                 [false, true, false],
                 language
             )
         }
+        // Icelandic counts 21, 31 and 101 in the singular, but not 11: "21 rafskúta".
+        XCTAssertEqual([11, 21, 31, 101, 111].map { ScooterPlural.isSingular($0, language: "is") }, [false, true, true, true, false])
+        XCTAssertFalse(ScooterPlural.isSingular(21, language: "pt"))
         XCTAssertEqual(
             ScooterCountContext.nearby.label(for: 0, language: "fr"),
             String(localized: "scooter nearby")
@@ -735,11 +738,11 @@ extension ScooterModelsTests {
             ScooterCountContext.onThisMap.label(for: 2, language: "fr"),
             String(localized: "scooters on this map")
         )
-        XCTAssertTrue(["en", "de", "fr", "it", "nl", "nb"].contains(ScooterPlural.language))
+        XCTAssertTrue(["en", "de", "fr", "it", "nl", "nb", "pt", "es", "is"].contains(ScooterPlural.language))
     }
 
     func testPercentagesAndTheShownStateReadAsOnTheWeb() throws {
-        for language in ["en", "de", "fr", "it", "nl", "nb"] {
+        for language in ["en", "de", "fr", "it", "nl", "nb", "pt", "es", "is"] {
             let strings = try XCTUnwrap(
                 Bundle.main.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:))
             )

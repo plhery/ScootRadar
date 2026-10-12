@@ -138,7 +138,7 @@
 
 /* UX alignment: outside coverage and filters with nothing to show */
 "No scooter data here yet" = "No scooter data here yet";
-"ScootRadar covers selected cities in Belgium, France, Germany, Italy, Norway, Switzerland and the United Kingdom." = "ScootRadar covers selected cities in Belgium, France, Germany, Italy, Norway, Switzerland and the United Kingdom.";
+"ScootRadar covers selected cities in Belgium, France, Germany, Iceland, Italy, Norway, Portugal, Spain, Switzerland and the United Kingdom." = "ScootRadar covers selected cities in Belgium, France, Germany, Iceland, Italy, Norway, Portugal, Spain, Switzerland and the United Kingdom.";
 "Closest cities" = "Closest cities";
 "%1$@ · %2$@" = "%1$@ · %2$@";
 "1 scooter hidden by your filters" = "1 scooter hidden by your filters";

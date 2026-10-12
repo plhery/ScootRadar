@@ -1086,14 +1086,20 @@ struct ScooterDockSummary: Equatable, Sendable {
 
 /// Which form of a counted word a number takes.
 enum ScooterPlural {
-    /// The language the app's strings are in: "en", "de", "fr", "it", "nl" or "nb".
+    /// The language the app's strings are in: "en", "de", "fr", "it", "nl", "nb",
+    /// "pt", "es" or "is".
     static var language: String {
         ScooterLanguage.current.rawValue
     }
 
-    /// One takes the singular. In French nothing does as well: "0 trottinette".
+    /// One takes the singular. In French nothing does as well: "0 trottinette";
+    /// in Icelandic, any count ending in 1 but not in 11: "21 rafskúta".
     static func isSingular(_ count: Int, language: String = ScooterPlural.language) -> Bool {
-        language == "fr" ? (0 ... 1).contains(count) : count == 1
+        switch language {
+        case "fr": (0 ... 1).contains(count)
+        case "is": count % 10 == 1 && count % 100 != 11
+        default: count == 1
+        }
     }
 }
 

@@ -244,15 +244,15 @@ describe('ControlSheet settings', () => {
   it('names the languages in their own language and switches at once', () => {
     settings();
     const language = screen.getByRole('group', { name: 'Language' });
-    expect(pressed(language)).toEqual(['Deutsch:false', 'Français:false', 'Italiano:false', 'Nederlands:false', 'Norsk:false', 'English:true']);
+    expect(pressed(language)).toEqual(['Deutsch:false', 'Français:false', 'Italiano:false', 'Nederlands:false', 'Norsk:false', 'Português:false', 'Español:false', 'Íslenska:false', 'English:true']);
     expect(within(language).getAllByRole('button').map(button => button.lang))
-      .toEqual(['de-CH', 'fr-CH', 'it-CH', 'nl-CH', 'nb-CH', 'en-CH']);
+      .toEqual(['de-CH', 'fr-CH', 'it-CH', 'nl-CH', 'nb-CH', 'pt-CH', 'es-CH', 'is-CH', 'en-CH']);
 
     fireEvent.click(within(language).getByRole('button', { name: 'Deutsch' }));
     expect(screen.getByRole('dialog', { name: 'Einstellungen' })).toBeInTheDocument();
     expect(screen.getByRole('group', { name: 'Darstellung' })).toBeInTheDocument();
     expect(pressed(screen.getByRole('group', { name: 'Sprache' })))
-      .toEqual(['Deutsch:true', 'Français:false', 'Italiano:false', 'Nederlands:false', 'Norsk:false', 'English:false']);
+      .toEqual(['Deutsch:true', 'Français:false', 'Italiano:false', 'Nederlands:false', 'Norsk:false', 'Português:false', 'Español:false', 'Íslenska:false', 'English:false']);
     expect(localStorage.getItem('scooters-locale')).toBe('de');
   });
 
@@ -279,11 +279,13 @@ describe('ControlSheet settings', () => {
       'Mobility data CH',
       'France: Dott, Bird, Lime, Voi, Pony',
       'MobiData BW',
-      'DE/IT/BE/UK: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy',
+      'DE/IT/BE/UK/PT/ES/IS: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy',
+      'BE: Pony · transportdata.be',
       'UK: Beryl · CDLA-Permissive-2.0',
       'NO: Entur AS · NLOD',
       'NO: Kartverket boundaries · CC BY 4.0',
       'UK: ONS boundaries · OGL v3.0',
+      'PT: DGT boundaries · CC BY 4.0',
       '© swisstopo',
       'Parking · Métropole Européenne de Lille',
     ]);

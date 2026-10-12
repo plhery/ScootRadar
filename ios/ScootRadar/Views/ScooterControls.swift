@@ -450,7 +450,7 @@ struct ScooterControlDock: View {
                 systemImage: "map",
                 tint: ScooterPalette.actionText,
                 title: String(localized: "No scooter data here yet"),
-                message: String(localized: "ScootRadar covers selected cities in Belgium, France, Germany, Italy, Norway, Switzerland and the United Kingdom.")
+                message: String(localized: "ScootRadar covers selected cities in Belgium, France, Germany, Iceland, Italy, Norway, Portugal, Spain, Switzerland and the United Kingdom.")
             )
 
             VStack(alignment: .leading, spacing: 8) {
@@ -1465,9 +1465,9 @@ private func providerAccent(_ provider: ScooterProvider?, colorScheme: ColorSche
 
 enum RidePriceFormatter {
     /// "5.20": the amount without its currency, which the label under a figure names.
-    static func amount(minorUnits: Int) -> String {
+    static func amount(minorUnits: Int, currency: String) -> String {
         (Decimal(minorUnits) / 100).formatted(
-            .number.precision(.fractionLength(2)).locale(ScooterLanguage.current.locale)
+            .number.precision(.fractionLength(fractionDigits(currency))).locale(ScooterLanguage.current.locale)
         )
     }
 
@@ -1476,13 +1476,21 @@ enum RidePriceFormatter {
         formatter.locale = ScooterLanguage.current.locale
         formatter.numberStyle = .currency
         formatter.currencyCode = currency.uppercased()
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = fractionDigits(currency)
+        formatter.maximumFractionDigits = fractionDigits(currency)
 
         let amount = NSDecimalNumber(value: minorUnits)
             .dividing(by: NSDecimalNumber(value: 100))
         return formatter.string(from: amount)
             ?? "\(currency.uppercased()) \(amount.stringValue)"
+    }
+
+    /// Two decimals, or none for a currency that has no cents: "ISK 350".
+    private static func fractionDigits(_ currency: String) -> Int {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = currency.uppercased()
+        return formatter.maximumFractionDigits == 0 ? 0 : 2
     }
 }
 
@@ -1965,8 +1973,12 @@ struct ScooterCreditsList: View {
                 url: URL(string: "https://www.mobidata-bw.de/")!
             ),
             Source(
-                title: "DE/IT/BE/UK: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy",
+                title: "DE/IT/BE/UK/PT/ES/IS: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy",
                 url: URL(string: "https://github.com/MobilityData/gbfs")!
+            ),
+            Source(
+                title: "BE: Pony · transportdata.be",
+                url: URL(string: "https://transportdata.be/dataset/pony_charleroi")!
             ),
             Source(
                 title: "UK: Beryl · CDLA-Permissive-2.0",
@@ -1983,6 +1995,10 @@ struct ScooterCreditsList: View {
             Source(
                 title: "UK: ONS boundaries · OGL v3.0",
                 url: URL(string: "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/")!
+            ),
+            Source(
+                title: "PT: DGT boundaries · CC BY 4.0",
+                url: URL(string: "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop")!
             ),
             Source(
                 title: String(localized: "Address data © swisstopo"),

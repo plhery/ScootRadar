@@ -6,7 +6,7 @@ import { expect, test, type Page } from '@playwright/test';
 // the same security policy.
 
 /** Where each language is. */
-const ADDRESS = { en: '/', de: '/de', fr: '/fr', it: '/it', nl: '/nl', nb: '/nb' };
+const ADDRESS = { en: '/', de: '/de', fr: '/fr', it: '/it', nl: '/nl', nb: '/nb', pt: '/pt', es: '/es', is: '/is' };
 
 const HEADLINES = {
   en: /^There are \d+ scooters around you\.$/,
@@ -15,6 +15,9 @@ const HEADLINES = {
   it: /^Ci sono \d+ monopattini intorno a te\.$/,
   nl: /^Er staan \d+ deelsteps om je heen\.$/,
   nb: /^Det står \d+ elsparkesykler rundt deg\.$/,
+  pt: /^Há \d+ trotinetes à sua volta\.$/,
+  es: /^Hay \d+ patinetes a tu alrededor\.$/,
+  is: /^Í kringum þig (?:er \d+ rafskúta|eru \d+ rafskútur)\.$/,
 };
 
 // On every page of the site Chromium refuses the preload hint of the first
@@ -67,7 +70,7 @@ for (const [locale, headline] of Object.entries(HEADLINES)) {
 test('the landing page changes language from its bar and stays where it is', async ({ page }) => {
   await page.goto('/');
   const languages = page.getByRole('group', { name: 'Language' });
-  await expect(languages.getByRole('link')).toHaveText(['EN', 'DE', 'FR', 'IT', 'NL', 'NB']);
+  await expect(languages.getByRole('link')).toHaveText(['EN', 'DE', 'FR', 'IT', 'NL', 'NB', 'PT', 'ES', 'IS']);
   await expect(languages.getByRole('link', { name: 'EN' })).toHaveAttribute('aria-current', 'page');
   for (const [locale, address] of Object.entries(ADDRESS)) {
     await expect(languages.getByRole('link', { name: locale.toUpperCase() })).toHaveAttribute('href', address);
@@ -283,7 +286,7 @@ test('without motion the landing page is at rest from the start', async ({ page 
 });
 
 test('the landing page has no page for a language it does not speak', async ({ page }) => {
-  expect((await page.goto('/es'))?.status()).toBe(404);
+  expect((await page.goto('/sv'))?.status()).toBe(404);
   expect((await page.goto('/de/zurich'))?.status()).toBe(404);
   expect((await page.goto('/en/zurich'))?.status()).toBe(404);
 });

@@ -1,0 +1,210 @@
+"Settings" = "Stillingar";
+"Finding your location…" = "Leitar að staðsetningu þinni…";
+"scooter" = "rafskúta";
+"scooters" = "rafskútur";
+"All" = "Öll";
+"Battery" = "Hleðsla";
+"Estimated range" = "Áætluð drægni";
+"Any" = "Allar";
+"Address data © swisstopo" = "Heimilisföng © swisstopo";
+"Privacy" = "Persónuvernd";
+"Go to my location" = "Fara á staðsetningu mína";
+"Standard" = "Venjulegt";
+"Quiet" = "Rólegt";
+"Satellite" = "Gervihnattamynd";
+"Shows scooter details" = "Sýnir upplýsingar um rafskútuna";
+"Zooms in to show individual scooters" = "Þysjar inn til að sýna hverja rafskútu fyrir sig";
+"Updated %@" = "Uppfært kl. %@";
+"%lld percent" = "%lld prósent";
+"%@ scooter" = "%@-rafskúta";
+"%@ scooters" = "Rafskútur: %@";
+"City or address" = "Staður eða heimilisfang";
+"Use my location" = "Nota staðsetningu mína";
+"Finding scooters…" = "Leitar að rafskútum…";
+"Close scooter details" = "Loka upplýsingum um rafskútu";
+
+/* Scooter details */
+"Centers this scooter on the map" = "Færir rafskútuna á mitt kortið";
+"%lld%%" = "%lld%%";
+"Done" = "Lokið";
+"Filters" = "Síur";
+"Providers" = "Fyrirtæki";
+"Show all" = "Sýna allar";
+"%@, %lld scooters" = "%@, rafskútur: %lld";
+"Shown" = "Sýnt";
+"Hidden" = "Falið";
+"Map" = "Kort";
+"Appearance" = "Útlit";
+"Automatic" = "Sjálfvirkt";
+"Light" = "Ljóst";
+"Dark" = "Dökkt";
+"Language" = "Tungumál";
+"Mobility data sources" = "Heimildir samgöngugagna";
+"About" = "Um appið";
+"Live" = "Í beinni";
+"Filters, active" = "Síur, virkar";
+"%lld percent or more" = "%lld prósent eða meira";
+"All providers" = "Öll fyrirtæki";
+"Shows only this provider" = "Sýnir aðeins þetta fyrirtæki";
+"Shows all providers" = "Sýnir öll fyrirtæki";
+"Hides this provider" = "Felur þetta fyrirtæki";
+"Adds this provider" = "Bætir þessu fyrirtæki við";
+"%@, one scooter" = "%@, ein rafskúta";
+"≈%lld min walk" = "≈%lld mín. gangur";
+"One address suggestion" = "Ein tillaga að heimilisfangi";
+"%lld address suggestions" = "Tillögur að heimilisföngum: %lld";
+
+/* Ride pricing and passes */
+"Pass applied" = "Með passa";
+"Passes" = "Passar";
+"Not set" = "Ekki stillt";
+"Expired" = "Útrunninn";
+"Free unlock" = "Ekkert startgjald";
+"%lld free min" = "%lld mín. ókeypis";
+"Pass active" = "Passi virkur";
+"Pass benefits are used only for estimates. Free-minute balances are not reduced automatically." = "Fríðindi passans eru aðeins notuð í verðáætlunum. Ókeypis mínútur eru ekki dregnar frá sjálfkrafa.";
+"I have a pass" = "Ég er með passa";
+"Your pass details stay on this iPhone." = "Upplýsingar um passann þinn eru aðeins geymdar á þessum iPhone.";
+"Pass benefits" = "Fríðindi passans";
+"Free minutes available" = "Ókeypis mínútur eftir";
+"Has expiry date" = "Með lokadagsetningu";
+"Valid through" = "Gildir til og með";
+"This pass has expired" = "Þessi passi er útrunninn";
+"Expiry" = "Gildistími";
+"Benefits remain active through the end of the selected day." = "Fríðindin gilda út valinn dag.";
+"Pricing can vary. Confirm the final price and pass eligibility in the provider app before riding." = "Verð getur breyst. Staðfestu endanlegt verð og hvort passinn gildi í appi fyrirtækisins áður en þú leggur af stað.";
+"%@ pass" = "%@-passi";
+"French mobility data" = "Frönsk samgöngugögn";
+
+"City totals · refreshed hourly" = "Fjöldi eftir stöðum · uppfært á klukkutíma fresti";
+
+/* Scooter parking */
+"Designated scooter parking." = "Merkt stæði fyrir rafskútur.";
+"Parking" = "Stæði";
+
+// Self-hosted usage analytics
+"Share anonymous usage" = "Deila nafnlausum notkunargögnum";
+"Helps improve ScootRadar. No addresses or precise locations are sent." = "Hjálpar til við að bæta ScootRadar. Við sendum hvorki heimilisföng né nákvæma staðsetningu.";
+
+/* UX alignment: search bar */
+"Search city or address" = "Leita að stað eða heimilisfangi";
+"Tap to search a city or address" = "Ýttu til að leita að stað eða heimilisfangi";
+"Scooters near this place" = "Rafskútur nálægt þessum stað";
+"Clear place" = "Fjarlægja stað";
+"Showing scooters near %@. Search another place." = "Valinn staður: %@. Sýnir rafskútur í nágrenninu. Leita að öðrum stað.";
+
+/* UX alignment: search panel */
+"Cancel" = "Hætta við";
+"Recent" = "Nýlegt";
+"Cities with scooters" = "Staðir með rafskútum";
+"No data" = "Engin gögn";
+"Searching…" = "Leitar…";
+"No places found. Outside Switzerland, search by city." = "Ekkert fannst. Utan Sviss geturðu leitað að bæ eða borg.";
+"Search isn’t available right now." = "Leitin er ekki tiltæk eins og er.";
+"Try again" = "Reyna aftur";
+"Clear search" = "Hreinsa leit";
+
+/* UX alignment: dock */
+"scooter nearby" = "rafskúta í nágrenninu";
+"scooters nearby" = "rafskútur í nágrenninu";
+"scooter on this map" = "rafskúta á kortinu";
+"scooters on this map" = "rafskútur á kortinu";
+"Waiting for scooter data" = "Bíður eftir gögnum um rafskútur";
+"Updated %lld min ago" = "Uppfært fyrir %lld mín.";
+"Tap a city to see its scooters." = "Ýttu á stað til að sjá rafskúturnar þar.";
+"Couldn’t refresh · showing %@" = "Uppfærsla mistókst · staðan kl. %@";
+"You’re offline · showing %@" = "Engin nettenging · staðan kl. %@";
+"Data delayed · showing %@" = "Seinkun á gögnum · staðan kl. %@";
+"%@ isn’t sharing data right now." = "%@ deilir ekki gögnum eins og er.";
+"%1$@ and %2$@ aren’t sharing data right now." = "%1$@ og %2$@ deila ekki gögnum eins og er.";
+"%lld providers aren’t sharing data right now." = "%lld fyrirtæki deila ekki gögnum eins og er.";
+"Some providers aren’t sharing data right now." = "Sum fyrirtæki deila ekki gögnum eins og er.";
+"%@: not sharing data right now" = "%@: deilir ekki gögnum eins og er";
+"Showing %1$@ of %2$@ — zoom in to see all" = "Sýnir %1$@ af %2$@ – þysjaðu inn til að sjá allar";
+"Parking bays unavailable right now" = "Ekki hægt að sýna stæði eins og er";
+"Parking bays may be out of date" = "Upplýsingar um stæði gætu verið úreltar";
+"Night ban in %1$@: no scooter rentals until %2$@" = "%1$@: næturbann, engin útleiga fyrr en kl. %2$@";
+"Night ban in %1$@: you can rent it from %2$@" = "%1$@: næturbann, þú getur leigt hana frá kl. %2$@";
+"No scooters here right now. Zoom out or move the map." = "Engar rafskútur hér eins og er. Þysjaðu út eða færðu kortið.";
+
+/* UX alignment: refresh and load failures */
+"These positions are out of date" = "Þessar staðsetningar eru úreltar";
+"Last update %@." = "Síðast uppfært kl. %@.";
+"You’re offline. Check your connection." = "Engin nettenging. Athugaðu tenginguna.";
+"ScootRadar took too long to respond." = "ScootRadar svaraði ekki í tæka tíð.";
+"ScootRadar is busy right now. Try again in a moment." = "Mikið álag er á ScootRadar núna. Reyndu aftur eftir smástund.";
+"ScootRadar is having trouble. Try again in a moment." = "ScootRadar á í vandræðum. Reyndu aftur eftir smástund.";
+"Couldn’t load scooters." = "Ekki tókst að sækja rafskúturnar.";
+
+/* UX alignment: outside coverage and filters with nothing to show */
+"No scooter data here yet" = "Engin gögn um rafskútur hér enn";
+"ScootRadar covers selected cities in Belgium, France, Germany, Iceland, Italy, Norway, Portugal, Spain, Switzerland and the United Kingdom." = "ScootRadar nær yfir valdar borgir og bæi á Íslandi, Ítalíu og Spáni og í Belgíu, Bretlandi, Frakklandi, Noregi, Portúgal, Sviss og Þýskalandi.";
+"Closest cities" = "Næstu staðir";
+"%1$@ · %2$@" = "%1$@ · %2$@";
+"1 scooter hidden by your filters" = "Síurnar þínar fela einu rafskútuna hér";
+"%lld scooters hidden by your filters" = "Síurnar þínar fela allar rafskútur hér (%lld)";
+"No scooters match your filters here" = "Engar rafskútur hér passa við síurnar þínar";
+"Show all %lld" = "Sýna allar (%lld)";
+"Edit filters" = "Breyta síum";
+"%@ only" = "Aðeins %@";
+"battery %lld%% or more" = "hleðsla %lld%% eða meiri";
+
+/* UX alignment: scooter card */
+"≈%1$lld min walk · %2$@" = "≈%1$lld mín. gangur · %2$@";
+"≈%1$lld min walk from %2$@ · %3$@" = "≈%1$lld mín. gangur frá: %2$@ · %3$@";
+"≈%1$lld min walk from %2$@" = "≈%1$lld mín. gangur frá: %2$@";
+"Turn on location to see walking time" = "Kveiktu á staðsetningu til að sjá göngutíma";
+"Directions" = "Leiðarlýsing";
+"Open in %@" = "Opna %@-appið";
+"≈ %1$@ for %2$lld min" = "≈ %1$@ fyrir %2$lld mín.";
+"Price shown in the %@ app" = "Verðið sést í %@-appinu";
+"Ride estimate, %lld minutes. Change duration." = "Áætlað verð ferðar, %lld mínútur. Breyta lengd.";
+"%lld min" = "%lld mín.";
+
+/* UX alignment: parking bay */
+"%@ parking bay" = "%@-stæði";
+"You must park in a bay in this zone." = "Á þessu svæði þarftu að leggja í merkt stæði.";
+"Check the %@ app before you end your ride." = "Athugaðu %@-appið áður en þú lýkur ferðinni.";
+"Close parking details" = "Loka upplýsingum um stæði";
+"Shows parking details" = "Sýnir upplýsingar um stæðið";
+
+/* UX alignment: location */
+"Near me" = "Nálægt mér";
+"Location is off" = "Slökkt er á staðsetningu";
+"Turn it on in Settings, or search a place instead." = "Kveiktu á henni í stillingum, eða leitaðu frekar að stað.";
+"Location is restricted on this device. Search a place instead." = "Staðsetning er takmörkuð á þessu tæki. Leitaðu frekar að stað.";
+"Open Settings" = "Opna stillingar";
+"Search a place" = "Leita að stað";
+"Couldn’t find your location." = "Ekki tókst að finna staðsetninguna þína.";
+"Dismiss" = "Loka";
+
+/* UX alignment: filters sheet */
+"Reset" = "Endurstilla";
+"Scooters without battery info are hidden while a minimum is set." = "Rafskútur án upplýsinga um hleðslu eru faldar á meðan lágmark er valið.";
+"Not sharing data right now" = "Deilir ekki gögnum eins og er";
+"Show 0 scooters" = "Sýna rafskútur (0)";
+"Show 1 scooter" = "Sýna rafskútu (1)";
+"Show %lld scooters" = "Sýna rafskútur (%lld)";
+
+/* UX alignment: settings */
+"Map & data credits" = "Heimildir korts og gagna";
+"Read the privacy notice" = "Lesa persónuverndarstefnuna";
+"Source code on GitHub" = "Frumkóði á GitHub";
+"Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter." = "Framboðið uppfærist sjálfkrafa. Rafskúta er ekki tekin frá þótt þú opnir app fyrirtækisins.";
+
+/* Map look: the nearest scooter in the dock, and the figures of the scooter card */
+"to the nearest scooter" = "að næstu rafskútu";
+"%1$@, %2$lld min on foot" = "%1$@, %2$lld mín. gangandi";
+"Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details." = "Næsta rafskúta: %1$@, %2$@ í burtu, %3$lld mín. gangandi. Sjá nánar.";
+"min" = "mín.";
+"on foot" = "gangandi";
+"from %@" = "frá: %@";
+"away" = "í burtu";
+"%1$@, %2$lld min" = "%1$@, %2$lld mín.";
+"battery" = "hleðsla";
+"range" = "drægni";
+"%1$lld%% battery, %2$@ range" = "%1$lld%% hleðsla, %2$@ drægni";
+"%lld%% battery" = "%lld%% hleðsla";
+"%@ range" = "%@ drægni";
+"%1$@ to unlock, then %2$@ a minute" = "Startgjald %1$@, svo %2$@ á mínútu";
+"No unlock fee, %@ a minute" = "Ekkert startgjald, %@ á mínútu";

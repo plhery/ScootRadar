@@ -14,24 +14,24 @@ function strings(value: unknown, path = ''): [string, string][] {
 }
 
 describe('the languages of the landing page', () => {
-  it('knows its six languages and no other', () => {
-    expect(LANDING_LOCALES).toEqual(['en', 'de', 'fr', 'it', 'nl', 'nb']);
+  it('knows its nine languages and no other', () => {
+    expect(LANDING_LOCALES).toEqual(['en', 'de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is']);
     expect(Object.keys(LANGUAGE_NAMES)).toEqual([...LANDING_LOCALES]);
     expect(isLandingLocale('fr')).toBe(true);
-    expect(isLandingLocale('es')).toBe(false);
+    expect(isLandingLocale('sv')).toBe(false);
     expect(isLandingLocale('')).toBe(false);
   });
 
   it('has English at the root and the others under their code', () => {
-    expect(LANDING_LOCALES.map(landingPath)).toEqual(['/', '/de', '/fr', '/it', '/nl', '/nb']);
+    expect(LANDING_LOCALES.map(landingPath)).toEqual(['/', '/de', '/fr', '/it', '/nl', '/nb', '/pt', '/es', '/is']);
     expect(landingLocaleOf(undefined)).toBe('en');
     expect(landingLocaleOf([])).toBe('en');
-    for (const locale of ['de', 'fr', 'it', 'nl', 'nb'] as const) expect(landingLocaleOf([locale])).toBe(locale);
+    for (const locale of ['de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is'] as const) expect(landingLocaleOf([locale])).toBe(locale);
   });
 
   it('has no second address for English, and none below a language', () => {
     expect(landingLocaleOf(['en'])).toBeNull();
-    expect(landingLocaleOf(['es'])).toBeNull();
+    expect(landingLocaleOf(['sv'])).toBeNull();
     expect(landingLocaleOf(['de', 'zurich'])).toBeNull();
   });
 

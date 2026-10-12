@@ -43,6 +43,9 @@ const OPEN_GRAPH_LOCALES: Record<LandingLocale, string> = {
   // The country of each with scooters on the map.
   nl: 'nl_BE',
   nb: 'nb_NO',
+  pt: 'pt_PT',
+  es: 'es_ES',
+  is: 'is_IS',
 };
 
 // The steps of the app's battery filter; the page shows it set to the third.

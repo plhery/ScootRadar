@@ -1,0 +1,283 @@
+{
+  "verifiedOn": "2026-10-12",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "bird_es_caleta_de_fuste",
+      "country": "ES",
+      "provider": "bird",
+      "city": "Caleta de Fuste",
+      "center": [
+        28.3983,
+        -13.8602
+      ],
+      "bounds": {
+        "south": 28.3622,
+        "north": 28.4199,
+        "west": -13.8857,
+        "east": -13.8442
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/antigua/gbfs.json",
+      "aliases": [
+        "El Castillo",
+        "Costa de Antigua",
+        "Antigua",
+        "Fuerteventura"
+      ]
+    },
+    {
+      "id": "bird_es_getafe",
+      "country": "ES",
+      "provider": "bird",
+      "city": "Getafe",
+      "center": [
+        40.3179,
+        -3.6871
+      ],
+      "bounds": {
+        "south": 40.3098,
+        "north": 40.3377,
+        "west": -3.7197,
+        "east": -3.6545
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/madrid/gbfs.json"
+    },
+    {
+      "id": "bird_es_gijon",
+      "country": "ES",
+      "provider": "bird",
+      "city": "Gijón",
+      "center": [
+        43.5449,
+        -5.6627
+      ],
+      "bounds": {
+        "south": 43.5042,
+        "north": 43.5546,
+        "west": -5.7134,
+        "east": -5.5986
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/gijon/gbfs.json",
+      "aliases": [
+        "Gijon",
+        "Xixón",
+        "Xixon"
+      ]
+    },
+    {
+      "id": "bird_es_pajara",
+      "country": "ES",
+      "provider": "bird",
+      "city": "Pájara",
+      "center": [
+        28.1608,
+        -14.2301
+      ],
+      "bounds": {
+        "south": 28.041,
+        "north": 28.1799,
+        "west": -14.3561,
+        "east": -14.2029
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/pajara/gbfs.json",
+      "areas": [
+        {
+          "city": "Costa Calma",
+          "aliases": [
+            "Pájara",
+            "Pajara",
+            "Fuerteventura"
+          ],
+          "center": [
+            28.1608,
+            -14.2301
+          ],
+          "bounds": {
+            "south": 28.1311,
+            "north": 28.1799,
+            "west": -14.2536,
+            "east": -14.2029
+          }
+        },
+        {
+          "city": "Morro Jable",
+          "aliases": [
+            "Jandía",
+            "Jandia",
+            "Solana Matorral",
+            "Pájara",
+            "Pajara",
+            "Fuerteventura"
+          ],
+          "center": [
+            28.0502,
+            -14.3522
+          ],
+          "bounds": {
+            "south": 28.041,
+            "north": 28.0831,
+            "west": -14.3561,
+            "east": -14.2967
+          }
+        }
+      ]
+    },
+    {
+      "id": "bird_es_playa_de_las_americas",
+      "country": "ES",
+      "provider": "bird",
+      "city": "Playa de las Américas",
+      "center": [
+        28.0602,
+        -16.7311
+      ],
+      "bounds": {
+        "south": 28.0407,
+        "north": 28.1027,
+        "west": -16.7528,
+        "east": -16.6956
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/adeje/gbfs.json",
+      "aliases": [
+        "Playa de las Americas",
+        "Costa Adeje",
+        "Adeje",
+        "Arona",
+        "Los Cristianos",
+        "Tenerife",
+        "Teneriffa"
+      ]
+    },
+    {
+      "id": "hopp_es_costa_blanca",
+      "country": "ES",
+      "provider": "hopp",
+      "city": "Costa Blanca",
+      "center": [
+        37.9775,
+        -0.6828
+      ],
+      "bounds": {
+        "south": 37.8382,
+        "north": 38.0354,
+        "west": -0.8007,
+        "east": -0.6426
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/es-costa-blanca/gbfs.json",
+      "areas": [
+        {
+          "city": "Torrevieja",
+          "center": [
+            37.9775,
+            -0.6828
+          ],
+          "bounds": {
+            "south": 37.9392,
+            "north": 38.0354,
+            "west": -0.7395,
+            "east": -0.6426
+          }
+        },
+        {
+          "city": "Pilar de la Horadada",
+          "aliases": [
+            "Torre de la Horadada",
+            "Mil Palmeras"
+          ],
+          "center": [
+            37.8675,
+            -0.7926
+          ],
+          "bounds": {
+            "south": 37.8382,
+            "north": 37.8943,
+            "west": -0.8007,
+            "east": -0.7462
+          }
+        }
+      ]
+    },
+    {
+      "id": "hopp_es_javea",
+      "country": "ES",
+      "provider": "hopp",
+      "city": "Jávea",
+      "center": [
+        38.7894,
+        0.1634
+      ],
+      "bounds": {
+        "south": 38.7636,
+        "north": 38.7994,
+        "west": 0.16,
+        "east": 0.2006
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/es-javea/gbfs.json",
+      "aliases": [
+        "Javea",
+        "Xàbia",
+        "Xabia"
+      ]
+    },
+    {
+      "id": "hopp_es_tenerife",
+      "country": "ES",
+      "provider": "hopp",
+      "city": "Tenerife",
+      "center": [
+        28.0602,
+        -16.7311
+      ],
+      "bounds": {
+        "south": 28.0188,
+        "north": 28.0935,
+        "west": -16.7408,
+        "east": -16.5879
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/es-tenerife/gbfs.json",
+      "areas": [
+        {
+          "city": "Playa de las Américas",
+          "aliases": [
+            "Playa de las Americas",
+            "Costa Adeje",
+            "Adeje",
+            "Arona",
+            "Los Cristianos",
+            "Tenerife",
+            "Teneriffa"
+          ],
+          "center": [
+            28.0602,
+            -16.7311
+          ],
+          "bounds": {
+            "south": 28.0452,
+            "north": 28.0935,
+            "west": -16.7408,
+            "east": -16.6976
+          }
+        },
+        {
+          "city": "Golf del Sur",
+          "aliases": [
+            "San Miguel de Abona",
+            "Amarilla Golf",
+            "Tenerife",
+            "Teneriffa"
+          ],
+          "center": [
+            28.033,
+            -16.6077
+          ],
+          "bounds": {
+            "south": 28.0188,
+            "north": 28.0377,
+            "west": -16.6251,
+            "east": -16.5879
+          }
+        }
+      ]
+    }
+  ]
+}

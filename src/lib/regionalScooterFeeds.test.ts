@@ -63,7 +63,7 @@ describe('German and Italian scooter coverage', () => {
     expect(result.vehicles).toHaveLength(1);
     expect(result.vehicles[0]).toMatchObject({ provider: system.provider, battery: 72 });
     expect(result.meta.sources).toEqual({ national: 'skipped', hopp: 'skipped', publibike: 'skipped',
-      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', [country]: 'fresh' });
+      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', [country]: 'fresh' });
     expect(fetchMock).toHaveBeenCalledTimes(3);
   });
   it('collects multi-city feeds once and skips the empty space between their service areas', async () => {
