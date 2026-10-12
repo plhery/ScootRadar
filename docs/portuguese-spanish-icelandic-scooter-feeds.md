@@ -51,8 +51,11 @@ routed per town. The bounds, discovery URLs and aliases are in
 (Edital n.º 1608/2022). Its boundary is the municipality from the Direção-Geral
 do Território's [CAOP](https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop),
 under CC BY 4.0: *Informação geográfica cedida pela Direção-Geral do
-Território*. All polls ran in daytime, so whether Bird empties the feed during
-the ban is unchecked.
+Território*. Bird keeps listing its scooters as available during the ban. On
+12 October 2026 it listed 228 scooters at 17:05, 225 of them available. Polled
+at 22:16, 22:21 and 22:26 Lisbon time, it listed 223, 232 and 233, with 219,
+228 and 228 available; none was reserved. So the map keeps showing them, and
+the dock and each scooter's card state the ban and when renting resumes.
 
 - Porto lifted its 06:00–22:00 rule in November 2025
   ([Regulamento n.º 1222/2025](https://mobilidade.cm-porto.pt/files/uploads/cms/CRMP_vers%C3%A3o_atualizada_20251127.pdf)).
