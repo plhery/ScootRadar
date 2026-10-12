@@ -68,8 +68,9 @@ Supported city names and aliases are answered from the local, reviewed
 scooter-city catalog. Other places, across Europe, come from
 [Photon](https://photon.komoot.io/), komoot's public geocoder on OpenStreetMap
 data (ODbL, credited with `© OpenStreetMap contributors`). Its use is free
-within reasonable limits and may be throttled; a private Photon instance is the
-way out if traffic outgrows it. The app sends the map centre, rounded to about a
+within reasonable limits and may be throttled; `PHOTON_API_URL` points the
+search at a Photon of our own, with the public one standing in when ours fails
+(see DEPLOY.md). The app sends the map centre, rounded to about a
 kilometre, as a location bias once the map shows a city or less, and restricts
 results to Europe.
 

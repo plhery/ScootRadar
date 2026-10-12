@@ -1,3 +1,4 @@
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { BodyTooLargeError, readJsonBody } from '@/lib/readJsonBody';
 import { NextRequest, NextResponse } from 'next/server';
 import { rateLimitAllows } from '@/lib/rateLimit';
@@ -24,7 +25,11 @@ const MOTORWAY_CLASS = 'TLM_AUS_EINFAHRT';
 const STOP_ORIGIN = 'haltestellen';
 
 // Places across Europe, from OpenStreetMap: swisstopo knows Switzerland only.
-const PHOTON_SEARCH_URL = 'https://photon.komoot.io/api/';
+// komoot's public Photon, unless PHOTON_API_URL names our own (photonService).
+const PUBLIC_PHOTON_URL = 'https://photon.komoot.io/api/';
+// Our own Photon answers in a fraction of a second: one that takes longer is
+// left for the public one, and the two together take no longer than one search.
+const OWN_PHOTON_TIMEOUT_MS = 3_000;
 const PHOTON_RESULT_LIMIT = 15;
 // The languages Photon names places in; in the others, places keep their local names.
 const PHOTON_LANGUAGES = ['de', 'en', 'fr'] as const;
@@ -265,8 +270,13 @@ function validCoordinate(lat: number, lng: number): boolean {
   return Number.isFinite(lat) && lat >= -90 && lat <= 90 && Number.isFinite(lng) && lng >= -180 && lng <= 180;
 }
 
-async function fetchJson(url: URL, headers: Record<string, string> = {}, signal?: AbortSignal): Promise<Upstream<unknown>> {
-  const timeout = AbortSignal.timeout(GEOCODE_TIMEOUT_MS);
+async function fetchJson(
+  url: URL,
+  headers: Record<string, string> = {},
+  signal?: AbortSignal,
+  timeoutMs = GEOCODE_TIMEOUT_MS
+): Promise<Upstream<unknown>> {
+  const timeout = AbortSignal.timeout(timeoutMs);
   try {
     const response = await fetch(url, {
       headers: { Accept: 'application/json', 'User-Agent': 'scootradar/2.0 (scootradar.com)', ...headers },
@@ -362,6 +372,33 @@ function photonLines(properties: Record<string, unknown>): { title: string; subt
   }
 }
 
+/** Where Photon is asked. */
+interface PhotonService {
+  url: string;
+  /** Our own instance's Cloudflare Access service token; nothing for the public one. */
+  headers: Record<string, string>;
+}
+
+/** Our own Photon where PHOTON_API_URL names one over HTTPS, with the Access
+    token where both of its halves are set; komoot's public instance otherwise. */
+async function photonService(): Promise<PhotonService | null> {
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    const settings = env as CloudflareEnv & Record<string, unknown>;
+    const url = settings.PHOTON_API_URL;
+    if (typeof url !== 'string' || !url.startsWith('https://')) return null;
+    const id = settings.PHOTON_ACCESS_CLIENT_ID;
+    const secret = settings.PHOTON_ACCESS_CLIENT_SECRET;
+    const headers: Record<string, string> = typeof id === 'string' && id && typeof secret === 'string' && secret
+      ? { 'CF-Access-Client-Id': id, 'CF-Access-Client-Secret': secret }
+      : {};
+    return { url, headers };
+  } catch {
+    // Outside the Worker: the public service.
+    return null;
+  }
+}
+
 async function searchPhoton(
   query: string,
   language: GeocodeLanguage,
@@ -381,10 +418,20 @@ async function searchPhoton(
     params.set('lon', String(near[1]));
     params.set('location_bias_scale', PHOTON_BIAS_SCALE);
   }
-  const url = new URL(PHOTON_SEARCH_URL);
-  url.search = params.toString();
+  const ask = (service: string, headers: Record<string, string> = {}, timeoutMs?: number) => {
+    const url = new URL(service);
+    url.search = params.toString();
+    return fetchJson(url, headers, signal, timeoutMs);
+  };
 
-  const answer = await fetchJson(url, {}, signal);
+  const own = await photonService();
+  let answer = own ? await ask(own.url, own.headers, OWN_PHOTON_TIMEOUT_MS) : await ask(PUBLIC_PHOTON_URL);
+  // Ours down, restarting on a new database, slow or refusing an expired
+  // token: the public one stands in. Not when the search no longer waits for it.
+  if (own && !answer.ok && answer.failure !== 'rateLimited' && !signal.aborted) {
+    console.warn(JSON.stringify({ event: 'photon_fallback', failure: answer.failure }));
+    answer = await ask(PUBLIC_PHOTON_URL, {}, GEOCODE_TIMEOUT_MS - OWN_PHOTON_TIMEOUT_MS);
+  }
   if (!answer.ok) return answer;
   const features = (answer.value as PhotonResponse | null)?.features;
   if (!Array.isArray(features)) return { ok: false, failure: 'invalid' };
@@ -482,7 +529,7 @@ async function geocode(input: GeocodeInput) {
   return NextResponse.json(shown.slice(0, MAX_RESULTS).map(({ place }) => place), {
     headers: {
       'Cache-Control': 'private, no-store',
-      'X-Geocoding-Data-Source': [swiss?.ok && 'swisstopo geo.admin.ch', europe.ok && 'Photon photon.komoot.io']
+      'X-Geocoding-Data-Source': [swiss?.ok && 'swisstopo geo.admin.ch', europe.ok && 'Photon, OpenStreetMap']
         .filter(Boolean).join(', '),
     },
   });

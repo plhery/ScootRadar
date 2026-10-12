@@ -2,8 +2,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { NextRequest } from 'next/server';
 
 const rateLimitAllows = vi.hoisted(() => vi.fn());
+const getCloudflareContext = vi.hoisted(() => vi.fn());
 
 vi.mock('@/lib/rateLimit', () => ({ rateLimitAllows }));
+vi.mock('@opennextjs/cloudflare', () => ({ getCloudflareContext }));
 
 import { GET, POST } from '@/app/api/geocode/route';
 import { RECORDED_ANSWERS, RECORDED_PHOTON_ANSWERS } from '@/app/api/geocode/recordedAnswers';
@@ -29,10 +31,10 @@ const PHOTON_HOST = 'photon.komoot.io';
 type GeoAdminRow = [origin: string | undefined, label: string | undefined, lat: number, lon: number];
 type PhotonRow = [properties: Record<string, unknown>, lat: number, lon: number];
 
-/** Answers swisstopo with its rows and Photon with its features, or with a status for a service that fails. */
+/** Answers swisstopo with its rows and each Photon with its features, or with a status for a service that fails. */
 function stubUpstreams({ swisstopo = [], photon = [] }: { swisstopo?: unknown[] | number; photon?: PhotonRow[] | number }) {
   const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
-    const answer = new URL(String(input)).hostname === PHOTON_HOST
+    const answer = new URL(String(input)).hostname !== GEOADMIN_HOST
       ? typeof photon === 'number' ? photon : {
         type: 'FeatureCollection',
         features: photon.map(([properties, lat, lon]) => ({ type: 'Feature', properties, geometry: { type: 'Point', coordinates: [lon, lat] } })),
@@ -69,6 +71,7 @@ const LAUSANNE: [number, number] = [46.5231, 6.6292];
 
 beforeEach(() => {
   rateLimitAllows.mockResolvedValue(true);
+  getCloudflareContext.mockRejectedValue(new Error('getCloudflareContext has been called outside the Worker'));
 });
 
 afterEach(() => {
@@ -199,7 +202,7 @@ describe('GET /api/geocode', () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get('cache-control')).toBe('private, no-store');
-    expect(response.headers.get('x-geocoding-data-source')).toBe('swisstopo geo.admin.ch, Photon photon.komoot.io');
+    expect(response.headers.get('x-geocoding-data-source')).toBe('swisstopo geo.admin.ch, Photon, OpenStreetMap');
   });
 
   it('rejects malformed POST bodies without contacting GeoAdmin', async () => {
@@ -675,7 +678,7 @@ describe('places across Europe', () => {
 
     stubUpstreams({ swisstopo: 503, photon });
     let response = await GET(request('Paradeplatz'));
-    expect(response.headers.get('x-geocoding-data-source')).toBe('Photon photon.komoot.io');
+    expect(response.headers.get('x-geocoding-data-source')).toBe('Photon, OpenStreetMap');
     expect((await response.json() as { subtitle: string }[]).map(place => place.subtitle)).toEqual(['Konstanz']);
 
     stubUpstreams({ swisstopo, photon: 429 });
@@ -752,6 +755,121 @@ describe('places across Europe', () => {
   });
 });
 
+// Our own Photon where the Worker names one, and komoot's public one standing in for it.
+describe('our own Photon', () => {
+  const OWN_PHOTON = 'https://photon.example.ch/api/';
+  const PUBLIC_PHOTON = 'https://photon.komoot.io/api/';
+  const TOKEN = { PHOTON_ACCESS_CLIENT_ID: 'id.access', PHOTON_ACCESS_CLIENT_SECRET: 'secret' };
+  const RIVOLI: PhotonRow = [{ type: 'house', housenumber: '10', street: 'Rue de Rivoli', postcode: '75004', city: 'Paris', countrycode: 'FR' }, 48.8556, 2.3594];
+
+  function inWorker(env: Record<string, unknown>) {
+    getCloudflareContext.mockResolvedValue({ env });
+  }
+
+  /** Our own Photon answering with a status, a page, or an error; the public one with Rivoli. */
+  function stubOwnPhoton(own: number | string | Error) {
+    const fetchMock = vi.fn(async (input: URL) => {
+      if (input.hostname !== new URL(OWN_PHOTON).hostname) {
+        return new Response(JSON.stringify({ features: [{ properties: RIVOLI[0], geometry: { coordinates: [RIVOLI[2], RIVOLI[1]] } }] }));
+      }
+      if (own instanceof Error) throw own;
+      return typeof own === 'number' ? new Response('', { status: own }) : new Response(own);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+    return fetchMock;
+  }
+
+  /** Each Photon asked, in order, with the Access token it was sent. */
+  function photonsAsked(fetchMock: ReturnType<typeof vi.fn>) {
+    return fetchMock.mock.calls
+      .map(([input, init]) => [new URL(String(input)), new Headers((init as RequestInit).headers)] as const)
+      .filter(([url]) => url.hostname !== GEOADMIN_HOST)
+      .map(([url, headers]) => [url.origin + url.pathname, headers.get('CF-Access-Client-Id'), headers.get('CF-Access-Client-Secret')]);
+  }
+
+  async function titles(response: Response) {
+    return ((await response.json()) as { title: string }[]).map(place => place.title);
+  }
+
+  it.each<[url: string | undefined, id: string | undefined, secret: string | undefined, photon: (string | null)[]]>([
+    [OWN_PHOTON, 'id.access', 'secret', [OWN_PHOTON, 'id.access', 'secret']],
+    // Half a token is none.
+    [OWN_PHOTON, 'id.access', '', [OWN_PHOTON, null, null]],
+    [OWN_PHOTON, undefined, 'secret', [OWN_PHOTON, null, null]],
+    // The public one never sees the token.
+    ['http://photon.example.ch/api/', 'id.access', 'secret', [PUBLIC_PHOTON, null, null]],
+    ['', 'id.access', 'secret', [PUBLIC_PHOTON, null, null]],
+    [undefined, 'id.access', 'secret', [PUBLIC_PHOTON, null, null]],
+  ])('asks the Photon set in PHOTON_API_URL only over HTTPS, with the Access token only if whole (%s)', async (url, id, secret, photon) => {
+    inWorker({ PHOTON_API_URL: url, PHOTON_ACCESS_CLIENT_ID: id, PHOTON_ACCESS_CLIENT_SECRET: secret });
+    const fetchMock = stubUpstreams({ photon: [RIVOLI] });
+
+    const response = await POST(postRequest('Rue de Rivoli 10', 'fr', PARIS));
+
+    expect(photonsAsked(fetchMock)).toEqual([photon]);
+    expect(asked(fetchMock, new URL(String(photon[0])).hostname)[0].searchParams.get('q')).toBe('Rue de Rivoli 10');
+    expect(await titles(response)).toEqual(['10 Rue de Rivoli']);
+    expect(response.headers.get('x-geocoding-data-source')).toBe('Photon, OpenStreetMap');
+  });
+
+  it.each<[own: number | string | Error, failure: string]>([
+    [502, 'unavailable'],
+    // Cloudflare Access's sign-in page, for a token it no longer takes.
+    ['<!DOCTYPE html><title>Sign in ・ Cloudflare Access</title>', 'unavailable'],
+    [new TypeError('Network connection lost.'), 'unavailable'],
+    [new DOMException('The operation timed out.', 'TimeoutError'), 'timedOut'],
+  ])('asks the public Photon when ours answers %s', async (own, failure) => {
+    inWorker({ PHOTON_API_URL: OWN_PHOTON, ...TOKEN });
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const fetchMock = stubOwnPhoton(own);
+
+    const response = await POST(postRequest('Rue de Rivoli 10', 'fr', PARIS));
+
+    expect(photonsAsked(fetchMock)).toEqual([[OWN_PHOTON, 'id.access', 'secret'], [PUBLIC_PHOTON, null, null]]);
+    expect(await titles(response)).toEqual(['10 Rue de Rivoli']);
+    expect(warn).toHaveBeenCalledWith(JSON.stringify({ event: 'photon_fallback', failure }));
+  });
+
+  it('gives ours three seconds, and the public one the rest of the ten one search has', async () => {
+    inWorker({ PHOTON_API_URL: OWN_PHOTON, ...TOKEN });
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const timeouts = vi.spyOn(AbortSignal, 'timeout');
+    stubOwnPhoton(new DOMException('The operation timed out.', 'TimeoutError'));
+
+    await POST(postRequest('Rue de Rivoli 10', 'fr', PARIS));
+
+    expect(timeouts.mock.calls).toEqual([[3_000], [7_000]]);
+  });
+
+  it('does not send the public Photon what ours turned away as too many', async () => {
+    inWorker({ PHOTON_API_URL: OWN_PHOTON, ...TOKEN });
+    const fetchMock = stubOwnPhoton(429);
+
+    const response = await POST(postRequest('Rue de Rivoli 10', 'fr', PARIS));
+
+    expect(photonsAsked(fetchMock)).toEqual([[OWN_PHOTON, 'id.access', 'secret']]);
+    expect(response.status).toBe(503);
+    expect(response.headers.get('retry-after')).toBe('60');
+  });
+
+  it('does not ask the public Photon once the search has stopped waiting for ours', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] });
+    inWorker({ PHOTON_API_URL: OWN_PHOTON, ...TOKEN });
+    const zurich = { attrs: { origin: 'address', label: 'Paradeplatz 2 <b>8001 Zürich</b>', lat: ZURICH[0], lon: ZURICH[1] } };
+    // Ours answers only once given up on.
+    const fetchMock = vi.fn((input: URL, init: RequestInit) => input.hostname === GEOADMIN_HOST
+      ? Promise.resolve(new Response(JSON.stringify({ results: [zurich] })))
+      : new Promise<Response>((_, reject) => init.signal?.addEventListener('abort', () => reject(init.signal?.reason))));
+    vi.stubGlobal('fetch', fetchMock);
+
+    const response = POST(postRequest('Paradeplatz', 'en', ZURICH));
+    await vi.advanceTimersByTimeAsync(1_000);
+
+    expect((await response).headers.get('x-geocoding-data-source')).toBe('swisstopo geo.admin.ch');
+    expect(photonsAsked(fetchMock)).toEqual([[OWN_PHOTON, 'id.access', 'secret']]);
+  });
+});
+
 // The rows a rider sees across Europe, answered as Photon answered them.
 describe('recorded Photon answers', () => {
   const NO_DATA = false;
@@ -791,7 +909,7 @@ describe('recorded Photon answers', () => {
     const results = await response.json() as { title: string; subtitle: string; covered: boolean }[];
 
     expect(asked(fetchMock, GEOADMIN_HOST)).toEqual([]);
-    expect(response.headers.get('x-geocoding-data-source')).toBe('Photon photon.komoot.io');
+    expect(response.headers.get('x-geocoding-data-source')).toBe('Photon, OpenStreetMap');
     expect(results.map(result => [result.title, result.subtitle, result.covered])).toEqual(rows);
   });
 });
@@ -912,7 +1030,7 @@ describe('recorded swisstopo answers', () => {
     const results = await response.json() as { title: string; subtitle: string; covered: boolean }[];
 
     expect(asked(fetchMock, GEOADMIN_HOST)).toHaveLength(1);
-    expect(response.headers.get('x-geocoding-data-source')).toBe('swisstopo geo.admin.ch, Photon photon.komoot.io');
+    expect(response.headers.get('x-geocoding-data-source')).toBe('swisstopo geo.admin.ch, Photon, OpenStreetMap');
     expect(results.map(result => [result.title, result.subtitle, result.covered])).toEqual(rows);
   });
 });
