@@ -163,6 +163,17 @@ describe('the words of a guide', () => {
       .toBe('Ride on the bike lane, see the law.');
   });
 
+  it('lets a link lead to a city with brackets in its name, and ends it at its own bracket', () => {
+    expect(guideParts('Near [Disneyland](map:fr:Marne-la-Vallée (SIEMU)) and [Lyon](map:fr:Lyon) (Rhône).', 'fr'))
+      .toEqual([
+        { text: 'Near ' },
+        { text: 'Disneyland', href: expect.stringMatching(/^\/map\?origin=48\.\d+,2\.\d+$/) },
+        { text: ' and ' },
+        { text: 'Lyon', href: expect.stringMatching(/^\/map\?origin=45\.\d+,4\.\d+$/) },
+        { text: ' (Rhône).' },
+      ]);
+  });
+
   it('leads a link to a topic to the guide on it in the same language', () => {
     for (const guide of GUIDES) {
       expect(guideParts(`[it](guide:${guide.topic})`, guide.locale)).toEqual([{ text: 'it', href: guidePath(guide) }]);

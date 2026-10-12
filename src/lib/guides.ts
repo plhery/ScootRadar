@@ -125,7 +125,8 @@ export interface GuidePart {
   strong?: boolean;
 }
 
-const MARKS = /\[([^\]]+)\]\(([^)]+)\)|\*\*(.+?)\*\*/g;
+// An address may hold brackets of its own, as the city fr:Marne-la-Vallée (SIEMU) does.
+const MARKS = /\[([^\]]+)\]\(((?:[^()]|\([^()]*\))+)\)|\*\*(.+?)\*\*/g;
 
 /** Words of a guide cut at their links and their strong words. */
 export function guideParts(text: GuideText, locale: LandingLocale): GuidePart[] {
