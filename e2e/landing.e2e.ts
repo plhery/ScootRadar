@@ -97,8 +97,7 @@ test.describe('on the narrowest phone', () => {
   test('the name of the app stays clear of the button, in every language', async ({ page }) => {
     for (const address of Object.values(ADDRESS)) {
       await page.goto(address);
-      // Measured in the app's own fonts. What stands in for them while they load
-      // depends on the system: on Linux it is a much wider one.
+      // Measured in the app's own fonts, as the page shows once they have loaded.
       const ownFonts = await page.evaluate(async () => {
         const fonts = ['.brand', '.pill-cta'].map(selector => {
           const style = getComputedStyle(document.querySelector(selector)!);
@@ -109,13 +108,23 @@ test.describe('on the narrowest phone', () => {
       });
       expect(ownFonts, address).toBe(true);
       expect(await page.evaluate(() => document.documentElement.clientWidth)).toBe(320);
-      const space = await page.evaluate(() => {
+      const { space, layout } = await page.evaluate(() => {
         const name = [...document.querySelector('.brand')!.childNodes].find(node => node.nodeType === Node.TEXT_NODE)!;
         const range = document.createRange();
         range.selectNodeContents(name);
-        return document.querySelector('.pill-cta')!.getBoundingClientRect().left - range.getBoundingClientRect().right;
+        const text = range.getBoundingClientRect();
+        // Where each part of the bar is, for a failure that shows only in CI.
+        const parts = [...document.querySelector('.pill')!.children].flatMap(part => {
+          const box = part.getBoundingClientRect();
+          return box.width ? [`${part.className} ${box.left.toFixed(1)}+${box.width.toFixed(1)}@${box.top.toFixed(0)}`] : [];
+        });
+        const style = getComputedStyle(document.querySelector('.brand')!);
+        return {
+          space: document.querySelector('.pill-cta')!.getBoundingClientRect().left - text.right,
+          layout: `name ${text.left.toFixed(1)}+${text.width.toFixed(1)} in ${style.fontWeight} ${style.fontSize}; ${parts.join('; ')}`,
+        };
       });
-      expect(space, address).toBeGreaterThanOrEqual(8);
+      expect(space, `${address}: ${layout}`).toBeGreaterThanOrEqual(8);
     }
   });
 });
