@@ -304,6 +304,24 @@ img {
   box-shadow: 0 8px 30px -10px rgba(255, 255, 255, 0.6);
 }
 
+/* On the narrowest phones, 320 px wide, the name and the button only fit side by side a little smaller. */
+@media (max-width: 359px) {
+  .pill {
+    gap: 4px 8px;
+    padding-left: 10px;
+  }
+
+  .brand {
+    gap: 8px;
+    font-size: 16px;
+  }
+
+  .pill-cta {
+    padding: 0 13px;
+    font-size: 15px;
+  }
+}
+
 /* From a tablet up the bar is one row, and it stays with you down the page.
    Its links to the sections wait for room beside the nine languages. */
 @media (min-width: 760px) {
