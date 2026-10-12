@@ -90,19 +90,24 @@ test('the landing page changes language from its bar and stays where it is', asy
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
 });
 
-test('on the narrowest phone the name of the app stays clear of the button, in every language', async ({ page }) => {
-  await page.setViewportSize({ width: 320, height: 640 });
-  for (const address of Object.values(ADDRESS)) {
-    await page.goto(address);
-    await page.evaluate(() => document.fonts.ready);
-    const space = await page.evaluate(() => {
-      const name = [...document.querySelector('.brand')!.childNodes].find(node => node.nodeType === Node.TEXT_NODE)!;
-      const range = document.createRange();
-      range.selectNodeContents(name);
-      return document.querySelector('.pill-cta')!.getBoundingClientRect().left - range.getBoundingClientRect().right;
-    });
-    expect(space, address).toBeGreaterThanOrEqual(8);
-  }
+test.describe('on the narrowest phone', () => {
+  // A phone, whose scrollbar takes none of the 320 px: desktop Chromium on Linux keeps 15 px for its own.
+  test.use({ viewport: { width: 320, height: 640 }, isMobile: true, hasTouch: true });
+
+  test('the name of the app stays clear of the button, in every language', async ({ page }) => {
+    for (const address of Object.values(ADDRESS)) {
+      await page.goto(address);
+      await page.evaluate(() => document.fonts.ready);
+      expect(await page.evaluate(() => document.documentElement.clientWidth)).toBe(320);
+      const space = await page.evaluate(() => {
+        const name = [...document.querySelector('.brand')!.childNodes].find(node => node.nodeType === Node.TEXT_NODE)!;
+        const range = document.createRange();
+        range.selectNodeContents(name);
+        return document.querySelector('.pill-cta')!.getBoundingClientRect().left - range.getBoundingClientRect().right;
+      });
+      expect(space, address).toBeGreaterThanOrEqual(8);
+    }
+  });
 });
 
 test('the landing page tells a search engine where each language is', async ({ page }) => {
