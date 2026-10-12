@@ -116,7 +116,7 @@ const guide: Guide = {
             'Deelsteps rijden hooguit **20 km/u**, en **8 km/u** in voetgangerszones en parken.',
           ],
         },
-        'Op de [kaart rond Brussel](map:be:Bruxelles) stonden op 12 oktober 2026 ongeveer 6000 deelsteps van Dott en Bolt. Het gepubliceerde tarief van Bolt was die dag € 0,99 om te ontgrendelen en € 0,31 per minuut; de eindprijs zie je in de app van de aanbieder.',
+        'Op de [kaart rond Brussel](map:be:Bruxelles) stonden op 12 oktober 2026 ongeveer 6000 deelsteps van Dott en Bolt. Het gepubliceerde tarief van Bolt was die dag € 0,99 om te ontgrendelen en € 0,31 per minuut; de eindprijs zie je in de app van de aanbieder. Alles over huren, dropzones en trage zones lees je in [deelsteps in Brussel](guide:brussels).',
       ],
     },
     {

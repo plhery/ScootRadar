@@ -153,7 +153,7 @@ const guide: Guide = {
           ],
         },
         'That insurance is thinner than it looks. At Lime, Bolt and Voi the liability cover is **secondary**: it pays only after your own private liability insurance. Dott’s last published cover paid only above your other insurance; PubliBike includes none. On top of police fines, Voi may charge CHF 25 for bad parking after warnings, and Bolt up to CHF 100 to fetch a scooter left outside its area.',
-        'To see who has scooters near you, open the map in [Zürich](map:ch:zurich) or [Basel](map:ch:basel): ScootRadar shows every provider that publishes its positions, with battery and walking time, and opens the operator’s app to unlock and pay. For prices, see [e-scooter prices in Switzerland](guide:swiss-prices).',
+        'To see who has scooters near you, open the map in [Zürich](map:ch:zurich) or [Basel](map:ch:basel): ScootRadar shows the providers that publish their positions (in Basel, not yet Hopp), with battery and walking time, and opens the operator’s app to unlock and pay. For prices, see [e-scooter prices in Switzerland](guide:swiss-prices); for zones and providers city by city, our guides to [Zürich](guide:zurich), [Bern](guide:bern) and [Basel](guide:basel).',
         '**Visiting?** From 16 you may ride without a licence, whatever your nationality, and the operators’ Swiss terms ask for no Swiss residence. Expect 20 km/h, no plate or sticker, no helmet requirement and one alcohol limit for all ages. At 14 or 15, don’t count on riding: we could not confirm that a foreign moped licence replaces category M. From the UK? Compare [the rules at home](guide:uk-law).',
       ],
     },

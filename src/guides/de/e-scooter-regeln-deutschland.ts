@@ -141,7 +141,7 @@ const guide: Guide = {
             caption: 'Leih-Scooter in grossen Städten, Stand Oktober 2026',
             head: ['Stadt', 'Obergrenze', 'Was beim Abstellen gilt'],
             rows: [
-              ['Berlin', '19 000 im S-Bahn-Ring, ausserhalb keine', 'Auf dem Gehweg 2,30 m frei lassen; nicht an Haltestellen, Kreuzungen, Radwegen, in Grünanlagen und Fussgängerzonen. Bis 100 m um eine Jelbi-Abstellfläche nur dort. Foto am Fahrtende'],
+              ['Berlin', '19 000 im S-Bahn-Ring, ausserhalb keine', 'Auf dem Gehweg 2,30 m frei lassen; nicht an Haltestellen, Kreuzungen, Radwegen, in Grünanlagen und Fussgängerzonen. Im Umkreis von mindestens 100 m um eine Jelbi-Abstellfläche nur dort. Foto am Fahrtende'],
               ['Hamburg', '5000 innerhalb von Ring 2', 'Mindestens 1,60 m Gehweg frei. Verbotszonen in Grünanlagen, an belebten Orten der Innenstadt und am Wasser. Bussgelder fürs Falschparken gibt der Anbieter an dich weiter'],
               ['[München](map:de:München)', 'Freiwillig: je Anbieter 100 in der Altstadt und 1000 weitere innerhalb des Mittleren Rings', 'Altstadt nur an festen Abstellflächen, sonst bis 100 m um jede Fläche nur dort. Tabu: Fussgängerzonen, Grünanlagen, südlicher Englischer Garten, 10 m rund um Haltestellen'],
               ['[Köln](map:de:Köln)', 'Seit 2022: 500 je Anbieter in der Innenstadt', 'Kein Fahrtende in Fussgängerzonen, auf Brücken, am Rheinufer und in Grünanlagen; in Altstadt und Kolumbaviertel nur an festen Stationen. Nächte auf Samstag und Sonntag (20–6 Uhr): auch nicht an den Ringen zwischen Friesen- und Rudolfplatz, an der Zülpicher Strasse und im Belgischen Viertel. 1,50 m Gehweg frei, sonst 15 €'],
@@ -152,7 +152,7 @@ const guide: Guide = {
           },
         },
         'Karlsruhe sperrt das Mieten in den Nächten auf Samstag und Sonntag von 23 bis 6 Uhr.',
-        'ScootRadar zeigt auf der [Live-Karte](/map) die Anbieter, die offene Daten veröffentlichen. In Berlin ist das Dott: Die [Karte rund um Berlin](map:de:Berlin) zeigte am 12. Oktober 2026 rund 4900 Scooter. Bolt, Lime, Voi und Zeus sind dort ebenfalls zugelassen, fehlen aber auf der Karte.',
+        'ScootRadar zeigt auf der [Live-Karte](/map) die Anbieter, die offene Daten veröffentlichen. In Berlin ist das Dott: Die [Karte rund um Berlin](map:de:Berlin) zeigte am 12. Oktober 2026 rund 4900 Scooter. Bolt, Lime, Voi und Zeus sind dort ebenfalls zugelassen, fehlen aber auf der Karte. Anbieter, Preise und Parkzonen erklären unsere Ratgeber [E-Scooter in Berlin](guide:berlin) und [E-Scooter in München](guide:munich).',
       ],
     },
     {

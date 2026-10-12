@@ -146,14 +146,14 @@ const guide: Guide = {
           },
         },
         'Per trovare il monopattino più vicino, di qualunque operatore che pubblica i suoi dati, guarda la [mappa](/map): un pulsante ti porta nell’app dell’operatore, dove sblocchi e paghi.',
-        '**Se sei in Italia in vacanza.** Le regole valgono anche per te, casco compreso: nella prima settimana di controlli sul contrassegno a Roma, riportano i giornali, ci sono state 400 multe su 1.000 controlli, soprattutto per il casco, turisti compresi.',
+        '**Se sei in Italia in vacanza.** Le regole valgono anche per te, casco compreso: nella prima settimana di controlli sul contrassegno a Roma, riportano i giornali, su oltre 1.000 controlli le violazioni sono state più di 400, soprattutto per il casco, turisti compresi.',
         'Il contrassegno viene rilasciato solo a chi risiede in Italia o ci vive almeno 185 giorni l’anno («residenza normale»). Non abbiamo trovato indicazioni ufficiali per i turisti, ma stando alle norme chi è solo di passaggio non può mettere in regola il proprio monopattino: meglio noleggiare. In Svizzera, Ticino compreso, le regole sono diverse: le trovi nella [guida alle regole svizzere](guide:swiss-rules).',
       ],
     },
     {
       heading: 'Monopattini in sharing a Roma',
       blocks: [
-        'A Roma i monopattini in sharing sono di **Bird, Dott e Lime**, secondo Roma Servizi per la Mobilità (pagina aggiornata a luglio 2026). Le regole del Comune: iscrizione dai 18 anni con un documento d’identità, 20 km/h al massimo e 6 km/h automatici nelle aree pedonali. Gli abbonati annuali Metrebus Roma o Lazio con la zona A hanno diritto a corse gratuite, alle condizioni di ciascun operatore.',
+        'A Roma i monopattini in sharing sono di **Bird, Dott e Lime**, secondo Roma Servizi per la Mobilità (pagina aggiornata a luglio 2026). Le regole del Comune: iscrizione dai 18 anni con un documento d’identità, 20 km/h al massimo e 6 km/h automatici nelle aree pedonali. Gli abbonati annuali Metrebus Roma o Lazio con la zona A hanno diritto a corse gratuite o quasi, alle condizioni di ciascun operatore. Tutto su prezzi, zone e parcheggio nella guida ai [monopattini in sharing a Roma](guide:rome).',
         'Le autorizzazioni dei tre operatori scadevano il 31 agosto 2026. Il Comune le ha prorogate per il tempo necessario a scegliere i nuovi: secondo la stampa, fino al **31 ottobre 2026**.',
         'Le domande per il nuovo bando si chiudono il **26 ottobre 2026** alle 15. Il Comune sceglierà fino a tre operatori di monopattini per tre anni, e chi vince avrà fino a 150 giorni per avviare il servizio. Il bando premia chi mette su ogni monopattino un casco sbloccabile dall’app.',
         'Al 12 ottobre 2026 non abbiamo trovato annunci su cosa succederà dopo il 31 ottobre: da novembre, controlla l’app prima di uscire.',

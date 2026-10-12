@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-scooter prices in Switzerland 2026: what a ride costs',
   description: 'E-scooter prices in Switzerland: unlock fees and per-minute rates by operator and city, what 5, 10 and 20 minutes cost, passes and the fees that surprise you.',
   headline: 'E-scooter prices in Switzerland: what a shared e-scooter costs, city by city',
-  lede: 'E-scooter prices in Switzerland are almost always an unlock fee plus a rate per minute: CHF 1.00 to unlock, then CHF 0.39 to CHF 0.48 a minute at the rates Bolt, Hopp and Voi published on 12 October 2026. Ten minutes therefore cost CHF 4.90 to CHF 5.80. PubliBike is cheaper in Zürich and Biel, at CHF 1 plus CHF 0.20 a minute on its price page (October 2026). Lime, Bird and Dott don’t publish their rates, and every operator’s app shows the final price before you unlock.',
+  lede: 'E-scooter prices in Switzerland are almost always an unlock fee plus a rate per minute: CHF 1.00 to unlock, then CHF 0.39 to CHF 0.48 a minute at the rates Bolt, Hopp and Voi published on 12 October 2026. Ten minutes therefore cost CHF 4.90 to CHF 5.80. PubliBike is cheaper in Zürich and Biel, at CHF 1 plus CHF 0.20 a minute on its price page (October 2026). Bird publishes no rates, Lime and Dott only for Basel, and every operator’s app shows the final price before you unlock.',
   published: '2026-10-12',
   updated: '2026-10-12',
   sections: [
@@ -22,7 +22,7 @@ const guide: Guide = {
     {
       heading: 'E-scooter prices by operator and city',
       blocks: [
-        'Bolt, Hopp, Voi and Zeus publish their rates in the open data feeds the map reads. On the morning of 12 October 2026 they showed these; PubliBike’s rate comes from its own price page:',
+        'Bolt, Hopp, Voi and Zeus publish their rates in the open data feeds the map reads. On the morning of 12 October 2026 they showed these. Lime’s and Dott’s Basel rates come from their own data feeds (read that evening), and PubliBike’s rate from its own price page:',
         {
           table: {
             caption: 'Published rates on 12 October 2026: unlock fee and price per minute',
@@ -35,12 +35,15 @@ const guide: Guide = {
               ['Bern', 'Voi', 'CHF 1.00', 'CHF 0.42'],
               ['Basel', 'Voi', 'CHF 1.00', 'CHF 0.39'],
               ['Basel', 'Bolt', 'CHF 1.00', 'CHF 0.45'],
+              ['Basel', 'Lime (own data feed)', 'CHF 1.00', 'CHF 0.46'],
+              ['Basel', 'Dott (own data feed)', 'CHF 0.95', 'CHF 0.39'],
+              ['Basel', 'Bird', 'Not published', 'Shown in the app'],
               ['Biel/Bienne', 'Voi', 'CHF 1.00', 'CHF 0.39'],
               ['Zug area', 'Bolt', 'CHF 1.00', 'CHF 0.48'],
               ['Schaffhausen', 'Voi', 'None', 'CHF 0.39'],
               ['Singen (Germany), across the border from Schaffhausen', 'Zeus', 'EUR 1.00', 'EUR 0.25'],
               ['Zürich and Biel/Bienne', 'PubliBike (price page, October 2026)', 'CHF 1.00', 'CHF 0.20'],
-              ['Zürich, Basel, St. Gallen and more', 'Lime, Bird, Dott', 'Not published', 'Shown in the app'],
+              ['Zürich, St. Gallen and more', 'Lime, Bird, Dott', 'Not published', 'Shown in the app'],
             ],
           },
         },
@@ -59,10 +62,12 @@ const guide: Guide = {
             head: ['Rate (where)', '5 minutes', '10 minutes', '20 minutes'],
             rows: [
               ['PubliBike, CHF 1 + 0.20 (Zürich, Biel)', 'CHF 2.00', 'CHF 3.00', 'CHF 5.00'],
+              ['Dott, CHF 0.95 + 0.39 (Basel)', 'CHF 2.90', 'CHF 4.85', 'CHF 8.75'],
               ['Voi, CHF 1 + 0.39 (Basel, Biel)', 'CHF 2.95', 'CHF 4.90', 'CHF 8.80'],
               ['Hopp, CHF 1 + 0.40 (Zürich area)', 'CHF 3.00', 'CHF 5.00', 'CHF 9.00'],
               ['Voi or Bolt, CHF 1 + 0.42 (Zürich, Winterthur, Bern)', 'CHF 3.10', 'CHF 5.20', 'CHF 9.40'],
               ['Bolt, CHF 1 + 0.45 (Basel)', 'CHF 3.25', 'CHF 5.50', 'CHF 10.00'],
+              ['Lime, CHF 1 + 0.46 (Basel)', 'CHF 3.30', 'CHF 5.60', 'CHF 10.20'],
               ['Bolt, CHF 1 + 0.48 (Zug area)', 'CHF 3.40', 'CHF 5.80', 'CHF 10.60'],
             ],
           },
@@ -127,7 +132,7 @@ const guide: Guide = {
     {
       heading: 'How the price estimate on the map works',
       blocks: [
-        'ScootRadar takes each operator’s published unlock fee and rate per minute from its open data feed and does the same sum as above, for a ride of 5, 10, 15, 20 or 30 minutes (10 unless you pick another). Lime, Bird, Dott and PubliBike publish no rates in their feeds, so their scooters show no estimate.',
+        'ScootRadar takes each operator’s published unlock fee and rate per minute from its open data feed and does the same sum as above, for a ride of 5, 10, 15, 20 or 30 minutes (10 unless you pick another). The map finds no rate it can use in the feeds of Lime, Bird, Dott and PubliBike, so their scooters show no estimate.',
         'In the iPhone app you can add a pass you hold, with its free unlocks, free minutes and end date, and the estimate allows for it. Those details stay on your phone.',
         'Feeds can be a few minutes old and rates can vary by zone or time, so the estimate is a guide, not a quote. The button on each scooter opens the operator’s app, which shows the final price before you unlock. [Open the map](/map) to compare.',
       ],
@@ -148,7 +153,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I pay for an e-scooter with TWINT?',
-      answer: 'We found no mention of TWINT in the operators’ Swiss terms and help pages in October 2026. They take credit and debit cards, and Lime also lists Apple Pay, Google Pay, PayPal and Klarna in selected places. The app shows what works when you add a payment method.',
+      answer: 'Of the big operators, only Dott names TWINT, in its general help, as a method you may see depending on where you are; we found no mention of it at Lime, Voi or Bolt in October 2026. They all take credit and debit cards, and Lime also lists Apple Pay, Google Pay, PayPal and Klarna in selected places. The app shows what works when you add a payment method.',
     },
   ],
   sources: [

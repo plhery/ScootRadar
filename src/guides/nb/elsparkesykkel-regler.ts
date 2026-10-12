@@ -135,7 +135,7 @@ const guide: Guide = {
     {
       heading: 'Elsparkesykkel i Oslo: tre operatører, stengt om natten',
       blocks: [
-        'Oslos utleieforskrift har gjeldt fullt ut siden 1. april 2025. Kommunen gir tillatelse til nøyaktig tre operatører, og i dag er det **Bolt, Ryde og Voi**. I Ruter-appen kan du også finne og låse opp elsparkesykler.',
+        'Oslos utleieforskrift har gjeldt fullt ut siden 1. april 2025. Kommunen gir tillatelse til nøyaktig tre operatører, og i dag er det **Bolt, Ryde og Voi**. I Ruter-appen kan du også finne og låse opp elsparkesykler. Priser, soner og parkering finner du i guiden [Elsparkesykkel i Oslo](guide:oslo).',
         {
           list: [
             'Taket er **16 000** små elektriske kjøretøy til sammen, og da er elsyklene til leie regnet med. Under den forrige forskriften var taket 8000.',

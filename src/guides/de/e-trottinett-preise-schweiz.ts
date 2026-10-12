@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Trottinett-Preise Schweiz 2026: Was eine Fahrt kostet',
   description: 'E-Trottinett-Preise in der Schweiz: Entsperrgebühr und Minutenpreis je Anbieter und Stadt, was 5, 10 und 20 Minuten kosten, Abos und teure Zusatzgebühren.',
   headline: 'E-Trottinett-Preise in der Schweiz: So viel kostet ein Sharing-Trottinett, Stadt für Stadt',
-  lede: 'Die E-Trottinett-Preise in der Schweiz setzen sich fast immer gleich zusammen: CHF 1.– fürs Entsperren, dann 39 bis 48 Rappen pro Minute, so die Tarife, die Bolt, Hopp und Voi am 12. Oktober 2026 veröffentlichten. Zehn Minuten kosten damit CHF 4.90 bis CHF 5.80. Günstiger fährst du mit PubliBike in Zürich und Biel: CHF 1.– plus 20 Rappen pro Minute laut Preisliste, Stand Oktober 2026. Lime, Bird und Dott veröffentlichen ihre Tarife nicht, und bei allen Anbietern zeigt die App den Endpreis, bevor du entsperrst.',
+  lede: 'Die E-Trottinett-Preise in der Schweiz setzen sich fast immer gleich zusammen: CHF 1.– fürs Entsperren, dann 39 bis 48 Rappen pro Minute, so die Tarife, die Bolt, Hopp und Voi am 12. Oktober 2026 veröffentlichten. Zehn Minuten kosten damit CHF 4.90 bis CHF 5.80. Günstiger fährst du mit PubliBike in Zürich und Biel: CHF 1.– plus 20 Rappen pro Minute laut Preisliste, Stand Oktober 2026. Bird veröffentlicht keine Tarife, Lime und Dott nur für Basel, und bei allen Anbietern zeigt die App den Endpreis, bevor du entsperrst.',
   published: '2026-10-12',
   updated: '2026-10-12',
   sections: [
@@ -22,7 +22,7 @@ const guide: Guide = {
     {
       heading: 'E-Trottinett-Preise nach Anbieter und Stadt',
       blocks: [
-        'Bolt, Hopp, Voi und Zeus veröffentlichen ihre Tarife in den offenen Datenfeeds, aus denen auch die Karte liest. Am Morgen des 12. Oktober 2026 standen dort diese Preise; der Tarif von PubliBike stammt aus seiner eigenen Preisliste:',
+        'Bolt, Hopp, Voi und Zeus veröffentlichen ihre Tarife in den offenen Datenfeeds, aus denen auch die Karte liest. Am Morgen des 12. Oktober 2026 standen dort diese Preise. Die Basler Tarife von Lime und Dott stammen aus ihren eigenen Datenfeeds (gelesen am Abend desselben Tages), der Tarif von PubliBike aus seiner eigenen Preisliste:',
         {
           table: {
             caption: 'Veröffentlichte Tarife vom 12. Oktober 2026: Entsperrgebühr und Preis pro Minute',
@@ -35,12 +35,15 @@ const guide: Guide = {
               ['Bern', 'Voi', 'CHF 1.–', '42 Rappen'],
               ['Basel', 'Voi', 'CHF 1.–', '39 Rappen'],
               ['Basel', 'Bolt', 'CHF 1.–', '45 Rappen'],
+              ['Basel', 'Lime (eigener Datenfeed)', 'CHF 1.–', '46 Rappen'],
+              ['Basel', 'Dott (eigener Datenfeed)', '95 Rappen', '39 Rappen'],
+              ['Basel', 'Bird', 'nicht veröffentlicht', 'in der App'],
               ['Biel/Bienne', 'Voi', 'CHF 1.–', '39 Rappen'],
               ['Region Zug', 'Bolt', 'CHF 1.–', '48 Rappen'],
               ['Schaffhausen', 'Voi', 'keine', '39 Rappen'],
               ['Singen (Deutschland), jenseits der Grenze bei Schaffhausen', 'Zeus', '1 Euro', '25 Cent'],
               ['Zürich und Biel/Bienne', 'PubliBike (Preisliste, Oktober 2026)', 'CHF 1.–', '20 Rappen'],
-              ['Zürich, Basel, St. Gallen und weitere', 'Lime, Bird, Dott', 'nicht veröffentlicht', 'in der App'],
+              ['Zürich, St. Gallen und weitere', 'Lime, Bird, Dott', 'nicht veröffentlicht', 'in der App'],
             ],
           },
         },
@@ -59,10 +62,12 @@ const guide: Guide = {
             head: ['Tarif (wo)', '5 Minuten', '10 Minuten', '20 Minuten'],
             rows: [
               ['PubliBike, CHF 1.– + 20 Rp. (Zürich, Biel)', 'CHF 2.–', 'CHF 3.–', 'CHF 5.–'],
+              ['Dott, 95 Rp. + 39 Rp. (Basel)', 'CHF 2.90', 'CHF 4.85', 'CHF 8.75'],
               ['Voi, CHF 1.– + 39 Rp. (Basel, Biel)', 'CHF 2.95', 'CHF 4.90', 'CHF 8.80'],
               ['Hopp, CHF 1.– + 40 Rp. (Region Zürich)', 'CHF 3.–', 'CHF 5.–', 'CHF 9.–'],
               ['Voi oder Bolt, CHF 1.– + 42 Rp. (Zürich, Winterthur, Bern)', 'CHF 3.10', 'CHF 5.20', 'CHF 9.40'],
               ['Bolt, CHF 1.– + 45 Rp. (Basel)', 'CHF 3.25', 'CHF 5.50', 'CHF 10.–'],
+              ['Lime, CHF 1.– + 46 Rp. (Basel)', 'CHF 3.30', 'CHF 5.60', 'CHF 10.20'],
               ['Bolt, CHF 1.– + 48 Rp. (Region Zug)', 'CHF 3.40', 'CHF 5.80', 'CHF 10.60'],
             ],
           },
@@ -127,7 +132,7 @@ const guide: Guide = {
     {
       heading: 'So funktioniert die Preisschätzung auf der Karte',
       blocks: [
-        'ScootRadar liest die veröffentlichte Entsperrgebühr und den Minutenpreis jedes Anbieters aus seinem offenen Datenfeed und rechnet wie oben, für eine Fahrt von 5, 10, 15, 20 oder 30 Minuten; voreingestellt sind 10. Lime, Bird, Dott und PubliBike veröffentlichen in ihren Feeds keine Tarife, ihre Trottinette zeigen darum keine Schätzung.',
+        'ScootRadar liest die veröffentlichte Entsperrgebühr und den Minutenpreis jedes Anbieters aus seinem offenen Datenfeed und rechnet wie oben, für eine Fahrt von 5, 10, 15, 20 oder 30 Minuten; voreingestellt sind 10. In den Feeds von Lime, Bird, Dott und PubliBike findet die Karte keinen Tarif, den sie verwenden kann; ihre Trottinette zeigen darum keine Schätzung.',
         'In der iPhone-App kannst du ein Abo oder Paket eintragen, das du bei einem Anbieter hast, mit Gratis-Entsperrungen, Gratis-Minuten und Ablaufdatum, und die Schätzung rechnet es ein. Diese Angaben bleiben auf deinem iPhone.',
         'Die Feeds können einige Minuten alt sein, und Tarife können je nach Zone oder Zeit abweichen. Die Schätzung hilft beim Vergleichen, ein verbindliches Angebot ist sie nicht. Der Button bei jedem Trottinett öffnet die App des Anbieters, und dort siehst du den Endpreis, bevor du entsperrst. [Öffne die Karte](/map) und vergleiche.',
       ],
@@ -148,7 +153,7 @@ const guide: Guide = {
     },
     {
       question: 'Kann ich ein E-Trottinett mit TWINT bezahlen?',
-      answer: 'In den Schweizer Nutzungsbedingungen und Hilfeseiten der Anbieter haben wir im Oktober 2026 keinen Hinweis auf TWINT gefunden. Sie nehmen Kredit- und Debitkarten, Lime nennt zudem Apple Pay, Google Pay, PayPal und Klarna an ausgewählten Orten. Welche Zahlungsart geht, siehst du in der App, wenn du sie hinterlegst.',
+      answer: 'Von den grossen Anbietern nennt nur Dott TWINT, in seiner allgemeinen Hilfe, als Zahlungsart, die je nach Ort erscheinen kann; bei Lime, Voi und Bolt haben wir im Oktober 2026 keinen Hinweis darauf gefunden. Alle nehmen Kredit- und Debitkarten, Lime nennt zudem Apple Pay, Google Pay, PayPal und Klarna an ausgewählten Orten. Welche Zahlungsart geht, siehst du in der App, wenn du sie hinterlegst.',
     },
   ],
   sources: [

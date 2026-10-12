@@ -76,7 +76,7 @@ const guide: Guide = {
           },
         },
         'Cette liste n’est pas complète et s’allonge vite. Pour Bordeaux, Marseille ou Grenoble, nous n’avons pas trouvé d’arrêté au 12 octobre 2026, sans pouvoir l’exclure. Avant de rouler, consultez le site de la préfecture de votre département.',
-        { note: 'Les arrêtés visent en général tout conducteur d’EDPM, location comprise : vérifiez celui de votre département. Si vous louez une trottinette à Lyon, à Versailles ou à Marne-la-Vallée, prévoyez votre casque.' },
+        { note: 'Les arrêtés visent en général tout conducteur d’EDPM, location comprise : vérifiez celui de votre département. Si vous louez une trottinette à Lyon, autour de Versailles ou à Marne-la-Vallée, prévoyez votre casque.' },
       ],
     },
     {
@@ -139,9 +139,9 @@ const guide: Guide = {
     {
       heading: 'Trottinettes en libre-service : Paris, Lyon et les autres villes',
       blocks: [
-        '**Paris** n’a plus de trottinettes en libre-service depuis le 1er septembre 2023. À la votation du 2 avril 2023, 89 % des votants ont dit « contre », avec environ 7,5 % de participation, et les conventions de Dott, Lime et Tier ont pris fin le 31 août 2023. Au 12 octobre 2026, nous n’avons trouvé aucune annonce officielle de retour.',
-        'Autour de Paris, le 12 octobre 2026, la carte en montrait à Versailles, à Saint-Quentin-en-Yvelines et dans le Grand Paris Seine et Oise (Yvelines), ainsi qu’à Marne-la-Vallée (Seine-et-Marne) : deux départements où le casque est obligatoire.',
-        '**Lyon** n’autorise plus qu’un opérateur, Dott, depuis le 1er janvier 2025 : 18 ans minimum, vitesse bridée à 20 km/h, trottinettes immatriculées. Le 12 octobre 2026, ScootRadar affichait environ 3 500 véhicules Dott sur la carte autour de [Lyon](map:fr:Lyon).',
+        '**Paris** n’a plus de trottinettes en libre-service depuis le 1er septembre 2023. À la votation du 2 avril 2023, 89 % des votants ont dit « contre », avec environ 7,5 % de participation, et les conventions de Dott, Lime et Tier ont pris fin le 31 août 2023. Au 12 octobre 2026, nous n’avons trouvé aucune annonce officielle de retour. Pour savoir quoi louer à la place, lisez notre guide de la [trottinette en libre-service à Paris](guide:paris).',
+        'En grande banlieue, le 12 octobre 2026, la carte en montrait autour de Versailles (à La Celle-Saint-Cloud, au Chesnay-Rocquencourt et à Bougival, mais aucune à Versailles même), à Saint-Quentin-en-Yvelines et dans le Grand Paris Seine et Oise (Yvelines), autour de Lagny-sur-Marne et de Bussy-Saint-Georges (Marne-la-Vallée, Seine-et-Marne) et à Évry-Courcouronnes (Essonne). Le casque est obligatoire dans les Yvelines et en Seine-et-Marne ; l’Essonne aurait suivi le 5 octobre 2026, mais nous n’avons pas pu lire l’arrêté.',
+        '**Lyon** n’autorise plus qu’un opérateur, Dott, depuis le 1er janvier 2025 : 18 ans minimum, vitesse bridée à 20 km/h, trottinettes immatriculées. Le 12 octobre 2026, ScootRadar affichait environ 3 500 véhicules Dott sur la carte autour de [Lyon](map:fr:Lyon). Prix, casque et règles locales : voyez notre guide de la [trottinette électrique à Lyon](guide:lyon).',
         '**Bordeaux Métropole** a retenu Dott et Pony, 1 000 trottinettes chacun, du 1er novembre 2025 au 1er novembre 2029 : 18 ans minimum, départ et retour uniquement sur les quelque 500 emplacements dédiés. [Voir Bordeaux sur la carte](map:fr:Bordeaux).',
         '**Lille** : selon la Métropole, les trottinettes Lime se rendent dans l’une des quelque 1 400 stations ; tant qu’elle n’y est pas garée, la location continue d’être facturée.',
         'Le 12 octobre 2026, la carte montrait aussi Lime et Voi à [Marseille](map:fr:Marseille), Voi à Grenoble et au Havre, Pony ou Bird dans des villes comme Angers, Perpignan ou Laval. D’autres opérateurs peuvent y rouler sans publier leurs données. Pour trouver la trottinette la plus proche, ouvrez [la carte](/map) : un bouton ouvre l’app de l’opérateur, où vous la déverrouillez et payez.',
@@ -187,7 +187,7 @@ const guide: Guide = {
     },
     {
       question: 'Y a-t-il encore des trottinettes en libre-service à Paris ?',
-      answer: 'Non, plus depuis le 1er septembre 2023, après la votation du 2 avril 2023. Au 12 octobre 2026, nous n’avons trouvé aucune annonce officielle de retour. Il en reste autour de Paris, par exemple à Versailles ou à Saint-Quentin-en-Yvelines, où le casque est obligatoire depuis le 15 septembre 2026.',
+      answer: 'Non, plus depuis le 1er septembre 2023, après la votation du 2 avril 2023. Au 12 octobre 2026, nous n’avons trouvé aucune annonce officielle de retour. Il en reste autour de Paris, par exemple autour de Versailles ou à Saint-Quentin-en-Yvelines, où le casque est obligatoire depuis le 15 septembre 2026.',
     },
     {
       question: 'Le casque va-t-il devenir obligatoire dans toute la France ?',
@@ -201,7 +201,7 @@ const guide: Guide = {
     { title: 'Ministères de la Transition écologique et des Transports : Trottinettes électriques et EDPM, la réglementation en vigueur (6 février 2026)', url: 'https://www.ecologie.gouv.fr/trottinettes-electriques-et-edpm-reglementation-en-vigueur' },
     { title: 'Préfecture de police : arrêté n° 2026-00969 du 7 août 2026 sur le casque et le gilet en EDPM à Paris et en petite couronne', url: 'https://cdn.paris.fr/paris/2026/08/10/arrete-2026_00969_07082026-1-nPt1.pdf' },
     { title: 'Service-public.gouv.fr : Sécurité routière, de nouvelles obligations pour les usagers de trottinettes électriques, gyropodes et hoverboards (12 août 2026)', url: 'https://www.service-public.gouv.fr/particuliers/actualites/A19037' },
-    { title: 'Ville de Lyon : Plus de sécurité pour les usagers de l’espace public (28 septembre 2026)', url: 'https://www.lyon.fr/actualite/mobilites/plus-de-securite-pour-les-usagers-de-lespace-public' },
+    { title: 'Préfecture du Rhône : arrêté n° 69-2026-09 du 28 septembre 2026 imposant le casque et le gilet haute visibilité aux conducteurs d’EDPM (copie publiée par la commune de Ternay)', url: 'https://www.ternay.fr/wp-content/uploads/2026/09/ap_signe_port_casque_gilet_haute_visibilite_edpm_rhone.pdf' },
     { title: 'Ville de Paris : Fin des trottinettes en libre-service à Paris le 31 août 2023 (résultats de la votation)', url: 'https://www.paris.fr/pages/pour-ou-contre-les-trottinettes-en-libre-service-23231' },
     { title: 'Bordeaux Métropole : Free-floating, la Métropole change de braquet', url: 'https://www.bordeaux-metropole.fr/actualites/free-floating-metropole-change-braquet' },
     { title: 'Sénat : question orale n° 1174S « Port du casque à trottinette », réponse du 16 juin 2026', url: 'https://www.senat.fr/questions/base/2026/qSEQ26061174S.html' },
