@@ -1662,7 +1662,7 @@ test('the settings name the languages, and About leads to the credits, the priva
   await settings.getByRole('button', { name: 'Map & data credits' }).click();
   const credits = page.getByRole('dialog', { name: 'Map & data credits', exact: true });
   await expect(credits.getByRole('heading', { name: 'Map & data credits', level: 2 })).toBeFocused();
-  await expect(credits.getByRole('link')).toHaveCount(10);
+  await expect(credits.getByRole('link')).toHaveCount(12);
   await expect(credits.getByRole('link', { name: '© OpenStreetMap contributors' })).toHaveAttribute('href', 'https://www.openstreetmap.org/copyright');
   await expect(credits.getByRole('link', { name: 'OpenFreeMap © OpenMapTiles' })).toHaveAttribute('href', 'https://openfreemap.org/');
   await expect(credits.getByRole('link', { name: '© swisstopo' })).toHaveAttribute('target', '_blank');
