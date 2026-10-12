@@ -97,7 +97,17 @@ test.describe('on the narrowest phone', () => {
   test('the name of the app stays clear of the button, in every language', async ({ page }) => {
     for (const address of Object.values(ADDRESS)) {
       await page.goto(address);
-      await page.evaluate(() => document.fonts.ready);
+      // Measured in the app's own fonts. What stands in for them while they load
+      // depends on the system: on Linux it is a much wider one.
+      const ownFonts = await page.evaluate(async () => {
+        const fonts = ['.brand', '.pill-cta'].map(selector => {
+          const style = getComputedStyle(document.querySelector(selector)!);
+          return `${style.fontWeight} ${style.fontSize} ${style.fontFamily.split(',')[0]}`;
+        });
+        await Promise.all(fonts.map(font => document.fonts.load(font)));
+        return fonts.every(font => document.fonts.check(font));
+      });
+      expect(ownFonts, address).toBe(true);
       expect(await page.evaluate(() => document.documentElement.clientWidth)).toBe(320);
       const space = await page.evaluate(() => {
         const name = [...document.querySelector('.brand')!.childNodes].find(node => node.nodeType === Node.TEXT_NODE)!;
