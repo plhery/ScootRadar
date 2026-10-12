@@ -1670,12 +1670,14 @@ test('the settings name the languages, and About leads to the credits, the priva
   await settings.getByRole('button', { name: 'Map & data credits' }).click();
   const credits = page.getByRole('dialog', { name: 'Map & data credits', exact: true });
   await expect(credits.getByRole('heading', { name: 'Map & data credits', level: 2 })).toBeFocused();
-  await expect(credits.getByRole('link')).toHaveCount(16);
+  await expect(credits.getByRole('link')).toHaveCount(17);
   await expect(credits.getByRole('link', { name: '© OpenStreetMap contributors' })).toHaveAttribute('href', 'https://www.openstreetmap.org/copyright');
   await expect(credits.getByRole('link', { name: 'OpenFreeMap © OpenMapTiles' })).toHaveAttribute('href', 'https://openfreemap.org/');
   // The walking routes come from FOSSGIS's Valhalla, whose terms ask for both: its credit, and a way to fix the map.
   await expect(credits.getByRole('link', { name: 'Walking routes · Valhalla, FOSSGIS' })).toHaveAttribute('href', 'https://routing.openstreetmap.de/about.html');
   await expect(credits.getByRole('link', { name: 'Fix the map · OpenStreetMap' })).toHaveAttribute('href', 'https://www.openstreetmap.org/fixthemap');
+  // Places across Europe come from komoot's Photon.
+  await expect(credits.getByRole('link', { name: 'Search · Photon, komoot' })).toHaveAttribute('href', 'https://photon.komoot.io/');
   await expect(credits.getByRole('link', { name: '© swisstopo' })).toHaveAttribute('target', '_blank');
   await expect(credits.getByRole('link', { name: 'Parking · Métropole Européenne de Lille' })).toBeVisible();
   for (const control of await credits.getByRole('button').or(credits.getByRole('link')).all()) {
