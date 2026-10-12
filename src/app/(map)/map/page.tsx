@@ -47,6 +47,8 @@ import {
   boundsIntersect,
   expandBounds,
   haversineM,
+  viewportContainsPoint,
+  type MapViewport,
 } from '@/lib/geo';
 import { useLiveLocation } from '@/lib/useLiveLocation';
 import { useWalkRoute } from '@/lib/useWalkRoute';
@@ -152,13 +154,23 @@ function creditsOpen(): boolean {
   }
 }
 
-function boundsEqual(a: MapBounds | null, b: MapBounds): boolean {
+const sameCoordinate = (a: number, b: number) => Math.abs(a - b) < 1e-7;
+
+function sameCorners(a: MapViewport['corners'], b: MapViewport['corners']): boolean {
+  if (!a || !b) return a === b;
+  return a.length === b.length &&
+    a.every(([lat, lng], i) => sameCoordinate(lat, b[i][0]) && sameCoordinate(lng, b[i][1]));
+}
+
+// A turn of the map can keep its bounds and still show something else: the corners say.
+function viewportsEqual(a: MapViewport | null, b: MapViewport): boolean {
   if (!a) return false;
   return (
-    Math.abs(a.south - b.south) < 1e-7 &&
-    Math.abs(a.west - b.west) < 1e-7 &&
-    Math.abs(a.north - b.north) < 1e-7 &&
-    Math.abs(a.east - b.east) < 1e-7
+    sameCoordinate(a.south, b.south) &&
+    sameCoordinate(a.west, b.west) &&
+    sameCoordinate(a.north, b.north) &&
+    sameCoordinate(a.east, b.east) &&
+    sameCorners(a.corners, b.corners)
   );
 }
 
@@ -181,7 +193,7 @@ export default function Home() {
   const [enabledProviders, setEnabledProviders] = useState<Set<string>>(
     new Set(Object.keys(PROVIDERS))
   );
-  const [viewportBounds, setViewportBounds] = useState<MapBounds | null>(null);
+  const [viewportBounds, setViewportBounds] = useState<MapViewport | null>(null);
   const [viewportZoom, setViewportZoom] = useState(INITIAL_ZOOM);
   const [mapQuery, setMapQuery] = useState<ScooterMapQuery | null>(null);
   const [focusRequest, setFocusRequest] = useState<{
@@ -368,8 +380,8 @@ export default function Home() {
     choosePlace(place);
   };
 
-  const handleViewportChange = useCallback((bounds: MapBounds, zoom: number) => {
-    setViewportBounds(current => boundsEqual(current, bounds) ? current : bounds);
+  const handleViewportChange = useCallback((bounds: MapViewport, zoom: number) => {
+    setViewportBounds(current => viewportsEqual(current, bounds) ? current : bounds);
     setViewportZoom(zoom);
 
     const current = mapQueryRef.current;
@@ -410,8 +422,8 @@ export default function Home() {
     setEnabledProviders(new Set(Object.keys(PROVIDERS)));
   }, []);
 
-  // The response covers a padded area; only markers inside the exact viewport
-  // are rendered and counted. Provider counts intentionally ignore the active
+  // The response covers a padded area; only markers inside the exact viewport,
+  // what the screen shows even of a turned map, are rendered and counted. Provider counts intentionally ignore the active
   // provider selection so every pill shows how many are available on screen.
   const viewportData = useMemo(() => {
     const clustered = responseMeta?.mode === 'clusters';
@@ -421,7 +433,7 @@ export default function Home() {
     if (!viewportBounds) return { providerCounts, visibleVehicles, visibleClusters, totalCount: 0 };
 
     for (const vehicle of vehicles) {
-      if (!boundsContainPoint(viewportBounds, vehicle.lat, vehicle.lng)) continue;
+      if (!viewportContainsPoint(viewportBounds, vehicle.lat, vehicle.lng)) continue;
       if (minBattery > 0 && (vehicle.battery === null || vehicle.battery < minBattery)) continue;
 
       providerCounts[vehicle.provider] = (providerCounts[vehicle.provider] ?? 0) + 1;
@@ -430,7 +442,7 @@ export default function Home() {
 
     if (clustered) {
       for (const cluster of clusters) {
-        if (!boundsContainPoint(viewportBounds, cluster.lat, cluster.lng)) continue;
+        if (!viewportContainsPoint(viewportBounds, cluster.lat, cluster.lng)) continue;
         for (const [provider, count] of Object.entries(cluster.providers)) {
           providerCounts[provider] = (providerCounts[provider] ?? 0) + count;
         }
@@ -472,7 +484,7 @@ export default function Home() {
   const visibleParking = useMemo<ParkingLocation[]>(() => {
     if (!viewportBounds || viewportZoom < PARKING_MIN_ZOOM) return [];
     return parking.filter(location => enabledProviders.has(location.provider) &&
-      boundsContainPoint(viewportBounds, location.lat, location.lng));
+      viewportContainsPoint(viewportBounds, location.lat, location.lng));
   }, [enabledProviders, parking, viewportBounds, viewportZoom]);
 
   // The scooter walked to, as the latest data has it. Some apps give a scooter a
@@ -632,7 +644,7 @@ export default function Home() {
   // The exception is the load that follows a move within the same area: what
   // was known just before holds until the answer, so that the notice and the
   // dashed chip do not leave and come back with every move of the map.
-  const [answered, setAnswered] = useState<{ providers: ReadonlySet<string> | null; viewport: MapBounds | null }>(
+  const [answered, setAnswered] = useState<{ providers: ReadonlySet<string> | null; viewport: MapViewport | null }>(
     { providers: null, viewport: null }
   );
   if (answersQuery && (answered.providers !== providersHere || answered.viewport !== viewportBounds)) {

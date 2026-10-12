@@ -21,6 +21,39 @@ export function boundsContainPoint(bounds: MapBounds, lat: number, lng: number):
   );
 }
 
+/**
+ * What the screen shows of the map. A turned map shows less than its bounds,
+ * which enclose the screen: then the corners of the screen say what is on it.
+ */
+export interface MapViewport extends MapBounds {
+  /** [lat, lng] of each corner of the screen, in order around it; none while north is up. */
+  corners?: readonly (readonly [number, number])[];
+}
+
+function mercatorY(lat: number): number {
+  return Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360));
+}
+
+export function viewportContainsPoint(viewport: MapViewport, lat: number, lng: number): boolean {
+  if (!boundsContainPoint(viewport, lat, lng)) return false;
+  const { corners } = viewport;
+  if (!corners) return true;
+  // On the Mercator plane the screen is a rectangle, turned: a point on it is
+  // on the same side of each of its edges.
+  const y = mercatorY(lat);
+  let side = 0;
+  for (let i = 0; i < corners.length; i++) {
+    const [aLat, aLng] = corners[i];
+    const [bLat, bLng] = corners[(i + 1) % corners.length];
+    const aY = mercatorY(aLat);
+    const cross = Math.sign((bLng - aLng) * (y - aY) - (mercatorY(bLat) - aY) * (lng - aLng));
+    if (cross === 0) continue;
+    if (side === 0) side = cross;
+    else if (cross !== side) return false;
+  }
+  return true;
+}
+
 export function boundsContainBounds(container: MapBounds, contained: MapBounds): boolean {
   return (
     contained.south >= container.south &&

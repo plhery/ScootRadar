@@ -1,6 +1,6 @@
 import { PROVIDERS, PROVIDER_KEYS, providerKeyForSystemId, type ProviderKey } from '@/generated/providers';
-import { boundsContainPoint } from '@/lib/geo';
-import type { MapBounds, ScooterCluster, ScooterResponseMeta, Vehicle } from '@/lib/types';
+import { viewportContainsPoint, type MapViewport } from '@/lib/geo';
+import type { ScooterCluster, ScooterResponseMeta, Vehicle } from '@/lib/types';
 import type { UiText } from '@/lib/uiText';
 
 /**
@@ -34,17 +34,17 @@ const HEALTHY: ProviderHealth = { down: [], unknown: false };
 export function providersInView({ vehicles, clusters, viewport, serverMinBattery }: {
   vehicles: readonly Pick<Vehicle, 'provider' | 'lat' | 'lng'>[];
   clusters: readonly Pick<ScooterCluster, 'lat' | 'lng' | 'providers'>[];
-  viewport: MapBounds | null;
+  viewport: MapViewport | null;
   /** The minBattery of the query that produced the response. */
   serverMinBattery: number;
 }): Set<string> | null {
   if (!viewport || serverMinBattery > 0) return null;
   const providers = new Set<string>();
   for (const vehicle of vehicles) {
-    if (boundsContainPoint(viewport, vehicle.lat, vehicle.lng)) providers.add(vehicle.provider);
+    if (viewportContainsPoint(viewport, vehicle.lat, vehicle.lng)) providers.add(vehicle.provider);
   }
   for (const cluster of clusters) {
-    if (!boundsContainPoint(viewport, cluster.lat, cluster.lng)) continue;
+    if (!viewportContainsPoint(viewport, cluster.lat, cluster.lng)) continue;
     for (const [provider, count] of Object.entries(cluster.providers)) {
       if (count > 0) providers.add(provider);
     }

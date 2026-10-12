@@ -11,12 +11,12 @@ import 'leaflet/dist/leaflet.css';
 import MapCompass from './MapCompass';
 import MarkerPopover, { followMarker } from './MarkerPopover';
 import UserLocationMarker from './UserLocationMarker';
-import type { MapBounds, ParkingLocation, ScooterCluster, Vehicle } from '@/lib/types';
+import type { ParkingLocation, ScooterCluster, Vehicle } from '@/lib/types';
 import { PROVIDERS } from '@/lib/types';
 import { useI18n, type TranslationKey } from '@/lib/i18n';
 import type { AddressResult } from '@/components/AddressSearch';
 import type { MapStyleName, ThemeName } from '@/lib/clientParams';
-import { haversineM } from '@/lib/geo';
+import { haversineM, type MapViewport } from '@/lib/geo';
 import {
   CLOSE_UP_ZOOM,
   NAME_WEIGHT,
@@ -316,7 +316,7 @@ interface MapComponentProps {
   focusZoom: number | null;
   focusVersion: number;
   destination: AddressResult | null;
-  onViewportChange: (bounds: MapBounds, zoom: number) => void;
+  onViewportChange: (bounds: MapViewport, zoom: number) => void;
   selectedVehicleKey: string | null;
   onVehicleSelect: (vehicle: Vehicle) => void;
   selectedParkingId: string | null;
@@ -487,12 +487,28 @@ export default function MapComponent({
   const destinationIcon = useMemo(() => createDestinationIcon(), []);
 
   const reportViewport = useCallback((map: L.Map) => {
+    // Panned into a copy of the world, beside this one: brought back to the same
+    // place in this one, where the scooters are drawn and longitudes are asked for.
+    const center = map.getCenter();
+    if (Math.abs(center.lng) > 180) {
+      map.setView(map.wrapLatLng(center), map.getZoom(), { animate: false });
+      return;
+    }
+    // Turned, the map's bounds enclose the screen, and more.
     const bounds = map.getBounds();
+    const size = map.getSize();
+    const corners = map.getBearing() % 360 === 0
+      ? undefined
+      : [L.point(0, 0), L.point(size.x, 0), size, L.point(0, size.y)].map(corner => {
+          const { lat, lng } = map.containerPointToLatLng(corner);
+          return [lat, lng] as const;
+        });
     const next = {
       south: Math.min(90, Math.max(-90, bounds.getSouth())),
       west: Math.min(180, Math.max(-180, bounds.getWest())),
       north: Math.min(90, Math.max(-90, bounds.getNorth())),
       east: Math.min(180, Math.max(-180, bounds.getEast())),
+      corners,
     };
     if (next.south < next.north && next.west < next.east) {
       onViewportChangeRef.current(next, map.getZoom());

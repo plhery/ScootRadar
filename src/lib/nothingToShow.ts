@@ -1,9 +1,9 @@
 import { PROVIDERS, PROVIDER_KEYS } from '@/generated/providers';
 import { nearestCoveredCities, type NearbyCoveredCity } from '@/lib/coveredCities';
-import { boundsContainPoint } from '@/lib/geo';
+import { viewportContainsPoint, type MapViewport } from '@/lib/geo';
 import type { LoadFailure } from '@/lib/loadFailure';
 import type { ScooterLoading } from '@/lib/scooterDataState';
-import type { MapBounds, ScooterCluster, ScooterResponseMeta, Vehicle } from '@/lib/types';
+import type { ScooterCluster, ScooterResponseMeta, Vehicle } from '@/lib/types';
 import type { UiTextFormatter } from '@/lib/uiText';
 
 /** How many cities the outside-coverage card offers. */
@@ -60,17 +60,17 @@ export function unfilteredCountInView({ meta, vehicles, clusters, viewport, serv
   meta: Pick<ScooterResponseMeta, 'truncated'> | null;
   vehicles: readonly Pick<Vehicle, 'lat' | 'lng'>[];
   clusters: readonly Pick<ScooterCluster, 'lat' | 'lng' | 'providers'>[];
-  viewport: MapBounds | null;
+  viewport: MapViewport | null;
   /** The minBattery of the query that produced the response. */
   serverMinBattery: number;
 }): number | null {
   if (!meta || !viewport || meta.truncated || serverMinBattery > 0) return null;
   let count = 0;
   for (const vehicle of vehicles) {
-    if (boundsContainPoint(viewport, vehicle.lat, vehicle.lng)) count++;
+    if (viewportContainsPoint(viewport, vehicle.lat, vehicle.lng)) count++;
   }
   for (const cluster of clusters) {
-    if (!boundsContainPoint(viewport, cluster.lat, cluster.lng)) continue;
+    if (!viewportContainsPoint(viewport, cluster.lat, cluster.lng)) continue;
     for (const providerCount of Object.values(cluster.providers)) count += providerCount;
   }
   return count;

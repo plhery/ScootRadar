@@ -1,7 +1,7 @@
 import { PROVIDERS, PROVIDER_KEYS } from '@/generated/providers';
 import type { NearbyCoveredCity } from '@/lib/coveredCities';
 import { providerHealth, providersDownNotice, type ProviderHealth } from '@/lib/dataHealth';
-import { boundsContainPoint } from '@/lib/geo';
+import { viewportContainsPoint, type MapViewport } from '@/lib/geo';
 import { failureReasonKey, type LoadFailure } from '@/lib/loadFailure';
 import {
   coverageDistanceKm,
@@ -10,7 +10,7 @@ import {
 } from '@/lib/nothingToShow';
 import { activeCurfew } from '@/lib/rentalCurfews';
 import type { ScooterLoading } from '@/lib/scooterDataState';
-import type { MapBounds, ScooterResponseMeta } from '@/lib/types';
+import type { ScooterResponseMeta } from '@/lib/types';
 import type { UiText, UiTextFormatter } from '@/lib/uiText';
 import { walkingMinutes } from '@/lib/walking';
 
@@ -18,8 +18,8 @@ const LIVE_MAX_AGE_MS = 90_000;
 const MINUTE_MS = 60_000;
 const HOUR_MS = 3_600_000;
 
-export function originInViewport(origin: [number, number] | null, viewport: MapBounds | null): boolean {
-  return origin !== null && viewport !== null && boundsContainPoint(viewport, origin[0], origin[1]);
+export function originInViewport(origin: [number, number] | null, viewport: MapViewport | null): boolean {
+  return origin !== null && viewport !== null && viewportContainsPoint(viewport, origin[0], origin[1]);
 }
 
 export interface DockChip {

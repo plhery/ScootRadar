@@ -1,7 +1,8 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import type { MapBounds, ParkingLocation, ScooterCluster, Vehicle } from '@/lib/types';
+import type { MapViewport } from '@/lib/geo';
+import type { ParkingLocation, ScooterCluster, Vehicle } from '@/lib/types';
 import type { AddressResult } from '@/components/AddressSearch';
 import type { MapStyleName, ThemeName } from '@/lib/clientParams';
 import type { RefObject } from 'react';
@@ -24,7 +25,7 @@ interface MapWrapperProps {
   focusZoom: number | null;
   focusVersion: number;
   destination: AddressResult | null;
-  onViewportChange: (bounds: MapBounds, zoom: number) => void;
+  onViewportChange: (bounds: MapViewport, zoom: number) => void;
   selectedVehicleKey: string | null;
   onVehicleSelect: (vehicle: Vehicle) => void;
   selectedParkingId: string | null;

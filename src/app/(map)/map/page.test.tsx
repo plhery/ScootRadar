@@ -1049,6 +1049,25 @@ it('tells the filters what the map will show, what each provider has in view and
   expect(screen.queryByRole('button', { name: 'Voi: not sharing data right now' })).not.toBeInTheDocument();
 });
 
+it('counts and leads with only what a turned map shows, not the corners of its bounds', async () => {
+  const body = response();
+  // Inside the bounds but off the screen of the map turned 45°, and nearer Zürich HB than Voi's.
+  body.vehicles[0] = { ...body.vehicles[0], lat: 47.386, lng: 8.528 };
+  body.vehicles.push({ ...body.vehicles[0], provider: 'voi', vehicle_id: 'two', lat: 47.362, lng: 8.548 });
+  body.parking = [{ id: 'bay', provider: 'lime', lat: 47.386, lng: 8.528, name: 'Bay', mandatory: true }];
+  viewport.bounds = { south: 47.36, west: 8.52, north: 47.39, east: 8.57,
+    corners: [[47.39, 8.545], [47.375, 8.57], [47.36, 8.545], [47.375, 8.52]] } as typeof viewport.bounds;
+  vi.stubGlobal('fetch', vi.fn(async () => Response.json(body)));
+  mount();
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(screen.getByTestId('vehicles')).toHaveTextContent('1');
+  expect(screen.getByTestId('parking')).toHaveTextContent('0');
+  expect(JSON.parse(screen.getByTestId('filters').textContent!)).toMatchObject({ show: 1, counts: { voi: 1 } });
+  fireEvent.click(screen.getByRole('button', { name: 'Search Zürich HB' }));
+  fireEvent.click(screen.getByRole('button', { name: /^Nearest scooter to Zürich HB: Voi,/ }));
+  expect(screen.getByTestId('selected')).toHaveTextContent('voi:two');
+});
+
 it('names no provider as not sharing data while city totals are shown', async () => {
   const body = response();
   body.vehicles = [];
