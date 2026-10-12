@@ -19,7 +19,7 @@ export default function PrivacyPage() {
       <article className="legal-content">
         <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
         <h1>Privacy</h1>
-        <p>Last updated: 11 October 2026</p>
+        <p>Last updated: 12 October 2026</p>
 
         <h2>Overview</h2>
         <p>
@@ -31,13 +31,25 @@ export default function PrivacyPage() {
           If you grant location permission, your browser or device provides your position to the
           app. Your position is used on the device to focus the map and calculate distances. The
           ScootRadar API receives the visible map bounds needed to find vehicles, but no
-          separate user-location coordinate. These values are not stored by the application,
-          except in an error report when a request fails (see below).
+          separate user-location coordinate, except for a walking route (see below). These
+          values are not stored by the application, except in an error report when a request
+          fails (see below).
         </p>
         <p>
           The map is drawn on your device from OpenStreetMap data, in tiles requested directly from
           OpenFreeMap. It receives standard network information such as your IP address, the website
           origin and the requested tile coordinates.
+        </p>
+
+        <h2>Walking routes</h2>
+        <p>
+          When you press Directions on the website, the start of the walk (your location, or the
+          place you searched for) and the scooter or parking bay are sent through the ScootRadar
+          API, in the request body, to the Valhalla routing service run by FOSSGIS e.V. in Germany,
+          which keeps route requests in its server log. ScootRadar does not send your IP address
+          with them, and neither logs nor stores them. While the route is on the map, it is asked
+          for again from where you are if you leave it, or if the scooter moves. In the iOS app,
+          walking routes come from Apple Maps.
         </p>
 
         <h2>Address search</h2>
@@ -114,6 +126,8 @@ export default function PrivacyPage() {
           Third-party services have their own privacy policies: {' '}
           <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a>, {' '}
           <a href="https://openfreemap.org/privacy/">OpenFreeMap</a>, {' '}
+          <a href="https://www.fossgis.de/datenschutzerkl%C3%A4rung">FOSSGIS</a>, {' '}
+          <a href="https://www.apple.com/legal/privacy/">Apple</a>, {' '}
           <a href="https://sentry.io/privacy/">Sentry</a>, and {' '}
           <a href="https://www.geo.admin.ch/en/data-privacy">geo.admin.ch</a>.
         </p>

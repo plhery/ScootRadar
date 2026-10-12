@@ -2,10 +2,21 @@
 
 import { useLayoutEffect, type ReactNode, type RefObject } from 'react';
 import type L from 'leaflet';
-import { placePopover } from '@/lib/popoverPlacement';
+import { placePopover, type Box } from '@/lib/popoverPlacement';
 
 // What stays free between the card and the search bar when the card is below it.
 const SEARCH_BAR_GAP = 12;
+// What is on the map besides the markers: a card out of sight of its marker leaves it in view.
+const CONTROLS = [
+  '.search-island',
+  '.map-notices .load-banner',
+  '.map-notices .location-card',
+  '.sheet',
+  '.map-navigation',
+  '.fab-stack:not([aria-hidden="true"])',
+  '.map-attribution',
+  '.key-hints',
+].join(', ');
 
 /**
  * Keeps a card beside its marker while the map moves, zooms, rotates or is
@@ -24,16 +35,25 @@ export function followMarker(map: L.Map, card: HTMLElement, anchor: () => HTMLEl
     const target = marker.getBoundingClientRect();
     const area = map.getContainer().getBoundingClientRect();
     const bar = document.querySelector('.search-island')?.getBoundingClientRect();
+    const controls = (): Box[] => [...document.querySelectorAll(CONTROLS)]
+      .map(control => control.getBoundingClientRect())
+      .filter(box => box.width > 0 && box.height > 0)
+      .map(box => ({ left: box.left - area.left, top: box.top - area.top, right: box.right - area.left, bottom: box.bottom - area.top }));
+    const centre = { x: target.left + target.width / 2 - area.left, y: target.top + target.height / 2 - area.top };
     const placement = placePopover({
-      anchor: { x: target.left + target.width / 2 - area.left, y: target.top + target.height / 2 - area.top },
+      anchor: centre,
       size: { width: card.offsetWidth, height: card.offsetHeight },
       viewport: { width: area.width, height: area.height },
       avoid: bar && { right: bar.right - area.left + SEARCH_BAR_GAP, bottom: bar.bottom - area.top + SEARCH_BAR_GAP },
+      // Only looked for once the marker is out of view: a card beside it may cover them.
+      controls: centre.x < 0 || centre.y < 0 || centre.x > area.width || centre.y > area.height ? controls() : [],
     });
     card.style.left = `${Math.round(area.left + placement.left)}px`;
     card.style.top = `${Math.round(area.top + placement.top)}px`;
     card.style.setProperty('--arrow-top', `${Math.round(placement.arrowTop)}px`);
     card.dataset.side = placement.side;
+    if (placement.detached) card.dataset.detached = 'true';
+    else delete card.dataset.detached;
     card.dataset.placed = 'true';
   };
 

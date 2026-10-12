@@ -15,16 +15,17 @@ const track = vi.mocked(sendEvent);
 const viewport = vi.hoisted(() => ({ bounds: { south: 47.36, west: 8.52, north: 47.39, east: 8.57 } }));
 vi.mock('@/components/MapWrapper', () => ({ default: function MapStub({
   onViewportChange, onVehicleSelect, onParkingSelect, selectedParkingId, vehicles, parking, focusLocation, focusZoom, destination,
-  hoverTips, popover, zoomStep, selectedVehicleKey, onMapClick, markerLookupRef, userLocation,
+  hoverTips, popover, zoomStep, selectedVehicleKey, onMapClick, markerLookupRef, userLocation, walk,
 }: {
   userLocation: [number, number] | null;
   markerLookupRef: { current: ((vehicleKey: string | null, parkingId: string | null) => HTMLElement | null) | null };
   hoverTips: boolean; popover: { label: string; content: React.ReactNode } | null; zoomStep: { direction: number; version: number };
   onViewportChange: (bounds: MapBounds, zoom: number) => void; onVehicleSelect: (vehicle: Vehicle) => void;
   onParkingSelect: (location: ParkingLocation) => void; selectedParkingId: string | null;
-  selectedVehicleKey: string | null; onMapClick: () => void;
+  selectedVehicleKey: string | null; onMapClick: (() => void) | undefined;
   vehicles: Vehicle[]; parking: ParkingLocation[]; focusLocation: [number, number] | null; focusZoom: number | null;
   destination: { display_name: string } | null;
+  walk: { phase: string; line: [number, number][]; routeId: number | null; remainingM: number | null } | null;
 }) {
   useEffect(() => onViewportChange(viewport.bounds, 16), [onViewportChange]);
   useEffect(() => {
@@ -34,6 +35,7 @@ vi.mock('@/components/MapWrapper', () => ({ default: function MapStub({
     <span data-testid="focus">{focusLocation ? `${focusLocation.join(',')} zoom ${focusZoom}` : 'none'}</span>
     <span data-testid="pin">{destination ? destination.display_name : 'none'}</span>
     <span data-testid="dot">{userLocation ? 'shown' : 'none'}</span>
+    <span data-testid="route">{walk ? `${walk.phase} ${walk.line.length} ${walk.routeId}` : 'none'}</span>
     <span data-testid="tips">{String(hoverTips)}</span><span data-testid="zoom-steps">{zoomStep.version}:{zoomStep.direction}</span>
     <span data-testid="selected">{selectedVehicleKey ?? selectedParkingId ?? 'none'}</span><button onClick={onMapClick}>Tap the map</button>
     {popover && <div role="dialog" aria-label={popover.label}>{popover.content}</div>}
@@ -580,6 +582,401 @@ it('closes the card of a scooter or a bay with a tap on the map', async () => {
   expect(track).not.toHaveBeenCalled();
 });
 
+// Some 340 m north-east of `position` in a straight line, some 480 m along the streets.
+const FAR: Vehicle = { provider: 'lime', vehicle_id: 'far', lat: 47.379, lng: 8.545, battery: 80, range_m: null,
+  distance_m: null, deep_link: null };
+const OTHER: Vehicle = { ...FAR, provider: 'voi', vehicle_id: 'two', lat: 47.3745, lng: 8.538 };
+// Some 330 m south-east of `position` in a straight line, some 440 m along the streets.
+const FAR_BAY: ParkingLocation = { id: 'bay', provider: 'lime', lat: 47.3755, lng: 8.5455, name: 'Bay', mandatory: true };
+const HERE: [number, number] = [position.coords.latitude, position.coords.longitude];
+const TAKEN = 'No longer on the map. Someone may have taken it.';
+
+/** Scooter data as `response()` has it, with these scooters and bays: a new update each time. */
+function data(vehicles: Vehicle[], parking: ParkingLocation[] = [], meta: Partial<ScooterResponse['meta']> = {}): ScooterResponse {
+  const body = response();
+  return { ...body, vehicles, parking, meta: { ...body.meta, totalVehicles: vehicles.length, ...meta } };
+}
+type Way = { from: [number, number]; to: [number, number] };
+/** Along two streets: north or south first, then east or west. */
+const alongStreets = ({ from, to }: Way) => Response.json({ path: [from, [to[0], from[1]], to], distanceM: 0 });
+/**
+ * The server: what `scooters()` has inside the area asked for, and the ways on
+ * foot of `walk`. Returns what was asked of /api/walk.
+ */
+function stubServer(scooters: () => ScooterResponse, walk: (way: Way) => Response = alongStreets) {
+  const walks: (Way & { method?: string })[] = [];
+  vi.stubGlobal('fetch', vi.fn(async (input: string, init?: RequestInit) => {
+    if (input === '/api/walk') {
+      const way = JSON.parse(String(init?.body)) as Way;
+      walks.push({ method: init?.method, ...way });
+      return walk(way);
+    }
+    const area = new URL(input, 'https://scootradar.test').searchParams;
+    const [south, west, north, east] = ['south', 'west', 'north', 'east'].map(side => Number(area.get(side)));
+    const inside = ({ lat, lng }: { lat: number; lng: number }) => lat >= south && lat <= north && lng >= west && lng <= east;
+    const body = scooters();
+    return Response.json({ ...body, vehicles: body.vehicles.filter(inside), parking: body.parking?.filter(inside) });
+  }));
+  return walks;
+}
+
+const routeOnMap = () => screen.getByTestId('route');
+const scooterCard = () => screen.getByRole('group', { name: 'Lime scooter' });
+/** The map loaded on Zürich, with your location found at `position`. */
+async function mountLocated() {
+  stubGeolocation(position);
+  mount();
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Near me' })); });
+}
+/** Presses Directions on a card and lets the server answer. */
+async function pressDirections(card: HTMLElement) {
+  await act(async () => {
+    fireEvent.click(within(card).getByRole('button', { name: 'Directions' }));
+    await vi.advanceTimersByTimeAsync(0);
+  });
+}
+// The data is refreshed every minute.
+const refreshData = () => act(async () => vi.advanceTimersByTimeAsync(61_000));
+
+it('draws the walk from your location when Directions is pressed, and keeps the card until the route is hidden', async () => {
+  const walks = stubServer(() => data([FAR]));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  // In a straight line until there is a way.
+  expect(within(scooterCard()).getByText(/^≈5 min walk · 34\d m$/)).toBeInTheDocument();
+  track.mockClear();
+
+  await pressDirections(scooterCard());
+  expect(walks).toEqual([{ method: 'POST', from: HERE, to: [FAR.lat, FAR.lng] }]);
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  // What is left of the way, not the straight line.
+  expect(within(scooterCard()).getByText(/^≈7 min walk · 48\d m$/)).toBeInTheDocument();
+  expect(within(scooterCard()).getByText(/^Route shown: ≈7 min walk · 48\d m$/)).toBeInTheDocument();
+  expect(track.mock.calls).toEqual([
+    ['directions_open', { provider: 'lime', target: 'vehicle', result: 'route' }],
+    ['route_result', { result: 'success' }],
+  ]);
+
+  // A stray tap on the map leaves the card and its way.
+  fireEvent.click(screen.getByRole('button', { name: 'Tap the map' }));
+  expect(within(scooterCard()).getByRole('heading', { name: 'Lime' })).toBeVisible();
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  expect(track).not.toHaveBeenCalledWith('vehicle_dismiss');
+
+  fireEvent.click(within(scooterCard()).getByRole('button', { name: 'Hide route' }));
+  expect(routeOnMap()).toHaveTextContent('none');
+  expect(within(scooterCard()).getByRole('button', { name: 'Directions' })).toBeVisible();
+  expect(within(scooterCard()).getByText(/^≈5 min walk · 34\d m$/)).toBeInTheDocument();
+  expect(screen.getByTestId('selected')).toHaveTextContent('lime:far');
+  fireEvent.click(screen.getByRole('button', { name: 'Tap the map' }));
+  expect(screen.queryByRole('group', { name: 'Lime scooter' })).toBeNull();
+  expect(screen.getByTestId('selected')).toHaveTextContent('none');
+  expect(walks).toHaveLength(1);
+});
+
+it('finds your location first when Directions is pressed without one, and asks for the way once it has come', async () => {
+  const walks = stubServer(() => data([FAR]));
+  const fixArrives = stubSlowGeolocation();
+  mount();
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  track.mockClear();
+
+  await pressDirections(scooterCard());
+  const directions = within(scooterCard()).getByRole('button', { name: 'Directions' });
+  expect(directions).toHaveAttribute('aria-busy', 'true');
+  expect(within(scooterCard()).getByText('Finding the way…')).toBeInTheDocument();
+  expect(routeOnMap()).toHaveTextContent('locating 0 null');
+  expect(navigator.geolocation.getCurrentPosition).toHaveBeenCalledOnce();
+  expect(track.mock.calls.filter(([event]) => event === 'locate')).toHaveLength(1);
+  // Pressed again while it is on its way: nothing more is asked.
+  fireEvent.click(directions);
+  expect(navigator.geolocation.getCurrentPosition).toHaveBeenCalledOnce();
+  expect(walks).toEqual([]);
+
+  await act(async () => { fixArrives(); await vi.advanceTimersByTimeAsync(0); });
+  expect(walks).toEqual([{ method: 'POST', from: HERE, to: [FAR.lat, FAR.lng] }]);
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  expect(within(scooterCard()).getByRole('button', { name: 'Hide route' })).toHaveAttribute('aria-busy', 'false');
+  // The map stays on the scooter.
+  expect(screen.getByTestId('focus')).toHaveTextContent('none');
+});
+
+it('says when Directions cannot find your location, and offers Google Maps instead', async () => {
+  const walks = stubServer(() => data([FAR]));
+  stubGeolocation(null);
+  mount();
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+  expect(within(scooterCard()).getByText('Couldn’t find your location.')).toBeVisible();
+  expect(within(scooterCard()).getByRole('link', { name: 'Open in Google Maps' }))
+    .toHaveAttribute('href', expect.stringContaining('travelmode=walking'));
+  expect(within(scooterCard()).queryByRole('button', { name: 'Directions' })).toBeNull();
+  expect(routeOnMap()).toHaveTextContent('failed 0 null');
+  expect(walks).toEqual([]);
+});
+
+it('ends the walk when another scooter is chosen or the card closes, and keeps it when the same one is pressed again', async () => {
+  const walks = stubServer(() => data([FAR, OTHER]));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  expect(within(scooterCard()).getByRole('button', { name: 'Hide route' })).toBeVisible();
+
+  fireEvent.click(screen.getByRole('button', { name: 'Marker two' }));
+  expect(screen.getByTestId('selected')).toHaveTextContent('voi:two');
+  expect(routeOnMap()).toHaveTextContent('none');
+  expect(within(screen.getByRole('group', { name: 'Voi scooter' })).getByRole('button', { name: 'Directions' })).toBeVisible();
+
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  fireEvent.click(within(scooterCard()).getByRole('button', { name: 'Close scooter details' }));
+  expect(routeOnMap()).toHaveTextContent('none');
+  expect(screen.getByTestId('selected')).toHaveTextContent('none');
+  expect(walks).toHaveLength(2);
+});
+
+it('walks to a parking bay too, and keeps the bay and its way below the zoom of bays', async () => {
+  const walks = stubServer(() => data([], [FAR_BAY]));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Parking bay' }));
+  const bayCard = () => screen.getByRole('group', { name: 'Lime parking bay' });
+  expect(document.querySelector('.card-title p')).toHaveTextContent(/^Bay · ≈5 min walk$/);
+  track.mockClear();
+
+  await pressDirections(bayCard());
+  expect(walks).toEqual([{ method: 'POST', from: HERE, to: [FAR_BAY.lat, FAR_BAY.lng] }]);
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  expect(document.querySelector('.card-title p')).toHaveTextContent(/^Bay · ≈6 min walk$/);
+  expect(track).toHaveBeenCalledWith('directions_open', { provider: 'lime', target: 'parking', result: 'route' });
+  expect(track).toHaveBeenCalledWith('route_result', { result: 'success' });
+
+  // Further out no bays are shown, but the one walked to stays, with its card and its way.
+  await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Zoom to 15' })); });
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(screen.getByTestId('parking')).toHaveTextContent('1');
+  expect(within(bayCard()).getByRole('button', { name: 'Hide route' })).toBeVisible();
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+
+  fireEvent.click(within(bayCard()).getByRole('button', { name: 'Close parking details' }));
+  expect(routeOnMap()).toHaveTextContent('none');
+  expect(screen.getByTestId('parking')).toHaveTextContent('0');
+});
+
+it('keeps the scooter walked to and its card while the map is away from it, until its provider is switched off', async () => {
+  stubServer(() => data([FAR]));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+
+  // Dragged out of view, where the data does not have it: without a walk the card would close.
+  viewport.bounds = { south: 47.40, west: 8.52, north: 47.43, east: 8.57 };
+  await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Zoom to 16' })); });
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(screen.getByRole('button', { name: 'Marker far' })).toBeInTheDocument();
+  expect(screen.getByTestId('vehicles')).toHaveTextContent('1');
+  expect(screen.getByTestId('selected')).toHaveTextContent('lime:far');
+  expect(within(scooterCard()).getByRole('button', { name: 'Hide route' })).toBeVisible();
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  // Data for another area says nothing of whether it was taken.
+  await refreshData();
+  await refreshData();
+  expect(screen.queryByText(TAKEN)).toBeNull();
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+
+  fireEvent.click(screen.getByRole('button', { name: 'Lime in the filters' }));
+  expect(screen.queryByRole('group', { name: 'Lime scooter' })).toBeNull();
+  expect(routeOnMap()).toHaveTextContent('none');
+  expect(screen.getByTestId('selected')).toHaveTextContent('none');
+  fireEvent.click(screen.getByRole('button', { name: 'Lime in the filters' }));
+  expect(screen.queryByRole('group', { name: 'Lime scooter' })).toBeNull();
+  expect(screen.getByTestId('vehicles')).toHaveTextContent('0');
+});
+
+it('says the scooter walked to was taken once two updates of the data that would show it no longer have it', async () => {
+  let vehicles = [FAR];
+  stubServer(() => data(vehicles));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+
+  // Missing from one update: it may be back with the next, so the way stays.
+  vehicles = [];
+  await refreshData();
+  expect(screen.queryByText(TAKEN)).toBeNull();
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  expect(screen.getByRole('button', { name: 'Marker far' })).toBeInTheDocument();
+  vehicles = [FAR];
+  await refreshData();
+  vehicles = [];
+  await refreshData();
+  expect(screen.queryByText(TAKEN)).toBeNull();
+
+  // Missing from a second, later update as well.
+  await refreshData();
+  expect(within(scooterCard()).getByText(TAKEN)).toBeVisible();
+  expect(routeOnMap()).toHaveTextContent('gone 0 null');
+  expect(within(scooterCard()).queryByRole('link')).toBeNull();
+  expect(within(scooterCard()).queryByRole('button', { name: /^(Directions|Hide route)$/ })).toBeNull();
+});
+
+it('keeps where a scooter taken was beside its card, and gives Directions back if it returns', async () => {
+  let vehicles = [FAR];
+  stubServer(() => data(vehicles));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+  vehicles = [];
+  await refreshData();
+  await refreshData();
+  expect(within(scooterCard()).getByText(TAKEN)).toBeVisible();
+  // The map draws it as where it was, so that a card beside its marker keeps its place.
+  expect(routeOnMap()).toHaveTextContent('gone 0 null');
+  expect(screen.getByRole('button', { name: 'Marker far' })).toBeInTheDocument();
+  expect(screen.getByTestId('selected')).toHaveTextContent('lime:far');
+
+  vehicles = [FAR];
+  await refreshData();
+  expect(screen.queryByText(TAKEN)).toBeNull();
+  expect(routeOnMap()).toHaveTextContent('none');
+  expect(within(scooterCard()).getByRole('button', { name: 'Directions' })).toBeVisible();
+});
+
+it('leaves the card of a walk that failed to the view, as any other', async () => {
+  stubServer(() => data([FAR]), () => Response.json({ reason: 'no_route' }, { status: 422 }));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+  expect(routeOnMap()).toHaveTextContent('failed 0 null');
+
+  viewport.bounds = { south: 47.40, west: 8.52, north: 47.43, east: 8.57 };
+  await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Zoom to 16' })); });
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(screen.queryByRole('group', { name: 'Lime scooter' })).toBeNull();
+  expect(routeOnMap()).toHaveTextContent('none');
+  expect(screen.getByTestId('vehicles')).toHaveTextContent('0');
+});
+
+it('never takes the scooter walked to for gone from data that cannot tell', async () => {
+  let vehicles = [FAR];
+  let meta: Partial<ScooterResponse['meta']> = {};
+  stubServer(() => data(vehicles, [], meta));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+  vehicles = [];
+
+  // A feed of Lime failed, the answer was cut short, or the scooters came in groups.
+  for (const cannotTell of [
+    { failedSources: ['national:lime_zurich'], partial: true },
+    { truncated: true },
+    { mode: 'clusters' as const },
+  ]) {
+    meta = cannotTell;
+    await refreshData();
+    await refreshData();
+    expect(screen.queryByText(TAKEN)).toBeNull();
+    expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  }
+
+  // Further out the server leaves out the scooters under the minimum battery.
+  meta = {};
+  fireEvent.click(screen.getByRole('button', { name: 'Zoom to 15' }));
+  fireEvent.click(screen.getByRole('button', { name: 'At least 60% in the filters' }));
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(vi.mocked(fetch).mock.calls.at(-1)![0]).toContain('minBattery=60');
+  await refreshData();
+  expect(screen.queryByText(TAKEN)).toBeNull();
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+
+  // Back at street level, where every scooter is sent: another provider's failed feed does not matter.
+  meta = { failedSources: ['national:bird_zurich'], partial: true };
+  await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Zoom to 16' })); });
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(screen.queryByText(TAKEN)).toBeNull();
+  await refreshData();
+  expect(within(scooterCard()).getByText(TAKEN)).toBeVisible();
+});
+
+it('follows the scooter walked to when its app gives it a new id a few metres away', async () => {
+  let vehicles = [FAR];
+  const walks = stubServer(() => data(vehicles));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+
+  // Neither a Voi on the same spot nor a Lime 30 m away is it.
+  vehicles = [{ ...FAR, provider: 'voi', vehicle_id: 'voi-here' }, { ...FAR, vehicle_id: 'lime-near', lat: FAR.lat + 0.00027 }];
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('lime:far');
+
+  // The same Lime some 9 m on, under another id, is.
+  vehicles = [{ ...FAR, vehicle_id: 'renamed', lat: FAR.lat + 0.00008 }];
+  await refreshData();
+  expect(screen.getByTestId('selected')).toHaveTextContent('lime:renamed');
+  expect(within(scooterCard()).getByRole('button', { name: 'Hide route' })).toBeVisible();
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  expect(screen.getAllByRole('button', { name: /^Marker / }).map(marker => marker.textContent)).toEqual(['Marker renamed']);
+  await refreshData();
+  expect(screen.queryByText(TAKEN)).toBeNull();
+  // Pressed on the map, it is the same walk.
+  fireEvent.click(screen.getByRole('button', { name: 'Marker renamed' }));
+  expect(routeOnMap()).toHaveTextContent('shown 3 1');
+  expect(walks).toHaveLength(1);
+});
+
+it('leaves a walk of more than 10 km to Google Maps', async () => {
+  const walks = stubServer(() => data([FAR]));
+  mount();
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  fireEvent.click(screen.getByRole('button', { name: 'Search Lungern' }));
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  track.mockClear();
+
+  const directions = within(scooterCard()).getByRole('link', { name: 'Directions' });
+  expect(directions).toHaveAttribute('href', 'https://www.google.com/maps/dir/?api=1&destination=47.379%2C8.545&travelmode=walking');
+  fireEvent.click(directions);
+  await act(async () => vi.advanceTimersByTimeAsync(0));
+  expect(track.mock.calls).toEqual([['directions_open', { provider: 'lime', target: 'vehicle', result: 'maps' }]]);
+  expect(walks).toEqual([]);
+  expect(routeOnMap()).toHaveTextContent('none');
+});
+
+it('offers Google Maps when no walking route is found, and says when none can be loaded', async () => {
+  let failure = { status: 422, reason: 'no_route' };
+  const walks = stubServer(() => data([FAR]), () => Response.json({ reason: failure.reason }, { status: failure.status }));
+  await mountLocated();
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  track.mockClear();
+
+  await pressDirections(scooterCard());
+  expect(within(scooterCard()).getByText('Couldn’t find a walking route.')).toBeVisible();
+  const maps = within(scooterCard()).getByRole('link', { name: 'Open in Google Maps' });
+  expect(maps).toHaveAttribute('href', expect.stringContaining('travelmode=walking'));
+  expect(routeOnMap()).toHaveTextContent('failed 0 null');
+  expect(track).toHaveBeenCalledWith('route_result', { result: 'no_route' });
+  fireEvent.click(maps);
+  expect(track).toHaveBeenLastCalledWith('directions_open', { provider: 'lime', target: 'vehicle', result: 'maps' });
+  // Nothing is drawn: a tap on the map closes the card again.
+  fireEvent.click(screen.getByRole('button', { name: 'Tap the map' }));
+  expect(screen.queryByRole('group', { name: 'Lime scooter' })).toBeNull();
+
+  failure = { status: 503, reason: 'busy' };
+  fireEvent.click(screen.getByRole('button', { name: 'Marker far' }));
+  await pressDirections(scooterCard());
+  expect(within(scooterCard()).getByText('Walking routes can’t be loaded right now.')).toBeVisible();
+  expect(within(scooterCard()).getByRole('link', { name: 'Open in Google Maps' })).toBeVisible();
+  expect(track).toHaveBeenCalledWith('route_result', { result: 'busy' });
+  expect(walks).toHaveLength(2);
+});
+
 it('explains an area without scooter data and makes the closest city the place', async () => {
   // Lungern: no operator serves it.
   viewport.bounds = { south: 46.76, west: 8.13, north: 46.79, east: 8.18 };
@@ -1055,7 +1452,7 @@ it('on a desktop opens the card beside the marker, keeps the count and the provi
   fireEvent.click(screen.getByRole('button', { name: 'Marker one' }));
   const card = screen.getByRole('dialog', { name: 'Lime scooter' });
   expect(within(card).getByRole('heading', { name: 'Lime' })).toBeVisible();
-  expect(within(card).getByRole('link', { name: 'Directions' })).toBeVisible();
+  expect(within(card).getByRole('button', { name: 'Directions' })).toBeVisible();
   // The dock keeps what it showed.
   expect(dockCount()).toHaveTextContent(/^1\s*scooter on this map$/);
   expect(screen.getByRole('group', { name: 'Filter scooters by provider' })).toBe(legend);

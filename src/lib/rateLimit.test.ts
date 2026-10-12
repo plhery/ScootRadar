@@ -38,4 +38,15 @@ describe('rateLimitAllows', () => {
     await expect(rateLimitAllows(request, 'SCOOTER_API_RATE_LIMITER')).resolves.toBe(true);
     expect(limit).toHaveBeenCalledWith({ key: '203.0.113.10' });
   });
+
+  it('counts against the key given instead of the client, for a limit all clients share', async () => {
+    const limit = vi.fn().mockResolvedValue({ success: false });
+    getCloudflareContext.mockResolvedValue({
+      env: { WALK_UPSTREAM_RATE_LIMITER: { limit } },
+    });
+
+    await expect(rateLimitAllows(request, 'WALK_UPSTREAM_RATE_LIMITER', 'walk-route-upstream')).resolves.toBe(false);
+    expect(limit).toHaveBeenCalledOnce();
+    expect(limit).toHaveBeenCalledWith({ key: 'walk-route-upstream' });
+  });
 });

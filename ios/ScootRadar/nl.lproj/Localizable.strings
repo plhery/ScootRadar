@@ -208,3 +208,12 @@
 "%@ range" = "%@ bereik";
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ om te ontgrendelen, daarna %2$@ per minuut";
 "No unlock fee, %@ a minute" = "Geen ontgrendelkosten, %@ per minuut";
+
+/* Walking route: Directions on a card draws the way on the map */
+"Hide route" = "Route verbergen";
+"Finding the way…" = "Route zoeken…";
+"Couldn’t find a walking route." = "Geen looproute gevonden.";
+"Open in Maps" = "Openen in Kaarten";
+"You’re there." = "Je bent er.";
+"Route shown: ≈%1$lld min walk · %2$@" = "Route getoond: ≈%1$lld min te voet · %2$@";
+"No longer on the map. Someone may have taken it." = "Niet meer op de kaart. Misschien heeft iemand hem genomen.";

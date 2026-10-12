@@ -197,6 +197,13 @@ struct ScooterControlDock: View {
             guard UIAccessibility.isVoiceOverRunning, let announcement = model.dockAnnouncement else { return }
             UIAccessibility.post(notification: .announcement, argument: announcement)
         }
+        // The walking route is drawn on the map, away from the button that
+        // asked for it, and the walk can end on its own.
+        .animation(reduceMotion ? nil : .snappy(duration: 0.24), value: model.walk?.phase)
+        .onChange(of: model.walkAnnouncement) { _, announcement in
+            guard UIAccessibility.isVoiceOverRunning, let announcement else { return }
+            UIAccessibility.post(notification: .announcement, argument: announcement.text)
+        }
         .sensoryFeedback(.selection, trigger: model.enabledProviders)
     }
 
@@ -1109,6 +1116,12 @@ private struct ScooterCard: View {
                 .padding(.top, 4)
             }
 
+            if let note = model.walkNote(for: .scooter(scooter)) {
+                WalkNoteRow(note: note)
+                    .padding(.top, 12)
+                    .transition(.opacity)
+            }
+
             // "Open in …" is the wider of the two.
             DockActionRow(weights: scooter.rentalURL == nil ? [] : [1.5, 1]) {
                 if let rentalURL = scooter.rentalURL {
@@ -1124,15 +1137,11 @@ private struct ScooterCard: View {
                     .dockActionStyle(prominent: true)
                 }
 
-                Button {
-                    ScooterAnalytics.shared.track("directions_open", provider: scooter.provider, target: "vehicle")
-                    openWalkingDirections(to: scooter)
-                } label: {
-                    Label("Directions", systemImage: "figure.walk")
-                }
-                .dockActionStyle(prominent: false)
+                DirectionsButton(model: model, target: .scooter(scooter), prominent: false)
             }
             .padding(.top, 12)
+            // A scooter gone from the map can be neither rented nor walked to.
+            .removed(model.directionsControl(for: .scooter(scooter)) == .none)
         }
     }
 
@@ -1424,16 +1433,13 @@ private struct ParkingBayCard: View {
                 in: RoundedRectangle(cornerRadius: 14, style: .continuous)
             )
 
+            if let note = model.walkNote(for: .parking(parking)) {
+                WalkNoteRow(note: note)
+                    .transition(.opacity)
+            }
+
             DockActionRow {
-                Button {
-                    ScooterAnalytics.shared.track("directions_open", provider: parking.provider, target: "parking")
-                    openWalkingDirections(to: parking)
-                } label: {
-                    Label("Directions", systemImage: "figure.walk")
-                        .frame(maxWidth: .infinity)
-                        .foregroundStyle(.white)
-                }
-                .dockActionStyle(prominent: true)
+                DirectionsButton(model: model, target: .parking(parking), prominent: true)
             }
 
             Text(parking.footnote)
@@ -2450,26 +2456,98 @@ private struct TopChromeTapShield: View {
     }
 }
 
-private func openWalkingDirections(to scooter: Scooter) {
-    let location = CLLocation(latitude: scooter.latitude, longitude: scooter.longitude)
-    let destination = MKMapItem(location: location, address: nil)
-    let providerName = scooter.providerInfo?.name ?? scooter.provider.capitalized
-    destination.name = String(
-        format: String(localized: "%@ scooter"),
-        providerName
-    )
-    destination.openInMaps(launchOptions: [
-        MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking
-    ])
+/// Directions on a scooter or bay card. It draws the walking route on the
+/// map, and is Hide route while the route is there; while the way is being
+/// found, a small spinner takes the place of its icon. When no route was
+/// found it opens Apple Maps instead.
+private struct DirectionsButton: View {
+    let model: ScooterMapModel
+    let target: ScooterWalkTarget
+    let prominent: Bool
+
+    var body: some View {
+        let control = model.directionsControl(for: target)
+        let isFinding = control == .finding
+        Button {
+            switch control {
+            case .directions: model.showWalkingRoute(to: target)
+            case .hideRoute: model.hideWalkingRoute()
+            case .openInMaps: model.openWalkInMaps(to: target)
+            // Busy: the tap waits for the way like the rider does.
+            case .finding, .none: break
+            }
+        } label: {
+            Label {
+                Text(Self.title(control))
+            } icon: {
+                Image(systemName: Self.symbol(control))
+                    .opacity(isFinding ? 0 : 1)
+                    .overlay {
+                        if isFinding {
+                            ProgressView()
+                                .controlSize(.mini)
+                                .tint(prominent ? Color.white : ScooterPalette.dockText)
+                        }
+                    }
+            }
+        }
+        .dockActionStyle(prominent: prominent)
+        .accessibilityLabel(isFinding ? String(localized: "Finding the way…") : Self.title(control))
+        .accessibilityAddTraits(isFinding ? .updatesFrequently : [])
+    }
+
+    private static func title(_ control: ScooterDirectionsControl) -> String {
+        switch control {
+        case .directions, .finding, .none: String(localized: "Directions")
+        case .hideRoute: String(localized: "Hide route")
+        case .openInMaps: String(localized: "Open in Maps")
+        }
+    }
+
+    private static func symbol(_ control: ScooterDirectionsControl) -> String {
+        switch control {
+        case .directions, .finding, .none: "figure.walk"
+        case .hideRoute: "xmark"
+        case .openInMaps: "map"
+        }
+    }
 }
 
-private func openWalkingDirections(to parking: ScooterParking) {
-    let location = CLLocation(latitude: parking.latitude, longitude: parking.longitude)
-    let destination = MKMapItem(location: location, address: nil)
-    destination.name = parking.name.isEmpty ? parking.bayTitle : parking.name
-    destination.openInMaps(launchOptions: [
-        MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeWalking
-    ])
+/// What became of a walk, on its card: no location or no route, in the
+/// colour of a warning; there, in green; or the scooter gone from the map.
+private struct WalkNoteRow: View {
+    let note: ScooterWalkNote
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 6) {
+            Image(systemName: note.systemImage)
+                .font(.caption.weight(.semibold))
+                .accessibilityHidden(true)
+            Text(note.text)
+                .font(.footnote.weight(.semibold))
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
+        }
+        .foregroundStyle(color)
+        .padding(.horizontal, 2)
+        .accessibilityElement(children: .combine)
+    }
+
+    private var color: Color {
+        switch note {
+        case .noLocation, .noRoute: ScooterPalette.warning
+        case .arrived: ScooterPalette.good
+        case .gone: ScooterPalette.secondaryText
+        }
+    }
+}
+
+private extension View {
+    /// The view, or nothing in its place.
+    @ViewBuilder
+    func removed(_ isRemoved: Bool) -> some View {
+        if !isRemoved { self }
+    }
 }
 
 private func batterySymbol(for battery: Int) -> String {

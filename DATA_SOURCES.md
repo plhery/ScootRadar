@@ -85,6 +85,27 @@ catalog. French street-address geocoding is not provided.
 - The service worker does not bulk-download or create offline tile archives.
 - The iOS app uses Apple Maps.
 
+## Walking routes
+
+- On the web, Directions draws the way on foot on the map. It is asked of
+  [Valhalla](https://github.com/valhalla/valhalla) on the
+  [FOSSGIS routing servers](https://routing.openstreetmap.de/about.html), which
+  route on OpenStreetMap data, through `/api/walk`: the browser never contacts
+  them, and the server sends neither the visitor's IP address nor any cookie.
+- Their [terms](https://www.fossgis.de/arbeitsgruppen/osm-server/nutzungsbedingungen/)
+  ask for at most one request a second, a valid User-Agent and Referer, the
+  attribution and a "fix the map" link, and no heavy use. The proxy sends
+  `scootradar/2.0 (scootradar.com; hello@scootradar.com)` and the site as the
+  referrer, counts all visitors together (`WALK_UPSTREAM_RATE_LIMITER`) and each
+  visitor (`WALK_API_RATE_LIMITER`), and refuses walks over 10 km in a straight
+  line, which open Google Maps instead. The credits list FOSSGIS and link to
+  <https://www.openstreetmap.org/fixthemap>.
+- The address is `WALK_ROUTE_API_URL` in `wrangler.jsonc`, as FOSSGIS asks, so
+  that a Valhalla of our own can take over (`https://` only). A walk asks again
+  at most every 15 seconds and ten times, when the walker leaves the way or the
+  scooter moves; routes with a ferry are refused.
+- The iOS app routes with Apple Maps (MapKit).
+
 ## Scooter parking in France, Germany and Italy
 
 The reviewed regional GBFS systems also supply `station_information`,

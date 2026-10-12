@@ -12,14 +12,9 @@ import { RIDE_DURATIONS, formatRidePrice, ridePriceQuote } from '@/lib/ridePrice
 import { PROVIDERS, type Vehicle } from '@/lib/types';
 import { formatUiText } from '@/lib/uiText';
 import { useRideDuration } from '@/lib/useRideDuration';
-import {
-  distanceParts,
-  formatDistance,
-  walkingDirectionsUrl,
-  walkingMinutes,
-  type WalkEstimate,
-} from '@/lib/walking';
+import { distanceParts, formatDistance, walkingMinutes, type WalkEstimate } from '@/lib/walking';
 import Icon from './Icon';
+import { WalkButton, WalkStatus, type CardWalk } from './WalkAction';
 
 export interface SelectedVehicle {
   vehicle: Vehicle;
@@ -36,6 +31,8 @@ interface ScooterCardProps {
   onLocate: () => void;
   /** The location is on its way: the line says so instead of offering to locate again. */
   locating?: boolean;
+  /** Directions, and the way it draws on the map. */
+  walk: CardWalk;
 }
 
 type FigureKind = 'walk' | 'distance' | 'price' | 'battery' | 'range';
@@ -80,11 +77,13 @@ function Figure({ value, unit, label, spoken, tone, children }: {
 }
 
 /** What the dock shows for the selected scooter: who runs it, how far it is, what a ride costs. */
-export default function ScooterCard({ selection, onClose, onLocate, locating = false }: ScooterCardProps) {
+export default function ScooterCard({ selection, onClose, onLocate, locating = false, walk: cardWalk }: ScooterCardProps) {
   const i18n = useI18n();
   const { locale, t, formatNumber } = i18n;
   const [duration, setDuration] = useRideDuration();
   const { vehicle, walk } = selection;
+  // Taken by someone while you walked to it: nothing is left to do with it.
+  const gone = cardWalk.view?.phase === 'gone';
   const provider = PROVIDERS[vehicle.provider];
   const name = provider?.name ?? vehicle.provider;
   const rentalLink = browserRentalLink(
@@ -248,29 +247,24 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
         </p>
       )}
 
-      <div className="card-actions">
-        {rentalLink && (
-          <a
-            className="card-action-primary"
-            href={rentalLink}
-            target="_blank"
-            rel="noreferrer"
-            onClick={() => { track('rental_open', { provider: vehicle.provider }); selectionFeedback(); }}
-          >
-            <Icon name="scooter" size={18} />
-            {t('card.openIn', { name })}
-          </a>
-        )}
-        <a
-          href={walkingDirectionsUrl(vehicle.lat, vehicle.lng)}
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => { track('directions_open', { provider: vehicle.provider, target: 'vehicle' }); selectionFeedback(); }}
-        >
-          <Icon name="directions" size={18} />
-          {t('card.directions')}
-        </a>
-      </div>
+      {!gone && (
+        <div className="card-actions">
+          {rentalLink && (
+            <a
+              className="card-action-primary"
+              href={rentalLink}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => { track('rental_open', { provider: vehicle.provider }); selectionFeedback(); }}
+            >
+              <Icon name="scooter" size={18} />
+              {t('card.openIn', { name })}
+            </a>
+          )}
+          <WalkButton walk={cardWalk} lat={vehicle.lat} lng={vehicle.lng} provider={vehicle.provider} target="vehicle" />
+        </div>
+      )}
+      <WalkStatus view={cardWalk.view} />
     </div>
   );
 }

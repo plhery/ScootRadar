@@ -1,12 +1,12 @@
 'use client';
 
 import type { CSSProperties } from 'react';
-import { track } from '@/lib/analytics';
 import { selectionFeedback } from '@/lib/feedback';
 import { useI18n } from '@/lib/i18n';
 import { PROVIDERS, type ParkingLocation } from '@/lib/types';
-import { walkingDirectionsUrl, walkingMinutes, type WalkEstimate } from '@/lib/walking';
+import { walkingMinutes, type WalkEstimate } from '@/lib/walking';
 import Icon from './Icon';
+import { WalkButton, WalkStatus, type CardWalk } from './WalkAction';
 
 export interface SelectedParking {
   parking: ParkingLocation;
@@ -17,10 +17,12 @@ export interface SelectedParking {
 interface ParkingCardProps {
   selection: SelectedParking;
   onClose: () => void;
+  /** Directions, and the way it draws on the map. */
+  walk: CardWalk;
 }
 
 /** What the dock shows for the selected parking bay: whose it is, where it is, and whether parking there is required. */
-export default function ParkingCard({ selection, onClose }: ParkingCardProps) {
+export default function ParkingCard({ selection, onClose, walk: cardWalk }: ParkingCardProps) {
   const { t, formatNumber } = useI18n();
   const { parking, walk } = selection;
   const provider = PROVIDERS[parking.provider];
@@ -71,17 +73,9 @@ export default function ParkingCard({ selection, onClose }: ParkingCardProps) {
       </p>
 
       <div className="card-actions">
-        <a
-          className="card-action-primary"
-          href={walkingDirectionsUrl(parking.lat, parking.lng)}
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => { track('directions_open', { provider: parking.provider, target: 'parking' }); selectionFeedback(); }}
-        >
-          <Icon name="directions" size={18} />
-          {t('card.directions')}
-        </a>
+        <WalkButton walk={cardWalk} lat={parking.lat} lng={parking.lng} provider={parking.provider} target="parking" primary />
       </div>
+      <WalkStatus view={cardWalk.view} />
       <p className="card-footnote">{t('bay.check', { name })}</p>
     </div>
   );

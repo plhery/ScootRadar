@@ -208,3 +208,12 @@
 "%@ range" = "%@ Reichweite";
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ zum Entsperren, dann %2$@ pro Minute";
 "No unlock fee, %@ a minute" = "Keine Entsperrgebühr, %@ pro Minute";
+
+/* Walking route: Directions on a card draws the way on the map */
+"Hide route" = "Route ausblenden";
+"Finding the way…" = "Weg wird gesucht…";
+"Couldn’t find a walking route." = "Kein Fussweg gefunden.";
+"Open in Maps" = "In Karten öffnen";
+"You’re there." = "Angekommen.";
+"Route shown: ≈%1$lld min walk · %2$@" = "Route angezeigt: ≈%1$lld Min. zu Fuss · %2$@";
+"No longer on the map. Someone may have taken it." = "Nicht mehr auf der Karte. Vielleicht hat ihn jemand genommen.";

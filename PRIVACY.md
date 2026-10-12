@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 11 October 2026
+Last updated: 12 October 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches.
@@ -8,6 +8,14 @@ searches.
 - With permission, the app uses location coordinates on the device to focus the
   map and calculate distance. Its API receives the visible map bounds needed to
   find vehicles, not a separate user-location coordinate.
+- Walking routes on the web: when Directions is pressed, the start (the user's
+  location, or the searched place) and the scooter or bay are proxied in a
+  non-cacheable request body to the Valhalla routing service run by FOSSGIS e.V.
+  in Germany, without the user's IP address. ScootRadar does not log or store
+  them; FOSSGIS keeps route requests in its server log. While the route is shown
+  it is asked for again when the user leaves it, from where they are, or when
+  the scooter moves.
+  In the iOS app routes come from Apple Maps on the device's behalf.
 - Address text is proxied in a non-cacheable request body, with the language
   the app is shown in, to the Swiss federal geo.admin.ch service. The name of a
   city in the ScootRadar catalogue is answered without contacting it.
@@ -28,7 +36,7 @@ searches.
   state at the time, never the IP address, request headers or search text.
   Sentry keeps it for up to 90 days.
 
-Cloudflare, Sentry and upstream providers may process limited network or security
+Cloudflare, Sentry, FOSSGIS and upstream providers may process limited network or security
 metadata under their own privacy policies. The full user-facing notice is
 published at <https://scootradar.com/privacy>.
 

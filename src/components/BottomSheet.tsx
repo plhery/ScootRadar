@@ -21,6 +21,7 @@ import { distanceParts, formatDistance } from '@/lib/walking';
 import Icon from './Icon';
 import ParkingCard, { type SelectedParking } from './ParkingCard';
 import ScooterCard, { type SelectedVehicle } from './ScooterCard';
+import type { CardWalk } from './WalkAction';
 
 interface BottomSheetProps {
   /** What the dock shows while nothing is selected, from dockModel(). */
@@ -51,6 +52,8 @@ interface BottomSheetProps {
   onLocate: () => void;
   /** The location asked for from a card is on its way. */
   locating?: boolean;
+  /** Directions on the card of the selection, and the way it draws on the map. */
+  walk: CardWalk;
 }
 
 function tap(action: () => void) {
@@ -317,6 +320,7 @@ export default function BottomSheet({
   onSelectNearest,
   onLocate,
   locating = false,
+  walk,
 }: BottomSheetProps) {
   const i18n = useI18n();
   const { t, formatNumber } = i18n;
@@ -361,6 +365,7 @@ export default function BottomSheet({
           onClose={onClearSelection}
           onLocate={onLocate}
           locating={locating}
+          walk={walk}
         />
       </DockSelection>
     );
@@ -373,7 +378,7 @@ export default function BottomSheet({
         anchor={selectionAnchor}
       >
         <CardIssue issue={issue} onRetry={onRetry} />
-        <ParkingCard key={parking.id} selection={selectedParking} onClose={onClearSelection} />
+        <ParkingCard key={parking.id} selection={selectedParking} onClose={onClearSelection} walk={walk} />
       </DockSelection>
     );
   } else if (dock.kind === 'outOfDate') {

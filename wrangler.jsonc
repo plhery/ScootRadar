@@ -28,7 +28,10 @@
     }
   ],
   "vars": {
-    "SCOOTER_SNAPSHOT_API_URL": "https://scooter-data.plhery.com"
+    "SCOOTER_SNAPSHOT_API_URL": "https://scooter-data.plhery.com",
+    // Valhalla for walking routes: src/app/api/walk/route.ts. FOSSGIS asks
+    // that its address be set here rather than in the app.
+    "WALK_ROUTE_API_URL": "https://valhalla1.openstreetmap.de/route"
   },
   "assets": {
     "directory": ".open-next/assets",
@@ -50,6 +53,26 @@
       "simple": {
         "limit": 30,
         "period": 60
+      }
+    },
+    {
+      "name": "WALK_API_RATE_LIMITER",
+      "namespace_id": "1824003",
+      // A walk asks once, then again only when the walker leaves the way.
+      "simple": {
+        "limit": 20,
+        "period": 60
+      }
+    },
+    {
+      "name": "WALK_UPSTREAM_RATE_LIMITER",
+      "namespace_id": "1824004",
+      // All visitors together, by one key: FOSSGIS allows one request a second.
+      // Counted over ten seconds, the shortest period, to keep bursts small.
+      // Cloudflare counts per location, so this is a ceiling for each, not for all.
+      "simple": {
+        "limit": 10,
+        "period": 10
       }
     }
   ],

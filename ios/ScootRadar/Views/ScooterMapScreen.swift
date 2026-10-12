@@ -47,7 +47,10 @@ struct ScooterMapScreen: View {
                     selectedParkingID: model.selectedParkingID,
                     onParkingSelectionChange: model.selectParking,
                     origin: model.mapOrigin,
-                    language: model.language
+                    language: model.language,
+                    walkTrail: model.walkTrail,
+                    isWalking: model.isWalking,
+                    walkRemainingMetres: model.walkRemainingMetres
                 )
                 .ignoresSafeArea()
 

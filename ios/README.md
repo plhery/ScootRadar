@@ -87,6 +87,20 @@ visible.
 **Parking bay card.** Selecting a `P` shows the bay, whether parking there is
 required in this zone, and **Directions**.
 
+**Walking route.** **Directions** on either card draws the way on foot in the
+app, from the searched place or else from you. MapKit's walking directions find
+it, with no other service asked. The map fits the whole route between the search
+bar and the card, and a trail of blue dots draws itself from the start to the
+scooter. The button becomes **Hide route**, and the card and the map's label
+count the minutes along the route. As you walk, the part behind you disappears.
+Leave the route, or have the scooter move, and a new one is found, at most every
+15 seconds; the camera never follows you. Within 20 m the trail fades and the
+card says **You’re there.** A walk of more than 10 km opens Apple Maps as before.
+When no route or no location is found, the card says so and offers **Open in
+Maps**. Closing the card or choosing another scooter or bay ends the walk; until
+then the scooter stays selected wherever the map goes. When fresh data no longer
+lists it, the card stays open with no actions and says someone may have taken it.
+
 **Location problems.** A card under the search bar: **Location is off** with
 **Open Settings** and **Search a place**; restricted on this device; or not
 found, with **Try again**. It stays dismissed until the next attempt.
@@ -158,16 +172,20 @@ changes when it is rebuilt and reinstalled; a web deployment does not update it.
   cards and status lines are built from; `ScooterFiltering.swift` the filters and
   counts; `ScooterMapLook.swift` the look of the map as plain rules: the size of
   a dot, the names and where they stand, scooters on one spot, the nearest
-  scooter of the dock and the figures of the card.
+  scooter of the dock and the figures of the card. `WalkRoute.swift` holds the
+  walking route: how far is left, where the rider is along it, when they left it
+  or arrived, and the walk's states.
   `ProviderCatalog.generated.swift` (providers, service areas, covered
   cities) and `ScooterAPIContract.generated.swift` (the API's shape) are written
   by `npm run generate:providers` and `npm run generate:api-contract` from the
   repository's shared data; do not edit them by hand.
-- `Services/` — the scooter API, the address search and analytics.
+- `Services/` — the scooter API, the address search, MapKit's walking directions
+  and analytics.
 - `ViewModels/ScooterMapModel.swift` — the state of the screen: loading and
   refreshing, location, the selection, filters, passes, and what the dock shows.
 - `Views/` — `ScooterMapScreen.swift` lays the screen out; `ScooterMapView.swift`
-  is the MapKit map and its markers, `ScooterMarkerArt.swift` their pictures;
+  is the MapKit map and its markers, `ScooterMarkerArt.swift` their pictures,
+  `WalkTrailOverlay.swift` the dotted walking trail;
   `ScooterControls.swift` the dock, cards,
   sheets and notices; `SwissAddressSearch.swift` the search bar and panel.
 - `en.lproj`, `de.lproj`, `fr.lproj`, `it.lproj` — every string, keyed by its

@@ -208,3 +208,12 @@
 "%@ range" = "%@ di autonomia";
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ per sbloccare, poi %2$@ al minuto";
 "No unlock fee, %@ a minute" = "Nessun costo di sblocco, %@ al minuto";
+
+/* Walking route: Directions on a card draws the way on the map */
+"Hide route" = "Nascondi percorso";
+"Finding the way…" = "Ricerca del percorso…";
+"Couldn’t find a walking route." = "Nessun percorso a piedi trovato.";
+"Open in Maps" = "Apri in Mappe";
+"You’re there." = "Ci sei.";
+"Route shown: ≈%1$lld min walk · %2$@" = "Percorso mostrato: ≈%1$lld min a piedi · %2$@";
+"No longer on the map. Someone may have taken it." = "Non è più sulla mappa. Forse qualcuno l’ha preso.";

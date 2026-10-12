@@ -45,6 +45,8 @@ import {
 } from '@/lib/quietGround';
 import { scooterTip } from '@/lib/scooterTip';
 import { walkingMinutes } from '@/lib/walking';
+import { createRouteLayer, type Frame, type RouteLayer } from '@/lib/walkRouteLayer';
+import type { WalkView } from '@/lib/walkState';
 import './map.css';
 
 type Translate = (key: TranslationKey, values?: Record<string, string | number>) => string;
@@ -77,6 +79,8 @@ interface Light {
   lettered: boolean;
   /** The name beside it, for the nearest of each app and for the selected one; null for the others. */
   name: { app: string; walk: string | null } | null;
+  /** Taken while it was walked to: only where it was is left. */
+  gone: boolean;
 }
 
 function drawLight(marker: L.Marker, light: Light) {
@@ -90,6 +94,7 @@ function drawLight(marker: L.Marker, light: Light) {
     light.kind === 'head' && 'scooter-marker-head',
     light.kind === 'selected' && 'scooter-marker-selected',
     light.lettered && 'scooter-marker-lettered',
+    light.gone && 'scooter-marker-gone',
   ].filter(Boolean).join(' ');
   dot.style.setProperty('--marker-color', color);
   dot.style.setProperty('--marker-ink', providerInkColor(light.provider));
@@ -112,7 +117,7 @@ function drawLight(marker: L.Marker, light: Light) {
     for (const part of ['i', 'b', 'span']) name.appendChild(document.createElement(part));
     element.appendChild(name);
   }
-  name.className = `scooter-name${light.kind === 'selected' ? ' scooter-name-selected' : ''}`;
+  name.className = `scooter-name${light.kind === 'selected' ? ' scooter-name-selected' : ''}${light.gone ? ' scooter-name-gone' : ''}`;
   name.style.setProperty('--marker-color', color);
   name.style.setProperty('--marker-ink', providerInkColor(light.provider));
   const [, app, walk] = name.children;
@@ -155,6 +160,10 @@ const INTRO_MS = 1_800;
 const DOCK_SETTLE_MS = 320;
 const TIP_GAP = 8;
 const TIP_MARGIN = 8;
+// A way is framed this far inside what can be seen of the map, clear of the
+// markers at its ends and of the name beside the scooter.
+const ROUTE_EDGE = 44;
+const ROUTE_EDGE_VERTICAL = 28;
 
 function formatDistance(meters: number, t: Translate, formatNumber: FormatNumber): string {
   return meters < 1000
@@ -228,6 +237,32 @@ function onMarkerPress(marker: L.Marker, press: () => void): L.Marker {
   });
 }
 
+/**
+ * What of the map can be seen for a way: under the search bar and its notices,
+ * above the dock where it spans the screen, beside it where it stands at the
+ * side, and on a phone clear of the buttons over the dock.
+ */
+function routeFrame(map: L.Map, aboveDock: boolean): Frame {
+  const area = map.getContainer().getBoundingClientRect();
+  const shown = (box: DOMRect | undefined): box is DOMRect => box !== undefined && box.height > 0;
+  const above = [
+    document.querySelector('.search-island')?.getBoundingClientRect(),
+    ...[...document.querySelectorAll('.map-notices .load-banner, .map-notices .location-card')].map(notice => notice.getBoundingClientRect()),
+  ].filter(shown);
+  const sheet = document.querySelector('.sheet')?.getBoundingClientRect();
+  const beside = shown(sheet) && sheet.width < area.width / 2;
+  const below = [
+    beside ? undefined : sheet,
+    aboveDock ? document.querySelector('.fab-stack:not([aria-hidden="true"])')?.getBoundingClientRect() : undefined,
+  ].filter(shown);
+  return {
+    left: beside ? sheet.right - area.left + ROUTE_EDGE_VERTICAL : ROUTE_EDGE,
+    top: Math.max(0, ...above.map(box => box.bottom - area.top)) + ROUTE_EDGE_VERTICAL,
+    right: area.width - ROUTE_EDGE,
+    bottom: Math.min(area.height, ...below.map(box => box.top - area.top)) - ROUTE_EDGE_VERTICAL,
+  };
+}
+
 function vehicleMarkerKey(vehicle: Vehicle): string {
   return vehicle.vehicle_id
     ? `${vehicle.provider}:${vehicle.vehicle_id}`
@@ -290,6 +325,8 @@ interface MapComponentProps {
   onMapClick?: () => void;
   /** Phone: what was picked stays in view when the dock grows over it with a card. */
   revealAboveDock?: boolean;
+  /** The walk to the selected scooter or bay: its way is drawn, and the scooter is named with what is left of it. */
+  walk?: WalkView | null;
   /** Desktop: a scooter under the pointer says what it is, in place of the browser's tooltip. */
   hoverTips?: boolean;
   /** Desktop: the card of the selected scooter or parking bay, shown beside its marker. */
@@ -353,6 +390,7 @@ export default function MapComponent({
   onParkingSelect,
   onMapClick,
   revealAboveDock = false,
+  walk = null,
   hoverTips = false,
   popover = null,
   zoomStep,
@@ -393,8 +431,15 @@ export default function MapComponent({
   const onVehicleSelectRef = useRef(onVehicleSelect);
   const onParkingSelectRef = useRef(onParkingSelect);
   const onMapClickRef = useRef(onMapClick);
+  const revealAboveDockRef = useRef(revealAboveDock);
+  const routeLayerRef = useRef<RouteLayer | null>(null);
   const [readyMap, setReadyMap] = useState<L.Map | null>(null);
   const [zoom, setZoom] = useState(initialZoom);
+  const walkLine = walk?.line ?? null;
+  const walkRouteId = walk?.routeId ?? null;
+  // Along the way once it is shown: the name of the selected scooter says what is left of it.
+  const routeRemainingM = walk?.phase === 'shown' ? walk.remainingM : null;
+  const walkedGone = walk?.phase === 'gone';
 
   useEffect(() => {
     onViewportChangeRef.current = onViewportChange;
@@ -411,6 +456,10 @@ export default function MapComponent({
   useEffect(() => {
     onMapClickRef.current = onMapClick;
   }, [onMapClick]);
+
+  useEffect(() => {
+    revealAboveDockRef.current = revealAboveDock;
+  }, [revealAboveDock]);
 
   const scooterIcon = useMemo(() => createScooterIcon(), []);
   const hasPopover = popover !== null;
@@ -677,6 +726,25 @@ export default function MapComponent({
     }
   }, [destination, destinationIcon, readyMap, t]);
 
+  // The way to walk, over the ground and under the markers.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!readyMap || !map) return;
+    const layer = createRouteLayer(map, () => routeFrame(map, revealAboveDockRef.current));
+    routeLayerRef.current = layer;
+    return () => {
+      layer.remove();
+      routeLayerRef.current = null;
+    };
+  }, [readyMap]);
+
+  useEffect(() => {
+    const layer = routeLayerRef.current;
+    if (!readyMap || !layer) return;
+    if (walkLine && walkRouteId !== null) layer.show(walkLine, walkRouteId);
+    else layer.hide();
+  }, [readyMap, walkLine, walkRouteId]);
+
   useEffect(() => {
     const map = mapRef.current;
     const layer = scooterLayerRef.current;
@@ -716,6 +784,7 @@ export default function MapComponent({
     }
     for (const { key, vehicle, distanceM } of placed) {
       const selected = key === selectedVehicleKey;
+      const gone = selected && walkedGone;
       const head = heads.has(key);
       const kind: LightKind = selected ? 'selected' : head ? 'head' : 'dot';
       // Beside a card that stands next to its marker, the name would say it twice.
@@ -733,9 +802,12 @@ export default function MapComponent({
           ? {
               // "PubliBike / Velospot" is the one name too long for the map.
               app: (PROVIDERS[vehicle.provider]?.name ?? vehicle.provider).split(' / ')[0],
-              walk: distanceM === null ? null : t('card.duration', { minutes: formatNumber(walkingMinutes(distanceM)) }),
+              walk: gone ? null : selected && routeRemainingM !== null
+                ? t('card.duration', { minutes: formatNumber(walkingMinutes(routeRemainingM)) })
+                : distanceM === null ? null : t('card.duration', { minutes: formatNumber(walkingMinutes(distanceM)) }),
             }
           : null,
+        gone,
       };
       lightsRef.current.set(key, light);
       const label = labelFor(vehicle, distanceM);
@@ -905,8 +977,10 @@ export default function MapComponent({
     lightUnder,
     readyMap,
     revealAboveDock,
+    routeRemainingM,
     scooterIcon,
     selectedVehicleKey,
+    walkedGone,
     t,
     userLocation,
     vehicles,

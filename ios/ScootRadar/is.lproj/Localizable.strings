@@ -208,3 +208,12 @@
 "%@ range" = "%@ drægni";
 "%1$@ to unlock, then %2$@ a minute" = "Startgjald %1$@, svo %2$@ á mínútu";
 "No unlock fee, %@ a minute" = "Ekkert startgjald, %@ á mínútu";
+
+/* Walking route: Directions on a card draws the way on the map */
+"Hide route" = "Fela leiðina";
+"Finding the way…" = "Leita að leið…";
+"Couldn’t find a walking route." = "Engin gönguleið fannst.";
+"Open in Maps" = "Opna í Kortum";
+"You’re there." = "Þú ert á staðnum.";
+"Route shown: ≈%1$lld min walk · %2$@" = "Leið sýnd: ≈%1$lld mín. gangur · %2$@";
+"No longer on the map. Someone may have taken it." = "Ekki lengur á kortinu. Kannski hefur einhver tekið hana.";

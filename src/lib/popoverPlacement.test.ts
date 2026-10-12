@@ -8,7 +8,7 @@ describe('placePopover', () => {
   it('opens to the right of the marker with the arrow level with the head of the card', () => {
     // The marker and the card of the X-Desktop-card artboard.
     expect(placePopover({ anchor: { x: 903, y: 392 }, size, viewport })).toEqual({
-      side: 'right', left: 934, top: 333, arrowTop: 59,
+      side: 'right', left: 934, top: 333, arrowTop: 59, detached: false,
     });
   });
 
@@ -68,5 +68,41 @@ describe('placePopover', () => {
     const placement = placePopover({ anchor: { x: 200, y: 150 }, size, viewport: { width: 1000, height: 200 } });
 
     expect(placement.top).toBe(16);
+  });
+  it('keeps the card of a marker out of view at the edge it is beyond, clear of the controls', () => {
+    // The desktop layout: the legend on the left, Near me and the credits in the bottom right corner.
+    const controls = [
+      { left: 24, top: 16, right: 392, bottom: 72 },
+      { left: 24, top: 96, right: 248, bottom: 496 },
+      { left: 1380, top: 60, right: 1424, bottom: 200 },
+      { left: 1180, top: 830, right: 1310, bottom: 862 },
+      { left: 1336, top: 812, right: 1424, bottom: 868 },
+    ];
+    const overlaps = (placement: { left: number; top: number }) => controls.some(box =>
+      placement.left < box.right && placement.left + size.width > box.left &&
+      placement.top < box.bottom && placement.top + size.height > box.top);
+
+    // Below the window, under the credits: the card stands above them, at the bottom.
+    const below = placePopover({ anchor: { x: 1300, y: 1200 }, size, viewport, controls });
+    expect(below).toMatchObject({ detached: true, left: 1300 - 31 - 320, top: 830 - 12 - 231 });
+    expect(overlaps(below)).toBe(false);
+    // Clear of them already, it stays at the bottom.
+    expect(placePopover({ anchor: { x: 700, y: 1200 }, size, viewport, controls }).top).toBe(900 - 16 - 231);
+
+    // Beyond the left edge: beside the legend rather than over it.
+    const left = placePopover({ anchor: { x: -300, y: 300 }, size, viewport, controls });
+    expect(left.detached).toBe(true);
+    expect(overlaps(left)).toBe(false);
+    expect(left.left).toBe(248 + 12);
+
+    // A marker in view may still be covered: the card points at it, whatever is there.
+    const inView = placePopover({ anchor: { x: 1300, y: 860 }, size, viewport, controls });
+    expect(inView).toMatchObject({ detached: false, top: 900 - 16 - 231 });
+  });
+
+  it('leaves a card out of sight of its marker where it is when nowhere is clear', () => {
+    const everywhere = [{ left: 0, top: 0, right: 1440, bottom: 900 }];
+    const placement = placePopover({ anchor: { x: 600, y: 1200 }, size, viewport, controls: everywhere });
+    expect(placement).toMatchObject({ detached: true, top: 900 - 16 - 231 });
   });
 });

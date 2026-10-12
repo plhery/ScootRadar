@@ -208,3 +208,12 @@
 "%@ range" = "%@ rekkevidde";
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ for å låse opp, så %2$@ per minutt";
 "No unlock fee, %@ a minute" = "Gratis opplåsing, %@ per minutt";
+
+/* Walking route: Directions on a card draws the way on the map */
+"Hide route" = "Skjul ruten";
+"Finding the way…" = "Finner veien…";
+"Couldn’t find a walking route." = "Fant ingen gangrute.";
+"Open in Maps" = "Åpne i Kart";
+"You’re there." = "Du er fremme.";
+"Route shown: ≈%1$lld min walk · %2$@" = "Rute vist: ≈%1$lld min gange · %2$@";
+"No longer on the map. Someone may have taken it." = "Ikke lenger på kartet. Kanskje noen har tatt den.";

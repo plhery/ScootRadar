@@ -7,6 +7,8 @@ import { selectionFeedback } from '@/lib/feedback';
 const SOURCES = [
   { href: 'https://www.openstreetmap.org/copyright', label: '© OpenStreetMap contributors' },
   { href: 'https://openfreemap.org/', label: 'OpenFreeMap © OpenMapTiles' },
+  { href: 'https://routing.openstreetmap.de/about.html', label: 'Walking routes · Valhalla, FOSSGIS' },
+  { href: 'https://www.openstreetmap.org/fixthemap', label: 'Fix the map · OpenStreetMap' },
   { href: 'https://opentransportdata.swiss/en/cookbook/shared-mobility/', label: 'Mobility data CH' },
   { href: 'https://transport.data.gouv.fr/datasets?type=vehicles-sharing', label: 'France: Dott, Bird, Lime, Voi, Pony' },
   { href: 'https://www.mobidata-bw.de/', label: 'MobiData BW' },

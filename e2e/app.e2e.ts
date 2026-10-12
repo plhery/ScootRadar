@@ -233,9 +233,11 @@ test('does not invent a distance without location and offers walking directions'
   await expect(card.locator('.card-figure strong')).toHaveText(['64%', '10km']);
   await expect(card.locator('.card-figure-label')).toHaveText(['battery', 'range']);
   await expect(card.getByText('Price shown in the Bird app')).toBeVisible();
-  // No rental link for this scooter: directions alone.
-  await expect(card.getByRole('link')).toHaveCount(1);
-  await expect(card.getByRole('link', { name: 'Directions' })).toHaveAttribute('href', /travelmode=walking/);
+  // No rental link for this scooter: directions alone. They draw the walk on the map
+  // (e2e/walk.e2e.ts), so Directions is a button and the card leaves nothing to follow.
+  await expect(card.getByRole('link')).toHaveCount(0);
+  await expect(card.locator('.card-actions').getByRole('button')).toHaveText(['Directions']);
+  await expect(card.getByRole('button', { name: 'Directions', exact: true })).not.toHaveClass(/card-action-primary/);
   await expect(card.locator('.card-footnote')).toHaveCount(0);
   if (await desktopLayout(page)) {
     // On a desktop the card is beside the marker, and the dock keeps the count and the providers.
@@ -366,7 +368,11 @@ test('scooter card shows the walk, the battery and a ride estimate whose duratio
   await expect(open).toHaveAttribute('href', 'https://li.me/ride');
   // The app's blue on every provider, never the provider's colour.
   expect(await open.evaluate(element => getComputedStyle(element).backgroundColor)).toBe('rgb(0, 112, 235)');
-  await expect(card.getByRole('link', { name: 'Directions' })).toHaveAttribute('href', /destination=47\.3769%2C8\.5417/);
+  // A short walk: Directions draws it on the map instead of leaving for a maps app.
+  const directions = card.getByRole('button', { name: 'Directions', exact: true });
+  await expect(directions).toBeVisible();
+  await expect(directions).not.toHaveClass(/card-action-primary/);
+  await expect(card.getByRole('link', { name: 'Directions' })).toHaveCount(0);
   // The card ends with its two buttons.
   await expect(card.locator('.card-footnote')).toHaveCount(0);
   const accessibility = await new AxeBuilder({ page }).include(await cardSurface(page)).withTags(['wcag2a', 'wcag2aa']).analyze();
@@ -1662,9 +1668,12 @@ test('the settings name the languages, and About leads to the credits, the priva
   await settings.getByRole('button', { name: 'Map & data credits' }).click();
   const credits = page.getByRole('dialog', { name: 'Map & data credits', exact: true });
   await expect(credits.getByRole('heading', { name: 'Map & data credits', level: 2 })).toBeFocused();
-  await expect(credits.getByRole('link')).toHaveCount(14);
+  await expect(credits.getByRole('link')).toHaveCount(16);
   await expect(credits.getByRole('link', { name: '© OpenStreetMap contributors' })).toHaveAttribute('href', 'https://www.openstreetmap.org/copyright');
   await expect(credits.getByRole('link', { name: 'OpenFreeMap © OpenMapTiles' })).toHaveAttribute('href', 'https://openfreemap.org/');
+  // The walking routes come from FOSSGIS's Valhalla, whose terms ask for both: its credit, and a way to fix the map.
+  await expect(credits.getByRole('link', { name: 'Walking routes · Valhalla, FOSSGIS' })).toHaveAttribute('href', 'https://routing.openstreetmap.de/about.html');
+  await expect(credits.getByRole('link', { name: 'Fix the map · OpenStreetMap' })).toHaveAttribute('href', 'https://www.openstreetmap.org/fixthemap');
   await expect(credits.getByRole('link', { name: '© swisstopo' })).toHaveAttribute('target', '_blank');
   await expect(credits.getByRole('link', { name: 'Parking · Métropole Européenne de Lille' })).toBeVisible();
   for (const control of await credits.getByRole('button').or(credits.getByRole('link')).all()) {
@@ -2102,8 +2111,10 @@ test('parking bays appear at street zoom, open one selection at a time and follo
   // No origin, so no walking time: the name of the bay alone.
   await expect(card.locator('.card-title p')).toHaveText('Place test');
   await expect(card.getByText('You must park in a bay in this zone.')).toBeVisible();
-  await expect(card.getByRole('link')).toHaveCount(1);
-  await expect(card.getByRole('link', { name: 'Directions' })).toHaveAttribute('href', /destination=45\.75%2C4\.85&travelmode=walking/);
+  // Directions is the one button of a bay, in the app's blue; it draws the walk on the map (e2e/walk.e2e.ts).
+  await expect(card.getByRole('link')).toHaveCount(0);
+  await expect(card.locator('.card-actions').getByRole('button')).toHaveText(['Directions']);
+  await expect(card.getByRole('button', { name: 'Directions', exact: true })).toHaveClass(/card-action-primary/);
   await expect(card.getByText('Check the Dott app before you end your ride.')).toBeVisible();
   if (await desktopLayout(page)) {
     // On a desktop the card is beside the bay, and the dock keeps the count.
@@ -2452,7 +2463,8 @@ test.describe('on a small phone, or one held on its side', () => {
   /** The two buttons of a card: how high each is, and whether one is under the other. */
   const buttons = async (card: ReturnType<Page['locator']>, second: string) => {
     const [directions, open] = [
-      (await card.getByRole('link', { name: 'Directions' }).boundingBox())!,
+      // Directions is a button that draws the walk; the app's own is a link.
+      (await card.getByRole('button', { name: 'Directions', exact: true }).boundingBox())!,
       (await card.getByRole('link', { name: second }).boundingBox())!,
     ];
     return {
@@ -2650,7 +2662,7 @@ test.describe('on a small phone, or one held on its side', () => {
     const open = card.getByRole('link', { name: 'Open in PubliBike / Velospot' });
     await expect(open).toBeVisible();
     await expect.poll(() => buttons(card, 'Open in PubliBike / Velospot')).toEqual({ heights: [48, 48], stacked: true });
-    const widths = [(await open.boundingBox())!.width, (await card.getByRole('link', { name: 'Directions' }).boundingBox())!.width];
+    const widths = [(await open.boundingBox())!.width, (await card.getByRole('button', { name: 'Directions', exact: true }).boundingBox())!.width];
     expect(Math.abs(widths[0] - widths[1])).toBeLessThan(2);
     // The card is still shown whole.
     expect(await page.locator('.sheet-content').evaluate(element => element.scrollHeight - element.clientHeight)).toBe(0);

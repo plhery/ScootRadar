@@ -1045,6 +1045,56 @@ svg {
   line-height: 1.4;
   text-align: center;
 }
+/* Directions while the way is found: a spinner in place of the icon, the button the same size. */
+.card-actions > .walk-action[aria-busy='true'] {
+  cursor: progress;
+}
+.walk-action-spinner {
+  width: 14px;
+  height: 14px;
+  margin: 2px;
+}
+.card-action-primary .walk-action-spinner {
+  border-color: rgba(255, 255, 255, 0.36);
+  border-top-color: #fff;
+}
+/* The way is on the map: the button is lit in its blue, and takes it away. */
+.card-actions > .walk-action-shown {
+  background: color-mix(in srgb, var(--blue) 13%, transparent);
+  color: var(--blue-ink);
+}
+/* What became of the walk, under the buttons: you are there, or no way was found. */
+.walk-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+  animation: content-in 240ms var(--spring);
+}
+.walk-status > svg {
+  flex-shrink: 0;
+}
+.walk-status-warning {
+  color: var(--warning-ink);
+}
+.walk-status-arrived {
+  color: var(--success-ink);
+}
+/* Taken while you walked to it: in place of the buttons, as a notice. */
+.walk-status-gone {
+  justify-content: flex-start;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--warning-bg);
+  font-size: 13px;
+  text-align: left;
+}
 /* The parking sign of the map marker, at the size of a card symbol. */
 .bay-symbol {
   display: grid;
@@ -2405,6 +2455,10 @@ svg {
 }
 .app-shell[data-searching='true'] .marker-popover {
   visibility: hidden;
+}
+/* Its marker out of view, during a walk: nothing to point at. */
+.marker-popover[data-detached] .marker-popover-arrow {
+  display: none;
 }
 /* What a scooter under the pointer is, just above it. */
 .map-tip {

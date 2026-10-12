@@ -44,6 +44,8 @@ function input(overrides: Partial<DockInput> = {}): DockInput {
 }
 
 const dock = (overrides: Partial<DockInput> = {}) => dockModel(input(overrides));
+/** The line above a card: the first that announces, the card has its own for the walk. */
+const cardIssue = () => screen.getAllByRole('status')[0];
 /** The dock and the line above a card, as the page derives both from one input. */
 const data = (overrides: Partial<DockInput> = {}) => ({ dock: dock(overrides), issue: dockIssue(input(overrides)) });
 
@@ -72,6 +74,7 @@ function renderSheet(overrides: Partial<React.ComponentProps<typeof BottomSheet>
     onCitySelect: vi.fn(),
     onSelectNearest: vi.fn(),
     onLocate: vi.fn(),
+    walk: { view: null, tooFar: false, onStart: vi.fn(), onHide: vi.fn() },
     ...overrides,
   };
 
@@ -455,9 +458,9 @@ describe('BottomSheet', () => {
     });
 
     // The line is announced; the button beside it is not part of what is read out.
-    expect(screen.getByRole('status')).toHaveTextContent(new RegExp(`^Couldn’t refresh · showing ${SHOWING}$`));
+    expect(cardIssue()).toHaveTextContent(new RegExp(`^Couldn’t refresh · showing ${SHOWING}$`));
     const issue = document.querySelector('.dock-issue') as HTMLElement;
-    expect(issue).toContainElement(screen.getByRole('status'));
+    expect(issue).toContainElement(cardIssue());
     const retry = within(issue).getByRole('button', { name: 'Try again' });
     // The same pill as in the dock header.
     expect(retry).toHaveClass('dock-retry');
@@ -472,18 +475,18 @@ describe('BottomSheet', () => {
       selectedVehicle: { vehicle: lime, walk: null },
     });
 
-    expect(screen.getByRole('status')).toHaveTextContent(`Data delayed · showing ${SHOWING}`);
+    expect(cardIssue()).toHaveTextContent(`Data delayed · showing ${SHOWING}`);
     expect(within(document.querySelector('.dock-issue') as HTMLElement).queryByRole('button')).not.toBeInTheDocument();
   });
 
   it('has the place of the line above a card in the page while all is well, and says there what goes wrong', () => {
     const sheet = renderSheet({ selectedVehicle: { vehicle: lime, walk: null } });
-    const place = screen.getByRole('status');
+    const place = cardIssue();
     expect(place).toBeEmptyDOMElement();
     expect(document.querySelector('.dock-issue')).not.toBeInTheDocument();
 
     sheet.update({ ...data({ failure: 'offline' }), selectedVehicle: { vehicle: lime, walk: null } });
-    expect(screen.getByRole('status')).toBe(place);
+    expect(cardIssue()).toBe(place);
     expect(place).toHaveTextContent(`You’re offline · showing ${SHOWING}`);
     expect(place.parentElement).toHaveClass('dock-issue');
   });
@@ -516,7 +519,7 @@ describe('BottomSheet', () => {
       selectedParking: { parking: bay, walk: null },
     });
 
-    expect(screen.getByRole('status')).toHaveTextContent(`You’re offline · showing ${SHOWING}`);
+    expect(cardIssue()).toHaveTextContent(`You’re offline · showing ${SHOWING}`);
     const issue = document.querySelector('.dock-issue') as HTMLElement;
     fireEvent.click(within(issue).getByRole('button', { name: 'Try again' }));
     expect(props.onRetry).toHaveBeenCalledOnce();

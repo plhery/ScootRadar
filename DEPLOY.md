@@ -101,6 +101,13 @@ when a binding is missing or unavailable in production. Persisted invocation
 logs are disabled because scooter and geocode URLs can contain precise
 coordinates or address text; structured application error logs remain enabled.
 
+Walking routes (`/api/walk`) use two more bindings: `WALK_API_RATE_LIMITER`
+per visitor and `WALK_UPSTREAM_RATE_LIMITER`, one key for all visitors, which
+keeps to the FOSSGIS limit of about one request a second (Cloudflare counts per
+location: under real traffic, run a Valhalla of our own). `WALK_ROUTE_API_URL`
+in `vars` is the routing service; only `https://` addresses are used, anything
+else falls back to the FOSSGIS server. See DATA_SOURCES.md.
+
 ## Cloudflare Workers Builds
 
 The GitHub repository can remain connected to Cloudflare Workers Builds.

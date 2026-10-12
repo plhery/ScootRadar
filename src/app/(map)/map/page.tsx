@@ -10,6 +10,7 @@ import BottomSheet from '@/components/BottomSheet';
 import KeyHints from '@/components/KeyHints';
 import ParkingCard, { type SelectedParking } from '@/components/ParkingCard';
 import ScooterCard, { type SelectedVehicle } from '@/components/ScooterCard';
+import type { CardWalk } from '@/components/WalkAction';
 import MapControls from '@/components/MapControls';
 import MapCredits from '@/components/MapCredits';
 import MapNotices from '@/components/MapNotices';
@@ -28,7 +29,7 @@ import {
   type ThemeName,
 } from '@/lib/clientParams';
 import { nearestCoveredCities, type NearbyCoveredCity } from '@/lib/coveredCities';
-import { providerHealth, providersInView } from '@/lib/dataHealth';
+import { providerForFailedSource, providerHealth, providersInView } from '@/lib/dataHealth';
 import { dockIssue, dockModel, originInViewport, type DockInput } from '@/lib/dockModel';
 import { activeCurfew } from '@/lib/rentalCurfews';
 import { useI18n } from '@/lib/i18n';
@@ -45,9 +46,13 @@ import {
   boundsContainPoint,
   boundsIntersect,
   expandBounds,
+  haversineM,
 } from '@/lib/geo';
 import { useLiveLocation } from '@/lib/useLiveLocation';
-import { walkEstimate, type WalkOrigin } from '@/lib/walking';
+import { useWalkRoute } from '@/lib/useWalkRoute';
+import { walkEstimate, type WalkEstimate, type WalkOrigin } from '@/lib/walking';
+import { WALK_ROUTE_MAX_M } from '@/lib/walkRoute';
+import type { WalkFrom } from '@/lib/walkState';
 import { requestHeadingPermission, type HeadingPermission } from '@/lib/deviceHeading';
 
 const SWITZERLAND_CENTER: [number, number] = [46.8182, 8.2275];
@@ -63,6 +68,8 @@ const SEARCH_CITY_COUNT = 6;
 // How often the age of the data in the dock is worked out again.
 const CLOCK_TICK_MS = 30_000;
 const VIEWPORT_FETCH_PADDING = 0.25;
+// A scooter of the same app this close to the one walked to, under another id, is taken to be it.
+const SAME_SCOOTER_M = 15;
 
 // The colour the browser gives its own bars in each appearance.
 const THEME_COLOR = { light: '#eef0f4', dark: '#0b0e14' };
@@ -75,6 +82,18 @@ const LOCATED_ONCE_STORAGE_KEY = 'scooters-located-once';
 interface ScooterMapQuery {
   bounds: MapBounds;
   zoom: number;
+}
+
+/** The scooter or bay walked to, as it was when Directions was pressed. */
+type WalkPin = { vehicle: Vehicle } | { parking: ParkingLocation };
+
+function vehicleKey(vehicle: Vehicle): string {
+  return vehicle.vehicle_id ? `${vehicle.provider}:${vehicle.vehicle_id}` : `${vehicle.provider}:${vehicle.lat}:${vehicle.lng}`;
+}
+
+// Along the way on the map, once there is one: what is left of it, not the straight line.
+function alongRoute(estimate: WalkEstimate | null, remainingM: number | null): WalkEstimate | null {
+  return estimate && remainingM !== null ? { ...estimate, distanceM: remainingM } : estimate;
 }
 
 function saveParamsToStorage(params: Record<string, string>) {
@@ -150,6 +169,7 @@ export default function Home() {
   const [initialCenter, setInitialCenter] = useState<[number, number]>(SWITZERLAND_CENTER);
   const {
     location: userLocation,
+    accuracyM: locationAccuracyM,
     locating,
     error: locationError,
     locate,
@@ -278,10 +298,27 @@ export default function Home() {
     () => mapQuery && { ...mapQuery, minBattery: mapQuery.zoom <= 15 ? minBattery : 0 },
     [mapQuery, minBattery]
   );
+  // A searched place wins over your location until it is cleared.
+  const walkOrigin = useMemo<WalkOrigin | null>(() => {
+    if (searchedPlace) return { point: [searchedPlace.lat, searchedPlace.lng], place: searchedPlace.title };
+    return userLocation ? { point: userLocation, place: null } : null;
+  }, [searchedPlace, userLocation]);
+  // Where a walk starts: the same, with how far off your location may be.
+  const walkFrom = useMemo<WalkFrom | null>(() => walkOrigin && {
+    ...walkOrigin,
+    accuracyM: walkOrigin.place === null ? locationAccuracyM : null,
+  }, [locationAccuracyM, walkOrigin]);
+  // The walk to the selected scooter or bay, which Directions starts and its card ends.
+  const walk = useWalkRoute(walkFrom);
+  const { end: endWalk } = walk;
+  // The scooter or bay walked to, as it was when Directions was pressed: it stays
+  // on the map and in the dock while it is out of view or counted in a group.
+  const [walkPin, setWalkPin] = useState<WalkPin | null>(null);
   const clearSelection = useCallback(() => {
+    endWalk();
     setSelectedVehicleKey(null);
     setSelectedParkingId(null);
-  }, []);
+  }, [endWalk]);
   const {
     vehicles,
     clusters,
@@ -427,12 +464,6 @@ export default function Home() {
     display_name: [searchedPlace.title, searchedPlace.subtitle].filter(Boolean).join(', '),
   }, [searchedPlace]);
 
-  // A searched place wins over your location until it is cleared.
-  const walkOrigin = useMemo<WalkOrigin | null>(() => {
-    if (searchedPlace) return { point: [searchedPlace.lat, searchedPlace.lng], place: searchedPlace.title };
-    return userLocation ? { point: userLocation, place: null } : null;
-  }, [searchedPlace, userLocation]);
-
   // Like the scooters: only the bays of the providers switched on, inside the exact viewport.
   const visibleParking = useMemo<ParkingLocation[]>(() => {
     if (!viewportBounds || viewportZoom < PARKING_MIN_ZOOM) return [];
@@ -440,26 +471,61 @@ export default function Home() {
       boundsContainPoint(viewportBounds, location.lat, location.lng));
   }, [enabledProviders, parking, viewportBounds, viewportZoom]);
 
+  // The scooter walked to, as the latest data has it. Some apps give a scooter a
+  // new id now and then: one of the same app a few metres from where it was is it.
+  // Held while the walk is under way, or to say it is gone; a walk that failed or
+  // got there leaves the card to the view, as any other.
+  const walkHolds = walk.state !== null && walk.state.phase !== 'failed' && walk.state.phase !== 'arrived';
+  const pinnedVehicle = walkHolds && walkPin && 'vehicle' in walkPin ? walkPin.vehicle : null;
+  const pinnedParking = walkHolds && walkPin && 'parking' in walkPin ? walkPin.parking : null;
+  const pinnedProvider = pinnedVehicle?.provider ?? null;
+  const [walkLat, walkLng] = walk.state?.target.point ?? [null, null];
+  const liveWalkedVehicle = useMemo(() => {
+    if (pinnedProvider === null || walkLat === null || walkLng === null) return null;
+    let nearest: Vehicle | null = null;
+    let nearestM = SAME_SCOOTER_M;
+    for (const vehicle of vehicles) {
+      if (vehicleKey(vehicle) === selectedVehicleKey) return vehicle;
+      if (vehicle.provider !== pinnedProvider) continue;
+      const distanceM = haversineM(walkLat, walkLng, vehicle.lat, vehicle.lng);
+      if (distanceM <= nearestM) {
+        nearest = vehicle;
+        nearestM = distanceM;
+      }
+    }
+    return nearest;
+  }, [pinnedProvider, selectedVehicleKey, vehicles, walkLat, walkLng]);
+  const liveWalkedParking = useMemo(
+    () => pinnedParking && (parking.find(location => location.id === pinnedParking.id) ?? null),
+    [parking, pinnedParking]
+  );
+  // The pin is kept as fresh as the data, for when the data has nothing to say of it.
+  if (liveWalkedVehicle && pinnedVehicle && pinnedVehicle !== liveWalkedVehicle) setWalkPin({ vehicle: liveWalkedVehicle });
+  if (liveWalkedVehicle && vehicleKey(liveWalkedVehicle) !== selectedVehicleKey) setSelectedVehicleKey(vehicleKey(liveWalkedVehicle));
+  const walkedVehicle = liveWalkedVehicle ?? pinnedVehicle;
+  const walkedParking = liveWalkedParking ?? pinnedParking;
+  const routeRemainingM = walk.view?.phase === 'shown' ? walk.view.remainingM : null;
+
+  // While it is walked to, a scooter or a bay keeps its card out of view, among
+  // groups and below the zoom of bays; a provider switched off still closes it.
   const selectedParking = useMemo<SelectedParking | null>(() => {
-    const bay = selectedParkingId === null ? undefined : visibleParking.find(location => location.id === selectedParkingId);
-    return bay ? { parking: bay, walk: walkEstimate(walkOrigin, bay.lat, bay.lng) } : null;
-  }, [selectedParkingId, visibleParking, walkOrigin]);
+    if (selectedParkingId === null) return null;
+    const bay = walkedParking ?? visibleParking.find(location => location.id === selectedParkingId);
+    if (!bay || !enabledProviders.has(bay.provider)) return null;
+    return { parking: bay, walk: alongRoute(walkEstimate(walkOrigin, bay.lat, bay.lng), routeRemainingM) };
+  }, [enabledProviders, routeRemainingM, selectedParkingId, visibleParking, walkOrigin, walkedParking]);
 
   const selectedVehicle = useMemo<SelectedVehicle | null>(() => {
     if (!selectedVehicleKey) return null;
-    const vehicle = viewportData.visibleVehicles.find(candidate => {
-      const key = candidate.vehicle_id
-        ? `${candidate.provider}:${candidate.vehicle_id}`
-        : `${candidate.provider}:${candidate.lat}:${candidate.lng}`;
-      return key === selectedVehicleKey;
-    });
-    if (!vehicle) return null;
+    const vehicle = walkedVehicle ??
+      viewportData.visibleVehicles.find(candidate => vehicleKey(candidate) === selectedVehicleKey);
+    if (!vehicle || !enabledProviders.has(vehicle.provider)) return null;
     return {
       vehicle,
-      walk: walkEstimate(walkOrigin, vehicle.lat, vehicle.lng),
+      walk: alongRoute(walkEstimate(walkOrigin, vehicle.lat, vehicle.lng), routeRemainingM),
       curfew: activeCurfew([vehicle.lat, vehicle.lng], now),
     };
-  }, [now, selectedVehicleKey, viewportData.visibleVehicles, walkOrigin]);
+  }, [enabledProviders, now, routeRemainingM, selectedVehicleKey, viewportData.visibleVehicles, walkOrigin, walkedVehicle]);
 
   // The scooter that leads the dock: the nearest one shown, while single scooters are.
   const nearestVehicle = useMemo(() => {
@@ -472,14 +538,22 @@ export default function Home() {
     return nearest;
   }, [responseMeta?.mode, viewportData.visibleVehicles, walkOrigin]);
 
+  // Another scooter or bay is another walk; the same one again keeps its way.
   const selectVehicle = (vehicle: Vehicle) => {
     track('vehicle_select', { provider: vehicle.provider });
     selectionFeedback();
+    const key = vehicleKey(vehicle);
+    if (key !== selectedVehicleKey) endWalk();
     setSelectedParkingId(null);
-    setSelectedVehicleKey(vehicle.vehicle_id
-      ? `${vehicle.provider}:${vehicle.vehicle_id}`
-      : `${vehicle.provider}:${vehicle.lat}:${vehicle.lng}`
-    );
+    setSelectedVehicleKey(key);
+  };
+
+  const selectParking = (location: ParkingLocation) => {
+    track('parking_select', { provider: location.provider });
+    selectionFeedback();
+    if (location.id !== selectedParkingId) endWalk();
+    setSelectedVehicleKey(null);
+    setSelectedParkingId(location.id);
   };
 
   // What closes a card clears the selection, as in the iOS app: a scooter or a
@@ -487,6 +561,49 @@ export default function Home() {
   // open again by itself once it is back.
   if (selectedVehicleKey !== null && !selectedVehicle) setSelectedVehicleKey(null);
   if (selectedParkingId !== null && !selectedParking) setSelectedParkingId(null);
+
+  // A walk belongs to its card: it ends with it, whatever closed it.
+  const walking = walk.state !== null;
+  const selectionShown = selectedVehicle !== null || selectedParking !== null;
+  const { setTarget: setWalkTarget, locationFailed: walkLocationFailed, gone: walkGone } = walk;
+  useEffect(() => {
+    if (walking && !selectionShown) endWalk();
+  }, [endWalk, selectionShown, walking]);
+
+  // Moved by someone, or found under a new id: the walk leads to where it is now.
+  const liveLat = liveWalkedVehicle?.lat ?? null;
+  const liveLng = liveWalkedVehicle?.lng ?? null;
+  useEffect(() => {
+    if (liveLat !== null && liveLng !== null) setWalkTarget([liveLat, liveLng]);
+  }, [liveLat, liveLng, setWalkTarget]);
+
+  // Directions located you first, and your location could not be had.
+  const walkPhase = walk.view?.phase ?? null;
+  useEffect(() => {
+    if (walkPhase === 'locating' && !locating && locationError) walkLocationFailed();
+  }, [locating, locationError, walkLocationFailed, walkPhase]);
+
+  // Taken while you walked to it: no longer in data that would have it, where
+  // single scooters are sent whatever their battery and its app's feed answered.
+  // Twice, from two updates of the data: a scooter missing from one comes back.
+  const walkedCovered = pinnedVehicle !== null && walkLat !== null && walkLng !== null && lastUpdated !== null &&
+    answersQuery && mapQuery !== null && responseMeta?.mode === 'vehicles' && !responseMeta.truncated &&
+    (scooterQuery?.minBattery ?? 0) === 0 &&
+    boundsContainPoint(mapQuery.bounds, walkLat, walkLng) &&
+    !responseMeta.failedSources.some(source => providerForFailedSource(source) === pinnedVehicle.provider);
+  const walkedSeen = liveWalkedVehicle ? true : walkedCovered ? false : null;
+  const [walkMissedIn, setWalkMissedIn] = useState<number | null>(null);
+  if (walkedSeen === false && walkMissedIn === null) setWalkMissedIn(lastUpdated);
+  if (walkedSeen === true && walkMissedIn !== null) setWalkMissedIn(null);
+  const walkedTaken = walkedSeen === false && walkMissedIn !== null && lastUpdated !== walkMissedIn;
+  useEffect(() => {
+    if (walkedTaken) walkGone();
+  }, [walkGone, walkedTaken]);
+  // Back after all: the card is the scooter's again, and Directions with it.
+  const walkedBack = walkPhase === 'gone' && liveWalkedVehicle !== null;
+  useEffect(() => {
+    if (walkedBack) endWalk();
+  }, [endWalk, walkedBack]);
 
   const availableProviders = viewportBounds
     ? [...new Set([...providersForViewport(viewportBounds), ...Object.keys(viewportData.providerCounts)])]
@@ -577,6 +694,50 @@ export default function Home() {
     clearSelection();
   };
 
+  // Directions on the open card: the way is drawn from where walking times start,
+  // or from your location once it has come.
+  const walkTarget = selectedVehicle?.vehicle ?? selectedParking?.parking ?? null;
+  const cardWalk: CardWalk = {
+    view: walk.view,
+    tooFar: walkOrigin !== null && walkTarget !== null &&
+      haversineM(walkOrigin.point[0], walkOrigin.point[1], walkTarget.lat, walkTarget.lng) > WALK_ROUTE_MAX_M,
+    onStart: () => {
+      const pin: WalkPin | null = selectedVehicle
+        ? { vehicle: selectedVehicle.vehicle }
+        : selectedParking ? { parking: selectedParking.parking } : null;
+      if (!pin) return;
+      const target = 'vehicle' in pin ? pin.vehicle : pin.parking;
+      setWalkPin(pin);
+      setWalkMissedIn(null);
+      walk.start({
+        key: 'vehicle' in pin ? `vehicle:${vehicleKey(pin.vehicle)}` : `parking:${pin.parking.id}`,
+        point: [target.lat, target.lng],
+      });
+      if (!walkOrigin && !locating) {
+        track('locate');
+        startLocating(false);
+      }
+    },
+    onHide: endWalk,
+  };
+
+  // What is walked to stays on the map while the walk holds it, as its card does;
+  // a scooter gone is drawn as where it was.
+  const mapVehicles = useMemo(() => {
+    const walked = walkHolds ? selectedVehicle?.vehicle : undefined;
+    const visible = viewportData.visibleVehicles;
+    if (!walked) return visible;
+    const key = vehicleKey(walked);
+    return visible.some(vehicle => vehicleKey(vehicle) === key) ? visible : [...visible, walked];
+  }, [selectedVehicle, viewportData.visibleVehicles, walkHolds]);
+  const mapParking = useMemo(() => {
+    const walked = walkHolds ? selectedParking?.parking : undefined;
+    if (!walked || visibleParking.some(location => location.id === walked.id)) return visibleParking;
+    return [...visibleParking, walked];
+  }, [selectedParking, visibleParking, walkHolds]);
+  // A stray tap on the map does not take the way away: the card closes it.
+  const walkOnMap = walkPhase === 'locating' || walkPhase === 'finding' || walkPhase === 'shown';
+
   // The marker of the selection: the card in the dock hands the focus back to it when it closes.
   const selectionAnchor = useCallback(
     () => markerLookupRef.current?.(selectedVehicleKey, selectedParkingId) ?? null,
@@ -598,6 +759,7 @@ export default function Home() {
               onClose={closeCard}
               onLocate={handleLocateFromCard}
               locating={locating}
+              walk={cardWalk}
             />
           ),
         }
@@ -606,7 +768,7 @@ export default function Home() {
             label: t('bay.title', {
               name: PROVIDERS[selectedParking.parking.provider]?.name ?? selectedParking.parking.provider,
             }),
-            content: <ParkingCard key={selectedParking.parking.id} selection={selectedParking} onClose={closeCard} />,
+            content: <ParkingCard key={selectedParking.parking.id} selection={selectedParking} onClose={closeCard} walk={cardWalk} />,
           }
         : null;
 
@@ -740,11 +902,12 @@ export default function Home() {
         onSelectNearest={() => { if (nearestVehicle) selectVehicle(nearestVehicle.vehicle); }}
         onLocate={handleLocateFromCard}
         locating={locating}
+        walk={cardWalk}
       />
 
       <MapWrapper
-        parking={visibleParking}
-        vehicles={viewportData.visibleVehicles}
+        parking={mapParking}
+        vehicles={mapVehicles}
         clusters={viewportData.visibleClusters}
         clustered={responseMeta?.mode === 'clusters'}
         origin={initialCenter}
@@ -760,13 +923,9 @@ export default function Home() {
         selectedVehicleKey={selectedVehicleKey}
         onVehicleSelect={selectVehicle}
         selectedParkingId={selectedParkingId}
-        onParkingSelect={location => {
-          track('parking_select', { provider: location.provider });
-          selectionFeedback();
-          setSelectedVehicleKey(null);
-          setSelectedParkingId(location.id);
-        }}
-        onMapClick={closeCard}
+        onParkingSelect={selectParking}
+        onMapClick={walkOnMap ? undefined : closeCard}
+        walk={walk.view}
         revealAboveDock={!desktop}
         hoverTips={desktop}
         popover={popover}

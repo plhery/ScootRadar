@@ -78,13 +78,17 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         }
     }
     private(set) var parking: [ScooterParking] = []
-    /// The bays drawn on the map: zoom 16 and closer, for the providers that are shown.
+    /// The bays drawn on the map: zoom 16 and closer, for the providers that
+    /// are shown, and the bay walked to wherever the map is.
     var mapParking: [ScooterParking] {
-        guard viewportZoom >= 16 else { return [] }
-        return parking.filter { location in
+        var shown = viewportZoom < 16 ? [] : parking.filter { location in
             guard let provider = ScooterProvider(rawValue: location.provider) else { return false }
             return enabledProviders.contains(provider) && viewport.contains(latitude: location.latitude, longitude: location.longitude)
         }
+        if let held = walk?.heldParking, !shown.contains(where: { $0.id == held.id }) {
+            shown.append(held)
+        }
+        return shown
     }
     var viewport = GeoBounds(region: initialRegion) {
         didSet { rebuildVisibleCounts() }
@@ -98,7 +102,11 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// so the out-of-date card can say when the last update was.
     var lastUpdated: Date?
     private(set) var responseMetadata: ScooterResponseMetadata?
-    var userLocation: GeoPoint?
+    var userLocation: GeoPoint? {
+        didSet {
+            if userLocation != oldValue { walkOriginDidChange() }
+        }
+    }
     private(set) var userHeading: ScooterUserHeading?
     /// True once this device has located successfully. Only this boolean is stored.
     private(set) var hasLocatedOnce: Bool
@@ -123,15 +131,33 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     var selectedScooterID: String? {
         didSet {
             if selectedScooterID != nil { selectedParkingID = nil }
+            if selectedScooterID != oldValue { endWalkIfTargetLeftSelection() }
         }
     }
     /// Selecting a bay clears the selected scooter, and the other way round.
-    private(set) var selectedParkingID: String?
-    var searchedDestination: MapDestination?
+    private(set) var selectedParkingID: String? {
+        didSet {
+            if selectedParkingID != oldValue { endWalkIfTargetLeftSelection() }
+        }
+    }
+    var searchedDestination: MapDestination? {
+        didSet {
+            if searchedDestination != oldValue { walkOriginDidChange() }
+        }
+    }
     /// Places chosen during this session, newest first. Never persisted: the
     /// privacy notice promises that precise origins are not stored.
     private(set) var recentPlaces: [MapDestination] = []
     var focusRequest: MapFocusRequest?
+    /// The walk to the selected scooter or bay, from a tap on Directions until
+    /// the route is hidden, the card closes or the walk ends on its own. Nil
+    /// while the card simply offers Directions.
+    private(set) var walk: ScooterWalk? {
+        didSet { walkDidChange(from: oldValue) }
+    }
+    /// What VoiceOver is told about the walk: that the way is being found,
+    /// the route that was found, that none was, or that the rider is there.
+    private(set) var walkAnnouncement: ScooterWalkAnnouncement?
 
     var minimumBattery: Double {
         didSet {
@@ -182,6 +208,17 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     @ObservationIgnored private let locationTimeout: Duration
     @ObservationIgnored private let refreshPolicy: ScooterRefreshPolicy
     @ObservationIgnored private let clock: () -> Date
+    @ObservationIgnored private let directions: any WalkingDirectionsClient
+    @ObservationIgnored private let openInMaps: @MainActor (ScooterWalkTarget) -> Void
+    /// The route being found, and the number of the latest request: an
+    /// answer to an earlier one is not wanted any more.
+    @ObservationIgnored private var routeTask: Task<Void, Never>?
+    @ObservationIgnored private var routeRequests = 0
+    @ObservationIgnored private var routeRevisions = 0
+    @ObservationIgnored private var walkAnnouncements = 0
+    /// How precise the last location was: a location this vague may lie that
+    /// far from the path without the rider having left it.
+    @ObservationIgnored private var locationAccuracy: CLLocationAccuracy = 0
     // What the data on the map was requested for. Observed, because the dock
     // only reports an area as empty once the data covers it.
     private var queryBounds: GeoBounds?
@@ -245,9 +282,13 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         defaults: UserDefaults,
         locationTimeout: Duration = .seconds(5),
         refreshPolicy: ScooterRefreshPolicy = .standard,
-        now: @escaping () -> Date = Date.init
+        now: @escaping () -> Date = Date.init,
+        directions: any WalkingDirectionsClient = MapKitWalkingDirections(),
+        openInMaps: @escaping @MainActor (ScooterWalkTarget) -> Void = { $0.openInMaps() }
     ) {
         self.api = api
+        self.directions = directions
+        self.openInMaps = openInMaps
         self.locationManager = locationManager
         self.defaults = defaults
         self.locationTimeout = locationTimeout
@@ -282,13 +323,19 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.distanceFilter = 20
+        locationManager.distanceFilter = Self.distanceFilter
         locationManager.headingFilter = 2
     }
 
+    /// The selected scooter. A walk keeps it on the card when the data no
+    /// longer lists it: zoomed out, where the data counts scooters in
+    /// clusters, or gone, when someone may have taken it.
     var selectedScooter: Scooter? {
         guard let selectedScooterID else { return nil }
-        return vehiclesByID[selectedScooterID]
+        if let scooter = vehiclesByID[selectedScooterID] { return scooter }
+        guard let walk, walk.holdsCard, case let .scooter(scooter) = walk.target,
+              scooter.id == selectedScooterID else { return nil }
+        return scooter
     }
 
     /// The selected bay, while it is still drawn on the map.
@@ -354,7 +401,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     func cardContent(for scooter: Scooter) -> ScooterCardContent {
         ScooterCardContent(
             scooter: scooter,
-            metres: straightLineDistance(to: scooter),
+            metres: walkingDistance(to: scooter),
             placeTitle: searchedDestination?.title,
             quote: ridePriceQuote(for: scooter),
             curfew: RentalCurfew.active(at: GeoPoint(latitude: scooter.latitude, longitude: scooter.longitude), on: clock())
@@ -569,6 +616,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     }
 
     func formattedDistance(for scooter: Scooter) -> String? {
+        if let metres = routeDistance(to: .scooter(scooter)) { return Scooter.formattedLength(meters: metres) }
         guard let origin = activeOrigin?.point else { return nil }
         return scooter.formattedDistance(from: origin)
     }
@@ -578,12 +626,18 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         return scooter.distance(from: origin)
     }
 
+    /// What is left to walk along the route on the map, or else the straight line.
+    func walkingDistance(to scooter: Scooter) -> CLLocationDistance? {
+        routeDistance(to: .scooter(scooter)) ?? straightLineDistance(to: scooter)
+    }
+
     func approximateWalkingMinutes(to scooter: Scooter) -> Int? {
-        guard let distance = straightLineDistance(to: scooter), distance.isFinite else { return nil }
+        guard let distance = walkingDistance(to: scooter), distance.isFinite else { return nil }
         return ScooterMapLook.walkingMinutes(metres: distance)
     }
 
     func approximateWalkingMinutes(to parking: ScooterParking) -> Int? {
+        if let metres = routeDistance(to: .parking(parking)) { return ScooterMapLook.walkingMinutes(metres: metres) }
         guard let origin = activeOrigin?.point else { return nil }
         let distance = Self.distance(
             from: origin,
@@ -887,11 +941,20 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     }
 
     private func choosePlace(_ destination: MapDestination) {
-        selectedScooterID = nil
-        selectedParkingID = nil
+        // A walk under way goes on from the new place when it is still a walk
+        // from there. Its route then shows the place and the scooter, and the
+        // map fits it rather than move to the place first.
+        let keepsWalk = walk.map {
+            $0.isUnderway && WalkRoute.isWalk(from: destination.point, to: $0.target.point)
+        } ?? false
+        if !keepsWalk {
+            selectedScooterID = nil
+            selectedParkingID = nil
+        }
         placeChoices += 1
         searchedDestination = destination
         rememberPlace(destination)
+        guard !keepsWalk else { return }
         focusToken += 1
         focusRequest = destination.kind == .city
             ? .city(destination.point, token: focusToken)
@@ -957,11 +1020,15 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     }
 
     private func rebuildMapScooters() {
-        let next = ScooterFiltering.mapScooters(
+        var next = ScooterFiltering.mapScooters(
             from: vehicles,
             minimumBattery: minimumBattery,
             enabledProviders: enabledProviders
         )
+        // The scooter walked to stays on the map whatever the map shows around it.
+        if let held = walk?.heldScooter, !next.contains(where: { $0.id == held.id }) {
+            next.append(held)
+        }
         guard next != mapScooters else { return }
         mapScooters = next
         mapScootersRevision &+= 1
@@ -1016,7 +1083,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             self.selectedParkingID = nil
         }
 
-        guard let selectedScooter else { return }
+        // The scooter walked to stays selected wherever the map goes.
+        guard let selectedScooter, walk?.heldScooter?.id != selectedScooter.id else { return }
         let remainsVisible = viewport.contains(
             latitude: selectedScooter.latitude,
             longitude: selectedScooter.longitude
@@ -1081,6 +1149,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 queryZoom = zoom
                 queryMinimumBattery = requestMinimumBattery
                 rebuildVehicleIndex()
+                followWalkTarget(in: response.meta, loadedFor: bounds)
                 rebuildMapScooters()
                 rebuildMapClusters()
                 rebuildVisibleCounts()
@@ -1327,6 +1396,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         let nextLocation = GeoPoint(location.coordinate)
         let hadLocation = userLocation != nil
         if !hadLocation { ScooterAnalytics.shared.track("location_result", result: "success") }
+        locationAccuracy = location.horizontalAccuracy
         userLocation = nextLocation
         isLocating = false
         locationProblem = nil
@@ -1415,6 +1485,11 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         }
         ScooterAnalytics.shared.track("location_result", result: locationProblem == .denied ? "denied" : "unavailable")
         keepsMapOnFirstFix = false
+        if var walk, walk.phase == .locating {
+            walk.phase = .failed(.noLocation)
+            self.walk = walk
+            announceWalk(ScooterWalkNote.noLocation.text)
+        }
         locationTimeoutTask?.cancel()
         locationTimeoutTask = nil
         bestLocationCandidate = nil
@@ -1450,5 +1525,338 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private static func distance(from start: GeoPoint, to end: GeoPoint) -> CLLocationDistance {
         CLLocation(latitude: start.latitude, longitude: start.longitude)
             .distance(from: CLLocation(latitude: end.latitude, longitude: end.longitude))
+    }
+}
+
+// MARK: - Walking route
+
+extension ScooterMapModel {
+    /// Core Location reports a move of this many metres. While the rider
+    /// walks a route, of a few metres: the trail behind them goes as they walk.
+    private static let distanceFilter: CLLocationDistance = 20
+    private static let walkingDistanceFilter: CLLocationDistance = 5
+
+    /// What the Directions button of the card of this scooter or bay is.
+    func directionsControl(for target: ScooterWalkTarget) -> ScooterDirectionsControl {
+        guard let walk, walk.target.isSame(as: target) else { return .directions }
+        return walk.control
+    }
+
+    /// The line the card of this scooter or bay shows about its walk, if any.
+    func walkNote(for target: ScooterWalkTarget) -> ScooterWalkNote? {
+        guard let walk, walk.target.isSame(as: target) else { return nil }
+        return walk.note
+    }
+
+    /// The route the map draws, while there is one.
+    var walkTrail: WalkTrail? { walk?.trail }
+
+    /// A walk is under way: the scooter or the bay stays selected and on the
+    /// map wherever the map goes, and a tap on the empty map keeps its card open.
+    var isWalking: Bool { walk?.isUnderway == true }
+
+    /// What is left to walk along the route on the map.
+    var walkRemainingMetres: CLLocationDistance? { walk?.remainingDistance }
+
+    /// Directions on a card: the way on foot from the searched place, or from
+    /// the rider, to the scooter or the bay, drawn on the map. A rider not yet
+    /// located is located first, and the map stays where it is meanwhile.
+    func showWalkingRoute(to target: ScooterWalkTarget) {
+        ScooterAnalytics.shared.track("directions_open", provider: target.provider, target: target.analyticsTarget)
+        cancelRouteRequest()
+        guard let origin = activeOrigin else {
+            walk = ScooterWalk(target: target, phase: .locating)
+            announceWalk(String(localized: "Finding the way…"))
+            // A location already on its way is waited for.
+            if !isLocating { locateForWalkingTime() }
+            return
+        }
+        startWalk(to: target, from: origin, asked: true)
+    }
+
+    /// Hide route: the trail fades and the card offers Directions again.
+    func hideWalkingRoute() {
+        endWalk()
+    }
+
+    /// Open in Maps, once no route was found: Apple Maps takes over, as
+    /// Directions did before the route was drawn in the app.
+    func openWalkInMaps(to target: ScooterWalkTarget) {
+        ScooterAnalytics.shared.track("directions_open", provider: target.provider, target: target.analyticsTarget)
+        openInMaps(target)
+    }
+
+    /// `asked` when the rider is waiting for this route: a tap on Directions,
+    /// and the location it waited for. Only that route is reported, and only
+    /// a walk too long for that opens Apple Maps.
+    private func startWalk(to target: ScooterWalkTarget, from origin: NearbyOrigin, asked: Bool) {
+        cancelRouteRequest()
+        let start = Self.walkOrigin(of: origin)
+        guard WalkRoute.isWalk(from: origin.point, to: target.point) else {
+            walk = nil
+            if asked {
+                trackRouteResult("too_far", for: target)
+                openInMaps(target)
+            }
+            return
+        }
+        if start == .rider, WalkRoute.hasArrived(origin.point, at: target.point) {
+            // Already there: nothing to find.
+            walk = ScooterWalk(target: target, phase: .arrived, origin: .rider)
+            reportArrival(at: target)
+            return
+        }
+        walk = ScooterWalk(target: target, phase: .finding, origin: start)
+        announceWalk(String(localized: "Finding the way…"))
+        requestRoute(from: origin.point, reveals: true, reports: asked)
+    }
+
+    /// Asks MapKit for the way. A route that `reveals` is fitted on the map
+    /// and draws itself; a route found again on the way only takes the old
+    /// one's place, which stays on the map meanwhile.
+    private func requestRoute(from origin: GeoPoint, reveals: Bool, reports: Bool) {
+        guard var walk else { return }
+        cancelRouteRequest()
+        routeRequests += 1
+        let request = routeRequests
+        let target = walk.target
+        walk.lastRequestAt = clock()
+        self.walk = walk
+        routeTask = Task { [weak self, directions = self.directions] in
+            let path = try? await directions.walkingPath(from: origin, to: target.point)
+            // A request that was replaced or cancelled answers nothing.
+            guard let self, !Task.isCancelled, request == routeRequests else { return }
+            routeTask = nil
+            routeFound(path, from: origin, to: target, reveals: reveals, reports: reports)
+        }
+    }
+
+    private func routeFound(
+        _ path: [GeoPoint]?,
+        from origin: GeoPoint,
+        to target: ScooterWalkTarget,
+        reveals: Bool,
+        reports: Bool
+    ) {
+        guard var walk, walk.phase == .finding || walk.phase == .shown else { return }
+        guard let path, !path.isEmpty else {
+            // A route asked for again on the way keeps the one on the map.
+            guard walk.phase == .finding else { return }
+            walk.phase = .failed(.noRoute)
+            walk.route = nil
+            self.walk = walk
+            if reports { trackRouteResult("error", for: walk.target) }
+            announceWalk(ScooterWalkNote.noRoute.text)
+            return
+        }
+        let route = WalkRoute(origin: origin, path: path, target: target.point)
+        routeRevisions += 1
+        walk.route = route
+        walk.routeRevision = routeRevisions
+        walk.reveals = reveals
+        walk.progress = 0
+        walk.phase = .shown
+        self.walk = walk
+        if reports { trackRouteResult("success", for: walk.target) }
+        if reveals {
+            announceWalk(String(
+                format: String(localized: "Route shown: ≈%1$lld min walk · %2$@"),
+                Int64(ScooterMapLook.walkingMinutes(metres: route.length)),
+                Scooter.formattedLength(meters: route.length)
+            ))
+        }
+        // The rider may have walked on while the way was found.
+        if walk.origin == .rider, let userLocation { riderMoved(to: userLocation) }
+    }
+
+    /// The searched place or the rider changed. A walk waiting for a location
+    /// begins; a walk under way follows the rider, or begins again from
+    /// another place; a walk that ended goes once its origin is another.
+    private func walkOriginDidChange() {
+        guard let walk else { return }
+        let origin = activeOrigin
+        switch walk.phase {
+        case .locating:
+            guard let origin else { return }
+            startWalk(to: walk.target, from: origin, asked: true)
+        case .finding, .shown:
+            guard let origin else { return endWalk() }
+            if Self.walkOrigin(of: origin) != walk.origin {
+                // Fitted and drawn again, from where the walk now starts.
+                startWalk(to: walk.target, from: origin, asked: false)
+            } else if walk.origin == .rider {
+                riderMoved(to: origin.point)
+            }
+        case .failed, .arrived:
+            if origin.map(Self.walkOrigin(of:)) != walk.origin { self.walk = nil }
+        case .gone:
+            break
+        }
+    }
+
+    /// The rider walked on. The route behind them goes; a rider who left the
+    /// route, or whose scooter moved away from its end, gets a new one, at
+    /// most every fifteen seconds. The camera never follows.
+    private func riderMoved(to point: GeoPoint) {
+        guard var walk, walk.origin == .rider, walk.isUnderway else { return }
+        if WalkRoute.hasArrived(point, at: walk.target.point) { return arrive() }
+        guard walk.phase == .shown, let route = walk.route,
+              let position = route.position(of: point, after: walk.progress) else { return }
+        if WalkRoute.isOffRoute(position.offset, accuracy: locationAccuracy) {
+            rerouteIfAllowed(from: point)
+            return
+        }
+        if position.along != walk.progress {
+            walk.progress = position.along
+            self.walk = walk
+        }
+        if walkTargetLeftRoute { rerouteIfAllowed(from: point) }
+    }
+
+    /// The scooter is further from the end of the route than a scooter
+    /// standing where it stood.
+    private var walkTargetLeftRoute: Bool {
+        guard let walk, let end = walk.route?.end else { return false }
+        return end.distance(to: walk.target.point) > WalkRoute.targetMoveDistance
+    }
+
+    private func rerouteIfAllowed(from point: GeoPoint) {
+        guard var walk, walk.phase == .shown, walk.origin == .rider, routeTask == nil,
+              walk.reroutes < WalkRoute.maximumReroutes else { return }
+        if let last = walk.lastRequestAt, clock().timeIntervalSince(last) < WalkRoute.rerouteInterval { return }
+        walk.reroutes += 1
+        self.walk = walk
+        requestRoute(from: point, reveals: false, reports: false)
+    }
+
+    /// The rider is at the scooter or the bay: the trail fades and the card
+    /// says so.
+    private func arrive() {
+        cancelRouteRequest()
+        guard var walk else { return }
+        walk.phase = .arrived
+        walk.route = nil
+        self.walk = walk
+        reportArrival(at: walk.target)
+    }
+
+    private func reportArrival(at target: ScooterWalkTarget) {
+        ScooterAnalytics.shared.track("route_arrived", provider: target.provider, target: target.analyticsTarget)
+        announceWalk(ScooterWalkNote.arrived.text)
+    }
+
+    /// Fresh data about the scooter walked to. It may have moved, and the
+    /// route then follows it; or data that would list it no longer does,
+    /// which mostly means someone took it. Scooters get new ids now and then,
+    /// so one of the same provider standing where it stood is that scooter.
+    private func followWalkTarget(in meta: ScooterResponseMetadata?, loadedFor bounds: GeoBounds) {
+        guard var walk, walk.holdsCard, case let .scooter(scooter) = walk.target else { return }
+        if let fresh = vehiclesByID[scooter.id] {
+            guard walk.phase != .gone else {
+                // Back on the map: its card is a scooter's card again.
+                self.walk = nil
+                return
+            }
+            guard fresh != scooter else { return }
+            walk.target = .scooter(fresh)
+            self.walk = walk
+            if walkTargetLeftRoute, walk.origin == .rider, let userLocation { rerouteIfAllowed(from: userLocation) }
+            return
+        }
+        let point = GeoPoint(scooter.coordinate)
+        guard walk.isUnderway, Self.listsEveryScooter(of: scooter.provider, at: point, in: meta, loadedFor: bounds) else {
+            return
+        }
+        let successor = vehicles
+            .filter { $0.provider == scooter.provider }
+            .map { (scooter: $0, metres: $0.distance(from: point)) }
+            .filter { $0.metres <= WalkRoute.rebindDistance }
+            .min { $0.metres < $1.metres }?
+            .scooter
+        if let successor {
+            walk.target = .scooter(successor)
+            self.walk = walk
+            selectedScooterID = successor.id
+            if walkTargetLeftRoute, walk.origin == .rider, let userLocation { rerouteIfAllowed(from: userLocation) }
+            return
+        }
+        cancelRouteRequest()
+        walk.phase = .gone
+        walk.route = nil
+        self.walk = walk
+        announceWalk(ScooterWalkNote.gone.text)
+    }
+
+    /// Whether data would list the scooter if it were still there: single
+    /// scooters, not cut short, loaded around it, with every feed of its
+    /// provider in. A failed feed nobody can name might be its provider's.
+    private static func listsEveryScooter(
+        of provider: String,
+        at point: GeoPoint,
+        in meta: ScooterResponseMetadata?,
+        loadedFor bounds: GeoBounds
+    ) -> Bool {
+        guard bounds.contains(point) else { return false }
+        guard let meta else { return true }
+        guard meta.mode != "clusters", !meta.overview, !meta.truncated else { return false }
+        return meta.failedSources.allSatisfy { source in
+            guard let failed = ScooterProviderHealth.provider(forSource: source) else { return false }
+            return failed.rawValue != provider
+        }
+    }
+
+    /// Closing the card or choosing another scooter or bay ends the walk.
+    private func endWalkIfTargetLeftSelection() {
+        guard let walk else { return }
+        let isSelected = switch walk.target {
+        case let .scooter(scooter): selectedScooterID == scooter.id
+        case let .parking(parking): selectedParkingID == parking.id
+        }
+        if !isSelected { endWalk() }
+    }
+
+    private func endWalk() {
+        cancelRouteRequest()
+        walk = nil
+    }
+
+    private func cancelRouteRequest() {
+        routeTask?.cancel()
+        routeTask = nil
+    }
+
+    private func walkDidChange(from old: ScooterWalk?) {
+        if old?.heldScooter != walk?.heldScooter { rebuildMapScooters() }
+        let filter = walk?.isUnderway == true && walk?.origin == .rider
+            ? Self.walkingDistanceFilter
+            : Self.distanceFilter
+        if locationManager.distanceFilter != filter { locationManager.distanceFilter = filter }
+    }
+
+    /// What is left of the route on the map to this scooter or bay.
+    private func routeDistance(to target: ScooterWalkTarget) -> CLLocationDistance? {
+        guard let walk, walk.target.isSame(as: target) else { return nil }
+        return walk.remainingDistance
+    }
+
+    private func announceWalk(_ text: String) {
+        walkAnnouncements += 1
+        walkAnnouncement = ScooterWalkAnnouncement(text: text, serial: walkAnnouncements)
+    }
+
+    private func trackRouteResult(_ result: String, for target: ScooterWalkTarget) {
+        ScooterAnalytics.shared.track(
+            "route_result",
+            provider: target.provider,
+            result: result,
+            target: target.analyticsTarget
+        )
+    }
+
+    private static func walkOrigin(of origin: NearbyOrigin) -> ScooterWalkOrigin {
+        switch origin {
+        case let .searchedDestination(place): .place(place)
+        case .userLocation: .rider
+        }
     }
 }

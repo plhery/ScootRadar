@@ -23,6 +23,11 @@
 		A0000000000000000000001A /* ScooterMapLookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000022 /* ScooterMapLookTests.swift */; };
 		A0000000000000000000001B /* ScooterLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000023 /* ScooterLanguage.swift */; };
 		A0000000000000000000001C /* ScooterSettingsTiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000024 /* ScooterSettingsTiles.swift */; };
+		A0000000000000000000001D /* WalkRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000025 /* WalkRoute.swift */; };
+		A0000000000000000000001E /* WalkingDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000026 /* WalkingDirections.swift */; };
+		A0000000000000000000001F /* WalkTrailOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000027 /* WalkTrailOverlay.swift */; };
+		A00000000000000000000020 /* WalkRouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000028 /* WalkRouteTests.swift */; };
+		A00000000000000000000021 /* ScooterWalkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000029 /* ScooterWalkTests.swift */; };
 		A0000000000000000000000A /* GeoBoundsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000000C /* GeoBoundsTests.swift */; };
 		A0000000000000000000000B /* ScooterModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000000D /* ScooterModelsTests.swift */; };
 		A0000000000000000000000C /* ScooterFilteringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000000E /* ScooterFilteringTests.swift */; };
@@ -65,6 +70,11 @@
 		B00000000000000000000022 /* ScooterMapLookTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterMapLookTests.swift; sourceTree = "<group>"; };
 		B00000000000000000000023 /* ScooterLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterLanguage.swift; sourceTree = "<group>"; };
 		B00000000000000000000024 /* ScooterSettingsTiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterSettingsTiles.swift; sourceTree = "<group>"; };
+		B00000000000000000000025 /* WalkRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkRoute.swift; sourceTree = "<group>"; };
+		B00000000000000000000026 /* WalkingDirections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkingDirections.swift; sourceTree = "<group>"; };
+		B00000000000000000000027 /* WalkTrailOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkTrailOverlay.swift; sourceTree = "<group>"; };
+		B00000000000000000000028 /* WalkRouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkRouteTests.swift; sourceTree = "<group>"; };
+		B00000000000000000000029 /* ScooterWalkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterWalkTests.swift; sourceTree = "<group>"; };
 		B0000000000000000000000B /* ScootRadarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScootRadarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0000000000000000000000C /* GeoBoundsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoBoundsTests.swift; sourceTree = "<group>"; };
 		B0000000000000000000000D /* ScooterModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterModelsTests.swift; sourceTree = "<group>"; };
@@ -156,6 +166,7 @@
 				B0000000000000000000000A /* ScooterFiltering.swift */,
 				B00000000000000000000020 /* ScooterMapLook.swift */,
 				B00000000000000000000023 /* ScooterLanguage.swift */,
+				B00000000000000000000025 /* WalkRoute.swift */,
 				B0000000000000000000001C /* ProviderCatalog.generated.swift */,
 				B0000000000000000000001D /* ScooterAPIContract.generated.swift */,
 			);
@@ -168,6 +179,7 @@
 				B00000000000000000000003 /* ScooterAPI.swift */,
 				B0000000000000000000001B /* AddressSearchAPI.swift */,
 				B0000000000000000000001F /* ScooterAnalytics.swift */,
+				B00000000000000000000026 /* WalkingDirections.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -188,6 +200,7 @@
 				B00000000000000000000006 /* ScooterControls.swift */,
 				B00000000000000000000024 /* ScooterSettingsTiles.swift */,
 				B00000000000000000000021 /* ScooterMarkerArt.swift */,
+				B00000000000000000000027 /* WalkTrailOverlay.swift */,
 				B00000000000000000000007 /* ScooterMapScreen.swift */,
 				B0000000000000000000001A /* SwissAddressSearch.swift */,
 			);
@@ -201,6 +214,8 @@
 				B0000000000000000000000D /* ScooterModelsTests.swift */,
 				B0000000000000000000000E /* ScooterFilteringTests.swift */,
 				B00000000000000000000022 /* ScooterMapLookTests.swift */,
+				B00000000000000000000028 /* WalkRouteTests.swift */,
+				B00000000000000000000029 /* ScooterWalkTests.swift */,
 				B00000000000000000000010 /* ScooterMapModelTests.swift */,
 				B00000000000000000000011 /* ScooterAPITests.swift */,
 			);
@@ -377,6 +392,9 @@
 				A00000000000000000000017 /* ScooterAnalytics.swift in Sources */,
 				A00000000000000000000014 /* ProviderCatalog.generated.swift in Sources */,
 				A00000000000000000000015 /* ScooterAPIContract.generated.swift in Sources */,
+				A0000000000000000000001D /* WalkRoute.swift in Sources */,
+				A0000000000000000000001E /* WalkingDirections.swift in Sources */,
+				A0000000000000000000001F /* WalkTrailOverlay.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,6 +406,8 @@
 				A0000000000000000000000B /* ScooterModelsTests.swift in Sources */,
 				A0000000000000000000000C /* ScooterFilteringTests.swift in Sources */,
 				A0000000000000000000001A /* ScooterMapLookTests.swift in Sources */,
+				A00000000000000000000020 /* WalkRouteTests.swift in Sources */,
+				A00000000000000000000021 /* ScooterWalkTests.swift in Sources */,
 				A0000000000000000000000E /* ScooterMapModelTests.swift in Sources */,
 				A0000000000000000000000F /* ScooterAPITests.swift in Sources */,
 			);

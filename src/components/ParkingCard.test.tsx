@@ -14,6 +14,7 @@ function renderCard(selection: Partial<SelectedParking> = {}, parking: Partial<P
   const props = {
     selection: { parking: { ...bay, ...parking }, walk: { distanceM: 210, place: null }, ...selection },
     onClose: vi.fn(),
+    walk: { view: null, tooFar: false, onStart: vi.fn(), onHide: vi.fn() },
   };
   render(<I18nProvider><ParkingCard {...props} /></I18nProvider>);
   return props;
@@ -74,15 +75,13 @@ describe('ParkingCard', () => {
   });
 
   it('offers walking directions as its one, primary action and says to check the provider app', () => {
-    renderCard();
+    const props = renderCard();
 
-    expect(screen.getAllByRole('link')).toHaveLength(1);
-    const directions = screen.getByRole('link', { name: 'Directions' });
-    expect(directions).toHaveAttribute(
-      'href',
-      'https://www.google.com/maps/dir/?api=1&destination=50.6365%2C3.0635&travelmode=walking'
-    );
+    expect(screen.queryAllByRole('link')).toHaveLength(0);
+    const directions = screen.getByRole('button', { name: 'Directions' });
     expect(directions).toHaveClass('card-action-primary');
+    fireEvent.click(directions);
+    expect(props.walk.onStart).toHaveBeenCalledOnce();
     expect(screen.getByText('Check the Dott app before you end your ride.')).toBeVisible();
   });
 

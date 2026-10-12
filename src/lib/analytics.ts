@@ -9,6 +9,7 @@ export type AnalyticsEvent =
   | 'filters_open' | 'settings_open' | 'panel_close' | 'provider_filter' | 'providers_all' | 'filters_reset'
   | 'battery_filter' | 'map_style' | 'language_change' | 'locate' | 'location_result'
   | 'vehicle_select' | 'vehicle_dismiss' | 'cluster_select' | 'parking_select' | 'directions_open' | 'rental_open'
+  | 'route_result' | 'route_arrived'
   | 'map_zoom' | 'compass_reset' | 'refresh' | 'refresh_result' | 'data_error' | 'data_expired'
   | 'app_install' | 'app_open';
 export interface AnalyticsData {

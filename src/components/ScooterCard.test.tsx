@@ -3,9 +3,11 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import ScooterCard, { type SelectedVehicle } from '@/components/ScooterCard';
+import type { CardWalk } from '@/components/WalkAction';
 import { I18nProvider } from '@/lib/i18n';
 import type { Vehicle } from '@/lib/types';
 import { formatClockTime } from '@/lib/uiText';
+import type { WalkView } from '@/lib/walkState';
 
 const lime: Vehicle = {
   provider: 'lime', lat: 47.37, lng: 8.54, battery: 82, range_m: 24_000,
@@ -14,16 +16,34 @@ const lime: Vehicle = {
   pricing: { currency: 'CHF', unlock_fee_minor_units: 100, minute_fee_minor_units: 35 },
 };
 
-function renderCard(selection: Partial<SelectedVehicle> = {}, vehicle: Partial<Vehicle> = {}, locating = false) {
+function renderCard(
+  selection: Partial<SelectedVehicle> = {},
+  vehicle: Partial<Vehicle> = {},
+  locating = false,
+  walk: Partial<CardWalk> = {}
+) {
   const props = {
     selection: { vehicle: { ...lime, ...vehicle }, walk: { distanceM: 126, place: null }, ...selection },
     onClose: vi.fn(),
     onLocate: vi.fn(),
+    walk: { view: null, tooFar: false, onStart: vi.fn(), onHide: vi.fn(), ...walk },
   };
-  const card = (isLocating: boolean) => <I18nProvider><ScooterCard {...props} locating={isLocating} /></I18nProvider>;
+  const card = (isLocating: boolean, cardWalk = props.walk) => (
+    <I18nProvider><ScooterCard {...props} locating={isLocating} walk={cardWalk} /></I18nProvider>
+  );
   const view = render(card(locating));
-  return { ...props, setLocating: (isLocating: boolean) => view.rerender(card(isLocating)), unmount: view.unmount };
+  return {
+    ...props,
+    setLocating: (isLocating: boolean) => view.rerender(card(isLocating)),
+    setWalk: (next: Partial<CardWalk>) => view.rerender(card(locating, { ...props.walk, ...next })),
+    unmount: view.unmount,
+  };
 }
+
+/** The walk as the card is given it, in one phase. */
+const walkView = (phase: WalkView['phase'], extra: Partial<WalkView> = {}): WalkView => ({
+  phase, failure: null, line: [], routeId: null, remainingM: null, ...extra,
+});
 
 const plain = (text: string | null | undefined) => text?.replace(/\s+/g, ' ') ?? null;
 /** The figures of the card: the number with its unit, what it measures, and what a screen reader hears instead. */
@@ -225,7 +245,7 @@ describe('ScooterCard', () => {
 
     expect(document.querySelector('.card-figures')).toBeNull();
     expect(screen.getByText('Price shown in the Lime app')).toBeVisible();
-    expect(screen.getByRole('link', { name: 'Directions' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Directions' })).toBeVisible();
   });
 
   it('says so when unlocking costs nothing', () => {
@@ -238,10 +258,7 @@ describe('ScooterCard', () => {
   it('opens the provider app with the app’s blue button, next to directions', () => {
     renderCard();
 
-    expect(screen.getByRole('link', { name: 'Directions' })).toHaveAttribute(
-      'href',
-      'https://www.google.com/maps/dir/?api=1&destination=47.37%2C8.54&travelmode=walking'
-    );
+    expect(screen.getByRole('button', { name: 'Directions' })).not.toHaveClass('card-action-primary');
     const open = screen.getByRole('link', { name: 'Open in Lime' });
     expect(open).toHaveAttribute('href', 'https://li.me/ride');
     expect(open).toHaveClass('card-action-primary');
@@ -252,9 +269,91 @@ describe('ScooterCard', () => {
   it('leaves directions alone when there is no way to open the provider app', () => {
     renderCard({}, { rental_uris: undefined });
 
-    expect(screen.getAllByRole('link')).toHaveLength(1);
-    expect(screen.getByRole('link', { name: 'Directions' })).toBeVisible();
+    expect(screen.queryAllByRole('link')).toHaveLength(0);
+    expect(screen.getByRole('button', { name: 'Directions' })).toBeVisible();
     expect(document.querySelector('.card-footnote')).toBeNull();
+  });
+
+  it('draws the way on the map from Directions, and takes it away again', () => {
+    const props = renderCard();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Directions' }));
+    expect(props.walk.onStart).toHaveBeenCalledOnce();
+
+    props.setWalk({ view: walkView('finding') });
+    const busy = screen.getByRole('button', { name: 'Directions' });
+    expect(busy).toHaveAttribute('aria-busy', 'true');
+    expect(screen.getByRole('status')).toHaveTextContent('Finding the way…');
+    // Pressed again while the way is found: it is on its way already.
+    fireEvent.click(busy);
+    expect(props.walk.onStart).toHaveBeenCalledOnce();
+
+    props.setWalk({ view: walkView('shown', { line: [[47.371, 8.541], [47.37, 8.54]], routeId: 1, remainingM: 410 }) });
+    expect(screen.getByRole('status')).toHaveTextContent('Route shown: ≈6 min walk · 410 m');
+    fireEvent.click(screen.getByRole('button', { name: 'Hide route' }));
+    expect(props.walk.onHide).toHaveBeenCalledOnce();
+  });
+
+  it('announces a way once, not again with every step taken along it', () => {
+    const props = renderCard();
+    const shown = (remainingM: number, routeId = 1) =>
+      props.setWalk({ view: walkView('shown', { line: [[47.371, 8.541], [47.37, 8.54]], routeId, remainingM }) });
+
+    shown(410);
+    shown(330);
+    expect(screen.getByRole('status')).toHaveTextContent('≈6 min walk · 410 m');
+    // A way from another start is a new one.
+    shown(900, 2);
+    expect(screen.getByRole('status')).toHaveTextContent('≈12 min walk · 900 m');
+  });
+
+  it('opens Google Maps where no way was found on foot', () => {
+    renderCard({}, {}, false, { view: walkView('failed', { failure: 'route' }) });
+
+    expect(screen.getByRole('link', { name: 'Open in Google Maps' })).toHaveAttribute(
+      'href',
+      'https://www.google.com/maps/dir/?api=1&destination=47.37%2C8.54&travelmode=walking'
+    );
+    expect(screen.getByRole('status')).toHaveTextContent('Couldn’t find a walking route.');
+  });
+
+  it('does not blame the streets when the routes cannot be had for now', () => {
+    renderCard({}, {}, false, { view: walkView('failed', { failure: 'unavailable' }) });
+
+    expect(screen.getByRole('status')).toHaveTextContent('Walking routes can’t be loaded right now.');
+    expect(screen.getByRole('link', { name: 'Open in Google Maps' })).toBeVisible();
+  });
+
+  it('says when your location could not be had for the way', () => {
+    renderCard({ walk: null }, {}, false, { view: walkView('failed', { failure: 'location' }) });
+
+    expect(screen.getByRole('status')).toHaveTextContent('Couldn’t find your location.');
+  });
+
+  it('leaves a walk too long for the map to Google Maps', () => {
+    renderCard({ walk: { distanceM: 25_000, place: null } }, {}, false, { tooFar: true });
+
+    expect(screen.queryByRole('button', { name: 'Directions' })).toBeNull();
+    expect(screen.getByRole('link', { name: 'Directions' })).toHaveAttribute(
+      'href',
+      'https://www.google.com/maps/dir/?api=1&destination=47.37%2C8.54&travelmode=walking'
+    );
+  });
+
+  it('says when you are there', () => {
+    renderCard({}, {}, false, { view: walkView('arrived') });
+
+    expect(screen.getByRole('status')).toHaveTextContent('You’re there.');
+    expect(screen.getByRole('link', { name: 'Open in Lime' })).toBeVisible();
+  });
+
+  it('has nothing left to offer for a scooter taken while you walked to it', () => {
+    renderCard({}, {}, false, { view: walkView('gone') });
+
+    expect(screen.getByRole('status')).toHaveTextContent('No longer on the map. Someone may have taken it.');
+    expect(screen.queryByRole('link', { name: 'Open in Lime' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Directions' })).toBeNull();
+    expect(screen.getByRole('button', { name: 'Close scooter details' })).toBeVisible();
   });
 
   it('closes from its own button', () => {

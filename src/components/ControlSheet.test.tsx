@@ -276,6 +276,8 @@ describe('ControlSheet settings', () => {
     expect(links.map(link => link.textContent)).toEqual([
       '© OpenStreetMap contributors',
       'OpenFreeMap © OpenMapTiles',
+      'Walking routes · Valhalla, FOSSGIS',
+      'Fix the map · OpenStreetMap',
       'Mobility data CH',
       'France: Dott, Bird, Lime, Voi, Pony',
       'MobiData BW',

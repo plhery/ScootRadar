@@ -208,3 +208,12 @@
 "%@ range" = "%@ range";
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ to unlock, then %2$@ a minute";
 "No unlock fee, %@ a minute" = "No unlock fee, %@ a minute";
+
+/* Walking route: Directions on a card draws the way on the map */
+"Hide route" = "Hide route";
+"Finding the way…" = "Finding the way…";
+"Couldn’t find a walking route." = "Couldn’t find a walking route.";
+"Open in Maps" = "Open in Maps";
+"You’re there." = "You’re there.";
+"Route shown: ≈%1$lld min walk · %2$@" = "Route shown: ≈%1$lld min walk · %2$@";
+"No longer on the map. Someone may have taken it." = "No longer on the map. Someone may have taken it.";

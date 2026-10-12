@@ -4,7 +4,11 @@ interface RateLimitBinding {
   limit(options: { key: string }): Promise<{ success: boolean }>;
 }
 
-type RateLimitBindingName = 'SCOOTER_API_RATE_LIMITER' | 'GEOCODE_API_RATE_LIMITER';
+type RateLimitBindingName =
+  | 'SCOOTER_API_RATE_LIMITER'
+  | 'GEOCODE_API_RATE_LIMITER'
+  | 'WALK_API_RATE_LIMITER'
+  | 'WALK_UPSTREAM_RATE_LIMITER';
 
 function clientKey(request: Request): string {
   return request.headers.get('cf-connecting-ip') ??
@@ -16,9 +20,11 @@ function failOpenInLocalDevelopment(): boolean {
   return process.env.NODE_ENV !== 'production';
 }
 
+/** Counts the request against its client, or against `key` when one is given: a limit for all clients together. */
 export async function rateLimitAllows(
   request: Request,
-  bindingName: RateLimitBindingName
+  bindingName: RateLimitBindingName,
+  key?: string
 ): Promise<boolean> {
   try {
     const context = await getCloudflareContext({ async: true });
@@ -26,7 +32,7 @@ export async function rateLimitAllows(
       RateLimitBinding | undefined;
     if (!binding) return failOpenInLocalDevelopment();
 
-    const result = await binding.limit({ key: clientKey(request) });
+    const result = await binding.limit({ key: key ?? clientKey(request) });
     return result.success;
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);

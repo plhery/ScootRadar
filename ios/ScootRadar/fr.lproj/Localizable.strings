@@ -208,3 +208,12 @@
 "%@ range" = "%@ d’autonomie";
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ pour déverrouiller, puis %2$@ par minute";
 "No unlock fee, %@ a minute" = "Pas de frais de déverrouillage, %@ par minute";
+
+/* Walking route: Directions on a card draws the way on the map */
+"Hide route" = "Masquer l’itinéraire";
+"Finding the way…" = "Recherche du chemin…";
+"Couldn’t find a walking route." = "Aucun itinéraire à pied trouvé.";
+"Open in Maps" = "Ouvrir dans Plans";
+"You’re there." = "Vous y êtes.";
+"Route shown: ≈%1$lld min walk · %2$@" = "Itinéraire affiché : ≈%1$lld min à pied · %2$@";
+"No longer on the map. Someone may have taken it." = "N’est plus sur la carte. Quelqu’un l’a peut-être prise.";

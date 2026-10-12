@@ -47,6 +47,8 @@ export function shouldAcceptLocation(current: LocationFix | null, next: Location
 
 export function useLiveLocation() {
   const [location, setLocation] = useState<[number, number] | null>(null);
+  // How far off the location may be, in metres: a walk is not off its way by less.
+  const [accuracyM, setAccuracyM] = useState<number | null>(null);
   const [locating, setLocating] = useState(false);
   const [error, setError] = useState<LiveLocationError | null>(null);
   const [tracking, setTracking] = useState(false);
@@ -57,6 +59,7 @@ export function useLiveLocation() {
     if (force || shouldAcceptLocation(acceptedFixRef.current, next)) {
       acceptedFixRef.current = next;
       setLocation(next.coordinates);
+      setAccuracyM(next.accuracyM);
     }
     setError(null);
     setLocating(false);
@@ -126,5 +129,5 @@ export function useLiveLocation() {
     );
   }, [acceptPosition, handlePositionError]);
 
-  return { location, locating, error, locate };
+  return { location, accuracyM, locating, error, locate };
 }

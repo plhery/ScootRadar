@@ -5,6 +5,7 @@ import type { MapBounds, ParkingLocation, ScooterCluster, Vehicle } from '@/lib/
 import type { AddressResult } from '@/components/AddressSearch';
 import type { MapStyleName, ThemeName } from '@/lib/clientParams';
 import type { RefObject } from 'react';
+import type { WalkView } from '@/lib/walkState';
 import type { MapPopover, MarkerLookup } from './MapComponent';
 
 const MapComponent = dynamic(() => import('./MapComponent'), { ssr: false });
@@ -30,6 +31,7 @@ interface MapWrapperProps {
   onParkingSelect: (location: ParkingLocation) => void;
   onMapClick?: () => void;
   revealAboveDock?: boolean;
+  walk?: WalkView | null;
   hoverTips?: boolean;
   popover?: MapPopover | null;
   zoomStep?: { direction: 1 | -1; version: number };

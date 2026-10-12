@@ -21,7 +21,8 @@ root, the web map was counted under `/`: web views of `/` before that are the ma
 | Preferences | `settings_open`, `panel_close`, `map_style`, `language_change` | style (web: the appearance `auto`/`light`/`dark` or the map `calm`/`detailed`; iOS: the appearance `auto`/`light`/`dark` or the map `standard`/`quiet`/`satellite`, in `result`), language (iOS: in `result`) |
 | Location | `locate`, `location_result` | success/denied/unavailable |
 | Map/details | `vehicle_select`, `vehicle_dismiss`, `cluster_select`, `parking_select`, `map_zoom` (web), `compass_reset` (web) | provider; zoom direction |
-| Conversion intent | `directions_open`, `rental_open` | provider, vehicle/parking target |
+| Conversion intent | `directions_open`, `rental_open` | provider, vehicle/parking target; for directions on the web, `result`: `route` (drawn on the map) or `maps` (Google Maps); iOS sends it for Directions and for Open in Maps alike, without `result` |
+| Walking routes | `route_result`, `route_arrived` | web: `success`/`no_route`/`busy`/`failed`/`too_far`; iOS: `success`/`error`/`too_far`, with provider and vehicle/parking target |
 | Reliability | `refresh`, `refresh_result` (web), `data_error`, `data_expired` (web) | generic outcome only (`success`/`error`; `timeout`/`request_failed`) |
 | Price tools (iOS) | `ride_duration`, `ride_pass_change` | duration, provider; never pass expiry or financial details |
 
@@ -52,6 +53,12 @@ What the events mean on the web:
   `filters_reset` is Reset in that sheet or "Show all" on the card that says
   the filters hide every scooter.
 - `panel_close` closes Filters or Settings.
+- `directions_open` with `result: route` is Directions drawing the way on the
+  map; `route_result` follows with what came of the first request for it (a
+  way found again as the walker goes is not counted). `result: maps` is the
+  Google Maps link that stands in for it where the walk is over 10 km or no way
+  was found. `route_arrived` is sent once a walk reaches the scooter or bay.
+  Neither carries a position, a distance or the route.
 - The desktop keys send the event of the control they stand for: `/` sends
   `search_open`, `+` and `−` send `map_zoom`, Esc sends `search_close` or, on a
   scooter card, `vehicle_dismiss`. A tap on the map that closes a scooter card

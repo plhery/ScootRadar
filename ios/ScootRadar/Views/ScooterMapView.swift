@@ -98,6 +98,13 @@ struct ScooterMapView: UIViewRepresentable {
     var origin: GeoPoint? = nil
     /// The names on the map and what VoiceOver reads of it are written in it.
     var language = ScooterLanguage.current
+    /// The walking route to the selected scooter or bay, while one is shown.
+    var walkTrail: WalkTrail? = nil
+    /// A walk is under way: the selected scooter or bay stays selected and
+    /// on its own whatever the zoom, and a tap on the empty map keeps it.
+    var isWalking = false
+    /// What is left of the route, for the time on the selected scooter's name.
+    var walkRemainingMetres: CLLocationDistance? = nil
 
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
@@ -149,6 +156,7 @@ struct ScooterMapView: UIViewRepresentable {
         mapView.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
             [coordinator = context.coordinator] (mapView: MKMapView, _) in
             coordinator.updateLook(on: mapView)
+            coordinator.updateTrailLook(on: mapView)
         }
         return mapView
     }
@@ -166,7 +174,9 @@ struct ScooterMapView: UIViewRepresentable {
         context.coordinator.applyDestination(destination, on: mapView)
         context.coordinator.applySelection(selectedScooterID, on: mapView)
         context.coordinator.applyParkingSelection(selectedParkingID, on: mapView)
+        context.coordinator.applyWalking(on: mapView)
         context.coordinator.applyFocus(focusRequest, on: mapView)
+        context.coordinator.applyTrail(walkTrail, on: mapView)
         context.coordinator.updateUserHeading(on: mapView, animated: true)
         context.coordinator.updateCompass(on: mapView)
         context.coordinator.updateLook(on: mapView)
@@ -202,6 +212,12 @@ struct ScooterMapView: UIViewRepresentable {
         private var pillNeighbours: [String: [CGRect]] = [:]
         /// The dots light up once, the first time they appear.
         private var lightUpEnds: TimeInterval?
+        private let trail = WalkTrailOverlay()
+        /// The scooter walked to, which MapKit never gathers into a cluster.
+        private var heldScooterID: String?
+        /// A route waits for the camera to fit it before it draws itself.
+        private var pendingReveal: (revision: Int, since: TimeInterval)?
+        private var revealFallback: Task<Void, Never>?
 
         static let mapKitTapResolutionGracePeriod: TimeInterval = 1
         /// The dots are sized again when the scale of the map has changed by this much.
@@ -212,6 +228,8 @@ struct ScooterMapView: UIViewRepresentable {
             let revision: Int?
             let origin: GeoPoint?
             let selectedID: String?
+            /// Along the route to the selected scooter, while one is shown.
+            let walkMinutes: Int?
             let isDark: Bool
             let isStreetLevel: Bool
             let scaleStep: Int
@@ -460,10 +478,21 @@ struct ScooterMapView: UIViewRepresentable {
                 // dissolve clusters when the zoom threshold is crossed.
                 mapView.removeAnnotations(scooterAnnotations)
                 mapView.addAnnotations(scooterAnnotations)
+                // The scooter walked to was selected before and stays so.
+                if let heldScooterID, let annotation = annotationsByID[heldScooterID] {
+                    mapView.selectAnnotation(annotation, animated: false)
+                }
             }
         }
 
         func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+            // The camera has fitted a new route: it draws itself now. Not on
+            // what the fit itself does at once, before its move.
+            if let pendingReveal, pendingReveal.revision == trail.revision,
+               animated || ProcessInfo.processInfo.systemUptime - pendingReveal.since > 0.1 {
+                revealPendingRoute()
+            }
+            trail.mapDidMove(on: mapView)
             applyFocus(parent.focusRequest, on: mapView)
             updateClusteringMode(on: mapView)
             updateLook(on: mapView)
@@ -495,7 +524,8 @@ struct ScooterMapView: UIViewRepresentable {
                 revision: reconciledScooterRevision,
                 origin: parent.origin,
                 selectedID: appliedSelectionID,
-                isDark: mapView.traitCollection.userInterfaceStyle == .dark || parent.mapStyle == .satellite,
+                walkMinutes: parent.walkRemainingMetres.map(ScooterMapLook.walkingMinutes(metres:)),
+                isDark: isDark(mapView),
                 // Zoomed out, MapKit gathers the scooters into clusters.
                 isStreetLevel: clusteringEnabled == false,
                 scaleStep: Int((log(metresPerPoint) / Self.scaleStep).rounded()),
@@ -603,14 +633,14 @@ struct ScooterMapView: UIViewRepresentable {
                     fresh.insert(id)
                 }
                 look.offset = offsets[id] ?? .zero
+                // The scooter walked to says the time along its route.
+                let minutes = (id == inputs.selectedID ? inputs.walkMinutes : nil)
+                    ?? annotation.metres.map(ScooterMapLook.walkingMinutes(metres:))
                 let pill = named.contains(id) ? ScooterNamePillView.Content(
                     provider: annotation.scooter.providerInfo,
                     name: annotation.scooter.providerInfo?.briefName ?? annotation.scooter.provider.capitalized,
-                    time: annotation.metres.map {
-                        String(
-                            format: String(localized: "%lld min"),
-                            Int64(ScooterMapLook.walkingMinutes(metres: $0))
-                        )
+                    time: minutes.map {
+                        String(format: String(localized: "%lld min"), Int64($0))
                     },
                     isFilled: id == inputs.selectedID,
                     isDark: inputs.isDark
@@ -847,12 +877,12 @@ struct ScooterMapView: UIViewRepresentable {
                 return view
             }
 
-            guard annotation is ScooterMapAnnotation else { return nil }
+            guard let scooter = annotation as? ScooterMapAnnotation else { return nil }
             let view = mapView.dequeueReusableAnnotationView(
                 withIdentifier: ScooterAnnotationView.reuseIdentifier,
                 for: annotation
             ) as! ScooterAnnotationView
-            view.setClusteringEnabled(ScooterClusteringPolicy.shouldCluster(
+            view.setClusteringEnabled(scooter.scooter.id != heldScooterID && ScooterClusteringPolicy.shouldCluster(
                 at: Self.zoomLevel(on: mapView)
             ))
             view.refreshAppearance()
@@ -904,7 +934,8 @@ struct ScooterMapView: UIViewRepresentable {
                     animated: !UIAccessibility.isReduceMotionEnabled
                 )
                 updateLook(on: mapView)
-            } else {
+            } else if !parent.isWalking {
+                // During a walk the card stays open: the map is for looking around.
                 clearSelection(on: mapView)
             }
         }
@@ -1152,6 +1183,7 @@ struct ScooterMapView: UIViewRepresentable {
         }
 
         func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+            if parent.isWalking, keepWalkSelection(of: view.annotation, on: mapView) { return }
             let now = ProcessInfo.processInfo.systemUptime
             guard now >= suppressMapKitSelectionUntil,
                   now >= suppressAllMapKitSelectionsUntil else { return }
@@ -1166,6 +1198,135 @@ struct ScooterMapView: UIViewRepresentable {
             appliedSelectionID = nil
             parent.onSelectionChange(nil)
             updateLook(on: mapView)
+        }
+
+        // MARK: Walking route
+
+        func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+            trail.renderer(for: overlay) ?? MKOverlayRenderer(overlay: overlay)
+        }
+
+        private func isDark(_ mapView: MKMapView) -> Bool {
+            mapView.traitCollection.userInterfaceStyle == .dark || parent.mapStyle == .satellite
+        }
+
+        func updateTrailLook(on mapView: MKMapView) {
+            trail.setDark(isDark(mapView))
+        }
+
+        /// The scooter walked to stands on its own, outside MapKit's clusters.
+        func applyWalking(on mapView: MKMapView) {
+            let held = parent.isWalking ? parent.selectedScooterID : nil
+            guard held != heldScooterID else { return }
+            let previous = heldScooterID
+            heldScooterID = held
+            for id in [previous, held].compactMap({ $0 }) {
+                guard let annotation = annotationsByID[id],
+                      let view = mapView.view(for: annotation) as? ScooterAnnotationView else { continue }
+                view.setClusteringEnabled(id != held && clusteringEnabled == true)
+            }
+        }
+
+        /// A new route is fitted on the map and then draws itself; a route
+        /// found again on the way takes the old one's place as it is; the
+        /// part walked goes; a route no longer wanted fades.
+        func applyTrail(_ walkTrail: WalkTrail?, on mapView: MKMapView) {
+            trail.setDark(isDark(mapView))
+            guard let walkTrail else {
+                pendingReveal = nil
+                revealFallback?.cancel()
+                trail.hide(on: mapView)
+                return
+            }
+            guard walkTrail.revision != trail.revision else {
+                trail.setWalked(walkTrail.walked)
+                return
+            }
+            let animated = !UIAccessibility.isReduceMotionEnabled && mapView.window != nil
+            let reveals = walkTrail.reveals && animated
+            trail.show(walkTrail, on: mapView, drawn: reveals ? 0 : 1)
+            pendingReveal = nil
+            revealFallback?.cancel()
+            guard walkTrail.reveals else { return }
+            fitRoute(walkTrail, on: mapView, animated: animated)
+            guard reveals else {
+                // Fitted at once: the dots are spaced for where the camera is now.
+                trail.mapDidMove(on: mapView)
+                return
+            }
+            pendingReveal = (walkTrail.revision, ProcessInfo.processInfo.systemUptime)
+            revealFallback = Task { @MainActor [weak self] in
+                try? await Task.sleep(for: .seconds(WalkTrailLook.fitDuration))
+                guard !Task.isCancelled else { return }
+                self?.revealPendingRoute()
+            }
+        }
+
+        private func revealPendingRoute() {
+            guard pendingReveal != nil else { return }
+            pendingReveal = nil
+            revealFallback?.cancel()
+            revealFallback = nil
+            trail.revealRoute(animated: !UIAccessibility.isReduceMotionEnabled)
+        }
+
+        /// Shows the whole route between the search bar and the dock, turned
+        /// and tilted as the map is, no closer than street level.
+        private func fitRoute(_ walkTrail: WalkTrail, on mapView: MKMapView, animated: Bool) {
+            let bounds = mapView.bounds
+            guard bounds.width > 0, bounds.height > 0, let first = walkTrail.points.first else { return }
+            let band = visibleBand(of: mapView)
+            var visible = band.insetBy(dx: WalkTrailLook.fitMargin, dy: WalkTrailLook.fitMargin)
+            // With very little room left, the margin goes first.
+            if visible.width < 88 || visible.height < 88 { visible = band }
+            if visible.width < 44 || visible.height < 44 { visible = bounds }
+            let minimumScale = MKMapPointsPerMeterAtLatitude(first.latitude)
+                * WalkTrailLook.closestFitWidth / Double(bounds.width)
+            guard let rect = ScooterMapCameraPolicy.rect(
+                fitting: walkTrail.points.map { MKMapPoint($0.coordinate) },
+                heading: mapView.camera.heading,
+                size: bounds.size,
+                visible: visible.offsetBy(dx: -bounds.minX, dy: -bounds.minY),
+                minimumScale: minimumScale
+            ) else { return }
+            ScooterMapCameraPolicy.setRegionPreservingPerspective(
+                MKCoordinateRegion(rect),
+                on: mapView,
+                animated: animated
+            )
+        }
+
+        /// MapKit deselects what a tap on the empty map leaves behind, and
+        /// what it takes off the map to cluster again. During a walk its
+        /// scooter or bay is selected again. Returns whether the deselection
+        /// is answered here, and so not passed on as the card closing.
+        private func keepWalkSelection(of annotation: MKAnnotation?, on mapView: MKMapView) -> Bool {
+            if let scooter = annotation as? ScooterMapAnnotation {
+                let id = scooter.scooter.id
+                guard id == appliedSelectionID else { return false }
+                // The walk went on with the same scooter under a new id, which
+                // the map selects next: the old one leaving closes nothing.
+                guard id == parent.selectedScooterID else { return true }
+                Task { @MainActor [weak self, weak mapView] in
+                    guard let self, let mapView, parent.isWalking, appliedSelectionID == id,
+                          let annotation = annotationsByID[id],
+                          !mapView.selectedAnnotations.contains(where: { $0 === annotation }) else { return }
+                    mapView.selectAnnotation(annotation, animated: false)
+                }
+                return true
+            }
+            if let parking = annotation as? ScooterParkingAnnotation {
+                let id = parking.parking.id
+                guard id == appliedParkingID, id == parent.selectedParkingID else { return false }
+                Task { @MainActor [weak self, weak mapView] in
+                    guard let self, let mapView, parent.isWalking, appliedParkingID == id,
+                          let annotation = parkingAnnotationsByID[id],
+                          !mapView.selectedAnnotations.contains(where: { $0 === annotation }) else { return }
+                    mapView.selectAnnotation(annotation, animated: false)
+                }
+                return true
+            }
+            return false
         }
     }
 }
