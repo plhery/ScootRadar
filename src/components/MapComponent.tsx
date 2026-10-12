@@ -207,6 +207,11 @@ function createClusterIcon(cluster: ScooterCluster, count: string): L.DivIcon {
   });
 }
 
+// Where totals touch, as neighbouring countries do zoomed out, the larger is drawn over the smaller.
+function clusterZIndex(cluster: ScooterCluster): number {
+  return 500 + Math.round(Math.log10(cluster.count + 1) * 1000);
+}
+
 function clusterTitle(cluster: ScooterCluster, t: Translate, formatNumber: FormatNumber): string {
   const providers = Object.entries(cluster.providers)
     .map(([provider, count]) => `${PROVIDERS[provider]?.name ?? provider} ${formatNumber(count)}`)
@@ -898,10 +903,11 @@ export default function MapComponent({
       if (existing) {
         if (!existing.getLatLng().equals(center)) existing.setLatLng(center);
         existing.setIcon(createClusterIcon(cluster, formatNumber(cluster.count)));
+        existing.setZIndexOffset(clusterZIndex(cluster));
         updateMarkerLabel(existing, label);
       } else {
         const marker = onMarkerPress(
-          L.marker(center, { icon: createClusterIcon(cluster, formatNumber(cluster.count)), zIndexOffset: 500, title: label }),
+          L.marker(center, { icon: createClusterIcon(cluster, formatNumber(cluster.count)), zIndexOffset: clusterZIndex(cluster), title: label }),
           () => {
             selectionFeedback();
             track('cluster_select');

@@ -196,6 +196,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             ScooterAnalytics.shared.track("language_change", result: language.rawValue)
             ScooterLanguage.current = language
             defaults.set([language.rawValue], forKey: Self.languagesKey)
+            // Countries are named in it.
+            rebuildMapClusters()
         }
     }
 
@@ -1044,7 +1046,10 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private func rebuildMapClusters() {
         var next = clusters.compactMap { $0.filtered(to: enabledProviders) }
         if responseMetadata?.overview == true {
-            next = ScooterCityGrouping.group(next, zoomLevel: viewportZoomLevel)
+            let locale = language.locale
+            next = ScooterCityGrouping.group(next, zoomLevel: viewportZoomLevel) { code in
+                locale.localizedString(forRegionCode: code) ?? code.uppercased()
+            }
         }
         guard next != mapClusters else { return }
         mapClusters = next

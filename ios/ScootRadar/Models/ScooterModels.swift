@@ -409,55 +409,112 @@ struct ScooterCluster: Identifiable, Hashable, Sendable {
     }
 }
 
-/// Further out than a few cities, neighbouring city totals are drawn as one.
+/// Zoomed out, a country or neighbouring cities are drawn as one total.
 enum ScooterCityGrouping {
+    /// Further out than this, where a phone shows more than France, a country is one total.
+    static let countryTotalsBelowZoom = 5.0
     /// Centres closer than this, in points, would draw the totals over one another.
     static let spacing = 60.0
     /// Named in a group's label; the rest are left to zooming in.
     static let namedCities = 3
+    /// Where a country's total stands: inland and about the middle of the country.
+    static let countryAnchors: [String: (latitude: Double, longitude: Double)] = [
+        "be": (50.6, 4.6), "ch": (46.8, 8.2), "de": (51.1, 10.4), "es": (40.4, -2.5), "fr": (46.6, 2.4),
+        "gb": (52.8, -1.6), "is": (64.9, -18.6), "it": (43, 12.5), "nl": (52.2, 5.6), "no": (61, 9.5), "pt": (39.6, -8),
+    ]
 
-    /// The city with the most scooters takes in its neighbours on screen and stays
+    /// Zoomed out to a continent, one total per country, never two countries in one;
+    /// closer, one per city or cluster of neighbouring cities.
+    static func group(
+        _ cities: [ScooterCluster],
+        zoomLevel: Double,
+        countryName: (String) -> String = { $0.uppercased() }
+    ) -> [ScooterCluster] {
+        zoomLevel < countryTotalsBelowZoom
+            ? countryTotals(cities, countryName: countryName).sorted(by: byCount)
+            : spacedApart(cities, zoomLevel: zoomLevel)
+    }
+
+    /// "city:fr:Paris" is in France.
+    static func country(of city: ScooterCluster) -> String? {
+        let parts = city.id.split(separator: ":", maxSplits: 2)
+        guard parts.count == 3, parts[0] == "city", parts[1].count == 2 else { return nil }
+        return String(parts[1])
+    }
+
+    private static func byCount(_ lhs: ScooterCluster, _ rhs: ScooterCluster) -> Bool {
+        lhs.count != rhs.count ? lhs.count > rhs.count : lhs.id < rhs.id
+    }
+
+    private static func countryTotals(_ cities: [ScooterCluster], countryName: (String) -> String) -> [ScooterCluster] {
+        var countries: [String: [ScooterCluster]] = [:]
+        var totals: [ScooterCluster] = []
+        for city in cities {
+            if let country = country(of: city) {
+                countries[country, default: []].append(city)
+            } else {
+                totals.append(city)
+            }
+        }
+        for (country, members) in countries {
+            let anchor = countryAnchors[country] ?? (members[0].latitude, members[0].longitude)
+            totals.append(combined(
+                members, id: "country:\(country)", latitude: anchor.latitude, longitude: anchor.longitude,
+                name: countryName(country)
+            ))
+        }
+        return totals
+    }
+
+    /// The total with the most scooters takes in its neighbours on screen and stays
     /// where it is, so a group sits on a real city and keeps its place while the map is panned.
-    static func group(_ cities: [ScooterCluster], zoomLevel: Double) -> [ScooterCluster] {
-        let ordered = cities
-            .map { (city: $0, point: worldPoint(latitude: $0.latitude, longitude: $0.longitude, zoomLevel: zoomLevel)) }
-            .sorted { $0.city.count != $1.city.count ? $0.city.count > $1.city.count : $0.city.id < $1.city.id }
+    private static func spacedApart(_ totals: [ScooterCluster], zoomLevel: Double) -> [ScooterCluster] {
+        let ordered = totals.sorted(by: byCount)
+            .map { (total: $0, point: worldPoint(latitude: $0.latitude, longitude: $0.longitude, zoomLevel: zoomLevel)) }
         var taken = Set<String>()
         var groups: [ScooterCluster] = []
-        for head in ordered where !taken.contains(head.city.id) {
+        for head in ordered where !taken.contains(head.total.id) {
             let members = ordered.filter { other in
-                !taken.contains(other.city.id) &&
+                !taken.contains(other.total.id) &&
                     hypot(other.point.x - head.point.x, other.point.y - head.point.y) < spacing
-            }
-            for member in members { taken.insert(member.city.id) }
+            }.map(\.total)
+            for member in members { taken.insert(member.id) }
             guard members.count > 1 else {
-                groups.append(head.city)
+                groups.append(head.total)
                 continue
             }
-
-            var providers: [String: Int] = [:]
-            for member in members {
-                providers.merge(member.city.providers, uniquingKeysWith: +)
-            }
-            let names = members.compactMap(\.city.city)
-            let latitudes = members.map(\.city.latitude)
-            let longitudes = members.map(\.city.longitude)
-            groups.append(ScooterCluster(
-                id: "group:\(head.city.id)",
-                latitude: head.city.latitude,
-                longitude: head.city.longitude,
-                count: members.reduce(0) { $0 + $1.city.count },
-                providers: providers,
-                city: names.count > namedCities
+            let names = members.compactMap(\.city)
+            groups.append(combined(
+                members, id: "group:\(head.total.id)", latitude: head.total.latitude, longitude: head.total.longitude,
+                name: names.count > namedCities
                     ? names.prefix(namedCities).joined(separator: ", ") + "…"
-                    : names.joined(separator: ", "),
-                bounds: GeoBounds(
-                    south: latitudes.min()!, west: longitudes.min()!,
-                    north: latitudes.max()!, east: longitudes.max()!
-                )
+                    : names.joined(separator: ", ")
             ))
         }
         return groups
+    }
+
+    private static func combined(
+        _ members: [ScooterCluster], id: String, latitude: Double, longitude: Double, name: String
+    ) -> ScooterCluster {
+        var providers: [String: Int] = [:]
+        for member in members {
+            providers.merge(member.providers, uniquingKeysWith: +)
+        }
+        return ScooterCluster(
+            id: id,
+            latitude: latitude,
+            longitude: longitude,
+            count: members.reduce(0) { $0 + $1.count },
+            providers: providers,
+            city: name,
+            bounds: GeoBounds(
+                south: members.map { $0.bounds?.south ?? $0.latitude }.min()!,
+                west: members.map { $0.bounds?.west ?? $0.longitude }.min()!,
+                north: members.map { $0.bounds?.north ?? $0.latitude }.max()!,
+                east: members.map { $0.bounds?.east ?? $0.longitude }.max()!
+            )
+        )
     }
 
     /// Web Mercator, in points of a 256-point tile.

@@ -35,7 +35,7 @@ import { activeCurfew } from '@/lib/rentalCurfews';
 import { useI18n } from '@/lib/i18n';
 import { failureSurface } from '@/lib/loadFailure';
 import { unfilteredCountInView } from '@/lib/nothingToShow';
-import { placeForCity, recentPlaces, type Place } from '@/lib/places';
+import { placeForCity, recentPlaces, searchNear, type Place } from '@/lib/places';
 import { shortcutFor } from '@/lib/shortcuts';
 import { useDesktopLayout } from '@/lib/useDesktopLayout';
 import { useRecentPlaces } from '@/lib/useRecentPlaces';
@@ -469,10 +469,12 @@ export default function Home() {
     viewportBounds,
   ]);
 
-  // Further out than a few cities, neighbouring totals are drawn as one.
-  const mapClusters = useMemo(() => (
-    responseMeta?.overview ? groupCityTotals(viewportData.visibleClusters, viewportZoom) : viewportData.visibleClusters
-  ), [responseMeta?.overview, viewportData.visibleClusters, viewportZoom]);
+  // Zoomed out, a country or neighbouring cities are drawn as one total.
+  const mapClusters = useMemo(() => {
+    if (!responseMeta?.overview) return viewportData.visibleClusters;
+    const countries = new Intl.DisplayNames([locale], { type: 'region' });
+    return groupCityTotals(viewportData.visibleClusters, viewportZoom, code => countries.of(code.toUpperCase()) ?? code);
+  }, [locale, responseMeta?.overview, viewportData.visibleClusters, viewportZoom]);
 
   const representedVehicleCount = vehicles.length + clusters.reduce(
     (total, cluster) => total + cluster.count,
@@ -640,6 +642,7 @@ export default function Home() {
     () => searchExpanded && viewportCenter ? nearestCoveredCities(viewportCenter, SEARCH_CITY_COUNT) : [],
     [searchExpanded, viewportCenter]
   );
+  const searchCentre = useMemo(() => searchNear(viewportCenter, viewportZoom), [viewportCenter, viewportZoom]);
 
   // Who has scooters here whatever the filters hide. Data loaded for another
   // view says nothing about this one, so it names nobody as not sharing data.
@@ -884,6 +887,7 @@ export default function Home() {
         hasActiveFilters={hasActiveFilters}
         recentPlaces={recent}
         nearbyCities={nearbyCities}
+        near={searchCentre}
         onExpandedChange={expanded => { track(expanded ? 'search_open' : 'search_close'); setSearchExpanded(expanded); }}
         onSelect={handlePlaceSelect}
         onClear={() => { track('search_clear'); setSearchedPlace(null); }}

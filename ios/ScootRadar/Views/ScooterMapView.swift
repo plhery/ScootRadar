@@ -1769,6 +1769,8 @@ final class ScooterClusterAnnotationView: MKAnnotationView {
         renderedCount = count
         renderedProviderCounts = providerCounts
         renderedCity = city
+        // Where totals touch, as neighbouring countries do zoomed out, the larger is drawn over the smaller.
+        zPriority = MKAnnotationViewZPriority(rawValue: Float(500 + log10(Double(count) + 1) * 60))
         countLabel.text = "\(count)"
         accessibilityLabel = Self.accessibilityLabel(count: count, city: city)
         refreshArt()

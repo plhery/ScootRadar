@@ -929,4 +929,25 @@ extension ScooterModelsTests {
 
         XCTAssertEqual(ScooterCityGrouping.group([paris, boulogne, lyon], zoomLevel: 12), [paris, lyon, boulogne])
     }
+
+    func testZoomedOutToAContinentEachCountryIsOneTotal() {
+        let paris = ScooterCluster(id: "city:fr:Paris", latitude: 48.8566, longitude: 2.3522, count: 3000,
+                                   providers: ["dott": 3000], city: "Paris")
+        let bordeaux = ScooterCluster(id: "city:fr:Bordeaux", latitude: 44.8378, longitude: -0.5792, count: 500,
+                                      providers: ["dott": 500], city: "Bordeaux")
+        let berlin = ScooterCluster(id: "city:de:Berlin", latitude: 52.52, longitude: 13.405, count: 700,
+                                    providers: ["voi": 700], city: "Berlin")
+        let names = ["fr": "France", "de": "Germany"]
+
+        let totals = ScooterCityGrouping.group([paris, bordeaux, berlin], zoomLevel: 4) { names[$0]! }
+        XCTAssertEqual(totals.map(\.id), ["country:fr", "country:de"])
+        XCTAssertEqual(totals[0].city, "France")
+        XCTAssertEqual(totals[0].count, 3500)
+        XCTAssertEqual(totals[0].latitude, 46.6)
+        XCTAssertEqual(totals[0].bounds, GeoBounds(south: bordeaux.latitude, west: bordeaux.longitude,
+                                                   north: paris.latitude, east: paris.longitude))
+
+        XCTAssertEqual(ScooterCityGrouping.group([paris, bordeaux], zoomLevel: 5).map(\.id),
+                       ["city:fr:Paris", "city:fr:Bordeaux"])
+    }
 }

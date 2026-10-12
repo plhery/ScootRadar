@@ -79,4 +79,21 @@ describe('city totals', () => {
   it('leaves cities apart once they can be told apart', () => {
     expect(groupCityTotals([paris, boulogne, lyon], 12)).toEqual([paris, lyon, boulogne]);
   });
+
+  it('draws one total per country when zoomed out to a continent', () => {
+    const fr = (name: string, lat: number, lng: number, count: number) =>
+      ({ ...city(name, lat, lng, { dott: count }), id: `city:fr:${name}` });
+    const de = { ...city('Berlin', 52.52, 13.405, { voi: 700 }), id: 'city:de:Berlin' };
+    const names: Record<string, string> = { fr: 'France', de: 'Germany' };
+    const totals = groupCityTotals([fr('Paris', 48.8566, 2.3522, 3000), fr('Bordeaux', 44.8378, -0.5792, 500), de], 4,
+      code => names[code]);
+    expect(totals).toEqual([
+      { id: 'country:fr', city: 'France', lat: 46.6, lng: 2.4, count: 3500, providers: { dott: 3500 },
+        bounds: { south: 44.8378, west: -0.5792, north: 48.8566, east: 2.3522 } },
+      { id: 'country:de', city: 'Germany', lat: 51.1, lng: 10.4, count: 700, providers: { voi: 700 },
+        bounds: { south: 52.52, west: 13.405, north: 52.52, east: 13.405 } },
+    ]);
+    expect(groupCityTotals([fr('Paris', 48.8566, 2.3522, 3000), fr('Bordeaux', 44.8378, -0.5792, 500)], 5)
+      .map(total => total.id)).toEqual(['city:fr:Paris', 'city:fr:Bordeaux']);
+  });
 });
