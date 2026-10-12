@@ -1212,7 +1212,7 @@ it('labels the locate button until locating has worked once, and remembers only 
   expect(document.querySelector('.near-me')).toBeNull();
 });
 
-it('locates by itself when the browser has already granted location, and never otherwise', async () => {
+it('locates by itself where location is granted or has worked before, and never otherwise', async () => {
   vi.stubGlobal('fetch', vi.fn(async () => Response.json(response())));
   const getCurrentPosition = stubGeolocation(position);
   const query = vi.fn(async () => ({ state: 'prompt' }));
@@ -1229,6 +1229,27 @@ it('locates by itself when the browser has already granted location, and never o
   expect(getCurrentPosition).toHaveBeenCalledOnce();
   expect(screen.getByTestId('focus')).toHaveTextContent('47.3769,8.5417 zoom 17');
   second.unmount();
+
+  // Safari says "prompt" until the page has asked, even where it then answers
+  // without one: having located here before is enough, as is a browser that will not say.
+  for (const permissions of [{ query: vi.fn(async () => ({ state: 'prompt' })) }, undefined]) {
+    getCurrentPosition.mockClear();
+    stubNavigator('permissions', permissions);
+    const view = mount();
+    await act(async () => vi.advanceTimersByTimeAsync(180));
+    expect(getCurrentPosition).toHaveBeenCalledOnce();
+    expect(screen.getByTestId('focus')).toHaveTextContent('47.3769,8.5417 zoom 17');
+    view.unmount();
+  }
+
+  // Location turned off since is left alone.
+  getCurrentPosition.mockClear();
+  stubNavigator('permissions', { query: vi.fn(async () => ({ state: 'denied' })) });
+  const refusedView = mount();
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+  expect(getCurrentPosition).not.toHaveBeenCalled();
+  expect(screen.getByTestId('focus')).toHaveTextContent('none');
+  refusedView.unmount();
 
   // A shared link keeps its own place.
   getCurrentPosition.mockClear();

@@ -128,13 +128,13 @@ function readUrlParams(): ClientParams {
   return parseClientParams(p);
 }
 
-// True only when the browser can tell without asking; a permission prompt needs a tap.
-async function locationAlreadyGranted(): Promise<boolean> {
+// What the browser says of location before it is asked; null when it will not say.
+async function locationPermission(): Promise<PermissionState | null> {
   try {
     const status = await navigator.permissions?.query({ name: 'geolocation' });
-    return status?.state === 'granted';
+    return status?.state ?? null;
   } catch {
-    return false;
+    return null;
   }
 }
 
@@ -256,8 +256,12 @@ export default function Home() {
       setInitialCenter(params.origin);
       setFocusRequest(current => ({ location: params.origin, zoom: null, version: current.version + 1 }));
     } else {
-      // As the iOS app does on launch: locate at once when that needs no prompt.
-      void locationAlreadyGranted().then(granted => { if (granted) startLocating(); });
+      // As the iOS app does on launch: locate at once where location is granted,
+      // or has worked here before. Safari says "prompt" until the page has asked,
+      // even where it then answers without one, so that alone is not a refusal.
+      void locationPermission().then(state => {
+        if (state === 'granted' || (located && state !== 'denied')) startLocating();
+      });
     }
   }, [startLocating]);
 
