@@ -22,7 +22,12 @@ export default function ServiceWorkerRegistration() {
     let registration: ServiceWorkerRegistration | null = null;
     let lastCheckAt = 0;
     const reloadOnce = createServiceWorkerReloader({
-      storage: sessionStorage,
+      // Read when used: where storage is denied, even reaching `sessionStorage`
+      // throws, and the reloader only catches what its own calls throw.
+      storage: {
+        getItem: (key) => window.sessionStorage.getItem(key),
+        setItem: (key, value) => window.sessionStorage.setItem(key, value),
+      },
       reload: () => window.location.reload(),
     });
 
