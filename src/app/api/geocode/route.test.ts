@@ -30,12 +30,22 @@ const PHOTON_HOST = 'photon.komoot.io';
 
 type PhotonRow = [properties: Record<string, unknown>, lat: number, lon: number];
 type GeoapifyRow = [fields: Record<string, unknown>, lat: number, lon: number];
+type GeoapifyRequest = 'towns' | 'nearby' | 'anywhere';
+/** What Geoapify answers every request, or each of a search's requests; one not given fails. */
+type GeoapifyAnswers = GeoapifyRow[] | number | Partial<Record<GeoapifyRequest, GeoapifyRow[] | number>>;
+
+/** Which of a search's requests Geoapify is asked: for towns, for places close by, or for places anywhere. */
+function geoapifyRequest(url: URL): GeoapifyRequest {
+  return url.searchParams.get('type') === 'city' ? 'towns' : url.searchParams.has('filter') ? 'nearby' : 'anywhere';
+}
 
 /** Answers Geoapify with its results and each Photon with its features, or with a status for a service that fails. */
-function stubUpstreams({ geoapify = [], photon = [] }: { geoapify?: GeoapifyRow[] | number; photon?: PhotonRow[] | number }) {
+function stubUpstreams({ geoapify = [], photon = [] }: { geoapify?: GeoapifyAnswers; photon?: PhotonRow[] | number }) {
   const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
-    const answer = new URL(String(input)).hostname === GEOAPIFY_HOST
-      ? typeof geoapify === 'number' ? geoapify : { results: geoapify.map(([fields, lat, lon]) => ({ ...fields, lat, lon })) }
+    const url = new URL(String(input));
+    const rows = Array.isArray(geoapify) || typeof geoapify === 'number' ? geoapify : geoapify[geoapifyRequest(url)] ?? 500;
+    const answer = url.hostname === GEOAPIFY_HOST
+      ? typeof rows === 'number' ? rows : { results: rows.map(([fields, lat, lon]) => ({ ...fields, lat, lon })) }
       : typeof photon === 'number' ? photon : {
         type: 'FeatureCollection',
         features: photon.map(([properties, lat, lon]) => ({ type: 'Feature', properties, geometry: { type: 'Point', coordinates: [lon, lat] } })),
@@ -56,6 +66,12 @@ function stubRecordedAnswer(query: string) {
   return stubUpstreams({ geoapify: RECORDED_GEOAPIFY_ANSWERS[query] ?? [], photon: RECORDED_PHOTON_ANSWERS[query] ?? [] });
 }
 
+/** The rows shown, as a rider reads them. */
+async function shownRows(response: Response) {
+  return (await response.json() as { title: string; subtitle: string; covered: boolean }[])
+    .map(({ title, subtitle, covered }) => [title, subtitle, covered]);
+}
+
 function inWorker(env: Record<string, unknown>) {
   getCloudflareContext.mockResolvedValue({ env });
 }
@@ -63,6 +79,7 @@ function inWorker(env: Record<string, unknown>) {
 // Inside the Zürich service area, and outside every service area.
 const ZURICH: [number, number] = [47.3695, 8.5389];
 const LAUSANNE: [number, number] = [46.5231, 6.6292];
+const BERN: [number, number] = [46.948, 7.4474];
 // Inside the Berlin service area, and in Paris, which has none.
 const BERLIN: [number, number] = [52.52, 13.405];
 const PARIS: [number, number] = [48.8566, 2.3522];
@@ -143,9 +160,10 @@ describe('GET /api/geocode', () => {
     [undefined, 'Germany', 'Switzerland'],
   ])('writes the country of a city in the language asked for (%s)', async (language, germany, switzerland) => {
     vi.stubGlobal('fetch', vi.fn());
+    // Without a map centre, Switzerland is near.
     const expected = [
-      { lat: 52.52, lng: 13.405, display_name: 'Berlin, Germany', title: 'Berlin', subtitle: germany, covered: true },
       { lat: 46.948, lng: 7.4474, display_name: 'Bern, Switzerland', title: 'Bern', subtitle: switzerland, covered: true },
+      { lat: 52.52, lng: 13.405, display_name: 'Berlin, Germany', title: 'Berlin', subtitle: germany, covered: true },
     ];
 
     await expect((await GET(request('Ber', language))).json()).resolves.toEqual(expected);
@@ -306,6 +324,136 @@ describe('address search results', () => {
     expect(await titles('Lodz', [{ type: 'city', name: 'Łódź', country: 'Polska' }, 51.7592, 19.456])).toEqual(['Łódź', 'Lodzweg']);
     // Not what is found for a street of its name.
     expect(await titles('Rue de Lyon', [{ type: 'city', name: 'Lyon', country: 'France' }, 45.7578, 4.832])).toEqual(['Rue de Lyonweg', 'Lyon']);
+  });
+
+  it('puts the towns whose names start as typed after those typed in full, the nearest first', async () => {
+    const lausanne: PhotonRow = [{ type: 'city', name: 'Lausanne', state: 'Waadt', country: 'Schweiz', countrycode: 'CH' }, ...LAUSANNE];
+    const leMont: PhotonRow = [{ type: 'city', name: 'Le Mont-sur-Lausanne', state: 'Waadt', country: 'Schweiz', countrycode: 'CH' }, 46.5582, 6.6315];
+    // In the Basel service area, but far from Lausanne.
+    const lausen: PhotonRow = [{ type: 'city', name: 'Lausen', state: 'Basel-Landschaft', country: 'Schweiz', countrycode: 'CH' }, 47.4714, 7.7604];
+    const lausannegasse: PhotonRow = [{ type: 'street', name: 'Lausannegasse', city: 'Zürich', countrycode: 'CH' }, ...ZURICH];
+    const titles = async (query: string, near: [number, number], photon: PhotonRow[]) => {
+      stubUpstreams({ photon });
+      return (await (await POST(postRequest(query, 'de', near))).json() as { title: string }[]).map(place => place.title);
+    };
+
+    expect(await titles('Lausanne', LAUSANNE, [lausannegasse, leMont, lausanne])).toEqual(['Lausanne', 'Le Mont-sur-Lausanne', 'Lausannegasse']);
+    expect(await titles('Laus', LAUSANNE, [lausannegasse, lausen, lausanne, leMont])).toEqual(['Lausanne', 'Le Mont-sur-Lausanne', 'Lausen', 'Lausannegasse']);
+    // Bern and Berlin from our list first. Burgdorf is in the canton of Bern, not on the way to it.
+    expect(await titles('Ber', ZURICH, [
+      [{ type: 'city', name: 'Burgdorf', state: 'Bern', country: 'Schweiz', countrycode: 'CH' }, 47.0559, 7.6271],
+      [{ type: 'city', name: 'Bergdietikon', state: 'Aargau', country: 'Schweiz', countrycode: 'CH' }, 47.3898, 8.3865],
+      [{ type: 'street', name: 'Bernerstrasse', city: 'Zürich', countrycode: 'CH' }, 47.3889, 8.4986],
+    ])).toEqual(['Berlin', 'Bern', 'Bergdietikon', 'Bernerstrasse', 'Burgdorf']);
+  });
+});
+
+// Our own list of the cities with scooter data, and the towns Geoapify finds anywhere.
+describe('cities and towns', () => {
+  beforeEach(() => {
+    inWorker({ GEOAPIFY_API_KEY: 'test-key' });
+  });
+
+  async function titles(response: Response) {
+    return ((await response.json()) as { title: string }[]).map(place => place.title);
+  }
+
+  it('asks only for the towns of a city typed in full, and puts the city of our list first', async () => {
+    const fetchMock = stubUpstreams({ geoapify: { towns: [
+      [{ result_type: 'city', name: 'Freiburg', city: 'Freiburg', state: 'Freiburg', country: 'Schweiz', country_code: 'ch' }, 46.8065, 7.1619],
+      [{ result_type: 'city', name: 'Freiburg im Breisgau', city: 'Freiburg im Breisgau', state: 'Baden-Württemberg', country: 'Deutschland', country_code: 'de' }, 47.9959, 7.8522],
+    ] } });
+
+    const response = await POST(postRequest('Freiburg', 'de', BERN));
+
+    expect(asked(fetchMock, GEOAPIFY_HOST).map(geoapifyRequest)).toEqual(['towns']);
+    expect(response.headers.get('x-geocoding-data-source')).toBe('Verified European scooter city catalog, Geoapify, OpenStreetMap');
+    // Fribourg too, which is Freiburg in German; Geoapify's Freiburg im Breisgau is the one of our list.
+    expect(await shownRows(response)).toEqual([['Freiburg im Breisgau', 'Deutschland', true], ['Freiburg', 'Schweiz', false]]);
+  });
+
+  it('lists the cities a few letters could become first, then the towns they start, then places', async () => {
+    const fetchMock = stubUpstreams({ geoapify: {
+      towns: [
+        [{ result_type: 'city', name: 'Beromünster', city: 'Beromünster', state: 'Luzern', country: 'Schweiz', country_code: 'ch' }, 47.2076, 8.1924],
+        [{ result_type: 'city', name: 'Bern', city: 'Bern', state: 'Bern', country: 'Schweiz', country_code: 'ch' }, 46.9481, 7.4474],
+        [{ result_type: 'city', name: 'Bergdietikon', city: 'Bergdietikon', state: 'Aargau', country: 'Schweiz', country_code: 'ch' }, 47.3898, 8.3865],
+        // Found by another of its names: three letters are no name typed in full.
+        [{ result_type: 'city', name: 'Bärschwil', city: 'Bärschwil', state: 'Solothurn', country: 'Schweiz', country_code: 'ch' }, 47.3819, 7.4728],
+      ],
+      nearby: [[{ result_type: 'street', name: 'Bernerstrasse', city: 'Zürich', country_code: 'ch' }, 47.3889, 8.4986]],
+    } });
+
+    const response = await POST(postRequest('Ber', 'de', ZURICH));
+
+    expect(asked(fetchMock, GEOAPIFY_HOST).map(geoapifyRequest)).toEqual(['towns', 'nearby']);
+    expect(await titles(response)).toEqual(['Berlin', 'Bern', 'Bergdietikon', 'Beromünster', 'Bernerstrasse']);
+  });
+
+  it('takes a town of the name typed close to a city of our list for that city, ranked as that town', async () => {
+    stubUpstreams({ geoapify: {
+      towns: [[{ result_type: 'city', name: 'Rom', city: 'Rom', state: 'Latium', country: 'Italien', country_code: 'it' }, 41.8933, 12.4829]],
+      nearby: [],
+      anywhere: [],
+    } });
+
+    // Rome, which "Rom" names in German, before Romanshorn, whose name it starts, close by.
+    expect(await shownRows(await POST(postRequest('Rom', 'de', [47.555, 9.39])))).toEqual([
+      ['Roma', 'Italien', true], ['Romanshorn', 'Schweiz', true],
+    ]);
+  });
+
+  it('leaves out the hamlets, quarters and stations Geoapify finds for towns, and its near misses', async () => {
+    stubUpstreams({ geoapify: {
+      towns: [
+        [{ result_type: 'city', name: 'Lausanne', city: 'Lausanne', state: 'Waadt', country: 'Schweiz', country_code: 'ch' }, ...LAUSANNE],
+        [{ result_type: 'city', name: 'Lausanne', city: 'Loché-sur-Indrois', state: 'Centre-Loire', country: 'Frankreich', country_code: 'fr' }, 47.0889, 1.2208],
+        [{ result_type: 'suburb', name: 'Lausanne', city: 'Ouchy', country: 'Schweiz', country_code: 'ch' }, 46.5076, 6.6268],
+        [{ result_type: 'amenity', name: 'Lausanne', street: 'Place de la Gare', city: 'Lausanne', country_code: 'ch' }, 46.5168, 6.6291],
+        [{ result_type: 'city', name: 'Laussonne', city: 'Laussonne', state: 'Auvergne-Rhône-Alpes', country: 'Frankreich', country_code: 'fr', rank: { confidence: 0.7 } }, 44.9694, 4.0517],
+        [{ result_type: 'city', name: 'Le Mont-sur-Lausanne', city: 'Le Mont-sur-Lausanne', state: 'Waadt', country: 'Schweiz', country_code: 'ch' }, 46.5582, 6.6315],
+      ],
+      nearby: [],
+      anywhere: [],
+    } });
+
+    expect(await titles(await POST(postRequest('Lausanne', 'de', ZURICH)))).toEqual(['Lausanne', 'Le Mont-sur-Lausanne']);
+  });
+
+  it('waits for towns as long as for places, and a second and a half at most', async () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+    const lausanne: GeoapifyRow = [{ result_type: 'city', name: 'Lausanne', city: 'Lausanne', country: 'Schweiz', country_code: 'ch' }, ...LAUSANNE];
+    const answer = (rows: GeoapifyRow[], afterMs: number) => new Promise<Response>(resolve => setTimeout(() => resolve(
+      new Response(JSON.stringify({ results: rows.map(([fields, lat, lon]) => ({ ...fields, lat, lon })) }))), afterMs));
+    const search = (townsAfterMs: number, placesAfterMs: number) => {
+      vi.stubGlobal('fetch', vi.fn(async (input: URL) => geoapifyRequest(input) === 'towns'
+        ? answer([lausanne], townsAfterMs)
+        : answer([[{ result_type: 'street', name: 'Lausannestrasse', city: 'Zürich', country_code: 'ch' }, 47.3712, 8.5391]], placesAfterMs)));
+      let answered = false;
+      const response = POST(postRequest('Lausanne', 'de', ZURICH)).then(async result => { answered = true; return titles(result); });
+      return { response, answered: () => answered };
+    };
+
+    const late = search(60_000, 500);
+    await vi.advanceTimersByTimeAsync(1_499);
+    expect(late.answered()).toBe(false);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(await late.response).toEqual(['Lausannestrasse']);
+
+    const slowPlaces = search(2_500, 3_000);
+    await vi.advanceTimersByTimeAsync(3_000);
+    expect(await slowPlaces.response).toEqual(['Lausanne', 'Lausannestrasse']);
+  });
+
+  it('still shows the cities of our list when the services fail', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    stubUpstreams({ geoapify: 503, photon: 503 });
+
+    const response = await POST(postRequest('Ber', 'de', ZURICH));
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get('x-geocoding-data-source')).toBe('Verified European scooter city catalog');
+    expect(await titles(response)).toEqual(['Berlin', 'Bern']);
   });
 });
 
@@ -470,13 +618,13 @@ describe('Geoapify', () => {
     return ((await response.json()) as { title: string }[]).map(place => place.title);
   }
 
-  it('asks Geoapify alone, in the language of the app, near the map centre', async () => {
+  it('asks Geoapify alone for places within 50 km of the map centre, in the language of the app', async () => {
     const fetchMock = stubUpstreams({ geoapify: [[{ result_type: 'street', name: 'Karl Johans gate', city: 'Oslo', country_code: 'no' }, 59.9119, 10.7465]] });
 
     await POST(postRequest('Rue de Rivoli 10', 'fr', [48.856613, 2.352222]));
     const response = await POST(postRequest('Karl Johans gate', 'nb', [59.91, 10.75]));
 
-    const [paris, oslo] = asked(fetchMock, GEOAPIFY_HOST);
+    const [paris, ...oslo] = asked(fetchMock, GEOAPIFY_HOST);
     expect(paris.origin + paris.pathname).toBe('https://api.geoapify.com/v1/geocode/autocomplete');
     expect(Object.fromEntries(paris.searchParams)).toEqual({
       text: 'Rue de Rivoli 10',
@@ -484,24 +632,94 @@ describe('Geoapify', () => {
       limit: '20',
       // To about a kilometre, longitude first.
       bias: 'proximity:2.35,48.86',
+      filter: 'circle:2.35,48.86,50000',
       format: 'json',
       apiKey: 'test-key',
     });
-    // Geoapify names places in every language of the app.
-    expect(oslo.searchParams.get('lang')).toBe('nb');
+    // Geoapify names places, and towns, in every language of the app.
+    expect(oslo.map(url => [geoapifyRequest(url), url.searchParams.get('lang')])).toEqual([['towns', 'nb'], ['nearby', 'nb']]);
     expect(asked(fetchMock, PHOTON_HOST)).toEqual([]);
     expect(response.headers.get('x-geocoding-data-source')).toBe('Geoapify, OpenStreetMap');
     expect(await titles(response)).toEqual(['Karl Johans gate']);
   });
 
-  it('asks Geoapify for a postcode when only a number is typed', async () => {
-    const fetchMock = stubUpstreams({});
+  it('asks Geoapify for a postcode when only a number is typed, with its town or without', async () => {
+    const fetchMock = stubUpstreams({ geoapify: [[{ result_type: 'postcode', postcode: '8004', city: 'Zürich', country_code: 'ch' }, 47.3769, 8.5232]] });
 
     await POST(postRequest('8004', 'de', ZURICH));
     await POST(postRequest('8004 Zürich', 'de', ZURICH));
     await POST(postRequest('Langstrasse 120', 'de', ZURICH));
 
-    expect(asked(fetchMock, GEOAPIFY_HOST).map(url => url.searchParams.get('type'))).toEqual(['postcode', null, null]);
+    expect(asked(fetchMock, GEOAPIFY_HOST).map(url => [url.searchParams.get('text'), url.searchParams.get('type')])).toEqual([
+      ['8004', 'postcode'], ['8004', 'postcode'], ['Langstrasse 120', null],
+    ]);
+  });
+
+  it('asks for places anywhere, still near the map centre, when none within 50 km of it is what was typed', async () => {
+    const zurichHb: GeoapifyRow = [{ result_type: 'amenity', name: 'Zürich HB', street: 'Bahnhofplatz', postcode: '8001', city: 'Zürich', country_code: 'ch' }, 47.3779, 8.5403];
+    // Geoapify's near misses: what it found for some of what was typed.
+    const zurichstrasse: GeoapifyRow = [{ result_type: 'street', name: 'Zürichstrasse', city: 'Münchenbuchsee', country_code: 'ch', rank: { confidence: 0 } }, 47.0215, 7.4513];
+    const search = async (nearby: GeoapifyRow[]) => {
+      const fetchMock = stubUpstreams({ geoapify: { towns: [], nearby, anywhere: [zurichHb] } });
+      const response = await POST(postRequest('Zürich HB', 'de', BERN));
+      return {
+        asked: asked(fetchMock, GEOAPIFY_HOST).map(url => [geoapifyRequest(url), url.searchParams.get('bias')]),
+        titles: await titles(response),
+      };
+    };
+
+    expect(await search([])).toEqual({
+      asked: [['towns', 'proximity:7.45,46.95'], ['nearby', 'proximity:7.45,46.95'], ['anywhere', 'proximity:7.45,46.95']],
+      titles: ['Zürich HB'],
+    });
+    // After what was found for what was typed.
+    expect((await search([zurichstrasse])).titles).toEqual(['Zürich HB', 'Zürichstrasse']);
+    expect((await search([zurichHb])).asked.map(([request]) => request)).toEqual(['towns', 'nearby']);
+  });
+
+  it('asks for the towns of the name typed anywhere, but not for an address or a postcode', async () => {
+    const fetchMock = stubUpstreams({ geoapify: [[{ result_type: 'street', name: 'Langstrasse', city: 'Zürich', country_code: 'ch' }, ...ZURICH]] });
+
+    await POST(postRequest('Lausanne', 'de', ZURICH));
+    await GET(request('Lausanne', 'de'));
+    await POST(postRequest('Langstrasse 120', 'de', ZURICH));
+    await POST(postRequest('8004', 'de', ZURICH));
+    await POST(postRequest('Kolosseum, Roma', 'de', ZURICH));
+
+    expect(asked(fetchMock, GEOAPIFY_HOST).filter(url => geoapifyRequest(url) === 'towns').map(url => Object.fromEntries(url.searchParams))).toEqual([
+      { text: 'Lausanne', lang: 'de', limit: '20', bias: 'proximity:8.54,47.37', type: 'city', format: 'json', apiKey: 'test-key' },
+      { text: 'Lausanne', lang: 'de', limit: '20', bias: 'countrycode:ch', type: 'city', format: 'json', apiKey: 'test-key' },
+    ]);
+  });
+
+  it('looks for an address typed with a city of our list in that city, without its name, wherever the map is', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const biel: GeoapifyRow = [{ result_type: 'building', housenumber: '10', street: 'Bahnhofstrasse', postcode: '2501', city: 'Biel/Bienne', country_code: 'ch', rank: { confidence: 0.75 } }, 47.1334, 7.2425];
+    const lyss: GeoapifyRow = [{ result_type: 'building', housenumber: '10', street: 'Bahnhofstrasse', postcode: '3250', city: 'Lyss', country_code: 'ch' }, 47.0745, 7.3065];
+    const asks = (fetchMock: ReturnType<typeof vi.fn>, host: string, ...params: string[]) =>
+      asked(fetchMock, host).map(url => params.map(param => url.searchParams.get(param)));
+
+    const inBiel = stubUpstreams({ geoapify: { nearby: [lyss, biel] } });
+    const response = await POST(postRequest('Bahnhofstrasse 10, Biel', 'de', ZURICH));
+    // No towns for an address.
+    expect(asks(inBiel, GEOAPIFY_HOST, 'text', 'bias', 'filter')).toEqual([
+      ['Bahnhofstrasse 10', 'proximity:7.2468,47.1368', 'circle:7.2468,47.1368,15000'],
+    ]);
+    // The one in Biel first: its town was typed.
+    expect((await shownRows(response)).map(([, subtitle]) => subtitle)).toEqual(['2501 Biel/Bienne', '3250 Lyss']);
+
+    // Nothing in Biel: anywhere, near it, with its name.
+    const anywhere = stubUpstreams({ geoapify: { nearby: [], anywhere: [biel] } });
+    await POST(postRequest('Bahnhofstrasse 10 Biel', 'de'));
+    expect(asks(anywhere, GEOAPIFY_HOST, 'text', 'bias', 'filter')).toEqual([
+      ['Bahnhofstrasse 10', 'proximity:7.2468,47.1368', 'circle:7.2468,47.1368,15000'],
+      ['Bahnhofstrasse 10 Biel', 'proximity:7.2468,47.1368', null],
+    ]);
+
+    // And so Photon, when it stands in.
+    const photon = stubUpstreams({ geoapify: 503 });
+    await POST(postRequest('Bahnhofstrasse 10 Biel', 'de', ZURICH));
+    expect(asks(photon, PHOTON_HOST, 'q', 'lat', 'lon')).toEqual([['Bahnhofstrasse 10 Biel', '47.1368', '7.2468']]);
   });
 
   it('asks Geoapify for places in Switzerland first without a map centre', async () => {
@@ -520,6 +738,8 @@ describe('Geoapify', () => {
     // A street has a postcode in each of its parts; it is named by its town alone.
     [{ result_type: 'street', name: 'Karl Johans gate', street: 'Karl Johans gate', postcode: '0154', city: 'Oslo', suburb: 'Sentrum', country_code: 'no' }, 'Karl Johans gate', 'Oslo'],
     [{ result_type: 'city', name: 'Colonia', city: 'Colonia', state: 'Renania Settentrionale-Vestfalia', country: 'Germania', country_code: 'de' }, 'Colonia', 'Renania Settentrionale-Vestfalia, Germania'],
+    // A hamlet, by the town it is part of.
+    [{ result_type: 'city', name: 'Mailand', city: 'Leutkirch im Allgäu', state: 'Baden-Württemberg', country: 'Deutschland', country_code: 'de' }, 'Mailand', 'Leutkirch im Allgäu'],
     // A quarter and a postcode are named in their own fields.
     [{ result_type: 'suburb', suburb: 'Kreis 4', city: 'Zürich', country_code: 'ch' }, 'Kreis 4', 'Zürich'],
     [{ result_type: 'district', district: 'Mitte', city: 'Berlin', country_code: 'de' }, 'Mitte', 'Berlin'],
@@ -620,6 +840,24 @@ describe('Geoapify', () => {
     await POST(postRequest('Rue de Rivoli 10', 'fr', PARIS));
 
     expect(timeouts.mock.calls).toEqual([[5_000], [5_000]]);
+  });
+
+  it('gives the search anywhere five seconds too, and Photon what the two left', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const timeouts = vi.spyOn(AbortSignal, 'timeout');
+    const fetchMock = vi.fn(async (input: URL) => {
+      if (input.hostname !== GEOAPIFY_HOST) return new Response(JSON.stringify({ features: [] }));
+      vi.setSystemTime(Date.now() + (geoapifyRequest(input) === 'nearby' ? 3_000 : 5_000));
+      if (geoapifyRequest(input) === 'nearby') return new Response(JSON.stringify({ results: [] }));
+      throw new DOMException('The operation timed out.', 'TimeoutError');
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    await POST(postRequest('Rue de Rivoli 10', 'fr', PARIS));
+
+    expect(asked(fetchMock, GEOAPIFY_HOST).map(geoapifyRequest)).toEqual(['nearby', 'anywhere']);
+    expect(timeouts.mock.calls).toEqual([[5_000], [5_000], [2_000]]);
   });
 
   it('leaves our own Photon three seconds of what Geoapify left, and the public one the rest', async () => {
@@ -784,9 +1022,9 @@ describe('recorded Geoapify answers', () => {
     inWorker({ GEOAPIFY_API_KEY: 'test-key' });
   });
 
-  it.each<[query: string, language: string, near: [number, number] | undefined, rows: ShownRow[]]>([
+  it.each<[query: string, language: string, near: [number, number] | undefined, requests: GeoapifyRequest[], rows: ShownRow[]]>([
     // The station and its entrances, each under its own name.
-    ['Gare de Lyon', 'fr', [48.86, 2.35], [
+    ['Gare de Lyon', 'fr', [48.86, 2.35], ['towns', 'nearby'], [
       ['Gare de Lyon', 'Place Louis Armand, 75012 Paris', NO_DATA],
       ['Gare de Lyon-Diderot', 'Boulevard Diderot, 75012 Paris', NO_DATA],
       ['Gare de Lyon - Place Louis Armand', 'Place Louis Armand, 75012 Paris', NO_DATA],
@@ -794,9 +1032,10 @@ describe('recorded Geoapify answers', () => {
       ['Gare de Lyon - Chalon', 'Rue de Chalon, 75012 Paris', NO_DATA],
     ]],
     // Not the squares of the same name in four other German towns, 200 km and more away.
-    ['Alexanderplatz', 'de', [52.52, 13.4], [['Alexanderplatz', 'Berlin', DATA]]],
-    ['Karl Johans gate', 'nb', [59.91, 10.75], [['Karl Johans gate', 'Oslo', DATA]]],
-    ['Rue de Rivoli 10', 'fr', [48.86, 2.35], [
+    ['Alexanderplatz', 'de', [52.52, 13.4], ['towns', 'nearby'], [['Alexanderplatz', 'Berlin', DATA]]],
+    ['Karl Johans gate', 'nb', [59.91, 10.75], ['towns', 'nearby'], [['Karl Johans gate', 'Oslo', DATA]]],
+    // The one in Paris, then its street, before the same address in the towns around.
+    ['Rue de Rivoli 10', 'fr', [48.86, 2.35], ['nearby'], [
       ['10 Rue de Rivoli', '75004 Paris', NO_DATA],
       ['Rue de Rivoli', 'Paris', NO_DATA],
       ['10 Rue de Rivoli', '91360 Épinay-sur-Orge', DATA],
@@ -804,55 +1043,117 @@ describe('recorded Geoapify answers', () => {
       ['10 Rue de Rivoli', '78950 Gambais', DATA],
     ]],
     // Turin's first, before the Via Roma 10 of the towns around it.
-    ['Via Roma 10', 'it', [45.07, 7.69], [
+    ['Via Roma 10', 'it', [45.07, 7.69], ['nearby'], [
       ['Via Roma 10', '10123 Torino', NO_DATA],
       ['Via Romagnano 10', '10145 Torino', NO_DATA],
       ['Via Roma', 'Torino', NO_DATA],
       ['Via Roma 10', '10099 Torino', NO_DATA],
       ['Via Roma 10', '10025 Pino Torinese', NO_DATA],
     ]],
-    // The address, then the hotel and the bakery at it.
-    ['Langstrasse 120', 'de', [47.37, 8.54], [
+    // The address, then the hotel and the bakery at it. No towns for an address.
+    ['Langstrasse 120', 'de', [47.37, 8.54], ['nearby'], [
       ['Langstrasse 120', '8004 Zürich', DATA],
       ['Nani City Hotel', 'Langstrasse 120, 8004 Zürich', DATA],
       ['happybeck', 'Langstrasse 120, 8004 Zürich', DATA],
       ['Langstrasse', 'Zürich', DATA],
       ['Langstrasse 120', '8966 Lieli', DATA],
     ]],
-    // A restaurant by its name.
-    ['Don Leone', 'de', [47.37, 8.54], [
+    // A restaurant by its name, only those close to the map.
+    ['Don Leone', 'de', [47.37, 8.54], ['towns', 'nearby'], [
       ['Don Leone', 'Bäckerstrasse 31, 8004 Zürich', DATA],
       ['Don Leone', 'Waffenplatzstrasse 15, 8002 Zürich', DATA],
       ['Don Leone Delivery', 'Gotthardstrasse 40, 8800 Thalwil', DATA],
-      ['Sentiero Don Leone Leoni', 'Gambarogno', DATA],
-      ['Don Leone', 'Carrer Toni Costa, 07660 Santanyí', NO_DATA],
     ]],
-    // Zürich's postcode, then those elsewhere that start with it.
-    ['8004', 'de', [47.37, 8.54], [
-      ['8004', 'Zürich', DATA],
-      ['8004', 'Baz', NO_DATA],
-      ['80048', "Sant'Anastasia", NO_DATA],
-      ['80046', 'San Giorgio a Cremano', NO_DATA],
-      ['80049', 'Somma Vesuviana', NO_DATA],
-    ]],
-    // The town at the falls, not the towns Geoapify found for a near miss of the name.
-    ['Rheinfall', 'de', [47.37, 8.54], [
+    // Zürich's postcode, not those elsewhere that start with it.
+    ['8004', 'de', [47.37, 8.54], ['nearby'], [['8004', 'Zürich', DATA]]],
+    // The town at the falls, then the streets named after them, not the towns Geoapify found for a near miss of the name.
+    ['Rheinfall', 'de', [47.37, 8.54], ['towns', 'nearby'], [
       ['Neuhausen am Rheinfall', 'Schaffhausen, Schweiz', DATA],
-      ['Rheintal', 'Baden-Württemberg, Deutschland', NO_DATA],
-      ['Rheinwald', 'Graubünden, Schweiz', NO_DATA],
-      ['Rheinfeld', 'Nordrhein-Westfalen, Deutschland', NO_DATA],
-      ['Rheinfeld', 'Woiwodschaft Pommern, Polen', NO_DATA],
+      ['Rheinfallweg 3', '8447 Dachsen', DATA],
+      ['Rheinfallweg 11', '8447 Dachsen', DATA],
+      ['Rheinfallweg 17', '8447 Dachsen', DATA],
+      ['Rheinfallstrasse 20', '8447 Dachsen', DATA],
     ]],
     // The one in England, of twenty across the world.
-    ['Springfield', 'en', undefined, [['Springfield', 'England, United Kingdom', NO_DATA]]],
-  ])('answers "%s" with the places a rider would choose', async (query, language, near, rows) => {
+    ['Springfield', 'en', undefined, ['towns', 'anywhere'], [['Springfield', 'England, United Kingdom', NO_DATA]]],
+    // Munich's, not the quarters of the name in Stuttgart and Saarbrücken found for towns.
+    ['Hauptbahnhof', 'de', [48.14, 11.56], ['towns', 'nearby'], [['München Hauptbahnhof', 'Arnulfstraße, 80335 München', DATA]]],
+    // Nothing of the name within 50 km of Zürich: Lausanne, the towns that bear its name, a hamlet in France.
+    ['Lausanne', 'de', [47.37, 8.54], ['towns', 'nearby', 'anywhere'], [
+      ['Lausanne', 'Waadt, Schweiz', NO_DATA],
+      ['Le Mont-sur-Lausanne', 'Waadt, Schweiz', NO_DATA],
+      ['Cheseaux-sur-Lausanne', 'Waadt, Schweiz', NO_DATA],
+      ['Romanel-sur-Lausanne', 'Waadt, Schweiz', NO_DATA],
+      ['Lausanne', 'Loché-sur-Indrois', NO_DATA],
+    ]],
+    // Milan, which "Mailand" names in German, before the street of the name close by.
+    ['Mailand', 'de', [47.37, 8.54], ['towns', 'nearby'], [
+      ['Mailand', 'Lombardei, Italien', NO_DATA],
+      ['Im Mailand 10', '79802 Baltersweil', DATA],
+      ['Im Mailand 12', '79802 Baltersweil', DATA],
+      ['Im Mailand', 'Baltersweil', DATA],
+      ['Im Mailand 3', '79802 Baltersweil', DATA],
+    ]],
+    // Nothing within 50 km of Zürich: the one in Rome.
+    ['Kolosseum Rom', 'de', [47.37, 8.54], ['towns', 'nearby', 'anywhere'], [['Kolosseum', 'Piazza del Colosseo, 00184 Rom', DATA]]],
+    // From Bern, the station in Zürich, not the Zürichstrasse close by.
+    ['Zürich HB', 'de', [46.95, 7.44], ['towns', 'nearby', 'anywhere'], [
+      ['Zürich HB', 'Walchebrücke, 8021 Zürich', DATA],
+      ['Zürich HB SZU Süd', 'Militärbrücke, 8004 Zürich', DATA],
+      ['Taxistand Zürich HB', 'Bahnhofpassage, 8021 Zürich', DATA],
+      ['Sihlpost/HB', 'Kasernenstrasse, 8004 Zürich', DATA],
+      ['Avia Service HB', 'Ausstellungsstrasse, 8021 Zürich', DATA],
+    ]],
+    // In Biel, wherever the map is, then in the towns around it.
+    ['Bahnhofstrasse 10 Biel', 'de', [47.37, 8.54], ['nearby'], [
+      ['Bahnhofstrasse 10', '2501 Biel', DATA],
+      ['Bahnhofstrasse 10', '3292 Lyss', DATA],
+      ['Bahnhofstrasse 10', '3293 Dotzigen', DATA],
+      ['Bahnhofstrasse 10', '2542 Pieterlen', DATA],
+      ['Bahnhofstrasse 10', '3250 Lyss', DATA],
+    ]],
+    // The city of our list, then the other towns of the name, for one request.
+    ['Freiburg', 'de', [46.95, 7.44], ['towns'], [
+      ['Freiburg im Breisgau', 'Deutschland', DATA],
+      ['Freiburg', 'Schweiz', NO_DATA],
+      ['Freiburg', 'Grand Est, Frankreich', NO_DATA],
+      ['Freiburg (Elbe)', 'Niedersachsen, Deutschland', NO_DATA],
+    ]],
+    // The cities of our list it may become, then the towns it starts close by.
+    ['Ber', 'de', [47.37, 8.54], ['towns', 'nearby'], [
+      ['Berlin', 'Deutschland', DATA],
+      ['Bern', 'Schweiz', DATA],
+      ['Bergdietikon', 'Aargau, Schweiz', DATA],
+      ['Berikon', 'Aargau, Schweiz', DATA],
+      ['Berg am Irchel', 'Zürich, Schweiz', DATA],
+    ]],
+    // Rome, which "Rom" names in German, before Romanshorn, whose name it starts.
+    ['Rom', 'de', [47.37, 8.54], ['towns', 'nearby'], [
+      ['Roma', 'Italien', DATA],
+      ['Romanshorn', 'Schweiz', DATA],
+      ['Romont', 'Freiburg, Schweiz', DATA],
+      ['Romanel-sur-Lausanne', 'Waadt, Schweiz', NO_DATA],
+      ['Römerswil', 'Luzern, Schweiz', NO_DATA],
+    ]],
+    // On its way to Lausanne, then to Lausen, farther.
+    ['Laus', 'fr', [46.52, 6.63], ['towns', 'nearby'], [
+      ['Lausanne', 'Vaud, Suisse', NO_DATA],
+      ['Lausen', 'Bâle-Campagne, Suisse', DATA],
+      ['Route de Lausanne', 'Rolle', DATA],
+      ['Route de Lausanne', 'Villette (Lavaux)', NO_DATA],
+      ['Route de Lausanne', 'Prangins', DATA],
+    ]],
+  ])('answers "%s" with the places a rider would choose', async (query, language, near, requests, rows) => {
     const fetchMock = stubRecordedAnswer(query);
 
     const response = await POST(postRequest(query, language, near));
     const results = await response.json() as { title: string; subtitle: string; covered: boolean }[];
 
+    expect(asked(fetchMock, GEOAPIFY_HOST).map(geoapifyRequest)).toEqual(requests);
     expect(asked(fetchMock, PHOTON_HOST)).toEqual([]);
-    expect(response.headers.get('x-geocoding-data-source')).toBe('Geoapify, OpenStreetMap');
+    expect(response.headers.get('x-geocoding-data-source')).toBe(['Freiburg', 'Ber', 'Rom'].includes(query)
+      ? 'Verified European scooter city catalog, Geoapify, OpenStreetMap'
+      : 'Geoapify, OpenStreetMap');
     expect(results.map(result => [result.title, result.subtitle, result.covered])).toEqual(rows);
   });
 });

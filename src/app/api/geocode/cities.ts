@@ -77,12 +77,24 @@ export interface CityMatch {
   covered: boolean;
 }
 
+/** A city with scooter data a query names, and whether it names it in full rather than by its start. */
+export interface NamedCity {
+  city: CityMatch;
+  exact: boolean;
+  country: CoveredCountry;
+}
+
 /**
  * The cities with scooter data that a query names, found without a geocoding
  * request: a city typed in full first, then those that only start like it, by name.
  * The second line is the country in the language asked for.
  */
 export function searchCoveredCities(query: string, language: GeocodeLanguage = 'en'): CityMatch[] {
+  return namedCities(query, language).map(({ city }) => city);
+}
+
+/** searchCoveredCities, saying of each city whether it was typed in full. */
+export function namedCities(query: string, language: GeocodeLanguage = 'en'): NamedCity[] {
   const words = normalize(query).split(' ');
   const countries = Object.keys(COUNTRY_WORDS) as CoveredCountry[];
   const country = countries.find(code => COUNTRY_WORDS[code].some(word => words.includes(word)));
@@ -96,13 +108,71 @@ export function searchCoveredCities(query: string, language: GeocodeLanguage = '
     .map(city => ({ city, exact: city.names.some(parts => parts.join(' ') === typed) }))
     .sort((a, b) => Number(b.exact) - Number(a.exact) || a.city.city.localeCompare(b.city.city))
     .slice(0, MAX_CITIES)
-    .map(({ city }) => ({
-      lat: city.center[0],
-      lng: city.center[1],
-      // Decoded by app versions that predate title and subtitle; those always received English.
-      display_name: `${city.city}, ${COUNTRY_NAMES[city.country].en}`,
-      title: city.city,
-      subtitle: COUNTRY_NAMES[city.country][language],
-      covered: isPointCovered(city.center[0], city.center[1]),
+    .map(({ city, exact }) => ({
+      city: {
+        lat: city.center[0],
+        lng: city.center[1],
+        // Decoded by app versions that predate title and subtitle; those always received English.
+        display_name: `${city.city}, ${COUNTRY_NAMES[city.country].en}`,
+        title: city.city,
+        subtitle: COUNTRY_NAMES[city.country][language],
+        covered: isPointCovered(city.center[0], city.center[1]),
+      },
+      exact,
+      country: city.country,
     }));
+}
+
+// Words that tie a city's name to the street before it: "10 Rue de Lyon" is no address in Lyon.
+const LINKING_WORDS = new Set([
+  'a', 'al', 'am', 'an', 'au', 'aux', 'bei', 'd', 'da', 'das', 'de', 'dei', 'del', 'della', 'der', 'des', 'di', 'do',
+  'dos', 'du', 'en', 'im', 'in', 'l', 'la', 'le', 'les', 'of', 'sur', 'van', 'vom', 'von', 'y', 'zum', 'zur',
+]);
+
+// The names an address is placed in a city by. Not a name two cities go by, as
+// Tenerife, nor a short name of the city's own that other towns also have:
+// "Freiburg" is Freiburg im Breisgau's, and Fribourg's in German.
+const ADDRESS_CITY_NAMES = (() => {
+  const names = COVERED_CITIES.flatMap(city => {
+    const own = normalize(city.city).split(' ');
+    const shortened = (name: string[]) => name.length < own.length && name.every((part, index) => part === own[index]);
+    const regional = (REGIONAL_ALIASES.get(city.id) ?? []).map(alias => normalize(alias).split(' ')).filter(name => !shortened(name));
+    return [own, ...(SWISS_ALIASES[city.id] ?? []).map(alias => normalize(alias).split(' ')), ...regional]
+      .map(parts => ({ center: city.center, id: city.id, parts }));
+  });
+  const cities = new Map<string, Set<string>>();
+  for (const { id, parts } of names) cities.set(parts.join(' '), (cities.get(parts.join(' ')) ?? new Set()).add(id));
+  return names.filter(({ parts }) => cities.get(parts.join(' '))?.size === 1);
+})();
+
+/**
+ * An address typed with the city it is in, and the centre of that city:
+ * "Bahnhofstrasse 10, Biel" is "Bahnhofstrasse 10" in Biel. The city is a city
+ * with scooter data, written after a comma or after a house number, or first
+ * and followed by a comma. Not "Via Roma" nor "Bristol Road": streets named
+ * after a city, wherever they are.
+ */
+export function cityOfAddress(query: string): { address: string; center: [number, number] } | null {
+  // Each word as written in the catalogue, with where it is in the query.
+  const words = [...query.matchAll(/[\p{L}\p{M}\p{N}]+/gu)].flatMap(match => normalize(match[0]).split(' ').filter(Boolean)
+    .map(word => ({ word, start: match.index, end: match.index + match[0].length })));
+  const between = (before: number, after: number) => query.slice(words[before].end, words[after].start);
+  const found = ADDRESS_CITY_NAMES.flatMap(({ center, parts }) => {
+    const count = parts.length;
+    if (count >= words.length) return [];
+    const last = words.length - count;
+    if (parts.every((part, index) => words[last + index].word === part)) {
+      const address = query.slice(0, words[last].start).replace(/[^\p{L}\p{M}\p{N}]+$/u, '');
+      const afterComma = between(last - 1, last).includes(',');
+      const afterNumber = /\d/.test(address) && !LINKING_WORDS.has(words[last - 1].word);
+      return afterComma || afterNumber ? [{ center, count, address }] : [];
+    }
+    if (parts.every((part, index) => words[index].word === part) && between(count - 1, count).includes(',')) {
+      return [{ center, count, address: query.slice(words[count].start).trim() }];
+    }
+    return [];
+  })
+    // "Brighton and Hove" rather than "Hove".
+    .sort((a, b) => b.count - a.count)[0];
+  return found && found.address.length >= 2 ? { address: found.address, center: found.center } : null;
 }

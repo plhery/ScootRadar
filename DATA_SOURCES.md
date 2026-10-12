@@ -64,10 +64,11 @@ for the verified cities, sample counts, excluded feeds, and recheck command.
 
 ## Address data
 
-Supported city names and aliases are answered from the local, reviewed
-scooter-city catalog, without asking any service. Other places, across Europe,
-come from the Address Autocomplete API of [Geoapify](https://www.geoapify.com/)
-when the Worker secret `GEOAPIFY_API_KEY` is set.
+Supported city names and aliases are found in the local, reviewed
+scooter-city catalog, without asking any service, and are listed first. Other
+places, across Europe, come from the Address Autocomplete API of
+[Geoapify](https://www.geoapify.com/) when the Worker secret `GEOAPIFY_API_KEY`
+is set.
 Geoapify answers from OpenStreetMap data (ODbL, credited with
 `© OpenStreetMap contributors`) and other open sources it names in each answer.
 Its free plan allows commercial use with visible Geoapify and OpenStreetMap
@@ -75,8 +76,17 @@ attribution, which the app displays (`Search · Geoapify`), and 3,000 requests a
 day. The Worker sends the typed text, the language the app is shown in, and,
 once the map shows a city or less, the map centre, rounded to about a
 kilometre, as a location bias (without one, places in Switzerland come first).
-It leaves out places outside Europe, and asks for up to 20 places; the app
-shows 5.
+With a map centre it asks first for places within 50 km of it, and for places
+anywhere, still the nearest first, only when none of those is what was typed
+(Geoapify's near misses, as Zürichstrasse for "Zürich HB", do not count).
+For text without digits it also asks, at the same time, for the towns of that
+name anywhere: towns far from the map, and Fribourg for "Freiburg" next to
+Freiburg im Breisgau. They are waited for as long as places are, or for 1.5
+seconds. A city of the catalog typed in full asks for these towns alone. An
+address typed with a city of the catalog ("Bahnhofstrasse 10, Biel") is looked
+for without the city's name within 15 km of the city's centre, wherever the map
+is, and anywhere near that centre when nothing is found there. It leaves out
+places outside Europe, and asks for up to 20 places each time; the app shows 5.
 
 When Geoapify fails (the day's requests used up, the key refused, the service
 down or slower than five seconds), or without `GEOAPIFY_API_KEY`, as in a copy
@@ -85,8 +95,11 @@ of this repository run without one, the same search goes to
 data. Its use is free within reasonable limits and may be throttled;
 `PHOTON_API_URL` points the search at a Photon of our own, with the public one
 standing in when ours fails (see DEPLOY.md). The `X-Geocoding-Data-Source`
-response header names which answered: `Geoapify, OpenStreetMap` or
-`Photon, OpenStreetMap`. The app rate-limits searches.
+response header names where the answer came from: `Verified European scooter
+city catalog` when the catalog has a city of the name, then the services that
+answered (`Geoapify`, `Photon`), then `OpenStreetMap`, as in
+`Verified European scooter city catalog, Geoapify, OpenStreetMap`. The app
+rate-limits searches.
 
 ## Map tiles
 

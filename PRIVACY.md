@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 12 October 2026
+Last updated: 13 October 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches.
@@ -20,11 +20,13 @@ searches.
   the app is shown in, to Geoapify (OpenStreetMap and other open data), a
   company in Cyprus whose servers are in the EU, without the user's IP address.
   When the map shows a city or less, its centre, rounded to about a kilometre,
-  goes with it so that nearby places come first. Geoapify generally keeps the
-  data of a successful request for no longer than 24 hours. When Geoapify
-  cannot answer, the same goes to komoot's Photon service in Germany
-  (OpenStreetMap data) instead. The name of a city in the ScootRadar catalogue
-  is answered without contacting either.
+  goes with it so that nearby places come first; with an address followed by a
+  city in the ScootRadar catalogue, that city's centre goes instead. Geoapify
+  generally keeps the data of a successful request for no longer than 24
+  hours. When Geoapify cannot answer, the same goes to komoot's Photon service
+  in Germany (OpenStreetMap data) instead. Cities in the ScootRadar catalogue
+  are found without contacting either; their names still go to Geoapify, to
+  find other towns of the same name.
 - OpenFreeMap receives normal map tile requests from the user's device, with the website origin as the referrer (no page path or query string). The tiles hold OpenStreetMap data and are drawn on the device.
 - Language, filters, appearance, map style, the ride length chosen for price
   estimates and, in the iOS app, the ride passes entered are stored locally, as is the fact that the device has found its

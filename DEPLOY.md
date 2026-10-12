@@ -111,9 +111,14 @@ else falls back to the FOSSGIS server. See DATA_SOURCES.md.
 Address search (`/api/geocode`) asks Geoapify when the Worker secret
 `GEOAPIFY_API_KEY` is set: store the key with
 `npx wrangler secret put GEOAPIFY_API_KEY`. The free plan allows 3,000 requests
-a day. Geoapify gets five seconds. If it fails or is slower (out of the day's
-requests, key refused or down), the search asks Photon and logs
-`geoapify_fallback`. Without the key, the search asks Photon alone.
+a day, and one search takes one to three: places within 50 km of the map
+centre, places anywhere when none of those matches, and the towns of the name
+for text without digits. A city of the catalog typed in full takes one; so
+does an address typed with its city, unless nothing is found in the city. Each
+request gets five seconds. If places fail or are slower (out of the day's
+requests, key refused or down), the search asks Photon with what is left of
+its ten seconds and logs `geoapify_fallback`. Without the key, the search asks
+Photon alone.
 
 Photon is komoot's public one unless `PHOTON_API_URL` in `vars` names one of our
 own; only `https://` addresses are used. Ours sits behind Cloudflare Access:

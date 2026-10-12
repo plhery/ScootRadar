@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { GEOCODE_LANGUAGES, searchCoveredCities } from '@/app/api/geocode/cities';
+import { cityOfAddress, GEOCODE_LANGUAGES, namedCities, searchCoveredCities } from '@/app/api/geocode/cities';
 import { COVERED_CITIES } from '@/lib/coveredCities';
 import { searchRegionalScooterCities } from '@/lib/regionalScooterSystems';
 
@@ -121,5 +121,52 @@ describe('searchCoveredCities', () => {
     expect(names('St')).toEqual(['St. Gallen, Switzerland', 'Stavanger, Norway', 'Stjørdal, Norway', 'Stuttgart, Germany', 'Stykkishólmur, Iceland']);
     expect(searchRegionalScooterCities('St').map(city => city.display_name))
       .toEqual(['Stavanger, Norway', 'Stjørdal, Norway', 'Stuttgart, Germany', 'Stykkishólmur, Iceland']);
+  });
+});
+
+describe('namedCities', () => {
+  it('says of each city whether it was typed in full, and in which country it is', () => {
+    expect(namedCities('Ber').map(({ city, exact, country }) => [city.title, exact, country])).toEqual([
+      ['Berlin', false, 'DE'], ['Bern', false, 'CH'],
+    ]);
+    expect(namedCities('Bienne').map(({ city, exact }) => [city.title, exact])).toEqual([['Biel/Bienne', true]]);
+    // By its short name.
+    expect(namedCities('Freiburg').map(({ city, exact, country }) => [city.title, exact, country])).toEqual([
+      ['Freiburg im Breisgau', true, 'DE'],
+    ]);
+  });
+});
+
+describe('cityOfAddress', () => {
+  it.each<[query: string, address: string, city: string]>([
+    ['Bahnhofstrasse 10 Biel', 'Bahnhofstrasse 10', 'Biel/Bienne'],
+    ['Bahnhofstrasse 10, Biel/Bienne', 'Bahnhofstrasse 10', 'Biel/Bienne'],
+    ['Bahnhofstrasse 10, Bienne', 'Bahnhofstrasse 10', 'Biel/Bienne'],
+    ['Kolosseum, Roma', 'Kolosseum', 'Roma'],
+    ['Zürich, Langstrasse 120', 'Langstrasse 120', 'Zürich'],
+    ['8004 Zürich', '8004', 'Zürich'],
+    ['10 Rue de la République Lyon', '10 Rue de la République', 'Lyon'],
+    ['Bahnhofstrasse 10 St. Gallen', 'Bahnhofstrasse 10', 'St. Gallen'],
+    ['Karl Johans gate 10 Oslo', 'Karl Johans gate 10', 'Oslo'],
+    // The longest name: not Hove, another name of Brighton's too.
+    ['12 North Street, Brighton and Hove', '12 North Street', 'Brighton'],
+  ])('finds "%s" as "%s" in %s', (query, address, city) => {
+    const { center } = COVERED_CITIES.find(covered => covered.city === city)!;
+    expect(cityOfAddress(query)).toEqual({ address, center });
+  });
+
+  it.each([
+    // Streets named after a city, wherever they are.
+    'Via Roma', 'Via Roma 10', 'Bristol Road', '10 Rue de Lyon', 'Rue de Lyon', 'Gare de Lyon',
+    // Stations of a city, which the address search finds by its name.
+    'Zürich HB', 'Basel SBB',
+    // A city alone.
+    'Lyon',
+    // A name other towns have too: Fribourg is Freiburg in German, and two towns of our list are on Tenerife.
+    'Bahnhofstrasse 10 Freiburg', 'Calle Mayor 5, Tenerife',
+    // Nothing, or next to nothing, to look for.
+    ', Biel', '1 Biel',
+  ])('leaves "%s" to the search everywhere', query => {
+    expect(cityOfAddress(query)).toBeNull();
   });
 });
