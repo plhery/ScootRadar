@@ -40,6 +40,7 @@ import { shortcutFor } from '@/lib/shortcuts';
 import { useDesktopLayout } from '@/lib/useDesktopLayout';
 import { useRecentPlaces } from '@/lib/useRecentPlaces';
 import { useScooterData, type ScooterDataQuery } from '@/lib/useScooterData';
+import { groupCityTotals } from '@/lib/clustering';
 import { mapRepresentationsMatch, providersForViewport } from '@/lib/mapCoverage';
 import {
   boundsContainBounds,
@@ -467,6 +468,11 @@ export default function Home() {
     vehicles,
     viewportBounds,
   ]);
+
+  // Further out than a few cities, neighbouring totals are drawn as one.
+  const mapClusters = useMemo(() => (
+    responseMeta?.overview ? groupCityTotals(viewportData.visibleClusters, viewportZoom) : viewportData.visibleClusters
+  ), [responseMeta?.overview, viewportData.visibleClusters, viewportZoom]);
 
   const representedVehicleCount = vehicles.length + clusters.reduce(
     (total, cluster) => total + cluster.count,
@@ -924,7 +930,7 @@ export default function Home() {
       <MapWrapper
         parking={mapParking}
         vehicles={mapVehicles}
-        clusters={viewportData.visibleClusters}
+        clusters={mapClusters}
         clustered={responseMeta?.mode === 'clusters'}
         origin={initialCenter}
         initialZoom={INITIAL_ZOOM}

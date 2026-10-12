@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { clusterVehicles, shouldClusterAtZoom } from '@/lib/clustering';
-import type { Vehicle } from '@/lib/types';
+import { clusterVehicles, groupCityTotals, shouldClusterAtZoom } from '@/lib/clustering';
+import type { ScooterCluster, Vehicle } from '@/lib/types';
 
 function vehicle(id: string, provider: string, lat: number, lng: number): Vehicle {
   return {
@@ -53,5 +53,30 @@ describe('web clustering', () => {
     ];
 
     expect(clusterVehicles(vehicles, 16)).toEqual({ vehicles, clusters: [] });
+  });
+});
+
+function city(id: string, lat: number, lng: number, providers: Record<string, number>): ScooterCluster {
+  const count = Object.values(providers).reduce((total, value) => total + value, 0);
+  return { id: `city:${id}`, city: id, lat, lng, count, providers };
+}
+
+describe('city totals', () => {
+  const paris = city('Paris', 48.8566, 2.3522, { dott: 3000, lime: 1000 });
+  const boulogne = city('Boulogne', 48.8397, 2.2399, { dott: 200 });
+  const lyon = city('Lyon', 45.764, 4.8357, { voi: 900 });
+
+  it('draws neighbouring cities as one total on the largest of them', () => {
+    const [group, other] = groupCityTotals([boulogne, lyon, paris], 6);
+    expect(group).toMatchObject({
+      id: 'group:city:Paris', city: 'Paris, Boulogne', lat: paris.lat, lng: paris.lng,
+      count: 4200, providers: { dott: 3200, lime: 1000 },
+      bounds: { south: boulogne.lat, west: boulogne.lng, north: paris.lat, east: paris.lng },
+    });
+    expect(other).toBe(lyon);
+  });
+
+  it('leaves cities apart once they can be told apart', () => {
+    expect(groupCityTotals([paris, boulogne, lyon], 12)).toEqual([paris, lyon, boulogne]);
   });
 });

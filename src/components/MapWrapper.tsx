@@ -2,7 +2,8 @@
 
 import dynamic from 'next/dynamic';
 import type { MapViewport } from '@/lib/geo';
-import type { ParkingLocation, ScooterCluster, Vehicle } from '@/lib/types';
+import type { ParkingLocation, Vehicle } from '@/lib/types';
+import type { CityGroup } from '@/lib/clustering';
 import type { AddressResult } from '@/components/AddressSearch';
 import type { MapStyleName, ThemeName } from '@/lib/clientParams';
 import type { RefObject } from 'react';
@@ -14,7 +15,7 @@ const MapComponent = dynamic(() => import('./MapComponent'), { ssr: false });
 interface MapWrapperProps {
   parking?: ParkingLocation[];
   vehicles: Vehicle[];
-  clusters: ScooterCluster[];
+  clusters: CityGroup[];
   clustered: boolean;
   origin: [number, number];
   initialZoom: number;

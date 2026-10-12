@@ -12,6 +12,7 @@ import MapCompass from './MapCompass';
 import MarkerPopover, { followMarker } from './MarkerPopover';
 import UserLocationMarker from './UserLocationMarker';
 import type { ParkingLocation, ScooterCluster, Vehicle } from '@/lib/types';
+import type { CityGroup } from '@/lib/clustering';
 import { PROVIDERS } from '@/lib/types';
 import { useI18n, type TranslationKey } from '@/lib/i18n';
 import type { AddressResult } from '@/components/AddressSearch';
@@ -196,13 +197,13 @@ function createClusterIcon(cluster: ScooterCluster, count: string): L.DivIcon {
   const largest = entries.reduce<[string, number] | null>((best, entry) => (!best || entry[1] > best[1] ? entry : best), null);
   const glow = largest ? colorOf(largest[0]) : '#999';
   const ring = entries.length > 1 ? `conic-gradient(${segments.join(',')})` : glow;
-  const size = cluster.count < 10 ? 34 : cluster.count < 100 ? 40 : cluster.count < 1000 ? 46 : 52;
+  const size = cluster.count < 10 ? 34 : cluster.count < 100 ? 40 : cluster.count < 1000 ? 46 : cluster.count < 10_000 ? 52 : 58;
 
   return L.divIcon({
     className: 'cluster-marker-wrap',
     html: `<div class="cluster-marker" style="--cluster-ring:${ring};--cluster-glow:${glow};--cluster-size:${size}px"><span>${count}</span></div>`,
-    iconSize: [52, 52],
-    iconAnchor: [26, 26],
+    iconSize: [58, 58],
+    iconAnchor: [29, 29],
   });
 }
 
@@ -304,7 +305,7 @@ function MapZoomControls({ mapRef }: { mapRef: { current: L.Map | null } }) {
 interface MapComponentProps {
   parking?: ParkingLocation[];
   vehicles: Vehicle[];
-  clusters: ScooterCluster[];
+  clusters: CityGroup[];
   clustered: boolean;
   origin: [number, number];
   initialZoom: number;
@@ -413,6 +414,8 @@ export default function MapComponent({
   const movingRef = useRef(false);
   const vehicleMarkersRef = useRef<Map<string, L.Marker>>(new Map());
   const clusterMarkersRef = useRef<Map<string, L.Marker>>(new Map());
+  // What each total stands for now: a group gains and loses cities as the map zooms.
+  const clusterDataRef = useRef<Map<string, CityGroup>>(new Map());
   const parkingMarkersRef = useRef<Map<string, { marker: L.Marker; signature: string }>>(new Map());
   const markerSignaturesRef = useRef<Map<string, string>>(new Map());
   const vehicleDataRef = useRef<Map<string, Vehicle>>(new Map());
@@ -520,6 +523,7 @@ export default function MapComponent({
     if (!container) return;
     const vehicleMarkers = vehicleMarkersRef.current;
     const clusterMarkers = clusterMarkersRef.current;
+    const clusterData = clusterDataRef.current;
     const parkingMarkers = parkingMarkersRef.current;
     const markerSignatures = markerSignaturesRef.current;
     const lights = lightsRef.current;
@@ -591,6 +595,7 @@ export default function MapComponent({
       destinationLayerRef.current = null;
       vehicleMarkers.clear();
       clusterMarkers.clear();
+      clusterData.clear();
       parkingMarkers.clear();
       markerSignatures.clear();
       vehicleDataRef.current.clear();
@@ -879,11 +884,13 @@ export default function MapComponent({
       if (incomingClusters.has(id)) continue;
       layer.removeLayer(marker);
       clusterMarkersRef.current.delete(id);
+      clusterDataRef.current.delete(id);
       markerSignaturesRef.current.delete(`c:${id}`);
     }
     for (const cluster of visibleClusters) {
       const center: [number, number] = [cluster.lat, cluster.lng];
       const label = `${cluster.city ? `${cluster.city}: ` : ''}${clusterTitle(cluster, t, formatNumber)}`;
+      clusterDataRef.current.set(cluster.id, cluster);
       const signature = JSON.stringify([cluster, label]);
       if (markerSignaturesRef.current.get(`c:${cluster.id}`) === signature) continue;
       markerSignaturesRef.current.set(`c:${cluster.id}`, signature);
@@ -898,9 +905,16 @@ export default function MapComponent({
           () => {
             selectionFeedback();
             track('cluster_select');
-            map.flyTo(marker.getLatLng(), cluster.city ? 13 : Math.min(map.getZoom() + 2, 20), {
-              animate: !prefersReducedMotion(), duration: 0.55,
-            });
+            const animate = !prefersReducedMotion();
+            // A group opens onto its cities, each a total of its own again.
+            const bounds = clusterDataRef.current.get(cluster.id)?.bounds;
+            if (bounds) {
+              map.flyToBounds(L.latLngBounds([bounds.south, bounds.west], [bounds.north, bounds.east]), {
+                animate, duration: 0.55, padding: [80, 80], maxZoom: 13,
+              });
+              return;
+            }
+            map.flyTo(marker.getLatLng(), cluster.city ? 13 : Math.min(map.getZoom() + 2, 20), { animate, duration: 0.55 });
           }
         ).addTo(layer);
         labelMarker(marker, label);
