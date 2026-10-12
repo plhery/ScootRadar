@@ -74,6 +74,18 @@ export function placeForCity(city: CoveredCity, locale: AppLocale): Place {
   };
 }
 
+// From this zoom the map shows a city or less; zoomed out further, its centre says little about what is looked for.
+export const SEARCH_NEAR_MIN_ZOOM = 10;
+
+/**
+ * The map centre the address search favours places near, to about a kilometre:
+ * no more than it needs to favour a neighbourhood. None for a map of a whole region.
+ */
+export function searchNear(center: readonly [number, number] | null, zoom: number): [number, number] | null {
+  if (!center || zoom < SEARCH_NEAR_MIN_ZOOM) return null;
+  return [Math.round(center[0] * 100) / 100, Math.round(center[1] * 100) / 100];
+}
+
 export const MAX_RECENT_PLACES = 3;
 
 function samePlace(a: Place, b: Place): boolean {

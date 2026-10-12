@@ -121,6 +121,18 @@ describe('typing', () => {
     }));
   });
 
+  it('sends the centre of the map it was given, so that places near it come first', async () => {
+    const fetcher = answer(PARADEPLATZ);
+    vi.stubGlobal('fetch', fetcher);
+    const { input } = renderSearch({ near: [48.86, 2.35] });
+
+    await type(input, 'Rue de Rivoli 10');
+
+    expect(fetcher).toHaveBeenCalledExactlyOnceWith('/api/geocode', expect.objectContaining({
+      body: JSON.stringify({ q: 'Rue de Rivoli 10', lang: 'en', near: [48.86, 2.35] }),
+    }));
+  });
+
   it('searches in the language the interface is shown in, and names a city’s country in it', async () => {
     localStorage.setItem('scooters-locale', 'de');
     const fetcher = answer(PARADEPLATZ);

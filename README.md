@@ -126,7 +126,7 @@ run the `ScootRadar` scheme. More details are in [ios/README.md](ios/README.md).
 
 Scooter locations come from the
 [Open data platform mobility Switzerland](https://data.opentransportdata.swiss/en/dataset/sharedmobility),
-address search comes from swisstopo, and the web map is drawn from OpenFreeMap tiles of OpenStreetMap data.
+address search comes from Photon (OpenStreetMap) and, in Switzerland, swisstopo, and the web map is drawn from OpenFreeMap tiles of OpenStreetMap data.
 The app stores no account or location history.
 
 - [Data sources and attribution](DATA_SOURCES.md)

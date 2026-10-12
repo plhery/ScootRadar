@@ -21,6 +21,8 @@ interface AddressSearchProps {
   recentPlaces: readonly Place[];
   /** The covered cities nearest to the map centre. */
   nearbyCities: readonly CoveredCity[];
+  /** The map centre, rounded, when the map shows a city or less: places near it are found first. */
+  near?: readonly [number, number] | null;
   onSelect: (place: Place) => void;
   onLocate: () => void;
   onCancel: () => void;
@@ -80,7 +82,7 @@ function PlaceRow({
 
 /** The open search: the field first, with Cancel beside it; under it, ways to
     start while nothing is typed and the places found from two characters on. */
-export default function AddressSearch({ recentPlaces, nearbyCities, onSelect, onLocate, onCancel }: AddressSearchProps) {
+export default function AddressSearch({ recentPlaces, nearbyCities, near = null, onSelect, onLocate, onCancel }: AddressSearchProps) {
   const { locale, t } = useI18n();
   const listboxId = useId();
   const recentId = useId();
@@ -131,7 +133,7 @@ export default function AddressSearch({ recentPlaces, nearbyCities, onSelect, on
       const response = await fetch('/api/geocode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: value, lang: locale }),
+        body: JSON.stringify({ q: value, lang: locale, ...(near ? { near } : {}) }),
         cache: 'no-store',
         signal: deadline.signal,
       });

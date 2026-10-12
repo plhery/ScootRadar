@@ -5,6 +5,7 @@ import {
   createRecentPlacesStore,
   placeForCity,
   recentPlaces,
+  searchNear,
   splitDisplayName,
   toPlace,
   withRecentPlace,
@@ -14,6 +15,20 @@ import {
 function place(title: string, lat = 47.3695, lng = 8.5389): Place {
   return { lat, lng, display_name: title, title, subtitle: '8001 Zürich', covered: true };
 }
+
+describe('searchNear', () => {
+  it('rounds the centre of a map of a city or less to about a kilometre', () => {
+    expect(searchNear([48.856613, 2.352222], 10)).toEqual([48.86, 2.35]);
+    expect(searchNear([47.37689, 8.541694], 17)).toEqual([47.38, 8.54]);
+    expect(searchNear([-33.86882, 151.20929], 12)).toEqual([-33.87, 151.21]);
+  });
+
+  it('gives none for a map of a whole region, as on its first view, or before the map is there', () => {
+    expect(searchNear([46.8182, 8.2275], 8)).toBeNull();
+    expect(searchNear([48.856613, 2.352222], 9.5)).toBeNull();
+    expect(searchNear(null, 15)).toBeNull();
+  });
+});
 
 describe('splitDisplayName', () => {
   it('splits a legacy label at the first comma', () => {

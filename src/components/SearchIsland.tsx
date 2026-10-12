@@ -21,6 +21,8 @@ interface SearchIslandProps {
   recentPlaces: readonly Place[];
   /** The covered cities nearest to the map centre. */
   nearbyCities: readonly CoveredCity[];
+  /** The map centre, rounded, when the map shows a city or less: the search finds places near it first. */
+  near?: readonly [number, number] | null;
   onExpandedChange: (expanded: boolean) => void;
   onSelect: (place: Place) => void;
   onClear: () => void;
@@ -45,6 +47,7 @@ export default function SearchIsland({
   hasActiveFilters,
   recentPlaces,
   nearbyCities,
+  near,
   onExpandedChange,
   onSelect,
   onClear,
@@ -123,6 +126,7 @@ export default function SearchIsland({
           <AddressSearch
             recentPlaces={recentPlaces}
             nearbyCities={nearbyCities}
+            near={near}
             onSelect={(chosen) => {
               onSelect(chosen);
               setExpanded(false);

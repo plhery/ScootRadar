@@ -81,8 +81,8 @@ Total: **15,262 available scooters**, with **0 failed feeds** in the final catal
   envelopes, not legal riding or parking zones. A stray Pony Angers record was
   observed outside its region; records outside the configured service bounds
   are excluded. Changes in service areas need a catalog review.
-- **Search:** supported French city names are searchable alongside Swiss address
-  results. French street-address geocoding is not included. City names are
+- **Search:** supported French city names are answered from the catalog; French
+  streets, addresses and places come from Photon (OpenStreetMap). City names are
   deduplicated when two operators cover the same place.
 
 ## Feeds not enabled

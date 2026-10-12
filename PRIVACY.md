@@ -17,8 +17,12 @@ searches.
   the scooter moves.
   In the iOS app routes come from Apple Maps on the device's behalf.
 - Address text is proxied in a non-cacheable request body, with the language
-  the app is shown in, to the Swiss federal geo.admin.ch service. The name of a
-  city in the ScootRadar catalogue is answered without contacting it.
+  the app is shown in, to komoot's Photon service in Germany (OpenStreetMap
+  data), without the user's IP address. When the map shows a city or less, its
+  centre, rounded to about a kilometre, goes with it so that nearby places come
+  first. With the map in or near Switzerland, or without a centre, the text also
+  goes to the Swiss federal geo.admin.ch service. The name of a city in the
+  ScootRadar catalogue is answered without contacting either.
 - OpenFreeMap receives normal map tile requests from the user's device, with the website origin as the referrer (no page path or query string). The tiles hold OpenStreetMap data and are drawn on the device.
 - Language, filters, appearance, map style, the ride length chosen for price
   estimates and, in the iOS app, the ride passes entered are stored locally, as is the fact that the device has found its
@@ -36,7 +40,7 @@ searches.
   state at the time, never the IP address, request headers or search text.
   Sentry keeps it for up to 90 days.
 
-Cloudflare, Sentry, FOSSGIS and upstream providers may process limited network or security
+Cloudflare, Sentry, FOSSGIS, komoot and upstream providers may process limited network or security
 metadata under their own privacy policies. The full user-facing notice is
 published at <https://scootradar.com/privacy>.
 

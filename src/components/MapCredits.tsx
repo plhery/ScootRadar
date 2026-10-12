@@ -19,6 +19,7 @@ const SOURCES = [
   { href: 'https://creativecommons.org/licenses/by/4.0/', label: 'NO: Kartverket boundaries · CC BY 4.0' },
   { href: 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/', label: 'UK: ONS boundaries · OGL v3.0' },
   { href: 'https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop', label: 'PT: DGT boundaries · CC BY 4.0' },
+  { href: 'https://photon.komoot.io/', label: 'Search · Photon, komoot' },
   { href: 'https://www.geo.admin.ch/en/geo-services/geo-services/application-programming-interface-api', label: '© swisstopo' },
   { href: 'https://data.lillemetropole.fr/', label: 'Parking · Métropole Européenne de Lille' },
 ];

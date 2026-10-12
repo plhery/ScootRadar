@@ -288,6 +288,7 @@ describe('ControlSheet settings', () => {
       'NO: Kartverket boundaries · CC BY 4.0',
       'UK: ONS boundaries · OGL v3.0',
       'PT: DGT boundaries · CC BY 4.0',
+      'Search · Photon, komoot',
       '© swisstopo',
       'Parking · Métropole Européenne de Lille',
     ]);

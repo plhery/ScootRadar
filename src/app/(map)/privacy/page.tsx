@@ -55,10 +55,15 @@ export default function PrivacyPage() {
         <h2>Address search</h2>
         <p>
           Address search text is sent through the ScootRadar API, with the language the app is
-          shown in, to the Swiss federal geo.admin.ch service operated by swisstopo. The name of a
-          city in the ScootRadar catalogue is answered without contacting it. The current app sends
-          search text in the request body, and instructs browsers and intermediary caches not to
-          store the request or response.
+          shown in, to Photon, a search service on OpenStreetMap data run by komoot in Germany.
+          When the map shows a city or less, the centre of the map, rounded to about a kilometre,
+          is sent with it so that places nearby come first; when you follow your location, that
+          centre is near you. When the map is in or near Switzerland, or the app does not send
+          its centre, the text is also sent to the Swiss federal geo.admin.ch service operated by
+          swisstopo. ScootRadar does not send your IP address with them. The name of a city in the
+          ScootRadar catalogue is answered without contacting either. The current app sends search
+          text in the request body, and instructs browsers and intermediary caches not to store the
+          request or response.
         </p>
 
         <h2>Mobility data</h2>
@@ -128,7 +133,8 @@ export default function PrivacyPage() {
           <a href="https://openfreemap.org/privacy/">OpenFreeMap</a>, {' '}
           <a href="https://www.fossgis.de/datenschutzerkl%C3%A4rung">FOSSGIS</a>, {' '}
           <a href="https://www.apple.com/legal/privacy/">Apple</a>, {' '}
-          <a href="https://sentry.io/privacy/">Sentry</a>, and {' '}
+          <a href="https://sentry.io/privacy/">Sentry</a>, {' '}
+          <a href="https://www.komoot.com/privacy">komoot</a>, and {' '}
           <a href="https://www.geo.admin.ch/en/data-privacy">geo.admin.ch</a>.
         </p>
       </article>

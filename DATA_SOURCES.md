@@ -64,11 +64,21 @@ for the verified cities, sample counts, excluded feeds, and recheck command.
 
 ## Address data
 
-Search uses the federal `geo.admin.ch` SearchServer operated by swisstopo. Its
-services are available without registration under FSDI fair-use and attribution
-conditions. The app limits and caches requests and displays `© swisstopo`.
-Supported French city names are supplied by the local, reviewed scooter-city
-catalog. French street-address geocoding is not provided.
+Supported city names and aliases are answered from the local, reviewed
+scooter-city catalog. Other places, across Europe, come from
+[Photon](https://photon.komoot.io/), komoot's public geocoder on OpenStreetMap
+data (ODbL, credited with `© OpenStreetMap contributors`). Its use is free
+within reasonable limits and may be throttled; a private Photon instance is the
+way out if traffic outgrows it. The app sends the map centre, rounded to about a
+kilometre, as a location bias once the map shows a city or less, and restricts
+results to Europe.
+
+With the map in or near Switzerland, or without a map centre (the iOS app),
+the federal `geo.admin.ch` SearchServer operated by swisstopo is asked as well.
+Its services are available without registration under FSDI fair-use and
+attribution conditions; the app displays `© swisstopo`. Its official addresses
+and stops come before Photon's Swiss places, which fill in only when swisstopo
+finds nothing that starts with the typed text. The app rate-limits searches.
 
 ## Map tiles
 
@@ -162,7 +172,7 @@ geofencing envelopes take precedence over stray vehicle coordinates when setting
 routing bounds, except for Zeus, whose zones are a single polygon or span tens
 of kilometres: its bounds enclose where its scooters stood. The map never treats these routing envelopes as legal riding
 or parking boundaries. Native provider filters use the same generated catalog.
-Supported city names and aliases are resolved locally before Swiss address search.
+Supported city names and aliases are resolved locally before address search.
 
 ## Belgium, Norway and the United Kingdom
 
