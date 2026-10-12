@@ -36,7 +36,7 @@
     {
       "uid": "scootradar-feed-stopped",
       "title": "ScootRadar feed stopped",
-      "expr": "(max by (feed, source, provider) (scootradar_feed_state{job=\"scootradar-cache\", state=\"expired\"}) == 1) and on (feed) (avg_over_time((max by (feed) (scootradar_feed_state{job=\"scootradar-cache\", state=~\"ok|failing\"}))[7d:5m]) > 0.5)",
+      "expr": "max by (feed, source, provider) (scootradar_feed_state{job=\"scootradar-cache\", state=\"expired\"}) and on (feed) (avg_over_time((max by (feed) (scootradar_feed_state{job=\"scootradar-cache\", state=~\"ok|failing\"}))[7d:5m]) > 0.5)",
       "for": "10m",
       "severity": "warning",
       "noDataState": "KeepLast",

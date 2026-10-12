@@ -88,7 +88,11 @@ The alert rules:
 | ScootRadar cache memory high | over 1.3 GB for 15 minutes (the limit is 1536 MiB) |
 
 While the cache cannot be scraped, as for a moment during a deploy, every rule but
-"target down" keeps its last state rather than resolving and firing again.
+"target down" keeps its last state rather than resolving and firing again. So every
+rule must answer 0 when all is well, never nothing: "feed stopped" answers 0 for each
+feed it covers rather than filtering with `== 1`. When it filtered, a feed that
+recovered before its 10 minutes left the answer empty, and Grafana kept the pending
+alert and fired it anyway, as for six Beryl feeds on 12 October 2026.
 
 The default notification policy sends them all to the `telegram-paul` contact point.
 The dashboard's "Expired, rarely served" table lists the others: silence isn't
