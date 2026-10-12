@@ -9,8 +9,10 @@ export interface ParkingSnapshot { locations: ParkingLocation[]; observedAt: num
 interface Station {
   station_id: string; name?: unknown; lat?: number; lon?: number;
   is_virtual_station?: boolean; station_area?: unknown; parking_type?: string;
-  vehicle_capacity?: Record<string, number>; vehicle_type_ids?: string[];
+  vehicle_capacity?: Record<string, number>; vehicle_type_capacity?: Record<string, number>; vehicle_type_ids?: string[];
+  vehicle_types_capacity?: Capacity[]; vehicle_docks_capacity?: Capacity[];
 }
+interface Capacity { vehicle_type_ids?: string[]; count?: number }
 interface Rule {
   vehicle_type_ids?: string[]; vehicle_type_id?: string[]; station_parking?: boolean;
 }
@@ -36,6 +38,13 @@ function polygons(geometry: Geometry): number[][][][] {
 }
 function timestamp(value: number | string | undefined, fallback: number) {
   return value === undefined ? fallback : typeof value === 'number' ? value * 1000 : Date.parse(value);
+}
+// Any published parking or dock capacity, keyed by type (GBFS 2) or listed per group of types (GBFS 3),
+// limits a station to the types it has room for.
+function hasRoomFor(capacity: Record<string, number> | Capacity[] | undefined, type: string): boolean {
+  if (!capacity) return true;
+  return Array.isArray(capacity) ? capacity.some(group => group?.vehicle_type_ids?.includes(type) && (group.count ?? 0) > 0)
+    : (capacity[type] ?? 0) > 0;
 }
 function stationName(name: unknown, fallback: string, language: string): string {
   if (typeof name === 'string' && name.trim()) return name.trim().replaceAll('_', ' ').slice(0, 200);
@@ -75,7 +84,8 @@ export function normalizeParkingLocations(system: RegionalScooterSystem, types: 
       !(station.is_virtual_station === true || station.station_area || station.parking_type)) continue;
     const allowedTypes = scooterTypes.filter(type =>
       (!station.vehicle_type_ids || station.vehicle_type_ids.includes(type)) &&
-      (!station.vehicle_capacity || (station.vehicle_capacity[type] ?? 0) > 0));
+      [station.vehicle_capacity, station.vehicle_type_capacity, station.vehicle_types_capacity, station.vehicle_docks_capacity]
+        .every(capacity => hasRoomFor(capacity, type)));
     if (!allowedTypes.length) continue;
     // GBFS rules are ordered: the first matching polygon/rule wins, including holes.
     const mandatory = allowedTypes.every(type => {
@@ -92,6 +102,12 @@ export function normalizeParkingLocations(system: RegionalScooterSystem, types: 
     unique.set(location.id, location);
   }
   return [...unique.values()];
+}
+
+/** The next time a geofencing zone starts or ends, which changes what normalizeParkingLocations returns. */
+export function nextParkingRuleChange(geofencing: ParkingZonesFeed, now = Date.now()): number {
+  return (geofencing.data?.geofencing_zones?.features ?? []).flatMap(zone => [zone.properties?.start, zone.properties?.end])
+    .map(time => timestamp(time, Infinity)).reduce((next, time) => time > now && time < next ? time : next, Infinity);
 }
 
 export function filterReturningParking(locations: ParkingLocation[], status: ParkingStatusFeed): ParkingLocation[] {

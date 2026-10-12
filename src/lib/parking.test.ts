@@ -27,6 +27,20 @@ describe('published scooter parking', () => {
       { ...station, station_id: 'invalid', lat: NaN }, { ...station, station_id: 'foreign', lat: 47.4 }];
     expect(normalize(stations).map(x => x.id)).toEqual(['dott_fr_lyon:bay']);
   });
+  it('reads GBFS 3 virtual and dock capacities by vehicle type', () => {
+    const holds = (count: number, ...ids: string[]) => ({ vehicle_type_ids: ids, count });
+    const dock = { ...station, is_virtual_station: false, parking_type: 'street_parking' };
+    const stations = [
+      { ...station, station_id: 'scooter', vehicle_types_capacity: [holds(10, 'scooter')] },
+      { ...station, station_id: 'bike', capacity: 10, vehicle_types_capacity: [holds(10, 'bike')] },
+      { ...station, station_id: 'mixed', vehicle_types_capacity: [holds(6, 'bike'), holds(4, 'scooter', 'bike')] },
+      { ...station, station_id: 'zero', vehicle_types_capacity: [holds(0, 'scooter'), holds(10, 'bike')] },
+      { ...dock, station_id: 'scooter-dock', vehicle_docks_capacity: [holds(10, 'scooter')] },
+      { ...dock, station_id: 'bike-dock', vehicle_docks_capacity: [holds(10, 'bike')] },
+      { ...dock, station_id: 'gbfs2-bike-dock', vehicle_type_capacity: { bike: 10 } },
+    ];
+    expect(normalize(stations).map(x => x.id)).toEqual(['dott_fr_lyon:scooter', 'dott_fr_lyon:mixed', 'dott_fr_lyon:scooter-dock']);
+  });
   it('honors polygon holes, rule order, type restrictions and global rules', () => {
     const hole = [[4.84,45.74],[4.86,45.74],[4.86,45.76],[4.84,45.76],[4.84,45.74]];
     expect(normalize([station], { data: { geofencing_zones: { features: [

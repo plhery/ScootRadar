@@ -1,13 +1,13 @@
 import { statusObservedAt, validateDiscovery, validateTypes, validateStations, validateStationStatus } from './feedValidation';
 import type { RegionalScooterSystem } from './regionalScooterSystems';
 import { discoveryFeedEntries, discoveredFeedUrl, fetchJson } from './scooterFeeds';
-import { filterReturningParking, normalizeParkingLocations,
+import { filterReturningParking, nextParkingRuleChange, normalizeParkingLocations,
   type ParkingStationsFeed, type ParkingStatusFeed, type ParkingTypesFeed, type ParkingZonesFeed } from './parking';
 import type { ParkingLocation } from './types';
 import { fetchLilleParking } from './lilleParking';
 
 const normalized = new Map<string, { information: ParkingStationsFeed; types: ParkingTypesFeed;
-  zones: ParkingZonesFeed; hour: number; locations: ParkingLocation[] }>();
+  zones: ParkingZonesFeed; until: number; locations: ParkingLocation[] }>();
 
 export async function fetchRegionalParking(system: RegionalScooterSystem) {
   if (system.id === 'lime_fr_lille') return fetchLilleParking(system);
@@ -24,11 +24,13 @@ export async function fetchRegionalParking(system: RegionalScooterSystem) {
     zonesUrl ? fetchJson<ParkingZonesFeed>(zonesUrl, { revalidate: 3600 }) : { data: {}, stale: false },
   ]);
   if (!Array.isArray(information.data.data?.stations) || !Array.isArray(types.data.data?.vehicle_types)) throw new Error('Invalid parking metadata');
-  const hour = Math.floor(Date.now() / 3600_000);
+  const now = Date.now();
   let cached = normalized.get(system.id);
-  if (!cached || cached.information !== information.data || cached.types !== types.data || cached.zones !== zones.data || cached.hour !== hour) {
-    cached = { information: information.data, types: types.data, zones: zones.data, hour,
-      locations: normalizeParkingLocations(system, types.data, information.data, zones.data) };
+  // A zone's rules apply only from its start to its end, so evaluate them again at the next of those times
+  // even when no document changed.
+  if (!cached || cached.information !== information.data || cached.types !== types.data || cached.zones !== zones.data || now >= cached.until) {
+    cached = { information: information.data, types: types.data, zones: zones.data, until: nextParkingRuleChange(zones.data, now),
+      locations: normalizeParkingLocations(system, types.data, information.data, zones.data, now) };
     normalized.set(system.id, cached);
   }
   const statusUrl = discoveredFeedUrl(entries, 'station_status', base);
