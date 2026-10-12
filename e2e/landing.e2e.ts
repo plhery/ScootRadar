@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
-// The landing page, src/app/(site)/[[...locale]]/page.tsx: one page per
+// The landing page, src/app/(site)/[[...path]]/page.tsx: one page per
 // language, English at the root, served by the same Worker as the map and under
 // the same security policy.
 
@@ -184,8 +184,10 @@ test('the last line of the landing page names what else its maker makes, in its 
   await page.goto('/');
   await expect(page.locator('.maker')).toHaveText('By the maker of X Horoscope, UnfollowMonkey and the Peek parcel tracker.');
   await expect(page.locator('.maker').getByRole('link', { name: 'Peek parcel tracker' })).toHaveAttribute('href', 'https://peektracker.com');
-  // No guide is written yet, so the footer lists none.
-  await expect(page.getByRole('contentinfo').locator('.guides')).toHaveCount(0);
+  // Above it, the guides of the language, and the list of them last.
+  const guides = page.getByRole('contentinfo').getByRole('navigation', { name: 'Guides' }).getByRole('link');
+  await expect(guides.last()).toHaveText('All guides');
+  await expect(guides.last()).toHaveAttribute('href', '/guides');
 });
 
 test('a link to the map from when it was at the root still opens the map', async ({ page, request }) => {

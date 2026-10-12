@@ -1,5 +1,5 @@
 import { COVERED_CITIES, type CoveredCountry } from '@/lib/coveredCities';
-import { MAP_PATH } from '@/lib/mapAddress';
+import { mapAt } from '@/lib/mapAddress';
 
 // The cities the landing page names, by their id in the catalogue. The others
 // of each country are counted, so the page stays right as cities are added.
@@ -39,7 +39,7 @@ export function landingCountries(): LandingCountryCities[] {
     const cities = COVERED_CITIES.filter(city => city.country === country);
     const featured = FEATURED[country].flatMap(id => {
       const city = cities.find(candidate => candidate.id === id);
-      return city ? [{ name: city.city, href: `${MAP_PATH}?origin=${city.center[0]},${city.center[1]}` }] : [];
+      return city ? [{ name: city.city, href: mapAt(city.center) }] : [];
     });
     return { country, total: cities.length, featured, more: cities.length - featured.length };
   });

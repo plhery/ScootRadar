@@ -1,7 +1,8 @@
-import { Fragment, type ComponentProps, type CSSProperties } from 'react';
+import { Fragment, type CSSProperties } from 'react';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { AppLink, Linked, SiteBar, SiteFooter } from '../chrome';
+import { GuideIndex, GuidePage, guideIndexMetadata, guideMetadata } from '../guides';
 import Icon from '@/components/Icon';
 import StageDepth from '@/components/StageDepth';
 import { PROVIDERS } from '@/generated/providers';
@@ -10,14 +11,9 @@ import { LANDING_CITY_TOTAL, landingCountries } from '@/lib/landingCities';
 import {
   APP_STORE_URL,
   LANDING_COPY,
-  LANDING_GUIDES,
   LANDING_LOCALES,
-  LANGUAGE_NAMES,
   SOURCE_URL,
-  landingLocaleOf,
   landingPath,
-  linkedParts,
-  makerLinks,
   type LandingCopy,
   type LandingLocale,
 } from '@/lib/landingCopy';
@@ -30,23 +26,11 @@ import { DEFAULT_RIDE_DURATION, RIDE_DURATIONS, formatRidePrice, ridePriceQuote 
 import type { RidePricing } from '@/lib/types';
 import { MAP_PATH } from '@/lib/mapAddress';
 import { inkOn } from '@/lib/providerColor';
-import { SITE_NAME, SITE_URL } from '@/lib/site';
+import { OPEN_GRAPH_LOCALES, SITE_NAME, SITE_URL, shareImage } from '@/lib/site';
+import { sitePageOf } from '@/lib/sitePages';
 import { formatDistance, walkingMinutes } from '@/lib/walking';
 
-type Props = Readonly<{ params: Promise<{ locale?: string[] }> }>;
-
-const OPEN_GRAPH_LOCALES: Record<LandingLocale, string> = {
-  en: 'en_CH',
-  de: 'de_CH',
-  fr: 'fr_CH',
-  it: 'it_CH',
-  // The country of each with scooters on the map.
-  nl: 'nl_BE',
-  nb: 'nb_NO',
-  pt: 'pt_PT',
-  es: 'es_ES',
-  is: 'is_IS',
-};
+type Props = Readonly<{ params: Promise<{ path?: string[] }> }>;
 
 // The steps of the app's battery filter; the page shows it set to the third.
 const BATTERY_STEPS = [30, 60, 80] as const;
@@ -57,9 +41,20 @@ const BATTERY_STEP_SHOWN = 60;
 const TILE_COLORS: Record<string, string> = { bird: '#f4f5f7' };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const locale = landingLocaleOf((await params).locale);
-  if (!locale) return {};
+  const page = sitePageOf((await params).path);
+  switch (page?.kind) {
+    case 'landing':
+      return landingMetadata(page.locale);
+    case 'guides':
+      return guideIndexMetadata(page.locale);
+    case 'guide':
+      return guideMetadata(page.guide);
+    default:
+      return {};
+  }
+}
 
+function landingMetadata(locale: LandingLocale): Metadata {
   const { meta } = LANDING_COPY[locale];
   const description = meta.description(LANDING_CITY_TOTAL);
   const share = { url: shareImage(locale), width: 1200, height: 630, alt: meta.share.alt };
@@ -89,11 +84,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       images: [share],
     },
   };
-}
-
-/** The picture of this language a shared link shows: scripts/generate-share-images.mjs draws it. */
-function shareImage(locale: LandingLocale): string {
-  return `/share/${locale}.png`;
 }
 
 /**
@@ -235,25 +225,12 @@ function Phone({ src, alt, className, first = false }: {
   );
 }
 
-/**
- * A link to the app or to its privacy notice. They are under the other root
- * layout, so the browser loads them whole: an anchor, not a route change.
- */
-function AppLink(props: ComponentProps<'a'>) {
-  return <a {...props} />;
-}
-
 function AppleMark() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M16.37 12.6c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.19-1.73-1.36-.14-2.65.8-3.34.8-.69 0-1.75-.78-2.88-.76-1.48.02-2.85.86-3.61 2.19-1.54 2.67-.39 6.62 1.11 8.79.73 1.06 1.6 2.25 2.75 2.21 1.1-.04 1.52-.71 2.85-.71 1.33 0 1.71.71 2.88.69 1.19-.02 1.94-1.08 2.67-2.15.84-1.23 1.19-2.42 1.21-2.48-.03-.01-2.31-.89-2.33-3.54ZM14.2 6.13c.61-.74 1.02-1.76.91-2.78-.88.04-1.94.59-2.57 1.32-.56.65-1.06 1.7-.93 2.7.98.08 1.98-.5 2.59-1.24Z" />
     </svg>
   );
-}
-
-/** A sentence of the copy with its links in it: each name it gives one has its address here. */
-function Linked({ sentence, links }: { sentence: string; links: Readonly<Record<string, string>> }) {
-  return linkedParts(sentence).map(({ text, link }) => (link ? <a key={link} href={links[link]}>{text}</a> : text));
 }
 
 /** The mark of GitHub, beside the words that lead to the code there. */
@@ -276,14 +253,24 @@ function Actions({ copy }: { copy: LandingCopy }) {
   );
 }
 
-export default async function LandingPage({ params }: Props) {
-  const locale = landingLocaleOf((await params).locale);
-  if (!locale) notFound();
+export default async function SitePage({ params }: Props) {
+  const page = sitePageOf((await params).path);
+  if (!page) notFound();
 
+  switch (page.kind) {
+    case 'landing':
+      return <LandingPage locale={page.locale} />;
+    case 'guides':
+      return <GuideIndex locale={page.locale} />;
+    case 'guide':
+      return <GuidePage guide={page.guide} />;
+  }
+}
+
+function LandingPage({ locale }: { locale: LandingLocale }) {
   const copy = LANDING_COPY[locale];
   const format = formatters(locale);
   const picture = (scene: string) => `/landing/${locale}-${scene}.webp`;
-  const guides = LANDING_GUIDES[locale];
   const nearby = LANDING_SCOOTERS_NEARBY;
   // The scooter the page follows from the hero down, and the runner-up it is compared with.
   const [nearest, second] = LANDING_NEAREST;
@@ -303,33 +290,12 @@ export default async function LandingPage({ params }: Props) {
         // Nothing in it can close the tag: "<" is written as its escape.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(locale, copy)).replace(/</g, '\\u003c') }}
       />
-      <header className="top" id="top">
-        <nav className="pill" aria-label={copy.nav.main}>
-          <a className="brand" href="#top">
-            {/* eslint-disable-next-line @next/next/no-img-element -- The icon of the app, an SVG. */}
-            <img src="/icon.svg" alt="" width={30} height={30} />
-            {SITE_NAME}
-          </a>
-          <a className="pill-link" href="#know">{copy.nav.shows}</a>
-          <a className="pill-link" href="#cities">{copy.nav.cities}</a>
-          <span className="langs" role="group" aria-label={copy.nav.languages}>
-            {LANDING_LOCALES.map(language => (
-              <Link
-                key={language}
-                href={landingPath(language)}
-                hrefLang={language}
-                lang={language}
-                prefetch={false}
-                title={LANGUAGE_NAMES[language]}
-                aria-current={language === locale ? 'page' : undefined}
-              >
-                {language.toUpperCase()}
-              </Link>
-            ))}
-          </span>
-          <AppLink className="pill-cta" href={MAP_PATH}>{copy.openMap}</AppLink>
-        </nav>
-      </header>
+      <SiteBar
+        locale={locale}
+        home="#top"
+        links={[{ href: '#know', label: copy.nav.shows }, { href: '#cities', label: copy.nav.cities }]}
+        languages={LANDING_LOCALES.map(language => ({ locale: language, href: landingPath(language) }))}
+      />
 
       <main>
         <section className="hero">
@@ -526,26 +492,7 @@ export default async function LandingPage({ params }: Props) {
         </section>
       </main>
 
-      <footer className="footer">
-        {guides.length > 0 && (
-          <nav className="guides" aria-labelledby="guides">
-            <h2 id="guides">{copy.footer.guides}</h2>
-            <ul>
-              {guides.map(guide => (
-                <li key={guide.href}><a href={guide.href}>{guide.title}</a></li>
-              ))}
-            </ul>
-          </nav>
-        )}
-        <div className="footer-about">
-          <p>{copy.footer.text}</p>
-          <nav aria-label={copy.footer.links}>
-            <AppLink href="/privacy" hrefLang="en">{copy.footer.privacy}</AppLink>
-            <a href={SOURCE_URL}>{copy.footer.source}</a>
-          </nav>
-        </div>
-        <p className="maker"><Linked sentence={copy.footer.maker} links={makerLinks(locale)} /></p>
-      </footer>
+      <SiteFooter locale={locale} />
     </>
   );
 }

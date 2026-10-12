@@ -7,6 +7,11 @@ import { CLIENT_PARAMETERS } from '@/lib/clientParams';
  */
 export const MAP_PATH = '/map';
 
+/** The map, opened on a place: a city's centre, say. */
+export function mapAt([lat, lng]: readonly [number, number]): string {
+  return `${MAP_PATH}?origin=${lat},${lng}`;
+}
+
 /** The answer to a link to the map as it was at "/", or nothing for any other request. */
 export function movedMapRedirect(request: Request): Response | null {
   if (request.method !== 'GET' && request.method !== 'HEAD') return null;

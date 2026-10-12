@@ -2,9 +2,9 @@ import PageView from '@/components/PageView';
 import type { Metadata, Viewport } from 'next';
 import { Red_Hat_Display, Red_Hat_Text } from 'next/font/google';
 import { notFound } from 'next/navigation';
-import { LANDING_LOCALES, landingLocaleOf, landingPath } from '@/lib/landingCopy';
 import { MOVED_MAP_SCRIPT } from '@/lib/mapAddress';
 import { SITE_URL } from '@/lib/site';
+import { sitePageOf, sitePaths } from '@/lib/sitePages';
 import '../landing.css';
 
 // One family in two cuts: Display for the headlines and the figures, Text for
@@ -40,28 +40,28 @@ export const viewport: Viewport = {
   colorScheme: 'dark',
 };
 
-// Every page is served as it was built (open-next.config.ts): the four
-// languages exist, English at "/", and nothing else under this layout does.
+// Every page is served as it was built (open-next.config.ts): the landing page
+// in each language, English at "/", the guides, and nothing else under this layout.
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return LANDING_LOCALES.map(locale => ({ locale: landingPath(locale).split('/').filter(Boolean) }));
+  return sitePaths().map(path => ({ path }));
 }
 
-// A root layout of its own, beside the one of the app: the page has its own
+// A root layout of its own, beside the one of the app: each page has its own
 // language in the document, and none of the app's styles, scripts or service worker.
 export default async function LandingLayout({
   children,
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ locale?: string[] }>;
+  params: Promise<{ path?: string[] }>;
 }>) {
-  const locale = landingLocaleOf((await params).locale);
-  if (!locale) notFound();
+  const page = sitePageOf((await params).path);
+  if (!page) notFound();
 
   return (
-    <html lang={locale} className={`${display.variable} ${text.variable}`}>
+    <html lang={page.locale} className={`${display.variable} ${text.variable}`}>
       <head>
         {/* The map was at "/" before this page: what still looks for it here is sent on. */}
         <script dangerouslySetInnerHTML={{ __html: MOVED_MAP_SCRIPT }} />

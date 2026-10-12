@@ -1,6 +1,7 @@
-/* The landing page, src/app/(site)/[[...locale]]/page.tsx: the map at night.
-   It shares nothing with the app's globals.css; this is its whole stylesheet,
-   and it is dark whatever the appearance of the system. */
+/* The landing page, src/app/(site)/[[...path]]/page.tsx: the map at night,
+   and the guides beside it, src/app/(site)/guides.tsx. They share nothing with
+   the app's globals.css; this is their whole stylesheet, and it is dark
+   whatever the appearance of the system. */
 
 :root {
   --night: #090b10;
@@ -1208,6 +1209,346 @@ img {
 .maker a {
   display: inline-block;
   padding-block: 8px;
+}
+
+/* The guides: long reading, in one column on the same night. */
+
+.guide {
+  width: 100%;
+  max-width: calc(720px + 2 * var(--gutter));
+  margin-inline: auto;
+  padding: clamp(36px, 6vw, 80px) var(--gutter) clamp(72px, 9vw, 120px);
+}
+
+.guide .title {
+  /* A guide's headline is a sentence, not the landing page's few words. */
+  font-size: clamp(32px, 4.2vw, 48px);
+}
+
+.guide-head .lede {
+  margin-top: 20px;
+}
+
+.guide-meta {
+  margin: 18px 0 0;
+  font-size: 15px;
+  color: var(--quiet);
+}
+
+.trail ol {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+  color: var(--quiet);
+}
+
+.trail li {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.trail li + li::before {
+  content: '›';
+  margin: 0 10px;
+}
+
+.trail a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--soft);
+  text-decoration: none;
+}
+
+.trail a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.contents {
+  margin-top: 40px;
+  padding: 20px 24px;
+  border-radius: 20px;
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.contents h2 {
+  margin: 0 0 6px;
+  font: 800 17px var(--display);
+}
+
+.contents ol {
+  margin: 0;
+  padding-left: 22px;
+  color: var(--quiet);
+}
+
+.contents a {
+  display: inline-block;
+  padding-block: 7px;
+  color: var(--soft);
+  text-decoration: none;
+}
+
+.contents a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Under the bar, which stays at the top from a tablet up. */
+.guide-section {
+  margin-top: clamp(48px, 6vw, 72px);
+  scroll-margin-top: 96px;
+}
+
+.guide-section > h2 {
+  margin: 0 0 18px;
+  font: 800 clamp(27px, 3vw, 36px)/1.12 var(--display);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.guide-section p,
+.guide-section li {
+  color: var(--soft);
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.guide-section p {
+  margin: 0 0 18px;
+}
+
+.guide-section ul,
+.guide-section ol {
+  margin: 0 0 18px;
+  padding-left: 24px;
+}
+
+.guide-section li {
+  margin: 8px 0;
+  padding-left: 4px;
+}
+
+.guide-section li::marker {
+  color: var(--quiet);
+}
+
+.guide strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.guide-section a,
+.guide-head a:not(.trail a),
+.guide-sources a {
+  color: var(--text);
+  text-decoration-color: rgba(255, 255, 255, 0.35);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.2s;
+}
+
+.guide-section a:hover,
+.guide-sources a:hover {
+  text-decoration-color: #ffffff;
+}
+
+/* Steps are counted in discs, as a list the reader follows. */
+.guide-section .steps {
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.steps li {
+  position: relative;
+  margin: 14px 0;
+  padding-left: 46px;
+  counter-increment: step;
+}
+
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: -1px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--control);
+  color: var(--text);
+  font: 800 15px var(--display);
+}
+
+.guide-section .callout {
+  margin: 26px 0;
+  padding: 16px 20px;
+  border-left: 3px solid var(--c);
+  border-radius: 0 16px 16px 0;
+  background: var(--panel);
+  color: var(--text);
+}
+
+.table {
+  margin: 26px 0;
+  overflow-x: auto;
+  border-radius: 18px;
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.table caption {
+  padding: 16px 18px 8px;
+  caption-side: top;
+  text-align: left;
+  font: 700 15px var(--display);
+  color: var(--quiet);
+}
+
+.table th,
+.table td {
+  padding: 11px 18px;
+  border-top: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.table th {
+  font-family: var(--display);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.table thead th {
+  white-space: nowrap;
+  color: var(--quiet);
+}
+
+.table td {
+  color: var(--soft);
+}
+
+/* The box that leads to the map, lit in the colour of the nearest provider. */
+.guide-map {
+  margin-top: clamp(56px, 7vw, 80px);
+  padding: clamp(32px, 5vw, 48px) clamp(22px, 4vw, 44px);
+  border-radius: 28px;
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 0%, color-mix(in srgb, var(--c) 22%, transparent), transparent),
+    var(--panel);
+  box-shadow: inset 0 0 0 1px var(--line);
+  text-align: center;
+}
+
+.guide-map .heading {
+  font-size: clamp(28px, 3.4vw, 40px);
+}
+
+.guide-map p {
+  max-width: 460px;
+  margin: 14px auto 26px;
+  color: var(--soft);
+}
+
+.guide-faq .question dt {
+  font-size: 19px;
+}
+
+.guide-sources {
+  margin-top: clamp(48px, 6vw, 64px);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--quiet);
+}
+
+.guide-sources h2 {
+  margin: 0 0 8px;
+  font: 800 17px var(--display);
+  color: var(--text);
+}
+
+.guide-sources ol {
+  margin: 0;
+  padding-left: 22px;
+}
+
+.guide-sources li {
+  margin: 6px 0;
+  overflow-wrap: anywhere;
+}
+
+.guide-sources p {
+  margin: 18px 0 0;
+}
+
+.more {
+  margin-top: clamp(56px, 7vw, 80px);
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+
+.more h2 {
+  margin: 0 0 18px;
+  font: 800 22px var(--display);
+}
+
+.guide-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guide--index .guide-list {
+  margin-top: clamp(32px, 4vw, 48px);
+}
+
+.guide-list a {
+  display: block;
+  padding: 20px 24px;
+  border-radius: 20px;
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--line);
+  text-decoration: none;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.guide-list a:hover {
+  background: var(--raised);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.guide-list-name {
+  display: block;
+  font: 800 20px/1.25 var(--display);
+  color: var(--text);
+  text-wrap: balance;
+}
+
+.guide-list-text {
+  display: block;
+  margin-top: 6px;
+  font-size: 16px;
+  color: var(--quiet);
+  text-wrap: pretty;
 }
 
 /* Motion. One entrance: the words, then the phone, then the cards leaving it

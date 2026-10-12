@@ -1,4 +1,4 @@
-// The words of the landing page, src/app/(site)/[[...locale]]/page.tsx. It is
+// The words of the landing page, src/app/(site)/[[...path]]/page.tsx. It is
 // rendered on the server only, so none of this reaches the browser as script.
 //
 // The labels of the app the page redraws (the walk, the price, the two buttons,
@@ -80,18 +80,6 @@ export function linkedParts(sentence: string): { text: string; link?: string }[]
   return [...parts, { text: sentence.slice(read) }].filter(part => part.text);
 }
 
-/** A guide as the page links to it, in one language. */
-export interface LandingGuide {
-  title: string;
-  href: string;
-}
-
-// The guides of each language, the ones to read first at the top. None is
-// written yet: the footer lists them above its other lines once one is here.
-export const LANDING_GUIDES: Record<LandingLocale, readonly LandingGuide[]> = {
-  en: [], de: [], fr: [], it: [], nl: [], nb: [], pt: [], es: [], is: [],
-};
-
 // The App Store page of the iPhone app, once it has one. The buttons that lead
 // to it are left out until then.
 export const APP_STORE_URL = null as string | null;
@@ -171,7 +159,7 @@ export interface LandingCopy {
     links: string;
     privacy: string;
     source: string;
-    /** The heading of the guides, once there are some: LANDING_GUIDES. */
+    /** The heading of the guides, src/lib/guides.ts, and their name in the trail above a guide. */
     guides: string;
     /** The last line, with a link for each name of makerLinks. Peek is called what its own page calls it. */
     maker: string;

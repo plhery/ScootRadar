@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  LANDING_COPY, LANDING_GUIDES, LANDING_LOCALES, LANGUAGE_NAMES, isLandingLocale, landingLocaleOf, landingPath, linkedParts, makerLinks,
+  LANDING_COPY, LANDING_LOCALES, LANGUAGE_NAMES, isLandingLocale, landingLocaleOf, landingPath, linkedParts, makerLinks,
 } from '@/lib/landingCopy';
 import { PROVIDERS } from '@/generated/providers';
 import { LANDING_NEAREST } from '@/lib/landingSnapshot';
@@ -121,14 +121,6 @@ describe('the links of the landing page', () => {
       const { maker } = LANDING_COPY[locale].footer;
       expect(linked(maker).sort(), locale).toEqual(Object.keys(makerLinks(locale)).sort());
       expect(read(maker), locale).not.toMatch(/[<>]/);
-    }
-  });
-
-  it('lists a guide by its title, at an address of the site', () => {
-    expect(Object.keys(LANDING_GUIDES)).toEqual([...LANDING_LOCALES]);
-    for (const guide of Object.values(LANDING_GUIDES).flat()) {
-      expect(guide.title.trim()).not.toBe('');
-      expect(guide.href).toMatch(/^\/[^/]/);
     }
   });
 });
