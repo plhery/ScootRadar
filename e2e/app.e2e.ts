@@ -379,6 +379,8 @@ test('scooter card shows the walk, the battery and a ride estimate whose duratio
   expect(accessibility.violations).toEqual([]);
 
   // The chosen duration is still there for the next scooter and the next visit.
+  // That visit has no stand-in location, so it must not locate by itself because this one did.
+  await page.evaluate(() => localStorage.removeItem('scooters-located-once'));
   await page.reload();
   await expect(page.locator('.scooter-marker')).toHaveCount(0);
   await focusFixtureArea(page);
