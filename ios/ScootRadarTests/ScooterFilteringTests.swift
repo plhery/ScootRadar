@@ -572,10 +572,12 @@ final class ScooterFilteringTests: XCTestCase {
 
         // The sources of the credits list on the web, Lille's parking bays and the
         // boundaries of the night bans included.
-        XCTAssertEqual(sources.count, 12)
+        XCTAssertEqual(sources.count, 13)
         XCTAssertEqual(Set(sources.map(\.url)).count, sources.count)
         XCTAssertTrue(sources.allSatisfy { $0.url.scheme == "https" && !$0.title.isEmpty })
         XCTAssertTrue(sources.contains { $0.url.host() == "data.lillemetropole.fr" })
+        // Searched places from Photon are OpenStreetMap data, whose licence asks for this credit.
+        XCTAssertTrue(sources.contains { $0.url.absoluteString == "https://www.openstreetmap.org/copyright" })
 
         XCTAssertEqual(ScooterLinks.privacyNotice.absoluteString, "https://scootradar.com/privacy")
         XCTAssertEqual(ScooterLinks.sourceCode.absoluteString, "https://github.com/plhery/ScootRadar")

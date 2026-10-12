@@ -366,6 +366,20 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         ScooterCityCatalog.nearest(to: viewport.center, count: 6)
     }
 
+    /// The map centre for the address search, which finds places near it
+    /// first: only when the map shows a city or less, and rounded to about a
+    /// kilometre, as on the web.
+    var searchNear: GeoPoint? {
+        guard viewportZoomLevel >= Self.searchNearMinimumZoom else { return nil }
+        let centre = viewport.center
+        return GeoPoint(
+            latitude: (centre.latitude * 100).rounded() / 100,
+            longitude: (centre.longitude * 100).rounded() / 100
+        )
+    }
+
+    static let searchNearMinimumZoom = 10.0
+
     /// The three covered cities nearest to the map centre, for the outside-coverage card.
     var closestCities: [ScooterCityDistance] {
         ScooterCityCatalog.nearest(to: viewport.center, count: 3)

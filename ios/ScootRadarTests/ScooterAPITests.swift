@@ -244,7 +244,7 @@ final class AddressSearchAPITests: XCTestCase {
             session: session
         )
 
-        let results = try await api.search(query: "Ankerstrasse 114", language: "de")
+        let results = try await api.search(query: "Ankerstrasse 114", language: "de", near: nil)
 
         XCTAssertEqual(results, [AddressSearchResult(
             latitude: 47.3762772,
@@ -264,6 +264,20 @@ final class AddressSearchAPITests: XCTestCase {
         XCTAssertEqual(json, ["q": "Ankerstrasse 114", "lang": "de"])
     }
 
+    func testTheMapCentreIsSentWhenThereIsOne() async throws {
+        let session = StubAddressSearchSession(data: Data("[]".utf8))
+        let api = AddressSearchAPI(baseURL: URL(string: "https://example.com")!, session: session)
+
+        _ = try await api.search(query: "Rue de Rivoli 10", language: "fr", near: GeoPoint(latitude: 48.86, longitude: 2.35))
+
+        let request = await session.lastRequest
+        let body = try XCTUnwrap(request?.httpBody)
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: body) as? [String: Any])
+        XCTAssertEqual(json["q"] as? String, "Rue de Rivoli 10")
+        XCTAssertEqual(json["lang"] as? String, "fr")
+        XCTAssertEqual(json["near"] as? [Double], [48.86, 2.35])
+    }
+
     func testTooManySearchesAreToldApartFromOtherFailures() async {
         let expectations: [(Int, [String: String], AddressSearchAPIError)] = [
             (429, ["Retry-After": "60"], .rateLimited(retryAfter: .seconds(60))),
@@ -277,7 +291,7 @@ final class AddressSearchAPITests: XCTestCase {
                 session: StubAddressSearchSession(data: Data(), statusCode: statusCode, headers: headers)
             )
             do {
-                _ = try await api.search(query: "Bahnhofstrasse", language: "de")
+                _ = try await api.search(query: "Bahnhofstrasse", language: "de", near: nil)
                 XCTFail("Expected an error for \(statusCode)")
             } catch {
                 XCTAssertEqual(error as? AddressSearchAPIError, expected, "\(statusCode) \(headers)")
@@ -499,6 +513,23 @@ final class AddressSearchModelTests: XCTestCase {
         XCTAssertEqual(languages, ["fr", "fr", "fr"])
     }
 
+    func testEverySearchSendsTheMapCentreItIsGiven() async {
+        let api = StubAddressSearchClient(answers: [.places([zurich]), .places([zurich])])
+        let model = SwissAddressSearchModel(api: api, debounce: .zero)
+
+        model.query = "Paradeplatz"
+        var settled = await waitUntil { model.status != .searching }
+        XCTAssertTrue(settled)
+
+        model.near = GeoPoint(latitude: 47.37, longitude: 8.54)
+        model.query = "Bahnhofstrasse 1"
+        settled = await waitUntil { model.status != .searching }
+        XCTAssertTrue(settled)
+
+        let nears = await api.nears
+        XCTAssertEqual(nears, [nil, GeoPoint(latitude: 47.37, longitude: 8.54)])
+    }
+
     func testSearchLanguageIsTheOneTheAppIsShownIn() async {
         XCTAssertEqual(ScooterLanguage(localizations: ["de"]), .de)
         XCTAssertEqual(ScooterLanguage(localizations: ["fr", "en"]), .fr)
@@ -553,15 +584,17 @@ private actor StubAddressSearchClient: AddressSearchAPIClient {
     private let delay: Duration
     private(set) var queries: [String] = []
     private(set) var languages: [String] = []
+    private(set) var nears: [GeoPoint?] = []
 
     init(answers: [Answer], delay: Duration = .zero) {
         self.answers = answers
         self.delay = delay
     }
 
-    func search(query: String, language: String) async throws -> [AddressSearchResult] {
+    func search(query: String, language: String, near: GeoPoint?) async throws -> [AddressSearchResult] {
         queries.append(query)
         languages.append(language)
+        nears.append(near)
         let answer = answers.isEmpty ? Answer.places([]) : answers.removeFirst()
         try await Task.sleep(for: delay)
         switch answer {
@@ -585,7 +618,7 @@ private actor RateLimitedAddressSearchClient: AddressSearchAPIClient {
         self.places = places
     }
 
-    func search(query: String, language: String) async throws -> [AddressSearchResult] {
+    func search(query: String, language: String, near: GeoPoint?) async throws -> [AddressSearchResult] {
         queries.append(query)
         let now = ContinuousClock.now
         let allowedFrom = allowedFrom ?? now + retryAfter

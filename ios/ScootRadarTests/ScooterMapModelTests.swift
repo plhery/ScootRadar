@@ -2302,6 +2302,24 @@ extension ScooterMapModelTests {
         XCTAssertEqual(model.nearbyCities.count, 6)
     }
 
+    func testTheAddressSearchGetsTheMapCentreRoundedOnlyWhenACityOrLessIsShown() {
+        let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
+        let paris = MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: 48.85837, longitude: 2.29448),
+            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        )
+
+        // Zoomed out to a region or a country, the map centre says little about what is meant.
+        model.updateViewport(paris, zoom: 10, zoomLevel: 9.9)
+        XCTAssertNil(model.searchNear)
+
+        // A city or less: the centre, rounded to about a kilometre.
+        model.updateViewport(paris, zoom: 10, zoomLevel: 10)
+        XCTAssertEqual(model.searchNear, GeoPoint(latitude: 48.86, longitude: 2.29))
+        model.updateViewport(paris, zoom: 17, zoomLevel: 16.4)
+        XCTAssertEqual(model.searchNear, GeoPoint(latitude: 48.86, longitude: 2.29))
+    }
+
     func testATypedCoveredCityShowsTheWholeCityLikeItsChip() throws {
         let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
         let bulle = try XCTUnwrap(ScooterCityCatalog.cities.first { $0.id == "ch:bulle" })

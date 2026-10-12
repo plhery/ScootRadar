@@ -14,6 +14,8 @@ struct ScooterSearchIsland: View {
     var recentPlaces: [MapDestination] = []
     /// The covered cities nearest to the map centre.
     var nearbyCities: [ScooterCity] = []
+    /// The map centre, rounded, when the map shows a city or less: places near it are found first.
+    var near: GeoPoint?
     /// Where the open panel has to end when no keyboard is up, in global coordinates.
     var bottomLimit: CGFloat = .infinity
     let onSelect: (MapDestination) -> Void
@@ -31,6 +33,7 @@ struct ScooterSearchIsland: View {
                 ScooterSearchPanel(
                     recentPlaces: recentPlaces,
                     nearbyCities: nearbyCities,
+                    near: near,
                     bottomLimit: bottomLimit,
                     onSelect: { destination in
                         onSelect(destination)
@@ -216,6 +219,7 @@ struct ScooterSearchPanel: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     private let recentPlaces: [MapDestination]
     private let nearbyCities: [ScooterCity]
+    private let near: GeoPoint?
     private let bottomLimit: CGFloat
     private let autofocus: Bool
     private let onSelect: (MapDestination) -> Void
@@ -227,6 +231,7 @@ struct ScooterSearchPanel: View {
         searchModel: SwissAddressSearchModel = SwissAddressSearchModel(),
         recentPlaces: [MapDestination] = [],
         nearbyCities: [ScooterCity] = [],
+        near: GeoPoint? = nil,
         bottomLimit: CGFloat = .infinity,
         autofocus: Bool = true,
         onSelect: @escaping (MapDestination) -> Void,
@@ -237,6 +242,7 @@ struct ScooterSearchPanel: View {
         _searchModel = State(initialValue: searchModel)
         self.recentPlaces = recentPlaces
         self.nearbyCities = nearbyCities
+        self.near = near
         self.bottomLimit = bottomLimit
         self.autofocus = autofocus
         self.onSelect = onSelect
@@ -285,6 +291,9 @@ struct ScooterSearchPanel: View {
         }
         .onDisappear {
             searchModel.cancel()
+        }
+        .onChange(of: near, initial: true) { _, near in
+            searchModel.near = near
         }
         .task {
             guard autofocus else { return }
@@ -658,6 +667,8 @@ final class SwissAddressSearchModel {
     /// Sent with every search, so country names come back in the language on
     /// screen; nil is the language the app is shown in when the search is sent.
     @ObservationIgnored private let language: String?
+    /// Sent with every search, so places near the map come first.
+    @ObservationIgnored var near: GeoPoint?
     @ObservationIgnored private var searchTask: Task<Void, Never>?
     /// Until when the server refuses searches as too many. Nothing is sent
     /// before then, whatever is typed meanwhile.
@@ -740,7 +751,11 @@ final class SwissAddressSearchModel {
         }
         let results: [AddressSearchResult]
         do {
-            results = try await api.search(query: text, language: language ?? ScooterLanguage.current.rawValue)
+            results = try await api.search(
+                query: text,
+                language: language ?? ScooterLanguage.current.rawValue,
+                near: near
+            )
         } catch let AddressSearchAPIError.rateLimited(retryAfter) {
             // Between a second and a minute, as on the web.
             let wait = min(max(retryAfter ?? rateLimitPause, .seconds(1)), .seconds(60))

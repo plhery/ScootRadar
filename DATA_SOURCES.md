@@ -73,7 +73,8 @@ way out if traffic outgrows it. The app sends the map centre, rounded to about a
 kilometre, as a location bias once the map shows a city or less, and restricts
 results to Europe.
 
-With the map in or near Switzerland, or without a map centre (the iOS app),
+With the map in or near Switzerland, or without a map centre (zoomed out
+further than a city, or an iOS app from before it sent one),
 the federal `geo.admin.ch` SearchServer operated by swisstopo is asked as well.
 Its services are available without registration under FSDI fair-use and
 attribution conditions; the app displays `© swisstopo`. Its official addresses

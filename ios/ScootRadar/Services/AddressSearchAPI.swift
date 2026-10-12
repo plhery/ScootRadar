@@ -98,7 +98,9 @@ struct AddressSearchResult: Decodable, Equatable, Identifiable, Sendable {
 }
 
 protocol AddressSearchAPIClient: Sendable {
-    func search(query: String, language: String) async throws -> [AddressSearchResult]
+    /// `near` is the map centre, rounded, when the map shows a city or less:
+    /// places near it come first. Nil leaves the order to the server.
+    func search(query: String, language: String, near: GeoPoint?) async throws -> [AddressSearchResult]
 }
 
 protocol AddressSearchNetworkSession: Sendable {
@@ -115,6 +117,8 @@ actor AddressSearchAPI: AddressSearchAPIClient {
     private struct SearchRequest: Encodable {
         let q: String
         let lang: String
+        /// Latitude and longitude, left out when there is no centre to send.
+        let near: [Double]?
     }
 
     private let baseURL: URL
@@ -128,10 +132,14 @@ actor AddressSearchAPI: AddressSearchAPIClient {
         self.session = session
     }
 
-    func search(query: String, language: String) async throws -> [AddressSearchResult] {
+    func search(query: String, language: String, near: GeoPoint?) async throws -> [AddressSearchResult] {
         var request = URLRequest(url: baseURL.appending(path: "api/geocode"))
         request.httpMethod = "POST"
-        request.httpBody = try JSONEncoder().encode(SearchRequest(q: query, lang: language))
+        request.httpBody = try JSONEncoder().encode(SearchRequest(
+            q: query,
+            lang: language,
+            near: near.map { [$0.latitude, $0.longitude] }
+        ))
         request.timeoutInterval = 12
         request.cachePolicy = .reloadIgnoringLocalCacheData
         request.setValue("application/json", forHTTPHeaderField: "Accept")
