@@ -334,7 +334,8 @@ img {
   box-shadow: 0 8px 30px -10px color-mix(in srgb, var(--loud) 60%, transparent);
 }
 
-/* On the narrowest phones, 320 px wide, the name and the button only fit side by side a little smaller. */
+/* On the narrowest phones, 320 px wide, the name and the button only fit side by side a little smaller,
+   with room to spare where the letters come out wider: Chromium on Linux sets them about a tenth wider. */
 @media (max-width: 359px) {
   .pill {
     gap: 4px 8px;
@@ -343,11 +344,11 @@ img {
 
   .brand {
     gap: 8px;
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .pill-cta {
-    padding: 0 13px;
+    padding: 0 11px;
     font-size: 15px;
   }
 }
