@@ -94,6 +94,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         didSet { rebuildVisibleCounts() }
     }
     private(set) var viewportZoom = 8
+    /// The zoom as MapKit has it, between whole levels: it decides which city totals are drawn as one.
+    private(set) var viewportZoomLevel = 8.0
     var isLoading = false
     var isLocating = false
     /// What went wrong with loading, until a load succeeds again.
@@ -830,10 +832,15 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         }
     }
 
-    func updateViewport(_ region: MKCoordinateRegion, zoom: Int) {
+    func updateViewport(_ region: MKCoordinateRegion, zoom: Int, zoomLevel: Double? = nil) {
         let nextViewport = GeoBounds(region: region)
         viewport = nextViewport
         viewportZoom = zoom
+        let nextZoomLevel = zoomLevel ?? Double(zoom)
+        if nextZoomLevel != viewportZoomLevel {
+            viewportZoomLevel = nextZoomLevel
+            if responseMetadata?.overview == true { rebuildMapClusters() }
+        }
         clearSelectionIfHidden()
 
         if queryCovers(nextViewport, zoom: zoom, pending: false) {
@@ -1035,7 +1042,10 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     }
 
     private func rebuildMapClusters() {
-        let next = clusters.compactMap { $0.filtered(to: enabledProviders) }
+        var next = clusters.compactMap { $0.filtered(to: enabledProviders) }
+        if responseMetadata?.overview == true {
+            next = ScooterCityGrouping.group(next, zoomLevel: viewportZoomLevel)
+        }
         guard next != mapClusters else { return }
         mapClusters = next
         mapClustersRevision &+= 1

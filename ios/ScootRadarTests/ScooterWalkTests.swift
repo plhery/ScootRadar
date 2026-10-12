@@ -478,7 +478,7 @@ final class ScooterWalkTests: XCTestCase {
                 scooters: [target], scooterRevision: 1, clusters: [], clusterRevision: 0,
                 usesServerClusters: false, mapStyle: .quiet, showsUserLocation: false,
                 focusRequest: nil, destination: nil, selectedScooterID: target.id,
-                onRegionChange: { _, _ in }, onSelectionChange: { published.append($0) },
+                onRegionChange: { _, _, _ in }, onSelectionChange: { published.append($0) },
                 walkTrail: trail, isWalking: walking
             )
         }

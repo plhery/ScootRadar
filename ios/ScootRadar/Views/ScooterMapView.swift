@@ -86,7 +86,8 @@ struct ScooterMapView: UIViewRepresentable {
     /// The locate button and the dock, in window coordinates. The names of
     /// the scooters keep clear of them.
     var bottomChromeFrames: [CGRect] = []
-    let onRegionChange: (MKCoordinateRegion, Int) -> Void
+    /// The region, the zoom asked of the server and the zoom as drawn.
+    let onRegionChange: (MKCoordinateRegion, Int, Double) -> Void
     let onSelectionChange: (String?) -> Void
     var userHeading: ScooterUserHeading? = nil
     var showsMapCompass = true
@@ -497,9 +498,10 @@ struct ScooterMapView: UIViewRepresentable {
             updateClusteringMode(on: mapView)
             updateLook(on: mapView)
             let region = mapView.region
-            let zoom = ScooterClusteringPolicy.apiZoom(for: Self.zoomLevel(on: mapView))
+            let zoomLevel = Self.zoomLevel(on: mapView)
+            let zoom = ScooterClusteringPolicy.apiZoom(for: zoomLevel)
             Task { @MainActor [parent] in
-                parent.onRegionChange(region, zoom)
+                parent.onRegionChange(region, zoom, zoomLevel)
             }
         }
 
@@ -1130,6 +1132,25 @@ struct ScooterMapView: UIViewRepresentable {
 
             if let cluster = view.annotation as? ScooterServerClusterAnnotation {
                 ScooterAnalytics.shared.track("cluster_select")
+                // A group opens onto its cities, each a total of its own again.
+                if let bounds = cluster.cluster.bounds {
+                    ScooterMapCameraPolicy.setRegionPreservingPerspective(
+                        MKCoordinateRegion(
+                            center: CLLocationCoordinate2D(
+                                latitude: (bounds.south + bounds.north) / 2,
+                                longitude: (bounds.west + bounds.east) / 2
+                            ),
+                            span: MKCoordinateSpan(
+                                latitudeDelta: max((bounds.north - bounds.south) * 1.6, 0.08),
+                                longitudeDelta: max((bounds.east - bounds.west) * 1.6, 0.12)
+                            )
+                        ),
+                        on: mapView,
+                        animated: !UIAccessibility.isReduceMotionEnabled
+                    )
+                    mapView.deselectAnnotation(cluster, animated: false)
+                    return
+                }
                 let span = mapView.region.span
                 ScooterMapCameraPolicy.setRegionPreservingPerspective(
                     MKCoordinateRegion(

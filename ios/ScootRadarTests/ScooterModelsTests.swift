@@ -907,4 +907,26 @@ extension ScooterModelsTests {
         let city = try XCTUnwrap(ScooterCityCatalog.cities.first)
         XCTAssertTrue(city.destination.isCovered)
     }
+
+    func testNeighbouringCityTotalsAreDrawnAsOneOnTheLargest() {
+        let paris = ScooterCluster(id: "city:Paris", latitude: 48.8566, longitude: 2.3522, count: 4000,
+                                   providers: ["dott": 3000, "lime": 1000], city: "Paris")
+        let boulogne = ScooterCluster(id: "city:Boulogne", latitude: 48.8397, longitude: 2.2399, count: 200,
+                                      providers: ["dott": 200], city: "Boulogne")
+        let lyon = ScooterCluster(id: "city:Lyon", latitude: 45.764, longitude: 4.8357, count: 900,
+                                  providers: ["voi": 900], city: "Lyon")
+
+        let grouped = ScooterCityGrouping.group([boulogne, lyon, paris], zoomLevel: 6)
+        XCTAssertEqual(grouped.count, 2)
+        XCTAssertEqual(grouped[0].id, "group:city:Paris")
+        XCTAssertEqual(grouped[0].city, "Paris, Boulogne")
+        XCTAssertEqual(grouped[0].latitude, paris.latitude)
+        XCTAssertEqual(grouped[0].count, 4200)
+        XCTAssertEqual(grouped[0].providers, ["dott": 3200, "lime": 1000])
+        XCTAssertEqual(grouped[0].bounds, GeoBounds(south: boulogne.latitude, west: boulogne.longitude,
+                                                    north: paris.latitude, east: paris.longitude))
+        XCTAssertEqual(grouped[1], lyon)
+
+        XCTAssertEqual(ScooterCityGrouping.group([paris, boulogne, lyon], zoomLevel: 12), [paris, lyon, boulogne])
+    }
 }

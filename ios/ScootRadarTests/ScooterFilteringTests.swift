@@ -139,7 +139,7 @@ final class ScooterFilteringTests: XCTestCase {
             focusRequest: request,
             destination: nil,
             selectedScooterID: nil,
-            onRegionChange: { _, _ in },
+            onRegionChange: { _, _, _ in },
             onSelectionChange: { _ in }
         )
         let coordinator = ScooterMapView.Coordinator(parent: parent)
@@ -477,7 +477,7 @@ final class ScooterFilteringTests: XCTestCase {
             focusRequest: nil,
             destination: nil,
             selectedScooterID: nil,
-            onRegionChange: { _, _ in },
+            onRegionChange: { _, _, _ in },
             onSelectionChange: { selectionChanges.append($0) }
         )
         let coordinator = ScooterMapView.Coordinator(parent: parent)
@@ -507,7 +507,7 @@ final class ScooterFilteringTests: XCTestCase {
             focusRequest: nil,
             destination: nil,
             selectedScooterID: nil,
-            onRegionChange: { _, _ in },
+            onRegionChange: { _, _, _ in },
             onSelectionChange: { _ in },
             parking: [bay],
             onParkingSelectionChange: { parkingChanges.append($0) }
@@ -545,7 +545,7 @@ final class ScooterFilteringTests: XCTestCase {
             focusRequest: nil,
             destination: nil,
             selectedScooterID: nil,
-            onRegionChange: { _, _ in },
+            onRegionChange: { _, _, _ in },
             onSelectionChange: { _ in }
         )
         let coordinator = ScooterMapView.Coordinator(parent: parent)

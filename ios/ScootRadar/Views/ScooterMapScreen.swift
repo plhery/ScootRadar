@@ -39,7 +39,7 @@ struct ScooterMapScreen: View {
                     interactionExclusionFrame: topChromeFrame,
                     bottomChromeTop: bottomChromeTop,
                     bottomChromeFrames: [locateButtonFrame, dockFrame],
-                    onRegionChange: model.updateViewport,
+                    onRegionChange: { model.updateViewport($0, zoom: $1, zoomLevel: $2) },
                     onSelectionChange: model.selectScooter,
                     userHeading: model.userHeading,
                     showsMapCompass: !searchIsExpanded,

@@ -384,6 +384,8 @@ struct ScooterCluster: Identifiable, Hashable, Sendable {
     let count: Int
     let providers: [String: Int]
     var city: String? = nil
+    /// Where the cities of a group lie, for a total that stands for several.
+    var bounds: GeoBounds? = nil
 
     var coordinate: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -401,7 +403,70 @@ struct ScooterCluster: Identifiable, Hashable, Sendable {
             longitude: longitude,
             count: filteredCount,
             providers: filteredProviders,
-            city: city
+            city: city,
+            bounds: bounds
+        )
+    }
+}
+
+/// Further out than a few cities, neighbouring city totals are drawn as one.
+enum ScooterCityGrouping {
+    /// Centres closer than this, in points, would draw the totals over one another.
+    static let spacing = 60.0
+    /// Named in a group's label; the rest are left to zooming in.
+    static let namedCities = 3
+
+    /// The city with the most scooters takes in its neighbours on screen and stays
+    /// where it is, so a group sits on a real city and keeps its place while the map is panned.
+    static func group(_ cities: [ScooterCluster], zoomLevel: Double) -> [ScooterCluster] {
+        let ordered = cities
+            .map { (city: $0, point: worldPoint(latitude: $0.latitude, longitude: $0.longitude, zoomLevel: zoomLevel)) }
+            .sorted { $0.city.count != $1.city.count ? $0.city.count > $1.city.count : $0.city.id < $1.city.id }
+        var taken = Set<String>()
+        var groups: [ScooterCluster] = []
+        for head in ordered where !taken.contains(head.city.id) {
+            let members = ordered.filter { other in
+                !taken.contains(other.city.id) &&
+                    hypot(other.point.x - head.point.x, other.point.y - head.point.y) < spacing
+            }
+            for member in members { taken.insert(member.city.id) }
+            guard members.count > 1 else {
+                groups.append(head.city)
+                continue
+            }
+
+            var providers: [String: Int] = [:]
+            for member in members {
+                providers.merge(member.city.providers, uniquingKeysWith: +)
+            }
+            let names = members.compactMap(\.city.city)
+            let latitudes = members.map(\.city.latitude)
+            let longitudes = members.map(\.city.longitude)
+            groups.append(ScooterCluster(
+                id: "group:\(head.city.id)",
+                latitude: head.city.latitude,
+                longitude: head.city.longitude,
+                count: members.reduce(0) { $0 + $1.city.count },
+                providers: providers,
+                city: names.count > namedCities
+                    ? names.prefix(namedCities).joined(separator: ", ") + "…"
+                    : names.joined(separator: ", "),
+                bounds: GeoBounds(
+                    south: latitudes.min()!, west: longitudes.min()!,
+                    north: latitudes.max()!, east: longitudes.max()!
+                )
+            ))
+        }
+        return groups
+    }
+
+    /// Web Mercator, in points of a 256-point tile.
+    private static func worldPoint(latitude: Double, longitude: Double, zoomLevel: Double) -> CGPoint {
+        let worldSize = 256 * pow(2, zoomLevel)
+        let sinLatitude = sin(min(85.05112878, max(-85.05112878, latitude)) * .pi / 180)
+        return CGPoint(
+            x: (longitude + 180) / 360 * worldSize,
+            y: (0.5 - log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * .pi)) * worldSize
         )
     }
 }
@@ -706,7 +771,7 @@ struct GeoPoint: Equatable, Sendable {
     }
 }
 
-struct GeoBounds: Equatable, Sendable {
+struct GeoBounds: Hashable, Sendable {
     let south: Double
     let west: Double
     let north: Double
