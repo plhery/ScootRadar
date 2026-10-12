@@ -22,6 +22,10 @@ const snapshot = (feeds: FeedSnapshot[]): MobilitySnapshot => ({
   version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now),
 });
 const query = { bounds: lyon, minBattery: 0 };
+const voi = feed({ id: 'france:voi_lyon', provider: 'voi', vehicles: [{ ...vehicle('three'), provider: 'voi' }] });
+// As the cache server does: publishing keeps the city totals, persisting rebuilds them when needed.
+const persistCycle = (cached: MobilitySnapshot, feeds: FeedSnapshot[], at: number): MobilitySnapshot => ({ ...cached, feeds,
+  overview: overviewNeedsRefresh(cached, feeds, at) ? buildCityOverview(feeds, at) : cached.overview });
 
 describe('persistent map snapshots', () => {
   it('refreshes incomplete startup city counts as failed feeds recover', () => {
@@ -33,6 +37,20 @@ describe('persistent map snapshots', () => {
     const refreshed = { ...initial, feeds: [healthy], overview: buildCityOverview([healthy], now) };
     expect(querySnapshot(refreshed, { bounds: lyon, minBattery: 0 }, 8, now).meta.totalVehicles).toBe(2);
     expect(overviewNeedsRefresh(refreshed, [healthy], now + 60_000)).toBe(false);
+  });
+
+  it('counts a feed discovered after the city totals were built', () => {
+    // Discovery adds it as a failed placeholder before its first collection.
+    const placeholder = { ...voi, vehicles: [], observedAt: 0, attemptedAt: 0, failed: true, stale: true };
+    let cached = persistCycle(snapshot([feed()]), [feed(), placeholder], now + 60_000);
+    cached = persistCycle(cached, [feed(), voi], now + 120_000);
+    expect(querySnapshot(cached, query, 8, now + 120_000).providers).toEqual({ dott: 2, voi: 1 });
+    expect(overviewNeedsRefresh(cached, [feed(), voi], now + 180_000)).toBe(false);
+  });
+
+  it('drops the counts of a retired feed from the city totals', () => {
+    const cached = persistCycle(snapshot([feed(), voi]), [feed()], now + 60_000);
+    expect(querySnapshot(cached, query, 8, now + 60_000).providers).toEqual({ dott: 2 });
   });
 
   it('returns empty coverage without needing live or even fresh cached feeds', () => {

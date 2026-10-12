@@ -42,7 +42,8 @@ export interface MobilitySnapshot {
   version: 1;
   updatedAt: number;
   feeds: FeedSnapshot[];
-  overview: { generatedAt: number; cities: CityTotals[] };
+  // feedIds lists the feeds the city totals were built from.
+  overview: { generatedAt: number; feedIds: string[]; cities: CityTotals[] };
 }
 
 function emptyHealth(): ScooterFetchMetadata {
@@ -73,6 +74,10 @@ const regionalCities = REGIONAL_SCOOTER_CITIES;
 export function overviewNeedsRefresh(snapshot: MobilitySnapshot | undefined, feeds: FeedSnapshot[], now: number): boolean {
   if (!snapshot || snapshot.overview.cities.length !== regionalCities.length + SWISS_SCOOTER_AREAS.length ||
     now - snapshot.overview.generatedAt >= OVERVIEW_REFRESH_MS) return true;
+  // A feed discovered or retired since the totals were built would be missing from them or linger.
+  // Totals saved before feedIds existed list none, so they refresh once.
+  const built = new Set(snapshot.overview.feedIds);
+  if (built.size !== feeds.length || feeds.some(feed => !built.has(feed.id))) return true;
   const recovered = new Set(feeds.filter(feed => !feed.failed && now - feed.observedAt < VEHICLE_MAX_AGE_MS).map(feed => feed.id));
   return snapshot.overview.cities.some(city => city.failedSources.some(id => recovered.has(id)));
 }
@@ -107,7 +112,7 @@ export function buildCityOverview(feeds: FeedSnapshot[], now: number): MobilityS
       bins[vehicle.battery ?? 101]++;
     }
   }
-  return { generatedAt: now, cities: [...totals.values()].sort((a, b) => a.id.localeCompare(b.id)) };
+  return { generatedAt: now, feedIds: feeds.map(feed => feed.id), cities: [...totals.values()].sort((a, b) => a.id.localeCompare(b.id)) };
 }
 
 function overviewResponse(snapshot: MobilitySnapshot, query: FeedQuery, zoom: number, now: number): ScooterResponse {
