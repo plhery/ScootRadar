@@ -91,8 +91,10 @@ test('the landing page changes language from its bar and stays where it is', asy
 });
 
 test.describe('on the narrowest phone', () => {
-  // A phone, with all 320 px for the page.
-  test.use({ viewport: { width: 320, height: 640 }, isMobile: true, hasTouch: true });
+  // A phone, with all 320 px for the page and a screen of two pixels to the point,
+  // as phones that narrow have. At one, Chromium on Linux sets each letter on whole
+  // pixels, which made the name 99 px wide in CI where the font itself makes it 90.
+  test.use({ viewport: { width: 320, height: 640 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
 
   test('the name of the app stays clear of the button, in every language', async ({ page }) => {
     for (const address of Object.values(ADDRESS)) {
