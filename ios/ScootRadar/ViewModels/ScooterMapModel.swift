@@ -1154,11 +1154,12 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 rebuildMapClusters()
                 rebuildVisibleCounts()
                 distanceOrigin = fetchOrigin
-                lastUpdated = min(Self.apiDate(response.meta?.generatedAt) ?? receivedAt, receivedAt)
+                let generatedAt = Self.apiDate(response.meta?.generatedAt, clockOffset: response.clockOffset)
+                lastUpdated = min(generatedAt ?? receivedAt, receivedAt)
                 lastSuccessAt = receivedAt
                 lastAttemptAt = receivedAt
                 loadIssue = nil
-                scheduleDataExpiry(response.meta, receivedAt: receivedAt)
+                scheduleDataExpiry(response.meta, receivedAt: receivedAt, clockOffset: response.clockOffset)
                 expireParkingIfNeeded()
                 clearSelectionIfHidden()
             } catch is CancellationError {
@@ -1215,20 +1216,25 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         clearPendingFetch()
     }
 
-    private static func apiDate(_ value: String?) -> Date? {
+    /// A time the server wrote, on the clock of this device: `clockOffset` is
+    /// how far this clock is ahead of the server's.
+    private static func apiDate(_ value: String?, clockOffset: TimeInterval) -> Date? {
         guard let value else { return nil }
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return formatter.date(from: value) ?? ISO8601DateFormatter().date(from: value)
+        let date = formatter.date(from: value) ?? ISO8601DateFormatter().date(from: value)
+        return date?.addingTimeInterval(clockOffset)
     }
 
-    private func scheduleDataExpiry(_ meta: ScooterResponseMetadata?, receivedAt: Date) {
-        let observedAt = min(receivedAt, Self.apiDate(meta?.generatedAt) ?? receivedAt)
+    /// The server's times are moved onto this device's clock first: a clock
+    /// that is minutes fast would otherwise find every response expired on arrival.
+    private func scheduleDataExpiry(_ meta: ScooterResponseMetadata?, receivedAt: Date, clockOffset: TimeInterval) {
+        let observedAt = min(receivedAt, Self.apiDate(meta?.generatedAt, clockOffset: clockOffset) ?? receivedAt)
         let maximumAge: TimeInterval = meta?.overview == true ? 3 * 3600 : 900
         // Scooters past this moment are only cleared once a refresh has failed.
-        vehiclesExpireAt = min(Self.apiDate(meta?.expiresAt) ?? .distantFuture,
+        vehiclesExpireAt = min(Self.apiDate(meta?.expiresAt, clockOffset: clockOffset) ?? .distantFuture,
             observedAt.addingTimeInterval(maximumAge))
-        parkingExpireAt = min(Self.apiDate(meta?.parkingExpiresAt) ?? .distantFuture,
+        parkingExpireAt = min(Self.apiDate(meta?.parkingExpiresAt, clockOffset: clockOffset) ?? .distantFuture,
             receivedAt.addingTimeInterval(300))
 
         parkingExpiryTask?.cancel()

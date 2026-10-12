@@ -653,17 +653,20 @@ final class SwissAddressSearchModel {
 
     @ObservationIgnored private let api: any AddressSearchAPIClient
     @ObservationIgnored private let debounce: Duration
-    /// The longest wait before the one repeat of a search the server refused as one too many.
+    /// The wait after a search refused as one too many, when the server does not say how long.
     @ObservationIgnored private let rateLimitPause: Duration
     /// Sent with every search, so country names come back in the language on
     /// screen; nil is the language the app is shown in when the search is sent.
     @ObservationIgnored private let language: String?
     @ObservationIgnored private var searchTask: Task<Void, Never>?
+    /// Until when the server refuses searches as too many. Nothing is sent
+    /// before then, whatever is typed meanwhile.
+    @ObservationIgnored private var rateLimitedUntil: ContinuousClock.Instant?
 
     init(
         api: any AddressSearchAPIClient = AddressSearchAPI(),
         debounce: Duration = .milliseconds(350),
-        rateLimitPause: Duration = .seconds(3),
+        rateLimitPause: Duration = .seconds(10),
         language: String? = nil
     ) {
         self.api = api
@@ -713,7 +716,7 @@ final class SwissAddressSearchModel {
         searchTask = Task { [weak self] in
             do {
                 try await Task.sleep(for: delay)
-                try await self?.search(trimmedQuery, waitsOutTheLimit: true)
+                try await self?.search(trimmedQuery)
             } catch is CancellationError {
                 return
             } catch {
@@ -727,15 +730,22 @@ final class SwissAddressSearchModel {
 
     /// Asks the server and shows its answer. Typing sends a request at every
     /// pause, which can use up the searches allowed in a minute: a refusal for
-    /// that reason is waited out once, with "Searching…" still up, instead of
-    /// offering a "Try again" that would be refused as well.
-    private func search(_ text: String, waitsOutTheLimit: Bool) async throws {
+    /// that reason is waited out for as long as the server asks, with
+    /// "Searching…" still up, instead of offering a "Try again" that would be
+    /// refused as well. Text typed during the wait waits for the same moment,
+    /// and only the latest is asked for then.
+    private func search(_ text: String) async throws {
+        if let rateLimitedUntil {
+            try await Task.sleep(until: rateLimitedUntil)
+        }
         let results: [AddressSearchResult]
         do {
             results = try await api.search(query: text, language: language ?? ScooterLanguage.current.rawValue)
-        } catch let AddressSearchAPIError.rateLimited(retryAfter) where waitsOutTheLimit {
-            try await Task.sleep(for: min(retryAfter ?? rateLimitPause, rateLimitPause))
-            return try await search(text, waitsOutTheLimit: false)
+        } catch let AddressSearchAPIError.rateLimited(retryAfter) {
+            // Between a second and a minute, as on the web.
+            let wait = min(max(retryAfter ?? rateLimitPause, .seconds(1)), .seconds(60))
+            rateLimitedUntil = ContinuousClock.now + wait
+            return try await search(text)
         }
         try Task.checkCancellation()
         guard query.trimmingCharacters(in: .whitespacesAndNewlines) == text else { return }

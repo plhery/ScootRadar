@@ -229,6 +229,50 @@ final class ScooterModelsTests: XCTestCase {
         ))
     }
 
+    @MainActor
+    func testOpeningARentalFallsBackToTheWebPageWhenTheProvidersAppIsMissing() async {
+        let scooter = Scooter(
+            provider: "lime",
+            latitude: 47.3769,
+            longitude: 8.5417,
+            battery: 82,
+            rangeMeters: nil,
+            vehicleID: "abc-123",
+            deepLink: "https://lime.bike/vehicle/abc-123",
+            rentalURIs: ScooterRentalURIs(
+                ios: "limebike://vehicle/abc-123",
+                android: "https://lime.bike/vehicle/abc-123?platform=android",
+                web: "https://lime.bike/vehicle/abc-123"
+            ),
+            distanceMeters: nil
+        )
+        XCTAssertEqual(scooter.rentalURLs.map(\.absoluteString), [
+            "limebike://vehicle/abc-123",
+            "https://lime.bike/vehicle/abc-123"
+        ])
+
+        // Without Lime on the iPhone nothing handles its scheme: the web page opens instead.
+        var tried: [String] = []
+        let opened = await scooter.openRental { url in
+            tried.append(url.absoluteString)
+            return url.scheme == "https"
+        }
+        XCTAssertEqual(tried, ["limebike://vehicle/abc-123", "https://lime.bike/vehicle/abc-123"])
+        XCTAssertEqual(opened?.absoluteString, "https://lime.bike/vehicle/abc-123")
+
+        // With the app installed, its link is the only one tried.
+        tried = []
+        await scooter.openRental { url in
+            tried.append(url.absoluteString)
+            return true
+        }
+        XCTAssertEqual(tried, ["limebike://vehicle/abc-123"])
+
+        // When nothing opens, nothing is reported as opened.
+        let nothing = await scooter.openRental { _ in false }
+        XCTAssertNil(nothing)
+    }
+
     func testRideEstimateDurationPolicyAcceptsOnlyMenuDurations() {
         XCTAssertEqual(RideEstimateDuration.allowedMinutes, [5, 10, 15, 20, 30])
         XCTAssertEqual(RideEstimateDuration.defaultMinutes, 10)

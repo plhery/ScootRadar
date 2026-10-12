@@ -176,6 +176,34 @@ final class ScooterAPITests: XCTestCase {
         }
     }
 
+    func testTheClockOffsetComesFromTheDateHeaderOfTheResponse() async throws {
+        let sentAt = try XCTUnwrap(ISO8601DateFormatter().date(from: "2026-10-12T10:00:00Z"))
+        let header = "Mon, 12 Oct 2026 10:00:00 GMT"
+        // Twenty minutes fast, twenty minutes slow, and right.
+        XCTAssertEqual(ScooterAPI.clockOffset(dateHeader: header, receivedAt: sentAt.addingTimeInterval(1_200)), 1_200)
+        XCTAssertEqual(ScooterAPI.clockOffset(dateHeader: header, receivedAt: sentAt.addingTimeInterval(-1_200)), -1_200)
+        XCTAssertEqual(ScooterAPI.clockOffset(dateHeader: header, receivedAt: sentAt), 0)
+        // Without a header that can be read, nothing is moved.
+        XCTAssertEqual(ScooterAPI.clockOffset(dateHeader: nil, receivedAt: sentAt), 0)
+        XCTAssertEqual(ScooterAPI.clockOffset(dateHeader: "yesterday", receivedAt: sentAt), 0)
+
+        // The client reads it from the response it received: the server's clock
+        // says twenty minutes less than this one.
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(identifier: "GMT")
+        formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss 'GMT'"
+        let session = StubNetworkSession(
+            mode: .response(statusCode: 200, data: emptyResponseData),
+            headers: ["Date": formatter.string(from: Date().addingTimeInterval(-1_200))]
+        )
+        let fast = try await ScooterAPI(session: session).scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+        XCTAssertEqual(fast.clockOffset, 1_200, accuracy: 5)
+        let withoutHeader = try await makeAPI(responseStatus: 200, data: emptyResponseData)
+            .scooters(bounds: bounds, zoom: 16, minimumBattery: 0)
+        XCTAssertEqual(withoutHeader.clockOffset, 0)
+    }
+
     private var origin: GeoPoint {
         GeoPoint(latitude: 47.3769, longitude: 8.5417)
     }
@@ -387,49 +415,54 @@ final class AddressSearchModelTests: XCTestCase {
         XCTAssertEqual(queries, ["Xyzzy", "Zürich", "Zürich"])
     }
 
-    func testASearchRefusedAsOneTooManyIsRepeatedOnceInsteadOfFailing() async {
-        let api = StubAddressSearchClient(answers: [.tooMany, .places([zurich])])
-        let model = SwissAddressSearchModel(api: api, debounce: .zero, rateLimitPause: .milliseconds(40))
+    func testASearchRefusedAsOneTooManyWaitsAsLongAsTheServerAsks() async {
+        // The server asks for a second; the pause for a refusal that names none is far shorter.
+        let api = RateLimitedAddressSearchClient(retryAfter: .seconds(1), places: [zurich])
+        let model = SwissAddressSearchModel(api: api, debounce: .zero, rateLimitPause: .milliseconds(20))
         var seen: [SwissAddressSearchStatus] = []
 
         model.query = "Paradeplatz"
         for _ in 0 ..< 400 where model.status == .searching || seen.isEmpty {
             seen.append(model.status)
-            try? await Task.sleep(for: .milliseconds(5))
+            try? await Task.sleep(for: .milliseconds(10))
         }
 
-        // "Searching…" stayed up until the repeat answered; "Try again" never showed.
-        XCTAssertFalse(seen.isEmpty)
+        // "Searching…" stayed up through the wait; "Try again" never showed.
         XCTAssertTrue(seen.allSatisfy { $0 == .searching }, "\(seen)")
         XCTAssertEqual(model.status, .results([zurich]))
-        var queries = await api.queries
+        // Asked once, then again once the server allowed it, and not before.
+        let queries = await api.queries
         XCTAssertEqual(queries, ["Paradeplatz", "Paradeplatz"])
+        let refusals = await api.refusals
+        XCTAssertEqual(refusals, 1)
+    }
 
-        // Refused again, the search fails like any other, and Try again asks anew.
-        let busy = StubAddressSearchClient(answers: [.tooMany, .tooMany, .places([lungern])])
-        let refused = SwissAddressSearchModel(api: busy, debounce: .zero, rateLimitPause: .milliseconds(10))
-        refused.query = "Lungern"
-        var settled = await waitUntil { refused.status != .searching }
-        XCTAssertTrue(settled)
-        XCTAssertEqual(refused.status, .failed)
-        refused.retry()
-        settled = await waitUntil { refused.status != .searching }
-        XCTAssertTrue(settled)
-        XCTAssertEqual(refused.status, .results([lungern]))
+    func testTextTypedDuringTheWaitIsAskedForOnlyOnceTheServerAllowsIt() async {
+        let api = RateLimitedAddressSearchClient(retryAfter: .seconds(1), places: [zurich])
+        let model = SwissAddressSearchModel(api: api, debounce: .zero, rateLimitPause: .milliseconds(20))
 
-        // The next keystroke ends the wait: only the new text is asked for again.
-        let typing = StubAddressSearchClient(answers: [.tooMany, .places([zurich])])
-        let typed = SwissAddressSearchModel(api: typing, debounce: .zero, rateLimitPause: .seconds(30))
-        typed.query = "Par"
-        settled = await waitUntil { await typing.queries == ["Par"] }
+        model.query = "Par"
+        var settled = await waitUntil { await api.queries == ["Par"] }
         XCTAssertTrue(settled)
         try? await Task.sleep(for: .milliseconds(30))
-        typed.query = "Parade"
-        settled = await waitUntil { typed.status != .searching }
+
+        // Typing on asks nothing while the server refuses searches, and "Searching…" stays up.
+        model.query = "Para"
+        try? await Task.sleep(for: .milliseconds(100))
+        model.query = "Parade"
+        try? await Task.sleep(for: .milliseconds(100))
+        var queries = await api.queries
+        XCTAssertEqual(queries, ["Par"])
+        XCTAssertEqual(model.status, .searching)
+
+        // Once it allows them again, only the latest text is asked for.
+        settled = await waitUntil { model.status != .searching }
         XCTAssertTrue(settled)
-        XCTAssertEqual(typed.status, .results([zurich]))
-        queries = await typing.queries
+        XCTAssertEqual(model.status, .results([zurich]))
+        queries = await api.queries
         XCTAssertEqual(queries, ["Par", "Parade"])
+        let refusals = await api.refusals
+        XCTAssertEqual(refusals, 1)
     }
 
     func testClearingTheFieldBringsTheSuggestionsBackAndDropsALateAnswer() async {
@@ -514,8 +547,6 @@ private actor StubAddressSearchClient: AddressSearchAPIClient {
     enum Answer: Sendable {
         case places([AddressSearchResult])
         case failure
-        /// HTTP 429 with the server's "Retry-After: 60".
-        case tooMany
     }
 
     private var answers: [Answer]
@@ -536,8 +567,34 @@ private actor StubAddressSearchClient: AddressSearchAPIClient {
         switch answer {
         case let .places(places): return places
         case .failure: throw URLError(.notConnectedToInternet)
-        case .tooMany: throw AddressSearchAPIError.rateLimited(retryAfter: .seconds(60))
         }
+    }
+}
+
+/// Refuses searches as too many, as the server does, until the time its first
+/// refusal named has passed, and answers every search from then on.
+private actor RateLimitedAddressSearchClient: AddressSearchAPIClient {
+    private let retryAfter: Duration
+    private let places: [AddressSearchResult]
+    private var allowedFrom: ContinuousClock.Instant?
+    private(set) var queries: [String] = []
+    private(set) var refusals = 0
+
+    init(retryAfter: Duration, places: [AddressSearchResult]) {
+        self.retryAfter = retryAfter
+        self.places = places
+    }
+
+    func search(query: String, language: String) async throws -> [AddressSearchResult] {
+        queries.append(query)
+        let now = ContinuousClock.now
+        let allowedFrom = allowedFrom ?? now + retryAfter
+        self.allowedFrom = allowedFrom
+        guard now >= allowedFrom else {
+            refusals += 1
+            throw AddressSearchAPIError.rateLimited(retryAfter: retryAfter)
+        }
+        return places
     }
 }
 
@@ -548,10 +605,12 @@ private actor StubNetworkSession: ScooterNetworkSession {
     }
 
     let mode: Mode
+    let headers: [String: String]
     private(set) var lastRequest: URLRequest?
 
-    init(mode: Mode) {
+    init(mode: Mode, headers: [String: String] = [:]) {
         self.mode = mode
+        self.headers = headers
     }
 
     func scooterData(for request: URLRequest) async throws -> (Data, URLResponse) {
@@ -562,7 +621,7 @@ private actor StubNetworkSession: ScooterNetworkSession {
                 url: request.url!,
                 statusCode: statusCode,
                 httpVersion: "HTTP/1.1",
-                headerFields: ["Content-Type": "application/json"]
+                headerFields: headers.merging(["Content-Type": "application/json"]) { given, _ in given }
             )!
             return (data, response)
         case let .urlError(code):

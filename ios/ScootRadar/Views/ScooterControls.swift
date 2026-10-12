@@ -1124,10 +1124,10 @@ private struct ScooterCard: View {
 
             // "Open in …" is the wider of the two.
             DockActionRow(weights: scooter.rentalURL == nil ? [] : [1.5, 1]) {
-                if let rentalURL = scooter.rentalURL {
+                if scooter.rentalURL != nil {
                     Button {
                         ScooterAnalytics.shared.track("rental_open", provider: scooter.provider)
-                        UIApplication.shared.open(rentalURL)
+                        Task { await scooter.openRental() }
                     } label: {
                         Label(
                             String(format: String(localized: "Open in %@"), providerName),

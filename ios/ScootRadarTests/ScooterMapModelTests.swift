@@ -1319,6 +1319,75 @@ extension ScooterMapModelTests {
         XCTAssertEqual(model.mapScooters.count, 1)
         XCTAssertNil(model.loadIssue)
     }
+
+    func testAPhoneClockTwentyMinutesFastNeitherExpiresNorAgesFreshData() async {
+        await assertServerTimesFollowTheServersClock(clockOffset: 1_200)
+    }
+
+    func testAPhoneClockTwentyMinutesSlowStillExpiresDataWhenTheServerSays() async {
+        await assertServerTimesFollowTheServersClock(clockOffset: -1_200)
+    }
+
+    /// The phone's clock is `clockOffset` ahead of the server's. By the
+    /// server's clock the response was just generated, its scooters expire in
+    /// ten minutes and its bays in three, and that is what the phone keeps to.
+    private func assertServerTimesFollowTheServersClock(clockOffset: TimeInterval) async {
+        let clock = TestClock()
+        let receivedAt = clock.now
+        let bay = ScooterParking(id: "bay", provider: "lime", name: "Bay",
+            latitude: 47.3769, longitude: 8.5417, mandatory: true)
+        let api = StubScooterAPI(response: timedResponse(
+            generatedAt: receivedAt.addingTimeInterval(-clockOffset), expiresIn: 600,
+            parking: [bay], parkingExpiresIn: 180, clockOffset: clockOffset
+        ))
+        let model = makeModel(api: api, clock: clock)
+        model.updateViewport(zurichRegion, zoom: 16)
+        let loaded = await waitUntil { model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+
+        // Just generated: the bays stay and the dock reads Live.
+        XCTAssertEqual(model.parking, [bay])
+        XCTAssertEqual(model.lastUpdated, receivedAt)
+        guard case let .summary(summary) = model.dock else { return XCTFail("Expected the dock summary") }
+        XCTAssertEqual(summary.status(at: clock.now), .live)
+
+        // The next request waits for the server's minute, not the ten seconds between retries.
+        clock.advance(59)
+        model.autoRefreshIfNeeded()
+        await settle()
+        let calls = await api.snapshot().calls
+        XCTAssertEqual(calls, 1)
+        clock.advance(1)
+        model.autoRefreshIfNeeded()
+        let refreshed = await waitUntil { await api.snapshot().calls == 2 && !model.isLoading }
+        XCTAssertTrue(refreshed)
+
+        // A failed refresh keeps the scooters while the server still has them fresh.
+        await api.setFailure(.offline)
+        clock.advance(60)
+        model.autoRefreshIfNeeded()
+        let failed = await waitUntil { model.loadIssue != nil && !model.isLoading }
+        XCTAssertTrue(failed)
+        XCTAssertEqual(model.loadIssue, .refreshFailed(.offline, showing: receivedAt))
+        XCTAssertEqual(model.mapScooters.count, 1)
+
+        // The bays go when the server said they would.
+        clock.advance(59)
+        model.expireParkingIfNeeded()
+        XCTAssertEqual(model.parking, [bay])
+        clock.advance(2)
+        model.expireParkingIfNeeded()
+        XCTAssertTrue(model.parking.isEmpty)
+
+        // So do the scooters, once a refresh after their expiry fails as well.
+        clock.advance(420)
+        model.autoRefreshIfNeeded()
+        let expired = await waitUntil {
+            model.loadIssue == .outOfDate(.offline, lastUpdate: receivedAt) && !model.isLoading
+        }
+        XCTAssertTrue(expired)
+        XCTAssertTrue(model.mapScooters.isEmpty)
+    }
 }
 
 // Provider health and the dock.
@@ -2344,7 +2413,8 @@ extension ScooterMapModelTests {
         generatedAt: Date,
         expiresIn: TimeInterval,
         parking: [ScooterParking] = [],
-        parkingExpiresIn: TimeInterval? = nil
+        parkingExpiresIn: TimeInterval? = nil,
+        clockOffset: TimeInterval = 0
     ) -> ScooterResponse {
         let formatter = ISO8601DateFormatter()
         return ScooterResponse(
@@ -2359,7 +2429,8 @@ extension ScooterMapModelTests {
                     formatter.string(from: generatedAt.addingTimeInterval($0))
                 }
             ),
-            parking: parking
+            parking: parking,
+            clockOffset: clockOffset
         )
     }
 

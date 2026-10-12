@@ -74,11 +74,30 @@ struct Scooter: Identifiable, Hashable, Sendable {
     }
 
     var rentalURL: URL? {
-        ScooterRentalLinkPolicy.rentalURL(
+        rentalURLs.first
+    }
+
+    /// The safe links to the scooter, in the order they are tried.
+    var rentalURLs: [URL] {
+        ScooterRentalLinkPolicy.rentalURLs(
             provider: provider,
             rentalURIs: rentalURIs,
             legacyLink: deepLink
         )
+    }
+
+    /// Opens the scooter in its provider's app. A link in the app's own scheme
+    /// opens nothing when the app is not installed, so the next link, the
+    /// provider's web page, is tried then. Returns the link that opened.
+    @MainActor
+    @discardableResult
+    func openRental(
+        using open: @MainActor (URL) async -> Bool = { await UIApplication.shared.open($0) }
+    ) async -> URL? {
+        for url in rentalURLs where await open(url) {
+            return url
+        }
+        return nil
     }
 
     /// "320 m" below a kilometre; "1.4 km" and "24 km" from there, as on the
@@ -313,12 +332,23 @@ enum ScooterRentalLinkPolicy {
         rentalURIs: ScooterRentalURIs?,
         legacyLink: String?
     ) -> URL? {
+        rentalURLs(provider: provider, rentalURIs: rentalURIs, legacyLink: legacyLink).first
+    }
+
+    /// The iOS link, the web link and the legacy one, without the unsafe ones
+    /// and without repeats.
+    static func rentalURLs(
+        provider: String,
+        rentalURIs: ScooterRentalURIs?,
+        legacyLink: String?
+    ) -> [URL] {
+        var urls: [URL] = []
         for candidate in [rentalURIs?.ios, rentalURIs?.web, legacyLink] {
-            if let url = safeURL(provider: provider, value: candidate) {
-                return url
+            if let url = safeURL(provider: provider, value: candidate), !urls.contains(url) {
+                urls.append(url)
             }
         }
-        return nil
+        return urls
     }
 
     static func safeURL(provider: String, value: String?) -> URL? {
@@ -445,19 +475,24 @@ struct ScooterResponse: Sendable {
     let providers: [String: Int]
     let meta: ScooterResponseMetadata?
     let parking: [ScooterParking]
+    /// How far the clock of this device is ahead of the server's (negative when
+    /// it is behind), from the response's Date header. 0 without the header.
+    var clockOffset: TimeInterval
 
     init(
         vehicles: [Scooter],
         clusters: [ScooterCluster] = [],
         providers: [String: Int] = [:],
         meta: ScooterResponseMetadata? = nil,
-        parking: [ScooterParking] = []
+        parking: [ScooterParking] = [],
+        clockOffset: TimeInterval = 0
     ) {
         self.vehicles = vehicles
         self.clusters = clusters
         self.providers = providers
         self.meta = meta
         self.parking = parking
+        self.clockOffset = clockOffset
     }
 }
 

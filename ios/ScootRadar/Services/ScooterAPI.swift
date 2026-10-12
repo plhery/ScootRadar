@@ -91,12 +91,35 @@ actor ScooterAPI: ScooterAPIClient {
         guard (200 ... 299).contains(httpResponse.statusCode) else {
             throw ScooterAPIError.httpStatus(httpResponse.statusCode)
         }
+        // The server's times are compared with this device's clock, which may be wrong.
+        let clockOffset = Self.clockOffset(
+            dateHeader: httpResponse.value(forHTTPHeaderField: "Date"),
+            receivedAt: Date()
+        )
 
         do {
-            return try JSONDecoder().decode(ScooterAPIResponsePayload.self, from: data).model
+            var scooters = try JSONDecoder().decode(ScooterAPIResponsePayload.self, from: data).model
+            scooters.clockOffset = clockOffset
+            return scooters
         } catch {
             throw ScooterAPIError.invalidData(error)
         }
+    }
+
+    /// How far the clock of this device is ahead of the server's (negative when
+    /// it is behind), from the Date header of a response and the moment it
+    /// arrived; 0 without a readable header, as on the web. The header counts
+    /// whole seconds and the response took a moment to arrive, so a right clock
+    /// gives a second or two, not 0.
+    static func clockOffset(dateHeader: String?, receivedAt: Date) -> TimeInterval {
+        guard let dateHeader else { return 0 }
+        // "Mon, 12 Oct 2026 10:00:00 GMT"
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(identifier: "GMT")
+        formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
+        guard let sentAt = formatter.date(from: dateHeader) else { return 0 }
+        return receivedAt.timeIntervalSince(sentAt)
     }
 }
 
