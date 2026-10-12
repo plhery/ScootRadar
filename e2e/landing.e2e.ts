@@ -47,8 +47,8 @@ for (const [locale, headline] of Object.entries(HEADLINES)) {
     // Seven providers beside the phone, the nearest first.
     const cards = page.locator('.near-card');
     await expect(cards).toHaveCount(7);
-    await expect(cards.first()).toContainText('PubliBike');
-    await expect(cards.first()).toContainText('70 m');
+    await expect(cards.first()).toContainText('Voi');
+    await expect(cards.first()).toContainText('31 m');
 
     // The pictures further down load as they come into view.
     const pictures = page.locator('main img');

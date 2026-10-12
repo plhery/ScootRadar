@@ -16,10 +16,10 @@
 // of the app is lost. The app shows the live data, which the server renews
 // about every minute: the pictures by the station are taken right after a
 // renewal, and again if the next one came before the last language opened, so
-// the six languages show the same scooters. The run ends by printing the
+// the nine languages show the same scooters. The run ends by printing the
 // nearest scooter of each provider at that moment. Copy them into
 // src/lib/landingSnapshot.ts, with the number on the "All" chip of the dark
-// pictures, or the page contradicts its own phone; that the six pictures do
+// pictures, or the page contradicts its own phone; that the nine pictures do
 // carry the same number is for you to see.
 //
 // sharp comes with Next.js; it is not a dependency of its own.
@@ -42,13 +42,13 @@ const API = 'https://scootradar.com/api/scooters';
 // A public place, not a rider's position: the square in front of Zürich main station.
 const RIDER = { latitude: 47.3763, longitude: 8.5395 };
 // As LANDING_LOCALES in src/lib/landingCopy.ts.
-const LOCALES = ['en', 'de', 'fr', 'it', 'nl', 'nb'];
+const LOCALES = ['en', 'de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is'];
 // The page shows a capture in a phone at most 340 px wide: 780 px across is
 // two device pixels per unit, and 1695 down the proportions of an iPhone Pro.
 const PICTURE = { width: 780, height: 1695 };
 // The map, its scooters and their names are drawn three seconds after the app
 // opens, and a change of appearance within one. Longer waits would not fit
-// six languages between two renewals of the data.
+// nine languages between two renewals of the data.
 const OPENED_MS = 5_000;
 const APPEARANCE_MS = 2_000;
 
@@ -68,7 +68,7 @@ mkdirSync(out, { recursive: true });
 
 /** The scooters around the station as the server has them now, past any cache: no two calls ask the same box. */
 let asked = 0;
-async function scootersNow() {
+async function scootersNow(retries = 3) {
   asked += 1;
   const box = {
     south: RIDER.latitude - 0.004,
@@ -78,17 +78,26 @@ async function scootersNow() {
   };
   const query = new URLSearchParams({ ...Object.fromEntries(Object.entries(box).map(([side, degrees]) => [side, degrees.toFixed(5)])), zoom: '17' });
   const response = await fetch(`${API}?${query}`, { headers: { Accept: 'application/json' } });
+  // The server answers 503 for a moment when its origin does not.
+  if (response.status === 503 && retries > 0) {
+    await sleep(10_000);
+    return scootersNow(retries - 1);
+  }
   if (!response.ok) throw new Error(`${API} answered ${response.status}`);
   return response.json();
 }
 
+// What the pictures show of an answer: its scooters. Its generatedAt is the
+// time of the oldest feed in view, which stays put while another one renews.
+const scene = answer => answer.vehicles.map(({ provider, lat, lng }) => `${provider} ${lat} ${lng}`).sort().join('\n');
+
 /** Waits for the server to renew its data and returns the new answer. */
 async function renewal() {
-  const { generatedAt } = (await scootersNow()).meta;
+  const before = scene(await scootersNow());
   for (let attempt = 0; attempt < 240; attempt += 1) {
     await sleep(3_000);
     const answer = await scootersNow();
-    if (answer.meta.generatedAt !== generatedAt) return answer;
+    if (scene(answer) !== before) return answer;
   }
   throw new Error('The server has not renewed its data in twelve minutes.');
 }
@@ -167,7 +176,7 @@ try {
       await picture(`${locale}-nearby`);
     }
     // The last language asked for its scooters as it opened, a few seconds ago.
-    if ((await scootersNow()).meta.generatedAt === street.meta.generatedAt) break;
+    if (scene(await scootersNow()) === scene(street)) break;
     console.log('The data was renewed between two languages: taking the pictures by the station again.');
   }
 } finally {
@@ -197,4 +206,4 @@ for (const { provider, lat, lng, battery, range_m: rangeM, pricing = null } of s
 console.log(`The pictures by the station show the data of ${street.meta.generatedAt}.`);
 console.log('The nearest scooter of each provider, the first of which the dock of those pictures names:');
 for (const vehicle of [...nearest.values()].sort((a, b) => a.distanceM - b.distanceM)) console.log(`  ${JSON.stringify(vehicle)}`);
-console.log('Read the scooters in view on the "All" chip of the six dark pictures: it has to be one number.');
+console.log('Read the scooters in view on the "All" chip of the nine dark pictures: it has to be one number.');

@@ -32,15 +32,15 @@ const CHF = (unlock: number, minute: number): RidePricing => ({
 
 /** Nearest first. The first one is the scooter the page then follows. */
 export const LANDING_NEAREST: readonly LandingNearest[] = [
-  { provider: 'publibike', name: 'PubliBike', distanceM: 70, battery: null, rangeM: null, pricing: null, shows: ['walk', 'bike'] },
-  { provider: 'bolt', name: 'Bolt', distanceM: 92, battery: 92, rangeM: 58_800, pricing: CHF(100, 42), shows: ['battery', 'range'] },
-  { provider: 'bird', name: 'Bird', distanceM: 116, battery: 68, rangeM: 23_160, pricing: null, shows: ['battery', 'range'] },
-  { provider: 'lime', name: 'Lime', distanceM: 127, battery: null, rangeM: 3_138, pricing: null, shows: ['range'] },
-  { provider: 'hopp', name: 'Hopp', distanceM: 128, battery: 34, rangeM: 11_200, pricing: CHF(100, 40), shows: ['battery', 'price'] },
-  { provider: 'voi', name: 'Voi', distanceM: 181, battery: null, rangeM: 67_200, pricing: CHF(100, 42), shows: ['price'] },
-  { provider: 'dott', name: 'Dott', distanceM: 504, battery: 44, rangeM: 25_896, pricing: null, shows: ['battery', 'range'] },
+  { provider: 'voi', name: 'Voi', distanceM: 31, battery: null, rangeM: 67_200, pricing: CHF(100, 42), shows: ['walk', 'price'] },
+  { provider: 'lime', name: 'Lime', distanceM: 69, battery: null, rangeM: 21_581, pricing: null, shows: ['range'] },
+  { provider: 'publibike', name: 'PubliBike', distanceM: 70, battery: null, rangeM: null, pricing: null, shows: ['bike'] },
+  { provider: 'bolt', name: 'Bolt', distanceM: 77, battery: 61, rangeM: 37_100, pricing: CHF(100, 42), shows: ['battery', 'range'] },
+  { provider: 'bird', name: 'Bird', distanceM: 79, battery: 68, rangeM: 23_160, pricing: null, shows: ['battery', 'range'] },
+  { provider: 'hopp', name: 'Hopp', distanceM: 105, battery: 51, rangeM: 18_000, pricing: CHF(100, 40), shows: ['battery', 'price'] },
+  { provider: 'dott', name: 'Dott', distanceM: 142, battery: 69, rangeM: 42_496, pricing: null, shows: ['battery', 'range'] },
 ];
 
 // The scooters in view on the dark map (public/landing/*-dark.webp), which its
 // "All" chip counts in every language: the headline repeats the number beside it.
-export const LANDING_SCOOTERS_NEARBY = 61;
+export const LANDING_SCOOTERS_NEARBY = 103;
