@@ -593,6 +593,51 @@ extension ScooterModelsTests {
         )
     }
 
+    func testCitiesBanRentingOnTheirNightsInLocalTime() throws {
+        let oslo = GeoPoint(latitude: 59.9139, longitude: 10.7522)
+        let sandvika = GeoPoint(latitude: 59.8913, longitude: 10.5236)
+        let iso = ISO8601DateFormatter()
+        func at(_ string: String) throws -> Date { try XCTUnwrap(iso.date(from: string)) }
+
+        // 22:59 and 23:00 in Oslo, summer time.
+        XCTAssertNil(RentalCurfew.active(at: oslo, on: try at("2026-10-12T20:59:00Z")))
+        XCTAssertEqual(
+            RentalCurfew.active(at: oslo, on: try at("2026-10-12T21:00:00Z")),
+            RentalCurfew.Active(city: "Oslo", until: try at("2026-10-13T03:00:00Z"))
+        )
+        XCTAssertNil(RentalCurfew.active(at: oslo, on: try at("2026-10-13T03:00:00Z")))
+        XCTAssertNil(RentalCurfew.active(at: sandvika, on: try at("2026-10-12T22:00:00Z")))
+        // The nights the clocks go back and forward end at 05:00 all the same.
+        XCTAssertEqual(RentalCurfew.active(at: oslo, on: try at("2026-10-24T21:30:00Z"))?.until, try at("2026-10-25T04:00:00Z"))
+        XCTAssertEqual(RentalCurfew.active(at: oslo, on: try at("2027-03-27T22:30:00Z"))?.until, try at("2027-03-28T03:00:00Z"))
+
+        // Trondheim bans only Friday and Saturday nights; Stavanger's start at midnight, after the evening.
+        let trondheim = GeoPoint(latitude: 63.4305, longitude: 10.3951)
+        let stavanger = GeoPoint(latitude: 58.97, longitude: 5.7331)
+        XCTAssertNil(RentalCurfew.active(at: trondheim, on: try at("2026-10-12T21:30:00Z")))
+        XCTAssertEqual(RentalCurfew.active(at: trondheim, on: try at("2026-10-16T21:30:00Z"))?.until, try at("2026-10-17T03:00:00Z"))
+        XCTAssertEqual(RentalCurfew.active(at: trondheim, on: try at("2026-10-17T22:30:00Z"))?.until, try at("2026-10-18T03:00:00Z"))
+        XCTAssertNil(RentalCurfew.active(at: trondheim, on: try at("2026-10-18T21:30:00Z")))
+        XCTAssertNil(RentalCurfew.active(at: stavanger, on: try at("2026-10-16T21:30:00Z")))
+        XCTAssertEqual(RentalCurfew.active(at: stavanger, on: try at("2026-10-16T22:30:00Z"))?.until, try at("2026-10-17T03:00:00Z"))
+        XCTAssertNil(RentalCurfew.active(at: stavanger, on: try at("2026-10-15T22:30:00Z")))
+
+        // The ban comes before every other notice, with a moon.
+        let curfew = RentalCurfew.Active(city: "Oslo", until: try at("2026-10-13T03:00:00Z"))
+        XCTAssertEqual(
+            ScooterDockNotice.notices(
+                curfew: curfew,
+                health: ScooterProviderHealth(downProviders: [.bird], hasUnknownFailures: false),
+                metadata: ScooterResponseMetadata(partial: true, failedSources: ["bird_oslo"]),
+                shownCount: 12
+            ),
+            [.curfew(curfew), .providersDown([.bird])]
+        )
+        XCTAssertEqual(ScooterDockNotice.curfew(curfew).systemImage, "moon.fill")
+        XCTAssertTrue(ScooterDockNotice.curfew(curfew).text.contains("Oslo"))
+        XCTAssertTrue(ScooterDockNotice.curfew(curfew).text.contains(ScooterDockStatus.clockTime(curfew.until)))
+    }
+
     func testDockStatusPrefersFailureThenDelayThenCityTotalsThenAge() {
         let updated = Date(timeIntervalSince1970: 1_790_000_000)
         func summary(

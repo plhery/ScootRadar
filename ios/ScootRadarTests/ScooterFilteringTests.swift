@@ -570,8 +570,9 @@ final class ScooterFilteringTests: XCTestCase {
     func testCreditsNameEverySourceOnceAndAboutLinksAreSecure() {
         let sources = ScooterCreditsList.sources
 
-        // The sources of the credits list on the web, Lille's parking bays included.
-        XCTAssertEqual(sources.count, 8)
+        // The sources of the credits list on the web, Lille's parking bays and the
+        // boundaries of the night bans included.
+        XCTAssertEqual(sources.count, 10)
         XCTAssertEqual(Set(sources.map(\.url)).count, sources.count)
         XCTAssertTrue(sources.allSatisfy { $0.url.scheme == "https" && !$0.title.isEmpty })
         XCTAssertTrue(sources.contains { $0.url.host() == "data.lillemetropole.fr" })

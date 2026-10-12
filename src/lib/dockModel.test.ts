@@ -247,6 +247,16 @@ describe('dock notices', () => {
     expect(summary().notices).toEqual([]);
   });
 
+  it('says first that the city in view bans renting at night, and until when', () => {
+    const oslo: [number, number] = [59.9139, 10.7522];
+    const night = Date.parse('2026-10-12T22:30:00Z');
+    expect(summary({ viewportCenter: oslo, now: night, lastUpdated: night - 30_000 }).notices[0]).toEqual({
+      kind: 'curfew',
+      text: { key: 'dock.curfew', values: { city: 'Oslo' }, time: Date.parse('2026-10-13T03:00:00Z') },
+    });
+    expect(summary({ viewportCenter: oslo }).notices).toEqual([]);
+  });
+
   it('names providers that are not sharing data and have nothing in view', () => {
     const failed = (...failedSources: string[]) => summary({
       meta: meta({ partial: true, failedSources }),

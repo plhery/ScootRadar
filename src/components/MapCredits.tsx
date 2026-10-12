@@ -13,6 +13,8 @@ const SOURCES = [
   { href: 'https://github.com/MobilityData/gbfs', label: 'DE/IT/BE/UK: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy' },
   { href: 'https://cdla.dev/permissive-2-0/', label: 'UK: Beryl · CDLA-Permissive-2.0' },
   { href: 'https://data.norge.no/nlod/en/2.0', label: 'NO: Entur AS · NLOD' },
+  { href: 'https://creativecommons.org/licenses/by/4.0/', label: 'NO: Kartverket boundaries · CC BY 4.0' },
+  { href: 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/', label: 'UK: ONS boundaries · OGL v3.0' },
   { href: 'https://www.geo.admin.ch/en/geo-services/geo-services/application-programming-interface-api', label: '© swisstopo' },
   { href: 'https://data.lillemetropole.fr/', label: 'Parking · Métropole Européenne de Lille' },
 ];

@@ -104,6 +104,7 @@ const paths = {
     </>
   ),
   upDown: <path d="m8 9 4-4 4 4M8 15l4 4 4-4" />,
+  moon: <path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a6.8 6.8 0 0 0 10.7 10.7Z" />,
 } as const;
 
 export default function Icon({

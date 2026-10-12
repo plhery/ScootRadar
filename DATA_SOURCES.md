@@ -173,3 +173,12 @@ and Hoppy publish no licence in these feeds. The map's credits list Entur, the
 NLOD and Beryl's licence. See the
 [coverage audit](docs/belgian-norwegian-british-scooter-feeds.md) for the
 systems, the gaps and the recheck command.
+
+Night bans on renting, in `data/rental-curfews.json`, come from each town's
+rules: Lovdata for Norway, the council or the operator for Britain. Their areas
+are municipal boundaries from Kartverket under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) and local authority
+districts from the ONS under the
+[Open Government Licence v3.0](https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/)
+(contains OS data © Crown copyright and database right 2018). The credits list
+both.

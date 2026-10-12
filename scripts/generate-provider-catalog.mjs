@@ -19,6 +19,7 @@ const regionalSystems = [
   ...readJson('data/norwegian-scooter-feeds.json').systems,
   ...readJson('data/british-scooter-feeds.json').systems,
 ];
+const curfews = readJson('data/rental-curfews.json').curfews;
 
 function validateCatalog() {
   if (!Array.isArray(providers) || providers.length === 0) {
@@ -303,6 +304,42 @@ ${cities}
 `;
 }
 
+// data/rental-curfews.json, which src/lib/rentalCurfews.ts reads as it is.
+function swiftCurfews() {
+  const time = value => {
+    if (!/^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(value)) throw new Error(`Invalid curfew time: ${value}`);
+    const [hours, minutes] = value.split(':').map(Number);
+    return hours * 60 + minutes;
+  };
+  // Calendar's weekdays: 1 is Sunday.
+  const weekdays = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+  const night = ({ days, from, until }) => {
+    if (days !== undefined && (days.length === 0 || !days.every(day => weekdays.includes(day)))) {
+      throw new Error(`Invalid curfew days: ${days}`);
+    }
+    const evenings = days ? `[${days.map(day => weekdays.indexOf(day) + 1).join(', ')}]` : 'nil';
+    return `RentalCurfew.Night(evenings: ${evenings}, fromMinute: ${time(from)}, untilMinute: ${time(until)})`;
+  };
+  const entries = curfews.map(curfew => {
+    if (!curfew.nights.length) throw new Error(`Curfew without nights: ${curfew.id}`);
+    if (!curfew.areas.length || curfew.areas.some(area => area.length < 3 || !area.flat().every(Number.isFinite))) {
+      throw new Error(`Invalid curfew area: ${curfew.id}`);
+    }
+    const areas = curfew.areas.map(area => `[${area.map(([lat, lng]) => `GeoPoint(latitude: ${lat}, longitude: ${lng})`).join(', ')}]`);
+    return `        RentalCurfew(\n            city: ${JSON.stringify(curfew.city)}, timeZone: ${JSON.stringify(curfew.timeZone)},\n` +
+      `            nights: [${curfew.nights.map(night).join(', ')}],\n            areas: [${areas.join(', ')}]\n        ),`;
+  }).join('\n');
+
+  return `
+/// Cities that ban renting shared scooters at night, as src/lib/rentalCurfews.ts reads them.
+extension RentalCurfew {
+    static let all: [RentalCurfew] = [
+${entries}
+    ]
+}
+`;
+}
+
 validateCatalog();
 writeOrCheck(typescriptPath, typescriptCatalog());
-writeOrCheck(swiftPath, swiftCatalog() + swiftCoverage() + swiftCities());
+writeOrCheck(swiftPath, swiftCatalog() + swiftCoverage() + swiftCities() + swiftCurfews());

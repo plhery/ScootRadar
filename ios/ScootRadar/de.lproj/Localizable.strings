@@ -123,6 +123,8 @@
 "Showing %1$@ of %2$@ — zoom in to see all" = "%1$@ von %2$@ angezeigt – vergrössern, um alle zu sehen";
 "Parking bays unavailable right now" = "Parkplatzdaten gerade nicht verfügbar";
 "Parking bays may be out of date" = "Parkplatzdaten sind möglicherweise veraltet";
+"Night ban in %1$@: no scooter rentals until %2$@" = "Nachtverbot in %1$@: keine Ausleihe bis %2$@";
+"Night ban in %1$@: you can rent it from %2$@" = "Nachtverbot in %1$@: ausleihbar ab %2$@";
 "No scooters here right now. Zoom out or move the map." = "Hier gibt es gerade keine Scooter. Verkleinere oder verschiebe die Karte.";
 
 /* UX alignment: refresh and load failures */

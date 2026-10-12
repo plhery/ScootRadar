@@ -289,6 +289,16 @@ describe('BottomSheet', () => {
     ]);
   });
 
+  it('tells of a night ban with a moon, not a warning', () => {
+    const night = Date.parse('2026-10-12T22:30:00Z');
+    renderSheet({ dock: dock({ viewportCenter: [59.9139, 10.7522], now: night, lastUpdated: night - 30_000 }) });
+
+    const until = formatClockTime(Date.parse('2026-10-13T03:00:00Z'), 'en');
+    const note = screen.getByText(`Night ban in Oslo: no scooter rentals until ${until}`).closest('.dock-note');
+    expect(note).toHaveClass('dock-note-calm');
+    expect(note?.closest('[role="status"]')).toHaveClass('dock-notes');
+  });
+
   it('orders the provider chips by their count, most first', () => {
     renderSheet({ dock: dock({ providerCounts: { bolt: 2, lime: 7, voi: 6, hopp: 4 }, count: 19 }) });
 

@@ -356,7 +356,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             scooter: scooter,
             metres: straightLineDistance(to: scooter),
             placeTitle: searchedDestination?.title,
-            quote: ridePriceQuote(for: scooter)
+            quote: ridePriceQuote(for: scooter),
+            curfew: RentalCurfew.active(at: GeoPoint(latitude: scooter.latitude, longitude: scooter.longitude), on: clock())
         )
     }
 
@@ -391,10 +392,11 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         )
     }
 
-    /// The calm lines under the dock status: providers down, truncation, parking.
+    /// The calm lines under the dock status: a night ban, providers down, truncation, parking.
     var dockNotices: [ScooterDockNotice] {
         guard let responseMetadata else { return [] }
         return ScooterDockNotice.notices(
+            curfew: RentalCurfew.active(at: viewport.center, on: clock()),
             health: providerHealth,
             metadata: responseMetadata,
             shownCount: representedVehicleCount

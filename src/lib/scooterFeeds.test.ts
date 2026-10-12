@@ -908,7 +908,27 @@ describe('feed validation and tariff regressions', () => {
     expect(collected.vehicles).toHaveLength(1);
   });
 
+  it('reads a minute band that starts at minute 1 as the price of every minute, as Dott, Ryde and Pony mean it', async () => {
+    vi.stubGlobal('fetch', vi.fn(async input => {
+      const response = nationalResponse(String(input))!;
+      if (String(input).endsWith('/system_pricing_plans')) {
+        return jsonResponse({ data: { plans: [{
+          plan_id: 'lime-standard',
+          currency: 'CHF',
+          price: 1,
+          description: 'Pricing information for Zürich (scooter): Riders pay 1 CHF to unlock and 0.42 CHF per minute.',
+          per_min_pricing: [{ start: 1, rate: 0.42, interval: 1 }],
+        }] } });
+      }
+      return response;
+    }));
+    const result = await fetchScooters({ ...query, providers: new Set(['lime']) });
+    expect(result.vehicles[0].pricing).toEqual({ currency: 'CHF', unlock_fee_minor_units: 100, minute_fee_minor_units: 42 });
+  });
+
   it.each([
+    { per_min_pricing: [{ start: 1, rate: 1.5, interval: 20 }] },
+    { per_min_pricing: [{ start: 2, rate: 0.42, interval: 1 }] },
     { per_min_pricing: [{ start: 0, rate: 0, interval: 1, end: 5 }, { start: 5, rate: 0.4, interval: 1 }] },
     { per_min_pricing: [{ start: 0, rate: 0.8, interval: 2 }] },
     { per_km_pricing: [{ start: 0, rate: 0.1, interval: 1 }] },

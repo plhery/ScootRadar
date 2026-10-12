@@ -30,6 +30,7 @@ import {
 import { nearestCoveredCities, type NearbyCoveredCity } from '@/lib/coveredCities';
 import { providerHealth, providersInView } from '@/lib/dataHealth';
 import { dockIssue, dockModel, originInViewport, type DockInput } from '@/lib/dockModel';
+import { activeCurfew } from '@/lib/rentalCurfews';
 import { useI18n } from '@/lib/i18n';
 import { failureSurface } from '@/lib/loadFailure';
 import { unfilteredCountInView } from '@/lib/nothingToShow';
@@ -453,8 +454,12 @@ export default function Home() {
       return key === selectedVehicleKey;
     });
     if (!vehicle) return null;
-    return { vehicle, walk: walkEstimate(walkOrigin, vehicle.lat, vehicle.lng) };
-  }, [selectedVehicleKey, viewportData.visibleVehicles, walkOrigin]);
+    return {
+      vehicle,
+      walk: walkEstimate(walkOrigin, vehicle.lat, vehicle.lng),
+      curfew: activeCurfew([vehicle.lat, vehicle.lng], now),
+    };
+  }, [now, selectedVehicleKey, viewportData.visibleVehicles, walkOrigin]);
 
   // The scooter that leads the dock: the nearest one shown, while single scooters are.
   const nearestVehicle = useMemo(() => {

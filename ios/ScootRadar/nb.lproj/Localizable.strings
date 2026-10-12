@@ -123,6 +123,8 @@
 "Showing %1$@ of %2$@ — zoom in to see all" = "Viser %1$@ av %2$@ – zoom inn for å se alle";
 "Parking bays unavailable right now" = "Parkeringsplassene kan ikke vises akkurat nå";
 "Parking bays may be out of date" = "Parkeringsplassene kan være utdaterte";
+"Night ban in %1$@: no scooter rentals until %2$@" = "Nattforbud i %1$@: ingen utleie før kl. %2$@";
+"Night ban in %1$@: you can rent it from %2$@" = "Nattforbud i %1$@: kan leies fra kl. %2$@";
 "No scooters here right now. Zoom out or move the map." = "Ingen elsparkesykler her akkurat nå. Zoom ut eller flytt kartet.";
 
 /* UX alignment: refresh and load failures */

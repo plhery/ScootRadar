@@ -728,6 +728,84 @@ struct GeoBounds: Equatable, Sendable {
     }
 }
 
+/// A city's ban on renting shared scooters at night, like src/lib/rentalCurfews.ts.
+/// Some operators still list their scooters as available then, so the dock and
+/// the card say why they can't be rented. `all` is generated from
+/// data/rental-curfews.json.
+struct RentalCurfew: Sendable {
+    /// One window of the ban. A night belongs to the evening it starts on: a
+    /// window that starts before noon is the early hours after that evening.
+    struct Night: Sendable {
+        /// Calendar weekdays of those evenings, 1 for Sunday; every evening when nil.
+        let evenings: Set<Int>?
+        /// Local minutes since midnight; a window past midnight starts after it ends.
+        let fromMinute: Int
+        let untilMinute: Int
+
+        /// Whether it holds at that wall-clock time, on that weekday.
+        func holds(atMinute local: Int, weekday: Int) -> Bool {
+            let evening: Int
+            if fromMinute > untilMinute {
+                guard local >= fromMinute || local < untilMinute else { return false }
+                evening = local >= fromMinute ? weekday : weekday - 1
+            } else {
+                guard local >= fromMinute, local < untilMinute else { return false }
+                evening = fromMinute >= 12 * 60 ? weekday : weekday - 1
+            }
+            return evenings?.contains((evening + 6) % 7 + 1) ?? true
+        }
+    }
+
+    let city: String
+    let timeZone: String
+    let nights: [Night]
+    /// The municipality's boundary, one ring a piece.
+    let areas: [[GeoPoint]]
+
+    struct Active: Equatable, Hashable, Sendable {
+        let city: String
+        /// When renting is allowed again.
+        let until: Date
+    }
+
+    /// The ban in force at that point and instant, if any.
+    static func active(at point: GeoPoint, on date: Date, among curfews: [RentalCurfew] = all) -> Active? {
+        for curfew in curfews where curfew.contains(point) {
+            guard let zone = TimeZone(identifier: curfew.timeZone) else { continue }
+            var calendar = Calendar(identifier: .gregorian)
+            calendar.timeZone = zone
+            let clock = calendar.dateComponents([.weekday, .hour, .minute], from: date)
+            let local = (clock.hour ?? 0) * 60 + (clock.minute ?? 0)
+            // The calendar finds the end across a change of the clocks.
+            guard let night = curfew.nights.first(where: { $0.holds(atMinute: local, weekday: clock.weekday ?? 1) }),
+                  let until = calendar.nextDate(
+                    after: date,
+                    matching: DateComponents(hour: night.untilMinute / 60, minute: night.untilMinute % 60, second: 0),
+                    matchingPolicy: .nextTime
+                  ) else { continue }
+            return Active(city: curfew.city, until: until)
+        }
+        return nil
+    }
+
+    /// Ray casting, as polygonContainsPoint on the web.
+    func contains(_ point: GeoPoint) -> Bool {
+        areas.contains { area in
+            var inside = false
+            var previous = area.count - 1
+            for index in area.indices {
+                let a = area[index], b = area[previous]
+                if (a.latitude > point.latitude) != (b.latitude > point.latitude),
+                   point.longitude < (b.longitude - a.longitude) * (point.latitude - a.latitude) / (b.latitude - a.latitude) + a.longitude {
+                    inside.toggle()
+                }
+                previous = index
+            }
+            return inside
+        }
+    }
+}
+
 struct MapFocusRequest: Equatable, Sendable {
     let point: GeoPoint
     let token: Int
@@ -1088,6 +1166,8 @@ enum ScooterDockStatus: Equatable, Sendable {
 }
 
 enum ScooterDockNotice: Hashable, Identifiable, Sendable {
+    /// The city in view bans renting at night: a moon rather than a warning.
+    case curfew(RentalCurfew.Active)
     /// Named providers, in catalogue order; never empty.
     case providersDown([ScooterProvider])
     /// Only sources that belong to no known provider failed.
@@ -1098,8 +1178,18 @@ enum ScooterDockNotice: Hashable, Identifiable, Sendable {
 
     var id: Self { self }
 
+    var systemImage: String {
+        if case .curfew = self { "moon.fill" } else { "exclamationmark.triangle" }
+    }
+
     var text: String {
         switch self {
+        case let .curfew(curfew):
+            String(
+                format: String(localized: "Night ban in %1$@: no scooter rentals until %2$@"),
+                curfew.city,
+                ScooterDockStatus.clockTime(curfew.until)
+            )
         case let .providersDown(providers) where providers.count == 1:
             String(format: String(localized: "%@ isn’t sharing data right now."), providers[0].name)
         case let .providersDown(providers) where providers.count == 2:
@@ -1128,13 +1218,18 @@ enum ScooterDockNotice: Hashable, Identifiable, Sendable {
         }
     }
 
-    /// Providers down, then truncation, then parking.
+    /// A night ban first, as some operators keep listing their scooters through
+    /// it, then providers down, truncation and parking.
     static func notices(
+        curfew: RentalCurfew.Active? = nil,
         health: ScooterProviderHealth,
         metadata: ScooterResponseMetadata,
         shownCount: Int
     ) -> [ScooterDockNotice] {
         var notices: [ScooterDockNotice] = []
+        if let curfew {
+            notices.append(.curfew(curfew))
+        }
         if !health.downProviders.isEmpty {
             notices.append(.providersDown(health.downProviders))
         } else if health.hasUnknownFailures {

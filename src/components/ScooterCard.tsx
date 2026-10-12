@@ -6,9 +6,11 @@ import { batteryLevel } from '@/lib/battery';
 import { selectionFeedback } from '@/lib/feedback';
 import { useI18n } from '@/lib/i18n';
 import { providerInkColor, providerSurfaceColor } from '@/lib/providerColor';
+import type { ActiveCurfew } from '@/lib/rentalCurfews';
 import { browserRentalLink } from '@/lib/rentalLinks';
 import { RIDE_DURATIONS, formatRidePrice, ridePriceQuote } from '@/lib/ridePrice';
 import { PROVIDERS, type Vehicle } from '@/lib/types';
+import { formatUiText } from '@/lib/uiText';
 import { useRideDuration } from '@/lib/useRideDuration';
 import {
   distanceParts,
@@ -23,6 +25,8 @@ export interface SelectedVehicle {
   vehicle: Vehicle;
   /** Null without an origin: neither your location nor a searched place. */
   walk: WalkEstimate | null;
+  /** The night ban of the city the scooter is in, while it holds. */
+  curfew?: ActiveCurfew | null;
 }
 
 interface ScooterCardProps {
@@ -237,6 +241,12 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
 
       {figures.length > 0 && <div className="card-figures">{figures.map(figure)}</div>}
       <p className="card-note">{note}</p>
+      {selection.curfew && (
+        <p className="card-note card-curfew">
+          <Icon name="moon" size={13} strokeWidth={2.2} />
+          <span>{formatUiText({ key: 'card.curfew', values: { city: selection.curfew.city }, time: selection.curfew.until }, i18n)}</span>
+        </p>
+      )}
 
       <div className="card-actions">
         {rentalLink && (

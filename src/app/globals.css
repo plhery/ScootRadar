@@ -685,6 +685,11 @@ svg {
   margin-top: 2px;
   color: var(--warning-ink);
 }
+/* A rule of the city rather than trouble with the data. */
+.dock-note-calm > svg,
+.card-curfew > svg {
+  color: var(--blue-ink);
+}
 .dock-hint {
   padding: 12px 0 0;
 }
@@ -992,6 +997,16 @@ svg {
   font-size: 12px;
   line-height: 1.4;
   font-variant-numeric: tabular-nums;
+}
+.card-curfew {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin-top: 4px;
+}
+.card-curfew > svg {
+  flex: none;
+  margin-top: 2px;
 }
 /* Side by side where both labels fit on one line, one under the other where they do not. */
 .card-actions {

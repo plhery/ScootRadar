@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import ScooterCard, { type SelectedVehicle } from '@/components/ScooterCard';
 import { I18nProvider } from '@/lib/i18n';
 import type { Vehicle } from '@/lib/types';
+import { formatClockTime } from '@/lib/uiText';
 
 const lime: Vehicle = {
   provider: 'lime', lat: 47.37, lng: 8.54, battery: 82, range_m: 24_000,
@@ -137,6 +138,15 @@ describe('ScooterCard', () => {
     expect(facts()).toHaveTextContent(/^24 km range$/);
     expect(screen.getByText('Price shown in the Lime app')).toHaveClass('card-note');
     expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
+  });
+
+  it('says under the price that the city bans renting at night, and from when it can be rented', () => {
+    const until = Date.parse('2026-10-13T03:00:00Z');
+    renderCard({ curfew: { city: 'Oslo', until } });
+
+    const line = screen.getByText(`Night ban in Oslo: you can rent it from ${formatClockTime(until, 'en')}`).closest('p');
+    expect(line).toHaveClass('card-note', 'card-curfew');
+    expect(line?.previousElementSibling).toHaveTextContent('CHF 1.00 to unlock, then CHF 0.35 a minute');
   });
 
   it('puts the range there when the battery is not known either', () => {

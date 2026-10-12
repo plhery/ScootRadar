@@ -8,6 +8,7 @@ import {
   nothingToShow,
   type FilterSummaryPart,
 } from '@/lib/nothingToShow';
+import { activeCurfew } from '@/lib/rentalCurfews';
 import type { ScooterLoading } from '@/lib/scooterDataState';
 import type { MapBounds, ScooterResponseMeta } from '@/lib/types';
 import type { UiText, UiTextFormatter } from '@/lib/uiText';
@@ -92,7 +93,8 @@ export type DockStatus =
   | { kind: 'updated'; text: UiText };
 
 export interface DockNotice {
-  kind: 'providers' | 'truncated' | 'parking';
+  /** A curfew is the city's night ban on renting, shown with a moon rather than a warning. */
+  kind: 'curfew' | 'providers' | 'truncated' | 'parking';
   text: UiText;
 }
 
@@ -246,6 +248,9 @@ export function dockIssue(input: StatusInput & Pick<DockInput, 'loading' | 'outO
 function dockNotices(input: DockInput, health: ProviderHealth): DockNotice[] {
   const { meta } = input;
   const notices: DockNotice[] = [];
+  // Some operators keep listing their scooters through the ban, so it comes first.
+  const curfew = activeCurfew(input.viewportCenter, input.now);
+  if (curfew) notices.push({ kind: 'curfew', text: { key: 'dock.curfew', values: { city: curfew.city }, time: curfew.until } });
   const providers = providersDownNotice(health);
   if (providers) notices.push({ kind: 'providers', text: providers });
   if (meta?.truncated) {

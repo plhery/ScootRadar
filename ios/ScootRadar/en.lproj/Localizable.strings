@@ -123,6 +123,8 @@
 "Showing %1$@ of %2$@ — zoom in to see all" = "Showing %1$@ of %2$@ — zoom in to see all";
 "Parking bays unavailable right now" = "Parking bays unavailable right now";
 "Parking bays may be out of date" = "Parking bays may be out of date";
+"Night ban in %1$@: no scooter rentals until %2$@" = "Night ban in %1$@: no scooter rentals until %2$@";
+"Night ban in %1$@: you can rent it from %2$@" = "Night ban in %1$@: you can rent it from %2$@";
 "No scooters here right now. Zoom out or move the map." = "No scooters here right now. Zoom out or move the map.";
 
 /* UX alignment: refresh and load failures */

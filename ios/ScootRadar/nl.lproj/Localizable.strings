@@ -123,6 +123,8 @@
 "Showing %1$@ of %2$@ — zoom in to see all" = "%1$@ van %2$@ getoond — zoom in om alles te zien";
 "Parking bays unavailable right now" = "Parkeerplekken nu niet beschikbaar";
 "Parking bays may be out of date" = "Parkeerplekken zijn mogelijk niet actueel";
+"Night ban in %1$@: no scooter rentals until %2$@" = "Nachtverbod in %1$@: geen verhuur tot %2$@";
+"Night ban in %1$@: you can rent it from %2$@" = "Nachtverbod in %1$@: te huur vanaf %2$@";
 "No scooters here right now. Zoom out or move the map." = "Hier staan nu geen deelsteps. Zoom uit of verschuif de kaart.";
 
 /* UX alignment: refresh and load failures */

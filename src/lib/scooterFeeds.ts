@@ -432,7 +432,11 @@ function vehiclePricing(plan: PricingPlan): VehiclePricing | null {
   // with introductory periods, interval billing, distance charges or extra tax.
   if (minuteBands?.length !== 1 || plan.per_km_pricing?.length || plan.is_taxable === true) return null;
   const band = minuteBands[0];
-  if (band.start !== 0 || band.interval !== 1 || band.end !== undefined) return null;
+  // Dott, Ryde and Pony start their band at minute 1, yet their descriptions
+  // say "1 EUR to unlock and 0.37 EUR per minute": every minute is charged. Read
+  // to the letter, the first minute would be free, so the estimate is at most
+  // one minute's fee above it, never below.
+  if ((band.start !== 0 && band.start !== 1) || band.interval !== 1 || band.end !== undefined) return null;
   const minuteFee = minorUnits(band.rate);
 
   if (!currency?.match(/^[A-Z]{3}$/) || unlockFee == null || minuteFee == null) {

@@ -564,6 +564,8 @@ struct ScooterCardContent: Equatable, Sendable {
     let facts: String?
     /// "CHF 1.00 to unlock, then CHF 0.42 a minute".
     let note: String
+    /// "Night ban in Oslo: you can rent it from 05:00", while the ban holds.
+    let curfew: String?
 
     /// With an origin the figures are the walk, the distance and the price of
     /// a ride; without a price the battery takes its cell, or else the range.
@@ -572,8 +574,16 @@ struct ScooterCardContent: Equatable, Sendable {
         scooter: Scooter,
         metres: CLLocationDistance?,
         placeTitle: String? = nil,
-        quote: RidePriceQuote?
+        quote: RidePriceQuote?,
+        curfew: RentalCurfew.Active? = nil
     ) {
+        self.curfew = curfew.map { curfew in
+            String(
+                format: String(localized: "Night ban in %1$@: you can rent it from %2$@"),
+                curfew.city,
+                ScooterDockStatus.clockTime(curfew.until)
+            )
+        }
         let providerName = scooter.providerInfo?.name ?? scooter.provider.capitalized
         let price = quote.map { quote in
             ScooterCardFigure(

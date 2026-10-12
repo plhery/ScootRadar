@@ -324,7 +324,11 @@ struct ScooterControlDock: View {
             if !summary.notices.isEmpty {
                 VStack(alignment: .leading, spacing: 4) {
                     ForEach(summary.notices) { notice in
-                        DockNoteRow(systemImage: "exclamationmark.triangle", text: notice.text)
+                        DockNoteRow(
+                            systemImage: notice.systemImage,
+                            text: notice.text,
+                            tint: notice.systemImage == "moon.fill" ? ScooterPalette.actionText : nil
+                        )
                     }
                 }
             }
@@ -634,11 +638,14 @@ private struct DockStatusLabel: View {
 private struct DockNoteRow: View {
     let systemImage: String
     let text: String
+    /// The symbol's own colour; the text's when nil.
+    var tint: Color?
 
     var body: some View {
         HStack(alignment: .firstTextBaseline, spacing: 6) {
             Image(systemName: systemImage)
                 .font(.caption2.weight(.semibold))
+                .foregroundStyle(tint ?? ScooterPalette.secondaryText)
                 .accessibilityHidden(true)
             Text(text)
                 .font(.caption)
@@ -1085,6 +1092,22 @@ private struct ScooterCard: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal, 2)
                 .padding(.top, 10)
+
+            if let curfew = content.curfew {
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                    Image(systemName: "moon.fill")
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(ScooterPalette.actionText)
+                        .accessibilityHidden(true)
+                    Text(curfew)
+                        .designFont(12, relativeTo: .caption)
+                        .monospacedDigit()
+                        .foregroundStyle(ScooterPalette.dockQuiet)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(.horizontal, 2)
+                .padding(.top, 4)
+            }
 
             // "Open in …" is the wider of the two.
             DockActionRow(weights: scooter.rentalURL == nil ? [] : [1.5, 1]) {
@@ -1952,6 +1975,14 @@ struct ScooterCreditsList: View {
             Source(
                 title: "NO: Entur AS · NLOD",
                 url: URL(string: "https://data.norge.no/nlod/en/2.0")!
+            ),
+            Source(
+                title: "NO: Kartverket boundaries · CC BY 4.0",
+                url: URL(string: "https://creativecommons.org/licenses/by/4.0/")!
+            ),
+            Source(
+                title: "UK: ONS boundaries · OGL v3.0",
+                url: URL(string: "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/")!
             ),
             Source(
                 title: String(localized: "Address data © swisstopo"),

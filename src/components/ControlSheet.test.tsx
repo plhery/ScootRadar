@@ -282,6 +282,8 @@ describe('ControlSheet settings', () => {
       'DE/IT/BE/UK: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy',
       'UK: Beryl · CDLA-Permissive-2.0',
       'NO: Entur AS · NLOD',
+      'NO: Kartverket boundaries · CC BY 4.0',
+      'UK: ONS boundaries · OGL v3.0',
       '© swisstopo',
       'Parking · Métropole Européenne de Lille',
     ]);
