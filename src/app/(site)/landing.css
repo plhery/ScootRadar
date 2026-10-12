@@ -1,7 +1,7 @@
 /* The landing page, src/app/(site)/[[...path]]/page.tsx: the map at night,
    and the guides beside it, src/app/(site)/guides.tsx. They share nothing with
-   the app's globals.css; this is their whole stylesheet, and it is dark
-   whatever the appearance of the system. */
+   the app's globals.css; this is their whole stylesheet. The landing page is
+   dark whatever the appearance of the system; the guides follow it. */
 
 :root {
   --night: #090b10;
@@ -10,10 +10,18 @@
   --lifted: #1a1f2a;
   --bezel: #1b1f29;
   --control: #262b37;
+  /* The far end from the night: a link under the pointer and the fill of a
+     solid button, and, thinned, the rules between things. */
+  --loud: #ffffff;
   --text: #f4f5f7;
   --soft: #c5c9d1;
   --quiet: #a3a8b3;
   --line: rgba(255, 255, 255, 0.09);
+  /* What the languages sit in, in the bar from a tablet up. */
+  --groove: #0c0f15;
+  --shade: rgba(0, 0, 0, 0.9);
+  --focus: #8ad4ff;
+  --selection: rgba(47, 123, 255, 0.55);
   /* The blue of the app's own button: white letters read on it. */
   --blue: #0070eb;
   --display: var(--font-display), 'Trebuchet MS', Helvetica, sans-serif;
@@ -22,6 +30,27 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   /* The colour of the nearest provider, wherever something glows in it. */
   --c: #ff1493;
+}
+
+/* The guides are read at length, and by day where the system is light. The
+   layout marks the pages that follow the system. */
+@media (prefers-color-scheme: light) {
+  html[data-theme='auto'] {
+    color-scheme: light;
+    --night: #f4f5f7;
+    --panel: #ffffff;
+    --raised: #ffffff;
+    --control: #d9dde3;
+    --loud: #000000;
+    --text: #10131a;
+    --soft: #3a404c;
+    --quiet: #596273;
+    --line: rgba(16, 19, 26, 0.1);
+    --groove: #eef0f3;
+    --shade: rgba(16, 19, 26, 0.22);
+    --focus: var(--blue);
+    --selection: rgba(0, 112, 235, 0.22);
+  }
 }
 
 *,
@@ -69,14 +98,14 @@ img {
 }
 
 :focus-visible {
-  outline: 3px solid #8ad4ff;
+  outline: 3px solid var(--focus);
   outline-offset: 3px;
   border-radius: 8px;
 }
 
 ::selection {
-  background: rgba(47, 123, 255, 0.55);
-  color: #ffffff;
+  background: var(--selection);
+  color: var(--loud);
 }
 
 .sr-only {
@@ -182,14 +211,14 @@ img {
   transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
 }
 
-.btn--white {
-  background: #ffffff;
+.btn--solid {
+  background: var(--loud);
   color: var(--night);
 }
 
-.btn--white:hover {
+.btn--solid:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 44px -14px rgba(255, 255, 255, 0.55);
+  box-shadow: 0 14px 44px -14px color-mix(in srgb, var(--loud) 55%, transparent);
 }
 
 .btn--line {
@@ -254,7 +283,7 @@ img {
 
 .pill-link:hover,
 .langs a:hover {
-  color: #ffffff;
+  color: var(--loud);
 }
 
 /* On a phone the bar keeps its two ends, and the languages take a row of their own. */
@@ -295,14 +324,14 @@ img {
 .pill-cta {
   padding: 0 16px;
   border-radius: 16px;
-  background: #ffffff;
+  background: var(--loud);
   color: var(--night);
   font-weight: 600;
   transition: box-shadow 0.25s var(--ease-out);
 }
 
 .pill-cta:hover {
-  box-shadow: 0 8px 30px -10px rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 30px -10px color-mix(in srgb, var(--loud) 60%, transparent);
 }
 
 /* On the narrowest phones, 320 px wide, the name and the button only fit side by side a little smaller. */
@@ -340,7 +369,7 @@ img {
     width: auto;
     padding: 6px 8px 6px 14px;
     background: color-mix(in srgb, var(--raised) 78%, transparent);
-    box-shadow: inset 0 0 0 1px var(--line), 0 14px 40px -18px rgba(0, 0, 0, 0.9);
+    box-shadow: inset 0 0 0 1px var(--line), 0 14px 40px -18px var(--shade);
     -webkit-backdrop-filter: blur(22px) saturate(1.6);
     backdrop-filter: blur(22px) saturate(1.6);
     pointer-events: auto;
@@ -359,7 +388,7 @@ img {
     padding: 3px;
     border-top: 0;
     border-radius: 14px;
-    background: #0c0f15;
+    background: var(--groove);
   }
 
   .langs a {
@@ -1026,12 +1055,12 @@ img {
   flex-wrap: wrap;
   gap: 6px 28px;
   padding: 22px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid color-mix(in srgb, var(--loud) 12%, transparent);
 }
 
 .country:last-child,
 .question:last-child {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid color-mix(in srgb, var(--loud) 12%, transparent);
 }
 
 .country dt {
@@ -1134,7 +1163,7 @@ img {
 
 .footer {
   padding: 32px var(--gutter) 36px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid color-mix(in srgb, var(--loud) 10%, transparent);
   font-size: 15px;
   line-height: 1.6;
   color: var(--quiet);
@@ -1146,14 +1175,14 @@ img {
 }
 
 .footer a:hover {
-  color: #ffffff;
+  color: var(--loud);
 }
 
 /* The guides, once there are some: their titles, in as many columns as fit. */
 .guides {
   margin-bottom: 28px;
   padding-bottom: 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid color-mix(in srgb, var(--loud) 10%, transparent);
 }
 
 .guides h2 {
@@ -1202,7 +1231,7 @@ img {
 .maker {
   margin: 24px 0 0;
   padding-top: 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid color-mix(in srgb, var(--loud) 10%, transparent);
   text-wrap: balance;
 }
 
@@ -1265,7 +1294,7 @@ img {
 }
 
 .trail a:hover {
-  color: #ffffff;
+  color: var(--loud);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -1297,7 +1326,7 @@ img {
 }
 
 .contents a:hover {
-  color: #ffffff;
+  color: var(--loud);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -1350,7 +1379,7 @@ img {
 .guide-head a:not(.trail a),
 .guide-sources a {
   color: var(--text);
-  text-decoration-color: rgba(255, 255, 255, 0.35);
+  text-decoration-color: color-mix(in srgb, var(--loud) 35%, transparent);
   text-decoration-thickness: 1px;
   text-underline-offset: 4px;
   transition: text-decoration-color 0.2s;
@@ -1358,7 +1387,7 @@ img {
 
 .guide-section a:hover,
 .guide-sources a:hover {
-  text-decoration-color: #ffffff;
+  text-decoration-color: var(--loud);
 }
 
 /* Steps are counted in discs, as a list the reader follows. */
@@ -1533,7 +1562,7 @@ img {
 
 .guide-list a:hover {
   background: var(--raised);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--loud) 20%, transparent);
 }
 
 .guide-list-name {
@@ -2011,7 +2040,7 @@ img {
       position: absolute;
       inset: -1px 0 auto;
       height: 1px;
-      background: rgba(255, 255, 255, 0.12);
+      background: color-mix(in srgb, var(--loud) 12%, transparent);
       transform-origin: left;
       animation: draw linear both;
       animation-timeline: view();

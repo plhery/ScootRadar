@@ -124,16 +124,42 @@ test('the guides are in the sitemap, each with its translations', async ({ reque
   expect(listed).toContain(`hreflang="it" href="${SITE}${SWISS_RULES.it}"`);
 });
 
-test('a guide is accessible, and its targets are big enough for a finger', async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  for (const address of [SWISS_RULES.en, LISTS.en]) {
-    await page.goto(address);
-    const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
-    expect(accessibility.violations, address).toEqual([]);
+test('a guide follows the appearance of the system, where the landing page stays at night', async ({ page }) => {
+  const painted = () => page.evaluate(() => ({
+    page: getComputedStyle(document.body).backgroundColor,
+    // The colour the browser gives what it draws around the page.
+    around: [...document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]')]
+      .find(meta => !meta.media || matchMedia(meta.media).matches)?.content,
+  }));
+  const day = { page: 'rgb(244, 245, 247)', around: '#f4f5f7' };
+  const night = { page: 'rgb(9, 11, 16)', around: '#090b10' };
 
-    for (const link of await page.locator('.pill a:visible, .trail a, .contents a, .btn, .guide-list a, .footer a').all()) {
-      const box = (await link.boundingBox())!;
-      expect(box.height, await link.innerText()).toBeGreaterThanOrEqual(38);
+  for (const address of [SWISS_RULES.en, LISTS.en]) {
+    await page.emulateMedia({ colorScheme: 'light' });
+    await page.goto(address);
+    expect(await painted(), address).toEqual(day);
+    await page.emulateMedia({ colorScheme: 'dark' });
+    expect(await painted(), address).toEqual(night);
+  }
+
+  await page.emulateMedia({ colorScheme: 'light' });
+  await page.goto('/');
+  expect(await painted()).toEqual(night);
+});
+
+test('a guide is accessible in either appearance, and its targets are big enough for a finger', async ({ page }) => {
+  // Each appearance from the load: the cards would still be on their way from the other one.
+  for (const colorScheme of ['light', 'dark'] as const) {
+    await page.emulateMedia({ reducedMotion: 'reduce', colorScheme });
+    for (const address of [SWISS_RULES.en, LISTS.en]) {
+      await page.goto(address);
+      const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
+      expect(accessibility.violations, `${address}, ${colorScheme}`).toEqual([]);
+
+      for (const link of await page.locator('.pill a:visible, .trail a, .contents a, .btn, .guide-list a, .footer a').all()) {
+        const box = (await link.boundingBox())!;
+        expect(box.height, await link.innerText()).toBeGreaterThanOrEqual(38);
+      }
     }
   }
 });

@@ -245,7 +245,7 @@ function GitHubMark() {
 function Actions({ copy }: { copy: LandingCopy }) {
   return (
     <div className="cta-row">
-      <AppLink className="btn btn--white" href={MAP_PATH}>{copy.openMap}</AppLink>
+      <AppLink className="btn btn--solid" href={MAP_PATH}>{copy.openMap}</AppLink>
       {APP_STORE_URL && (
         <a className="btn btn--line" href={APP_STORE_URL}><AppleMark />{copy.iphoneApp}</a>
       )}

@@ -21,7 +21,8 @@ import { OPEN_GRAPH_LOCALES, SITE_NAME, SITE_URL, shareImage } from '@/lib/site'
 import { AppLink, SiteBar, SiteFooter } from './chrome';
 
 // The guides, src/lib/guides.ts: one page each, and the list of a language's
-// guides. They are read at length, in one column, on the night of the landing page.
+// guides. They are read at length, in one column: on the night of the landing
+// page, or by day where the system is light.
 
 /** The languages that have guides, each with its list. */
 function indexLanguages() {
@@ -316,7 +317,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
             <h2 id="find" className="heading">{copy.map.title}</h2>
             <p>{copy.map.text}</p>
             <div className="cta-row">
-              <AppLink className="btn btn--white" href={city ? mapAt(city.center) : MAP_PATH}>{landing.openMap}</AppLink>
+              <AppLink className="btn btn--solid" href={city ? mapAt(city.center) : MAP_PATH}>{landing.openMap}</AppLink>
             </div>
           </aside>
 
