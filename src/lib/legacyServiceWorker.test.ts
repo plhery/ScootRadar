@@ -92,10 +92,9 @@ describe.each(['swiss-scooters.plhery.com', 'zurich-scooter.plhery.com', 'scoote
 });
 
 describe('the landing page, where the worker of the app is installed', () => {
-  const visit = (worker: ReturnType<typeof migrationWorker>, preloadResponse?: Promise<Response | undefined>) =>
+  const visit = (worker: ReturnType<typeof migrationWorker>) =>
     worker.dispatch('fetch', {
       request: { url: `${worker.origin}/`, mode: 'navigate', method: 'GET' },
-      preloadResponse,
     });
 
   it('comes from the network and is not kept as the app', async () => {
@@ -104,9 +103,6 @@ describe('the landing page, where the worker of the app is installed', () => {
     worker.fetch.mockResolvedValue(landing);
     const respond = await visit(worker);
     expect(await respond.mock.calls[0][0]).toBe(landing);
-
-    const preloaded = new Response('preloaded');
-    expect(await (await visit(worker, Promise.resolve(preloaded))).mock.calls[0][0]).toBe(preloaded);
     expect(worker.fetch).toHaveBeenCalledOnce();
   });
 

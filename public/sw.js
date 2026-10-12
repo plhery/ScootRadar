@@ -24,6 +24,9 @@ const PUBLIC_ASSET_PATHS = new Set([
 const MAX_ASSET_ENTRIES = 80;
 
 let shellRefreshPromise = null;
+// The pages the kept shell opened. It can be of an older release than the
+// server's, whose files are gone from there.
+const openedFromKeptShell = new Set();
 
 self.addEventListener("install", (event) => {
   if (MOVED_ORIGIN) {
@@ -83,9 +86,12 @@ self.addEventListener("activate", (event) => {
         return;
       }
 
+      // Off, where an earlier worker turned it on: Safari never settles the
+      // preload of a launch answered from the cache, and the shell's update
+      // waited for it for good.
       if (self.registration.navigationPreload) {
         try {
-          await self.registration.navigationPreload.enable();
+          await self.registration.navigationPreload.disable();
         } catch {
           // Navigation preload is an optional optimization.
         }
@@ -115,9 +121,9 @@ self.addEventListener("fetch", (event) => {
     url.origin === self.location.origin &&
     url.pathname === APP_SHELL_PATH
   ) {
-    const refresh = refreshAppShell(request, event.preloadResponse);
+    const refresh = refreshAppShell(request);
     event.waitUntil(refresh.then(() => undefined));
-    event.respondWith(serveAppShell(refresh));
+    event.respondWith(serveAppShell(request, refresh, event.resultingClientId));
     return;
   }
 
@@ -126,7 +132,7 @@ self.addEventListener("fetch", (event) => {
     url.origin === self.location.origin &&
     url.pathname === "/"
   ) {
-    event.respondWith(landingPage(request, event.preloadResponse));
+    event.respondWith(landingPage(request));
     return;
   }
 
@@ -134,7 +140,7 @@ self.addEventListener("fetch", (event) => {
     url.origin === self.location.origin &&
     url.pathname.startsWith("/_next/static/")
   ) {
-    event.respondWith(cacheFirst(request));
+    event.respondWith(appFile(event));
     return;
   }
 
@@ -181,15 +187,15 @@ function movedPageUrl(source) {
 
 // The landing page is not kept: it comes from the network. Without one, an app
 // installed while "/" was the map still opens on the map.
-async function landingPage(request, preloadResponse) {
+async function landingPage(request) {
   try {
-    return (await preloadResponse) ?? (await fetch(request));
+    return await fetch(request);
   } catch {
     return Response.redirect(APP_SHELL_URL, 302);
   }
 }
 
-async function serveAppShell(refresh) {
+async function serveAppShell(request, refresh, clientId) {
   const cache = await caches.open(APP_CACHE);
   const [cached, updatePending] = await Promise.all([
     cache.match(APP_SHELL_URL),
@@ -200,11 +206,14 @@ async function serveAppShell(refresh) {
     // If an update was prepared during an earlier launch, this response is the
     // new shell. Clearing the marker prevents a second, unnecessary reload.
     if (updatePending) await cache.delete(UPDATE_MARKER_URL);
+    if (clientId) openedFromKeptShell.add(clientId);
     return cached;
   }
 
   return (
     (await refresh) ??
+    // A page that cannot be kept is shown all the same: only offline is there none.
+    (await fetch(request).catch(() => null)) ??
     new Response("The app is unavailable offline until it has loaded once.", {
       status: 503,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -212,7 +221,7 @@ async function serveAppShell(refresh) {
   );
 }
 
-function refreshAppShell(request, preloadResponse) {
+function refreshAppShell(request) {
   if (shellRefreshPromise) return shellRefreshPromise;
 
   shellRefreshPromise = (async () => {
@@ -220,10 +229,7 @@ function refreshAppShell(request, preloadResponse) {
     const cached = await cache.match(APP_SHELL_URL);
 
     try {
-      const preloaded = preloadResponse ? await preloadResponse : null;
-      const fresh =
-        preloaded ??
-        (await fetch(new Request(request, { cache: "no-store" })));
+      const fresh = await fetch(new Request(request, { cache: "no-store" }));
 
       if (!fresh.ok || !responseNonce(fresh)) return null;
 
@@ -270,13 +276,22 @@ async function comparableAppShell(response) {
   )}`;
 }
 
-async function cacheFirst(request) {
+// A file of the app never changes under its address: once kept, it comes from
+// the cache. Only the map's are kept, as the map is the one page that opens
+// offline: the pages around it would only push its files out.
+async function appFile(event) {
+  const { request, clientId } = event;
   const cache = await caches.open(ASSET_CACHE);
   const cached = await cache.match(request);
   if (cached) return cached;
 
   const response = await fetch(request);
-  if (!response.ok) return response;
+  // A file the server no longer has, for a page of the kept shell: the shell is
+  // of an older release, and the page cannot run.
+  if (response.status === 404 && openedFromKeptShell.delete(clientId)) {
+    event.waitUntil(reopenFromNetwork(clientId));
+  }
+  if (!response.ok || !(await askedByMap(clientId))) return response;
 
   await cache.put(request, response.clone());
   const keys = await cache.keys();
@@ -286,6 +301,31 @@ async function cacheFirst(request) {
     )
   );
   return response;
+}
+
+async function askedByMap(clientId) {
+  const client = clientId ? await self.clients.get(clientId) : undefined;
+  // A request the browser does not tie to a page is kept, as everything was.
+  return !client || new URL(client.url).pathname === APP_SHELL_PATH;
+}
+
+// The page opens again from the network, with the release whose files the
+// server has, and that shell is kept instead.
+async function reopenFromNetwork(clientId) {
+  // An update check under way would keep a shell again just after.
+  await shellRefreshPromise;
+  const cache = await caches.open(APP_CACHE);
+  await Promise.all([
+    cache.delete(APP_SHELL_URL),
+    cache.delete(UPDATE_MARKER_URL),
+  ]);
+
+  const client = await self.clients.get(clientId);
+  try {
+    await client?.navigate(client.url);
+  } catch {
+    // Safari before 16 cannot: the next launch comes from the network.
+  }
 }
 
 async function networkFirst(request) {
