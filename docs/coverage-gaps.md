@@ -107,12 +107,49 @@ banned shared scooters, and feeds that were empty when checked.
 
 ## Countries not covered yet
 
-| Country | Status |
+Surveyed on the night of 12–13 October 2026: MobilityData's GBFS registry, the
+national access points, Dott's country listings, a scan of Bolt's and ATOM
+Mobility's feed ids, Hopp's town list, and guessed Bird, Lime and Hopp
+addresses for each country's towns. Survey files were not kept; rerun the
+checks before relying on a count.
+
+**Public feeds found, being added one country at a time:**
+
+| Country | Scooters | Feeds |
+| --- | ---: | --- |
+| Sweden | ~890 | Lime Uppsala, Hopp Kiruna |
+| Latvia | ~705 | Ride Mobility Riga (ATOM Mobility, a provider new to the app) |
+| Poland | ~545 | Dott Sosnowiec, Wołomin and Oświęcim; Hopp in five small towns |
+| Hungary | ~380 | Hopp Pécs and Békéscsaba |
+| Greece | ~320 | Hopp Rhodes, Piraeus, Kefalonia, Nafplio and Ioannina |
+| Cyprus | ~100 | Hopp Paphos and Limassol |
+| Finland | ~40 | Hopp Mariehamn, on Åland |
+
+**On hold:** Ukraine. 3electra's Kyiv feed (ATOM Mobility) lists about 780
+scooters, but places most of them in Lima, Peru, and moves the same scooters
+between the two cities. Check it by day, and ask the operator, before adding
+it.
+
+**Nothing public:**
+
+| Country | Why |
 | --- | --- |
-| Austria | Nothing public on 11 October 2026: Dott's Austrian regions are private, and Vienna's operators publish no feed |
-| Poland | Dott in three small towns, about 540 scooters, on 11 October 2026; other operators not checked |
-| Netherlands, Ireland, Denmark, Sweden, Finland | Dott listed nothing public on 11 October 2026; other operators not checked |
-| Every other European country | Not checked yet |
+| Austria | Dott's regions are private. Vienna's operators (Bird, Lime, Link, Voi) and Voi Innsbruck publish no feed; the access point has Voi's static zones only, behind a registration |
+| Netherlands | No shared standing scooters: the national data hub (CROW) lists 27,000 shared vehicles and no scooter. They need type approval and, since July 2025, a plate |
+| Denmark | Lime (Copenhagen, Odense) and Voi publish no feed; Dott lists e-bikes only |
+| Czechia | Prague banned shared scooters from 1 January 2026; Golemio's feed needs a token. Bolt reportedly left the other towns |
+| Ireland | Bolt's Wexford trial (2024) publishes nothing; Moby and Bleeper are bikes. Public funding for scooter schemes was paused in July 2026 |
+| Estonia, Lithuania | Bolt and Ride Mobility publish no feed |
+| Slovakia, Slovenia, Bulgaria, Romania, Moldova | Dott and Bolt publish no feed; nothing else found |
+| Croatia | 2 docked nextbike scooters in Istria; Hopp Omiš held 11, all disabled. Rijeka is tendering 300 scooters from late 2026 |
+| Serbia | Belgrade cancelled its scooter tender in July 2026 |
+| Turkey | Martı, BinBin and Hop publish no feed |
+| Malta | Rental scooters banned since March 2024 |
+| Luxembourg, Monaco, Liechtenstein | Bikes and e-bikes only |
+| Bosnia and Herzegovina, Montenegro, North Macedonia, Albania, Kosovo, Andorra, San Marino, Gibraltar, Faroe Islands | No scooter feed found (Hopp Tórshavn held 13, all disabled) |
+
+Bolt publishes only two public scooter feeds in Europe, Brussels and Liverpool;
+its other systems answer 401. Dott made most regions private in September 2026.
 
 ## Dates to check again
 
@@ -131,5 +168,8 @@ banned shared scooters, and feeds that were empty when checked.
   Netherlands may publish feeds then.
 - **1 January 2027:** Brussels's ban starts; Bolt and Dott Bruxelles should
   empty.
+- **Spring 2027:** Dott's six paused Finnish towns (Ekenäs, Hamina, Hanko,
+  Imatra, Kalajoki, Kotka) and Hopp's Greek island towns (Chania, Rethymno,
+  Kos, Zakynthos and others) may open for the season.
 - Every Monday, the [catalog check workflow](../.github/workflows/catalog-check.yml)
   fails when an entry of a covered country is gone.
