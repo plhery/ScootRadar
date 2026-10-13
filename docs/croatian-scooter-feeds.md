@@ -94,10 +94,12 @@ and 32 at zoom 3.
   and 71 in the feed now, which its app shows.
 - **Time zone:** the feed gives `Europe/Zagreb` and opening hours `24/7`.
   Neither the app nor the scooter cache reads `system_information`.
-- **Load:** the scooter cache asks for Rijeka's `vehicle_status` once a minute
-  and its discovery, vehicle types, prices, stations and geofencing once an
-  hour, so Rijeka adds about 65 requests an hour to `hoppy.rideatom.com`,
-  which the cache paces to two requests a second, as every ATOM host.
+- **Load:** the scooter cache asks for Rijeka's `vehicle_status` every 20
+  minutes, or every minute for 10 minutes after someone looks at the town, and
+  its discovery, vehicle types, prices, stations and geofencing once an hour.
+  So Rijeka adds about 8 requests an hour to `hoppy.rideatom.com`, and at most
+  about 65 while it is watched; the cache paces every ATOM host to two requests
+  a second.
 
 ## Night bans
 
