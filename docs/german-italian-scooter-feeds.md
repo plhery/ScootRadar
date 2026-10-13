@@ -27,6 +27,11 @@ Göttingen, Freiburg im Breisgau and Erfurt; see [Yoio, October 2026](#yoio-octo
 Voi's Böblingen and Sindelfingen scooters, about 190, joined the map the same
 day; see [Voi in Böblingen and Sindelfingen, October 2026](#voi-in-böblingen-and-sindelfingen-october-2026).
 
+Zeus is moving its towns from `zeus.city` to ATOM Mobility. As checked on
+13 October 2026, that changes nothing on the map yet, and ten towns it has
+moved publish no feed with scooters; see
+[Zeus's move to ATOM Mobility, October 2026](#zeuss-move-to-atom-mobility-october-2026).
+
 Italy grew from Rome to three cities on 13 October 2026, with Bird Palermo and
 Bird Napoli; see [Italy, October 2026](#italy-october-2026).
 
@@ -166,6 +171,72 @@ now route them, so each town can be searched by name; no new feed is read.
   operator in the town centre and a complaints service, but no night ban. No rule on shared scooters was found for
   Sindelfingen. No curfew was added.
 
+## Zeus's move to ATOM Mobility, October 2026
+
+Zeus is moving its towns from its own backend, whose GBFS 2.2 feeds are at
+`zeus.city`, to ATOM Mobility's platform, which publishes GBFS 3.0 at
+`https://zeus.rideatom.com/gbfs/<id>/v3.0/gbfs`. A town that has moved keeps
+its `zeus.city` feed, but every scooter in it is disabled and none moves. On
+13 October 2026 Zeus's `zeus.city` and MobiData BW feeds were polled five
+times, five minutes apart, from 19:12 to 19:34, after the polls from 18:28.
+Zeus's ATOM ids were mapped from 19:09 to 19:16 and rechecked at 22:35, never
+faster than one request a second. Every ATOM feed is keyless, on the
+discovery's origin and under its directory, and publishes no `license_url`.
+
+- **Nothing on the map changes.** Each ATOM id with scooters is one that
+  MobiData BW already republishes, with the same vehicle ids, and the map
+  reads MobiData BW, which licenses them:
+
+  | ATOM id | ATOM's name | MobiData BW feed | Available |
+  | --- | --- | --- | ---: |
+  | 185 | Heidelberg | `zeus_leimen_walldorf_wiesloch` | 111 |
+  | 188 | Konstanz | `zeus_konstanz` | 110 |
+  | 190 | Neustadt | `zeus_neustadt` | 140 |
+  | 1339 | Singen | `zeus_singen` | 269 |
+  | 1396 | Renningen Malmsheim 2 | `zeus_renningen_malmsheim` | 85 |
+  | 1412 | Donaueschingen 2 | `zeus_donaueschingen` | 121 |
+  | 1415 | Würzburg 2 | `zeus_wurzburg` | 183 |
+  | 1416 | Tuttlingen 2 | `zeus_tuttlingen` | 110 |
+  | 1417 | Freiburg 2 | `zeus_freiburg` | 278 |
+  | 1421 | Villingen Schwenningen 2 | `zeus_villingen_schwenningen` | 284 |
+
+- **The four towns read from `zeus.city` are still live:** Bamberg (89 to 91
+  available), Ludwigsburg (141 or 142), Regensburg (195 to 197) and
+  Schweinfurt (154 or 155), with scooters leaving and arriving between polls.
+  Their ATOM ids answer but list no vehicles: 184 ("Bamberg/Memmelsdorf"), 82
+  (Ludwigsburg, which MobiData BW's empty `zeus_ludwigsburg` mirrors), 192
+  (Regensburg) and 193 (Schweinfurt). When one of these `zeus.city` feeds lists
+  only disabled scooters, read the town from its ATOM id instead, or from
+  MobiData BW if it carries the town.
+- **Moved, with no feed to read:** `zeus.city` lists only disabled scooters,
+  the same in all five polls, in Rüsselsheim (131), Straubing (109), Kempten
+  (105), Pforzheim (87), Göppingen (56), Schwäbisch Gmünd (55), Tübingen (51),
+  Hagen (44), Hattingen (35) and Heilbronn (15). It does the same for Konstanz
+  (104) and Villingen-Schwenningen (354), which the map reads from MobiData BW.
+  The ATOM ids named Kempten (187), Pforzheim (191) and Heilbronn (186) list
+  no vehicles, and 26 Zeus ids answer "GBFS disabled": 194, 1301, 1303, 1318,
+  1330 to 1337, 1386, 1387, 1391, 1392, 1394, 1395, 1397, 1398, 1404, 1411,
+  1413, 1414 and 1418 to 1420. A disabled id gives no name, so which towns
+  they hold is unknown. Voi still covers Pforzheim and Tübingen.
+- **No feed at all:** Zeus's list of cities also names Haßloch, Iserlohn,
+  Falkensee, Dessau-Roßlau, Korntal-Münchingen, Eisenach, Gotha, Jülich,
+  Wangen, Schwieberdingen, Sonthofen, Soest and Rottweil, which have neither a
+  `zeus.city` feed nor a known ATOM id.
+- **Depots:** ATOM id 189, "Zeus Warehouse (Neustadt)", is empty and is not a
+  town. MobiData BW's Konstanz feed lists 9 scooters stacked at one point in
+  Singen, and Zeus's Ludwigsburg feed 8 at one point east of the town; both
+  stacks lie outside their town's bounds, so the map leaves them out.
+- **Request rate:** ATOM blocks an address after a burst of about 900
+  requests, across its operators. The scooter cache reads no Zeus feed from
+  ATOM, so it still reads four ATOM feeds: Hoppy, Ride Mobility, and Yoio in
+  Göttingen and Erfurt. Each costs one `vehicle_status` request a minute, one
+  `station_status` a minute where it has parking, and five metadata documents
+  an hour: 65 to 125 requests an hour. That is at most about 250 an hour on
+  `yoio.rideatom.com` and 500 across ATOM, and each `rideatom.com` host is
+  paced to one request every 500 ms. Ten Zeus towns read from ATOM directly
+  would add 650 to 1,250 an hour on `zeus.rideatom.com`; that host would then
+  need a longer collection interval.
+
 ## Italy, October 2026
 
 Bird Palermo and Bird Napoli are Bird's own GBFS 2.3 feeds, under the
@@ -229,10 +300,12 @@ origin and under its directory.
   shows its scooters only after a login. Helbiz's and Link's hosts no longer
   resolve. Cooltra lists mopeds and e-bikes, no scooters. Pony's site lists
   Turin, but its server answered `UNKNOWN_REGION` for Turin and Torino.
-- Zeus's own feeds for Castrop-Rauxel, Duisburg, Friedberg, Gera, Göppingen,
-  Hagen, Hattingen, Heilbronn, Herne, Jena, Kempten, Marburg, Pforzheim,
-  Reutlingen, Rüsselsheim, Schwäbisch Gmünd and Tübingen held no scooters, and
-  Limburgerhof and Straubing a few; none was added. Its Italian feeds were
+- Zeus's own feeds for Castrop-Rauxel, Duisburg, Friedberg, Gera, Herne, Jena,
+  Marburg and Reutlingen held no available scooters, and Limburgerhof a few;
+  none was added. Ten more towns list only disabled scooters since Zeus moved
+  them to ATOM Mobility, which publishes no feed with scooters for them; see
+  [Zeus's move to ATOM Mobility](#zeuss-move-to-atom-mobility-october-2026).
+  Its Italian feeds were
   stale or empty: Anzio, Augusta and Mazara listed no available scooter, and
   Teramo, Modena and Reggio Emilia none at all.
 - German Lime Dresden and Oberhausen contained no available standing scooters;
@@ -243,7 +316,8 @@ origin and under its directory.
 ## Sources and recheck
 
 [MobiData BW](https://www.mobidata-bw.de/) provides the public regional proxy feeds.
-Zeus publishes its own city feeds at `https://zeus.city/api/v1/mds/gbfs/<city>/gbfs.json`.
+Zeus publishes its own city feeds at `https://zeus.city/api/v1/mds/gbfs/<city>/gbfs.json`,
+and on ATOM Mobility at `https://zeus.rideatom.com/gbfs/<id>/v3.0/gbfs`.
 Yoio publishes its own feeds on ATOM Mobility, at `https://yoio.rideatom.com/gbfs/<id>/v3.0/gbfs`.
 [Dott Germany discovery](https://gbfs.api.ridedott.com/public/v2/countries/de/gbfs.json)
 contains repeated feed names for separate cities, so each reviewed city is collected

@@ -205,6 +205,13 @@ ten of the fourteen Zeus systems; its Voi feed covers eight Baden-Württemberg
 cities, not all of Germany. Zeus's own feeds supply Bamberg, Ludwigsburg,
 Regensburg and Schweinfurt.
 
+Zeus is moving its towns from `zeus.city` to ATOM Mobility
+(`zeus.rideatom.com`), whose feeds publish no licence. MobiData BW's ten Zeus
+feeds already republish Zeus's ATOM feeds, so none is read from ATOM. Ten towns
+whose `zeus.city` feeds now list only disabled scooters, among them Kempten,
+Pforzheim and Rüsselsheim, have no ATOM feed with scooters yet; see the
+[audit](docs/german-italian-scooter-feeds.md#zeuss-move-to-atom-mobility-october-2026).
+
 Yoio, added on 13 October 2026, runs on ATOM Mobility. MobiData BW supplies its
 Freiburg im Breisgau scooters, in the same
 [bundled e-scooter dataset](https://mobidata-bw.de/dataset/escootch) as the

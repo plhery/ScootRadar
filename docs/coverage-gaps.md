@@ -68,7 +68,15 @@ banned shared scooters, and feeds that were empty when checked.
   - Bird München and Ulm stopped updating.
   - Lime Hamburg answers 404; Lime Dresden, Oberhausen and Solingen (6
     scooters) were too small or empty.
-  - Seventeen Zeus towns were empty.
+  - Zeus is moving its towns to ATOM Mobility. Rüsselsheim, Straubing,
+    Kempten, Pforzheim, Göppingen, Schwäbisch Gmünd, Tübingen, Hagen,
+    Hattingen and Heilbronn list only disabled scooters on `zeus.city`, and
+    no ATOM feed lists them: Kempten's (187), Pforzheim's (191) and
+    Heilbronn's (186) are empty, and 26 Zeus ids have GBFS disabled.
+    Haßloch, Iserlohn, Falkensee, Dessau-Roßlau, Korntal-Münchingen,
+    Eisenach, Gotha, Jülich, Wangen, Schwieberdingen, Sonthofen, Soest and
+    Rottweil have no feed at all. Castrop-Rauxel, Duisburg, Friedberg, Gera,
+    Herne, Jena, Marburg and Reutlingen list no available scooter.
   - Voi publishes eight Baden-Württemberg cities only, through MobiData BW.
   - Hopp Augsburg listed 42 scooters, all disabled and unchanged, on the
     evening of 13 October 2026; check it in spring.
@@ -303,6 +311,14 @@ its other systems answer 401. Dott made most regions private in September 2026.
   winners do.
 - **Saturday 17 or Sunday 18 October 2026, in the afternoon:** Hopp Wałcz and
   Września, which had no ride while polled on a Tuesday evening.
+- **20 October 2026:** Zeus's move to ATOM Mobility. Probe the ids that
+  answer "GBFS disabled" and the empty ones (82, 183, 184, 186, 187, 191, 192,
+  193) for the ten moved towns, and MobiData BW's listing for new Zeus feeds.
+  Check that `zeus.city` still lists available scooters in Bamberg,
+  Ludwigsburg, Regensburg and Schweinfurt; a feed that lists only disabled
+  scooters has frozen, so read that town from its ATOM id. Check again every
+  few weeks until the move is done, at one request a second on
+  `zeus.rideatom.com`; id 189 is a warehouse.
 - **1 December 2026:** the EU's rule on multimodal travel information
   (Delegated Regulation (EU) 2024/490) requires shared-scooter availability on
   each country's national access point for the cities on the main EU transport
