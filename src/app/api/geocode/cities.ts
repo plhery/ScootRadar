@@ -25,6 +25,7 @@ const COUNTRY_NAMES: Record<CoveredCountry, Record<GeocodeLanguage, string>> = {
   HU: { en: 'Hungary', de: 'Ungarn', fr: 'Hongrie', it: 'Ungheria', nl: 'Hongarije', nb: 'Ungarn', pt: 'Hungria', es: 'Hungría', is: 'Ungverjaland' },
   GR: { en: 'Greece', de: 'Griechenland', fr: 'Grèce', it: 'Grecia', nl: 'Griekenland', nb: 'Hellas', pt: 'Grécia', es: 'Grecia', is: 'Grikkland' },
   CY: { en: 'Cyprus', de: 'Zypern', fr: 'Chypre', it: 'Cipro', nl: 'Cyprus', nb: 'Kypros', pt: 'Chipre', es: 'Chipre', is: 'Kýpur' },
+  FI: { en: 'Finland', de: 'Finnland', fr: 'Finlande', it: 'Finlandia', nl: 'Finland', nb: 'Finland', pt: 'Finlândia', es: 'Finlandia', is: 'Finnland' },
 };
 
 // Typed beside a city to say which one is meant: "Lindau Deutschland".
@@ -46,6 +47,7 @@ const COUNTRY_WORDS: Record<CoveredCountry, string[]> = {
   HU: ['hungary', 'ungarn', 'hongrie', 'ungheria', 'hongarije', 'hungria', 'ungverjaland', 'magyarorszag'],
   GR: ['greece', 'griechenland', 'grece', 'grecia', 'griekenland', 'hellas', 'grikkland', 'ellada', 'ελλαδα'],
   CY: ['cyprus', 'zypern', 'chypre', 'cipro', 'kypros', 'chipre', 'kypur', 'κυπροσ', 'kibris'],
+  FI: ['finland', 'finnland', 'finlande', 'finlandia', 'suomi'],
 };
 
 // What the Swiss cities are called in the other languages of the app, and how

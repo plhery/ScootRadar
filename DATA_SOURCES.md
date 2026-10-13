@@ -366,3 +366,17 @@ no vehicles or availability, so the map doesn't use it.
 Hopp links its privacy policy, not a licence. The map's credits name it under
 the GBFS line. See the [coverage audit](docs/cypriot-scooter-feeds.md) for the
 systems, the town names, the gaps and the recheck command.
+
+## Finland
+
+The reviewed catalog lives in `data/finnish-scooter-feeds.json`: 1 feed, Hopp
+in Mariehamn, on Åland. It is Hopp's own public GBFS feed. It is not in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
+and answers at the address Hopp uses for its other towns. Finland's national
+access point, [finap.fi](https://finap.fi/), lists Voi's NeTEx files for
+Helsinki, Turku, Tampere and Jyväskylä, with zones, prices and hours and no
+vehicles, so the map doesn't use them.
+
+Hopp links its privacy policy, not a licence. The map's credits name it under
+the GBFS line. See the [coverage audit](docs/finnish-scooter-feeds.md) for the
+system, the town name, the gaps and the recheck command.

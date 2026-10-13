@@ -134,7 +134,7 @@ local or preview backend is needed.
 
 The API covers Switzerland and selected cities in France, Germany, Italy, Belgium,
 Norway, the United Kingdom, Portugal, Spain, Iceland, Sweden, Latvia, Poland, Hungary,
-Greece and Cyprus.
+Greece, Cyprus and Finland.
 Prices are in the currency of the feed's tariff, where it supplies one. The backend loads
 feeds for the visible map area only.
 

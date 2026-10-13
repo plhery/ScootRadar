@@ -13,18 +13,19 @@ import polishCatalog from '../../data/polish-scooter-feeds.json';
 import hungarianCatalog from '../../data/hungarian-scooter-feeds.json';
 import greekCatalog from '../../data/greek-scooter-feeds.json';
 import cypriotCatalog from '../../data/cypriot-scooter-feeds.json';
+import finnishCatalog from '../../data/finnish-scooter-feeds.json';
 import type { ProviderKey } from '@/generated/providers';
 import type { MapBounds } from '@/lib/types';
 
-export type ScooterCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY';
+export type ScooterCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI';
 export const COUNTRY_SOURCES = {
   FR: 'france', DE: 'germany', IT: 'italy', BE: 'belgium', NO: 'norway', GB: 'uk', PT: 'portugal', ES: 'spain', IS: 'iceland',
-  SE: 'sweden', LV: 'latvia', PL: 'poland', HU: 'hungary', GR: 'greece', CY: 'cyprus',
+  SE: 'sweden', LV: 'latvia', PL: 'poland', HU: 'hungary', GR: 'greece', CY: 'cyprus', FI: 'finland',
 } as const;
 export type RegionalSource = typeof COUNTRY_SOURCES[ScooterCountry];
 const COUNTRY_NAMES = {
   FR: 'France', DE: 'Germany', IT: 'Italy', BE: 'Belgium', NO: 'Norway', GB: 'United Kingdom', PT: 'Portugal', ES: 'Spain', IS: 'Iceland',
-  SE: 'Sweden', LV: 'Latvia', PL: 'Poland', HU: 'Hungary', GR: 'Greece', CY: 'Cyprus',
+  SE: 'Sweden', LV: 'Latvia', PL: 'Poland', HU: 'Hungary', GR: 'Greece', CY: 'Cyprus', FI: 'Finland',
 };
 const COUNTRY_ALIASES = { FR: ['france', 'frankreich', 'francia', 'frankrijk', 'frankrike', 'franca', 'frakkland'],
   DE: ['germany', 'deutschland', 'allemagne', 'germania', 'duitsland', 'tyskland', 'alemanha', 'alemania', 'thyskaland'],
@@ -41,7 +42,8 @@ const COUNTRY_ALIASES = { FR: ['france', 'frankreich', 'francia', 'frankrijk', '
   PL: ['poland', 'polen', 'pologne', 'polonia', 'polland', 'polska'],
   HU: ['hungary', 'ungarn', 'hongrie', 'ungheria', 'hongarije', 'hungria', 'ungverjaland', 'magyarorszag'],
   GR: ['greece', 'griechenland', 'grece', 'grecia', 'griekenland', 'hellas', 'grikkland', 'ellada', 'ελλαδα'],
-  CY: ['cyprus', 'zypern', 'chypre', 'cipro', 'kypros', 'chipre', 'kypur', 'κυπροσ', 'kibris'] };
+  CY: ['cyprus', 'zypern', 'chypre', 'cipro', 'kypros', 'chipre', 'kypur', 'κυπροσ', 'kibris'],
+  FI: ['finland', 'finnland', 'finlande', 'finlandia', 'suomi'] };
 
 export interface ScooterServiceArea {
   city: string;
@@ -65,7 +67,7 @@ export const REGIONAL_SCOOTER_SYSTEMS = [
   ...belgianCatalog.systems, ...norwegianCatalog.systems, ...britishCatalog.systems,
   ...portugueseCatalog.systems, ...spanishCatalog.systems, ...icelandicCatalog.systems, ...swedishCatalog.systems,
   ...latvianCatalog.systems, ...polishCatalog.systems, ...hungarianCatalog.systems, ...greekCatalog.systems,
-  ...cypriotCatalog.systems,
+  ...cypriotCatalog.systems, ...finnishCatalog.systems,
 ] as RegionalScooterSystem[];
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {

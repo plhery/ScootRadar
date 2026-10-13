@@ -31,7 +31,10 @@ describe('German and Italian scooter coverage', () => {
     ['Paphos', 'Paphos, Cyprus'], ['Pafos', 'Paphos, Cyprus'], ['Πάφος', 'Paphos, Cyprus'], ['ΠΑΦΟΣ', 'Paphos, Cyprus'],
     ['Pafos Kıbrıs', 'Paphos, Cyprus'], ['Paphos Zypern', 'Paphos, Cyprus'], ['Limassol', 'Limassol, Cyprus'],
     ['Lemesos', 'Limassol, Cyprus'], ['Λεμεσός', 'Limassol, Cyprus'], ['Λεμεσος Κύπρος', 'Limassol, Cyprus'],
-    ['Limassol Kibris', 'Limassol, Cyprus'], ['Lemesos Kypros', 'Limassol, Cyprus'], ['Limassol Chypre', 'Limassol, Cyprus']])('finds %s', (query, name) => {
+    ['Limassol Kibris', 'Limassol, Cyprus'], ['Lemesos Kypros', 'Limassol, Cyprus'], ['Limassol Chypre', 'Limassol, Cyprus'],
+    ['Mariehamn', 'Mariehamn, Finland'], ['Maarianhamina', 'Mariehamn, Finland'], ['Mariehamn Suomi', 'Mariehamn, Finland'],
+    ['Maarianhamina Finnland', 'Mariehamn, Finland'], ['Åland', 'Mariehamn, Finland'], ['Aland Finlande', 'Mariehamn, Finland'],
+    ['Ahvenanmaa Suomi', 'Mariehamn, Finland']])('finds %s', (query, name) => {
     expect(searchRegionalScooterCities(query)[0].display_name).toBe(name);
   });
   it('does not silently ignore a conflicting country or expose the aggregate feed as a city', () => {
@@ -83,7 +86,7 @@ describe('German and Italian scooter coverage', () => {
     expect(result.vehicles).toHaveLength(1);
     expect(result.vehicles[0]).toMatchObject({ provider: system.provider, battery: 72 });
     expect(result.meta.sources).toEqual({ national: 'skipped', hopp: 'skipped', publibike: 'skipped',
-      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', [country]: 'fresh' });
+      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped', [country]: 'fresh' });
     expect(fetchMock).toHaveBeenCalledTimes(3);
   });
   it('prices each Hopp Pécs scooter from its own plan, in forints, never from the plans in other currencies', async () => {
@@ -169,6 +172,37 @@ describe('German and Italian scooter coverage', () => {
       'hopp_cy_cyprus:one': { currency: 'EUR', unlock_fee_minor_units: 120, minute_fee_minor_units: 25 },
       'hopp_cy_cyprus:two': { currency: 'EUR', unlock_fee_minor_units: 100, minute_fee_minor_units: 25 },
       'hopp_cy_cyprus:three': { currency: 'EUR', unlock_fee_minor_units: 100, minute_fee_minor_units: 25 },
+    });
+  });
+  it('prices each Hopp Mariehamn scooter at EUR 1.70 to start and EUR 0.42 a minute, and never shows the cars it declares', async () => {
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'hopp_fi_mariehamn')!;
+    expect(system).toMatchObject({ country: 'FI', city: 'Mariehamn' });
+    const base = new URL('.', system.discoveryUrl).toString();
+    expect(base).toBe('https://api.hopp.bike/gbfs/fi-mariehamn/');
+    const scooter = { bike_id: 'one', vehicle_type_id: 'vtp_120', lat: 60.0975, lon: 19.9346, hopp_battery_level: 71,
+      pricing_plan_id: 'flt_457', hopp_start_cost: 170, hopp_credits_per_min: 42 };
+    // As Hopp Mariehamn publishes them: two scooter types and two electric car types.
+    vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+      if (url === system.discoveryUrl) return response({ data: { en: { feeds: ['vehicle_types', 'free_bike_status', 'system_pricing_plans']
+        .map(name => ({ name, url: `${base}en/${name}.json` })) } } });
+      if (url === `${base}en/vehicle_types.json`) return response({ data: { vehicle_types: [
+        { vehicle_type_id: 'vtp_116', form_factor: 'car', propulsion_type: 'electric' },
+        { vehicle_type_id: 'vtp_119', form_factor: 'scooter', propulsion_type: 'electric' },
+        { vehicle_type_id: 'vtp_120', form_factor: 'scooter', propulsion_type: 'electric' },
+        { vehicle_type_id: 'vtp_75', form_factor: 'car', propulsion_type: 'electric' }] } });
+      if (url === `${base}en/free_bike_status.json`) return response({ last_updated: Date.now() / 1000, data: { bikes: [scooter,
+        { ...scooter, bike_id: 'two', vehicle_type_id: 'vtp_119' },
+        { ...scooter, bike_id: 'car', vehicle_type_id: 'vtp_116' }, { ...scooter, bike_id: 'van', vehicle_type_id: 'vtp_75' }] } });
+      if (url === `${base}en/system_pricing_plans.json`) return response({ data: { plans: [{ plan_id: 'flt_457', name: 'Hopp pricing',
+        description: '€1.70 to start and €0.42 per minute.', price: 1.7, currency: 'EUR', is_taxable: false,
+        per_min_price: [{ start: 0, interval: 1, rate: 0.42 }] }] } });
+      throw new Error(`Unexpected upstream ${url}`);
+    }));
+    const result = await fetchScooters({ bounds: system.bounds, minBattery: 0, providers: new Set(['hopp']) });
+    expect(result.meta.sources.finland).toBe('fresh');
+    expect(Object.fromEntries(result.vehicles.map(vehicle => [vehicle.vehicle_id, vehicle.pricing]))).toEqual({
+      'hopp_fi_mariehamn:one': { currency: 'EUR', unlock_fee_minor_units: 170, minute_fee_minor_units: 42 },
+      'hopp_fi_mariehamn:two': { currency: 'EUR', unlock_fee_minor_units: 170, minute_fee_minor_units: 42 },
     });
   });
   it('keeps Dott Wołomin\'s feeds under its percent-encoded directory, however the letter is written', () => {

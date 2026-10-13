@@ -314,6 +314,7 @@ enum ScooterProviderCoverage {
         (.hopp, GeoBounds(south: 39.5875, west: 20.7955, north: 39.6989, east: 20.9053)),
         (.hopp, GeoBounds(south: 34.7243, west: 32.3084, north: 34.9182, east: 32.4919)),
         (.hopp, GeoBounds(south: 34.6397, west: 32.9752, north: 34.7227, east: 33.1875)),
+        (.hopp, GeoBounds(south: 60.0657, west: 19.8824, north: 60.1438, east: 19.9972)),
     ]
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
@@ -540,6 +541,7 @@ enum ScooterCityCatalog {
         ScooterCity(id: "gr:Ioannina", name: "Ioannina", countryCode: "GR", center: GeoPoint(latitude: 39.664, longitude: 20.8523), bounds: GeoBounds(south: 39.5875, west: 20.7955, north: 39.6989, east: 20.9053)),
         ScooterCity(id: "cy:Paphos", name: "Paphos", countryCode: "CY", center: GeoPoint(latitude: 34.7756, longitude: 32.4243), bounds: GeoBounds(south: 34.7243, west: 32.3084, north: 34.9182, east: 32.4919)),
         ScooterCity(id: "cy:Limassol", name: "Limassol", countryCode: "CY", center: GeoPoint(latitude: 34.6727, longitude: 33.0418), bounds: GeoBounds(south: 34.6397, west: 32.9752, north: 34.7227, east: 33.1875)),
+        ScooterCity(id: "fi:Mariehamn", name: "Mariehamn", countryCode: "FI", center: GeoPoint(latitude: 60.0973, longitude: 19.9348), bounds: GeoBounds(south: 60.0657, west: 19.8824, north: 60.1438, east: 19.9972)),
     ]
 
     /// Cities by distance from the point to their centre, nearest first.

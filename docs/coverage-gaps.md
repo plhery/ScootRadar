@@ -201,6 +201,24 @@ banned shared scooters, and feeds that were empty when checked.
   - Bird, Lime, Dott and Zeus have nothing in Cyprus: Dott's Cypriot listing
     names no region, and the others' addresses answer 404 or 400 for each
     town tried. nextbike Cyprus is bikes and e-bikes only.
+- **Finland** ([guide](finnish-scooter-feeds.md#known-gaps)): Hopp in
+  Mariehamn, on Åland, is covered.
+  - The mainland has no scooter on the map. Voi, Ryde and Dott run in
+    Helsinki, Espoo, Vantaa, Tampere and Turku with no public feed, and Bolt
+    publishes none. Dott's 40 Finnish regions in the registry don't answer: 34
+    answer 404, and 6 (Ekenäs, Hamina, Hanko, Imatra, Kalajoki, Kotka) are
+    paused, probably for the winter. Bird Helsinki's feed is empty and stamped
+    `last_updated` 0.
+  - Joe Scooter's Rauma feed (ATOM Mobility) answers but listed no scooter at
+    night or in 21 polls from 17:00 to 18:01 on a Tuesday. Its other towns'
+    feeds answer "GBFS disabled". Check Rauma in spring, and add it as a new
+    provider if its scooters are ridden.
+  - The national access point (finap.fi) lists Voi's static NeTEx for Helsinki,
+    Turku, Tampere and Jyväskylä: zones, prices and hours, no vehicles.
+    Digitransit needs a key and carries city bikes only. Donkey Republic and
+    Helsinki's city bikes are bikes only.
+  - Helsinki, Espoo, Vantaa, Turku and Oulu ban renting or riding on weekend
+    nights; add a curfew with any of them.
 
 ## Countries not covered yet
 
@@ -209,12 +227,6 @@ national access points, Dott's country listings, a scan of Bolt's and ATOM
 Mobility's feed ids, Hopp's town list, and guessed Bird, Lime and Hopp
 addresses for each country's towns. Survey files were not kept; rerun the
 checks before relying on a count.
-
-**Public feeds found, being added one country at a time:**
-
-| Country | Scooters | Feeds |
-| --- | ---: | --- |
-| Finland | ~40 | Hopp Mariehamn, on Åland |
 
 **On hold:** Ukraine. 3electra's Kyiv feed (ATOM Mobility) lists about 780
 scooters, but places most of them in Lima, Peru, and moves the same scooters
@@ -260,8 +272,8 @@ its other systems answer 401. Dott made most regions private in September 2026.
 - **1 January 2027:** Brussels's ban starts; Bolt and Dott Bruxelles should
   empty.
 - **Spring 2027:** Dott's six paused Finnish towns (Ekenäs, Hamina, Hanko,
-  Imatra, Kalajoki, Kotka) and Hopp's Greek island towns (Chania, Rethymno,
-  Kos, Zakynthos and others) may open for the season; recheck Hopp Nafplio
-  then too.
+  Imatra, Kalajoki, Kotka), Joe Scooter in Rauma, and Hopp's Greek island
+  towns (Chania, Rethymno, Kos, Zakynthos and others) may open for the
+  season; recheck Hopp Nafplio then too.
 - Every Monday, the [catalog check workflow](../.github/workflows/catalog-check.yml)
   fails when an entry of a covered country is gone.

@@ -437,6 +437,9 @@ enum ScooterCityGrouping {
         "gr": (39.0, 22.0),
         // Inland, in the Troodos mountains, between Paphos and Limassol.
         "cy": (34.9, 32.9),
+        // Inland in the south-west, between Turku and Tampere: on the mainland, so it isn't read
+        // as Stockholm's, and on the side nearest Mariehamn, on Åland, where all its scooters are.
+        "fi": (61.1, 23.8),
     ]
 
     /// Zoomed out to a continent, one total per country, never two countries in one;

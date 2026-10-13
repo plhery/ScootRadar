@@ -19,7 +19,7 @@ describe('covered cities', () => {
     expect(COVERED_CITIES).toHaveLength(SWISS_SCOOTER_AREAS.length + REGIONAL_SCOOTER_CITIES.length);
     expect(new Set(COVERED_CITIES.map(city => city.id)).size).toBe(COVERED_CITIES.length);
     expect(COVERED_CITIES.slice(0, SWISS_SCOOTER_AREAS.length).every(city => city.country === 'CH')).toBe(true);
-    expect(new Set(COVERED_CITIES.map(city => city.country))).toEqual(new Set(['CH', 'FR', 'DE', 'IT', 'BE', 'NO', 'GB', 'PT', 'ES', 'IS', 'SE', 'LV', 'PL', 'HU', 'GR', 'CY']));
+    expect(new Set(COVERED_CITIES.map(city => city.country))).toEqual(new Set(['CH', 'FR', 'DE', 'IT', 'BE', 'NO', 'GB', 'PT', 'ES', 'IS', 'SE', 'LV', 'PL', 'HU', 'GR', 'CY', 'FI']));
     expect(COVERED_CITIES).toEqual(expect.arrayContaining([
       {
         id: 'ch:zurich',

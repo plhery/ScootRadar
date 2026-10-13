@@ -57,7 +57,7 @@ describe('persistent map snapshots', () => {
     const response = querySnapshot(snapshot([feed({ observedAt: 0 })]), { ...query, outsideCoverage: true }, 16, now);
     expect(response.vehicles).toEqual([]);
     expect(response.meta.partial).toBe(false);
-    expect(Object.values(response.meta.sources)).toEqual(Array(18).fill('skipped'));
+    expect(Object.values(response.meta.sources)).toEqual(Array(19).fill('skipped'));
   });
 
   it('does not involve Swiss feed health in a French city response', () => {

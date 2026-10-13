@@ -92,7 +92,7 @@ describe('searchCoveredCities', () => {
     // src/lib/places.ts asks Intl.DisplayNames; a typed city and a chip must read the same.
     for (const language of GEOCODE_LANGUAGES) {
       const regions = new Intl.DisplayNames(`${language}-CH`, { type: 'region' });
-      for (const [query, country] of [['Zürich', 'CH'], ['Lyon', 'FR'], ['Berlin', 'DE'], ['Roma', 'IT'], ['Uppsala', 'SE'], ['Rīga', 'LV'], ['Sosnowiec', 'PL'], ['Pécs', 'HU'], ['Piraeus', 'GR'], ['Limassol', 'CY']]) {
+      for (const [query, country] of [['Zürich', 'CH'], ['Lyon', 'FR'], ['Berlin', 'DE'], ['Roma', 'IT'], ['Uppsala', 'SE'], ['Rīga', 'LV'], ['Sosnowiec', 'PL'], ['Pécs', 'HU'], ['Piraeus', 'GR'], ['Limassol', 'CY'], ['Mariehamn', 'FI']]) {
         expect(searchCoveredCities(query, language)[0].subtitle, `${country} in ${language}`).toBe(regions.of(country));
       }
     }
@@ -121,6 +121,19 @@ describe('searchCoveredCities', () => {
     // A country alone names no city.
     expect(searchCoveredCities('Κύπρος')).toEqual([]);
     expect(searchCoveredCities('Kıbrıs')).toEqual([]);
+  });
+
+  it('finds Mariehamn by its Swedish or Finnish name, or by Åland, and Finland as Suomi', () => {
+    for (const [query, title] of [['Mariehamn', 'Mariehamn'], ['Maarianhamina', 'Mariehamn'], ['mariehamn suomi', 'Mariehamn'],
+      ['Maarianhamina Finnland', 'Mariehamn'], ['Åland', 'Mariehamn'], ['Aland', 'Mariehamn'], ['ÅLAND Finland', 'Mariehamn'],
+      ['Ahvenanmaa', 'Mariehamn'], ['Ahvenanmaa Suomi', 'Mariehamn'], ['Mariehamn Finlândia', 'Mariehamn']]) {
+      expect(searchCoveredCities(query)[0]?.title, query).toBe(title);
+    }
+    expect(searchCoveredCities('Åland', 'fr')[0].subtitle).toBe('Finlande');
+    expect(searchCoveredCities('Mariehamn Sverige')).toEqual([]);
+    // A country alone names no city.
+    expect(searchCoveredCities('Suomi')).toEqual([]);
+    expect(searchCoveredCities('Finland')).toEqual([]);
   });
 
   it('leaves streets, stations and towns without scooter data to the address search', () => {

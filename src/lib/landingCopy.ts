@@ -84,7 +84,7 @@ export function linkedParts(sentence: string): { text: string; link?: string }[]
 // to it are left out until then.
 export const APP_STORE_URL = null as string | null;
 
-export type LandingCountry = 'CH' | 'DE' | 'FR' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY';
+export type LandingCountry = 'CH' | 'DE' | 'FR' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI';
 
 export interface LandingCopy {
   meta: {
@@ -238,10 +238,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} cities.`,
-      lede: 'Shared e-scooters in Switzerland, Germany, France, Italy, Belgium, Norway, the United Kingdom, Portugal, Spain, Iceland, Sweden, Latvia, Poland, Hungary, Greece and Cyprus. Where no provider publishes its data, the map says so and points you to the closest cities that have it. Pick a city to open the map there.',
+      lede: 'Shared e-scooters in Switzerland, Germany, France, Italy, Belgium, Norway, the United Kingdom, Portugal, Spain, Iceland, Sweden, Latvia, Poland, Hungary, Greece, Cyprus and Finland. Where no provider publishes its data, the map says so and points you to the closest cities that have it. Pick a city to open the map there.',
       countries: {
         CH: 'Switzerland', DE: 'Germany', FR: 'France', IT: 'Italy', BE: 'Belgium', NO: 'Norway', GB: 'United Kingdom',
-        PT: 'Portugal', ES: 'Spain', IS: 'Iceland', SE: 'Sweden', LV: 'Latvia', PL: 'Poland', HU: 'Hungary', GR: 'Greece', CY: 'Cyprus',
+        PT: 'Portugal', ES: 'Spain', IS: 'Iceland', SE: 'Sweden', LV: 'Latvia', PL: 'Poland', HU: 'Hungary', GR: 'Greece', CY: 'Cyprus', FI: 'Finland',
       },
       more: count => `and ${count} more`,
       alt: 'The map at night, zoomed out over Europe, with the number of scooters on each city.',
@@ -364,10 +364,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} Städte.`,
-      lede: 'E-Scooter in der Schweiz, in Deutschland, Frankreich, Italien, Belgien, Norwegen, im Vereinigten Königreich, in Portugal, Spanien, Island, Schweden, Lettland, Polen, Ungarn, Griechenland und Zypern. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten. Wähle eine Stadt, um die Karte dort zu öffnen.',
+      lede: 'E-Scooter in der Schweiz, in Deutschland, Frankreich, Italien, Belgien, Norwegen, im Vereinigten Königreich, in Portugal, Spanien, Island, Schweden, Lettland, Polen, Ungarn, Griechenland, Zypern und Finnland. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten. Wähle eine Stadt, um die Karte dort zu öffnen.',
       countries: {
         CH: 'Schweiz', DE: 'Deutschland', FR: 'Frankreich', IT: 'Italien', BE: 'Belgien', NO: 'Norwegen', GB: 'Vereinigtes Königreich',
-        PT: 'Portugal', ES: 'Spanien', IS: 'Island', SE: 'Schweden', LV: 'Lettland', PL: 'Polen', HU: 'Ungarn', GR: 'Griechenland', CY: 'Zypern',
+        PT: 'Portugal', ES: 'Spanien', IS: 'Island', SE: 'Schweden', LV: 'Lettland', PL: 'Polen', HU: 'Ungarn', GR: 'Griechenland', CY: 'Zypern', FI: 'Finnland',
       },
       more: count => `und ${count} weitere`,
       alt: 'Die Karte bei Nacht, herausgezoomt über Europa, mit der Zahl der Scooter in jeder Stadt.',
@@ -490,10 +490,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} villes.`,
-      lede: 'Des trottinettes en libre-service en Suisse, en Allemagne, en France, en Italie, en Belgique, en Norvège, au Royaume-Uni, au Portugal, en Espagne, en Islande, en Suède, en Lettonie, en Pologne, en Hongrie, en Grèce et à Chypre. Là où aucun opérateur ne publie de données, la carte le dit et indique les villes les plus proches qui en ont. Choisissez une ville pour y ouvrir la carte.',
+      lede: 'Des trottinettes en libre-service en Suisse, en Allemagne, en France, en Italie, en Belgique, en Norvège, au Royaume-Uni, au Portugal, en Espagne, en Islande, en Suède, en Lettonie, en Pologne, en Hongrie, en Grèce, à Chypre et en Finlande. Là où aucun opérateur ne publie de données, la carte le dit et indique les villes les plus proches qui en ont. Choisissez une ville pour y ouvrir la carte.',
       countries: {
         CH: 'Suisse', DE: 'Allemagne', FR: 'France', IT: 'Italie', BE: 'Belgique', NO: 'Norvège', GB: 'Royaume-Uni',
-        PT: 'Portugal', ES: 'Espagne', IS: 'Islande', SE: 'Suède', LV: 'Lettonie', PL: 'Pologne', HU: 'Hongrie', GR: 'Grèce', CY: 'Chypre',
+        PT: 'Portugal', ES: 'Espagne', IS: 'Islande', SE: 'Suède', LV: 'Lettonie', PL: 'Pologne', HU: 'Hongrie', GR: 'Grèce', CY: 'Chypre', FI: 'Finlande',
       },
       more: count => (count === 1 ? 'et une autre' : `et ${count} autres`),
       alt: 'La carte de nuit à l’échelle de l’Europe, avec le nombre de trottinettes dans chaque ville.',
@@ -616,10 +616,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} città.`,
-      lede: 'Monopattini in sharing in Svizzera, Germania, Francia, Italia, Belgio, Norvegia, Regno Unito, Portogallo, Spagna, Islanda, Svezia, Lettonia, Polonia, Ungheria, Grecia e Cipro. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno. Scegli una città per aprire lì la mappa.',
+      lede: 'Monopattini in sharing in Svizzera, Germania, Francia, Italia, Belgio, Norvegia, Regno Unito, Portogallo, Spagna, Islanda, Svezia, Lettonia, Polonia, Ungheria, Grecia, Cipro e Finlandia. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno. Scegli una città per aprire lì la mappa.',
       countries: {
         CH: 'Svizzera', DE: 'Germania', FR: 'Francia', IT: 'Italia', BE: 'Belgio', NO: 'Norvegia', GB: 'Regno Unito',
-        PT: 'Portogallo', ES: 'Spagna', IS: 'Islanda', SE: 'Svezia', LV: 'Lettonia', PL: 'Polonia', HU: 'Ungheria', GR: 'Grecia', CY: 'Cipro',
+        PT: 'Portogallo', ES: 'Spagna', IS: 'Islanda', SE: 'Svezia', LV: 'Lettonia', PL: 'Polonia', HU: 'Ungheria', GR: 'Grecia', CY: 'Cipro', FI: 'Finlandia',
       },
       more: count => (count === 1 ? 'e un’altra' : `e altre ${count}`),
       alt: 'La mappa dell’Europa vista da lontano, di notte, con il numero di monopattini in ogni città.',
@@ -742,7 +742,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} byer.`,
-      lede: 'Elsparkesykler til leie i Sveits, Tyskland, Frankrike, Italia, Belgia, Norge, Storbritannia, Portugal, Spania, Island, Sverige, Latvia, Polen, Ungarn, Hellas og Kypros. Der ingen operatør publiserer data, sier kartet ifra og peker deg til de nærmeste byene som har det. Velg en by for å åpne kartet der.',
+      lede: 'Elsparkesykler til leie i Sveits, Tyskland, Frankrike, Italia, Belgia, Norge, Storbritannia, Portugal, Spania, Island, Sverige, Latvia, Polen, Ungarn, Hellas, Kypros og Finland. Der ingen operatør publiserer data, sier kartet ifra og peker deg til de nærmeste byene som har det. Velg en by for å åpne kartet der.',
       countries: {
         CH: 'Sveits',
         DE: 'Tyskland',
@@ -760,6 +760,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         HU: 'Ungarn',
         GR: 'Hellas',
         CY: 'Kypros',
+        FI: 'Finland',
       },
       more: count => (count === 1 ? 'og én til' : `og ${count} til`),
       alt: 'Kartet om natten, zoomet ut over Europa, med antall elsparkesykler i hver by.',
@@ -882,7 +883,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} steden.`,
-      lede: 'Deelsteps in Zwitserland, Duitsland, Frankrijk, Italië, België, Noorwegen, het Verenigd Koninkrijk, Portugal, Spanje, IJsland, Zweden, Letland, Polen, Hongarije, Griekenland en Cyprus. Waar geen enkele aanbieder zijn data publiceert, zegt de kaart dat en krijg je de dichtstbijzijnde steden die wel data hebben. Kies een stad om de kaart daar te openen.',
+      lede: 'Deelsteps in Zwitserland, Duitsland, Frankrijk, Italië, België, Noorwegen, het Verenigd Koninkrijk, Portugal, Spanje, IJsland, Zweden, Letland, Polen, Hongarije, Griekenland, Cyprus en Finland. Waar geen enkele aanbieder zijn data publiceert, zegt de kaart dat en krijg je de dichtstbijzijnde steden die wel data hebben. Kies een stad om de kaart daar te openen.',
       countries: {
         CH: 'Zwitserland',
         DE: 'Duitsland',
@@ -900,6 +901,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         HU: 'Hongarije',
         GR: 'Griekenland',
         CY: 'Cyprus',
+        FI: 'Finland',
       },
       more: count => (count === 1 ? 'en nog één' : `en nog ${count}`),
       alt: 'De kaart ’s nachts, uitgezoomd over Europa, met het aantal deelsteps op elke stad.',
@@ -1021,10 +1023,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => (cities === 1 ? '1 cidade.' : `${cities} cidades.`),
-      lede: 'Trotinetes elétricas partilhadas na Suíça, na Alemanha, em França, em Itália, na Bélgica, na Noruega, no Reino Unido, em Portugal, em Espanha, na Islândia, na Suécia, na Letónia, na Polónia, na Hungria, na Grécia e em Chipre. Onde nenhum operador publica os dados, o mapa avisa e indica-lhe as cidades mais próximas que os têm. Escolha uma cidade para abrir lá o mapa.',
+      lede: 'Trotinetes elétricas partilhadas na Suíça, na Alemanha, em França, em Itália, na Bélgica, na Noruega, no Reino Unido, em Portugal, em Espanha, na Islândia, na Suécia, na Letónia, na Polónia, na Hungria, na Grécia, em Chipre e na Finlândia. Onde nenhum operador publica os dados, o mapa avisa e indica-lhe as cidades mais próximas que os têm. Escolha uma cidade para abrir lá o mapa.',
       countries: {
         CH: 'Suíça', DE: 'Alemanha', FR: 'França', IT: 'Itália', BE: 'Bélgica', NO: 'Noruega', GB: 'Reino Unido',
-        PT: 'Portugal', ES: 'Espanha', IS: 'Islândia', SE: 'Suécia', LV: 'Letónia', PL: 'Polónia', HU: 'Hungria', GR: 'Grécia', CY: 'Chipre',
+        PT: 'Portugal', ES: 'Espanha', IS: 'Islândia', SE: 'Suécia', LV: 'Letónia', PL: 'Polónia', HU: 'Hungria', GR: 'Grécia', CY: 'Chipre', FI: 'Finlândia',
       },
       more: count => (count === 1 ? 'e mais uma' : `e mais ${count}`),
       alt: 'O mapa à noite, a mostrar toda a Europa, com o número de trotinetes de cada cidade.',
@@ -1146,10 +1148,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => (cities === 1 ? '1 ciudad.' : `${cities} ciudades.`),
-      lede: 'Patinetes eléctricos compartidos en Suiza, Alemania, Francia, Italia, Bélgica, Noruega, el Reino Unido, Portugal, España, Islandia, Suecia, Letonia, Polonia, Hungría, Grecia y Chipre. Donde ningún operador publica sus datos, el mapa te lo dice y te indica las ciudades más cercanas que sí los tienen. Elige una ciudad para abrir allí el mapa.',
+      lede: 'Patinetes eléctricos compartidos en Suiza, Alemania, Francia, Italia, Bélgica, Noruega, el Reino Unido, Portugal, España, Islandia, Suecia, Letonia, Polonia, Hungría, Grecia, Chipre y Finlandia. Donde ningún operador publica sus datos, el mapa te lo dice y te indica las ciudades más cercanas que sí los tienen. Elige una ciudad para abrir allí el mapa.',
       countries: {
         CH: 'Suiza', DE: 'Alemania', FR: 'Francia', IT: 'Italia', BE: 'Bélgica', NO: 'Noruega', GB: 'Reino Unido',
-        PT: 'Portugal', ES: 'España', IS: 'Islandia', SE: 'Suecia', LV: 'Letonia', PL: 'Polonia', HU: 'Hungría', GR: 'Grecia', CY: 'Chipre',
+        PT: 'Portugal', ES: 'España', IS: 'Islandia', SE: 'Suecia', LV: 'Letonia', PL: 'Polonia', HU: 'Hungría', GR: 'Grecia', CY: 'Chipre', FI: 'Finlandia',
       },
       more: count => (count === 1 ? 'y otra más' : `y ${count} más`),
       alt: 'El mapa de noche, alejado sobre Europa, con el número de patinetes de cada ciudad.',
@@ -1274,7 +1276,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} ${cities % 10 === 1 && cities % 100 !== 11 ? 'staður' : 'staðir'}.`,
-      lede: 'Rafskútur til leigu á Íslandi, Ítalíu, Spáni, Grikklandi og Kýpur, í Sviss, Þýskalandi, Frakklandi, Belgíu, Noregi, Bretlandi, Portúgal, Svíþjóð, Lettlandi, Póllandi og Ungverjalandi. Þar sem ekkert fyrirtæki birtir gögn segir kortið frá því og bendir þér á næstu staði sem hafa þau. Veldu stað til að opna kortið þar.',
+      lede: 'Rafskútur til leigu á Íslandi, Ítalíu, Spáni, Grikklandi og Kýpur, í Sviss, Þýskalandi, Frakklandi, Belgíu, Noregi, Bretlandi, Portúgal, Svíþjóð, Lettlandi, Póllandi, Ungverjalandi og Finnlandi. Þar sem ekkert fyrirtæki birtir gögn segir kortið frá því og bendir þér á næstu staði sem hafa þau. Veldu stað til að opna kortið þar.',
       countries: {
         CH: 'Sviss',
         DE: 'Þýskaland',
@@ -1292,6 +1294,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         HU: 'Ungverjaland',
         GR: 'Grikkland',
         CY: 'Kýpur',
+        FI: 'Finnland',
       },
       more: count => `og ${count} til viðbótar`,
       alt: 'Kortið að nóttu til, yfir allri Evrópu, með tölu sem sýnir hve margar rafskútur eru á hverjum stað.',

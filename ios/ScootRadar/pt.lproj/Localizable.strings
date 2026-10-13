@@ -139,7 +139,7 @@
 
 /* UX alignment: outside coverage and filters with nothing to show */
 "No scooter data here yet" = "Ainda não há dados de trotinetes aqui";
-"ScootRadar covers selected cities in Belgium, Cyprus, France, Germany, Greece, Hungary, Iceland, Italy, Latvia, Norway, Poland, Portugal, Spain, Sweden, Switzerland and the United Kingdom." = "O ScootRadar abrange algumas cidades da Alemanha, da Bélgica, de Chipre, de Espanha, de França, da Grécia, da Hungria, da Islândia, de Itália, da Letónia, da Noruega, da Polónia, de Portugal, do Reino Unido, da Suécia e da Suíça.";
+"ScootRadar covers selected cities in Belgium, Cyprus, Finland, France, Germany, Greece, Hungary, Iceland, Italy, Latvia, Norway, Poland, Portugal, Spain, Sweden, Switzerland and the United Kingdom." = "O ScootRadar abrange algumas cidades da Alemanha, da Bélgica, de Chipre, de Espanha, da Finlândia, de França, da Grécia, da Hungria, da Islândia, de Itália, da Letónia, da Noruega, da Polónia, de Portugal, do Reino Unido, da Suécia e da Suíça.";
 "Closest cities" = "Cidades mais próximas";
 "%1$@ · %2$@" = "%1$@ · %2$@";
 "1 scooter hidden by your filters" = "1 trotinete oculta pelos seus filtros";

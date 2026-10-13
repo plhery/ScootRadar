@@ -1,0 +1,28 @@
+{
+  "verifiedOn": "2026-10-13",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "hopp_fi_mariehamn",
+      "country": "FI",
+      "provider": "hopp",
+      "city": "Mariehamn",
+      "center": [
+        60.0973,
+        19.9348
+      ],
+      "bounds": {
+        "south": 60.0657,
+        "north": 60.1438,
+        "west": 19.8824,
+        "east": 19.9972
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/fi-mariehamn/gbfs.json",
+      "aliases": [
+        "Maarianhamina",
+        "Åland",
+        "Ahvenanmaa"
+      ]
+    }
+  ]
+}
