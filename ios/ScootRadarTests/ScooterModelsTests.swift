@@ -800,8 +800,13 @@ extension ScooterModelsTests {
         ScooterLanguage.current = .en
         XCTAssertEqual(
             ScooterCoverageSummary.text(),
-            "ScootRadar covers \(ScooterCityCatalog.cityCount) cities in \(ScooterCityCatalog.countryCount) countries."
+            held("ScootRadar covers \(ScooterCityCatalog.cityCount) cities in \(ScooterCityCatalog.countryCount) countries.")
         )
+    }
+
+    /// A sentence as written here, each count held to its noun by a no-break space.
+    private func held(_ sentence: String) -> String {
+        sentence.replacingOccurrences(of: #"(\d) "#, with: "$1\u{00A0}", options: .regularExpression)
     }
 
     func testTheCoverageSentenceGivesEachCountItsOwnFormInEveryLanguage() {
@@ -820,19 +825,34 @@ extension ScooterModelsTests {
         XCTAssertEqual(Set(sentences.keys), Set(ScooterLanguage.allCases))
         for (language, sentence) in sentences {
             ScooterLanguage.current = language
-            XCTAssertEqual(ScooterCoverageSummary.text(cities: 186, countries: 17), sentence.many, language.rawValue)
-            XCTAssertEqual(ScooterCoverageSummary.text(cities: 1, countries: 1), sentence.one, language.rawValue)
+            XCTAssertEqual(ScooterCoverageSummary.text(cities: 186, countries: 17), held(sentence.many), language.rawValue)
+            XCTAssertEqual(ScooterCoverageSummary.text(cities: 1, countries: 1), held(sentence.one), language.rawValue)
         }
 
         // Icelandic counts 21 in the singular, but not 11 or 22, and each count picks its own form.
         ScooterLanguage.current = .is
-        XCTAssertEqual(ScooterCoverageSummary.text(cities: 21, countries: 21), "ScootRadar nær yfir 21 stað í 21 landi.")
-        XCTAssertEqual(ScooterCoverageSummary.text(cities: 22, countries: 22), "ScootRadar nær yfir 22 staði í 22 löndum.")
-        XCTAssertEqual(ScooterCoverageSummary.text(cities: 11, countries: 11), "ScootRadar nær yfir 11 staði í 11 löndum.")
-        XCTAssertEqual(ScooterCoverageSummary.text(cities: 186, countries: 21), "ScootRadar nær yfir 186 staði í 21 landi.")
-        XCTAssertEqual(ScooterCoverageSummary.text(cities: 21, countries: 17), "ScootRadar nær yfir 21 stað í 17 löndum.")
+        XCTAssertEqual(ScooterCoverageSummary.text(cities: 21, countries: 21), held("ScootRadar nær yfir 21 stað í 21 landi."))
+        XCTAssertEqual(ScooterCoverageSummary.text(cities: 22, countries: 22), held("ScootRadar nær yfir 22 staði í 22 löndum."))
+        XCTAssertEqual(ScooterCoverageSummary.text(cities: 11, countries: 11), held("ScootRadar nær yfir 11 staði í 11 löndum."))
+        XCTAssertEqual(ScooterCoverageSummary.text(cities: 186, countries: 21), held("ScootRadar nær yfir 186 staði í 21 landi."))
+        XCTAssertEqual(ScooterCoverageSummary.text(cities: 21, countries: 17), held("ScootRadar nær yfir 21 stað í 17 löndum."))
         ScooterLanguage.current = .en
-        XCTAssertEqual(ScooterCoverageSummary.text(cities: 21, countries: 21), "ScootRadar covers 21 cities in 21 countries.")
+        XCTAssertEqual(ScooterCoverageSummary.text(cities: 21, countries: 21), held("ScootRadar covers 21 cities in 21 countries."))
+    }
+
+    func testTheCoverageSentenceKeepsEachCountOnTheLineOfItsNounInEveryLanguage() throws {
+        defer { ScooterLanguage.current = .atLaunch }
+        let held = try NSRegularExpression(pattern: #"\d\u00A0\p{L}"#)
+        let counts = [(ScooterCityCatalog.cityCount, ScooterCityCatalog.countryCount), (1, 1), (21, 22), (1200, 17)]
+        for language in ScooterLanguage.allCases {
+            ScooterLanguage.current = language
+            for (cities, countries) in counts {
+                let sentence = ScooterCoverageSummary.text(cities: cities, countries: countries)
+                let whole = NSRange(sentence.startIndex..., in: sentence)
+                XCTAssertNil(sentence.range(of: #"\d "#, options: .regularExpression), "\(language.rawValue): \(sentence)")
+                XCTAssertEqual(held.numberOfMatches(in: sentence, range: whole), 2, "\(language.rawValue): \(sentence)")
+            }
+        }
     }
 
     func testPercentagesAndTheShownStateReadAsOnTheWeb() throws {

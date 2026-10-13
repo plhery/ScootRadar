@@ -498,19 +498,23 @@ describe('dock cards', () => {
       .toEqual(['Zug · 52 km', 'Bern · 57 km', 'Grenchen · 73 km']);
   });
 
+  /** The coverage sentence of the card, as a language says it. */
+  const say = (locale: AppLocale, cities: number, countries: number) => formatUiText(coverageBody(cities, countries), {
+    locale,
+    t: (key, values) => translate(locale, key, values),
+    formatNumber: value => new Intl.NumberFormat(`${locale}-CH`).format(value),
+  });
+  /** A sentence as written here, each count held to its noun by a no-break space. */
+  const held = (sentence: string) => sentence.replace(/(\d) /g, '$1\u00a0');
+
   it('says how many cities and countries are covered, each noun in the form its count takes', () => {
     const model = dockModel(input({ count: 0, providerCounts: {}, viewportProviders: [], viewportCenter: LUNGERN, unfilteredCount: 0 }));
     expect(model).toMatchObject({ kind: 'outsideCoverage', body: coverageBody(COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL) });
 
-    const say = (locale: AppLocale, cities: number, countries: number) => formatUiText(coverageBody(cities, countries), {
-      locale,
-      t: (key, values) => translate(locale, key, values),
-      formatNumber: value => new Intl.NumberFormat(`${locale}-CH`).format(value),
-    });
     const locales = ['en', 'de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is'] as const;
     expect(new Set(locales)).toEqual(new Set(SUPPORTED_LOCALES));
     expect(say('en', COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL))
-      .toBe(`ScootRadar covers ${COVERED_CITY_TOTAL} cities in ${COVERED_COUNTRY_TOTAL} countries.`);
+      .toBe(held(`ScootRadar covers ${COVERED_CITY_TOTAL} cities in ${COVERED_COUNTRY_TOTAL} countries.`));
     expect(locales.map(locale => say(locale, 186, 17))).toEqual([
       'ScootRadar covers 186 cities in 17 countries.',
       'ScootRadar deckt 186 Städte in 17 Ländern ab.',
@@ -521,7 +525,7 @@ describe('dock cards', () => {
       'O ScootRadar abrange 186 cidades em 17 países.',
       'ScootRadar cubre 186 ciudades en 17 países.',
       'ScootRadar nær yfir 186 staði í 17 löndum.',
-    ]);
+    ].map(held));
     expect(locales.map(locale => say(locale, 1, 1))).toEqual([
       'ScootRadar covers 1 city in 1 country.',
       'ScootRadar deckt 1 Stadt in 1 Land ab.',
@@ -532,16 +536,26 @@ describe('dock cards', () => {
       'O ScootRadar abrange 1 cidade em 1 país.',
       'ScootRadar cubre 1 ciudad en 1 país.',
       'ScootRadar nær yfir 1 stað í 1 landi.',
-    ]);
+    ].map(held));
     // Icelandic takes the singular for a count ending in 1, but not 11; each count picks its own form.
-    expect(say('is', 21, 21)).toBe('ScootRadar nær yfir 21 stað í 21 landi.');
-    expect(say('is', 22, 22)).toBe('ScootRadar nær yfir 22 staði í 22 löndum.');
-    expect(say('is', 11, 11)).toBe('ScootRadar nær yfir 11 staði í 11 löndum.');
-    expect(say('is', 186, 21)).toBe('ScootRadar nær yfir 186 staði í 21 landi.');
-    expect(say('en', 21, 21)).toBe('ScootRadar covers 21 cities in 21 countries.');
-    expect(say('pt', 21, 21)).toBe('O ScootRadar abrange 21 cidades em 21 países.');
+    expect(say('is', 21, 21)).toBe(held('ScootRadar nær yfir 21 stað í 21 landi.'));
+    expect(say('is', 22, 22)).toBe(held('ScootRadar nær yfir 22 staði í 22 löndum.'));
+    expect(say('is', 11, 11)).toBe(held('ScootRadar nær yfir 11 staði í 11 löndum.'));
+    expect(say('is', 186, 21)).toBe(held('ScootRadar nær yfir 186 staði í 21 landi.'));
+    expect(say('en', 21, 21)).toBe(held('ScootRadar covers 21 cities in 21 countries.'));
+    expect(say('pt', 21, 21)).toBe(held('O ScootRadar abrange 21 cidades em 21 países.'));
     // Thousands are grouped as the app groups them.
-    expect(say('de', 1200, 17)).toBe(`ScootRadar deckt ${new Intl.NumberFormat('de-CH').format(1200)} Städte in 17 Ländern ab.`);
+    expect(say('de', 1200, 17)).toBe(held(`ScootRadar deckt ${new Intl.NumberFormat('de-CH').format(1200)} Städte in 17 Ländern ab.`));
+  });
+
+  it('keeps each count of the coverage on the line of its noun, in every language', () => {
+    for (const locale of SUPPORTED_LOCALES) {
+      for (const [cities, countries] of [[COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL], [1, 1], [21, 22], [1200, 17]]) {
+        const sentence = say(locale, cities, countries);
+        expect(sentence, locale).not.toMatch(/\d /);
+        expect(sentence.match(/\d\u00a0\p{L}/gu), `${locale}: ${sentence}`).toHaveLength(2);
+      }
+    }
   });
 
   it('shows how many scooters the filters hide and offers to show them', () => {

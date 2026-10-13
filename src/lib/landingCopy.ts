@@ -74,10 +74,11 @@ export function makerLinks(locale: LandingLocale): Readonly<Record<string, strin
 /**
  * A count and its noun, in the form the language gives that count by its
  * plural rules: "17 countries", "1 country", and in Icelandic "21 landi" but
- * "22 löndum", since a count ending in 1, except 11, takes the singular.
+ * "22 löndum", since a count ending in 1, except 11, takes the singular. A
+ * no-break space keeps the count on the line of its noun.
  */
 function counted(locale: LandingLocale, count: number, one: string, other: string): string {
-  return `${new Intl.NumberFormat(`${locale}-CH`).format(count)} ${isSingular(count, locale) ? one : other}`;
+  return `${new Intl.NumberFormat(`${locale}-CH`).format(count)}\u00a0${isSingular(count, locale) ? one : other}`;
 }
 
 /** A sentence cut at its links: what it writes as "<name>words</name>" is the words of the link of that name. */
@@ -249,7 +250,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
     },
     cities: {
-      title: cities => `${cities} cities.`,
+      title: cities => `${counted('en', cities, 'city', 'cities')}.`,
       lede: countries =>
         `Shared e-scooters in ${counted('en', countries, 'country', 'countries')}. Where no provider publishes its data, the map says so and points you to the closest cities that have it. Pick a city to open the map there.`,
       countries: {
@@ -376,7 +377,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
     },
     cities: {
-      title: cities => `${cities} Städte.`,
+      title: cities => `${counted('de', cities, 'Stadt', 'Städte')}.`,
       lede: countries =>
         `E-Scooter in ${counted('de', countries, 'Land', 'Ländern')}. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten. Wähle eine Stadt, um die Karte dort zu öffnen.`,
       countries: {
@@ -503,7 +504,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
     },
     cities: {
-      title: cities => `${cities} villes.`,
+      title: cities => `${counted('fr', cities, 'ville', 'villes')}.`,
       lede: countries =>
         `Des trottinettes en libre-service dans ${counted('fr', countries, 'pays', 'pays')}. Là où aucun opérateur ne publie de données, la carte le dit et indique les villes les plus proches qui en ont. Choisissez une ville pour y ouvrir la carte.`,
       countries: {
@@ -630,7 +631,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
     },
     cities: {
-      title: cities => `${cities} città.`,
+      title: cities => `${counted('it', cities, 'città', 'città')}.`,
       lede: countries =>
         `Monopattini in sharing in ${counted('it', countries, 'paese', 'paesi')}. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno. Scegli una città per aprire lì la mappa.`,
       countries: {
@@ -757,7 +758,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
     },
     cities: {
-      title: cities => `${cities} byer.`,
+      title: cities => `${counted('nb', cities, 'by', 'byer')}.`,
       lede: countries =>
         `Elsparkesykler til leie i ${counted('nb', countries, 'land', 'land')}. Der ingen operatør publiserer data, sier kartet ifra og peker deg til de nærmeste byene som har det. Velg en by for å åpne kartet der.`,
       countries: {
@@ -899,7 +900,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
     },
     cities: {
-      title: cities => `${cities} steden.`,
+      title: cities => `${counted('nl', cities, 'stad', 'steden')}.`,
       lede: countries =>
         `Deelsteps in ${counted('nl', countries, 'land', 'landen')}. Waar geen enkele aanbieder zijn data publiceert, zegt de kaart dat en krijg je de dichtstbijzijnde steden die wel data hebben. Kies een stad om de kaart daar te openen.`,
       countries: {
@@ -1040,7 +1041,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
     },
     cities: {
-      title: cities => (cities === 1 ? '1 cidade.' : `${cities} cidades.`),
+      title: cities => `${counted('pt', cities, 'cidade', 'cidades')}.`,
       lede: countries =>
         `Trotinetes elétricas partilhadas em ${counted('pt', countries, 'país', 'países')}. Onde nenhum operador publica os dados, o mapa avisa e indica-lhe as cidades mais próximas que os têm. Escolha uma cidade para abrir lá o mapa.`,
       countries: {
@@ -1166,7 +1167,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
     },
     cities: {
-      title: cities => (cities === 1 ? '1 ciudad.' : `${cities} ciudades.`),
+      title: cities => `${counted('es', cities, 'ciudad', 'ciudades')}.`,
       lede: countries =>
         `Patinetes eléctricos compartidos en ${counted('es', countries, 'país', 'países')}. Donde ningún operador publica sus datos, el mapa te lo dice y te indica las ciudades más cercanas que sí los tienen. Elige una ciudad para abrir allí el mapa.`,
       countries: {
@@ -1295,7 +1296,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       },
     },
     cities: {
-      title: cities => `${cities} ${cities % 10 === 1 && cities % 100 !== 11 ? 'staður' : 'staðir'}.`,
+      title: cities => `${counted('is', cities, 'staður', 'staðir')}.`,
       lede: countries =>
         `Rafskútur til leigu í ${counted('is', countries, 'landi', 'löndum')}. Þar sem ekkert fyrirtæki birtir gögn segir kortið frá því og bendir þér á næstu staði sem hafa þau. Veldu stað til að opna kortið þar.`,
       countries: {

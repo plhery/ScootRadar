@@ -13,9 +13,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>one</key>
-			<string>%lld città</string>
+			<string>%lld&#x00A0;città</string>
 			<key>other</key>
-			<string>%lld città</string>
+			<string>%lld&#x00A0;città</string>
 		</dict>
 		<key>countries</key>
 		<dict>
@@ -24,9 +24,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>one</key>
-			<string>%lld paese</string>
+			<string>%lld&#x00A0;paese</string>
 			<key>other</key>
-			<string>%lld paesi</string>
+			<string>%lld&#x00A0;paesi</string>
 		</dict>
 	</dict>
 </dict>

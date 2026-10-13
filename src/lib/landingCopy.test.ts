@@ -3,6 +3,7 @@ import {
   LANDING_COPY, LANDING_LOCALES, LANGUAGE_NAMES, isLandingLocale, landingLocaleOf, landingPath, linkedParts, makerLinks,
 } from '@/lib/landingCopy';
 import { PROVIDERS } from '@/generated/providers';
+import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL } from '@/lib/coveredCities';
 import { LANDING_NEAREST } from '@/lib/landingSnapshot';
 import { DEFAULT_RIDE_DURATION, RIDE_DURATIONS } from '@/lib/ridePrice';
 
@@ -63,6 +64,19 @@ describe('the cities of the landing page', () => {
   /** The first sentence of the lede, which counts the countries. */
   const opening = (locale: (typeof LANDING_LOCALES)[number], countries: number) =>
     LANDING_COPY[locale].cities.lede(countries).split('. ')[0];
+  /** A sentence as written here, each count held to its noun by a no-break space. */
+  const held = (sentence: string) => sentence.replace(/(\d) /g, '$1\u00a0');
+
+  it('counts the cities in its title, the noun in the form its count takes', () => {
+    expect(LANDING_LOCALES.map(locale => LANDING_COPY[locale].cities.title(186))).toEqual([
+      '186 cities.', '186 Städte.', '186 villes.', '186 città.', '186 steden.', '186 byer.', '186 cidades.', '186 ciudades.', '186 staðir.',
+    ].map(held));
+    expect(LANDING_LOCALES.map(locale => LANDING_COPY[locale].cities.title(1))).toEqual([
+      '1 city.', '1 Stadt.', '1 ville.', '1 città.', '1 stad.', '1 by.', '1 cidade.', '1 ciudad.', '1 staður.',
+    ].map(held));
+    // Icelandic takes the singular for a count ending in 1, but not 11.
+    expect([21, 22, 11].map(count => LANDING_COPY.is.cities.title(count))).toEqual(['21 staður.', '22 staðir.', '11 staðir.'].map(held));
+  });
 
   it('counts the countries rather than naming them, the noun in the form its count takes', () => {
     expect(LANDING_LOCALES.map(locale => opening(locale, 17))).toEqual([
@@ -75,7 +89,7 @@ describe('the cities of the landing page', () => {
       'Trotinetes elétricas partilhadas em 17 países',
       'Patinetes eléctricos compartidos en 17 países',
       'Rafskútur til leigu í 17 löndum',
-    ]);
+    ].map(held));
     expect(LANDING_LOCALES.map(locale => opening(locale, 1))).toEqual([
       'Shared e-scooters in 1 country',
       'E-Scooter in 1 Land',
@@ -86,17 +100,27 @@ describe('the cities of the landing page', () => {
       'Trotinetes elétricas partilhadas em 1 país',
       'Patinetes eléctricos compartidos en 1 país',
       'Rafskútur til leigu í 1 landi',
-    ]);
+    ].map(held));
     // Icelandic takes the singular for a count ending in 1, but not 11.
     expect([21, 22, 11, 31].map(count => opening('is', count)))
-      .toEqual(['Rafskútur til leigu í 21 landi', 'Rafskútur til leigu í 22 löndum', 'Rafskútur til leigu í 11 löndum', 'Rafskútur til leigu í 31 landi']);
-    expect(opening('en', 21)).toBe('Shared e-scooters in 21 countries');
+      .toEqual(['Rafskútur til leigu í 21 landi', 'Rafskútur til leigu í 22 löndum', 'Rafskútur til leigu í 11 löndum', 'Rafskútur til leigu í 31 landi'].map(held));
+    expect(opening('en', 21)).toBe(held('Shared e-scooters in 21 countries'));
+  });
+
+  it('keeps each count on the line of its noun, in every language', () => {
+    for (const locale of LANDING_LOCALES) {
+      const { title } = LANDING_COPY[locale].cities;
+      for (const text of [title(COVERED_CITY_TOTAL), opening(locale, COVERED_COUNTRY_TOTAL), title(1200), opening(locale, 1)]) {
+        expect(text, locale).not.toMatch(/\d /);
+        expect(text.match(/\d\u00a0\p{L}/gu), `${locale}: ${text}`).toHaveLength(1);
+      }
+    }
   });
 
   it('keeps what the lede says after the count', () => {
-    expect(LANDING_COPY.en.cities.lede(17)).toBe(
+    expect(LANDING_COPY.en.cities.lede(17)).toBe(held(
       'Shared e-scooters in 17 countries. Where no provider publishes its data, the map says so and points you to the closest cities that have it. Pick a city to open the map there.'
-    );
+    ));
     for (const locale of LANDING_LOCALES) expect(LANDING_COPY[locale].cities.lede(17).split('. ')).toHaveLength(3);
   });
 });

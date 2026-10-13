@@ -13,9 +13,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>one</key>
-			<string>%lld by</string>
+			<string>%lld&#x00A0;by</string>
 			<key>other</key>
-			<string>%lld byer</string>
+			<string>%lld&#x00A0;byer</string>
 		</dict>
 		<key>countries</key>
 		<dict>
@@ -24,9 +24,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>lld</string>
 			<key>one</key>
-			<string>%lld land</string>
+			<string>%lld&#x00A0;land</string>
 			<key>other</key>
-			<string>%lld land</string>
+			<string>%lld&#x00A0;land</string>
 		</dict>
 	</dict>
 </dict>
