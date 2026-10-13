@@ -3,6 +3,22 @@
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
+      "id": "bird_fr_agen",
+      "provider": "bird",
+      "city": "Agen",
+      "center": [
+        44.2033,
+        0.6163
+      ],
+      "bounds": {
+        "south": 44.17,
+        "west": 0.59,
+        "north": 44.22,
+        "east": 0.66
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/agen-france/gbfs.json"
+    },
+    {
       "id": "bird_fr_ajaccio",
       "provider": "bird",
       "city": "Ajaccio",
@@ -209,6 +225,128 @@
         "east": 5.65
       },
       "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/marseille/gbfs.json"
+    },
+    {
+      "id": "lime_fr_paris_west",
+      "provider": "lime",
+      "city": "Saint-Germain Boucles de Seine",
+      "center": [
+        48.9,
+        2.134
+      ],
+      "bounds": {
+        "south": 48.8435,
+        "west": 2.0649,
+        "north": 48.9576,
+        "east": 2.2103
+      },
+      "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/paris_west/gbfs.json",
+      "areas": [
+        {
+          "city": "Croissy-sur-Seine",
+          "center": [
+            48.8805,
+            2.1342
+          ],
+          "bounds": {
+            "south": 48.8672,
+            "west": 2.1062,
+            "north": 48.8938,
+            "east": 2.1623
+          }
+        },
+        {
+          "city": "Houilles",
+          "center": [
+            48.9266,
+            2.1866
+          ],
+          "bounds": {
+            "south": 48.913,
+            "west": 2.164,
+            "north": 48.9402,
+            "east": 2.2092
+          }
+        },
+        {
+          "city": "Le Pecq",
+          "center": [
+            48.8924,
+            2.1022
+          ],
+          "bounds": {
+            "south": 48.8741,
+            "west": 2.0802,
+            "north": 48.9108,
+            "east": 2.1242
+          }
+        },
+        {
+          "city": "Le Port-Marly",
+          "center": [
+            48.8808,
+            2.1104
+          ],
+          "bounds": {
+            "south": 48.8689,
+            "west": 2.097,
+            "north": 48.8927,
+            "east": 2.1238
+          }
+        },
+        {
+          "city": "Le Vésinet",
+          "center": [
+            48.8928,
+            2.1312
+          ],
+          "bounds": {
+            "south": 48.8729,
+            "west": 2.108,
+            "north": 48.9127,
+            "east": 2.1545
+          }
+        },
+        {
+          "city": "Marly-le-Roi",
+          "center": [
+            48.866,
+            2.0892
+          ],
+          "bounds": {
+            "south": 48.8435,
+            "west": 2.0649,
+            "north": 48.8884,
+            "east": 2.1135
+          }
+        },
+        {
+          "city": "Montesson",
+          "center": [
+            48.919,
+            2.1381
+          ],
+          "bounds": {
+            "south": 48.8999,
+            "west": 2.1091,
+            "north": 48.9382,
+            "east": 2.1671
+          }
+        },
+        {
+          "city": "Sartrouville",
+          "center": [
+            48.9374,
+            2.1744
+          ],
+          "bounds": {
+            "south": 48.9173,
+            "west": 2.1386,
+            "north": 48.9576,
+            "east": 2.2103
+          }
+        }
+      ]
     },
     {
       "id": "pony_fr_angers",

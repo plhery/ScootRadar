@@ -12,7 +12,9 @@ cities or operating areas. The repository now includes those feeds in
 [`data/french-scooter-feeds.json`](../data/french-scooter-feeds.json).
 
 Rechecked 13 October 2026: Pony La Roche-sur-Yon joined the catalog, read with the key the National Access Point publishes for La
-Roche-sur-Yon; see [Pony, October 2026](#pony-october-2026).
+Roche-sur-Yon; see [Pony, October 2026](#pony-october-2026). Lime west of Paris
+and Bird Agen joined it the same day; see
+[Lime west of Paris and Bird Agen, October 2026](#lime-west-of-paris-and-bird-agen-october-2026).
 
 ## Verified availability
 
@@ -124,6 +126,55 @@ Pony's other French towns, and the Belgian access point publishes Charleroi's.
   Hérouville, Lorient, Perpignan and Poitiers answer too, but the map already
   reads them through the access point's proxy.
 
+## Lime west of Paris and Bird Agen, October 2026
+
+Both feeds are keyless GBFS over https, and every feed their discoveries list
+is on the discovery's origin and under its directory.
+
+| Feed | Available scooters | Polls | Movement between polls |
+| --- | ---: | --- | --- |
+| Lime, Saint-Germain Boucles de Seine ([discovery](https://data.lime.bike/api/partners/v2/gbfs/paris_west/gbfs.json), GBFS 2.2) | 487–498 | 5, five minutes apart, 19:05–19:25 on Tuesday 13 October 2026 | 6 followed by id moved 190 m to 1 km; by position, 3 to 19 left their spot and 6 to 14 appeared at a new one in each interval |
+| Bird Agen ([discovery](https://mds.bird.co/gbfs/v2/public/agen-france/gbfs.json), GBFS 2.3) | 141–144 | the same five polls | by position, 1 to 3 left their spot and up to 3 appeared at a new one in each interval; 5 left and 5 appeared between the first and last |
+
+- **Lime west of Paris** (`paris_west`) is listed only on data.gouv.fr, where
+  Lime itself publishes it as [GBFS CASGBS](https://www.data.gouv.fr/datasets/gbfs-casgbs)
+  under the Licence Ouverte 2.0; the feed's own `license_url` points to Lime's
+  GBFS terms. It is the service of the Communauté d'agglomération Saint Germain Boucles de Seine,
+  which Lime took over from Dott at the end of July 2025
+  ([Infos Yvelines](https://www.infosyvelines.fr/articles/15-communes-des-yvelines-sunissent-pour-la-mobilite-douce),
+  updated 9 August 2026). Scooters run in eight towns: Croissy-sur-Seine,
+  Houilles, Le Pecq, Le Port-Marly, Le Vésinet, Marly-le-Roi, Montesson and
+  Sartrouville; Bezons, Carrières-sur-Seine, Chambourcy, Chatou,
+  L'Étang-la-Ville, Louveciennes and Mareil-Marly have e-bikes only. The feed
+  lists about 495 scooters (type 2) and about 525 e-bikes, which the map leaves
+  out. The catalog entry has one area per town, so each can be searched and
+  counted; each area is the town's boundary
+  ([geo.api.gouv.fr](https://geo.api.gouv.fr/epcis/200058519/communes)) plus
+  0.003° of latitude and 0.004° of longitude, as the feed has no geofencing.
+  In the first poll Houilles held 147 scooters, Marly-le-Roi 83, Montesson 63,
+  Le Pecq 55, Croissy 51, Le Vésinet 48, Le Port-Marly 17 and Sartrouville 7,
+  all at its southern edge. About 20 scooters stood still through the five polls
+  west of the service, around Saint-Nom-la-Bretèche, with one in Bougival; they fall
+  outside the areas and the map leaves them out. Lime gives a scooter the same
+  `bike_id` for a few polls, then a new one, and stamps `last_reported` with
+  the time of the request. Range is published, battery and rental links are
+  not, and the feed has no pricing; the article gives EUR 1 and EUR 0.22 a
+  minute. Its one station, `paris_west`, is a placeholder about 35 km north-west
+  of the towns, not a parking spot; the map shows no parking for it. Rides end at
+  authorised spots, checked by a photo. The article says the vehicles stay
+  available day and night, every day, so there is no night ban. Dott has no
+  feed here any more, and the catalog never had one.
+- **Bird Agen:** the [city](https://www.agen.fr/vie-quotidienne/se-deplacer-et-stationner/trottinettes-electriques-en-libre-service-a-agen)
+  (updated 17 August 2026) lists 150 scooters, renewed in April 2025, at 58
+  parking spots, at EUR 1 and EUR 0.20 a minute, for riders 18 or older. The
+  feed has 56 virtual stations and gives battery and range, but no rental
+  links and an empty pricing plan list. Bird gives each scooter a new
+  `bike_id` on every request, so scooters were followed by position. One
+  scooter's position was 20 minutes old and the map drops it; the others were
+  at most ten minutes old. The bounds are the zone where riding is allowed
+  (44.1784–44.2116, 0.6074–0.6443) plus about 0.01°. None of the 13 zones
+  sets hours, the city sets none, and no night ban was found.
+
 ## Findings that affect integration
 
 - **Dott:** the [France country entry point](https://gbfs.api.ridedott.com/public/v2/countries/fr/gbfs.json)
@@ -144,7 +195,8 @@ Pony's other French towns, and the Belgian access point publishes Charleroi's.
   adapter rejects missing timestamps or data older than fifteen minutes. An unavailable
   city feed does not discard other successful city feeds.
 - **Bounds:** geofencing envelopes have conservative padding; Lime's feeds lack
-  geofencing, so reviewed metropolitan bounds are used. These are fetch-routing
+  geofencing, so reviewed metropolitan bounds, or town boundaries west of Paris,
+  are used. These are fetch-routing
   envelopes, not legal riding or parking zones. A stray Pony Angers record was
   observed outside its region; records outside the configured service bounds
   are excluded. Changes in service areas need a catalog review.
@@ -159,7 +211,7 @@ Pony's other French towns, and the Belgian access point publishes Charleroi's.
 | --- | --- |
 | Dott GPSEO | The catalog's old city discovery returned HTTP 404. The working Voi GPSEO feed is enabled. |
 | Dott OL Vallée | Current status returned zero vehicles; keep as a candidate rather than claiming current availability. |
-| Central Paris | Sampled Dott, Lime, and Voi feeds returned bicycles and zero available standing scooters. Nearby GPSEO, SIEMU, Versailles and Saint-Quentin-en-Yvelines are separate systems. |
+| Central Paris | Sampled Dott, Lime, and Voi feeds returned bicycles and zero available standing scooters. Nearby GPSEO, SIEMU, Versailles, Saint-Quentin-en-Yvelines and Lime west of Paris are separate systems. |
 | Other Lime feeds | Nice and Sophia Antipolis returned zero available standing scooters in this sample. |
 | Other Pony feeds | Nice, Limoges and Pays Basque returned zero available standing scooters in this sample. On 13 October 2026 Tours, Orléans, Limoges, Nice and Marseille listed e-bikes only, Pays Basque e-bikes and one disabled scooter, and Paris 9 disabled scooters; see [Pony, October 2026](#pony-october-2026). |
 | Voi V'Lônes | Returned bicycles and zero available standing scooters in this sample. |

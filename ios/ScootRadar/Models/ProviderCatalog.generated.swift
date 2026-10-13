@@ -130,6 +130,7 @@ enum ScooterProviderCoverage {
         GeoBounds(south: 47.27, west: 8.34, north: 47.49, east: 8.73),
     ]
     private static let regionalSystems: [(ScooterProvider, GeoBounds)] = [
+        (.bird, GeoBounds(south: 44.17, west: 0.59, north: 44.22, east: 0.66)),
         (.bird, GeoBounds(south: 41.81, west: 8.53, north: 42.03, east: 8.87)),
         (.bird, GeoBounds(south: 47.46, west: 1.2, north: 47.71, east: 1.44)),
         (.bird, GeoBounds(south: 48.85, west: 4.22, north: 49.07, east: 4.49)),
@@ -143,6 +144,14 @@ enum ScooterProviderCoverage {
         (.dott, GeoBounds(south: 48.73, west: 2.02, north: 48.96, east: 2.24)),
         (.lime, GeoBounds(south: 50.4, west: 2.75, north: 50.9, east: 3.4)),
         (.lime, GeoBounds(south: 43.12, west: 5.22, north: 43.49, east: 5.65)),
+        (.lime, GeoBounds(south: 48.8672, west: 2.1062, north: 48.8938, east: 2.1623)),
+        (.lime, GeoBounds(south: 48.913, west: 2.164, north: 48.9402, east: 2.2092)),
+        (.lime, GeoBounds(south: 48.8741, west: 2.0802, north: 48.9108, east: 2.1242)),
+        (.lime, GeoBounds(south: 48.8689, west: 2.097, north: 48.8927, east: 2.1238)),
+        (.lime, GeoBounds(south: 48.8729, west: 2.108, north: 48.9127, east: 2.1545)),
+        (.lime, GeoBounds(south: 48.8435, west: 2.0649, north: 48.8884, east: 2.1135)),
+        (.lime, GeoBounds(south: 48.8999, west: 2.1091, north: 48.9382, east: 2.1671)),
+        (.lime, GeoBounds(south: 48.9173, west: 2.1386, north: 48.9576, east: 2.2103)),
         (.pony, GeoBounds(south: 47.33, west: -0.73, north: 47.62, east: -0.38)),
         (.pony, GeoBounds(south: 49.16, west: 1.67, north: 49.75, east: 2.55)),
         (.pony, GeoBounds(south: 44.67, west: -0.86, north: 45.05, east: -0.39)),
@@ -385,6 +394,7 @@ enum ScooterCityCatalog {
         ScooterCity(id: "ch:winterthur", name: "Winterthur", countryCode: "CH", center: GeoPoint(latitude: 47.499, longitude: 8.7241), bounds: GeoBounds(south: 47.38, west: 8.53, north: 47.64, east: 8.97)),
         ScooterCity(id: "ch:zug", name: "Zug", countryCode: "CH", center: GeoPoint(latitude: 47.1724, longitude: 8.5174), bounds: GeoBounds(south: 47.03, west: 8.32, north: 47.31, east: 8.74)),
         ScooterCity(id: "ch:zurich", name: "Zürich", countryCode: "CH", center: GeoPoint(latitude: 47.3769, longitude: 8.5417), bounds: GeoBounds(south: 47.27, west: 8.34, north: 47.49, east: 8.73)),
+        ScooterCity(id: "fr:Agen", name: "Agen", countryCode: "FR", center: GeoPoint(latitude: 44.2033, longitude: 0.6163), bounds: GeoBounds(south: 44.17, west: 0.59, north: 44.22, east: 0.66)),
         ScooterCity(id: "fr:Ajaccio", name: "Ajaccio", countryCode: "FR", center: GeoPoint(latitude: 41.9192, longitude: 8.7386), bounds: GeoBounds(south: 41.81, west: 8.53, north: 42.03, east: 8.87)),
         ScooterCity(id: "fr:Blois", name: "Blois", countryCode: "FR", center: GeoPoint(latitude: 47.5861, longitude: 1.3359), bounds: GeoBounds(south: 47.46, west: 1.2, north: 47.71, east: 1.44)),
         ScooterCity(id: "fr:Châlons-en-Champagne", name: "Châlons-en-Champagne", countryCode: "FR", center: GeoPoint(latitude: 48.9566, longitude: 4.3523), bounds: GeoBounds(south: 48.85, west: 4.22, north: 49.07, east: 4.49)),
@@ -398,6 +408,14 @@ enum ScooterCityCatalog {
         ScooterCity(id: "fr:Versailles Grand Parc", name: "Versailles Grand Parc", countryCode: "FR", center: GeoPoint(latitude: 48.8049, longitude: 2.1204), bounds: GeoBounds(south: 48.73, west: 2.02, north: 48.96, east: 2.24)),
         ScooterCity(id: "fr:Lille Métropole", name: "Lille Métropole", countryCode: "FR", center: GeoPoint(latitude: 50.6292, longitude: 3.0573), bounds: GeoBounds(south: 50.4, west: 2.75, north: 50.9, east: 3.4)),
         ScooterCity(id: "fr:Marseille", name: "Marseille", countryCode: "FR", center: GeoPoint(latitude: 43.2965, longitude: 5.3698), bounds: GeoBounds(south: 43.11, west: 5.18, north: 43.49, east: 5.65)),
+        ScooterCity(id: "fr:Croissy-sur-Seine", name: "Croissy-sur-Seine", countryCode: "FR", center: GeoPoint(latitude: 48.8805, longitude: 2.1342), bounds: GeoBounds(south: 48.8672, west: 2.1062, north: 48.8938, east: 2.1623)),
+        ScooterCity(id: "fr:Houilles", name: "Houilles", countryCode: "FR", center: GeoPoint(latitude: 48.9266, longitude: 2.1866), bounds: GeoBounds(south: 48.913, west: 2.164, north: 48.9402, east: 2.2092)),
+        ScooterCity(id: "fr:Le Pecq", name: "Le Pecq", countryCode: "FR", center: GeoPoint(latitude: 48.8924, longitude: 2.1022), bounds: GeoBounds(south: 48.8741, west: 2.0802, north: 48.9108, east: 2.1242)),
+        ScooterCity(id: "fr:Le Port-Marly", name: "Le Port-Marly", countryCode: "FR", center: GeoPoint(latitude: 48.8808, longitude: 2.1104), bounds: GeoBounds(south: 48.8689, west: 2.097, north: 48.8927, east: 2.1238)),
+        ScooterCity(id: "fr:Le Vésinet", name: "Le Vésinet", countryCode: "FR", center: GeoPoint(latitude: 48.8928, longitude: 2.1312), bounds: GeoBounds(south: 48.8729, west: 2.108, north: 48.9127, east: 2.1545)),
+        ScooterCity(id: "fr:Marly-le-Roi", name: "Marly-le-Roi", countryCode: "FR", center: GeoPoint(latitude: 48.866, longitude: 2.0892), bounds: GeoBounds(south: 48.8435, west: 2.0649, north: 48.8884, east: 2.1135)),
+        ScooterCity(id: "fr:Montesson", name: "Montesson", countryCode: "FR", center: GeoPoint(latitude: 48.919, longitude: 2.1381), bounds: GeoBounds(south: 48.8999, west: 2.1091, north: 48.9382, east: 2.1671)),
+        ScooterCity(id: "fr:Sartrouville", name: "Sartrouville", countryCode: "FR", center: GeoPoint(latitude: 48.9374, longitude: 2.1744), bounds: GeoBounds(south: 48.9173, west: 2.1386, north: 48.9576, east: 2.2103)),
         ScooterCity(id: "fr:Angers", name: "Angers", countryCode: "FR", center: GeoPoint(latitude: 47.4784, longitude: -0.5632), bounds: GeoBounds(south: 47.33, west: -0.73, north: 47.62, east: -0.38)),
         ScooterCity(id: "fr:Beauvais", name: "Beauvais", countryCode: "FR", center: GeoPoint(latitude: 49.4295, longitude: 2.0807), bounds: GeoBounds(south: 49.16, west: 1.67, north: 49.75, east: 2.55)),
         ScooterCity(id: "fr:Bourges", name: "Bourges", countryCode: "FR", center: GeoPoint(latitude: 47.081, longitude: 2.3988), bounds: GeoBounds(south: 46.96, west: 2.28, north: 47.21, east: 2.53)),
@@ -558,7 +576,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 189
+    static let cityCount = 198
     static let countryCount = 17
 
     /// Cities by distance from the point to their centre, nearest first.

@@ -34,8 +34,9 @@ describe('searchCoveredCities', () => {
 
   it('lists the cities a few letters could become, a city typed in full first and the others by name', () => {
     expect(names('Ber')).toEqual(['Berlin, Germany', 'Bern, Switzerland']);
-    // Portimão by its beach, Praia da Rocha, Faliraki by its island, Rhodes or Rodos, and La Roche-sur-Yon by its second word.
-    expect(names('Ro')).toEqual(['Faliraki, Greece', 'La Roche-sur-Yon, France', 'Portimão, Portugal', 'Roma, Italy', 'Romanshorn, Switzerland']);
+    // Portimão by its beach, Praia da Rocha, Faliraki by its island, Rhodes or Rodos, La Roche-sur-Yon and
+    // Marly-le-Roi by a later word; five at most, so Romanshorn waits for a third letter.
+    expect(names('Ro')).toEqual(['Faliraki, Greece', 'La Roche-sur-Yon, France', 'Marly-le-Roi, France', 'Portimão, Portugal', 'Roma, Italy']);
     expect(names('Rom')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland']);
     expect(names('Roma')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland']);
     // Vestmannaeyjar by its island, Heimaey.

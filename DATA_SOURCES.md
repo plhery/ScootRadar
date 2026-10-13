@@ -49,8 +49,8 @@ does not imply endorsement.
 
 ### French cities
 
-The app also reads 28 reviewed public GBFS feeds from Dott, Bird, Lime, Voi and
-Pony across 26 French cities or operating areas. The catalog is checked into
+The app also reads 30 reviewed public GBFS feeds from Dott, Bird, Lime, Voi and
+Pony across 35 French cities or operating areas. The catalog is checked into
 [`data/french-scooter-feeds.json`](data/french-scooter-feeds.json), using the
 [MobilityData registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
 and [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets?format=gbfs&subtype=scooter)
@@ -60,7 +60,9 @@ Agglomération under the Licence Ouverte 2.0, links Pony's own feed with the key
 the address needs, and the catalog uses that address, key included. The key was
 published for La Roche-sur-Yon only; it was decided on 13 October 2026 that it
 may be used for Pony's other towns too, though none of the others tried
-qualifies yet. The other feeds are served directly by their operators.
+qualifies yet. The other feeds are served directly by their operators. Lime's
+feed west of Paris, in eight towns of Saint Germain Boucles de Seine, is listed
+only on data.gouv.fr, where Lime publishes it under the Licence Ouverte 2.0.
 
 Production collects each system independently every minute on Netcup, with at
 most six systems in flight. Map requests read only the relevant cached systems,
@@ -165,7 +167,7 @@ opens directions. The operator app remains the final check for ending a ride.
 - GBFS 2.3 `vehicle_type_id` and GBFS 3 `vehicle_type_ids`, localized names,
   polygon holes, ordered rules, global defaults and active dates are supported.
 - Only scooter-compatible virtual/infrastructure stations are used. Lime's
-  synthetic whole-city Lille station is excluded. Lime's Lille parking instead
+  synthetic whole-city stations in Lille and west of Paris are excluded. Lime's Lille parking instead
   comes from the official MEL inventory of mandatory e-scooter bays, paginated
   and cached hourly. Bike-only and non-parking records are excluded. This
   municipal inventory does not publish live return availability. Missing spots
