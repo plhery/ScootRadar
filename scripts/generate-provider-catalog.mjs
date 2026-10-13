@@ -21,6 +21,7 @@ const regionalSystems = [
   ...readJson('data/portuguese-scooter-feeds.json').systems,
   ...readJson('data/spanish-scooter-feeds.json').systems,
   ...readJson('data/icelandic-scooter-feeds.json').systems,
+  ...readJson('data/swedish-scooter-feeds.json').systems,
 ];
 const curfews = readJson('data/rental-curfews.json').curfews;
 
@@ -247,7 +248,7 @@ function scooterCities() {
 
 function swiftCities() {
   const cities = scooterCities().map(city => {
-    if (!/^(CH|FR|DE|IT|BE|NO|GB|PT|ES|IS)$/.test(city.country) || !city.center.every(Number.isFinite)) {
+    if (!/^(CH|FR|DE|IT|BE|NO|GB|PT|ES|IS|SE)$/.test(city.country) || !city.center.every(Number.isFinite)) {
       throw new Error(`Invalid covered city: ${city.id}`);
     }
     return `        ScooterCity(id: ${JSON.stringify(city.id)}, name: ${JSON.stringify(city.name)}, countryCode: ${JSON.stringify(city.country)}, ` +

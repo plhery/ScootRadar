@@ -292,6 +292,8 @@ enum ScooterProviderCoverage {
         (.hopp, GeoBounds(south: 65.0584, west: -22.762, north: 65.0856, east: -22.7041)),
         (.hopp, GeoBounds(south: 63.4233, west: -20.3143, north: 63.454, east: -20.2472)),
         (.hopp, GeoBounds(south: 63.4101, west: -19.029, north: 63.4284, east: -18.9801)),
+        (.hopp, GeoBounds(south: 67.8205, west: 20.1797, north: 67.8801, east: 20.3641)),
+        (.lime, GeoBounds(south: 59.8076, west: 17.5747, north: 59.9021, east: 17.7203)),
     ]
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
@@ -501,6 +503,8 @@ enum ScooterCityCatalog {
         ScooterCity(id: "is:Stykkishólmur", name: "Stykkishólmur", countryCode: "IS", center: GeoPoint(latitude: 65.0743, longitude: -22.7303), bounds: GeoBounds(south: 65.0584, west: -22.762, north: 65.0856, east: -22.7041)),
         ScooterCity(id: "is:Vestmannaeyjar", name: "Vestmannaeyjar", countryCode: "IS", center: GeoPoint(latitude: 63.4401, longitude: -20.2786), bounds: GeoBounds(south: 63.4233, west: -20.3143, north: 63.454, east: -20.2472)),
         ScooterCity(id: "is:Vík", name: "Vík", countryCode: "IS", center: GeoPoint(latitude: 63.4188, longitude: -19.0055), bounds: GeoBounds(south: 63.4101, west: -19.029, north: 63.4284, east: -18.9801)),
+        ScooterCity(id: "se:Kiruna", name: "Kiruna", countryCode: "SE", center: GeoPoint(latitude: 67.8496, longitude: 20.3063), bounds: GeoBounds(south: 67.8205, west: 20.1797, north: 67.8801, east: 20.3641)),
+        ScooterCity(id: "se:Uppsala", name: "Uppsala", countryCode: "SE", center: GeoPoint(latitude: 59.8586, longitude: 17.6387), bounds: GeoBounds(south: 59.8076, west: 17.5747, north: 59.9021, east: 17.7203)),
     ]
 
     /// Cities by distance from the point to their centre, nearest first.

@@ -5,7 +5,7 @@
 <h1 align="center">ScootRadar</h1>
 
 <p align="center">
-  A friendly map for finding shared e-scooters in Switzerland and selected cities in France, Germany, Italy, Belgium, Norway, the United Kingdom, Portugal, Spain and Iceland.
+  A friendly map for finding shared e-scooters in Switzerland and selected cities in France, Germany, Italy, Belgium, Norway, the United Kingdom, Portugal, Spain, Iceland and Sweden.
 </p>
 
 <p align="center">
@@ -56,6 +56,8 @@ feeds across 18 towns (Beryl, Dott and Bolt). See the
 Portugal adds 12 feeds across 11 cities (Bird and Lime), Spain 8 feeds across 10
 towns (Bird and Hopp), and Iceland 14 Hopp feeds across 18 towns. See the
 [Portuguese, Spanish and Icelandic feed audit](docs/portuguese-spanish-icelandic-scooter-feeds.md).
+Sweden adds 2 feeds: Lime in Uppsala and Hopp in Kiruna. See the
+[Swedish feed audit](docs/swedish-scooter-feeds.md).
 What is not covered yet, and why, is listed in
 [Coverage gaps](docs/coverage-gaps.md).
 

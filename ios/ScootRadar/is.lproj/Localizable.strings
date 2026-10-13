@@ -139,7 +139,7 @@
 
 /* UX alignment: outside coverage and filters with nothing to show */
 "No scooter data here yet" = "Engin gögn um rafskútur hér enn";
-"ScootRadar covers selected cities in Belgium, France, Germany, Iceland, Italy, Norway, Portugal, Spain, Switzerland and the United Kingdom." = "ScootRadar nær yfir valdar borgir og bæi á Íslandi, Ítalíu og Spáni og í Belgíu, Bretlandi, Frakklandi, Noregi, Portúgal, Sviss og Þýskalandi.";
+"ScootRadar covers selected cities in Belgium, France, Germany, Iceland, Italy, Norway, Portugal, Spain, Sweden, Switzerland and the United Kingdom." = "ScootRadar nær yfir valdar borgir og bæi á Íslandi, Ítalíu og Spáni og í Belgíu, Bretlandi, Frakklandi, Noregi, Portúgal, Sviss, Svíþjóð og Þýskalandi.";
 "Closest cities" = "Næstu staðir";
 "%1$@ · %2$@" = "%1$@ · %2$@";
 "1 scooter hidden by your filters" = "Síurnar þínar fela einu rafskútuna hér";

@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 const requested = process.argv.find(arg => arg.startsWith('--countries='))?.split('=')[1].split(',') ?? ['FR'];
 const catalogs = {
   FR: 'french', DE: 'german', IT: 'italian', BE: 'belgian', NO: 'norwegian', GB: 'british',
-  PT: 'portuguese', ES: 'spanish', IS: 'icelandic',
+  PT: 'portuguese', ES: 'spanish', IS: 'icelandic', SE: 'swedish',
 };
 if (requested.some(country => !catalogs[country])) throw new Error(`Use --countries=${Object.keys(catalogs).join(',')}`);
 // --fail-on=gone fails the run only for an entry its operator no longer serves, as the weekly workflow does.

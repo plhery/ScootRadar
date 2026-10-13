@@ -457,7 +457,7 @@ struct ScooterControlDock: View {
                 systemImage: "map",
                 tint: ScooterPalette.actionText,
                 title: String(localized: "No scooter data here yet"),
-                message: String(localized: "ScootRadar covers selected cities in Belgium, France, Germany, Iceland, Italy, Norway, Portugal, Spain, Switzerland and the United Kingdom.")
+                message: String(localized: "ScootRadar covers selected cities in Belgium, France, Germany, Iceland, Italy, Norway, Portugal, Spain, Sweden, Switzerland and the United Kingdom.")
             )
 
             VStack(alignment: .leading, spacing: 8) {
@@ -1979,7 +1979,7 @@ struct ScooterCreditsList: View {
                 url: URL(string: "https://www.mobidata-bw.de/")!
             ),
             Source(
-                title: "DE/IT/BE/UK/PT/ES/IS: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy",
+                title: "DE/IT/BE/UK/PT/ES/IS/SE: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy",
                 url: URL(string: "https://github.com/MobilityData/gbfs")!
             ),
             Source(

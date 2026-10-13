@@ -14,10 +14,11 @@ const FEATURED: Record<CoveredCountry, string[]> = {
   PT: ['pt:Lisboa', 'pt:Porto', 'pt:Cascais', 'pt:Almada', 'pt:Matosinhos', 'pt:Oeiras'],
   ES: ['es:Gijón', 'es:Getafe', 'es:Torrevieja', 'es:Playa de las Américas', 'es:Jávea', 'es:Pilar de la Horadada'],
   IS: ['is:Reykjavík', 'is:Reykjanesbær', 'is:Akureyri', 'is:Selfoss', 'is:Akranes', 'is:Vestmannaeyjar'],
+  SE: ['se:Uppsala', 'se:Kiruna'],
 };
 
 // Switzerland and its neighbours first, then the countries in the order they were added.
-const COUNTRY_ORDER: CoveredCountry[] = ['CH', 'DE', 'FR', 'IT', 'BE', 'NO', 'GB', 'PT', 'ES', 'IS'];
+const COUNTRY_ORDER: CoveredCountry[] = ['CH', 'DE', 'FR', 'IT', 'BE', 'NO', 'GB', 'PT', 'ES', 'IS', 'SE'];
 
 export interface LandingCity {
   name: string;

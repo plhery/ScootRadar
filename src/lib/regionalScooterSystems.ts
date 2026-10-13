@@ -7,16 +7,19 @@ import britishCatalog from '../../data/british-scooter-feeds.json';
 import portugueseCatalog from '../../data/portuguese-scooter-feeds.json';
 import spanishCatalog from '../../data/spanish-scooter-feeds.json';
 import icelandicCatalog from '../../data/icelandic-scooter-feeds.json';
+import swedishCatalog from '../../data/swedish-scooter-feeds.json';
 import type { ProviderKey } from '@/generated/providers';
 import type { MapBounds } from '@/lib/types';
 
-export type ScooterCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS';
+export type ScooterCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE';
 export const COUNTRY_SOURCES = {
   FR: 'france', DE: 'germany', IT: 'italy', BE: 'belgium', NO: 'norway', GB: 'uk', PT: 'portugal', ES: 'spain', IS: 'iceland',
+  SE: 'sweden',
 } as const;
 export type RegionalSource = typeof COUNTRY_SOURCES[ScooterCountry];
 const COUNTRY_NAMES = {
   FR: 'France', DE: 'Germany', IT: 'Italy', BE: 'Belgium', NO: 'Norway', GB: 'United Kingdom', PT: 'Portugal', ES: 'Spain', IS: 'Iceland',
+  SE: 'Sweden',
 };
 const COUNTRY_ALIASES = { FR: ['france', 'frankreich', 'francia', 'frankrijk', 'frankrike', 'franca', 'frakkland'],
   DE: ['germany', 'deutschland', 'allemagne', 'germania', 'duitsland', 'tyskland', 'alemanha', 'alemania', 'thyskaland'],
@@ -27,7 +30,8 @@ const COUNTRY_ALIASES = { FR: ['france', 'frankreich', 'francia', 'frankrijk', '
     'inglaterra', 'bretland'],
   PT: ['portugal', 'portogallo'],
   ES: ['spain', 'spanien', 'espagne', 'spagna', 'spanje', 'spania', 'espanha', 'espana', 'spann'],
-  IS: ['iceland', 'island', 'islande', 'islanda', 'ijsland', 'islandia'] };
+  IS: ['iceland', 'island', 'islande', 'islanda', 'ijsland', 'islandia'],
+  SE: ['sweden', 'schweden', 'suede', 'svezia', 'zweden', 'sverige', 'suecia', 'svithjod'] };
 
 export interface ScooterServiceArea {
   city: string;
@@ -49,7 +53,7 @@ export const REGIONAL_SCOOTER_SYSTEMS = [
   ...frenchCatalog.systems.map(system => ({ ...system, country: 'FR' })),
   ...germanCatalog.systems, ...italianCatalog.systems,
   ...belgianCatalog.systems, ...norwegianCatalog.systems, ...britishCatalog.systems,
-  ...portugueseCatalog.systems, ...spanishCatalog.systems, ...icelandicCatalog.systems,
+  ...portugueseCatalog.systems, ...spanishCatalog.systems, ...icelandicCatalog.systems, ...swedishCatalog.systems,
 ] as RegionalScooterSystem[];
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {

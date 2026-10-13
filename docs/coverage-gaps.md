@@ -104,6 +104,21 @@ banned shared scooters, and feeds that were empty when checked.
 - **Iceland** ([guide](portuguese-spanish-icelandic-scooter-feeds.md#known-gaps)):
   - Bolt has run in the capital area since 2024, with no public feed.
   - Nine small Hopp towns held fewer than ten scooters.
+- **Sweden** ([guide](swedish-scooter-feeds.md#known-gaps)): Lime in Uppsala
+  and Hopp in Kiruna are covered.
+  - Voi (Stockholm, Uppsala, Göteborg, Malmö and others), Bolt (Stockholm),
+    Ryde (Uppsala, Göteborg) and Dott (Göteborg) publish no public feed.
+    Stockholm, which allows 12,000 scooters, has none on the map, and Uppsala
+    shows Lime's only.
+  - Dott's 12 Swedish regions in the registry (Göteborg, Eskilstuna,
+    Helsingborg and others) answer 404, and its Swedish listing is empty.
+  - Lime Stockholm, Göteborg and Malmö answer 404.
+  - Zeus Borlänge, Falun, Halmstad, Karlstad and Gävle list only disabled
+    scooters, last reported in 2022 and 2023.
+  - Sweden's national access point (trafficdata.se) has no shared-mobility
+    data, and Stockholm's open data has scooter parking bays only, behind a
+    key.
+  - Donkey Republic, Styr & Ställ and Lundahoj are bikes only.
 
 ## Countries not covered yet
 
@@ -117,7 +132,6 @@ checks before relying on a count.
 
 | Country | Scooters | Feeds |
 | --- | ---: | --- |
-| Sweden | ~890 | Lime Uppsala, Hopp Kiruna |
 | Latvia | ~705 | Ride Mobility Riga (ATOM Mobility, a provider new to the app) |
 | Poland | ~545 | Dott Sosnowiec, Wołomin and Oświęcim; Hopp in five small towns |
 | Hungary | ~380 | Hopp Pécs and Békéscsaba |

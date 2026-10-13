@@ -1,0 +1,48 @@
+{
+  "verifiedOn": "2026-10-13",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "hopp_se_kiruna",
+      "country": "SE",
+      "provider": "hopp",
+      "city": "Kiruna",
+      "center": [
+        67.8496,
+        20.3063
+      ],
+      "bounds": {
+        "south": 67.8205,
+        "north": 67.8801,
+        "west": 20.1797,
+        "east": 20.3641
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/se-kiruna/gbfs.json",
+      "aliases": [
+        "Giron",
+        "Kiiruna"
+      ]
+    },
+    {
+      "id": "lime_se_uppsala",
+      "country": "SE",
+      "provider": "lime",
+      "city": "Uppsala",
+      "center": [
+        59.8586,
+        17.6387
+      ],
+      "bounds": {
+        "south": 59.8076,
+        "north": 59.9021,
+        "west": 17.5747,
+        "east": 17.7203
+      },
+      "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/uppsala/gbfs.json",
+      "aliases": [
+        "Upsala",
+        "Uppsalir"
+      ]
+    }
+  ]
+}

@@ -262,3 +262,20 @@ France and Germany. Hopp links its privacy policy, not a licence. The map's
 credits name all three. See the
 [coverage audit](docs/portuguese-spanish-icelandic-scooter-feeds.md) for the
 systems, the gaps and the recheck command.
+
+## Sweden
+
+The reviewed catalog lives in `data/swedish-scooter-feeds.json`: 2 feeds in 2
+towns, Lime in Uppsala and Hopp in Kiruna. Both are the operators' own public
+GBFS feeds. Lime Uppsala is listed in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv);
+Hopp Kiruna is not, and answers at the address Hopp uses for its other towns.
+Sweden's national access point, [trafficdata.se](https://trafficdata.se),
+lists no shared-mobility data.
+
+Lime's [GBFS terms](https://www.li.me/legal/public-gbfs-terms) allow public
+display only where local law requires it and data no older than ten minutes,
+as in France, Germany and Portugal. Hopp links its privacy policy, not a
+licence. The map's credits name both under the GBFS line. See the
+[coverage audit](docs/swedish-scooter-feeds.md) for the systems, the gaps and
+the recheck command.

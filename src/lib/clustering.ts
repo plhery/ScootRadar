@@ -91,6 +91,8 @@ const CITY_GROUP_NAMES = 3;
 const COUNTRY_ANCHORS: Record<string, [number, number]> = {
   be: [50.6, 4.6], ch: [46.8, 8.2], de: [51.1, 10.4], es: [40.4, -2.5], fr: [46.6, 2.4],
   gb: [52.8, -1.6], is: [64.9, -18.6], it: [43, 12.5], nl: [52.2, 5.6], no: [61, 9.5], pt: [39.6, -8],
+  // Inland, between Uppsala and Kiruna, and clear of Norway's total.
+  se: [63.6, 17.8],
 };
 
 // "city:fr:Paris" is in France.

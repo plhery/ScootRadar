@@ -133,8 +133,8 @@ language it is shown in. The endpoint is set in `Services/ScooterAPI.swift` if a
 local or preview backend is needed.
 
 The API covers Switzerland and selected cities in France, Germany, Italy, Belgium,
-Norway, the United Kingdom, Portugal, Spain and Iceland.
-Prices are in CHF or EUR where the feed supplies a tariff. The backend loads
+Norway, the United Kingdom, Portugal, Spain, Iceland and Sweden.
+Prices are in the currency of the feed's tariff, where it supplies one. The backend loads
 feeds for the visible map area only.
 
 Refreshing is automatic while the app is in front: at the interval the server
