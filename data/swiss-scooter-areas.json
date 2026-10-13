@@ -112,6 +112,20 @@
     }
   },
   {
+    "id": "ch:lichtensteig",
+    "city": "Lichtensteig",
+    "center": [
+      47.3236,
+      9.0876
+    ],
+    "bounds": {
+      "south": 47.31,
+      "west": 9.075,
+      "north": 47.342,
+      "east": 9.121
+    }
+  },
+  {
     "id": "ch:locarno",
     "city": "Locarno",
     "center": [
@@ -224,6 +238,20 @@
     }
   },
   {
+    "id": "ch:wadenswil",
+    "city": "Wädenswil",
+    "center": [
+      47.2297,
+      8.6722
+    ],
+    "bounds": {
+      "south": 47.168,
+      "west": 8.62,
+      "north": 47.258,
+      "east": 8.72
+    }
+  },
+  {
     "id": "ch:wetzikon",
     "city": "Wetzikon",
     "center": [
@@ -235,6 +263,20 @@
       "west": 8.68,
       "north": 47.4,
       "east": 8.98
+    }
+  },
+  {
+    "id": "ch:wil",
+    "city": "Wil",
+    "center": [
+      47.4625,
+      9.045
+    ],
+    "bounds": {
+      "south": 47.441,
+      "west": 9,
+      "north": 47.5,
+      "east": 9.103
     }
   },
   {

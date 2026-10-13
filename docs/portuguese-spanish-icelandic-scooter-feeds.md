@@ -158,6 +158,15 @@ the dock and each scooter's card state the ban and when renting resumes.
   - Hopp's Hveragerði and Hella / Hvolsvöllur feeds held under ten available
     scooters, and Grindavík, Höfn, Seyðisfjörður, Blönduós, Ólafsfjörður and
     Þorlákshöfn none.
+  - Hopp Siglufjörður, one of the enabled feeds, held about 20 scooters from
+    12 October 2026 until the evening of the 13th, when they went: 10 at
+    18:40, 1 at 19:40 and none from 20:40 (UTC, the scooter cache's counts).
+    The feed then listed no rows at all, in the audit's polls from 22:00 to
+    22:10, at 22:40 and again at 09:20 on the 14th, while Dalvík and
+    Sauðárkrókur, nearby, still listed theirs. Its discovery, vehicle types
+    and geofencing zones are still published, so the feed stays in the
+    catalog, empty on the map; Hopp may have taken the scooters in for the
+    winter. Check it in spring, and remove it if it is still empty.
 
 ## Recheck
 

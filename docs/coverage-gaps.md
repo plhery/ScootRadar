@@ -40,6 +40,13 @@ banned shared scooters, and feeds that were empty when checked.
   (Zürich, Basel and Kloten) and PubliBike, read from their own feeds. Hopp
   stamps each response with the time it was asked for, so the fifteen-minute
   age limit can't tell how old its positions are.
+  - Lime Winterthur, Zug and Wetzikon list no vehicles, with fresh
+    timestamps, as they have since at least 11 October 2026. Winterthur
+    licenses Voi alone until the end of 2027
+    ([Data sources](../DATA_SOURCES.md#mobility-data)).
+  - Dott's 13 scooters in Lichtensteig, on the map since 14 October 2026,
+    sat at the same spots from 00:37 to 11:41 that day: check over a weekend
+    that they are ridden.
 - **France** ([guide](french-scooter-feeds.md#feeds-not-enabled)):
   - Central Paris has no shared scooters (banned in 2023).
   - Dott GPSEO answers 404; Dott OL Vallée was empty.
@@ -135,6 +142,9 @@ banned shared scooters, and feeds that were empty when checked.
 - **Iceland** ([guide](portuguese-spanish-icelandic-scooter-feeds.md#known-gaps)):
   - Bolt has run in the capital area since 2024, with no public feed.
   - Nine small Hopp towns held fewer than ten scooters.
+  - Hopp Siglufjörður, on the map, has listed no scooters since the evening
+    of 13 October 2026, after about 20 the day before. Its feed and zone
+    remain, so it stays; check it in spring, and remove it if it stays empty.
 - **Sweden** ([guide](swedish-scooter-feeds.md#known-gaps)): Lime in Uppsala
   and Hopp in Kiruna are covered.
   - Voi (Stockholm, Uppsala, Göteborg, Malmö and others), Bolt (Stockholm),

@@ -482,7 +482,7 @@ describe('dock cards', () => {
     });
     if (model.kind !== 'outsideCoverage') return;
     expect(model.cities.map(({ city, distanceKm }) => `${city.city} · ${distanceKm} km`))
-      .toEqual(['Zug · 52 km', 'Bern · 57 km', 'Grenchen · 73 km']);
+      .toEqual(['Zug · 52 km', 'Bern · 57 km', 'Wädenswil · 64 km']);
     expect(model.cities[1].city.center).toEqual([46.948, 7.4474]);
 
     const templates: Record<string, string> = { 'coverage.city': '{city} · {distance}', 'distance.kilometers': '{count} km' };
@@ -495,7 +495,7 @@ describe('dock cards', () => {
       formatNumber: value => String(value),
     };
     expect(model.cities.map(city => formatCoverageCity(city, i18n)))
-      .toEqual(['Zug · 52 km', 'Bern · 57 km', 'Grenchen · 73 km']);
+      .toEqual(['Zug · 52 km', 'Bern · 57 km', 'Wädenswil · 64 km']);
   });
 
   /** The coverage sentence of the card, as a language says it. */

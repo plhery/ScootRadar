@@ -24,6 +24,21 @@ with the same whole francs, the app takes the described fee. Lime's plans carry
 no description and say tax comes on top, so Lime's scooters get no price
 estimate.
 
+The dataset names most systems after a town, and the map reads a system where
+the view touches that town's area. Two serve other towns as well, as their
+published geofencing shows, and are read there too: Bolt Zürich's "Wadenswil"
+zone takes in Wädenswil and Richterswil, and Dott St. Gallen draws zones around
+Wil and Lichtensteig. Just after midnight on 14 October 2026 Bolt listed 93
+scooters around Wädenswil, and Dott 35 in Wil and 13 in Lichtensteig. Riding
+is allowed in Dott's Lichtensteig zone, but its 13 scooters sat at the same
+spots in all seventeen polls from 00:37 to 11:41 that day, so no ride there has
+been seen yet.
+
+Lime's Winterthur, Zug and Wetzikon systems are listed with fresh timestamps
+but no vehicles, and have been since at least 11 October 2026. Winterthur
+licenses Voi alone, until 31 December 2027
+([Stadtratsbeschluss 258 of 25 June 2025](https://stadt.winterthur.ch/download/resolution-document/2699/SRB%20258%20%28Optimierung%20stationslose%20Fahrzeugverleihsysteme_%20Kenntnisnahme%20Reduktion%20Anzahl%20Anbieter%20und%20Ausblick%29.pdf)).
+
 Hopp is not in the dataset. Its scooters in Zürich, Basel and Kloten come from
 Hopp's own GBFS feeds at `api.hopp.bike/gbfs/ch-<town>`, which link Hopp's
 privacy policy, not a licence.

@@ -49,7 +49,7 @@ Total: **15,262 available scooters**, with **0 failed feeds** in the final catal
 | Bird | Laval | 237 | [Discovery](https://mds.bird.co/gbfs/v2/public/laval/gbfs.json) |
 | Bird | Vichy | 68 | [Discovery](https://mds.bird.co/gbfs/v2/public/vichy/gbfs.json) |
 | Dott | Bordeaux | 933 | [Discovery](https://gbfs.api.ridedott.com/public/v2/bordeaux/gbfs.json) |
-| Dott | Bourgoin-Jallieu | 143 | [Discovery](https://gbfs.api.ridedott.com/public/v2/bourgoin-jallieu/gbfs.json) |
+| Dott | Bourgoin-Jallieu | 0, paused since early October 2026 (143 on 7 September) | [Discovery](https://gbfs.api.ridedott.com/public/v2/bourgoin-jallieu/gbfs.json) |
 | Dott | Lyon | 3,514 | [Discovery](https://gbfs.api.ridedott.com/public/v2/lyon/gbfs.json) |
 | Dott | Marne-la-Vallée (SIEMU) | 238 | [Discovery](https://gbfs.api.ridedott.com/public/v2/siemu/gbfs.json) |
 | Dott | Tignes | 30 | [Discovery](https://gbfs.api.ridedott.com/public/v2/tignes/gbfs.json) |

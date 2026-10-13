@@ -59,6 +59,14 @@ const SYSTEM_SUFFIXES = [
   'zug',
 ] as const;
 
+// Systems named after one town that serve others too, as their published
+// geofencing shows: Bolt Zürich's "Wadenswil" zone, which takes in Richterswil,
+// and Dott St. Gallen's polygons around Wil and Lichtensteig.
+const SYSTEM_EXTRA_AREAS: Record<string, string[]> = {
+  bolt_zurich: ['wadenswil'],
+  'dott_st-gallen': ['wil', 'lichtensteig'],
+};
+
 const REGION_ALIASES: Record<string, string[]> = {
   'biel-bienne': ['biel'],
   'biel-bienne-bern': ['biel', 'bern'],
@@ -97,7 +105,7 @@ export function knownSystemCoverage(systemId: string): MapBounds[] | null {
   const suffix = SYSTEM_SUFFIXES.find(area => (
     id.endsWith(`_${area}`) || id.endsWith(`-${area}`)
   ));
-  return suffix ? [AREA_BOUNDS[suffix]] : null;
+  return suffix ? [suffix, ...(SYSTEM_EXTRA_AREAS[id] ?? [])].map(area => AREA_BOUNDS[area]) : null;
 }
 
 export function coverageForRegionNames(names: string[]): RegionCoverage {

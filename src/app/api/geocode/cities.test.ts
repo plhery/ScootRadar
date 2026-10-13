@@ -27,6 +27,7 @@ describe('searchCoveredCities', () => {
     ['St. Gallen', 'St. Gallen'], ['St.Gallen', 'St. Gallen'], ['St Gallen', 'St. Gallen'],
     ['Sankt Gallen', 'St. Gallen'], ['Saint-Gall', 'St. Gallen'], ['San Gallo', 'St. Gallen'],
     ['Winterthour', 'Winterthur'], ['Zoug', 'Zug'], ['Schaffhouse', 'Schaffhausen'], ['Effretikon', 'Illnau-Effretikon'],
+    ['Waedenswil', 'Wädenswil'], ['Richterswil', 'Wädenswil'], ['Wil SG', 'Wil'], ['Wattwil', 'Lichtensteig'],
     ['Munich', 'München'], ['Muenchen', 'München'], ['Rome', 'Roma'], ['Cologne', 'Köln'], ['koln', 'Köln'],
   ])('finds "%s" as %s', (query, title) => {
     expect(searchCoveredCities(query)[0].title).toBe(title);
