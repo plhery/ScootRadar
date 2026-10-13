@@ -95,6 +95,8 @@ const COUNTRY_ANCHORS: Record<string, [number, number]> = {
   se: [63.6, 17.8],
   // Inland, east of Rīga, about the middle of the country.
   lv: [56.9, 24.6],
+  // About the middle of the country, near Łódź.
+  pl: [52.1, 19.4],
 };
 
 // "city:fr:Paris" is in France.

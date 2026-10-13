@@ -293,3 +293,23 @@ Ride Mobility publishes no licence in its feed, as Voi in Antwerpen and Hoppy
 don't. The map's credits name it under the GBFS line. See the
 [coverage audit](docs/latvian-scooter-feeds.md) for the system, the gaps and
 the recheck command.
+
+## Poland
+
+The reviewed catalog lives in `data/polish-scooter-feeds.json`: 5 feeds across
+7 towns. Dott covers Sosnowiec, Oświęcim, and Wołomin with Kobyłka and
+Radzymin, which one Dott region spans; Hopp covers Knurów and Złotów. All are
+the operators' own public GBFS feeds. Dott's are named in
+[Dott's Polish listing](https://gbfs.api.ridedott.com/public/v2/countries/pl/gbfs.json)
+and in [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv);
+Hopp's are not in the registry, and answer at the address Hopp uses for its
+other towns. Poland's national access point register,
+[dane.gov.pl dataset 1739](https://dane.gov.pl/dataset/1739), lists no scooter
+feed.
+
+Dott publishes no licence in these feeds; its
+[API terms](https://ridedott.com/api-licence/) restrict distribution, as
+noted for France above. Hopp links its privacy policy, not a licence. The
+map's credits name both under the GBFS line. See the
+[coverage audit](docs/polish-scooter-feeds.md) for the systems, the gaps and
+the recheck command.

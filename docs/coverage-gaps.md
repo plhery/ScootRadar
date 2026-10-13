@@ -131,6 +131,26 @@ banned shared scooters, and feeds that were empty when checked.
     found for Jūrmala, or for Ride in Estonia and Lithuania.
   - nextbike Latvia is empty, and the national access point
     (transportdata.gov.lv) has no shared-mobility data.
+- **Poland** ([guide](polish-scooter-feeds.md#known-gaps)): Dott in
+  Sosnowiec, Oświęcim, and Wołomin with Kobyłka and Radzymin, and Hopp in
+  Knurów and Złotów are covered.
+  - Dott's Polish site lists 85 places, but its public listing names those
+    three regions only. Of its other 74 Polish entries in the registry, 73
+    answer 404 (Warsaw, Kraków, Wrocław, Gdańsk, Poznań, Katowice and others)
+    and Brzeg Dolny 403.
+  - Lime (14 places, Warsaw and Kraków among them), Bolt (about 20 towns) and
+    blinkee publish no public feed, so Warsaw, Kraków and the other large
+    cities have no scooter on the map. Voi doesn't run in Poland.
+  - Hopp Wałcz listed 13 available scooters, but none moved between 23:41
+    and 09:15 on a Tuesday; check it on an afternoon or a weekend, and add it
+    if its scooters are ridden. Hopp Września (5 available) and Środa
+    Wielkopolska (1) held fewer than ten. Lublin, Piła, Wągrowiec and
+    Szamotuły listed disabled scooters only, and Oborniki, Słupca, Zgorzelec,
+    Murowana Goślina and Trzcianka were empty. No Hopp feed was found for
+    Gliwice.
+  - The national access point register (dane.gov.pl dataset 1739) links
+    Bolt's and blinkee's websites, with no API; its only GBFS feed is MEVO's
+    bikes.
 
 ## Countries not covered yet
 
@@ -144,7 +164,6 @@ checks before relying on a count.
 
 | Country | Scooters | Feeds |
 | --- | ---: | --- |
-| Poland | ~545 | Dott Sosnowiec, Wołomin and Oświęcim; Hopp in five small towns |
 | Hungary | ~380 | Hopp Pécs and Békéscsaba |
 | Greece | ~320 | Hopp Rhodes, Piraeus, Kefalonia, Nafplio and Ioannina |
 | Cyprus | ~100 | Hopp Paphos and Limassol |

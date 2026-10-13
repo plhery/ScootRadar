@@ -9,18 +9,19 @@ import spanishCatalog from '../../data/spanish-scooter-feeds.json';
 import icelandicCatalog from '../../data/icelandic-scooter-feeds.json';
 import swedishCatalog from '../../data/swedish-scooter-feeds.json';
 import latvianCatalog from '../../data/latvian-scooter-feeds.json';
+import polishCatalog from '../../data/polish-scooter-feeds.json';
 import type { ProviderKey } from '@/generated/providers';
 import type { MapBounds } from '@/lib/types';
 
-export type ScooterCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV';
+export type ScooterCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL';
 export const COUNTRY_SOURCES = {
   FR: 'france', DE: 'germany', IT: 'italy', BE: 'belgium', NO: 'norway', GB: 'uk', PT: 'portugal', ES: 'spain', IS: 'iceland',
-  SE: 'sweden', LV: 'latvia',
+  SE: 'sweden', LV: 'latvia', PL: 'poland',
 } as const;
 export type RegionalSource = typeof COUNTRY_SOURCES[ScooterCountry];
 const COUNTRY_NAMES = {
   FR: 'France', DE: 'Germany', IT: 'Italy', BE: 'Belgium', NO: 'Norway', GB: 'United Kingdom', PT: 'Portugal', ES: 'Spain', IS: 'Iceland',
-  SE: 'Sweden', LV: 'Latvia',
+  SE: 'Sweden', LV: 'Latvia', PL: 'Poland',
 };
 const COUNTRY_ALIASES = { FR: ['france', 'frankreich', 'francia', 'frankrijk', 'frankrike', 'franca', 'frakkland'],
   DE: ['germany', 'deutschland', 'allemagne', 'germania', 'duitsland', 'tyskland', 'alemanha', 'alemania', 'thyskaland'],
@@ -33,7 +34,8 @@ const COUNTRY_ALIASES = { FR: ['france', 'frankreich', 'francia', 'frankrijk', '
   ES: ['spain', 'spanien', 'espagne', 'spagna', 'spanje', 'spania', 'espanha', 'espana', 'spann'],
   IS: ['iceland', 'island', 'islande', 'islanda', 'ijsland', 'islandia'],
   SE: ['sweden', 'schweden', 'suede', 'svezia', 'zweden', 'sverige', 'suecia', 'svithjod'],
-  LV: ['latvia', 'lettland', 'lettonie', 'lettonia', 'letland', 'letonia', 'latvija'] };
+  LV: ['latvia', 'lettland', 'lettonie', 'lettonia', 'letland', 'letonia', 'latvija'],
+  PL: ['poland', 'polen', 'pologne', 'polonia', 'polland', 'polska'] };
 
 export interface ScooterServiceArea {
   city: string;
@@ -56,7 +58,7 @@ export const REGIONAL_SCOOTER_SYSTEMS = [
   ...germanCatalog.systems, ...italianCatalog.systems,
   ...belgianCatalog.systems, ...norwegianCatalog.systems, ...britishCatalog.systems,
   ...portugueseCatalog.systems, ...spanishCatalog.systems, ...icelandicCatalog.systems, ...swedishCatalog.systems,
-  ...latvianCatalog.systems,
+  ...latvianCatalog.systems, ...polishCatalog.systems,
 ] as RegionalScooterSystem[];
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {
@@ -86,12 +88,12 @@ for (const system of REGIONAL_SCOOTER_SYSTEMS) {
 export const REGIONAL_SCOOTER_CITIES = [...cities.values()];
 
 // The letters no accent can be stripped from are spelled out, so "Tromso",
-// "Baerum" and "Isafjordur" find Tromsø, Bærum and Ísafjörður.
-const SPELLED_OUT: Record<string, string> = { ß: 'ss', æ: 'ae', ø: 'o', œ: 'oe', þ: 'th', ð: 'd' };
+// "Baerum", "Isafjordur" and "Wolomin" find Tromsø, Bærum, Ísafjörður and Wołomin.
+const SPELLED_OUT: Record<string, string> = { ß: 'ss', æ: 'ae', ø: 'o', œ: 'oe', þ: 'th', ð: 'd', ł: 'l' };
 
 function normalize(value: string) {
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-    .replace(/[ßæøœþð]/g, letter => SPELLED_OUT[letter]).replace(/[^a-z0-9]+/g, ' ').trim();
+    .replace(/[ßæøœþðł]/g, letter => SPELLED_OUT[letter]).replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
 /** Local city navigation stays available without a geocoding network request. */

@@ -300,6 +300,13 @@ enum ScooterProviderCoverage {
         (.hopp, GeoBounds(south: 67.8205, west: 20.1797, north: 67.8801, east: 20.3641)),
         (.lime, GeoBounds(south: 59.8076, west: 17.5747, north: 59.9021, east: 17.7203)),
         (.ride_mobility, GeoBounds(south: 56.862, west: 23.8878, north: 57.0871, east: 24.3426)),
+        (.dott, GeoBounds(south: 50.0153, west: 19.1853, north: 50.0623, east: 19.2617)),
+        (.dott, GeoBounds(south: 50.2488, west: 19.0917, north: 50.3188, east: 19.2153)),
+        (.dott, GeoBounds(south: 52.3218, west: 21.211, north: 52.3675, east: 21.2883)),
+        (.dott, GeoBounds(south: 52.3148, west: 21.164, north: 52.3578, east: 21.2498)),
+        (.dott, GeoBounds(south: 52.392, west: 21.149, north: 52.4303, east: 21.2185)),
+        (.hopp, GeoBounds(south: 50.1984, west: 18.6242, north: 50.2455, east: 18.6968)),
+        (.hopp, GeoBounds(south: 53.3449, west: 17.0006, north: 53.3832, east: 17.0833)),
     ]
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
@@ -512,6 +519,13 @@ enum ScooterCityCatalog {
         ScooterCity(id: "se:Kiruna", name: "Kiruna", countryCode: "SE", center: GeoPoint(latitude: 67.8496, longitude: 20.3063), bounds: GeoBounds(south: 67.8205, west: 20.1797, north: 67.8801, east: 20.3641)),
         ScooterCity(id: "se:Uppsala", name: "Uppsala", countryCode: "SE", center: GeoPoint(latitude: 59.8586, longitude: 17.6387), bounds: GeoBounds(south: 59.8076, west: 17.5747, north: 59.9021, east: 17.7203)),
         ScooterCity(id: "lv:Rīga", name: "Rīga", countryCode: "LV", center: GeoPoint(latitude: 56.9496, longitude: 24.1052), bounds: GeoBounds(south: 56.862, west: 23.8878, north: 57.0871, east: 24.3426)),
+        ScooterCity(id: "pl:Oświęcim", name: "Oświęcim", countryCode: "PL", center: GeoPoint(latitude: 50.0382, longitude: 19.2214), bounds: GeoBounds(south: 50.0153, west: 19.1853, north: 50.0623, east: 19.2617)),
+        ScooterCity(id: "pl:Sosnowiec", name: "Sosnowiec", countryCode: "PL", center: GeoPoint(latitude: 50.2781, longitude: 19.1343), bounds: GeoBounds(south: 50.2488, west: 19.0917, north: 50.3188, east: 19.2153)),
+        ScooterCity(id: "pl:Wołomin", name: "Wołomin", countryCode: "PL", center: GeoPoint(latitude: 52.3469, longitude: 21.242), bounds: GeoBounds(south: 52.3218, west: 21.211, north: 52.3675, east: 21.2883)),
+        ScooterCity(id: "pl:Kobyłka", name: "Kobyłka", countryCode: "PL", center: GeoPoint(latitude: 52.3387, longitude: 21.1965), bounds: GeoBounds(south: 52.3148, west: 21.164, north: 52.3578, east: 21.2498)),
+        ScooterCity(id: "pl:Radzymin", name: "Radzymin", countryCode: "PL", center: GeoPoint(latitude: 52.4176, longitude: 21.1808), bounds: GeoBounds(south: 52.392, west: 21.149, north: 52.4303, east: 21.2185)),
+        ScooterCity(id: "pl:Knurów", name: "Knurów", countryCode: "PL", center: GeoPoint(latitude: 50.2217, longitude: 18.6707), bounds: GeoBounds(south: 50.1984, west: 18.6242, north: 50.2455, east: 18.6968)),
+        ScooterCity(id: "pl:Złotów", name: "Złotów", countryCode: "PL", center: GeoPoint(latitude: 53.3632, longitude: 17.0347), bounds: GeoBounds(south: 53.3449, west: 17.0006, north: 53.3832, east: 17.0833)),
     ]
 
     /// Cities by distance from the point to their centre, nearest first.

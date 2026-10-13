@@ -6,14 +6,14 @@ import { LANDING_CITY_TOTAL, landingCountries } from '@/lib/landingCities';
 describe('the cities of the landing page', () => {
   it('counts every city of the catalogue, country by country', () => {
     const countries = landingCountries();
-    expect(countries.map(({ country }) => country)).toEqual(['CH', 'DE', 'FR', 'IT', 'BE', 'NO', 'GB', 'PT', 'ES', 'IS', 'SE', 'LV']);
+    expect(countries.map(({ country }) => country)).toEqual(['CH', 'DE', 'FR', 'IT', 'BE', 'NO', 'GB', 'PT', 'ES', 'IS', 'SE', 'LV', 'PL']);
     expect(countries.reduce((sum, { total }) => sum + total, 0)).toBe(COVERED_CITIES.length);
     expect(LANDING_CITY_TOTAL).toBe(COVERED_CITIES.length);
   });
 
   it('finds every city it names', () => {
     // A name that left the catalogue would be dropped from the page without a word.
-    expect(landingCountries().map(({ featured }) => featured.length)).toEqual([6, 6, 6, 3, 4, 6, 6, 6, 6, 6, 2, 1]);
+    expect(landingCountries().map(({ featured }) => featured.length)).toEqual([6, 6, 6, 3, 4, 6, 6, 6, 6, 6, 2, 1, 6]);
     for (const { total, featured, more } of landingCountries()) expect(featured.length + more).toBe(total);
   });
 

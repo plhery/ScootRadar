@@ -1,0 +1,147 @@
+{
+  "verifiedOn": "2026-10-13",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "dott_pl_oswiecim",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Oświęcim",
+      "center": [
+        50.0382,
+        19.2214
+      ],
+      "bounds": {
+        "south": 50.0153,
+        "north": 50.0623,
+        "west": 19.1853,
+        "east": 19.2617
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/oswiecim/gbfs.json",
+      "aliases": [
+        "Oswiecim"
+      ]
+    },
+    {
+      "id": "dott_pl_sosnowiec",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Sosnowiec",
+      "center": [
+        50.2781,
+        19.1343
+      ],
+      "bounds": {
+        "south": 50.2488,
+        "north": 50.3188,
+        "west": 19.0917,
+        "east": 19.2153
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/sosnowiec/gbfs.json"
+    },
+    {
+      "id": "dott_pl_wolomin",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Wołomin",
+      "center": [
+        52.3469,
+        21.242
+      ],
+      "bounds": {
+        "south": 52.3148,
+        "north": 52.4303,
+        "west": 21.149,
+        "east": 21.2883
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/wo%C5%82omin/gbfs.json",
+      "areas": [
+        {
+          "city": "Wołomin",
+          "center": [
+            52.3469,
+            21.242
+          ],
+          "bounds": {
+            "south": 52.3218,
+            "north": 52.3675,
+            "west": 21.211,
+            "east": 21.2883
+          },
+          "aliases": [
+            "Wolomin"
+          ]
+        },
+        {
+          "city": "Kobyłka",
+          "center": [
+            52.3387,
+            21.1965
+          ],
+          "bounds": {
+            "south": 52.3148,
+            "north": 52.3578,
+            "west": 21.164,
+            "east": 21.2498
+          },
+          "aliases": [
+            "Kobylka"
+          ]
+        },
+        {
+          "city": "Radzymin",
+          "center": [
+            52.4176,
+            21.1808
+          ],
+          "bounds": {
+            "south": 52.392,
+            "north": 52.4303,
+            "west": 21.149,
+            "east": 21.2185
+          }
+        }
+      ]
+    },
+    {
+      "id": "hopp_pl_knurow",
+      "country": "PL",
+      "provider": "hopp",
+      "city": "Knurów",
+      "center": [
+        50.2217,
+        18.6707
+      ],
+      "bounds": {
+        "south": 50.1984,
+        "north": 50.2455,
+        "west": 18.6242,
+        "east": 18.6968
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/pl-knurow/gbfs.json",
+      "aliases": [
+        "Knurow"
+      ]
+    },
+    {
+      "id": "hopp_pl_zlotow",
+      "country": "PL",
+      "provider": "hopp",
+      "city": "Złotów",
+      "center": [
+        53.3632,
+        17.0347
+      ],
+      "bounds": {
+        "south": 53.3449,
+        "north": 53.3832,
+        "west": 17.0006,
+        "east": 17.0833
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/pl-zlotow/gbfs.json",
+      "aliases": [
+        "Zlotow"
+      ]
+    }
+  ]
+}

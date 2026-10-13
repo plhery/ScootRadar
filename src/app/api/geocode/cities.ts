@@ -21,6 +21,7 @@ const COUNTRY_NAMES: Record<CoveredCountry, Record<GeocodeLanguage, string>> = {
   IS: { en: 'Iceland', de: 'Island', fr: 'Islande', it: 'Islanda', nl: 'IJsland', nb: 'Island', pt: 'Islândia', es: 'Islandia', is: 'Ísland' },
   SE: { en: 'Sweden', de: 'Schweden', fr: 'Suède', it: 'Svezia', nl: 'Zweden', nb: 'Sverige', pt: 'Suécia', es: 'Suecia', is: 'Svíþjóð' },
   LV: { en: 'Latvia', de: 'Lettland', fr: 'Lettonie', it: 'Lettonia', nl: 'Letland', nb: 'Latvia', pt: 'Letónia', es: 'Letonia', is: 'Lettland' },
+  PL: { en: 'Poland', de: 'Polen', fr: 'Pologne', it: 'Polonia', nl: 'Polen', nb: 'Polen', pt: 'Polónia', es: 'Polonia', is: 'Pólland' },
 };
 
 // Typed beside a city to say which one is meant: "Lindau Deutschland".
@@ -38,6 +39,7 @@ const COUNTRY_WORDS: Record<CoveredCountry, string[]> = {
   IS: ['iceland', 'island', 'islande', 'islanda', 'ijsland', 'islandia'],
   SE: ['sweden', 'schweden', 'suede', 'svezia', 'zweden', 'sverige', 'suecia', 'svithjod'],
   LV: ['latvia', 'lettland', 'lettonie', 'lettonia', 'letland', 'letonia', 'latvija'],
+  PL: ['poland', 'polen', 'pologne', 'polonia', 'polland', 'polska'],
 };
 
 // What the Swiss cities are called in the other languages of the app, and how
@@ -54,12 +56,12 @@ const SWISS_ALIASES: Record<string, string[]> = {
 };
 
 // The letters no accent can be stripped from are spelled out, so "Tromso",
-// "Baerum" and "Isafjordur" find Tromsø, Bærum and Ísafjörður.
-const SPELLED_OUT: Record<string, string> = { ß: 'ss', æ: 'ae', ø: 'o', œ: 'oe', þ: 'th', ð: 'd' };
+// "Baerum", "Isafjordur" and "Wolomin" find Tromsø, Bærum, Ísafjörður and Wołomin.
+const SPELLED_OUT: Record<string, string> = { ß: 'ss', æ: 'ae', ø: 'o', œ: 'oe', þ: 'th', ð: 'd', ł: 'l' };
 
 function normalize(value: string): string {
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-    .replace(/[ßæøœþð]/g, letter => SPELLED_OUT[letter]).replace(/[^a-z0-9]+/g, ' ').trim();
+    .replace(/[ßæøœþðł]/g, letter => SPELLED_OUT[letter]).replace(/[^a-z0-9]+/g, ' ').trim();
 }
 
 const REGIONAL_ALIASES = new Map(REGIONAL_SCOOTER_CITIES.map(city => [city.id, city.aliases ?? []]));
