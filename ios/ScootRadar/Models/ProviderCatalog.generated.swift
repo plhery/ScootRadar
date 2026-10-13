@@ -17,6 +17,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     case ryde
     case hoppy
     case ride_mobility
+    case yoio
 
     var id: String { rawValue }
 
@@ -35,6 +36,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .ryde: "Ryde"
         case .hoppy: "Hoppy"
         case .ride_mobility: "Ride Mobility"
+        case .yoio: "Yoio"
         }
     }
 
@@ -53,6 +55,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .ryde: "R"
         case .hoppy: "Ho"
         case .ride_mobility: "RM"
+        case .yoio: "Y"
         }
     }
 
@@ -73,6 +76,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .ryde: UIColor(red: 0.184314, green: 0.517647, blue: 0.074510, alpha: 1)
         case .hoppy: UIColor(red: 0.133333, green: 0.772549, blue: 0.666667, alpha: 1)
         case .ride_mobility: UIColor(red: 0.698039, green: 0.121569, blue: 0.352941, alpha: 1)
+        case .yoio: UIColor(red: 0.050980, green: 0.368627, blue: 0.290196, alpha: 1)
         }
     }
 
@@ -89,6 +93,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         (.pony, [], ["pony"]),
         (.zeus, [], ["zeus"]),
         (.ryde, [], ["ryde"]),
+        (.yoio, [], ["yoio"]),
         (.voi, [], ["voi"]),
     ]
 
@@ -182,6 +187,9 @@ enum ScooterProviderCoverage {
         (.voi, GeoBounds(south: 48.6983, west: 9.0659, north: 48.8556, east: 9.2723)),
         (.voi, GeoBounds(south: 48.4824, west: 9.0088, north: 48.5647, east: 9.1103)),
         (.voi, GeoBounds(south: 48.4312, west: 9.1335, north: 48.5396, east: 9.2596)),
+        (.yoio, GeoBounds(south: 50.9374, west: 10.9742, north: 51.031, east: 11.1075)),
+        (.yoio, GeoBounds(south: 47.9649, west: 7.746, north: 48.0667, east: 7.9134)),
+        (.yoio, GeoBounds(south: 51.4953, west: 9.8716, north: 51.6057, east: 9.9978)),
         (.zeus, GeoBounds(south: 49.8549, west: 10.83, north: 49.9301, east: 10.9481)),
         (.zeus, GeoBounds(south: 47.9204, west: 8.4496, north: 47.9818, east: 8.5362)),
         (.zeus, GeoBounds(south: 47.958, west: 7.7695, north: 48.051, east: 7.9323)),
@@ -424,9 +432,11 @@ enum ScooterCityCatalog {
         ScooterCity(id: "de:Wuppertal", name: "Wuppertal", countryCode: "DE", center: GeoPoint(latitude: 51.2669, longitude: 7.1769), bounds: GeoBounds(south: 51.2053, west: 7.0316, north: 51.314, east: 7.2833)),
         ScooterCity(id: "de:Pforzheim", name: "Pforzheim", countryCode: "DE", center: GeoPoint(latitude: 48.8926, longitude: 8.6946), bounds: GeoBounds(south: 48.83, west: 8.59, north: 48.96, east: 8.81)),
         ScooterCity(id: "de:Mannheim", name: "Mannheim", countryCode: "DE", center: GeoPoint(latitude: 49.4875, longitude: 8.466), bounds: GeoBounds(south: 49.4082, west: 8.3311, north: 49.569, east: 8.589)),
+        ScooterCity(id: "de:Erfurt", name: "Erfurt", countryCode: "DE", center: GeoPoint(latitude: 50.9787, longitude: 11.0328), bounds: GeoBounds(south: 50.9374, west: 10.9742, north: 51.031, east: 11.1075)),
+        ScooterCity(id: "de:Freiburg im Breisgau", name: "Freiburg im Breisgau", countryCode: "DE", center: GeoPoint(latitude: 47.999, longitude: 7.8421), bounds: GeoBounds(south: 47.958, west: 7.746, north: 48.0667, east: 7.9323)),
+        ScooterCity(id: "de:Göttingen", name: "Göttingen", countryCode: "DE", center: GeoPoint(latitude: 51.5413, longitude: 9.9158), bounds: GeoBounds(south: 51.4953, west: 9.8716, north: 51.6057, east: 9.9978)),
         ScooterCity(id: "de:Bamberg", name: "Bamberg", countryCode: "DE", center: GeoPoint(latitude: 49.8988, longitude: 10.9028), bounds: GeoBounds(south: 49.8549, west: 10.83, north: 49.9301, east: 10.9481)),
         ScooterCity(id: "de:Donaueschingen", name: "Donaueschingen", countryCode: "DE", center: GeoPoint(latitude: 47.9531, longitude: 8.5033), bounds: GeoBounds(south: 47.9204, west: 8.4496, north: 47.9818, east: 8.5362)),
-        ScooterCity(id: "de:Freiburg im Breisgau", name: "Freiburg im Breisgau", countryCode: "DE", center: GeoPoint(latitude: 47.999, longitude: 7.8421), bounds: GeoBounds(south: 47.958, west: 7.7695, north: 48.051, east: 7.9323)),
         ScooterCity(id: "de:Leimen", name: "Leimen", countryCode: "DE", center: GeoPoint(latitude: 49.3483, longitude: 8.6911), bounds: GeoBounds(south: 49.315, west: 8.62, north: 49.37, east: 8.73)),
         ScooterCity(id: "de:Walldorf", name: "Walldorf", countryCode: "DE", center: GeoPoint(latitude: 49.3064, longitude: 8.6428), bounds: GeoBounds(south: 49.27, west: 8.61, north: 49.315, east: 8.67)),
         ScooterCity(id: "de:Wiesloch", name: "Wiesloch", countryCode: "DE", center: GeoPoint(latitude: 49.2942, longitude: 8.6986), bounds: GeoBounds(south: 49.27, west: 8.67, north: 49.315, east: 8.73)),

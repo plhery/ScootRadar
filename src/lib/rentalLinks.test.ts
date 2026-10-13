@@ -60,6 +60,15 @@ describe('rental links', () => {
     expect(safeRentalUri('ryde', link)).toBeNull();
   });
 
+  it('keeps the link to each Yoio scooter, on its own host only', () => {
+    const link = 'https://rideyoio.app.link/1072';
+    expect(normalizeRentalUris('yoio', { ios: link, android: link, web: 'https://rideyoio.app.link/' }))
+      .toEqual({ ios: link, android: link, web: 'https://rideyoio.app.link/' });
+    // The other operators on ATOM Mobility don't take Yoio's links, nor Yoio theirs.
+    expect(safeRentalUri('yoio', 'https://ridemobility.app.link/475216')).toBeNull();
+    expect(safeRentalUri('ride_mobility', link)).toBeNull();
+  });
+
   it('selects only the link intended for the current mobile platform', () => {
     const ios = 'https://go.ridedott.com/vehicles/1?platform=ios';
     const android = 'https://go.ridedott.com/vehicles/1?platform=android';

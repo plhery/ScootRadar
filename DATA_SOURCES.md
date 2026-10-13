@@ -184,8 +184,8 @@ e-scooter and e-bike parking](https://www.data.gouv.fr/datasets/espaces-de-stati
 ## Germany and Italy
 
 Reviewed catalogs live in `data/german-scooter-feeds.json` and
-`data/italian-scooter-feeds.json`. Germany has 37 verified feeds across 38 cities:
-Dott, Bolt, Hopp, Lime, Voi and Zeus. Dott made its GBFS private in September 2026; the
+`data/italian-scooter-feeds.json`. Germany has 40 verified feeds across 40 cities:
+Dott, Bolt, Hopp, Lime, Voi, Zeus and Yoio. Dott made its GBFS private in September 2026; the
 catalog keeps the 15 German regions its public listing still names. Italy has 3
 Bird feeds, in Roma, Palermo and Napoli; the other tested Italian scooter feeds
 were empty, stale or unavailable. See the [coverage audit](docs/german-italian-scooter-feeds.md).
@@ -197,6 +197,16 @@ MobiData BW supplies the reviewed Bolt, Hopp, Lime and Voi GBFS 3.0 systems and
 ten of the fourteen Zeus systems; its Voi feed covers six Baden-Württemberg
 cities, not all of Germany. Zeus's own feeds supply Bamberg, Ludwigsburg,
 Regensburg and Schweinfurt.
+
+Yoio, added on 13 October 2026, runs on ATOM Mobility. MobiData BW supplies its
+Freiburg im Breisgau scooters, in the same
+[bundled e-scooter dataset](https://mobidata-bw.de/dataset/escootch) as the
+others, which it licenses under the
+[Datenlizenz Deutschland Namensnennung 2.0](https://www.govdata.de/dl-de/by-2-0).
+Yoio's own feeds on `yoio.rideatom.com` supply Göttingen and Erfurt; they
+publish no licence, as Hoppy and Ride Mobility don't. ATOM refuses bursts of
+requests, so the scooter cache paces each `rideatom.com` host to about two
+requests a second.
 
 Multi-city feeds are fetched once and routed through separate city envelopes.
 City totals remain country-specific, with one count per vehicle. Published

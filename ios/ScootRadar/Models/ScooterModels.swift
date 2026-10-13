@@ -325,6 +325,10 @@ enum ScooterRentalLinkPolicy {
             schemes: [],
             httpsHosts: ["ridemobility.app.link", "ridemobility.eu"]
         ),
+        "yoio": ProviderPolicy(
+            schemes: [],
+            httpsHosts: ["rideyoio.app.link", "yoio.app"]
+        ),
         "publibike": ProviderPolicy(
             schemes: ["publibike", "velospot"],
             httpsHosts: ["publibike.ch", "velospot.info"]

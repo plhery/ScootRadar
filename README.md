@@ -44,10 +44,10 @@ English. There is also a native SwiftUI app for iPhone.
   its marker, hovering a marker shows a short tip, and `/`, `L`, `+`, `−` and
   `Esc` work from the keyboard.
 
-**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde, Hoppy and Ride Mobility.
+**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde, Hoppy, Ride Mobility and Yoio.
 
 French coverage includes 27 verified feeds across 25 cities or operating areas,
-with city-name search. German coverage adds 37 feeds across 38 cities (Dott, Bolt, Hopp, Lime, Voi and Zeus); Italy adds 3 Bird feeds, in Roma, Palermo and Napoli. See the [German/Italian feed audit](docs/german-italian-scooter-feeds.md) for coverage and known gaps. See the [French feed investigation](docs/french-scooter-feeds.md)
+with city-name search. German coverage adds 40 feeds across 40 cities (Dott, Bolt, Hopp, Lime, Voi, Zeus and Yoio); Italy adds 3 Bird feeds, in Roma, Palermo and Napoli. See the [German/Italian feed audit](docs/german-italian-scooter-feeds.md) for coverage and known gaps. See the [French feed investigation](docs/french-scooter-feeds.md)
 for the city list, live-check command, and source terms to review before deployment.
 Belgium adds 6 feeds across 4 cities (Bolt, Dott, Voi, Pony and Hoppy), Norway 23 feeds
 from Entur across 21 towns (Voi, Ryde, Bolt and Dott), and the United Kingdom 11

@@ -12,7 +12,7 @@ const SOURCES = [
   { href: 'https://opentransportdata.swiss/en/cookbook/shared-mobility/', label: 'Mobility data CH' },
   { href: 'https://transport.data.gouv.fr/datasets?type=vehicles-sharing', label: 'France: Dott, Bird, Lime, Voi, Pony' },
   { href: 'https://www.mobidata-bw.de/', label: 'MobiData BW' },
-  { href: 'https://github.com/MobilityData/gbfs', label: 'DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy, Ride Mobility' },
+  { href: 'https://github.com/MobilityData/gbfs', label: 'DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy, Ride Mobility, Yoio' },
   { href: 'https://transportdata.be/dataset/pony_charleroi', label: 'BE: Pony · transportdata.be' },
   { href: 'https://cdla.dev/permissive-2-0/', label: 'UK: Beryl · CDLA-Permissive-2.0' },
   { href: 'https://data.norge.no/nlod/en/2.0', label: 'NO: Entur AS · NLOD' },

@@ -542,6 +542,63 @@
       ]
     },
     {
+      "id": "yoio_de_erfurt",
+      "country": "DE",
+      "provider": "yoio",
+      "city": "Erfurt",
+      "center": [
+        50.9787,
+        11.0328
+      ],
+      "bounds": {
+        "south": 50.9374,
+        "north": 51.031,
+        "west": 10.9742,
+        "east": 11.1075
+      },
+      "discoveryUrl": "https://yoio.rideatom.com/gbfs/159/v3.0/gbfs"
+    },
+    {
+      "id": "yoio_de_freiburg",
+      "country": "DE",
+      "provider": "yoio",
+      "city": "Freiburg im Breisgau",
+      "center": [
+        47.999,
+        7.8421
+      ],
+      "bounds": {
+        "south": 47.9649,
+        "north": 48.0667,
+        "west": 7.746,
+        "east": 7.9134
+      },
+      "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/yoio_freiburg/gbfs",
+      "aliases": [
+        "Freiburg"
+      ]
+    },
+    {
+      "id": "yoio_de_goettingen",
+      "country": "DE",
+      "provider": "yoio",
+      "city": "Göttingen",
+      "center": [
+        51.5413,
+        9.9158
+      ],
+      "bounds": {
+        "south": 51.4953,
+        "north": 51.6057,
+        "west": 9.8716,
+        "east": 9.9978
+      },
+      "discoveryUrl": "https://yoio.rideatom.com/gbfs/9/v3.0/gbfs",
+      "aliases": [
+        "Goettingen"
+      ]
+    },
+    {
       "id": "zeus_de_bamberg",
       "country": "DE",
       "provider": "zeus",

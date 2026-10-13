@@ -15,6 +15,11 @@ import { initErrorReporting, reportError, reportFeedExpired } from './errorRepor
 
 initErrorReporting();
 upstreamJsonCache.paceHost('gbfs.api.ridedott.com', 150);
+// ATOM Mobility hosts its operators (Hoppy, Ride Mobility, Yoio) under rideatom.com and refuses
+// bursts, so each of its hosts gets at most two requests a second, cold starts included.
+for (const host of new Set(REGIONAL_SCOOTER_SYSTEMS.map(system => new URL(system.discoveryUrl).hostname))) {
+  if (host.endsWith('.rideatom.com')) upstreamJsonCache.paceHost(host, 500);
+}
 const snapshotPath = process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json';
 let snapshot: MobilitySnapshot | undefined;
 let stopping = false;

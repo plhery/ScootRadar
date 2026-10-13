@@ -21,6 +21,9 @@ subsets of it; its own Würzburg and Neustadt feeds hold a few scooters on
 depots). Zeus's own Heidelberg feed lies inside MobiData BW's Leimen / Walldorf /
 Wiesloch feed, and its Hemmingen feed inside its Ludwigsburg feed.
 
+Yoio was added on 13 October 2026: 3 feeds, about 675 available scooters, in
+Göttingen, Freiburg im Breisgau and Erfurt; see [Yoio, October 2026](#yoio-october-2026).
+
 Italy grew from Rome to three cities on 13 October 2026, with Bird Palermo and
 Bird Napoli; see [Italy, October 2026](#italy-october-2026).
 
@@ -32,9 +35,10 @@ Bird Napoli; see [Italy, October 2026](#italy-october-2026).
 | Germany | Lime | 3 | Frankfurt, Wuppertal, Stuttgart / Konstanz |
 | Germany | Voi | 1 | Karlsruhe, Pforzheim, Mannheim, Stuttgart, Tübingen and Reutlingen |
 | Germany | Zeus | 14 | Bamberg, Donaueschingen, Freiburg im Breisgau, Heidelberg / Leimen / Walldorf / Wiesloch, Konstanz, Ludwigsburg, Neustadt an der Weinstraße, Regensburg, Renningen, Schweinfurt, Singen, Tuttlingen, Villingen-Schwenningen and Würzburg |
+| Germany | Yoio | 3 | Erfurt, Freiburg im Breisgau and Göttingen |
 | Italy | Bird | 3 | Roma, Palermo and Napoli |
 
-German coverage contains 38 distinct cities, Italian coverage 3.
+German coverage contains 40 distinct cities, Italian coverage 3.
 The complete reviewed city bounds, public discovery URLs and aliases are in
 [`german-scooter-feeds.json`](../data/german-scooter-feeds.json) and
 [`italian-scooter-feeds.json`](../data/italian-scooter-feeds.json).
@@ -61,6 +65,66 @@ The complete reviewed city bounds, public discovery URLs and aliases are in
 - Feed collection is independent of map requests. Overview counts refresh hourly;
   individual scooters refresh with the minute collector. City search recognizes
   local names and English aliases (for example München/Munich and Napoli/Naples).
+
+## Yoio, October 2026
+
+Yoio is a German operator, run by YourCar GmbH of Göttingen
+([yoio.app](https://yoio.app/)), on ATOM Mobility's platform, as Hoppy and
+Ride Mobility are. ATOM publishes its feeds as GBFS 3.0 at
+`https://yoio.rideatom.com/gbfs/<id>/v3.0/gbfs`: 9 is Göttingen, 71 Freiburg
+and 159 Erfurt. Every feed URL is https, on the discovery's origin and under its
+directory.
+
+- **Freiburg comes from MobiData BW**, whose `yoio_freiburg` feed republishes
+  Yoio's own. In two paired polls it listed 234 and 238 available scooters
+  where Yoio's listed 232 and 237, with the same vehicle ids (prefixed
+  `YOO:Vehicle:`) and the same links, and its `last_updated` trailed Yoio's by
+  about 35 seconds. MobiData BW's
+  [bundled e-scooter dataset](https://mobidata-bw.de/dataset/escootch) is
+  licensed under the
+  [Datenlizenz Deutschland Namensnennung 2.0](https://www.govdata.de/dl-de/by-2-0),
+  so it is read instead of Yoio's own feed. The map's credits already name
+  MobiData BW.
+- **Göttingen and Erfurt** come from Yoio's own feeds. They publish no licence:
+  `system_information` has no `license_url`, and none was found on yoio.app.
+- **Liveness:** ATOM stamps `last_updated` with the time of the request and
+  gives no `last_reported`, so the feeds were judged by movement, polled
+  six times, five minutes apart, from 18:29 to 18:54 on Tuesday 13 October
+  2026, with each scooter followed by the number in its rental link.
+  Göttingen listed 254 to 257 available scooters; between polls 4 left, 4 came
+  back and 3 moved, one by more than 300 m. Freiburg, through MobiData BW,
+  listed 234 to 238, with 18 leaving, 18 coming back and 5 moving; Erfurt
+  183 to 185, with 8 leaving, 7 coming back and 4 moving.
+- **Scooters:** every scooter type is `scooter_standing`, `electric`. Göttingen
+  also lists e-bikes and cargo bikes (about 16), and Freiburg an e-bike type;
+  the map leaves them out. Göttingen's one station, "E-Bikes: START & ENDE NUR
+  HIER", is for its e-bikes.
+- **Bounds** enclose the zones where Yoio lets a ride start (24 in Göttingen,
+  19 in Freiburg, 14 in Erfurt), plus 0.005° of latitude and 0.01° of
+  longitude. Every scooter seen stood inside them.
+- **Prices** depend on the model and a tier: in Göttingen EUR 1.00 to start
+  and EUR 0.21 or 0.25 a minute, in Freiburg EUR 1.09 and EUR 0.25 or 0.29, and
+  in Erfurt EUR 1.09 and EUR 0.21 or 0.25.
+- **Battery:** Yoio publishes range only (`current_range_meters`), so the map
+  shows range and no percentage, as for Lime and Voi.
+- **Rental links** (`https://rideyoio.app.link/<number>`) name each scooter by
+  a short number, the same in every poll, not by a hardware id, so they are
+  kept, on Yoio's own hosts only.
+- **Burst limits:** ATOM refuses bursts of requests from one address, across
+  all its operators. The scooter cache paces each `rideatom.com` host to one
+  request every 500 ms, so the two Yoio feeds, Hoppy and Ride Mobility stay
+  well below it.
+- **Night rules:** all three feeds give opening hours of `24/7`. Freiburg's
+  [page on rental e-scooters](https://www.freiburg.de/pb/2045706.html) names
+  Yoio and Zeus and sets no-ride zones (pedestrian zones, parts of the old
+  town, the villages west of the motorway) and parking rules, but no night
+  ban. No rule banning rentals at night was found for Göttingen, which has a
+  voluntary agreement with the operators and painted parking bays, or for
+  Erfurt, where only the general special-use bylaw
+  ([Sondernutzungssatzung](https://www.erfurt.de/mam/ef/rathaus/stadtrecht/6/6814.pdf))
+  was found. No curfew was added.
+- **Colour:** Yoio's mint green (#21d081) is too close to Bolt's and Beryl's
+  greens, so the map uses a deep shade of it, #0d5e4a, with the initial Y.
 
 ## Italy, October 2026
 
@@ -135,6 +199,7 @@ origin and under its directory.
 
 [MobiData BW](https://www.mobidata-bw.de/) provides the public regional proxy feeds.
 Zeus publishes its own city feeds at `https://zeus.city/api/v1/mds/gbfs/<city>/gbfs.json`.
+Yoio publishes its own feeds on ATOM Mobility, at `https://yoio.rideatom.com/gbfs/<id>/v3.0/gbfs`.
 [Dott Germany discovery](https://gbfs.api.ridedott.com/public/v2/countries/de/gbfs.json)
 contains repeated feed names for separate cities, so each reviewed city is collected
 independently. Bird's own feeds for

@@ -99,5 +99,12 @@
     "color": "#b21f5a",
     "initial": "RM",
     "systemIds": { "prefixes": ["ride_mobility"] }
+  },
+  {
+    "key": "yoio",
+    "name": "Yoio",
+    "color": "#0d5e4a",
+    "initial": "Y",
+    "systemIds": { "prefixes": ["yoio"] }
   }
 ]

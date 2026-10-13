@@ -282,3 +282,6 @@ cold starts and hourly metadata refreshes. A full cold collection can take about
 two minutes; persisted snapshots keep map requests independent of that work.
 City overviews rebuild when previously failed feeds recover, avoiding an hour
 of incomplete startup counts.
+
+ATOM Mobility (`*.rideatom.com`: Hoppy, Ride Mobility, Yoio) refuses bursts of
+requests, so each of its hosts is paced at 500 ms, about two requests a second.

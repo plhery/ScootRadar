@@ -19,12 +19,21 @@ the work.
 
 | What | Blocked on |
 | --- | --- |
-| **Yoio** in Göttingen (~265), Freiburg (~222) and Erfurt (~189), Germany | A new provider. Freiburg comes through MobiData BW; Göttingen and Erfurt publish no licence, and Yoio's server blocks bursts of requests. Like Hopp, it stamps responses with the request time |
 | **Pony** in other cities, with the key published for La Roche-sur-Yon | transport.data.gouv.fr published the key for that city only. Whether it may be used elsewhere is a licence question |
-| **Lime** everywhere | Its [GBFS terms](https://www.li.me/legal/public-gbfs-terms) allow public display only where local law requires it. Needs a written answer from Lime |
-| **Bird** everywhere | Its licence page now answers 404; the [archived copy](https://web.archive.org/web/20260516143232/https://www.bird.co/gbfs-data-license-agreement/) allows display. Worth confirming with Bird |
 | **Dott** everywhere | Its [API licence](https://ridedott.com/api-licence/) restricts distribution. Since September 2026 most regions need a partner key, which Dott grants through its partner integrations team |
 | **Voi** in the United Kingdom | Access is asked from nap@voiapp.io, under a [licence](https://www.voi.com/voi-licencing-agreement) that forbids storing the data, which the scooter cache does |
+
+It was decided on 13 October 2026 not to ask Lime, Bird or Hopp for a written
+licence, so their terms block nothing and their feeds stay on the map. For the
+record:
+
+- **Lime:** its [GBFS terms](https://www.li.me/legal/public-gbfs-terms) allow
+  public display only where local law requires it.
+- **Bird:** its licence page answers 404; the
+  [archived copy](https://web.archive.org/web/20260516143232/https://www.bird.co/gbfs-data-license-agreement/)
+  allows display.
+- **Hopp:** its `license_url` points to its privacy policy, so it publishes no
+  licence.
 
 ## No public data, in covered countries
 

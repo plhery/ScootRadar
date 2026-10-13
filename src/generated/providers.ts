@@ -20,6 +20,7 @@ const PROVIDER_DEFINITIONS = {
   ryde: { name: "Ryde", color: "#2f8413", initial: "R" },
   hoppy: { name: "Hoppy", color: "#22c5aa", initial: "Ho" },
   ride_mobility: { name: "Ride Mobility", color: "#b21f5a", initial: "RM" },
+  yoio: { name: "Yoio", color: "#0d5e4a", initial: "Y" },
 } as const;
 
 export type ProviderKey = keyof typeof PROVIDER_DEFINITIONS;
@@ -44,6 +45,7 @@ const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: str
   pony: {"prefixes":["pony"]},
   zeus: {"prefixes":["zeus"]},
   ryde: {"prefixes":["ryde"]},
+  yoio: {"prefixes":["yoio"]},
   voi: {"prefixes":["voi"]},
 };
 

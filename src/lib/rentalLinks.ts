@@ -65,6 +65,11 @@ const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
     schemes: [],
     httpsHosts: ['ridemobility.app.link', 'ridemobility.eu'],
   },
+  // Yoio is on ATOM Mobility too: its links name each scooter by the number it carries, not by hardware.
+  yoio: {
+    schemes: [],
+    httpsHosts: ['rideyoio.app.link', 'yoio.app'],
+  },
 };
 
 const UNSAFE_CHARACTERS = /[\u0000-\u001f\u007f]/;
