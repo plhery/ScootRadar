@@ -57,12 +57,12 @@
     {
       "uid": "scootradar-cache-restarting",
       "title": "ScootRadar cache restarting",
-      "expr": "changes(process_start_time_seconds{job=\"scootradar-cache\"}[1h]) > bool 3",
+      "expr": "max(changes((process_start_time_seconds{job=\"scootradar-cache\"} * on (instance) group_left (version) scootradar_build_info{job=\"scootradar-cache\"})[1h:30s])) > bool 3",
       "for": "0s",
       "severity": "warning",
       "noDataState": "KeepLast",
-      "summary": "The cache has restarted more than three times in an hour.",
-      "description": "A deploy restarts it once. More is a crash loop: killed above its 1536 MiB, or a startup failure. Its last logs are in Loki ({app=\"scootradar-cache\"}) and an exception in Sentry's scootradar-cache project."
+      "summary": "One build of the cache has restarted more than three times in an hour.",
+      "description": "A deploy starts another build and is not counted. Restarts of one build are a crash loop: killed above its 1536 MiB, or a startup failure. Its last logs are in Loki ({app=\"scootradar-cache\"}) and an exception in Sentry's scootradar-cache project."
     },
     {
       "uid": "scootradar-cache-memory",

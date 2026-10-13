@@ -84,7 +84,7 @@ The alert rules:
 | ScootRadar collector stalled | no collection has finished for 5 minutes |
 | ScootRadar feed stopped | a feed served more than half of the last 7 days has been expired for 10 minutes; one notification per feed |
 | ScootRadar feed discovery stale | no successful discovery for 2 hours |
-| ScootRadar cache restarting | more than three restarts in an hour (a deploy is one) |
+| ScootRadar cache restarting | one build has restarted more than three times in an hour (a deploy is not counted) |
 | ScootRadar cache memory high | over 1.3 GB for 15 minutes (the limit is 1536 MiB) |
 
 While the cache cannot be scraped, as for a moment during a deploy, every rule but
@@ -93,6 +93,14 @@ rule must answer 0 when all is well, never nothing: "feed stopped" answers 0 for
 feed it covers rather than filtering with `== 1`. When it filtered, a feed that
 recovered before its 10 minutes left the answer empty, and Grafana kept the pending
 alert and fired it anyway, as for six Beryl feeds on 12 October 2026.
+
+"Cache restarting" counts the restarts of one build, by joining the start time with
+`scootradar_build_info`: a deploy starts another build, so its series begins without a
+change. Every push that changes the cache deploys it, and for about a minute the old
+and the new container both answer on `scootradar-cache:3001`, so Prometheus reads one,
+then the other. When the rule counted every change of the start time, one deploy made
+three, and the second deploy within an hour fired it: seven times from 11 to 13
+October 2026, with no crash.
 
 The default notification policy sends them all to the `telegram-paul` contact point.
 The dashboard's "Expired, rarely served" table lists the others: silence isn't
