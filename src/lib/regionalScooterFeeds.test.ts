@@ -27,6 +27,7 @@ describe('German and Italian scooter coverage', () => {
     ['Peiraias Hellas', 'Piraeus, Greece'], ['Πειραιάς', 'Piraeus, Greece'], ['Πειραια', 'Piraeus, Greece'],
     ['Argostoli', 'Argostoli, Greece'], ['Αργοστόλι', 'Argostoli, Greece'], ['Kefalonia', 'Argostoli, Greece'],
     ['Cephalonia Griechenland', 'Argostoli, Greece'], ['Κεφαλονιά', 'Argostoli, Greece'], ['Kefallonia Grèce', 'Argostoli, Greece'],
+    ['Ioannina', 'Ioannina, Greece'], ['Giannena', 'Ioannina, Greece'], ['Ιωάννινα', 'Ioannina, Greece'], ['Γιάννενα', 'Ioannina, Greece'],
     ['Paphos', 'Paphos, Cyprus'], ['Pafos', 'Paphos, Cyprus'], ['Πάφος', 'Paphos, Cyprus'], ['ΠΑΦΟΣ', 'Paphos, Cyprus'],
     ['Pafos Kıbrıs', 'Paphos, Cyprus'], ['Paphos Zypern', 'Paphos, Cyprus'], ['Limassol', 'Limassol, Cyprus'],
     ['Lemesos', 'Limassol, Cyprus'], ['Λεμεσός', 'Limassol, Cyprus'], ['Λεμεσος Κύπρος', 'Limassol, Cyprus'],

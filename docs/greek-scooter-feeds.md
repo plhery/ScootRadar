@@ -7,15 +7,17 @@ Thessaloniki, which answer 404, and nextbike's four Athens suburbs, which have
 e-bikes only. Hopp's Greek towns were polled at the address Hopp uses for its
 other towns on Tuesday 13 October, 15 times about five minutes apart from 12:03
 to 13:17 Athens time, then 11 times ten minutes apart until 15:07, and compared
-with a poll at 02:10 the same night. Every feed URL is https, on the
-discovery's origin and under its directory. No account credentials or private
-rider APIs are used.
+with a poll at 02:10 the same night. Nafplio and Ioannina were polled 9 times
+more, ten minutes apart until 16:47, and Ioannina 6 times more, five minutes
+apart until 17:15. Every feed URL is https, on the discovery's origin and under
+its directory. No account credentials or private rider APIs are used.
 
 | Operator | Town | Available scooters |
 | --- | --- | ---: |
 | Hopp | Faliraki | 125 to 136 |
 | Hopp | Piraeus | 93 to 94 |
 | Hopp | Argostoli | 59 to 62 |
+| Hopp | Ioannina | 14 to 15 |
 
 Faliraki had 33 rides traced by the code printed on each scooter, of 0.3 to
 6.3 km: each scooter came back under a new id, with 1 to 19 points less
@@ -24,9 +26,11 @@ after 13:57 and were back by 14:17. Five more scooters moved 0.6 to 0.9 km
 with no less charge. Piraeus and Argostoli were quiet at midday: no scooter of
 either moved before 13:07. From then to 15:07, Piraeus had 3 rides, of 0.6 to
 1.0 km, and Argostoli 3, of 0.5 to 1.6 km, with 2 to 7 points less charge;
-Hopp also swapped a battery in Argostoli. Between the night poll and the first
-poll of the day, 8 Piraeus scooters and 2 Argostoli scooters had moved 0.4 to
-1.4 km with less charge. Nafplio and Ioannina are left out: see
+Hopp also swapped a battery in Argostoli. Ioannina was quiet for longer: no
+scooter moved before 15:57. From then to 17:15 it had 3 rides, of 1.1 to
+2.6 km, with 6 to 14 points less charge. Between the night poll and the first
+poll of the day, 8 Piraeus scooters, 2 Argostoli scooters and 2 Ioannina
+scooters had moved 0.4 to 1.4 km with less charge. Nafplio is left out: see
 [Known gaps](#known-gaps). The bounds, discovery URLs and aliases are in
 [`greek-scooter-feeds.json`](../data/greek-scooter-feeds.json).
 
@@ -35,9 +39,10 @@ poll of the day, 8 Piraeus scooters and 2 Argostoli scooters had moved 0.4 to
 Each town is named in Latin script, as Greek road signs also write it, since
 Greek script would be unreadable to most riders. Where English has its own name
 for the town, the map uses it (Piraeus); elsewhere it uses the Greek name as
-the town itself writes it in Latin script (Faliraki, Argostoli). Every other
-form finds the town in search: the Greek name in Greek script, the formal
-transliteration and the older English name.
+the town itself writes it in Latin script (Faliraki, Argostoli, Ioannina).
+Every other form finds the town in search: the Greek name in Greek script, the
+formal transliteration and the older English name, and for Ioannina the name
+it goes by in speech, Giannena.
 
 Two of Hopp's feeds are named after more than their town:
 
@@ -60,6 +65,7 @@ Two of Hopp's feeds are named after more than their town:
 | Faliraki | Φαληράκι, Rhodes, Rodos, Ρόδος |
 | Piraeus | Peiraias, Pireas, Πειραιάς |
 | Argostoli | Αργοστόλι, Kefalonia, Kefallonia, Cephalonia, Κεφαλονιά |
+| Ioannina | Ιωάννινα, Giannena, Γιάννενα |
 
 ## Data handling
 
@@ -78,7 +84,7 @@ Two of Hopp's feeds are named after more than their town:
   (`ttl` 0), as in its other towns, so the age limit can't tell how old its
   positions are; the rides above show the feeds are live.
 - **Vehicle types:** `vtp_119` and `vtp_120`, both electric standing scooters.
-  Argostoli lists `vtp_119` only.
+  Argostoli and Ioannina list `vtp_119` only.
 - **Prices:** from the pricing feed, in euros. Each town has one plan, and
   every scooter of every poll pointed to it:
 
@@ -87,6 +93,7 @@ Two of Hopp's feeds are named after more than their town:
   | Faliraki | EUR 1.00 | EUR 0.33 |
   | Piraeus | EUR 0.99 | EUR 0.27 |
   | Argostoli | EUR 1.00 | EUR 0.35 |
+  | Ioannina | EUR 1.00 | EUR 0.30 |
 
   Argostoli's feed writes its minute price as `0.35000000000000003`; the app
   rounds a price to the cent, and a unit test covers it. Each scooter also
@@ -102,8 +109,8 @@ Two of Hopp's feeds are named after more than their town:
   battery swap. The code printed on the scooter (`hopp_code`) is masked in
   these feeds to two letters and three digits, such as `XX732`, so codes
   repeat: Faliraki had 5 or 6 codes shared by two scooters in each poll,
-  Piraeus 3 and Argostoli 1. Rides were traced only by codes held by a
-  single scooter.
+  Piraeus 3, Argostoli 1 and Ioannina none. Rides were traced only by codes
+  held by a single scooter.
 - **Parking:** Hopp publishes no stations, so the map shows none; its app
   shows where parking is allowed.
 - **Time zone:** Hopp Rhodes's `system_information` gives
@@ -134,8 +141,8 @@ No Greek law or covered town bans renting at night, so
   published a decision on shared scooters in Diavgeia, the register of public
   decisions, searched up to 13 October 2026: Rhodes, which Faliraki belongs
   to; Piraeus, Nikaia–Agios Ioannis Rentis, Keratsini–Drapetsona and
-  Korydallos, which the Piraeus area spans; and Argostoli. The Rhodes press
-  reports that the municipality has no rules for them at all
+  Korydallos, which the Piraeus area spans; Argostoli; and Ioannina. The
+  Rhodes press reports that the municipality has no rules for them at all
   ([Dimokratiki](https://www.dimokratiki.gr/15-08-2026/tilemachos-kabouris-patinia-pantou-pezodromia-katilimmena-ke-o-dimos-aplos-kitazi/),
   15 August 2026).
 - **Hopp's terms** ([hopp.bike](https://hopp.bike/tos)) set an age of 18 and
@@ -155,24 +162,16 @@ No Greek law or covered town bans renting at night, so
 ## Known gaps
 
 - **Hopp Nafplio** (`gr-nafplion`) listed 17 or 18 available scooters, of 26,
-  but none moved, left or came back from 12:03 to 15:07, and all 26 had kept
-  their ids since the night poll at 02:10; only a few battery levels changed.
-  It is left out until a later check, in the tourist season or on a weekend,
-  shows rides.
+  but none moved, left or came back in 35 polls from 12:03 to 16:47, and all
+  26 kept their ids from the night poll at 02:10 to the last; only a few
+  battery levels changed. It is left out until a later check, in the tourist
+  season or on a weekend, shows rides.
   - Its bounds would be 37.5561° to 37.5919° N and 22.7865° to 22.8407° E,
     from its geofencing as for the other towns. It charges EUR 1.00 to start
     and EUR 0.28 a minute.
   - Nafplio's council discussed rental scooters on 8 May 2026
     ([Anagnostis](https://www.anagnostis.org/2026/05/05/synedriasi-dimotikou-symvouliou-nafpliou-me-6-themata/),
     press); no decision followed in Diavgeia. Check it before adding the town.
-- **Hopp Ioannina** (`gr-ioannina`) listed 15 available scooters in every
-  poll, and none moved, left or came back from 12:03 to 15:07. Two had ridden
-  0.7 and 1.0 km, with 23 points less charge each, between the night poll and
-  the first poll of the day, so it is used, if rarely. It is left out until a
-  later check shows rides while it is polled.
-  - Its bounds would be 39.5875° to 39.6989° N and 20.7955° to 20.9053° E. It
-    charges EUR 1.00 to start and EUR 0.30 a minute. No municipal decision on
-    shared scooters was found in Diavgeia.
 - **Athens** has no scooter on the map. **Dott**'s Athens and Thessaloniki
   regions in the registry answer 404 (`ERR_REGION_NOT_FOUND`), **Lime**'s
   address answers 404 for both cities, and **Bolt** publishes no feed.

@@ -101,7 +101,7 @@ describe('searchCoveredCities', () => {
   it('finds a Greek town by its Greek name as by its Latin ones, with or without accents', () => {
     for (const [query, title] of [['Πειραιάς', 'Piraeus'], ['πειραιας', 'Piraeus'], ['Peiraias', 'Piraeus'], ['Ρόδος', 'Faliraki'],
       ['ΡΟΔΟΣ', 'Faliraki'], ['Φαληρ', 'Faliraki'], ['Rhodes Ελλάδα', 'Faliraki'], ['Αργοστόλι', 'Argostoli'], ['Cephalonia', 'Argostoli'],
-      ['Κεφαλονιά Hellas', 'Argostoli']]) {
+      ['Κεφαλονιά Hellas', 'Argostoli'], ['Ιωάννινα', 'Ioannina'], ['Giannena Hellas', 'Ioannina']]) {
       expect(searchCoveredCities(query)[0]?.title, query).toBe(title);
     }
     expect(searchCoveredCities('Ρόδος', 'de')[0].subtitle).toBe('Griechenland');

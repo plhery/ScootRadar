@@ -171,17 +171,17 @@ banned shared scooters, and feeds that were empty when checked.
     (napportal.kozut.hu) lists timetables and road data, no shared mobility,
     and BKK's FUTÁR API needs a key and carries bike stations, not scooters.
 - **Greece** ([guide](greek-scooter-feeds.md#known-gaps)): Hopp in Faliraki,
-  Piraeus and Argostoli is covered.
+  Piraeus, Argostoli and Ioannina is covered.
   - Athens has no scooter on the map. Dott's Athens and Thessaloniki regions
     in the registry answer 404, Lime's address answers 404 for both cities,
     and Bolt publishes no feed.
-  - Hopp Nafplio listed 17 or 18 available scooters and Hopp Ioannina 15,
-    but none moved, left or came back from 12:03 to 15:07 Athens time on a
-    Tuesday, while Faliraki, Piraeus and Argostoli had rides. Nafplio's 26
-    scooters had also kept their ids since 02:10 that night; Ioannina had 2
-    rides overnight. Check them in the tourist season or on a weekend, and
-    add them if their scooters are ridden. Nafplio's council discussed rental
-    scooters on 8 May 2026; check for a decision first.
+  - Hopp Nafplio listed 17 or 18 available scooters, but none moved, left or
+    came back in 35 polls from 12:03 to 16:47 Athens time on a Tuesday, while
+    Faliraki, Piraeus, Argostoli and Ioannina had rides. Its 26 scooters had
+    also kept their ids since 02:10 that night. Check it in the tourist
+    season or on a weekend, and add it if its scooters are ridden. Nafplio's
+    council discussed rental scooters on 8 May 2026; check for a decision
+    first.
   - Hopp Athens (Kifisia), Voula, Zakynthos and Lefkada listed only disabled
     scooters, 1 to 7 each; Chania, Rethymno, Kos, Kardamena, Kalymnos,
     Trikala, Katerini, Preveza and Corinth listed none.

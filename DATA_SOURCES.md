@@ -340,9 +340,9 @@ the systems, the gaps and the recheck command.
 
 ## Greece
 
-The reviewed catalog lives in `data/greek-scooter-feeds.json`: 3 feeds, Hopp
-in Faliraki, on Rhodes, in Piraeus and in Argostoli, on Kefalonia. They are
-Hopp's own public GBFS feeds. They are not in
+The reviewed catalog lives in `data/greek-scooter-feeds.json`: 4 feeds, Hopp
+in Faliraki, on Rhodes, in Piraeus, in Argostoli, on Kefalonia, and in
+Ioannina. They are Hopp's own public GBFS feeds. They are not in
 [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
 and answer at the address Hopp uses for its other towns. Greece's national
 access point, [nap.gov.gr](https://nap.gov.gr/), is a landing page, and its

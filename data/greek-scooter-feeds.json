@@ -70,6 +70,28 @@
         "Cephalonia",
         "Κεφαλονιά"
       ]
+    },
+    {
+      "id": "hopp_gr_ioannina",
+      "country": "GR",
+      "provider": "hopp",
+      "city": "Ioannina",
+      "center": [
+        39.664,
+        20.8523
+      ],
+      "bounds": {
+        "south": 39.5875,
+        "north": 39.6989,
+        "west": 20.7955,
+        "east": 20.9053
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/gr-ioannina/gbfs.json",
+      "aliases": [
+        "Giannena",
+        "Ιωάννινα",
+        "Γιάννενα"
+      ]
     }
   ]
 }
