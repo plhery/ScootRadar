@@ -34,8 +34,8 @@ describe('searchCoveredCities', () => {
 
   it('lists the cities a few letters could become, a city typed in full first and the others by name', () => {
     expect(names('Ber')).toEqual(['Berlin, Germany', 'Bern, Switzerland']);
-    // Portimão by its beach, Praia da Rocha.
-    expect(names('Ro')).toEqual(['Portimão, Portugal', 'Roma, Italy', 'Romanshorn, Switzerland', 'Rorschach, Switzerland']);
+    // Portimão by its beach, Praia da Rocha, and Faliraki by its island, Rhodes or Rodos.
+    expect(names('Ro')).toEqual(['Faliraki, Greece', 'Portimão, Portugal', 'Roma, Italy', 'Romanshorn, Switzerland', 'Rorschach, Switzerland']);
     expect(names('Rom')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland']);
     expect(names('Roma')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland']);
     // Vestmannaeyjar by its island, Heimaey.
@@ -92,10 +92,22 @@ describe('searchCoveredCities', () => {
     // src/lib/places.ts asks Intl.DisplayNames; a typed city and a chip must read the same.
     for (const language of GEOCODE_LANGUAGES) {
       const regions = new Intl.DisplayNames(`${language}-CH`, { type: 'region' });
-      for (const [query, country] of [['Zürich', 'CH'], ['Lyon', 'FR'], ['Berlin', 'DE'], ['Roma', 'IT'], ['Uppsala', 'SE'], ['Rīga', 'LV'], ['Sosnowiec', 'PL'], ['Pécs', 'HU']]) {
+      for (const [query, country] of [['Zürich', 'CH'], ['Lyon', 'FR'], ['Berlin', 'DE'], ['Roma', 'IT'], ['Uppsala', 'SE'], ['Rīga', 'LV'], ['Sosnowiec', 'PL'], ['Pécs', 'HU'], ['Piraeus', 'GR']]) {
         expect(searchCoveredCities(query, language)[0].subtitle, `${country} in ${language}`).toBe(regions.of(country));
       }
     }
+  });
+
+  it('finds a Greek town by its Greek name as by its Latin ones, with or without accents', () => {
+    for (const [query, title] of [['Πειραιάς', 'Piraeus'], ['πειραιας', 'Piraeus'], ['Peiraias', 'Piraeus'], ['Ρόδος', 'Faliraki'],
+      ['ΡΟΔΟΣ', 'Faliraki'], ['Φαληρ', 'Faliraki'], ['Rhodes Ελλάδα', 'Faliraki'], ['Αργοστόλι', 'Argostoli'], ['Cephalonia', 'Argostoli'],
+      ['Κεφαλονιά Hellas', 'Argostoli']]) {
+      expect(searchCoveredCities(query)[0]?.title, query).toBe(title);
+    }
+    expect(searchCoveredCities('Ρόδος', 'de')[0].subtitle).toBe('Griechenland');
+    expect(searchCoveredCities('Πειραιάς Italia')).toEqual([]);
+    // A country alone names no city.
+    expect(searchCoveredCities('Ελλάδα')).toEqual([]);
   });
 
   it('leaves streets, stations and towns without scooter data to the address search', () => {

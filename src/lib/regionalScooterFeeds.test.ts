@@ -21,7 +21,12 @@ describe('German and Italian scooter coverage', () => {
     ['Rīga Lettland', 'Rīga, Latvia'], ['Wolomin', 'Wołomin, Poland'], ['Wołomin', 'Wołomin, Poland'], ['Kobylka Polska', 'Kobyłka, Poland'],
     ['Oswiecim', 'Oświęcim, Poland'], ['Radzymin Polen', 'Radzymin, Poland'], ['Knurow', 'Knurów, Poland'],
     ['Zlotow Pologne', 'Złotów, Poland'], ['Pecs', 'Pécs, Hungary'], ['Pécs Magyarország', 'Pécs, Hungary'],
-    ['Fünfkirchen', 'Pécs, Hungary'], ['Funfkirchen Ungarn', 'Pécs, Hungary']])('finds %s', (query, name) => {
+    ['Fünfkirchen', 'Pécs, Hungary'], ['Funfkirchen Ungarn', 'Pécs, Hungary'], ['Faliraki', 'Faliraki, Greece'],
+    ['Φαληράκι', 'Faliraki, Greece'], ['Rhodes', 'Faliraki, Greece'], ['Rodos Ellada', 'Faliraki, Greece'], ['Ρόδος', 'Faliraki, Greece'],
+    ['ΡΟΔΟΣ', 'Faliraki, Greece'], ['Ροδος Ελλάδα', 'Faliraki, Greece'], ['Piraeus', 'Piraeus, Greece'], ['Pireas', 'Piraeus, Greece'],
+    ['Peiraias Hellas', 'Piraeus, Greece'], ['Πειραιάς', 'Piraeus, Greece'], ['Πειραια', 'Piraeus, Greece'],
+    ['Argostoli', 'Argostoli, Greece'], ['Αργοστόλι', 'Argostoli, Greece'], ['Kefalonia', 'Argostoli, Greece'],
+    ['Cephalonia Griechenland', 'Argostoli, Greece'], ['Κεφαλονιά', 'Argostoli, Greece'], ['Kefallonia Grèce', 'Argostoli, Greece']])('finds %s', (query, name) => {
     expect(searchRegionalScooterCities(query)[0].display_name).toBe(name);
   });
   it('does not silently ignore a conflicting country or expose the aggregate feed as a city', () => {
@@ -73,7 +78,7 @@ describe('German and Italian scooter coverage', () => {
     expect(result.vehicles).toHaveLength(1);
     expect(result.vehicles[0]).toMatchObject({ provider: system.provider, battery: 72 });
     expect(result.meta.sources).toEqual({ national: 'skipped', hopp: 'skipped', publibike: 'skipped',
-      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', [country]: 'fresh' });
+      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', [country]: 'fresh' });
     expect(fetchMock).toHaveBeenCalledTimes(3);
   });
   it('prices each Hopp Pécs scooter from its own plan, in forints, never from the plans in other currencies', async () => {
@@ -105,6 +110,29 @@ describe('German and Italian scooter coverage', () => {
       'hopp_hu_pecs:two': null,
       'hopp_hu_pecs:three': null,
     });
+  });
+  it('prices Hopp\'s Greek scooters to the cent, though its feeds write 0.35 as 0.35000000000000003', async () => {
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'hopp_gr_kefalonia')!;
+    const base = new URL('.', system.discoveryUrl).toString();
+    expect(base).toBe('https://api.hopp.bike/gbfs/gr-kefalonia/');
+    const scooter = { bike_id: 'one', vehicle_type_id: 'vtp_119', lat: 38.1754, lon: 20.4896, hopp_battery_level: 46,
+      pricing_plan_id: 'flt_540', hopp_start_cost: 100, hopp_credits_per_min: 35 };
+    vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+      if (url === system.discoveryUrl) return response({ data: { en: { feeds: ['vehicle_types', 'free_bike_status', 'system_pricing_plans']
+        .map(name => ({ name, url: `${base}en/${name}.json` })) } } });
+      if (url === `${base}en/vehicle_types.json`) return response({ data: { vehicle_types: [
+        { vehicle_type_id: 'vtp_119', form_factor: 'scooter', propulsion_type: 'electric' }] } });
+      if (url === `${base}en/free_bike_status.json`) return response({ last_updated: Date.now() / 1000, data: { bikes: [scooter] } });
+      // As Hopp Kefalonia publishes it.
+      if (url === `${base}en/system_pricing_plans.json`) return response({ data: { plans: [{ plan_id: 'flt_540', name: 'Hopp pricing',
+        description: '€1.00 to start and €0.35 per minute.', price: 1, currency: 'EUR', is_taxable: false,
+        per_min_price: [{ start: 0, interval: 1, rate: 0.35000000000000003 }] }] } });
+      throw new Error(`Unexpected upstream ${url}`);
+    }));
+    const result = await fetchScooters({ bounds: system.bounds, minBattery: 0, providers: new Set(['hopp']) });
+    expect(result.meta.sources.greece).toBe('fresh');
+    expect(result.vehicles).toMatchObject([{ vehicle_id: 'hopp_gr_kefalonia:one', battery: 46,
+      pricing: { currency: 'EUR', unlock_fee_minor_units: 100, minute_fee_minor_units: 35 } }]);
   });
   it('keeps Dott Wołomin\'s feeds under its percent-encoded directory, however the letter is written', () => {
     const base = new URL('.', REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'dott_pl_wolomin')!.discoveryUrl).toString();

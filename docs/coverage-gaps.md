@@ -170,6 +170,23 @@ banned shared scooters, and feeds that were empty when checked.
   - MOL Bubi and Donkey Republic are bikes only. The national access point
     (napportal.kozut.hu) lists timetables and road data, no shared mobility,
     and BKK's FUTÁR API needs a key and carries bike stations, not scooters.
+- **Greece** ([guide](greek-scooter-feeds.md#known-gaps)): Hopp in Faliraki,
+  Piraeus and Argostoli is covered.
+  - Athens has no scooter on the map. Dott's Athens and Thessaloniki regions
+    in the registry answer 404, Lime's address answers 404 for both cities,
+    and Bolt publishes no feed.
+  - Hopp Nafplio listed 17 or 18 available scooters and Hopp Ioannina 15,
+    but none moved, left or came back from 12:03 to 15:07 Athens time on a
+    Tuesday, while Faliraki, Piraeus and Argostoli had rides. Nafplio's 26
+    scooters had also kept their ids since 02:10 that night; Ioannina had 2
+    rides overnight. Check them in the tourist season or on a weekend, and
+    add them if their scooters are ridden. Nafplio's council discussed rental
+    scooters on 8 May 2026; check for a decision first.
+  - Hopp Athens (Kifisia), Voula, Zakynthos and Lefkada listed only disabled
+    scooters, 1 to 7 each; Chania, Rethymno, Kos, Kardamena, Kalymnos,
+    Trikala, Katerini, Preveza and Corinth listed none.
+  - nextbike's four Athens suburbs have e-bikes only. The national access
+    point (nap.gov.gr) is a landing page, and its catalogue timed out.
 
 ## Countries not covered yet
 
@@ -183,7 +200,6 @@ checks before relying on a count.
 
 | Country | Scooters | Feeds |
 | --- | ---: | --- |
-| Greece | ~320 | Hopp Rhodes, Piraeus, Kefalonia, Nafplio and Ioannina |
 | Cyprus | ~100 | Hopp Paphos and Limassol |
 | Finland | ~40 | Hopp Mariehamn, on Åland |
 
@@ -232,6 +248,7 @@ its other systems answer 401. Dott made most regions private in September 2026.
   empty.
 - **Spring 2027:** Dott's six paused Finnish towns (Ekenäs, Hamina, Hanko,
   Imatra, Kalajoki, Kotka) and Hopp's Greek island towns (Chania, Rethymno,
-  Kos, Zakynthos and others) may open for the season.
+  Kos, Zakynthos and others) may open for the season; recheck Hopp Nafplio
+  then too.
 - Every Monday, the [catalog check workflow](../.github/workflows/catalog-check.yml)
   fails when an entry of a covered country is gone.

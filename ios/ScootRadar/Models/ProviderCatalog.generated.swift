@@ -308,6 +308,9 @@ enum ScooterProviderCoverage {
         (.hopp, GeoBounds(south: 50.1984, west: 18.6242, north: 50.2455, east: 18.6968)),
         (.hopp, GeoBounds(south: 53.3449, west: 17.0006, north: 53.3832, east: 17.0833)),
         (.hopp, GeoBounds(south: 46.0199, west: 18.1584, north: 46.0962, east: 18.2795)),
+        (.hopp, GeoBounds(south: 36.302, west: 28.1756, north: 36.39, east: 28.2465)),
+        (.hopp, GeoBounds(south: 37.9208, west: 23.602, north: 37.9967, east: 23.6771)),
+        (.hopp, GeoBounds(south: 38.1459, west: 20.4613, north: 38.1995, east: 20.5084)),
     ]
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
@@ -528,6 +531,9 @@ enum ScooterCityCatalog {
         ScooterCity(id: "pl:Knurów", name: "Knurów", countryCode: "PL", center: GeoPoint(latitude: 50.2217, longitude: 18.6707), bounds: GeoBounds(south: 50.1984, west: 18.6242, north: 50.2455, east: 18.6968)),
         ScooterCity(id: "pl:Złotów", name: "Złotów", countryCode: "PL", center: GeoPoint(latitude: 53.3632, longitude: 17.0347), bounds: GeoBounds(south: 53.3449, west: 17.0006, north: 53.3832, east: 17.0833)),
         ScooterCity(id: "hu:Pécs", name: "Pécs", countryCode: "HU", center: GeoPoint(latitude: 46.0765, longitude: 18.228), bounds: GeoBounds(south: 46.0199, west: 18.1584, north: 46.0962, east: 18.2795)),
+        ScooterCity(id: "gr:Faliraki", name: "Faliraki", countryCode: "GR", center: GeoPoint(latitude: 36.3403, longitude: 28.202), bounds: GeoBounds(south: 36.302, west: 28.1756, north: 36.39, east: 28.2465)),
+        ScooterCity(id: "gr:Piraeus", name: "Piraeus", countryCode: "GR", center: GeoPoint(latitude: 37.9432, longitude: 23.6471), bounds: GeoBounds(south: 37.9208, west: 23.602, north: 37.9967, east: 23.6771)),
+        ScooterCity(id: "gr:Argostoli", name: "Argostoli", countryCode: "GR", center: GeoPoint(latitude: 38.1757, longitude: 20.4879), bounds: GeoBounds(south: 38.1459, west: 20.4613, north: 38.1995, east: 20.5084)),
     ]
 
     /// Cities by distance from the point to their centre, nearest first.

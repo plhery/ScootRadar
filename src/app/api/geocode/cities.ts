@@ -23,6 +23,7 @@ const COUNTRY_NAMES: Record<CoveredCountry, Record<GeocodeLanguage, string>> = {
   LV: { en: 'Latvia', de: 'Lettland', fr: 'Lettonie', it: 'Lettonia', nl: 'Letland', nb: 'Latvia', pt: 'Letónia', es: 'Letonia', is: 'Lettland' },
   PL: { en: 'Poland', de: 'Polen', fr: 'Pologne', it: 'Polonia', nl: 'Polen', nb: 'Polen', pt: 'Polónia', es: 'Polonia', is: 'Pólland' },
   HU: { en: 'Hungary', de: 'Ungarn', fr: 'Hongrie', it: 'Ungheria', nl: 'Hongarije', nb: 'Ungarn', pt: 'Hungria', es: 'Hungría', is: 'Ungverjaland' },
+  GR: { en: 'Greece', de: 'Griechenland', fr: 'Grèce', it: 'Grecia', nl: 'Griekenland', nb: 'Hellas', pt: 'Grécia', es: 'Grecia', is: 'Grikkland' },
 };
 
 // Typed beside a city to say which one is meant: "Lindau Deutschland".
@@ -42,6 +43,7 @@ const COUNTRY_WORDS: Record<CoveredCountry, string[]> = {
   LV: ['latvia', 'lettland', 'lettonie', 'lettonia', 'letland', 'letonia', 'latvija'],
   PL: ['poland', 'polen', 'pologne', 'polonia', 'polland', 'polska'],
   HU: ['hungary', 'ungarn', 'hongrie', 'ungheria', 'hongarije', 'hungria', 'ungverjaland', 'magyarorszag'],
+  GR: ['greece', 'griechenland', 'grece', 'grecia', 'griekenland', 'hellas', 'grikkland', 'ellada', 'ελλαδα'],
 };
 
 // What the Swiss cities are called in the other languages of the app, and how
@@ -59,11 +61,13 @@ const SWISS_ALIASES: Record<string, string[]> = {
 
 // The letters no accent can be stripped from are spelled out, so "Tromso",
 // "Baerum", "Isafjordur" and "Wolomin" find Tromsø, Bærum, Ísafjörður and Wołomin.
-const SPELLED_OUT: Record<string, string> = { ß: 'ss', æ: 'ae', ø: 'o', œ: 'oe', þ: 'th', ð: 'd', ł: 'l' };
+// Greek letters are kept, without their accents, and a final sigma is a sigma:
+// "Ροδος" and "Ρόδοσ" find Ρόδος.
+const SPELLED_OUT: Record<string, string> = { ß: 'ss', æ: 'ae', ø: 'o', œ: 'oe', þ: 'th', ð: 'd', ł: 'l', ς: 'σ' };
 
 function normalize(value: string): string {
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-    .replace(/[ßæøœþðł]/g, letter => SPELLED_OUT[letter]).replace(/[^a-z0-9]+/g, ' ').trim();
+    .replace(/[ßæøœþðłς]/g, letter => SPELLED_OUT[letter]).replace(/[^a-z0-9α-ω]+/g, ' ').trim();
 }
 
 const REGIONAL_ALIASES = new Map(REGIONAL_SCOOTER_CITIES.map(city => [city.id, city.aliases ?? []]));

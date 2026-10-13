@@ -1,0 +1,75 @@
+{
+  "verifiedOn": "2026-10-13",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "hopp_gr_rhodes",
+      "country": "GR",
+      "provider": "hopp",
+      "city": "Faliraki",
+      "center": [
+        36.3403,
+        28.202
+      ],
+      "bounds": {
+        "south": 36.302,
+        "north": 36.39,
+        "west": 28.1756,
+        "east": 28.2465
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/gr-rhodes/gbfs.json",
+      "aliases": [
+        "Φαληράκι",
+        "Rhodes",
+        "Rodos",
+        "Ρόδος"
+      ]
+    },
+    {
+      "id": "hopp_gr_piraeus",
+      "country": "GR",
+      "provider": "hopp",
+      "city": "Piraeus",
+      "center": [
+        37.9432,
+        23.6471
+      ],
+      "bounds": {
+        "south": 37.9208,
+        "north": 37.9967,
+        "west": 23.602,
+        "east": 23.6771
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/gr-piraeus/gbfs.json",
+      "aliases": [
+        "Peiraias",
+        "Pireas",
+        "Πειραιάς"
+      ]
+    },
+    {
+      "id": "hopp_gr_kefalonia",
+      "country": "GR",
+      "provider": "hopp",
+      "city": "Argostoli",
+      "center": [
+        38.1757,
+        20.4879
+      ],
+      "bounds": {
+        "south": 38.1459,
+        "north": 38.1995,
+        "west": 20.4613,
+        "east": 20.5084
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/gr-kefalonia/gbfs.json",
+      "aliases": [
+        "Αργοστόλι",
+        "Kefalonia",
+        "Kefallonia",
+        "Cephalonia",
+        "Κεφαλονιά"
+      ]
+    }
+  ]
+}

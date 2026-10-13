@@ -99,6 +99,8 @@ const COUNTRY_ANCHORS: Record<string, [number, number]> = {
   pl: [52.1, 19.4],
   // About the middle of the country, south-east of Budapest.
   hu: [47.2, 19.5],
+  // Inland, about the middle of the mainland, west of Lamia.
+  gr: [39, 22],
 };
 
 // "city:fr:Paris" is in France.

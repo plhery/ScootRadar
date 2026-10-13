@@ -337,3 +337,17 @@ shared-mobility data.
 Hopp links its privacy policy, not a licence. The map's credits name it under
 the GBFS line. See the [coverage audit](docs/hungarian-scooter-feeds.md) for
 the systems, the gaps and the recheck command.
+
+## Greece
+
+The reviewed catalog lives in `data/greek-scooter-feeds.json`: 3 feeds, Hopp
+in Faliraki, on Rhodes, in Piraeus and in Argostoli, on Kefalonia. They are
+Hopp's own public GBFS feeds. They are not in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
+and answer at the address Hopp uses for its other towns. Greece's national
+access point, [nap.gov.gr](https://nap.gov.gr/), is a landing page, and its
+catalogue timed out.
+
+Hopp links its privacy policy, not a licence. The map's credits name it under
+the GBFS line. See the [coverage audit](docs/greek-scooter-feeds.md) for the
+systems, the town names, the gaps and the recheck command.
