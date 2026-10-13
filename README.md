@@ -5,7 +5,7 @@
 <h1 align="center">ScootRadar</h1>
 
 <p align="center">
-  A friendly map for finding shared e-scooters in Switzerland and selected cities in France, Germany, Italy, Belgium, Norway, the United Kingdom, Portugal, Spain, Iceland and Sweden.
+  A friendly map for finding shared e-scooters in Switzerland and selected cities in France, Germany, Italy, Belgium, Norway, the United Kingdom, Portugal, Spain, Iceland, Sweden and Latvia.
 </p>
 
 <p align="center">
@@ -44,7 +44,7 @@ English. There is also a native SwiftUI app for iPhone.
   its marker, hovering a marker shows a short tip, and `/`, `L`, `+`, `−` and
   `Esc` work from the keyboard.
 
-**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde and Hoppy.
+**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde, Hoppy and Ride Mobility.
 
 French coverage includes 27 verified feeds across 25 cities or operating areas,
 with city-name search. German coverage adds 37 feeds across 38 cities (Dott, Bolt, Hopp, Lime, Voi and Zeus); Italy adds 3 Bird feeds, in Roma, Palermo and Napoli. See the [German/Italian feed audit](docs/german-italian-scooter-feeds.md) for coverage and known gaps. See the [French feed investigation](docs/french-scooter-feeds.md)
@@ -58,6 +58,8 @@ towns (Bird and Hopp), and Iceland 14 Hopp feeds across 18 towns. See the
 [Portuguese, Spanish and Icelandic feed audit](docs/portuguese-spanish-icelandic-scooter-feeds.md).
 Sweden adds 2 feeds: Lime in Uppsala and Hopp in Kiruna. See the
 [Swedish feed audit](docs/swedish-scooter-feeds.md).
+Latvia adds 1 feed: Ride Mobility in Rīga. See the
+[Latvian feed audit](docs/latvian-scooter-feeds.md).
 What is not covered yet, and why, is listed in
 [Coverage gaps](docs/coverage-gaps.md).
 

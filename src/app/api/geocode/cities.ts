@@ -20,6 +20,7 @@ const COUNTRY_NAMES: Record<CoveredCountry, Record<GeocodeLanguage, string>> = {
   ES: { en: 'Spain', de: 'Spanien', fr: 'Espagne', it: 'Spagna', nl: 'Spanje', nb: 'Spania', pt: 'Espanha', es: 'España', is: 'Spánn' },
   IS: { en: 'Iceland', de: 'Island', fr: 'Islande', it: 'Islanda', nl: 'IJsland', nb: 'Island', pt: 'Islândia', es: 'Islandia', is: 'Ísland' },
   SE: { en: 'Sweden', de: 'Schweden', fr: 'Suède', it: 'Svezia', nl: 'Zweden', nb: 'Sverige', pt: 'Suécia', es: 'Suecia', is: 'Svíþjóð' },
+  LV: { en: 'Latvia', de: 'Lettland', fr: 'Lettonie', it: 'Lettonia', nl: 'Letland', nb: 'Latvia', pt: 'Letónia', es: 'Letonia', is: 'Lettland' },
 };
 
 // Typed beside a city to say which one is meant: "Lindau Deutschland".
@@ -36,6 +37,7 @@ const COUNTRY_WORDS: Record<CoveredCountry, string[]> = {
   ES: ['spain', 'spanien', 'espagne', 'spagna', 'spanje', 'spania', 'espanha', 'espana', 'spann'],
   IS: ['iceland', 'island', 'islande', 'islanda', 'ijsland', 'islandia'],
   SE: ['sweden', 'schweden', 'suede', 'svezia', 'zweden', 'sverige', 'suecia', 'svithjod'],
+  LV: ['latvia', 'lettland', 'lettonie', 'lettonia', 'letland', 'letonia', 'latvija'],
 };
 
 // What the Swiss cities are called in the other languages of the app, and how

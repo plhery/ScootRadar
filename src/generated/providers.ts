@@ -19,6 +19,7 @@ const PROVIDER_DEFINITIONS = {
   beryl: { name: "Beryl", color: "#00c896", initial: "Be" },
   ryde: { name: "Ryde", color: "#2f8413", initial: "R" },
   hoppy: { name: "Hoppy", color: "#22c5aa", initial: "Ho" },
+  ride_mobility: { name: "Ride Mobility", color: "#b21f5a", initial: "RM" },
 } as const;
 
 export type ProviderKey = keyof typeof PROVIDER_DEFINITIONS;
@@ -31,6 +32,7 @@ export const PROVIDER_KEYS = Object.keys(PROVIDER_DEFINITIONS) as ProviderKey[];
 export const SWISS_PROVIDER_KEYS: readonly ProviderKey[] = ["bolt","bird","dott","hopp","lime","voi","publibike"];
 
 const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: string[] }> = {
+  ride_mobility: {"prefixes":["ride_mobility"]},
   publibike: {"exact":["velospot"],"prefixes":["publibike"]},
   beryl: {"prefixes":["beryl"]},
   hoppy: {"prefixes":["hoppy"]},

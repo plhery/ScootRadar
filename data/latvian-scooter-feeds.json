@@ -1,0 +1,26 @@
+{
+  "verifiedOn": "2026-10-13",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "ride_mobility_lv_riga",
+      "country": "LV",
+      "provider": "ride_mobility",
+      "city": "Rīga",
+      "center": [
+        56.9496,
+        24.1052
+      ],
+      "bounds": {
+        "south": 56.862,
+        "north": 57.0871,
+        "west": 23.8878,
+        "east": 24.3426
+      },
+      "discoveryUrl": "https://rideride.rideatom.com/gbfs/27/v3.0/gbfs",
+      "aliases": [
+        "Riga"
+      ]
+    }
+  ]
+}

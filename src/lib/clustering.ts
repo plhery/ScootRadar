@@ -93,6 +93,8 @@ const COUNTRY_ANCHORS: Record<string, [number, number]> = {
   gb: [52.8, -1.6], is: [64.9, -18.6], it: [43, 12.5], nl: [52.2, 5.6], no: [61, 9.5], pt: [39.6, -8],
   // Inland, between Uppsala and Kiruna, and clear of Norway's total.
   se: [63.6, 17.8],
+  // Inland, east of Rīga, about the middle of the country.
+  lv: [56.9, 24.6],
 };
 
 // "city:fr:Paris" is in France.

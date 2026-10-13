@@ -17,7 +17,8 @@ describe('German and Italian scooter coverage', () => {
   it.each([['Munich', 'München, Germany'], ['Muenchen Deutschland', 'München, Germany'],
     ['Koln', 'Köln, Germany'], ['Rome', 'Roma, Italy'], ['Roma Italia', 'Roma, Italy'], ['Naples', 'Napoli, Italy'],
     ['Neapel', 'Napoli, Italy'], ['Palerme', 'Palermo, Italy'], ['Uppsala Sverige', 'Uppsala, Sweden'], ['Upsala', 'Uppsala, Sweden'],
-    ['Kiiruna', 'Kiruna, Sweden'], ['Giron', 'Kiruna, Sweden']])('finds %s', (query, name) => {
+    ['Kiiruna', 'Kiruna, Sweden'], ['Giron', 'Kiruna, Sweden'], ['Riga', 'Rīga, Latvia'], ['Riga Latvija', 'Rīga, Latvia'],
+    ['Rīga Lettland', 'Rīga, Latvia']])('finds %s', (query, name) => {
     expect(searchRegionalScooterCities(query)[0].display_name).toBe(name);
   });
   it('does not silently ignore a conflicting country or expose the aggregate feed as a city', () => {
@@ -38,6 +39,7 @@ describe('German and Italian scooter coverage', () => {
     { id: 'bird_it_rome', bounds: rome, country: 'italy', v3: false },
     { id: 'hopp_se_kiruna', bounds: { south: 67.84, north: 67.86, west: 20.22, east: 20.3 }, country: 'sweden', v3: false },
     { id: 'bolt_de_karlsruhe', bounds: { south: 49, north: 49.02, west: 8.39, east: 8.42 }, country: 'germany', v3: true },
+    { id: 'ride_mobility_lv_riga', bounds: { south: 56.94, north: 56.96, west: 24.1, east: 24.13 }, country: 'latvia', v3: true },
     // Zeus's own feeds call its standing scooters electric_assist.
     { id: 'zeus_de_regensburg', bounds: { south: 49.01, north: 49.02, west: 12.09, east: 12.11 }, country: 'germany', v3: false,
       propulsion: 'electric_assist' },
@@ -66,7 +68,7 @@ describe('German and Italian scooter coverage', () => {
     expect(result.vehicles).toHaveLength(1);
     expect(result.vehicles[0]).toMatchObject({ provider: system.provider, battery: 72 });
     expect(result.meta.sources).toEqual({ national: 'skipped', hopp: 'skipped', publibike: 'skipped',
-      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', [country]: 'fresh' });
+      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', [country]: 'fresh' });
     expect(fetchMock).toHaveBeenCalledTimes(3);
   });
   it('collects multi-city feeds once and skips the empty space between their service areas', async () => {

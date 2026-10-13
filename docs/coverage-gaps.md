@@ -119,6 +119,18 @@ banned shared scooters, and feeds that were empty when checked.
     data, and Stockholm's open data has scooter parking bays only, behind a
     key.
   - Donkey Republic, Styr & Ställ and Lundahoj are bikes only.
+- **Latvia** ([guide](latvian-scooter-feeds.md#known-gaps)): Ride Mobility
+  in Rīga is covered.
+  - Bolt runs scooters in 16 Latvian towns, Riga among them, with no public
+    feed, and Skok (SIA Eterna Elect) publishes none either. So the map shows
+    Ride's part of Riga's scooters only.
+  - Ride's operating zones in Jūrmala and Jelgava held no scooter when
+    checked. Jūrmala's held a few of Ride's Yadea Q20s, which its feed types
+    as bicycles; the map leaves all of them out.
+  - Ride's ids 1 to 400 on its ATOM host answer for Riga only, so no feed was
+    found for Jūrmala, or for Ride in Estonia and Lithuania.
+  - nextbike Latvia is empty, and the national access point
+    (transportdata.gov.lv) has no shared-mobility data.
 
 ## Countries not covered yet
 
@@ -132,7 +144,6 @@ checks before relying on a count.
 
 | Country | Scooters | Feeds |
 | --- | ---: | --- |
-| Latvia | ~705 | Ride Mobility Riga (ATOM Mobility, a provider new to the app) |
 | Poland | ~545 | Dott Sosnowiec, Wołomin and Oświęcim; Hopp in five small towns |
 | Hungary | ~380 | Hopp Pécs and Békéscsaba |
 | Greece | ~320 | Hopp Rhodes, Piraeus, Kefalonia, Nafplio and Ioannina |

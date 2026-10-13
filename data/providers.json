@@ -92,5 +92,12 @@
     "color": "#22c5aa",
     "initial": "Ho",
     "systemIds": { "prefixes": ["hoppy"] }
+  },
+  {
+    "key": "ride_mobility",
+    "name": "Ride Mobility",
+    "color": "#b21f5a",
+    "initial": "RM",
+    "systemIds": { "prefixes": ["ride_mobility"] }
   }
 ]

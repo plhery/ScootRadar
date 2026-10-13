@@ -279,3 +279,17 @@ as in France, Germany and Portugal. Hopp links its privacy policy, not a
 licence. The map's credits name both under the GBFS line. See the
 [coverage audit](docs/swedish-scooter-feeds.md) for the systems, the gaps and
 the recheck command.
+
+## Latvia
+
+The reviewed catalog lives in `data/latvian-scooter-feeds.json`: 1 feed,
+Ride Mobility in Rīga. It is the operator's own public GBFS feed, on the ATOM
+Mobility platform Hoppy uses too, and is listed in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv).
+Latvia's national access point, [transportdata.gov.lv](https://transportdata.gov.lv),
+lists no shared-mobility data.
+
+Ride Mobility publishes no licence in its feed, as Voi in Antwerpen and Hoppy
+don't. The map's credits name it under the GBFS line. See the
+[coverage audit](docs/latvian-scooter-feeds.md) for the system, the gaps and
+the recheck command.

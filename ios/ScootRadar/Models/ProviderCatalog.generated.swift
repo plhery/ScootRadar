@@ -16,6 +16,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     case beryl
     case ryde
     case hoppy
+    case ride_mobility
 
     var id: String { rawValue }
 
@@ -33,6 +34,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .beryl: "Beryl"
         case .ryde: "Ryde"
         case .hoppy: "Hoppy"
+        case .ride_mobility: "Ride Mobility"
         }
     }
 
@@ -50,6 +52,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .beryl: "Be"
         case .ryde: "R"
         case .hoppy: "Ho"
+        case .ride_mobility: "RM"
         }
     }
 
@@ -69,10 +72,12 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .beryl: UIColor(red: 0.000000, green: 0.784314, blue: 0.588235, alpha: 1)
         case .ryde: UIColor(red: 0.184314, green: 0.517647, blue: 0.074510, alpha: 1)
         case .hoppy: UIColor(red: 0.133333, green: 0.772549, blue: 0.666667, alpha: 1)
+        case .ride_mobility: UIColor(red: 0.698039, green: 0.121569, blue: 0.352941, alpha: 1)
         }
     }
 
     private static let systemIDMatchers: [(provider: ScooterProvider, exact: [String], prefixes: [String])] = [
+        (.ride_mobility, [], ["ride_mobility"]),
         (.publibike, ["velospot"], ["publibike"]),
         (.beryl, [], ["beryl"]),
         (.hoppy, [], ["hoppy"]),
@@ -294,6 +299,7 @@ enum ScooterProviderCoverage {
         (.hopp, GeoBounds(south: 63.4101, west: -19.029, north: 63.4284, east: -18.9801)),
         (.hopp, GeoBounds(south: 67.8205, west: 20.1797, north: 67.8801, east: 20.3641)),
         (.lime, GeoBounds(south: 59.8076, west: 17.5747, north: 59.9021, east: 17.7203)),
+        (.ride_mobility, GeoBounds(south: 56.862, west: 23.8878, north: 57.0871, east: 24.3426)),
     ]
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
@@ -505,6 +511,7 @@ enum ScooterCityCatalog {
         ScooterCity(id: "is:Vík", name: "Vík", countryCode: "IS", center: GeoPoint(latitude: 63.4188, longitude: -19.0055), bounds: GeoBounds(south: 63.4101, west: -19.029, north: 63.4284, east: -18.9801)),
         ScooterCity(id: "se:Kiruna", name: "Kiruna", countryCode: "SE", center: GeoPoint(latitude: 67.8496, longitude: 20.3063), bounds: GeoBounds(south: 67.8205, west: 20.1797, north: 67.8801, east: 20.3641)),
         ScooterCity(id: "se:Uppsala", name: "Uppsala", countryCode: "SE", center: GeoPoint(latitude: 59.8586, longitude: 17.6387), bounds: GeoBounds(south: 59.8076, west: 17.5747, north: 59.9021, east: 17.7203)),
+        ScooterCity(id: "lv:Rīga", name: "Rīga", countryCode: "LV", center: GeoPoint(latitude: 56.9496, longitude: 24.1052), bounds: GeoBounds(south: 56.862, west: 23.8878, north: 57.0871, east: 24.3426)),
     ]
 
     /// Cities by distance from the point to their centre, nearest first.

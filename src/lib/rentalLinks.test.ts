@@ -51,6 +51,15 @@ describe('rental links', () => {
     });
   });
 
+  it('keeps the link to each Ride Mobility scooter, on its own host only', () => {
+    const link = 'https://ridemobility.app.link/475216';
+    expect(normalizeRentalUris('ride_mobility', { ios: link, android: link, web: 'https://ridemobility.app.link/' }))
+      .toEqual({ ios: link, android: link, web: 'https://ridemobility.app.link/' });
+    // Hoppy runs on the same platform, and Ryde sounds the same: neither takes the other's links.
+    expect(safeRentalUri('ride_mobility', 'https://ride-hoppy.app.link/400202')).toBeNull();
+    expect(safeRentalUri('ryde', link)).toBeNull();
+  });
+
   it('selects only the link intended for the current mobile platform', () => {
     const ios = 'https://go.ridedott.com/vehicles/1?platform=ios';
     const android = 'https://go.ridedott.com/vehicles/1?platform=android';

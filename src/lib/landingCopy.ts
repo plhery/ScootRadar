@@ -84,7 +84,7 @@ export function linkedParts(sentence: string): { text: string; link?: string }[]
 // to it are left out until then.
 export const APP_STORE_URL = null as string | null;
 
-export type LandingCountry = 'CH' | 'DE' | 'FR' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE';
+export type LandingCountry = 'CH' | 'DE' | 'FR' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV';
 
 export interface LandingCopy {
   meta: {
@@ -171,7 +171,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'E-scooter map: Lime, Bolt, Bird, Voi, Dott and more | ScootRadar',
       description: cities =>
-        `Every shared e-scooter near you on one live map: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde and Hoppy. Free, no account, in ${cities} cities.`,
+        `Every shared e-scooter near you on one live map: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy and Ride Mobility. Free, no account, in ${cities} cities.`,
       share: {
         title: 'Every e-scooter on one map.',
         alt: 'Every e-scooter on one map: the app at night by Zürich main station, beside the initials of twelve providers.',
@@ -238,10 +238,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} cities.`,
-      lede: 'Shared e-scooters in Switzerland, Germany, France, Italy, Belgium, Norway, the United Kingdom, Portugal, Spain, Iceland and Sweden. Where no provider publishes its data, the map says so and points you to the closest cities that have it. Pick a city to open the map there.',
+      lede: 'Shared e-scooters in Switzerland, Germany, France, Italy, Belgium, Norway, the United Kingdom, Portugal, Spain, Iceland, Sweden and Latvia. Where no provider publishes its data, the map says so and points you to the closest cities that have it. Pick a city to open the map there.',
       countries: {
         CH: 'Switzerland', DE: 'Germany', FR: 'France', IT: 'Italy', BE: 'Belgium', NO: 'Norway', GB: 'United Kingdom',
-        PT: 'Portugal', ES: 'Spain', IS: 'Iceland', SE: 'Sweden',
+        PT: 'Portugal', ES: 'Spain', IS: 'Iceland', SE: 'Sweden', LV: 'Latvia',
       },
       more: count => `and ${count} more`,
       alt: 'The map at night, zoomed out over Europe, with the number of scooters on each city.',
@@ -251,7 +251,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Is there one app for Lime, Bolt, Bird, Voi and Dott?',
-          answer: 'ScootRadar is one map for all of them, and for Hopp, Pony, PubliBike, Zeus, Beryl, Ryde and Hoppy too. It shows every shared e-scooter whose provider publishes where it is, so you no longer open one app after another to find the nearest.',
+          answer: 'ScootRadar is one map for all of them, and for Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy and Ride Mobility too. It shows every shared e-scooter whose provider publishes where it is, so you no longer open one app after another to find the nearest.',
         },
         {
           question: 'How do I find the nearest e-scooter?',
@@ -297,7 +297,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'E-Scooter-Karte: Lime, Bolt, Bird, Voi, Dott und mehr | ScootRadar',
       description: cities =>
-        `Alle E-Scooter und E-Trottinette in deiner Nähe auf einer Live-Karte: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde und Hoppy. Gratis, ohne Konto, in ${cities} Städten.`,
+        `Alle E-Scooter und E-Trottinette in deiner Nähe auf einer Live-Karte: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy und Ride Mobility. Gratis, ohne Konto, in ${cities} Städten.`,
       share: {
         title: 'Alle E-Scooter auf einer Karte.',
         alt: 'Alle E-Scooter auf einer Karte: die App bei Nacht am Zürcher Hauptbahnhof, daneben die Initialen von zwölf Anbietern.',
@@ -364,10 +364,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} Städte.`,
-      lede: 'E-Scooter in der Schweiz, in Deutschland, Frankreich, Italien, Belgien, Norwegen, im Vereinigten Königreich, in Portugal, Spanien, Island und Schweden. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten. Wähle eine Stadt, um die Karte dort zu öffnen.',
+      lede: 'E-Scooter in der Schweiz, in Deutschland, Frankreich, Italien, Belgien, Norwegen, im Vereinigten Königreich, in Portugal, Spanien, Island, Schweden und Lettland. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten. Wähle eine Stadt, um die Karte dort zu öffnen.',
       countries: {
         CH: 'Schweiz', DE: 'Deutschland', FR: 'Frankreich', IT: 'Italien', BE: 'Belgien', NO: 'Norwegen', GB: 'Vereinigtes Königreich',
-        PT: 'Portugal', ES: 'Spanien', IS: 'Island', SE: 'Schweden',
+        PT: 'Portugal', ES: 'Spanien', IS: 'Island', SE: 'Schweden', LV: 'Lettland',
       },
       more: count => `und ${count} weitere`,
       alt: 'Die Karte bei Nacht, herausgezoomt über Europa, mit der Zahl der Scooter in jeder Stadt.',
@@ -377,7 +377,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Gibt es eine einzige App für Lime, Bolt, Bird, Voi und Dott?',
-          answer: 'ScootRadar ist eine Karte für alle fünf und auch für Hopp, Pony, PubliBike, Zeus, Beryl, Ryde und Hoppy. Sie zeigt jeden Sharing-E-Scooter, dessen Anbieter den Standort veröffentlicht. So musst du nicht mehr eine App nach der anderen öffnen, um den nächsten zu finden.',
+          answer: 'ScootRadar ist eine Karte für alle fünf und auch für Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy und Ride Mobility. Sie zeigt jeden Sharing-E-Scooter, dessen Anbieter den Standort veröffentlicht. So musst du nicht mehr eine App nach der anderen öffnen, um den nächsten zu finden.',
         },
         {
           question: 'Wie finde ich den nächsten E-Scooter oder das nächste E-Trottinett?',
@@ -423,7 +423,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'Carte des trottinettes électriques en libre-service | ScootRadar',
       description: cities =>
-        `Toutes les trottinettes électriques en libre-service autour de vous sur une carte en direct : Lime, Dott, Bolt, Voi, Bird, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde et Hoppy. Gratuit, sans compte, dans ${cities} villes.`,
+        `Toutes les trottinettes électriques en libre-service autour de vous sur une carte en direct : Lime, Dott, Bolt, Voi, Bird, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy et Ride Mobility. Gratuit, sans compte, dans ${cities} villes.`,
       share: {
         title: 'Toutes les trottinettes sur une seule carte.',
         alt: 'Toutes les trottinettes sur une seule carte : l’app, de nuit, près de la gare centrale de Zurich, à côté des initiales de douze opérateurs.',
@@ -490,10 +490,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} villes.`,
-      lede: 'Des trottinettes en libre-service en Suisse, en Allemagne, en France, en Italie, en Belgique, en Norvège, au Royaume-Uni, au Portugal, en Espagne, en Islande et en Suède. Là où aucun opérateur ne publie de données, la carte le dit et indique les villes les plus proches qui en ont. Choisissez une ville pour y ouvrir la carte.',
+      lede: 'Des trottinettes en libre-service en Suisse, en Allemagne, en France, en Italie, en Belgique, en Norvège, au Royaume-Uni, au Portugal, en Espagne, en Islande, en Suède et en Lettonie. Là où aucun opérateur ne publie de données, la carte le dit et indique les villes les plus proches qui en ont. Choisissez une ville pour y ouvrir la carte.',
       countries: {
         CH: 'Suisse', DE: 'Allemagne', FR: 'France', IT: 'Italie', BE: 'Belgique', NO: 'Norvège', GB: 'Royaume-Uni',
-        PT: 'Portugal', ES: 'Espagne', IS: 'Islande', SE: 'Suède',
+        PT: 'Portugal', ES: 'Espagne', IS: 'Islande', SE: 'Suède', LV: 'Lettonie',
       },
       more: count => (count === 1 ? 'et une autre' : `et ${count} autres`),
       alt: 'La carte de nuit à l’échelle de l’Europe, avec le nombre de trottinettes dans chaque ville.',
@@ -503,7 +503,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Existe-t-il une app qui regroupe Lime, Bolt, Bird, Voi et Dott ?',
-          answer: 'ScootRadar les réunit tous sur une seule carte, avec en plus Hopp, Pony, PubliBike, Zeus, Beryl, Ryde et Hoppy. Elle montre chaque trottinette électrique en libre-service dont l’opérateur publie la position : plus besoin d’ouvrir les apps une à une pour trouver la plus proche.',
+          answer: 'ScootRadar les réunit tous sur une seule carte, avec en plus Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy et Ride Mobility. Elle montre chaque trottinette électrique en libre-service dont l’opérateur publie la position : plus besoin d’ouvrir les apps une à une pour trouver la plus proche.',
         },
         {
           question: 'Comment trouver la trottinette électrique la plus proche ?',
@@ -549,7 +549,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'Monopattini elettrici in sharing su una sola mappa | ScootRadar',
       description: cities =>
-        `Tutti i monopattini elettrici in sharing intorno a te su una mappa in tempo reale: Lime, Bolt, Dott, Voi, Bird, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde e Hoppy. Gratis, senza account, in ${cities} città.`,
+        `Tutti i monopattini elettrici in sharing intorno a te su una mappa in tempo reale: Lime, Bolt, Dott, Voi, Bird, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy e Ride Mobility. Gratis, senza account, in ${cities} città.`,
       share: {
         title: 'Tutti i monopattini su una sola mappa.',
         alt: 'Tutti i monopattini su una sola mappa: l’app di notte vicino alla stazione centrale di Zurigo, accanto alle iniziali di dodici operatori.',
@@ -616,10 +616,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} città.`,
-      lede: 'Monopattini in sharing in Svizzera, Germania, Francia, Italia, Belgio, Norvegia, Regno Unito, Portogallo, Spagna, Islanda e Svezia. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno. Scegli una città per aprire lì la mappa.',
+      lede: 'Monopattini in sharing in Svizzera, Germania, Francia, Italia, Belgio, Norvegia, Regno Unito, Portogallo, Spagna, Islanda, Svezia e Lettonia. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno. Scegli una città per aprire lì la mappa.',
       countries: {
         CH: 'Svizzera', DE: 'Germania', FR: 'Francia', IT: 'Italia', BE: 'Belgio', NO: 'Norvegia', GB: 'Regno Unito',
-        PT: 'Portogallo', ES: 'Spagna', IS: 'Islanda', SE: 'Svezia',
+        PT: 'Portogallo', ES: 'Spagna', IS: 'Islanda', SE: 'Svezia', LV: 'Lettonia',
       },
       more: count => (count === 1 ? 'e un’altra' : `e altre ${count}`),
       alt: 'La mappa dell’Europa vista da lontano, di notte, con il numero di monopattini in ogni città.',
@@ -629,7 +629,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Esiste un’unica app per Lime, Bolt, Bird, Voi e Dott?',
-          answer: 'ScootRadar li mette tutti su una sola mappa, insieme a Hopp, Pony, PubliBike, Zeus, Beryl, Ryde e Hoppy. Mostra ogni monopattino elettrico in sharing il cui operatore pubblica la posizione: non serve più aprire un’app dopo l’altra per trovare quello più vicino.',
+          answer: 'ScootRadar li mette tutti su una sola mappa, insieme a Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy e Ride Mobility. Mostra ogni monopattino elettrico in sharing il cui operatore pubblica la posizione: non serve più aprire un’app dopo l’altra per trovare quello più vicino.',
         },
         {
           question: 'Come trovo il monopattino elettrico più vicino?',
@@ -675,7 +675,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'Kart over elsparkesykler: Lime, Bolt, Bird, Voi, Dott og flere | ScootRadar',
       description: cities =>
-        `Alle elsparkesykler til leie nær deg på ett kart i sanntid: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde og Hoppy. Gratis, uten konto, i ${cities} byer.`,
+        `Alle elsparkesykler til leie nær deg på ett kart i sanntid: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy og Ride Mobility. Gratis, uten konto, i ${cities} byer.`,
       share: {
         title: 'Alle elsparkesykler på ett kart.',
         alt: 'Alle elsparkesykler på ett kart: appen om natten ved Zürich hovedstasjon, ved siden av initialene til tolv operatører.',
@@ -742,7 +742,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} byer.`,
-      lede: 'Elsparkesykler til leie i Sveits, Tyskland, Frankrike, Italia, Belgia, Norge, Storbritannia, Portugal, Spania, Island og Sverige. Der ingen operatør publiserer data, sier kartet ifra og peker deg til de nærmeste byene som har det. Velg en by for å åpne kartet der.',
+      lede: 'Elsparkesykler til leie i Sveits, Tyskland, Frankrike, Italia, Belgia, Norge, Storbritannia, Portugal, Spania, Island, Sverige og Latvia. Der ingen operatør publiserer data, sier kartet ifra og peker deg til de nærmeste byene som har det. Velg en by for å åpne kartet der.',
       countries: {
         CH: 'Sveits',
         DE: 'Tyskland',
@@ -755,6 +755,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         ES: 'Spania',
         IS: 'Island',
         SE: 'Sverige',
+        LV: 'Latvia',
       },
       more: count => (count === 1 ? 'og én til' : `og ${count} til`),
       alt: 'Kartet om natten, zoomet ut over Europa, med antall elsparkesykler i hver by.',
@@ -764,7 +765,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Finnes det én app for Lime, Bolt, Bird, Voi og Dott?',
-          answer: 'ScootRadar er ett kart for alle sammen, og for Hopp, Pony, PubliBike, Zeus, Beryl, Ryde og Hoppy også. Det viser alle elsparkesykler til leie der operatøren publiserer hvor de står, så du slipper å åpne den ene appen etter den andre for å finne den nærmeste.',
+          answer: 'ScootRadar er ett kart for alle sammen, og for Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy og Ride Mobility også. Det viser alle elsparkesykler til leie der operatøren publiserer hvor de står, så du slipper å åpne den ene appen etter den andre for å finne den nærmeste.',
         },
         {
           question: 'Hvordan finner jeg nærmeste elsparkesykkel?',
@@ -810,7 +811,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'Deelsteps op één kaart: Lime, Bolt, Bird, Voi, Dott en meer | ScootRadar',
       description: cities =>
-        `Alle elektrische deelsteps bij jou in de buurt, live op één kaart: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde en Hoppy. Gratis, zonder account, in ${cities} steden.`,
+        `Alle elektrische deelsteps bij jou in de buurt, live op één kaart: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy en Ride Mobility. Gratis, zonder account, in ${cities} steden.`,
       share: {
         title: 'Alle deelsteps op één kaart.',
         alt: 'Alle deelsteps op één kaart: de app ’s nachts bij het centraal station van Zürich, naast de initialen van twaalf aanbieders.',
@@ -877,7 +878,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} steden.`,
-      lede: 'Deelsteps in Zwitserland, Duitsland, Frankrijk, Italië, België, Noorwegen, het Verenigd Koninkrijk, Portugal, Spanje, IJsland en Zweden. Waar geen enkele aanbieder zijn data publiceert, zegt de kaart dat en krijg je de dichtstbijzijnde steden die wel data hebben. Kies een stad om de kaart daar te openen.',
+      lede: 'Deelsteps in Zwitserland, Duitsland, Frankrijk, Italië, België, Noorwegen, het Verenigd Koninkrijk, Portugal, Spanje, IJsland, Zweden en Letland. Waar geen enkele aanbieder zijn data publiceert, zegt de kaart dat en krijg je de dichtstbijzijnde steden die wel data hebben. Kies een stad om de kaart daar te openen.',
       countries: {
         CH: 'Zwitserland',
         DE: 'Duitsland',
@@ -890,6 +891,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         ES: 'Spanje',
         IS: 'IJsland',
         SE: 'Zweden',
+        LV: 'Letland',
       },
       more: count => (count === 1 ? 'en nog één' : `en nog ${count}`),
       alt: 'De kaart ’s nachts, uitgezoomd over Europa, met het aantal deelsteps op elke stad.',
@@ -899,7 +901,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Is er één app voor Lime, Bolt, Bird, Voi en Dott?',
-          answer: 'ScootRadar is één kaart voor ze allemaal, en ook voor Hopp, Pony, PubliBike, Zeus, Beryl, Ryde en Hoppy. De kaart toont elke deelstep waarvan de aanbieder publiceert waar hij staat, zodat je niet meer de ene app na de andere hoeft te openen om de dichtstbijzijnde te vinden.',
+          answer: 'ScootRadar is één kaart voor ze allemaal, en ook voor Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy en Ride Mobility. De kaart toont elke deelstep waarvan de aanbieder publiceert waar hij staat, zodat je niet meer de ene app na de andere hoeft te openen om de dichtstbijzijnde te vinden.',
         },
         {
           question: 'Hoe vind ik de dichtstbijzijnde elektrische step?',
@@ -944,7 +946,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'Mapa de trotinetes elétricas: Lime, Bolt, Bird, Voi, Dott e mais | ScootRadar',
       description: cities =>
-        `Todas as trotinetes elétricas partilhadas perto de si num mapa em tempo real: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde e Hoppy. Grátis, sem conta, em ${cities} cidades.`,
+        `Todas as trotinetes elétricas partilhadas perto de si num mapa em tempo real: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy e Ride Mobility. Grátis, sem conta, em ${cities} cidades.`,
       share: {
         title: 'Todas as trotinetes num só mapa.',
         alt: 'Todas as trotinetes num só mapa: a app à noite junto à estação central de Zurique, ao lado das iniciais de doze operadores.',
@@ -1011,10 +1013,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => (cities === 1 ? '1 cidade.' : `${cities} cidades.`),
-      lede: 'Trotinetes elétricas partilhadas na Suíça, na Alemanha, em França, em Itália, na Bélgica, na Noruega, no Reino Unido, em Portugal, em Espanha, na Islândia e na Suécia. Onde nenhum operador publica os dados, o mapa avisa e indica-lhe as cidades mais próximas que os têm. Escolha uma cidade para abrir lá o mapa.',
+      lede: 'Trotinetes elétricas partilhadas na Suíça, na Alemanha, em França, em Itália, na Bélgica, na Noruega, no Reino Unido, em Portugal, em Espanha, na Islândia, na Suécia e na Letónia. Onde nenhum operador publica os dados, o mapa avisa e indica-lhe as cidades mais próximas que os têm. Escolha uma cidade para abrir lá o mapa.',
       countries: {
         CH: 'Suíça', DE: 'Alemanha', FR: 'França', IT: 'Itália', BE: 'Bélgica', NO: 'Noruega', GB: 'Reino Unido',
-        PT: 'Portugal', ES: 'Espanha', IS: 'Islândia', SE: 'Suécia',
+        PT: 'Portugal', ES: 'Espanha', IS: 'Islândia', SE: 'Suécia', LV: 'Letónia',
       },
       more: count => (count === 1 ? 'e mais uma' : `e mais ${count}`),
       alt: 'O mapa à noite, a mostrar toda a Europa, com o número de trotinetes de cada cidade.',
@@ -1024,7 +1026,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Existe uma app que junte Lime, Bolt, Bird, Voi e Dott?',
-          answer: 'O ScootRadar reúne-as todas num só mapa, e ainda Hopp, Pony, PubliBike, Zeus, Beryl, Ryde e Hoppy. Mostra todas as trotinetes elétricas partilhadas cujo operador publica a localização, para que deixe de abrir uma app atrás da outra à procura da mais próxima.',
+          answer: 'O ScootRadar reúne-as todas num só mapa, e ainda Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy e Ride Mobility. Mostra todas as trotinetes elétricas partilhadas cujo operador publica a localização, para que deixe de abrir uma app atrás da outra à procura da mais próxima.',
         },
         {
           question: 'Como encontro a trotinete elétrica mais próxima?',
@@ -1069,7 +1071,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'Mapa de patinetes eléctricos: Lime, Bolt, Bird, Voi, Dott y más | ScootRadar',
       description: cities =>
-        `Todos los patinetes eléctricos de alquiler cerca de ti, en tiempo real y en un solo mapa: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde y Hoppy. Gratis, sin registro, en ${cities} ciudades.`,
+        `Todos los patinetes eléctricos de alquiler cerca de ti, en tiempo real y en un solo mapa: Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy y Ride Mobility. Gratis, sin registro, en ${cities} ciudades.`,
       share: {
         title: 'Todos los patinetes en un solo mapa.',
         alt: 'Todos los patinetes en un solo mapa: la app de noche junto a la estación central de Zúrich, con las iniciales de doce operadores al lado.',
@@ -1136,10 +1138,10 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => (cities === 1 ? '1 ciudad.' : `${cities} ciudades.`),
-      lede: 'Patinetes eléctricos compartidos en Suiza, Alemania, Francia, Italia, Bélgica, Noruega, el Reino Unido, Portugal, España, Islandia y Suecia. Donde ningún operador publica sus datos, el mapa te lo dice y te indica las ciudades más cercanas que sí los tienen. Elige una ciudad para abrir allí el mapa.',
+      lede: 'Patinetes eléctricos compartidos en Suiza, Alemania, Francia, Italia, Bélgica, Noruega, el Reino Unido, Portugal, España, Islandia, Suecia y Letonia. Donde ningún operador publica sus datos, el mapa te lo dice y te indica las ciudades más cercanas que sí los tienen. Elige una ciudad para abrir allí el mapa.',
       countries: {
         CH: 'Suiza', DE: 'Alemania', FR: 'Francia', IT: 'Italia', BE: 'Bélgica', NO: 'Noruega', GB: 'Reino Unido',
-        PT: 'Portugal', ES: 'España', IS: 'Islandia', SE: 'Suecia',
+        PT: 'Portugal', ES: 'España', IS: 'Islandia', SE: 'Suecia', LV: 'Letonia',
       },
       more: count => (count === 1 ? 'y otra más' : `y ${count} más`),
       alt: 'El mapa de noche, alejado sobre Europa, con el número de patinetes de cada ciudad.',
@@ -1149,7 +1151,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: '¿Hay una sola app para Lime, Bolt, Bird, Voi y Dott?',
-          answer: 'ScootRadar es un único mapa para todos ellos, y también para Hopp, Pony, PubliBike, Zeus, Beryl, Ryde y Hoppy. Muestra cada patinete eléctrico compartido cuyo operador publica dónde está, para que no tengas que abrir una app tras otra hasta dar con el más cercano.',
+          answer: 'ScootRadar es un único mapa para todos ellos, y también para Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy y Ride Mobility. Muestra cada patinete eléctrico compartido cuyo operador publica dónde está, para que no tengas que abrir una app tras otra hasta dar con el más cercano.',
         },
         {
           question: '¿Cómo encuentro un patinete eléctrico de alquiler cerca de mí?',
@@ -1194,7 +1196,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'Rafskútur á einu korti: Hopp, Lime, Bolt, Voi, Dott og fleiri | ScootRadar',
       description: cities =>
-        `Allar rafskútur (rafhlaupahjól) til leigu nálægt þér, á einu korti í rauntíma: Hopp, Lime, Bolt, Bird, Voi, Dott, Pony, PubliBike, Zeus, Beryl, Ryde og Hoppy. Ókeypis og án skráningar, á ${cities} ${cities % 10 === 1 && cities % 100 !== 11 ? 'stað' : 'stöðum'}.`,
+        `Allar rafskútur (rafhlaupahjól) til leigu nálægt þér, á einu korti í rauntíma: Hopp, Lime, Bolt, Bird, Voi, Dott, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy og Ride Mobility. Ókeypis og án skráningar, á ${cities} ${cities % 10 === 1 && cities % 100 !== 11 ? 'stað' : 'stöðum'}.`,
       share: {
         title: 'Allar rafskútur á einu korti.',
         alt: 'Allar rafskútur á einu korti: appið að nóttu til við aðallestarstöðina í Zürich, við hlið upphafsstafa tólf fyrirtækja.',
@@ -1264,7 +1266,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${cities} ${cities % 10 === 1 && cities % 100 !== 11 ? 'staður' : 'staðir'}.`,
-      lede: 'Rafskútur til leigu á Íslandi, Ítalíu og Spáni, í Sviss, Þýskalandi, Frakklandi, Belgíu, Noregi, Bretlandi, Portúgal og Svíþjóð. Þar sem ekkert fyrirtæki birtir gögn segir kortið frá því og bendir þér á næstu staði sem hafa þau. Veldu stað til að opna kortið þar.',
+      lede: 'Rafskútur til leigu á Íslandi, Ítalíu og Spáni, í Sviss, Þýskalandi, Frakklandi, Belgíu, Noregi, Bretlandi, Portúgal, Svíþjóð og Lettlandi. Þar sem ekkert fyrirtæki birtir gögn segir kortið frá því og bendir þér á næstu staði sem hafa þau. Veldu stað til að opna kortið þar.',
       countries: {
         CH: 'Sviss',
         DE: 'Þýskaland',
@@ -1277,6 +1279,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         ES: 'Spánn',
         IS: 'Ísland',
         SE: 'Svíþjóð',
+        LV: 'Lettland',
       },
       more: count => `og ${count} til viðbótar`,
       alt: 'Kortið að nóttu til, yfir allri Evrópu, með tölu sem sýnir hve margar rafskútur eru á hverjum stað.',
@@ -1286,7 +1289,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Er til eitt app fyrir Hopp, Lime, Bolt, Voi og Dott?',
-          answer: 'ScootRadar er eitt kort fyrir þau öll, og líka fyrir Bird, Pony, PubliBike, Zeus, Beryl, Ryde og Hoppy. Það sýnir allar rafskútur til leigu sem fyrirtækin birta staðsetningu á, svo þú þarft ekki lengur að opna eitt appið á fætur öðru til að finna þá næstu.',
+          answer: 'ScootRadar er eitt kort fyrir þau öll, og líka fyrir Bird, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy og Ride Mobility. Það sýnir allar rafskútur til leigu sem fyrirtækin birta staðsetningu á, svo þú þarft ekki lengur að opna eitt appið á fætur öðru til að finna þá næstu.',
         },
         {
           question: 'Hvernig finn ég næstu rafskútu eða næsta rafhlaupahjól?',
