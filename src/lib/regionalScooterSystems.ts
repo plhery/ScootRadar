@@ -86,11 +86,16 @@ export function isRegionalSource(source: string): source is RegionalSource {
   return Object.values(COUNTRY_SOURCES).some(value => value === source);
 }
 
+/** The id of the city a system's service area is in: "no:Oslo". */
+export function regionalCityId(system: RegionalScooterSystem, area: ScooterServiceArea) {
+  return `${system.country.toLowerCase()}:${area.city}`;
+}
+
 // Merge each city's operator envelopes so overview health includes every operator.
 const cities = new Map<string, ScooterServiceArea & { id: string; country: ScooterCountry }>();
 for (const system of REGIONAL_SCOOTER_SYSTEMS) {
   for (const area of serviceAreas(system)) {
-    const id = `${system.country.toLowerCase()}:${area.city}`;
+    const id = regionalCityId(system, area);
     const previous = cities.get(id);
     cities.set(id, { ...area, id, country: system.country,
       center: previous?.center ?? area.center,

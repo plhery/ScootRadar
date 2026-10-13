@@ -95,7 +95,10 @@ usable for at most fifteen minutes from their source timestamp, including when a
 refresh fails; missing timestamps and older data are rejected. The national
 platform publishes Voi every eight to nine minutes, about ninety seconds after
 the timestamp it carries, so a shorter limit blanks Voi whenever it is a little
-late. City totals are aggregated hourly.
+late. City totals are aggregated hourly. Each scooter counts under the
+nearest town whose bounds hold it; outside Switzerland the towns its own
+feed serves come first, so a scooter in east Oslo is Oslo's, though
+Lørenskog's centre is nearer.
 
 These endpoints are publicly accessible but do not share one universal license.
 In particular, [Dott's API terms](https://ridedott.com/api-licence/) contain

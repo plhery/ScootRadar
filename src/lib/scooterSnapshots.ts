@@ -1,5 +1,7 @@
 import { SWISS_SCOOTER_AREAS, coverageIntersects } from '@/lib/feedCoverage';
-import { REGIONAL_SCOOTER_CITIES, COUNTRY_SOURCES, isRegionalSource } from '@/lib/regionalScooterSystems';
+import {
+  REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, COUNTRY_SOURCES, isRegionalSource, regionalCityId, serviceAreas,
+} from '@/lib/regionalScooterSystems';
 import { boundsContainPoint, haversineM } from '@/lib/geo';
 import { CITY_OVERVIEW_MAX_ZOOM, providersForViewport } from '@/lib/mapCoverage';
 import { PARKING_MAX_AGE_MS, PARKING_MIN_ZOOM, type ParkingSnapshot } from '@/lib/parking';
@@ -102,6 +104,49 @@ export function overviewNeedsRefresh(snapshot: MobilitySnapshot | undefined, fee
   return snapshot.overview.cities.some(city => city.failedSources.some(id => recovered.has(id)));
 }
 
+interface OverviewTown {
+  id: string;
+  center: number[];
+  bounds: MapBounds;
+}
+
+const areaKey = (bounds: MapBounds) => `${bounds.south},${bounds.west},${bounds.north},${bounds.east}`;
+// The town of each service area the catalogs review for a feed, found by its
+// bounds, which the feed's snapshot keeps as its coverage. Not the Swiss areas:
+// they are generous envelopes around towns, and a Swiss system is given one by
+// its name, though Bolt Zürich, for one, also runs Opfikon and Kloten.
+const TOWNS_OF_AREA = new Map<string, Set<string>>();
+for (const system of REGIONAL_SCOOTER_SYSTEMS) {
+  for (const area of serviceAreas(system)) {
+    const key = areaKey(area.bounds);
+    TOWNS_OF_AREA.set(key, (TOWNS_OF_AREA.get(key) ?? new Set()).add(regionalCityId(system, area)));
+  }
+}
+
+/** The towns of the service areas a feed was reviewed for. */
+function ownTowns(feed: FeedSnapshot): Set<string> {
+  return new Set(feed.coverage.flatMap(bounds => [...TOWNS_OF_AREA.get(areaKey(bounds)) ?? []]));
+}
+
+function nearestTown<T extends OverviewTown>(vehicle: Vehicle, towns: T[]): T {
+  return towns.reduce((nearest, candidate) => (
+    haversineM(vehicle.lat, vehicle.lng, candidate.center[0], candidate.center[1]) <
+    haversineM(vehicle.lat, vehicle.lng, nearest.center[0], nearest.center[1]) ? candidate : nearest
+  ));
+}
+
+/**
+ * The town a scooter counts under: the nearest centre among the towns whose
+ * bounds hold it, those of its own feed first, or the nearest centre of all
+ * when none does. The nearest centre alone is not enough: most of east Oslo
+ * is nearer Lørenskog's, and much of Lisbon nearer Almada's across the river.
+ */
+function townOf<T extends OverviewTown>(vehicle: Vehicle, towns: T[], own: Set<string>): T {
+  const holding = towns.filter(town => boundsContainPoint(town.bounds, vehicle.lat, vehicle.lng));
+  const owned = holding.filter(town => own.has(town.id));
+  return nearestTown(vehicle, owned.length ? owned : holding.length ? holding : towns);
+}
+
 export function buildCityOverview(feeds: FeedSnapshot[], now: number,
   counts: (feed: FeedSnapshot) => boolean = feed => showsPositions(feed, now)): MobilitySnapshot['overview'] {
   const totals = new Map<string, CityTotals>();
@@ -119,16 +164,13 @@ export function buildCityOverview(feeds: FeedSnapshot[], now: number,
     const cities = isRegionalSource(feed.source)
       ? regionalCities.filter(city => COUNTRY_SOURCES[city.country] === feed.source) : SWISS_SCOOTER_AREAS;
     if (!cities.length) continue;
+    const own = ownTowns(feed);
     for (const vehicle of feed.vehicles) {
       const key = `${vehicle.provider}:${vehicle.vehicle_id ?? `${vehicle.lat}:${vehicle.lng}`}`;
       if (seen.has(key)) continue;
       seen.add(key);
       // Assign each scooter once, including where neighbouring service areas overlap.
-      const city = cities.reduce((nearest, candidate) => (
-        haversineM(vehicle.lat, vehicle.lng, ...candidate.center as [number, number]) <
-        haversineM(vehicle.lat, vehicle.lng, ...nearest.center as [number, number]) ? candidate : nearest
-      ));
-      const total = totals.get(city.id)!;
+      const total = totals.get(townOf(vehicle, cities, own).id)!;
       const bins = total.batteries[vehicle.provider] ??= Array<number>(102).fill(0);
       bins[vehicle.battery ?? 101]++;
     }
