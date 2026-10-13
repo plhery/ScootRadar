@@ -63,7 +63,7 @@ Latvia adds 1 feed: Ride Mobility in Rīga. See the
 Poland adds 5 feeds across 7 towns: Dott in Sosnowiec, Oświęcim, and Wołomin
 with Kobyłka and Radzymin, and Hopp in Knurów and Złotów. See the
 [Polish feed audit](docs/polish-scooter-feeds.md).
-Hungary adds 1 feed: Hopp in Pécs. See the
+Hungary adds 2 feeds: Hopp in Pécs and Békéscsaba. See the
 [Hungarian feed audit](docs/hungarian-scooter-feeds.md).
 Greece adds 4 feeds: Hopp in Faliraki, on Rhodes, in Piraeus, in Argostoli,
 on Kefalonia, and in Ioannina. See the

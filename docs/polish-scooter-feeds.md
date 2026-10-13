@@ -135,15 +135,23 @@ No covered Polish town bans renting at night, so
 - **Dott, other towns:** Dott's Polish site lists 85 places, and the registry
   77 Polish entries. Besides the three covered regions, 73 answer 404
   (`ERR_REGION_NOT_FOUND`), Warsaw, Kraków, Wrocław, Gdańsk, Poznań and
-  Katowice among them, and Brzeg Dolny 403 (`ERR_REGION_OFFLINE`). Dott's
-  Polish listing names the three covered regions only.
+  Katowice among them, and Brzeg Dolny 403 (`ERR_REGION_OFFLINE`), still so at
+  18:27 on 13 October. Dott's Polish listing names the three covered regions
+  only.
 - **Hopp, other towns:** Hopp's Polish towns are franchises, run by local
   companies.
   - Wałcz listed 13 available scooters out of 22, but not one moved, came or
-    went from 23:41 to 09:15, so it is left out until a later check, on an
-    afternoon or a weekend, shows rides.
-  - Września had 5 available out of 18, with one ride, and Środa Wielkopolska
-    1 out of 10: under ten.
+    went from 23:41 to 09:15, nor in 22 polls four minutes apart from 18:26 to
+    19:50 on the Tuesday evening. Between 09:15 and 18:26 one scooter was
+    ridden 2.3 km, with 28 points less charge. It is left out until a check on
+    a weekend afternoon shows rides while it is polled.
+  - Września had 5 available out of 18 at night, with one ride. By the evening
+    Hopp had charged and put out its scooters, and it listed 13 or 14
+    available out of 14 or 15 from 18:26 to 19:50, but none was ridden while
+    it was polled: one left at 18:34 and didn't come back. It is left out
+    until a weekend check shows rides.
+  - Środa Wielkopolska listed 1 available scooter out of 10 until 19:22, then
+    Hopp put out freshly charged ones, 7 by 19:50; none was ridden. Under ten.
   - Lublin (3 scooters), Piła (12), Wągrowiec (6) and Szamotuły (1) listed
     disabled scooters only. Oborniki, Słupca, Zgorzelec, Murowana Goślina and
     Trzcianka were empty.
@@ -172,8 +180,12 @@ Wolomin, Oświęcim and Oswiecim, Złotów and Zlotow. The app folds `ł` to `l`
 which Unicode doesn't decompose. "Auschwitz" is not an alias of Oświęcim: the
 address search already finds the town under that name, and the town asks to
 be seen as a living place, not only as the camp
-([oswiecim.pl](https://oswiecim.pl/geneza-nazwy-miasta/)). The Memorial bans
-any vehicle on its grounds, scooters included
+([oswiecim.pl](https://oswiecim.pl/geneza-nazwy-miasta/)). Checked in
+production on 13 October at 18:28: a search for "Auschwitz" puts Oświęcim
+first, marked as covered, whether the map is centred on Zürich, Warsaw or
+Paris or not at all; in German the address search lists it under its German
+name, Auschwitz, at the same place. The Memorial bans any vehicle on its
+grounds, scooters included
 ([visitor rules](https://www.auschwitz.org/gfx/auschwitz/userfiles/_public/visit/65_en.pdf)).
 
 ## Recheck

@@ -5,36 +5,47 @@ Verified 13 October 2026. The
 lists no Hopp feed for Hungary, and its 8 Hungarian Dott entries answer 404.
 Hopp's Hungarian towns were polled at the address Hopp uses for its other
 towns, 12 times, about five minutes apart, from 09:33 to 10:27 Budapest time on
-Tuesday 13 October. Every feed URL is https, on the discovery's origin and
-under its directory. No account credentials or private rider APIs are used.
+Tuesday 13 October. Békéscsaba was polled again that evening, 22 times four
+minutes apart from 18:26 to 19:50. Every feed URL is https, on the discovery's
+origin and under its directory. No account credentials or private rider APIs
+are used.
 
 | Operator | City | Available scooters |
 | --- | --- | ---: |
 | Hopp | Pécs | 222 to 238 |
+| Hopp | Békéscsaba | 138 to 140 |
 
 Pécs had 4 rides traced by the code printed on each scooter, of 0.5 to 1.4 km:
 each scooter came back under a new id, with 1 to 13 points less charge. Between
 10:06 and 10:26 Hopp also moved 7 scooters 0.5 to 0.8 km, with at most a point
-less charge, to two spots, and swapped 3 batteries. Békéscsaba is left out:
-see [Known gaps](#known-gaps). The bounds, discovery URL and aliases are in
+less charge, to two spots, and swapped 3 batteries. Békéscsaba was still in
+the morning: none of its 140 scooters moved, left or came back from 09:33 to
+10:27. By 18:26, 14 had been ridden 0.2 to 4.7 km and come back under new ids,
+with 3 to 19 points less charge, and in the evening polls it had 7 rides, of
+0.2 to 2.8 km, with 1 to 13 points less charge; one scooter was out when the
+polls ended. The bounds, discovery URLs and aliases are in
 [`hungarian-scooter-feeds.json`](../data/hungarian-scooter-feeds.json).
 
 ## Data handling
 
-- **Bounds:** Hopp's geofencing has one no-riding polygon around the town,
-  whose hole is the operating area, and 2 no-riding zones inside it. The
-  bounds are the hole plus 0.005° of latitude and 0.0075° of longitude, about
-  550 m. Every scooter of every poll, disabled ones included, stood inside
-  them.
+- **Bounds:** Hopp's geofencing has one no-riding polygon around each town,
+  whose hole is the operating area, and no-riding zones inside it: 2 in Pécs
+  and 10 in Békéscsaba. The bounds are the hole plus 0.005° of latitude and
+  0.0075° of longitude, about 550 m. Every scooter of every poll, disabled ones
+  included, stood inside them.
 - **Freshness:** Hopp stamps each response with the time it was asked for
   (`ttl` 0), as in its other towns, so the age limit can't tell how old its
   positions are; the rides above show the feed is live.
-- **Vehicle types:** one type, `vtp_120`, an electric standing scooter.
-- **Prices:** from the pricing feed, in forints: HUF 272 to start and HUF 76 a
-  minute. The feed also lists a DKK plan and a USD plan, which no scooter of
-  any poll pointed to. Each scooter is priced from its own `pricing_plan_id`,
-  so those plans are never used, and a scooter whose plan is missing or
-  unknown gets no price rather than another plan's. A unit test covers both.
+- **Vehicle types:** one type in each town, an electric standing scooter:
+  `vtp_120` in Pécs and `vtp_119` in Békéscsaba.
+- **Prices:** from the pricing feeds, in forints: HUF 272 to start and HUF 76
+  a minute in Pécs, HUF 299 and HUF 99 in Békéscsaba. Pécs's feed also lists a
+  DKK plan and a USD plan, and Békéscsaba's a HUF 399 plan, Gyula's; no scooter
+  of any poll pointed to them. Each scooter is priced from its own
+  `pricing_plan_id`, so those plans are never used, and a scooter whose plan is
+  missing or unknown gets no price rather than another plan's. A unit test
+  covers both. Hopp's own fields, `hopp_start_cost` and `hopp_credits_per_min`,
+  matched Békéscsaba's plan for every scooter of every poll.
 - **Forints:** the app writes prices in whole forints, "HUF 272", as it does
   Icelandic krónur. The fillér went out of use in 1999, but ISO 4217 still
   gives the forint two decimals; Safari follows it ("HUF 272.00") and Chrome
@@ -46,17 +57,25 @@ see [Known gaps](#known-gaps). The bounds, discovery URL and aliases are in
   in Hopp's other countries.
 - **IDs:** Hopp gives a scooter a new `bike_id` after a ride, a move or a
   battery swap. The code printed on the scooter (`hopp_code`) is masked in
-  this feed to two letters and three digits, such as `XX240`, so codes
-  repeat: in each poll 20 to 24 codes were shared by two or more scooters.
-  Rides were traced only by codes held by a single scooter.
+  these feeds to two letters and three digits, such as `XX240`, so codes
+  repeat: in each poll 20 to 24 codes were shared by two or more scooters in
+  Pécs, and 8 in Békéscsaba. Rides were traced only by codes held by a single
+  scooter.
+- **Békéscsaba's address:** its feed is at
+  `https://api.hopp.bike/gbfs/hu-bekescaba/gbfs.json`, spelt without the second
+  "s"; `hu-bekescsaba` answers 404. The catalog's id, `hopp_hu_bekescsaba`,
+  spells the town's name.
 - **Parking:** Pécs allows parking only at marked spots, and charges 4,000 Ft
-  for a scooter left elsewhere ([pecs.hu](https://pecs.hu/e-roller/)). Hopp
-  publishes no stations, so the map can't show the spots; Hopp's app does.
-- **Time zone:** the feed gives `Europe/Budapest`.
+  for a scooter left elsewhere ([pecs.hu](https://pecs.hu/e-roller/)).
+  Békéscsaba allows it only at marked parking points, at least 60 of them,
+  under its 2024 tender (see [Night bans](#night-bans)). Hopp publishes no
+  stations, so the map can't show the spots; Hopp's app does.
+- **Time zone:** both feeds give `Europe/Budapest`. Neither the app nor the
+  scooter cache reads `system_information`.
 
 ## Night bans
 
-Pécs doesn't ban renting at night, so
+Neither Pécs nor Békéscsaba bans renting at night, so
 [`rental-curfews.json`](../data/rental-curfews.json) has no Hungarian entry.
 
 - **Pécs:** the city's scooter page
@@ -68,6 +87,12 @@ Pécs doesn't ban renting at night, so
   sets any, and the decree on public space, which covers scooter parking,
   doesn't either
   ([31/2008](https://njt.jog.gov.hu/jogszabaly/2008-31-SP-5Y2329)).
+- **Békéscsaba:** the council's 2024 tender
+  ([proposal](https://bekescsaba.hu/download/1978/02-03-a-koezoessegi-rollerszolgaltatas),
+  adopted as resolution 186/2024) sets 25 km/h, slow, no-go and no-parking
+  zones, and parking at marked points only, and no hours. The register of
+  local decrees (or.njt.hu) refused the connection on 13 October, as it had
+  that morning, so no local decree was checked.
 - **Hopp's terms** ([hopp.bike](https://hopp.bike/tos)) set an age of 18 and
   no hours, and nothing specific to Hungary.
 - **National rules:** Hungary has no law yet on scooter hours, age or
@@ -83,21 +108,6 @@ Pécs doesn't ban renting at night, so
 
 ## Known gaps
 
-- **Hopp Békéscsaba** listed 140 available scooters in every poll, but not one
-  moved, left or came back from 09:33 to 10:27, while Pécs had its rides; only
-  17 battery levels changed, by a point or two. It is left out until a later
-  check, on an afternoon or a weekend, shows rides.
-  - Its feed is at `https://api.hopp.bike/gbfs/hu-bekescaba/gbfs.json`, spelt
-    without the second "s"; `hu-bekescsaba` answers 404.
-  - Its bounds would be 46.6404° to 46.7058° N and 21.0275° to 21.1674° E,
-    from its geofencing as for Pécs. It charges HUF 299 to start and HUF 99 a
-    minute; its pricing feed also lists Gyula's HUF 399 plan, which no scooter
-    pointed to.
-  - No night ban was found: the council's 2024 tender
-    ([proposal](https://bekescsaba.hu/download/1978/02-03-a-koezoessegi-rollerszolgaltatas),
-    adopted as resolution 186/2024) sets 25 km/h and slow, no-go and
-    no-parking zones, and no hours. The register of local decrees couldn't
-    be reached.
 - **Budapest** has no scooter on the map. **Lime** (Budapest and 16 other
   places, Szeged, Eger, Sopron and Veszprém among them) and **Dott**
   (Budapest, Győr, Miskolc, Siófok and four other towns) publish no public
@@ -123,10 +133,11 @@ Pécs doesn't ban renting at night, so
 
 ## Search
 
-Pécs is found as Pécs, Pecs and Fünfkirchen, its German name. Hungary is found
-in the app's nine languages and as Magyarország, with or without accents. The
-app strips accents by Unicode decomposition, which handles Hungarian's ő and ű
-too.
+Pécs is found as Pécs, Pecs and Fünfkirchen, its German name, and Békéscsaba
+as Békéscsaba, Bekescsaba and Békešská Čaba, the name of its Slovak minority.
+Hungary is found in the app's nine languages and as Magyarország, with or
+without accents. The app strips accents by Unicode decomposition, which handles
+Hungarian's ő and ű too.
 
 ## Recheck
 

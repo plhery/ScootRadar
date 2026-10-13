@@ -70,6 +70,8 @@ banned shared scooters, and feeds that were empty when checked.
     scooters) were too small or empty.
   - Seventeen Zeus towns were empty.
   - Voi publishes six Baden-Württemberg cities only, through MobiData BW.
+  - Hopp Augsburg listed 42 scooters, all disabled and unchanged, on the
+    evening of 13 October 2026; check it in spring.
 - **Italy** ([guide](german-italian-scooter-feeds.md#known-gaps)): Bird in
   Roma, Palermo and Napoli is covered.
   - Dott (Roma, Milano, Palermo and others) and Lime (Roma, Milano, Palermo)
@@ -84,7 +86,7 @@ banned shared scooters, and feeds that were empty when checked.
     Prato ended on 31 December 2025.
   - Zeus's Italian feeds are stale or empty (Anzio, Augusta, Mazara, Teramo,
     Modena, Reggio Emilia). Hopp Como held no scooters at night on 13 October
-    2026; check it by day, and add it if it has some.
+    2026 or that evening; check it in spring, and add it if it has some.
   - Helbiz and Link no longer resolve. Cooltra lists mopeds and e-bikes only.
     Pony's site lists Turin, but its server answered `UNKNOWN_REGION` for
     Turin and Torino.
@@ -157,33 +159,32 @@ banned shared scooters, and feeds that were empty when checked.
   - Dott's Polish site lists 85 places, but its public listing names those
     three regions only. Of its other 74 Polish entries in the registry, 73
     answer 404 (Warsaw, Kraków, Wrocław, Gdańsk, Poznań, Katowice and others)
-    and Brzeg Dolny 403.
+    and Brzeg Dolny 403, still on the evening of 13 October 2026.
   - Lime (14 places, Warsaw and Kraków among them), Bolt (about 20 towns) and
     blinkee publish no public feed, so Warsaw, Kraków and the other large
     cities have no scooter on the map. Voi doesn't run in Poland.
   - Hopp Wałcz listed 13 available scooters, but none moved between 23:41
-    and 09:15 on a Tuesday; check it on an afternoon or a weekend, and add it
-    if its scooters are ridden. Hopp Września (5 available) and Środa
-    Wielkopolska (1) held fewer than ten. Lublin, Piła, Wągrowiec and
-    Szamotuły listed disabled scooters only, and Oborniki, Słupca, Zgorzelec,
-    Murowana Goślina and Trzcianka were empty. No Hopp feed was found for
-    Gliwice.
+    and 09:15 on a Tuesday, nor in 22 polls from 18:26 to 19:50 that
+    evening; one was ridden in between. Hopp Września listed 13 or 14
+    available that evening, after a recharging round, but none was ridden
+    while it was polled. Check both on a weekend afternoon, and add them if
+    their scooters are ridden. Środa Wielkopolska held 1 to 7, under ten.
+    Lublin, Piła, Wągrowiec and Szamotuły listed disabled scooters only, and
+    Oborniki, Słupca, Zgorzelec, Murowana Goślina and Trzcianka were empty. No
+    Hopp feed was found for Gliwice.
   - The national access point register (dane.gov.pl dataset 1739) links
     Bolt's and blinkee's websites, with no API; its only GBFS feed is MEVO's
     bikes.
 - **Hungary** ([guide](hungarian-scooter-feeds.md#known-gaps)): Hopp in Pécs
-  is covered.
+  and Békéscsaba is covered.
   - Budapest has no scooter on the map. Lime (Budapest and 16 other places,
     Szeged, Eger, Sopron and Veszprém among them) and Dott (Budapest, Győr,
     Miskolc, Siófok and four other towns) publish no public feed: Dott's 8
     Hungarian regions in the registry answer 404, its Hungarian listing names
     none, and Lime's address answers 404 for each town tried. blinkee (2
     towns) publishes nothing either, and Bolt runs taxis only in Hungary.
-  - Hopp Békéscsaba listed 140 available scooters, but none moved, left or
-    came back between 09:33 and 10:27 on a Tuesday, while Pécs had rides;
-    check it on an afternoon or a weekend, and add it if its scooters are
-    ridden. Hopp Gyula's feed answers but held no scooter at night or by day,
-    and Hopp's site doesn't list it. Of 57 other Hungarian towns tried at
+  - Hopp Gyula's feed answers but held no scooter at night or by day, and
+    Hopp's site doesn't list it. Of 57 other Hungarian towns tried at
     Hopp's address, none answered.
   - Budapest's 7th district (Erzsébetváros) voted in April 2025 that rental
     e-devices may not be used from 22:00 to 06:00 inside Károly körút, Király
@@ -202,8 +203,9 @@ banned shared scooters, and feeds that were empty when checked.
     and Bolt publishes no feed.
   - Hopp Nafplio listed 17 or 18 available scooters, but none moved, left or
     came back in 35 polls from 12:03 to 16:47 Athens time on a Tuesday, while
-    Faliraki, Piraeus, Argostoli and Ioannina had rides. Its 26 scooters had
-    also kept their ids since 02:10 that night. Check it in the tourist
+    Faliraki, Piraeus, Argostoli and Ioannina had rides, nor in 22 polls from
+    19:26 to 20:50, when Hopp took six in to charge. Its other scooters kept
+    their ids from 02:10 that night to 20:50. Check it in the tourist
     season or on a weekend, and add it if its scooters are ridden. Nafplio's
     council discussed rental scooters on 8 May 2026; check for a decision
     first.
@@ -253,10 +255,20 @@ Mobility's feed ids, Hopp's town list, and guessed Bird, Lime and Hopp
 addresses for each country's towns. Survey files were not kept; rerun the
 checks before relying on a count.
 
-**On hold:** Ukraine. 3electra's Kyiv feed (ATOM Mobility) lists about 780
-scooters, but places most of them in Lima, Peru, and moves the same scooters
-between the two cities. Check it by day, and ask the operator, before adding
-it.
+**On hold:** Ukraine. 3electra's Kyiv feed (ATOM Mobility, system 66) lists
+about 800 scooters. From 19:26 to 20:38 Kyiv time on 13 October 2026, 698 to
+718 available standing scooters stood in central Kyiv, and 53 rides showed as
+a scooter leaving the feed and coming back 0.2 to 3.2 km away under a new id,
+47 of them with less range. But 80 to 99 more stood in Lima, Peru, hopping
+about 1.7 km between polls with the same range, and from 20:42 scooters moved
+to Lima by the hundred (364 by 20:50; 714 at 00:40 the night before, most back
+in Kyiv by 02:10). Three that came back from Lima stood 5 to 17 m from where
+they had left Kyiv, so Lima looks like a mask over hidden scooters, not a
+position. Bounds would drop Lima, but the map would lose most of Kyiv each
+evening for reasons unknown. Systems 65, 67 and 68 answer 400, and the feed
+gives no licence. Ask the operator what Lima means before adding it; Kyiv's
+martial-law curfew, 01:00 to 05:00, would also need a curfew entry from a
+primary source.
 
 **Nothing public:**
 
@@ -264,17 +276,17 @@ it.
 | --- | --- |
 | Austria | Dott's regions are private. Vienna's operators (Bird, Lime, Link, Voi) and Voi Innsbruck publish no feed; the access point has Voi's static zones only, behind a registration |
 | Netherlands | No shared standing scooters: the national data hub (CROW) lists 27,000 shared vehicles and no scooter. They need type approval and, since July 2025, a plate |
-| Denmark | Lime (Copenhagen, Odense) and Voi publish no feed; Dott lists e-bikes only |
+| Denmark | Lime (Copenhagen, Odense) and Voi publish no feed; Dott lists e-bikes only. Hopp Roskilde held 1 disabled scooter on 13 October 2026 |
 | Czechia | Prague banned shared scooters from 1 January 2026; Golemio's feed needs a token. Bolt reportedly left the other towns |
 | Ireland | Bolt's Wexford trial (2024) publishes nothing; Moby and Bleeper are bikes. Public funding for scooter schemes was paused in July 2026 |
 | Estonia, Lithuania | Bolt and Ride Mobility publish no feed |
 | Slovakia, Slovenia, Bulgaria, Romania, Moldova | Dott and Bolt publish no feed; nothing else found |
-| Croatia | 2 docked nextbike scooters in Istria; Hopp Omiš held 11, all disabled. Rijeka is tendering 300 scooters from late 2026 |
+| Croatia | 2 docked nextbike scooters in Istria; Hopp Omiš held 11, all disabled, at night and on the evening of 13 October 2026. Rijeka is tendering 300 scooters from late 2026 |
 | Serbia | Belgrade cancelled its scooter tender in July 2026 |
 | Turkey | Martı, BinBin and Hop publish no feed |
 | Malta | Rental scooters banned since March 2024 |
 | Luxembourg, Monaco, Liechtenstein | Bikes and e-bikes only |
-| Bosnia and Herzegovina, Montenegro, North Macedonia, Albania, Kosovo, Andorra, San Marino, Gibraltar, Faroe Islands | No scooter feed found (Hopp Tórshavn held 13, all disabled) |
+| Bosnia and Herzegovina, Montenegro, North Macedonia, Albania, Kosovo, Andorra, San Marino, Gibraltar, Faroe Islands | No scooter feed found (Hopp Tórshavn held 13, all disabled, at night and on the evening of 13 October 2026) |
 
 Bolt publishes only two public scooter feeds in Europe, Brussels and Liverpool;
 its other systems answer 401. Dott made most regions private in September 2026.
@@ -289,6 +301,8 @@ its other systems answer 401. Dott made most regions private in September 2026.
   ([Roma Servizi per la Mobilità](https://romamobilita.it/eventi-e-news/selezione-operatori-servizi-di-micromobilita-sharing/)).
   Check that Bird Roma still publishes after both dates, and whether the
   winners do.
+- **Saturday 17 or Sunday 18 October 2026, in the afternoon:** Hopp Wałcz and
+  Września, which had no ride while polled on a Tuesday evening.
 - **1 December 2026:** the EU's rule on multimodal travel information
   (Delegated Regulation (EU) 2024/490) requires shared-scooter availability on
   each country's national access point for the cities on the main EU transport
@@ -300,8 +314,8 @@ its other systems answer 401. Dott made most regions private in September 2026.
   2026, most of which never moved; add it if it holds ten or more and they
   are ridden.
 - **Spring 2027:** Dott's six paused Finnish towns (Ekenäs, Hamina, Hanko,
-  Imatra, Kalajoki, Kotka), Joe Scooter in Rauma, and Hopp's Greek island
-  towns (Chania, Rethymno, Kos, Zakynthos and others) may open for the
-  season; recheck Hopp Nafplio then too.
+  Imatra, Kalajoki, Kotka), Joe Scooter in Rauma, Hopp's Greek island towns
+  (Chania, Rethymno, Kos, Zakynthos and others), Hopp Como and Hopp Augsburg
+  may open for the season; recheck Hopp Nafplio then too.
 - Every Monday, the [catalog check workflow](../.github/workflows/catalog-check.yml)
   fails when an entry of a covered country is gone.

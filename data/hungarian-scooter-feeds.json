@@ -22,6 +22,27 @@
         "Pecs",
         "Fünfkirchen"
       ]
+    },
+    {
+      "id": "hopp_hu_bekescsaba",
+      "country": "HU",
+      "provider": "hopp",
+      "city": "Békéscsaba",
+      "center": [
+        46.6798,
+        21.0985
+      ],
+      "bounds": {
+        "south": 46.6404,
+        "north": 46.7058,
+        "west": 21.0275,
+        "east": 21.1674
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/hu-bekescaba/gbfs.json",
+      "aliases": [
+        "Bekescsaba",
+        "Békešská Čaba"
+      ]
     }
   ]
 }

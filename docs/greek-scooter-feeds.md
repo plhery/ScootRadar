@@ -164,8 +164,12 @@ No Greek law or covered town bans renting at night, so
 - **Hopp Nafplio** (`gr-nafplion`) listed 17 or 18 available scooters, of 26,
   but none moved, left or came back in 35 polls from 12:03 to 16:47, and all
   26 kept their ids from the night poll at 02:10 to the last; only a few
-  battery levels changed. It is left out until a later check, in the tourist
-  season or on a weekend, shows rides.
+  battery levels changed. Polled again that evening, 22 times four minutes
+  apart from 19:26 to 20:50, it still listed 17 until 20:26; then six
+  scooters, with 0 to 57% charge, left one by one and didn't come back, as
+  when Hopp collects them to charge, leaving 13 available. None was ridden,
+  and the other 20 kept their ids from 02:10 the night before. It is left out
+  until a later check, in the tourist season or on a weekend, shows rides.
   - Its bounds would be 37.5561° to 37.5919° N and 22.7865° to 22.8407° E,
     from its geofencing as for the other towns. It charges EUR 1.00 to start
     and EUR 0.28 a minute.
@@ -177,9 +181,11 @@ No Greek law or covered town bans renting at night, so
   address answers 404 for both cities, and **Bolt** publishes no feed.
 - **Hopp, other towns:** Athens (Kifisia, `gr-athens`) listed 4 scooters,
   Voula 7, Zakynthos 3 and Lefkada 1, all of them disabled, in each of the
-  seven polls from 12:03 to 12:33 that included them. Chania, Rethymno, Kos,
-  Kardamena, Kalymnos, Trikala, Katerini, Preveza and Corinth answered with
-  no scooter at all. Hopp's site lists Preveza, Kifisia,
+  seven polls from 12:03 to 12:33 that included them, and the same scooters,
+  with the same ids and charge, in each of the 22 evening polls from 19:26 to
+  20:50. Chania, Rethymno, Kos, Kardamena, Kalymnos, Trikala, Katerini,
+  Preveza and Corinth answered with no scooter at all, by day and in the
+  evening; they may be closed for the season. Hopp's site lists Preveza, Kifisia,
   Crete, Kos and Trikala besides Rhodes and Piraeus, and neither Kefalonia,
   Nafplio nor Ioannina.
 - **nextbike** in four Athens suburbs has e-bikes only.

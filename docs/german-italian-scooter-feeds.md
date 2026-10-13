@@ -180,7 +180,11 @@ origin and under its directory.
 - Bird Milano, Firenze, Torino, Moncalieri, Collegno, Rivoli, Nichelino and
   Sesto Fiorentino were empty, with a timestamp of 0; Bird München and Ulm had
   abandoned timestamps. None was added.
-- Hopp Como held no scooters at night on 13 October 2026; check it by day.
+- Hopp Como held no scooters at night on 13 October 2026, nor in 22 polls from
+  18:26 to 19:50 that evening; check it in spring.
+- Hopp Augsburg (`de-augsburg`) listed 42 scooters, all disabled, in each of
+  22 polls from 18:26 to 19:50 on 13 October 2026, with the same ids and
+  charge throughout. Hopp's site still lists the town; check it in spring.
 - RideMovi's feeds answer 401, and BIT Mobility (Napoli, Bari and others)
   shows its scooters only after a login. Helbiz's and Link's hosts no longer
   resolve. Cooltra lists mopeds and e-bikes, no scooters. Pony's site lists
