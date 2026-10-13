@@ -155,8 +155,12 @@ stays open at night.
   - Brussels bans shared e-scooters from 1 January 2027, when Bolt's and
     Dott's permits end ([La Libre, 11 June 2026](https://www.lalibre.be/belgique/mobilite/2026/06/11/grand-changement-dans-le-secteur-de-la-mobilite-bruxelles-interdit-les-trottinettes-partagees-sur-son-territoire-IRS4BZDEPFFS3H6MJT23AUASK4/)).
     Their Brussels feeds should empty then.
-  - Pony's Liège feed held 2 scooters on 12 October 2026, so it is left out.
-    Pony publishes no feed for Brussels.
+  - Pony's Liège feed held 2 scooters on 12 October 2026, and 8 or 9
+    available in six polls on 13 October, under ten, and most never moved,
+    so it is left out; check it again in April 2027.
+    Pony publishes no feed for Brussels; read with the key the French access
+    point publishes for La Roche-sur-Yon, its Brussels region listed 4
+    scooters, all disabled.
   - Lime Brussels and Kortrijk, Dott Ghent and Mons, and Bolt Ghent publish
     e-bikes only.
   - Lime Antwerp answers 404.

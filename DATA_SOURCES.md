@@ -49,13 +49,18 @@ does not imply endorsement.
 
 ### French cities
 
-The app also reads 27 reviewed public GBFS feeds from Dott, Bird, Lime, Voi and
-Pony across 25 French cities or operating areas. The catalog is checked into
+The app also reads 28 reviewed public GBFS feeds from Dott, Bird, Lime, Voi and
+Pony across 26 French cities or operating areas. The catalog is checked into
 [`data/french-scooter-feeds.json`](data/french-scooter-feeds.json), using the
 [MobilityData registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
 and [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets?format=gbfs&subtype=scooter)
-as discovery sources. Pony is accessed through the National Access Point's proxy;
-the other feeds are served directly by their operators.
+as discovery sources. Pony is accessed through the National Access Point's proxy,
+apart from La Roche-sur-Yon: its dataset, published by La Roche-sur-Yon
+Agglomération under the Licence Ouverte 2.0, links Pony's own feed with the key
+the address needs, and the catalog uses that address, key included. The key was
+published for La Roche-sur-Yon only; it was decided on 13 October 2026 that it
+may be used for Pony's other towns too, though none of the others tried
+qualifies yet. The other feeds are served directly by their operators.
 
 Production collects each system independently every minute on Netcup, with at
 most six systems in flight. Map requests read only the relevant cached systems,

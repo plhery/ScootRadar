@@ -10,16 +10,12 @@ out, and remove an entry once it's added or settled for good.
 These feeds are public and were live when checked. Nothing blocks them except
 the work.
 
-| Where | Provider | Scooters | Checked | Notes |
-| --- | --- | ---: | --- | --- |
-| La Roche-sur-Yon, France | Pony | ~82 | 11 Oct 2026 | Licence Ouverte, through transport.data.gouv.fr. A new city |
-| Nantes, France | Pony, through the city's Naolib feed | ~57 | 11 Oct 2026 | Licence Ouverte. Station counts, not single scooters ([French guide](french-scooter-feeds.md#feeds-not-enabled)) |
+None at the moment.
 
 ## Waiting on a decision
 
 | What | Blocked on |
 | --- | --- |
-| **Pony** in other cities, with the key published for La Roche-sur-Yon | transport.data.gouv.fr published the key for that city only. Whether it may be used elsewhere is a licence question |
 | **Dott** everywhere | Its [API licence](https://ridedott.com/api-licence/) restricts distribution. Since September 2026 most regions need a partner key, which Dott grants through its partner integrations team |
 | **Voi** in the United Kingdom | Access is asked from nap@voiapp.io, under a [licence](https://www.voi.com/voi-licencing-agreement) that forbids storing the data, which the scooter cache does |
 
@@ -49,6 +45,17 @@ banned shared scooters, and feeds that were empty when checked.
   - Dott GPSEO answers 404; Dott OL Vallée was empty.
   - Lime Nice and Sophia Antipolis, Pony Nice, Limoges and Pays Basque, and Voi
     V'Lônes held no scooters.
+  - Nantes: Pony's feed lists the scooters of Naolib Micromob' (about 50
+    available, at Chantrerie and Saint-Herblain, and ridden), but with Pony's
+    price and app, while riders rent them in Naolib's app at Naolib's price.
+    The city's own Naolib feed lists its feeds on another host, which the
+    same-origin rule refuses
+    ([French guide](french-scooter-feeds.md#pony-october-2026)).
+  - Pony's other regions, read on 13 October 2026 with the key published for
+    La Roche-sur-Yon: Tours, Orléans, Limoges, Nice and Marseille listed
+    e-bikes only, Pays Basque e-bikes and one disabled scooter, and Paris 9
+    scooters, all disabled. Caen, Olivet and Sète, which Pony's site lists,
+    answered `UNKNOWN_REGION`.
   - Thirteen old Bird towns are empty (Bordeaux, Marseille and others).
   - Lime Le Havre needs partner credentials.
 - **Germany** ([guide](german-italian-scooter-feeds.md#known-gaps)):
@@ -75,10 +82,15 @@ banned shared scooters, and feeds that were empty when checked.
     Modena, Reggio Emilia). Hopp Como held no scooters at night on 13 October
     2026; check it by day, and add it if it has some.
   - Helbiz and Link no longer resolve. Cooltra lists mopeds and e-bikes only.
+    Pony's site lists Turin, but its server answered `UNKNOWN_REGION` for
+    Turin and Torino.
 - **Belgium** ([guide](belgian-norwegian-british-scooter-feeds.md#known-gaps)):
   - Brussels bans shared scooters from 1 January 2027, so Bolt's and Dott's
     feeds there should empty.
-  - Pony Liège held 2 scooters; Pony publishes nothing for Brussels.
+  - Pony Liège held 8 or 9 available scooters on 13 October 2026, under ten,
+    and most never moved; check it again in April 2027.
+    Pony publishes nothing for Brussels; its Brussels region, read with the
+    key published for La Roche-sur-Yon, listed 4 scooters, all disabled.
   - Lime Brussels and Kortrijk, Dott Ghent and Mons and Bolt Ghent list
     e-bikes only.
   - Lime Antwerp answers 404, Dott Liège 403 and Dott Kortrijk 404. Bird
@@ -280,6 +292,9 @@ its other systems answer 401. Dott made most regions private in September 2026.
   Netherlands may publish feeds then.
 - **1 January 2027:** Brussels's ban starts; Bolt and Dott Bruxelles should
   empty.
+- **April 2027:** Pony Liège held 8 or 9 available scooters on 13 October
+  2026, most of which never moved; add it if it holds ten or more and they
+  are ridden.
 - **Spring 2027:** Dott's six paused Finnish towns (Ekenäs, Hamina, Hanko,
   Imatra, Kalajoki, Kotka), Joe Scooter in Rauma, and Hopp's Greek island
   towns (Chania, Rethymno, Kos, Zakynthos and others) may open for the

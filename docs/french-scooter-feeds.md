@@ -11,6 +11,9 @@ and cross-checked the [French National Access Point](https://transport.data.gouv
 cities or operating areas. The repository now includes those feeds in
 [`data/french-scooter-feeds.json`](../data/french-scooter-feeds.json).
 
+Rechecked 13 October 2026: Pony La Roche-sur-Yon joined the catalog, read with the key the National Access Point publishes for La
+Roche-sur-Yon; see [Pony, October 2026](#pony-october-2026).
+
 ## Verified availability
 
 This is a snapshot, not a fleet-size promise. Counts below exclude reserved or
@@ -57,6 +60,70 @@ Total: **15,262 available scooters**, with **0 failed feeds** in the final catal
 | Voi | Grand Paris Seine et Oise | 550 | [Discovery](https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/422/gbfs.json) |
 | Voi | Marseille | 1,305 | [Discovery](https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/66/gbfs.json) |
 
+## Pony, October 2026
+
+La Roche-sur-Yon Agglomération publishes its Pony scooters on
+transport.data.gouv.fr, in the dataset
+[Trottinettes Pony La Roche-sur-Yon](https://transport.data.gouv.fr/datasets/stations-trottinette-en-libre-service-de-la-roche-sur-yon),
+under the [Licence Ouverte 2.0](https://www.etalab.gouv.fr/licence-ouverte-open-licence/).
+Its one resource links Pony's own GBFS 2.2 feed, with the key the address
+needs: `https://gbfs.getapony.com/v1/La_Roche_Sur_Yon/en/gbfs.json?key=…`.
+Without the key the feed answers 401. The access point has no proxy for this
+town, unlike Pony's other French towns, so the catalog uses that address, key
+included, as the Belgian catalog does for Charleroi. Every feed URL the
+discovery lists is https, on its origin and under its directory, with the key.
+
+**The key and Pony's other towns.** The key was published for La Roche-sur-Yon
+only, but Pony's server accepted it for each of its regions tried. It was
+decided on 13 October 2026 that the map may use it for Pony's other towns too.
+None of the others tried qualifies yet (see below), so for now only La
+Roche-sur-Yon uses it. No other key is committed: the proxy hides the key of
+Pony's other French towns, and the Belgian access point publishes Charleroi's.
+
+| Town | Available scooters | Polls | Movement between polls |
+| --- | ---: | --- | --- |
+| La Roche-sur-Yon | 83–88 | 6, five minutes apart, 18:29–18:54 on Tuesday 13 October 2026 | 11 left their spot, 14 appeared at a new one, 16 batteries changed |
+
+- **La Roche-sur-Yon:** Pony gives each scooter a new `bike_id` on every
+  request and stamps `last_reported` with the time of the request, so
+  scooters were followed by position and battery. A scooter being ridden
+  leaves the feed. Riders must end their ride at one of Pony's 82 virtual
+  stations; about 80 scooters stood at one, and 7 or 8 elsewhere in the zone. The
+  bounds are Pony's operating zone plus 0.005° of latitude and 0.01° of
+  longitude; every scooter seen stood inside. A ride costs EUR 1.00 and
+  EUR 0.23 a minute; battery and range are published, and the rental link
+  opens Pony's scanner, as elsewhere. Neither the feed's zones nor the
+  agglomeration's
+  [September 2024 press kit](https://larochesuryon.fr/app/uploads/2024/09/DP_Nouveaux_Services_Mobilites_Transport_Sept2024.pdf)
+  (150 scooters, 75 stations then) set hours, and no night ban was found.
+- **Nantes is left out.** Pony's Nantes region lists the scooters of Naolib
+  Micromob', which Semitan runs for Nantes Métropole at Chantrerie and
+  Saint-Herblain
+  ([Nantes Métropole](https://metropole.nantes.fr/actualites/pour-le-dernier-kilometre-deplacez-vous-avec-naolib-micromob)):
+  116 scooters, 49 of them available, at 51 stations. They are ridden: in
+  eight polls from 18:29 to 19:04, two available scooters went about 1 km from
+  one station to another, and a disabled one moved too. But riders rent them
+  in the Naolib Micromob' app, at EUR 0.10 a minute, while Pony's feed gives
+  Pony's price (EUR 1.00 and EUR 0.22 a minute) and a link to Pony's app, so
+  the map would send riders to the wrong app with the wrong price. Pony's
+  feed also listed a scooter as available while it was being ridden,
+  unlocked and away from any station. The city's own
+  [Naolib Micromob' dataset](https://transport.data.gouv.fr/datasets/offre-et-temps-reel-du-service-naolib-micromob-de-nantes-metropole-au-format-gbfs)
+  (Licence Ouverte) lists each vehicle with Naolib's link, but its discovery,
+  on `api.gbfs.ecovelo.mobi`, lists its feeds on another host,
+  `api.gbfs.v3.0.ecovelo.mobi`, and its vehicle types outside its directory,
+  so it fails the same-origin rule.
+- **Other regions, with the same key:** Liège listed 8 or 9 available
+  scooters, most of which never moved, so it stays out (see the
+  [Belgian audit](belgian-norwegian-british-scooter-feeds.md#known-gaps)).
+  Brussels listed 4 scooters and Paris 9, all disabled. Tours, Orléans,
+  Limoges, Nice and Marseille listed e-bikes only, and Pays Basque
+  (`Basque_Country`) e-bikes and one disabled scooter. Caen, Olivet, Sète and
+  Turin (also as Torino), which Pony's site lists, answered `UNKNOWN_REGION`
+  under every name tried. Angers, Beauvais, Bordeaux, Bourges, Évry,
+  Hérouville, Lorient, Perpignan and Poitiers answer too, but the map already
+  reads them through the access point's proxy.
+
 ## Findings that affect integration
 
 - **Dott:** the [France country entry point](https://gbfs.api.ridedott.com/public/v2/countries/fr/gbfs.json)
@@ -94,12 +161,11 @@ Total: **15,262 available scooters**, with **0 failed feeds** in the final catal
 | Dott OL Vallée | Current status returned zero vehicles; keep as a candidate rather than claiming current availability. |
 | Central Paris | Sampled Dott, Lime, and Voi feeds returned bicycles and zero available standing scooters. Nearby GPSEO, SIEMU, Versailles and Saint-Quentin-en-Yvelines are separate systems. |
 | Other Lime feeds | Nice and Sophia Antipolis returned zero available standing scooters in this sample. |
-| Other Pony feeds | Nice, Limoges and Pays Basque returned zero available standing scooters in this sample. |
+| Other Pony feeds | Nice, Limoges and Pays Basque returned zero available standing scooters in this sample. On 13 October 2026 Tours, Orléans, Limoges, Nice and Marseille listed e-bikes only, Pays Basque e-bikes and one disabled scooter, and Paris 9 disabled scooters; see [Pony, October 2026](#pony-october-2026). |
 | Voi V'Lônes | Returned bicycles and zero available standing scooters in this sample. |
 | Historical Bird feeds | Bordeaux returned only unavailable/bicycle data with an old timestamp. Castres, Dieppe, Draguignan, Épron, Gap, Hérouville-Saint-Clair, La Roche-sur-Yon, Marseille, Millau, Montluçon, Ouistreham and Sarreguemines returned empty status with timestamp 0. |
 | Lime Le Havre | The [official listing](https://transport.data.gouv.fr/datasets/gbfs-le-havre-2) describes a secured feed whose credentials are provided to approved partners. No authenticated access was attempted. Voi Le Havre is enabled. |
-| Nantes Micromob | The [municipal dataset](https://transport.data.gouv.fr/datasets/offre-et-temps-reel-du-service-naolib-micromob-de-nantes-metropole-au-format-gbfs) describes station-level bicycle/scooter availability; station counts need a separate representation from individual vehicles. |
-| Pony La Roche-sur-Yon | The [official dataset](https://transport.data.gouv.fr/datasets/stations-trottinette-en-libre-service-de-la-roche-sur-yon) describes station availability and reports low endpoint availability. It is not included in the verified individual-vehicle catalog. |
+| Nantes Micromob | Left out on 13 October 2026. The [municipal dataset](https://transport.data.gouv.fr/datasets/offre-et-temps-reel-du-service-naolib-micromob-de-nantes-metropole-au-format-gbfs) lists its feeds on another host, and Pony's own feed gives Pony's price and app for scooters rented through Naolib's; see [Pony, October 2026](#pony-october-2026). |
 
 Empty feeds are snapshot observations, not proof that an operator has permanently
 left a city. The enabled catalog deliberately contains only positively verified
@@ -117,7 +183,9 @@ Bird's `system_information` points to its
 [GBFS Data License](https://www.bird.co/wp-content/uploads/2019/03/GBFS-Data-License-Agreement-2018-09-25.pdf).
 Lime's `system_information` points to [Lime GBFS terms](https://www.li.me/gbfs-terms).
 The sampled Pony and Voi system-information documents did not supply a license URL;
-consult their individual National Access Point dataset terms. Government proxying
+consult their individual National Access Point dataset terms. La Roche-sur-Yon's
+Pony dataset is under the Licence Ouverte 2.0; its key, which the access point
+publishes, also reads Pony's other towns (see [Pony, October 2026](#pony-october-2026)). Government proxying
 alone should not be treated as a new license. Operator attribution is included in
 the map, footer, and API response header.
 

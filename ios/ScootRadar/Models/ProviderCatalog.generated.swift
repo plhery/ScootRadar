@@ -149,6 +149,7 @@ enum ScooterProviderCoverage {
         (.pony, GeoBounds(south: 46.96, west: 2.28, north: 47.21, east: 2.53)),
         (.pony, GeoBounds(south: 48.52, west: 2.31, north: 48.73, east: 2.55)),
         (.pony, GeoBounds(south: 48.89, west: -0.76, north: 49.49, east: 0.09)),
+        (.pony, GeoBounds(south: 46.6384, west: -1.4684, north: 46.7073, east: -1.3833)),
         (.pony, GeoBounds(south: 47.59, west: -3.58, north: 47.89, east: -3.21)),
         (.pony, GeoBounds(south: 42.52, west: 2.63, north: 43.03, east: 3.2)),
         (.pony, GeoBounds(south: 46.32, west: -0.09, north: 46.91, east: 0.81)),
@@ -402,6 +403,7 @@ enum ScooterCityCatalog {
         ScooterCity(id: "fr:Bourges", name: "Bourges", countryCode: "FR", center: GeoPoint(latitude: 47.081, longitude: 2.3988), bounds: GeoBounds(south: 46.96, west: 2.28, north: 47.21, east: 2.53)),
         ScooterCity(id: "fr:Évry-Courcouronnes", name: "Évry-Courcouronnes", countryCode: "FR", center: GeoPoint(latitude: 48.624, longitude: 2.429), bounds: GeoBounds(south: 48.52, west: 2.31, north: 48.73, east: 2.55)),
         ScooterCity(id: "fr:Hérouville-Saint-Clair", name: "Hérouville-Saint-Clair", countryCode: "FR", center: GeoPoint(latitude: 49.2032, longitude: -0.3261), bounds: GeoBounds(south: 48.89, west: -0.76, north: 49.49, east: 0.09)),
+        ScooterCity(id: "fr:La Roche-sur-Yon", name: "La Roche-sur-Yon", countryCode: "FR", center: GeoPoint(latitude: 46.6706, longitude: -1.4269), bounds: GeoBounds(south: 46.6384, west: -1.4684, north: 46.7073, east: -1.3833)),
         ScooterCity(id: "fr:Lorient", name: "Lorient", countryCode: "FR", center: GeoPoint(latitude: 47.7483, longitude: -3.3702), bounds: GeoBounds(south: 47.59, west: -3.58, north: 47.89, east: -3.21)),
         ScooterCity(id: "fr:Perpignan", name: "Perpignan", countryCode: "FR", center: GeoPoint(latitude: 42.6887, longitude: 2.8948), bounds: GeoBounds(south: 42.52, west: 2.63, north: 43.03, east: 3.2)),
         ScooterCity(id: "fr:Poitiers", name: "Poitiers", countryCode: "FR", center: GeoPoint(latitude: 46.5802, longitude: 0.3404), bounds: GeoBounds(south: 46.32, west: -0.09, north: 46.91, east: 0.81)),
@@ -556,7 +558,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 188
+    static let cityCount = 189
     static let countryCount = 17
 
     /// Cities by distance from the point to their centre, nearest first.

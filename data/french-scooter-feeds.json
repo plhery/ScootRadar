@@ -307,6 +307,22 @@
       "discoveryUrl": "https://proxy.transport.data.gouv.fr/resource/pony-herouville-gbfs/gbfs.json"
     },
     {
+      "id": "pony_fr_la_roche_sur_yon",
+      "provider": "pony",
+      "city": "La Roche-sur-Yon",
+      "center": [
+        46.6706,
+        -1.4269
+      ],
+      "bounds": {
+        "south": 46.6384,
+        "west": -1.4684,
+        "north": 46.7073,
+        "east": -1.3833
+      },
+      "discoveryUrl": "https://gbfs.getapony.com/v1/La_Roche_Sur_Yon/en/gbfs.json?key=AIzaSyB1I8b8Kj_3wc2Svv7GThGiecJTkrf8_qc"
+    },
+    {
       "id": "pony_fr_lorient",
       "provider": "pony",
       "city": "Lorient",

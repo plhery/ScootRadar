@@ -183,7 +183,8 @@ origin and under its directory.
 - Hopp Como held no scooters at night on 13 October 2026; check it by day.
 - RideMovi's feeds answer 401, and BIT Mobility (Napoli, Bari and others)
   shows its scooters only after a login. Helbiz's and Link's hosts no longer
-  resolve. Cooltra lists mopeds and e-bikes, no scooters.
+  resolve. Cooltra lists mopeds and e-bikes, no scooters. Pony's site lists
+  Turin, but its server answered `UNKNOWN_REGION` for Turin and Torino.
 - Zeus's own feeds for Castrop-Rauxel, Duisburg, Friedberg, Gera, Göppingen,
   Hagen, Hattingen, Heilbronn, Herne, Jena, Kempten, Marburg, Pforzheim,
   Reutlingen, Rüsselsheim, Schwäbisch Gmünd and Tübingen held no scooters, and
