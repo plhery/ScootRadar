@@ -190,6 +190,7 @@ describe('the words of a guide', () => {
     expect(sectionId('Où rouler ?')).toBe('ou-rouler');
     expect(sectionId('Hjelm, alder og promille')).toBe('hjelm-alder-og-promille');
     expect(sectionId('Bøter på fortauet')).toBe('boter-pa-fortauet');
+    expect(sectionId('Þarf ég hjálm? Hvað kostar ferðin?')).toBe('tharf-eg-hjalm-hvad-kostar-ferdin');
   });
 
   it('takes a minute to read for every 220 words', () => {

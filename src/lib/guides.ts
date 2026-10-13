@@ -180,6 +180,8 @@ export function sectionId(heading: string): string {
     .replace(/ø/g, 'o')
     .replace(/æ/g, 'ae')
     .replace(/å/g, 'a')
+    .replace(/ð/g, 'd')
+    .replace(/þ/g, 'th')
     .replace(/ß/g, 'ss')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');

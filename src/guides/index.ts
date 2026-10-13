@@ -38,6 +38,24 @@ import howToRentNl from './nl/deelstep-huren';
 import howToRentNb from './nb/leie-elsparkesykkel';
 import baselDe from './de/e-trottinett-basel';
 import baselEn from './en/e-scooters-basel';
+import munichEn from './en/e-scooters-munich';
+import osloEn from './en/e-scooters-oslo';
+import brusselsEn from './en/e-scooters-brussels';
+import portugueseRulesPt from './pt/trotinete-eletrica-regras-portugal';
+import lisbonPt from './pt/trotinetes-lisboa';
+import lisbonEn from './en/e-scooters-lisbon';
+import portoPt from './pt/trotinetes-porto';
+import portoEn from './en/e-scooters-porto';
+import frankfurtDe from './de/e-scooter-frankfurt';
+import icelandicRulesIs from './is/rafskutur-reglur';
+import spanishRulesEs from './es/normativa-patinete-electrico-espana';
+import reykjavikIs from './is/rafskutur-reykjavik';
+import reykjavikEn from './en/e-scooters-reykjavik';
+import cologneDe from './de/e-scooter-koeln';
+import howToRentPt from './pt/alugar-trotinete-eletrica';
+import howToRentEs from './es/alquilar-patinete-electrico';
+import howToRentIs from './is/leigja-rafskutu';
+import marseilleFr from './fr/trottinette-electrique-marseille';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -49,8 +67,14 @@ export const GUIDES: readonly Guide[] = [
   ukLawEn,
   ukHireEn,
   berlinEn,
+  munichEn,
   parisEn,
   romeEn,
+  brusselsEn,
+  lisbonEn,
+  portoEn,
+  osloEn,
+  reykjavikEn,
   swissRulesDe,
   howToRentDe,
   swissPricesDe,
@@ -60,11 +84,14 @@ export const GUIDES: readonly Guide[] = [
   germanRulesDe,
   berlinDe,
   munichDe,
+  cologneDe,
+  frankfurtDe,
   swissRulesFr,
   howToRentFr,
   frenchRulesFr,
   parisFr,
   lyonFr,
+  marseilleFr,
   brusselsFr,
   swissRulesIt,
   howToRentIt,
@@ -76,4 +103,13 @@ export const GUIDES: readonly Guide[] = [
   norwegianRulesNb,
   howToRentNb,
   osloNb,
+  portugueseRulesPt,
+  howToRentPt,
+  lisbonPt,
+  portoPt,
+  spanishRulesEs,
+  howToRentEs,
+  icelandicRulesIs,
+  howToRentIs,
+  reykjavikIs,
 ];

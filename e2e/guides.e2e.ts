@@ -16,7 +16,10 @@ const SWISS_RULES = {
 };
 
 /** Where each language lists its guides. */
-const LISTS = { en: '/guides', de: '/de/ratgeber', fr: '/fr/guides', it: '/it/guide', nl: '/nl/gidsen', nb: '/nb/guider' };
+const LISTS = {
+  en: '/guides', de: '/de/ratgeber', fr: '/fr/guides', it: '/it/guide', nl: '/nl/gidsen', nb: '/nb/guider',
+  pt: '/pt/guias', es: '/es/guias', is: '/is/leidarvisar',
+};
 
 // On every page of the site Chromium refuses the preload hint of the first
 // script, which the Worker gives no nonce. The script itself loads by its tag.
