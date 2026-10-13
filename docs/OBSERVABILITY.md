@@ -24,14 +24,25 @@ series follow the snapshot at each scrape, with the states of the
 `snapshot_feed_state` log line; feeds never attempted or skipped are left out:
 
 - `scootradar_feed_state{feed, source, provider, state}`: 1 for the feed's state, 0 for
-  the others. `ok` is served; `failing` means the last collection failed and the previous
-  positions are served until they are 15 minutes old; `expired` means nothing is served
-  and the map says the provider is not sharing data.
-- `scootradar_feed_vehicles`: vehicles served, 0 once expired.
+  the others, judged by the feed's cadence (see [Collection cadence](#collection-cadence)).
+  `ok` is served, or would be as soon as someone looked; `failing` means the last
+  collection failed and the previous positions are kept; `expired` means the feed is
+  late for its cadence and the map says the provider is not sharing data. A Swiss or
+  watched feed expires when its positions are over 15 minutes old; an idle feed only
+  after 30 minutes without a successful collection.
+- `scootradar_feed_vehicles`: vehicles held, 0 once expired.
 - `scootradar_feed_observation_timestamp_seconds`: the source's own timestamp of the
-  positions held. `time() -` it is their age.
+  positions held. `time() -` it is their age; an idle feed's may pass 15 minutes.
 - `scootradar_feed_attempt_timestamp_seconds`, and `scootradar_feed_parking_up` for
-  regional feeds (parking expires after five minutes).
+  regional feeds: parking as fresh as the cadence promises (5 minutes for a feed
+  collected every minute, 30 for an idle one).
+- `scootradar_feeds_by_cadence{cadence="always|watched|idle"}`: feeds on each cadence now.
+- `scootradar_collections_started_total{reason}`: `always`, `watched`, `wake` (a request
+  found the data over a minute old), `idle` and `retry` (an idle feed that failed).
+- `scootradar_request_waits_total{outcome="collected|timeout"}`: requests that waited for
+  the collection of feeds whose positions were over 15 minutes old.
+- `scootradar_upstream_requests_total{kind="status|metadata"}`: requests sent to
+  operators; status covers positions and parking, metadata what is kept an hour or more.
 - `scootradar_feed_collections_total{outcome="ok|failed"}` and
   `scootradar_feed_collection_duration_seconds_sum/_count`, per feed.
 - `scootradar_http_requests_total{route, status}` and
@@ -44,6 +55,33 @@ series follow the snapshot at each scrape, with the states of the
 
 Counters start at zero with the process; the dashboard's "Deploys" annotation marks
 restarts.
+
+## Collection cadence
+
+Few people use the map, so the cache collects a feed every minute only where someone
+looks:
+
+- **Always**: the sources in `SCOOTER_ALWAYS_FAST` (Switzerland by default) every minute.
+- **Watched**: a map request covering a feed keeps it on the minute for 10 minutes. If
+  its last collection is over a minute old, the request starts one at once.
+- **Idle**: every other feed every 20 minutes, each at its own time in the interval
+  (from a hash of its id), so about eight a minute start. A failed collection is
+  retried after 1, 2, 4, 8, then every 10 minutes.
+
+A request whose feeds hold positions over 15 minutes old waits up to 3 seconds for
+their collection, then answers. When a collection it started is still under way, the
+answer carries `meta.refreshing: true` with `refreshAfterSeconds: 3`, is not cached,
+and the web and iOS apps ask once more 3 seconds later. Older apps ask again after
+their usual 10 seconds.
+
+The cadence comes from the cache's environment, every value with a default:
+
+| Variable | Default | |
+| --- | --- | --- |
+| `SCOOTER_ALWAYS_FAST` | `CH` | country codes (`CH`, `FR`, `DE`…) or source keys, comma-separated, or `all` |
+| `SCOOTER_ACTIVE_INTERVAL_SECONDS` | 60 | always-fast and watched feeds |
+| `SCOOTER_IDLE_INTERVAL_SECONDS` | 1200 | idle feeds; their expiry is this plus 10 minutes |
+| `SCOOTER_WATCH_SECONDS` | 600 | how long a request keeps a feed watched |
 
 ## Dashboard and alerts
 
@@ -81,8 +119,8 @@ The alert rules:
 | --- | --- |
 | ScootRadar cache target down | Prometheus cannot scrape the cache for 3 minutes |
 | ScootRadar serves no scooters | every feed has expired for 5 minutes |
-| ScootRadar collector stalled | no collection has finished for 5 minutes |
-| ScootRadar feed stopped | a feed served more than half of the last 7 days has been expired for 10 minutes; one notification per feed |
+| ScootRadar collector stalled | no collection has finished for 5 minutes (Swiss feeds alone finish one every few seconds) |
+| ScootRadar feed stopped | a feed served more than half of the last 7 days has been expired for 10 minutes, by its cadence's rule; one notification per feed |
 | ScootRadar feed discovery stale | no successful discovery for 2 hours |
 | ScootRadar cache restarting | one build has restarted more than three times in an hour (a deploy is not counted) |
 | ScootRadar cache memory high | over 1.3 GB for 15 minutes (the limit is 1536 MiB) |
@@ -105,9 +143,11 @@ October 2026, with no crash.
 The default notification policy sends them all to the `telegram-paul` contact point.
 The dashboard's "Expired, rarely served" table lists the others: silence isn't
 success. A feed that dies stops alerting once it has been dead for half a week, and
-moves to that table. "Oldest positions served" shows feeds coming close
+moves to that table. "Oldest positions held" shows feeds coming close
 to the 15-minute limit, as Swiss Voi does with its 8-minute updates published 90
-seconds late.
+seconds late; idle feeds pass it between collections, which is expected. The
+"Cadence" row shows the feeds on each cadence, the collections started and the
+requests sent to operators.
 
 ## Sentry
 
@@ -121,7 +161,8 @@ class instances by name only); to read them the SDK opens Node's inspector on a 
 inside the container, hence the `Debugger listening on ws://127.0.0.1:…` line at
 startup. Tracing is off, and no trace headers go to the operators' feeds.
 
-- **Feed stopped being served**: a warning each time a feed becomes `expired`, one
+- **Feed stopped being served**: a warning each time a feed becomes `expired` by its
+  cadence's rule (an idle feed after 30 minutes without a successful collection), one
   issue per feed (tags `feed`, `source`, `provider`), at most one event an hour for
   each, so a feed that keeps expiring between updates stays quiet. Its `feed` context has the
   `snapshot_feed_state` figures and the last collection error, or says that the last
@@ -136,8 +177,8 @@ Routine feed failures are not sent; the metrics and logs cover them.
 ## Logs
 
 `snapshot_feed_state` (a feed changing state), `snapshot_feed_failed` and
-`parking_feed_failed` (with the error), and `snapshot_health` (every minute) are JSON
-lines. In Grafana's Loki data source:
+`parking_feed_failed` (with the error), and `snapshot_health` (every minute, with the
+feeds on each cadence) are JSON lines. In Grafana's Loki data source:
 
 ```logql
 {app="scootradar-cache", event="snapshot_feed_state"} | json | feed="national:voiscooters.com"

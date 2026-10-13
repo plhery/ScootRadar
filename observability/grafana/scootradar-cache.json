@@ -1,7 +1,7 @@
 {
   "uid": "scootradar-cache",
   "title": "ScootRadar — Scooter feeds",
-  "description": "The scooter feed cache's Prometheus metrics: which feeds the map serves, collections, the origin API and the process. See docs/OBSERVABILITY.md.",
+  "description": "The scooter feed cache's Prometheus metrics: which feeds the map serves, how often they are collected, the origin API and the process. See docs/OBSERVABILITY.md.",
   "tags": [
     "scootradar"
   ],
@@ -357,7 +357,7 @@
       "id": 5,
       "type": "stat",
       "title": "Snapshot age",
-      "description": "Since a collection last finished. Each feed is collected every minute, so this stays at a few seconds.",
+      "description": "Since a collection last finished. Swiss feeds are collected every minute and the others at staggered times, so this stays at a few seconds.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -790,8 +790,8 @@
     {
       "id": 12,
       "type": "timeseries",
-      "title": "Oldest positions served",
-      "description": "The ten feeds with the oldest positions still served. A feed expires at 15 minutes (the red line); Swiss Voi publishes about every 8 minutes, 90 seconds late.",
+      "title": "Oldest positions held",
+      "description": "The ten feeds with the oldest positions held. The map shows positions up to 15 minutes old (the red line): a feed nobody looks at may pass it, and is collected again as soon as someone does. Swiss Voi publishes about every 8 minutes, 90 seconds late.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -959,7 +959,7 @@
       "id": 15,
       "type": "timeseries",
       "title": "Collection failures per minute by provider",
-      "description": "Includes the dead feeds, which fail every minute.",
+      "description": "Includes the dead feeds: every minute while always-fast or watched, otherwise backing off to every 10 minutes.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -1106,8 +1106,8 @@
     {
       "id": 17,
       "type": "timeseries",
-      "title": "Fresh parking (regional feeds)",
-      "description": "Parking availability expires after 5 minutes.",
+      "title": "Parking on time (regional feeds)",
+      "description": "The map shows parking availability up to 5 minutes old. A feed collected every minute is on time within 5 minutes; an idle one within its interval and ten minutes, as it is collected again when someone looks.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -1126,7 +1126,7 @@
           },
           "editorMode": "code",
           "expr": "sum(scootradar_feed_parking_up{job=\"scootradar-cache\", source=~\"$source\"})",
-          "legendFormat": "fresh",
+          "legendFormat": "on time",
           "range": true,
           "instant": false,
           "refId": "A"
@@ -1138,7 +1138,7 @@
           },
           "editorMode": "code",
           "expr": "count(scootradar_feed_parking_up{job=\"scootradar-cache\", source=~\"$source\"} == 0)",
-          "legendFormat": "not fresh",
+          "legendFormat": "late",
           "range": true,
           "instant": false,
           "refId": "B"
@@ -1276,13 +1276,322 @@
       }
     },
     {
+      "id": 26,
+      "type": "row",
+      "title": "Cadence",
+      "collapsed": false,
+      "gridPos": {
+        "x": 0,
+        "y": 47,
+        "w": 24,
+        "h": 1
+      },
+      "panels": []
+    },
+    {
+      "id": 27,
+      "type": "timeseries",
+      "title": "Feeds by cadence",
+      "description": "always: collected every minute (SCOOTER_ALWAYS_FAST, Switzerland by default). watched: someone looked in the last 10 minutes, every minute. idle: every 20 minutes.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 48,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (cadence) (scootradar_feeds_by_cadence{job=\"scootradar-cache\"})",
+          "legendFormat": "{{cadence}}",
+          "range": true,
+          "instant": false,
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 0,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [
+            "lastNotNull"
+          ],
+          "sortBy": "Last *",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 28,
+      "type": "timeseries",
+      "title": "Collections started per minute by reason",
+      "description": "always and watched: every minute. wake: a request found the data over a minute old. idle: every 20 minutes. retry: an idle feed that failed, after 1, 2, 4, 8 then 10 minutes.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 48,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (reason) (rate(scootradar_collections_started_total{job=\"scootradar-cache\"}[5m])) * 60",
+          "legendFormat": "{{reason}}",
+          "range": true,
+          "instant": false,
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 0,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [
+            "lastNotNull"
+          ],
+          "sortBy": "Last *",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 29,
+      "type": "timeseries",
+      "title": "Requests to operators per minute",
+      "description": "What the cache sends to the operators' feeds. status: positions and parking availability; metadata: documents kept an hour or more.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 56,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (kind) (rate(scootradar_upstream_requests_total{job=\"scootradar-cache\"}[5m])) * 60",
+          "legendFormat": "{{kind}}",
+          "range": true,
+          "instant": false,
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 0,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [
+            "lastNotNull"
+          ],
+          "sortBy": "Last *",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 30,
+      "type": "timeseries",
+      "title": "Requests that waited for a collection per hour",
+      "description": "A request for positions too old to show waits up to 3 seconds for their collection. timeout: it answered without them and asked to be polled again.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 56,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (outcome) (increase(scootradar_request_waits_total{job=\"scootradar-cache\"}[1h]))",
+          "legendFormat": "{{outcome}}",
+          "range": true,
+          "instant": false,
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 0,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [
+            "lastNotNull"
+          ],
+          "sortBy": "Last *",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
       "id": 19,
       "type": "row",
       "title": "Origin API",
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 47,
+        "y": 64,
         "w": 24,
         "h": 1
       },
@@ -1299,7 +1608,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 48,
+        "y": 65,
         "w": 12,
         "h": 8
       },
@@ -1373,7 +1682,7 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 48,
+        "y": 65,
         "w": 12,
         "h": 8
       },
@@ -1443,7 +1752,7 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 56,
+        "y": 73,
         "w": 24,
         "h": 1
       },
@@ -1460,7 +1769,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 57,
+        "y": 74,
         "w": 8,
         "h": 8
       },
@@ -1546,7 +1855,7 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 57,
+        "y": 74,
         "w": 8,
         "h": 8
       },
@@ -1620,7 +1929,7 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 57,
+        "y": 74,
         "w": 8,
         "h": 8
       },
