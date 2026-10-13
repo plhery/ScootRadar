@@ -124,7 +124,8 @@ describe('French scooter feeds', () => {
     });
     expect(result.meta.sources).toEqual({ national: 'skipped', hopp: 'skipped', publibike: 'skipped', france: 'fresh', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped' });
     expect(result.vehicles.length).toBeGreaterThan(0);
-    expect(fetchMock).toHaveBeenCalledTimes(relevant.length * 4);
+    // Discovery, types, status and prices, but no prices from another operator's feed.
+    expect(fetchMock).toHaveBeenCalledTimes(relevant.reduce((calls, candidate) => calls + (candidate.feedOperator ? 3 : 4), 0));
   });
 
   it('reads Pony GBFS 3 vehicles, pricing and rental links while filtering unavailable vehicles and other modes', async () => {
@@ -151,6 +152,31 @@ describe('French scooter feeds', () => {
       rental_uris: { ios: valid.rental_uris.ios, android: valid.rental_uris.android, web: null },
       pricing: { currency: 'EUR', unlock_fee_minor_units: 100, minute_fee_minor_units: 25 },
     });
+  });
+
+  it('shows Naolib Micromob\'s scooters as Naolib\'s, in Nantes and Saint-Herblain, without Pony\'s price or app', async () => {
+    const scooter = {
+      bike_id: 'pony_1', vehicle_type_id: 'scooter', lat: 47.2818, lon: -1.5169, current_fuel_percent: 0.8,
+      pricing_plan_id: 'standard', rental_uris: { ios: 'https://getapony.com/app/scan', android: 'https://getapony.com/app/scan' },
+    };
+    const serve = fixture('naolib_fr_nantes', { vehicles: [
+      scooter,
+      { ...scooter, bike_id: 'pony_2', lat: 47.2225, lon: -1.6394 },
+      // In the centre of Nantes, between the two: Naolib has no station there.
+      { ...scooter, bike_id: 'pony_3', lat: 47.2109, lon: -1.5774 },
+    ] });
+    const fetchMock = vi.fn(async (url: string) => serve(String(url))!);
+    vi.stubGlobal('fetch', fetchMock);
+
+    const result = await fetchScooters({ bounds: { south: 47.2, west: -1.67, north: 47.31, east: -1.48 }, minBattery: 0 });
+    expect(result.vehicles.map(vehicle => vehicle.vehicle_id).sort())
+      .toEqual(['naolib_fr_nantes:pony_1', 'naolib_fr_nantes:pony_2']);
+    for (const vehicle of result.vehicles) {
+      expect(vehicle).toMatchObject({ provider: 'naolib', battery: 80, deep_link: null,
+        rental_uris: { ios: null, android: null, web: null } });
+      expect(vehicle.pricing).toBeUndefined();
+    }
+    expect(fetchMock.mock.calls.map(([url]) => String(url))).not.toContainEqual(expect.stringContaining('pricing'));
   });
 
   it('retains unknown battery percentages and honors provider and battery filters', async () => {
@@ -244,6 +270,9 @@ describe('French scooter feeds', () => {
     expect(searchFrenchScooterCities('Bordeaux')).toEqual([{ lat: 44.8378, lng: -0.5792, display_name: 'Bordeaux, France' }]);
     expect(searchFrenchScooterCities('Evry France')[0].display_name).toBe('Évry-Courcouronnes, France');
     expect(searchFrenchScooterCities('Chalons')[0].display_name).toBe('Châlons-en-Champagne, France');
+    expect(searchFrenchScooterCities('Nantes')[0].display_name).toBe('Nantes, France');
+    expect(searchFrenchScooterCities('Chantrerie')[0].display_name).toBe('Nantes, France');
+    expect(searchFrenchScooterCities('Saint Herblain')[0].display_name).toBe('Saint-Herblain, France');
     expect(searchFrenchScooterCities('France')).toEqual([]);
   });
 });

@@ -18,6 +18,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     case hoppy
     case ride_mobility
     case yoio
+    case naolib
 
     var id: String { rawValue }
 
@@ -37,6 +38,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .hoppy: "Hoppy"
         case .ride_mobility: "Ride Mobility"
         case .yoio: "Yoio"
+        case .naolib: "Naolib Micromob’"
         }
     }
 
@@ -56,6 +58,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .hoppy: "Ho"
         case .ride_mobility: "RM"
         case .yoio: "Y"
+        case .naolib: "NM"
         }
     }
 
@@ -77,12 +80,14 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .hoppy: UIColor(red: 0.133333, green: 0.772549, blue: 0.666667, alpha: 1)
         case .ride_mobility: UIColor(red: 0.698039, green: 0.121569, blue: 0.352941, alpha: 1)
         case .yoio: UIColor(red: 0.050980, green: 0.368627, blue: 0.290196, alpha: 1)
+        case .naolib: UIColor(red: 0.376471, green: 0.643137, blue: 0.000000, alpha: 1)
         }
     }
 
     private static let systemIDMatchers: [(provider: ScooterProvider, exact: [String], prefixes: [String])] = [
         (.ride_mobility, [], ["ride_mobility"]),
         (.publibike, ["velospot"], ["publibike"]),
+        (.naolib, [], ["naolib"]),
         (.beryl, [], ["beryl"]),
         (.hoppy, [], ["hoppy"]),
         (.bolt, [], ["bolt"]),
@@ -152,6 +157,8 @@ enum ScooterProviderCoverage {
         (.lime, GeoBounds(south: 48.8435, west: 2.0649, north: 48.8884, east: 2.1135)),
         (.lime, GeoBounds(south: 48.8999, west: 2.1091, north: 48.9382, east: 2.1671)),
         (.lime, GeoBounds(south: 48.9173, west: 2.1386, north: 48.9576, east: 2.2103)),
+        (.naolib, GeoBounds(south: 47.274, west: -1.536, north: 47.3, east: -1.492)),
+        (.naolib, GeoBounds(south: 47.21, west: -1.66, north: 47.244, east: -1.622)),
         (.pony, GeoBounds(south: 47.33, west: -0.73, north: 47.62, east: -0.38)),
         (.pony, GeoBounds(south: 49.16, west: 1.67, north: 49.75, east: 2.55)),
         (.pony, GeoBounds(south: 44.67, west: -0.86, north: 45.05, east: -0.39)),
@@ -419,6 +426,8 @@ enum ScooterCityCatalog {
         ScooterCity(id: "fr:Marly-le-Roi", name: "Marly-le-Roi", countryCode: "FR", center: GeoPoint(latitude: 48.866, longitude: 2.0892), bounds: GeoBounds(south: 48.8435, west: 2.0649, north: 48.8884, east: 2.1135)),
         ScooterCity(id: "fr:Montesson", name: "Montesson", countryCode: "FR", center: GeoPoint(latitude: 48.919, longitude: 2.1381), bounds: GeoBounds(south: 48.8999, west: 2.1091, north: 48.9382, east: 2.1671)),
         ScooterCity(id: "fr:Sartrouville", name: "Sartrouville", countryCode: "FR", center: GeoPoint(latitude: 48.9374, longitude: 2.1744), bounds: GeoBounds(south: 48.9173, west: 2.1386, north: 48.9576, east: 2.2103)),
+        ScooterCity(id: "fr:Nantes", name: "Nantes", countryCode: "FR", center: GeoPoint(latitude: 47.2873, longitude: -1.5142), bounds: GeoBounds(south: 47.274, west: -1.536, north: 47.3, east: -1.492)),
+        ScooterCity(id: "fr:Saint-Herblain", name: "Saint-Herblain", countryCode: "FR", center: GeoPoint(latitude: 47.2271, longitude: -1.6407), bounds: GeoBounds(south: 47.21, west: -1.66, north: 47.244, east: -1.622)),
         ScooterCity(id: "fr:Angers", name: "Angers", countryCode: "FR", center: GeoPoint(latitude: 47.4784, longitude: -0.5632), bounds: GeoBounds(south: 47.33, west: -0.73, north: 47.62, east: -0.38)),
         ScooterCity(id: "fr:Beauvais", name: "Beauvais", countryCode: "FR", center: GeoPoint(latitude: 49.4295, longitude: 2.0807), bounds: GeoBounds(south: 49.16, west: 1.67, north: 49.75, east: 2.55)),
         ScooterCity(id: "fr:Bourges", name: "Bourges", countryCode: "FR", center: GeoPoint(latitude: 47.081, longitude: 2.3988), bounds: GeoBounds(south: 46.96, west: 2.28, north: 47.21, east: 2.53)),
@@ -582,7 +591,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 201
+    static let cityCount = 203
     static let countryCount = 17
 
     /// Cities by distance from the point to their centre, nearest first.

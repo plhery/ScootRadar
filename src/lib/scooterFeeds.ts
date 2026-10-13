@@ -1011,7 +1011,8 @@ async function fetchRegionalSystemFeeds(
 
   const [status, pricing] = await Promise.all([
     fetchJson<StatusFeed>(statusUrl, { validate: validateVehicleStatus, revalidate: STATUS_REVALIDATE_SECONDS }),
-    fetchPricingPlans(discoveredFeedUrl(entries, 'system_pricing_plans', baseUrl), {
+    // Another operator's feed prices the ride at its own fares, not the ones the provider's riders pay.
+    fetchPricingPlans(system.feedOperator ? null : discoveredFeedUrl(entries, 'system_pricing_plans', baseUrl), {
       source: system.id,
     }),
   ]);

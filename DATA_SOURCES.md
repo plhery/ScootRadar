@@ -49,8 +49,8 @@ does not imply endorsement.
 
 ### French cities
 
-The app also reads 30 reviewed public GBFS feeds from Dott, Bird, Lime, Voi and
-Pony across 35 French cities or operating areas. The catalog is checked into
+The app also reads 31 reviewed public GBFS feeds from Dott, Bird, Lime, Voi and
+Pony across 37 French cities or operating areas. The catalog is checked into
 [`data/french-scooter-feeds.json`](data/french-scooter-feeds.json), using the
 [MobilityData registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
 and [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets?format=gbfs&subtype=scooter)
@@ -59,8 +59,13 @@ apart from La Roche-sur-Yon: its dataset, published by La Roche-sur-Yon
 Agglomération under the Licence Ouverte 2.0, links Pony's own feed with the key
 the address needs, and the catalog uses that address, key included. The key was
 published for La Roche-sur-Yon only; it was decided on 13 October 2026 that it
-may be used for Pony's other towns too, though none of the others tried
-qualifies yet. The other feeds are served directly by their operators. Lime's
+may be used for Pony's other towns too. Of the others tried, only Nantes
+qualifies: its feed lists the scooters of Naolib Micromob', the service of
+Nantes Métropole's Naolib network at Chantrerie and in Saint-Herblain. Riders
+rent them in Naolib's app at Naolib's price, so the map shows them as Naolib
+Micromob's, without Pony's price or its link to Pony's app. Nantes Métropole
+publishes the same scooters under the Licence Ouverte, but its feeds sit on
+another host. The other feeds are served directly by their operators. Lime's
 feed west of Paris, in eight towns of Saint Germain Boucles de Seine, is listed
 only on data.gouv.fr, where Lime publishes it under the Licence Ouverte 2.0.
 

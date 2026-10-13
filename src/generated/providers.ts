@@ -21,6 +21,7 @@ const PROVIDER_DEFINITIONS = {
   hoppy: { name: "Hoppy", color: "#22c5aa", initial: "Ho" },
   ride_mobility: { name: "Ride Mobility", color: "#b21f5a", initial: "RM" },
   yoio: { name: "Yoio", color: "#0d5e4a", initial: "Y" },
+  naolib: { name: "Naolib Micromob’", color: "#60a400", initial: "NM" },
 } as const;
 
 export type ProviderKey = keyof typeof PROVIDER_DEFINITIONS;
@@ -35,6 +36,7 @@ export const SWISS_PROVIDER_KEYS: readonly ProviderKey[] = ["bolt","bird","dott"
 const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: string[] }> = {
   ride_mobility: {"prefixes":["ride_mobility"]},
   publibike: {"exact":["velospot"],"prefixes":["publibike"]},
+  naolib: {"prefixes":["naolib"]},
   beryl: {"prefixes":["beryl"]},
   hoppy: {"prefixes":["hoppy"]},
   bolt: {"prefixes":["bolt"]},

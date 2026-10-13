@@ -279,7 +279,7 @@ describe('ControlSheet settings', () => {
       'Walking routes · Valhalla, FOSSGIS',
       'Fix the map · OpenStreetMap',
       'Mobility data CH',
-      'France: Dott, Bird, Lime, Voi, Pony',
+      'France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob’',
       'MobiData BW',
       'DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy, Ride Mobility, Yoio',
       'BE: Pony · transportdata.be',

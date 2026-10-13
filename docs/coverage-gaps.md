@@ -49,12 +49,6 @@ banned shared scooters, and feeds that were empty when checked.
     de Seine, now on the map; Bezons, Carrières-sur-Seine, Chambourcy, Chatou,
     L'Étang-la-Ville, Louveciennes and Mareil-Marly have its e-bikes only
     ([French guide](french-scooter-feeds.md#lime-west-of-paris-and-bird-agen-october-2026)).
-  - Nantes: Pony's feed lists the scooters of Naolib Micromob' (about 50
-    available, at Chantrerie and Saint-Herblain, and ridden), but with Pony's
-    price and app, while riders rent them in Naolib's app at Naolib's price.
-    The city's own Naolib feed lists its feeds on another host, which the
-    same-origin rule refuses
-    ([French guide](french-scooter-feeds.md#pony-october-2026)).
   - Pony's other regions, read on 13 October 2026 with the key published for
     La Roche-sur-Yon: Tours, Orléans, Limoges, Nice and Marseille listed
     e-bikes only, Pays Basque e-bikes and one disabled scooter, and Paris 9

@@ -39,10 +39,11 @@ describe('searchCoveredCities', () => {
     expect(names('Ro')).toEqual(['Faliraki, Greece', 'La Roche-sur-Yon, France', 'Marly-le-Roi, France', 'Portimão, Portugal', 'Roma, Italy']);
     expect(names('Rom')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland']);
     expect(names('Roma')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland']);
-    // Vestmannaeyjar by its island, Heimaey.
+    // Saint-Herblain by a later word; Vestmannaeyjar, by its island, Heimaey, waits for a third letter.
     expect(names('He')).toEqual([
-      'Heidelberg, Germany', 'Heilbronn, Germany', 'Hellissandur, Iceland', 'Hérouville-Saint-Clair, France', 'Vestmannaeyjar, Iceland',
+      'Heidelberg, Germany', 'Heilbronn, Germany', 'Hellissandur, Iceland', 'Hérouville-Saint-Clair, France', 'Saint-Herblain, France',
     ]);
+    expect(names('Hei')).toContain('Vestmannaeyjar, Iceland');
     expect(searchCoveredCities('B')).toEqual([]);
     expect(searchCoveredCities('a').length).toBe(0);
   });

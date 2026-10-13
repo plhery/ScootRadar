@@ -58,6 +58,12 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   discoveryUrl: string;
   /** Published subregions of a shared feed; fetched once, routed per city. */
   areas?: ScooterServiceArea[];
+  /**
+   * The operator whose feed this is, when it is not the provider's own: Pony's
+   * feed lists Naolib Micromob's scooters in Nantes. Its prices are that
+   * operator's, so none is shown, and the provider's link policy drops its links.
+   */
+  feedOperator?: ProviderKey;
 }
 
 // Reviewed public endpoints, never an unvalidated runtime registry download.

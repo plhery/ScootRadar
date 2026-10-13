@@ -15,6 +15,8 @@ Rechecked 13 October 2026: Pony La Roche-sur-Yon joined the catalog, read with t
 Roche-sur-Yon; see [Pony, October 2026](#pony-october-2026). Lime west of Paris
 and Bird Agen joined it the same day; see
 [Lime west of Paris and Bird Agen, October 2026](#lime-west-of-paris-and-bird-agen-october-2026).
+So did Naolib Micromob' in Nantes and Saint-Herblain, a provider of its own read
+from Pony's feed; see [Naolib Micromob', October 2026](#naolib-micromob-october-2026).
 
 ## Verified availability
 
@@ -78,8 +80,8 @@ discovery lists is https, on its origin and under its directory, with the key.
 **The key and Pony's other towns.** The key was published for La Roche-sur-Yon
 only, but Pony's server accepted it for each of its regions tried. It was
 decided on 13 October 2026 that the map may use it for Pony's other towns too.
-None of the others tried qualifies yet (see below), so for now only La
-Roche-sur-Yon uses it. No other key is committed: the proxy hides the key of
+Of the others tried, only Nantes qualifies, for the scooters of Naolib
+Micromob' (see below). No other key is committed: the proxy hides the key of
 Pony's other French towns, and the Belgian access point publishes Charleroi's.
 
 | Town | Available scooters | Polls | Movement between polls |
@@ -98,23 +100,10 @@ Pony's other French towns, and the Belgian access point publishes Charleroi's.
   agglomeration's
   [September 2024 press kit](https://larochesuryon.fr/app/uploads/2024/09/DP_Nouveaux_Services_Mobilites_Transport_Sept2024.pdf)
   (150 scooters, 75 stations then) set hours, and no night ban was found.
-- **Nantes is left out.** Pony's Nantes region lists the scooters of Naolib
-  Micromob', which Semitan runs for Nantes Métropole at Chantrerie and
-  Saint-Herblain
-  ([Nantes Métropole](https://metropole.nantes.fr/actualites/pour-le-dernier-kilometre-deplacez-vous-avec-naolib-micromob)):
-  116 scooters, 49 of them available, at 51 stations. They are ridden: in
-  eight polls from 18:29 to 19:04, two available scooters went about 1 km from
-  one station to another, and a disabled one moved too. But riders rent them
-  in the Naolib Micromob' app, at EUR 0.10 a minute, while Pony's feed gives
-  Pony's price (EUR 1.00 and EUR 0.22 a minute) and a link to Pony's app, so
-  the map would send riders to the wrong app with the wrong price. Pony's
-  feed also listed a scooter as available while it was being ridden,
-  unlocked and away from any station. The city's own
-  [Naolib Micromob' dataset](https://transport.data.gouv.fr/datasets/offre-et-temps-reel-du-service-naolib-micromob-de-nantes-metropole-au-format-gbfs)
-  (Licence Ouverte) lists each vehicle with Naolib's link, but its discovery,
-  on `api.gbfs.ecovelo.mobi`, lists its feeds on another host,
-  `api.gbfs.v3.0.ecovelo.mobi`, and its vehicle types outside its directory,
-  so it fails the same-origin rule.
+- **Nantes:** Pony's Nantes region lists the scooters of Naolib Micromob',
+  which riders rent in Naolib's app at Naolib's price. The map shows them as
+  Naolib Micromob's, without Pony's price or app; see
+  [Naolib Micromob', October 2026](#naolib-micromob-october-2026).
 - **Other regions, with the same key:** Liège listed 8 or 9 available
   scooters, most of which never moved, so it stays out (see the
   [Belgian audit](belgian-norwegian-british-scooter-feeds.md#known-gaps)).
@@ -125,6 +114,72 @@ Pony's other French towns, and the Belgian access point publishes Charleroi's.
   under every name tried. Angers, Beauvais, Bordeaux, Bourges, Évry,
   Hérouville, Lorient, Perpignan and Poitiers answer too, but the map already
   reads them through the access point's proxy.
+
+## Naolib Micromob', October 2026
+
+Naolib Micromob' is the scooter and e-bike service of Nantes Métropole's Naolib
+network, at Chantrerie, in the north-east of Nantes, and in Saint-Herblain: 60
+scooters and 35 e-bikes at 16 stations, 8 at each site
+([Naolib](https://naolib.fr/fr/velos/micromob-1);
+[Nantes Métropole](https://metropole.nantes.fr/actualites/pour-le-dernier-kilometre-deplacez-vous-avec-naolib-micromob),
+updated 31 March 2025). Its scooters are Pony's, and Pony's Nantes region lists
+them, read with the key La Roche-sur-Yon Agglomération publishes (see
+[Pony, October 2026](#pony-october-2026)):
+`https://gbfs.getapony.com/v1/Nantes/en/gbfs.json?key=…`, GBFS 2.2. Every feed
+its discovery lists is https, on its origin and under its directory.
+
+| Town | Available scooters | Polls | Movement between polls |
+| --- | ---: | --- | --- |
+| Nantes (Chantrerie) | 23–24 | 20, five minutes apart, 18:29–20:04, and 5 more, 23:18–23:38, on Tuesday 13 October 2026 | 2 available scooters ridden from one station to another, Chantrerie Grandes Écoles to École Vétérinaire (18:39–18:49) and Ponton Gachet to Sophie Germain (19:44–19:54); a disabled one moved too |
+| Saint-Herblain | 23–24 | the same | 1 ridden 1 km, François Mitterrand to Rivaudière (18:59–19:04) |
+
+- **A provider of its own.** Riders rent these scooters in the Naolib Micromob'
+  app or at [micromob.naolib.fr](https://micromob.naolib.fr/), not in Pony's
+  app, so the map shows them as Naolib Micromob' (`naolib`, initials NM),
+  never as Pony's. Its colour, #60a400, is a deeper shade of Naolib's green,
+  #78d700, which sits too close to Lime's and Bolt's and is too light for
+  white initials. The catalog entry, `naolib_fr_nantes`, names Pony as the
+  `feedOperator`.
+- **No price.** Pony's feed prices them at Pony's fare, EUR 1.00 and EUR 0.22 a
+  minute. Naolib charges EUR 0.10 a minute; with a subscription, EUR 1 a month
+  or free with a Naolib card, the first 15 minutes of each ride are free
+  ([Naolib](https://naolib.fr/fr/velos/micromob-1)). The map reads no price
+  from another operator's feed, and it has no way to carry a fixed price per
+  provider, so it shows none.
+- **No link.** Pony's feed links each scooter to Pony's scanner
+  (`https://getapony.com/app/scan`), which can't rent them. Links are kept only
+  on their provider's own hosts, and Naolib Micromob' has none listed, so its
+  scooters have no "Open in" button on the web or on iOS. The app has no link
+  per provider to fall back on: since 12 October 2026, iOS only tries a
+  scooter's next link when one fails. The city's feed links every vehicle to
+  `https://micromob.naolib.fr//#/trip/start`, which a link per provider could
+  use one day.
+- **The feed.** Pony gives each scooter a new `bike_id` on every request and
+  stamps `last_reported` with the time of the request, as in La Roche-sur-Yon,
+  so rides were traced by `_vehicle_id`, Pony's own code for each scooter,
+  which stays the same. A scooter being ridden stays in the feed as available,
+  unlocked, so the map may show one for the length of a ride. Battery and range
+  are published; the feed's two e-bikes, both disabled, are left out, and
+  Naolib's 35 e-bikes are not in it.
+- **Bounds.** Rides end at a station, and every available scooter stood at one.
+  Each town's area is its 8 stations plus 0.006° of latitude and 0.009° of
+  longitude; the zones of Pony's feed and of the city's cover the whole
+  metropole. Pony's feed lists 51 stations: each of Naolib's 16 twice, once
+  with "NFC" in its name, 18 in the centre of Nantes that held no scooter, and
+  a test station. One available scooter stood still in the west of central
+  Nantes, away from any station, in all 25 polls; the areas leave it out.
+- **No night ban.** The city's feed gives `opening_hours` as `24/7`, and
+  neither Naolib nor Nantes Métropole sets hours.
+- **Licence.** Pony's feed publishes none; the key comes from La
+  Roche-sur-Yon's dataset, under the Licence Ouverte 2.0. Nantes Métropole
+  publishes the same fleet under the Licence Ouverte in its
+  [Naolib Micromob' dataset](https://transport.data.gouv.fr/datasets/offre-et-temps-reel-du-service-naolib-micromob-de-nantes-metropole-au-format-gbfs),
+  but its discovery, on `api.gbfs.ecovelo.mobi`, lists its feeds on another
+  host, `api.gbfs.v3.0.ecovelo.mobi`, and its vehicle types outside its
+  directory, so it fails the same-origin rule. Its positions match Pony's: at
+  23:20, 47 of Pony's 49 available scooters stood within 30 m of one the city's
+  feed lists as available. The city's feed also lists as available seven
+  scooters at 0% battery, which Pony's marks disabled.
 
 ## Lime west of Paris and Bird Agen, October 2026
 
@@ -190,7 +245,8 @@ is on the discovery's origin and under its directory.
   from vehicle range. A positive battery filter excludes unknown batteries.
 - **Rental links:** Dott publishes vehicle links; Voi links to its nearest-vehicle
   flow; Pony links to its scanner. Bird and Lime supplied no vehicle rental links
-  in these feeds. Only the supplied, provider-validated links are exposed.
+  in these feeds. Only the supplied, provider-validated links are exposed, so
+  Naolib Micromob's scooters, which Pony's feed links to Pony's scanner, have none.
 - **Feed health:** successful HTTP responses can contain abandoned data. The new
   adapter rejects missing timestamps or data older than fifteen minutes. An unavailable
   city feed does not discard other successful city feeds.
@@ -217,7 +273,6 @@ is on the discovery's origin and under its directory.
 | Voi V'Lônes | Returned bicycles and zero available standing scooters in this sample. |
 | Historical Bird feeds | Bordeaux returned only unavailable/bicycle data with an old timestamp. Castres, Dieppe, Draguignan, Épron, Gap, Hérouville-Saint-Clair, La Roche-sur-Yon, Marseille, Millau, Montluçon, Ouistreham and Sarreguemines returned empty status with timestamp 0. |
 | Lime Le Havre | The [official listing](https://transport.data.gouv.fr/datasets/gbfs-le-havre-2) describes a secured feed whose credentials are provided to approved partners. No authenticated access was attempted. Voi Le Havre is enabled. |
-| Nantes Micromob | Left out on 13 October 2026. The [municipal dataset](https://transport.data.gouv.fr/datasets/offre-et-temps-reel-du-service-naolib-micromob-de-nantes-metropole-au-format-gbfs) lists its feeds on another host, and Pony's own feed gives Pony's price and app for scooters rented through Naolib's; see [Pony, October 2026](#pony-october-2026). |
 
 Empty feeds are snapshot observations, not proof that an operator has permanently
 left a city. The enabled catalog deliberately contains only positively verified
@@ -237,7 +292,9 @@ Lime's `system_information` points to [Lime GBFS terms](https://www.li.me/gbfs-t
 The sampled Pony and Voi system-information documents did not supply a license URL;
 consult their individual National Access Point dataset terms. La Roche-sur-Yon's
 Pony dataset is under the Licence Ouverte 2.0; its key, which the access point
-publishes, also reads Pony's other towns (see [Pony, October 2026](#pony-october-2026)). Government proxying
+publishes, also reads Pony's other towns (see [Pony, October 2026](#pony-october-2026)),
+among them Nantes, whose Naolib Micromob' scooters Nantes Métropole also publishes
+under the Licence Ouverte (see [Naolib Micromob', October 2026](#naolib-micromob-october-2026)). Government proxying
 alone should not be treated as a new license. Operator attribution is included in
 the map, footer, and API response header.
 

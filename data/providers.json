@@ -106,5 +106,12 @@
     "color": "#0d5e4a",
     "initial": "Y",
     "systemIds": { "prefixes": ["yoio"] }
+  },
+  {
+    "key": "naolib",
+    "name": "Naolib Micromob’",
+    "color": "#60a400",
+    "initial": "NM",
+    "systemIds": { "prefixes": ["naolib"] }
   }
 ]

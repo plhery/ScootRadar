@@ -349,6 +349,54 @@
       ]
     },
     {
+      "id": "naolib_fr_nantes",
+      "provider": "naolib",
+      "feedOperator": "pony",
+      "city": "Nantes Métropole",
+      "center": [
+        47.2873,
+        -1.5142
+      ],
+      "bounds": {
+        "south": 47.21,
+        "west": -1.66,
+        "north": 47.3,
+        "east": -1.492
+      },
+      "discoveryUrl": "https://gbfs.getapony.com/v1/Nantes/en/gbfs.json?key=AIzaSyB1I8b8Kj_3wc2Svv7GThGiecJTkrf8_qc",
+      "areas": [
+        {
+          "city": "Nantes",
+          "center": [
+            47.2873,
+            -1.5142
+          ],
+          "bounds": {
+            "south": 47.274,
+            "west": -1.536,
+            "north": 47.3,
+            "east": -1.492
+          },
+          "aliases": [
+            "Chantrerie"
+          ]
+        },
+        {
+          "city": "Saint-Herblain",
+          "center": [
+            47.2271,
+            -1.6407
+          ],
+          "bounds": {
+            "south": 47.21,
+            "west": -1.66,
+            "north": 47.244,
+            "east": -1.622
+          }
+        }
+      ]
+    },
+    {
       "id": "pony_fr_angers",
       "provider": "pony",
       "city": "Angers",
