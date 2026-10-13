@@ -444,6 +444,10 @@ enum ScooterCityGrouping {
         // Inland in the south-west, between Turku and Tampere: on the mainland, so it isn't read
         // as Stockholm's, and on the side nearest Mariehamn, on Åland, where all its scooters are.
         "fi": (61.1, 23.8),
+        // Inland, at the middle of the country, near Slunj: on Rijeka's side, but off the coast, where
+        // it would read as Slovenia's or Trieste's, and about 50 points from Italy's and Hungary's
+        // totals at zoom 4, between which Croatia lies.
+        "hr": (45.2, 15.5),
     ]
 
     /// Zoomed out to a continent, one total per country, never two countries in one;

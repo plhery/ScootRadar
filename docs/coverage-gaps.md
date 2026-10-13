@@ -248,6 +248,17 @@ banned shared scooters, and feeds that were empty when checked.
     Helsinki's city bikes are bikes only.
   - Helsinki, Espoo, Vantaa, Turku and Oulu ban renting or riding on weekend
     nights; add a curfew with any of them.
+- **Croatia** ([guide](croatian-scooter-feeds.md#known-gaps)): Hoppy in
+  Rijeka is covered.
+  - Hopp Omiš held 11 scooters, all disabled, at night and on the evening of
+    13 October 2026, and again near midnight.
+  - Hoppy Crikvenica (ATOM id 2302) answers, with three scooter types, but
+    listed no scooter at 18:50 or near midnight on 13 October 2026. Hoppy
+    started there this season, from Dramalj to Selce; check it in spring.
+  - nextbike Croatia's country feed holds 2 docked scooters, one each at
+    Vodnjan and Svetvinčenat, in Istria.
+  - The national access point (promet-info.hr) carries road and traffic data,
+    not shared vehicles.
 
 ## Countries not covered yet
 
@@ -283,7 +294,6 @@ primary source.
 | Ireland | Bolt's Wexford trial (2024) publishes nothing; Moby and Bleeper are bikes. Public funding for scooter schemes was paused in July 2026 |
 | Estonia, Lithuania | Bolt and Ride Mobility publish no feed |
 | Slovakia, Slovenia, Bulgaria, Romania, Moldova | Dott and Bolt publish no feed; nothing else found |
-| Croatia | 2 docked nextbike scooters in Istria; Hopp Omiš held 11, all disabled, at night and on the evening of 13 October 2026. Rijeka is tendering 300 scooters from late 2026 |
 | Serbia | Belgrade cancelled its scooter tender in July 2026 |
 | Turkey | Martı, BinBin and Hop publish no feed |
 | Malta | Rental scooters banned since March 2024 |
@@ -324,7 +334,8 @@ its other systems answer 401. Dott made most regions private in September 2026.
   2026, most of which never moved; add it if it holds ten or more and they
   are ridden.
 - **Spring 2027:** Dott's six paused Finnish towns (Ekenäs, Hamina, Hanko,
-  Imatra, Kalajoki, Kotka), Joe Scooter in Rauma, Hopp's Greek island towns
+  Imatra, Kalajoki, Kotka), Joe Scooter in Rauma, Hoppy in Crikvenica and Hopp
+  in Omiš, Hopp's Greek island towns
   (Chania, Rethymno, Kos, Zakynthos and others), Hopp Como and Hopp Augsburg
   may open for the season; recheck Hopp Nafplio then too.
 - Every Monday, the [catalog check workflow](../.github/workflows/catalog-check.yml)

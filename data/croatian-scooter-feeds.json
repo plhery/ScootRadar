@@ -1,0 +1,26 @@
+{
+  "verifiedOn": "2026-10-13",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "hoppy_hr_rijeka",
+      "country": "HR",
+      "provider": "hoppy",
+      "city": "Rijeka",
+      "center": [
+        45.327,
+        14.4425
+      ],
+      "bounds": {
+        "south": 45.3081,
+        "north": 45.3587,
+        "west": 14.353,
+        "east": 14.4896
+      },
+      "discoveryUrl": "https://hoppy.rideatom.com/gbfs/2304/v3.0/gbfs",
+      "aliases": [
+        "Fiume"
+      ]
+    }
+  ]
+}

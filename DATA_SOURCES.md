@@ -410,3 +410,19 @@ vehicles, so the map doesn't use them.
 Hopp links its privacy policy, not a licence. The map's credits name it under
 the GBFS line. See the [coverage audit](docs/finnish-scooter-feeds.md) for the
 system, the town name, the gaps and the recheck command.
+
+## Croatia
+
+The reviewed catalog lives in `data/croatian-scooter-feeds.json`: 1 feed, Hoppy
+in Rijeka. It is Hoppy's own public GBFS 3.0 feed, on ATOM Mobility's
+`hoppy.rideatom.com`, as in Kortrijk, and is not in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
+whose Croatian entries are nextbike's bike systems. Croatia's national access
+point, [promet-info.hr](https://www.promet-info.hr/), run by Hrvatske ceste,
+lists road and traffic data, not shared vehicles. The scooter cache paces
+`hoppy.rideatom.com` to about two requests a second, as every ATOM host.
+
+Hoppy publishes no licence in its Rijeka feed, as in Kortrijk. The map's
+credits name it under the GBFS line. See the
+[coverage audit](docs/croatian-scooter-feeds.md) for the system, the town
+name, the gaps and the recheck command.

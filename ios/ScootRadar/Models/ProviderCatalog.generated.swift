@@ -343,6 +343,7 @@ enum ScooterProviderCoverage {
         (.hopp, GeoBounds(south: 34.7243, west: 32.3084, north: 34.9182, east: 32.4919)),
         (.hopp, GeoBounds(south: 34.6397, west: 32.9752, north: 34.7227, east: 33.1875)),
         (.hopp, GeoBounds(south: 60.0657, west: 19.8824, north: 60.1438, east: 19.9972)),
+        (.hoppy, GeoBounds(south: 45.3081, west: 14.353, north: 45.3587, east: 14.4896)),
     ]
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
@@ -587,12 +588,13 @@ enum ScooterCityCatalog {
         ScooterCity(id: "cy:Paphos", name: "Paphos", countryCode: "CY", center: GeoPoint(latitude: 34.7756, longitude: 32.4243), bounds: GeoBounds(south: 34.7243, west: 32.3084, north: 34.9182, east: 32.4919)),
         ScooterCity(id: "cy:Limassol", name: "Limassol", countryCode: "CY", center: GeoPoint(latitude: 34.6727, longitude: 33.0418), bounds: GeoBounds(south: 34.6397, west: 32.9752, north: 34.7227, east: 33.1875)),
         ScooterCity(id: "fi:Mariehamn", name: "Mariehamn", countryCode: "FI", center: GeoPoint(latitude: 60.0973, longitude: 19.9348), bounds: GeoBounds(south: 60.0657, west: 19.8824, north: 60.1438, east: 19.9972)),
+        ScooterCity(id: "hr:Rijeka", name: "Rijeka", countryCode: "HR", center: GeoPoint(latitude: 45.327, longitude: 14.4425), bounds: GeoBounds(south: 45.3081, west: 14.353, north: 45.3587, east: 14.4896)),
     ]
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 203
-    static let countryCount = 17
+    static let cityCount = 204
+    static let countryCount = 18
 
     /// Cities by distance from the point to their centre, nearest first.
     static func nearest(to point: GeoPoint, count: Int) -> [ScooterCityDistance] {

@@ -36,7 +36,9 @@ describe('German and Italian scooter coverage', () => {
     ['Limassol Kibris', 'Limassol, Cyprus'], ['Lemesos Kypros', 'Limassol, Cyprus'], ['Limassol Chypre', 'Limassol, Cyprus'],
     ['Mariehamn', 'Mariehamn, Finland'], ['Maarianhamina', 'Mariehamn, Finland'], ['Mariehamn Suomi', 'Mariehamn, Finland'],
     ['Maarianhamina Finnland', 'Mariehamn, Finland'], ['Åland', 'Mariehamn, Finland'], ['Aland Finlande', 'Mariehamn, Finland'],
-    ['Ahvenanmaa Suomi', 'Mariehamn, Finland']])('finds %s', (query, name) => {
+    ['Ahvenanmaa Suomi', 'Mariehamn, Finland'], ['Rijeka', 'Rijeka, Croatia'], ['Fiume', 'Rijeka, Croatia'],
+    ['Rijeka Hrvatska', 'Rijeka, Croatia'], ['Fiume Croazia', 'Rijeka, Croatia'], ['Rijeka Kroatien', 'Rijeka, Croatia'],
+    ['Rijeka Croacia', 'Rijeka, Croatia']])('finds %s', (query, name) => {
     expect(searchRegionalScooterCities(query)[0].display_name).toBe(name);
   });
   it('does not silently ignore a conflicting country or expose the aggregate feed as a city', () => {
@@ -88,7 +90,7 @@ describe('German and Italian scooter coverage', () => {
     expect(result.vehicles).toHaveLength(1);
     expect(result.vehicles[0]).toMatchObject({ provider: system.provider, battery: 72 });
     expect(result.meta.sources).toEqual({ national: 'skipped', hopp: 'skipped', publibike: 'skipped',
-      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped', [country]: 'fresh' });
+      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped', croatia: 'skipped', [country]: 'fresh' });
     expect(fetchMock).toHaveBeenCalledTimes(3);
   });
   it('prices each Hopp Pécs scooter from its own plan, in forints, never from the plans in other currencies', async () => {
@@ -206,6 +208,37 @@ describe('German and Italian scooter coverage', () => {
       'hopp_fi_mariehamn:one': { currency: 'EUR', unlock_fee_minor_units: 170, minute_fee_minor_units: 42 },
       'hopp_fi_mariehamn:two': { currency: 'EUR', unlock_fee_minor_units: 170, minute_fee_minor_units: 42 },
     });
+  });
+  it('reads Hoppy Rijeka\'s GBFS 3.0 feed: EUR 0 to start and EUR 0.19 a minute, range only, and a link to each scooter', async () => {
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'hoppy_hr_rijeka')!;
+    expect(system).toMatchObject({ country: 'HR', city: 'Rijeka' });
+    const base = new URL('.', system.discoveryUrl).toString();
+    expect(base).toBe('https://hoppy.rideatom.com/gbfs/2304/v3.0/');
+    // As Hoppy Rijeka publishes them on ATOM Mobility.
+    const scooter = { vehicle_id: '4123108368186487605', lat: 45.3323, lon: 14.4385, is_reserved: false, is_disabled: false,
+      rental_uris: { android: 'https://ride-hoppy.app.link/302484', ios: 'https://ride-hoppy.app.link/302484', web: 'https://ride-hoppy.app.link/' },
+      vehicle_type_id: '4152', current_range_meters: 46800, pricing_plan_id: '4152' };
+    vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+      if (url === system.discoveryUrl) return response({ version: '3.0', data: { feeds: ['vehicle_types', 'vehicle_status', 'system_pricing_plans']
+        .map(name => ({ name, url: `${base}${name}` })) } });
+      if (url === `${base}vehicle_types`) return response({ data: { vehicle_types: [{ vehicle_type_id: '4152',
+        form_factor: 'scooter_standing', propulsion_type: 'electric', max_range_meters: 60000, default_pricing_plan_id: '4152' }] } });
+      if (url === `${base}vehicle_status`) return response({ last_updated: new Date().toISOString(), data: { vehicles: [scooter,
+        { ...scooter, vehicle_id: 'disabled', is_disabled: true }] } });
+      if (url === `${base}system_pricing_plans`) return response({ data: { plans: [{ plan_id: '4152',
+        name: [{ text: 'SEGW RIJEK ANRT_KSCEG_TIER1', language: 'en' }], currency: 'EUR', price: 0, is_taxable: false,
+        description: [{ text: 'This is pricing plan for SEGW RIJEK ANRT_KSCEG_TIER1; Maximum distance is 60.00;', language: 'en' }],
+        per_min_pricing: [{ start: 0, rate: 0.19, interval: 1 }] }] } });
+      throw new Error(`Unexpected upstream ${url}`);
+    }));
+    const result = await fetchScooters({ bounds: system.bounds, minBattery: 0, providers: new Set(['hoppy']) });
+    expect(result.meta.sources.croatia).toBe('fresh');
+    expect(result.vehicles).toEqual([expect.objectContaining({
+      provider: 'hoppy', vehicle_id: 'hoppy_hr_rijeka:4123108368186487605', battery: null, range_m: 46800,
+      pricing: { currency: 'EUR', unlock_fee_minor_units: 0, minute_fee_minor_units: 19 },
+      // The number at the end of the link is the one printed on the scooter, which outlives its rotating id.
+      rental_uris: { android: 'https://ride-hoppy.app.link/302484', ios: 'https://ride-hoppy.app.link/302484', web: 'https://ride-hoppy.app.link/' },
+    })]);
   });
   it('keeps Dott Wołomin\'s feeds under its percent-encoded directory, however the letter is written', () => {
     const base = new URL('.', REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'dott_pl_wolomin')!.discoveryUrl).toString();

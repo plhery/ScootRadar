@@ -96,7 +96,7 @@ export function linkedParts(sentence: string): { text: string; link?: string }[]
 // to it are left out until then.
 export const APP_STORE_URL = null as string | null;
 
-export type LandingCountry = 'CH' | 'DE' | 'FR' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI';
+export type LandingCountry = 'CH' | 'DE' | 'FR' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR';
 
 export interface LandingCopy {
   meta: {
@@ -256,6 +256,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       countries: {
         CH: 'Switzerland', DE: 'Germany', FR: 'France', IT: 'Italy', BE: 'Belgium', NO: 'Norway', GB: 'United Kingdom',
         PT: 'Portugal', ES: 'Spain', IS: 'Iceland', SE: 'Sweden', LV: 'Latvia', PL: 'Poland', HU: 'Hungary', GR: 'Greece', CY: 'Cyprus', FI: 'Finland',
+        HR: 'Croatia',
       },
       more: count => `and ${count} more`,
       alt: 'The map at night, zoomed out over Europe, with the number of scooters on each city.',
@@ -383,6 +384,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       countries: {
         CH: 'Schweiz', DE: 'Deutschland', FR: 'Frankreich', IT: 'Italien', BE: 'Belgien', NO: 'Norwegen', GB: 'Vereinigtes Königreich',
         PT: 'Portugal', ES: 'Spanien', IS: 'Island', SE: 'Schweden', LV: 'Lettland', PL: 'Polen', HU: 'Ungarn', GR: 'Griechenland', CY: 'Zypern', FI: 'Finnland',
+        HR: 'Kroatien',
       },
       more: count => `und ${count} weitere`,
       alt: 'Die Karte bei Nacht, herausgezoomt über Europa, mit der Zahl der Scooter in jeder Stadt.',
@@ -510,6 +512,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       countries: {
         CH: 'Suisse', DE: 'Allemagne', FR: 'France', IT: 'Italie', BE: 'Belgique', NO: 'Norvège', GB: 'Royaume-Uni',
         PT: 'Portugal', ES: 'Espagne', IS: 'Islande', SE: 'Suède', LV: 'Lettonie', PL: 'Pologne', HU: 'Hongrie', GR: 'Grèce', CY: 'Chypre', FI: 'Finlande',
+        HR: 'Croatie',
       },
       more: count => (count === 1 ? 'et une autre' : `et ${count} autres`),
       alt: 'La carte de nuit à l’échelle de l’Europe, avec le nombre de trottinettes dans chaque ville.',
@@ -637,6 +640,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       countries: {
         CH: 'Svizzera', DE: 'Germania', FR: 'Francia', IT: 'Italia', BE: 'Belgio', NO: 'Norvegia', GB: 'Regno Unito',
         PT: 'Portogallo', ES: 'Spagna', IS: 'Islanda', SE: 'Svezia', LV: 'Lettonia', PL: 'Polonia', HU: 'Ungheria', GR: 'Grecia', CY: 'Cipro', FI: 'Finlandia',
+        HR: 'Croazia',
       },
       more: count => (count === 1 ? 'e un’altra' : `e altre ${count}`),
       alt: 'La mappa dell’Europa vista da lontano, di notte, con il numero di monopattini in ogni città.',
@@ -779,6 +783,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         GR: 'Hellas',
         CY: 'Kypros',
         FI: 'Finland',
+        HR: 'Kroatia',
       },
       more: count => (count === 1 ? 'og én til' : `og ${count} til`),
       alt: 'Kartet om natten, zoomet ut over Europa, med antall elsparkesykler i hver by.',
@@ -921,6 +926,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         GR: 'Griekenland',
         CY: 'Cyprus',
         FI: 'Finland',
+        HR: 'Kroatië',
       },
       more: count => (count === 1 ? 'en nog één' : `en nog ${count}`),
       alt: 'De kaart ’s nachts, uitgezoomd over Europa, met het aantal deelsteps op elke stad.',
@@ -1047,6 +1053,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       countries: {
         CH: 'Suíça', DE: 'Alemanha', FR: 'França', IT: 'Itália', BE: 'Bélgica', NO: 'Noruega', GB: 'Reino Unido',
         PT: 'Portugal', ES: 'Espanha', IS: 'Islândia', SE: 'Suécia', LV: 'Letónia', PL: 'Polónia', HU: 'Hungria', GR: 'Grécia', CY: 'Chipre', FI: 'Finlândia',
+        HR: 'Croácia',
       },
       more: count => (count === 1 ? 'e mais uma' : `e mais ${count}`),
       alt: 'O mapa à noite, a mostrar toda a Europa, com o número de trotinetes de cada cidade.',
@@ -1173,6 +1180,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       countries: {
         CH: 'Suiza', DE: 'Alemania', FR: 'Francia', IT: 'Italia', BE: 'Bélgica', NO: 'Noruega', GB: 'Reino Unido',
         PT: 'Portugal', ES: 'España', IS: 'Islandia', SE: 'Suecia', LV: 'Letonia', PL: 'Polonia', HU: 'Hungría', GR: 'Grecia', CY: 'Chipre', FI: 'Finlandia',
+        HR: 'Croacia',
       },
       more: count => (count === 1 ? 'y otra más' : `y ${count} más`),
       alt: 'El mapa de noche, alejado sobre Europa, con el número de patinetes de cada ciudad.',
@@ -1317,6 +1325,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         GR: 'Grikkland',
         CY: 'Kýpur',
         FI: 'Finnland',
+        HR: 'Króatía',
       },
       more: count => `og ${count} til viðbótar`,
       alt: 'Kortið að nóttu til, yfir allri Evrópu, með tölu sem sýnir hve margar rafskútur eru á hverjum stað.',

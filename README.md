@@ -72,6 +72,8 @@ Cyprus adds 2 feeds: Hopp in Paphos and Limassol. See the
 [Cypriot feed audit](docs/cypriot-scooter-feeds.md).
 Finland adds 1 feed: Hopp in Mariehamn, on Åland. See the
 [Finnish feed audit](docs/finnish-scooter-feeds.md).
+Croatia adds 1 feed: Hoppy in Rijeka. See the
+[Croatian feed audit](docs/croatian-scooter-feeds.md).
 What is not covered yet, and why, is listed in
 [Coverage gaps](docs/coverage-gaps.md).
 
