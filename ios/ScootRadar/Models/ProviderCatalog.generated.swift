@@ -194,7 +194,9 @@ enum ScooterProviderCoverage {
         (.voi, GeoBounds(south: 48.9649, west: 8.2776, north: 49.059, east: 8.5008)),
         (.voi, GeoBounds(south: 48.83, west: 8.59, north: 48.96, east: 8.81)),
         (.voi, GeoBounds(south: 49.4082, west: 8.3311, north: 49.569, east: 8.589)),
-        (.voi, GeoBounds(south: 48.6983, west: 9.0659, north: 48.8556, east: 9.2723)),
+        (.voi, GeoBounds(south: 48.6983, west: 9.0659, north: 48.8556, east: 9.29)),
+        (.voi, GeoBounds(south: 48.658, west: 8.95, north: 48.697, east: 9.058)),
+        (.voi, GeoBounds(south: 48.697, west: 8.95, north: 48.738, east: 9.058)),
         (.voi, GeoBounds(south: 48.4824, west: 9.0088, north: 48.5647, east: 9.1103)),
         (.voi, GeoBounds(south: 48.4312, west: 9.1335, north: 48.5396, east: 9.2596)),
         (.yoio, GeoBounds(south: 50.9374, west: 10.9742, north: 51.031, east: 11.1075)),
@@ -433,7 +435,7 @@ enum ScooterCityCatalog {
         ScooterCity(id: "de:Karlsruhe", name: "Karlsruhe", countryCode: "DE", center: GeoPoint(latitude: 49.0069, longitude: 8.4037), bounds: GeoBounds(south: 48.8623, west: 8.2776, north: 49.5247, east: 8.7576)),
         ScooterCity(id: "de:Reutlingen", name: "Reutlingen", countryCode: "DE", center: GeoPoint(latitude: 48.4914, longitude: 9.2043), bounds: GeoBounds(south: 48.4312, west: 9.1335, north: 48.5396, east: 9.2596)),
         ScooterCity(id: "de:Tübingen", name: "Tübingen", countryCode: "DE", center: GeoPoint(latitude: 48.5216, longitude: 9.0576), bounds: GeoBounds(south: 48.4824, west: 9.0088, north: 48.5647, east: 9.1103)),
-        ScooterCity(id: "de:Stuttgart", name: "Stuttgart", countryCode: "DE", center: GeoPoint(latitude: 48.7758, longitude: 9.1829), bounds: GeoBounds(south: 48.6977, west: 9.0659, north: 48.8618, east: 9.2897)),
+        ScooterCity(id: "de:Stuttgart", name: "Stuttgart", countryCode: "DE", center: GeoPoint(latitude: 48.7758, longitude: 9.1829), bounds: GeoBounds(south: 48.6977, west: 9.0659, north: 48.8618, east: 9.29)),
         ScooterCity(id: "de:Aachen", name: "Aachen", countryCode: "DE", center: GeoPoint(latitude: 50.7773, longitude: 6.0895), bounds: GeoBounds(south: 50.7249, west: 6.023, north: 50.8211, east: 6.1962)),
         ScooterCity(id: "de:Berlin", name: "Berlin", countryCode: "DE", center: GeoPoint(latitude: 52.52, longitude: 13.405), bounds: GeoBounds(south: 52.4275, west: 13.1051, north: 52.6548, east: 13.6436)),
         ScooterCity(id: "de:Köln", name: "Köln", countryCode: "DE", center: GeoPoint(latitude: 50.9375, longitude: 6.9603), bounds: GeoBounds(south: 50.8217, west: 6.796, north: 51.0145, east: 7.1351)),
@@ -453,6 +455,8 @@ enum ScooterCityCatalog {
         ScooterCity(id: "de:Wuppertal", name: "Wuppertal", countryCode: "DE", center: GeoPoint(latitude: 51.2669, longitude: 7.1769), bounds: GeoBounds(south: 51.2053, west: 7.0316, north: 51.314, east: 7.2833)),
         ScooterCity(id: "de:Pforzheim", name: "Pforzheim", countryCode: "DE", center: GeoPoint(latitude: 48.8926, longitude: 8.6946), bounds: GeoBounds(south: 48.83, west: 8.59, north: 48.96, east: 8.81)),
         ScooterCity(id: "de:Mannheim", name: "Mannheim", countryCode: "DE", center: GeoPoint(latitude: 49.4875, longitude: 8.466), bounds: GeoBounds(south: 49.4082, west: 8.3311, north: 49.569, east: 8.589)),
+        ScooterCity(id: "de:Böblingen", name: "Böblingen", countryCode: "DE", center: GeoPoint(latitude: 48.685, longitude: 9.0113), bounds: GeoBounds(south: 48.658, west: 8.95, north: 48.697, east: 9.058)),
+        ScooterCity(id: "de:Sindelfingen", name: "Sindelfingen", countryCode: "DE", center: GeoPoint(latitude: 48.7084, longitude: 9.0035), bounds: GeoBounds(south: 48.697, west: 8.95, north: 48.738, east: 9.058)),
         ScooterCity(id: "de:Erfurt", name: "Erfurt", countryCode: "DE", center: GeoPoint(latitude: 50.9787, longitude: 11.0328), bounds: GeoBounds(south: 50.9374, west: 10.9742, north: 51.031, east: 11.1075)),
         ScooterCity(id: "de:Freiburg im Breisgau", name: "Freiburg im Breisgau", countryCode: "DE", center: GeoPoint(latitude: 47.999, longitude: 7.8421), bounds: GeoBounds(south: 47.958, west: 7.746, north: 48.0667, east: 7.9323)),
         ScooterCity(id: "de:Göttingen", name: "Göttingen", countryCode: "DE", center: GeoPoint(latitude: 51.5413, longitude: 9.9158), bounds: GeoBounds(south: 51.4953, west: 9.8716, north: 51.6057, east: 9.9978)),
@@ -578,7 +582,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 199
+    static let cityCount = 201
     static let countryCount = 17
 
     /// Cities by distance from the point to their centre, nearest first.

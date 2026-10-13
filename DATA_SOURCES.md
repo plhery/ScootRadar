@@ -191,7 +191,7 @@ e-scooter and e-bike parking](https://www.data.gouv.fr/datasets/espaces-de-stati
 ## Germany and Italy
 
 Reviewed catalogs live in `data/german-scooter-feeds.json` and
-`data/italian-scooter-feeds.json`. Germany has 40 verified feeds across 40 cities:
+`data/italian-scooter-feeds.json`. Germany has 40 verified feeds across 42 cities:
 Dott, Bolt, Hopp, Lime, Voi, Zeus and Yoio. Dott made its GBFS private in September 2026; the
 catalog keeps the 15 German regions its public listing still names. Italy has 3
 Bird feeds, in Roma, Palermo and Napoli; the other tested Italian scooter feeds
@@ -201,7 +201,7 @@ Sources: [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blo
 [Dott Germany](https://gbfs.api.ridedott.com/public/v2/countries/de/gbfs.json),
 [MobiData BW](https://www.mobidata-bw.de/) and the individual public operator feeds.
 MobiData BW supplies the reviewed Bolt, Hopp, Lime and Voi GBFS 3.0 systems and
-ten of the fourteen Zeus systems; its Voi feed covers six Baden-Württemberg
+ten of the fourteen Zeus systems; its Voi feed covers eight Baden-Württemberg
 cities, not all of Germany. Zeus's own feeds supply Bamberg, Ludwigsburg,
 Regensburg and Schweinfurt.
 

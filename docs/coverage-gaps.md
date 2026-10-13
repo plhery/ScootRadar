@@ -69,7 +69,7 @@ banned shared scooters, and feeds that were empty when checked.
   - Lime Hamburg answers 404; Lime Dresden, Oberhausen and Solingen (6
     scooters) were too small or empty.
   - Seventeen Zeus towns were empty.
-  - Voi publishes six Baden-Württemberg cities only, through MobiData BW.
+  - Voi publishes eight Baden-Württemberg cities only, through MobiData BW.
   - Hopp Augsburg listed 42 scooters, all disabled and unchanged, on the
     evening of 13 October 2026; check it in spring.
 - **Italy** ([guide](german-italian-scooter-feeds.md#known-gaps)): Bird in

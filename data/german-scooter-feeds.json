@@ -457,7 +457,7 @@
         "south": 48.4312,
         "north": 49.569,
         "west": 8.2776,
-        "east": 9.2723
+        "east": 9.29
       },
       "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/gbfs",
       "areas": [
@@ -510,7 +510,39 @@
             "south": 48.6983,
             "north": 48.8556,
             "west": 9.0659,
-            "east": 9.2723
+            "east": 9.29
+          }
+        },
+        {
+          "city": "Böblingen",
+          "aliases": [
+            "Boeblingen"
+          ],
+          "center": [
+            48.685,
+            9.0113
+          ],
+          "bounds": {
+            "south": 48.658,
+            "north": 48.697,
+            "west": 8.95,
+            "east": 9.058
+          }
+        },
+        {
+          "city": "Sindelfingen",
+          "aliases": [
+            "Maichingen"
+          ],
+          "center": [
+            48.7084,
+            9.0035
+          ],
+          "bounds": {
+            "south": 48.697,
+            "north": 48.738,
+            "west": 8.95,
+            "east": 9.058
           }
         },
         {

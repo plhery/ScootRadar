@@ -24,6 +24,9 @@ Wiesloch feed, and its Hemmingen feed inside its Ludwigsburg feed.
 Yoio was added on 13 October 2026: 3 feeds, about 675 available scooters, in
 Göttingen, Freiburg im Breisgau and Erfurt; see [Yoio, October 2026](#yoio-october-2026).
 
+Voi's Böblingen and Sindelfingen scooters, about 190, joined the map the same
+day; see [Voi in Böblingen and Sindelfingen, October 2026](#voi-in-böblingen-and-sindelfingen-october-2026).
+
 Italy grew from Rome to three cities on 13 October 2026, with Bird Palermo and
 Bird Napoli; see [Italy, October 2026](#italy-october-2026).
 
@@ -33,12 +36,12 @@ Bird Napoli; see [Italy, October 2026](#italy-october-2026).
 | Germany | Bolt | 3 | Karlsruhe, Stuttgart, Reutlingen / Tübingen |
 | Germany | Hopp | 1 | Konstanz |
 | Germany | Lime | 3 | Frankfurt, Wuppertal, Stuttgart / Konstanz |
-| Germany | Voi | 1 | Karlsruhe, Pforzheim, Mannheim, Stuttgart, Tübingen and Reutlingen |
+| Germany | Voi | 1 | Karlsruhe, Pforzheim, Mannheim, Stuttgart, Böblingen, Sindelfingen, Tübingen and Reutlingen |
 | Germany | Zeus | 14 | Bamberg, Donaueschingen, Freiburg im Breisgau, Heidelberg / Leimen / Walldorf / Wiesloch, Konstanz, Ludwigsburg, Neustadt an der Weinstraße, Regensburg, Renningen, Schweinfurt, Singen, Tuttlingen, Villingen-Schwenningen and Würzburg |
 | Germany | Yoio | 3 | Erfurt, Freiburg im Breisgau and Göttingen |
 | Italy | Bird | 3 | Roma, Palermo and Napoli |
 
-German coverage contains 40 distinct cities, Italian coverage 3.
+German coverage contains 42 distinct cities, Italian coverage 3.
 The complete reviewed city bounds, public discovery URLs and aliases are in
 [`german-scooter-feeds.json`](../data/german-scooter-feeds.json) and
 [`italian-scooter-feeds.json`](../data/italian-scooter-feeds.json).
@@ -126,6 +129,43 @@ directory.
 - **Colour:** Yoio's mint green (#21d081) is too close to Bolt's and Beryl's
   greens, so the map uses a deep shade of it, #0d5e4a, with the initial Y.
 
+## Voi in Böblingen and Sindelfingen, October 2026
+
+The app already read Voi's Baden-Württemberg feed (`voi_de` on MobiData BW,
+catalog id `voi_de_bw`) but dropped about 190 scooters in Böblingen and
+Sindelfingen, because no area covered these towns. Two areas, one per town,
+now route them, so each town can be searched by name; no new feed is read.
+
+- **Zone:** Voi's operating zone "Stuttgart - New" in the feed's
+  `geofencing_zones` has a separate part at 48.6634–48.7329 N,
+  8.9579–9.0515 E, around Böblingen, Sindelfingen and Maichingen. Both areas
+  span it, with about 0.005° of padding, and split at latitude 48.697. Of the
+  209 scooters seen there, all but one stood on their own town's side of
+  that line, as OpenStreetMap draws the boundary.
+- **Liveness:** polled ten times, from 18:28 to 19:34 on Tuesday 13 October
+  2026, about five minutes apart. The two towns listed 187 to 192 available
+  scooters, about 105 in Sindelfingen and 85 in Böblingen; at 22:38 they still
+  listed 189. Voi gives a scooter a new id after each ride, so rides show as
+  ids leaving and new ids appearing: 22 left and 19 appeared, 14 of them more
+  than 300 m from any scooter that left in the same interval.
+- **Stuttgart:** the same zone's main part reaches 9.2806 E, east of the
+  Stuttgart area's edge at 9.2723, and 2 scooters stood in between, so the
+  edge moved to 9.29.
+- **Licence:** MobiData BW's
+  [bundled e-scooter dataset](https://mobidata-bw.de/dataset/escootch), under
+  the [Datenlizenz Deutschland Namensnennung 2.0](https://www.govdata.de/dl-de/by-2-0);
+  `system_information` has no `license_url`.
+- **Scooters:** Voi publishes range only (`current_range_meters`), no battery
+  percentage. Its rental links open Voi's app at the closest scooter, not at
+  this one. The two towns' scooters use Voi's Stuttgart price: EUR 0.49 to
+  start and EUR 0.24 a minute.
+- **Night rules:** the feed gives opening hours of `24/7`, and no zone carries
+  times. Böblingen's
+  [voluntary commitment for operators](https://www.boeblingen.de/site/Boeblingen-Internet/get/params_E-497274273/25086993/Selbstverpflichtungserkl%C3%A4rung%20Stadt%20B%C3%B6blingen%20mit%20Anlagen.pdf)
+  sets no-parking areas, groups of at most five scooters, at most 50 per
+  operator in the town centre and a complaints service, but no night ban. No rule on shared scooters was found for
+  Sindelfingen. No curfew was added.
+
 ## Italy, October 2026
 
 Bird Palermo and Bird Napoli are Bird's own GBFS 2.3 feeds, under the
@@ -197,8 +237,8 @@ origin and under its directory.
   Teramo, Modena and Reggio Emilia none at all.
 - German Lime Dresden and Oberhausen contained no available standing scooters;
   the Hamburg and older Stuttgart discovery URLs returned 404.
-- Voi's reviewed German proxy covers six cities in Baden-Württemberg; it is not
-  a nationwide Voi feed. Other operator/city combinations remain unverified.
+- Voi's reviewed German proxy covers eight cities in Baden-Württemberg; it is
+  not a nationwide Voi feed. Other operator/city combinations remain unverified.
 
 ## Sources and recheck
 
