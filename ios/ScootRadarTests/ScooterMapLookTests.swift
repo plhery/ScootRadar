@@ -553,6 +553,35 @@ final class ScooterMapLookTests: XCTestCase {
         XCTAssertEqual(withPass.note, "\(price(100)) to unlock, then \(price(42)) a minute · Pass applied")
     }
 
+    func testTheCardShowsForintsAndKronurWithoutDecimals() {
+        // Hopp in Pécs: HUF 272 to start and HUF 76 a minute.
+        let forints = ScooterRidePricing(currency: "HUF", unlockFeeMinorUnits: 27_200, minuteFeeMinorUnits: 7_600)
+        let content = ScooterCardContent(
+            scooter: scooter(provider: "hopp", pricing: forints),
+            metres: 60,
+            quote: RidePriceEstimator.quote(pricing: forints, durationMinutes: 10)
+        )
+        let separator = ScooterLanguage.current.locale.decimalSeparator ?? "."
+        let decimals = { (text: String) in text.contains(separator) }
+
+        XCTAssertEqual(content.figures[2].value.filter(\.isNumber), "1032")
+        XCTAssertFalse(decimals(content.figures[2].value), content.figures[2].value)
+        XCTAssertEqual(content.figures[2].label, "HUF, 10 min")
+        let unlock = RidePriceFormatter.string(minorUnits: 27_200, currency: "HUF")
+        let minute = RidePriceFormatter.string(minorUnits: 7_600, currency: "huf")
+        XCTAssertEqual(content.note, "\(unlock) to unlock, then \(minute) a minute")
+        XCTAssertTrue(unlock.contains("272") && !decimals(unlock), unlock)
+        XCTAssertTrue(minute.contains("76") && !decimals(minute), minute)
+
+        let kronur = RidePriceFormatter.string(minorUnits: 35_000, currency: "ISK")
+        XCTAssertTrue(kronur.contains("350") && !decimals(kronur), kronur)
+        XCTAssertEqual(
+            [RidePriceFormatter.fractionDigits("HUF"), RidePriceFormatter.fractionDigits("huf"),
+             RidePriceFormatter.fractionDigits("ISK"), RidePriceFormatter.fractionDigits("CHF")],
+            [0, 0, 0, 2]
+        )
+    }
+
     // MARK: The lead of the dock
 
     func testTheLeadNamesTheNearestScooterItsDistanceAndTheWalk() {

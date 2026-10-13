@@ -22,6 +22,7 @@ const COUNTRY_NAMES: Record<CoveredCountry, Record<GeocodeLanguage, string>> = {
   SE: { en: 'Sweden', de: 'Schweden', fr: 'Suède', it: 'Svezia', nl: 'Zweden', nb: 'Sverige', pt: 'Suécia', es: 'Suecia', is: 'Svíþjóð' },
   LV: { en: 'Latvia', de: 'Lettland', fr: 'Lettonie', it: 'Lettonia', nl: 'Letland', nb: 'Latvia', pt: 'Letónia', es: 'Letonia', is: 'Lettland' },
   PL: { en: 'Poland', de: 'Polen', fr: 'Pologne', it: 'Polonia', nl: 'Polen', nb: 'Polen', pt: 'Polónia', es: 'Polonia', is: 'Pólland' },
+  HU: { en: 'Hungary', de: 'Ungarn', fr: 'Hongrie', it: 'Ungheria', nl: 'Hongarije', nb: 'Ungarn', pt: 'Hungria', es: 'Hungría', is: 'Ungverjaland' },
 };
 
 // Typed beside a city to say which one is meant: "Lindau Deutschland".
@@ -40,6 +41,7 @@ const COUNTRY_WORDS: Record<CoveredCountry, string[]> = {
   SE: ['sweden', 'schweden', 'suede', 'svezia', 'zweden', 'sverige', 'suecia', 'svithjod'],
   LV: ['latvia', 'lettland', 'lettonie', 'lettonia', 'letland', 'letonia', 'latvija'],
   PL: ['poland', 'polen', 'pologne', 'polonia', 'polland', 'polska'],
+  HU: ['hungary', 'ungarn', 'hongrie', 'ungheria', 'hongarije', 'hungria', 'ungverjaland', 'magyarorszag'],
 };
 
 // What the Swiss cities are called in the other languages of the app, and how

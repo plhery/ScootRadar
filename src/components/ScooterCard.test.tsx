@@ -248,6 +248,14 @@ describe('ScooterCard', () => {
     expect(screen.getByRole('button', { name: 'Directions' })).toBeVisible();
   });
 
+  it('shows a price in forints or krónur without decimals', () => {
+    // Hopp in Pécs: HUF 272 to start and HUF 76 a minute.
+    renderCard({}, { provider: 'hopp', pricing: { currency: 'HUF', unlock_fee_minor_units: 27_200, minute_fee_minor_units: 7_600 } });
+
+    expect(figures()[2]).toEqual({ value: "1'032", label: 'HUF, 10 min', spoken: "≈ HUF 1'032 for 10 min" });
+    expect(screen.getByText('HUF 272 to unlock, then HUF 76 a minute')).toHaveClass('card-note');
+  });
+
   it('says so when unlocking costs nothing', () => {
     renderCard({}, { pricing: { currency: 'CHF', unlock_fee_minor_units: 0, minute_fee_minor_units: 45 } });
 

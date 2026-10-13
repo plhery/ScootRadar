@@ -324,3 +324,16 @@ noted for France above. Hopp links its privacy policy, not a licence. The
 map's credits name both under the GBFS line. See the
 [coverage audit](docs/polish-scooter-feeds.md) for the systems, the gaps and
 the recheck command.
+
+## Hungary
+
+The reviewed catalog lives in `data/hungarian-scooter-feeds.json`: 1 feed,
+Hopp in Pécs. It is Hopp's own public GBFS feed. It is not in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
+and answers at the address Hopp uses for its other towns. Hungary's national
+access point, [napportal.kozut.hu](https://napportal.kozut.hu/), lists no
+shared-mobility data.
+
+Hopp links its privacy policy, not a licence. The map's credits name it under
+the GBFS line. See the [coverage audit](docs/hungarian-scooter-feeds.md) for
+the systems, the gaps and the recheck command.

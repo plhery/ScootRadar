@@ -8,7 +8,7 @@ import { useI18n } from '@/lib/i18n';
 import { providerInkColor, providerSurfaceColor } from '@/lib/providerColor';
 import type { ActiveCurfew } from '@/lib/rentalCurfews';
 import { browserRentalLink } from '@/lib/rentalLinks';
-import { RIDE_DURATIONS, formatRidePrice, ridePriceQuote } from '@/lib/ridePrice';
+import { RIDE_DURATIONS, currencyFractionDigits, formatRidePrice, ridePriceQuote } from '@/lib/ridePrice';
 import { PROVIDERS, type Vehicle } from '@/lib/types';
 import { formatUiText } from '@/lib/uiText';
 import { useRideDuration } from '@/lib/useRideDuration';
@@ -159,10 +159,12 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
       );
     }
     if (kind === 'price' && quote) {
+      // "4.50" for francs, "1'032" for forints: the label beside it names the currency.
+      const digits = currencyFractionDigits(quote.currency);
       return (
         <Figure
           key={kind}
-          value={formatNumber(quote.totalMinorUnits / 100, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          value={formatNumber(quote.totalMinorUnits / 100, { minimumFractionDigits: digits, maximumFractionDigits: digits })}
           label={t('card.figure.price', { currency: quote.currency.toUpperCase(), minutes: formatNumber(duration) })}
           spoken={t('card.price', {
             price: money(quote.totalMinorUnits),

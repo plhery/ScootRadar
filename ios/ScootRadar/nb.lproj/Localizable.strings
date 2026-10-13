@@ -139,7 +139,7 @@
 
 /* UX alignment: outside coverage and filters with nothing to show */
 "No scooter data here yet" = "Ingen data om elsparkesykler her ennå";
-"ScootRadar covers selected cities in Belgium, France, Germany, Iceland, Italy, Latvia, Norway, Poland, Portugal, Spain, Sweden, Switzerland and the United Kingdom." = "ScootRadar dekker utvalgte byer i Belgia, Frankrike, Island, Italia, Latvia, Norge, Polen, Portugal, Spania, Storbritannia, Sveits, Sverige og Tyskland.";
+"ScootRadar covers selected cities in Belgium, France, Germany, Hungary, Iceland, Italy, Latvia, Norway, Poland, Portugal, Spain, Sweden, Switzerland and the United Kingdom." = "ScootRadar dekker utvalgte byer i Belgia, Frankrike, Island, Italia, Latvia, Norge, Polen, Portugal, Spania, Storbritannia, Sveits, Sverige, Tyskland og Ungarn.";
 "Closest cities" = "Nærmeste byer";
 "%1$@ · %2$@" = "%1$@ · %2$@";
 "1 scooter hidden by your filters" = "1 elsparkesykkel skjult av filtrene dine";

@@ -457,7 +457,7 @@ struct ScooterControlDock: View {
                 systemImage: "map",
                 tint: ScooterPalette.actionText,
                 title: String(localized: "No scooter data here yet"),
-                message: String(localized: "ScootRadar covers selected cities in Belgium, France, Germany, Iceland, Italy, Latvia, Norway, Poland, Portugal, Spain, Sweden, Switzerland and the United Kingdom.")
+                message: String(localized: "ScootRadar covers selected cities in Belgium, France, Germany, Hungary, Iceland, Italy, Latvia, Norway, Poland, Portugal, Spain, Sweden, Switzerland and the United Kingdom.")
             )
 
             VStack(alignment: .leading, spacing: 8) {
@@ -1491,13 +1491,20 @@ enum RidePriceFormatter {
             ?? "\(currency.uppercased()) \(amount.stringValue)"
     }
 
-    /// Two decimals, or none for a currency that has no cents: "ISK 350".
-    private static func fractionDigits(_ currency: String) -> Int {
+    /// Two decimals, or none for a currency that has no cents: "ISK 350", "HUF 272".
+    static func fractionDigits(_ currency: String) -> Int {
+        let code = currency.uppercased()
+        if wholeUnitCurrencies.contains(code) { return 0 }
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
-        formatter.currencyCode = currency.uppercased()
+        formatter.currencyCode = code
         return formatter.maximumFractionDigits == 0 ? 0 : 2
     }
+
+    /// Forints are written whole: the fillér left circulation in 1999, yet ISO
+    /// 4217 still gives HUF two decimals, and some systems follow it ("HUF 272.00").
+    /// src/lib/ridePrice.ts lists the same.
+    private static let wholeUnitCurrencies: Set<String> = ["HUF"]
 }
 
 /// Filters: a minimum battery and the providers to show. Choices apply at
@@ -1979,7 +1986,7 @@ struct ScooterCreditsList: View {
                 url: URL(string: "https://www.mobidata-bw.de/")!
             ),
             Source(
-                title: "DE/IT/BE/UK/PT/ES/IS/SE/LV/PL: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy, Ride Mobility",
+                title: "DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy, Ride Mobility",
                 url: URL(string: "https://github.com/MobilityData/gbfs")!
             ),
             Source(

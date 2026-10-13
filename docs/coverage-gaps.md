@@ -146,6 +146,30 @@ banned shared scooters, and feeds that were empty when checked.
   - The national access point register (dane.gov.pl dataset 1739) links
     Bolt's and blinkee's websites, with no API; its only GBFS feed is MEVO's
     bikes.
+- **Hungary** ([guide](hungarian-scooter-feeds.md#known-gaps)): Hopp in Pécs
+  is covered.
+  - Budapest has no scooter on the map. Lime (Budapest and 16 other places,
+    Szeged, Eger, Sopron and Veszprém among them) and Dott (Budapest, Győr,
+    Miskolc, Siófok and four other towns) publish no public feed: Dott's 8
+    Hungarian regions in the registry answer 404, its Hungarian listing names
+    none, and Lime's address answers 404 for each town tried. blinkee (2
+    towns) publishes nothing either, and Bolt runs taxis only in Hungary.
+  - Hopp Békéscsaba listed 140 available scooters, but none moved, left or
+    came back between 09:33 and 10:27 on a Tuesday, while Pécs had rides;
+    check it on an afternoon or a weekend, and add it if its scooters are
+    ridden. Hopp Gyula's feed answers but held no scooter at night or by day,
+    and Hopp's site doesn't list it. Of 57 other Hungarian towns tried at
+    Hopp's address, none answered.
+  - Budapest's 7th district (Erzsébetváros) voted in April 2025 that rental
+    e-devices may not be used from 22:00 to 06:00 inside Károly körút, Király
+    utca, Erzsébet körút and Rákóczi út
+    ([resolution 149/2025](https://www.erzsebetvaros.hu/uploads/files/php2YGu2i-1746011602-2025_04_29_KT_kivonat_ny%C3%ADlt.pdf);
+    [Infostart](https://infostart.hu/belfold/2025/05/16/sebessegsapka-uj-tilalmak-es-egyeb-szabalyok-erzsebetvarosban),
+    16 May 2025, press). It sets terms for the district's future contracts;
+    no report says it is enforced. Check it before adding Budapest.
+  - MOL Bubi and Donkey Republic are bikes only. The national access point
+    (napportal.kozut.hu) lists timetables and road data, no shared mobility,
+    and BKK's FUTÁR API needs a key and carries bike stations, not scooters.
 
 ## Countries not covered yet
 
@@ -159,7 +183,6 @@ checks before relying on a count.
 
 | Country | Scooters | Feeds |
 | --- | ---: | --- |
-| Hungary | ~380 | Hopp Pécs and Békéscsaba |
 | Greece | ~320 | Hopp Rhodes, Piraeus, Kefalonia, Nafplio and Ioannina |
 | Cyprus | ~100 | Hopp Paphos and Limassol |
 | Finland | ~40 | Hopp Mariehamn, on Åland |

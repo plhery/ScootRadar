@@ -307,6 +307,7 @@ enum ScooterProviderCoverage {
         (.dott, GeoBounds(south: 52.392, west: 21.149, north: 52.4303, east: 21.2185)),
         (.hopp, GeoBounds(south: 50.1984, west: 18.6242, north: 50.2455, east: 18.6968)),
         (.hopp, GeoBounds(south: 53.3449, west: 17.0006, north: 53.3832, east: 17.0833)),
+        (.hopp, GeoBounds(south: 46.0199, west: 18.1584, north: 46.0962, east: 18.2795)),
     ]
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
@@ -526,6 +527,7 @@ enum ScooterCityCatalog {
         ScooterCity(id: "pl:Radzymin", name: "Radzymin", countryCode: "PL", center: GeoPoint(latitude: 52.4176, longitude: 21.1808), bounds: GeoBounds(south: 52.392, west: 21.149, north: 52.4303, east: 21.2185)),
         ScooterCity(id: "pl:Knurów", name: "Knurów", countryCode: "PL", center: GeoPoint(latitude: 50.2217, longitude: 18.6707), bounds: GeoBounds(south: 50.1984, west: 18.6242, north: 50.2455, east: 18.6968)),
         ScooterCity(id: "pl:Złotów", name: "Złotów", countryCode: "PL", center: GeoPoint(latitude: 53.3632, longitude: 17.0347), bounds: GeoBounds(south: 53.3449, west: 17.0006, north: 53.3832, east: 17.0833)),
+        ScooterCity(id: "hu:Pécs", name: "Pécs", countryCode: "HU", center: GeoPoint(latitude: 46.0765, longitude: 18.228), bounds: GeoBounds(south: 46.0199, west: 18.1584, north: 46.0962, east: 18.2795)),
     ]
 
     /// Cities by distance from the point to their centre, nearest first.

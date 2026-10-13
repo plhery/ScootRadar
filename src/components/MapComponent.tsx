@@ -1088,7 +1088,8 @@ export default function MapComponent({
   // On a phone a card opens in the dock, which grows and lifts the controls that
   // sit on it. What the visitor picked, a scooter, a bay or a searched place, must
   // not end up underneath: once the dock has settled, the map moves up by just
-  // what is needed. A place counts as just picked until the map is dragged; after
+  // what is needed, and sideways too where a tall card leaves too little room
+  // above it to clear the controls. A place counts as just picked until the map is dragged; after
   // that the map does not move by itself for it again. Declared after the effects
   // that draw the markers.
   useEffect(() => {
@@ -1113,10 +1114,11 @@ export default function MapComponent({
           .filter((box): box is DOMRect => box !== undefined && box.height > 0),
         ceiling: Math.max(area.top, ...above.map(box => box?.bottom ?? 0)),
         floor: area.bottom,
+        sides: { left: area.left, right: area.right },
       });
-      if (shift === 0) return;
+      if (shift.x === 0 && shift.y === 0) return;
       const size = map.getSize();
-      map.panTo(map.containerPointToLatLng(L.point(size.x / 2, size.y / 2 + shift)), {
+      map.panTo(map.containerPointToLatLng(L.point(size.x / 2 - shift.x, size.y / 2 + shift.y)), {
         animate: !prefersReducedMotion(),
         duration: 0.25,
       });

@@ -431,6 +431,8 @@ enum ScooterCityGrouping {
         "lv": (56.9, 24.6),
         // About the middle of the country, near Łódź.
         "pl": (52.1, 19.4),
+        // About the middle of the country, south-east of Budapest.
+        "hu": (47.2, 19.5),
     ]
 
     /// Zoomed out to a continent, one total per country, never two countries in one;

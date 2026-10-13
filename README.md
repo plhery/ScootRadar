@@ -5,7 +5,7 @@
 <h1 align="center">ScootRadar</h1>
 
 <p align="center">
-  A friendly map for finding shared e-scooters in Switzerland and selected cities in France, Germany, Italy, Belgium, Norway, the United Kingdom, Portugal, Spain, Iceland, Sweden, Latvia and Poland.
+  A friendly map for finding shared e-scooters in Switzerland and selected cities in France, Germany, Italy, Belgium, Norway, the United Kingdom, Portugal, Spain, Iceland, Sweden, Latvia, Poland and Hungary.
 </p>
 
 <p align="center">
@@ -63,6 +63,8 @@ Latvia adds 1 feed: Ride Mobility in Rīga. See the
 Poland adds 5 feeds across 7 towns: Dott in Sosnowiec, Oświęcim, and Wołomin
 with Kobyłka and Radzymin, and Hopp in Knurów and Złotów. See the
 [Polish feed audit](docs/polish-scooter-feeds.md).
+Hungary adds 1 feed: Hopp in Pécs. See the
+[Hungarian feed audit](docs/hungarian-scooter-feeds.md).
 What is not covered yet, and why, is listed in
 [Coverage gaps](docs/coverage-gaps.md).
 

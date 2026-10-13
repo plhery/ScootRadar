@@ -4,6 +4,7 @@ const requested = process.argv.find(arg => arg.startsWith('--countries='))?.spli
 const catalogs = {
   FR: 'french', DE: 'german', IT: 'italian', BE: 'belgian', NO: 'norwegian', GB: 'british',
   PT: 'portuguese', ES: 'spanish', IS: 'icelandic', SE: 'swedish', LV: 'latvian', PL: 'polish',
+  HU: 'hungarian',
 };
 if (requested.some(country => !catalogs[country])) throw new Error(`Use --countries=${Object.keys(catalogs).join(',')}`);
 // --fail-on=gone fails the run only for an entry its operator no longer serves, as the weekly workflow does.

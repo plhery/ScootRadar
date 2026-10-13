@@ -1,0 +1,27 @@
+{
+  "verifiedOn": "2026-10-13",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "hopp_hu_pecs",
+      "country": "HU",
+      "provider": "hopp",
+      "city": "Pécs",
+      "center": [
+        46.0765,
+        18.228
+      ],
+      "bounds": {
+        "south": 46.0199,
+        "north": 46.0962,
+        "west": 18.1584,
+        "east": 18.2795
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/hu-pecs/gbfs.json",
+      "aliases": [
+        "Pecs",
+        "Fünfkirchen"
+      ]
+    }
+  ]
+}

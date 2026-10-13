@@ -3,6 +3,7 @@ import {
   DEFAULT_RIDE_DURATION,
   RIDE_DURATIONS,
   RIDE_DURATION_STORAGE_KEY,
+  currencyFractionDigits,
   formatRidePrice,
   loadRideDuration,
   normalizeRideDuration,
@@ -79,6 +80,27 @@ describe('formatRidePrice', () => {
   it('accepts a lower-case code and survives one that is not a currency', () => {
     expect(plain(formatRidePrice(450, 'chf', 'en'))).toBe('CHF 4.50');
     expect(formatRidePrice(450, 'francs', 'en')).toBe('FRANCS 4.50');
+    expect(currencyFractionDigits('francs')).toBe(2);
+  });
+
+  it('shows the króna and the forint without decimals', () => {
+    expect(plain(formatRidePrice(35000, 'ISK', 'en'))).toBe('ISK 350');
+    // Hopp in Pécs: HUF 272 to start and HUF 76 a minute.
+    expect(plain(formatRidePrice(27200, 'HUF', 'en'))).toBe('HUF 272');
+    expect(plain(formatRidePrice(7600, 'huf', 'fr'))).toBe('76 HUF');
+    expect(plain(formatRidePrice(103200, 'HUF', 'de'))).toBe("HUF 1'032");
+    expect([currencyFractionDigits('ISK'), currencyFractionDigits('HUF'), currencyFractionDigits('huf')]).toEqual([0, 0, 0]);
+  });
+
+  it('shows whole forints even where Intl gives HUF two decimals, as Safari does', () => {
+    // WebKit follows ISO 4217, which still lists the fillér; Chrome and Node don't.
+    const resolvedOptions = Intl.NumberFormat.prototype.resolvedOptions;
+    vi.spyOn(Intl.NumberFormat.prototype, 'resolvedOptions').mockImplementation(function (this: Intl.NumberFormat) {
+      return { ...resolvedOptions.call(this), maximumFractionDigits: 2 };
+    });
+    expect(currencyFractionDigits('HUF')).toBe(0);
+    expect(plain(formatRidePrice(27200, 'HUF', 'en'))).toBe('HUF 272');
+    expect(plain(formatRidePrice(450, 'CHF', 'en'))).toBe('CHF 4.50');
   });
 });
 

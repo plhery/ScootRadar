@@ -391,6 +391,31 @@ test('scooter card shows the walk, the battery and a ride estimate whose duratio
   await expect(page.locator('.dock-card').getByText(/for 20 min/)).toHaveText(/^≈ CHF\s8\.00 for 20 min$/);
 });
 
+test('a price in forints is in whole forints, in Safari too', async ({ page }) => {
+  // Hopp in Pécs: HUF 272 to start and HUF 76 a minute. WebKit gives the forint
+  // the two decimals of ISO 4217, which nobody in Hungary writes.
+  const hopp = { ...scooterResponse.vehicles[0], provider: 'hopp', vehicle_id: 'hopp-1', rental_uris: undefined,
+    pricing: { currency: 'HUF', unlock_fee_minor_units: 27_200, minute_fee_minor_units: 7_600 } };
+  await page.route('**/api/scooters?**', route => {
+    const zoom = Number(new URL(route.request().url()).searchParams.get('zoom'));
+    if (zoom <= 15) return route.fallback();
+    return route.fulfill({ json: {
+      ...scooterResponse, vehicles: [hopp], providers: { hopp: 1 },
+      meta: { ...scooterResponse.meta, totalVehicles: 1, mode: 'vehicles', zoom },
+    } });
+  });
+  await page.goto('/map');
+  await focusFixtureArea(page);
+  await zoomTo(page, 16);
+  await page.getByRole('button', { name: 'Hopp scooter', exact: true }).click();
+
+  const card = page.locator('.dock-card');
+  await expect(card.locator('.card-figure strong')).toHaveText(['82%', '14km', /^1['’]032$/]);
+  await expect(card.locator('.card-figure-label')).toHaveText(['battery', 'range', 'HUF, 10 min']);
+  await expect(card.locator('.card-note')).toHaveText(/^HUF\s272 to unlock, then HUF\s76 a minute$/);
+  await expect(card.getByText(/for 10 min/)).toHaveText(/^≈ HUF\s1['’]032 for 10 min$/);
+});
+
 test('a refresh that fails keeps the scooters, says so in the dock and recovers with Try again', async ({ page }) => {
   let fail = false;
   await page.route('**/api/scooters?**', async route => {
@@ -544,7 +569,7 @@ test('an area without scooter data offers the closest cities and makes the one c
   await page.goto('/map?origin=46.7741,8.1558');
   const dock = page.locator('.sheet');
   await expect(dock.getByRole('heading', { name: 'No scooter data here yet' })).toBeVisible();
-  await expect(dock.getByText('ScootRadar covers selected cities in Belgium, France, Germany, Iceland, Italy, Latvia, Norway, Poland, Portugal, Spain, Sweden, Switzerland and the United Kingdom.')).toBeVisible();
+  await expect(dock.getByText('ScootRadar covers selected cities in Belgium, France, Germany, Hungary, Iceland, Italy, Latvia, Norway, Poland, Portugal, Spain, Sweden, Switzerland and the United Kingdom.')).toBeVisible();
   await expect(page.locator('.sheet-count')).toHaveCount(0);
   await expect(page.getByRole('group', { name: 'Filter scooters by provider' })).toHaveCount(0);
   const cities = dock.getByRole('group', { name: 'Closest cities' }).getByRole('button');

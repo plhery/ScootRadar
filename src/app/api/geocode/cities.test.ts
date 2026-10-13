@@ -92,7 +92,7 @@ describe('searchCoveredCities', () => {
     // src/lib/places.ts asks Intl.DisplayNames; a typed city and a chip must read the same.
     for (const language of GEOCODE_LANGUAGES) {
       const regions = new Intl.DisplayNames(`${language}-CH`, { type: 'region' });
-      for (const [query, country] of [['Zürich', 'CH'], ['Lyon', 'FR'], ['Berlin', 'DE'], ['Roma', 'IT'], ['Uppsala', 'SE'], ['Rīga', 'LV'], ['Sosnowiec', 'PL']]) {
+      for (const [query, country] of [['Zürich', 'CH'], ['Lyon', 'FR'], ['Berlin', 'DE'], ['Roma', 'IT'], ['Uppsala', 'SE'], ['Rīga', 'LV'], ['Sosnowiec', 'PL'], ['Pécs', 'HU']]) {
         expect(searchCoveredCities(query, language)[0].subtitle, `${country} in ${language}`).toBe(regions.of(country));
       }
     }

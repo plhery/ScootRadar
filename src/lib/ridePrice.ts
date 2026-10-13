@@ -39,14 +39,30 @@ export function ridePriceQuote(pricing: RidePricing, durationMinutes: number): R
   };
 }
 
+// Forints are written whole: the fillér left circulation in 1999, yet ISO 4217
+// still gives HUF two decimals, and Safari follows it ("HUF 272.00") where
+// Chrome doesn't. RidePriceFormatter in ScooterControls.swift lists the same.
+const WHOLE_UNIT_CURRENCIES = new Set(['HUF']);
+
+/** Two decimals, or none for a currency that has no cents: "ISK 350", "HUF 272". */
+export function currencyFractionDigits(currency: string): 0 | 2 {
+  const code = currency.toUpperCase();
+  if (WHOLE_UNIT_CURRENCIES.has(code)) return 0;
+  try {
+    return new Intl.NumberFormat('en', { style: 'currency', currency: code })
+      .resolvedOptions().maximumFractionDigits === 0 ? 0 : 2;
+  } catch {
+    // Not a currency code Intl accepts.
+    return 2;
+  }
+}
+
 /** "CHF 4.50" in the app's locale; minor units are hundredths, as on iOS. */
 export function formatRidePrice(minorUnits: number, currency: string, locale: AppLocale): string {
   const amount = minorUnits / 100;
   const code = currency.toUpperCase();
   try {
-    // Two decimals, or none for a currency that has no cents: "ISK 350".
-    const digits = new Intl.NumberFormat('en', { style: 'currency', currency: code })
-      .resolvedOptions().maximumFractionDigits === 0 ? 0 : 2;
+    const digits = currencyFractionDigits(code);
     return new Intl.NumberFormat(`${locale}-CH`, {
       style: 'currency',
       currency: code,
