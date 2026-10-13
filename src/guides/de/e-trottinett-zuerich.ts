@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Trottinett Zürich: Anbieter, Preise, Sperrzonen und wo du parkierst',
   lede: 'Ein E-Trottinett in Zürich mietest du in der App von Lime, Bolt, Bird, Voi, Dott, Hopp oder PubliBike: QR-Code scannen, entsperren und auf dem Velostreifen losfahren, mit höchstens 20 km/h. Zehn Minuten kosten bei PubliBike CHF 3.– (CHF 1.– plus 20 Rappen pro Minute, Stand Oktober 2026), bei Bolt und Voi CHF 5.20 (CHF 1.– plus 42 Rappen, veröffentlichte Tarife vom 12. Oktober 2026). In der Altstadt und auf dem Bahnhofplatz kannst du die Fahrt nicht beenden: Parkiere in einer Parkierzone der App oder ausserhalb der Parkverbotszone.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-13',
   city: 'ch:zurich',
   sections: [
     {
@@ -39,21 +39,23 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Trottinett in Zürich?',
       blocks: [
-        'Du zahlst eine Gebühr fürs Entsperren und einen Minutenpreis. Bolt, Hopp und Voi veröffentlichen ihre Tarife in offenen Datenfeeds; die Tabelle zeigt sie mit Stand vom 12. Oktober 2026, dazu den Tarif von PubliBike aus seiner eigenen Preisliste. Je nach Zone und Tageszeit können die Preise abweichen; den Endpreis zeigt die App vor der Fahrt.',
+        'Du zahlst eine Gebühr fürs Entsperren und einen Minutenpreis. Bolt, Hopp, Voi, Dott und Lime veröffentlichen ihre Tarife in offenen Datenfeeds; die Tabelle zeigt sie mit Stand vom 12. Oktober 2026 (Dott und Lime vom 13. Oktober), dazu den Tarif von PubliBike aus seiner eigenen Preisliste. Je nach Zone und Tageszeit können die Preise abweichen; den Endpreis zeigt die App vor der Fahrt.',
         {
           table: {
-            caption: 'Veröffentlichte Tarife für E-Trottinette in Zürich (Feeds vom 12. Oktober 2026; PubliBike: publibike.ch, Oktober 2026)',
+            caption: 'Veröffentlichte Tarife für E-Trottinette in Zürich (Feeds vom 12. und 13. Oktober 2026; PubliBike: publibike.ch, Oktober 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten'],
             rows: [
               ['PubliBike (publibike.ch, Oktober 2026)', 'CHF 1.–', '20 Rappen', 'CHF 3.–'],
               ['Hopp', 'CHF 1.–', '40 Rappen', 'CHF 5.–'],
+              ['Dott', '95 Rappen', '41 Rappen', 'CHF 5.05'],
               ['Bolt', 'CHF 1.–', '42 Rappen (einzelne zu 48 Rappen)', 'CHF 5.20'],
               ['Voi', 'CHF 1.–', '42 Rappen (einige zu 39 Rappen)', 'CHF 5.20'],
-              ['Lime, Bird, Dott', 'nicht veröffentlicht', 'nicht veröffentlicht', 'Tarif in der App'],
+              ['Lime', 'CHF 1.–', '49 Rappen (einige zu 42 Rappen)', 'CHF 5.90'],
+              ['Bird', 'nicht veröffentlicht', 'nicht veröffentlicht', 'Tarif in der App'],
             ],
           },
         },
-        'Lime, Bird und Dott veröffentlichen keine Tarife: Den Preis siehst du in ihrer App, bevor du entsperrst. Das Jahresabo von PubliBike für CHF 69.– macht seine E-Trottinette nicht günstiger. Eine durchschnittliche Fahrt ist in Zürich rund 1,5 km lang und dauert etwa 10 Minuten, sagt der Chef der städtischen Verkehrssicherheit. Wie Zürich im Vergleich zu anderen Städten abschneidet, steht unter [E-Trottinett-Preise in der Schweiz](guide:swiss-prices).',
+        'Bird veröffentlicht keine Tarife: Den Preis siehst du in der App, bevor du entsperrst. Lime kennzeichnet seine Tarife im Feed als Preise ohne Steuern, darum schätzt die Karte bei Lime keinen Preis; den Endpreis zeigt die App. Das Jahresabo von PubliBike für CHF 69.– macht seine E-Trottinette nicht günstiger. Eine durchschnittliche Fahrt ist in Zürich rund 1,5 km lang und dauert etwa 10 Minuten, sagt der Chef der städtischen Verkehrssicherheit. Wie Zürich im Vergleich zu anderen Städten abschneidet, steht unter [E-Trottinett-Preise in der Schweiz](guide:swiss-prices).',
       ],
     },
     {

@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Are e-scooters legal in the UK? What you can ride, where, and what it costs if you get it wrong',
   lede: 'E-scooters are legal in the UK only as rentals in an official trial area. A privately owned e-scooter is illegal on public roads, pavements and cycle lanes and in parks; you may ride it only on private land with the landowner’s permission. The rental trials run in 21 areas, all in England, until May 2028, and you need a full or provisional driving licence to ride. As of 12 October 2026 the government has promised a new law but has not put a bill before Parliament.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-13',
   sections: [
     {
       heading: 'Are e-scooters legal in the UK? Private vs rental',
@@ -136,7 +136,7 @@ const guide: Guide = {
     {
       heading: 'London: the TfL e-scooter trial',
       blocks: [
-        'London’s trial began on 7 June 2021. Transport for London runs it with London Councils and the boroughs taking part, and since Dott left in April 2024 the operators have been **Lime** and **Voi**. TfL’s own page still describes the trial’s second phase, but trade press reported in late September 2026 that a third phase had begun with the same two operators. You can hire a scooter in Camden, the City of London, Ealing, Hammersmith and Fulham, Kensington and Chelsea, Lambeth, Richmond upon Thames, Southwark, Tower Hamlets (with limited parking at Canary Wharf and some TfL stations), Wandsworth and Westminster.',
+        'London’s trial began on 7 June 2021. Transport for London runs it with London Councils and the boroughs taking part, and since Dott left in April 2024 the operators have been **Lime** and **Voi**. A third phase began in September 2026, again with Lime and Voi, under contracts TfL signed on 24 July 2026. You can hire a scooter in Camden, the City of London, Ealing, Hammersmith and Fulham, Kensington and Chelsea, Lambeth, Richmond upon Thames, Southwark, Tower Hamlets (with limited parking at Canary Wharf and some TfL stations), Wandsworth and Westminster.',
         {
           list: [
             'Top speed is capped at **12.5 mph**, below the national 15.5 mph.',
@@ -216,6 +216,7 @@ const guide: Guide = {
     { title: 'Crime and Policing Act 2026, section 8', url: 'https://www.legislation.gov.uk/ukpga/2026/20/section/8/enacted' },
     { title: 'GOV.UK: The drink drive limit', url: 'https://www.gov.uk/drink-drive-limit' },
     { title: 'Transport for London: E-scooter rental trial', url: 'https://tfl.gov.uk/modes/driving/electric-scooter-rental-trial' },
+    { title: 'Find a Tender: TfL contract details notice, E-scooter trial phase 3 (17 September 2026)', url: 'https://www.find-tender.service.gov.uk/Notice/088384-2026' },
   ],
 };
 

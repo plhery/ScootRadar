@@ -10,15 +10,15 @@ const guide: Guide = {
   headline: 'E-Trottinett Basel: Anbieter, Preise, Sperrzonen und Parkieren am Rhein',
   lede: 'Ein E-Trottinett in Basel mietest du in der App von Lime, Voi, Dott, Bird, Bolt oder Hopp: QR-Code scannen, entsperren und auf dem Velostreifen losfahren. Zehn Minuten kosten CHF 4.85 bis 5.60: 95 Rappen oder CHF 1.– fürs Entsperren plus 39 bis 46 Rappen pro Minute (veröffentlichte Tarife vom 12. Oktober 2026). In der Altstadt, etwa auf dem Marktplatz oder in der Freien Strasse, bremst das Trotti bis zum Stillstand, und auf den Rheinbrücken kannst du die Fahrt nicht beenden. Nach Deutschland, nach Frankreich und an den EuroAirport kommst du damit nicht.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-13',
   city: 'ch:basel',
   sections: [
     {
       heading: 'Welche E-Trottinett-Anbieter gibt es in Basel?',
       blocks: [
-        'In Basel mietest du E-Trottinette von sechs Marken: Lime, Voi, Dott (früher Tier), Bird, Bolt und seit dem 17. März 2026 auch Hopp. ScootRadar zeigt fünf davon. **Hopp fehlt auf der Karte**, seine Trottis findest du nur in der Hopp-App. Schweizer Nutzungsbedingungen von Hopp haben wir nicht gefunden; Mindestalter und Versicherung prüfst du darum in der App.',
+        'In Basel mietest du E-Trottinette von sechs Marken: Lime, Voi, Dott (früher Tier), Bird, Bolt und seit dem 17. März 2026 auch Hopp. ScootRadar zeigt alle sechs. Schweizer Nutzungsbedingungen von Hopp haben wir nicht gefunden; Mindestalter und Versicherung prüfst du darum in der Hopp-App.',
         'Eine Bewilligung braucht in Basel kein Anbieter, und Gebühren zahlt keiner. Seit Oktober 2025 muss sich aber jeder an die Nutzungsordnung des Kantons halten: im Monatsmittel höchstens **200 Velos oder Trottis pro Anbieter** auf öffentlichem Grund der Stadt und ein Foto des parkierten Trottis am Ende jeder Fahrt. Wer die Regeln wiederholt bricht, riskiert, dass der Kanton die ganze Flotte vom öffentlichen Grund verbannt.',
-        'Am Morgen des 12. Oktober 2026 zeigte die [Karte rund um Basel](map:ch:basel) etwa 1300 Fahrzeuge von Lime, Voi, Dott, Bird und Bolt, Riehen und die Vororte eingerechnet. So kommst du zu deinem Trotti:',
+        'Am Morgen des 12. Oktober 2026 zeigte die [Karte rund um Basel](map:ch:basel) etwa 1300 Fahrzeuge von Lime, Voi, Dott, Bird und Bolt, Riehen und die Vororte eingerechnet; dazu kamen rund 220 von Hopp. So kommst du zu deinem Trotti:',
         {
           steps: [
             'Das nächste Trotti auf der [Live-Karte von Basel](map:ch:basel) suchen und die App des Anbieters öffnen.',

@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Trottinett-Regeln in der Schweiz: wer E-Scooter fahren darf, wo und was eine Busse kostet',
   lede: 'Die E-Trottinett-Regeln der Schweiz kurz gesagt: Ein E-Trottinett oder E-Scooter ist ein Leicht-Motorfahrrad, dessen Motor bis 20 km/h unterstützt, und braucht weder Kontrollschild noch Vignette noch eine obligatorische Versicherung. Fahren darfst du ab 16 ohne Führerausweis, mit 14 und 15 nur mit dem Ausweis der Kategorie M, und zwar auf dem Velostreifen oder der Strasse, nie auf dem Trottoir; mieten kannst du erst ab 18. Stand Oktober 2026 gibt es keine Helmpflicht, das Licht muss auch tagsüber brennen, zu zweit fahren ist verboten, und die Promillegrenze liegt bei 0,5.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-13',
   sections: [
     {
       heading: 'Ist das E-Trottinett in der Schweiz erlaubt? Die Regeln im Überblick',
@@ -153,7 +153,7 @@ const guide: Guide = {
           ],
         },
         'Diese Versicherung ist dünner, als sie aussieht. Bei Lime, Bolt und Voi ist die Haftpflicht **subsidiär**: Sie zahlt erst nach deiner eigenen Privathaftpflicht. Dotts zuletzt veröffentlichte Deckung zahlte nur über deine anderen Versicherungen hinaus, PubliBike versichert gar nichts. Zu den Polizeibussen kommen Gebühren: Voi kann nach Verwarnungen CHF 25.– fürs falsche Parkieren verlangen, Bolt bis CHF 100.– fürs Abholen eines Scooters ausserhalb des Gebiets.',
-        'Welche Anbieter in deiner Nähe Scooter haben, siehst du auf der Karte in [Zürich](map:ch:zurich), [Bern](map:ch:bern) oder [Basel](map:ch:basel): ScootRadar zeigt die Anbieter, die ihre Standorte veröffentlichen (in Basel noch ohne Hopp), mit Akku und Gehzeit, und öffnet zum Entsperren und Bezahlen die App des Anbieters. Was eine Fahrt kostet, steht im Ratgeber [E-Trottinett-Preise in der Schweiz](guide:swiss-prices), was in den Städten gilt, in den Ratgebern zu [Zürich](guide:zurich), [Bern](guide:bern) und [Basel](guide:basel).',
+        'Welche Anbieter in deiner Nähe Scooter haben, siehst du auf der Karte in [Zürich](map:ch:zurich), [Bern](map:ch:bern) oder [Basel](map:ch:basel): ScootRadar zeigt die Anbieter, die ihre Standorte veröffentlichen, mit Akku und Gehzeit, und öffnet zum Entsperren und Bezahlen die App des Anbieters. Was eine Fahrt kostet, steht im Ratgeber [E-Trottinett-Preise in der Schweiz](guide:swiss-prices), was in den Städten gilt, in den Ratgebern zu [Zürich](guide:zurich), [Bern](guide:bern) und [Basel](guide:basel).',
         '**Zu Besuch aus dem Ausland?** Ab 16 darfst du ohne Führerausweis fahren, egal woher du kommst, und die Schweizer Bedingungen der Anbieter verlangen keinen Wohnsitz in der Schweiz. Für 14- und 15-Jährige konnten wir nicht bestätigen, dass ein ausländischer Mofa-Ausweis die Kategorie M ersetzt; verlass dich nicht darauf.',
       ],
     },

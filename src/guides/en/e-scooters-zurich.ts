@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Zürich: operators, prices, no-go zones and parking',
   lede: 'To rent an e-scooter in Zürich, open the app of Lime, Bolt, Bird, Voi, Dott, Hopp or PubliBike, scan a scooter and ride on the bike lane at up to 20 km/h. Ten minutes cost CHF 3.00 with PubliBike (CHF 1.00 plus CHF 0.20 a minute, October 2026) and CHF 5.20 with Bolt or Voi (CHF 1.00 plus CHF 0.42, published rates on 12 October 2026). You can’t end a ride in the Old Town or on the station forecourt, so park in a parking zone shown in the app or outside the no-parking area.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-13',
   city: 'ch:zurich',
   sections: [
     {
@@ -39,21 +39,23 @@ const guide: Guide = {
     {
       heading: 'What does an e-scooter cost in Zürich?',
       blocks: [
-        'You pay an unlock fee plus a price per minute. Bolt, Hopp and Voi publish their rates in open data feeds; the table shows them as they stood on 12 October 2026, with PubliBike’s rate from its own price page. Rates can vary by zone and time, and the app shows the final price before you ride.',
+        'You pay an unlock fee plus a price per minute. Bolt, Hopp, Voi, Dott and Lime publish their rates in open data feeds; the table shows them as they stood on 12 October 2026 (Dott’s and Lime’s on 13 October), with PubliBike’s rate from its own price page. Rates can vary by zone and time, and the app shows the final price before you ride.',
         {
           table: {
-            caption: 'Published e-scooter rates in Zürich (feeds on 12 October 2026; PubliBike: publibike.ch, October 2026)',
+            caption: 'Published e-scooter rates in Zürich (feeds on 12 and 13 October 2026; PubliBike: publibike.ch, October 2026)',
             head: ['Operator', 'Unlock', 'Per minute', '10 minutes'],
             rows: [
               ['PubliBike (publibike.ch, October 2026)', 'CHF 1.00', 'CHF 0.20', 'CHF 3.00'],
               ['Hopp', 'CHF 1.00', 'CHF 0.40', 'CHF 5.00'],
+              ['Dott', 'CHF 0.95', 'CHF 0.41', 'CHF 5.05'],
               ['Bolt', 'CHF 1.00', 'CHF 0.42 (a few at CHF 0.48)', 'CHF 5.20'],
               ['Voi', 'CHF 1.00', 'CHF 0.42 (some at CHF 0.39)', 'CHF 5.20'],
-              ['Lime, Bird, Dott', 'Not published', 'Not published', 'Rate shown in their app'],
+              ['Lime', 'CHF 1.00', 'CHF 0.49 (some at CHF 0.42)', 'CHF 5.90'],
+              ['Bird', 'Not published', 'Not published', 'Rate shown in its app'],
             ],
           },
         },
-        'Lime, Bird and Dott publish no rates, so check the price in their app before you unlock. PubliBike’s CHF 69 yearly subscription doesn’t lower its e-scooter rate. The average Zürich rental ride is about 1.5 km and 10 minutes long, says the city’s head of traffic safety. To compare with other Swiss cities, see [e-scooter prices in Switzerland](guide:swiss-prices).',
+        'Bird publishes no rates, so check its price in the app before you unlock. Lime’s feed marks its rates as excluding tax, so the map gives no estimate for Lime; its app shows the final price. PubliBike’s CHF 69 yearly subscription doesn’t lower its e-scooter rate. The average Zürich rental ride is about 1.5 km and 10 minutes long, says the city’s head of traffic safety. To compare with other Swiss cities, see [e-scooter prices in Switzerland](guide:swiss-prices).',
       ],
     },
     {

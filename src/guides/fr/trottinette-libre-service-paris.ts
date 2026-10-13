@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trottinette en libre-service à Paris : interdite depuis 2023, que louer à la place ?',
   lede: 'Il n’y a plus de trottinette en libre-service à Paris depuis le 1er septembre 2023 : à la votation du 2 avril 2023, 89,03 % des votants ont dit « contre », avec 7,46 % de participation. À la place, prenez un Vélib’ (3 € le trajet de 45 minutes) ou un vélo électrique Lime, Dott ou Voi (0,29 € la minute chez Voi, sans frais de déverrouillage, tarif publié le 12 octobre 2026). Les trottinettes en libre-service les plus proches roulent en grande banlieue, autour de Versailles, à Saint-Quentin-en-Yvelines ou à Marne-la-Vallée, casque obligatoire. Votre propre trottinette reste permise dans Paris, avec casque et gilet à toute heure depuis le 7 août 2026.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-13',
   city: 'fr:Versailles Grand Parc',
   sections: [
     {
@@ -100,7 +100,7 @@ const guide: Guide = {
             '**Évry-Courcouronnes** : Pony, depuis mars 2022.',
           ],
         },
-        { note: 'Prévoyez votre casque. Dans les Yvelines (environs de Versailles, Saint-Quentin, Seine et Oise), le casque et le gilet ou un équipement réfléchissant sont obligatoires à toute heure depuis le 15 septembre 2026 ; en Seine-et-Marne, un arrêté du 2 juillet 2026 impose le casque et un équipement réfléchissant. L’Essonne aurait suivi le 5 octobre 2026, mais nous n’avons pas pu lire l’arrêté.' },
+        { note: 'Prévoyez votre casque. Dans les Yvelines (environs de Versailles, Saint-Quentin, Seine et Oise), le casque et le gilet ou un équipement réfléchissant sont obligatoires à toute heure depuis le 15 septembre 2026 ; en Seine-et-Marne, un arrêté du 2 juillet 2026 impose le casque et un équipement réfléchissant. L’Essonne a suivi le 5 octobre 2026 : casque et gilet ou équipement rétroréfléchissant, de jour comme de nuit, pistes cyclables comprises.' },
         'Ailleurs qu’en Seine et Oise, vérifiez l’âge minimum dans l’app. Première location ? Voyez [comment louer une trottinette en libre-service](guide:how-to-rent).',
       ],
     },
@@ -187,6 +187,7 @@ const guide: Guide = {
     { title: 'RATP : Le réseau en trottinette', url: 'https://www.ratp.fr/services-aux-voyageurs/services-de-mobilite/le-reseau-en-trottinette' },
     { title: 'Ville de Meulan-en-Yvelines : les trottinettes Voi dans le Grand Paris Seine et Oise', url: 'https://ville-meulan.fr/print/pdf/node/2348' },
     { title: 'Préfecture des Yvelines : arrêté n° 78-2026-09-07-00004 sur le casque et le gilet (copie publiée par Bois-d’Arcy)', url: 'https://www.boisdarcy.fr/arrete-pref.pdf' },
+    { title: 'Commune de Vauhallan : De nouvelles règles pour les trottinettes électriques en Essonne (12 octobre 2026)', url: 'https://www.vauhallan.fr/actualites/de-nouvelles-regles-pour-les-trottinettes-electriques-en-essonne-4675' },
   ],
 };
 

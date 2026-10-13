@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter hire in the UK: where you can rent one, who runs it and what it costs',
   lede: 'E-scooter hire in the UK is legal only in 21 government trial areas, all in England, and the trials are due to run until May 2028. Voi, Beryl, Lime, Dott and Bolt run the schemes. You need a full or provisional driving licence, and every operator we checked rents only to riders aged 18 or over. Pay as you go, unlocking costs £0 to £1 and riding 20p to 29p a minute, so 15 minutes cost £3.75 to £4.75 at the rates published on 12 October 2026. In London, Lime and Voi hire out e-scooters in 11 boroughs, and every ride ends in a marked bay.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-13',
   sections: [
     {
       heading: 'E-scooter hire in the UK: the 21 trial areas and who runs them',
@@ -85,7 +85,7 @@ const guide: Guide = {
             '**Price:** Voi charges no unlock fee and 27p a minute, around the clock; Lime shows its London price only in its app. Both have discount schemes.',
           ],
         },
-        'TfL’s own page still describes the trial’s second phase, but trade press reported in late September 2026 that a third had begun with Lime and Voi, for an initial two years “subject to Department for Transport (DfT) timescales”, and with new technology to spot riding two up or on the pavement.',
+        'A third phase began in September 2026. TfL signed it with Lime and Voi on 24 July 2026 for up to two years, as far as national law allows (the trials are legal until May 2028), and may extend it by up to four years. Trade press reported that it brings new technology to spot riding two up or on the pavement. TfL’s own trial page still describes the second phase.',
         'The second phase logged 6.4 million trips from September 2023 to September 2026, and by September 2025, 379 riders had been banned for poor riding or anti-social behaviour. Use the Lime or Voi app, or TfL’s Santander Cycles if you’d rather pedal.',
       ],
     },
@@ -193,6 +193,7 @@ const guide: Guide = {
     { title: 'Department for Transport: Government response to the e-scooter trials evaluation report', url: 'https://www.gov.uk/government/publications/government-response-to-the-e-scooter-trials-evaluation-report/government-response-to-the-e-scooter-trials-evaluation-report' },
     { title: 'Transport for London: E-scooter rental trial', url: 'https://tfl.gov.uk/modes/driving/electric-scooter-rental-trial' },
     { title: 'Transport for London: E-scooter rental trial report, 24 August to 20 September 2026', url: 'https://tfl.gov.uk/cdn/static/cms/documents/london-escooter-rental-trial-phase-2-trial-period-39-24-aug-to-20-sept-2026.pdf' },
+    { title: 'Find a Tender: TfL contract details notice, E-scooter trial phase 3 (17 September 2026)', url: 'https://www.find-tender.service.gov.uk/Notice/088384-2026' },
     { title: 'Voi: E-scooters and e-bikes in London', url: 'https://www.voi.com/city/london' },
     { title: 'Transport for West Midlands: E-scooters in the West Midlands', url: 'https://www.tfwm.org.uk/plan-your-journey/ways-to-travel/e-scooters-in-the-west-midlands/' },
     { title: 'Liverpool City Council: E-scooters and e-bikes for hire', url: 'https://liverpool.gov.uk/parking-roads-and-travel/getting-around-liverpool/e-scooters-and-e-bikes-for-hire' },

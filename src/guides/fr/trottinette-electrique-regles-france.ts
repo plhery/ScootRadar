@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Réglementation de la trottinette électrique en France en 2026 : âge, casque, assurance et amendes',
   lede: 'La réglementation de la trottinette électrique en France tient en quelques règles : 14 ans minimum, pas de permis, une assurance si la trottinette vous appartient, 25 km/h au maximum, la piste cyclable ou une route limitée à 50 km/h, le trottoir interdit et personne d’autre à bord. La loi nationale n’impose le casque que sur les routes à 80 km/h ouvertes aux trottinettes, mais un nombre croissant de préfets l’exigent dans leur département : à Paris et en petite couronne depuis le 7 août 2026, dans tout le Rhône, Lyon compris, depuis le 28 septembre 2026. La plupart des amendes sont de 35 € ou de 135 €.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-13',
   sections: [
     {
       heading: 'Réglementation de la trottinette électrique : ce qui a changé depuis 2023',
@@ -60,11 +60,12 @@ const guide: Guide = {
         'Le Code de la route n’impose le casque que sur une route limitée à 80 km/h que l’autorité a ouverte aux trottinettes ; ailleurs, il est « fortement recommandé ». Mais depuis avril 2026, de nombreux préfets l’ont rendu obligatoire, le plus souvent dans tout leur département et à toute heure.',
         {
           table: {
-            caption: 'Arrêtés préfectoraux imposant le casque en trottinette, connus au 12 octobre 2026 (liste non exhaustive)',
+            caption: 'Arrêtés préfectoraux imposant le casque en trottinette, connus au 13 octobre 2026 (liste non exhaustive)',
             head: ['Département', 'Date', 'Obligation', 'Amende'],
             rows: [
               ['Paris, Hauts-de-Seine, Seine-Saint-Denis, Val-de-Marne', 'Depuis le 7 août 2026', 'Casque et gilet, à toute heure, pistes cyclables comprises', '135 € sans casque, 35 € sans gilet'],
               ['Yvelines (Versailles, Saint-Quentin-en-Yvelines)', 'Depuis le 15 septembre 2026', 'Casque et gilet, à toute heure, pistes cyclables comprises', '35 € ou 135 €'],
+              ['Essonne (Évry-Courcouronnes)', 'Depuis le 5 octobre 2026', 'Casque et gilet ou équipement rétroréfléchissant, à toute heure, pistes cyclables comprises', 'Non vérifiée'],
               ['Rhône, Métropole de Lyon comprise', 'Depuis le 28 septembre 2026', 'Casque et gilet, à toute heure, pistes cyclables comprises, dans tout le département', '135 € sans casque, 35 € sans gilet'],
               ['Seine-et-Marne (Marne-la-Vallée)', 'Arrêté du 2 juillet 2026', 'Casque et équipement réfléchissant', 'Non vérifiée'],
               ['Nord (Métropole de Lille)', 'Depuis le 1er septembre 2026, selon la presse', 'Casque', 'Non vérifiée'],
@@ -140,7 +141,7 @@ const guide: Guide = {
       heading: 'Trottinettes en libre-service : Paris, Lyon et les autres villes',
       blocks: [
         '**Paris** n’a plus de trottinettes en libre-service depuis le 1er septembre 2023. À la votation du 2 avril 2023, 89 % des votants ont dit « contre », avec environ 7,5 % de participation, et les conventions de Dott, Lime et Tier ont pris fin le 31 août 2023. Au 12 octobre 2026, nous n’avons trouvé aucune annonce officielle de retour. Pour savoir quoi louer à la place, lisez notre guide de la [trottinette en libre-service à Paris](guide:paris).',
-        'En grande banlieue, le 12 octobre 2026, la carte en montrait autour de Versailles (à La Celle-Saint-Cloud, au Chesnay-Rocquencourt et à Bougival, mais aucune à Versailles même), à Saint-Quentin-en-Yvelines et dans le Grand Paris Seine et Oise (Yvelines), autour de Lagny-sur-Marne et de Bussy-Saint-Georges (Marne-la-Vallée, Seine-et-Marne) et à Évry-Courcouronnes (Essonne). Le casque est obligatoire dans les Yvelines et en Seine-et-Marne ; l’Essonne aurait suivi le 5 octobre 2026, mais nous n’avons pas pu lire l’arrêté.',
+        'En grande banlieue, le 12 octobre 2026, la carte en montrait autour de Versailles (à La Celle-Saint-Cloud, au Chesnay-Rocquencourt et à Bougival, mais aucune à Versailles même), à Saint-Quentin-en-Yvelines et dans le Grand Paris Seine et Oise (Yvelines), autour de Lagny-sur-Marne et de Bussy-Saint-Georges (Marne-la-Vallée, Seine-et-Marne) et à Évry-Courcouronnes (Essonne). Le casque est obligatoire dans les Yvelines, en Seine-et-Marne et, depuis le 5 octobre 2026, en Essonne.',
         '**Lyon** n’autorise plus qu’un opérateur, Dott, depuis le 1er janvier 2025 : 18 ans minimum, vitesse bridée à 20 km/h, trottinettes immatriculées. Le 12 octobre 2026, ScootRadar affichait environ 3 500 véhicules Dott sur la carte autour de [Lyon](map:fr:Lyon). Prix, casque et règles locales : voyez notre guide de la [trottinette électrique à Lyon](guide:lyon).',
         '**Bordeaux Métropole** a retenu Dott et Pony, 1 000 trottinettes chacun, du 1er novembre 2025 au 1er novembre 2029 : 18 ans minimum, départ et retour uniquement sur les quelque 500 emplacements dédiés. [Voir Bordeaux sur la carte](map:fr:Bordeaux).',
         '**Lille** : selon la Métropole, les trottinettes Lime se rendent dans l’une des quelque 1 400 stations ; tant qu’elle n’y est pas garée, la location continue d’être facturée.',
@@ -205,6 +206,7 @@ const guide: Guide = {
     { title: 'Ville de Paris : Fin des trottinettes en libre-service à Paris le 31 août 2023 (résultats de la votation)', url: 'https://www.paris.fr/pages/pour-ou-contre-les-trottinettes-en-libre-service-23231' },
     { title: 'Bordeaux Métropole : Free-floating, la Métropole change de braquet', url: 'https://www.bordeaux-metropole.fr/actualites/free-floating-metropole-change-braquet' },
     { title: 'Sénat : question orale n° 1174S « Port du casque à trottinette », réponse du 16 juin 2026', url: 'https://www.senat.fr/questions/base/2026/qSEQ26061174S.html' },
+    { title: 'Commune de Vauhallan : De nouvelles règles pour les trottinettes électriques en Essonne (12 octobre 2026)', url: 'https://www.vauhallan.fr/actualites/de-nouvelles-regles-pour-les-trottinettes-electriques-en-essonne-4675' },
   ],
 };
 

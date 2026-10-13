@@ -10,15 +10,15 @@ const guide: Guide = {
   headline: 'E-scooters in Basel: six apps, prices, no-go zones and parking by the Rhine',
   lede: 'To rent an e-scooter in Basel, open the app of Lime, Voi, Dott, Bird, Bolt or Hopp, scan the QR code and ride on the bike lane at up to 20 km/h. Ten minutes cost CHF 4.85 to CHF 5.60: about CHF 1 to unlock plus CHF 0.39 to CHF 0.46 a minute (published rates on 12 October 2026). In the old town the scooter brakes to a halt, you can’t end a ride on the Rhine bridges, and rental scooters can’t cross into Germany or France or reach EuroAirport.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-13',
   city: 'ch:basel',
   sections: [
     {
       heading: 'Which e-scooter apps work in Basel?',
       blocks: [
-        'Six brands rent out e-scooters in Basel: Lime, Voi, Dott (formerly Tier), Bird, Bolt and Hopp, which arrived on 17 March 2026. ScootRadar shows five of them. **Hopp is not on our map**, so open the Hopp app for its scooters, and check its age limit and insurance there: we found no Swiss terms for it.',
+        'Six brands rent out e-scooters in Basel: Lime, Voi, Dott (formerly Tier), Bird, Bolt and Hopp, which arrived on 17 March 2026. ScootRadar shows all six. Check Hopp’s age limit and insurance in its app: we found no Swiss terms for it.',
         'Basel issues no permits and charges no fees. Instead, since October 2025 every operator must follow the canton’s usage rules: at most **200 scooters or bikes per operator** on public ground in the city (a monthly average), and a photo of the parked scooter at the end of every ride. An operator that keeps breaking them risks a ban on its whole fleet.',
-        'On the morning of 12 October 2026 the [map around Basel](map:ch:basel) showed about 1,300 vehicles from the five brands, suburbs included. Renting one takes three steps:',
+        'On the morning of 12 October 2026 the [map around Basel](map:ch:basel) showed about 1,300 vehicles from the other five brands, suburbs included, and Hopp’s feed listed about 220 more. Renting one takes three steps:',
         {
           steps: [
             'Find the nearest scooter on the [live map of Basel](map:ch:basel) and tap through to its operator’s app.',

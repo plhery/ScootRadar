@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trottinette électrique à Lyon : casque obligatoire, Dott, prix et stationnement en 2026',
   lede: 'Pour louer une trottinette électrique à Lyon, il n’y a plus qu’un opérateur autorisé, Dott : 18 ans minimum, 1 € pour déverrouiller puis 0,29 € la minute, soit 3,90 € les 10 minutes (tarif publié le 12 octobre 2026). Depuis le 28 septembre 2026, le casque et un gilet haute visibilité sont obligatoires dans tout le Rhône, de jour comme de nuit : 135 € d’amende sans casque, 35 € sans gilet. La location se termine uniquement sur un emplacement indiqué dans l’app, et Villeurbanne n’a pas de trottinettes en libre-service.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-13',
   city: 'fr:Lyon',
   sections: [
     {
@@ -175,7 +175,7 @@ const guide: Guide = {
     },
     {
       question: 'Peut-on prendre une trottinette dans le métro à Lyon ?',
-      answer: 'Pas une Dott : elle ne se plie pas, et le règlement des TCL, tel que la presse le citait en 2019, n’admet que les trottinettes pliables et pliées, sans rouler dans le réseau. Terminez la location sur un emplacement près de la station, puis prenez le métro ou le funiculaire.',
+      answer: 'Le règlement du réseau TCL veut des trottinettes pliables et pliées, portées à côté de soi. Une trottinette qui ne se plie pas, comme une Dott, est seulement tolérée, à condition de ne gêner ni la circulation des voyageurs, notamment aux heures de pointe, ni les autres usagers ; elle doit être éteinte, et l’on ne roule jamais dans le réseau. Comme la location continue de courir, le plus simple reste de la terminer sur un emplacement près de la station, puis de prendre le métro ou le funiculaire.',
     },
     {
       question: 'Que deviennent les trottinettes à Lyon après février 2027 ?',
@@ -193,6 +193,7 @@ const guide: Guide = {
     { title: 'Tribune de Lyon : Dott, la sécurité des trottinettes et la fin de l’autorisation en 2027 (7 mai 2026)', url: 'https://tribunedelyon.fr/transports/lyon-dott-trottinettes-securite/' },
     { title: 'Lyon Capitale : la Ville de Lyon conserve un opérateur unique de trottinettes en libre-service (19 décembre 2024)', url: 'https://www.lyoncapitale.fr/actualite/trottinettes-en-libre-service-la-ville-de-lyon-conserve-un-operateur-unique-sans-nouvel-appel-a-projets' },
     { title: 'LyonMag : Villeurbanne garde son interdiction des trottinettes en libre-service (28 août 2026)', url: 'https://www.lyonmag.com/article/153741/' },
+    { title: 'TCL : Règlement du réseau TCL unifié (article 6.1)', url: 'https://www.tcl.fr/a-propos-de-tcl/reglement-du-reseau' },
   ],
 };
 

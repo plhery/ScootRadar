@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Paris: why you can’t rent one, and what to ride instead',
   lede: 'You can’t rent a shared e-scooter in Paris: the city ended the service on 1 September 2023, after a vote on 2 April 2023 in which 89.03% said no, on a turnout of 7.46%. Ride a Vélib’ (€3 for 45 minutes) or a Lime, Dott or Voi e-bike instead (Voi: €0.29 a minute, no unlock fee, published rate on 12 October 2026). The nearest shared e-scooters are in the outer suburbs, around Versailles, in Saint-Quentin-en-Yvelines and near Disneyland Paris, where helmets are compulsory. Your own e-scooter is allowed in Paris, with a helmet and a high-visibility vest at all hours since 7 August 2026.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-13',
   city: 'fr:Versailles Grand Parc',
   sections: [
     {
@@ -106,7 +106,7 @@ const guide: Guide = {
             '**Évry-Courcouronnes**: Pony, since March 2022.',
           ],
         },
-        { note: 'Bring a helmet. In the Yvelines (around Versailles, Saint-Quentin, Seine & Oise), a helmet and a vest or reflective gear have been compulsory at all hours since 15 September 2026, and a Seine-et-Marne order of 2 July 2026 requires a helmet and reflective gear around Marne-la-Vallée. Essonne, where Évry is, reportedly followed on 5 October 2026; we could not read the order.' },
+        { note: 'Bring a helmet. In the Yvelines (around Versailles, Saint-Quentin, Seine & Oise), a helmet and a vest or reflective gear have been compulsory at all hours since 15 September 2026, and a Seine-et-Marne order of 2 July 2026 requires a helmet and reflective gear around Marne-la-Vallée. Essonne, where Évry is, followed on 5 October 2026: a helmet and a vest or reflective gear at all hours, bike lanes included.' },
         'The minimum age is 18 in Seine & Oise; elsewhere, check the app. First time on a shared scooter? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -186,6 +186,7 @@ const guide: Guide = {
     { title: 'RATP: travelling the network with a scooter (French)', url: 'https://www.ratp.fr/services-aux-voyageurs/services-de-mobilite/le-reseau-en-trottinette' },
     { title: 'Meulan-en-Yvelines: Voi e-scooters in Grand Paris Seine & Oise (French)', url: 'https://ville-meulan.fr/print/pdf/node/2348' },
     { title: 'Yvelines prefecture: order 78-2026-09-07-00004 on helmets and vests, copy published by Bois-d’Arcy (PDF, French)', url: 'https://www.boisdarcy.fr/arrete-pref.pdf' },
+    { title: 'Vauhallan town hall: new rules for e-scooters across Essonne, 12 October 2026 (French)', url: 'https://www.vauhallan.fr/actualites/de-nouvelles-regles-pour-les-trottinettes-electriques-en-essonne-4675' },
   ],
 };
 
