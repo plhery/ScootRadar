@@ -12,14 +12,8 @@ the work.
 
 | Where | Provider | Scooters | Checked | Notes |
 | --- | --- | ---: | --- | --- |
-| Basel, Switzerland | Hopp | ~217 | 11 Oct 2026 | sharedmobility.ch has no Hopp. The app reads Hopp for Zürich only (`HOPP_COVERAGE` in `src/lib/feedCoverage.ts`), so this needs a small change |
-| Kloten, Switzerland | Hopp | ~28 | 11 Oct 2026 | Same as above |
 | La Roche-sur-Yon, France | Pony | ~82 | 11 Oct 2026 | Licence Ouverte, through transport.data.gouv.fr. A new city |
 | Nantes, France | Pony, through the city's Naolib feed | ~57 | 11 Oct 2026 | Licence Ouverte. Station counts, not single scooters ([French guide](french-scooter-feeds.md#feeds-not-enabled)) |
-
-Hopp stamps each response with the time it was asked for, so the fifteen-minute
-age limit can't tell how old its positions are. Hopp Zürich has the same
-problem.
 
 ## Waiting on a decision
 
@@ -37,9 +31,10 @@ problem.
 Operators that run there but publish nothing the map can read, cities that
 banned shared scooters, and feeds that were empty when checked.
 
-- **Switzerland:** everything comes from sharedmobility.ch, apart from Hopp in
-  Zürich. See [Found, not added yet](#found-not-added-yet) for Hopp's other
-  towns.
+- **Switzerland:** everything comes from sharedmobility.ch, apart from Hopp
+  (Zürich, Basel and Kloten) and PubliBike, read from their own feeds. Hopp
+  stamps each response with the time it was asked for, so the fifteen-minute
+  age limit can't tell how old its positions are.
 - **France** ([guide](french-scooter-feeds.md#feeds-not-enabled)):
   - Central Paris has no shared scooters (banned in 2023).
   - Dott GPSEO answers 404; Dott OL Vallée was empty.

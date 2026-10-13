@@ -118,7 +118,12 @@ export function coverageIntersects(bounds: MapBounds[], query: MapBounds): boole
   return bounds.some(coverage => boundsIntersect(coverage, query));
 }
 
-export const HOPP_COVERAGE = AREA_BOUNDS.zurich;
+// Hopp publishes each Swiss town at api.hopp.bike/gbfs/ch-<town>; sharedmobility.ch has none of them.
+export const HOPP_SWISS_TOWNS = ['zurich', 'basel', 'kloten'].map(town => ({
+  id: `hopp_ch_${town}`,
+  discoveryUrl: `https://api.hopp.bike/gbfs/ch-${town}/gbfs.json`,
+  coverage: AREA_BOUNDS[town],
+}));
 export const PUBLIBIKE_FREE_FLOATING_COVERAGE = AREA_BOUNDS.zurich;
 // PubliBike's station-based e-scooters are confined to Biel and Locarno, though
 // its bicycle network is national.

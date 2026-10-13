@@ -100,45 +100,54 @@ function nationalResponse(url: string): Response | null {
   return null;
 }
 
+const HOPP_TOWNS: Record<string, { bikeId: string; lat: number; lon: number }> = {
+  zurich: { bikeId: 'hopp-1', lat: 47.3771, lon: 8.5421 },
+  basel: { bikeId: 'hopp-basel-1', lat: 47.5531, lon: 7.6030 },
+};
+
 function hoppResponse(url: string): Response | null {
-  if (url === 'https://api.hopp.bike/gbfs/ch-zurich/gbfs.json') {
+  const match = url.match(/^https:\/\/api\.hopp\.bike\/gbfs\/ch-([a-z]+)\/(.+)$/);
+  const town = match && HOPP_TOWNS[match[1]];
+  if (!match || !town) return null;
+  const base = `https://api.hopp.bike/gbfs/ch-${match[1]}`;
+  if (match[2] === 'gbfs.json') {
     return jsonResponse({
       data: {
         feeds: [
           {
             name: 'free_bike_status',
-            url: 'https://api.hopp.bike/gbfs/ch-zurich/en/free_bike_status.json',
+            url: `${base}/en/free_bike_status.json`,
           },
           {
             name: 'vehicle_types',
-            url: 'https://api.hopp.bike/gbfs/ch-zurich/en/vehicle_types.json',
+            url: `${base}/en/vehicle_types.json`,
           },
           {
             name: 'system_pricing_plans',
-            url: 'https://api.hopp.bike/gbfs/ch-zurich/en/system_pricing_plans.json',
+            url: `${base}/en/system_pricing_plans.json`,
           },
         ],
       },
     });
   }
-  if (url === 'https://api.hopp.bike/gbfs/ch-zurich/en/free_bike_status.json') {
+  if (match[2] === 'en/free_bike_status.json') {
     return jsonResponse({
       data: {
         bikes: [{
           vehicle_type_id: 'hopp-scooter',
           pricing_plan_id: 'hopp-standard',
-          bike_id: 'hopp-1',
-          lat: 47.3771,
-          lon: 8.5421,
+          bike_id: town.bikeId,
+          lat: town.lat,
+          lon: town.lon,
           hopp_battery_level: 68,
-          hopp_deeplink: 'https://app.hopp.bike/launch/hopp-1?direct',
+          hopp_deeplink: `https://app.hopp.bike/launch/${town.bikeId}?direct`,
           is_reserved: false,
           is_disabled: false,
         }],
       },
     });
   }
-  if (url === 'https://api.hopp.bike/gbfs/ch-zurich/en/vehicle_types.json') {
+  if (match[2] === 'en/vehicle_types.json') {
     return jsonResponse({
       data: {
         vehicle_types: [{
@@ -149,7 +158,7 @@ function hoppResponse(url: string): Response | null {
       },
     });
   }
-  if (url === 'https://api.hopp.bike/gbfs/ch-zurich/en/system_pricing_plans.json') {
+  if (match[2] === 'en/system_pricing_plans.json') {
     return jsonResponse({
       data: {
         plans: [{
@@ -302,8 +311,8 @@ describe('fetchScooters source health', () => {
             plans: [{
               plan_id: 'lime-standard',
               currency: 'CHF',
-              price: 0,
-              description: 'Riders pay 0.95 CHF to unlock and 0.41 CHF per minute.',
+              price: 1,
+              description: 'Riders pay 1 CHF to unlock and 0.45 CHF per minute.',
               per_min_pricing: [{ start: 1, rate: 0.41, interval: 1 }],
             }],
           },
@@ -434,6 +443,32 @@ describe('fetchScooters source health', () => {
     expect(fetchMock.mock.calls.some(([input]) => String(input).includes('sharedmobility.ch'))).toBe(false);
   });
 
+  it('loads Hopp in Basel from its own Basel feed', async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const response = hoppResponse(String(input));
+      if (response) return response;
+      throw new Error(`Unexpected URL: ${String(input)}`);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const result = await fetchScooters({
+      ...query,
+      origin: null,
+      bounds: { south: 47.54, west: 7.57, north: 47.57, east: 7.62 },
+      providers: new Set(['hopp']),
+    });
+
+    expect(result.vehicles).toEqual([
+      expect.objectContaining({
+        provider: 'hopp',
+        vehicle_id: 'hopp:hopp-basel-1',
+        pricing: { currency: 'CHF', unlock_fee_minor_units: 100, minute_fee_minor_units: 40 },
+      }),
+    ]);
+    expect(result.meta.sources.hopp).toBe('fresh');
+    expect(fetchMock.mock.calls.every(([input]) => String(input).includes('/gbfs/ch-basel/'))).toBe(true);
+  });
+
   it('marks a Hopp outage as partial when national data is available', async () => {
     vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => {
       const url = String(input);
@@ -448,7 +483,7 @@ describe('fetchScooters source health', () => {
     expect(result.vehicles).toHaveLength(2);
     expect(result.meta).toMatchObject({
       partial: true,
-      failedSources: ['hopp'],
+      failedSources: ['hopp:hopp_ch_zurich'],
       sources: { france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', national: 'fresh', hopp: 'failed', publibike: 'fresh' },
     });
   });
@@ -513,7 +548,7 @@ describe('fetchScooters source health', () => {
 
     await expect(fetchScooters(query)).rejects.toMatchObject({
       name: 'ScooterFeedsUnavailableError',
-      failedSources: ['national', 'hopp', 'publibike'],
+      failedSources: ['national', 'hopp:hopp_ch_zurich', 'publibike'],
     } satisfies Partial<ScooterFeedsUnavailableError>);
   });
 
@@ -532,7 +567,7 @@ describe('fetchScooters source health', () => {
     expect(result.meta.partial).toBe(false);
   });
 
-  it('skips Hopp before discovery when the viewport is outside Zurich', async () => {
+  it('skips Hopp before discovery when the viewport is outside its towns', async () => {
     const fetchMock = vi.fn();
     vi.stubGlobal('fetch', fetchMock);
 
@@ -924,6 +959,38 @@ describe('feed validation and tariff regressions', () => {
     }));
     const result = await fetchScooters({ ...query, providers: new Set(['lime']) });
     expect(result.vehicles[0].pricing).toEqual({ currency: 'CHF', unlock_fee_minor_units: 100, minute_fee_minor_units: 42 });
+  });
+
+  function stubSwissPricingPlan(plan: Record<string, unknown>) {
+    vi.stubGlobal('fetch', vi.fn(async input => {
+      if (String(input).endsWith('/system_pricing_plans')) {
+        return jsonResponse({ data: { plans: [{ plan_id: 'lime-standard', currency: 'CHF', ...plan }] } });
+      }
+      return nationalResponse(String(input))!;
+    }));
+  }
+
+  it.each([
+    { price: 0, unlock: '0.95', expected: 95 },
+    { price: 1, unlock: '1.2', expected: 120 },
+  ])('restores the cents sharedmobility.ch cuts from a $unlock CHF unlock fee', async ({ price, unlock, expected }) => {
+    stubSwissPricingPlan({
+      price,
+      description: `Pricing information for Basel (scooter): Riders pay ${unlock} CHF to unlock and 0.39 CHF per minute.`,
+      per_min_pricing: [{ start: 1, rate: 0.39, interval: 1 }],
+    });
+    const result = await fetchScooters({ ...query, providers: new Set(['lime']) });
+    expect(result.vehicles[0].pricing).toEqual({ currency: 'CHF', unlock_fee_minor_units: expected, minute_fee_minor_units: 39 });
+  });
+
+  it('still omits an estimate whose description contradicts more than the cents', async () => {
+    stubSwissPricingPlan({
+      price: 1,
+      description: 'Riders pay 0.95 CHF to unlock and 0.39 CHF per minute.',
+      per_min_pricing: [{ start: 1, rate: 0.39, interval: 1 }],
+    });
+    const result = await fetchScooters({ ...query, providers: new Set(['lime']) });
+    expect(result.vehicles[0].pricing).toBeUndefined();
   });
 
   it.each([

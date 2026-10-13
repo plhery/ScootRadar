@@ -1178,8 +1178,8 @@ struct ScooterProviderHealth: Equatable, Sendable {
     }
 
     /// The provider behind an entry of `failedSources`. An id can carry its
-    /// source in front ("national:lime_zurich", "france:dott_fr_lyon", plain
-    /// "hopp"), so the source goes before the system id is matched.
+    /// source in front ("national:lime_zurich", "france:dott_fr_lyon",
+    /// "hopp:hopp_ch_basel"), so the source goes before the system id is matched.
     static func provider(forSource source: String) -> ScooterProvider? {
         let systemID = source.firstIndex(of: ":").map { source[source.index(after: $0)...] } ?? source[...]
         return ScooterProvider.provider(forSystemID: String(systemID))

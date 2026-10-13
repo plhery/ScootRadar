@@ -16,7 +16,7 @@ describe('providerForFailedSource', () => {
     expect(providerForFailedSource('france:dott_fr_bordeaux')).toBe('dott');
     expect(providerForFailedSource('germany:bolt_de_stuttgart')).toBe('bolt');
     expect(providerForFailedSource('italy:bird_it_rome')).toBe('bird');
-    expect(providerForFailedSource('hopp')).toBe('hopp');
+    expect(providerForFailedSource('hopp:hopp_ch_basel')).toBe('hopp');
     expect(providerForFailedSource('publibike')).toBe('publibike');
     expect(providerForFailedSource('national:velospot')).toBe('publibike');
     expect(providerForFailedSource('LIME_ZURICH')).toBe('lime');
@@ -100,7 +100,7 @@ describe('providerHealth', () => {
   });
 
   it('names each failed provider once, in catalogue order', () => {
-    expect(health(['national:voi_zurich', 'national:bird_zurich', 'national:voi_winterthur', 'hopp']))
+    expect(health(['national:voi_zurich', 'national:bird_zurich', 'national:voi_winterthur', 'hopp:hopp_ch_zurich']))
       .toEqual({ down: ['bird', 'hopp', 'voi'], unknown: false });
   });
 

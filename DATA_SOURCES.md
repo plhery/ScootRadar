@@ -17,6 +17,17 @@ resilience. The dataset keeps listing systems after their operator stops
 sending positions; one whose positions are over a week old, or were never
 sent, counts as inactive rather than failing.
 
+The dataset cuts each unlock fee to whole francs: Dott's CHF 0.95 in Basel and
+Zürich arrives as 0, its CHF 1.20 in St. Gallen as 1, while Dott's own feeds
+and the plans' descriptions keep the cents. Where a description names a fee
+with the same whole francs, the app takes the described fee. Lime's plans carry
+no description and say tax comes on top, so Lime's scooters get no price
+estimate.
+
+Hopp is not in the dataset. Its scooters in Zürich, Basel and Kloten come from
+Hopp's own GBFS feeds at `api.hopp.bike/gbfs/ch-<town>`, which link Hopp's
+privacy policy, not a licence.
+
 PubliBike / Velospot e-scooters do not come from that dataset, whose copy of
 Velospot runs 15 to 75 minutes behind. The app reads two unauthenticated
 endpoints used by the official PubliBike Velospot app instead:

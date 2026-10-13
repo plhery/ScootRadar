@@ -6,7 +6,8 @@ import type { UiText } from '@/lib/uiText';
 /**
  * The provider behind an entry of meta.failedSources. Those ids name the feed
  * with its source in front ("national:lime_zurich", "france:dott_fr_bordeaux",
- * plain "hopp"), so the source has to go before the system id can be matched.
+ * "hopp:hopp_ch_basel"), so the source has to go before the system id can be
+ * matched.
  * Null for ids that belong to no provider, such as "city-overview".
  */
 export function providerForFailedSource(id: string): ProviderKey | null {

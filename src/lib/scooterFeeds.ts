@@ -3,7 +3,7 @@ import { VEHICLE_MAX_AGE_MS } from './dataFreshness';
 import {
   coverageForRegionNames,
   coverageIntersects,
-  HOPP_COVERAGE,
+  HOPP_SWISS_TOWNS,
   knownSystemCoverage,
   PUBLIBIKE_FREE_FLOATING_COVERAGE,
   PUBLIBIKE_STATION_COVERAGE,
@@ -23,7 +23,6 @@ import {
 
 const NATIONAL_V23_REGISTRY_URL = 'https://sharedmobility.ch/v2/gbfs';
 const SPATIAL_IDENTIFY_URL = 'https://api.sharedmobility.ch/v1/sharedmobility/identify';
-const HOPP_DISCOVERY_URL = 'https://api.hopp.bike/gbfs/ch-zurich/gbfs.json';
 const PUBLIBIKE_FREE_FLOATING_URL =
   'https://velospot.info/customer/public/api/pbvsng/freeFloating';
 const PUBLIBIKE_STATIONS_URL = 'https://velospot.info/customer/public/api/pbvsng/stations';
@@ -226,8 +225,11 @@ export async function discoverCollectableFeeds(): Promise<CollectableScooterFeed
 export function independentCollectableFeeds(): CollectableScooterFeed[] {
   const query: FeedQuery = { bounds: SWISS_MOBILITY_BOUNDS, minBattery: 0 };
   return [
-    { id: 'hopp', host: new URL(HOPP_DISCOVERY_URL).hostname, source: 'hopp', provider: 'hopp', coverage: [HOPP_COVERAGE],
-      collect: () => fetchHoppVehicles(query) },
+    ...HOPP_SWISS_TOWNS.map(town => ({
+      id: `hopp:${town.id}`, host: new URL(town.discoveryUrl).hostname, source: 'hopp' as const, provider: 'hopp' as const,
+      coverage: [town.coverage],
+      collect: () => fetchHoppTownVehicles(town, query),
+    })),
     { id: 'publibike', host: new URL(PUBLIBIKE_FREE_FLOATING_URL).hostname, source: 'publibike', provider: 'publibike',
       coverage: [PUBLIBIKE_FREE_FLOATING_COVERAGE],
       collect: () => fetchPubliBikeFreeFloatingVehicles(query) },
@@ -422,9 +424,9 @@ function describedMinorUnits(
   return minorUnits(Number(match[1].replace(',', '.')));
 }
 
-function vehiclePricing(plan: PricingPlan): VehiclePricing | null {
+function vehiclePricing(plan: PricingPlan, wholeUnitPrice = false): VehiclePricing | null {
   const currency = plan.currency?.trim().toUpperCase();
-  const unlockFee = minorUnits(plan.price);
+  let unlockFee = minorUnits(plan.price);
   const minuteBands = plan.per_min_pricing?.length
     ? plan.per_min_pricing
     : plan.per_min_price;
@@ -447,6 +449,12 @@ function vehiclePricing(plan: PricingPlan): VehiclePricing | null {
   // contradictory canonical value. In that case omitting the estimate is safer.
   const describedUnlockFee = describedMinorUnits(plan.description, currency, 'unlock');
   const describedMinuteFee = describedMinorUnits(plan.description, currency, 'minute');
+  // Except for the cents sharedmobility.ch drops: its copy cuts the unlock fee
+  // to whole francs, so Dott's CHF 0.95 in Basel, as Dott's own feed and the
+  // description have it, arrives as 0, and St. Gallen's 1.20 as 1.
+  if (wholeUnitPrice && describedUnlockFee != null && describedUnlockFee - describedUnlockFee % 100 === unlockFee) {
+    unlockFee = describedUnlockFee;
+  }
   if (
     (describedUnlockFee != null && describedUnlockFee !== unlockFee) ||
     (describedMinuteFee != null && describedMinuteFee !== minuteFee)
@@ -461,12 +469,12 @@ function vehiclePricing(plan: PricingPlan): VehiclePricing | null {
   };
 }
 
-function pricingPlanMap(feed: PricingPlansFeed): Map<string, VehiclePricing> {
+function pricingPlanMap(feed: PricingPlansFeed, wholeUnitPrice: boolean): Map<string, VehiclePricing> {
   const plans = feed.data?.plans ?? feed.data?.pricing_plans ?? [];
   const pricingByPlanId = new Map<string, VehiclePricing>();
   for (const plan of plans) {
     const planId = plan.plan_id?.trim();
-    const pricing = vehiclePricing(plan);
+    const pricing = vehiclePricing(plan, wholeUnitPrice);
     if (planId && pricing) pricingByPlanId.set(planId, pricing);
   }
   return pricingByPlanId;
@@ -474,7 +482,7 @@ function pricingPlanMap(feed: PricingPlansFeed): Map<string, VehiclePricing> {
 
 async function fetchPricingPlans(
   url: string | null,
-  options: { authenticated?: boolean; source: string }
+  options: { authenticated?: boolean; source: string; wholeUnitPrice?: boolean }
 ): Promise<Map<string, VehiclePricing>> {
   if (!url) return new Map();
 
@@ -483,7 +491,7 @@ async function fetchPricingPlans(
       authenticated: options.authenticated,
       revalidate: METADATA_REVALIDATE_SECONDS,
     });
-    return pricingPlanMap(result.data);
+    return pricingPlanMap(result.data, options.wholeUnitPrice ?? false);
   } catch (error) {
     // Pricing enriches availability and must never make otherwise-valid scooters disappear.
     logFallback(`${options.source}:system_pricing_plans`, error);
@@ -695,7 +703,7 @@ async function fetchSystemVehicles(
       authenticated: true,
       revalidate: STATUS_REVALIDATE_SECONDS,
     }),
-    fetchPricingPlans(pricingUrl, { authenticated: true, source: system.id }),
+    fetchPricingPlans(pricingUrl, { authenticated: true, source: system.id, wholeUnitPrice: true }),
   ]);
   // An operator that has left the city, or never sends positions, is not failing.
   if (isAbandonedStatus(status.data)) {
@@ -776,27 +784,55 @@ async function fetchHoppVehicles(query: FeedQuery): Promise<SourceVehicles> {
     return { vehicles: [], stale: false, skipped: true };
   }
 
-  if (!coverageIntersects([HOPP_COVERAGE], query.bounds)) {
+  const towns = HOPP_SWISS_TOWNS.filter(town => coverageIntersects([town.coverage], query.bounds));
+  if (towns.length === 0) {
     return { vehicles: [], stale: false, skipped: true };
   }
 
-  const discovery = await fetchJson<DiscoveryFeed>(HOPP_DISCOVERY_URL, {
+  const results = await Promise.allSettled(towns.map(town => fetchHoppTownVehicles(town, query)));
+  const served: SourceVehicles[] = [];
+  const failedSources: string[] = [];
+  results.forEach((result, index) => {
+    if (result.status === 'fulfilled') {
+      if (!result.value.skipped) served.push(result.value);
+      return;
+    }
+    failedSources.push(`hopp:${towns[index].id}`);
+    logFallback(towns[index].id, result.reason);
+  });
+  if (served.length === 0) {
+    if (failedSources.length > 0) throw new ScooterFeedsUnavailableError(failedSources);
+    return { vehicles: [], stale: false, skipped: true };
+  }
+  return {
+    observedAt: Math.min(...served.map(result => result.observedAt ?? Date.now())),
+    vehicles: served.flatMap(result => result.vehicles),
+    stale: served.some(result => result.stale),
+    failedSources,
+  };
+}
+
+async function fetchHoppTownVehicles(
+  town: (typeof HOPP_SWISS_TOWNS)[number],
+  query: FeedQuery
+): Promise<SourceVehicles> {
+  const discovery = await fetchJson<DiscoveryFeed>(town.discoveryUrl, {
     validate: validateDiscovery,
     revalidate: METADATA_REVALIDATE_SECONDS,
   });
   const entries = discoveryFeedEntries(discovery.data);
-  const hoppBaseUrl = 'https://api.hopp.bike/gbfs/ch-zurich';
-  const statusUrl = discoveredFeedUrl(entries, 'free_bike_status', hoppBaseUrl);
-  const typesUrl = discoveredFeedUrl(entries, 'vehicle_types', hoppBaseUrl);
-  const pricingUrl = discoveredFeedUrl(entries, 'system_pricing_plans', hoppBaseUrl);
+  const baseUrl = new URL('.', town.discoveryUrl).toString();
+  const statusUrl = discoveredFeedUrl(entries, 'free_bike_status', baseUrl);
+  const typesUrl = discoveredFeedUrl(entries, 'vehicle_types', baseUrl);
+  const pricingUrl = discoveredFeedUrl(entries, 'system_pricing_plans', baseUrl);
   if (!statusUrl || !typesUrl) {
-    throw new Error('Hopp GBFS discovery contains no supported scooter feeds');
+    throw new Error(`${town.id} discovery contains no supported scooter feeds`);
   }
 
   const [status, types, pricingByPlanId] = await Promise.all([
     fetchJson<StatusFeed>(statusUrl, { validate: validateVehicleStatus, revalidate: STATUS_REVALIDATE_SECONDS }),
     fetchJson<VehicleTypesFeed>(typesUrl, { validate: validateTypes, revalidate: METADATA_REVALIDATE_SECONDS }),
-    fetchPricingPlans(pricingUrl, { source: 'hopp' }),
+    fetchPricingPlans(pricingUrl, { source: town.id }),
   ]);
   const typesById = typeMap(types.data);
   if (!hasElectricScooter(typesById, 'hopp')) {
@@ -805,6 +841,7 @@ async function fetchHoppVehicles(query: FeedQuery): Promise<SourceVehicles> {
 
   return {
     observedAt: statusObservedAt(status.data),
+    // Hopp's bike ids are UUIDs, unique across its towns, so they keep the plain "hopp" prefix.
     vehicles: filterVehicles(
       'hopp',
       rawVehicles(status.data),
