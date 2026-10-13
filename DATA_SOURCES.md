@@ -69,9 +69,12 @@ another host. The other feeds are served directly by their operators. Lime's
 feed west of Paris, in eight towns of Saint Germain Boucles de Seine, is listed
 only on data.gouv.fr, where Lime publishes it under the Licence Ouverte 2.0.
 
-Production collects each system independently every minute on Netcup, with at
-most six systems in flight. Map requests read only the relevant cached systems,
-with no operator requests. The local direct-feed fallback selects by viewport
+Production collects each system independently on Netcup, with at most six
+systems in flight: Switzerland every minute, the others every twenty minutes, or
+every minute for ten minutes after someone looks at them. Map requests read only
+the relevant cached systems; one for a system whose data is over a minute old
+starts its collection, and waits up to three seconds for it when its positions
+are over fifteen minutes old. The local direct-feed fallback selects by viewport
 and allows four concurrent French systems. Individual scooter positions remain
 usable for at most fifteen minutes from their source timestamp, including when a
 refresh fails; missing timestamps and older data are rejected. The national
@@ -181,9 +184,10 @@ opens directions. The operator app remains the final check for ending a ride.
   docking hardware: Pony publishes `is_installed=false` alongside
   `is_returning=true` throughout its virtual parking feeds.
 - Static station/rule metadata is cached for an hour; return status is refreshed
-  with the minute collector. A parking failure does not fail scooter collection.
+  with each scooter collection. A parking failure does not fail scooter collection.
   The API marks retained parking stale and stops exposing it after five minutes.
-- Map requests only read the persistent snapshot. Country/city overviews omit
+- Map requests read the persistent snapshot, and ask for a collection of the
+  systems they cover. Country/city overviews omit
   parking geometry and individual bays to keep low-zoom payloads small.
 
 References: [GBFS station information and geofencing](https://github.com/MobilityData/gbfs/blob/master/gbfs.md),

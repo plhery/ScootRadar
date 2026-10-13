@@ -40,7 +40,9 @@ export function scooterResponse(
 export function scooterResponseHeaders(body: ScooterResponse): Record<string, string> {
   const degraded = body.meta.partial || body.meta.stale;
   return {
-    'Cache-Control': body.meta.overview
+    // A response asking to be polled again in a few seconds must not answer that poll itself.
+    'Cache-Control': body.meta.refreshing ? 'no-store'
+      : body.meta.overview
       ? 'public, max-age=300, s-maxage=300, stale-while-revalidate=300'
       : degraded
         ? 'public, max-age=10, s-maxage=10, stale-while-revalidate=30'

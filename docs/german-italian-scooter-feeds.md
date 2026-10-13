@@ -70,8 +70,8 @@ The complete reviewed city bounds, public discovery URLs and aliases are in
   11 October 2026, without those more than 6 km from the median, plus padding.
 - Parking uses the existing virtual-bay, return-status and geofencing adapter.
   Empty or absent parking data does not imply unrestricted parking.
-- Feed collection is independent of map requests. Overview counts refresh hourly;
-  individual scooters refresh with the minute collector. City search recognizes
+- Overview counts refresh hourly; individual scooters every twenty minutes, or
+  every minute while someone looks at the town. City search recognizes
   local names and English aliases (for example München/Munich and Napoli/Naples).
 
 ## Yoio, October 2026

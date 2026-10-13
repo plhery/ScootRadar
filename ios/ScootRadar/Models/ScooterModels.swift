@@ -657,6 +657,8 @@ struct ScooterResponseMetadata: Sendable {
     let zoom: Int?
     let overview: Bool
     let refreshAfterSeconds: Int?
+    /// The server is collecting feeds of this answer again: ask once more after `refreshAfterSeconds`.
+    let refreshing: Bool
     let parkingStatus: String?
     let expiresAt: String?
     let parkingExpiresAt: String?
@@ -673,6 +675,7 @@ struct ScooterResponseMetadata: Sendable {
         zoom: Int? = nil,
         overview: Bool = false,
         refreshAfterSeconds: Int? = nil,
+        refreshing: Bool = false,
         parkingStatus: String? = nil,
         expiresAt: String? = nil,
         parkingExpiresAt: String? = nil
@@ -688,6 +691,7 @@ struct ScooterResponseMetadata: Sendable {
         self.zoom = zoom
         self.overview = overview
         self.refreshAfterSeconds = refreshAfterSeconds
+        self.refreshing = refreshing
         self.parkingStatus = parkingStatus
         self.expiresAt = expiresAt
         self.parkingExpiresAt = parkingExpiresAt
@@ -751,6 +755,7 @@ extension ScooterResponseMetadataPayload {
             zoom: zoom,
             overview: overview ?? false,
             refreshAfterSeconds: refreshAfterSeconds,
+            refreshing: refreshing ?? false,
             parkingStatus: parkingStatus?.rawValue,
             expiresAt: expiresAt,
             parkingExpiresAt: parkingExpiresAt
@@ -1099,6 +1104,13 @@ extension ScooterCityDistance {
     }
 }
 
+/// The query of a refreshing response whose quick follow-up was already granted.
+struct ScooterFollowUpQuery: Equatable, Sendable {
+    let bounds: GeoBounds
+    let zoom: Int
+    let minimumBattery: Int
+}
+
 /// When scooter data is refreshed automatically. Web and iOS follow the same rules.
 struct ScooterRefreshPolicy: Equatable, Sendable {
     /// The interval when a response names none.
@@ -1107,19 +1119,23 @@ struct ScooterRefreshPolicy: Equatable, Sendable {
     var expiryLead: TimeInterval = 5
     /// Automatic requests leave at least this long after the previous one finished.
     var minimumAttemptGap: TimeInterval = 10
+    /// The shortest gap before the one follow-up a refreshing response asks for.
+    var followUpGap: TimeInterval = 2
 
     static let standard = ScooterRefreshPolicy()
 
     /// When the data is due for a refresh, before the gap between requests is
     /// applied: at the server's interval or shortly before the data expires,
     /// whichever comes first. Without a successful load it is always due.
+    /// `attemptGap` replaces `minimumAttemptGap` for a quick follow-up.
     func refreshDue(
         lastSuccess: Date?,
         refreshAfter: TimeInterval,
-        expiresAt: Date?
+        expiresAt: Date?,
+        attemptGap: TimeInterval? = nil
     ) -> Date {
         guard let lastSuccess else { return .distantPast }
-        let interval = lastSuccess.addingTimeInterval(max(minimumAttemptGap, refreshAfter))
+        let interval = lastSuccess.addingTimeInterval(max(attemptGap ?? minimumAttemptGap, refreshAfter))
         guard let expiresAt else { return interval }
         return min(interval, expiresAt.addingTimeInterval(-expiryLead))
     }
@@ -1130,11 +1146,12 @@ struct ScooterRefreshPolicy: Equatable, Sendable {
         lastSuccess: Date?,
         refreshAfter: TimeInterval,
         expiresAt: Date?,
-        lastAttempt: Date?
+        lastAttempt: Date?,
+        attemptGap: TimeInterval? = nil
     ) -> Date {
-        let due = refreshDue(lastSuccess: lastSuccess, refreshAfter: refreshAfter, expiresAt: expiresAt)
+        let due = refreshDue(lastSuccess: lastSuccess, refreshAfter: refreshAfter, expiresAt: expiresAt, attemptGap: attemptGap)
         guard let lastAttempt else { return due }
-        return max(due, lastAttempt.addingTimeInterval(minimumAttemptGap))
+        return max(due, lastAttempt.addingTimeInterval(attemptGap ?? minimumAttemptGap))
     }
 }
 

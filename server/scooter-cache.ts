@@ -9,9 +9,10 @@ import { fetchRegionalParking } from '../src/lib/parkingFeeds';
 import { FeedScheduler } from './feedScheduler';
 import { createSnapshotServer } from './snapshotServer';
 import { collectSnapshotFeed } from './collectFeed';
-import { createFeedStateLog } from './feedStateLog';
+import { createFeedStateLog, feedState, type FeedCadence } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
 import { initErrorReporting, reportError, reportFeedExpired } from './errorReporting';
+import { cadenceFromEnv } from './cadence';
 
 initErrorReporting();
 upstreamJsonCache.paceHost('gbfs.api.ridedott.com', 150);
@@ -29,13 +30,27 @@ let lastHealthLogAt = 0;
 const records = new Map<string, FeedSnapshot>();
 // The last collection error of each failing feed, for its Sentry report should it expire.
 const lastErrors = new Map<string, string>();
-const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT);
 const regionalSystems = new Map(REGIONAL_SCOOTER_SYSTEMS.map(system => [`${regionalSource(system)}:${system.id}`, system]));
 
 // Validate configuration before doing any network collection.
+const schedule = cadenceFromEnv();
+// Always-fast sources every minute; the others every idle interval, and every minute while someone looks.
+const scheduler = new FeedScheduler(collect, { ...schedule,
+  alwaysFast: feed => schedule.alwaysFastSources.has(feed.source),
+  // After a restart, a feed collected recently waits for its turn rather than everyone at once.
+  lastCollectedAt: feed => {
+    const record = records.get(feed.id);
+    return record && !record.failed ? record.collectedAt ?? (record.attemptedAt || undefined) : undefined;
+  },
+  onStart: (_feed, reason) => metrics.recordCollectionStart(reason) });
+const cadence: FeedCadence = { fastSince: (id, now) => scheduler.fastSince(id, now), idleExpiryMs: schedule.idleExpiryMs };
+// City totals count the feeds collected on time, whatever the age of their positions.
+const countedAt = (now: number) => (feed: FeedSnapshot) => feedState(feed, now, cadence) !== 'expired';
+const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
+  cadenceModes: now => scheduler.modes(now), upstreamRequests: () => upstreamJsonCache.requests });
 const server = createSnapshotServer({ snapshot: () => snapshot,
   token: process.env.SCOOTER_SNAPSHOT_API_TOKEN, production: process.env.NODE_ENV === 'production',
-  version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN });
+  version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler });
 try {
   const persisted = JSON.parse(await readFile(snapshotPath, 'utf8')) as MobilitySnapshot;
   if (persisted.version === 1 && Array.isArray(persisted.feeds) && Array.isArray(persisted.overview?.cities)) {
@@ -53,12 +68,13 @@ function publish() {
   const now = Date.now();
   const feeds = [...records.values()];
   snapshot = { version: 1, updatedAt: now, feeds,
-    overview: snapshot?.overview ?? buildCityOverview(feeds, now) };
+    overview: snapshot?.overview ?? buildCityOverview(feeds, now, countedAt(now)) };
   dirty = true;
 }
 
 async function collect(definition: CollectableScooterFeed) {
   const system = regionalSystems.get(definition.id);
+  let failed = false;
   const timed = async () => {
     const started = performance.now();
     try {
@@ -67,6 +83,7 @@ async function collect(definition: CollectableScooterFeed) {
       lastErrors.delete(definition.id);
       return result;
     } catch (error) {
+      failed = true;
       metrics.recordCollection(definition, true, (performance.now() - started) / 1000);
       lastErrors.set(definition.id, (error instanceof Error ? error.message : String(error)).slice(0, 300));
       throw error;
@@ -78,8 +95,8 @@ async function collect(definition: CollectableScooterFeed) {
     records.set(definition.id, record);
     publish();
   }, system ? () => fetchRegionalParking(system) : undefined);
+  return { failed };
 }
-const scheduler = new FeedScheduler(collect);
 
 function setDefinitions(definitions: CollectableScooterFeed[], retireMissing: boolean) {
   if (retireMissing) {
@@ -100,15 +117,19 @@ async function persist() {
   if (persisting) return persisting;
   if (!snapshot || !dirty) return;
   dirty = false;
-  if (overviewNeedsRefresh(snapshot, snapshot.feeds, Date.now())) {
-    snapshot = { ...snapshot, overview: buildCityOverview(snapshot.feeds, Date.now()) };
+  const now = Date.now();
+  if (overviewNeedsRefresh(snapshot, snapshot.feeds, now, countedAt(now))) {
+    snapshot = { ...snapshot, overview: buildCityOverview(snapshot.feeds, now, countedAt(now)) };
   }
-  if (Date.now() - lastHealthLogAt >= 60_000) {
-    lastHealthLogAt = Date.now();
+  if (now - lastHealthLogAt >= 60_000) {
+    lastHealthLogAt = now;
     const relevant = snapshot.feeds.filter(feed => !feed.skipped);
+    const modes = scheduler.modes(now);
     console.log(JSON.stringify({ event: 'snapshot_health', feeds: relevant.length,
       failedFeeds: relevant.filter(feed => feed.failed).length,
-      expiredFeeds: relevant.filter(feed => Date.now() - feed.observedAt > VEHICLE_MAX_AGE_MS).length,
+      expiredFeeds: relevant.filter(feed => feedState(feed, now, cadence) === 'expired').length,
+      servedFeeds: relevant.filter(feed => now - feed.observedAt <= VEHICLE_MAX_AGE_MS).length,
+      alwaysFeeds: modes.always, watchedFeeds: modes.watched, idleFeeds: modes.idle,
       oldestObservationAgeSeconds: relevant.length
         ? Math.round(Math.max(...relevant.map(feed => Date.now() - feed.observedAt)) / 1000) : null }));
   }
@@ -149,7 +170,7 @@ scheduler.start();
 void discover();
 const logFeedStates = createFeedStateLog(console.log, (change, feed) => {
   if (change.state === 'expired') reportFeedExpired(change, feed, lastErrors.get(feed.id));
-});
+}, cadence);
 const persistenceTimer = setInterval(() => {
   if (snapshot) logFeedStates(snapshot.feeds);
   void persist();

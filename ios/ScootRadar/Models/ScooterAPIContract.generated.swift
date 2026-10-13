@@ -98,6 +98,7 @@ struct ScooterResponseMetadataPayload: Decodable, Sendable {
     let generatedAt: String
     let overview: Bool?
     let refreshAfterSeconds: Int?
+    let refreshing: Bool?
     let availableProviders: [String]?
     let truncated: Bool
     let totalVehicles: Int

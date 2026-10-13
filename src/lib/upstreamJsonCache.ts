@@ -1,5 +1,5 @@
 // Keep the reviewed four-country catalog (up to nine documents per feed) resident.
-// Otherwise the minute collector evicts hourly metadata before its next pass.
+// Otherwise the collector evicts hourly metadata before its next pass.
 const DEFAULT_MAX_ENTRIES = 2048;
 const DEFAULT_ERROR_RETRY_SECONDS = 15;
 
@@ -61,6 +61,11 @@ export class UpstreamJsonCache {
   private readonly maxEntries: number;
   private readonly errorRetryMs: number;
   private readonly now: () => number;
+  /**
+   * Requests sent to operators since the start, by kind: `status` documents are
+   * kept for a minute or less, `metadata` for longer.
+   */
+  readonly requests = { status: 0, metadata: 0 };
 
   constructor(options: UpstreamJsonCacheOptions = {}) {
     this.fetcher = options.fetcher ?? ((input, init) => globalThis.fetch(input, init));
@@ -123,6 +128,7 @@ export class UpstreamJsonCache {
   ): Promise<CachedJson<T>> {
     try {
       if (this.hostIntervals.size) await this.waitForHost(url);
+      this.requests[options.freshSeconds <= 60 ? 'status' : 'metadata']++;
       const response = await this.fetcher(url, {
         headers: options.headers,
         cache: 'no-store',

@@ -1,5 +1,5 @@
-import { expect, it } from 'vitest';
-import { createFeedStateLog } from './feedStateLog';
+import { describe, expect, it } from 'vitest';
+import { createFeedStateLog, feedState, parkingUp, type FeedCadence } from './feedStateLog';
 import { VEHICLE_MAX_AGE_MS, type FeedSnapshot } from '../src/lib/scooterSnapshots';
 
 const feed = (changes: Partial<FeedSnapshot>): FeedSnapshot => ({ id: 'national:voiscooters.com', source: 'national',
@@ -56,4 +56,49 @@ it('passes each change and its feed on', () => {
   logStates([feed({ observedAt: now - 20_000, attemptedAt: now - 10_000 })], now);
   logStates([feed({ observedAt: now - 20_000, attemptedAt: now - 10_000 })], now + VEHICLE_MAX_AGE_MS);
   expect(changes).toEqual([['expired', 'ok', 'voi']]);
+});
+
+describe('cadence', () => {
+  const now = 1_000_000_000;
+  const minutes = (count: number) => count * 60_000;
+  const idle: FeedCadence = { fastSince: () => undefined, idleExpiryMs: minutes(30) };
+  const watchedSince = (since: number): FeedCadence => ({ fastSince: () => since, idleExpiryMs: minutes(30) });
+
+  it('keeps an idle feed ok while its collections are on time, however old its positions', () => {
+    // Collected 19 minutes ago, with positions already 9 minutes old then.
+    const quiet = feed({ observedAt: now - minutes(28), attemptedAt: now - minutes(19), collectedAt: now - minutes(19) });
+    expect(feedState(quiet, now, idle)).toBe('ok');
+    expect(feedState(quiet, now)).toBe('expired');
+    // No successful collection for over half an hour.
+    expect(feedState({ ...quiet, failed: true, attemptedAt: now - minutes(1) }, now + minutes(12), idle)).toBe('expired');
+    expect(feedState({ ...quiet, failed: true, attemptedAt: now - minutes(1) }, now, idle)).toBe('failing');
+    // Saved before collectedAt existed: its positions' time stands in.
+    expect(feedState(feed({ observedAt: now - minutes(31), attemptedAt: now - minutes(1) }), now, idle)).toBe('expired');
+  });
+
+  it('judges a feed by its positions once it has been watched for 15 minutes', () => {
+    const old = feed({ observedAt: now - minutes(16), attemptedAt: now - minutes(1), collectedAt: now - minutes(1) });
+    // Just watched: its collection is under way.
+    expect(feedState(old, now, watchedSince(now - minutes(1)))).toBe('ok');
+    expect(feedState(old, now, watchedSince(now - minutes(15)))).toBe('expired');
+  });
+
+  it('judges parking as its cadence allows', () => {
+    const parked = feed({ id: 'france:dott_fr_lyon', source: 'france', parking: { locations: [], observedAt: now - minutes(12), stale: false } });
+    expect(parkingUp(parked, now, idle)).toBe(true);
+    expect(parkingUp(parked, now)).toBe(false);
+    expect(parkingUp(parked, now, watchedSince(now - minutes(2)))).toBe(true);
+    expect(parkingUp({ ...parked, parking: { ...parked.parking!, observedAt: now - minutes(31) } }, now, idle)).toBe(false);
+    expect(parkingUp({ ...parked, parking: { ...parked.parking!, stale: true } }, now, idle)).toBe(false);
+  });
+
+  it('logs no expiry for an idle feed whose positions age between collections', () => {
+    const lines: string[] = [];
+    const logStates = createFeedStateLog(line => lines.push(line), undefined, idle);
+    for (let minute = 0; minute <= 60; minute++) {
+      const collected = now + Math.floor(minute / 20) * minutes(20);
+      logStates([feed({ observedAt: collected - minutes(9), attemptedAt: collected, collectedAt: collected })], now + minutes(minute));
+    }
+    expect(lines).toEqual([]);
+  });
 });

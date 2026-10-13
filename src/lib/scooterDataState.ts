@@ -1,4 +1,4 @@
-import { DEFAULT_REFRESH_AFTER_MS } from '@/lib/autoRefresh';
+import { DEFAULT_REFRESH_AFTER_MS, FOLLOW_UP_GAP_MS, MIN_ATTEMPT_GAP_MS } from '@/lib/autoRefresh';
 import { deviceTime, failedRequestOutcome, isExpired, responseExpiry } from '@/lib/dataExpiry';
 import type { LoadFailure } from '@/lib/loadFailure';
 import type {
@@ -51,6 +51,10 @@ export interface ScooterDataState {
   /** When the previous request finished, whatever its outcome. */
   lastAttemptAt: number | null;
   refreshAfterMs: number;
+  /** The gap before the next request: short once when the server says it is refreshing the data. */
+  attemptGapMs: number;
+  /** The query whose refreshing response already had its quick follow-up; null when the last response was not refreshing. */
+  followedUpKey: string | null;
   /** The query of the request that was started last. */
   requestKey: string | null;
   requestInFlight: boolean;
@@ -73,6 +77,8 @@ export const INITIAL_SCOOTER_DATA_STATE: ScooterDataState = {
   lastSuccessAt: null,
   lastAttemptAt: null,
   refreshAfterMs: DEFAULT_REFRESH_AFTER_MS,
+  attemptGapMs: MIN_ATTEMPT_GAP_MS,
+  followedUpKey: null,
   requestKey: null,
   requestInFlight: false,
   failure: null,
@@ -100,6 +106,9 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
       const expiry = responseExpiry(response.meta, now, clockOffsetMs);
       const generated = deviceTime(response.meta.generatedAt, clockOffsetMs);
       const refreshAfter = response.meta.refreshAfterSeconds;
+      // The server is collecting feeds of this answer again: ask once more soon, but only once in a row.
+      const refreshing = response.meta.refreshing === true;
+      const followUp = refreshing && state.followedUpKey !== event.key;
       return {
         vehicles: response.vehicles,
         clusters: response.clusters ?? [],
@@ -115,6 +124,8 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
         refreshAfterMs: typeof refreshAfter === 'number' && refreshAfter > 0
           ? refreshAfter * 1000
           : DEFAULT_REFRESH_AFTER_MS,
+        attemptGapMs: followUp ? FOLLOW_UP_GAP_MS : MIN_ATTEMPT_GAP_MS,
+        followedUpKey: refreshing ? event.key : null,
         requestKey: event.key,
         requestInFlight: false,
         failure: null,
@@ -123,7 +134,8 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
     }
 
     case 'failed': {
-      const next = { ...state, lastAttemptAt: event.now, requestInFlight: false, failure: event.failure };
+      const next = { ...state, lastAttemptAt: event.now, requestInFlight: false, failure: event.failure,
+        attemptGapMs: MIN_ATTEMPT_GAP_MS };
       if (failedRequestOutcome(state, event.now) !== 'out-of-date') return next;
       return { ...next, vehicles: [], clusters: [], hasData: false, dataKey: null, outOfDate: true };
     }

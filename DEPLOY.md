@@ -184,13 +184,23 @@ origin-authentication migration above did, push the cache change alone, wait
 for `/ready`, then push the rest. A cache can also be deployed by hand from Coolify.
 Coolify remains the source of truth for the application, storage, and resource limits.
 
-The collector schedules each feed independently at most once per minute with
-six concurrent systems and at most two per host. A slow host cannot monopolize
-collection slots. Vehicle results are published immediately, before optional
+The collector schedules each feed independently, with six concurrent systems
+and at most two per host. A slow host cannot monopolize collection slots.
+Switzerland is collected every minute; any other feed every 20 minutes, or every
+minute for 10 minutes after a map request covers it, the request starting a
+collection at once when the last is over a minute old (see
+[docs/OBSERVABILITY.md](docs/OBSERVABILITY.md#collection-cadence)). To collect
+another country every minute whether or not anyone looks, set
+`SCOOTER_ALWAYS_FAST` in the application's Coolify environment to a
+comma-separated list of country codes or source keys, such as `CH,FR`, and
+redeploy; `all` restores the old minute-for-everything. `SCOOTER_IDLE_INTERVAL_SECONDS`
+(1200), `SCOOTER_ACTIVE_INTERVAL_SECONDS` (60) and `SCOOTER_WATCH_SECONDS` (600)
+tune the rest. Vehicle results are published immediately, before optional
 parking completes; disk writes and city overview rebuilding are batched every
-five seconds. Discovery/type/pricing metadata lasts an hour. Scooter status feeds
-must carry a timestamp within fifteen minutes; failed feeds retain vehicles only
-until that observation expires. Parking availability expires after five minutes.
+five seconds. Discovery/type/pricing metadata lasts an hour. The map shows
+positions only while their timestamp is within fifteen minutes; failed feeds
+retain vehicles only until that observation expires. A request for a feed whose
+positions are older waits up to three seconds for the collection it starts. Parking availability expires after five minutes.
 Cached metadata is reported as degraded independently and does not prevent live
 vehicle timestamps advancing.
 Both clients honor response expiry times, including parking expiry, during outages. Snapshots

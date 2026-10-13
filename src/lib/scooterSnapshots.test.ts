@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { buildCityOverview, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from './scooterSnapshots';
+import { buildCityOverview, feedsForQuery, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from './scooterSnapshots';
+import { scooterResponseHeaders } from './scooterResponse';
 import { ScooterFeedsUnavailableError } from './scooterFeeds';
 import { providersForViewport, mapRepresentationsMatch } from './mapCoverage';
 import type { Vehicle } from './types';
@@ -161,4 +162,41 @@ it('returns parking only at street zoom, separately from scooter counts and batt
   expect(expired.parking).toEqual([]);
   expect(expired.meta.parkingStatus).toBe('failed');
   expect(expired.vehicles).toHaveLength(2);
+});
+
+describe('feeds collected on demand', () => {
+  const minutes = (count: number) => count * 60_000;
+
+  it('names the feeds whose positions answer a query, and none for the city totals', () => {
+    const cached = snapshot([feed(), voi, feed({ id: 'national:lime_zurich', source: 'national', provider: 'lime', coverage: [zurich] })]);
+    expect(feedsForQuery(cached, query, 16).map(item => item.id)).toEqual(['france:dott_fr_lyon', 'france:voi_lyon']);
+    expect(feedsForQuery(cached, { ...query, providers: new Set(['voi']) }, 13).map(item => item.id)).toEqual(['france:voi_lyon']);
+    expect(feedsForQuery(cached, query, 10)).toEqual([]);
+    expect(feedsForQuery(cached, { ...query, outsideCoverage: true }, 16)).toEqual([]);
+  });
+
+  it('says a refresh is under way and does not call a feed being collected again failed', () => {
+    const cold = feed({ observedAt: now - minutes(20), collectedAt: now - minutes(20) });
+    const cached = snapshot([cold, voi]);
+    expect(querySnapshot(cached, query, 16, now).meta.failedSources).toEqual(['france:dott_fr_lyon']);
+    const response = querySnapshot(cached, query, 16, now, { refreshing: new Set(['france:dott_fr_lyon']) });
+    expect(response.meta).toMatchObject({ refreshing: true, refreshAfterSeconds: 3, failedSources: [], partial: false, stale: true });
+    expect(response.meta.sources.france).toBe('stale');
+    expect(response.vehicles.map(item => item.provider)).toEqual(['voi']);
+    expect(scooterResponseHeaders(response)['Cache-Control']).toBe('no-store');
+    // Alone and too old to show, it answers empty rather than unavailable while it comes back.
+    expect(() => querySnapshot(snapshot([cold]), query, 16, now)).toThrow(ScooterFeedsUnavailableError);
+    expect(querySnapshot(snapshot([cold]), query, 16, now, { refreshing: new Set([cold.id]) }).vehicles).toEqual([]);
+  });
+
+  it('counts in the city totals an idle feed whose positions are older than the map shows', () => {
+    const idle = feed({ observedAt: now - minutes(25), collectedAt: now - minutes(16) });
+    const onTime = (item: FeedSnapshot) => now - (item.collectedAt ?? item.observedAt) <= minutes(30);
+    expect(buildCityOverview([idle], now).cities.find(city => city.id === 'fr:Lyon')?.failedSources).toEqual(['france:dott_fr_lyon']);
+    const overview = buildCityOverview([idle], now, onTime);
+    const cached: MobilitySnapshot = { version: 1, updatedAt: now, feeds: [idle], overview };
+    expect(querySnapshot(cached, query, 8, now).providers).toEqual({ dott: 2 });
+    expect(querySnapshot(cached, query, 8, now).meta.sources.france).toBe('fresh');
+    expect(overviewNeedsRefresh(cached, [idle], now + 60_000, onTime)).toBe(false);
+  });
 });

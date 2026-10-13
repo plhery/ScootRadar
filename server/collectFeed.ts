@@ -13,11 +13,11 @@ export async function collectSnapshotFeed(
   try {
     const result = await definition.collect();
     record = { ...base, vehicles: result.vehicles, observedAt: result.observedAt ?? Date.now(),
-      attemptedAt: Date.now(), stale: result.stale, failed: false, skipped: result.skipped ?? false,
+      attemptedAt: Date.now(), collectedAt: Date.now(), stale: result.stale, failed: false, skipped: result.skipped ?? false,
       parking: result.skipped ? undefined : old?.parking };
   } catch (error) {
     record = { ...base, vehicles: old?.vehicles ?? [], observedAt: old?.observedAt ?? 0,
-      attemptedAt: Date.now(), stale: true, failed: true, skipped: false, parking: old?.parking };
+      attemptedAt: Date.now(), collectedAt: old?.collectedAt, stale: true, failed: true, skipped: false, parking: old?.parking };
     console.warn(JSON.stringify({ event: 'snapshot_feed_failed', feed: definition.id,
       error: error instanceof Error ? error.message : String(error) }));
   }

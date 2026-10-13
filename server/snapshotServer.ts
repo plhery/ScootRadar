@@ -2,13 +2,29 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { isIP } from 'node:net';
 import { parseScooterQuery } from '../src/lib/scooterQuery';
-import { querySnapshot, VEHICLE_MAX_AGE_MS, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
+import { feedsForQuery, querySnapshot, showsPositions, VEHICLE_MAX_AGE_MS, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { ScooterFeedsUnavailableError } from '../src/lib/scooterFeeds';
 import { scooterResponseHeaders } from '../src/lib/scooterResponse';
 import { isRegionalSource } from '../src/lib/regionalScooterSystems';
-import { PARKING_MAX_AGE_MS } from '../src/lib/dataFreshness';
 import type { SnapshotMetrics } from './metrics';
 import { reportError } from './errorReporting';
+import { ALWAYS_FAST, feedState, parkingUp, type FeedCadence } from './feedStateLog';
+
+/** Collects feeds on demand: the scheduler. */
+export interface FeedRefresher {
+  /** Marks the feeds as watched, and collects at once those last collected over an active interval ago. */
+  demand(ids: string[], now: number): void;
+  /** A collection a request asked for is queued or under way. */
+  refreshing(id: string): boolean;
+  /** Resolves with true once the feeds' collections have finished, or with false after timeoutMs. */
+  wait(ids: string[], timeoutMs: number): Promise<boolean>;
+}
+
+/**
+ * How long a request waits for feeds whose positions are too old to show. The
+ * Worker gives the origin 5 seconds (src/lib/scooterProxy.ts).
+ */
+export const COLD_WAIT_MS = 3_000;
 
 interface ServerOptions {
   snapshot: () => MobilitySnapshot | undefined;
@@ -18,6 +34,11 @@ interface ServerOptions {
   metrics?: SnapshotMetrics;
   /** Opens /metrics to this bearer token; it answers 404 without one. */
   metricsToken?: string;
+  /** How often each feed is meant to be collected, which /ready judges it by. */
+  cadence?: FeedCadence;
+  refresher?: FeedRefresher;
+  /** COLD_WAIT_MS by default. */
+  coldWaitMs?: number;
 }
 
 const ROUTES = new Set(['/api/scooters', '/health', '/ready', '/metrics']);
@@ -33,7 +54,8 @@ export function createSnapshotServer(options: ServerOptions) {
   const metricsTokenHash = options.metricsToken ? createHash('sha256').update(`Bearer ${options.metricsToken}`).digest() : null;
   const clients = new Map<string, { count: number; resetAt: number }>();
   let activeResponses = 0;
-  function handle(request: IncomingMessage, response: ServerResponse) {
+  const cadence = options.cadence ?? ALWAYS_FAST;
+  async function handle(request: IncomingMessage, response: ServerResponse) {
     response.setHeader('Content-Type', 'application/json; charset=utf-8');
     response.setHeader('X-Content-Type-Options', 'nosniff');
     response.setHeader('Cache-Control', 'private, no-store');
@@ -41,21 +63,23 @@ export function createSnapshotServer(options: ServerOptions) {
     let url: URL;
     try { url = new URL(request.url ?? '/', 'http://localhost'); }
     catch { response.writeHead(400); response.end('{"error":"Invalid request URL"}'); return; }
-    const snapshot = options.snapshot();
+    let snapshot = options.snapshot();
     const now = Date.now();
     if (url.pathname === '/health' || url.pathname === '/ready') {
-      const feeds = snapshot?.feeds ?? [];
+      const feeds = (snapshot?.feeds ?? []).filter(feed => !feed.skipped);
       const live = !!snapshot && now - snapshot.updatedAt < VEHICLE_MAX_AGE_MS;
-      const usable = feeds.filter(feed => !feed.skipped && now - feed.observedAt <= VEHICLE_MAX_AGE_MS);
+      // Usable: collected as often as its cadence promises, so served at once or on the next request.
+      const usable = feeds.filter(feed => feedState(feed, now, cadence) !== 'expired');
       const ready = live && usable.length > 0;
       response.writeHead((url.pathname === '/health' ? live : ready) ? 200 : 503);
-      response.end(JSON.stringify({ live, ready, updatedAt: snapshot?.updatedAt, feeds: feeds.length,
+      response.end(JSON.stringify({ live, ready, updatedAt: snapshot?.updatedAt, feeds: snapshot?.feeds.length ?? 0,
         usableFeeds: usable.length,
-        failedFeeds: feeds.filter(feed => !feed.skipped && (feed.failed || now - feed.observedAt > VEHICLE_MAX_AGE_MS)).map(feed => feed.id),
+        // Positions recent enough to show without collecting again.
+        servedFeeds: feeds.filter(feed => showsPositions(feed, now)).length,
+        failedFeeds: feeds.filter(feed => feedState(feed, now, cadence) !== 'ok').map(feed => feed.id),
         oldestUsableAgeSeconds: usable.length ? Math.round(Math.max(...usable.map(feed => now - feed.observedAt)) / 1000) : null,
         parkingLocations: feeds.reduce((sum, feed) => sum + (feed.parking?.locations.length ?? 0), 0),
-        failedParkingFeeds: feeds.filter(feed => isRegionalSource(feed.source) && !feed.skipped &&
-          (!feed.parking || feed.parking.stale || now - feed.parking.observedAt > PARKING_MAX_AGE_MS)).map(feed => feed.id),
+        failedParkingFeeds: feeds.filter(feed => isRegionalSource(feed.source) && !parkingUp(feed, now, cadence)).map(feed => feed.id),
         cities: snapshot?.overview.cities.length, version: options.version ?? 'local' }));
       return;
     }
@@ -87,7 +111,21 @@ export function createSnapshotServer(options: ServerOptions) {
     const parsed = parseScooterQuery(url.searchParams);
     if (!parsed.ok) { response.writeHead(400); response.end(JSON.stringify({ error: parsed.error })); return; }
     if (!snapshot) { response.writeHead(503, { 'Retry-After': '5' }); response.end('{"error":"Scooter data is warming up."}'); return; }
-    const body = querySnapshot(snapshot, parsed.query, parsed.zoom);
+    let refreshing: Set<string> | undefined;
+    const refresher = options.refresher;
+    if (refresher) {
+      // The feeds this answer uses are watched for a while, and collected again now if their data is over a minute old.
+      const watched = feedsForQuery(snapshot, parsed.query, parsed.zoom).filter(feed => !feed.skipped);
+      refresher.demand(watched.map(feed => feed.id), now);
+      // Positions too old to show would leave the map empty: wait a moment for those likely to come back.
+      const cold = watched.filter(feed => !feed.failed && !showsPositions(feed, now) && refresher.refreshing(feed.id));
+      if (cold.length) {
+        options.metrics?.recordWait(await refresher.wait(cold.map(feed => feed.id), options.coldWaitMs ?? COLD_WAIT_MS));
+        snapshot = options.snapshot() ?? snapshot;
+      }
+      refreshing = new Set(watched.filter(feed => refresher.refreshing(feed.id)).map(feed => feed.id));
+    }
+    const body = querySnapshot(snapshot, parsed.query, parsed.zoom, Date.now(), { refreshing });
     // The origin only serves authenticated traffic. Public caching is set at the Worker.
     response.writeHead(200, { ...scooterResponseHeaders(body), 'Cache-Control': 'private, no-store',
       'X-Scooter-Public-Cache-Control': scooterResponseHeaders(body)['Cache-Control'] });
@@ -101,8 +139,7 @@ export function createSnapshotServer(options: ServerOptions) {
       const route = ROUTES.has(path) ? path : 'other';
       response.once('finish', () => options.metrics?.recordRequest(route, response.statusCode, (performance.now() - started) / 1000));
     }
-    try { handle(request, response); }
-    catch (error) {
+    handle(request, response).catch((error: unknown) => {
       if (response.headersSent) { response.destroy(); return; }
       const unavailable = error instanceof ScooterFeedsUnavailableError;
       if (!unavailable) {
@@ -111,7 +148,7 @@ export function createSnapshotServer(options: ServerOptions) {
       }
       response.writeHead(unavailable ? 503 : 500, { 'Retry-After': '30', 'Cache-Control': 'private, no-store' });
       response.end('{"error":"Scooter data is temporarily unavailable."}');
-    }
+    });
   });
   server.requestTimeout = 10_000;
   server.headersTimeout = 10_000;

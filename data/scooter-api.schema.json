@@ -246,6 +246,10 @@
         "generatedAt": { "type": "string", "format": "date-time" },
         "overview": { "type": "boolean" },
         "refreshAfterSeconds": { "type": "integer", "minimum": 1 },
+        "refreshing": {
+          "description": "Feeds of this answer are being collected again; poll once more after refreshAfterSeconds.",
+          "type": "boolean"
+        },
         "availableProviders": { "type": "array", "items": { "type": "string" } },
         "truncated": { "type": "boolean" },
         "totalVehicles": { "type": "integer", "minimum": 0 },

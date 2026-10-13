@@ -72,3 +72,33 @@ it('stops counting a feed retired from the catalog', () => {
   expect(text).toContain('feed="national:voiscooters.com"');
   expect(text).not.toContain('national:retired');
 });
+
+it('judges feeds by their cadence and shows what the cadence costs', () => {
+  const requests = { status: 12, metadata: 3 };
+  const metrics = createSnapshotMetrics('abc123', {
+    cadence: { fastSince: id => id.startsWith('national:') ? 0 : undefined, idleExpiryMs: 30 * 60_000 },
+    cadenceModes: () => ({ always: 20, watched: 2, idle: 150 }),
+    upstreamRequests: () => requests,
+  });
+  metrics.recordCollectionStart('idle');
+  metrics.recordCollectionStart('wake');
+  metrics.recordCollectionStart('idle');
+  metrics.recordWait(true);
+  const lyon = 'feed="france:dott_fr_lyon",source="france",provider="dott"';
+  const text = metrics.render(snapshot([
+    // Idle, collected 12 minutes ago with positions 9 minutes old then.
+    feed({ id: 'france:dott_fr_lyon', source: 'france', provider: 'dott', observedAt: now - 21 * 60_000,
+      attemptedAt: now - 12 * 60_000, collectedAt: now - 12 * 60_000,
+      parking: { locations: [], observedAt: now - 12 * 60_000, stale: false } }),
+    feed({ observedAt: now - VEHICLE_MAX_AGE_MS - 1_000, collectedAt: now - 60_000 }),
+  ]), now);
+  expect(sample(text, `scootradar_feed_state{${lyon},state="ok"}`)).toBe('1');
+  expect(sample(text, `scootradar_feed_parking_up{${lyon}}`)).toBe('1');
+  expect(sample(text, 'scootradar_feed_state{feed="national:voiscooters.com",source="national",provider="voi",state="expired"}')).toBe('1');
+  expect(sample(text, 'scootradar_feeds_by_cadence{cadence="idle"}')).toBe('150');
+  expect(sample(text, 'scootradar_collections_started_total{reason="idle"}')).toBe('2');
+  expect(sample(text, 'scootradar_collections_started_total{reason="wake"}')).toBe('1');
+  expect(sample(text, 'scootradar_request_waits_total{outcome="collected"}')).toBe('1');
+  expect(sample(text, 'scootradar_request_waits_total{outcome="timeout"}')).toBe('0');
+  expect(sample(text, 'scootradar_upstream_requests_total{kind="status"}')).toBe('12');
+});

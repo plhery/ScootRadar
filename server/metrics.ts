@@ -1,14 +1,23 @@
 import { monitorEventLoopDelay } from 'node:perf_hooks';
-import { PARKING_MAX_AGE_MS } from '../src/lib/dataFreshness';
 import { isRegionalSource } from '../src/lib/regionalScooterSystems';
 import type { MobilitySnapshot } from '../src/lib/scooterSnapshots';
-import { feedState, type FeedState } from './feedStateLog';
+import { ALWAYS_FAST, feedState, parkingUp, type FeedCadence, type FeedState } from './feedStateLog';
+import type { CollectionReason, FeedCadenceMode } from './feedScheduler';
 
 interface FeedLabels { id: string; source: string; provider: string }
 type Labels = Record<string, string>;
 
 const FEED_STATES: FeedState[] = ['ok', 'failing', 'expired'];
 const EVENT_LOOP_RESOLUTION_MS = 20;
+
+interface MetricsSources {
+  /** How often each feed is meant to be collected, which its state is judged by. */
+  cadence?: FeedCadence;
+  /** How many feeds are on each cadence now. */
+  cadenceModes?: (now: number) => Record<FeedCadenceMode, number>;
+  /** Requests sent to operators since the start, by kind. */
+  upstreamRequests?: () => Record<string, number>;
+}
 
 /**
  * Prometheus metrics of the snapshot server, in the text exposition format.
@@ -17,8 +26,11 @@ const EVENT_LOOP_RESOLUTION_MS = 20;
  * the snapshot at scrape time; collections and requests are counted as they
  * happen, from zero since the process started.
  */
-export function createSnapshotMetrics(version = 'local') {
+export function createSnapshotMetrics(version = 'local', sources: MetricsSources = {}) {
+  const cadence = sources.cadence ?? ALWAYS_FAST;
   const collections = new Map<string, { labels: Labels; ok: number; failed: number; seconds: number }>();
+  const starts = new Map<CollectionReason, number>();
+  const waits = { collected: 0, timeout: 0 };
   const requests = new Map<string, { labels: Labels; count: number }>();
   const requestSeconds = new Map<string, { count: number; seconds: number }>();
   let discoveredAt = 0;
@@ -44,6 +56,9 @@ export function createSnapshotMetrics(version = 'local') {
       requestSeconds.set(route, timing);
     },
     recordDiscovery(at = Date.now()) { discoveredAt = at; },
+    recordCollectionStart(reason: CollectionReason) { starts.set(reason, (starts.get(reason) ?? 0) + 1); },
+    /** A request waited for the collection of feeds whose positions had expired. */
+    recordWait(collected: boolean) { waits[collected ? 'collected' : 'timeout']++; },
     render(snapshot: MobilitySnapshot | undefined, now = Date.now()): string {
       const out: string[] = [];
       const metric = (name: string, type: string, help: string, samples: [Labels, number][]) => {
@@ -69,18 +84,33 @@ export function createSnapshotMetrics(version = 'local') {
       metric('scootradar_feed_state', 'gauge',
         'ok: served. failing: the last collection failed, the previous positions are still served. expired: nothing is served and the map says the provider is not sharing data.',
         feeds.flatMap(feed => {
-          const state = feedState(feed, now);
+          const state = feedState(feed, now, cadence);
           return FEED_STATES.map((candidate): [Labels, number] => [{ ...labelsOf(feed), state: candidate }, candidate === state ? 1 : 0]);
         }));
-      metric('scootradar_feed_vehicles', 'gauge', 'Vehicles served from the feed, 0 once its data has expired.',
-        feeds.map(feed => [labelsOf(feed), feedState(feed, now) === 'expired' ? 0 : feed.vehicles.length]));
+      metric('scootradar_feed_vehicles', 'gauge', 'Vehicles held for the feed, 0 once it has expired.',
+        feeds.map(feed => [labelsOf(feed), feedState(feed, now, cadence) === 'expired' ? 0 : feed.vehicles.length]));
       metric('scootradar_feed_observation_timestamp_seconds', 'gauge', 'The source timestamp of the positions held for the feed.',
         feeds.filter(feed => feed.observedAt > 0).map(feed => [labelsOf(feed), seconds(feed.observedAt)]));
       metric('scootradar_feed_attempt_timestamp_seconds', 'gauge', 'When the feed was last collected, successfully or not.',
         feeds.map(feed => [labelsOf(feed), seconds(feed.attemptedAt)]));
-      metric('scootradar_feed_parking_up', 'gauge', 'Whether the feed\'s parking availability is fresh, for regional feeds.',
-        feeds.filter(feed => isRegionalSource(feed.source)).map(feed => [labelsOf(feed),
-          feed.parking && !feed.parking.stale && now - feed.parking.observedAt <= PARKING_MAX_AGE_MS ? 1 : 0]));
+      metric('scootradar_feed_parking_up', 'gauge', 'Whether the feed\'s parking availability is as fresh as its cadence promises, for regional feeds.',
+        feeds.filter(feed => isRegionalSource(feed.source)).map(feed => [labelsOf(feed), parkingUp(feed, now, cadence) ? 1 : 0]));
+      if (sources.cadenceModes) {
+        metric('scootradar_feeds_by_cadence', 'gauge',
+          'Feeds by cadence: always (collected every minute), watched (someone looked recently, every minute), idle.',
+          Object.entries(sources.cadenceModes(now)).map(([mode, count]) => [{ cadence: mode }, count]));
+      }
+      metric('scootradar_collections_started_total', 'counter',
+        'Collections started, by reason: always, watched, wake (a request found the data over a minute old), idle, retry (an idle feed that failed).',
+        [...starts].map(([reason, count]) => [{ reason }, count]));
+      metric('scootradar_request_waits_total', 'counter',
+        'Requests that waited for feeds whose positions had expired, by whether their collection finished in time.',
+        Object.entries(waits).map(([outcome, count]) => [{ outcome }, count]));
+      if (sources.upstreamRequests) {
+        metric('scootradar_upstream_requests_total', 'counter',
+          'Requests sent to operators, by kind: status (positions, parking) or metadata (kept an hour or more).',
+          Object.entries(sources.upstreamRequests()).map(([kind, count]) => [{ kind }, count]));
+      }
       metric('scootradar_feed_collections_total', 'counter', 'Feed collections by outcome.',
         [...collections.values()].flatMap(entry => [
           [{ ...entry.labels, outcome: 'ok' }, entry.ok] as [Labels, number],

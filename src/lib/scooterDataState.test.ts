@@ -104,6 +104,24 @@ describe('scooterDataReducer', () => {
     }
   });
 
+  it('asks once more a few seconds later when the server is refreshing the data, and only once in a row', () => {
+    const refreshing = response({ refreshing: true, refreshAfterSeconds: 3 });
+    const first = scooterDataReducer(loaded, { type: 'succeeded', key: 'a', response: refreshing, now: T0 });
+    const schedule = (state: ScooterDataState) => nextRefreshAt({ lastSuccessAt: state.lastSuccessAt, lastAttemptAt: state.lastAttemptAt,
+      refreshAfterMs: state.refreshAfterMs, expiresAt: state.expiresAt, attemptGapMs: state.attemptGapMs });
+    expect(schedule(first)).toBe(T0 + 3_000);
+    // Still refreshing three seconds later: the usual ten-second gap.
+    const second = scooterDataReducer(first, { type: 'succeeded', key: 'a', response: refreshing, now: T0 + 3_000 });
+    expect(schedule(second)).toBe(T0 + 13_000);
+    // Done: back to the server's minute.
+    const done = scooterDataReducer(second, { type: 'succeeded', key: 'a', response: response(), now: T0 + 13_000 });
+    expect(schedule(done)).toBe(T0 + 73_000);
+    expect(schedule(scooterDataReducer(done, { type: 'succeeded', key: 'a', response: refreshing, now: T0 + 73_000 }))).toBe(T0 + 76_000);
+    // Another area gets its own follow-up; a failed request goes back to the usual gap.
+    expect(schedule(scooterDataReducer(second, { type: 'succeeded', key: 'b', response: refreshing, now: T0 + 3_000 }))).toBe(T0 + 6_000);
+    expect(schedule(scooterDataReducer(first, { type: 'failed', failure: 'failed', now: T0 + 3_000 }))).toBe(T0 + 13_000);
+  });
+
   it('never dates the data later than it was received', () => {
     const ahead = scooterDataReducer(loaded, { type: 'succeeded', key: 'a', response: response({ generatedAt: iso(T0 + 90_000) }), now: T0 });
     const invalid = scooterDataReducer(loaded, { type: 'succeeded', key: 'a', response: response({ generatedAt: 'now' }), now: T0 });

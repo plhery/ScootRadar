@@ -1,11 +1,54 @@
 import { VEHICLE_MAX_AGE_MS, type FeedSnapshot } from '../src/lib/scooterSnapshots';
+import { PARKING_MAX_AGE_MS } from '../src/lib/dataFreshness';
 
 /**
- * ok: its positions are served. failing: the last collection failed, the
- * previous positions are still served. expired: nothing is served and the map
- * says the provider is not sharing data.
+ * ok: its last collection succeeded. failing: the last collection failed, the
+ * previous positions are still held. expired: it has not been collected as
+ * often as its cadence promises, so the map says the provider is not sharing
+ * data, or would as soon as someone looked.
  */
 export type FeedState = 'ok' | 'failing' | 'expired';
+
+/** How often a feed is meant to be collected, for judging its state. */
+export interface FeedCadence {
+  /**
+   * When the feed went onto the active interval: 0 for an always-fast feed,
+   * the start of its watch for a watched one, undefined while it is idle.
+   */
+  fastSince(id: string, now: number): number | undefined;
+  /** An idle feed expires once it has had no successful collection for this long. */
+  idleExpiryMs: number;
+}
+
+/** Every feed collected every minute: the rule before idle feeds existed. */
+export const ALWAYS_FAST: FeedCadence = { fastSince: () => 0, idleExpiryMs: VEHICLE_MAX_AGE_MS };
+
+const lastSuccess = (feed: FeedSnapshot) => feed.collectedAt ?? feed.observedAt;
+/** On the active interval for at least `ms`, so its collections should have kept the data that fresh. */
+const fastFor = (feed: FeedSnapshot, now: number, cadence: FeedCadence, ms: number) => {
+  const since = cadence.fastSince(feed.id, now);
+  return since !== undefined && now - since >= ms;
+};
+
+/**
+ * An idle feed's positions may be older than the map shows (15 minutes): it is
+ * collected again as soon as someone looks. So it expires only when no
+ * collection has succeeded for its interval and a grace. A feed collected every
+ * minute, for at least 15 minutes, expires as its positions do on the map.
+ */
+export function feedState(feed: FeedSnapshot, now: number, cadence: FeedCadence = ALWAYS_FAST): FeedState {
+  if (now - lastSuccess(feed) > cadence.idleExpiryMs ||
+    (fastFor(feed, now, cadence, VEHICLE_MAX_AGE_MS) && now - feed.observedAt > VEHICLE_MAX_AGE_MS)) return 'expired';
+  return feed.failed ? 'failing' : 'ok';
+}
+
+/** Whether the feed's parking availability is as fresh as its cadence promises. */
+export function parkingUp(feed: FeedSnapshot, now: number, cadence: FeedCadence = ALWAYS_FAST): boolean {
+  if (!feed.parking || feed.parking.stale) return false;
+  const limit = fastFor(feed, now, cadence, PARKING_MAX_AGE_MS) ? PARKING_MAX_AGE_MS
+    : Math.max(PARKING_MAX_AGE_MS, cadence.idleExpiryMs);
+  return now - feed.parking.observedAt <= limit;
+}
 
 export interface FeedStateChange {
   event: 'snapshot_feed_state';
@@ -17,19 +60,14 @@ export interface FeedStateChange {
   attemptAgeSeconds: number;
 }
 
-export function feedState(feed: FeedSnapshot, now: number): FeedState {
-  if (now - feed.observedAt > VEHICLE_MAX_AGE_MS) return 'expired';
-  return feed.failed ? 'failing' : 'ok';
-}
-
 /**
  * Logs every feed whose state changed since the last call. A feed also expires
- * between two collections, without any error, when the source's own timestamp
- * passes the age limit: this runs on a timer, not after collections. The first
+ * between two collections, without any error, when its time runs out: this
+ * runs on a timer, not after collections. The first
  * state seen for a feed is its baseline and is not logged.
  */
 export function createFeedStateLog(log: (line: string) => void = console.log,
-  onChange?: (change: FeedStateChange, feed: FeedSnapshot) => void) {
+  onChange?: (change: FeedStateChange, feed: FeedSnapshot) => void, cadence: FeedCadence = ALWAYS_FAST) {
   const known = new Map<string, { state: FeedState; since: number }>();
   return (feeds: readonly FeedSnapshot[], now = Date.now()) => {
     const seen = new Set<string>();
@@ -37,7 +75,7 @@ export function createFeedStateLog(log: (line: string) => void = console.log,
       // A feed not attempted yet has no state to speak of.
       if (feed.skipped || feed.attemptedAt === 0) continue;
       seen.add(feed.id);
-      const state = feedState(feed, now);
+      const state = feedState(feed, now, cadence);
       const previous = known.get(feed.id);
       if (previous?.state === state) continue;
       known.set(feed.id, { state, since: now });

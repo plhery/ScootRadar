@@ -237,6 +237,10 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// When the previous request finished, whatever its outcome.
     @ObservationIgnored private var lastAttemptAt: Date?
     @ObservationIgnored private var lastSuccessAt: Date?
+    /// The gap before the next request when the data on screen asked for a quick follow-up.
+    @ObservationIgnored private var followUpGap: TimeInterval?
+    /// The last response was refreshing, for this query; its follow-up was already granted.
+    @ObservationIgnored private var followedUpQuery: ScooterFollowUpQuery?
     @ObservationIgnored private var vehiclesExpireAt: Date?
     @ObservationIgnored private var parkingExpireAt: Date?
     @ObservationIgnored private var locationTimeoutTask: Task<Void, Never>?
@@ -814,12 +818,14 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 lastSuccess: lastSuccessAt,
                 refreshAfter: refreshAfter,
                 expiresAt: vehiclesExpireAt,
-                lastAttempt: lastAttemptAt
+                lastAttempt: lastAttemptAt,
+                attemptGap: followUpGap
             )
             : refreshPolicy.refreshDue(
                 lastSuccess: lastSuccessAt,
                 refreshAfter: refreshAfter,
-                expiresAt: vehiclesExpireAt
+                expiresAt: vehiclesExpireAt,
+                attemptGap: followUpGap
             )
         if clock() >= due {
             refresh()
@@ -837,7 +843,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             lastSuccess: lastSuccessAt,
             refreshAfter: refreshAfter,
             expiresAt: vehiclesExpireAt,
-            lastAttempt: lastAttemptAt
+            lastAttempt: lastAttemptAt,
+            attemptGap: followUpGap
         )
         let delay = max(0, nextAttempt.timeIntervalSince(clock()))
         refreshTimerTask = Task { [weak self] in
@@ -1187,6 +1194,11 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 lastUpdated = min(generatedAt ?? receivedAt, receivedAt)
                 lastSuccessAt = receivedAt
                 lastAttemptAt = receivedAt
+                // The server is collecting feeds of this answer again: ask once more soon, but only once in a row.
+                let query = ScooterFollowUpQuery(bounds: bounds, zoom: zoom, minimumBattery: requestMinimumBattery)
+                let refreshing = response.meta?.refreshing == true
+                followUpGap = refreshing && followedUpQuery != query ? refreshPolicy.followUpGap : nil
+                followedUpQuery = refreshing ? query : nil
                 loadIssue = nil
                 scheduleDataExpiry(response.meta, receivedAt: receivedAt, clockOffset: response.clockOffset)
                 expireParkingIfNeeded()
@@ -1200,6 +1212,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                     ScooterAnalytics.shared.track("data_error", result: "request_failed")
                 }
                 lastAttemptAt = clock()
+                followUpGap = nil
                 handleLoadFailure(ScooterLoadFailure(error))
             }
 

@@ -1,5 +1,10 @@
 /** Automatic requests leave at least this long after the previous request finished. */
 export const MIN_ATTEMPT_GAP_MS = 10_000;
+/**
+ * The shortest gap before the one follow-up a response asks for with
+ * meta.refreshing, while the server collects its feeds again.
+ */
+export const FOLLOW_UP_GAP_MS = 2_000;
 /** Refresh this long before the scooters on screen expire. */
 export const EXPIRY_LEAD_MS = 5_000;
 export const DEFAULT_REFRESH_AFTER_MS = 60_000;
@@ -13,6 +18,8 @@ export interface RefreshSchedule {
   refreshAfterMs: number;
   /** When the scooters on screen expire; null when there are none. */
   expiresAt: number | null;
+  /** The gap between requests; MIN_ATTEMPT_GAP_MS unless the data on screen asked for a quick follow-up. */
+  attemptGapMs?: number;
 }
 
 /**
@@ -23,7 +30,7 @@ export interface RefreshSchedule {
 export function refreshDueAt(schedule: RefreshSchedule): number {
   if (schedule.lastSuccessAt === null) return -Infinity;
   return Math.min(
-    schedule.lastSuccessAt + Math.max(MIN_ATTEMPT_GAP_MS, schedule.refreshAfterMs),
+    schedule.lastSuccessAt + Math.max(schedule.attemptGapMs ?? MIN_ATTEMPT_GAP_MS, schedule.refreshAfterMs),
     (schedule.expiresAt ?? Infinity) - EXPIRY_LEAD_MS
   );
 }
@@ -34,7 +41,7 @@ export function refreshDueAt(schedule: RefreshSchedule): number {
  */
 export function nextRefreshAt(schedule: RefreshSchedule): number | null {
   if (schedule.lastAttemptAt === null) return null;
-  return Math.max(refreshDueAt(schedule), schedule.lastAttemptAt + MIN_ATTEMPT_GAP_MS);
+  return Math.max(refreshDueAt(schedule), schedule.lastAttemptAt + (schedule.attemptGapMs ?? MIN_ATTEMPT_GAP_MS));
 }
 
 export interface RefreshContext extends RefreshSchedule {

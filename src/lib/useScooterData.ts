@@ -104,6 +104,7 @@ function createScooterDataController() {
       lastAttemptAt: state.lastAttemptAt,
       refreshAfterMs: state.refreshAfterMs,
       expiresAt: state.expiresAt,
+      attemptGapMs: state.attemptGapMs,
       now,
       visible: document.visibilityState === 'visible',
       returning,

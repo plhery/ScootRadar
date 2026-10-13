@@ -59,6 +59,7 @@ export interface ScooterResponseMeta {
   generatedAt: string;
   overview?: boolean;
   refreshAfterSeconds?: number;
+  refreshing?: boolean;
   availableProviders?: string[];
   truncated: boolean;
   totalVehicles: number;

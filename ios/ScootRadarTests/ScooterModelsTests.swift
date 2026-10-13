@@ -566,6 +566,33 @@ extension ScooterModelsTests {
         )
     }
 
+    func testARefreshingResponseGetsAQuickFollowUp() {
+        let loaded = Date(timeIntervalSince1970: 1_790_000_000)
+        let policy = ScooterRefreshPolicy.standard
+        XCTAssertEqual(policy.followUpGap, 2)
+        // The server suggests three seconds; the gap allows it once.
+        XCTAssertEqual(
+            policy.nextAttempt(
+                lastSuccess: loaded, refreshAfter: 3, expiresAt: loaded.addingTimeInterval(300),
+                lastAttempt: loaded, attemptGap: policy.followUpGap
+            ),
+            loaded.addingTimeInterval(3)
+        )
+        // Without it, the usual ten seconds.
+        XCTAssertEqual(
+            policy.nextAttempt(
+                lastSuccess: loaded, refreshAfter: 3, expiresAt: loaded.addingTimeInterval(300), lastAttempt: loaded
+            ),
+            loaded.addingTimeInterval(10)
+        )
+        let payload = try? JSONDecoder().decode(ScooterResponseMetadataPayload.self, from: Data("""
+            {"partial":false,"stale":true,"failedSources":[],"sources":{},"generatedAt":"2026-10-14T10:00:00.000Z",
+             "truncated":false,"totalVehicles":0,"mode":"vehicles","zoom":16,"refreshAfterSeconds":3,"refreshing":true}
+            """.utf8))
+        XCTAssertEqual(payload?.model.refreshing, true)
+        XCTAssertEqual(payload?.model.refreshAfterSeconds, 3)
+    }
+
     func testFailedSourcesBecomeDownProvidersOperatingInTheViewport() {
         let failedSources = ["voi_zurich", "Bird_Basel", "velospot", "pony_fr_angers", "city-overview"]
         let health = ScooterProviderHealth(

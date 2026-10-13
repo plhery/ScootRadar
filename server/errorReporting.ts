@@ -61,9 +61,12 @@ export function reportError(key: string, error: unknown, now = Date.now()) {
 }
 
 /**
- * A feed whose positions are no longer served: the map tells people the
- * provider is not sharing data. One issue per feed, with at most one event an
- * hour, so a feed that keeps expiring between updates stays quiet.
+ * A feed that expired (see feedState): the map tells people the provider is not
+ * sharing data, or would as soon as someone looked. Being idle is not enough:
+ * an idle feed expires only after its interval and ten minutes (half an hour by
+ * default) without a successful collection.
+ * One issue per feed, with at most one event an hour, so a feed that keeps
+ * expiring between updates stays quiet.
  */
 export function reportFeedExpired(change: FeedStateChange, feed: FeedSnapshot, lastError: string | undefined, now = Date.now()) {
   if (!due(`expired:${feed.id}`, now)) return;
