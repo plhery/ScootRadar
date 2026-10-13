@@ -41,6 +41,18 @@ export const COVERED_CITIES: CoveredCity[] = [
   })),
 ];
 
+/**
+ * How many cities and countries ScootRadar covers, as the app and the landing
+ * page say it: "186 cities in 17 countries". A city is an entry above, the one
+ * riders search, see among the closest cities and find on the landing page:
+ * each Swiss area, and each town of the other catalogs once, however many
+ * operators run there and whether its feed is its own or shared with other
+ * towns through `areas`. The iOS app counts ScooterCityCatalog, generated from
+ * the same catalogs, the same way.
+ */
+export const COVERED_CITY_TOTAL = COVERED_CITIES.length;
+export const COVERED_COUNTRY_TOTAL = new Set(COVERED_CITIES.map(city => city.country)).size;
+
 // The operators' own envelopes rather than the merged city boxes, so a covered
 // point always has at least one provider in providersForViewport.
 const SERVICE_AREA_BOUNDS: MapBounds[] = [

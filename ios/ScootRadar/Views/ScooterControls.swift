@@ -457,7 +457,7 @@ struct ScooterControlDock: View {
                 systemImage: "map",
                 tint: ScooterPalette.actionText,
                 title: String(localized: "No scooter data here yet"),
-                message: String(localized: "ScootRadar covers selected cities in Belgium, Cyprus, Finland, France, Germany, Greece, Hungary, Iceland, Italy, Latvia, Norway, Poland, Portugal, Spain, Sweden, Switzerland and the United Kingdom.")
+                message: ScooterCoverageSummary.text()
             )
 
             VStack(alignment: .leading, spacing: 8) {

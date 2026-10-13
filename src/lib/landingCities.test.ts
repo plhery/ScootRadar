@@ -1,14 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import { parseClientParams } from '@/lib/clientParams';
-import { COVERED_CITIES, isPointCovered } from '@/lib/coveredCities';
-import { LANDING_CITY_TOTAL, landingCountries } from '@/lib/landingCities';
+import { COVERED_CITIES, COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, isPointCovered } from '@/lib/coveredCities';
+import { landingCountries } from '@/lib/landingCities';
 
 describe('the cities of the landing page', () => {
   it('counts every city of the catalogue, country by country', () => {
     const countries = landingCountries();
     expect(countries.map(({ country }) => country)).toEqual(['CH', 'DE', 'FR', 'IT', 'BE', 'NO', 'GB', 'PT', 'ES', 'IS', 'SE', 'LV', 'PL', 'HU', 'GR', 'CY', 'FI']);
     expect(countries.reduce((sum, { total }) => sum + total, 0)).toBe(COVERED_CITIES.length);
-    expect(LANDING_CITY_TOTAL).toBe(COVERED_CITIES.length);
+    // The title's count and the lede's are the app's.
+    expect(countries.filter(({ total }) => total > 0)).toHaveLength(COVERED_COUNTRY_TOTAL);
+    expect(COVERED_CITY_TOTAL).toBe(COVERED_CITIES.length);
   });
 
   it('finds every city it names', () => {

@@ -83,4 +83,13 @@ extension String {
     init(localized key: String.LocalizationValue) {
         self.init(localized: key, bundle: ScooterLanguage.current.strings)
     }
+
+    /// The same, for a sentence about counts whose words Localizable.stringsdict
+    /// puts in the form each count takes. Foundation picks that form by the
+    /// rules of the locale, so the locale is the language shown, not the one of
+    /// the launch: "21 stað" in Icelandic, where English rules give "21 staði".
+    init(localizedCounting key: String.LocalizationValue) {
+        let language = ScooterLanguage.current
+        self.init(localized: key, bundle: language.strings, locale: language.locale)
+    }
 }

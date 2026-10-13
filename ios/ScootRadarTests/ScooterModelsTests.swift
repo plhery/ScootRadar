@@ -785,6 +785,56 @@ extension ScooterModelsTests {
         XCTAssertTrue(["en", "de", "fr", "it", "nl", "nb", "pt", "es", "is"].contains(ScooterPlural.language))
     }
 
+    func testTheCoverageCardCountsEachCityOfTheCatalogsOnceAndTheirCountries() {
+        let cities = ScooterCityCatalog.cities
+        XCTAssertEqual(ScooterCityCatalog.cityCount, cities.count)
+        XCTAssertEqual(Set(cities.map(\.id)).count, cities.count)
+        XCTAssertEqual(ScooterCityCatalog.countryCount, Set(cities.map(\.countryCode)).count)
+        XCTAssertTrue(cities.contains { $0.countryCode == "CH" })
+        // Dott's one feed for Wołomin, Kobyłka and Radzymin counts three towns.
+        for id in ["pl:Wołomin", "pl:Kobyłka", "pl:Radzymin"] {
+            XCTAssertEqual(cities.filter { $0.id == id }.count, 1, id)
+        }
+
+        defer { ScooterLanguage.current = .atLaunch }
+        ScooterLanguage.current = .en
+        XCTAssertEqual(
+            ScooterCoverageSummary.text(),
+            "ScootRadar covers \(ScooterCityCatalog.cityCount) cities in \(ScooterCityCatalog.countryCount) countries."
+        )
+    }
+
+    func testTheCoverageSentenceGivesEachCountItsOwnFormInEveryLanguage() {
+        defer { ScooterLanguage.current = .atLaunch }
+        let sentences: [ScooterLanguage: (many: String, one: String)] = [
+            .en: ("ScootRadar covers 186 cities in 17 countries.", "ScootRadar covers 1 city in 1 country."),
+            .de: ("ScootRadar deckt 186 Städte in 17 Ländern ab.", "ScootRadar deckt 1 Stadt in 1 Land ab."),
+            .fr: ("ScootRadar couvre 186 villes dans 17 pays.", "ScootRadar couvre 1 ville dans 1 pays."),
+            .it: ("ScootRadar copre 186 città in 17 paesi.", "ScootRadar copre 1 città in 1 paese."),
+            .nl: ("ScootRadar werkt in 186 steden in 17 landen.", "ScootRadar werkt in 1 stad in 1 land."),
+            .nb: ("ScootRadar dekker 186 byer i 17 land.", "ScootRadar dekker 1 by i 1 land."),
+            .pt: ("O ScootRadar abrange 186 cidades em 17 países.", "O ScootRadar abrange 1 cidade em 1 país."),
+            .es: ("ScootRadar cubre 186 ciudades en 17 países.", "ScootRadar cubre 1 ciudad en 1 país."),
+            .is: ("ScootRadar nær yfir 186 staði í 17 löndum.", "ScootRadar nær yfir 1 stað í 1 landi."),
+        ]
+        XCTAssertEqual(Set(sentences.keys), Set(ScooterLanguage.allCases))
+        for (language, sentence) in sentences {
+            ScooterLanguage.current = language
+            XCTAssertEqual(ScooterCoverageSummary.text(cities: 186, countries: 17), sentence.many, language.rawValue)
+            XCTAssertEqual(ScooterCoverageSummary.text(cities: 1, countries: 1), sentence.one, language.rawValue)
+        }
+
+        // Icelandic counts 21 in the singular, but not 11 or 22, and each count picks its own form.
+        ScooterLanguage.current = .is
+        XCTAssertEqual(ScooterCoverageSummary.text(cities: 21, countries: 21), "ScootRadar nær yfir 21 stað í 21 landi.")
+        XCTAssertEqual(ScooterCoverageSummary.text(cities: 22, countries: 22), "ScootRadar nær yfir 22 staði í 22 löndum.")
+        XCTAssertEqual(ScooterCoverageSummary.text(cities: 11, countries: 11), "ScootRadar nær yfir 11 staði í 11 löndum.")
+        XCTAssertEqual(ScooterCoverageSummary.text(cities: 186, countries: 21), "ScootRadar nær yfir 186 staði í 21 landi.")
+        XCTAssertEqual(ScooterCoverageSummary.text(cities: 21, countries: 17), "ScootRadar nær yfir 21 stað í 17 löndum.")
+        ScooterLanguage.current = .en
+        XCTAssertEqual(ScooterCoverageSummary.text(cities: 21, countries: 21), "ScootRadar covers 21 cities in 21 countries.")
+    }
+
     func testPercentagesAndTheShownStateReadAsOnTheWeb() throws {
         for language in ["en", "de", "fr", "it", "nl", "nb", "pt", "es", "is"] {
             let strings = try XCTUnwrap(

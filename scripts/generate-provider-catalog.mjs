@@ -253,7 +253,8 @@ function scooterCities() {
 }
 
 function swiftCities() {
-  const cities = scooterCities().map(city => {
+  const covered = scooterCities();
+  const cities = covered.map(city => {
     if (!/^(CH|FR|DE|IT|BE|NO|GB|PT|ES|IS|SE|LV|PL|HU|GR|CY|FI)$/.test(city.country) || !city.center.every(Number.isFinite)) {
       throw new Error(`Invalid covered city: ${city.id}`);
     }
@@ -283,6 +284,11 @@ enum ScooterCityCatalog {
     static let cities: [ScooterCity] = [
 ${cities}
     ]
+
+    /// How many cities the app covers, and in how many countries, for the card outside coverage:
+    /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
+    static let cityCount = ${covered.length}
+    static let countryCount = ${new Set(covered.map(city => city.country)).size}
 
     /// Cities by distance from the point to their centre, nearest first.
     static func nearest(to point: GeoPoint, count: Int) -> [ScooterCityDistance] {

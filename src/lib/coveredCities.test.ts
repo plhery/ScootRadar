@@ -1,6 +1,8 @@
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { COVERED_CITIES, isPointCovered, nearestCoveredCities } from '@/lib/coveredCities';
+import {
+  COVERED_CITIES, COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, isPointCovered, nearestCoveredCities,
+} from '@/lib/coveredCities';
 import { SWISS_SCOOTER_AREAS } from '@/lib/feedCoverage';
 import { boundsContainPoint } from '@/lib/geo';
 import { providersForViewport } from '@/lib/mapCoverage';
@@ -108,6 +110,37 @@ describe('nearest covered cities', () => {
   });
 });
 
+describe('the count of covered cities and countries', () => {
+  // Read from the catalogs themselves, so a catalog the app does not read, or a
+  // town it drops, changes one count and not the other.
+  function fromCatalogs() {
+    const cities = new Set<string>(JSON.parse(readFileSync('data/swiss-scooter-areas.json', 'utf8')).map(({ id }: { id: string }) => id));
+    const countries = new Set(['CH']);
+    for (const file of readdirSync('data').filter(name => name.endsWith('-scooter-feeds.json'))) {
+      // The French catalog alone has no country on its systems.
+      for (const system of JSON.parse(readFileSync(`data/${file}`, 'utf8')).systems) {
+        const country: string = system.country ?? 'FR';
+        countries.add(country);
+        for (const { city } of system.areas ?? [system]) cities.add(`${country.toLowerCase()}:${city}`);
+      }
+    }
+    return { cities: cities.size, countries: countries.size };
+  }
+
+  it('counts every Swiss area and every town of the catalogs once, and their countries', () => {
+    expect({ cities: COVERED_CITY_TOTAL, countries: COVERED_COUNTRY_TOTAL }).toEqual(fromCatalogs());
+    expect(COVERED_CITY_TOTAL).toBe(COVERED_CITIES.length);
+    expect(COVERED_COUNTRY_TOTAL).toBe(new Set(COVERED_CITIES.map(city => city.country)).size);
+  });
+
+  it('counts each town of a feed shared by several, and a town with several operators once', () => {
+    // Dott runs one feed for Wołomin, Kobyłka and Radzymin; Voi and Bolt both run Reutlingen and Tübingen.
+    for (const id of ['pl:Wołomin', 'pl:Kobyłka', 'pl:Radzymin', 'de:Reutlingen', 'de:Tübingen', 'fr:Bordeaux']) {
+      expect(COVERED_CITIES.filter(city => city.id === id), id).toHaveLength(1);
+    }
+  });
+});
+
 describe('iOS city catalogue', () => {
   // scripts/generate-provider-catalog.mjs repeats the merge in plain JavaScript;
   // the iOS app must offer exactly the cities the web app does.
@@ -130,5 +163,11 @@ describe('iOS city catalogue', () => {
     }));
 
     expect(cities).toEqual(COVERED_CITIES);
+  });
+
+  it('is generated with the same count of cities and countries', () => {
+    const swift = readFileSync('ios/ScootRadar/Models/ProviderCatalog.generated.swift', 'utf8');
+    expect(swift).toContain(`static let cityCount = ${COVERED_CITY_TOTAL}\n`);
+    expect(swift).toContain(`static let countryCount = ${COVERED_COUNTRY_TOTAL}\n`);
   });
 });

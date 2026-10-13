@@ -6,8 +6,9 @@ import { GuideIndex, GuidePage, guideIndexMetadata, guideMetadata } from '../gui
 import Icon from '@/components/Icon';
 import StageDepth from '@/components/StageDepth';
 import { PROVIDERS } from '@/generated/providers';
+import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL } from '@/lib/coveredCities';
 import type { TranslationKey } from '@/lib/i18n';
-import { LANDING_CITY_TOTAL, landingCountries } from '@/lib/landingCities';
+import { landingCountries } from '@/lib/landingCities';
 import {
   APP_STORE_URL,
   LANDING_COPY,
@@ -56,7 +57,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 function landingMetadata(locale: LandingLocale): Metadata {
   const { meta } = LANDING_COPY[locale];
-  const description = meta.description(LANDING_CITY_TOTAL);
+  const description = meta.description(COVERED_CITY_TOTAL);
   const share = { url: shareImage(locale), width: 1200, height: 630, alt: meta.share.alt };
   return {
     title: meta.title,
@@ -116,7 +117,7 @@ function structuredData(locale: LandingLocale, copy: LandingCopy) {
         '@id': `${SITE_URL}${MAP_PATH}#app`,
         name: SITE_NAME,
         url: `${SITE_URL}${MAP_PATH}`,
-        description: copy.meta.description(LANDING_CITY_TOTAL),
+        description: copy.meta.description(COVERED_CITY_TOTAL),
         applicationCategory: 'TravelApplication',
         operatingSystem: 'Any',
         browserRequirements: 'Requires JavaScript',
@@ -450,8 +451,8 @@ function LandingPage({ locale }: { locale: LandingLocale }) {
 
         <section className="cities" id="cities">
           <div className="cities-copy">
-            <h2 className="title">{copy.cities.title(LANDING_CITY_TOTAL)}</h2>
-            <p className="lede">{copy.cities.lede}</p>
+            <h2 className="title">{copy.cities.title(COVERED_CITY_TOTAL)}</h2>
+            <p className="lede">{copy.cities.lede(COVERED_COUNTRY_TOTAL)}</p>
             <dl className="countries">
               {landingCountries().map(({ country, total, featured, more }) => (
                 <div className="country" key={country}>

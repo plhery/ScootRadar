@@ -58,6 +58,24 @@ describe('formatUiText', () => {
   });
 });
 
+describe('formatUiText with parts', () => {
+  it('formats each part as a sentence of its own, with its own count and form, before substituting it', () => {
+    const counted = (key: 'cities' | 'countries', count: number) => ({
+      key: `coverage.${key}.other`, numbers: { count }, one: { key: `coverage.${key}.one`, count },
+    }) as const;
+    const icelandic = { ...i18n, locale: 'is' } as const;
+    const text = (cities: number, countries: number) =>
+      ({ key: 'coverage.body', parts: { cities: counted('cities', cities), countries: counted('countries', countries) } }) as const;
+
+    expect(formatUiText(text(1, 2), i18n))
+      .toBe('coverage.body cities=coverage.cities.one count=1 countries=coverage.countries.other count=2');
+    expect(formatUiText(text(21, 22), icelandic))
+      .toBe('coverage.body cities=coverage.cities.one count=21 countries=coverage.countries.other count=22');
+    expect(formatUiText(text(5412, 21), i18n))
+      .toBe(`coverage.body cities=coverage.cities.other count=${new Intl.NumberFormat('de-CH').format(5412)} countries=coverage.countries.other count=21`);
+  });
+});
+
 describe('isSingular', () => {
   it('is true for one in every app language, and for none only in French', () => {
     for (const locale of ['en', 'de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is'] as const) {

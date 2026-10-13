@@ -3,6 +3,7 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import BottomSheet from '@/components/BottomSheet';
+import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL } from '@/lib/coveredCities';
 import { dockIssue, dockModel, type DockInput } from '@/lib/dockModel';
 import { I18nProvider } from '@/lib/i18n';
 import { PROVIDERS, type ParkingLocation, type ScooterResponseMeta, type Vehicle } from '@/lib/types';
@@ -399,7 +400,7 @@ describe('BottomSheet', () => {
     }) });
 
     expect(screen.getByRole('heading', { name: 'No scooter data here yet' })).toBeVisible();
-    expect(screen.getByText('ScootRadar covers selected cities in Belgium, Cyprus, Finland, France, Germany, Greece, Hungary, Iceland, Italy, Latvia, Norway, Poland, Portugal, Spain, Sweden, Switzerland and the United Kingdom.')).toBeVisible();
+    expect(screen.getByText(`ScootRadar covers ${COVERED_CITY_TOTAL} cities in ${COVERED_COUNTRY_TOTAL} countries.`)).toBeVisible();
     expect(count()).not.toBeInTheDocument();
     const cities = within(screen.getByRole('group', { name: 'Closest cities' })).getAllByRole('button');
     expect(cities).toHaveLength(3);

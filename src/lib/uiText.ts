@@ -14,6 +14,12 @@ export interface UiText {
    * `key` where the language shown uses the singular for that count.
    */
   one?: { key: TranslationKey; count: number };
+  /**
+   * Phrases of their own, formatted like this one and substituted for their
+   * name, so that each count of a sentence about two takes its own form:
+   * "{cities} in {countries}".
+   */
+  parts?: Record<string, UiText>;
 }
 
 /** The value of useI18n() satisfies this. */
@@ -38,9 +44,11 @@ export function isSingular(count: number, locale: AppLocale): boolean {
   return new Intl.PluralRules(locale === 'pt' ? 'pt-PT' : locale).select(count) === 'one';
 }
 
-export function formatUiText(text: UiText, { locale, t, formatNumber }: UiTextFormatter): string {
+export function formatUiText(text: UiText, formatter: UiTextFormatter): string {
+  const { locale, t, formatNumber } = formatter;
   const values: Record<string, string | number> = { ...text.values };
   for (const [name, value] of Object.entries(text.numbers ?? {})) values[name] = formatNumber(value);
   if (text.time !== undefined) values.time = formatClockTime(text.time, locale);
+  for (const [name, part] of Object.entries(text.parts ?? {})) values[name] = formatUiText(part, formatter);
   return t(text.one && isSingular(text.one.count, locale) ? text.one.key : text.key, values);
 }

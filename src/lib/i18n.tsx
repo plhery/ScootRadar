@@ -88,7 +88,11 @@ const en = {
   'fail.unavailable': 'ScootRadar is having trouble. Try again in a moment.',
   'fail.generic': 'Couldn’t load scooters.',
   'coverage.title': 'No scooter data here yet',
-  'coverage.body': 'ScootRadar covers selected cities in Belgium, Cyprus, Finland, France, Germany, Greece, Hungary, Iceland, Italy, Latvia, Norway, Poland, Portugal, Spain, Sweden, Switzerland and the United Kingdom.',
+  'coverage.body': 'ScootRadar covers {cities} in {countries}.',
+  'coverage.cities.one': '{count} city',
+  'coverage.cities.other': '{count} cities',
+  'coverage.countries.one': '{count} country',
+  'coverage.countries.other': '{count} countries',
   'coverage.closest': 'Closest cities',
   'coverage.city': '{city} · {distance}',
   'hidden.title.one': '1 scooter hidden by your filters',
@@ -280,7 +284,11 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'fail.unavailable': 'ScootRadar hat gerade Probleme. Versuche es gleich nochmals.',
     'fail.generic': 'Scooter konnten nicht geladen werden.',
     'coverage.title': 'Hier gibt es noch keine Scooter-Daten',
-    'coverage.body': 'ScootRadar deckt ausgewählte Städte in Belgien, Deutschland, Finnland, Frankreich, Griechenland, Island, Italien, Lettland, Norwegen, Polen, Portugal, Schweden, der Schweiz, Spanien, Ungarn, im Vereinigten Königreich und in Zypern ab.',
+    'coverage.body': 'ScootRadar deckt {cities} in {countries} ab.',
+    'coverage.cities.one': '{count} Stadt',
+    'coverage.cities.other': '{count} Städte',
+    'coverage.countries.one': '{count} Land',
+    'coverage.countries.other': '{count} Ländern',
     'coverage.closest': 'Nächstgelegene Städte',
     'coverage.city': '{city} · {distance}',
     'hidden.title.one': '1 Scooter durch deine Filter ausgeblendet',
@@ -466,7 +474,11 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'fail.unavailable': 'ScootRadar rencontre un problème. Réessayez dans un instant.',
     'fail.generic': 'Impossible de charger les trottinettes.',
     'coverage.title': 'Pas encore de données de trottinettes ici',
-    'coverage.body': 'ScootRadar couvre certaines villes de Belgique, de Chypre, de Finlande, de France, d’Allemagne, de Grèce, de Hongrie, d’Islande, d’Italie, de Lettonie, de Norvège, de Pologne, du Portugal, d’Espagne, de Suède, de Suisse et du Royaume-Uni.',
+    'coverage.body': 'ScootRadar couvre {cities} dans {countries}.',
+    'coverage.cities.one': '{count} ville',
+    'coverage.cities.other': '{count} villes',
+    'coverage.countries.one': '{count} pays',
+    'coverage.countries.other': '{count} pays',
     'coverage.closest': 'Villes les plus proches',
     'coverage.city': '{city} · {distance}',
     'hidden.title.one': '1 trottinette masquée par vos filtres',
@@ -652,7 +664,11 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'fail.unavailable': 'ScootRadar ha qualche problema. Riprova tra poco.',
     'fail.generic': 'Impossibile caricare i monopattini.',
     'coverage.title': 'Qui non ci sono ancora dati sui monopattini',
-    'coverage.body': 'ScootRadar copre alcune città in Belgio, Cipro, Finlandia, Francia, Germania, Grecia, Ungheria, Islanda, Italia, Lettonia, Norvegia, Polonia, Portogallo, Spagna, Svezia, Svizzera e Regno Unito.',
+    'coverage.body': 'ScootRadar copre {cities} in {countries}.',
+    'coverage.cities.one': '{count} città',
+    'coverage.cities.other': '{count} città',
+    'coverage.countries.one': '{count} paese',
+    'coverage.countries.other': '{count} paesi',
     'coverage.closest': 'Città più vicine',
     'coverage.city': '{city} · {distance}',
     'hidden.title.one': '1 monopattino nascosto dai tuoi filtri',
@@ -838,7 +854,11 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'fail.unavailable': 'ScootRadar har problemer. Prøv igjen om litt.',
     'fail.generic': 'Kunne ikke laste inn elsparkesykler.',
     'coverage.title': 'Ingen data om elsparkesykler her ennå',
-    'coverage.body': 'ScootRadar dekker utvalgte byer i Belgia, Finland, Frankrike, Hellas, Island, Italia, Kypros, Latvia, Norge, Polen, Portugal, Spania, Storbritannia, Sveits, Sverige, Tyskland og Ungarn.',
+    'coverage.body': 'ScootRadar dekker {cities} i {countries}.',
+    'coverage.cities.one': '{count} by',
+    'coverage.cities.other': '{count} byer',
+    'coverage.countries.one': '{count} land',
+    'coverage.countries.other': '{count} land',
     'coverage.closest': 'Nærmeste byer',
     'coverage.city': '{city} · {distance}',
     'hidden.title.one': '1 elsparkesykkel skjult av filtrene dine',
@@ -1024,7 +1044,11 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'fail.unavailable': 'ScootRadar heeft problemen. Probeer het zo opnieuw.',
     'fail.generic': 'De deelsteps konden niet worden geladen.',
     'coverage.title': 'Hier is nog geen data over deelsteps',
-    'coverage.body': 'ScootRadar werkt in een selectie van steden in België, Cyprus, Duitsland, Finland, Frankrijk, Griekenland, Hongarije, IJsland, Italië, Letland, Noorwegen, Polen, Portugal, Spanje, het Verenigd Koninkrijk, Zweden en Zwitserland.',
+    'coverage.body': 'ScootRadar werkt in {cities} in {countries}.',
+    'coverage.cities.one': '{count} stad',
+    'coverage.cities.other': '{count} steden',
+    'coverage.countries.one': '{count} land',
+    'coverage.countries.other': '{count} landen',
     'coverage.closest': 'Dichtstbijzijnde steden',
     'coverage.city': '{city} · {distance}',
     'hidden.title.one': '1 deelstep verborgen door je filters',
@@ -1210,7 +1234,11 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'fail.unavailable': 'O ScootRadar está com problemas. Tente novamente daqui a pouco.',
     'fail.generic': 'Não foi possível carregar as trotinetes.',
     'coverage.title': 'Ainda não há dados de trotinetes aqui',
-    'coverage.body': 'O ScootRadar abrange algumas cidades da Alemanha, da Bélgica, de Chipre, de Espanha, da Finlândia, de França, da Grécia, da Hungria, da Islândia, de Itália, da Letónia, da Noruega, da Polónia, de Portugal, do Reino Unido, da Suécia e da Suíça.',
+    'coverage.body': 'O ScootRadar abrange {cities} em {countries}.',
+    'coverage.cities.one': '{count} cidade',
+    'coverage.cities.other': '{count} cidades',
+    'coverage.countries.one': '{count} país',
+    'coverage.countries.other': '{count} países',
     'coverage.closest': 'Cidades mais próximas',
     'coverage.city': '{city} · {distance}',
     'hidden.title.one': '1 trotinete oculta pelos seus filtros',
@@ -1396,7 +1424,11 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'fail.unavailable': 'ScootRadar está teniendo problemas. Inténtalo de nuevo en un momento.',
     'fail.generic': 'No se han podido cargar los patinetes.',
     'coverage.title': 'Aún no hay datos de patinetes aquí',
-    'coverage.body': 'ScootRadar cubre algunas ciudades de Alemania, Bélgica, Chipre, España, Finlandia, Francia, Grecia, Hungría, Islandia, Italia, Letonia, Noruega, Polonia, Portugal, el Reino Unido, Suecia y Suiza.',
+    'coverage.body': 'ScootRadar cubre {cities} en {countries}.',
+    'coverage.cities.one': '{count} ciudad',
+    'coverage.cities.other': '{count} ciudades',
+    'coverage.countries.one': '{count} país',
+    'coverage.countries.other': '{count} países',
     'coverage.closest': 'Ciudades más cercanas',
     'coverage.city': '{city} · {distance}',
     'hidden.title.one': '1 patinete oculto por tus filtros',
@@ -1582,7 +1614,11 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'fail.unavailable': 'ScootRadar á í vandræðum. Reyndu aftur eftir smástund.',
     'fail.generic': 'Ekki tókst að sækja rafskúturnar.',
     'coverage.title': 'Engin gögn um rafskútur hér enn',
-    'coverage.body': 'ScootRadar nær yfir valdar borgir og bæi á Grikklandi, Íslandi, Ítalíu, Kýpur og Spáni og í Belgíu, Bretlandi, Finnlandi, Frakklandi, Lettlandi, Noregi, Portúgal, Póllandi, Sviss, Svíþjóð, Ungverjalandi og Þýskalandi.',
+    'coverage.body': 'ScootRadar nær yfir {cities} í {countries}.',
+    'coverage.cities.one': '{count} stað',
+    'coverage.cities.other': '{count} staði',
+    'coverage.countries.one': '{count} landi',
+    'coverage.countries.other': '{count} löndum',
     'coverage.closest': 'Næstu staðir',
     'coverage.city': '{city} · {distance}',
     'hidden.title.one': 'Síurnar þínar fela einu rafskútuna hér',
@@ -1689,6 +1725,14 @@ const dictionaries: Record<AppLocale, Dictionary> = {
 
 type TranslationValues = Record<string, string | number>;
 
+/** The sentence of the key in the language, its {placeholders} replaced by the values. */
+export function translate(locale: AppLocale, key: TranslationKey, values: TranslationValues = {}): string {
+  return Object.entries(values).reduce(
+    (result, [name, value]) => result.replaceAll(`{${name}}`, String(value)),
+    dictionaries[locale][key]
+  );
+}
+
 interface I18nContextValue {
   locale: AppLocale;
   setLocale: (locale: AppLocale) => void;
@@ -1739,13 +1783,10 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   }, []);
 
-  const t = useCallback((key: TranslationKey, values: TranslationValues = {}) => {
-    const template = dictionaries[locale][key];
-    return Object.entries(values).reduce(
-      (result, [name, value]) => result.replaceAll(`{${name}}`, String(value)),
-      template
-    );
-  }, [locale]);
+  const t = useCallback(
+    (key: TranslationKey, values?: TranslationValues) => translate(locale, key, values),
+    [locale]
+  );
 
   const formatNumber = useCallback(
     (value: number, options?: Intl.NumberFormatOptions) =>

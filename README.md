@@ -5,7 +5,7 @@
 <h1 align="center">ScootRadar</h1>
 
 <p align="center">
-  A friendly map for finding shared e-scooters in Switzerland and selected cities in France, Germany, Italy, Belgium, Norway, the United Kingdom, Portugal, Spain, Iceland, Sweden, Latvia, Poland, Hungary, Greece, Cyprus and Finland.
+  A friendly map for finding shared e-scooters in Switzerland and cities across Europe.
 </p>
 
 <p align="center">

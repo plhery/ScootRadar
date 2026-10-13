@@ -59,6 +59,48 @@ describe('the languages of the landing page', () => {
   });
 });
 
+describe('the cities of the landing page', () => {
+  /** The first sentence of the lede, which counts the countries. */
+  const opening = (locale: (typeof LANDING_LOCALES)[number], countries: number) =>
+    LANDING_COPY[locale].cities.lede(countries).split('. ')[0];
+
+  it('counts the countries rather than naming them, the noun in the form its count takes', () => {
+    expect(LANDING_LOCALES.map(locale => opening(locale, 17))).toEqual([
+      'Shared e-scooters in 17 countries',
+      'E-Scooter in 17 Ländern',
+      'Des trottinettes en libre-service dans 17 pays',
+      'Monopattini in sharing in 17 paesi',
+      'Deelsteps in 17 landen',
+      'Elsparkesykler til leie i 17 land',
+      'Trotinetes elétricas partilhadas em 17 países',
+      'Patinetes eléctricos compartidos en 17 países',
+      'Rafskútur til leigu í 17 löndum',
+    ]);
+    expect(LANDING_LOCALES.map(locale => opening(locale, 1))).toEqual([
+      'Shared e-scooters in 1 country',
+      'E-Scooter in 1 Land',
+      'Des trottinettes en libre-service dans 1 pays',
+      'Monopattini in sharing in 1 paese',
+      'Deelsteps in 1 land',
+      'Elsparkesykler til leie i 1 land',
+      'Trotinetes elétricas partilhadas em 1 país',
+      'Patinetes eléctricos compartidos en 1 país',
+      'Rafskútur til leigu í 1 landi',
+    ]);
+    // Icelandic takes the singular for a count ending in 1, but not 11.
+    expect([21, 22, 11, 31].map(count => opening('is', count)))
+      .toEqual(['Rafskútur til leigu í 21 landi', 'Rafskútur til leigu í 22 löndum', 'Rafskútur til leigu í 11 löndum', 'Rafskútur til leigu í 31 landi']);
+    expect(opening('en', 21)).toBe('Shared e-scooters in 21 countries');
+  });
+
+  it('keeps what the lede says after the count', () => {
+    expect(LANDING_COPY.en.cities.lede(17)).toBe(
+      'Shared e-scooters in 17 countries. Where no provider publishes its data, the map says so and points you to the closest cities that have it. Pick a city to open the map there.'
+    );
+    for (const locale of LANDING_LOCALES) expect(LANDING_COPY[locale].cities.lede(17).split('. ')).toHaveLength(3);
+  });
+});
+
 describe('the links of the landing page', () => {
   /** The names a sentence gives its links, in order. */
   const linked = (sentence: string) => linkedParts(sentence).flatMap(({ link }) => link ?? []);

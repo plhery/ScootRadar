@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
+import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL } from '@/lib/coveredCities';
 import {
+  coverageBody,
   dockChips,
   dockIssue,
   dockModel,
@@ -8,7 +10,7 @@ import {
   type DockInput,
   type DockModel,
 } from '@/lib/dockModel';
-import type { TranslationKey } from '@/lib/i18n';
+import { SUPPORTED_LOCALES, translate, type AppLocale, type TranslationKey } from '@/lib/i18n';
 import type { ScooterResponseMeta } from '@/lib/types';
 import { formatUiText, type UiTextFormatter } from '@/lib/uiText';
 
@@ -494,6 +496,52 @@ describe('dock cards', () => {
     };
     expect(model.cities.map(city => formatCoverageCity(city, i18n)))
       .toEqual(['Zug · 52 km', 'Bern · 57 km', 'Grenchen · 73 km']);
+  });
+
+  it('says how many cities and countries are covered, each noun in the form its count takes', () => {
+    const model = dockModel(input({ count: 0, providerCounts: {}, viewportProviders: [], viewportCenter: LUNGERN, unfilteredCount: 0 }));
+    expect(model).toMatchObject({ kind: 'outsideCoverage', body: coverageBody(COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL) });
+
+    const say = (locale: AppLocale, cities: number, countries: number) => formatUiText(coverageBody(cities, countries), {
+      locale,
+      t: (key, values) => translate(locale, key, values),
+      formatNumber: value => new Intl.NumberFormat(`${locale}-CH`).format(value),
+    });
+    const locales = ['en', 'de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is'] as const;
+    expect(new Set(locales)).toEqual(new Set(SUPPORTED_LOCALES));
+    expect(say('en', COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL))
+      .toBe(`ScootRadar covers ${COVERED_CITY_TOTAL} cities in ${COVERED_COUNTRY_TOTAL} countries.`);
+    expect(locales.map(locale => say(locale, 186, 17))).toEqual([
+      'ScootRadar covers 186 cities in 17 countries.',
+      'ScootRadar deckt 186 Städte in 17 Ländern ab.',
+      'ScootRadar couvre 186 villes dans 17 pays.',
+      'ScootRadar copre 186 città in 17 paesi.',
+      'ScootRadar werkt in 186 steden in 17 landen.',
+      'ScootRadar dekker 186 byer i 17 land.',
+      'O ScootRadar abrange 186 cidades em 17 países.',
+      'ScootRadar cubre 186 ciudades en 17 países.',
+      'ScootRadar nær yfir 186 staði í 17 löndum.',
+    ]);
+    expect(locales.map(locale => say(locale, 1, 1))).toEqual([
+      'ScootRadar covers 1 city in 1 country.',
+      'ScootRadar deckt 1 Stadt in 1 Land ab.',
+      'ScootRadar couvre 1 ville dans 1 pays.',
+      'ScootRadar copre 1 città in 1 paese.',
+      'ScootRadar werkt in 1 stad in 1 land.',
+      'ScootRadar dekker 1 by i 1 land.',
+      'O ScootRadar abrange 1 cidade em 1 país.',
+      'ScootRadar cubre 1 ciudad en 1 país.',
+      'ScootRadar nær yfir 1 stað í 1 landi.',
+    ]);
+    // Icelandic takes the singular for a count ending in 1, but not 11; each count picks its own form.
+    expect(say('is', 21, 21)).toBe('ScootRadar nær yfir 21 stað í 21 landi.');
+    expect(say('is', 22, 22)).toBe('ScootRadar nær yfir 22 staði í 22 löndum.');
+    expect(say('is', 11, 11)).toBe('ScootRadar nær yfir 11 staði í 11 löndum.');
+    expect(say('is', 186, 21)).toBe('ScootRadar nær yfir 186 staði í 21 landi.');
+    expect(say('en', 21, 21)).toBe('ScootRadar covers 21 cities in 21 countries.');
+    expect(say('pt', 21, 21)).toBe('O ScootRadar abrange 21 cidades em 21 países.');
+    // Thousands are grouped as the app groups them.
+    expect(say('de', 1200, 17)).toBe(`ScootRadar deckt ${new Intl.NumberFormat('de-CH').format(1200)} Städte in 17 Ländern ab.`);
   });
 
   it('shows how many scooters the filters hide and offers to show them', () => {

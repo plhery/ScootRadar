@@ -554,6 +554,11 @@ enum ScooterCityCatalog {
         ScooterCity(id: "fi:Mariehamn", name: "Mariehamn", countryCode: "FI", center: GeoPoint(latitude: 60.0973, longitude: 19.9348), bounds: GeoBounds(south: 60.0657, west: 19.8824, north: 60.1438, east: 19.9972)),
     ]
 
+    /// How many cities the app covers, and in how many countries, for the card outside coverage:
+    /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
+    static let cityCount = 188
+    static let countryCount = 17
+
     /// Cities by distance from the point to their centre, nearest first.
     static func nearest(to point: GeoPoint, count: Int) -> [ScooterCityDistance] {
         let distances = cities.map { city in

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ScootRadar covers %lld cities in %lld countries.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>O ScootRadar abrange %#@cities@ em %#@countries@.</string>
+		<key>cities</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld cidade</string>
+			<key>other</key>
+			<string>%lld cidades</string>
+		</dict>
+		<key>countries</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>lld</string>
+			<key>one</key>
+			<string>%lld país</string>
+			<key>other</key>
+			<string>%lld países</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

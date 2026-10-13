@@ -36,6 +36,7 @@
 		A0000000000000000000000F /* ScooterAPITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000011 /* ScooterAPITests.swift */; };
 		A00000000000000000000010 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C00000000000000000000009 /* Localizable.strings */; };
 		A00000000000000000000011 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0000000000000000000000A /* InfoPlist.strings */; };
+		A000000000000000000000B0 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = C000000000000000000000B0 /* Localizable.stringsdict */; };
 		A00000000000000000000012 /* SwissAddressSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000001A /* SwissAddressSearch.swift */; };
 		A00000000000000000000013 /* AddressSearchAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000001B /* AddressSearchAPI.swift */; };
 		A00000000000000000000014 /* ProviderCatalog.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000001C /* ProviderCatalog.generated.swift */; };
@@ -100,6 +101,15 @@
 		B000000000000000000000A7 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B000000000000000000000A8 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B000000000000000000000A9 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B000000000000000000000B0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		B000000000000000000000B1 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = de; path = de.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		B000000000000000000000B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = fr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		B000000000000000000000B3 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = it; path = it.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		B000000000000000000000B4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = nl; path = nl.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		B000000000000000000000B5 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = nb; path = nb.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		B000000000000000000000B6 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = pt; path = pt.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		B000000000000000000000B7 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = es; path = es.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		B000000000000000000000B8 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = is; path = is.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		B0000000000000000000001A /* SwissAddressSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwissAddressSearch.swift; sourceTree = "<group>"; };
 		B0000000000000000000001B /* AddressSearchAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchAPI.swift; sourceTree = "<group>"; };
 		B0000000000000000000001C /* ProviderCatalog.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderCatalog.generated.swift; sourceTree = "<group>"; };
@@ -154,6 +164,7 @@
 				C00000000000000000000006 /* Views */,
 				B00000000000000000000008 /* Assets.xcassets */,
 				C00000000000000000000009 /* Localizable.strings */,
+				C000000000000000000000B0 /* Localizable.stringsdict */,
 				C0000000000000000000000A /* InfoPlist.strings */,
 			);
 			path = ScootRadar;
@@ -265,6 +276,22 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
+		C000000000000000000000B0 /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B000000000000000000000B0 /* en */,
+				B000000000000000000000B1 /* de */,
+				B000000000000000000000B2 /* fr */,
+				B000000000000000000000B3 /* it */,
+				B000000000000000000000B4 /* nl */,
+				B000000000000000000000B5 /* nb */,
+				B000000000000000000000B6 /* pt */,
+				B000000000000000000000B7 /* es */,
+				B000000000000000000000B8 /* is */,
+			);
+			name = Localizable.stringsdict;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -356,6 +383,7 @@
 			files = (
 				A00000000000000000000008 /* Assets.xcassets in Resources */,
 				A00000000000000000000010 /* Localizable.strings in Resources */,
+				A000000000000000000000B0 /* Localizable.stringsdict in Resources */,
 				A00000000000000000000011 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

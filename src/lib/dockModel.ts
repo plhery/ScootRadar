@@ -1,5 +1,5 @@
 import { PROVIDERS, PROVIDER_KEYS } from '@/generated/providers';
-import type { NearbyCoveredCity } from '@/lib/coveredCities';
+import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, type NearbyCoveredCity } from '@/lib/coveredCities';
 import { providerHealth, providersDownNotice, type ProviderHealth } from '@/lib/dataHealth';
 import { viewportContainsPoint, type MapViewport } from '@/lib/geo';
 import { failureReasonKey, type LoadFailure } from '@/lib/loadFailure';
@@ -103,6 +103,17 @@ export interface DockCoverageCity {
   city: NearbyCoveredCity;
   /** From the centre of the viewport, in whole kilometres. */
   distanceKm: number;
+}
+
+/**
+ * "ScootRadar covers 186 cities in 17 countries.", each count with the form of
+ * its noun the language gives it: "21 stað í 21 landi" in Icelandic.
+ */
+export function coverageBody(cities: number, countries: number): UiText {
+  const counted = (noun: 'cities' | 'countries', count: number): UiText => ({
+    key: `coverage.${noun}.other`, numbers: { count }, one: { key: `coverage.${noun}.one`, count },
+  });
+  return { key: 'coverage.body', parts: { cities: counted('cities', cities), countries: counted('countries', countries) } };
 }
 
 /** "Bern · 61 km" */
@@ -307,7 +318,7 @@ export function dockModel(input: DockInput): DockModel {
     return {
       kind: 'outsideCoverage',
       title: { key: 'coverage.title' },
-      body: { key: 'coverage.body' },
+      body: coverageBody(COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL),
       label: { key: 'coverage.closest' },
       cities: nothing.cities.map(city => ({ city, distanceKm: coverageDistanceKm(city.distanceM) })),
     };

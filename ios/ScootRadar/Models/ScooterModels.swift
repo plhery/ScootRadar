@@ -1283,6 +1283,19 @@ enum ScooterPlural {
     }
 }
 
+/// What the card shown where there is no scooter data says the app covers, as
+/// the web app does: "ScootRadar covers 186 cities in 17 countries."
+enum ScooterCoverageSummary {
+    /// Each noun takes the form Localizable.stringsdict gives its count in the
+    /// language shown: "21 stað í 21 landi" but "22 staði í 22 löndum" in Icelandic.
+    static func text(
+        cities: Int = ScooterCityCatalog.cityCount,
+        countries: Int = ScooterCityCatalog.countryCount
+    ) -> String {
+        String(localizedCounting: "ScootRadar covers \(cities) cities in \(countries) countries.")
+    }
+}
+
 enum ScooterCountContext: Equatable, Sendable {
     /// Your location or the chosen place is on screen.
     case nearby

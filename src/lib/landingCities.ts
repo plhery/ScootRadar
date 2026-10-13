@@ -40,8 +40,6 @@ export interface LandingCountryCities {
   more: number;
 }
 
-export const LANDING_CITY_TOTAL = COVERED_CITIES.length;
-
 export function landingCountries(): LandingCountryCities[] {
   return COUNTRY_ORDER.map(country => {
     const cities = COVERED_CITIES.filter(city => city.country === country);
