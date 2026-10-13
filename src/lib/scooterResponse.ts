@@ -5,7 +5,7 @@ import type { ScooterResponse, ScooterResponseMeta } from '@/lib/types';
 import { VEHICLE_MAX_AGE_MS } from './dataFreshness';
 
 export const MOBILITY_SOURCE =
-  'Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; France: Dott, Bird, Lime, Voi, Pony GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus GBFS; MobiData BW; Italy: Bird GBFS; Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; Portugal: Bird, Lime GBFS; Spain: Bird, Hopp GBFS; Iceland: Hopp GBFS; Sweden: Lime, Hopp GBFS; Latvia: Ride Mobility GBFS; Poland: Dott, Hopp GBFS; Hungary: Hopp GBFS; Greece: Hopp GBFS; Lille parking: Metropole Europeenne de Lille';
+  'Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; France: Dott, Bird, Lime, Voi, Pony GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus GBFS; MobiData BW; Italy: Bird GBFS; Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; Portugal: Bird, Lime GBFS; Spain: Bird, Hopp GBFS; Iceland: Hopp GBFS; Sweden: Lime, Hopp GBFS; Latvia: Ride Mobility GBFS; Poland: Dott, Hopp GBFS; Hungary: Hopp GBFS; Greece: Hopp GBFS; Cyprus: Hopp GBFS; Lille parking: Metropole Europeenne de Lille';
 
 export function scooterResponse(
   result: ScooterFetchResult,

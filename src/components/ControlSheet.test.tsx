@@ -281,7 +281,7 @@ describe('ControlSheet settings', () => {
       'Mobility data CH',
       'France: Dott, Bird, Lime, Voi, Pony',
       'MobiData BW',
-      'DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy, Ride Mobility',
+      'DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy, Ride Mobility',
       'BE: Pony · transportdata.be',
       'UK: Beryl · CDLA-Permissive-2.0',
       'NO: Entur AS · NLOD',

@@ -1,7 +1,7 @@
 {
   "name": "ScootRadar",
   "short_name": "ScootRadar",
-  "description": "Find shared e-scooters in Switzerland and selected cities in France, Germany, Italy, Belgium, Norway, the United Kingdom, Portugal, Spain, Iceland, Sweden, Latvia, Poland, Hungary and Greece",
+  "description": "Find shared e-scooters in Switzerland and selected cities in France, Germany, Italy, Belgium, Norway, the United Kingdom, Portugal, Spain, Iceland, Sweden, Latvia, Poland, Hungary, Greece and Cyprus",
   "id": "/",
   "start_url": "/map",
   "scope": "/",

@@ -92,7 +92,7 @@ describe('searchCoveredCities', () => {
     // src/lib/places.ts asks Intl.DisplayNames; a typed city and a chip must read the same.
     for (const language of GEOCODE_LANGUAGES) {
       const regions = new Intl.DisplayNames(`${language}-CH`, { type: 'region' });
-      for (const [query, country] of [['Zürich', 'CH'], ['Lyon', 'FR'], ['Berlin', 'DE'], ['Roma', 'IT'], ['Uppsala', 'SE'], ['Rīga', 'LV'], ['Sosnowiec', 'PL'], ['Pécs', 'HU'], ['Piraeus', 'GR']]) {
+      for (const [query, country] of [['Zürich', 'CH'], ['Lyon', 'FR'], ['Berlin', 'DE'], ['Roma', 'IT'], ['Uppsala', 'SE'], ['Rīga', 'LV'], ['Sosnowiec', 'PL'], ['Pécs', 'HU'], ['Piraeus', 'GR'], ['Limassol', 'CY']]) {
         expect(searchCoveredCities(query, language)[0].subtitle, `${country} in ${language}`).toBe(regions.of(country));
       }
     }
@@ -108,6 +108,19 @@ describe('searchCoveredCities', () => {
     expect(searchCoveredCities('Πειραιάς Italia')).toEqual([]);
     // A country alone names no city.
     expect(searchCoveredCities('Ελλάδα')).toEqual([]);
+  });
+
+  it('finds a Cypriot town by its English, Greek or transliterated name, and Cyprus in Greek and Turkish', () => {
+    for (const [query, title] of [['Paphos', 'Paphos'], ['Pafos', 'Paphos'], ['Πάφος', 'Paphos'], ['παφοσ', 'Paphos'],
+      ['Paphos Κύπρος', 'Paphos'], ['Limassol', 'Limassol'], ['Lemesos', 'Limassol'], ['Λεμεσός', 'Limassol'], ['ΛΕΜΕΣΟΣ', 'Limassol'],
+      ['Limassol Kıbrıs', 'Limassol'], ['Lemesos KIBRIS', 'Limassol'], ['Limassol kibris', 'Limassol'], ['Lemesos Kypros', 'Limassol']]) {
+      expect(searchCoveredCities(query)[0]?.title, query).toBe(title);
+    }
+    expect(searchCoveredCities('Λεμεσός', 'is')[0].subtitle).toBe('Kýpur');
+    expect(searchCoveredCities('Paphos Ελλάδα')).toEqual([]);
+    // A country alone names no city.
+    expect(searchCoveredCities('Κύπρος')).toEqual([]);
+    expect(searchCoveredCities('Kıbrıs')).toEqual([]);
   });
 
   it('leaves streets, stations and towns without scooter data to the address search', () => {

@@ -1,0 +1,48 @@
+{
+  "verifiedOn": "2026-10-13",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "hopp_cy_paphos",
+      "country": "CY",
+      "provider": "hopp",
+      "city": "Paphos",
+      "center": [
+        34.7756,
+        32.4243
+      ],
+      "bounds": {
+        "south": 34.7243,
+        "north": 34.9182,
+        "west": 32.3084,
+        "east": 32.4919
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/cy-paphos/gbfs.json",
+      "aliases": [
+        "Pafos",
+        "Πάφος"
+      ]
+    },
+    {
+      "id": "hopp_cy_cyprus",
+      "country": "CY",
+      "provider": "hopp",
+      "city": "Limassol",
+      "center": [
+        34.6727,
+        33.0418
+      ],
+      "bounds": {
+        "south": 34.6397,
+        "north": 34.7227,
+        "west": 32.9752,
+        "east": 33.1875
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/cy-cyprus/gbfs.json",
+      "aliases": [
+        "Lemesos",
+        "Λεμεσός"
+      ]
+    }
+  ]
+}

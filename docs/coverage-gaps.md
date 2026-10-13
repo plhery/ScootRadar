@@ -187,6 +187,20 @@ banned shared scooters, and feeds that were empty when checked.
     Trikala, Katerini, Preveza and Corinth listed none.
   - nextbike's four Athens suburbs have e-bikes only. The national access
     point (nap.gov.gr) is a landing page, and its catalogue timed out.
+- **Cyprus** ([guide](cypriot-scooter-feeds.md#known-gaps)): Hopp in Paphos
+  and Limassol is covered.
+  - Nicosia has no scooter on the map. Bolt runs e-scooters there, parked at
+    fixed stations, with no public feed. The national access point
+    (traffic4cyprus.org.cy) offers Bolt's 255 Nicosia stations under CC BY
+    4.0, in DATEX II, with no vehicles or availability, so there is nothing
+    to show. Scroll ran in Nicosia in 2024; whether it still does is
+    unverified.
+  - Hopp Larnaca's feed answers but held no scooter, by night or by day, and
+    Hopp's site doesn't list the town. Hopp Paphos's area around Polis and
+    Latchi, 29 km north of Paphos, held no scooter either.
+  - Bird, Lime, Dott and Zeus have nothing in Cyprus: Dott's Cypriot listing
+    names no region, and the others' addresses answer 404 or 400 for each
+    town tried. nextbike Cyprus is bikes and e-bikes only.
 
 ## Countries not covered yet
 
@@ -200,7 +214,6 @@ checks before relying on a count.
 
 | Country | Scooters | Feeds |
 | --- | ---: | --- |
-| Cyprus | ~100 | Hopp Paphos and Limassol |
 | Finland | ~40 | Hopp Mariehamn, on Åland |
 
 **On hold:** Ukraine. 3electra's Kyiv feed (ATOM Mobility) lists about 780

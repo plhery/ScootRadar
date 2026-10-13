@@ -101,6 +101,8 @@ const COUNTRY_ANCHORS: Record<string, [number, number]> = {
   hu: [47.2, 19.5],
   // Inland, about the middle of the mainland, west of Lamia.
   gr: [39, 22],
+  // Inland, in the Troodos mountains, between Paphos and Limassol.
+  cy: [34.9, 32.9],
 };
 
 // "city:fr:Paris" is in France.

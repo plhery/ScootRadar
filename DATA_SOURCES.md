@@ -351,3 +351,18 @@ catalogue timed out.
 Hopp links its privacy policy, not a licence. The map's credits name it under
 the GBFS line. See the [coverage audit](docs/greek-scooter-feeds.md) for the
 systems, the town names, the gaps and the recheck command.
+
+## Cyprus
+
+The reviewed catalog lives in `data/cypriot-scooter-feeds.json`: 2 feeds, Hopp
+in Paphos and in Limassol, whose feed Hopp names Hopp Cyprus. They are Hopp's
+own public GBFS feeds. They are not in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
+and answer at the address Hopp uses for its other towns. Cyprus's national
+access point, [traffic4cyprus.org.cy](https://traffic4cyprus.org.cy/), offers
+Bolt's 255 e-scooter stations in Nicosia under CC BY 4.0, in DATEX II, with
+no vehicles or availability, so the map doesn't use it.
+
+Hopp links its privacy policy, not a licence. The map's credits name it under
+the GBFS line. See the [coverage audit](docs/cypriot-scooter-feeds.md) for the
+systems, the town names, the gaps and the recheck command.

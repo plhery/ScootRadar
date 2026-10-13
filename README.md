@@ -5,7 +5,7 @@
 <h1 align="center">ScootRadar</h1>
 
 <p align="center">
-  A friendly map for finding shared e-scooters in Switzerland and selected cities in France, Germany, Italy, Belgium, Norway, the United Kingdom, Portugal, Spain, Iceland, Sweden, Latvia, Poland, Hungary and Greece.
+  A friendly map for finding shared e-scooters in Switzerland and selected cities in France, Germany, Italy, Belgium, Norway, the United Kingdom, Portugal, Spain, Iceland, Sweden, Latvia, Poland, Hungary, Greece and Cyprus.
 </p>
 
 <p align="center">
@@ -68,6 +68,8 @@ Hungary adds 1 feed: Hopp in Pécs. See the
 Greece adds 3 feeds: Hopp in Faliraki, on Rhodes, in Piraeus and in
 Argostoli, on Kefalonia. See the
 [Greek feed audit](docs/greek-scooter-feeds.md).
+Cyprus adds 2 feeds: Hopp in Paphos and Limassol. See the
+[Cypriot feed audit](docs/cypriot-scooter-feeds.md).
 What is not covered yet, and why, is listed in
 [Coverage gaps](docs/coverage-gaps.md).
 

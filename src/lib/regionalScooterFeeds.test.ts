@@ -26,7 +26,11 @@ describe('German and Italian scooter coverage', () => {
     ['ΡΟΔΟΣ', 'Faliraki, Greece'], ['Ροδος Ελλάδα', 'Faliraki, Greece'], ['Piraeus', 'Piraeus, Greece'], ['Pireas', 'Piraeus, Greece'],
     ['Peiraias Hellas', 'Piraeus, Greece'], ['Πειραιάς', 'Piraeus, Greece'], ['Πειραια', 'Piraeus, Greece'],
     ['Argostoli', 'Argostoli, Greece'], ['Αργοστόλι', 'Argostoli, Greece'], ['Kefalonia', 'Argostoli, Greece'],
-    ['Cephalonia Griechenland', 'Argostoli, Greece'], ['Κεφαλονιά', 'Argostoli, Greece'], ['Kefallonia Grèce', 'Argostoli, Greece']])('finds %s', (query, name) => {
+    ['Cephalonia Griechenland', 'Argostoli, Greece'], ['Κεφαλονιά', 'Argostoli, Greece'], ['Kefallonia Grèce', 'Argostoli, Greece'],
+    ['Paphos', 'Paphos, Cyprus'], ['Pafos', 'Paphos, Cyprus'], ['Πάφος', 'Paphos, Cyprus'], ['ΠΑΦΟΣ', 'Paphos, Cyprus'],
+    ['Pafos Kıbrıs', 'Paphos, Cyprus'], ['Paphos Zypern', 'Paphos, Cyprus'], ['Limassol', 'Limassol, Cyprus'],
+    ['Lemesos', 'Limassol, Cyprus'], ['Λεμεσός', 'Limassol, Cyprus'], ['Λεμεσος Κύπρος', 'Limassol, Cyprus'],
+    ['Limassol Kibris', 'Limassol, Cyprus'], ['Lemesos Kypros', 'Limassol, Cyprus'], ['Limassol Chypre', 'Limassol, Cyprus']])('finds %s', (query, name) => {
     expect(searchRegionalScooterCities(query)[0].display_name).toBe(name);
   });
   it('does not silently ignore a conflicting country or expose the aggregate feed as a city', () => {
@@ -78,7 +82,7 @@ describe('German and Italian scooter coverage', () => {
     expect(result.vehicles).toHaveLength(1);
     expect(result.vehicles[0]).toMatchObject({ provider: system.provider, battery: 72 });
     expect(result.meta.sources).toEqual({ national: 'skipped', hopp: 'skipped', publibike: 'skipped',
-      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', [country]: 'fresh' });
+      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', [country]: 'fresh' });
     expect(fetchMock).toHaveBeenCalledTimes(3);
   });
   it('prices each Hopp Pécs scooter from its own plan, in forints, never from the plans in other currencies', async () => {
@@ -133,6 +137,38 @@ describe('German and Italian scooter coverage', () => {
     expect(result.meta.sources.greece).toBe('fresh');
     expect(result.vehicles).toMatchObject([{ vehicle_id: 'hopp_gr_kefalonia:one', battery: 46,
       pricing: { currency: 'EUR', unlock_fee_minor_units: 100, minute_fee_minor_units: 35 } }]);
+  });
+  it('prices each Hopp Limassol scooter from its own plan, EUR 1.20 or EUR 1.00 to start', async () => {
+    // Hopp names the feed Hopp Cyprus; every scooter stands in Limassol.
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'hopp_cy_cyprus')!;
+    expect(system.city).toBe('Limassol');
+    const base = new URL('.', system.discoveryUrl).toString();
+    expect(base).toBe('https://api.hopp.bike/gbfs/cy-cyprus/');
+    const scooter = { bike_id: 'one', vehicle_type_id: 'vtp_120', lat: 34.6785, lon: 33.0446, hopp_battery_level: 81,
+      pricing_plan_id: 'flt_466', hopp_start_cost: 120, hopp_credits_per_min: 25 };
+    // As Hopp Cyprus publishes them: two plans at EUR 1.00 to start, one at EUR 1.20.
+    const plan = (plan_id: string, price: number) => ({ plan_id, name: 'Hopp pricing', description: '', price, currency: 'EUR',
+      is_taxable: false, per_min_price: [{ start: 0, interval: 1, rate: 0.25 }] });
+    vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+      if (url === system.discoveryUrl) return response({ data: { en: { feeds: ['vehicle_types', 'free_bike_status', 'system_pricing_plans']
+        .map(name => ({ name, url: `${base}en/${name}.json` })) } } });
+      if (url === `${base}en/vehicle_types.json`) return response({ data: { vehicle_types: [
+        { vehicle_type_id: 'vtp_119', form_factor: 'scooter', propulsion_type: 'electric' },
+        { vehicle_type_id: 'vtp_120', form_factor: 'scooter', propulsion_type: 'electric' }] } });
+      if (url === `${base}en/free_bike_status.json`) return response({ last_updated: Date.now() / 1000, data: { bikes: [scooter,
+        { ...scooter, bike_id: 'two', vehicle_type_id: 'vtp_119', pricing_plan_id: 'flt_564', hopp_start_cost: 100 },
+        { ...scooter, bike_id: 'three', pricing_plan_id: 'flt_470', hopp_start_cost: 100 }] } });
+      if (url === `${base}en/system_pricing_plans.json`) return response({ data: { plans: [plan('flt_470', 1), plan('flt_564', 1),
+        plan('flt_466', 1.2)] } });
+      throw new Error(`Unexpected upstream ${url}`);
+    }));
+    const result = await fetchScooters({ bounds: system.bounds, minBattery: 0, providers: new Set(['hopp']) });
+    expect(result.meta.sources.cyprus).toBe('fresh');
+    expect(Object.fromEntries(result.vehicles.map(vehicle => [vehicle.vehicle_id, vehicle.pricing]))).toEqual({
+      'hopp_cy_cyprus:one': { currency: 'EUR', unlock_fee_minor_units: 120, minute_fee_minor_units: 25 },
+      'hopp_cy_cyprus:two': { currency: 'EUR', unlock_fee_minor_units: 100, minute_fee_minor_units: 25 },
+      'hopp_cy_cyprus:three': { currency: 'EUR', unlock_fee_minor_units: 100, minute_fee_minor_units: 25 },
+    });
   });
   it('keeps Dott Wołomin\'s feeds under its percent-encoded directory, however the letter is written', () => {
     const base = new URL('.', REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'dott_pl_wolomin')!.discoveryUrl).toString();
