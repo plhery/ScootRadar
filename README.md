@@ -5,7 +5,8 @@
 <h1 align="center">ScootRadar</h1>
 
 <p align="center">
-  A friendly map for finding shared e-scooters in Switzerland and cities across Europe.
+  A friendly map for finding shared e-scooters in Switzerland and in the cities of the
+  other countries it covers.
 </p>
 
 <p align="center">
