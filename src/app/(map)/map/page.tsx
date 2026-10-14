@@ -57,7 +57,9 @@ import { walkEstimate, type WalkEstimate, type WalkOrigin } from '@/lib/walking'
 import { WALK_ROUTE_MAX_M } from '@/lib/walkRoute';
 import type { WalkFrom } from '@/lib/walkState';
 import { requestHeadingPermission, type HeadingPermission } from '@/lib/deviceHeading';
+import { deviceTimeZone, startCity } from '@/lib/startPlace';
 
+// Where the map opens for a time zone that has no covered city near: all of Switzerland.
 const SWITZERLAND_CENTER: [number, number] = [46.8182, 8.2275];
 const INITIAL_ZOOM = 8;
 // About 350 m across on a phone, as the iOS app shows after locating.
@@ -180,6 +182,7 @@ export default function Home() {
   // A wide window with a mouse: the dock is a legend, cards open beside their marker, keys work.
   const desktop = useDesktopLayout();
   const [initialCenter, setInitialCenter] = useState<[number, number]>(SWITZERLAND_CENTER);
+  const [initialZoom, setInitialZoom] = useState(INITIAL_ZOOM);
   const {
     location: userLocation,
     accuracyM: locationAccuracyM,
@@ -269,6 +272,14 @@ export default function Home() {
       setInitialCenter(params.origin);
       setFocusRequest(current => ({ location: params.origin, zoom: null, version: current.version + 1 }));
     } else {
+      // Until then the map shows the covered city nearest the device's time
+      // zone (startPlace.ts), as the iOS app does: Paris for Europe/Paris.
+      const start = startCity(deviceTimeZone());
+      if (start) {
+        setInitialCenter(start.center);
+        setInitialZoom(CITY_ZOOM);
+        setFocusRequest(current => ({ location: start.center, zoom: CITY_ZOOM, version: current.version + 1 }));
+      }
       // As the iOS app does on launch: locate at once where location is granted,
       // or has worked here before. Safari says "prompt" until the page has asked,
       // even where it then answers without one, so that alone is not a refusal.
@@ -937,7 +948,7 @@ export default function Home() {
         clusters={mapClusters}
         clustered={responseMeta?.mode === 'clusters'}
         origin={initialCenter}
-        initialZoom={INITIAL_ZOOM}
+        initialZoom={initialZoom}
         distanceOrigin={walkOrigin?.point ?? null}
         userLocation={userLocation}
         headingEnabled={headingPermission === 'granted' && locationError !== 'denied'}

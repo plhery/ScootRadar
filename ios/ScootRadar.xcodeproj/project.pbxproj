@@ -22,6 +22,8 @@
 		A00000000000000000000019 /* ScooterMarkerArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000021 /* ScooterMarkerArt.swift */; };
 		A0000000000000000000001A /* ScooterMapLookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000022 /* ScooterMapLookTests.swift */; };
 		A0000000000000000000001B /* ScooterLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000023 /* ScooterLanguage.swift */; };
+		A00000000000000000005A01 /* ScooterStartPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000005A01 /* ScooterStartPlace.swift */; };
+		A00000000000000000005A02 /* TimeZones.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000005A02 /* TimeZones.generated.swift */; };
 		A0000000000000000000001C /* ScooterSettingsTiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000024 /* ScooterSettingsTiles.swift */; };
 		A0000000000000000000001D /* WalkRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000025 /* WalkRoute.swift */; };
 		A0000000000000000000001E /* WalkingDirections.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000026 /* WalkingDirections.swift */; };
@@ -70,6 +72,8 @@
 		B00000000000000000000021 /* ScooterMarkerArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterMarkerArt.swift; sourceTree = "<group>"; };
 		B00000000000000000000022 /* ScooterMapLookTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterMapLookTests.swift; sourceTree = "<group>"; };
 		B00000000000000000000023 /* ScooterLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterLanguage.swift; sourceTree = "<group>"; };
+		B00000000000000000005A01 /* ScooterStartPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterStartPlace.swift; sourceTree = "<group>"; };
+		B00000000000000000005A02 /* TimeZones.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZones.generated.swift; sourceTree = "<group>"; };
 		B00000000000000000000024 /* ScooterSettingsTiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterSettingsTiles.swift; sourceTree = "<group>"; };
 		B00000000000000000000025 /* WalkRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkRoute.swift; sourceTree = "<group>"; };
 		B00000000000000000000026 /* WalkingDirections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkingDirections.swift; sourceTree = "<group>"; };
@@ -177,6 +181,8 @@
 				B0000000000000000000000A /* ScooterFiltering.swift */,
 				B00000000000000000000020 /* ScooterMapLook.swift */,
 				B00000000000000000000023 /* ScooterLanguage.swift */,
+				B00000000000000000005A01 /* ScooterStartPlace.swift */,
+				B00000000000000000005A02 /* TimeZones.generated.swift */,
 				B00000000000000000000025 /* WalkRoute.swift */,
 				B0000000000000000000001C /* ProviderCatalog.generated.swift */,
 				B0000000000000000000001D /* ScooterAPIContract.generated.swift */,
@@ -413,6 +419,8 @@
 				A00000000000000000000009 /* ScooterFiltering.swift in Sources */,
 				A00000000000000000000018 /* ScooterMapLook.swift in Sources */,
 				A0000000000000000000001B /* ScooterLanguage.swift in Sources */,
+				A00000000000000000005A01 /* ScooterStartPlace.swift in Sources */,
+				A00000000000000000005A02 /* TimeZones.generated.swift in Sources */,
 				A0000000000000000000001C /* ScooterSettingsTiles.swift in Sources */,
 				A00000000000000000000019 /* ScooterMarkerArt.swift in Sources */,
 				A00000000000000000000012 /* SwissAddressSearch.swift in Sources */,

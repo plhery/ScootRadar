@@ -55,12 +55,10 @@ extension MapFocusRequest {
 @MainActor
 @Observable
 final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
-    static let switzerlandCenter = GeoPoint(latitude: 46.8182, longitude: 8.2275)
-    static let initialRegion = MKCoordinateRegion(
-        center: switzerlandCenter.coordinate,
-        latitudinalMeters: 300_000,
-        longitudinalMeters: 500_000
-    )
+    static let switzerlandCenter = ScooterMapStart.switzerlandCenter
+    /// Where the app's map opens: the covered city nearest the iPhone's time zone (ScooterStartPlace).
+    static let start = ScooterStartPlace.start(forTimeZone: TimeZone.current.identifier)
+    static var initialRegion: MKCoordinateRegion { start.region }
 
     private(set) var vehicles: [Scooter] = [] {
         didSet {
@@ -90,12 +88,12 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         }
         return shown
     }
-    var viewport = GeoBounds(region: initialRegion) {
+    var viewport = GeoBounds(region: ScooterMapStart.switzerland.region) {
         didSet { rebuildVisibleCounts() }
     }
-    private(set) var viewportZoom = 8
+    private(set) var viewportZoom = ScooterMapStart.switzerland.zoom
     /// The zoom as MapKit has it, between whole levels: it decides which city totals are drawn as one.
-    private(set) var viewportZoomLevel = 8.0
+    private(set) var viewportZoomLevel = Double(ScooterMapStart.switzerland.zoom)
     var isLoading = false
     var isLocating = false
     /// What went wrong with loading, until a load succeeds again.
@@ -256,7 +254,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     @ObservationIgnored private var focusToken = 0
     @ObservationIgnored private var hasStarted = false
     @ObservationIgnored private var isApplyingResponse = false
-    @ObservationIgnored private var distanceOrigin = switzerlandCenter
+    /// Scooters are asked for, and walks measured, from here until the iPhone's location is known.
+    @ObservationIgnored private let startCenter: GeoPoint
+    @ObservationIgnored private var distanceOrigin: GeoPoint
     @ObservationIgnored private var vehiclesByID: [String: Scooter] = [:]
     private(set) var mapScooters: [Scooter] = []
     private(set) var mapScootersRevision = 0
@@ -281,7 +281,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private static let userFocusZoom = 17
 
     override convenience init() {
-        self.init(api: ScooterAPI(), locationManager: CLLocationManager(), defaults: .standard)
+        self.init(api: ScooterAPI(), locationManager: CLLocationManager(), defaults: .standard, start: Self.start)
     }
 
     init(
@@ -292,8 +292,14 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         refreshPolicy: ScooterRefreshPolicy = .standard,
         now: @escaping () -> Date = Date.init,
         directions: any WalkingDirectionsClient = MapKitWalkingDirections(),
-        openInMaps: @escaping @MainActor (ScooterWalkTarget) -> Void = { $0.openInMaps() }
+        openInMaps: @escaping @MainActor (ScooterWalkTarget) -> Void = { $0.openInMaps() },
+        start: ScooterMapStart = .switzerland
     ) {
+        startCenter = start.center
+        distanceOrigin = start.center
+        viewport = GeoBounds(region: start.region)
+        viewportZoom = start.zoom
+        viewportZoomLevel = Double(start.zoom)
         self.api = api
         self.directions = directions
         self.openInMaps = openInMaps
@@ -1139,7 +1145,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         refreshTimerTask = nil
 
         let requestID = UUID()
-        let fetchOrigin = userLocation ?? Self.switzerlandCenter
+        let fetchOrigin = userLocation ?? startCenter
         let requestMinimumBattery = ScooterClusteringPolicy.shouldCluster(at: zoom)
             ? Int(minimumBattery)
             : 0

@@ -86,12 +86,26 @@ final class ScooterFilteringTests: XCTestCase {
         XCTAssertFalse(ScooterMapCameraPolicy.openingFrame.isEmpty)
 
         let mapView = MKMapView(frame: ScooterMapCameraPolicy.openingFrame)
-        mapView.setRegion(ScooterMapModel.initialRegion, animated: false)
+        mapView.setRegion(ScooterMapStart.switzerland.region, animated: false)
         ScooterMapCameraPolicy.applyOpeningPitch(to: mapView)
 
         let center = mapView.camera.centerCoordinate
         XCTAssertEqual(center.latitude, ScooterMapModel.switzerlandCenter.latitude, accuracy: 0.5)
         XCTAssertEqual(center.longitude, ScooterMapModel.switzerlandCenter.longitude, accuracy: 0.5)
+    }
+
+    @MainActor
+    func testMapOpensOnTheCityOfTheTimeZone() throws {
+        let start = ScooterStartPlace.start(forTimeZone: "Europe/Berlin")
+        let berlin = try XCTUnwrap(ScooterCityCatalog.cities.first { $0.id == "de:Berlin" })
+        let mapView = MKMapView(frame: ScooterMapCameraPolicy.openingFrame)
+        mapView.setRegion(start.region, animated: false)
+        ScooterMapCameraPolicy.applyOpeningPitch(to: mapView)
+
+        let center = mapView.camera.centerCoordinate
+        XCTAssertEqual(center.latitude, berlin.center.latitude, accuracy: 0.02)
+        XCTAssertEqual(center.longitude, berlin.center.longitude, accuracy: 0.02)
+        XCTAssertEqual(start.zoom, ScooterStartPlace.cityZoom)
     }
 
     @MainActor

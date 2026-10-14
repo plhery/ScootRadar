@@ -7,6 +7,7 @@ import type { MapBounds, ParkingLocation, ScooterResponse, Vehicle } from '@/lib
 import Home from './page';
 import { track as sendEvent } from '@/lib/analytics';
 import { I18nProvider } from '@/lib/i18n';
+import { COVERED_CITIES } from '@/lib/coveredCities';
 import { recentPlaces } from '@/lib/places';
 import { formatClockTime } from '@/lib/uiText';
 
@@ -14,10 +15,17 @@ vi.mock('@/lib/analytics', () => ({ track: vi.fn() }));
 const track = vi.mocked(sendEvent);
 
 const viewport = vi.hoisted(() => ({ bounds: { south: 47.36, west: 8.52, north: 47.39, east: 8.57 } }));
+// The device's time zone, which picks where the map opens; UTC opens on Switzerland.
+const device = vi.hoisted(() => ({ timeZone: 'UTC' as string | undefined }));
+vi.mock('@/lib/startPlace', async importOriginal => ({
+  ...await importOriginal<typeof import('@/lib/startPlace')>(),
+  deviceTimeZone: () => device.timeZone,
+}));
 vi.mock('@/components/MapWrapper', () => ({ default: function MapStub({
-  onViewportChange, onVehicleSelect, onParkingSelect, selectedParkingId, vehicles, parking, focusLocation, focusZoom, destination,
+  origin, initialZoom, onViewportChange, onVehicleSelect, onParkingSelect, selectedParkingId, vehicles, parking, focusLocation, focusZoom, destination,
   hoverTips, popover, zoomStep, selectedVehicleKey, onMapClick, markerLookupRef, userLocation, walk,
 }: {
+  origin: [number, number]; initialZoom: number;
   userLocation: [number, number] | null;
   markerLookupRef: { current: ((vehicleKey: string | null, parkingId: string | null) => HTMLElement | null) | null };
   hoverTips: boolean; popover: { label: string; content: React.ReactNode } | null; zoomStep: { direction: number; version: number };
@@ -34,6 +42,7 @@ vi.mock('@/components/MapWrapper', () => ({ default: function MapStub({
   }, [markerLookupRef]);
   return <><span data-testid="vehicles">{vehicles.length}</span><span data-testid="parking">{parking.length}</span>
     <span data-testid="focus">{focusLocation ? `${focusLocation.join(',')} zoom ${focusZoom}` : 'none'}</span>
+    <span data-testid="start">{`${origin.join(',')} zoom ${initialZoom}`}</span>
     <span data-testid="pin">{destination ? destination.display_name : 'none'}</span>
     <span data-testid="dot">{userLocation ? 'shown' : 'none'}</span>
     <span data-testid="route">{walk ? `${walk.phase} ${walk.line.length} ${walk.routeId}` : 'none'}</span>
@@ -122,6 +131,7 @@ beforeEach(() => {
   vi.stubGlobal('ResizeObserver', class { observe() {} disconnect() {} });
   // The visitor is in Switzerland, where the fixtures are; jsdom's browser asks for en-US.
   vi.spyOn(navigator, 'languages', 'get').mockReturnValue(['en-CH']);
+  device.timeZone = 'UTC';
 });
 afterEach(() => {
   // Unmount first: the location watch is stopped through the stub removed below.
@@ -1232,6 +1242,28 @@ it('labels the locate button until locating has worked once, and remembers only 
   await act(async () => vi.advanceTimersByTimeAsync(180));
   expect(screen.getByRole('button', { name: 'Near me' })).toHaveClass('fab');
   expect(document.querySelector('.near-me')).toBeNull();
+});
+
+it('opens on Switzerland for a time zone with no covered city near, and on the city nearest the zone otherwise', async () => {
+  mount();
+  await act(async () => vi.advanceTimersByTimeAsync(0));
+  expect(screen.getByTestId('start')).toHaveTextContent('46.8182,8.2275 zoom 8');
+  expect(screen.getByTestId('focus')).toHaveTextContent('none');
+  cleanup();
+
+  const berlin = COVERED_CITIES.find(city => city.id === 'de:Berlin')!;
+  device.timeZone = 'Europe/Berlin';
+  mount();
+  await act(async () => vi.advanceTimersByTimeAsync(0));
+  expect(screen.getByTestId('start')).toHaveTextContent(`${berlin.center.join(',')} zoom 13`);
+  expect(screen.getByTestId('focus')).toHaveTextContent(`${berlin.center.join(',')} zoom 13`);
+  cleanup();
+
+  // A shared link's place wins over the time zone.
+  window.history.replaceState(null, '', '/map?origin=47.3769,8.5417');
+  mount();
+  await act(async () => vi.advanceTimersByTimeAsync(0));
+  expect(screen.getByTestId('focus')).toHaveTextContent('47.3769,8.5417 zoom null');
 });
 
 it('locates by itself where location is granted or has worked before, and never otherwise', async () => {

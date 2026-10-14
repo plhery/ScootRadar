@@ -446,6 +446,23 @@ test.describe('in a browser that asks for US English', () => {
   });
 });
 
+test.describe('in a browser set to the Berlin time zone', () => {
+  test.use({ timezoneId: 'Europe/Berlin' });
+
+  test('the map opens on Berlin and asks for its scooters', async ({ page }) => {
+    const boxes: number[][] = [];
+    page.on('request', request => {
+      const url = new URL(request.url());
+      if (url.pathname !== '/api/scooters') return;
+      boxes.push(['south', 'west', 'north', 'east'].map(side => Number(url.searchParams.get(side))));
+    });
+    await page.goto('/map');
+    await expect(page.locator('.leaflet-container')).toHaveAttribute('data-zoom', '13');
+    await expect.poll(() => boxes.some(([south, west, north, east]) =>
+      south < 52.52 && north > 52.52 && west < 13.405 && east > 13.405)).toBe(true);
+  });
+});
+
 test('a refresh that fails keeps the scooters, says so in the dock and recovers with Try again', async ({ page }) => {
   let fail = false;
   await page.route('**/api/scooters?**', async route => {

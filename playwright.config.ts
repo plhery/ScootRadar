@@ -13,6 +13,9 @@ export default defineConfig({
     // The visitor is in Switzerland, where the fixtures are: numbers, times and
     // distances are written as en-CH writes them. Tests of other regions set their own.
     locale: 'en-CH',
+    // Without the visitor's location the map opens on the covered city nearest the
+    // time zone; UTC keeps the Switzerland start the tests are written for.
+    timezoneId: 'UTC',
     trace: 'retain-on-failure',
   },
   webServer: {

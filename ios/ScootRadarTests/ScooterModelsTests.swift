@@ -1115,3 +1115,81 @@ extension ScooterModelsTests {
                        ["city:us:or:Portland", "city:us:me:Portland"])
     }
 }
+
+// Where the map opens when it may not use the iPhone's location.
+extension ScooterModelsTests {
+    private func city(_ id: String, _ countryCode: String, _ latitude: Double, _ longitude: Double) -> ScooterCity {
+        ScooterCity(
+            id: id,
+            name: id,
+            countryCode: countryCode,
+            center: GeoPoint(latitude: latitude, longitude: longitude),
+            bounds: GeoBounds(south: latitude - 0.1, west: longitude - 0.1, north: latitude + 0.1, east: longitude + 0.1)
+        )
+    }
+
+    // North America as country agents may add it, beside a few cities of Europe.
+    private var startCities: [ScooterCity] {
+        [
+            city("ch:zurich", "CH", 47.3769, 8.5417),
+            city("ch:st-gallen", "CH", 47.4245, 9.3767),
+            city("fr:Nice", "FR", 43.7031, 7.2661),
+            city("ca:on:toronto", "CA", 43.6532, -79.3832),
+            city("ca:qc:montreal", "CA", 45.5019, -73.5674),
+            city("us:tx:austin", "US", 30.2672, -97.7431),
+            city("us:or:portland", "US", 45.5152, -122.6784),
+            city("mx:cdmx", "MX", 19.4326, -99.1332),
+        ]
+    }
+
+    private func startID(_ timeZone: String) -> String? {
+        ScooterStartPlace.city(forTimeZone: timeZone, in: startCities)?.id
+    }
+
+    func testMapOpensOnTheCoveredCityNearestTheTimeZone() {
+        XCTAssertEqual(ScooterStartPlace.city(forTimeZone: "Europe/Berlin")?.id, "de:Berlin")
+        XCTAssertEqual(ScooterStartPlace.city(forTimeZone: "Europe/Zurich")?.id, "ch:zurich")
+        // Paris itself has no shared scooters: the nearest town that has them.
+        XCTAssertEqual(ScooterStartPlace.city(forTimeZone: "Europe/Paris")?.id, "fr:Houilles")
+        // An older name the iPhone may still report.
+        XCTAssertEqual(ScooterStartPlace.city(forTimeZone: "Europe/Kiev")?.id, "ua:Kyiv")
+
+        XCTAssertEqual(startID("America/Toronto"), "ca:on:toronto")
+        XCTAssertEqual(startID("America/Mexico_City"), "mx:cdmx")
+        XCTAssertEqual(startID("America/Chicago"), "us:tx:austin")
+        XCTAssertEqual(startID("America/Los_Angeles"), "us:or:portland")
+        XCTAssertEqual(startID("America/Halifax"), "ca:qc:montreal")
+        XCTAssertEqual(startID("America/Montreal"), "ca:on:toronto")
+        XCTAssertEqual(startID("US/Central"), "us:tx:austin")
+    }
+
+    func testMapCrossesABorderOnlyToACityWithin150Kilometres() {
+        XCTAssertEqual(startID("Europe/Monaco"), "fr:Nice")
+        XCTAssertEqual(startID("Europe/Vaduz"), "ch:st-gallen")
+        XCTAssertNil(startID("Europe/Vienna"))
+    }
+
+    func testMapKeepsSwitzerlandForZonesWithNothingNear() {
+        for zone in ["UTC", "GMT", "Etc/GMT+5", "Asia/Tokyo", ""] {
+            XCTAssertNil(ScooterStartPlace.city(forTimeZone: zone), zone)
+            let start = ScooterStartPlace.start(forTimeZone: zone)
+            XCTAssertEqual(start.zoom, ScooterMapStart.switzerland.zoom, zone)
+            XCTAssertEqual(start.center, ScooterMapStart.switzerlandCenter, zone)
+        }
+        // North America before any of its cities is covered.
+        XCTAssertNil(ScooterStartPlace.city(
+            forTimeZone: "America/New_York",
+            in: startCities.filter { !["CA", "US", "MX"].contains($0.countryCode) }
+        ))
+    }
+
+    func testTimeZoneTableComesFromANamedReleaseAndItsOlderNamesPointAtListedZones() {
+        XCTAssertNotNil(ScooterTimeZones.version.range(of: #"^\d{4}[a-z]$"#, options: .regularExpression))
+        XCTAssertEqual(ScooterTimeZones.places["Europe/Oslo"]?.countryCode, "NO")
+        XCTAssertEqual(ScooterTimeZones.places["America/Toronto"]?.countryCode, "CA")
+        XCTAssertNil(ScooterTimeZones.places["Asia/Tokyo"])
+        for (alias, zone) in ScooterTimeZones.aliases {
+            XCTAssertNotNil(ScooterTimeZones.places[zone], alias)
+        }
+    }
+}
