@@ -1114,6 +1114,43 @@ extension ScooterModelsTests {
         XCTAssertEqual(ScooterCityGrouping.group([maine, oregon], zoomLevel: 6).map(\.id),
                        ["city:us:or:Portland", "city:us:me:Portland"])
     }
+
+    func testZoomedOutACountryWithStateTotalsShowsOnePerState() {
+        // As data/countries.json would list the United States' states, with California, whose code is Canada's.
+        let regions = ["us": [
+            "ca": ScooterRegion(name: "California", names: ["de": "Kalifornien", "fr": "Californie"], latitude: 36.8, longitude: -119.4),
+            "me": ScooterRegion(name: "Maine", latitude: 45.3, longitude: -69.2),
+            "or": ScooterRegion(name: "Oregon", latitude: 43.9, longitude: -120.6),
+        ]]
+        let city = { (id: String, latitude: Double, longitude: Double, count: Int) in
+            ScooterCluster(id: "city:\(id)", latitude: latitude, longitude: longitude, count: count,
+                           providers: ["lime": count], city: id)
+        }
+        let cities = [
+            city("us:or:Portland", 45.52, -122.68, 900), city("us:me:Portland", 43.66, -70.26, 100),
+            city("us:me:South Portland", 43.63, -70.29, 50), city("us:ca:Los Angeles", 34.05, -118.24, 2000),
+            city("fr:Lyon", 45.76, 4.84, 500),
+        ]
+        let names = ["us": "États-Unis", "fr": "France"]
+
+        let states = ScooterCityGrouping.group(cities, zoomLevel: 4, language: .fr, regions: regions) { names[$0]! }
+        XCTAssertEqual(states.map(\.id), ["region:us:ca", "region:us:or", "country:fr", "region:us:me"])
+        XCTAssertEqual(states.map(\.city), ["Californie", "Oregon", "France", "Maine"])
+        XCTAssertEqual(states[0].latitude, 36.8)
+        XCTAssertEqual(states[3].count, 150)
+        XCTAssertEqual(states[3].bounds, GeoBounds(south: 43.63, west: -70.29, north: 43.66, east: -70.26))
+        XCTAssertEqual(ScooterCityGrouping.group(cities, zoomLevel: 3, language: .de, regions: regions) { names[$0]! }
+            .map(\.city), ["Kalifornien", "Oregon", "France", "Maine"])
+
+        // Zoomed out to the world, the country is one total again.
+        let world = ScooterCityGrouping.group(cities, zoomLevel: 2.9, language: .fr, regions: regions) { names[$0]! }
+        XCTAssertEqual(world.map(\.id), ["country:us", "country:fr"])
+        XCTAssertEqual(world[0].count, 3050)
+        // Without state totals, as the generated catalog has no such country yet, one total for the country.
+        XCTAssertEqual(ScooterCityGrouping.group(cities, zoomLevel: 4).map(\.id), ["country:us", "country:fr"])
+        XCTAssertNil(ScooterCityGrouping.region(of: cities[4], in: regions))
+        XCTAssertEqual(ScooterCityGrouping.region(of: cities[0], in: regions)?.code, "or")
+    }
 }
 
 // Where the map opens when it may not use the iPhone's location.

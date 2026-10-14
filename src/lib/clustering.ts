@@ -1,4 +1,6 @@
-import { COUNTRY_ANCHORS, type CountryCode } from '@/generated/countries';
+import {
+  COUNTRY_ANCHORS, COUNTRY_REGIONS, type CountryCode, type CountryNameLanguage, type CountryRegion,
+} from '@/generated/countries';
 import type { MapBounds, ScooterCluster, Vehicle } from '@/lib/types';
 
 export const MAX_CLUSTER_ZOOM = 15;
@@ -77,13 +79,17 @@ export function clusterVehicles(vehicles: Vehicle[], zoom: number): ClusteredVeh
 }
 
 // A city total that stands for several cities lying too close together to be told apart,
-// or for a whole country.
+// or for a whole country, state or province.
 export interface CityGroup extends ScooterCluster {
   bounds?: MapBounds;
 }
 
 // Further out than this, where a phone shows more than France, a country is one total.
 export const COUNTRY_TOTALS_BELOW_ZOOM = 5;
+// Down to this zoom, a country whose totals are its states' or provinces' (data/countries.json)
+// shows one per region; further out, where the whole United States is a couple of hundred
+// pixels wide, one for the country again.
+export const REGION_TOTALS_FROM_ZOOM = 3;
 // Centres closer than this would draw the totals over one another.
 const CITY_GROUP_SPACING_PX = 60;
 // Named in a group's label; the rest are left to zooming in.
@@ -93,6 +99,19 @@ const CITY_GROUP_NAMES = 3;
 // "city:fr:Paris" is in France, and "city:us:or:Portland" in the United States.
 function countryOf(city: ScooterCluster): string | null {
   return /^city:([a-z]{2}):/.exec(city.id)?.[1] ?? null;
+}
+
+// "city:us:or:Portland" is in Oregon, where the United States' totals are its states'.
+function regionOf(city: ScooterCluster, country: string): CountryRegion | null {
+  const regions = COUNTRY_REGIONS[country.toUpperCase() as CountryCode];
+  if (!regions?.totals) return null;
+  const code = /^city:[a-z]{2}:([a-z]{2,3}):/.exec(city.id)?.[1].toUpperCase();
+  return regions.list.find(region => region.code === code && region.anchor) ?? null;
+}
+
+/** A region's name in the language: "British Columbia", "Colombie-Britannique". */
+export function regionName(region: CountryRegion, language: CountryNameLanguage): string {
+  return region.names?.[language] ?? region.name;
 }
 
 function boundsOf(totals: CityGroup[]): MapBounds {
@@ -116,18 +135,28 @@ function byCount(a: ScooterCluster, b: ScooterCluster): number {
   return b.count - a.count || a.id.localeCompare(b.id);
 }
 
-function countryTotals(cities: ScooterCluster[], countryName: (code: string) => string): CityGroup[] {
-  const countries = new Map<string, ScooterCluster[]>();
+function countryTotals(cities: ScooterCluster[], countryName: (code: string) => string,
+  byRegion: boolean, language: CountryNameLanguage): CityGroup[] {
+  const groups = new Map<string, { name: string; anchor?: readonly [number, number]; members: ScooterCluster[] }>();
   const totals: CityGroup[] = [];
   for (const city of cities) {
     const country = countryOf(city);
-    if (!country) totals.push(city);
-    else countries.set(country, [...countries.get(country) ?? [], city]);
+    if (!country) {
+      totals.push(city);
+      continue;
+    }
+    const region = byRegion ? regionOf(city, country) : null;
+    const id = region ? `region:${country}:${region.code.toLowerCase()}` : `country:${country}`;
+    const group = groups.get(id) ?? { members: [],
+      ...(region ? { name: regionName(region, language), anchor: region.anchor }
+        : { name: countryName(country), anchor: COUNTRY_ANCHORS[country.toUpperCase() as CountryCode] }) };
+    group.members.push(city);
+    groups.set(id, group);
   }
-  for (const [country, members] of countries) {
-    const [lat, lng] = COUNTRY_ANCHORS[country.toUpperCase() as CountryCode] ?? [members[0].lat, members[0].lng];
+  for (const [id, { name, anchor, members }] of groups) {
+    const [lat, lng] = anchor ?? [members[0].lat, members[0].lng];
     totals.push({
-      id: `country:${country}`, city: countryName(country), lat, lng,
+      id, city: name, lat, lng,
       count: members.reduce((total, member) => total + member.count, 0),
       providers: sumProviders(members),
       bounds: boundsOf(members),
@@ -166,12 +195,17 @@ function spaceApart(totals: CityGroup[], zoom: number): CityGroup[] {
   return groups;
 }
 
-// Zoomed out to a continent, one total per country, never two countries in one,
-// the larger drawn over its neighbours; closer, one per city or cluster of neighbouring cities.
+// Zoomed out to a continent, one total per country, never two countries in one, or per state
+// or province where the country's totals are its regions', the larger drawn over its
+// neighbours; closer, one per city or cluster of neighbouring cities. Countries are named by
+// countryName, regions in the language.
 export function groupCityTotals(
   cities: ScooterCluster[],
   zoom: number,
   countryName: (code: string) => string = code => code.toUpperCase(),
+  language: CountryNameLanguage = 'en',
 ): CityGroup[] {
-  return zoom < COUNTRY_TOTALS_BELOW_ZOOM ? countryTotals(cities, countryName).sort(byCount) : spaceApart(cities, zoom);
+  return zoom < COUNTRY_TOTALS_BELOW_ZOOM
+    ? countryTotals(cities, countryName, zoom >= REGION_TOTALS_FROM_ZOOM, language).sort(byCount)
+    : spaceApart(cities, zoom);
 }

@@ -28,7 +28,7 @@ const unitedStates = {
     es: 'Estados Unidos', is: 'Bandaríkin' },
   searchWords: ['usa'],
   anchor: [39.8, -98.6],
-  regions: { showInCityNames: true, list: [{ code: 'ME', name: 'Maine' }, { code: 'OR', name: 'Oregon' }] },
+  regions: { showInCityNames: true, totals: false, list: [{ code: 'ME', name: 'Maine' }, { code: 'OR', name: 'Oregon' }] },
   featuredCities: ['us:or:Portland'],
   credits: { attribution: 'United States: Lime GBFS', gbfs: ['Lime'] },
 };
@@ -97,8 +97,7 @@ describe('the countries of data/countries.json', () => {
       { id: 'us:me:South Portland', name: 'South Portland, ME', region: 'ME' },
     ]);
     expect(Math.max(...american.map(city => cityKm(city.bounds)))).toBeLessThan(40);
-    expect(typescript).toContain('export const COUNTRY_REGIONS: Partial<Record<CountryCode, { showInCityNames: boolean; ' +
-      'list: readonly CountryRegion[] }>> = {\n  US: { showInCityNames: true, list: [\n    { code: "ME", name: "Maine" },\n' +
+    expect(typescript).toContain('}>> = {\n  US: { showInCityNames: true, totals: false, list: [\n    { code: "ME", name: "Maine" },\n' +
       '    { code: "OR", name: "Oregon" },\n  ] },\n};');
     // A country whose names leave the region out still has it in its ids.
     const quiet = { ...unitedStates, regions: { ...unitedStates.regions, showInCityNames: false } };
@@ -124,8 +123,36 @@ describe('the countries of data/countries.json', () => {
     expect(() => generate({ ...europe, countries: [...europe.countries, canada] }, path => path === canada.catalog ? regionalCanada : read(path)))
       .toThrow('bird_toronto in Toronto has a region, and CA has none');
     expect(() => generate({ ...europe, countries: [...europe.countries,
-      { ...unitedStates, regions: { showInCityNames: true, list: [{ code: 'Oregon', name: 'Oregon' }] } }] }))
+      { ...unitedStates, regions: { showInCityNames: true, totals: false, list: [{ code: 'Oregon', name: 'Oregon' }] } }] }))
       .toThrow('US: region Oregon needs an unrepeated code of two or three capitals and a name');
+  });
+
+  it('gives each state its total, zoomed out, where the country asks for it', () => {
+    const withTotals = { ...unitedStates, regions: { showInCityNames: true, totals: true, list: [
+      { code: 'ME', name: 'Maine', anchor: [45.3, -69.2] },
+      { code: 'OR', name: 'Oregon', names: { fr: 'Orégon' }, anchor: [43.9, -120.6], anchorNote: 'East of the Cascades.' },
+    ] } };
+    const { typescript, swift } = generate({ ...europe, countries: [...europe.countries, withTotals] });
+    expect(typescript).toContain('  US: { showInCityNames: true, totals: true, list: [\n' +
+      '    { code: "ME", name: "Maine", anchor: [45.3, -69.2] },\n' +
+      '    // East of the Cascades.\n    { code: "OR", name: "Oregon", names: { fr: "Orégon" }, anchor: [43.9, -120.6] },\n  ] },');
+    expect(swift).toContain('    static let regionTotals: [String: [String: ScooterRegion]] = [\n        "us": [\n' +
+      '            "me": ScooterRegion(name: "Maine", latitude: 45.3, longitude: -69.2),\n' +
+      '            // East of the Cascades.\n' +
+      '            "or": ScooterRegion(name: "Oregon", names: ["fr": "Orégon"], latitude: 43.9, longitude: -120.6),\n        ],\n    ]');
+    // A country without state totals, as Mexico, has none on iOS, where only totals need its regions.
+    expect(generate({ ...europe, countries: [...europe.countries, unitedStates] }).swift)
+      .toContain('static let regionTotals: [String: [String: ScooterRegion]] = [:]');
+
+    const withRegions = regions => ({ ...europe, countries: [...europe.countries, { ...unitedStates, regions }] });
+    expect(() => generate(withRegions({ ...withTotals.regions, list: [{ code: 'ME', name: 'Maine' }, withTotals.regions.list[1]] })))
+      .toThrow('US: region ME needs an anchor');
+    expect(() => generate(withRegions({ ...withTotals.regions, totals: false })))
+      .toThrow('US: region ME needs an anchor only where the country has totals');
+    expect(() => generate(withRegions({ ...withTotals.regions, list: [withTotals.regions.list[0],
+      { ...withTotals.regions.list[1], names: { fr_CA: 'Orégon' } }] }))).toThrow('US: region OR has names in en, de');
+    expect(() => generate(withRegions({ showInCityNames: true, list: withTotals.regions.list })))
+      .toThrow('US: regions need a list, showInCityNames and totals');
   });
 
   it('lets a listed city be wider, and only one that is', () => {

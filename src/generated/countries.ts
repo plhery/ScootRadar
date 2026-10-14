@@ -140,13 +140,23 @@ export const COUNTRY_ANCHORS: Record<CountryCode, readonly [number, number]> = {
 };
 
 /** A state or province of a country that has them. */
-export interface CountryRegion { code: string; name: string }
+export interface CountryRegion {
+  code: string;
+  name: string;
+  /** Its name where a language of the apps writes it otherwise. */
+  names?: Partial<Record<CountryNameLanguage, string>>;
+  /** Where its total stands, zoomed out, where the country's totals are its regions'. */
+  anchor?: readonly [number, number];
+}
 
 /**
  * The states or provinces of the countries that list them. Their code is part of a city's id,
- * "us:or:Portland", and, where showInCityNames, of its name: "Portland, OR".
+ * "us:or:Portland", and, where showInCityNames, of its name: "Portland, OR". Where totals,
+ * zoomed out, the country shows one total per region rather than one for the whole country.
  */
-export const COUNTRY_REGIONS: Partial<Record<CountryCode, { showInCityNames: boolean; list: readonly CountryRegion[] }>> = {};
+export const COUNTRY_REGIONS: Partial<Record<CountryCode, {
+  showInCityNames: boolean; totals: boolean; list: readonly CountryRegion[];
+}>> = {};
 
 /** The cities the landing page names, by their id in the catalogue. */
 export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {

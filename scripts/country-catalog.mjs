@@ -13,21 +13,31 @@ const lower = country => country.code.toLowerCase();
 // A state or province: "OR", "ON", or ISO 3166-2's "CMX" for Mexico City.
 const REGION_CODE = /^[A-Z]{2,3}$/;
 
+const isPoint = point => Array.isArray(point) && point.length === 2 && point.every(Number.isFinite);
+
 /**
  * The regions of a country that has them, by code. A country lists them when two of its towns
  * share a name, as Portland, Oregon and Portland, Maine do: every service area of its catalog
- * then names its region, and its cities' ids include it.
+ * then names its region, and its cities' ids include it. Where `totals`, zoomed out, the country
+ * shows one total per region, at the region's anchor, rather than one for the whole country.
  */
 function regionsOf(country) {
   if (country.regions === undefined) return null;
-  const { list, showInCityNames } = country.regions;
-  if (!Array.isArray(list) || !list.length || typeof showInCityNames !== 'boolean') {
-    throw new Error(`${country.code}: regions need a list and showInCityNames`);
+  const { list, showInCityNames, totals } = country.regions;
+  if (!Array.isArray(list) || !list.length || typeof showInCityNames !== 'boolean' || typeof totals !== 'boolean') {
+    throw new Error(`${country.code}: regions need a list, showInCityNames and totals`);
   }
   const regions = new Map();
   for (const region of list) {
     if (!REGION_CODE.test(region.code) || regions.has(region.code) || !region.name) {
       throw new Error(`${country.code}: region ${region.code} needs an unrepeated code of two or three capitals and a name`);
+    }
+    // Its name where a language of the apps writes it otherwise: "Colombie-Britannique".
+    if (Object.entries(region.names ?? {}).some(([language, name]) => !LANGUAGES.includes(language) || typeof name !== 'string' || !name)) {
+      throw new Error(`${country.code}: region ${region.code} has names in ${LANGUAGES.join(', ')} only`);
+    }
+    if (totals ? !isPoint(region.anchor) : region.anchor !== undefined) {
+      throw new Error(`${country.code}: region ${region.code} needs an anchor${totals ? '' : ' only where the country has totals'}`);
     }
     regions.set(region.code, region);
   }
@@ -238,15 +248,27 @@ ${countries.map(country => `${comment(country.anchorNote, '  ')}  ${country.code
 };
 
 /** A state or province of a country that has them. */
-export interface CountryRegion { code: string; name: string }
+export interface CountryRegion {
+  code: string;
+  name: string;
+  /** Its name where a language of the apps writes it otherwise. */
+  names?: Partial<Record<CountryNameLanguage, string>>;
+  /** Where its total stands, zoomed out, where the country's totals are its regions'. */
+  anchor?: readonly [number, number];
+}
 
 /**
  * The states or provinces of the countries that list them. Their code is part of a city's id,
- * "us:or:Portland", and, where showInCityNames, of its name: "Portland, OR".
+ * "us:or:Portland", and, where showInCityNames, of its name: "Portland, OR". Where totals,
+ * zoomed out, the country shows one total per region rather than one for the whole country.
  */
-export const COUNTRY_REGIONS: Partial<Record<CountryCode, { showInCityNames: boolean; list: readonly CountryRegion[] }>> = {${
-  countries.filter(country => country.regions).map(country => `\n  ${country.code}: { showInCityNames: ${country.regions.showInCityNames}, list: [\n${
-    country.regions.list.map(region => `    { code: ${JSON.stringify(region.code)}, name: ${JSON.stringify(region.name)} },\n`).join('')}  ] },`).join('')}${
+export const COUNTRY_REGIONS: Partial<Record<CountryCode, {
+  showInCityNames: boolean; totals: boolean; list: readonly CountryRegion[];
+}>> = {${countries.filter(country => country.regions).map(({ code, regions }) => `
+  ${code}: { showInCityNames: ${regions.showInCityNames}, totals: ${regions.totals}, list: [
+${regions.list.map(region => `${comment(region.anchorNote, '    ')}    { code: ${JSON.stringify(region.code)}, name: ${JSON.stringify(region.name)}${
+    region.names ? `, names: { ${Object.entries(region.names).map(([language, name]) => `${language}: ${JSON.stringify(name)}`).join(', ')} }` : ''}${
+    region.anchor ? `, anchor: [${region.anchor.join(', ')}]` : ''} },\n`).join('')}  ] },`).join('')}${
   countries.some(country => country.regions) ? '\n' : ''}};
 
 /** The cities the landing page names, by their id in the catalogue. */
@@ -280,6 +302,15 @@ ${catalogs.map(country => `  ...${name(country)}.systems.map(system => ({ ...sys
 `;
 }
 
+function swiftRegionTotals(countries) {
+  const totals = countries.filter(country => country.regions?.totals);
+  if (!totals.length) return ':';
+  return `\n${totals.map(country => `        "${lower(country)}": [\n${country.regions.list.map(region =>
+    `${comment(region.anchorNote, '            ')}            "${region.code.toLowerCase()}": ScooterRegion(name: ${JSON.stringify(region.name)}, ${
+      region.names ? `names: [${Object.entries(region.names).map(([language, name]) => `"${language}": ${JSON.stringify(name)}`).join(', ')}], ` : ''
+    }latitude: ${region.anchor[0]}, longitude: ${region.anchor[1]}),\n`).join('')}        ],\n`).join('')}    `;
+}
+
 export function swiftCountries(countries) {
   return `
 /// The countries of data/countries.json, as src/generated/countries.ts has them on the web.
@@ -293,6 +324,18 @@ ${countries.map(country => `${comment(country.anchorNote, '        ')}        "$
     static let credits: [(title: String, url: String)] = [
 ${countryCreditLinks(countries).map(link => `        (${JSON.stringify(link.label)}, ${JSON.stringify(link.href)}),`).join('\n')}
     ]
+
+    /// The countries whose totals, zoomed out, are their states' or provinces', and those by code.
+    static let regionTotals: [String: [String: ScooterRegion]] = [${swiftRegionTotals(countries)}]
+}
+
+/// A state or province whose total stands apart, zoomed out.
+struct ScooterRegion: Equatable, Sendable {
+    let name: String
+    /// Its name where a language of the app writes it otherwise: "Colombie-Britannique".
+    var names: [String: String] = [:]
+    let latitude: Double
+    let longitude: Double
 }
 `;
 }

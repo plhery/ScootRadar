@@ -866,4 +866,16 @@ enum ScooterCountryCatalog {
         ("PT: DGT boundaries · CC BY 4.0", "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop"),
         ("UA: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
     ]
+
+    /// The countries whose totals, zoomed out, are their states' or provinces', and those by code.
+    static let regionTotals: [String: [String: ScooterRegion]] = [:]
+}
+
+/// A state or province whose total stands apart, zoomed out.
+struct ScooterRegion: Equatable, Sendable {
+    let name: String
+    /// Its name where a language of the app writes it otherwise: "Colombie-Britannique".
+    var names: [String: String] = [:]
+    let latitude: Double
+    let longitude: Double
 }

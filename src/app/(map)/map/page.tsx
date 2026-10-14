@@ -480,11 +480,11 @@ export default function Home() {
     viewportBounds,
   ]);
 
-  // Zoomed out, a country or neighbouring cities are drawn as one total.
+  // Zoomed out, a country, a state or province, or neighbouring cities are drawn as one total.
   const mapClusters = useMemo(() => {
     if (!responseMeta?.overview) return viewportData.visibleClusters;
     const countries = new Intl.DisplayNames([locale], { type: 'region' });
-    return groupCityTotals(viewportData.visibleClusters, viewportZoom, code => countries.of(code.toUpperCase()) ?? code);
+    return groupCityTotals(viewportData.visibleClusters, viewportZoom, code => countries.of(code.toUpperCase()) ?? code, locale);
   }, [locale, responseMeta?.overview, viewportData.visibleClusters, viewportZoom]);
 
   const representedVehicleCount = vehicles.length + clusters.reduce(

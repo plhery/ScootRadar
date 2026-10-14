@@ -438,10 +438,14 @@ struct ScooterCluster: Identifiable, Hashable, Sendable {
     }
 }
 
-/// Zoomed out, a country or neighbouring cities are drawn as one total.
+/// Zoomed out, a country, a state or province, or neighbouring cities are drawn as one total.
 enum ScooterCityGrouping {
     /// Further out than this, where a phone shows more than France, a country is one total.
     static let countryTotalsBelowZoom = 5.0
+    /// Down to this zoom, a country whose totals are its states' or provinces' (data/countries.json)
+    /// shows one per region; further out, where the whole United States is a couple of hundred
+    /// points wide, one for the country again.
+    static let regionTotalsFromZoom = 3.0
     /// Centres closer than this, in points, would draw the totals over one another.
     static let spacing = 60.0
     /// Named in a group's label; the rest are left to zooming in.
@@ -449,15 +453,21 @@ enum ScooterCityGrouping {
     /// Where a country's total stands: inland and about the middle of the country, from data/countries.json.
     static let countryAnchors = ScooterCountryCatalog.anchors
 
-    /// Zoomed out to a continent, one total per country, never two countries in one;
-    /// closer, one per city or cluster of neighbouring cities.
+    /// Zoomed out to a continent, one total per country, never two countries in one, or per state or
+    /// province where the country's totals are its regions'; closer, one per city or cluster of
+    /// neighbouring cities. Countries are named by countryName, regions in the language.
     static func group(
         _ cities: [ScooterCluster],
         zoomLevel: Double,
+        language: ScooterLanguage = .en,
+        regions: [String: [String: ScooterRegion]] = ScooterCountryCatalog.regionTotals,
         countryName: (String) -> String = { $0.uppercased() }
     ) -> [ScooterCluster] {
         zoomLevel < countryTotalsBelowZoom
-            ? countryTotals(cities, countryName: countryName).sorted(by: byCount)
+            ? countryTotals(
+                cities, regions: zoomLevel >= regionTotalsFromZoom ? regions : [:], language: language,
+                countryName: countryName
+            ).sorted(by: byCount)
             : spacedApart(cities, zoomLevel: zoomLevel)
     }
 
@@ -472,21 +482,41 @@ enum ScooterCityGrouping {
         lhs.count != rhs.count ? lhs.count > rhs.count : lhs.id < rhs.id
     }
 
-    private static func countryTotals(_ cities: [ScooterCluster], countryName: (String) -> String) -> [ScooterCluster] {
-        var countries: [String: [ScooterCluster]] = [:]
+    /// "city:us:or:Portland" is in Oregon, "or", where the regions name the United States' states.
+    static func region(of city: ScooterCluster, in regions: [String: [String: ScooterRegion]]) -> (code: String, region: ScooterRegion)? {
+        let parts = city.id.split(separator: ":", maxSplits: 3)
+        guard parts.count == 4, parts[0] == "city", let region = regions[String(parts[1])]?[String(parts[2])] else { return nil }
+        return (String(parts[2]), region)
+    }
+
+    private static func countryTotals(
+        _ cities: [ScooterCluster],
+        regions: [String: [String: ScooterRegion]],
+        language: ScooterLanguage,
+        countryName: (String) -> String
+    ) -> [ScooterCluster] {
+        var groups: [String: (name: String, anchor: (latitude: Double, longitude: Double)?, members: [ScooterCluster])] = [:]
         var totals: [ScooterCluster] = []
         for city in cities {
-            if let country = country(of: city) {
-                countries[country, default: []].append(city)
-            } else {
+            guard let country = country(of: city) else {
                 totals.append(city)
+                continue
+            }
+            if let (code, region) = region(of: city, in: regions) {
+                let id = "region:\(country):\(code)"
+                groups[id, default: (
+                    name: region.names[language.rawValue] ?? region.name,
+                    anchor: (latitude: region.latitude, longitude: region.longitude), members: []
+                )].members.append(city)
+            } else {
+                groups["country:\(country)", default: (name: countryName(country), anchor: countryAnchors[country], members: [])]
+                    .members.append(city)
             }
         }
-        for (country, members) in countries {
-            let anchor = countryAnchors[country] ?? (members[0].latitude, members[0].longitude)
+        for (id, group) in groups {
+            let anchor = group.anchor ?? (group.members[0].latitude, group.members[0].longitude)
             totals.append(combined(
-                members, id: "country:\(country)", latitude: anchor.latitude, longitude: anchor.longitude,
-                name: countryName(country)
+                group.members, id: id, latitude: anchor.latitude, longitude: anchor.longitude, name: group.name
             ))
         }
         return totals

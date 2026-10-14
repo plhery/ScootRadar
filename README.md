@@ -140,8 +140,11 @@ changing the response contract.
      providers its GBFS feeds are credited for (`gbfs`, one line per
      continent), and the `links` a licence asks for;
    - `regions`, for a country whose towns share names across states or
-     provinces, as in North America: their `list` (`code`, `name`) and
-     whether `showInCityNames`. Every service area of its catalog then has a
+     provinces, as in North America: their `list` (`code`, `name`, and
+     `names` where a language of the apps writes one otherwise), whether
+     `showInCityNames`, and whether its `totals`, zoomed out, are its
+     regions' rather than one for the country; each region then has an
+     `anchor` (and an `anchorNote`). Every service area of its catalog has a
      `region` (or its system has one for all its areas), and its cities' ids
      include it: `us:or:Portland`, shown as "Portland, OR".
 

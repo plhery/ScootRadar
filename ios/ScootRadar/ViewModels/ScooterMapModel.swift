@@ -1074,7 +1074,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         var next = clusters.compactMap { $0.filtered(to: enabledProviders) }
         if responseMetadata?.overview == true {
             let locale = language.locale
-            next = ScooterCityGrouping.group(next, zoomLevel: viewportZoomLevel) { code in
+            next = ScooterCityGrouping.group(next, zoomLevel: viewportZoomLevel, language: language) { code in
                 locale.localizedString(forRegionCode: code) ?? code.uppercased()
             }
         }
