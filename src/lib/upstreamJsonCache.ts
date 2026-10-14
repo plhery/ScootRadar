@@ -1,6 +1,16 @@
-// Keep the reviewed four-country catalog (up to nine documents per feed) resident.
-// Otherwise the collector evicts hourly metadata before its next pass.
+// The floor for a process that never says how many feeds it collects, such as a web worker.
 const DEFAULT_MAX_ENTRIES = 2048;
+/**
+ * A feed reads up to nine documents: discovery, vehicle types, vehicle status, pricing plans,
+ * system regions, and for parking station information, station status, geofencing zones and
+ * their vehicle types.
+ */
+export const UPSTREAM_DOCUMENTS_PER_FEED = 9;
+
+/** Room for every document of `feeds` feeds, with a fifth spare for URLs that change. */
+export function upstreamCacheEntriesFor(feeds: number): number {
+  return Math.ceil(feeds * UPSTREAM_DOCUMENTS_PER_FEED * 1.2);
+}
 const DEFAULT_ERROR_RETRY_SECONDS = 15;
 
 type Fetcher = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
@@ -58,7 +68,7 @@ export class UpstreamJsonCache {
   private readonly hostIntervals = new Map<string, number>();
   private readonly nextRequests = new Map<string, number>();
   private readonly fetcher: Fetcher;
-  private readonly maxEntries: number;
+  private maxEntries: number;
   private readonly errorRetryMs: number;
   private readonly now: () => number;
   /**
@@ -66,6 +76,8 @@ export class UpstreamJsonCache {
    * kept for a minute or less, `metadata` for longer.
    */
   readonly requests = { status: 0, metadata: 0 };
+  /** Documents dropped to make room while they could still be served. */
+  evictions = 0;
 
   constructor(options: UpstreamJsonCacheOptions = {}) {
     this.fetcher = options.fetcher ?? ((input, init) => globalThis.fetch(input, init));
@@ -77,6 +89,9 @@ export class UpstreamJsonCache {
   async fetch<T>(url: string, options: UpstreamJsonOptions): Promise<CachedJson<T>> {
     const now = this.now();
     let entry = this.entries.get(url);
+    // Least recently used first out: the Map's order is the order of last use, so the
+    // hourly metadata every collection reads stays while documents nobody asks for go.
+    if (entry) this.touch(url, entry);
 
     if (entry?.hasValue && entry.freshUntil > now) {
       return { data: entry.value as T, stale: false, fetchedAt: entry.fetchedAt };
@@ -100,6 +115,14 @@ export class UpstreamJsonCache {
       if (entry.pending === request) entry.pending = undefined;
     }
   }
+
+  /** Grows the cache to hold at least `entries` documents; it never shrinks. */
+  reserve(entries: number): void {
+    this.maxEntries = Math.max(this.maxEntries, Math.ceil(entries));
+  }
+
+  get size(): number { return this.entries.size; }
+  get capacity(): number { return this.maxEntries; }
 
   /** Collector pacing prevents large country catalogs from bursting upstream quotas. */
   paceHost(hostname: string, intervalMs: number): void {
@@ -168,11 +191,17 @@ export class UpstreamJsonCache {
     }
   }
 
+  private touch(url: string, entry: CacheEntry): void {
+    this.entries.delete(url);
+    this.entries.set(url, entry);
+  }
+
   private createEntry(url: string): CacheEntry {
     while (this.entries.size >= this.maxEntries) {
-      const oldestKey = this.entries.keys().next().value;
-      if (oldestKey === undefined) break;
-      this.entries.delete(oldestKey);
+      const leastRecentKey = this.entries.keys().next().value;
+      if (leastRecentKey === undefined) break;
+      this.entries.delete(leastRecentKey);
+      this.evictions++;
     }
 
     const entry: CacheEntry = {

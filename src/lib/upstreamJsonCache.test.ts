@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { UpstreamJsonCache, type UpstreamJsonOptions } from '@/lib/upstreamJsonCache';
+import { UpstreamJsonCache, upstreamCacheEntriesFor, type UpstreamJsonOptions } from '@/lib/upstreamJsonCache';
 
 const options: UpstreamJsonOptions = {
   headers: { Accept: 'application/json' },
@@ -39,6 +39,38 @@ describe('UpstreamJsonCache', () => {
       stale: false, fetchedAt: expect.any(Number),
     });
     expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('drops the least recently used document when full, keeping metadata read every pass', async () => {
+    const fetcher = vi.fn(async (url: RequestInfo | URL) => jsonResponse({ url: String(url) }));
+    const hourly = { ...options, freshSeconds: 3_600 };
+    const cache = new UpstreamJsonCache({ fetcher, maxEntries: 3 });
+    await cache.fetch('https://example.com/a/discovery', hourly);
+    await cache.fetch('https://example.com/a/status', options);
+    await cache.fetch('https://example.com/b/status', options);
+    // The next pass reads a's discovery again before a fourth document arrives.
+    await cache.fetch('https://example.com/a/discovery', hourly);
+    await cache.fetch('https://example.com/c/status', options);
+    expect(cache.size).toBe(3);
+    expect(cache.evictions).toBe(1);
+
+    fetcher.mockClear();
+    await cache.fetch('https://example.com/a/discovery', hourly);
+    expect(fetcher).not.toHaveBeenCalled();
+    await cache.fetch('https://example.com/a/status', options);
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+
+  it('grows to the catalog it is given and never shrinks', () => {
+    const cache = new UpstreamJsonCache({ maxEntries: 2048 });
+    // 215 feeds today (186 regional and the Swiss national ones): 2,322 documents.
+    expect(upstreamCacheEntriesFor(215)).toBe(2_322);
+    cache.reserve(upstreamCacheEntriesFor(215));
+    expect(cache.capacity).toBe(2_322);
+    cache.reserve(100);
+    expect(cache.capacity).toBe(2_322);
+    cache.reserve(upstreamCacheEntriesFor(415));
+    expect(cache.capacity).toBe(4_482);
   });
 
   it('paces cold requests per host without delaying other providers or cache hits', async () => {

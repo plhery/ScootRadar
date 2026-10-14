@@ -17,6 +17,8 @@ interface MetricsSources {
   cadenceModes?: (now: number) => Record<FeedCadenceMode, number>;
   /** Requests sent to operators since the start, by kind. */
   upstreamRequests?: () => Record<string, number>;
+  /** How full the cache of operators' documents is, and how many it dropped to make room. */
+  upstreamCache?: () => { entries: number; capacity: number; evictions: number };
 }
 
 /**
@@ -110,6 +112,15 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         metric('scootradar_upstream_requests_total', 'counter',
           'Requests sent to operators, by kind: status (positions, parking) or metadata (kept an hour or more).',
           Object.entries(sources.upstreamRequests()).map(([kind, count]) => [{ kind }, count]));
+      }
+      if (sources.upstreamCache) {
+        const cache = sources.upstreamCache();
+        metric('scootradar_upstream_cache_entries', 'gauge',
+          'Operators\' documents held in memory (used) and the most the cache holds (capacity), sized from the feed count.',
+          [[{ kind: 'used' }, cache.entries], [{ kind: 'capacity' }, cache.capacity]]);
+        metric('scootradar_upstream_cache_evictions_total', 'counter',
+          'Documents dropped, least recently used first, to make room while they could still be served.',
+          [[{}, cache.evictions]]);
       }
       metric('scootradar_feed_collections_total', 'counter', 'Feed collections by outcome.',
         [...collections.values()].flatMap(entry => [
