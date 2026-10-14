@@ -52,9 +52,9 @@ describe('searchCoveredCities', () => {
   });
 
   it('returns five cities at most', () => {
-    // Two initials: every city with a word that starts with a B, eighteen of them.
+    // Two initials: every city with a word that starts with a B, more than five of them.
     expect(names('B B')).toEqual([
-      'Bærum, Norway', 'Bamberg, Germany', 'Basel, Switzerland', 'Bath, United Kingdom', 'Beauvais, France',
+      'Bærum, Norway', 'Bamberg, Germany', 'Basel, Switzerland', 'Bath, United Kingdom', 'Beaumont, AB, Canada',
     ]);
   });
 
@@ -188,9 +188,9 @@ describe('searchCoveredCities', () => {
       expect(names(query), query).toEqual(searchRegionalScooterCities(query).map(city => city.display_name));
     }
     // Swiss cities take their place among them by name.
-    expect(names('St')).toEqual(['St. Gallen, Switzerland', 'Stavanger, Norway', 'Stjørdal, Norway', 'Stuttgart, Germany', 'Stykkishólmur, Iceland']);
+    expect(names('St')).toEqual(['St. Albert, AB, Canada', 'St. Gallen, Switzerland', 'Stavanger, Norway', 'Stjørdal, Norway', 'Stuttgart, Germany']);
     expect(searchRegionalScooterCities('St').map(city => city.display_name))
-      .toEqual(['Stavanger, Norway', 'Stjørdal, Norway', 'Stuttgart, Germany', 'Stykkishólmur, Iceland']);
+      .toEqual(['St. Albert, AB, Canada', 'Stavanger, Norway', 'Stjørdal, Norway', 'Stuttgart, Germany', 'Stykkishólmur, Iceland']);
   });
 });
 

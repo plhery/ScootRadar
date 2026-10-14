@@ -1379,8 +1379,13 @@ extension ScooterModelsTests {
         XCTAssertNil(ScooterSeasonalPause.active(at: montreal, on: try at("2026-11-20T17:00:00Z"), among: Self.quebec))
         XCTAssertNil(ScooterSeasonalPause.active(at: montreal, on: try at("2026-07-20T16:00:00Z"), among: Self.quebec))
         XCTAssertNil(ScooterSeasonalPause.active(at: GeoPoint(latitude: 45.65, longitude: -73.6), on: january, among: Self.quebec))
-        // No city of the catalogs pauses today.
-        XCTAssertTrue(ScooterCityCatalog.cities.allSatisfy { $0.pauses.isEmpty })
+        // Of the catalogs' cities, only Ottawa pauses, from 16 November until 30 April, by its own clock.
+        XCTAssertEqual(ScooterCityCatalog.cities.filter { !$0.pauses.isEmpty }.map(\.id), ["ca:on:Ottawa"])
+        let ottawa = GeoPoint(latitude: 45.4215, longitude: -75.6972)
+        XCTAssertEqual(ScooterSeasonalPause.active(at: ottawa, on: january), ScooterSeasonalPause.Active(city: "Ottawa, ON", month: 4))
+        XCTAssertNil(ScooterSeasonalPause.active(at: ottawa, on: try at("2026-11-16T04:30:00Z")))
+        XCTAssertNotNil(ScooterSeasonalPause.active(at: ottawa, on: try at("2026-11-16T05:30:00Z")))
+        XCTAssertNil(ScooterSeasonalPause.active(at: ottawa, on: try at("2027-04-30T12:00:00Z")))
 
         // After a night ban, before providers down, with a calendar, calm.
         XCTAssertEqual(

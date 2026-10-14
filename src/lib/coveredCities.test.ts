@@ -159,7 +159,9 @@ describe('iOS city catalogue', () => {
     const pattern = new RegExp(
       `ScooterCity\\(id: ${text}, name: ${text}, countryCode: ${text}, ` +
       `center: GeoPoint\\(latitude: ${number}, longitude: ${number}\\), ` +
-      `bounds: GeoBounds\\(south: ${number}, west: ${number}, north: ${number}, east: ${number}\\)\\)`,
+      `bounds: GeoBounds\\(south: ${number}, west: ${number}, north: ${number}, east: ${number}\\)` +
+      // A town with a winter pause, Ottawa's, lists it after its bounds.
+      `(?:, pauses: \\[[^\\]]*\\])?\\)`,
       'g'
     );
     const cities = [...swift.matchAll(pattern)].map(([, id, name, country, lat, lng, south, west, north, east]) => ({

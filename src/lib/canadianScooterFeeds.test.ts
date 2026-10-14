@@ -1,0 +1,185 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { fetchScooters, independentCollectableFeeds } from './scooterFeeds';
+import { upstreamJsonCache } from './upstreamJsonCache';
+import { REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, searchRegionalScooterCities, serviceAreas } from './regionalScooterSystems';
+import { buildCityOverview, type FeedSnapshot } from './scooterSnapshots';
+import { activeSeasonalPause, feedPaused } from './seasonalPauses';
+import { isEmptyUndatedStatus } from './feedValidation';
+import { filterReturningParking, normalizeParkingLocations } from './parking';
+import { namedCities } from '@/app/api/geocode/cities';
+
+const response = (data: unknown) => new Response(JSON.stringify(data));
+const system = (id: string) => REGIONAL_SCOOTER_SYSTEMS.find(entry => entry.id === id)!;
+const city = (id: string) => REGIONAL_SCOOTER_CITIES.find(entry => entry.id === id)!;
+const collector = (id: string) => independentCollectableFeeds().find(feed => feed.id === `canada:${id}`)!;
+beforeEach(() => upstreamJsonCache.clear());
+afterEach(() => { upstreamJsonCache.clear(); vi.unstubAllGlobals(); });
+
+// Bird's two vehicle types in every Canadian town, as its feeds list them.
+const BIRD_SCOOTER = 'bae2102b-56ba-42ba-9097-720e5990b4b2';
+const BIRD_EBIKE = '2ea3c8b2-ed07-4c53-b87e-638c08471309';
+
+/** A Bird town as mds.bird.co serves it: GBFS 2.3, no prices, and the status the test gives. */
+function serveBird(id: string, status: () => object) {
+  const bird = system(id);
+  const base = new URL('.', bird.discoveryUrl).toString();
+  return vi.fn(async (url: string) => {
+    if (url === bird.discoveryUrl) return response({ version: '2.3', data: { en: { feeds: ['free_bike_status', 'system_information',
+      'system_pricing_plans', 'vehicle_types'].map(name => ({ name, url: `${base}${name}.json` })) } } });
+    if (url === `${base}vehicle_types.json`) return response({ version: '2.3', data: { vehicle_types: [
+      { vehicle_type_id: BIRD_SCOOTER, form_factor: 'scooter', propulsion_type: 'electric', max_range_meters: 24000.0 },
+      { vehicle_type_id: BIRD_EBIKE, form_factor: 'bicycle', propulsion_type: 'electric_assist', max_range_meters: 60000.0 },
+    ] } });
+    if (url === `${base}system_pricing_plans.json`) return response({ version: '2.3', data: { plans: [] } });
+    if (url === `${base}free_bike_status.json`) return response(status());
+    throw new Error(`Unexpected upstream ${url}`);
+  });
+}
+
+describe('Canada', () => {
+  it('names every town with its province, in that province\'s time zone', () => {
+    const canadian = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'CA');
+    expect(canadian.map(entry => entry.id).sort()).toEqual([
+      'bird_ca_calgary', 'bird_ca_edmonton', 'bird_ca_halifax', 'bird_ca_hamilton', 'bird_ca_leduc', 'bird_ca_ottawa',
+      'bird_ca_vaughan', 'bird_ca_windsor', 'lime_ca_calgary', 'lime_ca_edmonton', 'lime_ca_kelowna', 'lime_ca_mississauga',
+      'lime_ca_ottawa', 'lime_ca_vancouver',
+    ]);
+    const zones = { AB: 'America/Edmonton', BC: 'America/Vancouver', ON: 'America/Toronto', NS: 'America/Halifax' };
+    for (const entry of canadian) {
+      for (const area of serviceAreas(entry)) {
+        const region = (area.region ?? entry.region) as keyof typeof zones;
+        expect(zones[region], `${entry.id} in ${area.city}`).toBe(area.timeZone ?? entry.timeZone);
+      }
+    }
+    // Lime's Calgary and Edmonton feeds hold their neighbours' scooters too: each counts under its own town.
+    expect(serviceAreas(system('lime_ca_calgary')).map(area => area.city)).toEqual(['Calgary', 'Airdrie']);
+    expect(serviceAreas(system('lime_ca_edmonton')).map(area => area.city)).toEqual(['Edmonton', 'St. Albert', 'Beaumont']);
+    expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA').map(entry => entry.city).sort()).toEqual([
+      'Airdrie, AB', 'Beaumont, AB', 'Calgary, AB', 'Edmonton, AB', 'Halifax, NS', 'Hamilton, ON', 'Kelowna, BC', 'Leduc, AB',
+      'Mississauga, ON', 'Ottawa, ON', 'St. Albert, AB', 'Vancouver, BC', 'Vaughan, ON', 'Windsor, ON',
+    ]);
+    expect(city('ca:on:Ottawa')).toMatchObject({ city: 'Ottawa, ON', country: 'CA', region: 'ON' });
+  });
+
+  it.each([
+    ['Ottawa', 'Ottawa, ON'], ['Ottawa ON', 'Ottawa, ON'], ['Ottawa, Ontario', 'Ottawa, ON'], ['Calgary Alberta', 'Calgary, AB'],
+    ['Vancouver BC', 'Vancouver, BC'], ['Vancouver Colombie-Britannique', 'Vancouver, BC'], ['Halifax Nouvelle-Écosse', 'Halifax, NS'],
+    ['Dartmouth', 'Halifax, NS'], ['Dartmouth NS', 'Halifax, NS'], ['Tecumseh', 'Windsor, ON'], ['St Albert', 'St. Albert, AB'],
+    ['Saint-Albert', 'St. Albert, AB'], ['St. Albert AB', 'St. Albert, AB'], ['Airdrie', 'Airdrie, AB'], ['Edmonton Canada', 'Edmonton, AB'],
+  ])('finds "%s" as %s', (query, title) => {
+    expect(namedCities(query)[0].city.title).toBe(title);
+  });
+
+  it('lists Halifax under Dartmouth, across the harbour, and Windsor under Tecumseh', () => {
+    expect(searchRegionalScooterCities('Dartmouth')[0].display_name).toBe('Halifax, NS, Canada');
+    expect(searchRegionalScooterCities('Tecumseh')[0].display_name).toBe('Windsor, ON, Canada');
+  });
+
+  it('reads Bird Calgary\'s feed: its scooters, not its e-bikes, with their battery and range', async () => {
+    const bird = system('bird_ca_calgary');
+    // As Bird publishes them in Calgary, with no rental link of their own.
+    const scooter = { bike_id: '702b400a-9f33-473e-89d5-46cafb0393ba', lat: 51.030849599999996, lon: -114.0325907,
+      is_disabled: false, is_reserved: false, vehicle_type_id: BIRD_SCOOTER, last_reported: Math.floor(Date.now() / 1000) - 120,
+      current_range_meters: 14130.0, current_fuel_percent: 0.32258064 };
+    vi.stubGlobal('fetch', serveBird('bird_ca_calgary', () => ({ version: '2.3', ttl: 60, last_updated: Math.floor(Date.now() / 1000),
+      data: { bikes: [scooter, { ...scooter, bike_id: 'ebike', vehicle_type_id: BIRD_EBIKE },
+        { ...scooter, bike_id: 'reserved', is_reserved: true }, { ...scooter, bike_id: 'disabled', is_disabled: true }] } })));
+    const result = await fetchScooters({ bounds: bird.bounds, minBattery: 0, providers: new Set(['bird']) });
+    expect(result.meta.sources.canada).toBe('fresh');
+    expect(result.vehicles).toEqual([expect.objectContaining({
+      provider: 'bird', vehicle_id: `bird_ca_calgary:${scooter.bike_id}`, battery: 32, range_m: 14130,
+      // The card opens Bird's app; Bird publishes no prices in Canada.
+      rental_uris: { ios: null, android: null, web: null },
+    })]);
+    expect(result.vehicles[0]).not.toHaveProperty('pricing');
+  });
+
+  it('shows an empty Bird town, as on a snow day, as empty rather than as a feed that stopped', async () => {
+    // What Bird serves where it has no scooter out: no vehicles, and a time of 0.
+    const empty = { version: '2.3', data: { bikes: [] }, last_updated: 0, ttl: 60 };
+    expect(isEmptyUndatedStatus(empty)).toBe(true);
+    const bird = system('bird_ca_calgary');
+    vi.stubGlobal('fetch', serveBird('bird_ca_calgary', () => empty));
+    const result = await fetchScooters({ bounds: bird.bounds, minBattery: 0, providers: new Set(['bird']) });
+    expect(result.vehicles).toEqual([]);
+    expect(result.meta).toMatchObject({ partial: false, failedSources: [], sources: { canada: 'skipped' } });
+    // The cache leaves it out of the feed states, so the feed-stopped alert has nothing to fire on.
+    await expect(collector('bird_ca_calgary').collect()).resolves.toEqual({ vehicles: [], stale: false, skipped: true });
+  });
+
+  it('still fails a Bird feed with a time of 0 that lists scooters, or an empty one that is out of date', async () => {
+    const bird = system('bird_ca_calgary');
+    const scooter = { bike_id: 'a', lat: 51.03, lon: -114.03, is_disabled: false, is_reserved: false, vehicle_type_id: BIRD_SCOOTER };
+    const statuses = [
+      { version: '2.3', data: { bikes: [scooter] }, last_updated: 0 },
+      { version: '2.3', data: { bikes: [] }, last_updated: Math.floor(Date.now() / 1000) - 3600 },
+      { version: '2.3', data: {}, last_updated: 0 },
+    ];
+    for (const status of statuses) {
+      upstreamJsonCache.clear();
+      vi.stubGlobal('fetch', serveBird('bird_ca_calgary', () => status));
+      await expect(fetchScooters({ bounds: bird.bounds, minBattery: 0, providers: new Set(['bird']) }), JSON.stringify(status))
+        .rejects.toMatchObject({ failedSources: ['canada:bird_ca_calgary'] });
+    }
+    expect(isEmptyUndatedStatus({ last_updated: 0, data: { vehicles: [] } })).toBe(true);
+    expect(isEmptyUndatedStatus({ last_updated: '0', data: { bikes: [] } })).toBe(false);
+    expect(isEmptyUndatedStatus(null)).toBe(false);
+  });
+
+  it('counts the scooters of Lime\'s Calgary and Edmonton feeds under Airdrie, St. Albert and Beaumont where they stand', () => {
+    const now = Date.now();
+    const scooter = (id: string, lat: number, lng: number) => ({ provider: 'lime', vehicle_id: id, lat, lng, battery: null, range_m: 20000,
+      deep_link: null, rental_uris: { ios: null, android: null, web: null }, distance_m: 0 });
+    const feed = (id: string, vehicles: ReturnType<typeof scooter>[]): FeedSnapshot => ({ id: `canada:${id}`, source: 'canada', provider: 'lime',
+      coverage: serviceAreas(system(id)).map(area => area.bounds), vehicles, observedAt: now, attemptedAt: now, collectedAt: now,
+      stale: false, failed: false, skipped: false });
+    const overview = buildCityOverview([
+      feed('lime_ca_calgary', [scooter('downtown', 51.0447, -114.0719), scooter('airdrie', 51.2917, -114.0144)]),
+      feed('lime_ca_edmonton', [scooter('whyte', 53.5181, -113.4977), scooter('st-albert', 53.6305, -113.6256),
+        scooter('beaumont', 53.3572, -113.4147)]),
+    ], now);
+    const total = (id: string) => Object.values(overview.cities.find(entry => entry.id === id)!.batteries)
+      .flat().reduce((sum, count) => sum + count, 0);
+    expect(['ca:ab:Calgary', 'ca:ab:Airdrie', 'ca:ab:Edmonton', 'ca:ab:St. Albert', 'ca:ab:Beaumont', 'ca:ab:Leduc'].map(total))
+      .toEqual([1, 1, 1, 1, 1, 0]);
+  });
+
+  it('shows Vancouver\'s e-scooter stations, where every Lime ride must end, and no station elsewhere in Lime\'s feeds', () => {
+    // As Lime lists them: plain stations, no geofencing, and room for its type 2 scooters in the status.
+    const types = { data: { vehicle_types: [{ vehicle_type_id: '2', form_factor: 'scooter', propulsion_type: 'electric' },
+      { vehicle_type_id: '3', form_factor: 'bicycle', propulsion_type: 'electric_assist' }] } };
+    const stations = { data: { stations: [
+      { station_id: '6e24f5eb-3968-40ec-b27d-e97dc96d3797', name: '#0017 - Pandora St & Kamloops St', lat: 49.2829, lon: -123.0545 },
+      { station_id: '1e6c0520-8f63-49c6-beba-98a2b25dac7e', name: '#0101 - Closed', lat: 49.2701, lon: -123.1004 },
+    ] } };
+    const locations = normalizeParkingLocations(system('lime_ca_vancouver'), types, stations, {});
+    expect(locations.map(location => [location.name, location.mandatory])).toEqual([
+      ['#0017 - Pandora St & Kamloops St', true], ['#0101 - Closed', true],
+    ]);
+    // A station not taking returns is left out, as anywhere.
+    expect(filterReturningParking(locations, { data: { stations: [
+      { station_id: '1e6c0520-8f63-49c6-beba-98a2b25dac7e', is_installed: true, is_returning: false },
+    ] } }).map(location => location.name)).toEqual(['#0017 - Pandora St & Kamloops St']);
+    // Lime's other feeds list one plain station named after the town, at no parking: it stays off the map.
+    expect(normalizeParkingLocations(system('lime_ca_mississauga'), types,
+      { data: { stations: [{ station_id: 'mississauga', name: 'Mississauga, ON', lat: 43.5797, lon: -79.6556 }] } }, {})).toEqual([]);
+  });
+
+  it('says Ottawa\'s scooters are away from 16 November until 30 April, by Ottawa\'s clock, and no other town\'s', () => {
+    const ottawa: [number, number] = [45.4215, -75.6972];
+    // 23:30 on 15 November in Ottawa is still in season; 00:30 on the 16th is not.
+    expect(activeSeasonalPause(ottawa, Date.UTC(2026, 10, 16, 4, 30))).toBeNull();
+    expect(activeSeasonalPause(ottawa, Date.UTC(2026, 10, 16, 5, 30))).toEqual({ city: 'Ottawa, ON', month: 4 });
+    expect(activeSeasonalPause(ottawa, Date.UTC(2027, 3, 29, 12))).toEqual({ city: 'Ottawa, ON', month: 4 });
+    expect(activeSeasonalPause(ottawa, Date.UTC(2027, 3, 30, 12))).toBeNull();
+    const winter = Date.UTC(2027, 0, 15, 12);
+    expect(feedPaused('canada:bird_ca_ottawa', winter)).toBe(true);
+    expect(feedPaused('canada:lime_ca_ottawa', winter)).toBe(true);
+    // Only Ottawa sets its season by a standing rule; the other towns' winters are announced each year.
+    for (const [id, point] of [['ca:on:Mississauga', [43.589, -79.6441]], ['ca:ab:Calgary', [51.0447, -114.0719]],
+      ['ca:ns:Halifax', [44.6488, -63.5752]], ['ca:on:Vaughan', [43.8361, -79.4983]]] as const) {
+      expect(activeSeasonalPause([...point], winter), id).toBeNull();
+    }
+    expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA' && entry.pauses).map(entry => entry.id)).toEqual(['ca:on:Ottawa']);
+  });
+});

@@ -1,4 +1,6 @@
-import { isAbandonedStatus, statusObservedAt, validateDiscovery, validateRegistry, validateTypes, validateVehicleStatus } from './feedValidation';
+import {
+  isAbandonedStatus, isEmptyUndatedStatus, statusObservedAt, validateDiscovery, validateRegistry, validateTypes, validateVehicleStatus,
+} from './feedValidation';
 import { VEHICLE_MAX_AGE_MS } from './dataFreshness';
 import {
   coverageForRegionNames,
@@ -1100,7 +1102,10 @@ async function fetchRegionalSystemFeeds(
   }
 
   const [status, pricing] = await Promise.all([
-    fetchJson<StatusFeed>(statusUrl, { validate: validateVehicleStatus, revalidate: STATUS_REVALIDATE_SECONDS }),
+    fetchJson<StatusFeed>(statusUrl, {
+      validate: value => { if (!isEmptyUndatedStatus(value)) validateVehicleStatus(value); },
+      revalidate: STATUS_REVALIDATE_SECONDS,
+    }),
     // Another operator's feed prices the ride at its own fares, not the ones the provider's riders pay.
     fetchPricingPlans(system.feedOperator ? null : discoveredFeedUrl(entries, 'system_pricing_plans', baseUrl), {
       source: system.id,
@@ -1108,6 +1113,10 @@ async function fetchRegionalSystemFeeds(
   ]);
   if (!Array.isArray(status.data.data?.bikes) && !Array.isArray(status.data.data?.vehicles)) {
     throw new Error(`${system.id} status contains no vehicle array`);
+  }
+  // No scooter out and no time: Bird's town out of season or under snow is empty, not failing.
+  if (isEmptyUndatedStatus(status.data)) {
+    return { vehicles: [], stale: discovery.stale || types.stale || status.stale, skipped: true };
   }
 
   return {

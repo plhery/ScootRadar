@@ -437,6 +437,23 @@ enum ScooterProviderCoverage {
         (.zelectra, GeoBounds(south: 50.3748, west: 30.4036, north: 50.5282, east: 30.663)),
         (.bolt_hopp, GeoBounds(south: 38.7862, west: -77.1309, north: 39.0046, east: -76.8978)),
         (.veo, GeoBounds(south: 38.7862, west: -77.1309, north: 39.0046, east: -76.8978)),
+        (.bird, GeoBounds(south: 50.9416, west: -114.2441, north: 51.16, east: -113.9083)),
+        (.bird, GeoBounds(south: 53.4218, west: -113.6709, north: 53.6382, east: -113.33)),
+        (.bird, GeoBounds(south: 44.586, west: -63.7068, north: 44.7269, east: -63.4358)),
+        (.bird, GeoBounds(south: 43.1875, west: -80.0054, north: 43.3108, east: -79.7437)),
+        (.bird, GeoBounds(south: 53.2264, west: -113.6265, north: 53.323, east: -113.4739)),
+        (.bird, GeoBounds(south: 45.3695, west: -75.7756, north: 45.4591, east: -75.6245)),
+        (.bird, GeoBounds(south: 43.765, west: -79.603, north: 43.8931, east: -79.4076)),
+        (.bird, GeoBounds(south: 42.225, west: -83.1112, north: 42.3527, east: -82.8324)),
+        (.lime, GeoBounds(south: 50.9417, west: -114.2139, north: 51.1414, east: -113.9182)),
+        (.lime, GeoBounds(south: 51.2409, west: -114.0605, north: 51.316, east: -113.9659)),
+        (.lime, GeoBounds(south: 53.4232, west: -113.6583, north: 53.6263, east: -113.3326)),
+        (.lime, GeoBounds(south: 53.5963, west: -113.6858, north: 53.6747, east: -113.5601)),
+        (.lime, GeoBounds(south: 53.3297, west: -113.459, north: 53.3752, east: -113.377)),
+        (.lime, GeoBounds(south: 49.78, west: -119.5355, north: 49.9733, east: -119.361)),
+        (.lime, GeoBounds(south: 43.4744, west: -79.8043, north: 43.6832, east: -79.5394)),
+        (.lime, GeoBounds(south: 45.3613, west: -75.7701, north: 45.4581, east: -75.6275)),
+        (.lime, GeoBounds(south: 49.2181, west: -123.179, north: 49.3026, east: -123.0101)),
     ]
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
@@ -740,12 +757,26 @@ enum ScooterCityCatalog {
         ScooterCity(id: "hr:Rijeka", name: "Rijeka", countryCode: "HR", center: GeoPoint(latitude: 45.327, longitude: 14.4425), bounds: GeoBounds(south: 45.3081, west: 14.353, north: 45.3587, east: 14.4896)),
         ScooterCity(id: "ua:Kyiv", name: "Kyiv", countryCode: "UA", center: GeoPoint(latitude: 50.444, longitude: 30.518), bounds: GeoBounds(south: 50.3748, west: 30.4036, north: 50.5282, east: 30.663)),
         ScooterCity(id: "us:dc:Washington", name: "Washington, DC", countryCode: "US", center: GeoPoint(latitude: 38.9072, longitude: -77.0369), bounds: GeoBounds(south: 38.7862, west: -77.1309, north: 39.0046, east: -76.8978)),
+        ScooterCity(id: "ca:ab:Calgary", name: "Calgary, AB", countryCode: "CA", center: GeoPoint(latitude: 51.0454, longitude: -114.0714), bounds: GeoBounds(south: 50.9416, west: -114.2441, north: 51.16, east: -113.9083)),
+        ScooterCity(id: "ca:ab:Edmonton", name: "Edmonton, AB", countryCode: "CA", center: GeoPoint(latitude: 53.5444, longitude: -113.4909), bounds: GeoBounds(south: 53.4218, west: -113.6709, north: 53.6382, east: -113.33)),
+        ScooterCity(id: "ca:ns:Halifax", name: "Halifax, NS", countryCode: "CA", center: GeoPoint(latitude: 44.6466, longitude: -63.5906), bounds: GeoBounds(south: 44.586, west: -63.7068, north: 44.7269, east: -63.4358)),
+        ScooterCity(id: "ca:on:Hamilton", name: "Hamilton, ON", countryCode: "CA", center: GeoPoint(latitude: 43.2578, longitude: -79.871), bounds: GeoBounds(south: 43.1875, west: -80.0054, north: 43.3108, east: -79.7437)),
+        ScooterCity(id: "ca:ab:Leduc", name: "Leduc, AB", countryCode: "CA", center: GeoPoint(latitude: 53.2645, longitude: -113.5593), bounds: GeoBounds(south: 53.2264, west: -113.6265, north: 53.323, east: -113.4739)),
+        ScooterCity(id: "ca:on:Ottawa", name: "Ottawa, ON", countryCode: "CA", center: GeoPoint(latitude: 45.4215, longitude: -75.6915), bounds: GeoBounds(south: 45.3613, west: -75.7756, north: 45.4591, east: -75.6245), pauses: [ScooterSeasonalPause(from: "11-16", until: "04-30", timeZone: "America/Toronto")]),
+        ScooterCity(id: "ca:on:Vaughan", name: "Vaughan, ON", countryCode: "CA", center: GeoPoint(latitude: 43.7955, longitude: -79.5323), bounds: GeoBounds(south: 43.765, west: -79.603, north: 43.8931, east: -79.4076)),
+        ScooterCity(id: "ca:on:Windsor", name: "Windsor, ON", countryCode: "CA", center: GeoPoint(latitude: 42.3041, longitude: -83.063), bounds: GeoBounds(south: 42.225, west: -83.1112, north: 42.3527, east: -82.8324)),
+        ScooterCity(id: "ca:ab:Airdrie", name: "Airdrie, AB", countryCode: "CA", center: GeoPoint(latitude: 51.2799, longitude: -114.022), bounds: GeoBounds(south: 51.2409, west: -114.0605, north: 51.316, east: -113.9659)),
+        ScooterCity(id: "ca:ab:St. Albert", name: "St. Albert, AB", countryCode: "CA", center: GeoPoint(latitude: 53.6369, longitude: -113.6255), bounds: GeoBounds(south: 53.5963, west: -113.6858, north: 53.6747, east: -113.5601)),
+        ScooterCity(id: "ca:ab:Beaumont", name: "Beaumont, AB", countryCode: "CA", center: GeoPoint(latitude: 53.355, longitude: -113.4276), bounds: GeoBounds(south: 53.3297, west: -113.459, north: 53.3752, east: -113.377)),
+        ScooterCity(id: "ca:bc:Kelowna", name: "Kelowna, BC", countryCode: "CA", center: GeoPoint(latitude: 49.8864, longitude: -119.4754), bounds: GeoBounds(south: 49.78, west: -119.5355, north: 49.9733, east: -119.361)),
+        ScooterCity(id: "ca:on:Mississauga", name: "Mississauga, ON", countryCode: "CA", center: GeoPoint(latitude: 43.5797, longitude: -79.6556), bounds: GeoBounds(south: 43.4744, west: -79.8043, north: 43.6832, east: -79.5394)),
+        ScooterCity(id: "ca:bc:Vancouver", name: "Vancouver, BC", countryCode: "CA", center: GeoPoint(latitude: 49.2684, longitude: -123.1047), bounds: GeoBounds(south: 49.2181, west: -123.179, north: 49.3026, east: -123.0101)),
     ]
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 260
-    static let countryCount = 20
+    static let cityCount = 274
+    static let countryCount = 21
 
     /// Cities by distance from the point to their centre, nearest first.
     static func nearest(to point: GeoPoint, count: Int) -> [ScooterCityDistance] {
@@ -900,12 +931,15 @@ enum ScooterCountryCatalog {
         // Near Lebanon, Kansas, the geographic centre of the 48 contiguous states. Zoomed in, each
         // state has its own total at its centre of population (US Census Bureau, 2020).
         "us": (39.5, -98.6),
+        // Inland in Manitoba's Interlake, near Fisher Branch: about the middle of the band of cities
+        // from Vancouver to Halifax, and north of the United States' total.
+        "ca": (51.1, -97.6),
     ]
 
     /// The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences.
     static let credits: [(title: String, url: String)] = [
         ("DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio, Bird, Elerent, Hoppy, Ride Mobility, 3electra", "https://github.com/MobilityData/gbfs"),
-        ("US: Bolt, Veo", "https://github.com/MobilityData/gbfs"),
+        ("US/CA: Bolt, Veo, Bird, Lime", "https://github.com/MobilityData/gbfs"),
         ("MobiData BW", "https://www.mobidata-bw.de/"),
         ("BE: Pony · transportdata.be", "https://transportdata.be/dataset/pony_charleroi"),
         ("NO: Entur AS · NLOD", "https://data.norge.no/nlod/en/2.0"),
@@ -970,6 +1004,35 @@ enum ScooterCountryCatalog {
             "wv": ScooterRegion(name: "West Virginia", names: ["fr": "Virginie-Occidentale", "it": "Virginia Occidentale", "nb": "Vest-Virginia", "pt": "Virgínia Ocidental", "es": "Virginia Occidental", "is": "Vestur-Virginía"], latitude: 38.82, longitude: -80.67),
             "wi": ScooterRegion(name: "Wisconsin", latitude: 43.72, longitude: -89.03),
             "wy": ScooterRegion(name: "Wyoming", latitude: 42.69, longitude: -106.98),
+        ],
+        "ca": [
+            // Near Red Deer, between Calgary and Edmonton, where Alberta's scooters are.
+            "ab": ScooterRegion(name: "Alberta", latitude: 52.3, longitude: -113.8),
+            // Near Merritt, between Vancouver and Kelowna, in the south where the province's
+            // scooters are.
+            "bc": ScooterRegion(name: "British Columbia", names: ["fr": "Colombie-Britannique", "it": "Columbia Britannica", "nl": "Brits-Columbia", "nb": "Britisk Columbia", "pt": "Colúmbia Britânica", "es": "Columbia Británica", "is": "Breska-Kólumbía"], latitude: 50.1, longitude: -120.8),
+            // Near Portage la Prairie, west of Winnipeg, in the south where its people live.
+            "mb": ScooterRegion(name: "Manitoba", latitude: 50, longitude: -98.3),
+            // Inland between Fredericton, Moncton and Saint John.
+            "nb": ScooterRegion(name: "New Brunswick", names: ["fr": "Nouveau-Brunswick", "it": "Nuovo Brunswick", "pt": "Novo Brunswick", "es": "Nuevo Brunswick", "is": "Nýja-Brúnsvík"], latitude: 46, longitude: -65.8),
+            // Near Grand Falls-Windsor, inland on the island of Newfoundland.
+            "nl": ScooterRegion(name: "Newfoundland and Labrador", names: ["de": "Neufundland und Labrador", "fr": "Terre-Neuve-et-Labrador", "it": "Terranova e Labrador", "nl": "Newfoundland en Labrador", "nb": "Newfoundland og Labrador", "pt": "Terra Nova e Labrador", "es": "Terranova y Labrador", "is": "Nýfundnaland og Labrador"], latitude: 48.9, longitude: -55.7),
+            // Inland between Halifax and Truro.
+            "ns": ScooterRegion(name: "Nova Scotia", names: ["fr": "Nouvelle-Écosse", "it": "Nuova Scozia", "pt": "Nova Escócia", "es": "Nueva Escocia"], latitude: 45, longitude: -63.4),
+            // At Yellowknife, its capital.
+            "nt": ScooterRegion(name: "Northwest Territories", names: ["de": "Nordwest-Territorien", "fr": "Territoires du Nord-Ouest", "it": "Territori del Nord-Ovest", "nb": "Nordvestterritoriene", "pt": "Territórios do Noroeste", "es": "Territorios del Noroeste", "is": "Norðvesturhéruðin"], latitude: 62.5, longitude: -114.4),
+            // At Iqaluit, its capital.
+            "nu": ScooterRegion(name: "Nunavut", names: ["is": "Núnavút"], latitude: 63.7, longitude: -68.5),
+            // At Peterborough, between Hamilton and Ottawa, where Ontario's scooters are.
+            "on": ScooterRegion(name: "Ontario", names: ["pt": "Ontário", "is": "Ontaríó"], latitude: 44.3, longitude: -78.3),
+            // Near Hunter River, in the middle of the island.
+            "pe": ScooterRegion(name: "Prince Edward Island", names: ["fr": "Île-du-Prince-Édouard", "it": "Isola del Principe Edoardo", "pt": "Ilha do Príncipe Eduardo", "es": "Isla del Príncipe Eduardo", "is": "Eyja Játvarðs prins"], latitude: 46.3, longitude: -63.3),
+            // Near Shawinigan, between Montréal and Québec City, in the south where its people live.
+            "qc": ScooterRegion(name: "Quebec", names: ["de": "Québec", "fr": "Québec", "it": "Québec", "nl": "Québec", "nb": "Québec", "is": "Québec"], latitude: 46.6, longitude: -72.7),
+            // Near Davidson, between Saskatoon and Regina.
+            "sk": ScooterRegion(name: "Saskatchewan", latitude: 51.3, longitude: -105.9),
+            // At Whitehorse, its capital.
+            "yt": ScooterRegion(name: "Yukon", names: ["es": "Yukón", "is": "Júkon"], latitude: 60.7, longitude: -135.1),
         ],
     ]
 }

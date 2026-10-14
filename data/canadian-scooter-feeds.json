@@ -1,0 +1,363 @@
+{
+  "verifiedOn": "2026-10-14",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "bird_ca_calgary",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Calgary",
+      "region": "AB",
+      "timeZone": "America/Edmonton",
+      "center": [
+        51.0454,
+        -114.0714
+      ],
+      "bounds": {
+        "south": 50.9416,
+        "north": 51.16,
+        "west": -114.2441,
+        "east": -113.9083
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/calgary/gbfs.json"
+    },
+    {
+      "id": "bird_ca_edmonton",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Edmonton",
+      "region": "AB",
+      "timeZone": "America/Edmonton",
+      "center": [
+        53.5444,
+        -113.4909
+      ],
+      "bounds": {
+        "south": 53.4218,
+        "north": 53.6382,
+        "west": -113.6709,
+        "east": -113.33
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/edmonton/gbfs.json"
+    },
+    {
+      "id": "bird_ca_halifax",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Halifax",
+      "region": "NS",
+      "timeZone": "America/Halifax",
+      "center": [
+        44.6466,
+        -63.5906
+      ],
+      "bounds": {
+        "south": 44.586,
+        "north": 44.7269,
+        "west": -63.7068,
+        "east": -63.4358
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/halifax/gbfs.json",
+      "aliases": [
+        "Dartmouth",
+        "Halifax Regional Municipality",
+        "HRM"
+      ]
+    },
+    {
+      "id": "bird_ca_hamilton",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Hamilton",
+      "region": "ON",
+      "timeZone": "America/Toronto",
+      "center": [
+        43.2578,
+        -79.871
+      ],
+      "bounds": {
+        "south": 43.1875,
+        "north": 43.3108,
+        "west": -80.0054,
+        "east": -79.7437
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/hamilton/gbfs.json"
+    },
+    {
+      "id": "bird_ca_leduc",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Leduc",
+      "region": "AB",
+      "timeZone": "America/Edmonton",
+      "center": [
+        53.2645,
+        -113.5593
+      ],
+      "bounds": {
+        "south": 53.2264,
+        "north": 53.323,
+        "west": -113.6265,
+        "east": -113.4739
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/leduc/gbfs.json"
+    },
+    {
+      "id": "bird_ca_ottawa",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Ottawa",
+      "region": "ON",
+      "timeZone": "America/Toronto",
+      "center": [
+        45.4215,
+        -75.6915
+      ],
+      "bounds": {
+        "south": 45.3695,
+        "north": 45.4591,
+        "west": -75.7756,
+        "east": -75.6245
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/ottawa/gbfs.json",
+      "seasonal": {
+        "from": "11-16",
+        "until": "04-30",
+        "timeZone": "America/Toronto"
+      }
+    },
+    {
+      "id": "bird_ca_vaughan",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Vaughan",
+      "region": "ON",
+      "timeZone": "America/Toronto",
+      "center": [
+        43.7955,
+        -79.5323
+      ],
+      "bounds": {
+        "south": 43.765,
+        "north": 43.8931,
+        "west": -79.603,
+        "east": -79.4076
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/vaughan/gbfs.json"
+    },
+    {
+      "id": "bird_ca_windsor",
+      "country": "CA",
+      "provider": "bird",
+      "city": "Windsor",
+      "region": "ON",
+      "timeZone": "America/Toronto",
+      "center": [
+        42.3041,
+        -83.063
+      ],
+      "bounds": {
+        "south": 42.225,
+        "north": 42.3527,
+        "west": -83.1112,
+        "east": -82.8324
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/windsor-on/gbfs.json",
+      "aliases": [
+        "Tecumseh"
+      ]
+    },
+    {
+      "id": "lime_ca_calgary",
+      "country": "CA",
+      "provider": "lime",
+      "city": "Calgary / Airdrie",
+      "region": "AB",
+      "timeZone": "America/Edmonton",
+      "center": [
+        51.0454,
+        -114.0714
+      ],
+      "bounds": {
+        "south": 50.9417,
+        "north": 51.316,
+        "west": -114.2139,
+        "east": -113.9182
+      },
+      "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/calgary/gbfs.json",
+      "areas": [
+        {
+          "city": "Calgary",
+          "center": [
+            51.0454,
+            -114.0714
+          ],
+          "bounds": {
+            "south": 50.9417,
+            "north": 51.1414,
+            "west": -114.2139,
+            "east": -113.9182
+          }
+        },
+        {
+          "city": "Airdrie",
+          "center": [
+            51.2799,
+            -114.022
+          ],
+          "bounds": {
+            "south": 51.2409,
+            "north": 51.316,
+            "west": -114.0605,
+            "east": -113.9659
+          }
+        }
+      ]
+    },
+    {
+      "id": "lime_ca_edmonton",
+      "country": "CA",
+      "provider": "lime",
+      "city": "Edmonton / St. Albert / Beaumont",
+      "region": "AB",
+      "timeZone": "America/Edmonton",
+      "center": [
+        53.5444,
+        -113.4909
+      ],
+      "bounds": {
+        "south": 53.3297,
+        "north": 53.6747,
+        "west": -113.6858,
+        "east": -113.3326
+      },
+      "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/edmonton/gbfs.json",
+      "areas": [
+        {
+          "city": "Edmonton",
+          "center": [
+            53.5444,
+            -113.4909
+          ],
+          "bounds": {
+            "south": 53.4232,
+            "north": 53.6263,
+            "west": -113.6583,
+            "east": -113.3326
+          }
+        },
+        {
+          "city": "St. Albert",
+          "center": [
+            53.6369,
+            -113.6255
+          ],
+          "bounds": {
+            "south": 53.5963,
+            "north": 53.6747,
+            "west": -113.6858,
+            "east": -113.5601
+          },
+          "aliases": [
+            "Saint-Albert"
+          ]
+        },
+        {
+          "city": "Beaumont",
+          "center": [
+            53.355,
+            -113.4276
+          ],
+          "bounds": {
+            "south": 53.3297,
+            "north": 53.3752,
+            "west": -113.459,
+            "east": -113.377
+          }
+        }
+      ]
+    },
+    {
+      "id": "lime_ca_kelowna",
+      "country": "CA",
+      "provider": "lime",
+      "city": "Kelowna",
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "center": [
+        49.8864,
+        -119.4754
+      ],
+      "bounds": {
+        "south": 49.78,
+        "north": 49.9733,
+        "west": -119.5355,
+        "east": -119.361
+      },
+      "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/kelowna/gbfs.json"
+    },
+    {
+      "id": "lime_ca_mississauga",
+      "country": "CA",
+      "provider": "lime",
+      "city": "Mississauga",
+      "region": "ON",
+      "timeZone": "America/Toronto",
+      "center": [
+        43.5797,
+        -79.6556
+      ],
+      "bounds": {
+        "south": 43.4744,
+        "north": 43.6832,
+        "west": -79.8043,
+        "east": -79.5394
+      },
+      "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/mississauga/gbfs.json"
+    },
+    {
+      "id": "lime_ca_ottawa",
+      "country": "CA",
+      "provider": "lime",
+      "city": "Ottawa",
+      "region": "ON",
+      "timeZone": "America/Toronto",
+      "center": [
+        45.4215,
+        -75.6915
+      ],
+      "bounds": {
+        "south": 45.3613,
+        "north": 45.4581,
+        "west": -75.7701,
+        "east": -75.6275
+      },
+      "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/ottawa/gbfs.json",
+      "seasonal": {
+        "from": "11-16",
+        "until": "04-30",
+        "timeZone": "America/Toronto"
+      }
+    },
+    {
+      "id": "lime_ca_vancouver",
+      "country": "CA",
+      "provider": "lime",
+      "city": "Vancouver",
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "center": [
+        49.2684,
+        -123.1047
+      ],
+      "bounds": {
+        "south": 49.2181,
+        "north": 49.3026,
+        "west": -123.179,
+        "east": -123.0101
+      },
+      "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/vancouver_bc/gbfs.json",
+      "stationParking": true
+    }
+  ]
+}

@@ -524,3 +524,23 @@ allows showing its vehicles, with data no older than fifteen minutes, as in
 Europe. Veo publishes no licence in its feed. The map's credits name both
 under the GBFS line. See the [coverage audit](docs/american-scooter-feeds.md)
 for the systems, the brand Hopp, the bounds, the gaps and the recheck command.
+
+## Canada
+
+The reviewed catalog lives in `data/canadian-scooter-feeds.json`: 14 feeds,
+Bird's 8 at `mds.bird.co` (Calgary, Edmonton, Leduc, Halifax, Hamilton,
+Ottawa, Vaughan, Windsor) and Lime's 6 at `data.lime.bike` (Calgary,
+Edmonton, Kelowna, Mississauga, Ottawa, Vancouver). Lime's Calgary feed also
+holds Airdrie's scooters, and its Edmonton feed those of St. Albert and
+Beaumont; each is a town of its own on the map. All but Bird Windsor are in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv);
+Windsor answers at the address Bird uses for its other towns.
+
+Bird's feeds point to its 2018 GBFS Data License Agreement, whose PDF answers
+404; the archived copy of its licence page allows display. Lime's point to its
+[GBFS terms](https://www.li.me/legal/public-gbfs-terms). The map's credits
+name both under the GBFS line. Ottawa's winter pause comes from the city's
+council report and season page. See the
+[coverage audit](docs/canadian-scooter-feeds.md) for the systems, the bounds,
+the empty feeds, the winter, the night rules, the parking, the gaps and the
+recheck command.

@@ -3,11 +3,11 @@
 // countries' names or credits don't load every city.
 
 /** Every country with scooter data, in the order of data/countries.json. */
-export const COUNTRY_CODES = ["CH", "FR", "DE", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US"] as const;
+export const COUNTRY_CODES = ["CH", "FR", "DE", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA"] as const;
 export type CountryCode = typeof COUNTRY_CODES[number];
 
 /** The countries with a catalog of their own, data/<adjective>-scooter-feeds.json: all but Switzerland. */
-export type CatalogCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR' | 'UA' | 'US';
+export type CatalogCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR' | 'UA' | 'US' | 'CA';
 
 export type CountryNameLanguage = 'en' | 'de' | 'fr' | 'it' | 'nl' | 'nb' | 'pt' | 'es' | 'is';
 
@@ -34,6 +34,7 @@ export const COUNTRY_SOURCES = {
   HR: 'croatia',
   UA: 'ukraine',
   US: 'us',
+  CA: 'canada',
 } as const;
 
 export const COUNTRY_CONTINENTS: Record<CountryCode, Continent> = {
@@ -57,6 +58,7 @@ export const COUNTRY_CONTINENTS: Record<CountryCode, Continent> = {
   HR: 'europe',
   UA: 'europe',
   US: 'north-america',
+  CA: 'north-america',
 };
 
 /** A table rather than Intl.DisplayNames, whose locale data is not a given on the server. */
@@ -81,6 +83,7 @@ export const COUNTRY_NAMES: Record<CountryCode, Readonly<Record<CountryNameLangu
   HR: { en: "Croatia", de: "Kroatien", fr: "Croatie", it: "Croazia", nl: "Kroatië", nb: "Kroatia", pt: "Croácia", es: "Croacia", is: "Króatía" },
   UA: { en: "Ukraine", de: "Ukraine", fr: "Ukraine", it: "Ucraina", nl: "Oekraïne", nb: "Ukraina", pt: "Ucrânia", es: "Ucrania", is: "Úkraína" },
   US: { en: "United States", de: "Vereinigte Staaten", fr: "États-Unis", it: "Stati Uniti", nl: "Verenigde Staten", nb: "USA", pt: "Estados Unidos", es: "Estados Unidos", is: "Bandaríkin" },
+  CA: { en: "Canada", de: "Kanada", fr: "Canada", it: "Canada", nl: "Canada", nb: "Canada", pt: "Canadá", es: "Canadá", is: "Kanada" },
 };
 
 /** Typed beside a city to say which one is meant: "Lindau Deutschland". */
@@ -105,6 +108,7 @@ export const COUNTRY_SEARCH_WORDS: Record<CountryCode, readonly string[]> = {
   HR: ["croatia", "kroatien", "croatie", "croazia", "kroatie", "kroatia", "croacia", "hrvatska"],
   UA: ["ukraine", "ucraina", "oekraine", "ukraina", "ucrania", "ukrajina", "ukrayina", "украіна", "украина"],
   US: ["usa", "america", "amerika", "amerique", "eeuu", "eua", "bandarikin"],
+  CA: ["canada", "kanada"],
 };
 
 /** Where a country's total stands, zoomed out: inland and about the middle of the country. */
@@ -144,6 +148,9 @@ export const COUNTRY_ANCHORS: Record<CountryCode, readonly [number, number]> = {
   // Near Lebanon, Kansas, the geographic centre of the 48 contiguous states. Zoomed in, each state
   // has its own total at its centre of population (US Census Bureau, 2020).
   US: [39.5, -98.6],
+  // Inland in Manitoba's Interlake, near Fisher Branch: about the middle of the band of cities from
+  // Vancouver to Halifax, and north of the United States' total.
+  CA: [51.1, -97.6],
 };
 
 /** A state or province of a country that has them. */
@@ -217,6 +224,34 @@ export const COUNTRY_REGIONS: Partial<Record<CountryCode, {
     { code: "WI", name: "Wisconsin", anchor: [43.72, -89.03] },
     { code: "WY", name: "Wyoming", anchor: [42.69, -106.98] },
   ] },
+  CA: { showInCityNames: true, totals: true, list: [
+    // Near Red Deer, between Calgary and Edmonton, where Alberta's scooters are.
+    { code: "AB", name: "Alberta", anchor: [52.3, -113.8] },
+    // Near Merritt, between Vancouver and Kelowna, in the south where the province's scooters are.
+    { code: "BC", name: "British Columbia", names: { fr: "Colombie-Britannique", it: "Columbia Britannica", nl: "Brits-Columbia", nb: "Britisk Columbia", pt: "Colúmbia Britânica", es: "Columbia Británica", is: "Breska-Kólumbía" }, anchor: [50.1, -120.8] },
+    // Near Portage la Prairie, west of Winnipeg, in the south where its people live.
+    { code: "MB", name: "Manitoba", anchor: [50, -98.3] },
+    // Inland between Fredericton, Moncton and Saint John.
+    { code: "NB", name: "New Brunswick", names: { fr: "Nouveau-Brunswick", it: "Nuovo Brunswick", pt: "Novo Brunswick", es: "Nuevo Brunswick", is: "Nýja-Brúnsvík" }, anchor: [46, -65.8] },
+    // Near Grand Falls-Windsor, inland on the island of Newfoundland.
+    { code: "NL", name: "Newfoundland and Labrador", names: { de: "Neufundland und Labrador", fr: "Terre-Neuve-et-Labrador", it: "Terranova e Labrador", nl: "Newfoundland en Labrador", nb: "Newfoundland og Labrador", pt: "Terra Nova e Labrador", es: "Terranova y Labrador", is: "Nýfundnaland og Labrador" }, anchor: [48.9, -55.7] },
+    // Inland between Halifax and Truro.
+    { code: "NS", name: "Nova Scotia", names: { fr: "Nouvelle-Écosse", it: "Nuova Scozia", pt: "Nova Escócia", es: "Nueva Escocia" }, anchor: [45, -63.4] },
+    // At Yellowknife, its capital.
+    { code: "NT", name: "Northwest Territories", names: { de: "Nordwest-Territorien", fr: "Territoires du Nord-Ouest", it: "Territori del Nord-Ovest", nb: "Nordvestterritoriene", pt: "Territórios do Noroeste", es: "Territorios del Noroeste", is: "Norðvesturhéruðin" }, anchor: [62.5, -114.4] },
+    // At Iqaluit, its capital.
+    { code: "NU", name: "Nunavut", names: { is: "Núnavút" }, anchor: [63.7, -68.5] },
+    // At Peterborough, between Hamilton and Ottawa, where Ontario's scooters are.
+    { code: "ON", name: "Ontario", names: { pt: "Ontário", is: "Ontaríó" }, anchor: [44.3, -78.3] },
+    // Near Hunter River, in the middle of the island.
+    { code: "PE", name: "Prince Edward Island", names: { fr: "Île-du-Prince-Édouard", it: "Isola del Principe Edoardo", pt: "Ilha do Príncipe Eduardo", es: "Isla del Príncipe Eduardo", is: "Eyja Játvarðs prins" }, anchor: [46.3, -63.3] },
+    // Near Shawinigan, between Montréal and Québec City, in the south where its people live.
+    { code: "QC", name: "Quebec", names: { de: "Québec", fr: "Québec", it: "Québec", nl: "Québec", nb: "Québec", is: "Québec" }, anchor: [46.6, -72.7] },
+    // Near Davidson, between Saskatoon and Regina.
+    { code: "SK", name: "Saskatchewan", anchor: [51.3, -105.9] },
+    // At Whitehorse, its capital.
+    { code: "YT", name: "Yukon", names: { es: "Yukón", is: "Júkon" }, anchor: [60.7, -135.1] },
+  ] },
 };
 
 /** The cities the landing page names, by their id in the catalogue. */
@@ -241,18 +276,19 @@ export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {
   HR: ["hr:Rijeka"],
   UA: ["ua:Kyiv"],
   US: ["us:dc:Washington"],
+  CA: ["ca:bc:Vancouver", "ca:ab:Calgary", "ca:ab:Edmonton", "ca:on:Ottawa", "ca:bc:Kelowna", "ca:on:Hamilton"],
 };
 
 /** The order of the countries on the landing page. */
-export const LANDING_COUNTRY_ORDER: readonly CountryCode[] = ["CH", "DE", "FR", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US"];
+export const LANDING_COUNTRY_ORDER: readonly CountryCode[] = ["CH", "DE", "FR", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA"];
 
 /** Whose data the map shows, country by country, for the X-Mobility-Data-Source header. */
-export const COUNTRY_DATA_ATTRIBUTION = "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW; Italy: Bird, Elerent GBFS; Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Portugal: Bird, Lime GBFS; Spain: Bird, Hopp, Hoppy GBFS; Iceland: Hopp GBFS; Sweden: Lime, Hopp GBFS; Latvia: Ride Mobility GBFS; Poland: Dott, Hopp GBFS; Hungary: Hopp GBFS; Greece: Hopp, Hoppy GBFS; Cyprus: Hopp GBFS; Finland: Hopp GBFS; Croatia: Hoppy GBFS; Ukraine: 3electra GBFS; United States: Bolt, Veo GBFS";
+export const COUNTRY_DATA_ATTRIBUTION = "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW; Italy: Bird, Elerent GBFS; Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Portugal: Bird, Lime GBFS; Spain: Bird, Hopp, Hoppy GBFS; Iceland: Hopp GBFS; Sweden: Lime, Hopp GBFS; Latvia: Ride Mobility GBFS; Poland: Dott, Hopp GBFS; Hungary: Hopp GBFS; Greece: Hopp, Hoppy GBFS; Cyprus: Hopp GBFS; Finland: Hopp GBFS; Croatia: Hoppy GBFS; Ukraine: 3electra GBFS; United States: Bolt, Veo GBFS; Canada: Bird, Lime GBFS";
 
 /** The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences. */
 export const COUNTRY_CREDIT_LINKS: readonly { label: string; href: string }[] = [
   { label: "DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio, Bird, Elerent, Hoppy, Ride Mobility, 3electra", href: "https://github.com/MobilityData/gbfs" },
-  { label: "US: Bolt, Veo", href: "https://github.com/MobilityData/gbfs" },
+  { label: "US/CA: Bolt, Veo, Bird, Lime", href: "https://github.com/MobilityData/gbfs" },
   { label: "MobiData BW", href: "https://www.mobidata-bw.de/" },
   { label: "BE: Pony · transportdata.be", href: "https://transportdata.be/dataset/pony_charleroi" },
   { label: "NO: Entur AS · NLOD", href: "https://data.norge.no/nlod/en/2.0" },

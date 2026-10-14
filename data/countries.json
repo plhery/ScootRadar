@@ -369,6 +369,40 @@
           { "code": "WY", "name": "Wyoming", "anchor": [42.69, -106.98] }
         ]
       }
+    },
+    {
+      "code": "CA",
+      "continent": "north-america",
+      "catalog": "data/canadian-scooter-feeds.json",
+      "source": "canada",
+      "names": { "en": "Canada", "de": "Kanada", "fr": "Canada", "it": "Canada", "nl": "Canada", "nb": "Canada", "pt": "Canadá", "es": "Canadá", "is": "Kanada" },
+      "searchWords": ["canada", "kanada"],
+      "anchor": [51.1, -97.6],
+      "anchorNote": "Inland in Manitoba's Interlake, near Fisher Branch: about the middle of the band of cities from Vancouver to Halifax, and north of the United States' total.",
+      "featuredCities": ["ca:bc:Vancouver", "ca:ab:Calgary", "ca:ab:Edmonton", "ca:on:Ottawa", "ca:bc:Kelowna", "ca:on:Hamilton"],
+      "credits": {
+        "attribution": "Canada: Bird, Lime GBFS",
+        "gbfs": ["Bird", "Lime"]
+      },
+      "regions": {
+        "showInCityNames": true,
+        "totals": true,
+        "list": [
+          { "code": "AB", "name": "Alberta", "anchor": [52.3, -113.8], "anchorNote": "Near Red Deer, between Calgary and Edmonton, where Alberta's scooters are." },
+          { "code": "BC", "name": "British Columbia", "names": { "fr": "Colombie-Britannique", "it": "Columbia Britannica", "nl": "Brits-Columbia", "nb": "Britisk Columbia", "pt": "Colúmbia Britânica", "es": "Columbia Británica", "is": "Breska-Kólumbía" }, "anchor": [50.1, -120.8], "anchorNote": "Near Merritt, between Vancouver and Kelowna, in the south where the province's scooters are." },
+          { "code": "MB", "name": "Manitoba", "anchor": [50.0, -98.3], "anchorNote": "Near Portage la Prairie, west of Winnipeg, in the south where its people live." },
+          { "code": "NB", "name": "New Brunswick", "names": { "fr": "Nouveau-Brunswick", "it": "Nuovo Brunswick", "pt": "Novo Brunswick", "es": "Nuevo Brunswick", "is": "Nýja-Brúnsvík" }, "anchor": [46.0, -65.8], "anchorNote": "Inland between Fredericton, Moncton and Saint John." },
+          { "code": "NL", "name": "Newfoundland and Labrador", "names": { "de": "Neufundland und Labrador", "fr": "Terre-Neuve-et-Labrador", "it": "Terranova e Labrador", "nl": "Newfoundland en Labrador", "nb": "Newfoundland og Labrador", "pt": "Terra Nova e Labrador", "es": "Terranova y Labrador", "is": "Nýfundnaland og Labrador" }, "anchor": [48.9, -55.7], "anchorNote": "Near Grand Falls-Windsor, inland on the island of Newfoundland." },
+          { "code": "NS", "name": "Nova Scotia", "names": { "fr": "Nouvelle-Écosse", "it": "Nuova Scozia", "pt": "Nova Escócia", "es": "Nueva Escocia" }, "anchor": [45.0, -63.4], "anchorNote": "Inland between Halifax and Truro." },
+          { "code": "NT", "name": "Northwest Territories", "names": { "de": "Nordwest-Territorien", "fr": "Territoires du Nord-Ouest", "it": "Territori del Nord-Ovest", "nb": "Nordvestterritoriene", "pt": "Territórios do Noroeste", "es": "Territorios del Noroeste", "is": "Norðvesturhéruðin" }, "anchor": [62.5, -114.4], "anchorNote": "At Yellowknife, its capital." },
+          { "code": "NU", "name": "Nunavut", "names": { "is": "Núnavút" }, "anchor": [63.7, -68.5], "anchorNote": "At Iqaluit, its capital." },
+          { "code": "ON", "name": "Ontario", "names": { "pt": "Ontário", "is": "Ontaríó" }, "anchor": [44.3, -78.3], "anchorNote": "At Peterborough, between Hamilton and Ottawa, where Ontario's scooters are." },
+          { "code": "PE", "name": "Prince Edward Island", "names": { "fr": "Île-du-Prince-Édouard", "it": "Isola del Principe Edoardo", "pt": "Ilha do Príncipe Eduardo", "es": "Isla del Príncipe Eduardo", "is": "Eyja Játvarðs prins" }, "anchor": [46.3, -63.3], "anchorNote": "Near Hunter River, in the middle of the island." },
+          { "code": "QC", "name": "Quebec", "names": { "de": "Québec", "fr": "Québec", "it": "Québec", "nl": "Québec", "nb": "Québec", "is": "Québec" }, "anchor": [46.6, -72.7], "anchorNote": "Near Shawinigan, between Montréal and Québec City, in the south where its people live." },
+          { "code": "SK", "name": "Saskatchewan", "anchor": [51.3, -105.9], "anchorNote": "Near Davidson, between Saskatoon and Regina." },
+          { "code": "YT", "name": "Yukon", "names": { "es": "Yukón", "is": "Júkon" }, "anchor": [60.7, -135.1], "anchorNote": "At Whitehorse, its capital." }
+        ]
+      }
     }
   ]
 }

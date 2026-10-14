@@ -56,6 +56,19 @@ export function isAbandonedStatus(value: unknown, now = Date.now()): boolean {
   return typeof timestamp === 'number' && (timestamp === 0 || now - timestamp * 1000 > ABANDONED_STATUS_AGE_MS);
 }
 
+/**
+ * A status feed with no vehicles and no time, `last_updated` 0: what Bird serves for a town where
+ * it has no scooter out, as Saskatoon out of season or Calgary on a snow day. An empty town, not
+ * a late feed; with a single vehicle in it, a zero time is still out of date.
+ */
+export function isEmptyUndatedStatus(value: unknown): boolean {
+  if (!value || typeof value !== 'object' || (value as { last_updated?: unknown }).last_updated !== 0) return false;
+  const data = (value as { data?: unknown }).data;
+  const vehicles = data && typeof data === 'object' ? (data as { bikes?: unknown; vehicles?: unknown }) : {};
+  const list = vehicles.bikes ?? vehicles.vehicles;
+  return Array.isArray(list) && list.length === 0;
+}
+
 export function validateVehicleStatus(value: unknown): void {
   statusObservedAt(value);
   const data = object(object(value).data);

@@ -331,6 +331,35 @@ banned shared scooters, and feeds that were empty when checked.
     Spin's `ohio_state` and `osu` its Columbus feed, Spin's `richmond` its
     `richmond_va`, and Veo's `oak` and `smo` its `xeb` and `xla`.
 
+- **Canada** ([guide](canadian-scooter-feeds.md#known-gaps)): Bird and Lime
+  in 14 towns of Alberta, British Columbia, Ontario and Nova Scotia are
+  covered.
+  - **Banned or not allowed:** Toronto bans shared scooters, apart from
+    private sites such as the Distillery District; Montréal doesn't allow
+    them; London, ON did not join the provincial pilot's scooter sharing.
+    Laval has a programme but no public feed.
+  - **Bird:** its Saskatoon, Ajax and Surrey feeds listed no vehicle on 14
+    October 2026, and its Kelowna feed none either, as Lime is the town's
+    operator. Bird's other 2026 towns publish no feed: Lethbridge, Medicine
+    Hat, Red Deer, Chestermere, Okotoks, Cochrane, Spruce Grove, Stony Plain,
+    Penticton, Vernon, Kamloops, Cranbrook, Regina, Mississauga, Brampton,
+    Oshawa, Pickering and Laval answer 404 "Invalid organization slug" for 14
+    forms of each name. Its Airdrie and St. Albert scooters have no feed;
+    Lime's are covered.
+  - **Neuron:** its 12 Canadian feeds answer 404 since Lime bought it on 3
+    July 2026. Lime's feeds already hold Airdrie, St. Albert and Beaumont,
+    but none answers yet for Red Deer, Lacombe, Blackfalds, Sylvan Lake,
+    Saskatoon, Regina or Waterloo Region.
+  - **Gone:** Spin's feed host answers with Bird's API, Roll's doesn't answer
+    (Calgary, Kelowna, Ottawa), Link closed at the end of 2023, Hopr's
+    certificate has expired (and its systems are e-bikes), and Zip's
+    (Joyride's) host no longer resolves.
+  - **Bikes only:** BIXI, Bike Share Toronto and the other PBSC systems, Mobi
+    in Vancouver, Hamilton's SoBi, Locomotion and Lime Victoria.
+  - **No bays:** Lime publishes no parking in Ottawa or Mississauga, where
+    rides must end in designated spots, and Bird and Lime none in Edmonton's
+    Mill Woods (see the guide's [parking](canadian-scooter-feeds.md#parking)).
+
 ## Countries not covered yet
 
 Surveyed on the night of 12–13 October 2026: MobilityData's GBFS registry, the
@@ -347,6 +376,22 @@ Bolt ids, the same 9 public ones answer 200, and id 355 now answers 400
 instead of 401.
 
 **Not covered, by decision:** Russia (the user's decision of 14 October 2026).
+
+**Mexico,** surveyed on 14 October 2026 with Canada: no feed lists a
+scooter, so Mexico has no entry in `data/countries.json` yet.
+
+- **Lime Ciudad de México** (`data.lime.bike/api/partners/v2/gbfs/mexico_city`)
+  answers but has listed no vehicle since SEMOVI's pilot ended in September
+  2026.
+- **Lime** runs scooters in Querétaro (since January 2025) and in Monterrey
+  and Guadalupe (since September 2025), with no public feed: about 40 slugs
+  tried (`queretaro`, `monterrey`, `guadalupe`, `san_pedro_garza_garcia`,
+  `nuevo_leon` and others) answer 404.
+- **Whoosh** (San Pedro Garza García since April 2026, central Monterrey, a
+  pilot in Mexico City) and **JET** (San Pedro Garza García, Mexico City)
+  publish no GBFS. **Movo** has left Mexico.
+- **Bikes only:** Ecobici in Mexico City, whose feed lists no vehicle, and
+  MiBici in Guadalajara.
 
 **Skipped:** Slovenia. Two live feeds were found on 14 October 2026, both
 served by a community relay, gbfs.derp.si. MobilityData added 15 of its feeds
@@ -415,6 +460,15 @@ its other systems answer 401. Dott made most regions private in September 2026.
   scooters has frozen, so read that town from its ATOM id. Check again every
   few weeks until the move is done, at one request a second on
   `zeus.rideatom.com`; id 189 is a warehouse.
+- **November 2026:** Beaumont's pilot runs "until the end of October 2026",
+  and Lime's licence there to the end of 2026. Check that Lime's Edmonton feed
+  still holds scooters in Beaumont, and whether the town goes on in 2027;
+  remove its area from `lime_ca_edmonton` if it doesn't. Check again in April
+  2027.
+- **December 2026:** Halifax's pilot runs to 30 November 2026 by the council
+  report of 9 July 2024, with a possible extension into 2027, or for two years
+  from 15 May 2025 by the project page. Check whether Bird's Halifax feed and
+  the pilot go on; last winter Halifax paused from 15 December to 16 March.
 - **1 December 2026:** the EU's rule on multimodal travel information
   (Delegated Regulation (EU) 2024/490) requires shared-scooter availability on
   each country's national access point for the cities on the main EU transport
@@ -424,12 +478,31 @@ its other systems answer 401. Dott made most regions private in September 2026.
   feed.
 - **1 January 2027:** Brussels's ban starts; Bolt and Dott Bruxelles should
   empty.
+- **1 March 2027:** Lime Ciudad de México, empty since SEMOVI's pilot ended
+  in September 2026. Check Lime's Querétaro and Monterrey slugs, Whoosh and
+  JET again too.
+- **15 April 2027:** Bird Ajax and Bird Surrey, empty on 14 October 2026; the
+  Durham Region pilots run from April to October.
+- **20 April 2027:** Bird Saskatoon, empty on 14 October 2026. The city's
+  [page](https://www.saskatoon.ca/moving-around/cycling/e-scooters) sets the
+  season from 15 April to 31 October; if it still does, add Saskatoon with a
+  window from `11-01` until `04-15` in `America/Regina` (its feed says
+  `Canada/Central`, which keeps daylight saving time; Saskatchewan doesn't).
+- **Late April 2027:** Ottawa's 2027 season. The catalog pauses Ottawa from
+  16 November until 30 April, from council's "approximately April 30 to
+  November 15"; if the city announces another start, change `until` for Bird
+  and Lime.
 - **April 2027:** Pony Liège held 8 or 9 available scooters on 13 October
   2026, most of which never moved; add it if it holds ten or more and they
   are ridden. The season starts in Belarus, Georgia, Armenia, Azerbaijan and
   Kazakhstan too (Minsk's runs from about 15 March to 15 November): check
   Bolt's ids, Whoosh, the registry, ATOM Mobility and the national portals
   again.
+- **1 May 2027:** Bird's other Canadian towns (Lethbridge, Red Deer, Kamloops,
+  Vernon, Brampton, Oshawa, Laval and the rest listed above) and Lime's
+  former Neuron towns (Red Deer, Saskatoon, Regina, Waterloo Region): probe
+  the slugs again. Windsor's one-year contract with Bird, from May 2026, ends
+  then too: check that `windsor-on` still answers.
 - **Spring 2027:** Dott's six paused Finnish towns (Ekenäs, Hamina, Hanko,
   Imatra, Kalajoki, Kotka), Joe Scooter in Rauma, Hoppy in Crikvenica and Hopp
   in Omiš, Hopp's Greek island towns (Chania, Kardamena, Kalymnos and others),

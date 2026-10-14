@@ -81,6 +81,9 @@ Ukraine adds 1 feed: 3electra in Kyiv. See the
 The United States adds 2 feeds in Washington, DC: Hopp, as Bolt is named
 there, and Veo. See the
 [American feed audit](docs/american-scooter-feeds.md).
+Canada adds 14 feeds, Bird's and Lime's, in 14 towns of Alberta, British
+Columbia, Ontario and Nova Scotia. See the
+[Canadian feed audit](docs/canadian-scooter-feeds.md).
 What is not covered yet, and why, is listed in
 [Coverage gaps](docs/coverage-gaps.md).
 
@@ -141,6 +144,9 @@ changing the response contract.
    A seasonal pause is in its town's zone, and so is a night ban. Inside the window the map
    says "back in April" rather than that the operator is not sharing data,
    and the feed's alerts are muted; `src/lib/seasonalPauses.ts` explains.
+   A feed whose plain stations are all where rides must end, as Lime's in
+   Vancouver, says so with `"stationParking": true`, and the map shows them
+   as required bays.
 2. Add one entry to `data/countries.json`:
    - `code`, `continent` (`europe` or `north-america`), `catalog` and `source`,
      the key of its feeds in the API's `meta.sources`;

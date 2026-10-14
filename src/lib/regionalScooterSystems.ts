@@ -47,6 +47,12 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
    * operator's, so none is shown, and the provider's link policy drops its links.
    */
   feedOperator?: ProviderKey;
+  /**
+   * Every station of the feed is a parking station where rides must end, though the feed says
+   * neither: Vancouver makes riders end at the city's e-scooter stations, and Lime lists them as
+   * plain stations, with no geofencing.
+   */
+  stationParking?: boolean;
 }
 
 // Reviewed public endpoints, never an unvalidated runtime registry download.

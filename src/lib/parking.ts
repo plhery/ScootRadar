@@ -55,7 +55,10 @@ function stationName(name: unknown, fallback: string, language: string): string 
   return fallback;
 }
 
-/** Only actual scooter parking infrastructure, never synthetic whole-city stations. */
+/**
+ * Only actual scooter parking infrastructure, never synthetic whole-city stations: stations the
+ * feed marks as parking, or every station of a system whose catalog says rides end at them.
+ */
 export function normalizeParkingLocations(system: RegionalScooterSystem, types: ParkingTypesFeed,
   information: ParkingStationsFeed, geofencing: ParkingZonesFeed, now = Date.now()): ParkingLocation[] {
   const scooterTypes = (types.data?.vehicle_types ?? []).filter(type => isElectricScooter(type, system.provider))
@@ -81,14 +84,14 @@ export function normalizeParkingLocations(system: RegionalScooterSystem, types: 
       typeof station.lat !== 'number' || typeof station.lon !== 'number' ||
       !Number.isFinite(station.lat) || !Number.isFinite(station.lon) ||
       !serviceAreas(system).some(area => boundsContainPoint(area.bounds, station.lat!, station.lon!)) ||
-      !(station.is_virtual_station === true || station.station_area || station.parking_type)) continue;
+      !(system.stationParking || station.is_virtual_station === true || station.station_area || station.parking_type)) continue;
     const allowedTypes = scooterTypes.filter(type =>
       (!station.vehicle_type_ids || station.vehicle_type_ids.includes(type)) &&
       [station.vehicle_capacity, station.vehicle_type_capacity, station.vehicle_types_capacity, station.vehicle_docks_capacity]
         .every(capacity => hasRoomFor(capacity, type)));
     if (!allowedTypes.length) continue;
     // GBFS rules are ordered: the first matching polygon/rule wins, including holes.
-    const mandatory = allowedTypes.every(type => {
+    const mandatory = system.stationParking === true || allowedTypes.every(type => {
       for (const entry of zones) {
         const rule = ruleFor(entry.zone.properties?.rules, type);
         if (!rule || !boundsContainPoint(entry.bounds, station.lat!, station.lon!)) continue;
