@@ -421,7 +421,7 @@ test('a price in forints is in whole forints, in Safari too', async ({ page }) =
 test.describe('in a browser that asks for US English', () => {
   test.use({ locale: 'en-US' });
 
-  test('numbers and prices are written the US way', async ({ page }) => {
+  test('numbers, prices and distances are written the US way', async ({ page }) => {
     const hopp = { ...scooterResponse.vehicles[0], provider: 'hopp', vehicle_id: 'hopp-1', rental_uris: undefined,
       pricing: { currency: 'HUF', unlock_fee_minor_units: 27_200, minute_fee_minor_units: 7_600 } };
     await page.route('**/api/scooters?**', route => {
@@ -439,7 +439,8 @@ test.describe('in a browser that asks for US English', () => {
     await page.getByRole('button', { name: 'Hopp scooter', exact: true }).click();
 
     const card = page.locator('.dock-card');
-    await expect(card.locator('.card-figure strong').last()).toHaveText('1,032');
+    // A range of 14 km, in miles as iOS gives it in the US.
+    await expect(card.locator('.card-figure strong')).toHaveText(['82%', '8.7mi', '1,032']);
     await expect(card.getByText(/for 10 min/)).toHaveText(/^≈ HUF\s1,032 for 10 min$/);
   });
 });

@@ -81,7 +81,7 @@ function StatusText({ status }: { status: DockStatus }) {
 function LeadLine({ lead, onSelect }: { lead: DockLead; onSelect: () => void }) {
   const i18n = useI18n();
   const { t, formatNumber } = i18n;
-  const distance = distanceParts(lead.distanceM, formatNumber);
+  const distance = distanceParts(lead.distanceM, i18n);
   const values = {
     name: lead.name,
     minutes: formatNumber(lead.minutes),

@@ -2,6 +2,15 @@ import MapKit
 import SwiftUI
 import UIKit
 
+/// Whether the map shows a scale while it zooms: where the region measures in
+/// miles, so a rider can judge feet and miles on the map as Apple Maps lets
+/// them. Metric regions keep the map as it was.
+enum ScooterMapScalePolicy {
+    static func showsScale(locale: Locale) -> Bool {
+        locale.measurementSystem != .metric
+    }
+}
+
 enum ScooterMapCameraPolicy {
     /// The tilt the map opens with, in degrees, so that the buildings stand up
     /// a little. It is the least MapKit keeps: under 20° it lays the map flat
@@ -117,6 +126,7 @@ struct ScooterMapView: UIViewRepresentable {
         context.coordinator.applyMapStyle(mapStyle, to: mapView)
         mapView.showsUserLocation = false
         mapView.showsCompass = false
+        // The scale MapKit places itself would sit under the search bar; see installScale(on:).
         mapView.showsScale = false
         mapView.isPitchEnabled = true
         mapView.register(
@@ -153,6 +163,7 @@ struct ScooterMapView: UIViewRepresentable {
         mapView.setRegion(ScooterMapModel.initialRegion, animated: false)
         ScooterMapCameraPolicy.applyOpeningPitch(to: mapView)
         context.coordinator.installCompass(on: mapView)
+        context.coordinator.installScale(on: mapView)
         // The dots and the names are drawn for one appearance.
         mapView.registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
             [coordinator = context.coordinator] (mapView: MKMapView, _) in
@@ -204,6 +215,8 @@ struct ScooterMapView: UIViewRepresentable {
         private var suppressAllMapKitSelectionsUntil: TimeInterval = 0
         private var compassButton: MKCompassButton?
         private var compassTopConstraint: NSLayoutConstraint?
+        private var scaleView: MKScaleView?
+        private var scaleTopConstraint: NSLayoutConstraint?
         private var appliedMapStyle: AppleMapStyle?
         private var appliedLook: LookInputs?
         /// The scooters that carry their name, in the order the names are placed.
@@ -259,19 +272,44 @@ struct ScooterMapView: UIViewRepresentable {
             updateCompass(on: mapView)
         }
 
+        /// A scale while the map zooms, for a region that measures in miles,
+        /// where Apple Maps shows one too, opposite the compass under the search bar.
+        func installScale(on mapView: MKMapView, locale: Locale = .current) {
+            guard ScooterMapScalePolicy.showsScale(locale: locale) else { return }
+            let scale = MKScaleView(mapView: mapView)
+            scale.translatesAutoresizingMaskIntoConstraints = false
+            scale.scaleVisibility = .adaptive
+            scale.legendAlignment = .leading
+            scale.accessibilityIdentifier = "map-scale"
+            mapView.addSubview(scale)
+            let top = scale.topAnchor.constraint(equalTo: mapView.topAnchor)
+            NSLayoutConstraint.activate([
+                top,
+                scale.leadingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.leadingAnchor, constant: 16)
+            ])
+            scaleView = scale
+            scaleTopConstraint = top
+            updateCompass(on: mapView)
+        }
+
         func updateCompass(on mapView: MKMapView) {
-            guard let compassButton else { return }
-            compassButton.compassVisibility = parent.showsMapCompass ? .adaptive : .hidden
             let searchFrame = parent.interactionExclusionFrame
+            let top: CGFloat
             if searchFrame.isNull || searchFrame.isEmpty {
-                compassTopConstraint?.constant = mapView.safeAreaInsets.top + 80
+                top = mapView.safeAreaInsets.top + 80
             } else {
-                let searchBottom = mapView.convert(
+                top = mapView.convert(
                     CGPoint(x: searchFrame.midX, y: searchFrame.maxY),
                     from: nil
-                ).y
-                compassTopConstraint?.constant = searchBottom + 12
+                ).y + 12
             }
+            if let scaleView {
+                scaleTopConstraint?.constant = top
+                mapView.bringSubviewToFront(scaleView)
+            }
+            guard let compassButton else { return }
+            compassButton.compassVisibility = parent.showsMapCompass ? .adaptive : .hidden
+            compassTopConstraint?.constant = top
             mapView.bringSubviewToFront(compassButton)
         }
 

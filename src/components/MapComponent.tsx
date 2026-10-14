@@ -45,7 +45,7 @@ import {
   type GroundTheme,
 } from '@/lib/quietGround';
 import { scooterTip } from '@/lib/scooterTip';
-import { walkingMinutes } from '@/lib/walking';
+import { formatDistance as formatWalkingDistance, measurementSystem, walkingMinutes, type DistanceFormatter } from '@/lib/walking';
 import { createRouteLayer, type Frame, type RouteLayer } from '@/lib/walkRouteLayer';
 import type { WalkView } from '@/lib/walkState';
 import './map.css';
@@ -166,7 +166,10 @@ const TIP_MARGIN = 8;
 const ROUTE_EDGE = 44;
 const ROUTE_EDGE_VERTICAL = 28;
 
-function formatDistance(meters: number, t: Translate, formatNumber: FormatNumber): string {
+/** As walking.ts writes it, with a decimal on every kilometre: "1.0 km", so the label keeps its width. */
+function formatDistance(meters: number, formatter: DistanceFormatter): string {
+  if (measurementSystem(formatter.region) !== 'metric') return formatWalkingDistance(meters, formatter);
+  const { t, formatNumber } = formatter;
   return meters < 1000
     ? t('distance.meters', { count: formatNumber(Math.round(meters)) })
     : t('distance.kilometers', {
@@ -404,7 +407,7 @@ export default function MapComponent({
   theme = 'auto',
   mapStyle = 'calm',
 }: MapComponentProps) {
-  const { t, formatNumber } = useI18n();
+  const { t, formatNumber, locale, region } = useI18n();
   const systemDark = useSyncExternalStore(subscribeToScheme, () => window.matchMedia(DARK_SCHEME).matches, () => false);
   const ground: GroundTheme = theme === 'dark' || (theme === 'auto' && systemDark) ? 'night' : 'day';
   const containerRef = useRef<HTMLDivElement>(null);
@@ -796,7 +799,7 @@ export default function MapComponent({
         ? t('marker.scooter', { name })
         : t('marker.scooterAway', {
             name,
-            distance: formatDistance(distanceM, t, formatNumber),
+            distance: formatDistance(distanceM, { t, formatNumber, locale, region }),
           });
     };
 
@@ -1011,7 +1014,9 @@ export default function MapComponent({
     hasPopover,
     hoverTips,
     lightUnder,
+    locale,
     readyMap,
+    region,
     revealAboveDock,
     routeRemainingM,
     scooterIcon,

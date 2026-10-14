@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { TranslationKey } from '@/lib/i18n';
 import {
-  coverageDistanceKm,
   filterSummary,
   filtersActive,
   formatFilterSummary,
@@ -158,7 +157,7 @@ describe('nothingToShow', () => {
     const result = nothingToShow(input({ viewportProviders: [], viewportCenter: LUNGERN }));
     expect(result?.kind).toBe('outsideCoverage');
     if (result?.kind !== 'outsideCoverage') return;
-    expect(result.cities.map(city => `${city.city} · ${coverageDistanceKm(city.distanceM)} km`))
+    expect(result.cities.map(city => `${city.city} · ${Math.round(city.distanceM / 1000)} km`))
       .toEqual(['Zug · 52 km', 'Bern · 57 km', 'Wädenswil · 64 km']);
     expect(result.cities[0].center).toHaveLength(2);
   });
@@ -194,13 +193,5 @@ describe('nothingToShow', () => {
     expect(nothingToShow(input())).toEqual({ kind: 'empty' });
     // A provider elsewhere being off is not a filter here.
     expect(nothingToShow(input({ enabledProviders: new Set(ZURICH), unfilteredCount: null }))).toEqual({ kind: 'empty' });
-  });
-});
-
-describe('coverageDistanceKm', () => {
-  it('rounds to whole kilometres and never shows zero', () => {
-    expect(coverageDistanceKm(61_400)).toBe(61);
-    expect(coverageDistanceKm(61_500)).toBe(62);
-    expect(coverageDistanceKm(300)).toBe(1);
   });
 });

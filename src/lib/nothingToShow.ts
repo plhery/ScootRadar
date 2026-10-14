@@ -116,8 +116,3 @@ export function nothingToShow(input: NothingToShowInput): NothingToShow | null {
   }
   return { kind: 'empty' };
 }
-
-/** Whole kilometres for "Bern · 61 km"; never 0. */
-export function coverageDistanceKm(distanceM: number): number {
-  return Math.max(1, Math.round(distanceM / 1000));
-}

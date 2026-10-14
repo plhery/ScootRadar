@@ -152,7 +152,11 @@ final class ScooterModelsTests: XCTestCase {
 
         XCTAssertEqual(distance, 111.2, accuracy: 1.5)
         XCTAssertEqual(
-            plainSpaces(scooter.formattedDistance(from: GeoPoint(latitude: 47.3769, longitude: 8.5417))),
+            scooter.formattedDistance(from: GeoPoint(latitude: 47.3769, longitude: 8.5417)),
+            Scooter.formattedLength(meters: distance)
+        )
+        XCTAssertEqual(
+            plainSpaces(Scooter.formattedLength(meters: distance, locale: Locale(identifier: "en_CH"))),
             "\(Int(distance.rounded())) m"
         )
     }
@@ -165,18 +169,50 @@ final class ScooterModelsTests: XCTestCase {
     /// The same scooter reads the same on the web and here: whole metres below a
     /// kilometre, then kilometres with at most one decimal. No rounding to 50 m.
     func testLengthsAreWrittenAsOnTheWeb() throws {
-        let decimal = Locale.current.decimalSeparator ?? "."
+        let swiss = Locale(identifier: "en_CH")
         let expectations = [
             (51, "51 m"), (320, "320 m"), (337, "337 m"), (951, "951 m"),
-            (1_000, "1 km"), (1_250, "1\(decimal)3 km"), (1_449, "1\(decimal)4 km"),
-            (12_400, "12\(decimal)4 km"), (24_000, "24 km")
+            (1_000, "1 km"), (1_250, "1.3 km"), (1_449, "1.4 km"),
+            (12_400, "12.4 km"), (24_000, "24 km")
         ]
         for (meters, text) in expectations {
-            let range = try XCTUnwrap(makeScooter(rangeMeters: meters).formattedRange)
-            XCTAssertEqual(plainSpaces(range), text, "\(meters) m")
+            let length = Scooter.formattedLength(meters: Double(meters), locale: swiss)
+            XCTAssertEqual(plainSpaces(length), text, "\(meters) m")
             // A line never breaks between the number and its unit.
-            XCTAssertFalse(range.contains(" "), range)
+            XCTAssertFalse(length.contains(" "), length)
         }
+        let range = try XCTUnwrap(makeScooter(rangeMeters: 1_250).formattedRange)
+        XCTAssertEqual(range, Scooter.formattedLength(meters: 1_250))
+    }
+
+    /// Feet or yards under half a mile and miles from there where the region
+    /// measures in miles, rounded as iOS rounds lengths on roads; the web's
+    /// src/lib/walking.test.ts expects the same.
+    func testLengthsAreInMilesWhereTheRegionMeasuresInMiles() {
+        let american = Locale(identifier: "en_US")
+        let british = Locale(identifier: "en_GB")
+        let expectations: [(Double, String, String)] = [
+            (2, "7 ft", "2 yd"), (12, "40 ft", "10 yd"), (80, "250 ft", "90 yd"),
+            (100, "350 ft", "100 yd"), (300, "1,000 ft", "350 yd"), (800, "2,600 ft", "850 yd"),
+            (805, "0.5 mi", "0.5 mi"), (1_000, "0.62 mi", "0.62 mi"), (3_000, "1.9 mi", "1.9 mi"),
+            (14_000, "8.7 mi", "8.7 mi"), (61_000, "38 mi", "38 mi")
+        ]
+        for (meters, us, uk) in expectations {
+            XCTAssertEqual(plainSpaces(Scooter.formattedLength(meters: meters, locale: american)), us, "\(meters) m")
+            XCTAssertEqual(plainSpaces(Scooter.formattedLength(meters: meters, locale: british)), uk, "\(meters) m")
+        }
+        let parts = Scooter.lengthParts(meters: 300, locale: american)
+        XCTAssertEqual(parts.value, "1,000")
+        XCTAssertEqual(parts.unit, "ft")
+        XCTAssertFalse(Scooter.formattedLength(meters: 300, locale: american).contains(" "))
+    }
+
+    func testTheMapShowsItsScaleWhereTheRegionMeasuresInMiles() {
+        XCTAssertTrue(ScooterMapScalePolicy.showsScale(locale: Locale(identifier: "en_US")))
+        XCTAssertTrue(ScooterMapScalePolicy.showsScale(locale: Locale(identifier: "en_GB")))
+        XCTAssertFalse(ScooterMapScalePolicy.showsScale(locale: Locale(identifier: "en_CH")))
+        XCTAssertFalse(ScooterMapScalePolicy.showsScale(locale: Locale(identifier: "fr_CA")))
+        XCTAssertFalse(ScooterMapScalePolicy.showsScale(locale: Locale(identifier: "es_MX")))
     }
 
     private func plainSpaces(_ text: String) -> String {
@@ -928,8 +964,10 @@ extension ScooterModelsTests {
 
         XCTAssertEqual(closest.map(\.city.name), ["Zug", "Bern", "Wädenswil"])
         let zug = try XCTUnwrap(closest.first)
-        XCTAssertTrue(zug.formattedDistance.contains("52"), zug.formattedDistance)
-        XCTAssertFalse(zug.formattedDistance.contains("52."), zug.formattedDistance)
+        let swiss = zug.formattedDistance(locale: Locale(identifier: "en_CH"))
+        XCTAssertEqual(plainSpaces(swiss), "52 km")
+        XCTAssertEqual(plainSpaces(zug.formattedDistance(locale: Locale(identifier: "en_US"))), "32 mi")
+        XCTAssertEqual(zug.formattedDistance, zug.formattedDistance(locale: ScooterLanguage.current.locale))
         XCTAssertTrue(zug.label.hasPrefix("Zug"))
         XCTAssertTrue(zug.label.hasSuffix(zug.formattedDistance))
         XCTAssertFalse(ScooterCityCatalog.contains(lungern))

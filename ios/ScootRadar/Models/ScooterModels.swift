@@ -102,27 +102,40 @@ struct Scooter: Identifiable, Hashable, Sendable {
 
     /// "320 m" below a kilometre; "1.4 km" and "24 km" from there, as on the
     /// web. The system's rounding for roads would say "300 m" for the same scooter.
-    static func formattedLength(meters: Double) -> String {
-        let length = meters < 1_000
-            ? Measurement(value: meters.rounded(), unit: UnitLength.meters)
-            : Measurement(value: meters / 1_000, unit: UnitLength.kilometers)
-        return length.formatted(.measurement(
-            width: .abbreviated,
-            usage: .asProvided,
-            // Halves go up, as the web rounds them: 1 250 m is "1.3 km".
-            numberFormatStyle: .number
-                .precision(.fractionLength(0 ... 1))
-                .rounded(rule: .toNearestOrAwayFromZero)
-        ).locale(ScooterLanguage.current.locale))
+    /// Where the region measures in miles, as in the US and the UK, the system
+    /// writes it as it does on its own roads: "1,000 ft" or "350 yd" under half a
+    /// mile, "1.9 mi" from there. src/lib/walking.ts rounds the same way.
+    static func formattedLength(meters: Double, locale: Locale = ScooterLanguage.current.locale) -> String {
+        let formatted: String
+        if locale.measurementSystem == .metric {
+            let length = meters < 1_000
+                ? Measurement(value: meters.rounded(), unit: UnitLength.meters)
+                : Measurement(value: meters / 1_000, unit: UnitLength.kilometers)
+            formatted = length.formatted(.measurement(
+                width: .abbreviated,
+                usage: .asProvided,
+                // Halves go up, as the web rounds them: 1 250 m is "1.3 km".
+                numberFormatStyle: .number
+                    .precision(.fractionLength(0 ... 1))
+                    .rounded(rule: .toNearestOrAwayFromZero)
+            ).locale(locale))
+        } else {
+            formatted = Measurement(value: meters, unit: UnitLength.meters)
+                .formatted(.measurement(width: .abbreviated, usage: .road).locale(locale))
+        }
         // A line never breaks between the number and its unit.
-        .replacingOccurrences(of: " ", with: "\u{00A0}")
+        return formatted.replacingOccurrences(of: " ", with: "\u{00A0}")
     }
 
     /// The same length with its number and its unit apart, for a figure whose
     /// unit is set smaller than its number.
-    static func lengthParts(meters: Double) -> (value: String, unit: String?) {
-        let parts = formattedLength(meters: meters).split(separator: "\u{00A0}", maxSplits: 1)
-        guard parts.count == 2 else { return (formattedLength(meters: meters), nil) }
+    static func lengthParts(
+        meters: Double,
+        locale: Locale = ScooterLanguage.current.locale
+    ) -> (value: String, unit: String?) {
+        let length = formattedLength(meters: meters, locale: locale)
+        let parts = length.split(separator: "\u{00A0}", maxSplits: 1)
+        guard parts.count == 2 else { return (length, nil) }
         return (String(parts[0]), String(parts[1]))
     }
 }
@@ -1095,16 +1108,21 @@ extension ScooterCity {
 }
 
 extension ScooterCityDistance {
-    /// Whole kilometres such as "61 km", as on the web.
+    /// Whole kilometres such as "61 km", as on the web; whole miles such as
+    /// "38 mi" where the region measures in miles.
     var formattedDistance: String {
-        Measurement(
-            value: max(1, (distanceMeters / 1_000).rounded()),
-            unit: UnitLength.kilometers
-        ).formatted(.measurement(
+        formattedDistance(locale: ScooterLanguage.current.locale)
+    }
+
+    func formattedDistance(locale: Locale) -> String {
+        let length = locale.measurementSystem == .metric
+            ? Measurement(value: max(1, (distanceMeters / 1_000).rounded()), unit: UnitLength.kilometers)
+            : Measurement(value: max(1, (distanceMeters / 1_609.344).rounded()), unit: UnitLength.miles)
+        return length.formatted(.measurement(
             width: .abbreviated,
             usage: .asProvided,
             numberFormatStyle: .number.precision(.fractionLength(0))
-        ).locale(ScooterLanguage.current.locale))
+        ).locale(locale))
         // A line never breaks between the number and its unit.
         .replacingOccurrences(of: " ", with: "\u{00A0}")
     }

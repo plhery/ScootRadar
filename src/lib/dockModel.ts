@@ -4,7 +4,6 @@ import { providerHealth, providersDownNotice, type ProviderHealth } from '@/lib/
 import { viewportContainsPoint, type MapViewport } from '@/lib/geo';
 import { failureReasonKey, type LoadFailure } from '@/lib/loadFailure';
 import {
-  coverageDistanceKm,
   nothingToShow,
   type FilterSummaryPart,
 } from '@/lib/nothingToShow';
@@ -12,7 +11,7 @@ import { activeCurfew } from '@/lib/rentalCurfews';
 import type { ScooterLoading } from '@/lib/scooterDataState';
 import type { ScooterResponseMeta } from '@/lib/types';
 import type { UiText, UiTextFormatter } from '@/lib/uiText';
-import { walkingMinutes } from '@/lib/walking';
+import { formatCityDistance, walkingMinutes } from '@/lib/walking';
 
 const LIVE_MAX_AGE_MS = 90_000;
 const MINUTE_MS = 60_000;
@@ -99,10 +98,8 @@ export interface DockNotice {
 }
 
 export interface DockCoverageCity {
-  /** The chip flies to city.center. */
+  /** The chip flies to city.center; city.distanceM is from the centre of the viewport. */
   city: NearbyCoveredCity;
-  /** From the centre of the viewport, in whole kilometres. */
-  distanceKm: number;
 }
 
 /**
@@ -116,12 +113,9 @@ export function coverageBody(cities: number, countries: number): UiText {
   return { key: 'coverage.body', parts: { cities: counted('cities', cities), countries: counted('countries', countries) } };
 }
 
-/** "Bern · 61 km" */
-export function formatCoverageCity({ city, distanceKm }: DockCoverageCity, { t, formatNumber }: UiTextFormatter): string {
-  return t('coverage.city', {
-    city: city.city,
-    distance: t('distance.kilometers', { count: formatNumber(distanceKm) }),
-  });
+/** "Bern · 61 km", or "Bern · 38 mi" where the region measures in miles. */
+export function formatCoverageCity({ city }: DockCoverageCity, formatter: UiTextFormatter): string {
+  return formatter.t('coverage.city', { city: city.city, distance: formatCityDistance(city.distanceM, formatter) });
 }
 
 /** The nearest scooter, as the first line of the dock: how far, whose, and how long on foot. */
@@ -320,7 +314,7 @@ export function dockModel(input: DockInput): DockModel {
       title: { key: 'coverage.title' },
       body: coverageBody(COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL),
       label: { key: 'coverage.closest' },
-      cities: nothing.cities.map(city => ({ city, distanceKm: coverageDistanceKm(city.distanceM) })),
+      cities: nothing.cities.map(city => ({ city })),
     };
   }
   if (nothing?.kind === 'filtersHideAll') {

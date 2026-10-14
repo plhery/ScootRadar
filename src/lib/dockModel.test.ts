@@ -481,8 +481,7 @@ describe('dock cards', () => {
       label: { key: 'coverage.closest' },
     });
     if (model.kind !== 'outsideCoverage') return;
-    expect(model.cities.map(({ city, distanceKm }) => `${city.city} · ${distanceKm} km`))
-      .toEqual(['Zug · 52 km', 'Bern · 57 km', 'Wädenswil · 64 km']);
+    expect(model.cities.map(({ city }) => city.city)).toEqual(['Zug', 'Bern', 'Wädenswil']);
     expect(model.cities[1].city.center).toEqual([46.948, 7.4474]);
 
     const templates: Record<string, string> = { 'coverage.city': '{city} · {distance}', 'distance.kilometers': '{count} km' };
@@ -496,6 +495,9 @@ describe('dock cards', () => {
     };
     expect(model.cities.map(city => formatCoverageCity(city, i18n)))
       .toEqual(['Zug · 52 km', 'Bern · 57 km', 'Wädenswil · 64 km']);
+    // In whole miles where the region measures in them.
+    expect(model.cities.map(city => formatCoverageCity(city, { ...i18n, region: 'US' }).replace(/\u00a0/g, ' ')))
+      .toEqual(['Zug · 32 mi', 'Bern · 36 mi', 'Wädenswil · 40 mi']);
   });
 
   /** The coverage sentence of the card, as a language says it. */

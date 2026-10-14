@@ -131,7 +131,7 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
       );
     }
     if (kind === 'distance' && walk) {
-      const distance = distanceParts(walk.distanceM, formatNumber);
+      const distance = distanceParts(walk.distanceM, i18n);
       return <Figure key={kind} value={distance.value} unit={distance.unit} label={t('card.figure.distance')} />;
     }
     if (kind === 'battery' && battery !== null) {
@@ -147,7 +147,7 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
       );
     }
     if (kind === 'range' && range !== null) {
-      const distance = distanceParts(range, formatNumber);
+      const distance = distanceParts(range, i18n);
       return (
         <Figure
           key={kind}

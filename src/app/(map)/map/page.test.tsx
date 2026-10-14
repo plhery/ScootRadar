@@ -120,6 +120,8 @@ beforeEach(() => {
   window.history.replaceState(null, '', '/map');
   vi.spyOn(console, 'error').mockImplementation(() => {});
   vi.stubGlobal('ResizeObserver', class { observe() {} disconnect() {} });
+  // The visitor is in Switzerland, where the fixtures are; jsdom's browser asks for en-US.
+  vi.spyOn(navigator, 'languages', 'get').mockReturnValue(['en-CH']);
 });
 afterEach(() => {
   // Unmount first: the location watch is stopped through the stub removed below.
@@ -210,8 +212,7 @@ it('keeps the scooters and says so in the dock when a refresh fails, then shows 
   vi.stubGlobal('fetch', fetcher);
   mount();
   await act(async () => vi.advanceTimersByTimeAsync(180));
-  // jsdom's browser asks for en-US, so the time is written as the US writes it.
-  const shown = formatClockTime(Date.now(), 'en', 'US');
+  const shown = formatClockTime(Date.now(), 'en', 'CH');
   await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Marker one' })); });
   expect(screen.getByRole('heading', { name: 'Lime' })).toBeVisible();
 
