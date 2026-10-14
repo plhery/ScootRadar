@@ -469,7 +469,7 @@ final class ScooterMapLookTests: XCTestCase {
     func testCardShowsWalkDistanceAndPriceAndLeavesTheRestToTheLineUnderTheName() {
         let scooter = scooter(battery: 80, rangeMeters: 50_000, pricing: pricing)
         let quote = RidePriceEstimator.quote(pricing: pricing, durationMinutes: 10)
-        let content = ScooterCardContent(scooter: scooter, metres: 60, quote: quote)
+        let content = ScooterCardContent(scooter: scooter, metres: 60, quote: quote, locale: Self.swiss)
 
         XCTAssertEqual(content.figures.map(\.kind), [.walk, .distance, .price])
         XCTAssertEqual(content.figures[0].value, "1")
@@ -481,7 +481,7 @@ final class ScooterMapLookTests: XCTestCase {
         XCTAssertEqual(content.figures[2].value, RidePriceFormatter.amount(minorUnits: 520, currency: "CHF"))
         XCTAssertNil(content.figures[2].unit)
         XCTAssertEqual(content.figures[2].label, "CHF, 10 min")
-        XCTAssertEqual(content.facts, "80% battery, \(scooter.formattedRange!) range")
+        XCTAssertEqual(content.facts, "80% battery, 50\u{00A0}km range")
         XCTAssertEqual(
             content.note,
             "\(price(100)) to unlock, then \(price(42)) a minute"
@@ -489,16 +489,18 @@ final class ScooterMapLookTests: XCTestCase {
     }
 
     func testWithoutAPriceTheBatteryTakesTheThirdCellOrElseTheRange() {
-        let both = ScooterCardContent(scooter: scooter(battery: 80, rangeMeters: 39_000), metres: 400, quote: nil)
+        let both = ScooterCardContent(
+            scooter: scooter(battery: 80, rangeMeters: 39_000), metres: 400, quote: nil, locale: Self.swiss
+        )
         XCTAssertEqual(both.figures.map(\.kind), [.walk, .distance, .battery])
         XCTAssertEqual(both.figures[0].value, "5")
         XCTAssertEqual(both.figures[2].value, "80")
         XCTAssertEqual(both.figures[2].unit, "%")
         XCTAssertEqual(both.figures[2].label, "battery")
-        XCTAssertEqual(both.facts, "\(scooter(rangeMeters: 39_000).formattedRange!) range")
+        XCTAssertEqual(both.facts, "39\u{00A0}km range")
         XCTAssertEqual(both.note, "Price shown in the Voi app")
 
-        let rangeOnly = ScooterCardContent(scooter: scooter(rangeMeters: 39_000), metres: 400, quote: nil)
+        let rangeOnly = ScooterCardContent(scooter: scooter(rangeMeters: 39_000), metres: 400, quote: nil, locale: Self.swiss)
         XCTAssertEqual(rangeOnly.figures.map(\.kind), [.walk, .distance, .range])
         XCTAssertEqual(rangeOnly.figures[2].value, "39")
         XCTAssertEqual(rangeOnly.figures[2].unit, "km")
@@ -524,12 +526,14 @@ final class ScooterMapLookTests: XCTestCase {
     }
 
     func testTheWalkNamesTheSearchedPlaceItStartsFrom() {
-        let content = ScooterCardContent(scooter: scooter(), metres: 1_250, placeTitle: "Zürich HB", quote: nil)
+        let content = ScooterCardContent(
+            scooter: scooter(), metres: 1_250, placeTitle: "Zürich HB", quote: nil, locale: Self.swiss
+        )
 
         XCTAssertEqual(content.figures[0].value, "16")
         XCTAssertEqual(content.figures[0].label, "from Zürich HB")
         // Halves go up, as everywhere in the app.
-        XCTAssertEqual(content.figures[1].value, 1.3.formatted(.number.precision(.fractionLength(1))))
+        XCTAssertEqual(content.figures[1].value, "1.3")
         XCTAssertEqual(content.figures[1].unit, "km")
     }
 
@@ -613,10 +617,11 @@ final class ScooterMapLookTests: XCTestCase {
         let lead = ScooterDockLead(scooter: scooter(provider: "publibike"), metres: 62)
 
         XCTAssertEqual(lead.minutes, 1)
-        XCTAssertEqual(lead.distance, "62\u{00A0}m")
+        XCTAssertEqual(lead.distance(locale: Self.swiss), "62\u{00A0}m")
+        XCTAssertEqual(lead.distance, Scooter.formattedLength(meters: 62))
         XCTAssertEqual(lead.detail, "PubliBike, 1 min on foot")
         XCTAssertEqual(
-            lead.accessibilityLabel,
+            lead.accessibilityLabel(locale: Self.swiss),
             "Nearest scooter: PubliBike / Velospot, 62\u{00A0}m away, 1 min on foot. Show details."
         )
         XCTAssertEqual(ScooterDockLead(scooter: scooter(), metres: 161).minutes, 3)
@@ -668,6 +673,9 @@ final class ScooterMapLookTests: XCTestCase {
     }
 
     // MARK: Helpers
+
+    /// Lengths in metres whatever the region of the simulator: a US one writes them in feet.
+    private static let swiss = Locale(identifier: "en_CH")
 
     private let pricing = ScooterRidePricing(currency: "CHF", unlockFeeMinorUnits: 100, minuteFeeMinorUnits: 42)
 

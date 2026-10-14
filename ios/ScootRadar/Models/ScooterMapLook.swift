@@ -519,7 +519,7 @@ struct ScooterDockLead: Equatable, Sendable {
     }
 
     var minutes: Int { ScooterMapLook.walkingMinutes(metres: metres) }
-    var distance: String { Scooter.formattedLength(meters: metres) }
+    var distance: String { distance(locale: ScooterLanguage.current.locale) }
     var providerName: String { scooter.providerInfo?.name ?? scooter.provider.capitalized }
     var briefProviderName: String { scooter.providerInfo?.briefName ?? scooter.provider.capitalized }
 
@@ -528,11 +528,16 @@ struct ScooterDockLead: Equatable, Sendable {
         String(format: String(localized: "%1$@, %2$lld min on foot"), briefProviderName, Int64(minutes))
     }
 
-    var accessibilityLabel: String {
+    var accessibilityLabel: String { accessibilityLabel(locale: ScooterLanguage.current.locale) }
+
+    /// "62 m" where the region measures in metres, "200 ft" where it measures in miles.
+    func distance(locale: Locale) -> String { Scooter.formattedLength(meters: metres, locale: locale) }
+
+    func accessibilityLabel(locale: Locale) -> String {
         String(
             format: String(localized: "Nearest scooter: %1$@, %2$@ away, %3$lld min on foot. Show details."),
             providerName,
-            distance,
+            distance(locale: locale),
             Int64(minutes)
         )
     }
@@ -570,12 +575,14 @@ struct ScooterCardContent: Equatable, Sendable {
     /// With an origin the figures are the walk, the distance and the price of
     /// a ride; without a price the battery takes its cell, or else the range.
     /// Without an origin they are what is known of battery, range and price.
+    /// Lengths are written as the locale's region measures them.
     init(
         scooter: Scooter,
         metres: CLLocationDistance?,
         placeTitle: String? = nil,
         quote: RidePriceQuote?,
-        curfew: RentalCurfew.Active? = nil
+        curfew: RentalCurfew.Active? = nil,
+        locale: Locale = ScooterLanguage.current.locale
     ) {
         self.curfew = curfew.map { curfew in
             String(
@@ -601,13 +608,13 @@ struct ScooterCardContent: Equatable, Sendable {
             ScooterCardFigure(kind: .battery, value: "\(battery)", unit: "%", label: String(localized: "battery"))
         }
         let range = scooter.rangeMeters.map { range in
-            let parts = Scooter.lengthParts(meters: Double(range))
+            let parts = Scooter.lengthParts(meters: Double(range), locale: locale)
             return ScooterCardFigure(kind: .range, value: parts.value, unit: parts.unit, label: String(localized: "range"))
         }
 
         var figures: [ScooterCardFigure] = []
         if let metres, metres.isFinite {
-            let parts = Scooter.lengthParts(meters: metres)
+            let parts = Scooter.lengthParts(meters: metres, locale: locale)
             figures = [
                 ScooterCardFigure(
                     kind: .walk,
@@ -628,7 +635,9 @@ struct ScooterCardContent: Equatable, Sendable {
 
         let shown = Set(figures.map(\.kind))
         let leftBattery = shown.contains(.battery) ? nil : scooter.battery
-        let leftRange = shown.contains(.range) ? nil : scooter.formattedRange
+        let leftRange = shown.contains(.range)
+            ? nil
+            : scooter.rangeMeters.map { Scooter.formattedLength(meters: Double($0), locale: locale) }
         facts = switch (leftBattery, leftRange) {
         case let (battery?, range?):
             String(format: String(localized: "%1$lld%% battery, %2$@ range"), Int64(battery), range)
