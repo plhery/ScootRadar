@@ -7,6 +7,13 @@ import { COVERED_CITIES } from '@/lib/coveredCities';
 import { I18nProvider } from '@/lib/i18n';
 import type { Place } from '@/lib/places';
 
+// The device's time zone, whose country goes with a search without a map centre; UTC has none.
+const device = vi.hoisted(() => ({ timeZone: 'UTC' as string | undefined }));
+vi.mock('@/lib/startPlace', async importOriginal => ({
+  ...await importOriginal<typeof import('@/lib/startPlace')>(),
+  deviceTimeZone: () => device.timeZone,
+}));
+
 // The answer of /api/geocode to "Paradeplatz": the places with scooter data first.
 const PARADEPLATZ = [
   { lat: 47.369, lng: 8.539, display_name: 'Paradeplatz (ZH) - Zürich', title: 'Paradeplatz', subtitle: 'Zürich ZH', covered: true },
@@ -36,6 +43,7 @@ async function type(input: HTMLElement, text: string) {
 
 beforeEach(() => {
   vi.useFakeTimers();
+  device.timeZone = 'UTC';
   localStorage.setItem('scooters-locale', 'en');
 });
 
@@ -130,6 +138,32 @@ describe('typing', () => {
 
     expect(fetcher).toHaveBeenCalledExactlyOnceWith('/api/geocode', expect.objectContaining({
       body: JSON.stringify({ q: 'Rue de Rivoli 10', lang: 'en', near: [48.86, 2.35] }),
+    }));
+  });
+
+  it('sends the country of the device’s time zone instead, without a centre, so that its places come first', async () => {
+    const fetcher = answer(PARADEPLATZ);
+    vi.stubGlobal('fetch', fetcher);
+    device.timeZone = 'America/Chicago';
+    const { input } = renderSearch();
+
+    await type(input, 'Congress Ave');
+
+    expect(fetcher).toHaveBeenLastCalledWith('/api/geocode', expect.objectContaining({
+      body: JSON.stringify({ q: 'Congress Ave', lang: 'en', country: 'US' }),
+    }));
+  });
+
+  it('sends no country with a centre, which says more', async () => {
+    const fetcher = answer(PARADEPLATZ);
+    vi.stubGlobal('fetch', fetcher);
+    device.timeZone = 'America/Chicago';
+    const { input } = renderSearch({ near: [30.27, -97.74] });
+
+    await type(input, 'Congress Ave');
+
+    expect(fetcher).toHaveBeenLastCalledWith('/api/geocode', expect.objectContaining({
+      body: JSON.stringify({ q: 'Congress Ave', lang: 'en', near: [30.27, -97.74] }),
     }));
   });
 

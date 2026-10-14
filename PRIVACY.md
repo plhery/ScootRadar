@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 13 October 2026
+Last updated: 14 October 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches.
@@ -21,7 +21,9 @@ searches.
   company in Cyprus whose servers are in the EU, without the user's IP address.
   When the map shows a city or less, its centre, rounded to about a kilometre,
   goes with it so that nearby places come first; with an address followed by a
-  city in the ScootRadar catalogue, that city's centre goes instead. Geoapify
+  city in the ScootRadar catalogue, that city's centre goes instead. Without a
+  centre, the country of the device's time zone, such as "US", worked out on the
+  device, goes with it so that places in that country come first. Geoapify
   generally keeps the data of a successful request for no longer than 24
   hours. When Geoapify cannot answer, the same goes to komoot's Photon service
   in Germany (OpenStreetMap data) instead. Cities in the ScootRadar catalogue

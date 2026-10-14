@@ -119,17 +119,24 @@ actor AddressSearchAPI: AddressSearchAPIClient {
         let lang: String
         /// Latitude and longitude, left out when there is no centre to send.
         let near: [Double]?
+        /// The country of the iPhone's time zone, sent only without a centre.
+        let country: String?
     }
 
     private let baseURL: URL
     let session: any AddressSearchNetworkSession
+    /// The country of the iPhone's time zone, whose places come first without a
+    /// map centre; nil where the zone says none, and Switzerland's then do.
+    private let homeCountry: String?
 
     init(
         baseURL: URL = ScooterAPI.productionBaseURL,
-        session: any AddressSearchNetworkSession = ScooterAPI.privateSession
+        session: any AddressSearchNetworkSession = ScooterAPI.privateSession,
+        homeCountry: String? = ScooterStartPlace.country(forTimeZone: TimeZone.current.identifier)
     ) {
         self.baseURL = baseURL
         self.session = session
+        self.homeCountry = homeCountry
     }
 
     func search(query: String, language: String, near: GeoPoint?) async throws -> [AddressSearchResult] {
@@ -138,7 +145,8 @@ actor AddressSearchAPI: AddressSearchAPIClient {
         request.httpBody = try JSONEncoder().encode(SearchRequest(
             q: query,
             lang: language,
-            near: near.map { [$0.latitude, $0.longitude] }
+            near: near.map { [$0.latitude, $0.longitude] },
+            country: near == nil ? homeCountry : nil
         ))
         request.timeoutInterval = 12
         request.cachePolicy = .reloadIgnoringLocalCacheData

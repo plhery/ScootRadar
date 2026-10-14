@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { rateLimitAllows } from '@/lib/rateLimit';
 import { isPointCovered } from '@/lib/coveredCities';
 import { haversineM } from '@/lib/geo';
+import { COUNTRY_CONTINENTS, COUNTRY_REGIONS, type Continent, type CountryCode } from '@/generated/countries';
 import { cityOfAddress, GEOCODE_LANGUAGES, namedCities, type GeocodeLanguage } from './cities';
 
 const MAX_QUERY_LENGTH = 160;
@@ -11,7 +12,7 @@ const MAX_RESULTS = 5;
 // One search, however many services it asks.
 const GEOCODE_TIMEOUT_MS = 10_000;
 
-// Places across Europe, from OpenStreetMap: Geoapify where GEOAPIFY_API_KEY is
+// Places where the app has cities, from OpenStreetMap: Geoapify where GEOAPIFY_API_KEY is
 // set, Photon where it is not or when Geoapify cannot answer (searchPlaces).
 const GEOAPIFY_AUTOCOMPLETE_URL = 'https://api.geoapify.com/v1/geocode/autocomplete';
 // Geoapify answers in about a second, an address with its house number in up to
@@ -49,11 +50,18 @@ const PHOTON_RESULT_LIMIT = 15;
 const PHOTON_LANGUAGES = ['de', 'en', 'fr'] as const;
 // Not the centres of counties, regions and countries.
 const PHOTON_LAYERS = ['house', 'street', 'locality', 'district', 'city', 'other'];
-// Where the app has cities: Europe, from the Azores and the Canaries to the North
-// Cape. Photon is asked within it; Geoapify is not, as in a rectangle that large
-// it finds nothing for "Via Roma 10", nor in a list of Europe's countries "Gare de
-// Lyon" near Paris: its places outside are left out instead (europeanPlace).
-const EUROPE = { west: -32, south: 27, east: 45, north: 72 };
+// Where the app may have cities: Europe, from the Azores and the Canaries to the
+// North Cape, and North America, from Hawaii and Alaska to Newfoundland and from
+// the Arctic to Mexico's southern border. Only the parts with a country in
+// data/countries.json are searched. Photon is asked within the one around the
+// map centre; Geoapify is not, as in a rectangle that large it finds nothing for
+// "Via Roma 10", nor in a list of Europe's countries "Gare de Lyon" near Paris:
+// the places of both outside are left out instead (servedPlace).
+const CONTINENT_BOXES: Record<Continent, Box> = {
+  europe: { west: -32, south: 27, east: 45, north: 72 },
+  'north-america': { west: -170, south: 14, east: -50, north: 72 },
+};
+const SERVED_BOXES = [...new Set(Object.values(COUNTRY_CONTINENTS))].map(continent => CONTINENT_BOXES[continent]);
 // Distance to the map centre counts for more than prominence: "Bahnhofstrasse 1"
 // near Zürich is the one in Zürich, not the better-known station in Goldau.
 const PHOTON_BIAS_SCALE = '0.1';
@@ -63,7 +71,18 @@ const NEARBY_M = 30_000;
 // A station, its building and its platforms under one name: within this, they are one place.
 const SAME_PLACE_M = 250;
 // Where the house number is written before the street: "10 Rue de Rivoli".
-const NUMBER_FIRST_COUNTRIES = new Set(['FR', 'GB', 'IE', 'LU', 'MC']);
+const NUMBER_FIRST_COUNTRIES = new Set(['FR', 'GB', 'IE', 'LU', 'MC', 'US', 'CA']);
+// Where the town comes before its state or province and its postcode: "Austin, TX 78701".
+const TOWN_FIRST_COUNTRIES = new Set(['US', 'CA']);
+// Whose places Geoapify favours without a map centre, when the app does not say where the rider is.
+const DEFAULT_HOME = 'CH';
+
+interface Box {
+  west: number;
+  south: number;
+  east: number;
+  north: number;
+}
 
 interface PhotonFeature {
   geometry?: { coordinates?: unknown };
@@ -87,15 +106,22 @@ interface Search {
   typed: string[];
   /** Where places come first: the map centre, or the city an address was typed with. */
   near: [number, number] | null;
+  /** The country whose places come first without a centre: that of the device's time zone, or Switzerland. */
+  home: string;
   /** An address typed with its city, without the city: "Bahnhofstrasse 10" for "Bahnhofstrasse 10, Biel". */
   address: string | null;
 }
+
+/** What places are ranked from: where they come first, and the country that does without a centre. */
+type From = Pick<Search, 'near' | 'home'>;
 
 interface GeocodeInput {
   query: string;
   requestedLanguage: string;
   /** The centre of the map, when it shows a city or less: places near it come first. */
   near: [number, number] | null;
+  /** The country of the device's time zone, sent without a centre: its places come first. */
+  country: string | null;
 }
 
 interface GeocodePlace {
@@ -140,11 +166,19 @@ function withoutLigatures(text: string): string {
 // Letters no accent can be taken from, spelled out so that "Tromso" names Tromsø.
 const SPELLED_OUT: Record<string, string> = { 'ø': 'o', 'đ': 'd', 'ł': 'l', 'þ': 'th', 'ð': 'd', 'ı': 'i' };
 
-/** The words of a text in one spelling: "Zuerich" and "Zürich" are both "zurich". */
+/** The words of a text in one spelling, without accents: "Zürich" and "Zurich" are both "zurich". */
 function searchWords(text: string): string[] {
   return withoutLigatures(text).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
-    .replace(/[øđłþðı]/g, letter => SPELLED_OUT[letter])
-    .replace(/([aou])e/g, '$1').split(/[^a-z0-9]+/).filter(Boolean);
+    .replace(/[øđłþðı]/g, letter => SPELLED_OUT[letter]).split(/[^a-z0-9]+/).filter(Boolean);
+}
+
+/** The words of a place's name as it may be typed: "Zürich" as "zurich" and, with its umlaut spelled out, "zuerich".
+    What is typed is read as it is: "Joel" does not start Joliet, nor "Blue" Bluff. */
+function placeSpellings(text: string): string[][] {
+  const spelledOut = text.normalize('NFD').replace(/([aouAOU])\u0308/g, '$1e');
+  const words = searchWords(text);
+  const umlauts = searchWords(spelledOut);
+  return umlauts.join(' ') === words.join(' ') ? [words] : [words, umlauts];
 }
 
 // Towns typed by their names come first, then towns whose names start as typed,
@@ -160,25 +194,26 @@ function placeRank(
   town: boolean,
   nearMiss: boolean,
   country: string,
-  near: [number, number] | null
+  from: From
 ): Ranked {
-  const title = searchWords(place.title);
+  const spellings = placeSpellings(place.title);
+  const title = spellings.flat();
   // In any order: "Flughafen Zürich" names "Zürich Flughafen".
-  const named = title.length === typed.length && [...title].sort().join(' ') === [...typed].sort().join(' ');
-  const words = [...title, ...searchWords(place.subtitle)];
+  const named = spellings.some(words => words.length === typed.length && [...words].sort().join(' ') === [...typed].sort().join(' '));
+  const words = [...title, ...placeSpellings(place.subtitle).flat()];
   const atWordStart = typed.every(word => words.some(candidate => candidate.startsWith(word)));
   // What the services found by another of its names is no typing mistake, and a
   // town found so, typed in full, was typed by that name: "Milano" for Milan. Not
   // by a number: Geoapify finds Pompei for "8004", the start of its postcode. Nor
   // by three letters, which may be the start of another name: Bärschwil for "Ber".
-  const namedOtherwise = !atWordStart && title.length === typed.length && typed.join('').length > 3 &&
+  const namedOtherwise = !atWordStart && spellings[0].length === typed.length && typed.join('').length > 3 &&
     !typed.some(word => /\d/.test(word));
   // A town typed by its name is what was asked for, with scooter data or without;
   // one whose name starts as typed may be: "Laus" is on its way to Lausanne. By
   // its own name: Burgdorf is in the canton of Bern, not on the way to it.
   const started = typed.every(word => title.some(candidate => candidate.startsWith(word)));
   if (town && (named || namedOtherwise || started)) {
-    return { rank: townRank(named || namedOtherwise, place, country, near), town: true, miss: false };
+    return { rank: townRank(named || namedOtherwise, place, country, from), town: true, miss: false };
   }
   const match = named ? 0 : atWordStart ? 1 : 2;
   // "Zürichstrasse" for "Zürich HB"; not "Rue de Rivoli" for "Rue de Rivoli 10",
@@ -188,21 +223,22 @@ function placeRank(
     street.every(word => words.some(candidate => candidate.startsWith(word)));
   const miss = nearMiss && match === 2 && !ofAddress;
   // Near the map centre first, then with scooter data, then named as typed: each outweighs those after it.
-  const rank = (miss ? MISS_RANK : PLACE_RANK) + remoteness(place, country, near) * 6 + (place.covered ? 0 : 3) + match;
+  const rank = (miss ? MISS_RANK : PLACE_RANK) + remoteness(place, country, from) * 6 + (place.covered ? 0 : 3) + match;
   return { rank, town: false, miss };
 }
 
 /** Where a town ranks: typed by its name before started; the cities of our list
     first, then the others; the nearest first, then those with scooter data. */
-function townRank(named: boolean, place: GeocodePlace, country: string, near: [number, number] | null, listed = false): number {
-  const distance = remoteness(place, country, near);
+function townRank(named: boolean, place: GeocodePlace, country: string, from: From, listed = false): number {
+  const distance = remoteness(place, country, from);
   return (named ? 0 : STARTED_TOWN_RANK) + (listed ? distance : 3 + distance * 2 + (place.covered ? 0 : 1));
 }
 
 /** How far a place is from what the map shows: within a short ride of its centre, in the city around it, or farther. */
-function remoteness(place: GeocodePlace, country: string, near: [number, number] | null): 0 | 1 | 2 {
-  // Without a map centre, as in iOS apps from before they sent one, Switzerland is near.
-  if (!near) return country === 'CH' ? 0 : 1;
+function remoteness(place: GeocodePlace, country: string, { near, home }: From): 0 | 1 | 2 {
+  // Without a map centre, the country of the device's time zone is near; Switzerland
+  // where the app does not say, as in iOS apps from before they sent either.
+  if (!near) return country === home ? 0 : 1;
   const distance = haversineM(near[0], near[1], place.lat, place.lng);
   return distance <= CLOSE_M ? 0 : distance <= NEARBY_M ? 1 : 2;
 }
@@ -255,13 +291,21 @@ function text(value: unknown): string {
   return typeof value === 'string' ? value.replace(/\s+/g, ' ').trim() : '';
 }
 
+/** The code of a place's state or province, where its country writes it after the town: "TX" for Texas. */
+function regionCode(properties: Record<string, unknown>, countryCode: string): string {
+  const state = text(properties.state);
+  const regions = COUNTRY_REGIONS[countryCode as CountryCode]?.list ?? [];
+  return text(properties.statecode) || regions.find(({ name }) => name === state)?.code || state;
+}
+
 /** A Photon place in two lines: "Gare de Lyon" over "Place Louis Armand, 75012 Paris". */
 function photonLines(properties: Record<string, unknown>): { title: string; subtitle: string } {
   const name = text(properties.name);
   const street = text(properties.street);
   const number = text(properties.housenumber);
+  const countryCode = text(properties.countrycode).toUpperCase();
   const address = !street || !number ? street
-    : NUMBER_FIRST_COUNTRIES.has(text(properties.countrycode).toUpperCase()) ? `${number} ${street}` : `${street} ${number}`;
+    : NUMBER_FIRST_COUNTRIES.has(countryCode) ? `${number} ${street}` : `${street} ${number}`;
   const town = text(properties.city) || text(properties.locality) || text(properties.district) || text(properties.county);
   const region = text(properties.state) || text(properties.county);
   const country = text(properties.country);
@@ -276,7 +320,10 @@ function photonLines(properties: Record<string, unknown>): { title: string; subt
     case 'street':
       return lines(name || street, town);
     case 'house': {
-      const postTown = [text(properties.postcode), town].filter(Boolean).join(' ');
+      // "Austin, TX 78701" in the US and Canada, "8001 Zürich" elsewhere.
+      const postTown = TOWN_FIRST_COUNTRIES.has(countryCode)
+        ? [town, [regionCode(properties, countryCode), text(properties.postcode)].filter(Boolean).join(' ')].filter(Boolean).join(', ')
+        : [text(properties.postcode), town].filter(Boolean).join(' ');
       return name ? lines(name, address, postTown) : lines(address, postTown);
     }
     default:
@@ -305,13 +352,13 @@ function photonService(settings: Record<string, unknown>): PhotonService | null 
 }
 
 /** Photon's places, in its order, as rows ranked for what was typed. */
-function photonCandidates(features: PhotonFeature[], typed: string[], near: [number, number] | null): Candidate[] {
+function photonCandidates(features: PhotonFeature[], typed: string[], from: From): Candidate[] {
   return features.flatMap(feature => {
     const coordinates = feature?.geometry?.coordinates;
     const [lng, lat] = Array.isArray(coordinates) && coordinates.every(value => typeof value === 'number') ? coordinates : [NaN, NaN];
     const properties = feature?.properties && typeof feature.properties === 'object' ? feature.properties : {};
     const { title, subtitle } = photonLines(properties);
-    if (!validCoordinate(lat, lng) || !title) return [];
+    if (!validCoordinate(lat, lng) || !title || !servedPlace(lat, lng)) return [];
     const place = {
       lat,
       lng,
@@ -324,24 +371,21 @@ function photonCandidates(features: PhotonFeature[], typed: string[], near: [num
     const nearMiss = properties.nearMiss === true;
     // Not a town Geoapify found for a near miss of its name: "Rheinwald" for "Rheinfall".
     const town = properties.type === 'city' && !nearMiss;
-    return [{ place, ...placeRank(typed, place, town, nearMiss, text(properties.countrycode).toUpperCase(), near) }];
+    return [{ place, ...placeRank(typed, place, town, nearMiss, text(properties.countrycode).toUpperCase(), from) }];
   });
 }
 
-async function searchPhoton(
-  query: string,
-  language: GeocodeLanguage,
-  typed: string[],
-  near: [number, number] | null,
-  own: PhotonService | null,
-  deadline: number
-): Promise<Upstream<Found>> {
+async function searchPhoton(search: Search, own: PhotonService | null, deadline: number): Promise<Upstream<Found>> {
+  const { query, language, near } = search;
   const params = new URLSearchParams({
     q: query,
     limit: String(PHOTON_RESULT_LIMIT),
     lang: PHOTON_LANGUAGES.find(code => code === language) ?? 'default',
-    bbox: [EUROPE.west, EUROPE.south, EUROPE.east, EUROPE.north].join(','),
   });
+  // Within the part of the world the map shows; anywhere without a centre, as
+  // "Paris" may be in France or in Texas, and what is outside is left out after.
+  const box = near && servedBox(near[0], near[1]);
+  if (box) params.set('bbox', [box.west, box.south, box.east, box.north].join(','));
   for (const layer of PHOTON_LAYERS) params.append('layer', layer);
   if (near) {
     params.set('lat', String(near[0]));
@@ -367,12 +411,16 @@ async function searchPhoton(
   if (!answer.ok) return answer;
   const features = (answer.value as PhotonResponse | null)?.features;
   if (!Array.isArray(features)) return { ok: false, failure: 'invalid' };
-  return { ok: true, value: { source: 'Photon', candidates: photonCandidates(features, typed, near) } };
+  return { ok: true, value: { source: 'Photon', candidates: photonCandidates(features, search.typed, search) } };
 }
 
-function europeanPlace(lat: unknown, lng: unknown): boolean {
-  return typeof lat === 'number' && typeof lng === 'number' &&
-    lat >= EUROPE.south && lat <= EUROPE.north && lng >= EUROPE.west && lng <= EUROPE.east;
+/** The part of the world where the app has cities that a point is in, if any. */
+function servedBox(lat: number, lng: number): Box | undefined {
+  return SERVED_BOXES.find(box => lat >= box.south && lat <= box.north && lng >= box.west && lng <= box.east);
+}
+
+function servedPlace(lat: unknown, lng: unknown): boolean {
+  return typeof lat === 'number' && typeof lng === 'number' && servedBox(lat, lng) !== undefined;
 }
 
 /** A Geoapify place as Photon describes one, to be shown and ranked alike. */
@@ -381,7 +429,7 @@ function photonFeature(result: Record<string, unknown>): PhotonFeature | null {
   const hamlet = result.result_type === 'city' && text(result.city) !== '' &&
     searchWords(text(result.city)).join(' ') !== searchWords(text(result.name)).join(' ');
   const type = hamlet ? 'other' : GEOAPIFY_TYPES[text(result.result_type)];
-  if (!type || !europeanPlace(result.lat, result.lon)) return null;
+  if (!type || !servedPlace(result.lat, result.lon)) return null;
   // A quarter and a postcode are named in their own fields.
   const name = text(result.name)
     || (type === 'district' ? text(result.suburb) || text(result.district) : '')
@@ -400,6 +448,7 @@ function photonFeature(result: Record<string, unknown>): PhotonFeature | null {
       district: result.suburb ?? result.district,
       county: result.county,
       state: result.state,
+      statecode: result.state_code,
       country: result.country,
       countrycode: result.country_code,
       nearMiss: typeof confidence === 'number' && confidence < 1,
@@ -426,8 +475,8 @@ async function searchGeoapify(search: Search, key: string, ask: GeoapifyAsk): Pr
     // Geoapify names places in every language of the app.
     lang: search.language,
     limit: String(GEOAPIFY_RESULT_LIMIT),
-    // Without a map centre, as in iOS apps from before they sent one, Switzerland is near.
-    bias: near ? `proximity:${near[1]},${near[0]}` : 'countrycode:ch',
+    // Without a map centre, the country of the device's time zone is near, or Switzerland.
+    bias: near ? `proximity:${near[1]},${near[0]}` : `countrycode:${search.home.toLowerCase()}`,
     format: 'json',
     apiKey: key,
   });
@@ -447,7 +496,7 @@ async function searchGeoapify(search: Search, key: string, ask: GeoapifyAsk): Pr
     const feature = result && typeof result === 'object' ? photonFeature(result as Record<string, unknown>) : null;
     return feature ? [feature] : [];
   });
-  const candidates = photonCandidates(features, search.typed, near);
+  const candidates = photonCandidates(features, search.typed, search);
   // Towns, not the hamlets, quarters and stations Geoapify also has, nor near misses of their names.
   return { ok: true, value: { source: 'Geoapify', candidates: ask.towns ? candidates.filter(({ town }) => town) : candidates } };
 }
@@ -469,7 +518,7 @@ async function geoapifyPlaces(search: Search, key: string): Promise<Upstream<Fou
   return { ok: true, value: { source: 'Geoapify', candidates: [...nearby.value.candidates, ...farther.value.candidates] } };
 }
 
-/** Places across Europe: from Geoapify where the Worker has its key, from Photon
+/** Places where the app has cities: from Geoapify where the Worker has its key, from Photon
     where it has none or when Geoapify cannot answer, all within one search's time. */
 async function searchPlaces(search: Search, settings: Record<string, unknown>, key: string, deadline: number): Promise<Upstream<Found>> {
   if (key) {
@@ -478,7 +527,7 @@ async function searchPlaces(search: Search, settings: Record<string, unknown>, k
     // Out of credits for the day, the key refused, down or slow: Photon stands in.
     console.warn(JSON.stringify({ event: 'geoapify_fallback', failure: found.failure }));
   }
-  return searchPhoton(search.query, search.language, search.typed, search.near, photonService(settings), deadline);
+  return searchPhoton(search, photonService(settings), deadline);
 }
 
 /** What a promise comes to within some time, or null. */
@@ -527,6 +576,7 @@ async function geocode(input: GeocodeInput) {
     language,
     typed: searchWords(typedText),
     near: inCity?.center ?? input.near,
+    home: input.country ?? DEFAULT_HOME,
     address: inCity?.address ?? null,
   };
 
@@ -546,7 +596,7 @@ async function geocode(input: GeocodeInput) {
 
   const candidates: Candidate[] = [
     ...listed.map(({ city, exact, country }) =>
-      ({ place: city, rank: townRank(exact, city, country, search.near, true), town: true, miss: false, listed: true })),
+      ({ place: city, rank: townRank(exact, city, country, search, true), town: true, miss: false, listed: true })),
     ...(foundTowns?.ok ? foundTowns.value.candidates : []),
     ...(foundPlaces?.ok ? foundPlaces.value.candidates : []),
   ];
@@ -569,13 +619,18 @@ async function geocode(input: GeocodeInput) {
   shown.sort((a, b) => a.rank - b.rank);
 
   const services = [...new Set([foundTowns, foundPlaces].flatMap(found => found?.ok ? [found.value.source] : []))];
-  const sources = [...(listed.length ? ['Verified European scooter city catalog'] : []), ...services, ...(services.length ? ['OpenStreetMap'] : [])];
+  const sources = [...(listed.length ? ['Verified scooter city catalog'] : []), ...services, ...(services.length ? ['OpenStreetMap'] : [])];
   return NextResponse.json(shown.slice(0, MAX_RESULTS).map(({ place }) => place), {
     headers: {
       'Cache-Control': 'private, no-store',
       'X-Geocoding-Data-Source': sources.join(', '),
     },
   });
+}
+
+/** The country sent with a search: two letters, or none. */
+function countryCode(value: unknown): string | null {
+  return typeof value === 'string' && /^[A-Za-z]{2}$/.test(value) ? value.toUpperCase() : null;
 }
 
 /** The map centre sent with a search, to about a kilometre; anything else is no centre. */
@@ -592,6 +647,7 @@ export async function GET(request: NextRequest) {
     query: request.nextUrl.searchParams.get('q') ?? '',
     requestedLanguage: request.nextUrl.searchParams.get('lang') ?? 'en',
     near: null,
+    country: null,
   });
 }
 
@@ -609,10 +665,11 @@ export async function POST(request: NextRequest) {
     return errorResponse('Address search request must be a JSON object.', 400);
   }
 
-  const { q, lang, near } = body as { q?: unknown; lang?: unknown; near?: unknown };
+  const { q, lang, near, country } = body as { q?: unknown; lang?: unknown; near?: unknown; country?: unknown };
   return geocode({
     query: typeof q === 'string' ? q : '',
     requestedLanguage: typeof lang === 'string' ? lang : 'en',
     near: nearPoint(near),
+    country: countryCode(country),
   });
 }

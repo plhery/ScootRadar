@@ -40,6 +40,15 @@ export function startCity(timeZone: string | undefined, cities: readonly Covered
   return neighbour && neighbour.distanceM <= NEIGHBOUR_REACH_M ? neighbour.city : null;
 }
 
+/**
+ * The country of a time zone, "US" for America/Chicago, which the address
+ * search sends instead of a map centre so that its places come first; null for
+ * a zone the table does not know, such as UTC.
+ */
+export function timeZoneCountry(timeZone: string | undefined): string | null {
+  return (timeZone ? zoneOf(timeZone)?.country : null) ?? null;
+}
+
 /** The IANA time zone of the device, such as "Europe/Zurich"; undefined where the browser gives none. */
 export function deviceTimeZone(): string | undefined {
   try {

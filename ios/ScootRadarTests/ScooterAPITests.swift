@@ -241,7 +241,8 @@ final class AddressSearchAPITests: XCTestCase {
         let session = StubAddressSearchSession(data: data)
         let api = AddressSearchAPI(
             baseURL: URL(string: "https://example.com")!,
-            session: session
+            session: session,
+            homeCountry: nil
         )
 
         let results = try await api.search(query: "Ankerstrasse 114", language: "de", near: nil)
@@ -266,7 +267,7 @@ final class AddressSearchAPITests: XCTestCase {
 
     func testTheMapCentreIsSentWhenThereIsOne() async throws {
         let session = StubAddressSearchSession(data: Data("[]".utf8))
-        let api = AddressSearchAPI(baseURL: URL(string: "https://example.com")!, session: session)
+        let api = AddressSearchAPI(baseURL: URL(string: "https://example.com")!, session: session, homeCountry: "FR")
 
         _ = try await api.search(query: "Rue de Rivoli 10", language: "fr", near: GeoPoint(latitude: 48.86, longitude: 2.35))
 
@@ -276,6 +277,23 @@ final class AddressSearchAPITests: XCTestCase {
         XCTAssertEqual(json["q"] as? String, "Rue de Rivoli 10")
         XCTAssertEqual(json["lang"] as? String, "fr")
         XCTAssertEqual(json["near"] as? [Double], [48.86, 2.35])
+        // The centre says more than the time zone's country, which then stays on the iPhone.
+        XCTAssertNil(json["country"])
+    }
+
+    func testTheTimeZoneCountryIsSentWithoutACentre() async throws {
+        let session = StubAddressSearchSession(data: Data("[]".utf8))
+        let api = AddressSearchAPI(baseURL: URL(string: "https://example.com")!, session: session, homeCountry: "US")
+
+        _ = try await api.search(query: "Congress Ave", language: "en", near: nil)
+
+        let request = await session.lastRequest
+        let body = try XCTUnwrap(request?.httpBody)
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: body) as? [String: String])
+        XCTAssertEqual(json, ["q": "Congress Ave", "lang": "en", "country": "US"])
+        XCTAssertEqual(ScooterStartPlace.country(forTimeZone: "America/Chicago"), "US")
+        XCTAssertEqual(ScooterStartPlace.country(forTimeZone: "America/Montreal"), "CA")
+        XCTAssertNil(ScooterStartPlace.country(forTimeZone: "UTC"))
     }
 
     func testTooManySearchesAreToldApartFromOtherFailures() async {

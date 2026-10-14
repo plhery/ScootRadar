@@ -8,6 +8,7 @@ import { useI18n } from '@/lib/i18n';
 import { placeForCity, toPlace, type Place, type PlaceResult } from '@/lib/places';
 import Icon from './Icon';
 import { requestDeadline } from '@/lib/requestDeadline';
+import { deviceTimeZone, timeZoneCountry } from '@/lib/startPlace';
 
 /** What the map needs of a searched place. */
 export interface AddressResult {
@@ -129,11 +130,13 @@ export default function AddressSearch({ recentPlaces, nearbyCities, near = null,
     const deadline = requestDeadline(controller.signal, 12_000);
     setStatus({ kind: 'searching' });
 
+    // Without a map centre, the country of the device's time zone, whose places then come first.
+    const country = near ? null : timeZoneCountry(deviceTimeZone());
     try {
       const response = await fetch('/api/geocode', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: value, lang: locale, ...(near ? { near } : {}) }),
+        body: JSON.stringify({ q: value, lang: locale, ...(near ? { near } : {}), ...(country ? { country } : {}) }),
         cache: 'no-store',
         signal: deadline.signal,
       });

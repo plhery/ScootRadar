@@ -117,7 +117,7 @@ describe('GET /api/geocode', () => {
 
     const response = await GET(request('Biel'));
 
-    expect(response.headers.get('x-geocoding-data-source')).toBe('Verified European scooter city catalog');
+    expect(response.headers.get('x-geocoding-data-source')).toBe('Verified scooter city catalog');
     expect(response.headers.get('cache-control')).toBe('private, no-store');
     await expect(response.json()).resolves.toEqual([
       { lat: 47.1368, lng: 7.2468, display_name: 'Biel/Bienne, Switzerland', title: 'Biel/Bienne', subtitle: 'Switzerland', covered: true },
@@ -249,6 +249,20 @@ describe('address search results', () => {
     expect(results.map(result => result.title)).toEqual(['Zürich Flughafen', 'Zürich Flughafen, OPC', 'Zürich Flughafen, Werft']);
   });
 
+  it('reads an umlaut spelled out in a name, and nothing else into what was typed', async () => {
+    const town = (name: string, lat: number, lng: number): PhotonRow => [{ type: 'city', name, country: 'Deutschland', countrycode: 'DE' }, lat, lng];
+    const street = (name: string): PhotonRow => [{ type: 'street', name, city: 'Zürich', countrycode: 'CH' }, ...ZURICH];
+    const answers = async (query: string, photon: PhotonRow[]) => {
+      stubUpstreams({ photon });
+      return (await (await POST(postRequest(query, 'de', ZURICH))).json() as { title: string }[]).map(place => place.title);
+    };
+
+    // A town whose name starts as typed comes before a street: "Muen" is on its way to München...
+    expect(await answers('Muen', [street('Muenzgasse'), town('München', 48.1372, 11.5756)])).toEqual(['München', 'Muenzgasse']);
+    // ...but "Joe" is not on its way to Johannisberg, as it was when "oe" was read as "o".
+    expect(await answers('Joe', [town('Johannisberg', 49.99, 7.98), street('Joe-Kaeser-Weg')])).toEqual(['Joe-Kaeser-Weg', 'Johannisberg']);
+  });
+
   it('ranks an address typed with ß as the same address typed with ss, and asks for it as typed', async () => {
     // Einsiedeln starts with the "e" that is left of "Straße" when the ß is taken for a space.
     const photon: PhotonRow[] = [
@@ -367,7 +381,7 @@ describe('cities and towns', () => {
     const response = await POST(postRequest('Freiburg', 'de', BERN));
 
     expect(asked(fetchMock, GEOAPIFY_HOST).map(geoapifyRequest)).toEqual(['towns']);
-    expect(response.headers.get('x-geocoding-data-source')).toBe('Verified European scooter city catalog, Geoapify, OpenStreetMap');
+    expect(response.headers.get('x-geocoding-data-source')).toBe('Verified scooter city catalog, Geoapify, OpenStreetMap');
     // Fribourg too, which is Freiburg in German; Geoapify's Freiburg im Breisgau is the one of our list.
     expect(await shownRows(response)).toEqual([['Freiburg im Breisgau', 'Deutschland', true], ['Freiburg', 'Schweiz', false]]);
   });
@@ -452,12 +466,12 @@ describe('cities and towns', () => {
     const response = await POST(postRequest('Ber', 'de', ZURICH));
 
     expect(response.status).toBe(200);
-    expect(response.headers.get('x-geocoding-data-source')).toBe('Verified European scooter city catalog');
+    expect(response.headers.get('x-geocoding-data-source')).toBe('Verified scooter city catalog');
     expect(await titles(response)).toEqual(['Berlin', 'Bern']);
   });
 });
 
-describe('places across Europe', () => {
+describe('places where the app has cities', () => {
   it('asks Photon in Europe, without regions, in the language of the app where it has one, near the map centre', async () => {
     const fetchMock = stubUpstreams({});
 
@@ -1152,7 +1166,7 @@ describe('recorded Geoapify answers', () => {
     expect(asked(fetchMock, GEOAPIFY_HOST).map(geoapifyRequest)).toEqual(requests);
     expect(asked(fetchMock, PHOTON_HOST)).toEqual([]);
     expect(response.headers.get('x-geocoding-data-source')).toBe(['Freiburg', 'Ber', 'Rom'].includes(query)
-      ? 'Verified European scooter city catalog, Geoapify, OpenStreetMap'
+      ? 'Verified scooter city catalog, Geoapify, OpenStreetMap'
       : 'Geoapify, OpenStreetMap');
     expect(results.map(result => [result.title, result.subtitle, result.covered])).toEqual(rows);
   });

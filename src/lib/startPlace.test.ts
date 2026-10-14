@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { TIME_ZONES, TIME_ZONE_ALIASES, TZDATA_VERSION } from '@/generated/timeZones';
 import type { CoveredCity } from '@/lib/coveredCities';
-import { startCity } from '@/lib/startPlace';
+import { startCity, timeZoneCountry } from '@/lib/startPlace';
 
 function city(id: string, country: CoveredCity['country'], center: [number, number]): CoveredCity {
   const [lat, lng] = center;
@@ -60,6 +60,18 @@ describe('startCity', () => {
     expect(startId('__proto__')).toBeNull();
     // North America before any of its cities is covered.
     expect(startCity('America/New_York', CITIES.filter(({ country }) => !['US', 'CA', 'MX'].includes(country)))).toBeNull();
+  });
+});
+
+describe('timeZoneCountry', () => {
+  it('is the country of a zone the table knows, by its name or an older one, and none for another', () => {
+    expect(timeZoneCountry('America/Chicago')).toBe('US');
+    expect(timeZoneCountry('America/Montreal')).toBe('CA');
+    expect(timeZoneCountry('Europe/Zurich')).toBe('CH');
+    expect(timeZoneCountry('UTC')).toBeNull();
+    expect(timeZoneCountry('Asia/Tokyo')).toBeNull();
+    expect(timeZoneCountry('__proto__')).toBeNull();
+    expect(timeZoneCountry(undefined)).toBeNull();
   });
 });
 

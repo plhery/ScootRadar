@@ -20,9 +20,7 @@ enum ScooterStartPlace {
         forTimeZone identifier: String,
         in cities: [ScooterCity] = ScooterCityCatalog.cities
     ) -> ScooterCity? {
-        guard let zone = ScooterTimeZones.places[identifier]
-            ?? ScooterTimeZones.aliases[identifier].flatMap({ ScooterTimeZones.places[$0] })
-        else { return nil }
+        guard let zone = zone(identifier) else { return nil }
         let origin = CLLocation(latitude: zone.point.latitude, longitude: zone.point.longitude)
         let distances = cities.map { city in
             (city, origin.distance(from: CLLocation(latitude: city.center.latitude, longitude: city.center.longitude)))
@@ -34,6 +32,18 @@ enum ScooterStartPlace {
             return nil
         }
         return neighbour.0
+    }
+
+    /// The country of a time zone, "US" for America/Chicago, which the address
+    /// search sends instead of a map centre so that its places come first; nil
+    /// for a zone the table does not know, such as UTC.
+    static func country(forTimeZone identifier: String) -> String? {
+        zone(identifier)?.countryCode
+    }
+
+    private static func zone(_ identifier: String) -> ScooterTimeZonePlace? {
+        ScooterTimeZones.places[identifier]
+            ?? ScooterTimeZones.aliases[identifier].flatMap { ScooterTimeZones.places[$0] }
     }
 
     /// The zoom asked for at a city's tapped span on an iPhone, until the map reports its own.
