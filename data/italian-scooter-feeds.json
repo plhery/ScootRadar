@@ -64,6 +64,26 @@
       "aliases": [
         "Rome"
       ]
+    },
+    {
+      "id": "elerent_it_catania",
+      "country": "IT",
+      "provider": "elerent",
+      "city": "Catania",
+      "center": [
+        37.5023,
+        15.0873
+      ],
+      "bounds": {
+        "south": 37.465,
+        "north": 37.5427,
+        "west": 15.0445,
+        "east": 15.1362
+      },
+      "discoveryUrl": "https://elerent.rideatom.com/gbfs/2166/v3.0/gbfs",
+      "aliases": [
+        "Catane"
+      ]
     }
   ]
 }

@@ -57,7 +57,8 @@ directory. Its timezone reads Europe/London, which keeps the Canaries' time.
   minutes, or every minute for 10 minutes after someone looks at the town, and
   its metadata once an hour. So Puerto del Carmen's feed adds about 8
   requests an hour to `hoppy.rideatom.com`, and at most about 65 while
-  watched.
+  watched; see
+  [ATOM's request rate](german-italian-scooter-feeds.md#atoms-request-rate-october-2026).
 
 ## Data handling
 

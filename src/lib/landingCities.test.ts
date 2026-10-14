@@ -15,7 +15,7 @@ describe('the cities of the landing page', () => {
 
   it('finds every city it names', () => {
     // A name that left the catalogue would be dropped from the page without a word.
-    expect(landingCountries().map(({ featured }) => featured.length)).toEqual([6, 6, 6, 3, 6, 6, 6, 6, 6, 6, 2, 1, 6, 2, 6, 2, 1, 1]);
+    expect(landingCountries().map(({ featured }) => featured.length)).toEqual([6, 6, 6, 4, 6, 6, 6, 6, 6, 6, 2, 1, 6, 2, 6, 2, 1, 1]);
     for (const { total, featured, more } of landingCountries()) expect(featured.length + more).toBe(total);
   });
 

@@ -19,6 +19,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     case ride_mobility
     case yoio
     case naolib
+    case elerent
 
     var id: String { rawValue }
 
@@ -39,6 +40,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .ride_mobility: "Ride Mobility"
         case .yoio: "Yoio"
         case .naolib: "Naolib Micromob’"
+        case .elerent: "Elerent"
         }
     }
 
@@ -59,6 +61,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .ride_mobility: "RM"
         case .yoio: "Y"
         case .naolib: "NM"
+        case .elerent: "E"
         }
     }
 
@@ -81,12 +84,14 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .ride_mobility: UIColor(red: 0.698039, green: 0.121569, blue: 0.352941, alpha: 1)
         case .yoio: UIColor(red: 0.050980, green: 0.368627, blue: 0.290196, alpha: 1)
         case .naolib: UIColor(red: 0.376471, green: 0.643137, blue: 0.000000, alpha: 1)
+        case .elerent: UIColor(red: 0.431373, green: 0.490196, blue: 0.094118, alpha: 1)
         }
     }
 
     private static let systemIDMatchers: [(provider: ScooterProvider, exact: [String], prefixes: [String])] = [
         (.ride_mobility, [], ["ride_mobility"]),
         (.publibike, ["velospot"], ["publibike"]),
+        (.elerent, [], ["elerent"]),
         (.naolib, [], ["naolib"]),
         (.beryl, [], ["beryl"]),
         (.hoppy, [], ["hoppy"]),
@@ -247,6 +252,7 @@ enum ScooterProviderCoverage {
         (.bird, GeoBounds(south: 40.7844, west: 14.1066, north: 40.921, east: 14.3912)),
         (.bird, GeoBounds(south: 38.0876, west: 13.3064, north: 38.2158, east: 13.388)),
         (.bird, GeoBounds(south: 41.6884, west: 12.2183, north: 42.0928, east: 12.7268)),
+        (.elerent, GeoBounds(south: 37.465, west: 15.0445, north: 37.5427, east: 15.1362)),
         (.bolt, GeoBounds(south: 50.7705, west: 4.2448, north: 50.918, east: 4.4816)),
         (.dott, GeoBounds(south: 50.7755, west: 4.2508, north: 50.9224, east: 4.4816)),
         (.dott, GeoBounds(south: 50.3504, west: 4.3494, north: 50.4803, east: 4.5161)),
@@ -536,6 +542,7 @@ enum ScooterCityCatalog {
         ScooterCity(id: "it:Napoli", name: "Napoli", countryCode: "IT", center: GeoPoint(latitude: 40.8518, longitude: 14.2681), bounds: GeoBounds(south: 40.7844, west: 14.1066, north: 40.921, east: 14.3912)),
         ScooterCity(id: "it:Palermo", name: "Palermo", countryCode: "IT", center: GeoPoint(latitude: 38.1157, longitude: 13.3613), bounds: GeoBounds(south: 38.0876, west: 13.3064, north: 38.2158, east: 13.388)),
         ScooterCity(id: "it:Roma", name: "Roma", countryCode: "IT", center: GeoPoint(latitude: 41.9028, longitude: 12.4964), bounds: GeoBounds(south: 41.6884, west: 12.2183, north: 42.0928, east: 12.7268)),
+        ScooterCity(id: "it:Catania", name: "Catania", countryCode: "IT", center: GeoPoint(latitude: 37.5023, longitude: 15.0873), bounds: GeoBounds(south: 37.465, west: 15.0445, north: 37.5427, east: 15.1362)),
         ScooterCity(id: "be:Bruxelles", name: "Bruxelles", countryCode: "BE", center: GeoPoint(latitude: 50.8467, longitude: 4.3525), bounds: GeoBounds(south: 50.7705, west: 4.2448, north: 50.9224, east: 4.4816)),
         ScooterCity(id: "be:Charleroi", name: "Charleroi", countryCode: "BE", center: GeoPoint(latitude: 50.4108, longitude: 4.4446), bounds: GeoBounds(south: 50.3504, west: 4.3459, north: 50.4817, east: 4.5161)),
         ScooterCity(id: "be:Blankenberge", name: "Blankenberge", countryCode: "BE", center: GeoPoint(latitude: 51.3131, longitude: 3.1316), bounds: GeoBounds(south: 51.2861, west: 3.0977, north: 51.3268, east: 3.1643)),
@@ -654,7 +661,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 234
+    static let cityCount = 235
     static let countryCount = 18
 
     /// Cities by distance from the point to their centre, nearest first.

@@ -113,5 +113,12 @@
     "color": "#60a400",
     "initial": "NM",
     "systemIds": { "prefixes": ["naolib"] }
+  },
+  {
+    "key": "elerent",
+    "name": "Elerent",
+    "color": "#6e7d18",
+    "initial": "E",
+    "systemIds": { "prefixes": ["elerent"] }
   }
 ]

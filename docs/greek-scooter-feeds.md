@@ -158,7 +158,8 @@ are empty or disabled (see [Known gaps](#known-gaps)).
 - **Load:** the scooter cache asks for each feed's `vehicle_status` every 20
   minutes, or every minute for 10 minutes after someone looks at the town, and
   its metadata once an hour. So the four feeds add about 32 requests an hour to
-  `hoppy.rideatom.com`, and at most about 65 each while watched.
+  `hoppy.rideatom.com`, and at most about 65 each while watched; see
+  [ATOM's request rate](german-italian-scooter-feeds.md#atoms-request-rate-october-2026).
 
 ## Data handling
 

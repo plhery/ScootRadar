@@ -33,7 +33,9 @@ moved publish no feed with scooters; see
 [Zeus's move to ATOM Mobility, October 2026](#zeuss-move-to-atom-mobility-october-2026).
 
 Italy grew from Rome to three cities on 13 October 2026, with Bird Palermo and
-Bird Napoli; see [Italy, October 2026](#italy-october-2026).
+Bird Napoli; see [Italy, October 2026](#italy-october-2026). Elerent's
+scooters in Catania followed on 14 October 2026; see
+[Elerent in Catania, October 2026](#elerent-in-catania-october-2026).
 
 | Country | Operator | Enabled feeds | Coverage |
 | --- | --- | ---: | --- |
@@ -45,8 +47,9 @@ Bird Napoli; see [Italy, October 2026](#italy-october-2026).
 | Germany | Zeus | 14 | Bamberg, Donaueschingen, Freiburg im Breisgau, Heidelberg / Leimen / Walldorf / Wiesloch, Konstanz, Ludwigsburg, Neustadt an der Weinstraße, Regensburg, Renningen, Schweinfurt, Singen, Tuttlingen, Villingen-Schwenningen and Würzburg |
 | Germany | Yoio | 3 | Erfurt, Freiburg im Breisgau and Göttingen |
 | Italy | Bird | 3 | Roma, Palermo and Napoli |
+| Italy | Elerent | 1 | Catania |
 
-German coverage contains 42 distinct cities, Italian coverage 3.
+German coverage contains 42 distinct cities, Italian coverage 4.
 The complete reviewed city bounds, public discovery URLs and aliases are in
 [`german-scooter-feeds.json`](../data/german-scooter-feeds.json) and
 [`italian-scooter-feeds.json`](../data/italian-scooter-feeds.json).
@@ -235,16 +238,16 @@ discovery's origin and under its directory, and publishes no `license_url`.
   stacks lie outside their town's bounds, so the map leaves them out.
 - **Request rate:** ATOM blocks an address after a burst of about 900
   requests, across its operators. The scooter cache reads no Zeus feed from
-  ATOM, so it still reads four ATOM feeds: Hoppy, Ride Mobility, and Yoio in
-  Göttingen and Erfurt. Each is asked for its `vehicle_status`, and its
+  ATOM. Each ATOM feed is asked for its `vehicle_status`, and its
   `station_status` where it has parking, every 20 minutes, or every minute
   for 10 minutes after someone looks at its town, and for five metadata
   documents an hour: 8 to 11 requests an hour while nobody looks, and at most
-  65 to 125 while someone does. That is about 20 an hour on
-  `yoio.rideatom.com` and 40 across ATOM, at most about 250 and 500 with every
-  town watched, and each `rideatom.com` host is paced to one request every
-  500 ms. Ten Zeus towns read from ATOM directly would add 80 to 110 an hour
-  on `zeus.rideatom.com`, and up to 650 to 1,250 with all of them watched.
+  65 to 125 while someone does. Yoio's two towns cost about 20 an hour on
+  `yoio.rideatom.com`, at most about 250 with both watched, and each
+  `rideatom.com` host is paced to one request every 500 ms. Ten Zeus towns
+  read from ATOM directly would add 80 to 110 an hour on `zeus.rideatom.com`,
+  and up to 650 to 1,250 with all of them watched. For every ATOM feed the
+  cache reads, see [ATOM's request rate](#atoms-request-rate-october-2026).
 
 ## Italy, October 2026
 
@@ -286,6 +289,81 @@ origin and under its directory.
   required since 17 May 2026. BIT's service in Prato ended on 31 December 2025.
   No Italian city was found to ban renting at night.
 
+## Elerent in Catania, October 2026
+
+Elerent is a Sicilian operator from Ragusa ([elerent.it](https://www.elerent.it/)),
+on ATOM Mobility's platform, as Hoppy, Ride Mobility and Yoio are. Its Catania
+feed is keyless GBFS 3.0 at `https://elerent.rideatom.com/gbfs/2166/v3.0/gbfs`,
+and every feed URL is https, on the discovery's origin and under its
+directory. Catania awarded its new scooter permits to Bolt (400 scooters), Lime
+(300) and Elerent Ragusa (300), after Bit Mobility, ranked first, withdrew
+([Mobilita Catania, 16 February 2026](https://catania.mobilita.org/2026/02/16/catania-punta-ancora-sui-monopattini-in-sharing-in-arrivo-mille-mezzi-e-nuove-regole-piu-rigide/)).
+Bolt and Lime publish no Italian feed.
+
+- **Liveness:** ATOM stamps `last_updated` with the time of the request and
+  gives no `last_reported`, and a scooter's `vehicle_id` changes after each
+  ride, so each scooter was followed by the code at the end of its rental link,
+  such as `CAT0059`, which is printed on it. The feed was polled 153 times,
+  every five minutes, from 23:00 on Tuesday 13 October to 10:28 the next
+  morning, and listed 125 to 137 available scooters. It had 30 rides, 18 of
+  them at night, by 25 scooters: each came back 0.2 to 2.4 km away under a new
+  id, after 5 to 75 minutes, with 1 to 31 points less charge.
+- **Scooters:** both vehicle types (`ZIMO CAT` and `MAX PLUS CAT`) are
+  `scooter_standing`, `electric`.
+- **Bounds:** ATOM's geofencing forbids starting or ending a ride everywhere
+  (`global_rules`), and allows both in 8 zones: four large ones over central
+  Catania and four small ones around it. The bounds enclose them, plus
+  0.005° of latitude and 0.01° of longitude; every scooter seen stood inside.
+  Catane is an alias.
+- **Battery:** ATOM gives each scooter its type's maximum range scaled by its
+  charge, and Elerent sets that maximum to 1,000 km (`max_range_meters`
+  1,000,000; the plans say "Maximum distance is 1000.00"). So its
+  `current_range_meters`, 120,000 to 930,000, is the charge: 650,000 is 65%.
+  The parser reads any range over 200 km, against a type maximum that large, as
+  a charge, and shows it as a battery level with no range. Hoppy's 60 km
+  maximum gives real ranges, which it keeps.
+- **Prices:** EUR 1.00 to start and EUR 0.26 a minute, for both types.
+- **Rental links** (`https://elerent.app.link/<code>`) name each scooter by the
+  code it carries, not by a hardware id, so they are kept, on Elerent's own
+  hosts only.
+- **Licence:** none. The feed has no `license_url`, and an empty
+  `feed_contact_email`.
+- **Night rules:** the feed gives opening hours of `24/7`. Catania's new rules
+  bring helmets, plates and fines for scooters left outside the parking bays,
+  but no reports of them name a night ban. No curfew was added.
+- **Colour:** Elerent's brand lime (#bbd033) on black is too light for the
+  map's white initials, so the map uses a deep olive shade of it, #6e7d18,
+  with the initial E. No other provider uses E.
+- **Left out:** Elerent's Bologna feed (id 1887) listed one scooter, with
+  e-bikes and petrol mopeds. Elerent also runs in Ragusa and Siracusa, with no
+  public feed found.
+
+## ATOM's request rate, October 2026
+
+With Elerent's Catania and Hoppy's Oostende, Mechelen, Sint-Niklaas,
+Blankenberge, Puerto del Carmen, Rhodes, Kos, Rethymno and Zakynthos, the
+scooter cache reads 15 ATOM feeds: 11 of Hoppy's on `hoppy.rideatom.com`
+(with Kortrijk and Rijeka), Yoio's two, Ride Mobility's Rīga and Elerent's
+Catania. None of Hoppy's or Elerent's has stations, so each feed costs one
+`vehicle_status` a collection, plus five metadata documents an hour:
+discovery, vehicle types, prices, stations and geofencing.
+
+- **Now,** the cache collects the feeds outside Switzerland that nobody looks
+  at every twenty minutes, so a feed costs about 8 requests an hour:
+  `hoppy.rideatom.com` carries about 90 an hour, and ATOM's four hosts about
+  130, as Yoio's and Ride Mobility's feeds also read their parking. A feed
+  someone looks at is collected every minute for ten minutes, so it costs up
+  to 65 an hour while watched; Hoppy's host would reach about 700 only if all
+  eleven of its towns were watched for a whole hour.
+- **Before 14 October 2026,** the cache collected every feed every minute, at
+  about 65 requests an hour each: `hoppy.rideatom.com` would have carried
+  about 700 an hour, one every five seconds, and ATOM's hosts about 1,150.
+
+The cache paces each `rideatom.com` host to one request every 500 ms and
+spreads the feeds over the interval, so even at the old cadence ATOM would see
+no burst near the roughly 900 requests after which it blocks an address. No
+interval was changed for ATOM.
+
 ## Known gaps
 
 - Dott no longer publishes most German regions, among them Hamburg, Bremen,
@@ -300,6 +378,8 @@ origin and under its directory.
 - Bird Milano, Firenze, Torino, Moncalieri, Collegno, Rivoli, Nichelino and
   Sesto Fiorentino were empty, with a timestamp of 0; Bird München and Ulm had
   abandoned timestamps. None was added.
+- Elerent Bologna (ATOM id 1887) listed one scooter on 13 October 2026; left
+  out.
 - Hopp Como held no scooters at night on 13 October 2026, nor in 22 polls from
   18:26 to 19:50 that evening; check it in spring.
 - Hopp Augsburg (`de-augsburg`) listed 42 scooters, all disabled, in each of
@@ -327,7 +407,8 @@ origin and under its directory.
 [MobiData BW](https://www.mobidata-bw.de/) provides the public regional proxy feeds.
 Zeus publishes its own city feeds at `https://zeus.city/api/v1/mds/gbfs/<city>/gbfs.json`,
 and on ATOM Mobility at `https://zeus.rideatom.com/gbfs/<id>/v3.0/gbfs`.
-Yoio publishes its own feeds on ATOM Mobility, at `https://yoio.rideatom.com/gbfs/<id>/v3.0/gbfs`.
+Yoio publishes its own feeds on ATOM Mobility, at `https://yoio.rideatom.com/gbfs/<id>/v3.0/gbfs`,
+and Elerent its Catania feed, at `https://elerent.rideatom.com/gbfs/2166/v3.0/gbfs`.
 [Dott Germany discovery](https://gbfs.api.ridedott.com/public/v2/countries/de/gbfs.json)
 contains repeated feed names for separate cities, so each reviewed city is collected
 independently. Bird's own feeds for

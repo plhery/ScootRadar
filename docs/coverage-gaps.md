@@ -75,12 +75,15 @@ banned shared scooters, and feeds that were empty when checked.
   - Hopp Augsburg listed 42 scooters, all disabled and unchanged, on the
     evening of 13 October 2026; check it in spring.
 - **Italy** ([guide](german-italian-scooter-feeds.md#known-gaps)): Bird in
-  Roma, Palermo and Napoli is covered.
+  Roma, Palermo and Napoli and Elerent in Catania are covered.
   - Dott (Roma, Milano, Palermo and others) and Lime (Roma, Milano, Palermo)
     publish no public feed: Dott's 21 Italian regions answer 404, Catania and
     Alghero 403, and its API now needs authentication. Lime answers 404
     everywhere. BIT Mobility (Napoli, Bari and others) is behind a login, and
-    RideMovi answers 401.
+    RideMovi answers 401. Bolt and Lime, which hold Catania's other permits,
+    publish no feed.
+  - Elerent Bologna listed one scooter on 13 October 2026. Elerent's Ragusa
+    and Siracusa fleets have no public feed.
   - Bird Milano, Firenze, Torino, Moncalieri, Collegno, Rivoli, Nichelino and
     Sesto Fiorentino are empty, with a timestamp of 0. Milano revoked Bird's
     permit in July 2026, over scooters without plates.

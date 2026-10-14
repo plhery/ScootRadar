@@ -69,6 +69,14 @@ describe('rental links', () => {
     expect(safeRentalUri('ride_mobility', link)).toBeNull();
   });
 
+  it('keeps the link to each Elerent scooter, on its own host only', () => {
+    const link = 'https://elerent.app.link/CAT0059';
+    expect(normalizeRentalUris('elerent', { ios: link, android: link, web: 'https://elerent.app.link/' }))
+      .toEqual({ ios: link, android: link, web: 'https://elerent.app.link/' });
+    expect(safeRentalUri('elerent', 'https://ride-hoppy.app.link/600332')).toBeNull();
+    expect(safeRentalUri('hoppy', link)).toBeNull();
+  });
+
   it('selects only the link intended for the current mobile platform', () => {
     const ios = 'https://go.ridedott.com/vehicles/1?platform=ios';
     const android = 'https://go.ridedott.com/vehicles/1?platform=android';

@@ -46,7 +46,8 @@ describe('German and Italian scooter coverage', () => {
     ['Ostend', 'Oostende, Belgium'], ['Ostende Belgique', 'Oostende, Belgium'],
     ['Bredene', 'Oostende, Belgium'], ['Mechelen', 'Mechelen, Belgium'], ['Malines Belgique', 'Mechelen, Belgium'],
     ['Blankenberge', 'Blankenberge, Belgium'], ['Sint-Niklaas', 'Sint-Niklaas, Belgium'], ['Saint-Nicolas Belgique', 'Sint-Niklaas, Belgium'],
-    ['Puerto del Carmen', 'Puerto del Carmen, Spain'], ['Tias', 'Puerto del Carmen, Spain'], ['Lanzarote Spain', 'Puerto del Carmen, Spain']])('finds %s', (query, name) => {
+    ['Puerto del Carmen', 'Puerto del Carmen, Spain'], ['Tias', 'Puerto del Carmen, Spain'], ['Lanzarote Spain', 'Puerto del Carmen, Spain'], ['Catania', 'Catania, Italy'],
+    ['Catane Italie', 'Catania, Italy']])('finds %s', (query, name) => {
     expect(searchRegionalScooterCities(query)[0].display_name).toBe(name);
   });
   it('does not silently ignore a conflicting country or expose the aggregate feed as a city', () => {
@@ -260,6 +261,24 @@ describe('German and Italian scooter coverage', () => {
       throw new Error(`Unexpected upstream ${url}`);
     });
   };
+  it('shows the charge of each Elerent scooter in Catania, never its 1,000 km "range", with its price and link', async () => {
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'elerent_it_catania')!;
+    expect(system).toMatchObject({ country: 'IT', provider: 'elerent', city: 'Catania' });
+    const link = 'https://elerent.app.link/CAT0059';
+    vi.stubGlobal('fetch', atomFeeds(system,
+      { vehicle_type_id: '3866', form_factor: 'scooter_standing', propulsion_type: 'electric', max_range_meters: 1_000_000,
+        default_pricing_plan_id: '3866' },
+      { plan_id: '3866', name: [{ text: 'ZIMO CAT', language: 'en' }], currency: 'EUR', price: 1, is_taxable: false,
+        per_min_pricing: [{ start: 0, rate: 0.26, interval: 1 }] },
+      [{ vehicle_id: '4121700984696156981', lat: 37.5154, lon: 15.0874, is_reserved: false, is_disabled: false,
+        rental_uris: { android: link, ios: link, web: 'https://elerent.app.link/' }, vehicle_type_id: '3866',
+        current_range_meters: 650_000, pricing_plan_id: '3866' }]));
+    const result = await fetchScooters({ bounds: system.bounds, minBattery: 0, providers: new Set(['elerent']) });
+    expect(result.meta.sources.italy).toBe('fresh');
+    expect(result.vehicles).toMatchObject([{ vehicle_id: 'elerent_it_catania:4121700984696156981', provider: 'elerent',
+      battery: 65, range_m: null, pricing: { currency: 'EUR', unlock_fee_minor_units: 100, minute_fee_minor_units: 26 },
+      rental_uris: { ios: link, android: link, web: 'https://elerent.app.link/' } }]);
+  });
   it('shows the range of each Hoppy scooter in Oostende, where a type goes 60 km', async () => {
     const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'hoppy_be_oostende')!;
     const link = 'https://ride-hoppy.app.link/600332';

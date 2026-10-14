@@ -74,7 +74,13 @@ interface PubliBikeStation {
 
 interface VehicleType extends GbfsVehicleType {
   default_pricing_plan_id?: string;
+  max_range_meters?: number;
 }
+
+// No standing scooter goes this far on a charge. ATOM Mobility gives each scooter its type's
+// maximum range scaled by its charge, and Elerent sets that maximum to 1,000 km: its range is
+// only the charge, so it is shown as one.
+const MAX_SCOOTER_RANGE_M = 200_000;
 
 interface StatusFeed {
   last_updated?: number | string;
@@ -333,13 +339,16 @@ function toVehicle(
   raw: RawVehicle,
   query: Pick<FeedQuery, 'origin'>,
   pricingByPlanId: Map<string, VehiclePricing>,
-  defaultPricingPlanId?: string
+  type?: VehicleType
 ): Vehicle | null {
   const lat = raw.lat;
   const lng = raw.lon ?? raw.lng;
   if (lat == null || lng == null || !Number.isFinite(lat) || !Number.isFinite(lng)) return null;
 
-  const range = raw.current_range_meters;
+  const reported = raw.current_range_meters != null ? Number(raw.current_range_meters) : NaN;
+  const range = Number.isFinite(reported) && reported >= 0 ? reported : null;
+  const maxRange = type?.max_range_meters;
+  const rangeIsCharge = range !== null && maxRange != null && maxRange > MAX_SCOOTER_RANGE_M && range <= maxRange;
   const rentalUris = normalizeRentalUris(
     provider,
     raw.rental_uris,
@@ -349,15 +358,15 @@ function toVehicle(
   const distance = query.origin
     ? Math.round(haversineM(query.origin[0], query.origin[1], lat, lng) * 10) / 10
     : null;
-  const planId = raw.pricing_plan_id ?? defaultPricingPlanId;
+  const planId = raw.pricing_plan_id ?? type?.default_pricing_plan_id;
   const pricing = planId ? pricingByPlanId.get(planId) : undefined;
 
   return {
     provider,
     lat,
     lng,
-    battery: batteryPercent(raw),
-    range_m: range != null && Number.isFinite(Number(range)) && Number(range) >= 0 ? Math.round(Number(range)) : null,
+    battery: batteryPercent(raw) ?? (rangeIsCharge ? Math.round(range / maxRange * 100) : null),
+    range_m: range !== null && range <= MAX_SCOOTER_RANGE_M ? Math.round(range) : null,
     vehicle_id: vehicleId(systemId, raw),
     deep_link: legacyRentalLink(rentalUris),
     rental_uris: rentalUris,
@@ -389,7 +398,7 @@ function filterVehicles(
       !boundsContainPoint(query.bounds, lat, lng)
     ) continue;
 
-    const vehicle = toVehicle(systemId, provider, raw, query, pricingByPlanId, types.get(raw.vehicle_type_id)?.default_pricing_plan_id);
+    const vehicle = toVehicle(systemId, provider, raw, query, pricingByPlanId, types.get(raw.vehicle_type_id));
     if (!vehicle) continue;
     filtered.push(vehicle);
   }

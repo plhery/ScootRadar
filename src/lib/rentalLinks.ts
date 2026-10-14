@@ -70,6 +70,11 @@ const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
     schemes: [],
     httpsHosts: ['rideyoio.app.link', 'yoio.app'],
   },
+  // Elerent too, and its links name each scooter by the code it carries, such as CAT0059 in Catania.
+  elerent: {
+    schemes: [],
+    httpsHosts: ['elerent.app.link', 'elerent.com'],
+  },
 };
 
 const UNSAFE_CHARACTERS = /[\u0000-\u001f\u007f]/;

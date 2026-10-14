@@ -202,9 +202,9 @@ e-scooter and e-bike parking](https://www.data.gouv.fr/datasets/espaces-de-stati
 Reviewed catalogs live in `data/german-scooter-feeds.json` and
 `data/italian-scooter-feeds.json`. Germany has 40 verified feeds across 42 cities:
 Dott, Bolt, Hopp, Lime, Voi, Zeus and Yoio. Dott made its GBFS private in September 2026; the
-catalog keeps the 15 German regions its public listing still names. Italy has 3
-Bird feeds, in Roma, Palermo and Napoli; the other tested Italian scooter feeds
-were empty, stale or unavailable. See the [coverage audit](docs/german-italian-scooter-feeds.md).
+catalog keeps the 15 German regions its public listing still names. Italy has 4
+feeds: Bird in Roma, Palermo and Napoli, and Elerent in Catania; the other
+tested Italian scooter feeds were empty, stale or unavailable. See the [coverage audit](docs/german-italian-scooter-feeds.md).
 
 Sources: [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
 [Dott Germany](https://gbfs.api.ridedott.com/public/v2/countries/de/gbfs.json),
@@ -227,9 +227,10 @@ Freiburg im Breisgau scooters, in the same
 others, which it licenses under the
 [Datenlizenz Deutschland Namensnennung 2.0](https://www.govdata.de/dl-de/by-2-0).
 Yoio's own feeds on `yoio.rideatom.com` supply Göttingen and Erfurt; they
-publish no licence, as Hoppy and Ride Mobility don't. ATOM refuses bursts of
-requests, so the scooter cache paces each `rideatom.com` host to about two
-requests a second.
+publish no licence, as Hoppy and Ride Mobility don't. Elerent, added on
+14 October 2026, publishes its Catania scooters on `elerent.rideatom.com`,
+with no licence either. ATOM refuses bursts of requests, so the scooter cache
+paces each `rideatom.com` host to about two requests a second.
 
 Multi-city feeds are fetched once and routed through separate city envelopes.
 City totals remain country-specific, with one count per vehicle. Published
