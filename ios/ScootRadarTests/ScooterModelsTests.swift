@@ -717,6 +717,7 @@ extension ScooterModelsTests {
 
     func testCitiesBanRentingOnTheirNightsInLocalTime() throws {
         let oslo = GeoPoint(latitude: 59.9139, longitude: 10.7522)
+        let osloTime = try XCTUnwrap(TimeZone(identifier: "Europe/Oslo"))
         let sandvika = GeoPoint(latitude: 59.8913, longitude: 10.5236)
         let iso = ISO8601DateFormatter()
         func at(_ string: String) throws -> Date { try XCTUnwrap(iso.date(from: string)) }
@@ -725,7 +726,7 @@ extension ScooterModelsTests {
         XCTAssertNil(RentalCurfew.active(at: oslo, on: try at("2026-10-12T20:59:00Z")))
         XCTAssertEqual(
             RentalCurfew.active(at: oslo, on: try at("2026-10-12T21:00:00Z")),
-            RentalCurfew.Active(city: "Oslo", until: try at("2026-10-13T03:00:00Z"))
+            RentalCurfew.Active(city: "Oslo", until: try at("2026-10-13T03:00:00Z"), timeZone: osloTime)
         )
         XCTAssertNil(RentalCurfew.active(at: oslo, on: try at("2026-10-13T03:00:00Z")))
         XCTAssertNil(RentalCurfew.active(at: sandvika, on: try at("2026-10-12T22:00:00Z")))
@@ -750,12 +751,12 @@ extension ScooterModelsTests {
         XCTAssertNil(RentalCurfew.active(at: kyiv, on: try at("2026-10-14T21:59:00Z")))
         XCTAssertEqual(
             RentalCurfew.active(at: kyiv, on: try at("2026-10-14T22:00:00Z")),
-            RentalCurfew.Active(city: "Kyiv", until: try at("2026-10-15T02:00:00Z"))
+            RentalCurfew.Active(city: "Kyiv", until: try at("2026-10-15T02:00:00Z"), timeZone: try XCTUnwrap(TimeZone(identifier: "Europe/Kyiv")))
         )
         XCTAssertNil(RentalCurfew.active(at: brovary, on: try at("2026-10-14T23:00:00Z")))
 
         // The ban comes before every other notice, with a moon.
-        let curfew = RentalCurfew.Active(city: "Oslo", until: try at("2026-10-13T03:00:00Z"))
+        let curfew = RentalCurfew.Active(city: "Oslo", until: try at("2026-10-13T03:00:00Z"), timeZone: osloTime)
         XCTAssertEqual(
             ScooterDockNotice.notices(
                 curfew: curfew,
@@ -767,7 +768,16 @@ extension ScooterModelsTests {
         )
         XCTAssertEqual(ScooterDockNotice.curfew(curfew).systemImage, "moon.fill")
         XCTAssertTrue(ScooterDockNotice.curfew(curfew).text.contains("Oslo"))
-        XCTAssertTrue(ScooterDockNotice.curfew(curfew).text.contains(ScooterDockStatus.clockTime(curfew.until)))
+        XCTAssertTrue(ScooterDockNotice.curfew(curfew).text.contains(ScooterDockStatus.clockTime(curfew.until, in: osloTime)))
+
+        // By the city's clock, named after its zone where the iPhone's reads otherwise.
+        let farAway = try XCTUnwrap(TimeZone(identifier: TimeZone.current.secondsFromGMT() == 14 * 3600 ? "Pacific/Pago_Pago" : "Pacific/Kiritimati"))
+        let there = ScooterDockStatus.clockTime(curfew.until, in: farAway)
+        XCTAssertNotEqual(there, ScooterDockStatus.clockTime(curfew.until))
+        XCTAssertTrue(there.contains("GMT"), there)
+        XCTAssertEqual(ScooterDockStatus.clockTime(curfew.until, in: .current), ScooterDockStatus.clockTime(curfew.until))
+        let farCurfew = RentalCurfew.Active(city: "Oslo", until: curfew.until, timeZone: farAway)
+        XCTAssertTrue(ScooterDockNotice.curfew(farCurfew).text.contains(there))
     }
 
     func testDockStatusPrefersFailureThenDelayThenCityTotalsThenAge() {

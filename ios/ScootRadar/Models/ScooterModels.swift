@@ -995,6 +995,8 @@ struct RentalCurfew: Sendable {
         let city: String
         /// When renting is allowed again.
         let until: Date
+        /// The city's time zone, whose clock that time is told by.
+        let timeZone: TimeZone
     }
 
     /// The ban in force at that point and instant, if any.
@@ -1012,7 +1014,7 @@ struct RentalCurfew: Sendable {
                     matching: DateComponents(hour: night.untilMinute / 60, minute: night.untilMinute % 60, second: 0),
                     matchingPolicy: .nextTime
                   ) else { continue }
-            return Active(city: curfew.city, until: until)
+            return Active(city: curfew.city, until: until, timeZone: zone)
         }
         return nil
     }
@@ -1494,9 +1496,18 @@ enum ScooterDockStatus: Equatable, Sendable {
         }
     }
 
-    /// "14:02", the time of day in the user's format.
-    static func clockTime(_ date: Date) -> String {
-        date.formatted(Date.FormatStyle(date: .omitted, time: .shortened, locale: ScooterLanguage.current.locale))
+    /// "14:02", the time of day in the user's format. For a place in another
+    /// time zone, given, the time by the place's clock, named after it where the
+    /// iPhone's clock reads otherwise: Oslo's night ban ends at "05:00 GMT+2"
+    /// seen from New York, as on the web (formatClockTime in src/lib/uiText.ts).
+    static func clockTime(_ date: Date, in zone: TimeZone? = nil) -> String {
+        let locale = ScooterLanguage.current.locale
+        guard let zone, zone.secondsFromGMT(for: date) != TimeZone.current.secondsFromGMT(for: date) else {
+            return date.formatted(Date.FormatStyle(date: .omitted, time: .shortened, locale: locale))
+        }
+        return date.formatted(
+            Date.FormatStyle(locale: locale, timeZone: zone).hour().minute().timeZone(.specificName(.short))
+        )
     }
 
     /// The body of the out-of-date card: "Last update 14:02. You’re offline. Check your connection."
@@ -1542,7 +1553,7 @@ enum ScooterDockNotice: Hashable, Identifiable, Sendable {
             String(
                 format: String(localized: "Night ban in %1$@: no scooter rentals until %2$@"),
                 curfew.city,
-                ScooterDockStatus.clockTime(curfew.until)
+                ScooterDockStatus.clockTime(curfew.until, in: curfew.timeZone)
             )
         case let .season(season):
             String(

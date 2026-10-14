@@ -247,7 +247,7 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
       {selection.curfew && (
         <p className="card-note card-curfew">
           <Icon name="moon" size={13} strokeWidth={2.2} />
-          <span>{formatUiText({ key: 'card.curfew', values: { city: selection.curfew.city }, time: selection.curfew.until }, i18n)}</span>
+          <span>{formatUiText({ key: 'card.curfew', values: { city: selection.curfew.city }, time: selection.curfew.until, timeZone: selection.curfew.timeZone }, i18n)}</span>
         </p>
       )}
 

@@ -259,7 +259,9 @@ function dockNotices(input: DockInput, health: ProviderHealth): DockNotice[] {
   const notices: DockNotice[] = [];
   // Some operators keep listing their scooters through the ban, so it comes first.
   const curfew = activeCurfew(input.viewportCenter, input.now);
-  if (curfew) notices.push({ kind: 'curfew', text: { key: 'dock.curfew', values: { city: curfew.city }, time: curfew.until } });
+  if (curfew) {
+    notices.push({ kind: 'curfew', text: { key: 'dock.curfew', values: { city: curfew.city }, time: curfew.until, timeZone: curfew.timeZone } });
+  }
   // Its operators may list nothing or stop answering: they are not named as down (scooterSnapshots.ts).
   const season = activeSeasonalPause(input.viewportCenter, input.now);
   if (season) notices.push({ kind: 'season', text: { key: 'dock.season', values: { city: season.city }, month: season.month } });

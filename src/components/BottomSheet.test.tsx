@@ -297,7 +297,7 @@ describe('BottomSheet', () => {
     const night = Date.parse('2026-10-12T22:30:00Z');
     renderSheet({ dock: dock({ viewportCenter: [59.9139, 10.7522], now: night, lastUpdated: night - 30_000 }) });
 
-    const until = formatClockTime(Date.parse('2026-10-13T03:00:00Z'), 'en');
+    const until = formatClockTime(Date.parse('2026-10-13T03:00:00Z'), 'en', undefined, 'Europe/Oslo');
     const note = screen.getByText(`Night ban in Oslo: no scooter rentals until ${until}`).closest('.dock-note');
     expect(note).toHaveClass('dock-note-calm');
     expect(note?.closest('[role="status"]')).toHaveClass('dock-notes');

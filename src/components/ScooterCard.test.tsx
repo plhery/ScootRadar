@@ -162,9 +162,10 @@ describe('ScooterCard', () => {
 
   it('says under the price that the city bans renting at night, and from when it can be rented', () => {
     const until = Date.parse('2026-10-13T03:00:00Z');
-    renderCard({ curfew: { city: 'Oslo', until } });
+    renderCard({ curfew: { city: 'Oslo', until, timeZone: 'Europe/Oslo' } });
 
-    const line = screen.getByText(`Night ban in Oslo: you can rent it from ${formatClockTime(until, 'en')}`).closest('p');
+    // By Oslo's clock, named where the device's reads otherwise.
+    const line = screen.getByText(`Night ban in Oslo: you can rent it from ${formatClockTime(until, 'en', undefined, 'Europe/Oslo')}`).closest('p');
     expect(line).toHaveClass('card-note', 'card-curfew');
     expect(line?.previousElementSibling).toHaveTextContent('CHF 1.00 to unlock, then CHF 0.35 a minute');
   });

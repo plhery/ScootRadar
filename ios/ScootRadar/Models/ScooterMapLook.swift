@@ -581,7 +581,7 @@ struct ScooterCardContent: Equatable, Sendable {
             String(
                 format: String(localized: "Night ban in %1$@: you can rent it from %2$@"),
                 curfew.city,
-                ScooterDockStatus.clockTime(curfew.until)
+                ScooterDockStatus.clockTime(curfew.until, in: curfew.timeZone)
             )
         }
         let providerName = scooter.providerInfo?.name ?? scooter.provider.capitalized

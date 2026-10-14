@@ -29,6 +29,8 @@ export interface ActiveCurfew {
   city: string;
   /** When renting is allowed again, epoch milliseconds. */
   until: number;
+  /** The city's time zone, "Europe/Oslo", whose clock that time is told by. */
+  timeZone: string;
 }
 
 const CURFEWS = catalog.curfews as unknown as RentalCurfew[];
@@ -100,7 +102,7 @@ export function activeCurfew(point: [number, number] | null, now: number): Activ
     // The night the clocks change is an hour longer or shorter than the wall clock says.
     const drift = ((until - localClock(end, curfew.timeZone).minutes + DAY_MINUTES * 1.5) % DAY_MINUTES) - DAY_MINUTES / 2;
     end += drift * MINUTE_MS;
-    return { city: curfew.city, until: end };
+    return { city: curfew.city, until: end, timeZone: curfew.timeZone };
   }
   return null;
 }
