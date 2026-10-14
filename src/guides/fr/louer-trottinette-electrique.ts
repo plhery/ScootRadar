@@ -44,7 +44,7 @@ const guide: Guide = {
               ['Suisse', 'Lime, Bolt, Voi, Dott, Bird, PubliBike', '18 ans', 'Scan d’une pièce d’identité là où c’est requis'],
               ['France', 'Lime, Dott, Voi, Bird', '18 ans', 'Pièce d’identité exigée chez Dott à Lyon'],
               ['Bruxelles', 'Bolt, Dott', '18 ans', 'Scan d’une pièce d’identité avant le premier trajet, depuis décembre 2025'],
-              ['France et Belgique', 'Pony', '16 ans', 'Caution de 0 à 25 € selon la ville, remboursable'],
+              ['France et Belgique', 'Pony', '16 ans (18 à Bordeaux)', 'Caution de 0 à 25 € selon la ville, remboursable'],
             ],
           },
         },
@@ -69,7 +69,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Lime, Dott et Bird ne publient pas leurs tarifs dans ces données ; Dott annonce en général de 0,17 à 0,55 € la minute selon la ville. Seul le prix affiché dans l’app fait foi.',
+        'Bird ne publie pas ses tarifs dans ces données ; ceux de Lime et de Dott changent d’une ville à l’autre, et Dott annonce en général de 0,17 à 0,55 € la minute selon la ville. Seul le prix affiché dans l’app fait foi.',
         '**La somme bloquée sur votre carte.** Au départ, l’opérateur réserve un petit montant : chez Dott, CHF 3 en Suisse, 2,50 € en France et 3 € en Belgique ; chez Voi, de 4 à 7,50 € selon le pays et le moyen de paiement. Il est libéré à la fin du trajet, mais votre banque peut mettre plusieurs jours à l’afficher.',
         '**Pass et forfaits.** Si vous roulez souvent, un paquet de minutes (Voi, LimePass, ou le Minute Pass de Dott dans certaines villes), un pass 24 heures (Pony, dès 4 €) ou un abonnement à déverrouillages gratuits (LimePrime, Voi Pass, pass Bolt, Pony dès 8,50 € les 30 jours) revient moins cher. En France, Dott a aussi un tarif solidaire, de 60 à 75 % moins cher.',
       ],
@@ -107,7 +107,7 @@ const guide: Guide = {
             '**hors de la zone de service** : la trottinette s’arrête, et vous ne pouvez terminer qu’en y revenant.',
           ],
         },
-        'Garez la trottinette debout, béquille baissée, sans bloquer le trottoir ni une entrée, puis prenez la photo : Dott la fait analyser par une intelligence artificielle, et Voi la vérifie aussi. À Lille, une Lime doit être rendue dans l’une des quelque 1 400 stations ; à Bruxelles, dans une dropzone.',
+        'Garez la trottinette debout, béquille baissée, sans bloquer le trottoir ni une entrée, puis prenez la photo : Dott la fait analyser par une intelligence artificielle, et Voi la vérifie aussi. Dans la métropole lilloise, une Lime doit être rendue dans l’une des près de 1 400 stations ; à Bruxelles, dans une dropzone.',
         { note: 'Tant que l’app n’a pas confirmé la fin de la location, vous payez. Avant de vous éloigner, vérifiez que l’écran indique bien que le trajet est terminé.' },
         {
           table: {
@@ -173,7 +173,7 @@ const guide: Guide = {
     },
     {
       question: 'Faut-il un permis pour louer une trottinette en libre-service ?',
-      answer: 'Non, ni en Suisse, ni en France, ni en Belgique : il faut l’âge exigé par l’opérateur, 18 ans en général, 16 ans chez Pony. Au Royaume-Uni, en revanche, le permis de conduire est exigé.',
+      answer: 'Non, ni en Suisse, ni en France, ni en Belgique : il faut l’âge exigé par l’opérateur, 18 ans en général, 16 ans chez Pony (18 ans à Bordeaux). Au Royaume-Uni, en revanche, le permis de conduire est exigé.',
     },
     {
       question: 'Peut-on louer plusieurs trottinettes avec un seul compte ?',

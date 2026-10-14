@@ -72,7 +72,7 @@ const guide: Guide = {
           },
         },
         '**Ein Rechenbeispiel:** Du fährst mit Voi in Bern 9 Minuten und 20 Sekunden. Berechnet werden 10 Minuten: CHF 1.– + 10 × 42 Rappen = CHF 5.20. Suchst du danach noch zwei Minuten einen erlaubten Abstellplatz, sind es 12 Minuten und CHF 6.04.',
-        'Wo kein Tarif veröffentlicht ist, etwa bei Lime, Bird und Dott, zeigt die App den Preis vor dem Entsperren. Alle Schweizer Tarife nach Stadt: [E-Trottinett-Preise in der Schweiz](guide:swiss-prices).',
+        'Bird veröffentlicht keinen Tarif in offenen Daten, und bei Lime und Dott wechselt er von Stadt zu Stadt; wie bei jedem Anbieter zeigt die App den Preis vor dem Entsperren. Alle Schweizer Tarife nach Stadt, auch die von Dott und Lime: [E-Trottinett-Preise in der Schweiz](guide:swiss-prices).',
       ],
     },
     {

@@ -40,7 +40,7 @@ const guide: Guide = {
     {
       heading: 'Vitesse maximale et équipement obligatoire',
       blocks: [
-        'La trottinette doit être construite pour ne pas dépasser **25 km/h**. Les limitations plus basses s’appliquent, et dans une aire piétonne, vous roulez au pas. En libre-service, la vitesse est souvent bridée plus bas, par exemple à 20 km/h à Lyon et à Lille.',
+        'La trottinette doit être construite pour ne pas dépasser **25 km/h**. Les limitations plus basses s’appliquent, et dans une aire piétonne, vous roulez au pas. En libre-service, la vitesse est souvent bridée plus bas, par exemple à 20 km/h à Lyon et dans la métropole lilloise.',
         'Votre trottinette doit avoir :',
         {
           list: [
@@ -143,8 +143,8 @@ const guide: Guide = {
         '**Paris** n’a plus de trottinettes en libre-service depuis le 1er septembre 2023. À la votation du 2 avril 2023, 89 % des votants ont dit « contre », avec environ 7,5 % de participation, et les conventions de Dott, Lime et Tier ont pris fin le 31 août 2023. Au 12 octobre 2026, nous n’avons trouvé aucune annonce officielle de retour. Pour savoir quoi louer à la place, lisez notre guide de la [trottinette en libre-service à Paris](guide:paris).',
         'En grande banlieue, le 12 octobre 2026, la carte en montrait autour de Versailles (à La Celle-Saint-Cloud, au Chesnay-Rocquencourt et à Bougival, mais aucune à Versailles même), à Saint-Quentin-en-Yvelines et dans le Grand Paris Seine et Oise (Yvelines), autour de Lagny-sur-Marne et de Bussy-Saint-Georges (Marne-la-Vallée, Seine-et-Marne) et à Évry-Courcouronnes (Essonne). Le casque est obligatoire dans les Yvelines, en Seine-et-Marne et, depuis le 5 octobre 2026, en Essonne.',
         '**Lyon** n’autorise plus qu’un opérateur, Dott, depuis le 1er janvier 2025 : 18 ans minimum, vitesse bridée à 20 km/h, trottinettes immatriculées. Le 12 octobre 2026, ScootRadar affichait environ 3 500 véhicules Dott sur la carte autour de [Lyon](map:fr:Lyon). Prix, casque et règles locales : voyez notre guide de la [trottinette électrique à Lyon](guide:lyon).',
-        '**Bordeaux Métropole** a retenu Dott et Pony, 1 000 trottinettes chacun, du 1er novembre 2025 au 1er novembre 2029 : 18 ans minimum, départ et retour uniquement sur les quelque 500 emplacements dédiés. [Voir Bordeaux sur la carte](map:fr:Bordeaux).',
-        '**Lille** : selon la Métropole, les trottinettes Lime se rendent dans l’une des quelque 1 400 stations ; tant qu’elle n’y est pas garée, la location continue d’être facturée.',
+        '**Bordeaux Métropole** a retenu Dott et Pony, 1 000 trottinettes chacun, du 1er novembre 2025 au 1er novembre 2029 : 18 ans minimum, départ et retour uniquement sur les près de 600 emplacements dédiés. [Voir Bordeaux sur la carte](map:fr:Bordeaux).',
+        '**Métropole lilloise** : la ville de Lille n’autorise que des vélos en libre-service ; dans les autres communes de la Métropole, les trottinettes Lime se rendent dans l’une des près de 1 400 stations, et tant que la trottinette n’y est pas garée, la location continue d’être facturée.',
         'Le 12 octobre 2026, la carte montrait aussi Lime et Voi à [Marseille](map:fr:Marseille), Voi à Grenoble et au Havre, Pony ou Bird dans des villes comme Angers, Perpignan ou Laval. D’autres opérateurs peuvent y rouler sans publier leurs données. Pour trouver la trottinette la plus proche, ouvrez [la carte](/map) : un bouton ouvre l’app de l’opérateur, où vous la déverrouillez et payez.',
         'En libre-service, c’est l’app qui décide où la location peut se terminer : hors zone, la facturation continue ou l’opérateur peut vous pénaliser.',
       ],

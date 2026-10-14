@@ -72,7 +72,7 @@ const guide: Guide = {
           },
         },
         '**A worked example.** You ride a Voi in Bern for 9 minutes 20 seconds. That’s billed as 10 minutes: CHF 1 + 10 × CHF 0.42 = CHF 5.20. Spend two more minutes looking for a spot outside a no-parking zone and it’s 12 minutes, or CHF 6.04.',
-        'Lime, Bird and Dott publish no rates in open data, but like every operator they show the price in the app before you unlock. Swiss rates by city are in [e-scooter prices in Switzerland](guide:swiss-prices).',
+        'Bird publishes no rates in open data, and Lime’s and Dott’s change from city to city, but like every operator they show the price in the app before you unlock. Swiss rates by city, Dott’s and Lime’s included, are in [e-scooter prices in Switzerland](guide:swiss-prices).',
         '**Passes** pay off if you ride often. Minute bundles (LimePass, Voi, Dott), day passes (Voi, Dott) and monthly passes (LimePrime, Voi Pass, Bolt) cut or waive the unlock fee.',
         '**The hold.** At the start of a ride the app reserves a small sum on your card: about CHF 3, £2.25 or €2.50 to €3 at Dott, and £4 to £7.50 or €4 to €7.50 at Voi, which also reserves CHF 5 when you sign up in Switzerland. It’s released when the ride ends, though your bank may take days to show it.',
       ],

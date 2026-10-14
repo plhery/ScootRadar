@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'Deelstep huren: zo huur je een elektrische step in België',
   description: 'Deelstep huren in België, stap voor stap: de app, leeftijd en id-scan, wat een rit kost, reserveren, parkeren met foto, ongevallen en huren in het buitenland.',
   headline: 'Deelstep huren in België: van de app tot het einde van je rit',
-  lede: 'Een deelstep huren gaat zo: je installeert de app van de aanbieder, maakt een account aan met je gsm-nummer en een betaalkaart, scant de QR-code op het stuur en rijdt weg. Op het einde zet je de step op een toegelaten plek, in Brussel en binnen de Antwerpse Leien in een dropzone, en neem je een foto. Bolt en Dott vragen 18 jaar, Voi in Antwerpen en Hoppy in Kortrijk 16, en in Brussel scan je één keer je identiteitsbewijs. Je betaalt om te ontgrendelen en per minuut: Voi publiceerde in Antwerpen op 12 oktober 2026 € 0,99 plus € 0,25 per minuut, dus € 3,49 voor tien minuten.',
+  lede: 'Een deelstep huren gaat zo: je installeert de app van de aanbieder, maakt een account aan met je gsm-nummer en een betaalkaart, scant de QR-code op het stuur en rijdt weg. Op het einde zet je de step op een toegelaten plek, in Brussel en binnen de Antwerpse Leien in een dropzone, en neem je een foto. Bolt, Dott en Lime vragen 18 jaar, Voi in Antwerpen en Hoppy in Kortrijk 16, en in Brussel scan je één keer je identiteitsbewijs. Je betaalt om te ontgrendelen en per minuut: Voi publiceerde in Antwerpen op 12 oktober 2026 € 0,99 plus € 0,25 per minuut, dus € 3,49 voor tien minuten.',
   published: '2026-10-12',
   updated: '2026-10-12',
   sections: [
@@ -44,7 +44,7 @@ const guide: Guide = {
               ['Bolt (Brussel, Antwerpen)', '18 jaar', 'Kan een foto van je rijbewijs of een officieel identiteitsbewijs vragen; in Brussel verplicht', 'Visa of Mastercard; American Express in de eurozone'],
               ['Dott (Brussel, Charleroi)', '18 jaar', 'In Brussel: identiteitskaart, rijbewijs, paspoort of verblijfsvergunning', 'Kaart, Bancontact, PayPal, Apple Pay, Revolut Pay'],
               ['Voi (Antwerpen)', '16 jaar', 'Niet vermeld', 'Kaart, Apple Pay, Google Pay, PayPal, Klarna'],
-              ['Lime (Antwerpen)', 'Niet bevestigd voor België: kijk in de app', 'In sommige steden een id-scan', 'Kaart of prepaidkaart; op sommige plaatsen ook Apple Pay, Google Pay, PayPal of Klarna'],
+              ['Lime (Antwerpen)', '18 jaar', 'In sommige steden een id-scan', 'Kaart of prepaidkaart; op sommige plaatsen ook Apple Pay, Google Pay, PayPal of Klarna'],
               ['Hoppy (Kortrijk)', '16 jaar, 18 voor een abonnement', 'Niet vermeld', 'Kaart, of een Hoppy-portefeuille die automatisch oplaadt'],
             ],
           },
@@ -109,7 +109,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Voi rekent pas iets aan na meerdere waarschuwingen; Lime noemt geen bedrag. Bovenop die kosten kan de politie of de gemeente je nog een boete geven.',
+        'Voi rekent voor fout parkeren pas iets aan na meerdere waarschuwingen, maar laat je volgens zijn Belgische voorwaarden € 25 betalen als hij de step als achtergelaten beschouwt. Lime rekent in België tot € 50 aan als je de step in een verboden zone gebruikt, en € 100 om hem buiten het toegelaten gebied op te halen. Bovenop die kosten kan de politie of de gemeente je nog een boete geven.',
       ],
     },
     {
@@ -161,7 +161,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Hoe oud moet je zijn om een deelstep te huren?',
-      answer: 'Bij Bolt en Dott 18 jaar, ook al laat de wet je vanaf 16 steppen. Voi in Antwerpen, Hoppy in Kortrijk en Pony laten je vanaf 16 rijden; bij Lime kijk je in de app. Hoppy rekent € 50 aan als iemand jonger met je account rijdt.',
+      answer: 'Bij Bolt, Dott en Lime 18 jaar, ook al laat de wet je vanaf 16 steppen. Voi in Antwerpen, Hoppy in Kortrijk en Pony laten je vanaf 16 rijden. Hoppy rekent € 50 aan als iemand jonger met je account rijdt.',
     },
     {
       question: 'Mag je met twee op een deelstep?',
@@ -186,6 +186,8 @@ const guide: Guide = {
     { title: 'Dott Help: betaalmethoden (Engels)', url: 'https://help.ridedott.com/en/articles/209' },
     { title: 'Dott: gratis reserveren (Engels)', url: 'https://ridedott.com/reservations/' },
     { title: 'Voi: Antwerpen, prijzen en leeftijd (Engels)', url: 'https://www.voi.com/city/antwerp' },
+    { title: 'Voi: Algemene voorwaarden voor het gebruik, België', url: 'https://www.voi.com/nl/juridisch/algemene-voorwaarden-voor-het-gebruik/belgie' },
+    { title: 'Lime: Gebruikersovereenkomst België', url: 'https://www.li.me/nl-be/user-agreement' },
     { title: 'Voi Help: gereserveerde bedragen (Engels)', url: 'https://www.voi.com/help/accounts-and-payments/why-do-i-see-a-reserved-or-pending-payment-from-voi' },
     { title: 'Lime Help: ritkosten en tarieven (Engels)', url: 'https://help.li.me/hc/en-us/articles/115004914208' },
     { title: 'Hoppy: Algemene voorwaarden', url: 'https://behoppy.eu/nl/algemene-voorwaarden/' },

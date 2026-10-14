@@ -147,7 +147,7 @@ const guide: Guide = {
             '**App in cui prenoti e paghi.** In alcune città, Zurigo compresa, noleggi i Lime dall’app di Uber; a Berlino, Monaco e Oslo lo fanno le app dei trasporti pubblici, per alcuni operatori. Lì i pass dell’operatore di solito non valgono.',
           ],
         },
-        'In Italia la mappa copre [Roma](map:it:Roma), dove il 12 ottobre 2026 mostrava circa 3.700 monopattini Bird; Dott e Lime li trovi nelle loro app. In Ticino, intorno a [Locarno](map:ch:locarno), mostra i mezzi PubliBike, che prendi e riconsegni in una stazione. [Apri la mappa](/map) per vedere chi ha un monopattino vicino a te.',
+        'In Italia la mappa copre [Roma](map:it:Roma), dove il 12 ottobre 2026 mostrava circa 3.700 monopattini Bird (Dott e Lime li trovi nelle loro app), i Bird di [Napoli](map:it:Napoli) e [Palermo](map:it:Palermo) e, a [Catania](map:it:Catania), i monopattini di Elerent. In Ticino, intorno a [Locarno](map:ch:locarno), mostra i mezzi PubliBike, che prendi e riconsegni in una stazione. [Apri la mappa](/map) per vedere chi ha un monopattino vicino a te.',
       ],
     },
   ],

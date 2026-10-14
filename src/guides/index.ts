@@ -56,6 +56,22 @@ import howToRentPt from './pt/alugar-trotinete-eletrica';
 import howToRentEs from './es/alquilar-patinete-electrico';
 import howToRentIs from './is/leigja-rafskutu';
 import marseilleFr from './fr/trottinette-electrique-marseille';
+import bristolEn from './en/e-scooters-bristol';
+import bordeauxFr from './fr/trottinette-electrique-bordeaux';
+import stuttgartDe from './de/e-scooter-stuttgart';
+import winterthurDe from './de/e-trottinett-winterthur';
+import tenerifeEn from './en/e-scooters-tenerife';
+import tenerifeEs from './es/alquiler-patinete-electrico-tenerife-sur';
+import trondheimNb from './nb/elsparkesykkel-trondheim';
+import naplesIt from './it/monopattini-sharing-napoli';
+import antwerpNl from './nl/deelstep-antwerpen';
+import lilleFr from './fr/trottinette-electrique-lille';
+import liverpoolEn from './en/e-scooters-liverpool';
+import dusseldorfDe from './de/e-scooter-duesseldorf';
+import hanoverDe from './de/e-scooter-hannover';
+import stavangerNb from './nb/elsparkesykkel-stavanger';
+import palermoIt from './it/monopattini-sharing-palermo';
+import stGallenDe from './de/e-trottinett-st-gallen';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -66,6 +82,8 @@ export const GUIDES: readonly Guide[] = [
   bernEn,
   ukLawEn,
   ukHireEn,
+  bristolEn,
+  liverpoolEn,
   berlinEn,
   munichEn,
   parisEn,
@@ -75,40 +93,54 @@ export const GUIDES: readonly Guide[] = [
   portoEn,
   osloEn,
   reykjavikEn,
+  tenerifeEn,
   swissRulesDe,
   howToRentDe,
   swissPricesDe,
   zurichDe,
   baselDe,
   bernDe,
+  winterthurDe,
+  stGallenDe,
   germanRulesDe,
   berlinDe,
   munichDe,
   cologneDe,
   frankfurtDe,
+  stuttgartDe,
+  dusseldorfDe,
+  hanoverDe,
   swissRulesFr,
   howToRentFr,
   frenchRulesFr,
   parisFr,
   lyonFr,
   marseilleFr,
+  bordeauxFr,
+  lilleFr,
   brusselsFr,
   swissRulesIt,
   howToRentIt,
   italianRulesIt,
   romeIt,
+  naplesIt,
+  palermoIt,
   belgianRulesNl,
   howToRentNl,
   brusselsNl,
+  antwerpNl,
   norwegianRulesNb,
   howToRentNb,
   osloNb,
+  trondheimNb,
+  stavangerNb,
   portugueseRulesPt,
   howToRentPt,
   lisbonPt,
   portoPt,
   spanishRulesEs,
   howToRentEs,
+  tenerifeEs,
   icelandicRulesIs,
   howToRentIs,
   reykjavikIs,

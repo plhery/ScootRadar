@@ -124,7 +124,7 @@ const guide: Guide = {
       blocks: [
         'In **Antwerpen** is het hele gebied binnen de Leien sinds **1 juli 2025** een no park zone voor deelsteps. Je beëindigt je rit daar alleen in een van de **129 dropzones**: witte vakken op de grond met ‘dropzone’ erop en een infobord. In drukke winkelgebieden ligt er een binnen 150 meter, elders binnen 250 meter.',
         'Op de **Meir** en de **Grote Markt** rijdt een deelstep tussen 11 en 19 uur hooguit **8 km/u**. Aan Antwerpen-Centraal, op begraafplaatsen en in natuurgebieden remt de step zelf af tot hij stilstaat.',
-        'Bolt, Lime en Voi hebben er een vergunning. De stad houdt het op 16 jaar, zoals de wet, maar Bolt vraagt 18; voor Voi en Lime kijk je in de app. Op de [kaart van Antwerpen](map:be:Antwerpen) toont ScootRadar de steps van Voi.',
+        'Bolt, Lime en Voi hebben er een vergunning. De stad houdt het op 16 jaar, zoals de wet, en ook Voi verhuurt vanaf 16; Lime en Bolt vragen 18. Op de [kaart van Antwerpen](map:be:Antwerpen) toont ScootRadar de steps van Voi.',
         'In [Kortrijk](map:be:Kortrijk) rijden 200 deelsteps van Hoppy, verdeeld over ongeveer 200 parkeerzones, en je kan er een tot 30 minuten op voorhand reserveren. Op de Grote Markt en aan de Verlaagde Leieboorden rij je hooguit **6 km/u**. Hoppy laat je steppen vanaf 16 jaar en rekent € 50 extra aan als iemand jonger rijdt.',
         'In **Charleroi** vermeldt de stad drie aanbieders (Dott, Pony en Bolt) en in een eerste fase hooguit 1500 deelvoertuigen. Parkeer je er een deelstep, laat dan 1,50 meter van het voetpad vrij en blijf weg van opritten, haltes, zebrapaden en geleidetegels. De stadspagina heeft geen datum: kijk in de app wat vandaag geldt.',
         'Zoek je de dichtstbijzijnde deelstep, van welke aanbieder ook, dan toont [de kaart van ScootRadar](/map) ze allemaal samen. Ontgrendelen en betalen doe je in de app van de aanbieder.',
@@ -160,7 +160,7 @@ const guide: Guide = {
     },
     {
       question: 'Mag je als 16-jarige een deelstep huren?',
-      answer: 'De wet laat je vanaf 16 jaar met een step rijden, maar aanbieders mogen strenger zijn. Bolt en Dott vragen in België 18 jaar; Hoppy, in Kortrijk, laat je vanaf 16 rijden. Bij andere aanbieders kijk je in de app.',
+      answer: 'De wet laat je vanaf 16 jaar met een step rijden, maar aanbieders mogen strenger zijn. Bolt, Dott en Lime vragen in België 18 jaar; Voi in Antwerpen en Hoppy in Kortrijk laten je vanaf 16 rijden. Bij andere aanbieders kijk je in de app.',
     },
     {
       question: 'Kan je je rijbewijs kwijtraken door dronken te steppen?',

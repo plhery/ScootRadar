@@ -163,7 +163,7 @@ const guide: Guide = {
           list: [
             '**Deutsche Bahn, Fernverkehr:** Zusammengeklappt und sicher verstaut fährt er kostenlos als Handgepäck mit. Den Akku darfst du nicht herausnehmen oder laden. Grosse Scooter, die sich nicht klappen lassen, reisen wie Fahrräder.',
             '**S-Bahn und Regionalzug:** Kein bundesweites Verbot. In den Verbünden von Berlin, Hamburg, München, Stuttgart, Leipzig und Hannover darf er zusammengeklappt mit, in München mit höchstens 90 × 80 cm und 25 kg.',
-            '**U-Bahn, Tram und Stadtbus:** Viele Betriebe haben E-Tretroller 2023 und 2024 wegen der Brandgefahr der Akkus verbannt, oft auch zusammengeklappt: die BVG in Berlin, die Hamburger U-Bahn, die MVG in München, die KVB in Köln und die VGF in Frankfurt. In Stuttgart fährt er zusammengeklappt kostenlos mit.',
+            '**U-Bahn, Tram und Stadtbus:** Viele Betriebe haben E-Tretroller 2023 und 2024 wegen der Brandgefahr der Akkus verbannt, oft auch zusammengeklappt: die BVG in Berlin, die Hamburger U-Bahn, die MVG in München, die KVB in Köln, die VGF in Frankfurt, die Rheinbahn in Düsseldorf und die ÜSTRA in Hannover. In Stuttgart fährt er zusammengeklappt kostenlos mit.',
           ],
         },
         'Die Akkunorm, die die Verkehrsbetriebe gefordert hatten, ist für neue E-Scooter ab 2027 Pflicht. Die genannten Verbote gelten trotzdem weiter, Stand Oktober 2026.',

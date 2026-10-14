@@ -117,7 +117,7 @@ const guide: Guide = {
     {
       heading: 'E-scooter parking bays, and what parking outside them costs',
       blocks: [
-        'In most areas a ride can end only in a bay or parking spot shown in the app. Bolt in Liverpool and Voi in Northampton, Kettering and Corby are the exceptions: there you leave the scooter on the street.',
+        'In most areas, Liverpool included, a ride can end only in a bay or parking spot shown in the app. Voi in Northampton, Kettering and Corby is the exception: there you leave the scooter on the street.',
         {
           table: {
             caption: 'Where to end a ride, and what the operators charge, October 2026',
@@ -125,8 +125,8 @@ const guide: Guide = {
             rows: [
               ['Beryl, all areas', 'In a Beryl Bay', 'Outside a bay: £10 (£5 in Bournemouth and Poole). Outside the zone: £20 to £25 (£10 in Bournemouth and Poole), plus £80 if the scooter isn’t back within 24 hours. Not locked properly: £10'],
               ['Lime and Voi, London', 'In a marked bay', 'Not published'],
-              ['Dott', 'Where the app allows; in Nottingham, at one of about 300 parking locations', 'Fines for poor parking; Dott’s UK terms allow a £50 charge for breaking them'],
-              ['Bolt, Liverpool', 'On the street; your end-of-ride photo is checked by AI', 'Up to £40 under Bolt’s UK terms, and up to £100 to fetch a scooter left outside the area'],
+              ['Dott', 'In the West of England, only in a parking bay; in Nottingham, at one of about 300 parking locations; elsewhere where the app allows', 'In the West of England, £10 outside a bay (£15 outside the area); Dott’s UK terms allow a £50 charge for breaking them'],
+              ['Bolt, Liverpool', 'In one of about 1,500 bays shown in the app; your end-of-ride photo is checked by AI', 'Up to £40 under Bolt’s UK terms, and up to £100 to fetch a scooter left outside the area'],
               ['Lime, West Midlands', 'In a designated area shown in the app', 'Charges apply; amounts not published'],
               ['Voi, outside London', 'At a parking spot in most towns; in Northampton, Kettering and Corby, parallel to and close to a wall', 'Not published'],
             ],
@@ -146,7 +146,7 @@ const guide: Guide = {
             '**Pavements:** never, not even for a few metres: a £50 fixed penalty.',
             '**Passengers:** one rider only; in the West of England, Dott bans riders caught riding two up.',
             '**Phone and drink:** using a phone in your hand costs £200 and 6 points, and the drink-drive limit for cars applies. In Liverpool, Bolt’s app can ask for a reaction test first.',
-            '**Speed:** 15.5 mph at most; 12.5 mph in London, Brighton and Cornwall, and 7.5 mph in each Cornish town’s pedestrianised Go Slow Zone.',
+            '**Speed:** 15.5 mph at most; 12.5 mph in London, Brighton, Cornwall and the West of England, and 7.5 mph in each Cornish town’s pedestrianised Go Slow Zone.',
             '**Hours:** many areas run around the clock, but Brighton has a curfew from midnight to 5am, and in Aylesbury and High Wycombe Voi listed 5am to 11pm on Mondays.',
           ],
         },

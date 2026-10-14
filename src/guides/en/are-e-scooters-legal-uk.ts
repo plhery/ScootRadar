@@ -60,7 +60,7 @@ const guide: Guide = {
               ['UK licence', 'Full or provisional, with category Q (included with AM, A or B)'],
               ['Foreign licence', 'A full EU or EEA licence works. A full licence from elsewhere works if it covers cars, mopeds or motorcycles and you entered the UK in the last 12 months. Foreign provisional licences and learner permits don’t'],
               ['Age', 'The legal minimum is 16, but Beryl and Dott require 18 or over, as do Lime and Voi in London'],
-              ['Top speed', '15.5 mph at most; 12.5 mph in London, Brighton and Cornwall, and slower in go-slow zones'],
+              ['Top speed', '15.5 mph at most; 12.5 mph in London, Brighton, Cornwall and the West of England, and slower in go-slow zones'],
               ['Helmet', 'Recommended, not required by law'],
               ['Passengers and loads', 'One person only. No towing, and no bags hanging from the handlebars'],
               ['Phone', 'Don’t use it while riding. A navigation screen is fine if you set it up before you set off'],

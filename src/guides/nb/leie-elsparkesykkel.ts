@@ -30,7 +30,7 @@ const guide: Guide = {
           ],
         },
         'Bolt kan kreve at du består en kognitiv reaksjonstest for å låse opp i topptimer. Ifølge Bolts generelle hjelpeside får du fem forsøk, og stryker du, kan du ikke leie på tre timer. Ryde har en obligatorisk reaksjonstest på kveldstid i helgene.',
-        'Mange kommuner stenger utleien om natten, Oslo og Trondheim fra kl. 23 til 05 hver natt. Tidene for flere byer står i [reglene for elsparkesykkel i Norge](guide:norwegian-rules).',
+        'Mange kommuner stenger utleien om natten, Oslo fra kl. 23 til 05 hver natt. Trondheims forskrift sier det samme, men i 2026 har Voi og Ryde bare stengt natt til lørdag og søndag, så sjekk appen. Tidene for flere byer står i [reglene for elsparkesykkel i Norge](guide:norwegian-rules).',
       ],
     },
     {

@@ -21,7 +21,7 @@ const guide: Guide = {
           list: [
             '**Bird:** [Gijón](map:es:Gijón), [Getafe](map:es:Getafe), el sur de Tenerife y Fuerteventura (Caleta de Fuste, Costa Calma y Morro Jable).',
             '**Hopp:** [Torrevieja](map:es:Torrevieja) y Pilar de la Horadada, en la Costa Blanca; Jávea (y Dénia, según su web), en la Marina Alta; y el sur de Tenerife, en [Playa de las Américas](map:es:Playa de las Américas) y Golf del Sur.',
-            '**Dott** tiene condiciones y seguro para España y Canarias, pero no hemos podido confirmar en qué ciudades alquila patinetes.',
+            '**Dott** tiene condiciones y seguro para España y Canarias; según el Ayuntamiento, alquila patinetes en Santa Cruz de Tenerife desde 2024, pero no publica datos que nuestro mapa pueda leer.',
           ],
         },
         'En Oviedo, según la prensa, Bird gestiona desde junio de 2025 el servicio municipal, con 200 patinetes en 171 puntos fijos.',

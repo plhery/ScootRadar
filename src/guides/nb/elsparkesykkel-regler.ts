@@ -157,7 +157,7 @@ const guide: Guide = {
             caption: 'Utleieregler i utvalgte byer, per oktober 2026',
             head: ['By', 'Stengt om natten', 'Verdt å vite'],
             rows: [
-              ['Trondheim', '23–05 hver natt', 'Sesong fra 15. mars til 1. desember, og stengt ved fare for snø og is. Opptil tre operatører og 3200 kjøretøy til sammen; kommunen fastsetter antallet før hver sesong.'],
+              ['Trondheim', 'Forskriften: 23–05 hver natt. I 2026 har Voi og Ryde bare stengt natt til lørdag og søndag', 'Sesong fra 15. mars til 1. desember, og stengt ved fare for snø og is. Opptil tre operatører og 3200 kjøretøy til sammen; kommunen fastsetter antallet før hver sesong.'],
               ['Bergen', 'Ny forskrift: 23–05 natt til lørdag, søndag og røde dager', 'Saktesoner i sentrum, de fleste på 12 km/t. Den nye forskriften fra juni 2026 gir opptil to operatører, valgt etter konkurranse. Dagens operatører fortsetter til de nye tillatelsene starter, etter planen 31. mars 2027.'],
               ['Stavanger', '00–05 natt til lørdag, søndag og helligdager', 'Opptil to operatører, med tak på antall kjøretøy per sone.'],
               ['Kristiansand', '00–05 lørdag og søndag', 'Opptil to operatører. Sparkesyklene tas inn ved fare for snø og is.'],
@@ -194,7 +194,7 @@ const guide: Guide = {
     },
     {
       question: 'Hvorfor kan jeg ikke leie elsparkesykkel om natten?',
-      answer: 'Fordi mange kommuner har bestemt at utleien skal være stengt om natten. I Oslo og Trondheim er den stengt fra kl. 23 til 05 hver natt. I Stavanger og Tromsø gjelder stengingen bare natt til lørdag, søndag og helligdager.',
+      answer: 'Fordi mange kommuner har bestemt at utleien skal være stengt om natten. I Oslo er den stengt fra kl. 23 til 05 hver natt. Trondheims forskrift sier det samme, men i 2026 har Voi og Ryde bare stengt natt til lørdag og søndag, så sjekk appen. I Stavanger og Tromsø gjelder stengingen bare natt til lørdag, søndag og helligdager.',
     },
     {
       question: 'Blir aldersgrensen for elsparkesykkel 16 år?',
