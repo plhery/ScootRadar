@@ -9,7 +9,9 @@ Hopp's Polish towns, at the address Hopp uses for its other towns. Every feed
 was polled at 23:41, 23:49 and 01:10 Warsaw time on the night of Monday 12
 October, then every five minutes from 03:40 to 09:15 on Tuesday 13 October.
 Every feed URL is https, on the discovery's origin and under its directory. No
-account credentials or private rider APIs are used.
+account credentials or private rider APIs are used. Hopp Września, left out
+then, was added on 14 October 2026; see
+[Hopp in Września, October 2026](#hopp-in-września-october-2026).
 
 | Operator | City | Available scooters |
 | --- | --- | ---: |
@@ -18,12 +20,40 @@ account credentials or private rider APIs are used.
 | Dott | Oświęcim | 91 to 94 |
 | Hopp | Knurów | 13 to 15 |
 | Hopp | Złotów | 10 to 11 |
+| Hopp | Września | 12 to 18 |
 
 Between 06:00 and 09:15, 9 Dott scooters left the feed in Sosnowiec, 17 in
 the Wołomin region and 15 in Oświęcim, and nearly as many came back under new
 ids. Hopp Knurów had 3 rides, of 0.3 to 1.3 km, and Hopp Złotów 2, of 1.1 and
 2.6 km. The bounds, discovery URLs and aliases are in
 [`polish-scooter-feeds.json`](../data/polish-scooter-feeds.json).
+
+## Hopp in Września, October 2026
+
+Hopp Września was left out on 13 October: it held 5 available scooters at
+night, and 13 or 14 that evening, after Hopp had charged and put them out,
+but none was ridden while it was polled from 18:26 to 19:50. Polled on, it
+was added on 14 October 2026. Its feed,
+`https://api.hopp.bike/gbfs/pl-wrzesnia/gbfs.json`, is keyless GBFS 2.2, at
+the address Hopp uses for its other towns, and every feed URL is https, on
+the discovery's origin and under its directory.
+
+- **Liveness:** polled 27 times from 19:03 on Tuesday 13 October to 00:20,
+  five then ten minutes apart, with a gap from 21:07 to 22:37, then 18 times
+  from 11:25 to 12:51 on Wednesday 14 October, five minutes apart. It listed
+  12 or 13 available scooters out of 14 in the evening and 17 or 18 out of 19
+  or 20 at midday. Rides were traced by the code printed on each
+  scooter, as in Knurów and Złotów. One scooter was ridden 0.6 km in the
+  evening's gap; overnight four came back 0.8 to 2.5 km from where they had
+  stood, under new ids, with 4 to 19 points less charge; and at midday one
+  was ridden 0.2 km between 11:46 and 12:01, with 7 points less.
+- **Bounds:** the hole of Hopp's geofencing plus 0.005° of latitude and
+  0.0075° of longitude, as for Knurów and Złotów. Every scooter of every
+  poll stood inside them.
+- **Prices:** PLN 2.49 to start and PLN 0.79 a minute, a little more than in
+  Knurów and Złotów.
+- **Vehicle types:** one, `vtp_119`, an electric standing scooter, as in
+  Hopp's other Polish towns.
 
 ## Data handling
 
@@ -64,7 +94,7 @@ ids. Hopp Knurów had 3 rides, of 0.3 to 1.3 km, and Hopp Złotów 2, of 1.1 and
 - **Prices:** from the pricing feeds, in złoty. Dott charges PLN 3.90 to
   unlock and PLN 0.99 a minute in Sosnowiec and Oświęcim, PLN 2.50 and
   PLN 0.89 in Wołomin. Hopp charges PLN 2.39 to start and PLN 0.69 a minute
-  in both towns.
+  in Knurów and Złotów, and PLN 2.49 and PLN 0.79 in Września.
 - **Battery:** Dott gives each scooter's charge; Hopp's comes from its
   `hopp_battery_level` field.
 - **Rental links:** each scooter links to its own `go.ridedott.com` or
@@ -83,7 +113,7 @@ ids. Hopp Knurów had 3 rides, of 0.3 to 1.3 km, and Hopp Złotów 2, of 1.1 and
   ([oswiecim.pl](https://oswiecim.pl/oswiecim-8-miejsc-postojowych-dla-hulajnog/40812/)).
   Tier has since merged into Dott; whether those arrangements bind Dott is
   not known.
-- **Time zone:** the five feeds give `Europe/Warsaw`. Of the Hopp towns left
+- **Time zone:** the six feeds give `Europe/Warsaw`. Of the Hopp towns left
   out, Wałcz and Trzcianka give `Atlantic/Reykjavik` and Szamotuły
   `Europe/Riga`. Neither the app nor the scooter cache reads
   `system_information`, so this changes nothing on the map.
@@ -111,6 +141,8 @@ No covered Polish town bans renting at night, so
   about scooters ridden fast on pavements in September 2026
   ([zlotowskie.pl](https://zlotowskie.pl/artykul/hulajnogi-na-drzewo-n1854695),
   press); no rule followed.
+- **Września:** no rule on renting hours, and no agreement between the town
+  and Hopp, was found on the town's site or in the local press.
 - **Dott's Polish terms**
   ([ridedott.com](https://ridedott.com/terms-and-conditions/poland/)) set no
   hours. They still name Tier Mobility Poland as the contract partner in
@@ -145,11 +177,6 @@ No covered Polish town bans renting at night, so
     19:50 on the Tuesday evening. Between 09:15 and 18:26 one scooter was
     ridden 2.3 km, with 28 points less charge. It is left out until a check on
     a weekend afternoon shows rides while it is polled.
-  - Września had 5 available out of 18 at night, with one ride. By the evening
-    Hopp had charged and put out its scooters, and it listed 13 or 14
-    available out of 14 or 15 from 18:26 to 19:50, but none was ridden while
-    it was polled: one left at 18:34 and didn't come back. It is left out
-    until a weekend check shows rides.
   - Środa Wielkopolska listed 1 available scooter out of 10 until 19:22, then
     Hopp put out freshly charged ones, 7 by 19:50; none was ridden. Under ten.
   - Lublin (3 scooters), Piła (12), Wągrowiec (6) and Szamotuły (1) listed
@@ -176,8 +203,9 @@ No covered Polish town bans renting at night, so
 ## Search
 
 Town names are found with and without their Polish letters: Wołomin and
-Wolomin, Oświęcim and Oswiecim, Złotów and Zlotow. The app folds `ł` to `l`,
-which Unicode doesn't decompose. "Auschwitz" is not an alias of Oświęcim: the
+Wolomin, Oświęcim and Oswiecim, Złotów and Zlotow, Września and Wrzesnia. The
+app folds `ł` to `l`, which Unicode doesn't decompose. "Auschwitz" is not an
+alias of Oświęcim: the
 address search already finds the town under that name, and the town asks to
 be seen as a living place, not only as the camp
 ([oswiecim.pl](https://oswiecim.pl/geneza-nazwy-miasta/)). Checked in

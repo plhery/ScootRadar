@@ -54,14 +54,14 @@ from Entur across 21 towns (Voi, Ryde, Bolt and Dott), and the United Kingdom 11
 feeds across 18 towns (Beryl, Dott and Bolt). See the
 [Belgian, Norwegian and British feed audit](docs/belgian-norwegian-british-scooter-feeds.md).
 Portugal adds 12 feeds across 11 cities (Bird and Lime), Spain 14 feeds across 16
-towns (Bird, Hopp and Hoppy), and Iceland 14 Hopp feeds across 18 towns. See the
+towns (Bird, Hopp and Hoppy), and Iceland 16 Hopp feeds across 20 towns. See the
 [Portuguese, Spanish and Icelandic feed audit](docs/portuguese-spanish-icelandic-scooter-feeds.md).
 Sweden adds 2 feeds: Lime in Uppsala and Hopp in Kiruna. See the
 [Swedish feed audit](docs/swedish-scooter-feeds.md).
 Latvia adds 1 feed: Ride Mobility in Rīga. See the
 [Latvian feed audit](docs/latvian-scooter-feeds.md).
-Poland adds 5 feeds across 7 towns: Dott in Sosnowiec, Oświęcim, and Wołomin
-with Kobyłka and Radzymin, and Hopp in Knurów and Złotów. See the
+Poland adds 6 feeds across 8 towns: Dott in Sosnowiec, Oświęcim, and Wołomin
+with Kobyłka and Radzymin, and Hopp in Knurów, Złotów and Września. See the
 [Polish feed audit](docs/polish-scooter-feeds.md).
 Hungary adds 2 feeds: Hopp in Pécs and Békéscsaba. See the
 [Hungarian feed audit](docs/hungarian-scooter-feeds.md).

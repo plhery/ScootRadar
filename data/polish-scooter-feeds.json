@@ -124,6 +124,26 @@
       ]
     },
     {
+      "id": "hopp_pl_wrzesnia",
+      "country": "PL",
+      "provider": "hopp",
+      "city": "Września",
+      "center": [
+        52.3251,
+        17.5652
+      ],
+      "bounds": {
+        "south": 52.3069,
+        "north": 52.3432,
+        "west": 17.5272,
+        "east": 17.6078
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/pl-wrzesnia/gbfs.json",
+      "aliases": [
+        "Wrzesnia"
+      ]
+    },
+    {
       "id": "hopp_pl_zlotow",
       "country": "PL",
       "provider": "hopp",

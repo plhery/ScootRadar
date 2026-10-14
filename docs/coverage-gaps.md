@@ -120,6 +120,10 @@ banned shared scooters, and feeds that were empty when checked.
   - Ryde's fleets in Bærum, Lillestrøm, Lørenskog and Kristiansand are missing
     from Entur.
   - Lime Oslo is empty, and seven Bolt systems in Entur are empty.
+  - Dott Malvik held 15 to 17 available scooters on 13 and 14 October 2026,
+    but none was ridden while it was polled; check it on Saturday 17
+    October. Dott Melhus (7 to 11 available, a few of them ridden) and Skaun
+    (6 or 7) are too small.
 - **United Kingdom** ([guide](belgian-norwegian-british-scooter-feeds.md#known-gaps)):
   - Voi (London, Oxford, Cambridge, Essex, Northamptonshire and more) and Lime
     (London, West Midlands, Salford) publish no public feed. TfL publishes no
@@ -144,7 +148,9 @@ banned shared scooters, and feeds that were empty when checked.
     and the Torrevieja system's in Orihuela Costa held no scooters.
 - **Iceland** ([guide](portuguese-spanish-icelandic-scooter-feeds.md#known-gaps)):
   - Bolt has run in the capital area since 2024, with no public feed.
-  - Nine small Hopp towns held fewer than ten scooters.
+  - Hopp Hella / Hvolsvöllur (5 available of 17 on 13 October 2026) and
+    Ísafjörður (3 of 16) held fewer than ten available scooters, and six
+    other small Hopp towns none.
   - Hopp Siglufjörður, on the map, has listed no scooters since the evening
     of 13 October 2026, after about 20 the day before. Its feed and zone
     remain, so it stays; check it in spring, and remove it if it stays empty.
@@ -177,7 +183,7 @@ banned shared scooters, and feeds that were empty when checked.
     (transportdata.gov.lv) has no shared-mobility data.
 - **Poland** ([guide](polish-scooter-feeds.md#known-gaps)): Dott in
   Sosnowiec, Oświęcim, and Wołomin with Kobyłka and Radzymin, and Hopp in
-  Knurów and Złotów are covered.
+  Knurów, Złotów and Września are covered.
   - Dott's Polish site lists 85 places, but its public listing names those
     three regions only. Of its other 74 Polish entries in the registry, 73
     answer 404 (Warsaw, Kraków, Wrocław, Gdańsk, Poznań, Katowice and others)
@@ -187,13 +193,11 @@ banned shared scooters, and feeds that were empty when checked.
     cities have no scooter on the map. Voi doesn't run in Poland.
   - Hopp Wałcz listed 13 available scooters, but none moved between 23:41
     and 09:15 on a Tuesday, nor in 22 polls from 18:26 to 19:50 that
-    evening; one was ridden in between. Hopp Września listed 13 or 14
-    available that evening, after a recharging round, but none was ridden
-    while it was polled. Check both on a weekend afternoon, and add them if
-    their scooters are ridden. Środa Wielkopolska held 1 to 7, under ten.
-    Lublin, Piła, Wągrowiec and Szamotuły listed disabled scooters only, and
-    Oborniki, Słupca, Zgorzelec, Murowana Goślina and Trzcianka were empty. No
-    Hopp feed was found for Gliwice.
+    evening; one was ridden in between. Check it on a weekend afternoon, and
+    add it if its scooters are ridden. Środa Wielkopolska held 1 to 7, under
+    ten. Lublin, Piła, Wągrowiec and Szamotuły listed disabled scooters only,
+    and Oborniki, Słupca, Zgorzelec, Murowana Goślina and Trzcianka were
+    empty. No Hopp feed was found for Gliwice.
   - The national access point register (dane.gov.pl dataset 1739) links
     Bolt's and blinkee's websites, with no API; its only GBFS feed is MEVO's
     bikes.
@@ -337,8 +341,13 @@ its other systems answer 401. Dott made most regions private in September 2026.
   ([Roma Servizi per la Mobilità](https://romamobilita.it/eventi-e-news/selezione-operatori-servizi-di-micromobilita-sharing/)).
   Check that Bird Roma still publishes after both dates, and whether the
   winners do.
-- **Saturday 17 or Sunday 18 October 2026, in the afternoon:** Hopp Wałcz and
-  Września, which had no ride while polled on a Tuesday evening.
+- **Saturday 17 or Sunday 18 October 2026, in the afternoon:** Hopp Wałcz,
+  which had no ride while polled on a Tuesday evening.
+- **Saturday 17 October 2026, 12:00 to 18:00:** Dott Malvik, in Norway, from
+  Entur. It listed 15 to 17 available scooters on the evening of 13 October
+  and at midday on the 14th, and Dott deployed and swapped some, but none
+  was ridden while it was polled. Entur renews the ids, so match scooters by
+  position, and add it if they are ridden.
 - **20 October 2026:** Zeus's move to ATOM Mobility. Probe the ids that
   answer "GBFS disabled" and the empty ones (82, 183, 184, 186, 187, 191, 192,
   193) for the ten moved towns, and MobiData BW's listing for new Zeus feeds.

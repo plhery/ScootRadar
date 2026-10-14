@@ -353,7 +353,9 @@ enum ScooterProviderCoverage {
         (.hopp, GeoBounds(south: 65.6486, west: -18.1687, north: 65.71, east: -18.0277)),
         (.hopp, GeoBounds(south: 64.5283, west: -21.9425, north: 64.563, east: -21.8808)),
         (.hopp, GeoBounds(south: 65.9611, west: -18.5579, north: 65.983, east: -18.5043)),
+        (.hopp, GeoBounds(south: 65.2474, west: -14.4586, north: 65.3089, east: -14.3682)),
         (.hopp, GeoBounds(south: 66.0289, west: -17.3699, north: 66.0549, east: -17.316)),
+        (.hopp, GeoBounds(south: 63.9852, west: -21.2262, north: 64.0277, east: -21.1619)),
         (.hopp, GeoBounds(south: 64.8836, west: -23.7189, north: 64.9001, east: -23.6805)),
         (.hopp, GeoBounds(south: 64.9091, west: -23.9007, north: 64.9305, east: -23.801)),
         (.hopp, GeoBounds(south: 63.9551, west: -22.636, north: 64.0158, east: -22.4649)),
@@ -376,6 +378,7 @@ enum ScooterProviderCoverage {
         (.dott, GeoBounds(south: 52.3148, west: 21.164, north: 52.3578, east: 21.2498)),
         (.dott, GeoBounds(south: 52.392, west: 21.149, north: 52.4303, east: 21.2185)),
         (.hopp, GeoBounds(south: 50.1984, west: 18.6242, north: 50.2455, east: 18.6968)),
+        (.hopp, GeoBounds(south: 52.3069, west: 17.5272, north: 52.3432, east: 17.6078)),
         (.hopp, GeoBounds(south: 53.3449, west: 17.0006, north: 53.3832, east: 17.0833)),
         (.hopp, GeoBounds(south: 46.0199, west: 18.1584, north: 46.0962, east: 18.2795)),
         (.hopp, GeoBounds(south: 46.6404, west: 21.0275, north: 46.7058, east: 21.1674)),
@@ -639,7 +642,9 @@ enum ScooterCityCatalog {
         ScooterCity(id: "is:Akureyri", name: "Akureyri", countryCode: "IS", center: GeoPoint(latitude: 65.6826, longitude: -18.0913), bounds: GeoBounds(south: 65.6486, west: -18.1687, north: 65.71, east: -18.0277)),
         ScooterCity(id: "is:Borgarnes", name: "Borgarnes", countryCode: "IS", center: GeoPoint(latitude: 64.5383, longitude: -21.9202), bounds: GeoBounds(south: 64.5283, west: -21.9425, north: 64.563, east: -21.8808)),
         ScooterCity(id: "is:Dalvík", name: "Dalvík", countryCode: "IS", center: GeoPoint(latitude: 65.9711, longitude: -18.5304), bounds: GeoBounds(south: 65.9611, west: -18.5579, north: 65.983, east: -18.5043)),
+        ScooterCity(id: "is:Egilsstaðir", name: "Egilsstaðir", countryCode: "IS", center: GeoPoint(latitude: 65.262, longitude: -14.4035), bounds: GeoBounds(south: 65.2474, west: -14.4586, north: 65.3089, east: -14.3682)),
         ScooterCity(id: "is:Húsavík", name: "Húsavík", countryCode: "IS", center: GeoPoint(latitude: 66.0433, longitude: -17.341), bounds: GeoBounds(south: 66.0289, west: -17.3699, north: 66.0549, east: -17.316)),
+        ScooterCity(id: "is:Hveragerði", name: "Hveragerði", countryCode: "IS", center: GeoPoint(latitude: 63.9976, longitude: -21.1868), bounds: GeoBounds(south: 63.9852, west: -21.2262, north: 64.0277, east: -21.1619)),
         ScooterCity(id: "is:Ólafsvík", name: "Ólafsvík", countryCode: "IS", center: GeoPoint(latitude: 64.8959, longitude: -23.7084), bounds: GeoBounds(south: 64.8836, west: -23.7189, north: 64.9001, east: -23.6805)),
         ScooterCity(id: "is:Hellissandur", name: "Hellissandur", countryCode: "IS", center: GeoPoint(latitude: 64.9172, longitude: -23.8825), bounds: GeoBounds(south: 64.9091, west: -23.9007, north: 64.9305, east: -23.801)),
         ScooterCity(id: "is:Reykjanesbær", name: "Reykjanesbær", countryCode: "IS", center: GeoPoint(latitude: 63.9833, longitude: -22.5561), bounds: GeoBounds(south: 63.9551, west: -22.636, north: 64.0158, east: -22.4649)),
@@ -662,6 +667,7 @@ enum ScooterCityCatalog {
         ScooterCity(id: "pl:Kobyłka", name: "Kobyłka", countryCode: "PL", center: GeoPoint(latitude: 52.3387, longitude: 21.1965), bounds: GeoBounds(south: 52.3148, west: 21.164, north: 52.3578, east: 21.2498)),
         ScooterCity(id: "pl:Radzymin", name: "Radzymin", countryCode: "PL", center: GeoPoint(latitude: 52.4176, longitude: 21.1808), bounds: GeoBounds(south: 52.392, west: 21.149, north: 52.4303, east: 21.2185)),
         ScooterCity(id: "pl:Knurów", name: "Knurów", countryCode: "PL", center: GeoPoint(latitude: 50.2217, longitude: 18.6707), bounds: GeoBounds(south: 50.1984, west: 18.6242, north: 50.2455, east: 18.6968)),
+        ScooterCity(id: "pl:Września", name: "Września", countryCode: "PL", center: GeoPoint(latitude: 52.3251, longitude: 17.5652), bounds: GeoBounds(south: 52.3069, west: 17.5272, north: 52.3432, east: 17.6078)),
         ScooterCity(id: "pl:Złotów", name: "Złotów", countryCode: "PL", center: GeoPoint(latitude: 53.3632, longitude: 17.0347), bounds: GeoBounds(south: 53.3449, west: 17.0006, north: 53.3832, east: 17.0833)),
         ScooterCity(id: "hu:Pécs", name: "Pécs", countryCode: "HU", center: GeoPoint(latitude: 46.0765, longitude: 18.228), bounds: GeoBounds(south: 46.0199, west: 18.1584, north: 46.0962, east: 18.2795)),
         ScooterCity(id: "hu:Békéscsaba", name: "Békéscsaba", countryCode: "HU", center: GeoPoint(latitude: 46.6798, longitude: 21.0985), bounds: GeoBounds(south: 46.6404, west: 21.0275, north: 46.7058, east: 21.1674)),
@@ -684,7 +690,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 244
+    static let cityCount = 247
     static let countryCount = 18
 
     /// Cities by distance from the point to their centre, nearest first.

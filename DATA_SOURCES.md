@@ -312,7 +312,7 @@ Território). The credits list all three.
 Reviewed catalogs live in `data/portuguese-scooter-feeds.json`,
 `data/spanish-scooter-feeds.json` and `data/icelandic-scooter-feeds.json`.
 Portugal has 12 feeds across 11 cities (Bird and Lime), Spain 14 across 16
-(Bird, Hopp and Hoppy) and Iceland 14 across 18 (Hopp). All come from the
+(Bird, Hopp and Hoppy) and Iceland 16 across 20 (Hopp). All come from the
 operators' own public GBFS feeds, found through
 [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
 except Hoppy's, found on ATOM Mobility (`hoppy.rideatom.com`): Puerto del
@@ -363,10 +363,10 @@ the recheck command.
 
 ## Poland
 
-The reviewed catalog lives in `data/polish-scooter-feeds.json`: 5 feeds across
-7 towns. Dott covers Sosnowiec, Oświęcim, and Wołomin with Kobyłka and
-Radzymin, which one Dott region spans; Hopp covers Knurów and Złotów. All are
-the operators' own public GBFS feeds. Dott's are named in
+The reviewed catalog lives in `data/polish-scooter-feeds.json`: 6 feeds across
+8 towns. Dott covers Sosnowiec, Oświęcim, and Wołomin with Kobyłka and
+Radzymin, which one Dott region spans; Hopp covers Knurów, Złotów and
+Września. All are the operators' own public GBFS feeds. Dott's are named in
 [Dott's Polish listing](https://gbfs.api.ridedott.com/public/v2/countries/pl/gbfs.json)
 and in [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv);
 Hopp's are not in the registry, and answer at the address Hopp uses for its

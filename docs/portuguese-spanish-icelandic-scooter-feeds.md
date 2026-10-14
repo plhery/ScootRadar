@@ -12,6 +12,8 @@ Hoppy's scooters were added on 14 October 2026: in Puerto del Carmen, on
 Lanzarote, then on Tenerife, Fuerteventura and the Costa Blanca; see
 [Hoppy in Puerto del Carmen](#hoppy-in-puerto-del-carmen-october-2026) and
 [Hoppy on Tenerife, Fuerteventura and the Costa Blanca](#hoppy-on-tenerife-fuerteventura-and-the-costa-blanca-october-2026).
+Hopp's scooters in Egilsstaðir and Hveragerði, Iceland, were added the same
+day; see [Hopp in Egilsstaðir and Hveragerði, October 2026](#hopp-in-egilsstaðir-and-hveragerði-october-2026).
 
 | Country | Operator | Enabled feeds | Coverage | Available scooters |
 | --- | --- | ---: | --- | ---: |
@@ -20,9 +22,9 @@ Lanzarote, then on Tenerife, Fuerteventura and the Costa Blanca; see
 | Spain | Bird | 5 | Gijón, Getafe, Playa de las Américas (Tenerife), Caleta de Fuste and Pájara (Fuerteventura) | 1,250 |
 | Spain | Hopp | 3 | Torrevieja and Pilar de la Horadada, Jávea, Playa de las Américas and Golf del Sur (Tenerife) | 550 |
 | Spain | Hoppy | 6 | Puerto del Carmen (Lanzarote), Playa de las Américas (Tenerife), Corralejo and Caleta de Fuste (Fuerteventura), Altea, L'Albir, L'Alfàs del Pi and La Nucía (Marina Baixa), Torrevieja | 2,350 |
-| Iceland | Hopp | 14 | Reykjavík and its capital area, Reykjanesbær (with Sandgerði, Garður and Vogar), Akureyri, Selfoss, Akranes, Vestmannaeyjar and eight smaller towns | 2,700 |
+| Iceland | Hopp | 16 | Reykjavík and its capital area, Reykjanesbær (with Sandgerði, Garður and Vogar), Akureyri, Selfoss, Akranes, Vestmannaeyjar and ten smaller towns | 2,750 |
 
-Portugal has 11 cities, Spain 16 and Iceland 18, once multi-town feeds are
+Portugal has 11 cities, Spain 16 and Iceland 20, once multi-town feeds are
 routed per town. The bounds, discovery URLs and aliases are in
 [`portuguese-scooter-feeds.json`](../data/portuguese-scooter-feeds.json),
 [`spanish-scooter-feeds.json`](../data/spanish-scooter-feeds.json) and
@@ -135,6 +137,56 @@ directory.
   hour while nobody looks, and at most about 65 each while watched; see
   [ATOM's request rate](german-italian-scooter-feeds.md#atoms-request-rate-october-2026).
 
+## Hopp in Egilsstaðir and Hveragerði, October 2026
+
+Hopp runs scooters in Egilsstaðir, the main town of East Iceland, and in
+Hveragerði, east of Reykjavík. Their feeds are at the address Hopp uses for
+its other Icelandic towns:
+`https://api.hopp.bike/gbfs/is-egilstadir/gbfs.json`, which Hopp spells with
+one s, and `https://api.hopp.bike/gbfs/is-hveragerdi/gbfs.json`. Both are
+keyless GBFS 2.2, and every feed URL is https, on the discovery's origin and
+under its directory.
+
+| Town | Available scooters | Rides traced |
+| --- | ---: | ---: |
+| Egilsstaðir | 21 to 23 | 11 |
+| Hveragerði | 19 to 22 | 13 |
+
+- **Liveness:** both feeds were polled 27 times from 16:52 to 22:20 Iceland
+  time on Tuesday 13 October, five then ten minutes apart, with a gap from
+  19:07 to 20:37, and six times from 10:25 to 10:51 on Wednesday the 14th.
+  Hopp stamps `last_updated` with the time of the request (`ttl` 0), so the
+  age limit can't tell how old its positions are, and gives a scooter a new
+  `bike_id` after each ride. So rides were traced by the code printed on
+  each scooter (`hopp_code`): a scooter that left the feed and came back
+  elsewhere, under a new id, with less charge. In Egilsstaðir 6 scooters made
+  11 rides, of 0.2 to 1.6 km, with 1 to 24 points less charge. In Hveragerði
+  6 scooters made 13, of 0.4 to 1.2 km, with 3 to 12 points less, one of
+  them ending empty; two more moved 0.2 and 0.8 km with no charge lost.
+  Overnight one more scooter was ridden in each town, about 1 km; on
+  Wednesday morning the counts held at 23 and 21 and no scooter was ridden
+  in the half hour polled.
+- **Codes shared by two scooters:** the feed masks all but the last three
+  digits of each code, so two scooters can report the same one: `XX755` in
+  Egilsstaðir and `XX681` in Hveragerði, in each case one available and one
+  disabled with an empty battery. Rides were matched on code and position.
+- **Bounds:** Hopp's geofencing has one no-riding polygon around each town,
+  whose holes are the operating area, as in Hopp's Polish and Greek towns.
+  The bounds are those holes plus 0.005° of latitude and 0.01° of
+  longitude, about 550 m and 470 m. Egilsstaðir's take in Fellabær, across
+  the bridge over Lagarfljót, where its scooters go too. One available
+  Hveragerði scooter stood in Selfoss, 11 km east, in every poll; the bounds
+  leave it out, so the map shows it only when it takes in Hveragerði too.
+  Every other scooter of every poll stood inside the bounds.
+- **Search:** Egilsstaðir is also found as Egilsstadir, as Hopp's
+  Egilstadir, as Fellabær and as Múlaþing, its municipality; Hveragerði as
+  Hveragerdi.
+- **Vehicle types:** each type in both feeds is an electric scooter.
+- **Prices:** ISK 115 to start and ISK 45 a minute, as in Hopp's other
+  Icelandic towns. Hveragerði's pricing feed also lists a plan in Danish
+  kroner that no scooter used.
+- **Time zone:** both feeds give `UTC`, which is Iceland's time all year.
+
 ## Data handling
 
 - **Bird's "madrid" feed is Getafe.** Its scooters stand in Getafe's
@@ -179,6 +231,10 @@ the dock and each scooter's card state the ban and when renting resumes.
 - Reykjavík's
   [2026 rules](https://reykjavik.is/sites/default/files/2026-02/Verklagsreglur_um_stöðvalausar_hjólaleigur_2026.pdf)
   (§5.5.1) let the city limit rental hours, but it has not.
+- **Egilsstaðir and Hveragerði:** no rule on renting hours was found.
+  [Múlaþing's list of its rules](https://www.mulathing.is/is/stjornsysla/reglur-samthykktir-og-stefnur/reglur-i-mulathingi),
+  59 of them, has none on scooters, and neither town's site nor the local
+  press mentions any.
 - **Tías** (Puerto del Carmen): Hoppy's feed gives opening hours of `24/7`,
   and no rule on renting hours was found. The town's police removed 34 rental
   scooters from Puerto del Carmen's streets in July 2024
@@ -237,9 +293,11 @@ the dock and each scooter's card state the ban and when renting resumes.
     were empty.
 - **Iceland:**
   - Bolt has run in the capital area since 2024, with no public feed.
-  - Hopp's Hveragerði and Hella / Hvolsvöllur feeds held under ten available
-    scooters, and Grindavík, Höfn, Seyðisfjörður, Blönduós, Ólafsfjörður and
-    Þorlákshöfn none.
+  - Hopp's Hella / Hvolsvöllur feed (5 available of 17 on 13 October 2026)
+    and Ísafjörður's (3 of 16) held under ten available scooters, and
+    Grindavík, Höfn, Seyðisfjörður, Blönduós, Ólafsfjörður and Þorlákshöfn
+    none. Hveragerði, also under ten when first checked, held 19 to 22 on 13
+    October and was added; Egilsstaðir was added with it.
   - Hopp Siglufjörður, one of the enabled feeds, held about 20 scooters from
     12 October 2026 until the evening of the 13th, when they went: 10 at
     18:40, 1 at 19:40 and none from 20:40 (UTC, the scooter cache's counts).

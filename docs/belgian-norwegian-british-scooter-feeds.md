@@ -250,7 +250,15 @@ stays open at night.
     scooter its manifest lacks, and guessed system ids answer 404. Ryde
     publishes only the 11 systems in the catalog, so its fleets in Bærum,
     Lillestrøm, Lørenskog and Kristiansand are missing too.
-  - Dott Malvik, Melhus and Skaun hold fewer than twenty scooters each.
+  - Dott Malvik, Melhus and Skaun hold fewer than twenty scooters each, and
+    e-bikes, which the map leaves out. Malvik listed 15 to 17 available
+    scooters in 27 polls on the evening of 13 October 2026 and 12 at midday
+    on the 14th, but none was ridden: Dott deployed two, swapped a low one
+    for a charged one and collected another, all without a ride. Check it on
+    the afternoon of Saturday 17 October, matching scooters by position,
+    since Entur renews their ids, and add it if they are ridden. Melhus had
+    a few rides but held 7 to 11, and no more than 10 at midday, and Skaun
+    6 or 7.
   - Seven Bolt systems in Entur are empty.
   - Lime Oslo is live but empty, and Zeus Oslo has been dead since 2021.
 - **United Kingdom:**

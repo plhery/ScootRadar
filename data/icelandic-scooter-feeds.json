@@ -74,6 +74,31 @@
       ]
     },
     {
+      "id": "hopp_is_egilsstadir",
+      "country": "IS",
+      "provider": "hopp",
+      "city": "Egilsstaðir",
+      "center": [
+        65.262,
+        -14.4035
+      ],
+      "bounds": {
+        "south": 65.2474,
+        "north": 65.3089,
+        "west": -14.4586,
+        "east": -14.3682
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/is-egilstadir/gbfs.json",
+      "aliases": [
+        "Egilsstadir",
+        "Egilstadir",
+        "Fellabær",
+        "Fellabaer",
+        "Múlaþing",
+        "Mulathing"
+      ]
+    },
+    {
       "id": "hopp_is_husavik",
       "country": "IS",
       "provider": "hopp",
@@ -91,6 +116,26 @@
       "discoveryUrl": "https://api.hopp.bike/gbfs/is-husavik/gbfs.json",
       "aliases": [
         "Husavik"
+      ]
+    },
+    {
+      "id": "hopp_is_hveragerdi",
+      "country": "IS",
+      "provider": "hopp",
+      "city": "Hveragerði",
+      "center": [
+        63.9976,
+        -21.1868
+      ],
+      "bounds": {
+        "south": 63.9852,
+        "north": 64.0277,
+        "west": -21.2262,
+        "east": -21.1619
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/is-hveragerdi/gbfs.json",
+      "aliases": [
+        "Hveragerdi"
       ]
     },
     {
