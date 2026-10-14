@@ -278,6 +278,28 @@
           }
         }
       ]
+    },
+    {
+      "id": "hoppy_es_puerto_del_carmen",
+      "country": "ES",
+      "provider": "hoppy",
+      "city": "Puerto del Carmen",
+      "center": [
+        28.9236,
+        -13.663
+      ],
+      "bounds": {
+        "south": 28.9145,
+        "north": 28.9412,
+        "west": -13.6887,
+        "east": -13.6057
+      },
+      "discoveryUrl": "https://hoppy.rideatom.com/gbfs/1776/v3.0/gbfs",
+      "aliases": [
+        "Tías",
+        "Tias",
+        "Lanzarote"
+      ]
     }
   ]
 }

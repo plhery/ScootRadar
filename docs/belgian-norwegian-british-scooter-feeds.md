@@ -9,13 +9,17 @@ counts changed and scooters moved between polls, every feed was under fifteen
 minutes old, and every feed URL is https, on the discovery's origin and under
 its directory. No account credentials or private rider APIs are used.
 
+Hoppy's scooters in Ostend, Mechelen, Sint-Niklaas and Blankenberge were added
+on 14 October 2026; see
+[Hoppy's Flemish towns, October 2026](#hoppys-flemish-towns-october-2026).
+
 | Country | Operator | Enabled feeds | Coverage | Available scooters |
 | --- | --- | ---: | --- | ---: |
 | Belgium | Bolt | 1 | Bruxelles | 2,750 |
 | Belgium | Dott | 2 | Bruxelles, Charleroi | 3,750 |
 | Belgium | Pony | 1 | Charleroi | 220 |
 | Belgium | Voi | 1 | Antwerpen | 925 |
-| Belgium | Hoppy | 1 | Kortrijk | 200 |
+| Belgium | Hoppy | 5 | Blankenberge, Kortrijk, Mechelen, Oostende (with Bredene), Sint-Niklaas | 1,225 |
 | Norway | Voi | 9 | Oslo, Bærum / Asker, Lillestrøm / Lørenskog, Trondheim, Stavanger / Sandnes, Kristiansand / Vennesla, Arendal, Moss, Fredrikstad / Sarpsborg | 13,850 |
 | Norway | Ryde | 11 | Oslo, Trondheim, Stavanger, Tromsø, Sandefjord, Ålesund, Skien, Fredrikstad, Tønsberg, Porsgrunn, Sarpsborg | 12,800 |
 | Norway | Bolt | 1 | Oslo | 4,930 |
@@ -24,7 +28,7 @@ its directory. No account credentials or private rider APIs are used.
 | United Kingdom | Dott | 4 | Bath, Bristol (with Yate), Milton Keynes, Nottingham | 3,450 |
 | United Kingdom | Bolt | 1 | Liverpool | 1,830 |
 
-Belgium has 4 cities, Norway 21 and the United Kingdom 18, once multi-town
+Belgium has 8 cities, Norway 21 and the United Kingdom 18, once multi-town
 feeds are routed per town. The bounds, discovery URLs and aliases are in
 [`belgian-scooter-feeds.json`](../data/belgian-scooter-feeds.json),
 [`norwegian-scooter-feeds.json`](../data/norwegian-scooter-feeds.json) and
@@ -43,6 +47,65 @@ feeds are routed per town. The bounds, discovery URLs and aliases are in
   `beryl-gbfs-production.web.app`. The `gbfs.beryl.cc` discovery files that the
   registry lists point to the production host, which breaks the same-origin
   rule, so the catalog uses the production URLs.
+
+## Hoppy's Flemish towns, October 2026
+
+Hoppy runs all four on ATOM Mobility, as in Kortrijk:
+`https://hoppy.rideatom.com/gbfs/<id>/v3.0/gbfs`, with 1996 for Oostende, 1490
+for Mechelen, 1734 for Sint-Niklaas and 1494 for Blankenberge. All are keyless
+GBFS 3.0, and every feed URL is https, on the discovery's origin and under its
+directory.
+
+- **Liveness:** ATOM stamps `last_updated` with the time of the request and
+  gives no `last_reported`, and a scooter's `vehicle_id` changes after each
+  ride. So each scooter was followed by the code at the end of its rental link,
+  the number printed on it. Each feed was polled every five minutes from
+  about midnight on Tuesday 13 October to 10:29 the next morning, 142 to 153
+  times. Oostende had 84 rides, Mechelen 119, Sint-Niklaas 47 and
+  Blankenberge 8, from midnight through the morning: each scooter came back
+  0.2 to 4.7 km away under a new id, with 0.6 to 15 km less range. Oostende
+  listed 527 to 537 available scooters, Mechelen 177 to 199, Sint-Niklaas 174
+  to 181 and Blankenberge 111 to 120.
+- **Scooters:** every vehicle type is `scooter_standing`, `electric`, with a
+  60 km maximum range. Hoppy's other Flemish systems carry e-bikes only (see
+  [Known gaps](#known-gaps)).
+- **Oostende** is one area. Its scooters stand in Ostend and in Bredene, which
+  touches it to the east, so Bredene is an alias. One scooter stood in
+  Blankenberge, about 17 km up the coast and far from any of Oostende's parking
+  zones. Blankenberge has its own feed, so the bounds leave that scooter out:
+  Oostende's end at 2.9994° E and Blankenberge's start at 3.0977° E, and no
+  scooter is counted twice.
+  The city signed a five-year deal with Hoppy, capped at 750 scooters, with
+  8 km/h zones and parking zones
+  ([VRT, 17 December 2025](https://www.vrt.be/vrtnws/nl/2025/12/17/oostende-nieuwe-deelsteps-zones-sensoren/)).
+- **Mechelen:** one scooter in its feed stood in Kortrijk, 60 km away, where
+  Hoppy's Kortrijk feed already shows its own scooters. Mechelen's bounds leave
+  it out. Hoppy had 200 scooters there in June 2025, which it was refitting
+  with cameras that slow them to walking pace on pavements
+  ([VRT, 4 June 2025](https://www.vrt.be/vrtnws/nl/2025/06/04/hoppy-deelsteps-mechelen-artificiele-intelligentie-scannen-wegde/)).
+  Malines is an alias.
+- **Sint-Niklaas** chose Hoppy when Bird's contract ended, with 300 scooters
+  ([VRT, 14 June 2025](https://www.vrt.be/vrtnws/nl/2025/06/14/deelsteps-ai-sint-niklaas-artificiele-intelligentie/)).
+- **Bounds:** ATOM's geofencing forbids starting or ending a ride everywhere
+  (`global_rules`), and allows both in Hoppy's parking zones: 167 in Oostende,
+  131 in Mechelen, 190 in Sint-Niklaas and 48 in Blankenberge. Each feed also
+  has one large no-ride polygon without a hole over the whole town, which is
+  how ATOM exports the operating area, so it can't serve as bounds. The bounds
+  enclose the parking zones and the scooters seen, plus 0.005° of latitude and
+  0.01° of longitude.
+- **Prices:** EUR 1.00 to start (EUR 0.95 in Sint-Niklaas), then EUR 0.18 to
+  0.33 a minute, by the scooter's tier.
+- **Battery:** Hoppy publishes range only, so the map shows range and no
+  percentage, as in Kortrijk.
+- **Night rules:** every feed gives opening hours of `24/7`, and no town's
+  rules or reports name a night ban. Mechelen's regulation for shared scooters
+  ([council, 16 December 2019](https://mechelen.be/reglement-deelstepspdf))
+  sets permits and parking rules but no hours. No curfew was added.
+- **Load:** the scooter cache asks for each feed's `vehicle_status` every 20
+  minutes, or every minute for 10 minutes after someone looks at the town, and
+  its metadata once an hour. So the four new Flemish feeds add about 32
+  requests an hour to `hoppy.rideatom.com`, and at most about 65 each while
+  watched.
 
 ## Data handling
 
@@ -151,7 +214,8 @@ stays open at night.
   question as in France, Germany and Italy.
 - **Pony:** transportdata.be marks both of its datasets open, under "Other
   (Attribution)". The credits name Pony and the access point.
-- **Voi** (Antwerpen) and **Hoppy** publish no licence in their feeds.
+- **Voi** (Antwerpen) and **Hoppy** (Blankenberge, Kortrijk, Mechelen,
+  Oostende, Sint-Niklaas) publish no licence in their feeds.
 
 ## Known gaps
 
@@ -170,8 +234,10 @@ stays open at night.
   - Lime Antwerp answers 404.
   - Bird Antwerp has been empty for years.
   - Dott Liège answers 403, and Dott Kortrijk 404.
-  - Hoppy has only one public system out of the ids scanned. Its other
-    cities answer 401.
+  - Hoppy's Vervoerregio West-Vlaanderen (ATOM id 2010), Kempen (1973) and
+    Dender & VVA (1663) systems list e-bikes only, about 430, 270 and 360 on
+    13 October 2026, and West-Vlaanderen 76 pedal bikes too. Hoppy's Genk
+    system (1522) held 6 e-bikes.
 - **Norway:**
   - Bergen (Ryde, Lime and RideMovi, about 9,000 scooters), Drammen (Ryde,
     Gogo), Larvik and Bodø (Ryde) have scooters but no public source. Entur,

@@ -8,7 +8,7 @@ const FEATURED: Record<CoveredCountry, string[]> = {
   DE: ['de:Berlin', 'de:München', 'de:Köln', 'de:Frankfurt', 'de:Stuttgart', 'de:Düsseldorf'],
   FR: ['fr:Lyon', 'fr:Marseille', 'fr:Bordeaux', 'fr:Lille Métropole', 'fr:Grenoble', 'fr:Angers'],
   IT: ['it:Roma', 'it:Palermo', 'it:Napoli'],
-  BE: ['be:Bruxelles', 'be:Antwerpen', 'be:Charleroi', 'be:Kortrijk'],
+  BE: ['be:Bruxelles', 'be:Antwerpen', 'be:Oostende', 'be:Charleroi', 'be:Kortrijk', 'be:Mechelen'],
   NO: ['no:Oslo', 'no:Trondheim', 'no:Stavanger', 'no:Kristiansand', 'no:Bærum', 'no:Tromsø'],
   GB: ['gb:Bristol', 'gb:Liverpool', 'gb:Nottingham', 'gb:Leeds', 'gb:Brighton', 'gb:Bournemouth'],
   PT: ['pt:Lisboa', 'pt:Porto', 'pt:Cascais', 'pt:Almada', 'pt:Matosinhos', 'pt:Oeiras'],

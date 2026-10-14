@@ -100,7 +100,8 @@ banned shared scooters, and feeds that were empty when checked.
     Pony publishes nothing for Brussels; its Brussels region, read with the
     key published for La Roche-sur-Yon, listed 4 scooters, all disabled.
   - Lime Brussels and Kortrijk, Dott Ghent and Mons and Bolt Ghent list
-    e-bikes only.
+    e-bikes only, as do Hoppy's Vervoerregio West-Vlaanderen, Kempen, Dender
+    and Genk systems.
   - Lime Antwerp answers 404, Dott Liège 403 and Dott Kortrijk 404. Bird
     Antwerp is empty.
 - **Norway** ([guide](belgian-norwegian-british-scooter-feeds.md#known-gaps)):
@@ -125,6 +126,9 @@ banned shared scooters, and feeds that were empty when checked.
   - Dott (Santa Cruz de Tenerife, Ibiza, Lanzarote) and Bolt (Oviedo) have no
     public feed.
   - Hopp Benidorm, Cartagena, Dénia, Fuengirola and Marbella are empty.
+    Hoppy's Almería, Cartagena and Mojácar & Vera systems list e-bikes only,
+    and its Roquetas de Mar, Magic World Resort and Cabo de Gata - Níjar
+    systems are empty.
 - **Iceland** ([guide](portuguese-spanish-icelandic-scooter-feeds.md#known-gaps)):
   - Bolt has run in the capital area since 2024, with no public feed.
   - Nine small Hopp towns held fewer than ten scooters.

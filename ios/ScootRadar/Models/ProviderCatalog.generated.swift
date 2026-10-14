@@ -251,7 +251,11 @@ enum ScooterProviderCoverage {
         (.dott, GeoBounds(south: 50.7755, west: 4.2508, north: 50.9224, east: 4.4816)),
         (.dott, GeoBounds(south: 50.3504, west: 4.3494, north: 50.4803, east: 4.5161)),
         (.pony, GeoBounds(south: 50.369, west: 4.3459, north: 50.4817, east: 4.5118)),
+        (.hoppy, GeoBounds(south: 51.2861, west: 3.0977, north: 51.3268, east: 3.1643)),
         (.hoppy, GeoBounds(south: 50.7643, west: 3.2165, north: 50.8622, east: 3.3118)),
+        (.hoppy, GeoBounds(south: 50.9977, west: 4.445, north: 51.0485, east: 4.5283)),
+        (.hoppy, GeoBounds(south: 51.187, west: 2.8483, north: 51.2612, east: 2.9994)),
+        (.hoppy, GeoBounds(south: 51.1416, west: 4.1029, north: 51.1882, east: 4.1829)),
         (.voi, GeoBounds(south: 51.1544, west: 4.3381, north: 51.2709, east: 4.4885)),
         (.bolt, GeoBounds(south: 59.8134, west: 10.6189, north: 59.9862, east: 10.9552)),
         (.dott, GeoBounds(south: 63.4299, west: 10.8165, north: 63.5147, east: 10.997)),
@@ -324,6 +328,7 @@ enum ScooterProviderCoverage {
         (.hopp, GeoBounds(south: 38.7636, west: 0.16, north: 38.7994, east: 0.2006)),
         (.hopp, GeoBounds(south: 28.0452, west: -16.7408, north: 28.0935, east: -16.6976)),
         (.hopp, GeoBounds(south: 28.0188, west: -16.6251, north: 28.0377, east: -16.5879)),
+        (.hoppy, GeoBounds(south: 28.9145, west: -13.6887, north: 28.9412, east: -13.6057)),
         (.hopp, GeoBounds(south: 64.3078, west: -22.1074, north: 64.333, east: -22.0223)),
         (.hopp, GeoBounds(south: 65.6486, west: -18.1687, north: 65.71, east: -18.0277)),
         (.hopp, GeoBounds(south: 64.5283, west: -21.9425, north: 64.563, east: -21.8808)),
@@ -525,7 +530,11 @@ enum ScooterCityCatalog {
         ScooterCity(id: "it:Roma", name: "Roma", countryCode: "IT", center: GeoPoint(latitude: 41.9028, longitude: 12.4964), bounds: GeoBounds(south: 41.6884, west: 12.2183, north: 42.0928, east: 12.7268)),
         ScooterCity(id: "be:Bruxelles", name: "Bruxelles", countryCode: "BE", center: GeoPoint(latitude: 50.8467, longitude: 4.3525), bounds: GeoBounds(south: 50.7705, west: 4.2448, north: 50.9224, east: 4.4816)),
         ScooterCity(id: "be:Charleroi", name: "Charleroi", countryCode: "BE", center: GeoPoint(latitude: 50.4108, longitude: 4.4446), bounds: GeoBounds(south: 50.3504, west: 4.3459, north: 50.4817, east: 4.5161)),
+        ScooterCity(id: "be:Blankenberge", name: "Blankenberge", countryCode: "BE", center: GeoPoint(latitude: 51.3131, longitude: 3.1316), bounds: GeoBounds(south: 51.2861, west: 3.0977, north: 51.3268, east: 3.1643)),
         ScooterCity(id: "be:Kortrijk", name: "Kortrijk", countryCode: "BE", center: GeoPoint(latitude: 50.8279, longitude: 3.2649), bounds: GeoBounds(south: 50.7643, west: 3.2165, north: 50.8622, east: 3.3118)),
+        ScooterCity(id: "be:Mechelen", name: "Mechelen", countryCode: "BE", center: GeoPoint(latitude: 51.0281, longitude: 4.4794), bounds: GeoBounds(south: 50.9977, west: 4.445, north: 51.0485, east: 4.5283)),
+        ScooterCity(id: "be:Oostende", name: "Oostende", countryCode: "BE", center: GeoPoint(latitude: 51.2253, longitude: 2.9197), bounds: GeoBounds(south: 51.187, west: 2.8483, north: 51.2612, east: 2.9994)),
+        ScooterCity(id: "be:Sint-Niklaas", name: "Sint-Niklaas", countryCode: "BE", center: GeoPoint(latitude: 51.165, longitude: 4.1395), bounds: GeoBounds(south: 51.1416, west: 4.1029, north: 51.1882, east: 4.1829)),
         ScooterCity(id: "be:Antwerpen", name: "Antwerpen", countryCode: "BE", center: GeoPoint(latitude: 51.2211, longitude: 4.3997), bounds: GeoBounds(south: 51.1544, west: 4.3381, north: 51.2709, east: 4.4885)),
         ScooterCity(id: "no:Oslo", name: "Oslo", countryCode: "NO", center: GeoPoint(latitude: 59.9109, longitude: 10.7528), bounds: GeoBounds(south: 59.8134, west: 10.6158, north: 59.9871, east: 10.9574)),
         ScooterCity(id: "no:Stjørdal", name: "Stjørdal", countryCode: "NO", center: GeoPoint(latitude: 63.4714, longitude: 10.9139), bounds: GeoBounds(south: 63.4299, west: 10.8165, north: 63.5147, east: 10.997)),
@@ -587,6 +596,7 @@ enum ScooterCityCatalog {
         ScooterCity(id: "es:Pilar de la Horadada", name: "Pilar de la Horadada", countryCode: "ES", center: GeoPoint(latitude: 37.8675, longitude: -0.7926), bounds: GeoBounds(south: 37.8382, west: -0.8007, north: 37.8943, east: -0.7462)),
         ScooterCity(id: "es:Jávea", name: "Jávea", countryCode: "ES", center: GeoPoint(latitude: 38.7894, longitude: 0.1634), bounds: GeoBounds(south: 38.7636, west: 0.16, north: 38.7994, east: 0.2006)),
         ScooterCity(id: "es:Golf del Sur", name: "Golf del Sur", countryCode: "ES", center: GeoPoint(latitude: 28.033, longitude: -16.6077), bounds: GeoBounds(south: 28.0188, west: -16.6251, north: 28.0377, east: -16.5879)),
+        ScooterCity(id: "es:Puerto del Carmen", name: "Puerto del Carmen", countryCode: "ES", center: GeoPoint(latitude: 28.9236, longitude: -13.663), bounds: GeoBounds(south: 28.9145, west: -13.6887, north: 28.9412, east: -13.6057)),
         ScooterCity(id: "is:Akranes", name: "Akranes", countryCode: "IS", center: GeoPoint(latitude: 64.3171, longitude: -22.0834), bounds: GeoBounds(south: 64.3078, west: -22.1074, north: 64.333, east: -22.0223)),
         ScooterCity(id: "is:Akureyri", name: "Akureyri", countryCode: "IS", center: GeoPoint(latitude: 65.6826, longitude: -18.0913), bounds: GeoBounds(south: 65.6486, west: -18.1687, north: 65.71, east: -18.0277)),
         ScooterCity(id: "is:Borgarnes", name: "Borgarnes", countryCode: "IS", center: GeoPoint(latitude: 64.5383, longitude: -21.9202), bounds: GeoBounds(south: 64.5283, west: -21.9425, north: 64.563, east: -21.8808)),
@@ -629,7 +639,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 222
+    static let cityCount = 227
     static let countryCount = 18
 
     /// Cities by distance from the point to their centre, nearest first.

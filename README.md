@@ -49,12 +49,12 @@ English. There is also a native SwiftUI app for iPhone.
 French coverage includes 31 verified feeds across 55 cities or operating areas,
 with city-name search. German coverage adds 40 feeds across 42 cities (Dott, Bolt, Hopp, Lime, Voi, Zeus and Yoio); Italy adds 3 Bird feeds, in Roma, Palermo and Napoli. See the [German/Italian feed audit](docs/german-italian-scooter-feeds.md) for coverage and known gaps. See the [French feed investigation](docs/french-scooter-feeds.md)
 for the city list, live-check command, and source terms to review before deployment.
-Belgium adds 6 feeds across 4 cities (Bolt, Dott, Voi, Pony and Hoppy), Norway 23 feeds
+Belgium adds 10 feeds across 8 cities (Bolt, Dott, Voi, Pony and Hoppy), Norway 23 feeds
 from Entur across 21 towns (Voi, Ryde, Bolt and Dott), and the United Kingdom 11
 feeds across 18 towns (Beryl, Dott and Bolt). See the
 [Belgian, Norwegian and British feed audit](docs/belgian-norwegian-british-scooter-feeds.md).
-Portugal adds 12 feeds across 11 cities (Bird and Lime), Spain 8 feeds across 10
-towns (Bird and Hopp), and Iceland 14 Hopp feeds across 18 towns. See the
+Portugal adds 12 feeds across 11 cities (Bird and Lime), Spain 9 feeds across 11
+towns (Bird, Hopp and Hoppy), and Iceland 14 Hopp feeds across 18 towns. See the
 [Portuguese, Spanish and Icelandic feed audit](docs/portuguese-spanish-icelandic-scooter-feeds.md).
 Sweden adds 2 feeds: Lime in Uppsala and Hopp in Kiruna. See the
 [Swedish feed audit](docs/swedish-scooter-feeds.md).

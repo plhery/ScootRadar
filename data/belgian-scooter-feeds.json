@@ -81,6 +81,23 @@
       "discoveryUrl": "https://gbfs.getapony.com/v1/Charleroi/en/gbfs.json?key=AIzaSyA2roqgVo5gwx28uHcK4zr413B2fTsCkrU"
     },
     {
+      "id": "hoppy_be_blankenberge",
+      "country": "BE",
+      "provider": "hoppy",
+      "city": "Blankenberge",
+      "center": [
+        51.3131,
+        3.1316
+      ],
+      "bounds": {
+        "south": 51.2861,
+        "north": 51.3268,
+        "west": 3.0977,
+        "east": 3.1643
+      },
+      "discoveryUrl": "https://hoppy.rideatom.com/gbfs/1494/v3.0/gbfs"
+    },
+    {
       "id": "hoppy_be_kortrijk",
       "country": "BE",
       "provider": "hoppy",
@@ -98,6 +115,68 @@
       "discoveryUrl": "https://hoppy.rideatom.com/gbfs/1542/v3.0/gbfs",
       "aliases": [
         "Courtrai"
+      ]
+    },
+    {
+      "id": "hoppy_be_mechelen",
+      "country": "BE",
+      "provider": "hoppy",
+      "city": "Mechelen",
+      "center": [
+        51.0281,
+        4.4794
+      ],
+      "bounds": {
+        "south": 50.9977,
+        "north": 51.0485,
+        "west": 4.445,
+        "east": 4.5283
+      },
+      "discoveryUrl": "https://hoppy.rideatom.com/gbfs/1490/v3.0/gbfs",
+      "aliases": [
+        "Malines"
+      ]
+    },
+    {
+      "id": "hoppy_be_oostende",
+      "country": "BE",
+      "provider": "hoppy",
+      "city": "Oostende",
+      "center": [
+        51.2253,
+        2.9197
+      ],
+      "bounds": {
+        "south": 51.187,
+        "north": 51.2612,
+        "west": 2.8483,
+        "east": 2.9994
+      },
+      "discoveryUrl": "https://hoppy.rideatom.com/gbfs/1996/v3.0/gbfs",
+      "aliases": [
+        "Ostend",
+        "Ostende",
+        "Bredene"
+      ]
+    },
+    {
+      "id": "hoppy_be_sint_niklaas",
+      "country": "BE",
+      "provider": "hoppy",
+      "city": "Sint-Niklaas",
+      "center": [
+        51.165,
+        4.1395
+      ],
+      "bounds": {
+        "south": 51.1416,
+        "north": 51.1882,
+        "west": 4.1029,
+        "east": 4.1829
+      },
+      "discoveryUrl": "https://hoppy.rideatom.com/gbfs/1734/v3.0/gbfs",
+      "aliases": [
+        "Saint-Nicolas"
       ]
     },
     {

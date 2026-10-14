@@ -8,19 +8,56 @@ weekday afternoon: counts changed between polls, every feed was under a minute
 old, and every feed URL is https, on the discovery's origin and under its
 directory. No account credentials or private rider APIs are used.
 
+Hoppy's scooters in Puerto del Carmen, Lanzarote, were added on 14 October
+2026; see [Hoppy in Puerto del Carmen, October 2026](#hoppy-in-puerto-del-carmen-october-2026).
+
 | Country | Operator | Enabled feeds | Coverage | Available scooters |
 | --- | --- | ---: | --- | ---: |
 | Portugal | Bird | 10 | Lisboa, Porto, Cascais, Oeiras, Almada (with Costa da Caparica), Coimbra, Maia, Matosinhos, Portimão, Olhão | 4,350 |
 | Portugal | Lime | 2 | Lisboa, Almada (with Costa da Caparica) | 2,300 |
 | Spain | Bird | 5 | Gijón, Getafe, Playa de las Américas (Tenerife), Caleta de Fuste and Pájara (Fuerteventura) | 1,250 |
 | Spain | Hopp | 3 | Torrevieja and Pilar de la Horadada, Jávea, Playa de las Américas and Golf del Sur (Tenerife) | 550 |
+| Spain | Hoppy | 1 | Puerto del Carmen (Lanzarote) | 155 |
 | Iceland | Hopp | 14 | Reykjavík and its capital area, Reykjanesbær (with Sandgerði, Garður and Vogar), Akureyri, Selfoss, Akranes, Vestmannaeyjar and eight smaller towns | 2,700 |
 
-Portugal has 11 cities, Spain 10 and Iceland 18, once multi-town feeds are
+Portugal has 11 cities, Spain 11 and Iceland 18, once multi-town feeds are
 routed per town. The bounds, discovery URLs and aliases are in
 [`portuguese-scooter-feeds.json`](../data/portuguese-scooter-feeds.json),
 [`spanish-scooter-feeds.json`](../data/spanish-scooter-feeds.json) and
 [`icelandic-scooter-feeds.json`](../data/icelandic-scooter-feeds.json).
+
+## Hoppy in Puerto del Carmen, October 2026
+
+Hoppy, already on the map in Belgium and Croatia, runs scooters in
+Puerto del Carmen, in Tías on Lanzarote, on ATOM Mobility:
+`https://hoppy.rideatom.com/gbfs/1776/v3.0/gbfs`. The feed is keyless
+GBFS 3.0, and every feed URL is https, on the discovery's origin and under its
+directory. Its timezone reads Europe/London, which keeps the Canaries' time.
+
+- **Liveness:** ATOM stamps `last_updated` with the time of the request and
+  gives no `last_reported`, and a scooter's `vehicle_id` changes after each
+  ride, so each scooter was followed by the code at the end of its rental
+  link. It was polled 148 times, every five minutes, from 23:43 CEST on
+  Tuesday 13 October to 10:28 the next morning, and listed 148 to 160
+  available scooters. Four rides came back 0.5 to 3.0 km away under a new id,
+  with 3 to 11 km less range, two of them at night; two more scooters moved
+  0.3 and 0.6 km with a little less range and their old id.
+- **Scooters:** both vehicle types are `scooter_standing`, `electric`, with a
+  60 km maximum range. Hoppy's other Spanish systems carry e-bikes or nothing
+  (see [Known gaps](#known-gaps)).
+- **Bounds:** ATOM's geofencing forbids starting or ending a ride everywhere
+  (`global_rules`) and allows both in 58 parking zones along the resort. The
+  bounds enclose those zones, plus 0.005° of latitude and 0.01° of longitude;
+  every scooter seen stood inside them. Tías, Tias and Lanzarote are aliases.
+- **Prices:** EUR 1.20 to start, then EUR 0.35 or 0.37 a minute, by tier.
+- **Battery:** range only, as for Hoppy in Belgium.
+- **Rental links** (`https://ride-hoppy.app.link/<code>`) name each scooter by
+  its printed code, not by a hardware id, so they are kept.
+- **Load:** the scooter cache asks for the feed's `vehicle_status` every 20
+  minutes, or every minute for 10 minutes after someone looks at the town, and
+  its metadata once an hour. So Puerto del Carmen's feed adds about 8
+  requests an hour to `hoppy.rideatom.com`, and at most about 65 while
+  watched.
 
 ## Data handling
 
@@ -37,14 +74,15 @@ routed per town. The bounds, discovery URLs and aliases are in
 - **Vehicle types:** Hopp Reykjavík also lists electric cars, and Bird and Lime
   mix in e-bikes. The app keeps electric scooters only. Bird Barcelona files
   552 e-bikes under its scooter type in its station feed; it is left out.
-- **Prices** show for Hopp only: ISK 115 to unlock and ISK 45 a minute in
-  Iceland, EUR 0.95–0.99 and EUR 0.25–0.33 a minute in Spain. The króna has no
+- **Prices** show for Hopp and Hoppy: ISK 115 to unlock and ISK 45 a minute in
+  Iceland, EUR 0.95–0.99 and EUR 0.25–0.33 a minute for Hopp in Spain, and
+  EUR 1.20 and EUR 0.35–0.37 for Hoppy. The króna has no
   minor unit, so web and iOS show it without decimals. Bird publishes an empty
   plan list and Lime no pricing feed.
 - **Battery:** Lime gives range only, as elsewhere, so Lime scooters show no
   battery level. Hopp's comes from its `hopp_battery_level` field.
-- **Rental links:** Hopp links each scooter; Bird and Lime fall back to their
-  app.
+- **Rental links:** Hopp and Hoppy link each scooter; Bird and Lime fall back
+  to their app.
 - **IDs:** Bird and Lime rotate every vehicle id on every poll.
 
 ## Night bans
@@ -65,6 +103,14 @@ the dock and each scooter's card state the ban and when renting resumes.
 - Reykjavík's
   [2026 rules](https://reykjavik.is/sites/default/files/2026-02/Verklagsreglur_um_stöðvalausar_hjólaleigur_2026.pdf)
   (§5.5.1) let the city limit rental hours, but it has not.
+- **Tías** (Puerto del Carmen): Hoppy's feed gives opening hours of `24/7`,
+  and no rule on renting hours was found. The town's police removed 34 rental
+  scooters from Puerto del Carmen's streets in July 2024
+  ([La Voz de Lanzarote](https://www.lavozdelanzarote.com/en/news/politics/tias-removes-34-rental-scooters-from-public-roads-in-puerto-del-carmen_228016_102.html))
+  and 71 left on pavements and promenades in one week of July 2026
+  ([La Voz de Lanzarote](https://www.lavozdelanzarote.com/en/news/politics/security-and-order-in-tias-the-police-remove-71-electric-scooters-what-does-this-mean-for-you_244876_102.html)).
+  The town says rental firms without a licence break its bylaws. Neither
+  report names Hoppy. No curfew was added.
 - No other covered town was found to ban renting at night. The small Spanish
   and Portuguese towns had only a quick search.
 
@@ -81,7 +127,8 @@ the dock and each scooter's card state the ban and when renting resumes.
   does; this is the same open question as for Lime in France and Germany.
 - **Hopp:** its `license_url` points to its privacy policy, so it publishes no
   data licence, as in Germany.
-- The credits name Bird, Lime and Hopp for these countries, and the DGT for
+- **Hoppy** publishes no licence in its feed, as in Belgium.
+- The credits name Bird, Lime, Hopp and Hoppy for these countries, and the DGT for
   Matosinhos's boundary.
 
 ## Known gaps
@@ -100,6 +147,11 @@ the dock and each scooter's card state the ban and when renting resumes.
   - Dott (Santa Cruz de Tenerife, Ibiza, Lanzarote and other resorts) and Bolt
     (Oviedo) have no public feed.
   - Hopp's Benidorm, Cartagena, Dénia, Fuengirola and Marbella feeds are empty.
+  - Hoppy's other Spanish systems on ATOM Mobility list no scooters. Almería
+    (id 2113, about 480 e-bikes on 13 October 2026), Cartagena (2206, about
+    230) and Mojácar & Vera (2232, about 150) carry e-bikes only, and Roquetas
+    de Mar (2223), Magic World Resort (1393) and Cabo de Gata - Níjar (2272)
+    were empty.
 - **Iceland:**
   - Bolt has run in the capital area since 2024, with no public feed.
   - Hopp's Hveragerði and Hella / Hvolsvöllur feeds held under ten available

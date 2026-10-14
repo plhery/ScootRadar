@@ -38,7 +38,11 @@ describe('German and Italian scooter coverage', () => {
     ['Maarianhamina Finnland', 'Mariehamn, Finland'], ['Åland', 'Mariehamn, Finland'], ['Aland Finlande', 'Mariehamn, Finland'],
     ['Ahvenanmaa Suomi', 'Mariehamn, Finland'], ['Rijeka', 'Rijeka, Croatia'], ['Fiume', 'Rijeka, Croatia'],
     ['Rijeka Hrvatska', 'Rijeka, Croatia'], ['Fiume Croazia', 'Rijeka, Croatia'], ['Rijeka Kroatien', 'Rijeka, Croatia'],
-    ['Rijeka Croacia', 'Rijeka, Croatia']])('finds %s', (query, name) => {
+    ['Rijeka Croacia', 'Rijeka, Croatia'],
+    ['Ostend', 'Oostende, Belgium'], ['Ostende Belgique', 'Oostende, Belgium'],
+    ['Bredene', 'Oostende, Belgium'], ['Mechelen', 'Mechelen, Belgium'], ['Malines Belgique', 'Mechelen, Belgium'],
+    ['Blankenberge', 'Blankenberge, Belgium'], ['Sint-Niklaas', 'Sint-Niklaas, Belgium'], ['Saint-Nicolas Belgique', 'Sint-Niklaas, Belgium'],
+    ['Puerto del Carmen', 'Puerto del Carmen, Spain'], ['Tias', 'Puerto del Carmen, Spain'], ['Lanzarote Spain', 'Puerto del Carmen, Spain']])('finds %s', (query, name) => {
     expect(searchRegionalScooterCities(query)[0].display_name).toBe(name);
   });
   it('does not silently ignore a conflicting country or expose the aggregate feed as a city', () => {
@@ -239,6 +243,43 @@ describe('German and Italian scooter coverage', () => {
       // The number at the end of the link is the one printed on the scooter, which outlives its rotating id.
       rental_uris: { android: 'https://ride-hoppy.app.link/302484', ios: 'https://ride-hoppy.app.link/302484', web: 'https://ride-hoppy.app.link/' },
     })]);
+  });
+  // As ATOM Mobility publishes them: GBFS 3.0, a plan per scooter type, and a range that is the type's maximum scaled by the charge.
+  const atomFeeds = (system: (typeof REGIONAL_SCOOTER_SYSTEMS)[number], type: object, plan: object, vehicles: object[]) => {
+    const base = new URL('.', system.discoveryUrl).toString();
+    return vi.fn(async (url: string) => {
+      if (url === system.discoveryUrl) return response({ version: '3.0', data: { feeds: ['vehicle_types', 'vehicle_status',
+        'system_pricing_plans'].map(name => ({ name, url: `${base}${name}` })) } });
+      if (url === `${base}vehicle_types`) return response({ version: '3.0', data: { vehicle_types: [type] } });
+      if (url === `${base}vehicle_status`) return response({ last_updated: new Date().toISOString(), version: '3.0', data: { vehicles } });
+      if (url === `${base}system_pricing_plans`) return response({ version: '3.0', data: { plans: [plan] } });
+      throw new Error(`Unexpected upstream ${url}`);
+    });
+  };
+  it('shows the range of each Hoppy scooter in Oostende, where a type goes 60 km', async () => {
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'hoppy_be_oostende')!;
+    const link = 'https://ride-hoppy.app.link/600332';
+    vi.stubGlobal('fetch', atomFeeds(system,
+      { vehicle_type_id: '3719', form_factor: 'scooter_standing', propulsion_type: 'electric', max_range_meters: 60_000,
+        default_pricing_plan_id: '3719' },
+      { plan_id: '3719', name: [{ text: 'SEGW OOS ANRT_ KSCSEG _TIER3', language: 'en' }], currency: 'EUR', price: 1,
+        is_taxable: false, per_min_pricing: [{ start: 0, rate: 0.3, interval: 1 }] },
+      [{ vehicle_id: '3905803084817904437', lat: 51.2177, lon: 2.913, is_reserved: false, is_disabled: false,
+        rental_uris: { android: link, ios: link, web: 'https://ride-hoppy.app.link/' }, vehicle_type_id: '3719',
+        current_range_meters: 51_000, pricing_plan_id: '3719' }]));
+    const result = await fetchScooters({ bounds: system.bounds, minBattery: 0, providers: new Set(['hoppy']) });
+    expect(result.meta.sources.belgium).toBe('fresh');
+    expect(result.vehicles).toMatchObject([{ provider: 'hoppy', battery: null, range_m: 51_000,
+      pricing: { currency: 'EUR', unlock_fee_minor_units: 100, minute_fee_minor_units: 30 }, rental_uris: { ios: link } }]);
+  });
+  it('drops the Mechelen scooter that stood in Kortrijk, and keeps Oostende\'s and Blankenberge\'s towns apart', () => {
+    const bounds = (id: string) => REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === id)!.bounds;
+    expect(boundsContainPoint(bounds('hoppy_be_mechelen'), 50.823, 3.2728)).toBe(false);
+    expect(boundsContainPoint(bounds('hoppy_be_kortrijk'), 50.823, 3.2728)).toBe(true);
+    // Oostende's feed had one scooter in Blankenberge, which its bounds leave to Blankenberge's own feed.
+    expect(boundsContainPoint(bounds('hoppy_be_oostende'), 51.3124, 3.121)).toBe(false);
+    expect(boundsContainPoint(bounds('hoppy_be_blankenberge'), 51.3124, 3.121)).toBe(true);
+    expect(bounds('hoppy_be_oostende').east).toBeLessThan(bounds('hoppy_be_blankenberge').west);
   });
   it('keeps Dott Wołomin\'s feeds under its percent-encoded directory, however the letter is written', () => {
     const base = new URL('.', REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'dott_pl_wolomin')!.discoveryUrl).toString();
