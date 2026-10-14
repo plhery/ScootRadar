@@ -173,12 +173,40 @@
         9.6107
       ],
       "bounds": {
-        "south": 59.1385,
+        "south": 59.1153,
         "north": 59.2656,
         "west": 9.52,
-        "east": 9.6801
+        "east": 9.6952
       },
-      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydeskien/gbfs"
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydeskien/gbfs",
+      "areas": [
+        {
+          "city": "Skien",
+          "center": [
+            59.2075,
+            9.6107
+          ],
+          "bounds": {
+            "south": 59.1385,
+            "north": 59.2656,
+            "west": 9.52,
+            "east": 9.6801
+          }
+        },
+        {
+          "city": "Porsgrunn",
+          "center": [
+            59.1411,
+            9.6555
+          ],
+          "bounds": {
+            "south": 59.1153,
+            "north": 59.1616,
+            "west": 9.6191,
+            "east": 9.6952
+          }
+        }
+      ]
     },
     {
       "id": "ryde_no_stavanger",

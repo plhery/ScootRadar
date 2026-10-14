@@ -149,6 +149,10 @@ directory.
   and Kvernaland, in Time, which are now its aliases, and its Stavanger area to
   58.868 N (from 58.8765), into Sola. 8 to 10 scooters stood there in each
   poll, at night and by day, inside Voi's zones, and the map left them out.
+  Ryde's Skien zone reaches the centre of Porsgrunn, where about 90 of the
+  Skien feed's scooters stand, so that feed has had a second area since the
+  same day, Porsgrunn, with the bounds of Ryde's Porsgrunn feed; zoomed out,
+  those scooters count under Porsgrunn.
 
 ## Night bans
 

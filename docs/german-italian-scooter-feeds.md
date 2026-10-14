@@ -66,6 +66,10 @@ The complete reviewed city bounds, public discovery URLs and aliases are in
 - GBFS discovery links must stay within the reviewed HTTPS city/feed base.
 - German MobiData BW feeds use GBFS 3.0 and localized names. Multi-city feeds
   retain their published city subregions for provider filters and overview counts.
+  Dott Heidelberg's zone reaches Leimen, so since 14 October 2026 its feed has
+  a Leimen area too: Zeus's Leimen box, cut at the feed's own southern edge
+  (49.3288–49.37 N, 8.62–8.73 E). Its 18 to 30 scooters there count under
+  Leimen, not Heidelberg.
 - Routing envelopes use published geofencing plus small padding.
   Hopp's global geofence is restricted to its reviewed Konstanz area.
   Bolt Karlsruhe's feed also lists no-parking zones in Pforzheim and Mannheim,

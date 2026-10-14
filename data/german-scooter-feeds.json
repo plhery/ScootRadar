@@ -206,7 +206,35 @@
         "west": 8.6176,
         "east": 8.7379
       },
-      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/heidelberg/gbfs.json"
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/heidelberg/gbfs.json",
+      "areas": [
+        {
+          "city": "Heidelberg",
+          "center": [
+            49.4037,
+            8.6752
+          ],
+          "bounds": {
+            "south": 49.3288,
+            "north": 49.4539,
+            "west": 8.6176,
+            "east": 8.7379
+          }
+        },
+        {
+          "city": "Leimen",
+          "center": [
+            49.3483,
+            8.6911
+          ],
+          "bounds": {
+            "south": 49.3288,
+            "north": 49.37,
+            "west": 8.62,
+            "east": 8.73
+          }
+        }
+      ]
     },
     {
       "id": "dott_de_heilbronn",
