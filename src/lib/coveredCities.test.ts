@@ -43,8 +43,8 @@ describe('covered cities', () => {
     const bordeaux = COVERED_CITIES.filter(city => city.city === 'Bordeaux');
 
     expect(bordeaux).toHaveLength(1);
-    // Dott reaches further north and east than Pony.
-    expect(bordeaux[0].bounds).toEqual({ south: 44.66, west: -0.86, north: 45.07, east: -0.32 });
+    // Dott reaches further south, north and east than Pony, Pony further west.
+    expect(bordeaux[0].bounds).toEqual({ south: 44.7393, west: -0.7866, north: 44.9989, east: -0.3947 });
   });
 
   it('keeps every city centre inside its own bounds and inside coverage', () => {

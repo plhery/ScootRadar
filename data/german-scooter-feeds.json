@@ -51,6 +51,9 @@
         },
         {
           "city": "Tübingen",
+          "aliases": [
+            "Tuebingen"
+          ],
           "center": [
             48.5216,
             9.0576
@@ -189,7 +192,10 @@
         "west": 9.5647,
         "east": 9.893
       },
-      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/hannover/gbfs.json"
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/hannover/gbfs.json",
+      "aliases": [
+        "Hanover"
+      ]
     },
     {
       "id": "dott_de_heidelberg",
@@ -251,7 +257,48 @@
         "west": 9.0868,
         "east": 9.3189
       },
-      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/heilbronn/gbfs.json"
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/heilbronn/gbfs.json",
+      "areas": [
+        {
+          "city": "Heilbronn",
+          "center": [
+            49.1426,
+            9.2168
+          ],
+          "bounds": {
+            "south": 49.0791,
+            "north": 49.2308,
+            "west": 9.0868,
+            "east": 9.3189
+          }
+        },
+        {
+          "city": "Weinsberg",
+          "center": [
+            49.1513,
+            9.2876
+          ],
+          "bounds": {
+            "south": 49.139,
+            "north": 49.1781,
+            "west": 9.2412,
+            "east": 9.3173
+          }
+        },
+        {
+          "city": "Untereisesheim",
+          "center": [
+            49.2111,
+            9.2019
+          ],
+          "bounds": {
+            "south": 49.2015,
+            "north": 49.2246,
+            "west": 9.1785,
+            "east": 9.2168
+          }
+        }
+      ]
     },
     {
       "id": "dott_de_kaiserslautern",
@@ -323,6 +370,38 @@
       "aliases": [
         "Munich",
         "Muenchen"
+      ],
+      "areas": [
+        {
+          "city": "München",
+          "aliases": [
+            "Munich",
+            "Muenchen"
+          ],
+          "center": [
+            48.1372,
+            11.5756
+          ],
+          "bounds": {
+            "south": 48.0524,
+            "north": 48.3714,
+            "west": 11.3135,
+            "east": 11.7866
+          }
+        },
+        {
+          "city": "Germering",
+          "center": [
+            48.1339,
+            11.3765
+          ],
+          "bounds": {
+            "south": 48.1047,
+            "north": 48.1448,
+            "west": 11.3336,
+            "east": 11.3921
+          }
+        }
       ]
     },
     {
@@ -340,7 +419,10 @@
         "west": 7.538,
         "east": 7.7053
       },
-      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/munster/gbfs.json"
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/munster/gbfs.json",
+      "aliases": [
+        "Muenster"
+      ]
     },
     {
       "id": "dott_de_potsdam",
@@ -529,6 +611,19 @@
           }
         },
         {
+          "city": "Ludwigshafen am Rhein",
+          "center": [
+            49.4812,
+            8.4464
+          ],
+          "bounds": {
+            "south": 49.4287,
+            "north": 49.5538,
+            "west": 8.3322,
+            "east": 8.4587
+          }
+        },
+        {
           "city": "Stuttgart",
           "center": [
             48.7758,
@@ -575,6 +670,9 @@
         },
         {
           "city": "Tübingen",
+          "aliases": [
+            "Tuebingen"
+          ],
           "center": [
             48.5216,
             9.0576
@@ -656,6 +754,37 @@
       "discoveryUrl": "https://yoio.rideatom.com/gbfs/9/v3.0/gbfs",
       "aliases": [
         "Goettingen"
+      ],
+      "areas": [
+        {
+          "city": "Göttingen",
+          "aliases": [
+            "Goettingen"
+          ],
+          "center": [
+            51.5413,
+            9.9158
+          ],
+          "bounds": {
+            "south": 51.4953,
+            "north": 51.6057,
+            "west": 9.8716,
+            "east": 9.9978
+          }
+        },
+        {
+          "city": "Bovenden",
+          "center": [
+            51.5884,
+            9.9222
+          ],
+          "bounds": {
+            "south": 51.5795,
+            "north": 51.6057,
+            "west": 9.9159,
+            "east": 9.9474
+          }
+        }
       ]
     },
     {

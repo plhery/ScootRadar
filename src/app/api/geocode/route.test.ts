@@ -257,8 +257,8 @@ describe('address search results', () => {
       return (await (await POST(postRequest(query, 'de', ZURICH))).json() as { title: string }[]).map(place => place.title);
     };
 
-    // A town whose name starts as typed comes before a street: "Muen" is on its way to München...
-    expect(await answers('Muen', [street('Muenzgasse'), town('München', 48.1372, 11.5756)])).toEqual(['München', 'Muenzgasse']);
+    // A town whose name starts as typed comes before a street: "Muen" is on its way to München, and to Münster...
+    expect(await answers('Muen', [street('Muenzgasse'), town('München', 48.1372, 11.5756)])).toEqual(['München', 'Münster', 'Muenzgasse']);
     // ...but "Joe" is not on its way to Johannisberg, as it was when "oe" was read as "o".
     expect(await answers('Joe', [town('Johannisberg', 49.99, 7.98), street('Joe-Kaeser-Weg')])).toEqual(['Joe-Kaeser-Weg', 'Johannisberg']);
   });

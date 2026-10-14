@@ -109,3 +109,51 @@ describe('Swiss systems that serve several towns', () => {
     expect(counts['city:ch:zug']).toBeUndefined();
   });
 });
+
+describe('Swiss towns in the city totals', () => {
+  const now = Date.parse('2026-10-14T08:00:00Z');
+  const switzerland = { south: 45.8, west: 5.9, north: 47.9, east: 10.6 };
+  const scooter = (provider: string, id: string, lat: number, lng: number): Vehicle => ({
+    vehicle_id: id, lat, lng, provider, battery: 70, range_m: null, distance_m: null, deep_link: null,
+  });
+  const national = (systemId: string, provider: string, vehicles: Vehicle[]): FeedSnapshot => ({
+    id: `national:${systemId}`, source: 'national', provider, coverage: knownSystemCoverage(systemId)!, vehicles,
+    observedAt: now, attemptedAt: now, stale: false, failed: false, skipped: false,
+  });
+  // Positions from the polls of 14 October 2026.
+  const feeds = [
+    national('dott_romanshorn', 'dott', [scooter('dott', 'amriswil', 47.5487, 9.2886), scooter('dott', 'romanshorn', 47.5651, 9.3742)]),
+    national('dott_st-gallen', 'dott', [
+      scooter('dott', 'gossau', 47.4212, 9.2478), scooter('dott', 'flawil', 47.42, 9.1758),
+      scooter('dott', 'uzwil', 47.4367, 9.131), scooter('dott', 'st-gallen', 47.4245, 9.3767),
+    ]),
+    national('bolt_zurich', 'bolt', [
+      scooter('bolt', 'seebach', 47.4209, 8.5123), scooter('bolt', 'schwamendingen', 47.4099, 8.5676),
+      scooter('bolt', 'opfikon', 47.4343, 8.5677), scooter('bolt', 'kloten', 47.4472, 8.5691),
+    ]),
+  ];
+  const counts = Object.fromEntries(querySnapshot({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) },
+    { bounds: switzerland, minBattery: 0 }, 8, now).clusters.map(cluster => [cluster.id, cluster.providers]));
+
+  it('counts Dott in Amriswil, Gossau, Flawil and Uzwil under those towns, not Romanshorn or St. Gallen', () => {
+    for (const town of ['amriswil', 'romanshorn', 'gossau', 'flawil', 'uzwil', 'st-gallen']) {
+      expect(counts[`city:ch:${town}`]).toEqual({ dott: 1 });
+    }
+  });
+
+  it('counts the north of Zürich under Zürich, though Opfikon\'s centre is nearer', () => {
+    expect(counts['city:ch:zurich']).toEqual({ bolt: 2 });
+    expect(counts['city:ch:opfikon']).toEqual({ bolt: 1 });
+    expect(counts['city:ch:kloten']).toEqual({ bolt: 1 });
+  });
+
+  it('still reads Lime Opfikon and Bird Kloten where their scooters stand', () => {
+    // Lime Opfikon's and Bird Kloten's furthest scooters in the polls of 14 October 2026.
+    for (const [lat, lng] of [[47.4199, 8.5533], [47.4477, 8.6074]]) {
+      expect(coverageIntersects(knownSystemCoverage('lime_opfikon')!, { south: lat, west: lng, north: lat, east: lng })).toBe(true);
+    }
+    for (const [lat, lng] of [[47.4412, 8.5631], [47.4603, 8.5963]]) {
+      expect(coverageIntersects(knownSystemCoverage('bird-kloten')!, { south: lat, west: lng, north: lat, east: lng })).toBe(true);
+    }
+  });
+});

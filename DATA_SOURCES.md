@@ -34,6 +34,26 @@ is allowed in Dott's Lichtensteig zone, but its 13 scooters sat at the same
 spots in all seventeen polls from 00:37 to 11:41 that day, so no ride there has
 been seen yet.
 
+Each Swiss scooter counts in the city totals under the nearest town whose area
+holds it, so on the evening of 14 October 2026 each was placed in its
+municipality by swisstopo's boundaries, over six polls (00:01–00:10 and
+13:09–13:20). Opfikon's area reached into Zürich's Seebach, Affoltern, Oerlikon
+and Schwamendingen, whose scooters lie nearer Opfikon's centre than Zürich's:
+414 to 448 of Zürich's counted under Opfikon. Opfikon's area now stops on the
+south and west at Opfikon's boundary and Lime Opfikon's furthest scooters
+(47.4156 N, 8.5533 E) and runs 1 km beyond them to the north and east, to
+47.4568 N and 8.6208 E; Kloten's is the zone where Bird and Hopp allow riding
+there, plus 1 km (47.4287–47.4829 N, 8.5477–8.6213 E). 19 to 29 of Zürich's
+scooters, just south of Opfikon, still count under it. Dott's Romanshorn zone
+reaches Amriswil and its St. Gallen zone Gossau, Flawil and Uzwil, whose
+scooters stand apart from Romanshorn's and St. Gallen's but counted under them:
+76 to 79 in Amriswil, 56 or 57 in Gossau, 31 or 32 in Flawil and 18 in Uzwil.
+Each is now a town of its own, its boundary plus 1 km, stopping on the side
+that faces its neighbour. Wittenbach and Gaiserwald, joined to St. Gallen,
+Goldach and Tübach, joined to Rorschach, and Dott's Rheintal zone, where 50 to
+70 scooters stand among Au, Balgach, Berneck, Widnau and Diepoldsau, none of
+which holds most, still count under St. Gallen and Rorschach.
+
 Lime's Winterthur, Zug and Wetzikon systems are listed with fresh timestamps
 but no vehicles, and have been since at least 11 October 2026. Winterthur
 licenses Voi alone, until 31 December 2027

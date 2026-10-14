@@ -23,7 +23,9 @@ published zone, and Voi's Grand Paris Seine et Oise, Dott's Versailles Grand Par
 and Lime's Lille Métropole are split into towns; see
 [Bounds and towns, October 2026](#bounds-and-towns-october-2026). Later that
 day Pony Angers, Bordeaux and Perpignan and Lime Marseille were fitted too, and
-Pony Perpignan's scooters in Le Barcarès got a town of their own. Bird
+Pony Perpignan's scooters in Le Barcarès got a town of their own. In the last
+sweep that evening Dott Bordeaux and Lyon were fitted, and Pony Poitiers's
+scooters in Lusignan got a town of their own. Bird
 Cherbourg-en-Cotentin joined the catalog the same day; see
 [Bird Cherbourg-en-Cotentin, October 2026](#bird-cherbourg-en-cotentin-october-2026).
 
@@ -259,6 +261,8 @@ Dott's region polygon.
 | Bird Châlons-en-Champagne | 48.85–49.07, 4.22–4.49 | 48.9259–48.9944, 4.2961–4.4173 |
 | Bird Laval | 47.95–48.19, −0.94 to −0.65 | 48.0366–48.1153, −0.8698 to −0.7185 |
 | Bird Vichy | 46.00–46.27, 3.28–3.62 | 46.0785–46.1945, 3.3540–3.5438 |
+| Dott Bordeaux | 44.66–45.07, −0.86 to −0.32 | 44.7393–44.9989, −0.7862 to −0.3947 |
+| Dott Lyon | 45.63–45.92, 4.68–5.00 | 45.7065–45.8489, 4.7570–4.9294 |
 | Dott Marne-la-Vallée (SIEMU) | 48.73–48.97, 2.58–2.86 | 48.8049–48.8931, 2.6477–2.7887 |
 | Dott Versailles Grand Parc | 48.73–48.96, 2.02–2.24 | 48.8054–48.8787, 2.0894–2.1728, in three towns |
 | Pony Angers | 47.33–47.62, −0.73 to −0.38 | 47.4052–47.5430, −0.6573 to −0.4546 |
@@ -269,7 +273,7 @@ Dott's region polygon.
 | Pony Hérouville-Saint-Clair | 48.89–49.49, −0.76 to 0.09 | 49.1760–49.3021, −0.3820 to −0.2309 |
 | Pony Lorient | 47.59–47.89, −3.58 to −3.21 | 47.7171–47.7831, −3.4203 to −3.3350 |
 | Pony Perpignan | 42.52–43.03, 2.63–3.20 | 42.6116–42.9527, 2.7174–3.0736, in two towns |
-| Pony Poitiers | 46.32–46.91, −0.09 to 0.81 | 46.4175–46.6815, 0.0921–0.4341 |
+| Pony Poitiers | 46.32–46.91, −0.09 to 0.81 | 46.4175–46.6815, 0.0921–0.4341, in two towns |
 | Voi Grenoble | 45.01–45.37, 5.47–5.98 | 45.1054–45.2809, 5.6232–5.8865 |
 | Voi Grand Paris Seine et Oise | 48.77–49.16, 1.47–2.30 | 48.8829–49.0501, 1.6421–2.1408, in ten towns |
 | Voi Le Havre | 49.35–49.73, −0.05 to 0.38 | 49.4671–49.5982, 0.0529–0.2092 |
@@ -329,6 +333,30 @@ Dott's region polygon.
   5 or 6 scooters stood there by night and by day, and 6 to 8 stood in Caen; both count under Hérouville-Saint-Clair. Pony Angers's and
   Pony Bordeaux's zones take in suburbs that hold 10 to 60 scooters each; they
   stay under the city the operator names.
+- **Last sweep, 14 October 2026, evening.** Every catalog was checked by script
+  against the six polls above (00:01–00:10 and 13:09–13:20), each scooter
+  placed in its commune by the communes' boundaries
+  ([geo.api.gouv.fr](https://geo.api.gouv.fr/decoupage-administratif/communes)).
+  - **Dott Bordeaux and Dott Lyon** reached 6 to 10 km beyond Dott's region
+    polygon; they are now that polygon plus 1 km. Each kept every scooter of
+    every poll: 1,003 to 1,030 in Bordeaux and 3,331 to 3,441 in Lyon.
+  - **Pony Poitiers's** zone has a second part, around Lusignan, 23 km
+    south-west of Poitiers, where 10 scooters stood in every poll and counted
+    under Poitiers. The feed now has two towns, each its part of the zone plus
+    1 km: Poitiers, and Lusignan, centred on its town hall. No scooter was
+    dropped.
+  - **Not given a town.** A second town gets one where its scooters stand
+    apart from the named city's and a box can hold them without taking in the
+    city's. Suburbs joined to the city, such as Caluire-et-Cuire, Rillieux-la-Pape
+    and La Mulatière in Lyon (78 to 261 Dott scooters each), Mérignac and Pessac
+    in Bordeaux, Saint-Martin-d'Hères and Échirolles in Grenoble, stay under
+    the city: a box drawn round any of them takes in streets of the city
+    next door. So do Mignaloux-Beauvoir (11 to 13 Pony scooters), whose part
+    of the zone runs into Poitiers's east side, and Dott Bordeaux's
+    Saint-Médard-en-Jalles (16 to 18), Le Taillan-Médoc (22 to 24) and
+    Carbon-Blanc (9 to 11), whose boxes would each take in another suburb's
+    scooters. Towns of Lille Métropole, Saint-Quentin-en-Yvelines and the
+    SIEMU count under the agglomeration those feeds are named after.
 
 ## Bird Cherbourg-en-Cotentin, October 2026
 

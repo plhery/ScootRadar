@@ -43,13 +43,13 @@ scooters in Catania followed on 14 October 2026; see
 | Germany | Bolt | 3 | Karlsruhe, Stuttgart, Reutlingen / Tübingen |
 | Germany | Hopp | 1 | Konstanz |
 | Germany | Lime | 3 | Frankfurt, Wuppertal, Stuttgart / Konstanz |
-| Germany | Voi | 1 | Karlsruhe, Pforzheim, Mannheim, Stuttgart, Böblingen, Sindelfingen, Tübingen and Reutlingen |
+| Germany | Voi | 1 | Karlsruhe, Pforzheim, Mannheim, Ludwigshafen am Rhein, Stuttgart, Böblingen, Sindelfingen, Tübingen and Reutlingen |
 | Germany | Zeus | 14 | Bamberg, Donaueschingen, Freiburg im Breisgau, Heidelberg / Leimen / Walldorf / Wiesloch, Konstanz, Ludwigsburg, Neustadt an der Weinstraße, Regensburg, Renningen, Schweinfurt, Singen, Tuttlingen, Villingen-Schwenningen and Würzburg |
 | Germany | Yoio | 3 | Erfurt, Freiburg im Breisgau and Göttingen |
 | Italy | Bird | 3 | Roma, Palermo and Napoli |
 | Italy | Elerent | 1 | Catania |
 
-German coverage contains 42 distinct cities, Italian coverage 4.
+German coverage contains 47 distinct cities, Italian coverage 4.
 The complete reviewed city bounds, public discovery URLs and aliases are in
 [`german-scooter-feeds.json`](../data/german-scooter-feeds.json) and
 [`italian-scooter-feeds.json`](../data/italian-scooter-feeds.json).
@@ -70,6 +70,39 @@ The complete reviewed city bounds, public discovery URLs and aliases are in
   a Leimen area too: Zeus's Leimen box, cut at the feed's own southern edge
   (49.3288–49.37 N, 8.62–8.73 E). Its 18 to 30 scooters there count under
   Leimen, not Heidelberg.
+- A last sweep that evening checked every feed against six polls of 14 October
+  2026 (00:01–00:10 and 13:09–13:20), each scooter placed in its municipality
+  by BKG's boundaries ([VG250](https://gdz.bkg.bund.de/index.php/default/digitale-geodaten/verwaltungsgebiete.html)).
+  A second town got an area where its scooters stand apart from the named
+  city's and a box can hold them without taking in the city's; the box is the
+  operator's zone in that town plus 1 km, stopping at the boundary on the
+  side that faces the city, and centred on the town:
+  - **Voi**'s Mannheim zone crosses the Rhine: 128 to 141 of its scooters stood
+    in Ludwigshafen am Rhein and counted under Mannheim. Ludwigshafen am Rhein
+    is now an area of Voi's feed, its part of the zone (west of the Rhine)
+    plus 1 km on the other three sides (49.4287–49.5538 N, 8.3322–8.4587 E).
+  - **Dott Heilbronn**: Weinsberg (17 to 19 scooters, 49.139–49.1781 N,
+    9.2412–9.3173 E) and Untereisesheim (11 to 15, 49.2015–49.2246 N,
+    9.1785–9.2168 E).
+  - **Dott München**: Germering (13 or 14, 48.1047–48.1448 N,
+    11.3336–11.3921 E).
+  - **Yoio Göttingen**: Bovenden, a zone of its own 1 km north of Göttingen's,
+    with 12 scooters in every poll; its area is that zone with the feed's own
+    padding (51.5795–51.6057 N, 9.9159–9.9474 E).
+
+  Each feed's first area keeps its old bounds and name, so no scooter left the
+  map. In each poll at most 2 scooters of a town next door joined the new
+  areas: Erlenbach's under Weinsberg, Neckarsulm's under Untereisesheim, all
+  of which counted under Heilbronn before. Hanover, Tuebingen and Muenster now
+  find Hannover, Tübingen and Münster.
+- **Not given a town**: suburbs joined to the city, where a box would take in
+  the city's own streets: Langenhagen (386 to 396 Dott scooters), Garbsen (114
+  to 120) and Laatzen (90 to 104) under Hannover; Hattersheim am Main (86 or
+  87 Lime scooters) under Frankfurt; Neckarsulm (50 to 55) under Heilbronn;
+  Unterföhring (44 to 46), Gröbenzell (22 or 23) and Puchheim (16 or 17)
+  under München; Tamm (11 to 21) and Asperg (9 to 11) under Zeus's
+  Ludwigsburg. Dott München's 19 scooters at Munich Airport, in Freising,
+  stand at its stations there and count under München too.
 - Routing envelopes use published geofencing plus small padding.
   Hopp's global geofence is restricted to its reviewed Konstanz area.
   Bolt Karlsruhe's feed also lists no-parking zones in Pforzheim and Mannheim,
@@ -86,7 +119,8 @@ The complete reviewed city bounds, public discovery URLs and aliases are in
   Empty or absent parking data does not imply unrestricted parking.
 - Overview counts refresh hourly; individual scooters every twenty minutes, or
   every minute while someone looks at the town. City search recognizes
-  local names and English aliases (for example München/Munich and Napoli/Naples).
+  local names and English aliases (for example München/Munich, Hannover/Hanover
+  and Napoli/Naples).
 
 ## Yoio, October 2026
 

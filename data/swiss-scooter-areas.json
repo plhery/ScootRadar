@@ -1,5 +1,19 @@
 [
   {
+    "id": "ch:amriswil",
+    "city": "Amriswil",
+    "center": [
+      47.547,
+      9.2959
+    ],
+    "bounds": {
+      "south": 47.513,
+      "west": 9.234,
+      "north": 47.5773,
+      "east": 9.3262
+    }
+  },
+  {
     "id": "ch:basel",
     "city": "Basel",
     "center": [
@@ -56,6 +70,20 @@
     }
   },
   {
+    "id": "ch:flawil",
+    "city": "Flawil",
+    "center": [
+      47.413,
+      9.1832
+    ],
+    "bounds": {
+      "south": 47.3753,
+      "west": 9.1561,
+      "north": 47.4376,
+      "east": 9.2125
+    }
+  },
+  {
     "id": "ch:frauenfeld",
     "city": "Frauenfeld",
     "center": [
@@ -67,6 +95,20 @@
       "west": 8.72,
       "north": 47.68,
       "east": 9.1
+    }
+  },
+  {
+    "id": "ch:gossau",
+    "city": "Gossau",
+    "center": [
+      47.4155,
+      9.2548
+    ],
+    "bounds": {
+      "south": 47.3868,
+      "west": 9.2125,
+      "north": 47.4639,
+      "east": 9.2915
     }
   },
   {
@@ -105,10 +147,10 @@
       8.5849
     ],
     "bounds": {
-      "south": 47.4,
-      "west": 8.47,
-      "north": 47.56,
-      "east": 8.74
+      "south": 47.4287,
+      "west": 8.5477,
+      "north": 47.4829,
+      "east": 8.6213
     }
   },
   {
@@ -161,10 +203,10 @@
       8.5759
     ],
     "bounds": {
-      "south": 47.39,
-      "west": 8.47,
-      "north": 47.5,
-      "east": 8.68
+      "south": 47.4156,
+      "west": 8.5533,
+      "north": 47.4568,
+      "east": 8.6208
     }
   },
   {
@@ -235,6 +277,20 @@
       "west": 8.58,
       "north": 47.43,
       "east": 8.86
+    }
+  },
+  {
+    "id": "ch:uzwil",
+    "city": "Uzwil",
+    "center": [
+      47.4365,
+      9.1342
+    ],
+    "bounds": {
+      "south": 47.4149,
+      "west": 9.0528,
+      "north": 47.4735,
+      "east": 9.1565
     }
   },
   {

@@ -130,10 +130,10 @@
         -0.5792
       ],
       "bounds": {
-        "south": 44.66,
-        "west": -0.86,
-        "north": 45.07,
-        "east": -0.32
+        "south": 44.7393,
+        "west": -0.7862,
+        "north": 44.9989,
+        "east": -0.3947
       },
       "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/bordeaux/gbfs.json"
     },
@@ -162,10 +162,10 @@
         4.832
       ],
       "bounds": {
-        "south": 45.63,
-        "west": 4.68,
-        "north": 45.92,
-        "east": 5.0
+        "south": 45.7065,
+        "west": 4.757,
+        "north": 45.8489,
+        "east": 4.9294
       },
       "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/lyon/gbfs.json"
     },
@@ -755,7 +755,35 @@
         "north": 46.6815,
         "east": 0.4341
       },
-      "discoveryUrl": "https://proxy.transport.data.gouv.fr/resource/pony-poitiers-gbfs/gbfs.json"
+      "discoveryUrl": "https://proxy.transport.data.gouv.fr/resource/pony-poitiers-gbfs/gbfs.json",
+      "areas": [
+        {
+          "city": "Poitiers",
+          "center": [
+            46.5802,
+            0.3404
+          ],
+          "bounds": {
+            "south": 46.5056,
+            "west": 0.236,
+            "north": 46.6815,
+            "east": 0.4341
+          }
+        },
+        {
+          "city": "Lusignan",
+          "center": [
+            46.4349,
+            0.1228
+          ],
+          "bounds": {
+            "south": 46.4175,
+            "west": 0.0921,
+            "north": 46.4571,
+            "east": 0.1525
+          }
+        }
+      ]
     },
     {
       "id": "voi_fr_422",
