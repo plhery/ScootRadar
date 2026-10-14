@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
-  catalogSystems, countryCreditLinks, scooterCities, swiftCountries, typescriptCatalogs, typescriptCountries,
-  validateCountries,
+  catalogSystems, cityKm, countryCreditLinks, scooterCities, swiftCountries, typescriptCatalogs, typescriptCountries,
+  validateCityWidths, validateCountries,
 } from './country-catalog.mjs';
 
 const readJson = path => JSON.parse(readFileSync(path, 'utf8'));
@@ -21,13 +21,35 @@ const canada = {
 };
 const canadianCatalog = { systems: [{ id: 'bird_toronto', provider: 'bird', city: 'Toronto', center: [43.65, -79.38],
   bounds: { south: 43.58, west: -79.64, north: 43.86, east: -79.11 }, discoveryUrl: 'https://mds.bird.co/gbfs/v2/public/toronto/gbfs.json' }] };
-const fixtures = { 'data/canadian-scooter-feeds.json': canadianCatalog };
+// The United States, whose towns share names across states: one Portland in Oregon, one in Maine.
+const unitedStates = {
+  code: 'US', continent: 'north-america', catalog: 'data/american-scooter-feeds.json', source: 'unitedstates',
+  names: { en: 'United States', de: 'USA', fr: 'États-Unis', it: 'Stati Uniti', nl: 'Verenigde Staten', nb: 'USA', pt: 'Estados Unidos',
+    es: 'Estados Unidos', is: 'Bandaríkin' },
+  searchWords: ['usa'],
+  anchor: [39.8, -98.6],
+  regions: { showInCityNames: true, list: [{ code: 'ME', name: 'Maine' }, { code: 'OR', name: 'Oregon' }] },
+  featuredCities: ['us:or:Portland'],
+  credits: { attribution: 'United States: Lime GBFS', gbfs: ['Lime'] },
+};
+const portlandOregon = { city: 'Portland', center: [45.52, -122.68], bounds: { south: 45.43, west: -122.84, north: 45.65, east: -122.47 } };
+const portlandMaine = { city: 'Portland', center: [43.66, -70.26], bounds: { south: 43.62, west: -70.33, north: 43.72, east: -70.2 } };
+const americanCatalog = { systems: [
+  { id: 'lime_portland', provider: 'lime', region: 'OR', ...portlandOregon, discoveryUrl: 'https://data.lime.bike/api/partners/v2/gbfs/portland/gbfs.json' },
+  // A feed shared by two towns of Maine, each area naming its state.
+  { id: 'lime_maine', provider: 'lime', city: 'Portland', center: portlandMaine.center, bounds: portlandMaine.bounds,
+    areas: [{ ...portlandMaine, region: 'ME' }, { city: 'South Portland', region: 'ME', center: [43.63, -70.29],
+      bounds: { south: 43.6, west: -70.36, north: 43.65, east: -70.22 } }],
+    discoveryUrl: 'https://data.lime.bike/api/partners/v2/gbfs/maine/gbfs.json' },
+] };
+const fixtures = { 'data/canadian-scooter-feeds.json': canadianCatalog, 'data/american-scooter-feeds.json': americanCatalog };
 const read = path => fixtures[path] ?? readJson(path);
 
-function generate(data) {
-  const systems = catalogSystems(data.countries, read);
-  validateCountries(data, read, scooterCities(swissAreas, systems));
-  return { typescript: typescriptCountries(data), catalogs: typescriptCatalogs(data.countries), swift: swiftCountries(data.countries) };
+function generate(data, readCatalog = read) {
+  const systems = catalogSystems(data.countries, readCatalog);
+  const cities = scooterCities(swissAreas, systems, data.countries);
+  validateCountries(data, readCatalog, cities);
+  return { cities, typescript: typescriptCountries(data), catalogs: typescriptCatalogs(data.countries), swift: swiftCountries(data.countries) };
 }
 
 describe('the countries of data/countries.json', () => {
@@ -64,6 +86,55 @@ describe('the countries of data/countries.json', () => {
     expect(() => generate(withCanada({ featuredCities: ['ca:Montréal'] }))).toThrow('CA: featured cities not in its catalog: ca:Montréal');
     expect(() => generate(withCanada({ credits: { ...canada.credits,
       links: [{ label: 'MobiData BW', href: 'https://www.mobidata-bw.de/' }] } }))).toThrow('share a label');
+  });
+
+  it('tells apart two towns of one name by their state, in their id and in their name', () => {
+    const { cities, typescript } = generate({ ...europe, countries: [...europe.countries, unitedStates] });
+    const american = cities.filter(city => city.country === 'US');
+    expect(american.map(({ id, name, region }) => ({ id, name, region }))).toEqual([
+      { id: 'us:or:Portland', name: 'Portland, OR', region: 'OR' },
+      { id: 'us:me:Portland', name: 'Portland, ME', region: 'ME' },
+      { id: 'us:me:South Portland', name: 'South Portland, ME', region: 'ME' },
+    ]);
+    expect(Math.max(...american.map(city => cityKm(city.bounds)))).toBeLessThan(40);
+    expect(typescript).toContain('export const COUNTRY_REGIONS: Partial<Record<CountryCode, { showInCityNames: boolean; ' +
+      'list: readonly CountryRegion[] }>> = {\n  US: { showInCityNames: true, list: [\n    { code: "ME", name: "Maine" },\n' +
+      '    { code: "OR", name: "Oregon" },\n  ] },\n};');
+    // A country whose names leave the region out still has it in its ids.
+    const quiet = { ...unitedStates, regions: { ...unitedStates.regions, showInCityNames: false } };
+    expect(generate({ ...europe, countries: [...europe.countries, quiet] }).cities.filter(city => city.country === 'US')
+      .map(city => [city.id, city.name])).toEqual([['us:or:Portland', 'Portland'], ['us:me:Portland', 'Portland'], ['us:me:South Portland', 'South Portland']]);
+  });
+
+  it('refuses a city wider than a town, as two towns of one name without their state would be', () => {
+    const withoutRegion = place => ({ ...place, region: undefined });
+    const withoutRegions = { systems: americanCatalog.systems.map(system => ({ ...withoutRegion(system),
+      ...(system.areas ? { areas: system.areas.map(withoutRegion) } : {}) })) };
+    const readWithout = path => path === unitedStates.catalog ? withoutRegions : read(path);
+    const noRegions = { ...unitedStates, regions: undefined };
+    expect(() => generate({ ...europe, countries: [...europe.countries, { ...noRegions, featuredCities: ['us:Portland'] }] }, readWithout))
+      .toThrow(/Cities wider than 150 km: us:Portland \(4\d{3} km\)/);
+    // Every area of a country with regions names one of them, and only such a country's areas do.
+    expect(() => generate({ ...europe, countries: [...europe.countries, unitedStates] }, readWithout))
+      .toThrow("american-scooter-feeds.json: lime_portland in Portland needs one of US's regions, not undefined");
+    const inWashington = { systems: [{ ...americanCatalog.systems[0], region: 'WA' }] };
+    expect(() => generate({ ...europe, countries: [...europe.countries, unitedStates] }, path => path === unitedStates.catalog ? inWashington : read(path)))
+      .toThrow("needs one of US's regions, not WA");
+    const regionalCanada = { systems: [{ ...canadianCatalog.systems[0], region: 'ON' }] };
+    expect(() => generate({ ...europe, countries: [...europe.countries, canada] }, path => path === canada.catalog ? regionalCanada : read(path)))
+      .toThrow('bird_toronto in Toronto has a region, and CA has none');
+    expect(() => generate({ ...europe, countries: [...europe.countries,
+      { ...unitedStates, regions: { showInCityNames: true, list: [{ code: 'Oregon', name: 'Oregon' }] } }] }))
+      .toThrow('US: region Oregon needs an unrepeated code of two or three capitals and a name');
+  });
+
+  it('lets a listed city be wider, and only one that is', () => {
+    const cities = [{ id: 'us:Portland', bounds: { south: 43.6, west: -122.84, north: 45.65, east: -70.2 } },
+      { id: 'fr:Lyon', bounds: { south: 45.7, west: 4.77, north: 45.81, east: 4.93 } }];
+    expect(() => validateCityWidths(cities, { 'us:Portland': 'A fixture.' })).not.toThrow();
+    expect(() => validateCityWidths(cities, { 'us:Portland': 'A fixture.', 'fr:Lyon': 'Not wide.' }))
+      .toThrow('WIDE_CITIES lists cities that are not wider than 150 km: fr:Lyon');
+    expect(() => validateCityWidths(cities, {})).toThrow('us:Portland (4166 km)');
   });
 
   it('keeps each system in the country of its catalog', () => {

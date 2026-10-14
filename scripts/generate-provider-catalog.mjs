@@ -216,7 +216,7 @@ ${regionalSystems.flatMap(system => (system.areas ?? [system]).map(area => `    
 }
 
 function swiftCities() {
-  const covered = scooterCities(swissAreas, regionalSystems);
+  const covered = scooterCities(swissAreas, regionalSystems, countries);
   const cities = covered.map(city => {
     if (!countries.some(country => country.code === city.country) || !city.center.every(Number.isFinite)) {
       throw new Error(`Invalid covered city: ${city.id}`);
@@ -320,7 +320,7 @@ ${entries}
 }
 
 validateCatalog();
-validateCountries({ landingFirst, countries }, readJson, scooterCities(swissAreas, regionalSystems));
+validateCountries({ landingFirst, countries }, readJson, scooterCities(swissAreas, regionalSystems, countries));
 writeOrCheck(typescriptPath, typescriptCatalog());
 writeOrCheck(countriesPath, typescriptCountries({ landingFirst, countries }));
 writeOrCheck(catalogsPath, typescriptCatalogs(countries));

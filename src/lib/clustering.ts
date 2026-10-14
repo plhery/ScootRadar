@@ -90,7 +90,7 @@ const CITY_GROUP_SPACING_PX = 60;
 const CITY_GROUP_NAMES = 3;
 // Where a country's total stands, inland and about the middle of the country, is in data/countries.json.
 
-// "city:fr:Paris" is in France.
+// "city:fr:Paris" is in France, and "city:us:or:Portland" in the United States.
 function countryOf(city: ScooterCluster): string | null {
   return /^city:([a-z]{2}):/.exec(city.id)?.[1] ?? null;
 }

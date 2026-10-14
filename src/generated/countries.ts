@@ -139,6 +139,15 @@ export const COUNTRY_ANCHORS: Record<CountryCode, readonly [number, number]> = {
   UA: [49, 31],
 };
 
+/** A state or province of a country that has them. */
+export interface CountryRegion { code: string; name: string }
+
+/**
+ * The states or provinces of the countries that list them. Their code is part of a city's id,
+ * "us:or:Portland", and, where showInCityNames, of its name: "Portland, OR".
+ */
+export const COUNTRY_REGIONS: Partial<Record<CountryCode, { showInCityNames: boolean; list: readonly CountryRegion[] }>> = {};
+
 /** The cities the landing page names, by their id in the catalogue. */
 export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {
   CH: ["ch:zurich", "ch:basel", "ch:bern", "ch:winterthur", "ch:st-gallen", "ch:zug"],

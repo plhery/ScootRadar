@@ -1,5 +1,5 @@
 import { CATALOG_SYSTEMS } from '@/generated/countryCatalogs';
-import { COUNTRY_NAMES, COUNTRY_SEARCH_WORDS, COUNTRY_SOURCES, type CatalogCountry } from '@/generated/countries';
+import { COUNTRY_NAMES, COUNTRY_REGIONS, COUNTRY_SEARCH_WORDS, COUNTRY_SOURCES, type CatalogCountry } from '@/generated/countries';
 import type { ProviderKey } from '@/generated/providers';
 import type { MapBounds } from '@/lib/types';
 
@@ -16,6 +16,11 @@ export interface ScooterServiceArea {
   center: [number, number];
   bounds: MapBounds;
   aliases?: string[];
+  /**
+   * The state or province, "OR", in the countries that list theirs in data/countries.json, where
+   * it is required. Set on a system, it is that of each of its areas that sets none.
+   */
+  region?: string;
 }
 export interface RegionalScooterSystem extends ScooterServiceArea {
   id: string;
@@ -43,28 +48,45 @@ export function isRegionalSource(source: string): source is RegionalSource {
   return Object.values(COUNTRY_SOURCES).some(value => value === source);
 }
 
-/** The id of the city a system's service area is in: "no:Oslo". */
+/**
+ * The id of the city a system's service area is in: "no:Oslo", or, where the country has
+ * regions, "us:or:Portland", so that Portland, Maine is another city.
+ */
 export function regionalCityId(system: RegionalScooterSystem, area: ScooterServiceArea) {
-  return `${system.country.toLowerCase()}:${area.city}`;
+  const region = area.region ?? system.region;
+  return region
+    ? `${system.country.toLowerCase()}:${region.toLowerCase()}:${area.city}`
+    : `${system.country.toLowerCase()}:${area.city}`;
 }
 
-// Merge each city's operator envelopes so overview health includes every operator.
-const cities = new Map<string, ScooterServiceArea & { id: string; country: ScooterCountry }>();
-for (const system of REGIONAL_SCOOTER_SYSTEMS) {
-  for (const area of serviceAreas(system)) {
-    const id = regionalCityId(system, area);
-    const previous = cities.get(id);
-    cities.set(id, { ...area, id, country: system.country,
-      center: previous?.center ?? area.center,
-      aliases: [...new Set([...(previous?.aliases ?? []), ...(area.aliases ?? [])])],
-      bounds: previous ? {
-        south: Math.min(previous.bounds.south, area.bounds.south), west: Math.min(previous.bounds.west, area.bounds.west),
-        north: Math.max(previous.bounds.north, area.bounds.north), east: Math.max(previous.bounds.east, area.bounds.east),
-      } : area.bounds,
-    });
+export type RegionalScooterCity = ScooterServiceArea & { id: string; country: ScooterCountry };
+
+/**
+ * One entry per city, its bounds enclosing every operator's envelope, so overview health
+ * includes every operator. Its name is the one riders see, "Portland, OR" where the country's
+ * names say the region; the town's own name is then one of its aliases.
+ */
+export function mergeCities(systems: readonly RegionalScooterSystem[], regions: typeof COUNTRY_REGIONS = COUNTRY_REGIONS) {
+  const cities = new Map<string, RegionalScooterCity>();
+  for (const system of systems) {
+    for (const area of serviceAreas(system)) {
+      const id = regionalCityId(system, area);
+      const region = area.region ?? system.region;
+      const name = region && regions[system.country]?.showInCityNames ? `${area.city}, ${region}` : area.city;
+      const previous = cities.get(id);
+      cities.set(id, { ...area, id, city: name, country: system.country, ...(region ? { region } : {}),
+        center: previous?.center ?? area.center,
+        aliases: [...new Set([...(previous?.aliases ?? []), ...(area.aliases ?? []), ...(name === area.city ? [] : [area.city])])],
+        bounds: previous ? {
+          south: Math.min(previous.bounds.south, area.bounds.south), west: Math.min(previous.bounds.west, area.bounds.west),
+          north: Math.max(previous.bounds.north, area.bounds.north), east: Math.max(previous.bounds.east, area.bounds.east),
+        } : area.bounds,
+      });
+    }
   }
+  return [...cities.values()];
 }
-export const REGIONAL_SCOOTER_CITIES = [...cities.values()];
+export const REGIONAL_SCOOTER_CITIES = mergeCities(REGIONAL_SCOOTER_SYSTEMS);
 
 // The letters no accent can be stripped from are spelled out, so "Tromso",
 // "Baerum", "Isafjordur" and "Wolomin" find Tromsø, Bærum, Ísafjörður and Wołomin.

@@ -10,32 +10,77 @@ const OTHER_SOURCES = ['national', 'hopp', 'publibike'];
 
 const lower = country => country.code.toLowerCase();
 
+// A state or province: "OR", "ON", or ISO 3166-2's "CMX" for Mexico City.
+const REGION_CODE = /^[A-Z]{2,3}$/;
+
+/**
+ * The regions of a country that has them, by code. A country lists them when two of its towns
+ * share a name, as Portland, Oregon and Portland, Maine do: every service area of its catalog
+ * then names its region, and its cities' ids include it.
+ */
+function regionsOf(country) {
+  if (country.regions === undefined) return null;
+  const { list, showInCityNames } = country.regions;
+  if (!Array.isArray(list) || !list.length || typeof showInCityNames !== 'boolean') {
+    throw new Error(`${country.code}: regions need a list and showInCityNames`);
+  }
+  const regions = new Map();
+  for (const region of list) {
+    if (!REGION_CODE.test(region.code) || regions.has(region.code) || !region.name) {
+      throw new Error(`${country.code}: region ${region.code} needs an unrepeated code of two or three capitals and a name`);
+    }
+    regions.set(region.code, region);
+  }
+  return regions;
+}
+
 /** Every catalog's systems, in the order of data/countries.json, each with its country. */
 export function catalogSystems(countries, readCatalog) {
-  return countries.filter(country => country.catalog).flatMap(country =>
-    readCatalog(country.catalog).systems.map(system => {
+  return countries.filter(country => country.catalog).flatMap(country => {
+    const regions = regionsOf(country);
+    return readCatalog(country.catalog).systems.map(system => {
       if (system.country !== undefined && system.country !== country.code) {
         throw new Error(`${country.catalog}: ${system.id} is in ${system.country}, not ${country.code}`);
       }
+      for (const area of system.areas ?? [system]) {
+        const region = areaRegion(system, area);
+        if (regions ? !regions.has(region) : region !== undefined) {
+          throw new Error(`${country.catalog}: ${system.id} in ${area.city} ${regions
+            ? `needs one of ${country.code}'s regions, not ${region}` : `has a region, and ${country.code} has none`}`);
+        }
+      }
       return { ...system, country: country.code };
-    }));
+    });
+  });
+}
+
+/** A service area's state or province: its own, or its system's. */
+export const areaRegion = (system, area) => area.region ?? system.region;
+
+/** The id of a town: "no:Oslo", or "us:or:Portland" where the country has regions. */
+export function cityId(country, region, city) {
+  return region ? `${country.toLowerCase()}:${region.toLowerCase()}:${city}` : `${country.toLowerCase()}:${city}`;
 }
 
 /**
  * The Swiss areas, then REGIONAL_SCOOTER_CITIES as src/lib/regionalScooterSystems.ts merges
- * them: one entry per city, its bounds enclosing every operator's envelope.
+ * them: one entry per city, its bounds enclosing every operator's envelope, its name saying its
+ * region where the country's names do: "Portland, OR".
  */
-export function scooterCities(swissAreas, systems) {
+export function scooterCities(swissAreas, systems, countries) {
   const cities = new Map(swissAreas.map(area => [area.id, {
     id: area.id, name: area.city, country: 'CH', center: area.center, bounds: area.bounds,
   }]));
+  const namedWithRegion = new Set(countries.filter(country => country.regions?.showInCityNames).map(country => country.code));
   for (const system of systems) {
     for (const area of system.areas ?? [system]) {
-      const id = `${system.country.toLowerCase()}:${area.city}`;
+      const region = areaRegion(system, area);
+      const id = cityId(system.country, region, area.city);
       const previous = cities.get(id);
       cities.set(id, {
         id,
-        name: area.city,
+        name: region && namedWithRegion.has(system.country) ? `${area.city}, ${region}` : area.city,
+        ...(region ? { region } : {}),
         country: system.country,
         center: previous?.center ?? area.center,
         bounds: previous ? {
@@ -50,7 +95,31 @@ export function scooterCities(swissAreas, systems) {
   return [...cities.values()];
 }
 
-export function validateCountries({ countries, landingFirst }, readCatalog, cities) {
+// The widest a city may be, in km. Wider, a merged envelope is most likely two towns of one name
+// in different regions, which the catalog should tell apart with a region. In Europe the widest
+// is Perpignan, 57 km.
+export const MAX_CITY_KM = 150;
+// The cities that may be wider, by id, each with the reason. None so far.
+export const WIDE_CITIES = {};
+
+/** How wide a city's bounds are, in km, north to south or east to west, whichever is more. */
+export function cityKm({ south, west, north, east }) {
+  const kmPerDegree = 111.195;
+  const middle = (south + north) / 2 * Math.PI / 180;
+  return Math.max((north - south) * kmPerDegree, (east - west) * kmPerDegree * Math.cos(middle));
+}
+
+export function validateCityWidths(cities, wideCities = WIDE_CITIES) {
+  const wide = cities.filter(city => !wideCities[city.id] && cityKm(city.bounds) > MAX_CITY_KM);
+  if (wide.length) {
+    throw new Error(`Cities wider than ${MAX_CITY_KM} km: ${wide.map(city => `${city.id} (${Math.round(cityKm(city.bounds))} km)`)
+      .join(', ')}. Tell apart two towns of one name with their region, or list a city in WIDE_CITIES saying why.`);
+  }
+  const needless = Object.keys(wideCities).filter(id => !cities.some(city => city.id === id && cityKm(city.bounds) > MAX_CITY_KM));
+  if (needless.length) throw new Error(`WIDE_CITIES lists cities that are not wider than ${MAX_CITY_KM} km: ${needless.join(', ')}`);
+}
+
+export function validateCountries({ countries, landingFirst }, readCatalog, cities, wideCities = WIDE_CITIES) {
   const codes = new Set();
   const sources = new Set(OTHER_SOURCES);
   for (const country of countries) {
@@ -77,6 +146,8 @@ export function validateCountries({ countries, landingFirst }, readCatalog, citi
     if (!country.searchWords?.length || country.searchWords.some(word => !/^[a-z0-9α-ωа-яёєіїґ]+$/.test(word))) {
       throw new Error(`${code}: searchWords are lower case words without accents`);
     }
+    if (code === 'CH' && country.regions) throw new Error('CH: Switzerland\'s areas have no regions');
+    regionsOf(country);
     if (country.anchor?.length !== 2 || !country.anchor.every(Number.isFinite)) throw new Error(`${code}: invalid anchor`);
     const credits = country.credits ?? {};
     if (!credits.attribution || (credits.gbfs ?? []).some(name => typeof name !== 'string' || !name) ||
@@ -93,6 +164,7 @@ export function validateCountries({ countries, landingFirst }, readCatalog, citi
     const missing = (country.featuredCities ?? []).filter(id => !cityIds.has(id) || !id.startsWith(`${lower(country)}:`));
     if (missing.length) throw new Error(`${country.code}: featured cities not in its catalog: ${missing.join(', ')}`);
   }
+  validateCityWidths(cities, wideCities);
 }
 
 /**
@@ -164,6 +236,18 @@ export const COUNTRY_SEARCH_WORDS: Record<CountryCode, readonly string[]> = ${re
 export const COUNTRY_ANCHORS: Record<CountryCode, readonly [number, number]> = {
 ${countries.map(country => `${comment(country.anchorNote, '  ')}  ${country.code}: [${country.anchor.join(', ')}],`).join('\n')}
 };
+
+/** A state or province of a country that has them. */
+export interface CountryRegion { code: string; name: string }
+
+/**
+ * The states or provinces of the countries that list them. Their code is part of a city's id,
+ * "us:or:Portland", and, where showInCityNames, of its name: "Portland, OR".
+ */
+export const COUNTRY_REGIONS: Partial<Record<CountryCode, { showInCityNames: boolean; list: readonly CountryRegion[] }>> = {${
+  countries.filter(country => country.regions).map(country => `\n  ${country.code}: { showInCityNames: ${country.regions.showInCityNames}, list: [\n${
+    country.regions.list.map(region => `    { code: ${JSON.stringify(region.code)}, name: ${JSON.stringify(region.name)} },\n`).join('')}  ] },`).join('')}${
+  countries.some(country => country.regions) ? '\n' : ''}};
 
 /** The cities the landing page names, by their id in the catalogue. */
 export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = ${record(country => list(country.featuredCities ?? []))};

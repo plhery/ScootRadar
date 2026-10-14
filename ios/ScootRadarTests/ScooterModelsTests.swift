@@ -1095,4 +1095,23 @@ extension ScooterModelsTests {
         XCTAssertEqual(ScooterCityGrouping.group([paris, bordeaux], zoomLevel: 5).map(\.id),
                        ["city:fr:Paris", "city:fr:Bordeaux"])
     }
+
+    func testTheIdOfATownInACountryWithStatesNamesItsCountryFirst() {
+        // Two towns of one name, told apart by their state.
+        let oregon = ScooterCluster(id: "city:us:or:Portland", latitude: 45.52, longitude: -122.68, count: 900,
+                                    providers: ["lime": 900], city: "Portland, OR")
+        let maine = ScooterCluster(id: "city:us:me:Portland", latitude: 43.66, longitude: -70.26, count: 100,
+                                   providers: ["lime": 100], city: "Portland, ME")
+        XCTAssertEqual(ScooterCityGrouping.country(of: oregon), "us")
+        XCTAssertEqual(ScooterCityGrouping.country(of: maine), "us")
+        XCTAssertNil(ScooterCityGrouping.country(of: ScooterCluster(
+            id: "group:city:us:or:Portland", latitude: 45.52, longitude: -122.68, count: 1, providers: [:], city: nil
+        )))
+
+        let totals = ScooterCityGrouping.group([maine, oregon], zoomLevel: 3)
+        XCTAssertEqual(totals.map(\.id), ["country:us"])
+        XCTAssertEqual(totals[0].count, 1000)
+        XCTAssertEqual(ScooterCityGrouping.group([maine, oregon], zoomLevel: 6).map(\.id),
+                       ["city:us:or:Portland", "city:us:me:Portland"])
+    }
 }

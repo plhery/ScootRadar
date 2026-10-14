@@ -461,7 +461,7 @@ enum ScooterCityGrouping {
             : spacedApart(cities, zoomLevel: zoomLevel)
     }
 
-    /// "city:fr:Paris" is in France.
+    /// "city:fr:Paris" is in France, and "city:us:or:Portland", whose id names its state, in the United States.
     static func country(of city: ScooterCluster) -> String? {
         let parts = city.id.split(separator: ":", maxSplits: 2)
         guard parts.count == 3, parts[0] == "city", parts[1].count == 2 else { return nil }

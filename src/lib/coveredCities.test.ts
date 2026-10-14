@@ -126,7 +126,10 @@ describe('the count of covered cities and countries', () => {
       for (const system of JSON.parse(readFileSync(`data/${file}`, 'utf8')).systems) {
         const country: string = listed.get(`data/${file}`) ?? `unlisted ${file}`;
         countries.add(country);
-        for (const { city } of system.areas ?? [system]) cities.add(`${country.toLowerCase()}:${city}`);
+        for (const { city, region = system.region } of system.areas ?? [system]) {
+          cities.add([country, region, city].filter(Boolean).map((part, index, parts) =>
+            index < parts.length - 1 ? part.toLowerCase() : part).join(':'));
+        }
       }
     }
     return { cities: cities.size, countries: countries.size };

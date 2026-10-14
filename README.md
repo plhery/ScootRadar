@@ -138,7 +138,16 @@ changing the response contract.
    - `featuredCities`, the city ids the landing page names;
    - `credits`: its `attribution` in the `X-Mobility-Data-Source` header, the
      providers its GBFS feeds are credited for (`gbfs`, one line per
-     continent), and the `links` a licence asks for.
+     continent), and the `links` a licence asks for;
+   - `regions`, for a country whose towns share names across states or
+     provinces, as in North America: their `list` (`code`, `name`) and
+     whether `showInCityNames`. Every service area of its catalog then has a
+     `region` (or its system has one for all its areas), and its cities' ids
+     include it: `us:or:Portland`, shown as "Portland, OR".
+
+   The generator fails when a city's merged bounds are wider than 150 km, as
+   two towns of one name merged into one would be; a city that really is wider
+   is listed in `WIDE_CITIES` in `scripts/country-catalog.mjs`, with the reason.
 
    Countries are listed in the order they were added; `landingFirst` keeps
    Switzerland and its neighbours first on the landing page.
