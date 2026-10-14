@@ -229,13 +229,15 @@ discovery's origin and under its directory, and publishes no `license_url`.
 - **Request rate:** ATOM blocks an address after a burst of about 900
   requests, across its operators. The scooter cache reads no Zeus feed from
   ATOM, so it still reads four ATOM feeds: Hoppy, Ride Mobility, and Yoio in
-  Göttingen and Erfurt. Each costs one `vehicle_status` request a minute, one
-  `station_status` a minute where it has parking, and five metadata documents
-  an hour: 65 to 125 requests an hour. That is at most about 250 an hour on
-  `yoio.rideatom.com` and 500 across ATOM, and each `rideatom.com` host is
-  paced to one request every 500 ms. Ten Zeus towns read from ATOM directly
-  would add 650 to 1,250 an hour on `zeus.rideatom.com`; that host would then
-  need a longer collection interval.
+  Göttingen and Erfurt. Each is asked for its `vehicle_status`, and its
+  `station_status` where it has parking, every 20 minutes, or every minute
+  for 10 minutes after someone looks at its town, and for five metadata
+  documents an hour: 8 to 11 requests an hour while nobody looks, and at most
+  65 to 125 while someone does. That is about 20 an hour on
+  `yoio.rideatom.com` and 40 across ATOM, at most about 250 and 500 with every
+  town watched, and each `rideatom.com` host is paced to one request every
+  500 ms. Ten Zeus towns read from ATOM directly would add 80 to 110 an hour
+  on `zeus.rideatom.com`, and up to 650 to 1,250 with all of them watched.
 
 ## Italy, October 2026
 
