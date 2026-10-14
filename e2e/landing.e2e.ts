@@ -152,6 +152,15 @@ test('the landing page tells a search engine where each language is', async ({ p
   const asked = described['@graph'][3].mainEntity.map((question: { name: string }) => question.name);
   await expect(page.locator('#faq dt')).toHaveText(asked);
   expect(asked[0]).toBe('Gibt es eine einzige App für Lime, Bolt, Bird, Voi und Dott?');
+  // Free wherever it is used, so in no currency.
+  expect(described['@graph'][2].offers).toEqual({ '@type': 'Offer', price: '0' });
+  await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute('content', 'de_CH');
+  await expect(page.locator('meta[property="og:locale:alternate"]')).toHaveCount(0);
+
+  // French is written for Canada too.
+  await page.goto('/fr');
+  await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute('content', 'fr_CH');
+  await expect(page.locator('meta[property="og:locale:alternate"]')).toHaveAttribute('content', 'fr_CA');
 
   const listed = await (await page.request.get('/sitemap.xml')).text();
   for (const address of ['/', '/de', '/fr', '/it', '/map', '/privacy']) expect(listed).toContain(`<loc>${site}${address}</loc>`);

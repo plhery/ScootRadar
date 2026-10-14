@@ -20,6 +20,13 @@ export const OPEN_GRAPH_LOCALES: Record<LandingLocale, string> = {
   is: 'is_IS',
 };
 
+/** The other countries whose readers a language's landing page is written for, as a shared link names them. */
+export const OPEN_GRAPH_ALTERNATE_LOCALES: Partial<Record<LandingLocale, readonly string[]>> = {
+  en: ['en_US'],
+  es: ['es_MX'],
+  fr: ['fr_CA'],
+};
+
 /** The picture of this language a shared link shows: scripts/generate-share-images.mjs draws it. */
 export function shareImage(locale: LandingLocale): string {
   return `/share/${locale}.png`;

@@ -28,7 +28,7 @@ import { DEFAULT_RIDE_DURATION, RIDE_DURATIONS, formatRidePrice, ridePriceQuote 
 import type { RidePricing } from '@/lib/types';
 import { MAP_PATH } from '@/lib/mapAddress';
 import { inkOn } from '@/lib/providerColor';
-import { OPEN_GRAPH_LOCALES, SITE_NAME, SITE_URL, shareImage } from '@/lib/site';
+import { OPEN_GRAPH_ALTERNATE_LOCALES, OPEN_GRAPH_LOCALES, SITE_NAME, SITE_URL, shareImage } from '@/lib/site';
 import { sitePageOf } from '@/lib/sitePages';
 import { formatDistance, walkingMinutes } from '@/lib/walking';
 
@@ -77,6 +77,7 @@ function landingMetadata(locale: LandingLocale): Metadata {
       title: meta.title,
       description,
       locale: OPEN_GRAPH_LOCALES[locale],
+      ...(OPEN_GRAPH_ALTERNATE_LOCALES[locale] ? { alternateLocale: [...OPEN_GRAPH_ALTERNATE_LOCALES[locale]] } : {}),
       images: [share],
     },
     twitter: {
@@ -124,7 +125,8 @@ function structuredData(locale: LandingLocale, copy: LandingCopy) {
         browserRequirements: 'Requires JavaScript',
         inLanguage: [...LANDING_LOCALES],
         isAccessibleForFree: true,
-        offers: { '@type': 'Offer', price: '0', priceCurrency: 'CHF' },
+        // Free wherever it is used: no currency, which Google asks for only above zero.
+        offers: { '@type': 'Offer', price: '0' },
         screenshot: `${SITE_URL}/landing/${locale}-dark.webp`,
         image: `${SITE_URL}${shareImage(locale)}`,
         publisher: { '@id': organization },
