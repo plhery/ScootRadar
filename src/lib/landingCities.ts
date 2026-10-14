@@ -18,7 +18,7 @@ const FEATURED: Record<CoveredCountry, string[]> = {
   LV: ['lv:Rīga'],
   PL: ['pl:Sosnowiec', 'pl:Wołomin', 'pl:Oświęcim', 'pl:Radzymin', 'pl:Kobyłka', 'pl:Knurów'],
   HU: ['hu:Pécs', 'hu:Békéscsaba'],
-  GR: ['gr:Faliraki', 'gr:Piraeus', 'gr:Argostoli', 'gr:Ioannina'],
+  GR: ['gr:Rhodes', 'gr:Faliraki', 'gr:Kos', 'gr:Piraeus', 'gr:Argostoli', 'gr:Ioannina'],
   CY: ['cy:Paphos', 'cy:Limassol'],
   FI: ['fi:Mariehamn'],
   HR: ['hr:Rijeka'],

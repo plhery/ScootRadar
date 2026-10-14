@@ -376,17 +376,21 @@ the systems, the gaps and the recheck command.
 
 ## Greece
 
-The reviewed catalog lives in `data/greek-scooter-feeds.json`: 4 feeds, Hopp
-in Faliraki, on Rhodes, in Piraeus, in Argostoli, on Kefalonia, and in
-Ioannina. They are Hopp's own public GBFS feeds. They are not in
-[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
-and answer at the address Hopp uses for its other towns. Greece's national
+The reviewed catalog lives in `data/greek-scooter-feeds.json`: 8 feeds across
+11 towns. Hopp runs Faliraki, on Rhodes, Piraeus, Argostoli, on Kefalonia, and
+Ioannina. Hoppy, a different operator, runs Rhodes town with Ialysos, Faliraki,
+Afantou and Kolymbia, and Kos, Rethymno and Zakynthos. Both are the operators'
+own public GBFS feeds, not in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv):
+Hopp's answer at the address it uses for its other towns, Hoppy's on ATOM
+Mobility (`hoppy.rideatom.com`), as in Belgium and Spain. Greece's national
 access point, [nap.gov.gr](https://nap.gov.gr/), is a landing page, and its
 catalogue timed out.
 
-Hopp links its privacy policy, not a licence. The map's credits name it under
-the GBFS line. See the [coverage audit](docs/greek-scooter-feeds.md) for the
-systems, the town names, the gaps and the recheck command.
+Hopp links its privacy policy, not a licence, and Hoppy publishes none. The
+map's credits name both under the GBFS line. See the
+[coverage audit](docs/greek-scooter-feeds.md) for the systems, the town names,
+the gaps and the recheck command.
 
 ## Cyprus
 

@@ -65,8 +65,9 @@ with Kobyłka and Radzymin, and Hopp in Knurów and Złotów. See the
 [Polish feed audit](docs/polish-scooter-feeds.md).
 Hungary adds 2 feeds: Hopp in Pécs and Békéscsaba. See the
 [Hungarian feed audit](docs/hungarian-scooter-feeds.md).
-Greece adds 4 feeds: Hopp in Faliraki, on Rhodes, in Piraeus, in Argostoli,
-on Kefalonia, and in Ioannina. See the
+Greece adds 8 feeds across 11 towns: Hopp in Faliraki, Piraeus, Argostoli and
+Ioannina, and Hoppy in Rhodes town and four other towns on Rhodes, on Kos, in
+Rethymno and on Zakynthos. See the
 [Greek feed audit](docs/greek-scooter-feeds.md).
 Cyprus adds 2 feeds: Hopp in Paphos and Limassol. See the
 [Cypriot feed audit](docs/cypriot-scooter-feeds.md).

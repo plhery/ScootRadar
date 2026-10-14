@@ -203,7 +203,8 @@ banned shared scooters, and feeds that were empty when checked.
     (napportal.kozut.hu) lists timetables and road data, no shared mobility,
     and BKK's FUTÁR API needs a key and carries bike stations, not scooters.
 - **Greece** ([guide](greek-scooter-feeds.md#known-gaps)): Hopp in Faliraki,
-  Piraeus, Argostoli and Ioannina is covered.
+  Piraeus, Argostoli and Ioannina, and Hoppy on Rhodes, on Kos, in Rethymno
+  and on Zakynthos, are covered.
   - Athens has no scooter on the map. Dott's Athens and Thessaloniki regions
     in the registry answer 404, Lime's address answers 404 for both cities,
     and Bolt publishes no feed.
@@ -217,7 +218,10 @@ banned shared scooters, and feeds that were empty when checked.
     first.
   - Hopp Athens (Kifisia), Voula, Zakynthos and Lefkada listed only disabled
     scooters, 1 to 7 each; Chania, Rethymno, Kos, Kardamena, Kalymnos,
-    Trikala, Katerini, Preveza and Corinth listed none.
+    Trikala, Katerini, Preveza and Corinth listed none. Kos, Rethymno and
+    Zakynthos have scooters on the map all the same, from Hoppy, whose
+    Zakynthos scooters were ridden only once in 13 hours on 13 and 14 October;
+    check them again in spring.
   - nextbike's four Athens suburbs have e-bikes only. The national access
     point (nap.gov.gr) is a landing page, and its catalogue timed out.
 - **Cyprus** ([guide](cypriot-scooter-feeds.md#known-gaps)): Hopp in Paphos
@@ -339,8 +343,8 @@ its other systems answer 401. Dott made most regions private in September 2026.
   are ridden.
 - **Spring 2027:** Dott's six paused Finnish towns (Ekenäs, Hamina, Hanko,
   Imatra, Kalajoki, Kotka), Joe Scooter in Rauma, Hoppy in Crikvenica and Hopp
-  in Omiš, Hopp's Greek island towns
-  (Chania, Rethymno, Kos, Zakynthos and others), Hopp Como and Hopp Augsburg
-  may open for the season; recheck Hopp Nafplio then too.
+  in Omiš, Hopp's Greek island towns (Chania, Kardamena, Kalymnos and others),
+  Hopp Como and Hopp Augsburg may open for the season; recheck Hopp Nafplio
+  then too.
 - Every Monday, the [catalog check workflow](../.github/workflows/catalog-check.yml)
   fails when an entry of a covered country is gone.

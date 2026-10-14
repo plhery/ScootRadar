@@ -12,12 +12,21 @@ more, ten minutes apart until 16:47, and Ioannina 6 times more, five minutes
 apart until 17:15. Every feed URL is https, on the discovery's origin and under
 its directory. No account credentials or private rider APIs are used.
 
+Hoppy's scooters on Rhodes, on Kos, in Rethymno and on Zakynthos were added on
+14 October 2026; see
+[Hoppy on Rhodes, Kos, Crete and Zakynthos, October 2026](#hoppy-on-rhodes-kos-crete-and-zakynthos-october-2026).
+Hoppy is a different operator from Hopp, despite the name.
+
 | Operator | Town | Available scooters |
 | --- | --- | ---: |
 | Hopp | Faliraki | 125 to 136 |
 | Hopp | Piraeus | 93 to 94 |
 | Hopp | Argostoli | 59 to 62 |
 | Hopp | Ioannina | 14 to 15 |
+| Hoppy | Rhodes, Ialysos, Faliraki, Afantou, Kolymbia | 551 to 558 |
+| Hoppy | Kos | 319 to 332 |
+| Hoppy | Rethymno | 103 to 105 |
+| Hoppy | Zakynthos | 46 |
 
 Faliraki had 33 rides traced by the code printed on each scooter, of 0.3 to
 6.3 km: each scooter came back under a new id, with 1 to 19 points less
@@ -38,20 +47,24 @@ scooters had moved 0.4 to 1.4 km with less charge. Nafplio is left out: see
 
 Each town is named in Latin script, as Greek road signs also write it, since
 Greek script would be unreadable to most riders. Where English has its own name
-for the town, the map uses it (Piraeus); elsewhere it uses the Greek name as
-the town itself writes it in Latin script (Faliraki, Argostoli, Ioannina).
+for the town, the map uses it (Piraeus, Rhodes); elsewhere it uses the Greek
+name as the town itself writes it in Latin script (Faliraki, Argostoli,
+Ioannina, Kos, Rethymno, Zakynthos).
 Every other form finds the town in search: the Greek name in Greek script, the
 formal transliteration and the older English name, and for Ioannina the name
 it goes by in speech, Giannena.
 
-Two of Hopp's feeds are named after more than their town:
+Some feeds are named after more than their town:
 
 - **Hopp Rhodes** (`gr-rhodes`) has all its scooters in Faliraki, the resort on
   the island's east coast, about 10 km south of the town of Rhodes. Its
   operating area covers Faliraki and the coast north of it, and stops about
-  6 km short of the town of Rhodes. The map names it Faliraki, so that nobody
-  looks for scooters in the town of Rhodes; it is also found as Rhodes, Rodos
-  and Ρόδος, as Vestmannaeyjar is found by its island, Heimaey.
+  6 km short of the town of Rhodes. The map names it Faliraki. Rhodes, Rodos
+  and Ρόδος find the town of Rhodes, where Hoppy's scooters are.
+- **Hoppy Rhodes** spans the north of the island, so the map splits it into
+  five towns (see [below](#hoppy-on-rhodes-kos-crete-and-zakynthos-october-2026)):
+  Rhodes, Ialysos, Faliraki, Afantou and Kolymbia. Its Faliraki scooters join
+  Hopp's in one town, Faliraki, so the town is counted and found once.
 - **Hopp Kefalonia** (`gr-kefalonia`) runs in Argostoli, the island's main
   town, and is named Argostoli. It is also found as Kefalonia, Kefallonia,
   Cephalonia and Κεφαλονιά.
@@ -62,10 +75,90 @@ Two of Hopp's feeds are named after more than their town:
 
 | Town | Also found as |
 | --- | --- |
-| Faliraki | Φαληράκι, Rhodes, Rodos, Ρόδος |
+| Rhodes | Rodos, Ρόδος |
+| Ialysos | Ialyssos, Ιαλυσός, Trianta, Kremasti |
+| Faliraki | Φαληράκι |
+| Afantou | Afandou, Αφάντου |
+| Kolymbia | Kolympia, Kolimbia, Κολύμπια |
+| Kos | Κως, Psalidi, Lambi, Tigaki |
+| Rethymno | Ρέθυμνο, Rethymnon, Rethimno |
+| Zakynthos | Zante, Ζάκυνθος |
 | Piraeus | Peiraias, Pireas, Πειραιάς |
 | Argostoli | Αργοστόλι, Kefalonia, Kefallonia, Cephalonia, Κεφαλονιά |
 | Ioannina | Ιωάννινα, Giannena, Γιάννενα |
+
+## Hoppy on Rhodes, Kos, Crete and Zakynthos, October 2026
+
+Hoppy runs Rhodes, Kos, Rethymno, on Crete, and Zakynthos on ATOM Mobility, as
+in Belgium and Spain: `https://hoppy.rideatom.com/gbfs/<id>/v3.0/gbfs`, with
+1487 for Rhodes, 1501 for Kos, 1521 for Rethymno and 2198 for Zakynthos. All
+four are keyless GBFS 3.0, and every feed URL is https, on the discovery's
+origin and under its directory. Hopp's own Kos, Rethymno and Zakynthos feeds
+are empty or disabled (see [Known gaps](#known-gaps)).
+
+- **Liveness:** ATOM stamps `last_updated` with the time of the request and
+  gives no `last_reported`, and a scooter's `vehicle_id` changes after each
+  ride. So each scooter was followed by the code at the end of its rental link,
+  the number printed on it. Each feed was polled every five minutes from
+  01:09 to 11:29 Athens time on Wednesday 14 October, 141 to 143 times. Kos
+  had 28 rides, Rethymno 9 and Rhodes 7, most of them in the morning: each
+  scooter came back 0.2 to 7.7 km away under a new id, with 0.6 to 20 km less
+  range. On Rhodes, 22 scooters also moved again and again from 05:40 to
+  09:00 with the same id and range, as when staff move them by van. Rhodes
+  listed 551 to 558 available scooters, Kos 319 to 332 and Rethymno 103 to
+  105.
+- **Zakynthos** was quieter, as its season ends. Its 46 scooters, all
+  available, stood still with the same ids through 140 polls from 23:41 on
+  Tuesday to 11:27 on Wednesday, Athens time; only their range fell, by 1 to
+  3 km. Then one was ridden: by 12:22 it was back 2.3 km away under a new id,
+  with 6.6 km less range. That is a real ride, and the scooters are there to
+  rent, so the town is added; check it again in spring.
+- **Scooters:** every vehicle type is `scooter_standing`, `electric`. Most
+  have a 60 km maximum range; one Rhodes type, a different model, 51 km.
+- **Rhodes** is split into five towns, by where the scooters stand, with no
+  overlap between them:
+
+  | Town | Scooters (00:19 CEST) | Covers |
+  | --- | ---: | --- |
+  | Rhodes | 250 | the town, its old town and the coast south to Kallithea |
+  | Ialysos | 61 | Ialysos and Kremasti, west along the coast |
+  | Faliraki | 96 | Faliraki, shared with Hopp |
+  | Afantou | 24 | Afantou |
+  | Kolymbia | 122 | Kolymbia and its hotels |
+
+  Rhodes's bounds end at 36.3823° N, where Faliraki's begin; Hopp's Faliraki
+  bounds, unchanged, reach 36.39° N, so the two operators' Faliraki is one
+  town on the map. A Hoppy scooter at Lindos, 40 km south, would be left out;
+  none stood there.
+- **Kos** is one area: Kos town, the hotels of Psalidi along the coast to the
+  east, where most scooters stand, and a few at Lambi and Tigaki to the west.
+- **Zakynthos** is one area: its scooters stand in and just around the town.
+  Hoppy's parking zones also cover Argassi, Kalamaki and Laganas, to the
+  south, where no scooter stood in October; the bounds include them. Zante is
+  an alias.
+- **Rethymno** is one area: the town and the hotels along the beach east of
+  it. The town leased Hoppy 29 public spaces for its scooters from 26 June
+  2025, and extended the lease to 25 June 2027
+  ([decision 194/2026](https://diavgeia.gov.gr/doc/9ΣΗΣΩ1Ψ-31Ο), 18 May 2026).
+- **Bounds:** ATOM's geofencing forbids starting or ending a ride everywhere
+  (`global_rules`), and allows both in Hoppy's parking zones: 155 on Rhodes,
+  112 on Kos, 42 in Rethymno and 205 on Zakynthos. Each feed also has one
+  large no-ride polygon without a hole over the whole area, which is how ATOM
+  exports the operating area, so it can't serve as bounds; Rhodes has one more
+  over the old town.
+  The bounds enclose the parking zones and the scooters seen, plus 0.005° of
+  latitude and 0.01° of longitude.
+- **Prices:** EUR 1.00 to start, then EUR 0.30, 0.33 or 0.35 a minute, by the
+  scooter's tier, and EUR 0.25 for Rhodes's 51 km model.
+- **Battery:** Hoppy publishes range only, so the map shows range and no
+  percentage, as in Belgium.
+- **Rental links:** each scooter links to its own `ride-hoppy.app.link`
+  address, ending in its printed number.
+- **Time zone:** each feed gives `Europe/Athens` and opening hours of `24/7`.
+- **Load:** the scooter cache asks for each feed's `vehicle_status` every 20
+  minutes, or every minute for 10 minutes after someone looks at the town, and
+  its metadata once an hour. So the four feeds add about 32 requests an hour to
+  `hoppy.rideatom.com`, and at most about 65 each while watched.
 
 ## Data handling
 
@@ -138,10 +231,13 @@ No Greek law or covered town bans renting at night, so
   stop scooters from riding
   ([law 5322/2026, art. 81](https://www.taxheaven.gr/law/5322/2026/arthro/81)),
   by place, not by hour. None of the covered towns' municipalities has
-  published a decision on shared scooters in Diavgeia, the register of public
-  decisions, searched up to 13 October 2026: Rhodes, which Faliraki belongs
-  to; Piraeus, Nikaia–Agios Ioannis Rentis, Keratsini–Drapetsona and
-  Korydallos, which the Piraeus area spans; Argostoli; and Ioannina. The
+  published a decision on shared scooters' hours in Diavgeia, the register of
+  public decisions, searched up to 14 October 2026: Rhodes, which Faliraki,
+  Ialysos, Afantou and Kolymbia belong to; Kos; Rethymno, whose lease to
+  Hoppy names no hours; Zakynthos, where only the port fund has decided on
+  Hoppy, turning down its request for a space in the port on 30 June 2026; Piraeus, Nikaia–Agios Ioannis Rentis,
+  Keratsini–Drapetsona and Korydallos, which the Piraeus area spans;
+  Argostoli; and Ioannina. The
   Rhodes press reports that the municipality has no rules for them at all
   ([Dimokratiki](https://www.dimokratiki.gr/15-08-2026/tilemachos-kabouris-patinia-pantou-pezodromia-katilimmena-ke-o-dimos-aplos-kitazi/),
   15 August 2026).
@@ -157,7 +253,8 @@ No Greek law or covered town bans renting at night, so
 
 - **Hopp:** its `license_url` points to its privacy policy, so it publishes no
   data licence, as in Germany, Spain, Iceland, Sweden, Poland and Hungary.
-- The map's credits name Hopp under the GBFS line.
+- **Hoppy** gives no `license_url`, as in Belgium and Spain.
+- The map's credits name both under the GBFS line.
 
 ## Known gaps
 
@@ -185,7 +282,8 @@ No Greek law or covered town bans renting at night, so
   with the same ids and charge, in each of the 22 evening polls from 19:26 to
   20:50. Chania, Rethymno, Kos, Kardamena, Kalymnos, Trikala, Katerini,
   Preveza and Corinth answered with no scooter at all, by day and in the
-  evening; they may be closed for the season. Hopp's site lists Preveza, Kifisia,
+  evening; they may be closed for the season. Kos, Rethymno and Zakynthos
+  have scooters on the map all the same, from Hoppy. Hopp's site lists Preveza, Kifisia,
   Crete, Kos and Trikala besides Rhodes and Piraeus, and neither Kefalonia,
   Nafplio nor Ioannina.
 - **nextbike** in four Athens suburbs has e-bikes only.
@@ -197,7 +295,7 @@ No Greek law or covered town bans renting at night, so
 
 Greek script is searched as it is typed: the app keeps Greek letters, strips
 their accents and reads a final sigma as any other, so Ρόδος, ΡΟΔΟΣ, Ροδος and
-Ρόδοσ all find Faliraki. Greece is found in the app's nine languages and as
+Ρόδοσ all find Rhodes. Greece is found in the app's nine languages and as
 Hellas, Ellada and Ελλάδα, typed beside a town.
 
 ## Recheck

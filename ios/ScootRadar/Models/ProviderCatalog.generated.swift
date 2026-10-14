@@ -363,6 +363,14 @@ enum ScooterProviderCoverage {
         (.hopp, GeoBounds(south: 37.9208, west: 23.602, north: 37.9967, east: 23.6771)),
         (.hopp, GeoBounds(south: 38.1459, west: 20.4613, north: 38.1995, east: 20.5084)),
         (.hopp, GeoBounds(south: 39.5875, west: 20.7955, north: 39.6989, east: 20.9053)),
+        (.hoppy, GeoBounds(south: 36.8666, west: 27.174, north: 36.9192, east: 27.3618)),
+        (.hoppy, GeoBounds(south: 35.3476, west: 24.4431, north: 35.395, east: 24.6181)),
+        (.hoppy, GeoBounds(south: 37.7052, west: 20.8408, north: 37.8097, east: 20.9481)),
+        (.hoppy, GeoBounds(south: 36.3823, west: 28.187, north: 36.4612, east: 28.2492)),
+        (.hoppy, GeoBounds(south: 36.4062, west: 28.1137, north: 36.4278, east: 28.1869)),
+        (.hoppy, GeoBounds(south: 36.2953, west: 28.1747, north: 36.3822, east: 28.247)),
+        (.hoppy, GeoBounds(south: 36.2745, west: 28.1567, north: 36.2952, east: 28.1895)),
+        (.hoppy, GeoBounds(south: 36.2372, west: 28.1335, north: 36.271, east: 28.1787)),
         (.hopp, GeoBounds(south: 34.7243, west: 32.3084, north: 34.9182, east: 32.4919)),
         (.hopp, GeoBounds(south: 34.6397, west: 32.9752, north: 34.7227, east: 33.1875)),
         (.hopp, GeoBounds(south: 60.0657, west: 19.8824, north: 60.1438, east: 19.9972)),
@@ -627,10 +635,17 @@ enum ScooterCityCatalog {
         ScooterCity(id: "pl:Złotów", name: "Złotów", countryCode: "PL", center: GeoPoint(latitude: 53.3632, longitude: 17.0347), bounds: GeoBounds(south: 53.3449, west: 17.0006, north: 53.3832, east: 17.0833)),
         ScooterCity(id: "hu:Pécs", name: "Pécs", countryCode: "HU", center: GeoPoint(latitude: 46.0765, longitude: 18.228), bounds: GeoBounds(south: 46.0199, west: 18.1584, north: 46.0962, east: 18.2795)),
         ScooterCity(id: "hu:Békéscsaba", name: "Békéscsaba", countryCode: "HU", center: GeoPoint(latitude: 46.6798, longitude: 21.0985), bounds: GeoBounds(south: 46.6404, west: 21.0275, north: 46.7058, east: 21.1674)),
-        ScooterCity(id: "gr:Faliraki", name: "Faliraki", countryCode: "GR", center: GeoPoint(latitude: 36.3403, longitude: 28.202), bounds: GeoBounds(south: 36.302, west: 28.1756, north: 36.39, east: 28.2465)),
+        ScooterCity(id: "gr:Faliraki", name: "Faliraki", countryCode: "GR", center: GeoPoint(latitude: 36.3403, longitude: 28.202), bounds: GeoBounds(south: 36.2953, west: 28.1747, north: 36.39, east: 28.247)),
         ScooterCity(id: "gr:Piraeus", name: "Piraeus", countryCode: "GR", center: GeoPoint(latitude: 37.9432, longitude: 23.6471), bounds: GeoBounds(south: 37.9208, west: 23.602, north: 37.9967, east: 23.6771)),
         ScooterCity(id: "gr:Argostoli", name: "Argostoli", countryCode: "GR", center: GeoPoint(latitude: 38.1757, longitude: 20.4879), bounds: GeoBounds(south: 38.1459, west: 20.4613, north: 38.1995, east: 20.5084)),
         ScooterCity(id: "gr:Ioannina", name: "Ioannina", countryCode: "GR", center: GeoPoint(latitude: 39.664, longitude: 20.8523), bounds: GeoBounds(south: 39.5875, west: 20.7955, north: 39.6989, east: 20.9053)),
+        ScooterCity(id: "gr:Kos", name: "Kos", countryCode: "GR", center: GeoPoint(latitude: 36.8938, longitude: 27.2877), bounds: GeoBounds(south: 36.8666, west: 27.174, north: 36.9192, east: 27.3618)),
+        ScooterCity(id: "gr:Rethymno", name: "Rethymno", countryCode: "GR", center: GeoPoint(latitude: 35.3668, longitude: 24.4823), bounds: GeoBounds(south: 35.3476, west: 24.4431, north: 35.395, east: 24.6181)),
+        ScooterCity(id: "gr:Zakynthos", name: "Zakynthos", countryCode: "GR", center: GeoPoint(latitude: 37.7811, longitude: 20.8983), bounds: GeoBounds(south: 37.7052, west: 20.8408, north: 37.8097, east: 20.9481)),
+        ScooterCity(id: "gr:Rhodes", name: "Rhodes", countryCode: "GR", center: GeoPoint(latitude: 36.4437, longitude: 28.2274), bounds: GeoBounds(south: 36.3823, west: 28.187, north: 36.4612, east: 28.2492)),
+        ScooterCity(id: "gr:Ialysos", name: "Ialysos", countryCode: "GR", center: GeoPoint(latitude: 36.4156, longitude: 28.1582), bounds: GeoBounds(south: 36.4062, west: 28.1137, north: 36.4278, east: 28.1869)),
+        ScooterCity(id: "gr:Afantou", name: "Afantou", countryCode: "GR", center: GeoPoint(latitude: 36.2845, longitude: 28.1735), bounds: GeoBounds(south: 36.2745, west: 28.1567, north: 36.2952, east: 28.1895)),
+        ScooterCity(id: "gr:Kolymbia", name: "Kolymbia", countryCode: "GR", center: GeoPoint(latitude: 36.2532, longitude: 28.1611), bounds: GeoBounds(south: 36.2372, west: 28.1335, north: 36.271, east: 28.1787)),
         ScooterCity(id: "cy:Paphos", name: "Paphos", countryCode: "CY", center: GeoPoint(latitude: 34.7756, longitude: 32.4243), bounds: GeoBounds(south: 34.7243, west: 32.3084, north: 34.9182, east: 32.4919)),
         ScooterCity(id: "cy:Limassol", name: "Limassol", countryCode: "CY", center: GeoPoint(latitude: 34.6727, longitude: 33.0418), bounds: GeoBounds(south: 34.6397, west: 32.9752, north: 34.7227, east: 33.1875)),
         ScooterCity(id: "fi:Mariehamn", name: "Mariehamn", countryCode: "FI", center: GeoPoint(latitude: 60.0973, longitude: 19.9348), bounds: GeoBounds(south: 60.0657, west: 19.8824, north: 60.1438, east: 19.9972)),
@@ -639,7 +654,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 227
+    static let cityCount = 234
     static let countryCount = 18
 
     /// Cities by distance from the point to their centre, nearest first.

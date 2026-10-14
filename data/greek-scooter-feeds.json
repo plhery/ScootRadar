@@ -19,10 +19,7 @@
       },
       "discoveryUrl": "https://api.hopp.bike/gbfs/gr-rhodes/gbfs.json",
       "aliases": [
-        "Φαληράκι",
-        "Rhodes",
-        "Rodos",
-        "Ρόδος"
+        "Φαληράκι"
       ]
     },
     {
@@ -91,6 +88,182 @@
         "Giannena",
         "Ιωάννινα",
         "Γιάννενα"
+      ]
+    },
+    {
+      "id": "hoppy_gr_kos",
+      "country": "GR",
+      "provider": "hoppy",
+      "city": "Kos",
+      "center": [
+        36.8938,
+        27.2877
+      ],
+      "bounds": {
+        "south": 36.8666,
+        "north": 36.9192,
+        "west": 27.174,
+        "east": 27.3618
+      },
+      "discoveryUrl": "https://hoppy.rideatom.com/gbfs/1501/v3.0/gbfs",
+      "aliases": [
+        "Κως",
+        "Psalidi",
+        "Lambi",
+        "Tigaki"
+      ]
+    },
+    {
+      "id": "hoppy_gr_rethymno",
+      "country": "GR",
+      "provider": "hoppy",
+      "city": "Rethymno",
+      "center": [
+        35.3668,
+        24.4823
+      ],
+      "bounds": {
+        "south": 35.3476,
+        "north": 35.395,
+        "west": 24.4431,
+        "east": 24.6181
+      },
+      "discoveryUrl": "https://hoppy.rideatom.com/gbfs/1521/v3.0/gbfs",
+      "aliases": [
+        "Ρέθυμνο",
+        "Rethymnon",
+        "Rethimno"
+      ]
+    },
+    {
+      "id": "hoppy_gr_zakynthos",
+      "country": "GR",
+      "provider": "hoppy",
+      "city": "Zakynthos",
+      "center": [
+        37.7811,
+        20.8983
+      ],
+      "bounds": {
+        "south": 37.7052,
+        "north": 37.8097,
+        "west": 20.8408,
+        "east": 20.9481
+      },
+      "discoveryUrl": "https://hoppy.rideatom.com/gbfs/2198/v3.0/gbfs",
+      "aliases": [
+        "Zante",
+        "Ζάκυνθος"
+      ]
+    },
+    {
+      "id": "hoppy_gr_rhodes",
+      "country": "GR",
+      "provider": "hoppy",
+      "city": "Rhodes",
+      "center": [
+        36.4437,
+        28.2274
+      ],
+      "bounds": {
+        "south": 36.2372,
+        "north": 36.4612,
+        "west": 28.1137,
+        "east": 28.2492
+      },
+      "discoveryUrl": "https://hoppy.rideatom.com/gbfs/1487/v3.0/gbfs",
+      "aliases": [
+        "Rodos",
+        "Ρόδος"
+      ],
+      "areas": [
+        {
+          "city": "Rhodes",
+          "center": [
+            36.4437,
+            28.2274
+          ],
+          "bounds": {
+            "south": 36.3823,
+            "north": 36.4612,
+            "west": 28.187,
+            "east": 28.2492
+          },
+          "aliases": [
+            "Rodos",
+            "Ρόδος"
+          ]
+        },
+        {
+          "city": "Ialysos",
+          "center": [
+            36.4156,
+            28.1582
+          ],
+          "bounds": {
+            "south": 36.4062,
+            "north": 36.4278,
+            "west": 28.1137,
+            "east": 28.1869
+          },
+          "aliases": [
+            "Ialyssos",
+            "Ιαλυσός",
+            "Trianta",
+            "Kremasti"
+          ]
+        },
+        {
+          "city": "Faliraki",
+          "center": [
+            36.3403,
+            28.202
+          ],
+          "bounds": {
+            "south": 36.2953,
+            "north": 36.3822,
+            "west": 28.1747,
+            "east": 28.247
+          },
+          "aliases": [
+            "Φαληράκι"
+          ]
+        },
+        {
+          "city": "Afantou",
+          "center": [
+            36.2845,
+            28.1735
+          ],
+          "bounds": {
+            "south": 36.2745,
+            "north": 36.2952,
+            "west": 28.1567,
+            "east": 28.1895
+          },
+          "aliases": [
+            "Afandou",
+            "Αφάντου"
+          ]
+        },
+        {
+          "city": "Kolymbia",
+          "center": [
+            36.2532,
+            28.1611
+          ],
+          "bounds": {
+            "south": 36.2372,
+            "north": 36.271,
+            "west": 28.1335,
+            "east": 28.1787
+          },
+          "aliases": [
+            "Kolympia",
+            "Kolimbia",
+            "Κολύμπια"
+          ]
+        }
       ]
     }
   ]

@@ -24,8 +24,12 @@ describe('German and Italian scooter coverage', () => {
     ['Fünfkirchen', 'Pécs, Hungary'], ['Funfkirchen Ungarn', 'Pécs, Hungary'], ['Békéscsaba', 'Békéscsaba, Hungary'],
     ['Bekescsaba Magyarország', 'Békéscsaba, Hungary'], ['Békešská Čaba', 'Békéscsaba, Hungary'],
     ['Bekesska Caba Ungarn', 'Békéscsaba, Hungary'], ['Faliraki', 'Faliraki, Greece'],
-    ['Φαληράκι', 'Faliraki, Greece'], ['Rhodes', 'Faliraki, Greece'], ['Rodos Ellada', 'Faliraki, Greece'], ['Ρόδος', 'Faliraki, Greece'],
-    ['ΡΟΔΟΣ', 'Faliraki, Greece'], ['Ροδος Ελλάδα', 'Faliraki, Greece'], ['Piraeus', 'Piraeus, Greece'], ['Pireas', 'Piraeus, Greece'],
+    ['Φαληράκι', 'Faliraki, Greece'], ['Rhodes', 'Rhodes, Greece'], ['Rodos Ellada', 'Rhodes, Greece'], ['Ρόδος', 'Rhodes, Greece'],
+    ['ΡΟΔΟΣ', 'Rhodes, Greece'], ['Ροδος Ελλάδα', 'Rhodes, Greece'], ['Ialysos', 'Ialysos, Greece'], ['Ιαλυσός', 'Ialysos, Greece'],
+    ['Kremasti', 'Ialysos, Greece'], ['Afandou', 'Afantou, Greece'], ['Kolympia Hellas', 'Kolymbia, Greece'],
+    ['Kos', 'Kos, Greece'], ['Κως', 'Kos, Greece'], ['Psalidi', 'Kos, Greece'], ['Rethymno', 'Rethymno, Greece'],
+    ['Ρέθυμνο', 'Rethymno, Greece'], ['Rethimno Griechenland', 'Rethymno, Greece'], ['Zakynthos', 'Zakynthos, Greece'],
+    ['Zante Grèce', 'Zakynthos, Greece'], ['Ζάκυνθος', 'Zakynthos, Greece'], ['Piraeus', 'Piraeus, Greece'], ['Pireas', 'Piraeus, Greece'],
     ['Peiraias Hellas', 'Piraeus, Greece'], ['Πειραιάς', 'Piraeus, Greece'], ['Πειραια', 'Piraeus, Greece'],
     ['Argostoli', 'Argostoli, Greece'], ['Αργοστόλι', 'Argostoli, Greece'], ['Kefalonia', 'Argostoli, Greece'],
     ['Cephalonia Griechenland', 'Argostoli, Greece'], ['Κεφαλονιά', 'Argostoli, Greece'], ['Kefallonia Grèce', 'Argostoli, Greece'],
@@ -271,6 +275,29 @@ describe('German and Italian scooter coverage', () => {
     expect(result.meta.sources.belgium).toBe('fresh');
     expect(result.vehicles).toMatchObject([{ provider: 'hoppy', battery: null, range_m: 51_000,
       pricing: { currency: 'EUR', unlock_fee_minor_units: 100, minute_fee_minor_units: 30 }, rental_uris: { ios: link } }]);
+  });
+  it('routes Hoppy\'s Rhodes feed to five towns, sharing Faliraki with Hopp, and drops scooters outside them', async () => {
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'hoppy_gr_rhodes')!;
+    const areas = serviceAreas(system);
+    expect(areas.map(area => area.city)).toEqual(['Rhodes', 'Ialysos', 'Faliraki', 'Afantou', 'Kolymbia']);
+    // No two of its towns overlap, and Faliraki is one town, whichever operator a scooter is from.
+    for (const [i, a] of areas.entries()) for (const b of areas.slice(i + 1)) {
+      expect(a.bounds.south > b.bounds.north || b.bounds.south > a.bounds.north ||
+        a.bounds.west > b.bounds.east || b.bounds.west > a.bounds.east, `${a.city} and ${b.city}`).toBe(true);
+    }
+    expect(REGIONAL_SCOOTER_CITIES.filter(city => city.city === 'Faliraki')).toHaveLength(1);
+    const scooter = (code: string, lat: number, lon: number) => ({ vehicle_id: code, lat, lon, is_reserved: false,
+      is_disabled: false, rental_uris: { android: `https://ride-hoppy.app.link/${code}` }, vehicle_type_id: '2589',
+      current_range_meters: 30_000, pricing_plan_id: '2589' });
+    vi.stubGlobal('fetch', atomFeeds(system,
+      { vehicle_type_id: '2589', form_factor: 'scooter_standing', propulsion_type: 'electric', max_range_meters: 60_000 },
+      { plan_id: '2589', name: [{ text: 'SEGW RHO ANRT_ KSCSEG _TIER3', language: 'en' }], currency: 'EUR', price: 1,
+        is_taxable: false, per_min_pricing: [{ start: 0, rate: 0.35, interval: 1 }] },
+      // The old town, Kolymbia, and Lindos, where Hoppy has no zone.
+      [scooter('300001', 36.4453, 28.2244), scooter('300002', 36.2538, 28.1598), scooter('300003', 36.0917, 28.088)]));
+    const result = await fetchScooters({ bounds: system.bounds, minBattery: 0, providers: new Set(['hoppy']) });
+    expect(result.meta.sources.greece).toBe('fresh');
+    expect(result.vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(['hoppy_gr_rhodes:300001', 'hoppy_gr_rhodes:300002']);
   });
   it('drops the Mechelen scooter that stood in Kortrijk, and keeps Oostende\'s and Blankenberge\'s towns apart', () => {
     const bounds = (id: string) => REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === id)!.bounds;

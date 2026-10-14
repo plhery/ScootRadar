@@ -34,9 +34,9 @@ describe('searchCoveredCities', () => {
 
   it('lists the cities a few letters could become, a city typed in full first and the others by name', () => {
     expect(names('Ber')).toEqual(['Berlin, Germany', 'Bern, Switzerland']);
-    // Portimão by its beach, Praia da Rocha, Faliraki by its island, Rhodes or Rodos, La Roche-sur-Yon,
+    // Portimão by its beach, Praia da Rocha, Rhodes by its Greek name, Rodos, La Roche-sur-Yon,
     // Le Chesnay-Rocquencourt and Marly-le-Roi by a later word; five at most, so Roma and Romanshorn wait for a third letter.
-    expect(names('Ro')).toEqual(['Faliraki, Greece', 'La Roche-sur-Yon, France', 'Le Chesnay-Rocquencourt, France', 'Marly-le-Roi, France', 'Portimão, Portugal']);
+    expect(names('Ro')).toEqual(['La Roche-sur-Yon, France', 'Le Chesnay-Rocquencourt, France', 'Marly-le-Roi, France', 'Portimão, Portugal', 'Rhodes, Greece']);
     expect(names('Rom')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland']);
     expect(names('Roma')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland']);
     // Saint-Herblain, by a later word, and Vestmannaeyjar, by its island, Heimaey, wait for a third letter.
@@ -102,8 +102,8 @@ describe('searchCoveredCities', () => {
   });
 
   it('finds a Greek town by its Greek name as by its Latin ones, with or without accents', () => {
-    for (const [query, title] of [['Πειραιάς', 'Piraeus'], ['πειραιας', 'Piraeus'], ['Peiraias', 'Piraeus'], ['Ρόδος', 'Faliraki'],
-      ['ΡΟΔΟΣ', 'Faliraki'], ['Φαληρ', 'Faliraki'], ['Rhodes Ελλάδα', 'Faliraki'], ['Αργοστόλι', 'Argostoli'], ['Cephalonia', 'Argostoli'],
+    for (const [query, title] of [['Πειραιάς', 'Piraeus'], ['πειραιας', 'Piraeus'], ['Peiraias', 'Piraeus'], ['Ρόδος', 'Rhodes'],
+      ['ΡΟΔΟΣ', 'Rhodes'], ['Φαληρ', 'Faliraki'], ['Rhodes Ελλάδα', 'Rhodes'], ['Ρέθυμνο', 'Rethymno'], ['Κως', 'Kos'], ['Ζάκυνθος', 'Zakynthos'], ['Αργοστόλι', 'Argostoli'], ['Cephalonia', 'Argostoli'],
       ['Κεφαλονιά Hellas', 'Argostoli'], ['Ιωάννινα', 'Ioannina'], ['Giannena Hellas', 'Ioannina']]) {
       expect(searchCoveredCities(query)[0]?.title, query).toBe(title);
     }
