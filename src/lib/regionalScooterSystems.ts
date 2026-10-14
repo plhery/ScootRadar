@@ -1,53 +1,15 @@
-import frenchCatalog from '../../data/french-scooter-feeds.json';
-import germanCatalog from '../../data/german-scooter-feeds.json';
-import italianCatalog from '../../data/italian-scooter-feeds.json';
-import belgianCatalog from '../../data/belgian-scooter-feeds.json';
-import norwegianCatalog from '../../data/norwegian-scooter-feeds.json';
-import britishCatalog from '../../data/british-scooter-feeds.json';
-import portugueseCatalog from '../../data/portuguese-scooter-feeds.json';
-import spanishCatalog from '../../data/spanish-scooter-feeds.json';
-import icelandicCatalog from '../../data/icelandic-scooter-feeds.json';
-import swedishCatalog from '../../data/swedish-scooter-feeds.json';
-import latvianCatalog from '../../data/latvian-scooter-feeds.json';
-import polishCatalog from '../../data/polish-scooter-feeds.json';
-import hungarianCatalog from '../../data/hungarian-scooter-feeds.json';
-import greekCatalog from '../../data/greek-scooter-feeds.json';
-import cypriotCatalog from '../../data/cypriot-scooter-feeds.json';
-import finnishCatalog from '../../data/finnish-scooter-feeds.json';
-import croatianCatalog from '../../data/croatian-scooter-feeds.json';
-import ukrainianCatalog from '../../data/ukrainian-scooter-feeds.json';
+import { CATALOG_SYSTEMS } from '@/generated/countryCatalogs';
+import { COUNTRY_NAMES, COUNTRY_SEARCH_WORDS, COUNTRY_SOURCES, type CatalogCountry } from '@/generated/countries';
 import type { ProviderKey } from '@/generated/providers';
 import type { MapBounds } from '@/lib/types';
 
-export type ScooterCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR' | 'UA';
-export const COUNTRY_SOURCES = {
-  FR: 'france', DE: 'germany', IT: 'italy', BE: 'belgium', NO: 'norway', GB: 'uk', PT: 'portugal', ES: 'spain', IS: 'iceland',
-  SE: 'sweden', LV: 'latvia', PL: 'poland', HU: 'hungary', GR: 'greece', CY: 'cyprus', FI: 'finland', HR: 'croatia', UA: 'ukraine',
-} as const;
+// The countries, their catalogs and their sources come from data/countries.json:
+// scripts/generate-provider-catalog.mjs writes src/generated/countries.ts.
+export type ScooterCountry = CatalogCountry;
+export { COUNTRY_SOURCES };
 export type RegionalSource = typeof COUNTRY_SOURCES[ScooterCountry];
-const COUNTRY_NAMES = {
-  FR: 'France', DE: 'Germany', IT: 'Italy', BE: 'Belgium', NO: 'Norway', GB: 'United Kingdom', PT: 'Portugal', ES: 'Spain', IS: 'Iceland',
-  SE: 'Sweden', LV: 'Latvia', PL: 'Poland', HU: 'Hungary', GR: 'Greece', CY: 'Cyprus', FI: 'Finland', HR: 'Croatia', UA: 'Ukraine',
-};
-const COUNTRY_ALIASES = { FR: ['france', 'frankreich', 'francia', 'frankrijk', 'frankrike', 'franca', 'frakkland'],
-  DE: ['germany', 'deutschland', 'allemagne', 'germania', 'duitsland', 'tyskland', 'alemanha', 'alemania', 'thyskaland'],
-  IT: ['italy', 'italia', 'italie', 'italien'],
-  BE: ['belgium', 'belgien', 'belgique', 'belgio', 'belgie', 'belgia', 'belgica'],
-  NO: ['norway', 'norwegen', 'norvege', 'norvegia', 'noorwegen', 'norge', 'noruega', 'noregur'],
-  GB: ['uk', 'britain', 'england', 'scotland', 'wales', 'angleterre', 'inghilterra', 'engeland', 'storbritannia', 'grossbritannien',
-    'inglaterra', 'bretland'],
-  PT: ['portugal', 'portogallo'],
-  ES: ['spain', 'spanien', 'espagne', 'spagna', 'spanje', 'spania', 'espanha', 'espana', 'spann'],
-  IS: ['iceland', 'island', 'islande', 'islanda', 'ijsland', 'islandia'],
-  SE: ['sweden', 'schweden', 'suede', 'svezia', 'zweden', 'sverige', 'suecia', 'svithjod'],
-  LV: ['latvia', 'lettland', 'lettonie', 'lettonia', 'letland', 'letonia', 'latvija'],
-  PL: ['poland', 'polen', 'pologne', 'polonia', 'polland', 'polska'],
-  HU: ['hungary', 'ungarn', 'hongrie', 'ungheria', 'hongarije', 'hungria', 'ungverjaland', 'magyarorszag'],
-  GR: ['greece', 'griechenland', 'grece', 'grecia', 'griekenland', 'hellas', 'grikkland', 'ellada', 'ελλαδα'],
-  CY: ['cyprus', 'zypern', 'chypre', 'cipro', 'kypros', 'chipre', 'kypur', 'κυπροσ', 'kibris'],
-  FI: ['finland', 'finnland', 'finlande', 'finlandia', 'suomi'],
-  HR: ['croatia', 'kroatien', 'croatie', 'croazia', 'kroatie', 'kroatia', 'croacia', 'hrvatska'],
-  UA: ['ukraine', 'ucraina', 'oekraine', 'ukraina', 'ucrania', 'ukrajina', 'ukrayina', 'украіна', 'украина'] };
+const COUNTRY_ALIASES = Object.fromEntries((Object.keys(COUNTRY_SOURCES) as ScooterCountry[])
+  .map(country => [country, COUNTRY_SEARCH_WORDS[country]])) as Record<ScooterCountry, readonly string[]>;
 
 export interface ScooterServiceArea {
   city: string;
@@ -71,14 +33,7 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
 }
 
 // Reviewed public endpoints, never an unvalidated runtime registry download.
-export const REGIONAL_SCOOTER_SYSTEMS = [
-  ...frenchCatalog.systems.map(system => ({ ...system, country: 'FR' })),
-  ...germanCatalog.systems, ...italianCatalog.systems,
-  ...belgianCatalog.systems, ...norwegianCatalog.systems, ...britishCatalog.systems,
-  ...portugueseCatalog.systems, ...spanishCatalog.systems, ...icelandicCatalog.systems, ...swedishCatalog.systems,
-  ...latvianCatalog.systems, ...polishCatalog.systems, ...hungarianCatalog.systems, ...greekCatalog.systems,
-  ...cypriotCatalog.systems, ...finnishCatalog.systems, ...croatianCatalog.systems, ...ukrainianCatalog.systems,
-] as RegionalScooterSystem[];
+export const REGIONAL_SCOOTER_SYSTEMS = CATALOG_SYSTEMS as RegionalScooterSystem[];
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {
   return system.areas ?? [system];
@@ -136,5 +91,5 @@ export function searchRegionalScooterCities(query: string, countries?: ScooterCo
       cityWords.every(word => normalize(name).split(' ').some(part => part.startsWith(word)))))
     .sort((a, b) => Number(normalize(b.city) === cityWords.join(' ')) - Number(normalize(a.city) === cityWords.join(' ')) || a.city.localeCompare(b.city))
     .slice(0, 5).map(city => ({ lat: city.center[0], lng: city.center[1],
-      display_name: `${city.city}, ${COUNTRY_NAMES[city.country]}` }));
+      display_name: `${city.city}, ${COUNTRY_NAMES[city.country].en}` }));
 }

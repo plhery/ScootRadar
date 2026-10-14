@@ -1,14 +1,15 @@
+import type { CountryCode } from '@/generated/countries';
 import { SWISS_SCOOTER_AREAS } from '@/lib/feedCoverage';
 import { boundsContainPoint, haversineM } from '@/lib/geo';
 import {
   REGIONAL_SCOOTER_CITIES,
   REGIONAL_SCOOTER_SYSTEMS,
   serviceAreas,
-  type ScooterCountry,
 } from '@/lib/regionalScooterSystems';
 import type { MapBounds } from '@/lib/types';
 
-export type CoveredCountry = 'CH' | ScooterCountry;
+/** Switzerland and the countries with a catalog: every country of data/countries.json. */
+export type CoveredCountry = CountryCode;
 
 export interface CoveredCity {
   id: string;

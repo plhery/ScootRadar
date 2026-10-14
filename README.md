@@ -123,6 +123,35 @@ The scooter API wire types are generated for both clients from
 `data/scooter-api.schema.json`; run `npm run generate:api-contract` after
 changing the response contract.
 
+### Adding a country
+
+1. Write its catalog, `data/<adjective>-scooter-feeds.json` (`canadian`,
+   `mexican`, `american`), and its guide, `docs/<adjective>-scooter-feeds.md`,
+   with the evidence for each feed.
+2. Add one entry to `data/countries.json`:
+   - `code`, `continent` (`europe` or `north-america`), `catalog` and `source`,
+     the key of its feeds in the API's `meta.sources`;
+   - `names` in the nine languages of the apps, and the `searchWords` that,
+     typed beside a city, say which country is meant;
+   - `anchor`, where its total stands zoomed out, with an `anchorNote` saying
+     why there;
+   - `featuredCities`, the city ids the landing page names;
+   - `credits`: its `attribution` in the `X-Mobility-Data-Source` header, the
+     providers its GBFS feeds are credited for (`gbfs`, one line per
+     continent), and the `links` a licence asks for.
+
+   Countries are listed in the order they were added; `landingFirst` keeps
+   Switzerland and its neighbours first on the landing page.
+3. Run `npm run generate:providers`. It checks the entry and writes
+   `src/generated/countries.ts`, `src/generated/countryCatalogs.ts` and the
+   iOS `ProviderCatalog.generated.swift`. `node scripts/check-french-feeds.mjs
+   --countries=<code>` checks the feeds live; `npm run check:catalogs` checks
+   every country.
+
+A new provider still needs its entry in `data/providers.json` and its link
+policy in `src/lib/rentalLinks.ts` and the iOS `ScooterRentalLinkPolicy`; a
+night ban goes in `data/rental-curfews.json`.
+
 ## Deploy your own
 
 The included configuration targets Cloudflare Workers through OpenNext. Give

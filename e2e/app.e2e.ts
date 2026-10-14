@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { COUNTRY_CREDIT_LINKS } from '../src/generated/countries';
 import { visitFromSwitzerland } from './swissVisitor';
 
 const coarsePointer = (page: Page) => page.evaluate(() => matchMedia('(pointer: coarse)').matches);
@@ -1724,7 +1725,8 @@ test('the settings name the languages, and About leads to the credits, the priva
   await settings.getByRole('button', { name: 'Map & data credits' }).click();
   const credits = page.getByRole('dialog', { name: 'Map & data credits', exact: true });
   await expect(credits.getByRole('heading', { name: 'Map & data credits', level: 2 })).toBeFocused();
-  await expect(credits.getByRole('link')).toHaveCount(18);
+  // The map's, the search's, Switzerland's, France's and Lille's, and each country's own.
+  await expect(credits.getByRole('link')).toHaveCount(9 + COUNTRY_CREDIT_LINKS.length);
   await expect(credits.getByRole('link', { name: '© OpenStreetMap contributors' })).toHaveAttribute('href', 'https://www.openstreetmap.org/copyright');
   await expect(credits.getByRole('link', { name: 'OpenFreeMap © OpenMapTiles' })).toHaveAttribute('href', 'https://openfreemap.org/');
   // The walking routes come from FOSSGIS's Valhalla, whose terms ask for both: its credit, and a way to fix the map.

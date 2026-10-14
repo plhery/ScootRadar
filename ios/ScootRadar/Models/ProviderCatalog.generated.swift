@@ -813,3 +813,55 @@ extension RentalCurfew {
         ),
     ]
 }
+
+/// The countries of data/countries.json, as src/generated/countries.ts has them on the web.
+enum ScooterCountryCatalog {
+    /// Where a country's total stands, zoomed out: inland and about the middle of the country.
+    static let anchors: [String: (latitude: Double, longitude: Double)] = [
+        "ch": (46.8, 8.2),
+        "fr": (46.6, 2.4),
+        "de": (51.1, 10.4),
+        "it": (43, 12.5),
+        "be": (50.6, 4.6),
+        "no": (61, 9.5),
+        "gb": (52.8, -1.6),
+        "pt": (39.6, -8),
+        "es": (40.4, -2.5),
+        "is": (64.9, -18.6),
+        // Inland, between Uppsala and Kiruna, and clear of Norway's total.
+        "se": (63.6, 17.8),
+        // Inland, east of Rīga, about the middle of the country.
+        "lv": (56.9, 24.6),
+        // About the middle of the country, near Łódź.
+        "pl": (52.1, 19.4),
+        // About the middle of the country, south-east of Budapest.
+        "hu": (47.2, 19.5),
+        // Inland, about the middle of the mainland, west of Lamia.
+        "gr": (39, 22),
+        // Inland, in the Troodos mountains, between Paphos and Limassol.
+        "cy": (34.9, 32.9),
+        // Inland in the south-west, between Turku and Tampere: on the mainland, so it isn't read as
+        // Stockholm's, and on the side nearest Mariehamn, on Åland, where all its scooters are.
+        "fi": (61.1, 23.8),
+        // Inland, at the middle of the country, near Slunj: on Rijeka's side, but off the coast,
+        // where it would read as Slovenia's or Trieste's, and about 50 points from Italy's and
+        // Hungary's totals at zoom 4, between which Croatia lies.
+        "hr": (45.2, 15.5),
+        // Inland, in the middle of the country, near Zvenyhorodka: a little north of its geographic
+        // centre, towards Kyiv, where all its scooters are.
+        "ua": (49, 31),
+    ]
+
+    /// The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences.
+    static let credits: [(title: String, url: String)] = [
+        ("DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio, Bird, Elerent, Hoppy, Ride Mobility, 3electra", "https://github.com/MobilityData/gbfs"),
+        ("MobiData BW", "https://www.mobidata-bw.de/"),
+        ("BE: Pony · transportdata.be", "https://transportdata.be/dataset/pony_charleroi"),
+        ("NO: Entur AS · NLOD", "https://data.norge.no/nlod/en/2.0"),
+        ("NO: Kartverket boundaries · CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/"),
+        ("UK: Beryl · CDLA-Permissive-2.0", "https://cdla.dev/permissive-2-0/"),
+        ("UK: ONS boundaries · OGL v3.0", "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"),
+        ("PT: DGT boundaries · CC BY 4.0", "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop"),
+        ("UA: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
+    ]
+}

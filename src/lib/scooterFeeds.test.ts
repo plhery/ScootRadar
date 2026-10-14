@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { skippedSources } from '@/lib/scooterSources';
 import {
   fetchScooters,
   ScooterFeedsUnavailableError,
@@ -211,12 +212,7 @@ describe('fetchScooters source health', () => {
     });
 
     expect(result.vehicles).toEqual([]);
-    expect(result.meta.sources).toEqual({
-      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped', croatia: 'skipped', ukraine: 'skipped',
-      national: 'skipped',
-      hopp: 'skipped',
-      publibike: 'skipped',
-    });
+    expect(result.meta.sources).toEqual(skippedSources());
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
@@ -274,7 +270,7 @@ describe('fetchScooters source health', () => {
       partial: false,
       stale: false,
       failedSources: [],
-      sources: { france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped', croatia: 'skipped', ukraine: 'skipped', national: 'fresh', hopp: 'fresh', publibike: 'fresh' },
+      sources: { ...skippedSources(), national: 'fresh', hopp: 'fresh', publibike: 'fresh' },
     });
   });
 
@@ -297,7 +293,7 @@ describe('fetchScooters source health', () => {
       partial: false,
       stale: false,
       failedSources: [],
-      sources: { france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped', croatia: 'skipped', ukraine: 'skipped', national: 'fresh', hopp: 'skipped', publibike: 'skipped' },
+      sources: { ...skippedSources(), national: 'fresh' },
     });
     expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('system_pricing_plans'));
   });
@@ -372,7 +368,7 @@ describe('fetchScooters source health', () => {
       partial: false,
       stale: false,
       failedSources: [],
-      sources: { france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped', croatia: 'skipped', ukraine: 'skipped', national: 'skipped', hopp: 'skipped', publibike: 'fresh' },
+      sources: { ...skippedSources(), publibike: 'fresh' },
     });
   });
 
@@ -433,12 +429,7 @@ describe('fetchScooters source health', () => {
     expect(result.vehicles).toEqual([
       expect.objectContaining({ provider: 'hopp', battery: 68 }),
     ]);
-    expect(result.meta.sources).toEqual({
-      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped', croatia: 'skipped', ukraine: 'skipped',
-      national: 'skipped',
-      hopp: 'fresh',
-      publibike: 'skipped',
-    });
+    expect(result.meta.sources).toEqual({ ...skippedSources(), hopp: 'fresh' });
     expect(fetchMock).toHaveBeenCalledTimes(4);
     expect(fetchMock.mock.calls.some(([input]) => String(input).includes('sharedmobility.ch'))).toBe(false);
   });
@@ -484,7 +475,7 @@ describe('fetchScooters source health', () => {
     expect(result.meta).toMatchObject({
       partial: true,
       failedSources: ['hopp:hopp_ch_zurich'],
-      sources: { france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped', croatia: 'skipped', ukraine: 'skipped', national: 'fresh', hopp: 'failed', publibike: 'fresh' },
+      sources: { ...skippedSources(), national: 'fresh', hopp: 'failed', publibike: 'fresh' },
     });
   });
 
@@ -537,7 +528,7 @@ describe('fetchScooters source health', () => {
       partial: true,
       stale: false,
       failedSources: ['national:dott_zurich'],
-      sources: { france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped', croatia: 'skipped', ukraine: 'skipped', national: 'partial', hopp: 'skipped', publibike: 'skipped' },
+      sources: { ...skippedSources(), national: 'partial' },
     });
   });
 
@@ -579,12 +570,7 @@ describe('fetchScooters source health', () => {
     });
 
     expect(result.vehicles).toEqual([]);
-    expect(result.meta.sources).toEqual({
-      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped', croatia: 'skipped', ukraine: 'skipped',
-      national: 'skipped',
-      hopp: 'skipped',
-      publibike: 'skipped',
-    });
+    expect(result.meta.sources).toEqual(skippedSources());
     expect(fetchMock).not.toHaveBeenCalled();
   });
 

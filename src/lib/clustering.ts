@@ -1,3 +1,4 @@
+import { COUNTRY_ANCHORS, type CountryCode } from '@/generated/countries';
 import type { MapBounds, ScooterCluster, Vehicle } from '@/lib/types';
 
 export const MAX_CLUSTER_ZOOM = 15;
@@ -87,33 +88,7 @@ export const COUNTRY_TOTALS_BELOW_ZOOM = 5;
 const CITY_GROUP_SPACING_PX = 60;
 // Named in a group's label; the rest are left to zooming in.
 const CITY_GROUP_NAMES = 3;
-// Where a country's total stands: inland and about the middle of the country.
-const COUNTRY_ANCHORS: Record<string, [number, number]> = {
-  be: [50.6, 4.6], ch: [46.8, 8.2], de: [51.1, 10.4], es: [40.4, -2.5], fr: [46.6, 2.4],
-  gb: [52.8, -1.6], is: [64.9, -18.6], it: [43, 12.5], nl: [52.2, 5.6], no: [61, 9.5], pt: [39.6, -8],
-  // Inland, between Uppsala and Kiruna, and clear of Norway's total.
-  se: [63.6, 17.8],
-  // Inland, east of Rīga, about the middle of the country.
-  lv: [56.9, 24.6],
-  // About the middle of the country, near Łódź.
-  pl: [52.1, 19.4],
-  // About the middle of the country, south-east of Budapest.
-  hu: [47.2, 19.5],
-  // Inland, about the middle of the mainland, west of Lamia.
-  gr: [39, 22],
-  // Inland, in the Troodos mountains, between Paphos and Limassol.
-  cy: [34.9, 32.9],
-  // Inland in the south-west, between Turku and Tampere: on the mainland, so it isn't read
-  // as Stockholm's, and on the side nearest Mariehamn, on Åland, where all its scooters are.
-  fi: [61.1, 23.8],
-  // Inland, at the middle of the country, near Slunj: on Rijeka's side, but off the coast, where
-  // it would read as Slovenia's or Trieste's, and about 50 points from Italy's and Hungary's
-  // totals at zoom 4, between which Croatia lies.
-  hr: [45.2, 15.5],
-  // Inland, in the middle of the country, near Zvenyhorodka: a little north of its geographic
-  // centre, towards Kyiv, where all its scooters are.
-  ua: [49, 31],
-};
+// Where a country's total stands, inland and about the middle of the country, is in data/countries.json.
 
 // "city:fr:Paris" is in France.
 function countryOf(city: ScooterCluster): string | null {
@@ -150,7 +125,7 @@ function countryTotals(cities: ScooterCluster[], countryName: (code: string) => 
     else countries.set(country, [...countries.get(country) ?? [], city]);
   }
   for (const [country, members] of countries) {
-    const [lat, lng] = COUNTRY_ANCHORS[country] ?? [members[0].lat, members[0].lng];
+    const [lat, lng] = COUNTRY_ANCHORS[country.toUpperCase() as CountryCode] ?? [members[0].lat, members[0].lng];
     totals.push({
       id: `country:${country}`, city: countryName(country), lat, lng,
       count: members.reduce((total, member) => total + member.count, 0),

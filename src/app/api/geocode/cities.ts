@@ -1,3 +1,4 @@
+import { COUNTRY_NAMES, COUNTRY_SEARCH_WORDS } from '@/generated/countries';
 import { COVERED_CITIES, isPointCovered, type CoveredCountry } from '@/lib/coveredCities';
 import { REGIONAL_SCOOTER_CITIES } from '@/lib/regionalScooterSystems';
 
@@ -7,52 +8,10 @@ const MAX_CITIES = 5;
 export const GEOCODE_LANGUAGES = ['en', 'de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is'] as const;
 export type GeocodeLanguage = typeof GEOCODE_LANGUAGES[number];
 
-// A table rather than Intl.DisplayNames, whose locale data is not a given on the server.
-const COUNTRY_NAMES: Record<CoveredCountry, Record<GeocodeLanguage, string>> = {
-  CH: { en: 'Switzerland', de: 'Schweiz', fr: 'Suisse', it: 'Svizzera', nl: 'Zwitserland', nb: 'Sveits', pt: 'Suíça', es: 'Suiza', is: 'Sviss' },
-  FR: { en: 'France', de: 'Frankreich', fr: 'France', it: 'Francia', nl: 'Frankrijk', nb: 'Frankrike', pt: 'França', es: 'Francia', is: 'Frakkland' },
-  DE: { en: 'Germany', de: 'Deutschland', fr: 'Allemagne', it: 'Germania', nl: 'Duitsland', nb: 'Tyskland', pt: 'Alemanha', es: 'Alemania', is: 'Þýskaland' },
-  IT: { en: 'Italy', de: 'Italien', fr: 'Italie', it: 'Italia', nl: 'Italië', nb: 'Italia', pt: 'Itália', es: 'Italia', is: 'Ítalía' },
-  BE: { en: 'Belgium', de: 'Belgien', fr: 'Belgique', it: 'Belgio', nl: 'België', nb: 'Belgia', pt: 'Bélgica', es: 'Bélgica', is: 'Belgía' },
-  NO: { en: 'Norway', de: 'Norwegen', fr: 'Norvège', it: 'Norvegia', nl: 'Noorwegen', nb: 'Norge', pt: 'Noruega', es: 'Noruega', is: 'Noregur' },
-  GB: { en: 'United Kingdom', de: 'Vereinigtes Königreich', fr: 'Royaume-Uni', it: 'Regno Unito', nl: 'Verenigd Koninkrijk', nb: 'Storbritannia', pt: 'Reino Unido', es: 'Reino Unido', is: 'Bretland' },
-  PT: { en: 'Portugal', de: 'Portugal', fr: 'Portugal', it: 'Portogallo', nl: 'Portugal', nb: 'Portugal', pt: 'Portugal', es: 'Portugal', is: 'Portúgal' },
-  ES: { en: 'Spain', de: 'Spanien', fr: 'Espagne', it: 'Spagna', nl: 'Spanje', nb: 'Spania', pt: 'Espanha', es: 'España', is: 'Spánn' },
-  IS: { en: 'Iceland', de: 'Island', fr: 'Islande', it: 'Islanda', nl: 'IJsland', nb: 'Island', pt: 'Islândia', es: 'Islandia', is: 'Ísland' },
-  SE: { en: 'Sweden', de: 'Schweden', fr: 'Suède', it: 'Svezia', nl: 'Zweden', nb: 'Sverige', pt: 'Suécia', es: 'Suecia', is: 'Svíþjóð' },
-  LV: { en: 'Latvia', de: 'Lettland', fr: 'Lettonie', it: 'Lettonia', nl: 'Letland', nb: 'Latvia', pt: 'Letónia', es: 'Letonia', is: 'Lettland' },
-  PL: { en: 'Poland', de: 'Polen', fr: 'Pologne', it: 'Polonia', nl: 'Polen', nb: 'Polen', pt: 'Polónia', es: 'Polonia', is: 'Pólland' },
-  HU: { en: 'Hungary', de: 'Ungarn', fr: 'Hongrie', it: 'Ungheria', nl: 'Hongarije', nb: 'Ungarn', pt: 'Hungria', es: 'Hungría', is: 'Ungverjaland' },
-  GR: { en: 'Greece', de: 'Griechenland', fr: 'Grèce', it: 'Grecia', nl: 'Griekenland', nb: 'Hellas', pt: 'Grécia', es: 'Grecia', is: 'Grikkland' },
-  CY: { en: 'Cyprus', de: 'Zypern', fr: 'Chypre', it: 'Cipro', nl: 'Cyprus', nb: 'Kypros', pt: 'Chipre', es: 'Chipre', is: 'Kýpur' },
-  FI: { en: 'Finland', de: 'Finnland', fr: 'Finlande', it: 'Finlandia', nl: 'Finland', nb: 'Finland', pt: 'Finlândia', es: 'Finlandia', is: 'Finnland' },
-  HR: { en: 'Croatia', de: 'Kroatien', fr: 'Croatie', it: 'Croazia', nl: 'Kroatië', nb: 'Kroatia', pt: 'Croácia', es: 'Croacia', is: 'Króatía' },
-  UA: { en: 'Ukraine', de: 'Ukraine', fr: 'Ukraine', it: 'Ucraina', nl: 'Oekraïne', nb: 'Ukraina', pt: 'Ucrânia', es: 'Ucrania', is: 'Úkraína' },
-};
-
-// Typed beside a city to say which one is meant: "Lindau Deutschland".
-const COUNTRY_WORDS: Record<CoveredCountry, string[]> = {
-  CH: ['switzerland', 'schweiz', 'suisse', 'svizzera', 'zwitserland', 'sveits', 'suica', 'suiza', 'sviss'],
-  FR: ['france', 'frankreich', 'francia', 'frankrijk', 'frankrike', 'franca', 'frakkland'],
-  DE: ['germany', 'deutschland', 'allemagne', 'germania', 'duitsland', 'tyskland', 'alemanha', 'alemania', 'thyskaland'],
-  IT: ['italy', 'italia', 'italie', 'italien'],
-  BE: ['belgium', 'belgien', 'belgique', 'belgio', 'belgie', 'belgia', 'belgica'],
-  NO: ['norway', 'norwegen', 'norvege', 'norvegia', 'noorwegen', 'norge', 'noruega', 'noregur'],
-  GB: ['uk', 'britain', 'england', 'scotland', 'wales', 'angleterre', 'inghilterra', 'engeland', 'storbritannia', 'grossbritannien',
-    'inglaterra', 'bretland'],
-  PT: ['portugal', 'portogallo'],
-  ES: ['spain', 'spanien', 'espagne', 'spagna', 'spanje', 'spania', 'espanha', 'espana', 'spann'],
-  IS: ['iceland', 'island', 'islande', 'islanda', 'ijsland', 'islandia'],
-  SE: ['sweden', 'schweden', 'suede', 'svezia', 'zweden', 'sverige', 'suecia', 'svithjod'],
-  LV: ['latvia', 'lettland', 'lettonie', 'lettonia', 'letland', 'letonia', 'latvija'],
-  PL: ['poland', 'polen', 'pologne', 'polonia', 'polland', 'polska'],
-  HU: ['hungary', 'ungarn', 'hongrie', 'ungheria', 'hongarije', 'hungria', 'ungverjaland', 'magyarorszag'],
-  GR: ['greece', 'griechenland', 'grece', 'grecia', 'griekenland', 'hellas', 'grikkland', 'ellada', 'ελλαδα'],
-  CY: ['cyprus', 'zypern', 'chypre', 'cipro', 'kypros', 'chipre', 'kypur', 'κυπροσ', 'kibris'],
-  FI: ['finland', 'finnland', 'finlande', 'finlandia', 'suomi'],
-  HR: ['croatia', 'kroatien', 'croatie', 'croazia', 'kroatie', 'kroatia', 'croacia', 'hrvatska'],
-  UA: ['ukraine', 'ucraina', 'oekraine', 'ukraina', 'ucrania', 'ukrajina', 'ukrayina', 'украіна', 'украина'],
-};
+// A table rather than Intl.DisplayNames, whose locale data is not a given on the server;
+// typed beside a city, a country's words say which one is meant: "Lindau Deutschland".
+// Both are in data/countries.json.
+const COUNTRY_WORDS = COUNTRY_SEARCH_WORDS;
 
 // What the Swiss cities are called in the other languages of the app, and how
 // they are typed without an umlaut. The regional catalogues carry their own aliases.

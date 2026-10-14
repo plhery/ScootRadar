@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { skippedSources } from '@/lib/scooterSources';
 import { buildCityOverview, feedsForQuery, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from './scooterSnapshots';
 import { scooterResponseHeaders } from './scooterResponse';
 import { ScooterFeedsUnavailableError } from './scooterFeeds';
@@ -58,7 +59,7 @@ describe('persistent map snapshots', () => {
     const response = querySnapshot(snapshot([feed({ observedAt: 0 })]), { ...query, outsideCoverage: true }, 16, now);
     expect(response.vehicles).toEqual([]);
     expect(response.meta.partial).toBe(false);
-    expect(Object.values(response.meta.sources)).toEqual(Array(21).fill('skipped'));
+    expect(response.meta.sources).toEqual(skippedSources());
   });
 
   it('does not involve Swiss feed health in a French city response', () => {

@@ -1966,13 +1966,16 @@ struct ScooterCreditsList: View {
         let title: String
         let url: URL
 
-        var id: URL { url }
+        /// Two sources may share a licence's address, never a title.
+        var id: String { title }
     }
 
     /// The same sources as the credits list on the web. Names of feeds and
     /// operators are not translated.
     static var sources: [Source] {
-        [
+        // Each country's own, from data/countries.json.
+        let countries = ScooterCountryCatalog.credits.map { Source(title: $0.title, url: URL(string: $0.url)!) }
+        return [
             Source(
                 title: String(localized: "Mobility data sources"),
                 url: URL(string: "https://opentransportdata.swiss/en/cookbook/shared-mobility/")!
@@ -1981,42 +1984,7 @@ struct ScooterCreditsList: View {
                 title: String(localized: "French mobility data"),
                 url: URL(string: "https://transport.data.gouv.fr/datasets?type=vehicles-sharing")!
             ),
-            Source(
-                title: "MobiData BW",
-                url: URL(string: "https://www.mobidata-bw.de/")!
-            ),
-            Source(
-                title: "DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy, Ride Mobility, Yoio, Elerent, 3electra",
-                url: URL(string: "https://github.com/MobilityData/gbfs")!
-            ),
-            Source(
-                title: "BE: Pony · transportdata.be",
-                url: URL(string: "https://transportdata.be/dataset/pony_charleroi")!
-            ),
-            Source(
-                title: "UK: Beryl · CDLA-Permissive-2.0",
-                url: URL(string: "https://cdla.dev/permissive-2-0/")!
-            ),
-            Source(
-                title: "NO: Entur AS · NLOD",
-                url: URL(string: "https://data.norge.no/nlod/en/2.0")!
-            ),
-            Source(
-                title: "NO: Kartverket boundaries · CC BY 4.0",
-                url: URL(string: "https://creativecommons.org/licenses/by/4.0/")!
-            ),
-            Source(
-                title: "UK: ONS boundaries · OGL v3.0",
-                url: URL(string: "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/")!
-            ),
-            Source(
-                title: "PT: DGT boundaries · CC BY 4.0",
-                url: URL(string: "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop")!
-            ),
-            Source(
-                title: "UA: OpenStreetMap boundaries · ODbL",
-                url: URL(string: "https://opendatacommons.org/licenses/odbl/")!
-            ),
+        ] + countries + [
             Source(
                 title: String(localized: "Address search by Geoapify"),
                 url: URL(string: "https://www.geoapify.com/")!

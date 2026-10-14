@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { skippedSources } from '@/lib/scooterSources';
 import { fetchScooters, independentCollectableFeeds, ScooterFeedsUnavailableError } from '@/lib/scooterFeeds';
 import { FRENCH_SCOOTER_SYSTEMS, searchFrenchScooterCities } from '@/lib/frenchScooterSystems';
 import { serviceAreas } from '@/lib/regionalScooterSystems';
@@ -101,7 +102,7 @@ describe('French scooter feeds', () => {
     const result = await fetchScooters({ ...parsed.query, origin: [47.3769, 8.5417] });
     expect(result.vehicles).toHaveLength(1);
     expect(result.vehicles[0].vehicle_id).toBe('dott_fr_lyon:test-scooter');
-    expect(result.meta.sources).toEqual({ national: 'skipped', hopp: 'skipped', publibike: 'skipped', france: 'fresh', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped', croatia: 'skipped', ukraine: 'skipped' });
+    expect(result.meta.sources).toEqual({ ...skippedSources(), france: 'fresh' });
     expect(fetchMock).toHaveBeenCalledTimes(4);
     for (const [, init] of fetchMock.mock.calls as unknown as [unknown, RequestInit][]) {
       expect(init.headers).not.toHaveProperty('Authorization');
@@ -124,7 +125,7 @@ describe('French scooter feeds', () => {
       bounds,
       minBattery: 0,
     });
-    expect(result.meta.sources).toEqual({ national: 'skipped', hopp: 'skipped', publibike: 'skipped', france: 'fresh', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped', croatia: 'skipped', ukraine: 'skipped' });
+    expect(result.meta.sources).toEqual({ ...skippedSources(), france: 'fresh' });
     expect(result.vehicles.length).toBeGreaterThan(0);
     // Discovery, types, status and prices, but no prices from another operator's feed.
     expect(fetchMock).toHaveBeenCalledTimes(relevant.reduce((calls, candidate) => calls + (candidate.feedOperator ? 3 : 4), 0));

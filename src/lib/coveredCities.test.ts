@@ -1,4 +1,5 @@
 import { readdirSync, readFileSync } from 'node:fs';
+import { COUNTRY_CODES } from '@/generated/countries';
 import { describe, expect, it } from 'vitest';
 import {
   COVERED_CITIES, COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, isPointCovered, nearestCoveredCities,
@@ -21,7 +22,9 @@ describe('covered cities', () => {
     expect(COVERED_CITIES).toHaveLength(SWISS_SCOOTER_AREAS.length + REGIONAL_SCOOTER_CITIES.length);
     expect(new Set(COVERED_CITIES.map(city => city.id)).size).toBe(COVERED_CITIES.length);
     expect(COVERED_CITIES.slice(0, SWISS_SCOOTER_AREAS.length).every(city => city.country === 'CH')).toBe(true);
-    expect(new Set(COVERED_CITIES.map(city => city.country))).toEqual(new Set(['CH', 'FR', 'DE', 'IT', 'BE', 'NO', 'GB', 'PT', 'ES', 'IS', 'SE', 'LV', 'PL', 'HU', 'GR', 'CY', 'FI', 'HR', 'UA']));
+    // Every country of data/countries.json has cities, and no city is elsewhere.
+    expect(new Set(COVERED_CITIES.map(city => city.country))).toEqual(new Set(COUNTRY_CODES));
+    expect(COUNTRY_CODES).toEqual(expect.arrayContaining(['CH', 'FR', 'DE', 'IT', 'BE', 'NO', 'GB', 'PT', 'ES', 'IS', 'SE', 'LV', 'PL', 'HU', 'GR', 'CY', 'FI', 'HR', 'UA']));
     expect(COVERED_CITIES).toEqual(expect.arrayContaining([
       {
         id: 'ch:zurich',
@@ -116,10 +119,12 @@ describe('the count of covered cities and countries', () => {
   function fromCatalogs() {
     const cities = new Set<string>(JSON.parse(readFileSync('data/swiss-scooter-areas.json', 'utf8')).map(({ id }: { id: string }) => id));
     const countries = new Set(['CH']);
+    // A catalog data/countries.json does not list counts as a country of its own.
+    const listed = new Map((JSON.parse(readFileSync('data/countries.json', 'utf8')).countries as { code: string; catalog?: string }[])
+      .map(({ code, catalog }) => [catalog, code]));
     for (const file of readdirSync('data').filter(name => name.endsWith('-scooter-feeds.json'))) {
-      // The French catalog alone has no country on its systems.
       for (const system of JSON.parse(readFileSync(`data/${file}`, 'utf8')).systems) {
-        const country: string = system.country ?? 'FR';
+        const country: string = listed.get(`data/${file}`) ?? `unlisted ${file}`;
         countries.add(country);
         for (const { city } of system.areas ?? [system]) cities.add(`${country.toLowerCase()}:${city}`);
       }

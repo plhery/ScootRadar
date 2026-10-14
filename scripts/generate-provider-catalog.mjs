@@ -1,5 +1,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
+import {
+  catalogSystems, scooterCities, swiftCountries, typescriptCatalogs, typescriptCountries, validateCountries,
+} from './country-catalog.mjs';
 
 const root = process.cwd();
 const sourcePath = resolve(root, 'data/providers.json');
@@ -10,27 +13,11 @@ const checkOnly = process.argv.includes('--check');
 const readJson = path => JSON.parse(readFileSync(resolve(root, path), 'utf8'));
 const providers = JSON.parse(readFileSync(sourcePath, 'utf8'));
 const swissAreas = readJson('data/swiss-scooter-areas.json');
-// Countries as in src/lib/regionalScooterSystems.ts: the French catalog has no country field.
-const regionalSystems = [
-  ...readJson('data/french-scooter-feeds.json').systems.map(system => ({ ...system, country: 'FR' })),
-  ...readJson('data/german-scooter-feeds.json').systems,
-  ...readJson('data/italian-scooter-feeds.json').systems,
-  ...readJson('data/belgian-scooter-feeds.json').systems,
-  ...readJson('data/norwegian-scooter-feeds.json').systems,
-  ...readJson('data/british-scooter-feeds.json').systems,
-  ...readJson('data/portuguese-scooter-feeds.json').systems,
-  ...readJson('data/spanish-scooter-feeds.json').systems,
-  ...readJson('data/icelandic-scooter-feeds.json').systems,
-  ...readJson('data/swedish-scooter-feeds.json').systems,
-  ...readJson('data/latvian-scooter-feeds.json').systems,
-  ...readJson('data/polish-scooter-feeds.json').systems,
-  ...readJson('data/hungarian-scooter-feeds.json').systems,
-  ...readJson('data/greek-scooter-feeds.json').systems,
-  ...readJson('data/cypriot-scooter-feeds.json').systems,
-  ...readJson('data/finnish-scooter-feeds.json').systems,
-  ...readJson('data/croatian-scooter-feeds.json').systems,
-  ...readJson('data/ukrainian-scooter-feeds.json').systems,
-];
+const countriesPath = resolve(root, 'src/generated/countries.ts');
+const catalogsPath = resolve(root, 'src/generated/countryCatalogs.ts');
+const { landingFirst, countries } = readJson('data/countries.json');
+// Every catalog's systems, in the order of data/countries.json, each with its country.
+const regionalSystems = catalogSystems(countries, readJson);
 const curfews = readJson('data/rental-curfews.json').curfews;
 
 function validateCatalog() {
@@ -58,6 +45,7 @@ function validateCatalog() {
   }
 }
 
+// The languages the apps are shown in, as GEOCODE_LANGUAGES in src/app/api/geocode/cities.ts.
 // Longest prefixes first, so that "hoppy_be_kortrijk" is Hoppy's and not Hopp's.
 const longestPrefix = provider => Math.max(0, ...(provider.systemIds?.prefixes ?? []).map(prefix => prefix.length));
 const matcherOrder = [...providers].sort((a, b) => longestPrefix(b) - longestPrefix(a));
@@ -227,37 +215,10 @@ ${regionalSystems.flatMap(system => (system.areas ?? [system]).map(area => `    
 `;
 }
 
-// The Swiss areas, then REGIONAL_SCOOTER_CITIES as src/lib/regionalScooterSystems.ts
-// merges them: one entry per city, its bounds enclosing every operator's envelope.
-function scooterCities() {
-  const cities = new Map(swissAreas.map(area => [area.id, {
-    id: area.id, name: area.city, country: 'CH', center: area.center, bounds: area.bounds,
-  }]));
-  for (const system of regionalSystems) {
-    for (const area of system.areas ?? [system]) {
-      const id = `${system.country.toLowerCase()}:${area.city}`;
-      const previous = cities.get(id);
-      cities.set(id, {
-        id,
-        name: area.city,
-        country: system.country,
-        center: previous?.center ?? area.center,
-        bounds: previous ? {
-          south: Math.min(previous.bounds.south, area.bounds.south),
-          west: Math.min(previous.bounds.west, area.bounds.west),
-          north: Math.max(previous.bounds.north, area.bounds.north),
-          east: Math.max(previous.bounds.east, area.bounds.east),
-        } : area.bounds,
-      });
-    }
-  }
-  return [...cities.values()];
-}
-
 function swiftCities() {
-  const covered = scooterCities();
+  const covered = scooterCities(swissAreas, regionalSystems);
   const cities = covered.map(city => {
-    if (!/^(CH|FR|DE|IT|BE|NO|GB|PT|ES|IS|SE|LV|PL|HU|GR|CY|FI|HR|UA)$/.test(city.country) || !city.center.every(Number.isFinite)) {
+    if (!countries.some(country => country.code === city.country) || !city.center.every(Number.isFinite)) {
       throw new Error(`Invalid covered city: ${city.id}`);
     }
     return `        ScooterCity(id: ${JSON.stringify(city.id)}, name: ${JSON.stringify(city.name)}, countryCode: ${JSON.stringify(city.country)}, ` +
@@ -359,5 +320,8 @@ ${entries}
 }
 
 validateCatalog();
+validateCountries({ landingFirst, countries }, readJson, scooterCities(swissAreas, regionalSystems));
 writeOrCheck(typescriptPath, typescriptCatalog());
-writeOrCheck(swiftPath, swiftCatalog() + swiftCoverage() + swiftCities() + swiftCurfews());
+writeOrCheck(countriesPath, typescriptCountries({ landingFirst, countries }));
+writeOrCheck(catalogsPath, typescriptCatalogs(countries));
+writeOrCheck(swiftPath, swiftCatalog() + swiftCoverage() + swiftCities() + swiftCurfews() + swiftCountries(countries));

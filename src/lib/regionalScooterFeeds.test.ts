@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { skippedSources } from '@/lib/scooterSources';
 import { discoveredFeedUrl, fetchScooters, independentCollectableFeeds } from './scooterFeeds';
 import { upstreamJsonCache } from './upstreamJsonCache';
 import { REGIONAL_SCOOTER_SYSTEMS, REGIONAL_SCOOTER_CITIES, searchRegionalScooterCities, serviceAreas } from './regionalScooterSystems';
@@ -104,8 +105,7 @@ describe('German and Italian scooter coverage', () => {
     const result = await fetchScooters({ bounds, minBattery: 50, providers: new Set([system.provider]) });
     expect(result.vehicles).toHaveLength(1);
     expect(result.vehicles[0]).toMatchObject({ provider: system.provider, battery: 72 });
-    expect(result.meta.sources).toEqual({ national: 'skipped', hopp: 'skipped', publibike: 'skipped',
-      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped', croatia: 'skipped', ukraine: 'skipped', [country]: 'fresh' });
+    expect(result.meta.sources).toEqual({ ...skippedSources(), [country]: 'fresh' });
     expect(fetchMock).toHaveBeenCalledTimes(3);
   });
   it('prices each Hopp Pécs scooter from its own plan, in forints, never from the plans in other currencies', async () => {

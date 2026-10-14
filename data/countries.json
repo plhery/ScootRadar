@@ -1,0 +1,302 @@
+{
+  "landingFirst": ["CH", "DE", "FR", "IT"],
+  "countries": [
+    {
+      "code": "CH",
+      "continent": "europe",
+      "names": { "en": "Switzerland", "de": "Schweiz", "fr": "Suisse", "it": "Svizzera", "nl": "Zwitserland", "nb": "Sveits", "pt": "Suíça", "es": "Suiza", "is": "Sviss" },
+      "searchWords": ["switzerland", "schweiz", "suisse", "svizzera", "zwitserland", "sveits", "suica", "suiza", "sviss"],
+      "anchor": [46.8, 8.2],
+      "featuredCities": ["ch:zurich", "ch:basel", "ch:bern", "ch:winterthur", "ch:st-gallen", "ch:zug"],
+      "credits": { "attribution": "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed" }
+    },
+    {
+      "code": "FR",
+      "continent": "europe",
+      "catalog": "data/french-scooter-feeds.json",
+      "source": "france",
+      "names": { "en": "France", "de": "Frankreich", "fr": "France", "it": "Francia", "nl": "Frankrijk", "nb": "Frankrike", "pt": "França", "es": "Francia", "is": "Frakkland" },
+      "searchWords": ["france", "frankreich", "francia", "frankrijk", "frankrike", "franca", "frakkland"],
+      "anchor": [46.6, 2.4],
+      "featuredCities": ["fr:Lyon", "fr:Marseille", "fr:Bordeaux", "fr:Lille Métropole", "fr:Grenoble", "fr:Angers"],
+      "credits": { "attribution": "France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr)" }
+    },
+    {
+      "code": "DE",
+      "continent": "europe",
+      "catalog": "data/german-scooter-feeds.json",
+      "source": "germany",
+      "names": { "en": "Germany", "de": "Deutschland", "fr": "Allemagne", "it": "Germania", "nl": "Duitsland", "nb": "Tyskland", "pt": "Alemanha", "es": "Alemania", "is": "Þýskaland" },
+      "searchWords": ["germany", "deutschland", "allemagne", "germania", "duitsland", "tyskland", "alemanha", "alemania", "thyskaland"],
+      "anchor": [51.1, 10.4],
+      "featuredCities": ["de:Berlin", "de:München", "de:Köln", "de:Frankfurt", "de:Stuttgart", "de:Düsseldorf"],
+      "credits": {
+        "attribution": "Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW",
+        "gbfs": ["Dott", "Bolt", "Hopp", "Lime", "Voi", "Zeus", "Yoio"],
+        "links": [
+          { "label": "MobiData BW", "href": "https://www.mobidata-bw.de/" }
+        ]
+      }
+    },
+    {
+      "code": "IT",
+      "continent": "europe",
+      "catalog": "data/italian-scooter-feeds.json",
+      "source": "italy",
+      "names": { "en": "Italy", "de": "Italien", "fr": "Italie", "it": "Italia", "nl": "Italië", "nb": "Italia", "pt": "Itália", "es": "Italia", "is": "Ítalía" },
+      "searchWords": ["italy", "italia", "italie", "italien"],
+      "anchor": [43, 12.5],
+      "featuredCities": ["it:Roma", "it:Palermo", "it:Napoli", "it:Catania"],
+      "credits": {
+        "attribution": "Italy: Bird, Elerent GBFS",
+        "gbfs": ["Bird", "Elerent"]
+      }
+    },
+    {
+      "code": "BE",
+      "continent": "europe",
+      "catalog": "data/belgian-scooter-feeds.json",
+      "source": "belgium",
+      "names": { "en": "Belgium", "de": "Belgien", "fr": "Belgique", "it": "Belgio", "nl": "België", "nb": "Belgia", "pt": "Bélgica", "es": "Bélgica", "is": "Belgía" },
+      "searchWords": ["belgium", "belgien", "belgique", "belgio", "belgie", "belgia", "belgica"],
+      "anchor": [50.6, 4.6],
+      "featuredCities": ["be:Bruxelles", "be:Antwerpen", "be:Oostende", "be:Charleroi", "be:Kortrijk", "be:Mechelen"],
+      "credits": {
+        "attribution": "Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be)",
+        "gbfs": ["Bolt", "Dott", "Voi", "Hoppy"],
+        "links": [
+          { "label": "BE: Pony · transportdata.be", "href": "https://transportdata.be/dataset/pony_charleroi" }
+        ]
+      }
+    },
+    {
+      "code": "NO",
+      "continent": "europe",
+      "catalog": "data/norwegian-scooter-feeds.json",
+      "source": "norway",
+      "names": { "en": "Norway", "de": "Norwegen", "fr": "Norvège", "it": "Norvegia", "nl": "Noorwegen", "nb": "Norge", "pt": "Noruega", "es": "Noruega", "is": "Noregur" },
+      "searchWords": ["norway", "norwegen", "norvege", "norvegia", "noorwegen", "norge", "noruega", "noregur"],
+      "anchor": [61, 9.5],
+      "featuredCities": ["no:Oslo", "no:Trondheim", "no:Stavanger", "no:Kristiansand", "no:Bærum", "no:Tromsø"],
+      "credits": {
+        "attribution": "Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS",
+        "links": [
+          { "label": "NO: Entur AS · NLOD", "href": "https://data.norge.no/nlod/en/2.0" },
+          { "label": "NO: Kartverket boundaries · CC BY 4.0", "href": "https://creativecommons.org/licenses/by/4.0/" }
+        ]
+      }
+    },
+    {
+      "code": "GB",
+      "continent": "europe",
+      "catalog": "data/british-scooter-feeds.json",
+      "source": "uk",
+      "names": {
+        "en": "United Kingdom",
+        "de": "Vereinigtes Königreich",
+        "fr": "Royaume-Uni",
+        "it": "Regno Unito",
+        "nl": "Verenigd Koninkrijk",
+        "nb": "Storbritannia",
+        "pt": "Reino Unido",
+        "es": "Reino Unido",
+        "is": "Bretland"
+      },
+      "searchWords": ["uk", "britain", "england", "scotland", "wales", "angleterre", "inghilterra", "engeland", "storbritannia", "grossbritannien", "inglaterra", "bretland"],
+      "anchor": [52.8, -1.6],
+      "featuredCities": ["gb:Bristol", "gb:Liverpool", "gb:Nottingham", "gb:Leeds", "gb:Brighton", "gb:Bournemouth"],
+      "credits": {
+        "code": "UK",
+        "attribution": "United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS",
+        "gbfs": ["Bolt", "Dott"],
+        "links": [
+          { "label": "UK: Beryl · CDLA-Permissive-2.0", "href": "https://cdla.dev/permissive-2-0/" },
+          { "label": "UK: ONS boundaries · OGL v3.0", "href": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" }
+        ]
+      }
+    },
+    {
+      "code": "PT",
+      "continent": "europe",
+      "catalog": "data/portuguese-scooter-feeds.json",
+      "source": "portugal",
+      "names": { "en": "Portugal", "de": "Portugal", "fr": "Portugal", "it": "Portogallo", "nl": "Portugal", "nb": "Portugal", "pt": "Portugal", "es": "Portugal", "is": "Portúgal" },
+      "searchWords": ["portugal", "portogallo"],
+      "anchor": [39.6, -8],
+      "featuredCities": ["pt:Lisboa", "pt:Porto", "pt:Cascais", "pt:Almada", "pt:Matosinhos", "pt:Oeiras"],
+      "credits": {
+        "attribution": "Portugal: Bird, Lime GBFS",
+        "gbfs": ["Bird", "Lime"],
+        "links": [
+          { "label": "PT: DGT boundaries · CC BY 4.0", "href": "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop" }
+        ]
+      }
+    },
+    {
+      "code": "ES",
+      "continent": "europe",
+      "catalog": "data/spanish-scooter-feeds.json",
+      "source": "spain",
+      "names": { "en": "Spain", "de": "Spanien", "fr": "Espagne", "it": "Spagna", "nl": "Spanje", "nb": "Spania", "pt": "Espanha", "es": "España", "is": "Spánn" },
+      "searchWords": ["spain", "spanien", "espagne", "spagna", "spanje", "spania", "espanha", "espana", "spann"],
+      "anchor": [40.4, -2.5],
+      "featuredCities": ["es:Gijón", "es:Getafe", "es:Torrevieja", "es:Playa de las Américas", "es:Jávea", "es:Pilar de la Horadada"],
+      "credits": {
+        "attribution": "Spain: Bird, Hopp, Hoppy GBFS",
+        "gbfs": ["Bird", "Hopp", "Hoppy"]
+      }
+    },
+    {
+      "code": "IS",
+      "continent": "europe",
+      "catalog": "data/icelandic-scooter-feeds.json",
+      "source": "iceland",
+      "names": { "en": "Iceland", "de": "Island", "fr": "Islande", "it": "Islanda", "nl": "IJsland", "nb": "Island", "pt": "Islândia", "es": "Islandia", "is": "Ísland" },
+      "searchWords": ["iceland", "island", "islande", "islanda", "ijsland", "islandia"],
+      "anchor": [64.9, -18.6],
+      "featuredCities": ["is:Reykjavík", "is:Reykjanesbær", "is:Akureyri", "is:Selfoss", "is:Akranes", "is:Vestmannaeyjar"],
+      "credits": {
+        "attribution": "Iceland: Hopp GBFS",
+        "gbfs": ["Hopp"]
+      }
+    },
+    {
+      "code": "SE",
+      "continent": "europe",
+      "catalog": "data/swedish-scooter-feeds.json",
+      "source": "sweden",
+      "names": { "en": "Sweden", "de": "Schweden", "fr": "Suède", "it": "Svezia", "nl": "Zweden", "nb": "Sverige", "pt": "Suécia", "es": "Suecia", "is": "Svíþjóð" },
+      "searchWords": ["sweden", "schweden", "suede", "svezia", "zweden", "sverige", "suecia", "svithjod"],
+      "anchor": [63.6, 17.8],
+      "anchorNote": "Inland, between Uppsala and Kiruna, and clear of Norway's total.",
+      "featuredCities": ["se:Uppsala", "se:Kiruna"],
+      "credits": {
+        "attribution": "Sweden: Lime, Hopp GBFS",
+        "gbfs": ["Lime", "Hopp"]
+      }
+    },
+    {
+      "code": "LV",
+      "continent": "europe",
+      "catalog": "data/latvian-scooter-feeds.json",
+      "source": "latvia",
+      "names": { "en": "Latvia", "de": "Lettland", "fr": "Lettonie", "it": "Lettonia", "nl": "Letland", "nb": "Latvia", "pt": "Letónia", "es": "Letonia", "is": "Lettland" },
+      "searchWords": ["latvia", "lettland", "lettonie", "lettonia", "letland", "letonia", "latvija"],
+      "anchor": [56.9, 24.6],
+      "anchorNote": "Inland, east of Rīga, about the middle of the country.",
+      "featuredCities": ["lv:Rīga"],
+      "credits": {
+        "attribution": "Latvia: Ride Mobility GBFS",
+        "gbfs": ["Ride Mobility"]
+      }
+    },
+    {
+      "code": "PL",
+      "continent": "europe",
+      "catalog": "data/polish-scooter-feeds.json",
+      "source": "poland",
+      "names": { "en": "Poland", "de": "Polen", "fr": "Pologne", "it": "Polonia", "nl": "Polen", "nb": "Polen", "pt": "Polónia", "es": "Polonia", "is": "Pólland" },
+      "searchWords": ["poland", "polen", "pologne", "polonia", "polland", "polska"],
+      "anchor": [52.1, 19.4],
+      "anchorNote": "About the middle of the country, near Łódź.",
+      "featuredCities": ["pl:Sosnowiec", "pl:Wołomin", "pl:Oświęcim", "pl:Radzymin", "pl:Kobyłka", "pl:Knurów"],
+      "credits": {
+        "attribution": "Poland: Dott, Hopp GBFS",
+        "gbfs": ["Dott", "Hopp"]
+      }
+    },
+    {
+      "code": "HU",
+      "continent": "europe",
+      "catalog": "data/hungarian-scooter-feeds.json",
+      "source": "hungary",
+      "names": { "en": "Hungary", "de": "Ungarn", "fr": "Hongrie", "it": "Ungheria", "nl": "Hongarije", "nb": "Ungarn", "pt": "Hungria", "es": "Hungría", "is": "Ungverjaland" },
+      "searchWords": ["hungary", "ungarn", "hongrie", "ungheria", "hongarije", "hungria", "ungverjaland", "magyarorszag"],
+      "anchor": [47.2, 19.5],
+      "anchorNote": "About the middle of the country, south-east of Budapest.",
+      "featuredCities": ["hu:Pécs", "hu:Békéscsaba"],
+      "credits": {
+        "attribution": "Hungary: Hopp GBFS",
+        "gbfs": ["Hopp"]
+      }
+    },
+    {
+      "code": "GR",
+      "continent": "europe",
+      "catalog": "data/greek-scooter-feeds.json",
+      "source": "greece",
+      "names": { "en": "Greece", "de": "Griechenland", "fr": "Grèce", "it": "Grecia", "nl": "Griekenland", "nb": "Hellas", "pt": "Grécia", "es": "Grecia", "is": "Grikkland" },
+      "searchWords": ["greece", "griechenland", "grece", "grecia", "griekenland", "hellas", "grikkland", "ellada", "ελλαδα"],
+      "anchor": [39, 22],
+      "anchorNote": "Inland, about the middle of the mainland, west of Lamia.",
+      "featuredCities": ["gr:Rhodes", "gr:Faliraki", "gr:Kos", "gr:Piraeus", "gr:Argostoli", "gr:Ioannina"],
+      "credits": {
+        "attribution": "Greece: Hopp, Hoppy GBFS",
+        "gbfs": ["Hopp", "Hoppy"]
+      }
+    },
+    {
+      "code": "CY",
+      "continent": "europe",
+      "catalog": "data/cypriot-scooter-feeds.json",
+      "source": "cyprus",
+      "names": { "en": "Cyprus", "de": "Zypern", "fr": "Chypre", "it": "Cipro", "nl": "Cyprus", "nb": "Kypros", "pt": "Chipre", "es": "Chipre", "is": "Kýpur" },
+      "searchWords": ["cyprus", "zypern", "chypre", "cipro", "kypros", "chipre", "kypur", "κυπροσ", "kibris"],
+      "anchor": [34.9, 32.9],
+      "anchorNote": "Inland, in the Troodos mountains, between Paphos and Limassol.",
+      "featuredCities": ["cy:Paphos", "cy:Limassol"],
+      "credits": {
+        "attribution": "Cyprus: Hopp GBFS",
+        "gbfs": ["Hopp"]
+      }
+    },
+    {
+      "code": "FI",
+      "continent": "europe",
+      "catalog": "data/finnish-scooter-feeds.json",
+      "source": "finland",
+      "names": { "en": "Finland", "de": "Finnland", "fr": "Finlande", "it": "Finlandia", "nl": "Finland", "nb": "Finland", "pt": "Finlândia", "es": "Finlandia", "is": "Finnland" },
+      "searchWords": ["finland", "finnland", "finlande", "finlandia", "suomi"],
+      "anchor": [61.1, 23.8],
+      "anchorNote": "Inland in the south-west, between Turku and Tampere: on the mainland, so it isn't read as Stockholm's, and on the side nearest Mariehamn, on Åland, where all its scooters are.",
+      "featuredCities": ["fi:Mariehamn"],
+      "credits": {
+        "attribution": "Finland: Hopp GBFS",
+        "gbfs": ["Hopp"]
+      }
+    },
+    {
+      "code": "HR",
+      "continent": "europe",
+      "catalog": "data/croatian-scooter-feeds.json",
+      "source": "croatia",
+      "names": { "en": "Croatia", "de": "Kroatien", "fr": "Croatie", "it": "Croazia", "nl": "Kroatië", "nb": "Kroatia", "pt": "Croácia", "es": "Croacia", "is": "Króatía" },
+      "searchWords": ["croatia", "kroatien", "croatie", "croazia", "kroatie", "kroatia", "croacia", "hrvatska"],
+      "anchor": [45.2, 15.5],
+      "anchorNote": "Inland, at the middle of the country, near Slunj: on Rijeka's side, but off the coast, where it would read as Slovenia's or Trieste's, and about 50 points from Italy's and Hungary's totals at zoom 4, between which Croatia lies.",
+      "featuredCities": ["hr:Rijeka"],
+      "credits": {
+        "attribution": "Croatia: Hoppy GBFS",
+        "gbfs": ["Hoppy"]
+      }
+    },
+    {
+      "code": "UA",
+      "continent": "europe",
+      "catalog": "data/ukrainian-scooter-feeds.json",
+      "source": "ukraine",
+      "names": { "en": "Ukraine", "de": "Ukraine", "fr": "Ukraine", "it": "Ucraina", "nl": "Oekraïne", "nb": "Ukraina", "pt": "Ucrânia", "es": "Ucrania", "is": "Úkraína" },
+      "searchWords": ["ukraine", "ucraina", "oekraine", "ukraina", "ucrania", "ukrajina", "ukrayina", "украіна", "украина"],
+      "anchor": [49, 31],
+      "anchorNote": "Inland, in the middle of the country, near Zvenyhorodka: a little north of its geographic centre, towards Kyiv, where all its scooters are.",
+      "featuredCities": ["ua:Kyiv"],
+      "credits": {
+        "attribution": "Ukraine: 3electra GBFS",
+        "gbfs": ["3electra"],
+        "links": [
+          { "label": "UA: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
+        ]
+      }
+    }
+  ]
+}

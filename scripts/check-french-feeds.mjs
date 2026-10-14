@@ -1,17 +1,26 @@
 import { readFileSync } from 'node:fs';
 
-const requested = process.argv.find(arg => arg.startsWith('--countries='))?.split('=')[1].split(',') ?? ['FR'];
-const catalogs = {
-  FR: 'french', DE: 'german', IT: 'italian', BE: 'belgian', NO: 'norwegian', GB: 'british',
-  PT: 'portuguese', ES: 'spanish', IS: 'icelandic', SE: 'swedish', LV: 'latvian', PL: 'polish',
-  HU: 'hungarian', GR: 'greek', CY: 'cypriot', FI: 'finnish', HR: 'croatian', UA: 'ukrainian',
-};
-if (requested.some(country => !catalogs[country])) throw new Error(`Use --countries=${Object.keys(catalogs).join(',')}`);
+// The catalogs of data/countries.json. --countries= takes country codes (FR,DE), a continent
+// (europe, north-america) or all; --except= leaves countries out: check:europe skips France,
+// which check:france covers.
+const countries = JSON.parse(readFileSync(new URL('../data/countries.json', import.meta.url), 'utf8')).countries
+  .filter(country => country.catalog);
+const catalogs = Object.fromEntries(countries.map(country => [country.code, country.catalog]));
+const option = name => process.argv.find(arg => arg.startsWith(`--${name}=`))?.split('=')[1].split(',');
+const except = option('except') ?? [];
+const requested = (option('countries') ?? ['FR']).flatMap(name => name === 'all'
+  ? countries.map(country => country.code)
+  : countries.some(country => country.continent === name)
+    ? countries.filter(country => country.continent === name).map(country => country.code)
+    : [name]).filter(country => !except.includes(country));
+if (requested.some(country => !catalogs[country]) || except.some(country => !catalogs[country])) {
+  throw new Error(`Use --countries=all, a continent or some of ${Object.keys(catalogs).join(',')}`);
+}
 // --fail-on=gone fails the run only for an entry its operator no longer serves, as the weekly workflow does.
 const failOn = process.argv.find(arg => arg.startsWith('--fail-on='))?.split('=')[1] ?? 'any';
 if (!['any', 'gone'].includes(failOn)) throw new Error('Use --fail-on=any or --fail-on=gone');
 const catalog = { systems: requested.flatMap(country => JSON.parse(readFileSync(
-  new URL(`../data/${catalogs[country]}-scooter-feeds.json`, import.meta.url), 'utf8')).systems.map(system => ({ ...system, country }))) };
+  new URL(`../${catalogs[country]}`, import.meta.url), 'utf8')).systems.map(system => ({ ...system, country }))) };
 const results = [];
 const headers = { Accept: 'application/json', 'User-Agent': 'scootradar/2.0 (scootradar.com)' };
 // As HOST_HEADERS in src/lib/scooterFeeds.ts: Entur answers only clients that name themselves.
