@@ -67,6 +67,29 @@
       "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/chalonsenchampagne/gbfs.json"
     },
     {
+      "id": "bird_fr_cherbourg",
+      "provider": "bird",
+      "city": "Cherbourg-en-Cotentin",
+      "center": [
+        49.6424,
+        -1.6244
+      ],
+      "bounds": {
+        "south": 49.584,
+        "west": -1.7346,
+        "north": 49.6874,
+        "east": -1.5299
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/cherbourg-en-cotentin-france/gbfs.json",
+      "aliases": [
+        "Cherbourg-Octeville",
+        "Équeurdreville-Hainneville",
+        "La Glacerie",
+        "Querqueville",
+        "Tourlaville"
+      ]
+    },
+    {
       "id": "bird_fr_laval",
       "provider": "bird",
       "city": "Laval",

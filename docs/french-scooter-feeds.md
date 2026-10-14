@@ -21,7 +21,9 @@ from Pony's feed; see [Naolib Micromob', October 2026](#naolib-micromob-october-
 Rechecked 14 October 2026: eighteen feeds' bounds now fit the operator's
 published zone, and Voi's Grand Paris Seine et Oise, Dott's Versailles Grand Parc
 and Lime's Lille Métropole are split into towns; see
-[Bounds and towns, October 2026](#bounds-and-towns-october-2026).
+[Bounds and towns, October 2026](#bounds-and-towns-october-2026). Bird
+Cherbourg-en-Cotentin joined the catalog the same day; see
+[Bird Cherbourg-en-Cotentin, October 2026](#bird-cherbourg-en-cotentin-october-2026).
 
 ## Verified availability
 
@@ -304,6 +306,35 @@ Dott's region polygon.
   stood within 43.21–43.35, 5.35–5.48. Pony Angers, Bordeaux and Perpignan were
   not reviewed. Pony Hérouville's zone also covers Ouistreham, which no town
   area names yet.
+
+## Bird Cherbourg-en-Cotentin, October 2026
+
+Bird's feed for Cherbourg-en-Cotentin is
+[`cherbourg-en-cotentin-france`](https://mds.bird.co/gbfs/v2/public/cherbourg-en-cotentin-france/gbfs.json),
+GBFS 2.3; the plain `cherbourg` answers 404. It is keyless, every feed its
+discovery lists is on its origin and under its directory, and it is on neither
+transport.data.gouv.fr nor data.gouv.fr. Its licence is Bird's GBFS Data
+License, as in Bird's other towns.
+
+| Feed | Available scooters | Polls | Movement between polls |
+| --- | ---: | --- | --- |
+| Bird Cherbourg-en-Cotentin | 477–480 | 4, five minutes apart, 11:27–11:43 on Wednesday 14 October 2026, and two more at 11:47 and 11:48 | by position, 9 to 12 parked spots changed in each interval, 1 to 4 of them with no other scooter within 150 m |
+
+- **Fleet:** about 485 vehicles, all scooters; the feed defines an e-bike type
+  but lists none. Seven were disabled, one of them 21 hours old and 7 km
+  beyond the town's western edge. Of the available ones, 466 of 480 stood
+  within 50 m of one of Bird's 177 virtual stations, and all were at most ten
+  minutes old. Bird gives each scooter a new `bike_id` on every request, so
+  scooters were followed by position. Battery and range are published; rental
+  links and prices are not (the pricing plan list is empty).
+- **Bounds:** Bird's ride-allowed zone (49.5931–49.6783 N, 1.7207–1.5438 W)
+  plus 1 km: 49.584–49.6874 N, 1.7346–1.5299 W. Every available scooter stood
+  inside. The centre is the town hall. The former communes merged into
+  Cherbourg-en-Cotentin in 2016, Cherbourg-Octeville, Équeurdreville-Hainneville,
+  La Glacerie, Querqueville and Tourlaville, are aliases, so a search or an
+  address there finds the town.
+- **No night ban** was found: Bird's 31 zones set no hours, and the city
+  publishes none.
 
 ## Findings that affect integration
 

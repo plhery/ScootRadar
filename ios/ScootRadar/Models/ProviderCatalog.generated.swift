@@ -144,6 +144,7 @@ enum ScooterProviderCoverage {
         (.bird, GeoBounds(south: 41.8879, west: 8.5984, north: 41.9581, east: 8.7953)),
         (.bird, GeoBounds(south: 47.5477, west: 1.2701, north: 47.6332, east: 1.3711)),
         (.bird, GeoBounds(south: 48.9259, west: 4.2961, north: 48.9944, east: 4.4173)),
+        (.bird, GeoBounds(south: 49.584, west: -1.7346, north: 49.6874, east: -1.5299)),
         (.bird, GeoBounds(south: 48.0366, west: -0.8698, north: 48.1153, east: -0.7185)),
         (.bird, GeoBounds(south: 46.0785, west: 3.354, north: 46.1945, east: 3.5438)),
         (.dott, GeoBounds(south: 44.66, west: -0.86, north: 45.07, east: -0.32)),
@@ -446,6 +447,7 @@ enum ScooterCityCatalog {
         ScooterCity(id: "fr:Ajaccio", name: "Ajaccio", countryCode: "FR", center: GeoPoint(latitude: 41.9192, longitude: 8.7386), bounds: GeoBounds(south: 41.8879, west: 8.5984, north: 41.9581, east: 8.7953)),
         ScooterCity(id: "fr:Blois", name: "Blois", countryCode: "FR", center: GeoPoint(latitude: 47.5861, longitude: 1.3359), bounds: GeoBounds(south: 47.5477, west: 1.2701, north: 47.6332, east: 1.3711)),
         ScooterCity(id: "fr:Châlons-en-Champagne", name: "Châlons-en-Champagne", countryCode: "FR", center: GeoPoint(latitude: 48.9566, longitude: 4.3523), bounds: GeoBounds(south: 48.9259, west: 4.2961, north: 48.9944, east: 4.4173)),
+        ScooterCity(id: "fr:Cherbourg-en-Cotentin", name: "Cherbourg-en-Cotentin", countryCode: "FR", center: GeoPoint(latitude: 49.6424, longitude: -1.6244), bounds: GeoBounds(south: 49.584, west: -1.7346, north: 49.6874, east: -1.5299)),
         ScooterCity(id: "fr:Laval", name: "Laval", countryCode: "FR", center: GeoPoint(latitude: 48.0706, longitude: -0.7733), bounds: GeoBounds(south: 48.0366, west: -0.8698, north: 48.1153, east: -0.7185)),
         ScooterCity(id: "fr:Vichy", name: "Vichy", countryCode: "FR", center: GeoPoint(latitude: 46.1278, longitude: 3.4266), bounds: GeoBounds(south: 46.0785, west: 3.354, north: 46.1945, east: 3.5438)),
         ScooterCity(id: "fr:Bordeaux", name: "Bordeaux", countryCode: "FR", center: GeoPoint(latitude: 44.8378, longitude: -0.5792), bounds: GeoBounds(south: 44.66, west: -0.86, north: 45.07, east: -0.32)),
@@ -661,7 +663,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 235
+    static let cityCount = 236
     static let countryCount = 18
 
     /// Cities by distance from the point to their centre, nearest first.

@@ -49,8 +49,8 @@ does not imply endorsement.
 
 ### French cities
 
-The app also reads 31 reviewed public GBFS feeds from Dott, Bird, Lime, Voi and
-Pony across 37 French cities or operating areas. The catalog is checked into
+The app also reads 32 reviewed public GBFS feeds from Dott, Bird, Lime, Voi and
+Pony across 56 French cities or operating areas. The catalog is checked into
 [`data/french-scooter-feeds.json`](data/french-scooter-feeds.json), using the
 [MobilityData registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
 and [transport.data.gouv.fr](https://transport.data.gouv.fr/datasets?format=gbfs&subtype=scooter)
