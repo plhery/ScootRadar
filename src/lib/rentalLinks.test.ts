@@ -85,6 +85,41 @@ describe('rental links', () => {
     expect(safeRentalUri('elerent', link)).toBeNull();
   });
 
+  it('keeps the link to each Veo scooter, which names it by its number, on Veo\'s Adjust host only', () => {
+    const link = 'https://gmjc.adj.st/?adj_t=5vyf0nr&number=10103344';
+    expect(normalizeRentalUris('veo', { ios: link, android: link })).toEqual({ ios: link, android: link, web: null });
+    // Voi's Adjust host is another app's.
+    expect(safeRentalUri('veo', 'https://lqfa.adj.st/open?vehicle=1')).toBeNull();
+    expect(safeRentalUri('voi', link)).toBeNull();
+  });
+
+  it('keeps Lyft\'s one link per city, which opens its code scanner', () => {
+    for (const link of ['https://chi.lft.to/lastmile_qr_scan', 'https://lyft.biketownpdx.com/lastmile_qr_scan']) {
+      expect(normalizeRentalUris('lyft', { ios: link, android: link })).toEqual({ ios: link, android: link, web: null });
+    }
+    expect(safeRentalUri('lyft', 'https://lft.to.example.com/lastmile_qr_scan')).toBeNull();
+  });
+
+  it('opens Hopp, Bolt\'s app in Washington, DC, on the scooter, and not Bolt\'s European app', () => {
+    const link = 'bolt-hopp://action/rentalsSelectVehicleByRotatedUuid?rotated_uuid=8d8f81ed-a45a-4ad8-b33c-1a5ad04c5965';
+    expect(normalizeRentalUris('bolt_hopp', { ios: link, android: link })).toEqual({ ios: link, android: link, web: null });
+    expect(safeRentalUri('bolt', link)).toBeNull();
+    expect(safeRentalUri('bolt_hopp', 'bolt://action/rentalsSelectVehicleByRotatedUuid?rotated_uuid=1')).toBeNull();
+    // The Icelandic Hopp is another company, with other links.
+    expect(safeRentalUri('hopp', link)).toBeNull();
+  });
+
+  it('never opens the charger sign-up that Bird and Spin give as their app\'s address, in any country', () => {
+    for (const provider of ['bird', 'spin']) {
+      for (const link of ['bird://charger-onboarding', 'bird://Charger-Onboarding?source=gbfs']) {
+        expect(safeRentalUri(provider, link)).toBeNull();
+        expect(normalizeRentalUris(provider, { ios: link, android: link }, link)).toEqual({ ios: null, android: null, web: null });
+      }
+    }
+    // Bird's other links still open its app.
+    expect(safeRentalUri('bird', 'bird://scooter/ABC123')).toBe('bird://scooter/ABC123');
+  });
+
   it('selects only the link intended for the current mobile platform', () => {
     const ios = 'https://go.ridedott.com/vehicles/1?platform=ios';
     const android = 'https://go.ridedott.com/vehicles/1?platform=android';

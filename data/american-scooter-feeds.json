@@ -1,0 +1,54 @@
+{
+  "verifiedOn": "2026-10-14",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "bolt_hopp_us_washington",
+      "country": "US",
+      "provider": "bolt_hopp",
+      "city": "Washington",
+      "region": "DC",
+      "timeZone": "America/New_York",
+      "center": [
+        38.9072,
+        -77.0369
+      ],
+      "bounds": {
+        "south": 38.7862,
+        "north": 39.0046,
+        "west": -77.1309,
+        "east": -76.8978
+      },
+      "discoveryUrl": "https://mds.bolt.eu/gbfs/3/23/gbfs",
+      "aliases": [
+        "Washington DC",
+        "DC",
+        "District of Columbia"
+      ]
+    },
+    {
+      "id": "veo_us_washington",
+      "country": "US",
+      "provider": "veo",
+      "city": "Washington",
+      "region": "DC",
+      "timeZone": "America/New_York",
+      "center": [
+        38.9072,
+        -77.0369
+      ],
+      "bounds": {
+        "south": 38.7862,
+        "north": 39.0046,
+        "west": -77.1309,
+        "east": -76.8978
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/xdc/gbfs",
+      "aliases": [
+        "Washington DC",
+        "DC",
+        "District of Columbia"
+      ]
+    }
+  ]
+}

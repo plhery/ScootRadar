@@ -27,6 +27,12 @@ export interface ScooterServiceArea {
    * seasonalPauses.ts. Set on a system, it is that of each of its areas that sets none.
    */
   seasonal?: SeasonalPause;
+  /**
+   * The IANA time zone of the town, "America/Chicago", by its name today: required in North
+   * America, where it spans several. The feeds' own, US/Central or a wrong one, are never read.
+   * Set on a system, it is that of each of its areas that sets none.
+   */
+  timeZone?: string;
 }
 export interface RegionalScooterSystem extends ScooterServiceArea {
   id: string;
@@ -65,7 +71,7 @@ export function regionalCityId(system: RegionalScooterSystem, area: ScooterServi
     : `${system.country.toLowerCase()}:${area.city}`;
 }
 
-export type RegionalScooterCity = Omit<ScooterServiceArea, 'seasonal'> & {
+export type RegionalScooterCity = Omit<ScooterServiceArea, 'seasonal' | 'timeZone'> & {
   id: string;
   country: ScooterCountry;
   /**
@@ -96,6 +102,7 @@ export function mergeCities(systems: readonly RegionalScooterSystem[], regions: 
         : undefined;
       const place: ScooterServiceArea = { ...area };
       delete place.seasonal;
+      delete place.timeZone;
       cities.set(id, { ...place, id, city: name, country: system.country, ...(region ? { region } : {}),
         ...(pauses ? { pauses } : {}),
         center: previous?.center ?? area.center,

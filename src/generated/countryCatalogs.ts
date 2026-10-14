@@ -18,6 +18,7 @@ import cypriotCatalog from '../../data/cypriot-scooter-feeds.json';
 import finnishCatalog from '../../data/finnish-scooter-feeds.json';
 import croatianCatalog from '../../data/croatian-scooter-feeds.json';
 import ukrainianCatalog from '../../data/ukrainian-scooter-feeds.json';
+import americanCatalog from '../../data/american-scooter-feeds.json';
 
 /** Every catalog's systems, each with its country, in the order of data/countries.json. */
 export const CATALOG_SYSTEMS = [
@@ -39,4 +40,5 @@ export const CATALOG_SYSTEMS = [
   ...finnishCatalog.systems.map(system => ({ ...system, country: 'FI' as const })),
   ...croatianCatalog.systems.map(system => ({ ...system, country: 'HR' as const })),
   ...ukrainianCatalog.systems.map(system => ({ ...system, country: 'UA' as const })),
+  ...americanCatalog.systems.map(system => ({ ...system, country: 'US' as const })),
 ];

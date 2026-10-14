@@ -133,7 +133,7 @@ scooter-city catalog, without asking any service, and are listed first. A
 country, state or province typed after a city ("Lindau Deutschland",
 "Portland, OR") says which one is meant, but not within a name: Staten Island
 is no place in Iceland. Other places, in the parts of the world where the
-catalog has countries (Europe, and North America once it has one there), come
+catalog has countries (Europe and North America), come
 from the Address Autocomplete API of
 [Geoapify](https://www.geoapify.com/) when the Worker secret `GEOAPIFY_API_KEY`
 is set.
@@ -508,3 +508,19 @@ so they never reach the map, its totals or its health. The cache paces
 GBFS line. See the [coverage audit](docs/ukrainian-scooter-feeds.md) for the
 system, the scooters in Lima, the city name, the curfew, the gaps and the
 recheck command.
+
+## United States
+
+The reviewed catalog lives in `data/american-scooter-feeds.json`: 2 feeds in
+Washington, DC, Hopp (Bolt) and Veo. Each is the operator's own public GBFS
+feed: Bolt's system 23 at `mds.bolt.eu`, which Bolt runs in Washington under
+the name Hopp, and Veo's `xdc` at `cluster-prod.veoride.com`. Both were found
+through
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
+and the addresses the operators use for their other towns.
+
+Bolt's [GBFS licence](https://bolt.eu/en/legal/micromobility/security-gbfs-license/)
+allows showing its vehicles, with data no older than fifteen minutes, as in
+Europe. Veo publishes no licence in its feed. The map's credits name both
+under the GBFS line. See the [coverage audit](docs/american-scooter-feeds.md)
+for the systems, the brand Hopp, the bounds, the gaps and the recheck command.

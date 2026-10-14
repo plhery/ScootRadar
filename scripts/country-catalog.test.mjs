@@ -1,12 +1,14 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
-  catalogSystems, cityKm, countryCreditLinks, scooterCities, seasonalProblem, swiftCityPauses, swiftCountries, typescriptCatalogs,
-  typescriptCountries, validateCityWidths, validateCountries,
+  catalogSystems, cityKm, countryCreditLinks, curfewZoneProblem, scooterCities, seasonalProblem, swiftCityPauses, swiftCountries,
+  timeZoneProblem, typescriptCatalogs, typescriptCountries, validateCityWidths, validateCountries,
 } from './country-catalog.mjs';
 
 const readJson = path => JSON.parse(readFileSync(path, 'utf8'));
-const europe = readJson('data/countries.json');
+const countries = readJson('data/countries.json');
+// The fixtures below stand for North America's countries, the real ones aside.
+const europe = { ...countries, countries: countries.countries.filter(country => country.continent === 'europe') };
 const swissAreas = readJson('data/swiss-scooter-areas.json');
 
 // Canada as a country agent would add it: one entry, one catalog.
@@ -20,7 +22,8 @@ const canada = {
     links: [{ label: 'CA: City of Toronto · OGL Toronto', href: 'https://open.toronto.ca/open-data-license/' }] },
 };
 const canadianCatalog = { systems: [{ id: 'bird_toronto', provider: 'bird', city: 'Toronto', center: [43.65, -79.38],
-  bounds: { south: 43.58, west: -79.64, north: 43.86, east: -79.11 }, discoveryUrl: 'https://mds.bird.co/gbfs/v2/public/toronto/gbfs.json' }] };
+  bounds: { south: 43.58, west: -79.64, north: 43.86, east: -79.11 }, timeZone: 'America/Toronto',
+  discoveryUrl: 'https://mds.bird.co/gbfs/v2/public/toronto/gbfs.json' }] };
 // The United States, whose towns share names across states: one Portland in Oregon, one in Maine.
 const unitedStates = {
   code: 'US', continent: 'north-america', catalog: 'data/american-scooter-feeds.json', source: 'unitedstates',
@@ -35,9 +38,10 @@ const unitedStates = {
 const portlandOregon = { city: 'Portland', center: [45.52, -122.68], bounds: { south: 45.43, west: -122.84, north: 45.65, east: -122.47 } };
 const portlandMaine = { city: 'Portland', center: [43.66, -70.26], bounds: { south: 43.62, west: -70.33, north: 43.72, east: -70.2 } };
 const americanCatalog = { systems: [
-  { id: 'lime_portland', provider: 'lime', region: 'OR', ...portlandOregon, discoveryUrl: 'https://data.lime.bike/api/partners/v2/gbfs/portland/gbfs.json' },
+  { id: 'lime_portland', provider: 'lime', region: 'OR', ...portlandOregon, timeZone: 'America/Los_Angeles',
+    discoveryUrl: 'https://data.lime.bike/api/partners/v2/gbfs/portland/gbfs.json' },
   // A feed shared by two towns of Maine, each area naming its state.
-  { id: 'lime_maine', provider: 'lime', city: 'Portland', center: portlandMaine.center, bounds: portlandMaine.bounds,
+  { id: 'lime_maine', provider: 'lime', city: 'Portland', center: portlandMaine.center, bounds: portlandMaine.bounds, timeZone: 'America/New_York',
     areas: [{ ...portlandMaine, region: 'ME' }, { city: 'South Portland', region: 'ME', center: [43.63, -70.29],
       bounds: { south: 43.6, west: -70.36, north: 43.65, east: -70.22 } }],
     discoveryUrl: 'https://data.lime.bike/api/partners/v2/gbfs/maine/gbfs.json' },
@@ -79,7 +83,9 @@ describe('the countries of data/countries.json', () => {
     const withCanada = changes => ({ ...europe, countries: [...europe.countries, { ...canada, ...changes }] });
     expect(() => generate(withCanada({ names: { ...canada.names, is: undefined } }))).toThrow('CA: names needs en, de');
     expect(() => generate(withCanada({ source: 'uk' }))).toThrow('CA: invalid or repeated source uk');
-    expect(() => generate(withCanada({ code: 'GB' }))).toThrow('Invalid or repeated country code: GB');
+    // Its towns' zone is Britain's, so the code is what is refused.
+    const inLondon = path => path === canada.catalog ? { systems: [{ ...canadianCatalog.systems[0], timeZone: 'Europe/London' }] } : read(path);
+    expect(() => generate(withCanada({ code: 'GB' }), inLondon)).toThrow('Invalid or repeated country code: GB');
     expect(() => generate(withCanada({ continent: 'america' }))).toThrow('CA: continent is one of');
     expect(() => generate(withCanada({ catalog: undefined }))).toThrow('every country but CH needs a catalog');
     expect(() => generate(withCanada({ searchWords: ['Canadá'] }))).toThrow('lower case words without accents');
@@ -190,6 +196,40 @@ describe('the countries of data/countries.json', () => {
     const wrong = { systems: [{ ...toronto, areas: [{ ...toronto, seasonal: { ...winter, until: '13-01' } }] }] };
     expect(() => catalogSystems([canada], () => wrong)).toThrow(
       'data/canadian-scooter-feeds.json: the seasonal pause of bird_toronto in Toronto needs from and until as two different dates, "MM-DD"');
+  });
+
+  it('gives each North American town its time zone, by its name today, whatever its feed says', () => {
+    const toronto = canadianCatalog.systems[0];
+    const withZone = timeZone => ({ systems: [{ ...toronto, timeZone }] });
+    expect(() => catalogSystems([canada], () => withZone(undefined))).toThrow('bird_toronto in Toronto needs its time zone, timeZone');
+    // Bird's and Lime's feeds give older names; some, as Canada/Pacific for a town of Alberta, are not even the town's.
+    expect(() => catalogSystems([canada], () => withZone('Canada/Eastern')))
+      .toThrow('bird_toronto in Toronto has Canada/Eastern, an older name of America/Toronto: write that');
+    expect(() => catalogSystems([unitedStates], () => ({ systems: [{ ...americanCatalog.systems[0], timeZone: 'US/Pacific' }] })))
+      .toThrow('lime_portland in Portland has US/Pacific, an older name of America/Los_Angeles: write that');
+    // Veo gives America/Chicago for its towns of every zone, and a zone of Canada is not one of the US.
+    expect(() => catalogSystems([canada], () => withZone('America/New_York'))).toThrow('has America/New_York, a time zone of US');
+    expect(() => catalogSystems([canada], () => withZone('America/Toronto_'))).toThrow('has no time zone America/Toronto_');
+    // An area keeps its system's zone, or gives its own.
+    const twoZones = { systems: [{ ...toronto, areas: [{ ...toronto }, { ...toronto, city: 'Winnipeg', timeZone: 'America/Winnipeg' }] }] };
+    expect(() => catalogSystems([canada], () => twoZones)).not.toThrow();
+    // A seasonal pause is counted in its town's zone.
+    const paused = { systems: [{ ...toronto, seasonal: { from: '11-16', until: '04-15', timeZone: 'America/Winnipeg' } }] };
+    expect(() => catalogSystems([canada], () => paused))
+      .toThrow('the seasonal pause of bird_toronto in Toronto is in America/Winnipeg, the town in America/Toronto');
+    // Europe's towns need none, and the one they give is checked all the same.
+    expect(timeZoneProblem(undefined, 'CH')).toBe('needs its time zone, timeZone');
+    expect(timeZoneProblem('Europe/Zurich', 'CH')).toBeNull();
+    expect(timeZoneProblem('Europe/Berlin', 'CH')).toBe('has Europe/Berlin, a time zone of DE');
+  });
+
+  it('refuses a night ban counted in another zone than its town\'s', () => {
+    const curfew = { city: 'Toronto', timeZone: 'America/Toronto', areas: [[[43.6, -79.4], [43.7, -79.4], [43.7, -79.3]]] };
+    expect(curfewZoneProblem(curfew, canadianCatalog.systems)).toBeNull();
+    expect(curfewZoneProblem({ ...curfew, timeZone: 'America/Chicago' }, canadianCatalog.systems))
+      .toBe('The night ban of Toronto is in America/Chicago, and the towns around it in America/Toronto');
+    // Away from every town, there is none to compare with.
+    expect(curfewZoneProblem({ ...curfew, timeZone: 'America/Chicago', areas: [[[10, 10], [10.1, 10], [10, 10.1]]] }, canadianCatalog.systems)).toBeNull();
   });
 
   it('keeps each system in the country of its catalog', () => {

@@ -45,7 +45,7 @@ English. There is also a native SwiftUI app for iPhone.
   its marker, hovering a marker shows a short tip, and `/`, `L`, `+`, `−` and
   `Esc` work from the keyboard.
 
-**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob', Elerent and 3electra.
+**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob', Elerent, 3electra, Spin, Veo and Lyft.
 
 French coverage includes 32 verified feeds across 58 cities or operating areas,
 with city-name search. German coverage adds 40 feeds across 47 cities (Dott, Bolt, Hopp, Lime, Voi, Zeus and Yoio); Italy adds 4 feeds: Bird in Roma, Palermo and Napoli, and Elerent in Catania. See the [German/Italian feed audit](docs/german-italian-scooter-feeds.md) for coverage and known gaps. See the [French feed investigation](docs/french-scooter-feeds.md)
@@ -78,6 +78,9 @@ Croatia adds 1 feed: Hoppy in Rijeka. See the
 [Croatian feed audit](docs/croatian-scooter-feeds.md).
 Ukraine adds 1 feed: 3electra in Kyiv. See the
 [Ukrainian feed audit](docs/ukrainian-scooter-feeds.md).
+The United States adds 2 feeds in Washington, DC: Hopp, as Bolt is named
+there, and Veo. See the
+[American feed audit](docs/american-scooter-feeds.md).
 What is not covered yet, and why, is listed in
 [Coverage gaps](docs/coverage-gaps.md).
 
@@ -132,7 +135,10 @@ changing the response contract.
    the year, as Montréal each winter, says so with `seasonal`: `{ "from":
    "11-16", "until": "04-15", "timeZone": "America/Toronto" }`, its first day
    without scooters and the first day they are back, local dates (on a
-   system, for each of its areas that sets none). Inside the window the map
+   system, for each of its areas that sets none). In North America each
+   service area gives its `timeZone`, `"America/Chicago"`, by its name today:
+   the feeds' own are older names (`US/Central`) or wrong, and are never read.
+   A seasonal pause is in its town's zone, and so is a night ban. Inside the window the map
    says "back in April" rather than that the operator is not sharing data,
    and the feed's alerts are muted; `src/lib/seasonalPauses.ts` explains.
 2. Add one entry to `data/countries.json`:

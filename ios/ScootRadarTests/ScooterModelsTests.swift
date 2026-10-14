@@ -280,6 +280,32 @@ final class ScooterModelsTests: XCTestCase {
         ))
     }
 
+    func testRentalLinkPolicyNeverOpensBirdsChargerSignUp() {
+        // Bird's and Spin's feeds give it as their app's address, in Europe and North America alike.
+        for provider in ["bird", "spin"] {
+            for link in ["bird://charger-onboarding", "bird://Charger-Onboarding?source=gbfs"] {
+                XCTAssertNil(ScooterRentalLinkPolicy.safeURL(provider: provider, value: link), "\(provider) \(link)")
+            }
+        }
+        XCTAssertEqual(
+            ScooterRentalLinkPolicy.safeURL(provider: "bird", value: "bird://scooter/ABC123")?.absoluteString,
+            "bird://scooter/ABC123"
+        )
+    }
+
+    func testRentalLinkPolicyKeepsTheNorthAmericanProvidersLinksOnTheirOwnHosts() {
+        let hopp = "bolt-hopp://action/rentalsSelectVehicleByRotatedUuid?rotated_uuid=8d8f81ed"
+        XCTAssertEqual(ScooterRentalLinkPolicy.safeURL(provider: "bolt_hopp", value: hopp)?.absoluteString, hopp)
+        XCTAssertNil(ScooterRentalLinkPolicy.safeURL(provider: "bolt", value: hopp))
+        XCTAssertNil(ScooterRentalLinkPolicy.safeURL(provider: "hopp", value: hopp))
+        let veo = "https://gmjc.adj.st/?adj_t=5vyf0nr&number=10103344"
+        XCTAssertEqual(ScooterRentalLinkPolicy.safeURL(provider: "veo", value: veo)?.absoluteString, veo)
+        XCTAssertNil(ScooterRentalLinkPolicy.safeURL(provider: "voi", value: veo))
+        let lyft = "https://chi.lft.to/lastmile_qr_scan"
+        XCTAssertEqual(ScooterRentalLinkPolicy.safeURL(provider: "lyft", value: lyft)?.absoluteString, lyft)
+        XCTAssertNil(ScooterRentalLinkPolicy.safeURL(provider: "spin", value: lyft))
+    }
+
     @MainActor
     func testOpeningARentalFallsBackToTheWebPageWhenTheProvidersAppIsMissing() async {
         let scooter = Scooter(
@@ -1133,7 +1159,8 @@ extension ScooterModelsTests {
             id: "group:city:us:or:Portland", latitude: 45.52, longitude: -122.68, count: 1, providers: [:], city: nil
         )))
 
-        let totals = ScooterCityGrouping.group([maine, oregon], zoomLevel: 3)
+        // Without state totals, as Mexico, one for the country.
+        let totals = ScooterCityGrouping.group([maine, oregon], zoomLevel: 3, regions: [:])
         XCTAssertEqual(totals.map(\.id), ["country:us"])
         XCTAssertEqual(totals[0].count, 1000)
         XCTAssertEqual(ScooterCityGrouping.group([maine, oregon], zoomLevel: 6).map(\.id),
@@ -1171,8 +1198,10 @@ extension ScooterModelsTests {
         let world = ScooterCityGrouping.group(cities, zoomLevel: 2.9, language: .fr, regions: regions) { names[$0]! }
         XCTAssertEqual(world.map(\.id), ["country:us", "country:fr"])
         XCTAssertEqual(world[0].count, 3050)
-        // Without state totals, as the generated catalog has no such country yet, one total for the country.
-        XCTAssertEqual(ScooterCityGrouping.group(cities, zoomLevel: 4).map(\.id), ["country:us", "country:fr"])
+        // The generated catalog gives the United States its states' totals; without them, as Mexico, one for the country.
+        XCTAssertEqual(ScooterCityGrouping.group(cities, zoomLevel: 4).map(\.id),
+                       ["region:us:ca", "region:us:or", "country:fr", "region:us:me"])
+        XCTAssertEqual(ScooterCityGrouping.group(cities, zoomLevel: 4, regions: [:]).map(\.id), ["country:us", "country:fr"])
         XCTAssertNil(ScooterCityGrouping.region(of: cities[4], in: regions))
         XCTAssertEqual(ScooterCityGrouping.region(of: cities[0], in: regions)?.code, "or")
     }

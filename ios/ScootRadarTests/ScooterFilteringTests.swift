@@ -588,7 +588,7 @@ final class ScooterFilteringTests: XCTestCase {
         // boundaries of the night bans included: Switzerland's, France's, each country's
         // own from data/countries.json, then the search's and Lille's.
         XCTAssertEqual(sources.count, 5 + ScooterCountryCatalog.credits.count)
-        XCTAssertEqual(ScooterCountryCatalog.credits.count, 9)
+        XCTAssertEqual(ScooterCountryCatalog.credits.count, 10)
         XCTAssertEqual(Set(sources.map(\.title)).count, sources.count)
         XCTAssertEqual(sources[2].title.prefix(3), "DE/")
         XCTAssertTrue(sources.contains { $0.title == "UA: OpenStreetMap boundaries · ODbL" })

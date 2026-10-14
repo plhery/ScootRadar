@@ -1,6 +1,7 @@
 // The countries of data/countries.json, expanded for the web (src/generated/countries.ts and
 // countryCatalogs.ts) and for iOS (ScooterCountryCatalog in ProviderCatalog.generated.swift) by
 // scripts/generate-provider-catalog.mjs. Pure functions of the data, so tests can feed them fixtures.
+import { readFileSync } from 'node:fs';
 
 // The languages the apps are shown in, as GEOCODE_LANGUAGES in src/app/api/geocode/cities.ts.
 export const LANGUAGES = ['en', 'de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is'];
@@ -74,6 +75,33 @@ export function seasonalProblem(pause) {
 /** A service area's seasonal pause: its own, or its system's. */
 export const areaSeasonal = (system, area) => area.seasonal ?? system.seasonal;
 
+/** A service area's time zone: its own, or its system's. */
+export const areaTimeZone = (system, area) => area.timeZone ?? system.timeZone;
+
+/**
+ * The zones of src/generated/timeZones.ts, IANA's for Europe and North America, each with its
+ * country, and the older names that stand for them: US/Eastern, Canada/Eastern, US/Arizona.
+ */
+export function timeZoneTable(source) {
+  const zones = new Map([...source.matchAll(/^ {2}'([^']+)': \{ country: '([A-Z]{2})'/gm)].map(([, name, country]) => [name, country]));
+  const aliases = new Map([...source.matchAll(/^ {2}'([^']+)': '([^']+)',$/gm)].map(([, alias, zone]) => [alias, zone]));
+  return { zones, aliases };
+}
+const TIME_ZONES = timeZoneTable(readFileSync(new URL('../src/generated/timeZones.ts', import.meta.url), 'utf8'));
+
+/**
+ * Why a service area's time zone is not its town's, or null. North American feeds give theirs
+ * under older names (US/Eastern, Canada/Pacific), or wrongly: Veo says America/Chicago for every
+ * town. The app reads none of them; a town's zone is the catalog's, by its canonical name.
+ */
+export function timeZoneProblem(timeZone, country, table = TIME_ZONES) {
+  if (typeof timeZone !== 'string' || !timeZone) return 'needs its time zone, timeZone';
+  if (table.aliases.has(timeZone)) return `has ${timeZone}, an older name of ${table.aliases.get(timeZone)}: write that`;
+  const zoneCountry = table.zones.get(timeZone);
+  if (!zoneCountry) return `has no time zone ${timeZone}`;
+  return zoneCountry === country ? null : `has ${timeZone}, a time zone of ${zoneCountry}`;
+}
+
 /** Every catalog's systems, in the order of data/countries.json, each with its country. */
 export function catalogSystems(countries, readCatalog) {
   return countries.filter(country => country.catalog).flatMap(country => {
@@ -86,6 +114,14 @@ export function catalogSystems(countries, readCatalog) {
         const pause = areaSeasonal(system, area);
         const problem = pause === undefined ? null : seasonalProblem(pause);
         if (problem) throw new Error(`${country.catalog}: the seasonal pause of ${system.id} in ${area.city} ${problem}`);
+        // Every North American town says its time zone, which its seasonal pause keeps.
+        const timeZone = areaTimeZone(system, area);
+        const zoneProblem = country.continent === 'north-america' || timeZone !== undefined
+          ? timeZoneProblem(timeZone, country.code) : null;
+        if (zoneProblem) throw new Error(`${country.catalog}: ${system.id} in ${area.city} ${zoneProblem}`);
+        if (pause && timeZone && pause.timeZone !== timeZone) {
+          throw new Error(`${country.catalog}: the seasonal pause of ${system.id} in ${area.city} is in ${pause.timeZone}, the town in ${timeZone}`);
+        }
         const region = areaRegion(system, area);
         if (regions ? !regions.has(region) : region !== undefined) {
           throw new Error(`${country.catalog}: ${system.id} in ${area.city} ${regions
@@ -95,6 +131,20 @@ export function catalogSystems(countries, readCatalog) {
       return { ...system, country: country.code };
     });
   });
+}
+
+/**
+ * Why a night ban's time zone is not that of the towns it covers, or null: a ban is read by its
+ * own zone, which must be the one the catalog gives the service areas around its middle.
+ */
+export function curfewZoneProblem(curfew, systems) {
+  const points = curfew.areas.flat();
+  const [lat, lng] = [0, 1].map(axis => points.reduce((sum, point) => sum + point[axis], 0) / points.length);
+  const zones = new Set(systems.flatMap(system => (system.areas ?? [system])
+    .filter(({ bounds }) => lat >= bounds.south && lat <= bounds.north && lng >= bounds.west && lng <= bounds.east)
+    .map(area => areaTimeZone(system, area)).filter(Boolean)));
+  return zones.size && !zones.has(curfew.timeZone)
+    ? `The night ban of ${curfew.city} is in ${curfew.timeZone}, and the towns around it in ${[...zones].join(', ')}` : null;
 }
 
 /** A service area's state or province: its own, or its system's. */

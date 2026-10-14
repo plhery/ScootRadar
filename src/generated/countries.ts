@@ -3,11 +3,11 @@
 // countries' names or credits don't load every city.
 
 /** Every country with scooter data, in the order of data/countries.json. */
-export const COUNTRY_CODES = ["CH", "FR", "DE", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA"] as const;
+export const COUNTRY_CODES = ["CH", "FR", "DE", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US"] as const;
 export type CountryCode = typeof COUNTRY_CODES[number];
 
 /** The countries with a catalog of their own, data/<adjective>-scooter-feeds.json: all but Switzerland. */
-export type CatalogCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR' | 'UA';
+export type CatalogCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR' | 'UA' | 'US';
 
 export type CountryNameLanguage = 'en' | 'de' | 'fr' | 'it' | 'nl' | 'nb' | 'pt' | 'es' | 'is';
 
@@ -33,6 +33,7 @@ export const COUNTRY_SOURCES = {
   FI: 'finland',
   HR: 'croatia',
   UA: 'ukraine',
+  US: 'us',
 } as const;
 
 export const COUNTRY_CONTINENTS: Record<CountryCode, Continent> = {
@@ -55,6 +56,7 @@ export const COUNTRY_CONTINENTS: Record<CountryCode, Continent> = {
   FI: 'europe',
   HR: 'europe',
   UA: 'europe',
+  US: 'north-america',
 };
 
 /** A table rather than Intl.DisplayNames, whose locale data is not a given on the server. */
@@ -78,6 +80,7 @@ export const COUNTRY_NAMES: Record<CountryCode, Readonly<Record<CountryNameLangu
   FI: { en: "Finland", de: "Finnland", fr: "Finlande", it: "Finlandia", nl: "Finland", nb: "Finland", pt: "Finlândia", es: "Finlandia", is: "Finnland" },
   HR: { en: "Croatia", de: "Kroatien", fr: "Croatie", it: "Croazia", nl: "Kroatië", nb: "Kroatia", pt: "Croácia", es: "Croacia", is: "Króatía" },
   UA: { en: "Ukraine", de: "Ukraine", fr: "Ukraine", it: "Ucraina", nl: "Oekraïne", nb: "Ukraina", pt: "Ucrânia", es: "Ucrania", is: "Úkraína" },
+  US: { en: "United States", de: "Vereinigte Staaten", fr: "États-Unis", it: "Stati Uniti", nl: "Verenigde Staten", nb: "USA", pt: "Estados Unidos", es: "Estados Unidos", is: "Bandaríkin" },
 };
 
 /** Typed beside a city to say which one is meant: "Lindau Deutschland". */
@@ -101,6 +104,7 @@ export const COUNTRY_SEARCH_WORDS: Record<CountryCode, readonly string[]> = {
   FI: ["finland", "finnland", "finlande", "finlandia", "suomi"],
   HR: ["croatia", "kroatien", "croatie", "croazia", "kroatie", "kroatia", "croacia", "hrvatska"],
   UA: ["ukraine", "ucraina", "oekraine", "ukraina", "ucrania", "ukrajina", "ukrayina", "украіна", "украина"],
+  US: ["usa", "america", "amerika", "amerique", "eeuu", "eua", "bandarikin"],
 };
 
 /** Where a country's total stands, zoomed out: inland and about the middle of the country. */
@@ -137,6 +141,9 @@ export const COUNTRY_ANCHORS: Record<CountryCode, readonly [number, number]> = {
   // Inland, in the middle of the country, near Zvenyhorodka: a little north of its geographic
   // centre, towards Kyiv, where all its scooters are.
   UA: [49, 31],
+  // Near Lebanon, Kansas, the geographic centre of the 48 contiguous states. Zoomed in, each state
+  // has its own total at its centre of population (US Census Bureau, 2020).
+  US: [39.5, -98.6],
 };
 
 /** A state or province of a country that has them. */
@@ -156,7 +163,61 @@ export interface CountryRegion {
  */
 export const COUNTRY_REGIONS: Partial<Record<CountryCode, {
   showInCityNames: boolean; totals: boolean; list: readonly CountryRegion[];
-}>> = {};
+}>> = {
+  US: { showInCityNames: true, totals: true, list: [
+    { code: "AL", name: "Alabama", anchor: [33.02, -86.75] },
+    { code: "AK", name: "Alaska", names: { pt: "Alasca" }, anchor: [61.41, -148.96] },
+    { code: "AZ", name: "Arizona", anchor: [33.37, -111.88] },
+    { code: "AR", name: "Arkansas", anchor: [35.2, -92.71] },
+    { code: "CA", name: "California", names: { de: "Kalifornien", fr: "Californie", nl: "Californië", pt: "Califórnia", is: "Kalifornía" }, anchor: [35.49, -119.35] },
+    { code: "CO", name: "Colorado", anchor: [39.53, -105.19] },
+    { code: "CT", name: "Connecticut", anchor: [41.49, -72.88] },
+    { code: "DE", name: "Delaware", anchor: [39.33, -75.55] },
+    { code: "DC", name: "District of Columbia", names: { fr: "District de Columbia", it: "Distretto di Columbia", nl: "District Columbia", pt: "Distrito de Colúmbia", es: "Distrito de Columbia" }, anchor: [38.91, -77.01] },
+    { code: "FL", name: "Florida", names: { fr: "Floride", pt: "Flórida", is: "Flórída" }, anchor: [27.84, -81.64] },
+    { code: "GA", name: "Georgia", names: { fr: "Géorgie", pt: "Geórgia", is: "Georgía" }, anchor: [33.41, -83.89] },
+    { code: "HI", name: "Hawaii", names: { fr: "Hawaï", nl: "Hawaï", pt: "Havai", es: "Hawái" }, anchor: [21.11, -157.49] },
+    { code: "ID", name: "Idaho", anchor: [44.22, -115.22] },
+    { code: "IL", name: "Illinois", anchor: [41.31, -88.37] },
+    { code: "IN", name: "Indiana", anchor: [40.14, -86.25] },
+    { code: "IA", name: "Iowa", anchor: [41.94, -93.04] },
+    { code: "KS", name: "Kansas", anchor: [38.48, -96.41] },
+    { code: "KY", name: "Kentucky", anchor: [37.84, -85.26] },
+    { code: "LA", name: "Louisiana", names: { fr: "Louisiane", pt: "Luisiana", es: "Luisiana" }, anchor: [30.7, -91.47] },
+    { code: "ME", name: "Maine", anchor: [44.27, -69.76] },
+    { code: "MD", name: "Maryland", anchor: [39.14, -76.8] },
+    { code: "MA", name: "Massachusetts", anchor: [42.27, -71.35] },
+    { code: "MI", name: "Michigan", names: { es: "Míchigan" }, anchor: [42.86, -84.21] },
+    { code: "MN", name: "Minnesota", anchor: [45.19, -93.56] },
+    { code: "MS", name: "Mississippi", names: { es: "Misisipi" }, anchor: [32.58, -89.57] },
+    { code: "MO", name: "Missouri", names: { es: "Misuri" }, anchor: [38.43, -92.23] },
+    { code: "MT", name: "Montana", anchor: [46.76, -111.32] },
+    { code: "NE", name: "Nebraska", anchor: [41.17, -97.22] },
+    { code: "NV", name: "Nevada", anchor: [37.02, -116.17] },
+    { code: "NH", name: "New Hampshire", names: { pt: "Nova Hampshire", es: "Nuevo Hampshire" }, anchor: [43.15, -71.46] },
+    { code: "NJ", name: "New Jersey", names: { pt: "Nova Jérsia", es: "Nueva Jersey" }, anchor: [40.44, -74.42] },
+    { code: "NM", name: "New Mexico", names: { fr: "Nouveau-Mexique", it: "Nuovo Messico", pt: "Novo México", es: "Nuevo México", is: "Nýja-Mexíkó" }, anchor: [34.61, -106.33] },
+    { code: "NY", name: "New York", names: { pt: "Nova Iorque", es: "Nueva York", is: "New York-fylki" }, anchor: [41.47, -74.59] },
+    { code: "NC", name: "North Carolina", names: { fr: "Caroline du Nord", it: "Carolina del Nord", nb: "Nord-Carolina", pt: "Carolina do Norte", es: "Carolina del Norte", is: "Norður-Karólína" }, anchor: [35.54, -79.68] },
+    { code: "ND", name: "North Dakota", names: { fr: "Dakota du Nord", it: "Dakota del Nord", nb: "Nord-Dakota", pt: "Dakota do Norte", es: "Dakota del Norte", is: "Norður-Dakóta" }, anchor: [47.34, -99.44] },
+    { code: "OH", name: "Ohio", anchor: [40.44, -82.8] },
+    { code: "OK", name: "Oklahoma", anchor: [35.61, -96.85] },
+    { code: "OR", name: "Oregon", names: { es: "Oregón" }, anchor: [44.75, -122.59] },
+    { code: "PA", name: "Pennsylvania", names: { fr: "Pennsylvanie", pt: "Pensilvânia", es: "Pensilvania", is: "Pennsylvanía" }, anchor: [40.44, -76.97] },
+    { code: "RI", name: "Rhode Island", anchor: [41.76, -71.45] },
+    { code: "SC", name: "South Carolina", names: { fr: "Caroline du Sud", it: "Carolina del Sud", nb: "Sør-Carolina", pt: "Carolina do Sul", es: "Carolina del Sur", is: "Suður-Karólína" }, anchor: [34.02, -81] },
+    { code: "SD", name: "South Dakota", names: { fr: "Dakota du Sud", it: "Dakota del Sud", nb: "Sør-Dakota", pt: "Dakota do Sul", es: "Dakota del Sur", is: "Suður-Dakóta" }, anchor: [43.99, -98.92] },
+    { code: "TN", name: "Tennessee", anchor: [35.82, -86.33] },
+    { code: "TX", name: "Texas", anchor: [30.91, -97.33] },
+    { code: "UT", name: "Utah", anchor: [40.39, -111.95] },
+    { code: "VT", name: "Vermont", anchor: [44.1, -72.82] },
+    { code: "VA", name: "Virginia", names: { fr: "Virginie", pt: "Virgínia", is: "Virginía" }, anchor: [37.85, -77.77] },
+    { code: "WA", name: "Washington", anchor: [47.33, -121.63] },
+    { code: "WV", name: "West Virginia", names: { fr: "Virginie-Occidentale", it: "Virginia Occidentale", nb: "Vest-Virginia", pt: "Virgínia Ocidental", es: "Virginia Occidental", is: "Vestur-Virginía" }, anchor: [38.82, -80.67] },
+    { code: "WI", name: "Wisconsin", anchor: [43.72, -89.03] },
+    { code: "WY", name: "Wyoming", anchor: [42.69, -106.98] },
+  ] },
+};
 
 /** The cities the landing page names, by their id in the catalogue. */
 export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {
@@ -179,17 +240,19 @@ export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {
   FI: ["fi:Mariehamn"],
   HR: ["hr:Rijeka"],
   UA: ["ua:Kyiv"],
+  US: ["us:dc:Washington"],
 };
 
 /** The order of the countries on the landing page. */
-export const LANDING_COUNTRY_ORDER: readonly CountryCode[] = ["CH", "DE", "FR", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA"];
+export const LANDING_COUNTRY_ORDER: readonly CountryCode[] = ["CH", "DE", "FR", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US"];
 
 /** Whose data the map shows, country by country, for the X-Mobility-Data-Source header. */
-export const COUNTRY_DATA_ATTRIBUTION = "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW; Italy: Bird, Elerent GBFS; Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Portugal: Bird, Lime GBFS; Spain: Bird, Hopp, Hoppy GBFS; Iceland: Hopp GBFS; Sweden: Lime, Hopp GBFS; Latvia: Ride Mobility GBFS; Poland: Dott, Hopp GBFS; Hungary: Hopp GBFS; Greece: Hopp, Hoppy GBFS; Cyprus: Hopp GBFS; Finland: Hopp GBFS; Croatia: Hoppy GBFS; Ukraine: 3electra GBFS";
+export const COUNTRY_DATA_ATTRIBUTION = "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW; Italy: Bird, Elerent GBFS; Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Portugal: Bird, Lime GBFS; Spain: Bird, Hopp, Hoppy GBFS; Iceland: Hopp GBFS; Sweden: Lime, Hopp GBFS; Latvia: Ride Mobility GBFS; Poland: Dott, Hopp GBFS; Hungary: Hopp GBFS; Greece: Hopp, Hoppy GBFS; Cyprus: Hopp GBFS; Finland: Hopp GBFS; Croatia: Hoppy GBFS; Ukraine: 3electra GBFS; United States: Bolt, Veo GBFS";
 
 /** The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences. */
 export const COUNTRY_CREDIT_LINKS: readonly { label: string; href: string }[] = [
   { label: "DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio, Bird, Elerent, Hoppy, Ride Mobility, 3electra", href: "https://github.com/MobilityData/gbfs" },
+  { label: "US: Bolt, Veo", href: "https://github.com/MobilityData/gbfs" },
   { label: "MobiData BW", href: "https://www.mobidata-bw.de/" },
   { label: "BE: Pony · transportdata.be", href: "https://transportdata.be/dataset/pony_charleroi" },
   { label: "NO: Entur AS · NLOD", href: "https://data.norge.no/nlod/en/2.0" },

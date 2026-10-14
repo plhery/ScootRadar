@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 // A country with states, as data/countries.json would list the United States, and a catalog
 // with two towns of one name: Portland, Oregon and Portland, Maine, and Los Angeles in a state
 // whose code is Canada's. The generated modules are what scripts/generate-provider-catalog.mjs
-// would write for them.
+// would write for them, in place of the real United States.
 const fixture = vi.hoisted(() => {
   const portlandMaine = { city: 'Portland', region: 'ME', center: [43.66, -70.26] as [number, number],
     bounds: { south: 43.62, west: -70.33, north: 43.72, east: -70.2 } };
@@ -32,13 +32,13 @@ const fixture = vi.hoisted(() => {
 
 vi.mock('@/generated/countryCatalogs', async importOriginal => {
   const original = await importOriginal<typeof import('@/generated/countryCatalogs')>();
-  return { CATALOG_SYSTEMS: [...original.CATALOG_SYSTEMS, ...fixture.systems] };
+  return { CATALOG_SYSTEMS: [...original.CATALOG_SYSTEMS.filter(system => system.country !== 'US'), ...fixture.systems] };
 });
 vi.mock('@/generated/countries', async importOriginal => {
   const original = await importOriginal<typeof import('@/generated/countries')>();
   return {
     ...original,
-    COUNTRY_CODES: [...original.COUNTRY_CODES, 'US'],
+    COUNTRY_CODES: [...original.COUNTRY_CODES.filter(code => code !== 'US'), 'US'],
     COUNTRY_SOURCES: { ...original.COUNTRY_SOURCES, US: 'unitedstates' },
     COUNTRY_CONTINENTS: { ...original.COUNTRY_CONTINENTS, US: 'north-america' },
     COUNTRY_NAMES: { ...original.COUNTRY_NAMES, US: fixture.names },

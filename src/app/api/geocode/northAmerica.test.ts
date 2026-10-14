@@ -3,7 +3,8 @@ import { NextRequest } from 'next/server';
 
 // North America as country catalogs may list it: the US and Canada with their states and
 // provinces, Mexico without, and cities with the other names their catalogs give them. The
-// generated modules are what scripts/generate-provider-catalog.mjs would write for them.
+// generated modules are what scripts/generate-provider-catalog.mjs would write for them, in
+// place of the real countries of North America.
 const fixture = vi.hoisted(() => {
   const box = (lat: number, lng: number) => ({ center: [lat, lng] as [number, number],
     bounds: { south: lat - 0.1, west: lng - 0.1, north: lat + 0.1, east: lng + 0.1 } });
@@ -41,13 +42,14 @@ const fixture = vi.hoisted(() => {
 
 vi.mock('@/generated/countryCatalogs', async importOriginal => {
   const original = await importOriginal<typeof import('@/generated/countryCatalogs')>();
-  return { CATALOG_SYSTEMS: [...original.CATALOG_SYSTEMS, ...fixture.systems] };
+  const northAmerican = (country: string) => ['US', 'CA', 'MX'].includes(country);
+  return { CATALOG_SYSTEMS: [...original.CATALOG_SYSTEMS.filter(system => !northAmerican(system.country)), ...fixture.systems] };
 });
 vi.mock('@/generated/countries', async importOriginal => {
   const original = await importOriginal<typeof import('@/generated/countries')>();
   return {
     ...original,
-    COUNTRY_CODES: [...original.COUNTRY_CODES, 'US', 'CA', 'MX'],
+    COUNTRY_CODES: [...original.COUNTRY_CODES.filter(code => !['US', 'CA', 'MX'].includes(code)), 'US', 'CA', 'MX'],
     COUNTRY_SOURCES: { ...original.COUNTRY_SOURCES, US: 'unitedstates', CA: 'canada', MX: 'mexico' },
     COUNTRY_CONTINENTS: { ...original.COUNTRY_CONTINENTS, US: 'north-america', CA: 'north-america', MX: 'north-america' },
     COUNTRY_NAMES: { ...original.COUNTRY_NAMES, US: fixture.names('United States'), CA: fixture.names('Canada'), MX: fixture.names('Mexico') },

@@ -127,5 +127,33 @@
     "color": "#0f6f86",
     "initial": "3e",
     "systemIds": { "prefixes": ["zelectra"] }
+  },
+  {
+    "key": "spin",
+    "name": "Spin",
+    "color": "#ff5436",
+    "initial": "Sp",
+    "systemIds": { "prefixes": ["spin"] }
+  },
+  {
+    "key": "veo",
+    "name": "Veo",
+    "color": "#059a8e",
+    "initial": "Ve",
+    "systemIds": { "prefixes": ["veo"] }
+  },
+  {
+    "key": "lyft",
+    "name": "Lyft",
+    "color": "#ff00bf",
+    "initial": "Ly",
+    "systemIds": { "prefixes": ["lyft"] }
+  },
+  {
+    "key": "bolt_hopp",
+    "name": "Hopp",
+    "color": "#2a9c64",
+    "initial": "H",
+    "systemIds": { "prefixes": ["bolt_hopp"] }
   }
 ]

@@ -206,8 +206,10 @@ function placeRank(
   // town found so, typed in full, was typed by that name: "Milano" for Milan. Not
   // by a number: Geoapify finds Pompei for "8004", the start of its postcode. Nor
   // by three letters, which may be the start of another name: Bärschwil for "Ber".
+  // Nor on another continent than the one looked at: from Zürich, "Mailand" is
+  // Milan, and the Maitlands of Nova Scotia and Missouri Geoapify is as sure of are not.
   const namedOtherwise = !atWordStart && spellings[0].length === typed.length && typed.join('').length > 3 &&
-    !typed.some(word => /\d/.test(word));
+    !typed.some(word => /\d/.test(word)) && onLookedAtContinent(place, from);
   // A town typed by its name is what was asked for, with scooter data or without;
   // one whose name starts as typed may be: "Laus" is on its way to Lausanne. By
   // its own name: Burgdorf is in the canton of Bern, not on the way to it.
@@ -232,6 +234,12 @@ function placeRank(
 function townRank(named: boolean, place: GeocodePlace, country: string, from: From, listed = false): number {
   const distance = remoteness(place, country, from);
   return (named ? 0 : STARTED_TOWN_RANK) + (listed ? distance : 3 + distance * 2 + (place.covered ? 0 : 1));
+}
+
+/** Whether a place is on the continent the map shows, or that of the rider's country without a map centre. */
+function onLookedAtContinent(place: GeocodePlace, { near, home }: From): boolean {
+  const lookedAt = near ? continentAt(near[0], near[1]) : COUNTRY_CONTINENTS[home as CountryCode];
+  return !lookedAt || continentAt(place.lat, place.lng) === lookedAt;
 }
 
 /** How far a place is from what the map shows: within a short ride of its centre, in the city around it, or farther. */
@@ -416,9 +424,18 @@ async function searchPhoton(search: Search, own: PhotonService | null, deadline:
   return { ok: true, value: { source: 'Photon', candidates: photonCandidates(features, search.typed, search) } };
 }
 
+/** The continent of a point, of those where the app may have cities. */
+function continentAt(lat: number, lng: number): Continent | undefined {
+  return (Object.keys(CONTINENT_BOXES) as Continent[]).find(continent => inBox(CONTINENT_BOXES[continent], lat, lng));
+}
+
+function inBox(box: Box, lat: number, lng: number): boolean {
+  return lat >= box.south && lat <= box.north && lng >= box.west && lng <= box.east;
+}
+
 /** The part of the world where the app has cities that a point is in, if any. */
 function servedBox(lat: number, lng: number): Box | undefined {
-  return SERVED_BOXES.find(box => lat >= box.south && lat <= box.north && lng >= box.west && lng <= box.east);
+  return SERVED_BOXES.find(box => inBox(box, lat, lng));
 }
 
 function servedPlace(lat: unknown, lng: unknown): boolean {

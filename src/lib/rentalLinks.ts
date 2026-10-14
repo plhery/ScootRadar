@@ -80,7 +80,32 @@ const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
     schemes: [],
     httpsHosts: ['zelectra.app.link', '3electra.com.ua'],
   },
+  // Spin's feeds give no link of their own, and their app's, as Bird's, is the charger sign-up.
+  spin: {
+    schemes: [],
+    httpsHosts: ['spin.app', 'spin.pm'],
+  },
+  // Veo's links are Adjust links that open its app on the scooter's number.
+  veo: {
+    schemes: [],
+    httpsHosts: ['gmjc.adj.st', 'veoride.com'],
+  },
+  // Lyft gives every scooter of a city one link, which opens its app's code scanner: chi.lft.to
+  // in Chicago, lyft.biketownpdx.com in Portland.
+  lyft: {
+    schemes: [],
+    httpsHosts: ['lft.to', 'lyft.com', 'biketownpdx.com'],
+  },
+  // Bolt runs its scooters in Washington, DC as Hopp, in an app of that name: bolt-hopp://.
+  bolt_hopp: {
+    schemes: ['bolt-hopp'],
+    httpsHosts: ['gethopp.com'],
+  },
 };
+
+// Links that open an operator's app elsewhere than on a scooter. Bird's and Spin's feeds give
+// bird://charger-onboarding as their app's address, the sign-up for people who charge scooters.
+const NOT_RENTAL_LINKS: readonly { scheme: string; host: string }[] = [{ scheme: 'bird', host: 'charger-onboarding' }];
 
 const UNSAFE_CHARACTERS = /[\u0000-\u001f\u007f]/;
 const MAX_RENTAL_URI_LENGTH = 2_048;
@@ -111,6 +136,7 @@ export function safeRentalUri(
     if (url.username || url.password) return null;
 
     const scheme = url.protocol.slice(0, -1).toLowerCase();
+    if (NOT_RENTAL_LINKS.some(link => link.scheme === scheme && link.host === url.hostname.toLowerCase())) return null;
     if (scheme === 'https') {
       const hostname = url.hostname.toLowerCase();
       if (url.port || !policy.httpsHosts.some(host => matchesHost(hostname, host))) return null;

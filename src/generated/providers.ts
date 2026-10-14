@@ -24,6 +24,10 @@ const PROVIDER_DEFINITIONS = {
   naolib: { name: "Naolib Micromob’", color: "#60a400", initial: "NM" },
   elerent: { name: "Elerent", color: "#6e7d18", initial: "E" },
   zelectra: { name: "3electra", color: "#0f6f86", initial: "3e" },
+  spin: { name: "Spin", color: "#ff5436", initial: "Sp" },
+  veo: { name: "Veo", color: "#059a8e", initial: "Ve" },
+  lyft: { name: "Lyft", color: "#ff00bf", initial: "Ly" },
+  bolt_hopp: { name: "Hopp", color: "#2a9c64", initial: "H" },
 } as const;
 
 export type ProviderKey = keyof typeof PROVIDER_DEFINITIONS;
@@ -38,6 +42,7 @@ export const SWISS_PROVIDER_KEYS: readonly ProviderKey[] = ["bolt","bird","dott"
 const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: string[] }> = {
   ride_mobility: {"prefixes":["ride_mobility"]},
   publibike: {"exact":["velospot"],"prefixes":["publibike"]},
+  bolt_hopp: {"prefixes":["bolt_hopp"]},
   zelectra: {"prefixes":["zelectra"]},
   elerent: {"prefixes":["elerent"]},
   naolib: {"prefixes":["naolib"]},
@@ -52,7 +57,10 @@ const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: str
   zeus: {"prefixes":["zeus"]},
   ryde: {"prefixes":["ryde"]},
   yoio: {"prefixes":["yoio"]},
+  spin: {"prefixes":["spin"]},
+  lyft: {"prefixes":["lyft"]},
   voi: {"prefixes":["voi"]},
+  veo: {"prefixes":["veo"]},
 };
 
 export function providerKeyForSystemId(systemId: string): ProviderKey | null {

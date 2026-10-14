@@ -107,7 +107,8 @@ interface PerMinutePrice {
 interface PricingPlan {
   plan_id?: string;
   currency?: string;
-  price?: number;
+  // GBFS says a number; Lyft writes "1.00".
+  price?: number | string;
   description?: string | Array<{ language: string; text: string }>;
   per_min_pricing?: PerMinutePrice[];
   per_km_pricing?: unknown[];
@@ -341,7 +342,8 @@ function toVehicle(
   raw: RawVehicle,
   query: Pick<FeedQuery, 'origin'>,
   pricingByPlanId: Map<string, VehiclePricing>,
-  type?: VehicleType
+  type?: VehicleType,
+  scooterPlanId?: string
 ): Vehicle | null {
   const lat = raw.lat;
   const lng = raw.lon ?? raw.lng;
@@ -360,7 +362,7 @@ function toVehicle(
   const distance = query.origin
     ? Math.round(haversineM(query.origin[0], query.origin[1], lat, lng) * 10) / 10
     : null;
-  const planId = raw.pricing_plan_id ?? type?.default_pricing_plan_id;
+  const planId = raw.pricing_plan_id ?? type?.default_pricing_plan_id ?? scooterPlanId;
   const pricing = planId ? pricingByPlanId.get(planId) : undefined;
 
   return {
@@ -382,7 +384,8 @@ function filterVehicles(
   vehicles: RawVehicle[],
   types: Map<string, VehicleType>,
   query: FeedQuery,
-  pricingByPlanId: Map<string, VehiclePricing> = new Map()
+  pricingByPlanId: Map<string, VehiclePricing> = new Map(),
+  scooterPlanId?: string
 ): Vehicle[] {
   const provider = providerKeyForSystemId(systemId);
   if (!provider || (query.providers && !query.providers.has(provider))) return [];
@@ -400,18 +403,42 @@ function filterVehicles(
       !boundsContainPoint(query.bounds, lat, lng)
     ) continue;
 
-    const vehicle = toVehicle(systemId, provider, raw, query, pricingByPlanId, types.get(raw.vehicle_type_id));
+    const vehicle = toVehicle(systemId, provider, raw, query, pricingByPlanId, types.get(raw.vehicle_type_id), scooterPlanId);
     if (!vehicle) continue;
     filtered.push(vehicle);
   }
   return filtered;
 }
 
+/**
+ * The plans some operators publish for their scooters without linking them from the scooters or
+ * their type. Lyft lists bike and scooter plans side by side in Chicago and Portland, and names
+ * none on its vehicles; its scooters' is SCOOTER_SINGLE_RIDE, "SCOOTER SINGLE RIDE".
+ */
+const UNLINKED_SCOOTER_PLANS: Partial<Record<ProviderKey, string>> = { lyft: 'SCOOTER_SINGLE_RIDE' };
+
+/**
+ * That plan, where it can only be the scooters': the feed lists it, and one type of standing
+ * scooter that names no plan of its own. With two scooter types, it could be either's.
+ */
+export function unlinkedScooterPlan(
+  provider: ProviderKey,
+  types: ReadonlyMap<string, VehicleType>,
+  pricingByPlanId: ReadonlyMap<string, VehiclePricing>
+): string | undefined {
+  const planId = UNLINKED_SCOOTER_PLANS[provider];
+  const scooters = [...types.values()].filter(type => isElectricScooter(type, provider));
+  return planId && pricingByPlanId.has(planId) && scooters.length === 1 && !scooters[0].default_pricing_plan_id
+    ? planId : undefined;
+}
+
 function typeMap(feed: VehicleTypesFeed): Map<string, VehicleType> {
   return new Map((feed.data?.vehicle_types ?? []).map(type => [type.vehicle_type_id, type]));
 }
 
-function minorUnits(value: number | undefined): number | null {
+function minorUnits(value: number | string | undefined): number | null {
+  // A price written as a string, as Lyft's "1.00", counts when it is a plain decimal number.
+  if (typeof value === 'string') value = /^\d+(?:\.\d+)?$/.test(value.trim()) ? Number(value) : undefined;
   if (value == null || !Number.isFinite(value) || value < 0) return null;
   const minor = Math.round((value + Number.EPSILON) * 100);
   return Number.isSafeInteger(minor) ? minor : null;
@@ -1088,7 +1115,7 @@ async function fetchRegionalSystemFeeds(
     vehicles: filterVehicles(system.id, rawVehicles(status.data), typesById, {
       ...query,
       bounds,
-    }, pricing).filter(vehicle => serviceAreas(system).some(area => boundsContainPoint(area.bounds, vehicle.lat, vehicle.lng))),
+    }, pricing, unlinkedScooterPlan(system.provider, typesById, pricing)).filter(vehicle => serviceAreas(system).some(area => boundsContainPoint(area.bounds, vehicle.lat, vehicle.lng))),
     stale: discovery.stale || types.stale || status.stale,
   };
 }

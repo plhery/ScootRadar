@@ -21,6 +21,10 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     case naolib
     case elerent
     case zelectra
+    case spin
+    case veo
+    case lyft
+    case bolt_hopp
 
     var id: String { rawValue }
 
@@ -43,6 +47,10 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .naolib: "Naolib Micromob’"
         case .elerent: "Elerent"
         case .zelectra: "3electra"
+        case .spin: "Spin"
+        case .veo: "Veo"
+        case .lyft: "Lyft"
+        case .bolt_hopp: "Hopp"
         }
     }
 
@@ -65,6 +73,10 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .naolib: "NM"
         case .elerent: "E"
         case .zelectra: "3e"
+        case .spin: "Sp"
+        case .veo: "Ve"
+        case .lyft: "Ly"
+        case .bolt_hopp: "H"
         }
     }
 
@@ -89,12 +101,17 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .naolib: UIColor(red: 0.376471, green: 0.643137, blue: 0.000000, alpha: 1)
         case .elerent: UIColor(red: 0.431373, green: 0.490196, blue: 0.094118, alpha: 1)
         case .zelectra: UIColor(red: 0.058824, green: 0.435294, blue: 0.525490, alpha: 1)
+        case .spin: UIColor(red: 1.000000, green: 0.329412, blue: 0.211765, alpha: 1)
+        case .veo: UIColor(red: 0.019608, green: 0.603922, blue: 0.556863, alpha: 1)
+        case .lyft: UIColor(red: 1.000000, green: 0.000000, blue: 0.749020, alpha: 1)
+        case .bolt_hopp: UIColor(red: 0.164706, green: 0.611765, blue: 0.392157, alpha: 1)
         }
     }
 
     private static let systemIDMatchers: [(provider: ScooterProvider, exact: [String], prefixes: [String])] = [
         (.ride_mobility, [], ["ride_mobility"]),
         (.publibike, ["velospot"], ["publibike"]),
+        (.bolt_hopp, [], ["bolt_hopp"]),
         (.zelectra, [], ["zelectra"]),
         (.elerent, [], ["elerent"]),
         (.naolib, [], ["naolib"]),
@@ -109,7 +126,10 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         (.zeus, [], ["zeus"]),
         (.ryde, [], ["ryde"]),
         (.yoio, [], ["yoio"]),
+        (.spin, [], ["spin"]),
+        (.lyft, [], ["lyft"]),
         (.voi, [], ["voi"]),
+        (.veo, [], ["veo"]),
     ]
 
     /// The provider behind a feed or system ID such as "lime_zurich", like providerKeyForSystemId on the web.
@@ -415,6 +435,8 @@ enum ScooterProviderCoverage {
         (.hopp, GeoBounds(south: 60.0657, west: 19.8824, north: 60.1438, east: 19.9972)),
         (.hoppy, GeoBounds(south: 45.3081, west: 14.353, north: 45.3587, east: 14.4896)),
         (.zelectra, GeoBounds(south: 50.3748, west: 30.4036, north: 50.5282, east: 30.663)),
+        (.bolt_hopp, GeoBounds(south: 38.7862, west: -77.1309, north: 39.0046, east: -76.8978)),
+        (.veo, GeoBounds(south: 38.7862, west: -77.1309, north: 39.0046, east: -76.8978)),
     ]
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
@@ -717,12 +739,13 @@ enum ScooterCityCatalog {
         ScooterCity(id: "fi:Mariehamn", name: "Mariehamn", countryCode: "FI", center: GeoPoint(latitude: 60.0973, longitude: 19.9348), bounds: GeoBounds(south: 60.0657, west: 19.8824, north: 60.1438, east: 19.9972)),
         ScooterCity(id: "hr:Rijeka", name: "Rijeka", countryCode: "HR", center: GeoPoint(latitude: 45.327, longitude: 14.4425), bounds: GeoBounds(south: 45.3081, west: 14.353, north: 45.3587, east: 14.4896)),
         ScooterCity(id: "ua:Kyiv", name: "Kyiv", countryCode: "UA", center: GeoPoint(latitude: 50.444, longitude: 30.518), bounds: GeoBounds(south: 50.3748, west: 30.4036, north: 50.5282, east: 30.663)),
+        ScooterCity(id: "us:dc:Washington", name: "Washington, DC", countryCode: "US", center: GeoPoint(latitude: 38.9072, longitude: -77.0369), bounds: GeoBounds(south: 38.7862, west: -77.1309, north: 39.0046, east: -76.8978)),
     ]
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 259
-    static let countryCount = 19
+    static let cityCount = 260
+    static let countryCount = 20
 
     /// Cities by distance from the point to their centre, nearest first.
     static func nearest(to point: GeoPoint, count: Int) -> [ScooterCityDistance] {
@@ -874,11 +897,15 @@ enum ScooterCountryCatalog {
         // Inland, in the middle of the country, near Zvenyhorodka: a little north of its geographic
         // centre, towards Kyiv, where all its scooters are.
         "ua": (49, 31),
+        // Near Lebanon, Kansas, the geographic centre of the 48 contiguous states. Zoomed in, each
+        // state has its own total at its centre of population (US Census Bureau, 2020).
+        "us": (39.5, -98.6),
     ]
 
     /// The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences.
     static let credits: [(title: String, url: String)] = [
         ("DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio, Bird, Elerent, Hoppy, Ride Mobility, 3electra", "https://github.com/MobilityData/gbfs"),
+        ("US: Bolt, Veo", "https://github.com/MobilityData/gbfs"),
         ("MobiData BW", "https://www.mobidata-bw.de/"),
         ("BE: Pony · transportdata.be", "https://transportdata.be/dataset/pony_charleroi"),
         ("NO: Entur AS · NLOD", "https://data.norge.no/nlod/en/2.0"),
@@ -890,7 +917,61 @@ enum ScooterCountryCatalog {
     ]
 
     /// The countries whose totals, zoomed out, are their states' or provinces', and those by code.
-    static let regionTotals: [String: [String: ScooterRegion]] = [:]
+    static let regionTotals: [String: [String: ScooterRegion]] = [
+        "us": [
+            "al": ScooterRegion(name: "Alabama", latitude: 33.02, longitude: -86.75),
+            "ak": ScooterRegion(name: "Alaska", names: ["pt": "Alasca"], latitude: 61.41, longitude: -148.96),
+            "az": ScooterRegion(name: "Arizona", latitude: 33.37, longitude: -111.88),
+            "ar": ScooterRegion(name: "Arkansas", latitude: 35.2, longitude: -92.71),
+            "ca": ScooterRegion(name: "California", names: ["de": "Kalifornien", "fr": "Californie", "nl": "Californië", "pt": "Califórnia", "is": "Kalifornía"], latitude: 35.49, longitude: -119.35),
+            "co": ScooterRegion(name: "Colorado", latitude: 39.53, longitude: -105.19),
+            "ct": ScooterRegion(name: "Connecticut", latitude: 41.49, longitude: -72.88),
+            "de": ScooterRegion(name: "Delaware", latitude: 39.33, longitude: -75.55),
+            "dc": ScooterRegion(name: "District of Columbia", names: ["fr": "District de Columbia", "it": "Distretto di Columbia", "nl": "District Columbia", "pt": "Distrito de Colúmbia", "es": "Distrito de Columbia"], latitude: 38.91, longitude: -77.01),
+            "fl": ScooterRegion(name: "Florida", names: ["fr": "Floride", "pt": "Flórida", "is": "Flórída"], latitude: 27.84, longitude: -81.64),
+            "ga": ScooterRegion(name: "Georgia", names: ["fr": "Géorgie", "pt": "Geórgia", "is": "Georgía"], latitude: 33.41, longitude: -83.89),
+            "hi": ScooterRegion(name: "Hawaii", names: ["fr": "Hawaï", "nl": "Hawaï", "pt": "Havai", "es": "Hawái"], latitude: 21.11, longitude: -157.49),
+            "id": ScooterRegion(name: "Idaho", latitude: 44.22, longitude: -115.22),
+            "il": ScooterRegion(name: "Illinois", latitude: 41.31, longitude: -88.37),
+            "in": ScooterRegion(name: "Indiana", latitude: 40.14, longitude: -86.25),
+            "ia": ScooterRegion(name: "Iowa", latitude: 41.94, longitude: -93.04),
+            "ks": ScooterRegion(name: "Kansas", latitude: 38.48, longitude: -96.41),
+            "ky": ScooterRegion(name: "Kentucky", latitude: 37.84, longitude: -85.26),
+            "la": ScooterRegion(name: "Louisiana", names: ["fr": "Louisiane", "pt": "Luisiana", "es": "Luisiana"], latitude: 30.7, longitude: -91.47),
+            "me": ScooterRegion(name: "Maine", latitude: 44.27, longitude: -69.76),
+            "md": ScooterRegion(name: "Maryland", latitude: 39.14, longitude: -76.8),
+            "ma": ScooterRegion(name: "Massachusetts", latitude: 42.27, longitude: -71.35),
+            "mi": ScooterRegion(name: "Michigan", names: ["es": "Míchigan"], latitude: 42.86, longitude: -84.21),
+            "mn": ScooterRegion(name: "Minnesota", latitude: 45.19, longitude: -93.56),
+            "ms": ScooterRegion(name: "Mississippi", names: ["es": "Misisipi"], latitude: 32.58, longitude: -89.57),
+            "mo": ScooterRegion(name: "Missouri", names: ["es": "Misuri"], latitude: 38.43, longitude: -92.23),
+            "mt": ScooterRegion(name: "Montana", latitude: 46.76, longitude: -111.32),
+            "ne": ScooterRegion(name: "Nebraska", latitude: 41.17, longitude: -97.22),
+            "nv": ScooterRegion(name: "Nevada", latitude: 37.02, longitude: -116.17),
+            "nh": ScooterRegion(name: "New Hampshire", names: ["pt": "Nova Hampshire", "es": "Nuevo Hampshire"], latitude: 43.15, longitude: -71.46),
+            "nj": ScooterRegion(name: "New Jersey", names: ["pt": "Nova Jérsia", "es": "Nueva Jersey"], latitude: 40.44, longitude: -74.42),
+            "nm": ScooterRegion(name: "New Mexico", names: ["fr": "Nouveau-Mexique", "it": "Nuovo Messico", "pt": "Novo México", "es": "Nuevo México", "is": "Nýja-Mexíkó"], latitude: 34.61, longitude: -106.33),
+            "ny": ScooterRegion(name: "New York", names: ["pt": "Nova Iorque", "es": "Nueva York", "is": "New York-fylki"], latitude: 41.47, longitude: -74.59),
+            "nc": ScooterRegion(name: "North Carolina", names: ["fr": "Caroline du Nord", "it": "Carolina del Nord", "nb": "Nord-Carolina", "pt": "Carolina do Norte", "es": "Carolina del Norte", "is": "Norður-Karólína"], latitude: 35.54, longitude: -79.68),
+            "nd": ScooterRegion(name: "North Dakota", names: ["fr": "Dakota du Nord", "it": "Dakota del Nord", "nb": "Nord-Dakota", "pt": "Dakota do Norte", "es": "Dakota del Norte", "is": "Norður-Dakóta"], latitude: 47.34, longitude: -99.44),
+            "oh": ScooterRegion(name: "Ohio", latitude: 40.44, longitude: -82.8),
+            "ok": ScooterRegion(name: "Oklahoma", latitude: 35.61, longitude: -96.85),
+            "or": ScooterRegion(name: "Oregon", names: ["es": "Oregón"], latitude: 44.75, longitude: -122.59),
+            "pa": ScooterRegion(name: "Pennsylvania", names: ["fr": "Pennsylvanie", "pt": "Pensilvânia", "es": "Pensilvania", "is": "Pennsylvanía"], latitude: 40.44, longitude: -76.97),
+            "ri": ScooterRegion(name: "Rhode Island", latitude: 41.76, longitude: -71.45),
+            "sc": ScooterRegion(name: "South Carolina", names: ["fr": "Caroline du Sud", "it": "Carolina del Sud", "nb": "Sør-Carolina", "pt": "Carolina do Sul", "es": "Carolina del Sur", "is": "Suður-Karólína"], latitude: 34.02, longitude: -81),
+            "sd": ScooterRegion(name: "South Dakota", names: ["fr": "Dakota du Sud", "it": "Dakota del Sud", "nb": "Sør-Dakota", "pt": "Dakota do Sul", "es": "Dakota del Sur", "is": "Suður-Dakóta"], latitude: 43.99, longitude: -98.92),
+            "tn": ScooterRegion(name: "Tennessee", latitude: 35.82, longitude: -86.33),
+            "tx": ScooterRegion(name: "Texas", latitude: 30.91, longitude: -97.33),
+            "ut": ScooterRegion(name: "Utah", latitude: 40.39, longitude: -111.95),
+            "vt": ScooterRegion(name: "Vermont", latitude: 44.1, longitude: -72.82),
+            "va": ScooterRegion(name: "Virginia", names: ["fr": "Virginie", "pt": "Virgínia", "is": "Virginía"], latitude: 37.85, longitude: -77.77),
+            "wa": ScooterRegion(name: "Washington", latitude: 47.33, longitude: -121.63),
+            "wv": ScooterRegion(name: "West Virginia", names: ["fr": "Virginie-Occidentale", "it": "Virginia Occidentale", "nb": "Vest-Virginia", "pt": "Virgínia Ocidental", "es": "Virginia Occidental", "is": "Vestur-Virginía"], latitude: 38.82, longitude: -80.67),
+            "wi": ScooterRegion(name: "Wisconsin", latitude: 43.72, longitude: -89.03),
+            "wy": ScooterRegion(name: "Wyoming", latitude: 42.69, longitude: -106.98),
+        ],
+    ]
 }
 
 /// A state or province whose total stands apart, zoomed out.

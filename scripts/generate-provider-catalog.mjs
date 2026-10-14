@@ -1,7 +1,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import {
-  catalogSystems, scooterCities, swiftCityPauses, swiftCountries, typescriptCatalogs, typescriptCountries, validateCountries,
+  catalogSystems, curfewZoneProblem, scooterCities, swiftCityPauses, swiftCountries, typescriptCatalogs, typescriptCountries,
+  validateCountries,
 } from './country-catalog.mjs';
 
 const root = process.cwd();
@@ -306,6 +307,8 @@ function swiftCurfews() {
     if (!curfew.areas.length || curfew.areas.some(area => area.length < 3 || !area.flat().every(Number.isFinite))) {
       throw new Error(`Invalid curfew area: ${curfew.id}`);
     }
+    const zoneProblem = curfewZoneProblem(curfew, regionalSystems);
+    if (zoneProblem) throw new Error(zoneProblem);
     const areas = curfew.areas.map(area => `[${area.map(([lat, lng]) => `GeoPoint(latitude: ${lat}, longitude: ${lng})`).join(', ')}]`);
     return `        RentalCurfew(\n            city: ${JSON.stringify(curfew.city)}, timeZone: ${JSON.stringify(curfew.timeZone)},\n` +
       `            nights: [${curfew.nights.map(night).join(', ')}],\n            areas: [${areas.join(', ')}]\n        ),`;

@@ -772,7 +772,7 @@ describe('Geoapify', () => {
     }]);
   });
 
-  it('leaves out counties, regions, countries, places outside Europe and places without a name or a position', async () => {
+  it('leaves out counties, regions, countries, places outside Europe and North America and places without a name or a position', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ results: [
       null,
       'Springfield',
@@ -790,7 +790,9 @@ describe('Geoapify', () => {
 
     const results = await (await GET(request('Springfield'))).json() as { title: string; subtitle: string }[];
 
-    expect(results.map(result => [result.title, result.subtitle])).toEqual([['Springfield', 'England, United Kingdom']]);
+    expect(results.map(result => [result.title, result.subtitle])).toEqual([
+      ['Springfield', 'Illinois, United States'], ['Springfield', 'England, United Kingdom'],
+    ]);
   });
 
   it('ranks a town found by another of its names as typed by it, but not one found for a near miss of it', async () => {
@@ -1088,17 +1090,23 @@ describe('recorded Geoapify answers', () => {
       ['Rheinfallweg 17', '8447 Dachsen', DATA],
       ['Rheinfallstrasse 20', '8447 Dachsen', DATA],
     ]],
-    // The one in England, of twenty across the world.
-    ['Springfield', 'en', undefined, ['towns', 'anywhere'], [['Springfield', 'England, United Kingdom', NO_DATA]]],
+    // Of twenty across the world, the American ones Geoapify knows best, none of them nearer Switzerland than another.
+    ['Springfield', 'en', undefined, ['towns', 'anywhere'], [
+      ['Springfield', 'Missouri, United States', NO_DATA],
+      ['Springfield', 'Illinois, United States', NO_DATA],
+      ['Springfield', 'Massachusetts, United States', NO_DATA],
+      ['Springfield', 'Oregon, United States', NO_DATA],
+      ['Springfield', 'Ohio, United States', NO_DATA],
+    ]],
     // Munich's, not the quarters of the name in Stuttgart and Saarbrücken found for towns.
     ['Hauptbahnhof', 'de', [48.14, 11.56], ['towns', 'nearby'], [['München Hauptbahnhof', 'Arnulfstraße, 80335 München', DATA]]],
-    // Nothing of the name within 50 km of Zürich: Lausanne, the towns that bear its name, a hamlet in France.
+    // Nothing of the name within 50 km of Zürich: Lausanne, the towns that bear its name, a township in Pennsylvania.
     ['Lausanne', 'de', [47.37, 8.54], ['towns', 'nearby', 'anywhere'], [
       ['Lausanne', 'Waadt, Schweiz', NO_DATA],
       ['Le Mont-sur-Lausanne', 'Waadt, Schweiz', NO_DATA],
       ['Cheseaux-sur-Lausanne', 'Waadt, Schweiz', NO_DATA],
       ['Romanel-sur-Lausanne', 'Waadt, Schweiz', NO_DATA],
-      ['Lausanne', 'Loché-sur-Indrois', NO_DATA],
+      ['Lausanne Township', 'Pennsylvania, Vereinigte Staaten von Amerika', NO_DATA],
     ]],
     // Milan, which "Mailand" names in German, before the street of the name close by.
     ['Mailand', 'de', [47.37, 8.54], ['towns', 'nearby'], [

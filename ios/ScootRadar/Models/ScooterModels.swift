@@ -360,11 +360,31 @@ enum ScooterRentalLinkPolicy {
             schemes: [],
             httpsHosts: ["zelectra.app.link", "3electra.com.ua"]
         ),
+        "spin": ProviderPolicy(
+            schemes: [],
+            httpsHosts: ["spin.app", "spin.pm"]
+        ),
+        "veo": ProviderPolicy(
+            schemes: [],
+            httpsHosts: ["gmjc.adj.st", "veoride.com"]
+        ),
+        "lyft": ProviderPolicy(
+            schemes: [],
+            httpsHosts: ["lft.to", "lyft.com", "biketownpdx.com"]
+        ),
+        // Bolt runs its scooters in Washington, DC as Hopp, in an app of that name.
+        "bolt_hopp": ProviderPolicy(
+            schemes: ["bolt-hopp"],
+            httpsHosts: ["gethopp.com"]
+        ),
         "publibike": ProviderPolicy(
             schemes: ["publibike", "velospot"],
             httpsHosts: ["publibike.ch", "velospot.info"]
         )
     ]
+
+    /// Links that open an operator's app elsewhere than on a scooter, as rentalLinks.ts has them.
+    private static let notRentalLinks: [(scheme: String, host: String)] = [("bird", "charger-onboarding")]
 
     static func rentalURL(
         provider: String,
@@ -402,6 +422,11 @@ enum ScooterRentalLinkPolicy {
               components.password == nil,
               let scheme = components.scheme?.lowercased() else { return nil }
 
+        // Bird's and Spin's feeds give bird://charger-onboarding as their app's address: the
+        // sign-up for people who charge scooters, never a rental, whatever the country.
+        if notRentalLinks.contains(where: { $0.scheme == scheme && $0.host == components.host?.lowercased() }) {
+            return nil
+        }
         if scheme == "https" {
             guard components.port == nil,
                   let hostname = components.host?.lowercased(),

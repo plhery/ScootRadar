@@ -10,7 +10,10 @@ out, and remove an entry once it's added or settled for good.
 These feeds are public and were live when checked. Nothing blocks them except
 the work.
 
-None at the moment.
+- **United States** ([guide](american-scooter-feeds.md)): Washington, DC is
+  covered. 93 more feeds (Lime, Bird, Spin, Veo, Lyft and Bolt) are being
+  added in October 2026, and 13 with scooters but no ride seen in the survey
+  are being polled at their evening peak.
 
 ## Waiting on a decision
 
@@ -294,6 +297,39 @@ banned shared scooters, and feeds that were empty when checked.
     hundred in the evening, and the map drops them with the city's bounds.
     Why, and when, isn't published; only 3electra can say.
   - Systems 65, 67 and 68 on 3electra's host answer 400.
+
+- **United States** ([guide](american-scooter-feeds.md)): Hopp (Bolt) and Veo
+  in Washington, DC are covered.
+  - **Washington, DC:** Lime's feed answers 404; Bird's lists no available
+    scooter in the District, Spin's and Lyft's none at all. Veo's `arl` feed is
+    the same fleet as `xdc`, which is covered.
+  - **Dormant Bird feeds:** 51 of Bird's American feeds list no available
+    scooter, most with a `last_updated` of 0: Akron, Albuquerque, Alexandria,
+    Ann Arbor, Athens (GA), Baltimore, Beaumont, Champaign, Charlottesville,
+    Cheyenne, Columbus and Ohio State, Davis, Dayton, Denver, Detroit,
+    Durham, East Lansing, Fayetteville (AR), Fort Collins, Fort Myers, Green
+    Bay, Lansing, Louisville, Mayagüez, Milwaukee, Minneapolis, Montgomery
+    County (MD), Pawtucket, Ponce, Portland (OR), Providence, Provo, Raleigh,
+    Redding, Roanoke, Saint Paul, San Francisco, San Juan, San Marcos, Santa
+    Clara, South San Francisco, St. George, St. Petersburg, Stillwater,
+    Tallahassee, Tampa, Thornton, Tucson, the University of Akron and the
+    University of Utah. Bird Phoenix lists 8 scooters in town.
+  - **Stale:** Bird Chicago's feed was 4 days old, Bird Seattle's 7 days, and
+    Bird Salt Lake City's scooters last reported 15 days before; Lyft Denver's
+    feed was 667 days old.
+  - **Empty or gone:** Lime's Denver and Portland (OR) feeds answer 404, and
+    Lime Cleveland and Bolt Austin list no scooter. Lime Santa Monica and Spin
+    Salt Lake City hold 1 and 2 scooters. Spin lists none in Tempe, Tucson, Los
+    Angeles, Santa Monica, Chicago, Lansing, Dayton, Dallas, San Marcos,
+    Alexandria, Arlington (VA), Milwaukee or Cheyenne, and only e-bikes at Penn
+    State; its UCF feed answers 404. Veo lists no scooter in Colorado Springs,
+    Pensacola, Indianapolis, Memphis, Austin or Seattle, at College Station
+    one, and only its seated or pedal vehicles at the University of Alabama,
+    Orlando, Urbana-Champaign, Bend and Oregon State; its `lac`, `san` and `spe`
+    feeds, for towns it doesn't name, are empty.
+  - **Duplicates:** Bird's University of Kentucky feed is its Lexington feed,
+    Spin's `ohio_state` and `osu` its Columbus feed, Spin's `richmond` its
+    `richmond_va`, and Veo's `oak` and `smo` its `xeb` and `xla`.
 
 ## Countries not covered yet
 
