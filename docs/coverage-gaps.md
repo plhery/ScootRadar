@@ -303,21 +303,52 @@ Mobility's feed ids, Hopp's town list, and guessed Bird, Lime and Hopp
 addresses for each country's towns. Survey files were not kept; rerun the
 checks before relying on a count.
 
+Surveyed again on 14 October 2026, from 12:27 to 13:00 CEST, with the
+countries further east: the registry, the national open-data portals, the
+operators' sites and a new scan of 250 Bolt ids. Nothing had changed in the
+countries already listed, apart from Slovenia's relayed feeds below. Of the
+Bolt ids, the same 9 public ones answer 200, and id 355 now answers 400
+instead of 401.
+
+**Not covered, by decision:** Russia (the user's decision of 14 October 2026).
+
+**Skipped:** Slovenia. Two live feeds were found on 14 October 2026, both
+served by a community relay, gbfs.derp.si. MobilityData added 15 of its feeds
+to the registry on 22 September 2026 and removed them the next day, for lacking
+a licence. Neither is published by its operator:
+
+- **Bolt Ljubljana** (`https://gbfs.derp.si/bolt_proxy/2/359/gbfs`): 413 to
+  420 available scooters, ridden while polled from 12:44 to 13:00. Bolt's own
+  feed 359 answers 401, and the relay passes it on with login details Bolt
+  issued to someone else. Bolt's
+  [GBFS licence](https://bolt.eu/en/legal/security-gbfs-license/?category=micromobility),
+  clause 2.g, forbids access other than through Bolt's authorised interface.
+  Add it if Bolt makes feed 359 public (gbfs@bolt.eu).
+- **Kvik** (`https://gbfs.derp.si/gbfs/kvik/gbfs.json`): 45 available
+  scooters in Ljubljana, 39 in Koper, about 30 in Piran–Portorož and 3 in
+  Izola. The relay builds it by scraping Kvik's app API
+  (api.kvik.ezlines.com), a private rider API the audit standard excludes, and
+  its liveness is weak: 4 scooters moved in 15 minutes, and the feed stamps
+  each response with the time it was asked for. Add it if Kvik publishes an
+  official feed.
+
 **Nothing public:**
 
 | Country | Why |
 | --- | --- |
-| Austria | Dott's regions are private. Vienna's operators (Bird, Lime, Link, Voi) and Voi Innsbruck publish no feed; the access point has Voi's static zones only, behind a registration |
-| Netherlands | No shared standing scooters: the national data hub (CROW) lists 27,000 shared vehicles and no scooter. They need type approval and, since July 2025, a plate |
+| Austria | Dott's regions are private. Vienna's operators (Bird, Lime, Link, Voi) and Voi Innsbruck publish no feed; the access point has Voi's static zones only, behind a registration. Bird Wiener Neustadt lists a scooter type but no vehicle, with a timestamp of 0 |
+| Netherlands | No shared standing scooters: the national data hub (CROW) lists 27,000 shared vehicles and no scooter. They need type approval and, since July 2025, a plate. Check and Felyx run mopeds, and 7 Felyx feeds answer 410 |
 | Denmark | Lime (Copenhagen, Odense) and Voi publish no feed; Dott lists e-bikes only. Hopp Roskilde held 1 disabled scooter on 13 October 2026 |
 | Czechia | Prague banned shared scooters from 1 January 2026; Golemio's feed needs a token. Bolt reportedly left the other towns |
-| Ireland | Bolt's Wexford trial (2024) publishes nothing; Moby and Bleeper are bikes. Public funding for scooter schemes was paused in July 2026 |
+| Ireland | Bolt's Wexford trial (2024) publishes nothing; Moby and Bleeper are bikes. Public funding for scooter schemes was paused in July 2026. The registry files Beryl Belfast under Ireland; it is in the United Kingdom and lists no scooter |
 | Estonia, Lithuania | Bolt and Ride Mobility publish no feed |
-| Slovakia, Slovenia, Bulgaria, Romania, Moldova | Dott and Bolt publish no feed; nothing else found |
+| Slovakia, Bulgaria, Romania, Moldova | Dott and Bolt publish no feed; nothing else found. Romania's PBSC bike-share feeds list a scooter type with no scooters. (Slovenia: see above) |
 | Serbia | Belgrade cancelled its scooter tender in July 2026 |
 | Turkey | Martı, BinBin and Hop publish no feed |
 | Malta | Rental scooters banned since March 2024 |
-| Luxembourg, Monaco, Liechtenstein | Bikes and e-bikes only |
+| Luxembourg, Monaco, Liechtenstein | Bikes and e-bikes only; MonaBike lists a scooter type with no scooters |
+| Belarus, Georgia, Armenia, Azerbaijan, Kazakhstan | Bolt, with scooters in Tbilisi, Kutaisi, Baku and Almaty, answers 401, and so does Whoosh (`api.whoosh.bike/gbfs`). Eleven, Yandex Go, Jet, Mimo, BusyFly, YerevanRide, Ozim and Scroll publish nothing, and Kolobike has closed. No registry rows, no ATOM Mobility systems, nothing on the national open-data portals |
+| Vatican City | No operator. Bird Rome's geofence forbids riding over St Peter's, the Gardens and the Museums, and none of its 4,454 vehicles stood inside at 12:37 on 14 October 2026 |
 | Bosnia and Herzegovina, Montenegro, North Macedonia, Albania, Kosovo, Andorra, San Marino, Gibraltar, Faroe Islands | No scooter feed found (Hopp Tórshavn held 13, all disabled, at night and on the evening of 13 October 2026) |
 
 Bolt publishes only two public scooter feeds in Europe, Brussels and Liverpool;
@@ -352,12 +383,17 @@ its other systems answer 401. Dott made most regions private in September 2026.
   (Delegated Regulation (EU) 2024/490) requires shared-scooter availability on
   each country's national access point for the cities on the main EU transport
   network, among them Vienna, Madrid and Warsaw. Austria, Spain, Poland and the
-  Netherlands may publish feeds then.
+  Netherlands may publish feeds then. So may Slovenia, for Ljubljana: look
+  for Bolt's feed 359 there, or at `mds.bolt.eu`, and for an official Kvik
+  feed.
 - **1 January 2027:** Brussels's ban starts; Bolt and Dott Bruxelles should
   empty.
 - **April 2027:** Pony Liège held 8 or 9 available scooters on 13 October
   2026, most of which never moved; add it if it holds ten or more and they
-  are ridden.
+  are ridden. The season starts in Belarus, Georgia, Armenia, Azerbaijan and
+  Kazakhstan too (Minsk's runs from about 15 March to 15 November): check
+  Bolt's ids, Whoosh, the registry, ATOM Mobility and the national portals
+  again.
 - **Spring 2027:** Dott's six paused Finnish towns (Ekenäs, Hamina, Hanko,
   Imatra, Kalajoki, Kotka), Joe Scooter in Rauma, Hoppy in Crikvenica and Hopp
   in Omiš, Hopp's Greek island towns (Chania, Kardamena, Kalymnos and others),
