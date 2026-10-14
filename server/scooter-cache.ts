@@ -1,4 +1,4 @@
-import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
+import { mkdir, rename, rm } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { dirname } from 'node:path';
 import { discoverCollectableFeeds, independentCollectableFeeds, type CollectableScooterFeed } from '../src/lib/scooterFeeds';
@@ -8,6 +8,7 @@ import { upstreamCacheEntriesFor, upstreamJsonCache } from '../src/lib/upstreamJ
 import { fetchRegionalParking } from '../src/lib/parkingFeeds';
 import { FeedScheduler } from './feedScheduler';
 import { createSnapshotServer } from './snapshotServer';
+import { readSnapshot, writeSnapshot } from './snapshotFile';
 import { collectSnapshotFeed } from './collectFeed';
 import { createFeedStateLog, feedState, type FeedCadence } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
@@ -22,10 +23,15 @@ for (const host of new Set(REGIONAL_SCOOTER_SYSTEMS.map(system => new URL(system
   if (host.endsWith('.rideatom.com')) upstreamJsonCache.paceHost(host, 500);
 }
 const snapshotPath = process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json';
+// The snapshot is saved a feed at a time (snapshotFile.ts), at most once a minute and on shutdown:
+// a restart loses at most a minute of collections, which it makes again. Saved whole every five
+// seconds, 150,000 vehicles took 0.6 s of every five, and 300,000 a gigabyte of memory each time.
+const SAVE_EVERY_MS = 60_000;
 let snapshot: MobilitySnapshot | undefined;
 let stopping = false;
 let dirty = false;
 let persisting: Promise<void> | undefined;
+let savedAt = 0;
 let lastHealthLogAt = 0;
 const records = new Map<string, FeedSnapshot>();
 // The last collection error of each failing feed, for its Sentry report should it expire.
@@ -54,8 +60,8 @@ const server = createSnapshotServer({ snapshot: () => snapshot,
   token: process.env.SCOOTER_SNAPSHOT_API_TOKEN, production: process.env.NODE_ENV === 'production',
   version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler });
 try {
-  const persisted = JSON.parse(await readFile(snapshotPath, 'utf8')) as MobilitySnapshot;
-  if (persisted.version === 1 && Array.isArray(persisted.feeds) && Array.isArray(persisted.overview?.cities)) {
+  const persisted = await readSnapshot(snapshotPath);
+  if (persisted) {
     snapshot = persisted;
     for (const feed of persisted.feeds) records.set(feed.id, feed);
   }
@@ -117,10 +123,9 @@ function setDefinitions(definitions: CollectableScooterFeed[], retireMissing: bo
   scheduler.setFeeds(definitions);
 }
 
-async function persist() {
+async function persist(final = false) {
   if (persisting) return persisting;
   if (!snapshot || !dirty) return;
-  dirty = false;
   const now = Date.now();
   if (overviewNeedsRefresh(snapshot, snapshot.feeds, now, countedAt(now))) {
     snapshot = { ...snapshot, overview: buildCityOverview(snapshot.feeds, now, countedAt(now)) };
@@ -137,12 +142,15 @@ async function persist() {
       oldestObservationAgeSeconds: relevant.length
         ? Math.round(Math.max(...relevant.map(feed => Date.now() - feed.observedAt)) / 1000) : null }));
   }
+  if (!final && now - savedAt < SAVE_EVERY_MS) return;
+  dirty = false;
+  savedAt = now;
   const saved = snapshot;
   persisting = (async () => {
     const temporaryPath = `${snapshotPath}.${randomUUID()}.tmp`;
     try {
       await mkdir(dirname(snapshotPath), { recursive: true });
-      await writeFile(temporaryPath, JSON.stringify(saved));
+      await writeSnapshot(temporaryPath, saved);
       await rename(temporaryPath, snapshotPath);
     } catch (error) {
       dirty = true;
@@ -187,6 +195,6 @@ for (const signal of ['SIGTERM', 'SIGINT'] as const) {
     clearTimeout(discoveryTimer);
     clearInterval(persistenceTimer);
     server.close();
-    void (async () => { await persisting; await persist(); })();
+    void (async () => { await persisting; await persist(true); })();
   });
 }

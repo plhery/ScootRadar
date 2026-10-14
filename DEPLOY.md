@@ -196,8 +196,9 @@ comma-separated list of country codes or source keys, such as `CH,FR`, and
 redeploy; `all` restores the old minute-for-everything. `SCOOTER_IDLE_INTERVAL_SECONDS`
 (1200), `SCOOTER_ACTIVE_INTERVAL_SECONDS` (60) and `SCOOTER_WATCH_SECONDS` (600)
 tune the rest. Vehicle results are published immediately, before optional
-parking completes; disk writes and city overview rebuilding are batched every
-five seconds. Discovery/type/pricing metadata lasts an hour. The map shows
+parking completes; city overview rebuilding is batched every five seconds, and
+the snapshot is written to disk a feed at a time, once a minute and on shutdown.
+Discovery/type/pricing metadata lasts an hour. The map shows
 positions only while their timestamp is within fifteen minutes; failed feeds
 retain vehicles only until that observation expires. A request for a feed whose
 positions are older waits up to three seconds for the collection it starts. Parking availability expires after five minutes.
@@ -281,9 +282,19 @@ and `meta.parkingStatus`; zoom 15 and below omit individual parking locations.
 
 
 The Germany/Italy catalog expands the collector to approximately 80 feeds.
-Allocate 1536 MiB to the cache container (local validation peaked around 750 MiB).
-The upstream cache holds 2048 documents to retain hourly metadata across minute
-refreshes. The country catalogs are bundled into both the cache backend and the
+Allocate 1536 MiB to the cache container. Node gives its heap half of that, 864
+MiB, and the heap is what runs out first. In October 2026, with Europe's 128,000
+vehicles, the heap peaked around 575 MiB and the process around 900 MiB while
+the snapshot was saved whole every five seconds: each save built its JSON as
+one string, two bytes a character as one city name is outside Latin-1, then a
+buffer as long again. Measured with the US survey's feeds, each vehicle costs about 630
+bytes of heap, its feed's documents included, and a save a feed at a time adds
+about 80 MiB at 300,000 vehicles, where a whole save added 330 MiB of heap and a
+gigabyte of process memory. Reading the snapshot back at start a feed at a time
+holds 146 MiB for 300,000 vehicles, against 429 MiB read whole. The upstream
+cache holds nine documents per feed and a fifth more, 2048 at least, to retain
+hourly metadata across minute refreshes, dropping the least recently used beyond
+that. The country catalogs are bundled into both the cache backend and the
 Cloudflare web app, and the same push deploys both. City totals rebuild on
 startup when the catalog adds/removes cities, even if the old hourly cache is fresh.
 
