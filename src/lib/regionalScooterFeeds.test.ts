@@ -47,6 +47,9 @@ describe('German and Italian scooter coverage', () => {
     ['Bredene', 'Oostende, Belgium'], ['Mechelen', 'Mechelen, Belgium'], ['Malines Belgique', 'Mechelen, Belgium'],
     ['Blankenberge', 'Blankenberge, Belgium'], ['Sint-Niklaas', 'Sint-Niklaas, Belgium'], ['Saint-Nicolas Belgique', 'Sint-Niklaas, Belgium'],
     ['Puerto del Carmen', 'Puerto del Carmen, Spain'], ['Tias', 'Puerto del Carmen, Spain'], ['Lanzarote Spain', 'Puerto del Carmen, Spain'], ['Catania', 'Catania, Italy'],
+    ['Corralejo', 'Corralejo, Spain'], ['La Oliva España', 'Corralejo, Spain'], ['Altea', 'Altea, Spain'], ['Albir', 'L\'Albir, Spain'],
+    ['El Albir Spain', 'L\'Albir, Spain'], ['Alfaz del Pi', 'L\'Alfàs del Pi, Spain'], ['L\'Alfas del Pi', 'L\'Alfàs del Pi, Spain'],
+    ['La Nucia', 'La Nucía, Spain'], ['Polop', 'La Nucía, Spain'], ['La Mata', 'Torrevieja, Spain'],
     ['Catane Italie', 'Catania, Italy']])('finds %s', (query, name) => {
     expect(searchRegionalScooterCities(query)[0].display_name).toBe(name);
   });
@@ -326,6 +329,42 @@ describe('German and Italian scooter coverage', () => {
     expect(boundsContainPoint(bounds('hoppy_be_oostende'), 51.3124, 3.121)).toBe(false);
     expect(boundsContainPoint(bounds('hoppy_be_blankenberge'), 51.3124, 3.121)).toBe(true);
     expect(bounds('hoppy_be_oostende').east).toBeLessThan(bounds('hoppy_be_blankenberge').west);
+  });
+  it('routes Hoppy\'s "Benidorm" feed to the four Marina Baixa towns its scooters stand in, and keeps only its scooters', async () => {
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'hoppy_es_marina_baixa')!;
+    const areas = serviceAreas(system);
+    expect(areas.map(area => area.city)).toEqual(['Altea', 'L\'Albir', 'L\'Alfàs del Pi', 'La Nucía']);
+    for (const [i, a] of areas.entries()) for (const b of areas.slice(i + 1)) {
+      expect(a.bounds.south > b.bounds.north || b.bounds.south > a.bounds.north ||
+        a.bounds.west > b.bounds.east || b.bounds.west > a.bounds.east, `${a.city} and ${b.city}`).toBe(true);
+    }
+    // Hoppy has no zone in Benidorm's centre, so the town is not on the map as Hoppy's.
+    expect(searchRegionalScooterCities('Benidorm')).toEqual([]);
+    const vehicle = (code: string, type: string, lat: number, lon: number) => ({ vehicle_id: code, lat, lon, is_reserved: false,
+      is_disabled: false, rental_uris: { android: `https://ride-hoppy.app.link/${code}` }, vehicle_type_id: type,
+      current_range_meters: 30_000, pricing_plan_id: type });
+    const fetch = atomFeeds(system,
+      { vehicle_type_id: '2332', form_factor: 'scooter_standing', propulsion_type: 'electric', max_range_meters: 60_000 },
+      { plan_id: '2332', name: [{ text: 'SEGW MBAIXA ANRT_KSCSEG_Tier3', language: 'en' }], currency: 'EUR', price: 1,
+        is_taxable: false, per_min_pricing: [{ start: 0, rate: 0.35, interval: 1 }] },
+      // Scooters in Altea, L'Albir and La Nucía, an e-bike in Altea, and a scooter at Finestrat's shopping centre.
+      [vehicle('601001', '2332', 38.5995, -0.0518), vehicle('601002', '2332', 38.5698, -0.0716), vehicle('601003', '2332', 38.6024, -0.1296),
+        vehicle('500001', '3952', 38.5996, -0.0519), vehicle('601004', '2332', 38.5294, -0.167)]);
+    const types = { version: '3.0', data: { vehicle_types: [
+      { vehicle_type_id: '2332', form_factor: 'scooter_standing', propulsion_type: 'electric', max_range_meters: 60_000 },
+      { vehicle_type_id: '3952', form_factor: 'bicycle', propulsion_type: 'electric_assist', max_range_meters: 80_000 }] } };
+    vi.stubGlobal('fetch', vi.fn(async (url: string) => url.endsWith('/vehicle_types') ? response(types) : fetch(url)));
+    const result = await fetchScooters({ bounds: system.bounds, minBattery: 0, providers: new Set(['hoppy']) });
+    expect(result.meta.sources.spain).toBe('fresh');
+    expect(result.vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(
+      ['hoppy_es_marina_baixa:601001', 'hoppy_es_marina_baixa:601002', 'hoppy_es_marina_baixa:601003']);
+  });
+  it('names Hoppy\'s Canary and Torrevieja towns as Bird and Hopp do, so each town is counted once', () => {
+    for (const [id, city] of [['hoppy_es_tenerife_sur', 'Playa de las Américas'], ['hoppy_es_caleta_de_fuste', 'Caleta de Fuste'],
+      ['hoppy_es_torrevieja', 'Torrevieja']]) {
+      expect(serviceAreas(REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === id)!).map(area => area.city)).toEqual([city]);
+      expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'ES' && entry.city === city)).toHaveLength(1);
+    }
   });
   it('keeps Dott Wołomin\'s feeds under its percent-encoded directory, however the letter is written', () => {
     const base = new URL('.', REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'dott_pl_wolomin')!.discoveryUrl).toString();

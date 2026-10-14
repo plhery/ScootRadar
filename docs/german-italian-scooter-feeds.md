@@ -344,29 +344,33 @@ Bolt and Lime publish no Italian feed.
 
 ## ATOM's request rate, October 2026
 
-With Elerent's Catania and Hoppy's Oostende, Mechelen, Sint-Niklaas,
-Blankenberge, Puerto del Carmen, Rhodes, Kos, Rethymno and Zakynthos, the
-scooter cache reads 15 ATOM feeds: 11 of Hoppy's on `hoppy.rideatom.com`
-(with Kortrijk and Rijeka), Yoio's two, Ride Mobility's Rīga and Elerent's
-Catania. None of Hoppy's or Elerent's has stations, so each feed costs one
-`vehicle_status` a collection, plus five metadata documents an hour:
-discovery, vehicle types, prices, stations and geofencing.
+With Elerent's Catania, Hoppy's Oostende, Mechelen, Sint-Niklaas and
+Blankenberge, its Rhodes, Kos, Rethymno and Zakynthos, and its six Spanish
+systems (Puerto del Carmen, Tenerife Sur, Corralejo, Caleta de Fuste, Marina
+Baixa and Torrevieja), the scooter cache reads 20 ATOM feeds: 16 of Hoppy's on
+`hoppy.rideatom.com` (with Kortrijk and Rijeka), Yoio's two, Ride Mobility's
+Rīga and Elerent's Catania. None of Hoppy's or Elerent's has stations, so each
+feed costs one `vehicle_status` a collection, plus five metadata documents an
+hour: discovery, vehicle types, prices, stations and geofencing.
 
 - **Now,** the cache collects the feeds outside Switzerland that nobody looks
   at every twenty minutes, so a feed costs about 8 requests an hour:
-  `hoppy.rideatom.com` carries about 90 an hour, and ATOM's four hosts about
-  130, as Yoio's and Ride Mobility's feeds also read their parking. A feed
+  `hoppy.rideatom.com` carries about 130 an hour, and ATOM's four hosts about
+  170, as Yoio's and Ride Mobility's feeds also read their parking. A feed
   someone looks at is collected every minute for ten minutes, so it costs up
-  to 65 an hour while watched; Hoppy's host would reach about 700 only if all
-  eleven of its towns were watched for a whole hour.
+  to 65 an hour while watched: each Hoppy town watched for a whole hour adds
+  about 57 to Hoppy's host, which would reach a few hundred an hour with five
+  towns watched at once, and about 1,040 only if all sixteen were.
 - **Before 14 October 2026,** the cache collected every feed every minute, at
   about 65 requests an hour each: `hoppy.rideatom.com` would have carried
-  about 700 an hour, one every five seconds, and ATOM's hosts about 1,150.
+  about 1,040 an hour, one every three or four seconds, and ATOM's hosts about
+  1,500.
 
 The cache paces each `rideatom.com` host to one request every 500 ms and
-spreads the feeds over the interval, so even at the old cadence ATOM would see
-no burst near the roughly 900 requests after which it blocks an address. No
-interval was changed for ATOM.
+spreads the feeds over the interval, so ATOM sees a steady trickle, never a
+burst like the roughly 900 quick requests after which it blocked a scanning
+address. With the twenty-minute cadence Hoppy's host stays near 130 requests
+an hour, so no interval was changed for ATOM.
 
 ## Known gaps
 

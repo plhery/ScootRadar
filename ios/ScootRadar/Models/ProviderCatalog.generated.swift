@@ -340,7 +340,15 @@ enum ScooterProviderCoverage {
         (.hopp, GeoBounds(south: 38.7636, west: 0.16, north: 38.7994, east: 0.2006)),
         (.hopp, GeoBounds(south: 28.0452, west: -16.7408, north: 28.0935, east: -16.6976)),
         (.hopp, GeoBounds(south: 28.0188, west: -16.6251, north: 28.0377, east: -16.5879)),
+        (.hoppy, GeoBounds(south: 28.363, west: -13.8885, north: 28.4207, east: -13.8412)),
+        (.hoppy, GeoBounds(south: 28.7018, west: -13.8863, north: 28.749, east: -13.8462)),
+        (.hoppy, GeoBounds(south: 38.58, west: -0.08, north: 38.6464, east: 0.0195)),
+        (.hoppy, GeoBounds(south: 38.5537, west: -0.08, north: 38.5799, east: -0.0526)),
+        (.hoppy, GeoBounds(south: 38.5544, west: -0.122, north: 38.6238, east: -0.0801)),
+        (.hoppy, GeoBounds(south: 38.5634, west: -0.1596, north: 38.634, east: -0.1221)),
         (.hoppy, GeoBounds(south: 28.9145, west: -13.6887, north: 28.9412, east: -13.6057)),
+        (.hoppy, GeoBounds(south: 28.0375, west: -16.7953, north: 28.1375, east: -16.6901)),
+        (.hoppy, GeoBounds(south: 37.9395, west: -0.7523, north: 38.0344, east: -0.6383)),
         (.hopp, GeoBounds(south: 64.3078, west: -22.1074, north: 64.333, east: -22.0223)),
         (.hopp, GeoBounds(south: 65.6486, west: -18.1687, north: 65.71, east: -18.0277)),
         (.hopp, GeoBounds(south: 64.5283, west: -21.9425, north: 64.563, east: -21.8808)),
@@ -611,16 +619,21 @@ enum ScooterCityCatalog {
         ScooterCity(id: "pt:Olhão", name: "Olhão", countryCode: "PT", center: GeoPoint(latitude: 37.027, longitude: -7.8411), bounds: GeoBounds(south: 37.0174, west: -7.8629, north: 37.0559, east: -7.8152)),
         ScooterCity(id: "pt:Portimão", name: "Portimão", countryCode: "PT", center: GeoPoint(latitude: 37.1376, longitude: -8.5368), bounds: GeoBounds(south: 37.1099, west: -8.6041, north: 37.1623, east: -8.5214)),
         ScooterCity(id: "pt:Porto", name: "Porto", countryCode: "PT", center: GeoPoint(latitude: 41.1502, longitude: -8.6103), bounds: GeoBounds(south: 41.1351, west: -8.6946, north: 41.1868, east: -8.5741)),
-        ScooterCity(id: "es:Caleta de Fuste", name: "Caleta de Fuste", countryCode: "ES", center: GeoPoint(latitude: 28.3983, longitude: -13.8602), bounds: GeoBounds(south: 28.3622, west: -13.8857, north: 28.4199, east: -13.8442)),
+        ScooterCity(id: "es:Caleta de Fuste", name: "Caleta de Fuste", countryCode: "ES", center: GeoPoint(latitude: 28.3983, longitude: -13.8602), bounds: GeoBounds(south: 28.3622, west: -13.8885, north: 28.4207, east: -13.8412)),
         ScooterCity(id: "es:Getafe", name: "Getafe", countryCode: "ES", center: GeoPoint(latitude: 40.3179, longitude: -3.6871), bounds: GeoBounds(south: 40.3098, west: -3.7197, north: 40.3377, east: -3.6545)),
         ScooterCity(id: "es:Gijón", name: "Gijón", countryCode: "ES", center: GeoPoint(latitude: 43.5449, longitude: -5.6627), bounds: GeoBounds(south: 43.5042, west: -5.7134, north: 43.5546, east: -5.5986)),
         ScooterCity(id: "es:Costa Calma", name: "Costa Calma", countryCode: "ES", center: GeoPoint(latitude: 28.1608, longitude: -14.2301), bounds: GeoBounds(south: 28.1311, west: -14.2536, north: 28.1799, east: -14.2029)),
         ScooterCity(id: "es:Morro Jable", name: "Morro Jable", countryCode: "ES", center: GeoPoint(latitude: 28.0502, longitude: -14.3522), bounds: GeoBounds(south: 28.041, west: -14.3561, north: 28.0831, east: -14.2967)),
-        ScooterCity(id: "es:Playa de las Américas", name: "Playa de las Américas", countryCode: "ES", center: GeoPoint(latitude: 28.0602, longitude: -16.7311), bounds: GeoBounds(south: 28.0407, west: -16.763, north: 28.115, east: -16.6956)),
-        ScooterCity(id: "es:Torrevieja", name: "Torrevieja", countryCode: "ES", center: GeoPoint(latitude: 37.9775, longitude: -0.6828), bounds: GeoBounds(south: 37.9392, west: -0.7395, north: 38.0354, east: -0.6426)),
+        ScooterCity(id: "es:Playa de las Américas", name: "Playa de las Américas", countryCode: "ES", center: GeoPoint(latitude: 28.0602, longitude: -16.7311), bounds: GeoBounds(south: 28.0375, west: -16.7953, north: 28.1375, east: -16.6901)),
+        ScooterCity(id: "es:Torrevieja", name: "Torrevieja", countryCode: "ES", center: GeoPoint(latitude: 37.9775, longitude: -0.6828), bounds: GeoBounds(south: 37.9392, west: -0.7523, north: 38.0354, east: -0.6383)),
         ScooterCity(id: "es:Pilar de la Horadada", name: "Pilar de la Horadada", countryCode: "ES", center: GeoPoint(latitude: 37.8675, longitude: -0.7926), bounds: GeoBounds(south: 37.8382, west: -0.8007, north: 37.8943, east: -0.7462)),
         ScooterCity(id: "es:Jávea", name: "Jávea", countryCode: "ES", center: GeoPoint(latitude: 38.7894, longitude: 0.1634), bounds: GeoBounds(south: 38.7636, west: 0.16, north: 38.7994, east: 0.2006)),
         ScooterCity(id: "es:Golf del Sur", name: "Golf del Sur", countryCode: "ES", center: GeoPoint(latitude: 28.033, longitude: -16.6077), bounds: GeoBounds(south: 28.0188, west: -16.6251, north: 28.0377, east: -16.5879)),
+        ScooterCity(id: "es:Corralejo", name: "Corralejo", countryCode: "ES", center: GeoPoint(latitude: 28.7289, longitude: -13.8691), bounds: GeoBounds(south: 28.7018, west: -13.8863, north: 28.749, east: -13.8462)),
+        ScooterCity(id: "es:Altea", name: "Altea", countryCode: "ES", center: GeoPoint(latitude: 38.5995, longitude: -0.0518), bounds: GeoBounds(south: 38.58, west: -0.08, north: 38.6464, east: 0.0195)),
+        ScooterCity(id: "es:L'Albir", name: "L'Albir", countryCode: "ES", center: GeoPoint(latitude: 38.5698, longitude: -0.0716), bounds: GeoBounds(south: 38.5537, west: -0.08, north: 38.5799, east: -0.0526)),
+        ScooterCity(id: "es:L'Alfàs del Pi", name: "L'Alfàs del Pi", countryCode: "ES", center: GeoPoint(latitude: 38.5815, longitude: -0.1021), bounds: GeoBounds(south: 38.5544, west: -0.122, north: 38.6238, east: -0.0801)),
+        ScooterCity(id: "es:La Nucía", name: "La Nucía", countryCode: "ES", center: GeoPoint(latitude: 38.6024, longitude: -0.1296), bounds: GeoBounds(south: 38.5634, west: -0.1596, north: 38.634, east: -0.1221)),
         ScooterCity(id: "es:Puerto del Carmen", name: "Puerto del Carmen", countryCode: "ES", center: GeoPoint(latitude: 28.9236, longitude: -13.663), bounds: GeoBounds(south: 28.9145, west: -13.6887, north: 28.9412, east: -13.6057)),
         ScooterCity(id: "is:Akranes", name: "Akranes", countryCode: "IS", center: GeoPoint(latitude: 64.3171, longitude: -22.0834), bounds: GeoBounds(south: 64.3078, west: -22.1074, north: 64.333, east: -22.0223)),
         ScooterCity(id: "is:Akureyri", name: "Akureyri", countryCode: "IS", center: GeoPoint(latitude: 65.6826, longitude: -18.0913), bounds: GeoBounds(south: 65.6486, west: -18.1687, north: 65.71, east: -18.0277)),
@@ -671,7 +684,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 239
+    static let cityCount = 244
     static let countryCount = 18
 
     /// Cities by distance from the point to their centre, nearest first.

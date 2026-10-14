@@ -139,6 +139,9 @@ banned shared scooters, and feeds that were empty when checked.
     Hoppy's Almería, Cartagena and Mojácar & Vera systems list e-bikes only,
     and its Roquetas de Mar, Magic World Resort and Cabo de Gata - Níjar
     systems are empty.
+  - Benidorm's centre has no Hoppy zone: Hoppy's "Benidorm (Marina Baixa)"
+    system serves Altea, L'Alfàs del Pi and La Nucía. Its zones in El Campello
+    and the Torrevieja system's in Orihuela Costa held no scooters.
 - **Iceland** ([guide](portuguese-spanish-icelandic-scooter-feeds.md#known-gaps)):
   - Bolt has run in the capital area since 2024, with no public feed.
   - Nine small Hopp towns held fewer than ten scooters.

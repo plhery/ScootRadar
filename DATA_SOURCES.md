@@ -311,10 +311,13 @@ Território). The credits list all three.
 
 Reviewed catalogs live in `data/portuguese-scooter-feeds.json`,
 `data/spanish-scooter-feeds.json` and `data/icelandic-scooter-feeds.json`.
-Portugal has 12 feeds across 11 cities (Bird and Lime), Spain 9 across 11
-(Bird, Hopp and Hoppy) and Iceland 14 across 18 (Hopp). All come from the operators'
-own public GBFS feeds, found through
-[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv).
+Portugal has 12 feeds across 11 cities (Bird and Lime), Spain 14 across 16
+(Bird, Hopp and Hoppy) and Iceland 14 across 18 (Hopp). All come from the
+operators' own public GBFS feeds, found through
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
+except Hoppy's, found on ATOM Mobility (`hoppy.rideatom.com`): Puerto del
+Carmen, Playa de las Américas, Corralejo, Caleta de Fuste, Torrevieja, and
+Altea, L'Albir, L'Alfàs del Pi and La Nucía on the Marina Baixa.
 
 Bird's feeds link a
 [data licence](https://web.archive.org/web/20260516143232/https://www.bird.co/gbfs-data-license-agreement/)
@@ -323,8 +326,7 @@ to Bird, with data no older than fifteen minutes. Lime's
 [GBFS terms](https://www.li.me/legal/public-gbfs-terms) allow public display
 only where local law requires it and data no older than ten minutes, as in
 France and Germany. Hopp links its privacy policy, not a licence, and Hoppy
-(Puerto del Carmen, on ATOM Mobility) publishes none. The map's credits name
-all four. See the
+publishes none. The map's credits name all four. See the
 [coverage audit](docs/portuguese-spanish-icelandic-scooter-feeds.md) for the
 systems, the gaps and the recheck command.
 

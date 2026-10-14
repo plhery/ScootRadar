@@ -8,8 +8,10 @@ weekday afternoon: counts changed between polls, every feed was under a minute
 old, and every feed URL is https, on the discovery's origin and under its
 directory. No account credentials or private rider APIs are used.
 
-Hoppy's scooters in Puerto del Carmen, Lanzarote, were added on 14 October
-2026; see [Hoppy in Puerto del Carmen, October 2026](#hoppy-in-puerto-del-carmen-october-2026).
+Hoppy's scooters were added on 14 October 2026: in Puerto del Carmen, on
+Lanzarote, then on Tenerife, Fuerteventura and the Costa Blanca; see
+[Hoppy in Puerto del Carmen](#hoppy-in-puerto-del-carmen-october-2026) and
+[Hoppy on Tenerife, Fuerteventura and the Costa Blanca](#hoppy-on-tenerife-fuerteventura-and-the-costa-blanca-october-2026).
 
 | Country | Operator | Enabled feeds | Coverage | Available scooters |
 | --- | --- | ---: | --- | ---: |
@@ -17,10 +19,10 @@ Hoppy's scooters in Puerto del Carmen, Lanzarote, were added on 14 October
 | Portugal | Lime | 2 | Lisboa, Almada (with Costa da Caparica) | 2,300 |
 | Spain | Bird | 5 | Gijón, Getafe, Playa de las Américas (Tenerife), Caleta de Fuste and Pájara (Fuerteventura) | 1,250 |
 | Spain | Hopp | 3 | Torrevieja and Pilar de la Horadada, Jávea, Playa de las Américas and Golf del Sur (Tenerife) | 550 |
-| Spain | Hoppy | 1 | Puerto del Carmen (Lanzarote) | 155 |
+| Spain | Hoppy | 6 | Puerto del Carmen (Lanzarote), Playa de las Américas (Tenerife), Corralejo and Caleta de Fuste (Fuerteventura), Altea, L'Albir, L'Alfàs del Pi and La Nucía (Marina Baixa), Torrevieja | 2,350 |
 | Iceland | Hopp | 14 | Reykjavík and its capital area, Reykjanesbær (with Sandgerði, Garður and Vogar), Akureyri, Selfoss, Akranes, Vestmannaeyjar and eight smaller towns | 2,700 |
 
-Portugal has 11 cities, Spain 11 and Iceland 18, once multi-town feeds are
+Portugal has 11 cities, Spain 16 and Iceland 18, once multi-town feeds are
 routed per town. The bounds, discovery URLs and aliases are in
 [`portuguese-scooter-feeds.json`](../data/portuguese-scooter-feeds.json),
 [`spanish-scooter-feeds.json`](../data/spanish-scooter-feeds.json) and
@@ -43,8 +45,9 @@ directory. Its timezone reads Europe/London, which keeps the Canaries' time.
   with 3 to 11 km less range, two of them at night; two more scooters moved
   0.3 and 0.6 km with a little less range and their old id.
 - **Scooters:** both vehicle types are `scooter_standing`, `electric`, with a
-  60 km maximum range. Hoppy's other Spanish systems carry e-bikes or nothing
-  (see [Known gaps](#known-gaps)).
+  60 km maximum range. Hoppy's systems on Tenerife, Fuerteventura and the
+  Costa Blanca are in the next section; its other Spanish systems carry
+  e-bikes or nothing (see [Known gaps](#known-gaps)).
 - **Bounds:** ATOM's geofencing forbids starting or ending a ride everywhere
   (`global_rules`) and allows both in 58 parking zones along the resort. The
   bounds enclose those zones, plus 0.005° of latitude and 0.01° of longitude;
@@ -58,6 +61,78 @@ directory. Its timezone reads Europe/London, which keeps the Canaries' time.
   its metadata once an hour. So Puerto del Carmen's feed adds about 8
   requests an hour to `hoppy.rideatom.com`, and at most about 65 while
   watched; see
+  [ATOM's request rate](german-italian-scooter-feeds.md#atoms-request-rate-october-2026).
+
+## Hoppy on Tenerife, Fuerteventura and the Costa Blanca, October 2026
+
+Hoppy runs five more Spanish scooter systems on ATOM Mobility, at
+`https://hoppy.rideatom.com/gbfs/<id>/v3.0/gbfs`. Each is keyless GBFS 3.0,
+and every feed URL is https, on the discovery's origin and under its
+directory.
+
+| Hoppy's system (id) | On the map as | Available scooters |
+| --- | --- | ---: |
+| Tenerife Sur (1193) | Playa de las Américas | 991–1,013 |
+| Corralejo (Fuerteventura) (1477) | Corralejo | 179–195 |
+| Antigua (Fuerteventura) (1188) | Caleta de Fuste | 168–174 |
+| Benidorm (Marina Baixa) (906) | Altea, L'Albir, L'Alfàs del Pi and La Nucía | 311–325 |
+| Torrevieja (876) | Torrevieja | 484–493 |
+
+- **Liveness:** each scooter was followed by the code at the end of its rental
+  link, as in Puerto del Carmen. The three Canary feeds were polled 25 to 27
+  times, every five minutes from about 00:30 to 01:48 CEST on 14 October (an
+  hour earlier in local time) and again from 11:41 to 12:31; the two Costa
+  Blanca feeds 21 times, from 11:22 to 12:31. Between polls up to 20 minutes
+  apart, Tenerife Sur had 31 rides, Corralejo 5, Caleta de Fuste 3, the Marina
+  Baixa 10 and Torrevieja 4: each scooter came back 0.3 to 3.3 km away under a
+  new id, with 0.6 to 12 km less range. Over the morning gap, another 69
+  scooters on Tenerife, 24 in Corralejo and 15 in Caleta de Fuste moved under a
+  new id with less range. Torrevieja's were the quietest: three scooters made
+  its four rides, and the rest barely moved.
+- **Scooters:** the map keeps the `scooter_standing`, `electric` types, with a
+  60 km maximum range, or 40 km for some of Torrevieja's. The Marina Baixa
+  system also lists about 90 e-bikes, and types for mopeds and mobility
+  scooters; Torrevieja's has a moped type and an e-bike type. The app drops
+  them all.
+- **Town names:** Hoppy is a different operator from Bird and Hopp, but its
+  towns take the names the map already uses, so search and the city count
+  show each town once. Tenerife Sur's scooters stand from Los Cristianos to
+  Costa Adeje, so it is Playa de las Américas, with Bird's and Hopp's.
+  "Antigua (Fuerteventura)" is named after the municipality, and its scooters
+  stand in Caleta de Fuste, with Bird's. Torrevieja joins Hopp's Costa Blanca
+  town of that name. Corralejo is new.
+- **Marina Baixa:** the system is named after Benidorm, but its parking zones
+  and scooters lie almost all north of the town. By OpenStreetMap's municipal
+  boundaries, at 12:06 on 14 October 113 of its 318 scooters stood in Altea,
+  144 in L'Alfàs del Pi (with L'Albir), 42 in La Nucía, 7 in Polop, 8 at
+  Benidorm's northern edge and 4 in Finestrat. The towns' boundaries interlock,
+  so the feed is routed to four boxes that don't overlap: Altea north of
+  38.58° N and east of 0.08° W; L'Albir, the beach district of L'Alfàs del Pi,
+  south of it; L'Alfàs del Pi between 0.08° and 0.122° W, which also takes the
+  scooters at Benidorm's edge; and La Nucía west of that, with Polop as an
+  alias. A scooter near a boundary can count towards the next town. Four
+  scooters parked together in Finestrat, 5 km from the rest, are left out, as
+  are the system's parking zones in El Campello, near Alicante, where no
+  scooter stood. Hopp's own Benidorm feed is empty too (see
+  [Known gaps](#known-gaps)).
+- **Torrevieja:** every scooter stood in Torrevieja. The system's zones also
+  cover Orihuela Costa, Pilar de la Horadada and San Miguel de Salinas, where
+  none stood, so the bounds keep to Torrevieja; La Mata is an alias.
+- **Bounds:** ATOM's geofencing is again one no-ride polygon without a hole,
+  so the bounds enclose the parking zones open to the scooter types and the
+  scooters' positions, plus 0.005° of latitude and 0.01° of longitude: 278
+  zones on Tenerife, 35 in Corralejo, 98 in Caleta de Fuste, 583 on the
+  Marina Baixa and 346 in Torrevieja.
+- **Prices:** EUR 1.00 to start (EUR 1.20 in Corralejo), then EUR 0.28 to 0.37
+  a minute, by tier and town.
+- **Battery:** range only. **Rental links** name each scooter by its printed
+  code, so they are kept.
+- **Time zone:** the three Canary feeds give `Europe/London`, which keeps the
+  same offsets as `Atlantic/Canary`, and the two on the Costa Blanca
+  `Europe/Madrid`. All give opening hours of `24/7`.
+- **Load:** the five feeds add about 40 requests an hour to
+  `hoppy.rideatom.com`, which now carries 16 feeds and about 130 requests an
+  hour while nobody looks, and at most about 65 each while watched; see
   [ATOM's request rate](german-italian-scooter-feeds.md#atoms-request-rate-october-2026).
 
 ## Data handling
@@ -77,7 +152,7 @@ directory. Its timezone reads Europe/London, which keeps the Canaries' time.
   552 e-bikes under its scooter type in its station feed; it is left out.
 - **Prices** show for Hopp and Hoppy: ISK 115 to unlock and ISK 45 a minute in
   Iceland, EUR 0.95–0.99 and EUR 0.25–0.33 a minute for Hopp in Spain, and
-  EUR 1.20 and EUR 0.35–0.37 for Hoppy. The króna has no
+  EUR 1.00–1.20 and EUR 0.28–0.37 for Hoppy. The króna has no
   minor unit, so web and iOS show it without decimals. Bird publishes an empty
   plan list and Lime no pricing feed.
 - **Battery:** Lime gives range only, as elsewhere, so Lime scooters show no
@@ -112,6 +187,13 @@ the dock and each scooter's card state the ban and when renting resumes.
   ([La Voz de Lanzarote](https://www.lavozdelanzarote.com/en/news/politics/security-and-order-in-tias-the-police-remove-71-electric-scooters-what-does-this-mean-for-you_244876_102.html)).
   The town says rental firms without a licence break its bylaws. Neither
   report names Hoppy. No curfew was added.
+- **Adeje** (Playa de las Américas) approved a new mobility ordinance in May
+  2026 that makes rental firms hold a municipal authorisation, but the report
+  names no rental hours
+  ([Diario de Avisos](https://diariodeavisos.elespanol.com/2026/05/adeje-cambia-normas-patinetes-acampar/)).
+  Hoppy's five new feeds give opening hours of `24/7`, and no rule on renting
+  hours was found for Arona, La Oliva, Antigua, Altea, L'Alfàs del Pi, La
+  Nucía or Torrevieja. No curfew was added.
 - No other covered town was found to ban renting at night. The small Spanish
   and Portuguese towns had only a quick search.
 

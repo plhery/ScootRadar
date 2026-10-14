@@ -280,6 +280,134 @@
       ]
     },
     {
+      "id": "hoppy_es_caleta_de_fuste",
+      "country": "ES",
+      "provider": "hoppy",
+      "city": "Caleta de Fuste",
+      "center": [
+        28.3926,
+        -13.8647
+      ],
+      "bounds": {
+        "south": 28.363,
+        "north": 28.4207,
+        "west": -13.8885,
+        "east": -13.8412
+      },
+      "discoveryUrl": "https://hoppy.rideatom.com/gbfs/1188/v3.0/gbfs",
+      "aliases": [
+        "El Castillo",
+        "Costa de Antigua",
+        "Antigua",
+        "Fuerteventura"
+      ]
+    },
+    {
+      "id": "hoppy_es_corralejo",
+      "country": "ES",
+      "provider": "hoppy",
+      "city": "Corralejo",
+      "center": [
+        28.7289,
+        -13.8691
+      ],
+      "bounds": {
+        "south": 28.7018,
+        "north": 28.749,
+        "west": -13.8863,
+        "east": -13.8462
+      },
+      "discoveryUrl": "https://hoppy.rideatom.com/gbfs/1477/v3.0/gbfs",
+      "aliases": [
+        "La Oliva",
+        "Fuerteventura"
+      ]
+    },
+    {
+      "id": "hoppy_es_marina_baixa",
+      "country": "ES",
+      "provider": "hoppy",
+      "city": "Marina Baixa",
+      "center": [
+        38.5995,
+        -0.0518
+      ],
+      "bounds": {
+        "south": 38.5537,
+        "north": 38.6464,
+        "west": -0.1596,
+        "east": 0.0195
+      },
+      "discoveryUrl": "https://hoppy.rideatom.com/gbfs/906/v3.0/gbfs",
+      "areas": [
+        {
+          "city": "Altea",
+          "center": [
+            38.5995,
+            -0.0518
+          ],
+          "bounds": {
+            "south": 38.58,
+            "north": 38.6464,
+            "west": -0.08,
+            "east": 0.0195
+          }
+        },
+        {
+          "city": "L'Albir",
+          "aliases": [
+            "Albir",
+            "El Albir"
+          ],
+          "center": [
+            38.5698,
+            -0.0716
+          ],
+          "bounds": {
+            "south": 38.5537,
+            "north": 38.5799,
+            "west": -0.08,
+            "east": -0.0526
+          }
+        },
+        {
+          "city": "L'Alfàs del Pi",
+          "aliases": [
+            "L'Alfas del Pi",
+            "Alfaz del Pi",
+            "El Alfaz del Pi"
+          ],
+          "center": [
+            38.5815,
+            -0.1021
+          ],
+          "bounds": {
+            "south": 38.5544,
+            "north": 38.6238,
+            "west": -0.122,
+            "east": -0.0801
+          }
+        },
+        {
+          "city": "La Nucía",
+          "aliases": [
+            "La Nucia",
+            "Polop"
+          ],
+          "center": [
+            38.6024,
+            -0.1296
+          ],
+          "bounds": {
+            "south": 38.5634,
+            "north": 38.634,
+            "west": -0.1596,
+            "east": -0.1221
+          }
+        }
+      ]
+    },
+    {
       "id": "hoppy_es_puerto_del_carmen",
       "country": "ES",
       "provider": "hoppy",
@@ -299,6 +427,52 @@
         "Tías",
         "Tias",
         "Lanzarote"
+      ]
+    },
+    {
+      "id": "hoppy_es_tenerife_sur",
+      "country": "ES",
+      "provider": "hoppy",
+      "city": "Playa de las Américas",
+      "center": [
+        28.0654,
+        -16.7295
+      ],
+      "bounds": {
+        "south": 28.0375,
+        "north": 28.1375,
+        "west": -16.7953,
+        "east": -16.6901
+      },
+      "discoveryUrl": "https://hoppy.rideatom.com/gbfs/1193/v3.0/gbfs",
+      "aliases": [
+        "Playa de las Americas",
+        "Costa Adeje",
+        "Adeje",
+        "Arona",
+        "Los Cristianos",
+        "Tenerife",
+        "Teneriffa"
+      ]
+    },
+    {
+      "id": "hoppy_es_torrevieja",
+      "country": "ES",
+      "provider": "hoppy",
+      "city": "Torrevieja",
+      "center": [
+        37.9919,
+        -0.6798
+      ],
+      "bounds": {
+        "south": 37.9395,
+        "north": 38.0344,
+        "west": -0.7523,
+        "east": -0.6383
+      },
+      "discoveryUrl": "https://hoppy.rideatom.com/gbfs/876/v3.0/gbfs",
+      "aliases": [
+        "La Mata"
       ]
     }
   ]
