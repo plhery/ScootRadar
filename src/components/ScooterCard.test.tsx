@@ -256,6 +256,14 @@ describe('ScooterCard', () => {
     expect(screen.getByText('HUF 272 to unlock, then HUF 76 a minute')).toHaveClass('card-note');
   });
 
+  it('shows a price in hryvnias with its kopiyky', () => {
+    // 3electra in Kyiv: UAH 12 to start and UAH 5.60 a minute.
+    renderCard({}, { provider: 'zelectra', pricing: { currency: 'UAH', unlock_fee_minor_units: 1_200, minute_fee_minor_units: 560 } });
+
+    expect(figures()[2]).toEqual({ value: '68.00', label: 'UAH, 10 min', spoken: '≈ UAH 68.00 for 10 min' });
+    expect(screen.getByText('UAH 12.00 to unlock, then UAH 5.60 a minute')).toHaveClass('card-note');
+  });
+
   it('says so when unlocking costs nothing', () => {
     renderCard({}, { pricing: { currency: 'CHF', unlock_fee_minor_units: 0, minute_fee_minor_units: 45 } });
 

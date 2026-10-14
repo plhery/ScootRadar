@@ -52,7 +52,8 @@ describe('German and Italian scooter coverage', () => {
     ['Corralejo', 'Corralejo, Spain'], ['La Oliva España', 'Corralejo, Spain'], ['Altea', 'Altea, Spain'], ['Albir', 'L\'Albir, Spain'],
     ['El Albir Spain', 'L\'Albir, Spain'], ['Alfaz del Pi', 'L\'Alfàs del Pi, Spain'], ['L\'Alfas del Pi', 'L\'Alfàs del Pi, Spain'],
     ['La Nucia', 'La Nucía, Spain'], ['Polop', 'La Nucía, Spain'], ['La Mata', 'Torrevieja, Spain'],
-    ['Catane Italie', 'Catania, Italy']])('finds %s', (query, name) => {
+    ['Catane Italie', 'Catania, Italy'], ['Kyiv', 'Kyiv, Ukraine'], ['Kiev', 'Kyiv, Ukraine'], ['Kiew Ukraine', 'Kyiv, Ukraine'],
+    ['Київ', 'Kyiv, Ukraine'], ['Київ Україна', 'Kyiv, Ukraine'], ['Киев', 'Kyiv, Ukraine'], ['Kyiv Ucraina', 'Kyiv, Ukraine']])('finds %s', (query, name) => {
     expect(searchRegionalScooterCities(query)[0].display_name).toBe(name);
   });
   it('does not silently ignore a conflicting country or expose the aggregate feed as a city', () => {
@@ -104,7 +105,7 @@ describe('German and Italian scooter coverage', () => {
     expect(result.vehicles).toHaveLength(1);
     expect(result.vehicles[0]).toMatchObject({ provider: system.provider, battery: 72 });
     expect(result.meta.sources).toEqual({ national: 'skipped', hopp: 'skipped', publibike: 'skipped',
-      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped', croatia: 'skipped', [country]: 'fresh' });
+      france: 'skipped', germany: 'skipped', italy: 'skipped', belgium: 'skipped', norway: 'skipped', uk: 'skipped', portugal: 'skipped', spain: 'skipped', iceland: 'skipped', sweden: 'skipped', latvia: 'skipped', poland: 'skipped', hungary: 'skipped', greece: 'skipped', cyprus: 'skipped', finland: 'skipped', croatia: 'skipped', ukraine: 'skipped', [country]: 'fresh' });
     expect(fetchMock).toHaveBeenCalledTimes(3);
   });
   it('prices each Hopp Pécs scooter from its own plan, in forints, never from the plans in other currencies', async () => {
@@ -253,6 +254,47 @@ describe('German and Italian scooter coverage', () => {
       // The number at the end of the link is the one printed on the scooter, which outlives its rotating id.
       rental_uris: { android: 'https://ride-hoppy.app.link/302484', ios: 'https://ride-hoppy.app.link/302484', web: 'https://ride-hoppy.app.link/' },
     })]);
+  });
+  it('reads 3electra Kyiv\'s GBFS 3.0 feed: UAH 12 to start and UAH 5.60 a minute, and never the places in Peru it gives some', async () => {
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'zelectra_ua_kyiv')!;
+    expect(system).toMatchObject({ country: 'UA', city: 'Kyiv', provider: 'zelectra' });
+    const base = new URL('.', system.discoveryUrl).toString();
+    expect(base).toBe('https://zelectra.rideatom.com/gbfs/66/v3.0/');
+    // As 3electra publishes them on ATOM Mobility.
+    const scooter = { vehicle_id: '3761687905197830965', lat: 50.44467833333333, lon: 30.499063333333332, is_reserved: false, is_disabled: false,
+      rental_uris: { android: 'https://zelectra.app.link/Z3106', ios: 'https://zelectra.app.link/Z3106', web: 'https://zelectra.app.link/' },
+      vehicle_type_id: '1073', current_range_meters: 11500, pricing_plan_id: '1073' };
+    vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+      if (url === system.discoveryUrl) return response({ version: '3.0', data: { feeds: ['vehicle_types', 'vehicle_status', 'system_pricing_plans']
+        .map(name => ({ name, url: `${base}${name}` })) } });
+      if (url === `${base}vehicle_types`) return response({ data: { vehicle_types: [
+        { vehicle_type_id: '1073', form_factor: 'scooter_standing', propulsion_type: 'electric', max_range_meters: 25000, default_pricing_plan_id: '1073' },
+        { vehicle_type_id: '96', form_factor: 'moped', propulsion_type: 'electric', max_range_meters: 90000, default_pricing_plan_id: '96' }] } });
+      if (url === `${base}vehicle_status`) return response({ last_updated: new Date().toISOString(), data: { vehicles: [scooter,
+        // The feed puts hundreds of its scooters in Lima, where it also draws four zones, and once put one in the Galápagos.
+        { ...scooter, vehicle_id: 'lima', lat: -12.030745, lon: -77.046723 },
+        { ...scooter, vehicle_id: 'galapagos', lat: 0.934758, lon: -90.477218 },
+        { ...scooter, vehicle_id: 'moped', vehicle_type_id: '96', pricing_plan_id: '96' }] } });
+      if (url === `${base}system_pricing_plans`) return response({ data: { plans: [{ plan_id: '1073',
+        name: [{ text: 'Acton', language: 'en' }], currency: 'UAH', price: 12.0, is_taxable: false,
+        description: [{ text: 'This is pricing plan for Acton; Maximum distance is 25.00;', language: 'en' }],
+        per_min_pricing: [{ start: 0, rate: 5.6, interval: 1 }] }] } });
+      throw new Error(`Unexpected upstream ${url}`);
+    }));
+    const kyiv = expect.objectContaining({
+      provider: 'zelectra', vehicle_id: 'zelectra_ua_kyiv:3761687905197830965', battery: null, range_m: 11500,
+      pricing: { currency: 'UAH', unlock_fee_minor_units: 1200, minute_fee_minor_units: 560 },
+      // The code at the end of the link is the one printed on the scooter, which outlives its rotating id.
+      rental_uris: { android: 'https://zelectra.app.link/Z3106', ios: 'https://zelectra.app.link/Z3106', web: 'https://zelectra.app.link/' },
+    });
+    // The cache collects within Kyiv's bounds, so no snapshot, total or health figure ever holds Lima.
+    const collector = independentCollectableFeeds().find(feed => feed.id === 'ukraine:zelectra_ua_kyiv')!;
+    expect(collector.coverage).toEqual([system.bounds]);
+    expect((await collector.collect()).vehicles).toEqual([kyiv]);
+    upstreamJsonCache.clear();
+    const result = await fetchScooters({ bounds: system.bounds, minBattery: 0, providers: new Set(['zelectra']) });
+    expect(result.meta.sources.ukraine).toBe('fresh');
+    expect(result.vehicles).toEqual([kyiv]);
   });
   // As ATOM Mobility publishes them: GBFS 3.0, a plan per scooter type, and a range that is the type's maximum scaled by the charge.
   const atomFeeds = (system: (typeof REGIONAL_SCOOTER_SYSTEMS)[number], type: object, plan: object, vehicles: object[]) => {

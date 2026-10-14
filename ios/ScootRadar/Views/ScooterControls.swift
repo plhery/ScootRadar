@@ -1986,7 +1986,7 @@ struct ScooterCreditsList: View {
                 url: URL(string: "https://www.mobidata-bw.de/")!
             ),
             Source(
-                title: "DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy, Ride Mobility, Yoio, Elerent",
+                title: "DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Bird, Hoppy, Ride Mobility, Yoio, Elerent, 3electra",
                 url: URL(string: "https://github.com/MobilityData/gbfs")!
             ),
             Source(
@@ -2012,6 +2012,10 @@ struct ScooterCreditsList: View {
             Source(
                 title: "PT: DGT boundaries · CC BY 4.0",
                 url: URL(string: "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop")!
+            ),
+            Source(
+                title: "UA: OpenStreetMap boundaries · ODbL",
+                url: URL(string: "https://opendatacommons.org/licenses/odbl/")!
             ),
             Source(
                 title: String(localized: "Address search by Geoapify"),

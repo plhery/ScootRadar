@@ -96,7 +96,7 @@ describe('searchCoveredCities', () => {
     // src/lib/places.ts asks Intl.DisplayNames; a typed city and a chip must read the same.
     for (const language of GEOCODE_LANGUAGES) {
       const regions = new Intl.DisplayNames(`${language}-CH`, { type: 'region' });
-      for (const [query, country] of [['Zürich', 'CH'], ['Lyon', 'FR'], ['Berlin', 'DE'], ['Roma', 'IT'], ['Uppsala', 'SE'], ['Rīga', 'LV'], ['Sosnowiec', 'PL'], ['Pécs', 'HU'], ['Piraeus', 'GR'], ['Limassol', 'CY'], ['Mariehamn', 'FI'], ['Rijeka', 'HR']]) {
+      for (const [query, country] of [['Zürich', 'CH'], ['Lyon', 'FR'], ['Berlin', 'DE'], ['Roma', 'IT'], ['Uppsala', 'SE'], ['Rīga', 'LV'], ['Sosnowiec', 'PL'], ['Pécs', 'HU'], ['Piraeus', 'GR'], ['Limassol', 'CY'], ['Mariehamn', 'FI'], ['Rijeka', 'HR'], ['Kyiv', 'UA']]) {
         expect(searchCoveredCities(query, language)[0].subtitle, `${country} in ${language}`).toBe(regions.of(country));
       }
     }
@@ -152,6 +152,19 @@ describe('searchCoveredCities', () => {
     // A country alone names no city.
     expect(searchCoveredCities('Hrvatska')).toEqual([]);
     expect(searchCoveredCities('Croatia')).toEqual([]);
+  });
+
+  it('finds Kyiv as Kiev, in German, in Cyrillic, and Ukraine in any of the app\'s languages', () => {
+    for (const query of ['Kyiv', 'kyiv', 'Kiev', 'Kyjiw', 'Kiew', 'Київ', 'Киев', 'Киів', 'КИЇВ', 'Київ Україна',
+      'Kyiv Ucraina', 'Kiev Oekraïne', 'Kyiv Ukraina', 'Kiew Ukraine', 'Kyiv Úkraína', 'Kiev Ucrânia', 'Kyiv Ucrania']) {
+      expect(searchCoveredCities(query)[0]?.title, query).toBe('Kyiv');
+    }
+    expect(searchCoveredCities('Kiev', 'it')[0].subtitle).toBe('Ucraina');
+    expect(searchCoveredCities('Київ', 'nl')[0].subtitle).toBe('Oekraïne');
+    expect(searchCoveredCities('Kyiv Italia')).toEqual([]);
+    // A country alone names no city.
+    expect(searchCoveredCities('Україна')).toEqual([]);
+    expect(searchCoveredCities('Ukraine')).toEqual([]);
   });
 
   it('leaves streets, stations and towns without scooter data to the address search', () => {

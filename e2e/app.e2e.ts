@@ -1695,7 +1695,7 @@ test('the settings name the languages, and About leads to the credits, the priva
   await settings.getByRole('button', { name: 'Map & data credits' }).click();
   const credits = page.getByRole('dialog', { name: 'Map & data credits', exact: true });
   await expect(credits.getByRole('heading', { name: 'Map & data credits', level: 2 })).toBeFocused();
-  await expect(credits.getByRole('link')).toHaveCount(17);
+  await expect(credits.getByRole('link')).toHaveCount(18);
   await expect(credits.getByRole('link', { name: '© OpenStreetMap contributors' })).toHaveAttribute('href', 'https://www.openstreetmap.org/copyright');
   await expect(credits.getByRole('link', { name: 'OpenFreeMap © OpenMapTiles' })).toHaveAttribute('href', 'https://openfreemap.org/');
   // The walking routes come from FOSSGIS's Valhalla, whose terms ask for both: its credit, and a way to fix the map.
@@ -1706,6 +1706,8 @@ test('the settings name the languages, and About leads to the credits, the priva
   await expect(credits.getByRole('link', { name: 'Search · Geoapify' })).toHaveAttribute('target', '_blank');
   await expect(credits.getByRole('link', { name: 'Search · Photon, komoot' })).toHaveAttribute('href', 'https://photon.komoot.io/');
   await expect(credits.getByRole('link', { name: 'Parking · Métropole Européenne de Lille' })).toBeVisible();
+  // Kyiv's curfew area is OpenStreetMap's boundary, whose licence asks for its credit.
+  await expect(credits.getByRole('link', { name: 'UA: OpenStreetMap boundaries · ODbL' })).toHaveAttribute('href', 'https://opendatacommons.org/licenses/odbl/');
   for (const control of await credits.getByRole('button').or(credits.getByRole('link')).all()) {
     expect((await control.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   }

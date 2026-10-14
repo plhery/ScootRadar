@@ -287,6 +287,13 @@ banned shared scooters, and feeds that were empty when checked.
     Vodnjan and Svetvinčenat, in Istria.
   - The national access point (promet-info.hr) carries road and traffic data,
     not shared vehicles.
+- **Ukraine** ([guide](ukrainian-scooter-feeds.md#known-gaps)): 3electra in
+  Kyiv is covered.
+  - E-wings and Bolt run scooters in Kyiv with no public feed.
+  - 3electra's feed puts scooters it doesn't show in Lima, Peru, by the
+    hundred in the evening, and the map drops them with the city's bounds.
+    Why, and when, isn't published; only 3electra can say.
+  - Systems 65, 67 and 68 on 3electra's host answer 400.
 
 ## Countries not covered yet
 
@@ -295,21 +302,6 @@ national access points, Dott's country listings, a scan of Bolt's and ATOM
 Mobility's feed ids, Hopp's town list, and guessed Bird, Lime and Hopp
 addresses for each country's towns. Survey files were not kept; rerun the
 checks before relying on a count.
-
-**On hold:** Ukraine. 3electra's Kyiv feed (ATOM Mobility, system 66) lists
-about 800 scooters. From 19:26 to 20:38 Kyiv time on 13 October 2026, 698 to
-718 available standing scooters stood in central Kyiv, and 53 rides showed as
-a scooter leaving the feed and coming back 0.2 to 3.2 km away under a new id,
-47 of them with less range. But 80 to 99 more stood in Lima, Peru, hopping
-about 1.7 km between polls with the same range, and from 20:42 scooters moved
-to Lima by the hundred (364 by 20:50; 714 at 00:40 the night before, most back
-in Kyiv by 02:10). Three that came back from Lima stood 5 to 17 m from where
-they had left Kyiv, so Lima looks like a mask over hidden scooters, not a
-position. Bounds would drop Lima, but the map would lose most of Kyiv each
-evening for reasons unknown. Systems 65, 67 and 68 answer 400, and the feed
-gives no licence. Ask the operator what Lima means before adding it; Kyiv's
-martial-law curfew, 01:00 to 05:00, would also need a curfew entry from a
-primary source.
 
 **Nothing public:**
 

@@ -693,6 +693,16 @@ extension ScooterModelsTests {
         XCTAssertEqual(RentalCurfew.active(at: stavanger, on: try at("2026-10-16T22:30:00Z"))?.until, try at("2026-10-17T03:00:00Z"))
         XCTAssertNil(RentalCurfew.active(at: stavanger, on: try at("2026-10-15T22:30:00Z")))
 
+        // Kyiv's martial-law curfew, 01:00 to 05:00 Kyiv time, stops at the city's edge.
+        let kyiv = GeoPoint(latitude: 50.4501, longitude: 30.5234)
+        let brovary = GeoPoint(latitude: 50.5113, longitude: 30.7903)
+        XCTAssertNil(RentalCurfew.active(at: kyiv, on: try at("2026-10-14T21:59:00Z")))
+        XCTAssertEqual(
+            RentalCurfew.active(at: kyiv, on: try at("2026-10-14T22:00:00Z")),
+            RentalCurfew.Active(city: "Kyiv", until: try at("2026-10-15T02:00:00Z"))
+        )
+        XCTAssertNil(RentalCurfew.active(at: brovary, on: try at("2026-10-14T23:00:00Z")))
+
         // The ban comes before every other notice, with a moon.
         let curfew = RentalCurfew.Active(city: "Oslo", until: try at("2026-10-13T03:00:00Z"))
         XCTAssertEqual(

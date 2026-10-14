@@ -15,18 +15,19 @@ import greekCatalog from '../../data/greek-scooter-feeds.json';
 import cypriotCatalog from '../../data/cypriot-scooter-feeds.json';
 import finnishCatalog from '../../data/finnish-scooter-feeds.json';
 import croatianCatalog from '../../data/croatian-scooter-feeds.json';
+import ukrainianCatalog from '../../data/ukrainian-scooter-feeds.json';
 import type { ProviderKey } from '@/generated/providers';
 import type { MapBounds } from '@/lib/types';
 
-export type ScooterCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR';
+export type ScooterCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR' | 'UA';
 export const COUNTRY_SOURCES = {
   FR: 'france', DE: 'germany', IT: 'italy', BE: 'belgium', NO: 'norway', GB: 'uk', PT: 'portugal', ES: 'spain', IS: 'iceland',
-  SE: 'sweden', LV: 'latvia', PL: 'poland', HU: 'hungary', GR: 'greece', CY: 'cyprus', FI: 'finland', HR: 'croatia',
+  SE: 'sweden', LV: 'latvia', PL: 'poland', HU: 'hungary', GR: 'greece', CY: 'cyprus', FI: 'finland', HR: 'croatia', UA: 'ukraine',
 } as const;
 export type RegionalSource = typeof COUNTRY_SOURCES[ScooterCountry];
 const COUNTRY_NAMES = {
   FR: 'France', DE: 'Germany', IT: 'Italy', BE: 'Belgium', NO: 'Norway', GB: 'United Kingdom', PT: 'Portugal', ES: 'Spain', IS: 'Iceland',
-  SE: 'Sweden', LV: 'Latvia', PL: 'Poland', HU: 'Hungary', GR: 'Greece', CY: 'Cyprus', FI: 'Finland', HR: 'Croatia',
+  SE: 'Sweden', LV: 'Latvia', PL: 'Poland', HU: 'Hungary', GR: 'Greece', CY: 'Cyprus', FI: 'Finland', HR: 'Croatia', UA: 'Ukraine',
 };
 const COUNTRY_ALIASES = { FR: ['france', 'frankreich', 'francia', 'frankrijk', 'frankrike', 'franca', 'frakkland'],
   DE: ['germany', 'deutschland', 'allemagne', 'germania', 'duitsland', 'tyskland', 'alemanha', 'alemania', 'thyskaland'],
@@ -45,7 +46,8 @@ const COUNTRY_ALIASES = { FR: ['france', 'frankreich', 'francia', 'frankrijk', '
   GR: ['greece', 'griechenland', 'grece', 'grecia', 'griekenland', 'hellas', 'grikkland', 'ellada', 'ελλαδα'],
   CY: ['cyprus', 'zypern', 'chypre', 'cipro', 'kypros', 'chipre', 'kypur', 'κυπροσ', 'kibris'],
   FI: ['finland', 'finnland', 'finlande', 'finlandia', 'suomi'],
-  HR: ['croatia', 'kroatien', 'croatie', 'croazia', 'kroatie', 'kroatia', 'croacia', 'hrvatska'] };
+  HR: ['croatia', 'kroatien', 'croatie', 'croazia', 'kroatie', 'kroatia', 'croacia', 'hrvatska'],
+  UA: ['ukraine', 'ucraina', 'oekraine', 'ukraina', 'ucrania', 'ukrajina', 'ukrayina', 'украіна', 'украина'] };
 
 export interface ScooterServiceArea {
   city: string;
@@ -75,7 +77,7 @@ export const REGIONAL_SCOOTER_SYSTEMS = [
   ...belgianCatalog.systems, ...norwegianCatalog.systems, ...britishCatalog.systems,
   ...portugueseCatalog.systems, ...spanishCatalog.systems, ...icelandicCatalog.systems, ...swedishCatalog.systems,
   ...latvianCatalog.systems, ...polishCatalog.systems, ...hungarianCatalog.systems, ...greekCatalog.systems,
-  ...cypriotCatalog.systems, ...finnishCatalog.systems, ...croatianCatalog.systems,
+  ...cypriotCatalog.systems, ...finnishCatalog.systems, ...croatianCatalog.systems, ...ukrainianCatalog.systems,
 ] as RegionalScooterSystem[];
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {
@@ -113,11 +115,13 @@ export const REGIONAL_SCOOTER_CITIES = [...cities.values()];
 // "Baerum", "Isafjordur" and "Wolomin" find Tromsø, Bærum, Ísafjörður and Wołomin.
 // Greek letters are kept, without their accents, and a final sigma is a sigma:
 // "Ροδος" and "Ρόδοσ" find Ρόδος. A dotless ı is an i, so "Kıbrıs" finds Cyprus.
+// Cyrillic letters are kept as well, without their marks, so "Київ" is found
+// typed as "Киів" too.
 const SPELLED_OUT: Record<string, string> = { ß: 'ss', æ: 'ae', ø: 'o', œ: 'oe', þ: 'th', ð: 'd', ł: 'l', ς: 'σ', ı: 'i' };
 
 function normalize(value: string) {
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-    .replace(/[ßæøœþðłςı]/g, letter => SPELLED_OUT[letter]).replace(/[^a-z0-9α-ω]+/g, ' ').trim();
+    .replace(/[ßæøœþðłςı]/g, letter => SPELLED_OUT[letter]).replace(/[^a-z0-9α-ωа-яёєіїґ]+/g, ' ').trim();
 }
 
 /** Local city navigation stays available without a geocoding network request. */

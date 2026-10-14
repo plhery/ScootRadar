@@ -296,7 +296,8 @@ systems, the gaps and the recheck command.
 
 Night bans on renting, in `data/rental-curfews.json`, come from each town's
 rules: Lovdata for Norway, the council or the operator for Britain, the
-municipal regulation for Matosinhos in Portugal. Their areas are municipal
+municipal regulation for Matosinhos in Portugal, and the Kyiv City Military
+Administration's curfew order for Kyiv. Their areas are municipal
 boundaries from Kartverket under
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), local authority
 districts from the ONS under the
@@ -305,7 +306,10 @@ districts from the ONS under the
 municipalities from the Direção-Geral do Território's
 [CAOP](https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop)
 under CC BY 4.0 (Informação geográfica cedida pela Direção-Geral do
-Território). The credits list all three.
+Território). Kyiv's is its OpenStreetMap boundary (relation 421866), read
+through Nominatim, © OpenStreetMap contributors, under the
+[ODbL](https://opendatacommons.org/licenses/odbl/); simplified, it stays under
+the ODbL. The credits list all four.
 
 ## Portugal, Spain and Iceland
 
@@ -457,3 +461,19 @@ Hoppy publishes no licence in its Rijeka feed, as in Kortrijk. The map's
 credits name it under the GBFS line. See the
 [coverage audit](docs/croatian-scooter-feeds.md) for the system, the town
 name, the gaps and the recheck command.
+
+## Ukraine
+
+The reviewed catalog lives in `data/ukrainian-scooter-feeds.json`: 1 feed,
+3electra in Kyiv. It is 3electra's own public GBFS 3.0 feed, system 66 on ATOM
+Mobility's `zelectra.rideatom.com`, found through
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
+which lists no other Ukrainian system. The feed places the scooters 3electra
+doesn't show in Lima, Peru; the scooter cache collects Kyiv within its bounds,
+so they never reach the map, its totals or its health. The cache paces
+`zelectra.rideatom.com` to about two requests a second, as every ATOM host.
+
+3electra publishes no licence in its feed. The map's credits name it under the
+GBFS line. See the [coverage audit](docs/ukrainian-scooter-feeds.md) for the
+system, the scooters in Lima, the city name, the curfew, the gaps and the
+recheck command.

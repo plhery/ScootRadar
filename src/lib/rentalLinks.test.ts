@@ -77,6 +77,14 @@ describe('rental links', () => {
     expect(safeRentalUri('hoppy', link)).toBeNull();
   });
 
+  it('keeps the link to each 3electra scooter, on its own host only', () => {
+    const link = 'https://zelectra.app.link/Z3106';
+    expect(normalizeRentalUris('zelectra', { ios: link, android: link, web: 'https://zelectra.app.link/' }))
+      .toEqual({ ios: link, android: link, web: 'https://zelectra.app.link/' });
+    expect(safeRentalUri('zelectra', 'https://elerent.app.link/CAT0059')).toBeNull();
+    expect(safeRentalUri('elerent', link)).toBeNull();
+  });
+
   it('selects only the link intended for the current mobile platform', () => {
     const ios = 'https://go.ridedott.com/vehicles/1?platform=ios';
     const android = 'https://go.ridedott.com/vehicles/1?platform=android';

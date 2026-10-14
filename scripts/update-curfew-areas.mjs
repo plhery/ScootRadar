@@ -5,8 +5,9 @@ import { resolve } from 'node:path';
 // simplified to within TOLERANCE_M: Norwegian municipalities from Kartverket
 // (CC BY 4.0), British local authority districts from the ONS (Open Government
 // Licence v3.0), Portuguese municipalities from the Direção-Geral do Território's
-// CAOP (CC BY 4.0). Pieces smaller than MIN_AREA_KM2 (skerries, most islands) are
-// left out. Run it after adding a curfew, then npm run generate:providers.
+// CAOP (CC BY 4.0), and Kyiv from OpenStreetMap (ODbL). Pieces smaller than
+// MIN_AREA_KM2 (skerries, most islands) are left out. Run it after adding a
+// curfew, then npm run generate:providers.
 
 const TOLERANCE_M = 100;
 const MIN_AREA_KM2 = 1;
@@ -83,13 +84,20 @@ const BOUNDARIES = {
     url: id => `https://ogcapi.dgterritorio.gov.pt/collections/municipios/items/${id}?f=json`,
     geometry: body => body.geometry,
   },
+  // An OpenStreetMap relation by id, through Nominatim, whose policy asks each
+  // client to name itself.
+  osm: {
+    url: id => `https://nominatim.openstreetmap.org/lookup?osm_ids=R${id}&polygon_geojson=1&format=json`,
+    headers: { 'User-Agent': 'scootradar (+https://scootradar.com)' },
+    geometry: body => body[0]?.geojson,
+  },
 };
 
 /** The boundary as GeoJSON polygons of [lng, lat] rings. */
 async function boundary({ source, id }) {
   const reader = BOUNDARIES[source];
   if (!reader) throw new Error(`Unknown boundary source: ${source}`);
-  const response = await fetch(reader.url(id));
+  const response = await fetch(reader.url(id), { headers: reader.headers });
   if (!response.ok) throw new Error(`${source} ${id} answered ${response.status}`);
   const body = await response.json();
   const geometry = reader.geometry(body);
@@ -99,7 +107,8 @@ async function boundary({ source, id }) {
 
 for (const curfew of catalog.curfews) {
   const polygons = await boundary(curfew.boundary);
-  // Outer rings only: none of these towns has a hole.
+  // Outer rings only. Kyiv's two holes, enclaves of Kyiv Oblast to the west and
+  // north-east, lie well outside its scooters' bounds.
   curfew.areas = polygons
     .map(([outer]) => outer)
     .filter(outer => planeArea(toPlane(outer)) / 1e6 >= MIN_AREA_KM2)

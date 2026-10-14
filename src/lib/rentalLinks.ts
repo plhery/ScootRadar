@@ -75,6 +75,11 @@ const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
     schemes: [],
     httpsHosts: ['elerent.app.link', 'elerent.com'],
   },
+  // 3electra too, in Kyiv: its links end in the code on the scooter, such as Z3106.
+  zelectra: {
+    schemes: [],
+    httpsHosts: ['zelectra.app.link', '3electra.com.ua'],
+  },
 };
 
 const UNSAFE_CHARACTERS = /[\u0000-\u001f\u007f]/;

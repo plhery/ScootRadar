@@ -27,6 +27,7 @@ const COUNTRY_NAMES: Record<CoveredCountry, Record<GeocodeLanguage, string>> = {
   CY: { en: 'Cyprus', de: 'Zypern', fr: 'Chypre', it: 'Cipro', nl: 'Cyprus', nb: 'Kypros', pt: 'Chipre', es: 'Chipre', is: 'Kýpur' },
   FI: { en: 'Finland', de: 'Finnland', fr: 'Finlande', it: 'Finlandia', nl: 'Finland', nb: 'Finland', pt: 'Finlândia', es: 'Finlandia', is: 'Finnland' },
   HR: { en: 'Croatia', de: 'Kroatien', fr: 'Croatie', it: 'Croazia', nl: 'Kroatië', nb: 'Kroatia', pt: 'Croácia', es: 'Croacia', is: 'Króatía' },
+  UA: { en: 'Ukraine', de: 'Ukraine', fr: 'Ukraine', it: 'Ucraina', nl: 'Oekraïne', nb: 'Ukraina', pt: 'Ucrânia', es: 'Ucrania', is: 'Úkraína' },
 };
 
 // Typed beside a city to say which one is meant: "Lindau Deutschland".
@@ -50,6 +51,7 @@ const COUNTRY_WORDS: Record<CoveredCountry, string[]> = {
   CY: ['cyprus', 'zypern', 'chypre', 'cipro', 'kypros', 'chipre', 'kypur', 'κυπροσ', 'kibris'],
   FI: ['finland', 'finnland', 'finlande', 'finlandia', 'suomi'],
   HR: ['croatia', 'kroatien', 'croatie', 'croazia', 'kroatie', 'kroatia', 'croacia', 'hrvatska'],
+  UA: ['ukraine', 'ucraina', 'oekraine', 'ukraina', 'ucrania', 'ukrajina', 'ukrayina', 'украіна', 'украина'],
 };
 
 // What the Swiss cities are called in the other languages of the app, and how
@@ -72,11 +74,13 @@ const SWISS_ALIASES: Record<string, string[]> = {
 // "Baerum", "Isafjordur" and "Wolomin" find Tromsø, Bærum, Ísafjörður and Wołomin.
 // Greek letters are kept, without their accents, and a final sigma is a sigma:
 // "Ροδος" and "Ρόδοσ" find Ρόδος. A dotless ı is an i, so "Kıbrıs" finds Cyprus.
+// Cyrillic letters are kept as well, without their marks, so "Київ" is found
+// typed as "Киів" too.
 const SPELLED_OUT: Record<string, string> = { ß: 'ss', æ: 'ae', ø: 'o', œ: 'oe', þ: 'th', ð: 'd', ł: 'l', ς: 'σ', ı: 'i' };
 
 function normalize(value: string): string {
   return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-    .replace(/[ßæøœþðłςı]/g, letter => SPELLED_OUT[letter]).replace(/[^a-z0-9α-ω]+/g, ' ').trim();
+    .replace(/[ßæøœþðłςı]/g, letter => SPELLED_OUT[letter]).replace(/[^a-z0-9α-ωа-яёєіїґ]+/g, ' ').trim();
 }
 
 const REGIONAL_ALIASES = new Map(REGIONAL_SCOOTER_CITIES.map(city => [city.id, city.aliases ?? []]));

@@ -11,6 +11,9 @@ const BRIGHTON: [number, number] = [50.8225, -0.1372];
 const POOLE: [number, number] = [50.715, -1.9872];
 const MATOSINHOS: [number, number] = [41.1844, -8.6963];
 const PORTO: [number, number] = [41.1496, -8.611];
+const KYIV: [number, number] = [50.4501, 30.5234];
+const OBOLON: [number, number] = [50.5014, 30.4983];
+const BROVARY: [number, number] = [50.5113, 30.7903];
 const at = (iso: string) => Date.parse(iso);
 
 describe('activeCurfew', () => {
@@ -72,6 +75,17 @@ describe('activeCurfew', () => {
     expect(activeCurfew(MATOSINHOS, at('2026-10-12T20:59:00Z'))).toBeNull();
     expect(activeCurfew(MATOSINHOS, at('2026-10-12T21:00:00Z'))).toEqual({ city: 'Matosinhos', until: at('2026-10-13T05:00:00Z') });
     expect(activeCurfew(PORTO, at('2026-10-12T23:00:00Z'))).toBeNull();
+  });
+
+  it('reads Kyiv\'s martial-law curfew in Kyiv time, across the city and not beyond it', () => {
+    // 01:00 in Kyiv, summer time, until 05:00.
+    expect(activeCurfew(KYIV, at('2026-10-14T21:59:00Z'))).toBeNull();
+    expect(activeCurfew(KYIV, at('2026-10-14T22:00:00Z'))).toEqual({ city: 'Kyiv', until: at('2026-10-15T02:00:00Z') });
+    expect(activeCurfew(OBOLON, at('2026-10-15T01:59:00Z'))?.until).toBe(at('2026-10-15T02:00:00Z'));
+    expect(activeCurfew(KYIV, at('2026-10-15T02:00:00Z'))).toBeNull();
+    // 01:30 in winter time.
+    expect(activeCurfew(KYIV, at('2026-11-09T23:30:00Z'))).toEqual({ city: 'Kyiv', until: at('2026-11-10T03:00:00Z') });
+    expect(activeCurfew(BROVARY, at('2026-10-14T23:00:00Z'))).toBeNull();
   });
 
   it('stops at the edge of Oslo, and needs a place', () => {

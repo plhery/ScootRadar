@@ -120,5 +120,12 @@
     "color": "#6e7d18",
     "initial": "E",
     "systemIds": { "prefixes": ["elerent"] }
+  },
+  {
+    "key": "zelectra",
+    "name": "3electra",
+    "color": "#0f6f86",
+    "initial": "3e",
+    "systemIds": { "prefixes": ["zelectra"] }
   }
 ]

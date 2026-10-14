@@ -577,9 +577,13 @@ final class ScooterMapLookTests: XCTestCase {
         XCTAssertTrue(kronur.contains("350") && !decimals(kronur), kronur)
         XCTAssertEqual(
             [RidePriceFormatter.fractionDigits("HUF"), RidePriceFormatter.fractionDigits("huf"),
-             RidePriceFormatter.fractionDigits("ISK"), RidePriceFormatter.fractionDigits("CHF")],
-            [0, 0, 0, 2]
+             RidePriceFormatter.fractionDigits("ISK"), RidePriceFormatter.fractionDigits("CHF"),
+             RidePriceFormatter.fractionDigits("UAH")],
+            [0, 0, 0, 2, 2]
         )
+        // 3electra's UAH 5.60 a minute in Kyiv keeps its kopiyky.
+        let hryvnias = RidePriceFormatter.string(minorUnits: 560, currency: "UAH")
+        XCTAssertTrue(hryvnias.contains("5") && hryvnias.contains("60") && decimals(hryvnias), hryvnias)
     }
 
     // MARK: The lead of the dock

@@ -110,6 +110,9 @@ const COUNTRY_ANCHORS: Record<string, [number, number]> = {
   // it would read as Slovenia's or Trieste's, and about 50 points from Italy's and Hungary's
   // totals at zoom 4, between which Croatia lies.
   hr: [45.2, 15.5],
+  // Inland, in the middle of the country, near Zvenyhorodka: a little north of its geographic
+  // centre, towards Kyiv, where all its scooters are.
+  ua: [49, 31],
 };
 
 // "city:fr:Paris" is in France.

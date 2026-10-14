@@ -1,0 +1,30 @@
+{
+  "verifiedOn": "2026-10-14",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "zelectra_ua_kyiv",
+      "country": "UA",
+      "provider": "zelectra",
+      "city": "Kyiv",
+      "center": [
+        50.444,
+        30.518
+      ],
+      "bounds": {
+        "south": 50.3748,
+        "north": 50.5282,
+        "west": 30.4036,
+        "east": 30.663
+      },
+      "discoveryUrl": "https://zelectra.rideatom.com/gbfs/66/v3.0/gbfs",
+      "aliases": [
+        "Kiev",
+        "Kyjiw",
+        "Kiew",
+        "Київ",
+        "Киев"
+      ]
+    }
+  ]
+}

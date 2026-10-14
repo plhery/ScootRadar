@@ -92,6 +92,14 @@ describe('formatRidePrice', () => {
     expect([currencyFractionDigits('ISK'), currencyFractionDigits('HUF'), currencyFractionDigits('huf')]).toEqual([0, 0, 0]);
   });
 
+  it('keeps the kopiyky of a price in hryvnias', () => {
+    // 3electra in Kyiv: UAH 12 to start and UAH 5.60 a minute.
+    expect(plain(formatRidePrice(1200, 'UAH', 'en'))).toBe('UAH 12.00');
+    expect(plain(formatRidePrice(560, 'UAH', 'de'))).toBe('UAH 5.60');
+    expect(plain(formatRidePrice(560, 'uah', 'fr'))).toBe('5.60 UAH');
+    expect(currencyFractionDigits('UAH')).toBe(2);
+  });
+
   it('shows whole forints even where Intl gives HUF two decimals, as Safari does', () => {
     // WebKit follows ISO 4217, which still lists the fillér; Chrome and Node don't.
     const resolvedOptions = Intl.NumberFormat.prototype.resolvedOptions;

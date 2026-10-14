@@ -23,7 +23,7 @@
   <img src="docs/scootradar-map.png" width="390" alt="ScootRadar showing fictional demo scooters around Zürich on a phone">
 </p>
 
-ScootRadar puts the shared scooters of twelve providers on one map, in an
+ScootRadar puts the shared scooters of seventeen providers on one map, in an
 installable web app. It speaks German, French, Italian, Dutch, Norwegian and
 English. There is also a native SwiftUI app for iPhone.
 
@@ -44,7 +44,7 @@ English. There is also a native SwiftUI app for iPhone.
   its marker, hovering a marker shows a short tip, and `/`, `L`, `+`, `−` and
   `Esc` work from the keyboard.
 
-**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob' and Elerent.
+**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob', Elerent and 3electra.
 
 French coverage includes 32 verified feeds across 56 cities or operating areas,
 with city-name search. German coverage adds 40 feeds across 42 cities (Dott, Bolt, Hopp, Lime, Voi, Zeus and Yoio); Italy adds 4 feeds: Bird in Roma, Palermo and Napoli, and Elerent in Catania. See the [German/Italian feed audit](docs/german-italian-scooter-feeds.md) for coverage and known gaps. See the [French feed investigation](docs/french-scooter-feeds.md)
@@ -75,6 +75,8 @@ Finland adds 1 feed: Hopp in Mariehamn, on Åland. See the
 [Finnish feed audit](docs/finnish-scooter-feeds.md).
 Croatia adds 1 feed: Hoppy in Rijeka. See the
 [Croatian feed audit](docs/croatian-scooter-feeds.md).
+Ukraine adds 1 feed: 3electra in Kyiv. See the
+[Ukrainian feed audit](docs/ukrainian-scooter-feeds.md).
 What is not covered yet, and why, is listed in
 [Coverage gaps](docs/coverage-gaps.md).
 
