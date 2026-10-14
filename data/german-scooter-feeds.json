@@ -12,10 +12,10 @@
         8.4037
       ],
       "bounds": {
-        "south": 48.8623,
-        "north": 49.5247,
-        "west": 8.3074,
-        "east": 8.7576
+        "south": 48.9703,
+        "north": 49.0445,
+        "west": 8.3087,
+        "east": 8.4931
       },
       "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/bolt_karlsruhe/gbfs"
     },

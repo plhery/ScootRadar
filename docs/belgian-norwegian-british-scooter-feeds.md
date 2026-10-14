@@ -80,7 +80,11 @@ feeds are routed per town. The bounds, discovery URLs and aliases are in
 - **Bounds** enclose the scooters' positions over several polls, without strays
   far from the median, plus padding. In Norway they are also cut at municipal
   lines. Geofencing cannot set them there, because Ryde's zones include a
-  world polygon.
+  world polygon. Voi's Stavanger / Sandnes feed crosses them: since 14 October
+  2026 its Sandnes area reaches south to 58.765 N (from 58.8072), over Ganddal
+  and Kvernaland, in Time, which are now its aliases, and its Stavanger area to
+  58.868 N (from 58.8765), into Sola. 8 to 10 scooters stood there in each
+  poll, at night and by day, inside Voi's zones, and the map left them out.
 
 ## Night bans
 

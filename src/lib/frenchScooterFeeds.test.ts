@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fetchScooters, independentCollectableFeeds, ScooterFeedsUnavailableError } from '@/lib/scooterFeeds';
 import { FRENCH_SCOOTER_SYSTEMS, searchFrenchScooterCities } from '@/lib/frenchScooterSystems';
+import { serviceAreas } from '@/lib/regionalScooterSystems';
 import { upstreamJsonCache } from '@/lib/upstreamJsonCache';
 import { parseScooterQuery } from '@/lib/scooterQuery';
 import { boundsIntersect } from '@/lib/geo';
@@ -110,7 +111,8 @@ describe('French scooter feeds', () => {
   it.each(FRENCH_SCOOTER_SYSTEMS)('skips all Swiss feeds when viewing $city ($provider)', async system => {
     const [lat, lng] = system.center;
     const bounds = { south: lat - 0.005, north: lat + 0.005, west: lng - 0.005, east: lng + 0.005 };
-    const relevant = FRENCH_SCOOTER_SYSTEMS.filter(candidate => boundsIntersect(candidate.bounds, bounds));
+    // A feed split into towns is read only where one of its towns is, not in the space between them.
+    const relevant = FRENCH_SCOOTER_SYSTEMS.filter(candidate => serviceAreas(candidate).some(area => boundsIntersect(area.bounds, bounds)));
     const handlers = relevant.map(candidate => fixture(candidate.id, { v3: candidate.provider === 'pony' }));
     const fetchMock = vi.fn(async (url: RequestInfo | URL) => {
       const result = handlers.map(serve => serve(String(url))).find(Boolean);

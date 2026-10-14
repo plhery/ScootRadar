@@ -67,11 +67,11 @@ describe('covered cities', () => {
   });
 
   it('follows operator envelopes rather than the merged city box', () => {
-    // South-west corner of the Karlsruhe box: west of Bolt's area and south of Dott's and Voi's.
-    const corner: [number, number] = [48.87, 8.28];
-    const karlsruhe = COVERED_CITIES.find(city => city.id === 'de:Karlsruhe')!;
+    // North-east corner of the Freiburg box: north of Zeus's area and east of Yoio's.
+    const corner: [number, number] = [48.06, 7.925];
+    const freiburg = COVERED_CITIES.find(city => city.id === 'de:Freiburg im Breisgau')!;
 
-    expect(boundsContainPoint(karlsruhe.bounds, ...corner)).toBe(true);
+    expect(boundsContainPoint(freiburg.bounds, ...corner)).toBe(true);
     expect(isPointCovered(...corner)).toBe(false);
     expect(providersForViewport(viewportAround(corner))).toEqual([]);
   });

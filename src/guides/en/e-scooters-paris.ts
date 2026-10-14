@@ -11,7 +11,7 @@ const guide: Guide = {
   lede: 'You can’t rent a shared e-scooter in Paris: the city ended the service on 1 September 2023, after a vote on 2 April 2023 in which 89.03% said no, on a turnout of 7.46%. Ride a Vélib’ (€3 for 45 minutes) or a Lime, Dott or Voi e-bike instead (Voi: €0.29 a minute, no unlock fee, published rate on 12 October 2026). The nearest shared e-scooters are in the outer suburbs, around Versailles, in Saint-Quentin-en-Yvelines and near Disneyland Paris, where helmets are compulsory. Your own e-scooter is allowed in Paris, with a helmet and a high-visibility vest at all hours since 7 August 2026.',
   published: '2026-10-12',
   updated: '2026-10-13',
-  city: 'fr:Versailles Grand Parc',
+  city: 'fr:Le Chesnay-Rocquencourt',
   sections: [
     {
       heading: 'Can you rent an e-scooter in Paris?',
@@ -99,9 +99,9 @@ const guide: Guide = {
         'The counts are a snapshot of the map, not fleet sizes, and the app shows the final price.',
         {
           list: [
-            '**Around Versailles**: none in the town itself. At about 6 pm on 12 October 2026, the nearest Dott to the Château was about 1.4 km away, in Le Chesnay-Rocquencourt. The [map around Versailles](map:fr:Versailles Grand Parc) also shows Voi scooters from the Saint-Quentin service.',
+            '**Around Versailles**: none in the town itself. At about 6 pm on 12 October 2026, the nearest Dott to the Château was about 1.4 km away, in Le Chesnay-Rocquencourt. The [map at Le Chesnay-Rocquencourt](map:fr:Le Chesnay-Rocquencourt) shows the nearest.',
             '**Saint-Quentin-en-Yvelines**: Voi, across the area’s 12 towns; you pick up and return scooters at stations. [See Saint-Quentin on the map](map:fr:Saint-Quentin-en-Yvelines).',
-            '**Grand Paris Seine & Oise**: Voi since 4 May 2026, in three separate clusters, so you can’t ride from Poissy to Meulan. Riders must be 18, scooters slow to 10 km/h near schools and bridges, and the meter runs until you park in a station. [See Seine & Oise on the map](map:fr:Grand Paris Seine et Oise).',
+            '**Grand Paris Seine & Oise**: Voi since 4 May 2026, in three separate clusters, so you can’t ride from Poissy to Meulan. Riders must be 18, scooters slow to 10 km/h near schools and bridges, and the meter runs until you park in a station. [See Poissy on the map](map:fr:Poissy).',
             '**Marne-la-Vallée**: Dott, but none in Chessy or Serris on 12 October 2026; at about 6 pm, the nearest to Disneyland Paris was about 1.1 km away, in Montévrain. [See Marne-la-Vallée on the map](map:fr:Marne-la-Vallée (SIEMU)).',
             '**Évry-Courcouronnes**: Pony, since March 2022.',
           ],

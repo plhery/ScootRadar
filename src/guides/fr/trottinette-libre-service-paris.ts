@@ -11,7 +11,7 @@ const guide: Guide = {
   lede: 'Il n’y a plus de trottinette en libre-service à Paris depuis le 1er septembre 2023 : à la votation du 2 avril 2023, 89,03 % des votants ont dit « contre », avec 7,46 % de participation. À la place, prenez un Vélib’ (3 € le trajet de 45 minutes) ou un vélo électrique Lime, Dott ou Voi (0,29 € la minute chez Voi, sans frais de déverrouillage, tarif publié le 12 octobre 2026). Les trottinettes en libre-service les plus proches roulent en grande banlieue, autour de Versailles, à Saint-Quentin-en-Yvelines ou à Marne-la-Vallée, casque obligatoire. Votre propre trottinette reste permise dans Paris, avec casque et gilet à toute heure depuis le 7 août 2026.',
   published: '2026-10-12',
   updated: '2026-10-13',
-  city: 'fr:Versailles Grand Parc',
+  city: 'fr:Le Chesnay-Rocquencourt',
   sections: [
     {
       heading: 'Pourquoi les trottinettes en libre-service sont interdites à Paris',
@@ -93,9 +93,9 @@ const guide: Guide = {
         'Ce relevé n’est pas la taille des flottes, et le prix final est celui de l’app.',
         {
           list: [
-            '**Autour de Versailles** : aucune dans la commune même. Vers 18 h, la Dott la plus proche du château était à environ 1,4 km, au Chesnay-Rocquencourt. [La carte autour de Versailles](map:fr:Versailles Grand Parc) montre aussi des Voi de Saint-Quentin.',
+            '**Autour de Versailles** : aucune dans la commune même. Vers 18 h, la Dott la plus proche du château était à environ 1,4 km, au Chesnay-Rocquencourt. [La carte au Chesnay-Rocquencourt](map:fr:Le Chesnay-Rocquencourt) montre les plus proches.',
             '**Saint-Quentin-en-Yvelines** : Voi, dans les 12 communes de l’agglomération ; on prend et on rend la trottinette en station. [Saint-Quentin-en-Yvelines sur la carte](map:fr:Saint-Quentin-en-Yvelines).',
-            '**Grand Paris Seine et Oise** : Voi depuis le 4 mai 2026, en trois pôles séparés : impossible d’aller de Poissy à Meulan. Il faut avoir 18 ans, la vitesse tombe à 10 km/h près des écoles et des ponts, et la location court jusqu’à ce que la trottinette soit garée en station. [Le Grand Paris Seine et Oise sur la carte](map:fr:Grand Paris Seine et Oise).',
+            '**Grand Paris Seine et Oise** : Voi depuis le 4 mai 2026, en trois pôles séparés : impossible d’aller de Poissy à Meulan. Il faut avoir 18 ans, la vitesse tombe à 10 km/h près des écoles et des ponts, et la location court jusqu’à ce que la trottinette soit garée en station. [Poissy sur la carte](map:fr:Poissy).',
             '**Marne-la-Vallée** : Dott, mais aucune à Chessy ou à Serris le 12 octobre 2026 ; vers 18 h, la plus proche de Disneyland Paris était à environ 1,1 km, à Montévrain. [Marne-la-Vallée sur la carte](map:fr:Marne-la-Vallée (SIEMU)).',
             '**Évry-Courcouronnes** : Pony, depuis mars 2022.',
           ],

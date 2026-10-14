@@ -27,10 +27,10 @@
         8.7386
       ],
       "bounds": {
-        "south": 41.81,
-        "west": 8.53,
-        "north": 42.03,
-        "east": 8.87
+        "south": 41.8879,
+        "west": 8.5984,
+        "north": 41.9581,
+        "east": 8.7953
       },
       "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/ajaccio/gbfs.json"
     },
@@ -43,10 +43,10 @@
         1.3359
       ],
       "bounds": {
-        "south": 47.46,
-        "west": 1.2,
-        "north": 47.71,
-        "east": 1.44
+        "south": 47.5477,
+        "west": 1.2701,
+        "north": 47.6332,
+        "east": 1.3711
       },
       "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/provider/bird/blois-france/gbfs.json"
     },
@@ -59,10 +59,10 @@
         4.3523
       ],
       "bounds": {
-        "south": 48.85,
-        "west": 4.22,
-        "north": 49.07,
-        "east": 4.49
+        "south": 48.9259,
+        "west": 4.2961,
+        "north": 48.9944,
+        "east": 4.4173
       },
       "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/chalonsenchampagne/gbfs.json"
     },
@@ -75,10 +75,10 @@
         -0.7733
       ],
       "bounds": {
-        "south": 47.95,
-        "west": -0.94,
-        "north": 48.19,
-        "east": -0.65
+        "south": 48.0366,
+        "west": -0.8698,
+        "north": 48.1153,
+        "east": -0.7185
       },
       "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/laval/gbfs.json"
     },
@@ -91,10 +91,10 @@
         3.4266
       ],
       "bounds": {
-        "south": 46.0,
-        "west": 3.28,
-        "north": 46.27,
-        "east": 3.62
+        "south": 46.0785,
+        "west": 3.354,
+        "north": 46.1945,
+        "east": 3.5438
       },
       "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/vichy/gbfs.json"
     },
@@ -155,10 +155,10 @@
         2.7067
       ],
       "bounds": {
-        "south": 48.73,
-        "west": 2.58,
-        "north": 48.97,
-        "east": 2.86
+        "south": 48.8049,
+        "west": 2.6477,
+        "north": 48.8931,
+        "east": 2.7887
       },
       "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/siemu/gbfs.json"
     },
@@ -183,16 +183,60 @@
       "provider": "dott",
       "city": "Versailles Grand Parc",
       "center": [
-        48.8049,
-        2.1204
+        48.8265,
+        2.1253
       ],
       "bounds": {
-        "south": 48.73,
-        "west": 2.02,
-        "north": 48.96,
-        "east": 2.24
+        "south": 48.8054,
+        "west": 2.0894,
+        "north": 48.8787,
+        "east": 2.1728
       },
-      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/versailles-grand-parc/gbfs.json"
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/versailles-grand-parc/gbfs.json",
+      "areas": [
+        {
+          "city": "Le Chesnay-Rocquencourt",
+          "center": [
+            48.8265,
+            2.1253
+          ],
+          "bounds": {
+            "south": 48.8054,
+            "west": 2.0894,
+            "north": 48.8498,
+            "east": 2.1564
+          },
+          "aliases": [
+            "Versailles Grand Parc"
+          ]
+        },
+        {
+          "city": "La Celle-Saint-Cloud",
+          "center": [
+            48.8484,
+            2.1362
+          ],
+          "bounds": {
+            "south": 48.8262,
+            "west": 2.0963,
+            "north": 48.8787,
+            "east": 2.1728
+          }
+        },
+        {
+          "city": "Bougival",
+          "center": [
+            48.8608,
+            2.1398
+          ],
+          "bounds": {
+            "south": 48.8424,
+            "west": 2.1085,
+            "north": 48.876,
+            "east": 2.1701
+          }
+        }
+      ]
     },
     {
       "id": "lime_fr_lille",
@@ -203,12 +247,118 @@
         3.0573
       ],
       "bounds": {
-        "south": 50.4,
-        "west": 2.75,
-        "north": 50.9,
-        "east": 3.4
+        "south": 50.4906,
+        "west": 2.7749,
+        "north": 50.8037,
+        "east": 3.2867
       },
-      "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/lille/gbfs.json"
+      "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/lille/gbfs.json",
+      "areas": [
+        {
+          "city": "Lille Métropole",
+          "center": [
+            50.6292,
+            3.0573
+          ],
+          "bounds": {
+            "south": 50.4906,
+            "west": 2.7749,
+            "north": 50.8037,
+            "east": 3.2867
+          }
+        },
+        {
+          "city": "Roubaix",
+          "center": [
+            50.691,
+            3.1741
+          ],
+          "bounds": {
+            "south": 50.6658,
+            "west": 3.1471,
+            "north": 50.7117,
+            "east": 3.2214
+          }
+        },
+        {
+          "city": "Tourcoing",
+          "center": [
+            50.724,
+            3.161
+          ],
+          "bounds": {
+            "south": 50.6901,
+            "west": 3.1147,
+            "north": 50.752,
+            "east": 3.2008
+          }
+        },
+        {
+          "city": "Croix",
+          "center": [
+            50.6804,
+            3.156
+          ],
+          "bounds": {
+            "south": 50.6541,
+            "west": 3.1321,
+            "north": 50.6966,
+            "east": 3.1779
+          }
+        },
+        {
+          "city": "Wasquehal",
+          "center": [
+            50.6695,
+            3.1308
+          ],
+          "bounds": {
+            "south": 50.6479,
+            "west": 3.1054,
+            "north": 50.6973,
+            "east": 3.1538
+          }
+        },
+        {
+          "city": "Villeneuve-d'Ascq",
+          "center": [
+            50.6195,
+            3.1318
+          ],
+          "bounds": {
+            "south": 50.5961,
+            "west": 3.1119,
+            "north": 50.6764,
+            "east": 3.2118
+          }
+        },
+        {
+          "city": "Wattrelos",
+          "center": [
+            50.7018,
+            3.2156
+          ],
+          "bounds": {
+            "south": 50.6854,
+            "west": 3.1673,
+            "north": 50.7402,
+            "east": 3.2656
+          }
+        },
+        {
+          "city": "Hem",
+          "center": [
+            50.6542,
+            3.1841
+          ],
+          "bounds": {
+            "south": 50.6304,
+            "west": 3.1577,
+            "north": 50.6758,
+            "east": 3.2248
+          }
+        }
+      ]
     },
     {
       "id": "lime_fr_marseille",
@@ -421,10 +571,10 @@
         2.0807
       ],
       "bounds": {
-        "south": 49.16,
-        "west": 1.67,
-        "north": 49.75,
-        "east": 2.55
+        "south": 49.3973,
+        "west": 2.0343,
+        "north": 49.4768,
+        "east": 2.1367
       },
       "discoveryUrl": "https://proxy.transport.data.gouv.fr/resource/pony-beauvais-gbfs/gbfs.json"
     },
@@ -453,10 +603,10 @@
         2.3988
       ],
       "bounds": {
-        "south": 46.96,
-        "west": 2.28,
-        "north": 47.21,
-        "east": 2.53
+        "south": 47.0315,
+        "west": 2.3471,
+        "north": 47.134,
+        "east": 2.4562
       },
       "discoveryUrl": "https://proxy.transport.data.gouv.fr/resource/pony-bourges-gbfs/gbfs.json"
     },
@@ -469,10 +619,10 @@
         2.429
       ],
       "bounds": {
-        "south": 48.52,
-        "west": 2.31,
-        "north": 48.73,
-        "east": 2.55
+        "south": 48.6007,
+        "west": 2.3773,
+        "north": 48.6587,
+        "east": 2.476
       },
       "discoveryUrl": "https://proxy.transport.data.gouv.fr/resource/pony-evry-gbfs/gbfs.json"
     },
@@ -485,10 +635,10 @@
         -0.3261
       ],
       "bounds": {
-        "south": 48.89,
-        "west": -0.76,
-        "north": 49.49,
-        "east": 0.09
+        "south": 49.176,
+        "west": -0.382,
+        "north": 49.3021,
+        "east": -0.2309
       },
       "discoveryUrl": "https://proxy.transport.data.gouv.fr/resource/pony-herouville-gbfs/gbfs.json"
     },
@@ -517,10 +667,10 @@
         -3.3702
       ],
       "bounds": {
-        "south": 47.59,
-        "west": -3.58,
-        "north": 47.89,
-        "east": -3.21
+        "south": 47.7171,
+        "west": -3.4203,
+        "north": 47.7831,
+        "east": -3.335
       },
       "discoveryUrl": "https://proxy.transport.data.gouv.fr/resource/pony-lorient-gbfs/gbfs.json"
     },
@@ -549,10 +699,10 @@
         0.3404
       ],
       "bounds": {
-        "south": 46.32,
-        "west": -0.09,
-        "north": 46.91,
-        "east": 0.81
+        "south": 46.4175,
+        "west": 0.0921,
+        "north": 46.6815,
+        "east": 0.4341
       },
       "discoveryUrl": "https://proxy.transport.data.gouv.fr/resource/pony-poitiers-gbfs/gbfs.json"
     },
@@ -561,16 +711,164 @@
       "provider": "voi",
       "city": "Grand Paris Seine et Oise",
       "center": [
-        48.9975,
-        1.9093
+        48.9273,
+        2.0427
       ],
       "bounds": {
-        "south": 48.77,
-        "west": 1.47,
-        "north": 49.16,
-        "east": 2.3
+        "south": 48.8829,
+        "west": 1.6421,
+        "north": 49.0501,
+        "east": 2.1408
       },
-      "discoveryUrl": "https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/422/gbfs.json"
+      "discoveryUrl": "https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/422/gbfs.json",
+      "areas": [
+        {
+          "city": "Poissy",
+          "center": [
+            48.9273,
+            2.0427
+          ],
+          "bounds": {
+            "south": 48.8829,
+            "west": 1.967,
+            "north": 48.9653,
+            "east": 2.0833
+          },
+          "aliases": [
+            "Grand Paris Seine et Oise",
+            "GPSEO"
+          ]
+        },
+        {
+          "city": "Carrières-sous-Poissy",
+          "center": [
+            48.9438,
+            2.0342
+          ],
+          "bounds": {
+            "south": 48.9218,
+            "west": 1.9902,
+            "north": 48.9726,
+            "east": 2.0628
+          }
+        },
+        {
+          "city": "Andrésy",
+          "center": [
+            48.9823,
+            2.0606
+          ],
+          "bounds": {
+            "south": 48.9508,
+            "west": 2.0121,
+            "north": 49.0051,
+            "east": 2.0874
+          }
+        },
+        {
+          "city": "Conflans-Sainte-Honorine",
+          "center": [
+            48.9938,
+            2.0947
+          ],
+          "bounds": {
+            "south": 48.9761,
+            "west": 2.0586,
+            "north": 49.0268,
+            "east": 2.1408
+          }
+        },
+        {
+          "city": "Les Mureaux",
+          "center": [
+            48.9934,
+            1.9093
+          ],
+          "bounds": {
+            "south": 48.9604,
+            "west": 1.8627,
+            "north": 49.0157,
+            "east": 1.975
+          },
+          "aliases": [
+            "Grand Paris Seine et Oise",
+            "GPSEO"
+          ]
+        },
+        {
+          "city": "Meulan-en-Yvelines",
+          "center": [
+            49.0051,
+            1.9099
+          ],
+          "bounds": {
+            "south": 48.9857,
+            "west": 1.8504,
+            "north": 49.0501,
+            "east": 1.9518
+          },
+          "aliases": [
+            "Hardricourt",
+            "Tessancourt-sur-Aubette"
+          ]
+        },
+        {
+          "city": "Mantes-la-Jolie",
+          "center": [
+            48.9889,
+            1.7153
+          ],
+          "bounds": {
+            "south": 48.9735,
+            "west": 1.6435,
+            "north": 49.0189,
+            "east": 1.7394
+          },
+          "aliases": [
+            "Grand Paris Seine et Oise",
+            "GPSEO"
+          ]
+        },
+        {
+          "city": "Mantes-la-Ville",
+          "center": [
+            48.9779,
+            1.7135
+          ],
+          "bounds": {
+            "south": 48.9527,
+            "west": 1.6736,
+            "north": 48.9981,
+            "east": 1.7476
+          }
+        },
+        {
+          "city": "Buchelay",
+          "center": [
+            48.9804,
+            1.6724
+          ],
+          "bounds": {
+            "south": 48.9609,
+            "west": 1.6421,
+            "north": 49.0044,
+            "east": 1.7161
+          }
+        },
+        {
+          "city": "Limay",
+          "center": [
+            48.9921,
+            1.7358
+          ],
+          "bounds": {
+            "south": 48.9591,
+            "west": 1.6955,
+            "north": 49.0234,
+            "east": 1.7777
+          }
+        }
+      ]
     },
     {
       "id": "voi_fr_358",
@@ -581,10 +879,10 @@
         5.7245
       ],
       "bounds": {
-        "south": 45.01,
-        "west": 5.47,
-        "north": 45.37,
-        "east": 5.98
+        "south": 45.1054,
+        "west": 5.6232,
+        "north": 45.2809,
+        "east": 5.8865
       },
       "discoveryUrl": "https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/358/gbfs.json"
     },
@@ -597,10 +895,10 @@
         0.1079
       ],
       "bounds": {
-        "south": 49.35,
-        "west": -0.05,
-        "north": 49.73,
-        "east": 0.38
+        "south": 49.4671,
+        "west": 0.0529,
+        "north": 49.5982,
+        "east": 0.2092
       },
       "discoveryUrl": "https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/336/gbfs.json"
     },
@@ -613,10 +911,10 @@
         5.3698
       ],
       "bounds": {
-        "south": 43.11,
-        "west": 5.18,
-        "north": 43.49,
-        "east": 5.65
+        "south": 43.2016,
+        "west": 5.3287,
+        "north": 43.37,
+        "east": 5.5404
       },
       "discoveryUrl": "https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/66/gbfs.json"
     },
@@ -629,10 +927,10 @@
         2.0446
       ],
       "bounds": {
-        "south": 48.6,
-        "west": 1.77,
-        "north": 48.95,
-        "east": 2.24
+        "south": 48.6853,
+        "west": 1.8814,
+        "north": 48.8452,
+        "east": 2.1199
       },
       "discoveryUrl": "https://api.voiapp.io/gbfs/fr/6bb6b5dc-1cda-4da7-9216-d3023a0bc54a/v2/355/gbfs.json"
     }

@@ -133,8 +133,8 @@
       ],
       "bounds": {
         "south": 28.0407,
-        "north": 28.1027,
-        "west": -16.7528,
+        "north": 28.115,
+        "west": -16.763,
         "east": -16.6956
       },
       "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/adeje/gbfs.json",

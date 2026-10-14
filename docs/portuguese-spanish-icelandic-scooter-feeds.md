@@ -27,7 +27,10 @@ routed per town. The bounds, discovery URLs and aliases are in
 - **Bird's "madrid" feed is Getafe.** Its scooters stand in Getafe's
   industrial estates, where Bird has run with the council since June 2025, so
   the catalog names it Getafe. Its "adeje" feed also covers Arona, and is named
-  Playa de las Américas, where Hopp's Tenerife feed overlaps it.
+  Playa de las Américas, where Hopp's Tenerife feed overlaps it. Its bounds
+  reach 28.115 N and 16.763 W since 14 October 2026, about half a kilometre
+  beyond Bird's ride zone (to 28.1108 N, 16.7587 W): the old ones stopped at
+  28.1027 N and 16.7528 W and left out 11 or 12 scooters parked in Costa Adeje.
 - **Reykjavík's capital area** is one city, with Kópavogur, Hafnarfjörður,
   Garðabær, Mosfellsbær and Seltjarnarnes as aliases: their boxes would
   overlap.

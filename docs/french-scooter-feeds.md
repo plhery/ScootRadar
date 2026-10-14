@@ -18,6 +18,11 @@ and Bird Agen joined it the same day; see
 So did Naolib Micromob' in Nantes and Saint-Herblain, a provider of its own read
 from Pony's feed; see [Naolib Micromob', October 2026](#naolib-micromob-october-2026).
 
+Rechecked 14 October 2026: eighteen feeds' bounds now fit the operator's
+published zone, and Voi's Grand Paris Seine et Oise, Dott's Versailles Grand Parc
+and Lime's Lille Métropole are split into towns; see
+[Bounds and towns, October 2026](#bounds-and-towns-october-2026).
+
 ## Verified availability
 
 This is a snapshot, not a fleet-size promise. Counts below exclude reserved or
@@ -230,6 +235,76 @@ is on the discovery's origin and under its directory.
   (44.1784–44.2116, 0.6074–0.6443) plus about 0.01°. None of the 13 zones
   sets hours, the city sets none, and no night ban was found.
 
+## Bounds and towns, October 2026
+
+A night poll on 14 October 2026 found boxes far larger than the services. Pony
+Beauvais's and Pony Hérouville's were about 65 km across. Voi's Grand Paris
+Seine et Oise box took in the centres of 22 covered towns, among them Lime's
+eight west of Paris, and Voi's Saint-Quentin-en-Yvelines and Dott's Versailles
+Grand Parc took in 14 each. The map read those feeds, and called places
+covered, where the operator has no scooters. Where the feed
+publishes geofencing, the bounds are now the operator's own zone plus 1 km,
+rounded outward: Pony's `operating_zone`, Bird's large ride-allowed zone,
+Voi's ops zone (in Le Havre the hole in its "NRZ around Le Havre" frame), and
+Dott's region polygon.
+
+| Feed | Before (S–N, W–E) | After (S–N, W–E) |
+| --- | --- | --- |
+| Bird Ajaccio | 41.81–42.03, 8.53–8.87 | 41.8879–41.9581, 8.5984–8.7953 |
+| Bird Blois | 47.46–47.71, 1.20–1.44 | 47.5477–47.6332, 1.2701–1.3711 |
+| Bird Châlons-en-Champagne | 48.85–49.07, 4.22–4.49 | 48.9259–48.9944, 4.2961–4.4173 |
+| Bird Laval | 47.95–48.19, −0.94 to −0.65 | 48.0366–48.1153, −0.8698 to −0.7185 |
+| Bird Vichy | 46.00–46.27, 3.28–3.62 | 46.0785–46.1945, 3.3540–3.5438 |
+| Dott Marne-la-Vallée (SIEMU) | 48.73–48.97, 2.58–2.86 | 48.8049–48.8931, 2.6477–2.7887 |
+| Dott Versailles Grand Parc | 48.73–48.96, 2.02–2.24 | 48.8054–48.8787, 2.0894–2.1728, in three towns |
+| Pony Beauvais | 49.16–49.75, 1.67–2.55 | 49.3973–49.4768, 2.0343–2.1367 |
+| Pony Bourges | 46.96–47.21, 2.28–2.53 | 47.0315–47.1340, 2.3471–2.4562 |
+| Pony Évry-Courcouronnes | 48.52–48.73, 2.31–2.55 | 48.6007–48.6587, 2.3773–2.4760 |
+| Pony Hérouville-Saint-Clair | 48.89–49.49, −0.76 to 0.09 | 49.1760–49.3021, −0.3820 to −0.2309 |
+| Pony Lorient | 47.59–47.89, −3.58 to −3.21 | 47.7171–47.7831, −3.4203 to −3.3350 |
+| Pony Poitiers | 46.32–46.91, −0.09 to 0.81 | 46.4175–46.6815, 0.0921–0.4341 |
+| Voi Grenoble | 45.01–45.37, 5.47–5.98 | 45.1054–45.2809, 5.6232–5.8865 |
+| Voi Grand Paris Seine et Oise | 48.77–49.16, 1.47–2.30 | 48.8829–49.0501, 1.6421–2.1408, in ten towns |
+| Voi Le Havre | 49.35–49.73, −0.05 to 0.38 | 49.4671–49.5982, 0.0529–0.2092 |
+| Voi Marseille | 43.11–43.49, 5.18–5.65 | 43.2016–43.3700, 5.3287–5.5404 |
+| Voi Saint-Quentin-en-Yvelines | 48.60–48.95, 1.77–2.24 | 48.6853–48.8452, 1.8814–2.1199 |
+| Lime Lille Métropole | 50.40–50.90, 2.75–3.40 | 50.4906–50.8037, 2.7749–3.2867, with seven towns |
+
+- **Towns.** A feed that serves several towns now has one area per town, so
+  each can be searched, counted and linked, and the space between them is not
+  claimed. Voi's Grand Paris Seine et Oise has Poissy, Carrières-sous-Poissy,
+  Andrésy, Conflans-Sainte-Honorine, Les Mureaux, Meulan-en-Yvelines (with
+  Hardricourt and Tessancourt-sur-Aubette), Mantes-la-Jolie, Mantes-la-Ville,
+  Buchelay and Limay; Dott's Versailles Grand Parc has Le Chesnay-Rocquencourt,
+  La Celle-Saint-Cloud and Bougival. Each area is the part of the operator's
+  zone in the town ([geo.api.gouv.fr](https://geo.api.gouv.fr/epcis/200059889/communes)
+  for GPSEO, [VGP](https://geo.api.gouv.fr/epcis/247800584/communes)) plus
+  1 km, centred on the town hall; Bougival's reaches only half a kilometre
+  north, so Lime's Croissy-sur-Seine and Le Port-Marly stay outside it. Versailles
+  itself is outside Dott's zone. Poissy, Les Mureaux and Mantes-la-Jolie keep
+  "Grand Paris Seine et Oise" and "GPSEO" as aliases, and Le
+  Chesnay-Rocquencourt "Versailles Grand Parc".
+- **Lime Lille Métropole** publishes no geofencing. Its area is the
+  metropole's boundary ([geo.api.gouv.fr](https://geo.api.gouv.fr/epcis/200093201/communes))
+  plus 1 km, so it no longer takes in Kortrijk, where Hoppy runs; Roubaix,
+  Tourcoing, Croix, Wasquehal, Villeneuve-d'Ascq, Wattrelos and Hem have areas
+  of their own, each the town's boundary plus 0.003° of latitude and 0.004° of
+  longitude, as west of Paris. At 11:22 on 14 October all 1,030 of its
+  available scooters stood inside the metropole's area.
+- **Bolt Karlsruhe** got the same treatment; see the
+  [German audit](german-italian-scooter-feeds.md#data-handling).
+- **Proof.** Every changed feed was polled three times at night and three times
+  by day (11:22–11:32 on Wednesday 14 October 2026), read without bounds, and
+  checked against the old and new catalogs. By day the new bounds kept every
+  scooter the old ones kept but two of Voi's Grand Paris Seine et Oise, outside
+  every Voi zone: one at the depot it shares with Saint-Quentin-en-Yvelines, in
+  Trappes, and one in Colombes. Both are left out on purpose.
+- **Not changed.** Lime Marseille publishes no geofencing and its box,
+  43.12–43.49, 5.22–5.65, takes in no other covered town; by day its scooters
+  stood within 43.21–43.35, 5.35–5.48. Pony Angers, Bordeaux and Perpignan were
+  not reviewed. Pony Hérouville's zone also covers Ouistreham, which no town
+  area names yet.
+
 ## Findings that affect integration
 
 - **Dott:** the [France country entry point](https://gbfs.api.ridedott.com/public/v2/countries/fr/gbfs.json)
@@ -250,9 +325,10 @@ is on the discovery's origin and under its directory.
 - **Feed health:** successful HTTP responses can contain abandoned data. The new
   adapter rejects missing timestamps or data older than fifteen minutes. An unavailable
   city feed does not discard other successful city feeds.
-- **Bounds:** geofencing envelopes have conservative padding; Lime's feeds lack
-  geofencing, so reviewed metropolitan bounds, or town boundaries west of Paris,
-  are used. These are fetch-routing
+- **Bounds:** bounds are the operator's published zone plus 1 km (see
+  [Bounds and towns, October 2026](#bounds-and-towns-october-2026)); Lime's feeds lack
+  geofencing, so reviewed metropolitan bounds, or town boundaries west of Paris
+  and around Lille, are used. These are fetch-routing
   envelopes, not legal riding or parking zones. A stray Pony Angers record was
   observed outside its region; records outside the configured service bounds
   are excluded. Changes in service areas need a catalog review.

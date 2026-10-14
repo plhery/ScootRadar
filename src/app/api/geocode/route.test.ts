@@ -999,8 +999,8 @@ describe('recorded Photon answers', () => {
     ['Rue de Rivoli 10', 'fr', [48.86, 2.35], [
       ['10 Rue de Rivoli', '75004 Paris', NO_DATA],
       ['Rivoli Collection', 'Rue du Château Landon, 75010 Paris', NO_DATA],
-      ['10 Rue de Rivoli', '91360 Épinay-sur-Orge', DATA],
       ['10 Rue de Rivoli', '78450 Villepreux', DATA],
+      ['10 Rue de Rivoli', '91360 Épinay-sur-Orge', NO_DATA],
       ['10 Rue de Rivoli', '76600 Le Havre', DATA],
     ]],
     // Fifteen platforms, stops and entrances of the one station.
@@ -1038,9 +1038,9 @@ describe('recorded Geoapify answers', () => {
     ['Rue de Rivoli 10', 'fr', [48.86, 2.35], ['nearby'], [
       ['10 Rue de Rivoli', '75004 Paris', NO_DATA],
       ['Rue de Rivoli', 'Paris', NO_DATA],
-      ['10 Rue de Rivoli', '91360 Épinay-sur-Orge', DATA],
       ['10 Rue de Rivoli', '78450 Villepreux', DATA],
-      ['10 Rue de Rivoli', '78950 Gambais', DATA],
+      ['10 Rue de Rivoli', '91360 Épinay-sur-Orge', NO_DATA],
+      ['10 Rue de Rivoli', '78950 Gambais', NO_DATA],
     ]],
     // Turin's first, before the Via Roma 10 of the towns around it.
     ['Via Roma 10', 'it', [45.07, 7.69], ['nearby'], [

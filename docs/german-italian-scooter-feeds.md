@@ -65,6 +65,13 @@ The complete reviewed city bounds, public discovery URLs and aliases are in
   retain their published city subregions for provider filters and overview counts.
 - Routing envelopes use published geofencing plus small padding.
   Hopp's global geofence is restricted to its reviewed Konstanz area.
+  Bolt Karlsruhe's feed also lists no-parking zones in Pforzheim and Mannheim,
+  so since 14 October 2026 its bounds are its two business areas, "BA Karlsruhe
+  (Main/West)" and "BA Karlsruhe Ost", plus 1 km: 48.9703–49.0445 N,
+  8.3087–8.4931 E. The old box, 48.8623–49.5247 N, 8.3074–8.7576 E, took in
+  Heidelberg, Mannheim, Pforzheim, Leimen, Walldorf and Wiesloch. All 603
+  scooters polled at 11:22 that day stood inside; a scooter seen at night in
+  Ettlingen, 3.4 km south of the business areas, is left out.
   Zeus's zones are too coarse for this (one polygon of many rings, or zones
   tens of kilometres wide), so its bounds enclose the scooters' positions on
   11 October 2026, without those more than 6 km from the median, plus padding.

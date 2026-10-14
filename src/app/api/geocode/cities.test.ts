@@ -34,15 +34,16 @@ describe('searchCoveredCities', () => {
 
   it('lists the cities a few letters could become, a city typed in full first and the others by name', () => {
     expect(names('Ber')).toEqual(['Berlin, Germany', 'Bern, Switzerland']);
-    // Portimão by its beach, Praia da Rocha, Faliraki by its island, Rhodes or Rodos, La Roche-sur-Yon and
-    // Marly-le-Roi by a later word; five at most, so Romanshorn waits for a third letter.
-    expect(names('Ro')).toEqual(['Faliraki, Greece', 'La Roche-sur-Yon, France', 'Marly-le-Roi, France', 'Portimão, Portugal', 'Roma, Italy']);
+    // Portimão by its beach, Praia da Rocha, Faliraki by its island, Rhodes or Rodos, La Roche-sur-Yon,
+    // Le Chesnay-Rocquencourt and Marly-le-Roi by a later word; five at most, so Roma and Romanshorn wait for a third letter.
+    expect(names('Ro')).toEqual(['Faliraki, Greece', 'La Roche-sur-Yon, France', 'Le Chesnay-Rocquencourt, France', 'Marly-le-Roi, France', 'Portimão, Portugal']);
     expect(names('Rom')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland']);
     expect(names('Roma')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland']);
-    // Saint-Herblain by a later word; Vestmannaeyjar, by its island, Heimaey, waits for a third letter.
+    // Saint-Herblain, by a later word, and Vestmannaeyjar, by its island, Heimaey, wait for a third letter.
     expect(names('He')).toEqual([
-      'Heidelberg, Germany', 'Heilbronn, Germany', 'Hellissandur, Iceland', 'Hérouville-Saint-Clair, France', 'Saint-Herblain, France',
+      'Heidelberg, Germany', 'Heilbronn, Germany', 'Hellissandur, Iceland', 'Hem, France', 'Hérouville-Saint-Clair, France',
     ]);
+    expect(names('Her')).toContain('Saint-Herblain, France');
     expect(names('Hei')).toContain('Vestmannaeyjar, Iceland');
     expect(searchCoveredCities('B')).toEqual([]);
     expect(searchCoveredCities('a').length).toBe(0);
