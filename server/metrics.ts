@@ -1,6 +1,7 @@
 import { monitorEventLoopDelay } from 'node:perf_hooks';
 import { isRegionalSource } from '../src/lib/regionalScooterSystems';
 import type { MobilitySnapshot } from '../src/lib/scooterSnapshots';
+import { feedPaused } from '../src/lib/seasonalPauses';
 import { ALWAYS_FAST, feedState, parkingUp, type FeedCadence, type FeedState } from './feedStateLog';
 import type { CollectionReason, FeedCadenceMode } from './feedScheduler';
 
@@ -19,6 +20,8 @@ interface MetricsSources {
   upstreamRequests?: () => Record<string, number>;
   /** How full the cache of operators' documents is, and how many it dropped to make room. */
   upstreamCache?: () => { entries: number; capacity: number; evictions: number };
+  /** Whether the feed is in its seasonal pause; feedPaused from the catalogs by default. */
+  paused?: (feedId: string, now: number) => boolean;
 }
 
 /**
@@ -30,6 +33,7 @@ interface MetricsSources {
  */
 export function createSnapshotMetrics(version = 'local', sources: MetricsSources = {}) {
   const cadence = sources.cadence ?? ALWAYS_FAST;
+  const paused = sources.paused ?? feedPaused;
   const collections = new Map<string, { labels: Labels; ok: number; failed: number; seconds: number }>();
   const starts = new Map<CollectionReason, number>();
   const waits = { collected: 0, timeout: 0 };
@@ -89,6 +93,9 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
           const state = feedState(feed, now, cadence);
           return FEED_STATES.map((candidate): [Labels, number] => [{ ...labelsOf(feed), state: candidate }, candidate === state ? 1 : 0]);
         }));
+      metric('scootradar_feed_paused', 'gauge',
+        'Whether every service area of the feed is in its seasonal pause, as Montréal each winter: it may serve nothing, the map says when its scooters are back, and the feed-stopped alert ignores it.',
+        feeds.map(feed => [labelsOf(feed), paused(feed.id, now) ? 1 : 0]));
       metric('scootradar_feed_vehicles', 'gauge', 'Vehicles held for the feed, 0 once it has expired.',
         feeds.map(feed => [labelsOf(feed), feedState(feed, now, cadence) === 'expired' ? 0 : feed.vehicles.length]));
       metric('scootradar_feed_observation_timestamp_seconds', 'gauge', 'The source timestamp of the positions held for the feed.',

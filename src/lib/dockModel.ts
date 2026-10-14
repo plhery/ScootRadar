@@ -8,6 +8,7 @@ import {
   type FilterSummaryPart,
 } from '@/lib/nothingToShow';
 import { activeCurfew } from '@/lib/rentalCurfews';
+import { activeSeasonalPause } from '@/lib/seasonalPauses';
 import type { ScooterLoading } from '@/lib/scooterDataState';
 import type { ScooterResponseMeta } from '@/lib/types';
 import type { UiText, UiTextFormatter } from '@/lib/uiText';
@@ -92,8 +93,11 @@ export type DockStatus =
   | { kind: 'updated'; text: UiText };
 
 export interface DockNotice {
-  /** A curfew is the city's night ban on renting, shown with a moon rather than a warning. */
-  kind: 'curfew' | 'providers' | 'truncated' | 'parking';
+  /**
+   * A curfew is the city's night ban on renting, shown with a moon rather than a warning; a
+   * season, the part of the year the city has no scooters, with a calendar.
+   */
+  kind: 'curfew' | 'season' | 'providers' | 'truncated' | 'parking';
   text: UiText;
 }
 
@@ -256,6 +260,9 @@ function dockNotices(input: DockInput, health: ProviderHealth): DockNotice[] {
   // Some operators keep listing their scooters through the ban, so it comes first.
   const curfew = activeCurfew(input.viewportCenter, input.now);
   if (curfew) notices.push({ kind: 'curfew', text: { key: 'dock.curfew', values: { city: curfew.city }, time: curfew.until } });
+  // Its operators may list nothing or stop answering: they are not named as down (scooterSnapshots.ts).
+  const season = activeSeasonalPause(input.viewportCenter, input.now);
+  if (season) notices.push({ kind: 'season', text: { key: 'dock.season', values: { city: season.city }, month: season.month } });
   const providers = providersDownNotice(health);
   if (providers) notices.push({ kind: 'providers', text: providers });
   if (meta?.truncated) {

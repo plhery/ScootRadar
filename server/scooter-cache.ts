@@ -4,6 +4,7 @@ import { dirname } from 'node:path';
 import { discoverCollectableFeeds, independentCollectableFeeds, type CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import { buildCityOverview, overviewNeedsRefresh, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { REGIONAL_SCOOTER_SYSTEMS, regionalSource } from '../src/lib/regionalScooterSystems';
+import { feedPaused } from '../src/lib/seasonalPauses';
 import { upstreamCacheEntriesFor, upstreamJsonCache } from '../src/lib/upstreamJsonCache';
 import { fetchRegionalParking } from '../src/lib/parkingFeeds';
 import { FeedScheduler } from './feedScheduler';
@@ -181,7 +182,8 @@ setDefinitions(independentCollectableFeeds(), false);
 scheduler.start();
 void discover();
 const logFeedStates = createFeedStateLog(console.log, (change, feed) => {
-  if (change.state === 'expired') reportFeedExpired(change, feed, lastErrors.get(feed.id));
+  // In its seasonal pause, a feed is expected to stop; the log still says it did.
+  if (change.state === 'expired' && !feedPaused(feed.id, Date.now())) reportFeedExpired(change, feed, lastErrors.get(feed.id));
 }, cadence);
 const persistenceTimer = setInterval(() => {
   if (snapshot) logFeedStates(snapshot.feeds);

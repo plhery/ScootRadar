@@ -44,6 +44,36 @@ function regionsOf(country) {
   return regions;
 }
 
+// A local date, "MM-DD", of a year of 365 days.
+const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+const isMonthDay = date => /^\d\d-\d\d$/.test(date ?? '')
+  && Number(date.slice(3)) >= 1 && Number(date.slice(3)) <= (DAYS_IN_MONTH[Number(date.slice(0, 2)) - 1] ?? 0);
+function isTimeZone(timeZone) {
+  try {
+    new Intl.DateTimeFormat('en', { timeZone });
+    return typeof timeZone === 'string';
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Why a seasonal pause is not one, or null. A pause is the part of the year a service area has
+ * no scooters, as Montréal each winter: from its first day without them until the first day
+ * they are back, local dates in its time zone (src/lib/seasonalPauses.ts).
+ */
+export function seasonalProblem(pause) {
+  const keys = Object.keys(pause ?? {}).sort().join(',');
+  if (keys !== 'from,timeZone,until') return 'needs from, until and timeZone, and nothing else';
+  if (!isMonthDay(pause.from) || !isMonthDay(pause.until) || pause.from === pause.until) {
+    return 'needs from and until as two different dates, "MM-DD"';
+  }
+  return isTimeZone(pause.timeZone) ? null : `has no time zone ${pause.timeZone}`;
+}
+
+/** A service area's seasonal pause: its own, or its system's. */
+export const areaSeasonal = (system, area) => area.seasonal ?? system.seasonal;
+
 /** Every catalog's systems, in the order of data/countries.json, each with its country. */
 export function catalogSystems(countries, readCatalog) {
   return countries.filter(country => country.catalog).flatMap(country => {
@@ -53,6 +83,9 @@ export function catalogSystems(countries, readCatalog) {
         throw new Error(`${country.catalog}: ${system.id} is in ${system.country}, not ${country.code}`);
       }
       for (const area of system.areas ?? [system]) {
+        const pause = areaSeasonal(system, area);
+        const problem = pause === undefined ? null : seasonalProblem(pause);
+        if (problem) throw new Error(`${country.catalog}: the seasonal pause of ${system.id} in ${area.city} ${problem}`);
         const region = areaRegion(system, area);
         if (regions ? !regions.has(region) : region !== undefined) {
           throw new Error(`${country.catalog}: ${system.id} in ${area.city} ${regions
@@ -87,10 +120,17 @@ export function scooterCities(swissAreas, systems, countries) {
       const region = areaRegion(system, area);
       const id = cityId(system.country, region, area.city);
       const previous = cities.get(id);
+      // As mergeCities: each pause once, and none where one area has scooters all year.
+      const pause = areaSeasonal(system, area);
+      const pauses = pause && (!previous || previous.pauses)
+        ? [...previous?.pauses ?? [], pause].filter((entry, index, all) => all.findIndex(other =>
+          other.from === entry.from && other.until === entry.until && other.timeZone === entry.timeZone) === index)
+        : undefined;
       cities.set(id, {
         id,
         name: region && namedWithRegion.has(system.country) ? `${area.city}, ${region}` : area.city,
         ...(region ? { region } : {}),
+        ...(pauses ? { pauses } : {}),
         country: system.country,
         center: previous?.center ?? area.center,
         bounds: previous ? {
@@ -103,6 +143,14 @@ export function scooterCities(swissAreas, systems, countries) {
     }
   }
   return [...cities.values()];
+}
+
+/** The pauses argument of a city's ScooterCity in Swift, after its bounds; none for most. */
+export function swiftCityPauses(city) {
+  if (!city.pauses) return '';
+  const pauses = city.pauses.map(pause => `ScooterSeasonalPause(from: ${JSON.stringify(pause.from)}, ` +
+    `until: ${JSON.stringify(pause.until)}, timeZone: ${JSON.stringify(pause.timeZone)})`);
+  return `, pauses: [${pauses.join(', ')}]`;
 }
 
 // The widest a city may be, in km. Wider, a merged envelope is most likely two towns of one name

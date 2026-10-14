@@ -10,6 +10,8 @@ export interface UiText {
   numbers?: Record<string, number>;
   /** Epoch milliseconds, substituted for {time} as a clock time. */
   time?: number;
+  /** 1 for January, substituted for {month} as the month's name: "April", "avril". */
+  month?: number;
   /**
    * For a sentence about a count: its singular form, which takes the place of
    * `key` where the language shown uses the singular for that count.
@@ -55,11 +57,18 @@ export function isSingular(count: number, locale: AppLocale): boolean {
   return new Intl.PluralRules(locale === 'pt' ? 'pt-PT' : locale).select(count) === 'one';
 }
 
+/** The month's name in the language, as it stands in a sentence: "April", "avril". 1 is January. */
+export function formatMonth(month: number, locale: AppLocale, region?: string): string {
+  return new Intl.DateTimeFormat(formatLocale(locale, region), { month: 'long', timeZone: 'UTC' })
+    .format(Date.UTC(2001, month - 1, 15));
+}
+
 export function formatUiText(text: UiText, formatter: UiTextFormatter): string {
   const { locale, region, t, formatNumber } = formatter;
   const values: Record<string, string | number> = { ...text.values };
   for (const [name, value] of Object.entries(text.numbers ?? {})) values[name] = formatNumber(value);
   if (text.time !== undefined) values.time = formatClockTime(text.time, locale, region);
+  if (text.month !== undefined) values.month = formatMonth(text.month, locale, region);
   for (const [name, part] of Object.entries(text.parts ?? {})) values[name] = formatUiText(part, formatter);
   return t(text.one && isSingular(text.one.count, locale) ? text.one.key : text.key, values);
 }

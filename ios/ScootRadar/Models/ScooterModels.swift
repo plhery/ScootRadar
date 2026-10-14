@@ -1035,6 +1035,81 @@ struct RentalCurfew: Sendable {
     }
 }
 
+/// The part of the year a city has no scooters, as Montréal each winter, like
+/// src/lib/seasonalPauses.ts. Its operators may list nothing or stop answering
+/// then, so the dock says when the scooters are back. ScooterCity.pauses is
+/// generated from the catalogs' `seasonal` windows.
+struct ScooterSeasonalPause: Equatable, Sendable {
+    /// Local "MM-DD": the first day without scooters.
+    let from: String
+    /// Local "MM-DD": the first day they are back.
+    let until: String
+    /// The IANA time zone the dates are in.
+    let timeZone: String
+
+    struct Active: Equatable, Hashable, Sendable {
+        let city: String
+        /// The month the scooters come back, 1 for January.
+        let month: Int
+    }
+
+    /// The local date in the pause's zone, "MM-DD".
+    private func localDate(_ date: Date) -> String? {
+        guard let zone = TimeZone(identifier: timeZone) else { return nil }
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = zone
+        let day = calendar.dateComponents([.month, .day], from: date)
+        guard let month = day.month, let dayOfMonth = day.day else { return nil }
+        return String(format: "%02d-%02d", month, dayOfMonth)
+    }
+
+    /// Whether it holds on that date. A window from "11-16" until "04-15" spans the new year.
+    func holds(on date: Date) -> Bool {
+        guard let today = localDate(date) else { return false }
+        return from < until ? today >= from && today < until : today >= from || today < until
+    }
+
+    private static let daysBeforeMonth = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
+
+    private static func dayOfYear(_ date: String) -> Int {
+        let month = Int(date.prefix(2)) ?? 1
+        return daysBeforeMonth[min(max(month - 1, 0), 11)] + (Int(date.suffix(2)) ?? 1)
+    }
+
+    /// Days from that date to the first day back.
+    private func daysLeft(on date: Date) -> Int {
+        guard let today = localDate(date) else { return 365 }
+        return (Self.dayOfYear(until) - Self.dayOfYear(today) + 365) % 365
+    }
+
+    /// The month the scooters come back when every one of the pauses holds: the
+    /// soonest of their ends. Nil when one does not hold, or there are none.
+    static func returnMonth(_ pauses: [ScooterSeasonalPause], on date: Date) -> Int? {
+        guard !pauses.isEmpty, pauses.allSatisfy({ $0.holds(on: date) }),
+              let soonest = pauses.min(by: { $0.daysLeft(on: date) < $1.daysLeft(on: date) }) else { return nil }
+        return Int(soonest.until.prefix(2))
+    }
+
+    /// The city at that point whose scooters are away for the season. Nil outside
+    /// every city, or where one of the cities around the point has scooters now.
+    static func active(at point: GeoPoint, on date: Date, among cities: [ScooterCity] = ScooterCityCatalog.cities) -> Active? {
+        var found: Active?
+        for city in cities where city.bounds.contains(point) {
+            guard let month = returnMonth(city.pauses, on: date) else { return nil }
+            if found == nil { found = Active(city: city.name, month: month) }
+        }
+        return found
+    }
+
+    /// The month's name in the app's language, as it stands in a sentence: "April", "avril".
+    static func monthName(_ month: Int, locale: Locale = ScooterLanguage.current.locale) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = locale
+        let names = formatter.standaloneMonthSymbols ?? []
+        return names.indices.contains(month - 1) ? names[month - 1] : String(month)
+    }
+}
+
 struct MapFocusRequest: Equatable, Sendable {
     let point: GeoPoint
     let token: Int
@@ -1433,6 +1508,8 @@ enum ScooterDockStatus: Equatable, Sendable {
 enum ScooterDockNotice: Hashable, Identifiable, Sendable {
     /// The city in view bans renting at night: a moon rather than a warning.
     case curfew(RentalCurfew.Active)
+    /// The city in view has no scooters this part of the year: a calendar.
+    case season(ScooterSeasonalPause.Active)
     /// Named providers, in catalogue order; never empty.
     case providersDown([ScooterProvider])
     /// Only sources that belong to no known provider failed.
@@ -1444,7 +1521,19 @@ enum ScooterDockNotice: Hashable, Identifiable, Sendable {
     var id: Self { self }
 
     var systemImage: String {
-        if case .curfew = self { "moon.fill" } else { "exclamationmark.triangle" }
+        switch self {
+        case .curfew: "moon.fill"
+        case .season: "calendar"
+        default: "exclamationmark.triangle"
+        }
+    }
+
+    /// A ban or a season is the city's rule, not trouble with the data.
+    var isCalm: Bool {
+        switch self {
+        case .curfew, .season: true
+        default: false
+        }
     }
 
     var text: String {
@@ -1454,6 +1543,12 @@ enum ScooterDockNotice: Hashable, Identifiable, Sendable {
                 format: String(localized: "Night ban in %1$@: no scooter rentals until %2$@"),
                 curfew.city,
                 ScooterDockStatus.clockTime(curfew.until)
+            )
+        case let .season(season):
+            String(
+                format: String(localized: "Off season in %1$@: scooters are back in %2$@"),
+                season.city,
+                ScooterSeasonalPause.monthName(season.month)
             )
         case let .providersDown(providers) where providers.count == 1:
             String(format: String(localized: "%@ isn’t sharing data right now."), providers[0].name)
@@ -1484,9 +1579,10 @@ enum ScooterDockNotice: Hashable, Identifiable, Sendable {
     }
 
     /// A night ban first, as some operators keep listing their scooters through
-    /// it, then providers down, truncation and parking.
+    /// it, then the season, providers down, truncation and parking.
     static func notices(
         curfew: RentalCurfew.Active? = nil,
+        season: ScooterSeasonalPause.Active? = nil,
         health: ScooterProviderHealth,
         metadata: ScooterResponseMetadata,
         shownCount: Int
@@ -1494,6 +1590,9 @@ enum ScooterDockNotice: Hashable, Identifiable, Sendable {
         var notices: [ScooterDockNotice] = []
         if let curfew {
             notices.append(.curfew(curfew))
+        }
+        if let season {
+            notices.append(.season(season))
         }
         if !health.downProviders.isEmpty {
             notices.append(.providersDown(health.downProviders))

@@ -12,6 +12,7 @@ import {
 import { boundsContainPoint, boundsIntersection, haversineM } from '@/lib/geo';
 import { COUNTRY_SOURCES, REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas, type RegionalScooterSystem, type ScooterCountry } from '@/lib/regionalScooterSystems';
 import { skippedSources, type FeedSourceStatus, type ScooterSource } from '@/lib/scooterSources';
+import { feedPaused } from '@/lib/seasonalPauses';
 import { isElectricScooter, type GbfsVehicleType } from '@/lib/scooterTypes';
 import type { MapBounds, Vehicle } from '@/lib/types';
 import { legacyRentalLink, normalizeRentalUris } from '@/lib/rentalLinks';
@@ -1119,7 +1120,9 @@ async function fetchRegionalVehicles(query: FeedQuery, country: ScooterCountry):
       try {
         available.push(await fetchRegionalSystemVehicles(system, query));
       } catch (error) {
-        failedSources.push(`${regionalSource(system)}:${system.id}`);
+        const id = `${regionalSource(system)}:${system.id}`;
+        // In its seasonal pause, an operator is expected to be quiet (seasonalPauses.ts).
+        if (!feedPaused(id, Date.now())) failedSources.push(id);
         logFallback(system.id, error);
       }
     }

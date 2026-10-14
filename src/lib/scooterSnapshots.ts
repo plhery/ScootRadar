@@ -6,6 +6,7 @@ import { boundsContainPoint, haversineM } from '@/lib/geo';
 import { CITY_OVERVIEW_MAX_ZOOM, providersForViewport } from '@/lib/mapCoverage';
 import { PARKING_MAX_AGE_MS, PARKING_MIN_ZOOM, type ParkingSnapshot } from '@/lib/parking';
 import { scooterResponse } from '@/lib/scooterResponse';
+import { feedPaused } from '@/lib/seasonalPauses';
 import { skippedSources } from '@/lib/scooterSources';
 import { ScooterFeedsUnavailableError, type FeedQuery, type ScooterFetchMetadata } from '@/lib/scooterFeeds';
 import type { MapBounds, ScooterCluster, ScooterResponse, Vehicle } from '@/lib/types';
@@ -61,6 +62,15 @@ function emptyHealth(): ScooterFetchMetadata {
 export const showsPositions = (feed: FeedSnapshot, now: number) => now - feed.observedAt <= VEHICLE_MAX_AGE_MS;
 
 /**
+ * A feed in its seasonal pause that serves nothing and is not on its way is expected to be quiet:
+ * neither failed nor served, as if it had not been asked (seasonalPauses.ts).
+ */
+function quietInPause(feed: FeedSnapshot, now: number, usable: (feed: FeedSnapshot) => boolean,
+  refreshing?: ReadonlySet<string>): boolean {
+  return !usable(feed) && (feed.failed || !refreshing?.has(feed.id)) && feedPaused(feed.id, now);
+}
+
+/**
  * `usable` decides which feeds count. `refreshing` lists feeds being collected
  * again for this request: one whose last collection succeeded and whose
  * positions are merely old is on its way, not failed, and makes its source stale.
@@ -69,7 +79,7 @@ function healthFor(feeds: FeedSnapshot[], now: number, usable: (feed: FeedSnapsh
   refreshing?: ReadonlySet<string>): ScooterFetchMetadata {
   const meta = emptyHealth();
   for (const source of Object.keys(meta.sources) as Array<keyof typeof meta.sources>) {
-    const relevant = feeds.filter(feed => feed.source === source && !feed.skipped);
+    const relevant = feeds.filter(feed => feed.source === source && !feed.skipped && !quietInPause(feed, now, usable, refreshing));
     if (!relevant.length) continue;
     const served = relevant.filter(usable);
     const coming = relevant.filter(feed => !usable(feed) && !feed.failed && refreshing?.has(feed.id));
@@ -249,7 +259,9 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const relevant = feedsForQuery(snapshot, query, zoom);
   const meta = healthFor(relevant, now, undefined, options.refreshing);
   const refreshing = relevant.some(feed => !feed.skipped && options.refreshing?.has(feed.id));
-  if (relevant.some(feed => !feed.skipped) && !refreshing && relevant.every(feed => feed.skipped || !showsPositions(feed, now))) {
+  // A city whose every feed is in its seasonal pause has nothing to show, which is no failure.
+  const asked = relevant.filter(feed => !feed.skipped && !quietInPause(feed, now, candidate => showsPositions(candidate, now), options.refreshing));
+  if (asked.length > 0 && !refreshing && asked.every(feed => !showsPositions(feed, now))) {
     throw new ScooterFeedsUnavailableError(meta.failedSources);
   }
   const unique = new Map<string, Vehicle>();

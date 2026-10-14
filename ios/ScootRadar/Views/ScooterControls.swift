@@ -334,7 +334,7 @@ struct ScooterControlDock: View {
                         DockNoteRow(
                             systemImage: notice.systemImage,
                             text: notice.text,
-                            tint: notice.systemImage == "moon.fill" ? ScooterPalette.actionText : nil
+                            tint: notice.isCalm ? ScooterPalette.actionText : nil
                         )
                     }
                 }

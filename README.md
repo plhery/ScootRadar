@@ -127,7 +127,13 @@ changing the response contract.
 
 1. Write its catalog, `data/<adjective>-scooter-feeds.json` (`canadian`,
    `mexican`, `american`), and its guide, `docs/<adjective>-scooter-feeds.md`,
-   with the evidence for each feed.
+   with the evidence for each feed. A service area with no scooters part of
+   the year, as Montréal each winter, says so with `seasonal`: `{ "from":
+   "11-16", "until": "04-15", "timeZone": "America/Toronto" }`, its first day
+   without scooters and the first day they are back, local dates (on a
+   system, for each of its areas that sets none). Inside the window the map
+   says "back in April" rather than that the operator is not sharing data,
+   and the feed's alerts are muted; `src/lib/seasonalPauses.ts` explains.
 2. Add one entry to `data/countries.json`:
    - `code`, `continent` (`europe` or `north-america`), `catalog` and `source`,
      the key of its feeds in the API's `meta.sources`;

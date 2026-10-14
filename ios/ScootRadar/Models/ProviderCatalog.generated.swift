@@ -434,6 +434,8 @@ struct ScooterCity: Identifiable, Equatable, Sendable {
     let countryCode: String
     let center: GeoPoint
     let bounds: GeoBounds
+    /// The seasonal pauses of its service areas when every one has one, like pauses on the web.
+    var pauses: [ScooterSeasonalPause] = []
 }
 
 struct ScooterCityDistance: Identifiable, Equatable, Sendable {

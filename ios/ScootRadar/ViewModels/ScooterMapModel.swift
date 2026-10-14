@@ -467,11 +467,12 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         )
     }
 
-    /// The calm lines under the dock status: a night ban, providers down, truncation, parking.
+    /// The calm lines under the dock status: a night ban, the season, providers down, truncation, parking.
     var dockNotices: [ScooterDockNotice] {
         guard let responseMetadata else { return [] }
         return ScooterDockNotice.notices(
             curfew: RentalCurfew.active(at: viewport.center, on: clock()),
+            season: ScooterSeasonalPause.active(at: viewport.center, on: clock()),
             health: providerHealth,
             metadata: responseMetadata,
             shownCount: representedVehicleCount

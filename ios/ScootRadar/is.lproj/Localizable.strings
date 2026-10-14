@@ -125,6 +125,7 @@
 "Parking bays unavailable right now" = "Ekki hægt að sýna stæði eins og er";
 "Parking bays may be out of date" = "Upplýsingar um stæði gætu verið úreltar";
 "Night ban in %1$@: no scooter rentals until %2$@" = "%1$@: næturbann, engin útleiga fyrr en kl. %2$@";
+"Off season in %1$@: scooters are back in %2$@" = "%1$@: árstíðabundið hlé, rafskúturnar koma aftur í %2$@";
 "Night ban in %1$@: you can rent it from %2$@" = "%1$@: næturbann, þú getur leigt hana frá kl. %2$@";
 "No scooters here right now. Zoom out or move the map." = "Engar rafskútur hér eins og er. Þysjaðu út eða færðu kortið.";
 

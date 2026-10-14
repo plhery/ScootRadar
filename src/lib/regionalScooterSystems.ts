@@ -1,6 +1,7 @@
 import { CATALOG_SYSTEMS } from '@/generated/countryCatalogs';
 import { COUNTRY_NAMES, COUNTRY_REGIONS, COUNTRY_SEARCH_WORDS, COUNTRY_SOURCES, type CatalogCountry } from '@/generated/countries';
 import type { ProviderKey } from '@/generated/providers';
+import type { SeasonalPause } from '@/lib/seasonalPauses';
 import type { MapBounds } from '@/lib/types';
 
 // The countries, their catalogs and their sources come from data/countries.json:
@@ -21,6 +22,11 @@ export interface ScooterServiceArea {
    * it is required. Set on a system, it is that of each of its areas that sets none.
    */
   region?: string;
+  /**
+   * The part of the year the area has no scooters, as Montréal each winter; see
+   * seasonalPauses.ts. Set on a system, it is that of each of its areas that sets none.
+   */
+  seasonal?: SeasonalPause;
 }
 export interface RegionalScooterSystem extends ScooterServiceArea {
   id: string;
@@ -59,7 +65,15 @@ export function regionalCityId(system: RegionalScooterSystem, area: ScooterServi
     : `${system.country.toLowerCase()}:${area.city}`;
 }
 
-export type RegionalScooterCity = ScooterServiceArea & { id: string; country: ScooterCountry };
+export type RegionalScooterCity = Omit<ScooterServiceArea, 'seasonal'> & {
+  id: string;
+  country: ScooterCountry;
+  /**
+   * The seasonal pauses of the city's service areas, each once, when every one of them has
+   * one: the city has no scooters while all of them hold.
+   */
+  pauses?: SeasonalPause[];
+};
 
 /**
  * One entry per city, its bounds enclosing every operator's envelope, so overview health
@@ -74,7 +88,16 @@ export function mergeCities(systems: readonly RegionalScooterSystem[], regions: 
       const region = area.region ?? system.region;
       const name = region && regions[system.country]?.showInCityNames ? `${area.city}, ${region}` : area.city;
       const previous = cities.get(id);
-      cities.set(id, { ...area, id, city: name, country: system.country, ...(region ? { region } : {}),
+      const pause = area.seasonal ?? system.seasonal;
+      // One area without a pause has scooters all year, and so has the city.
+      const pauses = pause && (!previous || previous.pauses)
+        ? [...previous?.pauses ?? [], pause].filter((entry, index, all) => all.findIndex(other =>
+          other.from === entry.from && other.until === entry.until && other.timeZone === entry.timeZone) === index)
+        : undefined;
+      const place: ScooterServiceArea = { ...area };
+      delete place.seasonal;
+      cities.set(id, { ...place, id, city: name, country: system.country, ...(region ? { region } : {}),
+        ...(pauses ? { pauses } : {}),
         center: previous?.center ?? area.center,
         aliases: [...new Set([...(previous?.aliases ?? []), ...(area.aliases ?? []), ...(name === area.city ? [] : [area.city])])],
         bounds: previous ? {

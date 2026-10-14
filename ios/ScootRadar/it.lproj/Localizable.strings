@@ -125,6 +125,7 @@
 "Parking bays unavailable right now" = "Dati sui parcheggi non disponibili al momento";
 "Parking bays may be out of date" = "I dati sui parcheggi potrebbero non essere aggiornati";
 "Night ban in %1$@: no scooter rentals until %2$@" = "Divieto notturno a %1$@: nessun noleggio fino alle %2$@";
+"Off season in %1$@: scooters are back in %2$@" = "Pausa stagionale a %1$@: monopattini di nuovo in %2$@";
 "Night ban in %1$@: you can rent it from %2$@" = "Divieto notturno a %1$@: noleggiabile dalle %2$@";
 "No scooters here right now. Zoom out or move the map." = "Nessun monopattino qui al momento. Riduci lo zoom o sposta la mappa.";
 

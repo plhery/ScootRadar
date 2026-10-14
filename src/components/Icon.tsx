@@ -105,6 +105,12 @@ const paths = {
   ),
   upDown: <path d="m8 9 4-4 4 4M8 15l4 4 4-4" />,
   moon: <path d="M20.5 14.2A8.5 8.5 0 1 1 9.8 3.5a6.8 6.8 0 0 0 10.7 10.7Z" />,
+  calendar: (
+    <>
+      <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" />
+      <path d="M3.5 10h17M8 3v4M16 3v4" />
+    </>
+  ),
 } as const;
 
 export default function Icon({

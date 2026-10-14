@@ -483,8 +483,8 @@ export default function BottomSheet({
             providers, stay mounted for the same reason; empty, they take no room. */}
         <div className="dock-notes" role="status">
           {dock.notices.map((notice) => (
-            <p key={notice.kind} className={`dock-note${notice.kind === 'curfew' ? ' dock-note-calm' : ''}`}>
-              <Icon name={notice.kind === 'curfew' ? 'moon' : 'warning'} size={13} strokeWidth={2.2} />
+            <p key={notice.kind} className={`dock-note${notice.kind === 'curfew' || notice.kind === 'season' ? ' dock-note-calm' : ''}`}>
+              <Icon name={notice.kind === 'curfew' ? 'moon' : notice.kind === 'season' ? 'calendar' : 'warning'} size={13} strokeWidth={2.2} />
               <span>{text(notice.text)}</span>
             </p>
           ))}

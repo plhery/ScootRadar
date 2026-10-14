@@ -30,6 +30,10 @@ series follow the snapshot at each scrape, with the states of the
   late for its cadence and the map says the provider is not sharing data. A Swiss or
   watched feed expires when its positions are over 15 minutes old; an idle feed only
   after 30 minutes without a successful collection.
+- `scootradar_feed_paused`: 1 while every service area of the feed is in its seasonal
+  pause (`seasonal` in its catalog, as Montréal each winter), else 0. The feed may then
+  serve nothing: the map says when its scooters are back rather than that the provider is
+  not sharing data, Sentry is not told it stopped, and "feed stopped" ignores it.
 - `scootradar_feed_vehicles`: vehicles held, 0 once expired.
 - `scootradar_feed_observation_timestamp_seconds`: the source's own timestamp of the
   positions held. `time() -` it is their age; an idle feed's may pass 15 minutes.
@@ -120,7 +124,7 @@ The alert rules:
 | ScootRadar cache target down | Prometheus cannot scrape the cache for 3 minutes |
 | ScootRadar serves no scooters | every feed has expired for 5 minutes |
 | ScootRadar collector stalled | no collection has finished for 5 minutes (Swiss feeds alone finish one every few seconds) |
-| ScootRadar feed stopped | a feed served more than half of the last 7 days has been expired for 10 minutes, by its cadence's rule; one notification per feed |
+| ScootRadar feed stopped | a feed served more than half of the last 7 days has been expired for 10 minutes, by its cadence's rule; one notification per feed. Not in its seasonal pause, whose days count as served, so a feed that does not come back after its season is reported |
 | ScootRadar feed discovery stale | no successful discovery for 2 hours |
 | ScootRadar cache restarting | one build has restarted more than three times in an hour (a deploy is not counted) |
 | ScootRadar cache memory high | over 1.3 GB for 15 minutes (the limit is 1536 MiB) |
@@ -162,7 +166,8 @@ inside the container, hence the `Debugger listening on ws://127.0.0.1:…` line 
 startup. Tracing is off, and no trace headers go to the operators' feeds.
 
 - **Feed stopped being served**: a warning each time a feed becomes `expired` by its
-  cadence's rule (an idle feed after 30 minutes without a successful collection), one
+  cadence's rule (an idle feed after 30 minutes without a successful collection), outside
+  its seasonal pause, one
   issue per feed (tags `feed`, `source`, `provider`), at most one event an hour for
   each, so a feed that keeps expiring between updates stays quiet. Its `feed` context has the
   `snapshot_feed_state` figures and the last collection error, or says that the last

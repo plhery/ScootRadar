@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
-  catalogSystems, cityKm, countryCreditLinks, scooterCities, swiftCountries, typescriptCatalogs, typescriptCountries,
-  validateCityWidths, validateCountries,
+  catalogSystems, cityKm, countryCreditLinks, scooterCities, seasonalProblem, swiftCityPauses, swiftCountries, typescriptCatalogs,
+  typescriptCountries, validateCityWidths, validateCountries,
 } from './country-catalog.mjs';
 
 const readJson = path => JSON.parse(readFileSync(path, 'utf8'));
@@ -162,6 +162,34 @@ describe('the countries of data/countries.json', () => {
     expect(() => validateCityWidths(cities, { 'us:Portland': 'A fixture.', 'fr:Lyon': 'Not wide.' }))
       .toThrow('WIDE_CITIES lists cities that are not wider than 150 km: fr:Lyon');
     expect(() => validateCityWidths(cities, {})).toThrow('us:Portland (4166 km)');
+  });
+
+  it('keeps the seasonal pauses of a city\'s areas for iOS, and refuses one that is not a window of dates', () => {
+    const winter = { from: '11-16', until: '04-15', timeZone: 'America/Toronto' };
+    const early = { from: '12-01', until: '04-01', timeZone: 'America/Toronto' };
+    const toronto = canadianCatalog.systems[0];
+    const paused = { systems: [{ ...toronto, seasonal: winter },
+      { ...toronto, id: 'lime_toronto', provider: 'lime', areas: [{ ...toronto, seasonal: early }, { ...toronto, city: 'Mississauga' }] },
+      { ...toronto, id: 'neuron_toronto', provider: 'neuron', seasonal: winter }] };
+    const { cities } = generate({ ...europe, countries: [...europe.countries, canada] }, path => path === canada.catalog ? paused : read(path));
+    const city = id => cities.find(entry => entry.id === id);
+    // Each pause once; none where an area has scooters all year.
+    expect(city('ca:Toronto').pauses).toEqual([winter, early]);
+    expect(city('ca:Mississauga')).not.toHaveProperty('pauses');
+    expect(swiftCityPauses(city('ca:Toronto'))).toBe(', pauses: [ScooterSeasonalPause(from: "11-16", until: "04-15", ' +
+      'timeZone: "America/Toronto"), ScooterSeasonalPause(from: "12-01", until: "04-01", timeZone: "America/Toronto")]');
+    expect(swiftCityPauses(city('ca:Mississauga'))).toBe('');
+
+    expect(seasonalProblem(winter)).toBeNull();
+    expect(seasonalProblem({ ...winter, until: '02-29' })).toMatch('two different dates');
+    expect(seasonalProblem({ ...winter, until: '11-16' })).toMatch('two different dates');
+    expect(seasonalProblem({ ...winter, from: '4-15' })).toMatch('two different dates');
+    expect(seasonalProblem({ from: '11-16', until: '04-15' })).toMatch('needs from, until and timeZone');
+    expect(seasonalProblem({ ...winter, months: 5 })).toMatch('nothing else');
+    expect(seasonalProblem({ ...winter, timeZone: 'America/Montreal_' })).toBe('has no time zone America/Montreal_');
+    const wrong = { systems: [{ ...toronto, areas: [{ ...toronto, seasonal: { ...winter, until: '13-01' } }] }] };
+    expect(() => catalogSystems([canada], () => wrong)).toThrow(
+      'data/canadian-scooter-feeds.json: the seasonal pause of bird_toronto in Toronto needs from and until as two different dates, "MM-DD"');
   });
 
   it('keeps each system in the country of its catalog', () => {

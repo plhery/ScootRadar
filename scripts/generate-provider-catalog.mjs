@@ -1,7 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import {
-  catalogSystems, scooterCities, swiftCountries, typescriptCatalogs, typescriptCountries, validateCountries,
+  catalogSystems, scooterCities, swiftCityPauses, swiftCountries, typescriptCatalogs, typescriptCountries, validateCountries,
 } from './country-catalog.mjs';
 
 const root = process.cwd();
@@ -222,7 +222,7 @@ function swiftCities() {
       throw new Error(`Invalid covered city: ${city.id}`);
     }
     return `        ScooterCity(id: ${JSON.stringify(city.id)}, name: ${JSON.stringify(city.name)}, countryCode: ${JSON.stringify(city.country)}, ` +
-      `center: GeoPoint(latitude: ${city.center[0]}, longitude: ${city.center[1]}), bounds: ${swiftBounds(city.bounds)}),`;
+      `center: GeoPoint(latitude: ${city.center[0]}, longitude: ${city.center[1]}), bounds: ${swiftBounds(city.bounds)}${swiftCityPauses(city)}),`;
   }).join('\n');
 
   return `
@@ -233,6 +233,8 @@ struct ScooterCity: Identifiable, Equatable, Sendable {
     let countryCode: String
     let center: GeoPoint
     let bounds: GeoBounds
+    /// The seasonal pauses of its service areas when every one has one, like pauses on the web.
+    var pauses: [ScooterSeasonalPause] = []
 }
 
 struct ScooterCityDistance: Identifiable, Equatable, Sendable {

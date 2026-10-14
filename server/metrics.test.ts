@@ -39,6 +39,22 @@ it('exports the state of every attempted feed as the map sees it', () => {
   expect(sample(text, 'scootradar_snapshot_updated_timestamp_seconds')).toBe(String((now - 5_000) / 1000));
 });
 
+it('says which feeds are in their seasonal pause, for the feed-stopped alert to ignore', () => {
+  const asked: number[] = [];
+  const metrics = createSnapshotMetrics('abc123', { paused: (id, at) => {
+    asked.push(at);
+    return id === 'canada:bird_montreal';
+  } });
+  const text = metrics.render(snapshot([feed({}), feed({ id: 'canada:bird_montreal', source: 'canada' as FeedSnapshot['source'], provider: 'bird',
+    failed: true, observedAt: now - VEHICLE_MAX_AGE_MS - 1_000 })]), now);
+  expect(sample(text, 'scootradar_feed_paused{feed="canada:bird_montreal",source="canada",provider="bird"}')).toBe('1');
+  expect(sample(text, 'scootradar_feed_paused{feed="national:voiscooters.com",source="national",provider="voi"}')).toBe('0');
+  expect(asked.every(at => at === now)).toBe(true);
+  // No catalog feed pauses today.
+  expect(createSnapshotMetrics().render(snapshot([feed({})]), now)).toContain(
+    'scootradar_feed_paused{feed="national:voiscooters.com",source="national",provider="voi"} 0');
+});
+
 it('counts collections from zero by outcome, and requests by route and status', () => {
   const metrics = createSnapshotMetrics();
   const voi = { id: 'national:voiscooters.com', source: 'national', provider: 'voi' };

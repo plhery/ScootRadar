@@ -1282,3 +1282,97 @@ extension ScooterModelsTests {
         }
     }
 }
+
+// Cities whose scooters stop for the winter, as the catalogs' `seasonal` windows say.
+extension ScooterModelsTests {
+    private static let winter = ScooterSeasonalPause(from: "11-16", until: "04-15", timeZone: "America/Toronto")
+    private static let early = ScooterSeasonalPause(from: "12-01", until: "04-01", timeZone: "America/Toronto")
+    // Bird stops in Montréal on 16 November, Lime on 1 December; Lime runs in Laval all year.
+    private static let quebec = [
+        ScooterCity(
+            id: "ca:Montréal", name: "Montréal", countryCode: "CA", center: GeoPoint(latitude: 45.5, longitude: -73.57),
+            bounds: GeoBounds(south: 45.41, west: -73.98, north: 45.7, east: -73.47), pauses: [winter, early]
+        ),
+        ScooterCity(
+            id: "ca:Laval", name: "Laval", countryCode: "CA", center: GeoPoint(latitude: 45.58, longitude: -73.75),
+            bounds: GeoBounds(south: 45.52, west: -73.89, north: 45.7, east: -73.52)
+        ),
+    ]
+
+    func testASeasonalPauseHoldsInItsTimeZoneAcrossTheNewYear() throws {
+        let iso = ISO8601DateFormatter()
+        func at(_ string: String) throws -> Date { try XCTUnwrap(iso.date(from: string)) }
+        let winter = Self.winter
+        // Midnight in Montréal is 05:00 UTC in November, 04:00 in April.
+        XCTAssertFalse(winter.holds(on: try at("2026-11-16T04:59:00Z")))
+        XCTAssertTrue(winter.holds(on: try at("2026-11-16T05:00:00Z")))
+        XCTAssertTrue(winter.holds(on: try at("2027-01-20T17:00:00Z")))
+        XCTAssertTrue(winter.holds(on: try at("2027-04-15T03:59:00Z")))
+        XCTAssertFalse(winter.holds(on: try at("2027-04-15T04:00:00Z")))
+        XCTAssertFalse(winter.holds(on: try at("2026-07-20T16:00:00Z")))
+        let summer = ScooterSeasonalPause(from: "06-01", until: "09-01", timeZone: "Europe/Oslo")
+        XCTAssertTrue(summer.holds(on: try at("2026-07-20T16:00:00Z")))
+        XCTAssertFalse(summer.holds(on: try at("2027-01-20T17:00:00Z")))
+
+        // Back with the soonest of the pauses, once every one holds.
+        let january = try at("2027-01-20T17:00:00Z")
+        XCTAssertEqual(ScooterSeasonalPause.returnMonth([winter, Self.early], on: january), 4)
+        XCTAssertEqual(
+            ScooterSeasonalPause.returnMonth(
+                [winter, ScooterSeasonalPause(from: "12-01", until: "03-10", timeZone: "America/Toronto")], on: january
+            ),
+            3
+        )
+        XCTAssertNil(ScooterSeasonalPause.returnMonth([winter, Self.early], on: try at("2026-11-20T17:00:00Z")))
+        XCTAssertNil(ScooterSeasonalPause.returnMonth([], on: january))
+    }
+
+    func testTheDockSaysWhenTheScootersOfACityInItsPauseAreBack() throws {
+        defer { ScooterLanguage.current = .atLaunch }
+        let iso = ISO8601DateFormatter()
+        func at(_ string: String) throws -> Date { try XCTUnwrap(iso.date(from: string)) }
+        let montreal = GeoPoint(latitude: 45.5, longitude: -73.57)
+        let january = try at("2027-01-20T17:00:00Z")
+
+        let season = try XCTUnwrap(ScooterSeasonalPause.active(at: montreal, on: january, among: Self.quebec))
+        XCTAssertEqual(season, ScooterSeasonalPause.Active(city: "Montréal", month: 4))
+        // Lime runs until December, Laval all year, and Laval's bounds take in the north of Montréal.
+        XCTAssertNil(ScooterSeasonalPause.active(at: montreal, on: try at("2026-11-20T17:00:00Z"), among: Self.quebec))
+        XCTAssertNil(ScooterSeasonalPause.active(at: montreal, on: try at("2026-07-20T16:00:00Z"), among: Self.quebec))
+        XCTAssertNil(ScooterSeasonalPause.active(at: GeoPoint(latitude: 45.65, longitude: -73.6), on: january, among: Self.quebec))
+        // No city of the catalogs pauses today.
+        XCTAssertTrue(ScooterCityCatalog.cities.allSatisfy { $0.pauses.isEmpty })
+
+        // After a night ban, before providers down, with a calendar, calm.
+        XCTAssertEqual(
+            ScooterDockNotice.notices(
+                season: season,
+                health: ScooterProviderHealth(downProviders: [.lime], hasUnknownFailures: false),
+                metadata: ScooterResponseMetadata(partial: true, failedSources: ["canada:lime_quebec"]),
+                shownCount: 0
+            ),
+            [.season(season), .providersDown([.lime])]
+        )
+        XCTAssertEqual(ScooterDockNotice.season(season).systemImage, "calendar")
+        XCTAssertTrue(ScooterDockNotice.season(season).isCalm)
+        XCTAssertFalse(ScooterDockNotice.parkingUnavailable.isCalm)
+
+        let sentences: [ScooterLanguage: String] = [
+            .en: "Off season in Montréal: scooters are back in April",
+            .de: "Saisonpause in Montréal: Scooter wieder im April",
+            .fr: "Pause saisonnière à Montréal : retour des trottinettes en avril",
+            .it: "Pausa stagionale a Montréal: monopattini di nuovo in aprile",
+            .nl: "Seizoenspauze in Montréal: deelsteps weer in april",
+            .nb: "Sesongpause i Montréal: elsparkesykler igjen i april",
+            .pt: "Pausa sazonal em Montréal: trotinetes de volta em abril",
+            .es: "Pausa de temporada en Montréal: los patinetes vuelven en abril",
+            .is: "Montréal: árstíðabundið hlé, rafskúturnar koma aftur í apríl",
+        ]
+        XCTAssertEqual(Set(sentences.keys), Set(ScooterLanguage.allCases))
+        for (language, sentence) in sentences {
+            ScooterLanguage.current = language
+            // Spanish says scooter where the iPhone's region is in Latin America or the US.
+            XCTAssertEqual(ScooterDockNotice.season(season).text, language.written(sentence, in: language.locale.region), language.rawValue)
+        }
+    }
+}
