@@ -115,6 +115,11 @@
           "x-swift-name": "minuteFeeMinorUnits",
           "type": "integer",
           "minimum": 0
+        },
+        "plus_tax": {
+          "description": "Present and true where tax is added to these prices, as North American operators charge sales tax on top.",
+          "x-swift-name": "plusTax",
+          "type": "boolean"
         }
       }
     },

@@ -562,7 +562,7 @@ struct ScooterCardContent: Equatable, Sendable {
     let figures: [ScooterCardFigure]
     /// "80% battery, 50 km range": what is known and not among the figures.
     let facts: String?
-    /// "CHF 1.00 to unlock, then CHF 0.42 a minute".
+    /// "CHF 1.00 to unlock, then CHF 0.42 a minute", and "+ tax" where tax is added.
     let note: String
     /// "Night ban in Oslo: you can rent it from 05:00", while the ban holds.
     let curfew: String?
@@ -645,13 +645,13 @@ struct ScooterCardContent: Equatable, Sendable {
             return
         }
         let minute = RidePriceFormatter.string(minorUnits: pricing.minuteFeeMinorUnits, currency: pricing.currency)
-        let tariff = pricing.unlockFeeMinorUnits > 0
+        let tariff = pricing.taxed(pricing.unlockFeeMinorUnits > 0
             ? String(
                 format: String(localized: "%1$@ to unlock, then %2$@ a minute"),
                 RidePriceFormatter.string(minorUnits: pricing.unlockFeeMinorUnits, currency: pricing.currency),
                 minute
             )
-            : String(format: String(localized: "No unlock fee, %@ a minute"), minute)
+            : String(format: String(localized: "No unlock fee, %@ a minute"), minute))
         note = quote?.passApplied == true
             ? String(format: String(localized: "%1$@ · %2$@"), tariff, String(localized: "Pass applied"))
             : tariff

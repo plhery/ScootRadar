@@ -65,7 +65,8 @@ for (const [index, vehicle] of body.vehicles.entries()) {
       !Number.isInteger(pricing.unlock_fee_minor_units) ||
       pricing.unlock_fee_minor_units < 0 ||
       !Number.isInteger(pricing.minute_fee_minor_units) ||
-      pricing.minute_fee_minor_units < 0
+      pricing.minute_fee_minor_units < 0 ||
+      ('plus_tax' in pricing && typeof pricing.plus_tax !== 'boolean')
     ) {
       throw new Error(`Live scooter API vehicle ${index} has invalid pricing`);
     }

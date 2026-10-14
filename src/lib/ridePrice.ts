@@ -20,6 +20,8 @@ export interface RidePriceQuote {
   unlockFeeMinorUnits: number;
   minuteFeeMinorUnits: number;
   totalMinorUnits: number;
+  /** Tax is added to these prices: "+ tax" follows them. */
+  plusTax: boolean;
 }
 
 function wholeAmount(value: number): number {
@@ -37,6 +39,7 @@ export function ridePriceQuote(pricing: RidePricing, durationMinutes: number): R
     minuteFeeMinorUnits: minuteFee,
     // Saturates, as the Swift version does on overflow.
     totalMinorUnits: Math.min(unlockFee + minuteFee * minutes, Number.MAX_SAFE_INTEGER),
+    plusTax: pricing.plus_tax === true,
   };
 }
 

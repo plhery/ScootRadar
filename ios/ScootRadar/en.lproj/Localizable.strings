@@ -208,6 +208,7 @@
 "%@ range" = "%@ range";
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ to unlock, then %2$@ a minute";
 "No unlock fee, %@ a minute" = "No unlock fee, %@ a minute";
+"%@ + tax" = "%@ + tax";
 
 /* Walking route: Directions on a card draws the way on the map */
 "Hide route" = "Hide route";

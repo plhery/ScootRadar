@@ -553,6 +553,27 @@ final class ScooterMapLookTests: XCTestCase {
         XCTAssertEqual(withPass.note, "\(price(100)) to unlock, then \(price(42)) a minute · Pass applied")
     }
 
+    func testTheCardSaysPlusTaxAfterThePricesTaxIsAddedTo() {
+        defer { ScooterLanguage.current = .atLaunch }
+        ScooterLanguage.current = .en
+        // Veo in New York: USD 1 to unlock and USD 0.42 a minute, before sales tax.
+        let taxed = ScooterRidePricing(currency: "USD", unlockFeeMinorUnits: 100, minuteFeeMinorUnits: 42, plusTax: true)
+        let content = ScooterCardContent(
+            scooter: scooter(pricing: taxed),
+            metres: 60,
+            quote: RidePriceEstimator.quote(pricing: taxed, durationMinutes: 10)
+        )
+        let unlock = RidePriceFormatter.string(minorUnits: 100, currency: "USD")
+        let minute = RidePriceFormatter.string(minorUnits: 42, currency: "USD")
+        XCTAssertEqual(content.note, "\(unlock) to unlock, then \(minute) a minute + tax")
+        XCTAssertEqual(content.figures[2].label, "USD, 10 min")
+
+        ScooterLanguage.current = .fr
+        XCTAssertEqual(taxed.taxed("x"), "x + taxes")
+        ScooterLanguage.current = .de
+        XCTAssertEqual(taxed.taxed("x"), "x + Steuern")
+    }
+
     func testTheCardShowsForintsAndKronurWithoutDecimals() {
         // Hopp in Pécs: HUF 272 to start and HUF 76 a minute.
         let forints = ScooterRidePricing(currency: "HUF", unlockFeeMinorUnits: 27_200, minuteFeeMinorUnits: 7_600)

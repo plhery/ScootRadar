@@ -31,7 +31,22 @@ final class ScooterModelsTests: XCTestCase {
         XCTAssertEqual(scooter.coordinate.latitude, 47.4784)
         XCTAssertEqual(scooter.coordinate.longitude, -0.5632)
         XCTAssertEqual(scooter.pricing?.currency, "EUR")
+        XCTAssertEqual(scooter.pricing?.plusTax, false)
         XCTAssertEqual(scooter.rentalURL?.absoluteString, "https://getapony.com/app/scan")
+    }
+
+    func testAPriceTaxIsAddedToSaysSo() throws {
+        // Veo in New York: USD 1 to unlock and USD 0.42 a minute, before sales tax.
+        let data = Data(#"""
+        {
+          "provider": "lime", "lat": 40.7128, "lng": -74.006, "battery": 75, "range_m": null,
+          "vehicle_id": "veo-1", "deep_link": null, "rental_uris": null, "distance_m": null,
+          "pricing": { "currency": "USD", "unlock_fee_minor_units": 100, "minute_fee_minor_units": 42, "plus_tax": true }
+        }
+        """#.utf8)
+        let pricing = try XCTUnwrap(JSONDecoder().decode(ScooterVehiclePayload.self, from: data).model.pricing)
+        XCTAssertEqual(pricing, ScooterRidePricing(currency: "USD", unlockFeeMinorUnits: 100, minuteFeeMinorUnits: 42, plusTax: true))
+        XCTAssertTrue(RidePriceEstimator.quote(pricing: pricing, durationMinutes: 10).plusTax)
     }
 
     func testDecodingAndStableProviderIdentity() throws {

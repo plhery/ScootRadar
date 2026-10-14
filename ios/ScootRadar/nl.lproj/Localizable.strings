@@ -208,6 +208,7 @@
 "%@ range" = "%@ bereik";
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ om te ontgrendelen, daarna %2$@ per minuut";
 "No unlock fee, %@ a minute" = "Geen ontgrendelkosten, %@ per minuut";
+"%@ + tax" = "%@ + belasting";
 
 /* Walking route: Directions on a card draws the way on the map */
 "Hide route" = "Route verbergen";

@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { RIDE_DURATIONS } from '@/lib/ridePrice';
 import { skippedSources } from '@/lib/scooterSources';
 import {
   fetchScooters,
@@ -985,7 +986,12 @@ describe('feed validation and tariff regressions', () => {
     { per_min_pricing: [{ start: 0, rate: 0, interval: 1, end: 5 }, { start: 5, rate: 0.4, interval: 1 }] },
     { per_min_pricing: [{ start: 0, rate: 0.8, interval: 2 }] },
     { per_km_pricing: [{ start: 0, rate: 0.1, interval: 1 }] },
-    { is_taxable: true },
+    // A band that stops before the longest ride the app prices, 30 minutes.
+    { per_min_pricing: [{ start: 0, rate: 0.42, interval: 1, end: 20 }] },
+    // An introductory first minute cheaper than the rest.
+    { per_min_pricing: [{ start: 0, rate: 0, interval: 1, end: 1 }, { start: 1, rate: 0.42, interval: 1 }] },
+    // Minutes included in the price, as passes have them.
+    { per_min_pricing: [{ start: 30, rate: 0.25, interval: 1, end: 1230 }] },
   ])('omits estimates for tariffs the flat-minute contract cannot represent: %j', async changes => {
     vi.stubGlobal('fetch', vi.fn(async input => {
       const response = nationalResponse(String(input))!;
@@ -999,6 +1005,62 @@ describe('feed validation and tariff regressions', () => {
     const result = await fetchScooters({ ...query, providers: new Set(['lime']) });
     expect(result.vehicles).toHaveLength(1);
     expect(result.vehicles[0].pricing).toBeUndefined();
+  });
+
+  describe('North American tariffs', () => {
+    const lime = async () => (await fetchScooters({ ...query, providers: new Set(['lime']) })).vehicles[0].pricing;
+
+    it.each([
+      { is_taxable: true, plus_tax: true },
+      // Bike Share Toronto and SoBi Hamilton write the flag as a number.
+      { is_taxable: 1, plus_tax: true },
+      { is_taxable: 0, plus_tax: undefined },
+      { is_taxable: false, plus_tax: undefined },
+    ])('says tax is added to the prices where the plan says so: is_taxable $is_taxable', async ({ is_taxable, plus_tax }) => {
+      // Veo's plans: "The unlock fee is 1.000000 and we charge you 0.420000 for each every 1 minute".
+      stubSwissPricingPlan({ currency: 'USD', price: 1, is_taxable, per_min_pricing: [{ start: 0, rate: 0.42, interval: 1 }] });
+      expect(await lime()).toEqual({ currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 42, ...(plus_tax ? { plus_tax } : {}) });
+    });
+
+    it('reads a first minute at its own rate as an unlock fee, as Bike Share Toronto publishes its $1', async () => {
+      stubSwissPricingPlan({
+        currency: 'CAD', price: 0, is_taxable: 1, description: '+Classic bike $0.12/min; Ebike $0.20/min',
+        per_min_pricing: [{ start: 0, rate: 1.12, interval: 1, end: 1 }, { start: 1, rate: 0.12, interval: 1, end: 825 }],
+      });
+      expect(await lime()).toEqual({ currency: 'CAD', unlock_fee_minor_units: 100, minute_fee_minor_units: 12, plus_tax: true });
+    });
+
+    it.each([
+      // Tugo in Tucson: the band ends at the longest trip.
+      [{ start: 0, rate: 0.25, interval: 1, end: 1200 }],
+      // A table of bands that follow on at one rate.
+      [{ start: 15, rate: 0.25, interval: 1, end: 30 }, { start: 0, rate: 0.25, interval: 1, end: 15 }, { start: 30, rate: 0.25, interval: 1 }],
+    ])('reads bands that come to one rate through the longest ride priced as one minute price: %j', async (...bands) => {
+      stubSwissPricingPlan({ currency: 'USD', price: 1, description: '$1 unlock, plus $0.25/min', per_min_pricing: bands });
+      expect(await lime()).toEqual({ currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 25 });
+    });
+
+    it.each([
+      { end: Math.max(...RIDE_DURATIONS), priced: true },
+      { end: Math.max(...RIDE_DURATIONS) - 1, priced: false },
+    ])('prices a band only when it runs through the longest ride the card offers: end $end', async ({ end, priced }) => {
+      stubSwissPricingPlan({ currency: 'USD', price: 1, per_min_pricing: [{ start: 0, rate: 0.25, interval: 1, end }] });
+      expect(await lime()).toEqual(priced ? { currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 25 } : undefined);
+    });
+
+    it('keeps a tariff its description agrees with in dollars, as Lyft writes it', async () => {
+      stubSwissPricingPlan({ currency: 'USD', price: 1, is_taxable: true, description: '$1.00 unlock fee, $0.41 per minute.', per_min_pricing: [{ start: 0, rate: 0.41, interval: 1 }] });
+      expect(await lime()).toEqual({ currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 41, plus_tax: true });
+    });
+
+    it.each([
+      // MetroBike Austin: the bands make $2.25 once and $0.25 a minute, the description $2.50 to unlock.
+      { price: 0, description: 'Single-trip pass. $2.50 to unlock + $0.25 per minute.', per_min_pricing: [{ start: 0, rate: 2.5, interval: 1, end: 1 }, { start: 1, rate: 0.25, interval: 1, end: 471 }] },
+      { price: 1, description: '$1.00 unlock fee, $0.45 per minute.', per_min_pricing: [{ start: 0, rate: 0.41, interval: 1 }] },
+    ])('omits a tariff its description contradicts in dollars: $description', async plan => {
+      stubSwissPricingPlan({ currency: 'USD', ...plan });
+      expect(await lime()).toBeUndefined();
+    });
   });
 
   it('uses a vehicle type default tariff when the vehicle has no override', async () => {

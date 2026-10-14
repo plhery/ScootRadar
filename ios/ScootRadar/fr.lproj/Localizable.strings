@@ -208,6 +208,7 @@
 "%@ range" = "%@ d’autonomie";
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ pour déverrouiller, puis %2$@ par minute";
 "No unlock fee, %@ a minute" = "Pas de frais de déverrouillage, %@ par minute";
+"%@ + tax" = "%@ + taxes";
 
 /* Walking route: Directions on a card draws the way on the map */
 "Hide route" = "Masquer l’itinéraire";

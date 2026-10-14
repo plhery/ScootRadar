@@ -208,6 +208,7 @@
 "%@ range" = "%@ Reichweite";
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ zum Entsperren, dann %2$@ pro Minute";
 "No unlock fee, %@ a minute" = "Keine Entsperrgebühr, %@ pro Minute";
+"%@ + tax" = "%@ + Steuern";
 
 /* Walking route: Directions on a card draws the way on the map */
 "Hide route" = "Route ausblenden";

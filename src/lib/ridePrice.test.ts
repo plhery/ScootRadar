@@ -38,9 +38,14 @@ describe('ridePriceQuote', () => {
       unlockFeeMinorUnits: 100,
       minuteFeeMinorUnits: 35,
       totalMinorUnits: 450,
+      plusTax: false,
     });
     expect(ridePriceQuote(LIME, 30).totalMinorUnits).toBe(1150);
     expect(ridePriceQuote(LIME, 0).totalMinorUnits).toBe(100);
+  });
+
+  it('says whether tax is added to the estimate', () => {
+    expect(ridePriceQuote({ ...LIME, currency: 'USD', plus_tax: true }, 10)).toMatchObject({ totalMinorUnits: 450, plusTax: true });
   });
 
   it('handles tariffs without an unlock fee or without a minute fee', () => {

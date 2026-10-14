@@ -173,6 +173,13 @@ struct ScooterRidePricing: Hashable, Sendable {
     let currency: String
     let unlockFeeMinorUnits: Int
     let minuteFeeMinorUnits: Int
+    /// Tax is added to these prices, as North American operators charge sales tax on top.
+    var plusTax = false
+
+    /// "CHF 1.00 to unlock", or "USD 1.00 to unlock + tax" where tax is added.
+    func taxed(_ text: String) -> String {
+        plusTax ? String(format: String(localized: "%@ + tax"), text) : text
+    }
 }
 
 struct ProviderRidePass: Codable, Hashable, Sendable {
@@ -226,6 +233,8 @@ struct RidePriceQuote: Hashable, Sendable {
     let billedMinutes: Int
     let freeMinutesApplied: Int
     let passApplied: Bool
+    /// Tax is added to the estimate.
+    var plusTax = false
 }
 
 enum RidePriceEstimator {
@@ -264,7 +273,8 @@ enum RidePriceEstimator {
             chargedUnlockFeeMinorUnits: chargedUnlockFee,
             billedMinutes: billedMinutes,
             freeMinutesApplied: durationMinutes - billedMinutes,
-            passApplied: totalMinorUnits < grossMinorUnits
+            passApplied: totalMinorUnits < grossMinorUnits,
+            plusTax: pricing.plusTax
         )
     }
 
@@ -750,7 +760,8 @@ extension ScooterVehiclePayload {
                 return ScooterRidePricing(
                     currency: currency,
                     unlockFeeMinorUnits: payload.unlockFeeMinorUnits,
-                    minuteFeeMinorUnits: payload.minuteFeeMinorUnits
+                    minuteFeeMinorUnits: payload.minuteFeeMinorUnits,
+                    plusTax: payload.plusTax == true
                 )
             }
         )

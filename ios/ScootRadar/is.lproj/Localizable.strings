@@ -208,6 +208,7 @@
 "%@ range" = "%@ drægni";
 "%1$@ to unlock, then %2$@ a minute" = "Startgjald %1$@, svo %2$@ á mínútu";
 "No unlock fee, %@ a minute" = "Ekkert startgjald, %@ á mínútu";
+"%@ + tax" = "%@ + skattar";
 
 /* Walking route: Directions on a card draws the way on the map */
 "Hide route" = "Fela leiðina";

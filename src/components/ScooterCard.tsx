@@ -107,10 +107,12 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
   const tone = level === 'good' ? undefined : level;
 
   const money = (minorUnits: number) => quote ? formatRidePrice(minorUnits, quote.currency, locale, region) : '';
+  // Where tax is added, as in North America, the prices say so.
+  const taxed = (text: string) => quote?.plusTax ? t('card.plusTax', { text }) : text;
   const note = quote
-    ? quote.unlockFeeMinorUnits > 0
+    ? taxed(quote.unlockFeeMinorUnits > 0
       ? t('card.note.price', { unlock: money(quote.unlockFeeMinorUnits), minute: money(quote.minuteFeeMinorUnits) })
-      : t('card.note.noUnlock', { minute: money(quote.minuteFeeMinorUnits) })
+      : t('card.note.noUnlock', { minute: money(quote.minuteFeeMinorUnits) }))
     : t('card.priceInApp', { name });
 
   const figure = (kind: FigureKind) => {
@@ -167,7 +169,7 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
           value={formatNumber(quote.totalMinorUnits / 100, { minimumFractionDigits: digits, maximumFractionDigits: digits })}
           label={t('card.figure.price', { currency: quote.currency.toUpperCase(), minutes: formatNumber(duration) })}
           spoken={t('card.price', {
-            price: money(quote.totalMinorUnits),
+            price: taxed(money(quote.totalMinorUnits)),
             minutes: formatNumber(duration),
           })}
         >

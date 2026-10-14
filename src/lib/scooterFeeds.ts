@@ -110,7 +110,8 @@ interface PricingPlan {
   description?: string | Array<{ language: string; text: string }>;
   per_min_pricing?: PerMinutePrice[];
   per_km_pricing?: unknown[];
-  is_taxable?: boolean;
+  // GBFS says boolean; Bike Share Toronto, SoBi Hamilton and others write 1 and 0.
+  is_taxable?: boolean | number;
   // Hopp currently publishes this singular key instead of the GBFS key above.
   per_min_price?: PerMinutePrice[];
 }
@@ -428,31 +429,81 @@ function describedMinorUnits(
   const match = description.match(new RegExp(
     `([0-9]+(?:[.,][0-9]+)?)\\s*${currency}\\s+${suffix}`,
     'i'
-  ));
+  )) ?? (DOLLAR_CURRENCIES.has(currency) ? description.match(new RegExp(
+    // "$1.00 unlock fee, $0.41 per minute." (Lyft), "$2.50 to unlock + $0.25 per minute" (MetroBike).
+    `\\$\\s*([0-9]+(?:\\.[0-9]+)?)\\s+(?:${priceContext === 'unlock' ? 'unlock\\s+fee|' : ''}${suffix})`,
+    'i'
+  )) : null);
   if (!match) return null;
   return minorUnits(Number(match[1].replace(',', '.')));
 }
 
-function vehiclePricing(plan: PricingPlan, wholeUnitPrice = false): VehiclePricing | null {
-  const currency = plan.currency?.trim().toUpperCase();
-  let unlockFee = minorUnits(plan.price);
-  const minuteBands = plan.per_min_pricing?.length
-    ? plan.per_min_pricing
-    : plan.per_min_price;
-  // The wire contract models one uniform minute price. Do not flatten tariffs
-  // with introductory periods, interval billing, distance charges or extra tax.
-  if (minuteBands?.length !== 1 || plan.per_km_pricing?.length || plan.is_taxable === true) return null;
-  const band = minuteBands[0];
+/** Currencies North American feeds write with a bare "$" in their descriptions. */
+const DOLLAR_CURRENCIES = new Set(['USD', 'CAD', 'MXN']);
+
+/**
+ * A minute band holds for every ride the app prices when it runs to the
+ * longest of them: RIDE_DURATIONS in ridePrice.ts and RideEstimateDuration on
+ * iOS, which the cache does not build from.
+ */
+const LONGEST_PRICED_RIDE_MINUTES = 30;
+
+/**
+ * The fee of every minute, and what is charged once on top of the plan's
+ * price, where the minute bands come to one flat price a minute:
+ * - one band from minute 0 or 1, billed by the minute;
+ * - the same, split into bands that follow on with one rate (a table of 30
+ *   minute rows reads as one band);
+ * - a first minute at its own rate, then one rate a minute, as Bike Share
+ *   Toronto, MetroBike Austin and Chattanooga publish an unlock fee: $1.12 for
+ *   minute 0 and $0.12 from minute 1 is $1 once and $0.12 for each minute.
+ * A band may end, as many North American ones do at the longest trip, as long
+ * as it runs through every ride the app prices. Anything else, such as minutes
+ * included before the rate starts or billing by the quarter hour, is not a flat
+ * minute price and gets no estimate.
+ */
+function minuteTariff(bands: readonly PerMinutePrice[]): { onceMinorUnits: number; minuteMinorUnits: number } | null {
+  const merged: PerMinutePrice[] = [];
+  for (const band of [...bands].sort((a, b) => (a.start ?? 0) - (b.start ?? 0))) {
+    const last = merged.at(-1);
+    if (last && last.end !== undefined && last.end === band.start && last.rate === band.rate && last.interval === band.interval) {
+      merged[merged.length - 1] = { ...last, end: band.end };
+    } else {
+      merged.push({ ...band });
+    }
+  }
+  const lasts = (band: PerMinutePrice) => band.interval === 1 && (band.end === undefined || band.end >= LONGEST_PRICED_RIDE_MINUTES);
+  const [first, second] = merged;
   // Dott, Ryde and Pony start their band at minute 1, yet their descriptions
   // say "1 EUR to unlock and 0.37 EUR per minute": every minute is charged. Read
   // to the letter, the first minute would be free, so the estimate is at most
   // one minute's fee above it, never below.
-  if ((band.start !== 0 && band.start !== 1) || band.interval !== 1 || band.end !== undefined) return null;
-  const minuteFee = minorUnits(band.rate);
-
-  if (!currency?.match(/^[A-Z]{3}$/) || unlockFee == null || minuteFee == null) {
-    return null;
+  if (merged.length === 1 && (first.start === 0 || first.start === 1) && lasts(first)) {
+    const minute = minorUnits(first.rate);
+    return minute == null ? null : { onceMinorUnits: 0, minuteMinorUnits: minute };
   }
+  if (merged.length === 2 && first.start === 0 && first.end === 1 && first.interval === 1 && second.start === 1 && lasts(second)) {
+    const firstMinute = minorUnits(first.rate);
+    const minute = minorUnits(second.rate);
+    if (firstMinute == null || minute == null || firstMinute < minute) return null;
+    return { onceMinorUnits: firstMinute - minute, minuteMinorUnits: minute };
+  }
+  return null;
+}
+
+function vehiclePricing(plan: PricingPlan, wholeUnitPrice = false): VehiclePricing | null {
+  const currency = plan.currency?.trim().toUpperCase();
+  const minuteBands = plan.per_min_pricing?.length
+    ? plan.per_min_pricing
+    : plan.per_min_price;
+  // The wire contract models an unlock fee and one uniform minute price. Do not
+  // flatten tariffs with introductory periods, interval billing or distance charges.
+  if (!minuteBands?.length || plan.per_km_pricing?.length) return null;
+  const tariff = minuteTariff(minuteBands);
+  const price = minorUnits(plan.price);
+  if (!currency?.match(/^[A-Z]{3}$/) || price == null || !tariff) return null;
+  let unlockFee = price + tariff.onceMinorUnits;
+  const minuteFee = tariff.minuteMinorUnits;
 
   // Descriptions are never used as the tariff source, but they can expose a
   // contradictory canonical value. In that case omitting the estimate is safer.
@@ -475,6 +526,8 @@ function vehiclePricing(plan: PricingPlan, wholeUnitPrice = false): VehiclePrici
     currency,
     unlock_fee_minor_units: unlockFee,
     minute_fee_minor_units: minuteFee,
+    // North American prices are given before sales tax, which the rider pays on top.
+    ...(plan.is_taxable === true || plan.is_taxable === 1 ? { plus_tax: true } : {}),
   };
 }
 

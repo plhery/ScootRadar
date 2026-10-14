@@ -256,6 +256,14 @@ describe('ScooterCard', () => {
     expect(screen.getByText('HUF 272 to unlock, then HUF 76 a minute')).toHaveClass('card-note');
   });
 
+  it('says + tax after the prices of a tariff tax is added to', () => {
+    // Veo in New York: USD 1 to unlock and USD 0.42 a minute, before sales tax.
+    renderCard({}, { pricing: { currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 42, plus_tax: true } });
+
+    expect(figures()[2]).toEqual({ value: '5.20', label: 'USD, 10 min', spoken: '≈ US$ 5.20 + tax for 10 min' });
+    expect(screen.getByText('US$ 1.00 to unlock, then US$ 0.42 a minute + tax')).toHaveClass('card-note');
+  });
+
   it('shows a price in hryvnias with its kopiyky', () => {
     // 3electra in Kyiv: UAH 12 to start and UAH 5.60 a minute.
     renderCard({}, { provider: 'zelectra', pricing: { currency: 'UAH', unlock_fee_minor_units: 1_200, minute_fee_minor_units: 560 } });
