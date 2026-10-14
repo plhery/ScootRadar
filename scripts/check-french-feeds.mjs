@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { holdOffMs, hostPacer } from './host-pacing.mjs';
 
 // The catalogs of data/countries.json. --countries= takes country codes (FR,DE), a continent
 // (europe, north-america) or all; --except= leaves countries out: check:europe skips France,
@@ -29,11 +30,22 @@ const hostHeaders = { 'api.entur.io': { 'ET-Client-Name': 'scootradar-map' } };
 // keeps a 404 for hours and an unknown query parameter answers 400: no cache busting.
 const DOTT = 'https://gbfs.api.ridedott.com';
 
-async function json(url) {
+// At most two requests a second to one host, whatever the number of feeds it serves.
+const pacer = hostPacer(500);
+
+async function json(url, retries = 2) {
+  await pacer.wait(url);
   const response = await fetch(url, { headers: { ...headers, ...hostHeaders[new URL(url).hostname] }, signal: AbortSignal.timeout(15_000) });
+  if (response.status === 429 && retries > 0) {
+    pacer.holdOff(url, holdOffMs(response));
+    await response.body?.cancel();
+    return json(url, retries - 1);
+  }
   if (!response.ok) {
     // Dott names the error in the body: {"error":"Not Found: ERR_REGION_NOT_FOUND"}.
     const code = (await response.text().catch(() => '')).match(/\bERR_[A-Z_]+\b/)?.[0];
+    // A host that refuses us without naming why, as Dott does a paused region, is left alone for a while.
+    if (response.status === 429 || (response.status === 403 && !code)) pacer.holdOff(url, holdOffMs(response));
     throw Object.assign(new Error(`HTTP ${response.status}${code ? ` ${code}` : ''} at ${new URL(url).pathname}`),
       { status: response.status, code });
   }
