@@ -392,10 +392,10 @@
         5.3698
       ],
       "bounds": {
-        "south": 43.12,
-        "west": 5.22,
-        "north": 43.49,
-        "east": 5.65
+        "south": 43.1605,
+        "west": 5.2163,
+        "north": 43.4002,
+        "east": 5.545
       },
       "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/marseille/gbfs.json"
     },
@@ -578,10 +578,10 @@
         -0.5632
       ],
       "bounds": {
-        "south": 47.33,
-        "west": -0.73,
-        "north": 47.62,
-        "east": -0.38
+        "south": 47.4052,
+        "west": -0.6573,
+        "north": 47.543,
+        "east": -0.4546
       },
       "discoveryUrl": "https://proxy.transport.data.gouv.fr/resource/pony-angers-gbfs/gbfs.json"
     },
@@ -610,10 +610,10 @@
         -0.5792
       ],
       "bounds": {
-        "south": 44.67,
-        "west": -0.86,
-        "north": 45.05,
-        "east": -0.39
+        "south": 44.7425,
+        "west": -0.7866,
+        "north": 44.9725,
+        "east": -0.458
       },
       "discoveryUrl": "https://proxy.transport.data.gouv.fr/resource/pony-bordeaux-gbfs/gbfs.json"
     },
@@ -706,12 +706,40 @@
         2.8948
       ],
       "bounds": {
-        "south": 42.52,
-        "west": 2.63,
-        "north": 43.03,
-        "east": 3.2
+        "south": 42.6116,
+        "west": 2.7174,
+        "north": 42.9527,
+        "east": 3.0736
       },
-      "discoveryUrl": "https://proxy.transport.data.gouv.fr/resource/pony-perpignan-gbfs/gbfs.json"
+      "discoveryUrl": "https://proxy.transport.data.gouv.fr/resource/pony-perpignan-gbfs/gbfs.json",
+      "areas": [
+        {
+          "city": "Perpignan",
+          "center": [
+            42.6887,
+            2.8948
+          ],
+          "bounds": {
+            "south": 42.6116,
+            "west": 2.7174,
+            "north": 42.7818,
+            "east": 3.0648
+          }
+        },
+        {
+          "city": "Le Barcarès",
+          "center": [
+            42.7893,
+            3.0345
+          ],
+          "bounds": {
+            "south": 42.7636,
+            "west": 2.9899,
+            "north": 42.9527,
+            "east": 3.0736
+          }
+        }
+      ]
     },
     {
       "id": "pony_fr_poitiers",

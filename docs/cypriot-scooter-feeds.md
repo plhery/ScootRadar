@@ -62,7 +62,9 @@ its Greek name, in Greek script and transliterated.
     13 km from Paphos's centre, a second one arriving at 15:34 next to the
     first. So the bounds run north past Peyia, to 34.918° N. The fifth hole,
     around Polis and Latchi, 29 km north of Paphos, held no scooter, and is
-    left out.
+    left out. It held none again in six polls on 14 October 2026 (00:01–00:10
+    and 13:09–13:20), when 57 to 73 scooters stood between 34.74° and 34.80° N,
+    so Polis gets no area of its own until scooters stand there.
   - Every scooter of every poll, by day and at night, stood inside the
     bounds.
 - **Freshness:** Hopp stamps each response with the time it was asked for

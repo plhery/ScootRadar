@@ -21,7 +21,9 @@ from Pony's feed; see [Naolib Micromob', October 2026](#naolib-micromob-october-
 Rechecked 14 October 2026: eighteen feeds' bounds now fit the operator's
 published zone, and Voi's Grand Paris Seine et Oise, Dott's Versailles Grand Parc
 and Lime's Lille Métropole are split into towns; see
-[Bounds and towns, October 2026](#bounds-and-towns-october-2026). Bird
+[Bounds and towns, October 2026](#bounds-and-towns-october-2026). Later that
+day Pony Angers, Bordeaux and Perpignan and Lime Marseille were fitted too, and
+Pony Perpignan's scooters in Le Barcarès got a town of their own. Bird
 Cherbourg-en-Cotentin joined the catalog the same day; see
 [Bird Cherbourg-en-Cotentin, October 2026](#bird-cherbourg-en-cotentin-october-2026).
 
@@ -259,11 +261,14 @@ Dott's region polygon.
 | Bird Vichy | 46.00–46.27, 3.28–3.62 | 46.0785–46.1945, 3.3540–3.5438 |
 | Dott Marne-la-Vallée (SIEMU) | 48.73–48.97, 2.58–2.86 | 48.8049–48.8931, 2.6477–2.7887 |
 | Dott Versailles Grand Parc | 48.73–48.96, 2.02–2.24 | 48.8054–48.8787, 2.0894–2.1728, in three towns |
+| Pony Angers | 47.33–47.62, −0.73 to −0.38 | 47.4052–47.5430, −0.6573 to −0.4546 |
 | Pony Beauvais | 49.16–49.75, 1.67–2.55 | 49.3973–49.4768, 2.0343–2.1367 |
+| Pony Bordeaux | 44.67–45.05, −0.86 to −0.39 | 44.7425–44.9725, −0.7866 to −0.4580 |
 | Pony Bourges | 46.96–47.21, 2.28–2.53 | 47.0315–47.1340, 2.3471–2.4562 |
 | Pony Évry-Courcouronnes | 48.52–48.73, 2.31–2.55 | 48.6007–48.6587, 2.3773–2.4760 |
 | Pony Hérouville-Saint-Clair | 48.89–49.49, −0.76 to 0.09 | 49.1760–49.3021, −0.3820 to −0.2309 |
 | Pony Lorient | 47.59–47.89, −3.58 to −3.21 | 47.7171–47.7831, −3.4203 to −3.3350 |
+| Pony Perpignan | 42.52–43.03, 2.63–3.20 | 42.6116–42.9527, 2.7174–3.0736, in two towns |
 | Pony Poitiers | 46.32–46.91, −0.09 to 0.81 | 46.4175–46.6815, 0.0921–0.4341 |
 | Voi Grenoble | 45.01–45.37, 5.47–5.98 | 45.1054–45.2809, 5.6232–5.8865 |
 | Voi Grand Paris Seine et Oise | 48.77–49.16, 1.47–2.30 | 48.8829–49.0501, 1.6421–2.1408, in ten towns |
@@ -271,6 +276,7 @@ Dott's region polygon.
 | Voi Marseille | 43.11–43.49, 5.18–5.65 | 43.2016–43.3700, 5.3287–5.5404 |
 | Voi Saint-Quentin-en-Yvelines | 48.60–48.95, 1.77–2.24 | 48.6853–48.8452, 1.8814–2.1199 |
 | Lime Lille Métropole | 50.40–50.90, 2.75–3.40 | 50.4906–50.8037, 2.7749–3.2867, with seven towns |
+| Lime Marseille | 43.12–43.49, 5.22–5.65 | 43.1605–43.4002, 5.2163–5.5450 |
 
 - **Towns.** A feed that serves several towns now has one area per town, so
   each can be searched, counted and linked, and the space between them is not
@@ -301,11 +307,28 @@ Dott's region polygon.
   scooter the old ones kept but two of Voi's Grand Paris Seine et Oise, outside
   every Voi zone: one at the depot it shares with Saint-Quentin-en-Yvelines, in
   Trappes, and one in Colombes. Both are left out on purpose.
-- **Not changed.** Lime Marseille publishes no geofencing and its box,
-  43.12–43.49, 5.22–5.65, takes in no other covered town; by day its scooters
-  stood within 43.21–43.35, 5.35–5.48. Pony Angers, Bordeaux and Perpignan were
-  not reviewed. Pony Hérouville's zone also covers Ouistreham, which no town
-  area names yet.
+- **Pony Perpignan's** zone covers Perpignan and the towns around it, and runs
+  up the coast through Le Barcarès to Leucate, in the Aude. About 80
+  of its 445 scooters stood in Le Barcarès, 19 km from Perpignan, and counted
+  under Perpignan. The feed now has two towns, split at 42.7727° N, where Le
+  Barcarès's part of the zone begins: Perpignan, the zone south of that line,
+  and Le Barcarès, the zone north of it, centred on its town hall. Each is its
+  part of the zone plus 1 km. No scooter stood in Leucate, which counts under
+  Le Barcarès until it holds some.
+- **Lime Marseille** publishes no geofencing. In nine polls (three at night,
+  three at 11:22–11:32 and three at 13:09–13:20 on 14 October 2026) all of its
+  1,200 to 1,337 available scooters stood inside the commune of Marseille. Its box is now that boundary
+  ([geo.api.gouv.fr](https://geo.api.gouv.fr/communes/13055?fields=contour&geometry=contour))
+  plus 1 km, so it no longer reaches Aubagne, Allauch or Plan-de-Cuques.
+- **Proof, second pass.** Pony Angers, Bordeaux and Perpignan were polled
+  three times at night (00:01–00:10) and three times by day (13:09–13:20) on
+  14 October 2026, and Lime Marseille the nine times above. The new bounds kept
+  every scooter the old ones kept, 595 in Angers, 920 to 943 in Bordeaux and
+  445 in Perpignan in each poll.
+- **Not given a town.** Pony Hérouville's zone also covers Ouistreham, but only
+  5 or 6 scooters stood there by night and by day, and 6 to 8 stood in Caen; both count under Hérouville-Saint-Clair. Pony Angers's and
+  Pony Bordeaux's zones take in suburbs that hold 10 to 60 scooters each; they
+  stay under the city the operator names.
 
 ## Bird Cherbourg-en-Cotentin, October 2026
 

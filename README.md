@@ -46,7 +46,7 @@ English. There is also a native SwiftUI app for iPhone.
 
 **Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob', Elerent and 3electra.
 
-French coverage includes 32 verified feeds across 56 cities or operating areas,
+French coverage includes 32 verified feeds across 57 cities or operating areas,
 with city-name search. German coverage adds 40 feeds across 42 cities (Dott, Bolt, Hopp, Lime, Voi, Zeus and Yoio); Italy adds 4 feeds: Bird in Roma, Palermo and Napoli, and Elerent in Catania. See the [German/Italian feed audit](docs/german-italian-scooter-feeds.md) for coverage and known gaps. See the [French feed investigation](docs/french-scooter-feeds.md)
 for the city list, live-check command, and source terms to review before deployment.
 Belgium adds 10 feeds across 8 cities (Bolt, Dott, Voi, Pony and Hoppy), Norway 23 feeds
