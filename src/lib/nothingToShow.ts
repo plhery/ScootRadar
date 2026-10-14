@@ -1,5 +1,6 @@
 import { PROVIDERS, PROVIDER_KEYS } from '@/generated/providers';
 import { nearestCoveredCities, type NearbyCoveredCity } from '@/lib/coveredCities';
+import { formatLocale } from '@/lib/formatLocale';
 import { viewportContainsPoint, type MapViewport } from '@/lib/geo';
 import type { LoadFailure } from '@/lib/loadFailure';
 import type { ScooterLoading } from '@/lib/scooterDataState';
@@ -39,12 +40,12 @@ export function filterSummary({ minBattery, enabledProviders, viewportProviders 
   return parts;
 }
 
-export function formatFilterSummary(parts: readonly FilterSummaryPart[], { locale, t, formatNumber }: UiTextFormatter): string {
+export function formatFilterSummary(parts: readonly FilterSummaryPart[], { locale, region, t, formatNumber }: UiTextFormatter): string {
   const line = parts.map(part => part.kind === 'battery'
     ? t('hidden.battery', { value: formatNumber(part.value) })
     // "Lime and Voi", "Lime und Voi", "Lime et Voi", "Lime e Voi".
     : t('hidden.only', {
-        names: new Intl.ListFormat(`${locale}-CH`, { style: 'long', type: 'conjunction' }).format(part.names),
+        names: new Intl.ListFormat(formatLocale(locale, region), { style: 'long', type: 'conjunction' }).format(part.names),
       })
   ).join(' · ');
   // The battery part starts in lower case because it usually follows the providers.

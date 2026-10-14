@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Locator, type Page } from '@playwright/test';
+import { visitFromSwitzerland } from './swissVisitor';
 
 // Directions on the card of a scooter or a parking bay, src/components/WalkAction.tsx:
 // the walk is drawn on the map (src/lib/walkRouteLayer.ts) along the way that
@@ -236,6 +237,7 @@ async function openLime(page: Page): Promise<Locator> {
 }
 
 test.beforeEach(async ({ page }) => {
+  await visitFromSwitzerland(page);
   // Nothing reaches the routing service: a walk not stood in for by the test fails at once.
   await page.route('**/api/walk', route => route.fulfill({
     status: 502, contentType: 'application/json', body: JSON.stringify({ reason: 'failed' }),

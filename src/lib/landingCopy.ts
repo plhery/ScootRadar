@@ -11,6 +11,7 @@
 // e-scooter a "rafskúta", as Hopp does, and keeps a name it cannot decline out
 // of a preposition's reach: "frá: {place}", "{name}-appið".
 
+import { formatLocale } from '@/lib/formatLocale';
 import { isSingular } from '@/lib/uiText';
 
 export const LANDING_LOCALES = ['en', 'de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is'] as const;
@@ -80,7 +81,7 @@ export function makerLinks(locale: LandingLocale): Readonly<Record<string, strin
  * no-break space keeps the count on the line of its noun.
  */
 function counted(locale: LandingLocale, count: number, one: string, other: string): string {
-  return `${new Intl.NumberFormat(`${locale}-CH`).format(count)}\u00a0${isSingular(count, locale) ? one : other}`;
+  return `${new Intl.NumberFormat(formatLocale(locale)).format(count)}\u00a0${isSingular(count, locale) ? one : other}`;
 }
 
 /** A sentence cut at its links: what it writes as "<name>words</name>" is the words of the link of that name. */

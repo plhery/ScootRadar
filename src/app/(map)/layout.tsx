@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Red_Hat_Display, Red_Hat_Text } from "next/font/google";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 import { FIRST_PAINT_THEME_SCRIPT } from "@/lib/firstPaintTheme";
+import { formatLocale } from "@/lib/formatLocale";
 import { I18nProvider } from "@/lib/i18n";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import "../globals.css";
@@ -85,7 +86,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-CH" suppressHydrationWarning>
+    <html lang={formatLocale("en")} suppressHydrationWarning>
       <head>
         <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png" />
       </head>

@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import type { Metadata } from 'next';
+import { formatLocale } from '@/lib/formatLocale';
 import { GUIDE_COPY } from '@/lib/guideCopy';
 import {
   guideCity,
@@ -35,7 +36,7 @@ function share(locale: LandingLocale) {
 
 /** A day of a guide, written out as its language writes dates. */
 function formatDay(day: string, locale: LandingLocale): string {
-  return new Intl.DateTimeFormat(`${locale}-CH`, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
+  return new Intl.DateTimeFormat(formatLocale(locale), { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
     .format(new Date(day));
 }
 

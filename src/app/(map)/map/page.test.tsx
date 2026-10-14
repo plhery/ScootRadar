@@ -8,6 +8,7 @@ import Home from './page';
 import { track as sendEvent } from '@/lib/analytics';
 import { I18nProvider } from '@/lib/i18n';
 import { recentPlaces } from '@/lib/places';
+import { formatClockTime } from '@/lib/uiText';
 
 vi.mock('@/lib/analytics', () => ({ track: vi.fn() }));
 const track = vi.mocked(sendEvent);
@@ -209,7 +210,8 @@ it('keeps the scooters and says so in the dock when a refresh fails, then shows 
   vi.stubGlobal('fetch', fetcher);
   mount();
   await act(async () => vi.advanceTimersByTimeAsync(180));
-  const shown = new Date().toLocaleTimeString('en-CH', { hour: '2-digit', minute: '2-digit' });
+  // jsdom's browser asks for en-US, so the time is written as the US writes it.
+  const shown = formatClockTime(Date.now(), 'en', 'US');
   await act(async () => { fireEvent.click(screen.getByRole('button', { name: 'Marker one' })); });
   expect(screen.getByRole('heading', { name: 'Lime' })).toBeVisible();
 

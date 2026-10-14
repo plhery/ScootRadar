@@ -2,6 +2,8 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
+import { formatLocale, formatRegion } from '@/lib/formatLocale';
+
 export const SUPPORTED_LOCALES = ['de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is', 'en'] as const;
 export type AppLocale = (typeof SUPPORTED_LOCALES)[number];
 
@@ -1736,6 +1738,8 @@ export function translate(locale: AppLocale, key: TranslationKey, values: Transl
 
 interface I18nContextValue {
   locale: AppLocale;
+  /** The region numbers, times, prices and distances are written for: "US", "CA", "CH". See formatLocale.ts. */
+  region: string;
   setLocale: (locale: AppLocale) => void;
   t: (key: TranslationKey, values?: TranslationValues) => string;
   formatNumber: (value: number, options?: Intl.NumberFormatOptions) => string;
@@ -1761,6 +1765,9 @@ function browserLocale(): AppLocale {
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<AppLocale>('en');
+  // Empty until mounted, so the first render matches the server's.
+  const [browserLanguages, setBrowserLanguages] = useState<readonly string[]>([]);
+  const region = useMemo(() => formatRegion(locale, browserLanguages), [browserLanguages, locale]);
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -1769,13 +1776,14 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
         stored = localStorage.getItem(LOCALE_STORAGE_KEY);
       } catch {}
       setLocaleState(supportedLocale(stored) ?? browserLocale());
+      setBrowserLanguages(navigator.languages.length > 0 ? [...navigator.languages] : [navigator.language]);
     }, 0);
     return () => window.clearTimeout(timeoutId);
   }, []);
 
   useEffect(() => {
-    document.documentElement.lang = `${locale}-CH`;
-  }, [locale]);
+    document.documentElement.lang = formatLocale(locale, region);
+  }, [locale, region]);
 
   const setLocale = useCallback((nextLocale: AppLocale) => {
     setLocaleState(nextLocale);
@@ -1791,13 +1799,13 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
 
   const formatNumber = useCallback(
     (value: number, options?: Intl.NumberFormatOptions) =>
-      new Intl.NumberFormat(`${locale}-CH`, options).format(value),
-    [locale]
+      new Intl.NumberFormat(formatLocale(locale, region), options).format(value),
+    [locale, region]
   );
 
   const value = useMemo(
-    () => ({ locale, setLocale, t, formatNumber }),
-    [formatNumber, locale, setLocale, t]
+    () => ({ locale, region, setLocale, t, formatNumber }),
+    [formatNumber, locale, region, setLocale, t]
   );
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;

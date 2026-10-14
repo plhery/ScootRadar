@@ -79,7 +79,7 @@ function Figure({ value, unit, label, spoken, tone, children }: {
 /** What the dock shows for the selected scooter: who runs it, how far it is, what a ride costs. */
 export default function ScooterCard({ selection, onClose, onLocate, locating = false, walk: cardWalk }: ScooterCardProps) {
   const i18n = useI18n();
-  const { locale, t, formatNumber } = i18n;
+  const { locale, region, t, formatNumber } = i18n;
   const [duration, setDuration] = useRideDuration();
   const { vehicle, walk } = selection;
   // Taken by someone while you walked to it: nothing is left to do with it.
@@ -106,7 +106,7 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
   const level = battery === null ? 'good' : batteryLevel(battery);
   const tone = level === 'good' ? undefined : level;
 
-  const money = (minorUnits: number) => quote ? formatRidePrice(minorUnits, quote.currency, locale) : '';
+  const money = (minorUnits: number) => quote ? formatRidePrice(minorUnits, quote.currency, locale, region) : '';
   const note = quote
     ? quote.unlockFeeMinorUnits > 0
       ? t('card.note.price', { unlock: money(quote.unlockFeeMinorUnits), minute: money(quote.minuteFeeMinorUnits) })

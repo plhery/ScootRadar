@@ -10,6 +10,9 @@ export default defineConfig({
   reporter: 'list',
   use: {
     baseURL: 'http://127.0.0.1:3100',
+    // The visitor is in Switzerland, where the fixtures are: numbers, times and
+    // distances are written as en-CH writes them. Tests of other regions set their own.
+    locale: 'en-CH',
     trace: 'retain-on-failure',
   },
   webServer: {

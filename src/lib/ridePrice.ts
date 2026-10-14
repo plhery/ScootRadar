@@ -1,3 +1,4 @@
+import { formatLocale } from '@/lib/formatLocale';
 import type { AppLocale } from '@/lib/i18n';
 import type { RidePricing } from '@/lib/types';
 
@@ -57,13 +58,13 @@ export function currencyFractionDigits(currency: string): 0 | 2 {
   }
 }
 
-/** "CHF 4.50" in the app's locale; minor units are hundredths, as on iOS. */
-export function formatRidePrice(minorUnits: number, currency: string, locale: AppLocale): string {
+/** "CHF 4.50" in the app's locale and format region; minor units are hundredths, as on iOS. */
+export function formatRidePrice(minorUnits: number, currency: string, locale: AppLocale, region?: string): string {
   const amount = minorUnits / 100;
   const code = currency.toUpperCase();
   try {
     const digits = currencyFractionDigits(code);
-    return new Intl.NumberFormat(`${locale}-CH`, {
+    return new Intl.NumberFormat(formatLocale(locale, region), {
       style: 'currency',
       currency: code,
       minimumFractionDigits: digits,

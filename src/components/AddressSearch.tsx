@@ -83,7 +83,7 @@ function PlaceRow({
 /** The open search: the field first, with Cancel beside it; under it, ways to
     start while nothing is typed and the places found from two characters on. */
 export default function AddressSearch({ recentPlaces, nearbyCities, near = null, onSelect, onLocate, onCancel }: AddressSearchProps) {
-  const { locale, t } = useI18n();
+  const { locale, region, t } = useI18n();
   const listboxId = useId();
   const recentId = useId();
   const citiesId = useId();
@@ -298,7 +298,7 @@ export default function AddressSearch({ recentPlaces, nearbyCities, near = null,
                       type="button"
                       key={city.id}
                       className="chip"
-                      onClick={() => choose(placeForCity(city, locale))}
+                      onClick={() => choose(placeForCity(city, locale, region))}
                     >
                       {city.city}
                     </button>

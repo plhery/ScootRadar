@@ -1,4 +1,5 @@
 import { COVERED_CITIES, isPointCovered, type CoveredCity } from '@/lib/coveredCities';
+import { formatLocale } from '@/lib/formatLocale';
 import type { AppLocale } from '@/lib/i18n';
 
 /** A row of GET/POST /api/geocode. Servers before the two-line labels send display_name only. */
@@ -61,8 +62,8 @@ export function toPlace(result: PlaceResult): Place {
 }
 
 /** A "Cities with scooters" chip chosen as a place; the map shows the whole city. */
-export function placeForCity(city: CoveredCity, locale: AppLocale): Place {
-  const country = new Intl.DisplayNames(`${locale}-CH`, { type: 'region' }).of(city.country) ?? city.country;
+export function placeForCity(city: CoveredCity, locale: AppLocale, region?: string): Place {
+  const country = new Intl.DisplayNames(formatLocale(locale, region), { type: 'region' }).of(city.country) ?? city.country;
   return {
     lat: city.center[0],
     lng: city.center[1],

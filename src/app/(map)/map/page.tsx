@@ -176,7 +176,7 @@ function viewportsEqual(a: MapViewport | null, b: MapViewport): boolean {
 }
 
 export default function Home() {
-  const { t, locale } = useI18n();
+  const { t, locale, region } = useI18n();
   // A wide window with a mouse: the dock is a legend, cards open beside their marker, keys work.
   const desktop = useDesktopLayout();
   const [initialCenter, setInitialCenter] = useState<[number, number]>(SWITZERLAND_CENTER);
@@ -712,7 +712,7 @@ export default function Home() {
 
   // A "Closest cities" chip chooses the city as the place, like its chip in the
   // search: walking times then start there, not at the place without scooter data.
-  const handleCitySelect = (city: NearbyCoveredCity) => choosePlace(placeForCity(city, locale));
+  const handleCitySelect = (city: NearbyCoveredCity) => choosePlace(placeForCity(city, locale, region));
 
   const closeCard = () => {
     if (selectedVehicle) track('vehicle_dismiss');

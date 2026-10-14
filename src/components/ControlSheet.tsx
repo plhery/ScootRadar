@@ -6,6 +6,7 @@ import { useId, useRef, useState, type CSSProperties } from 'react';
 import { flushSync } from 'react-dom';
 import { BATTERY_PRESETS, batteryPresetLabel, snapBatteryPreset } from '@/lib/battery';
 import type { MapStyleName, ThemeName } from '@/lib/clientParams';
+import { formatLocale } from '@/lib/formatLocale';
 import { SUPPORTED_LOCALES, useI18n, type AppLocale, type TranslationKey } from '@/lib/i18n';
 import { isSingular } from '@/lib/uiText';
 import { PROVIDERS, PROVIDER_KEYS } from '@/lib/types';
@@ -288,7 +289,7 @@ export default function ControlSheet({
                   key={language}
                   type="button"
                   aria-pressed={locale === language}
-                  lang={`${language}-CH`}
+                  lang={formatLocale(language)}
                   onClick={() => {
                     if (locale === language) return;
                     selectionFeedback();

@@ -7,6 +7,7 @@ import Icon from '@/components/Icon';
 import StageDepth from '@/components/StageDepth';
 import { PROVIDERS } from '@/generated/providers';
 import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL } from '@/lib/coveredCities';
+import { formatLocale } from '@/lib/formatLocale';
 import type { TranslationKey } from '@/lib/i18n';
 import { landingCountries } from '@/lib/landingCities';
 import {
@@ -145,7 +146,7 @@ function structuredData(locale: LandingLocale, copy: LandingCopy) {
 /** Numbers, distances and prices as the app writes them in this language. */
 function formatters(locale: LandingLocale) {
   const formatNumber = (value: number, options?: Intl.NumberFormatOptions) =>
-    new Intl.NumberFormat(`${locale}-CH`, options).format(value);
+    new Intl.NumberFormat(formatLocale(locale), options).format(value);
   // The two units of a distance, which none of the four languages spells differently.
   const t = (key: TranslationKey, values?: Record<string, string | number>) =>
     `${values?.count} ${key === 'distance.meters' ? 'm' : 'km'}`;

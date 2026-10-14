@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { visitFromSwitzerland } from './swissVisitor';
 
 const coarsePointer = (page: Page) => page.evaluate(() => matchMedia('(pointer: coarse)').matches);
 /** A wide window with a mouse: the card of a scooter or bay opens beside its marker, and the providers are a legend. */
@@ -146,6 +147,7 @@ const scooterResponse = {
 };
 
 test.beforeEach(async ({ page }) => {
+  await visitFromSwitzerland(page);
   await page.addInitScript(() => {
     const denied: GeolocationPositionError = {
       code: 1,
@@ -414,6 +416,32 @@ test('a price in forints is in whole forints, in Safari too', async ({ page }) =
   await expect(card.locator('.card-figure-label')).toHaveText(['battery', 'range', 'HUF, 10 min']);
   await expect(card.locator('.card-note')).toHaveText(/^HUF\s272 to unlock, then HUF\s76 a minute$/);
   await expect(card.getByText(/for 10 min/)).toHaveText(/^≈ HUF\s1['’]032 for 10 min$/);
+});
+
+test.describe('in a browser that asks for US English', () => {
+  test.use({ locale: 'en-US' });
+
+  test('numbers and prices are written the US way', async ({ page }) => {
+    const hopp = { ...scooterResponse.vehicles[0], provider: 'hopp', vehicle_id: 'hopp-1', rental_uris: undefined,
+      pricing: { currency: 'HUF', unlock_fee_minor_units: 27_200, minute_fee_minor_units: 7_600 } };
+    await page.route('**/api/scooters?**', route => {
+      const zoom = Number(new URL(route.request().url()).searchParams.get('zoom'));
+      if (zoom <= 15) return route.fallback();
+      return route.fulfill({ json: {
+        ...scooterResponse, vehicles: [hopp], providers: { hopp: 1 },
+        meta: { ...scooterResponse.meta, totalVehicles: 1, mode: 'vehicles', zoom },
+      } });
+    });
+    await page.goto('/map');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');
+    await focusFixtureArea(page);
+    await zoomTo(page, 16);
+    await page.getByRole('button', { name: 'Hopp scooter', exact: true }).click();
+
+    const card = page.locator('.dock-card');
+    await expect(card.locator('.card-figure strong').last()).toHaveText('1,032');
+    await expect(card.getByText(/for 10 min/)).toHaveText(/^≈ HUF\s1,032 for 10 min$/);
+  });
 });
 
 test('a refresh that fails keeps the scooters, says so in the dock and recovers with Try again', async ({ page }) => {

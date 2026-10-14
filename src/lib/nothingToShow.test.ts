@@ -81,6 +81,12 @@ describe('filterSummary', () => {
     expect(formatFilterSummary(names, { ...i18n, locale: 'it' })).toBe('Lime e Voi only');
   });
 
+  it('joins names the way the format region does', () => {
+    const names = [{ kind: 'providers' as const, names: ['Bird', 'Lime', 'Veo'] }];
+    expect(formatFilterSummary(names, i18n)).toBe('Bird, Lime and Veo only');
+    expect(formatFilterSummary(names, { ...i18n, region: 'US' })).toBe('Bird, Lime, and Veo only');
+  });
+
   it('mentions only the battery when every provider here is on', () => {
     const parts = filterSummary({ minBattery: 30, enabledProviders: new Set(ALL), viewportProviders: ZURICH });
     expect(parts).toEqual([{ kind: 'battery', value: 30 }]);
