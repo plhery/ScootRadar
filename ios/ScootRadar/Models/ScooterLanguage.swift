@@ -64,6 +64,31 @@ enum ScooterLanguage: String, CaseIterable, Identifiable, Sendable {
         return Locale(components: components)
     }
 
+    /// Spanish as Mexico, the US and the rest of Latin America write it:
+    /// "scooter" where Spain's copy says "patinete" ("Scooter de Lime"). Both
+    /// words are masculine, so the sentence around the word stays as it is.
+    /// The region of the iPhone picks it; it is not a language of its own.
+    /// The regions are those CLDR gives es-419 as parent; the web does the
+    /// same in src/lib/i18n.tsx.
+    static let latinAmericanSpanishRegions: Set<String> = [
+        "419", "AR", "BO", "BR", "BZ", "CL", "CO", "CR", "CU", "DO", "EC", "GT",
+        "HN", "MX", "NI", "PA", "PE", "PR", "PY", "SV", "US", "UY", "VE",
+    ]
+
+    /// Whether the language says "scooter" for Spain's "patinete" in the region.
+    func saysScooter(in region: @autoclosure () -> Locale.Region?) -> Bool {
+        self == .es && region().map { Self.latinAmericanSpanishRegions.contains($0.identifier) } == true
+    }
+
+    /// A sentence of the app in the language as the region writes it.
+    /// The region is only read for Spanish.
+    func written(_ sentence: String, in region: @autoclosure () -> Locale.Region?) -> String {
+        guard saysScooter(in: region()) else { return sentence }
+        return sentence
+            .replacingOccurrences(of: "Patinete", with: "Scooter")
+            .replacingOccurrences(of: "patinete", with: "scooter")
+    }
+
     private static let strings = Dictionary(uniqueKeysWithValues: allCases.compactMap { language in
         Bundle.main.path(forResource: language.rawValue, ofType: "lproj")
             .flatMap(Bundle.init(path:))
@@ -81,7 +106,8 @@ extension String {
     /// `String(localized:)` of the app is this initialiser: Foundation's own,
     /// which it stands in front of, keeps to the language of the launch.
     init(localized key: String.LocalizationValue) {
-        self.init(localized: key, bundle: ScooterLanguage.current.strings)
+        let language = ScooterLanguage.current
+        self = language.written(String(localized: key, bundle: language.strings), in: language.locale.region)
     }
 
     /// The same, for a sentence about counts whose words Localizable.stringsdict
@@ -90,6 +116,7 @@ extension String {
     /// the launch: "21 stað" in Icelandic, where English rules give "21 staði".
     init(localizedCounting key: String.LocalizationValue) {
         let language = ScooterLanguage.current
-        self.init(localized: key, bundle: language.strings, locale: language.locale)
+        let locale = language.locale
+        self = language.written(String(localized: key, bundle: language.strings, locale: locale), in: locale.region)
     }
 }

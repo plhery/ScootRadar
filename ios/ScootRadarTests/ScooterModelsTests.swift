@@ -1193,3 +1193,40 @@ extension ScooterModelsTests {
         }
     }
 }
+
+// Spanish as Mexico, the US and the rest of Latin America write it.
+extension ScooterModelsTests {
+    func testSpanishSaysScooterInLatinAmericaAndTheUS() {
+        for region in ["MX", "US", "419", "AR", "CO", "PR"] {
+            XCTAssertTrue(ScooterLanguage.es.saysScooter(in: Locale.Region(region)), region)
+        }
+        XCTAssertFalse(ScooterLanguage.es.saysScooter(in: Locale.Region("ES")))
+        XCTAssertFalse(ScooterLanguage.es.saysScooter(in: Locale.Region("CH")))
+        XCTAssertFalse(ScooterLanguage.es.saysScooter(in: nil))
+        XCTAssertFalse(ScooterLanguage.en.saysScooter(in: Locale.Region("US")))
+        XCTAssertFalse(ScooterLanguage.pt.saysScooter(in: Locale.Region("BR")))
+
+        XCTAssertEqual(ScooterLanguage.es.written("Patinete de %@", in: Locale.Region("MX")), "Scooter de %@")
+        XCTAssertEqual(ScooterLanguage.es.written("Patinete de %@", in: Locale.Region("ES")), "Patinete de %@")
+        XCTAssertEqual(
+            ScooterLanguage.es.written("Acerca el mapa para mostrar cada patinete", in: Locale.Region("US")),
+            "Acerca el mapa para mostrar cada scooter"
+        )
+    }
+
+    func testLatinAmericanSpanishLeavesNoPatineteInTheApp() throws {
+        let path = try XCTUnwrap(Bundle.main.path(forResource: "Localizable", ofType: "strings", inDirectory: nil, forLocalization: "es"))
+        let sentences = try XCTUnwrap(NSDictionary(contentsOfFile: path) as? [String: String])
+        let changed = sentences.values.filter { $0.localizedCaseInsensitiveContains("patinete") }
+        XCTAssertFalse(changed.isEmpty)
+        for sentence in sentences.values {
+            let written = ScooterLanguage.es.written(sentence, in: Locale.Region("MX"))
+            XCTAssertFalse(written.localizedCaseInsensitiveContains("patinete"), written)
+            // Nothing but the word changes.
+            XCTAssertEqual(
+                written.replacingOccurrences(of: "Scooter", with: "Patinete").replacingOccurrences(of: "scooter", with: "patinete"),
+                sentence.replacingOccurrences(of: "Scooter", with: "Patinete").replacingOccurrences(of: "scooter", with: "patinete")
+            )
+        }
+    }
+}

@@ -248,7 +248,7 @@ struct ScooterControlDock: View {
                     ProgressView()
                         .controlSize(.small)
                         .accessibilityHidden(true)
-                    Text("Finding scooters…")
+                    Text(String(localized: "Finding scooters…"))
                         .font(.subheadline.weight(.semibold))
                 }
                 .frame(maxWidth: .infinity, minHeight: Self.headerHeight, alignment: .leading)
@@ -258,7 +258,7 @@ struct ScooterControlDock: View {
                 }
             }
         case .waiting:
-            Text("Waiting for scooter data")
+            Text(String(localized: "Waiting for scooter data"))
                 .font(.subheadline.weight(.semibold))
                 .frame(maxWidth: .infinity, minHeight: Self.headerHeight, alignment: .leading)
         case let .outsideCoverage(cities):
@@ -1039,7 +1039,7 @@ private struct DockLeadButton: View {
                         .contentTransition(.numericText())
 
                     VStack(alignment: .leading, spacing: 3) {
-                        Text("to the nearest scooter")
+                        Text(String(localized: "to the nearest scooter"))
                             .designFont(14.5, .bold, relativeTo: .subheadline)
                         HStack(alignment: .firstTextBaseline, spacing: 6) {
                             Circle()
@@ -1561,7 +1561,7 @@ struct ScooterFilterSheet: View {
             .accessibilityLabel(String(localized: "Battery"))
 
             if model.minimumBattery > 0 {
-                Text("Scooters without battery info are hidden while a minimum is set.")
+                Text(String(localized: "Scooters without battery info are hidden while a minimum is set."))
                     .font(.footnote)
                     .foregroundStyle(ScooterPalette.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
@@ -1625,7 +1625,7 @@ struct ScooterFilterSheet: View {
                 let entries = model.filterProviders
                 if entries.isEmpty {
                     // No provider operates in this part of the map.
-                    Text("No scooter data here yet")
+                    Text(String(localized: "No scooter data here yet"))
                         .font(.subheadline)
                         .foregroundStyle(ScooterPalette.secondaryText)
                         .padding(.horizontal, 14)
@@ -1888,7 +1888,7 @@ struct ScooterSettingsSheet: View {
                 } header: {
                     Text("About")
                 } footer: {
-                    Text("Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter.")
+                    Text(String(localized: "Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter."))
                 }
             }
             // As a string: a title given as a key stays in the language it was first shown in.

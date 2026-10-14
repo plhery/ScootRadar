@@ -413,7 +413,7 @@ struct ScooterSearchPanel: View {
             .buttonStyle(.plain)
 
             if !recentPlaces.isEmpty {
-                sectionHeader("Recent")
+                sectionHeader(String(localized: "Recent"))
 
                 ForEach(recentPlaces) { place in
                     Button {
@@ -436,7 +436,7 @@ struct ScooterSearchPanel: View {
             }
 
             if !nearbyCities.isEmpty {
-                sectionHeader("Cities with scooters")
+                sectionHeader(String(localized: "Cities with scooters"))
 
                 FlowLayout(spacing: 8, lineSpacing: 8) {
                     ForEach(nearbyCities) { city in
@@ -492,7 +492,7 @@ struct ScooterSearchPanel: View {
         }
     }
 
-    private func sectionHeader(_ title: LocalizedStringKey) -> some View {
+    private func sectionHeader(_ title: String) -> some View {
         Text(title)
             .font(.footnote.weight(.semibold))
             .foregroundStyle(ScooterPalette.secondaryText)

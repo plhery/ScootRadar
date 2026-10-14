@@ -1728,11 +1728,33 @@ const dictionaries: Record<AppLocale, Dictionary> = {
 
 type TranslationValues = Record<string, string | number>;
 
-/** The sentence of the key in the language, its {placeholders} replaced by the values. */
-export function translate(locale: AppLocale, key: TranslationKey, values: TranslationValues = {}): string {
+// Spanish as Mexico, the US and the rest of Latin America write it: "scooter"
+// where Spain's copy says "patinete" ("Scooter de Lime", "3 scooters cerca").
+// Both words are masculine, so the sentence around the word stays as it is.
+// The format region picks it (formatLocale.ts); it is not a language of its
+// own. The regions are those CLDR gives es-419 as parent; iOS does the same in
+// ScooterLanguage.swift.
+const LATIN_AMERICAN_SPANISH_REGIONS: ReadonlySet<string> = new Set([
+  '419', 'AR', 'BO', 'BR', 'BZ', 'CL', 'CO', 'CR', 'CU', 'DO', 'EC', 'GT',
+  'HN', 'MX', 'NI', 'PA', 'PE', 'PR', 'PY', 'SV', 'US', 'UY', 'VE',
+]);
+
+/** Whether the UI language in the region says "scooter" for Spain's "patinete": Spanish in Latin America and the US. */
+export function saysScooter(locale: AppLocale, region: string | undefined): boolean {
+  return locale === 'es' && region !== undefined && LATIN_AMERICAN_SPANISH_REGIONS.has(region);
+}
+
+const inLatinAmerica = (sentence: string) => sentence.replaceAll('Patinete', 'Scooter').replaceAll('patinete', 'scooter');
+
+/**
+ * The sentence of the key in the language, its {placeholders} replaced by the
+ * values; in Latin American Spanish when the region is one of Latin America's.
+ */
+export function translate(locale: AppLocale, key: TranslationKey, values: TranslationValues = {}, region?: string): string {
+  const sentence = dictionaries[locale][key];
   return Object.entries(values).reduce(
     (result, [name, value]) => result.replaceAll(`{${name}}`, String(value)),
-    dictionaries[locale][key]
+    saysScooter(locale, region) ? inLatinAmerica(sentence) : sentence
   );
 }
 
@@ -1793,8 +1815,8 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const t = useCallback(
-    (key: TranslationKey, values?: TranslationValues) => translate(locale, key, values),
-    [locale]
+    (key: TranslationKey, values?: TranslationValues) => translate(locale, key, values, region),
+    [locale, region]
   );
 
   const formatNumber = useCallback(
