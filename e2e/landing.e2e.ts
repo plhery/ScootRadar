@@ -205,6 +205,20 @@ test('the last line of the landing page names what else its maker makes, in its 
   })) {
     await expect(maker.getByRole('link', { name, exact: true })).toHaveAttribute('href', address);
   }
+  // Plain links, which tell each site the visit came from here.
+  for (const link of await maker.getByRole('link').all()) await expect(link).not.toHaveAttribute('rel');
+
+  // In Spanish, each site at its Spanish page; in Norwegian, which none of them
+  // is written in, at its English page.
+  for (const [path, addresses] of Object.entries({
+    '/es': ['https://x.com/plhery', 'https://x-horoscope.com/es/x', 'https://unfollow-monkey.com/es', 'https://peektracker.com/es'],
+    '/nb': ['https://x.com/plhery', 'https://x-horoscope.com/en/x', 'https://unfollow-monkey.com/en', 'https://peektracker.com'],
+  })) {
+    await page.goto(path);
+    const links = page.locator('.maker a');
+    await expect(links, path).toHaveCount(addresses.length);
+    for (const [index, address] of addresses.entries()) await expect(links.nth(index), path).toHaveAttribute('href', address);
+  }
 
   await page.goto('/');
   await expect(page.locator('.maker')).toHaveText('By the maker of X Horoscope, UnfollowMonkey and the Peek parcel tracker.');

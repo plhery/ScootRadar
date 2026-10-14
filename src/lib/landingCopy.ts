@@ -54,13 +54,15 @@ export const SOURCE_URL = 'https://github.com/plhery/ScootRadar';
  * Where the last line of the page leads: the other sites of the person who
  * makes ScootRadar, and that person on X. Each of those sites links to the
  * others the same way, with plain links a search engine follows, to the address
- * the site names as canonical for the language (read on 2026-10-11). All three
- * are in English, German, French and Italian, Unfollow Monkey in Dutch as well;
- * a language a site lacks leads to its English page.
+ * the site names as canonical for the language (read on 2026-10-14). A plain
+ * link keeps the referrer, so each site sees a visit came from another: no
+ * "noreferrer", no "nofollow", no campaign tags. All three are in English,
+ * German, French, Italian, Portuguese and Spanish, Unfollow Monkey in Dutch as
+ * well; a language a site lacks leads to its English page.
  */
 export function makerLinks(locale: LandingLocale): Readonly<Record<string, string>> {
-  const shared = ['en', 'de', 'fr', 'it'];
-  const within = (languages: string[]) => (languages.includes(locale) ? locale : DEFAULT_LANDING_LOCALE);
+  const shared: LandingLocale[] = ['en', 'de', 'fr', 'it', 'pt', 'es'];
+  const within = (languages: LandingLocale[]) => (languages.includes(locale) ? locale : DEFAULT_LANDING_LOCALE);
   const peek = within(shared);
   return {
     maker: 'https://x.com/plhery',

@@ -161,12 +161,14 @@ describe('the links of the landing page', () => {
       monkey: 'https://unfollow-monkey.com/en',
       peek: 'https://peektracker.com',
     });
-    expect(makerLinks('de')).toEqual({
-      maker: 'https://x.com/plhery',
-      horoscope: 'https://x-horoscope.com/de/x',
-      monkey: 'https://unfollow-monkey.com/de',
-      peek: 'https://peektracker.com/de',
-    });
+    for (const locale of ['de', 'fr', 'it', 'pt', 'es'] as const) {
+      expect(makerLinks(locale), locale).toEqual({
+        maker: 'https://x.com/plhery',
+        horoscope: `https://x-horoscope.com/${locale}/x`,
+        monkey: `https://unfollow-monkey.com/${locale}`,
+        peek: `https://peektracker.com/${locale}`,
+      });
+    }
     // A site without the language leads to its English page.
     expect(makerLinks('nl')).toEqual({
       maker: 'https://x.com/plhery',
@@ -174,12 +176,14 @@ describe('the links of the landing page', () => {
       monkey: 'https://unfollow-monkey.com/nl',
       peek: 'https://peektracker.com',
     });
-    expect(makerLinks('nb')).toEqual({
-      maker: 'https://x.com/plhery',
-      horoscope: 'https://x-horoscope.com/en/x',
-      monkey: 'https://unfollow-monkey.com/en',
-      peek: 'https://peektracker.com',
-    });
+    for (const locale of ['nb', 'is'] as const) {
+      expect(makerLinks(locale), locale).toEqual({
+        maker: 'https://x.com/plhery',
+        horoscope: 'https://x-horoscope.com/en/x',
+        monkey: 'https://unfollow-monkey.com/en',
+        peek: 'https://peektracker.com',
+      });
+    }
   });
 
   it('links each of them once in its last line', () => {
