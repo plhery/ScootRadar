@@ -261,12 +261,15 @@ describe('the search in North America', () => {
       [{ type: 'house', housenumber: '1100', street: 'Congress Avenue', postcode: '78701', city: 'Austin', state: 'Texas', countrycode: 'US' }, 30.2747, -97.7404],
       [{ type: 'house', name: 'CN Tower', housenumber: '290', street: 'Bremner Boulevard', postcode: 'M5V 3L9', city: 'Toronto', state: 'Ontario', countrycode: 'CA' }, 43.6426, -79.3871],
       [{ type: 'house', housenumber: '1', street: 'Congress Street', postcode: '04101', city: 'Portland', state: 'Maine', countrycode: 'US' }, 43.66, -70.25],
+      // Photon names Quebec in French when asked in French.
+      [{ type: 'house', housenumber: '1', street: 'Rue Sainte-Catherine', postcode: 'H2X 1K4', city: 'Montréal', state: 'Québec', countrycode: 'CA' }, 45.5, -73.56],
     ] });
 
     expect(await rows(await search('anything', { near: AUSTIN }))).toEqual([
       ['1100 Congress Avenue', 'Austin, TX 78701'],
       ['CN Tower', '290 Bremner Boulevard, Toronto, ON M5V 3L9'],
       ['1 Congress Street', 'Portland, ME 04101'],
+      ['1 Rue Sainte-Catherine', 'Montréal, QC H2X 1K4'],
     ]);
   });
 

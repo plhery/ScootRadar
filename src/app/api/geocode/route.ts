@@ -291,11 +291,13 @@ function text(value: unknown): string {
   return typeof value === 'string' ? value.replace(/\s+/g, ' ').trim() : '';
 }
 
-/** The code of a place's state or province, where its country writes it after the town: "TX" for Texas. */
+/** The code of a place's state or province, where its country writes it after the town: "TX" for Texas, "QC" for Québec. */
 function regionCode(properties: Record<string, unknown>, countryCode: string): string {
   const state = text(properties.state);
   const regions = COUNTRY_REGIONS[countryCode as CountryCode]?.list ?? [];
-  return text(properties.statecode) || regions.find(({ name }) => name === state)?.code || state;
+  return text(properties.statecode)
+    || regions.find(({ name, names }) => [name, ...Object.values(names ?? {})].includes(state))?.code
+    || state;
 }
 
 /** A Photon place in two lines: "Gare de Lyon" over "Place Louis Armand, 75012 Paris". */
