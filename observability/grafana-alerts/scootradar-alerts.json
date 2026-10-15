@@ -58,7 +58,7 @@
           "grafana_folder",
           "alertname"
         ],
-        "repeat_interval": "24h"
+        "repeat_interval": "1d"
       },
       "summary": "{{ $labels.provider }} feed {{ $labels.feed }} in {{ $labels.country }} has listed no available scooter for 3 days.",
       "description": "The feed answers but has listed no available standing scooter for 3 days, outside any seasonal pause: the map shows none of its scooters. A quiet night or a snow day does not last that long. The operator may have left the town, taken its scooters in for a season the catalog does not know, or its feed may be broken while still answering. Check the operator's site or app and the town's own pages, then: add a `seasonal` window to the catalog if the city or the operator publishes one; remove the feed and record it in docs/coverage-gaps.md if the scooters are gone; or silence the feed in Grafana while waiting. A catalog feed whose operator lists nothing at all (Bird's town with no scooter and no time, a Dott region it has paused) counts as empty; a Swiss system sharedmobility.ch lists after its operator stopped does not. Feeds followed for under 3 days, paused at any time in the last 3, or expired over half of the last day (the feed-stopped alert's) are not reported. Reminded once a day while it lasts. Its counts: scootradar_feed_vehicles{feed=\"{{ $labels.feed }}\"} in Prometheus."
