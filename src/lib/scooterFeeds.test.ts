@@ -4,6 +4,7 @@ import { skippedSources } from '@/lib/scooterSources';
 import {
   fetchScooters,
   ScooterFeedsUnavailableError,
+  vehiclePricing,
   type FeedQuery,
 } from '@/lib/scooterFeeds';
 import { upstreamJsonCache } from '@/lib/upstreamJsonCache';
@@ -1036,8 +1037,14 @@ describe('feed validation and tariff regressions', () => {
     expect(result.vehicles[0].pricing).toBeUndefined();
   });
 
+  it('shows Swiss prices as they are, VAT included, whatever is_taxable says', async () => {
+    stubSwissPricingPlan({ price: 1, is_taxable: true, per_min_pricing: [{ start: 0, rate: 0.42, interval: 1 }] });
+    const result = await fetchScooters({ ...query, providers: new Set(['lime']) });
+    expect(result.vehicles[0].pricing).toEqual({ currency: 'CHF', unlock_fee_minor_units: 100, minute_fee_minor_units: 42 });
+  });
+
   describe('North American tariffs', () => {
-    const lime = async () => (await fetchScooters({ ...query, providers: new Set(['lime']) })).vehicles[0].pricing;
+    const priced = (plan: Record<string, unknown>, country = 'US') => vehiclePricing({ plan_id: 'scooter', ...plan }, country);
 
     it.each([
       { is_taxable: true, plus_tax: true },
@@ -1045,18 +1052,17 @@ describe('feed validation and tariff regressions', () => {
       { is_taxable: 1, plus_tax: true },
       { is_taxable: 0, plus_tax: undefined },
       { is_taxable: false, plus_tax: undefined },
-    ])('says tax is added to the prices where the plan says so: is_taxable $is_taxable', async ({ is_taxable, plus_tax }) => {
+    ])('says tax is added to the prices where the plan says so: is_taxable $is_taxable', ({ is_taxable, plus_tax }) => {
       // Veo's plans: "The unlock fee is 1.000000 and we charge you 0.420000 for each every 1 minute".
-      stubSwissPricingPlan({ currency: 'USD', price: 1, is_taxable, per_min_pricing: [{ start: 0, rate: 0.42, interval: 1 }] });
-      expect(await lime()).toEqual({ currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 42, ...(plus_tax ? { plus_tax } : {}) });
+      const plan = { currency: 'USD', price: 1, is_taxable, per_min_pricing: [{ start: 0, rate: 0.42, interval: 1 }] };
+      expect(priced(plan)).toEqual({ currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 42, ...(plus_tax ? { plus_tax } : {}) });
     });
 
-    it('reads a first minute at its own rate as an unlock fee, as Bike Share Toronto publishes its $1', async () => {
-      stubSwissPricingPlan({
+    it('reads a first minute at its own rate as an unlock fee, as Bike Share Toronto publishes its $1', () => {
+      expect(priced({
         currency: 'CAD', price: 0, is_taxable: 1, description: '+Classic bike $0.12/min; Ebike $0.20/min',
         per_min_pricing: [{ start: 0, rate: 1.12, interval: 1, end: 1 }, { start: 1, rate: 0.12, interval: 1, end: 825 }],
-      });
-      expect(await lime()).toEqual({ currency: 'CAD', unlock_fee_minor_units: 100, minute_fee_minor_units: 12, plus_tax: true });
+      }, 'CA')).toEqual({ currency: 'CAD', unlock_fee_minor_units: 100, minute_fee_minor_units: 12, plus_tax: true });
     });
 
     it.each([
@@ -1064,32 +1070,45 @@ describe('feed validation and tariff regressions', () => {
       [{ start: 0, rate: 0.25, interval: 1, end: 1200 }],
       // A table of bands that follow on at one rate.
       [{ start: 15, rate: 0.25, interval: 1, end: 30 }, { start: 0, rate: 0.25, interval: 1, end: 15 }, { start: 30, rate: 0.25, interval: 1 }],
-    ])('reads bands that come to one rate through the longest ride priced as one minute price: %j', async (...bands) => {
-      stubSwissPricingPlan({ currency: 'USD', price: 1, description: '$1 unlock, plus $0.25/min', per_min_pricing: bands });
-      expect(await lime()).toEqual({ currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 25 });
+    ])('reads bands that come to one rate through the longest ride priced as one minute price: %j', (...bands) => {
+      expect(priced({ currency: 'USD', price: 1, description: '$1 unlock, plus $0.25/min', per_min_pricing: bands }))
+        .toEqual({ currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 25 });
     });
 
     it.each([
       { end: Math.max(...RIDE_DURATIONS), priced: true },
       { end: Math.max(...RIDE_DURATIONS) - 1, priced: false },
-    ])('prices a band only when it runs through the longest ride the card offers: end $end', async ({ end, priced }) => {
-      stubSwissPricingPlan({ currency: 'USD', price: 1, per_min_pricing: [{ start: 0, rate: 0.25, interval: 1, end }] });
-      expect(await lime()).toEqual(priced ? { currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 25 } : undefined);
+    ])('prices a band only when it runs through the longest ride the card offers: end $end', ({ end, priced: isPriced }) => {
+      expect(priced({ currency: 'USD', price: 1, per_min_pricing: [{ start: 0, rate: 0.25, interval: 1, end }] }))
+        .toEqual(isPriced ? { currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 25 } : null);
     });
 
-    it('keeps a tariff its description agrees with in dollars, as Lyft writes it', async () => {
-      stubSwissPricingPlan({ currency: 'USD', price: 1, is_taxable: true, description: '$1.00 unlock fee, $0.41 per minute.', per_min_pricing: [{ start: 0, rate: 0.41, interval: 1 }] });
-      expect(await lime()).toEqual({ currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 41, plus_tax: true });
+    it('keeps a tariff its description agrees with in dollars, as Lyft writes it', () => {
+      expect(priced({ currency: 'USD', price: 1, is_taxable: true, description: '$1.00 unlock fee, $0.41 per minute.',
+        per_min_pricing: [{ start: 0, rate: 0.41, interval: 1 }] }))
+        .toEqual({ currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 41, plus_tax: true });
     });
 
     it.each([
       // MetroBike Austin: the bands make $2.25 once and $0.25 a minute, the description $2.50 to unlock.
       { price: 0, description: 'Single-trip pass. $2.50 to unlock + $0.25 per minute.', per_min_pricing: [{ start: 0, rate: 2.5, interval: 1, end: 1 }, { start: 1, rate: 0.25, interval: 1, end: 471 }] },
       { price: 1, description: '$1.00 unlock fee, $0.45 per minute.', per_min_pricing: [{ start: 0, rate: 0.41, interval: 1 }] },
-    ])('omits a tariff its description contradicts in dollars: $description', async plan => {
-      stubSwissPricingPlan({ currency: 'USD', ...plan });
-      expect(await lime()).toBeUndefined();
+    ])('omits a tariff its description contradicts in dollars: $description', plan => {
+      expect(priced({ currency: 'USD', ...plan })).toBeNull();
     });
+  });
+
+  it('adds no tax to prices that include it, outside the US and Canada', () => {
+    // Flamingo in Auckland: "$1 NZD to unlock, 45c per min", GST included, and is_taxable all the same.
+    const flamingo = { plan_id: 'auckland', currency: 'NZD', price: 1, is_taxable: true, description: '$1 NZD to unlock, 45c per min',
+      per_min_pricing: [{ rate: 0.45, start: 0, interval: 1 }] };
+    expect(vehiclePricing(flamingo, 'NZ'))
+      .toEqual({ currency: 'NZD', unlock_fee_minor_units: 100, minute_fee_minor_units: 45 });
+    // Lyft's in the US, the same plan in dollars, keeps it.
+    expect(vehiclePricing({ ...flamingo, currency: 'USD', description: undefined }, 'US'))
+      .toEqual({ currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 45, plus_tax: true });
+    expect(vehiclePricing({ ...flamingo, currency: 'EUR', description: undefined }, 'FR'))
+      .toEqual({ currency: 'EUR', unlock_fee_minor_units: 100, minute_fee_minor_units: 45 });
   });
 
   it('uses a vehicle type default tariff when the vehicle has no override', async () => {

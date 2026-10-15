@@ -160,6 +160,10 @@ changing the response contract.
    - `credits`: its `attribution` in the `X-Mobility-Data-Source` header, the
      providers its GBFS feeds are credited for (`gbfs`, one line per
      continent), and the `links` a licence asks for;
+   - `pricesBeforeTax: true` where ride prices are given before sales tax,
+     as in the US and Canada: there a plan's `is_taxable` shows "+ tax".
+     Leave it out where prices include VAT or GST, which is all `is_taxable`
+     means elsewhere;
    - `regions`, for a country whose towns share names across states or
      provinces, as in North America: their `list` (`code`, `name`, and
      `names` where a language of the apps writes one otherwise), whether

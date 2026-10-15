@@ -250,6 +250,10 @@ export function validateCountries({ countries, landingFirst }, readCatalog, citi
       throw new Error(`${code}: invalid or repeated source ${country.source}`);
     }
     sources.add(country.source);
+    // Where ride prices are given before sales tax, as in the US and Canada; elsewhere they include it.
+    if (country.pricesBeforeTax !== undefined && country.pricesBeforeTax !== true) {
+      throw new Error(`${code}: pricesBeforeTax is true, or left out where prices include tax`);
+    }
     if (!LANGUAGES.every(language => typeof country.names?.[language] === 'string' && country.names[language])) {
       throw new Error(`${code}: names needs ${LANGUAGES.join(', ')}`);
     }
@@ -334,6 +338,13 @@ ${catalogs.map(country => `  ${country.code}: '${country.source}',`).join('\n')}
 } as const;
 
 export const COUNTRY_CONTINENTS: Record<CountryCode, Continent> = ${record(country => `'${country.continent}'`)};
+
+/**
+ * The countries whose ride prices are given before sales tax, which the rider pays on top, as in
+ * the US and Canada: there a pricing plan's is_taxable shows the price "+ tax". Everywhere else
+ * consumer prices include VAT or GST, whatever is_taxable says.
+ */
+export const PRICES_BEFORE_TAX: ReadonlySet<string> = new Set<CountryCode>(${list(countries.filter(country => country.pricesBeforeTax).map(country => country.code))});
 
 /** A table rather than Intl.DisplayNames, whose locale data is not a given on the server. */
 export const COUNTRY_NAMES: Record<CountryCode, Readonly<Record<CountryNameLanguage, string>>> = ${record(country =>

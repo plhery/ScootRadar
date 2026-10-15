@@ -61,6 +61,13 @@ export const COUNTRY_CONTINENTS: Record<CountryCode, Continent> = {
   CA: 'north-america',
 };
 
+/**
+ * The countries whose ride prices are given before sales tax, which the rider pays on top, as in
+ * the US and Canada: there a pricing plan's is_taxable shows the price "+ tax". Everywhere else
+ * consumer prices include VAT or GST, whatever is_taxable says.
+ */
+export const PRICES_BEFORE_TAX: ReadonlySet<string> = new Set<CountryCode>(["US", "CA"]);
+
 /** A table rather than Intl.DisplayNames, whose locale data is not a given on the server. */
 export const COUNTRY_NAMES: Record<CountryCode, Readonly<Record<CountryNameLanguage, string>>> = {
   CH: { en: "Switzerland", de: "Schweiz", fr: "Suisse", it: "Svizzera", nl: "Zwitserland", nb: "Sveits", pt: "Suíça", es: "Suiza", is: "Sviss" },

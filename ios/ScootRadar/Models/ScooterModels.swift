@@ -173,7 +173,7 @@ struct ScooterRidePricing: Hashable, Sendable {
     let currency: String
     let unlockFeeMinorUnits: Int
     let minuteFeeMinorUnits: Int
-    /// Tax is added to these prices, as North American operators charge sales tax on top.
+    /// Tax is added to these prices, as US and Canadian operators charge sales tax on top.
     var plusTax = false
 
     /// "CHF 1.00 to unlock", or "USD 1.00 to unlock + tax" where tax is added.

@@ -94,6 +94,15 @@ describe('the countries of data/countries.json', () => {
       links: [{ label: 'MobiData BW', href: 'https://www.mobidata-bw.de/' }] } }))).toThrow('share a label');
   });
 
+  it('lists the countries whose prices are given before sales tax, and only with true', () => {
+    expect(generate({ ...europe, countries: [...europe.countries, canada] }).typescript)
+      .toContain('export const PRICES_BEFORE_TAX: ReadonlySet<string> = new Set<CountryCode>([]);');
+    expect(generate({ ...europe, countries: [...europe.countries, { ...canada, pricesBeforeTax: true }] }).typescript)
+      .toContain('export const PRICES_BEFORE_TAX: ReadonlySet<string> = new Set<CountryCode>(["CA"]);');
+    expect(() => generate({ ...europe, countries: [...europe.countries, { ...canada, pricesBeforeTax: false }] }))
+      .toThrow('CA: pricesBeforeTax is true, or left out where prices include tax');
+  });
+
   it('tells apart two towns of one name by their state, in their id and in their name', () => {
     const { cities, typescript } = generate({ ...europe, countries: [...europe.countries, unitedStates] });
     const american = cities.filter(city => city.country === 'US');

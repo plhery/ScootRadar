@@ -2,6 +2,7 @@ import {
   isAbandonedStatus, isEmptyUndatedStatus, statusObservedAt, validateDiscovery, validateRegistry, validateTypes, validateVehicleStatus,
 } from './feedValidation';
 import { VEHICLE_MAX_AGE_MS } from './dataFreshness';
+import { PRICES_BEFORE_TAX } from '@/generated/countries';
 import {
   coverageForRegionNames,
   coverageIntersects,
@@ -522,7 +523,11 @@ function minuteTariff(bands: readonly PerMinutePrice[]): { onceMinorUnits: numbe
   return null;
 }
 
-function vehiclePricing(plan: PricingPlan, wholeUnitPrice = false): VehiclePricing | null {
+/**
+ * A plan's price as the app shows it, an unlock fee and one minute price, or null where it cannot
+ * be one. The plan's country says whether is_taxable adds tax on top (PRICES_BEFORE_TAX).
+ */
+export function vehiclePricing(plan: PricingPlan, country: string, wholeUnitPrice = false): VehiclePricing | null {
   const currency = plan.currency?.trim().toUpperCase();
   const minuteBands = plan.per_min_pricing?.length
     ? plan.per_min_pricing
@@ -557,17 +562,18 @@ function vehiclePricing(plan: PricingPlan, wholeUnitPrice = false): VehiclePrici
     currency,
     unlock_fee_minor_units: unlockFee,
     minute_fee_minor_units: minuteFee,
-    // North American prices are given before sales tax, which the rider pays on top.
-    ...(plan.is_taxable === true || plan.is_taxable === 1 ? { plus_tax: true } : {}),
+    // US and Canadian prices are given before sales tax, which the rider pays on top. Elsewhere
+    // they include VAT or GST, which is all is_taxable means there: Flamingo's in New Zealand.
+    ...(PRICES_BEFORE_TAX.has(country) && (plan.is_taxable === true || plan.is_taxable === 1) ? { plus_tax: true } : {}),
   };
 }
 
-function pricingPlanMap(feed: PricingPlansFeed, wholeUnitPrice: boolean): Map<string, VehiclePricing> {
+function pricingPlanMap(feed: PricingPlansFeed, country: string, wholeUnitPrice: boolean): Map<string, VehiclePricing> {
   const plans = feed.data?.plans ?? feed.data?.pricing_plans ?? [];
   const pricingByPlanId = new Map<string, VehiclePricing>();
   for (const plan of plans) {
     const planId = plan.plan_id?.trim();
-    const pricing = vehiclePricing(plan, wholeUnitPrice);
+    const pricing = vehiclePricing(plan, country, wholeUnitPrice);
     if (planId && pricing) pricingByPlanId.set(planId, pricing);
   }
   return pricingByPlanId;
@@ -575,7 +581,7 @@ function pricingPlanMap(feed: PricingPlansFeed, wholeUnitPrice: boolean): Map<st
 
 async function fetchPricingPlans(
   url: string | null,
-  options: { authenticated?: boolean; source: string; wholeUnitPrice?: boolean }
+  options: { authenticated?: boolean; source: string; country: string; wholeUnitPrice?: boolean }
 ): Promise<Map<string, VehiclePricing>> {
   if (!url) return new Map();
 
@@ -584,7 +590,7 @@ async function fetchPricingPlans(
       authenticated: options.authenticated,
       revalidate: METADATA_REVALIDATE_SECONDS,
     });
-    return pricingPlanMap(result.data, options.wholeUnitPrice ?? false);
+    return pricingPlanMap(result.data, options.country, options.wholeUnitPrice ?? false);
   } catch (error) {
     // Pricing enriches availability and must never make otherwise-valid scooters disappear.
     logFallback(`${options.source}:system_pricing_plans`, error);
@@ -798,7 +804,7 @@ async function fetchSystemVehicles(
       authenticated: true,
       revalidate: STATUS_REVALIDATE_SECONDS,
     }),
-    fetchPricingPlans(pricingUrl, { authenticated: true, source: system.id, wholeUnitPrice: true }),
+    fetchPricingPlans(pricingUrl, { authenticated: true, source: system.id, country: 'CH', wholeUnitPrice: true }),
   ]);
   // An operator that has left the city, or never sends positions, is not failing.
   if (isAbandonedStatus(status.data)) {
@@ -927,7 +933,7 @@ async function fetchHoppTownVehicles(
   const [status, types, pricingByPlanId] = await Promise.all([
     fetchJson<StatusFeed>(statusUrl, { validate: validateVehicleStatus, revalidate: STATUS_REVALIDATE_SECONDS }),
     fetchJson<VehicleTypesFeed>(typesUrl, { validate: validateTypes, revalidate: METADATA_REVALIDATE_SECONDS }),
-    fetchPricingPlans(pricingUrl, { source: town.id }),
+    fetchPricingPlans(pricingUrl, { source: town.id, country: 'CH' }),
   ]);
   const typesById = typeMap(types.data);
   if (!hasElectricScooter(typesById, 'hopp')) {
@@ -1112,6 +1118,7 @@ async function fetchRegionalSystemFeeds(
     // Another operator's feed prices the ride at its own fares, not the ones the provider's riders pay.
     fetchPricingPlans(system.feedOperator ? null : discoveredFeedUrl(entries, 'system_pricing_plans', baseUrl), {
       source: system.id,
+      country: system.country,
     }),
   ]);
   if (!Array.isArray(status.data.data?.bikes) && !Array.isArray(status.data.data?.vehicles)) {
