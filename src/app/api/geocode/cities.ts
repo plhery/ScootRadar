@@ -2,6 +2,8 @@ import { COUNTRY_NAMES, COUNTRY_REGIONS, COUNTRY_SEARCH_WORDS, type CountryCode 
 import { COVERED_CITIES, isPointCovered, type CoveredCountry } from '@/lib/coveredCities';
 import { REGIONAL_SCOOTER_CITIES } from '@/lib/regionalScooterSystems';
 import { searchText, searchWords, TYPED_WORD } from '@/lib/searchText';
+import { outlineHolds } from '@/lib/townOutlines';
+import { haversineM } from '@/lib/geo';
 import { POSTCODE_AFTER_TOWN } from './addressFormats';
 
 const MAX_CITIES = 5;
@@ -227,6 +229,27 @@ export function namedCities(query: string, language: GeocodeLanguage = 'en'): Na
     }));
 }
 
+/** A city's own name without the state the catalog writes after it: "Portland" for "Portland, OR". */
+function townName(city: typeof CITIES[number]): string {
+  return city.region && city.city.endsWith(`, ${city.region}`) ? city.city.slice(0, -city.region.length - 2) : city.city;
+}
+
+/**
+ * The catalog's name for a town of its country that a geocoder names in another script, as
+ * the apps' languages write it: "Kiryat Ono" for "קרית אונו", by one of the town's names,
+ * the nearest where two towns share it, or by the outline holding the place.
+ */
+export function catalogTownName(name: string, country: string, lat: number, lng: number): string | undefined {
+  const words = searchText(name);
+  const inCountry = CITIES.filter(city => city.country === country);
+  const named = inCountry.filter(city => city.names.some(parts => parts.join(' ') === words));
+  const distance = (city: typeof CITIES[number]) => haversineM(lat, lng, city.center[0], city.center[1]);
+  const city = named.length
+    ? named.reduce((nearest, other) => distance(other) < distance(nearest) ? other : nearest)
+    : inCountry.find(other => outlineHolds(other.id, lat, lng));
+  return city && townName(city);
+}
+
 // Words that tie a city's name to the street before it: "10 Rue de Lyon" is no address in Lyon.
 const LINKING_WORDS = new Set([
   'a', 'al', 'am', 'an', 'au', 'aux', 'bei', 'd', 'da', 'das', 'de', 'dei', 'del', 'della', 'der', 'des', 'di', 'do',
@@ -246,8 +269,7 @@ interface AddressCityName {
 // name of its own that other towns also have: "Freiburg" is Freiburg im Breisgau's,
 // and Fribourg's in German.
 const ADDRESS_NAMES: AddressCityName[] = CITIES.flatMap(city => {
-  const town = city.region && city.city.endsWith(`, ${city.region}`) ? city.city.slice(0, -city.region.length - 2) : city.city;
-  const own = searchWords(town);
+  const own = searchWords(townName(city));
   const shortened = (name: string[]) => name.length < own.length && name.every((part, index) => part === own[index]);
   const regional = (REGIONAL_ALIASES.get(city.id) ?? []).map(alias => searchWords(alias)).filter(name => !shortened(name));
   return [own, ...(SWISS_ALIASES[city.id] ?? []).map(alias => searchWords(alias)), ...regional]

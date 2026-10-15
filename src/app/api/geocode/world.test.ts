@@ -216,10 +216,11 @@ describe('the search in Oceania and West Asia', () => {
       ['Rothschild', '6806546 Bat Yam'],
       ['Rothschild', 'Bat Yam'],
       ['Rothschild', 'Holon'],
-      ['Rothschild', 'קרית אונו'],
+      // Photon's קרית אונו, by the catalog's name for it.
+      ['Rothschild', 'Kiryat Ono'],
     ]);
     // In Photon's order: all in Israel, so all at home.
-    expect(atHome.map(([, subtitle]) => subtitle)).toEqual(['6806546 Bat Yam', 'Bat Yam', 'Holon', 'קרית אונו', 'Sderot Rothschild, 6688218 Tel Aviv']);
+    expect(atHome.map(([, subtitle]) => subtitle)).toEqual(['6806546 Bat Yam', 'Bat Yam', 'Holon', 'Kiryat Ono', 'Sderot Rothschild, 6688218 Tel Aviv']);
   });
 
   it('finds King Fahd Road in Riyadh near Riyadh', async () => {
@@ -404,7 +405,7 @@ describe('addresses written as they are in Oceania and West Asia', () => {
       ['1 Sheikh Mohammed bin Rashid Boulevard', 'Dubai'],
     ]);
 
-    // As Photon names them in English, and in Hebrew where it has no English name.
+    // As Photon names them in English, and in Hebrew where it has no English name: its town by the catalog's name.
     stubUpstreams({ photon: [
       [{ type: 'house', name: 'Rothschild 22', housenumber: '22', street: 'Sderot Rothschild', postcode: '6688218', city: 'Tel Aviv', countrycode: 'IL' }, 32.0628, 34.7717],
       [{ type: 'house', housenumber: '22', street: 'Sderot Rothschild', postcode: '6688218', city: 'Tel Aviv', countrycode: 'IL' }, 32.0629, 34.7716],
@@ -413,7 +414,29 @@ describe('addresses written as they are in Oceania and West Asia', () => {
     expect(await rows(await search('anything', { near: TEL_AVIV }))).toEqual([
       ['Rothschild 22', '22 Sderot Rothschild, 6688218 Tel Aviv'],
       ['22 Sderot Rothschild', '6688218 Tel Aviv'],
-      ['שדרות רוטשילד 8', '6688101 תל אביב-יפו'],
+      ['שדרות רוטשילד 8', '6688101 Tel Aviv'],
+    ]);
+  });
+
+  it('writes a town Photon names in Hebrew or Arabic as the apps\' languages do', async () => {
+    stubUpstreams({ photon: [
+      // An alias of a town of the catalog, and a quarter inside one's outline.
+      [{ type: 'house', name: 'Mall of The Emirates', housenumber: '1', street: 'Al Seedaf 1 Street', city: 'دبي', locality: 'Al Barsha 1', district: 'Al Barsha 1', countrycode: 'AE' }, 25.118, 55.2004],
+      [{ type: 'street', name: 'כצנלסון', locality: 'שינקין', county: 'Tel Aviv Subdistrict', countrycode: 'IL' }, ...centreOf('il:Givatayim')],
+      // Outside the catalog's towns: its quarter in Latin letters, or as Photon gives it, not its county.
+      [{ type: 'street', name: 'Al Wasl Road', city: 'الشارقة', locality: 'Al Majaz', countrycode: 'AE' }, 25.3263, 55.3889],
+      [{ type: 'street', name: 'Θεσσαλονίκη - Προμαχώνας', city: 'Καμαρωτό', county: 'Serres Regional Unit', countrycode: 'GR' }, 41.1975, 23.3849],
+      // Written in Latin letters already: as given.
+      [{ type: 'street', name: 'Ibn Gabirol', city: 'Tel Aviv-Yafo', countrycode: 'IL' }, 32.08, 34.78],
+    ] });
+
+    // Those in the catalog's towns first.
+    expect(await rows(await search('anything'))).toEqual([
+      ['Mall of The Emirates', '1 Al Seedaf 1 Street, Dubai'],
+      ['כצנלסון', 'Givatayim'],
+      ['Ibn Gabirol', 'Tel Aviv-Yafo'],
+      ['Al Wasl Road', 'Al Majaz'],
+      ['Θεσσαλονίκη - Προμαχώνας', 'Καμαρωτό'],
     ]);
   });
 });

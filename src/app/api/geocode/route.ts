@@ -7,7 +7,7 @@ import { haversineM } from '@/lib/geo';
 import { COUNTRY_ANCHORS, COUNTRY_CONTINENTS, COUNTRY_REGIONS, type Continent, type CountryCode } from '@/generated/countries';
 import { searchWords, westernDigits } from '@/lib/searchText';
 import { streetAddress, townLine } from './addressFormats';
-import { cityOfAddress, GEOCODE_LANGUAGES, namedCities, type GeocodeLanguage } from './cities';
+import { catalogTownName, cityOfAddress, GEOCODE_LANGUAGES, namedCities, type GeocodeLanguage } from './cities';
 
 const MAX_QUERY_LENGTH = 160;
 const MAX_RESULTS = 5;
@@ -319,13 +319,26 @@ function regionCode(properties: Record<string, unknown>, countryCode: string): s
     || state;
 }
 
+const LATIN = /\p{Script=Latin}/u;
+
+/** The town of a place, in the script of the apps' languages where Photon and Geoapify name it in another:
+    the catalog's name for a town of its own, "Kiryat Ono" for "קרית אונו", or else the name of the
+    locality or quarter the place is in where they give one in it, as "Al Barsha 1" in Dubai. As given
+    otherwise: not the county, too large to tell two villages apart. */
+function townOf(properties: Record<string, unknown>, countryCode: string, lat: number, lng: number): string {
+  const [city, locality, district, county] = [properties.city, properties.locality, properties.district, properties.county].map(text);
+  const town = city || locality || district || county;
+  if (!town || LATIN.test(town)) return town;
+  return catalogTownName(town, countryCode, lat, lng) ?? [locality, district].find(name => LATIN.test(name)) ?? town;
+}
+
 /** A Photon place in two lines: "Gare de Lyon" over "Place Louis Armand, 75012 Paris". */
-function photonLines(properties: Record<string, unknown>): { title: string; subtitle: string } {
+function photonLines(properties: Record<string, unknown>, lat: number, lng: number): { title: string; subtitle: string } {
   const name = text(properties.name);
   const street = text(properties.street);
   const countryCode = text(properties.countrycode).toUpperCase();
   const address = streetAddress(countryCode, street, text(properties.housenumber));
-  const town = text(properties.city) || text(properties.locality) || text(properties.district) || text(properties.county);
+  const town = townOf(properties, countryCode, lat, lng);
   const region = text(properties.state) || text(properties.county);
   const country = text(properties.country);
   // Nothing said twice: the city of Oslo is in the county of Oslo.
@@ -374,8 +387,9 @@ function photonCandidates(features: PhotonFeature[], typed: string[], from: From
     const coordinates = feature?.geometry?.coordinates;
     const [lng, lat] = Array.isArray(coordinates) && coordinates.every(value => typeof value === 'number') ? coordinates : [NaN, NaN];
     const properties = feature?.properties && typeof feature.properties === 'object' ? feature.properties : {};
-    const { title, subtitle } = photonLines(properties);
-    if (!validCoordinate(lat, lng) || !title || !servedPlace(lat, lng)) return [];
+    if (!validCoordinate(lat, lng) || !servedPlace(lat, lng)) return [];
+    const { title, subtitle } = photonLines(properties, lat, lng);
+    if (!title) return [];
     const place = {
       lat,
       lng,

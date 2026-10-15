@@ -206,6 +206,9 @@ first; those over 30 km from the map centre, unless they are cities of the
 catalog, come after the streets and landmarks within 30 km of it named just as
 typed ("The" and other articles aside): over Tel Aviv, "Rothschild" is the
 boulevard before Rothschild, Wisconsin; "Rothschild Wisconsin" is the town.
+A town the services name in another script than the app's, as "קרית אונו",
+is written as the catalog writes it, "Kiryat Ono", or by the name of the
+locality or quarter in Latin letters where they give one.
 
 When Geoapify fails (the day's requests used up, the key refused, the service
 down or slower than five seconds), or without `GEOAPIFY_API_KEY`, as in a copy
