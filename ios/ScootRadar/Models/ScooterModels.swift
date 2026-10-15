@@ -377,6 +377,11 @@ enum ScooterRentalLinkPolicy {
             schemes: ["bolt-hopp"],
             httpsHosts: ["gethopp.com"]
         ),
+        // SAHAM, in Riyadh, is on ATOM Mobility: its links end in the number on the scooter.
+        "saham": ProviderPolicy(
+            schemes: [],
+            httpsHosts: ["ride-saham.app.link", "sahamofficial.com"]
+        ),
         "publibike": ProviderPolicy(
             schemes: ["publibike", "velospot"],
             httpsHosts: ["publibike.ch", "velospot.info"]

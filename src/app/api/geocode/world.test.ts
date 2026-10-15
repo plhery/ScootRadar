@@ -3,21 +3,21 @@ import { NextRequest } from 'next/server';
 import { RECORDED_WORLD_PHOTON_ANSWERS } from '@/app/api/geocode/recordedAnswers';
 import { searchText } from '@/lib/searchText';
 
-// New Zealand, Australia, Israel, the United Arab Emirates and Saudi Arabia as country catalogs
-// may list them: Australia with its states, cities with the other names their catalogs give them,
-// in English and in their own script, and the countries with their words in both. The generated
-// modules are what scripts/generate-provider-catalog.mjs would write for them, beside the real
-// countries of Europe and North America.
+// New Zealand, Australia and Israel as country catalogs may list them: Australia with its states,
+// cities with the other names their catalogs give them, in English and in their own script, and the
+// countries with their words in both. The generated modules are what scripts/generate-provider-catalog.mjs
+// would write for them, beside the real countries of Europe, North America and West Asia: the United
+// Arab Emirates and Saudi Arabia are the catalog's own.
 const fixture = vi.hoisted(() => {
   const box = (lat: number, lng: number) => ({ center: [lat, lng] as [number, number],
     bounds: { south: lat - 0.1, west: lng - 0.1, north: lat + 0.1, east: lng + 0.1 } });
-  type Country = 'NZ' | 'AU' | 'IL' | 'AE' | 'SA';
+  type Country = 'NZ' | 'AU' | 'IL';
   const system = (id: string, country: Country, city: string, region: string | undefined, at: [number, number], aliases?: string[]) => ({
     id, provider: 'lime', country, city, ...(region ? { region } : {}), ...box(...at), ...(aliases ? { aliases } : {}),
     discoveryUrl: `https://data.lime.bike/api/partners/v2/gbfs/${id}/gbfs.json`,
   });
   return {
-    countries: ['NZ', 'AU', 'IL', 'AE', 'SA'],
+    countries: ['NZ', 'AU', 'IL'],
     systems: [
       system('auckland', 'NZ', 'Auckland', undefined, [-36.8485, 174.7633]),
       system('christchurch', 'NZ', 'Christchurch', undefined, [-43.5321, 172.6362]),
@@ -25,10 +25,6 @@ const fixture = vi.hoisted(() => {
       system('melbourne', 'AU', 'Melbourne', 'VIC', [-37.8136, 144.9631]),
       system('tel_aviv', 'IL', 'Tel Aviv', undefined, [32.0853, 34.7818],
         ['Tel Aviv-Yafo', 'Tel Aviv-Jaffa', 'Jaffa', 'Yafo', 'TLV', 'תל אביב', 'תל אביב-יפו']),
-      system('dubai', 'AE', 'Dubai', undefined, [25.2048, 55.2708], ['دبي']),
-      system('abu_dhabi', 'AE', 'Abu Dhabi', undefined, [24.4539, 54.3773], ['أبو ظبي']),
-      system('riyadh', 'SA', 'Riyadh', undefined, [24.7136, 46.6753], ['الرياض']),
-      system('jeddah', 'SA', 'Jeddah', undefined, [21.4858, 39.1925], ['Jiddah', 'جدة']),
     ],
     regions: { showInCityNames: false, totals: true, list: [
       { code: 'NSW', name: 'New South Wales' }, { code: 'QLD', name: 'Queensland' }, { code: 'VIC', name: 'Victoria' },
@@ -37,9 +33,6 @@ const fixture = vi.hoisted(() => {
       NZ: ['new zealand', 'nz', 'neuseeland', 'nouvelle zelande', 'aotearoa'],
       AU: ['australia', 'australien', 'australie'],
       IL: ['israel', 'ישראל'],
-      AE: ['uae', 'united arab emirates', 'emirats arabes unis', 'الامارات'],
-      // Never "sa", which is a word of many a town and street.
-      SA: ['saudi arabia', 'ksa', 'saudi', 'arabie saoudite', 'السعوديه'],
     },
     names: (en: string) => ({ en, de: en, fr: en, it: en, nl: en, nb: en, pt: en, es: en, is: en }),
   };
@@ -54,12 +47,12 @@ vi.mock('@/generated/countries', async importOriginal => {
   return {
     ...original,
     COUNTRY_CODES: [...original.COUNTRY_CODES, ...fixture.countries],
-    COUNTRY_SOURCES: { ...original.COUNTRY_SOURCES, NZ: 'newzealand', AU: 'australia', IL: 'israel', AE: 'emirates', SA: 'saudiarabia' },
-    COUNTRY_CONTINENTS: { ...original.COUNTRY_CONTINENTS, NZ: 'oceania', AU: 'oceania', IL: 'asia', AE: 'asia', SA: 'asia' },
+    COUNTRY_SOURCES: { ...original.COUNTRY_SOURCES, NZ: 'newzealand', AU: 'australia', IL: 'israel' },
+    COUNTRY_CONTINENTS: { ...original.COUNTRY_CONTINENTS, NZ: 'oceania', AU: 'oceania', IL: 'asia' },
     COUNTRY_NAMES: { ...original.COUNTRY_NAMES, NZ: fixture.names('New Zealand'), AU: fixture.names('Australia'),
-      IL: fixture.names('Israel'), AE: fixture.names('United Arab Emirates'), SA: fixture.names('Saudi Arabia') },
+      IL: fixture.names('Israel') },
     COUNTRY_SEARCH_WORDS: { ...original.COUNTRY_SEARCH_WORDS, ...fixture.searchWords },
-    COUNTRY_ANCHORS: { ...original.COUNTRY_ANCHORS, NZ: [-41, 174], AU: [-25, 134], IL: [31.5, 34.9], AE: [24.4, 54.5], SA: [24, 45] },
+    COUNTRY_ANCHORS: { ...original.COUNTRY_ANCHORS, NZ: [-41, 174], AU: [-25, 134], IL: [31.5, 34.9] },
     COUNTRY_REGIONS: { ...original.COUNTRY_REGIONS, AU: fixture.regions },
   };
 });

@@ -405,6 +405,36 @@
           { "code": "YT", "name": "Yukon", "names": { "es": "Yukón", "is": "Júkon" }, "anchor": [60.7, -135.1], "anchorNote": "At Whitehorse, its capital." }
         ]
       }
+    },
+    {
+      "code": "AE",
+      "continent": "asia",
+      "catalog": "data/emirati-scooter-feeds.json",
+      "source": "emirates",
+      "names": { "en": "United Arab Emirates", "de": "Vereinigte Arabische Emirate", "fr": "Émirats arabes unis", "it": "Emirati Arabi Uniti", "nl": "Verenigde Arabische Emiraten", "nb": "De forente arabiske emirater", "pt": "Emirados Árabes Unidos", "es": "Emiratos Árabes Unidos", "is": "Sameinuðu arabísku furstadæmin" },
+      "searchWords": ["uae", "emirates", "united arab emirates", "vereinigte arabische emirate", "emirats arabes unis", "emirati arabi uniti", "verenigde arabische emiraten", "de forente arabiske emirater", "emirados arabes unidos", "emiratos arabes unidos", "sameinudu arabisku furstadaemin", "الامارات", "الامارات العربيه المتحده"],
+      "anchor": [24.7, 54.9],
+      "anchorNote": "Inland between Abu Dhabi and Dubai, south of Ghantoot: halfway between the two cities' scooters.",
+      "featuredCities": ["ae:Dubai", "ae:Abu Dhabi"],
+      "credits": {
+        "attribution": "United Arab Emirates: Dott GBFS",
+        "gbfs": ["Dott"]
+      }
+    },
+    {
+      "code": "SA",
+      "continent": "asia",
+      "catalog": "data/saudi-scooter-feeds.json",
+      "source": "saudiarabia",
+      "names": { "en": "Saudi Arabia", "de": "Saudi-Arabien", "fr": "Arabie saoudite", "it": "Arabia Saudita", "nl": "Saoedi-Arabië", "nb": "Saudi-Arabia", "pt": "Arábia Saudita", "es": "Arabia Saudí", "is": "Sádi-Arabía" },
+      "searchWords": ["saudi arabia", "saudi", "ksa", "saudi arabien", "arabie saoudite", "arabia saudita", "saoedi arabie", "arabia saudi", "sadi arabia", "السعوديه", "المملكه العربيه السعوديه"],
+      "anchor": [23.2, 42.9],
+      "anchorNote": "In Najd, south of Afif: halfway between Riyadh and Jeddah, the two towns with scooters.",
+      "featuredCities": ["sa:Riyadh", "sa:Jeddah"],
+      "credits": {
+        "attribution": "Saudi Arabia: SAHAM, Dott GBFS",
+        "gbfs": ["SAHAM", "Dott"]
+      }
     }
   ]
 }

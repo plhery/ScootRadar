@@ -85,6 +85,14 @@ describe('rental links', () => {
     expect(safeRentalUri('elerent', link)).toBeNull();
   });
 
+  it('keeps the link to each SAHAM scooter, which ends in the number on it, on its own host only', () => {
+    const link = 'https://ride-saham.app.link/0131';
+    expect(normalizeRentalUris('saham', { ios: link, android: link, web: 'https://ride-saham.app.link/' }))
+      .toEqual({ ios: link, android: link, web: 'https://ride-saham.app.link/' });
+    expect(safeRentalUri('saham', 'https://ride-hoppy.app.link/600332')).toBeNull();
+    expect(safeRentalUri('hoppy', link)).toBeNull();
+  });
+
   it('keeps the link to each Veo scooter, which names it by its number, on Veo\'s Adjust host only', () => {
     const link = 'https://gmjc.adj.st/?adj_t=5vyf0nr&number=10103344';
     expect(normalizeRentalUris('veo', { ios: link, android: link })).toEqual({ ios: link, android: link, web: null });

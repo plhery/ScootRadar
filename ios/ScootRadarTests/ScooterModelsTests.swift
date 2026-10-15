@@ -306,6 +306,14 @@ final class ScooterModelsTests: XCTestCase {
         XCTAssertNil(ScooterRentalLinkPolicy.safeURL(provider: "spin", value: lyft))
     }
 
+    func testRentalLinkPolicyKeepsSAHAMsLinkToTheNumberOnTheScooter() {
+        let saham = "https://ride-saham.app.link/0131"
+        XCTAssertEqual(ScooterRentalLinkPolicy.safeURL(provider: "saham", value: saham)?.absoluteString, saham)
+        // The other operators on ATOM Mobility don't take SAHAM's links, nor SAHAM theirs.
+        XCTAssertNil(ScooterRentalLinkPolicy.safeURL(provider: "hoppy", value: saham))
+        XCTAssertNil(ScooterRentalLinkPolicy.safeURL(provider: "saham", value: "https://ride-hoppy.app.link/600332"))
+    }
+
     @MainActor
     func testOpeningARentalFallsBackToTheWebPageWhenTheProvidersAppIsMissing() async {
         let scooter = Scooter(

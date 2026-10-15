@@ -283,6 +283,7 @@ describe('ControlSheet settings', () => {
       // Each country's own, from data/countries.json: the GBFS feeds credited together, then the licences.
       'DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio, Bird, Elerent, Hoppy, Ride Mobility, 3electra',
       'US/CA: Bird, Bolt, Lime, Veo, Spin, Lyft',
+      'AE/SA: Dott, SAHAM',
       'MobiData BW',
       'BE: Pony · transportdata.be',
       'NO: Entur AS · NLOD',

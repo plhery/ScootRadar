@@ -101,6 +101,11 @@ const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
     schemes: ['bolt-hopp'],
     httpsHosts: ['gethopp.com'],
   },
+  // SAHAM, in Riyadh, is on ATOM Mobility too: its links end in the number on the scooter, such as 0131.
+  saham: {
+    schemes: [],
+    httpsHosts: ['ride-saham.app.link', 'sahamofficial.com'],
+  },
 };
 
 // Links that open an operator's app elsewhere than on a scooter. Bird's and Spin's feeds give

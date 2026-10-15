@@ -1,0 +1,71 @@
+{
+  "verifiedOn": "2026-10-15",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "dott_ae_dubai",
+      "country": "AE",
+      "provider": "dott",
+      "city": "Dubai",
+      "timeZone": "Asia/Dubai",
+      "center": [
+        25.2048,
+        55.2708
+      ],
+      "bounds": {
+        "south": 25.0536,
+        "north": 25.2925,
+        "west": 55.1151,
+        "east": 55.5142
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/dubai/gbfs.json",
+      "aliases": [
+        "دبي"
+      ]
+    },
+    {
+      "id": "dott_ae_dubai_hills",
+      "country": "AE",
+      "provider": "dott",
+      "city": "Dubai",
+      "timeZone": "Asia/Dubai",
+      "center": [
+        25.1108,
+        55.2482
+      ],
+      "bounds": {
+        "south": 25.0797,
+        "north": 25.1268,
+        "west": 55.2242,
+        "east": 55.2674
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/dubai-hills/gbfs.json",
+      "aliases": [
+        "دبي"
+      ]
+    },
+    {
+      "id": "dott_ae_abu_dhabi",
+      "country": "AE",
+      "provider": "dott",
+      "city": "Abu Dhabi",
+      "timeZone": "Asia/Dubai",
+      "center": [
+        24.4539,
+        54.3773
+      ],
+      "bounds": {
+        "south": 24.3979,
+        "north": 24.5216,
+        "west": 54.307,
+        "east": 54.6349
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/abu-dhabi/gbfs.json",
+      "aliases": [
+        "ابوظبي",
+        "ابو ظبي",
+        "Abu Zabi"
+      ]
+    }
+  ]
+}

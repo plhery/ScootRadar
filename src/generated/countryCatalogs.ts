@@ -20,6 +20,8 @@ import croatianCatalog from '../../data/croatian-scooter-feeds.json';
 import ukrainianCatalog from '../../data/ukrainian-scooter-feeds.json';
 import americanCatalog from '../../data/american-scooter-feeds.json';
 import canadianCatalog from '../../data/canadian-scooter-feeds.json';
+import emiratiCatalog from '../../data/emirati-scooter-feeds.json';
+import saudiCatalog from '../../data/saudi-scooter-feeds.json';
 
 /** Every catalog's systems, each with its country, in the order of data/countries.json. */
 export const CATALOG_SYSTEMS = [
@@ -43,4 +45,6 @@ export const CATALOG_SYSTEMS = [
   ...ukrainianCatalog.systems.map(system => ({ ...system, country: 'UA' as const })),
   ...americanCatalog.systems.map(system => ({ ...system, country: 'US' as const })),
   ...canadianCatalog.systems.map(system => ({ ...system, country: 'CA' as const })),
+  ...emiratiCatalog.systems.map(system => ({ ...system, country: 'AE' as const })),
+  ...saudiCatalog.systems.map(system => ({ ...system, country: 'SA' as const })),
 ];

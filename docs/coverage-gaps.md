@@ -384,6 +384,37 @@ banned shared scooters, and feeds that were empty when checked.
     rides must end in designated spots, and Bird and Lime none in Edmonton's
     Mill Woods (see the guide's [parking](canadian-scooter-feeds.md#parking)).
 
+- **United Arab Emirates** ([guide](emirati-scooter-feeds.md#known-gaps)):
+  Dott in Dubai, with its Dubai Hills fleet, and in Abu Dhabi is covered.
+  - **Too few rides yet:** Dott's Dubai feed holds 12 or 13 scooters in Hatta,
+    which none rode in 10.5 hours on Thursday 15 October 2026; Hatta is a
+    weekend and cool-season place. Dott Sharjah (93 to 96 scooters at
+    University City, about 7 rides in 11 hours), Dott Ras Al Khaimah (32 to
+    34, about 2 rides) and Al Ain, in Dott's Abu Dhabi feed (16 to 18, about
+    2 rides), are left out until they are ridden more. See
+    [Dates to check again](#dates-to-check-again).
+  - **No public feed:** Lime, Skurtt and Arnab, which the RTA also licenses in
+    Dubai: about 40 of Lime's slugs (`dubai`, `dubai_uae`, `uae` and the
+    districts) answer 404. Bird's `abu-dhabi` feed answers with no vehicle and
+    a time of 0.
+  - **Gone:** Yaldi's ATOM host (`yaldi.rideatom.com`, system 511) no longer
+    resolves, and yaldi.ae now rents cars.
+  - **Bikes only:** Careem BIKE, docked bikes in Dubai and Abu Dhabi.
+  - **Dubai Pulse,** the emirate's data portal, has no scooter feed, and its
+    datasets need a key.
+- **Saudi Arabia** ([guide](saudi-scooter-feeds.md#known-gaps)): SAHAM in
+  Riyadh and Dott in Jeddah are covered.
+  - **Dott Riyadh:** 93 to 99 scooters, all in Boulevard City, about 10 rides
+    in 12.5 hours on 15 October 2026. Riyadh Season opens there on 21 October;
+    check from 23 October, in the evening.
+  - **Dott Sports Boulevard** (`sbf`): 44 or 45 scooters, all at one depot,
+    which never moved. **Dott STC City:** empty, with a free plan, on the stc
+    headquarters campus, not a public service.
+  - **Dott Makkah:** empty, with a free plan; it may run in the Hajj.
+  - **No public feed:** Wing, Barqscoot and SPIDERS; Green Arrows, on ATOM
+    Mobility, has no host that answers.
+  - **open.data.gov.sa** did not answer.
+
 ## Countries not covered yet
 
 Surveyed on the night of 12–13 October 2026: MobilityData's GBFS registry, the
@@ -449,15 +480,39 @@ a licence. Neither is published by its operator:
 | Estonia, Lithuania | Bolt and Ride Mobility publish no feed |
 | Slovakia, Bulgaria, Romania, Moldova | Dott and Bolt publish no feed; nothing else found. Romania's PBSC bike-share feeds list a scooter type with no scooters. (Slovenia: see above) |
 | Serbia | Belgrade cancelled its scooter tender in July 2026 |
-| Turkey | Martı, BinBin and Hop publish no feed |
+| Turkey | Martı, BinBin and Hop publish no feed: `gbfs.heyhop.app` answers 404 and `gbfs.martitech.com` doesn't answer (15 October 2026). Istanbul's, İzmir's and Konya's open-data portals hold static parking and routes only; AAR Bike Konya's feed is bicycles. Check again about April 2027 |
 | Malta | Rental scooters banned since March 2024 |
 | Luxembourg, Monaco, Liechtenstein | Bikes and e-bikes only; MonaBike lists a scooter type with no scooters |
 | Belarus, Georgia, Armenia, Azerbaijan, Kazakhstan | Bolt, with scooters in Tbilisi, Kutaisi, Baku and Almaty, answers 401, and so does Whoosh (`api.whoosh.bike/gbfs`). Eleven, Yandex Go, Jet, Mimo, BusyFly, YerevanRide, Ozim and Scroll publish nothing, and Kolobike has closed. No registry rows, no ATOM Mobility systems, nothing on the national open-data portals |
 | Vatican City | No operator. Bird Rome's geofence forbids riding over St Peter's, the Gardens and the Museums, and none of its 4,454 vehicles stood inside at 12:37 on 14 October 2026 |
+| Qatar | wer2, in Doha, is on ATOM Mobility, but its 11 systems (1824, 1836, 1837, 1838, 1840, 1841, 2050, 2109, 2110, 2132, 2143) answer "GBFS disabled", as does Salik's 1118. Loop and Dart publish no feed; data.gov.qa has no scooter data. wer2, or ATOM, would have to switch the feed on; no one has asked |
+| Kuwait | eFly is on ATOM Mobility, but its systems 2253 and 2340 answer "GBFS disabled". BSKL and e-Fly Scooters and More, on Joyride, publish no feed. eFly, or ATOM, would have to switch the feed on; no one has asked |
+| Oman | Biko, in Muscat, is on ATOM Mobility, but its 7 systems (1445, 1532, 1533, 1534, 1535, 1593, 1869) answer "GBFS disabled". Biko, or ATOM, would have to switch the feed on; no one has asked |
+| Bahrain | Hopp's `bh-bahrain` feed holds 13 or 14 scooters on three sites (Zallaq, Manama, Amwaj), about 2 rides in 10.4 hours on 15 October 2026: too few. Spiders and BSKL publish no feed; data.gov.bh has no scooter data |
+| Egypt | Rabbit, in Cairo, publishes no feed, and Cairo's governor ordered e-scooters seized |
+| South Africa | Zippy, in Langebaan, is on ATOM Mobility, but its systems 2028, 2075 and 2318 answer "GBFS disabled". Africa has no continent in the app yet |
+| Ghana | Hopp's `gh-accra` feed holds 13 scooters, all disabled with no range, at a depot |
+| Jordan | No scooter feed found; Dott's listing names no region |
+| Lebanon | No scooter feed found; Dott's listing names no region |
+| Morocco | No scooter feed found; Dott's listing names no region |
+| Tunisia | No scooter feed found |
+| Kenya | No scooter feed found; Dott's listing names no region |
+| Nigeria | No scooter feed found; Dott's listing names no region |
+| Rwanda | Guraride is docked bikes; no scooter feed found |
+| Mauritius | No scooter feed found |
+| Namibia | No scooter feed found |
 | Bosnia and Herzegovina, Montenegro, North Macedonia, Albania, Kosovo, Andorra, San Marino, Gibraltar, Faroe Islands | No scooter feed found (Hopp Tórshavn held 13, all disabled, at night and on the evening of 13 October 2026) |
 
 Bolt publishes only two public scooter feeds in Europe, Brussels and Liverpool;
 its other systems answer 401. Dott made most regions private in September 2026.
+
+The Middle East and Africa were surveyed on 15 October 2026, from 06:27 to
+17:37 UTC: MobilityData's GBFS registry, Dott's country listings and about 110
+guessed Dott and Bird slugs each, Lime's, Spin's, Lyft's, Veo's and Zeus's
+addresses, a scan of ATOM Mobility's systems, Hopp's town list, the app stores
+and the national open-data portals. ATOM's "GBFS disabled" answers mean the
+operator has a system but hasn't made its feed public. Survey files are in
+`/tmp/scoot-providers/middle-east-africa/`, which isn't kept.
 
 ## Dates to check again
 
@@ -484,15 +539,32 @@ its other systems answer 401. Dott made most regions private in September 2026.
   scooters has frozen, so read that town from its ATOM id. Check again every
   few weeks until the move is done, at one request a second on
   `zeus.rideatom.com`; id 189 is a warehouse.
+- **Friday 23 October 2026, 18:00 to 22:00 Riyadh time:** Dott Riyadh, in
+  Boulevard City (`riyadh`): 93 to 99 scooters and about 10 rides on 15
+  October 2026, before Riyadh Season opened there on 21 October. Poll it every
+  five minutes; Dott renews ids after each trip, so count rides as the
+  [Saudi guide](saudi-scooter-feeds.md#rides) does, and add it to
+  `data/saudi-scooter-feeds.json` if it is ridden. Poll Dott Jeddah too, in
+  the catalog on about 23 rides that evening: if it shows none, take it out.
 - **November 2026:** Beaumont's pilot runs "until the end of October 2026",
   and Lime's licence there to the end of 2026. Check that Lime's Edmonton feed
   still holds scooters in Beaumont, and whether the town goes on in 2027;
   remove its area from `lime_ca_edmonton` if it doesn't. Check again in April
   2027.
+- **Saturday 21 November 2026, or a Saturday after:** Hatta, in Dott's Dubai
+  feed, by day: 12 or 13 scooters, which none rode on 15 October 2026. If they
+  are ridden, add Hatta as an area of `dott_ae_dubai`, with bounds of Dott's
+  Hatta zone plus 1 km.
+- **Late November 2026:** Dott Sharjah, at University City: 93 to 96
+  scooters and about 7 rides in 11 hours on 15 October 2026. Add it if it is
+  ridden more as the weather cools.
 - **December 2026:** Halifax's pilot runs to 30 November 2026 by the council
   report of 9 July 2024, with a possible extension into 2027, or for two years
   from 15 May 2025 by the project page. Check whether Bird's Halifax feed and
   the pilot go on; last winter Halifax paused from 15 December to 16 March.
+- **December 2026:** Al Ain, in Dott's Abu Dhabi feed (16 to 18 scooters), and
+  Dott Ras Al Khaimah (32 to 34): about 2 rides each on 15 October 2026. Add
+  each if it holds about ten scooters that are ridden.
 - **1 December 2026:** the EU's rule on multimodal travel information
   (Delegated Regulation (EU) 2024/490) requires shared-scooter availability on
   each country's national access point for the cities on the main EU transport
@@ -554,6 +626,9 @@ its other systems answer 401. Dott made most regions private in September 2026.
   Kazakhstan too (Minsk's runs from about 15 March to 15 November): check
   Bolt's ids, Whoosh, the registry, ATOM Mobility and the national portals
   again.
+- **April 2027:** Turkey's season. Check `gbfs.heyhop.app`,
+  `gbfs.martitech.com`, BinBin, and Istanbul's, İzmir's and Konya's open-data
+  portals for a public scooter feed.
 - **1 May 2027:** Bird's other Canadian towns (Lethbridge, Red Deer, Kamloops,
   Vernon, Brampton, Oshawa, Laval and the rest listed above) and Lime's
   former Neuron towns (Red Deer, Saskatoon, Regina, Waterloo Region): probe
@@ -569,6 +644,8 @@ its other systems answer 401. Dott made most regions private in September 2026.
   scooters, check whether the city has let rental scooters back; if so, take
   it out of `LEFT_OUT_SWISS_SYSTEMS` and put its town back in
   `data/swiss-scooter-areas.json`.
+- **15 to 30 May 2027:** Dott Makkah, empty with a free plan on 15 October
+  2026, during the Hajj. Add it if it lists scooters that are ridden.
 - **June 2027:** Dott Tignes's summer season. The catalog pauses Tignes from
   8 September until 22 June, the dates of 2026; check Dott's announcement of
   the 2027 season and change the window if they differ.

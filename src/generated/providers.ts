@@ -28,6 +28,7 @@ const PROVIDER_DEFINITIONS = {
   veo: { name: "Veo", color: "#059a8e", initial: "Ve" },
   lyft: { name: "Lyft", color: "#ff00bf", initial: "Ly" },
   bolt_hopp: { name: "Hopp", color: "#2a9c64", initial: "H" },
+  saham: { name: "SAHAM", color: "#1ea9e1", initial: "Sa" },
 } as const;
 
 export type ProviderKey = keyof typeof PROVIDER_DEFINITIONS;
@@ -48,6 +49,7 @@ const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: str
   naolib: {"prefixes":["naolib"]},
   beryl: {"prefixes":["beryl"]},
   hoppy: {"prefixes":["hoppy"]},
+  saham: {"prefixes":["saham"]},
   bolt: {"prefixes":["bolt"]},
   bird: {"prefixes":["bird"]},
   dott: {"prefixes":["dott"]},

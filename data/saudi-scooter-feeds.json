@@ -1,0 +1,50 @@
+{
+  "verifiedOn": "2026-10-15",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "saham_sa_riyadh",
+      "country": "SA",
+      "provider": "saham",
+      "city": "Riyadh",
+      "timeZone": "Asia/Riyadh",
+      "center": [
+        24.7136,
+        46.6753
+      ],
+      "bounds": {
+        "south": 24.5521,
+        "north": 25.0316,
+        "west": 46.4871,
+        "east": 46.8692
+      },
+      "discoveryUrl": "https://saham.rideatom.com/gbfs/748/v3.0/gbfs",
+      "aliases": [
+        "الرياض",
+        "Ar Riyad"
+      ]
+    },
+    {
+      "id": "dott_sa_jeddah",
+      "country": "SA",
+      "provider": "dott",
+      "city": "Jeddah",
+      "timeZone": "Asia/Riyadh",
+      "center": [
+        21.6394,
+        39.1015
+      ],
+      "bounds": {
+        "south": 21.6246,
+        "north": 21.6661,
+        "west": 39.0907,
+        "east": 39.1151
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/jeddah/gbfs.json",
+      "aliases": [
+        "Jiddah",
+        "جده"
+      ]
+    }
+  ]
+}

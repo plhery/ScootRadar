@@ -600,3 +600,39 @@ council report and season page. See the
 [coverage audit](docs/canadian-scooter-feeds.md) for the systems, the bounds,
 the empty feeds, the winter, the night rules, the parking, the gaps and the
 recheck command.
+
+## United Arab Emirates
+
+The reviewed catalog lives in `data/emirati-scooter-feeds.json`: 3 Dott feeds
+in 2 cities. Dott's `dubai` and `dubai-hills` regions, two fleets with no
+scooter in common, both count under Dubai, and its `abu-dhabi` region is Abu
+Dhabi. All three are Dott's own public GBFS 2.3 feeds at
+`gbfs.api.ridedott.com`, in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
+and [Dott's Emirati listing](https://gbfs.api.ridedott.com/public/v2/countries/ae/gbfs.json).
+
+Dott publishes no licence in these feeds; its
+[API terms](https://ridedott.com/api-licence/) restrict distribution, as
+noted for France above. The map's credits name Dott under the GBFS line. Dubai's
+permit and Abu Dhabi's rules come from the RTA's and AD Mobility's own pages;
+neither sets hours. See the [coverage audit](docs/emirati-scooter-feeds.md)
+for the systems, the bounds, the rules, the gaps and the recheck command.
+
+## Saudi Arabia
+
+The reviewed catalog lives in `data/saudi-scooter-feeds.json`: 2 feeds.
+SAHAM's in Riyadh is its own public GBFS 3.0 feed, system 748 on ATOM
+Mobility's `saham.rideatom.com`, at the address ATOM gives its other
+operators' feeds; it is not in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv).
+Dott's in Jeddah is Dott's own public GBFS 2.3 feed, in the registry and in
+[Dott's Saudi listing](https://gbfs.api.ridedott.com/public/v2/countries/sa/gbfs.json).
+The cache paces `saham.rideatom.com` to about two requests a second, as every
+ATOM host.
+
+Neither SAHAM nor Dott publishes a licence in its feed; Dott's
+[API terms](https://ridedott.com/api-licence/) restrict distribution, as noted
+for France above. The map's credits name both under the GBFS line. The
+national rules come from the press (Gulf News, October 2024) and set no
+hours. See the [coverage audit](docs/saudi-scooter-feeds.md) for the systems,
+the rides, the rules, the gaps and the recheck command.

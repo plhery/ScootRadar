@@ -155,5 +155,12 @@
     "color": "#2a9c64",
     "initial": "H",
     "systemIds": { "prefixes": ["bolt_hopp"] }
+  },
+  {
+    "key": "saham",
+    "name": "SAHAM",
+    "color": "#1ea9e1",
+    "initial": "Sa",
+    "systemIds": { "prefixes": ["saham"] }
   }
 ]

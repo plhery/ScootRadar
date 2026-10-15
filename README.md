@@ -45,7 +45,7 @@ English. There is also a native SwiftUI app for iPhone.
   its marker, hovering a marker shows a short tip, and `/`, `L`, `+`, `−` and
   `Esc` work from the keyboard.
 
-**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob', Elerent, 3electra, Spin, Veo and Lyft.
+**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob', Elerent, 3electra, Spin, Veo, Lyft and SAHAM.
 
 French coverage includes 32 verified feeds across 58 cities or operating areas,
 with city-name search. German coverage adds 40 feeds across 47 cities (Dott, Bolt, Hopp, Lime, Voi, Zeus and Yoio); Italy adds 4 feeds: Bird in Roma, Palermo and Napoli, and Elerent in Catania. See the [German/Italian feed audit](docs/german-italian-scooter-feeds.md) for coverage and known gaps. See the [French feed investigation](docs/french-scooter-feeds.md)
@@ -85,6 +85,11 @@ in 28 and Lyft in Chicago and Portland. See the
 Canada adds 14 feeds, Bird's and Lime's, in 14 towns of Alberta, British
 Columbia, Ontario and Nova Scotia. See the
 [Canadian feed audit](docs/canadian-scooter-feeds.md).
+The United Arab Emirates adds 3 Dott feeds in 2 cities: Dubai, where Dott
+runs a second fleet in Dubai Hills, and Abu Dhabi. See the
+[Emirati feed audit](docs/emirati-scooter-feeds.md).
+Saudi Arabia adds 2 feeds: SAHAM in Riyadh and Dott in Jeddah. See the
+[Saudi feed audit](docs/saudi-scooter-feeds.md).
 What is not covered yet, and why, is listed in
 [Coverage gaps](docs/coverage-gaps.md).
 

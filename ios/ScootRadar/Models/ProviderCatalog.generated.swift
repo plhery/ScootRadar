@@ -25,6 +25,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     case veo
     case lyft
     case bolt_hopp
+    case saham
 
     var id: String { rawValue }
 
@@ -51,6 +52,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .veo: "Veo"
         case .lyft: "Lyft"
         case .bolt_hopp: "Hopp"
+        case .saham: "SAHAM"
         }
     }
 
@@ -77,6 +79,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .veo: "Ve"
         case .lyft: "Ly"
         case .bolt_hopp: "H"
+        case .saham: "Sa"
         }
     }
 
@@ -105,6 +108,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .veo: UIColor(red: 0.019608, green: 0.603922, blue: 0.556863, alpha: 1)
         case .lyft: UIColor(red: 1.000000, green: 0.000000, blue: 0.749020, alpha: 1)
         case .bolt_hopp: UIColor(red: 0.164706, green: 0.611765, blue: 0.392157, alpha: 1)
+        case .saham: UIColor(red: 0.117647, green: 0.662745, blue: 0.882353, alpha: 1)
         }
     }
 
@@ -117,6 +121,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         (.naolib, [], ["naolib"]),
         (.beryl, [], ["beryl"]),
         (.hoppy, [], ["hoppy"]),
+        (.saham, [], ["saham"]),
         (.bolt, [], ["bolt"]),
         (.bird, [], ["bird"]),
         (.dott, [], ["dott"]),
@@ -558,6 +563,11 @@ enum ScooterProviderCoverage {
         (.lime, GeoBounds(south: 43.4744, west: -79.8043, north: 43.6832, east: -79.5394)),
         (.lime, GeoBounds(south: 45.3613, west: -75.7701, north: 45.4581, east: -75.6275)),
         (.lime, GeoBounds(south: 49.2181, west: -123.179, north: 49.3026, east: -123.0101)),
+        (.dott, GeoBounds(south: 25.0536, west: 55.1151, north: 25.2925, east: 55.5142)),
+        (.dott, GeoBounds(south: 25.0797, west: 55.2242, north: 25.1268, east: 55.2674)),
+        (.dott, GeoBounds(south: 24.3979, west: 54.307, north: 24.5216, east: 54.6349)),
+        (.saham, GeoBounds(south: 24.5521, west: 46.4871, north: 25.0316, east: 46.8692)),
+        (.dott, GeoBounds(south: 21.6246, west: 39.0907, north: 21.6661, east: 39.1151)),
     ]
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
@@ -954,12 +964,16 @@ enum ScooterCityCatalog {
         ScooterCity(id: "ca:bc:Kelowna", name: "Kelowna, BC", countryCode: "CA", center: GeoPoint(latitude: 49.8864, longitude: -119.4754), bounds: GeoBounds(south: 49.78, west: -119.5355, north: 49.9733, east: -119.361)),
         ScooterCity(id: "ca:on:Mississauga", name: "Mississauga, ON", countryCode: "CA", center: GeoPoint(latitude: 43.5797, longitude: -79.6556), bounds: GeoBounds(south: 43.4744, west: -79.8043, north: 43.6832, east: -79.5394)),
         ScooterCity(id: "ca:bc:Vancouver", name: "Vancouver, BC", countryCode: "CA", center: GeoPoint(latitude: 49.2684, longitude: -123.1047), bounds: GeoBounds(south: 49.2181, west: -123.179, north: 49.3026, east: -123.0101)),
+        ScooterCity(id: "ae:Dubai", name: "Dubai", countryCode: "AE", center: GeoPoint(latitude: 25.2048, longitude: 55.2708), bounds: GeoBounds(south: 25.0536, west: 55.1151, north: 25.2925, east: 55.5142)),
+        ScooterCity(id: "ae:Abu Dhabi", name: "Abu Dhabi", countryCode: "AE", center: GeoPoint(latitude: 24.4539, longitude: 54.3773), bounds: GeoBounds(south: 24.3979, west: 54.307, north: 24.5216, east: 54.6349)),
+        ScooterCity(id: "sa:Riyadh", name: "Riyadh", countryCode: "SA", center: GeoPoint(latitude: 24.7136, longitude: 46.6753), bounds: GeoBounds(south: 24.5521, west: 46.4871, north: 25.0316, east: 46.8692)),
+        ScooterCity(id: "sa:Jeddah", name: "Jeddah", countryCode: "SA", center: GeoPoint(latitude: 21.6394, longitude: 39.1015), bounds: GeoBounds(south: 21.6246, west: 39.0907, north: 21.6661, east: 39.1151)),
     ]
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 353
-    static let countryCount = 21
+    static let cityCount = 357
+    static let countryCount = 23
 
     /// Cities by distance from the point to their centre, nearest first.
     static func nearest(to point: GeoPoint, count: Int) -> [ScooterCityDistance] {
@@ -1201,12 +1215,18 @@ enum ScooterCountryCatalog {
         // Inland in Manitoba's Interlake, near Fisher Branch: about the middle of the band of cities
         // from Vancouver to Halifax, and north of the United States' total.
         "ca": (51.1, -97.6),
+        // Inland between Abu Dhabi and Dubai, south of Ghantoot: halfway between the two cities'
+        // scooters.
+        "ae": (24.7, 54.9),
+        // In Najd, south of Afif: halfway between Riyadh and Jeddah, the two towns with scooters.
+        "sa": (23.2, 42.9),
     ]
 
     /// The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences.
     static let credits: [(title: String, url: String)] = [
         ("DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio, Bird, Elerent, Hoppy, Ride Mobility, 3electra", "https://github.com/MobilityData/gbfs"),
         ("US/CA: Bird, Bolt, Lime, Veo, Spin, Lyft", "https://github.com/MobilityData/gbfs"),
+        ("AE/SA: Dott, SAHAM", "https://github.com/MobilityData/gbfs"),
         ("MobiData BW", "https://www.mobidata-bw.de/"),
         ("BE: Pony · transportdata.be", "https://transportdata.be/dataset/pony_charleroi"),
         ("NO: Entur AS · NLOD", "https://data.norge.no/nlod/en/2.0"),
