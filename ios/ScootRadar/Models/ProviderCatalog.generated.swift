@@ -147,16 +147,13 @@ enum ScooterProviderCoverage {
         GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82),
         GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7),
         GeoBounds(south: 47.03, west: 7.05, north: 47.27, east: 7.45),
-        GeoBounds(south: 46.5, west: 6.82, north: 46.7, east: 7.12),
         GeoBounds(south: 47.3753, west: 9.1561, north: 47.4376, east: 9.2125),
         GeoBounds(south: 47.45, west: 8.72, north: 47.68, east: 9.1),
         GeoBounds(south: 47.3868, west: 9.2125, north: 47.4639, east: 9.2915),
-        GeoBounds(south: 47.08, west: 7.28, north: 47.28, east: 7.52),
         GeoBounds(south: 47.33, west: 8.58, north: 47.55, east: 8.88),
         GeoBounds(south: 47.4287, west: 8.5477, north: 47.4829, east: 8.6213),
         GeoBounds(south: 47.31, west: 9.075, north: 47.342, east: 9.121),
         GeoBounds(south: 46.1, west: 8.67, north: 46.25, east: 8.9),
-        GeoBounds(south: 46.25, west: 6.05, north: 46.55, east: 6.45),
         GeoBounds(south: 47.4156, west: 8.5533, north: 47.4568, east: 8.6208),
         GeoBounds(south: 47.45, west: 9.2, north: 47.66, east: 9.58),
         GeoBounds(south: 47.36, west: 9.3, north: 47.58, east: 9.68),
@@ -608,16 +605,13 @@ enum ScooterCityCatalog {
         ScooterCity(id: "ch:basel", name: "Basel", countryCode: "CH", center: GeoPoint(latitude: 47.5596, longitude: 7.5886), bounds: GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82)),
         ScooterCity(id: "ch:bern", name: "Bern", countryCode: "CH", center: GeoPoint(latitude: 46.948, longitude: 7.4474), bounds: GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7)),
         ScooterCity(id: "ch:biel", name: "Biel/Bienne", countryCode: "CH", center: GeoPoint(latitude: 47.1368, longitude: 7.2468), bounds: GeoBounds(south: 47.03, west: 7.05, north: 47.27, east: 7.45)),
-        ScooterCity(id: "ch:bulle", name: "Bulle", countryCode: "CH", center: GeoPoint(latitude: 46.6, longitude: 6.970000000000001), bounds: GeoBounds(south: 46.5, west: 6.82, north: 46.7, east: 7.12)),
         ScooterCity(id: "ch:flawil", name: "Flawil", countryCode: "CH", center: GeoPoint(latitude: 47.413, longitude: 9.1832), bounds: GeoBounds(south: 47.3753, west: 9.1561, north: 47.4376, east: 9.2125)),
         ScooterCity(id: "ch:frauenfeld", name: "Frauenfeld", countryCode: "CH", center: GeoPoint(latitude: 47.565, longitude: 8.91), bounds: GeoBounds(south: 47.45, west: 8.72, north: 47.68, east: 9.1)),
         ScooterCity(id: "ch:gossau", name: "Gossau", countryCode: "CH", center: GeoPoint(latitude: 47.4155, longitude: 9.2548), bounds: GeoBounds(south: 47.3868, west: 9.2125, north: 47.4639, east: 9.2915)),
-        ScooterCity(id: "ch:grenchen", name: "Grenchen", countryCode: "CH", center: GeoPoint(latitude: 47.18, longitude: 7.4), bounds: GeoBounds(south: 47.08, west: 7.28, north: 47.28, east: 7.52)),
         ScooterCity(id: "ch:illnau-effretikon", name: "Illnau-Effretikon", countryCode: "CH", center: GeoPoint(latitude: 47.44, longitude: 8.73), bounds: GeoBounds(south: 47.33, west: 8.58, north: 47.55, east: 8.88)),
         ScooterCity(id: "ch:kloten", name: "Kloten", countryCode: "CH", center: GeoPoint(latitude: 47.4515, longitude: 8.5849), bounds: GeoBounds(south: 47.4287, west: 8.5477, north: 47.4829, east: 8.6213)),
         ScooterCity(id: "ch:lichtensteig", name: "Lichtensteig", countryCode: "CH", center: GeoPoint(latitude: 47.3236, longitude: 9.0876), bounds: GeoBounds(south: 47.31, west: 9.075, north: 47.342, east: 9.121)),
         ScooterCity(id: "ch:locarno", name: "Locarno", countryCode: "CH", center: GeoPoint(latitude: 46.169, longitude: 8.799), bounds: GeoBounds(south: 46.1, west: 8.67, north: 46.25, east: 8.9)),
-        ScooterCity(id: "ch:nyon", name: "Nyon", countryCode: "CH", center: GeoPoint(latitude: 46.3833, longitude: 6.2396), bounds: GeoBounds(south: 46.25, west: 6.05, north: 46.55, east: 6.45)),
         ScooterCity(id: "ch:opfikon", name: "Opfikon", countryCode: "CH", center: GeoPoint(latitude: 47.4317, longitude: 8.5759), bounds: GeoBounds(south: 47.4156, west: 8.5533, north: 47.4568, east: 8.6208)),
         ScooterCity(id: "ch:romanshorn", name: "Romanshorn", countryCode: "CH", center: GeoPoint(latitude: 47.555, longitude: 9.39), bounds: GeoBounds(south: 47.45, west: 9.2, north: 47.66, east: 9.58)),
         ScooterCity(id: "ch:rorschach", name: "Rorschach", countryCode: "CH", center: GeoPoint(latitude: 47.478, longitude: 9.493), bounds: GeoBounds(south: 47.36, west: 9.3, north: 47.58, east: 9.68)),
@@ -964,7 +958,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 356
+    static let cityCount = 353
     static let countryCount = 21
 
     /// Cities by distance from the point to their centre, nearest first.

@@ -84,7 +84,7 @@ describe('nearest covered cities', () => {
   it('returns the closest cities first with their distance in metres', () => {
     const nearest = nearestCoveredCities(LUNGERN, 3);
 
-    expect(nearest.map(city => [city.city, city.country])).toEqual([['Bern', 'CH'], ['Wädenswil', 'CH'], ['Grenchen', 'CH']]);
+    expect(nearest.map(city => [city.city, city.country])).toEqual([['Bern', 'CH'], ['Wädenswil', 'CH'], ['Zürich', 'CH']]);
     expect(nearest[0]).toEqual({
       id: 'ch:bern',
       city: 'Bern',
@@ -98,7 +98,7 @@ describe('nearest covered cities', () => {
 
   it('crosses borders and starts with the city you are in', () => {
     expect(nearestCoveredCities(LAUSANNE, 6).map(city => city.city))
-      .toEqual(['Bulle', 'Nyon', 'Bern', 'Biel/Bienne', 'Grenchen', 'Tignes']);
+      .toEqual(['Bern', 'Biel/Bienne', 'Tignes', 'Basel', 'Lyon', 'Grenoble']);
     expect(nearestCoveredCities([47.3769, 8.5417], 1)).toEqual([
       expect.objectContaining({ city: 'Zürich', distanceM: 0 }),
     ]);

@@ -158,7 +158,7 @@ describe('nothingToShow', () => {
     expect(result?.kind).toBe('outsideCoverage');
     if (result?.kind !== 'outsideCoverage') return;
     expect(result.cities.map(city => `${city.city} · ${Math.round(city.distanceM / 1000)} km`))
-      .toEqual(['Bern · 57 km', 'Wädenswil · 64 km', 'Grenchen · 73 km']);
+      .toEqual(['Bern · 57 km', 'Wädenswil · 64 km', 'Zürich · 73 km']);
     expect(result.cities[0].center).toHaveLength(2);
   });
 

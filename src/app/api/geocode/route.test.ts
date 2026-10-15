@@ -1156,7 +1156,7 @@ describe('recorded Geoapify answers', () => {
     ['Rom', 'de', [47.37, 8.54], ['towns', 'nearby'], [
       ['Roma', 'Italien', DATA],
       ['Romanshorn', 'Schweiz', DATA],
-      ['Romont', 'Freiburg, Schweiz', DATA],
+      ['Romont', 'Freiburg, Schweiz', NO_DATA],
       ['Romanel-sur-Lausanne', 'Waadt, Schweiz', NO_DATA],
       ['Römerswil', 'Luzern, Schweiz', NO_DATA],
     ]],
@@ -1164,9 +1164,9 @@ describe('recorded Geoapify answers', () => {
     ['Laus', 'fr', [46.52, 6.63], ['towns', 'nearby'], [
       ['Lausanne', 'Vaud, Suisse', NO_DATA],
       ['Lausen', 'Bâle-Campagne, Suisse', DATA],
-      ['Route de Lausanne', 'Rolle', DATA],
       ['Route de Lausanne', 'Villette (Lavaux)', NO_DATA],
-      ['Route de Lausanne', 'Prangins', DATA],
+      ['Route de Lausanne', 'Rolle', NO_DATA],
+      ['Route de Lausanne', 'Prangins', NO_DATA],
     ]],
   ])('answers "%s" with the places a rider would choose', async (query, language, near, requests, rows) => {
     const fetchMock = stubRecordedAnswer(query);

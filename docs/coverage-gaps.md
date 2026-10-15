@@ -49,6 +49,13 @@ banned shared scooters, and feeds that were empty when checked.
     since November 2023 and Wetzikon since its pilot ended in February 2023,
     so both left the map's towns
     ([Data sources](../DATA_SOURCES.md#mobility-data)).
+  - Bulle, Grenchen and Nyon left the map's towns on 15 October 2026, with no
+    scooter from any source in them. Bird Grenchen has sent no position since
+    8 August 2026, though Zisch's site still names Grenchen; JM Fleets rents
+    its Bulle scooters in its own app, Trott', which publishes no feed, and
+    Bird's Bulle system lists none; Nyon's shared vehicles are Voi's e-bikes.
+    Bird Grenchen and Bird Bulle are in `LEFT_OUT_SWISS_SYSTEMS`
+    ([Data sources](../DATA_SOURCES.md#mobility-data)).
   - Dott's 13 scooters in Lichtensteig, on the map since 14 October 2026,
     sat at the same spots from 00:37 to 11:41 that day: check over a weekend
     that they are ridden.
@@ -512,6 +519,15 @@ its other systems answer 401. Dott made most regions private in September 2026.
 - **1 March 2027:** Lime Ciudad de México, empty since SEMOVI's pilot ended
   in September 2026. Check Lime's Querétaro and Monterrey slugs, Whoosh and
   JET again too.
+- **1 April 2027:** Bulle, Grenchen and Nyon, out of the map's towns since
+  15 October 2026. Check Bird Grenchen (`bird-grenchen`) and Bird Bulle
+  (`bird-platform-partner-jmfleets-bulle`) on sharedmobility.ch and at
+  `mds.bird.co/gbfs/v2/public/<town>`, whether Zisch still names Grenchen and
+  JM Fleets's Trott' app publishes a feed, and Voi's Nyon stations for
+  scooters. If one lists about ten available scooters that are ridden, take
+  its system out of `LEFT_OUT_SWISS_SYSTEMS` and put the town back in
+  `data/swiss-scooter-areas.json` (for Nyon, drop its entry in
+  `REGION_ALIASES`).
 - **15 April 2027:** Bird Ajax and Bird Surrey, empty on 14 October 2026; the
   Durham Region pilots run from April to October. Lime Grand Rapids too, and
   look for a Veo feed there.

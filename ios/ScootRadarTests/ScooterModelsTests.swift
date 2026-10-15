@@ -1025,7 +1025,7 @@ extension ScooterModelsTests {
         let lungern = GeoPoint(latitude: 46.7741, longitude: 8.1558)
         let closest = ScooterCityCatalog.nearest(to: lungern, count: 3)
 
-        XCTAssertEqual(closest.map(\.city.name), ["Bern", "Wädenswil", "Grenchen"])
+        XCTAssertEqual(closest.map(\.city.name), ["Bern", "Wädenswil", "Zürich"])
         let bern = try XCTUnwrap(closest.first)
         let swiss = bern.formattedDistance(locale: Locale(identifier: "en_CH"))
         XCTAssertEqual(plainSpaces(swiss), "57 km")

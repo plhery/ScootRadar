@@ -697,7 +697,8 @@ describe('fetchScooters source health', () => {
       const url = String(input);
       if (url === 'https://sharedmobility.ch/v2/gbfs') {
         return jsonResponse({
-          systems: ['lime_winterthur', 'lime_zug', 'lime_wetzikon'].map(id => ({ id, url: `https://sharedmobility.ch/v2/gbfs/${id}/gbfs` })),
+          systems: ['lime_winterthur', 'lime_zug', 'lime_wetzikon', 'bird-grenchen', 'bird-platform-partner-jmfleets-bulle']
+            .map(id => ({ id, url: `https://sharedmobility.ch/v2/gbfs/${id}/gbfs` })),
         });
       }
       throw new Error(`Unexpected URL: ${url}`);

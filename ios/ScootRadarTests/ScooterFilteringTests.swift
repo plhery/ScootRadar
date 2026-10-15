@@ -398,8 +398,8 @@ final class ScooterFilteringTests: XCTestCase {
         )
 
         XCTAssertEqual(
-            ScooterClusterAnnotationView.accessibilityLabel(count: 1, city: "Bulle"),
-            String(format: String(localized: "%@, one scooter"), "Bulle")
+            ScooterClusterAnnotationView.accessibilityLabel(count: 1, city: "Uster"),
+            String(format: String(localized: "%@, one scooter"), "Uster")
         )
     }
 

@@ -1680,7 +1680,7 @@ extension ScooterMapModelTests {
         guard case let .outsideCoverage(cities) = model.dock else {
             return XCTFail("Expected the outside-coverage card")
         }
-        XCTAssertEqual(cities.map(\.city.name), ["Bern", "Wädenswil", "Grenchen"])
+        XCTAssertEqual(cities.map(\.city.name), ["Bern", "Wädenswil", "Zürich"])
         XCTAssertEqual(cities.map { Int(($0.distanceMeters / 1_000).rounded()) }, [57, 64, 73])
         XCTAssertEqual(cities, model.closestCities)
 
@@ -2278,7 +2278,7 @@ extension ScooterMapModelTests {
         let cities = model.nearbyCities
         XCTAssertEqual(
             cities.map(\.city.name),
-            ["Wädenswil", "Bern", "Zürich", "Uster", "Opfikon", "Grenchen"]
+            ["Wädenswil", "Bern", "Zürich", "Uster", "Opfikon", "Kloten"]
         )
         XCTAssertEqual(cities.map(\.distanceMeters), cities.map(\.distanceMeters).sorted())
 
@@ -2322,32 +2322,32 @@ extension ScooterMapModelTests {
 
     func testATypedCoveredCityShowsTheWholeCityLikeItsChip() throws {
         let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
-        let bulle = try XCTUnwrap(ScooterCityCatalog.cities.first { $0.id == "ch:bulle" })
+        let locarno = try XCTUnwrap(ScooterCityCatalog.cities.first { $0.id == "ch:locarno" })
 
-        // What the address search answers for "Bulle": the catalogue's centre.
+        // What the address search answers for "Locarno": the catalogue's centre.
         let answer = Data("""
-        [{"lat": \(bulle.center.latitude), "lng": \(bulle.center.longitude),
-          "display_name": "Bulle, Switzerland", "title": "Bulle", "subtitle": "Suisse", "covered": true}]
+        [{"lat": \(locarno.center.latitude), "lng": \(locarno.center.longitude),
+          "display_name": "Locarno, Switzerland", "title": "Locarno", "subtitle": "Svizzera", "covered": true}]
         """.utf8)
         let typed = try XCTUnwrap(JSONDecoder().decode([AddressSearchResult].self, from: answer).first)
         XCTAssertEqual(typed.destination.kind, .city)
-        XCTAssertEqual(typed.destination.subtitle, "Suisse")
+        XCTAssertEqual(typed.destination.subtitle, "Svizzera")
 
         model.focusOnAddress(typed.destination)
         let typedFocus = try XCTUnwrap(model.focusRequest)
-        XCTAssertEqual(model.searchedDestination?.title, "Bulle")
+        XCTAssertEqual(model.searchedDestination?.title, "Locarno")
 
         // The same span as the "Cities with scooters" chip.
-        model.chooseCity(bulle)
+        model.chooseCity(locarno)
         let chipFocus = try XCTUnwrap(model.focusRequest)
-        XCTAssertEqual(typedFocus, .city(bulle.center, token: typedFocus.token))
+        XCTAssertEqual(typedFocus, .city(locarno.center, token: typedFocus.token))
         XCTAssertEqual(typedFocus.latitudinalMeters, chipFocus.latitudinalMeters)
         XCTAssertEqual(typedFocus.longitudinalMeters, chipFocus.longitudinalMeters)
 
         // An address, a station or a place in the city keeps the street-level view.
         let station = AddressSearchResult(
-            latitude: bulle.center.latitude + 0.002, longitude: bulle.center.longitude,
-            displayName: "Bulle, gare", title: "Bulle, gare", subtitle: "Train", isCovered: true
+            latitude: locarno.center.latitude + 0.002, longitude: locarno.center.longitude,
+            displayName: "Locarno, stazione", title: "Locarno, stazione", subtitle: "Treno", isCovered: true
         )
         XCTAssertEqual(station.destination.kind, .address)
         model.focusOnAddress(station.destination)
@@ -2410,7 +2410,7 @@ extension ScooterMapModelTests {
         )
     }
 
-    /// Lungern has no scooter operator; Bern, Wädenswil and Grenchen are the closest covered cities.
+    /// Lungern has no scooter operator; Bern, Wädenswil and Zürich are the closest covered cities.
     private var lungernRegion: MKCoordinateRegion {
         MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: 46.7741, longitude: 8.1558),

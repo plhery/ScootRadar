@@ -71,6 +71,34 @@ in the cache's alerts:
 With no other operator there, Zug and Wetzikon left the map's towns. The
 recheck dates are in [coverage gaps](docs/coverage-gaps.md#dates-to-check-again).
 
+Bulle, Grenchen and Nyon left the map's towns on 15 October 2026 too. In ten
+polls that day, from 06:17 to 08:23 Swiss time, through the app's own code,
+Hopp, the PubliBike app's endpoints, sharedmobility.ch's spatial search and
+the production API, no operator showed a scooter in any of them:
+
+- Grenchen: Zisch rents its scooters there in Bird's app
+  ([Grenchner Tagblatt, 3 March 2022](https://www.grenchnertagblatt.ch/solothurn/grenchen/e-trottinett-auf-zwei-raedern-durch-die-stadt-pilotversuch-mit-e-trottis-hat-begonnen-er-dauert-vorerst-bis-september-ld.2258520)),
+  and Zisch's [site](https://www.e-zisch.ch/) still names Grenchen. But Bird
+  Grenchen last sent positions on 8 August 2026, one scooter's, and Bird's own
+  Grenchen feed is empty and stamped 0. Neither the city nor Zisch has
+  published an end. The Voi and PubliBike scooters inside Grenchen's old
+  area stood in Biel, 8 to 10 km from Grenchen, and count under Biel, whose
+  [shared mobility page](https://www.biel-bienne.ch/de/shared-mobility.html/2911)
+  names those two as its only e-scooter operators.
+- Bulle: JM Fleets Intl rents its scooters in its own app, Trott', not
+  Bird's ([city of Bulle](https://www.bulle.ch/mobilite/27914)). Bird's Bulle
+  system on sharedmobility.ch has no vehicle feed, Bird's own Bulle feed is
+  empty and stamped 0, and Trott' publishes no feed.
+- Nyon has no scooter system on sharedmobility.ch. Voi's "Nyon" region there
+  is the Région de Nyon's bike network, more than 400 e-bikes in 16 towns
+  ([Région de Nyon](https://regiondenyon.ch/projet/velos-en-libre-service/)):
+  its 54 stations within 10 km of Nyon held 209 to 215 e-bikes and no
+  scooter. The map reads that region as naming no town (`REGION_ALIASES` in
+  `src/lib/feedCoverage.ts`).
+
+Bird Grenchen and Bird's Bulle system (`bird-platform-partner-jmfleets-bulle`)
+are in `LEFT_OUT_SWISS_SYSTEMS`.
+
 Hopp is not in the dataset. Its scooters in Zürich, Basel and Kloten come from
 Hopp's own GBFS feeds at `api.hopp.bike/gbfs/ch-<town>`, which link Hopp's
 privacy policy, not a licence.

@@ -56,20 +56,6 @@
     }
   },
   {
-    "id": "ch:bulle",
-    "city": "Bulle",
-    "center": [
-      46.6,
-      6.970000000000001
-    ],
-    "bounds": {
-      "south": 46.5,
-      "west": 6.82,
-      "north": 46.7,
-      "east": 7.12
-    }
-  },
-  {
     "id": "ch:flawil",
     "city": "Flawil",
     "center": [
@@ -109,20 +95,6 @@
       "west": 9.2125,
       "north": 47.4639,
       "east": 9.2915
-    }
-  },
-  {
-    "id": "ch:grenchen",
-    "city": "Grenchen",
-    "center": [
-      47.18,
-      7.4
-    ],
-    "bounds": {
-      "south": 47.08,
-      "west": 7.28,
-      "north": 47.28,
-      "east": 7.52
     }
   },
   {
@@ -179,20 +151,6 @@
       "west": 8.67,
       "north": 46.25,
       "east": 8.9
-    }
-  },
-  {
-    "id": "ch:nyon",
-    "city": "Nyon",
-    "center": [
-      46.3833,
-      6.2396
-    ],
-    "bounds": {
-      "south": 46.25,
-      "west": 6.05,
-      "north": 46.55,
-      "east": 6.45
     }
   },
   {

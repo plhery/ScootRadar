@@ -46,27 +46,29 @@ const SYSTEM_SUFFIXES = [
   'rorschach',
   'frauenfeld',
   'opfikon',
-  'grenchen',
   'zurich',
   'basel',
   'kloten',
-  'bulle',
   'uster',
-  'nyon',
   'biel',
   'bern',
 ] as const;
 
 /**
- * Systems sharedmobility.ch lists, on time, for towns where their operator has no scooter:
+ * Systems sharedmobility.ch still lists for towns where their operator shows no scooter:
  * left out of collection, so of the map, the city totals and the cache's alerts. Lime's
- * Winterthur, Zug and Wetzikon systems have listed no vehicle since at least 11 October 2026.
- * Winterthur licenses Voi alone until the end of 2027 (Voi's scooters there stay on the map);
- * Zug stopped its rental e-scooters in November 2023, and Wetzikon at the end of its pilot in
- * February 2023, so neither is a town of the map any more. Check them again
- * (docs/coverage-gaps.md): Winterthur in 2028, Zug and Wetzikon in spring 2027.
+ * Winterthur, Zug and Wetzikon systems have listed no vehicle, on time, since at least
+ * 11 October 2026. Winterthur licenses Voi alone until the end of 2027 (Voi's scooters there
+ * stay on the map); Zug stopped its rental e-scooters in November 2023, and Wetzikon at the end
+ * of its pilot in February 2023, so neither is a town of the map any more. Bird Grenchen last
+ * sent positions on 8 August 2026, and Bird's Bulle system has no vehicle feed: JM Fleets rents
+ * its Bulle scooters in its own app now, which publishes none. With no other operator there,
+ * Grenchen and Bulle left the map's towns on 15 October 2026. Check them again
+ * (docs/coverage-gaps.md): Winterthur in 2028, the others in spring 2027.
  */
-export const LEFT_OUT_SWISS_SYSTEMS: ReadonlySet<string> = new Set(['lime_winterthur', 'lime_zug', 'lime_wetzikon']);
+export const LEFT_OUT_SWISS_SYSTEMS: ReadonlySet<string> = new Set([
+  'lime_winterthur', 'lime_zug', 'lime_wetzikon', 'bird-grenchen', 'bird-platform-partner-jmfleets-bulle',
+]);
 
 // Systems named after one town that serve others too, as their published
 // geofencing shows: Bolt Zürich's "Wadenswil" zone, which takes in Richterswil,
@@ -80,6 +82,9 @@ const REGION_ALIASES: Record<string, string[]> = {
   'biel-bienne': ['biel'],
   'biel-bienne-bern': ['biel', 'bern'],
   'locarnese-bellinzonese': ['locarno'],
+  // Voi's Nyon region is the Région de Nyon's bike network: on 15 October 2026 its 54
+  // stations there held 209 to 215 e-bikes and no scooter, so it names no town of the map.
+  nyon: [],
   ticino: ['locarno'],
 };
 

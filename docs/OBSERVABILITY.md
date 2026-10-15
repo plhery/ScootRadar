@@ -119,7 +119,8 @@ arises:
   weekly [catalog check](../.github/workflows/catalog-check.yml) fails when an entry
   is gone.
 - A Swiss system whose positions are over a week old, or never sent, counts as
-  inactive, as Bird in Biel, Grenchen and Schaffhausen.
+  inactive, as Bird in Biel and Schaffhausen. Bird Grenchen, inactive since August
+  2026, is left out of collection with its town (`LEFT_OUT_SWISS_SYSTEMS`).
 - Velospot's copy on sharedmobility.ch, 15 to 75 minutes behind, gave way to the
   PubliBike app's station list (feed `publibike-stations`).
 
