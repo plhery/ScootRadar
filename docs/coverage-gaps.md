@@ -324,7 +324,12 @@ banned shared scooters, and feeds that were empty when checked.
     21:24 EDT on 14 October 2026. So were Spin University of Utah (321 to
     328), in the university's fall break, and Spin East Lansing, the city's
     feed (10 to 12, a few last reported days before), in 69 polls to 22:14
-    EDT.
+    EDT. A recheck in 24 polls from 17:47 to 19:44 EDT on 15 October found
+    the same: Bird Orlando's 468 to 474 scooters made one new position, the
+    University of Central Florida's none, Miami's 35 to 41 two, and neither
+    Spin feed any. Spin University of Utah is checked again on 20 October
+    2026, after the fall break, and the others on 15 January 2027 (East
+    Lansing on 15 April 2027).
   - **Outside their operator's towns:** since 15 October 2026 a feed keeps no
     scooter inside the outline of a town where its operator has no area, so
     Bird Cleveland's 2 in Cleveland Heights, Veo Santa Monica's 1 or 2 in
