@@ -53,9 +53,10 @@ does not promise scooters.
 **Search.** It opens on the field. Before you type: **Use my location**, the
 places chosen in this session and the six nearest cities with scooters. Typing
 two characters or more lists places with a second line and a **No data** tag
-where no operator shares data; Return chooses the first. Street search works in
-Switzerland; elsewhere, search by city. A chosen place becomes the point walking
-times are measured from, until it is cleared.
+where no operator shares data; Return chooses the first. Streets and addresses
+are found in every country the app covers, typed in the country's own script
+too. A chosen place becomes the point walking times are measured from, until it
+is cleared.
 
 **Dock.** At street level, while you or the searched place are on the map, the
 nearest of the scooters in view: how far, whose, and how long on foot. Tapping
@@ -118,10 +119,11 @@ for the providers that operate where the map is or that already have a pass;
 and About: map and data credits, Privacy with the usage switch and the privacy
 notice, and the source code on GitHub.
 
-The app is translated into English, German, French and Italian, and starts in
-the first of the iPhone's languages it speaks. A language chosen in Settings
-changes the app's own text at once; what iOS draws, such as the names on the
-map, follows the next time the app opens. The app follows Dynamic Type up to
+The app is translated into English, German, French, Italian, Dutch, Norwegian,
+Portuguese, Spanish and Icelandic, and starts in the first of the iPhone's
+languages it speaks. A language chosen in Settings changes the app's own text at
+once; what iOS draws, such as the names on the map, follows the next time the
+app opens. The app follows Dynamic Type up to
 the accessibility sizes, labels map markers and search results for VoiceOver,
 and respects Reduce Motion.
 

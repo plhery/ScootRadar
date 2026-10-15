@@ -5,8 +5,7 @@
 <h1 align="center">ScootRadar</h1>
 
 <p align="center">
-  A friendly map for finding shared e-scooters in Switzerland and in the cities of the
-  other countries it covers.
+  A friendly map for finding shared e-scooters in 371 cities in 24 countries.
 </p>
 
 <p align="center">
@@ -24,13 +23,15 @@
   <img src="docs/scootradar-map.png" width="390" alt="ScootRadar showing fictional demo scooters around Zürich on a phone">
 </p>
 
-ScootRadar puts the shared scooters of seventeen providers on one map, in an
-installable web app. It speaks German, French, Italian, Dutch, Norwegian and
-English. There is also a native SwiftUI app for iPhone.
+ScootRadar puts the shared scooters of 21 providers on one map, in an
+installable web app. It speaks German, French, Italian, Dutch, Norwegian,
+Portuguese, Spanish, Icelandic and English. There is also a native SwiftUI app
+for iPhone.
 
-- **Near you.** Tap *Near me*, or search a city or an address, and the dock
-  at the bottom of the map counts the scooters nearby and says how fresh the
-  data is. Street search works in Switzerland; elsewhere, search by city.
+- **Near you.** Tap *Near me*, or search a city, a street or an address, and
+  the dock at the bottom of the map counts the scooters nearby and says how
+  fresh the data is. Search finds streets and addresses in every country the
+  app covers, typed in the country's own script too.
 - **One scooter.** Tap a marker for its battery and range, the walking time, an
   estimate of what a ride costs, directions, and a button that opens the
   provider's app. Opening the app does not reserve the scooter.
@@ -47,53 +48,10 @@ English. There is also a native SwiftUI app for iPhone.
 
 **Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob', Elerent, 3electra, Spin, Veo, Lyft and SAHAM.
 
-French coverage includes 32 verified feeds across 58 cities or operating areas,
-with city-name search. German coverage adds 40 feeds across 47 cities (Dott, Bolt, Hopp, Lime, Voi, Zeus and Yoio); Italy adds 4 feeds: Bird in Roma, Palermo and Napoli, and Elerent in Catania. See the [German/Italian feed audit](docs/german-italian-scooter-feeds.md) for coverage and known gaps. See the [French feed investigation](docs/french-scooter-feeds.md)
-for the city list, live-check command, and source terms to review before deployment.
-Belgium adds 10 feeds across 8 cities (Bolt, Dott, Voi, Pony and Hoppy), Norway 23 feeds
-from Entur across 21 towns (Voi, Ryde, Bolt and Dott), and the United Kingdom 11
-feeds across 18 towns (Beryl, Dott and Bolt). See the
-[Belgian, Norwegian and British feed audit](docs/belgian-norwegian-british-scooter-feeds.md).
-Portugal adds 12 feeds across 11 cities (Bird and Lime), Spain 14 feeds across 16
-towns (Bird, Hopp and Hoppy), and Iceland 16 Hopp feeds across 20 towns. See the
-[Portuguese, Spanish and Icelandic feed audit](docs/portuguese-spanish-icelandic-scooter-feeds.md).
-Sweden adds 2 feeds: Lime in Uppsala and Hopp in Kiruna. See the
-[Swedish feed audit](docs/swedish-scooter-feeds.md).
-Latvia adds 1 feed: Ride Mobility in Rīga. See the
-[Latvian feed audit](docs/latvian-scooter-feeds.md).
-Poland adds 6 feeds across 8 towns: Dott in Sosnowiec, Oświęcim, and Wołomin
-with Kobyłka and Radzymin, and Hopp in Knurów, Złotów and Września. See the
-[Polish feed audit](docs/polish-scooter-feeds.md).
-Hungary adds 2 feeds: Hopp in Pécs and Békéscsaba. See the
-[Hungarian feed audit](docs/hungarian-scooter-feeds.md).
-Greece adds 8 feeds across 11 towns: Hopp in Faliraki, Piraeus, Argostoli and
-Ioannina, and Hoppy in Rhodes town and four other towns on Rhodes, on Kos, in
-Rethymno and on Zakynthos. See the
-[Greek feed audit](docs/greek-scooter-feeds.md).
-Cyprus adds 2 feeds: Hopp in Paphos and Limassol. See the
-[Cypriot feed audit](docs/cypriot-scooter-feeds.md).
-Finland adds 1 feed: Hopp in Mariehamn, on Åland. See the
-[Finnish feed audit](docs/finnish-scooter-feeds.md).
-Croatia adds 1 feed: Hoppy in Rijeka. See the
-[Croatian feed audit](docs/croatian-scooter-feeds.md).
-Ukraine adds 1 feed: 3electra in Kyiv. See the
-[Ukrainian feed audit](docs/ukrainian-scooter-feeds.md).
-The United States adds 102 feeds in 87 towns: Hopp, as Bolt is named there,
-and Veo in Washington, DC, Bird in 24 towns, Lime in 17, Veo in 39 more, Spin
-in 28 and Lyft in Chicago and Portland. See the
-[American feed audit](docs/american-scooter-feeds.md).
-Canada adds 14 feeds, Bird's and Lime's, in 14 towns of Alberta, British
-Columbia, Ontario and Nova Scotia. See the
-[Canadian feed audit](docs/canadian-scooter-feeds.md).
-The United Arab Emirates adds 3 Dott feeds in 2 cities: Dubai, where Dott
-runs a second fleet in Dubai Hills, and Abu Dhabi. See the
-[Emirati feed audit](docs/emirati-scooter-feeds.md).
-Saudi Arabia adds 2 feeds: SAHAM in Riyadh and Dott in Jeddah. See the
-[Saudi feed audit](docs/saudi-scooter-feeds.md).
-Israel adds 3 feeds, Bird's, Dott's and Lime's, in 14 towns: 13 in Gush Dan,
-around Tel Aviv, and Ashdod. See the
-[Israeli feed audit](docs/israeli-scooter-feeds.md).
-What is not covered yet, and why, is listed in
+Switzerland's scooters come from its national open-data platform, the other
+countries' from the feeds their operators and national platforms publish.
+[DATA_SOURCES.md](DATA_SOURCES.md) lists each country's feeds and links its
+audit; what is not covered yet, and why, is listed in
 [Coverage gaps](docs/coverage-gaps.md).
 
 ## Run it locally
