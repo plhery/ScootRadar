@@ -1,6 +1,6 @@
 import type { FeedQuery } from '@/lib/scooterFeeds';
 import { coverageIntersects, MOBILITY_COVERAGE, SUPPORTED_MOBILITY_BOUNDS } from '@/lib/feedCoverage';
-import { boundsIntersection } from '@/lib/geo';
+import { boundsIntersection, lngSpan } from '@/lib/geo';
 import { PROVIDERS } from '@/lib/types';
 
 export const MAX_SCOOTER_RESULTS = 25_000;
@@ -44,7 +44,8 @@ export function parseScooterQuery(params: URLSearchParams): ScooterQueryResult {
     !Number.isFinite(west) || west < -180 || west > 180 ||
     !Number.isFinite(north) || north < -90 || north > 90 ||
     !Number.isFinite(east) || east < -180 || east > 180 ||
-    south >= north || west >= east ||
+    // A west greater than the east is a box across the 180° line (geo.ts).
+    south >= north || lngSpan({ west, east }) <= 0 ||
     !Number.isInteger(minBattery) || minBattery < 0 || minBattery > 100 ||
     (zoom !== null && (!Number.isInteger(zoom) || zoom < 0 || zoom > 22))
   ) {

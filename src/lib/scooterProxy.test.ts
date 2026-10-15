@@ -39,6 +39,15 @@ describe('edge snapshot proxy', () => {
     expect(logged.mock.calls.map(([line]) => JSON.parse(line))).toEqual([{ event: 'scooter_origin_failure', status: 503 }]);
   });
 
+  it('forwards a view across the 180° line to the cache as it was asked', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({ vehicles: [] }));
+    const search = '?south=-47.06&west=159.9&north=-25.98&east=-157.1&zoom=6';
+    const response = await proxyScooterSnapshot(new Request(`https://map.example/api/scooters${search}`), env);
+    expect(response.status).toBe(200);
+    expect(fetcher).toHaveBeenCalledOnce();
+    expect(String(fetcher.mock.calls[0][0])).toBe(`https://cache.example/api/scooters${search}`);
+  });
+
   it('rejects invalid bounds before any origin call', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch');
     const response = await proxyScooterSnapshot(new Request('https://map.example/api/scooters?zoom=NaN'), env);

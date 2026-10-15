@@ -1024,6 +1024,69 @@ test('city overview drills directly into the city and preserves unchanged marker
   expect(await original?.evaluate(node => node.isConnected)).toBe(true);
 });
 
+test('a map panned across the 180° line keeps the scooters and the town totals on both sides of it', async ({ page }) => {
+  // East of New Zealand: two scooters a few metres either side of the line, and a town total each side.
+  const scooters = [
+    { ...scooterResponse.vehicles[0], provider: 'flamingo', vehicle_id: 'west', lat: -40.5, lng: 179.9998 },
+    { ...scooterResponse.vehicles[0], provider: 'flamingo', vehicle_id: 'east', lat: -40.5, lng: -179.9998 },
+  ];
+  const towns = [
+    { id: 'city:nz:bop:Tauranga', city: 'Tauranga', lat: -37.6878, lng: 176.1651, count: 4, providers: { flamingo: 4 } },
+    { id: 'city:nz:cit:Chatham Islands', city: 'Chatham Islands', lat: -43.95, lng: -176.56, count: 2, providers: { jolt: 2 } },
+  ];
+  const asked: { zoom: number; west: number; east: number }[] = [];
+  await page.route('**/api/scooters?**', async route => {
+    const params = new URL(route.request().url()).searchParams;
+    const [south, west, north, east, zoom] = ['south', 'west', 'north', 'east', 'zoom'].map(name => Number(params.get(name)));
+    asked.push({ zoom, west, east });
+    // A west greater than the east is a box across the line.
+    const inBox = ({ lat, lng }: { lat: number; lng: number }) => lat >= south && lat <= north &&
+      (west <= east ? lng >= west && lng <= east : lng >= west || lng <= east);
+    const meta = { ...scooterResponse.meta, generatedAt: new Date().toISOString(), zoom };
+    await route.fulfill({ contentType: 'application/json', body: JSON.stringify(zoom > 15
+      ? { ...scooterResponse, vehicles: scooters.filter(inBox), providers: { flamingo: scooters.filter(inBox).length },
+          meta: { ...meta, mode: 'vehicles' } }
+      : { ...scooterResponse, vehicles: [], clusters: towns.filter(inBox), providers: {},
+          meta: { ...meta, mode: 'clusters', ...(zoom <= 10 ? { overview: true, refreshAfterSeconds: 3600 } : {}) } }) });
+  });
+  const map = page.locator('.leaflet-container');
+  // Where each marker is from the middle of the map, and whether it is on the screen.
+  const places = async (selector: string) => {
+    const frame = (await map.boundingBox())!;
+    return page.locator(selector).evaluateAll((elements, frame) => elements.map(element => {
+      const box = element.getBoundingClientRect();
+      const dx = box.x + box.width / 2 - (frame.x + frame.width / 2);
+      const dy = box.y + box.height / 2 - (frame.y + frame.height / 2);
+      return { dx, onScreen: Math.abs(dx) < frame.width / 2 && Math.abs(dy) < frame.height / 2 };
+    }), frame);
+  };
+  const middle = (found: { dx: number }[]) => found.reduce((sum, { dx }) => sum + dx, 0) / found.length;
+
+  // In the street, 40 px west of the line: both scooters are east of the middle.
+  await page.goto('/map?origin=-40.5,179.99914');
+  await expect(map).toHaveAttribute('data-zoom', '16');
+  await expect.poll(async () => (await places('.scooter-marker')).filter(place => place.onScreen).length).toBe(2);
+  expect(middle(await places('.scooter-marker'))).toBeGreaterThan(0);
+  await expect(page.locator('.sheet-count')).toHaveText(/^2\s*scooters on this map$/);
+  expect(asked.at(-1)!.west).toBeGreaterThan(asked.at(-1)!.east);
+
+  // One step east takes the middle of the map past the line: the scooters stay, now west of it.
+  await map.press('ArrowRight');
+  await expect.poll(async () => middle(await places('.scooter-marker'))).toBeLessThan(0);
+  expect((await places('.scooter-marker')).map(place => place.onScreen)).toEqual([true, true]);
+  await expect(page.locator('.sheet-count')).toHaveText(/^2\s*scooters on this map$/);
+
+  // Zoomed out to the country with the middle past the line: one sane request across it, and
+  // Tauranga west of the line and the Chatham Islands east of it are both drawn and counted.
+  await zoomTo(page, 6);
+  await expect.poll(async () => (await places('.cluster-marker')).filter(place => place.onScreen).length).toBe(2);
+  await expect(page.locator('.sheet-count')).toHaveText(/^6\s*scooters on this map$/);
+  const country = asked.at(-1)!;
+  expect(country.zoom, JSON.stringify(asked)).toBeLessThanOrEqual(10);
+  expect(country.west, JSON.stringify(asked)).toBeGreaterThan(country.east);
+  expect(country.east - country.west + 360).toBeLessThan(90);
+});
+
 test('French map controls omit Swiss providers while keeping the local operator', async ({ page }) => {
   await page.goto('/map?origin=45.75,4.85');
   await expect(page.getByRole('button', { name: /^Dott, / })).toBeVisible();

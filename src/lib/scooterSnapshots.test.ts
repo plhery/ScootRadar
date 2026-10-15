@@ -201,3 +201,35 @@ describe('feeds collected on demand', () => {
     expect(overviewNeedsRefresh(cached, [idle], now + 60_000, onTime)).toBe(false);
   });
 });
+
+describe('a map across the 180° line', () => {
+  // A view of New Zealand at zoom 6 centred on 181.4°E, as the map asks for it: west greater than east.
+  const pastTheLine = { south: -47.06, west: 159.9, north: -25.98, east: -157.1 };
+  const tauranga = { south: -37.75, west: 176.05, north: -37.62, east: 176.37 };
+  const scooter = (id: string, lng: number): Vehicle => ({
+    vehicle_id: id, lat: -37.69, lng, provider: 'flamingo', battery: 70, range_m: null, distance_m: null, deep_link: null,
+  });
+  const nz = feed({ id: 'newzealand:flamingo_nz_tauranga', source: 'newzealand', provider: 'flamingo', coverage: [tauranga],
+    vehicles: [scooter('a', 176.16), scooter('b', 176.2)] });
+
+  it('answers with the scooters west of the line', () => {
+    const response = querySnapshot(snapshot([nz, feed()]), { bounds: pastTheLine, minBattery: 0 }, 16, now);
+    expect(response.vehicles.map(item => item.vehicle_id)).toEqual(['a', 'b']);
+    expect(response.meta.availableProviders).toContain('flamingo');
+    expect(response.meta.availableProviders).not.toContain('dott');
+    expect(feedsForQuery(snapshot([nz, feed()]), { bounds: pastTheLine, minBattery: 0 }, 16).map(item => item.id))
+      .toEqual(['newzealand:flamingo_nz_tauranga']);
+  });
+
+  it('answers with the town totals west of the line', () => {
+    const response = querySnapshot(snapshot([nz]), { bounds: pastTheLine, minBattery: 0 }, 6, now);
+    expect(response.clusters.map(cluster => [cluster.id, cluster.count])).toEqual([['city:nz:bop:Tauranga', 2]]);
+    expect(response.meta.totalVehicles).toBe(2);
+  });
+
+  it('leaves out a view east of the line alone', () => {
+    const east = { south: -47.06, west: -179.9, north: -25.98, east: -157.1 };
+    expect(querySnapshot(snapshot([nz]), { bounds: east, minBattery: 0 }, 16, now).vehicles).toEqual([]);
+    expect(querySnapshot(snapshot([nz]), { bounds: east, minBattery: 0 }, 6, now).clusters).toEqual([]);
+  });
+});

@@ -39,6 +39,37 @@ describe('parseScooterQuery', () => {
     expect(result.query.origin).toBeNull();
   });
 
+  it('accepts a view across the 180° line, west greater than east, cut to the supported envelope', () => {
+    const result = parseScooterQuery(new URLSearchParams({
+      south: '-47.06', west: '159.9', north: '-25.98', east: '-157.1', zoom: '6',
+    }));
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    // Nothing is covered east of the line: what is left is New Zealand's side.
+    expect(result.query.bounds).toEqual({
+      south: Math.max(-47.06, SUPPORTED_MOBILITY_BOUNDS.south), west: 159.9, north: -25.98, east: SUPPORTED_MOBILITY_BOUNDS.east,
+    });
+    expect(result.query.outsideCoverage).toBe(false);
+  });
+
+  it('marks a view across the line away from every covered town as outside coverage', () => {
+    const result = parseScooterQuery(new URLSearchParams({ south: '-20', west: '178', north: '-15', east: '-178' }));
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) return;
+    expect(result.query.outsideCoverage).toBe(true);
+  });
+
+  it('rejects a view with no width', () => {
+    for (const [west, east] of [['8.5', '8.5'], ['180', '-180']]) {
+      expect(parseScooterQuery(new URLSearchParams({ south: '47', west, north: '48', east }))).toEqual({
+        ok: false,
+        error: 'Invalid scooter search parameters',
+      });
+    }
+  });
+
   it('marks views outside supported coverage so feeds can be skipped', () => {
     const result = parseScooterQuery(new URLSearchParams({
       lat: '51.5',

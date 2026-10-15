@@ -10,6 +10,7 @@ export type {
   Vehicle,
 } from '@/generated/scooterApi';
 
+/** A west greater than the east crosses the 180° line (geo.ts). */
 export interface MapBounds {
   south: number;
   west: number;

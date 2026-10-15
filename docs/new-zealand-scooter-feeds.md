@@ -241,17 +241,6 @@ schools and motorways.
   Zealand.
 - **Zone curfews** in Wellington, Auckland and Tauranga are not on the map
   (see [Rules](#rules)).
-- **The date line.** New Zealand lies just west of 180°. Pan the web map's
-  centre east of it, east of Gisborne or towards the Chatham Islands, and
-  the map moves the view to the same place at -179°: New Zealand's coast is
-  then at the left edge of the screen, in the copy of the world west of
-  -180°, where no marker is drawn, and the map asks the server only for
-  longitudes from -180°. So the markers and the country's total vanish until
-  the centre is panned back west of 180°. The iPhone app's view stops at
-  ±180° the same way (read from its code, not tried). Fixing it means asking
-  for both sides of the line and drawing the markers in the copy on screen,
-  a change to the web map, the iPhone app and the clustering, so it is left
-  for later.
 
 ## Recheck
 

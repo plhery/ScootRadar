@@ -1174,13 +1174,10 @@ struct ScooterMapView: UIViewRepresentable {
                 if let bounds = cluster.cluster.bounds {
                     ScooterMapCameraPolicy.setRegionPreservingPerspective(
                         MKCoordinateRegion(
-                            center: CLLocationCoordinate2D(
-                                latitude: (bounds.south + bounds.north) / 2,
-                                longitude: (bounds.west + bounds.east) / 2
-                            ),
+                            center: bounds.center.coordinate,
                             span: MKCoordinateSpan(
                                 latitudeDelta: max((bounds.north - bounds.south) * 1.6, 0.08),
-                                longitudeDelta: max((bounds.east - bounds.west) * 1.6, 0.12)
+                                longitudeDelta: max(bounds.longitudeSpan * 1.6, 0.12)
                             )
                         ),
                         on: mapView,

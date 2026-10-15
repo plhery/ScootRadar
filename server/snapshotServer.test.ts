@@ -52,6 +52,23 @@ describe('snapshot origin boundary', () => {
     expect(health.failedParkingFeeds).toEqual(['france:dott_fr_paris']);
   });
 
+  it('answers a view across the 180° line with the scooters on its west side', async () => {
+    const now = Date.now();
+    const scooter = (id: string, lng: number) => ({ vehicle_id: id, lat: -37.69, lng, provider: 'flamingo', battery: 70,
+      range_m: null, distance_m: null, deep_link: null });
+    const feeds: FeedSnapshot[] = [{ id: 'newzealand:flamingo_nz_tauranga', source: 'newzealand', provider: 'flamingo',
+      coverage: [{ south: -37.75, west: 176.05, north: -37.62, east: 176.37 }], vehicles: [scooter('a', 176.16), scooter('b', 176.2)],
+      observedAt: now, attemptedAt: now, stale: false, failed: false, skipped: false }];
+    const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) });
+    const headers = { Authorization: `Bearer ${token}` };
+    const view = (zoom: number) => `http://127.0.0.1:${port}/api/scooters?south=-47.06&west=159.9&north=-25.98&east=-157.1&zoom=${zoom}`;
+    const street = await fetch(view(16), { headers });
+    expect(street.status).toBe(200);
+    expect(((await street.json()) as ScooterResponse).vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(['a', 'b']);
+    const totals = (await (await fetch(view(6), { headers })).json()) as ScooterResponse;
+    expect(totals.clusters.map(cluster => [cluster.id, cluster.count])).toEqual([['city:nz:bop:Tauranga', 2]]);
+  });
+
   it('rate limits authenticated clients, separates readiness, and prevents caching at the public origin', async () => {
     const now = Date.now();
     const snapshot: MobilitySnapshot = { version: 1, updatedAt: now, feeds: [], overview: buildCityOverview([], now) };

@@ -411,6 +411,31 @@ it('offers the six covered cities nearest to the map while the search is open', 
   expect(screen.getByTestId('cities')).toHaveTextContent(/^$/);
 });
 
+it('asks for both sides of the 180° line and counts the scooters on both', async () => {
+  // A view off Tauranga that reaches past 180°, as the map reports it: west greater than east.
+  viewport.bounds = { south: -37.72, west: 179.98, north: -37.66, east: -179.98 };
+  const scooter = (id: string, lng: number): Vehicle => ({ provider: 'lime', vehicle_id: id, lat: -37.69, lng,
+    battery: 80, range_m: null, distance_m: null, deep_link: null });
+  const asked: URLSearchParams[] = [];
+  vi.stubGlobal('fetch', vi.fn(async (input: string) => {
+    asked.push(new URL(input, 'https://scootradar.test').searchParams);
+    return Response.json(data([scooter('west', 179.99), scooter('east', -179.99), scooter('far', 179.5)], []));
+  }));
+  mount();
+  await act(async () => vi.advanceTimersByTimeAsync(180));
+
+  // One request, padded on either side of the line.
+  expect(asked).toHaveLength(1);
+  expect(Number(asked[0].get('west'))).toBeCloseTo(179.97, 5);
+  expect(Number(asked[0].get('east'))).toBeCloseTo(-179.97, 5);
+  // The two on screen, not the one beyond its west edge.
+  expect(screen.getByTestId('vehicles')).toHaveTextContent('2');
+  expect(dockCount()).toHaveTextContent(/^2\s*scooters on this map$/);
+  // The middle of the view is on the line, not in the Atlantic.
+  fireEvent.click(screen.getByRole('button', { name: 'Open the search' }));
+  expect(screen.getByTestId('cities').textContent!.split(', ')[0]).toBe('Tauranga');
+});
+
 it('locates from the scooter card without moving the map away from the scooter', async () => {
   vi.stubGlobal('fetch', vi.fn(async () => Response.json(response())));
   stubGeolocation(position);

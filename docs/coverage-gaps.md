@@ -459,9 +459,6 @@ banned shared scooters, and feeds that were empty when checked.
     Tauranga, and every night in Auckland's Wynyard Quarter. None of these
     zones has an official boundary to fetch, so `rental-curfews.json` holds
     none (see the guide's [Rules](new-zealand-scooter-feeds.md#rules)).
-  - **The date line:** pan the web map's centre east of 180° and New
-    Zealand's markers and total vanish until it is panned back; the iPhone
-    app's code stops its view at ±180° the same way.
   - **Auckland's licences** for Flamingo and Lime expire in November 2026,
     with no new round.
 

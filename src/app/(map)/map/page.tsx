@@ -43,6 +43,7 @@ import { useScooterData, type ScooterDataQuery } from '@/lib/useScooterData';
 import { groupCityTotals } from '@/lib/clustering';
 import { mapRepresentationsMatch, providersForViewport } from '@/lib/mapCoverage';
 import {
+  boundsCenter,
   boundsContainBounds,
   boundsContainPoint,
   boundsIntersect,
@@ -645,10 +646,8 @@ export default function Home() {
     : Object.keys(PROVIDERS);
   const hasActiveFilters = minBattery > 0 || availableProviders.some(provider => !enabledProviders.has(provider));
 
-  const viewportCenter = useMemo<[number, number] | null>(() => viewportBounds && [
-    (viewportBounds.south + viewportBounds.north) / 2,
-    (viewportBounds.west + viewportBounds.east) / 2,
-  ], [viewportBounds]);
+  // On the right side of the 180° line when the view crosses it.
+  const viewportCenter = useMemo<[number, number] | null>(() => viewportBounds && boundsCenter(viewportBounds), [viewportBounds]);
   const nearbyCities = useMemo(
     () => searchExpanded && viewportCenter ? nearestCoveredCities(viewportCenter, SEARCH_CITY_COUNT) : [],
     [searchExpanded, viewportCenter]

@@ -940,19 +940,30 @@ struct GeoPoint: Equatable, Sendable {
     }
 }
 
+/// A box of the map, like `MapBounds` in src/lib/types.ts. A west greater than
+/// the east crosses the 180° line, as in GeoJSON: the box runs from its west to
+/// 180° and on from -180° to its east, as a view of New Zealand and the Chatham
+/// Islands does. A box from -180 to 180 goes all the way round.
 struct GeoBounds: Hashable, Sendable {
     let south: Double
     let west: Double
     let north: Double
     let east: Double
 
+    /// The region MapKit shows. Its centre is between -180° and 180° and its
+    /// edges may run past them: such a view crosses the line, and one wider
+    /// than the world is all of it.
     init(region: MKCoordinateRegion) {
         let halfLatitude = region.span.latitudeDelta / 2
         let halfLongitude = region.span.longitudeDelta / 2
         south = max(-90, region.center.latitude - halfLatitude)
-        west = max(-180, region.center.longitude - halfLongitude)
         north = min(90, region.center.latitude + halfLatitude)
-        east = min(180, region.center.longitude + halfLongitude)
+        let longitudes = Self.longitudes(
+            west: region.center.longitude - halfLongitude,
+            east: region.center.longitude + halfLongitude
+        )
+        west = longitudes.west
+        east = longitudes.east
     }
 
     init(south: Double, west: Double, north: Double, east: Double) {
@@ -962,37 +973,81 @@ struct GeoBounds: Hashable, Sendable {
         self.east = east
     }
 
+    /// Longitudes that run from west to east past ±180°, brought back between them.
+    private static func longitudes(west: Double, east: Double) -> (west: Double, east: Double) {
+        if east - west >= 360 { return (-180, 180) }
+        var wrappedWest = wrapped(west)
+        var wrappedEast = wrapped(east)
+        // An edge on the line itself is on the side of the rest of the box.
+        if wrappedWest == 180 && wrappedEast < 180 { wrappedWest = -180 }
+        if wrappedEast == -180 && wrappedWest > -180 { wrappedEast = 180 }
+        return (wrappedWest, wrappedEast)
+    }
+
+    /// The longitude in -180...180; one already there is kept as it is, 180 included.
+    static func wrapped(_ longitude: Double) -> Double {
+        if longitude >= -180 && longitude <= 180 { return longitude }
+        let turned = (longitude + 180).truncatingRemainder(dividingBy: 360)
+        return (turned < 0 ? turned + 360 : turned) - 180
+    }
+
+    /// Whether the box runs across the 180° line.
+    var crossesDateLine: Bool { west > east }
+
+    /// How many degrees of longitude the box spans, 360 at most.
+    var longitudeSpan: Double { crossesDateLine ? east - west + 360 : east - west }
+
+    /// The box's longitudes as one or two ranges that keep to -180...180.
+    private var longitudeRanges: [ClosedRange<Double>] {
+        crossesDateLine ? [min(west, 180)...180, -180...max(east, -180)] : [west...east]
+    }
+
     func intersects(_ other: GeoBounds) -> Bool {
-        south <= other.north && north >= other.south && west <= other.east && east >= other.west
+        guard south <= other.north && north >= other.south else { return false }
+        // Both cross the line, so both hold it.
+        if crossesDateLine && other.crossesDateLine { return true }
+        return longitudeRanges.contains { range in other.longitudeRanges.contains { range.overlaps($0) } }
     }
 
     func contains(_ other: GeoBounds) -> Bool {
-        other.south >= south &&
-            other.west >= west &&
-            other.north <= north &&
-            other.east <= east
+        guard other.south >= south && other.north <= north else { return false }
+        if longitudeSpan >= 360 { return true }
+        // Within one of this box's ranges: across the line only if this box crosses it too.
+        if other.crossesDateLine {
+            return crossesDateLine && other.west >= west && other.east <= east
+        }
+        return longitudeRanges.contains { $0.contains(other.west) && $0.contains(other.east) }
     }
 
     func contains(latitude: Double, longitude: Double) -> Bool {
-        latitude >= south && latitude <= north && longitude >= west && longitude <= east
+        guard latitude >= south && latitude <= north else { return false }
+        return crossesDateLine
+            ? longitude >= west || longitude <= east
+            : longitude >= west && longitude <= east
     }
 
     func contains(_ point: GeoPoint) -> Bool {
         contains(latitude: point.latitude, longitude: point.longitude)
     }
 
+    /// The middle of the box, on the right side of the 180° line.
     var center: GeoPoint {
-        GeoPoint(latitude: (south + north) / 2, longitude: (west + east) / 2)
+        GeoPoint(
+            latitude: (south + north) / 2,
+            longitude: crossesDateLine ? Self.wrapped(west + longitudeSpan / 2) : (west + east) / 2
+        )
     }
 
+    /// Larger by the ratio of its size on each side; one that would go round the world is all of it.
     func expanded(by ratio: Double) -> GeoBounds {
         let latitudePadding = (north - south) * ratio
-        let longitudePadding = (east - west) * ratio
+        let longitudePadding = longitudeSpan * ratio
+        let round = longitudeSpan + 2 * longitudePadding >= 360
         return GeoBounds(
             south: max(-90, south - latitudePadding),
-            west: max(-180, west - longitudePadding),
+            west: round ? -180 : Self.wrapped(west - longitudePadding),
             north: min(90, north + latitudePadding),
-            east: min(180, east + longitudePadding)
+            east: round ? 180 : Self.wrapped(east + longitudePadding)
         )
     }
 }

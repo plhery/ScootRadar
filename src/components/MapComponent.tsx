@@ -18,7 +18,7 @@ import { PROVIDERS } from '@/lib/types';
 import { useI18n, type TranslationKey } from '@/lib/i18n';
 import type { AddressResult } from '@/components/AddressSearch';
 import type { MapStyleName, ThemeName } from '@/lib/clientParams';
-import { haversineM, type MapViewport } from '@/lib/geo';
+import { haversineM, lngNear, lngSpan, viewBounds, type MapViewport } from '@/lib/geo';
 import {
   CLOSE_UP_ZOOM,
   NAME_WEIGHT,
@@ -447,7 +447,23 @@ export default function MapComponent({
   const routeLayerRef = useRef<RouteLayer | null>(null);
   const [readyMap, setReadyMap] = useState<L.Map | null>(null);
   const [zoom, setZoom] = useState(initialZoom);
-  const walkLine = walk?.line ?? null;
+  // The longitude of the map's centre: what is on the map is drawn in the copy
+  // of the world nearest it, the one on screen, also where the view crosses 180°.
+  const [frameLng, setFrameLng] = useState(() => origin[1]);
+  const walkPoints = walk?.line ?? null;
+  // The way, all of it in the same copy as its start.
+  const walkShift = walkPoints?.length ? lngNear(walkPoints[0][1], frameLng) - walkPoints[0][1] : 0;
+  const walkLine = useMemo(
+    () => walkShift === 0 ? walkPoints : walkPoints?.map(([lat, lng]): [number, number] => [lat, lng + walkShift]) ?? null,
+    [walkPoints, walkShift]
+  );
+  const drawnUserLat = userLocation?.[0] ?? null;
+  const drawnUserLng = userLocation ? lngNear(userLocation[1], frameLng) : null;
+  const drawnUserLocation = useMemo<[number, number] | null>(
+    () => drawnUserLat !== null && drawnUserLng !== null ? [drawnUserLat, drawnUserLng] : null,
+    [drawnUserLat, drawnUserLng]
+  );
+  const destinationLng = destination ? lngNear(destination.lng, frameLng) : null;
   const walkRouteId = walk?.routeId ?? null;
   // Along the way once it is shown: the name of the selected scooter says what is left of it.
   const routeRemainingM = walk?.phase === 'shown' ? walk.remainingM : null;
@@ -499,14 +515,12 @@ export default function MapComponent({
   const destinationIcon = useMemo(() => createDestinationIcon(), []);
 
   const reportViewport = useCallback((map: L.Map) => {
-    // Panned into a copy of the world, beside this one: brought back to the same
-    // place in this one, where the scooters are drawn and longitudes are asked for.
-    const center = map.getCenter();
-    if (Math.abs(center.lng) > 180) {
-      map.setView(map.wrapLatLng(center), map.getZoom(), { animate: false });
-      return;
-    }
-    // Turned, the map's bounds enclose the screen, and more.
+    // Panned past 180°, or into a copy of the world beside this one, the map
+    // stays where it is: what is on it is drawn in the copy nearest its centre.
+    setFrameLng(map.getCenter().lng);
+    // Turned, the map's bounds enclose the screen, and more. Past ±180° they are
+    // brought back between -180° and 180°: a view across the line is then a box
+    // whose west is greater than its east (geo.ts), as the server is asked for it.
     const bounds = map.getBounds();
     const size = map.getSize();
     const corners = map.getBearing() % 360 === 0
@@ -516,13 +530,10 @@ export default function MapComponent({
           return [lat, lng] as const;
         });
     const next = {
-      south: Math.min(90, Math.max(-90, bounds.getSouth())),
-      west: Math.min(180, Math.max(-180, bounds.getWest())),
-      north: Math.min(90, Math.max(-90, bounds.getNorth())),
-      east: Math.min(180, Math.max(-180, bounds.getEast())),
+      ...viewBounds(bounds.getSouth(), bounds.getWest(), bounds.getNorth(), bounds.getEast()),
       corners,
     };
-    if (next.south < next.north && next.west < next.east) {
+    if (next.south < next.north && lngSpan(next) > 0) {
       onViewportChangeRef.current(next, map.getZoom());
     }
   }, []);
@@ -630,20 +641,21 @@ export default function MapComponent({
       const { id } = location;
       const label = t('parking.label', { name: PROVIDERS[location.provider]?.name ?? location.provider, place: location.name });
       const selected = id === selectedParkingId;
-      const signature = JSON.stringify([location, label, selected]);
+      const at: [number, number] = [location.lat, lngNear(location.lng, frameLng)];
+      const signature = JSON.stringify([location, at, label, selected]);
       const existing = markers.get(id);
       if (existing?.signature === signature) continue;
       const icon = createParkingIcon(location.provider, selected);
       if (existing) {
         // Changed in place, so that a bay selected from the keyboard keeps the focus.
-        if (!existing.marker.getLatLng().equals([location.lat, location.lng])) existing.marker.setLatLng([location.lat, location.lng]);
+        if (!existing.marker.getLatLng().equals(at)) existing.marker.setLatLng(at);
         existing.marker.setIcon(icon);
         updateMarkerLabel(existing.marker, label);
         existing.signature = signature;
         continue;
       }
       const marker = onMarkerPress(
-        L.marker([location.lat, location.lng], { icon, title: label, zIndexOffset: 100 }),
+        L.marker(at, { icon, title: label, zIndexOffset: 100 }),
         () => {
           const current = parkingDataRef.current.get(id);
           if (current) onParkingSelectRef.current(current);
@@ -652,7 +664,7 @@ export default function MapComponent({
       labelMarker(marker, label);
       markers.set(id, { marker, signature });
     }
-  }, [readyMap, parking, selectedParkingId, t]);
+  }, [frameLng, readyMap, parking, selectedParkingId, t]);
 
   // The ground: one layer, drawn here from vector tiles in the colours of the
   // appearance. Its address is asked for first; until it is known, and whenever
@@ -714,7 +726,9 @@ export default function MapComponent({
     const map = mapRef.current;
     if (!readyMap || !map || !focusLocation || focusVersion === 0) return;
     map.stop();
-    map.flyTo(focusLocation, focusZoom ?? Math.max(map.getZoom(), 16), {
+    // To the copy of the place nearest the map's centre, not round the world.
+    const target: [number, number] = [focusLocation[0], lngNear(focusLocation[1], map.getCenter().lng)];
+    map.flyTo(target, focusZoom ?? Math.max(map.getZoom(), 16), {
       animate: !prefersReducedMotion(),
       duration: 0.5,
       easeLinearity: 0.25,
@@ -740,10 +754,10 @@ export default function MapComponent({
     layer.clearLayers();
     destinationMarkerRef.current = null;
 
-    if (destination) {
+    if (destination && destinationLng !== null) {
       // A picture of where the place is: there is nothing to press, so it is
       // neither a button nor a stop for the Tab key.
-      const marker = L.marker([destination.lat, destination.lng], {
+      const marker = L.marker([destination.lat, destinationLng], {
         icon: destinationIcon,
         zIndexOffset: 1800,
         interactive: false,
@@ -754,7 +768,7 @@ export default function MapComponent({
       element?.setAttribute('aria-label', t('marker.searchedAddress', { name: destination.display_name }));
       destinationMarkerRef.current = marker;
     }
-  }, [destination, destinationIcon, readyMap, t]);
+  }, [destination, destinationIcon, destinationLng, readyMap, t]);
 
   // The way to walk, over the ground and under the markers.
   useEffect(() => {
@@ -841,18 +855,19 @@ export default function MapComponent({
       };
       lightsRef.current.set(key, light);
       const label = labelFor(vehicle, distanceM);
-      const signature = JSON.stringify([vehicle, light, label, hoverTips]);
+      const at: [number, number] = [vehicle.lat, lngNear(vehicle.lng, frameLng)];
+      const signature = JSON.stringify([vehicle, at, light, label, hoverTips]);
       if (markerSignaturesRef.current.get(`v:${key}`) === signature) continue;
       markerSignaturesRef.current.set(`v:${key}`, signature);
       const zIndexOffset = selected ? 1500 : head ? 1000 : 0;
       const existing = vehicleMarkersRef.current.get(key);
       if (existing) {
-        if (!existing.getLatLng().equals([vehicle.lat, vehicle.lng])) existing.setLatLng([vehicle.lat, vehicle.lng]);
+        if (!existing.getLatLng().equals(at)) existing.setLatLng(at);
         if (existing.options.zIndexOffset !== zIndexOffset) existing.setZIndexOffset(zIndexOffset);
         updateMarkerLabel(existing, label, !hoverTips);
         drawLight(existing, light);
       } else {
-        const marker = L.marker([vehicle.lat, vehicle.lng], {
+        const marker = L.marker(at, {
           icon: scooterIcon, riseOnHover: true, zIndexOffset, title: hoverTips ? '' : label,
         });
         const select = (pressed: Vehicle | null | undefined) => {
@@ -897,10 +912,10 @@ export default function MapComponent({
       markerSignaturesRef.current.delete(`c:${id}`);
     }
     for (const cluster of visibleClusters) {
-      const center: [number, number] = [cluster.lat, cluster.lng];
+      const center: [number, number] = [cluster.lat, lngNear(cluster.lng, frameLng)];
       const label = `${cluster.city ? `${isolated(cluster.city)}: ` : ''}${clusterTitle(cluster, t, formatNumber)}`;
       clusterDataRef.current.set(cluster.id, cluster);
-      const signature = JSON.stringify([cluster, label]);
+      const signature = JSON.stringify([cluster, center, label]);
       if (markerSignaturesRef.current.get(`c:${cluster.id}`) === signature) continue;
       markerSignaturesRef.current.set(`c:${cluster.id}`, signature);
       const existing = clusterMarkersRef.current.get(cluster.id);
@@ -919,7 +934,9 @@ export default function MapComponent({
             // A group opens onto its cities, each a total of its own again.
             const bounds = clusterDataRef.current.get(cluster.id)?.bounds;
             if (bounds) {
-              map.flyToBounds(L.latLngBounds([bounds.south, bounds.west], [bounds.north, bounds.east]), {
+              // In the copy of the world on screen.
+              const west = lngNear(bounds.west, map.getCenter().lng);
+              map.flyToBounds(L.latLngBounds([bounds.south, west], [bounds.north, west + lngSpan(bounds)]), {
                 animate, duration: 0.55, padding: [80, 80], maxZoom: 13,
               });
               return;
@@ -967,13 +984,13 @@ export default function MapComponent({
           obstacles.push({ x, y, half: light.diameter / 2, weight: 1 });
         }
       }
-      if (userLocation) {
-        const point = map.latLngToContainerPoint(userLocation);
+      if (drawnUserLocation) {
+        const point = map.latLngToContainerPoint(drawnUserLocation);
         obstacles.push({ x: point.x, y: point.y, half: 15, weight: NAME_WEIGHT });
       }
-      if (destination) {
+      if (destination && destinationLng !== null) {
         // The pin stands on its point.
-        const point = map.latLngToContainerPoint([destination.lat, destination.lng]);
+        const point = map.latLngToContainerPoint([destination.lat, destinationLng]);
         obstacles.push({ x: point.x, y: point.y - 15, half: 19, weight: NAME_WEIGHT });
       }
       const area = container.getBoundingClientRect();
@@ -1010,8 +1027,11 @@ export default function MapComponent({
     clustered,
     clusters,
     destination,
+    destinationLng,
     distanceOrigin,
+    drawnUserLocation,
     formatNumber,
+    frameLng,
     hasPopover,
     hoverTips,
     lightUnder,
@@ -1024,7 +1044,6 @@ export default function MapComponent({
     selectedVehicleKey,
     walkedGone,
     t,
-    userLocation,
     vehicles,
     zoom,
   ]);
@@ -1164,7 +1183,7 @@ export default function MapComponent({
     <>
       <div ref={containerRef} className="map-container" />
       {readyMap && (
-        <UserLocationMarker map={readyMap} location={userLocation} headingEnabled={headingEnabled} />
+        <UserLocationMarker map={readyMap} location={drawnUserLocation} headingEnabled={headingEnabled} />
       )}
       <div className="map-navigation">
         <MapCompass map={readyMap} />

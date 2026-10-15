@@ -131,7 +131,9 @@ and respects Reduce Motion.
 
 The app reads `https://scootradar.com/api/scooters` for the area on screen
 and `https://scootradar.com/api/geocode` for search, to which it sends the
-language it is shown in. The endpoint is set in `Services/ScooterAPI.swift` if a
+language it is shown in. An area across the 180° line, east of New Zealand, is
+asked for in one request whose west is greater than its east, as the web map
+does (`GeoBounds`). The endpoint is set in `Services/ScooterAPI.swift` if a
 local or preview backend is needed.
 
 The API covers Switzerland and the towns of the catalogs of the other countries

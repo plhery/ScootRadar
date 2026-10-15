@@ -47,6 +47,25 @@ final class ScooterAPITests: XCTestCase {
         XCTAssertEqual(values["minBattery"], "55")
     }
 
+    func testAViewAcrossTheDateLineIsAskedForWithItsWestGreaterThanItsEast() async throws {
+        let session = StubNetworkSession(mode: .response(statusCode: 200, data: emptyResponseData))
+        let api = ScooterAPI(baseURL: ScooterAPI.productionBaseURL, session: session)
+        let view = GeoBounds(region: MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: -36.52, longitude: -178.6),
+            span: MKCoordinateSpan(latitudeDelta: 21.08, longitudeDelta: 43)
+        ))
+
+        _ = try await api.scooters(bounds: view, zoom: 6, minimumBattery: 0)
+
+        let request = await session.lastRequest
+        let components = URLComponents(url: try XCTUnwrap(request?.url), resolvingAgainstBaseURL: false)
+        let values = Dictionary(uniqueKeysWithValues: components?.queryItems?.compactMap { item in
+            item.value.map { (item.name, $0) }
+        } ?? [])
+        XCTAssertEqual(values["west"], "159.90000")
+        XCTAssertEqual(values["east"], "-157.10000")
+    }
+
     func testRequestsToTheServerLeaveNothingOnDisk() async throws {
         // Left to themselves, both clients use a session without a URL cache:
         // the bounds in a request are the rider's position after Near me.
