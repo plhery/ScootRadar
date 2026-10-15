@@ -48,6 +48,16 @@ export function formatRegion(language: AppLocale, requested: readonly string[]):
   return tags.find(tag => tag.region && accepted.includes(tag.language))?.region ?? DEFAULT_FORMAT_REGION;
 }
 
+/**
+ * The language the map's place names are written in where its tiles carry them:
+ * the browser's first language where the app is not shown in it, "el" for
+ * "el-GR, en-US" or "he" for "he-IL, he, en-US", and the UI language otherwise.
+ */
+export function placeNameLanguage(language: AppLocale, requested: readonly string[]): string {
+  const first = requested.map(parsedTag).find(tag => tag !== null);
+  return first && !APP_LANGUAGES.has(first.language) ? first.language : language;
+}
+
 /** The BCP 47 tag that formats for the UI language in the region: "en-US", "fr-CA", "de-CH". */
 export function formatLocale(language: AppLocale, region: string = DEFAULT_FORMAT_REGION): string {
   return `${language}-${region}`;

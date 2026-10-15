@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_FORMAT_REGION, formatLocale, formatRegion } from '@/lib/formatLocale';
+import { DEFAULT_FORMAT_REGION, formatLocale, formatRegion, placeNameLanguage } from '@/lib/formatLocale';
 import { formatRidePrice } from '@/lib/ridePrice';
 import { formatClockTime } from '@/lib/uiText';
 
@@ -47,6 +47,21 @@ describe('formatRegion', () => {
     expect(formatRegion('en', ['en'])).toBe('CH');
     expect(formatRegion('it', ['en-US', 'fr-CA'])).toBe('CH');
     expect(formatRegion('en', ['not a tag', '*'])).toBe('CH');
+  });
+});
+
+describe('placeNameLanguage', () => {
+  it('is the first browser language where the app is not shown in it, else the UI language', () => {
+    expect(placeNameLanguage('en', ['el-GR', 'el', 'en-US'])).toBe('el');
+    expect(placeNameLanguage('en', ['he-IL', 'he', 'en-US', 'en'])).toBe('he');
+    expect(placeNameLanguage('en', ['ja', 'en-US'])).toBe('ja');
+    expect(placeNameLanguage('en', ['en-US', 'he-IL'])).toBe('en');
+    expect(placeNameLanguage('de', ['de-CH'])).toBe('de');
+    // A UI language chosen over the browser's first one the app has.
+    expect(placeNameLanguage('en', ['fr-FR', 'en-US'])).toBe('en');
+    expect(placeNameLanguage('nb', ['no-NO', 'en'])).toBe('nb');
+    expect(placeNameLanguage('en', [])).toBe('en');
+    expect(placeNameLanguage('en', ['*', 'el'])).toBe('el');
   });
 });
 

@@ -138,10 +138,52 @@ export interface GroundRules {
   labels: LabelRule[];
 }
 
-/** What is drawn, from the bottom up, and the names over it. */
-export function groundRules(theme: GroundTheme, detail: GroundDetail, fontFamily: string): GroundRules {
+// Where a script is not one of Unicode's, the ones it writes with: Japanese in kanji and kana.
+const SCRIPT_PARTS: Record<string, readonly string[]> = { Jpan: ['Hani', 'Hira', 'Kana'], Kore: ['Hang', 'Hani'], Hans: ['Hani'], Hant: ['Hani'] };
+
+/** Whether a name's first letter is in the script a language is written in; true for a name without letters. */
+function writtenAs(language: string): (name: string) => boolean {
+  let script: RegExp;
+  try {
+    const code = new Intl.Locale(language).maximize().script ?? 'Latn';
+    script = new RegExp(`^(?:${(SCRIPT_PARTS[code] ?? [code]).map(part => `\\p{Script=${part}}`).join('|')})`, 'u');
+  } catch {
+    script = /^\p{Script=Latn}/u;
+  }
+  return name => {
+    const letter = name.match(/\p{L}/u)?.[0];
+    return letter === undefined || script.test(letter);
+  };
+}
+
+/**
+ * Which of a feature's names its label shows, the first it has. The tiles carry
+ * name, the local name; name:latin, the same where it is Latin and else its
+ * English or Latin form; and name:<language> where OpenStreetMap has one. So:
+ * the place in the visitor's language, as Zurich for "en", Αθήνα for "el" and
+ * אתונה for "he"; else the local name where it is in the visitor's script, as
+ * the Greek streets of Athens for "el", which seldom say name:el; else its
+ * Latin form, so that an English map of Tel Aviv or Dubai reads "Ben Yehuda"
+ * and "Al Mustaqbal Street"; and else the local name, as for a Hebrew name
+ * with no Latin one.
+ */
+export function placeNameKeys(language: string): (zoom: number, feature?: Feature) => string[] {
+  // The tiles write Norwegian as no.
+  const own = `name:${language === 'nb' || language === 'nn' ? 'no' : language}`;
+  const sameScript = writtenAs(language);
+  const local = [own, 'name', 'name:latin'];
+  const latin = [own, 'name:latin', 'name'];
+  return (_zoom, feature) => {
+    const name = feature ? text(feature, 'name') : undefined;
+    return name !== undefined && sameScript(name) ? local : latin;
+  };
+}
+
+/** What is drawn, from the bottom up, and the names over it, in the visitor's language where the tiles have it. */
+export function groundRules(theme: GroundTheme, detail: GroundDetail, fontFamily: string, language = 'en'): GroundRules {
   const c = GROUND_PALETTES[theme];
   const classOf = (feature: Feature) => text(feature, 'class') ?? '';
+  const labelProps = placeNameKeys(language);
 
   const paint: PaintRule[] = [
     {
@@ -195,7 +237,7 @@ export function groundRules(theme: GroundTheme, detail: GroundDetail, fontFamily
     // The larger place first where two names want the same room.
     sort: (a, b) => (Number(a.rank) || 99) - (Number(b.rank) || 99),
     symbolizer: new CenteredTextSymbolizer({
-      labelProps: ['name'], fontFamily, fontSize, fontWeight: 700, maxLineChars: 12,
+      labelProps, fontFamily, fontSize, fontWeight: 700, maxLineChars: 12,
       fill: strong ? c.labelStrong : c.label, ...halo,
     }),
   });
@@ -209,7 +251,7 @@ export function groundRules(theme: GroundTheme, detail: GroundDetail, fontFamily
       minzoom: 13,
       filter: (_zoom, feature) => ['suburb', 'quarter', 'neighbourhood'].includes(classOf(feature)),
       symbolizer: new CenteredTextSymbolizer({
-        labelProps: ['name'], fontFamily, fontSize: 11, fontWeight: 700, textTransform: 'uppercase',
+        labelProps, fontFamily, fontSize: 11, fontWeight: 700, textTransform: 'uppercase',
         letterSpacing: 1.6, maxLineChars: 12, fill: c.label, ...halo,
       }),
     },
@@ -218,7 +260,7 @@ export function groundRules(theme: GroundTheme, detail: GroundDetail, fontFamily
       minzoom: 14,
       filter: (_zoom, feature) => classOf(feature) === 'railway' && text(feature, 'subclass') === 'station',
       symbolizer: new CenteredTextSymbolizer({
-        labelProps: ['name'], fontFamily, fontSize: 12.5, fontWeight: 700, maxLineChars: 14, fill: c.labelStrong, ...halo,
+        labelProps, fontFamily, fontSize: 12.5, fontWeight: 700, maxLineChars: 14, fill: c.labelStrong, ...halo,
       }),
     },
     {
@@ -226,7 +268,7 @@ export function groundRules(theme: GroundTheme, detail: GroundDetail, fontFamily
       minzoom: 9,
       filter: (_zoom, feature) => feature.geomType === GeomType.Point,
       symbolizer: new CenteredTextSymbolizer({
-        labelProps: ['name'], fontFamily, fontSize: 12, fontStyle: 'italic', fontWeight: 500, maxLineChars: 12, fill: c.waterLabel,
+        labelProps, fontFamily, fontSize: 12, fontStyle: 'italic', fontWeight: 500, maxLineChars: 12, fill: c.waterLabel,
       }),
     },
     {
@@ -235,7 +277,7 @@ export function groundRules(theme: GroundTheme, detail: GroundDetail, fontFamily
       filter: (_zoom, feature) => ['minor', 'tertiary', 'secondary', 'primary', 'trunk'].includes(classOf(feature)) ||
         (detail === 'detailed' && classOf(feature) === 'path'),
       symbolizer: new LineLabelSymbolizer({
-        labelProps: ['name'], fontFamily, fontWeight: 500, fontSize: zoom => (zoom >= 18 ? 12 : zoom >= 17 ? 11 : 10),
+        labelProps, fontFamily, fontWeight: 500, fontSize: zoom => (zoom >= 18 ? 12 : zoom >= 17 ? 11 : 10),
         fill: c.label, ...halo, position: LineLabelPlacement.Center, repeatDistance: 420,
       }),
     },
@@ -243,7 +285,7 @@ export function groundRules(theme: GroundTheme, detail: GroundDetail, fontFamily
       dataLayer: 'waterway',
       minzoom: 15,
       symbolizer: new LineLabelSymbolizer({
-        labelProps: ['name'], fontFamily, fontSize: 12, fontStyle: 'italic', fontWeight: 500,
+        labelProps, fontFamily, fontSize: 12, fontStyle: 'italic', fontWeight: 500,
         fill: c.waterLabel, position: LineLabelPlacement.Center,
       }),
     },
@@ -258,7 +300,7 @@ export function groundRules(theme: GroundTheme, detail: GroundDetail, fontFamily
         filter: (_zoom, feature) => !(classOf(feature) === 'railway' && text(feature, 'subclass') === 'station'),
         sort: (a, b) => (Number(a.rank) || 99) - (Number(b.rank) || 99),
         symbolizer: new CenteredTextSymbolizer({
-          labelProps: ['name'], fontFamily, fontSize: 10.5, fontWeight: 500, maxLineChars: 14, fill: c.label, ...halo,
+          labelProps, fontFamily, fontSize: 10.5, fontWeight: 500, maxLineChars: 14, fill: c.label, ...halo,
         }),
       },
       {

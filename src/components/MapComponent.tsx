@@ -407,7 +407,7 @@ export default function MapComponent({
   theme = 'auto',
   mapStyle = 'calm',
 }: MapComponentProps) {
-  const { t, formatNumber, locale, region } = useI18n();
+  const { t, formatNumber, locale, region, nameLanguage } = useI18n();
   const systemDark = useSyncExternalStore(subscribeToScheme, () => window.matchMedia(DARK_SCHEME).matches, () => false);
   const ground: GroundTheme = theme === 'dark' || (theme === 'auto' && systemDark) ? 'night' : 'day';
   const containerRef = useRef<HTMLDivElement>(null);
@@ -429,7 +429,7 @@ export default function MapComponent({
   const vehicleDataRef = useRef<Map<string, Vehicle>>(new Map());
   const parkingDataRef = useRef<Map<string, ParkingLocation>>(new Map());
   const groundLayerRef = useRef<GroundLayer | null>(null);
-  const groundLookRef = useRef({ ground, mapStyle });
+  const groundLookRef = useRef({ ground, mapStyle, nameLanguage });
   // The scooters as they are drawn now, and how far each was moved off its neighbours.
   const lightsRef = useRef<Map<string, Light>>(new Map());
   const lightOffsetsRef = useRef<Map<string, Offset>>(new Map());
@@ -669,7 +669,7 @@ export default function MapComponent({
       groundTileUrl().then(url => {
         if (stopped) return;
         const look = groundLookRef.current;
-        layer = createGroundLayer(url, groundRules(look.ground, look.mapStyle, font.family), {
+        layer = createGroundLayer(url, groundRules(look.ground, look.mapStyle, font.family, look.nameLanguage), {
           attribution: '',
           className: 'map-basemap',
           maxZoom: 22,
@@ -697,17 +697,17 @@ export default function MapComponent({
     };
   }, [readyMap]);
 
-  // Another appearance or map style draws the same tiles again; none is loaded for it.
+  // Another appearance, map style or language of names draws the same tiles again; none is loaded for it.
   useEffect(() => {
     const container = containerRef.current;
     if (!readyMap || !container) return;
     container.dataset.ground = ground;
     const previous = groundLookRef.current;
-    groundLookRef.current = { ground, mapStyle };
+    groundLookRef.current = { ground, mapStyle, nameLanguage };
     const layer = groundLayerRef.current;
-    if (!layer || (previous.ground === ground && previous.mapStyle === mapStyle)) return;
-    restyleGroundLayer(layer, groundRules(ground, mapStyle, groundFont(container).family));
-  }, [ground, mapStyle, readyMap]);
+    if (!layer || (previous.ground === ground && previous.mapStyle === mapStyle && previous.nameLanguage === nameLanguage)) return;
+    restyleGroundLayer(layer, groundRules(ground, mapStyle, groundFont(container).family, nameLanguage));
+  }, [ground, mapStyle, nameLanguage, readyMap]);
 
   useEffect(() => {
     const map = mapRef.current;

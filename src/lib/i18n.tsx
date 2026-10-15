@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import { formatLocale, formatRegion } from '@/lib/formatLocale';
+import { formatLocale, formatRegion, placeNameLanguage } from '@/lib/formatLocale';
 
 export const SUPPORTED_LOCALES = ['de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is', 'en'] as const;
 export type AppLocale = (typeof SUPPORTED_LOCALES)[number];
@@ -1780,6 +1780,8 @@ interface I18nContextValue {
   locale: AppLocale;
   /** The region numbers, times, prices and distances are written for: "US", "CA", "CH". See formatLocale.ts. */
   region: string;
+  /** The language the map writes place names in where its tiles have them: "en", or "el" in a Greek browser. See formatLocale.ts. */
+  nameLanguage: string;
   setLocale: (locale: AppLocale) => void;
   t: (key: TranslationKey, values?: TranslationValues) => string;
   formatNumber: (value: number, options?: Intl.NumberFormatOptions) => string;
@@ -1808,6 +1810,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   // Empty until mounted, so the first render matches the server's.
   const [browserLanguages, setBrowserLanguages] = useState<readonly string[]>([]);
   const region = useMemo(() => formatRegion(locale, browserLanguages), [browserLanguages, locale]);
+  const nameLanguage = useMemo(() => placeNameLanguage(locale, browserLanguages), [browserLanguages, locale]);
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -1844,8 +1847,8 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   );
 
   const value = useMemo(
-    () => ({ locale, region, setLocale, t, formatNumber }),
-    [formatNumber, locale, region, setLocale, t]
+    () => ({ locale, region, nameLanguage, setLocale, t, formatNumber }),
+    [formatNumber, locale, nameLanguage, region, setLocale, t]
   );
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
