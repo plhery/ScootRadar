@@ -142,6 +142,52 @@ describe('UpstreamJsonCache', () => {
     );
   });
 
+  it('fetches a fresh document again once older than the caller allows, keeping its usual freshness', async () => {
+    let now = 0;
+    let version = 1;
+    const fetcher = vi.fn(async () => jsonResponse({ version }));
+    const cache = new UpstreamJsonCache({ fetcher, now: () => now });
+    const hourly = { ...options, freshSeconds: 3_600 };
+    await cache.fetch('https://example.com/plans', hourly);
+
+    now = 119_000;
+    version = 2;
+    await expect(cache.fetch('https://example.com/plans', { ...hourly, maxAgeSeconds: 120 }))
+      .resolves.toMatchObject({ data: { version: 1 }, stale: false });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+
+    now = 120_000;
+    await expect(cache.fetch('https://example.com/plans', { ...hourly, maxAgeSeconds: 120 }))
+      .resolves.toEqual({ data: { version: 2 }, stale: false, fetchedAt: 120_000 });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    // The new copy is kept an hour from now for everyone else.
+    now = 3_700_000;
+    await expect(cache.fetch('https://example.com/plans', hourly)).resolves.toMatchObject({ data: { version: 2 } });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it('paces a document fetched again for its age like any other request to its host', async () => {
+    vi.useFakeTimers();
+    try {
+      const started: number[] = [];
+      const cache = new UpstreamJsonCache({ fetcher: async () => {
+        started.push(Date.now());
+        return jsonResponse({ ok: true });
+      } });
+      cache.paceHost('rideatom.example', 500);
+      const hourly = { ...options, freshSeconds: 3_600 };
+      await cache.fetch('https://rideatom.example/plans', hourly);
+      await vi.advanceTimersByTimeAsync(120_000);
+      const status = cache.fetch('https://rideatom.example/status', options);
+      const plans = cache.fetch('https://rideatom.example/plans', { ...hourly, maxAgeSeconds: 120 });
+      await vi.advanceTimersByTimeAsync(0);
+      expect(started).toHaveLength(2);
+      await vi.advanceTimersByTimeAsync(500);
+      await Promise.all([status, plans]);
+      expect(started[2] - started[1]).toBe(500);
+    } finally { vi.useRealTimers(); }
+  });
+
   it('does not cache unsuccessful HTTP responses without a stale value', async () => {
     const fetcher = vi.fn(async () => jsonResponse({ error: true }, 503));
     const cache = new UpstreamJsonCache({ fetcher });

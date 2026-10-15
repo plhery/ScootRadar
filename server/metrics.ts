@@ -23,6 +23,8 @@ interface MetricsSources {
   cadenceModes?: (now: number) => Record<FeedCadenceMode, number>;
   /** Requests sent to operators since the start, by kind. */
   upstreamRequests?: () => Record<string, number>;
+  /** Pricing plans fetched again for scooters naming plans they did not list, by outcome. */
+  planRefreshes?: () => Record<string, number>;
   /** How full the cache of operators' documents is, and how many it dropped to make room. */
   upstreamCache?: () => { entries: number; capacity: number; evictions: number };
   /** Whether the feed is in its seasonal pause; feedPaused from the catalogs by default. */
@@ -109,6 +111,9 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         counted.map(feed => [labelsOf(feed), paused(feed.id, now) ? 1 : 0]));
       metric('scootradar_feed_vehicles', 'gauge', 'Available standing scooters held for the feed, 0 once it has expired or while its operator lists none.',
         counted.map(feed => [labelsOf(feed), feedState(feed, now, cadence) === 'expired' ? 0 : feed.vehicles.length]));
+      metric('scootradar_feed_priced_vehicles', 'gauge', 'Of those, the scooters with a price: the rest name no plan, a plan the feed does not list, or one the app cannot show.',
+        counted.map(feed => [labelsOf(feed), feedState(feed, now, cadence) === 'expired' ? 0
+          : feed.vehicles.reduce((count, vehicle) => vehicle.pricing ? count + 1 : count, 0)]));
       metric('scootradar_feed_info', 'gauge', 'The country of the feed, in English, for the alerts to name.',
         counted.map(feed => [{ ...labelsOf(feed), country: countryOf(feed.source) }, 1]));
       metric('scootradar_feed_observation_timestamp_seconds', 'gauge', 'The source timestamp of the positions held for the feed.',
@@ -132,6 +137,11 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         metric('scootradar_upstream_requests_total', 'counter',
           'Requests sent to operators, by kind: status (positions, parking) or metadata (kept an hour or more).',
           Object.entries(sources.upstreamRequests()).map(([kind, count]) => [{ kind }, count]));
+      }
+      if (sources.planRefreshes) {
+        metric('scootradar_pricing_plan_refreshes_total', 'counter',
+          'Pricing plans fetched again because a scooter named a plan they did not list, by outcome: listed (they list it now) or unlisted (still not, or the fetch failed).',
+          Object.entries(sources.planRefreshes()).map(([outcome, count]) => [{ outcome }, count]));
       }
       if (sources.upstreamCache) {
         const cache = sources.upstreamCache();

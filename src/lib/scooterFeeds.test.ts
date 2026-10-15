@@ -2,13 +2,19 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { RIDE_DURATIONS } from '@/lib/ridePrice';
 import { skippedSources } from '@/lib/scooterSources';
 import {
+  discoverCollectableFeeds,
   fetchJson,
   fetchScooters,
+  forgetPlanRefreshes,
+  independentCollectableFeeds,
+  planRefreshCounts,
   ScooterFeedsUnavailableError,
   vehiclePricing,
+  type CollectableScooterFeed,
   type FeedQuery,
 } from '@/lib/scooterFeeds';
 import { upstreamJsonCache } from '@/lib/upstreamJsonCache';
+import { REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas } from '@/lib/regionalScooterSystems';
 
 const query: FeedQuery = {
   origin: [47.3769, 8.5417],
@@ -1132,5 +1138,174 @@ describe('fetchJson timeouts', () => {
     await fetchJson('https://mds.bird.co/gbfs/v2/public/chicago/free_bike_status.json', { revalidate: 30 });
     expect(fetchSpy.mock.calls.map(([, options]) => options.timeoutMs)).toEqual([40_000, 15_000]);
     fetchSpy.mockRestore();
+  });
+});
+
+describe('a plan the scooters name before the cache has it', () => {
+  let now: number;
+  // The plan the first scooter names; the second stays on lime-day.
+  let named: string;
+  // The plans upstream lists, with their minute rate.
+  let published: Record<string, number>;
+  let ttl: number | undefined;
+  let plansFail: boolean;
+  let planFetches: number;
+  const plansDocument = () => ({ ttl, data: { plans: Object.entries(published).map(([plan_id, rate]) => ({
+    plan_id, currency: 'CHF', price: 1, per_min_pricing: [{ start: 0, rate, interval: 1 }] })) } });
+
+  beforeEach(() => {
+    forgetPlanRefreshes();
+    now = Date.now();
+    vi.spyOn(Date, 'now').mockImplementation(() => now);
+    named = 'lime-day';
+    published = { 'lime-day': 0.42 };
+    ttl = 60;
+    plansFail = false;
+    planFetches = 0;
+    vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.endsWith('/system_pricing_plans')) {
+        planFetches++;
+        return plansFail ? new Response('{}', { status: 503 }) : jsonResponse(plansDocument());
+      }
+      const response = nationalResponse(url)!;
+      if (!url.endsWith('/free_bike_status')) return response;
+      const body = await response.json() as { data: { bikes: Record<string, unknown>[] } };
+      const [bike] = body.data.bikes;
+      body.data.bikes = [{ ...bike, pricing_plan_id: named }, { ...bike, bike_id: 'lime-2', pricing_plan_id: 'lime-day' }];
+      return Response.json({ ...body, last_updated: now / 1000 });
+    }));
+  });
+
+  const limeZurich = async () => (await discoverCollectableFeeds()).find(feed => feed.id === 'national:lime_zurich')!;
+  // The minute fee of each scooter, in rappen.
+  const minuteFees = async (feed: CollectableScooterFeed) => Object.fromEntries((await feed.collect()).vehicles
+    .map(vehicle => [vehicle.vehicle_id, vehicle.pricing?.minute_fee_minor_units]));
+
+  it('fetches the plans again once and prices the scooter in the same collection, as when Lime\'s rate changes', async () => {
+    const feed = await limeZurich();
+    expect(await minuteFees(feed)).toEqual({ 'lime_zurich:lime-1': 42, 'lime_zurich:lime-2': 42 });
+    expect(planFetches).toBe(1);
+    // At the rate change, Lime puts scooters on a new plan the cache, which keeps plans an hour, has not seen.
+    now += 10 * 60_000;
+    named = 'lime-peak';
+    published = { 'lime-day': 0.42, 'lime-peak': 0.49 };
+    expect(await minuteFees(feed)).toEqual({ 'lime_zurich:lime-1': 49, 'lime_zurich:lime-2': 42 });
+    expect(planFetches).toBe(2);
+    // The next collections use the plans just fetched.
+    now += 60_000;
+    expect(await minuteFees(feed)).toEqual({ 'lime_zurich:lime-1': 49, 'lime_zurich:lime-2': 42 });
+    expect(planFetches).toBe(2);
+    expect(planRefreshCounts).toEqual({ listed: 1, unlisted: 0 });
+  });
+
+  it('fetches a feed\'s plans again at most every two minutes, however many new plans its scooters name', async () => {
+    const feed = await limeZurich();
+    await feed.collect();
+    now += 60_000;
+    named = 'lime-peak';
+    published = { 'lime-day': 0.42, 'lime-peak': 0.49 };
+    // The plans are a minute old: the scooter waits.
+    expect((await minuteFees(feed))['lime_zurich:lime-1']).toBeUndefined();
+    expect(planFetches).toBe(1);
+    now += 60_000;
+    expect((await minuteFees(feed))['lime_zurich:lime-1']).toBe(49);
+    expect(planFetches).toBe(2);
+    // Another new plan a minute later waits for two minutes after that fetch.
+    now += 60_000;
+    named = 'lime-evening';
+    published = { ...published, 'lime-evening': 0.4 };
+    expect((await minuteFees(feed))['lime_zurich:lime-1']).toBeUndefined();
+    expect(planFetches).toBe(2);
+    now += 60_000;
+    expect((await minuteFees(feed))['lime_zurich:lime-1']).toBe(40);
+    expect(planFetches).toBe(3);
+  });
+
+  it('leaves a plan the new plans still lack unpriced, and looks for it again ever more rarely', async () => {
+    const feed = await limeZurich();
+    await feed.collect();
+    now += 5 * 60_000;
+    named = 'lime-unknown';
+    // One fetch, not one after another: the scooter has no price, the others keep theirs.
+    expect(await minuteFees(feed)).toEqual({ 'lime_zurich:lime-1': undefined, 'lime_zurich:lime-2': 42 });
+    expect(planFetches).toBe(2);
+    expect(planRefreshCounts).toEqual({ listed: 0, unlisted: 1 });
+    // Collected every minute for half an hour, the plans are fetched again after 2, 4, 8 and 16 minutes.
+    const start = now;
+    const fetchedAt: number[] = [];
+    for (let minute = 1; minute <= 30; minute++) {
+      now = start + minute * 60_000;
+      const before = planFetches;
+      expect((await minuteFees(feed))['lime_zurich:lime-1']).toBeUndefined();
+      if (planFetches > before) fetchedAt.push(minute);
+    }
+    expect(fetchedAt).toEqual([2, 6, 14, 30]);
+    // A plan id not seen before is looked for two minutes after the last fetch.
+    now += 2 * 60_000;
+    named = 'lime-night';
+    published = { ...published, 'lime-night': 0.35 };
+    expect((await minuteFees(feed))['lime_zurich:lime-1']).toBe(35);
+    expect(planFetches).toBe(7);
+  });
+
+  it('waits for the plans\' own ttl where it is longer than two minutes', async () => {
+    ttl = 600;
+    const feed = await limeZurich();
+    await feed.collect();
+    now += 5 * 60_000;
+    named = 'lime-peak';
+    published = { 'lime-day': 0.42, 'lime-peak': 0.49 };
+    expect((await minuteFees(feed))['lime_zurich:lime-1']).toBeUndefined();
+    expect(planFetches).toBe(1);
+    now += 5 * 60_000;
+    expect((await minuteFees(feed))['lime_zurich:lime-1']).toBe(49);
+    expect(planFetches).toBe(2);
+  });
+
+  it('keeps the prices it has when the plans cannot be fetched again, and backs off', async () => {
+    const feed = await limeZurich();
+    await feed.collect();
+    now += 5 * 60_000;
+    named = 'lime-peak';
+    plansFail = true;
+    expect(await minuteFees(feed)).toEqual({ 'lime_zurich:lime-1': undefined, 'lime_zurich:lime-2': 42 });
+    expect(planFetches).toBe(2);
+    now += 60_000;
+    await feed.collect();
+    expect(planFetches).toBe(2);
+    now += 60_000;
+    plansFail = false;
+    published = { 'lime-day': 0.42, 'lime-peak': 0.49 };
+    expect(await minuteFees(feed)).toEqual({ 'lime_zurich:lime-1': 49, 'lime_zurich:lime-2': 42 });
+    expect(planFetches).toBe(3);
+  });
+
+  it('does the same for an operator\'s own GBFS feed', async () => {
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(candidate => candidate.provider === 'lime' && !candidate.feedOperator)!;
+    const feed = independentCollectableFeeds().find(candidate => candidate.id === `${regionalSource(system)}:${system.id}`)!;
+    const area = serviceAreas(system)[0].bounds;
+    const base = new URL('.', system.discoveryUrl).toString();
+    vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url === system.discoveryUrl) return jsonResponse({ data: { en: { feeds: ['free_bike_status', 'vehicle_types', 'system_pricing_plans']
+        .map(name => ({ name, url: `${base}${name}` })) } } });
+      if (url === `${base}vehicle_types`) return jsonResponse({ data: { vehicle_types: [
+        { vehicle_type_id: 'scooter', form_factor: 'scooter_standing', propulsion_type: 'electric' }] } });
+      if (url === `${base}free_bike_status`) return Response.json({ last_updated: now / 1000, data: { bikes: [{ bike_id: 'one',
+        lat: (area.south + area.north) / 2, lon: (area.west + area.east) / 2, vehicle_type_id: 'scooter', pricing_plan_id: named,
+        is_reserved: false, is_disabled: false }] } });
+      if (url === `${base}system_pricing_plans`) {
+        planFetches++;
+        return jsonResponse(plansDocument());
+      }
+      throw new Error(`Unexpected upstream ${url}`);
+    }));
+    expect((await feed.collect()).vehicles.map(vehicle => vehicle.pricing?.minute_fee_minor_units)).toEqual([42]);
+    now += 3 * 60_000;
+    named = 'lime-peak';
+    published = { 'lime-day': 0.42, 'lime-peak': 0.49 };
+    expect((await feed.collect()).vehicles.map(vehicle => vehicle.pricing?.minute_fee_minor_units)).toEqual([49]);
+    expect(planFetches).toBe(2);
   });
 });

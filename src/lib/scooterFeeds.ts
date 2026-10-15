@@ -123,6 +123,7 @@ interface PricingPlan {
 }
 
 interface PricingPlansFeed {
+  ttl?: number;
   data?: {
     plans?: PricingPlan[];
     pricing_plans?: PricingPlan[];
@@ -130,6 +131,27 @@ interface PricingPlansFeed {
 }
 
 type VehiclePricing = NonNullable<Vehicle['pricing']>;
+
+interface PlanPrices {
+  /** The price of each plan the app can show. */
+  pricing: ReadonlyMap<string, VehiclePricing>;
+  /** Every plan the feed lists, priced or not. */
+  listed: ReadonlySet<string>;
+}
+
+interface PlanOptions {
+  authenticated?: boolean;
+  source: string;
+  country: string;
+  wholeUnitPrice?: boolean;
+}
+
+interface PricingPlans extends PlanPrices {
+  /** Where the plans came from, to fetch them again; absent when the feed has none or they failed. */
+  from?: { url: string; options: PlanOptions; fetchedAt: number; ttlSeconds: number };
+}
+
+const NO_PLANS: PricingPlans = { pricing: new Map(), listed: new Set() };
 
 interface RegistryFeed {
   systems?: Array<{
@@ -297,7 +319,7 @@ export const HOST_TIMEOUTS_MS: Record<string, number> = {
 
 export async function fetchJson<T>(
   url: string,
-  options: { authenticated?: boolean; revalidate: number; validate?: (value: unknown) => void }
+  options: { authenticated?: boolean; revalidate: number; validate?: (value: unknown) => void; maxAgeSeconds?: number }
 ): Promise<CachedJson<T>> {
   const host = new URL(url).hostname;
   const headers = {
@@ -315,6 +337,7 @@ export async function fetchJson<T>(
       ? STATUS_STALE_IF_ERROR_SECONDS
       : METADATA_STALE_IF_ERROR_SECONDS,
     timeoutMs: HOST_TIMEOUTS_MS[host] ?? FETCH_TIMEOUT_MS,
+    maxAgeSeconds: options.maxAgeSeconds,
   });
 }
 
@@ -352,9 +375,10 @@ function toVehicle(
   provider: ProviderKey,
   raw: RawVehicle,
   query: Pick<FeedQuery, 'origin'>,
-  pricingByPlanId: Map<string, VehiclePricing>,
+  plans: PlanPrices,
   type?: VehicleType,
-  scooterPlanId?: string
+  scooterPlanId?: string,
+  unlisted?: Set<string>
 ): Vehicle | null {
   const lat = raw.lat;
   const lng = raw.lon ?? raw.lng;
@@ -374,7 +398,8 @@ function toVehicle(
     ? Math.round(haversineM(query.origin[0], query.origin[1], lat, lng) * 10) / 10
     : null;
   const planId = raw.pricing_plan_id ?? type?.default_pricing_plan_id ?? scooterPlanId;
-  const pricing = planId ? pricingByPlanId.get(planId) : undefined;
+  const pricing = planId ? plans.pricing.get(planId) : undefined;
+  if (planId && !plans.listed.has(planId)) unlisted?.add(planId);
 
   return {
     provider,
@@ -395,8 +420,9 @@ function filterVehicles(
   vehicles: RawVehicle[],
   types: Map<string, VehicleType>,
   query: FeedQuery,
-  pricingByPlanId: Map<string, VehiclePricing> = new Map(),
-  scooterPlanId?: string
+  plans: PlanPrices = NO_PLANS,
+  scooterPlanId?: string,
+  unlisted?: Set<string>
 ): Vehicle[] {
   const provider = providerKeyForSystemId(systemId);
   if (!provider || (query.providers && !query.providers.has(provider))) return [];
@@ -414,7 +440,7 @@ function filterVehicles(
       !boundsContainPoint(query.bounds, lat, lng)
     ) continue;
 
-    const vehicle = toVehicle(systemId, provider, raw, query, pricingByPlanId, types.get(raw.vehicle_type_id), scooterPlanId);
+    const vehicle = toVehicle(systemId, provider, raw, query, plans, types.get(raw.vehicle_type_id), scooterPlanId, unlisted);
     if (!vehicle) continue;
     filtered.push(vehicle);
   }
@@ -575,34 +601,109 @@ export function vehiclePricing(plan: PricingPlan, country: string, wholeUnitPric
   };
 }
 
-function pricingPlanMap(feed: PricingPlansFeed, country: string, wholeUnitPrice: boolean): Map<string, VehiclePricing> {
+function pricingPlanMap(feed: PricingPlansFeed, country: string, wholeUnitPrice: boolean): PlanPrices {
   const plans = feed.data?.plans ?? feed.data?.pricing_plans ?? [];
-  const pricingByPlanId = new Map<string, VehiclePricing>();
+  const pricing = new Map<string, VehiclePricing>();
+  const listed = new Set<string>();
   for (const plan of plans) {
     const planId = plan.plan_id?.trim();
-    const pricing = vehiclePricing(plan, country, wholeUnitPrice);
-    if (planId && pricing) pricingByPlanId.set(planId, pricing);
+    if (!planId) continue;
+    listed.add(planId);
+    const price = vehiclePricing(plan, country, wholeUnitPrice);
+    if (price) pricing.set(planId, price);
   }
-  return pricingByPlanId;
+  return { pricing, listed };
 }
 
-async function fetchPricingPlans(
-  url: string | null,
-  options: { authenticated?: boolean; source: string; country: string; wholeUnitPrice?: boolean }
-): Promise<Map<string, VehiclePricing>> {
-  if (!url) return new Map();
+async function loadPricingPlans(url: string, options: PlanOptions, maxAgeSeconds?: number): Promise<PricingPlans> {
+  const result = await fetchJson<PricingPlansFeed>(url, {
+    authenticated: options.authenticated,
+    revalidate: METADATA_REVALIDATE_SECONDS,
+    maxAgeSeconds,
+  });
+  const ttl = Number(result.data.ttl);
+  return {
+    ...pricingPlanMap(result.data, options.country, options.wholeUnitPrice ?? false),
+    from: { url, options, fetchedAt: result.fetchedAt, ttlSeconds: Number.isFinite(ttl) && ttl > 0 ? ttl : 0 },
+  };
+}
+
+async function fetchPricingPlans(url: string | null, options: PlanOptions): Promise<PricingPlans> {
+  if (!url) return NO_PLANS;
 
   try {
-    const result = await fetchJson<PricingPlansFeed>(url, {
-      authenticated: options.authenticated,
-      revalidate: METADATA_REVALIDATE_SECONDS,
-    });
-    return pricingPlanMap(result.data, options.country, options.wholeUnitPrice ?? false);
+    return await loadPricingPlans(url, options);
   } catch (error) {
     // Pricing enriches availability and must never make otherwise-valid scooters disappear.
     logFallback(`${options.source}:system_pricing_plans`, error);
-    return new Map();
+    return NO_PLANS;
   }
+}
+
+/**
+ * The soonest a feed's plans are fetched again for a scooter naming a plan they don't list, or
+ * the plans' own ttl where it is longer.
+ */
+const PLAN_REFRESH_SECONDS = 120;
+
+interface PlanRefresh {
+  at: number;
+  /** The plan ids scooters named that the refresh did not find. */
+  unlisted: ReadonlySet<string>;
+  /** Refreshes in a row that left one unlisted. */
+  misses: number;
+}
+
+// By plans URL: one entry a feed at most, changed only when its plans are fetched again.
+const planRefreshes = new Map<string, PlanRefresh>();
+
+/** Refreshes of a feed's plans by outcome: listed (every plan the scooters named is now) or unlisted. */
+export const planRefreshCounts = { listed: 0, unlisted: 0 };
+
+/** For tests: forgets past refreshes. */
+export function forgetPlanRefreshes(): void {
+  planRefreshes.clear();
+  planRefreshCounts.listed = 0;
+  planRefreshCounts.unlisted = 0;
+}
+
+/**
+ * The feed's scooters, priced from its plans. Plans are kept an hour, positions a minute, so when
+ * an operator puts its scooters on new plans, as Lime does each time its rate changes through
+ * the day, they would go unpriced until the hour is up. A scooter naming a plan the plans don't
+ * list has them fetched again, at most every two minutes (or their ttl, if longer), and the
+ * scooters priced from them in the same collection. A plan the refresh doesn't find stays
+ * unpriced; it is looked for again after 2, 4, 8… minutes, up to the hour after which the plans
+ * are fetched anyway. A plan id not seen before is looked for after two minutes.
+ */
+async function pricedScooters(
+  plans: PricingPlans,
+  scooters: (plans: PlanPrices, unlisted?: Set<string>) => Vehicle[]
+): Promise<Vehicle[]> {
+  const unlisted = new Set<string>();
+  const vehicles = scooters(plans, unlisted);
+  const from = plans.from;
+  if (!from || !unlisted.size) return vehicles;
+
+  const now = Date.now();
+  const last = planRefreshes.get(from.url);
+  const novel = [...unlisted].some(id => !last?.unlisted.has(id));
+  const waitSeconds = Math.min(METADATA_REVALIDATE_SECONDS,
+    Math.max(PLAN_REFRESH_SECONDS, from.ttlSeconds) * (novel || !last ? 1 : 2 ** (last.misses - 1)));
+  if (now - Math.max(from.fetchedAt, last?.at ?? 0) < waitSeconds * 1000) return vehicles;
+
+  let refreshed: PricingPlans = plans;
+  try {
+    refreshed = await loadPricingPlans(from.url, from.options, waitSeconds);
+  } catch (error) {
+    logFallback(`${from.options.source}:system_pricing_plans`, error);
+  }
+  const still = new Set([...unlisted].filter(id => !refreshed.listed.has(id)));
+  planRefreshCounts[still.size ? 'unlisted' : 'listed']++;
+  // A plan missing for the first time starts the doubling again.
+  const misses = !still.size ? 0 : !last || [...still].some(id => !last.unlisted.has(id)) ? 1 : last.misses + 1;
+  planRefreshes.set(from.url, { at: now, unlisted: still, misses });
+  return refreshed === plans ? vehicles : scooters(refreshed);
 }
 
 function registrySystem(systemId: string, systemUrl: string): NationalSystem | null {
@@ -805,7 +906,7 @@ async function fetchSystemVehicles(
     }
   }
 
-  const [status, pricingByPlanId] = await Promise.all([
+  const [status, plans] = await Promise.all([
     fetchJson<StatusFeed>(statusUrl, {
       validate: value => { if (!isAbandonedStatus(value)) validateVehicleStatus(value); },
       authenticated: true,
@@ -820,13 +921,15 @@ async function fetchSystemVehicles(
 
   return {
     observedAt: statusObservedAt(status.data),
-    vehicles: filterVehicles(
+    vehicles: await pricedScooters(plans, (prices, unlisted) => filterVehicles(
       system.id,
       rawVehicles(status.data),
       typesById,
       query,
-      pricingByPlanId
-    ),
+      prices,
+      undefined,
+      unlisted
+    )),
     stale: discovery.stale || types.stale || coverageStale || status.stale,
   };
 }
@@ -937,7 +1040,7 @@ async function fetchHoppTownVehicles(
     throw new Error(`${town.id} discovery contains no supported scooter feeds`);
   }
 
-  const [status, types, pricingByPlanId] = await Promise.all([
+  const [status, types, plans] = await Promise.all([
     fetchJson<StatusFeed>(statusUrl, { validate: validateVehicleStatus, revalidate: STATUS_REVALIDATE_SECONDS }),
     fetchJson<VehicleTypesFeed>(typesUrl, { validate: validateTypes, revalidate: METADATA_REVALIDATE_SECONDS }),
     fetchPricingPlans(pricingUrl, { source: town.id, country: 'CH' }),
@@ -950,13 +1053,15 @@ async function fetchHoppTownVehicles(
   return {
     observedAt: statusObservedAt(status.data),
     // Hopp's bike ids are UUIDs, unique across its towns, so they keep the plain "hopp" prefix.
-    vehicles: filterVehicles(
+    vehicles: await pricedScooters(plans, (prices, unlisted) => filterVehicles(
       'hopp',
       rawVehicles(status.data),
       typesById,
       query,
-      pricingByPlanId
-    ),
+      prices,
+      undefined,
+      unlisted
+    )),
     stale: discovery.stale || status.stale || types.stale,
   };
 }
@@ -1117,7 +1222,7 @@ async function fetchRegionalSystemFeeds(
     return { vehicles: [], stale: discovery.stale || types.stale, skipped: true };
   }
 
-  const [status, pricing] = await Promise.all([
+  const [status, plans] = await Promise.all([
     fetchJson<StatusFeed>(statusUrl, {
       validate: value => { if (!isEmptyUndatedStatus(value)) validateVehicleStatus(value); },
       revalidate: STATUS_REVALIDATE_SECONDS,
@@ -1138,10 +1243,11 @@ async function fetchRegionalSystemFeeds(
 
   return {
     observedAt: statusObservedAt(status.data),
-    vehicles: filterVehicles(system.id, rawVehicles(status.data), typesById, {
+    vehicles: (await pricedScooters(plans, (prices, unlisted) => filterVehicles(system.id, rawVehicles(status.data), typesById, {
       ...query,
       bounds,
-    }, pricing, unlinkedScooterPlan(system.provider, typesById, pricing)).filter(vehicle => serviceAreas(system).some(area => boundsContainPoint(area.bounds, vehicle.lat, vehicle.lng))),
+    }, prices, unlinkedScooterPlan(system.provider, typesById, prices.pricing), unlisted)))
+      .filter(vehicle => serviceAreas(system).some(area => boundsContainPoint(area.bounds, vehicle.lat, vehicle.lng))),
     stale: discovery.stale || types.stale || status.stale,
   };
 }

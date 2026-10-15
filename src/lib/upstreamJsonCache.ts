@@ -54,6 +54,11 @@ export interface UpstreamJsonOptions {
   freshSeconds: number;
   staleIfErrorSeconds: number;
   timeoutMs: number;
+  /**
+   * A document fetched longer ago than this is fetched again, though still fresh: a feed's
+   * pricing plans when a scooter names a plan they don't list. It keeps its usual freshness after.
+   */
+  maxAgeSeconds?: number;
 }
 
 interface UpstreamJsonCacheOptions {
@@ -93,7 +98,8 @@ export class UpstreamJsonCache {
     // hourly metadata every collection reads stays while documents nobody asks for go.
     if (entry) this.touch(url, entry);
 
-    if (entry?.hasValue && entry.freshUntil > now) {
+    const young = options.maxAgeSeconds === undefined || now - (entry?.fetchedAt ?? 0) < options.maxAgeSeconds * 1000;
+    if (entry?.hasValue && entry.freshUntil > now && young) {
       return { data: entry.value as T, stale: false, fetchedAt: entry.fetchedAt };
     }
     if (entry?.hasValue && entry.staleUntil > now && entry.retryAfter > now) {

@@ -198,7 +198,10 @@ redeploy; `all` restores the old minute-for-everything. `SCOOTER_IDLE_INTERVAL_S
 tune the rest. Vehicle results are published immediately, before optional
 parking completes; city overview rebuilding is batched every five seconds, and
 the snapshot is written to disk a feed at a time, once a minute and on shutdown.
-Discovery/type/pricing metadata lasts an hour. The map shows
+Discovery/type/pricing metadata lasts an hour, but a scooter naming a pricing
+plan the cached plans don't list (Lime's rate changes through the day under new
+plan ids) has that feed's plans fetched again, at most every two minutes or
+their ttl if longer, and backing off for a plan still missing. The map shows
 positions only while their timestamp is within fifteen minutes; failed feeds
 retain vehicles only until that observation expires. A request for a feed whose
 positions are older waits up to three seconds for the collection it starts. Parking availability expires after five minutes.

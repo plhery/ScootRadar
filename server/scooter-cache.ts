@@ -1,7 +1,7 @@
 import { mkdir, rename, rm } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { dirname } from 'node:path';
-import { discoverCollectableFeeds, independentCollectableFeeds, type CollectableScooterFeed } from '../src/lib/scooterFeeds';
+import { discoverCollectableFeeds, independentCollectableFeeds, planRefreshCounts, type CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import { buildCityOverview, overviewNeedsRefresh, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { REGIONAL_SCOOTER_SYSTEMS, regionalSource } from '../src/lib/regionalScooterSystems';
 import { feedPaused } from '../src/lib/seasonalPauses';
@@ -55,6 +55,7 @@ const cadence: FeedCadence = { fastSince: (id, now) => scheduler.fastSince(id, n
 const countedAt = (now: number) => (feed: FeedSnapshot) => feedState(feed, now, cadence) !== 'expired';
 const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
   cadenceModes: now => scheduler.modes(now), upstreamRequests: () => upstreamJsonCache.requests,
+  planRefreshes: () => planRefreshCounts,
   upstreamCache: () => ({ entries: upstreamJsonCache.size, capacity: upstreamJsonCache.capacity,
     evictions: upstreamJsonCache.evictions }) });
 const server = createSnapshotServer({ snapshot: () => snapshot,

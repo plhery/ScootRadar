@@ -1585,13 +1585,163 @@
       }
     },
     {
+      "id": 31,
+      "type": "timeseries",
+      "title": "Scooters with a price, by provider",
+      "description": "The share of the scooters served that carry a price. Bird and PubliBike publish none. A drop for one provider: its scooters name plans the cache has not loaded, which it fetches again within minutes (pricing plan refreshes, beside), or plans the app cannot show.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 64,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "100 * sum by (provider) (scootradar_feed_priced_vehicles{job=\"scootradar-cache\", source=~\"$source\"}) / (sum by (provider) (scootradar_feed_vehicles{job=\"scootradar-cache\", source=~\"$source\"}) > 0)",
+          "legendFormat": "{{provider}}",
+          "range": true,
+          "instant": false,
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 0,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "min": 0,
+          "max": 100
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [
+            "lastNotNull"
+          ],
+          "sortBy": "Last *",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 32,
+      "type": "timeseries",
+      "title": "Pricing plans fetched again per hour",
+      "description": "A feed's pricing plans fetched again because a scooter named a plan they did not list, as Lime's do when its rate changes. listed: the plan is there now; unlisted: still missing, or the fetch failed, so it is looked for again after 2, 4, 8… minutes.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 64,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (outcome) (increase(scootradar_pricing_plan_refreshes_total{job=\"scootradar-cache\"}[1h]))",
+          "legendFormat": "{{outcome}}",
+          "range": true,
+          "instant": false,
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 1,
+            "fillOpacity": 0,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "calcs": [
+            "lastNotNull"
+          ],
+          "sortBy": "Last *",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
       "id": 19,
       "type": "row",
       "title": "Origin API",
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 64,
+        "y": 72,
         "w": 24,
         "h": 1
       },
@@ -1608,7 +1758,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 65,
+        "y": 73,
         "w": 12,
         "h": 8
       },
@@ -1682,7 +1832,7 @@
       },
       "gridPos": {
         "x": 12,
-        "y": 65,
+        "y": 73,
         "w": 12,
         "h": 8
       },
@@ -1752,7 +1902,7 @@
       "collapsed": false,
       "gridPos": {
         "x": 0,
-        "y": 73,
+        "y": 81,
         "w": 24,
         "h": 1
       },
@@ -1769,7 +1919,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 74,
+        "y": 82,
         "w": 8,
         "h": 8
       },
@@ -1855,7 +2005,7 @@
       },
       "gridPos": {
         "x": 8,
-        "y": 74,
+        "y": 82,
         "w": 8,
         "h": 8
       },
@@ -1929,7 +2079,7 @@
       },
       "gridPos": {
         "x": 16,
-        "y": 74,
+        "y": 82,
         "w": 8,
         "h": 8
       },

@@ -29,8 +29,10 @@ it('exports the state of every attempted feed as the map sees it', () => {
   expect(sample(text, `scootradar_feed_state{${leipzig},state="expired"}`)).toBe('1');
   expect(sample(text, 'scootradar_feed_state{feed="national:lime_zurich",source="national",provider="lime",state="failing"}')).toBe('1');
   expect(sample(text, `scootradar_feed_vehicles{${voi}}`)).toBe('2');
+  expect(sample(text, `scootradar_feed_priced_vehicles{${voi}}`)).toBe('0');
   // Expired positions are not served.
   expect(sample(text, `scootradar_feed_vehicles{${leipzig}}`)).toBe('0');
+  expect(sample(text, `scootradar_feed_priced_vehicles{${leipzig}}`)).toBe('0');
   expect(sample(text, `scootradar_feed_observation_timestamp_seconds{${voi}}`)).toBe(String((now - 60_000) / 1000));
   expect(sample(text, `scootradar_feed_parking_up{${leipzig}}`)).toBe('0');
   expect(text).not.toContain('italy:never');
@@ -96,6 +98,19 @@ it('counts collections from zero by outcome, and requests by route and status', 
   expect(sample(text, 'scootradar_http_requests_total{route="/api/scooters",status="429"}')).toBe('1');
   expect(sample(text, 'scootradar_http_request_duration_seconds_count{route="/api/scooters"}')).toBe('3');
   expect(sample(text, 'scootradar_snapshot_updated_timestamp_seconds')).toBeUndefined();
+});
+
+it('counts the scooters with a price, and the plans fetched again for plans scooters named', () => {
+  const vehicle: FeedSnapshot['vehicles'][number] = { provider: 'lime', lat: 47.37, lng: 8.54, battery: null, range_m: null,
+    vehicle_id: null, deep_link: null, distance_m: null };
+  const priced = { ...vehicle, pricing: { currency: 'CHF', unlock_fee_minor_units: 100, minute_fee_minor_units: 49 } };
+  const metrics = createSnapshotMetrics('abc123', { planRefreshes: () => ({ listed: 3, unlisted: 1 }) });
+  const text = metrics.render(snapshot([feed({ id: 'national:lime_zurich', provider: 'lime', vehicles: [priced, vehicle, priced] })]), now);
+  const lime = 'feed="national:lime_zurich",source="national",provider="lime"';
+  expect(sample(text, `scootradar_feed_vehicles{${lime}}`)).toBe('3');
+  expect(sample(text, `scootradar_feed_priced_vehicles{${lime}}`)).toBe('2');
+  expect(sample(text, 'scootradar_pricing_plan_refreshes_total{outcome="listed"}')).toBe('3');
+  expect(sample(text, 'scootradar_pricing_plan_refreshes_total{outcome="unlisted"}')).toBe('1');
 });
 
 it('escapes label values', () => {

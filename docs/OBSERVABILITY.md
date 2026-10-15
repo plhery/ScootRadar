@@ -39,6 +39,9 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   ignore it.
 - `scootradar_feed_vehicles`: available standing scooters held, 0 once expired, or while
   the operator lists none.
+- `scootradar_feed_priced_vehicles`: of those, the scooters with a price. The others
+  name no plan (Bird, PubliBike), a plan the feed's plans don't list, or one the app
+  cannot show as an unlock fee and a minute price.
 - `scootradar_feed_info{country}`: 1, with the feed's country in English
   (`Switzerland` for the national, Hopp and PubliBike sources), for alerts to name.
 - `scootradar_feed_observation_timestamp_seconds`: the source's own timestamp of the
@@ -53,6 +56,12 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   the collection of feeds whose positions were over 15 minutes old.
 - `scootradar_upstream_requests_total{kind="status|metadata"}`: requests sent to
   operators; status covers positions and parking, metadata what is kept an hour or more.
+- `scootradar_pricing_plan_refreshes_total{outcome="listed|unlisted"}`: a feed's
+  pricing plans fetched again because a scooter named a plan they did not list, as
+  Lime's do when its rate changes; `unlisted` if one is still missing afterwards or the
+  fetch failed. A feed's plans are fetched again at most every two minutes (or their
+  `ttl`, if longer); a plan still missing is looked for after 2, 4, 8… minutes, up to
+  the hourly refresh of all metadata.
 - `scootradar_feed_collections_total{outcome="ok|failed"}` and
   `scootradar_feed_collection_duration_seconds_sum/_count`, per feed.
 - `scootradar_http_requests_total{route, status}` and
