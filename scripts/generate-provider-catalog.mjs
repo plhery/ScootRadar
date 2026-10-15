@@ -302,16 +302,29 @@ function swiftCurfews() {
     const evenings = days ? `[${days.map(day => weekdays.indexOf(day) + 1).join(', ')}]` : 'nil';
     return `RentalCurfew.Night(evenings: ${evenings}, fromMinute: ${time(from)}, untilMinute: ${time(until)})`;
   };
+  // Each city's rings go in a property of their own, as bare numbers. One list
+  // holding a GeoPoint call for every corner took Swift's type checker more
+  // than 20 minutes on CI once the American bans had doubled the corners.
+  const areasName = id => {
+    if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(id)) throw new Error(`Invalid curfew id: ${id}`);
+    return `${id.replace(/-([a-z0-9])/g, (_, letter) => letter.toUpperCase())}Areas`;
+  };
+  const names = new Set();
+  const areas = [];
   const entries = curfews.map(curfew => {
     if (!curfew.nights.length) throw new Error(`Curfew without nights: ${curfew.id}`);
-    if (!curfew.areas.length || curfew.areas.some(area => area.length < 3 || !area.flat().every(Number.isFinite))) {
+    if (!curfew.areas.length || curfew.areas.some(area => area.length < 3 ||
+      !area.every(point => point.length === 2 && point.every(Number.isFinite)))) {
       throw new Error(`Invalid curfew area: ${curfew.id}`);
     }
     const zoneProblem = curfewZoneProblem(curfew, regionalSystems);
     if (zoneProblem) throw new Error(zoneProblem);
-    const areas = curfew.areas.map(area => `[${area.map(([lat, lng]) => `GeoPoint(latitude: ${lat}, longitude: ${lng})`).join(', ')}]`);
+    const name = areasName(curfew.id);
+    if (names.has(name)) throw new Error(`Duplicate curfew id: ${curfew.id}`);
+    names.add(name);
+    areas.push(`    private static let ${name}: [[Double]] = [${curfew.areas.map(area => `[${area.flat().join(', ')}]`).join(', ')}]`);
     return `        RentalCurfew(\n            city: ${JSON.stringify(curfew.city)}, timeZone: ${JSON.stringify(curfew.timeZone)},\n` +
-      `            nights: [${curfew.nights.map(night).join(', ')}],\n            areas: [${areas.join(', ')}]\n        ),`;
+      `            nights: [${curfew.nights.map(night).join(', ')}],\n            areas: rings(${name})\n        ),`;
   }).join('\n');
 
   return `
@@ -320,6 +333,15 @@ extension RentalCurfew {
     static let all: [RentalCurfew] = [
 ${entries}
     ]
+
+    /// Each ring as latitude, longitude, latitude, longitude…
+    private static func rings(_ coordinates: [[Double]]) -> [[GeoPoint]] {
+        coordinates.map { ring in
+            stride(from: 0, to: ring.count, by: 2).map { GeoPoint(latitude: ring[$0], longitude: ring[$0 + 1]) }
+        }
+    }
+
+${areas.join('\n')}
 }
 `;
 }
