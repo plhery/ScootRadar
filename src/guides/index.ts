@@ -83,6 +83,7 @@ import kristiansandNb from './nb/elsparkesykkel-kristiansand';
 import leHavreFr from './fr/trottinette-electrique-le-havre';
 import rhodesEn from './en/e-scooters-rhodes';
 import kosEn from './en/e-scooters-kos';
+import rigaEn from './en/e-scooters-riga';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -109,6 +110,7 @@ export const GUIDES: readonly Guide[] = [
   tenerifeEn,
   rhodesEn,
   kosEn,
+  rigaEn,
   swissRulesDe,
   howToRentDe,
   swissPricesDe,
