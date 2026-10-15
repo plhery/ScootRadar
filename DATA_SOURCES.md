@@ -511,18 +511,24 @@ recheck command.
 
 ## United States
 
-The reviewed catalog lives in `data/american-scooter-feeds.json`: 2 feeds in
-Washington, DC, Hopp (Bolt) and Veo. Each is the operator's own public GBFS
-feed: Bolt's system 23 at `mds.bolt.eu`, which Bolt runs in Washington under
-the name Hopp, and Veo's `xdc` at `cluster-prod.veoride.com`. Both were found
-through
+The reviewed catalog lives in `data/american-scooter-feeds.json`: 41 feeds in
+37 towns. In Washington, DC, Hopp (Bolt) and Veo; Bird in 24 towns and Lime in
+17, from Seattle to Norfolk, their New York feeds each in the Bronx and Queens. Each is the operator's own public GBFS feed:
+Bolt's system 23 at `mds.bolt.eu`, which Bolt runs in Washington under the
+name Hopp, Veo's `xdc` at `cluster-prod.veoride.com`, Bird's at `mds.bird.co`
+and Lime's at `data.lime.bike`. All were found through
 [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
 and the addresses the operators use for their other towns.
 
 Bolt's [GBFS licence](https://bolt.eu/en/legal/micromobility/security-gbfs-license/)
 allows showing its vehicles, with data no older than fifteen minutes, as in
-Europe. Veo publishes no licence in its feed. The map's credits name both
-under the GBFS line. See the [coverage audit](docs/american-scooter-feeds.md)
+Europe. Veo publishes no licence in its feed. Bird's feeds link the same
+[data licence](https://web.archive.org/web/20260516143232/https://www.bird.co/gbfs-data-license-agreement/)
+as in Europe, whose last copy allows showing Bird's vehicles, credited to Bird,
+with data no older than fifteen minutes. Lime's
+[GBFS terms](https://www.li.me/legal/public-gbfs-terms) allow public display
+only where local law requires it, the same open question as in Europe. The
+map's credits name all four under the GBFS line. See the [coverage audit](docs/american-scooter-feeds.md)
 for the systems, the brand Hopp, the bounds, the gaps and the recheck command.
 
 ## Canada

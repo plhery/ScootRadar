@@ -10,10 +10,10 @@ out, and remove an entry once it's added or settled for good.
 These feeds are public and were live when checked. Nothing blocks them except
 the work.
 
-- **United States** ([guide](american-scooter-feeds.md)): Washington, DC is
-  covered. 93 more feeds (Lime, Bird, Spin, Veo, Lyft and Bolt) are being
-  added in October 2026, and 13 with scooters but no ride seen in the survey
-  are being polled at their evening peak.
+- **United States** ([guide](american-scooter-feeds.md)): Washington, DC,
+  Bird in 24 towns and Lime in 17 are covered. Spin's, Veo's and Lyft's 54
+  feeds are being added in October 2026, and their rechecks polled at the
+  evening peak.
 
 ## Waiting on a decision
 
@@ -299,7 +299,13 @@ banned shared scooters, and feeds that were empty when checked.
   - Systems 65, 67 and 68 on 3electra's host answer 400.
 
 - **United States** ([guide](american-scooter-feeds.md)): Hopp (Bolt) and Veo
-  in Washington, DC are covered.
+  in Washington, DC, Bird in 24 towns and Lime in 17 are covered.
+  - **No ride seen:** Bird Miami (33 to 39 available scooters), Bird
+    University of Central Florida (286 to 299) and Bird Orlando (451 to 467)
+    were live but showed no ride, or one at most, in 59 polls from 16:34 to
+    21:24 EDT on 14 October 2026.
+  - **Lime Grand Rapids** lists no scooter. The city now names Veo its
+    exclusive operator ([Mobile GR](https://www.grandrapidsmi.gov/departments/mobile-gr/mobility/shared-micromobility/)).
   - **Washington, DC:** Lime's feed answers 404; Bird's lists no available
     scooter in the District, Spin's and Lyft's none at all. Veo's `arl` feed is
     the same fleet as `xdc`, which is covered.
@@ -476,13 +482,18 @@ its other systems answer 401. Dott made most regions private in September 2026.
   Netherlands may publish feeds then. So may Slovenia, for Ljubljana: look
   for Bolt's feed 359 there, or at `mds.bolt.eu`, and for an official Kvik
   feed.
+- **Wednesday 21 October 2026, 17:00 to 21:00 local:** Bird Miami, Bird
+  University of Central Florida and Bird Orlando. Bird renews its ids at every
+  request, so match scooters by place; add each if scooters leave places they
+  don't come back to and arrive elsewhere.
 - **1 January 2027:** Brussels's ban starts; Bolt and Dott Bruxelles should
   empty.
 - **1 March 2027:** Lime Ciudad de México, empty since SEMOVI's pilot ended
   in September 2026. Check Lime's Querétaro and Monterrey slugs, Whoosh and
   JET again too.
 - **15 April 2027:** Bird Ajax and Bird Surrey, empty on 14 October 2026; the
-  Durham Region pilots run from April to October.
+  Durham Region pilots run from April to October. Lime Grand Rapids too, and
+  look for a Veo feed there.
 - **20 April 2027:** Bird Saskatoon, empty on 14 October 2026. The city's
   [page](https://www.saskatoon.ca/moving-around/cycling/e-scooters) sets the
   season from 15 April to 31 October; if it still does, add Saskatoon with a

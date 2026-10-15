@@ -14,7 +14,7 @@ vi.mock('@/generated/countryCatalogs', async importOriginal => {
 
 const { fetchScooters, unlinkedScooterPlan } = await import('./scooterFeeds');
 const { upstreamJsonCache } = await import('./upstreamJsonCache');
-const { REGIONAL_SCOOTER_SYSTEMS, searchRegionalScooterCities } = await import('./regionalScooterSystems');
+const { REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, searchRegionalScooterCities, serviceAreas } = await import('./regionalScooterSystems');
 const { namedCities } = await import('@/app/api/geocode/cities');
 const { providerKeyForSystemId } = await import('@/generated/providers');
 
@@ -32,6 +32,30 @@ describe('the United States', () => {
     for (const query of ['Washington', 'Washington DC', 'DC', 'District of Columbia']) {
       expect(searchRegionalScooterCities(query)[0].display_name).toBe('Washington, DC, United States');
     }
+  });
+
+  it.each([
+    ['New York', ['Bronx, NY', 'Queens, NY']], ['NYC', ['Bronx, NY', 'Queens, NY']], ['New York City', ['Bronx, NY', 'Queens, NY']],
+    ['The Bronx', ['Bronx, NY']], ['Queens, NY', ['Queens, NY']], ['George Mason University', ['Fairfax, VA']],
+    ['GMU', ['Fairfax, VA']], ['Indy', ['Indianapolis, IN']],
+    ['Saint Louis', ['St. Louis, MO']], ['St Louis', ['St. Louis, MO']], ['SF', ['San Francisco, CA']],
+  ])('finds "%s" as %j', (query, titles) => {
+    expect(namedCities(query).filter(({ exact }) => exact).map(({ city }) => city.title)).toEqual(titles);
+  });
+  // "IN", "NE" and "OK" are words too; after a city, they are its state.
+  it.each([['Indianapolis IN', 'Indianapolis, IN'], ['Lincoln, NE', 'Lincoln, NE'], ['Kansas City MO', 'Kansas City, MO'],
+    ['Arlington, VA', 'Arlington, VA'], ['Richmond Virginia', 'Richmond, VA']])('reads the state in "%s"', (query, title) => {
+    expect(namedCities(query).map(({ city }) => city.title)).toEqual([title]);
+  });
+
+  it('counts the operators of one town as one city, in its own time zone', () => {
+    const cities = (id: string) => REGIONAL_SCOOTER_CITIES.filter(city => city.id === id);
+    for (const id of ['us:az:Tempe', 'us:ga:Atlanta', 'us:va:Arlington', 'us:ny:Bronx', 'us:ny:Queens']) expect(cities(id)).toHaveLength(1);
+    expect(serviceAreas(system('lime_us_new_york')).map(area => area.city)).toEqual(['Bronx', 'Queens']);
+    expect(system('bird_us_tempe').timeZone).toBe('America/Phoenix');
+    expect(system('lime_us_detroit').timeZone).toBe('America/Detroit');
+    expect(system('lime_us_louisville').timeZone).toBe('America/Kentucky/Louisville');
+    expect(system('bird_us_indianapolis').timeZone).toBe('America/Indiana/Indianapolis');
   });
 
   it('opens Hopp, Bolt\'s brand in Washington, DC, and reads its GBFS 3.0 feed: USD 1 to start and USD 0.16 a minute', async () => {
