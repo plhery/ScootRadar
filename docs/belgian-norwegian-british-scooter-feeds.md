@@ -149,6 +149,11 @@ directory.
   and Kvernaland, in Time, which are now its aliases, and its Stavanger area to
   58.868 N (from 58.8765), into Sola. 8 to 10 scooters stood there in each
   poll, at night and by day, inside Voi's zones, and the map left them out.
+  Since 16 October 2026 its Sandnes area also reaches north to 58.896 N
+  (from 58.8764), Sandnes's line at Forus and Lura, as Ryde's Sandnes area
+  does: about 57 of Voi's scooters a poll stood there, inside Sandnes's
+  kommune. They showed before, inside the Stavanger area's box, and counted
+  under Sandnes by its outline, so the map is unchanged.
   Ryde's Skien zone reaches the centre of Porsgrunn, where about 90 of the
   Skien feed's scooters stand, so that feed has had a second area since the
   same day, Porsgrunn, with the bounds of Ryde's Porsgrunn feed; zoomed out,

@@ -341,7 +341,7 @@ enum ScooterProviderCoverage {
         (.voi, GeoBounds(south: 59.4038, west: 10.6092, north: 59.4596, east: 10.7152)),
         (.voi, GeoBounds(south: 59.8219, west: 10.6158, north: 59.9871, east: 10.9574)),
         (.voi, GeoBounds(south: 58.868, west: 5.5629, north: 59.0144, east: 5.777)),
-        (.voi, GeoBounds(south: 58.765, west: 5.6738, north: 58.8764, east: 5.7891)),
+        (.voi, GeoBounds(south: 58.765, west: 5.6738, north: 58.896, east: 5.7891)),
         (.voi, GeoBounds(south: 63.3352, west: 10.306, north: 63.4603, east: 10.5386)),
         (.beryl, GeoBounds(south: 50.7028, west: -1.915, north: 50.7899, east: -1.7851)),
         (.beryl, GeoBounds(south: 50.7128, west: -1.785, north: 50.7639, east: -1.6868)),
