@@ -5,7 +5,8 @@ import { readFileSync } from 'node:fs';
 
 // The languages the apps are shown in, as GEOCODE_LANGUAGES in src/app/api/geocode/cities.ts.
 export const LANGUAGES = ['en', 'de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is'];
-export const CONTINENTS = ['europe', 'north-america'];
+// The Middle East is Asia's. South America comes with its first country.
+export const CONTINENTS = ['europe', 'north-america', 'asia', 'oceania'];
 // The feed sources that are not a country's catalog.
 const OTHER_SOURCES = ['national', 'hopp', 'publibike'];
 
@@ -257,8 +258,11 @@ export function validateCountries({ countries, landingFirst }, readCatalog, citi
     if (!LANGUAGES.every(language => typeof country.names?.[language] === 'string' && country.names[language])) {
       throw new Error(`${code}: names needs ${LANGUAGES.join(', ')}`);
     }
-    if (!country.searchWords?.length || country.searchWords.some(word => !/^[a-z0-9α-ωа-яёєіїґ]+$/.test(word))) {
-      throw new Error(`${code}: searchWords are lower case words without accents`);
+    // As the search reads them (src/lib/searchText.ts, which searchText.test.ts holds every country's to):
+    // "new zealand", "ελλαδα", "ישראל", "الامارات".
+    if (!country.searchWords?.length || country.searchWords.some(word => !/^[\p{Ll}\p{Lo}\p{N}]+(?: [\p{Ll}\p{Lo}\p{N}]+)*$/u.test(word) ||
+      /(?![\u3099\u309a])\p{Mn}/u.test(word.normalize('NFKD')))) {
+      throw new Error(`${code}: searchWords are lower case words without accents, one space between two`);
     }
     if (code === 'CH' && country.regions) throw new Error('CH: Switzerland\'s areas have no regions');
     regionsOf(country);

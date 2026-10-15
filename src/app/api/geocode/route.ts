@@ -4,7 +4,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { rateLimitAllows } from '@/lib/rateLimit';
 import { isPointCovered } from '@/lib/coveredCities';
 import { haversineM } from '@/lib/geo';
-import { COUNTRY_CONTINENTS, COUNTRY_REGIONS, type Continent, type CountryCode } from '@/generated/countries';
+import { COUNTRY_ANCHORS, COUNTRY_CONTINENTS, COUNTRY_REGIONS, type Continent, type CountryCode } from '@/generated/countries';
+import { searchWords, westernDigits } from '@/lib/searchText';
+import { streetAddress, townLine } from './addressFormats';
 import { cityOfAddress, GEOCODE_LANGUAGES, namedCities, type GeocodeLanguage } from './cities';
 
 const MAX_QUERY_LENGTH = 160;
@@ -50,18 +52,29 @@ const PHOTON_RESULT_LIMIT = 15;
 const PHOTON_LANGUAGES = ['de', 'en', 'fr'] as const;
 // Not the centres of counties, regions and countries.
 const PHOTON_LAYERS = ['house', 'street', 'locality', 'district', 'city', 'other'];
-// Where the app may have cities: Europe, from the Azores and the Canaries to the
-// North Cape, and North America, from Hawaii and Alaska to Newfoundland and from
-// the Arctic to Mexico's southern border. Only the parts with a country in
-// data/countries.json are searched. Photon is asked within the one around the
-// map centre; Geoapify is not, as in a rectangle that large it finds nothing for
-// "Via Roma 10", nor in a list of Europe's countries "Gare de Lyon" near Paris:
-// the places of both outside are left out instead (servedPlace).
-const CONTINENT_BOXES: Record<Continent, Box> = {
-  europe: { west: -32, south: 27, east: 45, north: 72 },
-  'north-america': { west: -170, south: 14, east: -50, north: 72 },
+// The parts of the world where the app may have cities, by continent:
+// - Australia and New Zealand, without the Chatham Islands;
+// - West Asia, from Israel to the Gulf and Yemen, and East Asia, from Burma to
+//   Japan and from Hokkaido to Java; Cyprus, north of 34°N, is in Europe's;
+// - North America, from Hawaii and Alaska to Newfoundland and from the Arctic
+//   to Mexico's southern border;
+// - Europe, from the Azores and the Canaries to the North Cape.
+// A point is in the first it is in: Israel in West Asia's, not in Europe's.
+// Only those with the anchor of a country of data/countries.json are searched.
+// Photon is asked within the one around the map centre; Geoapify is not, as in a
+// rectangle that large it finds nothing for "Via Roma 10", nor in a list of
+// Europe's countries "Gare de Lyon" near Paris: the places of both outside are
+// left out instead (servedPlace).
+const CONTINENT_BOXES: Record<Continent, Box[]> = {
+  oceania: [{ west: 110, south: -48, east: 180, north: -9 }],
+  asia: [{ west: 34, south: 12, east: 60, north: 34 }, { west: 95, south: -11, east: 150, north: 46 }],
+  'north-america': [{ west: -170, south: 14, east: -50, north: 72 }],
+  europe: [{ west: -32, south: 27, east: 45, north: 72 }],
 };
-const SERVED_BOXES = [...new Set(Object.values(COUNTRY_CONTINENTS))].map(continent => CONTINENT_BOXES[continent]);
+const BOXES = (Object.entries(CONTINENT_BOXES) as [Continent, Box[]][])
+  .flatMap(([continent, boxes]) => boxes.map(box => ({ continent, box })));
+const SERVED_BOXES = BOXES.map(({ box }) => box)
+  .filter(box => Object.values(COUNTRY_ANCHORS).some(([lat, lng]) => inBox(box, lat, lng)));
 // Distance to the map centre counts for more than prominence: "Bahnhofstrasse 1"
 // near Zürich is the one in Zürich, not the better-known station in Goldau.
 const PHOTON_BIAS_SCALE = '0.1';
@@ -70,10 +83,6 @@ const CLOSE_M = 5_000;
 const NEARBY_M = 30_000;
 // A station, its building and its platforms under one name: within this, they are one place.
 const SAME_PLACE_M = 250;
-// Where the house number is written before the street: "10 Rue de Rivoli".
-const NUMBER_FIRST_COUNTRIES = new Set(['FR', 'GB', 'IE', 'LU', 'MC', 'US', 'CA']);
-// Where the town comes before its state or province and its postcode: "Austin, TX 78701".
-const TOWN_FIRST_COUNTRIES = new Set(['US', 'CA']);
 // Whose places Geoapify favours without a map centre, when the app does not say where the rider is.
 const DEFAULT_HOME = 'CH';
 
@@ -155,22 +164,6 @@ interface Found {
 }
 
 type UpstreamFailure = 'rateLimited' | 'timedOut' | 'unavailable' | 'invalid';
-
-// Letters written two ways: "Bahnhofstraße" and "Bahnhofstrasse" are one street.
-const LIGATURES: Record<string, string> = { 'ß': 'ss', 'ẞ': 'SS', 'œ': 'oe', 'Œ': 'OE', 'æ': 'ae', 'Æ': 'AE' };
-
-function withoutLigatures(text: string): string {
-  return text.replace(/[ßẞœŒæÆ]/g, letter => LIGATURES[letter]);
-}
-
-// Letters no accent can be taken from, spelled out so that "Tromso" names Tromsø.
-const SPELLED_OUT: Record<string, string> = { 'ø': 'o', 'đ': 'd', 'ł': 'l', 'þ': 'th', 'ð': 'd', 'ı': 'i' };
-
-/** The words of a text in one spelling, without accents: "Zürich" and "Zurich" are both "zurich". */
-function searchWords(text: string): string[] {
-  return withoutLigatures(text).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
-    .replace(/[øđłþðı]/g, letter => SPELLED_OUT[letter]).split(/[^a-z0-9]+/).filter(Boolean);
-}
 
 /** The words of a place's name as it may be typed: "Zürich" as "zurich" and, with its umlaut spelled out, "zuerich".
     What is typed is read as it is: "Joel" does not start Joliet, nor "Blue" Bluff. */
@@ -312,10 +305,8 @@ function regionCode(properties: Record<string, unknown>, countryCode: string): s
 function photonLines(properties: Record<string, unknown>): { title: string; subtitle: string } {
   const name = text(properties.name);
   const street = text(properties.street);
-  const number = text(properties.housenumber);
   const countryCode = text(properties.countrycode).toUpperCase();
-  const address = !street || !number ? street
-    : NUMBER_FIRST_COUNTRIES.has(countryCode) ? `${number} ${street}` : `${street} ${number}`;
+  const address = streetAddress(countryCode, street, text(properties.housenumber));
   const town = text(properties.city) || text(properties.locality) || text(properties.district) || text(properties.county);
   const region = text(properties.state) || text(properties.county);
   const country = text(properties.country);
@@ -330,10 +321,8 @@ function photonLines(properties: Record<string, unknown>): { title: string; subt
     case 'street':
       return lines(name || street, town);
     case 'house': {
-      // "Austin, TX 78701" in the US and Canada, "8001 Zürich" elsewhere.
-      const postTown = TOWN_FIRST_COUNTRIES.has(countryCode)
-        ? [town, [regionCode(properties, countryCode), text(properties.postcode)].filter(Boolean).join(' ')].filter(Boolean).join(', ')
-        : [text(properties.postcode), town].filter(Boolean).join(' ');
+      // "8001 Zürich", "Austin, TX 78701", "Sydney NSW 2000".
+      const postTown = townLine(countryCode, { town, postcode: text(properties.postcode), region: () => regionCode(properties, countryCode) });
       return name ? lines(name, address, postTown) : lines(address, postTown);
     }
     default:
@@ -426,7 +415,7 @@ async function searchPhoton(search: Search, own: PhotonService | null, deadline:
 
 /** The continent of a point, of those where the app may have cities. */
 function continentAt(lat: number, lng: number): Continent | undefined {
-  return (Object.keys(CONTINENT_BOXES) as Continent[]).find(continent => inBox(CONTINENT_BOXES[continent], lat, lng));
+  return BOXES.find(({ box }) => inBox(box, lat, lng))?.continent;
 }
 
 function inBox(box: Box, lat: number, lng: number): boolean {
@@ -577,7 +566,8 @@ function failureResponse(failure: UpstreamFailure) {
 }
 
 async function geocode(input: GeocodeInput) {
-  const typedText = input.query.trim();
+  // Arabic-Indic digits as 0-9, for the services and for what reads a house number or a postcode.
+  const typedText = westernDigits(input.query.trim());
   if (typedText.length < 2 || typedText.length > MAX_QUERY_LENGTH) {
     return errorResponse('Address search must contain between 2 and 160 characters.', 400);
   }
@@ -587,7 +577,7 @@ async function geocode(input: GeocodeInput) {
   const language = GEOCODE_LANGUAGES.find(code => code === requestedLanguage) ?? 'en';
   const deadline = Date.now() + GEOCODE_TIMEOUT_MS;
   // The cities with scooter data the text names, found without a service.
-  const listed = namedCities(withoutLigatures(typedText), language);
+  const listed = namedCities(typedText, language);
   // An address typed with its city is looked for in the city, wherever the map is.
   const inCity = listed.length ? null : cityOfAddress(typedText);
   const search: Search = {

@@ -2,8 +2,8 @@ import { readFileSync } from 'node:fs';
 import { holdOffMs, hostPacer } from './host-pacing.mjs';
 
 // The catalogs of data/countries.json. --countries= takes country codes (FR,DE), a continent
-// (europe, north-america) or all; --except= leaves countries out: check:europe skips France,
-// which check:france covers.
+// (europe, north-america, asia, oceania) or all; --except= leaves countries out: check:europe
+// skips France, which check:france covers.
 const countries = JSON.parse(readFileSync(new URL('../data/countries.json', import.meta.url), 'utf8')).countries
   .filter(country => country.catalog);
 const catalogs = Object.fromEntries(countries.map(country => [country.code, country.catalog]));

@@ -76,6 +76,17 @@ describe('searchCoveredCities', () => {
     expect(names('Schweiz')).toEqual([]);
   });
 
+  it('takes a country named in several words', () => {
+    for (const query of ['Bath United Kingdom', 'Bath, Great Britain', 'Bath Royaume-Uni', 'Bath Reino Unido', 'Bath Vereinigtes Königreich']) {
+      expect(names(query), query).toEqual(['Bath, United Kingdom']);
+    }
+    expect(names('Portland, United States')).toEqual(['Portland, OR, United States']);
+    expect(names('Portland Estados Unidos')).toEqual(['Portland, OR, United States']);
+    expect(names('Bath United States')).toEqual([]);
+    expect(searchRegionalScooterCities('Bath United Kingdom').map(({ display_name }) => display_name)).toEqual(['Bath, United Kingdom']);
+    expect(searchRegionalScooterCities('Portland États-Unis').map(({ display_name }) => display_name)).toEqual(['Portland, OR, United States']);
+  });
+
   it('writes the country in the language asked for, and English when none is', () => {
     const lines = (query: string, language?: 'en' | 'de' | 'fr' | 'it') =>
       searchCoveredCities(query, language).map(city => `${city.title} / ${city.subtitle}`);

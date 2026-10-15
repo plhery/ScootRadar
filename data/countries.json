@@ -102,7 +102,7 @@
         "es": "Reino Unido",
         "is": "Bretland"
       },
-      "searchWords": ["uk", "britain", "england", "scotland", "wales", "angleterre", "inghilterra", "engeland", "storbritannia", "grossbritannien", "inglaterra", "bretland"],
+      "searchWords": ["uk", "britain", "england", "scotland", "wales", "angleterre", "inghilterra", "engeland", "storbritannia", "grossbritannien", "inglaterra", "bretland", "united kingdom", "great britain", "vereinigtes konigreich", "royaume uni", "regno unito", "verenigd koninkrijk", "reino unido"],
       "anchor": [52.8, -1.6],
       "featuredCities": ["gb:Bristol", "gb:Liverpool", "gb:Nottingham", "gb:Leeds", "gb:Brighton", "gb:Bournemouth"],
       "credits": {
@@ -305,7 +305,7 @@
       "source": "us",
       "pricesBeforeTax": true,
       "names": { "en": "United States", "de": "Vereinigte Staaten", "fr": "États-Unis", "it": "Stati Uniti", "nl": "Verenigde Staten", "nb": "USA", "pt": "Estados Unidos", "es": "Estados Unidos", "is": "Bandaríkin" },
-      "searchWords": ["usa", "america", "amerika", "amerique", "eeuu", "eua", "bandarikin"],
+      "searchWords": ["usa", "america", "amerika", "amerique", "eeuu", "eua", "bandarikin", "united states", "vereinigte staaten", "etats unis", "stati uniti", "verenigde staten", "estados unidos"],
       "anchor": [39.5, -98.6],
       "anchorNote": "Near Lebanon, Kansas, the geographic centre of the 48 contiguous states. Zoomed in, each state has its own total at its centre of population (US Census Bureau, 2020).",
       "featuredCities": ["us:dc:Washington", "us:ca:Los Angeles", "us:il:Chicago", "us:wa:Seattle", "us:ca:San Francisco", "us:ga:Atlanta"],

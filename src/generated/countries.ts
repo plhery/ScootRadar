@@ -11,7 +11,7 @@ export type CatalogCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'E
 
 export type CountryNameLanguage = 'en' | 'de' | 'fr' | 'it' | 'nl' | 'nb' | 'pt' | 'es' | 'is';
 
-export type Continent = 'europe' | 'north-america';
+export type Continent = 'europe' | 'north-america' | 'asia' | 'oceania';
 
 /** Where each catalog country's feeds are reported in meta.sources. */
 export const COUNTRY_SOURCES = {
@@ -101,7 +101,7 @@ export const COUNTRY_SEARCH_WORDS: Record<CountryCode, readonly string[]> = {
   IT: ["italy", "italia", "italie", "italien"],
   BE: ["belgium", "belgien", "belgique", "belgio", "belgie", "belgia", "belgica"],
   NO: ["norway", "norwegen", "norvege", "norvegia", "noorwegen", "norge", "noruega", "noregur"],
-  GB: ["uk", "britain", "england", "scotland", "wales", "angleterre", "inghilterra", "engeland", "storbritannia", "grossbritannien", "inglaterra", "bretland"],
+  GB: ["uk", "britain", "england", "scotland", "wales", "angleterre", "inghilterra", "engeland", "storbritannia", "grossbritannien", "inglaterra", "bretland", "united kingdom", "great britain", "vereinigtes konigreich", "royaume uni", "regno unito", "verenigd koninkrijk", "reino unido"],
   PT: ["portugal", "portogallo"],
   ES: ["spain", "spanien", "espagne", "spagna", "spanje", "spania", "espanha", "espana", "spann"],
   IS: ["iceland", "island", "islande", "islanda", "ijsland", "islandia"],
@@ -114,7 +114,7 @@ export const COUNTRY_SEARCH_WORDS: Record<CountryCode, readonly string[]> = {
   FI: ["finland", "finnland", "finlande", "finlandia", "suomi"],
   HR: ["croatia", "kroatien", "croatie", "croazia", "kroatie", "kroatia", "croacia", "hrvatska"],
   UA: ["ukraine", "ucraina", "oekraine", "ukraina", "ucrania", "ukrajina", "ukrayina", "украіна", "украина"],
-  US: ["usa", "america", "amerika", "amerique", "eeuu", "eua", "bandarikin"],
+  US: ["usa", "america", "amerika", "amerique", "eeuu", "eua", "bandarikin", "united states", "vereinigte staaten", "etats unis", "stati uniti", "verenigde staten", "estados unidos"],
   CA: ["canada", "kanada"],
 };
 

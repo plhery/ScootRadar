@@ -46,7 +46,20 @@ const americanCatalog = { systems: [
       bounds: { south: 43.6, west: -70.36, north: 43.65, east: -70.22 } }],
     discoveryUrl: 'https://data.lime.bike/api/partners/v2/gbfs/maine/gbfs.json' },
 ] };
-const fixtures = { 'data/canadian-scooter-feeds.json': canadianCatalog, 'data/american-scooter-feeds.json': americanCatalog };
+// New Zealand as a country agent would add it: Oceania's first, its words as the search reads them.
+const newZealand = {
+  code: 'NZ', continent: 'oceania', catalog: 'data/new-zealand-scooter-feeds.json', source: 'newzealand',
+  names: { en: 'New Zealand', de: 'Neuseeland', fr: 'Nouvelle-Zélande', it: 'Nuova Zelanda', nl: 'Nieuw-Zeeland', nb: 'New Zealand',
+    pt: 'Nova Zelândia', es: 'Nueva Zelanda', is: 'Nýja-Sjáland' },
+  searchWords: ['new zealand', 'nz', 'neuseeland', 'nouvelle zelande', 'aotearoa'],
+  anchor: [-41, 174],
+  credits: { attribution: 'New Zealand: Lime GBFS', gbfs: ['Lime'] },
+};
+const newZealandCatalog = { systems: [{ id: 'lime_auckland', provider: 'lime', city: 'Auckland', center: [-36.85, 174.76],
+  bounds: { south: -36.95, west: 174.65, north: -36.75, east: 174.87 },
+  discoveryUrl: 'https://data.lime.bike/api/partners/v2/gbfs/auckland/gbfs.json' }] };
+const fixtures = { 'data/canadian-scooter-feeds.json': canadianCatalog, 'data/american-scooter-feeds.json': americanCatalog,
+  'data/new-zealand-scooter-feeds.json': newZealandCatalog };
 const read = path => fixtures[path] ?? readJson(path);
 
 function generate(data, readCatalog = read) {
@@ -88,7 +101,9 @@ describe('the countries of data/countries.json', () => {
     expect(() => generate(withCanada({ code: 'GB' }), inLondon)).toThrow('Invalid or repeated country code: GB');
     expect(() => generate(withCanada({ continent: 'america' }))).toThrow('CA: continent is one of');
     expect(() => generate(withCanada({ catalog: undefined }))).toThrow('every country but CH needs a catalog');
-    expect(() => generate(withCanada({ searchWords: ['Canadá'] }))).toThrow('lower case words without accents');
+    for (const word of ['Canadá', 'canadá', 'nouveau-brunswick', 'new  brunswick', ' canada', 'canada ']) {
+      expect(() => generate(withCanada({ searchWords: [word] })), word).toThrow('lower case words without accents, one space between two');
+    }
     expect(() => generate(withCanada({ featuredCities: ['ca:Montréal'] }))).toThrow('CA: featured cities not in its catalog: ca:Montréal');
     expect(() => generate(withCanada({ credits: { ...canada.credits,
       links: [{ label: 'MobiData BW', href: 'https://www.mobidata-bw.de/' }] } }))).toThrow('share a label');
@@ -101,6 +116,32 @@ describe('the countries of data/countries.json', () => {
       .toContain('export const PRICES_BEFORE_TAX: ReadonlySet<string> = new Set<CountryCode>(["CA"]);');
     expect(() => generate({ ...europe, countries: [...europe.countries, { ...canada, pricesBeforeTax: false }] }))
       .toThrow('CA: pricesBeforeTax is true, or left out where prices include tax');
+  });
+
+  it('takes a country of Asia or Oceania, with words of several words or in its own script', () => {
+    // Its towns' cities, without the checks of their time zones (catalogSystems).
+    const europeanSystems = catalogSystems(europe.countries, read);
+    const validate = country => {
+      const data = { ...europe, countries: [...europe.countries, country] };
+      const systems = [...europeanSystems, ...newZealandCatalog.systems.map(system => ({ ...system, country: country.code }))];
+      validateCountries(data, read, scooterCities(swissAreas, systems, data.countries));
+      return data;
+    };
+    const withNewZealand = validate(newZealand);
+    const typescript = typescriptCountries(withNewZealand);
+    expect(typescript).toContain("export type Continent = 'europe' | 'north-america' | 'asia' | 'oceania';");
+    expect(typescript).toContain("  NZ: 'oceania',\n};");
+    expect(typescript).toContain('  NZ: ["new zealand", "nz", "neuseeland", "nouvelle zelande", "aotearoa"],');
+    // Oceania's feeds are credited on a line of their own.
+    expect(countryCreditLinks(withNewZealand.countries).map(link => link.label)[1]).toBe('NZ: Lime');
+
+    const israel = { ...newZealand, code: 'IL', continent: 'asia', source: 'israel', searchWords: ['israel', 'ישראל'] };
+    const emirates = { ...newZealand, code: 'AE', continent: 'asia', source: 'emirates', searchWords: ['uae', 'united arab emirates', 'الامارات'] };
+    for (const country of [israel, emirates]) expect(() => validate(country)).not.toThrow();
+    // Written as typed rather than as the search reads them: with a hamza, or a geresh.
+    for (const word of ['الإمارات', 'ז׳בוטינסקי']) {
+      expect(() => validate({ ...israel, searchWords: [word] }), word).toThrow('IL: searchWords are lower case words without accents');
+    }
   });
 
   it('tells apart two towns of one name by their state, in their id and in their name', () => {

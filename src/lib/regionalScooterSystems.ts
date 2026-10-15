@@ -1,6 +1,7 @@
 import { CATALOG_SYSTEMS } from '@/generated/countryCatalogs';
 import { COUNTRY_NAMES, COUNTRY_REGIONS, COUNTRY_SEARCH_WORDS, COUNTRY_SOURCES, type CatalogCountry } from '@/generated/countries';
 import type { ProviderKey } from '@/generated/providers';
+import { searchText, searchWords } from '@/lib/searchText';
 import type { SeasonalPause } from '@/lib/seasonalPauses';
 import type { MapBounds } from '@/lib/types';
 
@@ -124,33 +125,31 @@ export function mergeCities(systems: readonly RegionalScooterSystem[], regions: 
 }
 export const REGIONAL_SCOOTER_CITIES = mergeCities(REGIONAL_SCOOTER_SYSTEMS);
 
-// The letters no accent can be stripped from are spelled out, so "Tromso",
-// "Baerum", "Isafjordur" and "Wolomin" find Tromsø, Bærum, Ísafjörður and Wołomin.
-// Greek letters are kept, without their accents, and a final sigma is a sigma:
-// "Ροδος" and "Ρόδοσ" find Ρόδος. A dotless ı is an i, so "Kıbrıs" finds Cyprus.
-// Cyrillic letters are kept as well, without their marks, so "Київ" is found
-// typed as "Киів" too.
-const SPELLED_OUT: Record<string, string> = { ß: 'ss', æ: 'ae', ø: 'o', œ: 'oe', þ: 'th', ð: 'd', ł: 'l', ς: 'σ', ı: 'i' };
-
-function normalize(value: string) {
-  return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-    .replace(/[ßæøœþðłςı]/g, letter => SPELLED_OUT[letter]).replace(/[^a-z0-9α-ωа-яёєіїґ]+/g, ' ').trim();
+/** The country whose search words a query ends with, the longest such words, and the words before them: "Lindau Deutschland", "Portland United States". */
+function countryAtEnd(words: readonly string[]): { country?: ScooterCountry; cityWords: readonly string[] } {
+  let found: { country?: ScooterCountry; cityWords: readonly string[] } = { cityWords: words };
+  for (const [country, aliases] of Object.entries(COUNTRY_ALIASES) as [ScooterCountry, readonly string[]][]) {
+    for (const alias of aliases) {
+      const aliasWords = alias.split(' ');
+      const cityWords = words.slice(0, -aliasWords.length);
+      if (aliasWords.length < words.length && cityWords.length < found.cityWords.length &&
+        aliasWords.every((word, index) => words[cityWords.length + index] === word)) found = { country, cityWords };
+    }
+  }
+  return found;
 }
 
 /** Local city navigation stays available without a geocoding network request. */
 export function searchRegionalScooterCities(query: string, countries?: ScooterCountry[]) {
-  const words = normalize(query).split(' ');
-  const country = (Object.keys(COUNTRY_ALIASES) as ScooterCountry[])
-    .find(code => COUNTRY_ALIASES[code].some(alias => words.includes(alias)));
-  const cityWords = words.filter(word => !Object.values(COUNTRY_ALIASES).flat().includes(word));
+  const { country, cityWords } = countryAtEnd(searchWords(query));
   if (cityWords.join('').length < 2) return [];
   const byOwnName = (city: RegionalScooterCity) =>
-    cityWords.every(word => normalize(city.city).split(' ').some(part => part.startsWith(word)));
+    cityWords.every(word => searchWords(city.city).some(part => part.startsWith(word)));
   return REGIONAL_SCOOTER_CITIES.filter(city => (!countries || countries.includes(city.country)) &&
     (!country || country === city.country) && [city.city, ...(city.aliases ?? [])].some(name =>
-      cityWords.every(word => normalize(name).split(' ').some(part => part.startsWith(word)))))
+      cityWords.every(word => searchWords(name).some(part => part.startsWith(word)))))
     // Typed in full first, then found by its own name rather than only by another, then by name.
-    .sort((a, b) => Number(normalize(b.city) === cityWords.join(' ')) - Number(normalize(a.city) === cityWords.join(' ')) ||
+    .sort((a, b) => Number(searchText(b.city) === cityWords.join(' ')) - Number(searchText(a.city) === cityWords.join(' ')) ||
       Number(byOwnName(b)) - Number(byOwnName(a)) || a.city.localeCompare(b.city))
     .slice(0, 5).map(city => ({ lat: city.center[0], lng: city.center[1],
       display_name: `${city.city}, ${COUNTRY_NAMES[city.country].en}` }));

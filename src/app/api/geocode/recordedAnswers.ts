@@ -114,6 +114,113 @@ export const RECORDED_PHOTON_ANSWERS: Record<string, RecordedFeature[]> = {
   ],
 };
 
+// What Photon answered on 15 October 2026 outside Europe and North America, asked as above but within
+// the part of the world around the map centre, where there is one (route.ts, CONTINENT_BOXES).
+export const RECORDED_WORLD_PHOTON_ANSWERS: Record<string, RecordedFeature[]> = {
+  // lang=en, without a centre
+  'Dubai Mall': [
+    [{ type: 'house', name: 'Dubai Mall', street: 'Street 14', postcode: '63008', locality: 'Mangaf - Block 4', district: 'Mangaf', county: 'Mangaf', state: 'Ahmadi', country: 'Kuwait', countrycode: 'KW' }, 29.1028, 48.1272],
+    [{ type: 'house', name: 'Dubai Mall', street: 'Kozhikode - Nilambur - Gudallur Road', postcode: '679331', city: 'Muppini', district: 'Karakkod Mukkam ST Colony', county: 'Nilambur', state: 'Kerala', country: 'India', countrycode: 'IN' }, 11.3581, 76.3073],
+    [{ type: 'other', name: 'Dubai Mall Expansion', city: 'Dubai', district: 'Zabeel', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.1977, 55.2869],
+    [{ type: 'house', name: 'Dubai Mall Chinatown Bridge', street: 'Sheikh Mohammed bin Rashid Boulevard', city: 'Dubai', district: 'Burj Khalifa', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.1955, 55.282],
+    [{ type: 'house', name: 'Dubai Mall London', housenumber: '4', street: 'High Street', postcode: 'HA3 5DB', city: 'London Borough of Harrow', district: 'Wealdstone', county: 'Greater London', state: 'England', country: 'United Kingdom', countrycode: 'GB' }, 51.5932, -0.3348],
+    [{ type: 'house', name: 'Dubai mall duty paid shop', street: 'Kunnamkulam - Wadakkanchery Road', postcode: '680584', city: 'Kunnamkulam', county: 'Kunnamkulam', state: 'Kerala', country: 'India', countrycode: 'IN' }, 10.6661, 76.2493],
+    [{ type: 'house', name: 'Dubai Mall Metro Bus Stop Landside 1', street: 'Metro access : Burj Khalifa / Dubai Mall station', city: 'Dubai', district: 'Burj Khalifa', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.2009, 55.2695],
+    [{ type: 'house', name: 'Dubai Mall Zaabeel Parking Garage', street: 'Financial Center Road (Upper Level)', city: 'Dubai', locality: 'Za\'abeel', district: 'Zabeel', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.1997, 55.2828],
+    [{ type: 'house', name: 'The Dubai Mall', street: 'Financial Center Street', city: 'Dubai', district: 'Downtown Dubai', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.197, 55.279],
+    [{ type: 'house', name: 'Dubai Marina Mall', street: 'Al Marsa Street', locality: 'Dubai Marina', district: 'Dubai Marina', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.0766, 55.1402],
+    [{ type: 'house', name: 'Dubai Outlet Mall', street: 'Dubai - Al Ain Road', district: 'Madinat Hind 3', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.0714, 55.4009],
+    [{ type: 'house', name: 'Burj Khalifa / Dubai Mall', street: 'Metro access : Burj Khalifa / Dubai Mall station', city: 'Dubai', district: 'Burj Khalifa', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.2014, 55.2695],
+    [{ type: 'house', name: 'Mall of The Emirates', housenumber: '1', street: 'Al Seedaf 1 Street', city: 'دبي', locality: 'Al Barsha 1', district: 'Al Barsha 1', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.118, 55.2004],
+    [{ type: 'house', name: 'Dubai Hills Mall', street: 'Umm Suqeim Street', city: 'دبي', district: 'Hadaeq Sheikh Mohammed Bin Rashid', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.1017, 55.2399],
+    [{ type: 'house', name: 'Ibn Battuta Mall', street: 'Sheikh Zayed Road (north)', locality: 'Jabal Ali 1', district: 'Jabal Ali 2', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.0447, 55.1204],
+  ],
+  // lang=en, near Dubai (25.2, 55.27)
+  'دبي مول': [
+    [{ type: 'house', name: 'The Dubai Mall', street: 'Financial Center Street', city: 'Dubai', district: 'Downtown Dubai', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.197, 55.279],
+    [{ type: 'house', name: 'دبي مول / برج خليفة', street: 'Metro access : Burj Khalifa / Dubai Mall station', city: 'Dubai', district: 'Burj Khalifa', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.2013, 55.2695],
+    [{ type: 'house', name: 'Burj Khalifa / Dubai Mall', street: 'Metro access : Burj Khalifa / Dubai Mall station', city: 'Dubai', district: 'Burj Khalifa', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.2014, 55.2695],
+    [{ type: 'house', name: 'Dubai Marina Mall', street: 'Al Marsa Street', locality: 'Dubai Marina', district: 'Dubai Marina', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.0766, 55.1402],
+    [{ type: 'house', name: 'Mall of The Emirates', housenumber: '1', street: 'Al Seedaf 1 Street', city: 'دبي', locality: 'Al Barsha 1', district: 'Al Barsha 1', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.118, 55.2004],
+    [{ type: 'house', name: 'Wafi Mall', street: 'Sheikh Rashid Road', city: 'Dubai', district: 'Al Jadaf', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.2288, 55.3192],
+    [{ type: 'house', name: 'Dubai Hills Mall', street: 'Umm Suqeim Street', city: 'دبي', district: 'Hadaeq Sheikh Mohammed Bin Rashid', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.1017, 55.2399],
+    [{ type: 'house', name: 'Mall of the Emirates', street: 'Sheikh Zayed Road (North)', city: 'Dubai', locality: 'Al Quoz Industrial 3', district: 'Al Quoz Community', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.1212, 55.2004],
+    [{ type: 'house', name: 'Burj Khalifa / Dubai Mall', street: 'Metro access : Burj Khalifa / Dubai Mall station', city: 'Dubai', district: 'Burj Khalifa', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.2014, 55.2696],
+    [{ type: 'house', name: 'Burj Khalifa / Dubai Mall', street: 'Metro Link', city: 'Dubai', district: 'Burj Khalifa', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.2014, 55.2696],
+    [{ type: 'house', name: 'مول دبي حمامات +تواليت', street: 'Financial Center Street', city: 'Dubai', district: 'Downtown Dubai', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.1989, 55.2779],
+    [{ type: 'house', name: 'The Address - Dubai Mall', street: 'Sheikh Mohammed bin Rashid Boulevard', city: 'Dubai', district: 'Downtown Dubai', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.1997, 55.2776],
+    [{ type: 'other', name: 'Dubai Islands Mall', city: 'Dubai', district: 'Dubai Islands', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.2963, 55.3011],
+    [{ type: 'house', name: 'Dubai Mall Chinatown Bridge', street: 'Sheikh Mohammed bin Rashid Boulevard', city: 'Dubai', district: 'Burj Khalifa', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.1955, 55.282],
+    [{ type: 'other', name: 'Meydan One Mall', city: 'Dubai', district: 'MBR- Al Merkad', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.1726, 55.2871],
+  ],
+  // lang=en, near Auckland (-36.85, 174.76)
+  'Queen Street': [
+    [{ type: 'street', name: 'Queen Street', postcode: '1010', city: 'Waitematā', locality: 'Aotea Arts Quarter', district: 'City Centre', state: 'Auckland', country: 'New Zealand', countrycode: 'NZ' }, -36.8529, 174.7636],
+    [{ type: 'street', name: 'Queen Street', postcode: '1010', city: 'Waitematā', locality: 'Learning Quarter', district: 'City Centre', state: 'Auckland', country: 'New Zealand', countrycode: 'NZ' }, -36.8545, 174.7629],
+    [{ type: 'street', name: 'Queen Street', postcode: '1002', city: 'Waitematā', locality: 'Newton', district: 'Eden Terrace', state: 'Auckland', country: 'New Zealand', countrycode: 'NZ' }, -36.8577, 174.7615],
+    [{ type: 'street', name: 'Queen Street', postcode: '1027', city: 'Kaipātiki', district: 'Northcote Point', state: 'Auckland', country: 'New Zealand', countrycode: 'NZ' }, -36.825, 174.7479],
+    [{ type: 'street', name: 'Queen Street', postcode: '1027', city: 'Kaipātiki', district: 'Northcote Point', state: 'Auckland', country: 'New Zealand', countrycode: 'NZ' }, -36.8241, 174.748],
+    [{ type: 'street', name: 'Queen Street', postcode: '0627', city: 'Kaipātiki', district: 'Northcote Point', state: 'Auckland', country: 'New Zealand', countrycode: 'NZ' }, -36.8118, 174.7446],
+  ],
+  // lang=en, near Tel Aviv (32.07, 34.78)
+  'Rothschild': [
+    [{ type: 'house', name: 'Rothschild', street: 'Rothschild', postcode: '6806546', city: 'Bat Yam', district: 'בת ים', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0267, 34.7445],
+    [{ type: 'street', name: 'Rothschild', postcode: '6807836', city: 'Bat Yam', district: 'בת ים', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0273, 34.7488],
+    [{ type: 'street', name: 'Rothschild', postcode: '6807836', city: 'Bat Yam', district: 'בת ים', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0271, 34.747],
+    [{ type: 'street', name: 'Rothschild', postcode: '6806546', city: 'Bat Yam', district: 'בת ים', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0269, 34.7456],
+    [{ type: 'street', name: 'Rothschild', postcode: '5832337', city: 'Holon', locality: 'Holon', district: 'Shikun Am', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0239, 34.7718],
+    [{ type: 'street', name: 'Rothschild', postcode: '5550722', locality: 'קרית אונו', district: 'Ne\'ot Ariel Sharon', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0606, 34.8573],
+    [{ type: 'house', name: 'Rothschild', street: 'Sderot Rothschild', postcode: '6688218', city: 'Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0628, 34.7716],
+    [{ type: 'street', name: 'Rothschild', postcode: '5550722', locality: 'קרית אונו', district: 'Ne\'ot Ariel Sharon', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0619, 34.8582],
+    [{ type: 'street', name: 'Rothschild', postcode: '4941642', city: 'Petah Tikva', locality: 'Neve Ma\'oz', district: 'Lev HaMoshava', county: 'Petah Tikva Subdistrict', state: 'Center District', country: 'Israel', countrycode: 'IL' }, 32.0884, 34.8811],
+    [{ type: 'street', name: 'Rothschild', postcode: '4943729', city: 'Petah Tikva', locality: 'Kiryat Elazar', district: 'Shikun Mapam', county: 'Petah Tikva Subdistrict', state: 'Center District', country: 'Israel', countrycode: 'IL' }, 32.0759, 34.8856],
+    [{ type: 'street', name: 'Rothschild', postcode: '7539411', city: 'Rishon LeZion', district: 'Katznelson', county: 'Rehovot Subdistrict', state: 'Center District', country: 'Israel', countrycode: 'IL' }, 31.9646, 34.7932],
+    [{ type: 'street', name: 'Rothschild', postcode: '7539411', city: 'Rishon LeZion', district: 'Katznelson', county: 'Rehovot Subdistrict', state: 'Center District', country: 'Israel', countrycode: 'IL' }, 31.9645, 34.7931],
+  ],
+  // lang=en, near Tel Aviv (32.07, 34.78)
+  'שדרות רוטשילד': [
+    [{ type: 'street', name: 'Sderot Rothschild', postcode: '6511604', city: 'Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.066, 34.7772],
+    [{ type: 'street', name: 'Sderot Rothschild', postcode: '6527401', city: 'Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0719, 34.7791],
+    [{ type: 'street', name: 'Sderot Rothschild', postcode: '6578103', city: 'Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0641, 34.7747],
+    [{ type: 'street', name: 'Sderot Rothschild', postcode: '6688218', city: 'Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0629, 34.7709],
+    [{ type: 'street', name: 'Sderot Rothschild', postcode: '6688209', city: 'Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0637, 34.7734],
+    [{ type: 'street', name: 'Sderot Rothschild', postcode: '6525216', city: 'Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0627, 34.7693],
+    [{ type: 'street', name: 'Sderot Rothschild', postcode: '6525216', city: 'Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0629, 34.77],
+    [{ type: 'house', name: 'Rothschild 22', housenumber: '22', street: 'Sderot Rothschild', postcode: '6688218', city: 'Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0628, 34.7717],
+    [{ type: 'house', name: 'Rotshchild/Allenby', street: 'Sderot Rothschild', postcode: '6688209', city: 'Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0636, 34.7728],
+    [{ type: 'house', name: 'Ha\'Atsma\'ut Boulevard/Rothschild', street: 'Sderot HaAtzmaut', postcode: '6807836', city: 'Bat Yam', district: 'בת ים', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0266, 34.7481],
+    [{ type: 'house', name: 'Rothshild St. / Allenby St', housenumber: '36', street: 'Sderot Rothschild', postcode: '6578103', city: 'Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0635, 34.7732],
+    [{ type: 'house', name: 'Rothschild 48', housenumber: '48', street: 'Sderot Rothschild', postcode: '6578103', city: 'Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0639, 34.7749],
+    [{ type: 'house', name: 'Rothschild Boulevard/HaGoren', street: 'Rothschild', postcode: '7680400', city: 'Mazkeret Batya', county: 'Rehovot Subdistrict', state: 'Center District', country: 'Israel', countrycode: 'IL' }, 31.8549, 34.8395],
+    [{ type: 'house', name: 'Rothschild/HaAtzmaut Boulevard', street: 'Rothschild', postcode: '6807836', city: 'Bat Yam', district: 'בת ים', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', countrycode: 'IL' }, 32.0272, 34.7474],
+  ],
+  // lang=en, near Riyadh (24.71, 46.68)
+  'King Fahd Road': [
+    [{ type: 'street', name: 'King Fahd Road', postcode: '12281', city: 'Riyadh', district: 'Al Maathar Municipality', county: 'Riyadh governorate', state: 'Riyadh', country: 'Saudi Arabia', countrycode: 'SA' }, 24.7091, 46.6734],
+    [{ type: 'street', name: 'King Fahd Road', postcode: '12213', city: 'Riyadh', district: 'Al Maathar Municipality', county: 'Riyadh governorate', state: 'Riyadh', country: 'Saudi Arabia', countrycode: 'SA' }, 24.7018, 46.677],
+    [{ type: 'street', name: 'King Fahd Road', postcode: '12215', city: 'Riyadh', district: 'Ar Rahmaniyah', county: 'Riyadh governorate', state: 'Riyadh', country: 'Saudi Arabia', countrycode: 'SA' }, 24.7187, 46.6685],
+    [{ type: 'street', name: 'King Fahd Road', postcode: '12313', city: 'Riyadh', district: 'Al `Ulayya', county: 'Riyadh governorate', state: 'Riyadh', country: 'Saudi Arabia', countrycode: 'SA' }, 24.6952, 46.6806],
+    [{ type: 'street', name: 'King Fahd Road', postcode: '12361', city: 'Riyadh', district: 'Al Wurud', county: 'Riyadh governorate', state: 'Riyadh', country: 'Saudi Arabia', countrycode: 'SA' }, 24.7275, 46.6643],
+    [{ type: 'street', name: 'King Fahd Road', postcode: '12311', city: 'Riyadh', locality: 'Al Mu\'tamarat', district: 'Al `Ulayya', county: 'Riyadh governorate', state: 'Riyadh', country: 'Saudi Arabia', countrycode: 'SA' }, 24.6813, 46.6876],
+    [{ type: 'street', name: 'King Fahd Road', postcode: '12262', city: 'Riyadh', district: 'Al Muhammadiyah', county: 'Riyadh governorate', state: 'Riyadh', country: 'Saudi Arabia', countrycode: 'SA' }, 24.7367, 46.6594],
+    [{ type: 'street', name: 'King Fahd Road', postcode: '12612', city: 'Riyadh', district: 'An Namudhajiyah', county: 'Riyadh governorate', state: 'Riyadh', country: 'Saudi Arabia', countrycode: 'SA' }, 24.6682, 46.6957],
+    [{ type: 'street', name: 'King Fahd Road', postcode: '12264', city: 'Riyadh', district: 'Al Muruj', county: 'Riyadh governorate', state: 'Riyadh', country: 'Saudi Arabia', countrycode: 'SA' }, 24.7536, 46.6512],
+    [{ type: 'street', name: 'King Fahd Road', postcode: '12613', city: 'Riyadh', district: 'An Namudhajiyah', county: 'Riyadh governorate', state: 'Riyadh', country: 'Saudi Arabia', countrycode: 'SA' }, 24.6503, 46.7021],
+    [{ type: 'street', name: 'King Fahd Road', postcode: '11131', city: 'Riyadh', district: 'Umm Salim', county: 'Riyadh governorate', state: 'Riyadh', country: 'Saudi Arabia', countrycode: 'SA' }, 24.6342, 46.7041],
+  ],
+  // lang=en, without a centre
+  'Θεσσαλονίκη': [
+    [{ type: 'district', name: 'Thessaloniki', postcode: '540 12', city: 'Thessaloniki Municipal Unit', county: 'Thessaloniki Regional Unit', state: 'Macedonia and Thrace', country: 'Greece', countrycode: 'GR' }, 40.6403, 22.9353],
+    [{ type: 'house', name: 'Thessaloniki', street: 'Δημητρίου Μαργαροπούλου', postcode: '546 29', city: 'Thessaloniki Municipal Unit', locality: 'Ξηροκρήνη', district: '2nd District of Thessaloniki', county: 'Thessaloniki Regional Unit', state: 'Macedonia and Thrace', country: 'Greece', countrycode: 'GR' }, 40.6451, 22.9292],
+    [{ type: 'street', name: 'Θεσσαλονίκη - Προμαχώνας', postcode: '620 54', city: 'Serres Municipality', county: 'Serres Regional Unit', state: 'Macedonia and Thrace', country: 'Greece', countrycode: 'GR' }, 41.0634, 23.351],
+    [{ type: 'street', name: 'Θεσσαλονίκη - Προμαχώνας', postcode: '623 00', city: 'Καμαρωτό', county: 'Serres Regional Unit', state: 'Macedonia and Thrace', country: 'Greece', countrycode: 'GR' }, 41.1975, 23.3849],
+    [{ type: 'street', name: 'Θεσσαλονίκη - Προμαχώνας', postcode: '621 00', city: 'Κάτω Χριστός', county: 'Serres Regional Unit', state: 'Macedonia and Thrace', country: 'Greece', countrycode: 'GR' }, 41.1046, 23.4539],
+    [{ type: 'street', name: 'Θεσσαλονίκη - Προμαχώνας', city: 'Kilkis Municipality', county: 'Kilkis Regional Unit', state: 'Macedonia and Thrace', country: 'Greece', countrycode: 'GR' }, 40.9883, 23.198],
+    [{ type: 'street', name: 'Θεσσαλονίκη - Προμαχώνας', postcode: '570 17', city: 'Kilkis Municipality', county: 'Kilkis Regional Unit', state: 'Macedonia and Thrace', country: 'Greece', countrycode: 'GR' }, 40.957, 23.1525],
+    [{ type: 'street', name: 'Θεσσαλονίκης - Καβάλας', postcode: '564 29', city: 'Efkarpia Municipal Unit', locality: 'Βιομηχανική Περιοχή Ευκαρπίας', district: 'Ευκαρπία', county: 'Thessaloniki Regional Unit', state: 'Macedonia and Thrace', country: 'Greece', countrycode: 'GR' }, 40.6955, 22.9476],
+  ],
+};
+
 // What Geoapify answered on 12 October 2026 (api.geoapify.com/v1/geocode/autocomplete, limit=20,
 // near a map centre or else in Switzerland), reduced to the fields the route reads and with
 // coordinates rounded to about ten metres. Its places outside Europe too, which the route leaves out.

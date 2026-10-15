@@ -150,10 +150,15 @@ changing the response contract.
    Vancouver, says so with `"stationParking": true`, and the map shows them
    as required bays.
 2. Add one entry to `data/countries.json`:
-   - `code`, `continent` (`europe` or `north-america`), `catalog` and `source`,
-     the key of its feeds in the API's `meta.sources`;
+   - `code`, `continent` (`europe`, `north-america`, `asia`, the Middle East
+     included, or `oceania`), `catalog` and `source`, the key of its feeds in
+     the API's `meta.sources`;
    - `names` in the nine languages of the apps, and the `searchWords` that,
-     typed beside a city, say which country is meant;
+     typed after a city, say which country is meant: written as the search
+     reads them (`src/lib/searchText.ts`), lower case, without accents and
+     with one space between two words, in any script: `united kingdom`,
+     `ελλαδα`, `ישראל`, `الامارات` (not `الإمارات`). No word that is also a
+     common word of names: `ksa` for Saudi Arabia, never `sa`;
    - `anchor`, where its total stands zoomed out, with an `anchorNote` saying
      why there;
    - `featuredCities`, the city ids the landing page names;
@@ -172,6 +177,14 @@ changing the response contract.
      `anchor` (and an `anchorNote`). Every service area of its catalog has a
      `region` (or its system has one for all its areas), and its cities' ids
      include it: `us:or:Portland`, shown as "Portland, OR".
+
+   A country outside Europe also says how it writes an address, in
+   `ADDRESS_FORMATS` of `src/app/api/geocode/addressFormats.ts`: whether the
+   house number comes first, its town line ("Sydney NSW 2000"), and its
+   postcode as riders type it after the town; `addressFormats.test.ts` fails
+   until it does. The search looks for places within its continent's boxes,
+   `CONTINENT_BOXES` in `src/app/api/geocode/route.ts`, once a country's
+   `anchor` is in one.
 
    The generator fails when a city's merged bounds are wider than 150 km, as
    two towns of one name merged into one would be; a city that really is wider

@@ -1,6 +1,8 @@
 import { COUNTRY_NAMES, COUNTRY_REGIONS, COUNTRY_SEARCH_WORDS, type CountryCode } from '@/generated/countries';
 import { COVERED_CITIES, isPointCovered, type CoveredCountry } from '@/lib/coveredCities';
 import { REGIONAL_SCOOTER_CITIES } from '@/lib/regionalScooterSystems';
+import { searchText, searchWords, TYPED_WORD } from '@/lib/searchText';
+import { POSTCODE_AFTER_TOWN } from './addressFormats';
 
 const MAX_CITIES = 5;
 
@@ -25,19 +27,6 @@ const SWISS_ALIASES: Record<string, string[]> = {
   'ch:zurich': ['Zuerich', 'Zurigo'],
 };
 
-// The letters no accent can be stripped from are spelled out, so "Tromso",
-// "Baerum", "Isafjordur" and "Wolomin" find Tromsø, Bærum, Ísafjörður and Wołomin.
-// Greek letters are kept, without their accents, and a final sigma is a sigma:
-// "Ροδος" and "Ρόδοσ" find Ρόδος. A dotless ı is an i, so "Kıbrıs" finds Cyprus.
-// Cyrillic letters are kept as well, without their marks, so "Київ" is found
-// typed as "Киів" too.
-const SPELLED_OUT: Record<string, string> = { ß: 'ss', æ: 'ae', ø: 'o', œ: 'oe', þ: 'th', ð: 'd', ł: 'l', ς: 'σ', ı: 'i' };
-
-function normalize(value: string): string {
-  return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-    .replace(/[ßæøœþðłςı]/g, letter => SPELLED_OUT[letter]).replace(/[^a-z0-9α-ωа-яёєіїґ]+/g, ' ').trim();
-}
-
 const REGIONAL_ALIASES = new Map(REGIONAL_SCOOTER_CITIES.map(city => [city.id, city.aliases ?? []]));
 // The state or province of a city in a country that lists them: "OR" for Portland, Oregon.
 const REGIONS = new Map(REGIONAL_SCOOTER_CITIES.flatMap(city => city.region ? [[city.id, city.region] as const] : []));
@@ -50,7 +39,7 @@ const CITIES = COVERED_CITIES.map(city => ({
   ...city,
   region: REGIONS.get(city.id),
   names: [city.city, ...(SWISS_ALIASES[city.id] ?? []), ...(REGIONAL_ALIASES.get(city.id) ?? [])]
-    .map(name => normalize(name).split(' ')),
+    .map(name => searchWords(name)),
 }));
 
 /** A country, or a state or province of one, typed beside a city: "Lindau Deutschland", "Portland, OR". */
@@ -66,7 +55,7 @@ interface Qualifier {
 const QUALIFIERS = (() => {
   const qualifiers = new Map<string, Qualifier[]>();
   const add = (words: string, qualifier: Qualifier) => {
-    const key = normalize(words);
+    const key = searchText(words);
     const known = qualifiers.get(key) ?? [];
     const same = known.some(({ country, region }) => country === qualifier.country && region === qualifier.region);
     if (key && !same) qualifiers.set(key, [...known, qualifier]);
@@ -84,12 +73,13 @@ const QUALIFIERS = (() => {
 
 // Names that end in what is also a country's or a state's name, and so say no
 // country: Staten Island is no town in Iceland (Ísland), New England none in
-// England, New Mexico none in Mexico. The names of the states and provinces are
-// such names too, and those of the cities, but for a city in the country or
-// state its name ends with: "Austin TX" is Austin in Texas, whichever way it is read.
+// England, New Mexico none in Mexico, New South Wales none in Wales. The names
+// of the states and provinces are such names too, and those of the cities, but
+// for a city in the country or state its name ends with: "Austin TX" is Austin
+// in Texas, whichever way it is read.
 const NAMES_OF_NO_CITY = [
   'Staten Island', 'Long Island', 'Rhode Island', 'Vancouver Island', 'Prince Edward Island', 'New England', 'New Mexico',
-  'Ciudad de Mexico', 'Estado de Mexico', 'Baja California', 'West Virginia', 'Kansas City',
+  'Ciudad de Mexico', 'Estado de Mexico', 'Baja California', 'West Virginia', 'Kansas City', 'New South Wales',
   ...Object.values(COUNTRY_REGIONS).flatMap(regions => (regions?.list ?? []).flatMap(({ name, names }) => [name, ...Object.values(names ?? {})])),
 ];
 const KNOWN_NAMES = (() => {
@@ -97,7 +87,7 @@ const KNOWN_NAMES = (() => {
   const add = (name: string, city: { country: CountryCode; region?: string } | null) => {
     if (name.includes(' ')) known.set(name, [...(known.get(name) ?? []), city]);
   };
-  for (const name of NAMES_OF_NO_CITY) add(normalize(name), null);
+  for (const name of NAMES_OF_NO_CITY) add(searchText(name), null);
   for (const city of CITIES) for (const parts of city.names) add(parts.join(' '), city);
   return known;
 })();
@@ -125,17 +115,18 @@ interface QueryWord {
   afterComma: boolean;
 }
 
-// Initials written with full stops are one word: "D.C." is DC, "U.S.A." is USA.
-function joinInitials(query: string): string {
-  return query.replace(/(?<![\p{L}\p{N}])(\p{L})\.(?=\p{L}(?:\.|(?![\p{L}\p{N}])))/gu, '$1');
+// Initials written with full stops are one word: "D.C." is DC, "U.S.A." is USA. Arabic's
+// comma and East Asia's are commas: "شارع الشيخ زايد، دبي" is an address in Dubai.
+function plainQuery(query: string): string {
+  return query.replace(/(?<![\p{L}\p{N}])(\p{L})\.(?=\p{L}(?:\.|(?![\p{L}\p{N}])))/gu, '$1').replace(/[،，、]/g, ',');
 }
 
 function queryWords(query: string): QueryWord[] {
   let previousEnd = 0;
-  return [...query.matchAll(/[\p{L}\p{M}\p{N}]+/gu)].flatMap(match => {
+  return [...query.matchAll(TYPED_WORD)].flatMap(match => {
     const afterComma = query.slice(previousEnd, match.index).includes(',');
     previousEnd = match.index + match[0].length;
-    return normalize(match[0]).split(' ').filter(Boolean)
+    return searchWords(match[0])
       .map((word, index) => ({ word, start: match.index, end: previousEnd, afterComma: afterComma && index === 0 }));
   });
 }
@@ -198,7 +189,7 @@ export function searchCoveredCities(query: string, language: GeocodeLanguage = '
 
 /** searchCoveredCities, saying of each city whether it was typed in full. */
 export function namedCities(query: string, language: GeocodeLanguage = 'en'): NamedCity[] {
-  const words = queryWords(joinInitials(query));
+  const words = queryWords(plainQuery(query));
   const { count, qualifiers } = qualifiersAtEnd(words);
   const find = (cityWords: string[], within: Qualifier[][]) => cityWords.join('').length < 2 ? [] : CITIES
     .filter(city => inQualified(within, city) && city.names.some(parts =>
@@ -256,10 +247,10 @@ interface AddressCityName {
 // and Fribourg's in German.
 const ADDRESS_NAMES: AddressCityName[] = CITIES.flatMap(city => {
   const town = city.region && city.city.endsWith(`, ${city.region}`) ? city.city.slice(0, -city.region.length - 2) : city.city;
-  const own = normalize(town).split(' ');
+  const own = searchWords(town);
   const shortened = (name: string[]) => name.length < own.length && name.every((part, index) => part === own[index]);
-  const regional = (REGIONAL_ALIASES.get(city.id) ?? []).map(alias => normalize(alias).split(' ')).filter(name => !shortened(name));
-  return [own, ...(SWISS_ALIASES[city.id] ?? []).map(alias => normalize(alias).split(' ')), ...regional]
+  const regional = (REGIONAL_ALIASES.get(city.id) ?? []).map(alias => searchWords(alias)).filter(name => !shortened(name));
+  return [own, ...(SWISS_ALIASES[city.id] ?? []).map(alias => searchWords(alias)), ...regional]
     .map(parts => ({ center: city.center, id: city.id, country: city.country, region: city.region, parts }));
 });
 
@@ -271,21 +262,20 @@ function ownNames(names: readonly AddressCityName[]): AddressCityName[] {
 }
 const ADDRESS_CITY_NAMES = ownNames(ADDRESS_NAMES);
 
-// A US ZIP code or a Canadian postal code at the end of an address, after its state or province: "TX 78701", "ON M5V 2T6".
-const POSTCODE_AT_END = /[\s,]+(?:\d{5}(?:-\d{4})?|[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d)\s*$/;
-
 /**
  * An address typed with the city it is in, and the centre of that city:
  * "Bahnhofstrasse 10, Biel" is "Bahnhofstrasse 10" in Biel. The city is a city
  * with scooter data, written after a comma or after a house number, or first
- * and followed by a comma; its state or country and a US or Canadian postcode
- * may follow it, and say which of two towns of a name it is. Not "Via Roma" nor
- * "Bristol Road": streets named after a city, wherever they are.
+ * and followed by a comma; its state or country may follow it, and say which of
+ * two towns of a name it is, and a postcode written after the town
+ * (addressFormats.ts). Not "Via Roma" nor "Bristol Road": streets named after a
+ * city, wherever they are.
  */
 export function cityOfAddress(typed: string): { address: string; center: [number, number] } | null {
-  const query = joinInitials(typed);
-  // "1100 Congress Ave, Austin, TX 78701" and "Queen St W, Toronto, ON M5V 2T6": the city before its state and postcode.
-  const withoutPostcode = query.replace(POSTCODE_AT_END, '');
+  const query = plainQuery(typed);
+  // "1100 Congress Ave, Austin, TX 78701", "George St, Sydney NSW 2000" and "10 Queen Street, Auckland 1010":
+  // the city before its state and postcode.
+  const withoutPostcode = query.replace(POSTCODE_AFTER_TOWN, '');
   const words = queryWords(withoutPostcode);
   const { count, qualifiers } = qualifiersAtEnd(words);
   if (qualifiers.length) {
@@ -293,11 +283,18 @@ export function cityOfAddress(typed: string): { address: string; center: [number
     const inCity = addressIn(withoutPostcode.slice(0, words[count].start), names, true);
     if (inCity) return inCity;
   }
-  return addressIn(query, ADDRESS_CITY_NAMES, false);
+  // Only a city the postcode follows: in "Zürich, Langstrasse 1200", 1200 is the house number.
+  const beforePostcode = withoutPostcode === query ? null : addressIn(withoutPostcode, ADDRESS_CITY_NAMES, false, false);
+  return beforePostcode ?? addressIn(query, ADDRESS_CITY_NAMES, false);
 }
 
-/** An address typed with one of these cities; with a state or a country after it, when qualified. */
-function addressIn(query: string, names: readonly AddressCityName[], qualified: boolean): { address: string; center: [number, number] } | null {
+/** An address typed with one of these cities; with a state or a country after it, when qualified; after the address only, unless cityFirst. */
+function addressIn(
+  query: string,
+  names: readonly AddressCityName[],
+  qualified: boolean,
+  cityFirst = true
+): { address: string; center: [number, number] } | null {
   const words = queryWords(query);
   const between = (before: number, after: number) => query.slice(words[before].end, words[after].start);
   const found = names.flatMap(({ center, parts }) => {
@@ -313,7 +310,7 @@ function addressIn(query: string, names: readonly AddressCityName[], qualified: 
       const afterNumber = /\d/.test(address) && !LINKING_WORDS.has(words[last - 1].word);
       return (afterComma && !alsoQualifier) || afterNumber ? [{ center, count, address }] : [];
     }
-    if (parts.every((part, index) => words[index].word === part) && between(count - 1, count).includes(',')) {
+    if (cityFirst && parts.every((part, index) => words[index].word === part) && between(count - 1, count).includes(',')) {
       const address = query.slice(words[count].start).trim();
       return !alsoQualifier || /\d/.test(address) ? [{ center, count, address }] : [];
     }
