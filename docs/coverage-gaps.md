@@ -505,6 +505,14 @@ its other systems answer 401. Dott made most regions private in September 2026.
   Spin East Lansing (`east_lansing`). Bird and Spin renew their ids at every
   request, so match scooters by place; add each if scooters leave places they
   don't come back to and arrive elsewhere.
+- **Night of 21 to 22 October 2026:** Spin Pawtucket from 22:30 to 00:30 EDT
+  and Spin San Diego (UC San Diego) from 23:30 to 01:30 PDT, polled every 5
+  minutes. Pawtucket's 2023 pilot rules ban renting from 23:00, and San
+  Diego's code from midnight to 02:30, but neither is confirmed for these
+  fleets today (see the guide's
+  [Night bans](american-scooter-feeds.md#night-bans)). If rides stop at the
+  hour, and Pawtucket's Public Works or UC San Diego confirms it, add the
+  ban.
 - **Late November 2026:** Spin St. Paul's season is "typically" mid-April to
   mid-November, Veo Cedar Rapids' may run through November, the University of
   Toledo's Veo fleet goes from mid-November, and Veo Rochester's in

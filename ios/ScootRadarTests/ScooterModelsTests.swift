@@ -793,6 +793,19 @@ extension ScooterModelsTests {
         XCTAssertEqual(RentalCurfew.active(at: nashville, on: try at("2026-10-15T05:30:00Z"))?.until, try at("2026-10-15T10:00:00Z"))
         XCTAssertNil(RentalCurfew.active(at: brentwood, on: try at("2026-10-15T05:30:00Z")))
 
+        // Minneapolis from midnight, Central time; Raleigh from 23:00, Eastern time, on NC State's campus too; Birmingham from 23:00, Central time.
+        let minneapolis = GeoPoint(latitude: 44.9778, longitude: -93.265)
+        let ncState = GeoPoint(latitude: 35.7847, longitude: -78.6821)
+        let birmingham = GeoPoint(latitude: 33.5186, longitude: -86.8104)
+        XCTAssertNil(RentalCurfew.active(at: minneapolis, on: try at("2026-10-15T04:59:00Z")))
+        XCTAssertEqual(RentalCurfew.active(at: minneapolis, on: try at("2026-10-15T05:00:00Z"))?.until, try at("2026-10-15T09:00:00Z"))
+        XCTAssertNil(RentalCurfew.active(at: ncState, on: try at("2026-10-15T02:59:00Z")))
+        XCTAssertEqual(
+            RentalCurfew.active(at: ncState, on: try at("2026-10-15T03:00:00Z")),
+            RentalCurfew.Active(city: "Raleigh", until: try at("2026-10-15T10:00:00Z"), timeZone: try XCTUnwrap(TimeZone(identifier: "America/New_York")))
+        )
+        XCTAssertEqual(RentalCurfew.active(at: birmingham, on: try at("2026-10-15T04:00:00Z"))?.until, try at("2026-10-15T11:00:00Z"))
+
         // The ban comes before every other notice, with a moon.
         let curfew = RentalCurfew.Active(city: "Oslo", until: try at("2026-10-13T03:00:00Z"), timeZone: osloTime)
         XCTAssertEqual(

@@ -20,6 +20,10 @@ const NASHVILLE: [number, number] = [36.1627, -86.7816];
 const BRENTWOOD: [number, number] = [36.0331, -86.7828];
 const LINCOLN: [number, number] = [40.8136, -96.7026];
 const CHICAGO: [number, number] = [41.8781, -87.6298];
+const MINNEAPOLIS: [number, number] = [44.9778, -93.265];
+const ST_PAUL: [number, number] = [44.9537, -93.09];
+const NC_STATE: [number, number] = [35.7847, -78.6821];
+const BIRMINGHAM_AL: [number, number] = [33.5186, -86.8104];
 const at = (iso: string) => Date.parse(iso);
 
 describe('activeCurfew', () => {
@@ -108,6 +112,15 @@ describe('activeCurfew', () => {
     expect(activeCurfew(LINCOLN, at('2026-11-10T05:00:00Z'))).toEqual({ city: 'Lincoln', until: at('2026-11-10T12:00:00Z'), timeZone: 'America/Chicago' });
     // Chicago tests riders at night instead.
     expect(activeCurfew(CHICAGO, at('2026-10-15T06:00:00Z'))).toBeNull();
+    // Minneapolis from midnight to 04:00, Central time; St. Paul has no ban.
+    expect(activeCurfew(MINNEAPOLIS, at('2026-10-15T04:59:00Z'))).toBeNull();
+    expect(activeCurfew(MINNEAPOLIS, at('2026-10-15T05:00:00Z'))).toEqual({ city: 'Minneapolis', until: at('2026-10-15T09:00:00Z'), timeZone: 'America/Chicago' });
+    expect(activeCurfew(ST_PAUL, at('2026-10-15T06:00:00Z'))).toBeNull();
+    // Raleigh from 23:00 to 06:00, Eastern time, on NC State's campus too.
+    expect(activeCurfew(NC_STATE, at('2026-10-15T02:59:00Z'))).toBeNull();
+    expect(activeCurfew(NC_STATE, at('2026-10-15T03:00:00Z'))).toEqual({ city: 'Raleigh', until: at('2026-10-15T10:00:00Z'), timeZone: 'America/New_York' });
+    // Birmingham from 23:00 to 06:00, Central time.
+    expect(activeCurfew(BIRMINGHAM_AL, at('2026-10-15T04:00:00Z'))).toEqual({ city: 'Birmingham', until: at('2026-10-15T11:00:00Z'), timeZone: 'America/Chicago' });
   });
 
   it('stops at the edge of Oslo, and needs a place', () => {

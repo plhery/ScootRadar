@@ -15,7 +15,7 @@ The map covers 87 towns in 32 states and the District: Washington, DC (Hopp
 and Veo), 24 towns of Bird's, 17 of Lime's, 39 more of Veo's, 28 of Spin's,
 and Lyft's Chicago and Portland. In 22 of them, from Tempe and the Bronx to
 Chicago and Columbus, two or three operators run, and the map counts their
-scooters as one town's. Seven of the towns ban renting at night; see
+scooters as one town's. Ten of the towns ban renting at night; see
 [Night bans](#night-bans).
 
 Each town is named with its state, "Washington, DC", as the United States has
@@ -415,15 +415,16 @@ a fleet put away leaves its feed, and the map, empty.
 
 ## Night bans
 
-Seven covered towns ban renting at night, by ordinance or in the rules of
-their permits. While a ban holds, the dock tells of it, with a moon, for the
-town in view, and a scooter's card says when it can be rented again. Web and
-iOS read the same [`rental-curfews.json`](../data/rental-curfews.json). It
-holds each rule, its source and the town's boundary: the Census Bureau's
-incorporated place from TIGERweb (public domain), simplified to within 100 m
-by `scripts/update-curfew-areas.mjs`. Hours are the town's own. Each ban
-rests on the city's own rule, in force and read again on 15 October 2026;
-none rests on news or an operator's notice.
+Ten covered towns ban renting at night, by ordinance, in the rules of
+their permits or on the city's own program page. While a ban holds, the dock
+tells of it, with a moon, for the town in view, and a scooter's card says
+when it can be rented again. Web and iOS read the same
+[`rental-curfews.json`](../data/rental-curfews.json). It holds each rule,
+its source and the town's boundary: the Census Bureau's incorporated place
+from TIGERweb (public domain), simplified to within 100 m by
+`scripts/update-curfew-areas.mjs`. Hours are the town's own. Each ban rests
+on the city's own rule, in force and read again on 15 October 2026; none
+rests on news or an operator's notice.
 
 | Town | Nights | Source |
 | --- | --- | --- |
@@ -434,6 +435,9 @@ none rests on news or an operator's notice.
 | Cleveland, OH | Every night, 00:00–03:00 | [Shared Mobility Device and Bicycle Vendor Rules](https://www.clevelandcitycouncil.gov/sites/default/files/2024-07/CITY%20RECORD%207-5-2024.pdf), City Record of 5 July 2024, § VIII |
 | Nashville, TN | Every night, 00:00–05:00 | [Metropolitan Transportation Licensing Commission Rules](https://www.nashville.gov/sites/default/files/2026-10/TLC_Rules_9-16-2026.pdf), filed 16 September 2026, § 905.L |
 | Gainesville, FL | Every night, 00:00–06:00 | [City Code § 26-196(e)](https://library.municode.com/fl/gainesville/codes/code_of_ordinances?nodeId=PTIICOOR_CH26TRMOVE_ARTVIIMISE) |
+| Minneapolis, MN | Every night, 00:00–04:00 | [Rent a scooter](https://www.minneapolismn.gov/getting-around/scooters/rent-a-scooter/), updated 30 June 2026 |
+| Raleigh, NC | Every night, 23:00–06:00 | [E-Scooter Program](https://raleighnc.gov/transportation/services/e-scooter-program) |
+| Birmingham, AL | Every night, 23:00–06:00 | [City Code § 12-22-6(c)(20)](https://library.municode.com/al/birmingham/codes/code_of_ordinances?nodeId=PT1THCOGEOR_TIT12LIRE_CH22SHMIDESY) |
 
 - A night is named after its evening: Friday's runs into Saturday morning.
 - **Dallas:** "Units may only be available to users to start a ride from
@@ -482,6 +486,28 @@ none rests on news or an operator's notice.
   University of Florida's
   [TAPS page](https://taps.ufl.edu/alternative-transportation/micromobility/)
   gives the same 6 AM to midnight, on campus and in the city.
+- **Minneapolis:** the city's page, last updated on 30 June 2026: "Ordinance
+  requires companies disable scooters at midnight. They're turned back on
+  the following day at 4 a.m." In Spin's feed, polled every 10 minutes on
+  the night of 14 October, eight scooters turned up at new places between
+  23:00 and midnight, and none from midnight to 01:20. The ban stops at
+  the city line, so Spin's St. Paul scooters aren't in it.
+- **Raleigh:** "All scooters are available to ride from 6 a.m. to 11 p.m.,
+  seven days a week." The page names Lime and Spin and carries no date;
+  the City Code (§ 12-1007) leaves operating rules to the City Manager.
+  NC State's [Spin page](https://transportation.ncsu.edu/spin-e-scooters-e-bikes/)
+  gives the same hours for its campus, which is inside the city, so both
+  Spin feeds fall under the ban. Few rides showed that evening, one or two an
+  hour before 23:00, and none in the two hours after.
+- **Birmingham:** "Shared micromobility devices, except bicycles, shall not
+  be enabled for public use between the hours of 11:00 p.m. to 6:00 a.m."
+  The city may change the hours on 48 hours' notice to operators; no
+  change is published, and Veo's fleet keeps to these. Its ids hold from
+  poll to poll: 24 and then 28 scooters moved more than 250 m in the two
+  hours before 23:00 on 14 October, 3 in the hour after and 1 in the next.
+
+Spin and Veo keep listing scooters as available through a ban, Gainesville's
+and Cleveland's too, so only rides stopping can show one in their feeds.
 
 Rules that read like bans but are not, or that no primary source confirms:
 
@@ -502,6 +528,31 @@ Rules that read like bans but are not, or that no primary source confirms:
   ("Beginner Mode").
 - **Durham:** only Duke's campus, from 23:00 to 06:00; the city has "no set
   operating hours".
+- **Providence:** Public Works' regulations of April 2022 disabled fleets
+  from 23:00 to 05:00; the newest, of 26 January 2023, dropped the clause.
+- **Pawtucket:** the pilot's rules, revised 20 April 2023, say "Scooters
+  must be unavailable for rental between the hours of 11:00PM Eastern Time
+  and 5:00AM Eastern Time" (§ 4). But the pilot ran to the end of 2025,
+  with scooters out all night in the summer of 2025, and nothing says what
+  its renewal for 2026 keeps. On 14 October a scooter left its place
+  between 23:29 and 23:34 EDT, and one appeared 1.5 km away by 23:44. Left
+  out until the city confirms the hours.
+- **San Diego:** the Municipal Code bars providers from letting devices be
+  reserved or activated from midnight to 02:30 (§ 83.0308(i), from
+  O-21467, 2022). But the map's San Diego is UC San Diego's own Spin fleet,
+  nearly all of it on the campus, which is state land; the university's
+  [page](https://transportation.ucsd.edu/campus/shared.html) sets no hours,
+  and the city's program pages are gone, so whether the campus fleet
+  answers to the city's contract rules is unconfirmed.
+- **Toledo:** the city's release of 25 March 2022 moved the curfew to
+  02:00–05:00, and UToledo's Veo page says midnight to 05:00, but no rule in
+  force today repeats either, and the city's
+  [Veo page](https://toledo.oh.gov/residents/community/veo-scooters) gives
+  no hours.
+- **East Lansing:** the code makes licensees take scooters off the city's
+  streets from 03:00 to 06:00 (§ 8-610(13)). The town on the map is
+  Michigan State's campus fleet, on university land, whose rules set no
+  hours; the city's own feed is left out (see above).
 - **Baltimore:** the Director's regulations, effective 18 June 2025, set no
   hours. A 23:00–04:00 window in summaries of the 2019 rules isn't in them.
 - **Louisville:** only scooters without working lights stop after dark.
@@ -522,6 +573,22 @@ Rules that read like bans but are not, or that no primary source confirms:
   2021 leave "Hours and days of operation" to each operator's plan.
 - **Reno:** the Administrative Code (§ 5.90.1180) and the city's e-scooter
   page set no hours; Bird's 2022 franchise agreement couldn't be read.
+- **Phoenix:** open all day since the pilot of 1 March 2024; riders take an
+  in-app test from 23:00 to 05:00 (subcommittee report of 16 October
+  2024). **Ann Arbor:** a test from 22:00 to 04:00 as well, and the city's
+  licence agreement with Spin sets no hours.
+- **Fort Collins:** Spin stopped from 01:00 to 03:00 until the city's 2023
+  annual report: "Spin expanded service hours to 24 hours per day."
+- **Denver, Portland, Columbus, Berkeley, Emeryville, Davis, Salt Lake City,
+  Tampa, Fayetteville, Wichita, Manhattan, Charlottesville, Hartford, New
+  Haven, Rochester, Syracuse, Akron, Cedar Rapids, West Lafayette and
+  Carbondale:** no hours in what was read of their rules; SIU's page says
+  Veo runs "24 hours per day, seven days per week." College Park, like
+  Durham, limits only its university's campus.
+- **Not read yet:** Norman, St. George, Meridian, Stillwater, Tallahassee,
+  St. Paul, Roanoke, Cleveland Heights, University Heights, South Euclid,
+  University Park, South Salt Lake, Sarasota, Asbury Park, New Brunswick,
+  Piscataway, Highland Park and New Rochelle.
 
 None of these towns' rules sets a season, so no Bird or Lime area pauses for
 winter. Chicago and Detroit license scooters all year, and Lincoln's code has

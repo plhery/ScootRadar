@@ -368,8 +368,8 @@ systems, the gaps and the recheck command.
 Night bans on renting, in `data/rental-curfews.json`, come from each town's
 rules: Lovdata for Norway, the council or the operator for Britain, the
 municipal regulation for Matosinhos in Portugal, the Kyiv City Military
-Administration's curfew order for Kyiv, and each American city's code or
-permit rules. Their areas are municipal
+Administration's curfew order for Kyiv, and each American city's code,
+permit rules or program page. Their areas are municipal
 boundaries from Kartverket under
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), local authority
 districts from the ONS under the
@@ -576,8 +576,8 @@ with data no older than fifteen minutes. Spin, which Bird owns, links the same
 licence from its feeds. Lime's
 [GBFS terms](https://www.li.me/legal/public-gbfs-terms) allow public display
 only where local law requires it, the same open question as in Europe. The
-map's credits name all six under the GBFS line. Seven towns ban renting at
-night, by their codes or permit rules. See the
+map's credits name all six under the GBFS line. Ten towns ban renting at
+night, by their codes, permit rules or program pages. See the
 [coverage audit](docs/american-scooter-feeds.md) for the systems, the brand
 Hopp, the bounds, the night bans, the gaps and the recheck command.
 
