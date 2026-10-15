@@ -1487,7 +1487,8 @@ svg {
   border-radius: 18px;
   background: var(--fill-quaternary);
 }
-.filter-help {
+.filter-help,
+.settings-help {
   margin: 8px 2px 0;
   font-size: 12px;
   color: var(--ink-2);
@@ -1654,29 +1655,11 @@ svg {
   background: var(--ground-name);
   box-shadow: 46px 0 0 var(--ground-name), 82px 22px 0 var(--ground-name);
 }
-.language-options {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-.language-options button {
-  min-height: 44px;
-  padding: 8px;
-  border: 1.5px solid var(--hairline);
-  border-radius: 14px;
-  background: var(--fill-quaternary);
-  font-size: 14px;
-  font-weight: 500;
-}
-.language-options button[aria-pressed='true'] {
-  border-color: var(--blue);
-  background: color-mix(in srgb, var(--blue) 8%, transparent);
-  color: var(--blue-ink);
-  font-weight: 650;
-}
-/* Rows that lead somewhere: About, and the sources behind its credits. */
+/* Rows that lead somewhere: the language, About, and the sources behind its
+   credits. The languages themselves are rows too, each with a check when chosen. */
 .about-rows > :where(a, button),
-.credits-rows a {
+.credits-rows a,
+.language-rows > button {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1695,23 +1678,63 @@ svg {
   text-decoration: none;
 }
 .about-rows > * + *,
-.credits-rows li + li {
+.credits-rows li + li,
+.language-rows > * + * {
   border-top: 1px solid var(--hairline);
 }
 .about-rows > :first-child,
-.credits-rows li:first-child a {
+.credits-rows li:first-child a,
+.language-rows > :first-child {
   border-radius: 18px 18px 0 0;
 }
 .about-rows > :last-child,
-.credits-rows li:last-child a {
+.credits-rows li:last-child a,
+.language-rows > :last-child {
   border-radius: 0 0 18px 18px;
 }
+.about-rows > :only-child,
+.language-rows > :only-child {
+  border-radius: 18px;
+}
 .about-rows > :where(a, button):focus-visible,
-.credits-rows a:focus-visible {
+.credits-rows a:focus-visible,
+.language-rows > button:focus-visible {
   outline-offset: -3px;
 }
 .about-rows svg {
   color: var(--ink-3);
+}
+/* "Automatic" beside the language on screen, while it follows the browser. */
+.row-value {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-2);
+  font-size: 14px;
+  font-weight: 400;
+}
+.language-copy {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+/* A language's own name, then what the language on screen calls it: beside it, or under it where there is no room. */
+.language-copy-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 8px;
+}
+.language-note {
+  color: var(--ink-2);
+  font-size: 13px;
+  font-weight: 400;
+}
+.language-rows svg {
+  flex-shrink: 0;
+  color: var(--blue-ink);
 }
 .credits-rows {
   margin-top: 14px;
@@ -2092,7 +2115,6 @@ svg {
   .location-card button,
   .card-actions > *,
   .map-style-options > button,
-  .language-options button,
   .sheet-back
 ) {
   transition:
@@ -2118,7 +2140,6 @@ svg {
     .location-card button,
     .card-actions > *,
     .map-style-options > button,
-    .language-options button,
     .sheet-back,
     .chip
   ):active:not(:disabled) {
@@ -2136,7 +2157,8 @@ svg {
     .search-retry,
     .provider-options button,
     .about-rows > *,
-    .credits-rows a
+    .credits-rows a,
+    .language-rows > button
   ):hover {
     background: var(--fill-tertiary);
   }

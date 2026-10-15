@@ -1714,15 +1714,43 @@ test('the settings name the languages, and About leads to the credits, the priva
   await expect(settings).toBeVisible();
   expect(await settings.getByRole('heading', { level: 3 }).allTextContents()).toEqual(['Appearance', 'Map', 'Language', 'About']);
 
-  const language = settings.getByRole('group', { name: 'Language' });
-  await expect(language.getByRole('button')).toHaveText(['Deutsch', 'Français', 'Italiano', 'Nederlands', 'Norsk', 'Português', 'Español', 'Íslenska', 'English']);
-  await expect(language.getByRole('button', { name: 'English' })).toHaveAttribute('aria-pressed', 'true');
-  await language.getByRole('button', { name: 'Deutsch' }).click();
-  const einstellungen = page.getByRole('dialog', { name: 'Einstellungen', exact: true });
-  await expect(einstellungen.getByRole('group', { name: 'Darstellung' }).getByRole('button')).toHaveText(['Automatisch', 'Hell', 'Dunkel']);
+  // One row for the language, which says that it is the browser's, and leads to the list of them.
+  const languageRow = settings.getByRole('button', { name: 'English Automatic', exact: true });
+  await languageRow.click();
+  const languages = page.getByRole('dialog', { name: 'Language', exact: true });
+  await expect(languages.getByRole('heading', { name: 'Language', level: 2 })).toBeFocused();
+  const automatic = languages.getByRole('button', { name: 'Automatic English, the language of your browser', exact: true });
+  await expect(automatic).toHaveAttribute('aria-pressed', 'true');
+  await expect(automatic).toHaveAccessibleDescription('Follows your browser’s language, if you change it there.');
+  const choices = languages.locator('button[aria-pressed]');
+  await expect(choices.locator('[lang]')).toHaveText(['Deutsch', 'English', 'Español', 'Français', 'Íslenska', 'Italiano', 'Nederlands', 'Norsk', 'Português']);
+  await expect(languages.getByRole('button', { name: 'Deutsch German', exact: true })).toHaveAttribute('aria-pressed', 'false');
+  await expect(languages.getByRole('button', { pressed: true })).toHaveCount(1);
+
+  // A language applies at once and the list stays; Automatic follows the browser again and keeps nothing.
+  await languages.getByRole('button', { name: 'Deutsch German', exact: true }).click();
+  const sprache = page.getByRole('dialog', { name: 'Sprache', exact: true });
+  await expect(sprache.getByRole('button', { name: 'Deutsch', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('html')).toHaveAttribute('lang', 'de-CH');
-  await einstellungen.getByRole('button', { name: 'English' }).click();
+  expect(await page.evaluate(() => localStorage.getItem('scooters-locale'))).toBe('de');
+  await sprache.getByRole('button', { name: 'Automatisch English, die Sprache deines Browsers', exact: true }).click();
+  await expect(automatic).toHaveAttribute('aria-pressed', 'true');
+  await expect(languages.getByRole('button', { pressed: true })).toHaveCount(1);
+  expect(await page.evaluate(() => localStorage.getItem('scooters-locale'))).toBeNull();
+
+  await languages.evaluate(element => Promise.all(element.getAnimations({ subtree: true }).map(animation => animation.finished)));
+  const list = (await languages.boundingBox())!;
+  for (const control of await languages.getByRole('button').all()) {
+    const target = (await control.boundingBox())!;
+    expect(target.height).toBeGreaterThanOrEqual(44);
+    expect(target.x).toBeGreaterThanOrEqual(list.x);
+    expect(target.x + target.width).toBeLessThanOrEqual(list.x + list.width);
+  }
+  const languagesAccessibility = await new AxeBuilder({ page }).include('.control-sheet').withTags(['wcag2a', 'wcag2aa']).analyze();
+  expect(languagesAccessibility.violations).toEqual([]);
+  await languages.getByRole('button', { name: 'Settings', exact: true }).click();
   await expect(settings).toBeVisible();
+  await expect(languageRow).toBeFocused();
 
   // Everything can be tapped, and nothing reaches past the sheet.
   await settings.evaluate(element => Promise.all(element.getAnimations({ subtree: true }).map(animation => animation.finished)));
@@ -1806,6 +1834,14 @@ test('the settings fit a small screen and scroll to their last row', async ({ pa
   await last.scrollIntoViewIfNeeded();
   await expect(last).toBeInViewport({ ratio: 1 });
   await expect(settings.getByRole('button', { name: 'Terminé' })).toBeInViewport({ ratio: 1 });
+
+  // So do the languages, each with the name French gives it.
+  await settings.getByRole('button', { name: 'Français', exact: true }).click();
+  const langues = page.getByRole('dialog', { name: 'Langue', exact: true });
+  await expect(langues.getByRole('button', { name: 'Nederlands Néerlandais', exact: true })).toBeVisible();
+  for (const choice of await langues.locator('button[aria-pressed]').all()) {
+    expect(await choice.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
+  }
 });
 
 test('primary controls have no WCAG A/AA accessibility violations', async ({ page }) => {

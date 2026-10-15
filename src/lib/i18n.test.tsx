@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { I18nProvider, SUPPORTED_LOCALES, saysScooter, translate, useI18n } from '@/lib/i18n';
 
@@ -12,6 +12,17 @@ function Probe() {
 function Marker() {
   const { t } = useI18n();
   return <p>{t('marker.scooter', { name: 'Lime' })}</p>;
+}
+
+function Choice() {
+  const { locale, localeChoice, browserLocale, setLocale } = useI18n();
+  return (
+    <>
+      <output>{`${locale} ${localeChoice} ${browserLocale}`}</output>
+      <button type="button" onClick={() => setLocale('fr')}>Français</button>
+      <button type="button" onClick={() => setLocale('auto')}>Automatic</button>
+    </>
+  );
 }
 
 function browserLanguages(languages: string[]) {
@@ -47,6 +58,55 @@ describe('I18nProvider', () => {
     render(<I18nProvider><Probe /></I18nProvider>);
     await waitFor(() => expect(document.documentElement.lang).toBe('de-CH'));
     expect(screen.getByRole('status')).toHaveTextContent(/^de CH 12.345\.6$/);
+  });
+});
+
+describe('the language chosen', () => {
+  const shows = (text: string) => waitFor(() => expect(screen.getByRole('status')).toHaveTextContent(text));
+
+  it('is the browser\'s until one is chosen, and again once Automatic is, which keeps nothing', async () => {
+    browserLanguages(['de-CH', 'en']);
+    render(<I18nProvider><Choice /></I18nProvider>);
+    // The first render matches the server's, which knows no browser.
+    expect(screen.getByRole('status')).toHaveTextContent('en auto en');
+    await shows('de auto de');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Français' }));
+    expect(screen.getByRole('status')).toHaveTextContent('fr fr de');
+    expect(localStorage.getItem('scooters-locale')).toBe('fr');
+    await waitFor(() => expect(document.documentElement.lang).toBe('fr-CH'));
+
+    fireEvent.click(screen.getByRole('button', { name: 'Automatic' }));
+    expect(screen.getByRole('status')).toHaveTextContent('de auto de');
+    expect(localStorage.getItem('scooters-locale')).toBeNull();
+    await waitFor(() => expect(document.documentElement.lang).toBe('de-CH'));
+  });
+
+  it('comes back with the page, and a language the app is not in is none', async () => {
+    browserLanguages(['it-IT']);
+    localStorage.setItem('scooters-locale', 'nb');
+    const { unmount } = render(<I18nProvider><Choice /></I18nProvider>);
+    await shows('nb nb it');
+    unmount();
+
+    localStorage.setItem('scooters-locale', 'pl');
+    render(<I18nProvider><Choice /></I18nProvider>);
+    await shows('it auto it');
+  });
+
+  it('follows the browser when its languages change while the page is open, unless one was chosen', async () => {
+    browserLanguages(['en-US']);
+    render(<I18nProvider><Choice /></I18nProvider>);
+    await shows('en auto en');
+
+    browserLanguages(['nl-NL', 'en']);
+    fireEvent(window, new Event('languagechange'));
+    await shows('nl auto nl');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Français' }));
+    browserLanguages(['es-ES']);
+    fireEvent(window, new Event('languagechange'));
+    await shows('fr fr es');
   });
 });
 
@@ -94,5 +154,13 @@ describe('names written right to left', () => {
   it('leave the names written left to right, and the numbers, as they are', () => {
     expect(translate('en', 'dock.lead.detailFrom', { name: 'Dott', minutes: 4, place: 'Langstrasse 120' })).toBe('Dott, 4 min from Langstrasse 120');
     expect(translate('en', 'parking.label', { name: 'Lime', place: 'Θεσσαλονίκη' })).toBe('Lime parking: Θεσσαλονίκη');
+  });
+});
+
+describe('a Norwegian browser', () => {
+  it.each([['no-NO'], ['nn']])('asking for %s is shown the app in Norwegian', async (language) => {
+    browserLanguages([language, 'en']);
+    render(<I18nProvider><Choice /></I18nProvider>);
+    await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('nb auto nb'));
   });
 });

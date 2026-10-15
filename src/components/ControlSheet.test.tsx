@@ -1,10 +1,13 @@
 // @vitest-environment jsdom
 
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import ControlSheet from '@/components/ControlSheet';
+import { track } from '@/lib/analytics';
 import { I18nProvider } from '@/lib/i18n';
 import { PROVIDER_KEYS } from '@/lib/types';
+
+vi.mock('@/lib/analytics', () => ({ track: vi.fn() }));
 
 type Props = React.ComponentProps<typeof ControlSheet>;
 
@@ -241,19 +244,118 @@ describe('ControlSheet settings', () => {
     expect(pressed(map)).toEqual(['Calm:false', 'Detailed:true']);
   });
 
-  it('names the languages in their own language and switches at once', () => {
-    settings();
-    const language = screen.getByRole('group', { name: 'Language' });
-    expect(pressed(language)).toEqual(['Deutsch:false', 'Français:false', 'Italiano:false', 'Nederlands:false', 'Norsk:false', 'Português:false', 'Español:false', 'Íslenska:false', 'English:true']);
-    expect(within(language).getAllByRole('button').map(button => button.lang))
-      .toEqual(['de-CH', 'fr-CH', 'it-CH', 'nl-CH', 'nb-CH', 'pt-CH', 'es-CH', 'is-CH', 'en-CH']);
+  const browserLanguages = (languages: string[]) => vi.spyOn(navigator, 'languages', 'get').mockReturnValue(languages);
+  // The row of the Language section, which leads to the list of languages, and what it says on its left and right.
+  const languageRow = (heading = 'Language') =>
+    within(screen.getByRole('heading', { name: heading, level: 3 }).closest('section')!).getByRole('button');
+  const rowSays = (row: HTMLElement) => [...row.children].map(part => part.textContent);
+  // Each choice of the list as it reads, its lines apart, then whether it is the one chosen and has the check.
+  const languageChoices = () =>
+    [...screen.getByRole('dialog').querySelectorAll('button[aria-pressed]')].map(choice => {
+      const lines = [...choice.querySelectorAll('.language-copy > span')].map(line => line.textContent).join(' / ');
+      return `${lines}:${choice.getAttribute('aria-pressed')}${choice.querySelector('svg') ? ' ✓' : ''}`;
+    });
+  const choice = (name: string) => screen.getByText(name, { selector: '.language-copy > span' }).closest('button')!;
 
-    fireEvent.click(within(language).getByRole('button', { name: 'Deutsch' }));
-    expect(screen.getByRole('dialog', { name: 'Einstellungen' })).toBeInTheDocument();
-    expect(screen.getByRole('group', { name: 'Darstellung' })).toBeInTheDocument();
-    expect(pressed(screen.getByRole('group', { name: 'Sprache' })))
-      .toEqual(['Deutsch:true', 'Français:false', 'Italiano:false', 'Nederlands:false', 'Norsk:false', 'Português:false', 'Español:false', 'Íslenska:false', 'English:false']);
+  it('shows the language on screen in one row, and says Automatic while it is the browser\'s', async () => {
+    settings();
+    // English was chosen: nothing more to say.
+    await vi.waitFor(() => expect(rowSays(languageRow())).toEqual(['English', '']));
+    expect(languageRow().querySelector('[lang]')).toHaveAttribute('lang', 'en');
+    cleanup();
+
+    localStorage.removeItem('scooters-locale');
+    browserLanguages(['de-CH', 'en']);
+    settings();
+    await vi.waitFor(() => expect(rowSays(languageRow('Sprache'))).toEqual(['Deutsch', 'Automatisch']));
+    expect(languageRow('Sprache').querySelector('[lang]')).toHaveAttribute('lang', 'de');
+  });
+
+  it('lists Automatic, then every language by its own name, and leads back to the row', async () => {
+    settings();
+    await vi.waitFor(() => expect(rowSays(languageRow())).toEqual(['English', '']));
+    fireEvent.click(languageRow());
+    const languages = screen.getByRole('dialog', { name: 'Language' });
+    expect(within(languages).getByRole('heading', { name: 'Language', level: 2 })).toHaveFocus();
+    expect(within(languages).queryByRole('group', { name: 'Appearance' })).toBeNull();
+    expect(languageChoices()).toEqual([
+      'Automatic / English, the language of your browser:false',
+      // In the same order in every language; the name on screen beside each, but English's own.
+      'Deutsch / German:false',
+      'English:true ✓',
+      'Español / Spanish:false',
+      'Français / French:false',
+      'Íslenska / Icelandic:false',
+      'Italiano / Italian:false',
+      'Nederlands / Dutch:false',
+      'Norsk / Norwegian:false',
+      'Português / Portuguese:false',
+    ]);
+    expect(choice('Deutsch').querySelector('[lang]')).toHaveAttribute('lang', 'de');
+    expect(choice('Íslenska').querySelector('[lang]')).toHaveAttribute('lang', 'is');
+    expect(choice('Automatic')).toHaveAccessibleDescription('Follows your browser’s language, if you change it there.');
+
+    fireEvent.click(within(languages).getByRole('button', { name: 'Settings' }));
+    expect(screen.getByRole('dialog', { name: 'Settings' })).toBeInTheDocument();
+    expect(languageRow()).toHaveFocus();
+  });
+
+  it('switches at once, stays on the list, and keeps the language chosen', async () => {
+    settings();
+    await vi.waitFor(() => expect(rowSays(languageRow())).toEqual(['English', '']));
+    fireEvent.click(languageRow());
+    fireEvent.click(choice('Deutsch'));
+    expect(track).toHaveBeenCalledExactlyOnceWith('language_change', { language: 'de' });
     expect(localStorage.getItem('scooters-locale')).toBe('de');
+    const sprache = screen.getByRole('dialog', { name: 'Sprache' });
+    expect(languageChoices()).toEqual([
+      'Automatisch / English, die Sprache deines Browsers:false',
+      'Deutsch:true ✓',
+      'English / Englisch:false',
+      'Español / Spanisch:false',
+      'Français / Französisch:false',
+      'Íslenska / Isländisch:false',
+      'Italiano / Italienisch:false',
+      'Nederlands / Niederländisch:false',
+      'Norsk / Norwegisch:false',
+      'Português / Portugiesisch:false',
+    ]);
+    // The language already chosen is not chosen again.
+    fireEvent.click(choice('Deutsch'));
+    expect(track).toHaveBeenCalledOnce();
+
+    fireEvent.click(within(sprache).getByRole('button', { name: 'Einstellungen' }));
+    expect(rowSays(languageRow('Sprache'))).toEqual(['Deutsch', '']);
+    expect(languageRow('Sprache')).toHaveFocus();
+  });
+
+  it('forgets the language chosen with Automatic, and follows the browser\'s', async () => {
+    browserLanguages(['de-CH', 'en']);
+    settings();
+    await vi.waitFor(() => expect(rowSays(languageRow())).toEqual(['English', '']));
+    fireEvent.click(languageRow());
+    expect(languageChoices()[0]).toBe('Automatic / Deutsch, the language of your browser:false');
+
+    fireEvent.click(choice('Automatic'));
+    expect(track).toHaveBeenCalledExactlyOnceWith('language_change', { language: 'auto' });
+    expect(localStorage.getItem('scooters-locale')).toBeNull();
+    expect(screen.getByRole('dialog', { name: 'Sprache' })).toBeInTheDocument();
+    expect(document.documentElement.lang).toBe('de-CH');
+    // The check is on Automatic alone, though German is on screen.
+    expect(languageChoices().filter(line => line.endsWith('✓'))).toEqual(['Automatisch / Deutsch, die Sprache deines Browsers:true ✓']);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Einstellungen' }));
+    expect(rowSays(languageRow('Sprache'))).toEqual(['Deutsch', 'Automatisch']);
+  });
+
+  it('opens on the first view again when closed on the list of languages', () => {
+    const { rerender } = settings();
+    fireEvent.click(languageRow());
+    expect(screen.getByRole('dialog', { name: 'Language' })).toBeInTheDocument();
+    rerender({ panel: 'settings', open: false });
+    rerender({ panel: 'settings', open: true });
+    expect(screen.getByRole('dialog', { name: 'Settings' })).toBeInTheDocument();
+    expect(screen.getByRole('group', { name: 'Appearance' })).toBeInTheDocument();
   });
 
   it('leads from About to the privacy notice and to the source code', () => {

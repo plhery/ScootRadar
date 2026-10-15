@@ -189,6 +189,9 @@ const en = {
   'set.calm': 'Calm',
   'set.detailed': 'Detailed',
   'set.language': 'Language',
+  'set.languageAuto': 'Automatic',
+  'set.languageBrowser': '{language}, the language of your browser',
+  'set.languageHelp': 'Follows your browser’s language, if you change it there.',
   'set.about': 'About',
   'set.credits': 'Map & data credits',
   'set.privacy': 'Privacy notice',
@@ -387,6 +390,9 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'set.calm': 'Ruhig',
     'set.detailed': 'Detailliert',
     'set.language': 'Sprache',
+    'set.languageAuto': 'Automatisch',
+    'set.languageBrowser': '{language}, die Sprache deines Browsers',
+    'set.languageHelp': 'Folgt der Sprache deines Browsers, auch wenn du sie dort änderst.',
     'set.about': 'Über',
     'set.credits': 'Karten- & Datenquellen',
     'set.privacy': 'Datenschutzerklärung',
@@ -579,6 +585,9 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'set.calm': 'Épurée',
     'set.detailed': 'Détaillée',
     'set.language': 'Langue',
+    'set.languageAuto': 'Automatique',
+    'set.languageBrowser': '{language}, la langue de votre navigateur',
+    'set.languageHelp': 'Suit la langue de votre navigateur, même si vous la changez.',
     'set.about': 'À propos',
     'set.credits': 'Crédits de la carte et des données',
     'set.privacy': 'Déclaration de confidentialité',
@@ -771,6 +780,9 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'set.calm': 'Essenziale',
     'set.detailed': 'Dettagliata',
     'set.language': 'Lingua',
+    'set.languageAuto': 'Automatica',
+    'set.languageBrowser': '{language}, la lingua del tuo browser',
+    'set.languageHelp': 'Segue la lingua del tuo browser, anche se la cambi.',
     'set.about': 'Informazioni',
     'set.credits': 'Fonti della mappa e dei dati',
     'set.privacy': 'Informativa sulla privacy',
@@ -963,6 +975,9 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'set.calm': 'Rolig',
     'set.detailed': 'Detaljert',
     'set.language': 'Språk',
+    'set.languageAuto': 'Automatisk',
+    'set.languageBrowser': '{language}, språket i nettleseren din',
+    'set.languageHelp': 'Følger språket i nettleseren din, også hvis du endrer det der.',
     'set.about': 'Om',
     'set.credits': 'Kart- og datakilder',
     'set.privacy': 'Personvernerklæring',
@@ -1155,6 +1170,9 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'set.calm': 'Rustig',
     'set.detailed': 'Gedetailleerd',
     'set.language': 'Taal',
+    'set.languageAuto': 'Automatisch',
+    'set.languageBrowser': '{language}, de taal van je browser',
+    'set.languageHelp': 'Volgt de taal van je browser, ook als je die daar wijzigt.',
     'set.about': 'Over',
     'set.credits': 'Kaart- en databronnen',
     'set.privacy': 'Privacyverklaring',
@@ -1347,6 +1365,9 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'set.calm': 'Simples',
     'set.detailed': 'Detalhado',
     'set.language': 'Idioma',
+    'set.languageAuto': 'Automático',
+    'set.languageBrowser': '{language}, o idioma do seu navegador',
+    'set.languageHelp': 'Segue o idioma do seu navegador, mesmo que o altere.',
     'set.about': 'Acerca de',
     'set.credits': 'Créditos do mapa e dos dados',
     'set.privacy': 'Aviso de privacidade',
@@ -1539,6 +1560,9 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'set.calm': 'Sencillo',
     'set.detailed': 'Detallado',
     'set.language': 'Idioma',
+    'set.languageAuto': 'Automático',
+    'set.languageBrowser': '{language}, el idioma de tu navegador',
+    'set.languageHelp': 'Sigue el idioma de tu navegador, aunque lo cambies.',
     'set.about': 'Información',
     'set.credits': 'Créditos del mapa y los datos',
     'set.privacy': 'Política de privacidad',
@@ -1731,6 +1755,9 @@ const dictionaries: Record<AppLocale, Dictionary> = {
     'set.calm': 'Rólegt',
     'set.detailed': 'Ítarlegt',
     'set.language': 'Tungumál',
+    'set.languageAuto': 'Sjálfvirkt',
+    'set.languageBrowser': '{language}, tungumál vafrans þíns',
+    'set.languageHelp': 'Fylgir tungumáli vafrans þíns, líka ef þú breytir því þar.',
     'set.about': 'Um appið',
     'set.credits': 'Heimildir korts og gagna',
     'set.privacy': 'Persónuverndarstefna',
@@ -1779,13 +1806,21 @@ export function translate(locale: AppLocale, key: TranslationKey, values: Transl
   );
 }
 
+/** A language the visitor picked in the settings, or Automatic: the browser's, whichever it is. */
+export type LocaleChoice = AppLocale | 'auto';
+
 interface I18nContextValue {
   locale: AppLocale;
+  /** What the settings show as chosen. */
+  localeChoice: LocaleChoice;
+  /** The first of the app's languages the browser asks for, English when it asks for none: the one Automatic shows. */
+  browserLocale: AppLocale;
   /** The region numbers, times, prices and distances are written for: "US", "CA", "CH". See formatLocale.ts. */
   region: string;
   /** The language the map writes place names in where its tiles have them: "en", or "el" in a Greek browser. See formatLocale.ts. */
   nameLanguage: string;
-  setLocale: (locale: AppLocale) => void;
+  /** Shows the app in the language from now on, or in the browser's again with 'auto'. */
+  setLocale: (choice: LocaleChoice) => void;
   t: (key: TranslationKey, values?: TranslationValues) => string;
   formatNumber: (value: number, options?: Intl.NumberFormatOptions) => string;
 }
@@ -1796,22 +1831,29 @@ const LOCALE_STORAGE_KEY = 'scooters-locale';
 function supportedLocale(value: string | null | undefined): AppLocale | null {
   if (!value) return null;
   const language = value.toLowerCase().split('-')[0];
+  // Norwegian is asked for as "no" or "nn" as often as "nb", and the app's is the nearest of all.
+  if (language === 'no' || language === 'nn') return 'nb';
   return SUPPORTED_LOCALES.find((locale) => locale === language) ?? null;
 }
 
-function browserLocale(): AppLocale {
-  const requested = navigator.languages.length > 0 ? navigator.languages : [navigator.language];
-  for (const locale of requested) {
-    const supported = supportedLocale(locale);
+function navigatorLanguages(): readonly string[] {
+  return navigator.languages.length > 0 ? [...navigator.languages] : [navigator.language];
+}
+
+function preferredLocale(requested: readonly string[]): AppLocale {
+  for (const language of requested) {
+    const supported = supportedLocale(language);
     if (supported) return supported;
   }
   return 'en';
 }
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<AppLocale>('en');
-  // Empty until mounted, so the first render matches the server's.
+  // Automatic and empty until mounted, so the first render is in English and matches the server's.
+  const [localeChoice, setLocaleChoice] = useState<LocaleChoice>('auto');
   const [browserLanguages, setBrowserLanguages] = useState<readonly string[]>([]);
+  const browserLocale = useMemo(() => preferredLocale(browserLanguages), [browserLanguages]);
+  const locale = localeChoice === 'auto' ? browserLocale : localeChoice;
   const region = useMemo(() => formatRegion(locale, browserLanguages), [browserLanguages, locale]);
   const nameLanguage = useMemo(() => placeNameLanguage(locale, browserLanguages), [browserLanguages, locale]);
 
@@ -1821,20 +1863,28 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
       try {
         stored = localStorage.getItem(LOCALE_STORAGE_KEY);
       } catch {}
-      setLocaleState(supportedLocale(stored) ?? browserLocale());
-      setBrowserLanguages(navigator.languages.length > 0 ? [...navigator.languages] : [navigator.language]);
+      setLocaleChoice(supportedLocale(stored) ?? 'auto');
+      setBrowserLanguages(navigatorLanguages());
     }, 0);
-    return () => window.clearTimeout(timeoutId);
+    // A browser whose languages are changed while the page is open says so: Automatic follows at once.
+    const followBrowser = () => setBrowserLanguages(navigatorLanguages());
+    window.addEventListener('languagechange', followBrowser);
+    return () => {
+      window.clearTimeout(timeoutId);
+      window.removeEventListener('languagechange', followBrowser);
+    };
   }, []);
 
   useEffect(() => {
     document.documentElement.lang = formatLocale(locale, region);
   }, [locale, region]);
 
-  const setLocale = useCallback((nextLocale: AppLocale) => {
-    setLocaleState(nextLocale);
+  // Automatic keeps nothing, so the next visit follows the browser too.
+  const setLocale = useCallback((choice: LocaleChoice) => {
+    setLocaleChoice(choice);
     try {
-      localStorage.setItem(LOCALE_STORAGE_KEY, nextLocale);
+      if (choice === 'auto') localStorage.removeItem(LOCALE_STORAGE_KEY);
+      else localStorage.setItem(LOCALE_STORAGE_KEY, choice);
     } catch {}
   }, []);
 
@@ -1850,8 +1900,8 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   );
 
   const value = useMemo(
-    () => ({ locale, region, nameLanguage, setLocale, t, formatNumber }),
-    [formatNumber, locale, nameLanguage, region, setLocale, t]
+    () => ({ locale, localeChoice, browserLocale, region, nameLanguage, setLocale, t, formatNumber }),
+    [browserLocale, formatNumber, locale, localeChoice, nameLanguage, region, setLocale, t]
   );
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;

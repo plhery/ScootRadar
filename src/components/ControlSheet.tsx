@@ -6,8 +6,7 @@ import { useId, useRef, useState, type CSSProperties } from 'react';
 import { flushSync } from 'react-dom';
 import { BATTERY_PRESETS, batteryPresetLabel, snapBatteryPreset } from '@/lib/battery';
 import type { MapStyleName, ThemeName } from '@/lib/clientParams';
-import { formatLocale } from '@/lib/formatLocale';
-import { SUPPORTED_LOCALES, useI18n, type AppLocale, type TranslationKey } from '@/lib/i18n';
+import { SUPPORTED_LOCALES, useI18n, type AppLocale, type LocaleChoice, type TranslationKey } from '@/lib/i18n';
 import { isSingular } from '@/lib/uiText';
 import { PROVIDERS, PROVIDER_KEYS } from '@/lib/types';
 import { providerSurfaceColor } from '@/lib/providerColor';
@@ -27,6 +26,13 @@ const LOCALE_LABELS: Record<AppLocale, string> = {
   is: 'Íslenska',
   en: 'English',
 };
+
+// In the same order whatever the language on screen, so that a row stays where it was tapped.
+const LANGUAGES = [...SUPPORTED_LOCALES].sort((a, b) => LOCALE_LABELS[a].localeCompare(LOCALE_LABELS[b], 'en'));
+
+/** The views the settings lead to, each from its row, by their headings. */
+type SettingsView = 'language' | 'credits';
+const SETTINGS_VIEWS: Record<SettingsView, TranslationKey> = { language: 'set.language', credits: 'set.credits' };
 
 const THEMES: { name: ThemeName; label: TranslationKey }[] = [
   { name: 'auto', label: 'set.auto' },
@@ -85,31 +91,34 @@ export default function ControlSheet({
   onThemeChange,
   onMapStyleChange,
 }: ControlSheetProps) {
-  const { t, locale, setLocale, formatNumber } = useI18n();
+  const { t, locale, localeChoice, formatNumber } = useI18n();
   const batteryHelpId = useId();
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const languageRowRef = useRef<HTMLButtonElement>(null);
   const creditsRowRef = useRef<HTMLButtonElement>(null);
-  const [creditsShown, setCreditsShown] = useState(false);
+  const [viewShown, setViewShown] = useState<SettingsView | null>(null);
   const [wasOpen, setWasOpen] = useState(open);
   // The settings open on their first view, whatever they showed when they were closed.
   if (wasOpen !== open) {
     setWasOpen(open);
-    if (open) setCreditsShown(false);
+    if (open) setViewShown(null);
   }
   const filters = panel === 'filters';
-  const credits = !filters && creditsShown;
+  const view = filters ? null : viewShown;
   const tap = (action: () => void) => () => { selectionFeedback(); action(); };
 
   // Committed within the tap, so that the focus can follow to where the view changed.
-  const showCredits = () => {
+  const showView = (next: SettingsView) => () => {
     selectionFeedback();
-    flushSync(() => setCreditsShown(true));
+    flushSync(() => setViewShown(next));
     titleRef.current?.focus();
   };
-  const hideCredits = () => {
+  // Back on the first view, the focus is on the row that led away from it.
+  const hideView = () => {
+    const row = view === 'language' ? languageRowRef : creditsRowRef;
     selectionFeedback();
-    flushSync(() => setCreditsShown(false));
-    creditsRowRef.current?.focus();
+    flushSync(() => setViewShown(null));
+    row.current?.focus();
   };
 
   const batteryPreset = snapBatteryPreset(minBattery);
@@ -129,9 +138,9 @@ export default function ControlSheet({
   return (
     <ModalSheet
       open={open}
-      title={t(filters ? 'filter.title' : credits ? 'set.credits' : 'set.title')}
+      title={t(filters ? 'filter.title' : view ? SETTINGS_VIEWS[view] : 'set.title')}
       titleRef={titleRef}
-      back={credits ? { label: t('set.title'), onClick: hideCredits } : undefined}
+      back={view ? { label: t('set.title'), onClick: hideView } : undefined}
       action={filters ? (
         <button type="button" className="sheet-reset" disabled={!hasActiveFilters} onClick={tap(onResetFilters)}>
           {t('filter.reset')}
@@ -223,10 +232,12 @@ export default function ControlSheet({
             </div>
           </section>
         </>
-      ) : credits ? (
+      ) : view === 'credits' ? (
         <div className="settings-group credits-rows">
           <CreditsList />
         </div>
+      ) : view === 'language' ? (
+        <LanguageList />
       ) : (
         <>
           <section className="settings-section">
@@ -283,29 +294,21 @@ export default function ControlSheet({
           </section>
           <section className="settings-section">
             <h3>{t('set.language')}</h3>
-            <div className="language-options" role="group" aria-label={t('set.language')}>
-              {SUPPORTED_LOCALES.map((language) => (
-                <button
-                  key={language}
-                  type="button"
-                  aria-pressed={locale === language}
-                  lang={formatLocale(language)}
-                  onClick={() => {
-                    if (locale === language) return;
-                    selectionFeedback();
-                    track('language_change', { language });
-                    setLocale(language);
-                  }}
-                >
-                  {LOCALE_LABELS[language]}
-                </button>
-              ))}
+            {/* The language on screen, with Automatic beside it while it is the browser's. */}
+            <div className="settings-group about-rows">
+              <button ref={languageRowRef} type="button" onClick={showView('language')}>
+                <span lang={locale}>{LOCALE_LABELS[locale]}</span>
+                <span className="row-value">
+                  {localeChoice === 'auto' && t('set.languageAuto')}
+                  <Icon name="chevron" size={16} strokeWidth={2.2} />
+                </span>
+              </button>
             </div>
           </section>
           <section className="settings-section">
             <h3>{t('set.about')}</h3>
             <div className="settings-group about-rows">
-              <button ref={creditsRowRef} type="button" onClick={showCredits}>
+              <button ref={creditsRowRef} type="button" onClick={showView('credits')}>
                 {t('set.credits')}
                 <Icon name="chevron" size={16} strokeWidth={2.2} />
               </button>
@@ -323,5 +326,58 @@ export default function ControlSheet({
         </>
       )}
     </ModalSheet>
+  );
+}
+
+/** Automatic, which follows the browser, then every language by its own name. A tap switches at once and stays on the list. */
+function LanguageList() {
+  const { t, locale, localeChoice, browserLocale, setLocale } = useI18n();
+  const helpId = useId();
+  const names = new Intl.DisplayNames([locale], { type: 'language' });
+  // "German" beside "Deutsch", as the language on screen calls it, unless that is the same name.
+  // Norwegian is "Norwegian" beside "Norsk", not "Norwegian Bokmål".
+  const nameOnScreen = (language: AppLocale) => {
+    const name = names.of(language === 'nb' ? 'no' : language) ?? '';
+    const capitalised = name.charAt(0).toLocaleUpperCase(locale) + name.slice(1);
+    return capitalised === LOCALE_LABELS[language] ? null : capitalised;
+  };
+  const choose = (choice: LocaleChoice) => () => {
+    if (choice === localeChoice) return;
+    selectionFeedback();
+    track('language_change', { language: choice });
+    setLocale(choice);
+  };
+
+  return (
+    <>
+      <div className="settings-section">
+        <div className="settings-group language-rows">
+          <button type="button" aria-pressed={localeChoice === 'auto'} aria-describedby={helpId} onClick={choose('auto')}>
+            <span className="language-copy">
+              <span>{t('set.languageAuto')}</span>
+              <span className="language-note">{t('set.languageBrowser', { language: LOCALE_LABELS[browserLocale] })}</span>
+            </span>
+            {localeChoice === 'auto' && <Icon name="check" size={20} strokeWidth={2.4} />}
+          </button>
+        </div>
+        <p id={helpId} className="settings-help">{t('set.languageHelp')}</p>
+      </div>
+      <div className="settings-section">
+        <div className="settings-group language-rows">
+          {LANGUAGES.map((language) => {
+            const other = nameOnScreen(language);
+            return (
+              <button key={language} type="button" aria-pressed={localeChoice === language} onClick={choose(language)}>
+                <span className="language-copy language-copy-inline">
+                  <span lang={language}>{LOCALE_LABELS[language]}</span>
+                  {other && <span className="language-note">{other}</span>}
+                </span>
+                {localeChoice === language && <Icon name="check" size={20} strokeWidth={2.4} />}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </>
   );
 }
