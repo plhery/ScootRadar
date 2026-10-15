@@ -281,6 +281,7 @@ function LandingPage({ locale }: { locale: LandingLocale }) {
   // Not every provider publishes its rates: the ride is priced on the nearest scooter of one that does.
   const priced = LANDING_NEAREST.find(scooter => scooter.pricing);
   const glow = { '--c': tileColor(nearest.provider) } as CSSProperties;
+  const languages = LANDING_LOCALES.map(language => ({ locale: language, href: landingPath(language) }));
   // The providers in the order the page names them: by name, the one with bikes last.
   const named = [...LANDING_NEAREST].sort(
     (a, b) =>
@@ -298,7 +299,7 @@ function LandingPage({ locale }: { locale: LandingLocale }) {
         locale={locale}
         home="#top"
         links={[{ href: '#know', label: copy.nav.shows }, { href: '#cities', label: copy.nav.cities }]}
-        languages={LANDING_LOCALES.map(language => ({ locale: language, href: landingPath(language) }))}
+        languages={languages}
       />
 
       <main>
@@ -496,7 +497,7 @@ function LandingPage({ locale }: { locale: LandingLocale }) {
         </section>
       </main>
 
-      <SiteFooter locale={locale} />
+      <SiteFooter locale={locale} languages={languages} />
     </>
   );
 }

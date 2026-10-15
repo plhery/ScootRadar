@@ -77,12 +77,26 @@ test('a guide tells a search engine where it is in the other languages, and what
   const asked = described['@graph'][3].mainEntity.map((question: { name: string }) => question.name);
   await expect(page.locator('.guide-faq dt')).toHaveText(asked);
 
-  // The bar changes language to the same guide.
+  // The bar changes language to the same guide: the browser's beside the page's, the others
+  // behind Others, which lists the guide's four languages, not the site's nine.
   const languages = page.getByRole('group', { name: 'Langue' });
-  await expect(languages.getByRole('link')).toHaveText(['EN', 'DE', 'FR', 'IT']);
-  await languages.getByRole('link', { name: 'DE' }).click();
+  await expect(languages.getByRole('link')).toHaveCount(2);
+  await expect(languages.getByRole('link', { name: 'Français' })).toHaveAttribute('aria-current', 'page');
+  await expect(languages.getByRole('link', { name: 'English' })).toHaveAttribute('href', SWISS_RULES.en);
+  await languages.getByRole('button', { name: 'Autres' }).click();
+  const list = page.locator('#languages').getByRole('link');
+  await expect(list).toHaveCount(4);
+  await page.locator('#languages a[hreflang="de"]').click();
   await expect(page).toHaveURL(new RegExp(`${SWISS_RULES.de}$`));
   await expect(page.locator('html')).toHaveAttribute('lang', 'de');
+});
+
+test('a guide in three languages has a seat for each, and no list', async ({ page }) => {
+  await page.goto('/guides/e-scooters-brussels');
+  const languages = page.getByRole('group', { name: 'Language' });
+  await expect(languages.getByRole('link')).toHaveCount(3);
+  await expect(languages.getByRole('link').first()).toHaveAttribute('aria-current', 'page');
+  await expect(languages.getByRole('button')).toHaveCount(0);
 });
 
 test('a guide on a city opens the map there', async ({ page }) => {

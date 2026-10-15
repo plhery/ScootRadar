@@ -114,7 +114,16 @@ export interface LandingCopy {
     /** The picture a shared link shows, public/share/<locale>.png: scripts/generate-share-images.mjs draws it. */
     share: { title: string; alt: string };
   };
-  nav: { main: string; shows: string; cities: string; languages: string };
+  nav: {
+    main: string;
+    shows: string;
+    cities: string;
+    languages: string;
+    /** The third seat of the languages, which opens the list of all of them. */
+    others: string;
+    /** Why the second seat is the language it is, written under it in the list. */
+    guessed: { browser: string; place: string; default: string };
+  };
   openMap: string;
   iphoneApp: string;
   hero: {
@@ -199,7 +208,14 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         alt: 'Every e-scooter on one map: the app at night by Zürich main station, beside the initials of twelve providers.',
       },
     },
-    nav: { main: 'Main', shows: 'What it shows', cities: 'Cities', languages: 'Language' },
+    nav: {
+      main: 'Main',
+      shows: 'What it shows',
+      cities: 'Cities',
+      languages: 'Language',
+      others: 'Others',
+      guessed: { browser: 'Your browser', place: 'Where you are', default: 'Default' },
+    },
     openMap: 'Open the map',
     iphoneApp: 'Get the iPhone app',
     hero: {
@@ -323,7 +339,14 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         alt: 'Alle E-Scooter auf einer Karte: die App bei Nacht am Zürcher Hauptbahnhof, daneben die Initialen von zwölf Anbietern.',
       },
     },
-    nav: { main: 'Hauptnavigation', shows: 'Was die Karte zeigt', cities: 'Städte', languages: 'Sprache' },
+    nav: {
+      main: 'Hauptnavigation',
+      shows: 'Was die Karte zeigt',
+      cities: 'Städte',
+      languages: 'Sprache',
+      others: 'Weitere',
+      guessed: { browser: 'Dein Browser', place: 'Wo du bist', default: 'Standard' },
+    },
     openMap: 'Karte öffnen',
     iphoneApp: 'iPhone-App laden',
     hero: {
@@ -447,7 +470,14 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         alt: 'Toutes les trottinettes sur une seule carte : l’app, de nuit, près de la gare centrale de Zurich, à côté des initiales de douze opérateurs.',
       },
     },
-    nav: { main: 'Navigation principale', shows: 'Ce que montre la carte', cities: 'Villes', languages: 'Langue' },
+    nav: {
+      main: 'Navigation principale',
+      shows: 'Ce que montre la carte',
+      cities: 'Villes',
+      languages: 'Langue',
+      others: 'Autres',
+      guessed: { browser: 'Votre navigateur', place: 'Là où vous êtes', default: 'Par défaut' },
+    },
     openMap: 'Ouvrir la carte',
     iphoneApp: 'Télécharger l’app iPhone',
     hero: {
@@ -571,7 +601,14 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         alt: 'Tutti i monopattini su una sola mappa: l’app di notte vicino alla stazione centrale di Zurigo, accanto alle iniziali di dodici operatori.',
       },
     },
-    nav: { main: 'Navigazione principale', shows: 'Cosa mostra la mappa', cities: 'Città', languages: 'Lingua' },
+    nav: {
+      main: 'Navigazione principale',
+      shows: 'Cosa mostra la mappa',
+      cities: 'Città',
+      languages: 'Lingua',
+      others: 'Altre',
+      guessed: { browser: 'Il tuo browser', place: 'Dove ti trovi', default: 'Predefinita' },
+    },
     openMap: 'Apri la mappa',
     iphoneApp: 'Scarica l’app per iPhone',
     hero: {
@@ -695,7 +732,14 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         alt: 'Alle elsparkesykler på ett kart: appen om natten ved Zürich hovedstasjon, ved siden av initialene til tolv operatører.',
       },
     },
-    nav: { main: 'Hovedmeny', shows: 'Hva kartet viser', cities: 'Byer', languages: 'Språk' },
+    nav: {
+      main: 'Hovedmeny',
+      shows: 'Hva kartet viser',
+      cities: 'Byer',
+      languages: 'Språk',
+      others: 'Andre',
+      guessed: { browser: 'Nettleseren din', place: 'Der du er', default: 'Standard' },
+    },
     openMap: 'Åpne kartet',
     iphoneApp: 'Last ned iPhone-appen',
     hero: {
@@ -819,7 +863,14 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         alt: 'Alle deelsteps op één kaart: de app ’s nachts bij het centraal station van Zürich, naast de initialen van twaalf aanbieders.',
       },
     },
-    nav: { main: 'Hoofdnavigatie', shows: 'Wat de kaart toont', cities: 'Steden', languages: 'Taal' },
+    nav: {
+      main: 'Hoofdnavigatie',
+      shows: 'Wat de kaart toont',
+      cities: 'Steden',
+      languages: 'Taal',
+      others: 'Andere',
+      guessed: { browser: 'Je browser', place: 'Waar je bent', default: 'Standaard' },
+    },
     openMap: 'Open de kaart',
     iphoneApp: 'Download de iPhone-app',
     hero: {
@@ -942,7 +993,14 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         alt: 'Todas as trotinetes num só mapa: a app à noite junto à estação central de Zurique, ao lado das iniciais de doze operadores.',
       },
     },
-    nav: { main: 'Navegação principal', shows: 'O que o mapa mostra', cities: 'Cidades', languages: 'Idioma' },
+    nav: {
+      main: 'Navegação principal',
+      shows: 'O que o mapa mostra',
+      cities: 'Cidades',
+      languages: 'Idioma',
+      others: 'Outros',
+      guessed: { browser: 'O seu navegador', place: 'Onde está', default: 'Predefinição' },
+    },
     openMap: 'Abrir o mapa',
     iphoneApp: 'Descarregar a app para iPhone',
     hero: {
@@ -1065,7 +1123,14 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         alt: 'Todos los patinetes en un solo mapa: la app de noche junto a la estación central de Zúrich, con las iniciales de doce operadores al lado.',
       },
     },
-    nav: { main: 'Navegación principal', shows: 'Qué muestra el mapa', cities: 'Ciudades', languages: 'Idioma' },
+    nav: {
+      main: 'Navegación principal',
+      shows: 'Qué muestra el mapa',
+      cities: 'Ciudades',
+      languages: 'Idioma',
+      others: 'Otros',
+      guessed: { browser: 'Tu navegador', place: 'Donde estás', default: 'Predeterminado' },
+    },
     openMap: 'Abrir el mapa',
     iphoneApp: 'Descargar la app para iPhone',
     hero: {
@@ -1188,7 +1253,14 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
         alt: 'Allar rafskútur á einu korti: appið að nóttu til við aðallestarstöðina í Zürich, við hlið upphafsstafa tólf fyrirtækja.',
       },
     },
-    nav: { main: 'Aðalvalmynd', shows: 'Hvað kortið sýnir', cities: 'Staðir', languages: 'Tungumál' },
+    nav: {
+      main: 'Aðalvalmynd',
+      shows: 'Hvað kortið sýnir',
+      cities: 'Staðir',
+      languages: 'Tungumál',
+      others: 'Önnur',
+      guessed: { browser: 'Vafrinn þinn', place: 'Þar sem þú ert', default: 'Sjálfgefið' },
+    },
     openMap: 'Opna kortið',
     iphoneApp: 'Sækja iPhone-appið',
     hero: {

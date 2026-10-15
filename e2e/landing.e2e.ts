@@ -69,25 +69,73 @@ for (const [locale, headline] of Object.entries(HEADLINES)) {
 
 test('the landing page changes language from its bar and stays where it is', async ({ page }) => {
   await page.goto('/');
+  // Three seats: the page's language, the one guessed for the visitor, and Others. Where the
+  // visitor is decides the second for this browser, which asks for English only.
   const languages = page.getByRole('group', { name: 'Language' });
-  await expect(languages.getByRole('link')).toHaveText(['EN', 'DE', 'FR', 'IT', 'NL', 'NB', 'PT', 'ES', 'IS']);
-  await expect(languages.getByRole('link', { name: 'EN' })).toHaveAttribute('aria-current', 'page');
-  for (const [locale, address] of Object.entries(ADDRESS)) {
-    await expect(languages.getByRole('link', { name: locale.toUpperCase() })).toHaveAttribute('href', address);
-  }
+  const seats = languages.getByRole('link');
+  await expect(seats.first()).toHaveAccessibleName('English');
+  await expect(seats.first()).toHaveAttribute('aria-current', 'page');
+  expect(await seats.count()).toBeLessThanOrEqual(2);
 
-  await languages.getByRole('link', { name: 'FR' }).click();
+  // Behind Others, every language, by its own name.
+  await languages.getByRole('button', { name: 'Others' }).click();
+  const list = page.locator('#languages');
+  await expect(list).toBeVisible();
+  const items = list.getByRole('link');
+  await expect(items).toHaveCount(Object.keys(ADDRESS).length);
+  for (const [locale, address] of Object.entries(ADDRESS)) {
+    await expect(list.locator(`a[hreflang="${locale}"]`)).toHaveAttribute('href', address);
+  }
+  await expect(items.first()).toContainText('Deutsch');
+  await expect(list.locator('a[hreflang="fr"]')).toContainText('French');
+  await expect(list.locator('a[hreflang="en"]')).toHaveAttribute('aria-current', 'page');
+  await page.keyboard.press('Escape');
+  await expect(list).toBeHidden();
+
+  await languages.getByRole('button', { name: 'Others' }).click();
+  await list.locator('a[hreflang="fr"]').click();
   await expect(page).toHaveURL(/\/fr$/);
   await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(HEADLINES.fr);
-  await expect(page.getByRole('group', { name: 'Langue' }).getByRole('link', { name: 'FR' }))
-    .toHaveAttribute('aria-current', 'page');
+  const langue = page.getByRole('group', { name: 'Langue' });
+  await expect(langue.getByRole('link', { name: 'Français' })).toHaveAttribute('aria-current', 'page');
   await expect(page).toHaveTitle(/^Carte des trottinettes électriques en libre-service/);
 
-  // And back to English, which is the root.
-  await page.getByRole('group', { name: 'Langue' }).getByRole('link', { name: 'EN' }).click();
+  // And back to English, which is the browser's: the second seat.
+  await expect(langue.getByRole('link').nth(1)).toHaveAccessibleName('English');
+  await langue.getByRole('link', { name: 'English' }).click();
   await expect(page).toHaveURL(/:\d+\/$/);
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+});
+
+test.describe('in an Italian browser', () => {
+  test.use({ locale: 'it-IT' });
+
+  test('the second seat is the language of the browser, and the list says so', async ({ page }) => {
+    // The page as built offers English; the Worker offers this visitor Italian instead.
+    await page.goto('/fr');
+    const langue = page.getByRole('group', { name: 'Langue' });
+    await expect(langue.getByRole('link')).toHaveCount(2);
+    await expect(langue.getByRole('link').nth(1)).toHaveAccessibleName('Italiano');
+    await expect(langue.getByRole('link').nth(1)).toHaveAttribute('href', '/it');
+
+    await langue.getByRole('button', { name: 'Autres' }).click();
+    const list = page.locator('#languages');
+    await expect(list.locator('a[hreflang="it"] .langs-item-why')).toHaveAttribute('data-reason', 'Votre navigateur');
+    await expect(list.locator('[data-reason]')).toHaveCount(1);
+  });
+});
+
+test('every language of the site is in the footer, written out', async ({ page }) => {
+  await page.goto('/de');
+  const footer = page.getByRole('contentinfo').getByRole('navigation', { name: 'Sprache' });
+  await expect(footer.getByRole('link')).toHaveText(
+    ['Deutsch', 'English', 'Español', 'Français', 'Íslenska', 'Italiano', 'Nederlands', 'Norsk', 'Português'],
+  );
+  await expect(footer.getByRole('link', { name: 'Deutsch' })).toHaveAttribute('aria-current', 'page');
+  for (const [locale, address] of Object.entries(ADDRESS)) {
+    await expect(footer.locator(`a[hreflang="${locale}"]`)).toHaveAttribute('href', address);
+  }
 });
 
 test.describe('on the narrowest phone', () => {

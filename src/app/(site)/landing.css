@@ -246,6 +246,7 @@ img {
 .pill {
   display: grid;
   grid-template-columns: 1fr auto;
+  anchor-name: --bar;
   align-items: center;
   gap: 4px 12px;
   width: 100%;
@@ -276,17 +277,18 @@ img {
 }
 
 .pill-link,
-.langs a {
+.seat {
   color: var(--soft);
-  transition: color 0.2s;
+  transition: color 0.2s, background-color 0.2s;
 }
 
 .pill-link:hover,
-.langs a:hover {
+.seat:hover {
   color: var(--loud);
 }
 
-/* On a phone the bar keeps its two ends, and the languages take a row of their own. */
+/* On a phone the bar keeps its two ends, and the languages take a row of their own:
+   three seats at most, with the names written out, sharing the row by their length. */
 .pill .pill-link {
   display: none;
 }
@@ -299,26 +301,198 @@ img {
   gap: 2px;
   padding-top: 4px;
   border-top: 1px solid var(--line);
-  font: 700 14px var(--display);
+  font: 700 15px var(--display);
+  anchor-name: --languages;
 }
 
-.langs a {
-  flex: 1 1 0;
+.pill .seat {
+  flex: 1 1 auto;
   justify-content: center;
-  border-radius: 11px;
+  gap: 6px;
+  min-width: 0;
+  padding: 0 6px;
+  border-radius: 12px;
 }
 
-.langs a[aria-current] {
+/* The seats the guess did not take. */
+.pill .seat[hidden] {
+  display: none;
+}
+
+.seat-code {
+  display: none;
+}
+
+.seat-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.seat[aria-current] {
   color: var(--text);
 }
 
-.langs a[aria-current]::after {
+.seat[aria-current]::after {
   content: '';
+  flex: none;
   width: 5px;
   height: 5px;
-  margin-left: 6px;
   border-radius: 50%;
   background: var(--text);
+}
+
+/* Others: a button, which opens the list of every language. */
+.seat-more {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.seat-more svg {
+  flex: none;
+}
+
+.langs:has(.langs-menu:popover-open) .seat-more {
+  background: var(--control);
+  color: var(--text);
+}
+
+/* The list behind Others, two languages to a line, each under its own name
+   and the page's name for it. On a phone it is as wide as the bar, under it. */
+.langs-menu {
+  position: fixed;
+  inset: auto;
+  position-anchor: --bar;
+  top: calc(anchor(bottom) + 10px);
+  left: anchor(left);
+  right: anchor(right);
+  width: auto;
+  max-height: calc(100dvh - 150px);
+  margin: 0;
+  padding: 8px;
+  overflow: auto;
+  border: 0;
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--raised) 97%, transparent);
+  box-shadow: inset 0 0 0 1px var(--line), 0 30px 70px -20px var(--shade);
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+  backdrop-filter: blur(22px) saturate(1.6);
+  color: var(--text);
+  font: 500 16px/1.35 var(--body);
+}
+
+/* Where the list cannot be placed by the bar, it opens in the middle of the screen. */
+@supports not (anchor-name: --languages) {
+  .langs-menu {
+    inset: 0;
+    width: min(440px, calc(100% - 32px));
+    max-height: calc(100% - 32px);
+    height: fit-content;
+    margin: auto;
+  }
+}
+
+.langs-menu-title {
+  margin: 0;
+  padding: 6px 10px 8px;
+  font: 700 13px var(--display);
+  color: var(--quiet);
+}
+
+.langs-menu ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pill .langs-menu a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-content: center;
+  align-items: center;
+  gap: 2px 8px;
+  min-height: 56px;
+  padding: 8px 12px;
+  border-radius: 14px;
+  color: var(--text);
+  transition: background-color 0.2s;
+}
+
+.langs-menu a:hover {
+  background: color-mix(in srgb, var(--control) 55%, transparent);
+}
+
+.langs-menu a[aria-current] {
+  background: var(--control);
+}
+
+.langs-menu a > span {
+  grid-column: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.langs-menu a > svg {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.langs-item-name {
+  font: 700 15px var(--display);
+}
+
+.langs-item-sub {
+  font-size: 13px;
+  color: var(--quiet);
+}
+
+/* The language guessed, with why in place of its name: a blue dot, then "Your browser". */
+.langs-item-why {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--focus);
+}
+
+.langs-item-why:not([data-reason]),
+.langs-item-why[data-reason] + .langs-item-sub {
+  display: none;
+}
+
+.langs-item-why::before {
+  content: '';
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.langs-item-why::after {
+  content: attr(data-reason);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .langs-menu:popover-open {
+    animation: langs-menu-in 0.2s var(--ease-out);
+  }
+}
+
+@keyframes langs-menu-in {
+  from {
+    opacity: 0;
+    translate: 0 -6px;
+  }
 }
 
 .pill-cta {
@@ -351,10 +525,19 @@ img {
     padding: 0 11px;
     font-size: 15px;
   }
+
+  /* The longest two names, "Nederlands" and "Português", side by side. */
+  .langs {
+    font-size: 14px;
+  }
+
+  .pill .seat {
+    padding: 0 4px;
+  }
 }
 
 /* From a tablet up the bar is one row, and it stays with you down the page.
-   Its links to the sections wait for room beside the nine languages. */
+   Its links to the sections wait for room beside the languages. */
 @media (min-width: 760px) {
   .top {
     position: sticky;
@@ -385,25 +568,59 @@ img {
     padding-right: 8px;
   }
 
+  /* The seats sit in a groove, each with the language's code, and the name
+     is left for a screen reader. */
   .langs {
     padding: 3px;
     border-top: 0;
     border-radius: 14px;
     background: var(--groove);
+    font-size: 14px;
   }
 
-  .langs a {
+  .pill .seat {
     flex: none;
     min-width: 36px;
     min-height: 38px;
+    padding: 0;
+    border-radius: 11px;
   }
 
-  .langs a[aria-current] {
+  .pill .seat-more {
+    padding: 0 10px;
+  }
+
+  .seat-code {
+    display: inline;
+  }
+
+  .seat-name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .seat[aria-current] {
     background: var(--control);
   }
 
-  .langs a[aria-current]::after {
+  .seat[aria-current]::after {
     content: none;
+  }
+
+  .langs:has(.langs-menu:popover-open) .seat-more {
+    background: color-mix(in srgb, var(--control) 60%, transparent);
+  }
+
+  /* The list hangs from the right end of the languages. */
+  .langs-menu {
+    position-anchor: --languages;
+    top: calc(anchor(bottom) + 14px);
+    left: auto;
+    width: min(440px, calc(100vw - 32px));
+    padding: 10px;
   }
 
   .pill-cta {
@@ -1225,6 +1442,54 @@ img {
   display: flex;
   align-items: center;
   min-height: 44px;
+}
+
+/* Every language of the site, written out: where someone looks when the bar
+   is not in theirs. */
+.footer-langs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 28px;
+  margin-bottom: 24px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--loud) 10%, transparent);
+}
+
+.footer-langs h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font: 800 17px var(--display);
+  color: var(--text);
+}
+
+.footer-langs ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-langs a {
+  gap: 7px;
+  text-decoration: none;
+}
+
+.footer-langs a[aria-current] {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.footer-langs a[aria-current]::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
 }
 
 /* The last line: who makes the site, and what else that person makes. Each

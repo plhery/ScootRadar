@@ -273,6 +273,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
   const city = guide.city ? guideCity(guide.city) : undefined;
   const others = guidesIn(locale).filter(other => other !== guide);
   const updated = formatDay(guide.updated, locale);
+  const languages = translationsOf(guide).map(translation => ({ locale: translation.locale, href: guidePath(translation) }));
 
   return (
     <>
@@ -281,7 +282,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
         locale={locale}
         home={landingPath(locale)}
         links={[{ href: guidesPath(locale), label: landing.footer.guides }]}
-        languages={translationsOf(guide).map(translation => ({ locale: translation.locale, href: guidePath(translation) }))}
+        languages={languages}
       />
 
       <main className="guide">
@@ -353,7 +354,7 @@ export function GuidePage({ guide }: { guide: Guide }) {
         )}
       </main>
 
-      <SiteFooter locale={locale} />
+      <SiteFooter locale={locale} languages={languages} />
     </>
   );
 }
@@ -376,6 +377,7 @@ function GuideList({ guides }: { guides: readonly Guide[] }) {
 export function GuideIndex({ locale }: { locale: LandingLocale }) {
   const copy = GUIDE_COPY[locale];
   const landing = LANDING_COPY[locale];
+  const languages = indexLanguages().map(language => ({ locale: language, href: guidesPath(language) }));
   return (
     <>
       <StructuredData data={indexStructuredData(locale)} />
@@ -383,7 +385,7 @@ export function GuideIndex({ locale }: { locale: LandingLocale }) {
         locale={locale}
         home={landingPath(locale)}
         links={[]}
-        languages={indexLanguages().map(language => ({ locale: language, href: guidesPath(language) }))}
+        languages={languages}
       />
 
       <main className="guide guide--index">
@@ -395,7 +397,7 @@ export function GuideIndex({ locale }: { locale: LandingLocale }) {
         <GuideList guides={guidesIn(locale)} />
       </main>
 
-      <SiteFooter locale={locale} />
+      <SiteFooter locale={locale} languages={languages} />
     </>
   );
 }
