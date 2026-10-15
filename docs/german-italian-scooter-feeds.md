@@ -273,7 +273,12 @@ discovery's origin and under its directory, and publishes no `license_url`.
 - **Depots:** ATOM id 189, "Zeus Warehouse (Neustadt)", is empty and is not a
   town. MobiData BW's Konstanz feed lists 9 scooters stacked at one point in
   Singen, and Zeus's Ludwigsburg feed 8 at one point east of the town; both
-  stacks lie outside their town's bounds, so the map leaves them out.
+  stacks lie outside their town's bounds, so the map leaves them out. The
+  Ludwigsburg stack stands at one building in Poppenweiler (48.9088° N,
+  9.2645° E), 2.6 km east of the end of Zeus's ride zone and outside every
+  zone its feed publishes: the same 9 scooters in four polls on the night of
+  15 to 16 October 2026, 7 or 8 of them available, none moved. The bounds
+  are right to leave it out.
 - **Request rate:** ATOM blocks an address after a burst of about 900
   requests, across its operators. The scooter cache reads no Zeus feed from
   ATOM. Each ATOM feed is asked for its `vehicle_status`, and its

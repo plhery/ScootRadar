@@ -373,6 +373,12 @@ polls after, to 22:14 EDT, found nothing more outside them.
 - Spin Davis and Veo Charlottesville: most scooters stand on the campuses of
   UC Davis and the University of Virginia, Census places of their own.
   Spin Meridian's town is a Census place of Douglas County, south of Denver.
+  Its box, Spin's ride zone plus 1 km, overlaps Veo Denver's from 39.605° N
+  to 39.633° N, by Belleview Avenue. In four polls on 15 October 2026
+  (17:29 to 17:45 MDT), none of Spin's scooters stood there (the northernmost
+  at 39.564° N), and Veo's 7 a poll there counted under Denver, their own
+  feed's town: 5 in Denver, 2 in Greenwood Village. Of Spin's 68 to 71,
+  about 61 stood in Meridian and 9 in unincorporated Douglas County.
 
 **Left out.** Outside every box of their own feed, in the survey's and the
 evening's polls:

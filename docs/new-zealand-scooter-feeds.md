@@ -139,7 +139,12 @@ the South Island.
   `ride.flamingoscooters.com`, with one link for iPhones (`/vehicle/<id>`)
   and another for Android (`/v/<id>`), and none for the web, so phones open
   their own and a desktop browser none. JOLT links each scooter on
-  `joltscooters.co.nz/vehicle/<uuid>`, the same link for both phones. The web
+  `joltscooters.co.nz/vehicle/<uuid>`, the same link for both phones; JOLT's
+  apps claim every path of that host (its `apple-app-site-association` and
+  `assetlinks.json`), so the link opens the app where it is installed. The
+  `joltscooters://` in JOLT's `system_information` is its apps'
+  `discovery_uri`, which the map never reads, and no scooter's link uses it
+  (55 of 55 on 16 October 2026), so the link rules leave it out. The web
   and the iPhone app open only links on each operator's own host.
 - **Time zones.** The app never reads a feed's `timezone`. Flamingo's says
   `Etc/UTC`; every area of the catalog says `Pacific/Auckland`, as JOLT's
