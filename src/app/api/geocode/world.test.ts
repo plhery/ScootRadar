@@ -153,16 +153,47 @@ describe('the search in Oceania and West Asia', () => {
   it('finds the Dubai Mall in Dubai for a rider at home in the Emirates, and leaves out what is outside the parts of the world the app covers', async () => {
     stubUpstreams({ photon: RECORDED_WORLD_PHOTON_ANSWERS['Dubai Mall'] });
 
+    // The Dubai Mall is named "Dubai Mall": first.
     expect(await rows(await search('Dubai Mall', { country: 'AE' }))).toEqual([
+      ['The Dubai Mall', 'Financial Center Street, Dubai'],
       ['Dubai Mall Expansion', 'Dubai'],
       ['Dubai Mall Chinatown Bridge', 'Sheikh Mohammed bin Rashid Boulevard, Dubai'],
       ['Dubai Mall Metro Bus Stop Landside 1', 'Metro access : Burj Khalifa / Dubai Mall station, Dubai'],
       ['Dubai Mall Zaabeel Parking Garage', 'Financial Center Road (Upper Level), Dubai'],
-      ['The Dubai Mall', 'Financial Center Street, Dubai'],
     ]);
     // Photon's first two, named just so, come after those with scooter data, or not at all: Kuwait's is in West Asia, Kerala's is not.
     stubUpstreams({ photon: RECORDED_WORLD_PHOTON_ANSWERS['Dubai Mall'].slice(0, 2) });
     expect(await rows(await search('Dubai Mall', { country: 'AE' }))).toEqual([['Dubai Mall', 'Street 14, 63008 Mangaf - Block 4']]);
+  });
+
+  it('finds the Dubai Mall first near Dubai, where Geoapify lists its shops and stops before it', async () => {
+    inWorker({ GEOAPIFY_API_KEY: 'key' });
+    stubUpstreams({ geoapify: RECORDED_GEOAPIFY_ANSWERS['Dubai Mall'] });
+
+    // Twice: two entrances 300 m apart.
+    expect((await rows(await search('Dubai Mall', { near: DUBAI }))).slice(0, 3)).toEqual([
+      ['The Dubai Mall', 'Financial Center Street, 26661 88056 Dubai'],
+      ['The Dubai Mall', 'Financial Center Road (Upper Level), 26661 88056 Dubai'],
+      ['Dubai Mall Metro Bus Stop Landside 1', 'Metro access : Burj Khalifa / Dubai Mall station, 25656 88343 Dubai'],
+    ]);
+  });
+
+  it('puts the places named Rothschild near Tel Aviv before Rothschild, Wisconsin, unless Wisconsin is typed', async () => {
+    inWorker({ GEOAPIFY_API_KEY: 'key' });
+    stubUpstreams({ geoapify: RECORDED_GEOAPIFY_ANSWERS.Rothschild });
+    const nearTelAviv = await rows(await search('Rothschild', { near: TEL_AVIV }));
+    stubUpstreams({ geoapify: RECORDED_GEOAPIFY_ANSWERS['Rothschild Wisconsin'] });
+    const wisconsin = await rows(await search('Rothschild Wisconsin', { near: TEL_AVIV }));
+
+    // The two named so first, then those whose names hold it: Rothschild, Wisconsin, comes after them all.
+    expect(nearTelAviv).toEqual([
+      ['Rothschild', '22 Sderot Rothschild, 6688218 Tel-Aviv'],
+      ['Rothschild', '45 Amishav, 6767589 Givatayim'],
+      ['The Rothschild Hotel', '96 Sderot Rothschild, 6527401 Tel-Aviv'],
+      ['the rothschild 71', '71 Sderot Rothschild, 6511604 Tel-Aviv'],
+      ['65 Rothschild Av./ Nachmami St.', 'Sderot Rothschild, 6511604 Tel-Aviv'],
+    ]);
+    expect(wisconsin[0]).toEqual(['Rothschild', 'Wisconsin, United States']);
   });
 
   it('finds Queen Street in Auckland near Auckland', async () => {

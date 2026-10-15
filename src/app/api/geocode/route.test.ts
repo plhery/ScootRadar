@@ -731,6 +731,19 @@ describe('Geoapify', () => {
     await expect(response.json()).resolves.toEqual([]);
   });
 
+  it('puts the quarter of Zürich named Seefeld before the towns of its name far from Zürich, in their order', async () => {
+    stubRecordedAnswer('Seefeld');
+
+    // Seefeld in Bavaria and Seefeld in Upper Austria, named as typed, before the towns whose names start so.
+    expect(await shownRows(await POST(postRequest('Seefeld', 'de', ZURICH)))).toEqual([
+      ['Seefeld', 'Zürich', true],
+      ['Seefeld', 'Bayern, Deutschland', false],
+      ['Seefeld', 'Oberösterreich, Österreich', false],
+      ['Seefelden', 'Baden-Württemberg, Deutschland', false],
+      ['Seefeld in Tirol', 'Tirol, Österreich', false],
+    ]);
+  });
+
   it('asks for the towns of the name typed anywhere, but not for an address or a postcode', async () => {
     const fetchMock = stubUpstreams({ geoapify: [[{ result_type: 'street', name: 'Langstrasse', city: 'Zürich', country_code: 'ch' }, ...ZURICH]] });
 

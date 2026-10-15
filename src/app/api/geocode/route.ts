@@ -149,6 +149,10 @@ interface Ranked {
   town: boolean;
   /** Found for something other than what was typed. */
   miss: boolean;
+  /** Named as typed: a town by any of its names, another place by its own. */
+  named: boolean;
+  /** How far it is from what the map shows (remoteness). */
+  remoteness: 0 | 1 | 2;
 }
 
 interface Candidate extends Ranked {
@@ -164,6 +168,20 @@ interface Found {
 }
 
 type UpstreamFailure = 'rateLimited' | 'timedOut' | 'unavailable' | 'invalid';
+
+// Left out before a name of more words, in what is typed and in the names of places:
+// "Dubai Mall" names The Dubai Mall, and "Havre" Le Havre. Not a letter alone, as the
+// "A" of A Coruña.
+const ARTICLES = new Set(['the', 'le', 'la', 'les', 'l', 'el', 'los', 'las', 'il', 'lo', 'gli', 'der', 'die', 'das', 'de', 'het']);
+
+function withoutArticle(words: string[]): string[] {
+  return words.length > 1 && ARTICLES.has(words[0]) ? words.slice(1) : words;
+}
+
+/** The same words, in any order: "Flughafen Zürich" names "Zürich Flughafen". */
+function sameWords(a: string[], b: string[]): boolean {
+  return a.length === b.length && [...a].sort().join(' ') === [...b].sort().join(' ');
+}
 
 /** The words of a place's name as it may be typed: "Zürich" as "zurich" and, with its umlaut spelled out, "zuerich".
     What is typed is read as it is: "Joel" does not start Joliet, nor "Blue" Bluff. */
@@ -191,8 +209,7 @@ function placeRank(
 ): Ranked {
   const spellings = placeSpellings(place.title);
   const title = spellings.flat();
-  // In any order: "Flughafen Zürich" names "Zürich Flughafen".
-  const named = spellings.some(words => words.length === typed.length && [...words].sort().join(' ') === [...typed].sort().join(' '));
+  const named = spellings.some(words => sameWords(words, typed) || sameWords(withoutArticle(words), withoutArticle(typed)));
   const words = [...title, ...placeSpellings(place.subtitle).flat()];
   const atWordStart = typed.every(word => words.some(candidate => candidate.startsWith(word)));
   // What the services found by another of its names is no typing mistake, and a
@@ -207,8 +224,9 @@ function placeRank(
   // one whose name starts as typed may be: "Laus" is on its way to Lausanne. By
   // its own name: Burgdorf is in the canton of Bern, not on the way to it.
   const started = typed.every(word => title.some(candidate => candidate.startsWith(word)));
+  const distance = remoteness(place, country, from);
   if (town && (named || namedOtherwise || started)) {
-    return { rank: townRank(named || namedOtherwise, place, country, from), town: true, miss: false };
+    return { rank: townRank(named || namedOtherwise, place, country, from), town: true, miss: false, named: named || namedOtherwise, remoteness: distance };
   }
   const match = named ? 0 : atWordStart ? 1 : 2;
   // "Zürichstrasse" for "Zürich HB"; not "Rue de Rivoli" for "Rue de Rivoli 10",
@@ -218,8 +236,8 @@ function placeRank(
     street.every(word => words.some(candidate => candidate.startsWith(word)));
   const miss = nearMiss && match === 2 && !ofAddress;
   // Near the map centre first, then with scooter data, then named as typed: each outweighs those after it.
-  const rank = (miss ? MISS_RANK : PLACE_RANK) + remoteness(place, country, from) * 6 + (place.covered ? 0 : 3) + match;
-  return { rank, town: false, miss };
+  const rank = (miss ? MISS_RANK : PLACE_RANK) + distance * 6 + (place.covered ? 0 : 3) + match;
+  return { rank, town: false, miss, named, remoteness: distance };
 }
 
 /** Where a town ranks: typed by its name before started; the cities of our list
@@ -617,7 +635,7 @@ async function geocode(input: GeocodeInput) {
 
   const candidates: Candidate[] = [
     ...listed.map(({ city, exact, country }) =>
-      ({ place: city, rank: townRank(exact, city, country, search, true), town: true, miss: false, listed: true })),
+      ({ place: city, rank: townRank(exact, city, country, search, true), town: true, miss: false, named: exact, remoteness: remoteness(city, country, search), listed: true })),
     ...(foundTowns?.ok ? foundTowns.value.candidates : []),
     ...(foundPlaces?.ok ? foundPlaces.value.candidates : []),
   ];
@@ -635,6 +653,20 @@ async function geocode(input: GeocodeInput) {
       continue;
     }
     shown.push({ ...candidate });
+  }
+  // The streets and landmarks close to the map centre named as typed come before the
+  // towns far from it: over Tel Aviv, "Rothschild" is the boulevard and its places, not
+  // Rothschild, Wisconsin; over Zürich, "Seefeld" is its quarter, not Seefeld in Bavaria
+  // nor Seefeld in Tirol. The towns follow in their order, before the places ranked after.
+  // Not the cities of our list, nor a town typed with its state or country, as
+  // "Rothschild Wisconsin", which no place close by is named.
+  const namedClose = search.near ? shown.filter(({ town, named, remoteness }) => !town && named && remoteness < 2) : [];
+  if (namedClose.length) {
+    const after = Math.max(...namedClose.map(({ rank }) => rank)) + 0.5;
+    for (const candidate of shown) {
+      // A town ranks under PLACE_RANK: each comes between after and the next rank.
+      if (candidate.town && !candidate.listed && candidate.remoteness === 2) candidate.rank = after + candidate.rank / PLACE_RANK / 2;
+    }
   }
   // Stable: the services' ranking is kept among the places of one rank.
   shown.sort((a, b) => a.rank - b.rank);

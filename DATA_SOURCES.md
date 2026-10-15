@@ -201,7 +201,11 @@ is, and anywhere near that centre when nothing is found there; a US or
 Canadian address may end with its state or province and postcode
 ("1100 Congress Ave, Austin, TX 78701"). It leaves out places outside the
 parts of the world the catalog covers, and asks for up to 20 places each time;
-the app shows 5.
+the app shows 5. Towns whose names are or start with what was typed come
+first; those over 30 km from the map centre, unless they are cities of the
+catalog, come after the streets and landmarks within 30 km of it named just as
+typed ("The" and other articles aside): over Tel Aviv, "Rothschild" is the
+boulevard before Rothschild, Wisconsin; "Rothschild Wisconsin" is the town.
 
 When Geoapify fails (the day's requests used up, the key refused, the service
 down or slower than five seconds), or without `GEOAPIFY_API_KEY`, as in a copy
