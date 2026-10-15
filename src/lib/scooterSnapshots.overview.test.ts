@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { knownSystemCoverage } from './feedCoverage';
 import { REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas } from './regionalScooterSystems';
 import { buildCityOverview, type FeedSnapshot } from './scooterSnapshots';
+import { systemServesPoint } from './townOutlines';
 import type { Vehicle } from './types';
 
 // Positions the feeds published just after midnight on 14 October 2026, when
@@ -42,11 +43,16 @@ describe('the town a scooter counts under', () => {
   });
 
   it('is the town of the scooter’s own feed where two towns’ bounds hold it', () => {
-    // Inside both Oslo's and Lørenskog's bounds, and nearer Lørenskog's centre:
-    // Ryde Oslo's scooter is Oslo's, Voi Lillestrøm and Lørenskog's is Lørenskog's.
+    // In Carcavelos, inside both Cascais's and Oeiras's bounds and nearer Oeiras's centre,
+    // where 293 of Bird Cascais's scooters stood on 15 October 2026.
+    expect(countsOf([regional('bird_pt_cascais', [[38.685843, -9.350383]])])).toEqual({ 'pt:Cascais': { bird: 1 } });
+  });
+
+  it('is the town whose outline holds it, whichever feed it comes from', () => {
+    // Inside Oslo's outline, and both Oslo's and Lørenskog's bounds: Voi Lillestrøm and Lørenskog's scooter is Oslo's too.
     const spot: [number, number] = [59.95868, 10.925698];
     expect(countsOf([regional('ryde_no_oslo', [spot]), regional('voi_no_lillestrom_lorenskog', [spot])]))
-      .toEqual({ 'no:Oslo': { ryde: 1 }, 'no:Lørenskog': { voi: 1 } });
+      .toEqual({ 'no:Oslo': { ryde: 1, voi: 1 } });
   });
 
   // Positions of 15 October 2026 that the towns' bounds gave to the second town, and their outlines give to the first.
@@ -59,9 +65,30 @@ describe('the town a scooter counts under', () => {
     ['Houilles, not Sartrouville', 'lime_fr_paris_west', [48.92991, 2.17495], 'fr:Houilles'],
     ['La Celle-Saint-Cloud, not Bougival', 'dott_fr_versailles-grand-parc', [48.85917, 2.14785], 'fr:La Celle-Saint-Cloud'],
     ['Mantes-la-Jolie, not Buchelay', 'voi_fr_422', [48.99993, 1.68442], 'fr:Mantes-la-Jolie'],
+    ['Sandnes, not Stavanger', 'voi_no_stavanger_sandnes', [58.88508, 5.69869], 'no:Sandnes'],
+    ['Sandnes at Forus, not Stavanger, from Ryde’s Stavanger feed', 'ryde_no_stavanger', [58.8879, 5.7091], 'no:Sandnes'],
+    ['Lillestrøm, not Lørenskog', 'voi_no_lillestrom_lorenskog', [59.96073, 10.97798], 'no:Lillestrøm'],
+    ['Skien, not Porsgrunn', 'ryde_no_skien', [59.15197, 9.62459], 'no:Skien'],
+    ['Bærum, not Oslo', 'voi_no_oslo', [59.9338, 10.62675], 'no:Bærum'],
+    ['Bournemouth, not Christchurch', 'beryl_gb_bournemouth_christchurch_poole', [50.71876, -1.77878], 'gb:Bournemouth'],
+    ['Poole, not Bournemouth', 'beryl_gb_bournemouth_christchurch_poole', [50.7299, -1.90585], 'gb:Poole'],
+    ['Almada, not Costa da Caparica', 'lime_pt_almada', [38.67084, -9.23683], 'pt:Almada'],
+    ['La Nucía, not L’Alfàs del Pi', 'hoppy_es_marina_baixa', [38.57631, -0.12035], 'es:La Nucía'],
+    ['Kobyłka, not Wołomin', 'dott_pl_wolomin', [52.33258, 21.22527], 'pl:Kobyłka'],
+    ['Los Angeles in Venice, not Santa Monica', 'veo_us_santa_monica', [34.02931, -118.44279], 'us:ca:Los Angeles'],
+    ['Santa Monica, not Los Angeles, though Bird’s Los Angeles feed has it', 'bird_us_los_angeles', [34.02194, -118.44807], 'us:ca:Santa Monica'],
+    ['College Park, not University Park', 'veo_us_college_park', [38.97843, -76.92885], 'us:md:College Park'],
+    ['New Brunswick, not Highland Park', 'veo_us_new_brunswick', [40.48273, -74.42509], 'us:nj:New Brunswick'],
+    ['Berkeley, not Emeryville', 'veo_us_berkeley', [37.8511, -122.29251], 'us:ca:Berkeley'],
+    ['South Euclid, not University Heights', 'veo_us_cleveland', [41.50317, -81.53785], 'us:oh:South Euclid'],
   ] as const)('is %s', (_case, systemId, [lat, lng], town) => {
     const feed = regional(systemId, [[lat, lng]]);
     expect(countsOf([feed])).toEqual({ [town]: { [feed.provider]: 1 } });
+  });
+
+  it('is Zürich or Kloten by their outlines, not Opfikon between them', () => {
+    expect(countsOf([national('bolt_zurich', 'bolt', [[47.41627, 8.55776]]), national('dott_zurich', 'dott', [[47.44487, 8.57939]])]))
+      .toEqual({ 'ch:zurich': { bolt: 1 }, 'ch:kloten': { dott: 1 } });
   });
 
   it('is Lisbon for scooters in west Lisbon, nearer Almada’s centre across the river', () => {
@@ -96,5 +123,26 @@ describe('the town a scooter counts under', () => {
     // A Voi scooter in Lungern, outside every Swiss area.
     expect(countsOf([snapshotOf('national:voiscooters.com', 'voi', [], 'national', [[46.7741, 8.1558]])]))
       .toEqual({ 'ch:bern': { voi: 1 } });
+  });
+});
+
+describe('the scooters a feed keeps', () => {
+  const system = (id: string) => REGIONAL_SCOOTER_SYSTEMS.find(candidate => candidate.id === id)!;
+
+  it('are those in its areas and in no outlined town where its operator has none', () => {
+    // Bird's Los Angeles feed keeps its scooters in Santa Monica, a town of Bird's own Santa Monica feed,
+    // and Ryde Stavanger's those over the line in Sandnes, at Forus, where it has an area.
+    expect(systemServesPoint(system('bird_us_los_angeles'), 34.02194, -118.44807)).toBe(true);
+    expect(systemServesPoint(system('ryde_no_stavanger'), 58.8879, 5.7091)).toBe(true);
+    // Positions of 15 October 2026 inside the feeds' boxes, in towns where their operator has no area.
+    for (const [id, town, lat, lng] of [
+      ['bolt_no_oslo', 'Lørenskog', 59.94426, 10.94555], ['bolt_no_oslo', 'Bærum', 59.90797, 10.63792],
+      ['bird_us_cleveland', 'Cleveland Heights', 41.50636, -81.58994], ['veo_us_santa_monica', 'Culver City', 33.99147, -118.44615],
+      ['lime_us_oakland', 'Emeryville', 37.8285, -122.27838], ['veo_us_berkeley', 'Oakland', 37.84414, -122.28228],
+    ] as const) {
+      expect(serviceAreas(system(id)).some(area => area.bounds.south <= lat && lat <= area.bounds.north &&
+        area.bounds.west <= lng && lng <= area.bounds.east), `${id} in ${town}`).toBe(true);
+      expect(systemServesPoint(system(id), lat, lng), `${id} in ${town}`).toBe(false);
+    }
   });
 });

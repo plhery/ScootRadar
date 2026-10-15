@@ -326,5 +326,5 @@ export const COUNTRY_CREDIT_LINKS: readonly { label: string; href: string }[] = 
   { label: "UK: Beryl · CDLA-Permissive-2.0", href: "https://cdla.dev/permissive-2-0/" },
   { label: "UK: ONS boundaries · OGL v3.0", href: "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" },
   { label: "PT: DGT boundaries · CC BY 4.0", href: "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop" },
-  { label: "FR/UA/IL: OpenStreetMap boundaries · ODbL", href: "https://opendatacommons.org/licenses/odbl/" },
+  { label: "CH/FR/PT/ES/PL/UA/IL: OpenStreetMap boundaries · ODbL", href: "https://opendatacommons.org/licenses/odbl/" },
 ];

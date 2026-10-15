@@ -89,7 +89,7 @@ describe('the countries of data/countries.json', () => {
       'MobiData BW', 'BE: Pony · transportdata.be', 'NO: Entur AS · NLOD', 'NO: Kartverket boundaries · CC BY 4.0',
       'UK: Beryl · CDLA-Permissive-2.0', 'UK: ONS boundaries · OGL v3.0', 'PT: DGT boundaries · CC BY 4.0',
       // OpenStreetMap's boundaries, which several countries give, are credited once.
-      'FR/UA: OpenStreetMap boundaries · ODbL', 'CA: City of Toronto · OGL Toronto',
+      'CH/FR/PT/ES/PL/UA: OpenStreetMap boundaries · ODbL', 'CA: City of Toronto · OGL Toronto',
     ]);
   });
 

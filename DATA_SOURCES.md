@@ -43,8 +43,11 @@ and Schwamendingen, whose scooters lie nearer Opfikon's centre than Zürich's:
 south and west at Opfikon's boundary and Lime Opfikon's furthest scooters
 (47.4156 N, 8.5533 E) and runs 1 km beyond them to the north and east, to
 47.4568 N and 8.6208 E; Kloten's is the zone where Bird and Hopp allow riding
-there, plus 1 km (47.4287–47.4829 N, 8.5477–8.6213 E). 19 to 29 of Zürich's
-scooters, just south of Opfikon, still count under it. Dott's Romanshorn zone
+there, plus 1 km (47.4287–47.4829 N, 8.5477–8.6213 E). 27 of Zürich's
+scooters a poll, just south of Opfikon, still counted under it on 15 October
+2026, and 11 of Kloten's, south-west of its centre; Zürich, Opfikon and
+Kloten now have their municipalities' outlines in `data/town-outlines.json`,
+OpenStreetMap's, and none of the 40 is misnamed. Dott's Romanshorn zone
 reaches Amriswil and its St. Gallen zone Gossau, Flawil and Uzwil, whose
 scooters stand apart from Romanshorn's and St. Gallen's but counted under them:
 76 to 79 in Amriswil, 56 or 57 in Gossau, 31 or 32 in Flawil and 18 in Uzwil.
@@ -159,10 +162,16 @@ late. City totals are aggregated hourly. Each scooter counts under the
 nearest town whose bounds hold it; outside Switzerland the towns its own
 feed serves come first, so a scooter in east Oslo is Oslo's, though
 Lørenskog's centre is nearer. Where a town's municipal boundary is listed in
-`data/town-outlines.json`, as in Gush Dan or around Lille, a scooter inside
-it counts under that town first, under the smaller of two outlines that nest.
-The outlines are OpenStreetMap's (ODbL), simplified to within 20 m; the
-credits link the licence.
+`data/town-outlines.json`, as in Gush Dan, around Lille and Oslo, or in west
+Los Angeles, a scooter inside it counts under that town first, under the
+smaller of two outlines that nest. The outlines are OpenStreetMap's (ODbL),
+Kartverket's for Norway (CC BY 4.0), the ONS's for Bournemouth, Christchurch
+and Poole (OGL v3.0) and the Census Bureau's for American towns (public
+domain), simplified to within 20 m; the credits link the licences. On the
+evening of 15 October 2026, over two polls of every feed, they cut the
+scooters counted under the wrong town from about 950 a poll to about 70,
+most of those in Rhodes, Gush Dan and Bath, where no outline was added or
+the simplified boundary runs through a parking spot.
 
 These endpoints are publicly accessible but do not share one universal license.
 In particular, [Dott's API terms](https://ridedott.com/api-licence/) contain

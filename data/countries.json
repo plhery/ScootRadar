@@ -8,7 +8,12 @@
       "searchWords": ["switzerland", "schweiz", "suisse", "svizzera", "zwitserland", "sveits", "suica", "suiza", "sviss"],
       "anchor": [46.8, 8.2],
       "featuredCities": ["ch:zurich", "ch:basel", "ch:bern", "ch:winterthur", "ch:st-gallen", "ch:biel"],
-      "credits": { "attribution": "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed" }
+      "credits": {
+        "attribution": "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed",
+        "links": [
+          { "label": "CH: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
+        ]
+      }
     },
     {
       "code": "FR",
@@ -133,7 +138,8 @@
         "attribution": "Portugal: Bird, Lime GBFS",
         "gbfs": ["Bird", "Lime"],
         "links": [
-          { "label": "PT: DGT boundaries · CC BY 4.0", "href": "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop" }
+          { "label": "PT: DGT boundaries · CC BY 4.0", "href": "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop" },
+          { "label": "PT: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
         ]
       }
     },
@@ -148,7 +154,10 @@
       "featuredCities": ["es:Gijón", "es:Getafe", "es:Torrevieja", "es:Playa de las Américas", "es:Jávea", "es:Pilar de la Horadada"],
       "credits": {
         "attribution": "Spain: Bird, Hopp, Hoppy GBFS",
-        "gbfs": ["Bird", "Hopp", "Hoppy"]
+        "gbfs": ["Bird", "Hopp", "Hoppy"],
+        "links": [
+          { "label": "ES: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
+        ]
       }
     },
     {
@@ -207,7 +216,10 @@
       "featuredCities": ["pl:Sosnowiec", "pl:Wołomin", "pl:Oświęcim", "pl:Radzymin", "pl:Kobyłka", "pl:Knurów"],
       "credits": {
         "attribution": "Poland: Dott, Hopp GBFS",
-        "gbfs": ["Dott", "Hopp"]
+        "gbfs": ["Dott", "Hopp"],
+        "links": [
+          { "label": "PL: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
+        ]
       }
     },
     {

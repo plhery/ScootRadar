@@ -69,9 +69,13 @@ the discovery's origin and under its directory.
   catalog splits it into three areas, as it does Bristol and Yate: each part
   of the zone goes to the town whose boundary, from OpenStreetMap, holds it,
   or else to the nearest town centre, plus the padding above. The areas
-  overlap at their edges; the city overview counts each scooter for the
-  nearest centre, so none is counted twice. On the morning of the audit, 63 of
-  the region's scooters were nearest Wołomin, 51 Radzymin and 37 Kobyłka.
+  overlap at their edges, where the nearest centre gave 5 of Kobyłka's
+  scooters a poll to Wołomin on the evening of 15 October 2026. Since then
+  the three have their gminas' outlines in
+  [`town-outlines.json`](../data/town-outlines.json), OpenStreetMap's,
+  simplified to within 20 m, and a scooter inside one counts under that town:
+  none was misnamed in two polls. On the morning of the audit, 63 of the
+  region's scooters were nearest Wołomin, 51 Radzymin and 37 Kobyłka.
 - **Hopp's bounds:** Hopp's geofencing has one no-riding polygon around each
   town, whose holes are the operating area. The bounds are those holes plus
   the same padding; Knurów's include two small holes to the south-west, one

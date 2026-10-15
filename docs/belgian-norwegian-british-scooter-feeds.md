@@ -153,6 +153,32 @@ directory.
   Skien feed's scooters stand, so that feed has had a second area since the
   same day, Porsgrunn, with the bounds of Ryde's Porsgrunn feed; zoomed out,
   those scooters count under Porsgrunn.
+- **Town outlines:** where the boxes of touching towns overlap, the nearest
+  centre named the wrong town for about 220 Norwegian scooters a poll on the
+  evening of 15 October 2026: Sandnes's at Forus under Stavanger (75 and 77,
+  in two polls), Lillestrøm's under Lørenskog (55, 56) and Lørenskog's under
+  Lillestrøm (24), Skien's under Porsgrunn (47, 45), and a few between Oslo,
+  Bærum and Lørenskog. Oslo, Bærum, Lørenskog, Lillestrøm, Stavanger, Sandnes,
+  Skien and Porsgrunn now have their kommune's outline in
+  [`town-outlines.json`](../data/town-outlines.json), from Kartverket, as for
+  the night bans, simplified to within 20 m; a scooter inside one counts
+  under that town. After: 3 and 2 a poll, each within a few metres of a
+  kommune line or in a town without an outline. Ryde's Stavanger feed reaches
+  over the line into Sandnes at Forus, where 19 or 20 of its scooters stood in
+  four polls from 22:44 to 23:25, one arriving between them; so the feed has had a
+  second area since that evening, Sandnes (58.8788–58.896 N, 5.695–5.755 E),
+  given Sandnes's centre, and those scooters count under Sandnes. Bolt's
+  Oslo feed reaches Lørenskog and Bærum, where Bolt has no area: its 2
+  scooters in Lørenskog and 1 in Bærum, which didn't move in ten minutes, are
+  left out, as a feed keeps no scooter in a town where its operator runs no
+  service.
+- **Bournemouth, Christchurch and Poole:** Beryl's one feed has an area per
+  town, and their boxes overlap: in a poll at 21:44 on 15 October 2026, 62 of
+  its 658 scooters counted under the wrong one. Each town now has the outline
+  of its district before the three merged in 2019, the ONS's December 2018
+  boundaries, as for the night ban; after, 4, where OpenStreetMap's line
+  between Poole and Bournemouth parts from the ONS's. A second poll, at 22:28,
+  inside the night ban, found no Beryl scooters listed there.
 
 ## Night bans
 

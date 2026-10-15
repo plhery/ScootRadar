@@ -101,7 +101,8 @@ function nearbyOutlines(system: RegionalScooterSystem): { outline: TownOutline; 
 
 /**
  * Whether a system's feed keeps a scooter standing there: inside one of its service areas, and
- * not in a town of its country where its operator runs no service, by the town's outline:
+ * not in a town of its country where its operator runs no service, by the town's outline. Bird's
+ * Los Angeles feed keeps its scooters in Santa Monica, a town of Bird's own Santa Monica feed;
  * Dott's Tel Aviv feed drops its few in Givat Shmuel, where Dott runs none.
  */
 export function systemServesPoint(system: RegionalScooterSystem, lat: number, lng: number): boolean {

@@ -223,7 +223,35 @@
         "west": 5.6365,
         "east": 5.7765
       },
-      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydestavanger/gbfs"
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydestavanger/gbfs",
+      "areas": [
+        {
+          "city": "Stavanger",
+          "center": [
+            58.9701,
+            5.7315
+          ],
+          "bounds": {
+            "south": 58.8788,
+            "north": 59.0118,
+            "west": 5.6365,
+            "east": 5.7765
+          }
+        },
+        {
+          "city": "Sandnes",
+          "center": [
+            58.8523,
+            5.7366
+          ],
+          "bounds": {
+            "south": 58.8788,
+            "north": 58.896,
+            "west": 5.695,
+            "east": 5.755
+          }
+        }
+      ]
     },
     {
       "id": "ryde_no_tonsberg",

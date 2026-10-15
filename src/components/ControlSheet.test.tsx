@@ -291,7 +291,7 @@ describe('ControlSheet settings', () => {
       'UK: Beryl · CDLA-Permissive-2.0',
       'UK: ONS boundaries · OGL v3.0',
       'PT: DGT boundaries · CC BY 4.0',
-      'FR/UA/IL: OpenStreetMap boundaries · ODbL',
+      'CH/FR/PT/ES/PL/UA/IL: OpenStreetMap boundaries · ODbL',
       'Search · Geoapify',
       'Search · Photon, komoot',
       'Parking · Métropole Européenne de Lille',

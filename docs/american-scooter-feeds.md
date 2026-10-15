@@ -317,6 +317,29 @@ it:
   of it in Los Angeles, with Marina del Rey. Los Angeles keeps Bird's centre.
 - Veo Salt Lake City: Salt Lake City and South Salt Lake.
 
+**Town outlines.** Where those towns touch, their boxes overlap, and the
+nearest centre named the wrong town for 213 and 217 American scooters in two
+polls on 15 October 2026 (16:44 and 17:28 EDT): Veo's in Venice under Santa
+Monica (about 100), Bird's in Santa Monica under Los Angeles (23, 25), College
+Park's under University Park (33, 35), New Brunswick's under Highland Park
+(15, 14), Berkeley's under Emeryville (8, 7), South Euclid's under University
+Heights (7) and a few around Cleveland Heights, Culver City and South Salt
+Lake. Los Angeles, Santa Monica, Culver City, College Park, University Park,
+New Brunswick, Highland Park, Berkeley, Emeryville, Oakland, Cleveland,
+Cleveland Heights, University Heights, South Euclid, Salt Lake City and South
+Salt Lake now have their incorporated place's outline in
+[`town-outlines.json`](../data/town-outlines.json), from TIGERweb, as for the
+night bans, simplified to within 20 m; a scooter inside one counts under that
+town, whichever feed lists it, so Bird's Los Angeles feed keeps its scooters
+in Santa Monica and they count under Santa Monica. After: 5 and 4 a poll, two
+within 2 m of a town line and three between Arlington and Washington or St.
+Paul and Minneapolis, left as boxes for so few. A feed keeps no scooter in an
+outlined town where its operator has no area: Bird Cleveland's 2 in
+Cleveland Heights, Veo Santa Monica's 1 or 2 in Culver City, Lime Oakland's 1
+in Emeryville and Veo Berkeley's 1 in Oakland are left out. Elsewhere,
+including Canada (1 a poll, an Edmonton scooter under St. Albert), the
+boxes name nearly every scooter's town, and have no outlines.
+
 Campus feeds take their town's name: Spin's UC Davis feed is Davis, its
 Michigan State one East Lansing, its NC State one Raleigh, and its San Diego
 feed is the UC San Diego campus, in La Jolla, where the map centres San
@@ -372,9 +395,10 @@ evening's polls:
   Manhattan (KS) listed one in Wichita in 2 polls.
 
 Veo's Los Angeles feed has about 2 scooters in Culver City, inside the
-Los Angeles box: they show, counted under Los Angeles or Santa Monica, and
-Culver City is Bird's town. Spin Minneapolis's one scooter in St. Paul and
-Spin Providence's in Pawtucket stand inside their own boxes too.
+Los Angeles box. Culver City is Bird's town, and since 15 October 2026 its
+outline leaves them out (see **Town outlines** above). Spin Minneapolis's one
+scooter in St. Paul and Spin Providence's in Pawtucket stand inside their own
+boxes, and show.
 
 **Thin evidence.** The survey saw few rides at Spin Phoenix, San Diego,
 Meridian, Gainesville and Tampa, and at Veo's Bronx, San Antonio, Salt Lake

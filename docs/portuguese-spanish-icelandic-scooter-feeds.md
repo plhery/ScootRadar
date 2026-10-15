@@ -196,6 +196,18 @@ under its directory.
   reach 28.115 N and 16.763 W since 14 October 2026, about half a kilometre
   beyond Bird's ride zone (to 28.1108 N, 16.7587 W): the old ones stopped at
   28.1027 N and 16.7528 W and left out 11 or 12 scooters parked in Costa Adeje.
+- **Town outlines:** Costa da Caparica's box, which runs north to 38.68° N,
+  took in Trafaria and São João da Caparica, in Almada's parish of Caparica e
+  Trafaria, where Lime and Bird park: 24 scooters there counted under Costa
+  da Caparica in each of two polls on the evening of 15 October 2026. Almada and
+  Costa da Caparica now have their outlines in
+  [`town-outlines.json`](../data/town-outlines.json), OpenStreetMap's municipality
+  and parish, simplified to within 20 m; the parish lies inside the
+  municipality, and a scooter in both counts under the smaller, Costa da
+  Caparica. After: 3 a poll, between Lisboa, Oeiras, Cascais and Matosinhos,
+  which keep their boxes for so few. In Spain, 7 of Hoppy's scooters a poll
+  in La Nucía, east of 0.122° W, counted under L'Alfàs del Pi; La Nucía now
+  has its outline, and none is misnamed.
 - **Reykjavík's capital area** is one city, with Kópavogur, Hafnarfjörður,
   Garðabær, Mosfellsbær and Seltjarnarnes as aliases: their boxes would
   overlap.

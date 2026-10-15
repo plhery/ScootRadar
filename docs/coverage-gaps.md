@@ -136,6 +136,9 @@ banned shared scooters, and feeds that were empty when checked.
   - Ryde's fleets in Bærum, Lillestrøm, Lørenskog and Kristiansand are missing
     from Entur.
   - Lime Oslo is empty, and seven Bolt systems in Entur are empty.
+  - Bolt Oslo's 2 scooters in Lørenskog and 1 in Bærum, which didn't move in
+    ten minutes on 15 October 2026, are left out since that evening: Bolt has
+    no area in either town, whose outlines now decide.
   - Dott Malvik held 15 to 17 available scooters on 13 and 14 October 2026,
     but none was ridden while it was polled; check it on Saturday 17
     October. Dott Melhus (7 to 11 available, a few of them ridden) and Skaun
@@ -322,6 +325,11 @@ banned shared scooters, and feeds that were empty when checked.
     328), in the university's fall break, and Spin East Lansing, the city's
     feed (10 to 12, a few last reported days before), in 69 polls to 22:14
     EDT.
+  - **Outside their operator's towns:** since 15 October 2026 a feed keeps no
+    scooter inside the outline of a town where its operator has no area, so
+    Bird Cleveland's 2 in Cleveland Heights, Veo Santa Monica's 1 or 2 in
+    Culver City, Lime Oakland's 1 in Emeryville and Veo Berkeley's 1 in
+    Oakland are left out.
   - **Lime Grand Rapids** lists no scooter. The city now names Veo its
     exclusive operator ([Mobile GR](https://www.grandrapidsmi.gov/departments/mobile-gr/mobility/shared-micromobility/)).
   - **Washington, DC:** Lime's feed answers 404; Bird's lists no available

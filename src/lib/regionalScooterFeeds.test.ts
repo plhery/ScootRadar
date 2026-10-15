@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { skippedSources } from '@/lib/scooterSources';
 import { discoveredFeedUrl, fetchScooters, independentCollectableFeeds } from './scooterFeeds';
 import { upstreamJsonCache } from './upstreamJsonCache';
-import { REGIONAL_SCOOTER_SYSTEMS, REGIONAL_SCOOTER_CITIES, searchRegionalScooterCities, serviceAreas } from './regionalScooterSystems';
+import { REGIONAL_SCOOTER_SYSTEMS, REGIONAL_SCOOTER_CITIES, regionalCityId, searchRegionalScooterCities, serviceAreas } from './regionalScooterSystems';
 import { providersForViewport } from './mapCoverage';
 import { normalizeParkingLocations } from './parking';
 import { buildCityOverview, querySnapshot, type FeedSnapshot } from './scooterSnapshots';
@@ -65,8 +65,13 @@ describe('German and Italian scooter coverage', () => {
   });
   it('keeps reviewed IDs, coordinates and country membership consistent', () => {
     expect(new Set(REGIONAL_SCOOTER_SYSTEMS.map(system => system.id)).size).toBe(REGIONAL_SCOOTER_SYSTEMS.length);
-    for (const system of REGIONAL_SCOOTER_SYSTEMS) for (const area of serviceAreas(system)) {
-      expect(boundsContainPoint(area.bounds, ...area.center), `${system.id}: ${area.city}`).toBe(true);
+    const areas = REGIONAL_SCOOTER_SYSTEMS.flatMap(system => serviceAreas(system).map(area => ({ system, area, town: regionalCityId(system, area) })));
+    for (const { system, area, town } of areas) {
+      // An area at the edge of a town, as Ryde Stavanger's in Sandnes, at Forus, gives the
+      // centre that the town's main area gives and holds.
+      const centred = boundsContainPoint(area.bounds, ...area.center) || areas.some(other => other.town === town &&
+        other.area.center.join() === area.center.join() && boundsContainPoint(other.area.bounds, ...area.center));
+      expect(centred, `${system.id}: ${area.city}`).toBe(true);
       expect(system.id).toContain(`_${system.country.toLowerCase()}_`);
     }
   });

@@ -315,6 +315,7 @@ enum ScooterProviderCoverage {
         (.ryde, GeoBounds(south: 59.1385, west: 9.52, north: 59.2656, east: 9.6801)),
         (.ryde, GeoBounds(south: 59.1153, west: 9.6191, north: 59.1616, east: 9.6952)),
         (.ryde, GeoBounds(south: 58.8788, west: 5.6365, north: 59.0118, east: 5.7765)),
+        (.ryde, GeoBounds(south: 58.8788, west: 5.695, north: 58.896, east: 5.755)),
         (.ryde, GeoBounds(south: 59.2303, west: 10.3765, north: 59.3091, east: 10.4904)),
         (.ryde, GeoBounds(south: 69.5976, west: 18.8764, north: 69.7169, east: 19.0959)),
         (.ryde, GeoBounds(south: 63.3387, west: 10.3167, north: 63.461, east: 10.5444)),
@@ -787,6 +788,7 @@ enum ScooterCityCatalog {
         ScooterCity(id: "no:Sarpsborg", name: "Sarpsborg", countryCode: "NO", center: GeoPoint(latitude: 59.2842, longitude: 11.1101), bounds: GeoBounds(south: 59.2598, west: 11.021, north: 59.3078, east: 11.1466)),
         ScooterCity(id: "no:Skien", name: "Skien", countryCode: "NO", center: GeoPoint(latitude: 59.2075, longitude: 9.6107), bounds: GeoBounds(south: 59.1385, west: 9.52, north: 59.2656, east: 9.6801)),
         ScooterCity(id: "no:Stavanger", name: "Stavanger", countryCode: "NO", center: GeoPoint(latitude: 58.9701, longitude: 5.7315), bounds: GeoBounds(south: 58.868, west: 5.5629, north: 59.0144, east: 5.777)),
+        ScooterCity(id: "no:Sandnes", name: "Sandnes", countryCode: "NO", center: GeoPoint(latitude: 58.8523, longitude: 5.7366), bounds: GeoBounds(south: 58.765, west: 5.6738, north: 58.896, east: 5.7891)),
         ScooterCity(id: "no:Tønsberg", name: "Tønsberg", countryCode: "NO", center: GeoPoint(latitude: 59.2677, longitude: 10.4081), bounds: GeoBounds(south: 59.2303, west: 10.3765, north: 59.3091, east: 10.4904)),
         ScooterCity(id: "no:Tromsø", name: "Tromsø", countryCode: "NO", center: GeoPoint(latitude: 69.6514, longitude: 18.9586), bounds: GeoBounds(south: 69.5976, west: 18.8764, north: 69.7169, east: 19.0959)),
         ScooterCity(id: "no:Arendal", name: "Arendal", countryCode: "NO", center: GeoPoint(latitude: 58.4615, longitude: 8.7663), bounds: GeoBounds(south: 58.4301, west: 8.6955, north: 58.4883, east: 8.8325)),
@@ -797,7 +799,6 @@ enum ScooterCityCatalog {
         ScooterCity(id: "no:Lillestrøm", name: "Lillestrøm", countryCode: "NO", center: GeoPoint(latitude: 59.9534, longitude: 11.0452), bounds: GeoBounds(south: 59.8947, west: 11, north: 60.0214, east: 11.106)),
         ScooterCity(id: "no:Lørenskog", name: "Lørenskog", countryCode: "NO", center: GeoPoint(latitude: 59.9277, longitude: 10.9572), bounds: GeoBounds(south: 59.9032, west: 10.9151, north: 59.9916, east: 10.9999)),
         ScooterCity(id: "no:Moss", name: "Moss", countryCode: "NO", center: GeoPoint(latitude: 59.432, longitude: 10.6573), bounds: GeoBounds(south: 59.4038, west: 10.6092, north: 59.4596, east: 10.7152)),
-        ScooterCity(id: "no:Sandnes", name: "Sandnes", countryCode: "NO", center: GeoPoint(latitude: 58.8523, longitude: 5.7366), bounds: GeoBounds(south: 58.765, west: 5.6738, north: 58.8764, east: 5.7891)),
         ScooterCity(id: "gb:Bournemouth", name: "Bournemouth", countryCode: "GB", center: GeoPoint(latitude: 50.7204, longitude: -1.8796), bounds: GeoBounds(south: 50.7028, west: -1.915, north: 50.7899, east: -1.7851)),
         ScooterCity(id: "gb:Christchurch", name: "Christchurch", countryCode: "GB", center: GeoPoint(latitude: 50.7354, longitude: -1.7787), bounds: GeoBounds(south: 50.7128, west: -1.785, north: 50.7639, east: -1.6868)),
         ScooterCity(id: "gb:Poole", name: "Poole", countryCode: "GB", center: GeoPoint(latitude: 50.716, longitude: -1.984), bounds: GeoBounds(south: 50.6776, west: -2.0378, north: 50.7942, east: -1.9151)),
@@ -1279,7 +1280,7 @@ enum ScooterCountryCatalog {
         ("UK: Beryl · CDLA-Permissive-2.0", "https://cdla.dev/permissive-2-0/"),
         ("UK: ONS boundaries · OGL v3.0", "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"),
         ("PT: DGT boundaries · CC BY 4.0", "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop"),
-        ("FR/UA/IL: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
+        ("CH/FR/PT/ES/PL/UA/IL: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
     ]
 
     /// The countries whose totals, zoomed out, are their states' or provinces', and those by code.

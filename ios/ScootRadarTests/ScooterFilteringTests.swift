@@ -591,7 +591,7 @@ final class ScooterFilteringTests: XCTestCase {
         XCTAssertEqual(ScooterCountryCatalog.credits.count, 11)
         XCTAssertEqual(Set(sources.map(\.title)).count, sources.count)
         XCTAssertEqual(sources[2].title.prefix(3), "DE/")
-        XCTAssertTrue(sources.contains { $0.title == "FR/UA/IL: OpenStreetMap boundaries · ODbL" })
+        XCTAssertTrue(sources.contains { $0.title == "CH/FR/PT/ES/PL/UA/IL: OpenStreetMap boundaries · ODbL" })
         XCTAssertTrue(sources.contains { $0.title == "AE/SA/IL: Dott, SAHAM, Bird, Lime" })
         XCTAssertTrue(sources.allSatisfy { $0.url.scheme == "https" && !$0.title.isEmpty })
         XCTAssertTrue(sources.contains { $0.url.host() == "data.lillemetropole.fr" })
