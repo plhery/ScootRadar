@@ -3,33 +3,30 @@ import { NextRequest } from 'next/server';
 import { RECORDED_GEOAPIFY_ANSWERS, RECORDED_WORLD_PHOTON_ANSWERS, type RecordedSearch } from '@/app/api/geocode/recordedAnswers';
 import { searchText } from '@/lib/searchText';
 
-// Australia and Israel as country catalogs may list them: Australia with its states, cities with the
-// other names their catalogs give them, in English and in their own script, and the countries with their
-// words in both. The generated modules are what scripts/generate-provider-catalog.mjs would write for
-// them, beside the real countries of Europe, North America, West Asia and Oceania: the United Arab
-// Emirates, Saudi Arabia and New Zealand are the catalog's own.
+// Australia as a country catalog may list it, with its states. The generated modules are what
+// scripts/generate-provider-catalog.mjs would write for it, beside the real countries of Europe, North
+// America, West Asia and Oceania: the United Arab Emirates, Saudi Arabia, Israel (Tel Aviv with the
+// other names its catalog gives it, in English and in its own scripts) and New Zealand are the
+// catalog's own.
 const fixture = vi.hoisted(() => {
   const box = (lat: number, lng: number) => ({ center: [lat, lng] as [number, number],
     bounds: { south: lat - 0.1, west: lng - 0.1, north: lat + 0.1, east: lng + 0.1 } });
-  type Country = 'AU' | 'IL';
-  const system = (id: string, country: Country, city: string, region: string | undefined, at: [number, number], aliases?: string[]) => ({
-    id, provider: 'lime', country, city, ...(region ? { region } : {}), ...box(...at), ...(aliases ? { aliases } : {}),
+  type Country = 'AU';
+  const system = (id: string, country: Country, city: string, region: string, at: [number, number]) => ({
+    id, provider: 'lime', country, city, region, ...box(...at),
     discoveryUrl: `https://data.lime.bike/api/partners/v2/gbfs/${id}/gbfs.json`,
   });
   return {
-    countries: ['AU', 'IL'],
+    countries: ['AU'],
     systems: [
       system('sydney', 'AU', 'Sydney', 'NSW', [-33.8688, 151.2093]),
       system('melbourne', 'AU', 'Melbourne', 'VIC', [-37.8136, 144.9631]),
-      system('tel_aviv', 'IL', 'Tel Aviv', undefined, [32.0853, 34.7818],
-        ['Tel Aviv-Yafo', 'Tel Aviv-Jaffa', 'Jaffa', 'Yafo', 'TLV', 'תל אביב', 'תל אביב-יפו']),
     ],
     regions: { showInCityNames: false, totals: true, list: [
       { code: 'NSW', name: 'New South Wales' }, { code: 'QLD', name: 'Queensland' }, { code: 'VIC', name: 'Victoria' },
     ] },
     searchWords: {
       AU: ['australia', 'australien', 'australie'],
-      IL: ['israel', 'ישראל'],
     },
     names: (en: string) => ({ en, de: en, fr: en, it: en, nl: en, nb: en, pt: en, es: en, is: en }),
   };
@@ -44,11 +41,11 @@ vi.mock('@/generated/countries', async importOriginal => {
   return {
     ...original,
     COUNTRY_CODES: [...original.COUNTRY_CODES, ...fixture.countries],
-    COUNTRY_SOURCES: { ...original.COUNTRY_SOURCES, AU: 'australia', IL: 'israel' },
-    COUNTRY_CONTINENTS: { ...original.COUNTRY_CONTINENTS, AU: 'oceania', IL: 'asia' },
-    COUNTRY_NAMES: { ...original.COUNTRY_NAMES, AU: fixture.names('Australia'), IL: fixture.names('Israel') },
+    COUNTRY_SOURCES: { ...original.COUNTRY_SOURCES, AU: 'australia' },
+    COUNTRY_CONTINENTS: { ...original.COUNTRY_CONTINENTS, AU: 'oceania' },
+    COUNTRY_NAMES: { ...original.COUNTRY_NAMES, AU: fixture.names('Australia') },
     COUNTRY_SEARCH_WORDS: { ...original.COUNTRY_SEARCH_WORDS, ...fixture.searchWords },
-    COUNTRY_ANCHORS: { ...original.COUNTRY_ANCHORS, AU: [-25, 134], IL: [31.5, 34.9] },
+    COUNTRY_ANCHORS: { ...original.COUNTRY_ANCHORS, AU: [-25, 134] },
     COUNTRY_REGIONS: { ...original.COUNTRY_REGIONS, AU: fixture.regions },
   };
 });
