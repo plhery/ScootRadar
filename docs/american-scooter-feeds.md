@@ -14,7 +14,8 @@ left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 The map covers 37 towns in 22 states and the District: Washington, DC (Hopp
 and Veo), 24 towns of Bird's and 17 of Lime's. In Tempe, Atlanta, Arlington
 (VA), the Bronx and Queens, both Bird and Lime run, and the map counts their
-scooters as one town's.
+scooters as one town's. Seven of the towns ban renting at night; see
+[Night bans](#night-bans).
 
 Each town is named with its state, "Washington, DC", as the United States has
 many towns of one name. Zoomed out, the map shows a total per state, at the
@@ -210,6 +211,120 @@ the survey with no ride, had 9 scooters leave and 6 arrive, and is added too. Le
 
 Search also finds St. Louis as Saint Louis and St Louis, Indianapolis as
 Indy, and San Francisco as SF.
+
+## Night bans
+
+Seven covered towns ban renting at night, by ordinance or in the rules of
+their permits. While a ban holds, the dock tells of it, with a moon, for the
+town in view, and a scooter's card says when it can be rented again. Web and
+iOS read the same [`rental-curfews.json`](../data/rental-curfews.json). It
+holds each rule, its source and the town's boundary: the Census Bureau's
+incorporated place from TIGERweb (public domain), simplified to within 100 m
+by `scripts/update-curfew-areas.mjs`. Hours are the town's own. Each ban
+rests on the city's own rule, in force and read again on 15 October 2026;
+none rests on news or an operator's notice.
+
+| Town | Nights | Source |
+| --- | --- | --- |
+| Dallas, TX | Every night, 20:45–05:00 | [Shared Dockless Vehicle Program Rules](https://www.dallascityhall.com/departments/transportation/PublishingImages/Pages/dockless-vehicle-program/Posted%20Program%20Rules_4.17.26.pdf), 17 April 2026, § 6.A |
+| Lincoln, NE | Every night, 23:00–06:00 | [ScooterLNK](https://www.lincoln.ne.gov/City/Departments/LTU/Transportation/Traffic-Engineering/Active-Transportation/ScooterLNK) |
+| Atlanta, GA | Every night, 02:00–04:00 | [ATLDOT Administrative Regulations](https://atldot.atlantaga.gov/wp-content/uploads/2025/11/Administrative-Regulations-November-2024.pdf), updated 27 November 2024, § VII(D)(1)(i) |
+| Richmond, VA | Every night, 01:00–05:00 | City Code § 24-131(3), as amended by [Ord. 2023-029](https://legistar2.granicus.com/richmondva/attachments/87666009-0d3e-4a81-b6c7-8d74ec1700c1.pdf) |
+| Cleveland, OH | Every night, 00:00–03:00 | [Shared Mobility Device and Bicycle Vendor Rules](https://www.clevelandcitycouncil.gov/sites/default/files/2024-07/CITY%20RECORD%207-5-2024.pdf), City Record of 5 July 2024, § VIII |
+| Nashville, TN | Every night, 00:00–05:00 | [Metropolitan Transportation Licensing Commission Rules](https://www.nashville.gov/sites/default/files/2026-10/TLC_Rules_9-16-2026.pdf), filed 16 September 2026, § 905.L |
+| Gainesville, FL | Every night, 00:00–06:00 | [City Code § 26-196(e)](https://library.municode.com/fl/gainesville/codes/code_of_ordinances?nodeId=PTIICOOR_CH26TRMOVE_ARTVIIMISE) |
+
+- A night is named after its evening: Friday's runs into Saturday morning.
+- **Dallas:** "Units may only be available to users to start a ride from
+  5:00 am to 8:45 pm daily. All rides must end by 9:00 pm." The rules took
+  effect on 28 April 2026, and the city's program page says the same. They
+  let the city trial one more hour for 30 days in a permit cycle; none was
+  announced.
+- **Lincoln:** the city's page: "E-scooters are allowed to operate from 6
+  a.m. to 11 p.m., seven days a week. Users will not be able to start any
+  trips outside of that operating window." And: "E-scooters will not be
+  available during UNL Husker football home game days", all day and
+  city-wide; 31 October and 21 November are left in 2026. A nightly window
+  can't hold them, so the map doesn't show them.
+- **Atlanta:** the ban has never been in the City Code. It is a city-wide
+  no-ride rule: 21:00–04:00 by the mayor's order of August 2019, 00:00–04:00
+  from December 2022. Council resolution 24-R-4212 asked ATLDOT to narrow it to
+  02:00–04:00, and the regulations operators follow, updated 27 November
+  2024, did from 13 November: "No Permitted Device shall be rentable during
+  this time period", and scooters stop working from 02:20. ATLDOT's
+  [bikes and scooters page](https://atldot.atlantaga.gov/services-2/bikes-and-scooters/)
+  still carries the 2022 note, 00:00–04:00. The regulations are the binding
+  text, the page links them, and both forbid 02:00–04:00, so the map keeps
+  that.
+- **Richmond:** the ordinance moved the end of the day from 21:00 to 01:00 in
+  February 2023: devices "are only operated from 5:00 a.m. to 1:00 a.m."
+  It took force on adoption, and the city's Legistar holds no later
+  ordinance on the section. Municode's online code and the city's e-scooter
+  FAQ still give the old 05:00–21:00.
+- **Cleveland:** "E-scooters shall not be available for rent between 12 a.m.
+  and 3 a.m., 7 days a week." The rules, published for the permits of 2024
+  to 2027, are linked from the city's
+  [shared mobility page](https://clevelandohio.gov/transportation-mobility/shared-mobility),
+  which agrees: "E-scooters are available for use daily from 3 a.m. to 12
+  a.m. and e-bikes are available 24 hours a day."
+- **Nashville:** "Operation of SUMDs is prohibited after midnight and before
+  5:00 am, except for bicycles and electric bicycles", across Metro
+  Nashville-Davidson County. The commission's rules were filed with the
+  Metropolitan Clerk on 16 September 2026; a footnote dates this one to the
+  amendment of 27 April 2023. The area is Metro's outer edge, so it takes in
+  the satellite cities inside it, Belle Meade, Forest Hills, Oak Hill and
+  Berry Hill; on 14 October only Berry Hill held a scooter, one or two.
+- **Gainesville:** operators "may allow operation of their micromobility
+  devices between the hours of 6:00 a.m. to 12:00 a.m." and must disable
+  their fleets each night, as the code reads in its latest supplement (64).
+  The director may extend the hours and keeps those authorised on file; the
+  University of Florida's
+  [TAPS page](https://taps.ufl.edu/alternative-transportation/micromobility/)
+  gives the same 6 AM to midnight, on campus and in the city.
+
+Rules that read like bans but are not, or that no primary source confirms:
+
+- **Chicago:** CDOT's
+  [page](https://www.chicago.gov/city/en/depts/cdot/supp_info/escooter-share-pilot-project.html)
+  still says "Scooters may be rented between 5:00am-midnight", but the
+  Scooter Sharing Business Rules (2025 update, Rule 7.4) let operators rent
+  "at all hours of the day upon implementation of in-app impairment testing",
+  which riders take from midnight to 05:00 (Rule 11.1). A test, not a ban.
+- **St. Louis:** the city's release of 4 June 2021 set a curfew from 21:00 to
+  08:00 in Downtown and Downtown West, "indefinitely". The 2025 permit keeps
+  the city's power to draw curfew areas but holds no map of one, and nothing
+  later confirms it. Left out: a district rule at most, and unconfirmed.
+- **Detroit:** a weekend shutdown of the business district from 21:00 to
+  06:00 was reported in 2022. The 2026–2027 permit application sets no hours,
+  and its map is captioned "Regular 24/7 Operations".
+- **New York:** only a rider's first three trips can't start overnight
+  ("Beginner Mode").
+- **Durham:** only Duke's campus, from 23:00 to 06:00; the city has "no set
+  operating hours".
+- **Baltimore:** the Director's regulations, effective 18 June 2025, set no
+  hours. A 23:00–04:00 window in summaries of the 2019 rules isn't in them.
+- **Louisville:** only scooters without working lights stop after dark.
+- **Washington, DC, Los Angeles, Santa Monica, Culver City, San Francisco,
+  Oakland, San Jose, Seattle, Colorado Springs, Tempe, Indianapolis, Kansas
+  City, Lexington, San Antonio, Arlington, Fairfax, Norfolk and Eau Claire:**
+  no hours in their rules. San Antonio's 2019 curfew is gone.
+- **Greensboro:** since 1 March 2026 a ride started after 22:00 needs
+  a "Safe Start Cognitive test", and "the device will remain locked for
+  riders who are unable to pass the test"; downtown, speed drops to 10 mph
+  from 01:00 to 02:00 (city news release of 16 February 2026). A test, not a
+  ban. Code § 16-229 sets no hours.
+- **Memphis:** the city's Operating Regulations (version of 2 July 2021) set
+  no hours. A weekend curfew from 22:00 to 05:00 in Downtown and on Mud
+  Island appears only in news from 2020 and 2022, and would be a district
+  rule anyway.
+- **Newark:** Chapter 29:29 (2023) sets no hours, and the NewarkGo rules of
+  2021 leave "Hours and days of operation" to each operator's plan.
+- **Reno:** the Administrative Code (§ 5.90.1180) and the city's e-scooter
+  page set no hours; Bird's 2022 franchise agreement couldn't be read.
+
+None of these towns' rules sets a season, so no Bird or Lime area pauses for
+winter. Chicago and Detroit license scooters all year, and Lincoln's code has
+no winter clause.
 
 ## Reading the feeds
 

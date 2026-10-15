@@ -327,8 +327,9 @@ systems, the gaps and the recheck command.
 
 Night bans on renting, in `data/rental-curfews.json`, come from each town's
 rules: Lovdata for Norway, the council or the operator for Britain, the
-municipal regulation for Matosinhos in Portugal, and the Kyiv City Military
-Administration's curfew order for Kyiv. Their areas are municipal
+municipal regulation for Matosinhos in Portugal, the Kyiv City Military
+Administration's curfew order for Kyiv, and each American city's code or
+permit rules. Their areas are municipal
 boundaries from Kartverket under
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), local authority
 districts from the ONS under the
@@ -340,7 +341,11 @@ under CC BY 4.0 (Informação geográfica cedida pela Direção-Geral do
 Território). Kyiv's is its OpenStreetMap boundary (relation 421866), read
 through Nominatim, © OpenStreetMap contributors, under the
 [ODbL](https://opendatacommons.org/licenses/odbl/); simplified, it stays under
-the ODbL. The credits list all four.
+the ODbL. The credits list all four. American towns are the Census Bureau's
+incorporated places, read from
+[TIGERweb](https://tigerweb.geo.census.gov/tigerwebmain/TIGERweb_main.html);
+as works of the federal government they are in the public domain and need no
+credit.
 
 ## Portugal, Spain and Iceland
 
@@ -513,8 +518,8 @@ recheck command.
 
 The reviewed catalog lives in `data/american-scooter-feeds.json`: 41 feeds in
 37 towns. In Washington, DC, Hopp (Bolt) and Veo; Bird in 24 towns and Lime in
-17, from Seattle to Norfolk, their New York feeds each in the Bronx and Queens. Each is the operator's own public GBFS feed:
-Bolt's system 23 at `mds.bolt.eu`, which Bolt runs in Washington under the
+17, from Seattle to Norfolk, their New York feeds each in the Bronx and
+Queens. Each is the operator's own public GBFS feed: Bolt's system 23 at `mds.bolt.eu`, which Bolt runs in Washington under the
 name Hopp, Veo's `xdc` at `cluster-prod.veoride.com`, Bird's at `mds.bird.co`
 and Lime's at `data.lime.bike`. All were found through
 [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
@@ -528,8 +533,10 @@ as in Europe, whose last copy allows showing Bird's vehicles, credited to Bird,
 with data no older than fifteen minutes. Lime's
 [GBFS terms](https://www.li.me/legal/public-gbfs-terms) allow public display
 only where local law requires it, the same open question as in Europe. The
-map's credits name all four under the GBFS line. See the [coverage audit](docs/american-scooter-feeds.md)
-for the systems, the brand Hopp, the bounds, the gaps and the recheck command.
+map's credits name all four under the GBFS line. Seven towns ban renting at
+night, by their codes or permit rules. See the
+[coverage audit](docs/american-scooter-feeds.md) for the systems, the brand
+Hopp, the bounds, the night bans, the gaps and the recheck command.
 
 ## Canada
 

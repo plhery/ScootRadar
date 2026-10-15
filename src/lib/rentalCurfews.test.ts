@@ -14,6 +14,12 @@ const PORTO: [number, number] = [41.1496, -8.611];
 const KYIV: [number, number] = [50.4501, 30.5234];
 const OBOLON: [number, number] = [50.5014, 30.4983];
 const BROVARY: [number, number] = [50.5113, 30.7903];
+const DALLAS: [number, number] = [32.7767, -96.797];
+const ATLANTA: [number, number] = [33.749, -84.388];
+const NASHVILLE: [number, number] = [36.1627, -86.7816];
+const BRENTWOOD: [number, number] = [36.0331, -86.7828];
+const LINCOLN: [number, number] = [40.8136, -96.7026];
+const CHICAGO: [number, number] = [41.8781, -87.6298];
 const at = (iso: string) => Date.parse(iso);
 
 describe('activeCurfew', () => {
@@ -86,6 +92,22 @@ describe('activeCurfew', () => {
     // 01:30 in winter time.
     expect(activeCurfew(KYIV, at('2026-11-09T23:30:00Z'))).toEqual({ city: 'Kyiv', until: at('2026-11-10T03:00:00Z'), timeZone: 'Europe/Kyiv' });
     expect(activeCurfew(BROVARY, at('2026-10-14T23:00:00Z'))).toBeNull();
+  });
+
+  it('reads American bans by each city\'s clock, and stops at its line', () => {
+    // Dallas lets rides start until 20:45, Central time, and opens again at 05:00.
+    expect(activeCurfew(DALLAS, at('2026-10-15T01:44:00Z'))).toBeNull();
+    expect(activeCurfew(DALLAS, at('2026-10-15T01:45:00Z'))).toEqual({ city: 'Dallas', until: at('2026-10-15T10:00:00Z'), timeZone: 'America/Chicago' });
+    // Atlanta bans only 02:00 to 04:00, Eastern time.
+    expect(activeCurfew(ATLANTA, at('2026-10-15T05:59:00Z'))).toBeNull();
+    expect(activeCurfew(ATLANTA, at('2026-10-15T06:00:00Z'))).toEqual({ city: 'Atlanta', until: at('2026-10-15T08:00:00Z'), timeZone: 'America/New_York' });
+    // Nashville from midnight, and not in Brentwood, beyond Davidson County.
+    expect(activeCurfew(NASHVILLE, at('2026-10-15T05:30:00Z'))?.until).toBe(at('2026-10-15T10:00:00Z'));
+    expect(activeCurfew(BRENTWOOD, at('2026-10-15T05:30:00Z'))).toBeNull();
+    // Lincoln from 23:00 in winter time, until 06:00.
+    expect(activeCurfew(LINCOLN, at('2026-11-10T05:00:00Z'))).toEqual({ city: 'Lincoln', until: at('2026-11-10T12:00:00Z'), timeZone: 'America/Chicago' });
+    // Chicago tests riders at night instead.
+    expect(activeCurfew(CHICAGO, at('2026-10-15T06:00:00Z'))).toBeNull();
   });
 
   it('stops at the edge of Oslo, and needs a place', () => {

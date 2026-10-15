@@ -781,6 +781,18 @@ extension ScooterModelsTests {
         )
         XCTAssertNil(RentalCurfew.active(at: brovary, on: try at("2026-10-14T23:00:00Z")))
 
+        // Dallas lets rides start until 20:45, Central time; Nashville's ban stops at Davidson County's line.
+        let dallas = GeoPoint(latitude: 32.7767, longitude: -96.797)
+        let nashville = GeoPoint(latitude: 36.1627, longitude: -86.7816)
+        let brentwood = GeoPoint(latitude: 36.0331, longitude: -86.7828)
+        XCTAssertNil(RentalCurfew.active(at: dallas, on: try at("2026-10-15T01:44:00Z")))
+        XCTAssertEqual(
+            RentalCurfew.active(at: dallas, on: try at("2026-10-15T01:45:00Z")),
+            RentalCurfew.Active(city: "Dallas", until: try at("2026-10-15T10:00:00Z"), timeZone: try XCTUnwrap(TimeZone(identifier: "America/Chicago")))
+        )
+        XCTAssertEqual(RentalCurfew.active(at: nashville, on: try at("2026-10-15T05:30:00Z"))?.until, try at("2026-10-15T10:00:00Z"))
+        XCTAssertNil(RentalCurfew.active(at: brentwood, on: try at("2026-10-15T05:30:00Z")))
+
         // The ban comes before every other notice, with a moon.
         let curfew = RentalCurfew.Active(city: "Oslo", until: try at("2026-10-13T03:00:00Z"), timeZone: osloTime)
         XCTAssertEqual(

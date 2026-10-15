@@ -5,8 +5,9 @@ import { resolve } from 'node:path';
 // simplified to within TOLERANCE_M: Norwegian municipalities from Kartverket
 // (CC BY 4.0), British local authority districts from the ONS (Open Government
 // Licence v3.0), Portuguese municipalities from the Direção-Geral do Território's
-// CAOP (CC BY 4.0), and Kyiv from OpenStreetMap (ODbL). Pieces smaller than
-// MIN_AREA_KM2 (skerries, most islands) are left out. Run it after adding a
+// CAOP (CC BY 4.0), American incorporated places from the Census Bureau's
+// TIGERweb (public domain), and Kyiv from OpenStreetMap (ODbL). Pieces smaller
+// than MIN_AREA_KM2 (skerries, most islands) are left out. Run it after adding a
 // curfew, then npm run generate:providers.
 
 const TOLERANCE_M = 100;
@@ -69,6 +70,9 @@ function simplifyRing(ring) {
 // December 2018 districts: Bournemouth, Christchurch and Poole merged the year after.
 const ONS_DISTRICTS = 'https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/LAD_December_2018_Boundaries_UK_BGC_2022/FeatureServer/0/query';
 
+// Incorporated places as TIGERweb's current layer draws them.
+const TIGERWEB_PLACES = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Places_CouSub_ConCity_SubMCD/MapServer/4/query';
+
 // Each source's URL for an id, and where its answer keeps the geometry.
 const BOUNDARIES = {
   kartverket: {
@@ -83,6 +87,12 @@ const BOUNDARIES = {
   caop: {
     url: id => `https://ogcapi.dgterritorio.gov.pt/collections/municipios/items/${id}?f=json`,
     geometry: body => body.geometry,
+  },
+  // An incorporated place by GEOID, its state's code then the place's,
+  // reprojected by the server to lon/lat.
+  census: {
+    url: id => `${TIGERWEB_PLACES}?where=${encodeURIComponent(`GEOID='${id}'`)}&returnGeometry=true&outSR=4326&f=geojson`,
+    geometry: body => body.features?.[0]?.geometry,
   },
   // An OpenStreetMap relation by id, through Nominatim, whose policy asks each
   // client to name itself.
@@ -108,7 +118,8 @@ async function boundary({ source, id }) {
 for (const curfew of catalog.curfews) {
   const polygons = await boundary(curfew.boundary);
   // Outer rings only. Kyiv's two holes, enclaves of Kyiv Oblast to the west and
-  // north-east, lie well outside its scooters' bounds.
+  // north-east, lie well outside its scooters' bounds. Of the American holes,
+  // only Berry Hill, a city inside Nashville, held a scooter or two.
   curfew.areas = polygons
     .map(([outer]) => outer)
     .filter(outer => planeArea(toPlane(outer)) / 1e6 >= MIN_AREA_KM2)
