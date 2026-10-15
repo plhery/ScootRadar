@@ -84,6 +84,8 @@ import leHavreFr from './fr/trottinette-electrique-le-havre';
 import rhodesEn from './en/e-scooters-rhodes';
 import kosEn from './en/e-scooters-kos';
 import rigaEn from './en/e-scooters-riga';
+import fuerteventuraEn from './en/e-scooters-fuerteventura';
+import fuerteventuraEs from './es/alquiler-patinete-electrico-fuerteventura';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -108,6 +110,7 @@ export const GUIDES: readonly Guide[] = [
   tromsoEn,
   reykjavikEn,
   tenerifeEn,
+  fuerteventuraEn,
   rhodesEn,
   kosEn,
   rigaEn,
@@ -165,6 +168,7 @@ export const GUIDES: readonly Guide[] = [
   spanishRulesEs,
   howToRentEs,
   tenerifeEs,
+  fuerteventuraEs,
   icelandicRulesIs,
   howToRentIs,
   reykjavikIs,
