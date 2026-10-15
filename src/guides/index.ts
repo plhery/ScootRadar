@@ -67,6 +67,7 @@ import naplesIt from './it/monopattini-sharing-napoli';
 import antwerpNl from './nl/deelstep-antwerpen';
 import lilleFr from './fr/trottinette-electrique-lille';
 import liverpoolEn from './en/e-scooters-liverpool';
+import nottinghamEn from './en/e-scooters-nottingham';
 import dusseldorfDe from './de/e-scooter-duesseldorf';
 import hanoverDe from './de/e-scooter-hannover';
 import stavangerNb from './nb/elsparkesykkel-stavanger';
@@ -94,6 +95,7 @@ export const GUIDES: readonly Guide[] = [
   ukHireEn,
   bristolEn,
   liverpoolEn,
+  nottinghamEn,
   berlinEn,
   munichEn,
   parisEn,
