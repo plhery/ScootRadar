@@ -24,6 +24,23 @@ describe('formatRegion', () => {
     expect(formatRegion('nb', ['nn-NO'])).toBe('NO');
   });
 
+  it('takes the region of a first browser language the app is not shown in, or its likely one', () => {
+    // Chrome's defaults in Israel, Japan, Poland, Hungary and Greece.
+    expect(formatRegion('en', ['he-IL', 'he', 'en-US', 'en'])).toBe('IL');
+    expect(formatRegion('en', ['ja', 'en-US', 'en'])).toBe('JP');
+    expect(formatRegion('en', ['pl-PL', 'pl', 'en-US', 'en'])).toBe('PL');
+    expect(formatRegion('en', ['hu-HU', 'hu', 'en-US', 'en'])).toBe('HU');
+    expect(formatRegion('en', ['el', 'en-US'])).toBe('GR');
+    expect(formatRegion('en', ['ar', 'en'])).toBe('EG');
+    expect(formatRegion('de', ['pl-PL', 'de-DE'])).toBe('PL');
+    // A first language the app has keeps the rule above.
+    expect(formatRegion('en', ['en-US', 'he-IL'])).toBe('US');
+    expect(formatRegion('de', ['de-CH', 'en-US'])).toBe('CH');
+    expect(formatRegion('en', ['fr-FR', 'en-US'])).toBe('US');
+    expect(formatRegion('nb', ['nn', 'en-US'])).toBe('CH');
+    expect(formatRegion('en', ['not a tag', 'he-IL', 'en-US'])).toBe('IL');
+  });
+
   it('falls back to Switzerland, as before, when no language names a region for the UI language', () => {
     expect(DEFAULT_FORMAT_REGION).toBe('CH');
     expect(formatRegion('en', [])).toBe('CH');
@@ -53,6 +70,16 @@ describe('formatLocale', () => {
     expect(new Intl.NumberFormat(formatLocale('es', 'MX')).format(12345.6)).toBe('12,345.6');
     expect(plain(formatRidePrice(150, 'MXN', 'es', 'MX'))).toBe('$1.50');
     expect(plain(formatClockTime(EVENING, 'es', 'MX'))).toBe('11:05 p.m.');
+  });
+
+  it('writes English as Israel, the Gulf and New Zealand do, for a browser in Hebrew, Arabic or English there', () => {
+    expect(plain(formatRidePrice(550, 'ILS', 'en', 'IL'))).toBe('₪5.50');
+    expect(plain(formatClockTime(EVENING, 'en', 'IL'))).toBe('23:05');
+    expect(plain(formatRidePrice(550, 'AED', 'en', 'AE'))).toBe('AED 5.50');
+    expect(plain(formatClockTime(EVENING, 'en', 'AE'))).toBe('11:05 PM');
+    expect(plain(formatRidePrice(550, 'SAR', 'en', 'SA'))).toBe('SAR 5.50');
+    expect(plain(formatRidePrice(550, 'NZD', 'en', 'NZ'))).toBe('$5.50');
+    expect(plain(formatClockTime(EVENING, 'en', 'PL'))).toBe('23:05');
   });
 
   it('writes them as Switzerland does without a region, as every visitor saw before', () => {
