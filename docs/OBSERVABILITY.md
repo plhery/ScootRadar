@@ -19,9 +19,11 @@ bearer token. Production requires at least 32 characters. Prometheus reaches the
 container over the `coolify` network as `scootradar-cache:3001` (a Coolify network
 alias), with job `scootradar-cache`; the token is in its `prometheus.yml`.
 
-Labels hold feed ids, sources, providers, routes and status codes only. The feed
-series follow the snapshot at each scrape, with the states of the
-`snapshot_feed_state` log line; feeds never attempted or skipped are left out:
+Labels hold feed ids, sources, providers, countries, routes and status codes only. The
+feed series follow the snapshot at each scrape, with the states of the
+`snapshot_feed_state` log line; feeds never attempted are left out, and so are skipped
+feeds, whose operator lists nothing at all, but for the vehicles, pause and country of
+those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
 
 - `scootradar_feed_state{feed, source, provider, state}`: 1 for the feed's state, 0 for
   the others, judged by the feed's cadence (see [Collection cadence](#collection-cadence)).
@@ -33,8 +35,12 @@ series follow the snapshot at each scrape, with the states of the
 - `scootradar_feed_paused`: 1 while every service area of the feed is in its seasonal
   pause (`seasonal` in its catalog, as Montréal each winter), else 0. The feed may then
   serve nothing: the map says when its scooters are back rather than that the provider is
-  not sharing data, Sentry is not told it stopped, and "feed stopped" ignores it.
-- `scootradar_feed_vehicles`: vehicles held, 0 once expired.
+  not sharing data, Sentry is not told it stopped, and "feed stopped" and "feed empty"
+  ignore it.
+- `scootradar_feed_vehicles`: available standing scooters held, 0 once expired, or while
+  the operator lists none.
+- `scootradar_feed_info{country}`: 1, with the feed's country in English
+  (`Switzerland` for the national, Hopp and PubliBike sources), for alerts to name.
 - `scootradar_feed_observation_timestamp_seconds`: the source's own timestamp of the
   positions held. `time() -` it is their age; an idle feed's may pass 15 minutes.
 - `scootradar_feed_attempt_timestamp_seconds`, and `scootradar_feed_parking_up` for
@@ -125,6 +131,7 @@ The alert rules:
 | ScootRadar serves no scooters | every feed has expired for 5 minutes |
 | ScootRadar collector stalled | no collection has finished for 5 minutes (Swiss feeds alone finish one every few seconds) |
 | ScootRadar feed stopped | a feed served more than half of the last 7 days has been expired for 10 minutes, by its cadence's rule; one notification per feed. Not in its seasonal pause, whose days count as served, so a feed that does not come back after its season is reported |
+| ScootRadar feed empty | a feed has listed no available scooter for 3 days, outside its seasonal pause (see [Empty feeds](#empty-feeds)); a warning, repeated once a day |
 | ScootRadar feed discovery stale | no successful discovery for 2 hours |
 | ScootRadar cache restarting | one build has restarted more than three times in an hour (a deploy is not counted) |
 | ScootRadar cache memory high | over 1.3 GB for 15 minutes (the limit is 1536 MiB) |
@@ -144,7 +151,9 @@ then the other. When the rule counted every change of the start time, one deploy
 three, and the second deploy within an hour fired it: seven times from 11 to 13
 October 2026, with no crash.
 
-The default notification policy sends them all to the `telegram-paul` contact point.
+The default notification policy sends them all to the `telegram-paul` contact point,
+reminding every 4 hours while they fire. "Feed empty" goes there through its own
+`notificationSettings` (Grafana's `notification_settings`), which remind once a day.
 The dashboard's "Expired, rarely served" table lists the others: silence isn't
 success. A feed that dies stops alerting once it has been dead for half a week, and
 moves to that table. "Oldest positions held" shows feeds coming close
@@ -152,6 +161,35 @@ to the 15-minute limit, as Swiss Voi does with its 8-minute updates published 90
 seconds late; idle feeds pass it between collections, which is expected. The
 "Cadence" row shows the feeds on each cadence, the collections started and the
 requests sent to operators.
+
+### Empty feeds
+
+A feed can answer on time and list no scooter: "feed stopped" and `/ready` count it
+as served. "Feed empty" reports one that has listed no available standing scooter, by
+`scootradar_feed_vehicles`, for 3 days in Prometheus, which keeps 15. Lime's
+Winterthur, Zug and Wetzikon systems were the first, empty since at least 11 October
+2026.
+
+- **Not a quiet night or a snow day.** Beryl empties Bournemouth and Brighton every
+  night and Voi its Oslo feed during the night ban; Bird lists nothing in Calgary on a
+  snow day. A single scooter in 3 days keeps a feed quiet.
+- **Not in a seasonal pause.** A feed paused at any time in the last 3 days is left
+  out, so one whose season has ended has 3 days to bring its scooters back.
+- **Feeds that list nothing at all.** Bird's town with no scooter and no time (read
+  as an empty town since its Canadian feeds), a Dott region it has paused (403
+  `ERR_REGION_OFFLINE`) and a feed without a scooter type are skipped: they have no
+  state, but count as empty, so a town Bird leaves for good is reported. Swiss systems
+  sharedmobility.ch keeps listing after their operator stopped (Bird in Biel) are
+  skipped as inactive and left out.
+- **Not a feed that does not answer.** One expired over half of the last day is
+  "feed stopped"'s, then the "Expired, rarely served" table's.
+- **Followed for 3 days.** A feed is reported only if Prometheus held it 3 days ago, so
+  a new feed, or one skipped before its vehicles were exported (15 October 2026), waits.
+
+When it fires, check the operator's app or site and the town's pages, then add a
+`seasonal` window to the catalog if the city or the operator publishes one, or remove
+the feed and record it in [coverage gaps](coverage-gaps.md), or silence it in Grafana
+while waiting.
 
 ## Sentry
 

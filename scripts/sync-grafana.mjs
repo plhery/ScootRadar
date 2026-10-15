@@ -73,6 +73,9 @@ function toProvisionedRule(rule) {
     annotations: { summary: rule.summary, description: rule.description },
     labels: { service: 'scootradar', severity: rule.severity },
     isPaused: false,
+    // A rule may send to its contact point directly, with its own grouping and reminders, rather
+    // than through the notification policies (a reminder every 4 hours by default).
+    notification_settings: rule.notificationSettings ?? null,
   };
 }
 
@@ -103,6 +106,7 @@ function comparableRule(rule) {
     annotations: rule.annotations,
     labels: rule.labels,
     isPaused: rule.isPaused,
+    notification_settings: rule.notification_settings ?? null,
   }));
 }
 

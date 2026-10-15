@@ -55,6 +55,29 @@ it('says which feeds are in their seasonal pause, for the feed-stopped alert to 
     'scootradar_feed_paused{feed="national:voiscooters.com",source="national",provider="voi"} 0');
 });
 
+it('counts a catalog feed whose operator lists nothing as empty, but not an inactive Swiss system', () => {
+  const metrics = createSnapshotMetrics('abc123', { paused: id => id === 'canada:bird_ca_ottawa' });
+  const text = metrics.render(snapshot([
+    feed({}),
+    // Bird's town with no scooter and no time, and Dott's paused region, are skipped.
+    feed({ id: 'canada:bird_ca_saskatoon', source: 'canada' as FeedSnapshot['source'], provider: 'bird', skipped: true }),
+    feed({ id: 'canada:bird_ca_ottawa', source: 'canada' as FeedSnapshot['source'], provider: 'bird', skipped: true }),
+    feed({ id: 'uk:beryl_gb_brighton', source: 'uk' as FeedSnapshot['source'], provider: 'beryl' }),
+    // sharedmobility.ch still lists Bird in Biel, which sent its last position long ago.
+    feed({ id: 'national:bird-biel', provider: 'bird', skipped: true }),
+  ]), now);
+  const saskatoon = 'feed="canada:bird_ca_saskatoon",source="canada",provider="bird"';
+  expect(sample(text, `scootradar_feed_vehicles{${saskatoon}}`)).toBe('0');
+  expect(sample(text, `scootradar_feed_paused{${saskatoon}}`)).toBe('0');
+  expect(sample(text, 'scootradar_feed_paused{feed="canada:bird_ca_ottawa",source="canada",provider="bird"}')).toBe('1');
+  // A skipped feed has no state.
+  expect(sample(text, `scootradar_feed_state{${saskatoon},state="ok"}`)).toBeUndefined();
+  expect(sample(text, `scootradar_feed_info{${saskatoon},country="Canada"}`)).toBe('1');
+  expect(text).toContain('scootradar_feed_info{feed="uk:beryl_gb_brighton",source="uk",provider="beryl",country="United Kingdom"} 1\n');
+  expect(sample(text, 'scootradar_feed_info{feed="national:voiscooters.com",source="national",provider="voi",country="Switzerland"}')).toBe('1');
+  expect(text).not.toContain('national:bird-biel');
+});
+
 it('counts collections from zero by outcome, and requests by route and status', () => {
   const metrics = createSnapshotMetrics();
   const voi = { id: 'national:voiscooters.com', source: 'national', provider: 'voi' };

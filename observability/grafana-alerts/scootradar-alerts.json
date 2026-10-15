@@ -45,6 +45,25 @@
       "description": "Expired: a feed nobody looks at has had no successful collection for 30 minutes (its 20-minute interval and ten), or a Swiss feed, or one watched for 15 minutes, has positions over 15 minutes old. The map says {{ $labels.provider }} is not sharing data where this feed covers, or would as soon as someone looked. It was served more than half of the last 7 days; dead feeds, and feeds such as Velospot that are fresh only now and then, are not reported (see the dashboard's \"Expired, rarely served\"). A feed in its seasonal pause (scootradar_feed_paused, as Montréal each winter) is not reported, and its days in the pause count as served, so one that does not come back after its season is. The Sentry issue for the feed in scootradar-cache gives its last error, or says its data aged past the limit without one. Loki: {app=\"scootradar-cache\", event=\"snapshot_feed_state\"} | json | feed=\"{{ $labels.feed }}\"."
     },
     {
+      "uid": "scootradar-feed-empty",
+      "title": "ScootRadar feed empty",
+      "expr": "(max by (feed, source, provider) (max_over_time(scootradar_feed_vehicles{job=\"scootradar-cache\"}[3d])) < bool 1 and on (feed) max by (feed) (scootradar_feed_vehicles{job=\"scootradar-cache\"}) and on (feed) max by (feed) (max_over_time(scootradar_feed_vehicles{job=\"scootradar-cache\"}[1h] offset 3d)) unless on (feed) (max by (feed) (max_over_time(scootradar_feed_paused{job=\"scootradar-cache\"}[3d])) == 1) unless on (feed) (avg_over_time((max by (feed) (scootradar_feed_state{job=\"scootradar-cache\", state=\"expired\"}))[1d:5m]) > 0.5)) * on (feed) group_left (country) max by (feed, country) (scootradar_feed_info{job=\"scootradar-cache\"})",
+      "for": "10m",
+      "severity": "warning",
+      "noDataState": "KeepLast",
+      "perSeries": true,
+      "notificationSettings": {
+        "receiver": "telegram-paul",
+        "group_by": [
+          "grafana_folder",
+          "alertname"
+        ],
+        "repeat_interval": "24h"
+      },
+      "summary": "{{ $labels.provider }} feed {{ $labels.feed }} in {{ $labels.country }} has listed no available scooter for 3 days.",
+      "description": "The feed answers but has listed no available standing scooter for 3 days, outside any seasonal pause: the map shows none of its scooters. A quiet night or a snow day does not last that long. The operator may have left the town, taken its scooters in for a season the catalog does not know, or its feed may be broken while still answering. Check the operator's site or app and the town's own pages, then: add a `seasonal` window to the catalog if the city or the operator publishes one; remove the feed and record it in docs/coverage-gaps.md if the scooters are gone; or silence the feed in Grafana while waiting. A catalog feed whose operator lists nothing at all (Bird's town with no scooter and no time, a Dott region it has paused) counts as empty; a Swiss system sharedmobility.ch lists after its operator stopped does not. Feeds followed for under 3 days, paused at any time in the last 3, or expired over half of the last day (the feed-stopped alert's) are not reported. Reminded once a day while it lasts. Its counts: scootradar_feed_vehicles{feed=\"{{ $labels.feed }}\"} in Prometheus."
+    },
+    {
       "uid": "scootradar-discovery-stale",
       "title": "ScootRadar feed discovery stale",
       "expr": "time() - (max(scootradar_discovery_success_timestamp_seconds{job=\"scootradar-cache\"}) or max(process_start_time_seconds{job=\"scootradar-cache\"})) > bool 7200",

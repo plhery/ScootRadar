@@ -1,5 +1,6 @@
 import { monitorEventLoopDelay } from 'node:perf_hooks';
-import { isRegionalSource } from '../src/lib/regionalScooterSystems';
+import { COUNTRY_NAMES } from '../src/generated/countries';
+import { COUNTRY_SOURCES, isRegionalSource } from '../src/lib/regionalScooterSystems';
 import type { MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { feedPaused } from '../src/lib/seasonalPauses';
 import { ALWAYS_FAST, feedState, parkingUp, type FeedCadence, type FeedState } from './feedStateLog';
@@ -9,6 +10,10 @@ interface FeedLabels { id: string; source: string; provider: string }
 type Labels = Record<string, string>;
 
 const FEED_STATES: FeedState[] = ['ok', 'failing', 'expired'];
+// The country of each catalog's source; the others (national, hopp, publibike) are Swiss.
+const COUNTRY_OF_SOURCE = new Map<string, string>(Object.entries(COUNTRY_SOURCES)
+  .map(([country, source]) => [source, COUNTRY_NAMES[country as keyof typeof COUNTRY_SOURCES].en]));
+const countryOf = (source: string) => COUNTRY_OF_SOURCE.get(source) ?? COUNTRY_NAMES.CH.en;
 const EVENT_LOOP_RESOLUTION_MS = 20;
 
 interface MetricsSources {
@@ -72,7 +77,13 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         for (const [labels, value] of samples) out.push(`${name}${formatLabels(labels)} ${value}`);
       };
       // As in the feed state log, a feed not attempted yet has no state to speak of.
-      const feeds = (snapshot?.feeds ?? []).filter(feed => !feed.skipped && feed.attemptedAt > 0);
+      const attempted = (snapshot?.feeds ?? []).filter(feed => feed.attemptedAt > 0);
+      const feeds = attempted.filter(feed => !feed.skipped);
+      // A skipped feed, whose operator lists nothing at all (Bird out of season, a Dott region it
+      // has paused), has no state either, but holds no scooter, which the empty-feed alert counts.
+      // Not the Swiss systems sharedmobility.ch keeps listing after their operator stopped: they are
+      // skipped as inactive for good.
+      const counted = attempted.filter(feed => !feed.skipped || feed.source !== 'national');
       const labelsOf = (feed: FeedLabels): Labels => ({ feed: feed.id, source: feed.source, provider: feed.provider });
       // A feed retired from the catalog stops counting.
       if (snapshot) {
@@ -94,10 +105,12 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
           return FEED_STATES.map((candidate): [Labels, number] => [{ ...labelsOf(feed), state: candidate }, candidate === state ? 1 : 0]);
         }));
       metric('scootradar_feed_paused', 'gauge',
-        'Whether every service area of the feed is in its seasonal pause, as Montréal each winter: it may serve nothing, the map says when its scooters are back, and the feed-stopped alert ignores it.',
-        feeds.map(feed => [labelsOf(feed), paused(feed.id, now) ? 1 : 0]));
-      metric('scootradar_feed_vehicles', 'gauge', 'Vehicles held for the feed, 0 once it has expired.',
-        feeds.map(feed => [labelsOf(feed), feedState(feed, now, cadence) === 'expired' ? 0 : feed.vehicles.length]));
+        'Whether every service area of the feed is in its seasonal pause, as Montréal each winter: it may serve nothing, the map says when its scooters are back, and the feed-stopped and feed-empty alerts ignore it.',
+        counted.map(feed => [labelsOf(feed), paused(feed.id, now) ? 1 : 0]));
+      metric('scootradar_feed_vehicles', 'gauge', 'Available standing scooters held for the feed, 0 once it has expired or while its operator lists none.',
+        counted.map(feed => [labelsOf(feed), feedState(feed, now, cadence) === 'expired' ? 0 : feed.vehicles.length]));
+      metric('scootradar_feed_info', 'gauge', 'The country of the feed, in English, for the alerts to name.',
+        counted.map(feed => [{ ...labelsOf(feed), country: countryOf(feed.source) }, 1]));
       metric('scootradar_feed_observation_timestamp_seconds', 'gauge', 'The source timestamp of the positions held for the feed.',
         feeds.filter(feed => feed.observedAt > 0).map(feed => [labelsOf(feed), seconds(feed.observedAt)]));
       metric('scootradar_feed_attempt_timestamp_seconds', 'gauge', 'When the feed was last collected, successfully or not.',
