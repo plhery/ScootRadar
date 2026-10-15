@@ -241,9 +241,10 @@ describe('French scooter feeds', () => {
     }
   );
 
+  // Lyon, not Tignes: in its seasonal pause, Tignes's failures are not reported (seasonalPauses.ts).
   it.each([
-    { systemId: 'dott_fr_tignes', bounds: tignes, status: 404, error: 'Not Found: ERR_REGION_NOT_FOUND' },
-    { systemId: 'dott_fr_tignes', bounds: tignes, status: 403, error: 'Forbidden' },
+    { systemId: 'dott_fr_lyon', bounds: lyon, status: 404, error: 'Not Found: ERR_REGION_NOT_FOUND' },
+    { systemId: 'dott_fr_lyon', bounds: lyon, status: 403, error: 'Forbidden' },
     { systemId: 'pony_fr_angers', bounds: angers, status: 403, error: 'Forbidden: ERR_REGION_OFFLINE' },
   ])('still fails $systemId when it answers $status $error', async ({ systemId, bounds, status, error }) => {
     vi.stubGlobal('fetch', vi.fn(async () => refusal(status, error)));

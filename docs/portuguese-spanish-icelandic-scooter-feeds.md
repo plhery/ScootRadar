@@ -22,9 +22,9 @@ day; see [Hopp in Egilsstaðir and Hveragerði, October 2026](#hopp-in-egilssta�
 | Spain | Bird | 5 | Gijón, Getafe, Playa de las Américas (Tenerife), Caleta de Fuste and Pájara (Fuerteventura) | 1,250 |
 | Spain | Hopp | 3 | Torrevieja and Pilar de la Horadada, Jávea, Playa de las Américas and Golf del Sur (Tenerife) | 550 |
 | Spain | Hoppy | 6 | Puerto del Carmen (Lanzarote), Playa de las Américas (Tenerife), Corralejo and Caleta de Fuste (Fuerteventura), Altea, L'Albir, L'Alfàs del Pi and La Nucía (Marina Baixa), Torrevieja | 2,350 |
-| Iceland | Hopp | 16 | Reykjavík and its capital area, Reykjanesbær (with Sandgerði, Garður and Vogar), Akureyri, Selfoss, Akranes, Vestmannaeyjar and ten smaller towns | 2,750 |
+| Iceland | Hopp | 15 | Reykjavík and its capital area, Reykjanesbær (with Sandgerði, Garður and Vogar), Akureyri, Selfoss, Akranes, Vestmannaeyjar and nine smaller towns | 2,750 |
 
-Portugal has 11 cities, Spain 16 and Iceland 20, once multi-town feeds are
+Portugal has 11 cities, Spain 16 and Iceland 19, once multi-town feeds are
 routed per town. The bounds, discovery URLs and aliases are in
 [`portuguese-scooter-feeds.json`](../data/portuguese-scooter-feeds.json),
 [`spanish-scooter-feeds.json`](../data/spanish-scooter-feeds.json) and
@@ -298,15 +298,19 @@ the dock and each scooter's card state the ban and when renting resumes.
     Grindavík, Höfn, Seyðisfjörður, Blönduós, Ólafsfjörður and Þorlákshöfn
     none. Hveragerði, also under ten when first checked, held 19 to 22 on 13
     October and was added; Egilsstaðir was added with it.
-  - Hopp Siglufjörður, one of the enabled feeds, held about 20 scooters from
-    12 October 2026 until the evening of the 13th, when they went: 10 at
-    18:40, 1 at 19:40 and none from 20:40 (UTC, the scooter cache's counts).
-    The feed then listed no rows at all, in the audit's polls from 22:00 to
-    22:10, at 22:40 and again at 09:20 on the 14th, while Dalvík and
-    Sauðárkrókur, nearby, still listed theirs. Its discovery, vehicle types
-    and geofencing zones are still published, so the feed stays in the
-    catalog, empty on the map; Hopp may have taken the scooters in for the
-    winter. Check it in spring, and remove it if it is still empty.
+  - Hopp Siglufjörður held about 20 scooters from 12 October 2026 until the
+    evening of the 13th, when they went: 10 at 18:40, 1 at 19:40 and none
+    from 20:40 (UTC, the scooter cache's counts). The feed then listed no rows
+    at all, in the audit's polls from 22:00 to 22:10, at 22:40 and again at
+    09:20 on the 14th, while Dalvík and Sauðárkrókur, nearby, still listed
+    theirs. Its discovery, vehicle types and geofencing zones are still
+    published, so Hopp has probably taken the scooters in for the winter, but
+    neither Hopp ([locations](https://hopp.bike/locations)) nor Fjallabyggð
+    (its [2023 launch notice](https://www.fjallabyggd.is/is/frettir/hopp-maett-til-fjallabyggdar))
+    publishes a season, so there are no dates for a `seasonal` window. The
+    feed left the catalog on 15 October 2026, and Siglufjörður the map's
+    towns. Check it in spring 2027, and add it back if it again holds about
+    ten available scooters that are ridden.
 
 ## Recheck
 

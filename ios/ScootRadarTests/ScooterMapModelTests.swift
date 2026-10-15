@@ -1680,8 +1680,8 @@ extension ScooterMapModelTests {
         guard case let .outsideCoverage(cities) = model.dock else {
             return XCTFail("Expected the outside-coverage card")
         }
-        XCTAssertEqual(cities.map(\.city.name), ["Zug", "Bern", "Wädenswil"])
-        XCTAssertEqual(cities.map { Int(($0.distanceMeters / 1_000).rounded()) }, [52, 57, 64])
+        XCTAssertEqual(cities.map(\.city.name), ["Bern", "Wädenswil", "Grenchen"])
+        XCTAssertEqual(cities.map { Int(($0.distanceMeters / 1_000).rounded()) }, [57, 64, 73])
         XCTAssertEqual(cities, model.closestCities)
 
         // A chip flies to the city and makes it the place, so walking times
@@ -2278,12 +2278,12 @@ extension ScooterMapModelTests {
         let cities = model.nearbyCities
         XCTAssertEqual(
             cities.map(\.city.name),
-            ["Zug", "Wädenswil", "Bern", "Zürich", "Uster", "Wetzikon"]
+            ["Wädenswil", "Bern", "Zürich", "Uster", "Opfikon", "Grenchen"]
         )
         XCTAssertEqual(cities.map(\.distanceMeters), cities.map(\.distanceMeters).sorted())
 
         // A chip behaves like choosing that city as a place, and shows the whole city.
-        let bern = cities[2].city
+        let bern = cities[1].city
         model.chooseCity(bern)
 
         let place = try XCTUnwrap(model.searchedDestination)
@@ -2410,7 +2410,7 @@ extension ScooterMapModelTests {
         )
     }
 
-    /// Lungern has no scooter operator; Zug, Bern and Wädenswil are the closest covered cities.
+    /// Lungern has no scooter operator; Bern, Wädenswil and Grenchen are the closest covered cities.
     private var lungernRegion: MKCoordinateRegion {
         MKCoordinateRegion(
             center: CLLocationCoordinate2D(latitude: 46.7741, longitude: 8.1558),

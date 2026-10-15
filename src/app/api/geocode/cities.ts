@@ -22,7 +22,6 @@ const SWISS_ALIASES: Record<string, string[]> = {
   'ch:wadenswil': ['Waedenswil', 'Richterswil'],
   'ch:wil': ['Wil SG', 'Bronschhofen'],
   'ch:winterthur': ['Winterthour'],
-  'ch:zug': ['Zoug', 'Zugo'],
   'ch:zurich': ['Zuerich', 'Zurigo'],
 };
 

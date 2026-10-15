@@ -162,7 +162,7 @@ const guide: Guide = {
       heading: 'Hvernig finn ég næstu rafskútu?',
       blocks: [
         'Í júní 2024 fór Strætó að sýna rafskútur á rauntímakortinu á vefnum og í Klappinu, og með því að smella á skútu opnaðist hún í appi fyrirtækisins; hvort það virkar enn höfum við ekki fengið staðfest.',
-        '[ScootRadar](/map) sýnir á einu korti rafskútur allra fyrirtækja sem birta opin gögn, með hleðslu, göngutíma og áætluðu verði, ókeypis og án skráningar. Á Íslandi á það við um Hopp: 13. október 2026 voru um 2.800 Hopp-skútur á kortinu, um 2.200 á [höfuðborgarsvæðinu](map:is:Reykjavík), um 180 á [Akureyri](map:is:Akureyri) og hinar í 16 öðrum bæjum: Selfossi, Reykjanesbæ, Akranesi, Vestmannaeyjum, Siglufirði, Sauðárkróki, Stykkishólmi, Borgarnesi, Ólafsvík, Vík, Húsavík, Dalvík, Hellissandi, Sandgerði, Vogum og Garði.',
+        '[ScootRadar](/map) sýnir á einu korti rafskútur allra fyrirtækja sem birta opin gögn, með hleðslu, göngutíma og áætluðu verði, ókeypis og án skráningar. Á Íslandi á það við um Hopp: 13. október 2026 voru um 2.800 Hopp-skútur á kortinu, um 2.200 á [höfuðborgarsvæðinu](map:is:Reykjavík), um 180 á [Akureyri](map:is:Akureyri) og hinar í 15 öðrum bæjum: Selfossi, Reykjanesbæ, Akranesi, Vestmannaeyjum, Sauðárkróki, Stykkishólmi, Borgarnesi, Ólafsvík, Vík, Húsavík, Dalvík, Hellissandi, Sandgerði, Vogum og Garði.',
         'Bolt birtir engin opin gögn og sést því ekki. Kortið getur hvorki tekið frá né aflæst skútu: hnappur opnar Hopp-appið, þar sem þú aflæsir og borgar, og staðsetningarnar geta verið nokkurra mínútna gamlar.',
       ],
     },

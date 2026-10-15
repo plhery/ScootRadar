@@ -645,10 +645,10 @@ describe('fetchScooters source health', () => {
   });
 
   it('skips systems whose discovery document has no individual vehicle feed', async () => {
-    const zugQuery: FeedQuery = {
+    const usterQuery: FeedQuery = {
       ...query,
-      origin: [47.166, 8.516],
-      bounds: { south: 47.14, west: 8.48, north: 47.19, east: 8.55 },
+      origin: [47.347, 8.718],
+      bounds: { south: 47.32, west: 8.69, north: 47.36, east: 8.75 },
       providers: new Set(['lime']),
     };
     const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
@@ -656,18 +656,18 @@ describe('fetchScooters source health', () => {
       if (url === 'https://sharedmobility.ch/v2/gbfs') {
         return jsonResponse({
           systems: [{
-            id: 'lime_zug',
-            url: 'https://sharedmobility.ch/v2/gbfs/lime_zug/gbfs',
+            id: 'lime_uster',
+            url: 'https://sharedmobility.ch/v2/gbfs/lime_uster/gbfs',
           }],
         });
       }
-      if (url.endsWith('/lime_zug/gbfs')) {
+      if (url.endsWith('/lime_uster/gbfs')) {
         return jsonResponse({
           data: {
             en: {
               feeds: [{
                 name: 'vehicle_types',
-                url: 'https://sharedmobility.ch/v2/gbfs/lime_zug/vehicle_types',
+                url: 'https://sharedmobility.ch/v2/gbfs/lime_uster/vehicle_types',
               }],
             },
           },
@@ -677,12 +677,40 @@ describe('fetchScooters source health', () => {
     });
     vi.stubGlobal('fetch', fetchMock);
 
-    const result = await fetchScooters(zugQuery);
+    const result = await fetchScooters(usterQuery);
 
     expect(result.vehicles).toEqual([]);
     expect(result.meta.partial).toBe(false);
     expect(result.meta.sources.national).toBe('skipped');
     expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it('leaves out the Swiss systems of towns their operator has left, without asking them', async () => {
+    const { discoverCollectableFeeds } = await import('./scooterFeeds');
+    const winterthurQuery: FeedQuery = {
+      ...query,
+      origin: [47.4997, 8.7241],
+      bounds: { south: 47.48, west: 8.70, north: 47.52, east: 8.75 },
+      providers: new Set(['lime']),
+    };
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url === 'https://sharedmobility.ch/v2/gbfs') {
+        return jsonResponse({
+          systems: ['lime_winterthur', 'lime_zug', 'lime_wetzikon'].map(id => ({ id, url: `https://sharedmobility.ch/v2/gbfs/${id}/gbfs` })),
+        });
+      }
+      throw new Error(`Unexpected URL: ${url}`);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const result = await fetchScooters(winterthurQuery);
+
+    expect(result.vehicles).toEqual([]);
+    expect(result.meta.partial).toBe(false);
+    expect(result.meta.sources.national).toBe('skipped');
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect((await discoverCollectableFeeds()).map(feed => feed.id).filter(id => id.startsWith('national:'))).toEqual([]);
   });
 
   it('uses declared Voi regions to skip its national vehicle feed', async () => {

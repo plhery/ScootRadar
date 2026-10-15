@@ -168,7 +168,9 @@ A feed can answer on time and list no scooter: "feed stopped" and `/ready` count
 as served. "Feed empty" reports one that has listed no available standing scooter, by
 `scootradar_feed_vehicles`, for 3 days in Prometheus, which keeps 15. Lime's
 Winterthur, Zug and Wetzikon systems were the first, empty since at least 11 October
-2026.
+2026; they are left out of collection since 15 October 2026, and Hopp Siglufjörður,
+Dott Tignes (now paused out of season) and Dott Bourgoin-Jallieu were settled the same
+day.
 
 - **Not a quiet night or a snow day.** Beryl empties Bournemouth and Brighton every
   night and Voi its Oslo feed during the night ban; Bird lists nothing in Calgary on a
@@ -189,7 +191,9 @@ Winterthur, Zug and Wetzikon systems were the first, empty since at least 11 Oct
 When it fires, check the operator's app or site and the town's pages, then add a
 `seasonal` window to the catalog if the city or the operator publishes one, or remove
 the feed and record it in [coverage gaps](coverage-gaps.md), or silence it in Grafana
-while waiting.
+while waiting. A Swiss system comes from sharedmobility.ch, not a catalog: add its id
+to `LEFT_OUT_SWISS_SYSTEMS` in `src/lib/feedCoverage.ts`, and remove its town from
+`data/swiss-scooter-areas.json` if no other operator serves it.
 
 ## Sentry
 

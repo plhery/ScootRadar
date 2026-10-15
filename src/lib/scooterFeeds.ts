@@ -7,6 +7,7 @@ import {
   coverageIntersects,
   HOPP_SWISS_TOWNS,
   knownSystemCoverage,
+  LEFT_OUT_SWISS_SYSTEMS,
   PUBLIBIKE_FREE_FLOATING_COVERAGE,
   PUBLIBIKE_STATION_COVERAGE,
   SWISS_MOBILITY_BOUNDS,
@@ -601,6 +602,8 @@ function registrySystem(systemId: string, systemUrl: string): NationalSystem | n
     // Hopp and Velospot come from their own feeds: sharedmobility.ch's copy of
     // Velospot runs 15 to 75 minutes behind, its snapshots varying by request.
     if (!provider || provider === 'hopp' || systemId === 'velospot') return null;
+    // Systems for towns their operator has left, until rechecked (LEFT_OUT_SWISS_SYSTEMS).
+    if (LEFT_OUT_SWISS_SYSTEMS.has(systemId)) return null;
 
     const discoveryUrl = url.toString();
     url.pathname = url.pathname.slice(0, -'/gbfs'.length);

@@ -72,7 +72,7 @@ describe('the town a scooter counts under', () => {
 
   it('is the nearest Swiss town whose area holds it, whichever town its system is named after', () => {
     // Swiss areas are generous envelopes: Bolt Zürich's scooters in Glattbrugg stay Opfikon's,
-    // and one in Wädenswil, nearer Zug's centre than Zürich's, is Wädenswil's.
+    // and one in Wädenswil, outside Zürich's, is Wädenswil's.
     expect(countsOf([national('bolt_zurich', 'bolt', [[47.4306, 8.5653], [47.2231, 8.6746], [47.3769, 8.5417]])]))
       .toEqual({ 'ch:opfikon': { bolt: 1 }, 'ch:wadenswil': { bolt: 1 }, 'ch:zurich': { bolt: 1 } });
   });
@@ -80,6 +80,6 @@ describe('the town a scooter counts under', () => {
   it('is the nearest town of all when no town’s bounds hold it', () => {
     // A Voi scooter in Lungern, outside every Swiss area.
     expect(countsOf([snapshotOf('national:voiscooters.com', 'voi', [], 'national', [[46.7741, 8.1558]])]))
-      .toEqual({ 'ch:zug': { voi: 1 } });
+      .toEqual({ 'ch:bern': { voi: 1 } });
   });
 });

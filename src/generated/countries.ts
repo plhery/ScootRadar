@@ -256,7 +256,7 @@ export const COUNTRY_REGIONS: Partial<Record<CountryCode, {
 
 /** The cities the landing page names, by their id in the catalogue. */
 export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {
-  CH: ["ch:zurich", "ch:basel", "ch:bern", "ch:winterthur", "ch:st-gallen", "ch:zug"],
+  CH: ["ch:zurich", "ch:basel", "ch:bern", "ch:winterthur", "ch:st-gallen", "ch:biel"],
   FR: ["fr:Lyon", "fr:Marseille", "fr:Bordeaux", "fr:Lille Métropole", "fr:Grenoble", "fr:Angers"],
   DE: ["de:Berlin", "de:München", "de:Köln", "de:Frankfurt", "de:Stuttgart", "de:Düsseldorf"],
   IT: ["it:Roma", "it:Palermo", "it:Napoli", "it:Catania"],

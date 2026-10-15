@@ -42,8 +42,12 @@ banned shared scooters, and feeds that were empty when checked.
   stamps each response with the time it was asked for, so the fifteen-minute
   age limit can't tell how old its positions are.
   - Lime Winterthur, Zug and Wetzikon list no vehicles, with fresh
-    timestamps, as they have since at least 11 October 2026. Winterthur
-    licenses Voi alone until the end of 2027
+    timestamps, as they have since at least 11 October 2026, and are left
+    out of collection since 15 October 2026 (`LEFT_OUT_SWISS_SYSTEMS` in
+    `src/lib/feedCoverage.ts`). Winterthur licenses Voi alone until the end
+    of 2027, and Voi keeps it on the map; Zug has had no rental e-scooters
+    since November 2023 and Wetzikon since its pilot ended in February 2023,
+    so both left the map's towns
     ([Data sources](../DATA_SOURCES.md#mobility-data)).
   - Dott's 13 scooters in Lichtensteig, on the map since 14 October 2026,
     sat at the same spots from 00:37 to 11:41 that day: check over a weekend
@@ -63,6 +67,10 @@ banned shared scooters, and feeds that were empty when checked.
     scooters, all disabled. Caen, Olivet and Sète, which Pony's site lists,
     answered `UNKNOWN_REGION`.
   - Thirteen old Bird towns are empty (Bordeaux, Marseille and others).
+  - Dott Bourgoin-Jallieu has been offline (403 `ERR_REGION_OFFLINE`) since
+    early October 2026, after 143 scooters on 7 September, and left the
+    catalog on 15 October 2026. Neither the city nor Dott has published a
+    closure ([French guide](french-scooter-feeds.md#dott-tignes-and-bourgoin-jallieu-october-2026)).
   - Lime Le Havre needs partner credentials.
 - **Germany** ([guide](german-italian-scooter-feeds.md#known-gaps)):
   - Dott closed most of its public regions in September 2026, among them
@@ -152,9 +160,10 @@ banned shared scooters, and feeds that were empty when checked.
   - Hopp Hella / Hvolsvöllur (5 available of 17 on 13 October 2026) and
     Ísafjörður (3 of 16) held fewer than ten available scooters, and six
     other small Hopp towns none.
-  - Hopp Siglufjörður, on the map, has listed no scooters since the evening
-    of 13 October 2026, after about 20 the day before. Its feed and zone
-    remain, so it stays; check it in spring, and remove it if it stays empty.
+  - Hopp Siglufjörður has listed no scooters since the evening of 13
+    October 2026, after about 20 the day before. Neither Hopp nor
+    Fjallabyggð publishes a season, so it left the catalog on 15 October
+    2026; its feed and zone remain.
 - **Sweden** ([guide](swedish-scooter-feeds.md#known-gaps)): Lime in Uppsala
   and Hopp in Kiruna are covered.
   - Voi (Stockholm, Uppsala, Göteborg, Malmö and others), Bolt (Stockholm),
@@ -497,6 +506,9 @@ its other systems answer 401. Dott made most regions private in September 2026.
   through the winter, look for the city's dates and add a `seasonal` window.
 - **1 January 2027:** Brussels's ban starts; Bolt and Dott Bruxelles should
   empty.
+- **1 March 2027:** Dott Bourgoin-Jallieu, offline since early October 2026.
+  Check `bourgoin-jallieu` and Dott's French listing, and add it again if it
+  lists scooters that are ridden.
 - **1 March 2027:** Lime Ciudad de México, empty since SEMOVI's pilot ended
   in September 2026. Check Lime's Querétaro and Monterrey slugs, Whoosh and
   JET again too.
@@ -527,6 +539,18 @@ its other systems answer 401. Dott made most regions private in September 2026.
   Imatra, Kalajoki, Kotka), Joe Scooter in Rauma, Hoppy in Crikvenica and Hopp
   in Omiš, Hopp's Greek island towns (Chania, Kardamena, Kalymnos and others),
   Hopp Como and Hopp Augsburg may open for the season; recheck Hopp Nafplio
-  then too.
+  then too. Hopp Siglufjörður, out of the catalog since 15 October 2026: add
+  it back if it holds about ten available scooters that are ridden. Lime Zug
+  and Lime Wetzikon, left out of the Swiss collection: if either lists
+  scooters, check whether the city has let rental scooters back; if so, take
+  it out of `LEFT_OUT_SWISS_SYSTEMS` and put its town back in
+  `data/swiss-scooter-areas.json`.
+- **June 2027:** Dott Tignes's summer season. The catalog pauses Tignes from
+  8 September until 22 June, the dates of 2026; check Dott's announcement of
+  the 2027 season and change the window if they differ.
+- **January 2028:** Lime Winterthur, left out of the Swiss collection since
+  15 October 2026. Winterthur's licence for Voi alone ends on 31 December
+  2027: check which operators the city licenses next, and take Lime out of
+  `LEFT_OUT_SWISS_SYSTEMS` if it lists scooters again.
 - Every Monday, the [catalog check workflow](../.github/workflows/catalog-check.yml)
   fails when an entry of a covered country is gone.

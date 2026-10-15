@@ -1025,19 +1025,19 @@ extension ScooterModelsTests {
         let lungern = GeoPoint(latitude: 46.7741, longitude: 8.1558)
         let closest = ScooterCityCatalog.nearest(to: lungern, count: 3)
 
-        XCTAssertEqual(closest.map(\.city.name), ["Zug", "Bern", "Wädenswil"])
-        let zug = try XCTUnwrap(closest.first)
-        let swiss = zug.formattedDistance(locale: Locale(identifier: "en_CH"))
-        XCTAssertEqual(plainSpaces(swiss), "52 km")
-        XCTAssertEqual(plainSpaces(zug.formattedDistance(locale: Locale(identifier: "en_US"))), "32 mi")
-        XCTAssertEqual(zug.formattedDistance, zug.formattedDistance(locale: ScooterLanguage.current.locale))
-        XCTAssertTrue(zug.label.hasPrefix("Zug"))
-        XCTAssertTrue(zug.label.hasSuffix(zug.formattedDistance))
+        XCTAssertEqual(closest.map(\.city.name), ["Bern", "Wädenswil", "Grenchen"])
+        let bern = try XCTUnwrap(closest.first)
+        let swiss = bern.formattedDistance(locale: Locale(identifier: "en_CH"))
+        XCTAssertEqual(plainSpaces(swiss), "57 km")
+        XCTAssertEqual(plainSpaces(bern.formattedDistance(locale: Locale(identifier: "en_US"))), "36 mi")
+        XCTAssertEqual(bern.formattedDistance, bern.formattedDistance(locale: ScooterLanguage.current.locale))
+        XCTAssertTrue(bern.label.hasPrefix("Bern"))
+        XCTAssertTrue(bern.label.hasSuffix(bern.formattedDistance))
         XCTAssertFalse(ScooterCityCatalog.contains(lungern))
 
-        let place = zug.city.destination
-        XCTAssertEqual(place.title, "Zug")
-        XCTAssertEqual(place.point, zug.city.center)
+        let place = bern.city.destination
+        XCTAssertEqual(place.title, "Bern")
+        XCTAssertEqual(place.point, bern.city.center)
         XCTAssertEqual(place.kind, .city)
         XCTAssertFalse(place.subtitle.isEmpty)
         XCTAssertNotEqual(place.subtitle, "CH")
@@ -1391,8 +1391,14 @@ extension ScooterModelsTests {
         XCTAssertNil(ScooterSeasonalPause.active(at: montreal, on: try at("2026-11-20T17:00:00Z"), among: Self.quebec))
         XCTAssertNil(ScooterSeasonalPause.active(at: montreal, on: try at("2026-07-20T16:00:00Z"), among: Self.quebec))
         XCTAssertNil(ScooterSeasonalPause.active(at: GeoPoint(latitude: 45.65, longitude: -73.6), on: january, among: Self.quebec))
-        // Of the catalogs' cities, only Ottawa pauses, from 16 November until 30 April, by its own clock.
-        XCTAssertEqual(ScooterCityCatalog.cities.filter { !$0.pauses.isEmpty }.map(\.id), ["ca:on:Ottawa"])
+        // Of the catalogs' cities, Tignes pauses from 8 September until 22 June, and Ottawa
+        // from 16 November until 30 April, each by its own clock.
+        XCTAssertEqual(ScooterCityCatalog.cities.filter { !$0.pauses.isEmpty }.map(\.id), ["fr:Tignes", "ca:on:Ottawa"])
+        let tignes = GeoPoint(latitude: 45.4687, longitude: 6.9063)
+        XCTAssertEqual(ScooterSeasonalPause.active(at: tignes, on: january), ScooterSeasonalPause.Active(city: "Tignes", month: 6))
+        XCTAssertNil(ScooterSeasonalPause.active(at: tignes, on: try at("2026-09-07T21:30:00Z")))
+        XCTAssertNotNil(ScooterSeasonalPause.active(at: tignes, on: try at("2026-09-07T22:30:00Z")))
+        XCTAssertNil(ScooterSeasonalPause.active(at: tignes, on: try at("2027-06-22T12:00:00Z")))
         let ottawa = GeoPoint(latitude: 45.4215, longitude: -75.6972)
         XCTAssertEqual(ScooterSeasonalPause.active(at: ottawa, on: january), ScooterSeasonalPause.Active(city: "Ottawa, ON", month: 4))
         XCTAssertNil(ScooterSeasonalPause.active(at: ottawa, on: try at("2026-11-16T04:30:00Z")))

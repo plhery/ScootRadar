@@ -404,9 +404,9 @@ describe('BottomSheet', () => {
     expect(count()).not.toBeInTheDocument();
     const cities = within(screen.getByRole('group', { name: 'Closest cities' })).getAllByRole('button');
     expect(cities).toHaveLength(3);
-    expect(cities[0]).toHaveTextContent(/^Zug · 52 km$/);
+    expect(cities[0]).toHaveTextContent(/^Bern · 57 km$/);
     fireEvent.click(cities[0]);
-    expect(props.onCitySelect).toHaveBeenCalledWith(expect.objectContaining({ city: 'Zug', id: 'ch:zug' }));
+    expect(props.onCitySelect).toHaveBeenCalledWith(expect.objectContaining({ city: 'Bern', id: 'ch:bern' }));
   });
 
   it('says how many scooters the filters hide and offers to show them or edit the filters', () => {

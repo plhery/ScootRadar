@@ -138,22 +138,6 @@
       "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/bordeaux/gbfs.json"
     },
     {
-      "id": "dott_fr_bourgoin-jallieu",
-      "provider": "dott",
-      "city": "Bourgoin-Jallieu",
-      "center": [
-        45.5864,
-        5.2736
-      ],
-      "bounds": {
-        "south": 45.49,
-        "west": 5.14,
-        "north": 45.7,
-        "east": 5.39
-      },
-      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/bourgoin-jallieu/gbfs.json"
-    },
-    {
       "id": "dott_fr_lyon",
       "provider": "dott",
       "city": "Lyon",
@@ -199,7 +183,12 @@
         "north": 45.56,
         "east": 7.0
       },
-      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/tignes/gbfs.json"
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/tignes/gbfs.json",
+      "seasonal": {
+        "from": "09-08",
+        "until": "06-22",
+        "timeZone": "Europe/Paris"
+      }
     },
     {
       "id": "dott_fr_versailles-grand-parc",

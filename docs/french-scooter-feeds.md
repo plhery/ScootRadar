@@ -29,6 +29,10 @@ scooters in Lusignan got a town of their own. Bird
 Cherbourg-en-Cotentin joined the catalog the same day; see
 [Bird Cherbourg-en-Cotentin, October 2026](#bird-cherbourg-en-cotentin-october-2026).
 
+Rechecked 15 October 2026: Dott Tignes has a summer season, and Dott
+Bourgoin-Jallieu left the catalog; see
+[Dott Tignes and Bourgoin-Jallieu, October 2026](#dott-tignes-and-bourgoin-jallieu-october-2026).
+
 ## Verified availability
 
 This is a snapshot, not a fleet-size promise. Counts below exclude reserved or
@@ -53,10 +57,10 @@ Total: **15,262 available scooters**, with **0 failed feeds** in the final catal
 | Bird | Laval | 237 | [Discovery](https://mds.bird.co/gbfs/v2/public/laval/gbfs.json) |
 | Bird | Vichy | 68 | [Discovery](https://mds.bird.co/gbfs/v2/public/vichy/gbfs.json) |
 | Dott | Bordeaux | 933 | [Discovery](https://gbfs.api.ridedott.com/public/v2/bordeaux/gbfs.json) |
-| Dott | Bourgoin-Jallieu | 0, paused since early October 2026 (143 on 7 September) | [Discovery](https://gbfs.api.ridedott.com/public/v2/bourgoin-jallieu/gbfs.json) |
+| Dott | Bourgoin-Jallieu | 143; left the catalog on 15 October 2026, offline since early October | [Discovery](https://gbfs.api.ridedott.com/public/v2/bourgoin-jallieu/gbfs.json) |
 | Dott | Lyon | 3,514 | [Discovery](https://gbfs.api.ridedott.com/public/v2/lyon/gbfs.json) |
 | Dott | Marne-la-Vallée (SIEMU) | 238 | [Discovery](https://gbfs.api.ridedott.com/public/v2/siemu/gbfs.json) |
-| Dott | Tignes | 30 | [Discovery](https://gbfs.api.ridedott.com/public/v2/tignes/gbfs.json) |
+| Dott | Tignes | 30; summer only, 22 June to 7 September in 2026 | [Discovery](https://gbfs.api.ridedott.com/public/v2/tignes/gbfs.json) |
 | Dott | Versailles Grand Parc | 115 | [Discovery](https://gbfs.api.ridedott.com/public/v2/versailles-grand-parc/gbfs.json) |
 | Lime | Lille Métropole | 1,089 | [Discovery](https://data.lime.bike/api/partners/v2/gbfs/lille/gbfs.json) |
 | Lime | Marseille | 1,329 | [Discovery](https://data.lime.bike/api/partners/v2/gbfs/marseille/gbfs.json) |
@@ -387,6 +391,36 @@ License, as in Bird's other towns.
 - **No night ban** was found: Bird's 31 zones set no hours, and the city
   publishes none.
 
+## Dott Tignes and Bourgoin-Jallieu, October 2026
+
+Both Dott regions answer 403 `ERR_REGION_OFFLINE`, as they have since at least
+11 October 2026 (the scooter cache's logs), and Dott's
+[French listing](https://gbfs.api.ridedott.com/public/v2/countries/fr/gbfs.json)
+names neither on 15 October 2026: it lists Bordeaux, Lyon, OL Vallée, Paris,
+SIEMU and Versailles Grand Parc only.
+
+- **Tignes** is a summer service. Dott announced on its LinkedIn page on 27 June
+  2026 that, for the sixth year running with Tignes Développement, its summer
+  pop-up in the resort runs "du 22 juin au 7 septembre", with 80 scooters and 8
+  compulsory parking zones
+  ([post](https://www.linkedin.com/feed/update/urn:li:activity:7476499723525369856/)).
+  The resort's [mobility page](https://en.tignes.net/resort-guide/mobility/soft-mobility)
+  says the same without dates: Dott scooters run between Tignes le Lac, Le
+  Lavachet and Val Claret in summer. The catalog gives Tignes a `seasonal`
+  pause from 8 September until 22 June, in Europe/Paris: in it the map says when
+  the scooters come back, and the cache's alerts stay quiet. The dates are
+  2026's (2021's season ran from 23 June to 3 September); check Dott's
+  announcement each June.
+- **Bourgoin-Jallieu** left the catalog on 15 October 2026. Its feed listed 143
+  scooters on 7 September and has been offline since early October. Neither
+  the city nor Dott has published a closure: the city's
+  [page on getting around](https://www.bourgoinjallieu.fr/vie-quotidienne/se-deplacer/comment-se-deplacer)
+  still says Dott renewed its fleet of 175 scooters and 75 e-bikes in April and
+  May 2026, and Dott's [locations page](https://ridedott.com/locations/) still
+  lists the town. Dott's error is "offline", not "not found", so it may come
+  back: check it in March 2027, and add it again if it lists scooters that are
+  ridden.
+
 ## Findings that affect integration
 
 - **Dott:** the [France country entry point](https://gbfs.api.ridedott.com/public/v2/countries/fr/gbfs.json)
@@ -471,7 +505,7 @@ on feed failures. It does not modify the catalog or deploy the application.
 Each failure names Dott's error code. An entry whose feed answers 401, 404 or 410
 (Dott: `ERR_REGION_NOT_FOUND`) is **gone** and should leave the catalog. A Dott
 region answering 403 `ERR_REGION_OFFLINE` is **paused**: Dott closes Tignes out
-of season, and Bourgoin-Jallieu has been closed since early October 2026. A paused
+of season, from 8 September to 22 June. A paused
 region does not fail the check, and the map treats it as a system without scooters.
 The checker also reads Dott's listing of each country once, names the catalog
 entries it does not list, and the listed regions with scooters the catalog lacks.

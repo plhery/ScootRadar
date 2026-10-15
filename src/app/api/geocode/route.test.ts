@@ -318,15 +318,15 @@ describe('address search results', () => {
 
   it('puts the address near the map centre before better-known ones farther away', async () => {
     stubUpstreams({ photon: [
-      [{ type: 'house', name: 'Arth-Goldau', housenumber: '1', street: 'Bahnhofstrasse', postcode: '6410', city: 'Goldau', countrycode: 'CH' }, 47.0491, 8.5496],
+      [{ type: 'house', name: 'Schaffhausen', housenumber: '1', street: 'Bahnhofstrasse', postcode: '8200', city: 'Schaffhausen', countrycode: 'CH' }, 47.6977, 8.6327],
       [{ type: 'house', housenumber: '1', street: 'Bahnhofstrasse', postcode: '7304', city: 'Maienfeld', countrycode: 'CH' }, 47.0098, 9.5303],
       [{ type: 'house', housenumber: '1', street: 'Bahnhofstrasse', postcode: '8001', city: 'Zürich', countrycode: 'CH' }, 47.3673, 8.5399],
     ] });
 
     const results = await (await POST(postRequest('Bahnhofstrasse 1', 'de', ZURICH))).json() as { subtitle: string }[];
 
-    // Then the far ones: Goldau, in the Zug service area, before Maienfeld without scooters.
-    expect(results.map(result => result.subtitle)).toEqual(['8001 Zürich', 'Bahnhofstrasse 1, 6410 Goldau', '7304 Maienfeld']);
+    // Then the far ones: Schaffhausen, with scooter data, before Maienfeld without scooters.
+    expect(results.map(result => result.subtitle)).toEqual(['8001 Zürich', 'Bahnhofstrasse 1, 8200 Schaffhausen', '7304 Maienfeld']);
   });
 
   it('ranks a town found by another of its names, or spelled without its letters, as typed by its name', async () => {

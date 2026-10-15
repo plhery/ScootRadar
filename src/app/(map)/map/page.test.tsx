@@ -1010,15 +1010,15 @@ it('explains an area without scooter data and makes the closest city the place',
   expect(screen.getByTestId('place-has-data')).toHaveTextContent('false');
   const cities = within(screen.getByRole('group', { name: 'Closest cities' })).getAllByRole('button');
   expect(cities.map(city => city.textContent)).toEqual([
-    expect.stringMatching(/^Zug · \d+ km$/), expect.stringMatching(/ km$/), expect.stringMatching(/ km$/),
+    expect.stringMatching(/^Bern · \d+ km$/), expect.stringMatching(/ km$/), expect.stringMatching(/ km$/),
   ]);
   cities[0].focus();
   fireEvent.click(cities[0]);
-  expect(screen.getByTestId('focus')).toHaveTextContent(/^47\.\d+,8\.\d+ zoom 13$/);
+  expect(screen.getByTestId('focus')).toHaveTextContent(/^46\.\d+,7\.\d+ zoom 13$/);
   // The city replaces the place without scooter data, so walking times start in the city.
-  expect(screen.getByTestId('bar')).toHaveTextContent('Zug');
+  expect(screen.getByTestId('bar')).toHaveTextContent('Bern');
   expect(screen.getByTestId('place-has-data')).toHaveTextContent('true');
-  expect(screen.getByTestId('recent')).toHaveTextContent(/^Zug/);
+  expect(screen.getByTestId('recent')).toHaveTextContent(/^Bern/);
   // The chip leaves with its card once the map has arrived: the focus is handed on before it does.
   expect(screen.getByRole('button', { name: 'Open the search' })).toHaveFocus();
 });

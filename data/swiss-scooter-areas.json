@@ -308,20 +308,6 @@
     }
   },
   {
-    "id": "ch:wetzikon",
-    "city": "Wetzikon",
-    "center": [
-      47.3,
-      8.83
-    ],
-    "bounds": {
-      "south": 47.2,
-      "west": 8.68,
-      "north": 47.4,
-      "east": 8.98
-    }
-  },
-  {
     "id": "ch:wil",
     "city": "Wil",
     "center": [
@@ -347,20 +333,6 @@
       "west": 8.53,
       "north": 47.64,
       "east": 8.97
-    }
-  },
-  {
-    "id": "ch:zug",
-    "city": "Zug",
-    "center": [
-      47.1724,
-      8.5174
-    ],
-    "bounds": {
-      "south": 47.03,
-      "west": 8.32,
-      "north": 47.31,
-      "east": 8.74
     }
   },
   {

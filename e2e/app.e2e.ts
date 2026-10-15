@@ -606,8 +606,8 @@ test('one failed feed does not make a provider look down beside its scooters, an
 test('an area without scooter data offers the closest cities and makes the one chosen the place', async ({ page }) => {
   await page.route('**/api/scooters?**', async route => {
     const url = new URL(route.request().url());
-    // Nothing around Lungern; the fixtures everywhere else.
-    if (Number(url.searchParams.get('north')) > 47) return route.fallback();
+    // Nothing around Lungern; the fixtures everywhere else, Bern included.
+    if (Number(url.searchParams.get('north')) > 47 || Number(url.searchParams.get('south')) > 46.85) return route.fallback();
     await route.fulfill({ contentType: 'application/json', body: JSON.stringify({
       ...scooterResponse, vehicles: [], clusters: [], providers: {},
       meta: { ...scooterResponse.meta, totalVehicles: 0, zoom: Number(url.searchParams.get('zoom')) },
@@ -621,7 +621,7 @@ test('an area without scooter data offers the closest cities and makes the one c
   await expect(page.getByRole('group', { name: 'Filter scooters by provider' })).toHaveCount(0);
   const cities = dock.getByRole('group', { name: 'Closest cities' }).getByRole('button');
   await expect(cities).toHaveCount(3);
-  await expect(cities.first()).toHaveText(/^Zug · 5\d km$/);
+  await expect(cities.first()).toHaveText(/^Bern · 5\d km$/);
   const accessibility = await new AxeBuilder({ page }).include('.sheet').withTags(['wcag2a', 'wcag2aa']).analyze();
   expect(accessibility.violations).toEqual([]);
 
@@ -629,7 +629,7 @@ test('an area without scooter data offers the closest cities and makes the one c
   await expect(page.locator('.leaflet-container')).toHaveAttribute('data-zoom', '13');
   await expect(dock.getByRole('heading', { name: 'No scooter data here yet' })).toHaveCount(0);
   // The city is now the place: the bar names it, and walking times start there.
-  await expect(page.getByRole('button', { name: 'Showing scooters near Zug. Search another place.' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Showing scooters near Bern. Search another place.' })).toBeVisible();
   await expect(page.locator('.sheet-count')).toHaveText(/scooters nearby$/);
 });
 
@@ -639,8 +639,8 @@ test('the search bar does not promise scooters near a searched place without sco
   ]) }));
   await page.route('**/api/scooters?**', async route => {
     const url = new URL(route.request().url());
-    // Nothing around Lungern; the fixtures everywhere else.
-    if (Number(url.searchParams.get('north')) > 47) return route.fallback();
+    // Nothing around Lungern; the fixtures everywhere else, Bern included.
+    if (Number(url.searchParams.get('north')) > 47 || Number(url.searchParams.get('south')) > 46.85) return route.fallback();
     await route.fulfill({ contentType: 'application/json', body: JSON.stringify({
       ...scooterResponse, vehicles: [], clusters: [], providers: {},
       meta: { ...scooterResponse.meta, totalVehicles: 0, zoom: Number(url.searchParams.get('zoom')) },
@@ -1307,7 +1307,7 @@ test('the open search starts on the field and offers your location, recent place
   // The six covered cities nearest to the middle of the map, which shows Switzerland.
   const cities = island.getByRole('group', { name: 'Cities with scooters' }).getByRole('button');
   await expect(cities).toHaveCount(6);
-  await expect(cities.first()).toHaveText('Zug');
+  await expect(cities.first()).toHaveText('Wädenswil');
   await expectTouchTargets(page);
   const accessibility = () => new AxeBuilder({ page }).include('.search-island').withTags(['wcag2a', 'wcag2aa']).analyze();
   expect((await accessibility()).violations).toEqual([]);
@@ -1315,7 +1315,7 @@ test('the open search starts on the field and offers your location, recent place
   // A chip is like choosing the city as a place: the map shows the whole city.
   await cities.first().click();
   await expect(page.locator('.sheet')).not.toHaveAttribute('inert');
-  const bar = island.getByRole('button', { name: 'Showing scooters near Zug. Search another place.' });
+  const bar = island.getByRole('button', { name: 'Showing scooters near Wädenswil. Search another place.' });
   await expect(bar).toBeFocused();
   await expect(map).toHaveAttribute('data-zoom', '13');
   await expect(page.locator('.destination-marker')).toBeVisible();
@@ -1323,14 +1323,14 @@ test('the open search starts on the field and offers your location, recent place
   // The city is now a recent place, with the cities nearest to it underneath.
   await bar.click();
   const recent = island.getByRole('group', { name: 'Recent' }).getByRole('button');
-  await expect(recent).toHaveText(['ZugSwitzerland']);
-  await expect(recent.first()).toHaveAccessibleName('Zug, Switzerland');
-  await expect(cities.first()).toHaveText('Zug');
+  await expect(recent).toHaveText(['WädenswilSwitzerland']);
+  await expect(recent.first()).toHaveAccessibleName('Wädenswil, Switzerland');
+  await expect(cities.first()).toHaveText('Wädenswil');
   await expectTouchTargets(page);
   expect((await accessibility()).violations).toEqual([]);
   // Recent places are kept for this visit only: nothing about them is stored.
-  expect(await page.evaluate(() => JSON.stringify([{ ...localStorage }, { ...sessionStorage }, document.cookie]))).not.toMatch(/Zug|47\.1/);
-  expect(page.url()).not.toMatch(/Zug|47\.1/);
+  expect(await page.evaluate(() => JSON.stringify([{ ...localStorage }, { ...sessionStorage }, document.cookie]))).not.toMatch(/denswil|47\.22/);
+  expect(page.url()).not.toMatch(/denswil|47\.22/);
 
   // Cancel closes the search and leaves the place as it was.
   await island.getByRole('button', { name: 'Cancel' }).click();

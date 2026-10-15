@@ -55,9 +55,21 @@ Goldach and Tübach, joined to Rorschach, and Dott's Rheintal zone, where 50 to
 which holds most, still count under St. Gallen and Rorschach.
 
 Lime's Winterthur, Zug and Wetzikon systems are listed with fresh timestamps
-but no vehicles, and have been since at least 11 October 2026. Winterthur
-licenses Voi alone, until 31 December 2027
-([Stadtratsbeschluss 258 of 25 June 2025](https://stadt.winterthur.ch/download/resolution-document/2699/SRB%20258%20%28Optimierung%20stationslose%20Fahrzeugverleihsysteme_%20Kenntnisnahme%20Reduktion%20Anzahl%20Anbieter%20und%20Ausblick%29.pdf)).
+but no vehicles, and have been since at least 11 October 2026. Since 15
+October 2026 they are left out of collection (`LEFT_OUT_SWISS_SYSTEMS` in
+`src/lib/feedCoverage.ts`), so they are not on the map, in the city totals or
+in the cache's alerts:
+
+- Winterthur licenses Voi alone, until 31 December 2027
+  ([Stadtratsbeschluss 258 of 25 June 2025](https://stadt.winterthur.ch/download/resolution-document/2699/SRB%20258%20%28Optimierung%20stationslose%20Fahrzeugverleihsysteme_%20Kenntnisnahme%20Reduktion%20Anzahl%20Anbieter%20und%20Ausblick%29.pdf)).
+  Voi's scooters keep Winterthur on the map.
+- Zug has had no rental e-scooters since November 2023, and the city has not
+  let them back ([zentralplus, 16 July 2025](https://www.zentralplus.ch/verkehr-mobilitaet/e-scooter-in-zug-sie-sind-weg-und-bleiben-weg-2787774/)).
+- Wetzikon ended its e-scooter pilot in February 2023
+  ([city media release, 2 February 2023](https://www.wetzikon.ch/wAssets/docs/politik/stadtrat/medienmitteilungen/2023/2023-02-02-Zukunft-Mikromobilitaet-Wetzikon.pdf)).
+
+With no other operator there, Zug and Wetzikon left the map's towns. The
+recheck dates are in [coverage gaps](docs/coverage-gaps.md#dates-to-check-again).
 
 Hopp is not in the dataset. Its scooters in Zürich, Basel and Kloten come from
 Hopp's own GBFS feeds at `api.hopp.bike/gbfs/ch-<town>`, which link Hopp's

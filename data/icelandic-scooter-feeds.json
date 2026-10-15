@@ -350,28 +350,6 @@
       ]
     },
     {
-      "id": "hopp_is_siglufjordur",
-      "country": "IS",
-      "provider": "hopp",
-      "city": "Siglufjörður",
-      "center": [
-        66.1505,
-        -18.9096
-      ],
-      "bounds": {
-        "south": 66.1348,
-        "north": 66.1645,
-        "west": -18.9351,
-        "east": -18.8873
-      },
-      "discoveryUrl": "https://api.hopp.bike/gbfs/is-siglufjordur/gbfs.json",
-      "aliases": [
-        "Siglufjordur",
-        "Fjallabyggð",
-        "Fjallabyggd"
-      ]
-    },
-    {
       "id": "hopp_is_stykkisholmur",
       "country": "IS",
       "provider": "hopp",

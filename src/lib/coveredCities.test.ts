@@ -84,16 +84,16 @@ describe('nearest covered cities', () => {
   it('returns the closest cities first with their distance in metres', () => {
     const nearest = nearestCoveredCities(LUNGERN, 3);
 
-    expect(nearest.map(city => [city.city, city.country])).toEqual([['Zug', 'CH'], ['Bern', 'CH'], ['Wädenswil', 'CH']]);
+    expect(nearest.map(city => [city.city, city.country])).toEqual([['Bern', 'CH'], ['Wädenswil', 'CH'], ['Grenchen', 'CH']]);
     expect(nearest[0]).toEqual({
-      id: 'ch:zug',
-      city: 'Zug',
+      id: 'ch:bern',
+      city: 'Bern',
       country: 'CH',
-      center: [47.1724, 8.5174],
-      bounds: { south: 47.03, west: 8.32, north: 47.31, east: 8.74 },
-      distanceM: expect.closeTo(52_098, 0),
+      center: [46.948, 7.4474],
+      bounds: { south: 46.82, west: 7.2, north: 47.08, east: 7.7 },
+      distanceM: expect.closeTo(57_227, 0),
     });
-    expect(Math.round(nearest[1].distanceM / 1000)).toBe(57);
+    expect(Math.round(nearest[1].distanceM / 1000)).toBe(64);
   });
 
   it('crosses borders and starts with the city you are in', () => {

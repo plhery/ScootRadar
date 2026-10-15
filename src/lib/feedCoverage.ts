@@ -45,7 +45,6 @@ const SYSTEM_SUFFIXES = [
   'romanshorn',
   'rorschach',
   'frauenfeld',
-  'wetzikon',
   'opfikon',
   'grenchen',
   'zurich',
@@ -56,8 +55,18 @@ const SYSTEM_SUFFIXES = [
   'nyon',
   'biel',
   'bern',
-  'zug',
 ] as const;
+
+/**
+ * Systems sharedmobility.ch lists, on time, for towns where their operator has no scooter:
+ * left out of collection, so of the map, the city totals and the cache's alerts. Lime's
+ * Winterthur, Zug and Wetzikon systems have listed no vehicle since at least 11 October 2026.
+ * Winterthur licenses Voi alone until the end of 2027 (Voi's scooters there stay on the map);
+ * Zug stopped its rental e-scooters in November 2023, and Wetzikon at the end of its pilot in
+ * February 2023, so neither is a town of the map any more. Check them again
+ * (docs/coverage-gaps.md): Winterthur in 2028, Zug and Wetzikon in spring 2027.
+ */
+export const LEFT_OUT_SWISS_SYSTEMS: ReadonlySet<string> = new Set(['lime_winterthur', 'lime_zug', 'lime_wetzikon']);
 
 // Systems named after one town that serve others too, as their published
 // geofencing shows: Bolt Zürich's "Wadenswil" zone, which takes in Richterswil,
