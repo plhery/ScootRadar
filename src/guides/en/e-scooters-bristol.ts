@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter hire in Bristol: Dott’s prices, the no-go zones and where to park',
   lede: 'You can hire an e-scooter in Bristol from Dott, the only operator of the West of England’s scheme, at any hour: it has run around the clock since 1 October 2025. It costs £1 to unlock and 25p a minute, so 10 minutes cost £3.50, and you must be 18 or over with a full or provisional driving licence. End every ride in a parking bay shown in the app, or you risk a £10 charge. Your own e-scooter is illegal on Bristol’s roads and pavements.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   city: 'gb:Bristol',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'One company, **Dott**, runs Bristol’s shared e-scooters and e-bikes, under a contract with the West of England Mayoral Combined Authority (WECA). Its zones cover Bristol, Bath and parts of South Gloucestershire, but not North Somerset, where the airport is. There is no Lime, Voi, Bolt or Beryl here.',
         '**Voi** launched the trial on 29 October 2020. **Tier** took over Bristol on 14 October 2023 and added e-bikes, and since 3 September 2024, after Tier merged with Dott, the scheme has carried the **Dott** name. The contract, extended in January 2025, ends in 2027.',
-        'On 25 August 2026 WECA issued an invitation to tender for the next contract; no winner had been announced by 13 October 2026. The national trial that makes hire e-scooters legal is due to run until May 2028.',
+        'On 25 August 2026 WECA issued an invitation to tender for the next contract; no winner had been announced by 14 October 2026. The national trial that makes hire e-scooters legal is due to run until May 2028.',
         'On the morning of 13 October 2026 the [map of Bristol](map:gb:Bristol) showed about 2,200 Dott e-scooters around the city: a snapshot, not the fleet size. The map shows Dott’s e-scooters but not its e-bikes. Tap a scooter to open the Dott app, where you unlock and pay.',
       ],
     },
@@ -38,7 +38,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Dott Pro pays for itself after three 20-minute rides in 30 days, and Unlimited Free Unlocks after about six rides. Travelwest doesn’t say what a pass charges beyond 20 minutes, so check the app.',
+        'Dott Pro pays for itself after three 20-minute rides in 30 days, and Unlimited Free Unlocks after about six rides. Beyond a pass’s 20 minutes you pay by the minute; the app shows the rate.',
         'Travelwest’s UK Access Scheme takes 35% to 80% off pay-as-you-go rides for up to 12 months, though not off passes:',
         {
           table: {
@@ -81,19 +81,19 @@ const guide: Guide = {
     {
       heading: 'Dott Bristol no-go zones: where you can and can’t ride',
       blocks: [
-        'Dott’s Bristol area reaches into South Gloucestershire (Lyde Green, Warmley, Winterbourne, Frampton Cotterell, Yate and Chipping Sodbury) and, more recently, Whitchurch village. Inside it, scooters stop in no-ride zones and slow down in slow zones. This is how we read Dott’s zone data on 13 October 2026:',
+        'Dott’s Bristol area reaches into South Gloucestershire (Lyde Green, Warmley, Winterbourne, Frampton Cotterell, Yate and Chipping Sodbury) and, more recently, Whitchurch village. Inside it, scooters stop in no-ride zones and slow down in slow zones. This is how we read Dott’s zone data on 14 October 2026:',
         {
           table: {
-            caption: 'Riding zones as we read Dott’s data, 13 October 2026 (zones change: check the app)',
+            caption: 'Riding zones as we read Dott’s data, 14 October 2026 (zones change: check the app)',
             head: ['Where', 'Riding', 'Good to know'],
             rows: [
               ['Harbourside: Millennium Square, Anchor Square, Pero’s Bridge, M Shed, SS Great Britain', 'No riding', 'Bays about 90 m from Millennium Square'],
               ['Queen Square, College Green, Corn Street, St Nicholas Market', 'No riding', 'King Street and Welsh Back are open'],
               ['Cabot Circus', 'No riding', 'A bay about 60 m away'],
-              ['Broadmead, The Galleries, Union Street', 'Slow: 10 mph', '–'],
+              ['Broadmead, The Galleries', 'Slow: 10 mph', 'Union Street is normal'],
               ['Park Street, Stokes Croft, Gloucester Road, East Street, North Street', 'Normal', 'Park Street is steep'],
               ['Cotham Hill at Whiteladies Road', 'Slow: 7.5 mph', '–'],
-              ['The Downs', 'Mixed', 'Durdham Down is open; Clifton Down’s park isn’t'],
+              ['The Downs', 'No riding on the grass', 'The roads across are open'],
               ['Brandon Hill, Eastville Park, St Andrew’s Park, Blaise Castle', 'No riding', 'Many other parks too'],
               ['Bristol & Bath Railway Path, Concorde Way', 'Normal, since 4 December 2025', 'No bays on the paths'],
               ['Clifton Suspension Bridge, Leigh Woods, Ashton Court', 'Outside the area', 'Leaving a scooter there risks £15'],
@@ -174,14 +174,14 @@ const guide: Guide = {
     },
     {
       question: 'Who will run Bristol’s e-scooters after 2027?',
-      answer: 'That isn’t known yet. Dott’s contract ends in 2027, and on 25 August 2026 WECA invited tenders for the next one; no winner had been announced by 13 October 2026. Hire e-scooters also depend on the national trial, due to run until May 2028.',
+      answer: 'That isn’t known yet. Dott’s contract ends in 2027, and on 25 August 2026 WECA invited tenders for the next one; no winner had been announced by 14 October 2026. Hire e-scooters also depend on the national trial, due to run until May 2028.',
     },
   ],
   sources: [
     { title: 'Travelwest: E-scooter and e-bike hire', url: 'https://travelwest.info/e-scooter-e-bike-hire/' },
     { title: 'Travelwest: e-scooter and e-bike discounts', url: 'https://travelwest.info/e-scooter-e-bike-hire/save-money-on-hop-on-hop-off-e-scooter-and-e-bike-rental/' },
     { title: 'WECA: Public e-scooters trial', url: 'https://www.westofengland-ca.gov.uk/what-we-do/transport/future-transport-zone/public-e-scooters-trial/' },
-    { title: 'WECA: E-scooter trial evaluation report', url: 'https://www.westofengland-ca.gov.uk/what-we-do/transport/future-transport-zone/public-e-scooters-trial/evaluation-report/' },
+    { title: 'Dott Help Centre: charges on a Dott pass (October 2026)', url: 'https://help.ridedott.com/en/articles/222-i-don-t-understand-why-i-was-charged-riding-on-a-dott-pass' },
     { title: 'WECA: Trial to continue after record numbers (25 August 2026)', url: 'https://www.westofengland-ca.gov.uk/news/trial-to-continue-in-the-west-after-record-numbers/' },
     { title: 'WECA: Scoot Safe (20 August 2025)', url: 'https://www.westofengland-ca.gov.uk/news/scoot-safe-say-mayor-and-police-crime-commissioner/' },
     { title: 'Travelwest: 200 proposed new parking bays (October 2026)', url: 'https://travelwest.info/news/have-your-say-on-200-proposed-new-e-scooter-and-e-bike-parking-bays/' },

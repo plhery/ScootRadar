@@ -8,15 +8,15 @@ const guide: Guide = {
   title: 'Monopattini sharing Napoli 2026: Bird, Voi, prezzi e zone',
   description: 'Monopattini sharing a Napoli nel 2026: Bird e Voi, prezzi, casco da portare, zone vietate, dove lasciarli, stazione, porto, metro e funicolari.',
   headline: 'Monopattini sharing a Napoli: operatori, prezzi, zone vietate e parcheggio nel 2026',
-  lede: 'I monopattini sharing a Napoli, a ottobre 2026, sono quelli di Bird e Voi, autorizzati dal Comune con 700 mezzi ciascuno fino al 30 giugno 2027. Voi costa 1 euro di sblocco più 0,28 euro al minuto e chiede 18 anni; il prezzo di Bird lo vedi nell’app. Servono un documento d’identità e il casco, obbligatorio per tutti, che porti tu. Nel centro storico, in piazza del Plebiscito e su via Partenope il Comune vieta la sosta libera, anche se a volte l’app ti lascia chiudere la corsa.',
+  lede: 'I monopattini sharing a Napoli, a ottobre 2026, sono quelli di Bird e Voi, autorizzati dal Comune con 700 mezzi ciascuno fino al 30 giugno 2027. Voi costa 1 euro di sblocco più 0,28 euro al minuto; il prezzo di Bird lo vedi nell’app. Servono 18 anni, un documento d’identità e il casco, obbligatorio per tutti, che porti tu. Nel centro storico, in piazza del Plebiscito e su via Partenope il Comune vieta la sosta libera, anche se a volte l’app ti lascia chiudere la corsa.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   city: 'it:Napoli',
   sections: [
     {
       heading: 'Quali monopattini in sharing ci sono a Napoli',
       blocks: [
-        'A Napoli possono offrire monopattini in sharing solo gli operatori autorizzati dal Comune: a ottobre 2026 sono **Bird** e **Voi**. Il 1° luglio 2025 il Comune ha rinnovato le loro autorizzazioni, 700 monopattini ciascuno, fino al **30 giugno 2027**; al 13 ottobre 2026 non ha ancora annunciato cosa succederà dopo. L’avviso pubblico del 2023 ammette fino a tre operatori e 2.100 monopattini in tutto.',
+        'A Napoli possono offrire monopattini in sharing solo gli operatori autorizzati dal Comune: a ottobre 2026 sono **Bird** e **Voi**. Il 1° luglio 2025 il Comune ha rinnovato le loro autorizzazioni, 700 monopattini ciascuno, fino al **30 giugno 2027**; al 14 ottobre 2026 non ha ancora annunciato cosa succederà dopo. L’avviso pubblico del 2023 ammette fino a tre operatori e 2.100 monopattini in tutto.',
         'Il 13 ottobre 2026 sulla [mappa di Napoli](map:it:Napoli) c’erano circa 500 monopattini Bird, soprattutto in centro e a Chiaia; nella periferia nord ed est quasi nessuno. ScootRadar mostra Bird; Voi non pubblica dati che possiamo leggere, quindi i suoi monopattini non compaiono: apri anche l’app di Voi.',
         'Si noleggia giorno e notte, tutti i giorni, ma con il maltempo il servizio può essere sospeso.',
       ],
@@ -27,7 +27,7 @@ const guide: Guide = {
         {
           steps: [
             'Cerca un Bird sulla [mappa](map:it:Napoli), o un Voi nella sua app.',
-            'Iscriviti nell’app con un documento d’identità (se sei turista va bene il passaporto) e una carta. Prima del primo noleggio il Comune impone la registrazione del documento e un test sulle regole, nell’app. Voi chiede **18 anni**; per Bird controlla l’app. La patente non serve.',
+            'Iscriviti nell’app con un documento d’identità (se sei turista va bene il passaporto) e una carta. Prima del primo noleggio il Comune impone la registrazione del documento e un test sulle regole, nell’app. Bird e Voi chiedono **18 anni**; la patente non serve.',
             'Metti il casco, controlla freni e luci e verifica che ci sia il contrassegno, sul parafango posteriore o davanti al piantone dello sterzo.',
             'Inquadra il QR code e guida su strada o su pista ciclabile, mai sul marciapiede.',
             'Chiudi il noleggio dove l’app lo consente, fuori dalle zone in cui il Comune vieta la sosta libera, e scatta la foto di fine corsa, obbligatoria.',
@@ -40,7 +40,7 @@ const guide: Guide = {
     {
       heading: 'Noleggio monopattini a Napoli: quanto costa',
       blocks: [
-        'Di solito paghi uno sblocco più una tariffa al minuto. Voi pubblica la tariffa di Napoli; per Bird non abbiamo trovato prezzi pubblicati, nemmeno nei suoi dati aperti: la mappa non può stimare il costo, che vedi nell’app prima di sbloccare.',
+        'Di solito paghi uno sblocco più una tariffa al minuto. Voi pubblica la tariffa di Napoli; Bird la mostra solo nell’app, prima di sbloccare, non sul sito né nei dati aperti, e il Comune non fissa prezzi: la mappa non può stimare il costo.',
         {
           table: {
             caption: 'Le tariffe a consumo a Napoli, a ottobre 2026',
@@ -66,7 +66,7 @@ const guide: Guide = {
           ],
         },
         'Nei dati di Bird del 13 ottobre 2026 Borgo Marinari è fuori dall’area del servizio, mentre via San Gregorio Armeno e i parchi sono solo zone in cui non si chiude la corsa: il monopattino ci passa. Il divieto del Comune vale comunque: scendi e portalo a mano.',
-        'Nelle aree pedonali, secondo Voi, i suoi monopattini rallentano da soli a 6 km/h; i dati di Bird non lo dicono, quindi rallenta tu.',
+        'Nelle aree pedonali il Comune impone agli operatori un limitatore a 6 km/h: se il monopattino non rallenta da solo, rallenta tu.',
       ],
     },
     {
@@ -143,7 +143,7 @@ const guide: Guide = {
         '**Vomero e Posillipo.** Il Vomero arriva ai 251 metri della Certosa di San Martino: parti con la batteria carica e lascia perdere scalinate come il Petraio. Con Bird la corsa si chiude in piazza Medaglie d’Oro, non in piazza Vanvitelli; a Posillipo su via Posillipo e a Marechiaro, non al Parco Virgiliano.',
         '**Stadio.** Allo stadio Maradona la corsa con Bird non si chiude: nei giorni di partita fermati prima.',
         '**America’s Cup.** Dal 22 maggio al 4 luglio 2027 il Golfo di Napoli ospiterà la 38ª America’s Cup, e il Comune può vietare i monopattini nelle zone degli eventi: per le regate del settembre 2026 il villaggio era sul lungomare Caracciolo. In quei giorni guarda l’app prima di partire.',
-        '**Alternative.** Metro e funicolari ANM. Secondo Napolike (agosto 2026), Lime ha circa 500 bici elettriche da via Gianturco a Bagnoli, ma non è chiaro se le concessioni siano ancora in vigore: controlla la sua app. La nostra mappa mostra solo i monopattini.',
+        '**Alternative.** Metro e funicolari ANM. Il Comune ha autorizzato 500 bici elettriche di Lime fino al 30 giugno 2026; il rinnovo, possibile per altri due anni, non l’ha ancora pubblicato: controlla l’app di Lime. La nostra mappa mostra solo i monopattini.',
       ],
     },
     {
@@ -170,7 +170,7 @@ const guide: Guide = {
     },
     {
       question: 'A che età si può noleggiare un monopattino a Napoli? Serve la patente?',
-      answer: 'La legge permette di guidare dai 14 anni, ma Voi chiede 18 anni; per Bird controlla l’app. La patente non serve: bastano un documento d’identità e il test sulle regole che il Comune impone prima del primo noleggio.',
+      answer: 'La legge permette di guidare dai 14 anni, ma Bird e Voi chiedono 18 anni. La patente non serve: bastano un documento d’identità e il test sulle regole che il Comune impone prima del primo noleggio.',
     },
     {
       question: 'Perché non riesco a chiudere la corsa nel centro storico?',
@@ -185,10 +185,10 @@ const guide: Guide = {
     { title: 'Comune di Napoli: monopattini elettrici in sharing, atti e documenti', url: 'https://www.comune.napoli.it/novita/manifestazione-di-interesse-per-lindividuazione-di-operatori-interessati-a-svolgere-servizi-di-mobilita-in-sharing-con-monopattini-elettrici-nel-territorio-comunale-2/' },
     { title: 'Comune di Napoli: avviso pubblico 2023 (PDF)', url: 'https://static-www.comune.napoli.it/wp-content/uploads/2026/05/avviso_pubblico_monopattini_2023__pub_160623_signed-1.pdf' },
     { title: 'Comune di Napoli: area di divieto di sosta libera (2020, PDF)', url: 'https://static-www.comune.napoli.it/wp-content/uploads/2026/05/planimetria_Area_interdettA_alla_sosta_libera_signed-1.pdf' },
-    { title: 'Comune di Napoli: FAQ per gli operatori (PDF)', url: 'https://static-www.comune.napoli.it/wp-content/uploads/2026/05/FAQ_monopattini-1.pdf' },
     { title: 'Comune di Napoli: rinnovo dell’autorizzazione a Bird (PDF)', url: 'https://static-www.comune.napoli.it/wp-content/uploads/2026/05/1136E_250625_004-REP.pdf' },
-    { title: 'Comune di Napoli: rinnovo dell’autorizzazione a Voi (PDF)', url: 'https://static-www.comune.napoli.it/wp-content/uploads/2026/05/1136E_250625_005_REP.pdf' },
+    { title: 'Comune di Napoli: bici elettriche in sharing, avviso e autorizzazione a Lime', url: 'https://www.comune.napoli.it/novita/avviso-pubblico-servizi-di-mobilita-in-sharing-con-biciclette-elettriche/' },
     { title: 'Voi: monopattini a Napoli', url: 'https://www.voi.com/it/citta/naples' },
+    { title: 'Bird: contratto di noleggio per l’Italia', url: 'https://www.bird.co/rental-agreements/italy-it/' },
     { title: 'Bird: zone di Napoli (dati GBFS pubblici)', url: 'https://mds.bird.co/gbfs/v2/public/napoli-italy/geofencing_zones.json' },
     { title: 'ANM: regolamento per bici e monopattini', url: 'https://www.anm.it/s/regolamento-bici' },
     { title: 'Comune di Napoli: la 38ª America’s Cup', url: 'https://www.comune.napoli.it/articolo_tematico/napoli-citta-ospitante-della-38esima-edizione-della-americas-cup/' },

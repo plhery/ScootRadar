@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter-Regeln in Deutschland: was heute gilt und was sich am 1. März 2027 ändert',
   lede: 'Die E-Scooter-Regeln in Deutschland ändern sich in zwei Schritten: Seit dem 1. April 2026 gelten neue Bauvorschriften für neue Fahrzeuge, ab dem 1. März 2027 neue Verkehrsregeln und Bussgelder. Heute gilt: Ab 14 Jahren darfst du ohne Führerschein fahren, auf dem Radweg statt auf dem Gehweg, nur allein und mit denselben Promillegrenzen wie im Auto. Leih-Scooter bekommst du bei Lime, Voi, Bolt, Dott und Zeus erst ab 18.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-14',
   sections: [
     {
       heading: 'E-Scooter-Regeln heute und ab 1. März 2027',
@@ -111,10 +111,10 @@ const guide: Guide = {
               ['Auf dem Gehweg gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Radweg nicht benutzt, wo Pflicht', '15 €', '25 €, bis 40 €'],
               ['Nebeneinander gefahren', '15 €, bis 30 €', 'Erlaubt, wenn niemand behindert wird'],
-              ['Zu zweit gefahren', '5 € laut Verkehrsministerium (manche Portale nennen 10 €)', '25 €'],
+              ['Zu zweit gefahren', '10 € (Tatbestandskatalog des KBA)', '25 €'],
               ['Handy in der Hand', '100 € und 1 Punkt', 'Neu geregelt, Betrag noch nicht offiziell erläutert'],
               ['Rote Ampel', '60 € und 1 Punkt; länger als 1 Sekunde rot: 100 € und 1 Punkt', 'Unverändert'],
-              ['Unzulässig auf Geh- oder Radweg geparkt', 'Kein eigener Tatbestand für E-Scooter', '55 €, mit Behinderung 70 €'],
+              ['Unzulässig auf Geh- oder Radweg geparkt', 'Behindernd 20 €, gefährdend 30 € (§ 1 StVO)', '55 €, mit Behinderung 70 €'],
               ['Ohne gültige Versicherungsplakette', '40 €', 'Unverändert'],
             ],
           },
@@ -151,7 +151,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Karlsruhe sperrt das Mieten in den Nächten auf Samstag und Sonntag von 23 bis 6 Uhr.',
+        'Karlsruhe nennt auf seiner Website noch eine Mietsperre in den Nächten auf Samstag und Sonntag von 23 bis 6 Uhr. Dem Gemeinderat sagte die Stadt aber schon 2021, diese Nachtsperre sei seit der Corona-Pandemie ausgesetzt, und Voi und Bolt vermieten heute rund um die Uhr.',
         'ScootRadar zeigt auf der [Live-Karte](/map) die Anbieter, die offene Daten veröffentlichen. In Berlin ist das Dott: Die [Karte rund um Berlin](map:de:Berlin) zeigte am 12. Oktober 2026 rund 4900 Scooter. Bolt, Lime, Voi und Zeus sind dort ebenfalls zugelassen, fehlen aber auf der Karte. Anbieter, Preise und Parkzonen erklären unsere Ratgeber [E-Scooter in Berlin](guide:berlin) und [E-Scooter in München](guide:munich).',
       ],
     },
@@ -162,7 +162,7 @@ const guide: Guide = {
         {
           list: [
             '**Deutsche Bahn, Fernverkehr:** Zusammengeklappt und sicher verstaut fährt er kostenlos als Handgepäck mit. Den Akku darfst du nicht herausnehmen oder laden. Grosse Scooter, die sich nicht klappen lassen, reisen wie Fahrräder.',
-            '**S-Bahn und Regionalzug:** Kein bundesweites Verbot. In den Verbünden von Berlin, Hamburg, München, Stuttgart, Leipzig und Hannover darf er zusammengeklappt mit, in München mit höchstens 90 × 80 cm und 25 kg.',
+            '**S-Bahn und Regionalzug:** Kein bundesweites Verbot. In den Verbünden von Berlin, Hamburg, München, Stuttgart, Leipzig, Hannover und Rhein-Ruhr (VRR) darf er zusammengeklappt mit, in München mit höchstens 90 × 80 cm und 25 kg; im VRR darf ihn jedes Verkehrsunternehmen ausschliessen.',
             '**U-Bahn, Tram und Stadtbus:** Viele Betriebe haben E-Tretroller 2023 und 2024 wegen der Brandgefahr der Akkus verbannt, oft auch zusammengeklappt: die BVG in Berlin, die Hamburger U-Bahn, die MVG in München, die KVB in Köln, die VGF in Frankfurt, die Rheinbahn in Düsseldorf und die ÜSTRA in Hannover. In Stuttgart fährt er zusammengeklappt kostenlos mit.',
           ],
         },

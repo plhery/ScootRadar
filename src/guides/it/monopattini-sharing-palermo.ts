@@ -10,13 +10,13 @@ const guide: Guide = {
   headline: 'Monopattini in sharing a Palermo: operatori, orari in centro, parcheggio e multe nel 2026',
   lede: 'I monopattini sharing a Palermo, a ottobre 2026, sono quelli di Bird, Dott e Lime, gli unici tre operatori autorizzati dal Comune. Per noleggiarli servono 18 anni e un documento d’identità; il casco, obbligatorio per tutti, lo porti tu, e il prezzo lo vedi nell’app prima di sbloccare. In centro conta l’ora: su via Maqueda, tra via Cavour e piazza Bellini, e sul Cassaro i monopattini passano solo dalle 5 alle 10 del mattino, anche se l’app di Bird non te lo impedisce.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   city: 'it:Palermo',
   sections: [
     {
       heading: 'Quali monopattini in sharing ci sono a Palermo',
       blocks: [
-        'A Palermo possono offrire monopattini in sharing solo gli operatori scelti dal Comune: a ottobre 2026 sono **Bird**, **Dott** e **Lime**, autorizzati per cinque anni dal 2025. Per sceglierli ci sono voluti quattro avvisi e più di due anni di ricorsi al TAR; gli esclusi, come Link e Ridemovi, dovevano lasciare la città entro il 28 settembre 2025. Gli articoli su Bit, Helbiz o Link sono quindi superati.',
+        'A Palermo possono offrire monopattini in sharing solo gli operatori scelti dal Comune: a ottobre 2026 sono **Bird**, **Dott** e **Lime**, autorizzati per cinque anni dal 2025. Per sceglierli ci sono voluti quattro avvisi e più di due anni di ricorsi al TAR; gli esclusi, come Link e Ridemovi, dovevano lasciare la città entro il 28 settembre 2025. Gli articoli su Bit, Helbiz o Link sono superati.',
         {
           table: {
             caption: 'Gli operatori di Palermo e dove trovarli, a ottobre 2026',
@@ -29,7 +29,7 @@ const guide: Guide = {
           },
         },
         'Il 13 ottobre 2026 sulla [mappa di Palermo](map:it:Palermo) c’erano circa 1.160 monopattini Bird: una fotografia di quel momento, non la flotta ufficiale. Il giorno dopo quasi la metà era tra il Politeama, via Libertà e via Notarbartolo. Dott e Lime non pubblicano dati che possiamo leggere, quindi sulla mappa non compaiono.',
-        'Il Comune prevede da 500 a 1.000 monopattini per operatore, 3.000 in tutto, e può alzare il tetto fino a 1.500 ciascuno: quanti ne abbia concessi a ognuno non l’abbiamo trovato. Nella ZTL del centro ogni operatore può tenerne al massimo 100. Il servizio funziona giorno e notte.',
+        'Il Comune prevede da 500 a 1.000 monopattini per operatore, 3.000 in tutto, e può alzare il tetto fino a 1.500 ciascuno: quanti ne abbia concessi a ognuno non l’ha pubblicato. Nella ZTL del centro ogni operatore può tenerne al massimo 100. Il servizio funziona giorno e notte.',
       ],
     },
     {
@@ -51,14 +51,14 @@ const guide: Guide = {
     {
       heading: 'Noleggio monopattini a Palermo: quanto costa',
       blocks: [
-        'Di solito paghi uno sblocco più una tariffa al minuto, ma per Palermo non abbiamo trovato tariffe pubblicate da nessuno dei tre, nemmeno nei dati aperti di Bird: la mappa non può stimare il costo, che vedi nell’app prima di sbloccare. Le cifre che girano in rete sono del 2021 e del 2022.',
+        'Di solito paghi uno sblocco più una tariffa al minuto, ma a Palermo nessuno dei tre pubblica le tariffe, nemmeno Bird nei dati aperti: le vedi solo nell’app prima di sbloccare, e la mappa non può stimarle. Le cifre in rete sono del 2021 e del 2022.',
         'Nella gara il Comune ha chiesto agli operatori abbonamenti settimanali, mensili e annuali, e ha premiato gli sconti per chi usa i mezzi pubblici: se ci sono, li trovi nell’app.',
       ],
     },
     {
       heading: 'Via Maqueda, Cassaro e via Ruggero Settimo: quando si passa',
       blocks: [
-        'Nel centro storico gli orari li fissa un’ordinanza del Comune del 29 febbraio 2024, l’ultima che abbiamo trovato: valgono anche per i monopattini privati. Sul Cassaro il cartello dice: «Transito consentito: MONOPATTINI 5,00-10,00 tutti i giorni».',
+        'Nel centro storico gli orari li fissa un’ordinanza del Comune del 29 febbraio 2024, in vigore a ottobre 2026: valgono anche per i monopattini privati. Sul Cassaro il cartello dice: «Transito consentito: MONOPATTINI 5,00-10,00 tutti i giorni».',
         {
           table: {
             caption: 'Gli orari dei monopattini in centro',
@@ -108,7 +108,7 @@ const guide: Guide = {
             head: ['Mezzo', 'Il tuo monopattino', 'Quello in sharing'],
             rows: [
               ['Treni regionali Trenitalia, passante e Trinacria Express compresi', 'Gratis se piegato e spento, fino a 120×80×45 cm', 'No'],
-              ['Bus AMAT', 'Vietato dal 2021, secondo i giornali di allora', 'No'],
+              ['Bus AMAT', 'Vietato da marzo 2021 (nota AMAT citata dai giornali)', 'No'],
               ['Tram AMAT', 'Nessuna regola esplicita: non contarci', 'No'],
             ],
           },
@@ -143,11 +143,11 @@ const guide: Guide = {
     {
       heading: 'Mondello, basole, scirocco ed eventi: consigli pratici',
       blocks: [
-        '**Mondello.** D’estate (nel 2026 dall’8 maggio al 30 settembre) il lungomare di viale Regina Elena è pedonale e ammette bici elettriche e «analoghi dispositivi ad alimentazione elettrica» solo nei giorni feriali, a 6 km/h. Secondo noi la regola vale anche per i monopattini, ma l’ordinanza non li nomina: la domenica e nei festivi portalo a mano.',
+        '**Mondello.** D’estate (nel 2026 dall’8 maggio al 30 settembre) il lungomare di viale Regina Elena è pedonale e ammette bici elettriche e «analoghi dispositivi ad alimentazione elettrica» solo nei giorni feriali, sabato compreso, a 6 km/h. L’ordinanza non nomina i monopattini, ma la legge li equipara alle bici: la domenica e nei festivi portalo a mano.',
         '**Basole.** Il centro storico è lastricato di basole di pietra lavica, che fanno sobbalzare il monopattino e con la pioggia scivolano: rallenta ed evita le frenate brusche.',
         '**Salite e caldo.** Il centro è in piano; Monte Pellegrino no, e il santuario di Santa Rosalia è fuori dall’area di Bird. D’estate, con lo scirocco, evita le ore più calde; con vento forte o maltempo il servizio può essere sospeso.',
-        '**Eventi.** Per il Festino di Santa Rosalia, il 14 e 15 luglio, negli ultimi anni il Comune ha vietato monopattini, anche a noleggio, e bici nella zona della processione: controlla l’ordinanza dell’anno. La Maratona di Palermo (la prossima il 15 novembre 2026) parte e arriva in piazza Ruggero Settimo, al Politeama; nel 2025 erano chiuse anche via Libertà e la Favorita.',
-        '**Alternative.** Il bike sharing dell’AMAT ha chiuso il 1° aprile 2025. Se Dott e Lime offrono ancora bici elettriche, lo vedi nelle loro app: la nostra mappa mostra solo i monopattini. Restano bus e tram AMAT e il passante ferroviario.',
+        '**Eventi.** Per il Festino di Santa Rosalia, il 14 e 15 luglio, il Comune vieta bici e monopattini, anche a noleggio, nelle zone degli eventi (ordinanza dell’8 luglio 2026): controlla quella dell’anno. La Maratona di Palermo (la prossima il 15 novembre 2026) parte e arriva in piazza Ruggero Settimo, al Politeama; nel 2025 erano chiuse anche via Libertà e la Favorita.',
+        '**Alternative.** Il bike sharing dell’AMAT ha chiuso il 1° aprile 2025. Le bici elettriche di Dott e Lime erano una sperimentazione triennale partita nel 2022, senza proroga pubblicata: guarda le loro app; la nostra mappa mostra solo monopattini. Restano bus e tram AMAT e il passante ferroviario.',
       ],
     },
     {
@@ -190,6 +190,7 @@ const guide: Guide = {
     { title: 'Comune di Palermo: monopattini in via Maqueda, Cassaro e via Ruggero Settimo', url: 'https://www.comune.palermo.it/novita/modifiche-alla-regolazione-della-circolazione-dei-velocipedi-nelle-vie-maqueda-via-vittorio-emanuele-e-ruggero-settimo/' },
     { title: 'Comune di Palermo: Mondello, area pedonale e ZTL 2026', url: 'https://www.comune.palermo.it/novita/mondello-anticipato-all8-maggio-provvedimento-area-pedonale-e-ztl/' },
     { title: 'Comune di Palermo: Festino 2025, ordinanza su monopattini e bici', url: 'https://www.comune.palermo.it/novita/festino-di-santa-rosalia-2025-ordinanza-di-limitazione-utilizzo-monopattini-motorini-mezzi-a-ruota-bici-e-similari/' },
+    { title: 'Comune di Palermo: ordinanza n. 1243 dell’8 luglio 2026 per il Festino (PDF, copia di PalermoToday)', url: 'https://citynews-palermotoday.stgy.ovh/~media/70011399553946/ordinanza-festino-2026-richiesta-dalla-questura.pdf' },
     { title: 'Comune di Palermo: controlli della polizia municipale, 5-9 ottobre 2026', url: 'https://www.comune.palermo.it/novita/polizia-municipale-controlli-sulla-sicurezza-stradale-il-bilancio-dei-servizi-dal-5-al-9-ottobre-2026/' },
     { title: 'Comune di Palermo: Consulta della Bicicletta sul bike sharing AMAT (PDF)', url: 'https://www.comune.palermo.it/wp-content/uploads/2025/05/7b1fac83-0705-42a9-b291-2006ea6ab400.pdf' },
     { title: 'Bird: zone di Palermo (dati GBFS pubblici)', url: 'https://mds.bird.co/gbfs/v2/public/palermo-italy/geofencing_zones.json' },

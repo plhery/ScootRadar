@@ -8,15 +8,15 @@ const guide: Guide = {
   title: 'E-Trottinett St. Gallen 2026: Dott, Preise, Zonen, Parkieren',
   description: 'E-Trottinett St. Gallen: Nur Dott (früher Tier) fährt hier. Was zehn Minuten kosten, was in der Altstadt gilt, wo du parkierst und was die Mühleggbahn erlaubt.',
   headline: 'E-Trottinett St. Gallen: E-Scooter von Dott mieten, Preise, Altstadt und Mühleggbahn',
-  lede: 'Ein E-Trottinett in St. Gallen mietest du bei Dott, dem früheren Tier: Nur dieser Anbieter hat eine Bewilligung, und laut Stadt stehen 300 E-Trottinette und 200 E-Bikes bereit. Du musst mindestens 18 sein und zahlst CHF 1.20 fürs Entsperren plus 45 Rappen pro Minute, zehn Minuten kosten also CHF 5.70 (veröffentlichter Tarif vom 13. Oktober 2026). Durch die Altstadt darfst du fahren: Marktplatz, Bohl, Marktgasse und Gallusplatz sind Begegnungszonen mit Tempo 20 und Vortritt für Fussgänger, und abstellen solltest du das Trotti dort auf einem Dott-Platz.',
+  lede: 'Ein E-Trottinett in St. Gallen mietest du bei Dott, dem früheren Tier: Nur dieser Anbieter hat eine Bewilligung, und laut Stadt stehen 300 E-Trottinette und 200 E-Bikes bereit. Du musst mindestens 18 sein und zahlst CHF 1.20 fürs Entsperren plus 45 Rappen pro Minute, zehn Minuten kosten also CHF 5.70 (veröffentlichter Tarif vom 13. Oktober 2026). Durch die Altstadt darfst du fahren: Marktplatz, Bohl, Marktgasse und Gallusplatz sind Begegnungszonen mit Tempo 20 und Vortritt für Fussgänger, und beenden kannst du die Fahrt dort nur auf einem Dott-Platz.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   city: 'ch:st-gallen',
   sections: [
     {
       heading: 'E-Trottinett in St. Gallen mieten: Dott ist der einzige Anbieter',
       blocks: [
-        'Lime, Voi, Bolt oder Bird suchst du in St. Gallen vergeblich. Seit 2020 lässt die Stadt nur Tier zu, das heute Dott heisst. 2022 schrieb sie die Bewilligung zusammen mit Gossau, Wittenbach, Gaiserwald und Berg öffentlich aus, und Tier gewann gegen zwei andere Angebote. Die Bewilligung lief ab dem 1. April 2023 für drei Jahre, mit Option auf zwei weitere. Eine Verlängerung hat die Stadt nicht veröffentlicht, Dott fährt aber weiter (Stand Oktober 2026).',
+        'Lime, Voi, Bolt oder Bird suchst du in St. Gallen vergeblich. Seit 2020 lässt die Stadt nur Tier zu, das heute Dott heisst. 2022 schrieb sie die Bewilligung zusammen mit Gossau, Wittenbach, Gaiserwald und Berg öffentlich aus, und Tier gewann gegen zwei andere Angebote. Die Bewilligung lief ab dem 1. April 2023 für drei Jahre, mit Option auf zwei weitere, also längstens bis Ende März 2028. Ob die Stadt die Option gezogen hat, hat sie bis Oktober 2026 nicht veröffentlicht; Dott fährt weiter.',
         'Die [Karte von St. Gallen](map:ch:st-gallen) zeigt dir die freien Dott-Trottis; die E-Bikes findest du nur in der Dott-App. Am Morgen des 13. Oktober 2026 zeigte sie etwa 880, weit über die Stadt hinaus: von Gossau und Flawil über [Rorschach](map:ch:rorschach) bis ins Rheintal und nach Romanshorn. Innerhalb der Stadtgrenze waren es in der Nacht auf den 14. Oktober gut 300, ungefähr so viele, wie die Stadt nennt. So kommst du zu deinem Trotti:',
         {
           steps: [
@@ -51,11 +51,11 @@ const guide: Guide = {
       heading: 'Altstadt, Marktplatz, Stiftsbezirk: Wo du in St. Gallen fahren darfst',
       blocks: [
         'Anders als in Bern oder Basel ist die Altstadt keine Sperrzone. Für E-Trottinette gelten laut Stadt dieselben Regeln wie für Velos, und die zentralen Plätze und Gassen sind **Begegnungszonen**: höchstens 20 km/h, Fussgänger haben Vortritt. Das gilt auf dem Marktplatz und dem Bohl, in Marktgasse, Spisergasse und Multergasse, im Stiftsbezirk mit Klosterhof und Gallusplatz, auf dem Bahnhofplatz und im westlichen Teil der Vadianstrasse.',
-        'Dazu kommen Dotts Zonen in der App: In roten Bereichen darfst du nicht parkieren, in gelben drosselt das Trotti automatisch, so SRF 2023, als Dott noch Tier hiess. In den offenen Daten hat Dott für die Trottis in der Stadt kaum Zonen veröffentlicht, für die E-Bikes viele. Die Tabelle zeigt diese E-Bike-Zonen als Hinweis, nicht als Regeln der Stadt; massgebend sind die Farben in der App.',
+        'Dazu kommen Dotts Zonen in der App. Laut Dotts Hilfe-Center darfst du in roten Bereichen weder fahren noch parkieren, in grauen nicht parkieren, in gelben drosselt das Trotti, und in hellblauen beendest du die Fahrt nur an einem blauen «P», einem Dott-Platz. Die Tabelle zeigt, was Dotts offener Datenfeed für die Trottis festlegt; massgebend ist die App.',
         {
           table: {
-            caption: 'Dotts Zonen für E-Bikes in St. Gallen, ein Hinweis für Trottis (unsere Auswertung der offenen Daten vom 14. Oktober 2026)',
-            head: ['Zone', 'Was fürs E-Bike gilt', 'Wo, zum Beispiel'],
+            caption: 'Dotts Zonen für E-Trottinette in St. Gallen (unsere Auswertung von Dotts Datenfeed vom 14. Oktober 2026)',
+            head: ['Zone', 'Was gilt', 'Wo, zum Beispiel'],
             rows: [
               ['Altstadt', 'Fahrt nur auf einem Dott-Platz beenden', 'Marktplatz, Bohl, Marktgasse, Klosterhof, Gallusplatz, Talstation der Mühleggbahn'],
               ['Parkverbot', 'Durchfahren ja, Fahrt beenden nein', 'Bahnhofplatz, Hauptgebäude der HSG, OLMA-Gelände, Kantonsspital, Stadtpark, Kreuzbleiche'],
@@ -79,8 +79,8 @@ const guide: Guide = {
             'nie, wo die App Parkverbot zeigt, auch wenn das Gesetz seit dem 1. Juli 2025 Parkieren in Begegnungszonen erlaubt.',
           ],
         },
-        '**In und um die Altstadt** heissen Dotts Plätze «Bonusparken»: beim Kloster, am Gallusplatz, am Blumenmarkt und am Brühltor, weiter westlich an der Vadianstrasse, am Roten Platz und am Neumarkt. In der Nacht auf den 14. Oktober standen alle 20 Trottis, die wir dort zählten, nah bei einem dieser Plätze. Worin der Bonus besteht, sagt Dott öffentlich nicht.',
-        '**Am Hauptbahnhof** ist der Bahnhofplatz in Dotts E-Bike-Zonen Parkverbotszone; der Dott-Platz liegt auf der Nordseite des Bahnhofs. Im Bahnhof steigst du ab: Die SBB verbietet das Fahren auf ihrem Areal. In jener Nacht stand im Umkreis von 300 m um den Bahnhofplatz nur ein Trotti, um den Marktplatz 21.',
+        '**In und um die Altstadt** heissen Dotts Plätze «Bonusparken»: beim Kloster, am Gallusplatz, am Blumenmarkt und am Brühltor, weiter westlich an der Vadianstrasse, am Roten Platz und am Neumarkt. Worin der Bonus besteht, erklärt Dott weder in seinen Bedingungen noch im Hilfe-Center.',
+        '**Am Hauptbahnhof** ist der Bahnhofplatz in Dotts Zonen Parkverbotszone; Dott-Plätze gibt es auf der Nordseite an der Rosenbergstrasse und auf der Stadtseite beim Rathaus. Im Bahnhof steigst du ab: Die SBB verbietet das Fahren auf ihrem Areal. In der Nacht auf den 14. Oktober stand im Umkreis von 300 m um den Bahnhofplatz nur ein Trotti, um den Marktplatz 21.',
         'Befolgst du Dotts Park- und Sperranweisungen nicht, kann Dott laut seinen Schweizer Bedingungen bis zu 300 Euro verlangen, um das Trotti zurückzuholen. Landet eine Busse bei Dott, gibt Dott sie an dich weiter, plus 50 Euro Bearbeitungsgebühr. Steht ein Trotti im Weg, melde es auf [trotti-melder.ch](https://trotti-melder.ch).',
       ],
     },
@@ -90,11 +90,11 @@ const guide: Guide = {
         'Die Stadt erstreckt sich laut Velostadtplan von 500 bis 1075 m ü. M. Vom Marktplatz (668 m) sind es zur Universität rund 70 Höhenmeter, zu den Drei Weieren gut 100 und auf den Freudenberg 220. Der Motor hilft nur bis 20 km/h, und lange Steigungen leeren den Akku: Nimm für den Berg ein gut geladenes Trotti; die Karte zeigt den Akkustand.',
         {
           list: [
-            '**Universität (HSG):** rund 1 km vom Hauptbahnhof. Vor dem Hauptgebäude gilt in Dotts E-Bike-Zonen Parkverbot; Dott-Plätze gibt es rund um den Campus.',
-            '**Drei Weieren:** In Dotts E-Bike-Zonen gilt hier Fahrverbot (Tabelle oben). Beende die Fahrt vorher und geh zu Fuss, oder nimm die Mühleggbahn.',
-            '**Mühleggbahn:** Die Standseilbahn fährt in rund 90 Sekunden von der Altstadt nach St. Georgen, täglich von 5.40 bis 0.50 Uhr. Ein E-Trottinett fährt für CHF 2.30 mit, du selbst für CHF 2.50. Ob das auch für Miet-Trottis gilt, sagt der Tarif nicht, und die Minuten liefen weiter: Beende die Dott-Fahrt besser unten, etwa am Gallusplatz; oben an der Bergstation hat Dott wieder einen Abstellplatz. Vom 9. bis 13. November 2026 steht die Bahn wegen Revision still.',
+            '**Universität (HSG):** rund 1 km vom Hauptbahnhof. Vor dem Hauptgebäude gilt in Dotts Zonen Parkverbot; Dott-Plätze gibt es rund um den Campus.',
+            '**Drei Weieren:** In Dotts Zonen gilt hier Fahrverbot (Tabelle oben). Beende die Fahrt vorher und geh zu Fuss, oder nimm die Mühleggbahn.',
+            '**Mühleggbahn:** Die Standseilbahn fährt in rund 90 Sekunden von der Altstadt nach St. Georgen, täglich von 5.40 bis 0.50 Uhr. Ein E-Trottinett fährt für CHF 2.30 mit, du selbst für CHF 2.50. Der Tarif unterscheidet nicht zwischen eigenen und Miet-Trottis, doch bei Dott liefen die Minuten weiter: Beende die Dott-Fahrt besser unten, etwa am Gallusplatz; oben an der Bergstation hat Dott wieder einen Abstellplatz. Vom 9. bis 13. November 2026 steht die Bahn wegen Revision still.',
             '**Bus:** In den Bussen der VBSG braucht ein Velo oder ein ähnliches Fahrgerät mit mehr als 30 cm Raddurchmesser ein Billett zum reduzierten Tarif. Velos nimmt der Bus von 6 bis 8, 11 bis 14 und 17 bis 19 Uhr nicht mit, und im Zweifel entscheidet das Personal. Ein Dott-Trotti lässt du besser draussen: Beende die Fahrt, bevor du einsteigst.',
-            '**Zug:** Dein eigenes E-Trottinett fährt bei der SBB gratis mit, wenn das grösste Rad kleiner als 12 Zoll ist, sonst brauchst du ein Velobillett. Eine eigene Regel der Appenzeller Bahnen haben wir nicht gefunden.',
+            '**Zug:** Dein eigenes E-Trottinett fährt bei der SBB gratis mit, wenn das grösste Rad kleiner als 12 Zoll ist, sonst brauchst du ein Velobillett. Dasselbe gilt laut Ostwind-Tarif in den Appenzeller Bahnen.',
           ],
         },
       ],
@@ -107,7 +107,7 @@ const guide: Guide = {
             caption: 'Grosse Anlässe in St. Gallen',
             head: ['Anlass', 'Wann', 'Was du wissen musst'],
             rows: [
-              ['OLMA, auf dem Gelände der Olma Messen', 'Jedes Jahr im Oktober, 2026 vom 8. bis 18. Oktober', 'Auf dem Gelände gilt in Dotts E-Bike-Zonen Parkverbot, Dott-Plätze gibt es rundherum. Vom Bahnhof St. Fiden gehst du fünf Minuten, ab Hauptbahnhof fahren die Busse 3, 4 und 6'],
+              ['OLMA, auf dem Gelände der Olma Messen', 'Jedes Jahr im Oktober, 2026 vom 8. bis 18. Oktober', 'Auf dem Gelände gilt in Dotts Zonen Parkverbot, Dott-Plätze gibt es rundherum. Vom Bahnhof St. Fiden gehst du fünf Minuten, ab Hauptbahnhof fahren die Busse 3, 4 und 6'],
               ['FC St. Gallen im Berit Sitterstadion (früher Kybunpark)', 'Heimspiele laut Spielplan', 'Das Stadion liegt rund 5 km westlich des Hauptbahnhofs. Jedes Matchticket gilt 3 Stunden vor und nach dem Spiel als Fahrausweis im ganzen OSTWIND-Verbund, und vom Bahnhof Winkeln gehst du zu Fuss'],
               ['St. Galler Fest, in der Altstadt', '2026 am 14. und 15. August; das Datum 2027 ist noch offen', 'Die Altstadt ist bis spät in die Nacht voll: Beende die Fahrt am Rand und geh zu Fuss'],
               ['Kinderfest', 'Nächstes Mal 2028; das Datum steht frühestens im Mai 2027 fest', 'Rund 40 000 Besucherinnen und Besucher; temporäre Zonen zeigt die App'],
@@ -167,7 +167,7 @@ const guide: Guide = {
     },
     {
       question: 'Fahren die Dott-Trottis in St. Gallen auch im Winter?',
-      answer: 'Die erste Bewilligung von 2020 erlaubte den Betrieb nur von März bis Oktober. Ob die heutige eine Winterpause vorsieht, hat die Stadt nicht veröffentlicht; ob Trottis stehen, zeigen dir die Karte und die Dott-App. Und rechne mit Schnee und Eis: Die Stadt reicht bis auf 1075 m ü. M.',
+      answer: 'Ja. Die erste Bewilligung von 2020 erlaubte den Betrieb nur von März bis Oktober, doch im letzten Winter blieben die Trottis draussen: Dotts Datenfeed zeigte am 26. November 2025 190 und am 8. Februar 2026 258 Trottis in der Stadt. Die E-Bikes dagegen fehlten an beiden Tagen. Rechne mit Schnee und Eis: Die Stadt reicht bis auf 1075 m ü. M.',
     },
     {
       question: 'Wo melde ich ein falsch parkiertes E-Trottinett in St. Gallen?',
@@ -184,7 +184,7 @@ const guide: Guide = {
     { title: 'Stadt St. Gallen: Ausschreibung E-Trottinette, Zuschlag an Tier (12. Dezember 2022)', url: 'https://www.stadt.sg.ch/news/stsg_medienmitteilungen/2022/12/ausschreibung-e-trottinette-im-selbstverleih--tier-erhaelt-zusch.html' },
     { title: 'Stadt St. Gallen: Velostadtplan 2024 (PDF)', url: 'https://www.stadt.sg.ch/content/dam/dokument_library/dpb/tba/Verkehr/Velostadtplan%202024%20definitiv%20GzD%2024.02.2025.pdf' },
     { title: 'Dott: Allgemeine Geschäftsbedingungen Schweiz', url: 'https://ridedott.com/de/allgemeine/schweiz/' },
-    { title: 'sharedmobility.ch: offener Datenfeed von Dott St. Gallen', url: 'https://sharedmobility.ch/v2/gbfs/dott_st-gallen/gbfs' },
+    { title: 'Dott: offener Datenfeed St. Gallen (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/st.-gallen/gbfs.json' },
     { title: 'Mühleggbahn: Fahrgastinfo', url: 'https://www.muehleggbahn.ch/Fahrgastinfo.htm' },
     { title: 'VBSG: Tarife', url: 'https://www.vbsg.ch/home/tickets-preise/tarife.html' },
     { title: 'FC St. Gallen: Stadionbesuch', url: 'https://www.fcsg.ch/pages/stadionbesuch' },

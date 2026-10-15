@@ -17,7 +17,7 @@ const guide: Guide = {
       heading: 'Liverpool e-scooter hire: Bolt, and what happened to Voi',
       blocks: [
         'One company, **Bolt**, runs Liverpool’s shared e-scooters and e-bikes, under a Liverpool City Council contract and in partnership with the Liverpool City Region Combined Authority. Its area covers the whole city, Speke and Garston included, but not Bootle, Crosby, Huyton or the Wirral. The council and Merseyside Police call Bolt’s scooters “the only e-scooters permitted for use on public roads in Liverpool”.',
-        '**Voi** launched the trial in October 2020 and ran it for more than five years. Bolt won the council’s tender, signed the contract on 28 October 2025 and took over on 1 February 2026, with about 2,000 e-scooters and a smaller e-bike fleet: Liverpool is its first e-scooter city in the UK. The contract’s end date hasn’t been published, and the national trial that makes hire e-scooters legal is due to run until May 2028.',
+        '**Voi** launched the trial in October 2020 and ran it for more than five years. Bolt won the council’s tender, signed the contract on 28 October 2025 and took over on 1 February 2026, with about 2,000 e-scooters and a smaller e-bike fleet: Liverpool is its first e-scooter city in the UK. The award notice (November 2025) gives no end date for the contract, and the national trial that makes hire e-scooters legal is due to run until May 2028.',
         'On the morning of 13 October 2026 the [map of Liverpool](map:gb:Liverpool) showed about 1,800 Bolt e-scooters: a snapshot, not the fleet size. It doesn’t show Bolt’s e-bikes, bays or zones. Tap a scooter to open the Bolt app, where you unlock and pay.',
       ],
     },

@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Stuttgart: Anbieter, Preise, Parkzonen und was auf dem Wasen gilt',
   lede: 'Einen E-Scooter in Stuttgart leihst du ab 18 und ohne Führerschein bei Voi, Dott (früher TIER), Lime oder Bolt. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 13. Oktober 2026) zwischen 2,89 € bei Voi und 3,29 € bei Dott. In der City beendest du die Fahrt nur an markierten Flächen, in Fussgängerzonen, in Parks, am Flughafen und an der Messe gar nicht. Deinen eigenen Scooter nimmst du zusammengeklappt jederzeit kostenlos in Bus und Bahn des VVS mit, einen Leih-Scooter nie.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   city: 'de:Stuttgart',
   sections: [
     {
@@ -47,14 +47,14 @@ const guide: Guide = {
       blocks: [
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur dort, wo es keinen gibt, auf der Fahrbahn. «Gehwege und Fussgängerzonen sind tabu», schreibt die Stadt.',
         '**Königstrasse:** Die grosse Einkaufsstrasse ist Fussgängerzone, ebenso Nebenstrassen wie Schulstrasse und Calwer Strasse. Laut den Anbieterdaten sperrt keine App sie oder bremst dich dort. Absteigen und schieben musst du trotzdem, sonst kostet es 15 bis 30 €.',
-        '**Parks:** Im Schlossgarten, im Rosensteinpark und in anderen Grünanlagen darfst du keinen Scooter abstellen. Ein ausdrückliches Fahrverbot für Stuttgarter Parks haben wir nicht gefunden.',
+        '**Parks:** Im Schlossgarten, im Rosensteinpark und in anderen Grünanlagen darfst du keinen Scooter abstellen. Fahren darfst du dort laut Polizeiverordnung der Stadt nur auf freigegebenen und gekennzeichneten Wegen.',
         '**Kessel:** «Den Kessel und die Halbhöhe verbinden unzählige Treppen», schreibt die Stadt, und über die Stäffele kommst du mit keinem Scooter. Nach Degerloch oder in die Halbhöhe fährst du deshalb auf Umwegen über die Strasse. Schau vorher auf den Akku, nimm dir bergauf Zeit und brems bergab früh. Dott begrenzt seine Scooter laut Datenfeed auf 19 km/h.',
       ],
     },
     {
       heading: 'E-Scooter in Stuttgart abstellen: City, Hauptbahnhof, Parks',
       blocks: [
-        'In stark besuchten Bereichen stellst du den Scooter laut Stadt nur auf gekennzeichneten Flächen ab. In der City liegen sie laut den Daten der Anbieter etwa in der Kronprinz-, Gymnasium- oder Marktstrasse. Bei Lime ist der Kern um Königstrasse, Schillerplatz und Marktplatz ganz Parkverbotszone.',
+        'In stark besuchten Bereichen stellst du den Scooter laut Stadt nur auf gekennzeichneten Flächen ab. In der City liegen sie laut den Daten der Anbieter etwa in der Kronprinz-, Gymnasium- oder Marktstrasse. In Limes Datenfeed sind fast die ganze Königstrasse und der Schillerplatz Parkverbotszone, der Marktplatz nicht.',
         {
           table: {
             caption: 'Fahrt beenden an bekannten Orten (unsere Auswertung der Daten der vier Anbieter, Stand 13. Oktober 2026)',
@@ -87,11 +87,11 @@ const guide: Guide = {
             head: ['Verstoss', 'Heute', 'Ab 1. März 2027'],
             rows: [
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
-              ['Zu zweit auf einem Scooter', '5 € (laut Verkehrsministerium)', '25 €'],
+              ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 €, 1 Punkt', 'unverändert'],
               ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt, Betrag noch offen'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'unverändert'],
-              ['Falsch abgestellt', 'behindernd: 20 € nach dem allgemeinen Bussgeldkatalog', 'auf Geh- oder Radweg: 55 €, mit Behinderung 70 €'],
+              ['Falsch abgestellt', 'behindernd 20 €, gefährdend 30 € (§ 1 StVO)', 'auf Geh- oder Radweg: 55 €, mit Behinderung 70 €'],
             ],
           },
         },
@@ -143,8 +143,8 @@ const guide: Guide = {
     {
       heading: 'Obergrenze und Erlaubnis: Wer verleiht ab 2027 in Stuttgart E-Scooter?',
       blocks: [
-        'Seit einem Beschluss des Gemeinderats vom 22. Juni 2023 brauchen die Anbieter eine Sondernutzungserlaubnis der Stadt. Erlaubt sind höchstens 6000 Leih-Scooter, 1500 je Anbieter, davon je Anbieter höchstens 100 in der Kernstadt. Pro Scooter und angefangenem Monat zahlen sie laut dem Beschluss von 2023 7,50 € in der Kernstadt, 6 € in den übrigen Innenstadtbezirken und 4,50 € im Rest der Stadt, damit die Scooter auch in die Stadtteile kommen. Eine spätere Änderung haben wir nicht gefunden.',
-        'Die aktuellen Erlaubnisse vergab die Stadt im Dezember 2024 nach einem Auswahlverfahren; sie gelten vom 1. Januar 2025 bis zum 31. Dezember 2026. Danach vergibt die Stadt sie laut einer Antwort an den Landtag vom September 2025 in einem neuen Auswahlverfahren, bei dem sich bisherige und neue Anbieter aus ganz Deutschland bewerben können. Eine Ausschreibung oder Gewinner haben wir bis zum 13. Oktober 2026 nicht gefunden: Wer ab 2027 in Stuttgart E-Scooter verleiht, ist noch offen.',
+        'Seit einem Beschluss des Gemeinderats vom 22. Juni 2023 brauchen die Anbieter eine Sondernutzungserlaubnis der Stadt. Erlaubt sind höchstens 6000 Leih-Scooter, 1500 je Anbieter, davon je Anbieter höchstens 100 in der Kernstadt. Pro Scooter und angefangenem Monat zahlen sie laut dem seit Januar 2026 geltenden Gebührenverzeichnis 7,50 € in der Kernstadt, 6 € in den übrigen Innenstadtbezirken und 4,50 € im Rest der Stadt, damit die Scooter auch in die Stadtteile kommen.',
+        'Die aktuellen Erlaubnisse vergab die Stadt im Dezember 2024 nach einem Auswahlverfahren; sie gelten vom 1. Januar 2025 bis zum 31. Dezember 2026. Danach vergibt die Stadt sie laut einer Antwort an den Landtag vom September 2025 in einem neuen Auswahlverfahren, bei dem sich bisherige und neue Anbieter aus ganz Deutschland bewerben können. Eine Ausschreibung oder Gewinner hatte die Stadt bis zum 14. Oktober 2026 nicht veröffentlicht: Wer ab 2027 in Stuttgart E-Scooter verleiht, ist noch offen.',
         'Ab 1. März 2027 gilt das gewerbliche Aufstellen von Leih-Scootern bundesweit als Sondernutzung; Stuttgart behandelt es schon heute so.',
       ],
     },

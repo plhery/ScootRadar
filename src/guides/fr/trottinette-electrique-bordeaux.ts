@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trottinette électrique à Bordeaux : Dott, Pony, prix, zones et stationnement en 2026',
   lede: 'Pour louer une trottinette électrique à Bordeaux, vous avez le choix entre **Dott** et **Pony**, que Bordeaux Métropole autorise à déployer 1 000 trottinettes chacun jusqu’en novembre 2029 ; il faut avoir 18 ans. Chez l’un comme chez l’autre, comptez 1 € pour déverrouiller puis 0,29 € la minute, soit 3,90 € les 10 minutes, selon leurs données publiques du 13 octobre 2026. La location se termine uniquement sur un emplacement marqué au sol, et à Talence, restée en dehors du dispositif, c’est presque partout impossible.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   city: 'fr:Bordeaux',
   sections: [
     {
@@ -85,7 +85,7 @@ const guide: Guide = {
       heading: 'Âge, casque, amendes : les règles à Bordeaux',
       blocks: [
         '**L’âge.** La Métropole impose **18 ans** en libre-service. La loi, elle, autorise la trottinette personnelle dès 14 ans.',
-        '**Le casque.** Au 13 octobre 2026, nous n’avons pas trouvé d’arrêté préfectoral imposant le casque en Gironde, comme il en existe à Paris ou dans le Rhône, sans pouvoir l’exclure : vérifiez sur le site de la [préfecture de la Gironde](https://www.gironde.gouv.fr/). Il reste fortement recommandé.',
+        '**Le casque.** Au 14 octobre 2026, ni la presse ni les actes préfectoraux que nous avons pu lire ne signalent d’arrêté imposant le casque en Gironde, comme à Paris, dans le Rhône ou le Nord. Faute d’avoir pu lire tout son recueil des actes, vérifiez sur le site de la [préfecture](https://www.gironde.gouv.fr/). Il reste fortement recommandé.',
         {
           table: {
             caption: 'Trottinette électrique à Bordeaux : les règles nationales qui coûtent le plus cher (octobre 2026)',
@@ -170,7 +170,7 @@ const guide: Guide = {
     },
     {
       question: 'Le casque est-il obligatoire en trottinette à Bordeaux ?',
-      answer: 'Pas à notre connaissance au 13 octobre 2026 : nous n’avons pas trouvé d’arrêté préfectoral en Gironde, mais vérifiez auprès de la préfecture. La nuit ou par mauvaise visibilité, le gilet ou un équipement réfléchissant est obligatoire partout (35 €).',
+      answer: 'Pas à notre connaissance au 14 octobre 2026 : nous n’avons pas trouvé d’arrêté préfectoral en Gironde, mais vérifiez auprès de la préfecture. La nuit ou par mauvaise visibilité, le gilet ou un équipement réfléchissant est obligatoire partout (35 €).',
     },
     {
       question: 'Peut-on louer une trottinette à Bordeaux avant 18 ans ?',

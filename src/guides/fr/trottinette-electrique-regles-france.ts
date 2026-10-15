@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Réglementation de la trottinette électrique en France en 2026 : âge, casque, assurance et amendes',
   lede: 'La réglementation de la trottinette électrique en France tient en quelques règles : 14 ans minimum, pas de permis, une assurance si la trottinette vous appartient, 25 km/h au maximum, la piste cyclable ou une route limitée à 50 km/h, le trottoir interdit et personne d’autre à bord. La loi nationale n’impose le casque que sur les routes à 80 km/h ouvertes aux trottinettes, mais un nombre croissant de préfets l’exigent dans leur département : à Paris et en petite couronne depuis le 7 août 2026, dans tout le Rhône, Lyon compris, depuis le 28 septembre 2026. La plupart des amendes sont de 35 € ou de 135 €.',
   published: '2026-10-12',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   sections: [
     {
       heading: 'Réglementation de la trottinette électrique : ce qui a changé depuis 2023',
@@ -68,7 +68,7 @@ const guide: Guide = {
               ['Essonne (Évry-Courcouronnes)', 'Depuis le 5 octobre 2026', 'Casque et gilet ou équipement rétroréfléchissant, à toute heure, pistes cyclables comprises', 'Non vérifiée'],
               ['Rhône, Métropole de Lyon comprise', 'Depuis le 28 septembre 2026', 'Casque et gilet, à toute heure, pistes cyclables comprises, dans tout le département', '135 € sans casque, 35 € sans gilet'],
               ['Seine-et-Marne (Marne-la-Vallée)', 'Arrêté du 2 juillet 2026', 'Casque et équipement réfléchissant', 'Non vérifiée'],
-              ['Nord (Métropole de Lille)', 'Depuis le 1er septembre 2026, selon la presse', 'Casque', 'Non vérifiée'],
+              ['Nord (Métropole de Lille)', 'Depuis le 1er septembre 2026 (arrêté du 30 juillet 2026)', 'Casque attaché, à toute heure, pistes cyclables comprises, dans tout le département', '35 €'],
               ['Alpes-Maritimes (Nice)', 'Arrêté du 2 avril 2026', 'Casque et gilet, de jour comme de nuit', '35 €'],
               ['Cher (Bourges)', 'Arrêté de juillet 2026', 'Casque, pistes cyclables comprises', '135 €'],
               ['Yonne', 'Arrêté du 12 mai 2026', 'Casque et gilet', 'Non vérifiée'],
@@ -77,7 +77,7 @@ const guide: Guide = {
           },
         },
         'Cette liste n’est pas complète et s’allonge vite. Pour Bordeaux, Marseille ou Grenoble, nous n’avons pas trouvé d’arrêté au 12 octobre 2026, sans pouvoir l’exclure. Avant de rouler, consultez le site de la préfecture de votre département.',
-        { note: 'Les arrêtés visent en général tout conducteur d’EDPM, location comprise : vérifiez celui de votre département. Si vous louez une trottinette à Lyon, autour de Versailles ou à Marne-la-Vallée, prévoyez votre casque.' },
+        { note: 'Les arrêtés visent en général tout conducteur d’EDPM, location comprise : vérifiez celui de votre département. Si vous louez une trottinette à Lyon, dans la métropole lilloise, autour de Versailles ou à Marne-la-Vallée, prévoyez votre casque.' },
       ],
     },
     {
@@ -203,6 +203,7 @@ const guide: Guide = {
     { title: 'Préfecture de police : arrêté n° 2026-00969 du 7 août 2026 sur le casque et le gilet en EDPM à Paris et en petite couronne', url: 'https://cdn.paris.fr/paris/2026/08/10/arrete-2026_00969_07082026-1-nPt1.pdf' },
     { title: 'Service-public.gouv.fr : Sécurité routière, de nouvelles obligations pour les usagers de trottinettes électriques, gyropodes et hoverboards (12 août 2026)', url: 'https://www.service-public.gouv.fr/particuliers/actualites/A19037' },
     { title: 'Préfecture du Rhône : arrêté n° 69-2026-09 du 28 septembre 2026 imposant le casque et le gilet haute visibilité aux conducteurs d’EDPM (copie publiée par la commune de Ternay)', url: 'https://www.ternay.fr/wp-content/uploads/2026/09/ap_signe_port_casque_gilet_haute_visibilite_edpm_rhone.pdf' },
+    { title: 'Préfet du Nord : arrêté du 30 juillet 2026 portant obligation du port du casque pour tout conducteur d’EDPM (copie publiée par la commune de Linselles)', url: 'https://www.linselles.fr/wp-content/uploads/2026/08/Arrete-prefectoral-portant-obligation-du-port-du-casque-pour-tout-conducteur-dengin-de-deplacement-personnel-motorise-EDPM-dans-le-departement-du-Nord.pdf' },
     { title: 'Ville de Paris : Fin des trottinettes en libre-service à Paris le 31 août 2023 (résultats de la votation)', url: 'https://www.paris.fr/pages/pour-ou-contre-les-trottinettes-en-libre-service-23231' },
     { title: 'Bordeaux Métropole : Free-floating, la Métropole change de braquet', url: 'https://www.bordeaux-metropole.fr/actualites/free-floating-metropole-change-braquet' },
     { title: 'Sénat : question orale n° 1174S « Port du casque à trottinette », réponse du 16 juin 2026', url: 'https://www.senat.fr/questions/base/2026/qSEQ26061174S.html' },

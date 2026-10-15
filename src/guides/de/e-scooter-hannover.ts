@@ -10,13 +10,13 @@ const guide: Guide = {
   headline: 'E-Scooter Hannover: Anbieter, Preise, Parkzonen und was die neuen Regeln ändern',
   lede: 'Einen E-Scooter in Hannover leihst du ab 18 und ohne Führerschein bei Bolt, Dott (früher Tier), Lime, Voi oder Ryde. Zehn Minuten kosten im Standardtarif bei Voi 2,20 € und bei Dott 3,90 € (Stand Oktober 2026); verbindlich ist der Preis in der App. In der Innenstadt parkst du auf markierten Abstellflächen, in Parks wie der Eilenriede und am Maschsee gar nicht. In Stadtbahnen und Bussen der ÜSTRA sind E-Scooter seit dem 1. April 2024 verboten, auch zusammengeklappt.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   city: 'de:Hannover',
   sections: [
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Hannover?',
       blocks: [
-        'Laut Stadt vermieten fünf Anbieter in Hannover E-Scooter: **Bolt**, **Dott**, **Lime**, **Voi** und **Ryde**. Dott hiess früher Tier; wer Tier fuhr, nutzt heute die Dott-App. Ryde aus Norwegen ist laut HAZ erst seit Mai 2026 in der Stadt.',
+        'Laut Stadt vermieten fünf Anbieter in Hannover E-Scooter: **Bolt**, **Dott**, **Lime**, **Voi** und **Ryde**. Dott hiess früher Tier; wer Tier fuhr, nutzt heute die Dott-App. Ryde aus Norwegen ist erst seit Mai 2026 in der Stadt.',
         'Du leihst den Scooter in der App des Anbieters, laut Stadt ab 18, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
         'ScootRadar zeigt auf der [Karte rund um Hannover](map:de:Hannover) nur Dott, weil es in Hannover nur von Dott offene Standortdaten bekommt: am Vormittag des 13. Oktober 2026 rund 2100 Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Bolt, Lime, Voi und Ryde fehlen auf der Karte; ihre Scooter findest du in ihren eigenen Apps.',
         'Dotts Gebiet reicht über die Stadtgrenze hinaus bis Langenhagen, Laatzen und Garbsen; Voi fährt laut eigener Mitteilung auch in Garbsen und Ronnenberg.',
@@ -25,10 +25,10 @@ const guide: Guide = {
     {
       heading: 'Was kostet ein E-Scooter in Hannover?',
       blocks: [
-        'Einen Tarif für Hannover veröffentlichen Voi auf seiner Website und Dott in seinem offenen Datenfeed. Die Preise von Lime, Ryde und Bolt stammen aus einem Test der HAZ (Stand 25. September 2026).',
+        'Einen Tarif für Hannover veröffentlichen Voi auf seiner Website und Dott in seinem offenen Datenfeed. Lime, Ryde und Bolt zeigen ihn nur in der App; ihre Preise stammen aus einem Test der HAZ (Stand 25. September 2026).',
         {
           table: {
-            caption: 'E-Scooter-Preise in Hannover im Standardtarif (Voi und Dott: Stand 13. Oktober 2026; Lime, Ryde und Bolt laut HAZ: Stand 25. September 2026)',
+            caption: 'E-Scooter-Preise in Hannover im Standardtarif (Voi und Dott: Stand 14. Oktober 2026; Lime, Ryde und Bolt laut HAZ: Stand 25. September 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi', '0,00 €', '0,22 €', '2,20 €', '4,40 €'],
@@ -39,8 +39,8 @@ const guide: Guide = {
             ],
           },
         },
-        'Ausgerechnet Dott, der Anbieter auf unserer Karte, ist damit im Standardtarif der teuerste: Für zehn Minuten zahlst du dort mehr als anderthalbmal so viel wie bei Voi.',
-        'Wer oft fährt, spart laut HAZ mit Abo oder Pass: Mit Dotts 30-Tage-Abo «Flex» für 0,99 € kostet jede Fahrt bis 30 Minuten 1,60 €. Voi und Ryde verkaufen Monatspässe mit bis zu 300 Minuten für 24,99 €, Bolt einen 30-Tage-Pass mit 150 Minuten für 12,99 €.',
+        'Ausgerechnet Dott, der Anbieter auf unserer Karte, ist damit im Standardtarif der teuerste.',
+        'Die Preise von Abos und Pässen zeigen alle Anbieter nur in der App. Laut HAZ spart, wer oft fährt: Mit Dotts 30-Tage-Abo «Flex» für 0,99 € kostet jede Fahrt bis 30 Minuten 1,60 €. Voi und Ryde verkaufen Monatspässe mit bis zu 300 Minuten für 24,99 €, Bolt einen 30-Tage-Pass mit 150 Minuten für 12,99 €.',
         'Die Anbieter ändern ihre Preise oft; verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Den nächsten Dott und eine Preisschätzung für deinen Weg zeigt die [Live-Karte von Hannover](map:de:Hannover).',
       ],
     },
@@ -48,7 +48,7 @@ const guide: Guide = {
       heading: 'Wo darf man in Hannover mit dem E-Scooter fahren?',
       blocks: [
         'Du fährst auf dem Radweg, dem Radfahrstreifen oder in der Fahrradstrasse und nur dort, wo es nichts davon gibt, auf der Fahrbahn. Gehwege sind tabu.',
-        '**Fussgängerzonen:** Auch die Fussgängerzonen der Innenstadt sind tabu, etwa Bahnhofstrasse, Georgstrasse und Lister Meile. Die Dott-App bremst dich dort nicht aus, trotzdem gilt: absteigen und schieben.',
+        '**Fussgängerzonen:** Auch die Fussgängerzonen der Innenstadt sind tabu, etwa Bahnhofstrasse, Georgstrasse zwischen Steintor und Ständehausstrasse und Lister Meile ab dem Weisskreuzplatz. Die Dott-App bremst dich dort nicht aus, trotzdem gilt: absteigen und schieben.',
         '**Parks:** In der Eilenriede, im Maschpark und im Georgengarten fährst du nach den Vorgaben der Stadt nur auf ausgeschilderten Radwegen, nie über Wiesen oder Grünstreifen. Den Grossen Garten und den Berggarten in Herrenhausen besuchst du am besten zu Fuss.',
         '**Tempo und Schienen:** Langsamfahr- oder Fahrverbotszonen gibt es in Dotts Daten für Hannover nicht; Dotts Scooter fahren überall höchstens 19 km/h. Die Stadtbahn fährt vielerorts auf der Strasse: Schienen querst du am besten im rechten Winkel, damit das Vorderrad nicht in die Rille rutscht.',
       ],
@@ -77,7 +77,7 @@ const guide: Guide = {
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Verbotszone oder neben statt auf einer markierten Fläche. Fahr zur nächsten Fläche, die die App zeigt: Solange die Fahrt läuft, zahlst du weiter.',
         },
-        'Wer behindernd parkt, zahlt laut Stadt 20 €, wer andere gefährdet, 30 €. Dazu kommen die Anbieter: Laut ihrer Vereinbarung mit der Stadt müssen sie am Fahrtende ein Foto verlangen und bei Verstössen mindestens 20 € berechnen oder das Konto sperren.',
+        'Wer behindernd parkt, zahlt laut Stadt 20 €, wer andere gefährdet, 30 €. Dazu kommen die Anbieter: Laut ihrer Vereinbarung mit der Stadt müssen sie am Fahrtende ein Foto verlangen und bei Verstössen mindestens 20 € berechnen oder das Konto sperren. Bolts deutsche Bedingungen nennen nur 15 €.',
         'Steht dir ein Scooter im Weg, melde ihn dem Anbieter, am besten mit Foto und genauem Ort. Die Kontakte nennt die Stadt auf ihrer E-Scooter-Seite; für Bolt, Lime und Voi geht es auch über scooter-melder.de.',
       ],
     },
@@ -92,7 +92,7 @@ const guide: Guide = {
             rows: [
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Nebeneinander gefahren', '15 €, bis 30 €', 'erlaubt, wenn niemand behindert wird'],
-              ['Zu zweit auf einem Scooter', '5 € (laut Verkehrsministerium)', '25 €'],
+              ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 €, 1 Punkt', 'unverändert'],
               ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt, Betrag noch offen'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'unverändert'],
@@ -108,7 +108,7 @@ const guide: Guide = {
     {
       heading: 'Maschseefest, Schützenfest, Messe: E-Scooter bei Grossveranstaltungen',
       blocks: [
-        'Eigene Scooter-Regeln für Feste haben wir bei der Stadt nicht gefunden. Schützenplatz, Arena, Maschsee-Ufer und Messegelände liegen aber das ganze Jahr in Dotts Parkverbotszonen: Dort beendest du keine Dott-Fahrt. Stell den Scooter vorher ab, lauf das letzte Stück und prüf vor dem Fest die Zonen in der App.',
+        'Eigene Scooter-Regeln für Feste nennen weder Stadt noch Veranstalter. Schützenplatz, Arena, Maschsee-Ufer und Messegelände liegen aber das ganze Jahr in Dotts Parkverbotszonen: Dort beendest du keine Dott-Fahrt. Stell den Scooter vorher ab, lauf das letzte Stück und prüf vor dem Fest die Zonen in der App.',
         {
           table: {
             caption: 'Grosse Termine in Hannover (laut Stadt und Veranstaltern) und wo du die Fahrt beendest (laut Dotts Daten)',
@@ -153,7 +153,7 @@ const guide: Guide = {
             'in der **Innenstadt** Fahrtende nur noch auf markierten Flächen; im übrigen Stadtgebiet kommen nach und nach Flächen dazu, im Umkreis von meist 150 m parkst du dann nur dort.',
           ],
         },
-        'Die Ausschreibung soll laut Stadt noch folgen. Einen Starttermin, Bewerber oder Gewinner haben wir bis Mitte Oktober 2026 nicht gefunden: Welche drei Anbieter bleiben und ab wann, ist offen. Bis auf Weiteres vermieten alle fünf.',
+        'Die angekündigte Ausschreibung hatte die Stadt bis zum 14. Oktober 2026 nicht veröffentlicht: Wer bleibt und ab wann, ist offen. Bis auf Weiteres vermieten alle fünf.',
       ],
     },
     {
@@ -176,7 +176,7 @@ const guide: Guide = {
     },
     {
       question: 'Welcher E-Scooter-Anbieter ist in Hannover am günstigsten?',
-      answer: 'Im Standardtarif Voi, Lime und Ryde: keine Entsperrgebühr und 0,22 € pro Minute, zehn Minuten also 2,20 € (Voi Stand Oktober, Lime und Ryde laut HAZ Ende September 2026). Am teuersten ist Dott mit 1 € plus 0,29 € pro Minute; mit Dotts Abo «Flex» kostet aber jede Fahrt bis 30 Minuten 1,60 €.',
+      answer: 'Im Standardtarif Voi, Lime und Ryde: keine Entsperrgebühr und 0,22 € pro Minute, zehn Minuten also 2,20 € (Voi Stand Oktober, Lime und Ryde laut HAZ Ende September 2026). Am teuersten ist Dott mit 1 € plus 0,29 € pro Minute; mit Dotts Abo «Flex» kostet laut HAZ aber jede Fahrt bis 30 Minuten 1,60 €.',
     },
     {
       question: 'Darf ich meinen E-Scooter in der ÜSTRA mitnehmen?',

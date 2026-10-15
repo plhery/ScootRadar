@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter mieten: So funktioniert’s, von der App bis zum Ende der Fahrt',
   lede: 'E-Scooter mieten funktioniert in der Schweiz und in Deutschland fast überall gleich: App des Anbieters laden, mit Handynummer und Zahlungsmittel registrieren, QR-Code am Lenker scannen und losfahren, am Ziel in einer erlaubten Zone abstellen und die Fahrt mit einem Foto beenden. Die grossen Anbieter vermieten in beiden Ländern erst ab 18; einen Führerausweis oder Führerschein brauchst du nicht. Du zahlst eine Entsperrgebühr und einen Minutenpreis: Voi veröffentlichte am 12. Oktober 2026 für Bern CHF 1.– plus 42 Rappen pro Minute und für Stuttgart 0,49 € plus 0,24 € pro Minute; zehn Minuten kosten also CHF 5.20 oder 2,89 €.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-14',
   sections: [
     {
       heading: 'E-Scooter oder E-Trottinett mieten: Schritt für Schritt',
@@ -120,7 +120,7 @@ const guide: Guide = {
             head: ['Anbieter', 'Falsch abgestellt', 'Weitere Gebühren'],
             rows: [
               ['Voi', 'Schweiz: CHF 25.–, nach mehreren Verwarnungen', 'Gebühr für wiederholt schlechte Parkfotos'],
-              ['Bolt', 'Deutschland: 15 € (Bedingungen ab 1. November 2026)', 'Abholen ausserhalb des Gebiets: bis CHF 100.– oder 100 €'],
+              ['Bolt', 'Deutschland: 15 € (Bedingungen seit 2023, auch ab 1. November 2026)', 'Abholen ausserhalb des Gebiets: bis CHF 100.– oder 100 €'],
               ['Dott', 'bis 300 € laut Hilfe-Seite', 'Weitergeleitetes Bussgeld: plus 50 € Bearbeitung'],
               ['Lime', 'Strafgebühr, Betrag nicht veröffentlicht', 'Schweiz: Abholung und Bearbeitung je bis CHF 125.–'],
             ],

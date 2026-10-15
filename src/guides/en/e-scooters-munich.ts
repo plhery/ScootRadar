@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Munich: apps, prices, parking and the Oktoberfest rules',
   lede: 'To rent an e-scooter in Munich, use the Dott, Lime, Voi or Bolt app: you must be 18 and have a payment card, but need no driving licence. Ten minutes cost €4.00 with Dott and €3.59 with Voi (published rates, 12 October 2026); Lime and Bolt show their price in the app. In the old town you end a ride only at a marked bay, the English Garden is off limits, and MVG bans e-scooters from its U-Bahn, trams and buses.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   city: 'de:München',
   sections: [
     {
@@ -139,7 +139,7 @@ const guide: Guide = {
               ['Age, licence, helmet', '14 by law, no licence, no helmet required (one is still wise); 18 to rent', 'Unchanged'],
               ['Where to ride', 'Bike lane or path (Radweg) where there is one, otherwise the road; at most 20 km/h by design', 'Bike lanes compulsory where a blue bike sign stands, as for cyclists'],
               ['Pavement (Gehweg) or pedestrian zone', 'Banned unless a sign allows it: €15', 'Banned unless a sign allows it: €25'],
-              ['Passengers', 'Banned: €5, says the transport ministry', 'Banned: €25'],
+              ['Passengers', 'Banned: €10', 'Banned: €25'],
               ['Red light', '€60 and 1 point', 'Unchanged'],
               ['Phone in hand', '€100 and 1 point', 'New rate, not yet officially explained'],
               ['Alcohol', '0.5‰: €500, 2 points, one-month driving ban that covers cars too. From 1.1‰: a crime, licence usually lost. Under 21 or in your probationary period as a new driver: 0.0‰', 'Unchanged'],

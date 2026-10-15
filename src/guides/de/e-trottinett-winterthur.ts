@@ -10,14 +10,14 @@ const guide: Guide = {
   headline: 'E-Trottinett Winterthur: E-Scooter von Voi mieten, Preise, Zonen und Parkieren am HB',
   lede: 'Ein E-Trottinett in Winterthur mietest du bei Voi: Seit 2026 ist Voi laut Stadt der einzige Anbieter, mit 450 E-Scootern und 100 E-Bikes und einem Vertrag bis Ende 2027. Du musst mindestens 18 sein und zahlst CHF 1.– fürs Entsperren plus 42 Rappen pro Minute, zehn Minuten kosten also CHF 5.20 (veröffentlichter Tarif vom 13. Oktober 2026). Rund um den Hauptbahnhof parkierst du nur auf den roten Voi-Feldern, in der Altstadt, einer Fussgängerzone, drosselt Voi auf 10 km/h, und auf Hügeln wie dem Goldenberg oder dem Eschenberg kannst du die Fahrt nicht beenden.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   city: 'ch:winterthur',
   sections: [
     {
       heading: 'E-Trottinett in Winterthur mieten: Voi ist der einzige Anbieter',
       blocks: [
         'Lime, Bolt, Dott oder Bird suchst du in Winterthur vergeblich. Die Stadt vergibt das Recht, hier E-Scooter zu vermieten, per Konzession, und seit Anfang 2026 hat nur noch Voi eine: für 450 E-Trottinette und 100 E-Bikes, verteilt über die ganze Stadt und laut Voi rund um die Uhr verfügbar.',
-        'Am Abend des 13. Oktober 2026 zeigte die [Karte von Winterthur](map:ch:winterthur) in der Stadt rund 390 verfügbare Voi-Trottis. Richtung Zürich zeigt sie auch Lime, Bolt, Dott, Bird, Hopp und PubliBike: Diese Trottis stehen in Zürich-Nord, am Flughafen, in Kloten und Opfikon, nicht in Winterthur. Auch die Voi-Trottis in Frauenfeld und Effretikon gehören nicht zu Winterthurs 450. So kommst du zu deinem Trotti:',
+        'Am Abend des 13. Oktober 2026 zeigte die [Karte von Winterthur](map:ch:winterthur) in der Stadt rund 390 verfügbare Voi-Trottis. Richtung Zürich zeigt sie auch Lime, Bolt, Dott, Bird, Hopp und PubliBike: Diese Trottis stehen in Zürich-Nord, am Flughafen, in Kloten und Opfikon, nicht in Winterthur. Auch die Voi-Trottis in Zürich-Nord, Opfikon, Frauenfeld und Effretikon gehören nicht zu Winterthurs 450. So kommst du zu deinem Trotti:',
         {
           steps: [
             'Das nächste Voi-Trotti auf der [Live-Karte von Winterthur](map:ch:winterthur) suchen.',
@@ -63,7 +63,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Die 10 km/h sind nur die Drosselung, kein erlaubtes Tempo: Die ganze Altstadt ist Fussgängerzone. Fahren darfst du dort nur, wo eine Zusatztafel Velos erlaubt, im Schritttempo und mit Vortritt für die Fussgänger, sonst kostet es CHF 30.–. Laut einem Bericht des Stadtrats von 2018 durften Velos überall in der Altstadt fahren, ausser in der Marktgasse und im Untertor. Ob das heute noch so signalisiert ist, haben wir nicht geprüft; steig dort ab und stoss.',
+        'Die 10 km/h sind nur die Drosselung, kein erlaubtes Tempo: Die ganze Altstadt ist Fussgängerzone. Fahren darfst du dort nur, wo eine Zusatztafel Velos erlaubt, im Schritttempo und mit Vortritt für die Fussgänger, sonst kostet es CHF 30.–. Erlaubt ist das fast überall, etwa am Neumarkt, in der Steinberggasse und im Obertor. In der Marktgasse und im Untertor dagegen zeigt der Veloplan der Stadt ein Fahrverbot für Velos: Steig dort ab und stoss.',
         'Willst du auf den Goldenberg, zum Wildpark Bruderhaus oder zur Sammlung Oskar Reinhart am Römerholz, beende die Fahrt am Rand von Vois Gebiet und geh das letzte Stück zu Fuss. Der Brühlberg im Westen liegt dagegen im Gebiet.',
         { note: 'Ausserhalb von Vois Gebiet, in einer Parkverbotszone und am Hauptbahnhof neben den roten Feldern lässt dich die App die Fahrt nicht beenden, und die Minuten laufen weiter. Such dir den Abstellplatz in der App, bevor du am Ziel bist.' },
       ],
@@ -106,7 +106,7 @@ const guide: Guide = {
             caption: 'Die grossen Feste in der Winterthurer Altstadt',
             head: ['Anlass', 'Nächstes Datum', 'Was du wissen musst'],
             rows: [
-              ['Albanifest, in der Altstadt', 'Jedes Jahr am letzten Juni-Wochenende, nächstes Mal 25. bis 27. Juni 2027', 'Eigene Regeln für Trottis haben wir keine gefunden; in der Altstadt bremst Voi ohnehin auf 10 km/h'],
+              ['Albanifest, in der Altstadt', 'Jedes Jahr am letzten Juni-Wochenende, nächstes Mal 25. bis 27. Juni 2027', 'Der Veranstalter nennt keine Regel für Trottis und verweist auf Extrazüge und -busse; in der Altstadt bremst Voi ohnehin auf 10 km/h'],
               ['Musikfestwochen, Steinberggasse, Kirchplatz und Viehmarkt', '11. bis 22. August 2027', '«Fahrräder / E-Scooter» stehen auf der Liste der Gegenstände, die auf dem Festivalgelände verboten sind'],
             ],
           },
@@ -173,7 +173,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich ein E-Trottinett in Bus oder Zug mitnehmen?',
-      answer: 'Ein Voi-Trotti nicht: Die Fahrt muss in Vois Gebiet enden. Dein eigenes fährt im Zug gratis mit, wenn das grösste Rad kleiner als 12 Zoll ist, sonst brauchst du ein Velobillett. Eine eigene Regel von Stadtbus Winterthur haben wir nicht gefunden; frag im Zweifel das Fahrpersonal.',
+      answer: 'Ein Voi-Trotti nicht: Die Fahrt muss in Vois Gebiet enden. Dein eigenes fährt im Zug gratis mit, wenn das grösste Rad kleiner als 12 Zoll ist, sonst brauchst du ein Velobillett. Im Stadtbus gilt laut ZVV-Tarif dieselbe Regel; Velos nimmt der Bus nur mit, wenn Platz ist.',
     },
   ],
   sources: [
@@ -181,7 +181,7 @@ const guide: Guide = {
     { title: 'Stadt Winterthur: Falsch parkierte E-Scooter und E-Bikes melden', url: 'https://stadt.winterthur.ch/services/falsch-parkierte-e-scooter-und-e-bikes-melden' },
     { title: 'Stadtrat Winterthur: Beschluss 2025/258, Reduktion der Anbieter und Ausblick', url: 'https://stadt.winterthur.ch/stadtratsbeschluesse/2025-06-25/2025258' },
     { title: 'Stadtrat Winterthur: Beschluss SR.23.616-1, Ausschreibung von zwei Konzessionen', url: 'https://stadt.winterthur.ch/stadtratsbeschluesse/2023-08-23/sr23616-1' },
-    { title: 'Stadtrat Winterthur: Bericht zur Verkehrsberuhigung Stadthausstrasse, 2018 (PDF)', url: 'https://parlament.winterthur.ch/_doc/3421687' },
+    { title: 'Stadt Winterthur: Veloplan im Stadtplan', url: 'https://stadtplan.winterthur.ch/?topic=Veloplan' },
     { title: 'Voi: E-Scooter in Winterthur', url: 'https://www.voi.com/de/stadt/winterthur' },
     { title: 'Voi: Nutzungsbestimmungen Schweiz', url: 'https://www.voi.com/de/rechtliche-hinweise/nutzungsbestimmungen/schweiz' },
     { title: 'sharedmobility.ch: offener Datenfeed von Voi', url: 'https://sharedmobility.ch/v2/gbfs/voiscooters.com/gbfs' },

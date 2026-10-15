@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Frankfurt: Anbieter, Preise, Parkzonen und Verbote',
   lede: 'E-Scooter in Frankfurt leihst du seit dem 1. Juli 2026 nur noch bei Bolt, Lime und Voi, ab 18 und ohne Führerschein. Voi verlangt nichts fürs Entsperren und 0,27 € pro Minute, zehn Minuten kosten also 2,70 € (Stand 13. Oktober 2026); bei Lime und Bolt zeigt die App den Preis. In der Innenstadt, im Bahnhofsviertel, in Bockenheim, in Höchst und an der Berger Strasse beendest du die Fahrt nur auf einer markierten Abstellfläche, auf den Mainbrücken, in Fussgängerzonen und in Parks gar nicht. In U-Bahn und Strassenbahn sind E-Scooter seit Oktober 2024 verboten.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   city: 'de:Frankfurt',
   sections: [
     {
@@ -115,7 +115,7 @@ const guide: Guide = {
         {
           list: [
             '**Gehweg oder Fussgängerzone:** 15 €, ab 1. März 2027 25 €, mit Behinderung oder Gefährdung mehr.',
-            '**Zu zweit:** 5 € laut Verkehrsministerium, ab 1. März 2027 25 €.',
+            '**Zu zweit:** 10 €, ab 1. März 2027 25 €.',
             '**Rote Ampel:** 60 € und ein Punkt in Flensburg. **Handy in der Hand:** 100 € und ein Punkt.',
             '**Alkohol:** ab 0,5 Promille 500 €, zwei Punkte und ein Monat Fahrverbot, auch fürs Auto; ab 1,1 Promille eine Straftat, der Führerschein ist dann in der Regel weg; unter 21 oder in der Probezeit 0,0 Promille. Bolt verbietet laut seinem Vertrag jeden Alkohol.',
           ],

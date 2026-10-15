@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Elsparkesykkel i Trondheim: operatører, priser, sesong og soner',
   lede: 'Vil du leie elsparkesykkel i Trondheim, velger du mellom Dott, Voi og Ryde, som har tillatelse fra kommunen for 2025 og 2026. Det koster 10 kr å låse opp hos Voi og 10,90 kr hos Ryde og Dott, pluss 2,50 kr per minutt (13. oktober 2026), og du må ha fylt 15 år hos Ryde, 16 hos Voi og 18 hos Dott. Sesongen varer fra 15. mars til senest 1. desember. Etter forskriften er utleien stengt kl. 23–05 hver natt, men i 2026 har Voi og Ryde bare stengt natt til lørdag og natt til søndag, så sjekk appen.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   city: 'no:Trondheim',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Trondheim kommune har gitt tillatelse til tre operatører: **Dott, Voi og Ryde**. Tillatelsene gjelder sesongene 2025 og 2026. Dott het tidligere Tier, og kommunen skriver fortsatt «Tier-Dott». Ingen andre har tillatelse til å leie ut elsparkesykler i byen, heller ikke Bolt.',
         'Ryde var først ute i 2019 og vant mot kommunen i Høyesterett i desember 2021: Kommunen kunne ikke styre utleien som grunneier, men trengte hjemmel i lov. I februar 2022 fikk byen en egen utleieforskrift. Den tillater opptil tre operatører og **3200** kjøretøy til sammen, fordelt likt. I 2019 var taket 200, og i 2020 var det 600.',
-        'Som en prøveordning har kommunen dessuten latt operatørene sette ut flere sparkesykler i ytre bydeler, blant annet på Byåsen og Heimdal. Det er trolig derfor ScootRadar viste rundt 3900 elsparkesykler fra Voi, Ryde og Dott på [kartet over Trondheim](map:no:Trondheim) om morgenen 13. oktober 2026. Det er en telling på kartet, ikke kommunens tall for flåten.',
+        'Kommunen har dessuten som prøveordning tillatt flere sparkesykler i ytre bydeler, i 2025 opptil 1500 ekstra på Tiller, Heimdal og Byåsen. Et vedtak for 2026 er ikke publisert, men ordningen kan forklare at ScootRadar viste rundt 3900 elsparkesykler fra Voi, Ryde og Dott på [kartet over Trondheim](map:no:Trondheim) 13. oktober 2026. Det er en telling på kartet, ikke kommunens tall.',
         'Hvordan du registrerer deg, låser opp og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },
@@ -52,8 +52,8 @@ const guide: Guide = {
             '**Voi og Ryde i 2026:** Ifølge åpningstidene de publiserte 13. oktober 2026, har de åpent hele natten fra søndag kveld til fredag morgen og stenger kl. 23–05 bare natt til lørdag og natt til søndag. Dott har ikke publisert åpningstider.',
           ],
         },
-        'Dette er trolig en prøveordning: Forskriften lar kommunen tillate nattåpen utleie fra søndag kveld til fredag morgen, og kommunen har gjort det før. Sommeren 2023 ble det kjørt over 48 000 turer om natten, og bare to ulykker ble registrert i lovlig åpningstid, ifølge kommunen.',
-        'Appen viser når du kan leie. Sjekk den før du regner med å ta sparkesykkel hjem om natten, særlig natt til en helligdag. Hos Ryde kan noen utelivsgater i sentrum dessuten være stengt for kjøring om natten.',
+        'Forskriften lar kommunen prøve ut nattåpen utleie fra søndag kveld til fredag morgen. Det har kommunen gjort hvert år siden 2022, sist fra mai til oktober 2025, men et vedtak for 2026 er ikke publisert (oktober 2026). Sommeren 2023 ble det kjørt over 48 000 turer om natten, og bare to ulykker ble registrert i lovlig åpningstid, ifølge kommunen.',
+        'Sjekk appen før du regner med å ta sparkesykkel hjem om natten, særlig natt til en helligdag. Hos Ryde er utelivsområdene ved Solsiden og Fjordgata stengt for kjøring om natten.',
         'Ved store arrangementer kan deler av byen stenges for elsparkesykler: Under fotball-VM sommeren 2026 gjaldt det tre områder.',
       ],
     },
@@ -78,7 +78,7 @@ const guide: Guide = {
         },
         'Ryde har også kjøreforbud på flere andre gravplasser, på idrettsanlegg som Lerkendal stadion, Spektrum og Leangen og på tunnelrampene ved Ila og Strindheim. Sonene endres ofte, og kommunen har et eget [kart over sonene](https://geoinnsyn.no/?application=trondheim&project=Elsparkesykkelsoner).',
         'Nordre gate og Thomas Angells gate er gågater, så der gjelder uansett maks 6 km/t, selv om sparkesykkelen lar deg kjøre fortere.',
-        'På fortauet er det lov å kjøre når det er lite folk og du ikke er til fare eller hinder, men forbi gående holder du gangfart, aldri over 6 km/t. Bystyret diskuterte i mars 2026 et forbud mot elsparkesykler, også på fortauet, men Trondheim har ikke innført noe forbud (oktober 2026).',
+        'På fortauet er det lov å kjøre når det er lite folk og du ikke er til fare eller hinder, men forbi gående holder du gangfart, aldri over 6 km/t. I mars 2026 ba bystyret byrådet vurdere kjøreforbud på fortau i utvalgte soner, men Trondheim har ikke innført noe forbud (oktober 2026).',
       ],
     },
     {
@@ -175,7 +175,7 @@ const guide: Guide = {
     },
     {
       question: 'Kan jeg leie elsparkesykkel om natten i Trondheim?',
-      answer: 'Etter forskriften og kommunens nettside er utleien stengt kl. 23–05 hver natt. Men i 2026 har Voi og Ryde, trolig som en prøveordning, hatt åpent hele natten fra søndag kveld til fredag morgen og bare stengt natt til lørdag og natt til søndag. Dott har ikke publisert åpningstider, så sjekk appen.',
+      answer: 'Etter forskriften og kommunens nettside er utleien stengt kl. 23–05 hver natt. Men i 2026 har Voi og Ryde hatt åpent hele natten fra søndag kveld til fredag morgen og bare stengt natt til lørdag og natt til søndag. Et vedtak om prøveordning for 2026 er ikke publisert. Dott har ikke publisert åpningstider, så sjekk appen.',
     },
     {
       question: 'Kan jeg kjøre elsparkesykkel til Værnes?',

@@ -8,24 +8,25 @@ const guide: Guide = {
   title: 'Alquilar patinete eléctrico con app: dónde, precio y casco',
   description: 'Cómo alquilar un patinete eléctrico con app en España: dónde quedan, paso a paso, precios, edad, casco obligatorio, dónde aparcar y qué hacer si te caes.',
   headline: 'Cómo alquilar un patinete eléctrico con app en España: paso a paso, precios y dónde quedan',
-  lede: 'Para alquilar un patinete eléctrico con app, descarga la del operador, regístrate con tu móvil y una tarjeta, escanea el código QR del manillar y, al acabar, aparca donde te deje la app y haz la foto. Necesitas 18 años y, desde el 1 de octubre de 2026, tu propio casco. A 13 de octubre de 2026 no hay patinetes compartidos en Madrid, Barcelona, Valencia, Sevilla ni Málaga: quedan sobre todo en Gijón, Getafe, el sur de Tenerife, Fuerteventura y la Costa Blanca, con Bird o Hopp. Pagas un desbloqueo más cada minuto: con Hopp en Torrevieja, diez minutos salen por 4,29 €.',
+  lede: 'Para alquilar un patinete eléctrico con app, descarga la del operador, regístrate con tu móvil y una tarjeta, escanea el código QR del manillar y, al acabar, aparca donde te deje la app y haz la foto. Necesitas 18 años y, desde el 1 de octubre de 2026, tu propio casco. A 14 de octubre de 2026 no hay patinetes compartidos en Madrid, Barcelona, Valencia, Sevilla ni Málaga: quedan sobre todo en Gijón, Getafe, Canarias (el sur de Tenerife, Fuerteventura y Lanzarote) y la Costa Blanca, con Hoppy, Bird o Hopp. Pagas un desbloqueo más cada minuto: en Torrevieja, diez minutos salen por 4,29 € con Hopp y de 3,80 a 4,50 € con Hoppy.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   sections: [
     {
       heading: '¿Hay patinetes de alquiler en Madrid? Dónde quedan en España',
       blocks: [
         'Antes de descargar ninguna app, comprueba si en tu ciudad quedan patinetes. En **Madrid** no hay desde octubre de 2024: el Ayuntamiento revocó en septiembre los permisos de Lime, Dott y Tier (6000 patinetes) y no concederá otros nuevos. Según la prensa, tampoco los hay en **Barcelona**, que nunca los autorizó, ni en **Valencia, Sevilla, Málaga, Palma ni Bilbao**, y Tarragona se quedó sin ellos en septiembre de 2026.',
-        'Esta guía va del alquiler con app, por minutos, del patinete que coges en la calle, no de las tiendas que alquilan por horas o por meses. A 13 de octubre de 2026, los patinetes compartidos quedan sobre todo en ciudades medianas y zonas turísticas:',
+        'Esta guía va del alquiler con app, por minutos, del patinete que coges en la calle, no de las tiendas que alquilan por horas o por meses. A 14 de octubre de 2026, los patinetes compartidos quedan sobre todo en ciudades medianas y zonas turísticas:',
         {
           list: [
+            '**Hoppy:** el sur de Tenerife, de Los Cristianos a Costa Adeje; Fuerteventura (Caleta de Fuste y Corralejo); Lanzarote (Puerto del Carmen); y, en la Costa Blanca, Torrevieja y la Marina Baixa (Altea, L’Albir, L’Alfàs del Pi y La Nucía).',
             '**Bird:** [Gijón](map:es:Gijón), [Getafe](map:es:Getafe), el sur de Tenerife y Fuerteventura (Caleta de Fuste, Costa Calma y Morro Jable).',
             '**Hopp:** [Torrevieja](map:es:Torrevieja) y Pilar de la Horadada, en la Costa Blanca; Jávea (y Dénia, según su web), en la Marina Alta; y el sur de Tenerife, en [Playa de las Américas](map:es:Playa de las Américas) y Golf del Sur.',
             '**Dott** tiene condiciones y seguro para España y Canarias; según el Ayuntamiento, alquila patinetes en Santa Cruz de Tenerife desde 2024, pero no publica datos que nuestro mapa pueda leer.',
           ],
         },
         'En Oviedo, según la prensa, Bird gestiona desde junio de 2025 el servicio municipal, con 200 patinetes en 171 puntos fijos.',
-        'Para ver juntos los de Bird y Hopp en estos lugares, abre [nuestro mapa](/map): verás el tiempo a pie y, en Hopp, una estimación del precio; un botón te lleva a la app del operador. No incluye Oviedo, donde Bird no publica sus datos, y otros operadores pueden funcionar sin publicarlos.',
+        'Para ver juntos los de Hoppy, Bird y Hopp en estos lugares, abre [nuestro mapa](/map): verás el tiempo a pie y, en Hoppy y Hopp, una estimación del precio; un botón te lleva a la app del operador. No incluye Oviedo, donde Bird no publica sus datos, y otros operadores pueden funcionar sin publicarlos.',
       ],
     },
     {
@@ -51,8 +52,8 @@ const guide: Guide = {
     {
       heading: 'Qué piden para alquilar un patinete eléctrico: edad, casco y pago',
       blocks: [
-        '**18 años** en todos los operadores (Bird, Dott, Hopp y Lime), aunque la ley permite conducir un patinete desde los 15.',
-        '**Ni carné ni DNI escaneado.** No hemos encontrado ningún operador que pida escanear un documento en España: en el contrato de Bird declaras tú que tienes 18 años.',
+        '**18 años** en todos los operadores (Bird, Dott, Hopp, Hoppy y Lime), aunque la ley permite conducir un patinete desde los 15. Hoppy alquila desde los 16 en Bélgica, pero no en España.',
+        '**Ni carné ni DNI escaneado.** No hemos encontrado ningún operador que pida escanear un documento en España: en los contratos de Bird y Hoppy declaras tú que tienes 18 años.',
         '**Tu casco y, de noche, tu elemento reflectante o luminoso.** Los dos los llevas tú, porque la multa (200 €) es para quien conduce, y no hemos encontrado ningún operador que preste casco. Si alquilas en vacaciones, mételos en la maleta.',
         {
           table: {
@@ -62,6 +63,7 @@ const guide: Guide = {
               ['Hopp', 'Tarjeta, Apple Pay y Google Pay', 'Normalmente, de 5 a 8 €'],
               ['Bird', 'Tarjeta; Apple Pay, Google Pay y PayPal en algunas ciudades', 'Puede subir según dure el viaje; los bancos suelen liberarla en 7 a 10 días hábiles'],
               ['Dott', 'Tarjeta, PayPal, Apple Pay y Revolut Pay', '3 €'],
+              ['Hoppy', 'Tarjeta; el saldo se recarga solo, salvo que lo desactives', 'Sus condiciones no la mencionan'],
             ],
           },
         },
@@ -71,15 +73,19 @@ const guide: Guide = {
     {
       heading: '¿Cuánto cuesta alquilar un patinete eléctrico?',
       blocks: [
-        'Pagas un desbloqueo y cada minuto que tienes el patinete desbloqueado, en marcha o parado. Hopp publica sus tarifas; Bird no, así que su precio solo lo ves en la app, antes de desbloquear.',
+        'Pagas un desbloqueo y cada minuto que tienes el patinete desbloqueado, en marcha o parado. Hoppy y Hopp publican sus tarifas; Bird no, así que su precio solo lo ves en la app, antes de desbloquear. En Hoppy, el minuto cuesta más o menos según el patinete.',
         {
           table: {
-            caption: 'Tarifas de Hopp a 13 de octubre de 2026 y lo que cuesta un trayecto',
-            head: ['Zona de Hopp', 'Desbloqueo + minuto', '5 min', '10 min', '20 min'],
+            caption: 'Tarifas de Hoppy y Hopp publicadas el 14 de octubre de 2026 y lo que cuesta un trayecto',
+            head: ['Operador y zona', 'Desbloqueo + minuto', '5 min', '10 min', '20 min'],
             rows: [
-              ['Costa Blanca: Torrevieja y Pilar de la Horadada', '0,99 € + 0,33 €', '2,64 €', '4,29 €', '7,59 €'],
-              ['Marina Alta: Jávea y Dénia', '0,95 € + 0,25 €', '2,20 €', '3,45 €', '5,95 €'],
-              ['Sur de Tenerife: Playa de las Américas y Golf del Sur', '0,95 € + 0,25 €', '2,20 €', '3,45 €', '5,95 €'],
+              ['Hoppy: sur de Tenerife', '1 € + 0,35-0,37 €', '2,75-2,85 €', '4,50-4,70 €', '8-8,40 €'],
+              ['Hoppy: Caleta de Fuste (Fuerteventura)', '1 € + 0,32-0,37 €', '2,60-2,85 €', '4,20-4,70 €', '7,40-8,40 €'],
+              ['Hoppy: Corralejo (Fuerteventura) y Puerto del Carmen (Lanzarote)', '1,20 € + 0,35-0,37 €', '2,95-3,05 €', '4,70-4,90 €', '8,20-8,60 €'],
+              ['Hoppy: Torrevieja', '1 € + 0,28-0,35 €', '2,40-2,75 €', '3,80-4,50 €', '6,60-8 €'],
+              ['Hoppy: Marina Baixa', '1 € + 0,30-0,35 €', '2,50-2,75 €', '4-4,50 €', '7-8 €'],
+              ['Hopp: Torrevieja y Pilar de la Horadada', '0,99 € + 0,33 €', '2,64 €', '4,29 €', '7,59 €'],
+              ['Hopp: Marina Alta (Jávea y Dénia) y sur de Tenerife', '0,95 € + 0,25 €', '2,20 €', '3,45 €', '5,95 €'],
             ],
           },
         },
@@ -95,6 +101,7 @@ const guide: Guide = {
         'La app te marca zonas en el mapa. En la de Bird, las rojas y las grises son de no aparcar: ahí no puedes terminar el viaje, y en algunas ciudades solo puedes acabarlo en las zonas con una «P».',
         {
           list: [
+            '**Con Hoppy**, solo puedes terminar el viaje en uno de los puntos de aparcamiento que te marca la app.',
             '**En Getafe**, según la prensa local de junio de 2025, tienes que atar el Bird con su candado a algo fijo, como un aparcabicis; si no queda bien anclado, no puedes cerrar el viaje.',
             '**En Oviedo**, según la prensa, solo puedes dejarlo en uno de los 171 puntos fijos.',
             '**En cualquier sitio**, déjalo de pie y sin tapar el paso, portales ni vados. Cada ayuntamiento decide si se puede aparcar en la acera, y nunca debe estorbar a los peatones.',
@@ -111,6 +118,7 @@ const guide: Guide = {
               ['Bird', 'La primera vez, un aviso; la segunda, 5 €; la tercera, 20 €; a la cuarta puede rescindir tu contrato', 'Hasta 120 € si no puedes devolverlo a una zona válida y Bird tiene que recogerlo'],
               ['Dott', '50 € por cada incumplimiento de sus condiciones', 'Hasta 300 € por recuperar el patinete; 50 € de gestión si te pasa una multa'],
               ['Hopp', '30 € si no haces la foto final', '50 € por recogerlo fuera de la zona, a menos de 20 km; hasta 500 € más lejos o en un terreno privado'],
+              ['Hoppy', 'Hasta 50 € si lo usas en una zona prohibida, y 100 € por recogerlo si lo dejas en ella', 'Hasta 100 € si no pueden recogerlo; 150 € si lo abandonas sin avisar'],
             ],
           },
         },
@@ -141,13 +149,13 @@ const guide: Guide = {
           steps: [
             'Ponte a salvo y llama al **112** si hay heridos.',
             'Intercambia datos y haz fotos del lugar, del número del patinete y de los daños.',
-            'Si hay heridos o daños, llama a la policía, como piden las condiciones de Hopp.',
-            'Avisa enseguida al operador. Hopp: Costa Blanca, +34 722 143 627; Marina Alta, +34 634 451 453; Tenerife, tenerife@hopp.bike. Bird: desde la app o en hello@bird.co. Dott: desde la app o en claims-support@ridedott.com.',
+            'Si hay heridos o daños, avisa a la policía, como piden Hopp y Hoppy (esta, en 24 horas).',
+            'Avisa enseguida al operador. Hopp: Costa Blanca, +34 722 143 627; Marina Alta, +34 634 451 453; Tenerife, tenerife@hopp.bike. Hoppy: desde el chat de la app o en support@behoppy.eu. Bird: desde la app o en hello@bird.co. Dott: desde la app o en claims-support@ridedott.com.',
             'No reconozcas la culpa en el momento, como aconseja Dott.',
           ],
         },
-        'Lo que cubre el seguro depende del operador. Dott incluye en España responsabilidad civil y un seguro de accidentes para ti (invalidez permanente o fallecimiento) sin coste extra, aunque, según su centro de ayuda general, no cubre lesiones en la cabeza sin casco. El contrato de Bird no detalla ninguna cobertura y advierte de que el seguro de tu coche quizá no te cubra.',
-        'Los daños que causes al patinete los pagas tú: Hopp avisa de que reparar uno puede costar hasta 2000 €.',
+        'Lo que cubre el seguro depende del operador. Dott incluye en España responsabilidad civil y un seguro de accidentes para ti (invalidez permanente o fallecimiento) sin coste extra, aunque, según su centro de ayuda general, no cubre lesiones en la cabeza sin casco. Hoppy asegura los daños a terceros, pero puede cobrarte la franquicia: hasta 1000 € por siniestro. El contrato de Bird no detalla ninguna cobertura y advierte de que el seguro de tu coche quizá no te cubra.',
+        'Los daños que causes al patinete los pagas tú: Hopp avisa de que reparar uno puede costar hasta 2000 €, y Hoppy cobra 1290 € si lo destrozas.',
       ],
     },
     {
@@ -172,7 +180,7 @@ const guide: Guide = {
     },
     {
       question: '¿Se puede alquilar un patinete eléctrico con 16 años?',
-      answer: 'No. Bird, Dott, Hopp y Lime exigen 18 años, aunque desde el 1 de octubre de 2026 la ley permite conducir un patinete propio a partir de los 15. En los viajes en grupo de Bird y Dott, cada persona tiene que tener también 18.',
+      answer: 'No. Bird, Dott, Hopp, Hoppy y Lime exigen 18 años en España, aunque desde el 1 de octubre de 2026 la ley permite conducir un patinete propio a partir de los 15. Hoppy, que en Bélgica alquila desde los 16, aquí pide 18. En los viajes en grupo de Bird y Dott, cada persona tiene que tener también 18.',
     },
     {
       question: '¿Pueden ir dos personas en un patinete de alquiler?',
@@ -180,7 +188,7 @@ const guide: Guide = {
     },
     {
       question: '¿Cómo se llama la app para alquilar patinetes eléctricos?',
-      answer: 'No hay una sola: cada operador tiene la suya, y en España son sobre todo Bird y Hopp. ScootRadar los reúne en un mapa, en las zonas que cubre, y te lleva a la app de cada uno, que es donde desbloqueas y pagas.',
+      answer: 'No hay una sola: cada operador tiene la suya, y en España son sobre todo Hoppy, Bird y Hopp. La de Hoppy se llama «Hoppy Mobility» en las tiendas de apps. ScootRadar los reúne en un mapa, en las zonas que cubre, y te lleva a la app de cada uno, que es donde desbloqueas y pagas.',
     },
   ],
   sources: [
@@ -191,6 +199,8 @@ const guide: Guide = {
     { title: 'Bird Ayuda: retenciones de autorización y cargos', url: 'https://help.bird.co/hc/es/articles/17879020799124' },
     { title: 'Bird Ayuda: patinetes con candado de cable', url: 'https://help.bird.co/hc/es/articles/30300588013076' },
     { title: 'Bird Ayuda: si no puedes terminar el viaje', url: 'https://help.bird.co/hc/es/articles/5885339314068' },
+    { title: 'Hoppy: condiciones generales para España', url: 'https://behoppy.eu/es/terminos-y-condiciones/' },
+    { title: 'Hoppy: cómo funciona y dónde terminar el viaje', url: 'https://behoppy.eu/es/antes-del-viaje/' },
     { title: 'Hopp: ubicaciones y tarifas', url: 'https://hopp.bike/locations' },
     { title: 'Hopp: condiciones del servicio', url: 'https://hopp.bike/tos' },
     { title: 'Hopp: retención temporal en la tarjeta (en inglés)', url: 'https://support.hopp.bike/en/articles/109688' },

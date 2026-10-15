@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter München: Anbieter, Preise, Abstellflächen und was auf der Wiesn gilt',
   lede: 'Einen E-Scooter in München mietest du ab 18 und ohne Führerschein bei Dott, Lime, Voi oder Bolt. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 12. Oktober 2026) bei Dott 4 € und bei Voi 3,59 €; bei Lime und Bolt zeigt die App den Preis. Innerhalb des Altstadtrings beendest du die Fahrt nur auf ausgewiesenen Abstellflächen, im Englischen Garten sind E-Scooter verboten, und in U-Bahn, Tram und Bus der MVG darfst du sie nicht mitnehmen.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-14',
   city: 'de:München',
   sections: [
     {
@@ -133,7 +133,7 @@ const guide: Guide = {
         {
           list: [
             '**Gehweg oder Fussgängerzone:** 15 €, ab 1. März 2027 25 €, mit Behinderung oder Gefährdung mehr.',
-            '**Zu zweit:** 5 € laut Verkehrsministerium, ab 1. März 2027 25 €.',
+            '**Zu zweit:** 10 €, ab 1. März 2027 25 €.',
             '**Rote Ampel:** 60 € und ein Punkt in Flensburg.',
             '**Handy in der Hand:** 100 € und ein Punkt; ab März 2027 neu geregelt, der Betrag ist noch nicht offiziell erläutert.',
             '**Alkohol:** ab 0,5 Promille 500 €, zwei Punkte und ein Monat Fahrverbot, auch fürs Auto; ab 1,1 Promille eine Straftat, der Führerschein ist dann in der Regel weg; unter 21 oder in der Probezeit 0,0 Promille.',

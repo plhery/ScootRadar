@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Düsseldorf: Anbieter, Preise, Sharingstationen und was an Karneval und zur Kirmes gilt',
   lede: 'Einen E-Scooter in Düsseldorf leihst du ab 18 und ohne Führerschein bei Bolt, Dott (früher TIER), Lime oder Voi. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 13. Oktober 2026) bei Voi 3 € und bei Dott 4,10 €, bei Lime und Bolt zeigt die App den Preis. In Altstadt, Carlstadt, Stadtmitte und auf der Kö beendest du die Fahrt nur an einer markierten Sharingstation, sonst zahlst du weiter. In Bussen und Bahnen der Rheinbahn sind E-Scooter seit dem 1. März 2024 verboten, auch zusammengeklappt.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   city: 'de:Düsseldorf',
   sections: [
     {
@@ -48,7 +48,7 @@ const guide: Guide = {
         '**Altstadt:** Grosse Teile sind Fussgängerzone. Wo das Schild steht, steigst du ab und schiebst, auch wenn die App dich fahren lässt: Dott hat laut seinem Datenfeed nirgends eine Fahrverbotszone. Langsamfahrzonen gibt es nicht: Ein für 2024 geplanter Versuch scheiterte laut CMD an rechtlichen Hürden.',
         '**Rheinuferpromenade:** Fahr nur, wo ein Radweg ausgeschildert ist, sonst schieb.',
         '**Rheinbrücken:** Über die Oberkasseler Brücke, die Rheinkniebrücke und die Theodor-Heuss-Brücke fährst du auf dem Radweg. Auf den Brücken selbst beginnst und beendest du keine Fahrt.',
-        '**Parks:** Im Hofgarten, im Volksgarten, im Südpark und im Nordpark darfst du keinen Scooter abstellen. Ein ausdrückliches Fahrverbot für Düsseldorfer Parks haben wir nicht gefunden.',
+        '**Parks:** Im Hofgarten, im Volksgarten, im Südpark und im Nordpark darfst du keinen Scooter abstellen. Die Strassenordnung der Stadt verbietet zudem, mit Kraftfahrzeugen, also auch E-Scootern, durch Grünanlagen zu fahren.',
         '**Stadtgrenze:** Mit Dott beendest du keine Fahrt in Neuss, Ratingen, Meerbusch oder Hilden: Die Nachbarstädte liegen ausserhalb seines Gebiets.',
       ],
     },
@@ -77,7 +77,7 @@ const guide: Guide = {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Parkverbotszone oder neben statt auf der Station. Am Rand einer Station kann auch das GPS danebenliegen: Schieb den Scooter ein Stück weiter auf die Fläche. Solange die Fahrt läuft, zahlst du weiter.',
         },
         'Ausserhalb der Zonen stellst du frei ab, aufrecht und ohne Geh- oder Radweg, Zebrastreifen, Haltestellen oder Eingänge zu versperren. Lime verlangt mindestens 2 m freien Gehweg, 15 m Abstand zu Haltestellen und ein Foto am Ende der Fahrt.',
-        'Für einen Scooter in einer Parkverbotszone berechnet Lime eine Strafgebühr, nennt aber keinen Betrag. Steht dir ein Scooter im Weg, melde ihn bei der Hotline, deren Nummer auf dem Scooter steht.',
+        'Für einen Scooter in einer Parkverbotszone berechnet Lime eine Strafgebühr, nennt aber keinen Betrag. Steht dir ein Scooter im Weg, melde ihn über scooter-melder.de oder bei der Hotline, deren Nummer auf dem Scooter steht.',
       ],
     },
     {
@@ -90,11 +90,11 @@ const guide: Guide = {
             head: ['Verstoss', 'Heute', 'Ab 1. März 2027'],
             rows: [
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
-              ['Zu zweit auf einem Scooter', '5 € (laut Verkehrsministerium)', '25 €'],
+              ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 €, 1 Punkt', 'unverändert'],
               ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt, Betrag noch offen'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'unverändert'],
-              ['Falsch abgestellt', 'behindernd: 20 € nach dem allgemeinen Bussgeldkatalog', 'auf Geh- oder Radweg: 55 €, mit Behinderung 70 €'],
+              ['Falsch abgestellt', 'behindernd 20 €, gefährdend 30 € (§ 1 StVO)', 'auf Geh- oder Radweg: 55 €, mit Behinderung 70 €'],
             ],
           },
         },
@@ -113,15 +113,15 @@ const guide: Guide = {
             'zum Kinder- und Jugendumzug (14. Februar) und zum Kö-Treiben (15. Februar) Martin-Luther-Platz, Berliner Allee (Zurheide II) und Graf-Adolf-Platz.',
           ],
         },
-        'Für den 11.11.2026 und für Karneval 2027 (Altweiber ist am 4. Februar) hatte CMD bis zum 13. Oktober noch nichts angekündigt.',
-        '**Rheinkirmes:** Auf den Oberkasseler Rheinwiesen darfst du sonst nicht abstellen. Zur Kirmes richtet CMD dort und im Viertel temporäre Stationen ein; 2026 waren es laut CMD zwölf, vom 14. bis 27. Juli, etwa an der Rheinallee und am Barbarossaplatz. 2025 zählte CMD in den zehn Kirmestagen 209 466 Sharing-Fahrten, am Freitag, dem 18. Juli, allein 28 204: so viele wie an keinem anderen Tag des Jahres. Die nächste Kirmes beginnt laut Düsseldorf Tourismus am 16. Juli 2027.',
+        'Für den 11.11.2026 und für Karneval 2027 (Altweiber ist am 4. Februar) hatte CMD bis zum 14. Oktober noch nichts angekündigt.',
+        '**Rheinkirmes:** Auf den Oberkasseler Rheinwiesen darfst du sonst nicht abstellen. Zur Kirmes richtet CMD dort und im Viertel temporäre Stationen ein; 2026 waren es laut CMD zwölf, vom 14. bis 27. Juli, etwa an der Rheinallee und am Barbarossaplatz. 2025 zählte CMD in den zehn Kirmestagen 209 466 Sharing-Fahrten, am Freitag, dem 18. Juli, allein 28 204: so viele wie an keinem anderen Tag des Jahres. Die nächste Rheinkirmes läuft laut Veranstalter vom 16. bis 25. Juli 2027.',
       ],
     },
     {
       heading: 'E-Scooter in Bus und Bahn: Rheinbahn, Flughafen, Düsselbike',
       blocks: [
         'Seit dem 1. März 2024 darfst du E-Scooter nicht mehr in Bussen, Strassenbahnen und U-Bahnen der **Rheinbahn** mitnehmen, auch nicht zusammengeklappt: «aus Brandschutzgründen», schreibt die Rheinbahn. Das Verbot gilt bis auf Weiteres; Pedelecs und Elektrorollstühle sind ausgenommen.',
-        'Leih-Scooter lassen sich nicht klappen und dürfen ohnehin nie mit: Fahrt vor der Haltestelle beenden, am Ziel einen neuen mieten. Für deinen eigenen Scooter in S-Bahn und Regionalzügen des VRR haben wir keine offizielle Regel gefunden.',
+        'Leih-Scooter lassen sich nicht klappen und dürfen ohnehin nie mit: Fahrt vor der Haltestelle beenden, am Ziel einen neuen mieten. Deinen eigenen Scooter nimmst du laut VRR-Tarif in S-Bahn und Regionalzug zusammengeklappt als Handgepäck mit, sonst wie ein Fahrrad; jedes Verkehrsunternehmen darf ihn aber ausschliessen.',
         '**Flughafen:** Am **DUSsharing hub**, laut Flughafen zwei Gehminuten vom Terminal neben dem Mietwagenzentrum am P7 (Zufahrt über die Towerstrasse), stehen E-Scooter von Lime, Bolt und Voi; weitere Abhol- und Abstellzonen gibt es in der Airport City und an P13 und P24. Mit Dott kannst du am Flughafen keine Fahrt beenden: Terminal und Fernbahnhof liegen nach unserer Auswertung ausserhalb seines Gebiets.',
         '**Düsselbike**, das Leihrad der Stadt, fährt seit dem 1. Juli 2026 mit rund 2500 Rädern. Du buchst in der App von Donkey Republic oder in redy, der App der Rheinbahn, und gibst das Rad nur an Sharingstationen oder Düsselbike-Stationen zurück.',
         {
@@ -144,7 +144,7 @@ const guide: Guide = {
       blocks: [
         'Seit 2022 brauchen die Anbieter eine Sondernutzungserlaubnis nach der Sondernutzungssatzung vom Dezember 2021. Im August 2021 fuhren fünf Anbieter mit 12 700 Scootern; heute gilt eine Obergrenze von 8400, davon 1800 in Altstadt, Carlstadt und Stadtmitte, wo nur Stationen erlaubt sind.',
         'Pro Scooter und Jahr zahlen die Anbieter 50 € in der Innenstadt und den Stadtteilen drumherum (Zonen A und B) und 30 € im Rest der Stadt (Zone C), so der Gebührentarif in der seit 1. Januar 2026 geltenden Fassung. Bis 2021 waren es überall 20 €.',
-        'Im Januar 2024 kündigte die Stadt ein Vergabeverfahren an, nach dem nur noch drei Anbieter bleiben sollten. Im Juli 2026 teilte sie mit, ein Vergabeverfahren für geteilte Mikromobilität laufe. Ergebnis und Zeitplan haben wir bis zum 13. Oktober 2026 nicht gefunden: Wie viele und welche Anbieter danach bleiben, ist offen.',
+        'Im Januar 2024 kündigte die Stadt an, nur noch drei Anbieter zuzulassen. Im Juni 2026 schrieb sie die Konzession europaweit aus: höchstens drei Anbieter, drei Jahre ab 1. November 2026. Wer den Zuschlag bekommt, hatte sie bis zum 14. Oktober 2026 nicht veröffentlicht.',
       ],
     },
     {

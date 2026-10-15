@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'Deelstep Antwerpen 2026: prijzen, dropzones en no-go zones',
   description: 'Deelstep Antwerpen: wat Voi, Lime en Bolt kosten, dropzones binnen de Leien, 8 km/u op de Meir, no-go zones en de Belgische regels voor leeftijd en helm.',
   headline: 'Deelstep Antwerpen: Voi, Lime en Bolt, wat een rit kost, dropzones binnen de Leien en waar je step stilvalt',
-  lede: 'Een deelstep in Antwerpen huur je bij Voi, Lime of Bolt, de drie aanbieders met een vergunning van de stad. Voi vraagt € 0,99 om te ontgrendelen en € 0,25 per minuut, Lime € 0,99 en € 0,27 per minuut, en Bolt rekent per kilometer, ongeveer € 1,13 (tarieven op 13 oktober 2026). Binnen de Leien beëindig je je rit alleen in een dropzone, in het station Antwerpen-Centraal valt de step stil, en op de Meir rijdt hij overdag hooguit 8 km/u. De Belgische wet laat je vanaf 16 jaar steppen: bij Voi kan dat, bij Lime en Bolt moet je 18 zijn.',
+  lede: 'Een deelstep in Antwerpen huur je bij Voi, Lime of Bolt, de drie aanbieders met een vergunning van de stad. Voi vraagt € 0,99 om te ontgrendelen en € 0,25 per minuut, Lime € 0,99 en € 0,27 per minuut, en Bolt € 1,13 per kilometer (tarieven op 13 oktober 2026). Binnen de Leien beëindig je je rit alleen in een dropzone, in het station Antwerpen-Centraal valt de step stil, en op de Meir rijdt hij overdag hooguit 8 km/u. De Belgische wet laat je vanaf 16 jaar steppen: bij Voi kan dat, bij Lime en Bolt moet je 18 zijn.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   city: 'be:Antwerpen',
   sections: [
     {
@@ -32,7 +32,7 @@ const guide: Guide = {
             rows: [
               ['Voi', '€ 0,99', '€ 0,25 per minuut', '10 minuten: € 3,49; 20 minuten: € 5,99', 'Ja'],
               ['Lime', '€ 0,99', '€ 0,27 per minuut', '10 minuten: € 3,69; 20 minuten: € 6,39', 'Nee: kijk in de app'],
-              ['Bolt', '€ 0,99 volgens de stad; kijk in de app', 'Ongeveer € 1,13 per km', '2 km: € 3,25; 3 km: € 4,38', 'Nee: kijk in de app'],
+              ['Bolt', '€ 0,99 volgens de stad; kijk in de app', '€ 1,13 per km', '2 km: € 3,25; 3 km: € 4,38', 'Nee: kijk in de app'],
             ],
           },
         },
@@ -111,7 +111,7 @@ const guide: Guide = {
           list: [
             '**Sint-Annatunnel**, de voetgangerstunnel uit 1933 tussen de Sint-Jansvliet en het Frederik van Eedenplein: dag en nacht open, met roltrappen en liften. Je mag erdoor, maar **met de step aan de hand**.',
             '**Kennedyfietstunnel**, naast de autotunnel, met ingangen aan de D’Herbouvillekaai en aan de Beatrijslaan op Linkeroever: hier mag je **met de step rijden**.',
-            '**Sint-Annaveer**: gratis, sinds 15 september 2025 dag en nacht, van het Steenplein naar Linkeroever, voor voetgangers en fietsers. Of je er een deelstep mee aan boord mag nemen, zegt de stad niet: reken er niet op.',
+            '**Sint-Annaveer**: gratis, sinds 15 september 2025 dag en nacht, van het Steenplein naar Linkeroever, voor voetgangers en fietsers. Of een deelstep mee aan boord mag, zegt uitbater MDK niet: reken er niet op.',
           ],
         },
         'De app Slim over de Schelde toont of de liften, de roltrappen en het veer werken. Op Linkeroever kan je verder steppen; de app van je aanbieder toont tot waar.',
@@ -122,7 +122,7 @@ const guide: Guide = {
       blocks: [
         'Een deelstep mag nooit mee op de tram of de bus van **De Lijn**. Alleen een opvouwbare step mag gratis mee, als handbagage: volledig opgeplooid voor je opstapt, en de hele rit lang.',
         'Antwerpen is vlak, maar rond de Grote Markt rijd je over kasseien, en in veel straten liggen tramsporen. Steek die zo haaks mogelijk over.',
-        'Elk jaar in oktober loopt de **Antwerp Marathon**, in 2026 op zondag 18 oktober. Het parcours door het centrum is dan van 8 tot 18 uur verkeersvrij, en fietsers, dus ook steppers, mogen er niet op: stap af en ga te voet verder. In 2026 liggen start en aankomst op het Eilandje, en de stad raadt deelfietsen en deelsteps aan om er te geraken.',
+        'Sinds 2023 loopt de **Antwerp Marathon** elk jaar in oktober, in 2026 op zondag 18 oktober. Het parcours door het centrum is dan van 8 tot 18 uur verkeersvrij, en fietsers, dus ook steppers, mogen er niet op: stap af en ga te voet verder. In 2026 liggen start en aankomst op het Eilandje, en de stad raadt deelfietsen en deelsteps aan om er te geraken.',
       ],
     },
     {

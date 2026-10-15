@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Köln: Anbieter, Preise, Parkzonen und was an Karneval gilt',
   lede: 'Einen E-Scooter in Köln leihst du ab 18 und ohne Führerschein bei Bolt, Dott, Lime, RideMovi, Ryde oder Voi. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 13. Oktober 2026) bei Dott 4 € und bei Voi 3 €, bei den anderen zeigt die App den Preis. In der Altstadt beendest du die Fahrt nur an Stationen, am Rheinufer, auf Brücken und in Parks gar nicht, und an Karneval sperrt die Stadt Ausleihe und Rückgabe in den Feierzonen. In Bahnen und Bussen der KVB sind E-Scooter verboten.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   city: 'de:Köln',
   sections: [
     {
@@ -51,7 +51,7 @@ const guide: Guide = {
             head: ['Verstoss', 'Heute', 'Ab 1. März 2027'],
             rows: [
               ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, mit Behinderung oder Gefährdung mehr', '25 €, mit Behinderung oder Gefährdung mehr'],
-              ['Zu zweit auf einem Scooter', '5 € (laut Verkehrsministerium)', '25 €'],
+              ['Zu zweit auf einem Scooter', '10 €', '25 €'],
               ['Rote Ampel', '60 €, 1 Punkt', 'unverändert'],
               ['Handy in der Hand', '100 €, 1 Punkt', 'neu geregelt, Betrag noch offen'],
               ['Ab 0,5 Promille', '500 €, 2 Punkte, 1 Monat Fahrverbot, auch fürs Auto', 'unverändert'],

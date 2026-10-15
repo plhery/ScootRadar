@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trottinette électrique à Lille : pas de libre-service en ville, des Lime dans la métropole, casque et prix en 2026',
   lede: 'Pour louer une trottinette électrique à Lille, il faut sortir de la ville, qui n’autorise en libre-service que les vélos électriques : dans Lille même, prenez un V’Lille ou un vélo Lime. **Lime**, seul opérateur, a environ un millier de trottinettes dans le reste de la métropole, surtout à Roubaix, Villeneuve-d’Ascq, Wattrelos, Hem et Lambersart. Comptez 1 € pour déverrouiller, puis 0,18 à 0,22 € la minute selon les pages des communes ; l’app affiche le prix exact. La location se termine dans une station, et le casque est obligatoire dans tout le Nord depuis le 1er septembre 2026.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-14',
   city: 'fr:Lille Métropole',
   sections: [
     {
@@ -52,16 +52,16 @@ const guide: Guide = {
             '**Tourcoing** : huit trottinettes seulement, aucune à moins de 500 m de la Grand-Place. N’y comptez pas.',
           ],
         },
-        '**Et en 2027 ?** L’autorisation de 2023 valait trois ans au plus ; nous ne savons pas sur quelle base Lime roule depuis l’été 2026. Selon la presse, la MEL veut ensuite confier le service à **un seul opérateur** dès le premier trimestre 2027. La délibération était à l’ordre du jour du conseil métropolitain du 9 octobre 2026, mais son adoption n’était pas confirmée au 13 octobre.',
+        '**Et en 2027 ?** Lime roule avec des autorisations d’occuper la voirie délivrées par chaque maire depuis 2023, pour un an renouvelable deux fois ; leur échéance exacte n’est pas publiée. La MEL a soumis à son conseil du 9 octobre 2026 un nouvel appel : **un seul opérateur**, pour trois ans renouvelables deux fois un an, dès le premier trimestre 2027. Au 14 octobre, la MEL n’avait pas publié le vote.',
       ],
     },
     {
       heading: 'Tarif Lime à Lille : minute, LimePass et LimePrime',
       blocks: [
-        'Lime ne publie pas son tarif lillois dans ses données, donc notre carte ne l’estime pas. Les pages des communes, non datées, donnent **1 € pour déverrouiller**, puis de **0,18 €** (Armentières) à **0,22 € la minute** (Hem). Seul compte le prix affiché dans l’app avant le départ.',
+        'Lime ne publie son tarif lillois ni dans ses données, donc notre carte ne l’estime pas, ni sur son site : seule l’app l’affiche, avant le départ. Les pages des communes, non datées, donnent **1 € pour déverrouiller**, puis de **0,18 €** (Armentières) à **0,22 € la minute** (Hem).',
         {
           table: {
-            caption: 'Prix indicatifs d’une trottinette Lime (pages des communes ; pass et LimePrime selon la presse)',
+            caption: 'Prix indicatifs d’une trottinette Lime (pages des communes ; LimePass selon la presse)',
             head: ['Formule', 'Prix'],
             rows: [
               ['Déverrouillage, puis prix à la minute', '1 €, puis 0,18 à 0,22 €'],
@@ -79,23 +79,23 @@ const guide: Guide = {
       heading: 'Stations Lime : où garer sa trottinette dans la MEL',
       blocks: [
         'Pas de stationnement libre : selon la MEL, vous devez **impérativement** garer la trottinette dans une station, et vous payez tant qu’elle n’y est pas correctement garée. Il en existe **près de 1 400** ; l’app les montre, notre carte non.',
-        'Vous roulez vers Lille ? Avant de partir, trouvez dans l’app une station où rendre la trottinette : nous n’avons pas pu vérifier que c’est possible en ville.',
+        'Vous roulez vers Lille ? Selon les données ouvertes de la MEL (septembre 2026), les stations de la ville n’acceptent que les vélos, sauf quatre : deux à Hellemmes, deux à Lomme près du métro Saint-Philibert.',
         '**Mal se garer peut coûter cher.** La MEL a prévu dès 2023 des sanctions de l’opérateur, jusqu’au blocage du compte à la troisième infraction, et Lime vous refacture amendes et frais de fourrière. Côté police, le stationnement gênant coûte 35 €, fourrière possible. Une Lime mal garée ? Écrivez à signalement-MEL@li.me.',
       ],
     },
     {
       heading: 'Casque obligatoire dans le Nord : âge, vitesse et amendes',
       blocks: [
-        '**Le casque.** Depuis le **1er septembre 2026**, un arrêté du préfet du Nord impose un casque aux normes et attaché à tout conducteur de trottinette électrique ou d’engin semblable, **trottinettes Lime comprises**, selon la presse et la Ville de Lille. Les vélos électriques ne sont pas concernés. Selon le SAMU du Nord, la réanimation neurochirurgicale du CHU de Lille reçoit « au moins un patient par semaine » après un accident de trottinette.',
-        'L’amende annoncée varie : 135 € selon la Ville de Lille, 35 € selon La Voix du Nord ; nous n’avons pas pu lire l’arrêté.',
-        { note: 'Selon la MEL, les trottinettes Lime ont un casque intégré, mais nous n’avons pas pu vérifier qu’il y en a un sur chacune : prenez le vôtre.' },
+        '**Le casque.** Depuis le **1er septembre 2026**, un arrêté du préfet du Nord du 30 juillet 2026 impose un casque aux normes et attaché à tout conducteur de trottinette électrique ou d’engin semblable, **trottinettes Lime comprises**, de jour comme de nuit, pistes cyclables comprises. Les vélos électriques ne sont pas concernés. Selon le SAMU du Nord, la réanimation neurochirurgicale du CHU de Lille reçoit « au moins un patient par semaine » après un accident de trottinette.',
+        'L’arrêté en fait une contravention de 2e classe : **35 €**, jusqu’à 150 € devant le juge, et non 135 € comme l’écrit la Ville de Lille.',
+        { note: 'Selon la page de la MEL, non datée, les Lime ont un casque intégré ; Lime n’en dit rien et nous n’avons pas pu le vérifier : prenez le vôtre.' },
         '**L’âge et la vitesse.** Selon Lime, ses trottinettes sont réservées aux majeurs ; la page de la MEL indique 16 ans. L’app fait foi. Une trottinette personnelle, elle, se conduit dès 14 ans. Selon la MEL, les Lime sont bridées à 20 km/h, et à 6 km/h dans certaines zones très fréquentées ; l’app affiche les zones lentes et interdites.',
         {
           table: {
             caption: 'Les principales amendes en trottinette autour de Lille (octobre 2026)',
             head: ['Infraction', 'Amende'],
             rows: [
-              ['Sans casque, dans tout le Nord', '135 € selon la Ville de Lille, 35 € selon la presse'],
+              ['Sans casque, dans tout le Nord', '35 €'],
               ['Rouler sur le trottoir', '135 €'],
               ['Rouler dans une rue piétonne de Lille aux heures de pied à terre', '135 €'],
               ['À deux sur la trottinette', '135 €'],
@@ -111,12 +111,12 @@ const guide: Guide = {
     {
       heading: 'Rues piétonnes de Lille : pied à terre et Grand’Place au pas',
       blocks: [
-        'Ces règles valent pour votre trottinette personnelle, ou une Lime venue d’une commune voisine. Depuis le 9 octobre 2023, vélos et trottinettes doivent **mettre pied à terre** (horaires de la Ville, octobre 2026) :',
+        'Ces règles valent pour votre trottinette personnelle, ou une Lime venue d’une commune voisine. Selon les arrêtés municipaux du 22 janvier et du 4 septembre 2026, vélos et trottinettes doivent **mettre pied à terre** :',
         {
           list: [
-            '**Tous les jours de 11 h à 19 h** dans les aires piétonnes permanentes : rue de Béthune, rue Neuve, place Rihour, place Richebé…',
-            '**Le samedi de 11 h à 19 h** dans le Vieux-Lille et autour : rue Esquermoise, rue de la Monnaie, place Louise-de-Bettignies, rue des Chats-Bossus…',
-            '**La Grand’Place**, piétonne depuis le 12 janvier 2026 : on peut la traverser « en roulant au pas », les piétons restant prioritaires, sauf le samedi de 11 h à 19 h, où l’on descend.',
+            '**Tous les jours de 11 h à 20 h** autour des rues de Béthune et Neuve : place Richebé, place Rihour, rue des Tanneurs, rue Esquermoise jusqu’à la rue des Poissonceaux…',
+            '**Le samedi de 11 h à 19 h** dans le Vieux-Lille : rue de la Monnaie, place Louise-de-Bettignies, rue des Chats-Bossus, haut de la rue Esquermoise…',
+            '**La Grand’Place**, piétonne depuis le 12 janvier 2026, n’en fait pas partie : on la traverse au pas, les piétons restant prioritaires.',
           ],
         },
         'Sur les pavés du Vieux-Lille, glissants sous la pluie, ralentissez.',
@@ -130,7 +130,7 @@ const guide: Guide = {
             '**Métro, tram et bus.** Ilévia n’admet les trottinettes que « repliées dès l’entrée sur le réseau ». Une Lime ne se plie pas : rendez-la dans une station près de l’arrêt.',
             '**Lille-Flandres et Lille-Europe.** Aucune trottinette à la descente du TGV ou de l’Eurostar : le 13 octobre 2026, la plus proche était à 1,8 km. Prenez un V’Lille, à moins de 100 m de chacune des deux gares, ou un vélo Lime : ce soir-là, 85 attendaient à moins de 500 m de Lille-Flandres.',
             '**Aéroport de Lille-Lesquin.** Aucune trottinette devant l’aérogare : les plus proches étaient à 1,2 km environ. La navette rejoint les gares en une vingtaine de minutes, pour 7,99 € en ligne ou 9 € à bord ; le bus Ilévia 68 va jusqu’au métro 4 Cantons-Stade Pierre-Mauroy.',
-            '**Marché de Noël.** Il s’installe place Rihour du 18 novembre au 30 décembre 2026 : on y met pied à terre tous les jours de 11 h à 19 h.',
+            '**Marché de Noël.** Il s’installe place Rihour du 18 novembre au 30 décembre 2026 : on y met pied à terre tous les jours de 11 h à 20 h.',
           ],
         },
       ],
@@ -173,7 +173,7 @@ const guide: Guide = {
     },
     {
       question: 'Le casque est-il obligatoire en trottinette dans le Nord ?',
-      answer: 'Oui, depuis le 1er septembre 2026, pour tout conducteur de trottinette électrique, location comprise, selon la presse et la Ville de Lille. L’amende annoncée varie : 135 € selon la Ville de Lille, 35 € selon La Voix du Nord. Les vélos électriques ne sont pas concernés.',
+      answer: 'Oui : un arrêté du préfet du Nord l’impose depuis le 1er septembre 2026 à tout conducteur de trottinette électrique, location comprise, de jour comme de nuit. L’amende est de 35 €, jusqu’à 150 € devant le juge. Les vélos électriques ne sont pas concernés.',
     },
     {
       question: 'Peut-on prendre une trottinette dans le métro à Lille ?',
@@ -191,12 +191,12 @@ const guide: Guide = {
     { title: 'MEL : déploiement des trottinettes et vélos électriques en juillet 2023 (30 juin 2023)', url: 'https://www.lillemetropole.fr/communique-de-presse/en-juillet-deploiement-operationnel-des-trottinettes-et-velos-electriques-dans' },
     { title: 'Ville de Hem : tarifs des vélos et trottinettes en libre-service', url: 'https://www.ville-hem.fr/cadre-de-vie/vlille/' },
     { title: 'Ville d’Armentières : tarifs et abonnements', url: 'https://www.ville-armentieres.fr/tarifs-et-abonnements' },
-    { title: 'Ville de Lille : « Cyclistes, pied à terre »', url: 'https://www.lille.fr/Actualites/Cyclistes-pied-a-terre' },
-    { title: 'Ville de Lille : la Grand’Place piétonne', url: 'https://www.lille.fr/Actualites/Grand-Place-pietonne-info-commercants' },
+    { title: 'Ville de Lille : arrêté n° 17822 du 22 janvier 2026 sur le pied à terre (bulletin officiel du 22 janvier 2026, p. 114-117)', url: 'https://www.lille.fr/content/download/391481/3928997/file/BO+VDL+du+22+janvier+2026.pdf' },
+    { title: 'Ville de Lille : arrêté n° 1412 du 4 septembre 2026 instituant les aires piétonnes (bulletin officiel du 4 septembre 2026, p. 4-9)', url: 'https://www.lille.fr/content/download/420156/4099680/file/BO+VDL+du+04+septembre+2026.pdf' },
     { title: 'Ville de Lille : « À pied, à vélo : plus de sécurité » (2026)', url: 'https://www.lille.fr/Actualites/A-pied-a-velo-plus-de-securite' },
     { title: 'La Voix du Nord : le casque sera obligatoire pour tous les usagers de trottinettes (8 juillet 2026)', url: 'https://www.lavoixdunord.fr/1719726/article/2026-07-08/trottinettes-electriques-le-port-du-casque-sera-obligatoire-pour-tous-les' },
-    { title: 'La Voix du Nord : casque obligatoire au 1er septembre, quels véhicules sont visés (26 août 2026)', url: 'https://www.lavoixdunord.fr/1731867/article/2026-08-26/casque-obligatoire-au-1er-septembre-outre-les-trottinettes-quels-vehicules-sont' },
-    { title: 'La Tribune : la MEL veut pérenniser trottinettes et vélos en libre-service (8 octobre 2026)', url: 'https://www.latribune.fr/article/departements/nord/36649662139535/la-metropole-de-lille-souhaite-perenniser-le-service-de-trottinettes-et-velos-en-libre-service' },
+    { title: 'Préfet du Nord : arrêté du 30 juillet 2026 portant obligation du port du casque pour tout conducteur d’EDPM (copie publiée par la commune de Linselles)', url: 'https://www.linselles.fr/wp-content/uploads/2026/08/Arrete-prefectoral-portant-obligation-du-port-du-casque-pour-tout-conducteur-dengin-de-deplacement-personnel-motorise-EDPM-dans-le-departement-du-Nord.pdf' },
+    { title: 'MEL : note de synthèse du conseil du 9 octobre 2026 (délibération 26-C-0137, micromobilités)', url: 'https://www.lillemetropole.fr/sites/default/files/2026-10/C0910_NOTE_SYNTHESE.pdf' },
     { title: 'actu.fr : Lime annonce 1 000 vélos et trottinettes électriques de plus dans la métropole (30 septembre 2025)', url: 'https://actu.fr/hauts-de-france/lille_59350/metropole-de-lille-lime-annonce-larrivee-de-1000-velos-et-trottinettes-electriques-supplementaires_63234891.html' },
     { title: 'Ilévia : vélos et trottinettes à bord du métro, du tram et du bus', url: 'https://www.ilevia.fr/faq/pendant-mon-voyage' },
     { title: 'Ilévia : V’Lille, offres et tarifs', url: 'https://www.ilevia.fr/boutique/v-lille' },
