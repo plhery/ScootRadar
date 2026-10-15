@@ -289,15 +289,22 @@ export const HOST_HEADERS: Record<string, Record<string, string>> = {
   'api.entur.io': { 'ET-Client-Name': 'scootradar-map' },
 };
 
+// Lime's servers sometimes take 12 to 26 seconds before sending a big city's
+// vehicles (Chicago, Seattle: about 3 MB), and answer in about a second otherwise.
+export const HOST_TIMEOUTS_MS: Record<string, number> = {
+  'data.lime.bike': 40_000,
+};
+
 export async function fetchJson<T>(
   url: string,
   options: { authenticated?: boolean; revalidate: number; validate?: (value: unknown) => void }
 ): Promise<CachedJson<T>> {
+  const host = new URL(url).hostname;
   const headers = {
     ...(options.authenticated
       ? sharedMobilityHeaders()
       : { Accept: 'application/json', 'User-Agent': 'scootradar/2.0 (scootradar.com)' }),
-    ...HOST_HEADERS[new URL(url).hostname],
+    ...HOST_HEADERS[host],
   };
 
   return upstreamJsonCache.fetch<T>(url, {
@@ -307,7 +314,7 @@ export async function fetchJson<T>(
     staleIfErrorSeconds: options.revalidate === STATUS_REVALIDATE_SECONDS
       ? STATUS_STALE_IF_ERROR_SECONDS
       : METADATA_STALE_IF_ERROR_SECONDS,
-    timeoutMs: FETCH_TIMEOUT_MS,
+    timeoutMs: HOST_TIMEOUTS_MS[host] ?? FETCH_TIMEOUT_MS,
   });
 }
 

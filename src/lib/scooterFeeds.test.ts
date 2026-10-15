@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { RIDE_DURATIONS } from '@/lib/ridePrice';
 import { skippedSources } from '@/lib/scooterSources';
 import {
+  fetchJson,
   fetchScooters,
   ScooterFeedsUnavailableError,
   vehiclePricing,
@@ -1121,5 +1122,15 @@ describe('feed validation and tariff regressions', () => {
     }));
     const result = await fetchScooters({ ...query, providers: new Set(['lime']) });
     expect(result.vehicles[0].pricing?.minute_fee_minor_units).toBe(42);
+  });
+});
+
+describe('fetchJson timeouts', () => {
+  it('waits longer for Lime, whose big cities can take 26 seconds to answer', async () => {
+    const fetchSpy = vi.spyOn(upstreamJsonCache, 'fetch').mockResolvedValue({ data: {}, stale: false, fetchedAt: 0 });
+    await fetchJson('https://data.lime.bike/api/partners/v2/gbfs/chicago/free_bike_status', { revalidate: 30 });
+    await fetchJson('https://mds.bird.co/gbfs/v2/public/chicago/free_bike_status.json', { revalidate: 30 });
+    expect(fetchSpy.mock.calls.map(([, options]) => options.timeoutMs)).toEqual([40_000, 15_000]);
+    fetchSpy.mockRestore();
   });
 });
