@@ -686,7 +686,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             return String(
                 format: String(localized: "≈%1$lld min walk from %2$@ · %3$@"),
                 Int64(minutes),
-                searchedDestination.title,
+                searchedDestination.title.isolated,
                 distance
             )
         }
@@ -702,13 +702,13 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             String(
                 format: String(localized: "≈%1$lld min walk from %2$@"),
                 Int64(minutes),
-                searchedDestination.title
+                searchedDestination.title.isolated
             )
         } else {
             String(format: String(localized: "≈%lld min walk"), Int64(minutes))
         }
         guard !parking.name.isEmpty else { return walk }
-        return String(format: String(localized: "%1$@ · %2$@"), parking.name, walk)
+        return String(format: String(localized: "%1$@ · %2$@"), parking.name.isolated, walk)
     }
 
     func setRideEstimateMinutes(_ minutes: Int) {

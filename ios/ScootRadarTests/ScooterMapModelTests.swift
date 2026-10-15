@@ -1874,6 +1874,36 @@ extension ScooterMapModelTests {
         )
     }
 
+    func testNamesWrittenRightToLeftAreSetApartFromTheWalkAroundThem() async throws {
+        let bay = ScooterParking(id: "lime:bay", provider: "lime", name: "נחלת בנימין 105",
+            latitude: 47.3769, longitude: 8.5417, mandatory: false)
+        let parked = scooter(id: "one", provider: "lime")
+        let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [parked], parking: [bay])))
+        model.updateViewport(zurichRegion, zoom: 16)
+        let loaded = await waitUntil { model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+
+        model.searchedDestination = MapDestination(title: "שדרות רוטשילד 22", point: GeoPoint(latitude: 47.3779, longitude: 8.5417))
+        let distance = try XCTUnwrap(model.formattedDistance(for: parked))
+        let place = "\u{2068}שדרות רוטשילד 22\u{2069}"
+        XCTAssertEqual(
+            model.walkingSummary(for: parked),
+            String(format: String(localized: "≈%1$lld min walk from %2$@ · %3$@"), Int64(2), place, distance)
+        )
+        XCTAssertEqual(
+            model.parkingSubtitle(for: bay),
+            String(
+                format: String(localized: "%1$@ · %2$@"),
+                "\u{2068}נחלת בנימין 105\u{2069}",
+                String(format: String(localized: "≈%1$lld min walk from %2$@"), Int64(2), place)
+            )
+        )
+        // Names written left to right are left as they are.
+        XCTAssertEqual("Zürich HB".isolated, "Zürich HB")
+        XCTAssertEqual("Θεσσαλονίκη".isolated, "Θεσσαλονίκη")
+        XCTAssertEqual("دبي مول".isolated, "\u{2068}دبي مول\u{2069}")
+    }
+
     func testTheCardHeaderCentresTheScooterWithoutChangingTheZoom() async throws {
         let parked = scooter(id: "one", provider: "lime")
         let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [parked])))

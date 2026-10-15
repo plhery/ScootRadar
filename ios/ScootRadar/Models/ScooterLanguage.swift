@@ -120,3 +120,21 @@ extension String {
         self = language.written(String(localized: key, bundle: language.strings, locale: locale), in: locale.region)
     }
 }
+
+extension String {
+    /// The string set apart from the sentence it is put in, where it has letters written right to
+    /// left: a Hebrew name followed by " · 4 min walk" would otherwise draw the dot and the number
+    /// into its own run. Its direction is that of its first letter. A string written left to right
+    /// is left as it is; the app is, in every language it has.
+    var isolated: String {
+        unicodeScalars.contains(where: Self.isRightToLeft) ? "\u{2068}\(self)\u{2069}" : self
+    }
+
+    /// A letter of Hebrew, Arabic, Syriac, Thaana or N'Ko, or one of their presentation forms.
+    private static func isRightToLeft(_ scalar: Unicode.Scalar) -> Bool {
+        switch scalar.value {
+        case 0x0590...0x08FF, 0xFB1D...0xFDFF, 0xFE70...0xFEFC: true
+        default: false
+        }
+    }
+}

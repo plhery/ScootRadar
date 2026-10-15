@@ -620,7 +620,7 @@ struct ScooterCardContent: Equatable, Sendable {
                     kind: .walk,
                     value: "\(ScooterMapLook.walkingMinutes(metres: metres))",
                     unit: String(localized: "min"),
-                    label: placeTitle.map { String(format: String(localized: "from %@"), $0) }
+                    label: placeTitle.map { String(format: String(localized: "from %@"), $0.isolated) }
                         ?? String(localized: "on foot")
                 ),
                 ScooterCardFigure(kind: .distance, value: parts.value, unit: parts.unit, label: String(localized: "away"))

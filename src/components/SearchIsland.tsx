@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef } from 'react';
 import { flushSync } from 'react-dom';
 import AddressSearch from './AddressSearch';
 import Icon from './Icon';
+import { isolated } from '@/lib/bidi';
 import type { CoveredCity } from '@/lib/coveredCities';
 import { useI18n } from '@/lib/i18n';
 import { selectionFeedback } from '@/lib/feedback';
@@ -146,7 +147,7 @@ export default function SearchIsland({
               onClick={() => setExpanded(true)}
               aria-label={
                 place
-                  ? placeHasData ? t('bar.aria.place', { name: place.title }) : `${place.title}. ${placeLine}`
+                  ? placeHasData ? t('bar.aria.place', { name: place.title }) : `${isolated(place.title)}. ${placeLine}`
                   : undefined
               }
               aria-expanded={false}
@@ -155,7 +156,7 @@ export default function SearchIsland({
                 <>
                   <span className="place-tile"><Icon name="pin" size={18} /></span>
                   <span className="bar-copy">
-                    <strong>{place.title}</strong>
+                    <strong dir="auto">{place.title}</strong>
                     <span>{placeLine}</span>
                   </span>
                 </>

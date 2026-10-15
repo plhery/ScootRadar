@@ -1722,10 +1722,10 @@ enum ScooterSearchBarState: Equatable, Sendable {
     var accessibilityLabel: String {
         switch self {
         case let .place(destination) where destination.isCovered:
-            String(format: String(localized: "Showing scooters near %@. Search another place."), destination.title)
+            String(format: String(localized: "Showing scooters near %@. Search another place."), destination.title.isolated)
         case let .place(destination):
             // No scooters to announce: the place, then the same neutral line as on screen.
-            "\(destination.title). \(String(localized: "Tap to search a city or address"))"
+            "\(destination.title.isolated). \(String(localized: "Tap to search a city or address"))"
         case .empty, .locating:
             title
         }

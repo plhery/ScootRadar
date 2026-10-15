@@ -1299,6 +1299,13 @@ svg {
 .place-row-location .place-title {
   color: var(--blue-ink);
 }
+/* A name in Hebrew or Arabic reads right to left, at the left of the line as the
+   rest of the app; cut short at its own end. */
+.place-title[dir='auto'],
+.place-subtitle[dir='auto'],
+.bar-copy strong[dir='auto'] {
+  text-align: left;
+}
 /* Neutral: no operator shares scooter data at this place. */
 .place-tag {
   flex-shrink: 0;

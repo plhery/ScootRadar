@@ -48,7 +48,7 @@ export default function ParkingCard({ selection, onClose, walk: cardWalk }: Park
           <h2>{t('bay.title', { name })}</h2>
           {(place || walkLine) && (
             <p>
-              {place}
+              {place && <span dir="auto">{place}</span>}
               {place && walkLine && ' · '}
               {walkLine && <span className="bay-walk">{walkLine}</span>}
             </p>

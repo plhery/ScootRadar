@@ -1,6 +1,7 @@
 'use client';
 
 import { track } from '@/lib/analytics';
+import { isolated } from '@/lib/bidi';
 
 import { useEffect, useId, useRef, useState, type ButtonHTMLAttributes } from 'react';
 import type { CoveredCity } from '@/lib/coveredCities';
@@ -65,7 +66,7 @@ function PlaceRow({
     <button
       type="button"
       className="place-row"
-      aria-label={[place.title, place.subtitle, noData && t('find.noData')].filter(Boolean).join(', ')}
+      aria-label={[isolated(place.title), place.subtitle && isolated(place.subtitle), noData && t('find.noData')].filter(Boolean).join(', ')}
       {...button}
     >
       {/* Blue for a place with scooter data; grey for one without and for a recent place. */}
@@ -73,8 +74,9 @@ function PlaceRow({
         <Icon name={recent ? 'recent' : 'pin'} size={18} />
       </span>
       <span className="place-copy">
-        <span className="place-title">{place.title}</span>
-        {place.subtitle && <span className="place-subtitle">{place.subtitle}</span>}
+        {/* A name in Hebrew or Arabic reads right to left, at the left of the line all the same. */}
+        <span className="place-title" dir="auto">{place.title}</span>
+        {place.subtitle && <span className="place-subtitle" dir="auto">{place.subtitle}</span>}
       </span>
       {noData && <span className="place-tag">{t('find.noData')}</span>}
     </button>
@@ -303,7 +305,7 @@ export default function AddressSearch({ recentPlaces, nearbyCities, near = null,
                       className="chip"
                       onClick={() => choose(placeForCity(city, locale, region))}
                     >
-                      {city.city}
+                      <span dir="auto">{city.city}</span>
                     </button>
                   ))}
                 </div>

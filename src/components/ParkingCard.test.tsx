@@ -47,6 +47,14 @@ describe('ParkingCard', () => {
     expect(where()).toHaveTextContent(/^Rue Faidherbe · ≈4 min walk from Lille Flandres$/);
   });
 
+  it('keeps a name in Hebrew or Arabic apart from the walk after it, which reads left to right', () => {
+    renderCard({ walk: { distanceM: 320, place: 'שדרות רוטשילד 22' } }, { name: 'נחלת בנימין 105' });
+
+    const name = where()!.querySelector('[dir="auto"]');
+    expect(name).toHaveTextContent(/^נחלת בנימין 105$/);
+    expect(where()!.querySelector('.bay-walk')).toHaveTextContent(/^≈4 min walk from \u2068שדרות רוטשילד 22\u2069$/);
+  });
+
   it('shows the walk alone for a bay without a name', () => {
     renderCard({}, { name: '' });
 

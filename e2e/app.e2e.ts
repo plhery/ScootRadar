@@ -2237,6 +2237,54 @@ test('parking bays appear at street zoom, open one selection at a time and follo
   await expect(marker).toHaveCount(0);
 });
 
+test('names in Hebrew read right to left in the English app, at the left of their lines and apart from what follows them', async ({ page }, testInfo) => {
+  const rothschild = { lat: 45.7505, lng: 4.8505, display_name: 'שדרות רוטשילד 22, 6688218 תל אביב-יפו',
+    title: 'שדרות רוטשילד 22', subtitle: '6688218 תל אביב-יפו', covered: true };
+  await page.route('**/api/geocode', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify([rothschild]) }));
+  await page.route('**/api/scooters?**', async route => {
+    const zoom = Number(new URL(route.request().url()).searchParams.get('zoom'));
+    await route.fulfill({ contentType: 'application/json', body: JSON.stringify({
+      ...scooterResponse, clusters: [], vehicles: [], providers: { dott: 0 },
+      parking: [{ id: 'dott:nahalat', provider: 'dott', name: 'נחלת בנימין 105', lat: 45.75, lng: 4.85, mandatory: false }],
+      meta: { ...scooterResponse.meta, mode: 'vehicles', totalVehicles: 0, zoom },
+    }) });
+  });
+  await page.goto('/map?origin=45.75,4.85');
+  await expect(page.locator('.leaflet-container')).toHaveAttribute('data-zoom', '16');
+  /** Its direction, and how far its text starts from the left of its box. */
+  const layout = (selector: string) => page.locator(selector).first().evaluate(element => {
+    const range = document.createRange();
+    range.selectNodeContents(element);
+    return { direction: getComputedStyle(element).direction,
+      indent: Math.abs(Math.round(range.getBoundingClientRect().left - element.getBoundingClientRect().left)) };
+  });
+
+  await page.getByRole('button', { name: 'Search city or address' }).click();
+  await page.getByRole('combobox').fill('רוטשילד');
+  const option = page.getByRole('listbox', { name: 'Suggestions' }).getByRole('option');
+  await expect(option).toHaveText('שדרות רוטשילד 226688218 תל אביב-יפו');
+  expect(await layout('.place-row .place-title')).toEqual({ direction: 'rtl', indent: 0 });
+  expect(await layout('.place-row .place-subtitle')).toEqual({ direction: 'rtl', indent: 0 });
+  const searchShot = testInfo.outputPath('hebrew-place-in-the-search.png');
+  await page.locator('.search-island').screenshot({ path: searchShot });
+  await testInfo.attach('hebrew place in the search', { path: searchShot, contentType: 'image/png' });
+  await option.click();
+  expect(await layout('.bar-copy strong')).toEqual({ direction: 'rtl', indent: 0 });
+
+  await page.getByRole('button', { name: /^Dott parking: .*נחלת בנימין 105/ }).click();
+  const where = page.locator('.dock-card .card-title p');
+  await expect(where).toHaveText(/^נחלת בנימין 105 · ≈1 min walk from ⁨שדרות רוטשילד 22⁩$/);
+  const name = where.locator('[dir="auto"]');
+  expect(await name.evaluate(element => getComputedStyle(element).direction)).toBe('rtl');
+  // The name first, at the left, and the walk after it: on its right, or on the next line.
+  const [line, nameBox, walkBox] = await Promise.all([where.boundingBox(), name.boundingBox(), where.locator('.bay-walk').boundingBox()]);
+  expect(Math.abs(nameBox!.x - line!.x)).toBeLessThan(1);
+  expect(walkBox!.x >= nameBox!.x + nameBox!.width || walkBox!.y >= nameBox!.y + nameBox!.height - 1).toBe(true);
+  const cardShot = testInfo.outputPath('hebrew-parking-bay.png');
+  await page.locator('.dock-card').screenshot({ path: cardShot });
+  await testInfo.attach('hebrew parking bay', { path: cardShot, contentType: 'image/png' });
+});
+
 test.describe('on a desktop', () => {
   test.skip(({ isMobile }) => isMobile, 'The desktop layout needs a wide window with a mouse.');
 

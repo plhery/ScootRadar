@@ -2,6 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
+import { isolated } from '@/lib/bidi';
 import { formatLocale, formatRegion, placeNameLanguage } from '@/lib/formatLocale';
 
 export const SUPPORTED_LOCALES = ['de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is', 'en'] as const;
@@ -1767,11 +1768,13 @@ const inLatinAmerica = (sentence: string) => sentence.replaceAll('Patinete', 'Sc
 /**
  * The sentence of the key in the language, its {placeholders} replaced by the
  * values; in Latin American Spanish when the region is one of Latin America's.
+ * A value in Hebrew or Arabic is set apart from the sentence, which keeps its own
+ * order: "נחלת בנימין 105, 4 min from …", not the comma and the 4 drawn into the name.
  */
 export function translate(locale: AppLocale, key: TranslationKey, values: TranslationValues = {}, region?: string): string {
   const sentence = dictionaries[locale][key];
   return Object.entries(values).reduce(
-    (result, [name, value]) => result.replaceAll(`{${name}}`, String(value)),
+    (result, [name, value]) => result.replaceAll(`{${name}}`, isolated(String(value))),
     saysScooter(locale, region) ? inLatinAmerica(sentence) : sentence
   );
 }

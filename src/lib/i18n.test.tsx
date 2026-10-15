@@ -81,3 +81,18 @@ describe('Spanish in Latin America and the US', () => {
     await waitFor(() => expect(screen.getByText('Scooter de Lime')).toBeInTheDocument());
   });
 });
+
+describe('names written right to left', () => {
+  it('are set apart from the sentence they are put in, which keeps its order', () => {
+    expect(translate('en', 'dock.lead.detailFrom', { name: 'Dott', minutes: 4, place: 'נחלת בנימין 105' }))
+      .toBe('Dott, 4 min from ⁨נחלת בנימין 105⁩');
+    expect(translate('en', 'parking.label', { name: 'Dott', place: 'شارع الملك فهد' })).toBe('Dott parking: ⁨شارع الملك فهد⁩');
+    expect(translate('en', 'bar.aria.place', { name: 'Rothschild 22, תל אביב' }))
+      .toBe('Showing scooters near ⁨Rothschild 22, תל אביב⁩. Search another place.');
+  });
+
+  it('leave the names written left to right, and the numbers, as they are', () => {
+    expect(translate('en', 'dock.lead.detailFrom', { name: 'Dott', minutes: 4, place: 'Langstrasse 120' })).toBe('Dott, 4 min from Langstrasse 120');
+    expect(translate('en', 'parking.label', { name: 'Lime', place: 'Θεσσαλονίκη' })).toBe('Lime parking: Θεσσαλονίκη');
+  });
+});

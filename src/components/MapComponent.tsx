@@ -1,6 +1,7 @@
 'use client';
 
 import { track } from '@/lib/analytics';
+import { isolated } from '@/lib/bidi';
 
 import { prefersReducedMotion, selectionFeedback } from '@/lib/feedback';
 
@@ -897,7 +898,7 @@ export default function MapComponent({
     }
     for (const cluster of visibleClusters) {
       const center: [number, number] = [cluster.lat, cluster.lng];
-      const label = `${cluster.city ? `${cluster.city}: ` : ''}${clusterTitle(cluster, t, formatNumber)}`;
+      const label = `${cluster.city ? `${isolated(cluster.city)}: ` : ''}${clusterTitle(cluster, t, formatNumber)}`;
       clusterDataRef.current.set(cluster.id, cluster);
       const signature = JSON.stringify([cluster, label]);
       if (markerSignaturesRef.current.get(`c:${cluster.id}`) === signature) continue;
