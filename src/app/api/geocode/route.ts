@@ -15,7 +15,7 @@ const MAX_RESULTS = 5;
 const GEOCODE_TIMEOUT_MS = 10_000;
 
 // Places where the app has cities, from OpenStreetMap: Geoapify where GEOAPIFY_API_KEY is
-// set, Photon where it is not or when Geoapify cannot answer (searchPlaces).
+// set, Photon where it is not or when Geoapify cannot answer or finds nothing (searchPlaces).
 const GEOAPIFY_AUTOCOMPLETE_URL = 'https://api.geoapify.com/v1/geocode/autocomplete';
 // Geoapify answers in about a second, an address with its house number in up to
 // three: one that takes longer leaves Photon the rest of the search's time.
@@ -157,9 +157,9 @@ interface Candidate extends Ranked {
   listed?: boolean;
 }
 
-/** The places one service found, and its name. */
+/** The places the services asked found, and their names. */
 interface Found {
-  source: 'Geoapify' | 'Photon';
+  sources: ('Geoapify' | 'Photon')[];
   candidates: Candidate[];
 }
 
@@ -374,7 +374,7 @@ function photonCandidates(features: PhotonFeature[], typed: string[], from: From
   });
 }
 
-async function searchPhoton(search: Search, own: PhotonService | null, deadline: number): Promise<Upstream<Found>> {
+async function searchPhoton(search: Search, own: PhotonService | null, deadline: number, anywhere = false): Promise<Upstream<Found>> {
   const { query, language, near } = search;
   const params = new URLSearchParams({
     q: query,
@@ -382,8 +382,9 @@ async function searchPhoton(search: Search, own: PhotonService | null, deadline:
     lang: PHOTON_LANGUAGES.find(code => code === language) ?? 'default',
   });
   // Within the part of the world the map shows; anywhere without a centre, as
-  // "Paris" may be in France or in Texas, and what is outside is left out after.
-  const box = near && servedBox(near[0], near[1]);
+  // "Paris" may be in France or in Texas, or where Geoapify, asked anywhere, found
+  // nothing: "دبي مول" over Zürich is in Dubai. What is outside is left out after.
+  const box = !anywhere && near && servedBox(near[0], near[1]);
   if (box) params.set('bbox', [box.west, box.south, box.east, box.north].join(','));
   for (const layer of PHOTON_LAYERS) params.append('layer', layer);
   if (near) {
@@ -410,7 +411,7 @@ async function searchPhoton(search: Search, own: PhotonService | null, deadline:
   if (!answer.ok) return answer;
   const features = (answer.value as PhotonResponse | null)?.features;
   if (!Array.isArray(features)) return { ok: false, failure: 'invalid' };
-  return { ok: true, value: { source: 'Photon', candidates: photonCandidates(features, search.typed, search) } };
+  return { ok: true, value: { sources: ['Photon'], candidates: photonCandidates(features, search.typed, search) } };
 }
 
 /** The continent of a point, of those where the app may have cities. */
@@ -506,7 +507,7 @@ async function searchGeoapify(search: Search, key: string, ask: GeoapifyAsk): Pr
   });
   const candidates = photonCandidates(features, search.typed, search);
   // Towns, not the hamlets, quarters and stations Geoapify also has, nor near misses of their names.
-  return { ok: true, value: { source: 'Geoapify', candidates: ask.towns ? candidates.filter(({ town }) => town) : candidates } };
+  return { ok: true, value: { sources: ['Geoapify'], candidates: ask.towns ? candidates.filter(({ town }) => town) : candidates } };
 }
 
 /** Geoapify's places: those close to where places come first, and those farther
@@ -523,19 +524,30 @@ async function geoapifyPlaces(search: Search, key: string): Promise<Upstream<Fou
   const farther = await anywhere();
   if (!farther.ok) return farther;
   // The near misses close by, after what is found farther.
-  return { ok: true, value: { source: 'Geoapify', candidates: [...nearby.value.candidates, ...farther.value.candidates] } };
+  return { ok: true, value: { sources: ['Geoapify'], candidates: [...nearby.value.candidates, ...farther.value.candidates] } };
 }
 
 /** Places where the app has cities: from Geoapify where the Worker has its key, from Photon
-    where it has none or when Geoapify cannot answer, all within one search's time. */
-async function searchPlaces(search: Search, settings: Record<string, unknown>, key: string, deadline: number): Promise<Upstream<Found>> {
-  if (key) {
-    const found = await geoapifyPlaces(search, key);
-    if (found.ok) return found;
+    where it has none, when Geoapify cannot answer or when it finds nothing, all within one
+    search's time. Not when it finds nothing while a city of the catalog is on its way, as
+    "תל אב" is to Tel Aviv: the city is shown at once. */
+async function searchPlaces(search: Search, settings: Record<string, unknown>, key: string, deadline: number, cityOnItsWay: boolean): Promise<Upstream<Found>> {
+  const photon = photonService(settings);
+  if (!key) return searchPhoton(search, photon, deadline);
+  const found = await geoapifyPlaces(search, key);
+  if (!found.ok) {
     // Out of credits for the day, the key refused, down or slow: Photon stands in.
     console.warn(JSON.stringify({ event: 'geoapify_fallback', failure: found.failure }));
+    return searchPhoton(search, photon, deadline);
   }
-  return searchPhoton(search, photonService(settings), deadline);
+  // Nothing in the parts of the world the app covers: Geoapify finds "دبي مول", the
+  // Dubai Mall in Arabic, only over Dubai, and nothing for "Bahnhofstrase 10". Photon
+  // is asked anywhere, as Geoapify was, with what is left of the search's time; if it
+  // cannot answer, nothing was found. Not after near misses, which are shown as fast
+  // as before: "Alexanderpltz" is Alexanderplatz to Geoapify.
+  if (found.value.candidates.length || cityOnItsWay) return found;
+  const more = await searchPhoton(search, photon, deadline, true);
+  return more.ok ? { ok: true, value: { sources: ['Geoapify', 'Photon'], candidates: more.value.candidates } } : found;
 }
 
 /** What a promise comes to within some time, or null. */
@@ -599,7 +611,7 @@ async function geocode(input: GeocodeInput) {
     ? searchGeoapify(search, key, { towns: true, timeoutMs: GEOAPIFY_TIMEOUT_MS })
     : null;
   // A city typed in full is asked for, not the streets and shops of its name.
-  const places = listed.some(({ exact }) => exact) ? null : searchPlaces(search, settings, key, deadline);
+  const places = listed.some(({ exact }) => exact) ? null : searchPlaces(search, settings, key, deadline, listed.length > 0);
   const foundPlaces = places && await places;
   const foundTowns = towns && await within(towns, asked + TOWN_WAIT_MS - Date.now());
 
@@ -627,7 +639,7 @@ async function geocode(input: GeocodeInput) {
   // Stable: the services' ranking is kept among the places of one rank.
   shown.sort((a, b) => a.rank - b.rank);
 
-  const services = [...new Set([foundTowns, foundPlaces].flatMap(found => found?.ok ? [found.value.source] : []))];
+  const services = [...new Set([foundTowns, foundPlaces].flatMap(found => found?.ok ? found.value.sources : []))];
   const sources = [...(listed.length ? ['Verified scooter city catalog'] : []), ...services, ...(services.length ? ['OpenStreetMap'] : [])];
   return NextResponse.json(shown.slice(0, MAX_RESULTS).map(({ place }) => place), {
     headers: {

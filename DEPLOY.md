@@ -117,8 +117,11 @@ for text without digits. A city of the catalog typed in full takes one; so
 does an address typed with its city, unless nothing is found in the city. Each
 request gets five seconds. If places fail or are slower (out of the day's
 requests, key refused or down), the search asks Photon with what is left of
-its ten seconds and logs `geoapify_fallback`. Without the key, the search asks
-Photon alone.
+its ten seconds and logs `geoapify_fallback`. When Geoapify finds nothing in the
+parts of the world the catalog covers, as for "دبي مول" (the Dubai Mall in
+Arabic) away from Dubai, the search asks Photon anywhere with what is left too,
+unless a city of the catalog starts with the text. Without the key, the search
+asks Photon alone.
 
 Photon is komoot's public one unless `PHOTON_API_URL` in `vars` names one of our
 own; only `https://` addresses are used. Ours sits behind Cloudflare Access:
@@ -129,7 +132,7 @@ sent. Ours gets three seconds. If it fails or is slower, the search asks the
 public Photon and logs `photon_fallback`; it does not when ours answers 429.
 Before setting `PHOTON_API_URL`, update the privacy notice (PRIVACY.md and
 `src/app/(map)/privacy/page.tsx`), which names komoot as the recipient of
-address text when Geoapify cannot answer.
+address text when Geoapify cannot answer or finds nothing.
 
 ## Cloudflare Workers Builds
 

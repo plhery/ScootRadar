@@ -1,4 +1,4 @@
-// What Photon answered on 12 October 2026 (photon.komoot.io/api, limit=15, in Europe, without counties,
+// What Photon answered on 12 October 2026, or on the day said (photon.komoot.io/api, limit=15, in Europe, without counties,
 // regions and countries, location_bias_scale=0.1 near a map centre), reduced to the properties the route
 // reads and with coordinates rounded to about ten metres.
 export type RecordedFeature = [properties: Record<string, string>, lat: number, lon: number];
@@ -112,6 +112,24 @@ export const RECORDED_PHOTON_ANSWERS: Record<string, RecordedFeature[]> = {
     [{ type: 'house', name: 'Milano Gallaratese', street: 'Tangenziale Ovest di Milano', postcode: '20109', city: 'Milan', locality: 'Figino', district: 'Figino', county: 'Milan', state: 'Lombardy', country: 'Italy', countrycode: 'IT' }, 45.495, 9.0668],
     [{ type: 'district', name: 'Milanovo', city: 'Vranje', county: 'Pcinja Administrative District', state: 'Central Serbia', country: 'Serbia', countrycode: 'RS' }, 42.4433, 21.8964],
   ],
+  // lang=de, near Zürich (47.37, 8.54), anywhere, on 15 October 2026, after Geoapify found nothing
+  'Bahnhofstrase 10': [
+    [{ type: 'house', housenumber: '10', street: 'Bahnhofstrasse', postcode: '8001', city: 'Zürich', locality: 'Lindenhof', district: 'Altstadt', county: 'Bezirk Zürich', state: 'Zürich', country: 'Schweiz', countrycode: 'CH' }, 47.3681, 8.54],
+    [{ type: 'house', name: 'Satellite Office Zürich Haus Gryffenberg', housenumber: '10', street: 'Bahnhofstrasse', postcode: '8001', city: 'Zürich', locality: 'Lindenhof', district: 'Altstadt', county: 'Bezirk Zürich', state: 'Zürich', country: 'Schweiz', countrycode: 'CH' }, 47.3682, 8.5401],
+    [{ type: 'house', housenumber: '10', street: 'Bahnhofstrasse', postcode: '8304', city: 'Wallisellen', county: 'Bezirk Bülach', state: 'Zürich', country: 'Schweiz', countrycode: 'CH' }, 47.4148, 8.5893],
+    [{ type: 'house', housenumber: '10', street: 'Bahnhofstrasse', postcode: '8803', city: 'Rüschlikon', county: 'Bezirk Horgen', state: 'Zürich', country: 'Schweiz', countrycode: 'CH' }, 47.3138, 8.5535],
+    [{ type: 'house', housenumber: '10', street: 'Bahnhofstrasse', postcode: '8700', city: 'Küsnacht', locality: 'Oberwacht', district: 'Itschnach', county: 'Bezirk Meilen', state: 'Zürich', country: 'Schweiz', countrycode: 'CH' }, 47.3178, 8.5808],
+    [{ type: 'house', name: 'Besser Optik Küsnacht', housenumber: '10', street: 'Bahnhofstrasse', postcode: '8700', city: 'Küsnacht', locality: 'Oberwacht', district: 'Itschnach', county: 'Bezirk Meilen', state: 'Zürich', country: 'Schweiz', countrycode: 'CH' }, 47.3178, 8.581],
+    [{ type: 'house', housenumber: '10', street: 'Bahnhofstrasse', postcode: '8902', city: 'Urdorf', county: 'Bezirk Dietikon', state: 'Zürich', country: 'Schweiz', countrycode: 'CH' }, 47.3894, 8.4312],
+    [{ type: 'house', housenumber: '10', street: 'Bahnhofstrasse', postcode: '8800', city: 'Thalwil', locality: 'Lingg', county: 'Bezirk Horgen', state: 'Zürich', country: 'Schweiz', countrycode: 'CH' }, 47.2951, 8.5663],
+    [{ type: 'house', housenumber: '10', street: 'Bahnhofstrasse', postcode: '8603', city: 'Schwerzenbach', county: 'Bezirk Uster', state: 'Zürich', country: 'Schweiz', countrycode: 'CH' }, 47.3821, 8.6545],
+    [{ type: 'house', housenumber: '10', street: 'Bahnhofstrasse', postcode: '8302', city: 'Kloten', county: 'Bezirk Bülach', state: 'Zürich', country: 'Schweiz', countrycode: 'CH' }, 47.4486, 8.5829],
+    [{ type: 'house', name: 'Zürcher Kantonalbank', housenumber: '10', street: 'Bahnhofstrasse', postcode: '8302', city: 'Kloten', county: 'Bezirk Bülach', state: 'Zürich', country: 'Schweiz', countrycode: 'CH' }, 47.4486, 8.5829],
+    [{ type: 'house', housenumber: '10', street: 'Bahnhofstrasse', postcode: '8303', city: 'Bassersdorf', district: 'Baltenswil', county: 'Bezirk Bülach', state: 'Zürich', country: 'Schweiz', countrycode: 'CH' }, 47.4425, 8.6273],
+    [{ type: 'house', housenumber: '10', street: 'Hintere Bahnhofstrasse', postcode: '8908', city: 'Hedingen', county: 'Bezirk Affoltern', state: 'Zürich', country: 'Schweiz', countrycode: 'CH' }, 47.299, 8.4476],
+    [{ type: 'house', housenumber: '10', street: 'Bahnhofstrasse', postcode: '8942', city: 'Oberrieden', locality: 'Dörfli', county: 'Bezirk Horgen', state: 'Zürich', country: 'Schweiz', countrycode: 'CH' }, 47.2783, 8.5806],
+    [{ type: 'house', housenumber: '10', street: 'Bahnhofstrasse', postcode: '8953', city: 'Dietikon', locality: 'Dörfli', county: 'Bezirk Dietikon', state: 'Zürich', country: 'Schweiz', countrycode: 'CH' }, 47.4044, 8.404],
+  ],
 };
 
 // What Photon answered on 15 October 2026 outside Europe and North America, asked as above but within
@@ -152,6 +170,24 @@ export const RECORDED_WORLD_PHOTON_ANSWERS: Record<string, RecordedFeature[]> = 
     [{ type: 'other', name: 'Dubai Islands Mall', city: 'Dubai', district: 'Dubai Islands', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.2963, 55.3011],
     [{ type: 'house', name: 'Dubai Mall Chinatown Bridge', street: 'Sheikh Mohammed bin Rashid Boulevard', city: 'Dubai', district: 'Burj Khalifa', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.1955, 55.282],
     [{ type: 'other', name: 'Meydan One Mall', city: 'Dubai', district: 'MBR- Al Merkad', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.1726, 55.2871],
+  ],
+  // lang=en, near Zürich (47.37, 8.54), anywhere, after Geoapify found nothing
+  'دبي مول over Zürich': [
+    [{ type: 'house', name: 'The Dubai Mall', street: 'Financial Center Street', city: 'Dubai', district: 'Downtown Dubai', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.197, 55.279],
+    [{ type: 'house', name: 'دبي مول / برج خليفة', street: 'Metro access : Burj Khalifa / Dubai Mall station', city: 'Dubai', district: 'Burj Khalifa', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.2013, 55.2695],
+    [{ type: 'house', name: 'Dubai Mall', street: 'Abd Al Moneim Riyad Street', postcode: '32921', city: 'Sadat City', locality: 'Al Sharit Distinctive', district: 'Ebni Baitak', state: 'Monufia Governorate', country: 'Egypt', countrycode: 'EG' }, 30.3794, 30.5156],
+    [{ type: 'house', name: 'Dubai Marina Mall', street: 'Al Marsa Street', locality: 'Dubai Marina', district: 'Dubai Marina', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.0766, 55.1402],
+    [{ type: 'house', name: 'Burj Khalifa / Dubai Mall', street: 'Metro access : Burj Khalifa / Dubai Mall station', city: 'Dubai', district: 'Burj Khalifa', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.2014, 55.2695],
+    [{ type: 'house', name: 'Mall of The Emirates', housenumber: '1', street: 'Al Seedaf 1 Street', city: 'دبي', locality: 'Al Barsha 1', district: 'Al Barsha 1', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.118, 55.2004],
+    [{ type: 'house', name: 'Dubai Hills Mall', street: 'Umm Suqeim Street', city: 'دبي', district: 'Hadaeq Sheikh Mohammed Bin Rashid', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.1017, 55.2399],
+    [{ type: 'house', name: 'Wafi Mall', street: 'Sheikh Rashid Road', city: 'Dubai', district: 'Al Jadaf', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.2288, 55.3192],
+    [{ type: 'house', name: 'Mall of the Emirates', street: 'Sheikh Zayed Road (North)', city: 'Dubai', locality: 'Al Quoz Industrial 3', district: 'Al Quoz Community', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.1212, 55.2004],
+    [{ type: 'other', name: 'Dubai Islands Mall', city: 'Dubai', district: 'Dubai Islands', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.2963, 55.3011],
+    [{ type: 'house', name: 'Burj Khalifa / Dubai Mall', street: 'Metro access : Burj Khalifa / Dubai Mall station', city: 'Dubai', district: 'Burj Khalifa', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.2014, 55.2696],
+    [{ type: 'house', name: 'Burj Khalifa / Dubai Mall', street: 'Metro Link', city: 'Dubai', district: 'Burj Khalifa', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.2014, 55.2696],
+    [{ type: 'house', name: 'ف مول دبي', street: 'Belt Road', postcode: '54004', city: 'البلدية الرابعة', locality: 'حي العلماء', district: 'Hay Alatbaa', county: 'Al-Najaf District', state: 'Najaf', country: 'Iraq', countrycode: 'IQ' }, 32.0146, 44.335],
+    [{ type: 'house', name: 'مول دبي حمامات +تواليت', street: 'Financial Center Street', city: 'Dubai', district: 'Downtown Dubai', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.1989, 55.2779],
+    [{ type: 'house', name: 'The Address - Dubai Mall', street: 'Sheikh Mohammed bin Rashid Boulevard', city: 'Dubai', district: 'Downtown Dubai', state: 'Dubai', country: 'United Arab Emirates', countrycode: 'AE' }, 25.1997, 55.2776],
   ],
   // lang=en, near Auckland (-36.85, 174.76)
   'Queen Street': [
@@ -221,7 +257,7 @@ export const RECORDED_WORLD_PHOTON_ANSWERS: Record<string, RecordedFeature[]> = 
   ],
 };
 
-// What Geoapify answered on 12 October 2026 (api.geoapify.com/v1/geocode/autocomplete, limit=20,
+// What Geoapify answered on 12 October 2026, or on the day said (api.geoapify.com/v1/geocode/autocomplete, limit=20,
 // near a map centre or else in Switzerland), reduced to the fields the route reads and with
 // coordinates rounded to about ten metres. Its places outside Europe too, which the route leaves out.
 export type RecordedResult = [fields: Record<string, unknown>, lat: number, lon: number];
@@ -712,5 +748,52 @@ export const RECORDED_GEOAPIFY_ANSWERS: Record<string, RecordedSearch> = {
       [{ result_type: 'building', housenumber: '261', street: 'Rue de Lausanne', postcode: '01220', city: 'Divonne-les-Bains', county: 'Ain', state: 'Auvergne-Rhône-Alpes', country: 'France', country_code: 'fr' }, 46.3596, 6.144],
       [{ result_type: 'building', housenumber: '134', street: 'Rue de Lausanne', postcode: '01220', city: 'Divonne-les-Bains', county: 'Ain', state: 'Auvergne-Rhône-Alpes', country: 'France', country_code: 'fr' }, 46.3582, 6.145],
     ],
+  },
+  // lang=de, near Zürich (47.37, 8.54), on 15 October 2026
+  'Bahnhofstrase 10': {
+    nearby: [],
+    anywhere: [],
+  },
+  // lang=de, near Berlin (52.52, 13.4), on 15 October 2026
+  'Alexanderpltz': {
+    towns: [],
+    nearby: [
+      [{ result_type: 'amenity', name: 'Alexander Plaza', housenumber: '1', street: 'Rosenstraße', postcode: '10178', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.69 } }, 52.5216, 13.4041],
+      [{ result_type: 'amenity', name: 'Alexanderplatz', housenumber: '2', street: 'Dircksenstraße', postcode: '10179', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5216, 13.4113],
+      [{ result_type: 'amenity', name: 'Alexanderplatz', street: 'Panoramastraße', postcode: '10178', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5216, 13.4112],
+      [{ result_type: 'amenity', name: 'Alexanderplatz', street: 'Dircksenstraße', postcode: '10179', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5214, 13.4114],
+      [{ result_type: 'amenity', name: 'Alexanderplatz', street: 'Rathausstraße', postcode: '10178', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5205, 13.4121],
+      [{ result_type: 'amenity', name: 'Alexanderplatz', street: 'Dircksenstraße', postcode: '10178', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5213, 13.4124],
+      [{ result_type: 'postcode', name: 'Alexanderplatz', postcode: '10179', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5207, 13.4128],
+      [{ result_type: 'amenity', name: 'Alexanderplatz', postcode: '10178', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.522, 13.4136],
+      [{ result_type: 'postcode', name: 'Alexanderplatz', postcode: '10178', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5222, 13.4132],
+      [{ result_type: 'building', name: 'Alexanderplatz', housenumber: '1', street: 'Alexanderplatz', postcode: '10178', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0 } }, 52.5217, 13.4119],
+      [{ result_type: 'amenity', name: 'Alexanderplatz', street: 'Grunerstraße', postcode: '10179', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5208, 13.4147],
+      [{ result_type: 'amenity', name: 'Alexanderplatz', street: 'Alexanderstraße', postcode: '10178', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5232, 13.4145],
+    ],
+    anywhere: [
+      [{ result_type: 'amenity', name: 'Alexander Plaza', housenumber: '1', street: 'Rosenstraße', postcode: '10178', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.69 } }, 52.5216, 13.4041],
+      [{ result_type: 'amenity', name: 'Alexanderplatz', housenumber: '2', street: 'Dircksenstraße', postcode: '10179', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5216, 13.4113],
+      [{ result_type: 'amenity', name: 'Alexanderplatz', street: 'Panoramastraße', postcode: '10178', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5216, 13.4112],
+      [{ result_type: 'amenity', name: 'Alexanderplatz', street: 'Dircksenstraße', postcode: '10179', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5214, 13.4114],
+      [{ result_type: 'amenity', name: 'Alexanderplatz', street: 'Rathausstraße', postcode: '10178', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5205, 13.4121],
+      [{ result_type: 'amenity', name: 'Alexanderplatz', street: 'Dircksenstraße', postcode: '10178', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5213, 13.4124],
+      [{ result_type: 'postcode', name: 'Alexanderplatz', postcode: '10179', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5207, 13.4128],
+      [{ result_type: 'amenity', name: 'Alexanderplatz', postcode: '10178', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.522, 13.4136],
+      [{ result_type: 'postcode', name: 'Alexanderplatz', postcode: '10178', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5222, 13.4132],
+      [{ result_type: 'building', name: 'Alexanderplatz', housenumber: '1', street: 'Alexanderplatz', postcode: '10178', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0 } }, 52.5217, 13.4119],
+      [{ result_type: 'amenity', name: 'Alexanderplatz', street: 'Grunerstraße', postcode: '10179', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5208, 13.4147],
+      [{ result_type: 'amenity', name: 'Alexanderplatz', street: 'Alexanderstraße', postcode: '10178', city: 'Berlin', suburb: 'Mitte', district: 'Mitte', state: 'Berlin', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.84 } }, 52.5232, 13.4145],
+      [{ result_type: 'amenity', name: 'Alexander Platz', street: 'Poststraße', postcode: '15374', city: 'Müncheberg', district: 'Müncheberg', county: 'Märkisch-Oderland', state: 'Brandenburg', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.69 } }, 52.5032, 14.1372],
+      [{ result_type: 'amenity', name: 'Alexander Katz', street: 'Orkener Straße', postcode: '41515', city: 'Grevenbroich', suburb: 'Stadtmitte', district: 'Stadtmitte', county: 'Rhein-Kreis Neuss', state: 'Nordrhein-Westfalen', country: 'Deutschland', country_code: 'de', rank: { confidence: 0.85 } }, 51.0947, 6.582],
+    ],
+  },
+  // lang=en, near Zürich (47.37, 8.54), on 15 October 2026
+  'دبي مول over Zürich': {
+    towns: [
+      [{ result_type: 'city', name: 'Dabbe', city: 'Dabbe', state: 'Brakna', country: 'Mauritania', country_code: 'mr', rank: { confidence: 0 } }, 16.1475, -13.7972],
+    ],
+    nearby: [],
+    anywhere: [],
   },
 };

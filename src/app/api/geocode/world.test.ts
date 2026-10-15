@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { NextRequest } from 'next/server';
-import { RECORDED_WORLD_PHOTON_ANSWERS } from '@/app/api/geocode/recordedAnswers';
+import { RECORDED_GEOAPIFY_ANSWERS, RECORDED_WORLD_PHOTON_ANSWERS, type RecordedSearch } from '@/app/api/geocode/recordedAnswers';
 import { searchText } from '@/lib/searchText';
 
 // New Zealand, Australia and Israel as country catalogs may list them: Australia with its states,
@@ -79,17 +79,24 @@ const RIYADH: [number, number] = [24.71, 46.68];
 const NICOSIA: [number, number] = [35.17, 33.36];
 const AUSTIN: [number, number] = [30.27, -97.74];
 const TOKYO: [number, number] = [35.68, 139.69];
+const ZURICH: [number, number] = [47.37, 8.54];
 const GEOAPIFY_HOST = 'api.geoapify.com';
 const PHOTON_HOST = 'photon.komoot.io';
 
 type Row = [fields: Record<string, unknown>, lat: number, lon: number];
 
-/** Answers Geoapify and Photon alike with these places, and keeps what each was asked. */
-function stubUpstreams(rows: { geoapify?: Row[]; photon?: Row[] }) {
+/** Which of a search's requests Geoapify is asked: for towns, for places close by, or for places anywhere. */
+function geoapifyRequest(url: URL): keyof RecordedSearch {
+  return url.searchParams.get('type') === 'city' ? 'towns' : url.searchParams.has('filter') ? 'nearby' : 'anywhere';
+}
+
+/** Answers Geoapify, every request alike or each as recorded, and Photon with these places, and keeps what each was asked. */
+function stubUpstreams(rows: { geoapify?: Row[] | RecordedSearch; photon?: Row[] }) {
   const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
     const url = new URL(String(input));
+    const geoapify = Array.isArray(rows.geoapify) ? rows.geoapify : rows.geoapify?.[geoapifyRequest(url)];
     const body = url.hostname === GEOAPIFY_HOST
-      ? { results: (rows.geoapify ?? []).map(([fields, lat, lon]) => ({ ...fields, lat, lon })) }
+      ? { results: (geoapify ?? []).map(([fields, lat, lon]) => ({ ...fields, lat, lon })) }
       : { features: (rows.photon ?? []).map(([properties, lat, lon]) => ({ properties, geometry: { coordinates: [lon, lat] } })) };
     return new Response(JSON.stringify(body), { status: 200 });
   });
@@ -238,6 +245,33 @@ describe('the search in Hebrew, Arabic and Greek', () => {
       ['مول دبي حمامات +تواليت', 'Financial Center Street, Dubai'],
       ['The Dubai Mall', 'Financial Center Street, Dubai'],
     ]);
+  });
+
+  it('finds the Dubai Mall typed in Arabic over Zürich, from Photon asked anywhere when Geoapify finds nothing', async () => {
+    inWorker({ GEOAPIFY_API_KEY: 'key' });
+    const asked = stubUpstreams({ geoapify: RECORDED_GEOAPIFY_ANSWERS['دبي مول over Zürich'], photon: RECORDED_WORLD_PHOTON_ANSWERS['دبي مول over Zürich'] });
+
+    const response = await search('دبي مول', { near: ZURICH });
+
+    expect(asked(GEOAPIFY_HOST).map(geoapifyRequest)).toEqual(['towns', 'nearby', 'anywhere']);
+    expect(asked(PHOTON_HOST).map(url => url.searchParams.get('bbox'))).toEqual([null]);
+    expect(response.headers.get('x-geocoding-data-source')).toBe('Geoapify, Photon, OpenStreetMap');
+    // As near the map: those named with both words first, then the others in Photon's order.
+    expect((await rows(response)).slice(0, 3)).toEqual([
+      ['دبي مول / برج خليفة', 'Metro access : Burj Khalifa / Dubai Mall station, Dubai'],
+      ['مول دبي حمامات +تواليت', 'Financial Center Street, Dubai'],
+      ['The Dubai Mall', 'Financial Center Street, Dubai'],
+    ]);
+  });
+
+  it('shows Tel Aviv at once for "תל אב", without asking Photon after Geoapify', async () => {
+    inWorker({ GEOAPIFY_API_KEY: 'key' });
+    const asked = stubUpstreams({ geoapify: [] });
+
+    const found = await rows(await search('תל אב', { near: ZURICH }));
+
+    expect(asked(PHOTON_HOST)).toEqual([]);
+    expect(found).toEqual([['Tel Aviv', 'Israel']]);
   });
 
   it('asks for a number typed in Arabic-Indic digits in 0-9, and finds the address it ends', async () => {

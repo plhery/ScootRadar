@@ -694,6 +694,43 @@ describe('Geoapify', () => {
     expect((await search([zurichHb])).asked.map(([request]) => request)).toEqual(['towns', 'nearby']);
   });
 
+  it('asks Photon anywhere, still near the map centre, when Geoapify finds nothing: "Bahnhofstrase 10"', async () => {
+    const fetchMock = stubRecordedAnswer('Bahnhofstrase 10');
+
+    const response = await POST(postRequest('Bahnhofstrase 10', 'de', ZURICH));
+
+    expect(asked(fetchMock, GEOAPIFY_HOST).map(geoapifyRequest)).toEqual(['nearby', 'anywhere']);
+    const [photon] = asked(fetchMock, PHOTON_HOST);
+    expect(photon.searchParams.has('bbox')).toBe(false);
+    expect([photon.searchParams.get('lat'), photon.searchParams.get('lon')]).toEqual(['47.37', '8.54']);
+    expect(response.headers.get('x-geocoding-data-source')).toBe('Geoapify, Photon, OpenStreetMap');
+    expect((await shownRows(response)).slice(0, 2)).toEqual([
+      ['Bahnhofstrasse 10', '8001 Zürich', true],
+      ['Satellite Office Zürich Haus Gryffenberg', 'Bahnhofstrasse 10, 8001 Zürich', true],
+    ]);
+  });
+
+  it('shows Geoapify\'s near misses without asking Photon, as fast as before: "Alexanderpltz"', async () => {
+    const fetchMock = stubRecordedAnswer('Alexanderpltz');
+
+    const response = await POST(postRequest('Alexanderpltz', 'de', BERLIN));
+
+    expect(asked(fetchMock, PHOTON_HOST)).toEqual([]);
+    expect(response.headers.get('x-geocoding-data-source')).toBe('Geoapify, OpenStreetMap');
+    expect((await shownRows(response)).slice(0, 3).map(([title]) => title)).toEqual(['Alexander Plaza', 'Alexanderplatz', 'Alexanderplatz']);
+  });
+
+  it('answers with nothing, not an error, when Geoapify finds nothing and Photon cannot answer', async () => {
+    const fetchMock = stubUpstreams({ geoapify: { nearby: [], anywhere: [] }, photon: 503 });
+
+    const response = await POST(postRequest('Bahnhofstrase 10', 'de', ZURICH));
+
+    expect(asked(fetchMock, PHOTON_HOST)).toHaveLength(1);
+    expect(response.status).toBe(200);
+    expect(response.headers.get('x-geocoding-data-source')).toBe('Geoapify, OpenStreetMap');
+    await expect(response.json()).resolves.toEqual([]);
+  });
+
   it('asks for the towns of the name typed anywhere, but not for an address or a postcode', async () => {
     const fetchMock = stubUpstreams({ geoapify: [[{ result_type: 'street', name: 'Langstrasse', city: 'Zürich', country_code: 'ch' }, ...ZURICH]] });
 
@@ -877,6 +914,20 @@ describe('Geoapify', () => {
 
     expect(asked(fetchMock, GEOAPIFY_HOST).map(geoapifyRequest)).toEqual(['nearby', 'anywhere']);
     expect(timeouts.mock.calls).toEqual([[5_000], [5_000], [2_000]]);
+  });
+
+  it('gives Photon what Geoapify left of the ten seconds when Geoapify finds nothing', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    const timeouts = vi.spyOn(AbortSignal, 'timeout');
+    vi.stubGlobal('fetch', vi.fn(async (input: URL) => {
+      if (input.hostname !== GEOAPIFY_HOST) return new Response(JSON.stringify({ features: [] }));
+      vi.setSystemTime(Date.now() + 1_000);
+      return new Response(JSON.stringify({ results: [] }));
+    }));
+
+    await POST(postRequest('Bahnhofstrase 10', 'de', ZURICH));
+
+    expect(timeouts.mock.calls).toEqual([[5_000], [5_000], [8_000]]);
   });
 
   it('leaves our own Photon three seconds of what Geoapify left, and the public one the rest', async () => {

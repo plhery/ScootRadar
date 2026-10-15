@@ -175,7 +175,7 @@ scooter-city catalog, without asking any service, and are listed first. A
 country, state or province typed after a city ("Lindau Deutschland",
 "Portland, OR") says which one is meant, but not within a name: Staten Island
 is no place in Iceland. Other places, in the parts of the world where the
-catalog has countries (Europe and North America), come
+catalog has countries (Europe, North America and West Asia), come
 from the Address Autocomplete API of
 [Geoapify](https://www.geoapify.com/) when the Worker secret `GEOAPIFY_API_KEY`
 is set.
@@ -208,8 +208,12 @@ down or slower than five seconds), or without `GEOAPIFY_API_KEY`, as in a copy
 of this repository run without one, the same search goes to
 [Photon](https://photon.komoot.io/), komoot's public geocoder on OpenStreetMap
 data, within the part of the world around the map centre, or anywhere without
-one, leaving out what is outside the catalog's parts of the world. Its use is
-free within reasonable limits and may be throttled;
+one, leaving out what is outside the catalog's parts of the world. When
+Geoapify finds nothing there, as for "دبي مول" (the Dubai Mall in Arabic) away
+from Dubai or "Bahnhofstrase 10", Photon is asked anywhere, still near the map
+centre, with what is left of the search's ten seconds; not when a city of the
+catalog starts with the text, which is shown at once, nor after Geoapify's near
+misses. Its use is free within reasonable limits and may be throttled;
 `PHOTON_API_URL` points the search at a Photon of our own, with the public one
 standing in when ours fails (see DEPLOY.md). The `X-Geocoding-Data-Source`
 response header names where the answer came from: `Verified scooter city

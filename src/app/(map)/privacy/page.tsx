@@ -19,7 +19,7 @@ export default function PrivacyPage() {
       <article className="legal-content">
         <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
         <h1>Privacy</h1>
-        <p>Last updated: 14 October 2026</p>
+        <p>Last updated: 15 October 2026</p>
 
         <h2>Overview</h2>
         <p>
@@ -63,12 +63,13 @@ export default function PrivacyPage() {
           is sent instead. Without a centre, the country of your device&apos;s time zone, such as
           &ldquo;US&rdquo;, worked out on the device, is sent so that places in that country come
           first. Geoapify generally keeps the data of a successful request for no
-          longer than 24 hours. When Geoapify cannot answer, the same is sent instead to Photon,
-          a search service on OpenStreetMap data run by komoot in Germany. ScootRadar does not
-          send your IP address with them. Cities in the ScootRadar catalogue are found without
-          contacting either; their names are still sent to Geoapify, to find other towns of the
-          same name. The current app sends search text in the request body, and instructs
-          browsers and intermediary caches not to store the request or response.
+          longer than 24 hours. When Geoapify cannot answer or finds nothing, the same is
+          also sent to Photon, a search service on OpenStreetMap data run by komoot in
+          Germany. ScootRadar does not send your IP address with them. Cities in the ScootRadar
+          catalogue are found without contacting either; their names are still sent to
+          Geoapify, to find other towns of the same name. The current app sends search text in
+          the request body, and instructs browsers and intermediary caches not to store the
+          request or response.
         </p>
 
         <h2>Mobility data</h2>

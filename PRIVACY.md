@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 14 October 2026
+Last updated: 15 October 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches.
@@ -25,10 +25,10 @@ searches.
   centre, the country of the device's time zone, such as "US", worked out on the
   device, goes with it so that places in that country come first. Geoapify
   generally keeps the data of a successful request for no longer than 24
-  hours. When Geoapify cannot answer, the same goes to komoot's Photon service
-  in Germany (OpenStreetMap data) instead. Cities in the ScootRadar catalogue
-  are found without contacting either; their names still go to Geoapify, to
-  find other towns of the same name.
+  hours. When Geoapify cannot answer or finds nothing, the same also goes to
+  komoot's Photon service in Germany (OpenStreetMap data). Cities in the
+  ScootRadar catalogue are found without contacting either; their names still
+  go to Geoapify, to find other towns of the same name.
 - OpenFreeMap receives normal map tile requests from the user's device, with the website origin as the referrer (no page path or query string). The tiles hold OpenStreetMap data and are drawn on the device.
 - Language, filters, appearance, map style, the ride length chosen for price
   estimates and, in the iOS app, the ride passes entered are stored locally, as is the fact that the device has found its
