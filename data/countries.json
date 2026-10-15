@@ -19,7 +19,12 @@
       "searchWords": ["france", "frankreich", "francia", "frankrijk", "frankrike", "franca", "frakkland"],
       "anchor": [46.6, 2.4],
       "featuredCities": ["fr:Lyon", "fr:Marseille", "fr:Bordeaux", "fr:Lille Métropole", "fr:Grenoble", "fr:Angers"],
-      "credits": { "attribution": "France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr)" }
+      "credits": {
+        "attribution": "France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr)",
+        "links": [
+          { "label": "FR: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
+        ]
+      }
     },
     {
       "code": "DE",

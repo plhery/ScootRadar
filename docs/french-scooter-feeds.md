@@ -32,6 +32,9 @@ Cherbourg-en-Cotentin joined the catalog the same day; see
 Rechecked 15 October 2026: Dott Tignes has a summer season, and Dott
 Bourgoin-Jallieu left the catalog; see
 [Dott Tignes and Bourgoin-Jallieu, October 2026](#dott-tignes-and-bourgoin-jallieu-october-2026).
+The same evening 27 towns around Lille, west of Paris and along the Seine got
+their communes' outlines, which name each scooter's town where the boxes
+overlap; see [Town outlines, October 2026](#town-outlines-october-2026).
 
 ## Verified availability
 
@@ -361,6 +364,35 @@ Dott's region polygon.
     Carbon-Blanc (9 to 11), whose boxes would each take in another suburb's
     scooters. Towns of Lille Métropole, Saint-Quentin-en-Yvelines and the
     SIEMU count under the agglomeration those feeds are named after.
+
+## Town outlines, October 2026
+
+The towns' boxes above overlap where the towns touch, and a scooter in two
+boxes counted under the nearer centre. Two polls of every feed on the evening
+of 15 October 2026 (22:44 and 23:28), replayed through the app and placed in
+their communes by OpenStreetMap's boundaries, found 352 and 338 French
+scooters under the wrong town:
+
+| Where | Misnamed, two polls | After |
+| --- | ---: | ---: |
+| Lime Lille Métropole: Roubaix's under Croix, Hem or Wattrelos, the metropole's under Tourcoing, Hem or Villeneuve-d'Ascq | 254, 236 | 2, 1 |
+| Lime west of Paris: Marly-le-Roi's under Le Port-Marly, Houilles's under Sartrouville | 67, 74 | 0, 0 |
+| Dott Versailles Grand Parc: La Celle-Saint-Cloud's under Bougival | 15, 14 | 0, 0 |
+| Voi Grand Paris Seine et Oise: around Mantes-la-Jolie and Conflans-Sainte-Honorine | 16, 14 | 1, 1 |
+
+So 27 French towns have their commune's outline in
+[`town-outlines.json`](../data/town-outlines.json): the metropole and its
+seven towns, Lime's eight towns, Dott's three, and Poissy,
+Carrières-sous-Poissy, Andrésy, Conflans-Sainte-Honorine, Mantes-la-Jolie,
+Mantes-la-Ville, Buchelay and Limay. They are OpenStreetMap's (relation ids in
+the file), simplified to within 20 m. A scooter inside the metropole's outline
+counts under Lille Métropole unless it stands in one of the seven towns, whose
+outlines are smaller and win. The three left are within 20 m of a commune's
+line, where the simplified outline and the boundary part. No French scooter
+was dropped in either poll.
+
+Les Mureaux and Meulan-en-Yvelines, Saint-Quentin-en-Yvelines and the SIEMU
+keep their boxes alone: no scooter there counted under the wrong town.
 
 ## Bird Cherbourg-en-Cotentin, October 2026
 

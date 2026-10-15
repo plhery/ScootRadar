@@ -49,6 +49,21 @@ describe('the town a scooter counts under', () => {
       .toEqual({ 'no:Oslo': { ryde: 1 }, 'no:Lørenskog': { voi: 1 } });
   });
 
+  // Positions of 15 October 2026 that the towns' bounds gave to the second town, and their outlines give to the first.
+  it.each([
+    ['Roubaix, not Croix', 'lime_fr_lille', [50.68585, 3.15924], 'fr:Roubaix'],
+    ['Wattrelos, not Tourcoing', 'lime_fr_lille', [50.71135, 3.17584], 'fr:Wattrelos'],
+    ['Villeneuve-d’Ascq, not Wasquehal', 'lime_fr_lille', [50.65516, 3.15205], 'fr:Villeneuve-d\'Ascq'],
+    ['Lille Métropole around Tourcoing, not Tourcoing', 'lime_fr_lille', [50.72189, 3.12931], 'fr:Lille Métropole'],
+    ['Marly-le-Roi, not Le Port-Marly', 'lime_fr_paris_west', [48.87987, 2.10188], 'fr:Marly-le-Roi'],
+    ['Houilles, not Sartrouville', 'lime_fr_paris_west', [48.92991, 2.17495], 'fr:Houilles'],
+    ['La Celle-Saint-Cloud, not Bougival', 'dott_fr_versailles-grand-parc', [48.85917, 2.14785], 'fr:La Celle-Saint-Cloud'],
+    ['Mantes-la-Jolie, not Buchelay', 'voi_fr_422', [48.99993, 1.68442], 'fr:Mantes-la-Jolie'],
+  ] as const)('is %s', (_case, systemId, [lat, lng], town) => {
+    const feed = regional(systemId, [[lat, lng]]);
+    expect(countsOf([feed])).toEqual({ [town]: { [feed.provider]: 1 } });
+  });
+
   it('is Lisbon for scooters in west Lisbon, nearer Almada’s centre across the river', () => {
     expect(countsOf([
       regional('lime_pt_lisboa', [[38.712425, -9.201434], [38.704111, -9.174261]]),

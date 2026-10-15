@@ -77,15 +77,18 @@ ids in the file, read through Nominatim), simplified to within 20 m, 1,060
 points for 13 towns. Ashdod stands alone and needs none. A scooter inside a
 town's outline counts under that town; one outside every outline, under the
 nearest town whose box holds it, its own feed's first. A feed keeps no scooter
-inside the outline of a town it doesn't serve: Dott's scooters in Givat
-Shmuel, a town counted for Lime only, never count under Ramat Gan or Petah
-Tikva.
+inside the outline of a town where its operator runs no service: Dott's
+scooters in Givat Shmuel, a town counted for Lime only, never count under
+Ramat Gan or Petah Tikva.
 
 Replayed over every poll, against the municipal boundaries:
 
 - **Misnamed:** about 3 scooters a poll of 9,400, where the simplified
   outline and the boundary part: half of them within a metre of the
-  boundary, all within 36 m.
+  boundary, all within 36 m. On the evening of 15 October 2026, 25 and 21
+  in two polls, most of them Ramat Gan's under Givatayim, along the line
+  between them; 10 of the first poll's stood at one parking spot of Bird's
+  and Lime's, 8 to 17 m inside Ramat Gan.
 - **Dropped:** of the covered towns' scooters, 0.03 a poll (Dott, on Petah
   Tikva's boundary). The scooters of the towns left out are dropped by
   design: Dott's in Givat Shmuel (about 9 a poll), Kiryat Ono (about 3) and

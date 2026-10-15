@@ -2,7 +2,7 @@ import { COUNTRY_NAMES, COUNTRY_REGIONS, COUNTRY_SEARCH_WORDS, type CountryCode 
 import { COVERED_CITIES, isPointCovered, type CoveredCountry } from '@/lib/coveredCities';
 import { REGIONAL_SCOOTER_CITIES } from '@/lib/regionalScooterSystems';
 import { searchText, searchWords, TYPED_WORD } from '@/lib/searchText';
-import { outlineHolds } from '@/lib/townOutlines';
+import { outlinedTown } from '@/lib/townOutlines';
 import { haversineM } from '@/lib/geo';
 import { POSTCODE_AFTER_TOWN } from './addressFormats';
 
@@ -246,7 +246,7 @@ export function catalogTownName(name: string, country: string, lat: number, lng:
   const distance = (city: typeof CITIES[number]) => haversineM(lat, lng, city.center[0], city.center[1]);
   const city = named.length
     ? named.reduce((nearest, other) => distance(other) < distance(nearest) ? other : nearest)
-    : inCountry.find(other => outlineHolds(other.id, lat, lng));
+    : outlinedTown(inCountry, lat, lng);
   return city && townName(city);
 }
 

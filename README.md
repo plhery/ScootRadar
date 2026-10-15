@@ -152,15 +152,16 @@ changing the response contract.
    `CONTINENT_BOXES` in `src/app/api/geocode/route.ts`, once a country's
    `anchor` is in one.
 
-   Where towns touch, as in Gush Dan around Tel Aviv, a rectangle per town
-   can't tell a scooter's town: each box takes in parts of its neighbours.
-   List each town's municipal boundary in `data/town-outlines.json` (its
-   city id and its OpenStreetMap relation) and run
-   `node scripts/update-town-outlines.mjs`, which fetches and simplifies it.
-   A scooter inside a town's outline then counts under that town, and a feed
-   keeps no scooter inside the outline of a town of its country it doesn't
-   serve; the generator checks that each outline holds its own town's centre
-   and no other's.
+   Where towns touch, as in Gush Dan around Tel Aviv or around Lille, a
+   rectangle per town can't tell a scooter's town: each box takes in parts of
+   its neighbours. List each town's municipal boundary in
+   `data/town-outlines.json` (its city id and its OpenStreetMap relation) and
+   run `node scripts/update-town-outlines.mjs`, which fetches and simplifies
+   it. A scooter inside a town's outline then counts under that town, under
+   the smaller where two nest, as Roubaix's inside Lille Métropole's; and a
+   feed keeps no scooter inside the outline of a town of its country where
+   its operator runs no service. The generator checks that the smallest
+   outline holding each covered town's centre is that town's own.
 
    The generator fails when a city's merged bounds are wider than 150 km, as
    two towns of one name merged into one would be; a city that really is wider

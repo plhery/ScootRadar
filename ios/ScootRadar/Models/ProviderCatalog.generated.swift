@@ -1279,8 +1279,7 @@ enum ScooterCountryCatalog {
         ("UK: Beryl · CDLA-Permissive-2.0", "https://cdla.dev/permissive-2-0/"),
         ("UK: ONS boundaries · OGL v3.0", "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"),
         ("PT: DGT boundaries · CC BY 4.0", "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop"),
-        ("UA: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
-        ("IL: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
+        ("FR/UA/IL: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
     ]
 
     /// The countries whose totals, zoomed out, are their states' or provinces', and those by code.

@@ -88,7 +88,8 @@ describe('the countries of data/countries.json', () => {
       'CA: Bird, Neuron',
       'MobiData BW', 'BE: Pony · transportdata.be', 'NO: Entur AS · NLOD', 'NO: Kartverket boundaries · CC BY 4.0',
       'UK: Beryl · CDLA-Permissive-2.0', 'UK: ONS boundaries · OGL v3.0', 'PT: DGT boundaries · CC BY 4.0',
-      'UA: OpenStreetMap boundaries · ODbL', 'CA: City of Toronto · OGL Toronto',
+      // OpenStreetMap's boundaries, which several countries give, are credited once.
+      'FR/UA: OpenStreetMap boundaries · ODbL', 'CA: City of Toronto · OGL Toronto',
     ]);
   });
 
@@ -304,8 +305,14 @@ describe('the countries of data/countries.json', () => {
     expect(problem(outline('il:A', square(34.7, 34.8)), outline('il:A', square(34.7, 34.8))))
       .toBe('data/town-outlines.json: il:A is outlined twice');
     expect(problem(outline('il:A', [[32, 34.7], [32.1, 34.7]]))).toBe('data/town-outlines.json: il:A needs rings of [lat, lng] points');
-    expect(problem(outline('il:A', square(34.7, 34.9)), outline('il:B', square(34.8, 34.9))))
+    // A town inside another's outline, as Roubaix in Lille Métropole's: the smaller outline holding a centre is its own.
+    expect(problem(outline('il:A', square(34.7, 34.9)), outline('il:B', square(34.8, 34.9)))).toBeNull();
+    expect(problem(outline('il:A', square(34.7, 34.9)), outline('il:B', square(34.86, 34.9))))
       .toBe('data/town-outlines.json: the outline of il:A holds the centre of il:B');
+    expect(problem(outline('il:A', square(34.7, 34.86)), outline('il:B', square(34.8, 34.99))))
+      .toBe('data/town-outlines.json: the outline of il:A holds the centre of il:B');
+    expect(problem(outline('il:A', square(34.7, 34.9))))
+      .toBe('data/town-outlines.json: the outline of il:A holds the centre of il:B, which has none');
     expect(problem(outline('il:A', square(34.8, 34.9)))).toBe('data/town-outlines.json: the outline of il:A misses the centre of il:A');
     const real = readJson('data/town-outlines.json');
     expect(townOutlinesProblem(real, scooterCities(swissAreas, catalogSystems(countries.countries, readJson), countries.countries))).toBeNull();

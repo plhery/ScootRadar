@@ -296,9 +296,17 @@ function ringHolds(ring, [lat, lng]) {
   return inside;
 }
 
+// Twice the area of a ring of [lat, lng] points, in square degrees: enough to tell the larger of two outlines.
+function ringSize(ring) {
+  let sum = 0;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) sum += (ring[j][1] - ring[i][1]) * (ring[j][0] + ring[i][0]);
+  return Math.abs(sum) * Math.cos((ring[0][0] * Math.PI) / 180);
+}
+
 /**
  * Why data/town-outlines.json is wrong, or null: each outline is a covered city's, given once,
- * in rings of [lat, lng] points; it holds its city's centre and no other outlined city's.
+ * in rings of [lat, lng] points; the smallest outline holding a covered city's centre is that
+ * city's own, so an outline may hold another only around it, as Lille Métropole's holds Roubaix's.
  */
 export function townOutlinesProblem({ towns }, cities) {
   const byId = new Map(cities.map(city => [city.id, city]));
@@ -313,12 +321,18 @@ export function townOutlinesProblem({ towns }, cities) {
       return `data/town-outlines.json: ${town.city} needs rings of [lat, lng] points`;
     }
   }
-  for (const town of towns) {
-    for (const other of towns) {
-      const holds = town.areas.some(area => ringHolds(area, byId.get(other.city).center));
-      if (holds !== (town === other)) {
-        return `data/town-outlines.json: the outline of ${town.city} ${holds ? 'holds' : 'misses'} the centre of ${other.city}`;
-      }
+  const size = town => town.areas.reduce((sum, area) => sum + ringSize(area), 0);
+  const bySize = [...towns].sort((a, b) => size(a) - size(b));
+  for (const city of cities) {
+    const holder = bySize.find(town => town.areas.some(area => ringHolds(area, city.center)));
+    const own = towns.find(town => town.city === city.id);
+    if (own && holder !== own) {
+      return holder
+        ? `data/town-outlines.json: the outline of ${holder.city} holds the centre of ${city.id}`
+        : `data/town-outlines.json: the outline of ${city.id} misses the centre of ${city.id}`;
+    }
+    if (!own && holder && holder.city.split(':')[0] === city.id.split(':')[0]) {
+      return `data/town-outlines.json: the outline of ${holder.city} holds the centre of ${city.id}, which has none`;
     }
   }
   return null;
@@ -326,7 +340,8 @@ export function townOutlinesProblem({ towns }, cities) {
 
 /**
  * One line per continent for the GBFS feeds credited together, "DE/IT/…/UA: Dott, Bolt, …",
- * then each country's own links, in the order of data/countries.json.
+ * then each country's own links, in the order of data/countries.json. Links that countries
+ * share are credited once, where the last gives it: "FR/…/IL: OpenStreetMap boundaries · ODbL".
  */
 export function countryCreditLinks(countries) {
   const lines = CONTINENTS.flatMap(continent => {
@@ -336,7 +351,14 @@ export function countryCreditLinks(countries) {
     return [{ label: `${crediting.map(country => country.credits.code ?? country.code).join('/')}: ${names.join(', ')}`,
       href: 'https://github.com/MobilityData/gbfs' }];
   });
-  return [...lines, ...countries.flatMap(country => country.credits?.links ?? [])];
+  const links = [];
+  for (const link of countries.flatMap(country => country.credits?.links ?? [])) {
+    const [, code, what] = link.label.match(/^([A-Z]{2}): (.+)$/) ?? [];
+    const shared = what ? links.findIndex(other => other.what === what && other.href === link.href) : -1;
+    const [entry] = shared >= 0 ? links.splice(shared, 1) : [{ ...link, codes: [], what }];
+    links.push({ ...entry, codes: code ? [...entry.codes, code] : entry.codes });
+  }
+  return [...lines, ...links.map(({ label, href, codes, what }) => ({ label: what ? `${codes.join('/')}: ${what}` : label, href }))];
 }
 
 // A note as comment lines of at most 100 characters.
