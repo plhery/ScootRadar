@@ -53,26 +53,26 @@ describe('the language guessed beside the page’s', () => {
 
   it('is the first the browser asks for that is not the page’s', () => {
     expect(guessLanguage({ page: 'en', available, acceptLanguage: 'de-CH,de;q=0.9,en;q=0.8', country: 'CH', region: 'VD' }))
-      .toEqual({ locale: 'de', reason: 'browser' });
+      .toBe('de');
     expect(guessLanguage({ page: 'de', available, acceptLanguage: 'de-CH,de;q=0.9,en;q=0.8', country: 'CH', region: 'ZH' }))
-      .toEqual({ locale: 'en', reason: 'browser' });
+      .toBe('en');
     expect(guessLanguage({ page: 'fr', available, acceptLanguage: 'it-IT,it,en', country: 'FR' }))
-      .toEqual({ locale: 'it', reason: 'browser' });
+      .toBe('it');
   });
 
   it('is spoken where the visitor is, when the browser asks for nothing else the site has', () => {
     expect(guessLanguage({ page: 'en', available, acceptLanguage: 'en-GB,en', country: 'CH', region: 'VD' }))
-      .toEqual({ locale: 'fr', reason: 'place' });
+      .toBe('fr');
     expect(guessLanguage({ page: 'en', available, acceptLanguage: 'ja-JP,ja', country: 'CH', region: 'ZH' }))
-      .toEqual({ locale: 'de', reason: 'place' });
+      .toBe('de');
     expect(guessLanguage({ page: 'en', available, acceptLanguage: 'en-US', country: 'NO' }))
-      .toEqual({ locale: 'nb', reason: 'place' });
+      .toBe('nb');
   });
 
   it('is English when nothing else tells, unless the page is English', () => {
     expect(guessLanguage({ page: 'pt', available, acceptLanguage: 'pt-PT,pt', country: 'PT' }))
-      .toEqual({ locale: 'en', reason: 'default' });
-    expect(guessLanguage({ page: 'it', available })).toEqual({ locale: 'en', reason: 'default' });
+      .toBe('en');
+    expect(guessLanguage({ page: 'it', available })).toBe('en');
     expect(guessLanguage({ page: 'en', available, acceptLanguage: 'ja-JP,ja', country: 'JP' })).toBeUndefined();
     expect(guessLanguage({ page: 'en', available })).toBeUndefined();
   });
@@ -80,7 +80,7 @@ describe('the language guessed beside the page’s', () => {
   it('is one the page is written in', () => {
     const guide = ['en', 'de', 'it', 'nl'] as const;
     expect(guessLanguage({ page: 'en', available: guide, acceptLanguage: 'fr-CH,fr', country: 'CH', region: 'GR' }))
-      .toEqual({ locale: 'de', reason: 'place' });
+      .toBe('de');
     expect(guessLanguage({ page: 'de', available: ['de', 'fr', 'it', 'nl'] as const, acceptLanguage: 'ja' })).toBeUndefined();
   });
 });

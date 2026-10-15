@@ -121,8 +121,6 @@ export interface LandingCopy {
     languages: string;
     /** The third seat of the languages, which opens the list of all of them. */
     others: string;
-    /** Why the second seat is the language it is, written under it in the list. */
-    guessed: { browser: string; place: string; default: string };
   };
   openMap: string;
   iphoneApp: string;
@@ -214,7 +212,6 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       cities: 'Cities',
       languages: 'Language',
       others: 'Others',
-      guessed: { browser: 'Your browser', place: 'Where you are', default: 'Default' },
     },
     openMap: 'Open the map',
     iphoneApp: 'Get the iPhone app',
@@ -345,7 +342,6 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       cities: 'Städte',
       languages: 'Sprache',
       others: 'Weitere',
-      guessed: { browser: 'Dein Browser', place: 'Wo du bist', default: 'Standard' },
     },
     openMap: 'Karte öffnen',
     iphoneApp: 'iPhone-App laden',
@@ -476,7 +472,6 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       cities: 'Villes',
       languages: 'Langue',
       others: 'Autres',
-      guessed: { browser: 'Votre navigateur', place: 'Là où vous êtes', default: 'Par défaut' },
     },
     openMap: 'Ouvrir la carte',
     iphoneApp: 'Télécharger l’app iPhone',
@@ -607,7 +602,6 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       cities: 'Città',
       languages: 'Lingua',
       others: 'Altre',
-      guessed: { browser: 'Il tuo browser', place: 'Dove ti trovi', default: 'Predefinita' },
     },
     openMap: 'Apri la mappa',
     iphoneApp: 'Scarica l’app per iPhone',
@@ -738,7 +732,6 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       cities: 'Byer',
       languages: 'Språk',
       others: 'Andre',
-      guessed: { browser: 'Nettleseren din', place: 'Der du er', default: 'Standard' },
     },
     openMap: 'Åpne kartet',
     iphoneApp: 'Last ned iPhone-appen',
@@ -869,7 +862,6 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       cities: 'Steden',
       languages: 'Taal',
       others: 'Andere',
-      guessed: { browser: 'Je browser', place: 'Waar je bent', default: 'Standaard' },
     },
     openMap: 'Open de kaart',
     iphoneApp: 'Download de iPhone-app',
@@ -999,7 +991,6 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       cities: 'Cidades',
       languages: 'Idioma',
       others: 'Outros',
-      guessed: { browser: 'O seu navegador', place: 'Onde está', default: 'Predefinição' },
     },
     openMap: 'Abrir o mapa',
     iphoneApp: 'Descarregar a app para iPhone',
@@ -1129,7 +1120,6 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       cities: 'Ciudades',
       languages: 'Idioma',
       others: 'Otros',
-      guessed: { browser: 'Tu navegador', place: 'Donde estás', default: 'Predeterminado' },
     },
     openMap: 'Abrir el mapa',
     iphoneApp: 'Descargar la app para iPhone',
@@ -1259,7 +1249,6 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       cities: 'Staðir',
       languages: 'Tungumál',
       others: 'Önnur',
-      guessed: { browser: 'Vafrinn þinn', place: 'Þar sem þú ert', default: 'Sjálfgefið' },
     },
     openMap: 'Opna kortið',
     iphoneApp: 'Sækja iPhone-appið',

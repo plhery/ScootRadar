@@ -454,34 +454,6 @@ img {
   color: var(--quiet);
 }
 
-/* The language guessed, with why in place of its name: a blue dot, then "Your browser". */
-.langs-item-why {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: var(--focus);
-}
-
-.langs-item-why:not([data-reason]),
-.langs-item-why[data-reason] + .langs-item-sub {
-  display: none;
-}
-
-.langs-item-why::before {
-  content: '';
-  flex: none;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: currentColor;
-  box-shadow: 0 0 8px currentColor;
-}
-
-.langs-item-why::after {
-  content: attr(data-reason);
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .langs-menu:popover-open {
     animation: langs-menu-in 0.2s var(--ease-out);

@@ -5,14 +5,6 @@
 // from what their browser asks for and where they are. It has nothing to
 // import, so the Worker carries only this.
 
-/** Why a language was guessed: the visitor's browser asks for it, it is spoken where they are, or neither told us anything. */
-export type GuessReason = 'browser' | 'place' | 'default';
-
-export interface LanguageGuess<L extends string> {
-  locale: L;
-  reason: GuessReason;
-}
-
 /**
  * The languages a browser asks for, most wanted first, as codes without their
  * region: "de-CH,de;q=0.9,en;q=0.8" is de, de, en. Norwegian is asked for as
@@ -133,16 +125,11 @@ export function guessLanguage<L extends string>({ page, available, acceptLanguag
   acceptLanguage?: string | null;
   country?: string | null;
   region?: string | null;
-}): LanguageGuess<L> | undefined {
+}): L | undefined {
   const offered = (language: string): language is L => language !== page && (available as readonly string[]).includes(language);
 
-  const asked = browserLanguages(acceptLanguage).find(offered);
-  if (asked) return { locale: asked, reason: 'browser' };
-
-  const spoken = placeLanguages(country, region).find(offered);
-  if (spoken) return { locale: spoken, reason: 'place' };
-
   const english: string = 'en';
-  if (offered(english)) return { locale: english, reason: 'default' };
-  return undefined;
+  return browserLanguages(acceptLanguage).find(offered)
+    ?? placeLanguages(country, region).find(offered)
+    ?? (offered(english) ? english : undefined);
 }

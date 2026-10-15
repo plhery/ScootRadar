@@ -27,7 +27,6 @@ describe('the languages in the bar of the site', () => {
     const group = bar('fr').querySelector('.langs')!;
     expect(group).toHaveAttribute('data-guess-page', 'fr');
     expect(group).toHaveAttribute('data-guess-from', 'en de it nl nb pt es is');
-    expect(group).toHaveAttribute('data-reason-browser', 'Votre navigateur');
     expect([...group.querySelectorAll('[data-guess-seat]')].map(seat => seat.getAttribute('data-guess-seat')))
       .toEqual(['en', 'de', 'it', 'nl', 'nb', 'pt', 'es', 'is']);
   });
@@ -42,10 +41,10 @@ describe('the languages in the bar of the site', () => {
     expect(items.map(item => item.querySelector('.langs-item-name')?.textContent))
       .toEqual(['Deutsch', 'English', 'Español', 'Français', 'Íslenska', 'Italiano', 'Nederlands', 'Norsk', 'Português']);
     expect(items[0]).toHaveAttribute('aria-current', 'page');
-    expect(items[1].querySelector('.langs-item-why')).toHaveAttribute('data-reason', 'Standard');
+    expect(items[0].querySelector('.langs-item-sub')).toBeNull();
+    expect(items[1].querySelector('.langs-item-sub')).toHaveTextContent('Englisch');
     expect(items[3].querySelector('.langs-item-sub')).toHaveTextContent('Französisch');
     expect(items[7].querySelector('.langs-item-sub')).toHaveTextContent('Norwegisch');
-    expect(list.querySelectorAll('[data-reason]')).toHaveLength(1);
   });
 
   it('seat each of three languages, with no list', () => {

@@ -99,13 +99,10 @@ function LanguageSeats({ locale, languages }: { locale: LandingLocale; languages
       aria-label={copy.nav.languages}
       data-guess-page={locale}
       data-guess-from={others.map(language => language.locale).join(' ')}
-      data-reason-browser={copy.nav.guessed.browser}
-      data-reason-place={copy.nav.guessed.place}
-      data-reason-default={copy.nav.guessed.default}
     >
       <Seat language={current} current />
       {others.map(language => (
-        <Seat key={language.locale} language={language} guessed hidden={language.locale !== guess?.locale} />
+        <Seat key={language.locale} language={language} guessed hidden={language.locale !== guess} />
       ))}
       <button type="button" className="seat seat-more" popoverTarget={LANGUAGE_LIST}>
         <Icon name="globe" size={16} strokeWidth={2} />
@@ -125,18 +122,9 @@ function LanguageSeats({ locale, languages }: { locale: LandingLocale; languages
                   aria-current={isCurrent ? 'page' : undefined}
                 >
                   <span className="langs-item-name">{LANGUAGE_NAMES[language.locale]}</span>
-                  {!isCurrent && (
-                    <>
-                      <span
-                        className="langs-item-why"
-                        lang={locale}
-                        data-guess-reason={language.locale}
-                        data-reason={language.locale === guess?.locale ? copy.nav.guessed[guess.reason] : undefined}
-                      />
-                      <span className="langs-item-sub" lang={locale}>{languageNameIn(locale, language.locale)}</span>
-                    </>
-                  )}
-                  {isCurrent && <Icon name="check" size={18} strokeWidth={2.4} />}
+                  {isCurrent
+                    ? <Icon name="check" size={18} strokeWidth={2.4} />
+                    : <span className="langs-item-sub" lang={locale}>{languageNameIn(locale, language.locale)}</span>}
                 </a>
               </li>
             );

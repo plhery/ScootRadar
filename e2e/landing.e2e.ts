@@ -111,18 +111,13 @@ test('the landing page changes language from its bar and stays where it is', asy
 test.describe('in an Italian browser', () => {
   test.use({ locale: 'it-IT' });
 
-  test('the second seat is the language of the browser, and the list says so', async ({ page }) => {
+  test('the second seat is the language of the browser', async ({ page }) => {
     // The page as built offers English; the Worker offers this visitor Italian instead.
     await page.goto('/fr');
     const langue = page.getByRole('group', { name: 'Langue' });
     await expect(langue.getByRole('link')).toHaveCount(2);
     await expect(langue.getByRole('link').nth(1)).toHaveAccessibleName('Italiano');
     await expect(langue.getByRole('link').nth(1)).toHaveAttribute('href', '/it');
-
-    await langue.getByRole('button', { name: 'Autres' }).click();
-    const list = page.locator('#languages');
-    await expect(list.locator('a[hreflang="it"] .langs-item-why')).toHaveAttribute('data-reason', 'Votre navigateur');
-    await expect(list.locator('[data-reason]')).toHaveCount(1);
   });
 });
 
