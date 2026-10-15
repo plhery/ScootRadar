@@ -86,6 +86,7 @@ import kosEn from './en/e-scooters-kos';
 import rigaEn from './en/e-scooters-riga';
 import fuerteventuraEn from './en/e-scooters-fuerteventura';
 import fuerteventuraEs from './es/alquiler-patinete-electrico-fuerteventura';
+import torreviejaEs from './es/alquiler-patinete-electrico-torrevieja';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -169,6 +170,7 @@ export const GUIDES: readonly Guide[] = [
   howToRentEs,
   tenerifeEs,
   fuerteventuraEs,
+  torreviejaEs,
   icelandicRulesIs,
   howToRentIs,
   reykjavikIs,
