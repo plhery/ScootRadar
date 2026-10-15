@@ -167,7 +167,8 @@ Los Angeles, a scooter inside it counts under that town first, under the
 smaller of two outlines that nest. The outlines are OpenStreetMap's (ODbL),
 Kartverket's for Norway (CC BY 4.0), the ONS's for Bournemouth, Christchurch
 and Poole (OGL v3.0) and the Census Bureau's for American towns (public
-domain), simplified to within 20 m; the credits link the licences. On the
+domain), simplified to within 20 m, Israel's to within 10 m; the credits
+link the licences. On the
 evening of 15 October 2026, over two polls of every feed, they cut the
 scooters counted under the wrong town from about 950 a poll to about 70,
 most of those in Rhodes, Gush Dan and Bath, where no outline was added or
@@ -677,7 +678,7 @@ Each feed covers several towns, and their bounds overlap, so each town's
 municipal boundary decides which town a scooter counts under. The boundaries
 are OpenStreetMap's, read through Nominatim, © OpenStreetMap contributors,
 under the [ODbL](https://opendatacommons.org/licenses/odbl/); simplified to
-within 20 m in `data/town-outlines.json`, they stay under the ODbL, and the
+within 10 m in `data/town-outlines.json`, they stay under the ODbL, and the
 credits link it.
 
 Bird's feed points to its 2018 GBFS Data License Agreement, whose PDF answers

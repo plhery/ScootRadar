@@ -73,7 +73,7 @@ the wrong town, and even the best boxes found named 368.
 
 So each town's municipal boundary is in
 [`town-outlines.json`](../data/town-outlines.json): OpenStreetMap's (relation
-ids in the file, read through Nominatim), simplified to within 20 m, 1,060
+ids in the file, read through Nominatim), simplified to within 10 m, 1,443
 points for 13 towns. Ashdod stands alone and needs none. A scooter inside a
 town's outline counts under that town; one outside every outline, under the
 nearest town whose box holds it, its own feed's first. A feed keeps no scooter
@@ -88,7 +88,11 @@ Replayed over every poll, against the municipal boundaries:
   boundary, all within 36 m. On the evening of 15 October 2026, 25 and 21
   in two polls, most of them Ramat Gan's under Givatayim, along the line
   between them; 10 of the first poll's stood at one parking spot of Bird's
-  and Lime's, 8 to 17 m inside Ramat Gan.
+  and Lime's, 8 to 17 m inside Ramat Gan. So since 16 October 2026 Israel's
+  outlines are simplified to within 10 m, not the 20 m of other countries'.
+  In four polls that night, the scooters inside a town's boundary but not
+  inside its outline, or inside another's, fell from 19 to 22 a poll to 8
+  to 11, for 383 more points (12 KB more in a file only the server reads).
 - **Dropped:** of the covered towns' scooters, 0.03 a poll (Dott, on Petah
   Tikva's boundary). The scooters of the towns left out are dropped by
   design: Dott's in Givat Shmuel (about 9 a poll), Kiryat Ono (about 3) and
