@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   catalogSystems, cityKm, countryCreditLinks, curfewZoneProblem, scooterCities, seasonalProblem, swiftCityPauses, swiftCountries,
-  timeZoneProblem, typescriptCatalogs, typescriptCountries, validateCityWidths, validateCountries,
+  timeZoneProblem, townOutlinesProblem, typescriptCatalogs, typescriptCountries, validateCityWidths, validateCountries,
 } from './country-catalog.mjs';
 
 const readJson = path => JSON.parse(readFileSync(path, 'utf8'));
@@ -292,6 +292,23 @@ describe('the countries of data/countries.json', () => {
       .toBe('The night ban of Toronto is in America/Chicago, and the towns around it in America/Toronto');
     // Away from every town, there is none to compare with.
     expect(curfewZoneProblem({ ...curfew, timeZone: 'America/Chicago', areas: [[[10, 10], [10.1, 10], [10, 10.1]]] }, canadianCatalog.systems)).toBeNull();
+  });
+
+  it('checks the town outlines against the towns they outline', () => {
+    const cities = [{ id: 'il:A', center: [32.05, 34.75] }, { id: 'il:B', center: [32.05, 34.85] }];
+    const square = (west, east) => [[32, west], [32.1, west], [32.1, east], [32, east]];
+    const outline = (city, ring) => ({ city, areas: [ring] });
+    const problem = (...towns) => townOutlinesProblem({ towns }, cities);
+    expect(problem(outline('il:A', square(34.7, 34.8)), outline('il:B', square(34.8, 34.9)))).toBeNull();
+    expect(problem(outline('il:C', square(34.7, 34.8)))).toBe('data/town-outlines.json: il:C is no covered city');
+    expect(problem(outline('il:A', square(34.7, 34.8)), outline('il:A', square(34.7, 34.8))))
+      .toBe('data/town-outlines.json: il:A is outlined twice');
+    expect(problem(outline('il:A', [[32, 34.7], [32.1, 34.7]]))).toBe('data/town-outlines.json: il:A needs rings of [lat, lng] points');
+    expect(problem(outline('il:A', square(34.7, 34.9)), outline('il:B', square(34.8, 34.9))))
+      .toBe('data/town-outlines.json: the outline of il:A holds the centre of il:B');
+    expect(problem(outline('il:A', square(34.8, 34.9)))).toBe('data/town-outlines.json: the outline of il:A misses the centre of il:A');
+    const real = readJson('data/town-outlines.json');
+    expect(townOutlinesProblem(real, scooterCities(swissAreas, catalogSystems(countries.countries, readJson), countries.countries))).toBeNull();
   });
 
   it('keeps each system in the country of its catalog', () => {

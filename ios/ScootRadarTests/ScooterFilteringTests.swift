@@ -588,11 +588,11 @@ final class ScooterFilteringTests: XCTestCase {
         // boundaries of the night bans included: Switzerland's, France's, each country's
         // own from data/countries.json, then the search's and Lille's.
         XCTAssertEqual(sources.count, 5 + ScooterCountryCatalog.credits.count)
-        XCTAssertEqual(ScooterCountryCatalog.credits.count, 11)
+        XCTAssertEqual(ScooterCountryCatalog.credits.count, 12)
         XCTAssertEqual(Set(sources.map(\.title)).count, sources.count)
         XCTAssertEqual(sources[2].title.prefix(3), "DE/")
         XCTAssertTrue(sources.contains { $0.title == "UA: OpenStreetMap boundaries · ODbL" })
-        XCTAssertTrue(sources.contains { $0.title == "AE/SA: Dott, SAHAM" })
+        XCTAssertTrue(sources.contains { $0.title == "AE/SA/IL: Dott, SAHAM, Bird, Lime" })
         XCTAssertTrue(sources.allSatisfy { $0.url.scheme == "https" && !$0.title.isEmpty })
         XCTAssertTrue(sources.contains { $0.url.host() == "data.lillemetropole.fr" })
         // Searched places come from Geoapify, whose free plan asks for its name to be shown,

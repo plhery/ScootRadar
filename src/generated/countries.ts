@@ -3,11 +3,11 @@
 // countries' names or credits don't load every city.
 
 /** Every country with scooter data, in the order of data/countries.json. */
-export const COUNTRY_CODES = ["CH", "FR", "DE", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA"] as const;
+export const COUNTRY_CODES = ["CH", "FR", "DE", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL"] as const;
 export type CountryCode = typeof COUNTRY_CODES[number];
 
 /** The countries with a catalog of their own, data/<adjective>-scooter-feeds.json: all but Switzerland. */
-export type CatalogCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR' | 'UA' | 'US' | 'CA' | 'AE' | 'SA';
+export type CatalogCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR' | 'UA' | 'US' | 'CA' | 'AE' | 'SA' | 'IL';
 
 export type CountryNameLanguage = 'en' | 'de' | 'fr' | 'it' | 'nl' | 'nb' | 'pt' | 'es' | 'is';
 
@@ -37,6 +37,7 @@ export const COUNTRY_SOURCES = {
   CA: 'canada',
   AE: 'emirates',
   SA: 'saudiarabia',
+  IL: 'israel',
 } as const;
 
 export const COUNTRY_CONTINENTS: Record<CountryCode, Continent> = {
@@ -63,6 +64,7 @@ export const COUNTRY_CONTINENTS: Record<CountryCode, Continent> = {
   CA: 'north-america',
   AE: 'asia',
   SA: 'asia',
+  IL: 'asia',
 };
 
 /**
@@ -97,6 +99,7 @@ export const COUNTRY_NAMES: Record<CountryCode, Readonly<Record<CountryNameLangu
   CA: { en: "Canada", de: "Kanada", fr: "Canada", it: "Canada", nl: "Canada", nb: "Canada", pt: "Canadá", es: "Canadá", is: "Kanada" },
   AE: { en: "United Arab Emirates", de: "Vereinigte Arabische Emirate", fr: "Émirats arabes unis", it: "Emirati Arabi Uniti", nl: "Verenigde Arabische Emiraten", nb: "De forente arabiske emirater", pt: "Emirados Árabes Unidos", es: "Emiratos Árabes Unidos", is: "Sameinuðu arabísku furstadæmin" },
   SA: { en: "Saudi Arabia", de: "Saudi-Arabien", fr: "Arabie saoudite", it: "Arabia Saudita", nl: "Saoedi-Arabië", nb: "Saudi-Arabia", pt: "Arábia Saudita", es: "Arabia Saudí", is: "Sádi-Arabía" },
+  IL: { en: "Israel", de: "Israel", fr: "Israël", it: "Israele", nl: "Israël", nb: "Israel", pt: "Israel", es: "Israel", is: "Ísrael" },
 };
 
 /** Typed beside a city to say which one is meant: "Lindau Deutschland". */
@@ -124,6 +127,7 @@ export const COUNTRY_SEARCH_WORDS: Record<CountryCode, readonly string[]> = {
   CA: ["canada", "kanada"],
   AE: ["uae", "emirates", "united arab emirates", "vereinigte arabische emirate", "emirats arabes unis", "emirati arabi uniti", "verenigde arabische emiraten", "de forente arabiske emirater", "emirados arabes unidos", "emiratos arabes unidos", "sameinudu arabisku furstadaemin", "الامارات", "الامارات العربيه المتحده"],
   SA: ["saudi arabia", "saudi", "ksa", "saudi arabien", "arabie saoudite", "arabia saudita", "saoedi arabie", "arabia saudi", "sadi arabia", "السعوديه", "المملكه العربيه السعوديه"],
+  IL: ["israel", "israele", "ישראל", "اسراييل"],
 };
 
 /** Where a country's total stands, zoomed out: inland and about the middle of the country. */
@@ -170,6 +174,9 @@ export const COUNTRY_ANCHORS: Record<CountryCode, readonly [number, number]> = {
   AE: [24.7, 54.9],
   // In Najd, south of Afif: halfway between Riyadh and Jeddah, the two towns with scooters.
   SA: [23.2, 42.9],
+  // In Ramat Gan, east of Tel Aviv: in Gush Dan, where nearly all of Israel's scooters are, inside
+  // its pre-1967 lines.
+  IL: [32.07, 34.82],
 };
 
 /** A state or province of a country that has them. */
@@ -298,19 +305,20 @@ export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {
   CA: ["ca:bc:Vancouver", "ca:ab:Calgary", "ca:ab:Edmonton", "ca:on:Ottawa", "ca:bc:Kelowna", "ca:on:Hamilton"],
   AE: ["ae:Dubai", "ae:Abu Dhabi"],
   SA: ["sa:Riyadh", "sa:Jeddah"],
+  IL: ["il:Tel Aviv", "il:Ramat Gan", "il:Petah Tikva", "il:Ashdod", "il:Holon", "il:Herzliya"],
 };
 
 /** The order of the countries on the landing page. */
-export const LANDING_COUNTRY_ORDER: readonly CountryCode[] = ["CH", "DE", "FR", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA"];
+export const LANDING_COUNTRY_ORDER: readonly CountryCode[] = ["CH", "DE", "FR", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL"];
 
 /** Whose data the map shows, country by country, for the X-Mobility-Data-Source header. */
-export const COUNTRY_DATA_ATTRIBUTION = "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW; Italy: Bird, Elerent GBFS; Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Portugal: Bird, Lime GBFS; Spain: Bird, Hopp, Hoppy GBFS; Iceland: Hopp GBFS; Sweden: Lime, Hopp GBFS; Latvia: Ride Mobility GBFS; Poland: Dott, Hopp GBFS; Hungary: Hopp GBFS; Greece: Hopp, Hoppy GBFS; Cyprus: Hopp GBFS; Finland: Hopp GBFS; Croatia: Hoppy GBFS; Ukraine: 3electra GBFS; United States: Bird, Bolt, Lime, Veo, Spin, Lyft GBFS; Canada: Bird, Lime GBFS; United Arab Emirates: Dott GBFS; Saudi Arabia: SAHAM, Dott GBFS";
+export const COUNTRY_DATA_ATTRIBUTION = "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW; Italy: Bird, Elerent GBFS; Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Portugal: Bird, Lime GBFS; Spain: Bird, Hopp, Hoppy GBFS; Iceland: Hopp GBFS; Sweden: Lime, Hopp GBFS; Latvia: Ride Mobility GBFS; Poland: Dott, Hopp GBFS; Hungary: Hopp GBFS; Greece: Hopp, Hoppy GBFS; Cyprus: Hopp GBFS; Finland: Hopp GBFS; Croatia: Hoppy GBFS; Ukraine: 3electra GBFS; United States: Bird, Bolt, Lime, Veo, Spin, Lyft GBFS; Canada: Bird, Lime GBFS; United Arab Emirates: Dott GBFS; Saudi Arabia: SAHAM, Dott GBFS; Israel: Bird, Dott, Lime GBFS";
 
 /** The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences. */
 export const COUNTRY_CREDIT_LINKS: readonly { label: string; href: string }[] = [
   { label: "DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio, Bird, Elerent, Hoppy, Ride Mobility, 3electra", href: "https://github.com/MobilityData/gbfs" },
   { label: "US/CA: Bird, Bolt, Lime, Veo, Spin, Lyft", href: "https://github.com/MobilityData/gbfs" },
-  { label: "AE/SA: Dott, SAHAM", href: "https://github.com/MobilityData/gbfs" },
+  { label: "AE/SA/IL: Dott, SAHAM, Bird, Lime", href: "https://github.com/MobilityData/gbfs" },
   { label: "MobiData BW", href: "https://www.mobidata-bw.de/" },
   { label: "BE: Pony · transportdata.be", href: "https://transportdata.be/dataset/pony_charleroi" },
   { label: "NO: Entur AS · NLOD", href: "https://data.norge.no/nlod/en/2.0" },
@@ -319,4 +327,5 @@ export const COUNTRY_CREDIT_LINKS: readonly { label: string; href: string }[] = 
   { label: "UK: ONS boundaries · OGL v3.0", href: "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" },
   { label: "PT: DGT boundaries · CC BY 4.0", href: "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop" },
   { label: "UA: OpenStreetMap boundaries · ODbL", href: "https://opendatacommons.org/licenses/odbl/" },
+  { label: "IL: OpenStreetMap boundaries · ODbL", href: "https://opendatacommons.org/licenses/odbl/" },
 ];

@@ -1,0 +1,564 @@
+{
+  "verifiedOn": "2026-10-15",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "bird_il_israel",
+      "country": "IL",
+      "provider": "bird",
+      "city": "Gush Dan / Ashdod",
+      "timeZone": "Asia/Jerusalem",
+      "center": [
+        32.0853,
+        34.7818
+      ],
+      "bounds": {
+        "south": 31.7561,
+        "north": 32.2119,
+        "west": 34.603,
+        "east": 34.8758
+      },
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/israel/gbfs.json",
+      "areas": [
+        {
+          "city": "Tel Aviv",
+          "center": [
+            32.0853,
+            34.7818
+          ],
+          "bounds": {
+            "south": 32.0207,
+            "north": 32.1556,
+            "west": 34.7309,
+            "east": 34.8589
+          },
+          "aliases": [
+            "Tel Aviv-Yafo",
+            "Tel Aviv-Jaffa",
+            "Jaffa",
+            "Yafo",
+            "TLV",
+            "תל אביב",
+            "תל אביב-יפו",
+            "יפו",
+            "تل أبيب",
+            "يافا"
+          ]
+        },
+        {
+          "city": "Ramat Gan",
+          "center": [
+            32.0687,
+            34.8247
+          ],
+          "bounds": {
+            "south": 32.0318,
+            "north": 32.1143,
+            "west": 34.7889,
+            "east": 34.8645
+          },
+          "aliases": [
+            "רמת גן"
+          ]
+        },
+        {
+          "city": "Holon",
+          "center": [
+            32.0193,
+            34.7804
+          ],
+          "bounds": {
+            "south": 31.9809,
+            "north": 32.0474,
+            "west": 34.7451,
+            "east": 34.8231
+          },
+          "aliases": [
+            "חולון"
+          ]
+        },
+        {
+          "city": "Bat Yam",
+          "center": [
+            32.0155,
+            34.7505
+          ],
+          "bounds": {
+            "south": 31.9838,
+            "north": 32.0423,
+            "west": 34.7246,
+            "east": 34.7721
+          },
+          "aliases": [
+            "בת ים"
+          ]
+        },
+        {
+          "city": "Givatayim",
+          "center": [
+            32.073,
+            34.8113
+          ],
+          "bounds": {
+            "south": 32.0498,
+            "north": 32.0907,
+            "west": 34.7877,
+            "east": 34.8313
+          },
+          "aliases": [
+            "Givataim",
+            "גבעתיים"
+          ]
+        },
+        {
+          "city": "Herzliya",
+          "center": [
+            32.1656,
+            34.8469
+          ],
+          "bounds": {
+            "south": 32.1354,
+            "north": 32.2119,
+            "west": 34.7774,
+            "east": 34.875
+          },
+          "aliases": [
+            "Herzliyya",
+            "Herzlia",
+            "הרצליה"
+          ]
+        },
+        {
+          "city": "Rishon LeZion",
+          "center": [
+            31.9636,
+            34.8101
+          ],
+          "bounds": {
+            "south": 31.9349,
+            "north": 32.0162,
+            "west": 34.7203,
+            "east": 34.8567
+          },
+          "aliases": [
+            "Rishon le-Zion",
+            "Rishon Letzion",
+            "ראשון לציון"
+          ]
+        },
+        {
+          "city": "Ashdod",
+          "center": [
+            31.7977,
+            34.653
+          ],
+          "bounds": {
+            "south": 31.7561,
+            "north": 31.8442,
+            "west": 34.603,
+            "east": 34.683
+          },
+          "aliases": [
+            "אשדוד"
+          ]
+        },
+        {
+          "city": "Bnei Brak",
+          "center": [
+            32.0874,
+            34.8324
+          ],
+          "bounds": {
+            "south": 32.0604,
+            "north": 32.1172,
+            "west": 34.8112,
+            "east": 34.8588
+          },
+          "aliases": [
+            "בני ברק"
+          ]
+        },
+        {
+          "city": "Ramat HaSharon",
+          "center": [
+            32.1431,
+            34.8381
+          ],
+          "bounds": {
+            "south": 32.1109,
+            "north": 32.1674,
+            "west": 34.7854,
+            "east": 34.8758
+          },
+          "aliases": [
+            "Ramat ha-Sharon",
+            "רמת השרון"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dott_il_tel_aviv",
+      "country": "IL",
+      "provider": "dott",
+      "city": "Gush Dan",
+      "timeZone": "Asia/Jerusalem",
+      "center": [
+        32.0853,
+        34.7818
+      ],
+      "bounds": {
+        "south": 31.9853,
+        "north": 32.1879,
+        "west": 34.723,
+        "east": 34.9304
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/tel-aviv/gbfs.json",
+      "areas": [
+        {
+          "city": "Tel Aviv",
+          "center": [
+            32.0853,
+            34.7818
+          ],
+          "bounds": {
+            "south": 32.0207,
+            "north": 32.1556,
+            "west": 34.7289,
+            "east": 34.8625
+          },
+          "aliases": [
+            "Tel Aviv-Yafo",
+            "Tel Aviv-Jaffa",
+            "Jaffa",
+            "Yafo",
+            "TLV",
+            "תל אביב",
+            "תל אביב-יפו",
+            "יפו",
+            "تل أبيب",
+            "يافا"
+          ]
+        },
+        {
+          "city": "Ramat Gan",
+          "center": [
+            32.0687,
+            34.8247
+          ],
+          "bounds": {
+            "south": 32.0274,
+            "north": 32.1143,
+            "west": 34.7889,
+            "east": 34.8649
+          },
+          "aliases": [
+            "רמת גן"
+          ]
+        },
+        {
+          "city": "Petah Tikva",
+          "center": [
+            32.0878,
+            34.886
+          ],
+          "bounds": {
+            "south": 32.0583,
+            "north": 32.1208,
+            "west": 34.836,
+            "east": 34.9304
+          },
+          "aliases": [
+            "Petach Tikva",
+            "Petach Tikvah",
+            "Petah Tiqva",
+            "פתח תקווה",
+            "פתח תקוה"
+          ]
+        },
+        {
+          "city": "Holon",
+          "center": [
+            32.0193,
+            34.7804
+          ],
+          "bounds": {
+            "south": 31.9853,
+            "north": 32.0474,
+            "west": 34.7451,
+            "east": 34.8207
+          },
+          "aliases": [
+            "חולון"
+          ]
+        },
+        {
+          "city": "Bat Yam",
+          "center": [
+            32.0155,
+            34.7505
+          ],
+          "bounds": {
+            "south": 31.991,
+            "north": 32.0427,
+            "west": 34.723,
+            "east": 34.7721
+          },
+          "aliases": [
+            "בת ים"
+          ]
+        },
+        {
+          "city": "Givatayim",
+          "center": [
+            32.073,
+            34.8113
+          ],
+          "bounds": {
+            "south": 32.0498,
+            "north": 32.0907,
+            "west": 34.7877,
+            "east": 34.8313
+          },
+          "aliases": [
+            "Givataim",
+            "גבעתיים"
+          ]
+        },
+        {
+          "city": "Herzliya",
+          "center": [
+            32.1656,
+            34.8469
+          ],
+          "bounds": {
+            "south": 32.1354,
+            "north": 32.1879,
+            "west": 34.7866,
+            "east": 34.8622
+          },
+          "aliases": [
+            "Herzliyya",
+            "Herzlia",
+            "הרצליה"
+          ]
+        },
+        {
+          "city": "Bnei Brak",
+          "center": [
+            32.0874,
+            34.8324
+          ],
+          "bounds": {
+            "south": 32.0624,
+            "north": 32.1164,
+            "west": 34.8112,
+            "east": 34.858
+          },
+          "aliases": [
+            "בני ברק"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lime_il_tel_aviv",
+      "country": "IL",
+      "provider": "lime",
+      "city": "Gush Dan",
+      "timeZone": "Asia/Jerusalem",
+      "center": [
+        32.0853,
+        34.7818
+      ],
+      "bounds": {
+        "south": 31.9889,
+        "north": 32.1816,
+        "west": 34.7391,
+        "east": 34.9241
+      },
+      "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/tel_aviv/gbfs.json",
+      "areas": [
+        {
+          "city": "Tel Aviv",
+          "center": [
+            32.0853,
+            34.7818
+          ],
+          "bounds": {
+            "south": 32.0251,
+            "north": 32.1489,
+            "west": 34.7391,
+            "east": 34.8491
+          },
+          "aliases": [
+            "Tel Aviv-Yafo",
+            "Tel Aviv-Jaffa",
+            "Jaffa",
+            "Yafo",
+            "TLV",
+            "תל אביב",
+            "תל אביב-יפו",
+            "יפו",
+            "تل أبيب",
+            "يافا"
+          ]
+        },
+        {
+          "city": "Ramat Gan",
+          "center": [
+            32.0687,
+            34.8247
+          ],
+          "bounds": {
+            "south": 32.0329,
+            "north": 32.1069,
+            "west": 34.7943,
+            "east": 34.8577
+          },
+          "aliases": [
+            "רמת גן"
+          ]
+        },
+        {
+          "city": "Petah Tikva",
+          "center": [
+            32.0878,
+            34.886
+          ],
+          "bounds": {
+            "south": 32.0624,
+            "north": 32.1172,
+            "west": 34.8414,
+            "east": 34.9241
+          },
+          "aliases": [
+            "Petach Tikva",
+            "Petach Tikvah",
+            "Petah Tiqva",
+            "פתח תקווה",
+            "פתח תקוה"
+          ]
+        },
+        {
+          "city": "Holon",
+          "center": [
+            32.0193,
+            34.7804
+          ],
+          "bounds": {
+            "south": 31.9889,
+            "north": 32.0411,
+            "west": 34.7515,
+            "east": 34.8133
+          },
+          "aliases": [
+            "חולון"
+          ]
+        },
+        {
+          "city": "Givatayim",
+          "center": [
+            32.073,
+            34.8113
+          ],
+          "bounds": {
+            "south": 32.0547,
+            "north": 32.0863,
+            "west": 34.7928,
+            "east": 34.826
+          },
+          "aliases": [
+            "Givataim",
+            "גבעתיים"
+          ]
+        },
+        {
+          "city": "Herzliya",
+          "center": [
+            32.1656,
+            34.8469
+          ],
+          "bounds": {
+            "south": 32.1425,
+            "north": 32.1816,
+            "west": 34.7942,
+            "east": 34.8566
+          },
+          "aliases": [
+            "Herzliyya",
+            "Herzlia",
+            "הרצליה"
+          ]
+        },
+        {
+          "city": "Kiryat Ono",
+          "center": [
+            32.0592,
+            34.8594
+          ],
+          "bounds": {
+            "south": 32.0293,
+            "north": 32.0722,
+            "west": 34.8337,
+            "east": 34.8718
+          },
+          "aliases": [
+            "Qiryat Ono",
+            "קריית אונו",
+            "קרית אונו"
+          ]
+        },
+        {
+          "city": "Bnei Brak",
+          "center": [
+            32.0874,
+            34.8324
+          ],
+          "bounds": {
+            "south": 32.0648,
+            "north": 32.1107,
+            "west": 34.8165,
+            "east": 34.8515
+          },
+          "aliases": [
+            "בני ברק"
+          ]
+        },
+        {
+          "city": "Givat Shmuel",
+          "center": [
+            32.0769,
+            34.8525
+          ],
+          "bounds": {
+            "south": 32.0613,
+            "north": 32.0913,
+            "west": 34.8399,
+            "east": 34.8651
+          },
+          "aliases": [
+            "גבעת שמואל"
+          ]
+        },
+        {
+          "city": "Or Yehuda",
+          "center": [
+            32.027,
+            34.863
+          ],
+          "bounds": {
+            "south": 32.0243,
+            "north": 32.0457,
+            "west": 34.8502,
+            "east": 34.8655
+          },
+          "aliases": [
+            "Or Yehudah",
+            "אור יהודה"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -18,6 +18,7 @@ import { COUNTRY_SOURCES, REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas
 import { skippedSources, type FeedSourceStatus, type ScooterSource } from '@/lib/scooterSources';
 import { feedPaused } from '@/lib/seasonalPauses';
 import { isElectricScooter, type GbfsVehicleType } from '@/lib/scooterTypes';
+import { systemServesPoint } from '@/lib/townOutlines';
 import type { MapBounds, Vehicle } from '@/lib/types';
 import { legacyRentalLink, normalizeRentalUris } from '@/lib/rentalLinks';
 import { upstreamJsonCache, UpstreamHttpError, type CachedJson } from '@/lib/upstreamJsonCache';
@@ -1247,7 +1248,7 @@ async function fetchRegionalSystemFeeds(
       ...query,
       bounds,
     }, prices, unlinkedScooterPlan(system.provider, typesById, prices.pricing), unlisted)))
-      .filter(vehicle => serviceAreas(system).some(area => boundsContainPoint(area.bounds, vehicle.lat, vehicle.lng))),
+      .filter(vehicle => systemServesPoint(system, vehicle.lat, vehicle.lng)),
     stale: discovery.stale || types.stale || status.stale,
   };
 }

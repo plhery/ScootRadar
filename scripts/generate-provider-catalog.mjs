@@ -1,8 +1,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import {
-  catalogSystems, curfewZoneProblem, scooterCities, swiftCityPauses, swiftCountries, typescriptCatalogs, typescriptCountries,
-  validateCountries,
+  catalogSystems, curfewZoneProblem, scooterCities, swiftCityPauses, swiftCountries, townOutlinesProblem, typescriptCatalogs,
+  typescriptCountries, validateCountries,
 } from './country-catalog.mjs';
 
 const root = process.cwd();
@@ -348,6 +348,9 @@ ${areas.join('\n')}
 
 validateCatalog();
 validateCountries({ landingFirst, countries }, readJson, scooterCities(swissAreas, regionalSystems, countries));
+// Read by src/lib/townOutlines.ts as it is; the apps have no copy.
+const outlineProblem = townOutlinesProblem(readJson('data/town-outlines.json'), scooterCities(swissAreas, regionalSystems, countries));
+if (outlineProblem) throw new Error(outlineProblem);
 writeOrCheck(typescriptPath, typescriptCatalog());
 writeOrCheck(countriesPath, typescriptCountries({ landingFirst, countries }));
 writeOrCheck(catalogsPath, typescriptCatalogs(countries));

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { activeCurfew, polygonContainsPoint } from './rentalCurfews';
+import { activeCurfew } from './rentalCurfews';
+import { polygonContainsPoint } from './geo';
 
 const OSLO: [number, number] = [59.9139, 10.7522];
 const SANDVIKA: [number, number] = [59.8913, 10.5236];

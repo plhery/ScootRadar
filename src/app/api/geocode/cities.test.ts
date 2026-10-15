@@ -60,7 +60,7 @@ describe('searchCoveredCities', () => {
   it('returns five cities at most', () => {
     // Two initials: every city with a word that starts with a B, more than five of them.
     expect(names('B B')).toEqual([
-      'Bærum, Norway', 'Baltimore, MD, United States', 'Bamberg, Germany', 'Basel, Switzerland', 'Bath, United Kingdom',
+      'Bærum, Norway', 'Baltimore, MD, United States', 'Bamberg, Germany', 'Basel, Switzerland', 'Bat Yam, Israel',
     ]);
   });
 

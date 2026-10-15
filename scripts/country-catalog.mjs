@@ -285,6 +285,45 @@ export function validateCountries({ countries, landingFirst }, readCatalog, citi
   validateCityWidths(cities, wideCities);
 }
 
+// Ray casting over a ring of [lat, lng] points, as polygonContainsPoint in src/lib/geo.ts.
+function ringHolds(ring, [lat, lng]) {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [latI, lngI] = ring[i];
+    const [latJ, lngJ] = ring[j];
+    if ((latI > lat) !== (latJ > lat) && lng < ((lngJ - lngI) * (lat - latI)) / (latJ - latI) + lngI) inside = !inside;
+  }
+  return inside;
+}
+
+/**
+ * Why data/town-outlines.json is wrong, or null: each outline is a covered city's, given once,
+ * in rings of [lat, lng] points; it holds its city's centre and no other outlined city's.
+ */
+export function townOutlinesProblem({ towns }, cities) {
+  const byId = new Map(cities.map(city => [city.id, city]));
+  const seen = new Set();
+  for (const town of towns) {
+    const city = byId.get(town.city);
+    if (!city) return `data/town-outlines.json: ${town.city} is no covered city`;
+    if (seen.has(town.city)) return `data/town-outlines.json: ${town.city} is outlined twice`;
+    seen.add(town.city);
+    if (!town.areas?.length || town.areas.some(area => area.length < 3 ||
+      !area.every(point => point.length === 2 && point.every(Number.isFinite)))) {
+      return `data/town-outlines.json: ${town.city} needs rings of [lat, lng] points`;
+    }
+  }
+  for (const town of towns) {
+    for (const other of towns) {
+      const holds = town.areas.some(area => ringHolds(area, byId.get(other.city).center));
+      if (holds !== (town === other)) {
+        return `data/town-outlines.json: the outline of ${town.city} ${holds ? 'holds' : 'misses'} the centre of ${other.city}`;
+      }
+    }
+  }
+  return null;
+}
+
 /**
  * One line per continent for the GBFS feeds credited together, "DE/IT/…/UA: Dott, Bolt, …",
  * then each country's own links, in the order of data/countries.json.

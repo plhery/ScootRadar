@@ -158,7 +158,9 @@ the timestamp it carries, so a shorter limit blanks Voi whenever it is a little
 late. City totals are aggregated hourly. Each scooter counts under the
 nearest town whose bounds hold it; outside Switzerland the towns its own
 feed serves come first, so a scooter in east Oslo is Oslo's, though
-Lørenskog's centre is nearer.
+Lørenskog's centre is nearer. Where a town's municipal boundary is listed in
+`data/town-outlines.json`, as in Gush Dan, a scooter inside it counts under
+that town first.
 
 These endpoints are publicly accessible but do not share one universal license.
 In particular, [Dott's API terms](https://ridedott.com/api-licence/) contain
@@ -636,3 +638,31 @@ for France above. The map's credits name both under the GBFS line. The
 national rules come from the press (Gulf News, October 2024) and set no
 hours. See the [coverage audit](docs/saudi-scooter-feeds.md) for the systems,
 the rides, the rules, the gaps and the recheck command.
+
+## Israel
+
+The reviewed catalog lives in `data/israeli-scooter-feeds.json`: 3 feeds in
+14 towns, 13 of them in Gush Dan, around Tel Aviv, and Ashdod. Bird's `israel`
+feed at `mds.bird.co`, Dott's `tel-aviv` at `gbfs.api.ridedott.com` and Lime's
+`tel_aviv` at `data.lime.bike` are each the operator's own public GBFS feed,
+all three in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv).
+Bird's `tel-aviv` feed, also in the registry, repeats most of `israel`'s
+scooters under other ids, so it is left out. Israel's open-data portal,
+data.gov.il, has cycle networks and no shared vehicles.
+
+Each feed covers several towns, and their bounds overlap, so each town's
+municipal boundary decides which town a scooter counts under. The boundaries
+are OpenStreetMap's, read through Nominatim, © OpenStreetMap contributors,
+under the [ODbL](https://opendatacommons.org/licenses/odbl/); simplified to
+within 20 m in `data/town-outlines.json`, they stay under the ODbL, and the
+credits link it.
+
+Bird's feed points to its 2018 GBFS Data License Agreement, whose PDF answers
+404; the archived copy of its licence page allows display. Lime's points to
+its [GBFS terms](https://www.li.me/legal/public-gbfs-terms). Dott publishes no
+licence in its feed; its [API terms](https://ridedott.com/api-licence/)
+restrict distribution, as noted for France above. The map's credits name all
+three under the GBFS line for Asia. See the
+[coverage audit](docs/israeli-scooter-feeds.md) for the systems, the towns,
+the rules, the parking, the gaps and the recheck command.

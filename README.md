@@ -90,6 +90,9 @@ runs a second fleet in Dubai Hills, and Abu Dhabi. See the
 [Emirati feed audit](docs/emirati-scooter-feeds.md).
 Saudi Arabia adds 2 feeds: SAHAM in Riyadh and Dott in Jeddah. See the
 [Saudi feed audit](docs/saudi-scooter-feeds.md).
+Israel adds 3 feeds, Bird's, Dott's and Lime's, in 14 towns: 13 in Gush Dan,
+around Tel Aviv, and Ashdod. See the
+[Israeli feed audit](docs/israeli-scooter-feeds.md).
 What is not covered yet, and why, is listed in
 [Coverage gaps](docs/coverage-gaps.md).
 
@@ -190,6 +193,16 @@ changing the response contract.
    until it does. The search looks for places within its continent's boxes,
    `CONTINENT_BOXES` in `src/app/api/geocode/route.ts`, once a country's
    `anchor` is in one.
+
+   Where towns touch, as in Gush Dan around Tel Aviv, a rectangle per town
+   can't tell a scooter's town: each box takes in parts of its neighbours.
+   List each town's municipal boundary in `data/town-outlines.json` (its
+   city id and its OpenStreetMap relation) and run
+   `node scripts/update-town-outlines.mjs`, which fetches and simplifies it.
+   A scooter inside a town's outline then counts under that town, and a feed
+   keeps no scooter inside the outline of a town of its country it doesn't
+   serve; the generator checks that each outline holds its own town's centre
+   and no other's.
 
    The generator fails when a city's merged bounds are wider than 150 km, as
    two towns of one name merged into one would be; a city that really is wider

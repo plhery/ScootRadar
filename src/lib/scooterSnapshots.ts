@@ -8,6 +8,7 @@ import { PARKING_MAX_AGE_MS, PARKING_MIN_ZOOM, type ParkingSnapshot } from '@/li
 import { scooterResponse } from '@/lib/scooterResponse';
 import { feedPaused } from '@/lib/seasonalPauses';
 import { skippedSources } from '@/lib/scooterSources';
+import { outlineHolds } from '@/lib/townOutlines';
 import { ScooterFeedsUnavailableError, type FeedQuery, type ScooterFetchMetadata } from '@/lib/scooterFeeds';
 import type { MapBounds, ScooterCluster, ScooterResponse, Vehicle } from '@/lib/types';
 import { VEHICLE_MAX_AGE_MS } from './dataFreshness';
@@ -146,13 +147,17 @@ function nearestTown<T extends OverviewTown>(vehicle: Vehicle, towns: T[]): T {
 }
 
 /**
- * The town a scooter counts under: the nearest centre among the towns whose
- * bounds hold it, those of its own feed first, or the nearest centre of all
- * when none does. The nearest centre alone is not enough: most of east Oslo
- * is nearer Lørenskog's, and much of Lisbon nearer Almada's across the river.
+ * The town a scooter counts under: the town whose outline holds it, where the
+ * towns' bounds overlap too much to tell them apart, as around Tel Aviv
+ * (townOutlines.ts); else the nearest centre among the towns whose bounds hold
+ * it, those of its own feed first, or the nearest centre of all when none does.
+ * The nearest centre alone is not enough: most of east Oslo is nearer
+ * Lørenskog's, and much of Lisbon nearer Almada's across the river.
  */
 function townOf<T extends OverviewTown>(vehicle: Vehicle, towns: T[], own: Set<string>): T {
   const holding = towns.filter(town => boundsContainPoint(town.bounds, vehicle.lat, vehicle.lng));
+  const outlined = holding.find(town => outlineHolds(town.id, vehicle.lat, vehicle.lng));
+  if (outlined) return outlined;
   const owned = holding.filter(town => own.has(town.id));
   return nearestTown(vehicle, owned.length ? owned : holding.length ? holding : towns);
 }

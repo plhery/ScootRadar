@@ -1,4 +1,5 @@
 import catalog from '../../data/rental-curfews.json';
+import { polygonContainsPoint } from '@/lib/geo';
 
 // Cities that ban renting shared scooters at night, from data/rental-curfews.json.
 // Some operators still list their scooters as available then, so the dock and
@@ -60,17 +61,6 @@ function localClock(time: number, timeZone: string): { minutes: number; weekday:
     minutes: Number(part('hour')) * 60 + Number(part('minute')),
     weekday: WEEKDAYS.indexOf(part('weekday').toLowerCase().slice(0, 3) as Weekday),
   };
-}
-
-/** Ray casting; the rings are small enough for lat/lng to stand for a plane. */
-export function polygonContainsPoint(ring: readonly [number, number][], lat: number, lng: number): boolean {
-  let inside = false;
-  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-    const [latI, lngI] = ring[i];
-    const [latJ, lngJ] = ring[j];
-    if ((latI > lat) !== (latJ > lat) && lng < ((lngJ - lngI) * (lat - latI)) / (latJ - latI) + lngI) inside = !inside;
-  }
-  return inside;
 }
 
 /** Whether the window holds at that wall-clock time, given the day it is. */

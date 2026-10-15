@@ -21,6 +21,17 @@ export function boundsContainPoint(bounds: MapBounds, lat: number, lng: number):
   );
 }
 
+/** Ray casting; a ring of [lat, lng] points, small enough for lat/lng to stand for a plane. */
+export function polygonContainsPoint(ring: readonly [number, number][], lat: number, lng: number): boolean {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [latI, lngI] = ring[i];
+    const [latJ, lngJ] = ring[j];
+    if ((latI > lat) !== (latJ > lat) && lng < ((lngJ - lngI) * (lat - latI)) / (latJ - latI) + lngI) inside = !inside;
+  }
+  return inside;
+}
+
 /**
  * What the screen shows of the map. A turned map shows less than its bounds,
  * which enclose the screen: then the corners of the screen say what is on it.

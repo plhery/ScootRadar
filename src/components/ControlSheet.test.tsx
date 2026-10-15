@@ -283,7 +283,7 @@ describe('ControlSheet settings', () => {
       // Each country's own, from data/countries.json: the GBFS feeds credited together, then the licences.
       'DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio, Bird, Elerent, Hoppy, Ride Mobility, 3electra',
       'US/CA: Bird, Bolt, Lime, Veo, Spin, Lyft',
-      'AE/SA: Dott, SAHAM',
+      'AE/SA/IL: Dott, SAHAM, Bird, Lime',
       'MobiData BW',
       'BE: Pony · transportdata.be',
       'NO: Entur AS · NLOD',
@@ -292,6 +292,7 @@ describe('ControlSheet settings', () => {
       'UK: ONS boundaries · OGL v3.0',
       'PT: DGT boundaries · CC BY 4.0',
       'UA: OpenStreetMap boundaries · ODbL',
+      'IL: OpenStreetMap boundaries · ODbL',
       'Search · Geoapify',
       'Search · Photon, komoot',
       'Parking · Métropole Européenne de Lille',

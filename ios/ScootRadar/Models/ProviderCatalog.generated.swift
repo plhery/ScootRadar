@@ -568,6 +568,34 @@ enum ScooterProviderCoverage {
         (.dott, GeoBounds(south: 24.3979, west: 54.307, north: 24.5216, east: 54.6349)),
         (.saham, GeoBounds(south: 24.5521, west: 46.4871, north: 25.0316, east: 46.8692)),
         (.dott, GeoBounds(south: 21.6246, west: 39.0907, north: 21.6661, east: 39.1151)),
+        (.bird, GeoBounds(south: 32.0207, west: 34.7309, north: 32.1556, east: 34.8589)),
+        (.bird, GeoBounds(south: 32.0318, west: 34.7889, north: 32.1143, east: 34.8645)),
+        (.bird, GeoBounds(south: 31.9809, west: 34.7451, north: 32.0474, east: 34.8231)),
+        (.bird, GeoBounds(south: 31.9838, west: 34.7246, north: 32.0423, east: 34.7721)),
+        (.bird, GeoBounds(south: 32.0498, west: 34.7877, north: 32.0907, east: 34.8313)),
+        (.bird, GeoBounds(south: 32.1354, west: 34.7774, north: 32.2119, east: 34.875)),
+        (.bird, GeoBounds(south: 31.9349, west: 34.7203, north: 32.0162, east: 34.8567)),
+        (.bird, GeoBounds(south: 31.7561, west: 34.603, north: 31.8442, east: 34.683)),
+        (.bird, GeoBounds(south: 32.0604, west: 34.8112, north: 32.1172, east: 34.8588)),
+        (.bird, GeoBounds(south: 32.1109, west: 34.7854, north: 32.1674, east: 34.8758)),
+        (.dott, GeoBounds(south: 32.0207, west: 34.7289, north: 32.1556, east: 34.8625)),
+        (.dott, GeoBounds(south: 32.0274, west: 34.7889, north: 32.1143, east: 34.8649)),
+        (.dott, GeoBounds(south: 32.0583, west: 34.836, north: 32.1208, east: 34.9304)),
+        (.dott, GeoBounds(south: 31.9853, west: 34.7451, north: 32.0474, east: 34.8207)),
+        (.dott, GeoBounds(south: 31.991, west: 34.723, north: 32.0427, east: 34.7721)),
+        (.dott, GeoBounds(south: 32.0498, west: 34.7877, north: 32.0907, east: 34.8313)),
+        (.dott, GeoBounds(south: 32.1354, west: 34.7866, north: 32.1879, east: 34.8622)),
+        (.dott, GeoBounds(south: 32.0624, west: 34.8112, north: 32.1164, east: 34.858)),
+        (.lime, GeoBounds(south: 32.0251, west: 34.7391, north: 32.1489, east: 34.8491)),
+        (.lime, GeoBounds(south: 32.0329, west: 34.7943, north: 32.1069, east: 34.8577)),
+        (.lime, GeoBounds(south: 32.0624, west: 34.8414, north: 32.1172, east: 34.9241)),
+        (.lime, GeoBounds(south: 31.9889, west: 34.7515, north: 32.0411, east: 34.8133)),
+        (.lime, GeoBounds(south: 32.0547, west: 34.7928, north: 32.0863, east: 34.826)),
+        (.lime, GeoBounds(south: 32.1425, west: 34.7942, north: 32.1816, east: 34.8566)),
+        (.lime, GeoBounds(south: 32.0293, west: 34.8337, north: 32.0722, east: 34.8718)),
+        (.lime, GeoBounds(south: 32.0648, west: 34.8165, north: 32.1107, east: 34.8515)),
+        (.lime, GeoBounds(south: 32.0613, west: 34.8399, north: 32.0913, east: 34.8651)),
+        (.lime, GeoBounds(south: 32.0243, west: 34.8502, north: 32.0457, east: 34.8655)),
     ]
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
@@ -968,12 +996,26 @@ enum ScooterCityCatalog {
         ScooterCity(id: "ae:Abu Dhabi", name: "Abu Dhabi", countryCode: "AE", center: GeoPoint(latitude: 24.4539, longitude: 54.3773), bounds: GeoBounds(south: 24.3979, west: 54.307, north: 24.5216, east: 54.6349)),
         ScooterCity(id: "sa:Riyadh", name: "Riyadh", countryCode: "SA", center: GeoPoint(latitude: 24.7136, longitude: 46.6753), bounds: GeoBounds(south: 24.5521, west: 46.4871, north: 25.0316, east: 46.8692)),
         ScooterCity(id: "sa:Jeddah", name: "Jeddah", countryCode: "SA", center: GeoPoint(latitude: 21.6394, longitude: 39.1015), bounds: GeoBounds(south: 21.6246, west: 39.0907, north: 21.6661, east: 39.1151)),
+        ScooterCity(id: "il:Tel Aviv", name: "Tel Aviv", countryCode: "IL", center: GeoPoint(latitude: 32.0853, longitude: 34.7818), bounds: GeoBounds(south: 32.0207, west: 34.7289, north: 32.1556, east: 34.8625)),
+        ScooterCity(id: "il:Ramat Gan", name: "Ramat Gan", countryCode: "IL", center: GeoPoint(latitude: 32.0687, longitude: 34.8247), bounds: GeoBounds(south: 32.0274, west: 34.7889, north: 32.1143, east: 34.8649)),
+        ScooterCity(id: "il:Holon", name: "Holon", countryCode: "IL", center: GeoPoint(latitude: 32.0193, longitude: 34.7804), bounds: GeoBounds(south: 31.9809, west: 34.7451, north: 32.0474, east: 34.8231)),
+        ScooterCity(id: "il:Bat Yam", name: "Bat Yam", countryCode: "IL", center: GeoPoint(latitude: 32.0155, longitude: 34.7505), bounds: GeoBounds(south: 31.9838, west: 34.723, north: 32.0427, east: 34.7721)),
+        ScooterCity(id: "il:Givatayim", name: "Givatayim", countryCode: "IL", center: GeoPoint(latitude: 32.073, longitude: 34.8113), bounds: GeoBounds(south: 32.0498, west: 34.7877, north: 32.0907, east: 34.8313)),
+        ScooterCity(id: "il:Herzliya", name: "Herzliya", countryCode: "IL", center: GeoPoint(latitude: 32.1656, longitude: 34.8469), bounds: GeoBounds(south: 32.1354, west: 34.7774, north: 32.2119, east: 34.875)),
+        ScooterCity(id: "il:Rishon LeZion", name: "Rishon LeZion", countryCode: "IL", center: GeoPoint(latitude: 31.9636, longitude: 34.8101), bounds: GeoBounds(south: 31.9349, west: 34.7203, north: 32.0162, east: 34.8567)),
+        ScooterCity(id: "il:Ashdod", name: "Ashdod", countryCode: "IL", center: GeoPoint(latitude: 31.7977, longitude: 34.653), bounds: GeoBounds(south: 31.7561, west: 34.603, north: 31.8442, east: 34.683)),
+        ScooterCity(id: "il:Bnei Brak", name: "Bnei Brak", countryCode: "IL", center: GeoPoint(latitude: 32.0874, longitude: 34.8324), bounds: GeoBounds(south: 32.0604, west: 34.8112, north: 32.1172, east: 34.8588)),
+        ScooterCity(id: "il:Ramat HaSharon", name: "Ramat HaSharon", countryCode: "IL", center: GeoPoint(latitude: 32.1431, longitude: 34.8381), bounds: GeoBounds(south: 32.1109, west: 34.7854, north: 32.1674, east: 34.8758)),
+        ScooterCity(id: "il:Petah Tikva", name: "Petah Tikva", countryCode: "IL", center: GeoPoint(latitude: 32.0878, longitude: 34.886), bounds: GeoBounds(south: 32.0583, west: 34.836, north: 32.1208, east: 34.9304)),
+        ScooterCity(id: "il:Kiryat Ono", name: "Kiryat Ono", countryCode: "IL", center: GeoPoint(latitude: 32.0592, longitude: 34.8594), bounds: GeoBounds(south: 32.0293, west: 34.8337, north: 32.0722, east: 34.8718)),
+        ScooterCity(id: "il:Givat Shmuel", name: "Givat Shmuel", countryCode: "IL", center: GeoPoint(latitude: 32.0769, longitude: 34.8525), bounds: GeoBounds(south: 32.0613, west: 34.8399, north: 32.0913, east: 34.8651)),
+        ScooterCity(id: "il:Or Yehuda", name: "Or Yehuda", countryCode: "IL", center: GeoPoint(latitude: 32.027, longitude: 34.863), bounds: GeoBounds(south: 32.0243, west: 34.8502, north: 32.0457, east: 34.8655)),
     ]
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 357
-    static let countryCount = 23
+    static let cityCount = 371
+    static let countryCount = 24
 
     /// Cities by distance from the point to their centre, nearest first.
     static func nearest(to point: GeoPoint, count: Int) -> [ScooterCityDistance] {
@@ -1220,13 +1262,16 @@ enum ScooterCountryCatalog {
         "ae": (24.7, 54.9),
         // In Najd, south of Afif: halfway between Riyadh and Jeddah, the two towns with scooters.
         "sa": (23.2, 42.9),
+        // In Ramat Gan, east of Tel Aviv: in Gush Dan, where nearly all of Israel's scooters are,
+        // inside its pre-1967 lines.
+        "il": (32.07, 34.82),
     ]
 
     /// The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences.
     static let credits: [(title: String, url: String)] = [
         ("DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio, Bird, Elerent, Hoppy, Ride Mobility, 3electra", "https://github.com/MobilityData/gbfs"),
         ("US/CA: Bird, Bolt, Lime, Veo, Spin, Lyft", "https://github.com/MobilityData/gbfs"),
-        ("AE/SA: Dott, SAHAM", "https://github.com/MobilityData/gbfs"),
+        ("AE/SA/IL: Dott, SAHAM, Bird, Lime", "https://github.com/MobilityData/gbfs"),
         ("MobiData BW", "https://www.mobidata-bw.de/"),
         ("BE: Pony · transportdata.be", "https://transportdata.be/dataset/pony_charleroi"),
         ("NO: Entur AS · NLOD", "https://data.norge.no/nlod/en/2.0"),
@@ -1235,6 +1280,7 @@ enum ScooterCountryCatalog {
         ("UK: ONS boundaries · OGL v3.0", "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"),
         ("PT: DGT boundaries · CC BY 4.0", "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop"),
         ("UA: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
+        ("IL: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
     ]
 
     /// The countries whose totals, zoomed out, are their states' or provinces', and those by code.

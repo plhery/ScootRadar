@@ -383,7 +383,6 @@ banned shared scooters, and feeds that were empty when checked.
   - **No bays:** Lime publishes no parking in Ottawa or Mississauga, where
     rides must end in designated spots, and Bird and Lime none in Edmonton's
     Mill Woods (see the guide's [parking](canadian-scooter-feeds.md#parking)).
-
 - **United Arab Emirates** ([guide](emirati-scooter-feeds.md#known-gaps)):
   Dott in Dubai, with its Dubai Hills fleet, and in Abu Dhabi is covered.
   - **Too few rides yet:** Dott's Dubai feed holds 12 or 13 scooters in Hatta,
@@ -414,6 +413,22 @@ banned shared scooters, and feeds that were empty when checked.
   - **No public feed:** Wing, Barqscoot and SPIDERS; Green Arrows, on ATOM
     Mobility, has no host that answers.
   - **open.data.gov.sa** did not answer.
+- **Israel** ([guide](israeli-scooter-feeds.md#known-gaps)): Bird, Dott and
+  Lime in 13 towns of Gush Dan and in Ashdod are covered.
+  - **Left out:** Bird in Caesarea, 49 to 52 scooters with only 5 new
+    positions in 9 hours on 15 October 2026; Dott in Givat Shmuel (6 to 11
+    scooters, one arrival in the day), Kiryat Ono (2 or 3) and Ramat
+    HaSharon; Lime in Bat Yam and Ramat HaSharon; Bird in Petah Tikva and
+    Pardes Hanna-Karkur, about one scooter a poll each. The map drops their
+    scooters rather than count them under a neighbour.
+  - **Bird `tel-aviv`:** a duplicate of Bird `israel`: 1,502 of its 1,517
+    positions are also in `israel`, under other ids, so reading both would
+    count about 1,550 scooters twice.
+  - **Holon** decided to ban shared scooters from 17 September 2026; the
+    court froze the ban until the city decides again, after a review due by
+    15 October. Its scooters still ride, so Holon is covered.
+  - **Open data:** data.gov.il has cycle networks only; tel-aviv.gov.il
+    answers HTTP 571 outside Israel, and gov.il 403 to scripts.
 
 ## Countries not covered yet
 
@@ -546,11 +561,22 @@ operator has a system but hasn't made its feed public. Survey files are in
   [Saudi guide](saudi-scooter-feeds.md#rides) does, and add it to
   `data/saudi-scooter-feeds.json` if it is ridden. Poll Dott Jeddah too, in
   the catalog on about 23 rides that evening: if it shows none, take it out.
+- **29 October 2026, in the afternoon:** Bird in Caesarea, Israel: 49 to 52
+  scooters in Bird's `israel` feed on 15 October 2026, but only 5 new
+  positions in 9 hours. Add an area for Caesarea if they are ridden.
 - **November 2026:** Beaumont's pilot runs "until the end of October 2026",
   and Lime's licence there to the end of 2026. Check that Lime's Edmonton feed
   still holds scooters in Beaumont, and whether the town goes on in 2027;
   remove its area from `lime_ca_edmonton` if it doesn't. Check again in April
   2027.
+- **November 2026:** Holon, Israel. The city decided to ban shared scooters
+  from 17 September 2026
+  ([ice, 9 August 2026](https://www.ice.co.il/local-news/news/article/1124736));
+  the court froze the ban until the city decides again, after a review due by
+  15 October
+  ([ice, 10 September 2026](https://www.ice.co.il/law/news/article/1129448)).
+  If the ban goes ahead and the feeds empty there, remove Holon's areas from
+  the three Israeli feeds and its outline from `data/town-outlines.json`.
 - **Saturday 21 November 2026, or a Saturday after:** Hatta, in Dott's Dubai
   feed, by day: 12 or 13 scooters, which none rode on 15 October 2026. If they
   are ridden, add Hatta as an area of `dott_ae_dubai`, with bounds of Dott's
