@@ -80,6 +80,8 @@ import tromsoEn from './en/e-scooters-tromso';
 import munsterDe from './de/e-scooter-muenster';
 import kristiansandNb from './nb/elsparkesykkel-kristiansand';
 import leHavreFr from './fr/trottinette-electrique-le-havre';
+import rhodesEn from './en/e-scooters-rhodes';
+import kosEn from './en/e-scooters-kos';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -103,6 +105,8 @@ export const GUIDES: readonly Guide[] = [
   tromsoEn,
   reykjavikEn,
   tenerifeEn,
+  rhodesEn,
+  kosEn,
   swissRulesDe,
   howToRentDe,
   swissPricesDe,
