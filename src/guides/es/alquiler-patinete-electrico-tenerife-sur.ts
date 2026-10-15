@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Alquiler de patinete eléctrico en Tenerife sur: Hoppy, Bird y Hopp, precios, casco y paseos prohibidos',
   lede: 'Para el alquiler de patinete eléctrico en Tenerife sur tienes Hoppy, Bird y Hopp, en la costa que va de Los Cristianos a La Caleta, pasando por Playa de las Américas y Costa Adeje; Hopp tiene además una pequeña zona en Golf del Sur. Diez minutos cuestan de 4,50 a 4,70 € con Hoppy y 3,45 € con Hopp, y Bird solo muestra su precio en la app. Necesitas 18 años para alquilar y, desde el 1 de octubre de 2026, casco: ningún operador lo presta, así que lleva el tuyo. Y no vayas por el paseo marítimo entre Los Cristianos y Las Américas: Arona prohíbe allí los patinetes y la policía lo vigila.',
   published: '2026-10-13',
-  updated: '2026-10-14',
+  updated: '2026-10-15',
   city: 'es:Playa de las Américas',
   sections: [
     {
@@ -45,7 +45,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Pagas cada minuto que el patinete está desbloqueado, en marcha o parado, y el precio final te lo da la app. Si es tu primera vez, mira cómo [alquilar un patinete eléctrico](guide:how-to-rent) paso a paso.',
+        'Pagas cada minuto desbloqueado, en marcha o parado. Si es tu primera vez, mira cómo [alquilar un patinete eléctrico](guide:how-to-rent) paso a paso.',
         'Para un día de excursión, la guagua sale más barata: el bono turístico de un día de TITSA cuesta 10 € (más 2 € de la tarjeta ten+), con guaguas y tranvía sin límite durante 24 horas; 40 minutos en un Hopp cuestan 10,95 €.',
       ],
     },
@@ -54,7 +54,7 @@ const guide: Guide = {
       blocks: [
         'Desde 2016, Arona, el municipio de Los Cristianos y Playa de las Américas, prohíbe circular en bicicleta, segway o patinete por 98 paseos y calles peatonales. Entre ellos están el frente marítimo entre Los Cristianos y Las Américas (Paseo Marítimo, Paseo de Las Vistas y Paseo Francisco Andrade Fumero), la zona peatonal del casco de Los Cristianos y los paseos de Palm-Mar y Las Galletas.',
         { note: 'Bird y Hopp no bloquean el paseo; Hoppy te frena a 12 km/h en casi todo él y lo bloquea en dos tramos cortos. La policía, en cambio, te para: bájate y llévalo a pie, o ve por la calzada.' },
-        'La policía lo vigila: Arona retiró 5259 patinetes de sus calles en 2024, y en un solo operativo, en abril de 2026, denunció 92 patinetes e inmovilizó 81 por circular por zonas peatonales, no estar inscritos o aparcar en lugares no autorizados. Las multas recaen sobre las empresas de alquiler, que pueden pasártelas a ti.',
+        'La policía vigila: Arona retiró 5259 patinetes de sus calles en 2024, y en un solo operativo, en abril de 2026, denunció 92 patinetes e inmovilizó 81 por circular por zonas peatonales, no estar inscritos o aparcar en lugares no autorizados. Las multas recaen sobre las empresas de alquiler, que pueden pasártelas a ti.',
         'En Costa Adeje, el Ayuntamiento pide no circular por aceras ni zonas peatonales y bajarse del patinete para cruzar los pasos de peatones. Su nueva ordenanza de circulación, publicada íntegra en el Boletín Oficial de la Provincia el 9 de septiembre de 2026, lo convierte en norma: el paseo cuenta como zona peatonal, prohibida a los patinetes, y cruzar el paso subido al patinete es maniobra temeraria. Las empresas de alquiler necesitan un título municipal y deben geolocalizar cada patinete en tiempo real. Su fecha de entrada en vigor no se ha publicado.',
       ],
     },
@@ -62,14 +62,15 @@ const guide: Guide = {
       heading: 'Dónde aparcar: los puntos de Hoppy y Bird, las zonas de Hopp',
       blocks: [
         '**Hoppy.** Solo puedes empezar y terminar el viaje en uno de sus puntos de aparcamiento, unos 270 a lo largo de la costa según sus datos abiertos.',
-        '**Bird.** En toda su zona, solo puedes terminar el viaje en uno de los puntos de aparcamiento que te marca la app (199, según sus datos abiertos). Busca el más cercano antes de salir: pagas hasta que terminas.',
-        '**Hopp.** Aparca dentro de sus dos zonas, fuera del paseo y sin estorbar a los peatones, y haz la foto final. En algunas zonas altas de Costa Adeje, como San Eugenio Alto, puedes pasar, pero no empezar ni terminar el viaje, y en otras tres pequeñas no se puede circular, entre ellas el puerto deportivo de Puerto Colón. Míralas en el mapa de la app.',
+        '**Bird.** En toda su zona, solo puedes terminar el viaje en uno de los puntos de aparcamiento que te marca la app (199, según sus datos abiertos).',
+        '**Hopp.** Aparca dentro de sus dos zonas, fuera del paseo y sin estorbar a los peatones, y haz la foto final. En algunas zonas altas de Costa Adeje, como San Eugenio Alto, puedes pasar, pero no empezar ni terminar el viaje, y en otras tres pequeñas no se puede circular, entre ellas el puerto deportivo de Puerto Colón.',
         {
           table: {
             caption: 'Lo que cobran los operadores en España por aparcar mal y otros incumplimientos (sus condiciones, octubre de 2026)',
             head: ['Operador', 'Aparcar mal o saltarse las normas', 'Otros cargos'],
             rows: [
               ['Bird', 'La primera vez, un aviso; la segunda, 5 €; la tercera, 20 €; a la cuarta puede rescindir tu contrato', 'Hasta 120 € si no puedes devolverlo a una zona válida y Bird tiene que recogerlo'],
+              ['Hoppy', 'Hasta 50 € si lo usas en una zona prohibida, y 100 € por recogerlo si lo dejas en ella', 'Hasta 100 € si no pueden recogerlo; 150 € si lo abandonas sin avisar'],
               ['Hopp', '30 € si no haces la foto final', '50 € por recogerlo fuera de la zona, a menos de 20 km; hasta 500 € más lejos o en un terreno privado'],
             ],
           },

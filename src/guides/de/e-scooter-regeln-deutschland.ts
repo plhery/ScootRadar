@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter-Regeln in Deutschland: was heute gilt und was sich am 1. März 2027 ändert',
   lede: 'Die E-Scooter-Regeln in Deutschland ändern sich in zwei Schritten: Seit dem 1. April 2026 gelten neue Bauvorschriften für neue Fahrzeuge, ab dem 1. März 2027 neue Verkehrsregeln und Bussgelder. Heute gilt: Ab 14 Jahren darfst du ohne Führerschein fahren, auf dem Radweg statt auf dem Gehweg, nur allein und mit denselben Promillegrenzen wie im Auto. Leih-Scooter bekommst du bei Lime, Voi, Bolt, Dott und Zeus erst ab 18.',
   published: '2026-10-12',
-  updated: '2026-10-14',
+  updated: '2026-10-15',
   sections: [
     {
       heading: 'E-Scooter-Regeln heute und ab 1. März 2027',
@@ -151,7 +151,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Karlsruhe nennt auf seiner Website noch eine Mietsperre in den Nächten auf Samstag und Sonntag von 23 bis 6 Uhr. Dem Gemeinderat sagte die Stadt aber schon 2021, diese Nachtsperre sei seit der Corona-Pandemie ausgesetzt, und Voi und Bolt vermieten heute rund um die Uhr.',
+        'Karlsruhe nennt auf seiner Website noch eine Mietsperre in den Nächten auf Samstag und Sonntag von 23 bis 6 Uhr. Dem Gemeinderat sagte die Stadt aber schon 2021, diese Nachtsperre sei seit der Corona-Pandemie ausgesetzt, und Voi und Bolt vermieten laut ihren Angaben heute rund um die Uhr.',
         'ScootRadar zeigt auf der [Live-Karte](/map) die Anbieter, die offene Daten veröffentlichen. In Berlin ist das Dott: Die [Karte rund um Berlin](map:de:Berlin) zeigte am 12. Oktober 2026 rund 4900 Scooter. Bolt, Lime, Voi und Zeus sind dort ebenfalls zugelassen, fehlen aber auf der Karte. Anbieter, Preise und Parkzonen erklären unsere Ratgeber [E-Scooter in Berlin](guide:berlin) und [E-Scooter in München](guide:munich).',
       ],
     },

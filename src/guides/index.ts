@@ -72,6 +72,12 @@ import hanoverDe from './de/e-scooter-hannover';
 import stavangerNb from './nb/elsparkesykkel-stavanger';
 import palermoIt from './it/monopattini-sharing-palermo';
 import stGallenDe from './de/e-trottinett-st-gallen';
+import grenobleFr from './fr/trottinette-electrique-grenoble';
+import karlsruheDe from './de/e-scooter-karlsruhe';
+import freiburgDe from './de/e-scooter-freiburg';
+import tromsoNb from './nb/elsparkesykkel-tromso';
+import tromsoEn from './en/e-scooters-tromso';
+import munsterDe from './de/e-scooter-muenster';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -92,6 +98,7 @@ export const GUIDES: readonly Guide[] = [
   lisbonEn,
   portoEn,
   osloEn,
+  tromsoEn,
   reykjavikEn,
   tenerifeEn,
   swissRulesDe,
@@ -110,6 +117,9 @@ export const GUIDES: readonly Guide[] = [
   stuttgartDe,
   dusseldorfDe,
   hanoverDe,
+  karlsruheDe,
+  munsterDe,
+  freiburgDe,
   swissRulesFr,
   howToRentFr,
   frenchRulesFr,
@@ -118,6 +128,7 @@ export const GUIDES: readonly Guide[] = [
   marseilleFr,
   bordeauxFr,
   lilleFr,
+  grenobleFr,
   brusselsFr,
   swissRulesIt,
   howToRentIt,
@@ -134,6 +145,7 @@ export const GUIDES: readonly Guide[] = [
   osloNb,
   trondheimNb,
   stavangerNb,
+  tromsoNb,
   portugueseRulesPt,
   howToRentPt,
   lisbonPt,

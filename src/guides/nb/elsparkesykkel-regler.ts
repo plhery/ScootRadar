@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Regler for elsparkesykkel i Norge: alder, hjelm, promille og bøter',
   lede: 'Reglene for elsparkesykkel i Norge er enkle å huske: Du må ha fylt 12 år, du må ha hjelm hvis du er under 15, og promillegrensen er 0,2, den samme som for bil. En aldersgrense på 16 år er foreslått, men ikke vedtatt, og operatørene som leier ut, har ofte høyere grense enn loven. Du kjører på veien, i sykkelfeltet eller på sykkelveien, og på fortauet når det er lite folk, men forbi gående holder du gangfart. Bare én person får stå på sparkesykkelen, og i Oslo er utleien stengt hver natt fra kl. 23 til 05.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-15',
   city: 'no:Oslo',
   sections: [
     {
@@ -160,8 +160,8 @@ const guide: Guide = {
               ['Trondheim', 'Forskriften: 23–05 hver natt. I 2026 har Voi og Ryde bare stengt natt til lørdag og søndag', 'Sesong fra 15. mars til 1. desember, og stengt ved fare for snø og is. Opptil tre operatører og 3200 kjøretøy til sammen; kommunen fastsetter antallet før hver sesong.'],
               ['Bergen', 'Ny forskrift: 23–05 natt til lørdag, søndag og røde dager', 'Saktesoner i sentrum, de fleste på 12 km/t. Den nye forskriften fra juni 2026 gir opptil to operatører, valgt etter konkurranse. Dagens operatører fortsetter til de nye tillatelsene starter, etter planen 31. mars 2027.'],
               ['Stavanger', '00–05 natt til lørdag, søndag og helligdager', 'Opptil to operatører, med tak på antall kjøretøy per sone.'],
-              ['Kristiansand', '00–05 lørdag og søndag', 'Opptil to operatører. Sparkesyklene tas inn ved fare for snø og is.'],
-              ['Tromsø', '23–06 natt til lørdag, søndag og helligdager', 'Ny forskrift fra 1. januar 2026, med to operatører og maks 200 kjøretøy i sentrum.'],
+              ['Kristiansand', 'Forskriften: 00–05 natt til lørdag og søndag. Voi stenger allerede kl. 23', 'Opptil to operatører, i dag Voi og Ryde, med avtale til 31. mars 2027. Sparkesyklene tas inn ved fare for snø og is.'],
+              ['Tromsø', '23–06 natt til lørdag, søndag og helligdager', 'Ny forskrift fra 1. januar 2026: inntil to operatører (i 2026 bare Ryde) og maks 200 kjøretøy i sentrum.'],
               ['Skien og Porsgrunn', 'Ikke stengt', 'Maks 12 km/t i sentrum fra kl. 00 til 05. Om vinteren bare elsykler med piggdekk.'],
               ['Tønsberg', '23–05 natt til lørdag, søndag og helligdager, ellers 01–05', 'Maks 300 kjøretøy. Tas inn ved fare for snø og is.'],
               ['Fredrikstad og Sarpsborg', 'Ingen fast stenging i forskriften', 'Kommunen kan innføre stengetider, saktesoner og kjøreforbud. Sparkesyklene tas inn når det snør.'],
