@@ -205,9 +205,18 @@ under its directory.
   and parish, simplified to within 20 m; the parish lies inside the
   municipality, and a scooter in both counts under the smaller, Costa da
   Caparica. After: 3 a poll, between Lisboa, Oeiras, Cascais and Matosinhos,
-  which keep their boxes for so few. In Spain, 7 of Hoppy's scooters a poll
-  in La Nucía, east of 0.122° W, counted under L'Alfàs del Pi; La Nucía now
-  has its outline, and none is misnamed.
+  which keep their boxes for so few. The box still reaches Trafaria, and
+  should: Almada's own box stops at 9.205° W, so it is what keeps those
+  scooters on the map, and Almada's outline counts them under Almada (24 a
+  poll, 5 of Bird's and 19 of Lime's, in four polls on the night of 15 to 16
+  October 2026; none dropped). Costa da Caparica answered to "Caparica" too
+  until 16 October 2026. It needs no such alias, as search finds a town by
+  any word of its name, and the alias made "…, Caparica" in an address mean
+  Costa da Caparica, though it is the postal locality of the inland parish
+  of Caparica (Monte de Caparica, the NOVA campus): such an address was
+  looked for without its town, within 15 km of the beach. In Spain, 7 of
+  Hoppy's scooters a poll in La Nucía, east of 0.122° W, counted under
+  L'Alfàs del Pi; La Nucía now has its outline, and none is misnamed.
 - **Reykjavík's capital area** is one city, with Kópavogur, Hafnarfjörður,
   Garðabær, Mosfellsbær and Seltjarnarnes as aliases: their boxes would
   overlap.
