@@ -162,5 +162,19 @@
     "color": "#1ea9e1",
     "initial": "Sa",
     "systemIds": { "prefixes": ["saham"] }
+  },
+  {
+    "key": "flamingo",
+    "name": "Flamingo",
+    "color": "#ff206e",
+    "initial": "Fl",
+    "systemIds": { "prefixes": ["flamingo"] }
+  },
+  {
+    "key": "jolt",
+    "name": "JOLT",
+    "color": "#1a1a1a",
+    "initial": "J",
+    "systemIds": { "prefixes": ["jolt"] }
   }
 ]

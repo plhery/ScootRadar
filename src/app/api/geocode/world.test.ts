@@ -3,24 +3,22 @@ import { NextRequest } from 'next/server';
 import { RECORDED_GEOAPIFY_ANSWERS, RECORDED_WORLD_PHOTON_ANSWERS, type RecordedSearch } from '@/app/api/geocode/recordedAnswers';
 import { searchText } from '@/lib/searchText';
 
-// New Zealand, Australia and Israel as country catalogs may list them: Australia with its states,
-// cities with the other names their catalogs give them, in English and in their own script, and the
-// countries with their words in both. The generated modules are what scripts/generate-provider-catalog.mjs
-// would write for them, beside the real countries of Europe, North America and West Asia: the United
-// Arab Emirates and Saudi Arabia are the catalog's own.
+// Australia and Israel as country catalogs may list them: Australia with its states, cities with the
+// other names their catalogs give them, in English and in their own script, and the countries with their
+// words in both. The generated modules are what scripts/generate-provider-catalog.mjs would write for
+// them, beside the real countries of Europe, North America, West Asia and Oceania: the United Arab
+// Emirates, Saudi Arabia and New Zealand are the catalog's own.
 const fixture = vi.hoisted(() => {
   const box = (lat: number, lng: number) => ({ center: [lat, lng] as [number, number],
     bounds: { south: lat - 0.1, west: lng - 0.1, north: lat + 0.1, east: lng + 0.1 } });
-  type Country = 'NZ' | 'AU' | 'IL';
+  type Country = 'AU' | 'IL';
   const system = (id: string, country: Country, city: string, region: string | undefined, at: [number, number], aliases?: string[]) => ({
     id, provider: 'lime', country, city, ...(region ? { region } : {}), ...box(...at), ...(aliases ? { aliases } : {}),
     discoveryUrl: `https://data.lime.bike/api/partners/v2/gbfs/${id}/gbfs.json`,
   });
   return {
-    countries: ['NZ', 'AU', 'IL'],
+    countries: ['AU', 'IL'],
     systems: [
-      system('auckland', 'NZ', 'Auckland', undefined, [-36.8485, 174.7633]),
-      system('christchurch', 'NZ', 'Christchurch', undefined, [-43.5321, 172.6362]),
       system('sydney', 'AU', 'Sydney', 'NSW', [-33.8688, 151.2093]),
       system('melbourne', 'AU', 'Melbourne', 'VIC', [-37.8136, 144.9631]),
       system('tel_aviv', 'IL', 'Tel Aviv', undefined, [32.0853, 34.7818],
@@ -30,7 +28,6 @@ const fixture = vi.hoisted(() => {
       { code: 'NSW', name: 'New South Wales' }, { code: 'QLD', name: 'Queensland' }, { code: 'VIC', name: 'Victoria' },
     ] },
     searchWords: {
-      NZ: ['new zealand', 'nz', 'neuseeland', 'nouvelle zelande', 'aotearoa'],
       AU: ['australia', 'australien', 'australie'],
       IL: ['israel', 'ישראל'],
     },
@@ -47,12 +44,11 @@ vi.mock('@/generated/countries', async importOriginal => {
   return {
     ...original,
     COUNTRY_CODES: [...original.COUNTRY_CODES, ...fixture.countries],
-    COUNTRY_SOURCES: { ...original.COUNTRY_SOURCES, NZ: 'newzealand', AU: 'australia', IL: 'israel' },
-    COUNTRY_CONTINENTS: { ...original.COUNTRY_CONTINENTS, NZ: 'oceania', AU: 'oceania', IL: 'asia' },
-    COUNTRY_NAMES: { ...original.COUNTRY_NAMES, NZ: fixture.names('New Zealand'), AU: fixture.names('Australia'),
-      IL: fixture.names('Israel') },
+    COUNTRY_SOURCES: { ...original.COUNTRY_SOURCES, AU: 'australia', IL: 'israel' },
+    COUNTRY_CONTINENTS: { ...original.COUNTRY_CONTINENTS, AU: 'oceania', IL: 'asia' },
+    COUNTRY_NAMES: { ...original.COUNTRY_NAMES, AU: fixture.names('Australia'), IL: fixture.names('Israel') },
     COUNTRY_SEARCH_WORDS: { ...original.COUNTRY_SEARCH_WORDS, ...fixture.searchWords },
-    COUNTRY_ANCHORS: { ...original.COUNTRY_ANCHORS, NZ: [-41, 174], AU: [-25, 134], IL: [31.5, 34.9] },
+    COUNTRY_ANCHORS: { ...original.COUNTRY_ANCHORS, AU: [-25, 134], IL: [31.5, 34.9] },
     COUNTRY_REGIONS: { ...original.COUNTRY_REGIONS, AU: fixture.regions },
   };
 });
@@ -365,6 +361,18 @@ describe('cities named in their own script, or with their country', () => {
     expect(searchRegionalScooterCities('Christchurch Great Britain').map(({ display_name }) => display_name)).toEqual(['Christchurch, United Kingdom']);
   });
 
+  it('lists first the Christchurch nearer the map, or in the rider\'s country', async () => {
+    stubUpstreams({});
+    const BOURNEMOUTH: [number, number] = [50.72, -1.88];
+    expect(await rows(await search('Christchurch', { near: AUCKLAND }))).toEqual([
+      ['Christchurch', 'New Zealand'], ['Christchurch', 'United Kingdom'],
+    ]);
+    expect(await rows(await search('Christchurch', { near: BOURNEMOUTH }))).toEqual([
+      ['Christchurch', 'United Kingdom'], ['Christchurch', 'New Zealand'],
+    ]);
+    expect((await rows(await search('Christchurch', { country: 'NZ' })))[0]).toEqual(['Christchurch', 'New Zealand']);
+  });
+
   it('reads New South Wales as an Australian state, not as Wales', () => {
     expect(titles('Sydney, New South Wales')).toEqual(['Sydney']);
     expect(titles('Sydney NSW')).toEqual(['Sydney']);
@@ -377,8 +385,8 @@ describe('cities named in their own script, or with their country', () => {
 
 describe('addresses written as they are in Oceania and West Asia', () => {
   it.each<[query: string, address: string, city: string]>([
-    ['10 Queen Street, Auckland 1010', '10 Queen Street', 'nz:Auckland'],
-    ['10 Queen Street Auckland', '10 Queen Street', 'nz:Auckland'],
+    ['10 Queen Street, Auckland 1010', '10 Queen Street', 'nz:auk:Auckland'],
+    ['10 Queen Street Auckland', '10 Queen Street', 'nz:auk:Auckland'],
     ['George St, Sydney NSW 2000', 'George St', 'au:nsw:Sydney'],
     ['1 George St, Sydney, New South Wales 2000', '1 George St', 'au:nsw:Sydney'],
     ['Rothschild 22, Tel Aviv 6688218', 'Rothschild 22', 'il:Tel Aviv'],

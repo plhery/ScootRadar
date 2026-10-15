@@ -382,6 +382,16 @@ enum ScooterRentalLinkPolicy {
             schemes: [],
             httpsHosts: ["ride-saham.app.link", "sahamofficial.com"]
         ),
+        // Flamingo, in New Zealand, links each scooter on ride.flamingoscooters.com.
+        "flamingo": ProviderPolicy(
+            schemes: [],
+            httpsHosts: ["flamingoscooters.com"]
+        ),
+        // JOLT, in New Plymouth and Rolleston, links each scooter by a uuid on its own site.
+        "jolt": ProviderPolicy(
+            schemes: [],
+            httpsHosts: ["joltscooters.co.nz"]
+        ),
         "publibike": ProviderPolicy(
             schemes: ["publibike", "velospot"],
             httpsHosts: ["publibike.ch", "velospot.info"]

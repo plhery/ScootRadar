@@ -106,6 +106,17 @@ const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
     schemes: [],
     httpsHosts: ['ride-saham.app.link', 'sahamofficial.com'],
   },
+  // Flamingo, in New Zealand, links each scooter on ride.flamingoscooters.com: /vehicle/<id> for
+  // iPhones, /v/<id> for Android, so no one link serves both and the web gets none.
+  flamingo: {
+    schemes: [],
+    httpsHosts: ['flamingoscooters.com'],
+  },
+  // JOLT, in New Plymouth and Rolleston, links each scooter by a uuid on its own site.
+  jolt: {
+    schemes: [],
+    httpsHosts: ['joltscooters.co.nz'],
+  },
 };
 
 // Links that open an operator's app elsewhere than on a scooter. Bird's and Spin's feeds give

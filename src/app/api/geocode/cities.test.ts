@@ -193,10 +193,12 @@ describe('searchCoveredCities', () => {
 
   it('finds every city with scooter data by its own name, first', () => {
     for (const city of COVERED_CITIES) {
-      const [first] = searchCoveredCities(city.city);
-      expect(first, city.city).toMatchObject({
+      // Towns of one name, as the Christchurches of England and New Zealand, come first
+      // together; the address search puts the one nearer the map first.
+      const namesakes = COVERED_CITIES.filter(other => other.city === city.city).length;
+      expect(searchCoveredCities(city.city).slice(0, namesakes), city.city).toContainEqual(expect.objectContaining({
         title: city.city, lat: city.center[0], lng: city.center[1], covered: true,
-      });
+      }));
     }
   });
 

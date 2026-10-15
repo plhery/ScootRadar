@@ -437,6 +437,33 @@ banned shared scooters, and feeds that were empty when checked.
     15 October. Its scooters still ride, so Holon is covered.
   - **Open data:** data.gov.il has cycle networks only; tel-aviv.gov.il
     answers HTTP 571 outside Israel, and gov.il 403 to scripts.
+- **New Zealand** ([guide](new-zealand-scooter-feeds.md#known-gaps)):
+  Flamingo in Auckland, Christchurch, Wellington, Dunedin, Tauranga,
+  Palmerston North, Porirua, Rangiora and Kaiapoi, and JOLT in New Plymouth
+  and Rolleston, are covered.
+  - **JOLT `hutt_valley`:** 30 scooters in Lower Hutt and 14 in Upper Hutt
+    in the median poll, none ridden in polls on the evening of Thursday 15
+    October and the morning of Friday 16 October 2026, the commute included.
+    See [Dates to check again](#dates-to-check-again).
+  - **JOLT `napier`:** 53 zones and no scooter; not in the registry.
+  - **Too few rides:** Lincoln, in JOLT's `selwyn` feed (about 9 scooters),
+    and Woodend and Pegasus, in Flamingo's `waimakariri` feed (about 5),
+    none ridden. The map drops their scooters rather than count them under
+    Rolleston or Rangiora.
+  - **No public feed:** Beam, in Queenstown, Taupō and Whangārei, whose feed
+    host answers 401; Lime, in Auckland. Neuron has left New Zealand.
+  - **Zone curfews:** Wellington bans hiring in the Courtenay precinct from
+    21:00 to 06:00 on Thursday, Friday and Saturday nights and public-holiday
+    eves (its code of practice v9.0, §7.4), and Flamingo says hiring stops
+    from 22:00 on Friday and Saturday in curfew areas of Auckland and
+    Tauranga, and every night in Auckland's Wynyard Quarter. None of these
+    zones has an official boundary to fetch, so `rental-curfews.json` holds
+    none (see the guide's [Rules](new-zealand-scooter-feeds.md#rules)).
+  - **The date line:** pan the web map's centre east of 180° and New
+    Zealand's markers and total vanish until it is panned back; the iPhone
+    app's code stops its view at ±180° the same way.
+  - **Auckland's licences** for Flamingo and Lime expire in November 2026,
+    with no new round.
 
 ## Countries not covered yet
 
@@ -524,6 +551,13 @@ a licence. Neither is published by its operator:
 | Rwanda | Guraride is docked bikes; no scooter feed found |
 | Mauritius | No scooter feed found |
 | Namibia | No scooter feed found |
+| Australia | Neuron's and Beam's feeds answer 401, and Lime answers 404 for about 80 town names; no state's open-data portal has a scooter feed. New South Wales's trials (Forster-Tuncurry and Wollongong, to 22 January 2027) send their data to a closed government platform. Flamingo's `sydney` feed is a static test: 2,331 scooters that never move, with new ids at every poll, at Transport for NSW's Crash Lab test site. Check again on 1 March 2027 |
+| Japan | The national open-data hub (ODPT) has bike-share feeds only (docomo bike share, HELLO CYCLING). LUUP publishes no feed; JOJO and TOCKLE run on Joyride, whose feed host is gone |
+| South Korea | Swing, GCOO, Kickgoing, Deer, DART and Beam publish no feed. The government's TAGO service lists every operator's shared scooters, but not as GBFS, and it needs a personal key: a possible source |
+| Malaysia | Zeus's Kuala Lumpur feed holds 47 scooters, all disabled, last reported two to five years ago |
+| Taiwan, Hong Kong, Singapore, Thailand, Indonesia, the Philippines, Vietnam, India | No registry row, and no guessed address answers. Taiwan's shared fleets are seated mopeds, Singapore bans shared scooters, and India's Yulu runs seated vehicles |
+| Uzbekistan, Mongolia | JET, which runs in both and in Kazakhstan, Georgia and Azerbaijan, publishes no feed. Silk Road Sharing, in Samarkand (ATOM Mobility system 1976), and IZZY, in Tashkent (1918), answer "GBFS disabled". Check again on 1 April 2027 |
+| Pacific islands | Pineapple, in Samoa (ATOM Mobility system 1359), answers "GBFS disabled" and its site is down; Kai Ride (2118), whose place is unknown, too. France's access point (transport.data.gouv.fr) has nothing for Nouméa or Papeete |
 | Bosnia and Herzegovina, Montenegro, North Macedonia, Albania, Kosovo, Andorra, San Marino, Gibraltar, Faroe Islands | No scooter feed found (Hopp Tórshavn held 13, all disabled, at night and on the evening of 13 October 2026) |
 
 Bolt publishes only two public scooter feeds in Europe, Brussels and Liverpool;
@@ -536,6 +570,13 @@ addresses, a scan of ATOM Mobility's systems, Hopp's town list, the app stores
 and the national open-data portals. ATOM's "GBFS disabled" answers mean the
 operator has a system but hasn't made its feed public. Survey files are in
 `/tmp/scoot-providers/middle-east-africa/`, which isn't kept.
+
+Asia and the Pacific were surveyed on 15 October 2026, with polls from 06:33
+to 08:53 and from 19:00 to 20:50 UTC: MobilityData's GBFS registry, the
+national open-data portals, guessed Bird, Dott, Hopp, Lime, Neuron, Beam,
+Spin and Zeus addresses for each country's towns, a scan of ATOM Mobility's
+systems and the operators' sites. Only New Zealand had feeds to add. Survey
+files are in `/tmp/scoot-providers/asia-pacific/`, which isn't kept.
 
 ## Dates to check again
 
@@ -554,6 +595,15 @@ operator has a system but hasn't made its feed public. Survey files are in
   and at midday on the 14th, and Dott deployed and swapped some, but none
   was ridden while it was polled. Entur renews the ids, so match scooters by
   position, and add it if they are ridden.
+- **Sunday 18 October 2026, 11:00 to 14:00 New Zealand time** (22:00 on
+  Saturday to 01:00 UTC): JOLT `hutt_valley`, in Lower Hutt and Upper Hutt,
+  every five minutes. JOLT gives a scooter a new id after a trip, so count
+  rides by place and range as the
+  [New Zealand guide](new-zealand-scooter-feeds.md#rides) does. Add a
+  system for the feed, with an area for each town that holds about ten
+  scooters that are ridden. The Hutt Valley's boxes come near Wellington's
+  and Porirua's: check that they hold none of those towns' scooters, and add
+  outlines if they do.
 - **20 October 2026:** Zeus's move to ATOM Mobility. Probe the ids that
   answer "GBFS disabled" and the empty ones (82, 183, 184, 186, 187, 191, 192,
   193) for the ten moved towns, and MobiData BW's listing for new Zeus feeds.
@@ -572,6 +622,12 @@ operator has a system but hasn't made its feed public. Survey files are in
 - **29 October 2026, in the afternoon:** Bird in Caesarea, Israel: 49 to 52
   scooters in Bird's `israel` feed on 15 October 2026, but only 5 new
   positions in 9 hours. Add an area for Caesarea if they are ridden.
+- **After 4 November 2026:** Auckland's two-year e-scooter licences, for
+  Flamingo and Lime, expire in November 2026, and the council holds no new
+  round
+  ([Auckland Council](https://www.aucklandcouncil.govt.nz/en/licences-regulations/e-scooter-licences-regulations-auckland.html)).
+  Check that Flamingo's `auckland` feed still lists scooters that are
+  ridden; if it empties, take it out of `data/new-zealand-scooter-feeds.json`.
 - **November 2026:** Beaumont's pilot runs "until the end of October 2026",
   and Lime's licence there to the end of 2026. Check that Lime's Edmonton feed
   still holds scooters in Beaumont, and whether the town goes on in 2027;
@@ -606,6 +662,10 @@ operator has a system but hasn't made its feed public. Survey files are in
   Netherlands may publish feeds then. So may Slovenia, for Ljubljana: look
   for Bolt's feed 359 there, or at `mds.bolt.eu`, and for an official Kvik
   feed.
+- **1 December 2026:** JOLT in New Zealand: `hutt_valley` again, unless it
+  was added on 18 October; `napier`, which had no scooter; and Lincoln, in
+  `selwyn`, with about 9 scooters none rode. Poll each on a weekday morning
+  and a weekend afternoon, New Zealand time.
 - **Wednesday 21 October 2026, 17:00 to 21:00 local:** Bird Miami, Bird
   University of Central Florida, Bird Orlando, Spin University of Utah and
   Spin East Lansing (`east_lansing`). Bird and Spin renew their ids at every
@@ -633,6 +693,12 @@ operator has a system but hasn't made its feed public. Survey files are in
 - **1 March 2027:** Lime Ciudad de México, empty since SEMOVI's pilot ended
   in September 2026. Check Lime's Querétaro and Monterrey slugs, Whoosh and
   JET again too.
+- **1 March 2027:** Flamingo `sydney`
+  (`data.rideflamingo.com/gbfs/3/sydney/gbfs.json`), a static test feed on
+  15 October 2026, and Neuron's, Beam's and Lime's Australian feeds. Add
+  Australia if New South Wales approves operators and Flamingo's feed lists
+  scooters that move; Australia then needs a list of its states, so
+  addresses read "Sydney NSW 2000".
 - **1 April 2027:** Bulle, Grenchen and Nyon, out of the map's towns since
   15 October 2026. Check Bird Grenchen (`bird-grenchen`) and Bird Bulle
   (`bird-platform-partner-jmfleets-bulle`) on sharedmobility.ch and at
@@ -642,6 +708,11 @@ operator has a system but hasn't made its feed public. Survey files are in
   its system out of `LEFT_OUT_SWISS_SYSTEMS` and put the town back in
   `data/swiss-scooter-areas.json` (for Nyon, drop its entry in
   `REGION_ALIASES`).
+- **1 April 2027:** Uzbekistan's ATOM Mobility systems, Silk Road Sharing
+  in Samarkand (1976) and IZZY in Tashkent (1918), which answered "GBFS
+  disabled" on 15 October 2026. If either answers with scooters, Uzbekistan
+  needs its time zones (`Asia/Tashkent`, `Asia/Samarkand`) and prices in
+  UZS.
 - **15 April 2027:** Bird Ajax and Bird Surrey, empty on 14 October 2026; the
   Durham Region pilots run from April to October. Lime Grand Rapids too, and
   look for a Veo feed there.

@@ -470,6 +470,38 @@
           { "label": "IL: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
         ]
       }
+    },
+    {
+      "code": "NZ",
+      "continent": "oceania",
+      "catalog": "data/new-zealand-scooter-feeds.json",
+      "source": "newzealand",
+      "names": { "en": "New Zealand", "de": "Neuseeland", "fr": "Nouvelle-Zélande", "it": "Nuova Zelanda", "nl": "Nieuw-Zeeland", "nb": "New Zealand", "pt": "Nova Zelândia", "es": "Nueva Zelanda", "is": "Nýja-Sjáland" },
+      "searchWords": ["new zealand", "nz", "aotearoa", "neuseeland", "nouvelle zelande", "nuova zelanda", "nieuw zeeland", "nova zelandia", "nueva zelanda", "nyja sjaland"],
+      "anchor": [-41.28, 173.29],
+      "anchorNote": "At the Centre of New Zealand, on Botanical Hill above Nelson: on land, halfway between the fleets of Auckland and Dunedin, between the two islands.",
+      "featuredCities": ["nz:auk:Auckland", "nz:wgn:Wellington", "nz:can:Christchurch"],
+      "credits": {
+        "attribution": "New Zealand: Flamingo GBFS (CC BY 4.0), JOLT GBFS",
+        "gbfs": ["Flamingo", "JOLT"],
+        "links": [
+          { "label": "NZ: Flamingo · CC BY 4.0", "href": "https://creativecommons.org/licenses/by/4.0/" },
+          { "label": "NZ: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
+        ]
+      },
+      "regions": {
+        "showInCityNames": false,
+        "totals": false,
+        "list": [
+          { "code": "AUK", "name": "Auckland" },
+          { "code": "BOP", "name": "Bay of Plenty" },
+          { "code": "CAN", "name": "Canterbury" },
+          { "code": "MWT", "name": "Manawatū-Whanganui" },
+          { "code": "OTA", "name": "Otago" },
+          { "code": "TKI", "name": "Taranaki" },
+          { "code": "WGN", "name": "Wellington" }
+        ]
+      }
     }
   ]
 }

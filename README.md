@@ -5,7 +5,7 @@
 <h1 align="center">ScootRadar</h1>
 
 <p align="center">
-  A friendly map for finding shared e-scooters in 371 cities in 24 countries.
+  A friendly map for finding shared e-scooters in 382 cities in 25 countries.
 </p>
 
 <p align="center">
@@ -23,7 +23,7 @@
   <img src="docs/scootradar-map.png" width="390" alt="ScootRadar showing fictional demo scooters around Zürich on a phone">
 </p>
 
-ScootRadar puts the shared scooters of 21 providers on one map, in an
+ScootRadar puts the shared scooters of 23 providers on one map, in an
 installable web app. It speaks German, French, Italian, Dutch, Norwegian,
 Portuguese, Spanish, Icelandic and English. There is also a native SwiftUI app
 for iPhone.
@@ -46,7 +46,7 @@ for iPhone.
   its marker, hovering a marker shows a short tip, and `/`, `L`, `+`, `−` and
   `Esc` work from the keyboard.
 
-**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob', Elerent, 3electra, Spin, Veo, Lyft and SAHAM.
+**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob', Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo and JOLT.
 
 Switzerland's scooters come from its national open-data platform, the other
 countries' from the feeds their operators and national platforms publish.
@@ -154,18 +154,20 @@ changing the response contract.
 
    Where towns touch, as in Gush Dan around Tel Aviv, around Lille or in west
    Los Angeles, a rectangle per town can't tell a scooter's town: each box
-   takes in parts of its neighbours. List each town's municipal boundary in
-   `data/town-outlines.json` (its city id and where to read it: an
-   OpenStreetMap relation, a Norwegian kommune at Kartverket, a British
-   district at the ONS or an American place's GEOID at the Census Bureau) and
-   run `node scripts/update-town-outlines.mjs`, which fetches and simplifies
-   it. A scooter inside a town's outline then counts under that town, under
-   the smaller where two nest, as Roubaix's inside Lille Métropole's; and a
-   feed keeps no scooter inside the outline of a town of its country where
-   its operator runs no service. The generator checks that the smallest
-   outline holding each covered town's centre is that town's own. If a feed
-   reaches into a town where its operator has no area, give the feed an area
-   there, as Ryde Stavanger's in Sandnes, or its scooters there are dropped.
+   takes in parts of its neighbours. So too where one town's feed reaches into
+   another, as Flamingo's Porirua feed does into Tawa, which is in Wellington.
+   List each town's municipal boundary in `data/town-outlines.json` (its city
+   id and where to read it: an OpenStreetMap relation, a Norwegian kommune at
+   Kartverket, a British district at the ONS or an American place's GEOID at
+   the Census Bureau) and run `node scripts/update-town-outlines.mjs`, which
+   fetches and simplifies it. A scooter inside a town's outline then counts
+   under that town, under the smaller where two nest, as Roubaix's inside
+   Lille Métropole's; and a feed keeps no scooter inside the outline of a town
+   of its country where its operator runs no service. The generator checks
+   that the smallest outline holding each covered town's centre is that
+   town's own. If a feed reaches into a town where its operator has no area,
+   give the feed an area there, as Ryde Stavanger's in Sandnes, or its
+   scooters there are dropped.
 
    The generator fails when a city's merged bounds are wider than 150 km, as
    two towns of one name merged into one would be; a city that really is wider

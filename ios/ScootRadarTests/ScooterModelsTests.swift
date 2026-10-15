@@ -314,6 +314,21 @@ final class ScooterModelsTests: XCTestCase {
         XCTAssertNil(ScooterRentalLinkPolicy.safeURL(provider: "saham", value: "https://ride-hoppy.app.link/600332"))
     }
 
+    func testRentalLinkPolicyKeepsTheNewZealandProvidersLinksOnTheirOwnHosts() {
+        let flamingo = "https://ride.flamingoscooters.com/vehicle/8bee7d68e6cd88526d26554ab337e57d89cc0ea5316f5c71802205230b2ebcee"
+        let urls = ScooterRentalLinkPolicy.rentalURLs(
+            provider: "flamingo",
+            rentalURIs: ScooterRentalURIs(ios: flamingo, android: "https://ride.flamingoscooters.com/v/8bee7d68", web: nil),
+            legacyLink: nil
+        )
+        XCTAssertEqual(urls.map(\.absoluteString), [flamingo])
+        XCTAssertNil(ScooterRentalLinkPolicy.safeURL(provider: "flamingo", value: "https://ride.flamingoscooters.com.example.com/vehicle/1"))
+        let jolt = "https://joltscooters.co.nz/vehicle/79f33e40-ee98-4909-b815-d3e35795bd5d"
+        XCTAssertEqual(ScooterRentalLinkPolicy.safeURL(provider: "jolt", value: jolt)?.absoluteString, jolt)
+        XCTAssertNil(ScooterRentalLinkPolicy.safeURL(provider: "flamingo", value: jolt))
+        XCTAssertNil(ScooterRentalLinkPolicy.safeURL(provider: "jolt", value: flamingo))
+    }
+
     @MainActor
     func testOpeningARentalFallsBackToTheWebPageWhenTheProvidersAppIsMissing() async {
         let scooter = Scooter(

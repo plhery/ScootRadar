@@ -10,7 +10,9 @@ import type { MapBounds } from '@/lib/types';
 // under that town (townOf in scooterSnapshots.ts); where outlines nest, as Lille
 // Métropole's around Roubaix's, the smaller wins. A feed keeps no scooter inside
 // the outline of a town of its country where its operator runs no service, as
-// Dott's few in Givat Shmuel, where only Lime's are counted. Read on the server only.
+// Dott's few in Givat Shmuel, where only Lime's are counted. Wellington's outline
+// takes in Tawa, which Flamingo serves from its Porirua feed: a scooter there counts
+// under Wellington. Read on the server only.
 
 interface TownOutline {
   /** The city's id, "il:Tel Aviv". */

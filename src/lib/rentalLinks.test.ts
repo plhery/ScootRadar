@@ -93,6 +93,30 @@ describe('rental links', () => {
     expect(safeRentalUri('hoppy', link)).toBeNull();
   });
 
+  it('keeps Flamingo\'s two links to each scooter, which differ by phone, and gives the web neither', () => {
+    const id = '8bee7d68e6cd88526d26554ab337e57d89cc0ea5316f5c71802205230b2ebcee';
+    const rentalUris = normalizeRentalUris('flamingo', {
+      ios: `https://ride.flamingoscooters.com/vehicle/${id}`,
+      android: `https://ride.flamingoscooters.com/v/${id}`,
+    });
+    expect(rentalUris).toEqual({
+      ios: `https://ride.flamingoscooters.com/vehicle/${id}`,
+      android: `https://ride.flamingoscooters.com/v/${id}`,
+      web: null,
+    });
+    expect(legacyRentalLink(rentalUris)).toBeNull();
+    expect(safeRentalUri('flamingo', `https://ride.flamingoscooters.com.example.com/v/${id}`)).toBeNull();
+    expect(safeRentalUri('jolt', `https://ride.flamingoscooters.com/v/${id}`)).toBeNull();
+  });
+
+  it('keeps the link to each JOLT scooter, on its own host only', () => {
+    const link = 'https://joltscooters.co.nz/vehicle/79f33e40-ee98-4909-b815-d3e35795bd5d';
+    const rentalUris = normalizeRentalUris('jolt', { ios: link, android: link });
+    expect(rentalUris).toEqual({ ios: link, android: link, web: null });
+    expect(legacyRentalLink(rentalUris)).toBe(link);
+    expect(safeRentalUri('flamingo', link)).toBeNull();
+  });
+
   it('keeps the link to each Veo scooter, which names it by its number, on Veo\'s Adjust host only', () => {
     const link = 'https://gmjc.adj.st/?adj_t=5vyf0nr&number=10103344';
     expect(normalizeRentalUris('veo', { ios: link, android: link })).toEqual({ ios: link, android: link, web: null });

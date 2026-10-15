@@ -29,6 +29,8 @@ const PROVIDER_DEFINITIONS = {
   lyft: { name: "Lyft", color: "#ff00bf", initial: "Ly" },
   bolt_hopp: { name: "Hopp", color: "#2a9c64", initial: "H" },
   saham: { name: "SAHAM", color: "#1ea9e1", initial: "Sa" },
+  flamingo: { name: "Flamingo", color: "#ff206e", initial: "Fl" },
+  jolt: { name: "JOLT", color: "#1a1a1a", initial: "J" },
 } as const;
 
 export type ProviderKey = keyof typeof PROVIDER_DEFINITIONS;
@@ -45,6 +47,7 @@ const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: str
   publibike: {"exact":["velospot"],"prefixes":["publibike"]},
   bolt_hopp: {"prefixes":["bolt_hopp"]},
   zelectra: {"prefixes":["zelectra"]},
+  flamingo: {"prefixes":["flamingo"]},
   elerent: {"prefixes":["elerent"]},
   naolib: {"prefixes":["naolib"]},
   beryl: {"prefixes":["beryl"]},
@@ -61,6 +64,7 @@ const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: str
   yoio: {"prefixes":["yoio"]},
   spin: {"prefixes":["spin"]},
   lyft: {"prefixes":["lyft"]},
+  jolt: {"prefixes":["jolt"]},
   voi: {"prefixes":["voi"]},
   veo: {"prefixes":["veo"]},
 };

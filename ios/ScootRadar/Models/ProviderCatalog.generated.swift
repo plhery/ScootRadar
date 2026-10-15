@@ -26,6 +26,8 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     case lyft
     case bolt_hopp
     case saham
+    case flamingo
+    case jolt
 
     var id: String { rawValue }
 
@@ -53,6 +55,8 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .lyft: "Lyft"
         case .bolt_hopp: "Hopp"
         case .saham: "SAHAM"
+        case .flamingo: "Flamingo"
+        case .jolt: "JOLT"
         }
     }
 
@@ -80,6 +84,8 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .lyft: "Ly"
         case .bolt_hopp: "H"
         case .saham: "Sa"
+        case .flamingo: "Fl"
+        case .jolt: "J"
         }
     }
 
@@ -109,6 +115,8 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .lyft: UIColor(red: 1.000000, green: 0.000000, blue: 0.749020, alpha: 1)
         case .bolt_hopp: UIColor(red: 0.164706, green: 0.611765, blue: 0.392157, alpha: 1)
         case .saham: UIColor(red: 0.117647, green: 0.662745, blue: 0.882353, alpha: 1)
+        case .flamingo: UIColor(red: 1.000000, green: 0.125490, blue: 0.431373, alpha: 1)
+        case .jolt: UIColor(red: 0.101961, green: 0.101961, blue: 0.101961, alpha: 1)
         }
     }
 
@@ -117,6 +125,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         (.publibike, ["velospot"], ["publibike"]),
         (.bolt_hopp, [], ["bolt_hopp"]),
         (.zelectra, [], ["zelectra"]),
+        (.flamingo, [], ["flamingo"]),
         (.elerent, [], ["elerent"]),
         (.naolib, [], ["naolib"]),
         (.beryl, [], ["beryl"]),
@@ -133,6 +142,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         (.yoio, [], ["yoio"]),
         (.spin, [], ["spin"]),
         (.lyft, [], ["lyft"]),
+        (.jolt, [], ["jolt"]),
         (.voi, [], ["voi"]),
         (.veo, [], ["veo"]),
     ]
@@ -597,6 +607,18 @@ enum ScooterProviderCoverage {
         (.lime, GeoBounds(south: 32.0648, west: 34.8165, north: 32.1107, east: 34.8515)),
         (.lime, GeoBounds(south: 32.0613, west: 34.8399, north: 32.0913, east: 34.8651)),
         (.lime, GeoBounds(south: 32.0243, west: 34.8502, north: 32.0457, east: 34.8655)),
+        (.flamingo, GeoBounds(south: -36.9398, west: 174.664, north: -36.6989, east: 174.8976)),
+        (.flamingo, GeoBounds(south: -43.591, west: 172.5084, north: -43.4437, east: 172.7826)),
+        (.flamingo, GeoBounds(south: -41.3618, west: 174.7174, north: -41.1958, east: 174.8515)),
+        (.flamingo, GeoBounds(south: -41.1656, west: 174.8117, north: -41.0235, east: 174.9192)),
+        (.flamingo, GeoBounds(south: -41.1959, west: 174.8052, north: -41.143, east: 174.8511)),
+        (.flamingo, GeoBounds(south: -45.9268, west: 170.3708, north: -45.7984, east: 170.6397)),
+        (.flamingo, GeoBounds(south: -37.7585, west: 176.096, north: -37.6208, east: 176.3668)),
+        (.flamingo, GeoBounds(south: -40.4026, west: 175.5589, north: -40.3038, east: 175.6786)),
+        (.flamingo, GeoBounds(south: -43.3414, west: 172.5563, north: -43.2778, east: 172.6231)),
+        (.flamingo, GeoBounds(south: -43.4029, west: 172.6202, north: -43.3456, east: 172.6867)),
+        (.jolt, GeoBounds(south: -39.1064, west: 174.0067, north: -39.0087, east: 174.1857)),
+        (.jolt, GeoBounds(south: -43.6426, west: 172.3437, north: -43.5743, east: 172.4189)),
     ]
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
@@ -1011,12 +1033,23 @@ enum ScooterCityCatalog {
         ScooterCity(id: "il:Kiryat Ono", name: "Kiryat Ono", countryCode: "IL", center: GeoPoint(latitude: 32.0592, longitude: 34.8594), bounds: GeoBounds(south: 32.0293, west: 34.8337, north: 32.0722, east: 34.8718)),
         ScooterCity(id: "il:Givat Shmuel", name: "Givat Shmuel", countryCode: "IL", center: GeoPoint(latitude: 32.0769, longitude: 34.8525), bounds: GeoBounds(south: 32.0613, west: 34.8399, north: 32.0913, east: 34.8651)),
         ScooterCity(id: "il:Or Yehuda", name: "Or Yehuda", countryCode: "IL", center: GeoPoint(latitude: 32.027, longitude: 34.863), bounds: GeoBounds(south: 32.0243, west: 34.8502, north: 32.0457, east: 34.8655)),
+        ScooterCity(id: "nz:auk:Auckland", name: "Auckland", countryCode: "NZ", center: GeoPoint(latitude: -36.8485, longitude: 174.7633), bounds: GeoBounds(south: -36.9398, west: 174.664, north: -36.6989, east: 174.8976)),
+        ScooterCity(id: "nz:can:Christchurch", name: "Christchurch", countryCode: "NZ", center: GeoPoint(latitude: -43.5309, longitude: 172.6366), bounds: GeoBounds(south: -43.591, west: 172.5084, north: -43.4437, east: 172.7826)),
+        ScooterCity(id: "nz:wgn:Wellington", name: "Wellington", countryCode: "NZ", center: GeoPoint(latitude: -41.2865, longitude: 174.7762), bounds: GeoBounds(south: -41.3618, west: 174.7174, north: -41.143, east: 174.8515)),
+        ScooterCity(id: "nz:wgn:Porirua", name: "Porirua", countryCode: "NZ", center: GeoPoint(latitude: -41.1339, longitude: 174.8405), bounds: GeoBounds(south: -41.1656, west: 174.8117, north: -41.0235, east: 174.9192)),
+        ScooterCity(id: "nz:ota:Dunedin", name: "Dunedin", countryCode: "NZ", center: GeoPoint(latitude: -45.8742, longitude: 170.5036), bounds: GeoBounds(south: -45.9268, west: 170.3708, north: -45.7984, east: 170.6397)),
+        ScooterCity(id: "nz:bop:Tauranga", name: "Tauranga", countryCode: "NZ", center: GeoPoint(latitude: -37.6878, longitude: 176.1651), bounds: GeoBounds(south: -37.7585, west: 176.096, north: -37.6208, east: 176.3668)),
+        ScooterCity(id: "nz:mwt:Palmerston North", name: "Palmerston North", countryCode: "NZ", center: GeoPoint(latitude: -40.3564, longitude: 175.6111), bounds: GeoBounds(south: -40.4026, west: 175.5589, north: -40.3038, east: 175.6786)),
+        ScooterCity(id: "nz:can:Rangiora", name: "Rangiora", countryCode: "NZ", center: GeoPoint(latitude: -43.3036, longitude: 172.5953), bounds: GeoBounds(south: -43.3414, west: 172.5563, north: -43.2778, east: 172.6231)),
+        ScooterCity(id: "nz:can:Kaiapoi", name: "Kaiapoi", countryCode: "NZ", center: GeoPoint(latitude: -43.3796, longitude: 172.6594), bounds: GeoBounds(south: -43.4029, west: 172.6202, north: -43.3456, east: 172.6867)),
+        ScooterCity(id: "nz:tki:New Plymouth", name: "New Plymouth", countryCode: "NZ", center: GeoPoint(latitude: -39.0572, longitude: 174.0752), bounds: GeoBounds(south: -39.1064, west: 174.0067, north: -39.0087, east: 174.1857)),
+        ScooterCity(id: "nz:can:Rolleston", name: "Rolleston", countryCode: "NZ", center: GeoPoint(latitude: -43.5956, longitude: 172.382), bounds: GeoBounds(south: -43.6426, west: 172.3437, north: -43.5743, east: 172.4189)),
     ]
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 371
-    static let countryCount = 24
+    static let cityCount = 382
+    static let countryCount = 25
 
     /// Cities by distance from the point to their centre, nearest first.
     static func nearest(to point: GeoPoint, count: Int) -> [ScooterCityDistance] {
@@ -1266,6 +1299,9 @@ enum ScooterCountryCatalog {
         // In Ramat Gan, east of Tel Aviv: in Gush Dan, where nearly all of Israel's scooters are,
         // inside its pre-1967 lines.
         "il": (32.07, 34.82),
+        // At the Centre of New Zealand, on Botanical Hill above Nelson: on land, halfway between the
+        // fleets of Auckland and Dunedin, between the two islands.
+        "nz": (-41.28, 173.29),
     ]
 
     /// The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences.
@@ -1273,6 +1309,7 @@ enum ScooterCountryCatalog {
         ("DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio, Bird, Elerent, Hoppy, Ride Mobility, 3electra", "https://github.com/MobilityData/gbfs"),
         ("US/CA: Bird, Bolt, Lime, Veo, Spin, Lyft", "https://github.com/MobilityData/gbfs"),
         ("AE/SA/IL: Dott, SAHAM, Bird, Lime", "https://github.com/MobilityData/gbfs"),
+        ("NZ: Flamingo, JOLT", "https://github.com/MobilityData/gbfs"),
         ("MobiData BW", "https://www.mobidata-bw.de/"),
         ("BE: Pony · transportdata.be", "https://transportdata.be/dataset/pony_charleroi"),
         ("NO: Entur AS · NLOD", "https://data.norge.no/nlod/en/2.0"),
@@ -1280,7 +1317,8 @@ enum ScooterCountryCatalog {
         ("UK: Beryl · CDLA-Permissive-2.0", "https://cdla.dev/permissive-2-0/"),
         ("UK: ONS boundaries · OGL v3.0", "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"),
         ("PT: DGT boundaries · CC BY 4.0", "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop"),
-        ("CH/FR/PT/ES/PL/UA/IL: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
+        ("NZ: Flamingo · CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/"),
+        ("CH/FR/PT/ES/PL/UA/IL/NZ: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
     ]
 
     /// The countries whose totals, zoomed out, are their states' or provinces', and those by code.

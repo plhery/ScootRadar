@@ -7,7 +7,7 @@ import { haversineM } from '@/lib/geo';
 import { COUNTRY_ANCHORS, COUNTRY_CONTINENTS, COUNTRY_REGIONS, type Continent, type CountryCode } from '@/generated/countries';
 import { searchWords, westernDigits } from '@/lib/searchText';
 import { streetAddress, townLine } from './addressFormats';
-import { catalogTownName, cityOfAddress, GEOCODE_LANGUAGES, namedCities, type GeocodeLanguage } from './cities';
+import { catalogTownName, cityOfAddress, GEOCODE_LANGUAGES, namedCities, type GeocodeLanguage, type NamedCity } from './cities';
 
 const MAX_QUERY_LENGTH = 160;
 const MAX_RESULTS = 5;
@@ -245,6 +245,19 @@ function placeRank(
 function townRank(named: boolean, place: GeocodePlace, country: string, from: From, listed = false): number {
   const distance = remoteness(place, country, from);
   return (named ? 0 : STARTED_TOWN_RANK) + (listed ? distance : 3 + distance * 2 + (place.covered ? 0 : 1));
+}
+
+/**
+ * The cities of our list found, towns of one name ordered by how far each is from the map, or
+ * with the rider's country's first: over Auckland, "Christchurch" is New Zealand's before
+ * England's, though both are farther than a town's ranks tell apart.
+ */
+function namesakesNearestFirst(listed: NamedCity[], { near, home }: From): NamedCity[] {
+  const away = ({ city, country }: NamedCity) => near ? haversineM(near[0], near[1], city.lat, city.lng) : country === home ? 0 : 1;
+  const byTitle = new Map<string, NamedCity[]>();
+  for (const found of listed) byTitle.set(found.city.title, [...(byTitle.get(found.city.title) ?? []), found]);
+  for (const namesakes of byTitle.values()) namesakes.sort((a, b) => away(a) - away(b));
+  return listed.map(({ city }) => byTitle.get(city.title)!.shift()!);
 }
 
 /** Whether a place is on the continent the map shows, or that of the rider's country without a map centre. */
@@ -648,7 +661,7 @@ async function geocode(input: GeocodeInput) {
   const foundTowns = towns && await within(towns, asked + TOWN_WAIT_MS - Date.now());
 
   const candidates: Candidate[] = [
-    ...listed.map(({ city, exact, country }) =>
+    ...namesakesNearestFirst(listed, search).map(({ city, exact, country }) =>
       ({ place: city, rank: townRank(exact, city, country, search, true), town: true, miss: false, named: exact, remoteness: remoteness(city, country, search), listed: true })),
     ...(foundTowns?.ok ? foundTowns.value.candidates : []),
     ...(foundPlaces?.ok ? foundPlaces.value.candidates : []),

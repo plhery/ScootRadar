@@ -1,0 +1,275 @@
+{
+  "verifiedOn": "2026-10-16",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "flamingo_nz_auckland",
+      "country": "NZ",
+      "provider": "flamingo",
+      "city": "Auckland",
+      "region": "AUK",
+      "timeZone": "Pacific/Auckland",
+      "center": [
+        -36.8485,
+        174.7633
+      ],
+      "bounds": {
+        "south": -36.9398,
+        "north": -36.6989,
+        "west": 174.664,
+        "east": 174.8976
+      },
+      "discoveryUrl": "https://data.rideflamingo.com/gbfs/3/auckland/gbfs.json",
+      "aliases": [
+        "Tāmaki Makaurau"
+      ]
+    },
+    {
+      "id": "flamingo_nz_christchurch",
+      "country": "NZ",
+      "provider": "flamingo",
+      "city": "Christchurch",
+      "region": "CAN",
+      "timeZone": "Pacific/Auckland",
+      "center": [
+        -43.5309,
+        172.6366
+      ],
+      "bounds": {
+        "south": -43.591,
+        "north": -43.4437,
+        "west": 172.5084,
+        "east": 172.7826
+      },
+      "discoveryUrl": "https://data.rideflamingo.com/gbfs/3/christchurch/gbfs.json",
+      "aliases": [
+        "Ōtautahi"
+      ]
+    },
+    {
+      "id": "flamingo_nz_wellington",
+      "country": "NZ",
+      "provider": "flamingo",
+      "city": "Wellington",
+      "region": "WGN",
+      "timeZone": "Pacific/Auckland",
+      "center": [
+        -41.2865,
+        174.7762
+      ],
+      "bounds": {
+        "south": -41.3618,
+        "north": -41.1958,
+        "west": 174.7174,
+        "east": 174.8515
+      },
+      "discoveryUrl": "https://data.rideflamingo.com/gbfs/3/wellington/gbfs.json",
+      "aliases": [
+        "Te Whanganui-a-Tara"
+      ]
+    },
+    {
+      "id": "flamingo_nz_porirua",
+      "country": "NZ",
+      "provider": "flamingo",
+      "city": "Porirua",
+      "region": "WGN",
+      "timeZone": "Pacific/Auckland",
+      "center": [
+        -41.1339,
+        174.8405
+      ],
+      "bounds": {
+        "south": -41.1959,
+        "north": -41.0235,
+        "west": 174.8052,
+        "east": 174.9192
+      },
+      "discoveryUrl": "https://data.rideflamingo.com/gbfs/3/porirua/gbfs.json",
+      "areas": [
+        {
+          "city": "Porirua",
+          "center": [
+            -41.1339,
+            174.8405
+          ],
+          "bounds": {
+            "south": -41.1656,
+            "north": -41.0235,
+            "west": 174.8117,
+            "east": 174.9192
+          }
+        },
+        {
+          "city": "Wellington",
+          "center": [
+            -41.1688,
+            174.8263
+          ],
+          "bounds": {
+            "south": -41.1959,
+            "north": -41.143,
+            "west": 174.8052,
+            "east": 174.8511
+          }
+        }
+      ]
+    },
+    {
+      "id": "flamingo_nz_dunedin",
+      "country": "NZ",
+      "provider": "flamingo",
+      "city": "Dunedin",
+      "region": "OTA",
+      "timeZone": "Pacific/Auckland",
+      "center": [
+        -45.8742,
+        170.5036
+      ],
+      "bounds": {
+        "south": -45.9268,
+        "north": -45.7984,
+        "west": 170.3708,
+        "east": 170.6397
+      },
+      "discoveryUrl": "https://data.rideflamingo.com/gbfs/3/dunedin/gbfs.json",
+      "aliases": [
+        "Ōtepoti"
+      ]
+    },
+    {
+      "id": "flamingo_nz_tauranga",
+      "country": "NZ",
+      "provider": "flamingo",
+      "city": "Tauranga",
+      "region": "BOP",
+      "timeZone": "Pacific/Auckland",
+      "center": [
+        -37.6878,
+        176.1651
+      ],
+      "bounds": {
+        "south": -37.7585,
+        "north": -37.6208,
+        "west": 176.096,
+        "east": 176.3668
+      },
+      "discoveryUrl": "https://data.rideflamingo.com/gbfs/3/tauranga/gbfs.json",
+      "aliases": [
+        "Mount Maunganui",
+        "Mt Maunganui",
+        "Papamoa"
+      ]
+    },
+    {
+      "id": "flamingo_nz_palmerston_north",
+      "country": "NZ",
+      "provider": "flamingo",
+      "city": "Palmerston North",
+      "region": "MWT",
+      "timeZone": "Pacific/Auckland",
+      "center": [
+        -40.3564,
+        175.6111
+      ],
+      "bounds": {
+        "south": -40.4026,
+        "north": -40.3038,
+        "west": 175.5589,
+        "east": 175.6786
+      },
+      "discoveryUrl": "https://data.rideflamingo.com/gbfs/3/palmerston-north/gbfs.json",
+      "aliases": [
+        "Palmy"
+      ]
+    },
+    {
+      "id": "flamingo_nz_waimakariri",
+      "country": "NZ",
+      "provider": "flamingo",
+      "city": "Waimakariri",
+      "region": "CAN",
+      "timeZone": "Pacific/Auckland",
+      "center": [
+        -43.3796,
+        172.6594
+      ],
+      "bounds": {
+        "south": -43.4029,
+        "north": -43.2778,
+        "west": 172.5563,
+        "east": 172.6867
+      },
+      "discoveryUrl": "https://data.rideflamingo.com/gbfs/3/waimakariri/gbfs.json",
+      "areas": [
+        {
+          "city": "Rangiora",
+          "center": [
+            -43.3036,
+            172.5953
+          ],
+          "bounds": {
+            "south": -43.3414,
+            "north": -43.2778,
+            "west": 172.5563,
+            "east": 172.6231
+          }
+        },
+        {
+          "city": "Kaiapoi",
+          "center": [
+            -43.3796,
+            172.6594
+          ],
+          "bounds": {
+            "south": -43.4029,
+            "north": -43.3456,
+            "west": 172.6202,
+            "east": 172.6867
+          }
+        }
+      ]
+    },
+    {
+      "id": "jolt_nz_new_plymouth",
+      "country": "NZ",
+      "provider": "jolt",
+      "city": "New Plymouth",
+      "region": "TKI",
+      "timeZone": "Pacific/Auckland",
+      "center": [
+        -39.0572,
+        174.0752
+      ],
+      "bounds": {
+        "south": -39.1064,
+        "north": -39.0087,
+        "west": 174.0067,
+        "east": 174.1857
+      },
+      "discoveryUrl": "https://prod-api.joltscooters.co.nz/api/gbfs/new_plymouth/gbfs.json",
+      "aliases": [
+        "Ngāmotu"
+      ]
+    },
+    {
+      "id": "jolt_nz_selwyn",
+      "country": "NZ",
+      "provider": "jolt",
+      "city": "Rolleston",
+      "region": "CAN",
+      "timeZone": "Pacific/Auckland",
+      "center": [
+        -43.5956,
+        172.382
+      ],
+      "bounds": {
+        "south": -43.6426,
+        "north": -43.5743,
+        "west": 172.3437,
+        "east": 172.4189
+      },
+      "discoveryUrl": "https://prod-api.joltscooters.co.nz/api/gbfs/selwyn/gbfs.json"
+    }
+  ]
+}

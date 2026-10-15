@@ -688,3 +688,28 @@ restrict distribution, as noted for France above. The map's credits name all
 three under the GBFS line for Asia. See the
 [coverage audit](docs/israeli-scooter-feeds.md) for the systems, the towns,
 the rules, the parking, the gaps and the recheck command.
+
+## New Zealand
+
+The reviewed catalog lives in `data/new-zealand-scooter-feeds.json`: 10 feeds
+in 11 towns, from Auckland to Dunedin. Flamingo's 8 feeds at
+`data.rideflamingo.com` (GBFS 3.0) and JOLT's `new_plymouth` and `selwyn` at
+`prod-api.joltscooters.co.nz` (GBFS 2.3) are each the operator's own public
+GBFS feed, all in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv).
+JOLT's `hutt_valley` and `napier` feeds are left out: the first's scooters
+weren't ridden while polled, and the second lists none.
+
+Flamingo's `porirua` feed reaches into Tawa, a suburb of Wellington, so
+Wellington City's and Porirua City's council boundaries decide which town a
+scooter there counts under. They are OpenStreetMap's, read through
+Nominatim, © OpenStreetMap contributors, under the
+[ODbL](https://opendatacommons.org/licenses/odbl/); simplified to within 20 m
+in `data/town-outlines.json`, they stay under the ODbL, and the credits link
+it.
+
+Flamingo's feeds give the licence CC-BY-4.0, with no link; the map's credits
+name "Flamingo · CC BY 4.0". JOLT's give no licence. The map's credits name
+both on a GBFS line for New Zealand. See the
+[coverage audit](docs/new-zealand-scooter-feeds.md) for the systems, the
+towns, the rules, the parking, the gaps and the recheck command.
