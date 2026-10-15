@@ -79,8 +79,8 @@ export const areaSeasonal = (system, area) => area.seasonal ?? system.seasonal;
 export const areaTimeZone = (system, area) => area.timeZone ?? system.timeZone;
 
 /**
- * The zones of src/generated/timeZones.ts, IANA's for Europe and North America, each with its
- * country, and the older names that stand for them: US/Eastern, Canada/Eastern, US/Arizona.
+ * The zones of src/generated/timeZones.ts, every one of IANA's zone.tab, each with its country,
+ * and the older names that stand for them: US/Eastern, Canada/Eastern, Asia/Tel_Aviv.
  */
 export function timeZoneTable(source) {
   const zones = new Map([...source.matchAll(/^ {2}'([^']+)': \{ country: '([A-Z]{2})'/gm)].map(([, name, country]) => [name, country]));
@@ -90,9 +90,10 @@ export function timeZoneTable(source) {
 const TIME_ZONES = timeZoneTable(readFileSync(new URL('../src/generated/timeZones.ts', import.meta.url), 'utf8'));
 
 /**
- * Why a service area's time zone is not its town's, or null. North American feeds give theirs
- * under older names (US/Eastern, Canada/Pacific), or wrongly: Veo says America/Chicago for every
- * town. The app reads none of them; a town's zone is the catalog's, by its canonical name.
+ * Why a service area's time zone is not its town's, or null. Feeds give theirs under older names
+ * (US/Eastern, Canada/Pacific, Asia/Tel_Aviv), or wrongly: Veo says America/Chicago for every
+ * town, Flamingo Etc/UTC. The app reads none of them; a town's zone is the catalog's, by its
+ * canonical name.
  */
 export function timeZoneProblem(timeZone, country, table = TIME_ZONES) {
   if (typeof timeZone !== 'string' || !timeZone) return 'needs its time zone, timeZone';
@@ -114,9 +115,10 @@ export function catalogSystems(countries, readCatalog) {
         const pause = areaSeasonal(system, area);
         const problem = pause === undefined ? null : seasonalProblem(pause);
         if (problem) throw new Error(`${country.catalog}: the seasonal pause of ${system.id} in ${area.city} ${problem}`);
-        // Every North American town says its time zone, which its seasonal pause keeps.
+        // Every town outside Europe says its time zone, which its seasonal pause and night bans keep:
+        // a country there may have several, as Australia, whose Brisbane keeps no summer time.
         const timeZone = areaTimeZone(system, area);
-        const zoneProblem = country.continent === 'north-america' || timeZone !== undefined
+        const zoneProblem = country.continent !== 'europe' || timeZone !== undefined
           ? timeZoneProblem(timeZone, country.code) : null;
         if (zoneProblem) throw new Error(`${country.catalog}: ${system.id} in ${area.city} ${zoneProblem}`);
         if (pause && timeZone && pause.timeZone !== timeZone) {

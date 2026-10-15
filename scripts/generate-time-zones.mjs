@@ -1,11 +1,12 @@
-// The time zones a device may report in the regions the app serves, each with
-// its country and the point the IANA time zone database gives it (the main
-// place of the zone), for the place the map opens on when it may not use the
-// device's location: src/lib/startPlace.ts on the web and
+// Every time zone a device may report, each with its country and the point the
+// IANA time zone database gives it (the main place of the zone), for the place
+// the map opens on when it may not use the device's location:
+// src/lib/startPlace.ts on the web and
 // ios/ScootRadar/Models/ScooterStartPlace.swift on iOS pick the covered city
-// nearest that point at run time, so the table does not change as cities are
-// added. Only Europe and the US, Canada and Mexico are listed, which keeps it
-// small; a zone outside them opens on Switzerland, as every visitor did before.
+// nearest that point at run time, so the table does not change as cities or
+// countries are added. A zone it does not know, such as UTC, opens on
+// Switzerland, as every visitor did before. The catalog check reads it too:
+// a service area's timeZone must be one of its country's zones.
 //
 // Source: the IANA time zone database, https://www.iana.org/time-zones, which
 // is in the public domain. zone.tab gives one line per zone and country with
@@ -30,13 +31,6 @@ if (!tzdata) {
 const read = name => readFileSync(resolve(tzdata, name), 'utf8');
 const version = read('version').trim();
 
-// Europe from the Azores and the Canaries to the Urals' foot and Svalbard, without the
-// African and Asian shores of the Mediterranean but with Ceuta and Cyprus; and
-// the three countries of North America, Hawaii and Alaska included.
-const EUROPE = [27, -32, 81, 45];
-const EUROPEAN_OUTSIDE_EUROPE = new Set(['Africa/Ceuta', 'Asia/Famagusta', 'Asia/Nicosia']);
-const NORTH_AMERICA = new Set(['CA', 'MX', 'US']);
-
 /** "+4723+00832" or "+472300+0083200": degrees, minutes and maybe seconds. */
 function parsePoint(text) {
   const [, lat, lng] = text.match(/^([+-]\d+)([+-]\d+)$/);
@@ -51,19 +45,11 @@ function parsePoint(text) {
   return [degrees(lat, 2), degrees(lng, 3)];
 }
 
-function served(name, country, [lat, lng]) {
-  if (NORTH_AMERICA.has(country)) return true;
-  const [south, west, north, east] = EUROPE;
-  const inEurope = lat >= south && lat <= north && lng >= west && lng <= east;
-  return inEurope && (!/^(Africa|Asia)\//.test(name) || EUROPEAN_OUTSIDE_EUROPE.has(name));
-}
-
 const zones = new Map();
 for (const line of read('zone.tab').split('\n')) {
   if (!line || line.startsWith('#')) continue;
   const [country, point, name] = line.split('\t');
-  const at = parsePoint(point);
-  if (served(name, country, at)) zones.set(name, { country, point: at });
+  zones.set(name, { country, point: parsePoint(point) });
 }
 
 // "Link TARGET ALIAS", and "#= NAME" where zone.tab knows the alias by another name than the target.
@@ -85,7 +71,7 @@ const typescript = `${header}
 /** The release of the IANA time zone database the table comes from. */
 export const TZDATA_VERSION = '${version}';
 
-/** Each zone of Europe, the US, Canada and Mexico: its country and its point, [latitude, longitude]. */
+/** Each zone of zone.tab: its country and its point, [latitude, longitude]. */
 export const TIME_ZONES: Readonly<Record<string, { country: string; point: readonly [number, number] }>> = {
 ${sorted(zones).map(([name, { country, point }]) => `  '${name}': { country: '${country}', point: [${point[0]}, ${point[1]}] },`).join('\n')}
 };
@@ -107,7 +93,7 @@ enum ScooterTimeZones {
     /// The release of the IANA time zone database the table comes from.
     static let version = "${version}"
 
-    /// Each zone of Europe, the US, Canada and Mexico: its country and its point.
+    /// Each zone of zone.tab: its country and its point.
     static let places: [String: ScooterTimeZonePlace] = [
 ${sorted(zones).map(([name, { country, point }]) => `        "${name}": ScooterTimeZonePlace(countryCode: "${country}", point: GeoPoint(latitude: ${point[0]}, longitude: ${point[1]})),`).join('\n')}
     ]

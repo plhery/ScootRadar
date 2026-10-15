@@ -198,7 +198,7 @@ describe('the countries of data/countries.json', () => {
       'data/canadian-scooter-feeds.json: the seasonal pause of bird_toronto in Toronto needs from and until as two different dates, "MM-DD"');
   });
 
-  it('gives each North American town its time zone, by its name today, whatever its feed says', () => {
+  it('gives each town outside Europe its time zone, by its name today, whatever its feed says', () => {
     const toronto = canadianCatalog.systems[0];
     const withZone = timeZone => ({ systems: [{ ...toronto, timeZone }] });
     expect(() => catalogSystems([canada], () => withZone(undefined))).toThrow('bird_toronto in Toronto needs its time zone, timeZone');
@@ -217,7 +217,19 @@ describe('the countries of data/countries.json', () => {
     const paused = { systems: [{ ...toronto, seasonal: { from: '11-16', until: '04-15', timeZone: 'America/Winnipeg' } }] };
     expect(() => catalogSystems([canada], () => paused))
       .toThrow('the seasonal pause of bird_toronto in Toronto is in America/Winnipeg, the town in America/Toronto');
+    // Nor only in North America: New Zealand's towns say theirs, which Flamingo's feed gives as Etc/UTC.
+    const newZealand = { ...canada, code: 'NZ', continent: 'oceania', catalog: 'data/new-zealand-scooter-feeds.json', source: 'newzealand' };
+    const auckland = { id: 'flamingo_auckland', provider: 'flamingo', city: 'Auckland', center: [-36.85, 174.76],
+      bounds: { south: -37, west: 174.6, north: -36.7, east: 174.9 }, discoveryUrl: 'https://api.flamingoscooters.com/gbfs/auckland/gbfs.json' };
+    expect(() => catalogSystems([newZealand], () => ({ systems: [auckland] })))
+      .toThrow('data/new-zealand-scooter-feeds.json: flamingo_auckland in Auckland needs its time zone, timeZone');
+    expect(() => catalogSystems([newZealand], () => ({ systems: [{ ...auckland, timeZone: 'Etc/UTC' }] })))
+      .toThrow('flamingo_auckland in Auckland has no time zone Etc/UTC');
+    expect(() => catalogSystems([newZealand], () => ({ systems: [{ ...auckland, timeZone: 'NZ' }] })))
+      .toThrow('flamingo_auckland in Auckland has NZ, an older name of Pacific/Auckland: write that');
+    expect(() => catalogSystems([newZealand], () => ({ systems: [{ ...auckland, timeZone: 'Pacific/Auckland' }] }))).not.toThrow();
     // Europe's towns need none, and the one they give is checked all the same.
+    expect(() => catalogSystems(europe.countries.filter(({ code }) => code === 'FR'), path => readJson(path))).not.toThrow();
     expect(timeZoneProblem(undefined, 'CH')).toBe('needs its time zone, timeZone');
     expect(timeZoneProblem('Europe/Zurich', 'CH')).toBeNull();
     expect(timeZoneProblem('Europe/Berlin', 'CH')).toBe('has Europe/Berlin, a time zone of DE');

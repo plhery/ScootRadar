@@ -1244,7 +1244,7 @@ extension ScooterModelsTests {
         )
     }
 
-    // North America as country agents may add it, beside a few cities of Europe.
+    // North America, Oceania and the Middle East as country agents may add them, beside a few cities of Europe.
     private var startCities: [ScooterCity] {
         [
             city("ch:zurich", "CH", 47.3769, 8.5417),
@@ -1255,6 +1255,10 @@ extension ScooterModelsTests {
             city("us:tx:austin", "US", 30.2672, -97.7431),
             city("us:or:portland", "US", 45.5152, -122.6784),
             city("mx:cdmx", "MX", 19.4326, -99.1332),
+            city("nz:Auckland", "NZ", -36.8485, 174.7633),
+            city("au:Sydney", "AU", -33.8688, 151.2093),
+            city("au:Melbourne", "AU", -37.8136, 144.9631),
+            city("il:Tel Aviv", "IL", 32.0853, 34.7818),
         ]
     }
 
@@ -1277,6 +1281,13 @@ extension ScooterModelsTests {
         XCTAssertEqual(startID("America/Halifax"), "ca:qc:montreal")
         XCTAssertEqual(startID("America/Montreal"), "ca:on:toronto")
         XCTAssertEqual(startID("US/Central"), "us:tx:austin")
+
+        XCTAssertEqual(startID("Pacific/Auckland"), "nz:Auckland")
+        XCTAssertEqual(startID("Asia/Tel_Aviv"), "il:Tel Aviv")
+        XCTAssertEqual(startID("Australia/Sydney"), "au:Sydney")
+        // Perth has no city of its own: the nearest of Australia's.
+        XCTAssertEqual(startID("Australia/Perth"), "au:Melbourne")
+        XCTAssertEqual(ScooterStartPlace.country(forTimeZone: "Asia/Dubai"), "AE")
     }
 
     func testMapCrossesABorderOnlyToACityWithin150Kilometres() {
@@ -1286,7 +1297,8 @@ extension ScooterModelsTests {
     }
 
     func testMapKeepsSwitzerlandForZonesWithNothingNear() {
-        for zone in ["UTC", "GMT", "Etc/GMT+5", "Asia/Tokyo", ""] {
+        // Zones that are no place, and Antarctica's Troll station, far from any covered city.
+        for zone in ["UTC", "GMT", "Etc/UTC", "Factory", "Etc/GMT+5", "Antarctica/Troll", ""] {
             XCTAssertNil(ScooterStartPlace.city(forTimeZone: zone), zone)
             let start = ScooterStartPlace.start(forTimeZone: zone)
             XCTAssertEqual(start.zoom, ScooterMapStart.switzerland.zoom, zone)
@@ -1303,7 +1315,10 @@ extension ScooterModelsTests {
         XCTAssertNotNil(ScooterTimeZones.version.range(of: #"^\d{4}[a-z]$"#, options: .regularExpression))
         XCTAssertEqual(ScooterTimeZones.places["Europe/Oslo"]?.countryCode, "NO")
         XCTAssertEqual(ScooterTimeZones.places["America/Toronto"]?.countryCode, "CA")
-        XCTAssertNil(ScooterTimeZones.places["Asia/Tokyo"])
+        XCTAssertEqual(ScooterTimeZones.places["Pacific/Auckland"]?.countryCode, "NZ")
+        XCTAssertEqual(ScooterTimeZones.places["Asia/Tokyo"]?.countryCode, "JP")
+        XCTAssertEqual(ScooterTimeZones.aliases["Asia/Tel_Aviv"], "Asia/Jerusalem")
+        XCTAssertNil(ScooterTimeZones.places["Etc/UTC"])
         for (alias, zone) in ScooterTimeZones.aliases {
             XCTAssertNotNil(ScooterTimeZones.places[zone], alias)
         }
