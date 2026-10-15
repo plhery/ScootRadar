@@ -1,22 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-// Lyft's Chicago feed as data/american-scooter-feeds.json will list it, to read its quirks
-// before its towns are added.
-const lyftChicago = vi.hoisted(() => ({
-  id: 'lyft_us_chicago', provider: 'lyft', country: 'US' as const, city: 'Chicago', region: 'IL', timeZone: 'America/Chicago',
-  center: [41.8781, -87.6298] as [number, number], bounds: { south: 41.64, west: -87.95, north: 42.03, east: -87.52 },
-  discoveryUrl: 'https://gbfs.lyft.com/gbfs/2.3/chi/gbfs.json',
-}));
-vi.mock('@/generated/countryCatalogs', async importOriginal => {
-  const original = await importOriginal<typeof import('@/generated/countryCatalogs')>();
-  return { CATALOG_SYSTEMS: [...original.CATALOG_SYSTEMS, lyftChicago] };
-});
-
-const { fetchScooters, unlinkedScooterPlan } = await import('./scooterFeeds');
-const { upstreamJsonCache } = await import('./upstreamJsonCache');
-const { REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, searchRegionalScooterCities, serviceAreas } = await import('./regionalScooterSystems');
-const { namedCities } = await import('@/app/api/geocode/cities');
-const { providerKeyForSystemId } = await import('@/generated/providers');
+import { fetchScooters, unlinkedScooterPlan } from './scooterFeeds';
+import { upstreamJsonCache } from './upstreamJsonCache';
+import { REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, searchRegionalScooterCities, serviceAreas } from './regionalScooterSystems';
+import { namedCities } from '@/app/api/geocode/cities';
+import { providerKeyForSystemId } from '@/generated/providers';
 
 const response = (data: unknown) => new Response(JSON.stringify(data));
 const system = (id: string) => REGIONAL_SCOOTER_SYSTEMS.find(entry => entry.id === id)!;
@@ -124,7 +112,9 @@ describe('the United States', () => {
         per_min_pricing: [{ start: 0, rate: 0.46, interval: 1 }] }] } });
       throw new Error(`Unexpected upstream ${url}`);
     }));
-    const result = await fetchScooters({ bounds: veo.bounds, minBattery: 0, providers: new Set(['veo']) });
+    // Central Washington, short of Veo's College Park, Maryland, whose feed the test does not answer.
+    const result = await fetchScooters({ bounds: { south: 38.85, west: -77.06, north: 38.95, east: -76.95 }, minBattery: 0,
+      providers: new Set(['veo']) });
     expect(result.meta.sources.us).toBe('fresh');
     expect(result.vehicles).toEqual([expect.objectContaining({
       provider: 'veo', vehicle_id: `veo_us_washington:${scooter.bike_id}`, battery: null, range_m: 58729,
@@ -134,6 +124,9 @@ describe('the United States', () => {
   });
 
   it('reads Lyft\'s flags written 0 and 1, its price written "1.00", and the scooter plan its scooters do not name', async () => {
+    const lyftChicago = system('lyft_us_chicago');
+    expect(lyftChicago).toMatchObject({ country: 'US', city: 'Chicago', region: 'IL', timeZone: 'America/Chicago',
+      discoveryUrl: 'https://gbfs.lyft.com/gbfs/2.3/chi/gbfs.json' });
     const base = 'https://gbfs.lyft.com/gbfs/2.3/chi/en/';
     const link = 'https://chi.lft.to/lastmile_qr_scan';
     // As Lyft publishes them in Chicago: one link per city, which opens the app's code scanner.
@@ -171,5 +164,61 @@ describe('the United States', () => {
     expect(unlinkedScooterPlan('lyft', new Map([...typesById, ['4', { ...types[2], vehicle_type_id: '4' }]]), pricing)).toBeUndefined();
     expect(unlinkedScooterPlan('lyft', new Map([['3', { ...types[2], default_pricing_plan_id: 'OTHER' }]]), pricing)).toBeUndefined();
     expect(unlinkedScooterPlan('bird', typesById, pricing)).toBeUndefined();
+  });
+
+  it('reads Spin\'s feed, which names no price and gives Bird\'s apps, whose charger sign-up is no rental link', async () => {
+    const spin = system('spin_us_baltimore');
+    expect(spin).toMatchObject({ country: 'US', city: 'Baltimore', region: 'MD', timeZone: 'America/New_York',
+      discoveryUrl: 'https://gbfs.spin.pm/api/gbfs/v2_3/baltimore/gbfs' });
+    const base = 'https://gbfs.spin.pm/api/gbfs/v2_3/baltimore/';
+    // As Spin publishes them: a last_reported per scooter, and no price or link of its own.
+    const scooter = { bike_id: '44e616f1-de8c-4505-bcb9-558eed4f8dee', lat: 39.32782641666667, lon: -76.62328413333333,
+      is_disabled: false, is_reserved: false, vehicle_type_id: 'bae2102b-56ba-42ba-9097-720e5990b4b2',
+      last_reported: Math.floor(Date.now() / 1000) - 30, current_range_meters: 27318.0, current_fuel_percent: 0.6236559 };
+    vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+      if (url === spin.discoveryUrl) return response({ version: '2.3', data: { en: { feeds: ['system_information', 'free_bike_status',
+        'vehicle_types', 'system_pricing_plans'].map(name => ({ name, url: `${base}${name}` })) } } });
+      if (url === `${base}system_information`) return response({ version: '2.3', data: { system_id: 'provider-null-baltimore',
+        name: 'provider null baltimore', language: 'en', timezone: 'US/Eastern', operator: 'Bird Rides, Inc.', rental_apps: {
+          android: { discovery_uri: 'bird://charger-onboarding', store_uri: 'https://play.google.com/store/apps/details?id=co.bird.android' },
+          ios: { discovery_uri: 'bird://', store_uri: 'https://apps.apple.com/us/app/bird-be-free-enjoy-the-ride/id1260842311' } } } });
+      if (url === `${base}vehicle_types`) return response({ data: { vehicle_types: [{ vehicle_type_id: scooter.vehicle_type_id,
+        form_factor: 'scooter', propulsion_type: 'electric', max_range_meters: 24000.0 }] } });
+      if (url === `${base}free_bike_status`) return response({ version: '2.3', ttl: 60, last_updated: Math.floor(Date.now() / 1000),
+        data: { bikes: [scooter, { ...scooter, bike_id: 'reserved', is_reserved: true }] } });
+      if (url === `${base}system_pricing_plans`) return response({ version: '2.3', data: { plans: [] } });
+      throw new Error(`Unexpected upstream ${url}`);
+    }));
+    const result = await fetchScooters({ bounds: spin.bounds, minBattery: 0, providers: new Set(['spin']) });
+    expect(result.meta.sources.us).toBe('fresh');
+    expect(result.vehicles).toEqual([expect.objectContaining({
+      provider: 'spin', vehicle_id: `spin_us_baltimore:${scooter.bike_id}`, battery: 62, range_m: 27318, deep_link: null,
+      rental_uris: { android: null, ios: null, web: null },
+    })]);
+    expect(result.vehicles[0].pricing).toBeUndefined();
+  });
+
+  it('sets each Veo system\'s own zone, as its feeds give every town America/Chicago', () => {
+    const veo = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.provider === 'veo');
+    expect(veo.length).toBeGreaterThan(25);
+    const zones: Record<string, string> = { CA: 'America/Los_Angeles', CO: 'America/Denver', UT: 'America/Denver',
+      IN: 'America/Indiana/Indianapolis', AL: 'America/Chicago', AR: 'America/Chicago', IA: 'America/Chicago', IL: 'America/Chicago',
+      KS: 'America/Chicago', OK: 'America/Chicago', TX: 'America/Chicago' };
+    for (const entry of veo) expect(entry.timeZone, entry.id).toBe(zones[entry.region!] ?? 'America/New_York');
+    expect(system('veo_us_west_lafayette').timeZone).toBe('America/Indiana/Indianapolis');
+    expect(system('veo_us_berkeley').timeZone).toBe('America/Los_Angeles');
+  });
+
+  it.each([
+    ['UC Davis', 'Davis, CA'], ['Purdue', 'West Lafayette, IN'], ['UCSD', 'San Diego, CA'], ['K-State', 'Manhattan, KS'],
+    ['Rutgers', 'New Brunswick, NJ'], ['University of Maryland', 'College Park, MD'], ['Michigan State University', 'East Lansing, MI'],
+    ['NC State', 'Raleigh, NC'], ['Saint Paul', 'St. Paul, MN'], ['NYC', 'Bronx, NY'], ['New York', 'Bronx, NY'],
+  ])('finds the town of a campus or a borough by its other name: "%s"', (query, title) => {
+    expect(namedCities(query)[0].city.title).toBe(title);
+  });
+
+  it('finds both boroughs of New York with scooters as New York', () => {
+    expect(searchRegionalScooterCities('New York').map(city => city.display_name))
+      .toEqual(['Bronx, NY, United States', 'Queens, NY, United States']);
   });
 });

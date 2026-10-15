@@ -148,21 +148,22 @@ describe('GET /api/geocode', () => {
   });
 
   it.each([
-    ['de', 'Deutschland', 'Schweiz'],
-    ['fr', 'Allemagne', 'Suisse'],
-    ['it', 'Germania', 'Svizzera'],
-    ['es', 'Alemania', 'Suiza'],
-    ['is', 'Þýskaland', 'Sviss'],
-    ['en', 'Germany', 'Switzerland'],
+    ['de', 'Deutschland', 'Schweiz', 'Vereinigte Staaten'],
+    ['fr', 'Allemagne', 'Suisse', 'États-Unis'],
+    ['it', 'Germania', 'Svizzera', 'Stati Uniti'],
+    ['es', 'Alemania', 'Suiza', 'Estados Unidos'],
+    ['is', 'Þýskaland', 'Sviss', 'Bandaríkin'],
+    ['en', 'Germany', 'Switzerland', 'United States'],
     // Upper case is the same language; a language the apps are not shown in gets English.
-    ['DE', 'Deutschland', 'Schweiz'],
-    ['sv', 'Germany', 'Switzerland'],
-    [undefined, 'Germany', 'Switzerland'],
-  ])('writes the country of a city in the language asked for (%s)', async (language, germany, switzerland) => {
+    ['DE', 'Deutschland', 'Schweiz', 'Vereinigte Staaten'],
+    ['sv', 'Germany', 'Switzerland', 'United States'],
+    [undefined, 'Germany', 'Switzerland', 'United States'],
+  ])('writes the country of a city in the language asked for (%s)', async (language, germany, switzerland, unitedStates) => {
     vi.stubGlobal('fetch', vi.fn());
     // Without a map centre, Switzerland is near.
     const expected = [
       { lat: 46.948, lng: 7.4474, display_name: 'Bern, Switzerland', title: 'Bern', subtitle: switzerland, covered: true },
+      { lat: 37.8715, lng: -122.273, display_name: 'Berkeley, CA, United States', title: 'Berkeley, CA', subtitle: unitedStates, covered: true },
       { lat: 52.52, lng: 13.405, display_name: 'Berlin, Germany', title: 'Berlin', subtitle: germany, covered: true },
     ];
 
@@ -353,12 +354,13 @@ describe('address search results', () => {
 
     expect(await titles('Lausanne', LAUSANNE, [lausannegasse, leMont, lausanne])).toEqual(['Lausanne', 'Le Mont-sur-Lausanne', 'Lausannegasse']);
     expect(await titles('Laus', LAUSANNE, [lausannegasse, lausen, lausanne, leMont])).toEqual(['Lausanne', 'Le Mont-sur-Lausanne', 'Lausen', 'Lausannegasse']);
-    // Bern and Berlin from our list first. Burgdorf is in the canton of Bern, not on the way to it.
+    // Berkeley, Berlin and Bern from our list first. Burgdorf is in the canton of Bern, not on the way to
+    // it: it would come after Bernerstrasse, past the five shown.
     expect(await titles('Ber', ZURICH, [
       [{ type: 'city', name: 'Burgdorf', state: 'Bern', country: 'Schweiz', countrycode: 'CH' }, 47.0559, 7.6271],
       [{ type: 'city', name: 'Bergdietikon', state: 'Aargau', country: 'Schweiz', countrycode: 'CH' }, 47.3898, 8.3865],
       [{ type: 'street', name: 'Bernerstrasse', city: 'Zürich', countrycode: 'CH' }, 47.3889, 8.4986],
-    ])).toEqual(['Berlin', 'Bern', 'Bergdietikon', 'Bernerstrasse', 'Burgdorf']);
+    ])).toEqual(['Berkeley, CA', 'Berlin', 'Bern', 'Bergdietikon', 'Bernerstrasse']);
   });
 });
 
@@ -401,7 +403,8 @@ describe('cities and towns', () => {
     const response = await POST(postRequest('Ber', 'de', ZURICH));
 
     expect(asked(fetchMock, GEOAPIFY_HOST).map(geoapifyRequest)).toEqual(['towns', 'nearby']);
-    expect(await titles(response)).toEqual(['Berlin', 'Bern', 'Bergdietikon', 'Beromünster', 'Bernerstrasse']);
+    // Five at most, so Bernerstrasse, a place, is left out.
+    expect(await titles(response)).toEqual(['Berkeley, CA', 'Berlin', 'Bern', 'Bergdietikon', 'Beromünster']);
   });
 
   it('takes a town of the name typed close to a city of our list for that city, ranked as that town', async () => {
@@ -467,7 +470,7 @@ describe('cities and towns', () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get('x-geocoding-data-source')).toBe('Verified scooter city catalog');
-    expect(await titles(response)).toEqual(['Berlin', 'Bern']);
+    expect(await titles(response)).toEqual(['Berkeley, CA', 'Berlin', 'Bern']);
   });
 });
 
@@ -1143,11 +1146,11 @@ describe('recorded Geoapify answers', () => {
     ]],
     // The cities of our list it may become, then the towns it starts close by.
     ['Ber', 'de', [47.37, 8.54], ['towns', 'nearby'], [
+      ['Berkeley, CA', 'Vereinigte Staaten', DATA],
       ['Berlin', 'Deutschland', DATA],
       ['Bern', 'Schweiz', DATA],
       ['Bergdietikon', 'Aargau, Schweiz', DATA],
       ['Berikon', 'Aargau, Schweiz', DATA],
-      ['Berg am Irchel', 'Zürich, Schweiz', DATA],
     ]],
     // Rome, which "Rom" names in German, before Romanshorn, whose name it starts.
     ['Rom', 'de', [47.37, 8.54], ['towns', 'nearby'], [

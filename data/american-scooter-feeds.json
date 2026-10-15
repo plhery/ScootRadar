@@ -882,6 +882,1460 @@
         "east": -122.2291
       },
       "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/seattle/gbfs.json"
+    },
+    {
+      "id": "lyft_us_chicago",
+      "country": "US",
+      "provider": "lyft",
+      "city": "Chicago",
+      "region": "IL",
+      "timeZone": "America/Chicago",
+      "center": [
+        41.8781,
+        -87.6298
+      ],
+      "bounds": {
+        "south": 41.7482,
+        "north": 42.0313,
+        "west": -87.7999,
+        "east": -87.5437
+      },
+      "discoveryUrl": "https://gbfs.lyft.com/gbfs/2.3/chi/gbfs.json"
+    },
+    {
+      "id": "lyft_us_portland",
+      "country": "US",
+      "provider": "lyft",
+      "city": "Portland",
+      "region": "OR",
+      "timeZone": "America/Los_Angeles",
+      "center": [
+        45.5152,
+        -122.6784
+      ],
+      "bounds": {
+        "south": 45.4331,
+        "north": 45.6023,
+        "west": -122.764,
+        "east": -122.4778
+      },
+      "discoveryUrl": "https://gbfs.lyft.com/gbfs/2.3/pdx/gbfs.json"
+    },
+    {
+      "id": "spin_us_akron",
+      "country": "US",
+      "provider": "spin",
+      "city": "Akron",
+      "region": "OH",
+      "timeZone": "America/New_York",
+      "center": [
+        41.0814,
+        -81.519
+      ],
+      "bounds": {
+        "south": 41.0098,
+        "north": 41.1781,
+        "west": -81.6218,
+        "east": -81.4094
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/akron/gbfs"
+    },
+    {
+      "id": "spin_us_ann_arbor",
+      "country": "US",
+      "provider": "spin",
+      "city": "Ann Arbor",
+      "region": "MI",
+      "timeZone": "America/Detroit",
+      "center": [
+        42.2808,
+        -83.743
+      ],
+      "bounds": {
+        "south": 42.2155,
+        "north": 42.3342,
+        "west": -83.889,
+        "east": -83.6496
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/ann_arbor/gbfs"
+    },
+    {
+      "id": "spin_us_baltimore",
+      "country": "US",
+      "provider": "spin",
+      "city": "Baltimore",
+      "region": "MD",
+      "timeZone": "America/New_York",
+      "center": [
+        39.2904,
+        -76.6122
+      ],
+      "bounds": {
+        "south": 39.1886,
+        "north": 39.3803,
+        "west": -76.723,
+        "east": -76.5124
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/baltimore/gbfs"
+    },
+    {
+      "id": "spin_us_columbus",
+      "country": "US",
+      "provider": "spin",
+      "city": "Columbus",
+      "region": "OH",
+      "timeZone": "America/New_York",
+      "center": [
+        39.9612,
+        -82.9988
+      ],
+      "bounds": {
+        "south": 39.8522,
+        "north": 40.1481,
+        "west": -83.1551,
+        "east": -82.8317
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/columbus/gbfs"
+    },
+    {
+      "id": "spin_us_detroit",
+      "country": "US",
+      "provider": "spin",
+      "city": "Detroit",
+      "region": "MI",
+      "timeZone": "America/Detroit",
+      "center": [
+        42.3314,
+        -83.0458
+      ],
+      "bounds": {
+        "south": 42.246,
+        "north": 42.4979,
+        "west": -83.3,
+        "east": -82.8982
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/detroit/gbfs"
+    },
+    {
+      "id": "spin_us_durham",
+      "country": "US",
+      "provider": "spin",
+      "city": "Durham",
+      "region": "NC",
+      "timeZone": "America/New_York",
+      "center": [
+        35.994,
+        -78.8986
+      ],
+      "bounds": {
+        "south": 35.9411,
+        "north": 36.0479,
+        "west": -78.9726,
+        "east": -78.8525
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/durham/gbfs"
+    },
+    {
+      "id": "spin_us_fort_collins",
+      "country": "US",
+      "provider": "spin",
+      "city": "Fort Collins",
+      "region": "CO",
+      "timeZone": "America/Denver",
+      "center": [
+        40.5853,
+        -105.0844
+      ],
+      "bounds": {
+        "south": 40.471,
+        "north": 40.629,
+        "west": -105.1691,
+        "east": -104.9807
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/fort_collins/gbfs"
+    },
+    {
+      "id": "spin_us_gainesville",
+      "country": "US",
+      "provider": "spin",
+      "city": "Gainesville",
+      "region": "FL",
+      "timeZone": "America/New_York",
+      "center": [
+        29.6516,
+        -82.3248
+      ],
+      "bounds": {
+        "south": 29.5924,
+        "north": 29.6977,
+        "west": -82.4291,
+        "east": -82.2744
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/gainesville/gbfs"
+    },
+    {
+      "id": "spin_us_lexington",
+      "country": "US",
+      "provider": "spin",
+      "city": "Lexington",
+      "region": "KY",
+      "timeZone": "America/New_York",
+      "center": [
+        38.0406,
+        -84.5037
+      ],
+      "bounds": {
+        "south": 37.944,
+        "north": 38.1166,
+        "west": -84.6289,
+        "east": -84.376
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/lexington/gbfs"
+    },
+    {
+      "id": "spin_us_meridian",
+      "country": "US",
+      "provider": "spin",
+      "city": "Meridian",
+      "region": "CO",
+      "timeZone": "America/Denver",
+      "center": [
+        39.5453,
+        -104.8604
+      ],
+      "bounds": {
+        "south": 39.5179,
+        "north": 39.633,
+        "west": -104.9184,
+        "east": -104.8278
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/meridian/gbfs"
+    },
+    {
+      "id": "spin_us_east_lansing",
+      "country": "US",
+      "provider": "spin",
+      "city": "East Lansing",
+      "region": "MI",
+      "timeZone": "America/Detroit",
+      "center": [
+        42.737,
+        -84.4839
+      ],
+      "bounds": {
+        "south": 42.694,
+        "north": 42.7479,
+        "west": -84.5099,
+        "east": -84.4483
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/michigan_state_university/gbfs",
+      "aliases": [
+        "Michigan State University",
+        "MSU"
+      ]
+    },
+    {
+      "id": "spin_us_minneapolis",
+      "country": "US",
+      "provider": "spin",
+      "city": "Minneapolis",
+      "region": "MN",
+      "timeZone": "America/Chicago",
+      "center": [
+        44.9778,
+        -93.265
+      ],
+      "bounds": {
+        "south": 44.8835,
+        "north": 45.0603,
+        "west": -93.3417,
+        "east": -93.189
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/minneapolis/gbfs"
+    },
+    {
+      "id": "spin_us_nashville",
+      "country": "US",
+      "provider": "spin",
+      "city": "Nashville",
+      "region": "TN",
+      "timeZone": "America/Chicago",
+      "center": [
+        36.1627,
+        -86.7816
+      ],
+      "bounds": {
+        "south": 36.0296,
+        "north": 36.2505,
+        "west": -86.8834,
+        "east": -86.6253
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/nashville/gbfs"
+    },
+    {
+      "id": "spin_us_raleigh",
+      "country": "US",
+      "provider": "spin",
+      "city": "Raleigh",
+      "region": "NC",
+      "timeZone": "America/New_York",
+      "center": [
+        35.7796,
+        -78.6382
+      ],
+      "bounds": {
+        "south": 35.7313,
+        "north": 35.8458,
+        "west": -78.7468,
+        "east": -78.5618
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/raleigh/gbfs"
+    },
+    {
+      "id": "spin_us_nc_state",
+      "country": "US",
+      "provider": "spin",
+      "city": "Raleigh",
+      "region": "NC",
+      "timeZone": "America/New_York",
+      "center": [
+        35.7796,
+        -78.6382
+      ],
+      "bounds": {
+        "south": 35.7313,
+        "north": 35.8458,
+        "west": -78.7468,
+        "east": -78.5618
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/nc_state/gbfs",
+      "aliases": [
+        "NC State",
+        "North Carolina State University"
+      ]
+    },
+    {
+      "id": "spin_us_pawtucket",
+      "country": "US",
+      "provider": "spin",
+      "city": "Pawtucket",
+      "region": "RI",
+      "timeZone": "America/New_York",
+      "center": [
+        41.8787,
+        -71.3826
+      ],
+      "bounds": {
+        "south": 41.8475,
+        "north": 41.9094,
+        "west": -71.4342,
+        "east": -71.3219
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/pawtucket_ri/gbfs"
+    },
+    {
+      "id": "spin_us_providence",
+      "country": "US",
+      "provider": "spin",
+      "city": "Providence",
+      "region": "RI",
+      "timeZone": "America/New_York",
+      "center": [
+        41.824,
+        -71.4128
+      ],
+      "bounds": {
+        "south": 41.7634,
+        "north": 41.9094,
+        "west": -71.4893,
+        "east": -71.3219
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/providence/gbfs"
+    },
+    {
+      "id": "spin_us_phoenix",
+      "country": "US",
+      "provider": "spin",
+      "city": "Phoenix",
+      "region": "AZ",
+      "timeZone": "America/Phoenix",
+      "center": [
+        33.4484,
+        -112.074
+      ],
+      "bounds": {
+        "south": 33.3539,
+        "north": 33.5193,
+        "west": -112.1275,
+        "east": -111.9717
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/phoenix/gbfs"
+    },
+    {
+      "id": "spin_us_richmond",
+      "country": "US",
+      "provider": "spin",
+      "city": "Richmond",
+      "region": "VA",
+      "timeZone": "America/New_York",
+      "center": [
+        37.5407,
+        -77.436
+      ],
+      "bounds": {
+        "south": 37.4592,
+        "north": 37.6124,
+        "west": -77.6202,
+        "east": -77.381
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/richmond_va/gbfs"
+    },
+    {
+      "id": "spin_us_san_diego",
+      "country": "US",
+      "provider": "spin",
+      "city": "San Diego",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "center": [
+        32.8801,
+        -117.234
+      ],
+      "bounds": {
+        "south": 32.853,
+        "north": 32.9033,
+        "west": -117.2679,
+        "east": -117.2018
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/san_diego/gbfs",
+      "aliases": [
+        "UC San Diego",
+        "UCSD",
+        "La Jolla"
+      ]
+    },
+    {
+      "id": "spin_us_san_francisco",
+      "country": "US",
+      "provider": "spin",
+      "city": "San Francisco",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "center": [
+        37.7749,
+        -122.4194
+      ],
+      "bounds": {
+        "south": 37.6992,
+        "north": 37.8216,
+        "west": -122.5259,
+        "east": -122.3469
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/san_francisco/gbfs",
+      "aliases": [
+        "SF"
+      ]
+    },
+    {
+      "id": "spin_us_st_george",
+      "country": "US",
+      "provider": "spin",
+      "city": "St. George",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "center": [
+        37.0965,
+        -113.5684
+      ],
+      "bounds": {
+        "south": 36.9905,
+        "north": 37.2257,
+        "west": -113.6861,
+        "east": -113.4632
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/st_george/gbfs",
+      "aliases": [
+        "Saint George"
+      ]
+    },
+    {
+      "id": "spin_us_tampa",
+      "country": "US",
+      "provider": "spin",
+      "city": "Tampa",
+      "region": "FL",
+      "timeZone": "America/New_York",
+      "center": [
+        27.9506,
+        -82.4572
+      ],
+      "bounds": {
+        "south": 27.8124,
+        "north": 28.1804,
+        "west": -82.6231,
+        "east": -82.2439
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/tampa/gbfs"
+    },
+    {
+      "id": "spin_us_davis",
+      "country": "US",
+      "provider": "spin",
+      "city": "Davis",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "center": [
+        38.5382,
+        -121.7617
+      ],
+      "bounds": {
+        "south": 38.5073,
+        "north": 38.5846,
+        "west": -121.8245,
+        "east": -121.6643
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/uc_davis/gbfs",
+      "aliases": [
+        "UC Davis",
+        "University of California, Davis"
+      ]
+    },
+    {
+      "id": "spin_us_fayetteville",
+      "country": "US",
+      "provider": "spin",
+      "city": "Fayetteville",
+      "region": "AR",
+      "timeZone": "America/Chicago",
+      "center": [
+        36.0626,
+        -94.1574
+      ],
+      "bounds": {
+        "south": 36.0154,
+        "north": 36.1582,
+        "west": -94.2474,
+        "east": -94.1004
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/fayetteville/gbfs",
+      "aliases": [
+        "University of Arkansas"
+      ]
+    },
+    {
+      "id": "spin_us_stillwater",
+      "country": "US",
+      "provider": "spin",
+      "city": "Stillwater",
+      "region": "OK",
+      "timeZone": "America/Chicago",
+      "center": [
+        36.1156,
+        -97.0584
+      ],
+      "bounds": {
+        "south": 36.0739,
+        "north": 36.1917,
+        "west": -97.1434,
+        "east": -97.0032
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/stillwater/gbfs",
+      "aliases": [
+        "Oklahoma State University"
+      ]
+    },
+    {
+      "id": "spin_us_tallahassee",
+      "country": "US",
+      "provider": "spin",
+      "city": "Tallahassee",
+      "region": "FL",
+      "timeZone": "America/New_York",
+      "center": [
+        30.4383,
+        -84.2807
+      ],
+      "bounds": {
+        "south": 30.401,
+        "north": 30.4818,
+        "west": -84.3722,
+        "east": -84.2118
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/tallahassee/gbfs"
+    },
+    {
+      "id": "spin_us_saint_paul",
+      "country": "US",
+      "provider": "spin",
+      "city": "St. Paul",
+      "region": "MN",
+      "timeZone": "America/Chicago",
+      "center": [
+        44.9537,
+        -93.09
+      ],
+      "bounds": {
+        "south": 44.8784,
+        "north": 45.001,
+        "west": -93.2213,
+        "east": -92.9918
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/st_paul/gbfs",
+      "aliases": [
+        "Saint Paul"
+      ]
+    },
+    {
+      "id": "spin_us_roanoke",
+      "country": "US",
+      "provider": "spin",
+      "city": "Roanoke",
+      "region": "VA",
+      "timeZone": "America/New_York",
+      "center": [
+        37.271,
+        -79.9414
+      ],
+      "bounds": {
+        "south": 37.2006,
+        "north": 37.3483,
+        "west": -80.0516,
+        "east": -79.8652
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/roanoke_va/gbfs"
+    },
+    {
+      "id": "veo_us_birmingham",
+      "country": "US",
+      "provider": "veo",
+      "city": "Birmingham",
+      "region": "AL",
+      "timeZone": "America/Chicago",
+      "center": [
+        33.5186,
+        -86.8104
+      ],
+      "bounds": {
+        "south": 33.4682,
+        "north": 33.5524,
+        "west": -86.8757,
+        "east": -86.7212
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/bir/gbfs",
+      "aliases": [
+        "UAB"
+      ]
+    },
+    {
+      "id": "veo_us_columbus",
+      "country": "US",
+      "provider": "veo",
+      "city": "Columbus",
+      "region": "OH",
+      "timeZone": "America/New_York",
+      "center": [
+        39.9612,
+        -82.9988
+      ],
+      "bounds": {
+        "south": 39.8698,
+        "north": 40.1149,
+        "west": -83.1335,
+        "east": -82.8566
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/cbs/gbfs"
+    },
+    {
+      "id": "veo_us_cedar_rapids",
+      "country": "US",
+      "provider": "veo",
+      "city": "Cedar Rapids",
+      "region": "IA",
+      "timeZone": "America/Chicago",
+      "center": [
+        41.9779,
+        -91.6656
+      ],
+      "bounds": {
+        "south": 41.9153,
+        "north": 42.0241,
+        "west": -91.7281,
+        "east": -91.5999
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/cid/gbfs"
+    },
+    {
+      "id": "veo_us_cleveland",
+      "country": "US",
+      "provider": "veo",
+      "city": "Cleveland",
+      "region": "OH",
+      "timeZone": "America/New_York",
+      "center": [
+        41.4993,
+        -81.6944
+      ],
+      "bounds": {
+        "south": 41.4195,
+        "north": 41.555,
+        "west": -81.8052,
+        "east": -81.494
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/cle/gbfs",
+      "areas": [
+        {
+          "city": "Cleveland",
+          "center": [
+            41.4993,
+            -81.6944
+          ],
+          "bounds": {
+            "south": 41.4195,
+            "north": 41.555,
+            "west": -81.8052,
+            "east": -81.5637
+          }
+        },
+        {
+          "city": "Cleveland Heights",
+          "center": [
+            41.5201,
+            -81.5562
+          ],
+          "bounds": {
+            "south": 41.4869,
+            "north": 41.5454,
+            "west": -81.6067,
+            "east": -81.5204
+          }
+        },
+        {
+          "city": "University Heights",
+          "center": [
+            41.4978,
+            -81.5376
+          ],
+          "bounds": {
+            "south": 41.4799,
+            "north": 41.5091,
+            "west": -81.5607,
+            "east": -81.5152
+          },
+          "aliases": [
+            "John Carroll University"
+          ]
+        },
+        {
+          "city": "South Euclid",
+          "center": [
+            41.5231,
+            -81.5185
+          ],
+          "bounds": {
+            "south": 41.4924,
+            "north": 41.5469,
+            "west": -81.5532,
+            "east": -81.494
+          }
+        }
+      ]
+    },
+    {
+      "id": "veo_us_college_park",
+      "country": "US",
+      "provider": "veo",
+      "city": "College Park",
+      "region": "MD",
+      "timeZone": "America/New_York",
+      "center": [
+        38.9897,
+        -76.9378
+      ],
+      "bounds": {
+        "south": 38.9577,
+        "north": 39.0313,
+        "west": -76.9659,
+        "east": -76.8985
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/cpk/gbfs",
+      "areas": [
+        {
+          "city": "College Park",
+          "center": [
+            38.9897,
+            -76.9378
+          ],
+          "bounds": {
+            "south": 38.9629,
+            "north": 39.0313,
+            "west": -76.9659,
+            "east": -76.8985
+          },
+          "aliases": [
+            "University of Maryland",
+            "UMD"
+          ]
+        },
+        {
+          "city": "University Park",
+          "center": [
+            38.9709,
+            -76.9419
+          ],
+          "bounds": {
+            "south": 38.9577,
+            "north": 38.9852,
+            "west": -76.9624,
+            "east": -76.9105
+          }
+        }
+      ]
+    },
+    {
+      "id": "veo_us_charlottesville",
+      "country": "US",
+      "provider": "veo",
+      "city": "Charlottesville",
+      "region": "VA",
+      "timeZone": "America/New_York",
+      "center": [
+        38.0293,
+        -78.4767
+      ],
+      "bounds": {
+        "south": 37.9994,
+        "north": 38.0785,
+        "west": -78.5392,
+        "east": -78.4405
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/cvl/gbfs",
+      "aliases": [
+        "UVA",
+        "University of Virginia"
+      ]
+    },
+    {
+      "id": "veo_us_denver",
+      "country": "US",
+      "provider": "veo",
+      "city": "Denver",
+      "region": "CO",
+      "timeZone": "America/Denver",
+      "center": [
+        39.7392,
+        -104.9903
+      ],
+      "bounds": {
+        "south": 39.6047,
+        "north": 39.8229,
+        "west": -105.0935,
+        "east": -104.7276
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/den/gbfs"
+    },
+    {
+      "id": "veo_us_fayetteville",
+      "country": "US",
+      "provider": "veo",
+      "city": "Fayetteville",
+      "region": "AR",
+      "timeZone": "America/Chicago",
+      "center": [
+        36.0626,
+        -94.1574
+      ],
+      "bounds": {
+        "south": 36.026,
+        "north": 36.1576,
+        "west": -94.2394,
+        "east": -94.1075
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/fay/gbfs",
+      "aliases": [
+        "University of Arkansas"
+      ]
+    },
+    {
+      "id": "veo_us_gainesville",
+      "country": "US",
+      "provider": "veo",
+      "city": "Gainesville",
+      "region": "FL",
+      "timeZone": "America/New_York",
+      "center": [
+        29.6516,
+        -82.3248
+      ],
+      "bounds": {
+        "south": 29.6058,
+        "north": 29.695,
+        "west": -82.4095,
+        "east": -82.2773
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/gvl/gbfs"
+    },
+    {
+      "id": "veo_us_hartford",
+      "country": "US",
+      "provider": "veo",
+      "city": "Hartford",
+      "region": "CT",
+      "timeZone": "America/New_York",
+      "center": [
+        41.7658,
+        -72.6734
+      ],
+      "bounds": {
+        "south": 41.715,
+        "north": 41.8158,
+        "west": -72.7301,
+        "east": -72.6415
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/hrt/gbfs"
+    },
+    {
+      "id": "veo_us_manhattan",
+      "country": "US",
+      "provider": "veo",
+      "city": "Manhattan",
+      "region": "KS",
+      "timeZone": "America/Chicago",
+      "center": [
+        39.1836,
+        -96.5717
+      ],
+      "bounds": {
+        "south": 39.1607,
+        "north": 39.232,
+        "west": -96.6445,
+        "east": -96.5413
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/ksu/gbfs",
+      "aliases": [
+        "Kansas State University",
+        "K-State"
+      ]
+    },
+    {
+      "id": "veo_us_new_haven",
+      "country": "US",
+      "provider": "veo",
+      "city": "New Haven",
+      "region": "CT",
+      "timeZone": "America/New_York",
+      "center": [
+        41.3083,
+        -72.9279
+      ],
+      "bounds": {
+        "south": 41.2859,
+        "north": 41.3418,
+        "west": -72.9588,
+        "east": -72.8754
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/nhv/gbfs",
+      "aliases": [
+        "Yale"
+      ]
+    },
+    {
+      "id": "veo_us_new_rochelle",
+      "country": "US",
+      "provider": "veo",
+      "city": "New Rochelle",
+      "region": "NY",
+      "timeZone": "America/New_York",
+      "center": [
+        40.9115,
+        -73.7824
+      ],
+      "bounds": {
+        "south": 40.8835,
+        "north": 40.9407,
+        "west": -73.8118,
+        "east": -73.7534
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/nrc/gbfs"
+    },
+    {
+      "id": "veo_us_newark",
+      "country": "US",
+      "provider": "veo",
+      "city": "Newark",
+      "region": "NJ",
+      "timeZone": "America/New_York",
+      "center": [
+        40.7357,
+        -74.1724
+      ],
+      "bounds": {
+        "south": 40.6918,
+        "north": 40.7978,
+        "west": -74.255,
+        "east": -74.1217
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/nwk/gbfs"
+    },
+    {
+      "id": "veo_us_bronx",
+      "country": "US",
+      "provider": "veo",
+      "city": "Bronx",
+      "region": "NY",
+      "timeZone": "America/New_York",
+      "center": [
+        40.8448,
+        -73.8648
+      ],
+      "bounds": {
+        "south": 40.7987,
+        "north": 40.9151,
+        "west": -73.8939,
+        "east": -73.7913
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/nyc/gbfs",
+      "aliases": [
+        "The Bronx",
+        "New York",
+        "NYC",
+        "New York City"
+      ]
+    },
+    {
+      "id": "veo_us_queens",
+      "country": "US",
+      "provider": "veo",
+      "city": "Queens",
+      "region": "NY",
+      "timeZone": "America/New_York",
+      "center": [
+        40.7282,
+        -73.7949
+      ],
+      "bounds": {
+        "south": 40.6575,
+        "north": 40.7737,
+        "west": -73.8512,
+        "east": -73.7345
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/nyq/gbfs",
+      "aliases": [
+        "New York",
+        "NYC",
+        "New York City"
+      ]
+    },
+    {
+      "id": "veo_us_norman",
+      "country": "US",
+      "provider": "veo",
+      "city": "Norman",
+      "region": "OK",
+      "timeZone": "America/Chicago",
+      "center": [
+        35.2226,
+        -97.4395
+      ],
+      "bounds": {
+        "south": 35.1626,
+        "north": 35.257,
+        "west": -97.4996,
+        "east": -97.3867
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/oku/gbfs",
+      "aliases": [
+        "University of Oklahoma"
+      ]
+    },
+    {
+      "id": "veo_us_west_lafayette",
+      "country": "US",
+      "provider": "veo",
+      "city": "West Lafayette",
+      "region": "IN",
+      "timeZone": "America/Indiana/Indianapolis",
+      "center": [
+        40.4259,
+        -86.9081
+      ],
+      "bounds": {
+        "south": 40.4057,
+        "north": 40.481,
+        "west": -86.9576,
+        "east": -86.8865
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/pur/gbfs",
+      "aliases": [
+        "Purdue",
+        "Purdue University"
+      ]
+    },
+    {
+      "id": "veo_us_rochester",
+      "country": "US",
+      "provider": "veo",
+      "city": "Rochester",
+      "region": "NY",
+      "timeZone": "America/New_York",
+      "center": [
+        43.1566,
+        -77.6088
+      ],
+      "bounds": {
+        "south": 43.1044,
+        "north": 43.2084,
+        "west": -77.6881,
+        "east": -77.5337
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/roc/gbfs"
+    },
+    {
+      "id": "veo_us_carbondale",
+      "country": "US",
+      "provider": "veo",
+      "city": "Carbondale",
+      "region": "IL",
+      "timeZone": "America/Chicago",
+      "center": [
+        37.7273,
+        -89.2168
+      ],
+      "bounds": {
+        "south": 37.6848,
+        "north": 37.7612,
+        "west": -89.2673,
+        "east": -89.1719
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/siu/gbfs",
+      "aliases": [
+        "Southern Illinois University",
+        "SIU"
+      ]
+    },
+    {
+      "id": "veo_us_salt_lake_city",
+      "country": "US",
+      "provider": "veo",
+      "city": "Salt Lake City",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "center": [
+        40.7608,
+        -111.891
+      ],
+      "bounds": {
+        "south": 40.6781,
+        "north": 40.7951,
+        "west": -111.9584,
+        "east": -111.7979
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/slc/gbfs",
+      "areas": [
+        {
+          "city": "Salt Lake City",
+          "center": [
+            40.7608,
+            -111.891
+          ],
+          "bounds": {
+            "south": 40.6976,
+            "north": 40.7951,
+            "west": -111.9584,
+            "east": -111.7979
+          },
+          "aliases": [
+            "SLC"
+          ]
+        },
+        {
+          "city": "South Salt Lake",
+          "center": [
+            40.7188,
+            -111.8883
+          ],
+          "bounds": {
+            "south": 40.6781,
+            "north": 40.7344,
+            "west": -111.9115,
+            "east": -111.8689
+          }
+        }
+      ]
+    },
+    {
+      "id": "veo_us_san_antonio",
+      "country": "US",
+      "provider": "veo",
+      "city": "San Antonio",
+      "region": "TX",
+      "timeZone": "America/Chicago",
+      "center": [
+        29.4241,
+        -98.4936
+      ],
+      "bounds": {
+        "south": 29.396,
+        "north": 29.4867,
+        "west": -98.5246,
+        "east": -98.4505
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/stx/gbfs"
+    },
+    {
+      "id": "veo_us_syracuse",
+      "country": "US",
+      "provider": "veo",
+      "city": "Syracuse",
+      "region": "NY",
+      "timeZone": "America/New_York",
+      "center": [
+        43.0481,
+        -76.1474
+      ],
+      "bounds": {
+        "south": 42.9926,
+        "north": 43.0917,
+        "west": -76.212,
+        "east": -76.0577
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/syr/gbfs"
+    },
+    {
+      "id": "veo_us_toledo",
+      "country": "US",
+      "provider": "veo",
+      "city": "Toledo",
+      "region": "OH",
+      "timeZone": "America/New_York",
+      "center": [
+        41.6528,
+        -83.5379
+      ],
+      "bounds": {
+        "south": 41.5856,
+        "north": 41.7378,
+        "west": -83.6966,
+        "east": -83.4676
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/tol/gbfs"
+    },
+    {
+      "id": "veo_us_wichita",
+      "country": "US",
+      "provider": "veo",
+      "city": "Wichita",
+      "region": "KS",
+      "timeZone": "America/Chicago",
+      "center": [
+        37.6872,
+        -97.3301
+      ],
+      "bounds": {
+        "south": 37.663,
+        "north": 37.7414,
+        "west": -97.4373,
+        "east": -97.2863
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/wta/gbfs"
+    },
+    {
+      "id": "veo_us_berkeley",
+      "country": "US",
+      "provider": "veo",
+      "city": "Berkeley",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "center": [
+        37.8715,
+        -122.273
+      ],
+      "bounds": {
+        "south": 37.8163,
+        "north": 37.9076,
+        "west": -122.3148,
+        "east": -122.2255
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/xeb/gbfs",
+      "areas": [
+        {
+          "city": "Berkeley",
+          "center": [
+            37.8715,
+            -122.273
+          ],
+          "bounds": {
+            "south": 37.8163,
+            "north": 37.9076,
+            "west": -122.3148,
+            "east": -122.2255
+          },
+          "aliases": [
+            "UC Berkeley"
+          ]
+        },
+        {
+          "city": "Emeryville",
+          "center": [
+            37.8313,
+            -122.2852
+          ],
+          "bounds": {
+            "south": 37.8182,
+            "north": 37.855,
+            "west": -122.3069,
+            "east": -122.2664
+          }
+        }
+      ]
+    },
+    {
+      "id": "veo_us_santa_monica",
+      "country": "US",
+      "provider": "veo",
+      "city": "Santa Monica",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "center": [
+        34.0195,
+        -118.4912
+      ],
+      "bounds": {
+        "south": 33.9215,
+        "north": 34.0829,
+        "west": -118.5508,
+        "east": -118.3949
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/xla/gbfs",
+      "areas": [
+        {
+          "city": "Santa Monica",
+          "center": [
+            34.0195,
+            -118.4912
+          ],
+          "bounds": {
+            "south": 33.9873,
+            "north": 34.0539,
+            "west": -118.5274,
+            "east": -118.4353
+          }
+        },
+        {
+          "city": "Los Angeles",
+          "center": [
+            33.985,
+            -118.4695
+          ],
+          "bounds": {
+            "south": 33.9215,
+            "north": 34.0829,
+            "west": -118.5508,
+            "east": -118.3949
+          }
+        }
+      ]
+    },
+    {
+      "id": "veo_us_sarasota",
+      "country": "US",
+      "provider": "veo",
+      "city": "Sarasota",
+      "region": "FL",
+      "timeZone": "America/New_York",
+      "center": [
+        27.3364,
+        -82.5307
+      ],
+      "bounds": {
+        "south": 27.2936,
+        "north": 27.4162,
+        "west": -82.5909,
+        "east": -82.4897
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/sar/gbfs"
+    },
+    {
+      "id": "veo_us_asbury_park",
+      "country": "US",
+      "provider": "veo",
+      "city": "Asbury Park",
+      "region": "NJ",
+      "timeZone": "America/New_York",
+      "center": [
+        40.2204,
+        -74.0121
+      ],
+      "bounds": {
+        "south": 40.2062,
+        "north": 40.2534,
+        "west": -74.0482,
+        "east": -73.9868
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/asb/gbfs"
+    },
+    {
+      "id": "veo_us_new_brunswick",
+      "country": "US",
+      "provider": "veo",
+      "city": "New Brunswick",
+      "region": "NJ",
+      "timeZone": "America/New_York",
+      "center": [
+        40.4862,
+        -74.4518
+      ],
+      "bounds": {
+        "south": 40.4658,
+        "north": 40.5369,
+        "west": -74.4902,
+        "east": -74.4006
+      },
+      "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/rut/gbfs",
+      "areas": [
+        {
+          "city": "New Brunswick",
+          "center": [
+            40.4862,
+            -74.4518
+          ],
+          "bounds": {
+            "south": 40.4658,
+            "north": 40.5346,
+            "west": -74.4902,
+            "east": -74.4054
+          },
+          "aliases": [
+            "Rutgers",
+            "Rutgers University"
+          ]
+        },
+        {
+          "city": "Piscataway",
+          "center": [
+            40.5235,
+            -74.4636
+          ],
+          "bounds": {
+            "south": 40.5031,
+            "north": 40.5369,
+            "west": -74.4823,
+            "east": -74.42
+          }
+        },
+        {
+          "city": "Highland Park",
+          "center": [
+            40.4996,
+            -74.4243
+          ],
+          "bounds": {
+            "south": 40.4798,
+            "north": 40.5174,
+            "west": -74.4535,
+            "east": -74.4006
+          }
+        }
+      ]
     }
   ]
 }

@@ -309,8 +309,8 @@
       "anchorNote": "Near Lebanon, Kansas, the geographic centre of the 48 contiguous states. Zoomed in, each state has its own total at its centre of population (US Census Bureau, 2020).",
       "featuredCities": ["us:dc:Washington", "us:ca:Los Angeles", "us:il:Chicago", "us:wa:Seattle", "us:ca:San Francisco", "us:ga:Atlanta"],
       "credits": {
-        "attribution": "United States: Bird, Bolt, Lime, Veo GBFS",
-        "gbfs": ["Bird", "Bolt", "Lime", "Veo"]
+        "attribution": "United States: Bird, Bolt, Lime, Veo, Spin, Lyft GBFS",
+        "gbfs": ["Bird", "Bolt", "Lime", "Veo", "Spin", "Lyft"]
       },
       "regions": {
         "showInCityNames": true,

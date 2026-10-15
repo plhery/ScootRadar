@@ -10,10 +10,8 @@ out, and remove an entry once it's added or settled for good.
 These feeds are public and were live when checked. Nothing blocks them except
 the work.
 
-- **United States** ([guide](american-scooter-feeds.md)): Washington, DC,
-  Bird in 24 towns and Lime in 17 are covered. Spin's, Veo's and Lyft's 54
-  feeds are being added in October 2026, and their rechecks polled at the
-  evening peak.
+None at the moment: every live feed found is covered, or listed below with
+why it isn't.
 
 ## Waiting on a decision
 
@@ -299,11 +297,15 @@ banned shared scooters, and feeds that were empty when checked.
   - Systems 65, 67 and 68 on 3electra's host answer 400.
 
 - **United States** ([guide](american-scooter-feeds.md)): Hopp (Bolt) and Veo
-  in Washington, DC, Bird in 24 towns and Lime in 17 are covered.
+  in Washington, DC, Bird in 24 towns, Lime in 17, Veo in 39 more, Spin in 28
+  and Lyft in Chicago and Portland are covered.
   - **No ride seen:** Bird Miami (33 to 39 available scooters), Bird
     University of Central Florida (286 to 299) and Bird Orlando (451 to 467)
     were live but showed no ride, or one at most, in 59 polls from 16:34 to
-    21:24 EDT on 14 October 2026.
+    21:24 EDT on 14 October 2026. So were Spin University of Utah (321 to
+    328), in the university's fall break, and Spin East Lansing, the city's
+    feed (10 to 12, a few last reported days before), in 69 polls to 22:14
+    EDT.
   - **Lime Grand Rapids** lists no scooter. The city now names Veo its
     exclusive operator ([Mobile GR](https://www.grandrapidsmi.gov/departments/mobile-gr/mobility/shared-micromobility/)).
   - **Washington, DC:** Lime's feed answers 404; Bird's lists no available
@@ -332,7 +334,7 @@ banned shared scooters, and feeds that were empty when checked.
     Pensacola, Indianapolis, Memphis, Austin or Seattle, at College Station
     one, and only its seated or pedal vehicles at the University of Alabama,
     Orlando, Urbana-Champaign, Bend and Oregon State; its `lac`, `san` and `spe`
-    feeds, for towns it doesn't name, are empty.
+    feeds, for towns it doesn't name, are empty. Veo Tampa holds 1 scooter.
   - **Duplicates:** Bird's University of Kentucky feed is its Lexington feed,
     Spin's `ohio_state` and `osu` its Columbus feed, Spin's `richmond` its
     `richmond_va`, and Veo's `oak` and `smo` its `xeb` and `xla`.
@@ -483,9 +485,16 @@ its other systems answer 401. Dott made most regions private in September 2026.
   for Bolt's feed 359 there, or at `mds.bolt.eu`, and for an official Kvik
   feed.
 - **Wednesday 21 October 2026, 17:00 to 21:00 local:** Bird Miami, Bird
-  University of Central Florida and Bird Orlando. Bird renews its ids at every
+  University of Central Florida, Bird Orlando, Spin University of Utah and
+  Spin East Lansing (`east_lansing`). Bird and Spin renew their ids at every
   request, so match scooters by place; add each if scooters leave places they
   don't come back to and arrive elsewhere.
+- **Late November 2026:** Spin St. Paul's season is "typically" mid-April to
+  mid-November, Veo Cedar Rapids' may run through November, the University of
+  Toledo's Veo fleet goes from mid-November, and Veo Rochester's in
+  mid-December. None has a fixed date, so the catalog pauses none. Check that
+  the feeds empty when the fleets go; if one keeps listing available scooters
+  through the winter, look for the city's dates and add a `seasonal` window.
 - **1 January 2027:** Brussels's ban starts; Bolt and Dott Bruxelles should
   empty.
 - **1 March 2027:** Lime Ciudad de México, empty since SEMOVI's pilot ended

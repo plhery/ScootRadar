@@ -11,9 +11,10 @@ rider APIs are used. The catalog is
 [`american-scooter-feeds.json`](../data/american-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
-The map covers 37 towns in 22 states and the District: Washington, DC (Hopp
-and Veo), 24 towns of Bird's and 17 of Lime's. In Tempe, Atlanta, Arlington
-(VA), the Bronx and Queens, both Bird and Lime run, and the map counts their
+The map covers 87 towns in 32 states and the District: Washington, DC (Hopp
+and Veo), 24 towns of Bird's, 17 of Lime's, 39 more of Veo's, 28 of Spin's,
+and Lyft's Chicago and Portland. In 22 of them, from Tempe and the Bronx to
+Chicago and Columbus, two or three operators run, and the map counts their
 scooters as one town's. Seven of the towns ban renting at night; see
 [Night bans](#night-bans).
 
@@ -212,6 +213,206 @@ the survey with no ride, had 9 scooters leave and 6 arrive, and is added too. Le
 Search also finds St. Louis as Saint Louis and St Louis, Indianapolis as
 Indy, and San Francisco as SF.
 
+## Veo, Spin and Lyft
+
+Polled every five minutes, 58 times, from 16:34 to 21:19 EDT on 14 October
+2026 (13:34 to 18:19 in Portland and San Diego), with Bird and Lime, then on
+into the night to check the bounds and the quiet feeds. Spin gives a scooter a new id at every
+request, as Bird does, and Lyft and Veo after most rides, so rides are
+counted by place, as for Bird and Lime.
+
+| Operator | Town | Available scooters | Left / arrived | Bounds |
+| --- | --- | ---: | ---: | --- |
+| Lyft | Chicago, IL | 700 to 761 | 430 / 510 | scooters + 1 km |
+| Lyft | Portland, OR | 1,213 to 1,236 | 110 / 109 | scooters + 1 km |
+| Spin | Fayetteville, AR | 288 to 294 | 4 / 3 | zones + 1 km |
+| Spin | Phoenix, AZ | 370 to 380 | 10 / 18 | zones + 1 km |
+| Spin | Davis, CA (UC Davis) | 474 to 513 | 47 / 53 | zones + 1 km |
+| Spin | San Diego, CA (UC San Diego) | 680 to 730 | 8 / 8 | zones + 1 km |
+| Spin | San Francisco, CA | 2,941 to 2,997 | 162 / 168 | zones + 1 km |
+| Spin | Fort Collins, CO | 451 to 470 | 67 / 66 | zones + 1 km |
+| Spin | Meridian, CO | 64 to 68 | 6 / 6 | zones + 1 km |
+| Spin | Gainesville, FL | 100 to 131 | 28 / 39 | zones + 1 km |
+| Spin | Tallahassee, FL | 31 to 33 | 3 / 6 | zones + 1 km |
+| Spin | Tampa, FL | 339 to 351 | 17 / 17 | zones + 1 km |
+| Spin | Lexington, KY | 109 to 118 | 14 / 14 | zones + 1 km |
+| Spin | Baltimore, MD | 2,041 to 2,093 | 352 / 384 | zones + 1 km |
+| Spin | Ann Arbor, MI | 309 to 320 | 86 / 102 | zones + 1 km |
+| Spin | Detroit, MI | 323 to 330 | 30 / 39 | zones + 1 km |
+| Spin | East Lansing, MI (Michigan State) | 46 to 75 | 35 / 40 | zones + 1 km |
+| Spin | Minneapolis, MN | 343 to 355 | 74 / 74 | zones + 1 km |
+| Spin | St. Paul, MN | 38 to 40 | 5 / 6 | zones + 1 km |
+| Spin | Durham, NC | 147 to 153 | 16 / 12 | zones + 1 km |
+| Spin | Raleigh, NC | 270 to 289 | 45 / 37 | zones + 1 km |
+| Spin | Raleigh, NC (NC State) | 298 to 324 | 21 / 33 | zones + 1 km |
+| Spin | Akron, OH | 369 to 381 | 27 / 29 | zones + 1 km |
+| Spin | Columbus, OH | 656 to 716 | 78 / 94 | zones + 1 km |
+| Spin | Stillwater, OK | 53 to 59 | 22 / 25 | zones + 1 km |
+| Spin | Pawtucket, RI | 77 to 97 | 50 / 37 | zones + 1 km |
+| Spin | Providence, RI | 574 to 603 | 147 / 152 | zones + 1 km |
+| Spin | Nashville, TN | 398 to 410 | 52 / 55 | zones + 1 km |
+| Spin | St. George, UT | 143 to 147 | 17 / 22 | zones + 1 km |
+| Spin | Richmond, VA | 255 to 269 | 89 / 98 | zones + 1 km |
+| Spin | Roanoke, VA | 83 to 86 | 3 / 7 | zones + 1 km |
+| Veo | Birmingham, AL | 480 to 492 | 39 / 45 | scooters + 1 km |
+| Veo | Fayetteville, AR | 620 to 631 | 40 / 36 | scooters + 1 km |
+| Veo | Berkeley, Emeryville, CA | 257 to 272 | 129 / 146 | scooters + 1 km |
+| Veo | Santa Monica, Los Angeles, CA | 582 to 608 | 112 / 125 | scooters + 1 km |
+| Veo | Denver, CO | 3,454 to 3,491 | 746 / 745 | scooters + 1 km |
+| Veo | Hartford, CT | 755 to 790 | 290 / 306 | scooters + 1 km |
+| Veo | New Haven, CT | 268 to 290 | 48 / 57 | scooters + 1 km |
+| Veo | Gainesville, FL | 186 to 199 | 70 / 95 | scooters + 1 km |
+| Veo | Sarasota, FL | 277 to 288 | 7 / 12 | scooters + 1 km |
+| Veo | Cedar Rapids, IA | 322 to 337 | 61 / 49 | scooters + 1 km |
+| Veo | Carbondale, IL | 308 to 328 | 43 / 48 | scooters + 1 km |
+| Veo | West Lafayette, IN | 237 to 259 | 62 / 69 | scooters + 1 km |
+| Veo | Manhattan, KS | 311 to 335 | 33 / 17 | scooters + 1 km |
+| Veo | Wichita, KS | 346 to 364 | 20 / 14 | scooters + 1 km |
+| Veo | College Park, University Park, MD | 475 to 502 | 87 / 100 | scooters + 1 km |
+| Veo | Asbury Park, NJ | 146 to 161 | 12 / 13 | scooters + 1 km |
+| Veo | New Brunswick, Piscataway, Highland Park, NJ | 468 to 485 | 34 / 38 | scooters + 1 km |
+| Veo | Newark, NJ | 304 to 322 | 102 / 111 | scooters + 1 km |
+| Veo | Bronx, NY | 55 to 59 | 13 / 14 | scooters + 1 km |
+| Veo | New Rochelle, NY | 256 to 283 | 37 / 40 | scooters + 1 km |
+| Veo | Queens, NY | 257 to 267 | 37 / 45 | scooters + 1 km |
+| Veo | Rochester, NY | 454 to 469 | 130 / 137 | scooters + 1 km |
+| Veo | Syracuse, NY | 164 to 174 | 71 / 74 | scooters + 1 km |
+| Veo | Cleveland, Cleveland Heights, University Heights, South Euclid, OH | 257 to 266 | 32 / 42 | scooters + 1 km |
+| Veo | Columbus, OH | 867 to 886 | 92 / 109 | scooters + 1 km |
+| Veo | Toledo, OH | 529 to 561 | 131 / 138 | scooters + 1 km |
+| Veo | Norman, OK | 449 to 473 | 50 / 56 | scooters + 1 km |
+| Veo | San Antonio, TX | 298 to 304 | 22 / 19 | scooters + 1 km |
+| Veo | Salt Lake City, South Salt Lake, UT | 279 to 284 | 25 / 27 | scooters + 1 km |
+| Veo | Charlottesville, VA | 493 to 524 | 116 / 129 | scooters + 1 km |
+
+That is 66 towns besides Washington, 50 of them new to the map, and 10 more
+states: Veo in 39 towns with 14,400 to 14,500 scooters, Spin in 28 with
+12,500 to 12,700, and Lyft in Chicago and Portland with 1,900 to 2,000. Where
+two operators run in one town, their feeds use the same name and state, and
+the map counts their scooters as one town's: Spin with Bird or Lime in
+Baltimore, Detroit, Durham, Lexington, Nashville, Richmond and San Francisco;
+Veo with Bird or Lime in the Bronx, Queens, Cleveland, Los Angeles, Santa
+Monica, Newark and San Antonio; Lyft with Lime in Chicago; Spin and Veo in
+Columbus (OH) and Fayetteville (AR), and with Bird in Gainesville (FL).
+Spin's Raleigh and NC State feeds are both Raleigh's.
+
+Spin's feeds are at `gbfs.spin.pm/api/gbfs/v2_3/<town>/gbfs`, GBFS 2.3;
+Veo's at `cluster-prod.veoride.com/api/shares/name/<code>/gbfs`, GBFS 2.2;
+Lyft's at `gbfs.lyft.com/gbfs/2.3/<city>/gbfs.json`. Veo's scooters cost $1
+to unlock and $0.32 to $0.50 a minute, by town, and Lyft's $1 and $0.44 a
+minute in Chicago, $0.41 in Portland, all taxable. Spin publishes no price.
+
+**Towns.** Each scooter was placed in its town by the US Census Bureau's
+places ([TIGERweb](https://tigerweb.geo.census.gov/)). Six Veo feeds run in
+more than one town, and get one area per town, with the box of its scooters
+plus 1 km; each scooter counts in the nearest town of its feed whose box holds
+it:
+
+- Veo Cleveland: Cleveland, Cleveland Heights, University Heights and South
+  Euclid.
+- Veo College Park: College Park and University Park.
+- Veo's Rutgers feed (`rut`): New Brunswick, Piscataway and Highland Park.
+- Veo's East Bay feed (`xeb`): Berkeley and Emeryville.
+- Veo's Los Angeles feed (`xla`): Santa Monica, and Venice and the coast south
+  of it in Los Angeles, with Marina del Rey. Los Angeles keeps Bird's centre.
+- Veo Salt Lake City: Salt Lake City and South Salt Lake.
+
+Campus feeds take their town's name: Spin's UC Davis feed is Davis, its
+Michigan State one East Lansing, its NC State one Raleigh, and its San Diego
+feed is the UC San Diego campus, in La Jolla, where the map centres San
+Diego. Search finds them by the university too: UC Davis, Michigan State
+University and MSU, NC State, UC San Diego and UCSD, University of Arkansas,
+Oklahoma State University, Purdue, Kansas State University and K-State,
+Southern Illinois University and SIU, University of Oklahoma, UVA, Rutgers,
+University of Maryland and UMD, UC Berkeley, Yale, UAB and John Carroll
+University. It finds St. Paul as Saint Paul, St. George as Saint George and
+Salt Lake City as SLC, and Veo's Bronx and Queens with Bird's and Lime's, as
+New York and NYC.
+
+**Bounds.** Spin publishes its zones. A town's bounds are the box of the
+zones where a ride may end that hold its scooters, plus 1 km. Veo and Lyft
+publish none; their bounds are the box of the town's scooters over the
+survey's and the evening's polls, plus 1 km, without the strays below. The
+polls after, to 22:14 EDT, found nothing more outside them.
+
+**Counted under the town.** Per poll, about:
+
+- Veo Denver: 50 scooters in 12 neighbours, Aurora (15), Berkley (8),
+  Glendale (6), Lakewood (5), Four Square Mile (5), Englewood (4) and others.
+  Glendale is surrounded by Denver.
+- Veo Hartford: West Hartford (7 or 8) and Blue Hills (1).
+- Veo Syracuse: DeWitt (2), East Syracuse and Lyncourt.
+- Veo Berkeley: Albany (2) and Oakland (1).
+- Veo Columbus: Upper Arlington, Dublin, Bexley and Marble Cliff, 1 or 2
+  each. Veo Newark: East Orange (2), Silver Lake and Ampere North. Veo Salt
+  Lake City: West Valley City (1 or 2). Veo College Park: Adelphi (1). Veo
+  West Lafayette: Lafayette (1 or 2).
+- Spin Davis and Veo Charlottesville: most scooters stand on the campuses of
+  UC Davis and the University of Virginia, Census places of their own.
+  Spin Meridian's town is a Census place of Douglas County, south of Denver.
+
+**Left out.** Outside every box of their own feed, in the survey's and the
+evening's polls:
+
+- Veo Birmingham: 12 to 17 scooters at one spot in Homewood, 33.453° N
+  86.839° W, in every poll, as at a depot.
+- Veo Hartford: 8 to 10 at one spot in East Hartford, 41.787° N 72.610° W,
+  in every poll.
+- Veo New Rochelle: up to 6 at one spot in Mount Vernon, 40.906° N
+  73.834° W, one of them disabled in every poll.
+- Veo West Lafayette: 1 to 3 at one spot in Lafayette, 40.423° N 86.850° W,
+  across the Wabash.
+- Veo New Haven: 1 to 3 at one spot in Woodbridge, 41.339° N 72.982° W, 2 km
+  west of the box.
+- One scooter in every poll: Veo Syracuse's in Salina, north of the city; Veo
+  Newark's in Englewood, 25 km north-east; Veo Columbus's in the north of
+  Toledo, 200 km away.
+- Veo College Park's feed listed one scooter at 33.993° N 118.164° W, in Bell,
+  California, in 26 polls, and Veo Sarasota's one at the same spot in 2. Veo
+  Manhattan (KS) listed one in Wichita in 2 polls.
+
+Veo's Los Angeles feed has about 2 scooters in Culver City, inside the
+Los Angeles box: they show, counted under Los Angeles or Santa Monica, and
+Culver City is Bird's town. Spin Minneapolis's one scooter in St. Paul and
+Spin Providence's in Pawtucket stand inside their own boxes too.
+
+**Thin evidence.** The survey saw few rides at Spin Phoenix, San Diego,
+Meridian, Gainesville and Tampa, and at Veo's Bronx, San Antonio, Salt Lake
+City, Cedar Rapids, Wichita and Fayetteville feeds. Over the evening, all had
+scooters leave places they didn't come back to and arrive elsewhere (see the
+table); at Phoenix and Gainesville, 4 and 10 of them at places more than
+300 m from any scooter seen before. San Diego and Meridian were the
+quietest: by 22:14 EDT, 6 and 3 scooters had left places no scooter came
+back to, and 5 and 4 had arrived where none had stood, San Diego's all on
+the campus. Spin's `last_reported` is each scooter's own, a few minutes old
+in every poll, so their scooters are on and reporting. Eight feeds that
+were rechecks in the survey had rides in the evening, and are added: Spin
+Tallahassee, Roanoke, St. Paul, Stillwater and Fayetteville, and Veo
+Sarasota, Asbury Park and Rutgers. Left out until a recheck (see
+[Coverage gaps](coverage-gaps.md)):
+
+- **Spin University of Utah:** 321 to 328 scooters, all reporting every few
+  minutes. By 20:14 in Salt Lake City, two had left one spot together, one a
+  second, and one had appeared at a new place two hours before: no ride
+  between two places. The university's fall break runs from 10 to 18
+  October 2026
+  ([registrar](https://registrar.utah.edu/academic-calendars/fall2026.php)).
+- **Spin East Lansing** (`east_lansing`, the city's feed, not Michigan
+  State's): 10 to 12 scooters, a few of them last reported days before. By
+  22:14 EDT three had left places, two of them together, and none had
+  arrived at a new one.
+
+**No seasons.** St. Paul's operating season is "typically from mid-April to
+mid-November each year"
+([city](https://www.stpaul.gov/departments/public-works/transportation-and-transit/scooters)),
+and Cedar Rapids' runs from 1 April to 31 October but "could extend through
+November, depending on weather conditions" (KWWL, 12 March 2026). Rochester's
+Veo fleet goes into storage "in mid-December" and comes back about mid-March
+(city release, November 2025), the University of Toledo's from mid-November,
+and Manhattan's agreement allows a winter pause "for a mutually agreed to
+period". None of these is a fixed date, so the catalog pauses none of them;
+a fleet put away leaves its feed, and the map, empty.
+
 ## Night bans
 
 Seven covered towns ban renting at night, by ordinance or in the rules of
@@ -344,14 +545,27 @@ no winter clause.
 - **Veo:** GBFS 2.2, `form_factor` "scooter". Beside its 300 scooters, the
   Washington feed lists 4,294 vehicles typed as electric bicycles (`bicycle`,
   `electric`), the seated Cosmo among them, which are not shown. No
-  `last_reported`, no charge, only `current_range_meters`. Its prices are
-  taxable, shown with "+ tax". Each scooter's link opens Veo's app on it
-  through Adjust (`gmjc.adj.st`, with the scooter's number).
+  `last_reported`, no charge, only `current_range_meters`. Its prices, one
+  plan per town, are taxable, shown with "+ tax". Each scooter's link opens
+  Veo's app on it through Adjust (`gmjc.adj.st`, with the scooter's number).
+  Its campus feeds have short codes (`pur` for Purdue, `ksu` for Kansas State,
+  `siu`, `oku`, `cvl`, `rut`); the catalog's ids name the town.
 - **Lyft** writes `is_reserved` and `is_disabled` as 0 and 1, its prices as
   strings ("1.00"), and links no plan from its vehicles or their types. Its
   plan for scooters is `SCOOTER_SINGLE_RIDE`, used where the feed lists it and
   has one scooter type naming no plan. Its link is one per city, which opens
-  the app's code scanner (`chi.lft.to/lastmile_qr_scan`). No `last_reported`.
+  the app's code scanner (`chi.lft.to/lastmile_qr_scan`, and
+  `lyft.biketownpdx.com/lastmile_qr_scan` in Portland). No `last_reported`.
+  Its systems carry the names of the cities' bike shares, Divvy and Biketown,
+  and list their bicycles beside the scooters; only the scooter type is
+  shown, as Lyft's.
+- **Spin:** GBFS 2.3. Nothing in its feeds names Spin but the host:
+  `system_information` calls each system "provider null" and its town, its
+  operator "Bird Rides, Inc.", which has owned Spin since 2023, and gives
+  Bird's apps and Bird's licence. Its `system_pricing_plans` is empty and its
+  scooters carry no link, so the map shows neither. Each scooter's
+  `last_reported` is its own, mostly under five minutes old. Some feeds list
+  e-bikes too, which are not shown.
 - **Bird and Spin** give `bird://charger-onboarding`, the sign-up for chargers,
   as their Android app's address in `system_information` (85 Bird and 50 Spin
   feeds). The map never opens it, in any country.

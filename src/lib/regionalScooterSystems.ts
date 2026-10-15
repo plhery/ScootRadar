@@ -144,10 +144,14 @@ export function searchRegionalScooterCities(query: string, countries?: ScooterCo
     .find(code => COUNTRY_ALIASES[code].some(alias => words.includes(alias)));
   const cityWords = words.filter(word => !Object.values(COUNTRY_ALIASES).flat().includes(word));
   if (cityWords.join('').length < 2) return [];
+  const byOwnName = (city: RegionalScooterCity) =>
+    cityWords.every(word => normalize(city.city).split(' ').some(part => part.startsWith(word)));
   return REGIONAL_SCOOTER_CITIES.filter(city => (!countries || countries.includes(city.country)) &&
     (!country || country === city.country) && [city.city, ...(city.aliases ?? [])].some(name =>
       cityWords.every(word => normalize(name).split(' ').some(part => part.startsWith(word)))))
-    .sort((a, b) => Number(normalize(b.city) === cityWords.join(' ')) - Number(normalize(a.city) === cityWords.join(' ')) || a.city.localeCompare(b.city))
+    // Typed in full first, then found by its own name rather than only by another, then by name.
+    .sort((a, b) => Number(normalize(b.city) === cityWords.join(' ')) - Number(normalize(a.city) === cityWords.join(' ')) ||
+      Number(byOwnName(b)) - Number(byOwnName(a)) || a.city.localeCompare(b.city))
     .slice(0, 5).map(city => ({ lat: city.center[0], lng: city.center[1],
       display_name: `${city.city}, ${COUNTRY_NAMES[city.country].en}` }));
 }

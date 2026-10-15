@@ -78,8 +78,9 @@ Croatia adds 1 feed: Hoppy in Rijeka. See the
 [Croatian feed audit](docs/croatian-scooter-feeds.md).
 Ukraine adds 1 feed: 3electra in Kyiv. See the
 [Ukrainian feed audit](docs/ukrainian-scooter-feeds.md).
-The United States adds 41 feeds in 37 towns: Hopp, as Bolt is named there,
-and Veo in Washington, DC, Bird in 24 towns and Lime in 17. See the
+The United States adds 102 feeds in 87 towns: Hopp, as Bolt is named there,
+and Veo in Washington, DC, Bird in 24 towns, Lime in 17, Veo in 39 more, Spin
+in 28 and Lyft in Chicago and Portland. See the
 [American feed audit](docs/american-scooter-feeds.md).
 Canada adds 14 feeds, Bird's and Lime's, in 14 towns of Alberta, British
 Columbia, Ontario and Nova Scotia. See the

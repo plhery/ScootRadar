@@ -215,9 +215,12 @@ export function namedCities(query: string, language: GeocodeLanguage = 'en'): Na
   }
 
   const typed = cityWords.join(' ');
+  // A city found by its own name comes before one found only by another name, whose words
+  // may be common ones: "St" is on its way to St. Gallen before Michigan State University.
+  const byOwnName = (city: typeof CITIES[number]) => cityWords.every(word => city.names[0].some(part => part.startsWith(word)));
   return found
-    .map(city => ({ city, exact: city.names.some(parts => parts.join(' ') === typed) }))
-    .sort((a, b) => Number(b.exact) - Number(a.exact) || a.city.city.localeCompare(b.city.city))
+    .map(city => ({ city, exact: city.names.some(parts => parts.join(' ') === typed), own: byOwnName(city) }))
+    .sort((a, b) => Number(b.exact) - Number(a.exact) || Number(b.own) - Number(a.own) || a.city.city.localeCompare(b.city.city))
     .slice(0, MAX_CITIES)
     .map(({ city, exact }) => ({
       city: {
