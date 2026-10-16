@@ -36,9 +36,11 @@ export default function PrivacyPage() {
           fails (see below).
         </p>
         <p>
-          The map is drawn on your device from OpenStreetMap data, in tiles requested directly from
-          OpenFreeMap. It receives standard network information such as your IP address, the website
-          origin and the requested tile coordinates.
+          On the website, the map is drawn on your device from OpenStreetMap data, in tiles requested
+          directly from OpenFreeMap. It receives standard network information such as your IP address,
+          the website origin and the requested tile coordinates. In the iOS app, the map comes from
+          Apple Maps: your device requests the map data directly from Apple, under Apple&apos;s
+          privacy policy.
         </p>
 
         <h2>Walking routes</h2>
