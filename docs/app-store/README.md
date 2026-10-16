@@ -69,6 +69,15 @@ iPhone only, portrait, PNG without alpha, from the simulator with live data:
 - `screenshots/<locale>/6.9/`: 1320×2868 (iPhone 17 Pro Max), for the large
   iPhones (`APP_IPHONE_67`).
 
+The English set, taken on 16 October 2026 at Zürich main station with the
+simulator's location there, serves every language that has none of its own:
+the nearest scooters, a scooter's card, the walking route, the city at night,
+the filters and the street at night. To take them again: set the simulator's
+location (`xcrun simctl location <device> set 47.3779,8.5403`), the status bar
+(`xcrun simctl status_bar <device> override --time 9:41 …`) and the app's
+locale to `en_CH` for metres, then save each capture without alpha
+(`ffmpeg -i shot.png -pix_fmt rgb24 out.png`).
+
 ## Review notes
 
 Paste into App Review Information › Notes:
@@ -88,7 +97,8 @@ To try it:
    street level to see one dot per scooter.
 3. Tap a scooter: the card shows the walking time, battery or range, and a
    price estimate. "Directions" draws the walking route with Apple Maps'
-   directions. "Open in <operator>" opens that operator's own app (or its
+   directions. Where the operator's feed gives a rental link (Voi in Zürich,
+   for instance), "Open in <operator>" opens that operator's own app (or its
    website if the app isn't installed), where riders unlock and pay; ScootRadar
    itself rents nothing.
 4. Filters (battery, operators) and Settings (appearance, map style, language,
