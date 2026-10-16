@@ -334,9 +334,12 @@ banned shared scooters, and feeds that were empty when checked.
     EDT. A recheck in 24 polls from 17:47 to 19:44 EDT on 15 October found
     the same: Bird Orlando's 468 to 474 scooters made one new position, the
     University of Central Florida's none, Miami's 35 to 41 two, and neither
-    Spin feed any. Spin University of Utah is checked again on 20 October
-    2026, after the fall break, and the others on 15 January 2027 (East
-    Lansing on 15 April 2027).
+    Spin feed any. Another, from 12:00 to 14:00 EDT on 16 October, found Bird
+    Orlando and UCF still unridden, and Bird Miami with three rides at most
+    ([guide](american-scooter-feeds.md#bird-and-lime)). Spin University of
+    Utah is checked again on 20 October 2026, after the fall break, Bird Miami
+    on the evening of 21 October, Orlando and UCF on 15 January 2027, and East
+    Lansing on 15 April 2027.
   - **Outside their operator's towns:** since 15 October 2026 a feed keeps no
     scooter inside the outline of a town where its operator has no area, so
     Bird Cleveland's 2 in Cleveland Heights, Veo Santa Monica's 1 or 2 in
@@ -727,11 +730,12 @@ Bonaire had feeds to add. Survey files are in
   art. 124 of Ley 9078 on SCIJ, and update the
   [Costa Rican guide's rules](costa-rican-scooter-feeds.md#rules) if either
   says anything of e-scooters.
-- **Wednesday 21 October 2026, 17:00 to 21:00 local:** Bird Miami, Bird
-  University of Central Florida, Bird Orlando, Spin University of Utah and
-  Spin East Lansing (`east_lansing`). Bird and Spin renew their ids at every
-  request, so match scooters by place; add each if scooters leave places they
-  don't come back to and arrive elsewhere.
+- **Tuesday 20 October 2026, 17:00 to 21:00 Mountain time:** Spin
+  University of Utah, after the fall break.
+- **Wednesday 21 October 2026, 17:00 to 21:00 EDT:** Bird Miami, beside a
+  Bird feed on the map as a yardstick. Bird renews its ids at every request,
+  so match scooters by place; add Miami if its scooters leave places they
+  don't come back to and arrive elsewhere about as often as the yardstick's.
 - **Night of 21 to 22 October 2026:** Spin Pawtucket from 22:30 to 00:30 EDT
   and Spin San Diego (UC San Diego) from 23:30 to 01:30 PDT, polled every 5
   minutes. Pawtucket's 2023 pilot rules ban renting from 23:00, and San
@@ -748,6 +752,10 @@ Bonaire had feeds to add. Survey files are in
   through the winter, look for the city's dates and add a `seasonal` window.
 - **1 January 2027:** Brussels's ban starts; Bolt and Dott Bruxelles should
   empty.
+- **15 January 2027:** Bird Orlando and Bird University of Central Florida,
+  live but unridden on 14 and 16 October 2026. Poll each on a weekday
+  afternoon beside a Bird feed on the map, matching scooters by place, and
+  add it if its scooters leave their spots about as often.
 - **15 January 2027:** Hopp Las Terrenas (`do-las-terrenas`), in the
   Dominican Republic: 2 scooters, none available, on 15 October 2026. Add it
   if it holds about ten available scooters that are ridden.
@@ -785,7 +793,8 @@ Bonaire had feeds to add. Survey files are in
   its own that keeps out Venezuela's Paraguaná peninsula, 27 km south.
 - **15 April 2027:** Bird Ajax and Bird Surrey, empty on 14 October 2026; the
   Durham Region pilots run from April to October. Lime Grand Rapids too, and
-  look for a Veo feed there.
+  look for a Veo feed there, and Spin East Lansing (`east_lansing`), the
+  city's feed.
 - **20 April 2027:** Bird Saskatoon, empty on 14 October 2026. The city's
   [page](https://www.saskatoon.ca/moving-around/cycling/e-scooters) sets the
   season from 15 April to 31 October; if it still does, add Saskatoon with a

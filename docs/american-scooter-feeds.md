@@ -221,6 +221,24 @@ the survey with no ride, had 9 scooters leave and 6 arrive, and is added too. Le
   vanished south-east of the city at 17:09 EDT and one appeared 2 km away 15
   minutes later, the only possible ride in five hours.
 
+**Rechecked on Friday 16 October 2026,** from 12:00 to 14:00 EDT, in 24 polls
+five minutes apart. Bird Atlanta and Bird Indianapolis, both on the map, were
+polled the same way from 12:42 as a yardstick. In the 71 minutes when all five
+were polled:
+
+| Feed | Scooters | Left their spot | Appeared over 150 m from any earlier scooter |
+| --- | --- | --- | --- |
+| Bird Atlanta (on the map) | 2,445 | 7.5% | 33 |
+| Bird Indianapolis (on the map) | 665 | 12.3% | 4 |
+| Bird Orlando | 534 | 0.4% | 1 |
+| Bird University of Central Florida | 283 | 1.8% | 1 |
+| Bird Miami | 37 | 13.5% | 2 |
+
+So Orlando and UCF are still not ridden, and wait for a recheck in January.
+Miami's scooters move, in Brickell, Shenandoah and Coconut Grove: over the two
+hours, three appeared 390 m to 1.1 km from any earlier one. That's three rides
+at most, so Miami waits for the evening recheck on 21 October.
+
 Search also finds St. Louis as Saint Louis and St Louis, Indianapolis as
 Indy, and San Francisco as SF.
 
