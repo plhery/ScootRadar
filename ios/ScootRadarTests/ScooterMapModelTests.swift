@@ -857,13 +857,16 @@ extension ScooterMapModelTests {
     }
 
     func testUnsolicitedNetworkCancellationClearsLoading() async throws {
-        let model = makeModel(api: CancelledAPI())
+        let api = CancelledAPI()
+        let model = makeModel(api: api)
         model.refresh()
-        try await Task.sleep(for: .milliseconds(100))
-        XCTAssertFalse(model.isLoading, "A cancelled URLSession request should clear loading and pending state")
+        // Waits for the request rather than a fixed time: a slow CI simulator
+        // can take longer than that to come back to the main actor.
+        let cleared = await waitUntil { await api.callCount() == 1 && !model.isLoading }
+        XCTAssertTrue(cleared, "A cancelled URLSession request should clear loading and pending state")
         model.autoRefreshIfNeeded()
-        try await Task.sleep(for: .milliseconds(100))
-        XCTAssertFalse(model.isLoading)
+        let retried = await waitUntil { await api.callCount() == 2 && !model.isLoading }
+        XCTAssertTrue(retried, "With nothing pending, the next automatic refresh asks again")
     }
 }
 
@@ -879,7 +882,12 @@ private actor DelayedSecondAPI: ScooterAPIClient {
 }
 
 private actor CancelledAPI: ScooterAPIClient {
-    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse { throw CancellationError() }
+    private var calls = 0
+    func callCount() -> Int { calls }
+    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse {
+        calls += 1
+        throw CancellationError()
+    }
 }
 
 
