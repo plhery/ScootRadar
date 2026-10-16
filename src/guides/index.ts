@@ -76,6 +76,7 @@ import stGallenDe from './de/e-trottinett-st-gallen';
 import grenobleFr from './fr/trottinette-electrique-grenoble';
 import karlsruheDe from './de/e-scooter-karlsruhe';
 import freiburgDe from './de/e-scooter-freiburg';
+import wuppertalDe from './de/e-scooter-wuppertal';
 import tromsoNb from './nb/elsparkesykkel-tromso';
 import tromsoEn from './en/e-scooters-tromso';
 import munsterDe from './de/e-scooter-muenster';
@@ -139,6 +140,7 @@ export const GUIDES: readonly Guide[] = [
   karlsruheDe,
   munsterDe,
   freiburgDe,
+  wuppertalDe,
   swissRulesFr,
   howToRentFr,
   frenchRulesFr,
