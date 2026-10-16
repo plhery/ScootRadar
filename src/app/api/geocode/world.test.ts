@@ -136,10 +136,31 @@ describe('the search in Oceania and West Asia', () => {
       '34,12,60,34', '34,12,60,34', '34,12,60,34',
       '110,-48,180,-9', '110,-48,180,-9',
       // Cyprus is in Europe's, north of West Asia's.
-      '-32,27,45,72',
+      '-32,27.5,45,72',
       '-170,14,-50,72',
       // No country of the catalog in East Asia yet: anywhere.
       null,
+    ]);
+  });
+
+  it('leaves out Egypt, Libya and the Sahara from Europe\'s part of the world, but not the Canaries, Cyprus or Israel\'s neighbours', async () => {
+    stubUpstreams({ photon: [
+      [{ type: 'city', name: 'Cairo', country: 'Egypt', countrycode: 'EG' }, 30.0444, 31.2357],
+      [{ type: 'city', name: 'Alexandria', country: 'Egypt', countrycode: 'EG' }, 31.1992, 29.8952],
+      [{ type: 'city', name: 'Tripoli', country: 'Libya', countrycode: 'LY' }, 32.8967, 13.1778],
+      [{ type: 'city', name: 'Marrakesh', country: 'Morocco', countrycode: 'MA' }, 31.6295, -7.9811],
+      [{ type: 'city', name: 'Laayoune', country: 'Western Sahara', countrycode: 'EH' }, 27.1536, -13.2033],
+      [{ type: 'city', name: 'Puerto del Carmen', state: 'Canary Islands', country: 'Spain', countrycode: 'ES' }, 28.9236, -13.663],
+      [{ type: 'city', name: 'Larnaca', country: 'Cyprus', countrycode: 'CY' }, 34.9229, 33.6233],
+      [{ type: 'city', name: 'Tripoli', state: 'North Governorate', country: 'Lebanon', countrycode: 'LB' }, 34.4374, 35.8349],
+      [{ type: 'city', name: 'Sharm El Sheikh', state: 'South Sinai', country: 'Egypt', countrycode: 'EG' }, 27.9158, 34.33],
+      [{ type: 'city', name: 'Amman', country: 'Jordan', countrycode: 'JO' }, 31.9539, 35.9106],
+    ] });
+
+    const found = await rows(await search('anything', { near: NICOSIA }));
+
+    expect(found.map(([title, subtitle]) => `${title}, ${subtitle}`).sort()).toEqual([
+      'Amman, Jordan', 'Larnaca, Cyprus', 'Puerto del Carmen, Canary Islands, Spain', 'Sharm El Sheikh, South Sinai, Egypt', 'Tripoli, North Governorate, Lebanon',
     ]);
   });
 

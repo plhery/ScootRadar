@@ -484,7 +484,7 @@ describe('places where the app has cities', () => {
     const [paris, turin] = asked(fetchMock, PHOTON_HOST);
     expect(paris.origin + paris.pathname).toBe('https://photon.komoot.io/api/');
     expect(Object.fromEntries(paris.searchParams)).toEqual(expect.objectContaining({
-      q: 'Rue de Rivoli 10', lang: 'fr', bbox: '-32,27,45,72', location_bias_scale: '0.1',
+      q: 'Rue de Rivoli 10', lang: 'fr', bbox: '-32,27.5,45,72', location_bias_scale: '0.1',
       // To about a kilometre: no more than is needed to favour a neighbourhood.
       lat: '48.86', lon: '2.35',
     }));

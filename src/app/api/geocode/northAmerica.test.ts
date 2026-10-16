@@ -204,7 +204,7 @@ describe('the search in North America', () => {
 
     const [austin, paris] = asked(PHOTON_HOST);
     expect(austin.searchParams.get('bbox')).toBe('-170,14,-50,72');
-    expect(paris.searchParams.get('bbox')).toBe('-32,27,45,72');
+    expect(paris.searchParams.get('bbox')).toBe('-32,27.5,45,72');
     expect((await rows(await search('Lyon', { near: PARIS })))[0]).toEqual(['Lyon', 'France']);
   });
 

@@ -58,7 +58,9 @@ const PHOTON_LAYERS = ['house', 'street', 'locality', 'district', 'city', 'other
 //   Japan and from Hokkaido to Java; Cyprus, north of 34°N, is in Europe's;
 // - North America, from Hawaii and Alaska to Newfoundland and from the Arctic
 //   to Mexico's southern border;
-// - Europe, from the Azores and the Canaries to the North Cape.
+// - Europe, from the Azores and the Canaries to the North Cape, without Africa south
+//   of 34°N, from the coast facing the Canaries to Sinai: Egypt, Libya and the south
+//   of Morocco, Algeria and Tunisia. Cyprus, Crete and Malta are north of it.
 // A point is in the first it is in: Israel in West Asia's, not in Europe's.
 // Only those with the anchor of a country of data/countries.json are searched.
 // Photon is asked within the one around the map centre; Geoapify is not, as in a
@@ -69,7 +71,7 @@ const CONTINENT_BOXES: Record<Continent, Box[]> = {
   oceania: [{ west: 110, south: -48, east: 180, north: -9 }],
   asia: [{ west: 34, south: 12, east: 60, north: 34 }, { west: 95, south: -11, east: 150, north: 46 }],
   'north-america': [{ west: -170, south: 14, east: -50, north: 72 }],
-  europe: [{ west: -32, south: 27, east: 45, north: 72 }],
+  europe: [{ west: -32, south: 27.5, east: 45, north: 72, without: [{ west: -13.2, south: 27.5, east: 34, north: 34 }] }],
 };
 const BOXES = (Object.entries(CONTINENT_BOXES) as [Continent, Box[]][])
   .flatMap(([continent, boxes]) => boxes.map(box => ({ continent, box })));
@@ -96,6 +98,8 @@ interface Box {
   south: number;
   east: number;
   north: number;
+  /** What is left out of it. */
+  without?: Box[];
 }
 
 interface PhotonFeature {
@@ -482,7 +486,8 @@ function continentAt(lat: number, lng: number): Continent | undefined {
 }
 
 function inBox(box: Box, lat: number, lng: number): boolean {
-  return lat >= box.south && lat <= box.north && lng >= box.west && lng <= box.east;
+  return lat >= box.south && lat <= box.north && lng >= box.west && lng <= box.east &&
+    !box.without?.some(part => inBox(part, lat, lng));
 }
 
 /** The part of the world where the app has cities that a point is in, if any. */
