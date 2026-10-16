@@ -258,8 +258,8 @@ export const RECORDED_WORLD_PHOTON_ANSWERS: Record<string, RecordedFeature[]> = 
 };
 
 // What Geoapify answered on 12 October 2026, or on the day said (api.geoapify.com/v1/geocode/autocomplete, limit=20,
-// near a map centre or else in Switzerland), reduced to the fields the route reads and with
-// coordinates rounded to about ten metres. Its places outside Europe too, which the route leaves out.
+// near a map centre or else in Switzerland), reduced to the fields the route reads, the outlines (bbox) only where
+// a test reads them, and with coordinates rounded to about ten metres. Its places outside Europe too, which the route leaves out.
 export type RecordedResult = [fields: Record<string, unknown>, lat: number, lon: number];
 
 /** What Geoapify answered each request of one search: for towns of the name typed,
@@ -891,8 +891,9 @@ export const RECORDED_GEOAPIFY_ANSWERS: Record<string, RecordedSearch> = {
       [{ result_type: 'amenity', name: 'TEN 11 Coffee Boutique , Dubai Mall', housenumber: 'Level 2 , Fashion Avenue', street: 'Metro Link', postcode: '00000', city: 'Dubai', suburb: 'Burj Khalifa', state: 'Dubai Emirate', country: 'United Arab Emirates', country_code: 'ae' }, 25.1974, 55.2768],
       [{ result_type: 'amenity', name: 'TEN 11 Coffee Boutique , Dubai Mall', street: 'Metro Link', postcode: '00000', city: 'Dubai', district: 'Downtown Dubai', state: 'Dubai', country: 'United Arab Emirates', country_code: 'ae' }, 25.1974, 55.2768],
       [{ result_type: 'amenity', name: 'The Address - Dubai Mall', street: 'Sheikh Mohammed bin Rashid Boulevard', postcode: 'P. O. Box 31166', city: 'Dubai', suburb: 'Burj Khalifa', district: 'Downtown Dubai', state: 'Dubai Emirate', country: 'United Arab Emirates', country_code: 'ae' }, 25.1997, 55.2776],
-      [{ result_type: 'amenity', name: 'The Dubai Mall', street: 'Financial Center Street', postcode: '26661 88056', city: 'Dubai', suburb: 'Burj Khalifa', district: 'Downtown Dubai', state: 'Dubai Emirate', country: 'United Arab Emirates', country_code: 'ae' }, 25.197, 55.279],
-      [{ result_type: 'amenity', name: 'The Dubai Mall', street: 'Financial Center Road (Upper Level)', postcode: '26661 88056', city: 'Dubai', suburb: 'Burj Khalifa', district: 'Downtown Dubai', state: 'Dubai Emirate', country: 'United Arab Emirates', country_code: 'ae' }, 25.1997, 55.2795],
+      // The mall, with its outline, and the bus stop named after it, at its edge, with its own.
+      [{ result_type: 'amenity', name: 'The Dubai Mall', street: 'Financial Center Street', postcode: '26661 88056', city: 'Dubai', suburb: 'Burj Khalifa', district: 'Downtown Dubai', state: 'Dubai Emirate', country: 'United Arab Emirates', country_code: 'ae', bbox: { lon1: 55.2746, lat1: 25.1943, lon2: 55.2826, lat2: 25.1997 } }, 25.197, 55.279],
+      [{ result_type: 'amenity', name: 'The Dubai Mall', street: 'Financial Center Road (Upper Level)', postcode: '26661 88056', city: 'Dubai', suburb: 'Burj Khalifa', district: 'Downtown Dubai', state: 'Dubai Emirate', country: 'United Arab Emirates', country_code: 'ae', bbox: { lon1: 55.2795, lat1: 25.1996, lon2: 55.2796, lat2: 25.1997 } }, 25.1997, 55.2795],
       [{ result_type: 'amenity', name: 'Rental Cars UAE - Dubai Mall', housenumber: '3902', street: 'Sheikh Mohammed bin Rashid Boulevard', postcode: '35114', city: 'Dubai', suburb: 'Burj Khalifa', district: 'Downtown Dubai', state: 'Dubai Emirate', country: 'United Arab Emirates', country_code: 'ae' }, 25.1941, 55.2772],
       [{ result_type: 'amenity', name: 'Haidilao Dubai Mall', street: 'F', postcode: '26889 87732', city: 'Dubai', suburb: 'Burj Khalifa', district: 'Downtown Dubai', state: 'Dubai Emirate', country: 'United Arab Emirates', country_code: 'ae' }, 25.1965, 55.2808],
       [{ result_type: 'amenity', name: 'Hysteria Dubai Mall', street: 'Financial Center Street', postcode: '26857 87945', city: 'Dubai', suburb: 'Burj Khalifa', district: 'Downtown Dubai', state: 'Dubai Emirate', country: 'United Arab Emirates', country_code: 'ae' }, 25.1976, 55.2811],

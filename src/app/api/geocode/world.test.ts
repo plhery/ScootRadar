@@ -163,11 +163,11 @@ describe('the search in Oceania and West Asia', () => {
     inWorker({ GEOAPIFY_API_KEY: 'key' });
     stubUpstreams({ geoapify: RECORDED_GEOAPIFY_ANSWERS['Dubai Mall'] });
 
-    // Twice: two entrances 300 m apart. Without the Makani numbers OpenStreetMap gives as postcodes.
+    // Once: its bus stop of the same name, 300 m from it, is inside its outline. Without the Makani numbers OpenStreetMap gives as postcodes.
     expect((await rows(await search('Dubai Mall', { near: DUBAI }))).slice(0, 3)).toEqual([
       ['The Dubai Mall', 'Financial Center Street, Dubai'],
-      ['The Dubai Mall', 'Financial Center Road (Upper Level), Dubai'],
       ['Dubai Mall Metro Bus Stop Landside 1', 'Metro access : Burj Khalifa / Dubai Mall station, Dubai'],
+      ['Burj Khalifa / Dubai Mall', 'Metro access : Burj Khalifa / Dubai Mall station, Dubai'],
     ]);
   });
 

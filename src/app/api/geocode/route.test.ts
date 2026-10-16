@@ -576,6 +576,30 @@ describe('places where the app has cities', () => {
     ]);
   });
 
+  it('lists a landmark once with what bears its name inside its outline, and two shops of a chain 300 m apart twice', async () => {
+    stubUpstreams({ photon: [
+      // Photon's extent: west, north, east, south.
+      [{ type: 'house', name: 'Gare de Lyon', street: 'Place Louis Armand', postcode: '75012', city: 'Paris', extent: [2.37, 48.847, 2.378, 48.843] }, 48.8447, 2.3738],
+      // 300 m from the station's middle, at the end of its platforms.
+      [{ type: 'house', name: 'Gare de Lyon', street: 'Rue de Bercy', postcode: '75012', city: 'Paris' }, 48.8434, 2.3776],
+      [{ type: 'house', name: 'Monoprix', street: 'Boulevard Diderot', postcode: '75012', city: 'Paris', extent: [2.374, 48.846, 2.3744, 48.8457] }, 48.8458, 2.3742],
+      [{ type: 'house', name: 'Monoprix', street: 'Rue de Lyon', postcode: '75012', city: 'Paris' }, 48.8476, 2.378],
+      // A street holds no other of its name, as a quarter or a town holds none: they may be other streets.
+      [{ type: 'street', name: 'Rue de Lyon', city: 'Paris', extent: [2.369, 48.853, 2.374, 48.844] }, 48.849, 2.3715],
+      [{ type: 'street', name: 'Rue de Lyon', city: 'Paris 12e' }, 48.8525, 2.373],
+    ] });
+
+    const results = await (await POST(postRequest('anything', 'en', PARIS))).json() as { title: string; subtitle: string }[];
+
+    expect(results.map(result => [result.title, result.subtitle])).toEqual([
+      ['Gare de Lyon', 'Place Louis Armand, 75012 Paris'],
+      ['Monoprix', 'Boulevard Diderot, 75012 Paris'],
+      ['Monoprix', 'Rue de Lyon, 75012 Paris'],
+      ['Rue de Lyon', 'Paris'],
+      ['Rue de Lyon', 'Paris 12e'],
+    ]);
+  });
+
   it.each<[geoapify: number | null, photon: number | 'invalid', status: number, retryAfter: string | null]>([
     [null, 503, 502, '30'],
     [null, 429, 503, '60'],

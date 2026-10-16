@@ -81,8 +81,13 @@ const PHOTON_BIAS_SCALE = '0.1';
 // How far a place is from the map centre: within a short ride, within the city around it, or farther.
 const CLOSE_M = 5_000;
 const NEARBY_M = 30_000;
-// A station, its building and its platforms under one name: within this, they are one place.
+// A station, its building and its platforms under one name: within this of each
+// other, or of the outline of one, they are one place. The Dubai Mall and its bus
+// stop of that name, 300 m from its middle but inside it, are one; two shops of a
+// chain 300 m apart are two.
 const SAME_PLACE_M = 250;
+// A landmark's outline, not a region's: across 180°, or larger than this, it is none.
+const MAX_OUTLINE_DEGREES = 1;
 // Whose places Geoapify favours without a map centre, when the app does not say where the rider is.
 const DEFAULT_HOME = 'CH';
 
@@ -159,6 +164,8 @@ interface Candidate extends Ranked {
   place: GeocodePlace;
   /** A city with scooter data, from our own list of them. */
   listed?: boolean;
+  /** The outline of a landmark, a building or a shop, as a box: what lies in it, of its name, is part of it. */
+  outline?: Box;
 }
 
 /** The places the services asked found, and their names. */
@@ -394,6 +401,14 @@ function photonService(settings: Record<string, unknown>): PhotonService | null 
   return { url, headers };
 }
 
+/** The box a landmark's outline fits in, from Photon's extent: west, north, east and south. */
+function outlineBox(extent: unknown): Box | undefined {
+  if (!Array.isArray(extent) || extent.length !== 4 || !extent.every(value => typeof value === 'number' && Number.isFinite(value))) return undefined;
+  const [west, north, east, south] = extent as number[];
+  const box = { west: Math.min(west, east), south: Math.min(south, north), east: Math.max(west, east), north: Math.max(south, north) };
+  return box.east - box.west <= MAX_OUTLINE_DEGREES && box.north - box.south <= MAX_OUTLINE_DEGREES ? box : undefined;
+}
+
 /** Photon's places, in its order, as rows ranked for what was typed. */
 function photonCandidates(features: PhotonFeature[], typed: string[], from: From): Candidate[] {
   return features.flatMap(feature => {
@@ -415,7 +430,9 @@ function photonCandidates(features: PhotonFeature[], typed: string[], from: From
     const nearMiss = properties.nearMiss === true;
     // Not a town Geoapify found for a near miss of its name: "Rheinwald" for "Rheinfall".
     const town = properties.type === 'city' && !nearMiss;
-    return [{ place, ...placeRank(typed, place, town, nearMiss, text(properties.countrycode).toUpperCase(), from) }];
+    // A landmark's: not a street's, nor a town's or a quarter's, which may hold others of their name.
+    const outline = properties.type === 'house' || properties.type === 'other' ? outlineBox(properties.extent) : undefined;
+    return [{ place, ...placeRank(typed, place, town, nearMiss, text(properties.countrycode).toUpperCase(), from), ...(outline ? { outline } : {}) }];
   });
 }
 
@@ -490,6 +507,7 @@ function photonFeature(result: Record<string, unknown>): PhotonFeature | null {
     || (result.result_type === 'postcode' ? text(result.postcode) : '');
   // How sure Geoapify is that the place bears all of what was typed: under one, a near miss.
   const confidence = result.rank && typeof result.rank === 'object' ? (result.rank as Record<string, unknown>).confidence : undefined;
+  const bbox = result.bbox && typeof result.bbox === 'object' ? result.bbox as Record<string, unknown> : null;
   return {
     geometry: { coordinates: [result.lon, result.lat] },
     properties: {
@@ -506,6 +524,7 @@ function photonFeature(result: Record<string, unknown>): PhotonFeature | null {
       country: result.country,
       countrycode: result.country_code,
       nearMiss: typeof confidence === 'number' && confidence < 1,
+      extent: bbox ? [bbox.lon1, bbox.lat2, bbox.lon2, bbox.lat1] : undefined,
     },
   };
 }
@@ -606,11 +625,19 @@ async function within<T>(promise: Promise<T>, ms: number): Promise<T | null> {
   }
 }
 
-/** Two rows for one place: the same two lines, or the same name close by. */
-function samePlace(a: GeocodePlace, b: GeocodePlace): boolean {
-  if (a.title === b.title && a.subtitle === b.subtitle) return true;
-  return searchWords(a.title).join(' ') === searchWords(b.title).join(' ') &&
-    haversineM(a.lat, a.lng, b.lat, b.lng) <= SAME_PLACE_M;
+/** How far a place is from another's outline, or from the other where it has none. */
+function apartM({ place }: Candidate, { place: other, outline }: Candidate): number {
+  if (!outline) return haversineM(place.lat, place.lng, other.lat, other.lng);
+  const lat = Math.min(Math.max(place.lat, outline.south), outline.north);
+  const lng = Math.min(Math.max(place.lng, outline.west), outline.east);
+  return haversineM(place.lat, place.lng, lat, lng);
+}
+
+/** Two rows for one place: the same two lines, or the same name close by or in the other's outline. */
+function samePlace(a: Candidate, b: Candidate): boolean {
+  if (a.place.title === b.place.title && a.place.subtitle === b.place.subtitle) return true;
+  return searchWords(a.place.title).join(' ') === searchWords(b.place.title).join(' ') &&
+    Math.min(apartM(a, b), apartM(b, a)) <= SAME_PLACE_M;
 }
 
 function failureResponse(failure: UpstreamFailure) {
@@ -671,7 +698,7 @@ async function geocode(input: GeocodeInput) {
   const shown: Candidate[] = [];
   for (const candidate of candidates) {
     // A street comes in pieces, a station with its building, platforms and stops: one row each.
-    if (shown.some(({ place }) => samePlace(place, candidate.place))) continue;
+    if (shown.some(other => samePlace(other, candidate))) continue;
     // A town found as typed close to a city with scooter data is that city: "Rom" is Roma.
     const city = candidate.town && !candidate.listed && shown.find(({ place, listed }) =>
       listed && haversineM(place.lat, place.lng, candidate.place.lat, candidate.place.lng) <= CLOSE_M);
