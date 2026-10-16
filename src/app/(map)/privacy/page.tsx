@@ -96,7 +96,8 @@ export default function PrivacyPage() {
           and do not record your screen or replay sessions.
         </p>
         <p>
-          You can disable usage analytics below, or in the iOS app under Settings › About › Privacy.
+          Usage analytics is on by default. You can turn it off below, or in the iOS app under
+          Settings › About › Privacy.
           The website also respects Do Not Track and Global Privacy Control. This browser
           preference is saved locally and does not affect your iOS setting.
         </p>

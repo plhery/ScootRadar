@@ -67,7 +67,7 @@ vehicle IDs, URL queries/fragments, advertising IDs, or session recordings.
 Umami processes IP/user-agent information to derive approximate geography,
 device information and short-lived sessions; it does not store raw IPs. No
 analytics cookies or persistent user IDs are used. Session cache stays in memory.
-Disable analytics on the web privacy page or in the iOS app under
-Settings › About › Privacy. Web collection also respects Do Not Track and
+Analytics is on by default. Turn it off on the web privacy page or in the iOS
+app under Settings › About › Privacy. Web collection also respects Do Not Track and
 Global Privacy Control. Development/preview web hosts and iOS simulators/tests
 are excluded by default.

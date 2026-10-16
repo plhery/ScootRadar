@@ -50,7 +50,7 @@ code and the backends say why each type is there:
 | Location › Precise Location | App Functionality | No | No | The scooter API receives the bounds of the map on screen; when the map follows the rider their midpoint is the rider's position. They are kept only in a Sentry error report when the server fails (90 days). |
 | Location › Coarse Location | Analytics, App Functionality | No | No | Umami derives an approximate place from the IP address (the IP itself is not stored); the address search sends the map centre rounded to about a kilometre to Geoapify. |
 | Search History | App Functionality | No | No | Address text goes through the server to Geoapify (and Photon as a fallback), which keep it up to 24 hours. |
-| Usage Data › Product Interaction | Analytics | No | No | Screen views and named actions to the self-hosted Umami (`docs/analytics.md`); off under Settings › About › Privacy. |
+| Usage Data › Product Interaction | Analytics | No | No | Screen views and named actions to the self-hosted Umami (`docs/analytics.md`); on by default, off under Settings › About › Privacy. |
 | Diagnostics › Other Diagnostic Data | Analytics, App Functionality | No | No | Generic failure events in Umami, and the server's own error reports in Sentry. |
 
 Not collected: contact info, health, financial info, contacts, user content,
