@@ -72,11 +72,16 @@ iPhone only, portrait, PNG without alpha, from the simulator with live data:
 The English set, taken on 16 October 2026 at Zürich main station with the
 simulator's location there, serves every language that has none of its own:
 the nearest scooters, a scooter's card, the walking route, the city at night,
-the filters and the street at night. To take them again: set the simulator's
-location (`xcrun simctl location <device> set 47.3779,8.5403`), the status bar
+the filters and the street at night. The German (`de-DE`) and French (`fr-FR`)
+sets show the same scenes in Zürich, which has the most operators on the map;
+Paris had no vehicles that day. The French 6.9" set has the first three so far.
+To take them again: set the simulator's location
+(`xcrun simctl location <device> set 47.3779,8.5403`), the status bar
 (`xcrun simctl status_bar <device> override --time 9:41 …`) and the app's
-locale to `en_CH` for metres, then save each capture without alpha
-(`ffmpeg -i shot.png -pix_fmt rgb24 out.png`).
+language and region (`defaults write com.plhery.scootradar AppleLanguages
+-array de` and `AppleLocale de_CH`, through `xcrun simctl spawn <device>`;
+`en_CH`, `fr_CH` for the others, so distances are in metres), then save each
+capture without alpha (`ffmpeg -i shot.png -pix_fmt rgb24 out.png`).
 
 ## Review notes
 
