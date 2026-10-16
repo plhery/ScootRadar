@@ -9,8 +9,8 @@ const lastReportedAt = new Map<string, number>();
  * Sentry, enabled only with SENTRY_DSN. A failing request keeps its method and
  * URL, query included: the map bounds, zoom and filters that reproduce it. Its
  * headers are dropped: they hold the Worker's token and the visitor's address.
- * Routine feed failures are not reported, only a feed that stops being served
- * (see reportFeedExpired); Prometheus and the logs cover the rest.
+ * Routine feed failures are not reported, only a feed that stops being served for
+ * a while (see reportFeedExpired); Prometheus and the logs cover the rest.
  */
 export function initErrorReporting(env: Record<string, string | undefined> = process.env): boolean {
   const dsn = env.SENTRY_DSN?.trim();
@@ -61,10 +61,10 @@ export function reportError(key: string, error: unknown, now = Date.now()) {
 }
 
 /**
- * A feed that expired (see feedState): the map tells people the provider is not
- * sharing data, or would as soon as someone looked. Being idle is not enough:
- * an idle feed expires only after its interval and ten minutes (half an hour by
- * default) without a successful collection.
+ * A feed that expired (see feedState) and stayed so for a while (scooter-cache.ts):
+ * the map tells people the provider is not sharing data, or would as soon as
+ * someone looked. Being idle is not enough: an idle feed expires only after its
+ * interval and ten minutes (half an hour by default) without a successful collection.
  * One issue per feed, with at most one event an hour, so a feed that keeps
  * expiring between updates stays quiet.
  */

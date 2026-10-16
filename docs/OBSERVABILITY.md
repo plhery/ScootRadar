@@ -6,7 +6,7 @@ places. None of them holds a map URL, coordinates or a visitor's address.
 - **Prometheus** scrapes its `/metrics` every 30 seconds. **Grafana** draws them on the
   "ScootRadar — Scooter feeds" dashboard and alerts on them through Telegram.
 - **Sentry** (project `scootradar-cache`) gets unexpected errors, plus one event
-  each time a feed stops being served.
+  each time a feed stops being served for 5 minutes.
 - **Loki** keeps its log lines for 30 days under `app="scootradar-cache"`.
 
 The Worker is not in Prometheus or Sentry: its `scooter_origin_failure` lines are in
@@ -225,12 +225,13 @@ inside the container, hence the `Debugger listening on ws://127.0.0.1:…` line 
 startup. Tracing is off, and no trace headers go to the operators' feeds.
 
 - **Feed stopped being served**: a warning each time a feed becomes `expired` by its
-  cadence's rule (an idle feed after 30 minutes without a successful collection), outside
-  its seasonal pause, one
+  cadence's rule (an idle feed after 30 minutes without a successful collection) and is
+  still expired 5 minutes later, outside its seasonal pause. A shorter blip, as Voi
+  Switzerland's 105 seconds on 16 October 2026, is only in the logs. One
   issue per feed (tags `feed`, `source`, `provider`), at most one event an hour for
   each, so a feed that keeps expiring between updates stays quiet. Its `feed` context has the
-  `snapshot_feed_state` figures and the last collection error, or says that the last
-  collection succeeded and its data then aged past the limit.
+  `snapshot_feed_state` figures of its expiry and the last collection error, or says that
+  the last collection succeeded and its data then aged past the limit.
 - **Unexpected errors**: snapshot restore and persistence, feed discovery, a request
   answered 500, and a collection that threw outside the feed's own error handling. Each
   is reported at most once an hour, so a failure repeating every few seconds stays one

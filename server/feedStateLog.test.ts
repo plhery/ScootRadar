@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createFeedStateLog, feedState, parkingUp, type FeedCadence } from './feedStateLog';
+import { ALWAYS_FAST, createFeedStateLog, feedState, parkingUp, type FeedCadence } from './feedStateLog';
 import { VEHICLE_MAX_AGE_MS, type FeedSnapshot } from '../src/lib/scooterSnapshots';
 
 const feed = (changes: Partial<FeedSnapshot>): FeedSnapshot => ({ id: 'national:voiscooters.com', source: 'national',
@@ -56,6 +56,28 @@ it('passes each change and its feed on', () => {
   logStates([feed({ observedAt: now - 20_000, attemptedAt: now - 10_000 })], now);
   logStates([feed({ observedAt: now - 20_000, attemptedAt: now - 10_000 })], now + VEHICLE_MAX_AGE_MS);
   expect(changes).toEqual([['expired', 'ok', 'voi']]);
+});
+
+it('tells of a feed still expired after a while, once for each time it expires, and not of a blip', () => {
+  const reported: [string, number][] = [];
+  const minutes = (count: number) => count * 60_000;
+  const logStates = createFeedStateLog(() => {}, undefined, ALWAYS_FAST,
+    { afterMs: minutes(5), report: (change, current) => reported.push([change.previous, current.attemptedAt]) });
+  const now = 1_000_000_000;
+  const late = (at: number, attemptedAt = at) => [feed({ observedAt: at - VEHICLE_MAX_AGE_MS - 1_000, attemptedAt })];
+  logStates([feed({ observedAt: now, attemptedAt: now })], now);
+  // Expired for 105 seconds, as Voi on 16 October 2026, then back.
+  logStates(late(now + minutes(15)), now + minutes(15));
+  logStates(late(now + minutes(16)), now + minutes(16) + 45_000);
+  logStates([feed({ observedAt: now + minutes(17), attemptedAt: now + minutes(17) })], now + minutes(17));
+  expect(reported).toEqual([]);
+  // Expired again, and still after five minutes: told once, with the feed as it is then.
+  const expiredAt = now + minutes(32);
+  logStates(late(expiredAt), expiredAt);
+  logStates(late(expiredAt, expiredAt + minutes(4)), expiredAt + minutes(4));
+  logStates(late(expiredAt, expiredAt + minutes(5)), expiredAt + minutes(5));
+  logStates(late(expiredAt, expiredAt + minutes(9)), expiredAt + minutes(9));
+  expect(reported).toEqual([['ok', expiredAt + minutes(5)]]);
 });
 
 describe('cadence', () => {

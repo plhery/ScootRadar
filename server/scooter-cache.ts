@@ -182,10 +182,14 @@ async function discover() {
 setDefinitions(independentCollectableFeeds(), false);
 scheduler.start();
 void discover();
-const logFeedStates = createFeedStateLog(console.log, (change, feed) => {
-  // In its seasonal pause, a feed is expected to stop; the log still says it did.
-  if (change.state === 'expired' && !feedPaused(feed.id, Date.now())) reportFeedExpired(change, feed, lastErrors.get(feed.id));
-}, cadence);
+// Sentry hears of a feed still expired after 5 minutes: not of a blip, as Voi's of
+// 105 seconds on 16 October 2026. Grafana's "feed stopped" waits 10.
+const EXPIRED_REPORT_DELAY_MS = 5 * 60_000;
+const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afterMs: EXPIRED_REPORT_DELAY_MS,
+  report: (change, feed) => {
+    // In its seasonal pause, a feed is expected to stop; the log still says it did.
+    if (!feedPaused(feed.id, Date.now())) reportFeedExpired(change, feed, lastErrors.get(feed.id));
+  } });
 const persistenceTimer = setInterval(() => {
   if (snapshot) logFeedStates(snapshot.feeds);
   void persist();

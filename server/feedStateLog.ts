@@ -60,6 +60,13 @@ export interface FeedStateChange {
   attemptAgeSeconds: number;
 }
 
+/** A feed that has stayed expired for `afterMs`, told once for each time it expires. */
+export interface StillExpired {
+  afterMs: number;
+  /** The change that expired it, and the feed as it is now. */
+  report: (change: FeedStateChange, feed: FeedSnapshot) => void;
+}
+
 /**
  * Logs every feed whose state changed since the last call. A feed also expires
  * between two collections, without any error, when its time runs out: this
@@ -67,8 +74,9 @@ export interface FeedStateChange {
  * state seen for a feed is its baseline and is not logged.
  */
 export function createFeedStateLog(log: (line: string) => void = console.log,
-  onChange?: (change: FeedStateChange, feed: FeedSnapshot) => void, cadence: FeedCadence = ALWAYS_FAST) {
-  const known = new Map<string, { state: FeedState; since: number }>();
+  onChange?: (change: FeedStateChange, feed: FeedSnapshot) => void, cadence: FeedCadence = ALWAYS_FAST,
+  stillExpired?: StillExpired) {
+  const known = new Map<string, { state: FeedState; since: number; change?: FeedStateChange }>();
   return (feeds: readonly FeedSnapshot[], now = Date.now()) => {
     const seen = new Set<string>();
     for (const feed of feeds) {
@@ -77,13 +85,22 @@ export function createFeedStateLog(log: (line: string) => void = console.log,
       seen.add(feed.id);
       const state = feedState(feed, now, cadence);
       const previous = known.get(feed.id);
-      if (previous?.state === state) continue;
-      known.set(feed.id, { state, since: now });
-      if (!previous) continue;
+      if (previous?.state === state) {
+        if (stillExpired && previous.change?.state === 'expired' && now - previous.since >= stillExpired.afterMs) {
+          stillExpired.report(previous.change, feed);
+          previous.change = undefined;
+        }
+        continue;
+      }
+      if (!previous) {
+        known.set(feed.id, { state, since: now });
+        continue;
+      }
       const change: FeedStateChange = { event: 'snapshot_feed_state', feed: feed.id, state, previous: previous.state,
         secondsInPrevious: Math.round((now - previous.since) / 1000),
         observationAgeSeconds: Math.round((now - feed.observedAt) / 1000),
         attemptAgeSeconds: Math.round((now - feed.attemptedAt) / 1000) };
+      known.set(feed.id, { state, since: now, change });
       log(JSON.stringify(change));
       onChange?.(change, feed);
     }
