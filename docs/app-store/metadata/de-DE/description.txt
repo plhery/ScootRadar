@@ -1,0 +1,31 @@
+ScootRadar zeigt alle E-Scooter in deiner Nähe auf einer Karte, egal von welchem Sharing-Anbieter. So ist der nächste Scooter das Erste, was du siehst.
+
+Jeder Anbieter hat eine eigene App, und jede zeigt nur die eigene Flotte. ScootRadar zeigt alle. Dann ist der nächste Scooter auch wirklich der nächste.
+
+WISSEN, WIE WEIT ES IST
+Distanz und Gehzeit von deinem Standort oder einer gesuchten Adresse aus. «Route» zeichnet den Weg dorthin auf der Karte ein und folgt dir beim Gehen.
+
+LEERE AKKUS AUSBLENDEN
+Akkustand und Reichweite, sofern der Anbieter sie veröffentlicht. Lege einen Mindestladestand fest, und die Karte zeigt nur noch Scooter, die ihn erreichen.
+
+DEN PREIS KENNEN, BEVOR DU FÄHRST
+Eine Schätzung nach den veröffentlichten Tarifen des Anbieters, für eine Fahrt von 5 bis 30 Minuten. Kostenlose Entsperrungen und Freiminuten deiner Pässe sind eingerechnet. Den Endpreis zeigt die App des Anbieters.
+
+EIN FINGERTIPP ZUR RICHTIGEN APP
+«In … öffnen» bringt dich zur App des Anbieters. Entsperrt und bezahlt wird dort wie gewohnt. ScootRadar vermietet und reserviert keine Scooter.
+
+WO ES FUNKTIONIERT
+Fast 400 Städte und Gemeinden: in der Schweiz, in Frankreich, Deutschland, Norwegen, Island, Belgien, Portugal und Spanien, im Vereinigten Königreich, in den Vereinigten Staaten, in Kanada, Israel, Neuseeland und weiteren Ländern. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten.
+
+PRIVAT VON GRUND AUF
+Kein Konto, keine Werbung. Dein Standort wird auf deinem iPhone genutzt, um die Karte zu zentrieren und die Gehzeiten zu berechnen; der Server erhält nur den Kartenausschnitt, den du gerade ansiehst. Anonyme Nutzungsstatistiken lassen sich in den Einstellungen ausschalten.
+
+AUSSERDEM
+• Helle und dunkle Darstellung sowie die Kartenstile Standard, Ruhig und Satellit
+• Ausgewiesene Parkplätze, wo ein Anbieter sie vorschreibt
+• Dynamic Type, VoiceOver und Bewegung reduzieren
+• Deutsch, Englisch, Französisch, Italienisch, Niederländisch, Norwegisch, Portugiesisch, Spanisch und Isländisch
+
+Die Positionen stammen aus den öffentlichen Datenfeeds (GBFS) der Anbieter und Behörden und können einige Minuten alt sein. Auf der Karte sind je nach Stadt unter anderem Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Ryde, Hoppy, Beryl, Spin, Veo und Lyft.
+
+ScootRadar ist unabhängig und steht in keiner Verbindung zu den Anbietern; deren Namen sind Marken ihrer jeweiligen Inhaber. ScootRadar ist Open Source.

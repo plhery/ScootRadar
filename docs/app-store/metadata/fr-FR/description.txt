@@ -1,0 +1,31 @@
+ScootRadar réunit sur une seule carte toutes les trottinettes électriques en libre-service autour de vous, quel que soit l’opérateur. La plus proche est ainsi la première chose que vous voyez.
+
+L’app de chaque opérateur ne montre que sa propre flotte. ScootRadar montre toutes les flottes : la trottinette la plus proche est donc simplement la plus proche.
+
+SACHEZ JUSQU’OÙ MARCHER
+La distance et le temps de marche depuis votre position, ou depuis une adresse que vous avez cherchée. « Itinéraire » trace le chemin à pied sur la carte et vous suit pendant que vous marchez.
+
+ÉCARTEZ LES BATTERIES À PLAT
+La batterie et l’autonomie restante, quand l’opérateur les publie. Fixez un minimum et la carte ne garde que les trottinettes qui l’atteignent.
+
+LE PRIX, AVANT DE VOUS DÉCIDER
+Une estimation d’après les tarifs publiés par l’opérateur, pour un trajet de 5 à 30 minutes, qui tient compte des déverrouillages gratuits et des minutes gratuites de vos pass. Le prix final est celui qu’affiche l’app de l’opérateur.
+
+LA BONNE APP, EN UN GESTE
+« Ouvrir dans » vous mène à l’app de l’opérateur, où vous déverrouillez la trottinette et payez comme d’habitude. ScootRadar ne loue ni ne réserve de trottinettes.
+
+OÙ ÇA MARCHE
+Près de 400 villes et communes en Suisse, en France, en Allemagne, en Norvège, en Islande, en Belgique, au Portugal, en Espagne, au Royaume-Uni, aux États-Unis, au Canada, en Israël, en Nouvelle-Zélande et ailleurs. Là où aucun opérateur ne publie de données, la carte le dit et indique les villes les plus proches qui en ont.
+
+CONFIDENTIALITÉ DÈS LA CONCEPTION
+Sans compte et sans pub. Votre position est utilisée sur votre iPhone, pour centrer la carte et calculer les temps de marche ; le serveur ne reçoit que la partie de la carte que vous regardez. Les statistiques d’utilisation anonymes peuvent être désactivées dans les Réglages.
+
+ET AUSSI
+• Apparence claire et sombre, et les styles de carte Standard, Épuré et Satellite
+• Emplacements de stationnement là où un opérateur les impose
+• Dynamic Type, VoiceOver et Réduire les animations
+• Français, allemand, italien, anglais, néerlandais, norvégien, portugais, espagnol et islandais
+
+Les positions proviennent des flux de données publics (GBFS) diffusés par les opérateurs et les autorités, et peuvent dater de quelques minutes. Selon la ville, la carte montre notamment Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Ryde, Hoppy, Beryl, Spin, Veo et Lyft.
+
+ScootRadar est indépendant et n’est pas affilié aux opérateurs ; leurs noms sont des marques de leurs propriétaires respectifs. ScootRadar est open source.

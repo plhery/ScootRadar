@@ -1,0 +1,1 @@
+Todas as trotinetes elétricas partilhadas perto de si num mapa em tempo real, seja qual for o operador: tempo a pé, bateria e preço estimado antes de se pôr a caminho.

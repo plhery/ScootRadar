@@ -1,0 +1,31 @@
+ScootRadar puts every shared e-scooter around you on one map, whoever runs it, so the closest ride is the first thing you see.
+
+Each operator's app shows only its own fleet. ScootRadar shows them all, so the nearest scooter is simply the nearest one.
+
+KNOW THE WALK
+Distance and walking time from where you stand, or from an address you look up. Directions draws the way on foot on the map and follows you as you walk.
+
+SKIP THE FLAT ONES
+Battery and remaining range, where the operator publishes them. Set a minimum and the map keeps only the scooters that reach it.
+
+PRICE BEFORE YOU COMMIT
+An estimate from the operator's published rates for a ride of 5 to 30 minutes, with the free unlocks and free minutes of your passes taken into account. The operator's app shows the final price.
+
+ONE TAP TO THE RIGHT APP
+"Open in" takes you to the operator's own app, where you unlock and pay as usual. ScootRadar doesn't rent or reserve scooters.
+
+WHERE IT WORKS
+Close to 400 towns and cities in Switzerland, France, Germany, Norway, Iceland, Belgium, Portugal, Spain, the United Kingdom, the United States, Canada, Israel, New Zealand and more. Where no operator publishes its data, the map says so and shows the closest cities that do.
+
+PRIVATE BY DESIGN
+No account and no ads. Your location is used on your iPhone to centre the map and work out walking times; the server only receives the part of the map you are looking at. Anonymous usage statistics can be turned off in Settings.
+
+ALSO
+• Light and dark appearance, and Standard, Quiet and Satellite maps
+• Parking bays where an operator requires them
+• Dynamic Type, VoiceOver and Reduce Motion
+• English, German, French, Italian, Dutch, Norwegian, Portuguese, Spanish and Icelandic
+
+Positions come from the public data feeds (GBFS) that operators and public authorities publish, and can be a few minutes old. Operators on the map include Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Ryde, Hoppy, Beryl, Spin, Veo and Lyft, depending on the city.
+
+ScootRadar is independent and not affiliated with the operators; their names are trademarks of their owners. ScootRadar is open source.

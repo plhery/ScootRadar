@@ -1,0 +1,31 @@
+ScootRadar samler alle elsparkesykler til leie rundt deg på ett kart, uansett hvem som leier dem ut, så den nærmeste er det første du ser.
+
+Hver operatør har sin egen app, og hver app viser bare sin egen flåte. ScootRadar viser alle sammen, så den nærmeste er rett og slett den nærmeste.
+
+VIT HVOR LANGT DET ER
+Avstand og gangtid fra der du står, eller fra en adresse du søker opp. «Veibeskrivelse» tegner ruten til fots på kartet og følger deg mens du går.
+
+STYR UNNA TOMME BATTERIER
+Batteri og gjenværende rekkevidde, der operatøren publiserer dem. Velg et minimum, så viser kartet bare elsparkesyklene som når det.
+
+PRISEN, FØR DU BESTEMMER DEG
+Et anslag ut fra operatørens publiserte priser for en tur på 5 til 30 minutter, med gratis opplåsing og gratisminutter fra passene dine regnet med. Operatørens app viser endelig pris.
+
+ETT TRYKK TIL RIKTIG APP
+«Åpne i» tar deg til operatørens egen app, der du låser opp og betaler som vanlig. ScootRadar leier ikke ut og reserverer ikke elsparkesykler.
+
+HVOR DET FUNGERER
+Nesten 400 byer og tettsteder i Sveits, Frankrike, Tyskland, Norge, Island, Belgia, Portugal, Spania, Storbritannia, USA, Canada, Israel, New Zealand og flere land. Der ingen operatør publiserer data, sier kartet ifra og viser de nærmeste byene som har det.
+
+INNEBYGD PERSONVERN
+Ingen konto og ingen reklame. Posisjonen din brukes på iPhonen din, for å sentrere kartet og regne ut gangtider; serveren får bare den delen av kartet du ser på. Anonym bruksstatistikk kan slås av i Innstillinger.
+
+OGSÅ
+• Lyst og mørkt utseende, og kartene Standard, Rolig og Satellitt
+• Parkeringsplasser der en operatør krever det
+• Dynamic Type, VoiceOver og Reduser bevegelse
+• Norsk, engelsk, tysk, fransk, italiensk, nederlandsk, portugisisk, spansk og islandsk
+
+Posisjonene kommer fra de offentlige datastrømmene (GBFS) som operatørene og myndighetene publiserer, og kan være noen minutter gamle. På kartet finner du blant annet Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Ryde, Hoppy, Beryl, Spin, Veo og Lyft, avhengig av byen.
+
+ScootRadar er uavhengig og ikke tilknyttet operatørene; navnene deres er varemerker som tilhører eierne. ScootRadar har åpen kildekode.

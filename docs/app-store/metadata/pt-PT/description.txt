@@ -1,0 +1,31 @@
+O ScootRadar reúne num só mapa todas as trotinetes elétricas partilhadas à sua volta, seja qual for o operador. Assim, a mais próxima é a primeira coisa que vê.
+
+A app de cada operador só mostra a própria frota. O ScootRadar mostra as frotas todas juntas: a trotinete mais próxima é mesmo a mais próxima.
+
+SAIBA QUANTO TEM DE ANDAR
+A distância e o tempo a pé a partir de onde está, ou de uma morada que pesquise. “Itinerário” traça o caminho a pé no mapa e acompanha-o enquanto anda.
+
+ESQUEÇA AS DESCARREGADAS
+A bateria e a autonomia restante, quando o operador as publica. Defina um mínimo e o mapa só mostra as trotinetes que o atingem.
+
+O PREÇO, ANTES DE SE DECIDIR
+Uma estimativa com base nas tarifas publicadas pelo operador, para uma viagem de 5 a 30 minutos, que tem em conta os desbloqueios grátis e os minutos grátis dos seus passes. O preço final é o que aparece na app do operador.
+
+UM TOQUE ATÉ À APP CERTA
+“Abrir em” leva-o à app do próprio operador, onde desbloqueia e paga como sempre. O ScootRadar não aluga nem reserva trotinetes.
+
+ONDE FUNCIONA
+Quase 400 cidades e vilas na Suíça, em França, na Alemanha, na Noruega, na Islândia, na Bélgica, em Portugal, em Espanha, no Reino Unido, nos Estados Unidos, no Canadá, em Israel, na Nova Zelândia e noutros países. Onde nenhum operador publica os dados, o mapa avisa e indica as cidades mais próximas que os têm.
+
+PRIVACIDADE DE RAIZ
+Sem conta e sem anúncios. A sua localização é usada no seu iPhone, para centrar o mapa e calcular os tempos a pé; o servidor só recebe a parte do mapa que está a ver. As estatísticas de utilização anónimas podem ser desativadas nas Definições.
+
+E AINDA
+• Aspeto claro e escuro, e os mapas Padrão, Simples e Satélite
+• Locais de estacionamento onde um operador os exige
+• Dynamic Type, VoiceOver e Reduzir movimento
+• Português, inglês, alemão, francês, italiano, neerlandês, norueguês, espanhol e islandês
+
+As posições vêm dos dados abertos (GBFS) que os operadores e as autoridades publicam, e podem ter alguns minutos de atraso. No mapa estão, entre outros, Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Ryde, Hoppy, Beryl, Spin, Veo e Lyft, consoante a cidade.
+
+O ScootRadar é independente e não tem qualquer ligação aos operadores; os nomes destes são marcas dos respetivos titulares. O ScootRadar é de código aberto.

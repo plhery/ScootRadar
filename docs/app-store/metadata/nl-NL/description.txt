@@ -1,0 +1,31 @@
+ScootRadar zet alle deelsteps om je heen op één kaart, van welke aanbieder ook. Zo is de dichtstbijzijnde deelstep het eerste wat je ziet.
+
+Elke aanbieder heeft een eigen app die alleen zijn eigen vloot toont. ScootRadar toont ze allemaal, dus de dichtstbijzijnde is gewoon de dichtstbijzijnde.
+
+WEET HOE VER HET IS
+De afstand en hoeveel minuten het te voet is, vanaf waar je staat of vanaf een adres dat je opzoekt. ‘Route’ tekent de weg te voet op de kaart en volgt je terwijl je loopt.
+
+SLA DE LEGE OVER
+Het batterijniveau en het resterende bereik, als de aanbieder die publiceert. Stel een minimum in en de kaart houdt alleen de deelsteps over die het halen.
+
+DE PRIJS, VOOR JE OPSTAPT
+Een schatting op basis van de gepubliceerde tarieven van de aanbieder, voor een rit van 5 tot 30 minuten, met het gratis ontgrendelen en de gratis minuten van je passes meegerekend. De eindprijs zie je in de app van de aanbieder.
+
+EÉN TIK NAAR DE JUISTE APP
+‘Openen in’ brengt je naar de eigen app van de aanbieder, waar je zoals gewoonlijk ontgrendelt en betaalt. ScootRadar verhuurt en reserveert geen deelsteps.
+
+WAAR HET WERKT
+Bijna 400 steden en gemeenten in Zwitserland, Frankrijk, Duitsland, Noorwegen, IJsland, België, Portugal, Spanje, het Verenigd Koninkrijk, de Verenigde Staten, Canada, Israël, Nieuw-Zeeland en meer. Waar geen enkele aanbieder zijn data publiceert, zegt de kaart dat en krijg je de dichtstbijzijnde steden die wel data hebben.
+
+PRIVACY INGEBOUWD
+Geen account en geen reclame. Je locatie wordt op je iPhone gebruikt, om de kaart te centreren en de tijd te voet te berekenen; de server krijgt alleen het deel van de kaart waar je naar kijkt. Anonieme gebruiksstatistieken kun je uitzetten in Instellingen.
+
+OOK
+• Lichte en donkere weergave, en de kaarten Standaard, Rustig en Satelliet
+• Parkeerplekken waar een aanbieder die verplicht stelt
+• Dynamic Type, VoiceOver en Verminder beweging
+• Nederlands, Engels, Duits, Frans, Italiaans, Noors, Portugees, Spaans en IJslands
+
+De posities komen uit de openbare datafeeds (GBFS) die aanbieders en overheden publiceren, en kunnen een paar minuten oud zijn. Op de kaart staan onder meer Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Ryde, Hoppy, Beryl, Spin, Veo en Lyft, afhankelijk van de stad.
+
+ScootRadar is onafhankelijk en niet verbonden aan de aanbieders; hun namen zijn handelsmerken van hun eigenaars. ScootRadar is open source.
