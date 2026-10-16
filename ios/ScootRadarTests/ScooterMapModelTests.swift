@@ -2803,3 +2803,52 @@ extension ScooterMapModelTests {
         }
     }
 }
+
+extension ScooterMapModelTests {
+    func testALinkToACityOpensItLikeTheSearchAndTheFirstFixLeavesTheMapThere() throws {
+        let bern = try XCTUnwrap(ScooterCityCatalog.cities.first { $0.id == "ch:bern" })
+        let link = ScooterMapLink(origin: GeoPoint(latitude: bern.center.latitude, longitude: bern.center.longitude))
+        // The link may open the app before it starts locating, or after.
+        for linkFirst in [true, false] {
+            let manager = StubLocationManager(status: .authorizedWhenInUse)
+            let model = ScooterMapModel(
+                api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+                locationManager: manager,
+                defaults: isolatedDefaults()
+            )
+            if linkFirst {
+                model.open(link)
+                model.start()
+            } else {
+                model.start()
+                model.open(link)
+            }
+            let linkedFocus = try XCTUnwrap(model.focusRequest)
+            XCTAssertEqual(linkedFocus.point, bern.center, "link first: \(linkFirst)")
+            XCTAssertEqual(model.searchBarState, .place(bern.destination), "link first: \(linkFirst)")
+
+            model.locationManager(manager, didUpdateLocations: [zurichFix])
+            XCTAssertEqual(model.focusRequest, linkedFocus, "link first: \(linkFirst)")
+            XCTAssertEqual(model.userLocation, GeoPoint(zurichFix.coordinate))
+            XCTAssertEqual(model.activeOrigin, .searchedDestination(bern.destination))
+        }
+    }
+
+    func testALinkToAnyOtherPointMovesTheMapWithoutChoosingAPlace() throws {
+        let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
+        let point = GeoPoint(latitude: 46.2, longitude: 6.15)
+        model.open(ScooterMapLink(origin: point, minimumBattery: 60))
+        let focus = try XCTUnwrap(model.focusRequest)
+        XCTAssertEqual(focus.point, point)
+        XCTAssertFalse(focus.keepsZoom)
+        XCTAssertNil(model.searchedDestination)
+        XCTAssertEqual(model.minimumBattery, 60)
+    }
+
+    func testALinkWithoutAPlaceKeepsTheMapWhereItIs() {
+        let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
+        model.open(ScooterMapLink())
+        XCTAssertNil(model.focusRequest)
+        XCTAssertEqual(model.minimumBattery, 0)
+    }
+}

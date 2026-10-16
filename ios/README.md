@@ -10,8 +10,9 @@ installed.
 
 1. Install Xcode 26 or newer and open `ScootRadar.xcodeproj`.
 2. Select the **ScootRadar** target, open **Signing & Capabilities**, and
-   choose your Personal Team. Change the bundle identifier if Xcode asks for a
-   unique one.
+   choose your team. Change the bundle identifier if Xcode asks for a unique
+   one. A free Personal Team cannot sign the **Associated Domains** capability
+   (links from scootradar.com); remove it there for such a build.
 3. Connect the iPhone, enable Developer Mode if prompted, select it as the run
    destination, and press **Run**.
 4. The app opens on a map of Switzerland with city totals. Tap **Near me** and
@@ -106,6 +107,15 @@ lists it, the card stays open with no actions and says someone may have taken it
 **Open Settings** and **Search a place**; restricted on this device; or not
 found, with **Try again**. It stays dismissed until the next attempt.
 
+**Links from the website.** A link to the map on scootradar.com, such as a
+city's **Open the map** in a guide, opens in the app when it is installed
+(universal links: `public/.well-known/apple-app-site-association` and
+`ScootRadar.entitlements`). `Models/ScooterMapLink.swift` reads it as the web
+map does: a city's centre opens like the city chosen in the search, any other
+point moves the map there, and `minBattery` sets the battery filter. The first
+location fix after a link leaves the map where the link put it. Try it with
+`xcrun simctl openurl booted "https://scootradar.com/map?origin=47.3769,8.5417"`.
+
 **Filters.** One battery choice (Any, 30%+, 60%+, 80%+) and one provider list
 with the count in view, or a note when a provider is not sharing data. **Reset**
 is in the header and the button at the bottom says how many scooters the map
@@ -194,8 +204,9 @@ changes when it is rebuilt and reinstalled; a web deployment does not update it.
   `WalkTrailOverlay.swift` the dotted walking trail;
   `ScooterControls.swift` the dock, cards,
   sheets and notices; `SwissAddressSearch.swift` the search bar and panel.
-- `en.lproj`, `de.lproj`, `fr.lproj`, `it.lproj` — every string, keyed by its
-  English text. A new string needs an entry in all four.
+- `en.lproj`, `de.lproj`, `fr.lproj`, `it.lproj`, `nl.lproj`, `nb.lproj`,
+  `pt.lproj`, `es.lproj`, `is.lproj` — every string, keyed by its English text.
+  A new string needs an entry in all nine.
 
 The Xcode project lists its files one by one, so a new Swift file has to be added
 to `ScootRadar.xcodeproj` as well.

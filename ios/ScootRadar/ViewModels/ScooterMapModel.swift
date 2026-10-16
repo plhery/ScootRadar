@@ -1009,6 +1009,28 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         choosePlace(city.destination)
     }
 
+    /// A link to the map from the website (ScooterMapLink). A city's centre,
+    /// which is what the site's links carry, opens like the city chosen in the
+    /// search; any other point only moves the map there. Either way the first
+    /// fix of the rider's location leaves the map where the link put it, also
+    /// when the link opened the app before locating began.
+    func open(_ link: ScooterMapLink) {
+        if let battery = link.minimumBattery { setMinimumBattery(Double(battery)) }
+        guard let origin = link.origin else {
+            ScooterAnalytics.shared.track("link_open", result: "map")
+            return
+        }
+        keepsMapOnFirstFix = true
+        if let city = ScooterCityCatalog.city(linkedAt: origin) {
+            ScooterAnalytics.shared.track("link_open", result: "city")
+            choosePlace(city.destination)
+        } else {
+            ScooterAnalytics.shared.track("link_open", result: "place")
+            focusToken += 1
+            focusRequest = .city(origin, token: focusToken)
+        }
+    }
+
     private func rememberPlace(_ destination: MapDestination) {
         recentPlaces.removeAll { $0.id == destination.id }
         recentPlaces.insert(destination, at: 0)

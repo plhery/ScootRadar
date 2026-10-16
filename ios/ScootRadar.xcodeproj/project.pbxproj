@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A00000000000000000000022 /* ScooterMapLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000002A /* ScooterMapLink.swift */; };
+		A00000000000000000000023 /* ScooterMapLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000002B /* ScooterMapLinkTests.swift */; };
 		A00000000000000000000017 /* ScooterAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000001F /* ScooterAnalytics.swift */; };
 		A00000000000000000000016 /* ScooterUserLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0000000000000000000001E /* ScooterUserLocationView.swift */; };
 		A00000000000000000000001 /* ScootRadarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000001 /* ScootRadarApp.swift */; };
@@ -56,6 +58,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B0000000000000000000002A /* ScooterMapLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterMapLink.swift; sourceTree = "<group>"; };
+		B0000000000000000000002B /* ScooterMapLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterMapLinkTests.swift; sourceTree = "<group>"; };
+		B0000000000000000000002D /* ScootRadar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScootRadar.entitlements; sourceTree = "<group>"; };
 		B0000000000000000000001F /* ScooterAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterAnalytics.swift; sourceTree = "<group>"; };
 		B0000000000000000000001E /* ScooterUserLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterUserLocationView.swift; sourceTree = "<group>"; };
 		B00000000000000000000001 /* ScootRadarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScootRadarApp.swift; sourceTree = "<group>"; };
@@ -170,6 +175,7 @@
 				C00000000000000000000009 /* Localizable.strings */,
 				C000000000000000000000B0 /* Localizable.stringsdict */,
 				C0000000000000000000000A /* InfoPlist.strings */,
+				B0000000000000000000002D /* ScootRadar.entitlements */,
 			);
 			path = ScootRadar;
 			sourceTree = "<group>";
@@ -184,6 +190,7 @@
 				B00000000000000000005A01 /* ScooterStartPlace.swift */,
 				B00000000000000000005A02 /* TimeZones.generated.swift */,
 				B00000000000000000000025 /* WalkRoute.swift */,
+				B0000000000000000000002A /* ScooterMapLink.swift */,
 				B0000000000000000000001C /* ProviderCatalog.generated.swift */,
 				B0000000000000000000001D /* ScooterAPIContract.generated.swift */,
 			);
@@ -235,6 +242,7 @@
 				B00000000000000000000029 /* ScooterWalkTests.swift */,
 				B00000000000000000000010 /* ScooterMapModelTests.swift */,
 				B00000000000000000000011 /* ScooterAPITests.swift */,
+				B0000000000000000000002B /* ScooterMapLinkTests.swift */,
 			);
 			path = ScootRadarTests;
 			sourceTree = "<group>";
@@ -431,6 +439,7 @@
 				A0000000000000000000001D /* WalkRoute.swift in Sources */,
 				A0000000000000000000001E /* WalkingDirections.swift in Sources */,
 				A0000000000000000000001F /* WalkTrailOverlay.swift in Sources */,
+				A00000000000000000000022 /* ScooterMapLink.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,6 +455,7 @@
 				A00000000000000000000021 /* ScooterWalkTests.swift in Sources */,
 				A0000000000000000000000E /* ScooterMapModelTests.swift in Sources */,
 				A0000000000000000000000F /* ScooterAPITests.swift in Sources */,
+				A00000000000000000000023 /* ScooterMapLinkTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -579,6 +589,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ScootRadar/ScootRadar.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HGC93X794T;
@@ -611,6 +622,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ScootRadar/ScootRadar.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HGC93X794T;

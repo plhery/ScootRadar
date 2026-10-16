@@ -15,7 +15,7 @@ root, the web map was counted under `/`: web views of `/` before that are the ma
 
 | Flow | Events | Data |
 | --- | --- | --- |
-| Lifecycle | `app_open`, `app_install` (PWA), `app_foreground` (iOS) | platform |
+| Lifecycle | `app_open`, `app_install` (PWA), `app_foreground` (iOS), `link_open` (iOS) | platform; for `link_open`, a scootradar.com link to the map opened in the app, `result`: `city` (a city's centre, chosen like a city in the search), `place` (another point) or `map` (no place) |
 | Search | `search_open`, `search_close`, `search_results`, `search_error`, `search_select`, `search_clear` | result count only (`count` web, `value` iOS) |
 | Filters | `filters_open`, `provider_filter`, `providers_all`, `filters_reset`, `battery_filter` | provider, enabled/result, quick/filter source (web), value |
 | Preferences | `settings_open`, `panel_close`, `map_style`, `language_change` | style (web: the appearance `auto`/`light`/`dark` or the map `calm`/`detailed`; iOS: the appearance `auto`/`light`/`dark` or the map `standard`/`quiet`/`satellite`, in `result`), language (a code, or `auto` for Automatic, which follows the browser; iOS: in `result`) |

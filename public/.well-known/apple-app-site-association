@@ -1,0 +1,14 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["HGC93X794T.com.plhery.scootradar"],
+        "components": [
+          { "/": "/map", "comment": "The map" },
+          { "/": "/map/", "comment": "The map, with a trailing slash" },
+          { "/": "/", "?": { "origin": "?*" }, "comment": "A link to the map from when it was at the root" }
+        ]
+      }
+    ]
+  }
+}

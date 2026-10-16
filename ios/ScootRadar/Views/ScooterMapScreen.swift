@@ -192,6 +192,15 @@ struct ScooterMapScreen: View {
             }
         }
         .onDisappear { model.becameInactive() }
+        // A scootradar.com link to the map: its place shows on the map, not
+        // under a sheet or the search.
+        .onOpenURL { url in
+            guard let link = ScooterMapLink(url: url) else { return }
+            searchIsExpanded = false
+            filtersPresented = false
+            settingsPresented = false
+            model.open(link)
+        }
         .onChange(of: searchIsExpanded) { _, expanded in
             ScooterAnalytics.shared.track(expanded ? "search_open" : "search_close")
         }
