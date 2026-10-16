@@ -10,6 +10,8 @@ const TONSBERG: [number, number] = [59.2675, 10.4076];
 const TROMSO: [number, number] = [69.6492, 18.9553];
 const BRIGHTON: [number, number] = [50.8225, -0.1372];
 const POOLE: [number, number] = [50.715, -1.9872];
+const BOURNEMOUTH: [number, number] = [50.7204, -1.8796];
+const CHRISTCHURCH_GB: [number, number] = [50.7354, -1.7787];
 const MATOSINHOS: [number, number] = [41.1844, -8.6963];
 const PORTO: [number, number] = [41.1496, -8.611];
 const KYIV: [number, number] = [50.4501, 30.5234];
@@ -79,6 +81,11 @@ describe('activeCurfew', () => {
     expect(activeCurfew(BRIGHTON, at('2026-10-12T23:30:00Z'))).toEqual({ city: 'Brighton', until: at('2026-10-13T04:00:00Z'), timeZone: 'Europe/London' });
     expect(activeCurfew(BRIGHTON, at('2026-10-12T22:30:00Z'))).toBeNull();
     expect(activeCurfew(POOLE, at('2026-10-12T21:30:00Z'))).toEqual({ city: 'Poole', until: at('2026-10-13T04:00:00Z'), timeZone: 'Europe/London' });
+    // Beryl's feed for the three towns lists no scooter through the ban: the map says why, by town.
+    for (const [point, city] of [[BOURNEMOUTH, 'Bournemouth'], [CHRISTCHURCH_GB, 'Christchurch']] as const) {
+      expect(activeCurfew(point, at('2026-10-12T21:00:00Z'))).toEqual({ city, until: at('2026-10-13T04:00:00Z'), timeZone: 'Europe/London' });
+      expect(activeCurfew(point, at('2026-10-13T04:00:00Z'))).toBeNull();
+    }
   });
 
   it('reads Matosinhos in Lisbon time, and stops at Porto', () => {

@@ -138,9 +138,15 @@ directory.
   [Night bans](#night-bans)). Voi empties its Oslo feed during the ban, but
   Bolt and Ryde keep publishing their scooters as available, so the map shows
   them and says why they can't be rented.
-- **Beryl's night pause:** after midnight, Beryl's Bournemouth / Christchurch /
-  Poole and Brighton feeds list bikes only. Its other schemes keep their
-  scooters.
+- **Beryl's night pause:** during their night bans, from 22:00 in Bournemouth,
+  Christchurch and Poole and from midnight in Brighton, until 05:00, Beryl's
+  feeds for them list bikes only. Its other schemes keep their scooters. The
+  feeds stay fresh, so the map shows the ban's notice for the town in view, not
+  a provider that has stopped sharing data, and the feed-empty alert, which
+  waits 3 days, stays quiet. In October 2026 the Bournemouth / Christchurch /
+  Poole feed went from about 660 scooters to none, and back, at the first
+  collection after 22:00 and after 05:00 every night: 22:17 and 05:17 on 15–16
+  October, as nobody watched it and the cache collected it every 20 minutes.
 - **Bounds** enclose the scooters' positions over several polls, without strays
   far from the median, plus padding. In Norway they are also cut at municipal
   lines. Geofencing cannot set them there, because Ryde's zones include a
