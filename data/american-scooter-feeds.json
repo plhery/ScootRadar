@@ -20,10 +20,61 @@
         "east": -76.8978
       },
       "discoveryUrl": "https://mds.bolt.eu/gbfs/3/23/gbfs",
-      "aliases": [
-        "Washington DC",
-        "DC",
-        "District of Columbia"
+      "areas": [
+        {
+          "city": "Washington",
+          "center": [
+            38.9072,
+            -77.0369
+          ],
+          "bounds": {
+            "south": 38.87,
+            "north": 39.0046,
+            "west": -77.1309,
+            "east": -76.8978
+          },
+          "aliases": [
+            "Washington DC",
+            "DC",
+            "District of Columbia"
+          ]
+        },
+        {
+          "city": "Washington",
+          "center": [
+            38.9072,
+            -77.0369
+          ],
+          "bounds": {
+            "south": 38.82,
+            "north": 38.87,
+            "west": -77.041,
+            "east": -76.8978
+          },
+          "aliases": [
+            "Washington DC",
+            "DC",
+            "District of Columbia"
+          ]
+        },
+        {
+          "city": "Washington",
+          "center": [
+            38.9072,
+            -77.0369
+          ],
+          "bounds": {
+            "south": 38.7862,
+            "north": 38.82,
+            "west": -77.03,
+            "east": -76.8978
+          },
+          "aliases": [
+            "Washington DC",
+            "DC",
+            "District of Columbia"
+          ]
+        }
       ]
     },
     {
@@ -44,10 +95,61 @@
         "east": -76.8978
       },
       "discoveryUrl": "https://cluster-prod.veoride.com/api/shares/name/xdc/gbfs",
-      "aliases": [
-        "Washington DC",
-        "DC",
-        "District of Columbia"
+      "areas": [
+        {
+          "city": "Washington",
+          "center": [
+            38.9072,
+            -77.0369
+          ],
+          "bounds": {
+            "south": 38.87,
+            "north": 39.0046,
+            "west": -77.1309,
+            "east": -76.8978
+          },
+          "aliases": [
+            "Washington DC",
+            "DC",
+            "District of Columbia"
+          ]
+        },
+        {
+          "city": "Washington",
+          "center": [
+            38.9072,
+            -77.0369
+          ],
+          "bounds": {
+            "south": 38.82,
+            "north": 38.87,
+            "west": -77.041,
+            "east": -76.8978
+          },
+          "aliases": [
+            "Washington DC",
+            "DC",
+            "District of Columbia"
+          ]
+        },
+        {
+          "city": "Washington",
+          "center": [
+            38.9072,
+            -77.0369
+          ],
+          "bounds": {
+            "south": 38.7862,
+            "north": 38.82,
+            "west": -77.03,
+            "east": -76.8978
+          },
+          "aliases": [
+            "Washington DC",
+            "DC",
+            "District of Columbia"
+          ]
+        }
       ]
     },
     {

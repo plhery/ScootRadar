@@ -52,21 +52,32 @@ a minute, untaxed ("Unlock 1.00 USD, 0.16 USD/MIN."). That is the price the
 map shows; riders in the app may see a city or promotional price.
 
 **Bounds.** Bolt publishes its zones: the "Main allowed area", 164.6 km², is
-the District. Washington's bounds are that area's box, 38.795° N to
-38.996° N and 77.119° W to 76.909° W, plus about 1 km, and they hold Veo's
-scooters too. Left out, in the last poll:
+the District. Its box, 38.795° N to 38.996° N and 77.119° W to 76.909° W, plus
+about 1 km, would also hold Old Town Alexandria, Virginia, so search called
+Alexandria covered while it has no Hopp scooters and almost no Veo ones.
+Washington is three boxes instead, one stacked on the other, each stopping
+where the District meets the Potomac:
 
-- Hopp: one scooter, disabled, at 38.881° N 76.860° W in Landover, Maryland,
-  4 km east of the District, which the map would not show anyway.
-- Veo: one at 39.030° N 77.105° W, in North Bethesda, Maryland, which moved
-  less than a metre in 20 minutes. One at 22.79° N 113.93° E, in Shenzhen,
-  where Veo's test system (`xds`) has its scooters.
+- north of 38.87° N: the whole width, 77.131° W to 76.898° W;
+- 38.82° N to 38.87° N: east of 77.041° W, so Hains Point, the Navy Yard and
+  Anacostia stay in and Alexandria's riverside north of Old Town stays out.
+  Reagan National Airport, in Virginia, is inside it;
+- 38.786° N to 38.82° N: east of 77.03° W, the District's southern tip,
+  leaving out Old Town and its waterfront.
 
-Veo's feed also has 7 to 9 scooters in Virginia, inside Washington's box and
-counted with it: 7 stand within 30 m of one another at 38.808° N 77.097° W, by
-Eisenhower Avenue in Alexandria, as at a depot. Too few, and too still, for an
-Alexandria area of their own. Veo's `arl` feed is the same fleet as `xdc`, so
-it is left out.
+Their outer box is the one above. Left out, in the poll of 16 October 2026:
+
+- Hopp: none. Earlier, one scooter, disabled, at 38.881° N 76.860° W in
+  Landover, Maryland, 4 km east of the District.
+- Veo: 11 scooters in Alexandria, 8 of them standing within 30 m of one another
+  at 38.808° N 77.097° W, by Eisenhower Avenue, as at a depot. Too few, and too
+  still, for an Alexandria area of their own; Alexandria's riders see Bird's and
+  Lime's Arlington scooters near the county line. Earlier also one at 39.030° N
+  77.105° W, in North Bethesda, Maryland, which moved less than a metre in 20
+  minutes, and one at 22.79° N 113.93° E, in Shenzhen, where Veo's test system
+  (`xds`) has its scooters.
+
+Veo's `arl` feed is the same fleet as `xdc`, so it is left out.
 
 Search finds the city as Washington, Washington DC, Washington, D.C., DC, D.C.
 and District of Columbia.

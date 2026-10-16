@@ -62,6 +62,11 @@ describe('covered cities', () => {
     ['Lungern', LUNGERN, false],
     ['Lausanne', LAUSANNE, false],
     ['Paris', [48.8566, 2.3522], false],
+    // Washington's boxes stop at the Potomac (docs/american-scooter-feeds.md).
+    ['the White House', [38.8977, -77.0365], true],
+    ['Hains Point, Washington', [38.8558, -77.0213], true],
+    ['Old Town Alexandria, Virginia', [38.8048, -77.0469], false],
+    ['the Alexandria waterfront', [38.8046, -77.0395], false],
     ['the Atlantic', [0, -30], false],
   ])('knows whether %s has scooter data', (_place, point, covered) => {
     expect(isPointCovered(...point)).toBe(covered);
