@@ -210,6 +210,23 @@ describe('the search in Oceania and West Asia', () => {
     expect(wisconsin[0]).toEqual(['Rothschild', 'Wisconsin, United States']);
   });
 
+  it('finds Austin, Texas, first for "Austin TX" over Portland, though no service calls Texas TX', async () => {
+    inWorker({ GEOAPIFY_API_KEY: 'key' });
+    stubUpstreams({ geoapify: RECORDED_GEOAPIFY_ANSWERS['Austin TX'] });
+
+    const found = await rows(await search('Austin TX', { near: [45.52, -122.68] }));
+
+    // Then what is named Austin in Texas, with its town and state: a quarter of Mesquite, by Dallas, with
+    // scooter data, then a street of Austin and a place on another.
+    expect(found).toEqual([
+      ['Austin', 'Texas, United States'],
+      ['Austin', 'Mesquite, TX'],
+      ['Austin', 'Austin, TX'],
+      ['Austin', 'West 3rd Street, Austin, TX 78701'],
+      ['Northwest Austin', 'Austin, TX'],
+    ]);
+  });
+
   it('finds Queen Street in Auckland near Auckland', async () => {
     stubUpstreams({ photon: RECORDED_WORLD_PHOTON_ANSWERS['Queen Street'] });
 

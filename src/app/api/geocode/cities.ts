@@ -45,7 +45,7 @@ const CITIES = COVERED_CITIES.map(city => ({
 }));
 
 /** A country, or a state or province of one, typed beside a city: "Lindau Deutschland", "Portland, OR". */
-interface Qualifier {
+export interface Qualifier {
   country: CountryCode;
   region?: string;
 }
@@ -159,9 +159,27 @@ function qualifiersAtEnd(words: readonly QueryWord[]): { count: number; qualifie
 }
 
 /** Whether a city is in every country or state typed beside it. */
-function inQualified(qualifiers: readonly Qualifier[][], city: { country: CountryCode; region?: string }): boolean {
+function inQualified(qualifiers: readonly Qualifier[][], city: { country: string; region?: string }): boolean {
   return qualifiers.every(options => options.some(({ country, region }) =>
     country === city.country && (!region || region === city.region)));
+}
+
+/** What is typed before the countries and states that end it, and those: "austin" and Texas for "Austin TX". */
+export interface QualifiedQuery {
+  words: string[];
+  qualifiers: Qualifier[][];
+}
+
+/** A query ended by countries or states, as the catalog's cities are read: "Austin TX", "Rothschild Wisconsin". None for others. */
+export function qualifiedQuery(query: string): QualifiedQuery | null {
+  const words = queryWords(plainQuery(query));
+  const { count, qualifiers } = qualifiersAtEnd(words);
+  return qualifiers.length ? { words: words.slice(0, count).map(({ word }) => word), qualifiers } : null;
+}
+
+/** The words of a qualified query that name a place, where the place is in the countries and states typed after them. */
+export function wordsNaming(query: QualifiedQuery, country: string, region: string): string[] | null {
+  return inQualified(query.qualifiers, { country, region }) ? query.words : null;
 }
 
 export interface CityMatch {

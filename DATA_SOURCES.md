@@ -218,6 +218,9 @@ first; those over 30 km from the map centre, unless they are cities of the
 catalog, come after the streets and landmarks within 30 km of it named just as
 typed ("The" and other articles aside): over Tel Aviv, "Rothschild" is the
 boulevard before Rothschild, Wisconsin; "Rothschild Wisconsin" is the town.
+A state or a country typed after a name says where the places of that name
+are: over Portland, "Austin TX" is Austin, Texas, then a quarter named Austin
+in Mesquite, Texas, whose second line names its state too ("Mesquite, TX").
 A town the services name in another script than the app's, as "קרית אונו",
 is written as the catalog writes it, "Kiryat Ono", or by the name of the
 locality or quarter in Latin letters where they give one.

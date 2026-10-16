@@ -7,7 +7,10 @@ import { haversineM } from '@/lib/geo';
 import { COUNTRY_ANCHORS, COUNTRY_CONTINENTS, COUNTRY_REGIONS, type Continent, type CountryCode } from '@/generated/countries';
 import { searchWords, westernDigits } from '@/lib/searchText';
 import { streetAddress, townLine } from './addressFormats';
-import { catalogTownName, cityOfAddress, GEOCODE_LANGUAGES, namedCities, type GeocodeLanguage, type NamedCity } from './cities';
+import {
+  catalogTownName, cityOfAddress, GEOCODE_LANGUAGES, namedCities, qualifiedQuery, wordsNaming,
+  type GeocodeLanguage, type NamedCity, type QualifiedQuery,
+} from './cities';
 
 const MAX_QUERY_LENGTH = 160;
 const MAX_RESULTS = 5;
@@ -122,6 +125,8 @@ interface Search {
   language: GeocodeLanguage;
   /** The words typed, by which places are ranked. */
   typed: string[];
+  /** The same, when they end with a state or a country: a place in it is named by the words before them. */
+  qualified: QualifiedQuery | null;
   /** Where places come first: the map centre, or the city an address was typed with. */
   near: [number, number] | null;
   /** The country whose places come first without a centre: that of the device's time zone, or Switzerland. */
@@ -132,6 +137,8 @@ interface Search {
 
 /** What places are ranked from: where they come first, and the country that does without a centre. */
 type From = Pick<Search, 'near' | 'home'>;
+/** What places are ranked by: what was typed, and where they come first. */
+type Ranking = Pick<Search, 'typed' | 'qualified'> & From;
 
 interface GeocodeInput {
   query: string;
@@ -365,6 +372,9 @@ function photonLines(properties: Record<string, unknown>, lat: number, lng: numb
   const town = townOf(properties, countryCode, lat, lng);
   const region = text(properties.state) || text(properties.county);
   const country = text(properties.country);
+  // "8001 Zürich", "Austin, TX 78701", "Sydney NSW 2000"; with its state, where the country writes
+  // one after the town, a town alone: "Mesquite, TX", of which Texas has one and Nevada another.
+  const postTown = (postcode: string) => townLine(countryCode, { town, postcode, region: () => regionCode(properties, countryCode) });
   // Nothing said twice: the city of Oslo is in the county of Oslo.
   const lines = (title: string, ...parts: string[]) =>
     ({ title, subtitle: [...new Set(parts.filter(part => part && part !== title))].join(', ') });
@@ -374,14 +384,13 @@ function photonLines(properties: Record<string, unknown>, lat: number, lng: numb
       return lines(name, region, country);
     // Without a postcode, which changes along a street: its pieces read as one street.
     case 'street':
-      return lines(name || street, town);
+      return lines(name || street, town && postTown(''));
     case 'house': {
-      // "8001 Zürich", "Austin, TX 78701", "Sydney NSW 2000".
-      const postTown = townLine(countryCode, { town, postcode: text(properties.postcode), region: () => regionCode(properties, countryCode) });
-      return name ? lines(name, address, postTown) : lines(address, postTown);
+      const line = postTown(text(properties.postcode));
+      return name ? lines(name, address, line) : lines(address, line);
     }
     default:
-      return town && town !== name ? lines(name, town) : lines(name, region, country);
+      return town && town !== name ? lines(name, postTown('')) : lines(name, region, country);
   }
 }
 
@@ -413,8 +422,14 @@ function outlineBox(extent: unknown): Box | undefined {
   return box.east - box.west <= MAX_OUTLINE_DEGREES && box.north - box.south <= MAX_OUTLINE_DEGREES ? box : undefined;
 }
 
+/** The words typed that name a place: those before the state or country typed after them, where the place is
+    in it. "Austin TX" names Austin in Texas, which neither Photon nor Geoapify calls TX, and no Austin elsewhere. */
+function typedNaming({ typed, qualified }: Ranking, properties: Record<string, unknown>, countryCode: string): string[] {
+  return (qualified && wordsNaming(qualified, countryCode, regionCode(properties, countryCode))) ?? typed;
+}
+
 /** Photon's places, in its order, as rows ranked for what was typed. */
-function photonCandidates(features: PhotonFeature[], typed: string[], from: From): Candidate[] {
+function photonCandidates(features: PhotonFeature[], ranking: Ranking): Candidate[] {
   return features.flatMap(feature => {
     const coordinates = feature?.geometry?.coordinates;
     const [lng, lat] = Array.isArray(coordinates) && coordinates.every(value => typeof value === 'number') ? coordinates : [NaN, NaN];
@@ -436,7 +451,9 @@ function photonCandidates(features: PhotonFeature[], typed: string[], from: From
     const town = properties.type === 'city' && !nearMiss;
     // A landmark's: not a street's, nor a town's or a quarter's, which may hold others of their name.
     const outline = properties.type === 'house' || properties.type === 'other' ? outlineBox(properties.extent) : undefined;
-    return [{ place, ...placeRank(typed, place, town, nearMiss, text(properties.countrycode).toUpperCase(), from), ...(outline ? { outline } : {}) }];
+    const countryCode = text(properties.countrycode).toUpperCase();
+    const typed = typedNaming(ranking, properties, countryCode);
+    return [{ place, ...placeRank(typed, place, town, nearMiss, countryCode, ranking), ...(outline ? { outline } : {}) }];
   });
 }
 
@@ -477,7 +494,7 @@ async function searchPhoton(search: Search, own: PhotonService | null, deadline:
   if (!answer.ok) return answer;
   const features = (answer.value as PhotonResponse | null)?.features;
   if (!Array.isArray(features)) return { ok: false, failure: 'invalid' };
-  return { ok: true, value: { sources: ['Photon'], candidates: photonCandidates(features, search.typed, search) } };
+  return { ok: true, value: { sources: ['Photon'], candidates: photonCandidates(features, search) } };
 }
 
 /** The continent of a point, of those where the app may have cities. */
@@ -574,7 +591,7 @@ async function searchGeoapify(search: Search, key: string, ask: GeoapifyAsk): Pr
     const feature = result && typeof result === 'object' ? photonFeature(result as Record<string, unknown>) : null;
     return feature ? [feature] : [];
   });
-  const candidates = photonCandidates(features, search.typed, search);
+  const candidates = photonCandidates(features, search);
   // Towns, not the hamlets, quarters and stations Geoapify also has, nor near misses of their names.
   return { ok: true, value: { sources: ['Geoapify'], candidates: ask.towns ? candidates.filter(({ town }) => town) : candidates } };
 }
@@ -673,6 +690,7 @@ async function geocode(input: GeocodeInput) {
     query: typedText,
     language,
     typed: searchWords(typedText),
+    qualified: qualifiedQuery(typedText),
     near: inCity?.center ?? input.near,
     home: input.country ?? DEFAULT_HOME,
     address: inCity?.address ?? null,
