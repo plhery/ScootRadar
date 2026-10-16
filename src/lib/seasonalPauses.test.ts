@@ -41,7 +41,7 @@ vi.mock('@/generated/countries', async importOriginal => {
 });
 
 const { REGIONAL_SCOOTER_CITIES } = await import('@/lib/regionalScooterSystems');
-const { activeSeasonalPause, feedPaused, pauseHolds, pausesReturn } = await import('@/lib/seasonalPauses');
+const { activeSeasonalPause, feedCurfewed, feedPaused, pauseHolds, pausesReturn } = await import('@/lib/seasonalPauses');
 const { querySnapshot } = await import('@/lib/scooterSnapshots');
 const { dockModel } = await import('@/lib/dockModel');
 const { translate } = await import('@/lib/i18n');
@@ -165,5 +165,22 @@ describe('a city with a winter pause', () => {
     expect(say('es')).toBe('Pausa de temporada en Montréal: los patinetes vuelven en abril');
     expect(say('es', 'MX')).toBe('Pausa de temporada en Montréal: los scooters vuelven en abril');
     expect(say('is')).toBe('Montréal: árstíðabundið hlé, rafskúturnar koma aftur í apríl');
+  });
+});
+
+describe('a night ban', () => {
+  it('curfews a feed only while it holds at every area of it', () => {
+    // Dott in Trondheim: Friday 16 October 2026 at 23:30, Saturday at 05:00, and Monday at 23:30.
+    expect(feedCurfewed('norway:dott_no_trondheim', Date.parse('2026-10-16T21:30:00Z'))).toBe(true);
+    expect(feedCurfewed('norway:dott_no_trondheim', Date.parse('2026-10-17T03:00:00Z'))).toBe(false);
+    expect(feedCurfewed('norway:dott_no_trondheim', Date.parse('2026-10-12T21:30:00Z'))).toBe(false);
+    // Stjørdal, next door, bans no night.
+    expect(feedCurfewed('norway:dott_no_stjordal', Date.parse('2026-10-16T21:30:00Z'))).toBe(false);
+    // Kristiansand bans 00:00–05:00 after Friday and Saturday, Vennesla 00:00–04:00 every night.
+    expect(feedCurfewed('norway:voi_no_kristiansand_vennesla', Date.parse('2026-10-16T22:30:00Z'))).toBe(true);
+    expect(feedCurfewed('norway:voi_no_kristiansand_vennesla', Date.parse('2026-10-17T02:30:00Z'))).toBe(false);
+    // Sandnes bans none, though Stavanger does.
+    expect(feedCurfewed('norway:voi_no_stavanger_sandnes', Date.parse('2026-10-16T22:30:00Z'))).toBe(false);
+    expect(feedCurfewed('national:voiscooters.com', Date.parse('2026-10-16T22:30:00Z'))).toBe(false);
   });
 });

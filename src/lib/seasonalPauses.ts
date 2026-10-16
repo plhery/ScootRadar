@@ -1,5 +1,6 @@
 import { SWISS_SCOOTER_AREAS } from '@/lib/feedCoverage';
 import { boundsContainPoint } from '@/lib/geo';
+import { activeCurfew } from '@/lib/rentalCurfews';
 import {
   REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas,
   type RegionalScooterCity, type RegionalScooterSystem,
@@ -82,6 +83,17 @@ export function feedPaused(feedId: string, now: number, systems: ReadonlyMap<str
   if (!system) return false;
   const pauses = systemPauses(system);
   return pauses.every(pause => pause !== undefined && pauseHolds(pause, now));
+}
+
+/**
+ * Whether a night ban holds at every one of the feed's service areas (rentalCurfews.ts): its
+ * operator may then take the feed down until morning, as Dott takes Trondheim's on Friday and
+ * Saturday nights, while Entur keeps serving its last positions. The map already says renting is
+ * banned; the alerts wait for the morning.
+ */
+export function feedCurfewed(feedId: string, now: number, systems: ReadonlyMap<string, RegionalScooterSystem> = SYSTEMS_BY_FEED): boolean {
+  const system = systems.get(feedId);
+  return !!system && serviceAreas(system).every(area => activeCurfew(area.center, now) !== null);
 }
 
 /**

@@ -38,6 +38,11 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   serve nothing: the map says when its scooters are back rather than that the provider is
   not sharing data, Sentry is not told it stopped, and "feed stopped" and "feed empty"
   ignore it.
+- `scootradar_feed_curfewed`: 1 while a night ban (data/rental-curfews.json) holds at
+  every service area of the feed, else 0. Its operator may take the feed down until
+  morning, as Dott does in Trondheim on Friday and Saturday nights while Entur keeps
+  serving its last positions: Sentry and "feed stopped" hear of it only if it is still
+  expired 5 and 10 minutes after the ban.
 - `scootradar_feed_vehicles`: available standing scooters held, 0 once expired, or while
   the operator lists none.
 - `scootradar_feed_priced_vehicles`: of those, the scooters with a price. The others
@@ -146,7 +151,7 @@ The alert rules:
 | ScootRadar cache target down | Prometheus cannot scrape the cache for 3 minutes |
 | ScootRadar serves no scooters | every feed has expired for 5 minutes |
 | ScootRadar collector stalled | no collection has finished for 5 minutes (Swiss feeds alone finish one every few seconds) |
-| ScootRadar feed stopped | a feed served more than half of the last 7 days has been expired for 10 minutes, by its cadence's rule; one notification per feed. Not in its seasonal pause, whose days count as served, so a feed that does not come back after its season is reported |
+| ScootRadar feed stopped | a feed served more than half of the last 7 days has been expired for 10 minutes, by its cadence's rule; one notification per feed. Not in its seasonal pause, whose days count as served, so a feed that does not come back after its season is reported; nor under a night ban at all its service areas, until 10 minutes after it |
 | ScootRadar feed empty | a feed has listed no available scooter for 3 days, outside its seasonal pause (see [Empty feeds](#empty-feeds)); a warning, repeated once a day |
 | ScootRadar feed discovery stale | no successful discovery for 2 hours |
 | ScootRadar cache restarting | one build has restarted more than three times in an hour (a deploy is not counted) |
@@ -226,7 +231,10 @@ startup. Tracing is off, and no trace headers go to the operators' feeds.
 
 - **Feed stopped being served**: a warning each time a feed becomes `expired` by its
   cadence's rule (an idle feed after 30 minutes without a successful collection) and is
-  still expired 5 minutes later, outside its seasonal pause. A shorter blip, as Voi
+  still expired 5 minutes later, outside its seasonal pause. Under a night ban at all its
+  service areas, it waits for the ban to end and tells only if the feed is still expired
+  5 minutes after: Dott takes Trondheim's feed down on Friday and Saturday nights, which
+  Entur keeps serving as it last was. A shorter blip, as Voi
   Switzerland's 105 seconds on 16 October 2026, is only in the logs. One
   issue per feed (tags `feed`, `source`, `provider`), at most one event an hour for
   each, so a feed that keeps expiring between updates stays quiet. Its `feed` context has the

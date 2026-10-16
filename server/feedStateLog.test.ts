@@ -80,6 +80,33 @@ it('tells of a feed still expired after a while, once for each time it expires, 
   expect(reported).toEqual([['ok', expiredAt + minutes(5)]]);
 });
 
+it('holds the report while told to wait, and tells once if the feed is still expired after', () => {
+  const reported: number[] = [];
+  const minutes = (count: number) => count * 60_000;
+  const now = 1_000_000_000;
+  // As Dott in Trondheim under the night ban: down at 23:00, back at 05:00.
+  let banned = true;
+  const logStates = createFeedStateLog(() => {}, undefined, ALWAYS_FAST, { afterMs: minutes(5),
+    wait: () => banned, report: (_change, current) => { reported.push(current.attemptedAt); } });
+  const late = (at: number) => [feed({ observedAt: now, attemptedAt: at })];
+  logStates(late(now), now);
+  for (let minute = 16; minute < 6 * 60; minute += 10) logStates(late(now + minutes(minute)), now + minutes(minute));
+  logStates([feed({ observedAt: now + minutes(361), attemptedAt: now + minutes(361) })], now + minutes(361));
+  banned = false;
+  logStates([feed({ observedAt: now + minutes(362), attemptedAt: now + minutes(362) })], now + minutes(370));
+  expect(reported).toEqual([]);
+
+  // Not back after the ban: told once, when it may.
+  const expiredAt = now + minutes(400);
+  banned = true;
+  logStates(late(expiredAt), expiredAt);
+  logStates(late(expiredAt + minutes(30)), expiredAt + minutes(30));
+  banned = false;
+  logStates(late(expiredAt + minutes(31)), expiredAt + minutes(31));
+  logStates(late(expiredAt + minutes(32)), expiredAt + minutes(32));
+  expect(reported).toEqual([expiredAt + minutes(31)]);
+});
+
 describe('cadence', () => {
   const now = 1_000_000_000;
   const minutes = (count: number) => count * 60_000;

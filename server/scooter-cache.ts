@@ -4,7 +4,7 @@ import { dirname } from 'node:path';
 import { discoverCollectableFeeds, independentCollectableFeeds, planRefreshCounts, type CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import { buildCityOverview, overviewNeedsRefresh, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { REGIONAL_SCOOTER_SYSTEMS, regionalSource } from '../src/lib/regionalScooterSystems';
-import { feedPaused } from '../src/lib/seasonalPauses';
+import { feedCurfewed, feedPaused } from '../src/lib/seasonalPauses';
 import { upstreamCacheEntriesFor, upstreamJsonCache } from '../src/lib/upstreamJsonCache';
 import { fetchRegionalParking } from '../src/lib/parkingFeeds';
 import { FeedScheduler } from './feedScheduler';
@@ -186,6 +186,9 @@ void discover();
 // 105 seconds on 16 October 2026. Grafana's "feed stopped" waits 10.
 const EXPIRED_REPORT_DELAY_MS = 5 * 60_000;
 const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afterMs: EXPIRED_REPORT_DELAY_MS,
+  // Under a night ban, an operator may take its feed down until morning, as Dott did in Trondheim
+  // on 16 October 2026: Sentry hears of it only if it is not back 5 minutes after the ban.
+  wait: (feed, now) => feedCurfewed(feed.id, now) || feedCurfewed(feed.id, now - EXPIRED_REPORT_DELAY_MS),
   report: (change, feed) => {
     // In its seasonal pause, a feed is expected to stop; the log still says it did.
     if (!feedPaused(feed.id, Date.now())) reportFeedExpired(change, feed, lastErrors.get(feed.id));

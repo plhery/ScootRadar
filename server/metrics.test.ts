@@ -162,3 +162,14 @@ it('judges feeds by their cadence and shows what the cadence costs', () => {
   expect(sample(text, 'scootradar_upstream_cache_entries{kind="capacity"}')).toBe('2322');
   expect(sample(text, 'scootradar_upstream_cache_evictions_total')).toBe('4');
 });
+
+it('says which feeds are under a night ban, for the feed-stopped alert to wait', () => {
+  const metrics = createSnapshotMetrics('abc123', { curfewed: id => id === 'norway:dott_no_trondheim' });
+  const text = metrics.render(snapshot([feed({}), feed({ id: 'norway:dott_no_trondheim', source: 'norway' as FeedSnapshot['source'],
+    provider: 'dott', failed: true, observedAt: now - VEHICLE_MAX_AGE_MS - 1_000 })]), now);
+  expect(sample(text, 'scootradar_feed_curfewed{feed="norway:dott_no_trondheim",source="norway",provider="dott"}')).toBe('1');
+  expect(sample(text, 'scootradar_feed_curfewed{feed="national:voiscooters.com",source="national",provider="voi"}')).toBe('0');
+  // Switzerland bans no night.
+  expect(createSnapshotMetrics().render(snapshot([feed({})]), now)).toContain(
+    'scootradar_feed_curfewed{feed="national:voiscooters.com",source="national",provider="voi"} 0');
+});

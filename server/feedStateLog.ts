@@ -63,6 +63,8 @@ export interface FeedStateChange {
 /** A feed that has stayed expired for `afterMs`, told once for each time it expires. */
 export interface StillExpired {
   afterMs: number;
+  /** Whether to hold the report for now: asked again on each call while the feed stays expired. */
+  wait?: (feed: FeedSnapshot, now: number) => boolean;
   /** The change that expired it, and the feed as it is now. */
   report: (change: FeedStateChange, feed: FeedSnapshot) => void;
 }
@@ -86,7 +88,8 @@ export function createFeedStateLog(log: (line: string) => void = console.log,
       const state = feedState(feed, now, cadence);
       const previous = known.get(feed.id);
       if (previous?.state === state) {
-        if (stillExpired && previous.change?.state === 'expired' && now - previous.since >= stillExpired.afterMs) {
+        if (stillExpired && previous.change?.state === 'expired' && now - previous.since >= stillExpired.afterMs &&
+          !stillExpired.wait?.(feed, now)) {
           stillExpired.report(previous.change, feed);
           previous.change = undefined;
         }

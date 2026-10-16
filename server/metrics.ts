@@ -2,7 +2,7 @@ import { monitorEventLoopDelay } from 'node:perf_hooks';
 import { COUNTRY_NAMES } from '../src/generated/countries';
 import { COUNTRY_SOURCES, isRegionalSource } from '../src/lib/regionalScooterSystems';
 import type { MobilitySnapshot } from '../src/lib/scooterSnapshots';
-import { feedPaused } from '../src/lib/seasonalPauses';
+import { feedCurfewed, feedPaused } from '../src/lib/seasonalPauses';
 import { ALWAYS_FAST, feedState, parkingUp, type FeedCadence, type FeedState } from './feedStateLog';
 import type { CollectionReason, FeedCadenceMode } from './feedScheduler';
 
@@ -29,6 +29,8 @@ interface MetricsSources {
   upstreamCache?: () => { entries: number; capacity: number; evictions: number };
   /** Whether the feed is in its seasonal pause; feedPaused from the catalogs by default. */
   paused?: (feedId: string, now: number) => boolean;
+  /** Whether a night ban holds at every service area of the feed; feedCurfewed by default. */
+  curfewed?: (feedId: string, now: number) => boolean;
 }
 
 /**
@@ -41,6 +43,7 @@ interface MetricsSources {
 export function createSnapshotMetrics(version = 'local', sources: MetricsSources = {}) {
   const cadence = sources.cadence ?? ALWAYS_FAST;
   const paused = sources.paused ?? feedPaused;
+  const curfewed = sources.curfewed ?? feedCurfewed;
   const collections = new Map<string, { labels: Labels; ok: number; failed: number; seconds: number }>();
   const starts = new Map<CollectionReason, number>();
   const waits = { collected: 0, timeout: 0 };
@@ -112,6 +115,9 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
       metric('scootradar_feed_paused', 'gauge',
         'Whether every service area of the feed is in its seasonal pause, as Montréal each winter: it may serve nothing, the map says when its scooters are back, and the feed-stopped and feed-empty alerts ignore it.',
         counted.map(feed => [labelsOf(feed), paused(feed.id, now) ? 1 : 0]));
+      metric('scootradar_feed_curfewed', 'gauge',
+        'Whether a night ban holds at every service area of the feed, as in Trondheim on Friday and Saturday nights: its operator may take the feed down until morning, and the feed-stopped alert waits for the ban to end.',
+        counted.map(feed => [labelsOf(feed), curfewed(feed.id, now) ? 1 : 0]));
       metric('scootradar_feed_vehicles', 'gauge', 'Available standing scooters held for the feed, 0 once it has expired or while its operator lists none.',
         counted.map(feed => [labelsOf(feed), feedState(feed, now, cadence) === 'expired' ? 0 : feed.vehicles.length]));
       metric('scootradar_feed_priced_vehicles', 'gauge', 'Of those, the scooters with a price: the rest name no plan, a plan the feed does not list, or one the app cannot show.',
