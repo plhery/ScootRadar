@@ -125,6 +125,7 @@ describe('UpstreamJsonCache', () => {
       host: 'example.com',
       path: '/feed',
       errorType: 'Error',
+      stage: 'request',
     });
     expect(logged).not.toContain('Geometry');
     expect(logged).not.toContain('Zurich');
@@ -140,6 +141,34 @@ describe('UpstreamJsonCache', () => {
     await expect(cache.fetch(sensitiveUrl, options)).rejects.toThrow(
       'upstream unavailable'
     );
+  });
+
+  it('logs the network error code of a body cut off, without its message', async () => {
+    let now = 0;
+    let cut = false;
+    const warning = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const fetcher = vi.fn(async () => {
+      if (!cut) return jsonResponse({ version: 1 });
+      // Node's error when the operator closes the connection halfway through the body.
+      const body = new ReadableStream({ pull: () => { throw new TypeError('terminated', { cause: { code: 'UND_ERR_SOCKET' } }); } });
+      return new Response(body, { status: 200 });
+    });
+    const cache = new UpstreamJsonCache({ fetcher, now: () => now });
+    await cache.fetch('https://sharedmobility.ch/v2/gbfs/voiscooters.com/free_bike_status', options);
+
+    now = 31_000;
+    cut = true;
+    await expect(cache.fetch('https://sharedmobility.ch/v2/gbfs/voiscooters.com/free_bike_status', options))
+      .resolves.toMatchObject({ stale: true });
+    expect(JSON.parse(String(warning.mock.calls[0][0]))).toEqual({
+      event: 'upstream_stale_fallback',
+      host: 'sharedmobility.ch',
+      path: '/v2/gbfs/voiscooters.com/free_bike_status',
+      errorType: 'TypeError',
+      errorCode: 'UND_ERR_SOCKET',
+      stage: 'body',
+    });
+    warning.mockRestore();
   });
 
   it('fetches a fresh document again once older than the caller allows, keeping its usual freshness', async () => {

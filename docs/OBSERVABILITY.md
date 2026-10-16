@@ -235,7 +235,11 @@ Routine feed failures are not sent; the metrics and logs cover them.
 
 `snapshot_feed_state` (a feed changing state), `snapshot_feed_failed` and
 `parking_feed_failed` (with the error), and `snapshot_health` (every minute, with the
-feeds on each cadence) are JSON lines. In Grafana's Loki data source:
+feeds on each cadence) are JSON lines. So is `upstream_stale_fallback`, a request to an
+operator that failed while an earlier answer could still be served: its host and path,
+and the HTTP status, or the error's type, Node's code for a network error (`errorCode`,
+as `ECONNRESET` or `UND_ERR_SOCKET`) and whether it failed before the operator answered
+or while reading what it sent (`stage`: `request` or `body`). In Grafana's Loki data source:
 
 ```logql
 {app="scootradar-cache", event="snapshot_feed_state"} | json | feed="national:voiscooters.com"

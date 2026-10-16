@@ -32,6 +32,17 @@ function safeUpstreamTarget(value: string): { host: string; path: string } {
   }
 }
 
+/**
+ * What a failed request comes down to, without its message, which may hold the URL:
+ * Node's code for a network error ("fetch failed" or "terminated", whose cause
+ * says ECONNRESET, UND_ERR_SOCKET, UND_ERR_CONNECT_TIMEOUT…), when it has one.
+ */
+function errorCode(error: unknown): { errorCode?: string } {
+  const cause = error instanceof Error ? (error.cause as { code?: unknown } | undefined) : undefined;
+  const code = cause?.code ?? (error as { code?: unknown } | null)?.code;
+  return typeof code === 'string' && /^[A-Z][A-Z0-9_]{1,40}$/.test(code) ? { errorCode: code } : {};
+}
+
 interface CacheEntry {
   fetchedAt: number;
   freshUntil: number;
@@ -155,6 +166,8 @@ export class UpstreamJsonCache {
     entry: CacheEntry,
     options: UpstreamJsonOptions
   ): Promise<CachedJson<T>> {
+    // Whether the operator answered, and the request failed reading or checking what it sent.
+    let answered = false;
     try {
       if (this.hostIntervals.size) await this.waitForHost(url);
       this.requests[options.freshSeconds <= 60 ? 'status' : 'metadata']++;
@@ -163,6 +176,7 @@ export class UpstreamJsonCache {
         cache: 'no-store',
         signal: AbortSignal.timeout(options.timeoutMs),
       });
+      answered = true;
       if (!response.ok) {
         const body = await response.text().catch(() => '');
         throw new UpstreamHttpError(response.status, new URL(url).hostname, /\bERR_[A-Z_]+\b/.exec(body)?.[0]);
@@ -187,7 +201,8 @@ export class UpstreamJsonCache {
           ...safeUpstreamTarget(url),
           ...(error instanceof UpstreamHttpError
             ? { httpStatus: error.status }
-            : { errorType: error instanceof Error ? error.name : 'UnknownError' }),
+            : { errorType: error instanceof Error ? error.name : 'UnknownError', ...errorCode(error),
+                stage: answered ? 'body' : 'request' }),
         }));
         return { data: entry.value as T, stale: true, fetchedAt: entry.fetchedAt };
       }
