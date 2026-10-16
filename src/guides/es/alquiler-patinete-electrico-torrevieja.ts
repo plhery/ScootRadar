@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Alquiler de patinete eléctrico en Torrevieja: Hoppy y Hopp, precios, casco y dónde no circular',
   lede: 'Para el alquiler de patinete eléctrico en Torrevieja tienes Hoppy y Hopp, del centro a La Mata; en la costa de Pilar de la Horadada, Hopp, y en Orihuela Costa, Vamoz. Diez minutos cuestan 4,29 € con Hopp y de 3,80 a 4,50 € con Hoppy. Necesitas 18 años y, desde el 1 de octubre de 2026, tu propio casco: ningún operador lo presta. Y no vayas por los paseos ni por las calles peatonales: la multa es de 80 €.',
   published: '2026-10-14',
-  updated: '2026-10-15',
+  updated: '2026-10-16',
   city: 'es:Torrevieja',
   sections: [
     {
@@ -91,7 +91,7 @@ const guide: Guide = {
             head: ['Norma', 'Qué tienes que saber'],
             rows: [
               ['Casco', 'Obligatorio desde el 1 de octubre de 2026, también en los de alquiler: 200 €, y los agentes pueden inmovilizar el patinete. Ningún operador lo presta'],
-              ['Edad', '18 años para alquilar; la ley permite conducir desde los 15'],
+              ['Edad', '18 años para alquilar. Para conducir un patinete, el Reglamento General de Circulación pide 15 años y la ordenanza de Torrevieja, 16: 80 €'],
               ['De noche o con poca visibilidad', 'Un elemento reflectante o luminoso homologado, visible a 150 metros: 200 €'],
               ['Paseos, zonas peatonales, parques y aceras', 'Prohibidos por la ordenanza: 80 €'],
               ['Pasajeros', 'Ninguno. En la ciudad, la Policía Local multa con 90 €, según la ordenanza; los 100 € de la DGT son el máximo de esta infracción leve'],
@@ -117,7 +117,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Autobús urbano.** Desde el 27 de julio de 2026 lo gestiona Avanza. Las tarifas nuevas (sencillo a 1,50 €; tarjeta turística de 10 € por tres días) estaban previstas para octubre, pero a 15 de octubre aún no tienen fecha; hasta entonces, el sencillo cuesta 1,65 €. El borrador de su reglamento admite patinetes plegados; uno de alquiler se queda aparcado.',
+            '**Autobús urbano.** Desde el 27 de julio de 2026 lo gestiona Avanza. Las tarifas nuevas (sencillo a 1,50 €; tarjeta turística de 10 € por tres días) estaban previstas para octubre, pero esperan a la aprobación definitiva de su ordenanza, que a 16 de octubre aún no se ha publicado; hasta entonces, el sencillo cuesta 1,65 €. El borrador de su reglamento admite patinetes plegados; uno de alquiler se queda aparcado.',
             '**Aeropuertos.** Ningún patinete llega a ellos. Del de Alicante-Elche sale la línea directa de Costa Azul a Torrevieja (L40), en unos 40 minutos; al de la Región de Murcia (Corvera) va Airportbus, una lanzadera con reserva previa. Precio y horario, en la web de cada operador.',
             '**Todo el año.** Hoppy y Hopp siguen en la calle en invierno. De junio a septiembre, según la prensa, llegan hasta media docena de empresas más, que no salen en nuestro mapa, y hay más controles.',
             '**Si vienes de fuera.** Las apps funcionan en inglés; te registras con el móvil y una tarjeta, sin escanear documentos. Hazlo antes de viajar, por si el SMS no llega a tu número extranjero.',
@@ -159,7 +159,7 @@ const guide: Guide = {
     },
     {
       question: '¿Cuál es la edad mínima para alquilar un Hoppy?',
-      answer: '18 años, igual que en Hopp; la ley permite conducir desde los 15. Si un menor va en un patinete alquilado con tu cuenta, Hoppy puede cobrarte 50 € más.',
+      answer: '18 años, igual que en Hopp. Para conducir un patinete, el Reglamento General de Circulación pide 15 años y la ordenanza de Torrevieja, 16. Si un menor va en un patinete alquilado con tu cuenta, Hoppy puede cobrarte 50 € más.',
     },
     {
       question: '¿Cuál es el teléfono de Hoppy o de Hopp en Torrevieja?',
@@ -172,6 +172,7 @@ const guide: Guide = {
     { title: 'Plan rector del Parque Natural de las Lagunas de La Mata y Torrevieja', url: 'https://torrevieja.es/sites/default/files/repositorio-archivos/plan%20rector%20lagunas%20de%20la%20mata.pdf' },
     { title: 'Ayuntamiento de Pilar de la Horadada: ordenanza de circulación (2019)', url: 'https://sede.pilardelahoradada.org/portal/gdConecta/CUD:12435375044706415334.pdf' },
     { title: 'DGT: vehículos de movilidad personal (VMP)', url: 'https://www.dgt.es/nuestros-servicios/tu-vehiculo/vehiculos-de-movilidad-personal-vmp/' },
+    { title: 'BOE: Real Decreto 518/2026, que reforma el Reglamento General de Circulación (artículo 155: edad mínima de 15 años)', url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-13889' },
     { title: 'Hoppy: datos abiertos de Torrevieja (GBFS)', url: 'https://hoppy.rideatom.com/gbfs/876/v3.0/gbfs' },
     { title: 'Hoppy: condiciones generales para España', url: 'https://behoppy.eu/es/terminos-y-condiciones/' },
     { title: 'Hopp Costa Blanca: tarifas y pases', url: 'https://hopp.bike/in/costa-blanca' },
@@ -180,6 +181,8 @@ const guide: Guide = {
     { title: 'Información: multas y depósito de los patinetes de alquiler (3 de agosto de 2025)', url: 'https://www.informacion.es/vega-baja/2025/08/03/torrevieja-impone-verano-cien-multas-patinetes-electricos-policia-local-119743213.html' },
     { title: 'Información: arranca el alquiler de patinetes en Orihuela Costa (24 de mayo de 2026)', url: 'https://www.informacion.es/vega-baja/2026/05/24/arranca-alquiler-patinetes-orihuela-costa-130553368.html' },
     { title: 'Avanza: tarifas actuales del autobús de Torrevieja', url: 'https://hola-torrevieja.avanzagrupo.com/hc/es-es/articles/53579882083732-Resumen-de-tarifas-actuales' },
+    { title: 'Avanza: cuándo entrarán en vigor las nuevas tarifas (29 de septiembre de 2026)', url: 'https://hola-torrevieja.avanzagrupo.com/hc/es-es/articles/54039578990356--Cu%C3%A1ndo-entrar%C3%A1n-en-vigor-las-tarifas-definitivas-y-el-nuevo-sistema-completo' },
+    { title: 'BOP de Alicante n.º 126: aprobación inicial de la ordenanza de tarifas del autobús urbano (8 de julio de 2026)', url: 'https://www.dip-alicante.es/bop2/pdftotal/2026/07/08_126/bop.pdf' },
     { title: 'Aena: autobuses del aeropuerto de Alicante-Elche', url: 'https://www.aena.es/es/alicante-elche-miguel-hernandez/como-llegar/autobus.html' },
     { title: 'Airportbus: de Torrevieja al aeropuerto de la Región de Murcia', url: 'https://airportbus.es/es/paradas-de-autobus/torrevieja-murcia-international-airport/' },
   ],
