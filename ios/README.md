@@ -21,9 +21,10 @@ installed.
 
 No API keys or third-party packages are required.
 
-To rebuild and reinstall the app on a phone while renewing its free provisioning
-profile, set `SCOOTRADAR_DEVICE_NAME` to the iPhone's name and run the
-repository-level `scripts/refresh-ios-app.sh`.
+To rebuild and reinstall the app on a phone while renewing its development
+provisioning profile (a year with the paid team `HGC93X794T`, seven days with a
+free Personal Team), set `SCOOTRADAR_DEVICE_NAME` to the iPhone's name and run
+the repository-level `scripts/refresh-ios-app.sh`.
 
 ## What the app shows
 

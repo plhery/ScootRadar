@@ -47,6 +47,8 @@ restore_cached_profiles() {
   done
 }
 
+# A free Personal Team's profiles last seven days; moving them aside makes Xcode
+# issue a new one. The paid team's profiles last a year and are left alone.
 remove_cached_personal_profiles() {
   local profile
   local profile_app_id
@@ -104,7 +106,7 @@ if [[ -z "$DEVICE_UDID" ]]; then
   exit 1
 fi
 
-print "1/3 Building and renewing the free provisioning profile…"
+print "1/3 Building and renewing the development provisioning profile…"
 remove_cached_personal_profiles
 xcodebuild \
   -project "$PROJECT_PATH" \
@@ -134,7 +136,7 @@ if [[ -n "$EXPIRATION_UTC" ]]; then
 fi
 
 if [[ -z "$EXPIRATION_EPOCH" || "$EXPIRATION_EPOCH" -lt "$(( $(date '+%s') + 6 * 24 * 60 * 60 ))" ]]; then
-  print -u2 "Xcode did not produce a fresh seven-day provisioning profile."
+  print -u2 "Xcode did not produce a provisioning profile valid for at least six more days."
   exit 1
 fi
 SIGNING_BUILD_SUCCEEDED=1
