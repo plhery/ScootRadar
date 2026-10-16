@@ -600,6 +600,26 @@ describe('places where the app has cities', () => {
     ]);
   });
 
+  it('lists a street once where its town is written two ways, hyphens and accents aside, and the street of another town apart', async () => {
+    stubUpstreams({ photon: [
+      // Two pieces of Dizengoff Street, 570 m apart: Geoapify writes Tel Aviv both ways.
+      [{ type: 'street', name: 'Dizengoff', city: 'Tel Aviv', countrycode: 'IL' }, 32.0738, 34.7809],
+      [{ type: 'street', name: 'Dizengoff', city: 'Tel-Aviv', countrycode: 'IL' }, 32.0754, 34.7752],
+      [{ type: 'street', name: 'Dizengoff', city: 'Rishon LeZion', countrycode: 'IL' }, 31.98, 34.8137],
+      // Two pieces of Bahnhofstrasse, 870 m apart.
+      [{ type: 'street', name: 'Bahnhofstrasse', city: 'Zürich', countrycode: 'CH' }, 47.3667, 8.5393],
+      [{ type: 'street', name: 'Bahnhofstrasse', city: 'Zurich', countrycode: 'CH' }, 47.3745, 8.539],
+    ] });
+
+    const results = await (await POST(postRequest('anything', 'en', PARIS))).json() as { title: string; subtitle: string }[];
+
+    expect(results.map(result => [result.title, result.subtitle])).toEqual([
+      ['Dizengoff', 'Tel Aviv'],
+      ['Dizengoff', 'Rishon LeZion'],
+      ['Bahnhofstrasse', 'Zürich'],
+    ]);
+  });
+
   it.each<[geoapify: number | null, photon: number | 'invalid', status: number, retryAfter: string | null]>([
     [null, 503, 502, '30'],
     [null, 429, 503, '60'],

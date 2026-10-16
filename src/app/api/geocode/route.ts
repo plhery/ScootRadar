@@ -5,7 +5,7 @@ import { rateLimitAllows } from '@/lib/rateLimit';
 import { isPointCovered } from '@/lib/coveredCities';
 import { haversineM } from '@/lib/geo';
 import { COUNTRY_ANCHORS, COUNTRY_CONTINENTS, COUNTRY_REGIONS, type Continent, type CountryCode } from '@/generated/countries';
-import { searchWords, westernDigits } from '@/lib/searchText';
+import { searchText, searchWords, westernDigits } from '@/lib/searchText';
 import { streetAddress, townLine } from './addressFormats';
 import {
   catalogTownName, cityOfAddress, GEOCODE_LANGUAGES, namedCities, qualifiedQuery, wordsNaming,
@@ -661,11 +661,12 @@ function apartM({ place }: Candidate, { place: other, outline }: Candidate): num
   return haversineM(place.lat, place.lng, lat, lng);
 }
 
-/** Two rows for one place: the same two lines, or the same name close by or in the other's outline. */
+/** Two rows for one place: the same name, with the same second line, or close by or in the
+    other's outline. Hyphens, spaces, case and accents aside: Geoapify writes Tel Aviv both
+    "Tel Aviv" and "Tel-Aviv", and two pieces of Dizengoff Street, one in each, are one street. */
 function samePlace(a: Candidate, b: Candidate): boolean {
-  if (a.place.title === b.place.title && a.place.subtitle === b.place.subtitle) return true;
-  return searchWords(a.place.title).join(' ') === searchWords(b.place.title).join(' ') &&
-    Math.min(apartM(a, b), apartM(b, a)) <= SAME_PLACE_M;
+  return searchText(a.place.title) === searchText(b.place.title) &&
+    (searchText(a.place.subtitle) === searchText(b.place.subtitle) || Math.min(apartM(a, b), apartM(b, a)) <= SAME_PLACE_M);
 }
 
 function failureResponse(failure: UpstreamFailure) {
