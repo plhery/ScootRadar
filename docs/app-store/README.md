@@ -152,9 +152,16 @@ ASC_KEY_ID=<key id> ASC_ISSUER_ID=<issuer id> scripts/upload-ios-app.sh
 
 It archives a Release build with automatic signing through the API key
 (`~/.appstoreconnect/private_keys/AuthKey_<key id>.p8`), numbers it with the
-commit count of HEAD and uploads it with `ios/ExportOptions.plist`. The build
-then appears in TestFlight once Apple has processed it. It never submits for
-review.
+commit count of HEAD and uploads it with `ios/ExportOptions.plist`. Without the
+two variables it signs and uploads with the Apple account signed in to Xcode.
+The app's record must exist in App Store Connect first, or the upload fails
+with "App record not found". The build then appears in TestFlight once Apple
+has processed it. It never submits for review.
+
+Signing was checked on 16 October 2026 with the Xcode account: the archive and
+an App Store export (build 391) came out signed for team `HGC93X794T` with a
+cloud-managed Apple Distribution certificate, an App Store profile valid for a
+year and the `applinks:scootradar.com` entitlement.
 
 ## Push the listing
 

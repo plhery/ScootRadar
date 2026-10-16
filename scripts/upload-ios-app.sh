@@ -9,6 +9,10 @@
 #
 #   ASC_KEY_ID=<key id> ASC_ISSUER_ID=<issuer id> scripts/upload-ios-app.sh
 #
+# Without ASC_KEY_ID they use the Apple account signed in to Xcode
+# (Settings › Accounts) instead. Either way the app's record must already
+# exist in App Store Connect.
+#
 # The build number is the number of commits on HEAD, so each new commit on main
 # uploads a higher one; set SCOOTRADAR_BUILD_NUMBER to choose another.
 
@@ -17,24 +21,24 @@ set -euo pipefail
 PROJECT_ROOT="$(cd -- "$(dirname -- "$0")/.." && pwd)"
 PROJECT_PATH="$PROJECT_ROOT/ios/ScootRadar.xcodeproj"
 EXPORT_OPTIONS="$PROJECT_ROOT/ios/ExportOptions.plist"
-KEY_ID="${ASC_KEY_ID:?Set ASC_KEY_ID to the App Store Connect API key ID.}"
-ISSUER_ID="${ASC_ISSUER_ID:?Set ASC_ISSUER_ID to the App Store Connect issuer ID.}"
-KEY_PATH="${ASC_KEY_PATH:-$HOME/.appstoreconnect/private_keys/AuthKey_$KEY_ID.p8}"
 BUILD_NUMBER="${SCOOTRADAR_BUILD_NUMBER:-$(git -C "$PROJECT_ROOT" rev-list --count HEAD)}"
 WORK_DIR="$(mktemp -d "${TMPDIR:-/tmp}/scootradar-upload.XXXXXX")"
 ARCHIVE_PATH="$WORK_DIR/ScootRadar.xcarchive"
 
-if [[ ! -f "$KEY_PATH" ]]; then
-  print -u2 "No API key at $KEY_PATH"
-  exit 1
+AUTH=(-allowProvisioningUpdates)
+if [[ -n "${ASC_KEY_ID:-}" ]]; then
+  ISSUER_ID="${ASC_ISSUER_ID:?Set ASC_ISSUER_ID to the App Store Connect issuer ID.}"
+  KEY_PATH="${ASC_KEY_PATH:-$HOME/.appstoreconnect/private_keys/AuthKey_$ASC_KEY_ID.p8}"
+  if [[ ! -f "$KEY_PATH" ]]; then
+    print -u2 "No API key at $KEY_PATH"
+    exit 1
+  fi
+  AUTH+=(
+    -authenticationKeyPath "$KEY_PATH"
+    -authenticationKeyID "$ASC_KEY_ID"
+    -authenticationKeyIssuerID "$ISSUER_ID"
+  )
 fi
-
-AUTH=(
-  -allowProvisioningUpdates
-  -authenticationKeyPath "$KEY_PATH"
-  -authenticationKeyID "$KEY_ID"
-  -authenticationKeyIssuerID "$ISSUER_ID"
-)
 
 VERSION="$(awk '/MARKETING_VERSION/ { gsub(";", "", $3); print $3; exit }' "$PROJECT_PATH/project.pbxproj")"
 print "1/2 Archiving ScootRadar $VERSION ($BUILD_NUMBER)…"
