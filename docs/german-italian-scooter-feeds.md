@@ -423,8 +423,10 @@ an hour, so no interval was changed for ATOM.
 - Lime's Italian endpoints all returned 404, though Lime runs in Roma, Milano
   and Palermo.
 - Bird Milano, Firenze, Torino, Moncalieri, Collegno, Rivoli, Nichelino and
-  Sesto Fiorentino were empty, with a timestamp of 0; Bird München and Ulm had
-  abandoned timestamps. None was added.
+  Sesto Fiorentino were empty, with a timestamp of 0, and so were Bird München
+  and Ulm on 16 October 2026. Bird left Ulm and Neu-Ulm around 2022
+  ([Schwäbische Zeitung](https://www.schwaebische.de/regional/ulm-alb-donau/ulm/e-scooter-ernten-lob-und-enttaeuschung-50855)).
+  None was added.
 - Elerent Bologna (ATOM id 1887) listed one scooter on 13 October 2026; left
   out.
 - Hopp Como held no scooters at night on 13 October 2026, nor in 22 polls from
@@ -448,6 +450,18 @@ an hour, so no interval was changed for ATOM.
   the Hamburg and older Stuttgart discovery URLs returned 404.
 - Voi's reviewed German proxy covers eight cities in Baden-Württemberg; it is
   not a nationwide Voi feed. Other operator/city combinations remain unverified.
+- Outside Baden-Württemberg, the operators' feeds reach regional hubs but not
+  the public, as checked on 16 October 2026:
+  - North Rhine-Westphalia's
+    [Multimodale Datendrehscheibe](https://mdd.gorheinland.com/) carries GBFS
+    for Bolt (Köln/Bonn, Düsseldorf, Essen, Dortmund, Münster,
+    Bielefeld/Paderborn and Herford), Voi (eleven towns), Lime, Dott and Ryde.
+    Only transport bodies and municipalities may use it, and requests without
+    an account answer 401.
+  - Hamburg and Dresden receive the operators' MDS data for the city only.
+  - On Mobilithek, Voi publishes static NeTEx (zones, parking spots and fares)
+    for 22 German cities, but no vehicles. The only live scooter offer there
+    is Karlsruhe's, which the map already reads through MobiData BW.
 
 ## Sources and recheck
 

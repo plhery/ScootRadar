@@ -82,7 +82,10 @@ banned shared scooters, and feeds that were empty when checked.
 - **Germany** ([guide](german-italian-scooter-feeds.md#known-gaps)):
   - Dott closed most of its public regions in September 2026, among them
     Hamburg, Bremen, Nürnberg, Dortmund, Karlsruhe and Mannheim.
-  - Bird München and Ulm stopped updating.
+  - Bird München and Ulm list no vehicle; Bird left Ulm around 2022.
+  - North Rhine-Westphalia's mobility data hub holds Bolt, Voi, Lime and Dott
+    feeds for Köln, Düsseldorf, Essen, Dortmund and other towns, but only
+    transport bodies and municipalities may use it.
   - Lime Hamburg answers 404; Lime Dresden, Oberhausen and Solingen (6
     scooters) were too small or empty.
   - Zeus is moving its towns to ATOM Mobility. Rüsselsheim, Straubing,
@@ -708,7 +711,8 @@ Bonaire had feeds to add. Survey files are in
   network, among them Vienna and Warsaw, and in Spain Santa Cruz de Tenerife,
   Oviedo, Murcia and Las Palmas. Austria, Spain, Portugal, Poland and the
   Netherlands may publish feeds then. Portugal's access point already lists
-  Bolt's GBFS, on request; look there for Lime and Bird too. So may Slovenia, for Ljubljana: look
+  Bolt's GBFS, on request; look there for Lime and Bird too. Look on
+  Germany's Mobilithek for Bolt, Voi and Lime outside Baden-Württemberg. So may Slovenia, for Ljubljana: look
   for Bolt's feed 359 there, or at `mds.bolt.eu`, and for an official Kvik
   feed.
 - **1 December 2026:** JOLT in New Zealand: `hutt_valley` again, unless it
