@@ -31,6 +31,28 @@ it('stays off without a DSN, and sends a request\'s URL but never its headers', 
   expect(options.beforeSend!(withoutRequest, {})).toEqual({ message: 'failed', type: undefined });
 });
 
+it('replaces every IP address before an event leaves, frame variables included', () => {
+  initErrorReporting({ SENTRY_DSN: 'https://key@o1.ingest.sentry.io/1' });
+  const options = vi.mocked(Sentry.init).mock.calls[0][0]!;
+  const frame = { function: 'handle', vars: { forwarded: '203.0.113.7', key: '[Filtered]', remote: '::ffff:198.51.100.4',
+    v6: '2001:db8::1', parsed: { zoom: 16, client: '192.0.2.1' }, list: ['192.0.2.1:443', 'ok'],
+    started: '2026-10-16T08:00:00.000Z', version: '11.6.0', url: '<URL>' } };
+  const event = { type: undefined, message: 'rate limit for 203.0.113.7',
+    exception: { values: [{ type: 'Error', value: 'failed for [2001:db8::1]:443', stacktrace: { frames: [frame] } }] },
+    breadcrumbs: [{ message: 'from 203.0.113.7', data: { '192.0.2.1': { count: 3 }, south: 47.3 } }],
+    request: { method: 'GET', url: 'http://localhost/api/scooters', query_string: 'south=47.3&zoom=16' },
+    sdkProcessingMetadata: { normalizedRequest: { headers: { 'x-scooter-client-ip': '203.0.113.7' } } } } satisfies ErrorEvent;
+  const sent = options.beforeSend!(event, {}) as typeof event;
+  expect(sent.message).toBe('rate limit for [ip]');
+  expect(sent.exception.values[0].value).toBe('failed for [[ip]]:443');
+  expect(sent.exception.values[0].stacktrace.frames[0].vars).toEqual({ forwarded: '[ip]', key: '[Filtered]', remote: '[ip]',
+    v6: '[ip]', parsed: { zoom: 16, client: '[ip]' }, list: ['[ip]:443', 'ok'],
+    started: '2026-10-16T08:00:00.000Z', version: '11.6.0', url: '<URL>' });
+  expect(sent.breadcrumbs).toEqual([{ message: 'from [ip]', data: { south: 47.3 } }]);
+  expect(sent.request).toEqual({ method: 'GET', url: 'http://localhost/api/scooters', query_string: 'south=47.3&zoom=16' });
+  expect(JSON.stringify({ ...sent, sdkProcessingMetadata: undefined })).not.toMatch(/203\.0\.113|198\.51|192\.0\.2|2001:db8/);
+});
+
 it('reports a repeating error once an hour per key', () => {
   const error = new Error('disk full');
   reportError('persist-test', error, 0);

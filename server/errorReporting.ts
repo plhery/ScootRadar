@@ -1,3 +1,4 @@
+import { isIP } from 'node:net';
 import * as Sentry from '@sentry/node';
 import type { FeedSnapshot } from '../src/lib/scooterSnapshots';
 import type { FeedStateChange } from './feedStateLog';
@@ -9,6 +10,8 @@ const lastReportedAt = new Map<string, number>();
  * Sentry, enabled only with SENTRY_DSN. A failing request keeps its method and
  * URL, query included: the map bounds, zoom and filters that reproduce it. Its
  * headers are dropped: they hold the Worker's token and the visitor's address.
+ * Stack frames keep their local variables, but any IP address in the event, the
+ * rate limiter's key included, is replaced before it leaves (see withoutIps).
  * Routine feed failures are not reported, only a feed that stops being served for
  * a while (see reportFeedExpired); Prometheus and the logs cover the rest.
  */
@@ -27,7 +30,7 @@ export function initErrorReporting(env: Record<string, string | undefined> = pro
         event.request = { method, url, query_string };
       }
       delete event.user;
-      return event;
+      return withoutIps(event);
     },
     // Sentry 11 attaches stack traces to messages, which then arrive as untyped exceptions.
     attachStacktrace: false,
@@ -37,6 +40,43 @@ export function initErrorReporting(env: Record<string, string | undefined> = pro
     integrations: [Sentry.onUnhandledRejectionIntegration({ mode: 'strict' })],
   });
   return true;
+}
+
+const IPV6_CANDIDATE = /(?:[0-9a-f]{0,4}:){2,}[0-9a-f.]*/gi;
+const IPV4_CANDIDATE = /\d{1,3}(?:\.\d{1,3}){3}/g;
+
+function scrubText(text: string) {
+  const replace = (match: string) => (isIP(match) ? '[ip]' : match);
+  return text.replace(IPV6_CANDIDATE, replace).replace(IPV4_CANDIDATE, replace);
+}
+
+function scrub(value: unknown, seen: WeakSet<object>): unknown {
+  if (typeof value === 'string') return scrubText(value);
+  if (!value || typeof value !== 'object' || seen.has(value)) return value;
+  seen.add(value);
+  const record = value as Record<string, unknown>;
+  for (const key of Object.keys(record)) {
+    // A key that is an address (a map keyed by client, say) goes with its value.
+    if (scrubText(key) !== key) delete record[key];
+    else record[key] = scrub(record[key], seen);
+  }
+  return value;
+}
+
+/**
+ * The event with every IPv4 and IPv6 address replaced by "[ip]", in messages,
+ * stack frame variables, breadcrumbs and contexts alike. A visitor's address
+ * reaches the cache as a header and becomes the rate limiter's key, so it can
+ * sit in the variables of any frame that handled the request.
+ */
+export function withoutIps<T extends object>(event: T): T {
+  const seen = new WeakSet<object>();
+  const record = event as Record<string, unknown>;
+  for (const key of Object.keys(record)) {
+    // SDK bookkeeping, never sent, and it may hold the live request.
+    if (key !== 'sdkProcessingMetadata') record[key] = scrub(record[key], seen);
+  }
+  return event;
 }
 
 /** Whether `key` was not reported in the last hour, and now counts as reported. */
