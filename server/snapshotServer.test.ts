@@ -107,6 +107,23 @@ describe('snapshot origin boundary', () => {
     expect(text).toContain('scootradar_http_requests_total{route="/metrics",status="401"} 1');
     expect(text).not.toContain('47.3');
   });
+
+  it('counts the requests the Worker\'s address searches sent to Geoapify, from the Worker only', async () => {
+    const metrics = createSnapshotMetrics();
+    const { port } = await start(undefined, { metrics });
+    const url = (count: string) => `http://127.0.0.1:${port}/api/geocode-usage?geoapify=${count}`;
+    const post = (count: string, authorization = `Bearer ${token}`) =>
+      fetch(url(count), { method: 'POST', headers: { Authorization: authorization } }).then(response => response.status);
+    expect(await post('2')).toBe(204);
+    expect(await post('1')).toBe(204);
+    expect(await post('3', 'Bearer wrong')).toBe(401);
+    expect(await post('0')).toBe(400);
+    expect(await post('1.5')).toBe(400);
+    expect(await post('100')).toBe(400);
+    expect((await fetch(url('1'), { headers: { Authorization: `Bearer ${token}` } })).status).toBe(405);
+    expect((await fetch(`http://127.0.0.1:${port}/api/scooters`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } })).status).toBe(405);
+    expect(metrics.render(undefined)).toContain('scootradar_geoapify_requests_total{version="local"} 3');
+  });
 });
 
 describe('collection on demand', () => {

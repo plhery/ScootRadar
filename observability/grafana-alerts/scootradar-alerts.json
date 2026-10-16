@@ -92,6 +92,16 @@
       "noDataState": "KeepLast",
       "summary": "The cache has used over 1.3 GB for 15 minutes.",
       "description": "The container is limited to 1536 MiB and is killed above it. A catalog that grew, or a leak: compare with the feed count on the dashboard."
+    },
+    {
+      "uid": "scootradar-geoapify-quota",
+      "title": "ScootRadar Geoapify near its daily limit",
+      "expr": "(sum(increase(scootradar_geoapify_requests_total{job=\"scootradar-cache\"}[24h])) or vector(0)) > bool 2400",
+      "for": "5m",
+      "severity": "warning",
+      "noDataState": "KeepLast",
+      "summary": "Address searches sent Geoapify over 2,400 requests in 24 hours.",
+      "description": "Geoapify's free plan allows 3,000 a day. Past it, searches fall back to komoot's public Photon, slower (geoapify_fallback in the Worker's logs). Look at the Worker's /api/geocode traffic in Cloudflare for a burst from one client; for growth, a paid plan or our own Photon (DEPLOY.md)."
     }
   ]
 }

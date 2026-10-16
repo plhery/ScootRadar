@@ -121,7 +121,8 @@ its ten seconds and logs `geoapify_fallback`. When Geoapify finds nothing in the
 parts of the world the catalog covers, as for "دبي مول" (the Dubai Mall in
 Arabic) away from Dubai, the search asks Photon anywhere with what is left too,
 unless a city of the catalog starts with the text. Without the key, the search
-asks Photon alone.
+asks Photon alone. The cache counts the requests sent to Geoapify, and Grafana
+warns past 2,400 in a day (docs/OBSERVABILITY.md).
 
 Photon is komoot's public one unless `PHOTON_API_URL` in `vars` names one of our
 own; only `https://` addresses are used. Ours sits behind Cloudflare Access:

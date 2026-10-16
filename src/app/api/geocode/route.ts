@@ -31,6 +31,8 @@ const NEARBY_SEARCH_M = 50_000;
 const CITY_SEARCH_M = 15_000;
 // Towns are waited for as long as places are, or this long after both were asked for.
 const TOWN_WAIT_MS = 1_500;
+// How long the cache is given, after the answer, to count a search's requests to Geoapify.
+const GEOAPIFY_COUNT_TIMEOUT_MS = 5_000;
 // Far more than are shown, so that places with scooter data can be ranked first.
 const GEOAPIFY_RESULT_LIMIT = 20;
 // Geoapify's kinds of place as Photon names them. Not the centres of counties,
@@ -145,6 +147,8 @@ interface Search {
   home: string;
   /** An address typed with its city, without the city: "Bahnhofstrasse 10" for "Bahnhofstrasse 10, Biel". */
   address: string | null;
+  /** The requests sent to Geoapify for it, which the cache counts (countGeoapifyRequests). */
+  geoapifyRequests: number;
 }
 
 /** What places are ranked from: where they come first, and the country that does without a centre. */
@@ -346,6 +350,30 @@ async function workerSettings(): Promise<Record<string, unknown>> {
     return env as CloudflareEnv & Record<string, unknown>;
   } catch {
     return {};
+  }
+}
+
+/** Has the cache count a search's requests to Geoapify, once the answer is sent: Prometheus
+    keeps the day's total, and an alert goes off well before the free plan's 3,000 a day
+    (docs/OBSERVABILITY.md). Not outside the Worker, nor without the cache's token. */
+async function countGeoapifyRequests(requests: number) {
+  if (!requests) return;
+  try {
+    const { env, ctx } = await getCloudflareContext({ async: true });
+    const settings = env as CloudflareEnv & Record<string, unknown>;
+    const origin = text(settings.SCOOTER_SNAPSHOT_API_URL);
+    const token = text(settings.SCOOTER_SNAPSHOT_API_TOKEN);
+    if (!origin || !token || !ctx) return;
+    const url = new URL('/api/geocode-usage', origin);
+    url.searchParams.set('geoapify', String(requests));
+    const failed = (detail: Record<string, unknown>) => console.warn(JSON.stringify({ event: 'geoapify_count_failure', ...detail }));
+    // As for scooters, the token goes to no redirect target.
+    ctx.waitUntil(fetch(url, { method: 'POST', headers: { Authorization: `Bearer ${token}` }, redirect: 'manual',
+      signal: AbortSignal.timeout(GEOAPIFY_COUNT_TIMEOUT_MS) })
+      .then(response => { if (response.status !== 204) failed({ status: response.status }); },
+        (error: unknown) => failed({ error: error instanceof Error ? error.name : 'UnknownError' })));
+  } catch {
+    // Outside the Worker.
   }
 }
 
@@ -610,6 +638,7 @@ async function searchGeoapify(search: Search, key: string, ask: GeoapifyAsk): Pr
   const url = new URL(GEOAPIFY_AUTOCOMPLETE_URL);
   url.search = params.toString();
 
+  search.geoapifyRequests++;
   const answer = await fetchJson(url, {}, ask.timeoutMs);
   if (!answer.ok) return answer;
   const results = (answer.value as GeoapifyResponse | null)?.results;
@@ -735,6 +764,7 @@ async function geocode(input: GeocodeInput) {
     near: inCity?.center ?? input.near,
     home: input.country ?? DEFAULT_HOME,
     address: inCity?.address ?? null,
+    geoapifyRequests: 0,
   };
 
   const settings = await workerSettings();
@@ -750,6 +780,8 @@ async function geocode(input: GeocodeInput) {
   const places = listed.some(({ exact }) => exact) ? null : searchPlaces(search, settings, key, deadline, listed.length > 0);
   const foundPlaces = places && await places;
   const foundTowns = towns && await within(towns, asked + TOWN_WAIT_MS - Date.now());
+  // Every request to Geoapify the search makes has been sent.
+  await countGeoapifyRequests(search.geoapifyRequests);
 
   const candidates: Candidate[] = [
     ...namesakesNearestFirst(listed, search).map(({ city, exact, country }) =>

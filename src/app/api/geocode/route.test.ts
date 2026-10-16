@@ -364,6 +364,74 @@ describe('address search results', () => {
   });
 });
 
+describe('the count of requests to Geoapify', () => {
+  const CACHE = 'https://cache.example';
+  const TOKEN = 'test-service-token';
+
+  /** In the Worker, with the cache's address and token: the counts it is sent, once the answers are out. */
+  function countedInWorker(extra: Record<string, unknown> = {}) {
+    const pending: Promise<unknown>[] = [];
+    getCloudflareContext.mockResolvedValue({
+      env: { GEOAPIFY_API_KEY: 'test-key', SCOOTER_SNAPSHOT_API_URL: CACHE, SCOOTER_SNAPSHOT_API_TOKEN: TOKEN, ...extra },
+      ctx: { waitUntil: (promise: Promise<unknown>) => pending.push(promise) },
+    });
+    return pending;
+  }
+
+  /** The counts sent to the cache, with the token they were sent with. */
+  function counts(fetchMock: ReturnType<typeof vi.fn>) {
+    return fetchMock.mock.calls.filter(([input]) => new URL(String(input)).origin === CACHE)
+      .map(([input, init]) => [new URL(String(input)).pathname + new URL(String(input)).search,
+        (init as RequestInit).method, ((init as RequestInit).headers as Record<string, string>).Authorization]);
+  }
+
+  it('sends the cache the number of requests a search sent to Geoapify, after the answer', async () => {
+    const pending = countedInWorker();
+    // The towns of the name and places close by, which find nothing as typed, then places anywhere.
+    const fetchMock = stubUpstreams({ geoapify: { towns: [], nearby: [], anywhere: [] }, photon: [] });
+
+    const response = await POST(postRequest('Kolosseum', 'de', ZURICH));
+    await Promise.all(pending);
+
+    expect(response.status).toBe(200);
+    expect(asked(fetchMock, GEOAPIFY_HOST).map(geoapifyRequest)).toEqual(['towns', 'nearby', 'anywhere']);
+    expect(counts(fetchMock)).toEqual([['/api/geocode-usage?geoapify=3', 'POST', `Bearer ${TOKEN}`]]);
+  });
+
+  it('sends nothing when no request went to Geoapify, or without the cache\'s token', async () => {
+    const pending = countedInWorker({ GEOAPIFY_API_KEY: undefined });
+    let fetchMock = stubUpstreams({ photon: [] });
+    await POST(postRequest('Kolosseum', 'de', ZURICH));
+    expect(counts(fetchMock)).toEqual([]);
+
+    countedInWorker({ SCOOTER_SNAPSHOT_API_TOKEN: undefined });
+    fetchMock = stubUpstreams({ geoapify: [] });
+    await POST(postRequest('Kolosseum', 'de', ZURICH));
+    expect(asked(fetchMock, GEOAPIFY_HOST)).not.toEqual([]);
+    expect(counts(fetchMock)).toEqual([]);
+    expect(pending).toEqual([]);
+  });
+
+  it('answers the search when the cache cannot count it', async () => {
+    const pending = countedInWorker();
+    const warning = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const geoapify = stubUpstreams({ geoapify: [[{ result_type: 'street', name: 'Bahnhofstrasse', city: 'Zürich', country_code: 'ch' }, 47.3726, 8.5389]] });
+    vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) =>
+      new URL(String(input)).origin === CACHE ? new Response('{}', { status: 405 }) : geoapify(input)));
+
+    const response = await POST(postRequest('Bahnhofstrasse', 'de', ZURICH));
+    await Promise.all(pending);
+
+    expect(await titlesOf(response)).toContain('Bahnhofstrasse');
+    expect(warning.mock.calls.map(([line]) => JSON.parse(String(line)))).toContainEqual({ event: 'geoapify_count_failure', status: 405 });
+    warning.mockRestore();
+  });
+});
+
+async function titlesOf(response: Response) {
+  return ((await response.json()) as { title: string }[]).map(place => place.title);
+}
+
 // Our own list of the cities with scooter data, and the towns Geoapify finds anywhere.
 describe('cities and towns', () => {
   beforeEach(() => {

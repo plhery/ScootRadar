@@ -41,7 +41,9 @@ interface ServerOptions {
   coldWaitMs?: number;
 }
 
-const ROUTES = new Set(['/api/scooters', '/health', '/ready', '/metrics']);
+// The Worker's address searches report here how many requests they sent to Geoapify.
+const GEOCODE_USAGE_PATH = '/api/geocode-usage';
+const ROUTES = new Set(['/api/scooters', GEOCODE_USAGE_PATH, '/health', '/ready', '/metrics']);
 
 export function createSnapshotServer(options: ServerOptions) {
   if (options.production && (!options.token || options.token.length < 32)) {
@@ -55,14 +57,26 @@ export function createSnapshotServer(options: ServerOptions) {
   const clients = new Map<string, { count: number; resetAt: number }>();
   let activeResponses = 0;
   const cadence = options.cadence ?? ALWAYS_FAST;
+  const fromWorker = (request: IncomingMessage) => tokenHash
+    ? timingSafeEqual(tokenHash, createHash('sha256').update(request.headers.authorization ?? '').digest())
+    : ['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(request.socket.remoteAddress ?? '');
   async function handle(request: IncomingMessage, response: ServerResponse) {
     response.setHeader('Content-Type', 'application/json; charset=utf-8');
     response.setHeader('X-Content-Type-Options', 'nosniff');
     response.setHeader('Cache-Control', 'private, no-store');
-    if (request.method !== 'GET') { response.writeHead(405, { Allow: 'GET' }); response.end('{}'); return; }
     let url: URL;
     try { url = new URL(request.url ?? '/', 'http://localhost'); }
     catch { response.writeHead(400); response.end('{"error":"Invalid request URL"}'); return; }
+    const method = url.pathname === GEOCODE_USAGE_PATH ? 'POST' : 'GET';
+    if (request.method !== method) { response.writeHead(405, { Allow: method }); response.end('{}'); return; }
+    if (url.pathname === GEOCODE_USAGE_PATH) {
+      if (!fromWorker(request)) { response.writeHead(401); response.end('{}'); return; }
+      // A search sends Geoapify one to three requests.
+      const requests = Number(url.searchParams.get('geoapify'));
+      if (!Number.isInteger(requests) || requests < 1 || requests > 10) { response.writeHead(400); response.end('{}'); return; }
+      options.metrics?.recordGeoapifyRequests(requests);
+      response.writeHead(204); response.end(); return;
+    }
     let snapshot = options.snapshot();
     const now = Date.now();
     if (url.pathname === '/health' || url.pathname === '/ready') {
@@ -92,10 +106,7 @@ export function createSnapshotServer(options: ServerOptions) {
       return;
     }
     if (url.pathname !== '/api/scooters') { response.writeHead(404); response.end('{}'); return; }
-    const authorized = tokenHash
-      ? timingSafeEqual(tokenHash, createHash('sha256').update(request.headers.authorization ?? '').digest())
-      : ['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(request.socket.remoteAddress ?? '');
-    if (!authorized) { response.writeHead(401); response.end('{}'); return; }
+    if (!fromWorker(request)) { response.writeHead(401); response.end('{}'); return; }
     // Only an authenticated Worker may supply a client IP. It replaces any incoming header.
     const forwarded = request.headers['x-scooter-client-ip'];
     const key = tokenHash && typeof forwarded === 'string' && isIP(forwarded)

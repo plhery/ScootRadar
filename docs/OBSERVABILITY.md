@@ -10,7 +10,8 @@ places. None of them holds a map URL, coordinates or a visitor's address.
 - **Loki** keeps its log lines for 30 days under `app="scootradar-cache"`.
 
 The Worker is not in Prometheus or Sentry: its `scooter_origin_failure` lines are in
-the Cloudflare dashboard's Workers Logs for `swiss-scooters`.
+the Cloudflare dashboard's Workers Logs for `swiss-scooters`. Only its count of requests
+to Geoapify reaches Prometheus, through the cache (see below).
 
 ## Metrics
 
@@ -62,6 +63,11 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   fetch failed. A feed's plans are fetched again at most every two minutes (or their
   `ttl`, if longer); a plan still missing is looked for after 2, 4, 8… minutes, up to
   the hourly refresh of all metadata.
+- `scootradar_geoapify_requests_total{version}`: requests the Worker's address searches
+  sent to Geoapify. Once its answer is out, a search that asked Geoapify posts the number
+  to the cache's `POST /api/geocode-usage?geoapify=N`, with the token the Worker reads
+  scooters with; a failure is logged as `geoapify_count_failure` in Workers Logs and
+  not retried. By build, as the old and new containers both answer during a deploy.
 - `scootradar_feed_collections_total{outcome="ok|failed"}` and
   `scootradar_feed_collection_duration_seconds_sum/_count`, per feed.
 - `scootradar_http_requests_total{route, status}` and
@@ -145,6 +151,7 @@ The alert rules:
 | ScootRadar feed discovery stale | no successful discovery for 2 hours |
 | ScootRadar cache restarting | one build has restarted more than three times in an hour (a deploy is not counted) |
 | ScootRadar cache memory high | over 1.3 GB for 15 minutes (the limit is 1536 MiB) |
+| ScootRadar Geoapify near its daily limit | address searches sent Geoapify over 2,400 requests in 24 hours (its free plan allows 3,000 a day); a rolling day, so it fires no later than the calendar day does |
 
 While the cache cannot be scraped, as for a moment during a deploy, every rule but
 "target down" keeps its last state rather than resolving and firing again. So every

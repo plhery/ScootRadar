@@ -96,6 +96,8 @@ it('counts collections from zero by outcome, and requests by route and status', 
   expect(sample(text, `scootradar_feed_collection_duration_seconds_count{${labels}}`)).toBe('2');
   expect(sample(text, 'scootradar_http_requests_total{route="/api/scooters",status="200"}')).toBe('2');
   expect(sample(text, 'scootradar_http_requests_total{route="/api/scooters",status="429"}')).toBe('1');
+  // From the start, for the Geoapify alert to have a series to read.
+  expect(sample(text, 'scootradar_geoapify_requests_total{version="local"}')).toBe('0');
   expect(sample(text, 'scootradar_http_request_duration_seconds_count{route="/api/scooters"}')).toBe('3');
   expect(sample(text, 'scootradar_snapshot_updated_timestamp_seconds')).toBeUndefined();
 });

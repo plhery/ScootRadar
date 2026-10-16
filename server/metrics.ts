@@ -46,6 +46,7 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
   const waits = { collected: 0, timeout: 0 };
   const requests = new Map<string, { labels: Labels; count: number }>();
   const requestSeconds = new Map<string, { count: number; seconds: number }>();
+  let geoapifyRequests = 0;
   let discoveredAt = 0;
   const eventLoop = monitorEventLoopDelay({ resolution: EVENT_LOOP_RESOLUTION_MS });
   eventLoop.enable();
@@ -72,6 +73,8 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
     recordCollectionStart(reason: CollectionReason) { starts.set(reason, (starts.get(reason) ?? 0) + 1); },
     /** A request waited for the collection of feeds whose positions had expired. */
     recordWait(collected: boolean) { waits[collected ? 'collected' : 'timeout']++; },
+    /** Requests an address search on the Worker sent to Geoapify. */
+    recordGeoapifyRequests(count: number) { geoapifyRequests += count; },
     render(snapshot: MobilitySnapshot | undefined, now = Date.now()): string {
       const out: string[] = [];
       const metric = (name: string, type: string, help: string, samples: [Labels, number][]) => {
@@ -152,6 +155,11 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
           'Documents dropped, least recently used first, to make room while they could still be served.',
           [[{}, cache.evictions]]);
       }
+      // By build: during a deploy the old and the new container both answer for a minute,
+      // and one count read from each in turn would look reset again and again.
+      metric('scootradar_geoapify_requests_total', 'counter',
+        'Requests address searches sent to Geoapify, as the Worker reports them: its free plan allows 3,000 a day.',
+        [[{ version }, geoapifyRequests]]);
       metric('scootradar_feed_collections_total', 'counter', 'Feed collections by outcome.',
         [...collections.values()].flatMap(entry => [
           [{ ...entry.labels, outcome: 'ok' }, entry.ok] as [Labels, number],
