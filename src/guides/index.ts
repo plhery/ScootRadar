@@ -89,6 +89,7 @@ import rigaEn from './en/e-scooters-riga';
 import fuerteventuraEn from './en/e-scooters-fuerteventura';
 import dubaiEn from './en/e-scooters-dubai';
 import telAvivEn from './en/e-scooters-tel-aviv';
+import washingtonEn from './en/e-scooters-washington-dc';
 import fuerteventuraEs from './es/alquiler-patinete-electrico-fuerteventura';
 import torreviejaEs from './es/alquiler-patinete-electrico-torrevieja';
 import cataniaIt from './it/monopattini-sharing-catania';
@@ -122,6 +123,7 @@ export const GUIDES: readonly Guide[] = [
   rigaEn,
   dubaiEn,
   telAvivEn,
+  washingtonEn,
   swissRulesDe,
   howToRentDe,
   swissPricesDe,
