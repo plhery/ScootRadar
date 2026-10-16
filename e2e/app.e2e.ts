@@ -221,7 +221,7 @@ test('normalizes malformed URL settings without breaking the app', async ({ page
   await expect(page.locator('.app-shell')).toHaveAttribute('data-map', 'calm');
 });
 
-test('does not invent a distance without location and offers walking directions', async ({ page }) => {
+test('does not invent a distance without location and offers walking directions', async ({ page, isMobile }) => {
   await page.goto('/map');
   await focusFixtureArea(page);
   await zoomTo(page, 16);
@@ -236,9 +236,11 @@ test('does not invent a distance without location and offers walking directions'
   await expect(card.locator('.card-figure strong')).toHaveText(['64%', '10km']);
   await expect(card.locator('.card-figure-label')).toHaveText(['battery', 'range']);
   await expect(card.getByText('Price shown in the Bird app')).toBeVisible();
-  // No rental link for this scooter: directions alone. They draw the walk on the map
-  // (e2e/walk.e2e.ts), so Directions is a button and the card leaves nothing to follow.
-  await expect(card.getByRole('link')).toHaveCount(0);
+  // Bird's feed links no scooter. A phone gets Bird's own app instead, or its store page; a
+  // computer has no app to open. Directions draw the walk on the map (e2e/walk.e2e.ts), so
+  // Directions is a button and the card leaves nothing else to follow.
+  if (isMobile) await expect(card.getByRole('link')).toHaveText(['Open in Bird']);
+  else await expect(card.getByRole('link')).toHaveCount(0);
   await expect(card.locator('.card-actions').getByRole('button')).toHaveText(['Directions']);
   await expect(card.getByRole('button', { name: 'Directions', exact: true })).not.toHaveClass(/card-action-primary/);
   await expect(card.locator('.card-footnote')).toHaveCount(0);

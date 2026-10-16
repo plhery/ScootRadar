@@ -167,9 +167,10 @@ its discovery lists is https, on its origin and under its directory.
 - **No link.** Pony's feed links each scooter to Pony's scanner
   (`https://getapony.com/app/scan`), which can't rent them. Links are kept only
   on their provider's own hosts, and Naolib Micromob' has none listed, so its
-  scooters have no "Open in" button on the web or on iOS. The app has no link
-  per provider to fall back on: since 12 October 2026, iOS only tries a
-  scooter's next link when one fails. The city's feed links every vehicle to
+  scooters have no "Open in" button on the web or on iOS. Only Lime and Bird
+  have a link of their own app to fall back on (`app` in `data/providers.json`,
+  since 16 October 2026); iOS otherwise only tries a scooter's next link when
+  one fails. The city's feed links every vehicle to
   `https://micromob.naolib.fr//#/trip/start`, which a link per provider could
   use one day.
 - **The feed.** Pony gives each scooter a new `bike_id` on every request and

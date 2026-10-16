@@ -291,6 +291,15 @@ describe('ScooterCard', () => {
     expect(document.querySelector('.card-footnote')).toBeNull();
   });
 
+  it('opens Lime’s app on a phone when the feed links no scooter', () => {
+    vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue('Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X)');
+    renderCard({}, { rental_uris: undefined });
+
+    const open = screen.getByRole('link', { name: 'Open in Lime' });
+    expect(open).toHaveAttribute('href', 'https://lime.bike/');
+    expect(open).toHaveClass('card-action-primary');
+  });
+
   it('leaves directions alone when there is no way to open the provider app', () => {
     renderCard({}, { rental_uris: undefined });
 

@@ -4,6 +4,7 @@ import {
   browserRentalLink,
   legacyRentalLink,
   normalizeRentalUris,
+  operatorAppLink,
   rentalLinkForPlatform,
   rentalPlatform,
   safeRentalUri,
@@ -198,5 +199,22 @@ describe('rental links', () => {
     expect(browserRentalLink(scooter, 'Mozilla/5.0 (Linux; Android 16)')).toContain(
       'platform=android'
     );
+  });
+
+  it('opens Lime’s and Bird’s apps on phones, where their feeds link no scooter', () => {
+    expect(operatorAppLink('lime', 'ios')).toBe('https://lime.bike/');
+    expect(operatorAppLink('lime', 'android')).toBe('https://lime.bike/');
+    expect(operatorAppLink('bird', 'ios')).toBe('https://ride.bird.co/');
+    // A computer has no app to open, and other operators' feeds link their scooters.
+    expect(operatorAppLink('bird', 'web')).toBeNull();
+    expect(operatorAppLink('dott', 'ios')).toBeNull();
+    expect(operatorAppLink('unknown', 'android')).toBeNull();
+  });
+
+  it('keeps each operator’s app link among the links allowed for that operator', () => {
+    for (const provider of ['lime', 'bird']) {
+      const link = operatorAppLink(provider, 'ios');
+      expect(safeRentalUri(provider, link, { httpsOnly: true })).toBe(link);
+    }
   });
 });

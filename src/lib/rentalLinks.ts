@@ -1,3 +1,4 @@
+import { PROVIDERS } from '@/generated/providers';
 import type { RentalUris, Vehicle } from '@/generated/scooterApi';
 
 export type RentalPlatform = 'ios' | 'android' | 'web';
@@ -220,6 +221,15 @@ export function rentalLinkForPlatform(
     if (safe) return safe;
   }
   return null;
+}
+
+/**
+ * Where the feed links no scooter, as Lime's and Bird's never do, a phone still opens the
+ * operator's app: on its universal link, whose page sends a phone without the app to the app's
+ * store. A computer has no app to open.
+ */
+export function operatorAppLink(provider: string, platform: RentalPlatform): string | null {
+  return platform === 'web' ? null : PROVIDERS[provider]?.app?.link ?? null;
 }
 
 export function browserRentalLink(

@@ -1122,12 +1122,18 @@ private struct ScooterCard: View {
                     .transition(.opacity)
             }
 
-            // "Open in …" is the wider of the two.
-            DockActionRow(weights: scooter.rentalURL == nil ? [] : [1.5, 1]) {
-                if scooter.rentalURL != nil {
+            // "Open in …" is the wider of the two. Where the feed links no scooter, as Lime's
+            // and Bird's never do, it opens the operator's app, or else its App Store page.
+            DockActionRow(weights: scooter.rentalURL == nil && scooter.operatorApp == nil ? [] : [1.5, 1]) {
+                if scooter.rentalURL != nil || scooter.operatorApp != nil {
                     Button {
-                        ScooterAnalytics.shared.track("rental_open", provider: scooter.provider)
-                        Task { await scooter.openRental() }
+                        if scooter.rentalURL != nil {
+                            ScooterAnalytics.shared.track("rental_open", provider: scooter.provider)
+                            Task { await scooter.openRental() }
+                        } else {
+                            ScooterAnalytics.shared.track("rental_open", provider: scooter.provider, result: "app")
+                            Task { await scooter.openOperatorApp() }
+                        }
                     } label: {
                         Label(
                             String(format: String(localized: "Open in %@"), providerName),

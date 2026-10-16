@@ -7,7 +7,7 @@ import { selectionFeedback } from '@/lib/feedback';
 import { useI18n } from '@/lib/i18n';
 import { providerInkColor, providerSurfaceColor } from '@/lib/providerColor';
 import type { ActiveCurfew } from '@/lib/rentalCurfews';
-import { browserRentalLink } from '@/lib/rentalLinks';
+import { operatorAppLink, rentalLinkForPlatform, rentalPlatform } from '@/lib/rentalLinks';
 import { RIDE_DURATIONS, currencyFractionDigits, formatRidePrice, ridePriceQuote } from '@/lib/ridePrice';
 import { PROVIDERS, type Vehicle } from '@/lib/types';
 import { formatUiText } from '@/lib/uiText';
@@ -86,11 +86,11 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
   const gone = cardWalk.view?.phase === 'gone';
   const provider = PROVIDERS[vehicle.provider];
   const name = provider?.name ?? vehicle.provider;
-  const rentalLink = browserRentalLink(
-    vehicle,
-    typeof navigator === 'undefined' ? '' : navigator.userAgent,
-    typeof navigator === 'undefined' ? 0 : navigator.maxTouchPoints
-  );
+  const platform = typeof navigator === 'undefined' ? 'web' : rentalPlatform(navigator.userAgent, navigator.maxTouchPoints);
+  const scooterLink = rentalLinkForPlatform(vehicle, platform);
+  // Lime's and Bird's feeds link no scooter: a phone opens their app instead, or its store page.
+  const appLink = scooterLink ? null : operatorAppLink(vehicle.provider, platform);
+  const rentalLink = scooterLink ?? appLink;
   const quote = vehicle.pricing ? ridePriceQuote(vehicle.pricing, duration) : null;
   const { battery, range_m: range } = vehicle;
   const figures = cardFigures({ walk: walk !== null, battery: battery !== null, range: range !== null, price: quote !== null });
@@ -259,7 +259,7 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
               href={rentalLink}
               target="_blank"
               rel="noreferrer"
-              onClick={() => { track('rental_open', { provider: vehicle.provider }); selectionFeedback(); }}
+              onClick={() => { track('rental_open', { provider: vehicle.provider, ...(appLink && { result: 'app' }) }); selectionFeedback(); }}
             >
               <Icon name="scooter" size={18} />
               {t('card.openIn', { name })}

@@ -89,6 +89,21 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
+    /// The operator's app, for scooters whose feed gives no link: a universal link the app claims
+    /// and its App Store page.
+    struct OperatorApp: Equatable, Sendable {
+        let link: URL
+        let appStore: URL
+    }
+
+    var app: OperatorApp? {
+        switch self {
+        case .bird: OperatorApp(link: URL(string: "https://ride.bird.co/")!, appStore: URL(string: "https://apps.apple.com/app/id1260842311")!)
+        case .lime: OperatorApp(link: URL(string: "https://lime.bike/")!, appStore: URL(string: "https://apps.apple.com/app/id1199780189")!)
+        default: nil
+        }
+    }
+
     var color: Color { Color(uiColor: uiColor) }
 
     var uiColor: UIColor {

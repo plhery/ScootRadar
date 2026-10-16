@@ -43,6 +43,13 @@ function validateCatalog() {
     if (!(matchers.exact?.length || matchers.prefixes?.length)) {
       throw new Error(`Provider ${provider.key} needs a system ID matcher`);
     }
+    // The operator's app, for scooters whose feed gives no link: a universal link the app claims,
+    // whose page sends a phone without the app to its store, and the app's App Store id.
+    if (provider.app !== undefined && !(
+      /^https:\/\/[a-z0-9.-]+\/$/.test(provider.app.link) && Number.isInteger(provider.app.appStoreId) && provider.app.appStoreId > 0
+    )) {
+      throw new Error(`Provider ${provider.key}: app needs an https link to a site's root and an App Store id`);
+    }
   }
 }
 
@@ -53,7 +60,8 @@ const matcherOrder = [...providers].sort((a, b) => longestPrefix(b) - longestPre
 
 function typescriptCatalog() {
   const entries = providers.map(provider => (
-    `  ${provider.key}: { name: ${JSON.stringify(provider.name)}, color: ${JSON.stringify(provider.color)}, initial: ${JSON.stringify(provider.initial)} },`
+    `  ${provider.key}: { name: ${JSON.stringify(provider.name)}, color: ${JSON.stringify(provider.color)}, initial: ${JSON.stringify(provider.initial)}`
+    + `${provider.app ? `, app: { link: ${JSON.stringify(provider.app.link)}, appStoreId: ${provider.app.appStoreId} }` : ''} },`
   )).join('\n');
   const matchers = matcherOrder.map(provider => (
     `  ${provider.key}: ${JSON.stringify(provider.systemIds ?? {})},`
@@ -65,6 +73,8 @@ export interface ProviderConfig {
   name: string;
   color: string;
   initial: string;
+  /** The operator's app, for scooters whose feed gives no link: a universal link the app claims, whose page sends a phone without the app to its store. */
+  app?: { link: string; appStoreId: number };
 }
 
 const PROVIDER_DEFINITIONS = {
@@ -116,6 +126,10 @@ function swiftCatalog() {
   const initials = providers.map(provider => (
     `        case .${provider.key}: ${JSON.stringify(provider.initial)}`
   )).join('\n');
+  const apps = providers.filter(provider => provider.app).map(provider => (
+    `        case .${provider.key}: OperatorApp(link: URL(string: ${JSON.stringify(provider.app.link)})!, `
+    + `appStore: URL(string: "https://apps.apple.com/app/id${provider.app.appStoreId}")!)`
+  )).join('\n');
   const colors = providers.map(provider => {
     const [red, green, blue] = swiftColor(provider.color);
     return `        case .${provider.key}: UIColor(red: ${red}, green: ${green}, blue: ${blue}, alpha: 1)`;
@@ -140,6 +154,20 @@ ${names}
     var shortName: String {
         switch self {
 ${initials}
+        }
+    }
+
+    /// The operator's app, for scooters whose feed gives no link: a universal link the app claims
+    /// and its App Store page.
+    struct OperatorApp: Equatable, Sendable {
+        let link: URL
+        let appStore: URL
+    }
+
+    var app: OperatorApp? {
+        switch self {
+${apps}
+        default: nil
         }
     }
 

@@ -4,14 +4,16 @@ export interface ProviderConfig {
   name: string;
   color: string;
   initial: string;
+  /** The operator's app, for scooters whose feed gives no link: a universal link the app claims, whose page sends a phone without the app to its store. */
+  app?: { link: string; appStoreId: number };
 }
 
 const PROVIDER_DEFINITIONS = {
   bolt: { name: "Bolt", color: "#00cc44", initial: "B" },
-  bird: { name: "Bird", color: "#222222", initial: "Bi" },
+  bird: { name: "Bird", color: "#222222", initial: "Bi", app: { link: "https://ride.bird.co/", appStoreId: 1260842311 } },
   dott: { name: "Dott", color: "#ff6600", initial: "D" },
   hopp: { name: "Hopp", color: "#00bcd4", initial: "H" },
-  lime: { name: "Lime", color: "#32cd32", initial: "L" },
+  lime: { name: "Lime", color: "#32cd32", initial: "L", app: { link: "https://lime.bike/", appStoreId: 1199780189 } },
   voi: { name: "Voi", color: "#ff1493", initial: "V" },
   pony: { name: "Pony", color: "#00a7a0", initial: "P" },
   publibike: { name: "PubliBike / Velospot", color: "#9b59b6", initial: "PB" },

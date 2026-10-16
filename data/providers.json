@@ -13,7 +13,8 @@
     "color": "#222222",
     "initial": "Bi",
     "switzerland": true,
-    "systemIds": { "prefixes": ["bird"] }
+    "systemIds": { "prefixes": ["bird"] },
+    "app": { "link": "https://ride.bird.co/", "appStoreId": 1260842311 }
   },
   {
     "key": "dott",
@@ -37,7 +38,8 @@
     "color": "#32cd32",
     "initial": "L",
     "switzerland": true,
-    "systemIds": { "prefixes": ["lime"] }
+    "systemIds": { "prefixes": ["lime"] },
+    "app": { "link": "https://lime.bike/", "appStoreId": 1199780189 }
   },
   {
     "key": "voi",

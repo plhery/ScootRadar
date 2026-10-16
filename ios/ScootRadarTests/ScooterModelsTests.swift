@@ -373,6 +373,48 @@ final class ScooterModelsTests: XCTestCase {
         XCTAssertNil(nothing)
     }
 
+    func testOpensTheOperatorsAppOrItsStorePageWhereTheFeedLinksNoScooter() async {
+        func scooter(_ provider: String, rentalURIs: ScooterRentalURIs? = nil) -> Scooter {
+            Scooter(
+                provider: provider,
+                latitude: 40.7128,
+                longitude: -74.006,
+                battery: 64,
+                rangeMeters: nil,
+                vehicleID: "\(provider)-1",
+                deepLink: nil,
+                rentalURIs: rentalURIs,
+                distanceMeters: nil
+            )
+        }
+        let lime = scooter("lime")
+        XCTAssertEqual(lime.operatorApp?.link.absoluteString, "https://lime.bike/")
+        XCTAssertEqual(scooter("bird").operatorApp?.appStore.absoluteString, "https://apps.apple.com/app/id1260842311")
+
+        // With Lime installed, its universal link opens it; only an app may take that link.
+        var tried: [String] = []
+        let opened = await lime.openOperatorApp { url, appOnly in
+            tried.append("\(url.absoluteString) \(appOnly)")
+            return true
+        }
+        XCTAssertEqual(tried, ["https://lime.bike/ true"])
+        XCTAssertEqual(opened?.absoluteString, "https://lime.bike/")
+
+        // Without it, the App Store page opens instead.
+        tried = []
+        let store = await lime.openOperatorApp { url, appOnly in
+            tried.append("\(url.absoluteString) \(appOnly)")
+            return !appOnly
+        }
+        XCTAssertEqual(tried, ["https://lime.bike/ true", "https://apps.apple.com/app/id1199780189 false"])
+        XCTAssertEqual(store?.absoluteString, "https://apps.apple.com/app/id1199780189")
+
+        // A scooter its feed links keeps that link, and other operators have no app to fall back on.
+        let linked = scooter("lime", rentalURIs: ScooterRentalURIs(ios: "https://lime.bike/vehicle/1", android: nil, web: nil))
+        XCTAssertNil(linked.operatorApp)
+        XCTAssertNil(scooter("dott").operatorApp)
+    }
+
     func testRideEstimateDurationPolicyAcceptsOnlyMenuDurations() {
         XCTAssertEqual(RideEstimateDuration.allowedMinutes, [5, 10, 15, 20, 30])
         XCTAssertEqual(RideEstimateDuration.defaultMinutes, 10)

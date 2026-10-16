@@ -100,6 +100,26 @@ struct Scooter: Identifiable, Hashable, Sendable {
         return nil
     }
 
+    /// The operator's app, where the feed links no scooter: Lime's and Bird's never do.
+    var operatorApp: ScooterProvider.OperatorApp? {
+        rentalURLs.isEmpty ? providerInfo?.app : nil
+    }
+
+    /// Opens the operator's app on its universal link, which opens only an installed app;
+    /// without the app, its App Store page opens instead. Nothing asks iOS which apps are
+    /// installed. Returns the link that opened.
+    @MainActor
+    @discardableResult
+    func openOperatorApp(
+        using open: @MainActor (URL, _ appOnly: Bool) async -> Bool = { url, appOnly in
+            await UIApplication.shared.open(url, options: appOnly ? [.universalLinksOnly: true] : [:])
+        }
+    ) async -> URL? {
+        guard let app = operatorApp else { return nil }
+        if await open(app.link, true) { return app.link }
+        return await open(app.appStore, false) ? app.appStore : nil
+    }
+
     /// "320 m" below a kilometre; "1.4 km" and "24 km" from there, as on the
     /// web. The system's rounding for roads would say "300 m" for the same scooter.
     /// Where the region measures in miles, as in the US and the UK, the system
