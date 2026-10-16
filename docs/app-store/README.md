@@ -74,8 +74,7 @@ simulator's location there, serves every language that has none of its own:
 the nearest scooters, a scooter's card, the walking route, the city at night,
 the filters and the street at night. The German (`de-DE`) and French (`fr-FR`)
 sets show the same scenes in Zürich, which has the most operators on the map
-(central Paris bans shared scooters). The French 6.9" set has the first three
-so far.
+(central Paris bans shared scooters).
 To take them again: set the simulator's location
 (`xcrun simctl location <device> set 47.3779,8.5403`), the status bar
 (`xcrun simctl status_bar <device> override --time 9:41 …`) and the app's
