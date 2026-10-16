@@ -221,6 +221,10 @@ bay, and their apps show their own rules.
   reading both would count about 1,550 twice.
 - **Open data:** data.gov.il has cycle networks only, and tel-aviv.gov.il
   answers HTTP 571 outside Israel.
+- **No shared scooters found** in Jerusalem, Haifa or Be'er Sheva on 16
+  October 2026. Jerusalem's only service was a 2019 pilot in Har Hotzvim, with
+  Bird, Lime and Wind, and Bird's nationwide `israel` feed has no scooter in
+  any of the three.
 
 ## Recheck
 

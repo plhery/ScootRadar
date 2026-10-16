@@ -470,6 +470,9 @@ banned shared scooters, and feeds that were empty when checked.
     15 October. Its scooters still ride, so Holon is covered.
   - **Open data:** data.gov.il has cycle networks only; tel-aviv.gov.il
     answers HTTP 571 outside Israel, and gov.il 403 to scripts.
+  - **No shared scooters found** in Jerusalem, Haifa or Be'er Sheva on 16
+    October 2026. Jerusalem's only service was a 2019 pilot in Har Hotzvim,
+    and Bird's nationwide `israel` feed has no scooter in any of the three.
 - **New Zealand** ([guide](new-zealand-scooter-feeds.md#known-gaps)):
   Flamingo in Auckland, Christchurch, Wellington, Dunedin, Tauranga,
   Palmerston North, Porirua, Rangiora and Kaiapoi, and JOLT in New Plymouth
