@@ -263,7 +263,8 @@ export const RECORDED_WORLD_PHOTON_ANSWERS: Record<string, RecordedFeature[]> = 
 export type RecordedResult = [fields: Record<string, unknown>, lat: number, lon: number];
 
 /** What Geoapify answered each request of one search: for towns of the name typed,
-    for places close to the map centre or to the city typed, and for places anywhere. */
+    for places close to the map centre or to the city typed, or in the rider's country
+    without a centre (nearby), and for places anywhere. */
 export interface RecordedSearch {
   towns?: RecordedResult[];
   nearby?: RecordedResult[];
@@ -449,6 +450,8 @@ export const RECORDED_GEOAPIFY_ANSWERS: Record<string, RecordedSearch> = {
       [{ result_type: 'city', name: 'Springfield Township', city: 'Springfield Township', county: 'Burlington County', state: 'New Jersey', country: 'United States', country_code: 'us' }, 40.0432, -74.6454],
       [{ result_type: 'city', name: 'Town of Springfield', postcode: '53529', city: 'Town of Springfield', county: 'Dane County', state: 'Wisconsin', country: 'United States', country_code: 'us' }, 43.1987, -89.566],
     ],
+    // In Switzerland, on 16 October 2026.
+    nearby: [],
     anywhere: [
       [{ result_type: 'city', name: 'Springfield', city: 'Springfield', county: 'Greene County', state: 'Missouri', country: 'United States', country_code: 'us' }, 37.2082, -93.2923],
       [{ result_type: 'city', name: 'Springfield', city: 'Springfield', county: 'Sangamon County', state: 'Illinois', country: 'United States', country_code: 'us' }, 39.799, -89.644],
@@ -946,6 +949,24 @@ export const RECORDED_GEOAPIFY_ANSWERS: Record<string, RecordedSearch> = {
       [{ result_type: 'county', name: 'Austin', county: 'Austin', state: 'Texas', country: 'United States', country_code: 'us', rank: { confidence: 0.5 } }, 29.8916, -96.2443],
       [{ result_type: 'county', name: 'Austin County', county: 'Austin County', state: 'Texas', country: 'United States', country_code: 'us', rank: { confidence: 0.5 } }, 29.9333, -96.2733],
       [{ result_type: 'amenity', name: 'Austin College', housenumber: '900', street: 'North Grand Avenue', postcode: '75090', city: 'Sherman', county: 'Grayson County', state: 'Texas', country: 'United States', country_code: 'us', rank: { confidence: 0.29 } }, 33.6474, -96.598],
+    ],
+  },
+  // lang=en, without a map centre, for a rider in Israel (bias and filter countrycode:il), on 16 October 2026
+  'Rothschild in Israel': {
+    towns: [
+      [{ result_type: 'city', name: 'Rothschild', postcode: '54474', city: 'Rothschild', county: 'Marathon County', state: 'Wisconsin', country: 'United States', country_code: 'us' }, 44.8872, -89.6201],
+    ],
+    nearby: [
+      [{ result_type: 'amenity', name: 'Rothschild', street: 'Rothschild', postcode: '6806546', city: 'Bat Yam', suburb: 'בת ים', district: 'בת ים', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', country_code: 'il' }, 32.0267, 34.7445],
+      [{ result_type: 'amenity', name: 'Rothschild', housenumber: '22', street: 'Sderot Rothschild', postcode: '6688218', city: 'Tel-Aviv', suburb: 'Lev Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', country_code: 'il' }, 32.0628, 34.7716],
+      [{ result_type: 'amenity', name: 'Rothschild', housenumber: '45', street: 'Amishav', postcode: '6767589', city: 'Givatayim', suburb: 'Tel Haim', district: 'Tel Haim', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', country_code: 'il' }, 32.0622, 34.8058],
+      [{ result_type: 'amenity', name: 'Rothschild 48', housenumber: '48', street: 'Sderot Rothschild', postcode: '6578103', city: 'Tel-Aviv', suburb: 'Lev Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', country_code: 'il' }, 32.0639, 34.7749],
+      [{ result_type: 'amenity', name: 'Rothschild 49 tel aviv', housenumber: '49', street: 'Sderot Rothschild', postcode: '6578103', city: 'Tel-Aviv', suburb: 'Lev Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', country_code: 'il' }, 32.0643, 34.7751],
+      [{ result_type: 'amenity', name: 'Rothschild mall', housenumber: '45', street: 'Rothschild', postcode: '7539411', city: 'Rishon LeZion', suburb: 'Abramovich', district: 'Abramovich', county: 'Rehovot Subdistrict', state: 'Center District', country: 'Israel', country_code: 'il' }, 31.9634, 34.8014],
+      [{ result_type: 'amenity', name: '65 Rothschild Av./ Nachmami St.', street: 'Sderot Rothschild', postcode: '6511604', city: 'Tel-Aviv', suburb: 'Lev Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', country_code: 'il' }, 32.0652, 34.7766],
+      [{ result_type: 'amenity', name: 'The Rothschild Hotel', housenumber: '96', street: 'Sderot Rothschild', postcode: '6527401', city: 'Tel-Aviv', suburb: 'Lev Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', country_code: 'il' }, 32.0673, 34.7781],
+      [{ result_type: 'amenity', name: 'the rothschild 71', housenumber: '71', street: 'Sderot Rothschild', postcode: '6511604', city: 'Tel-Aviv', suburb: 'Lev Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', country_code: 'il' }, 32.0658, 34.7768],
+      [{ result_type: 'amenity', name: 'Coffee Rothschild Nahariya', street: 'HaMaapilim', postcode: '2221201', city: 'Nahariyya', suburb: 'Kiriyat Ben-Gurion', district: 'Kiriyat Ben-Gurion', county: 'Acre Subdistrict', state: 'North District', country: 'Israel', country_code: 'il' }, 33.0076, 35.0893],
     ],
   },
 };

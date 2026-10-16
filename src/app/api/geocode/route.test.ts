@@ -819,7 +819,10 @@ describe('Geoapify', () => {
     await GET(request('Bahnhofstrasse 1', 'de'));
     await POST(postRequest('Bahnhofstrasse 1', 'de'));
 
-    expect(asked(fetchMock, GEOAPIFY_HOST).map(url => url.searchParams.get('bias'))).toEqual(['countrycode:ch', 'countrycode:ch']);
+    const places = asked(fetchMock, GEOAPIFY_HOST);
+    expect(places.map(url => url.searchParams.get('bias'))).toEqual(['countrycode:ch', 'countrycode:ch', 'countrycode:ch', 'countrycode:ch']);
+    // In Switzerland, then anywhere, as nothing was found there.
+    expect(places.map(url => url.searchParams.get('filter'))).toEqual(['countrycode:ch', null, 'countrycode:ch', null]);
   });
 
   it.each<[fields: Record<string, unknown>, title: string, subtitle: string]>([
@@ -1181,8 +1184,8 @@ describe('recorded Geoapify answers', () => {
       ['Rheinfallweg 17', '8447 Dachsen', DATA],
       ['Rheinfallstrasse 20', '8447 Dachsen', DATA],
     ]],
-    // Of twenty across the world, the American ones Geoapify knows best, none of them nearer Switzerland than another.
-    ['Springfield', 'en', undefined, ['towns', 'anywhere'], [
+    // None in Switzerland, where places are looked for first; of twenty across the world, the American ones Geoapify knows best, none of them nearer Switzerland than another.
+    ['Springfield', 'en', undefined, ['towns', 'nearby', 'anywhere'], [
       ['Springfield', 'Missouri, United States', NO_DATA],
       ['Springfield', 'Illinois, United States', NO_DATA],
       ['Springfield', 'Massachusetts, United States', NO_DATA],

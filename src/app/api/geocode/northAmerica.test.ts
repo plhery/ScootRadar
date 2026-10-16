@@ -231,8 +231,12 @@ describe('the search in North America', () => {
     await search('Congress Ave', { country: 'United States' });
     await search('Congress Ave');
 
-    expect(asked(GEOAPIFY_HOST).filter(url => url.searchParams.get('type') !== 'city').map(url => url.searchParams.get('bias')))
-      .toEqual(['countrycode:us', 'proximity:-97.74,30.27', 'proximity:-97.74,30.27', 'countrycode:ch', 'countrycode:ch']);
+    // Without a centre, places in that country first, then anywhere when none there is what was typed.
+    const places = asked(GEOAPIFY_HOST).filter(url => url.searchParams.get('type') !== 'city');
+    expect(places.map(url => url.searchParams.get('bias'))).toEqual(['countrycode:us', 'countrycode:us',
+      'proximity:-97.74,30.27', 'proximity:-97.74,30.27', 'countrycode:ch', 'countrycode:ch', 'countrycode:ch', 'countrycode:ch']);
+    expect(places.map(url => url.searchParams.get('filter'))).toEqual(['countrycode:us', null,
+      'circle:-97.74,30.27,50000', null, 'countrycode:ch', null, 'countrycode:ch', null]);
   });
 
   it('ranks the towns of the visitor\'s country first without a centre', async () => {

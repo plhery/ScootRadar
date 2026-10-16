@@ -210,6 +210,25 @@ describe('the search in Oceania and West Asia', () => {
     expect(wisconsin[0]).toEqual(['Rothschild', 'Wisconsin, United States']);
   });
 
+  it('finds the places named Rothschild in Israel after Rothschild, Wisconsin, for a rider there without a map centre', async () => {
+    inWorker({ GEOAPIFY_API_KEY: 'key' });
+    const asked = stubUpstreams({ geoapify: RECORDED_GEOAPIFY_ANSWERS['Rothschild in Israel'] });
+
+    const found = await rows(await search('Rothschild', { country: 'IL' }));
+
+    // Asked anywhere, Geoapify finds the town alone; asked in Israel, the boulevard's places and
+    // those of its name in the towns around. Not anywhere after them.
+    expect(asked(GEOAPIFY_HOST).map(url => [url.searchParams.get('type'), url.searchParams.get('filter')]))
+      .toEqual([['city', null], [null, 'countrycode:il']]);
+    expect(found).toEqual([
+      ['Rothschild', 'Wisconsin, United States'],
+      ['Rothschild', '6806546 Bat Yam'],
+      ['Rothschild', '22 Sderot Rothschild, 6688218 Tel-Aviv'],
+      ['Rothschild', '45 Amishav, 6767589 Givatayim'],
+      ['Rothschild 48', '48 Sderot Rothschild, 6578103 Tel-Aviv'],
+    ]);
+  });
+
   it('finds Austin, Texas, first for "Austin TX" over Portland, though no service calls Texas TX', async () => {
     inWorker({ GEOAPIFY_API_KEY: 'key' });
     stubUpstreams({ geoapify: RECORDED_GEOAPIFY_ANSWERS['Austin TX'] });

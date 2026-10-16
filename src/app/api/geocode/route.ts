@@ -557,6 +557,8 @@ interface GeoapifyAsk {
   text?: string;
   /** Only places this close to where places come first. */
   withinM?: number;
+  /** Only places in the country that comes first without a map centre. */
+  atHome?: boolean;
   /** Only towns. */
   towns?: boolean;
   timeoutMs: number;
@@ -576,6 +578,7 @@ async function searchGeoapify(search: Search, key: string, ask: GeoapifyAsk): Pr
     apiKey: key,
   });
   if (near && ask.withinM) params.set('filter', `circle:${near[1]},${near[0]},${ask.withinM}`);
+  if (!near && ask.atHome) params.set('filter', `countrycode:${search.home.toLowerCase()}`);
   if (ask.towns) params.set('type', 'city');
   // A number alone is a postcode, which Geoapify finds only when asked for one:
   // otherwise it answers with the quarters around it, and towns whose postcodes start with it.
@@ -596,16 +599,19 @@ async function searchGeoapify(search: Search, key: string, ask: GeoapifyAsk): Pr
   return { ok: true, value: { sources: ['Geoapify'], candidates: ask.towns ? candidates.filter(({ town }) => town) : candidates } };
 }
 
-/** Geoapify's places: those close to where places come first, and those farther
-    when none close by is what was typed. An address typed with its city, in the city. */
+/** Geoapify's places: those close to the map centre, or in the rider's country without
+    one, and those anywhere when none of these is what was typed. An address typed with
+    its city, in the city. */
 async function geoapifyPlaces(search: Search, key: string): Promise<Upstream<Found>> {
   const anywhere = () => searchGeoapify(search, key, { timeoutMs: GEOAPIFY_TIMEOUT_MS });
-  if (!search.near) return anywhere();
   // Without the city's name: Geoapify finds "Bahnhofstrasse 10" in Biel, but
   // nothing for "Bahnhofstrasse 10 Biel", as it calls the city Biel/Bienne.
+  // Without a map centre, in the rider's country: asked anywhere, even with that
+  // country's places favoured, Geoapify finds Rothschild, Wisconsin, alone for
+  // "Rothschild", and the places on Tel Aviv's boulevard only when asked in Israel.
   const nearby = await searchGeoapify(search, key, search.address
     ? { text: search.address, withinM: CITY_SEARCH_M, timeoutMs: GEOAPIFY_TIMEOUT_MS }
-    : { withinM: NEARBY_SEARCH_M, timeoutMs: GEOAPIFY_TIMEOUT_MS });
+    : search.near ? { withinM: NEARBY_SEARCH_M, timeoutMs: GEOAPIFY_TIMEOUT_MS } : { atHome: true, timeoutMs: GEOAPIFY_TIMEOUT_MS });
   if (!nearby.ok || nearby.value.candidates.some(({ miss }) => !miss)) return nearby;
   const farther = await anywhere();
   if (!farther.ok) return farther;
