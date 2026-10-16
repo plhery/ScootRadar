@@ -294,8 +294,19 @@ the dock and each scooter's card state the ban and when renting resumes.
 ## Known gaps
 
 - **Portugal:**
-  - Bolt runs in Lisboa, Porto, Faro, Coimbra and elsewhere, with no public
-    feed. Lime has no feed for Porto or Faro.
+  - Bolt runs in Lisboa, Porto, Faro, Coimbra and elsewhere. Its GBFS is on
+    Portugal's access point
+    ([entry 10219](https://nap-portugal.imt-ip.pt/nap/), 6 January 2026) only
+    "on request, case by case", with possible costs. Porto's FIWARE broker
+    (`broker.fiware.urbanplatform.portodigital.pt`) holds about 1,000 Bolt
+    scooters, but it is unlicensed and hadn't been updated since 8 October
+    2026 when polled on the 16th. Lime has no feed for Porto or Faro (404),
+    and Link and Whoosh have left Portugal.
+  - Lisboa plans to suspend shared scooters: Mayor Moedas announced it on 15
+    October 2026, and the council discusses ending the agreements with Lime,
+    Bolt and Bird on 21 October, with removal by the end of 2026 or January 2027
+    ([Observador](https://observador.pt/2026/10/15/camara-de-lisboa-avanca-com-suspensao-do-sistema-de-trotinetes-partilhadas-ate-ao-final-do-ano/),
+    [ECO](https://eco.sapo.pt/2026/10/16/moedas-anuncia-suspensao-de-trotinetes-partilhadas-em-lisboa/)).
   - Braga banned shared scooters in September 2026; Espinho, Vila Real and
     Figueira da Foz ended or suspended them. Bird's Braga and Faro feeds are
     dead, and seven smaller Bird towns are empty.
@@ -304,8 +315,19 @@ the dock and each scooter's card state the ban and when renting resumes.
 - **Spain:**
   - Madrid, Barcelona, Valencia, Sevilla, Málaga, Zaragoza and the Basque
     Country have no shared scooters: banned, revoked or never licensed.
-  - Dott (Santa Cruz de Tenerife, Ibiza, Lanzarote and other resorts) and Bolt
-    (Oviedo) have no public feed.
+  - Dott runs Santa Cruz de Tenerife alone, with 646 scooters, and lists
+    Lanzarote, Murcia, Tarragona, Lorca, La Manga and Estepona. Its public API
+    names no Spanish region: `ibiza`, `murcia`, `tarragona`, `lorca` and
+    `la-manga` answer 403 (`ERR_REGION_OFFLINE`), Murcia's and Tarragona's
+    since mid-August 2026, and the others 404. Ibiza's 18-month pilot from May
+    2024 seems to have ended.
+  - Bird runs Oviedo (200 scooters and 100 e-bikes, on a four-year concession
+    from June 2025, after Bolt's) with no public system: `oviedo` answers 404.
+  - Las Palmas de Gran Canaria's public Sítyneta (87 scooters at 13 stations,
+    run by Sagulpa and booked in the Moxsi app) isn't in nextbike's feeds,
+    which list bicycles only.
+  - Spain's access point (nap.transportes.gob.es) carries public transport
+    only, with no shared-mobility data, as of 16 October 2026.
   - Hopp's Benidorm, Cartagena, Dénia, Fuengirola and Marbella feeds are empty.
   - Hoppy's other Spanish systems on ATOM Mobility list no scooters. Almería
     (id 2113, about 480 e-bikes on 13 October 2026), Cartagena (2206, about

@@ -149,14 +149,18 @@ banned shared scooters, and feeds that were empty when checked.
     scooter positions.
   - Zeus's UK feeds are stale; several Beryl and Dott schemes list bikes only.
 - **Portugal** ([guide](portuguese-spanish-icelandic-scooter-feeds.md#known-gaps)):
-  - Bolt (Lisboa, Porto, Faro, Coimbra) has no public feed, and Lime none for
-    Porto or Faro.
+  - Bolt (Lisboa, Porto, Faro, Coimbra) offers its GBFS only on request, on
+    Portugal's access point, and Lime has no feed for Porto or Faro.
+  - Lisboa plans to suspend shared scooters: its council discusses ending the
+    agreements with Lime, Bolt and Bird on 21 October 2026, with removal by the
+    end of 2026 or January 2027. Bird and Lime Lisboa would then empty.
   - Braga banned shared scooters in September 2026. Bird Braga and Faro are
     dead, and Bird Vila Nova de Gaia's 7 scooters never moved.
 - **Spain** ([guide](portuguese-spanish-icelandic-scooter-feeds.md#known-gaps)):
   - Madrid, Barcelona, Valencia, Sevilla, Málaga, Zaragoza and the Basque
     Country have no shared scooters.
-  - Dott (Santa Cruz de Tenerife, Ibiza, Lanzarote) and Bolt (Oviedo) have no
+  - Dott (Santa Cruz de Tenerife, Lanzarote, Murcia, Tarragona and other
+    towns), Bird in Oviedo and Las Palmas's public Sítyneta scooters have no
     public feed.
   - Hopp Benidorm, Cartagena, Dénia, Fuengirola and Marbella are empty.
     Hoppy's Almería, Cartagena and Mojácar & Vera systems list e-bikes only,
@@ -701,8 +705,10 @@ Bonaire had feeds to add. Survey files are in
 - **1 December 2026:** the EU's rule on multimodal travel information
   (Delegated Regulation (EU) 2024/490) requires shared-scooter availability on
   each country's national access point for the cities on the main EU transport
-  network, among them Vienna, Madrid and Warsaw. Austria, Spain, Poland and the
-  Netherlands may publish feeds then. So may Slovenia, for Ljubljana: look
+  network, among them Vienna and Warsaw, and in Spain Santa Cruz de Tenerife,
+  Oviedo, Murcia and Las Palmas. Austria, Spain, Portugal, Poland and the
+  Netherlands may publish feeds then. Portugal's access point already lists
+  Bolt's GBFS, on request; look there for Lime and Bird too. So may Slovenia, for Ljubljana: look
   for Bolt's feed 359 there, or at `mds.bolt.eu`, and for an official Kvik
   feed.
 - **1 December 2026:** JOLT in New Zealand: `hutt_valley` again, unless it
