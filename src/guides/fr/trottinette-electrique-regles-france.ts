@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Réglementation de la trottinette électrique en France en 2026 : âge, casque, assurance et amendes',
   lede: 'La réglementation de la trottinette électrique en France tient en quelques règles : 14 ans minimum, pas de permis, une assurance si la trottinette vous appartient, 25 km/h au maximum, la piste cyclable ou une route limitée à 50 km/h, le trottoir interdit et personne d’autre à bord. La loi nationale n’impose le casque que sur les routes à 80 km/h ouvertes aux trottinettes, mais un nombre croissant de préfets l’exigent dans leur département : à Paris et en petite couronne depuis le 7 août 2026, dans tout le Rhône, Lyon compris, depuis le 28 septembre 2026. La plupart des amendes sont de 35 € ou de 135 €.',
   published: '2026-10-12',
-  updated: '2026-10-14',
+  updated: '2026-10-16',
   sections: [
     {
       heading: 'Réglementation de la trottinette électrique : ce qui a changé depuis 2023',
@@ -22,7 +22,7 @@ const guide: Guide = {
             '**Novembre 2024** : un décret du 27 novembre autorise clignotants, feu stop et feux supplémentaires, fixés sur la trottinette ou portés sur vous.',
             '**Depuis avril 2026** : un nombre croissant de préfets imposent le casque, souvent avec un gilet, dans leur département.',
             '**Août 2026** : la loi du 18 août 2026 porte les peines pour l’alcool (0,8 g/l ou plus) et les drogues à 3 ans de prison et 9 000 € d’amende au maximum, contre 2 ans et 4 500 € auparavant.',
-            '**À l’étude** : un casque obligatoire dans toute la France. Aucun décret n’est annoncé au 12 octobre 2026.',
+            '**À l’étude** : un casque obligatoire dans toute la France, que demande une proposition de loi déposée le 6 octobre 2026. Au 16 octobre 2026, rien n’est voté ni décrété.',
           ],
         },
         'Pour justifier leurs arrêtés, les préfets citent le bilan national : 79 utilisateurs de trottinettes et d’autres EDPM tués en 2025, soit 34 de plus qu’en 2024, et environ 1 100 utilisateurs de trottinettes gravement blessés, en hausse de 33 %.',
@@ -192,7 +192,7 @@ const guide: Guide = {
     },
     {
       question: 'Le casque va-t-il devenir obligatoire dans toute la France ?',
-      answer: 'C’est à l’étude. Le 16 juin 2026, au Sénat, la ministre déléguée chargée de la citoyenneté, Marie-Pierre Vedrenne, a dit avoir demandé à la Sécurité routière d’étudier un casque obligatoire « en toutes circonstances et sur l’ensemble du territoire », pour les trottinettes comme pour les vélos. Au 12 octobre 2026, aucun décret n’était annoncé.',
+      answer: 'C’est à l’étude. Le 16 juin 2026, au Sénat, la ministre déléguée chargée de la citoyenneté, Marie-Pierre Vedrenne, a dit avoir demandé à la Sécurité routière d’étudier un casque obligatoire « en toutes circonstances et sur l’ensemble du territoire », pour les trottinettes comme pour les vélos. Le 6 octobre 2026, le député Yannick Favennec-Bécot a déposé une proposition de loi (n° 3256) qui l’imposerait à tout conducteur d’EDPM, location comprise, six mois après sa promulgation. Elle n’a pas encore été examinée en commission : au 16 octobre 2026, il n’y a ni loi ni décret.',
     },
   ],
   sources: [
@@ -207,6 +207,7 @@ const guide: Guide = {
     { title: 'Ville de Paris : Fin des trottinettes en libre-service à Paris le 31 août 2023 (résultats de la votation)', url: 'https://www.paris.fr/pages/pour-ou-contre-les-trottinettes-en-libre-service-23231' },
     { title: 'Bordeaux Métropole : Free-floating, la Métropole change de braquet', url: 'https://www.bordeaux-metropole.fr/actualites/free-floating-metropole-change-braquet' },
     { title: 'Sénat : question orale n° 1174S « Port du casque à trottinette », réponse du 16 juin 2026', url: 'https://www.senat.fr/questions/base/2026/qSEQ26061174S.html' },
+    { title: 'Assemblée nationale : proposition de loi n° 3256 du 6 octobre 2026 visant à rendre obligatoire le port du casque pour les utilisateurs de trottinettes et autres EDPM', url: 'https://www.assemblee-nationale.fr/dyn/17/dossiers/porte_casque_obligatoire_trottinettes_17e' },
     { title: 'Commune de Vauhallan : De nouvelles règles pour les trottinettes électriques en Essonne (12 octobre 2026)', url: 'https://www.vauhallan.fr/actualites/de-nouvelles-regles-pour-les-trottinettes-electriques-en-essonne-4675' },
   ],
 };
