@@ -1,0 +1,27 @@
+{
+  "verifiedOn": "2026-10-16",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "hopp_bq_bonaire",
+      "country": "BQ",
+      "provider": "hopp",
+      "city": "Kralendijk",
+      "timeZone": "America/Kralendijk",
+      "center": [
+        12.1473,
+        -68.274
+      ],
+      "bounds": {
+        "south": 12.0102,
+        "north": 12.2527,
+        "west": -68.368,
+        "east": -68.2127
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/bq-bonaire/gbfs.json",
+      "aliases": [
+        "Bonaire"
+      ]
+    }
+  ]
+}

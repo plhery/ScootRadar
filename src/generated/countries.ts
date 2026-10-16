@@ -3,11 +3,11 @@
 // countries' names or credits don't load every city.
 
 /** Every country with scooter data, in the order of data/countries.json. */
-export const COUNTRY_CODES = ["CH", "FR", "DE", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ"] as const;
+export const COUNTRY_CODES = ["CH", "FR", "DE", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ", "CR", "BQ"] as const;
 export type CountryCode = typeof COUNTRY_CODES[number];
 
 /** The countries with a catalog of their own, data/<adjective>-scooter-feeds.json: all but Switzerland. */
-export type CatalogCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR' | 'UA' | 'US' | 'CA' | 'AE' | 'SA' | 'IL' | 'NZ';
+export type CatalogCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR' | 'UA' | 'US' | 'CA' | 'AE' | 'SA' | 'IL' | 'NZ' | 'CR' | 'BQ';
 
 export type CountryNameLanguage = 'en' | 'de' | 'fr' | 'it' | 'nl' | 'nb' | 'pt' | 'es' | 'is';
 
@@ -39,6 +39,8 @@ export const COUNTRY_SOURCES = {
   SA: 'saudiarabia',
   IL: 'israel',
   NZ: 'newzealand',
+  CR: 'costarica',
+  BQ: 'caribbeannetherlands',
 } as const;
 
 export const COUNTRY_CONTINENTS: Record<CountryCode, Continent> = {
@@ -67,6 +69,8 @@ export const COUNTRY_CONTINENTS: Record<CountryCode, Continent> = {
   SA: 'asia',
   IL: 'asia',
   NZ: 'oceania',
+  CR: 'north-america',
+  BQ: 'north-america',
 };
 
 /**
@@ -103,6 +107,8 @@ export const COUNTRY_NAMES: Record<CountryCode, Readonly<Record<CountryNameLangu
   SA: { en: "Saudi Arabia", de: "Saudi-Arabien", fr: "Arabie saoudite", it: "Arabia Saudita", nl: "Saoedi-Arabië", nb: "Saudi-Arabia", pt: "Arábia Saudita", es: "Arabia Saudí", is: "Sádi-Arabía" },
   IL: { en: "Israel", de: "Israel", fr: "Israël", it: "Israele", nl: "Israël", nb: "Israel", pt: "Israel", es: "Israel", is: "Ísrael" },
   NZ: { en: "New Zealand", de: "Neuseeland", fr: "Nouvelle-Zélande", it: "Nuova Zelanda", nl: "Nieuw-Zeeland", nb: "New Zealand", pt: "Nova Zelândia", es: "Nueva Zelanda", is: "Nýja-Sjáland" },
+  CR: { en: "Costa Rica", de: "Costa Rica", fr: "Costa Rica", it: "Costa Rica", nl: "Costa Rica", nb: "Costa Rica", pt: "Costa Rica", es: "Costa Rica", is: "Kostaríka" },
+  BQ: { en: "Caribbean Netherlands", de: "Karibische Niederlande", fr: "Pays-Bas caribéens", it: "Caraibi Olandesi", nl: "Caribisch Nederland", nb: "Karibisk Nederland", pt: "Países Baixos Caribenhos", es: "Caribe neerlandés", is: "Karíbahafshluti Hollands" },
 };
 
 /** Typed beside a city to say which one is meant: "Lindau Deutschland". */
@@ -132,6 +138,8 @@ export const COUNTRY_SEARCH_WORDS: Record<CountryCode, readonly string[]> = {
   SA: ["saudi arabia", "saudi", "ksa", "saudi arabien", "arabie saoudite", "arabia saudita", "saoedi arabie", "arabia saudi", "sadi arabia", "السعوديه", "المملكه العربيه السعوديه"],
   IL: ["israel", "israele", "ישראל", "اسراييل"],
   NZ: ["new zealand", "nz", "aotearoa", "neuseeland", "nouvelle zelande", "nuova zelanda", "nieuw zeeland", "nova zelandia", "nueva zelanda", "nyja sjaland"],
+  CR: ["costa rica", "kostarika"],
+  BQ: ["caribbean netherlands", "bonaire", "karibische niederlande", "pays bas caribeens", "caraibi olandesi", "caribisch nederland", "karibisk nederland", "paises baixos caribenhos", "caribe neerlandes", "karibahafshluti hollands"],
 };
 
 /** Where a country's total stands, zoomed out: inland and about the middle of the country. */
@@ -184,6 +192,12 @@ export const COUNTRY_ANCHORS: Record<CountryCode, readonly [number, number]> = {
   // At the Centre of New Zealand, on Botanical Hill above Nelson: on land, halfway between the
   // fleets of Auckland and Dunedin, between the two islands.
   NZ: [-41.28, 173.29],
+  // At Santa Cruz, the seat of Tamarindo's canton, 28 km inland from it: on the Nicoya peninsula,
+  // where all of Costa Rica's scooters are, south of Nicaragua's border.
+  CR: [10.26, -85.58],
+  // On Bonaire, north of Kralendijk, where all the Caribbean Netherlands' scooters are: on land,
+  // away from Curaçao and from Venezuela's coast.
+  BQ: [12.17, -68.27],
 };
 
 /** A state or province of a country that has them. */
@@ -323,18 +337,20 @@ export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {
   SA: ["sa:Riyadh", "sa:Jeddah"],
   IL: ["il:Tel Aviv", "il:Ramat Gan", "il:Petah Tikva", "il:Ashdod", "il:Holon", "il:Herzliya"],
   NZ: ["nz:auk:Auckland", "nz:wgn:Wellington", "nz:can:Christchurch"],
+  CR: ["cr:Tamarindo"],
+  BQ: ["bq:Kralendijk"],
 };
 
 /** The order of the countries on the landing page. */
-export const LANDING_COUNTRY_ORDER: readonly CountryCode[] = ["CH", "DE", "FR", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ"];
+export const LANDING_COUNTRY_ORDER: readonly CountryCode[] = ["CH", "DE", "FR", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ", "CR", "BQ"];
 
 /** Whose data the map shows, country by country, for the X-Mobility-Data-Source header. */
-export const COUNTRY_DATA_ATTRIBUTION = "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW; Italy: Bird, Elerent GBFS; Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Portugal: Bird, Lime GBFS; Spain: Bird, Hopp, Hoppy GBFS; Iceland: Hopp GBFS; Sweden: Lime, Hopp GBFS; Latvia: Ride Mobility GBFS; Poland: Dott, Hopp GBFS; Hungary: Hopp GBFS; Greece: Hopp, Hoppy GBFS; Cyprus: Hopp GBFS; Finland: Hopp GBFS; Croatia: Hoppy GBFS; Ukraine: 3electra GBFS; United States: Bird, Bolt, Lime, Veo, Spin, Lyft GBFS; Canada: Bird, Lime GBFS; United Arab Emirates: Dott GBFS; Saudi Arabia: SAHAM, Dott GBFS; Israel: Bird, Dott, Lime GBFS; New Zealand: Flamingo GBFS (CC BY 4.0), JOLT GBFS";
+export const COUNTRY_DATA_ATTRIBUTION = "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW; Italy: Bird, Elerent GBFS; Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Portugal: Bird, Lime GBFS; Spain: Bird, Hopp, Hoppy GBFS; Iceland: Hopp GBFS; Sweden: Lime, Hopp GBFS; Latvia: Ride Mobility GBFS; Poland: Dott, Hopp GBFS; Hungary: Hopp GBFS; Greece: Hopp, Hoppy GBFS; Cyprus: Hopp GBFS; Finland: Hopp GBFS; Croatia: Hoppy GBFS; Ukraine: 3electra GBFS; United States: Bird, Bolt, Lime, Veo, Spin, Lyft GBFS; Canada: Bird, Lime GBFS; United Arab Emirates: Dott GBFS; Saudi Arabia: SAHAM, Dott GBFS; Israel: Bird, Dott, Lime GBFS; New Zealand: Flamingo GBFS (CC BY 4.0), JOLT GBFS; Costa Rica: Hopp GBFS; Caribbean Netherlands: Hopp GBFS";
 
 /** The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences. */
 export const COUNTRY_CREDIT_LINKS: readonly { label: string; href: string }[] = [
   { label: "DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio, Bird, Elerent, Hoppy, Ride Mobility, 3electra", href: "https://github.com/MobilityData/gbfs" },
-  { label: "US/CA: Bird, Bolt, Lime, Veo, Spin, Lyft", href: "https://github.com/MobilityData/gbfs" },
+  { label: "US/CA/CR/BQ: Bird, Bolt, Lime, Veo, Spin, Lyft, Hopp", href: "https://github.com/MobilityData/gbfs" },
   { label: "AE/SA/IL: Dott, SAHAM, Bird, Lime", href: "https://github.com/MobilityData/gbfs" },
   { label: "NZ: Flamingo, JOLT", href: "https://github.com/MobilityData/gbfs" },
   { label: "MobiData BW", href: "https://www.mobidata-bw.de/" },

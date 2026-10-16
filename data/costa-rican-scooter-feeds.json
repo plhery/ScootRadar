@@ -1,0 +1,28 @@
+{
+  "verifiedOn": "2026-10-16",
+  "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
+  "systems": [
+    {
+      "id": "hopp_cr_tamarindo",
+      "country": "CR",
+      "provider": "hopp",
+      "city": "Tamarindo",
+      "timeZone": "America/Costa_Rica",
+      "center": [
+        10.2984,
+        -85.84
+      ],
+      "bounds": {
+        "south": 10.2754,
+        "north": 10.3161,
+        "west": -85.8619,
+        "east": -85.8241
+      },
+      "discoveryUrl": "https://api.hopp.bike/gbfs/cr-tamarindo/gbfs.json",
+      "aliases": [
+        "Playa Tamarindo",
+        "Langosta"
+      ]
+    }
+  ]
+}

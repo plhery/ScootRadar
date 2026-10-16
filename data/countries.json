@@ -502,6 +502,36 @@
           { "code": "WGN", "name": "Wellington" }
         ]
       }
+    },
+    {
+      "code": "CR",
+      "continent": "north-america",
+      "catalog": "data/costa-rican-scooter-feeds.json",
+      "source": "costarica",
+      "names": { "en": "Costa Rica", "de": "Costa Rica", "fr": "Costa Rica", "it": "Costa Rica", "nl": "Costa Rica", "nb": "Costa Rica", "pt": "Costa Rica", "es": "Costa Rica", "is": "Kostaríka" },
+      "searchWords": ["costa rica", "kostarika"],
+      "anchor": [10.26, -85.58],
+      "anchorNote": "At Santa Cruz, the seat of Tamarindo's canton, 28 km inland from it: on the Nicoya peninsula, where all of Costa Rica's scooters are, south of Nicaragua's border.",
+      "featuredCities": ["cr:Tamarindo"],
+      "credits": {
+        "attribution": "Costa Rica: Hopp GBFS",
+        "gbfs": ["Hopp"]
+      }
+    },
+    {
+      "code": "BQ",
+      "continent": "north-america",
+      "catalog": "data/caribbean-netherlands-scooter-feeds.json",
+      "source": "caribbeannetherlands",
+      "names": { "en": "Caribbean Netherlands", "de": "Karibische Niederlande", "fr": "Pays-Bas caribéens", "it": "Caraibi Olandesi", "nl": "Caribisch Nederland", "nb": "Karibisk Nederland", "pt": "Países Baixos Caribenhos", "es": "Caribe neerlandés", "is": "Karíbahafshluti Hollands" },
+      "searchWords": ["caribbean netherlands", "bonaire", "karibische niederlande", "pays bas caribeens", "caraibi olandesi", "caribisch nederland", "karibisk nederland", "paises baixos caribenhos", "caribe neerlandes", "karibahafshluti hollands"],
+      "anchor": [12.17, -68.27],
+      "anchorNote": "On Bonaire, north of Kralendijk, where all the Caribbean Netherlands' scooters are: on land, away from Curaçao and from Venezuela's coast.",
+      "featuredCities": ["bq:Kralendijk"],
+      "credits": {
+        "attribution": "Caribbean Netherlands: Hopp GBFS",
+        "gbfs": ["Hopp"]
+      }
     }
   ]
 }

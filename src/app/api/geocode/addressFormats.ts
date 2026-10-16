@@ -30,6 +30,11 @@ export const ADDRESS_FORMATS: Readonly<Record<string, AddressFormat>> = {
   // Without postcodes: what OpenStreetMap tags as one there is a Makani number ("26661 88056"), a P.O. box or "00000".
   AE: { numberFirst: true, townLine: '{town}' },
   SA: { numberFirst: true, townLine: '{town} {postcode}', postcode: /\d{5}/ },
+  // Costa Rica's five-digit postcode comes after the town: "Tamarindo 50309".
+  CR: { townLine: '{town} {postcode}', postcode: /\d{5}/ },
+  // Bonaire and Curaçao have no postcodes; their addresses are written the Dutch way: "Kaya Grandi 22".
+  BQ: { townLine: '{town}' },
+  CW: { townLine: '{town}' },
 };
 
 /** A street with its house number, as the country writes it. A street named in Hebrew or Arabic keeps its number after it, as it is written there: "שדרות רוטשילד 22". */

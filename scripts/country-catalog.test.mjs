@@ -284,6 +284,11 @@ describe('the countries of data/countries.json', () => {
     expect(timeZoneProblem(undefined, 'CH')).toBe('needs its time zone, timeZone');
     expect(timeZoneProblem('Europe/Zurich', 'CH')).toBeNull();
     expect(timeZoneProblem('Europe/Berlin', 'CH')).toBe('has Europe/Berlin, a time zone of DE');
+    // Bonaire's zone is the Caribbean Netherlands', which ISO 3166 counts apart from the Netherlands.
+    expect(timeZoneProblem('America/Costa_Rica', 'CR')).toBeNull();
+    expect(timeZoneProblem('America/Kralendijk', 'BQ')).toBeNull();
+    expect(timeZoneProblem('America/Kralendijk', 'NL')).toBe('has America/Kralendijk, a time zone of BQ');
+    expect(timeZoneProblem('America/Curacao', 'BQ')).toBe('has America/Curacao, a time zone of CW');
   });
 
   it('refuses a night ban counted in another zone than its town\'s', () => {

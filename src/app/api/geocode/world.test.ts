@@ -72,6 +72,8 @@ const RIYADH: [number, number] = [24.71, 46.68];
 const NICOSIA: [number, number] = [35.17, 33.36];
 const AUSTIN: [number, number] = [30.27, -97.74];
 const TOKYO: [number, number] = [35.68, 139.69];
+const TAMARINDO: [number, number] = [10.3, -85.84];
+const KRALENDIJK: [number, number] = [12.15, -68.27];
 const ZURICH: [number, number] = [47.37, 8.54];
 const GEOAPIFY_HOST = 'api.geoapify.com';
 const PHOTON_HOST = 'photon.komoot.io';
@@ -306,6 +308,105 @@ describe('the search in Oceania and West Asia', () => {
     ] });
 
     expect((await rows(await search('Akko', { country: 'IL' })))[0]).toEqual(['Acre', 'North District, Israel']);
+  });
+});
+
+describe('the search in Central America and the Caribbean', () => {
+  // Bonaire's places, and Curaçao's, as Photon gives them: in the Netherlands.
+  const KAYA_GRANDI: Row[] = [
+    [{ type: 'street', name: 'Kaya Grandi', city: 'Kralendijk', district: 'Kralendijk', state: 'Nederland', country: 'Nederland', countrycode: 'NL' }, 12.1525, -68.2772],
+    [{ type: 'house', name: 'Bonaire Handmakers', street: 'Kaya Grandi', city: 'Kralendijk', state: 'Nederland', country: 'Nederland', countrycode: 'NL' }, 12.1509, -68.2768],
+    [{ type: 'house', housenumber: '22', street: 'Kaya Gusanio', locality: 'Katoentuin', district: 'Seru Grandi', state: 'Curaçao', country: 'Nederland', countrycode: 'NL' }, 12.0998, -68.847],
+  ];
+  const CARTAGENA: Row[] = [
+    [{ type: 'city', name: 'Cartagena', county: 'Campo de Cartagena y Mar Menor', state: 'Región de Murcia', country: 'España', countrycode: 'ES' }, 37.6155, -0.9875],
+    [{ type: 'city', name: 'Cartagena de Indias', county: 'Dique', state: 'Bolívar', country: 'Colombia', countrycode: 'CO' }, 10.4266, -75.5442],
+    [{ type: 'city', name: 'Cartagena', county: 'Provincia de San Antonio', state: 'Región de Valparaíso', country: 'Chile', countrycode: 'CL' }, -33.5468, -71.6032],
+    [{ type: 'street', name: 'Cartagena', postcode: '78253', county: 'Bexar', state: 'Texas', country: 'United States', countrycode: 'US' }, 29.4828, -98.7215],
+  ];
+
+  it('asks Photon within Central America near Tamarindo, and around Bonaire and Curaçao near Kralendijk', async () => {
+    const asked = stubUpstreams({});
+
+    for (const near of [TAMARINDO, KRALENDIJK, AUSTIN]) await search('Calle Central', { near });
+
+    expect(asked(PHOTON_HOST).map(url => url.searchParams.get('bbox'))).toEqual(['-92.5,7,-77.2,14', '-69.25,11.95,-68.1,12.45', '-170,14,-50,72']);
+  });
+
+  it('leaves out Colombia, Venezuela and Aruba, but not Central America, Bonaire or Curaçao', async () => {
+    stubUpstreams({ photon: [
+      [{ type: 'city', name: 'San José', state: 'San José', country: 'Costa Rica', countrycode: 'CR' }, 9.9326, -84.0796],
+      [{ type: 'city', name: 'Panamá', state: 'Panamá', country: 'Panamá', countrycode: 'PA' }, 8.9714, -79.5342],
+      [{ type: 'city', name: 'Turbo', state: 'Antioquia', country: 'Colombia', countrycode: 'CO' }, 8.0926, -76.7282],
+      [{ type: 'city', name: 'Cartagena de Indias', state: 'Bolívar', country: 'Colombia', countrycode: 'CO' }, 10.4266, -75.5442],
+      [{ type: 'city', name: 'Medellín', state: 'Antioquia', country: 'Colombia', countrycode: 'CO' }, 6.2443, -75.5736],
+      [{ type: 'city', name: 'Punto Fijo', state: 'Falcón', country: 'Venezuela', countrycode: 'VE' }, 11.6956, -70.1997],
+      [{ type: 'city', name: 'Coro', state: 'Falcón', country: 'Venezuela', countrycode: 'VE' }, 11.4045, -69.6734],
+      [{ type: 'city', name: 'Oranjestad', country: 'Aruba', countrycode: 'AW' }, 12.5186, -70.0358],
+      [{ type: 'city', name: 'Willemstad', state: 'Curaçao', country: 'Nederland', countrycode: 'NL' }, 12.1084, -68.9335],
+      [{ type: 'city', name: 'Rincon', state: 'Nederland', country: 'Nederland', countrycode: 'NL' }, 12.2443, -68.3289],
+    ] });
+
+    const found = await rows(await search('anything', { near: TAMARINDO }));
+
+    expect(found.map(([title]) => title).sort()).toEqual(['Panamá', 'Rincon', 'San José', 'Willemstad']);
+  });
+
+  it('finds no Cartagena of Colombia for a rider in the US, nor in Costa Rica', async () => {
+    stubUpstreams({ photon: CARTAGENA });
+
+    const nearAustin = await rows(await search('Cartagena', { near: AUSTIN }));
+    const atHome = await rows(await search('Cartagena', { country: 'US' }));
+    const inCostaRica = await rows(await search('Cartagena', { country: 'CR' }));
+
+    // Spain's, a town, before the street of Texas, as before Central America was searched.
+    expect(nearAustin).toEqual([['Cartagena', 'Región de Murcia, España'], ['Cartagena', 'Bexar, TX']]);
+    expect(atHome).toEqual([['Cartagena', 'Región de Murcia, España'], ['Cartagena', 'Bexar, TX']]);
+    expect(inCostaRica).toEqual(nearAustin);
+  });
+
+  it('finds Tamarindo, typed in full, without asking for places, from near it, from home in Costa Rica or from the US', async () => {
+    const asked = stubUpstreams({});
+
+    for (const from of [{ near: TAMARINDO }, { country: 'CR' }, { country: 'US' }, { near: AUSTIN }]) {
+      expect(await rows(await search('Tamarindo', from)), JSON.stringify(from)).toEqual([['Tamarindo', 'Costa Rica']]);
+    }
+    expect(asked(PHOTON_HOST)).toEqual([]);
+  });
+
+  it('finds the places of a street of Tamarindo typed with the town, from anywhere, and writes their postcode after the town', async () => {
+    const asked = stubUpstreams({ photon: [
+      [{ type: 'house', name: 'Farmacia Tamarindo', street: 'Calle Central', postcode: '50309', locality: 'Tamarindo', county: 'Santa Cruz', state: 'Guanacaste', country: 'Costa Rica', countrycode: 'CR' }, 10.3043, -85.8381],
+      [{ type: 'house', name: 'Best Western Tamarindo', street: 'Calle Central', postcode: '50309', city: 'Tamarindo', locality: 'Tamarindo', county: 'Santa Cruz', state: 'Guanacaste', country: 'Costa Rica', countrycode: 'CR' }, 10.3044, -85.8371],
+    ] });
+
+    const found = await rows(await search('Calle Central, Tamarindo', { country: 'US' }));
+
+    expect(asked(PHOTON_HOST)[0].searchParams.get('bbox')).toBe('-92.5,7,-77.2,14');
+    expect(found).toEqual([
+      ['Farmacia Tamarindo', 'Calle Central, Tamarindo 50309'],
+      ['Best Western Tamarindo', 'Calle Central, Tamarindo 50309'],
+    ]);
+  });
+
+  it('finds Kaya Grandi in Kralendijk near it, before a street of Curaçao for a rider at home on Bonaire, and typed with the town from anywhere', async () => {
+    const asked = stubUpstreams({ photon: KAYA_GRANDI });
+
+    const nearKralendijk = await rows(await search('Kaya Grandi', { near: KRALENDIJK }));
+    const atHome = await rows(await search('Kaya Grandi', { country: 'BQ' }));
+    const withTown = await rows(await search('Kaya Grandi, Kralendijk', { country: 'US' }));
+    const withIsland = await rows(await search('Kaya Grandi, Bonaire', { country: 'US' }));
+
+    expect(nearKralendijk).toEqual([
+      ['Kaya Grandi', 'Kralendijk'],
+      ['Bonaire Handmakers', 'Kaya Grandi, Kralendijk'],
+      ['Kaya Gusanio 22', 'Katoentuin'],
+    ]);
+    expect(atHome).toEqual(nearKralendijk);
+    expect(withTown).toEqual(nearKralendijk);
+    // "Bonaire" names the island's country, not Curaçao's.
+    expect(withIsland.slice(0, 2)).toEqual(nearKralendijk.slice(0, 2));
+    expect(asked(PHOTON_HOST).map(url => url.searchParams.get('bbox'))).toEqual(['-69.25,11.95,-68.1,12.45', null, '-69.25,11.95,-68.1,12.45', null]);
   });
 });
 

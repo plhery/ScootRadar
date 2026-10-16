@@ -466,6 +466,23 @@ banned shared scooters, and feeds that were empty when checked.
     none (see the guide's [Rules](new-zealand-scooter-feeds.md#rules)).
   - **Auckland's licences** for Flamingo and Lime expire in November 2026,
     with no new round.
+- **Costa Rica** ([guide](costa-rican-scooter-feeds.md#known-gaps)): Hopp in
+  Tamarindo is covered.
+  - **e-moob,** on ATOM Mobility, runs a smaller fleet in Tamarindo, but its
+    systems 1688 and 2319 answer "GBFS disabled". e-moob, or ATOM, would have
+    to switch the feed on; no one has asked.
+  - **The law:** Ley 9078, art. 124, bars from public roads the devices the
+    law doesn't authorise, e-scooters among them by a traffic officer's
+    reading (Teletica, 23 July 2026); its text on SCIJ couldn't be read. Ley
+    10834 adds "movilidad activa", by non-motorised means, from about 20
+    December 2026. Neither stops a rental (see the guide's
+    [Rules](costa-rican-scooter-feeds.md#rules) and
+    [Dates to check again](#dates-to-check-again)).
+  - **Nothing else found** in Costa Rica, San José included.
+- **Caribbean Netherlands**
+  ([guide](caribbean-netherlands-scooter-feeds.md#known-gaps)): Hopp on
+  Bonaire, in Kralendijk, is covered. Nothing was found on Sint Eustatius or
+  Saba.
 
 ## Countries not covered yet
 
@@ -484,12 +501,13 @@ instead of 401.
 
 **Not covered, by decision:** Russia (the user's decision of 14 October 2026).
 
-**Mexico,** surveyed on 14 October 2026 with Canada: no feed lists a
-scooter, so Mexico has no entry in `data/countries.json` yet.
+**Mexico,** surveyed on 14 October 2026 with Canada, and again on 15
+October with Latin America: no feed lists a scooter, so Mexico has no entry
+in `data/countries.json` yet. Check again on 1 March 2027.
 
 - **Lime Ciudad de México** (`data.lime.bike/api/partners/v2/gbfs/mexico_city`)
   answers but has listed no vehicle since SEMOVI's pilot ended in September
-  2026.
+  2026, nor at 15:11, 15:50 and 16:04 Mexico City time on 15 October 2026.
 - **Lime** runs scooters in Querétaro (since January 2025) and in Monterrey
   and Guadalupe (since September 2025), with no public feed: about 40 slugs
   tried (`queretaro`, `monterrey`, `guadalupe`, `san_pedro_garza_garcia`,
@@ -499,6 +517,7 @@ scooter, so Mexico has no entry in `data/countries.json` yet.
   publish no GBFS. **Movo** has left Mexico.
 - **Bikes only:** Ecobici in Mexico City, whose feed lists no vehicle, and
   MiBici in Guadalajara.
+- **Benji,** in Mérida, runs on OTORide, whose `/gbfs` paths answer 404.
 
 **Skipped:** Slovenia. Two live feeds were found on 14 October 2026, both
 served by a community relay, gbfs.derp.si. MobilityData added 15 of its feeds
@@ -561,6 +580,13 @@ a licence. Neither is published by its operator:
 | Uzbekistan, Mongolia | JET, which runs in both and in Kazakhstan, Georgia and Azerbaijan, publishes no feed. Silk Road Sharing, in Samarkand (ATOM Mobility system 1976), and IZZY, in Tashkent (1918), answer "GBFS disabled". Check again on 1 April 2027 |
 | Pacific islands | Pineapple, in Samoa (ATOM Mobility system 1359), answers "GBFS disabled" and its site is down; Kai Ride (2118), whose place is unknown, too. France's access point (transport.data.gouv.fr) has nothing for Nouméa or Papeete |
 | Bosnia and Herzegovina, Montenegro, North Macedonia, Albania, Kosovo, Andorra, San Marino, Gibraltar, Faroe Islands | No scooter feed found (Hopp Tórshavn held 13, all disabled, at night and on the evening of 13 October 2026) |
+| Colombia | Lime `bogota` answers but lists no vehicle (16:11 to 17:04 Bogotá time, 15 October 2026). Whoosh, in Medellín, answers 401 and 403: its feeds exist but are private. Yango, in Bogotá, publishes no feed. Check again on 1 March 2027 |
+| Brazil, Chile | Whoosh, the region's largest operator (8,000+ scooters in Chile), answers 401 and 403; JET's API is behind a Cloudflare challenge; Lime Chile (about 3,500 scooters) answers 404 for about 75 slugs. Lime has left Brazil. Check again on 1 April 2027 |
+| Peru | No fleet. The scooters 3electra's feed places in Lima at night are Kyiv's, moved there by its mask, with the same codes (see the [Ukrainian guide](ukrainian-scooter-feeds.md)). Whoosh's Lima feed is private, like its others |
+| Puerto Rico, US Virgin Islands | Bird's four Puerto Rico feeds (`san-juan-puerto-rico`, `guaynabo-puerto-rico`, `mayaguez-puerto-rico`, `ponce-puerto-rico`) publish their zones but no vehicle, with a timestamp of 0. Skootel, on OTORide, and KICK RIDE PR publish no feed; VIBES has left the US Virgin Islands. Check again on 1 April 2027. A feed there would need a decision: under the United States as a region (`PR`, `VI`), which needs `timeZoneProblem()` in `scripts/country-catalog.mjs` to accept America/Puerto_Rico and America/St_Thomas there, and gives prices before tax (Puerto Rico's IVU is 11.5%), or as a country of its own |
+| Aruba, Curaçao | e-moob, in Aruba (150+ scooters), is on ATOM Mobility, but its systems 1688 and 2319 answer "GBFS disabled", and so does Smart Wheels's 1875, in Curaçao. Check again on 1 April 2027. Each would be a country of its own (AW, CW), as Bonaire is |
+| Dominican Republic | Hopp `do-punta-cana` held 24 available scooters of 26, in Cap Cana, but none was ridden on the evening of 15 October 2026; a separate job rechecks it on Saturday 17 October. Hopp `do-las-terrenas` held 2 scooters, none available: check again on 15 January 2027. HappyVolts, in Santo Domingo, is a company's staff fleet |
+| Argentina, Uruguay and the rest of Latin America and the Caribbean | No scooter feed found: also Paraguay, Bolivia, Ecuador, Venezuela, Central America outside Costa Rica, Jamaica, Cuba, Haiti, Trinidad and Tobago, Barbados, the Cayman Islands, the Turks and Caicos Islands, Sint Maarten and the French Antilles. Lime has left Argentina, and Uruguay's last operator left by December 2025. Breeze, in the Bahamas, runs on OTORide and publishes no feed |
 
 Bolt publishes only two public scooter feeds in Europe, Brussels and Liverpool;
 its other systems answer 401. Dott made most regions private in September 2026.
@@ -580,6 +606,15 @@ Spin and Zeus addresses for each country's towns, a scan of ATOM Mobility's
 systems and the operators' sites. Only New Zealand had feeds to add. Survey
 files are in `/tmp/scoot-providers/asia-pacific/`, which isn't kept.
 
+Latin America and the Caribbean were surveyed on 15 and 16 October 2026,
+with polls from 21:11 UTC on the 15th to 02:11 UTC on the 16th: MobilityData's
+GBFS registry, about 860 guessed Hopp slugs, 190 Lime and 185 Bird ones,
+Spin's, Lyft's and Veo's addresses, Dott's country listings, a scan of ATOM
+Mobility's systems, about 85 OTORide operator hosts, the app stores of 20
+countries, the operators' sites and 12 open-data portals. Only Costa Rica and
+Bonaire had feeds to add. Survey files are in
+`/tmp/scoot-providers/latin-america/`, which isn't kept.
+
 ## Dates to check again
 
 - **After 26 October 2026:** applications to Rome's new operator selection
@@ -597,6 +632,12 @@ files are in `/tmp/scoot-providers/asia-pacific/`, which isn't kept.
   and at midday on the 14th, and Dott deployed and swapped some, but none
   was ridden while it was polled. Entur renews the ids, so match scooters by
   position, and add it if they are ridden.
+- **Saturday 17 October 2026, 10:00 to 17:00 Dominican time** (14:00 to
+  21:00 UTC): Hopp Punta Cana (`do-punta-cana`), whose 24 available
+  scooters, in Cap Cana, none rode on the evening of 15 October 2026. A
+  separate job checks it. If they are ridden, add the Dominican Republic,
+  naming the town for Cap Cana, where the scooters stand, or for Punta Cana,
+  with the other as an alias; if not, check again on 19 December 2026.
 - **Sunday 18 October 2026, 11:00 to 14:00 New Zealand time** (22:00 on
   Saturday to 01:00 UTC): JOLT `hutt_valley`, in Lower Hutt and Upper Hutt,
   every five minutes. JOLT gives a scooter a new id after a trip, so count
@@ -668,6 +709,14 @@ files are in `/tmp/scoot-providers/asia-pacific/`, which isn't kept.
   was added on 18 October; `napier`, which had no scooter; and Lincoln, in
   `selwyn`, with about 9 scooters none rode. Poll each on a weekday morning
   and a weekend afternoon, New Zealand time.
+- **19 December 2026:** Hopp Punta Cana, unless it was added on 17 October:
+  poll it by day.
+- **20 December 2026:** Costa Rica's Ley 10834, which adds "movilidad
+  activa" to the traffic law twelve months after it was published (Alcance
+  164 to La Gaceta 239, 19 December 2025). Read its official text, and
+  art. 124 of Ley 9078 on SCIJ, and update the
+  [Costa Rican guide's rules](costa-rican-scooter-feeds.md#rules) if either
+  says anything of e-scooters.
 - **Wednesday 21 October 2026, 17:00 to 21:00 local:** Bird Miami, Bird
   University of Central Florida, Bird Orlando, Spin University of Utah and
   Spin East Lansing (`east_lansing`). Bird and Spin renew their ids at every
@@ -689,12 +738,16 @@ files are in `/tmp/scoot-providers/asia-pacific/`, which isn't kept.
   through the winter, look for the city's dates and add a `seasonal` window.
 - **1 January 2027:** Brussels's ban starts; Bolt and Dott Bruxelles should
   empty.
+- **15 January 2027:** Hopp Las Terrenas (`do-las-terrenas`), in the
+  Dominican Republic: 2 scooters, none available, on 15 October 2026. Add it
+  if it holds about ten available scooters that are ridden.
 - **1 March 2027:** Dott Bourgoin-Jallieu, offline since early October 2026.
   Check `bourgoin-jallieu` and Dott's French listing, and add it again if it
   lists scooters that are ridden.
 - **1 March 2027:** Lime Ciudad de México, empty since SEMOVI's pilot ended
-  in September 2026. Check Lime's Querétaro and Monterrey slugs, Whoosh and
-  JET again too.
+  in September 2026, and Lime Bogotá (`bogota`), empty on 15 October 2026.
+  Check Lime's Querétaro and Monterrey slugs, Whoosh, JET and Yango again
+  too.
 - **1 March 2027:** Flamingo `sydney`
   (`data.rideflamingo.com/gbfs/3/sydney/gbfs.json`), a static test feed on
   15 October 2026, and Neuron's, Beam's and Lime's Australian feeds. Add
@@ -715,6 +768,11 @@ files are in `/tmp/scoot-providers/asia-pacific/`, which isn't kept.
   disabled" on 15 October 2026. If either answers with scooters, Uzbekistan
   needs its time zones (`Asia/Tashkent`, `Asia/Samarkand`) and prices in
   UZS.
+- **1 April 2027:** Latin America and the Caribbean: Bird's four Puerto Rico
+  feeds; ATOM Mobility's e-moob (1688 and 2319, Aruba and Tamarindo) and
+  Smart Wheels (1875, Curaçao), which answered "GBFS disabled"; Whoosh's feed
+  hosts, JET's API and Lime's Chilean slugs. Aruba would need a search box of
+  its own that keeps out Venezuela's Paraguaná peninsula, 27 km south.
 - **15 April 2027:** Bird Ajax and Bird Surrey, empty on 14 October 2026; the
   Durham Region pilots run from April to October. Lime Grand Rapids too, and
   look for a Veo feed there.

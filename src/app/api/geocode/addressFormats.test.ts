@@ -18,6 +18,8 @@ describe('the address formats', () => {
     expect(streetAddress('IL', 'Yafo Street', '16')).toBe('16 Yafo Street');
     expect(streetAddress('AE', 'Sheikh Zayed Road', '1')).toBe('1 Sheikh Zayed Road');
     expect(streetAddress('SA', 'King Fahd Road', '2')).toBe('2 King Fahd Road');
+    expect(streetAddress('CR', 'Calle Central', '5')).toBe('Calle Central 5');
+    expect(streetAddress('BQ', 'Kaya Grandi', '22')).toBe('Kaya Grandi 22');
     expect(streetAddress('XX', 'Main Street', '3')).toBe('Main Street 3');
     expect(streetAddress('NZ', 'Queen Street', '')).toBe('Queen Street');
   });
@@ -35,6 +37,8 @@ describe('the address formats', () => {
     expect(townLine('IL', { town: 'Tel Aviv', postcode: '6688218', region: region('Tel-Aviv District') })).toBe('6688218 Tel Aviv');
     expect(townLine('SA', { town: 'Riyadh', postcode: '12271', region: region('Riyadh Region') })).toBe('Riyadh 12271');
     expect(townLine('AE', { town: 'Dubai', postcode: '', region: region('Dubai') })).toBe('Dubai');
+    expect(townLine('CR', { town: 'Tamarindo', postcode: '50309', region: region('Guanacaste') })).toBe('Tamarindo 50309');
+    expect(townLine('BQ', { town: 'Kralendijk', postcode: '', region: region('Nederland') })).toBe('Kralendijk');
   });
 
   it('leave out what OpenStreetMap gives as an Emirati postcode, which the Emirates do not use', () => {
@@ -53,7 +57,7 @@ describe('the address formats', () => {
 
   it('read a postcode typed after the town, and no house number', () => {
     for (const typed of ['Austin, TX 78701', 'Austin TX 78701-1234', 'Toronto, ON M5V 2T6', 'Sydney NSW 2000',
-      'Auckland 1010', 'Tel Aviv 6688218', 'Riyadh 12271']) {
+      'Auckland 1010', 'Tel Aviv 6688218', 'Riyadh 12271', 'Tamarindo 50309']) {
       expect(typed.replace(POSTCODE_AFTER_TOWN, ''), typed).not.toBe(typed);
     }
     for (const typed of ['8001 Zürich', 'Langstrasse 120', 'Tel Aviv 66882181', 'Riyadh 12271a']) {

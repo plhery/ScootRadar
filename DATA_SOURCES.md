@@ -723,3 +723,31 @@ name "Flamingo · CC BY 4.0". JOLT's give no licence. The map's credits name
 both on a GBFS line for New Zealand. See the
 [coverage audit](docs/new-zealand-scooter-feeds.md) for the systems, the
 towns, the rules, the parking, the gaps and the recheck command.
+
+## Costa Rica
+
+The reviewed catalog lives in `data/costa-rican-scooter-feeds.json`: 1 feed,
+Hopp in Tamarindo. It is Hopp's own public GBFS feed, not in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
+and answers at the address Hopp uses for its other towns. Its prices are in
+US dollars, with no tax added.
+
+Hopp links its privacy policy, not a licence. The map's credits name it under
+the GBFS line. See the [coverage audit](docs/costa-rican-scooter-feeds.md) for
+the system, the town names, the rules, the gaps and the recheck command.
+
+## Caribbean Netherlands
+
+The reviewed catalog lives in `data/caribbean-netherlands-scooter-feeds.json`:
+1 feed, Hopp on Bonaire, whose scooters stand in Kralendijk. It is Hopp's own
+public GBFS feed, not in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
+and answers at the address Hopp uses for its other towns. Its prices are in
+US dollars, with no tax added. Bonaire is listed as the Caribbean Netherlands
+(BQ), as ISO 3166 and the time-zone database list it, not under the
+Netherlands.
+
+Hopp links its privacy policy, not a licence. The map's credits name it under
+the GBFS line. See the
+[coverage audit](docs/caribbean-netherlands-scooter-feeds.md) for the system,
+the town, the rules, the gaps and the recheck command.

@@ -619,6 +619,8 @@ enum ScooterProviderCoverage {
         (.flamingo, GeoBounds(south: -43.4029, west: 172.6202, north: -43.3456, east: 172.6867)),
         (.jolt, GeoBounds(south: -39.1064, west: 174.0067, north: -39.0087, east: 174.1857)),
         (.jolt, GeoBounds(south: -43.6426, west: 172.3437, north: -43.5743, east: 172.4189)),
+        (.hopp, GeoBounds(south: 10.2754, west: -85.8619, north: 10.3161, east: -85.8241)),
+        (.hopp, GeoBounds(south: 12.0102, west: -68.368, north: 12.2527, east: -68.2127)),
     ]
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
@@ -1044,12 +1046,14 @@ enum ScooterCityCatalog {
         ScooterCity(id: "nz:can:Kaiapoi", name: "Kaiapoi", countryCode: "NZ", center: GeoPoint(latitude: -43.3796, longitude: 172.6594), bounds: GeoBounds(south: -43.4029, west: 172.6202, north: -43.3456, east: 172.6867)),
         ScooterCity(id: "nz:tki:New Plymouth", name: "New Plymouth", countryCode: "NZ", center: GeoPoint(latitude: -39.0572, longitude: 174.0752), bounds: GeoBounds(south: -39.1064, west: 174.0067, north: -39.0087, east: 174.1857)),
         ScooterCity(id: "nz:can:Rolleston", name: "Rolleston", countryCode: "NZ", center: GeoPoint(latitude: -43.5956, longitude: 172.382), bounds: GeoBounds(south: -43.6426, west: 172.3437, north: -43.5743, east: 172.4189)),
+        ScooterCity(id: "cr:Tamarindo", name: "Tamarindo", countryCode: "CR", center: GeoPoint(latitude: 10.2984, longitude: -85.84), bounds: GeoBounds(south: 10.2754, west: -85.8619, north: 10.3161, east: -85.8241)),
+        ScooterCity(id: "bq:Kralendijk", name: "Kralendijk", countryCode: "BQ", center: GeoPoint(latitude: 12.1473, longitude: -68.274), bounds: GeoBounds(south: 12.0102, west: -68.368, north: 12.2527, east: -68.2127)),
     ]
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 382
-    static let countryCount = 25
+    static let cityCount = 384
+    static let countryCount = 27
 
     /// Cities by distance from the point to their centre, nearest first.
     static func nearest(to point: GeoPoint, count: Int) -> [ScooterCityDistance] {
@@ -1302,12 +1306,18 @@ enum ScooterCountryCatalog {
         // At the Centre of New Zealand, on Botanical Hill above Nelson: on land, halfway between the
         // fleets of Auckland and Dunedin, between the two islands.
         "nz": (-41.28, 173.29),
+        // At Santa Cruz, the seat of Tamarindo's canton, 28 km inland from it: on the Nicoya
+        // peninsula, where all of Costa Rica's scooters are, south of Nicaragua's border.
+        "cr": (10.26, -85.58),
+        // On Bonaire, north of Kralendijk, where all the Caribbean Netherlands' scooters are: on
+        // land, away from Curaçao and from Venezuela's coast.
+        "bq": (12.17, -68.27),
     ]
 
     /// The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences.
     static let credits: [(title: String, url: String)] = [
         ("DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio, Bird, Elerent, Hoppy, Ride Mobility, 3electra", "https://github.com/MobilityData/gbfs"),
-        ("US/CA: Bird, Bolt, Lime, Veo, Spin, Lyft", "https://github.com/MobilityData/gbfs"),
+        ("US/CA/CR/BQ: Bird, Bolt, Lime, Veo, Spin, Lyft, Hopp", "https://github.com/MobilityData/gbfs"),
         ("AE/SA/IL: Dott, SAHAM, Bird, Lime", "https://github.com/MobilityData/gbfs"),
         ("NZ: Flamingo, JOLT", "https://github.com/MobilityData/gbfs"),
         ("MobiData BW", "https://www.mobidata-bw.de/"),

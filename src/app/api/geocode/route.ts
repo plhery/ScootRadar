@@ -60,7 +60,13 @@ const PHOTON_LAYERS = ['house', 'street', 'locality', 'district', 'city', 'other
 // - West Asia, from Israel to the Gulf and Yemen, and East Asia, from Burma to
 //   Japan and from Hokkaido to Java; Cyprus, north of 34°N, is in Europe's;
 // - North America, from Hawaii and Alaska to Newfoundland and from the Arctic
-//   to Mexico's southern border;
+//   to Mexico's southern border; south of 14°N, as boxes of their own so that
+//   South America stays out, Central America, from Guatemala's Pacific coast to
+//   Panama's border with Colombia (a few villages of Colombia's Darién and its
+//   islands of San Andrés and Providencia come with it, not the Gulf of Urabá
+//   nor anything east of it), and Bonaire and Curaçao, off Venezuela's coast but
+//   not on it. Not Aruba, west of them: the same rectangle would take in Venezuela's
+//   Paraguaná peninsula, 27 km south of it;
 // - Europe, from the Azores and the Canaries to the North Cape, without Africa south
 //   of 34°N, from the coast facing the Canaries to Sinai: Egypt, Libya and the south
 //   of Morocco, Algeria and Tunisia. Cyprus, Crete and Malta are north of it.
@@ -73,13 +79,19 @@ const PHOTON_LAYERS = ['house', 'street', 'locality', 'district', 'city', 'other
 const CONTINENT_BOXES: Record<Continent, Box[]> = {
   oceania: [{ west: 110, south: -48, east: 180, north: -9 }],
   asia: [{ west: 34, south: 12, east: 60, north: 34 }, { west: 95, south: -11, east: 150, north: 46 }],
-  'north-america': [{ west: -170, south: 14, east: -50, north: 72 }],
+  'north-america': [
+    { west: -170, south: 14, east: -50, north: 72 },
+    { west: -92.5, south: 7, east: -77.2, north: 14 },
+    { west: -69.25, south: 11.95, east: -68.1, north: 12.45 },
+  ],
   europe: [{ west: -32, south: 27.5, east: 45, north: 72, without: [{ west: -13.2, south: 27.5, east: 34, north: 34 }] }],
 };
 const BOXES = (Object.entries(CONTINENT_BOXES) as [Continent, Box[]][])
   .flatMap(([continent, boxes]) => boxes.map(box => ({ continent, box })));
 const SERVED_BOXES = BOXES.map(({ box }) => box)
   .filter(box => Object.values(COUNTRY_ANCHORS).some(([lat, lng]) => inBox(box, lat, lng)));
+// The sea between Bonaire, whose west coast is at 68.42°W, and Klein Curaçao, at 68.64°W.
+const BONAIRE_WEST = -68.5;
 // Distance to the map centre counts for more than prominence: "Bahnhofstrasse 1"
 // near Zürich is the one in Zürich, not the better-known station in Goldau.
 const PHOTON_BIAS_SCALE = '0.1';
@@ -363,11 +375,23 @@ function townOf(properties: Record<string, unknown>, countryCode: string, lat: n
   return catalogTownName(town, countryCode, lat, lng) ?? [locality, district].find(name => LATIN.test(name)) ?? town;
 }
 
+/**
+ * The country of a place, as data/countries.json has it. OpenStreetMap, and so Photon, count
+ * Bonaire, and Curaçao, west of it, as part of the Netherlands; ISO 3166 and the time-zone
+ * database, as the catalog, count Bonaire as a country of its own, the Caribbean Netherlands
+ * (BQ), and Curaçao as another (CW).
+ */
+function placeCountry(properties: Record<string, unknown>, lat: number, lng: number): string {
+  const code = text(properties.countrycode).toUpperCase();
+  if (code !== 'NL' || lat > 13) return code;
+  return lng > BONAIRE_WEST ? 'BQ' : 'CW';
+}
+
 /** A Photon place in two lines: "Gare de Lyon" over "Place Louis Armand, 75012 Paris". */
 function photonLines(properties: Record<string, unknown>, lat: number, lng: number): { title: string; subtitle: string } {
   const name = text(properties.name);
   const street = text(properties.street);
-  const countryCode = text(properties.countrycode).toUpperCase();
+  const countryCode = placeCountry(properties, lat, lng);
   const address = streetAddress(countryCode, street, text(properties.housenumber));
   const town = townOf(properties, countryCode, lat, lng);
   const region = text(properties.state) || text(properties.county);
@@ -451,7 +475,7 @@ function photonCandidates(features: PhotonFeature[], ranking: Ranking): Candidat
     const town = properties.type === 'city' && !nearMiss;
     // A landmark's: not a street's, nor a town's or a quarter's, which may hold others of their name.
     const outline = properties.type === 'house' || properties.type === 'other' ? outlineBox(properties.extent) : undefined;
-    const countryCode = text(properties.countrycode).toUpperCase();
+    const countryCode = placeCountry(properties, lat, lng);
     const typed = typedNaming(ranking, properties, countryCode);
     return [{ place, ...placeRank(typed, place, town, nearMiss, countryCode, ranking), ...(outline ? { outline } : {}) }];
   });

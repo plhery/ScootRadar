@@ -5,7 +5,7 @@
 <h1 align="center">ScootRadar</h1>
 
 <p align="center">
-  A friendly map for finding shared e-scooters in 382 cities in 25 countries.
+  A friendly map for finding shared e-scooters in 384 cities in 27 countries.
 </p>
 
 <p align="center">
@@ -116,9 +116,9 @@ changing the response contract.
    Vancouver, says so with `"stationParking": true`, and the map shows them
    as required bays.
 2. Add one entry to `data/countries.json`:
-   - `code`, `continent` (`europe`, `north-america`, `asia`, the Middle East
-     included, or `oceania`), `catalog` and `source`, the key of its feeds in
-     the API's `meta.sources`;
+   - `code`, `continent` (`europe`, `north-america`, Central America and the
+     Caribbean included, `asia`, the Middle East included, or `oceania`),
+     `catalog` and `source`, the key of its feeds in the API's `meta.sources`;
    - `names` in the nine languages of the apps, and the `searchWords` that,
      typed after a city, say which country is meant: written as the search
      reads them (`src/lib/searchText.ts`), lower case, without accents and
@@ -150,7 +150,9 @@ changing the response contract.
    postcode as riders type it after the town; `addressFormats.test.ts` fails
    until it does. The search looks for places within its continent's boxes,
    `CONTINENT_BOXES` in `src/app/api/geocode/route.ts`, once a country's
-   `anchor` is in one.
+   `anchor` is in one. Where the nearest box would take in countries the map
+   doesn't cover, give the country a box of its own, as Central America's and
+   Bonaire's keep Colombia and Venezuela out.
 
    Where towns touch, as in Gush Dan around Tel Aviv, around Lille or in west
    Los Angeles, a rectangle per town can't tell a scooter's town: each box
