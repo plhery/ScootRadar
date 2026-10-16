@@ -112,7 +112,7 @@ async function inspect(system) {
     ));
     return {
       ...result, state: 'ok', version: discovery.version, availableScooters: available.length,
-      withBattery: available.filter(vehicle => Number.isFinite(vehicle.current_fuel_percent)).length,
+      withBattery: available.filter(vehicle => Number.isFinite(vehicle.current_fuel_percent) || Number.isFinite(vehicle.hopp_battery_level)).length,
       withRange: available.filter(vehicle => Number.isFinite(vehicle.current_range_meters)).length,
       withRentalLink: available.filter(vehicle => vehicle.rental_uris?.ios || vehicle.rental_uris?.android || vehicle.rental_uris?.web).length,
       updatedAt: new Date(updatedAt).toISOString(), ageSeconds,
