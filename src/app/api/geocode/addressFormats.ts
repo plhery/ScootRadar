@@ -27,8 +27,8 @@ export const ADDRESS_FORMATS: Readonly<Record<string, AddressFormat>> = {
   NZ: { numberFirst: true, townLine: '{town} {postcode}', postcode: /\d{4}/ },
   // Israel Post writes the postcode before the town, "6688218 Tel Aviv-Yafo"; riders type it after it too.
   IL: { numberFirst: true, postcode: /\d{7}/ },
-  // Without postcodes.
-  AE: { numberFirst: true },
+  // Without postcodes: what OpenStreetMap tags as one there is a Makani number ("26661 88056"), a P.O. box or "00000".
+  AE: { numberFirst: true, townLine: '{town}' },
   SA: { numberFirst: true, townLine: '{town} {postcode}', postcode: /\d{5}/ },
 };
 

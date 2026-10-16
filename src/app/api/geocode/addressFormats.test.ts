@@ -37,6 +37,12 @@ describe('the address formats', () => {
     expect(townLine('AE', { town: 'Dubai', postcode: '', region: region('Dubai') })).toBe('Dubai');
   });
 
+  it('leave out what OpenStreetMap gives as an Emirati postcode, which the Emirates do not use', () => {
+    for (const postcode of ['26661 88056', '00000', 'P. O. Box 31166']) {
+      expect(townLine('AE', { town: 'Dubai', postcode, region: region('Dubai Emirate') }), postcode).toBe('Dubai');
+    }
+  });
+
   it('leave out the parts a place lacks, with their commas', () => {
     expect(townLine('US', { town: 'Austin', postcode: '', region: region('TX') })).toBe('Austin, TX');
     expect(townLine('US', { town: '', postcode: '78701', region: region('TX') })).toBe('TX 78701');
