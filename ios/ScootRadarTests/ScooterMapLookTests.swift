@@ -29,6 +29,15 @@ final class ScooterMapLookTests: XCTestCase {
         XCTAssertTrue(ScooterMapLook.heads(among: []).isEmpty)
     }
 
+    func testNoScooterIsNamedWhileTheServerCountsThemInGroups() {
+        // Zoomed out, the server sends a lone scooter 105 minutes away beside
+        // its groups; it is not the nearest Lime and gets no name.
+        let alone = [ScooterDistance(id: "lime:alone", provider: "lime", metres: 8_400)]
+
+        XCTAssertTrue(ScooterMapLook.heads(among: alone, countedInGroups: true).isEmpty)
+        XCTAssertEqual(ScooterMapLook.heads(among: alone).map(\.id), ["lime:alone"])
+    }
+
     // MARK: Size and strength
 
     func testDotsShrinkAndFadeWithTheirDistance() {

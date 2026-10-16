@@ -246,6 +246,7 @@ struct ScooterMapView: UIViewRepresentable {
             let walkMinutes: Int?
             let isDark: Bool
             let isStreetLevel: Bool
+            let usesServerClusters: Bool
             let scaleStep: Int
             let headingStep: Int
             let language: ScooterLanguage
@@ -568,6 +569,7 @@ struct ScooterMapView: UIViewRepresentable {
                 isDark: isDark(mapView),
                 // Zoomed out, MapKit gathers the scooters into clusters.
                 isStreetLevel: clusteringEnabled == false,
+                usesServerClusters: parent.usesServerClusters,
                 scaleStep: Int((log(metresPerPoint) / Self.scaleStep).rounded()),
                 headingStep: Int((mapView.camera.heading / 3).rounded()),
                 language: parent.language
@@ -611,7 +613,7 @@ struct ScooterMapView: UIViewRepresentable {
                     annotation.metres.map {
                         ScooterDistance(id: annotation.scooter.id, provider: annotation.scooter.provider, metres: $0)
                     }
-                })
+                }, countedInGroups: inputs.usesServerClusters)
                 : []
             let headIDs = Set(heads.map(\.id))
             var named = heads.map(\.id)

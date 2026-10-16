@@ -96,7 +96,10 @@ enum ScooterMapLook {
 
     /// The nearest scooter of each provider, nearest first. Equal distances go
     /// to the smaller id, so a refresh does not hand the name to a neighbour.
-    static func heads(among scooters: [ScooterDistance]) -> [ScooterDistance] {
+    /// Where the server counts most scooters in groups, the few it sends alone
+    /// are not the nearest, so none is named, as on the web.
+    static func heads(among scooters: [ScooterDistance], countedInGroups: Bool = false) -> [ScooterDistance] {
+        guard !countedInGroups else { return [] }
         var nearest: [String: ScooterDistance] = [:]
         for scooter in scooters where scooter.metres.isFinite {
             if let current = nearest[scooter.provider], !isNearer(scooter, than: current) { continue }
