@@ -83,6 +83,14 @@ language and region (`defaults write com.plhery.scootradar AppleLanguages
 `en_CH`, `fr_CH` for the others, so distances are in metres), then save each
 capture without alpha (`ffmpeg -i shot.png -pix_fmt rgb24 out.png`).
 
+A Debug build opens on a chosen view, such as a landmark in 3D, with
+`xcrun simctl launch <device> com.plhery.scootradar -ScreenshotCamera
+"37.79554,-122.39400,650,62,55" -ScreenshotTerrain realistic`: the point
+looked at, the camera's distance from it in metres, the pitch and the
+heading. With location allowed, the simulator's location then gives the
+walking times and the map stays where the camera put it. Release builds
+leave both arguments out.
+
 ## Review notes
 
 Paste into App Review Information › Notes:

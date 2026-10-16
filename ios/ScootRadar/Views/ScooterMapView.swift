@@ -77,6 +77,33 @@ enum ScooterMapCameraPolicy {
     }
 }
 
+#if DEBUG
+/// A camera to open the map on, for screenshots, in DEBUG builds only:
+/// `-ScreenshotCamera "lat,lng,distance,pitch,heading"` is the point looked at,
+/// the camera's distance from it in metres, its tilt and the direction it
+/// faces in degrees, and `-ScreenshotTerrain realistic` draws the ground in 3D,
+/// with Apple's models of landmarks where it has them. A located rider leaves
+/// the map where the camera put it.
+enum ScooterScreenshotCamera {
+    static func fromLaunchArguments(_ defaults: UserDefaults = .standard) -> MKMapCamera? {
+        guard let values = defaults.string(forKey: "ScreenshotCamera")?
+            .split(separator: ",")
+            .compactMap({ Double($0.trimmingCharacters(in: .whitespaces)) }),
+            values.count == 5 else { return nil }
+        return MKMapCamera(
+            lookingAtCenter: CLLocationCoordinate2D(latitude: values[0], longitude: values[1]),
+            fromDistance: values[2],
+            pitch: values[3],
+            heading: values[4]
+        )
+    }
+
+    static func drawsTerrain(_ defaults: UserDefaults = .standard) -> Bool {
+        defaults.string(forKey: "ScreenshotTerrain") == "realistic"
+    }
+}
+#endif
+
 struct ScooterMapView: UIViewRepresentable {
     let scooters: [Scooter]
     let scooterRevision: Int
@@ -162,6 +189,11 @@ struct ScooterMapView: UIViewRepresentable {
         mapView.addGestureRecognizer(scooterTapRecognizer)
         mapView.setRegion(ScooterMapModel.initialRegion, animated: false)
         ScooterMapCameraPolicy.applyOpeningPitch(to: mapView)
+        #if DEBUG
+        if let camera = ScooterScreenshotCamera.fromLaunchArguments() {
+            mapView.setCamera(camera, animated: false)
+        }
+        #endif
         context.coordinator.installCompass(on: mapView)
         context.coordinator.installScale(on: mapView)
         // The dots and the names are drawn for one appearance.
@@ -326,7 +358,11 @@ struct ScooterMapView: UIViewRepresentable {
         func applyMapStyle(_ style: AppleMapStyle, to mapView: MKMapView) {
             guard style != appliedMapStyle else { return }
             appliedMapStyle = style
-            mapView.preferredConfiguration = style.configuration
+            let configuration = style.configuration
+            #if DEBUG
+            if ScooterScreenshotCamera.drawsTerrain() { configuration.elevationStyle = .realistic }
+            #endif
+            mapView.preferredConfiguration = configuration
         }
 
         func reconcile(_ scooters: [Scooter], revision: Int, on mapView: MKMapView) {

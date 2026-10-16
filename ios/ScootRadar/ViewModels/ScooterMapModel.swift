@@ -310,6 +310,10 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         clock = now
         knownAuthorizationStatus = locationManager.authorizationStatus
         hasLocatedOnce = defaults.bool(forKey: Self.hasLocatedOnceKey)
+        #if DEBUG
+        // A screenshot's camera stays where it was set when the rider is located.
+        keepsMapOnFirstFix = defaults.string(forKey: "ScreenshotCamera") != nil
+        #endif
 
         let savedBattery = defaults.object(forKey: Self.minimumBatteryKey) as? Int ?? 0
         minimumBattery = Double(ScooterBatteryFilter.snapped(savedBattery))
