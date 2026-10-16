@@ -472,6 +472,15 @@ async function check(report) {
   }
 }
 
+async function newestValidBuild(app) {
+  const response = await api('GET', `/v1/builds?filter[app]=${app.id}&filter[processingState]=VALID&filter[expired]=false`
+    + '&sort=-uploadedDate&limit=1&include=preReleaseVersion');
+  const build = response.data[0];
+  if (!build) return null;
+  const preRelease = response.included?.find(item => item.id === build.relationships?.preReleaseVersion?.data?.id);
+  return { ...build, shortVersion: preRelease?.attributes.version };
+}
+
 async function pushListing(locales, notes) {
   const app = await requireApp();
   if (app.attributes.contentRightsDeclaration === 'USES_THIRD_PARTY_CONTENT') {
@@ -510,6 +519,23 @@ async function pushListing(locales, notes) {
       data: { type: 'appStoreVersions', id: version.id, attributes: { copyright } },
     }, `copyright "${copyright}"`);
   } else console.log(`would PATCH /v1/appStoreVersions/${version.id}  copyright "${copyright}" (if different)`);
+
+  // Submitting needs a build on the version: the newest one Apple has processed, of the same version number.
+  const attached = (await get(`/v1/appStoreVersions/${version.id}/build`))?.data;
+  if (attached) console.log(`build: ${attached.attributes.version} attached`);
+  else if (!readable(`/v1/appStoreVersions/${version.id}/build`)) {
+    console.log(`would PATCH /v1/appStoreVersions/${version.id}/relationships/build  the newest VALID build of ${versionString}, `
+      + 'if none is attached');
+  } else {
+    const build = await newestValidBuild(app);
+    if (!build) console.log('build: no VALID build yet; upload one with scripts/upload-ios-app.sh, then run listing again');
+    else if (build.shortVersion !== versionString) {
+      console.log(`build: the newest VALID build is ${build.shortVersion} (${build.attributes.version}), not ${versionString}; none attached`);
+    } else {
+      await write('PATCH', `/v1/appStoreVersions/${version.id}/relationships/build`, { data: { type: 'builds', id: build.id } },
+        `attach build ${build.attributes.version}`);
+    }
+  }
 
   // No whatsNew: App Store Connect has none for the first version.
   const { data: versionLocalizations } = await getAll(`/v1/appStoreVersions/${version.id}/appStoreVersionLocalizations?limit=200`);
@@ -750,16 +776,13 @@ async function pushTestflight() {
       + `and POST /v1/betaGroups/${group.id}/relationships/builds unless it is in the group`);
     return;
   }
-  const response = await api('GET', `/v1/builds?filter[app]=${app.id}&filter[processingState]=VALID&filter[expired]=false`
-    + '&sort=-uploadedDate&limit=1&include=preReleaseVersion');
-  const build = response.data[0];
+  const build = await newestValidBuild(app);
   if (!build) {
     console.log('build: no VALID build yet; upload one with scripts/upload-ios-app.sh and wait for processing');
     process.exitCode = 1;
     return;
   }
-  const preRelease = response.included?.find(item => item.id === build.relationships?.preReleaseVersion?.data?.id);
-  console.log(`build ${preRelease?.attributes.version ?? '?'} (${build.attributes.version}) ${build.id}: `
+  console.log(`build ${build.shortVersion ?? '?'} (${build.attributes.version}) ${build.id}: `
     + `${build.attributes.processingState}, uploaded ${build.attributes.uploadedDate}`);
   if (build.attributes.usesNonExemptEncryption == null) {
     await write('PATCH', `/v1/builds/${build.id}`, {

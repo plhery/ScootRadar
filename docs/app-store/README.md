@@ -183,7 +183,8 @@ node scripts/app-store-connect.mjs testflight --apply
 Without `--apply` each command only prints what it would send; `check` also
 measures every field against App Store Connect's limits. `listing` sends the
 categories, the texts of each language, the URLs, the copyright, the age
-rating answers and the review notes above. The app record itself, the App
+rating answers and the review notes above, and attaches the newest processed
+build of the version when none is. The app record itself, the App
 Privacy answers, the EU trader status and the review contact are entered on
 the web. Nothing here submits the version for review.
 
