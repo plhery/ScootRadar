@@ -19,7 +19,7 @@ export default function PrivacyPage() {
       <article className="legal-content">
         <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
         <h1>Privacy</h1>
-        <p>Last updated: 15 October 2026</p>
+        <p>Last updated: 16 October 2026</p>
 
         <h2>Overview</h2>
         <p>
@@ -74,9 +74,10 @@ export default function PrivacyPage() {
 
         <h2>Mobility data</h2>
         <p>
-          Live vehicle data comes from the Open data platform mobility Switzerland and participating
-          mobility providers. ScootRadar filters that data to the visible map area and does not
-          build a history of vehicle movements.
+          Live vehicle data comes from the public data feeds that mobility providers and public
+          authorities publish, such as the Open data platform mobility Switzerland. ScootRadar
+          filters that data to the visible map area and does not build a history of vehicle
+          movements.
         </p>
 
         <h2>Usage analytics</h2>
@@ -131,9 +132,18 @@ export default function PrivacyPage() {
           up to 90 days.
         </p>
 
-        <h2>Contact and third parties</h2>
+        <h2>Your choices</h2>
         <p>
-          Questions can be sent to <a href="mailto:hello@scootradar.com">hello@scootradar.com</a>.
+          You can withdraw location permission at any time in your browser or device settings, and
+          turn off usage analytics as described above; the map works without either. Nothing
+          ScootRadar keeps is linked to an account or to you. To ask about an error report or have
+          it deleted before its 90 days are up, write to us with the time and the place on the
+          map, and we will delete it.
+        </p>
+
+        <h2 id="contact">Contact and third parties</h2>
+        <p>
+          Questions and requests can be sent to <a href="mailto:hello@scootradar.com">hello@scootradar.com</a>.
           Third-party services have their own privacy policies: {' '}
           <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a>, {' '}
           <a href="https://openfreemap.org/privacy/">OpenFreeMap</a>, {' '}

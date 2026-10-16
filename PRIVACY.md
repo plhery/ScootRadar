@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 15 October 2026
+Last updated: 16 October 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches.
@@ -45,6 +45,11 @@ searches.
   request URL (the visible map bounds, zoom level and filters) and the server's
   state at the time, never the IP address, request headers or search text.
   Sentry keeps it for up to 90 days.
+
+- Location permission can be withdrawn in the browser or device settings, and
+  analytics turned off (see below); the map works without either. Nothing kept
+  is linked to an account or a person; an error report is deleted on request
+  before its 90 days, given its time and place on the map.
 
 Cloudflare, Sentry, FOSSGIS, Geoapify, komoot and upstream providers may process limited network or security
 metadata under their own privacy policies. The full user-facing notice is
