@@ -110,19 +110,29 @@ user in App Store Connect.
 
 ## Availability
 
-Proposed from the market readiness summary of 16 October 2026 (the markets
-lane's notes, outside this public repository):
+The storefronts are the account holder's choice, set with the `availability`
+command below or on the web (Pricing and Availability). The recommendation,
+from the markets lane's readiness summary of 16 October 2026 (in its notes,
+outside this public repository), is a launch in stages:
 
-- **At launch:** Switzerland, France and Iceland (ready), and Germany, Norway,
-  Belgium, Portugal and Spain (almost ready: the map is useful in their main
-  cities, with gaps a local rider would notice).
-- **About a week later, once their feeds have a week of monitoring:** the
-  United States, Canada, Israel and New Zealand.
-- **Not yet:** the rest, where the main city is not on the map (United
-  Kingdom without London, Italy, Sweden, Poland and others).
+1. **Now:** Switzerland, France and Iceland, rated ready.
+   `--territories CHE,FRA,ISL`
+2. **Then:** Germany, Norway, Belgium, Portugal and Spain, rated almost ready:
+   the map is useful in their main cities, with gaps a local rider would
+   notice.
+   `--territories CHE,FRA,ISL,DEU,NOR,BEL,PRT,ESP`
+3. **After about a week of monitoring each:** the United States, Canada,
+   Israel, New Zealand and Bonaire, also almost ready but live only since 15
+   or 16 October. In the US and Canada, Lime and Bird carry most of the
+   scooters with no price or rental link, so the summary suggests an "Open in
+   Lime / Bird" button first.
+   `--territories CHE,FRA,ISL,DEU,NOR,BEL,PRT,ESP,USA,CAN,ISR,NZL`
 
-Whatever the storefronts, the map covers every country in the catalogue: a
-rider from a launch country sees scooters abroad too.
+Apple has no storefront for Bonaire (Caribbean Netherlands), so it cannot be
+ticked. Markets the summary rates "not yet" are left out. Whatever the
+storefronts, the map covers every country in the catalogue: a rider from a
+launch country sees scooters abroad too, and so does anyone in Bonaire who has
+the app from another store.
 
 ## Build and upload
 
@@ -143,7 +153,7 @@ export ASC_KEY_ID=<key id> ASC_ISSUER_ID=<issuer id>
 node scripts/app-store-connect.mjs check
 node scripts/app-store-connect.mjs listing --apply
 node scripts/app-store-connect.mjs screenshots --apply
-node scripts/app-store-connect.mjs availability --territories CHE,FRA,ISL,DEU,NOR,BEL,PRT,ESP --apply
+node scripts/app-store-connect.mjs availability --territories CHE,FRA,ISL --apply
 node scripts/app-store-connect.mjs testflight --apply
 ```
 
