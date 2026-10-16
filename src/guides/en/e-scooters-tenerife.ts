@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Tenerife: Hoppy, Bird and Hopp in the south, what a ride costs, and the promenades you can’t ride',
   lede: 'You can rent an e-scooter in Tenerife from Hoppy, Bird or Hopp in the south of the island: along the coast from Los Cristianos through Playa de las Américas to Costa Adeje and La Caleta, and with Hopp also in Golf del Sur. Ten minutes cost €4.50–4.70 on a Hoppy and €3.45 on a Hopp; Bird shows its price only in its app. You must be 18 to rent, and since 1 October 2026 a helmet is compulsory in Spain: no operator lends one, so bring your own. Stay off the seafront promenade between Los Cristianos and Las Américas, where scooters are banned and the police check.',
   published: '2026-10-13',
-  updated: '2026-10-14',
+  updated: '2026-10-16',
   city: 'es:Playa de las Américas',
   sections: [
     {
@@ -20,7 +20,7 @@ const guide: Guide = {
         'As of 14 October 2026, our map shows three operators in the south:',
         {
           list: [
-            '**Hoppy**, a Belgian company, from Los Cristianos to Costa Adeje.',
+            '**Hoppy**, a Belgian brand, from Los Cristianos to Costa Adeje. In Spain your contract is with Hoppylectrico S.L. of Elche.',
             '**Bird**, on one strip from Los Cristianos through Playa de las Américas to Costa Adeje and La Caleta.',
             '**Hopp**, an Icelandic brand run here by a local franchise, on almost the same strip, plus a small separate area in **Golf del Sur**, further east in San Miguel de Abona.',
           ],
