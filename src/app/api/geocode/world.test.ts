@@ -217,9 +217,9 @@ describe('the search in Oceania and West Asia', () => {
     const found = await rows(await search('Rothschild', { country: 'IL' }));
 
     // Asked anywhere, Geoapify finds the town alone; asked in Israel, the boulevard's places and
-    // those of its name in the towns around. Not anywhere after them.
+    // those of its name in the towns around.
     expect(asked(GEOAPIFY_HOST).map(url => [url.searchParams.get('type'), url.searchParams.get('filter')]))
-      .toEqual([['city', null], [null, 'countrycode:il']]);
+      .toEqual([['city', null], [null, 'countrycode:il'], [null, null]]);
     expect(found).toEqual([
       ['Rothschild', 'Wisconsin, United States'],
       ['Rothschild', '6806546 Bat Yam'],
@@ -252,6 +252,24 @@ describe('the search in Oceania and West Asia', () => {
     expect(await rows(await search('Queen Street', { near: AUCKLAND }))).toEqual([
       ['Queen Street', 'Waitematā'],
       ['Queen Street', 'Kaipātiki'],
+    ]);
+  });
+
+  it('finds New York\'s Times Square after those of Germany for a rider there without a map centre', async () => {
+    inWorker({ GEOAPIFY_API_KEY: 'key' });
+    stubUpstreams({ geoapify: RECORDED_GEOAPIFY_ANSWERS['Times Square in Germany'] });
+
+    const found = await rows(await search('Times Square', { lang: 'de', country: 'DE' }));
+
+    // Asked in Germany, Geoapify finds a street of Dresden and a café of Kaufbeuren, the
+    // café twice; asked anywhere, New York's square first, its piece of street and its
+    // postcode, then Dresden's again, and London's.
+    expect(found).toEqual([
+      ['Times Square', 'Dresden'],
+      ['Times Square Musikcafe', 'Sudetenstraße 121, 87600 Kaufbeuren'],
+      ['Times Square', 'New York, NY'],
+      ['Times Square', 'Groß-London'],
+      ['Times Square', 'Newcastle upon Tyne'],
     ]);
   });
 

@@ -951,7 +951,7 @@ export const RECORDED_GEOAPIFY_ANSWERS: Record<string, RecordedSearch> = {
       [{ result_type: 'amenity', name: 'Austin College', housenumber: '900', street: 'North Grand Avenue', postcode: '75090', city: 'Sherman', county: 'Grayson County', state: 'Texas', country: 'United States', country_code: 'us', rank: { confidence: 0.29 } }, 33.6474, -96.598],
     ],
   },
-  // lang=en, without a map centre, for a rider in Israel (bias and filter countrycode:il), on 16 October 2026
+  // lang=en, without a map centre, for a rider in Israel (bias countrycode:il, and filter countrycode:il nearby), on 16 October 2026
   'Rothschild in Israel': {
     towns: [
       [{ result_type: 'city', name: 'Rothschild', postcode: '54474', city: 'Rothschild', county: 'Marathon County', state: 'Wisconsin', country: 'United States', country_code: 'us' }, 44.8872, -89.6201],
@@ -967,6 +967,41 @@ export const RECORDED_GEOAPIFY_ANSWERS: Record<string, RecordedSearch> = {
       [{ result_type: 'amenity', name: 'The Rothschild Hotel', housenumber: '96', street: 'Sderot Rothschild', postcode: '6527401', city: 'Tel-Aviv', suburb: 'Lev Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', country_code: 'il' }, 32.0673, 34.7781],
       [{ result_type: 'amenity', name: 'the rothschild 71', housenumber: '71', street: 'Sderot Rothschild', postcode: '6511604', city: 'Tel-Aviv', suburb: 'Lev Tel Aviv', district: 'Lev Tel Aviv', county: 'Tel Aviv Subdistrict', state: 'Tel-Aviv District', country: 'Israel', country_code: 'il' }, 32.0658, 34.7768],
       [{ result_type: 'amenity', name: 'Coffee Rothschild Nahariya', street: 'HaMaapilim', postcode: '2221201', city: 'Nahariyya', suburb: 'Kiriyat Ben-Gurion', district: 'Kiriyat Ben-Gurion', county: 'Acre Subdistrict', state: 'North District', country: 'Israel', country_code: 'il' }, 33.0076, 35.0893],
+    ],
+    anywhere: [
+      [{ result_type: 'city', name: 'Rothschild', postcode: '54474', city: 'Rothschild', county: 'Marathon County', state: 'Wisconsin', country: 'United States', country_code: 'us' }, 44.8872, -89.6201],
+    ],
+  },
+  // lang=de, without a map centre, for a rider in Germany (bias countrycode:de, and filter countrycode:de nearby), on 16 October 2026
+  'Times Square in Germany': {
+    towns: [
+      [{ result_type: 'amenity', name: 'Times Square', city: 'New York City', suburb: 'Midtown West', district: 'Manhattan', county: 'New York County', state: 'New York', country: 'Vereinigte Staaten', country_code: 'us' }, 40.7564, -73.9864],
+      [{ result_type: 'suburb', name: 'Atlantic Times Square', city: 'Monterey Park', suburb: 'Atlantic Times Square', county: 'Los Angeles County', state: 'Kalifornien', country: 'Vereinigte Staaten', country_code: 'us' }, 34.0672, -118.1338],
+      [{ result_type: 'suburb', name: 'Times Square', city: 'Siloam Springs', suburb: 'Times Square', county: 'Benton County', state: 'Arkansas', country: 'Vereinigte Staaten', country_code: 'us' }, 36.1728, -94.5458],
+    ],
+    nearby: [
+      [{ result_type: 'street', name: 'Times Square', street: 'Times Square', postcode: '01099', city: 'Dresden', suburb: 'Albertstadt', district: 'Albertstadt', county: 'Dresden', state: 'Sachsen', country: 'Deutschland', country_code: 'de' }, 51.0812, 13.7607],
+      [{ result_type: 'amenity', name: 'Times Square Musikcafe', housenumber: '121', street: 'Sudetenstraße', postcode: '87600', city: 'Kaufbeuren', suburb: 'Neugablonz', district: 'Neugablonz', state: 'Bayern', country: 'Deutschland', country_code: 'de' }, 47.9123, 10.635],
+      [{ result_type: 'suburb', name: 'Times Square Musikcafe', city: 'Kaufbeuren', district: 'Kaufbeuren', county: 'Kaufbeuren', state: 'Bayern', country: 'Deutschland', country_code: 'de' }, 47.9123, 10.635],
+    ],
+    anywhere: [
+      [{ result_type: 'postcode', name: 'Times Square', postcode: '10036', city: 'New York', suburb: 'Manhattan', district: 'Manhattan Community Board 5', county: 'New York County', state: 'New York', country: 'Vereinigte Staaten von Amerika', country_code: 'us' }, 40.7573, -73.9859],
+      [{ result_type: 'street', name: 'Times Square', street: 'Times Square', postcode: '10036', city: 'New York', suburb: 'Manhattan', district: 'Manhattan Community Board 5', county: 'New York County', state: 'New York', country: 'Vereinigte Staaten von Amerika', country_code: 'us' }, 40.757, -73.986],
+      [{ result_type: 'amenity', name: 'Times Square', street: 'West 42nd Street', postcode: '10110', city: 'New York', suburb: 'Manhattan', district: 'Manhattan Community Board 5', county: 'New York County', state: 'New York', country: 'Vereinigte Staaten von Amerika', country_code: 'us' }, 40.7556, -73.9858],
+      [{ result_type: 'amenity', name: 'Times Square–42nd Street', street: '7th Avenue', postcode: '10018', city: 'New York', suburb: 'Manhattan', district: 'Manhattan Community Board 5', county: 'New York County', state: 'New York', country: 'Vereinigte Staaten von Amerika', country_code: 'us' }, 40.7558, -73.987],
+      [{ result_type: 'amenity', name: 'Times Square–42nd Street', street: 'West 41st Street', postcode: '10018', city: 'New York', suburb: 'Manhattan', district: 'Manhattan Community Board 5', county: 'New York County', state: 'New York', country: 'Vereinigte Staaten von Amerika', country_code: 'us' }, 40.7551, -73.9868],
+      [{ result_type: 'amenity', name: 'Times Square–42nd Street/Port Authority Bus Terminal', street: 'West 38th Street', postcode: '10036', city: 'New York', suburb: 'Manhattan', district: 'Garment District', county: 'New York County', state: 'New York', country: 'Vereinigte Staaten von Amerika', country_code: 'us' }, 40.7563, -73.9905],
+      [{ result_type: 'amenity', name: 'Times Square–42nd Street', street: 'Broadway', postcode: '10018', city: 'New York', suburb: 'Manhattan', district: 'Manhattan Community Board 5', county: 'New York County', state: 'New York', country: 'Vereinigte Staaten von Amerika', country_code: 'us' }, 40.7547, -73.9867],
+      [{ result_type: 'street', name: 'Times Square', street: 'Times Square', postcode: '01099', city: 'Dresden', suburb: 'Albertstadt', district: 'Neustadt', state: 'Sachsen', country: 'Deutschland', country_code: 'de' }, 51.0812, 13.7607],
+      [{ result_type: 'amenity', name: 'Times Square', city: 'Groß-London', suburb: 'Whitechapel', district: 'London Borough of Tower Hamlets', state: 'England', country: 'Vereinigtes Königreich', country_code: 'gb' }, 51.5126, -0.0682],
+      [{ result_type: 'street', name: 'Times Square', street: 'Times Square', postcode: 'NE1 4EP', city: 'Newcastle upon Tyne', suburb: 'Grainger Town', district: 'Grainger Town', county: 'Tyne and Wear', state: 'England', country: 'Vereinigtes Königreich', country_code: 'gb' }, 54.9678, -1.6211],
+      [{ result_type: 'street', name: 'Times Square Avenue', street: 'Times Square Avenue', postcode: 'DY5 1SY', city: 'Dudley', district: 'Mount Pleasant', county: 'West Midlands', state: 'England', country: 'Vereinigtes Königreich', country_code: 'gb' }, 52.4777, -2.1101],
+      [{ result_type: 'amenity', name: 'Times Square', housenumber: '46', street: 'St Enoch Square', postcode: 'G1 4DH', city: 'Glasgow', district: 'Blythswood Holm', county: 'Glasgow City', state: 'Schottland', country: 'Vereinigtes Königreich', country_code: 'gb' }, 55.8572, -4.2558],
+      [{ result_type: 'street', name: 'Times Square', street: 'Times Square', postcode: 'ST3 1BZ', city: 'Stoke-on-Trent', district: 'Sandford Hill', state: 'England', country: 'Vereinigtes Königreich', country_code: 'gb' }, 52.9895, -2.136],
+      [{ result_type: 'amenity', name: 'Times Square', street: 'Throwley Way', postcode: 'SM1 4AE', city: 'Groß-London', suburb: 'Benhilton', district: 'London Borough of Sutton', state: 'England', country: 'Vereinigtes Königreich', country_code: 'gb' }, 51.3643, -0.1915],
+      [{ result_type: 'amenity', name: 'Times Square', street: 'Place Fourneyron', postcode: '42000', city: 'Saint-Étienne', district: 'Saint-Étienne', county: 'Loire', state: 'Auvergne-Rhone-Alpen', country: 'Frankreich', country_code: 'fr' }, 45.4396, 4.3958],
+      [{ result_type: 'amenity', name: 'Times Square Pizza and Kebabs', street: 'Chells Way', postcode: 'SG2 0DJ', city: 'Stevenage', suburb: 'Chells', district: 'Chells', county: 'Hertfordshire', state: 'England', country: 'Vereinigtes Königreich', country_code: 'gb' }, 51.909, -0.1704],
+      [{ result_type: 'amenity', name: 'Times Square', street: 'Boulevard Abane Ramdane', postcode: '22000', city: 'Sidi bel Abbès', suburb: 'La Bremer', district: 'Sidi Yacine', county: 'Daïra Sidi Bel Abbès', state: 'Provinz Sīdī Bu-l-ʿAbbās', country: 'Algerien', country_code: 'dz' }, 35.1916, -0.6271],
     ],
   },
 };

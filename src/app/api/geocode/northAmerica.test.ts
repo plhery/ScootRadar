@@ -231,7 +231,7 @@ describe('the search in North America', () => {
     await search('Congress Ave', { country: 'United States' });
     await search('Congress Ave');
 
-    // Without a centre, places in that country first, then anywhere when none there is what was typed.
+    // Without a centre, places in that country and anywhere, asked at once.
     const places = asked(GEOAPIFY_HOST).filter(url => url.searchParams.get('type') !== 'city');
     expect(places.map(url => url.searchParams.get('bias'))).toEqual(['countrycode:us', 'countrycode:us',
       'proximity:-97.74,30.27', 'proximity:-97.74,30.27', 'countrycode:ch', 'countrycode:ch', 'countrycode:ch', 'countrycode:ch']);

@@ -203,9 +203,12 @@ instead of a centre, and places in Switzerland where none is sent.
 With a map centre it asks first for places within 50 km of it, and for places
 anywhere, still the nearest first, only when none of those is what was typed
 (Geoapify's near misses, as Zürichstrasse for "Zürich HB", do not count).
-Without one it asks so for places in that country first: asked anywhere,
-Geoapify finds Rothschild, Wisconsin, alone for "Rothschild", and the places
-of Tel Aviv's Rothschild Boulevard only when asked in Israel.
+Without one it asks at the same time for places in that country and for places
+anywhere, and lists that country's first: asked anywhere alone, Geoapify finds
+Rothschild, Wisconsin, alone for "Rothschild", and the places of Tel Aviv's
+Rothschild Boulevard only when asked in Israel; asked in Germany alone, it
+finds a street in Dresden and a café for "Times Square", and New York's
+square only when asked anywhere.
 For text without digits it also asks, at the same time, for the towns of that
 name anywhere: towns far from the map, and Fribourg for "Freiburg" next to
 Freiburg im Breisgau. They are waited for as long as places are, or for 1.5

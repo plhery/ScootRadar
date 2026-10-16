@@ -833,16 +833,30 @@ describe('Geoapify', () => {
     expect(asks(photon, PHOTON_HOST, 'q', 'lat', 'lon')).toEqual([['Bahnhofstrasse 10 Biel', '47.1368', '7.2468']]);
   });
 
-  it('asks Geoapify for places in Switzerland first without a map centre', async () => {
-    const fetchMock = stubUpstreams({});
+  it('asks Geoapify for places in Switzerland and anywhere at once without a map centre', async () => {
+    const fetchMock = stubUpstreams({ geoapify: [
+      [{ result_type: 'building', housenumber: '1', street: 'Bahnhofstrasse', postcode: '8001', city: 'Zürich', country_code: 'ch' }, 47.3717, 8.5389],
+    ] });
 
     await GET(request('Bahnhofstrasse 1', 'de'));
     await POST(postRequest('Bahnhofstrasse 1', 'de'));
 
     const places = asked(fetchMock, GEOAPIFY_HOST);
     expect(places.map(url => url.searchParams.get('bias'))).toEqual(['countrycode:ch', 'countrycode:ch', 'countrycode:ch', 'countrycode:ch']);
-    // In Switzerland, then anywhere, as nothing was found there.
+    // In Switzerland, and anywhere, though the address was found there.
     expect(places.map(url => url.searchParams.get('filter'))).toEqual(['countrycode:ch', null, 'countrycode:ch', null]);
+  });
+
+  it('lists what is found anywhere without a map centre when Geoapify fails to answer for the rider\'s country, and the reverse', async () => {
+    const bahnhofstrasse: GeoapifyRow = [{ result_type: 'building', housenumber: '1', street: 'Bahnhofstrasse', postcode: '8001', city: 'Zürich', country_code: 'ch' }, 47.3717, 8.5389];
+    for (const geoapify of [{ nearby: 503, anywhere: [bahnhofstrasse] }, { nearby: [bahnhofstrasse], anywhere: 503 }]) {
+      const fetchMock = stubUpstreams({ geoapify });
+
+      const response = await POST(postRequest('Bahnhofstrasse 1', 'de'));
+
+      expect(await shownRows(response)).toEqual([['Bahnhofstrasse 1', '8001 Zürich', true]]);
+      expect(asked(fetchMock, PHOTON_HOST)).toEqual([]);
+    }
   });
 
   it.each<[fields: Record<string, unknown>, title: string, subtitle: string]>([
@@ -1204,7 +1218,7 @@ describe('recorded Geoapify answers', () => {
       ['Rheinfallweg 17', '8447 Dachsen', DATA],
       ['Rheinfallstrasse 20', '8447 Dachsen', DATA],
     ]],
-    // None in Switzerland, where places are looked for first; of twenty across the world, the American ones Geoapify knows best, none of them nearer Switzerland than another.
+    // None in Switzerland, whose places would come first; of twenty across the world, the American ones Geoapify knows best, none of them nearer Switzerland than another.
     ['Springfield', 'en', undefined, ['towns', 'nearby', 'anywhere'], [
       ['Springfield', 'Missouri, United States', NO_DATA],
       ['Springfield', 'Illinois, United States', NO_DATA],
