@@ -112,6 +112,7 @@ import sanFranciscoEn from './en/e-scooters-san-francisco';
 import heidelbergDe from './de/e-scooter-heidelberg';
 import edmontonEn from './en/e-scooters-edmonton';
 import atlantaEn from './en/e-scooters-atlanta';
+import baltimoreEn from './en/e-scooters-baltimore';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -224,4 +225,5 @@ export const GUIDES: readonly Guide[] = [
   heidelbergDe,
   edmontonEn,
   atlantaEn,
+  baltimoreEn,
 ];
