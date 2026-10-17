@@ -104,6 +104,7 @@ import aucklandEn from './en/e-scooters-auckland';
 import fuerteventuraEs from './es/alquiler-patinete-electrico-fuerteventura';
 import torreviejaEs from './es/alquiler-patinete-electrico-torrevieja';
 import cataniaIt from './it/monopattini-sharing-catania';
+import essenDe from './de/e-scooter-essen';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -208,4 +209,5 @@ export const GUIDES: readonly Guide[] = [
   icelandicRulesIs,
   howToRentIs,
   reykjavikIs,
+  essenDe,
 ];
