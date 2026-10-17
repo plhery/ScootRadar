@@ -70,6 +70,20 @@ export interface StillExpired {
 }
 
 /**
+ * How long after a night ban Sentry waits for a feed to come back. An operator may take its feed
+ * down for the ban, as Dott does in Trondheim, and bring it back minutes after: 7.5 on 17 October 2026.
+ */
+export const CURFEW_RETURN_MS = 15 * 60_000;
+
+/**
+ * A StillExpired wait that holds the report while a night ban holds at the feed (`curfewed`), and
+ * for CURFEW_RETURN_MS after it ends.
+ */
+export function waitOutCurfew(curfewed: (feedId: string, now: number) => boolean) {
+  return (feed: FeedSnapshot, now: number) => curfewed(feed.id, now) || curfewed(feed.id, now - CURFEW_RETURN_MS);
+}
+
+/**
  * Logs every feed whose state changed since the last call. A feed also expires
  * between two collections, without any error, when its time runs out: this
  * runs on a timer, not after collections. The first

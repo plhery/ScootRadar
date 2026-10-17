@@ -11,7 +11,7 @@ import { FeedScheduler } from './feedScheduler';
 import { createSnapshotServer } from './snapshotServer';
 import { readSnapshot, writeSnapshot } from './snapshotFile';
 import { collectSnapshotFeed } from './collectFeed';
-import { createFeedStateLog, feedState, type FeedCadence } from './feedStateLog';
+import { createFeedStateLog, feedState, waitOutCurfew, type FeedCadence } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
 import { initErrorReporting, reportError, reportFeedExpired } from './errorReporting';
 import { cadenceFromEnv } from './cadence';
@@ -187,8 +187,8 @@ void discover();
 const EXPIRED_REPORT_DELAY_MS = 5 * 60_000;
 const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afterMs: EXPIRED_REPORT_DELAY_MS,
   // Under a night ban, an operator may take its feed down until morning, as Dott did in Trondheim
-  // on 16 October 2026: Sentry hears of it only if it is not back 5 minutes after the ban.
-  wait: (feed, now) => feedCurfewed(feed.id, now) || feedCurfewed(feed.id, now - EXPIRED_REPORT_DELAY_MS),
+  // on 16 October 2026: Sentry hears of it only if it is not back 15 minutes after the ban.
+  wait: waitOutCurfew(feedCurfewed),
   report: (change, feed) => {
     // In its seasonal pause, a feed is expected to stop; the log still says it did.
     if (!feedPaused(feed.id, Date.now())) reportFeedExpired(change, feed, lastErrors.get(feed.id));

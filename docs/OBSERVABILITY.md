@@ -42,7 +42,7 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   every service area of the feed, else 0. Its operator may take the feed down until
   morning, as Dott does in Trondheim on Friday and Saturday nights while Entur keeps
   serving its last positions: Sentry and "feed stopped" hear of it only if it is still
-  expired 5 and 10 minutes after the ban.
+  expired 15 and 10 minutes after the ban.
 - `scootradar_feed_vehicles`: available standing scooters held, 0 once expired, or while
   the operator lists none.
 - `scootradar_feed_priced_vehicles`: of those, the scooters with a price. The others
@@ -233,8 +233,9 @@ startup. Tracing is off, and no trace headers go to the operators' feeds.
   cadence's rule (an idle feed after 30 minutes without a successful collection) and is
   still expired 5 minutes later, outside its seasonal pause. Under a night ban at all its
   service areas, it waits for the ban to end and tells only if the feed is still expired
-  5 minutes after: Dott takes Trondheim's feed down on Friday and Saturday nights, which
-  Entur keeps serving as it last was. A shorter blip, as Voi
+  15 minutes after: Dott takes Trondheim's feed down on Friday and Saturday nights, which
+  Entur keeps serving as it last was, and brought it back 7.5 minutes after the ban on
+  17 October 2026. A shorter blip, as Voi
   Switzerland's 105 seconds on 16 October 2026, is only in the logs. One
   issue per feed (tags `feed`, `source`, `provider`), at most one event an hour for
   each, so a feed that keeps expiring between updates stays quiet. Its `feed` context has the
