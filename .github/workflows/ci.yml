@@ -50,6 +50,6 @@ jobs:
           xcodebuild test
           -project ios/ScootRadar.xcodeproj
           -scheme ScootRadar
-          -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=latest'
+          -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5'
           -derivedDataPath "$RUNNER_TEMP/ScootRadarDerivedData"
           CODE_SIGNING_ALLOWED=NO
