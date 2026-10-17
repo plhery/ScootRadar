@@ -484,6 +484,11 @@
         "east": 11.106
       },
       "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/voilillestrom/gbfs",
+      "seasonal": {
+        "from": "12-01",
+        "until": "03-01",
+        "timeZone": "Europe/Oslo"
+      },
       "areas": [
         {
           "city": "Lillestrøm",

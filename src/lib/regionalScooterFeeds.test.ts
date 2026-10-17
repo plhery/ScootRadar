@@ -7,6 +7,7 @@ import { providersForViewport } from './mapCoverage';
 import { normalizeParkingLocations } from './parking';
 import { buildCityOverview, querySnapshot, type FeedSnapshot } from './scooterSnapshots';
 import { boundsContainPoint } from './geo';
+import { activeSeasonalPause, feedPaused } from './seasonalPauses';
 
 const berlin = { south: 52.49, north: 52.55, west: 13.37, east: 13.44 };
 const rome = { south: 41.88, north: 41.93, west: 12.46, east: 12.53 };
@@ -453,6 +454,20 @@ describe('German and Italian scooter coverage', () => {
     expect(boundsContainPoint(bounds('hoppy_be_blankenberge'), 51.3124, 3.121)).toBe(true);
     expect(bounds('hoppy_be_oostende').east).toBeLessThan(bounds('hoppy_be_blankenberge').west);
   });
+  it('takes Voi Lillestrøm and Lørenskog\'s scooters off for December to February, as the towns allow no renting in winter', () => {
+    const lillestrom: [number, number] = [59.9556, 11.0492];
+    // 23:30 on 30 November in Lillestrøm is still in season; 00:30 on 1 December is not.
+    expect(activeSeasonalPause(lillestrom, Date.UTC(2026, 10, 30, 22, 30))).toBeNull();
+    expect(activeSeasonalPause(lillestrom, Date.UTC(2026, 10, 30, 23, 30))).toEqual({ city: 'Lillestrøm', month: 3 });
+    expect(activeSeasonalPause(lillestrom, Date.UTC(2027, 1, 28, 12))).toEqual({ city: 'Lillestrøm', month: 3 });
+    expect(activeSeasonalPause(lillestrom, Date.UTC(2027, 2, 1, 12))).toBeNull();
+    const winter = Date.UTC(2027, 0, 15, 12);
+    expect(feedPaused('norway:voi_no_lillestrom_lorenskog', winter)).toBe(true);
+    // Oslo's scooters stay out all winter.
+    expect(activeSeasonalPause([59.9139, 10.7522], winter)).toBeNull();
+    expect(feedPaused('norway:voi_no_oslo', winter)).toBe(false);
+  });
+
   it('keeps Zeus to Leimen, Walldorf and Wiesloch, as it has had no permit in Heidelberg since April 2026', () => {
     const zeus = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'zeus_de_leimen_walldorf_wiesloch')!;
     expect(serviceAreas(zeus).map(area => area.city)).toEqual(['Leimen', 'Walldorf', 'Wiesloch']);

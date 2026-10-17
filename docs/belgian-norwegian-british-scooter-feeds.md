@@ -195,7 +195,7 @@ directory.
 
 Each Norwegian municipality sets its own hours in its *forskrift* on renting
 small electric vehicles, and British trial areas set theirs in the trial's
-conditions. Ten Norwegian towns and two British areas covered ban renting at
+conditions. Eleven Norwegian towns and two British areas covered ban renting at
 night. While a ban holds, the dock tells of it, with a moon, for the town in
 view, and a scooter's card says when it can be rented again. Web and iOS read
 the same [`rental-curfews.json`](../data/rental-curfews.json). It holds each
@@ -216,6 +216,7 @@ stays open at night.
 | Tønsberg | Friday and Saturday 23:00–05:00, other nights 01:00–05:00 | [FOR-2024-09-04-2115](https://lovdata.no/dokument/LF/forskrift/2024-09-04-2115) § 6 d |
 | Sandefjord | Every night, 01:00–05:00 | [FOR-2022-06-22-1166](https://lovdata.no/dokument/LF/forskrift/2022-06-22-1166) § 7 e |
 | Lillestrøm | Friday and Saturday, 00:00–05:00 | [FOR-2022-06-15-1545](https://lovdata.no/dokument/LF/forskrift/2022-06-15-1545) § 7 e |
+| Rælingen | Friday and Saturday, 23:00–05:00 | [FOR-2022-12-07-2621](https://lovdata.no/dokument/LF/forskrift/2022-12-07-2621) § 7 e |
 | Arendal | Every night, 23:00–05:00 | [City page](https://www.arendal.kommune.no/tjenester/vei-parkering-og-havn/parkering/elsparkesykler/) |
 | Bournemouth, Christchurch, Poole | Every night, 22:00–05:00 | [Beryl](https://help-bikes.beryl.cc/en/articles/16098480-when-are-beryl-e-scooters-available-to-hire) |
 | Brighton and Hove | Every night, 00:00–05:00 | [Council](https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial) |
@@ -227,6 +228,12 @@ stays open at night.
   only operator, 23:00–05:00. The map keeps the hours two of them agree on.
 - Stavanger, Tromsø and Tønsberg also close on the eve of public holidays,
   which the map leaves out.
+- **Rælingen** has no town outline, so the map counts its scooters, from Voi's
+  Lillestrøm feed, under Lillestrøm; its night ban has its own boundary.
+- **Winter:** Lillestrøm's, Lørenskog's and Rælingen's rules allow renting from
+  March through November only ("Vinterdrift tillates ikke"), so Voi's Lillestrøm
+  and Lørenskog feed has a seasonal pause from 1 December to 1 March, read as
+  Ottawa's is ([Canadian feeds](canadian-scooter-feeds.md#winter)).
 - Oslo's city government can lift its ban without changing the rule. The city
   council kept it in January 2026
   ([NRK](https://www.nrk.no/stor-oslo/bystyret-stemte-ned-innstramminger-for-elsparkesykler-i-oslo-1.17746568)).
