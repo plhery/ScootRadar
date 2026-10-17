@@ -164,7 +164,7 @@ const guide: Guide = {
               ['Tromsø', '23–06 natt til lørdag, søndag og helligdager', 'Ny forskrift fra 1. januar 2026: inntil to operatører (i 2026 bare Ryde) og maks 200 kjøretøy i sentrum.'],
               ['Skien og Porsgrunn', 'Ikke stengt', 'Maks 12 km/t i sentrum fra kl. 00 til 05. Om vinteren bare elsykler med piggdekk.'],
               ['Tønsberg', '23–05 natt til lørdag, søndag og helligdager, ellers 01–05', 'Maks 300 kjøretøy. Tas inn ved fare for snø og is.'],
-              ['Fredrikstad og Sarpsborg', 'Ingen fast stenging i forskriften', 'Kommunen kan innføre stengetider, saktesoner og kjøreforbud. Sparkesyklene tas inn når det snør.'],
+              ['Fredrikstad og Sarpsborg', 'Ikke stengt', 'Maks 10 km/t kl. 23–05 natt til lørdag og søndag. Voi og Ryde har felles tillatelse til 31. mars 2027, med 1500 kjøretøy til sammen. Sparkesyklene tas inn når det snør.'],
               ['Arendal', '00–05 hver natt', 'Tillatelsene gjelder for to sesonger.'],
               ['Sandefjord', '01–05', 'Alle kvalifiserte operatører får ettårig tillatelse.'],
               ['Asker', 'Stengt hele vinteren', 'Opptil to operatører.'],
@@ -213,6 +213,7 @@ const guide: Guide = {
     { title: 'Oslo kommune: Leie av elsparkesykler og elsykler', url: 'https://www.oslo.kommune.no/gate-transport-og-parkering/sykkel/leie-av-elsparkesykler-og-elsykler/' },
     { title: 'Lovdata: Forskrift om utleie av små elektriske kjøretøy, Bergen (2026)', url: 'https://lovdata.no/dokument/LF/forskrift/2026-06-17-1345' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
+    { title: 'Sarpsborg kommune: Utleie av elsparkesykler i Sarpsborg', url: 'https://sarpsborg.com/byggesak-og-teknisk/utleie-av-elsparkesykler-i-sarpsborg/' },
   ],
 };
 
