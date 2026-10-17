@@ -453,6 +453,14 @@ describe('German and Italian scooter coverage', () => {
     expect(boundsContainPoint(bounds('hoppy_be_blankenberge'), 51.3124, 3.121)).toBe(true);
     expect(bounds('hoppy_be_oostende').east).toBeLessThan(bounds('hoppy_be_blankenberge').west);
   });
+  it('keeps Zeus to Leimen, Walldorf and Wiesloch, as it has had no permit in Heidelberg since April 2026', () => {
+    const zeus = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'zeus_de_leimen_walldorf_wiesloch')!;
+    expect(serviceAreas(zeus).map(area => area.city)).toEqual(['Leimen', 'Walldorf', 'Wiesloch']);
+    // Zeus's feed bars starting or ending a ride in Heidelberg; one of its 101 scooters stood there on 17 October 2026.
+    expect(boundsContainPoint(zeus.bounds, 49.4094, 8.698)).toBe(false);
+    expect(providersForViewport({ south: 49.40, north: 49.42, west: 8.68, east: 8.71 })).not.toContain('zeus');
+    expect(providersForViewport({ south: 49.34, north: 49.355, west: 8.68, east: 8.70 })).toContain('zeus');
+  });
   it('routes Hoppy\'s "Benidorm" feed to the four Marina Baixa towns its scooters stand in, and keeps only its scooters', async () => {
     const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'hoppy_es_marina_baixa')!;
     const areas = serviceAreas(system);

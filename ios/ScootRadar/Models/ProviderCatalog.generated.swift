@@ -301,7 +301,6 @@ enum ScooterProviderCoverage {
         (.zeus, GeoBounds(south: 47.9204, west: 8.4496, north: 47.9818, east: 8.5362)),
         (.zeus, GeoBounds(south: 47.958, west: 7.7695, north: 48.051, east: 7.9323)),
         (.zeus, GeoBounds(south: 47.648, west: 9.1149, north: 47.7104, east: 9.2302)),
-        (.zeus, GeoBounds(south: 49.37, west: 8.62, north: 49.44, east: 8.73)),
         (.zeus, GeoBounds(south: 49.315, west: 8.62, north: 49.37, east: 8.73)),
         (.zeus, GeoBounds(south: 49.27, west: 8.61, north: 49.315, east: 8.67)),
         (.zeus, GeoBounds(south: 49.27, west: 8.67, north: 49.315, east: 8.73)),

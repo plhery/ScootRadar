@@ -44,7 +44,7 @@ scooters in Catania followed on 14 October 2026; see
 | Germany | Hopp | 1 | Konstanz |
 | Germany | Lime | 3 | Frankfurt, Wuppertal, Stuttgart / Konstanz |
 | Germany | Voi | 1 | Karlsruhe, Pforzheim, Mannheim, Ludwigshafen am Rhein, Stuttgart, Böblingen, Sindelfingen, Tübingen and Reutlingen |
-| Germany | Zeus | 14 | Bamberg, Donaueschingen, Freiburg im Breisgau, Heidelberg / Leimen / Walldorf / Wiesloch, Konstanz, Ludwigsburg, Neustadt an der Weinstraße, Regensburg, Renningen, Schweinfurt, Singen, Tuttlingen, Villingen-Schwenningen and Würzburg |
+| Germany | Zeus | 14 | Bamberg, Donaueschingen, Freiburg im Breisgau, Leimen / Walldorf / Wiesloch, Konstanz, Ludwigsburg, Neustadt an der Weinstraße, Regensburg, Renningen, Schweinfurt, Singen, Tuttlingen, Villingen-Schwenningen and Würzburg |
 | Germany | Yoio | 3 | Erfurt, Freiburg im Breisgau and Göttingen |
 | Italy | Bird | 3 | Roma, Palermo and Napoli |
 | Italy | Elerent | 1 | Catania |
@@ -70,6 +70,12 @@ The complete reviewed city bounds, public discovery URLs and aliases are in
   a Leimen area too: Zeus's Leimen box, cut at the feed's own southern edge
   (49.3288–49.37 N, 8.62–8.73 E). Its 18 to 30 scooters there count under
   Leimen, not Heidelberg.
+- Zeus has had no permit in Heidelberg since 1 April 2026, when the city's
+  permits went to Dott, Bolt and Voi (city release of 22 April 2026), and the
+  Leimen / Walldorf / Wiesloch feed bars starting or ending a ride there. So
+  since 17 October 2026 that feed has no Heidelberg area and its bounds stop at
+  49.37 N, Leimen's northern edge; one of its 101 scooters stood north of it
+  that day and is left out.
 - A last sweep that evening checked every feed against six polls of 14 October
   2026 (00:01–00:10 and 13:09–13:20), each scooter placed in its municipality
   by BKG's boundaries ([VG250](https://gdz.bkg.bund.de/index.php/default/digitale-geodaten/verwaltungsgebiete.html)).

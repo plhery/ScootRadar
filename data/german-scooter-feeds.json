@@ -869,25 +869,12 @@
       ],
       "bounds": {
         "south": 49.27,
-        "north": 49.44,
+        "north": 49.37,
         "west": 8.61,
         "east": 8.73
       },
       "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/zeus_leimen_walldorf_wiesloch/gbfs",
       "areas": [
-        {
-          "city": "Heidelberg",
-          "center": [
-            49.4094,
-            8.6947
-          ],
-          "bounds": {
-            "south": 49.37,
-            "north": 49.44,
-            "west": 8.62,
-            "east": 8.73
-          }
-        },
         {
           "city": "Leimen",
           "aliases": [
