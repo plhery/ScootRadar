@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter-Regeln in Deutschland: was heute gilt und was sich am 1. März 2027 ändert',
   lede: 'Die E-Scooter-Regeln in Deutschland ändern sich in zwei Schritten: Seit dem 1. April 2026 gelten neue Bauvorschriften für neue Fahrzeuge, ab dem 1. März 2027 neue Verkehrsregeln und Bussgelder. Heute gilt: Ab 14 Jahren darfst du ohne Führerschein fahren, auf dem Radweg statt auf dem Gehweg, nur allein und mit denselben Promillegrenzen wie im Auto. Leih-Scooter bekommst du bei Lime, Voi, Bolt, Dott und Zeus erst ab 18.',
   published: '2026-10-12',
-  updated: '2026-10-15',
+  updated: '2026-10-17',
   sections: [
     {
       heading: 'E-Scooter-Regeln heute und ab 1. März 2027',
@@ -161,7 +161,7 @@ const guide: Guide = {
         'Leih-Scooter lassen sich nicht zusammenklappen; der Münchner Verkehrsverbund MVV schliesst die von Dott, Lime, Voi und Bolt ausdrücklich aus. Für deinen eigenen E-Tretroller gilt:',
         {
           list: [
-            '**Deutsche Bahn, Fernverkehr:** Zusammengeklappt und sicher verstaut fährt er kostenlos als Handgepäck mit. Den Akku darfst du nicht herausnehmen oder laden. Grosse Scooter, die sich nicht klappen lassen, reisen wie Fahrräder.',
+            '**Deutsche Bahn, Fernverkehr:** Zusammengeklappt und sicher verstaut fährt er kostenlos als Handgepäck mit. Den Akku darfst du nicht herausnehmen oder laden. Lässt er sich nicht klappen, gilt er als Traglast und darf nur mit, wenn du ihn sicher unterbringst, etwa im Gepäckregal.',
             '**S-Bahn und Regionalzug:** Kein bundesweites Verbot. In den Verbünden von Berlin, Hamburg, München, Stuttgart, Leipzig, Hannover und Rhein-Ruhr (VRR) darf er zusammengeklappt mit, in München mit höchstens 90 × 80 cm und 25 kg; im VRR darf ihn jedes Verkehrsunternehmen ausschliessen.',
             '**U-Bahn, Tram und Stadtbus:** Viele Betriebe haben E-Tretroller 2023 und 2024 wegen der Brandgefahr der Akkus verbannt, oft auch zusammengeklappt: die BVG in Berlin, die Hamburger U-Bahn, die MVG in München, die KVB in Köln, die VGF in Frankfurt, die Rheinbahn in Düsseldorf und die ÜSTRA in Hannover. In Stuttgart fährt er zusammengeklappt kostenlos mit.',
           ],
