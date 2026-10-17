@@ -106,7 +106,7 @@ const guide: Guide = {
         {
           note: 'You can’t end a ride in a no-parking zone, and the minutes keep counting while you look for a place where the app lets you stop. In Zürich that includes Europaplatz by the main station and Sechseläutenplatz.',
         },
-        'Check in the app where you may park before you set off. For the zones around Zürich’s main station and Old Town, see [e-scooters in Zürich](guide:zurich).',
+        'Check in the app where you may park before you set off. For the zones around Zürich’s main station and Old Town, see [e-scooters in Zürich](guide:zurich); for Bern’s station and squares, [e-scooters in Bern](guide:bern); for the Rhine and Basel’s old town, [e-scooters in Basel](guide:basel).',
         {
           table: {
             caption: 'Fees in the operators’ Swiss terms and price pages, as read in October 2026',

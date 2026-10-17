@@ -106,7 +106,7 @@ const guide: Guide = {
         {
           note: 'In einer Parkverbotszone kannst du die Fahrt nicht beenden, und die Minuten laufen weiter, bis du einen Platz findest, an dem die App das Abstellen erlaubt. In Zürich gilt das zum Beispiel auf dem Europaplatz beim Hauptbahnhof und auf dem Sechseläutenplatz.',
         },
-        'Schau vor der Fahrt in der App nach, wo du abstellen darfst. Wo die Zonen rund um den Zürcher Hauptbahnhof und die Altstadt liegen, steht im Ratgeber [E-Trottinett in Zürich](guide:zurich).',
+        'Schau vor der Fahrt in der App nach, wo du abstellen darfst. Wo die Zonen rund um den Zürcher Hauptbahnhof und die Altstadt liegen, steht im Ratgeber [E-Trottinett in Zürich](guide:zurich), für Berns Bahnhof und Plätze in [E-Trottinett in Bern](guide:bern), für den Rhein und die Basler Altstadt in [E-Trottinett in Basel](guide:basel).',
         {
           table: {
             caption: 'Gebühren in den Schweizer Nutzungsbedingungen und Preislisten der Anbieter, Stand Oktober 2026',
