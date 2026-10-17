@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter-Regeln in Deutschland: was heute gilt und was sich am 1. März 2027 ändert',
   lede: 'Die E-Scooter-Regeln in Deutschland ändern sich in zwei Schritten: Seit dem 1. April 2026 gelten neue Bauvorschriften für neue Fahrzeuge, ab dem 1. März 2027 neue Verkehrsregeln und Bussgelder. Heute gilt: Ab 14 Jahren darfst du ohne Führerschein fahren, auf dem Radweg statt auf dem Gehweg, nur allein und mit denselben Promillegrenzen wie im Auto. Leih-Scooter bekommst du bei Lime, Voi, Bolt, Dott und Zeus erst ab 18.',
   published: '2026-10-12',
-  updated: '2026-10-17',
+  updated: '2026-10-18',
   sections: [
     {
       heading: 'E-Scooter-Regeln heute und ab 1. März 2027',
@@ -134,7 +134,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter-Sharing: was in Berlin, Hamburg, München, Köln & Co. gilt',
       blocks: [
-        'Einen Führerschein verlangen die Anbieter nicht. Bolt kann laut seinen ab 1. November 2026 gültigen Bedingungen aber ein Foto deines Führerscheins als Identitätsnachweis fordern, Voi eine Identitätsprüfung, etwa nach einem Unfall oder wegen eines Bussgelds. Bei Dott, Bolt und Voi kannst du mit einem Konto Scooter für eine Gruppe entsperren; dann musst du dafür sorgen, dass alle mindestens 18 sind. TIER heisst heute Dott.',
+        'Einen Führerschein verlangen die Anbieter nicht. Bolt kann laut seinen ab 1. Dezember 2026 gültigen Bedingungen aber ein Foto deines Führerscheins als Identitätsnachweis fordern, Voi eine Identitätsprüfung, etwa nach einem Unfall oder wegen eines Bussgelds. Bei Dott, Bolt und Voi kannst du mit einem Konto Scooter für eine Gruppe entsperren; dann musst du dafür sorgen, dass alle mindestens 18 sind. TIER heisst heute Dott.',
         '**Parken:** Es gelten die Regeln für Fahrräder. Abstellen auf dem Gehweg ist erlaubt, solange niemand behindert oder gefährdet wird. Ab 1. März 2027 steht das ausdrücklich in der StVO, und Falschparken auf Geh- oder Radweg kostet dann ab 55 €. Wo Leih-Scooter stehen dürfen, regelt jede Stadt selbst; in Verbotszonen sperrt die App das Beenden der Fahrt.',
         {
           table: {
@@ -199,6 +199,7 @@ const guide: Guide = {
     { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
     { title: 'MVV: Scootersharing in München', url: 'https://www.mvv-muenchen.de/vernetzte-mobilitaet/shared-mobility/scootersharing/' },
     { title: 'Statistisches Bundesamt: Unfälle mit E-Scootern 2025', url: 'https://www.destatis.de/DE/Presse/Pressemitteilungen/2026/07/PD26_N049_462.html' },
+    { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge in Deutschland (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
   ],
 };
 
