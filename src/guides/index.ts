@@ -53,6 +53,7 @@ import reykjavikIs from './is/rafskutur-reykjavik';
 import reykjavikEn from './en/e-scooters-reykjavik';
 import cologneDe from './de/e-scooter-koeln';
 import howToRentPt from './pt/alugar-trotinete-eletrica';
+import cascaisPt from './pt/trotinetes-cascais';
 import howToRentEs from './es/alquilar-patinete-electrico';
 import howToRentIs from './is/leigja-rafskutu';
 import marseilleFr from './fr/trottinette-electrique-marseille';
@@ -182,6 +183,7 @@ export const GUIDES: readonly Guide[] = [
   howToRentPt,
   lisbonPt,
   portoPt,
+  cascaisPt,
   spanishRulesEs,
   howToRentEs,
   tenerifeEs,
