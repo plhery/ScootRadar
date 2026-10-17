@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Are e-scooters legal in the UK? What you can ride, where, and what it costs if you get it wrong',
   lede: 'E-scooters are legal in the UK only as rentals in an official trial area. A privately owned e-scooter is illegal on public roads, pavements and cycle lanes and in parks; you may ride it only on private land with the landowner’s permission. The rental trials run in 21 areas, all in England, until May 2028, and you need a full or provisional driving licence to ride. As of 12 October 2026 the government has promised a new law but has not put a bill before Parliament.',
   published: '2026-10-12',
-  updated: '2026-10-13',
+  updated: '2026-10-17',
   sections: [
     {
       heading: 'Are e-scooters legal in the UK? Private vs rental',
@@ -60,7 +60,7 @@ const guide: Guide = {
               ['UK licence', 'Full or provisional, with category Q (included with AM, A or B)'],
               ['Foreign licence', 'A full EU or EEA licence works. A full licence from elsewhere works if it covers cars, mopeds or motorcycles and you entered the UK in the last 12 months. Foreign provisional licences and learner permits don’t'],
               ['Age', 'The legal minimum is 16, but Beryl and Dott require 18 or over, as do Lime and Voi in London'],
-              ['Top speed', '15.5 mph at most; 12.5 mph in London, Brighton, Cornwall and the West of England, and slower in go-slow zones'],
+              ['Top speed', '15.5 mph at most; 12.5 mph in London, Brighton, Cornwall, Norwich and the West of England, and slower in go-slow zones'],
               ['Helmet', 'Recommended, not required by law'],
               ['Passengers and loads', 'One person only. No towing, and no bags hanging from the handlebars'],
               ['Phone', 'Don’t use it while riding. A navigation screen is fine if you set it up before you set off'],
@@ -69,7 +69,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Before your first ride the operator’s app checks your licence and your age. Every operator must offer training, and in London and with Beryl a short in-app lesson is compulsory before your first ride. Dott’s terms add that its insurance covers you only if you declare a valid licence with no more than 6 penalty points.',
+        'Before your first ride the operator’s app checks your licence and your age. Every operator must offer training, and in London, and with Beryl in Plymouth, a short in-app lesson is compulsory before your first ride. Dott’s terms add that its insurance covers you only if you declare a valid licence with no more than 6 penalty points.',
         'If you’re heading abroad, check the local rules before you ride: they change at the border, as our guide to [e-scooter rules in Switzerland](guide:swiss-rules) shows.',
       ],
     },
@@ -117,7 +117,7 @@ const guide: Guide = {
               ['London', '11 boroughs (see below)', 'Not shown (Lime and Voi run it)'],
               ['Milton Keynes', 'Milton Keynes', 'Dott'],
               ['North and West Northamptonshire', 'Northampton, Kettering, Corby, Wellingborough, Rushden, Higham Ferrers', 'Not shown'],
-              ['Norwich', 'Norwich, with bays in Wymondham', 'Beryl'],
+              ['Norwich', 'Norwich, Hethersett and Wymondham', 'Beryl'],
               ['Nottingham', 'Nottingham', 'Dott'],
               ['Oxford', 'Oxford', 'Not shown'],
               ['Plymouth', 'Plymouth, since 28 July 2026', 'Beryl'],
@@ -186,7 +186,7 @@ const guide: Guide = {
     },
     {
       question: 'Can I ride a rental e-scooter on a provisional licence?',
-      answer: 'Yes. A provisional licence with category Q entitlement, which comes with AM, A or B, is enough. You don’t need L plates or a CBT. The operator will ask you to upload your licence first, and in London and with Beryl you must also complete a short lesson in the app.',
+      answer: 'Yes. A provisional licence with category Q entitlement, which comes with AM, A or B, is enough. You don’t need L plates or a CBT. The operator will ask you to upload your licence first, and in London, and with Beryl in Plymouth, you must also complete a short lesson in the app.',
     },
     {
       question: 'How old do you have to be to rent an e-scooter in the UK?',
@@ -216,6 +216,9 @@ const guide: Guide = {
     { title: 'Crime and Policing Act 2026, section 8', url: 'https://www.legislation.gov.uk/ukpga/2026/20/section/8/enacted' },
     { title: 'GOV.UK: The drink drive limit', url: 'https://www.gov.uk/drink-drive-limit' },
     { title: 'Transport for London: E-scooter rental trial', url: 'https://tfl.gov.uk/modes/driving/electric-scooter-rental-trial' },
+    { title: 'Norfolk County Council: Extension of Norwich e-scooter trial (March 2026)', url: 'https://norfolkcc.cmis.uk.com/norfolkcc/DelegatedDecisions/tabid/67/ctl/ViewCMIS_DecisionDetails/mid/391/Id/2006/Default.aspx' },
+    { title: 'Beryl Help Centre: Riding a Beryl e-scooter', url: 'https://help-bikes.beryl.cc/en/articles/11706501-riding-a-beryl-e-scooter' },
+    { title: 'Beryl: E-scooters in Plymouth', url: 'https://beryl.cc/e-scooters-plymouth' },
     { title: 'Find a Tender: TfL contract details notice, E-scooter trial phase 3 (17 September 2026)', url: 'https://www.find-tender.service.gov.uk/Notice/088384-2026' },
   ],
 };

@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter hire in the UK: where you can rent one, who runs it and what it costs',
   lede: 'E-scooter hire in the UK is legal only in 21 government trial areas, all in England, and the trials are due to run until May 2028. Voi, Beryl, Lime, Dott and Bolt run the schemes. You need a full or provisional driving licence, and every operator we checked rents only to riders aged 18 or over. Pay as you go, unlocking costs £0 to £1 and riding 20p to 29p a minute, so 15 minutes cost £3.75 to £4.75 at the rates published on 12 October 2026. In London, Lime and Voi hire out e-scooters in 11 boroughs, and every ride ends in a marked bay.',
   published: '2026-10-12',
-  updated: '2026-10-13',
+  updated: '2026-10-17',
   sections: [
     {
       heading: 'E-scooter hire in the UK: the 21 trial areas and who runs them',
@@ -33,7 +33,7 @@ const guide: Guide = {
               ['London: 11 boroughs', 'Lime and Voi', 'Yes, with both'],
               ['Milton Keynes', 'Lime and Dott', 'Yes'],
               ['Northamptonshire: Northampton, Kettering, Corby, Wellingborough, Rushden, Higham Ferrers', 'Voi', 'Not listed'],
-              ['Norwich, with bays in Wymondham', 'Beryl', 'Yes, and pedal bikes'],
+              ['Norwich, Hethersett and Wymondham', 'Beryl', 'Yes, and pedal bikes'],
               ['Nottingham', 'Dott', 'Yes'],
               ['Oxford', 'Voi', 'Yes'],
               ['Plymouth', 'Beryl, since July 2026', 'Yes'],
@@ -146,7 +146,7 @@ const guide: Guide = {
             '**Pavements:** never, not even for a few metres: a £50 fixed penalty.',
             '**Passengers:** one rider only; in the West of England, Dott bans riders caught riding two up.',
             '**Phone and drink:** using a phone in your hand costs £200 and 6 points, and the drink-drive limit for cars applies. In Liverpool, Bolt’s app can ask for a reaction test first.',
-            '**Speed:** 15.5 mph at most; 12.5 mph in London, Brighton, Cornwall and the West of England, and 7.5 mph in each Cornish town’s pedestrianised Go Slow Zone.',
+            '**Speed:** 15.5 mph at most; 12.5 mph in London, Brighton, Cornwall, Norwich and the West of England, and 7.5 mph in each Cornish town’s pedestrianised Go Slow Zone.',
             '**Hours:** many areas run around the clock, but Brighton has a curfew from midnight to 5am, and in Aylesbury and High Wycombe Voi listed 5am to 11pm on Mondays.',
           ],
         },
@@ -171,7 +171,7 @@ const guide: Guide = {
     },
     {
       question: 'Will the app accept my foreign driving licence?',
-      answer: 'Legally, a full EU or EEA licence works, and so does another country’s full car, moped or motorcycle licence if you entered the UK in the last 12 months. Each app decides what it accepts: Beryl takes “supported” international licences, Dott non-EU ones within those 12 months, and Transport for West Midlands asks Lime riders there for a valid UK licence. Upload yours before you travel.',
+      answer: 'Legally, a full EU or EEA licence works, and so does another country’s full car, moped or motorcycle licence if you entered the UK in the last 12 months. Each app decides what it accepts: Beryl takes “supported” international licences in Leeds, Cornwall and Plymouth but asks for a UK licence in Norwich, Dott non-EU ones within those 12 months, and Transport for West Midlands asks Lime riders there for a valid UK licence. Upload yours before you travel.',
     },
     {
       question: 'Are hire e-scooters insured?',
@@ -198,6 +198,12 @@ const guide: Guide = {
     { title: 'Transport for West Midlands: E-scooters in the West Midlands', url: 'https://www.tfwm.org.uk/plan-your-journey/ways-to-travel/e-scooters-in-the-west-midlands/' },
     { title: 'Liverpool City Council: E-scooters and e-bikes for hire', url: 'https://liverpool.gov.uk/parking-roads-and-travel/getting-around-liverpool/e-scooters-and-e-bikes-for-hire' },
     { title: 'Beryl: Leeds scheme, prices and charges', url: 'https://beryl.cc/scheme/leeds' },
+    { title: 'Beryl: Leeds expands sustainable travel options with government-approved e-scooters (19 March 2026)', url: 'https://beryl.cc/news/2026/03/19/leeds-expands-sustainable-travel-options-launch-government-approved-e-scooters' },
+    { title: 'Beryl: More choice for Cornwall riders with the new launch of e-scooters (18 June 2026)', url: 'https://beryl.cc/news/2026/06/18/more-choice-cornwall-riders-new-launch-e-scooters' },
+    { title: 'Beryl: E-scooters in Plymouth', url: 'https://beryl.cc/e-scooters-plymouth' },
+    { title: 'Beryl Help Centre: Who can hire a Beryl e-scooter', url: 'https://help-bikes.beryl.cc/en/articles/11711908-who-can-hire-a-beryl-e-scooter' },
+    { title: 'Beryl Help Centre: Riding a Beryl e-scooter', url: 'https://help-bikes.beryl.cc/en/articles/11706501-riding-a-beryl-e-scooter' },
+    { title: 'Norfolk County Council: Extension of Norwich e-scooter trial (March 2026)', url: 'https://norfolkcc.cmis.uk.com/norfolkcc/DelegatedDecisions/tabid/67/ctl/ViewCMIS_DecisionDetails/mid/391/Id/2006/Default.aspx' },
   ],
 };
 
