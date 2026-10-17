@@ -80,6 +80,7 @@ import karlsruheDe from './de/e-scooter-karlsruhe';
 import freiburgDe from './de/e-scooter-freiburg';
 import wuppertalDe from './de/e-scooter-wuppertal';
 import leipzigDe from './de/e-scooter-leipzig';
+import mannheimDe from './de/e-scooter-mannheim';
 import tromsoNb from './nb/elsparkesykkel-tromso';
 import tromsoEn from './en/e-scooters-tromso';
 import munsterDe from './de/e-scooter-muenster';
@@ -153,6 +154,7 @@ export const GUIDES: readonly Guide[] = [
   freiburgDe,
   wuppertalDe,
   leipzigDe,
+  mannheimDe,
   swissRulesFr,
   howToRentFr,
   frenchRulesFr,
