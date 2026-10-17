@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trotinete elétrica: as regras em Portugal, as coimas e o que pode mudar com o capacete',
   lede: 'As regras da trotinete elétrica em Portugal são as da bicicleta, desde que o motor não ultrapasse 0,25 kW e a trotinete não passe dos 25 km/h. Não precisa de carta nem de seguro, a lei não fixa idade mínima e o capacete não é obrigatório. Circula-se na estrada ou na ciclovia, nunca no passeio, sem passageiro, sem auriculares nos dois ouvidos e com o limite de álcool dos automobilistas, 0,5 g/l. O capacete pode voltar a ser obrigatório: o Parlamento aprovou na generalidade dois projetos de lei nesse sentido a 30 de setembro de 2026, mas ainda não são lei.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-17',
   sections: [
     {
       heading: 'Trotinete elétrica no Código da Estrada: as regras essenciais',
@@ -73,7 +73,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Estrada**: sim, junto à direita da faixa de rodagem (60 a 300 € se não o fizer). Em sentido contrário ao do trânsito, **250 a 1250 €**, e é grave.',
+            '**Estrada**: sim, junto à direita da faixa de rodagem (30 a 150 € se não o fizer, artigo 90.º). Em sentido contrário ao do trânsito, **250 a 1250 €**, e é grave.',
             '**Ciclovia**: é o lugar previsto para bicicletas e equiparados. Use-a sempre que exista.',
             '**Passeio**: só para crianças até aos 10 anos; para os outros, coima de **60 a 300 €** (artigo 17.º). Só o pode atravessar para aceder a um prédio. Nas bermas pode circular, desde que não ponha em perigo quem anda a pé.',
             '**Autoestradas**: proibidas onde houver sinalização (120 a 600 €). As pontes 25 de Abril e Vasco da Gama são autoestradas: atravesse o Tejo de barco.',
