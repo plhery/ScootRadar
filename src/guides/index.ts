@@ -21,6 +21,7 @@ import munichDe from './de/e-scooter-muenchen';
 import lyonFr from './fr/trottinette-electrique-lyon';
 import brusselsNl from './nl/deelstep-brussel';
 import brusselsFr from './fr/trottinette-electrique-bruxelles';
+import charleroiFr from './fr/trottinette-electrique-charleroi';
 import berlinDe from './de/e-scooter-berlin';
 import berlinEn from './en/e-scooters-berlin';
 import romeIt from './it/monopattini-sharing-roma';
@@ -171,6 +172,7 @@ export const GUIDES: readonly Guide[] = [
   leHavreFr,
   angersFr,
   brusselsFr,
+  charleroiFr,
   swissRulesIt,
   howToRentIt,
   italianRulesIt,
