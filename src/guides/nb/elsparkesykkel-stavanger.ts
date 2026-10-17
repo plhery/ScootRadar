@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'Elsparkesykkel i Stavanger 2026: priser, regler og parkering',
   description: 'Elsparkesykkel i Stavanger og Sandnes: priser hos Voi og Ryde, aldersgrenser, nattestenging i helgene, soner, parkering i sentrum og gebyret på 900 kr.',
   headline: 'Elsparkesykkel i Stavanger og Sandnes: operatører, priser, soner og parkering',
-  lede: 'Vil du leie elsparkesykkel i Stavanger, velger du mellom Voi og Ryde, de to operatørene som har avtale med kommunen. Hos Voi er det gratis å låse opp, hos Ryde koster det 10,90 kr, og begge tar 2,50 kr per minutt (13. oktober 2026). Du må ha fylt 16 år hos Voi og 15 hos Ryde, og natt til lørdag, søndag og helligdager er utleien stengt fra midnatt til kl. 05. I store deler av sentrum kan du bare avslutte turen på oppmerkede plasser, og feilparkering kan koste 900 kr.',
+  lede: 'Vil du leie elsparkesykkel i Stavanger, velger du mellom Voi og Ryde, de to operatørene som har avtale med kommunen. Hos Voi er det gratis å låse opp, hos Ryde koster det 10,90 kr, og begge tar 2,50 kr per minutt (13. oktober 2026). Du må ha fylt 16 år hos både Voi og Ryde, og natt til lørdag, søndag og helligdager er utleien stengt fra midnatt til kl. 05. I store deler av sentrum kan du bare avslutte turen på oppmerkede plasser, og feilparkering kan koste 900 kr.',
   published: '2026-10-13',
-  updated: '2026-10-14',
+  updated: '2026-10-17',
   city: 'no:Stavanger',
   sections: [
     {
@@ -34,7 +34,7 @@ const guide: Guide = {
             head: ['Operatør', 'Opplåsing', 'Per minutt', '10 minutter', 'Aldersgrense'],
             rows: [
               ['Voi', '0 kr', '2,50 kr', '25 kr', '16 år'],
-              ['Ryde', '10,90 kr', '2,50 kr', '35,90 kr', '15 år'],
+              ['Ryde', '10,90 kr', '2,50 kr', '35,90 kr', '16 år'],
             ],
           },
         },
@@ -173,7 +173,7 @@ const guide: Guide = {
     },
     {
       question: 'Hvor gammel må man være for å leie elsparkesykkel i Stavanger?',
-      answer: 'Voi krever 16 år og Ryde 15 år. Loven sier 12 år, og hjelm er påbudt under 15. En nasjonal grense på 16 år er foreslått, men ikke vedtatt (oktober 2026).',
+      answer: 'Både Voi og Ryde krever 16 år. Loven sier 12 år, og hjelm er påbudt under 15. En nasjonal grense på 16 år er foreslått, men ikke vedtatt (oktober 2026).',
     },
     {
       question: 'Kan jeg kjøre elsparkesykkel til Sola flyplass?',
@@ -191,6 +191,7 @@ const guide: Guide = {
     { title: 'Kolumbus: Kan jeg ta med sykkelen om bord?', url: 'https://www.kolumbus.no/reise/sykkel-oversikt/kan-jeg-ta-med-sykkelen-om-bord/' },
     { title: 'Kolumbus: Bysykkel', url: 'https://www.kolumbus.no/sykkel/' },
     { title: 'Statens vegvesen: Sykkelstamveien mellom Stavanger og Sandnes (juni 2026)', url: 'https://www.vegvesen.no/om-oss/presse/aktuelt/2026/06/dyre-men-lonnsomme-sykkelveier/' },
+    { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
   ],
 };
 

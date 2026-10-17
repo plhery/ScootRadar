@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'Leie elsparkesykkel: alder, pris og slik gjør du det',
   description: 'Leie elsparkesykkel i Norge, steg for steg: appen, aldersgrenser, Vipps og kort, hva turen koster, pause, parkering med bilde, nattestenging og utlandet.',
   headline: 'Hvordan leie elsparkesykkel: fra appen til du avslutter turen',
-  lede: 'Å leie elsparkesykkel går slik: Du laster ned appen til operatøren, registrerer deg med mobilnummer og betalingskort, skanner QR-koden på styret og kjører, og til slutt parkerer du lovlig, avslutter turen og tar bilde av parkeringen. Ryde leier ut fra 15 år, Bolt fra 16, og Voi fra 16 i Oslo. Du betaler for å låse opp og per minutt: I Oslo publiserte Voi og Bolt 10 kr pluss 2,50 kr per minutt 12. oktober 2026, så ti minutter koster 35 kr. Mange byer stenger utleien om natten, Oslo hver natt fra kl. 23 til 05.',
+  lede: 'Å leie elsparkesykkel går slik: Du laster ned appen til operatøren, registrerer deg med mobilnummer og betalingskort, skanner QR-koden på styret og kjører, og til slutt parkerer du lovlig, avslutter turen og tar bilde av parkeringen. Ryde og Bolt leier ut fra 16 år, og Voi fra 16 i Oslo. Du betaler for å låse opp og per minutt: I Oslo publiserte Voi og Bolt 10 kr pluss 2,50 kr per minutt 12. oktober 2026, så ti minutter koster 35 kr. Mange byer stenger utleien om natten, Oslo hver natt fra kl. 23 til 05.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-17',
   sections: [
     {
       heading: 'Hvordan leie elsparkesykkel? Steg for steg',
@@ -42,7 +42,7 @@ const guide: Guide = {
             caption: 'Hva operatørene krever i Norge (oktober 2026)',
             head: ['Operatør', 'Aldersgrense', 'Legitimasjon', 'Betaling'],
             rows: [
-              ['Ryde', '15 år', 'Kortet kan verifiseres med 3-D Secure eller BankID på mobil; nye kontoer kan måtte forhåndsbetale', 'Kort, Vipps, Ryde Credits'],
+              ['Ryde', '16 år', 'Kortet kan verifiseres med 3-D Secure eller BankID på mobil; nye kontoer kan måtte forhåndsbetale', 'Kort, Vipps, Ryde Credits'],
               ['Bolt', '16 år', 'Kan be om bilde av førerkort eller annen legitimasjon', 'Visa eller Mastercard, Klarna'],
               ['Voi', '16 år i Oslo', 'Ikke oppgitt', 'Kort, Apple Pay, Google Pay, PayPal, Klarna'],
               ['Dott (blant annet Trondheim)', 'Sjekk appen', 'Kan be om førerkort, ID-kort eller pass for å sjekke alderen', 'Kort, PayPal, Apple Pay, Revolut Pay'],
@@ -159,7 +159,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Hvor gammel må man være for å leie elsparkesykkel?',
-      answer: 'Det kommer an på operatøren: Ryde leier ut fra 15 år, Bolt fra 16 og Voi fra 16 i Oslo. Loven sier 12 år, men Oslo kommune ber alle under 15 la være å leie.',
+      answer: 'Det kommer an på operatøren og byen: Ryde og Bolt leier ut fra 16 år, og Voi fra 16 i Oslo. Loven sier 12 år, men Oslo kommune ber alle under 15 la være å leie.',
     },
     {
       question: 'Kan man være to på en elsparkesykkel?',

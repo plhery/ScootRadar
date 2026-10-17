@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'Elsparkesykkel i Oslo 2026: priser, regler og nattestenging',
   description: 'Elsparkesykkel i Oslo: priser hos Bolt, Ryde og Voi, aldersgrenser, nattestengingen kl. 23–05, hvor du ikke får kjøre eller parkere, og hva vinteren betyr.',
   headline: 'Elsparkesykkel i Oslo: operatører, priser, nattestenging og soner',
-  lede: 'Vil du leie elsparkesykkel i Oslo, velger du mellom Bolt, Ryde og Voi, som har tillatelse fra kommunen. Det koster 10 kr å låse opp (10,90 kr hos Ryde) og 2,50 kr per minutt, så ti minutter kommer på rundt 35 kr med prisene fra 12. oktober 2026. Du må ha fylt 15 år hos Ryde og 16 år hos Bolt og Voi, og utleien er stengt hver natt fra kl. 23 til 05. På mange torg, i parker og ved stasjoner er det parkeringsforbud eller kjøreforbud, og feilparkering kan koste 900 kr.',
+  lede: 'Vil du leie elsparkesykkel i Oslo, velger du mellom Bolt, Ryde og Voi, som har tillatelse fra kommunen. Det koster 10 kr å låse opp (10,90 kr hos Ryde) og 2,50 kr per minutt, så ti minutter kommer på rundt 35 kr med prisene fra 12. oktober 2026. Du må ha fylt 16 år hos alle tre, og utleien er stengt hver natt fra kl. 23 til 05. På mange torg, i parker og ved stasjoner er det parkeringsforbud eller kjøreforbud, og feilparkering kan koste 900 kr.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-17',
   city: 'no:Oslo',
   sections: [
     {
@@ -48,17 +48,17 @@ const guide: Guide = {
         'Loven sier 12 år, men operatørene har egne grenser. Oslo kommune ber deg dessuten la være å leie hvis du er under 15 år, og ikke leie for noen som er under 15.',
         {
           table: {
-            caption: 'Aldersgrenser for å leie i Oslo ifølge Ruter, oktober 2026',
+            caption: 'Aldersgrenser for å leie i Oslo, oktober 2026',
             head: ['Tjeneste', 'Aldersgrense'],
             rows: [
-              ['Ryde', '15 år'],
+              ['Ryde', '16 år'],
               ['Bolt', '16 år'],
               ['Voi', '16 år'],
               ['Oslo Bysykkel', '18 år'],
             ],
           },
         },
-        'Bolts nye vilkår for Norge, som gjelder fra 1. november 2026, krever også 16 år. Bolt kan be om legitimasjon, og i topptimer må du bestå en reaksjonstest for å låse opp. Ryde har reaksjonstest på kveldstid i helgene.',
+        'Ruter oppgir fortsatt 15 år for Ryde, men Rydes vilkår for Norge krever 16 år (17. oktober 2026). Bolts nye vilkår for Norge, som gjelder fra 1. november 2026, krever også 16 år. Bolt kan be om legitimasjon, og i topptimer må du bestå en reaksjonstest for å låse opp. Ryde har reaksjonstest på kveldstid i helgene.',
         'Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget skal på høring og er **ikke vedtatt**.',
       ],
     },
@@ -190,6 +190,7 @@ const guide: Guide = {
     { title: 'Bolt: Vilkår for elektriske kjøretøy i Norge (fra 1. november 2026)', url: 'https://bolt.eu/en-no/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Oslo Bysykkel: priser og åpningstider', url: 'https://oslobysykkel.no/' },
     { title: 'Statens vegvesen: Flere skader seg på elsparkesykkel i Oslo (januar 2026)', url: 'https://www.vegvesen.no/om-oss/presse/aktuelt/2026/01/flere-skader-seg-pa-elsparkesykkel-i-oslo/' },
+    { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
   ],
 };
 

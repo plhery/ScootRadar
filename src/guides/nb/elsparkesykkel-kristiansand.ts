@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'Elsparkesykkel i Kristiansand 2026: priser og åpningstider',
   description: 'Elsparkesykkel i Kristiansand: priser hos Voi og Ryde, når Voi stenger, vinterpausen, soner, parkering i Kvadraturen og gebyret på 900 kr.',
   headline: 'Elsparkesykkel i Kristiansand: Voi og Ryde, priser, åpningstider og soner',
-  lede: 'Vil du leie elsparkesykkel i Kristiansand, velger du mellom Voi og Ryde, de to operatørene som har avtale med kommunen til og med 31. mars 2027. Voi tar 5 kr for å låse opp og 2,50 kr per minutt (14. oktober 2026) og krever at du har fylt 16 år, mens Ryde krever 15 år og viser prisen bare i appen. Natt til lørdag og natt til søndag er utleien stengt: Forskriften sier fra midnatt til kl. 05, men Voi stenger allerede kl. 23. Om vinteren samles sparkesyklene inn før snøen kommer, og i deler av Kvadraturen kan du bare avslutte turen på en oppmerket plass.',
+  lede: 'Vil du leie elsparkesykkel i Kristiansand, velger du mellom Voi og Ryde, de to operatørene som har avtale med kommunen til og med 31. mars 2027. Voi tar 5 kr for å låse opp og 2,50 kr per minutt (14. oktober 2026), mens Ryde viser prisen bare i appen, og begge krever at du har fylt 16 år. Natt til lørdag og natt til søndag er utleien stengt: Forskriften sier fra midnatt til kl. 05, men Voi stenger allerede kl. 23. Om vinteren samles sparkesyklene inn før snøen kommer, og i deler av Kvadraturen kan du bare avslutte turen på en oppmerket plass.',
   published: '2026-10-14',
-  updated: '2026-10-14',
+  updated: '2026-10-17',
   city: 'no:Kristiansand',
   sections: [
     {
@@ -34,12 +34,12 @@ const guide: Guide = {
             head: ['Operatør', 'Opplåsing', 'Per minutt', '10 minutter', 'Aldersgrense'],
             rows: [
               ['Voi', '5 kr', '2,50 kr', '30 kr', '16 år'],
-              ['Ryde', 'Vises i appen', 'Vises i appen', 'Vises i appen', '15 år'],
+              ['Ryde', 'Vises i appen', 'Vises i appen', 'Vises i appen', '16 år'],
             ],
           },
         },
         'Tjue minutter på en Voi koster 55 kr. Voi selger også minuttpakker og Voi Pass med fri opplåsing. Prisene kan endres, og den endelige prisen ser du i appen før du låser opp.',
-        'Loven sier 12 år, men Voi krever 16 år i Kristiansand, og Ryde krever 15 år i hele Norge. Hjelm er påbudt under 15 år. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget er **ikke vedtatt** og var ennå ikke sendt på høring 15. oktober 2026.',
+        'Loven sier 12 år, men Voi krever 16 år i Kristiansand, og Ryde krever 16 år i hele Norge (oktober 2026). Hjelm er påbudt under 15 år. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget er **ikke vedtatt** og var ennå ikke sendt på høring 15. oktober 2026.',
       ],
     },
     {
@@ -160,7 +160,7 @@ const guide: Guide = {
     },
     {
       question: 'Hvor gammel må man være for å leie elsparkesykkel i Kristiansand?',
-      answer: 'Voi krever 16 år i Kristiansand og Ryde 15 år. Loven sier 12 år, og hjelm er påbudt under 15. En nasjonal grense på 16 år er foreslått, men ikke vedtatt (oktober 2026).',
+      answer: 'Både Voi og Ryde krever 16 år. Loven sier 12 år, og hjelm er påbudt under 15. En nasjonal grense på 16 år er foreslått, men ikke vedtatt (oktober 2026).',
     },
     {
       question: 'Kan jeg ta med elsparkesykkel på bussen i Kristiansand?',

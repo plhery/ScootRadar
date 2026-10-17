@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'E-scooter Oslo 2026: prices, rules and the night curfew',
   description: 'Rent an e-scooter in Oslo: Bolt, Ryde and Voi prices and age limits, the 11 pm to 5 am curfew, where you can’t ride or park, and the NOK 900 parking fee.',
   headline: 'E-scooters in Oslo: operators, prices, the night curfew and where to ride',
-  lede: 'To rent an e-scooter in Oslo, use the app of Bolt, Ryde or Voi, the three companies with city permits, or Ruter’s public transport app. Unlocking costs NOK 10 (NOK 10.90 with Ryde), then NOK 2.50 a minute, so ten minutes come to about NOK 35 (published rates on 12 October 2026). You must be 15 to rent from Ryde and 16 from Bolt and Voi, and nobody can rent between 11 pm and 5 am. Many squares, parks and stations ban riding or parking, and bad parking can cost NOK 900.',
+  lede: 'To rent an e-scooter in Oslo, use the app of Bolt, Ryde or Voi, the three companies with city permits, or Ruter’s public transport app. Unlocking costs NOK 10 (NOK 10.90 with Ryde), then NOK 2.50 a minute, so ten minutes come to about NOK 35 (published rates on 12 October 2026). You must be 16 to rent from any of them, and nobody can rent between 11 pm and 5 am. Many squares, parks and stations ban riding or parking, and bad parking can cost NOK 900.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-17',
   city: 'no:Oslo',
   sections: [
     {
@@ -22,17 +22,17 @@ const guide: Guide = {
         'Norwegian law sets the minimum age at 12, but each company sets its own, and the city tells you not to rent one if you’re under 15, or for anyone under 15.',
         {
           table: {
-            caption: 'Minimum age to rent in Oslo, according to Ruter (October 2026)',
+            caption: 'Minimum age to rent in Oslo (October 2026)',
             head: ['Service', 'Minimum age'],
             rows: [
-              ['Ryde', '15'],
+              ['Ryde', '16'],
               ['Bolt', '16'],
               ['Voi', '16'],
               ['Oslo City Bike', '18'],
             ],
           },
         },
-        'Bolt may ask for ID, and at peak times you must pass a short reaction test to unlock; Ryde tests riders on weekend evenings. On 5 October 2026 the government proposed raising the national minimum age to 16; it is **not law yet**.',
+        'Ruter still lists 15 for Ryde, but Ryde’s terms for Norway require 16 (17 October 2026). Bolt may ask for ID, and at peak times you must pass a short reaction test to unlock; Ryde tests riders on weekend evenings. On 5 October 2026 the government proposed raising the national minimum age to 16; it is **not law yet**.',
       ],
     },
     {
@@ -162,7 +162,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Can tourists rent an e-scooter in Oslo?',
-      answer: 'Yes. Sign up in the Bolt, Ryde or Voi app, or unlock through the Ruter app; you must be 15 for Ryde and 16 for Bolt and Voi. No renting from 11 pm to 5 am.',
+      answer: 'Yes. Sign up in the Bolt, Ryde or Voi app, or unlock through the Ruter app; you must be 16. No renting from 11 pm to 5 am.',
     },
     {
       question: 'Do you need a helmet on an e-scooter in Norway?',
@@ -193,6 +193,7 @@ const guide: Guide = {
     { title: 'Norwegian Public Roads Administration: traffic rules for electric scooters', url: 'https://www.vegvesen.no/en/traffic-information/traffic-safety/norwegian-traffic-rules/traffic-rules-for-electric-scooters/' },
     { title: 'Lovdata: on-the-spot fines in road traffic (Norwegian)', url: 'https://lovdata.no/dokument/SF/forskrift/1990-06-29-492' },
     { title: 'Norwegian Public Roads Administration: e-scooter injuries in Oslo, January 2026 (Norwegian)', url: 'https://www.vegvesen.no/om-oss/presse/aktuelt/2026/01/flere-skader-seg-pa-elsparkesykkel-i-oslo/' },
+    { title: 'Ryde: terms and conditions for Norway', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
   ],
 };
 

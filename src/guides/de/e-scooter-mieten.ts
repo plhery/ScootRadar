@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter mieten: So funktioniert’s, von der App bis zum Ende der Fahrt',
   lede: 'E-Scooter mieten funktioniert in der Schweiz und in Deutschland fast überall gleich: App des Anbieters laden, mit Handynummer und Zahlungsmittel registrieren, QR-Code am Lenker scannen und losfahren, am Ziel in einer erlaubten Zone abstellen und die Fahrt mit einem Foto beenden. Die grossen Anbieter vermieten in beiden Ländern erst ab 18; einen Führerausweis oder Führerschein brauchst du nicht. Du zahlst eine Entsperrgebühr und einen Minutenpreis: Voi veröffentlichte am 12. Oktober 2026 für Bern CHF 1.– plus 42 Rappen pro Minute und für Stuttgart 0,49 € plus 0,24 € pro Minute; zehn Minuten kosten also CHF 5.20 oder 2,89 €.',
   published: '2026-10-12',
-  updated: '2026-10-14',
+  updated: '2026-10-17',
   sections: [
     {
       heading: 'E-Scooter oder E-Trottinett mieten: Schritt für Schritt',
@@ -163,7 +163,7 @@ const guide: Guide = {
               ['Frankreich', '18, bei Pony 16', 'Dott in Lyon: Ausweis', 'Pony: rückzahlbares Depot bis 25 €'],
               ['Italien', '18', 'Dott etwa in Rom und Mailand: Ausweis', 'Helmpflicht, eigenen Helm mitbringen; Parkfoto gesetzlich vorgeschrieben'],
               ['Belgien', '18; bei Voi in Antwerpen, Hoppy und Pony 16', 'Brüssel: einmaliger Ausweis-Scan', 'Bancontact bei Dott'],
-              ['Norwegen', '16 bei Bolt und Voi, 15 bei Ryde', 'Bolt kann ein Ausweisfoto verlangen', 'Vipps bei Ryde; in Oslo keine Miete von 23 bis 5 Uhr'],
+              ['Norwegen', '16 bei Bolt, Voi und Ryde', 'Bolt kann ein Ausweisfoto verlangen', 'Vipps bei Ryde; in Oslo keine Miete von 23 bis 5 Uhr'],
               ['Grossbritannien', '18', 'Führerschein Pflicht; ausländische nur unter Bedingungen', 'Beryl: Postleitzahl der Karte muss zur Rechnungsadresse passen'],
             ],
           },
@@ -217,6 +217,7 @@ const guide: Guide = {
     { title: 'Bolt: E-Scooter mieten', url: 'https://bolt.eu/de-de/scooters/' },
     { title: 'Jelbi (BVG): Häufige Fragen (englisch)', url: 'https://www.jelbi.de/en/faq/' },
     { title: 'MVG: MVGO, die Mobilitäts-App für München', url: 'https://www.mvg.de/services/mobile-services/mvgo.html' },
+    { title: 'Ryde: Nutzungsbedingungen für Norwegen (englisch und norwegisch)', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
   ],
 };
 

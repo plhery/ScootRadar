@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'Elsparkesykkel i Trondheim 2026: priser, regler og sesong',
   description: 'Elsparkesykkel i Trondheim: priser hos Voi, Ryde og Dott, aldersgrenser, sesong og nattestenging, soner, parkering og hvordan du kommer til Værnes.',
   headline: 'Elsparkesykkel i Trondheim: operatører, priser, sesong og soner',
-  lede: 'Vil du leie elsparkesykkel i Trondheim, velger du mellom Dott, Voi og Ryde, som har tillatelse fra kommunen for 2025 og 2026. Det koster 10 kr å låse opp hos Voi og 10,90 kr hos Ryde og Dott, pluss 2,50 kr per minutt (13. oktober 2026), og du må ha fylt 15 år hos Ryde, 16 hos Voi og 18 hos Dott. Sesongen varer fra 15. mars til senest 1. desember. Etter forskriften er utleien stengt kl. 23–05 hver natt, men i 2026 har Voi og Ryde bare stengt natt til lørdag og natt til søndag, så sjekk appen.',
+  lede: 'Vil du leie elsparkesykkel i Trondheim, velger du mellom Dott, Voi og Ryde, som har tillatelse fra kommunen for 2025 og 2026. Det koster 10 kr å låse opp hos Voi og 10,90 kr hos Ryde og Dott, pluss 2,50 kr per minutt (13. oktober 2026), og du må ha fylt 16 år hos Ryde og Voi og 18 hos Dott. Sesongen varer fra 15. mars til senest 1. desember. Etter forskriften er utleien stengt kl. 23–05 hver natt, men i 2026 har Voi og Ryde bare stengt natt til lørdag og natt til søndag, så sjekk appen.',
   published: '2026-10-13',
-  updated: '2026-10-14',
+  updated: '2026-10-17',
   city: 'no:Trondheim',
   sections: [
     {
@@ -32,7 +32,7 @@ const guide: Guide = {
             head: ['Operatør', 'Opplåsing', 'Per minutt', '10 minutter', 'Aldersgrense'],
             rows: [
               ['Voi', '10 kr', '2,50 kr', '35 kr', '16 år'],
-              ['Ryde', '10,90 kr', '2,50 kr', '35,90 kr', '15 år'],
+              ['Ryde', '10,90 kr', '2,50 kr', '35,90 kr', '16 år'],
               ['Dott', '10,90 kr', '2,50 kr', '35,90 kr', '18 år'],
             ],
           },
@@ -183,7 +183,7 @@ const guide: Guide = {
     },
     {
       question: 'Hvor gammel må man være for å leie elsparkesykkel i Trondheim?',
-      answer: 'Ryde krever 15 år, Voi 16 år og Dott 18 år. Loven sier 12 år, og hjelm er påbudt under 15. En nasjonal grense på 16 år er foreslått, men ikke vedtatt (oktober 2026).',
+      answer: 'Ryde og Voi krever 16 år, og Dott 18 år. Loven sier 12 år, og hjelm er påbudt under 15. En nasjonal grense på 16 år er foreslått, men ikke vedtatt (oktober 2026).',
     },
   ],
   sources: [
@@ -197,6 +197,7 @@ const guide: Guide = {
     { title: 'Trondheim parkering: Elsparkesykkel', url: 'https://www.trondheim.kommune.no/parkering/innhold/miljo/elsparkesykkel/' },
     { title: 'AtB: Fri bruk av bysykkel med periodebillett', url: 'https://www.atb.no/forside/aktuelt/fri-bruk-av-bysykkel-med-periodebillett-i-atb-appen' },
     { title: 'Trondheim Bysykkel: Priser', url: 'https://trondheimbysykkel.no/kjop' },
+    { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
   ],
 };
 

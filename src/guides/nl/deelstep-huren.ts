@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Deelstep huren in België: van de app tot het einde van je rit',
   lede: 'Een deelstep huren gaat zo: je installeert de app van de aanbieder, maakt een account aan met je gsm-nummer en een betaalkaart, scant de QR-code op het stuur en rijdt weg. Op het einde zet je de step op een toegelaten plek, in Brussel en binnen de Antwerpse Leien in een dropzone, en neem je een foto. Bolt, Dott en Lime vragen 18 jaar, Voi in Antwerpen en Hoppy in Kortrijk 16, en in Brussel scan je één keer je identiteitsbewijs. Je betaalt om te ontgrendelen en per minuut: Voi publiceerde in Antwerpen op 12 oktober 2026 € 0,99 plus € 0,25 per minuut, dus € 3,49 voor tien minuten.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-17',
   sections: [
     {
       heading: 'Deelstep huren: hoe werkt het, stap voor stap?',
@@ -136,7 +136,7 @@ const guide: Guide = {
           list: [
             '**Passen blijven in één land.** LimePass, LimePrime en de passen van Voi en Dott werken alleen in het land waar je ze kocht, een pas van Bolt zelfs alleen in de stad.',
             '**Tegoed blijft in één munt.** In Zwitserland, het VK of Noorwegen open je bij Dott en Bird een nieuwe portefeuille, en Bolt Balance werkt alleen in de munt waarin je het kocht.',
-            '**Ben je 16 of 17?** In het buitenland is de grens bijna overal 18 jaar. Uitzonderingen zijn onder meer Ryde in Noorwegen (vanaf 15), Bolt en Voi in Oslo en Pony in Frankrijk (vanaf 16).',
+            '**Ben je 16 of 17?** In het buitenland is de grens bijna overal 18 jaar. Uitzonderingen zijn onder meer Ryde in Noorwegen, Bolt en Voi in Oslo en Pony in Frankrijk (vanaf 16).',
             '**De regels veranderen aan de grens.** In het VK heb je een rijbewijs nodig. In Italië breng je verplicht je eigen helm mee en is de parkeerfoto wettelijk verplicht. In Oslo kan je tussen 23 en 5 uur niet huren, en in Parijs zijn er sinds 1 september 2023 geen deelsteps meer.',
             '**Betalen:** TWINT vonden we in Zwitserland alleen bij Dott, Vipps in Noorwegen alleen bij Ryde.',
           ],
@@ -193,6 +193,7 @@ const guide: Guide = {
     { title: 'Hoppy: Algemene voorwaarden', url: 'https://behoppy.eu/nl/algemene-voorwaarden/' },
     { title: 'Slim naar Antwerpen: Deelsteps', url: 'https://www.slimnaarantwerpen.be/nl/deelmobiliteit/deelsteps' },
     { title: 'The Brussels Times: id-controle voor deelsteps in Brussel (4 december 2025, Engels)', url: 'https://www.brusselstimes.com/brussels/1865985/mandatory-id-checks-for-e-scooter-users-in-brussels-from-now-on' },
+    { title: 'Ryde: voorwaarden voor Noorwegen (Engels en Noors)', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
   ],
 };
 

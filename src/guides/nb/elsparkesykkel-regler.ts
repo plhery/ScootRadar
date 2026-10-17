@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Regler for elsparkesykkel i Norge: alder, hjelm, promille og bøter',
   lede: 'Reglene for elsparkesykkel i Norge er enkle å huske: Du må ha fylt 12 år, du må ha hjelm hvis du er under 15, og promillegrensen er 0,2, den samme som for bil. En aldersgrense på 16 år er foreslått, men ikke vedtatt, og operatørene som leier ut, har ofte høyere grense enn loven. Du kjører på veien, i sykkelfeltet eller på sykkelveien, og på fortauet når det er lite folk, men forbi gående holder du gangfart. Bare én person får stå på sparkesykkelen, og i Oslo er utleien stengt hver natt fra kl. 23 til 05.',
   published: '2026-10-12',
-  updated: '2026-10-15',
+  updated: '2026-10-17',
   city: 'no:Oslo',
   sections: [
     {
@@ -122,7 +122,7 @@ const guide: Guide = {
         'Når du leier, gjelder både trafikkreglene og operatørens vilkår, og flere operatører har høyere aldersgrense enn loven. Ifølge regjeringen har mange utleieselskaper allerede 15 eller 16 år som grense.',
         {
           list: [
-            '**Ryde:** minst 15 år, etter vilkårene for Norge. Kontoen er personlig, og Ryde kan kontrollere opplysningene dine. På kveldstid i helgene må du ta en reaksjonstest før turen.',
+            '**Ryde:** minst 16 år, etter vilkårene for Norge (oktober 2026; i august 2026 var grensen 15 år). Kontoen er personlig, og Ryde kan kontrollere opplysningene dine. På kveldstid i helgene må du ta en reaksjonstest før turen.',
             '**Bolt:** fra 1. november 2026 minst 16 år, etter Bolts nye vilkår for Norge. Hvilken grense som gjelder før det, ser du i appen. Bolt kan be om bilde av førerkortet eller annen legitimasjon, og for å låse opp i topptimer må du bestå en kognitiv reaksjonstest.',
             '**Voi og Dott:** sjekk appen for aldersgrense og eventuell ID-kontroll.',
           ],
@@ -182,7 +182,7 @@ const guide: Guide = {
     },
     {
       question: 'Hvor gammel må du være for å leie elsparkesykkel?',
-      answer: 'Loven sier 12 år, men operatørene setter egne grenser. Ryde krever 15 år, og Bolts vilkår for Norge krever 16 år fra 1. november 2026. Oslo kommune ber alle under 15 la være å leie. Hos Voi og Dott ser du grensen i appen.',
+      answer: 'Loven sier 12 år, men operatørene setter egne grenser. Ryde krever 16 år, og Bolts vilkår for Norge krever 16 år fra 1. november 2026. Oslo kommune ber alle under 15 la være å leie. Hos Voi og Dott ser du grensen i appen.',
     },
     {
       question: 'Må bilene stoppe for meg i gangfeltet?',
@@ -212,6 +212,7 @@ const guide: Guide = {
     { title: 'Lovdata: Forskrift om utleie av små elektriske kjøretøy på offentlig grunn, Oslo', url: 'https://lovdata.no/dokument/LF/forskrift/2024-11-20-2821' },
     { title: 'Oslo kommune: Leie av elsparkesykler og elsykler', url: 'https://www.oslo.kommune.no/gate-transport-og-parkering/sykkel/leie-av-elsparkesykler-og-elsykler/' },
     { title: 'Lovdata: Forskrift om utleie av små elektriske kjøretøy, Bergen (2026)', url: 'https://lovdata.no/dokument/LF/forskrift/2026-06-17-1345' },
+    { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
   ],
 };
 

@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'Elsparkesykkel i Tromsø 2026: Ryde, pris, sesong og regler',
   description: 'Elsparkesykkel i Tromsø: prisen hos Ryde, sesongen fra 1. mai til 1. november, nattestenging i helgene, Tromsøbrua, tunnelene og gebyret på 900 kr.',
   headline: 'Elsparkesykkel i Tromsø: Ryde, pris, sesong, Tromsøbrua og soner',
-  lede: 'Vil du leie elsparkesykkel i Tromsø, er det Ryde du må bruke: Ryde er eneste utleier i byen. Det koster 10,90 kr å låse opp og 2,50 kr per minutt (14. oktober 2026), og du må ha fylt 15 år. Sesongen varer fra 1. mai til senest 1. november, kortere hvis snøen kommer tidlig, og deretter er sparkesyklene borte til våren. Natt til lørdag, søndag og helligdager er utleien stengt fra kl. 23 til 06, og i tunnelene er elsparkesykler forbudt.',
+  lede: 'Vil du leie elsparkesykkel i Tromsø, er det Ryde du må bruke: Ryde er eneste utleier i byen. Det koster 10,90 kr å låse opp og 2,50 kr per minutt (14. oktober 2026), og du må ha fylt 16 år. Sesongen varer fra 1. mai til senest 1. november, kortere hvis snøen kommer tidlig, og deretter er sparkesyklene borte til våren. Natt til lørdag, søndag og helligdager er utleien stengt fra kl. 23 til 06, og i tunnelene er elsparkesykler forbudt.',
   published: '2026-10-14',
-  updated: '2026-10-15',
+  updated: '2026-10-17',
   city: 'no:Tromsø',
   sections: [
     {
@@ -42,7 +42,7 @@ const guide: Guide = {
         },
         'Et kvarter på sparkesykkelen koster altså omtrent det samme som en bussbillett. Pass kjøper du bare i Ryde-appen, og der står også prisene for Tromsø.',
         'Du kan betale med kort som godkjennes med 3-D Secure eller BankID på mobil, med Google Pay eller med Vipps. Med Vipps trekkes turene samlet dagen etter, med et dagstak på 400 kr som standard. Nye kunder betaler et beløp for å bekrefte kontoen, og beløpet blir stående som Ryde Credits til senere turer.',
-        'Lovens aldersgrense er 12 år, men Ryde krever 15, og hjelm er påbudt under 15 år. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget er **ikke vedtatt** og var ennå ikke sendt på høring 15. oktober 2026.',
+        'Lovens aldersgrense er 12 år, men Ryde krever 16, og hjelm er påbudt under 15 år. Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen til 16 år. Forslaget er **ikke vedtatt** og var ennå ikke sendt på høring 15. oktober 2026.',
       ],
     },
     {

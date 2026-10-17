@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'E-scooter Tromsø 2026: Ryde app, prices, season and rules',
   description: 'E-scooter Tromsø guide for visitors: the Ryde app and its prices, the May to November season, weekend night closures, the bridge, tunnels and airport.',
   headline: 'E-scooters in Tromsø: the Ryde app, prices, the summer season and where you can ride',
-  lede: 'You can rent an e-scooter in Tromsø from one company only, Ryde, and only from 1 May until 1 November at the latest: there are none in the northern-lights season. A ride costs NOK 10.90 to unlock plus NOK 2.50 a minute, so 10 minutes come to NOK 35.90 (published rate, 14 October 2026). You must be 15, and a foreign phone number and card should work. Rentals stop from 11 pm to 6 am on Friday and Saturday nights and before public holidays, the road tunnels are off limits, and the way to the Arctic Cathedral is the cycle path over Tromsø Bridge.',
+  lede: 'You can rent an e-scooter in Tromsø from one company only, Ryde, and only from 1 May until 1 November at the latest: there are none in the northern-lights season. A ride costs NOK 10.90 to unlock plus NOK 2.50 a minute, so 10 minutes come to NOK 35.90 (published rate, 14 October 2026). You must be 16, and a foreign phone number and card should work. Rentals stop from 11 pm to 6 am on Friday and Saturday nights and before public holidays, the road tunnels are off limits, and the way to the Arctic Cathedral is the cycle path over Tromsø Bridge.',
   published: '2026-10-14',
-  updated: '2026-10-15',
+  updated: '2026-10-17',
   city: 'no:Tromsø',
   sections: [
     {
@@ -23,7 +23,7 @@ const guide: Guide = {
           list: [
             '**A phone number that receives texts.** Ryde’s [login help](https://www.ryde-technology.com/help/login-issues) asks you to pick the right country code, so a foreign number should work; its terms rule out temporary, public and shared numbers.',
             '**A card that passes 3-D Secure**, or Google Pay. Vipps, the Norwegian payment app, works too. New accounts pay a verification charge, which becomes Ryde Credits for your rides.',
-            '**Age 15 or over.** You need no driving licence.',
+            '**Age 16 or over.** You need no driving licence.',
           ],
         },
         'Since 1 January 2026 a local regulation has allowed up to two operators, with at most 200 vehicles in the centre and 2,000 elsewhere in the city. Ryde’s April 2026 application is the only one in the city’s public records, and the 2026–27 permit decision had not been published by 15 October 2026.',
@@ -124,7 +124,7 @@ const guide: Guide = {
             caption: 'E-scooter rules and fines in Norway, October 2026',
             head: ['Rule', 'What applies', 'Fine', 'Official source'],
             rows: [
-              ['Age', '12 by law, 15 at Ryde. A rise to 16 was proposed on 5 October 2026; it is not law', '–', '[Driving licence regulation § 12-1](https://lovdata.no/dokument/SF/forskrift/2004-01-19-298/KAPITTEL_12)'],
+              ['Age', '12 by law, 16 at Ryde. A national minimum of 16 was proposed on 5 October 2026; it is not law', '–', '[Driving licence regulation § 12-1](https://lovdata.no/dokument/SF/forskrift/2004-01-19-298/KAPITTEL_12)'],
               ['Helmet', 'Required under 15, recommended for everyone', '–', '[Protective equipment regulation § 4](https://lovdata.no/dokument/SF/forskrift/1979-09-21-7)'],
               ['Speed', 'E-scooters are limited to 20 km/h; past pedestrians and in pedestrian streets, walking pace, never over 6 km/h', '–', '[Small electric vehicle regulation § 3](https://lovdata.no/dokument/SF/forskrift/2022-05-25-918)'],
               ['Where to ride', 'Road, cycle lane or track; pavement only when quiet; never motorways or roads and tunnels signed against cyclists', 'NOK 1,950 past a ban sign', '[Traffic rules §§ 4 and 20](https://lovdata.no/dokument/SF/forskrift/1986-03-21-747)'],
@@ -159,7 +159,7 @@ const guide: Guide = {
     },
     {
       question: 'Do I need a Norwegian phone number or bank card to use Ryde?',
-      answer: 'Probably not. Ryde’s help pages ask only for a number that receives texts, with the right country code, and a card that passes 3-D Secure, or Google Pay. You need no driving licence, but you must be 15.',
+      answer: 'Probably not. Ryde’s help pages ask only for a number that receives texts, with the right country code, and a card that passes 3-D Secure, or Google Pay. You need no driving licence, but you must be 16.',
     },
     {
       question: 'Can I ride an e-scooter from Tromsø airport to the city centre?',
@@ -167,7 +167,7 @@ const guide: Guide = {
     },
     {
       question: 'Do you need a helmet on an e-scooter in Norway?',
-      answer: 'Only if you’re under 15, though it’s recommended for everyone. The law’s minimum age is 12, but Ryde rents only to riders aged 15 and over.',
+      answer: 'Only if you’re under 15, though it’s recommended for everyone. The law’s minimum age is 12, but Ryde rents only to riders aged 16 and over.',
     },
     {
       question: 'Can I take an e-scooter on the bus in Tromsø?',

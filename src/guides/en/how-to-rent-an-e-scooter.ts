@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'How to rent an e-scooter: from the app to the end of your ride',
   lede: 'How to rent an e-scooter, in short: install the operator’s app, sign up with your phone number and a card, scan the QR code on the handlebar and ride, then park where the app allows and take a photo to end the ride. Almost every operator rents only to riders aged 18 or over, and in the UK you also need a driving licence. You pay an unlock fee plus a rate per minute: Voi published CHF 1 plus CHF 0.42 a minute in Bern on 12 October 2026, so ten minutes cost CHF 5.20.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-17',
   sections: [
     {
       heading: 'How to rent (or hire) an e-scooter, step by step',
@@ -48,7 +48,7 @@ const guide: Guide = {
               ['France', '18; 16 at Pony', 'ID at Dott in Lyon', 'Pony: refundable deposit of €0–25'],
               ['Italy', '18', 'ID at Dott in Rome, Milan, Turin and more', 'Satispay at Dott'],
               ['Belgium', '18; 16 at Voi in Antwerp, Hoppy and Pony', 'Brussels: one-time ID scan', 'Bancontact at Dott'],
-              ['Norway', '16 at Bolt and Voi; 15 at Ryde', 'Ryde verifies your card by 3-D Secure or Mobile BankID', 'Vipps at Ryde'],
+              ['Norway', '16 at Bolt, Voi and Ryde', 'Ryde verifies your card by 3-D Secure or Mobile BankID', 'Vipps at Ryde'],
             ],
           },
         },
@@ -169,7 +169,7 @@ const guide: Guide = {
     },
     {
       question: 'How old do you have to be to rent an e-scooter?',
-      answer: 'Eighteen at almost every operator, even where the law lets younger riders use their own scooter. Norway is the main exception: Bolt and Voi rent from 16 and Ryde from 15. In Belgium, Voi in Antwerp, Hoppy and Pony rent from 16, and Pony does in France too.',
+      answer: 'Eighteen at almost every operator, even where the law lets younger riders use their own scooter. Norway is the main exception: Bolt, Voi and Ryde rent from 16. In Belgium, Voi in Antwerp, Hoppy and Pony rent from 16, and Pony does in France too.',
     },
     {
       question: 'Can two people ride one rental e-scooter?',
@@ -195,6 +195,7 @@ const guide: Guide = {
     { title: 'Dott: Reserve a vehicle for free', url: 'https://ridedott.com/reservations/' },
     { title: 'Bolt: Electric scooters', url: 'https://bolt.eu/en/scooters/' },
     { title: 'Jelbi (BVG): Frequently asked questions', url: 'https://www.jelbi.de/en/faq/' },
+    { title: 'Ryde: terms and conditions for Norway', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
   ],
 };
 
