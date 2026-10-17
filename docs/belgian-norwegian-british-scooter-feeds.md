@@ -230,10 +230,19 @@ stays open at night.
   which the map leaves out.
 - **Rælingen** has no town outline, so the map counts its scooters, from Voi's
   Lillestrøm feed, under Lillestrøm; its night ban has its own boundary.
-- **Winter:** Lillestrøm's, Lørenskog's and Rælingen's rules allow renting from
-  March through November only ("Vinterdrift tillates ikke"), so Voi's Lillestrøm
-  and Lørenskog feed has a seasonal pause from 1 December to 1 March, read as
-  Ottawa's is ([Canadian feeds](canadian-scooter-feeds.md#winter)).
+- **Winter:** some towns' rules allow renting only in a season, so their feeds
+  have a seasonal pause, read as Ottawa's is
+  ([Canadian feeds](canadian-scooter-feeds.md#winter)):
+  - Lillestrøm, Lørenskog and Rælingen: March through November ("Vinterdrift
+    tillates ikke", each forskrift's § 7 e), so Voi's Lillestrøm and Lørenskog
+    feed pauses from 1 December to 1 March.
+  - Tromsø: 1 May through 1 November
+    ([FOR-2025-09-03-1800](https://lovdata.no/dokument/LF/forskrift/2025-09-03-1800)
+    § 2 f), so Ryde's feed pauses from 2 November to 1 May.
+  - Trondheim: "i utgangspunktet" 15 March to 1 December, and closed when snow
+    or ice is likely
+    ([FOR-2022-02-08-192](https://lovdata.no/dokument/LF/forskrift/2022-02-08-192)
+    § 3), so Voi's, Ryde's and Dott's feeds pause from 2 December to 15 March.
 - Oslo's city government can lift its ban without changing the rule. The city
   council kept it in January 2026
   ([NRK](https://www.nrk.no/stor-oslo/bystyret-stemte-ned-innstramminger-for-elsparkesykler-i-oslo-1.17746568)).

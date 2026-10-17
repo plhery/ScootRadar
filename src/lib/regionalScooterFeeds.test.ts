@@ -468,6 +468,23 @@ describe('German and Italian scooter coverage', () => {
     expect(feedPaused('norway:voi_no_oslo', winter)).toBe(false);
   });
 
+  it('takes Tromsø\'s scooters off from 2 November to 1 May, and Trondheim\'s from 2 December to 15 March, as their rules set the season', () => {
+    const tromso: [number, number] = [69.6492, 18.9553];
+    const trondheim: [number, number] = [63.4305, 10.3951];
+    // Tromsø's season runs to 1 November inclusive: 23:30 that night is still in it, 00:30 on the 2nd is not.
+    expect(activeSeasonalPause(tromso, Date.UTC(2026, 10, 1, 22, 30))).toBeNull();
+    expect(activeSeasonalPause(tromso, Date.UTC(2026, 10, 1, 23, 30))).toEqual({ city: 'Tromsø', month: 5 });
+    expect(activeSeasonalPause(tromso, Date.UTC(2027, 4, 1, 12))).toBeNull();
+    // Trondheim's runs from 15 March to 1 December, for all three of its operators.
+    expect(activeSeasonalPause(trondheim, Date.UTC(2026, 11, 1, 12))).toBeNull();
+    expect(activeSeasonalPause(trondheim, Date.UTC(2026, 11, 2, 12))).toEqual({ city: 'Trondheim', month: 3 });
+    expect(activeSeasonalPause(trondheim, Date.UTC(2027, 2, 15, 12))).toBeNull();
+    const winter = Date.UTC(2027, 0, 15, 12);
+    for (const feed of ['ryde_no_tromso', 'voi_no_trondheim', 'ryde_no_trondheim', 'dott_no_trondheim']) {
+      expect(feedPaused(`norway:${feed}`, winter), feed).toBe(true);
+    }
+  });
+
   it('keeps Zeus to Leimen, Walldorf and Wiesloch, as it has had no permit in Heidelberg since April 2026', () => {
     const zeus = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'zeus_de_leimen_walldorf_wiesloch')!;
     expect(serviceAreas(zeus).map(area => area.city)).toEqual(['Leimen', 'Walldorf', 'Wiesloch']);

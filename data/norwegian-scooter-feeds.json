@@ -55,7 +55,12 @@
         "west": 10.3315,
         "east": 10.5549
       },
-      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/dotttrondheim/gbfs"
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/dotttrondheim/gbfs",
+      "seasonal": {
+        "from": "12-02",
+        "until": "03-15",
+        "timeZone": "Europe/Oslo"
+      }
     },
     {
       "id": "ryde_no_alesund",
@@ -290,6 +295,11 @@
         "east": 19.0959
       },
       "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydetromso/gbfs",
+      "seasonal": {
+        "from": "11-02",
+        "until": "05-01",
+        "timeZone": "Europe/Oslo"
+      },
       "aliases": [
         "Tromso",
         "Tromsoe"
@@ -310,7 +320,12 @@
         "west": 10.3167,
         "east": 10.5444
       },
-      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydetrondheim/gbfs"
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydetrondheim/gbfs",
+      "seasonal": {
+        "from": "12-02",
+        "until": "03-15",
+        "timeZone": "Europe/Oslo"
+      }
     },
     {
       "id": "voi_no_arendal",
@@ -624,7 +639,12 @@
         "west": 10.306,
         "east": 10.5386
       },
-      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/voitrondheim/gbfs"
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/voitrondheim/gbfs",
+      "seasonal": {
+        "from": "12-02",
+        "until": "03-15",
+        "timeZone": "Europe/Oslo"
+      }
     }
   ]
 }

@@ -1484,11 +1484,11 @@ extension ScooterModelsTests {
         XCTAssertNil(ScooterSeasonalPause.active(at: montreal, on: try at("2026-11-20T17:00:00Z"), among: Self.quebec))
         XCTAssertNil(ScooterSeasonalPause.active(at: montreal, on: try at("2026-07-20T16:00:00Z"), among: Self.quebec))
         XCTAssertNil(ScooterSeasonalPause.active(at: GeoPoint(latitude: 45.65, longitude: -73.6), on: january, among: Self.quebec))
-        // Of the catalogs' cities, Tignes pauses from 8 September until 22 June, Lillestrøm and
-        // Lørenskog from 1 December until 1 March, and Ottawa from 16 November until 30 April,
-        // each by its own clock.
+        // Of the catalogs' cities, Tignes pauses from 8 September until 22 June, Trondheim from
+        // 2 December until 15 March, Tromsø from 2 November until 1 May, Lillestrøm and Lørenskog
+        // from 1 December until 1 March, and Ottawa from 16 November until 30 April, each by its own clock.
         XCTAssertEqual(ScooterCityCatalog.cities.filter { !$0.pauses.isEmpty }.map(\.id),
-                       ["fr:Tignes", "no:Lillestrøm", "no:Lørenskog", "ca:on:Ottawa"])
+                       ["fr:Tignes", "no:Trondheim", "no:Tromsø", "no:Lillestrøm", "no:Lørenskog", "ca:on:Ottawa"])
         let tignes = GeoPoint(latitude: 45.4687, longitude: 6.9063)
         XCTAssertEqual(ScooterSeasonalPause.active(at: tignes, on: january), ScooterSeasonalPause.Active(city: "Tignes", month: 6))
         XCTAssertNil(ScooterSeasonalPause.active(at: tignes, on: try at("2026-09-07T21:30:00Z")))
