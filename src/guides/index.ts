@@ -110,6 +110,7 @@ import baerumNb from './nb/elsparkesykkel-baerum';
 import newYorkEn from './en/e-scooters-new-york';
 import sanFranciscoEn from './en/e-scooters-san-francisco';
 import heidelbergDe from './de/e-scooter-heidelberg';
+import edmontonEn from './en/e-scooters-edmonton';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -220,4 +221,5 @@ export const GUIDES: readonly Guide[] = [
   newYorkEn,
   sanFranciscoEn,
   heidelbergDe,
+  edmontonEn,
 ];
