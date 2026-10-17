@@ -106,6 +106,7 @@ import torreviejaEs from './es/alquiler-patinete-electrico-torrevieja';
 import cataniaIt from './it/monopattini-sharing-catania';
 import losAngelesEn from './en/e-scooters-los-angeles';
 import essenDe from './de/e-scooter-essen';
+import baerumNb from './nb/elsparkesykkel-baerum';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -212,4 +213,5 @@ export const GUIDES: readonly Guide[] = [
   reykjavikIs,
   essenDe,
   losAngelesEn,
+  baerumNb,
 ];
