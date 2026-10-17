@@ -489,7 +489,7 @@ rests on news or an operator's notice.
 | --- | --- | --- |
 | Dallas, TX | Every night, 20:45–05:00 | [Shared Dockless Vehicle Program Rules](https://www.dallascityhall.com/departments/transportation/PublishingImages/Pages/dockless-vehicle-program/Posted%20Program%20Rules_4.17.26.pdf), 17 April 2026, § 6.A |
 | Lincoln, NE | Every night, 23:00–06:00 | [ScooterLNK](https://www.lincoln.ne.gov/City/Departments/LTU/Transportation/Traffic-Engineering/Active-Transportation/ScooterLNK) |
-| Atlanta, GA | Every night, 02:00–04:00 | [ATLDOT Administrative Regulations](https://atldot.atlantaga.gov/wp-content/uploads/2025/11/Administrative-Regulations-November-2024.pdf), updated 27 November 2024, § VII(D)(1)(i) |
+| Atlanta, GA | Every night, 02:00–04:00 | [ATLDOT Administrative Regulations](https://atldot.atlantaga.gov/wp-content/uploads/2025/11/Administrative-Regulations-November-2024.pdf), updated 27 November 2024, § VI(d)(1)(i) |
 | Richmond, VA | Every night, 01:00–05:00 | City Code § 24-131(3), as amended by [Ord. 2023-029](https://legistar2.granicus.com/richmondva/attachments/87666009-0d3e-4a81-b6c7-8d74ec1700c1.pdf) |
 | Cleveland, OH | Every night, 00:00–03:00 | [Shared Mobility Device and Bicycle Vendor Rules](https://www.clevelandcitycouncil.gov/sites/default/files/2024-07/CITY%20RECORD%207-5-2024.pdf), City Record of 5 July 2024, § VIII |
 | Nashville, TN | Every night, 00:00–05:00 | [Metropolitan Transportation Licensing Commission Rules](https://www.nashville.gov/sites/default/files/2026-10/TLC_Rules_9-16-2026.pdf), filed 16 September 2026, § 905.L |
