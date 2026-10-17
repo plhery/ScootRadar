@@ -231,7 +231,9 @@ startup. Tracing is off, and no trace headers go to the operators' feeds.
 
 - **Feed stopped being served**: a warning each time a feed becomes `expired` by its
   cadence's rule (an idle feed after 30 minutes without a successful collection) and is
-  still expired 5 minutes later, outside its seasonal pause. Under a night ban at all its
+  still expired 5 minutes later (15 for Voi Switzerland, whose feed runs 2 or 3 minutes
+  short of expiring and which Voi stalled for up to 21 minutes three times on 16 and 17
+  October 2026, back within 10 minutes of expiring each time), outside its seasonal pause. Under a night ban at all its
   service areas, it waits for the ban to end and tells only if the feed is still expired
   15 minutes after: Dott takes Trondheim's feed down on Friday and Saturday nights, which
   Entur keeps serving as it last was, and brought it back 7.5 minutes after the ban on

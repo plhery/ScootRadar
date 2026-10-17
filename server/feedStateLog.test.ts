@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ALWAYS_FAST, createFeedStateLog, feedState, parkingUp, waitOutCurfew, type FeedCadence } from './feedStateLog';
+import { ALWAYS_FAST, createFeedStateLog, expiredReportDelay, feedState, parkingUp, waitOutCurfew, type FeedCadence } from './feedStateLog';
 import { feedCurfewed } from '../src/lib/seasonalPauses';
 import { VEHICLE_MAX_AGE_MS, type FeedSnapshot } from '../src/lib/scooterSnapshots';
 
@@ -79,6 +79,26 @@ it('tells of a feed still expired after a while, once for each time it expires, 
   logStates(late(expiredAt, expiredAt + minutes(5)), expiredAt + minutes(5));
   logStates(late(expiredAt, expiredAt + minutes(9)), expiredAt + minutes(9));
   expect(reported).toEqual([['ok', expiredAt + minutes(5)]]);
+});
+
+it('waits 15 minutes for Voi\'s Swiss feed, which Voi stalls for up to 21 minutes, and 5 for the others', () => {
+  const reported: [string, number][] = [];
+  const minutes = (count: number) => count * 60_000;
+  const logStates = createFeedStateLog(() => {}, undefined, ALWAYS_FAST,
+    { afterMs: expiredReportDelay, report: (change, current) => reported.push([change.feed, current.attemptedAt]) });
+  const now = 1_000_000_000;
+  const voi = (observedAt: number, attemptedAt: number) => feed({ observedAt, attemptedAt });
+  const dott = (observedAt: number, attemptedAt: number) => feed({ id: 'national:dott_zurich', provider: 'dott', observedAt, attemptedAt });
+  logStates([voi(now, now), dott(now, now)], now);
+  // As on 17 October 2026: Voi's positions are over 15 minutes old from minute 16, and new ones
+  // come at minute 26, 10 minutes later. Dott stops too, and isn't back.
+  for (let minute = 1; minute < 26; minute++) logStates([voi(now, now + minutes(minute)), dott(now, now + minutes(minute))], now + minutes(minute));
+  logStates([voi(now + minutes(25), now + minutes(26)), dott(now, now + minutes(26))], now + minutes(26));
+  expect(reported).toEqual([['national:dott_zurich', now + minutes(21)]]);
+
+  // Voi stops again and isn't back: told 15 minutes after it expires.
+  for (let minute = 27; minute <= 80; minute++) logStates([voi(now + minutes(25), now + minutes(minute))], now + minutes(minute));
+  expect(reported).toEqual([['national:dott_zurich', now + minutes(21)], ['national:voiscooters.com', now + minutes(56)]]);
 });
 
 it('holds the report while told to wait, and tells once if the feed is still expired after', () => {

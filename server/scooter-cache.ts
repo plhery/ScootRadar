@@ -11,7 +11,7 @@ import { FeedScheduler } from './feedScheduler';
 import { createSnapshotServer } from './snapshotServer';
 import { readSnapshot, writeSnapshot } from './snapshotFile';
 import { collectSnapshotFeed } from './collectFeed';
-import { createFeedStateLog, feedState, waitOutCurfew, type FeedCadence } from './feedStateLog';
+import { createFeedStateLog, expiredReportDelay, feedState, waitOutCurfew, type FeedCadence } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
 import { initErrorReporting, reportError, reportFeedExpired } from './errorReporting';
 import { cadenceFromEnv } from './cadence';
@@ -182,10 +182,8 @@ async function discover() {
 setDefinitions(independentCollectableFeeds(), false);
 scheduler.start();
 void discover();
-// Sentry hears of a feed still expired after 5 minutes: not of a blip, as Voi's of
-// 105 seconds on 16 October 2026. Grafana's "feed stopped" waits 10.
-const EXPIRED_REPORT_DELAY_MS = 5 * 60_000;
-const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afterMs: EXPIRED_REPORT_DELAY_MS,
+// Sentry hears of a feed still expired after 5 minutes, or 15 for Voi's Swiss feed (expiredReportDelay).
+const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afterMs: expiredReportDelay,
   // Under a night ban, an operator may take its feed down until morning, as Dott did in Trondheim
   // on 16 October 2026: Sentry hears of it only if it is not back 15 minutes after the ban.
   wait: waitOutCurfew(feedCurfewed),

@@ -62,11 +62,33 @@ export interface FeedStateChange {
 
 /** A feed that has stayed expired for `afterMs`, told once for each time it expires. */
 export interface StillExpired {
-  afterMs: number;
+  /** How long, the same for every feed or by feed. */
+  afterMs: number | ((feed: FeedSnapshot) => number);
   /** Whether to hold the report for now: asked again on each call while the feed stays expired. */
   wait?: (feed: FeedSnapshot, now: number) => boolean;
   /** The change that expired it, and the feed as it is now. */
   report: (change: FeedStateChange, feed: FeedSnapshot) => void;
+}
+
+const reportAfter = ({ afterMs }: StillExpired, feed: FeedSnapshot) => typeof afterMs === 'function' ? afterMs(feed) : afterMs;
+
+/**
+ * How long a feed stays expired before Sentry hears of it: not a blip, as Voi Switzerland's of
+ * 105 seconds on 16 October 2026. Grafana's "feed stopped" waits 10 minutes.
+ */
+export const EXPIRED_REPORT_DELAY_MS = 5 * 60_000;
+
+/**
+ * Longer for a feed that stalls upstream and comes back on its own. Voi's Swiss feed moves every
+ * 8 minutes and reaches us 3 to 5 minutes later, so it runs 2 or 3 minutes short of expiring; on
+ * 16 and 17 October 2026 Voi stopped it for up to 21 minutes three times, and it was back within
+ * 10 minutes of expiring each time.
+ */
+const EXPIRED_REPORT_DELAYS_MS: Readonly<Record<string, number>> = { 'national:voiscooters.com': 15 * 60_000 };
+
+/** How long this feed stays expired before Sentry hears of it. */
+export function expiredReportDelay(feed: FeedSnapshot): number {
+  return EXPIRED_REPORT_DELAYS_MS[feed.id] ?? EXPIRED_REPORT_DELAY_MS;
 }
 
 /**
@@ -102,7 +124,7 @@ export function createFeedStateLog(log: (line: string) => void = console.log,
       const state = feedState(feed, now, cadence);
       const previous = known.get(feed.id);
       if (previous?.state === state) {
-        if (stillExpired && previous.change?.state === 'expired' && now - previous.since >= stillExpired.afterMs &&
+        if (stillExpired && previous.change?.state === 'expired' && now - previous.since >= reportAfter(stillExpired, feed) &&
           !stillExpired.wait?.(feed, now)) {
           stillExpired.report(previous.change, feed);
           previous.change = undefined;
