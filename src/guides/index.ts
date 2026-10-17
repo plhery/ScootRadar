@@ -107,6 +107,7 @@ import cataniaIt from './it/monopattini-sharing-catania';
 import losAngelesEn from './en/e-scooters-los-angeles';
 import essenDe from './de/e-scooter-essen';
 import baerumNb from './nb/elsparkesykkel-baerum';
+import newYorkEn from './en/e-scooters-new-york';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -214,4 +215,5 @@ export const GUIDES: readonly Guide[] = [
   essenDe,
   losAngelesEn,
   baerumNb,
+  newYorkEn,
 ];
