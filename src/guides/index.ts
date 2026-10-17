@@ -84,6 +84,7 @@ import tromsoNb from './nb/elsparkesykkel-tromso';
 import tromsoEn from './en/e-scooters-tromso';
 import munsterDe from './de/e-scooter-muenster';
 import kristiansandNb from './nb/elsparkesykkel-kristiansand';
+import fredrikstadNb from './nb/elsparkesykkel-fredrikstad';
 import leHavreFr from './fr/trottinette-electrique-le-havre';
 import angersFr from './fr/trottinette-electrique-angers';
 import rhodesEn from './en/e-scooters-rhodes';
@@ -182,6 +183,7 @@ export const GUIDES: readonly Guide[] = [
   stavangerNb,
   tromsoNb,
   kristiansandNb,
+  fredrikstadNb,
   portugueseRulesPt,
   howToRentPt,
   lisbonPt,
