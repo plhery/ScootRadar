@@ -265,6 +265,44 @@ describe('German and Italian scooter coverage', () => {
       'hopp_fi_mariehamn:two': { currency: 'EUR', unlock_fee_minor_units: 170, minute_fee_minor_units: 42 },
     });
   });
+  it('prices Beryl\'s Norwich scooters from its pay-as-you-ride scooter plan, which no scooter or type names', async () => {
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'beryl_gb_norwich')!;
+    expect(system).toMatchObject({ country: 'GB', city: 'Norwich' });
+    const base = new URL('.', system.discoveryUrl).toString();
+    expect(base).toBe('https://beryl-gbfs-production.web.app/v2_2/Norwich/');
+    const scooter = { bike_id: '69a8062d392642d1b65b2fb85830ba86', is_reserved: false, is_disabled: false, vehicle_type_id: 'scooter',
+      lat: 52.639076232910156, lon: 1.2429759502410889, station_id: '1832', current_range_meters: 5000 };
+    const plan = (plan_id: string, name: string, price: number, rate: number, vehicle_type_id: string) => ({ plan_id, name,
+      description: name, currency: 'GBP', price, is_taxable: false, per_min_pricing: [{ start: 0, rate, interval: 1, vehicle_type_id }] });
+    // As Beryl publishes them: plans for each kind of vehicle, by town number, under type ids the vehicles don't use.
+    const plans = [plan('59-bike', 'Pay As You Ride', 1, 0.1, 'bike'), plan('59-ebike', 'Pay As You Ride', 1, 0.2, 'ebike'),
+      plan('59-escooter', 'Pay As You Ride', 1, 0.22, 'escooter'), plan('1343-escooter', '50 Minute Bundle', 0, 0, 'escooter'),
+      plan('1337-escooter', '50 Minute Bundle', 1, 0, 'escooter')];
+    const fetchMock = vi.fn(async (url: string) => {
+      if (url === system.discoveryUrl) return response({ data: { en: { feeds: ['vehicle_types', 'free_bike_status', 'system_pricing_plans']
+        .map(name => ({ name, url: `${base}${name}.json` })) } } });
+      if (url === `${base}vehicle_types.json`) return response({ data: { vehicle_types: [
+        { vehicle_type_id: 'beryl_bike', form_factor: 'bicycle', propulsion_type: 'human', name: 'Beryl Bike' },
+        { vehicle_type_id: 'bbe', form_factor: 'bicycle', propulsion_type: 'electric_assist', name: 'Beryl e-Bike' },
+        { vehicle_type_id: 'scooter', form_factor: 'scooter', propulsion_type: 'electric', max_range_meters: 30000, name: 'Beryl e-Scooter' }] } });
+      if (url === `${base}free_bike_status.json`) return response({ last_updated: Math.floor(Date.now() / 1000), data: { bikes: [scooter,
+        { ...scooter, bike_id: 'ebike', vehicle_type_id: 'bbe' }] } });
+      if (url === `${base}system_pricing_plans.json`) return response({ data: { plans } });
+      throw new Error(`Unexpected upstream ${url}`);
+    });
+    vi.stubGlobal('fetch', fetchMock);
+    const result = await fetchScooters({ bounds: system.bounds, minBattery: 0, providers: new Set(['beryl']) });
+    expect(result.meta.sources.uk).toBe('fresh');
+    expect(result.vehicles).toEqual([expect.objectContaining({ vehicle_id: `beryl_gb_norwich:${scooter.bike_id}`, range_m: 5000,
+      pricing: { currency: 'GBP', unlock_fee_minor_units: 100, minute_fee_minor_units: 22 } })]);
+
+    // Two such plans and the price could be either's: none is shown.
+    upstreamJsonCache.clear();
+    plans.push(plan('60-escooter', 'Pay As You Ride', 1.5, 0.25, 'escooter'));
+    const unsure = await fetchScooters({ bounds: system.bounds, minBattery: 0, providers: new Set(['beryl']) });
+    expect(unsure.vehicles).toHaveLength(1);
+    expect(unsure.vehicles[0].pricing).toBeUndefined();
+  });
   it('reads Hoppy Rijeka\'s GBFS 3.0 feed: EUR 0 to start and EUR 0.19 a minute, range only, and a link to each scooter', async () => {
     const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'hoppy_hr_rijeka')!;
     expect(system).toMatchObject({ country: 'HR', city: 'Rijeka' });

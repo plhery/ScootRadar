@@ -158,12 +158,13 @@ describe('the United States', () => {
 
     // The plan is the scooters' only where it can be no other's.
     const typesById = new Map(types.map(type => [type.vehicle_type_id, type]));
-    const pricing = new Map([['SCOOTER_SINGLE_RIDE', { currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 44 }]]);
-    expect(unlinkedScooterPlan('lyft', typesById, pricing)).toBe('SCOOTER_SINGLE_RIDE');
-    expect(unlinkedScooterPlan('lyft', typesById, new Map())).toBeUndefined();
-    expect(unlinkedScooterPlan('lyft', new Map([...typesById, ['4', { ...types[2], vehicle_type_id: '4' }]]), pricing)).toBeUndefined();
-    expect(unlinkedScooterPlan('lyft', new Map([['3', { ...types[2], default_pricing_plan_id: 'OTHER' }]]), pricing)).toBeUndefined();
-    expect(unlinkedScooterPlan('bird', typesById, pricing)).toBeUndefined();
+    const plans = { pricing: new Map([['SCOOTER_SINGLE_RIDE', { currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 44 }]]),
+      names: new Map() };
+    expect(unlinkedScooterPlan('lyft', typesById, plans)).toBe('SCOOTER_SINGLE_RIDE');
+    expect(unlinkedScooterPlan('lyft', typesById, { pricing: new Map(), names: new Map() })).toBeUndefined();
+    expect(unlinkedScooterPlan('lyft', new Map([...typesById, ['4', { ...types[2], vehicle_type_id: '4' }]]), plans)).toBeUndefined();
+    expect(unlinkedScooterPlan('lyft', new Map([['3', { ...types[2], default_pricing_plan_id: 'OTHER' }]]), plans)).toBeUndefined();
+    expect(unlinkedScooterPlan('bird', typesById, plans)).toBeUndefined();
   });
 
   it('reads Spin\'s feed, which names no price and gives Bird\'s apps, whose charger sign-up is no rental link', async () => {

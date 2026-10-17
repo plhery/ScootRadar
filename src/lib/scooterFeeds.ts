@@ -111,6 +111,7 @@ interface PerMinutePrice {
 
 interface PricingPlan {
   plan_id?: string;
+  name?: string | Array<{ language: string; text: string }>;
   currency?: string;
   // GBFS says a number; Lyft writes "1.00".
   price?: number | string;
@@ -138,6 +139,8 @@ interface PlanPrices {
   pricing: ReadonlyMap<string, VehiclePricing>;
   /** Every plan the feed lists, priced or not. */
   listed: ReadonlySet<string>;
+  /** The name of each priced plan that gives one, in English where it is translated. */
+  names: ReadonlyMap<string, string>;
 }
 
 interface PlanOptions {
@@ -152,7 +155,7 @@ interface PricingPlans extends PlanPrices {
   from?: { url: string; options: PlanOptions; fetchedAt: number; ttlSeconds: number };
 }
 
-const NO_PLANS: PricingPlans = { pricing: new Map(), listed: new Set() };
+const NO_PLANS: PricingPlans = { pricing: new Map(), listed: new Set(), names: new Map() };
 
 interface RegistryFeed {
   systems?: Array<{
@@ -451,23 +454,30 @@ function filterVehicles(
 /**
  * The plans some operators publish for their scooters without linking them from the scooters or
  * their type. Lyft lists bike and scooter plans side by side in Chicago and Portland, and names
- * none on its vehicles; its scooters' is SCOOTER_SINGLE_RIDE, "SCOOTER SINGLE RIDE".
+ * none on its vehicles; its scooters' is SCOOTER_SINGLE_RIDE, "SCOOTER SINGLE RIDE". Beryl lists
+ * a "Pay As You Ride" plan for its bikes, e-bikes and scooters in each town, beside bundles and
+ * passes, and numbers them by town: its scooters' is 59-escooter in Norwich, 1150-escooter in
+ * Leeds. Its scooters' type is "scooter", which the plans' minute prices call "escooter".
  */
-const UNLINKED_SCOOTER_PLANS: Partial<Record<ProviderKey, string>> = { lyft: 'SCOOTER_SINGLE_RIDE' };
+const UNLINKED_SCOOTER_PLANS: Partial<Record<ProviderKey, (planId: string, name?: string) => boolean>> = {
+  lyft: planId => planId === 'SCOOTER_SINGLE_RIDE',
+  beryl: (planId, name) => planId.endsWith('-escooter') && name === 'Pay As You Ride',
+};
 
 /**
- * That plan, where it can only be the scooters': the feed lists it, and one type of standing
- * scooter that names no plan of its own. With two scooter types, it could be either's.
+ * That plan, where it can only be the scooters': the feed prices one such plan, and has one type
+ * of standing scooter that names no plan of its own. With two scooter types, it could be either's.
  */
 export function unlinkedScooterPlan(
   provider: ProviderKey,
   types: ReadonlyMap<string, VehicleType>,
-  pricingByPlanId: ReadonlyMap<string, VehiclePricing>
+  plans: Pick<PlanPrices, 'pricing' | 'names'>
 ): string | undefined {
-  const planId = UNLINKED_SCOOTER_PLANS[provider];
+  const isScooterPlan = UNLINKED_SCOOTER_PLANS[provider];
   const scooters = [...types.values()].filter(type => isElectricScooter(type, provider));
-  return planId && pricingByPlanId.has(planId) && scooters.length === 1 && !scooters[0].default_pricing_plan_id
-    ? planId : undefined;
+  if (!isScooterPlan || scooters.length !== 1 || scooters[0].default_pricing_plan_id) return undefined;
+  const planIds = [...plans.pricing.keys()].filter(planId => isScooterPlan(planId, plans.names.get(planId)));
+  return planIds.length === 1 ? planIds[0] : undefined;
 }
 
 function typeMap(feed: VehicleTypesFeed): Map<string, VehicleType> {
@@ -606,14 +616,18 @@ function pricingPlanMap(feed: PricingPlansFeed, country: string, wholeUnitPrice:
   const plans = feed.data?.plans ?? feed.data?.pricing_plans ?? [];
   const pricing = new Map<string, VehiclePricing>();
   const listed = new Set<string>();
+  const names = new Map<string, string>();
   for (const plan of plans) {
     const planId = plan.plan_id?.trim();
     if (!planId) continue;
     listed.add(planId);
     const price = vehiclePricing(plan, country, wholeUnitPrice);
-    if (price) pricing.set(planId, price);
+    if (!price) continue;
+    pricing.set(planId, price);
+    const name = Array.isArray(plan.name) ? plan.name.find(value => value.language === 'en')?.text : plan.name;
+    if (typeof name === 'string' && name.trim()) names.set(planId, name.trim());
   }
-  return { pricing, listed };
+  return { pricing, listed, names };
 }
 
 async function loadPricingPlans(url: string, options: PlanOptions, maxAgeSeconds?: number): Promise<PricingPlans> {
@@ -1259,7 +1273,7 @@ async function fetchRegionalSystemFeeds(
     vehicles: (await pricedScooters(plans, (prices, unlisted) => filterVehicles(system.id, rawVehicles(status.data), typesById, {
       ...query,
       bounds,
-    }, prices, unlinkedScooterPlan(system.provider, typesById, prices.pricing), unlisted)))
+    }, prices, unlinkedScooterPlan(system.provider, typesById, prices), unlisted)))
       .filter(vehicle => systemServesPoint(system, vehicle.lat, vehicle.lng)),
     stale: discovery.stale || types.stale || status.stale,
   };
