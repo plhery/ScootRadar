@@ -24,7 +24,7 @@ const guide: Guide = {
           ],
         },
         'Spin’s City licence ran out on 15 June 2026 and wasn’t renewed, and Superpedestrian left in 2023, so the City lists no third company.',
-        'On the evening of 16 October 2026 the [map of Chicago](map:us:il:Chicago) showed about 11,300 Lime and 920 Divvy scooters: what’s on the map, not the fleets. **Our map shows only the Divvy scooters left outside a station.** Divvy’s open data counted about 930 more standing in its docks late that evening; you’ll find those in the Divvy or Lyft app.',
+        'On the evening of 16 October 2026 the [map of Chicago](map:us:il:Chicago) showed about 11,300 Lime scooters and 920 Divvy scooters left outside a station: what’s on the map, not the fleets. **Since 17 October it also shows the Divvy scooters standing in a dock**, each at its station: 928 more that morning, at 353 stations.',
         '**Visiting?** Get Lime or the Divvy app before you go. Lime asks for a debit or credit card with its expiry date and billing postal code, and may put a temporary hold on it. Divvy sells single rides in the app; its kiosks sell classic-bike rides only. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
