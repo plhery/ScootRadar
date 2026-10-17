@@ -784,6 +784,25 @@ function hasElectricScooter(types: Map<string, VehicleType>, provider: string | 
   return [...types.values()].some(type => isElectricScooter(type, provider));
 }
 
+// Entur lists only the types of the vehicles a feed holds now: under Oslo's night ban Voi's list names no
+// scooter, and that copy, kept for an hour, hid Oslo's scooters until 05:30 or later after the ban ended.
+// A list without a scooter is fetched again once it is SCOOTERLESS_TYPES_MAX_AGE_SECONDS old.
+const SCOOTERLESS_TYPES_MAX_AGE_SECONDS = 300;
+
+async function fetchScooterTypes(
+  url: string,
+  provider: string | null,
+  authenticated?: boolean
+): Promise<{ byId: Map<string, VehicleType>; hasScooter: boolean; stale: boolean }> {
+  const options = { validate: validateTypes, authenticated, revalidate: METADATA_REVALIDATE_SECONDS };
+  let types = await fetchJson<VehicleTypesFeed>(url, options);
+  if (!hasElectricScooter(typeMap(types.data), provider)) {
+    types = await fetchJson<VehicleTypesFeed>(url, { ...options, maxAgeSeconds: SCOOTERLESS_TYPES_MAX_AGE_SECONDS });
+  }
+  const byId = typeMap(types.data);
+  return { byId, hasScooter: hasElectricScooter(byId, provider), stale: types.stale };
+}
+
 function spatialFeatures(response: SpatialResponse): SpatialFeature[] {
   return Array.isArray(response) ? response : response.geoJsonSearchInformations ?? [];
 }
@@ -884,13 +903,9 @@ async function fetchSystemVehicles(
     return { vehicles: [], stale: discovery.stale, skipped: true };
   }
 
-  const types = await fetchJson<VehicleTypesFeed>(typesUrl, {
-    validate: validateTypes,
-    authenticated: true,
-    revalidate: METADATA_REVALIDATE_SECONDS,
-  });
-  const typesById = typeMap(types.data);
-  if (!hasElectricScooter(typesById, providerKeyForSystemId(system.id))) {
+  const types = await fetchScooterTypes(typesUrl, providerKeyForSystemId(system.id), true);
+  const typesById = types.byId;
+  if (!types.hasScooter) {
     return { vehicles: [], stale: discovery.stale || types.stale, skipped: true };
   }
 
@@ -1043,11 +1058,11 @@ async function fetchHoppTownVehicles(
 
   const [status, types, plans] = await Promise.all([
     fetchJson<StatusFeed>(statusUrl, { validate: validateVehicleStatus, revalidate: STATUS_REVALIDATE_SECONDS }),
-    fetchJson<VehicleTypesFeed>(typesUrl, { validate: validateTypes, revalidate: METADATA_REVALIDATE_SECONDS }),
+    fetchScooterTypes(typesUrl, 'hopp'),
     fetchPricingPlans(pricingUrl, { source: town.id, country: 'CH' }),
   ]);
-  const typesById = typeMap(types.data);
-  if (!hasElectricScooter(typesById, 'hopp')) {
+  const typesById = types.byId;
+  if (!types.hasScooter) {
     return { vehicles: [], stale: discovery.stale || types.stale, skipped: true };
   }
 
@@ -1214,12 +1229,9 @@ async function fetchRegionalSystemFeeds(
     throw new Error(`${system.id} discovery contains no supported scooter feeds`);
   }
 
-  const types = await fetchJson<VehicleTypesFeed>(typesUrl, {
-    validate: validateTypes,
-    revalidate: METADATA_REVALIDATE_SECONDS,
-  });
-  const typesById = typeMap(types.data);
-  if (!hasElectricScooter(typesById, system.provider)) {
+  const types = await fetchScooterTypes(typesUrl, system.provider);
+  const typesById = types.byId;
+  if (!types.hasScooter) {
     return { vehicles: [], stale: discovery.stale || types.stale, skipped: true };
   }
 

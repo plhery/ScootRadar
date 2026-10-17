@@ -113,6 +113,42 @@ describe('German and Italian scooter coverage', () => {
     expect(result.meta.sources).toEqual({ ...skippedSources(), [country]: 'fresh' });
     expect(fetchMock).toHaveBeenCalledTimes(3);
   });
+  it('shows Voi\'s Oslo scooters minutes after the night ban, though the types it listed during the ban had no scooter', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      vi.setSystemTime(new Date('2026-10-17T02:50:00Z'));
+      const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'voi_no_oslo')!;
+      const base = new URL('.', system.discoveryUrl).toString();
+      const bike = { vehicle_type_id: 'bike', form_factor: 'bicycle', propulsion_type: 'electric_assist' };
+      const scooter = { vehicle_type_id: 'scooter', form_factor: 'scooter_standing', propulsion_type: 'electric' };
+      let banned = true;
+      const fetchMock = vi.fn(async (url: string) => {
+        if (url === system.discoveryUrl) return response({ version: '3.0', data: { feeds: ['vehicle_types', 'vehicle_status']
+          .map(name => ({ name, url: `${base}${name}` })) } });
+        if (url === `${base}vehicle_types`) return response({ version: '3.0', data: { vehicle_types: banned ? [bike] : [bike, scooter] } });
+        if (url === `${base}vehicle_status`) return response({ last_updated: new Date().toISOString(), version: '3.0', data: {
+          vehicles: banned ? [] : [{ vehicle_id: 'v1', vehicle_type_id: 'scooter', lat: 59.915, lon: 10.75, current_fuel_percent: 0.8 }] } });
+        throw new Error(`Unexpected upstream ${url}`);
+      });
+      vi.stubGlobal('fetch', fetchMock);
+      const oslo = () => fetchScooters({ bounds: { south: 59.91, north: 59.92, west: 10.74, east: 10.76 }, minBattery: 0,
+        providers: new Set(['voi']) });
+      const typeRequests = () => fetchMock.mock.calls.filter(([url]) => url === `${base}vehicle_types`).length;
+
+      expect((await oslo()).vehicles).toEqual([]);
+      vi.setSystemTime(new Date('2026-10-17T02:53:00Z'));
+      expect((await oslo()).vehicles).toEqual([]);
+      expect(typeRequests()).toBe(1);
+
+      // 05:01 in Oslo: the ban is over, eleven minutes after the scooterless list was fetched.
+      banned = false;
+      vi.setSystemTime(new Date('2026-10-17T03:01:00Z'));
+      expect((await oslo()).vehicles).toMatchObject([{ provider: 'voi', battery: 80 }]);
+      expect(typeRequests()).toBe(2);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
   it('prices each Hopp Pécs scooter from its own plan, in forints, never from the plans in other currencies', async () => {
     const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'hopp_hu_pecs')!;
     const base = new URL('.', system.discoveryUrl).toString();
