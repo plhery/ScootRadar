@@ -1,5 +1,5 @@
 import {
-  isAbandonedStatus, isEmptyUndatedStatus, statusObservedAt, validateDiscovery, validateRegistry, validateTypes, validateVehicleStatus,
+  isAbandonedStatus, isEmptyUndatedStatus, statusObservedAt, validateDiscovery, validateRegistry, validateStations, validateTypes, validateVehicleStatus,
 } from './feedValidation';
 import { VEHICLE_MAX_AGE_MS } from './dataFreshness';
 import { PRICES_BEFORE_TAX } from '@/generated/countries';
@@ -34,7 +34,7 @@ const PUBLIBIKE_FREE_FLOATING_URL =
 const PUBLIBIKE_STATIONS_URL = 'https://velospot.info/customer/public/api/pbvsng/stations';
 const PUBLIBIKE_ESCOOTER_TYPE = 5;
 // Far above any real station; bounds the markers a malformed count can create.
-const PUBLIBIKE_STATION_MAX_SCOOTERS = 50;
+const STATION_MAX_SCOOTERS = 50;
 
 const STATUS_REVALIDATE_SECONDS = 30;
 const METADATA_REVALIDATE_SECONDS = 3600;
@@ -99,6 +99,24 @@ interface StatusFeed {
 interface VehicleTypesFeed {
   data?: {
     vehicle_types?: VehicleType[];
+  };
+}
+
+interface StationInformationFeed {
+  data?: {
+    stations?: { station_id?: string; lat?: number; lon?: number; rental_uris?: RawVehicle['rental_uris'] }[];
+  };
+}
+
+interface StationStatusFeed {
+  last_updated?: number | string;
+  data?: {
+    stations?: {
+      station_id?: string;
+      is_installed?: AvailabilityFlag;
+      is_renting?: AvailabilityFlag;
+      vehicle_types_available?: { vehicle_type_id?: string; count?: number }[];
+    }[];
   };
 }
 
@@ -349,7 +367,7 @@ function rawVehicles(feed: StatusFeed): RawVehicle[] {
   return feed.data?.bikes ?? feed.data?.vehicles ?? [];
 }
 
-function isUnavailable(value: AvailabilityFlag | undefined): boolean {
+function isSet(value: AvailabilityFlag | undefined): boolean {
   return value === true || value === 1;
 }
 
@@ -433,7 +451,7 @@ function filterVehicles(
 
   const filtered: Vehicle[] = [];
   for (const raw of vehicles) {
-    if (isUnavailable(raw.is_disabled) || isUnavailable(raw.is_reserved)) continue;
+    if (isSet(raw.is_disabled) || isSet(raw.is_reserved)) continue;
     if (!raw.vehicle_type_id || !isElectricScooter(types.get(raw.vehicle_type_id), provider)) continue;
 
     const lat = raw.lat;
@@ -478,6 +496,34 @@ export function unlinkedScooterPlan(
   if (!isScooterPlan || scooters.length !== 1 || scooters[0].default_pricing_plan_id) return undefined;
   const planIds = [...plans.pricing.keys()].filter(planId => isScooterPlan(planId, plans.names.get(planId)));
   return planIds.length === 1 ? planIds[0] : undefined;
+}
+
+/**
+ * The scooters docked at a feed's stations, which its station status counts by type, without ids.
+ * Each one is a vehicle at its station, with the station's link, numbered so that a count dropping
+ * from 3 to 2 removes only the third. A station not installed or not renting has none to hire.
+ */
+function dockedScooters(
+  information: StationInformationFeed,
+  status: StationStatusFeed,
+  isScooter: (typeId: string) => boolean
+): RawVehicle[] {
+  const places = new Map((information.data?.stations ?? []).map(station => [station.station_id, station]));
+  const docked: RawVehicle[] = [];
+  for (const station of status.data?.stations ?? []) {
+    const place = places.get(station.station_id);
+    if (!place || !isSet(station.is_installed) || !isSet(station.is_renting)) continue;
+    let index = 0;
+    for (const { vehicle_type_id, count } of station.vehicle_types_available ?? []) {
+      if (!vehicle_type_id || !isScooter(vehicle_type_id) ||
+        !Number.isInteger(count) || count! <= 0 || count! > STATION_MAX_SCOOTERS) continue;
+      for (let docks = 0; docks < count!; docks++) {
+        docked.push({ vehicle_id: `station:${station.station_id}:${++index}`, vehicle_type_id,
+          lat: place.lat, lon: place.lon, rental_uris: place.rental_uris });
+      }
+    }
+  }
+  return docked;
 }
 
 function typeMap(feed: VehicleTypesFeed): Map<string, VehicleType> {
@@ -1175,7 +1221,7 @@ async function fetchPubliBikeStationVehicles(
     if (
       station.out_of_service !== false ||
       typeof station.id !== 'string' || station.id.length === 0 ||
-      !Number.isInteger(count) || count! <= 0 || count! > PUBLIBIKE_STATION_MAX_SCOOTERS ||
+      !Number.isInteger(count) || count! <= 0 || count! > STATION_MAX_SCOOTERS ||
       lat == null || lng == null ||
       !Number.isFinite(lat) || !Number.isFinite(lng) ||
       !PUBLIBIKE_STATION_COVERAGE.some(bounds => boundsContainPoint(bounds, lat, lng)) ||
@@ -1249,7 +1295,7 @@ async function fetchRegionalSystemFeeds(
     return { vehicles: [], stale: discovery.stale || types.stale, skipped: true };
   }
 
-  const [status, plans] = await Promise.all([
+  const [status, plans, docked] = await Promise.all([
     fetchJson<StatusFeed>(statusUrl, {
       validate: value => { if (!isEmptyUndatedStatus(value)) validateVehicleStatus(value); },
       revalidate: STATUS_REVALIDATE_SECONDS,
@@ -1259,6 +1305,7 @@ async function fetchRegionalSystemFeeds(
       source: system.id,
       country: system.country,
     }),
+    system.stationScooters ? fetchDockedScooters(system, entries, baseUrl, typesById) : undefined,
   ]);
   if (!Array.isArray(status.data.data?.bikes) && !Array.isArray(status.data.data?.vehicles)) {
     throw new Error(`${system.id} status contains no vehicle array`);
@@ -1268,14 +1315,41 @@ async function fetchRegionalSystemFeeds(
     return { vehicles: [], stale: discovery.stale || types.stale || status.stale, skipped: true };
   }
 
+  const raw = docked ? [...rawVehicles(status.data), ...docked.vehicles] : rawVehicles(status.data);
   return {
-    observedAt: statusObservedAt(status.data),
-    vehicles: (await pricedScooters(plans, (prices, unlisted) => filterVehicles(system.id, rawVehicles(status.data), typesById, {
+    observedAt: Math.min(statusObservedAt(status.data), docked?.observedAt ?? Infinity),
+    vehicles: (await pricedScooters(plans, (prices, unlisted) => filterVehicles(system.id, raw, typesById, {
       ...query,
       bounds,
     }, prices, unlinkedScooterPlan(system.provider, typesById, prices), unlisted)))
       .filter(vehicle => systemServesPoint(system, vehicle.lat, vehicle.lng)),
-    stale: discovery.stale || types.stale || status.stale,
+    stale: discovery.stale || types.stale || status.stale || Boolean(docked?.stale),
+  };
+}
+
+/** The scooters docked at the stations of a system whose catalog entry has stationScooters. */
+async function fetchDockedScooters(
+  system: RegionalScooterSystem,
+  entries: DiscoveryFeedEntry[],
+  baseUrl: string,
+  types: Map<string, VehicleType>
+): Promise<{ vehicles: RawVehicle[]; observedAt: number; stale: boolean }> {
+  const informationUrl = discoveredFeedUrl(entries, 'station_information', baseUrl);
+  const statusUrl = discoveredFeedUrl(entries, 'station_status', baseUrl);
+  if (!informationUrl || !statusUrl) {
+    throw new Error(`${system.id} discovery contains no station feeds`);
+  }
+  const [information, status] = await Promise.all([
+    fetchJson<StationInformationFeed>(informationUrl, { validate: validateStations, revalidate: METADATA_REVALIDATE_SECONDS }),
+    fetchJson<StationStatusFeed>(statusUrl, {
+      validate: value => { validateStations(value); statusObservedAt(value); },
+      revalidate: STATUS_REVALIDATE_SECONDS,
+    }),
+  ]);
+  return {
+    vehicles: dockedScooters(information.data, status.data, typeId => isElectricScooter(types.get(typeId), system.provider)),
+    observedAt: statusObservedAt(status.data),
+    stale: information.stale || status.stale,
   };
 }
 

@@ -685,6 +685,16 @@ no winter clause.
   Its systems carry the names of the cities' bike shares, Divvy and Biketown,
   and list their bicycles beside the scooters; only the scooter type is
   shown, as Lyft's.
+- **Divvy** docks scooters at its stations too. Its `free_bike_status` lists
+  only those left away from a station, none with a `station_id`; the docked
+  ones are in `station_status`, counted by type in `vehicle_types_available`
+  (type 3) without ids. At 04:11 in Chicago on 17 October, 928 were docked at
+  353 of its 2,074 stations, beside 962 free-floating ones. The catalog says
+  so (`"stationScooters": true`): each is shown at its station, with the
+  station's link and no charge or range, at stations installed and renting.
+  The same feed's `num_scooters_available`, 1,033 then, is a count of Lyft's
+  own that the map does not read. Biketown's stations in Portland held no
+  scooter.
 - **Spin:** GBFS 2.3. Nothing in its feeds names Spin but the host:
   `system_information` calls each system "provider null" and its town, its
   operator "Bird Rides, Inc.", which has owned Spin since 2023, and gives

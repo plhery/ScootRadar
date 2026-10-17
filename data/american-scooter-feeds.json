@@ -1002,7 +1002,8 @@
         "west": -87.7999,
         "east": -87.5437
       },
-      "discoveryUrl": "https://gbfs.lyft.com/gbfs/2.3/chi/gbfs.json"
+      "discoveryUrl": "https://gbfs.lyft.com/gbfs/2.3/chi/gbfs.json",
+      "stationScooters": true
     },
     {
       "id": "lyft_us_portland",

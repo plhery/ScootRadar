@@ -123,10 +123,8 @@ describe('the United States', () => {
     })]);
   });
 
-  it('reads Lyft\'s flags written 0 and 1, its price written "1.00", and the scooter plan its scooters do not name', async () => {
+  describe('Lyft in Chicago', () => {
     const lyftChicago = system('lyft_us_chicago');
-    expect(lyftChicago).toMatchObject({ country: 'US', city: 'Chicago', region: 'IL', timeZone: 'America/Chicago',
-      discoveryUrl: 'https://gbfs.lyft.com/gbfs/2.3/chi/gbfs.json' });
     const base = 'https://gbfs.lyft.com/gbfs/2.3/chi/en/';
     const link = 'https://chi.lft.to/lastmile_qr_scan';
     // As Lyft publishes them in Chicago: one link per city, which opens the app's code scanner.
@@ -137,34 +135,76 @@ describe('the United States', () => {
     const types = [{ vehicle_type_id: '1', form_factor: 'bicycle', propulsion_type: 'human' },
       { vehicle_type_id: '2', form_factor: 'bicycle', propulsion_type: 'electric_assist', max_range_meters: 54717.56 },
       { vehicle_type_id: '3', form_factor: 'scooter', propulsion_type: 'electric', max_range_meters: 70810.95999999999 }];
-    vi.stubGlobal('fetch', vi.fn(async (url: string) => {
-      if (url === lyftChicago.discoveryUrl) return response({ version: '2.3', data: { en: { feeds: ['system_information', 'free_bike_status',
-        'vehicle_types', 'system_pricing_plans'].map(name => ({ name, url: `${base}${name}.json` })) } } });
-      if (url === `${base}vehicle_types.json`) return response({ data: { vehicle_types: types } });
-      if (url === `${base}free_bike_status.json`) return response({ version: '2.3', last_updated: Math.floor(Date.now() / 1000), data: { bikes: [
-        scooter, { ...scooter, bike_id: 'reserved', is_reserved: 1 }, { ...scooter, bike_id: 'disabled', is_disabled: 1 },
-        { ...scooter, bike_id: 'ebike', vehicle_type_id: '2', current_range_meters: 30000 }] } });
-      if (url === `${base}system_pricing_plans.json`) return response({ data: { plans: [plan('EBIKE_SINGLE_RIDE', 0.44),
-        plan('BIKE_SINGLE_RIDE', 0.2), plan('SCOOTER_SINGLE_RIDE', 0.44)] } });
-      throw new Error(`Unexpected upstream ${url}`);
-    }));
-    const result = await fetchScooters({ bounds: lyftChicago.bounds, minBattery: 0, providers: new Set(['lyft']) });
-    expect(result.meta.sources.us).toBe('fresh');
-    expect(result.vehicles).toEqual([expect.objectContaining({
-      provider: 'lyft', vehicle_id: `lyft_us_chicago:${scooter.bike_id}`, battery: null, range_m: 52786,
-      pricing: { currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 44, plus_tax: true },
-      rental_uris: { android: link, ios: link, web: null },
-    })]);
+    // Wood St & Cortland St, as Divvy lists it: its bikes and scooters counted by type.
+    const station = { station_id: '2132204879062053464', name: 'Wood St & Cortland St', short_name: 'CHI02134', lat: 41.91589,
+      lon: -87.67281, capacity: 11, rental_uris: { android: link, ios: link }, is_charging: false };
+    const docks = (station_id: string, counts: Record<string, number>, is_renting = 1) => ({ station_id, is_installed: 1, is_renting,
+      is_returning: is_renting, num_bikes_available: (counts['1'] ?? 0) + (counts['2'] ?? 0),
+      vehicle_types_available: Object.entries(counts).map(([vehicle_type_id, count]) => ({ vehicle_type_id, count })) });
+    const now = () => Math.floor(Date.now() / 1000);
 
-    // The plan is the scooters' only where it can be no other's.
-    const typesById = new Map(types.map(type => [type.vehicle_type_id, type]));
-    const plans = { pricing: new Map([['SCOOTER_SINGLE_RIDE', { currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 44 }]]),
-      names: new Map() };
-    expect(unlinkedScooterPlan('lyft', typesById, plans)).toBe('SCOOTER_SINGLE_RIDE');
-    expect(unlinkedScooterPlan('lyft', typesById, { pricing: new Map(), names: new Map() })).toBeUndefined();
-    expect(unlinkedScooterPlan('lyft', new Map([...typesById, ['4', { ...types[2], vehicle_type_id: '4' }]]), plans)).toBeUndefined();
-    expect(unlinkedScooterPlan('lyft', new Map([['3', { ...types[2], default_pricing_plan_id: 'OTHER' }]]), plans)).toBeUndefined();
-    expect(unlinkedScooterPlan('bird', typesById, plans)).toBeUndefined();
+    function stubLyftChicago(stationStatus: { last_updated: number; data: { stations: unknown[] } }) {
+      vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+        if (url === lyftChicago.discoveryUrl) return response({ version: '2.3', data: { en: { feeds: ['system_information', 'station_information',
+          'station_status', 'free_bike_status', 'vehicle_types', 'system_pricing_plans'].map(name => ({ name, url: `${base}${name}.json` })) } } });
+        if (url === `${base}vehicle_types.json`) return response({ data: { vehicle_types: types } });
+        if (url === `${base}free_bike_status.json`) return response({ version: '2.3', last_updated: now(), data: { bikes: [
+          scooter, { ...scooter, bike_id: 'reserved', is_reserved: 1 }, { ...scooter, bike_id: 'disabled', is_disabled: 1 },
+          { ...scooter, bike_id: 'ebike', vehicle_type_id: '2', current_range_meters: 30000 }] } });
+        if (url === `${base}system_pricing_plans.json`) return response({ data: { plans: [plan('EBIKE_SINGLE_RIDE', 0.44),
+          plan('BIKE_SINGLE_RIDE', 0.2), plan('SCOOTER_SINGLE_RIDE', 0.44)] } });
+        if (url === `${base}station_information.json`) return response({ version: '2.3', last_updated: now(), data: { stations: [station,
+          { ...station, station_id: 'closed', name: 'Closed' }, { ...station, station_id: 'bikes', name: 'Bikes only' }] } });
+        if (url === `${base}station_status.json`) return response({ version: '2.3', ...stationStatus });
+        throw new Error(`Unexpected upstream ${url}`);
+      }));
+    }
+
+    it('reads Lyft\'s flags written 0 and 1, its price written "1.00", and the scooter plan its scooters do not name', async () => {
+      expect(lyftChicago).toMatchObject({ country: 'US', city: 'Chicago', region: 'IL', timeZone: 'America/Chicago',
+        discoveryUrl: 'https://gbfs.lyft.com/gbfs/2.3/chi/gbfs.json' });
+      stubLyftChicago({ last_updated: now(), data: { stations: [] } });
+      const result = await fetchScooters({ bounds: lyftChicago.bounds, minBattery: 0, providers: new Set(['lyft']) });
+      expect(result.meta.sources.us).toBe('fresh');
+      expect(result.vehicles).toEqual([expect.objectContaining({
+        provider: 'lyft', vehicle_id: `lyft_us_chicago:${scooter.bike_id}`, battery: null, range_m: 52786,
+        pricing: { currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 44, plus_tax: true },
+        rental_uris: { android: link, ios: link, web: null },
+      })]);
+
+      // The plan is the scooters' only where it can be no other's.
+      const typesById = new Map(types.map(type => [type.vehicle_type_id, type]));
+      const plans = { pricing: new Map([['SCOOTER_SINGLE_RIDE', { currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 44 }]]),
+        names: new Map() };
+      expect(unlinkedScooterPlan('lyft', typesById, plans)).toBe('SCOOTER_SINGLE_RIDE');
+      expect(unlinkedScooterPlan('lyft', typesById, { pricing: new Map(), names: new Map() })).toBeUndefined();
+      expect(unlinkedScooterPlan('lyft', new Map([...typesById, ['4', { ...types[2], vehicle_type_id: '4' }]]), plans)).toBeUndefined();
+      expect(unlinkedScooterPlan('lyft', new Map([['3', { ...types[2], default_pricing_plan_id: 'OTHER' }]]), plans)).toBeUndefined();
+      expect(unlinkedScooterPlan('bird', typesById, plans)).toBeUndefined();
+    });
+
+    it('shows the scooters docked at Divvy\'s stations, which only their count by type lists, each at its station', async () => {
+      expect(lyftChicago.stationScooters).toBe(true);
+      // Biketown lists its stations too, with no scooter docked at any.
+      expect(system('lyft_us_portland').stationScooters).toBeUndefined();
+      stubLyftChicago({ last_updated: now(), data: { stations: [docks(station.station_id, { '1': 1, '2': 4, '3': 2 }),
+        docks('closed', { '3': 3 }, 0), docks('bikes', { '1': 5, '3': 0 }), docks('unlisted', { '3': 4 })] } });
+      const result = await fetchScooters({ bounds: lyftChicago.bounds, minBattery: 0, providers: new Set(['lyft']) });
+      expect(result.meta.sources.us).toBe('fresh');
+      const docked = { provider: 'lyft', lat: station.lat, lng: station.lon, battery: null, range_m: null,
+        pricing: { currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 44, plus_tax: true },
+        rental_uris: { android: link, ios: link, web: null } };
+      expect(result.vehicles.map(vehicle => vehicle.vehicle_id).sort()).toEqual([`lyft_us_chicago:${scooter.bike_id}`,
+        `lyft_us_chicago:station:${station.station_id}:1`, `lyft_us_chicago:station:${station.station_id}:2`]);
+      expect(result.vehicles.filter(vehicle => vehicle.vehicle_id?.includes(':station:')))
+        .toEqual([expect.objectContaining(docked), expect.objectContaining(docked)]);
+    });
+
+    it('fails Chicago\'s feed, rather than leave its docked scooters out, when the station status is out of date', async () => {
+      stubLyftChicago({ last_updated: now() - 3600, data: { stations: [docks(station.station_id, { '3': 2 })] } });
+      await expect(fetchScooters({ bounds: lyftChicago.bounds, minBattery: 0, providers: new Set(['lyft']) }))
+        .rejects.toMatchObject({ failedSources: ['us:lyft_us_chicago'] });
+    });
   });
 
   it('reads Spin\'s feed, which names no price and gives Bird\'s apps, whose charger sign-up is no rental link', async () => {

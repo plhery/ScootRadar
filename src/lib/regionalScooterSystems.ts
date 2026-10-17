@@ -54,6 +54,12 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
    * plain stations, with no geofencing.
    */
   stationParking?: boolean;
+  /**
+   * Scooters also wait docked at the feed's stations, which its station status counts by type
+   * and its vehicle status does not list: Divvy docks Lyft's scooters in Chicago. Each is shown at
+   * its station, with no charge or range.
+   */
+  stationScooters?: boolean;
 }
 
 // Reviewed public endpoints, never an unvalidated runtime registry download.

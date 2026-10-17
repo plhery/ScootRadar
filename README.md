@@ -114,7 +114,9 @@ changing the response contract.
    and the feed's alerts are muted; `src/lib/seasonalPauses.ts` explains.
    A feed whose plain stations are all where rides must end, as Lime's in
    Vancouver, says so with `"stationParking": true`, and the map shows them
-   as required bays.
+   as required bays. A feed whose stations hold scooters its vehicle status
+   does not list, as Divvy's in Chicago, says so with `"stationScooters":
+   true`, and each scooter its station status counts is shown at its station.
 2. Add one entry to `data/countries.json`:
    - `code`, `continent` (`europe`, `north-america`, Central America and the
      Caribbean included, `asia`, the Middle East included, or `oceania`),
