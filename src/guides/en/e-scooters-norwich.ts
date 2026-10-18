@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter hire in Norwich: Beryl’s prices, the parking bays and where you can ride',
   lede: 'You can hire an e-scooter in Norwich from Beryl, the only operator, in a trial that now runs to 31 May 2028. It costs £1 to unlock and 22p a minute, so 10 minutes cost £3.20, and you must be 18 or over with a full or provisional driving licence. End every ride in a Beryl bay or pay £10. The area stretches to Norwich Airport, UEA, Hethersett and Wymondham. Your own e-scooter is illegal on Norwich’s roads and pavements.',
   published: '2026-10-17',
-  updated: '2026-10-17',
+  updated: '2026-10-18',
   city: 'gb:Norwich',
   sections: [
     {
@@ -59,7 +59,7 @@ const guide: Guide = {
               ['Phone', 'Not in your hand while riding', '£200 and 6 points'],
               ['Headphones', 'No headphones or earbuds', 'Against Beryl’s rules'],
               ['Drink and drugs', 'Drink-drive law applies: 80 mg of alcohol per 100 ml of blood', 'Court, a driving ban, possibly prison'],
-              ['Speed', 'Up to 12.5 mph, below the national 15.5 mph', 'The motor stops helping above that'],
+              ['Speed', 'Up to 12.5 mph, according to Beryl’s help page (March 2026); the law allows 15.5 mph', 'The motor stops helping above that'],
               ['Helmet', 'Recommended, not compulsory', 'Beryl warns that riding without one may void its insurance'],
             ],
           },

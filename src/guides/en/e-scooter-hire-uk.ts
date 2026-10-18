@@ -146,7 +146,7 @@ const guide: Guide = {
             '**Pavements:** never, not even for a few metres: a £50 fixed penalty.',
             '**Passengers:** one rider only; in the West of England, Dott bans riders caught riding two up.',
             '**Phone and drink:** using a phone in your hand costs £200 and 6 points, and the drink-drive limit for cars applies. In Liverpool, Bolt’s app can ask for a reaction test first.',
-            '**Speed:** 15.5 mph at most; 12.5 mph in London, Brighton, Cornwall, Norwich, the West of England and the BCP area (Bournemouth, Christchurch and Poole), and 7.5 mph in each Cornish town’s pedestrianised Go Slow Zone.',
+            '**Speed:** 15.5 mph at most; 12.5 mph in London, Brighton and the West of England, and in Norwich and the BCP area (Bournemouth, Christchurch and Poole) according to Beryl’s help page. In Cornwall, Beryl’s page says 15.5 mph (October 2026), though the council’s page still says 12.5 mph; in each Cornish town’s pedestrianised Go Slow Zone it’s 7.5 mph.',
             '**Hours:** many areas run around the clock, but Beryl’s e-scooters can’t be hired from 10pm to 5am in Bournemouth, Christchurch and Poole or from midnight to 5am in Brighton, and in Aylesbury and High Wycombe Voi listed 5am to 11pm on Mondays.',
           ],
         },
@@ -203,6 +203,8 @@ const guide: Guide = {
     { title: 'Beryl: E-scooters in Plymouth', url: 'https://beryl.cc/e-scooters-plymouth' },
     { title: 'Beryl Help Centre: Who can hire a Beryl e-scooter', url: 'https://help-bikes.beryl.cc/en/articles/11711908-who-can-hire-a-beryl-e-scooter' },
     { title: 'Beryl Help Centre: Riding a Beryl e-scooter', url: 'https://help-bikes.beryl.cc/en/articles/11706501-riding-a-beryl-e-scooter' },
+    { title: 'Beryl: E-scooters in Cornwall', url: 'https://beryl.cc/e-scooters-cornwall' },
+    { title: 'Cornwall Council: Beryl bikes and scooters in Cornwall', url: 'https://www.cornwall.gov.uk/transport-parking-and-streets/sustainable-transport/active-travel-walking-and-cycling/beryl-bikes-and-scooters-in-cornwall/' },
     { title: 'Norfolk County Council: Extension of Norwich e-scooter trial (March 2026)', url: 'https://norfolkcc.cmis.uk.com/norfolkcc/DelegatedDecisions/tabid/67/ctl/ViewCMIS_DecisionDetails/mid/391/Id/2006/Default.aspx' },
   ],
 };
