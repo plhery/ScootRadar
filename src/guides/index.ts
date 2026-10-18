@@ -126,6 +126,7 @@ import bournemouthEn from './en/e-scooters-bournemouth';
 import alesundNb from './nb/elsparkesykkel-alesund';
 import ostendNl from './nl/deelstep-oostende';
 import columbusEn from './en/e-scooters-columbus';
+import skienNb from './nb/elsparkesykkel-skien';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -252,4 +253,5 @@ export const GUIDES: readonly Guide[] = [
   alesundNb,
   ostendNl,
   columbusEn,
+  skienNb,
 ];
