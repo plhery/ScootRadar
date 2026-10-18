@@ -128,27 +128,32 @@ it('holds the report while told to wait, and tells once if the feed is still exp
   expect(reported).toEqual([expiredAt + minutes(31)]);
 });
 
-it('waits 15 minutes after Trondheim\'s night ban for Dott\'s feed, which came back 7.5 minutes after it', () => {
+it('waits 30 minutes after Trondheim\'s night ban for Dott\'s feed, which came back 7.5 and 16 minutes after it', () => {
   const reported: number[] = [];
   const minutes = (count: number) => count * 60_000;
   const logStates = createFeedStateLog(() => {}, undefined, ALWAYS_FAST, { afterMs: minutes(5),
     wait: waitOutCurfew(feedCurfewed), report: (_change, current) => { reported.push(current.attemptedAt); } });
   const dott = (observedAt: number, attemptedAt: number) =>
     [feed({ id: 'norway:dott_no_trondheim', provider: 'dott', observedAt, attemptedAt })];
-  // Saturday 17 October 2026: the ban ends at 05:00 in Trondheim, 03:00 UTC.
-  const banEnd = Date.parse('2026-10-17T03:00:00Z');
-  const down = banEnd - minutes(6 * 60);
-  logStates(dott(down, down), down);
-  for (let at = down + minutes(20); at < banEnd + minutes(7); at += minutes(1)) logStates(dott(down, at), at);
-  logStates(dott(banEnd + minutes(7.5), banEnd + minutes(7.5)), banEnd + minutes(7.5));
+  // Down from about 23:00 until `after` minutes past the ban's end.
+  const night = (banEnd: number, after: number) => {
+    const down = banEnd - minutes(6 * 60);
+    logStates(dott(down, down), down);
+    for (let at = down + minutes(20); at < banEnd + minutes(after); at += minutes(1)) logStates(dott(down, at), at);
+    logStates(dott(banEnd + minutes(after), banEnd + minutes(after)), banEnd + minutes(after));
+  };
+  // The ban ends at 05:00 in Trondheim, 03:00 UTC: on Saturday 17 October 2026 Dott was back
+  // 7.5 minutes after it, and on Sunday 16, a minute after a 15-minute wait would have told.
+  night(Date.parse('2026-10-17T03:00:00Z'), 7.5);
+  night(Date.parse('2026-10-18T03:00:00Z'), 16);
   expect(reported).toEqual([]);
 
-  // Sunday morning, not back: told 15 minutes after the ban, not before.
-  const sundayEnd = Date.parse('2026-10-18T03:00:00Z');
-  const downAgain = sundayEnd - minutes(6 * 60);
-  logStates(dott(downAgain, downAgain), downAgain);
-  for (let at = downAgain + minutes(20); at <= sundayEnd + minutes(20); at += minutes(1)) logStates(dott(downAgain, at), at);
-  expect(reported).toEqual([sundayEnd + minutes(15)]);
+  // Saturday 24 October, not back: told 30 minutes after the ban, not before.
+  const banEnd = Date.parse('2026-10-24T03:00:00Z');
+  const down = banEnd - minutes(6 * 60);
+  logStates(dott(down, down), down);
+  for (let at = down + minutes(20); at <= banEnd + minutes(40); at += minutes(1)) logStates(dott(down, at), at);
+  expect(reported).toEqual([banEnd + minutes(30)]);
 });
 
 describe('cadence', () => {

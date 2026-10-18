@@ -74,7 +74,7 @@ const reportAfter = ({ afterMs }: StillExpired, feed: FeedSnapshot) => typeof af
 
 /**
  * How long a feed stays expired before Sentry hears of it: not a blip, as Voi Switzerland's of
- * 105 seconds on 16 October 2026. Grafana's "feed stopped" waits 10 minutes.
+ * 105 seconds on 16 October 2026. Grafana's "feed stopped" waits 10 minutes, and 15 for Voi Switzerland.
  */
 export const EXPIRED_REPORT_DELAY_MS = 5 * 60_000;
 
@@ -93,9 +93,10 @@ export function expiredReportDelay(feed: FeedSnapshot): number {
 
 /**
  * How long after a night ban Sentry waits for a feed to come back. An operator may take its feed
- * down for the ban, as Dott does in Trondheim, and bring it back minutes after: 7.5 on 17 October 2026.
+ * down for the ban, as Dott does in Trondheim, and bring it back minutes after: 7.5 on 17 October
+ * 2026, 16 on the 18th. Grafana's "feed stopped" waits as long.
  */
-export const CURFEW_RETURN_MS = 15 * 60_000;
+export const CURFEW_RETURN_MS = 30 * 60_000;
 
 /**
  * A StillExpired wait that holds the report while a night ban holds at the feed (`curfewed`), and
