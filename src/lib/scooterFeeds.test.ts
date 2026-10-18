@@ -14,6 +14,7 @@ import {
   type FeedQuery,
 } from '@/lib/scooterFeeds';
 import { upstreamJsonCache } from '@/lib/upstreamJsonCache';
+import { listedPricing } from '@/lib/listedPrices';
 import { REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas } from '@/lib/regionalScooterSystems';
 
 const query: FeedQuery = {
@@ -362,6 +363,8 @@ describe('fetchScooters source health', () => {
 
     const result = await fetchScooters({ ...query, providers: new Set(['publibike']) });
 
+    // The API prices nothing; PubliBike's own price list does, until that copy gets too old to show.
+    const pricing = listedPricing('publibike-freefloating', 47.3772, 8.5422, Date.now());
     expect(result.vehicles).toEqual([{
       provider: 'publibike',
       lat: 47.3772,
@@ -371,6 +374,7 @@ describe('fetchScooters source health', () => {
       vehicle_id: 'publibike-freefloating:zurich-1',
       deep_link: null,
       rental_uris: { ios: null, android: null, web: null },
+      ...(pricing ? { pricing } : {}),
       distance_m: expect.any(Number),
     }]);
     expect(result.meta).toMatchObject({
@@ -410,6 +414,9 @@ describe('fetchScooters source health', () => {
 
     expect(result.vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(['publibike-station:238:1', 'publibike-station:238:2']);
     expect(result.vehicles[0]).toMatchObject({ provider: 'publibike', lat: 47.1313, lng: 7.2360, battery: null, distance_m: null });
+    expect(result.vehicles[0].pricing).toEqual(listedPricing('publibike-station', 47.1313, 7.2360, Date.now()));
+    // Locarno's station scooters can't be paid per ride, so Biel's price stays in Biel.
+    expect(listedPricing('publibike-station', 46.1669, 8.8002, Date.now())).toBeUndefined();
     expect(result.meta).toMatchObject({ failedSources: [], sources: { national: 'skipped', publibike: 'fresh' } });
   });
 

@@ -1178,6 +1178,8 @@ async function fetchPubliBikeFreeFloatingVehicles(
     const distance = query.origin
       ? Math.round(haversineM(query.origin[0], query.origin[1], lat, lng) * 10) / 10
       : null;
+    // The app's API prices nothing: PubliBike's listed price.
+    const pricing = listedPricing('publibike-freefloating', lat, lng, Date.now());
     vehicles.push({
       provider: 'publibike',
       lat,
@@ -1187,6 +1189,7 @@ async function fetchPubliBikeFreeFloatingVehicles(
       vehicle_id: `publibike-freefloating:${raw.id}`,
       deep_link: null,
       rental_uris: { ios: null, android: null, web: null },
+      ...(pricing ? { pricing } : {}),
       distance_m: distance,
     });
   }
@@ -1233,6 +1236,8 @@ async function fetchPubliBikeStationVehicles(
     const distance = query.origin
       ? Math.round(haversineM(query.origin[0], query.origin[1], lat, lng) * 10) / 10
       : null;
+    // PubliBike's listed price, which is Biel's: Locarno's scooters can't be paid per ride.
+    const pricing = listedPricing('publibike-station', lat, lng, Date.now());
     for (let index = 1; index <= count!; index++) {
       vehicles.push({
         provider: 'publibike',
@@ -1243,6 +1248,7 @@ async function fetchPubliBikeStationVehicles(
         vehicle_id: `publibike-station:${station.id}:${index}`,
         deep_link: null,
         rental_uris: { ios: null, android: null, web: null },
+        ...(pricing ? { pricing } : {}),
         distance_m: distance,
       });
     }
