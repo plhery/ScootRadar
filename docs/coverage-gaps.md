@@ -492,7 +492,8 @@ banned shared scooters, and feeds that were empty when checked.
   - **JOLT `hutt_valley`:** 30 scooters in Lower Hutt and 14 in Upper Hutt
     in the median poll, none ridden in polls on the evening of Thursday 15
     October and the morning of Friday 16 October 2026, the commute included.
-    See [Dates to check again](#dates-to-check-again).
+    On Sunday 18 October, from 14:28 to 15:18 New Zealand time, it held no
+    scooter at all. See [Dates to check again](#dates-to-check-again).
   - **JOLT `napier`:** 53 zones and no scooter; not in the registry.
   - **Too few rides:** Lincoln, in JOLT's `selwyn` feed (about 9 scooters),
     and Woodend and Pegasus, in Flamingo's `waimakariri` feed (about 5),
@@ -681,15 +682,6 @@ Bonaire had feeds to add. Survey files are in
   separate job checks it. If they are ridden, add the Dominican Republic,
   naming the town for Cap Cana, where the scooters stand, or for Punta Cana,
   with the other as an alias; if not, check again on 19 December 2026.
-- **Sunday 18 October 2026, 11:00 to 14:00 New Zealand time** (22:00 on
-  Saturday to 01:00 UTC): JOLT `hutt_valley`, in Lower Hutt and Upper Hutt,
-  every five minutes. JOLT gives a scooter a new id after a trip, so count
-  rides by place and range as the
-  [New Zealand guide](new-zealand-scooter-feeds.md#rides) does. Add a
-  system for the feed, with an area for each town that holds about ten
-  scooters that are ridden. The Hutt Valley's boxes come near Wellington's
-  and Porirua's: check that they hold none of those towns' scooters, and add
-  outlines if they do.
 - **20 October 2026:** Zeus's move to ATOM Mobility. Probe the ids that
   answer "GBFS disabled" and the empty ones (82, 183, 184, 186, 187, 191, 192,
   193) for the ten moved towns, and MobiData BW's listing for new Zeus feeds.
@@ -751,8 +743,9 @@ Bonaire had feeds to add. Survey files are in
   Germany's Mobilithek for Bolt, Voi and Lime outside Baden-Württemberg. So may Slovenia, for Ljubljana: look
   for Bolt's feed 359 there, or at `mds.bolt.eu`, and for an official Kvik
   feed.
-- **1 December 2026:** JOLT in New Zealand: `hutt_valley` again, unless it
-  was added on 18 October; `napier`, which had no scooter; and Lincoln, in
+- **1 December 2026:** JOLT in New Zealand: `hutt_valley` again, which held
+  no scooter on the afternoon of Sunday 18 October; `napier`, which had no
+  scooter; and Lincoln, in
   `selwyn`, with about 9 scooters none rode. Poll each on a weekday morning
   and a weekend afternoon, New Zealand time.
 - **19 December 2026:** Hopp Punta Cana, unless it was added on 17 October:

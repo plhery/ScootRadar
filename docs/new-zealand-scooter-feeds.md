@@ -233,8 +233,9 @@ schools and motorways.
 - **Left out:**
   - JOLT's `hutt_valley` feed, with 30 scooters in Lower Hutt and 14 in Upper
     Hutt in the median poll, none of which was ridden, by the count above,
-    in any poll, Friday's morning commute included. Recheck on Sunday 18
-    October 2026, 11:00 to 14:00, then on 1 December.
+    in any poll, Friday's morning commute included. On Sunday 18 October
+    2026, from 14:28 to 15:18, it held no scooter at all. Recheck on 1
+    December.
   - JOLT's `napier` feed, which has 53 zones and no scooter. Not in the
     registry. Recheck on 1 December 2026.
   - Lincoln, in JOLT's `selwyn` feed: about 9 scooters a poll, none ridden.
