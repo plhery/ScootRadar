@@ -11,3 +11,5 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 # Committing
 
 When a change is done and the checks pass, commit it and push straight to `main`; no branch or pull request is needed.
+
+Between 23:00 and 05:30 Paris time, don't push a change that deploys the scooter cache (a path matched by `server/deploy-watch-paths.txt`; see DEPLOY.md). Norway's night bans run 23:00–05:00, and Sentry watches for 30 minutes after them. A restart takes each feed's state at that moment as its baseline, so a feed its operator took down for the ban (Dott in Trondheim) would not be reported if it never came back. Push after 05:30, or put `[skip cd]` in every commit message of the push: the next push that deploys the cache carries the change. The website's own changes are not affected.
