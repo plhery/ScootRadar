@@ -660,7 +660,7 @@ a licence. Neither is published by its operator:
 | Peru | No fleet. The scooters 3electra's feed places in Lima at night are Kyiv's, moved there by its mask, with the same codes (see the [Ukrainian guide](ukrainian-scooter-feeds.md)). Whoosh's Lima feed is private, like its others |
 | Puerto Rico, US Virgin Islands | Bird's four Puerto Rico feeds (`san-juan-puerto-rico`, `guaynabo-puerto-rico`, `mayaguez-puerto-rico`, `ponce-puerto-rico`) publish their zones but no vehicle, with a timestamp of 0. Skootel, on OTORide, and KICK RIDE PR publish no feed; VIBES has left the US Virgin Islands. Check again on 1 April 2027. A feed there would need a decision: under the United States as a region (`PR`, `VI`), which needs `timeZoneProblem()` in `scripts/country-catalog.mjs` to accept America/Puerto_Rico and America/St_Thomas there, and gives prices before tax (Puerto Rico's IVU is 11.5%), or as a country of its own |
 | Aruba, Curaçao | e-moob, in Aruba (150+ scooters), is on ATOM Mobility, but its systems 1688 and 2319 answer "GBFS disabled", and so does Smart Wheels's 1875, in Curaçao. Aruba banned e-scooters from public roads in July 2026, and the courts upheld it. Check again on 1 April 2027. Each would be a country of its own (AW, CW), as Bonaire is |
-| Dominican Republic | Hopp `do-punta-cana` held 24 available scooters of 26, in Cap Cana, but none was ridden on the evening of 15 October 2026; a separate job rechecks it on Saturday 17 October. Hopp `do-las-terrenas` held 2 scooters, none available: check again on 15 January 2027. HappyVolts, in Santo Domingo, is a company's staff fleet |
+| Dominican Republic | Hopp `do-punta-cana` held 24 available scooters of 26, in Cap Cana, but none was ridden on the evening of 15 October 2026, nor on Sunday 18 October from 08:47 to 12:57 Dominican time (27 polls, 10 minutes apart: the same 23 of 25 available, none moved more than 6 m). Check again on 19 December 2026. Hopp `do-las-terrenas` held 2 scooters, none available: check again on 15 January 2027. HappyVolts, in Santo Domingo, is a company's staff fleet |
 | Argentina, Uruguay and the rest of Latin America and the Caribbean | No scooter feed found: also Paraguay, Bolivia, Ecuador, Venezuela, Central America outside Costa Rica, Jamaica, Cuba, Haiti, Trinidad and Tobago, Barbados, the Cayman Islands, the Turks and Caicos Islands, Sint Maarten and the French Antilles. Lime has left Argentina, Uruguay's last operator left by December 2025, and Guayaquil's transit agency seizes scooters. Breeze, in the Bahamas, runs on OTORide and publishes no feed |
 
 Bolt publishes only two public scooter feeds in Europe, Brussels and Liverpool;
@@ -716,12 +716,6 @@ Bonaire had feeds to add. Survey files are in
   and at midday on the 14th, and Dott deployed and swapped some, but none
   was ridden while it was polled. Entur renews the ids, so match scooters by
   position, and add it if they are ridden.
-- **Saturday 17 October 2026, 10:00 to 17:00 Dominican time** (14:00 to
-  21:00 UTC): Hopp Punta Cana (`do-punta-cana`), whose 24 available
-  scooters, in Cap Cana, none rode on the evening of 15 October 2026. A
-  separate job checks it. If they are ridden, add the Dominican Republic,
-  naming the town for Cap Cana, where the scooters stand, or for Punta Cana,
-  with the other as an alias; if not, check again on 19 December 2026.
 - **20 October 2026:** Zeus's move to ATOM Mobility. Probe the ids that
   answer "GBFS disabled" and the empty ones (82, 183, 184, 186, 187, 191, 192,
   193) for the ten moved towns, and MobiData BW's listing for new Zeus feeds.
@@ -794,8 +788,11 @@ Bonaire had feeds to add. Survey files are in
   scooter; and Lincoln, in
   `selwyn`, with about 9 scooters none rode. Poll each on a weekday morning
   and a weekend afternoon, New Zealand time.
-- **19 December 2026:** Hopp Punta Cana, unless it was added on 17 October:
-  poll it by day.
+- **19 December 2026:** Hopp Punta Cana (`do-punta-cana`), unridden on the
+  evening of 15 October and on the morning of Sunday 18 October 2026: poll
+  it by day. If its scooters are ridden, add the Dominican Republic, naming
+  the town for Cap Cana, where the scooters stand, or for Punta Cana, with
+  the other as an alias.
 - **20 December 2026:** Costa Rica's Ley 10834, which adds "movilidad
   activa" to the traffic law twelve months after it was published (Alcance
   164 to La Gaceta 239, 19 December 2025). Read its official text, and
