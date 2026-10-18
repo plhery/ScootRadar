@@ -178,7 +178,9 @@ banned shared scooters, and feeds that were empty when checked.
     Country have no shared scooters.
   - Dott (Santa Cruz de Tenerife, Lanzarote, Murcia, Tarragona and other
     towns), Bird in Oviedo and Las Palmas's public Sítyneta scooters have no
-    public feed.
+    public feed. Neither has Islaride (Grupo Tambor, "more than 500"
+    scooters on several Canary Islands): it runs on ATOM Mobility, whose
+    system id for it isn't public (18 October 2026).
   - Hopp Benidorm, Cartagena, Dénia, Fuengirola and Marbella are empty.
     Hoppy's Almería, Cartagena and Mojácar & Vera systems list e-bikes only,
     and its Roquetas de Mar, Magic World Resort and Cabo de Gata - Níjar
@@ -434,6 +436,9 @@ banned shared scooters, and feeds that were empty when checked.
     July 2026. Lime's feeds already hold Airdrie, St. Albert and Beaumont,
     but none answers yet for Red Deer, Lacombe, Blackfalds, Sylvan Lake,
     Saskatoon, Regina or Waterloo Region.
+  - **MoVe** runs scooters in Halifax and Dartmouth on ATOM Mobility
+    (`move-mobility.rideatom.com`), and has announced Moncton. Its system id
+    isn't public, so no feed was found (18 October 2026).
   - **Gone:** Spin's feed host answers with Bird's API, Roll's doesn't answer
     (Calgary, Kelowna, Ottawa), Link closed at the end of 2023, Hopr's
     certificate has expired (and its systems are e-bikes), and Zip's
@@ -631,6 +636,7 @@ a licence. Neither is published by its operator:
 | Bahrain | Hopp's `bh-bahrain` feed holds 13 or 14 scooters on three sites (Zallaq, Manama, Amwaj), about 2 rides in 10.4 hours on 15 October 2026, and still 14 on 18 October: too few. Spiders, Fenix and BSKL publish no feed; data.gov.bh has no scooter data. Since Resolution 58 of 2026, scooters may ride only in designated zones |
 | Egypt | Rabbit, in Cairo, Giza and Alexandria (about 700 scooters in 2024, the last count), publishes no feed, and Cairo's governor ordered e-scooters seized |
 | South Africa | Zippy, in Langebaan, is on ATOM Mobility, but its systems 2028, 2075 and 2318 answer "GBFS disabled" (still on 18 October 2026). Africa has no continent in the app yet |
+| Senegal | Reby Mobility runs e-scooters in Dakar (Mermoz, Ouakam, Almadies, Ngor) on ATOM Mobility (`reby-mobility.rideatom.com`). Its system id isn't public, so no feed was found (18 October 2026) |
 | Ghana | Hopp's `gh-accra` feed holds 13 scooters, all disabled with no range, at a depot, by night and by day (02:40 and 12:48 UTC on 18 October 2026) |
 | Jordan | Sky Scooters (on OTORide) and E-Ride publish no feed; Dott's listing names no region |
 | Lebanon | No scooter feed found, and Loop's 2017 service is gone; Dott's listing names no region |

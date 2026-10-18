@@ -326,6 +326,9 @@ the dock and each scooter's card state the ban and when renting resumes.
   - Las Palmas de Gran Canaria's public Sítyneta (87 scooters at 13 stations,
     run by Sagulpa and booked in the Moxsi app) isn't in nextbike's feeds,
     which list bicycles only.
+  - Islaride, by Grupo Tambor, says it runs more than 500 scooters on several
+    Canary Islands, on ATOM Mobility (`isla-ride.rideatom.com`). Its system
+    id isn't public, so no feed was found (18 October 2026).
   - Spain's access point (nap.transportes.gob.es) carries public transport
     only, with no shared-mobility data, as of 16 October 2026.
   - Hopp's Benidorm, Cartagena, Dénia, Fuengirola and Marbella feeds are empty.

@@ -260,6 +260,9 @@ Bays show from zoom 16, as elsewhere.
 - **Neuron**'s twelve Canadian feeds answer 404 since Lime bought it; Lime has
   no public feed yet for its other former Neuron towns (Red Deer, Saskatoon,
   Regina, Waterloo Region and others).
+- **MoVe** runs scooters in Halifax and Dartmouth (and has announced Moncton)
+  on ATOM Mobility, `move-mobility.rideatom.com`, but its system id isn't
+  public, so no feed was found (18 October 2026).
 - Spin's feed host now answers with Bird's, Roll's doesn't answer, Link closed
   at the end of 2023, Hopr's certificate has expired and Zip's host doesn't
   resolve.
