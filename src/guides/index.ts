@@ -122,6 +122,7 @@ import vancouverEn from './en/e-scooters-vancouver';
 import sandefjordNb from './nb/elsparkesykkel-sandefjord';
 import tubingenDe from './de/e-scooter-tuebingen';
 import detroitEn from './en/e-scooters-detroit';
+import bournemouthEn from './en/e-scooters-bournemouth';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -244,4 +245,5 @@ export const GUIDES: readonly Guide[] = [
   sandefjordNb,
   tubingenDe,
   detroitEn,
+  bournemouthEn,
 ];
