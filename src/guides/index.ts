@@ -127,6 +127,7 @@ import alesundNb from './nb/elsparkesykkel-alesund';
 import ostendNl from './nl/deelstep-oostende';
 import columbusEn from './en/e-scooters-columbus';
 import skienNb from './nb/elsparkesykkel-skien';
+import portimaoPt from './pt/trotinetes-portimao';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -254,4 +255,5 @@ export const GUIDES: readonly Guide[] = [
   ostendNl,
   columbusEn,
   skienNb,
+  portimaoPt,
 ];
