@@ -1400,6 +1400,39 @@ extension ScooterMapModelTests {
 
 // Provider health and the dock.
 extension ScooterMapModelTests {
+    func testSkiensWinterNoticeGivesWayWhenRydeBringsItsScootersBackInMarch() async throws {
+        let clock = TestClock()
+        clock.now = try XCTUnwrap(ISO8601DateFormatter().date(from: "2027-03-20T12:00:00Z"))
+        let formatter = ISO8601DateFormatter()
+        func response(_ vehicles: [Scooter]) -> ScooterResponse {
+            ScooterResponse(vehicles: vehicles, meta: ScooterResponseMetadata(
+                partial: false, failedSources: [], generatedAt: formatter.string(from: clock.now),
+                refreshAfterSeconds: 60, expiresAt: formatter.string(from: clock.now.addingTimeInterval(300))
+            ))
+        }
+        let api = StubScooterAPI(response: response([]))
+        let model = makeModel(api: api, clock: clock)
+        model.updateViewport(MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: 59.2075, longitude: 9.6107),
+            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        ), zoom: 16)
+        let loaded = await waitUntil { model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+        // Still in its pause, with nothing in view: since 15 December, until the streets are clear.
+        let season = ScooterSeasonalPause.Active(city: "Skien", back: .clear(from: "12-15"))
+        XCTAssertEqual(model.dockNotices, [.season(season)])
+
+        // Ryde's scooters are back, even with Ryde filtered out: the notice gives way.
+        await api.setResponse(response([scooter(id: "ryde", provider: "ryde", latitude: 59.2075, longitude: 9.6107)]))
+        model.refresh()
+        let back = await waitUntil { !model.mapScooters.isEmpty && !model.isLoading }
+        XCTAssertTrue(back)
+        XCTAssertEqual(model.dockNotices, [])
+        model.toggle(provider: .ryde)
+        XCTAssertEqual(model.visibleCount, 0)
+        XCTAssertEqual(model.dockNotices, [])
+    }
+
     func testDownProvidersAreNamedOnlyWhereTheyOperateAndLeadTheChips() async {
         let api = StubScooterAPI(response: ScooterResponse(
             vehicles: [

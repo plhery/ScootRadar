@@ -485,6 +485,26 @@ describe('German and Italian scooter coverage', () => {
     }
   });
 
+  it('takes Skien\'s and Porsgrunn\'s scooters off from 15 December until the streets are clear, and its alerts back by 1 May', () => {
+    const skien: [number, number] = [59.2075, 9.6107];
+    const porsgrunn: [number, number] = [59.1411, 9.6555];
+    // 23:30 on 14 December in Skien is still in season; 00:30 on the 15th is not.
+    expect(activeSeasonalPause(skien, Date.UTC(2026, 11, 14, 22, 30))).toBeNull();
+    expect(activeSeasonalPause(skien, Date.UTC(2026, 11, 14, 23, 30))).toEqual({ city: 'Skien', from: '12-15' });
+    // Ryde's Skien feed reaches Porsgrunn, and both feeds stop there.
+    expect(activeSeasonalPause(porsgrunn, Date.UTC(2027, 2, 20, 12))).toEqual({ city: 'Porsgrunn', from: '12-15' });
+    // No later than 1 May: 23:30 on 30 April is the last of it.
+    expect(activeSeasonalPause(porsgrunn, Date.UTC(2027, 3, 30, 21, 30))).toEqual({ city: 'Porsgrunn', from: '12-15' });
+    expect(activeSeasonalPause(porsgrunn, Date.UTC(2027, 3, 30, 22, 30))).toBeNull();
+    // And again the next winter.
+    expect(activeSeasonalPause(skien, Date.UTC(2027, 11, 15, 12))).toEqual({ city: 'Skien', from: '12-15' });
+    for (const feed of ['ryde_no_skien', 'ryde_no_porsgrunn']) {
+      expect(feedPaused(`norway:${feed}`, Date.UTC(2027, 0, 15, 12)), feed).toBe(true);
+      expect(feedPaused(`norway:${feed}`, Date.UTC(2027, 4, 1, 12)), feed).toBe(false);
+      expect(feedPaused(`norway:${feed}`, Date.UTC(2026, 9, 18, 12)), feed).toBe(false);
+    }
+  });
+
   it('keeps Zeus to Leimen, Walldorf and Wiesloch, as it has had no permit in Heidelberg since April 2026', () => {
     const zeus = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'zeus_de_leimen_walldorf_wiesloch')!;
     expect(serviceAreas(zeus).map(area => area.city)).toEqual(['Leimen', 'Walldorf', 'Wiesloch']);

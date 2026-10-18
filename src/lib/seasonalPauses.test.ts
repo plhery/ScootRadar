@@ -74,11 +74,34 @@ describe('a seasonal pause', () => {
 
   it('says the month the scooters are back: the soonest, once every pause holds', () => {
     const early = { from: '12-01', until: '04-01', timeZone: 'America/Toronto' };
-    expect(pausesReturn([winter, early], JANUARY)).toBe(4);
-    expect(pausesReturn([winter, { ...early, until: '03-10' }], JANUARY)).toBe(3);
+    expect(pausesReturn([winter, early], JANUARY)).toEqual({ month: 4 });
+    expect(pausesReturn([winter, { ...early, until: '03-10' }], JANUARY)).toEqual({ month: 3 });
     expect(pausesReturn([winter, early], NOVEMBER)).toBeNull();
     expect(pausesReturn([], JANUARY)).toBeNull();
     expect(pausesReturn(undefined, JANUARY)).toBeNull();
+  });
+});
+
+describe('a pause until the streets are clear', () => {
+  // Skien's: from 15 December, back once the streets are clear of snow and ice.
+  const clear = { from: '12-15', until: 'clear', timeZone: 'Europe/Oslo' };
+
+  it('holds from its first day until 1 May at the latest, and again from the next 15 December', () => {
+    // Midnight in Oslo is 23:00 UTC in December, 22:00 in April.
+    expect(pauseHolds(clear, Date.parse('2026-12-14T22:59:00Z'))).toBe(false);
+    expect(pauseHolds(clear, Date.parse('2026-12-14T23:00:00Z'))).toBe(true);
+    expect(pauseHolds(clear, Date.parse('2027-03-20T12:00:00Z'))).toBe(true);
+    expect(pauseHolds(clear, Date.parse('2027-04-30T21:59:00Z'))).toBe(true);
+    expect(pauseHolds(clear, Date.parse('2027-04-30T22:00:00Z'))).toBe(false);
+    expect(pauseHolds(clear, Date.parse('2027-10-18T12:00:00Z'))).toBe(false);
+    expect(pauseHolds(clear, Date.parse('2027-12-15T12:00:00Z'))).toBe(true);
+  });
+
+  it('says since when, rather than a month, and goes first, as it may end any day', () => {
+    expect(pausesReturn([clear], Date.parse('2027-01-20T12:00:00Z'))).toEqual({ from: '12-15' });
+    const trondheim = { from: '12-02', until: '03-15', timeZone: 'Europe/Oslo' };
+    expect(pausesReturn([trondheim, clear], Date.parse('2027-01-20T12:00:00Z'))).toEqual({ from: '12-15' });
+    expect(pausesReturn([trondheim, clear], Date.parse('2026-12-10T12:00:00Z'))).toBeNull();
   });
 });
 
@@ -165,6 +188,50 @@ describe('a city with a winter pause', () => {
     expect(say('es')).toBe('Pausa de temporada en Montréal: los patinetes vuelven en abril');
     expect(say('es', 'MX')).toBe('Pausa de temporada en Montréal: los scooters vuelven en abril');
     expect(say('is')).toBe('Montréal: árstíðabundið hlé, rafskúturnar koma aftur í apríl');
+  });
+
+  it('says since when where the scooters come back once the streets are clear, until they are in view', () => {
+    // Skien in January, in its pause from 15 December, with nothing on the map.
+    const skien: [number, number] = [59.2075, 9.6107];
+    const january = Date.parse('2027-01-20T12:00:00Z');
+    const input: DockInput = {
+      count: 0, originInViewport: false, nearest: null, loading: null, failure: null, outOfDate: false, hasData: true,
+      meta: { generatedAt: new Date(january).toISOString(), partial: false, stale: false, failedSources: [], sources: {},
+        truncated: false, totalVehicles: 0, mode: 'vehicles', zoom: 14 },
+      lastUpdated: january - 30_000, now: january, representedCount: 0, viewportProviders: ['ryde'],
+      viewportCenter: skien, providerCounts: {}, providersInView: new Set(), enabledProviders: new Set(['ryde']),
+      minBattery: 0, unfilteredCount: 0,
+    };
+    const notices = (changes: Partial<DockInput>) => {
+      const model = dockModel({ ...input, ...changes });
+      if (model.kind !== 'summary') throw new Error(`Expected the summary, got ${model.kind}`);
+      return model.notices.filter(entry => entry.kind === 'season');
+    };
+    const [notice] = notices({});
+    expect(notice).toEqual({ kind: 'season', text: { key: 'dock.seasonUntilClear', values: { city: 'Skien' }, date: '12-15' } });
+    // Ryde back in March: its scooters on the map, and the notice gives way.
+    const march = Date.parse('2027-03-20T12:00:00Z');
+    const back = { now: march, lastUpdated: march - 30_000, providerCounts: { ryde: 12 }, providersInView: new Set(['ryde']) };
+    expect(notices({ ...back, count: 12, unfilteredCount: 12 })).toEqual([]);
+    // Also where a battery minimum on the server leaves the count before filters unknown.
+    expect(notices({ ...back, count: 12, unfilteredCount: null })).toEqual([]);
+    // Without them, it holds until 1 May, then the map is an empty town again.
+    expect(notices({ now: march, lastUpdated: march - 30_000 })).toEqual([notice]);
+    const may = Date.parse('2027-05-01T12:00:00Z');
+    expect(notices({ now: may, lastUpdated: may - 30_000 })).toEqual([]);
+
+    const say = (locale: AppLocale, region?: string) => formatUiText(notice!.text, { locale, region,
+      t: (key, values) => translate(locale, key, values, region), formatNumber: String });
+    expect(say('en')).toBe('Off season in Skien: from 15 December until the streets are clear');
+    expect(say('en', 'US')).toBe('Off season in Skien: from December 15 until the streets are clear');
+    expect(say('de')).toBe('Saisonpause in Skien: ab 15. Dezember, bis die Strassen schnee- und eisfrei sind');
+    expect(say('fr')).toBe('Pause saisonnière à Skien : dès le 15 décembre, jusqu’à ce que les rues soient dégagées');
+    expect(say('it')).toBe('Pausa stagionale a Skien: dal 15 dicembre finché le strade non saranno libere da neve e ghiaccio');
+    expect(say('nb')).toBe('Sesongpause i Skien: fra 15. desember til det er snø- og isfritt');
+    expect(say('nl')).toBe('Seizoenspauze in Skien: vanaf 15 december tot de straten sneeuw- en ijsvrij zijn');
+    expect(say('pt')).toBe('Pausa sazonal em Skien: a partir de 15 de dezembro, até as ruas estarem livres de neve e gelo');
+    expect(say('es')).toBe('Pausa de temporada en Skien: desde el 15 de diciembre hasta que las calles estén libres de nieve y hielo');
+    expect(say('is')).toBe('Skien: árstíðabundið hlé frá 15. desember þar til göturnar verða auðar');
   });
 });
 

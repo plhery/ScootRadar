@@ -238,6 +238,10 @@ describe('the countries of data/countries.json', () => {
     expect(swiftCityPauses(city('ca:Mississauga'))).toBe('');
 
     expect(seasonalProblem(winter)).toBeNull();
+    // Skien's scooters stop on 15 December, back once the streets are clear.
+    expect(seasonalProblem({ ...winter, from: '12-15', until: 'clear' })).toBeNull();
+    expect(seasonalProblem({ ...winter, from: '05-01', until: 'clear' })).toMatch('until "clear" from another day than 05-01');
+    expect(seasonalProblem({ ...winter, until: 'snow' })).toMatch('two different dates');
     expect(seasonalProblem({ ...winter, until: '02-29' })).toMatch('two different dates');
     expect(seasonalProblem({ ...winter, until: '11-16' })).toMatch('two different dates');
     expect(seasonalProblem({ ...winter, from: '4-15' })).toMatch('two different dates');

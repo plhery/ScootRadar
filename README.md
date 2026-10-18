@@ -105,8 +105,9 @@ changing the response contract.
    the year, as Montréal each winter, says so with `seasonal`: `{ "from":
    "11-16", "until": "04-15", "timeZone": "America/Toronto" }`, its first day
    without scooters and the first day they are back, local dates (on a
-   system, for each of its areas that sets none). Outside Europe each
-   service area gives its `timeZone`, `"America/Chicago"`, by its name today:
+   system, for each of its areas that sets none); `"until": "clear"` where
+   they come back once the streets are clear, on no set day, as in Skien.
+   Outside Europe each service area gives its `timeZone`, `"America/Chicago"`, by its name today:
    the feeds' own are older names (`US/Central`, `Asia/Tel_Aviv`) or wrong
    (`Etc/UTC`), and are never read.
    A seasonal pause is in its town's zone, and so is a night ban. Inside the window the map

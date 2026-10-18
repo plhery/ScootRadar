@@ -126,6 +126,7 @@
 "Parking bays may be out of date" = "Parking bays may be out of date";
 "Night ban in %1$@: no scooter rentals until %2$@" = "Night ban in %1$@: no scooter rentals until %2$@";
 "Off season in %1$@: scooters are back in %2$@" = "Off season in %1$@: scooters are back in %2$@";
+"Off season in %1$@: from %2$@ until the streets are clear" = "Off season in %1$@: from %2$@ until the streets are clear";
 "Night ban in %1$@: you can rent it from %2$@" = "Night ban in %1$@: you can rent it from %2$@";
 "No scooters here right now. Zoom out or move the map." = "No scooters here right now. Zoom out or move the map.";
 

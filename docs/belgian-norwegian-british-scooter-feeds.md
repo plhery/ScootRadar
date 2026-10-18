@@ -250,6 +250,30 @@ stays open at night.
     or ice is likely
     ([FOR-2022-02-08-192](https://lovdata.no/dokument/LF/forskrift/2022-02-08-192)
     § 3), so Voi's, Ryde's and Dott's feeds pause from 2 December to 15 March.
+  - Skien and Porsgrunn: from 15 December until the streets are clear, with
+    no set end. Skien kommune's
+    [Sykkel page](https://www.skien.kommune.no/kultur-idrett-og-frivillighet/parker-og-friluftsliv/sykkel/),
+    under "Leie el-sparkesykkel", says of Ryde's scooters in Grenland:
+    "Syklene er ikke tilgjengelig for utleie på vinteren. Det vil si fra 15.
+    desember til det er snø- og isfritt på våren." For Porsgrunn, the joint
+    forskrift its bystyre adopted
+    ([FOR-2022-06-16-1129](https://lovdata.no/dokument/LF/forskrift/2022-06-16-1129)
+    § 3) allows only e-bikes with studded tyres "i vintersesongen når det er
+    fare for snø og is"; Porsgrunn's
+    [page for 2026](https://www.porsgrunn.kommune.no/lokalpolitikk/hoeringer/utleie-av-elsparkesykler-2026/)
+    and the 2026–27 announcement it links, the same document as Skien's, set
+    no winter date, and Ryde holds the one permit for all of Grenland. So
+    Ryde's Skien feed, with its Porsgrunn area, and its Porsgrunn feed pause
+    from 15 December with `"until": "clear"` (read on 18 October 2026).
+- **An open end:** a pause until the streets are clear holds until 1 May at
+  the latest (`CLEAR_BY` in `src/lib/seasonalPauses.ts`), when Tromsø, the
+  northernmost town covered, starts its season. The feeds' alerts stay quiet
+  until then, even if Ryde is back weeks earlier, and come back on 1 May
+  whether it is or not: "feed empty" then reports a feed still empty 3 days
+  later. The dock shows "Off season in Skien: from 15 December until the
+  streets are clear" only while no scooter is in view, so it gives way as
+  soon as Ryde's scooters are back on the map, whichever day that is. A
+  rider zoomed in on a street with none still sees it.
 - Oslo's city government can lift its ban without changing the rule. The city
   council kept it in January 2026
   ([NRK](https://www.nrk.no/stor-oslo/bystyret-stemte-ned-innstramminger-for-elsparkesykler-i-oslo-1.17746568)).

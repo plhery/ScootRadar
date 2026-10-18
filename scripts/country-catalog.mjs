@@ -59,16 +59,21 @@ function isTimeZone(timeZone) {
   }
 }
 
+// The day a pause until the streets are clear ends at the latest: CLEAR_BY in src/lib/seasonalPauses.ts.
+const CLEAR_BY = '05-01';
+
 /**
  * Why a seasonal pause is not one, or null. A pause is the part of the year a service area has
  * no scooters, as Montréal each winter: from its first day without them until the first day
- * they are back, local dates in its time zone (src/lib/seasonalPauses.ts).
+ * they are back, local dates in its time zone, or until "clear", once the streets are clear of
+ * snow and ice, as Skien's (src/lib/seasonalPauses.ts).
  */
 export function seasonalProblem(pause) {
   const keys = Object.keys(pause ?? {}).sort().join(',');
   if (keys !== 'from,timeZone,until') return 'needs from, until and timeZone, and nothing else';
-  if (!isMonthDay(pause.from) || !isMonthDay(pause.until) || pause.from === pause.until) {
-    return 'needs from and until as two different dates, "MM-DD"';
+  const until = pause.until === 'clear' ? CLEAR_BY : pause.until;
+  if (!isMonthDay(pause.from) || !isMonthDay(until) || pause.from === until) {
+    return `needs from and until as two different dates, "MM-DD", or until "clear" from another day than ${CLEAR_BY}`;
   }
   return isTimeZone(pause.timeZone) ? null : `has no time zone ${pause.timeZone}`;
 }

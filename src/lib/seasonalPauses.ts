@@ -12,21 +12,37 @@ import {
 // the map says when the scooters come back rather than that the operator is not sharing data,
 // and the cache's alerts stay quiet. The iOS ScooterSeasonalPause reads the same windows from
 // ScooterCityCatalog, generated from the same catalogs (scripts/generate-provider-catalog.mjs).
+//
+// Some towns set no day for the scooters to come back: Skien's stop from 15 December "til det er
+// snø- og isfritt", until the streets are clear of snow and ice. Their pause ends 'clear'. It
+// holds until CLEAR_BY at the latest, so the alerts are back by then if the scooters are not, and
+// the dock shows it only while the map has no scooter in view (dockModel.ts), so it gives way as
+// soon as the operator brings them back, whichever day that is.
 
 export interface SeasonalPause {
   /** Local "MM-DD": the first day without scooters. */
   from: string;
-  /** Local "MM-DD": the first day they are back. */
+  /** Local "MM-DD": the first day they are back; or 'clear', once the streets are clear, on no set day. */
   until: string;
   /** The IANA time zone the dates are in: "America/Toronto". */
   timeZone: string;
 }
 
-export interface ActiveSeasonalPause {
-  city: string;
-  /** The month the scooters come back, 1 for January. */
-  month: number;
-}
+/**
+ * The first day a pause until the streets are clear no longer holds, local "MM-DD": 1 May, when
+ * Tromsø, the northernmost town covered, starts its season by its rule. Until then the cache's
+ * alerts stay quiet for the feed even once its scooters are back, which may be weeks earlier;
+ * from then on, a feed that has not come back is reported as any other.
+ */
+export const CLEAR_BY = '05-01';
+
+/**
+ * When the scooters come back: in a month, 1 for January, or once the streets are clear, after a
+ * pause from a local "MM-DD".
+ */
+export type SeasonalReturn = { month: number } | { from: string };
+
+export type ActiveSeasonalPause = { city: string } & SeasonalReturn;
 
 const dates = new Map<string, Intl.DateTimeFormat>();
 
@@ -42,12 +58,16 @@ function localDate(time: number, timeZone: string): string {
   return `${part('month')}-${part('day')}`;
 }
 
-/** Whether the pause holds at that instant. A window from "11-16" until "04-15" spans the new year. */
+/**
+ * Whether the pause holds at that instant. A window from "11-16" until "04-15" spans the new year;
+ * one until the streets are clear holds until CLEAR_BY.
+ */
 export function pauseHolds(pause: SeasonalPause, now: number): boolean {
   const today = localDate(now, pause.timeZone);
-  return pause.from < pause.until
-    ? today >= pause.from && today < pause.until
-    : today >= pause.from || today < pause.until;
+  const until = pause.until === 'clear' ? CLEAR_BY : pause.until;
+  return pause.from < until
+    ? today >= pause.from && today < until
+    : today >= pause.from || today < until;
 }
 
 // Days from one "MM-DD" to the next, forward, in a year of 365 days.
@@ -56,14 +76,17 @@ const dayOfYear = (date: string) => DAYS_BEFORE_MONTH[Number(date.slice(0, 2)) -
 const daysUntil = (from: string, to: string) => (dayOfYear(to) - dayOfYear(from) + 365) % 365;
 
 /**
- * The month the scooters come back, when every one of the pauses holds: the soonest of their
- * ends. Null when one of them does not hold, or there are none.
+ * When the scooters come back, when every one of the pauses holds: the soonest of their ends, and
+ * a pause until the streets are clear may end any day. Null when one of them does not hold, or
+ * there are none.
  */
-export function pausesReturn(pauses: readonly SeasonalPause[] | undefined, now: number): number | null {
+export function pausesReturn(pauses: readonly SeasonalPause[] | undefined, now: number): SeasonalReturn | null {
   if (!pauses?.length || !pauses.every(pause => pauseHolds(pause, now))) return null;
+  const clear = pauses.find(pause => pause.until === 'clear');
+  if (clear) return { from: clear.from };
   const soonest = pauses.reduce((best, pause) =>
     daysUntil(localDate(now, pause.timeZone), pause.until) < daysUntil(localDate(now, best.timeZone), best.until) ? pause : best);
-  return Number(soonest.until.slice(0, 2));
+  return { month: Number(soonest.until.slice(0, 2)) };
 }
 
 /** A system's pauses, one per service area; undefined where an area has none. */
@@ -107,9 +130,9 @@ export function activeSeasonalPause(point: [number, number] | null, now: number,
   let found: ActiveSeasonalPause | null = null;
   for (const city of cities) {
     if (!boundsContainPoint(city.bounds, point[0], point[1])) continue;
-    const month = pausesReturn(city.pauses, now);
-    if (month === null) return null;
-    found ??= { city: city.city, month };
+    const back = pausesReturn(city.pauses, now);
+    if (back === null) return null;
+    found ??= { city: city.city, ...back };
   }
   return found;
 }

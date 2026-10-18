@@ -1175,15 +1175,29 @@ struct RentalCurfew: Sendable {
 struct ScooterSeasonalPause: Equatable, Sendable {
     /// Local "MM-DD": the first day without scooters.
     let from: String
-    /// Local "MM-DD": the first day they are back.
+    /// Local "MM-DD": the first day they are back; or "clear", once the streets
+    /// are clear of snow and ice, on no set day, as in Skien.
     let until: String
     /// The IANA time zone the dates are in.
     let timeZone: String
 
+    /// The first day a pause until the streets are clear no longer holds, like
+    /// CLEAR_BY on the web: 1 May, when Tromsø, the northernmost town covered,
+    /// starts its season. The dock shows such a pause only while no scooter is
+    /// in view, so it gives way as soon as the operator brings them back.
+    static let clearBy = "05-01"
+
+    /// When the scooters come back.
+    enum Return: Equatable, Hashable, Sendable {
+        /// In that month, 1 for January.
+        case month(Int)
+        /// Once the streets are clear, on no set day, after a pause from that local "MM-DD".
+        case clear(from: String)
+    }
+
     struct Active: Equatable, Hashable, Sendable {
         let city: String
-        /// The month the scooters come back, 1 for January.
-        let month: Int
+        let back: Return
     }
 
     /// The local date in the pause's zone, "MM-DD".
@@ -1196,9 +1210,11 @@ struct ScooterSeasonalPause: Equatable, Sendable {
         return String(format: "%02d-%02d", month, dayOfMonth)
     }
 
-    /// Whether it holds on that date. A window from "11-16" until "04-15" spans the new year.
+    /// Whether it holds on that date. A window from "11-16" until "04-15" spans
+    /// the new year; one until the streets are clear holds until `clearBy`.
     func holds(on date: Date) -> Bool {
         guard let today = localDate(date) else { return false }
+        let until = until == "clear" ? Self.clearBy : until
         return from < until ? today >= from && today < until : today >= from || today < until
     }
 
@@ -1215,12 +1231,15 @@ struct ScooterSeasonalPause: Equatable, Sendable {
         return (Self.dayOfYear(until) - Self.dayOfYear(today) + 365) % 365
     }
 
-    /// The month the scooters come back when every one of the pauses holds: the
-    /// soonest of their ends. Nil when one does not hold, or there are none.
-    static func returnMonth(_ pauses: [ScooterSeasonalPause], on date: Date) -> Int? {
-        guard !pauses.isEmpty, pauses.allSatisfy({ $0.holds(on: date) }),
-              let soonest = pauses.min(by: { $0.daysLeft(on: date) < $1.daysLeft(on: date) }) else { return nil }
-        return Int(soonest.until.prefix(2))
+    /// When the scooters come back when every one of the pauses holds: the
+    /// soonest of their ends, and a pause until the streets are clear may end
+    /// any day. Nil when one does not hold, or there are none.
+    static func back(_ pauses: [ScooterSeasonalPause], on date: Date) -> Return? {
+        guard !pauses.isEmpty, pauses.allSatisfy({ $0.holds(on: date) }) else { return nil }
+        if let clear = pauses.first(where: { $0.until == "clear" }) { return .clear(from: clear.from) }
+        guard let soonest = pauses.min(by: { $0.daysLeft(on: date) < $1.daysLeft(on: date) }),
+              let month = Int(soonest.until.prefix(2)) else { return nil }
+        return .month(month)
     }
 
     /// The city at that point whose scooters are away for the season. Nil outside
@@ -1228,8 +1247,8 @@ struct ScooterSeasonalPause: Equatable, Sendable {
     static func active(at point: GeoPoint, on date: Date, among cities: [ScooterCity] = ScooterCityCatalog.cities) -> Active? {
         var found: Active?
         for city in cities where city.bounds.contains(point) {
-            guard let month = returnMonth(city.pauses, on: date) else { return nil }
-            if found == nil { found = Active(city: city.name, month: month) }
+            guard let back = back(city.pauses, on: date) else { return nil }
+            if found == nil { found = Active(city: city.name, back: back) }
         }
         return found
     }
@@ -1240,6 +1259,21 @@ struct ScooterSeasonalPause: Equatable, Sendable {
         formatter.locale = locale
         let names = formatter.standaloneMonthSymbols ?? []
         return names.indices.contains(month - 1) ? names[month - 1] : String(month)
+    }
+
+    /// A local "MM-DD" in the app's language and the iPhone's region, as it
+    /// stands in a sentence: "15 December", "December 15" in the US, "15. Dezember".
+    static func dayName(_ date: String, locale: Locale = ScooterLanguage.current.locale) -> String {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "UTC") ?? .current
+        guard let month = Int(date.prefix(2)), let day = Int(date.suffix(2)),
+              let instant = calendar.date(from: DateComponents(year: 2001, month: month, day: day)) else { return date }
+        let formatter = DateFormatter()
+        formatter.calendar = calendar
+        formatter.timeZone = calendar.timeZone
+        formatter.locale = locale
+        formatter.setLocalizedDateFormatFromTemplate("dMMMM")
+        return formatter.string(from: instant)
     }
 }
 
@@ -1687,11 +1721,20 @@ enum ScooterDockNotice: Hashable, Identifiable, Sendable {
                 ScooterDockStatus.clockTime(curfew.until, in: curfew.timeZone)
             )
         case let .season(season):
-            String(
-                format: String(localized: "Off season in %1$@: scooters are back in %2$@"),
-                season.city,
-                ScooterSeasonalPause.monthName(season.month)
-            )
+            switch season.back {
+            case let .month(month):
+                String(
+                    format: String(localized: "Off season in %1$@: scooters are back in %2$@"),
+                    season.city,
+                    ScooterSeasonalPause.monthName(month)
+                )
+            case let .clear(from):
+                String(
+                    format: String(localized: "Off season in %1$@: from %2$@ until the streets are clear"),
+                    season.city,
+                    ScooterSeasonalPause.dayName(from)
+                )
+            }
         case let .providersDown(providers) where providers.count == 1:
             String(format: String(localized: "%@ isn’t sharing data right now."), providers[0].name)
         case let .providersDown(providers) where providers.count == 2:
@@ -1721,10 +1764,13 @@ enum ScooterDockNotice: Hashable, Identifiable, Sendable {
     }
 
     /// A night ban first, as some operators keep listing their scooters through
-    /// it, then the season, providers down, truncation and parking.
+    /// it, then the season, providers down, truncation and parking. A pause until
+    /// the streets are clear has no end to wait for: it gives way once
+    /// `scootersInView`, whatever the filters hide.
     static func notices(
         curfew: RentalCurfew.Active? = nil,
         season: ScooterSeasonalPause.Active? = nil,
+        scootersInView: Bool = false,
         health: ScooterProviderHealth,
         metadata: ScooterResponseMetadata,
         shownCount: Int
@@ -1734,7 +1780,10 @@ enum ScooterDockNotice: Hashable, Identifiable, Sendable {
             notices.append(.curfew(curfew))
         }
         if let season {
-            notices.append(.season(season))
+            switch season.back {
+            case .clear where scootersInView: break
+            default: notices.append(.season(season))
+            }
         }
         if !health.downProviders.isEmpty {
             notices.append(.providersDown(health.downProviders))

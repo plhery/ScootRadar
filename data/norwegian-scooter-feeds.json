@@ -132,7 +132,12 @@
         "west": 9.6191,
         "east": 9.6952
       },
-      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydeporsgrunn/gbfs"
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydeporsgrunn/gbfs",
+      "seasonal": {
+        "from": "12-15",
+        "until": "clear",
+        "timeZone": "Europe/Oslo"
+      }
     },
     {
       "id": "ryde_no_sandefjord",
@@ -184,6 +189,11 @@
         "east": 9.6952
       },
       "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydeskien/gbfs",
+      "seasonal": {
+        "from": "12-15",
+        "until": "clear",
+        "timeZone": "Europe/Oslo"
+      },
       "areas": [
         {
           "city": "Skien",

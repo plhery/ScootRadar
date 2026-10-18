@@ -198,7 +198,9 @@ day.
   night and Voi its Oslo feed during the night ban; Bird lists nothing in Calgary on a
   snow day. A single scooter in 3 days keeps a feed quiet.
 - **Not in a seasonal pause.** A feed paused at any time in the last 3 days is left
-  out, so one whose season has ended has 3 days to bring its scooters back.
+  out, so one whose season has ended has 3 days to bring its scooters back. A pause
+  with no set end, until the streets are clear (Ryde in Skien and Porsgrunn from 15
+  December), ends on 1 May at the latest, so the alerts are back by then.
 - **Feeds that list nothing at all.** Bird's town with no scooter and no time (read
   as an empty town since its Canadian feeds), a Dott region it has paused (403
   `ERR_REGION_OFFLINE`) and a feed without a scooter type are skipped: they have no

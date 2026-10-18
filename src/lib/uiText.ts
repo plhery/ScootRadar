@@ -14,6 +14,8 @@ export interface UiText {
   timeZone?: string;
   /** 1 for January, substituted for {month} as the month's name: "April", "avril". */
   month?: number;
+  /** A day of the year, "MM-DD", substituted for {date} as the day and the month's name: "15 December", "15. Dezember". */
+  date?: string;
   /**
    * For a sentence about a count: its singular form, which takes the place of
    * `key` where the language shown uses the singular for that count.
@@ -79,12 +81,19 @@ export function formatMonth(month: number, locale: AppLocale, region?: string): 
     .format(Date.UTC(2001, month - 1, 15));
 }
 
+/** A day of the year, "MM-DD", as the language and region write it: "15 December", "December 15" in the US. */
+export function formatDayOfYear(date: string, locale: AppLocale, region?: string): string {
+  return new Intl.DateTimeFormat(formatLocale(locale, region), { day: 'numeric', month: 'long', timeZone: 'UTC' })
+    .format(Date.UTC(2001, Number(date.slice(0, 2)) - 1, Number(date.slice(3, 5))));
+}
+
 export function formatUiText(text: UiText, formatter: UiTextFormatter): string {
   const { locale, region, t, formatNumber } = formatter;
   const values: Record<string, string | number> = { ...text.values };
   for (const [name, value] of Object.entries(text.numbers ?? {})) values[name] = formatNumber(value);
   if (text.time !== undefined) values.time = formatClockTime(text.time, locale, region, text.timeZone);
   if (text.month !== undefined) values.month = formatMonth(text.month, locale, region);
+  if (text.date !== undefined) values.date = formatDayOfYear(text.date, locale, region);
   for (const [name, part] of Object.entries(text.parts ?? {})) values[name] = formatUiText(part, formatter);
   return t(text.one && isSingular(text.one.count, locale) ? text.one.key : text.key, values);
 }

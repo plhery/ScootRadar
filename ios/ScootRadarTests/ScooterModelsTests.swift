@@ -1504,15 +1504,15 @@ extension ScooterModelsTests {
 
         // Back with the soonest of the pauses, once every one holds.
         let january = try at("2027-01-20T17:00:00Z")
-        XCTAssertEqual(ScooterSeasonalPause.returnMonth([winter, Self.early], on: january), 4)
+        XCTAssertEqual(ScooterSeasonalPause.back([winter, Self.early], on: january), .month(4))
         XCTAssertEqual(
-            ScooterSeasonalPause.returnMonth(
+            ScooterSeasonalPause.back(
                 [winter, ScooterSeasonalPause(from: "12-01", until: "03-10", timeZone: "America/Toronto")], on: january
             ),
-            3
+            .month(3)
         )
-        XCTAssertNil(ScooterSeasonalPause.returnMonth([winter, Self.early], on: try at("2026-11-20T17:00:00Z")))
-        XCTAssertNil(ScooterSeasonalPause.returnMonth([], on: january))
+        XCTAssertNil(ScooterSeasonalPause.back([winter, Self.early], on: try at("2026-11-20T17:00:00Z")))
+        XCTAssertNil(ScooterSeasonalPause.back([], on: january))
     }
 
     func testTheDockSaysWhenTheScootersOfACityInItsPauseAreBack() throws {
@@ -1523,23 +1523,25 @@ extension ScooterModelsTests {
         let january = try at("2027-01-20T17:00:00Z")
 
         let season = try XCTUnwrap(ScooterSeasonalPause.active(at: montreal, on: january, among: Self.quebec))
-        XCTAssertEqual(season, ScooterSeasonalPause.Active(city: "Montréal", month: 4))
+        XCTAssertEqual(season, ScooterSeasonalPause.Active(city: "Montréal", back: .month(4)))
         // Lime runs until December, Laval all year, and Laval's bounds take in the north of Montréal.
         XCTAssertNil(ScooterSeasonalPause.active(at: montreal, on: try at("2026-11-20T17:00:00Z"), among: Self.quebec))
         XCTAssertNil(ScooterSeasonalPause.active(at: montreal, on: try at("2026-07-20T16:00:00Z"), among: Self.quebec))
         XCTAssertNil(ScooterSeasonalPause.active(at: GeoPoint(latitude: 45.65, longitude: -73.6), on: january, among: Self.quebec))
         // Of the catalogs' cities, Tignes pauses from 8 September until 22 June, Trondheim from
-        // 2 December until 15 March, Tromsø from 2 November until 1 May, Lillestrøm and Lørenskog
-        // from 1 December until 1 March, and Ottawa from 16 November until 30 April, each by its own clock.
+        // 2 December until 15 March, Porsgrunn and Skien from 15 December until the streets are
+        // clear, Tromsø from 2 November until 1 May, Lillestrøm and Lørenskog from 1 December until
+        // 1 March, and Ottawa from 16 November until 30 April, each by its own clock.
         XCTAssertEqual(ScooterCityCatalog.cities.filter { !$0.pauses.isEmpty }.map(\.id),
-                       ["fr:Tignes", "no:Trondheim", "no:Tromsø", "no:Lillestrøm", "no:Lørenskog", "ca:on:Ottawa"])
+                       ["fr:Tignes", "no:Trondheim", "no:Porsgrunn", "no:Skien", "no:Tromsø", "no:Lillestrøm", "no:Lørenskog",
+                        "ca:on:Ottawa"])
         let tignes = GeoPoint(latitude: 45.4687, longitude: 6.9063)
-        XCTAssertEqual(ScooterSeasonalPause.active(at: tignes, on: january), ScooterSeasonalPause.Active(city: "Tignes", month: 6))
+        XCTAssertEqual(ScooterSeasonalPause.active(at: tignes, on: january), ScooterSeasonalPause.Active(city: "Tignes", back: .month(6)))
         XCTAssertNil(ScooterSeasonalPause.active(at: tignes, on: try at("2026-09-07T21:30:00Z")))
         XCTAssertNotNil(ScooterSeasonalPause.active(at: tignes, on: try at("2026-09-07T22:30:00Z")))
         XCTAssertNil(ScooterSeasonalPause.active(at: tignes, on: try at("2027-06-22T12:00:00Z")))
         let ottawa = GeoPoint(latitude: 45.4215, longitude: -75.6972)
-        XCTAssertEqual(ScooterSeasonalPause.active(at: ottawa, on: january), ScooterSeasonalPause.Active(city: "Ottawa, ON", month: 4))
+        XCTAssertEqual(ScooterSeasonalPause.active(at: ottawa, on: january), ScooterSeasonalPause.Active(city: "Ottawa, ON", back: .month(4)))
         XCTAssertNil(ScooterSeasonalPause.active(at: ottawa, on: try at("2026-11-16T04:30:00Z")))
         XCTAssertNotNil(ScooterSeasonalPause.active(at: ottawa, on: try at("2026-11-16T05:30:00Z")))
         XCTAssertNil(ScooterSeasonalPause.active(at: ottawa, on: try at("2027-04-30T12:00:00Z")))
@@ -1574,6 +1576,80 @@ extension ScooterModelsTests {
             ScooterLanguage.current = language
             // Spanish says scooter where the iPhone's region is in Latin America or the US.
             XCTAssertEqual(ScooterDockNotice.season(season).text, language.written(sentence, in: language.locale.region), language.rawValue)
+        }
+    }
+
+    func testAPauseUntilTheStreetsAreClearHoldsUntilMayAtTheLatestAndComesBackEachWinter() throws {
+        let iso = ISO8601DateFormatter()
+        func at(_ string: String) throws -> Date { try XCTUnwrap(iso.date(from: string)) }
+        // Skien's: from 15 December, back once the streets are clear of snow and ice.
+        let clear = ScooterSeasonalPause(from: "12-15", until: "clear", timeZone: "Europe/Oslo")
+        // Midnight in Oslo is 23:00 UTC in December, 22:00 in April.
+        XCTAssertFalse(clear.holds(on: try at("2026-12-14T22:59:00Z")))
+        XCTAssertTrue(clear.holds(on: try at("2026-12-14T23:00:00Z")))
+        XCTAssertTrue(clear.holds(on: try at("2027-03-20T12:00:00Z")))
+        XCTAssertTrue(clear.holds(on: try at("2027-04-30T21:59:00Z")))
+        XCTAssertFalse(clear.holds(on: try at("2027-04-30T22:00:00Z")))
+        XCTAssertFalse(clear.holds(on: try at("2027-10-18T12:00:00Z")))
+        XCTAssertTrue(clear.holds(on: try at("2027-12-15T12:00:00Z")))
+
+        // It says since when rather than a month, and goes first, as it may end any day.
+        let january = try at("2027-01-20T12:00:00Z")
+        let trondheim = ScooterSeasonalPause(from: "12-02", until: "03-15", timeZone: "Europe/Oslo")
+        XCTAssertEqual(ScooterSeasonalPause.back([clear], on: january), .clear(from: "12-15"))
+        XCTAssertEqual(ScooterSeasonalPause.back([trondheim, clear], on: january), .clear(from: "12-15"))
+        XCTAssertNil(ScooterSeasonalPause.back([trondheim, clear], on: try at("2026-12-10T12:00:00Z")))
+
+        // Skien and Porsgrunn in the catalog, the latter reached by both of Ryde's feeds.
+        let skien = GeoPoint(latitude: 59.2075, longitude: 9.6107)
+        let porsgrunn = GeoPoint(latitude: 59.1411, longitude: 9.6555)
+        XCTAssertNil(ScooterSeasonalPause.active(at: skien, on: try at("2026-12-14T22:30:00Z")))
+        XCTAssertEqual(ScooterSeasonalPause.active(at: skien, on: try at("2026-12-14T23:30:00Z")),
+                       ScooterSeasonalPause.Active(city: "Skien", back: .clear(from: "12-15")))
+        XCTAssertEqual(ScooterSeasonalPause.active(at: porsgrunn, on: try at("2027-03-20T12:00:00Z")),
+                       ScooterSeasonalPause.Active(city: "Porsgrunn", back: .clear(from: "12-15")))
+        XCTAssertNotNil(ScooterSeasonalPause.active(at: porsgrunn, on: try at("2027-04-30T21:30:00Z")))
+        XCTAssertNil(ScooterSeasonalPause.active(at: porsgrunn, on: try at("2027-04-30T22:30:00Z")))
+        XCTAssertNotNil(ScooterSeasonalPause.active(at: skien, on: try at("2027-12-15T12:00:00Z")))
+    }
+
+    func testThePauseUntilTheStreetsAreClearGivesWayOnceScootersAreInView() throws {
+        defer { ScooterLanguage.current = .atLaunch }
+        let season = ScooterSeasonalPause.Active(city: "Skien", back: .clear(from: "12-15"))
+        let metadata = ScooterResponseMetadata(partial: false, failedSources: [])
+        XCTAssertEqual(ScooterDockNotice.notices(season: season, health: .healthy, metadata: metadata, shownCount: 0),
+                       [.season(season)])
+        // Ryde back in March: the notice gives way.
+        XCTAssertEqual(
+            ScooterDockNotice.notices(season: season, scootersInView: true, health: .healthy, metadata: metadata, shownCount: 12),
+            []
+        )
+        // A pause with a set end stays, as the town's rule.
+        let montreal = ScooterSeasonalPause.Active(city: "Montréal", back: .month(4))
+        XCTAssertEqual(
+            ScooterDockNotice.notices(season: montreal, scootersInView: true, health: .healthy, metadata: metadata, shownCount: 1),
+            [.season(montreal)]
+        )
+
+        // The day as the language and the region write it.
+        XCTAssertEqual(ScooterSeasonalPause.dayName("12-15", locale: Locale(identifier: "en_GB")), "15 December")
+        XCTAssertEqual(ScooterSeasonalPause.dayName("12-15", locale: Locale(identifier: "en_US")), "December 15")
+        let english = ScooterSeasonalPause.dayName("12-15", locale: ScooterLanguage.en.locale)
+        let sentences: [ScooterLanguage: String] = [
+            .en: "Off season in Skien: from \(english) until the streets are clear",
+            .de: "Saisonpause in Skien: ab 15. Dezember, bis die Strassen schnee- und eisfrei sind",
+            .fr: "Pause saisonnière à Skien : dès le 15 décembre, jusqu’à ce que les rues soient dégagées",
+            .it: "Pausa stagionale a Skien: dal 15 dicembre finché le strade non saranno libere da neve e ghiaccio",
+            .nl: "Seizoenspauze in Skien: vanaf 15 december tot de straten sneeuw- en ijsvrij zijn",
+            .nb: "Sesongpause i Skien: fra 15. desember til det er snø- og isfritt",
+            .pt: "Pausa sazonal em Skien: a partir de 15 de dezembro, até as ruas estarem livres de neve e gelo",
+            .es: "Pausa de temporada en Skien: desde el 15 de diciembre hasta que las calles estén libres de nieve y hielo",
+            .is: "Skien: árstíðabundið hlé frá 15. desember þar til göturnar verða auðar",
+        ]
+        XCTAssertEqual(Set(sentences.keys), Set(ScooterLanguage.allCases))
+        for (language, sentence) in sentences {
+            ScooterLanguage.current = language
+            XCTAssertEqual(ScooterDockNotice.season(season).text, sentence, language.rawValue)
         }
     }
 }

@@ -477,6 +477,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         return ScooterDockNotice.notices(
             curfew: RentalCurfew.active(at: viewport.center, on: clock()),
             season: ScooterSeasonalPause.active(at: viewport.center, on: clock()),
+            scootersInView: unfilteredVisibleCount > 0,
             health: providerHealth,
             metadata: responseMetadata,
             shownCount: representedVehicleCount
