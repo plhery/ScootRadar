@@ -500,7 +500,10 @@ banned shared scooters, and feeds that were empty when checked.
     none ridden. The map drops their scooters rather than count them under
     Rolleston or Rangiora.
   - **No public feed:** Beam, in Queenstown, Taupō and Whangārei, whose feed
-    host answers 401; Lime, in Auckland. Neuron has left New Zealand.
+    host answers 401; Lime, with about 3,000 scooters in Auckland,
+    Christchurch, Hamilton and Palmerston North (Ride Report's averages for
+    the third quarter of 2026, less Flamingo's), Hamilton's whole fleet
+    among them. Neuron has left New Zealand.
   - **Zone curfews:** Wellington bans hiring in the Courtenay precinct from
     21:00 to 06:00 on Thursday, Friday and Saturday nights and public-holiday
     eves (its code of practice v9.0, §7.4), and Flamingo says hiring stops
@@ -604,19 +607,19 @@ a licence. Neither is published by its operator:
 | Kuwait | eFly is on ATOM Mobility, but its systems 2253 and 2340 answer "GBFS disabled". BSKL, Rabbit, Rent it (on OTORide) and e-Fly Scooters and More (on Joyride) publish no feed. E-scooters have been banned on Kuwait's public roads since 31 October 2020. eFly, or ATOM, would have to switch the feed on; no one has asked |
 | Oman | Biko, in Muscat, is on ATOM Mobility, but its 7 systems (1445, 1532, 1533, 1534, 1535, 1593, 1869) answer "GBFS disabled", and `biko.rideatom.com` no longer resolves. Salik, which ran the transport ministry's trial at Knowledge Oasis Muscat, is ATOM system 1118 and answers "GBFS disabled" too. Biko, Salik or ATOM would have to switch the feed on; no one has asked |
 | Bahrain | Hopp's `bh-bahrain` feed holds 13 or 14 scooters on three sites (Zallaq, Manama, Amwaj), about 2 rides in 10.4 hours on 15 October 2026, and still 14 on 18 October: too few. Spiders, Fenix and BSKL publish no feed; data.gov.bh has no scooter data. Since Resolution 58 of 2026, scooters may ride only in designated zones |
-| Egypt | Rabbit, in Cairo, publishes no feed, and Cairo's governor ordered e-scooters seized |
-| South Africa | Zippy, in Langebaan, is on ATOM Mobility, but its systems 2028, 2075 and 2318 answer "GBFS disabled". Africa has no continent in the app yet |
+| Egypt | Rabbit, in Cairo, Giza and Alexandria (about 700 scooters in 2024, the last count), publishes no feed, and Cairo's governor ordered e-scooters seized |
+| South Africa | Zippy, in Langebaan, is on ATOM Mobility, but its systems 2028, 2075 and 2318 answer "GBFS disabled" (still on 18 October 2026). Africa has no continent in the app yet |
 | Ghana | Hopp's `gh-accra` feed holds 13 scooters, all disabled with no range, at a depot |
 | Jordan | Sky Scooters (on OTORide) and E-Ride publish no feed; Dott's listing names no region |
 | Lebanon | No scooter feed found, and Loop's 2017 service is gone; Dott's listing names no region |
 | Morocco | No scooter feed found; Dott's listing names no region |
 | Tunisia | No scooter feed found |
-| Kenya | No scooter feed found; Dott's listing names no region |
+| Kenya | No scooter feed found; Little's pilot at the University of Nairobi (about 200) publishes none, and Dott's listing names no region |
 | Nigeria | No scooter feed found; Dott's listing names no region |
-| Rwanda | Guraride is docked bikes; no scooter feed found |
+| Rwanda | Guraride is docked bikes; eWaka's planned scooters (500, then 1,000, announced in 2023) aren't confirmed running. No scooter feed found |
 | Mauritius | No scooter feed found |
 | Namibia | No scooter feed found |
-| Australia | Neuron's and Beam's feeds answer 401, and Lime answers 404 for about 80 town names; no state's open-data portal has a scooter feed. New South Wales's trials (Forster-Tuncurry and Wollongong, to 22 January 2027) send their data to a closed government platform. Flamingo's `sydney` feed is a static test: 2,331 scooters that never move, with new ids at every poll, at Transport for NSW's Crash Lab test site. Check again on 1 March 2027 |
+| Australia | About 8,000 scooters in about 20 towns: Brisbane (Lime 1,700 and Beam), Canberra (Lime, about 1,200), Adelaide (Neuron and Beam, about 940), Darwin (Beam, up to 750), Port Phillip (Lime and Neuron, about 460), Townsville, Cairns, Perth's Stirling and Beam's regional towns. Neuron's and Beam's feeds (one company since September 2025) answer 401, and Lime answers 404 for about 80 town names; no state's or city's open-data portal has positions (Brisbane publishes monthly trip counts). New South Wales's trials (Forster-Tuncurry and Wollongong, to 22 January 2027) send their data to a closed government platform. Flamingo's `sydney` feed is still a static test on 18 October 2026: 2,331 scooters that never move, with new ids at every poll, at Transport for NSW's Crash Lab test site. Check again on 1 March 2027 |
 | Japan | The national open-data hub (ODPT) has bike-share feeds only (docomo bike share, HELLO CYCLING), and Tokyo's open-data catalog has no scooter data. LUUP, with about 10,000 e-scooters and as many e-bikes, shows its map in its app only. JOJO and TOCKLE run on Joyride, whose three feed hosts no longer resolve |
 | South Korea | Swing, GCOO, Kickgoing, Deer, DART, Beam, Alpaca and Xingxing publish no feed, and Seoul, Busan and Daejeon publish only parking, towing and statistics. Seoul had 18,548 shared scooters in December 2025, down from 43,417 in October 2023. The government's TAGO API (data.go.kr dataset 15117668) lists scooters with their battery, but not as GBFS, and only in Sejong: GCOO's 2,800 or so, and ALPACA's 1,368, frozen. It needs a personal key, which only Korean nationals and businesses registered in Korea can get. Check the dataset page for other cities on 1 March 2027 |
 | Malaysia | Zeus's Kuala Lumpur feed holds 47 scooters, all disabled, last reported two to five years ago. Beam, with over 5,500 scooters in 8 cities and 24 universities, answers 401; Neuron publishes no feed |
@@ -624,13 +627,13 @@ a licence. Neither is published by its operator:
 | Uzbekistan, Mongolia, Kyrgyzstan | JET, which runs in Uzbekistan and Mongolia and in Kazakhstan, Georgia, Armenia and Azerbaijan, publishes no feed, nor do Whoosh, Urent, SunRent and E-motion in Bishkek. Ulaanbaatar is the biggest: JET put 3,000 scooters there in 2023 and planned 6,000 more. Silk Road Sharing, in Samarkand (ATOM Mobility system 1976), and IZZY, in Tashkent (1918), still answer "GBFS disabled" on 18 October 2026. Check again on 1 April 2027 |
 | Pacific islands | Pineapple, in Samoa (ATOM Mobility system 1359), answers "GBFS disabled" and its site is down; Kai Ride (2118), whose place is unknown, too. France's access point (transport.data.gouv.fr) has nothing for Nouméa or Papeete |
 | Bosnia and Herzegovina, Montenegro, North Macedonia, Albania, Kosovo, Andorra, San Marino, Gibraltar, Faroe Islands | No scooter feed found (Hopp Tórshavn held 13, all disabled, at night and on the evening of 13 October 2026) |
-| Colombia | Lime `bogota` answers but lists no vehicle (16:11 to 17:04 Bogotá time, 15 October 2026). Whoosh, in Medellín, answers 401 and 403: its feeds exist but are private. Yango, in Bogotá, publishes no feed. Check again on 1 March 2027 |
-| Brazil, Chile | Whoosh, the region's largest operator (8,000+ scooters in Chile), answers 401 and 403; JET's API is behind a Cloudflare challenge; Lime Chile (about 3,500 scooters) answers 404 for about 75 slugs. Lime has left Brazil. Check again on 1 April 2027 |
+| Colombia | Lime `bogota` answers but lists no vehicle (16:11 to 17:04 Bogotá time, 15 October 2026). Whoosh, in Medellín (about 400 scooters), answers 401 and 403: its feeds exist but are private. Yango, in Valledupar (400+) and licensed in Medellín, publishes no feed; its Bogotá launch waits for the city's rules. datos.gov.co has nothing. Check again on 1 March 2027 |
+| Brazil, Chile | The biggest fleets outside the map. Brazil has about 45,000 to 55,000 scooters in 50 or more towns, most of them JET's (it claims 40,000 to 50,000 vehicles in 53 cities), with Whoosh in São Paulo, Curitiba and Florianópolis. Chile has about 14,000 in about 20 towns: Whoosh 8,000+, Lime 3,500, JET 2,000+. Whoosh answers 401 and 403; JET's API is behind a Cloudflare challenge; Lime Chile answers 404 for about 75 slugs. Lime has left Brazil. São Paulo and Rio receive live data for the city's use only, and datos.gob.cl and dados.gov.br have no scooter data. Check again on 1 April 2027 |
 | Peru | No fleet. The scooters 3electra's feed places in Lima at night are Kyiv's, moved there by its mask, with the same codes (see the [Ukrainian guide](ukrainian-scooter-feeds.md)). Whoosh's Lima feed is private, like its others |
 | Puerto Rico, US Virgin Islands | Bird's four Puerto Rico feeds (`san-juan-puerto-rico`, `guaynabo-puerto-rico`, `mayaguez-puerto-rico`, `ponce-puerto-rico`) publish their zones but no vehicle, with a timestamp of 0. Skootel, on OTORide, and KICK RIDE PR publish no feed; VIBES has left the US Virgin Islands. Check again on 1 April 2027. A feed there would need a decision: under the United States as a region (`PR`, `VI`), which needs `timeZoneProblem()` in `scripts/country-catalog.mjs` to accept America/Puerto_Rico and America/St_Thomas there, and gives prices before tax (Puerto Rico's IVU is 11.5%), or as a country of its own |
-| Aruba, Curaçao | e-moob, in Aruba (150+ scooters), is on ATOM Mobility, but its systems 1688 and 2319 answer "GBFS disabled", and so does Smart Wheels's 1875, in Curaçao. Check again on 1 April 2027. Each would be a country of its own (AW, CW), as Bonaire is |
+| Aruba, Curaçao | e-moob, in Aruba (150+ scooters), is on ATOM Mobility, but its systems 1688 and 2319 answer "GBFS disabled", and so does Smart Wheels's 1875, in Curaçao. Aruba banned e-scooters from public roads in July 2026, and the courts upheld it. Check again on 1 April 2027. Each would be a country of its own (AW, CW), as Bonaire is |
 | Dominican Republic | Hopp `do-punta-cana` held 24 available scooters of 26, in Cap Cana, but none was ridden on the evening of 15 October 2026; a separate job rechecks it on Saturday 17 October. Hopp `do-las-terrenas` held 2 scooters, none available: check again on 15 January 2027. HappyVolts, in Santo Domingo, is a company's staff fleet |
-| Argentina, Uruguay and the rest of Latin America and the Caribbean | No scooter feed found: also Paraguay, Bolivia, Ecuador, Venezuela, Central America outside Costa Rica, Jamaica, Cuba, Haiti, Trinidad and Tobago, Barbados, the Cayman Islands, the Turks and Caicos Islands, Sint Maarten and the French Antilles. Lime has left Argentina, and Uruguay's last operator left by December 2025. Breeze, in the Bahamas, runs on OTORide and publishes no feed |
+| Argentina, Uruguay and the rest of Latin America and the Caribbean | No scooter feed found: also Paraguay, Bolivia, Ecuador, Venezuela, Central America outside Costa Rica, Jamaica, Cuba, Haiti, Trinidad and Tobago, Barbados, the Cayman Islands, the Turks and Caicos Islands, Sint Maarten and the French Antilles. Lime has left Argentina, Uruguay's last operator left by December 2025, and Guayaquil's transit agency seizes scooters. Breeze, in the Bahamas, runs on OTORide and publishes no feed |
 
 Bolt publishes only two public scooter feeds in Europe, Brussels and Liverpool;
 its other systems answer 401. Dott made most regions private in September 2026.
@@ -784,7 +787,15 @@ Bonaire had feeds to add. Survey files are in
   add it if its scooters leave their spots about as often.
 - **15 January 2027:** Hopp Las Terrenas (`do-las-terrenas`), in the
   Dominican Republic: 2 scooters, none available, on 15 October 2026. Add it
-  if it holds about ten available scooters that are ridden.
+  if it holds about ten available scooters that are ridden. Hopp Accra
+  (`gh-accra`) too, whose 13 scooters were all disabled on 18 October.
+- **January 2027:** Ballarat, whose Neuron scheme ended on 31 March 2026,
+  chooses a new operator, and Rio de Janeiro accredits its operators under
+  edital CCPAR 01/2026: see whether either publishes a feed.
+- **February 2027:** New South Wales's scooter trials (Wollongong and
+  Forster-Tuncurry) end on 22 January 2027 and the state decides what
+  follows: look for a public feed, and check Flamingo `sydney` sooner than
+  March if Sydney is opened to scooters.
 - **1 March 2027:** Dott Bourgoin-Jallieu, offline since early October 2026.
   Check `bourgoin-jallieu` and Dott's French listing, and add it again if it
   lists scooters that are ridden.
@@ -850,6 +861,9 @@ Bonaire had feeds to add. Survey files are in
   Kazakhstan too (Minsk's runs from about 15 March to 15 November): check
   Bolt's ids, Whoosh, the registry, ATOM Mobility and the national portals
   again.
+- **April 2027:** Bogotá's rules for shared scooters, which Yango's launch
+  there waits for; and new tenders in Hobart, Launceston, Bendigo and the
+  Sunshine Coast, whose schemes ended or paused in 2024–26.
 - **April 2027:** Turkey's season. Check `gbfs.heyhop.app`,
   `gbfs.martitech.com`, BinBin, and Istanbul's, İzmir's and Konya's open-data
   portals for a public scooter feed.

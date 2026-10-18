@@ -243,8 +243,10 @@ schools and motorways.
   - Woodend and Pegasus, in Flamingo's `waimakariri` feed: about 5 scooters,
     none ridden.
 - **No public feed:** Beam, in Queenstown, Taupō and Whangārei, whose feed
-  host answers 401; Lime, in Auckland and elsewhere. Neuron has left New
-  Zealand.
+  host answers 401; Lime, with about 3,000 scooters in Auckland,
+  Christchurch, Hamilton (about 670, the town's whole fleet) and Palmerston
+  North, by Ride Report's averages for the third quarter of 2026. Neuron has
+  left New Zealand.
 - **Zone curfews** in Wellington, Auckland and Tauranga are not on the map
   (see [Rules](#rules)).
 
