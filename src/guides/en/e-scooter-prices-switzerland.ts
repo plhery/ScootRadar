@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter prices in Switzerland: what a shared e-scooter costs, city by city',
   lede: 'E-scooter prices in Switzerland are almost always an unlock fee plus a rate per minute: CHF 1.00 to unlock, then CHF 0.39 to CHF 0.48 a minute at the rates Bolt, Hopp and Voi published on 12 October 2026. Ten minutes therefore cost CHF 4.90 to CHF 5.80. PubliBike is cheaper in Zürich and Biel, at CHF 1 plus CHF 0.20 a minute on its price page (October 2026). Dott charges CHF 0.95 to CHF 1.50 to unlock, depending on the town, Bird publishes no rates, and every operator’s app shows the final price before you unlock.',
   published: '2026-10-12',
-  updated: '2026-10-15',
+  updated: '2026-10-18',
   sections: [
     {
       heading: 'How much does an e-scooter cost in Switzerland?',
@@ -42,7 +42,7 @@ const guide: Guide = {
               ['Basel', 'Dott (own data feed)', 'CHF 0.95', 'CHF 0.39'],
               ['Basel', 'Bird', 'Not published', 'Shown in the app'],
               ['Biel/Bienne', 'Voi', 'CHF 1.00', 'CHF 0.39'],
-              ['St. Gallen, Rorschach, Gossau, Flawil, Uzwil, Wil and Lichtensteig', 'Dott', 'CHF 1.20', 'CHF 0.45'],
+              ['St. Gallen, Rorschach, Gossau, Flawil, Uzwil and Wil', 'Dott', 'CHF 1.20', 'CHF 0.45'],
               ['Romanshorn and Amriswil', 'Dott', 'CHF 1.50', 'CHF 0.45'],
               ['Wädenswil and Richterswil', 'Bolt', 'CHF 1.00', 'CHF 0.48'],
               ['Schaffhausen', 'Voi', 'None', 'CHF 0.39'],

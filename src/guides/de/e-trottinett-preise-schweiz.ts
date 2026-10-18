@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Trottinett-Preise in der Schweiz: So viel kostet ein Sharing-Trottinett, Stadt für Stadt',
   lede: 'Die E-Trottinett-Preise in der Schweiz setzen sich fast immer gleich zusammen: CHF 1.– fürs Entsperren, dann 39 bis 48 Rappen pro Minute, so die Tarife, die Bolt, Hopp und Voi am 12. Oktober 2026 veröffentlichten. Zehn Minuten kosten damit CHF 4.90 bis CHF 5.80. Günstiger fährst du mit PubliBike in Zürich und Biel: CHF 1.– plus 20 Rappen pro Minute laut Preisliste, Stand Oktober 2026. Dott verlangt je nach Ort 95 Rappen bis CHF 1.50 fürs Entsperren, Bird veröffentlicht keine Tarife, und bei allen Anbietern zeigt die App den Endpreis, bevor du entsperrst.',
   published: '2026-10-12',
-  updated: '2026-10-15',
+  updated: '2026-10-18',
   sections: [
     {
       heading: 'Was kostet es, ein E-Trottinett zu mieten?',
@@ -42,7 +42,7 @@ const guide: Guide = {
               ['Basel', 'Dott (eigener Datenfeed)', '95 Rappen', '39 Rappen'],
               ['Basel', 'Bird', 'nicht veröffentlicht', 'in der App'],
               ['Biel/Bienne', 'Voi', 'CHF 1.–', '39 Rappen'],
-              ['St. Gallen, Rorschach, Gossau, Flawil, Uzwil, Wil und Lichtensteig', 'Dott', 'CHF 1.20', '45 Rappen'],
+              ['St. Gallen, Rorschach, Gossau, Flawil, Uzwil und Wil', 'Dott', 'CHF 1.20', '45 Rappen'],
               ['Romanshorn und Amriswil', 'Dott', 'CHF 1.50', '45 Rappen'],
               ['Wädenswil und Richterswil', 'Bolt', 'CHF 1.–', '48 Rappen'],
               ['Schaffhausen', 'Voi', 'keine', '39 Rappen'],
