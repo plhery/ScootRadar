@@ -154,7 +154,9 @@ primary source was found.
   in the Hajj. Check again from 15 to 30 May 2027.
 - **SAHAM's other systems:** 1122 and 1383 on `saham.rideatom.com` answer
   "GBFS disabled".
-- **No public feed:** Wing, Barqscoot and SPIDERS; Green Arrows, on ATOM
+- **No public feed:** Wing, Barqscoot, SPIDERS and Rabbit; BSKL, whose App
+  Store listing has five times SAHAM's ratings, runs on Joyride, whose three
+  feed hosts no longer resolve (18 October 2026); Green Arrows, on ATOM
   Mobility, has no host that answers.
 - **open.data.gov.sa,** the national open-data portal, did not answer.
 

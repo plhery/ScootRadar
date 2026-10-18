@@ -61,8 +61,9 @@ banned shared scooters, and feeds that were empty when checked.
     18:10 to Sunday 18 October at 03:30 twelve of them stayed at the same
     spots, by the station and on the road to Wattwil, their batteries only
     draining; one scooter left and another arrived, at most one ride in 33
-    hours. Its zone is no longer read
-    ([Data sources](../DATA_SOURCES.md#mobility-data)).
+    hours. They still show when the view reaches Dott St. Gallen's area,
+    about a kilometre east, since a feed's scooters aren't clipped to its
+    towns' areas ([Data sources](../DATA_SOURCES.md#mobility-data)).
 - **France** ([guide](french-scooter-feeds.md#feeds-not-enabled)):
   - Central Paris has no shared scooters (banned in 2023).
   - Dott GPSEO answers 404; Dott OL Vallée was empty.
@@ -460,8 +461,10 @@ banned shared scooters, and feeds that were empty when checked.
     which never moved. **Dott STC City:** empty, with a free plan, on the stc
     headquarters campus, not a public service.
   - **Dott Makkah:** empty, with a free plan; it may run in the Hajj.
-  - **No public feed:** Wing, Barqscoot and SPIDERS; Green Arrows, on ATOM
-    Mobility, has no host that answers.
+  - **No public feed:** Wing, Barqscoot, SPIDERS and Rabbit; BSKL, whose App
+    Store listing has five times SAHAM's ratings, runs on Joyride, whose
+    three feed hosts no longer resolve (18 October 2026); Green Arrows, on
+    ATOM Mobility, has no host that answers.
   - **open.data.gov.sa** did not answer.
 - **Israel** ([guide](israeli-scooter-feeds.md#known-gaps)): Bird, Dott and
   Lime in 13 towns of Gush Dan and in Ashdod are covered.
@@ -591,20 +594,20 @@ a licence. Neither is published by its operator:
 | Estonia, Lithuania | Bolt and Ride Mobility publish no feed |
 | Slovakia, Bulgaria, Romania, Moldova | Dott and Bolt publish no feed; nothing else found. Romania's PBSC bike-share feeds list a scooter type with no scooters. (Slovenia: see above) |
 | Serbia | Belgrade cancelled its scooter tender in July 2026 |
-| Turkey | Martı, BinBin and Hop publish no feed: `gbfs.heyhop.app` answers 404 and `gbfs.martitech.com` doesn't answer (15 October 2026). Istanbul's, İzmir's and Konya's open-data portals hold static parking and routes only; AAR Bike Konya's feed is bicycles. Check again about April 2027 |
+| Turkey | Martı, BinBin and Hop publish no feed: `gbfs.heyhop.app` answers 404, and no `gbfs.` or `api.` host answers for Martı or BinBin (18 October 2026). Turkey had 93,221 licensed scooters at the end of 2022; Martı averaged 20,400 vehicles a day in early 2026, mopeds and e-bikes included, and BinBin runs in 8 Turkish towns. Since December 2025 operators report rides to the transport ministry's U-NET system, which isn't public. Istanbul's, İzmir's and Konya's open-data portals hold static parking and routes only; AAR Bike Konya's feed is bicycles. Check again about April 2027, or sooner if U-NET's data is opened |
 | Malta | Rental scooters banned since March 2024 |
 | Luxembourg, Monaco, Liechtenstein | Bikes and e-bikes only; MonaBike lists a scooter type with no scooters |
-| Belarus, Georgia, Armenia, Azerbaijan, Kazakhstan | Bolt, with scooters in Tbilisi, Kutaisi, Baku and Almaty, answers 401, and so does Whoosh (`api.whoosh.bike/gbfs`). Eleven, Yandex Go, Jet, Mimo, BusyFly, YerevanRide, Ozim and Scroll publish nothing, and Kolobike has closed. No registry rows, no ATOM Mobility systems, nothing on the national open-data portals |
+| Belarus, Georgia, Armenia, Azerbaijan, Kazakhstan | Bolt, with scooters in Tbilisi, Kutaisi, Baku and Almaty, answers 401, and so does Whoosh (`api.whoosh.bike/gbfs`). Eleven, Yandex Go, Urent, JET, Mimo, BusyFly, YerevanRide, Ozim and Scroll publish nothing, and Kolobike has closed; JET's site has no map and its other site is behind a bot challenge. No registry rows, no ATOM Mobility systems, nothing on the national open-data portals. Almaty is the biggest fleet: about 22,500 scooters in April 2026, with JET holding over 70% of the market. Yerevan has about 1,500 (JET and YerevanRide) |
 | Vatican City | No operator. Bird Rome's geofence forbids riding over St Peter's, the Gardens and the Museums, and none of its 4,454 vehicles stood inside at 12:37 on 14 October 2026 |
-| Qatar | wer2, in Doha, is on ATOM Mobility, but its 11 systems (1824, 1836, 1837, 1838, 1840, 1841, 2050, 2109, 2110, 2132, 2143) answer "GBFS disabled", as does Salik's 1118. Loop and Dart publish no feed; data.gov.qa has no scooter data. wer2, or ATOM, would have to switch the feed on; no one has asked |
-| Kuwait | eFly is on ATOM Mobility, but its systems 2253 and 2340 answer "GBFS disabled". BSKL and e-Fly Scooters and More, on Joyride, publish no feed. eFly, or ATOM, would have to switch the feed on; no one has asked |
-| Oman | Biko, in Muscat, is on ATOM Mobility, but its 7 systems (1445, 1532, 1533, 1534, 1535, 1593, 1869) answer "GBFS disabled". Biko, or ATOM, would have to switch the feed on; no one has asked |
-| Bahrain | Hopp's `bh-bahrain` feed holds 13 or 14 scooters on three sites (Zallaq, Manama, Amwaj), about 2 rides in 10.4 hours on 15 October 2026: too few. Spiders and BSKL publish no feed; data.gov.bh has no scooter data |
+| Qatar | wer2, in Doha, is on ATOM Mobility, but its 11 systems (1824, 1836, 1837, 1838, 1840, 1841, 2050, 2109, 2110, 2132, 2143) answer "GBFS disabled". Loop, Dart, OWLO, Fenix and Falcon Ride publish no feed; OTORide, which runs OWLO, answers 404 on every `/gbfs` path. data.gov.qa has no scooter data. Loop had over 500 scooters in 2020 and wer2 over 700 in 2022. wer2, or ATOM, would have to switch the feed on; no one has asked |
+| Kuwait | eFly is on ATOM Mobility, but its systems 2253 and 2340 answer "GBFS disabled". BSKL, Rabbit, Rent it (on OTORide) and e-Fly Scooters and More (on Joyride) publish no feed. E-scooters have been banned on Kuwait's public roads since 31 October 2020. eFly, or ATOM, would have to switch the feed on; no one has asked |
+| Oman | Biko, in Muscat, is on ATOM Mobility, but its 7 systems (1445, 1532, 1533, 1534, 1535, 1593, 1869) answer "GBFS disabled", and `biko.rideatom.com` no longer resolves. Salik, which ran the transport ministry's trial at Knowledge Oasis Muscat, is ATOM system 1118 and answers "GBFS disabled" too. Biko, Salik or ATOM would have to switch the feed on; no one has asked |
+| Bahrain | Hopp's `bh-bahrain` feed holds 13 or 14 scooters on three sites (Zallaq, Manama, Amwaj), about 2 rides in 10.4 hours on 15 October 2026, and still 14 on 18 October: too few. Spiders, Fenix and BSKL publish no feed; data.gov.bh has no scooter data. Since Resolution 58 of 2026, scooters may ride only in designated zones |
 | Egypt | Rabbit, in Cairo, publishes no feed, and Cairo's governor ordered e-scooters seized |
 | South Africa | Zippy, in Langebaan, is on ATOM Mobility, but its systems 2028, 2075 and 2318 answer "GBFS disabled". Africa has no continent in the app yet |
 | Ghana | Hopp's `gh-accra` feed holds 13 scooters, all disabled with no range, at a depot |
-| Jordan | No scooter feed found; Dott's listing names no region |
-| Lebanon | No scooter feed found; Dott's listing names no region |
+| Jordan | Sky Scooters (on OTORide) and E-Ride publish no feed; Dott's listing names no region |
+| Lebanon | No scooter feed found, and Loop's 2017 service is gone; Dott's listing names no region |
 | Morocco | No scooter feed found; Dott's listing names no region |
 | Tunisia | No scooter feed found |
 | Kenya | No scooter feed found; Dott's listing names no region |
@@ -613,11 +616,11 @@ a licence. Neither is published by its operator:
 | Mauritius | No scooter feed found |
 | Namibia | No scooter feed found |
 | Australia | Neuron's and Beam's feeds answer 401, and Lime answers 404 for about 80 town names; no state's open-data portal has a scooter feed. New South Wales's trials (Forster-Tuncurry and Wollongong, to 22 January 2027) send their data to a closed government platform. Flamingo's `sydney` feed is a static test: 2,331 scooters that never move, with new ids at every poll, at Transport for NSW's Crash Lab test site. Check again on 1 March 2027 |
-| Japan | The national open-data hub (ODPT) has bike-share feeds only (docomo bike share, HELLO CYCLING). LUUP publishes no feed; JOJO and TOCKLE run on Joyride, whose feed host is gone |
-| South Korea | Swing, GCOO, Kickgoing, Deer, DART and Beam publish no feed. The government's TAGO service lists every operator's shared scooters, but not as GBFS, and it needs a personal key: a possible source |
-| Malaysia | Zeus's Kuala Lumpur feed holds 47 scooters, all disabled, last reported two to five years ago |
-| Taiwan, Hong Kong, Singapore, Thailand, Indonesia, the Philippines, Vietnam, India | No registry row, and no guessed address answers. Taiwan's shared fleets are seated mopeds, Singapore bans shared scooters, and India's Yulu runs seated vehicles |
-| Uzbekistan, Mongolia | JET, which runs in both and in Kazakhstan, Georgia and Azerbaijan, publishes no feed. Silk Road Sharing, in Samarkand (ATOM Mobility system 1976), and IZZY, in Tashkent (1918), answer "GBFS disabled". Check again on 1 April 2027 |
+| Japan | The national open-data hub (ODPT) has bike-share feeds only (docomo bike share, HELLO CYCLING), and Tokyo's open-data catalog has no scooter data. LUUP, with about 10,000 e-scooters and as many e-bikes, shows its map in its app only. JOJO and TOCKLE run on Joyride, whose three feed hosts no longer resolve |
+| South Korea | Swing, GCOO, Kickgoing, Deer, DART, Beam, Alpaca and Xingxing publish no feed, and Seoul, Busan and Daejeon publish only parking, towing and statistics. Seoul had 18,548 shared scooters in December 2025, down from 43,417 in October 2023. The government's TAGO API (data.go.kr dataset 15117668) lists scooters with their battery, but not as GBFS, and only in Sejong: GCOO's 2,800 or so, and ALPACA's 1,368, frozen. It needs a personal key, which only Korean nationals and businesses registered in Korea can get. Check the dataset page for other cities on 1 March 2027 |
+| Malaysia | Zeus's Kuala Lumpur feed holds 47 scooters, all disabled, last reported two to five years ago. Beam, with over 5,500 scooters in 8 cities and 24 universities, answers 401; Neuron publishes no feed |
+| Taiwan, Hong Kong, Singapore, Thailand, Indonesia, the Philippines, Vietnam, India | No registry row, and no guessed address answers. Beam, in Indonesia and Thailand (Bangkok's at Chulalongkorn University's Samyan campus), answers 401; Moovr, in Manila's BGC and Makati, runs on Joyride, whose feed hosts no longer resolve. Taiwan's shared fleets are seated mopeds, with stand-up scooters only in local pilots; Hong Kong bans e-scooters and Singapore shared ones; India's Yulu runs seated vehicles |
+| Uzbekistan, Mongolia, Kyrgyzstan | JET, which runs in Uzbekistan and Mongolia and in Kazakhstan, Georgia, Armenia and Azerbaijan, publishes no feed, nor do Whoosh, Urent, SunRent and E-motion in Bishkek. Ulaanbaatar is the biggest: JET put 3,000 scooters there in 2023 and planned 6,000 more. Silk Road Sharing, in Samarkand (ATOM Mobility system 1976), and IZZY, in Tashkent (1918), still answer "GBFS disabled" on 18 October 2026. Check again on 1 April 2027 |
 | Pacific islands | Pineapple, in Samoa (ATOM Mobility system 1359), answers "GBFS disabled" and its site is down; Kai Ride (2118), whose place is unknown, too. France's access point (transport.data.gouv.fr) has nothing for Nouméa or Papeete |
 | Bosnia and Herzegovina, Montenegro, North Macedonia, Albania, Kosovo, Andorra, San Marino, Gibraltar, Faroe Islands | No scooter feed found (Hopp Tórshavn held 13, all disabled, at night and on the evening of 13 October 2026) |
 | Colombia | Lime `bogota` answers but lists no vehicle (16:11 to 17:04 Bogotá time, 15 October 2026). Whoosh, in Medellín, answers 401 and 403: its feeds exist but are private. Yango, in Bogotá, publishes no feed. Check again on 1 March 2027 |
@@ -796,6 +799,10 @@ Bonaire had feeds to add. Survey files are in
   in September 2026, and Lime Bogotá (`bogota`), empty on 15 October 2026.
   Check Lime's Querétaro and Monterrey slugs, Whoosh, JET and Yango again
   too.
+- **1 March 2027:** Korea's TAGO API (data.go.kr dataset 15117668), from
+  its page only, without a key: it listed Sejong alone on 18 October 2026.
+  If it adds Seoul or another big city, the key is still the obstacle: only
+  Korean nationals and businesses registered in Korea can get one.
 - **1 March 2027:** Flamingo `sydney`
   (`data.rideflamingo.com/gbfs/3/sydney/gbfs.json`), a static test feed on
   15 October 2026, and Neuron's, Beam's and Lime's Australian feeds. Add
@@ -821,9 +828,11 @@ Bonaire had feeds to add. Survey files are in
   `REGION_ALIASES`).
 - **1 April 2027:** Uzbekistan's ATOM Mobility systems, Silk Road Sharing
   in Samarkand (1976) and IZZY in Tashkent (1918), which answered "GBFS
-  disabled" on 15 October 2026. If either answers with scooters, Uzbekistan
-  needs its time zones (`Asia/Tashkent`, `Asia/Samarkand`) and prices in
-  UZS.
+  disabled" on 15 and 18 October 2026. If either answers with scooters,
+  Uzbekistan needs its time zones (`Asia/Tashkent`, `Asia/Samarkand`) and
+  prices in UZS. The Gulf's ATOM systems too: wer2 (1824 and the rest,
+  Qatar), eFly (2253 and 2340, Kuwait), Salik (1118) and Biko (Oman), and
+  Hopp `bh-bahrain`, which held 14 scooters on three sites.
 - **1 April 2027:** Latin America and the Caribbean: Bird's four Puerto Rico
   feeds; ATOM Mobility's e-moob (1688 and 2319, Aruba and Tamarindo) and
   Smart Wheels (1875, Curaçao), which answered "GBFS disabled"; Whoosh's feed
