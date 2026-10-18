@@ -473,11 +473,16 @@ banned shared scooters, and feeds that were empty when checked.
 - **Israel** ([guide](israeli-scooter-feeds.md#known-gaps)): Bird, Dott and
   Lime in 13 towns of Gush Dan and in Ashdod are covered.
   - **Left out:** Bird in Caesarea, 49 to 52 scooters with only 5 new
-    positions in 9 hours on 15 October 2026; Dott in Givat Shmuel (6 to 11
+    positions in 9 hours on 15 October 2026, and 41, 40 then 37 on the
+    morning of Sunday 18 October, three leaving and none arriving in 20
+    minutes; Dott in Givat Shmuel (6 to 11
     scooters, one arrival in the day), Kiryat Ono (2 or 3) and Ramat
     HaSharon; Lime in Bat Yam and Ramat HaSharon; Bird in Petah Tikva and
     Pardes Hanna-Karkur, about one scooter a poll each. The map drops their
     scooters rather than count them under a neighbour.
+  - **Bird's zones** outline service areas in Hadera, Afula, Beit She'an,
+    Rosh HaAyin, Eilat and Jerusalem's Har Hotzvim, none of which held a
+    scooter on 18 October 2026.
   - **Bird `tel-aviv`:** a duplicate of Bird `israel`: 1,502 of its 1,517
     positions are also in `israel`, under other ids, so reading both would
     count about 1,550 scooters twice.
@@ -615,7 +620,7 @@ a licence. Neither is published by its operator:
 | Luxembourg, Monaco, Liechtenstein | Bikes and e-bikes only; MonaBike lists a scooter type with no scooters |
 | Belarus, Georgia, Armenia, Azerbaijan, Kazakhstan | Bolt, with scooters in Tbilisi, Kutaisi, Baku and Almaty, answers 401, and so does Whoosh (`api.whoosh.bike/gbfs`). Eleven, Yandex Go, Urent, JET, Mimo, BusyFly, YerevanRide, Ozim and Scroll publish nothing, and Kolobike has closed; JET's site has no map and its other site is behind a bot challenge. No registry rows, no ATOM Mobility systems, nothing on the national open-data portals. Almaty is the biggest fleet: about 22,500 scooters in April 2026, with JET holding over 70% of the market. Yerevan has about 1,500 (JET and YerevanRide) |
 | Vatican City | No operator. Bird Rome's geofence forbids riding over St Peter's, the Gardens and the Museums, and none of its 4,454 vehicles stood inside at 12:37 on 14 October 2026 |
-| Qatar | wer2, in Doha, is on ATOM Mobility, but its 11 systems (1824, 1836, 1837, 1838, 1840, 1841, 2050, 2109, 2110, 2132, 2143) answer "GBFS disabled". Loop, Dart, OWLO, Fenix and Falcon Ride publish no feed; OTORide, which runs OWLO, answers 404 on every `/gbfs` path. data.gov.qa has no scooter data. Loop had over 500 scooters in 2020 and wer2 over 700 in 2022. wer2, or ATOM, would have to switch the feed on; no one has asked |
+| Qatar | wer2, in Doha, is on ATOM Mobility, but its 11 systems (1824, 1836, 1837, 1838, 1840, 1841, 2050, 2109, 2110, 2132, 2143) answer "GBFS disabled". Loop, Dart, OWLO, Fenix and Falcon Ride publish no feed; OTORide, which runs OWLO, answers 404 on every `/gbfs` path. data.gov.qa has no scooter data. Dott's Qatari terms (changed 23 September 2025) name TIER Mobility Doha, but Dott lists no Qatari region and its Qatari slugs answer 404 (18 October 2026). Loop had over 500 scooters in 2020 and wer2 over 700 in 2022. wer2, or ATOM, would have to switch the feed on; no one has asked |
 | Kuwait | eFly is on ATOM Mobility, but its systems 2253 and 2340 answer "GBFS disabled". BSKL, Rabbit, Rent it (on OTORide) and e-Fly Scooters and More (on Joyride) publish no feed. E-scooters have been banned on Kuwait's public roads since 31 October 2020. eFly, or ATOM, would have to switch the feed on; no one has asked |
 | Oman | Biko, in Muscat, is on ATOM Mobility, but its 7 systems (1445, 1532, 1533, 1534, 1535, 1593, 1869) answer "GBFS disabled", and `biko.rideatom.com` no longer resolves. Salik, which ran the transport ministry's trial at Knowledge Oasis Muscat, is ATOM system 1118 and answers "GBFS disabled" too. Biko, Salik or ATOM would have to switch the feed on; no one has asked |
 | Bahrain | Hopp's `bh-bahrain` feed holds 13 or 14 scooters on three sites (Zallaq, Manama, Amwaj), about 2 rides in 10.4 hours on 15 October 2026, and still 14 on 18 October: too few. Spiders, Fenix and BSKL publish no feed; data.gov.bh has no scooter data. Since Resolution 58 of 2026, scooters may ride only in designated zones |
@@ -632,7 +637,7 @@ a licence. Neither is published by its operator:
 | Mauritius | No scooter feed found |
 | Namibia | No scooter feed found |
 | Australia | About 8,000 scooters in about 20 towns: Brisbane (Lime 1,700 and Beam), Canberra (Lime, about 1,200), Adelaide (Neuron and Beam, about 940), Darwin (Beam, up to 750), Port Phillip (Lime and Neuron, about 460), Townsville, Cairns, Perth's Stirling and Beam's regional towns. Neuron's and Beam's feeds (one company since September 2025) answer 401, and Lime answers 404 for about 80 town names; no state's or city's open-data portal has positions (Brisbane publishes monthly trip counts). New South Wales's trials (Forster-Tuncurry and Wollongong, to 22 January 2027) send their data to a closed government platform. Flamingo's `sydney` feed is still a static test on 18 October 2026: 2,331 scooters that never move, with new ids at every poll, at Transport for NSW's Crash Lab test site. Check again on 1 March 2027 |
-| Japan | The national open-data hub (ODPT) has bike-share feeds only (docomo bike share, HELLO CYCLING), and Tokyo's open-data catalog has no scooter data. LUUP, with about 10,000 e-scooters and as many e-bikes, shows its map in its app only. JOJO and TOCKLE run on Joyride, whose three feed hosts no longer resolve |
+| Japan | The national open-data hub (ODPT) has bike-share feeds only (docomo bike share, HELLO CYCLING), and Tokyo's open-data catalog has no scooter data. LUUP, with about 10,000 e-scooters and as many e-bikes, shows its scooters in its app only; the port map on its site ships its over 17,900 ports encrypted. JOJO and TOCKLE run on Joyride, whose three feed hosts no longer resolve |
 | South Korea | Swing, GCOO, Kickgoing, Deer, DART, Beam, Alpaca and Xingxing publish no feed, and Seoul, Busan and Daejeon publish only parking, towing and statistics. Seoul had 18,548 shared scooters in December 2025, down from 43,417 in October 2023. The government's TAGO API (data.go.kr dataset 15117668) lists scooters with their battery, but not as GBFS, and only in Sejong: GCOO's 2,800 or so, and ALPACA's 1,368, frozen. It needs a personal key, which only Korean nationals and businesses registered in Korea can get. Check the dataset page for other cities on 1 March 2027 |
 | Malaysia | Zeus's Kuala Lumpur feed holds 47 scooters, all disabled, last reported two to five years ago. Beam, with over 5,500 scooters in 8 cities and 24 universities, answers 401; Neuron publishes no feed |
 | Taiwan, Hong Kong, Singapore, Thailand, Indonesia, the Philippines, Vietnam, India | No registry row, and no guessed address answers. Beam, in Indonesia and Thailand (Bangkok's at Chulalongkorn University's Samyan campus), answers 401; Moovr, in Manila's BGC and Makati, runs on Joyride, whose feed hosts no longer resolve. Taiwan's shared fleets are seated mopeds, with stand-up scooters only in local pilots; Hong Kong bans e-scooters and Singapore shared ones; India's Yulu runs seated vehicles |
@@ -664,6 +669,15 @@ national open-data portals, guessed Bird, Dott, Hopp, Lime, Neuron, Beam,
 Spin and Zeus addresses for each country's towns, a scan of ATOM Mobility's
 systems and the operators' sites. Only New Zealand had feeds to add. Survey
 files are in `/tmp/scoot-providers/asia-pacific/`, which isn't kept.
+
+Asia and the Middle East were surveyed again on 18 October 2026, with polls
+at 10:39, 10:49 and 10:59 UTC: Dott's index
+(`gbfs.api.ridedott.com/public/v2/gbfs.json`, 435 feeds of 62 regions, not
+all of its European ones), whose 11 Middle Eastern regions are all known, 79 more name-based Dott slugs from Qatar to Japan (all 404), Bird's,
+Lime's and Hopp's addresses, ODPT, BODIK and e-Gov in Japan, 175 datasets
+of data.go.kr in Korea and the portals of ten Turkish cities. Nothing new
+to add. Dott's GBFS 3 feeds answer 401 without a key. Survey files are in
+`/tmp/scoot-providers/asia-zones-pass/`, which isn't kept.
 
 Latin America and the Caribbean were surveyed on 15 and 16 October 2026,
 with polls from 21:11 UTC on the 15th to 02:11 UTC on the 16th: MobilityData's
