@@ -25,6 +25,7 @@ export interface RidePricing {
   unlock_fee_minor_units: number;
   minute_fee_minor_units: number;
   plus_tax?: boolean;
+  listed_on?: string;
 }
 
 export interface Vehicle {

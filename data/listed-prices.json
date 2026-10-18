@@ -1,0 +1,6 @@
+{
+  "about": "Prices for the systems whose feeds publish none, copied by hand from the operator's public price list, or from the city's where the operator publishes none. `checked` is the day the price was last read at `url`, and `quote` is what the page said. The map shows an entry's price until it is `staleAfterDays` old; the weekly catalog check fails from `recheckAfterDays`, so that someone reads the page again and updates the price and the day.",
+  "recheckAfterDays": 90,
+  "staleAfterDays": 180,
+  "prices": []
+}

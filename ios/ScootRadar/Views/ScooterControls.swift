@@ -1498,6 +1498,20 @@ enum RidePriceFormatter {
             ?? "\(currency.uppercased()) \(amount.stringValue)"
     }
 
+    /// "18 Oct", or "18 Oct 2026" when that is not this year: the day, "2026-10-18", a price
+    /// copied from an operator's price list was last checked there.
+    static func listedDay(_ day: String, now: Date = .now) -> String? {
+        guard let date = try? Date("\(day)T00:00:00Z", strategy: .iso8601) else { return nil }
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = .gmt
+        var style = Date.FormatStyle(locale: ScooterLanguage.current.locale, calendar: calendar, timeZone: .gmt)
+            .day().month(.abbreviated)
+        if calendar.component(.year, from: date) != calendar.component(.year, from: now) {
+            style = style.year()
+        }
+        return date.formatted(style)
+    }
+
     /// Two decimals, or none for a currency that has no cents: "ISK 350", "HUF 272".
     static func fractionDigits(_ currency: String) -> Int {
         let code = currency.uppercased()

@@ -210,6 +210,7 @@
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ zum Entsperren, dann %2$@ pro Minute";
 "No unlock fee, %@ a minute" = "Keine Entsperrgebühr, %@ pro Minute";
 "%@ + tax" = "%@ + Steuern";
+"%1$@ · published price, checked %2$@" = "%1$@ · veröffentlichter Preis, Stand %2$@";
 
 /* Walking route: Directions on a card draws the way on the map */
 "Hide route" = "Route ausblenden";

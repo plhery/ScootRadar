@@ -8,7 +8,7 @@ import { useI18n } from '@/lib/i18n';
 import { providerInkColor, providerSurfaceColor } from '@/lib/providerColor';
 import type { ActiveCurfew } from '@/lib/rentalCurfews';
 import { operatorAppLink, rentalLinkForPlatform, rentalPlatform } from '@/lib/rentalLinks';
-import { RIDE_DURATIONS, currencyFractionDigits, formatRidePrice, ridePriceQuote } from '@/lib/ridePrice';
+import { RIDE_DURATIONS, currencyFractionDigits, formatListedDay, formatRidePrice, ridePriceQuote } from '@/lib/ridePrice';
 import { PROVIDERS, type Vehicle } from '@/lib/types';
 import { formatUiText } from '@/lib/uiText';
 import { useRideDuration } from '@/lib/useRideDuration';
@@ -109,11 +109,17 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
   const money = (minorUnits: number) => quote ? formatRidePrice(minorUnits, quote.currency, locale, region) : '';
   // Where tax is added, as in North America, the prices say so.
   const taxed = (text: string) => quote?.plusTax ? t('card.plusTax', { text }) : text;
-  const note = quote
+  const tariff = quote
     ? taxed(quote.unlockFeeMinorUnits > 0
       ? t('card.note.price', { unlock: money(quote.unlockFeeMinorUnits), minute: money(quote.minuteFeeMinorUnits) })
       : t('card.note.noUnlock', { minute: money(quote.minuteFeeMinorUnits) }))
-    : t('card.priceInApp', { name });
+    : null;
+  // A price copied from the operator's price list, not its feed, says when it was read there.
+  const note = tariff === null
+    ? t('card.priceInApp', { name })
+    : quote?.listedOn
+      ? t('card.note.listed', { text: tariff, date: formatListedDay(quote.listedOn, locale, region) })
+      : tariff;
 
   const figure = (kind: FigureKind) => {
     if (kind === 'walk' && walk) {

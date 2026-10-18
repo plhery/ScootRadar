@@ -210,6 +210,7 @@
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ for å låse opp, så %2$@ per minutt";
 "No unlock fee, %@ a minute" = "Gratis opplåsing, %@ per minutt";
 "%@ + tax" = "%@ + skatt";
+"%1$@ · published price, checked %2$@" = "%1$@ · publisert pris, sjekket %2$@";
 
 /* Walking route: Directions on a card draws the way on the map */
 "Hide route" = "Skjul ruten";

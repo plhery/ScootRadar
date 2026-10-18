@@ -195,10 +195,19 @@ struct ScooterRidePricing: Hashable, Sendable {
     let minuteFeeMinorUnits: Int
     /// Tax is added to these prices, as US and Canadian operators charge sales tax on top.
     var plusTax = false
+    /// "2026-10-18": the feed publishes no price, and this one was copied from the operator's
+    /// price list, where it was last checked that day.
+    var listedOn: String?
 
     /// "CHF 1.00 to unlock", or "USD 1.00 to unlock + tax" where tax is added.
     func taxed(_ text: String) -> String {
         plusTax ? String(format: String(localized: "%@ + tax"), text) : text
+    }
+
+    /// The tariff, followed by when it was checked where it was copied from a price list.
+    func listed(_ text: String) -> String {
+        guard let day = listedOn.flatMap({ RidePriceFormatter.listedDay($0) }) else { return text }
+        return String(format: String(localized: "%1$@ · published price, checked %2$@"), text, day)
     }
 }
 
@@ -821,7 +830,8 @@ extension ScooterVehiclePayload {
                     currency: currency,
                     unlockFeeMinorUnits: payload.unlockFeeMinorUnits,
                     minuteFeeMinorUnits: payload.minuteFeeMinorUnits,
-                    plusTax: payload.plusTax == true
+                    plusTax: payload.plusTax == true,
+                    listedOn: payload.listedOn.flatMap { $0.wholeMatch(of: /\d{4}-\d{2}-\d{2}/) == nil ? nil : $0 }
                 )
             }
         )

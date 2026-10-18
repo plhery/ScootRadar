@@ -36,12 +36,14 @@ struct ScooterRidePricingPayload: Decodable, Sendable {
     let unlockFeeMinorUnits: Int
     let minuteFeeMinorUnits: Int
     let plusTax: Bool?
+    let listedOn: String?
 
     private enum CodingKeys: String, CodingKey {
         case currency
         case unlockFeeMinorUnits = "unlock_fee_minor_units"
         case minuteFeeMinorUnits = "minute_fee_minor_units"
         case plusTax = "plus_tax"
+        case listedOn = "listed_on"
     }
 }
 

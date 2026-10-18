@@ -120,6 +120,12 @@
           "description": "Present and true where tax is added to these prices: in the US and Canada, where operators charge sales tax on top.",
           "x-swift-name": "plusTax",
           "type": "boolean"
+        },
+        "listed_on": {
+          "description": "Present where the feed publishes no price and this one is copied from a public price list, the operator's or the city's (data/listed-prices.json): the day it was last checked there, YYYY-MM-DD.",
+          "x-swift-name": "listedOn",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
         }
       }
     },

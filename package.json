@@ -8,6 +8,7 @@
     "check:france": "node scripts/check-french-feeds.mjs",
     "check:europe": "node scripts/check-french-feeds.mjs --countries=europe --except=FR",
     "check:catalogs": "node scripts/check-french-feeds.mjs --countries=all",
+    "check:listed-prices": "node scripts/check-listed-prices.mjs",
     "generate:api-contract": "node scripts/generate-api-contract.mjs",
     "check:api-contract": "node scripts/generate-api-contract.mjs --check",
     "check:dependencies": "node scripts/check-dependency-audit.mjs",

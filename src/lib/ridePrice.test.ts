@@ -4,6 +4,7 @@ import {
   RIDE_DURATIONS,
   RIDE_DURATION_STORAGE_KEY,
   currencyFractionDigits,
+  formatListedDay,
   formatRidePrice,
   loadRideDuration,
   normalizeRideDuration,
@@ -39,6 +40,7 @@ describe('ridePriceQuote', () => {
       minuteFeeMinorUnits: 35,
       totalMinorUnits: 450,
       plusTax: false,
+      listedOn: null,
     });
     expect(ridePriceQuote(LIME, 30).totalMinorUnits).toBe(1150);
     expect(ridePriceQuote(LIME, 0).totalMinorUnits).toBe(100);
@@ -46,6 +48,10 @@ describe('ridePriceQuote', () => {
 
   it('says whether tax is added to the estimate', () => {
     expect(ridePriceQuote({ ...LIME, currency: 'USD', plus_tax: true }, 10)).toMatchObject({ totalMinorUnits: 450, plusTax: true });
+  });
+
+  it("keeps the day a price copied from the operator's price list was checked", () => {
+    expect(ridePriceQuote({ ...LIME, listed_on: '2026-10-18' }, 10)).toMatchObject({ totalMinorUnits: 450, listedOn: '2026-10-18' });
   });
 
   it('handles tariffs without an unlock fee or without a minute fee', () => {
@@ -63,6 +69,22 @@ describe('ridePriceQuote', () => {
     expect(ridePriceQuote({ currency: 'CHF', unlock_fee_minor_units: 1, minute_fee_minor_units: Number.MAX_SAFE_INTEGER }, 30).totalMinorUnits)
       .toBe(Number.MAX_SAFE_INTEGER);
     expect(ridePriceQuote({ currency: 'CHF', unlock_fee_minor_units: NaN, minute_fee_minor_units: 35.9 }, 10).totalMinorUnits).toBe(350);
+  });
+});
+
+describe('formatListedDay', () => {
+  const now = Date.parse('2026-12-01T12:00:00Z');
+
+  it('gives the day and month in the app language, and the year when it is not this one', () => {
+    expect(formatListedDay('2026-10-18', 'en', 'CH', now)).toBe('18 Oct');
+    expect(formatListedDay('2026-10-18', 'en', 'US', now)).toBe('Oct 18');
+    expect(formatListedDay('2026-10-18', 'de', 'CH', now)).toBe('18. Okt.');
+    expect(formatListedDay('2026-10-18', 'fr', 'CH', now)).toBe('18 oct.');
+    expect(formatListedDay('2025-12-30', 'en', 'CH', now)).toBe('30 Dec 2025');
+  });
+
+  it('leaves a day it cannot read as it is', () => {
+    expect(formatListedDay('soon', 'en', 'CH', now)).toBe('soon');
   });
 });
 

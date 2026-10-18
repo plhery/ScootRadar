@@ -210,6 +210,7 @@
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ to unlock, then %2$@ a minute";
 "No unlock fee, %@ a minute" = "No unlock fee, %@ a minute";
 "%@ + tax" = "%@ + tax";
+"%1$@ · published price, checked %2$@" = "%1$@ · published price, checked %2$@";
 
 /* Walking route: Directions on a card draws the way on the map */
 "Hide route" = "Hide route";

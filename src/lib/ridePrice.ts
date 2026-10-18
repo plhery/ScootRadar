@@ -22,6 +22,8 @@ export interface RidePriceQuote {
   totalMinorUnits: number;
   /** Tax is added to these prices: "+ tax" follows them. */
   plusTax: boolean;
+  /** "YYYY-MM-DD" where the feed has no price and this is the operator's listed one, checked that day. */
+  listedOn: string | null;
 }
 
 function wholeAmount(value: number): number {
@@ -40,6 +42,7 @@ export function ridePriceQuote(pricing: RidePricing, durationMinutes: number): R
     // Saturates, as the Swift version does on overflow.
     totalMinorUnits: Math.min(unlockFee + minuteFee * minutes, Number.MAX_SAFE_INTEGER),
     plusTax: pricing.plus_tax === true,
+    listedOn: pricing.listed_on ?? null,
   };
 }
 
@@ -77,6 +80,19 @@ export function formatRidePrice(minorUnits: number, currency: string, locale: Ap
     // Not a currency code Intl accepts.
     return `${code} ${amount.toFixed(2)}`;
   }
+}
+
+/** "18 Oct", or "18 Oct 2026" when that is not this year, for the day a listed price was checked. */
+export function formatListedDay(day: string, locale: AppLocale, region?: string, now = Date.now()): string {
+  const time = Date.parse(`${day}T00:00:00Z`);
+  if (!Number.isFinite(time)) return day;
+  const sameYear = new Date(time).getUTCFullYear() === new Date(now).getUTCFullYear();
+  return new Intl.DateTimeFormat(formatLocale(locale, region), {
+    day: 'numeric',
+    month: 'short',
+    ...(sameYear ? {} : { year: 'numeric' }),
+    timeZone: 'UTC',
+  }).format(time);
 }
 
 /** The duration chosen last on this device. */

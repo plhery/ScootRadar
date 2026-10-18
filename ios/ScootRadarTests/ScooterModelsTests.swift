@@ -49,6 +49,28 @@ final class ScooterModelsTests: XCTestCase {
         XCTAssertTrue(RidePriceEstimator.quote(pricing: pricing, durationMinutes: 10).plusTax)
     }
 
+    func testAPriceCopiedFromAPriceListKeepsTheDayItWasChecked() throws {
+        // Lime in Chicago publishes no price in its feed: USD 1 to unlock and USD 0.39 a minute on its site.
+        func pricing(listedOn: String) throws -> ScooterRidePricing? {
+            let data = Data("""
+            {
+              "provider": "lime", "lat": 41.88, "lng": -87.63, "battery": null, "range_m": null,
+              "vehicle_id": "lime-1", "deep_link": null, "rental_uris": null, "distance_m": null,
+              "pricing": { "currency": "USD", "unlock_fee_minor_units": 100, "minute_fee_minor_units": 39,
+                           "plus_tax": true, "listed_on": "\(listedOn)" }
+            }
+            """.utf8)
+            return try JSONDecoder().decode(ScooterVehiclePayload.self, from: data).model.pricing
+        }
+        XCTAssertEqual(
+            try pricing(listedOn: "2026-10-18"),
+            ScooterRidePricing(currency: "USD", unlockFeeMinorUnits: 100, minuteFeeMinorUnits: 39, plusTax: true, listedOn: "2026-10-18")
+        )
+        // A day it can't read is left out, and the price kept.
+        XCTAssertNil(try pricing(listedOn: "soon")?.listedOn)
+        XCTAssertEqual(try pricing(listedOn: "soon")?.minuteFeeMinorUnits, 39)
+    }
+
     func testDecodingAndStableProviderIdentity() throws {
         let data = Data(#"""
         {

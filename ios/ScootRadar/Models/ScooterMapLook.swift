@@ -657,13 +657,13 @@ struct ScooterCardContent: Equatable, Sendable {
             return
         }
         let minute = RidePriceFormatter.string(minorUnits: pricing.minuteFeeMinorUnits, currency: pricing.currency)
-        let tariff = pricing.taxed(pricing.unlockFeeMinorUnits > 0
+        let tariff = pricing.listed(pricing.taxed(pricing.unlockFeeMinorUnits > 0
             ? String(
                 format: String(localized: "%1$@ to unlock, then %2$@ a minute"),
                 RidePriceFormatter.string(minorUnits: pricing.unlockFeeMinorUnits, currency: pricing.currency),
                 minute
             )
-            : String(format: String(localized: "No unlock fee, %@ a minute"), minute))
+            : String(format: String(localized: "No unlock fee, %@ a minute"), minute)))
         note = quote?.passApplied == true
             ? String(format: String(localized: "%1$@ · %2$@"), tariff, String(localized: "Pass applied"))
             : tariff

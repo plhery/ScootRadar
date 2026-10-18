@@ -587,6 +587,35 @@ final class ScooterMapLookTests: XCTestCase {
         XCTAssertEqual(taxed.taxed("x"), "x + Steuern")
     }
 
+    func testTheCardSaysWhenAPriceCopiedFromAPriceListWasChecked() {
+        defer { ScooterLanguage.current = .atLaunch }
+        ScooterLanguage.current = .en
+        // Lime in Chicago publishes no price in its feed: USD 1 to unlock and USD 0.39 a minute on its site.
+        let listed = ScooterRidePricing(
+            currency: "USD", unlockFeeMinorUnits: 100, minuteFeeMinorUnits: 39, plusTax: true, listedOn: "2026-10-18"
+        )
+        let content = ScooterCardContent(
+            scooter: scooter(provider: "lime", pricing: listed),
+            metres: 60,
+            quote: RidePriceEstimator.quote(pricing: listed, durationMinutes: 10)
+        )
+        let unlock = RidePriceFormatter.string(minorUnits: 100, currency: "USD")
+        let minute = RidePriceFormatter.string(minorUnits: 39, currency: "USD")
+        let day = RidePriceFormatter.listedDay("2026-10-18") ?? ""
+        XCTAssertEqual(content.note, "\(unlock) to unlock, then \(minute) a minute + tax · published price, checked \(day)")
+
+        // The year only when it isn't this one; the order of day and month follows the region.
+        let december = Date(timeIntervalSince1970: 1_796_083_200) // 1 December 2026
+        let thisYear = RidePriceFormatter.listedDay("2026-10-18", now: december) ?? ""
+        XCTAssertTrue(thisYear.contains("18") && thisYear.contains("Oct") && !thisYear.contains("2026"), thisYear)
+        let lastYear = RidePriceFormatter.listedDay("2025-12-30", now: december) ?? ""
+        XCTAssertTrue(lastYear.contains("Dec") && lastYear.contains("2025"), lastYear)
+        XCTAssertNil(RidePriceFormatter.listedDay("soon"))
+        ScooterLanguage.current = .de
+        XCTAssertTrue(RidePriceFormatter.listedDay("2026-10-18", now: december)?.contains("Okt") == true)
+        XCTAssertTrue(listed.listed("x").hasPrefix("x · veröffentlichter Preis, Stand "))
+    }
+
     func testTheCardShowsForintsAndKronurWithoutDecimals() {
         // Hopp in Pécs: HUF 272 to start and HUF 76 a minute.
         let forints = ScooterRidePricing(currency: "HUF", unlockFeeMinorUnits: 27_200, minuteFeeMinorUnits: 7_600)

@@ -14,6 +14,7 @@ import {
   SWISS_MOBILITY_BOUNDS,
 } from '@/lib/feedCoverage';
 import { boundsContainPoint, boundsIntersection, haversineM } from '@/lib/geo';
+import { listedPricing } from '@/lib/listedPrices';
 import { COUNTRY_SOURCES, REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas, type RegionalScooterSystem, type ScooterCountry } from '@/lib/regionalScooterSystems';
 import { skippedSources, type FeedSourceStatus, type ScooterSource } from '@/lib/scooterSources';
 import { feedPaused } from '@/lib/seasonalPauses';
@@ -420,7 +421,8 @@ function toVehicle(
     ? Math.round(haversineM(query.origin[0], query.origin[1], lat, lng) * 10) / 10
     : null;
   const planId = raw.pricing_plan_id ?? type?.default_pricing_plan_id ?? scooterPlanId;
-  const pricing = planId ? plans.pricing.get(planId) : undefined;
+  // Where the feed prices none, as Lime's, Bird's and Spin's, the operator's listed price.
+  const pricing = (planId ? plans.pricing.get(planId) : undefined) ?? listedPricing(systemId, lat, lng, Date.now());
   if (planId && !plans.listed.has(planId)) unlisted?.add(planId);
 
   return {

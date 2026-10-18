@@ -210,6 +210,7 @@
 "%1$@ to unlock, then %2$@ a minute" = "Startgjald %1$@, svo %2$@ á mínútu";
 "No unlock fee, %@ a minute" = "Ekkert startgjald, %@ á mínútu";
 "%@ + tax" = "%@ + skattar";
+"%1$@ · published price, checked %2$@" = "%1$@ · birt verð, athugað %2$@";
 
 /* Walking route: Directions on a card draws the way on the map */
 "Hide route" = "Fela leiðina";
