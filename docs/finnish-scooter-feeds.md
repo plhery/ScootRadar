@@ -169,6 +169,17 @@ added.
   Voi's zones, prices and hours, and no vehicles, and the same address has no
   GBFS feed. Digitransit's API needs a subscription key and carries city bikes
   only.
+- **Fintraffic's national GBFS feed**
+  (`https://mobility-api.mobility-database.fintraffic.fi/gbfs/v2/gbfs.json`)
+  carries Dott's Finnish scooters, which Dott's own feeds don't, but answers
+  403 without a free key, ordered with an account on the Mobility Database
+  site. Seen through Transitous, which has a key, it listed 10,570 Dott
+  scooters in 27 towns on Sunday 18 October 2026, Helsinki, Tampere, Lahti,
+  Vantaa and Espoo first, with no Voi, Ryde or Bolt. None of them moved from
+  04:55 to 09:00 Helsinki time, and 447 stood in Hanko, Raseborg, Kotka and
+  Hamina, which Dott reports as paused, so the data looks frozen. It waits on
+  a key and a test of our own (see
+  [Coverage gaps](coverage-gaps.md#waiting-on-a-decision)).
 - **Hopp** answers for Mariehamn only: none of 26 other Finnish and Åland
   slugs tried at its address, for Helsinki, Tampere, Turku, Oulu and other
   towns, answered.

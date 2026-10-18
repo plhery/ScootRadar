@@ -19,6 +19,7 @@ why it isn't.
 | --- | --- |
 | **Dott** everywhere | Its [API licence](https://ridedott.com/api-licence/) restricts distribution. Since September 2026 most regions need a partner key, which Dott grants through its partner integrations team |
 | **Voi** in the United Kingdom | Access is asked from nap@voiapp.io, under a [licence](https://www.voi.com/voi-licencing-agreement) that forbids storing the data, which the scooter cache does |
+| **Fintraffic** in Finland | Its national GBFS feed (`mobility-api.mobility-database.fintraffic.fi/gbfs/v2/gbfs.json`) answers 403 without a free key, ordered with an account on the Mobility Database site, which answered 403 from Switzerland. Seen through Transitous, which has a key, it listed 10,570 Dott scooters in 27 towns on 18 October 2026 (Helsinki 1,720, Tampere 1,347, Lahti 894, Vantaa 826, Espoo 768), Donkey Republic's bikes, and no Voi, Ryde or Bolt. But no scooter moved from 04:55 to 09:00 on that Sunday morning, and it lists scooters in towns Dott reports as paused, so the data looks frozen. Test it with a key of our own before adding; Helsinki's season runs from 1 April to 30 November. Data under CC BY 4.0 ("Fintraffic / Digitraffic"), though some third parties' data may need a permit |
 
 It was decided on 13 October 2026 not to ask Lime, Bird or Hopp for a written
 licence, so their terms block nothing and their feeds stay on the map. For the
@@ -303,6 +304,9 @@ banned shared scooters, and feeds that were empty when checked.
     answer 404, and 6 (Ekenäs, Hamina, Hanko, Imatra, Kalajoki, Kotka) are
     paused, probably for the winter. Bird Helsinki's feed is empty and stamped
     `last_updated` 0.
+  - Dott's Finnish scooters reach only Fintraffic's national feed, which
+    needs a key and looked frozen on 18 October 2026 (see
+    [Waiting on a decision](#waiting-on-a-decision)).
   - Joe Scooter's Rauma feed (ATOM Mobility) answers but listed no scooter at
     night or in 21 polls from 17:00 to 18:01 on a Tuesday. Its other towns'
     feeds answer "GBFS disabled". Check Rauma in spring, and add it as a new
@@ -546,6 +550,14 @@ countries already listed, apart from Slovenia's relayed feeds below. Of the
 Bolt ids, the same 9 public ones answer 200, and id 355 now answers 400
 instead of 401.
 
+Surveyed a third time on 18 October 2026: the national access points,
+Transitous's provider list, MobilityData's registry, Dott's country listings
+and name-based Lime and Bird addresses, with daytime polls of the leads.
+Nothing new, apart from Hopp's empty Bucharest feed (Romania, below) and
+Fintraffic's in Finland ([Waiting on a decision](#waiting-on-a-decision)).
+No access point held vehicle positions; see 1 December 2026 under
+[Dates to check again](#dates-to-check-again).
+
 **Not covered, by decision:** Russia (the user's decision of 14 October 2026).
 
 **Mexico,** surveyed on 14 October 2026 with Canada, and again on 15
@@ -590,14 +602,14 @@ a licence. Neither is published by its operator:
 
 | Country | Why |
 | --- | --- |
-| Austria | Dott's regions are private. Vienna's operators (Bird, Lime, Link, Voi) and Voi Innsbruck publish no feed; the access point has Voi's static zones only, behind a registration. Bird Wiener Neustadt lists a scooter type but no vehicle, with a timestamp of 0 |
+| Austria | Dott's regions are private. Vienna's operators, now only Lime and Voi with about 4,000 scooters, and Voi Innsbruck publish no feed; the access point has Voi's static zones only, behind a registration. Bird Wiener Neustadt lists a scooter type but no vehicle, with a timestamp of 0 |
 | Netherlands | No shared standing scooters: the national data hub (CROW) lists 27,000 shared vehicles and no scooter. They need type approval and, since July 2025, a plate. Check and Felyx run mopeds, and 7 Felyx feeds answer 410 |
 | Denmark | Lime (Copenhagen, Odense) and Voi publish no feed; Dott lists e-bikes only. Hopp Roskilde held 1 disabled scooter on 13 October 2026 |
 | Czechia | Prague banned shared scooters from 1 January 2026; Golemio's feed needs a token. Bolt reportedly left the other towns |
 | Ireland | Bolt's Wexford trial (2024) publishes nothing; Moby and Bleeper are bikes. Public funding for scooter schemes was paused in July 2026. The registry files Beryl Belfast under Ireland; it is in the United Kingdom and lists no scooter |
 | Estonia, Lithuania | Bolt and Ride Mobility publish no feed |
-| Slovakia, Bulgaria, Romania, Moldova | Dott and Bolt publish no feed; nothing else found. Romania's PBSC bike-share feeds list a scooter type with no scooters. (Slovenia: see above) |
-| Serbia | Belgrade cancelled its scooter tender in July 2026 |
+| Slovakia, Bulgaria, Romania, Moldova | Dott and Bolt publish no feed; nothing else found. Romania's PBSC bike-share feeds list a scooter type with no scooters. Hopp's `ro-bucharest` feed answers but held no scooter at night or in 7 polls from 08:30 to 09:30 on Sunday 18 October 2026, and Hopp's site no longer lists Bucharest; check it again in April 2027. (Slovenia: see above) |
+| Serbia | Belgrade suspended its call for 2,000 scooters on 15 July 2026, a day after opening it; check again in January 2027 |
 | Turkey | Martı, BinBin and Hop publish no feed: `gbfs.heyhop.app` answers 404, and no `gbfs.` or `api.` host answers for Martı or BinBin (18 October 2026). Turkey had 93,221 licensed scooters at the end of 2022; Martı averaged 20,400 vehicles a day in early 2026, mopeds and e-bikes included, and BinBin runs in 8 Turkish towns. Since December 2025 operators report rides to the transport ministry's U-NET system, which isn't public. Istanbul's, İzmir's and Konya's open-data portals hold static parking and routes only; AAR Bike Konya's feed is bicycles. Check again about April 2027, or sooner if U-NET's data is opened |
 | Malta | Rental scooters banned since March 2024 |
 | Luxembourg, Monaco, Liechtenstein | Bikes and e-bikes only; MonaBike lists a scooter type with no scooters |
@@ -736,6 +748,9 @@ Bonaire had feeds to add. Survey files are in
 - **December 2026:** Al Ain, in Dott's Abu Dhabi feed (16 to 18 scooters), and
   Dott Ras Al Khaimah (32 to 34): about 2 rides each on 15 October 2026. Add
   each if it holds about ten scooters that are ridden.
+- **December 2026:** London's trial, in its third phase since September 2026
+  under two contracts, one of them Lime's: see who holds the other, and
+  whether Transport for London publishes the scooters' data.
 - **1 December 2026:** the EU's rule on multimodal travel information
   (Delegated Regulation (EU) 2024/490) requires shared-scooter availability on
   each country's national access point for the cities on the main EU transport
@@ -745,7 +760,10 @@ Bonaire had feeds to add. Survey files are in
   Bolt's GBFS, on request; look there for Lime and Bird too. Look on
   Germany's Mobilithek for Bolt, Voi and Lime outside Baden-Württemberg. So may Slovenia, for Ljubljana: look
   for Bolt's feed 359 there, or at `mds.bolt.eu`, and for an official Kvik
-  feed.
+  feed. On 18 October 2026 none of these access points held vehicle
+  positions: Austria, Bulgaria, Czechia, Denmark, Estonia, Finland, Greece,
+  Ireland, Italy, Lithuania, Luxembourg, the Netherlands, Poland, Romania,
+  Slovakia and Slovenia. Check them all between 2 and 15 December.
 - **1 December 2026:** JOLT in New Zealand: `hutt_valley` again, which held
   no scooter on the afternoon of Sunday 18 October; `napier`, which had no
   scooter; and Lincoln, in
@@ -792,6 +810,11 @@ Bonaire had feeds to add. Survey files are in
 - **January 2027:** Ballarat, whose Neuron scheme ended on 31 March 2026,
   chooses a new operator, and Rio de Janeiro accredits its operators under
   edital CCPAR 01/2026: see whether either publishes a feed.
+- **January 2027:** Belgrade's call for 2,000 scooters, suspended in July
+  2026, and Vienna's scooter concessions, whose 2023 licences were for three
+  years: see whether either asks operators for a public feed.
+- **February 2027:** Helsinki drafts its 2027 permit terms from this
+  season's data: see whether they ask operators for a public feed.
 - **February 2027:** New South Wales's scooter trials (Wollongong and
   Forster-Tuncurry) end on 22 January 2027 and the state decides what
   follows: look for a public feed, and check Flamingo `sydney` sooner than
@@ -813,6 +836,10 @@ Bonaire had feeds to add. Survey files are in
   Australia if New South Wales approves operators and Flamingo's feed lists
   scooters that move; Australia then needs a list of its states, so
   addresses read "Sydney NSW 2000".
+- **1 April 2027:** Hopp Bucharest (`ro-bucharest`), empty on 18 October
+  2026, in case Hopp starts a season there; and Fintraffic's Finnish feed if
+  it hasn't been tested with a key of our own by then, as Helsinki's season
+  starts that day.
 - **1 April 2027:** Lichtensteig, out of the map's towns since 18 October
   2026. If Dott St. Gallen's scooters there move on a weekend, put
   `lichtensteig` back in `SYSTEM_EXTRA_AREAS` in `src/lib/feedCoverage.ts`
