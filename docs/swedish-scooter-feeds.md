@@ -112,6 +112,8 @@ No covered Swedish town bans renting at night, so
   Gävle (0) list only disabled scooters, last reported in 2022 and 2023.
 - **Hopp** answers 404 for every other Swedish town tried, Gällivare and Visby
   among them.
+- **Qick** (Örebro, Linköping, Norrköping, Västerås) runs on ATOM Mobility,
+  but its systems 5, 10, 53 and 104 answer "GBFS disabled" (18 October 2026).
 - **Public data:** Sweden's national access point,
   [trafficdata.se](https://trafficdata.se), lists no shared-mobility
   dataset. Stockholm's [open data](https://openstreetgs.stockholm.se/Home/Data)

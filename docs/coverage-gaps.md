@@ -20,6 +20,7 @@ why it isn't.
 | **Dott** everywhere | Its [API licence](https://ridedott.com/api-licence/) restricts distribution. Since September 2026 most regions need a partner key, which Dott grants through its partner integrations team |
 | **Voi** in the United Kingdom | Access is asked from nap@voiapp.io, under a [licence](https://www.voi.com/voi-licencing-agreement) that forbids storing the data, which the scooter cache does |
 | **Fintraffic** in Finland | Its national GBFS feed (`mobility-api.mobility-database.fintraffic.fi/gbfs/v2/gbfs.json`) answers 403 without a free key, ordered with an account on the Mobility Database site, which answered 403 from Switzerland. Seen through Transitous, which has a key, it listed 10,570 Dott scooters in 27 towns on 18 October 2026 (Helsinki 1,720, Tampere 1,347, Lahti 894, Vantaa 826, Espoo 768), Donkey Republic's bikes, and no Voi, Ryde or Bolt. But no scooter moved from 04:55 to 09:00 on that Sunday morning, and it lists scooters in towns Dott reports as paused, so the data looks frozen. Test it with a key of our own before adding; Helsinki's season runs from 1 April to 30 November. Data under CC BY 4.0 ("Fintraffic / Digitraffic"), though some third parties' data may need a permit |
+| **NRW.Mobidrom** in North Rhine-Westphalia | The state's data platform ([mobilitaetsdaten.nrw](https://www.mobilitaetsdaten.nrw)) lists GBFS feeds for Voi in 12 towns (Köln, Düsseldorf, Essen, Dortmund, Bochum, Bonn, Münster, Aachen, Wuppertal, Duisburg-Oberhausen, Paderborn, Mönchengladbach), Bolt in four areas (Köln-Bonn, Düsseldorf-Mönchengladbach, Essen-Duisburg, Dortmund-Bochum) and Lime in Essen and Dortmund, under open licences: Voi CC BY-SA 4.0, Bolt CC BY 4.0, Lime dl-de/by-2-0. Its catalog is open to read, but the feeds answer 401 without a token, and its [terms](https://www.mobilitaetsdaten.nrw/landingpage/nutzungsbedingungen/) (April 2025, § 4) give access after a free registration with name, email and organisation. Unlike the Multimodale Datendrehscheibe, private people and companies may register (§ 2). The datasets' descriptions publish a shared client login, which wasn't used, since the terms ask each user to register. So the feeds' freshness is unknown, and the datasets say the operators must deliver live data from 1 December 2026. Voi's share-alike licence may bind what the scooter cache serves. Checked 18 October 2026 |
 
 It was decided on 13 October 2026 not to ask Lime, Bird or Hopp for a written
 licence, so their terms block nothing and their feeds stay on the map. For the
@@ -96,7 +97,9 @@ banned shared scooters, and feeds that were empty when checked.
   - Bird München and Ulm list no vehicle; Bird left Ulm around 2022.
   - North Rhine-Westphalia's mobility data hub holds Bolt, Voi, Lime and Dott
     feeds for Köln, Düsseldorf, Essen, Dortmund and other towns, but only
-    transport bodies and municipalities may use it.
+    transport bodies and municipalities may use it. The state's other
+    platform, NRW.Mobidrom, offers Voi's, Bolt's and Lime's feeds after a
+    free registration (see [Waiting on a decision](#waiting-on-a-decision)).
   - Lime Hamburg answers 404; Lime Dresden, Oberhausen and Solingen (6
     scooters) were too small or empty.
   - Zeus is moving its towns to ATOM Mobility. Rüsselsheim, Straubing,
@@ -203,6 +206,8 @@ banned shared scooters, and feeds that were empty when checked.
   - Lime Stockholm, Göteborg and Malmö answer 404.
   - Zeus Borlänge, Falun, Halmstad, Karlstad and Gävle list only disabled
     scooters, last reported in 2022 and 2023.
+  - Qick (Örebro, Linköping, Norrköping, Västerås) is on ATOM Mobility, but
+    its systems 5, 10, 53 and 104 answer "GBFS disabled" (18 October 2026).
   - Sweden's national access point (trafficdata.se) has no shared-mobility
     data, and Stockholm's open data has scooter parking bays only, behind a
     key.
@@ -626,7 +631,7 @@ a licence. Neither is published by its operator:
 | Bahrain | Hopp's `bh-bahrain` feed holds 13 or 14 scooters on three sites (Zallaq, Manama, Amwaj), about 2 rides in 10.4 hours on 15 October 2026, and still 14 on 18 October: too few. Spiders, Fenix and BSKL publish no feed; data.gov.bh has no scooter data. Since Resolution 58 of 2026, scooters may ride only in designated zones |
 | Egypt | Rabbit, in Cairo, Giza and Alexandria (about 700 scooters in 2024, the last count), publishes no feed, and Cairo's governor ordered e-scooters seized |
 | South Africa | Zippy, in Langebaan, is on ATOM Mobility, but its systems 2028, 2075 and 2318 answer "GBFS disabled" (still on 18 October 2026). Africa has no continent in the app yet |
-| Ghana | Hopp's `gh-accra` feed holds 13 scooters, all disabled with no range, at a depot |
+| Ghana | Hopp's `gh-accra` feed holds 13 scooters, all disabled with no range, at a depot, by night and by day (02:40 and 12:48 UTC on 18 October 2026) |
 | Jordan | Sky Scooters (on OTORide) and E-Ride publish no feed; Dott's listing names no region |
 | Lebanon | No scooter feed found, and Loop's 2017 service is gone; Dott's listing names no region |
 | Morocco | No scooter feed found; Dott's listing names no region |
@@ -877,7 +882,8 @@ Bonaire had feeds to add. Survey files are in
   Uzbekistan needs its time zones (`Asia/Tashkent`, `Asia/Samarkand`) and
   prices in UZS. The Gulf's ATOM systems too: wer2 (1824 and the rest,
   Qatar), eFly (2253 and 2340, Kuwait), Salik (1118) and Biko (Oman), and
-  Hopp `bh-bahrain`, which held 14 scooters on three sites.
+  Hopp `bh-bahrain`, which held 14 scooters on three sites. Sweden's Qick
+  (5, 10, 53 and 104) too.
 - **1 April 2027:** Latin America and the Caribbean: Bird's four Puerto Rico
   feeds; ATOM Mobility's e-moob (1688 and 2319, Aruba and Tamarindo) and
   Smart Wheels (1875, Curaçao), which answered "GBFS disabled"; Whoosh's feed

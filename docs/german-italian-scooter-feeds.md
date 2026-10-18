@@ -464,6 +464,12 @@ an hour, so no interval was changed for ATOM.
     Bielefeld/Paderborn and Herford), Voi (eleven towns), Lime, Dott and Ryde.
     Only transport bodies and municipalities may use it, and requests without
     an account answer 401.
+  - The state's data platform, [NRW.Mobidrom](https://www.mobilitaetsdaten.nrw),
+    lists GBFS for Voi (twelve towns), Bolt (four areas) and Lime (Essen and
+    Dortmund) under open licences. Private people and companies may use it,
+    but only after a free registration, so it waits on a decision
+    ([Coverage gaps](coverage-gaps.md#waiting-on-a-decision)); checked on
+    18 October 2026.
   - Hamburg and Dresden receive the operators' MDS data for the city only.
   - On Mobilithek, Voi publishes static NeTEx (zones, parking spots and fares)
     for 22 German cities, but no vehicles. The only live scooter offer there
