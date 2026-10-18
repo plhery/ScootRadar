@@ -124,6 +124,7 @@ import tubingenDe from './de/e-scooter-tuebingen';
 import detroitEn from './en/e-scooters-detroit';
 import bournemouthEn from './en/e-scooters-bournemouth';
 import alesundNb from './nb/elsparkesykkel-alesund';
+import ostendNl from './nl/deelstep-oostende';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -248,4 +249,5 @@ export const GUIDES: readonly Guide[] = [
   detroitEn,
   bournemouthEn,
   alesundNb,
+  ostendNl,
 ];
