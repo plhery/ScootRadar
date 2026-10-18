@@ -44,6 +44,10 @@ function secureDocumentResponse(request: Request, response: Response): Response 
   return new HTMLRewriter()
     .on('script', nonceHandler)
     .on('style', nonceHandler)
+    // Next's hints to fetch a script early: under 'strict-dynamic' a hint without
+    // the nonce is refused, though the script it names then loads by its tag.
+    .on('link[rel="preload"][as="script"]', nonceHandler)
+    .on('link[rel="modulepreload"]', nonceHandler)
     .on('[data-guess-page]', guessed.languages)
     .on('[data-guess-seat]', guessed.seat)
     .transform(documentResponse);

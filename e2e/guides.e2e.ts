@@ -21,14 +21,10 @@ const LISTS = {
   pt: '/pt/guias', es: '/es/guias', is: '/is/leidarvisar',
 };
 
-// On every page of the site Chromium refuses the preload hint of the first
-// script, which the Worker gives no nonce. The script itself loads by its tag.
-const SCRIPT_PRELOAD = /^Loading the script '[^']+\/_next\/static\/chunks\/[^']+\.js' violates the following Content Security Policy directive: "script-src /;
-
 function complaints(page: Page): string[] {
   const heard: string[] = [];
   page.on('console', message => {
-    if (message.type() === 'error' && !SCRIPT_PRELOAD.test(message.text())) heard.push(message.text());
+    if (message.type() === 'error') heard.push(message.text());
   });
   page.on('pageerror', error => heard.push(String(error)));
   return heard;

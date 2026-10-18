@@ -8,6 +8,17 @@ type RotationMap = L.Map & {
   shiftKeyRotate?: L.Handler & { _EASE: number };
 };
 
+/**
+ * The rules the rotation adapter needs for its panes, in a style of the id it looks
+ * for before it adds one of its own. That one has no nonce, so the page's policy
+ * refuses it; this one is in the page, which the Worker gives its nonce.
+ */
+export const ROTATE_PANES_STYLE_ID = 'leaflet-rotate-panes';
+export const ROTATE_PANES_STYLE = [
+  '.leaflet-rotate-pane { position: absolute; top: 0; left: 0; will-change: transform; }',
+  '.leaflet-norotate-pane { position: absolute; top: 0; left: 0; z-index: 600; }',
+].join('\n');
+
 export function stopMapRotation(map: L.Map) {
   const rotatingMap = map as RotationMap;
   rotatingMap.touchGestures?._stopRotateInertia();

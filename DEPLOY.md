@@ -93,8 +93,11 @@ the same Worker.
 
 The outer Worker applies the document CSP at the Cloudflare boundary. It creates
 a fresh nonce for every HTML response and uses `HTMLRewriter` to attach it to
-framework scripts and inline styles. This keeps the policy strict without a
-Next.js Proxy, which OpenNext Cloudflare does not yet support. The service worker
+framework scripts, Next's hints to fetch them early, and inline styles. This keeps
+the policy strict without a Next.js Proxy, which OpenNext Cloudflare does not yet
+support. The map's layout carries the rules of leaflet-rotate's panes in a style
+of the id the library looks for (`src/lib/mapRotation.ts`), so the library adds
+no style of its own, which would have no nonce. The service worker
 normalizes nonce values when comparing app shells so nonce rotation does not
 cause reload loops.
 

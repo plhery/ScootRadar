@@ -5,6 +5,7 @@ import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 import { FIRST_PAINT_THEME_SCRIPT } from "@/lib/firstPaintTheme";
 import { formatLocale } from "@/lib/formatLocale";
 import { I18nProvider } from "@/lib/i18n";
+import { ROTATE_PANES_STYLE, ROTATE_PANES_STYLE_ID } from "@/lib/mapRotation";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import "../globals.css";
 
@@ -89,6 +90,8 @@ export default async function RootLayout({
     <html lang={formatLocale("en")} suppressHydrationWarning>
       <head>
         <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png" />
+        {/* Before the map's script, which adds no style of its own once this is here. */}
+        <style id={ROTATE_PANES_STYLE_ID}>{ROTATE_PANES_STYLE}</style>
       </head>
       <body className={`${geistSans.variable} ${display.variable} ${text.variable}`}>
         <I18nProvider>{children}</I18nProvider>

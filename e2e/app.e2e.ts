@@ -1784,6 +1784,21 @@ test('a chosen appearance is on the page before the app starts, under the conten
   expect((await page.request.get('/map')).headers()['content-security-policy']).toMatch(/script-src 'self' 'nonce-[^']+' 'strict-dynamic';/);
 });
 
+test('the map starts with nothing refused by its content security policy', async ({ page }) => {
+  await page.addInitScript(() => {
+    const refused: string[] = [];
+    Object.assign(window, { refused });
+    document.addEventListener('securitypolicyviolation', event => refused.push(`${event.violatedDirective} ${event.blockedURI}`));
+  });
+  await page.goto('/map');
+  await expect(page.locator('.cluster-marker')).toHaveCount(1);
+  // Next's hint to fetch a script early carries the nonce, and the rotation
+  // adapter finds its panes' rules in the page rather than adding a style of its own.
+  expect(await page.evaluate(() => (window as Window & { refused?: string[] }).refused)).toEqual([]);
+  await expect(page.locator('style#leaflet-rotate-panes')).toHaveCount(1);
+  expect(await page.locator('.leaflet-norotate-pane').evaluate(pane => getComputedStyle(pane).zIndex)).toBe('600');
+});
+
 test('the tiles are not loaded again when the appearance or the map style changes', async ({ page }) => {
   const tiles = { asked: 0, answered: 0 };
   page.on('request', request => { if (request.url().endsWith('.pbf')) tiles.asked += 1; });
