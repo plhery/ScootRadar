@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter hire in the UK: where you can rent one, who runs it and what it costs',
   lede: 'E-scooter hire in the UK is legal only in 21 government trial areas, all in England, and the trials are due to run until May 2028. Voi, Beryl, Lime, Dott and Bolt run the schemes. You need a full or provisional driving licence, and every operator we checked rents only to riders aged 18 or over. Pay as you go, unlocking costs £0 to £1 and riding 20p to 29p a minute, so 15 minutes cost £3.75 to £4.75 at the rates published on 12 October 2026. In London, Lime and Voi hire out e-scooters in 11 boroughs, and every ride ends in a marked bay.',
   published: '2026-10-12',
-  updated: '2026-10-17',
+  updated: '2026-10-18',
   sections: [
     {
       heading: 'E-scooter hire in the UK: the 21 trial areas and who runs them',
@@ -146,8 +146,8 @@ const guide: Guide = {
             '**Pavements:** never, not even for a few metres: a £50 fixed penalty.',
             '**Passengers:** one rider only; in the West of England, Dott bans riders caught riding two up.',
             '**Phone and drink:** using a phone in your hand costs £200 and 6 points, and the drink-drive limit for cars applies. In Liverpool, Bolt’s app can ask for a reaction test first.',
-            '**Speed:** 15.5 mph at most; 12.5 mph in London, Brighton, Cornwall, Norwich and the West of England, and 7.5 mph in each Cornish town’s pedestrianised Go Slow Zone.',
-            '**Hours:** many areas run around the clock, but Brighton has a curfew from midnight to 5am, and in Aylesbury and High Wycombe Voi listed 5am to 11pm on Mondays.',
+            '**Speed:** 15.5 mph at most; 12.5 mph in London, Brighton, Cornwall, Norwich, the West of England and the BCP area (Bournemouth, Christchurch and Poole), and 7.5 mph in each Cornish town’s pedestrianised Go Slow Zone.',
+            '**Hours:** many areas run around the clock, but Beryl’s e-scooters can’t be hired from 10pm to 5am in Bournemouth, Christchurch and Poole or from midnight to 5am in Brighton, and in Aylesbury and High Wycombe Voi listed 5am to 11pm on Mondays.',
           ],
         },
       ],
