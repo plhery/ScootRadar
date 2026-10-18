@@ -23,6 +23,7 @@ import { systemServesPoint } from '@/lib/townOutlines';
 import type { MapBounds, Vehicle } from '@/lib/types';
 import { legacyRentalLink, normalizeRentalUris } from '@/lib/rentalLinks';
 import { upstreamJsonCache, UpstreamHttpError, type CachedJson } from '@/lib/upstreamJsonCache';
+import type { ZoneSource } from '@/lib/zoneFeeds';
 import {
   providerKeyForSystemId,
   type ProviderKey,
@@ -254,6 +255,8 @@ export interface CollectableScooterFeed {
   coverage: MapBounds[];
   collect: () => Promise<SourceVehicles>;
   host: string;
+  /** Its GBFS documents, for the zones the map draws when asked (zoneFeeds.ts). */
+  zoneSource?: ZoneSource;
 }
 
 // The persistent collector refreshes each system independently. A failing
@@ -274,6 +277,7 @@ export async function discoverCollectableFeeds(): Promise<CollectableScooterFeed
         provider: system.provider,
         coverage: knownSystemCoverage(system.id) ?? [SWISS_MOBILITY_BOUNDS],
         collect: () => fetchSystemVehicles(system, query),
+        zoneSource: { discoveryUrl: system.discoveryUrl, baseUrl: system.baseUrl, authenticated: true },
       }] : [];
     }),
     ...independentCollectableFeeds(),
@@ -287,6 +291,7 @@ export function independentCollectableFeeds(): CollectableScooterFeed[] {
       id: `hopp:${town.id}`, host: new URL(town.discoveryUrl).hostname, source: 'hopp' as const, provider: 'hopp' as const,
       coverage: [town.coverage],
       collect: () => fetchHoppTownVehicles(town, query),
+      zoneSource: { discoveryUrl: town.discoveryUrl, baseUrl: new URL('.', town.discoveryUrl).toString() },
     })),
     { id: 'publibike', host: new URL(PUBLIBIKE_FREE_FLOATING_URL).hostname, source: 'publibike', provider: 'publibike',
       coverage: [PUBLIBIKE_FREE_FLOATING_COVERAGE],
@@ -299,6 +304,7 @@ export function independentCollectableFeeds(): CollectableScooterFeed[] {
       id: `${regionalSource(system)}:${system.id}`, source: regionalSource(system), provider: system.provider,
       coverage: serviceAreas(system).map(area => area.bounds),
       collect: () => fetchRegionalSystemVehicles(system, { bounds: system.bounds, minBattery: 0 }),
+      zoneSource: { discoveryUrl: system.discoveryUrl, baseUrl: new URL('.', system.discoveryUrl).toString() },
     })),
   ];
 }

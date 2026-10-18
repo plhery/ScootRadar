@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { once } from 'node:events';
 import net, { type AddressInfo } from 'node:net';
 import type { Server } from 'node:http';
@@ -227,5 +227,27 @@ describe('collection on demand', () => {
       { cadence: { fastSince: () => undefined, idleExpiryMs: minutes(30) } });
     const ready = await (await fetch(`http://127.0.0.1:${port}/ready`)).json() as Record<string, unknown>;
     expect(ready).toMatchObject({ ready: true, usableFeeds: 1, servedFeeds: 0, failedFeeds: ['france:dott_fr_paris'] });
+  });
+
+  it('answers the zones of a street view to the Worker, and lets it keep a complete answer', async () => {
+    const view = 'south=47.36&west=8.53&north=47.38&east=8.55';
+    expect((await fetch(`http://127.0.0.1:${(await start()).port}/api/zones?${view}&zoom=15`,
+      { headers: { Authorization: `Bearer ${token}` } })).status).toBe(404);
+    let pending = false;
+    const zones = vi.fn(async () => ({ zones: [], meta: { generatedAt: new Date().toISOString(), pending, truncated: false } }));
+    const { port } = await start(undefined, { zones });
+    const url = (query: string) => `http://127.0.0.1:${port}/api/zones?${query}`;
+    const headers = { Authorization: `Bearer ${token}` };
+    expect((await fetch(url(`${view}&zoom=15`))).status).toBe(401);
+    expect((await fetch(url(`${view}&zoom=13`), { headers })).status).toBe(400);
+    expect((await fetch(url('south=47&west=8&north=47.5&east=9.2&zoom=15'), { headers })).status).toBe(400);
+    expect(zones).not.toHaveBeenCalled();
+    const complete = await fetch(url(`${view}&zoom=15`), { headers });
+    expect(complete.status).toBe(200);
+    expect(complete.headers.get('Cache-Control')).toBe('private, no-store');
+    expect(complete.headers.get('X-Scooter-Public-Cache-Control')).toBe('public, max-age=300');
+    expect(zones).toHaveBeenCalledWith(expect.objectContaining({ bounds: { south: 47.36, west: 8.53, north: 47.38, east: 8.55 } }));
+    pending = true;
+    expect((await fetch(url(`${view}&zoom=15`), { headers })).headers.get('X-Scooter-Public-Cache-Control')).toBe('private, no-store');
   });
 });

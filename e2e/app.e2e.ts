@@ -1128,6 +1128,55 @@ test('combines provider filters and resets them together', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Filters', exact: true })).toBeFocused();
 });
 
+test('the operators\' zones are drawn once turned on, for the providers shown, with what they mean', async ({ page }) => {
+  const square = (south: number, west: number) =>
+    [[[[south, west], [south, west + 0.003], [south + 0.002, west + 0.003], [south + 0.002, west], [south, west]]]];
+  const asked: string[] = [];
+  await page.route('**/api/zones?**', route => {
+    asked.push(new URL(route.request().url()).search);
+    return route.fulfill({ contentType: 'application/json', body: JSON.stringify({
+      zones: [
+        { id: 'lime:0', provider: 'lime', kind: 'noRide', polygons: square(47.375, 8.538) },
+        { id: 'bird:0', provider: 'bird', kind: 'noParking', polygons: square(47.377, 8.542) },
+        { id: 'bolt:0', provider: 'bolt', kind: 'slow', maxSpeedKph: 10, polygons: square(47.379, 8.539) },
+      ],
+      meta: { generatedAt: new Date().toISOString(), pending: false, truncated: false },
+    }) });
+  });
+  await page.goto('/map');
+  await focusFixtureArea(page);
+  await zoomTo(page, 16);
+  await expect(page.locator('.scooter-marker')).toHaveCount(3);
+  // Off until turned on: nothing is asked for and nothing is said.
+  await expect(page.locator('.zone-legend')).toHaveCount(0);
+  expect(asked).toEqual([]);
+
+  await page.getByRole('button', { name: 'Settings', exact: true }).click();
+  const settings = page.getByRole('dialog', { name: 'Settings', exact: true });
+  const zones = settings.getByRole('switch', { name: 'Ride and parking zones' });
+  await expect(zones).not.toBeChecked();
+  await zones.click();
+  await expect(zones).toBeChecked();
+  await page.keyboard.press('Escape');
+  await expect(settings).not.toBeVisible();
+  await expect.poll(() => new URL(page.url()).search).toBe('?zones=1');
+
+  const legend = page.getByRole('group', { name: 'Zones' });
+  await expect(legend).toHaveText('No ridingNo parkingSlow');
+  // One shape and one edge for each zone, under the scooters.
+  await expect(page.locator('.leaflet-zones-edges-pane path')).toHaveCount(3);
+  expect(asked).toHaveLength(1);
+  // Lime alone: its zone alone.
+  await page.getByRole('button', { name: /^Lime, 1\./ }).click();
+  await expect(page.locator('.scooter-marker')).toHaveCount(1);
+  await expect(page.locator('.leaflet-zones-edges-pane path')).toHaveCount(1);
+
+  // Further out, the zones make way for a word on why there are none.
+  await zoomTo(page, 13);
+  await expect(legend).toHaveText('Zoom in to see the zones');
+  await expect(page.locator('.leaflet-zones-edges-pane path')).toHaveCount(0);
+});
+
 test('the filters offer battery presets and providers with their counts, and say what the map will show', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/map?origin=47.3769,8.5417');

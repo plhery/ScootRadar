@@ -49,7 +49,12 @@ import { scooterTip } from '@/lib/scooterTip';
 import { formatDistance as formatWalkingDistance, measurementSystem, walkingMinutes, type DistanceFormatter } from '@/lib/walking';
 import { createRouteLayer, type Frame, type RouteLayer } from '@/lib/walkRouteLayer';
 import type { WalkView } from '@/lib/walkState';
+import type { MapZone } from '@/lib/zones';
+import { ZONE_STYLES } from './ZoneLegend';
 import './map.css';
+
+/** The panes of the zones' fills are made in this order, the strongest rule on top. */
+const ZONE_KINDS_BELOW_FIRST: MapZone['kind'][] = ['slow', 'noParking', 'noRide'];
 
 type Translate = (key: TranslationKey, values?: Record<string, string | number>) => string;
 type FormatNumber = (value: number, options?: Intl.NumberFormatOptions) => string;
@@ -313,6 +318,8 @@ function MapZoomControls({ mapRef }: { mapRef: { current: L.Map | null } }) {
 
 interface MapComponentProps {
   parking?: ParkingLocation[];
+  /** The operators' zones, drawn under everything else when turned on. */
+  zones?: MapZone[];
   vehicles: Vehicle[];
   clusters: CityGroup[];
   clustered: boolean;
@@ -381,6 +388,7 @@ export interface MapPopover {
 
 export default function MapComponent({
   parking = [],
+  zones = [],
   vehicles,
   clusters,
   clustered,
@@ -665,6 +673,36 @@ export default function MapComponent({
       markers.set(id, { marker, signature });
     }
   }, [frameLng, readyMap, parking, selectedParkingId, t]);
+
+  // The zones are drawn under the rest of what is drawn on the ground, in panes inside the
+  // one that turns with the map: each kind's fills in a pane of its own that is translucent
+  // as a whole, so that zones over each other are no darker, then all their edges. SVG, as
+  // the walk's way: leaflet-rotate's renderer patch reads a map Leaflet's canvas does not hand it.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!readyMap || !map || !zones.length) return;
+    const pane = (name: string, opacity = 1) => {
+      const element = map.getPane(name) ?? map.createPane(name, map.getPane('overlayPane'));
+      element.style.zIndex = '-1';
+      element.style.opacity = String(opacity);
+      return L.svg({ pane: name, padding: 0.5 });
+    };
+    const fills = Object.fromEntries(ZONE_KINDS_BELOW_FIRST.map(kind =>
+      [kind, pane(`zones-${kind}`, ZONE_STYLES[kind].fillOpacity)])) as Record<MapZone['kind'], L.Renderer>;
+    const edges = pane('zones-edges');
+    const layer = L.layerGroup();
+    for (const zone of zones) {
+      const first = zone.polygons[0]?.[0]?.[0];
+      if (!first) continue;
+      const shift = lngNear(first[1], frameLng) - first[1];
+      const shape = zone.polygons.map(polygon => polygon.map(ring => ring.map(([lat, lng]): [number, number] => [lat, lng + shift])));
+      const style = ZONE_STYLES[zone.kind];
+      L.polygon(shape, { renderer: fills[zone.kind], interactive: false, stroke: false, fillColor: style.color, fillOpacity: 1 }).addTo(layer);
+      L.polygon(shape, { ...style.edge, renderer: edges, interactive: false, fill: false }).addTo(layer);
+    }
+    layer.addTo(map);
+    return () => { layer.remove(); for (const renderer of [...Object.values(fills), edges]) renderer.remove(); };
+  }, [frameLng, readyMap, zones]);
 
   // The ground: one layer, drawn here from vector tiles in the colours of the
   // appearance. Its address is asked for first; until it is known, and whenever

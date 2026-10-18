@@ -105,6 +105,14 @@ describe('client params', () => {
     expect(serializeClientParams({ minBattery: 0, theme: 'light', map: 'calm' }).toString()).toBe('theme=light');
   });
 
+  it('keeps the zones layer on in the URL only while it is on', () => {
+    expect(parse('zones=1').zones).toBe(true);
+    expect(parse('zones=0').zones).toBeUndefined();
+    expect(serializeClientParams({ minBattery: 0, theme: 'auto', map: 'calm', zones: true }).toString()).toBe('zones=1');
+    expect(serializeClientParams({ minBattery: 0, theme: 'auto', map: 'calm', zones: false }).toString()).toBe('');
+    expect(parseStoredClientParams(JSON.stringify({ zones: '1' }))).toMatchObject({ zones: true });
+  });
+
   it('never writes the old tile setting or an origin', () => {
     const written = serializeClientParams({ minBattery: 30, theme: 'dark', map: 'detailed' });
     expect(written.has('tile')).toBe(false);

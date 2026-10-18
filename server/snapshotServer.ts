@@ -6,6 +6,8 @@ import { feedsForQuery, querySnapshot, showsPositions, VEHICLE_MAX_AGE_MS, type 
 import { ScooterFeedsUnavailableError } from '../src/lib/scooterFeeds';
 import { scooterResponseHeaders } from '../src/lib/scooterResponse';
 import { isRegionalSource } from '../src/lib/regionalScooterSystems';
+import { zoneQueryError, type ZoneResponse } from '../src/lib/zones';
+import type { FeedQuery } from '../src/lib/scooterFeeds';
 import type { SnapshotMetrics } from './metrics';
 import { reportError } from './errorReporting';
 import { ALWAYS_FAST, feedState, parkingUp, type FeedCadence } from './feedStateLog';
@@ -39,11 +41,14 @@ interface ServerOptions {
   refresher?: FeedRefresher;
   /** COLD_WAIT_MS by default. */
   coldWaitMs?: number;
+  /** Answers /api/zones, the zones of the feeds in the area; it answers 404 without. */
+  zones?: (query: FeedQuery) => Promise<ZoneResponse>;
 }
 
 // The Worker's address searches report here how many requests they sent to Geoapify.
 const GEOCODE_USAGE_PATH = '/api/geocode-usage';
-const ROUTES = new Set(['/api/scooters', GEOCODE_USAGE_PATH, '/health', '/ready', '/metrics']);
+const ZONES_PATH = '/api/zones';
+const ROUTES = new Set(['/api/scooters', ZONES_PATH, GEOCODE_USAGE_PATH, '/health', '/ready', '/metrics']);
 
 export function createSnapshotServer(options: ServerOptions) {
   if (options.production && (!options.token || options.token.length < 32)) {
@@ -105,7 +110,8 @@ export function createSnapshotServer(options: ServerOptions) {
       response.end(options.metrics.render(snapshot, now));
       return;
     }
-    if (url.pathname !== '/api/scooters') { response.writeHead(404); response.end('{}'); return; }
+    const zones = url.pathname === ZONES_PATH && options.zones;
+    if (url.pathname !== '/api/scooters' && !zones) { response.writeHead(404); response.end('{}'); return; }
     if (!fromWorker(request)) { response.writeHead(401); response.end('{}'); return; }
     // Only an authenticated Worker may supply a client IP. It replaces any incoming header.
     const forwarded = request.headers['x-scooter-client-ip'];
@@ -121,6 +127,16 @@ export function createSnapshotServer(options: ServerOptions) {
     response.once('close', () => activeResponses--);
     const parsed = parseScooterQuery(url.searchParams);
     if (!parsed.ok) { response.writeHead(400); response.end(JSON.stringify({ error: parsed.error })); return; }
+    if (zones) {
+      const error = zoneQueryError(parsed.zoom, parsed.query.bounds);
+      if (error) { response.writeHead(400); response.end(JSON.stringify({ error })); return; }
+      const body = await zones(parsed.query);
+      // Zones change rarely: a complete answer may be kept for five minutes.
+      response.writeHead(200, { 'Cache-Control': 'private, no-store',
+        'X-Scooter-Public-Cache-Control': body.meta.pending ? 'private, no-store' : 'public, max-age=300' });
+      response.end(JSON.stringify(body));
+      return;
+    }
     if (!snapshot) { response.writeHead(503, { 'Retry-After': '5' }); response.end('{"error":"Scooter data is warming up."}'); return; }
     let refreshing: Set<string> | undefined;
     const refresher = options.refresher;

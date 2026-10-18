@@ -17,6 +17,7 @@ import MapNotices from '@/components/MapNotices';
 import SearchIsland from '@/components/SearchIsland';
 import ControlSheet from '@/components/ControlSheet';
 import LocationHelpSheet from '@/components/LocationHelpSheet';
+import ZoneLegend from '@/components/ZoneLegend';
 import { selectionFeedback } from '@/lib/feedback';
 import type { MapBounds, ParkingLocation, ScooterCluster, Vehicle } from '@/lib/types';
 import { PROVIDERS } from '@/lib/types';
@@ -40,6 +41,7 @@ import { shortcutFor } from '@/lib/shortcuts';
 import { useDesktopLayout } from '@/lib/useDesktopLayout';
 import { useRecentPlaces } from '@/lib/useRecentPlaces';
 import { useScooterData, type ScooterDataQuery } from '@/lib/useScooterData';
+import { useZoneData } from '@/lib/useZoneData';
 import { groupCityTotals } from '@/lib/clustering';
 import { mapRepresentationsMatch, providersForViewport } from '@/lib/mapCoverage';
 import {
@@ -112,7 +114,7 @@ function loadParamsFromStorage(): ClientParams | null {
 
 function readUrlParams(): ClientParams {
   if (typeof window === 'undefined') {
-    return { origin: null, minBattery: undefined, theme: undefined, map: undefined };
+    return { origin: null, minBattery: undefined, theme: undefined, map: undefined, zones: undefined };
   }
   const p = new URLSearchParams(window.location.search);
   const hasUrlParams = p.toString().length > 0;
@@ -125,6 +127,7 @@ function readUrlParams(): ClientParams {
         minBattery: stored.minBattery ?? 0,
         theme: stored.theme ?? 'auto',
         map: stored.map ?? 'calm',
+        zones: stored.zones,
       });
       window.history.replaceState(null, '', `?${sp.toString()}`);
       return stored;
@@ -195,6 +198,8 @@ export default function Home() {
   const [minBattery, setMinBattery] = useState(0);
   const [theme, setTheme] = useState<ThemeName>('auto');
   const [mapStyle, setMapStyle] = useState<MapStyleName>('calm');
+  // The operators' zones, a preview: off unless turned on in the settings or by a link.
+  const [zonesOn, setZonesOn] = useState(false);
   const [enabledProviders, setEnabledProviders] = useState<Set<string>>(
     new Set(Object.keys(PROVIDERS))
   );
@@ -267,6 +272,7 @@ export default function Home() {
     if (params.minBattery !== undefined) setMinBattery(params.minBattery);
     if (params.theme) setTheme(params.theme);
     if (params.map) setMapStyle(params.map);
+    if (params.zones) setZonesOn(true);
 
     // Preserve old shared links without persisting their coordinates again.
     if (params.origin) {
@@ -298,7 +304,7 @@ export default function Home() {
   // Sync state to URL + localStorage
   useEffect(() => {
     if (!preferencesReady) return;
-    const p = serializeClientParams({ minBattery, theme, map: mapStyle });
+    const p = serializeClientParams({ minBattery, theme, map: mapStyle, zones: zonesOn });
     const qs = p.toString();
     const newUrl = qs ? `?${qs}` : window.location.pathname;
     window.history.replaceState(null, '', newUrl);
@@ -307,7 +313,7 @@ export default function Home() {
     const stored: Record<string, string> = {};
     p.forEach((v, k) => { stored[k] = v; });
     saveParamsToStorage(stored);
-  }, [minBattery, theme, mapStyle, preferencesReady]);
+  }, [minBattery, theme, mapStyle, zonesOn, preferencesReady]);
 
   /* eslint-enable react-hooks/set-state-in-effect */
 
@@ -361,6 +367,12 @@ export default function Home() {
     outOfDate,
     refresh,
   } = useScooterData(scooterQuery, { onOutOfDate: clearSelection });
+  const zoneData = useZoneData(mapQuery, zonesOn);
+  // Like the scooters: only the zones of the providers switched on.
+  const mapZones = useMemo(
+    () => zoneData.zones.filter(zone => enabledProviders.has(zone.provider)),
+    [enabledProviders, zoneData.zones]
+  );
 
   const handleProviderToggle = (provider: string) => {
     track('provider_filter', { provider, enabled: !enabledProviders.has(provider), source: 'filters' });
@@ -943,6 +955,7 @@ export default function Home() {
 
       <MapWrapper
         parking={mapParking}
+        zones={mapZones}
         vehicles={mapVehicles}
         clusters={mapClusters}
         clustered={responseMeta?.mode === 'clusters'}
@@ -981,6 +994,8 @@ export default function Home() {
         />
 
         <MapCredits />
+
+        {!searchExpanded && <ZoneLegend state={zoneData.state} count={mapZones.length} />}
       </div>
 
       {desktop && <KeyHints />}
@@ -1003,11 +1018,13 @@ export default function Home() {
         showCount={loading === 'load' ? null : viewportData.totalCount}
         theme={theme}
         mapStyle={mapStyle}
+        zones={zonesOn}
         onMinBatteryChange={value => { track('battery_filter', { value }); setMinBattery(value); }}
         onProviderToggle={handleProviderToggle}
         onResetFilters={resetFilters}
         onThemeChange={next => { track('map_style', { style: next }); setTheme(next); }}
         onMapStyleChange={next => { track('map_style', { style: next }); setMapStyle(next); }}
+        onZonesChange={next => { track('zones_toggle', { enabled: next }); setZonesOn(next); }}
       />
 
       <LocationHelpSheet open={locationHelpOpen} onClose={() => setLocationHelpOpen(false)} />

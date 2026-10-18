@@ -8,13 +8,14 @@ import { feedCurfewed, feedPaused } from '../src/lib/seasonalPauses';
 import { upstreamCacheEntriesFor, upstreamJsonCache } from '../src/lib/upstreamJsonCache';
 import { fetchRegionalParking } from '../src/lib/parkingFeeds';
 import { FeedScheduler } from './feedScheduler';
-import { createSnapshotServer } from './snapshotServer';
+import { COLD_WAIT_MS, createSnapshotServer } from './snapshotServer';
 import { readSnapshot, writeSnapshot } from './snapshotFile';
 import { collectSnapshotFeed } from './collectFeed';
 import { createFeedStateLog, expiredReportDelay, feedState, waitOutCurfew, type FeedCadence } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
 import { initErrorReporting, reportError, reportFeedExpired } from './errorReporting';
 import { cadenceFromEnv } from './cadence';
+import { answerZones, createZoneStore } from './zoneStore';
 
 initErrorReporting();
 upstreamJsonCache.paceHost('gbfs.api.ridedott.com', 150);
@@ -38,6 +39,10 @@ const records = new Map<string, FeedSnapshot>();
 // The last collection error of each failing feed, for its Sentry report should it expire.
 const lastErrors = new Map<string, string>();
 const regionalSystems = new Map(REGIONAL_SCOOTER_SYSTEMS.map(system => [`${regionalSource(system)}:${system.id}`, system]));
+// The feeds collected now, whose zones are read when someone asks for them.
+let collectable: CollectableScooterFeed[] = [];
+const zoneStore = createZoneStore({ onError: (feed, error) => console.warn(JSON.stringify({ event: 'zones_feed_failed', feed,
+  error: (error instanceof Error ? error.message : String(error)).slice(0, 300) })) });
 
 // Validate configuration before doing any network collection.
 const schedule = cadenceFromEnv();
@@ -60,7 +65,8 @@ const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
     evictions: upstreamJsonCache.evictions }) });
 const server = createSnapshotServer({ snapshot: () => snapshot,
   token: process.env.SCOOTER_SNAPSHOT_API_TOKEN, production: process.env.NODE_ENV === 'production',
-  version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler });
+  version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler,
+  zones: query => answerZones(zoneStore, collectable, query, COLD_WAIT_MS) });
 try {
   const persisted = await readSnapshot(snapshotPath);
   if (persisted) {
@@ -109,6 +115,7 @@ async function collect(definition: CollectableScooterFeed) {
 }
 
 function setDefinitions(definitions: CollectableScooterFeed[], retireMissing: boolean) {
+  collectable = definitions;
   if (retireMissing) {
     const active = new Set(definitions.map(feed => feed.id));
     for (const id of records.keys()) if (!active.has(id)) records.delete(id);

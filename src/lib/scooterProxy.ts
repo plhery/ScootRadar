@@ -23,7 +23,11 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     const url = new URL(request.url);
     const parsed = parseScooterQuery(url.searchParams);
     if (!parsed.ok) return Response.json({ error: parsed.error }, { status: 400, headers });
-    if (parsed.query.outsideCoverage) return Response.json({
+    // The zones of the map's layer come the same way, from the same origin (src/lib/zones.ts).
+    const zones = url.pathname === '/api/zones';
+    if (parsed.query.outsideCoverage) return Response.json(zones ? {
+      zones: [], meta: { generatedAt: new Date().toISOString(), pending: false, truncated: false },
+    } : {
       vehicles: [], clusters: [], providers: {},
       meta: { partial: false, stale: false, failedSources: [],
         sources: skippedSources(),
@@ -32,7 +36,7 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
         zoom: parsed.zoom, availableProviders: [] },
     }, { headers: { ...headers, 'Cache-Control': 'public, max-age=300' } });
     if (!env.SCOOTER_SNAPSHOT_API_TOKEN) throw new Error('Missing origin credential');
-    const upstream = new URL('/api/scooters', env.SCOOTER_SNAPSHOT_API_URL);
+    const upstream = new URL(zones ? '/api/zones' : '/api/scooters', env.SCOOTER_SNAPSHOT_API_URL);
     upstream.search = url.search;
     const response = await fetch(upstream, { headers: { Accept: 'application/json', Authorization: `Bearer ${env.SCOOTER_SNAPSHOT_API_TOKEN}`,
       'X-Scooter-Client-IP': request.headers.get('cf-connecting-ip') ?? 'unknown' }, redirect: 'manual', signal: AbortSignal.timeout(5000) });

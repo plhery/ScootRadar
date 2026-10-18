@@ -24,12 +24,14 @@ function sheetProps(overrides: Partial<Props> = {}): Props {
     showCount: 14,
     theme: 'auto',
     mapStyle: 'calm',
+    zones: false,
     onClose: vi.fn(),
     onMinBatteryChange: vi.fn(),
     onProviderToggle: vi.fn(),
     onResetFilters: vi.fn(),
     onThemeChange: vi.fn(),
     onMapStyleChange: vi.fn(),
+    onZonesChange: vi.fn(),
     ...overrides,
   };
 }
@@ -242,6 +244,17 @@ describe('ControlSheet settings', () => {
 
     rerender({ panel: 'settings', mapStyle: 'detailed' });
     expect(pressed(map)).toEqual(['Calm:false', 'Detailed:true']);
+  });
+
+  it('offers the operators\' zones as a switch, off until turned on', () => {
+    const { props, rerender } = settings();
+    const zones = screen.getByRole('switch', { name: 'Ride and parking zones' });
+    expect(zones).not.toBeChecked();
+    expect(zones).toHaveAccessibleDescription(/Each operator’s app has the final word/);
+    fireEvent.click(zones);
+    expect(props.onZonesChange).toHaveBeenCalledExactlyOnceWith(true);
+    rerender({ panel: 'settings', zones: true });
+    expect(zones).toBeChecked();
   });
 
   const browserLanguages = (languages: string[]) => vi.spyOn(navigator, 'languages', 'get').mockReturnValue(languages);

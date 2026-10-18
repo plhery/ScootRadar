@@ -91,7 +91,8 @@ const scootRadarWorker = {
       return redirect;
     }
 
-    if (new URL(request.url).pathname === '/api/scooters' && env.SCOOTER_SNAPSHOT_API_URL) {
+    const { pathname } = new URL(request.url);
+    if ((pathname === '/api/scooters' || pathname === '/api/zones') && env.SCOOTER_SNAPSHOT_API_URL) {
       return proxyScooterSnapshot(request, env);
     }
 

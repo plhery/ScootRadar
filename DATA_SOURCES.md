@@ -347,6 +347,26 @@ Lille source and attribution: [Métropole Européenne de Lille — mandatory sha
 e-scooter and e-bike parking](https://www.data.gouv.fr/datasets/espaces-de-stationnement-des-trottinettes-electriques-et-velos-a-assistance-electrique-en-libre-service).
 
 
+## Ride and parking zones
+
+A preview, off unless turned on (Settings → Map → Ride and parking zones, or
+`/map?zones=1`), draws from zoom 14 the zones that the Swiss national systems,
+Hopp's towns and the regional GBFS systems publish in `geofencing_zones`:
+
+- No riding (`ride_through_allowed=false`, or a limit of 0 km/h), no parking
+  (`ride_allowed=false`, or GBFS 3 `ride_end_allowed=false`) and slow zones (a
+  limit of 15 km/h or less). Zones whose rules allow everything else, such as
+  operating areas and zones that ask for parking at a station, are not drawn.
+- A zone is read by its first rule for a scooter type, or for every type; zones
+  for bikes only, and zones outside their `start` and `end`, are left out.
+- Each zone is drawn whole: a parking spot a feed lists before the no-parking
+  zone around it is not cut out of that zone, and the operator's app has the
+  final word.
+- The cache reads a system's zones only once a view with the layer on reaches
+  its area, keeps them an hour and lets them go after six hours without such a
+  view. Shapes are simplified to 2 m; one answer carries at most 60,000 points,
+  slow zones left out first, then no-parking zones.
+
 ## Germany and Italy
 
 Reviewed catalogs live in `data/german-scooter-feeds.json` and

@@ -64,12 +64,15 @@ interface ControlSheetProps {
   /** Automatic follows the system. */
   theme: ThemeName;
   mapStyle: MapStyleName;
+  /** The operators' zones over the map, a preview. */
+  zones: boolean;
   onClose: () => void;
   onMinBatteryChange: (value: number) => void;
   onProviderToggle: (provider: string) => void;
   onResetFilters: () => void;
   onThemeChange: (theme: ThemeName) => void;
   onMapStyleChange: (style: MapStyleName) => void;
+  onZonesChange: (zones: boolean) => void;
 }
 
 export default function ControlSheet({
@@ -84,15 +87,18 @@ export default function ControlSheet({
   showCount,
   theme,
   mapStyle,
+  zones,
   onClose,
   onMinBatteryChange,
   onProviderToggle,
   onResetFilters,
   onThemeChange,
   onMapStyleChange,
+  onZonesChange,
 }: ControlSheetProps) {
   const { t, locale, localeChoice, formatNumber } = useI18n();
   const batteryHelpId = useId();
+  const zonesHelpId = useId();
   const titleRef = useRef<HTMLHeadingElement>(null);
   const languageRowRef = useRef<HTMLButtonElement>(null);
   const creditsRowRef = useRef<HTMLButtonElement>(null);
@@ -291,6 +297,17 @@ export default function ControlSheet({
                 </button>
               ))}
             </div>
+            <label className="zone-toggle">
+              {t('set.zones')}
+              <input
+                type="checkbox"
+                role="switch"
+                checked={zones}
+                aria-describedby={zonesHelpId}
+                onChange={event => { selectionFeedback(); onZonesChange(event.currentTarget.checked); }}
+              />
+            </label>
+            <p id={zonesHelpId} className="settings-help">{t('set.zonesHelp')}</p>
           </section>
           <section className="settings-section">
             <h3>{t('set.language')}</h3>

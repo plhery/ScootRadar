@@ -36,8 +36,9 @@ for iPhone.
   estimate of what a ride costs, directions, and a button that opens the
   provider's app. Opening the app does not reserve the scooter.
 - **Your choices.** Filter by provider and by battery. In Settings, pick the
-  language, an appearance that follows the system or stays light or dark, and a
-  calm or a detailed map.
+  language, an appearance that follows the system or stays light or dark, a
+  calm or a detailed map, and a preview of the operators' ride and parking
+  zones (off unless turned on).
 - **When something is off.** The app says so in plain words: a provider that is
   not sharing data, positions that are out of date, an area without scooter
   data and the closest cities that have it, location that is switched off and

@@ -10,6 +10,8 @@ export interface ClientParams {
   theme: ThemeName | undefined;
   /** Undefined when nothing was chosen, which means calm. */
   map: MapStyleName | undefined;
+  /** The operators' zones over the map, a preview that is off unless turned on. */
+  zones: boolean | undefined;
 }
 
 /** What a link to the map can carry. "tile" is the style setting of older links. */
@@ -61,6 +63,7 @@ export function parseClientParams(params: URLSearchParams): ClientParams {
     minBattery: parseMinimumBattery(params.get('minBattery')),
     theme: parseTheme(params.get('theme'), legacyTile),
     map: parseMapStyle(params.get('map'), legacyTile),
+    zones: params.get('zones') === '1' ? true : undefined,
   };
 }
 
@@ -75,12 +78,12 @@ export function parseStoredClientParams(raw: string | null): ClientParams | null
     const params = new URLSearchParams();
     // Origins from older releases are intentionally ignored. Preferences may
     // persist locally, but precise map/location coordinates should not.
-    for (const key of ['minBattery', 'theme', 'map', 'tile']) {
+    for (const key of ['minBattery', 'theme', 'map', 'tile', 'zones']) {
       if (typeof record[key] === 'string') params.set(key, record[key]);
     }
 
     const parsed = parseClientParams(params);
-    return parsed.minBattery !== undefined || parsed.theme || parsed.map
+    return parsed.minBattery !== undefined || parsed.theme || parsed.map || parsed.zones
       ? parsed
       : null;
   } catch {
@@ -92,14 +95,17 @@ export function serializeClientParams({
   minBattery,
   theme,
   map,
+  zones = false,
 }: {
   minBattery: number;
   theme: ThemeName;
   map: MapStyleName;
+  zones?: boolean;
 }): URLSearchParams {
   const params = new URLSearchParams();
   if (minBattery !== 0) params.set('minBattery', String(minBattery));
   if (theme !== 'auto') params.set('theme', theme);
   if (map !== 'calm') params.set('map', map);
+  if (zones) params.set('zones', '1');
   return params;
 }

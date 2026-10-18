@@ -9,11 +9,13 @@ import type { MapStyleName, ThemeName } from '@/lib/clientParams';
 import type { RefObject } from 'react';
 import type { WalkView } from '@/lib/walkState';
 import type { MapPopover, MarkerLookup } from './MapComponent';
+import type { MapZone } from '@/lib/zones';
 
 const MapComponent = dynamic(() => import('./MapComponent'), { ssr: false });
 
 interface MapWrapperProps {
   parking?: ParkingLocation[];
+  zones?: MapZone[];
   vehicles: Vehicle[];
   clusters: CityGroup[];
   clustered: boolean;

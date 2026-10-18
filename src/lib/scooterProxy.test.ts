@@ -48,6 +48,17 @@ describe('edge snapshot proxy', () => {
     expect(String(fetcher.mock.calls[0][0])).toBe(`https://cache.example/api/scooters${search}`);
   });
 
+  it('asks the cache for the zones of the map\'s layer, and answers none outside the places it covers', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({ zones: [] },
+      { headers: { 'X-Scooter-Public-Cache-Control': 'public, max-age=300' } }));
+    const zones = await proxyScooterSnapshot(new Request('https://map.example/api/zones?south=47.36&west=8.53&north=47.38&east=8.55&zoom=15'), env);
+    expect(zones.headers.get('Cache-Control')).toBe('public, max-age=300');
+    expect(String(fetcher.mock.calls[0][0])).toBe('https://cache.example/api/zones?south=47.36&west=8.53&north=47.38&east=8.55&zoom=15');
+    const nowhere = await proxyScooterSnapshot(new Request('https://map.example/api/zones?south=43&west=1&north=43.1&east=1.1&zoom=15'), env);
+    expect(await nowhere.json()).toMatchObject({ zones: [], meta: { pending: false, truncated: false } });
+    expect(fetcher).toHaveBeenCalledOnce();
+  });
+
   it('rejects invalid bounds before any origin call', async () => {
     const fetcher = vi.spyOn(globalThis, 'fetch');
     const response = await proxyScooterSnapshot(new Request('https://map.example/api/scooters?zoom=NaN'), env);
