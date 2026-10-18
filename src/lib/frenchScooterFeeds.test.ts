@@ -6,6 +6,7 @@ import { serviceAreas } from '@/lib/regionalScooterSystems';
 import { upstreamJsonCache } from '@/lib/upstreamJsonCache';
 import { parseScooterQuery } from '@/lib/scooterQuery';
 import { boundsIntersect } from '@/lib/geo';
+import { listedPricing } from '@/lib/listedPrices';
 
 const lyon = { south: 45.72, west: 4.78, north: 45.82, east: 4.90 };
 const angers = { south: 47.42, west: -0.64, north: 47.53, east: -0.46 };
@@ -157,7 +158,7 @@ describe('French scooter feeds', () => {
     });
   });
 
-  it('shows Naolib Micromob\'s scooters as Naolib\'s, in Nantes and Saint-Herblain, without Pony\'s price or app', async () => {
+  it('shows Naolib Micromob\'s scooters as Naolib\'s, in Nantes and Saint-Herblain, with Naolib\'s published price and without Pony\'s price or app', async () => {
     const scooter = {
       bike_id: 'pony_1', vehicle_type_id: 'scooter', lat: 47.2818, lon: -1.5169, current_fuel_percent: 0.8,
       pricing_plan_id: 'standard', rental_uris: { ios: 'https://getapony.com/app/scan', android: 'https://getapony.com/app/scan' },
@@ -177,7 +178,8 @@ describe('French scooter feeds', () => {
     for (const vehicle of result.vehicles) {
       expect(vehicle).toMatchObject({ provider: 'naolib', battery: 80, deep_link: null,
         rental_uris: { ios: null, android: null, web: null } });
-      expect(vehicle.pricing).toBeUndefined();
+      // The price Nantes Métropole publishes for Naolib, until it gets too old to show.
+      expect(vehicle.pricing).toEqual(listedPricing('naolib_fr_nantes', vehicle.lat, vehicle.lng, Date.now()));
     }
     expect(fetchMock.mock.calls.map(([url]) => String(url))).not.toContainEqual(expect.stringContaining('pricing'));
   });

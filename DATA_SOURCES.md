@@ -124,6 +124,28 @@ PubliBike does not publish a redistribution license for these endpoints; its
 license questions to PubliBike. Responses advertise a 500-request limit without
 documenting the time window, so the app caches each for 30 seconds.
 
+### Listed prices
+
+Lime, Bird and Spin publish no prices in their feeds, nor do PubliBike and a
+few others. For their systems the map shows the pay-per-ride price the
+operator publishes on its own site, or, where it publishes none there, the
+price the city's permit or council report sets out. These are copied by hand
+into `data/listed-prices.json`, each with its page, the words it used and the
+day it was read, and a scooter's card says "published price, checked 18 Oct".
+Passes, subscriptions, discount programmes and first-ride offers are left out,
+and a fee charged on every ride, such as San Francisco's permit fee, is counted
+with the unlock fee. As of 18 October 2026 there are prices for 13 systems,
+about 9,000 scooters: PubliBike in Zürich and Biel, Hopp in Konstanz (from the
+text of its own feed, which links that price to no vehicle), Naolib in Nantes,
+Lime and Spin in San Francisco, and, from the city's or programme's page, Lime
+in Colorado Springs, Lime and Spin in Durham, Spin in Raleigh, Fort Collins
+and Davis, and Bird in Windsor. Bird publishes no prices on its sites, and Lime
+only for New York and San Francisco; New York's is a range, which the card
+can't show, so most of their systems still show none. The weekly [catalog check](.github/workflows/catalog-check.yml) runs
+`npm run check:listed-prices`, which fails once a price was read more than 90
+days ago or its page is gone; the map stops showing a price 180 days after it
+was read.
+
 Provider names remain trademarks of their respective owners. Their appearance
 does not imply endorsement.
 

@@ -12,7 +12,7 @@ import { holdOffMs, hostPacer } from './host-pacing.mjs';
 const failOn = process.argv.find(arg => arg.startsWith('--fail-on='))?.split('=')[1] ?? 'stale';
 if (!['stale', 'gone'].includes(failOn)) throw new Error('Use --fail-on=stale or --fail-on=gone');
 const catalog = JSON.parse(readFileSync(new URL('../data/listed-prices.json', import.meta.url), 'utf8'));
-const headers = { Accept: 'text/html,application/xhtml+xml', 'User-Agent': 'scootradar/2.0 (scootradar.com)' };
+const headers = { Accept: 'text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8', 'User-Agent': 'scootradar/2.0 (scootradar.com)' };
 const DAY_MS = 86_400_000;
 const now = Date.now();
 

@@ -1,6 +1,170 @@
 {
-  "about": "Prices for the systems whose feeds publish none, copied by hand from the operator's public price list, or from the city's where the operator publishes none. `checked` is the day the price was last read at `url`, and `quote` is what the page said. The map shows an entry's price until it is `staleAfterDays` old; the weekly catalog check fails from `recheckAfterDays`, so that someone reads the page again and updates the price and the day.",
+  "about": "Prices for the systems whose feeds publish none, copied by hand from the operator's public price list, or from the city's where the operator publishes none. A fee charged on every ride, such as San Francisco's permit fee, goes with the unlock fee. `checked` is the day the price was last read at `url`, and `quote` is what the page said. The map shows an entry's price until it is `staleAfterDays` old; the weekly catalog check fails from `recheckAfterDays`, so that someone reads the page again and updates the price and the day.",
   "recheckAfterDays": 90,
   "staleAfterDays": 180,
-  "prices": []
+  "prices": [
+    {
+      "systems": [
+        "publibike-freefloating"
+      ],
+      "currency": "CHF",
+      "unlock_fee_minor_units": 100,
+      "minute_fee_minor_units": 20,
+      "plus_tax": false,
+      "source": "operator",
+      "url": "https://www.publibike.ch/de/abos",
+      "quote": "Hast du kein Abonnement, zahlst du standardmässig unseren B-Quick National Tarif pro Fahrt. … E-Scooter Zürich & Biel/Bienne Freischaltgebühr: CHF 1 Pro Minute: CHF 0.20/min",
+      "checked": "2026-10-18"
+    },
+    {
+      "systems": [
+        "publibike-station"
+      ],
+      "bounds": {
+        "south": 47.08,
+        "west": 7.15,
+        "north": 47.2,
+        "east": 7.35
+      },
+      "currency": "CHF",
+      "unlock_fee_minor_units": 100,
+      "minute_fee_minor_units": 20,
+      "plus_tax": false,
+      "source": "operator",
+      "url": "https://www.publibike.ch/de/abos",
+      "quote": "E-Scooter Zürich & Biel/Bienne Freischaltgebühr: CHF 1 Pro Minute: CHF 0.20/min",
+      "checked": "2026-10-18"
+    },
+    {
+      "systems": [
+        "hopp_de_konstanz"
+      ],
+      "currency": "EUR",
+      "unlock_fee_minor_units": 100,
+      "minute_fee_minor_units": 25,
+      "plus_tax": false,
+      "source": "operator",
+      "url": "https://api.mobidata-bw.de/sharing/gbfs/v3/hopp_konstanz/system_pricing_plans",
+      "quote": "€1.00 to start and €0.25 per minute.",
+      "checked": "2026-10-18"
+    },
+    {
+      "systems": [
+        "naolib_fr_nantes"
+      ],
+      "currency": "EUR",
+      "unlock_fee_minor_units": 0,
+      "minute_fee_minor_units": 10,
+      "plus_tax": false,
+      "source": "city",
+      "url": "https://metropole.nantes.fr/actualites/pour-le-dernier-kilometre-deplacez-vous-avec-naolib-micromob",
+      "quote": "à la carte, au prix de 0,10 € la minute d",
+      "checked": "2026-10-18"
+    },
+    {
+      "systems": [
+        "lime_us_san_francisco"
+      ],
+      "currency": "USD",
+      "unlock_fee_minor_units": 148,
+      "minute_fee_minor_units": 55,
+      "plus_tax": true,
+      "source": "operator",
+      "url": "https://www.li.me/locations/san-francisco",
+      "quote": "Regular pricing: $1 unlock + $0.55/min. Plus San Francisco Permit Fee ($0.35) and Local Costs ($0.13)",
+      "checked": "2026-10-18"
+    },
+    {
+      "systems": [
+        "spin_us_san_francisco"
+      ],
+      "currency": "USD",
+      "unlock_fee_minor_units": 150,
+      "minute_fee_minor_units": 55,
+      "plus_tax": true,
+      "source": "operator",
+      "url": "https://www.spin.app/city/san-francisco",
+      "quote": "Regular Rates $1 to unlock, $0.55 per minute of use, and $0.50 per trip Fair Wage Fee (+ taxes).",
+      "checked": "2026-10-18"
+    },
+    {
+      "systems": [
+        "lime_us_colorado_springs"
+      ],
+      "currency": "USD",
+      "unlock_fee_minor_units": 100,
+      "minute_fee_minor_units": 42,
+      "plus_tax": true,
+      "source": "city",
+      "url": "https://coloradosprings.gov/escooters",
+      "quote": "Cost $1 to unlock, $0.42 per minute",
+      "checked": "2026-10-18"
+    },
+    {
+      "systems": [
+        "lime_us_durham",
+        "spin_us_durham"
+      ],
+      "currency": "USD",
+      "unlock_fee_minor_units": 100,
+      "minute_fee_minor_units": 41,
+      "plus_tax": true,
+      "source": "city",
+      "url": "https://www.durhamnc.gov/3219/Shared-Active-Transportation",
+      "quote": "All vehicles are available for $1 to unlock and $0.41 per minute from both companies.",
+      "checked": "2026-10-18"
+    },
+    {
+      "systems": [
+        "spin_us_raleigh"
+      ],
+      "currency": "USD",
+      "unlock_fee_minor_units": 100,
+      "minute_fee_minor_units": 41,
+      "plus_tax": true,
+      "source": "city",
+      "url": "https://raleighnc.gov/transportation/services/e-scooter-program",
+      "quote": "Spin Scooters: $1 to unlock + $0.41 per minute",
+      "checked": "2026-10-18"
+    },
+    {
+      "systems": [
+        "spin_us_fort_collins"
+      ],
+      "currency": "USD",
+      "unlock_fee_minor_units": 100,
+      "minute_fee_minor_units": 40,
+      "plus_tax": true,
+      "source": "city",
+      "url": "https://www.fortcollins.gov/Services/Transportation-and-Roads/Getting-Around-Town/Bicycling/Bike-and-Scooter-Share",
+      "quote": "Standard Rates $1 to unlock $0.40 per minute",
+      "checked": "2026-10-18"
+    },
+    {
+      "systems": [
+        "spin_us_davis"
+      ],
+      "currency": "USD",
+      "unlock_fee_minor_units": 100,
+      "minute_fee_minor_units": 32,
+      "plus_tax": true,
+      "source": "city",
+      "url": "https://transportation.ucdavis.edu/spin",
+      "quote": "Basic Rate $1/unlock $0.32/min",
+      "checked": "2026-10-18"
+    },
+    {
+      "systems": [
+        "bird_ca_windsor"
+      ],
+      "currency": "CAD",
+      "unlock_fee_minor_units": 115,
+      "minute_fee_minor_units": 42,
+      "plus_tax": true,
+      "source": "city",
+      "url": "https://www.citywindsor.ca/residents/recreation/outdoor-recreation/cycle-windsor/Bird-E-Scooter-and-E-Bike-Share-Program",
+      "quote": "The cost to rent one of Bird's e-scooters is $1.15 to unlock the device and $0.42 per minute.",
+      "checked": "2026-10-18"
+    }
+  ]
 }
