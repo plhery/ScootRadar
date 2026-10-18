@@ -66,6 +66,15 @@ async function rotateWithTwoFingers(page: Page) {
   });
 }
 
+/**
+ * Near me, pressed once the map shows its first scooters: pressed while the page
+ * is still starting, slower on mobile WebKit, the button does nothing yet.
+ */
+async function pressNearMe(page: Page) {
+  await expect(page.locator('.cluster-marker')).toHaveCount(1);
+  await page.getByRole('button', { name: 'Near me', exact: true }).click();
+}
+
 async function allowLocationWithCompass(page: Page, permission: 'granted' | 'denied') {
   await page.evaluate(permission => {
     // Emulated mobile WebKit otherwise inherits the host monitor's angle.
@@ -325,7 +334,7 @@ test('a tap on the map closes the card, and a card that closed does not open aga
 test('scooter card shows the walk, the battery and a ride estimate whose duration is remembered', async ({ page }) => {
   await page.goto('/map');
   await allowLocationWithCompass(page, 'granted');
-  await page.getByRole('button', { name: 'Near me', exact: true }).click();
+  await pressNearMe(page);
   await expect(page.locator('.scooter-marker')).toHaveCount(3);
   // Your location is on screen, so the count says nearby.
   await expect(page.locator('.sheet-count')).toHaveText(/^3\s*scooters nearby$/);
@@ -826,7 +835,7 @@ test('says that location is off under the search bar, stays dismissed and leads 
 test('See how explains how to turn location back on in this browser and on this device', async ({ page, browserName }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/map');
-  await page.getByRole('button', { name: 'Near me', exact: true }).click();
+  await pressNearMe(page);
   const card = page.getByRole('status').filter({ hasText: 'Location is off' });
   // The help comes before the way around it; the last button dismisses the card.
   await expect(card.getByRole('button')).toHaveText(['See how', 'Search a place', '']);
@@ -2077,7 +2086,7 @@ test('first launch shows the map at once, a labelled Near me button and compact 
 test('locating once zooms to the street, turns Near me into the icon button and is remembered', async ({ page }) => {
   await page.goto('/map');
   await allowLocationWithCompass(page, 'granted');
-  await page.getByRole('button', { name: 'Near me', exact: true }).click();
+  await pressNearMe(page);
   await expect(page.getByRole('img', { name: 'Your live location' })).toBeVisible();
   // About 350 m across on a phone, as on iOS.
   await expect(page.locator('.leaflet-container')).toHaveAttribute('data-zoom', '17');
@@ -2262,7 +2271,7 @@ test('phone direction follows compass readings and stays aligned on a rotated ma
   const response = await page.goto('/map');
   expect(response?.headers()['permissions-policy']).toContain('magnetometer=(self)');
   await allowLocationWithCompass(page, 'granted');
-  await page.getByRole('button', { name: 'Near me', exact: true }).click();
+  await pressNearMe(page);
   const dot = page.getByRole('img', { name: 'Your live location' });
   const beam = page.locator('.user-heading-beam');
   await expect(dot).toBeVisible();
@@ -2310,7 +2319,7 @@ test('phone direction follows compass readings and stays aligned on a rotated ma
 test('denying motion permission keeps location usable without inventing a direction', async ({ page }) => {
   await page.goto('/map');
   await allowLocationWithCompass(page, 'denied');
-  await page.getByRole('button', { name: 'Near me', exact: true }).click();
+  await pressNearMe(page);
   await expect(page.getByRole('img', { name: 'Your live location' })).toBeVisible();
   await expect(page.locator('body')).toHaveAttribute('data-compass-requested', 'true');
   // No message about it: the direction is simply not drawn.
