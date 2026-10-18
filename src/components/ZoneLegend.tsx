@@ -1,22 +1,20 @@
 'use client';
 
 import type { PathOptions } from 'leaflet';
-import type { CSSProperties } from 'react';
 import { useI18n, type TranslationKey } from '@/lib/i18n';
 import type { ZoneDataState } from '@/lib/useZoneData';
 import type { ZoneKind } from '@/lib/zones';
 
-const ZONE_COLORS: Record<ZoneKind, string> = { noRide: '#d92d20', noParking: '#e88a00', slow: '#3e63dd' };
-
 /**
- * How each kind of zone is drawn: its colour, how strongly it is filled (the stronger
- * the rule, the stronger the fill) and its edge. The fill is the whole kind's at once,
- * so that the same rule of five operators over a street looks like one.
+ * How each kind of zone is drawn: how strongly it is filled (the stronger the rule, the
+ * stronger the fill) and its edge, solid, dashed or dotted. The fill is the whole kind's
+ * at once, so that the same rule of five operators over a street looks like one. The
+ * colours, and no riding's hatching, are the appearance's (map.css).
  */
-export const ZONE_STYLES: Record<ZoneKind, { color: string; fillOpacity: number; edge: PathOptions }> = {
-  noRide: { color: ZONE_COLORS.noRide, fillOpacity: 0.22, edge: { color: ZONE_COLORS.noRide, opacity: 0.75, weight: 1.5 } },
-  noParking: { color: ZONE_COLORS.noParking, fillOpacity: 0.16, edge: { color: ZONE_COLORS.noParking, opacity: 0.7, weight: 1, dashArray: '5 4' } },
-  slow: { color: ZONE_COLORS.slow, fillOpacity: 0.12, edge: { color: ZONE_COLORS.slow, opacity: 0.65, weight: 1, dashArray: '2 4' } },
+export const ZONE_STYLES: Record<ZoneKind, { fillOpacity: number; edge: PathOptions }> = {
+  noRide: { fillOpacity: 0.4, edge: { opacity: 0.9, weight: 1.5 } },
+  noParking: { fillOpacity: 0.16, edge: { opacity: 0.9, weight: 1.5, dashArray: '6 4' } },
+  slow: { fillOpacity: 0.12, edge: { opacity: 0.9, weight: 2, dashArray: '0.1 4', lineCap: 'round' } },
 };
 
 const KINDS: { kind: ZoneKind; label: TranslationKey }[] = [
@@ -39,7 +37,7 @@ export default function ZoneLegend({ state, count }: { state: ZoneDataState; cou
     <div className="zone-legend glass" role="group" aria-label={t('zones.label')}>
       {note ? <span className="zone-legend-note">{t(note)}</span> : KINDS.map(({ kind, label }) => (
         <span key={kind} className="zone-legend-item">
-          <span className={`zone-swatch zone-swatch-${kind}`} style={{ '--zone-color': ZONE_COLORS[kind] } as CSSProperties} aria-hidden="true" />
+          <span className={`zone-swatch zone-swatch-${kind}`} aria-hidden="true" />
           {t(label)}
         </span>
       ))}

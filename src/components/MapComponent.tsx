@@ -697,8 +697,8 @@ export default function MapComponent({
       const shift = lngNear(first[1], frameLng) - first[1];
       const shape = zone.polygons.map(polygon => polygon.map(ring => ring.map(([lat, lng]): [number, number] => [lat, lng + shift])));
       const style = ZONE_STYLES[zone.kind];
-      L.polygon(shape, { renderer: fills[zone.kind], interactive: false, stroke: false, fillColor: style.color, fillOpacity: 1 }).addTo(layer);
-      L.polygon(shape, { ...style.edge, renderer: edges, interactive: false, fill: false }).addTo(layer);
+      L.polygon(shape, { renderer: fills[zone.kind], className: `zone-fill-${zone.kind}`, interactive: false, stroke: false, fillOpacity: 1 }).addTo(layer);
+      L.polygon(shape, { ...style.edge, renderer: edges, className: `zone-edge-${zone.kind}`, interactive: false, fill: false }).addTo(layer);
     }
     layer.addTo(map);
     return () => { layer.remove(); for (const renderer of [...Object.values(fills), edges]) renderer.remove(); };
@@ -1227,6 +1227,17 @@ export default function MapComponent({
         <MapCompass map={readyMap} />
         <MapZoomControls mapRef={mapRef} />
       </div>
+      {zones.length > 0 && (
+        // No riding's hatching, which its zones are filled with (map.css).
+        <svg className="zone-patterns" aria-hidden="true" focusable="false">
+          <defs>
+            <pattern id="zone-no-ride-hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <rect className="zone-hatch-ground" width="8" height="8" />
+              <line className="zone-hatch-line" x1="0" y1="0" x2="0" y2="8" />
+            </pattern>
+          </defs>
+        </svg>
+      )}
       <div ref={tipRef} className="map-tip glass" aria-hidden="true" hidden />
       {readyMap && popover && (
         <MarkerPopover

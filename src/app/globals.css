@@ -28,6 +28,10 @@
   --ground-water: #c2d8f2;
   --ground-street: #ffffff;
   --ground-name: #7c8596;
+  /* The operators' zones: edges of 3:1 at least on the land, the parks and the streets. */
+  --zone-no-ride: #d92d20;
+  --zone-no-parking: #c05600;
+  --zone-slow: #3e63dd;
   --attribution-bg: rgba(255, 255, 255, 0.85);
   --attribution-ink: #555c64;
   --map-control-bg: rgba(255, 255, 255, 0.58);
@@ -114,6 +118,9 @@ body {
   --ground-water: #0b2244;
   --ground-street: #2b354a;
   --ground-name: #76819a;
+  --zone-no-ride: #ff6961;
+  --zone-no-parking: #ffb340;
+  --zone-slow: #7c9cff;
   --attribution-bg: rgba(11, 14, 20, 0.85);
   --attribution-ink: #c0c5cf;
   --map-control-bg: rgba(16, 19, 26, 0.86);
@@ -163,6 +170,9 @@ body {
     --ground-water: #0b2244;
     --ground-street: #2b354a;
     --ground-name: #76819a;
+    --zone-no-ride: #ff6961;
+    --zone-no-parking: #ffb340;
+    --zone-slow: #7c9cff;
     --attribution-bg: rgba(11, 14, 20, 0.85);
     --attribution-ink: #c0c5cf;
     --map-control-bg: rgba(16, 19, 26, 0.86);
@@ -2005,20 +2015,29 @@ svg {
 .zone-legend-note {
   color: var(--ink-2);
 }
+/* Each as on the map, so that the edge and the hatching tell them apart without the colour. */
 .zone-swatch {
-  width: 12px;
+  width: 16px;
   height: 12px;
   border-radius: 3px;
   box-sizing: border-box;
-  border: 1.5px solid var(--zone-color);
-  background: color-mix(in srgb, var(--zone-color) 28%, transparent);
+  border: 2px solid var(--zone-color);
+  background: color-mix(in srgb, var(--zone-color) 16%, transparent);
 }
-.zone-swatch-noParking,
-.zone-swatch-slow {
+.zone-swatch-noRide {
+  --zone-color: var(--zone-no-ride);
+  background:
+    repeating-linear-gradient(-45deg, color-mix(in srgb, var(--zone-color) 55%, transparent) 0 1.5px, transparent 1.5px 4px),
+    color-mix(in srgb, var(--zone-color) 16%, transparent);
+}
+.zone-swatch-noParking {
+  --zone-color: var(--zone-no-parking);
   border-style: dashed;
 }
 .zone-swatch-slow {
-  background: color-mix(in srgb, var(--zone-color) 14%, transparent);
+  --zone-color: var(--zone-slow);
+  border-style: dotted;
+  background: color-mix(in srgb, var(--zone-color) 10%, transparent);
 }
 /* The switch of the zones, under the map styles. */
 .zone-toggle {

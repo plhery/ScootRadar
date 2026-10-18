@@ -459,6 +459,23 @@
 /* Dots in the blue of your location, each in a ring of the colour around the
    lights: walkRouteLayer.ts draws the two lines, one over the other, with the
    same dashes. They fade when the way is put away or you are there. */
+/* The operators' zones (MapComponent): the colours of the appearance, with what
+   ZONE_STYLES says. No riding is hatched, its edge solid; no parking's edge is
+   dashed and slow's dotted. */
+.leaflet-container .zone-fill-noRide { fill: url(#zone-no-ride-hatch); }
+.leaflet-container .zone-fill-noParking { fill: var(--zone-no-parking); }
+.leaflet-container .zone-fill-slow { fill: var(--zone-slow); }
+.leaflet-container .zone-edge-noRide { stroke: var(--zone-no-ride); }
+.leaflet-container .zone-edge-noParking { stroke: var(--zone-no-parking); }
+.leaflet-container .zone-edge-slow { stroke: var(--zone-slow); }
+.zone-patterns {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.zone-hatch-ground { fill: var(--zone-no-ride); fill-opacity: 0.4; }
+.zone-hatch-line { stroke: var(--zone-no-ride); stroke-width: 2px; }
 .walk-route {
   transition: opacity 260ms ease;
 }

@@ -1166,6 +1166,14 @@ test('the operators\' zones are drawn once turned on, for the providers shown, w
   // One shape and one edge for each zone, under the scooters.
   await expect(page.locator('.leaflet-zones-edges-pane path')).toHaveCount(3);
   expect(asked).toHaveLength(1);
+  // Told apart without their colours, on the map as in the legend: no riding hatched
+  // within a solid edge, no parking's edge dashed and slow's dotted.
+  const drawn = await page.evaluate(() => ({
+    fill: getComputedStyle(document.querySelector('.zone-fill-noRide')!).fill,
+    edges: ['noRide', 'noParking', 'slow'].map(kind => document.querySelector(`.zone-edge-${kind}`)!.getAttribute('stroke-dasharray')),
+    swatches: ['noRide', 'noParking', 'slow'].map(kind => getComputedStyle(document.querySelector(`.zone-swatch-${kind}`)!).borderTopStyle),
+  }));
+  expect(drawn).toEqual({ fill: 'url("#zone-no-ride-hatch")', edges: [null, '6 4', '0.1 4'], swatches: ['solid', 'dashed', 'dotted'] });
   // Lime alone: its zone alone.
   await page.getByRole('button', { name: /^Lime, 1\./ }).click();
   await expect(page.locator('.scooter-marker')).toHaveCount(1);
