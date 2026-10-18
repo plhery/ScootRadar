@@ -72,10 +72,13 @@ export const LEFT_OUT_SWISS_SYSTEMS: ReadonlySet<string> = new Set([
 
 // Systems named after one town that serve others too, as their published
 // geofencing shows: Bolt Zürich's "Wadenswil" zone, which takes in Richterswil,
-// and Dott St. Gallen's polygons around Wil and Lichtensteig.
+// and Dott St. Gallen's polygon around Wil. Its Lichtensteig zone is left out:
+// its 13 scooters stayed put from Friday 16 to Sunday 18 October 2026, with one
+// possible ride in 33 hours, so Lichtensteig left the map's towns (recheck in
+// spring 2027, docs/coverage-gaps.md).
 const SYSTEM_EXTRA_AREAS: Record<string, string[]> = {
   bolt_zurich: ['wadenswil'],
-  'dott_st-gallen': ['wil', 'lichtensteig'],
+  'dott_st-gallen': ['wil'],
 };
 
 const REGION_ALIASES: Record<string, string[]> = {

@@ -20,7 +20,6 @@ const SWISS_ALIASES: Record<string, string[]> = {
   'ch:bern': ['Berne', 'Berna'],
   'ch:biel': ['Biel', 'Bienne', 'Bienna'],
   'ch:gossau': ['Gossau SG'],
-  'ch:lichtensteig': ['Toggenburg', 'Wattwil'],
   'ch:schaffhausen': ['Schaffhouse', 'Sciaffusa'],
   'ch:st-gallen': ['Sankt Gallen', 'Saint-Gall', 'San Gallo'],
   'ch:wadenswil': ['Waedenswil', 'Richterswil'],

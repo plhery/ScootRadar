@@ -126,20 +126,6 @@
     }
   },
   {
-    "id": "ch:lichtensteig",
-    "city": "Lichtensteig",
-    "center": [
-      47.3236,
-      9.0876
-    ],
-    "bounds": {
-      "south": 47.31,
-      "west": 9.075,
-      "north": 47.342,
-      "east": 9.121
-    }
-  },
-  {
     "id": "ch:locarno",
     "city": "Locarno",
     "center": [

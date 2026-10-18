@@ -497,6 +497,9 @@ SIEMU and Versailles Grand Parc only.
 | Other Pony feeds | Nice, Limoges and Pays Basque returned zero available standing scooters in this sample. On 13 October 2026 Tours, Orléans, Limoges, Nice and Marseille listed e-bikes only, Pays Basque e-bikes and one disabled scooter, and Paris 9 disabled scooters; see [Pony, October 2026](#pony-october-2026). |
 | Voi V'Lônes | Returned bicycles and zero available standing scooters in this sample. |
 | Historical Bird feeds | Bordeaux returned only unavailable/bicycle data with an old timestamp. Castres, Dieppe, Draguignan, Épron, Gap, Hérouville-Saint-Clair, La Roche-sur-Yon, Marseille, Millau, Montluçon, Ouistreham and Sarreguemines returned empty status with timestamp 0. |
+| Bird Bastia and Gap | The access point lists "Trottinettes Bird Bastia" and "Trottinettes Bird Gap" (Bird Rides France SARL, since 17 November 2025), at `mds.bird.co/gbfs/v2/public/provider/bird/<town>/`. On 16 October 2026 at 19:55 CEST and 18 October 2026 at 03:30 CEST both were fresh (timestamps within seconds) but listed no vehicle, while Bird Ajaccio listed about 200 scooters. Recheck on 1 April 2027. |
+| Lime Paris-Saclay, Nogent-sur-Marne and Les Lilas | On the access point; on 16 October 2026 they listed 574, 107 and 11 vehicles, all e-bikes. |
+| YEGO | Paris, Bordeaux, Toulouse and Nice feeds on the access point list e-mopeds, which the map doesn't show. |
 | Lime Le Havre | The [official listing](https://transport.data.gouv.fr/datasets/gbfs-le-havre-2) describes a secured feed whose credentials are provided to approved partners. No authenticated access was attempted. Voi Le Havre is enabled. |
 
 Empty feeds are snapshot observations, not proof that an operator has permanently

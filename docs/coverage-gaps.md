@@ -56,9 +56,13 @@ banned shared scooters, and feeds that were empty when checked.
     Bird's Bulle system lists none; Nyon's shared vehicles are Voi's e-bikes.
     Bird Grenchen and Bird Bulle are in `LEFT_OUT_SWISS_SYSTEMS`
     ([Data sources](../DATA_SOURCES.md#mobility-data)).
-  - Dott's 13 scooters in Lichtensteig, on the map since 14 October 2026,
-    sat at the same spots from 00:37 to 11:41 that day: check over a weekend
-    that they are ridden.
+  - Lichtensteig left the map's towns on 18 October 2026. Dott St. Gallen
+    draws a zone there and lists 13 scooters, but from Friday 16 October at
+    18:10 to Sunday 18 October at 03:30 twelve of them stayed at the same
+    spots, by the station and on the road to Wattwil, their batteries only
+    draining; one scooter left and another arrived, at most one ride in 33
+    hours. Its zone is no longer read
+    ([Data sources](../DATA_SOURCES.md#mobility-data)).
 - **France** ([guide](french-scooter-feeds.md#feeds-not-enabled)):
   - Central Paris has no shared scooters (banned in 2023).
   - Dott GPSEO answers 404; Dott OL Vallée was empty.
@@ -74,6 +78,11 @@ banned shared scooters, and feeds that were empty when checked.
     scooters, all disabled. Caen, Olivet and Sète, which Pony's site lists,
     answered `UNKNOWN_REGION`.
   - Thirteen old Bird towns are empty (Bordeaux, Marseille and others).
+  - Bird Bastia and Bird Gap, on the access point since November 2025, were
+    fresh but listed no vehicle on 16 and 18 October 2026, while Bird
+    Ajaccio listed about 200 scooters.
+  - Lime Paris-Saclay, Nogent-sur-Marne and Les Lilas list e-bikes only, and
+    YEGO's Paris, Bordeaux, Toulouse and Nice feeds list e-mopeds.
   - Dott Bourgoin-Jallieu has been offline (403 `ERR_REGION_OFFLINE`) since
     early October 2026, after 143 scooters on 7 September, and left the
     catalog on 15 October 2026. Neither the city nor Dott has published a
@@ -793,6 +802,14 @@ Bonaire had feeds to add. Survey files are in
   Australia if New South Wales approves operators and Flamingo's feed lists
   scooters that move; Australia then needs a list of its states, so
   addresses read "Sydney NSW 2000".
+- **1 April 2027:** Lichtensteig, out of the map's towns since 18 October
+  2026. If Dott St. Gallen's scooters there move on a weekend, put
+  `lichtensteig` back in `SYSTEM_EXTRA_AREAS` in `src/lib/feedCoverage.ts`
+  and its area in `data/swiss-scooter-areas.json` (as in git history).
+- **1 April 2027:** Bird Bastia and Bird Gap
+  (`mds.bird.co/gbfs/v2/public/provider/bird/<town>/gbfs.json`), empty on 16
+  and 18 October 2026. If either lists about ten scooters that are ridden,
+  add it like Bird Ajaccio.
 - **1 April 2027:** Bulle, Grenchen and Nyon, out of the map's towns since
   15 October 2026. Check Bird Grenchen (`bird-grenchen`) and Bird Bulle
   (`bird-platform-partner-jmfleets-bulle`) on sharedmobility.ch and at

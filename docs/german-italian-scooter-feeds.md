@@ -315,8 +315,8 @@ origin and under its directory.
   no-ride or no-parking zones. Napoli's riding zones include three detached
   ones east and west of the city, where no scooter stood during the polls.
 - **Battery** is published for every scooter. There are no rental links, so a
-  scooter's card opens Bird's app, and the pricing list is empty, so no ride
-  estimate is shown, as for Bird in Portugal and Spain.
+  scooter's card has no "Open in" button, and the pricing list is empty, so no
+  ride estimate is shown, as for Bird in Portugal and Spain.
 - **Licence:** the `license_url` is Bird's 2018 PDF, which answers 404, as in
   the [Portuguese and Spanish audit](portuguese-spanish-icelandic-scooter-feeds.md#licences).
 - **Palermo's permits:** the city's final ranking

@@ -182,7 +182,6 @@ enum ScooterProviderCoverage {
         GeoBounds(south: 47.3868, west: 9.2125, north: 47.4639, east: 9.2915),
         GeoBounds(south: 47.33, west: 8.58, north: 47.55, east: 8.88),
         GeoBounds(south: 47.4287, west: 8.5477, north: 47.4829, east: 8.6213),
-        GeoBounds(south: 47.31, west: 9.075, north: 47.342, east: 9.121),
         GeoBounds(south: 46.1, west: 8.67, north: 46.25, east: 8.9),
         GeoBounds(south: 47.4156, west: 8.5533, north: 47.4568, east: 8.6208),
         GeoBounds(south: 47.45, west: 9.2, north: 47.66, east: 9.58),
@@ -691,7 +690,6 @@ enum ScooterCityCatalog {
         ScooterCity(id: "ch:gossau", name: "Gossau", countryCode: "CH", center: GeoPoint(latitude: 47.4155, longitude: 9.2548), bounds: GeoBounds(south: 47.3868, west: 9.2125, north: 47.4639, east: 9.2915)),
         ScooterCity(id: "ch:illnau-effretikon", name: "Illnau-Effretikon", countryCode: "CH", center: GeoPoint(latitude: 47.44, longitude: 8.73), bounds: GeoBounds(south: 47.33, west: 8.58, north: 47.55, east: 8.88)),
         ScooterCity(id: "ch:kloten", name: "Kloten", countryCode: "CH", center: GeoPoint(latitude: 47.4515, longitude: 8.5849), bounds: GeoBounds(south: 47.4287, west: 8.5477, north: 47.4829, east: 8.6213)),
-        ScooterCity(id: "ch:lichtensteig", name: "Lichtensteig", countryCode: "CH", center: GeoPoint(latitude: 47.3236, longitude: 9.0876), bounds: GeoBounds(south: 47.31, west: 9.075, north: 47.342, east: 9.121)),
         ScooterCity(id: "ch:locarno", name: "Locarno", countryCode: "CH", center: GeoPoint(latitude: 46.169, longitude: 8.799), bounds: GeoBounds(south: 46.1, west: 8.67, north: 46.25, east: 8.9)),
         ScooterCity(id: "ch:opfikon", name: "Opfikon", countryCode: "CH", center: GeoPoint(latitude: 47.4317, longitude: 8.5759), bounds: GeoBounds(south: 47.4156, west: 8.5533, north: 47.4568, east: 8.6208)),
         ScooterCity(id: "ch:romanshorn", name: "Romanshorn", countryCode: "CH", center: GeoPoint(latitude: 47.555, longitude: 9.39), bounds: GeoBounds(south: 47.45, west: 9.2, north: 47.66, east: 9.58)),
@@ -1070,7 +1068,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 384
+    static let cityCount = 383
     static let countryCount = 27
 
     /// Cities by distance from the point to their centre, nearest first.

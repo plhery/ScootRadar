@@ -27,12 +27,12 @@ estimate.
 The dataset names most systems after a town, and the map reads a system where
 the view touches that town's area. Two serve other towns as well, as their
 published geofencing shows, and are read there too: Bolt Zürich's "Wadenswil"
-zone takes in Wädenswil and Richterswil, and Dott St. Gallen draws zones around
-Wil and Lichtensteig. Just after midnight on 14 October 2026 Bolt listed 93
-scooters around Wädenswil, and Dott 35 in Wil and 13 in Lichtensteig. Riding
-is allowed in Dott's Lichtensteig zone, but its 13 scooters sat at the same
-spots in all seventeen polls from 00:37 to 11:41 that day, so no ride there has
-been seen yet.
+zone takes in Wädenswil and Richterswil, and Dott St. Gallen draws a zone
+around Wil. Just after midnight on 14 October 2026 Bolt listed 93 scooters
+around Wädenswil, and Dott 35 in Wil. Dott also draws a zone around
+Lichtensteig, with 13 scooters, but it isn't read: from Friday 16 to Sunday 18
+October 2026 twelve of them stayed at the same spots, with at most one ride in
+33 hours, so Lichtensteig left the map's towns on 18 October 2026.
 
 Each Swiss scooter counts in the city totals under the nearest town whose area
 holds it, so on the evening of 14 October 2026 each was placed in its

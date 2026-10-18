@@ -61,7 +61,8 @@ describe('feed coverage routing', () => {
 
 describe('Swiss systems that serve several towns', () => {
   const now = Date.parse('2026-10-14T08:00:00Z');
-  // Street views of Wädenswil, Wil and Lichtensteig, as in the audit of 14 October 2026.
+  // Street views of Wädenswil, Wil and Lichtensteig, as in the audit of 14 October 2026. Dott's
+  // Lichtensteig scooters weren't ridden over the weekend of 17–18 October, so that town is left out.
   const wadenswil = { south: 47.21, west: 8.64, north: 47.25, east: 8.70 };
   const wil = { south: 47.455, west: 9.03, north: 47.49, east: 9.07 };
   const lichtensteig = { south: 47.32, west: 9.08, north: 47.335, east: 9.095 };
@@ -84,10 +85,10 @@ describe('Swiss systems that serve several towns', () => {
   const snapshot = { version: 1 as const, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) };
   const shown = (bounds: MapBounds) => querySnapshot(snapshot, { bounds, minBattery: 0 }, 16, now).vehicles.map(vehicle => vehicle.vehicle_id);
 
-  it('reads Bolt Zürich in Wädenswil and Dott St. Gallen in Wil and Lichtensteig, where their geofencing reaches', () => {
+  it('reads Bolt Zürich in Wädenswil and Dott St. Gallen in Wil, where their geofencing reaches, but not Dott in Lichtensteig', () => {
     expect(coverageIntersects(knownSystemCoverage('bolt_zurich')!, wadenswil)).toBe(true);
     expect(coverageIntersects(knownSystemCoverage('dott_st-gallen')!, wil)).toBe(true);
-    expect(coverageIntersects(knownSystemCoverage('dott_st-gallen')!, lichtensteig)).toBe(true);
+    expect(coverageIntersects(knownSystemCoverage('dott_st-gallen')!, lichtensteig)).toBe(false);
     // Lime Zürich publishes nothing there.
     expect(coverageIntersects(knownSystemCoverage('lime_zurich')!, wadenswil)).toBe(false);
   });
@@ -95,7 +96,7 @@ describe('Swiss systems that serve several towns', () => {
   it('shows their scooters at street zoom in each town', () => {
     expect(shown(wadenswil)).toEqual(['wadenswil']);
     expect(shown(wil)).toEqual(['wil']);
-    expect(shown(lichtensteig)).toEqual(['lichtensteig']);
+    expect(shown(lichtensteig)).toEqual([]);
   });
 
   it('counts them under those towns in the city totals', () => {
@@ -103,7 +104,7 @@ describe('Swiss systems that serve several towns', () => {
       .map(cluster => [cluster.id, cluster.providers]));
     expect(counts['city:ch:wadenswil']).toEqual({ bolt: 3 });
     expect(counts['city:ch:wil']).toEqual({ dott: 1 });
-    expect(counts['city:ch:lichtensteig']).toEqual({ dott: 1 });
+    expect(counts['city:ch:lichtensteig']).toBeUndefined();
     expect(counts['city:ch:zurich']).toEqual({ bolt: 1 });
     expect(counts['city:ch:st-gallen']).toEqual({ dott: 1 });
     expect(counts['city:ch:zug']).toBeUndefined();
