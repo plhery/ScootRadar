@@ -10,6 +10,8 @@ const TONSBERG: [number, number] = [59.2675, 10.4076];
 const TROMSO: [number, number] = [69.6492, 18.9553];
 const LILLESTROM: [number, number] = [59.9556, 11.0492];
 const FJERDINGBY: [number, number] = [59.9253, 11.045];
+const PORSGRUNN: [number, number] = [59.1405, 9.6561];
+const SKIEN: [number, number] = [59.2096, 9.609];
 const BRIGHTON: [number, number] = [50.8225, -0.1372];
 const POOLE: [number, number] = [50.715, -1.9872];
 const BOURNEMOUTH: [number, number] = [50.7204, -1.8796];
@@ -73,6 +75,15 @@ describe('activeCurfew', () => {
     expect(activeCurfew(LILLESTROM, at('2026-10-16T22:30:00Z'))).toEqual({ city: 'Lillestrøm', until: at('2026-10-17T03:00:00Z'), timeZone: 'Europe/Oslo' });
     // Thursday 23:30.
     expect(activeCurfew(FJERDINGBY, at('2026-10-15T21:30:00Z'))).toBeNull();
+  });
+
+  it('closes Porsgrunn from 23:00 every night, while Skien next door stays open', () => {
+    // Wednesday 14 October 2026, 23:30 in Porsgrunn.
+    expect(activeCurfew(PORSGRUNN, at('2026-10-14T21:30:00Z'))).toEqual({ city: 'Porsgrunn', until: at('2026-10-15T03:00:00Z'), timeZone: 'Europe/Oslo' });
+    expect(activeCurfew(SKIEN, at('2026-10-14T21:30:00Z'))).toBeNull();
+    // 22:30, and 05:00 the next morning.
+    expect(activeCurfew(PORSGRUNN, at('2026-10-14T20:30:00Z'))).toBeNull();
+    expect(activeCurfew(PORSGRUNN, at('2026-10-15T03:00:00Z'))).toBeNull();
   });
 
   it('takes the window of the night it is when a city has several', () => {

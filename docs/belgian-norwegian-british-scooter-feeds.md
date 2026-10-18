@@ -195,7 +195,7 @@ directory.
 
 Each Norwegian municipality sets its own hours in its *forskrift* on renting
 small electric vehicles, and British trial areas set theirs in the trial's
-conditions. Eleven Norwegian towns and two British areas covered ban renting at
+conditions. Twelve Norwegian towns and two British areas covered ban renting at
 night. While a ban holds, the dock tells of it, with a moon, for the town in
 view, and a scooter's card says when it can be rented again. Web and iOS read
 the same [`rental-curfews.json`](../data/rental-curfews.json). It holds each
@@ -218,6 +218,7 @@ stays open at night.
 | Lillestrøm | Friday and Saturday, 00:00–05:00 | [FOR-2022-06-15-1545](https://lovdata.no/dokument/LF/forskrift/2022-06-15-1545) § 7 e |
 | Rælingen | Friday and Saturday, 23:00–05:00 | [FOR-2022-12-07-2621](https://lovdata.no/dokument/LF/forskrift/2022-12-07-2621) § 7 e |
 | Arendal | Every night, 23:00–05:00 | [City page](https://www.arendal.kommune.no/tjenester/vei-parkering-og-havn/parkering/elsparkesykler/) |
+| Porsgrunn | Every night, 23:00–05:00 | [Announcement 2026–27](https://skien.kommune.no/media/mrcb2f5v/2-kunngjoeringsdokument.pdf), "Tidspunkt for utleie" |
 | Bournemouth, Christchurch, Poole | Every night, 22:00–05:00 | [Beryl](https://help-bikes.beryl.cc/en/articles/16098480-when-are-beryl-e-scooters-available-to-hire) |
 | Brighton and Hove | Every night, 00:00–05:00 | [Council](https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial) |
 
@@ -230,6 +231,12 @@ stays open at night.
   which the map leaves out.
 - **Rælingen** has no town outline, so the map counts its scooters, from Voi's
   Lillestrøm feed, under Lillestrøm; its night ban has its own boundary.
+- **Porsgrunn's** hours come from the yearly announcement the four Grenland
+  municipalities publish under their joint forskrift
+  ([FOR-2022-06-16-1129](https://lovdata.no/dokument/LF/forskrift/2022-06-16-1129)),
+  here for 1 April 2026 to 31 March 2027. It closes the whole municipality, so
+  the Skien feed's scooters standing in Porsgrunn close too; Skien stays open
+  and only slows scooters to 12 km/h from 00:00 to 05:00, which the map leaves out.
 - **Winter:** some towns' rules allow renting only in a season, so their feeds
   have a seasonal pause, read as Ottawa's is
   ([Canadian feeds](canadian-scooter-feeds.md#winter)):
