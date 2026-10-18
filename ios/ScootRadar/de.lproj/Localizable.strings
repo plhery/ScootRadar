@@ -158,6 +158,7 @@
 "Directions" = "Route";
 "Open in %@" = "In %@ öffnen";
 "≈ %1$@ for %2$lld min" = "≈ %1$@ für %2$lld Min.";
+"From %1$@ for %2$lld min" = "Ab %1$@ für %2$lld Min.";
 "Price shown in the %@ app" = "Preis in der %@-App";
 "Ride estimate, %lld minutes. Change duration." = "Fahrtkostenschätzung, %lld Minuten. Dauer ändern.";
 "%lld min" = "%lld Min.";
@@ -209,6 +210,8 @@
 "%@ range" = "%@ Reichweite";
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ zum Entsperren, dann %2$@ pro Minute";
 "No unlock fee, %@ a minute" = "Keine Entsperrgebühr, %@ pro Minute";
+"%1$@ to unlock, then from %2$@ a minute" = "%1$@ zum Entsperren, dann ab %2$@ pro Minute";
+"No unlock fee, from %@ a minute" = "Keine Entsperrgebühr, ab %@ pro Minute";
 "%@ + tax" = "%@ + Steuern";
 "%1$@ · published price, checked %2$@" = "%1$@ · veröffentlichter Preis, Stand %2$@";
 

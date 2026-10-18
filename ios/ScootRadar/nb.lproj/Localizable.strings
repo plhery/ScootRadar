@@ -158,6 +158,7 @@
 "Directions" = "Veibeskrivelse";
 "Open in %@" = "Åpne i %@";
 "≈ %1$@ for %2$lld min" = "≈ %1$@ for %2$lld min";
+"From %1$@ for %2$lld min" = "Fra %1$@ for %2$lld min";
 "Price shown in the %@ app" = "Prisen vises i %@-appen";
 "Ride estimate, %lld minutes. Change duration." = "Anslått pris for turen, %lld minutter. Endre varighet.";
 "%lld min" = "%lld min";
@@ -209,6 +210,8 @@
 "%@ range" = "%@ rekkevidde";
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ for å låse opp, så %2$@ per minutt";
 "No unlock fee, %@ a minute" = "Gratis opplåsing, %@ per minutt";
+"%1$@ to unlock, then from %2$@ a minute" = "%1$@ for å låse opp, så fra %2$@ per minutt";
+"No unlock fee, from %@ a minute" = "Gratis opplåsing, fra %@ per minutt";
 "%@ + tax" = "%@ + skatt";
 "%1$@ · published price, checked %2$@" = "%1$@ · publisert pris, sjekket %2$@";
 

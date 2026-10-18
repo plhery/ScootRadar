@@ -279,6 +279,26 @@ describe('ScooterCard', () => {
     }
   });
 
+  it('says "from" where the operator gives a range a minute, and keeps the unlock fee', () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date('2026-10-20T12:00:00Z'));
+    try {
+      // Lime in New York: USD 1 to unlock, then USD 0.45 to 0.50 a minute.
+      renderCard({}, { provider: 'lime', pricing: { currency: 'USD', unlock_fee_minor_units: 100, minute_fee_minor_units: 45, minute_fee_from: true, plus_tax: true, listed_on: '2026-10-18' } });
+
+      expect(figures()[2]).toEqual({ value: '5.50', label: 'USD, 10 min', spoken: 'From US$ 5.50 + tax for 10 min' });
+      expect(screen.getByText('US$ 1.00 to unlock, then from US$ 0.45 a minute + tax · published price, checked 18 Oct')).toHaveClass('card-note');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('says "from" without an unlock fee too', () => {
+    renderCard({}, { pricing: { currency: 'CHF', unlock_fee_minor_units: 0, minute_fee_minor_units: 45, minute_fee_from: true } });
+
+    expect(screen.getByText('No unlock fee, from CHF 0.45 a minute')).toHaveClass('card-note');
+  });
+
   it('shows a price in hryvnias with its kopiyky', () => {
     // 3electra in Kyiv: UAH 12 to start and UAH 5.60 a minute.
     renderCard({}, { provider: 'zelectra', pricing: { currency: 'UAH', unlock_fee_minor_units: 1_200, minute_fee_minor_units: 560 } });

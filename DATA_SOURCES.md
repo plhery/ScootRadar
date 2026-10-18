@@ -134,14 +134,17 @@ into `data/listed-prices.json`, each with its page, the words it used and the
 day it was read, and a scooter's card says "published price, checked 18 Oct".
 Passes, subscriptions, discount programmes and first-ride offers are left out,
 and a fee charged on every ride, such as San Francisco's permit fee, is counted
-with the unlock fee. As of 18 October 2026 there are prices for 13 systems,
-about 9,000 scooters: PubliBike in Zürich and Biel, Hopp in Konstanz (from the
-text of its own feed, which links that price to no vehicle), Naolib in Nantes,
-Lime and Spin in San Francisco, and, from the city's or programme's page, Lime
-in Colorado Springs, Lime and Spin in Durham, Spin in Raleigh, Fort Collins
-and Davis, and Bird in Windsor. Bird publishes no prices on its sites, and Lime
-only for New York and San Francisco; New York's is a range, which the card
-can't show, so most of their systems still show none. The weekly [catalog check](.github/workflows/catalog-check.yml) runs
+with the unlock fee. Where the operator gives a range a minute, as Lime does
+in New York ($0.45 to $0.50), the card gives its lowest, "from $0.45 a
+minute", with the unlock fee. As of 18 October 2026 there are prices for 14
+systems, about 14,500 scooters: PubliBike in Zürich and Biel, Hopp in Konstanz
+(from the text of its own feed, which links that price to no vehicle), Naolib
+in Nantes, Lime in New York, Lime and Spin in San Francisco, and, from the
+city's or programme's page, Lime in Colorado Springs, Lime and Spin in Durham,
+Spin in Raleigh, Fort Collins and Davis, and Bird in Windsor. Bird publishes no
+prices on its sites, and Lime only for New York and San Francisco, so most of
+their systems still show none. The weekly
+[catalog check](.github/workflows/catalog-check.yml) runs
 `npm run check:listed-prices`, which fails once a price was read more than 90
 days ago or its page is gone; the map stops showing a price 180 days after it
 was read.

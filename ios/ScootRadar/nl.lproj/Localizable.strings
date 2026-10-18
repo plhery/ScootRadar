@@ -158,6 +158,7 @@
 "Directions" = "Route";
 "Open in %@" = "Openen in %@";
 "≈ %1$@ for %2$lld min" = "≈ %1$@ voor %2$lld min";
+"From %1$@ for %2$lld min" = "Vanaf %1$@ voor %2$lld min";
 "Price shown in the %@ app" = "Prijs in de app van %@";
 "Ride estimate, %lld minutes. Change duration." = "Geschatte ritprijs, %lld minuten. Duur wijzigen.";
 "%lld min" = "%lld min";
@@ -209,6 +210,8 @@
 "%@ range" = "%@ bereik";
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ om te ontgrendelen, daarna %2$@ per minuut";
 "No unlock fee, %@ a minute" = "Geen ontgrendelkosten, %@ per minuut";
+"%1$@ to unlock, then from %2$@ a minute" = "%1$@ om te ontgrendelen, daarna vanaf %2$@ per minuut";
+"No unlock fee, from %@ a minute" = "Geen ontgrendelkosten, vanaf %@ per minuut";
 "%@ + tax" = "%@ + belasting";
 "%1$@ · published price, checked %2$@" = "%1$@ · gepubliceerde prijs, gecontroleerd op %2$@";
 

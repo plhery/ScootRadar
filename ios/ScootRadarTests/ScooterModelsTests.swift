@@ -71,6 +71,28 @@ final class ScooterModelsTests: XCTestCase {
         XCTAssertEqual(try pricing(listedOn: "soon")?.minuteFeeMinorUnits, 39)
     }
 
+    func testAMinuteFeeGivenAsARangeKeepsItsLowestAndSaysFrom() throws {
+        // Lime in New York: USD 1 to unlock, then USD 0.45 to 0.50 a minute.
+        let data = Data("""
+        {
+          "provider": "lime", "lat": 40.85, "lng": -73.87, "battery": null, "range_m": null,
+          "vehicle_id": "lime-1", "deep_link": null, "rental_uris": null, "distance_m": null,
+          "pricing": { "currency": "USD", "unlock_fee_minor_units": 100, "minute_fee_minor_units": 45,
+                       "minute_fee_from": true, "plus_tax": true, "listed_on": "2026-10-18" }
+        }
+        """.utf8)
+        let pricing = try XCTUnwrap(try JSONDecoder().decode(ScooterVehiclePayload.self, from: data).model.pricing)
+        XCTAssertTrue(pricing.minuteFeeFrom)
+        XCTAssertEqual(pricing.minuteFeeMinorUnits, 45)
+        let quote = RidePriceEstimator.quote(pricing: pricing, durationMinutes: 10)
+        XCTAssertEqual(quote.totalMinorUnits, 550)
+        XCTAssertTrue(quote.minuteFeeFrom)
+        XCTAssertFalse(RidePriceEstimator.quote(
+            pricing: ScooterRidePricing(currency: "CHF", unlockFeeMinorUnits: 100, minuteFeeMinorUnits: 35),
+            durationMinutes: 10
+        ).minuteFeeFrom)
+    }
+
     func testDecodingAndStableProviderIdentity() throws {
         let data = Data(#"""
         {

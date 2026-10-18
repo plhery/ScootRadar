@@ -121,6 +121,11 @@
           "x-swift-name": "plusTax",
           "type": "boolean"
         },
+        "minute_fee_from": {
+          "description": "Present and true where the operator gives the per-minute fee as a range and this is its lowest, as Lime does in New York ($0.45 to $0.50 a minute): the card says \"from\".",
+          "x-swift-name": "minuteFeeFrom",
+          "type": "boolean"
+        },
         "listed_on": {
           "description": "Present where the feed publishes no price and this one is copied from a public price list, the operator's or the city's (data/listed-prices.json): the day it was last checked there, YYYY-MM-DD.",
           "x-swift-name": "listedOn",

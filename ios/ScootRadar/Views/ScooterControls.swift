@@ -1292,11 +1292,14 @@ private struct ScooterCard: View {
         .accessibilityValue(priceLabel(quote))
     }
 
-    /// "≈ CHF 4.50 for 10 min", followed by "Pass applied" when a pass lowers it.
+    /// "≈ CHF 4.50 for 10 min", or "From USD 5.50 for 10 min" where the minute fee is the lowest
+    /// of a range, followed by "Pass applied" when a pass lowers it.
     private func priceLabel(_ quote: RidePriceQuote) -> String {
         let price = RidePriceFormatter.string(minorUnits: quote.totalMinorUnits, currency: quote.currency)
         let estimate = String(
-            format: String(localized: "≈ %1$@ for %2$lld min"),
+            format: quote.minuteFeeFrom
+                ? String(localized: "From %1$@ for %2$lld min")
+                : String(localized: "≈ %1$@ for %2$lld min"),
             quote.plusTax ? String(format: String(localized: "%@ + tax"), price) : price,
             Int64(quote.durationMinutes)
         )

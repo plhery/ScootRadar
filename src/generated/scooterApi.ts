@@ -25,6 +25,7 @@ export interface RidePricing {
   unlock_fee_minor_units: number;
   minute_fee_minor_units: number;
   plus_tax?: boolean;
+  minute_fee_from?: boolean;
   listed_on?: string;
 }
 

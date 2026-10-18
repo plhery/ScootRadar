@@ -193,6 +193,8 @@ struct ScooterRidePricing: Hashable, Sendable {
     let currency: String
     let unlockFeeMinorUnits: Int
     let minuteFeeMinorUnits: Int
+    /// The operator gives a range a minute, as Lime does in New York, and this is its lowest: "from".
+    var minuteFeeFrom = false
     /// Tax is added to these prices, as US and Canadian operators charge sales tax on top.
     var plusTax = false
     /// "2026-10-18": the feed publishes no price, and this one was copied from the operator's
@@ -264,6 +266,8 @@ struct RidePriceQuote: Hashable, Sendable {
     let passApplied: Bool
     /// Tax is added to the estimate.
     var plusTax = false
+    /// The minute fee is the lowest of a range, so the estimate is the least the ride costs.
+    var minuteFeeFrom = false
 }
 
 enum RidePriceEstimator {
@@ -303,7 +307,8 @@ enum RidePriceEstimator {
             billedMinutes: billedMinutes,
             freeMinutesApplied: durationMinutes - billedMinutes,
             passApplied: totalMinorUnits < grossMinorUnits,
-            plusTax: pricing.plusTax
+            plusTax: pricing.plusTax,
+            minuteFeeFrom: pricing.minuteFeeFrom
         )
     }
 
@@ -830,6 +835,7 @@ extension ScooterVehiclePayload {
                     currency: currency,
                     unlockFeeMinorUnits: payload.unlockFeeMinorUnits,
                     minuteFeeMinorUnits: payload.minuteFeeMinorUnits,
+                    minuteFeeFrom: payload.minuteFeeFrom == true,
                     plusTax: payload.plusTax == true,
                     listedOn: payload.listedOn.flatMap { $0.wholeMatch(of: /\d{4}-\d{2}-\d{2}/) == nil ? nil : $0 }
                 )

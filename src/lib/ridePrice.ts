@@ -22,6 +22,8 @@ export interface RidePriceQuote {
   totalMinorUnits: number;
   /** Tax is added to these prices: "+ tax" follows them. */
   plusTax: boolean;
+  /** The minute fee is the lowest of a range: "from", and the total is the least the ride costs. */
+  minuteFeeFrom: boolean;
   /** "YYYY-MM-DD" where the feed has no price and this is the operator's listed one, checked that day. */
   listedOn: string | null;
 }
@@ -42,6 +44,7 @@ export function ridePriceQuote(pricing: RidePricing, durationMinutes: number): R
     // Saturates, as the Swift version does on overflow.
     totalMinorUnits: Math.min(unlockFee + minuteFee * minutes, Number.MAX_SAFE_INTEGER),
     plusTax: pricing.plus_tax === true,
+    minuteFeeFrom: pricing.minute_fee_from === true,
     listedOn: pricing.listed_on ?? null,
   };
 }

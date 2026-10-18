@@ -158,6 +158,7 @@
 "Directions" = "Leiðarlýsing";
 "Open in %@" = "Opna %@-appið";
 "≈ %1$@ for %2$lld min" = "≈ %1$@ fyrir %2$lld mín.";
+"From %1$@ for %2$lld min" = "Frá %1$@ fyrir %2$lld mín.";
 "Price shown in the %@ app" = "Verðið sést í %@-appinu";
 "Ride estimate, %lld minutes. Change duration." = "Áætlað verð ferðar, %lld mínútur. Breyta lengd.";
 "%lld min" = "%lld mín.";
@@ -209,6 +210,8 @@
 "%@ range" = "%@ drægni";
 "%1$@ to unlock, then %2$@ a minute" = "Startgjald %1$@, svo %2$@ á mínútu";
 "No unlock fee, %@ a minute" = "Ekkert startgjald, %@ á mínútu";
+"%1$@ to unlock, then from %2$@ a minute" = "Startgjald %1$@, svo frá %2$@ á mínútu";
+"No unlock fee, from %@ a minute" = "Ekkert startgjald, frá %@ á mínútu";
 "%@ + tax" = "%@ + skattar";
 "%1$@ · published price, checked %2$@" = "%1$@ · birt verð, athugað %2$@";
 

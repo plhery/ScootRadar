@@ -616,6 +616,34 @@ final class ScooterMapLookTests: XCTestCase {
         XCTAssertTrue(listed.listed("x").hasPrefix("x · veröffentlichter Preis, Stand "))
     }
 
+    func testTheCardSaysFromWhereTheOperatorGivesARangeAMinute() {
+        defer { ScooterLanguage.current = .atLaunch }
+        ScooterLanguage.current = .en
+        // Lime in New York: USD 1 to unlock, then USD 0.45 to 0.50 a minute.
+        let range = ScooterRidePricing(
+            currency: "USD", unlockFeeMinorUnits: 100, minuteFeeMinorUnits: 45, minuteFeeFrom: true, plusTax: true
+        )
+        let content = ScooterCardContent(
+            scooter: scooter(provider: "lime", pricing: range),
+            metres: 60,
+            quote: RidePriceEstimator.quote(pricing: range, durationMinutes: 10)
+        )
+        let unlock = RidePriceFormatter.string(minorUnits: 100, currency: "USD")
+        let minute = RidePriceFormatter.string(minorUnits: 45, currency: "USD")
+        XCTAssertEqual(content.note, "\(unlock) to unlock, then from \(minute) a minute + tax")
+
+        let free = ScooterRidePricing(currency: "CHF", unlockFeeMinorUnits: 0, minuteFeeMinorUnits: 45, minuteFeeFrom: true)
+        let freeContent = ScooterCardContent(
+            scooter: scooter(provider: "lime", pricing: free),
+            metres: 60,
+            quote: RidePriceEstimator.quote(pricing: free, durationMinutes: 10)
+        )
+        XCTAssertEqual(
+            freeContent.note,
+            "No unlock fee, from \(RidePriceFormatter.string(minorUnits: 45, currency: "CHF")) a minute"
+        )
+    }
+
     func testTheCardShowsForintsAndKronurWithoutDecimals() {
         // Hopp in Pécs: HUF 272 to start and HUF 76 a minute.
         let forints = ScooterRidePricing(currency: "HUF", unlockFeeMinorUnits: 27_200, minuteFeeMinorUnits: 7_600)

@@ -109,10 +109,11 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
   const money = (minorUnits: number) => quote ? formatRidePrice(minorUnits, quote.currency, locale, region) : '';
   // Where tax is added, as in North America, the prices say so.
   const taxed = (text: string) => quote?.plusTax ? t('card.plusTax', { text }) : text;
+  // Where the operator gives a range a minute, its lowest, "from".
   const tariff = quote
     ? taxed(quote.unlockFeeMinorUnits > 0
-      ? t('card.note.price', { unlock: money(quote.unlockFeeMinorUnits), minute: money(quote.minuteFeeMinorUnits) })
-      : t('card.note.noUnlock', { minute: money(quote.minuteFeeMinorUnits) }))
+      ? t(quote.minuteFeeFrom ? 'card.note.priceFrom' : 'card.note.price', { unlock: money(quote.unlockFeeMinorUnits), minute: money(quote.minuteFeeMinorUnits) })
+      : t(quote.minuteFeeFrom ? 'card.note.noUnlockFrom' : 'card.note.noUnlock', { minute: money(quote.minuteFeeMinorUnits) }))
     : null;
   // A price copied from the operator's price list, not its feed, says when it was read there.
   const note = tariff === null
@@ -174,7 +175,7 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
           key={kind}
           value={formatNumber(quote.totalMinorUnits / 100, { minimumFractionDigits: digits, maximumFractionDigits: digits })}
           label={t('card.figure.price', { currency: quote.currency.toUpperCase(), minutes: formatNumber(duration) })}
-          spoken={t('card.price', {
+          spoken={t(quote.minuteFeeFrom ? 'card.priceFrom' : 'card.price', {
             price: taxed(money(quote.totalMinorUnits)),
             minutes: formatNumber(duration),
           })}

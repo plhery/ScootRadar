@@ -158,6 +158,7 @@
 "Directions" = "Itinerário";
 "Open in %@" = "Abrir em %@";
 "≈ %1$@ for %2$lld min" = "≈ %1$@ por %2$lld min";
+"From %1$@ for %2$lld min" = "A partir de %1$@ por %2$lld min";
 "Price shown in the %@ app" = "Preço indicado na app %@";
 "Ride estimate, %lld minutes. Change duration." = "Estimativa da viagem, %lld minutos. Alterar a duração.";
 "%lld min" = "%lld min";
@@ -209,6 +210,8 @@
 "%@ range" = "%@ de autonomia";
 "%1$@ to unlock, then %2$@ a minute" = "%1$@ para desbloquear, depois %2$@ por minuto";
 "No unlock fee, %@ a minute" = "Sem taxa de desbloqueio, %@ por minuto";
+"%1$@ to unlock, then from %2$@ a minute" = "%1$@ para desbloquear, depois a partir de %2$@ por minuto";
+"No unlock fee, from %@ a minute" = "Sem taxa de desbloqueio, a partir de %@ por minuto";
 "%@ + tax" = "%@ + impostos";
 "%1$@ · published price, checked %2$@" = "%1$@ · preço publicado, verificado a %2$@";
 

@@ -45,6 +45,12 @@ describe('listedPriceLookup', () => {
     expect(lookup('lime_us_seattle', 47.6, -122.33, at('2026-10-18T12:00:00Z'))).toBeUndefined();
   });
 
+  it('says "from" where the operator gives a range a minute', () => {
+    const range = listedPriceLookup([{ ...CHICAGO, minute_fee_from: true }], 180);
+    expect(range('lime_us_chicago', 41.88, -87.63, at('2026-10-18T12:00:00Z'))).toMatchObject({ minute_fee_minor_units: 39, minute_fee_from: true });
+    expect(lookup('lime_us_chicago', 41.88, -87.63, at('2026-10-18T12:00:00Z'))).not.toHaveProperty('minute_fee_from');
+  });
+
   it('prefers the price for the part of a system the scooter is in', () => {
     const now = at('2026-10-18T12:00:00Z');
     expect(lookup('bird_il_israel', 31.8, 34.65, now)?.unlock_fee_minor_units).toBe(400);
@@ -76,6 +82,7 @@ describe('data/listed-prices.json', () => {
     expect(entry.currency).toMatch(/^[A-Z]{3}$/);
     expect(Number.isInteger(entry.unlock_fee_minor_units) && entry.unlock_fee_minor_units >= 0).toBe(true);
     expect(Number.isInteger(entry.minute_fee_minor_units) && entry.minute_fee_minor_units > 0).toBe(true);
+    expect(entry.minute_fee_from ?? true).toBe(true);
     expect(['operator', 'city']).toContain(entry.source);
     expect(entry.url).toMatch(/^https:\/\//);
     expect(entry.quote.trim()).not.toBe('');

@@ -17,6 +17,8 @@ export interface ListedPrice {
   currency: string;
   unlock_fee_minor_units: number;
   minute_fee_minor_units: number;
+  /** The operator gives a range a minute, and minute_fee_minor_units is its lowest: "from". */
+  minute_fee_from?: boolean;
   /** Tax comes on top, as in the US and Canada. */
   plus_tax: boolean;
   /** Whose page the price is from: the operator's, or the city's where the operator publishes none. */
@@ -48,6 +50,7 @@ export function listedPriceLookup(entries: ListedPrice[], staleAfterDays: number
       currency: entry.currency,
       unlock_fee_minor_units: entry.unlock_fee_minor_units,
       minute_fee_minor_units: entry.minute_fee_minor_units,
+      ...(entry.minute_fee_from ? { minute_fee_from: true } : {}),
       ...(entry.plus_tax ? { plus_tax: true } : {}),
       listed_on: entry.checked,
     };

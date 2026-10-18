@@ -40,6 +40,7 @@ describe('ridePriceQuote', () => {
       minuteFeeMinorUnits: 35,
       totalMinorUnits: 450,
       plusTax: false,
+      minuteFeeFrom: false,
       listedOn: null,
     });
     expect(ridePriceQuote(LIME, 30).totalMinorUnits).toBe(1150);
@@ -48,6 +49,10 @@ describe('ridePriceQuote', () => {
 
   it('says whether tax is added to the estimate', () => {
     expect(ridePriceQuote({ ...LIME, currency: 'USD', plus_tax: true }, 10)).toMatchObject({ totalMinorUnits: 450, plusTax: true });
+  });
+
+  it('says when the minute fee is the lowest of a range, so the estimate is the least the ride costs', () => {
+    expect(ridePriceQuote({ ...LIME, minute_fee_from: true }, 10)).toMatchObject({ totalMinorUnits: 450, minuteFeeFrom: true });
   });
 
   it("keeps the day a price copied from the operator's price list was checked", () => {

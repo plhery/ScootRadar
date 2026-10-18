@@ -1,5 +1,5 @@
 {
-  "about": "Prices for the systems whose feeds publish none, copied by hand from the operator's public price list, or from the city's where the operator publishes none. A fee charged on every ride, such as San Francisco's permit fee, goes with the unlock fee. `checked` is the day the price was last read at `url`, and `quote` is what the page said. The map shows an entry's price until it is `staleAfterDays` old; the weekly catalog check fails from `recheckAfterDays`, so that someone reads the page again and updates the price and the day.",
+  "about": "Prices for the systems whose feeds publish none, copied by hand from the operator's public price list, or from the city's where the operator publishes none. Where the operator gives a range a minute, `minute_fee_minor_units` is its lowest and `minute_fee_from` is true, and the card says \"from\". A fee charged on every ride, such as San Francisco's permit fee, goes with the unlock fee. `checked` is the day the price was last read at `url`, and `quote` is what the page said. The map shows an entry's price until it is `staleAfterDays` old; the weekly catalog check fails from `recheckAfterDays`, so that someone reads the page again and updates the price and the day.",
   "recheckAfterDays": 90,
   "staleAfterDays": 180,
   "prices": [
@@ -58,7 +58,21 @@
       "plus_tax": false,
       "source": "city",
       "url": "https://metropole.nantes.fr/actualites/pour-le-dernier-kilometre-deplacez-vous-avec-naolib-micromob",
-      "quote": "à la carte, au prix de 0,10 € la minute d",
+      "quote": "à la carte, au prix de 0,10 € la minute d’utilisation",
+      "checked": "2026-10-18"
+    },
+    {
+      "systems": [
+        "lime_us_new_york"
+      ],
+      "currency": "USD",
+      "unlock_fee_minor_units": 100,
+      "minute_fee_minor_units": 45,
+      "minute_fee_from": true,
+      "plus_tax": true,
+      "source": "operator",
+      "url": "https://www.li.me/locations/new-york",
+      "quote": "Lime in New York costs $1 to unlock, then between $0.45 and $0.50 a minute to ride.",
       "checked": "2026-10-18"
     },
     {
