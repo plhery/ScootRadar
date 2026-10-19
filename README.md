@@ -1,59 +1,88 @@
 <p align="center">
-  <img src="public/icon.svg" width="92" alt="ScootRadar logo">
+  <img src="public/icon.svg" width="88" alt="">
 </p>
 
 <h1 align="center">ScootRadar</h1>
 
 <p align="center">
-  A friendly map for finding shared e-scooters in 384 cities in 27 countries.
+  Every shared e-scooter around you, on one map.<br>
+  Lime, Bolt, Bird, Voi, Dott, Hopp and 17 more, in over 380 cities in 27 countries.
 </p>
 
 <p align="center">
   <a href="https://github.com/plhery/ScootRadar/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/plhery/ScootRadar/ci.yml?branch=main&style=flat-square&label=CI" alt="CI status"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f?style=flat-square" alt="MIT license"></a>
-  <img src="https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js" alt="Next.js 16">
-  <img src="https://img.shields.io/badge/Cloudflare-Workers-f38020?style=flat-square&logo=cloudflare" alt="Cloudflare Workers">
 </p>
 
 <p align="center">
-  <a href="https://scootradar.com/map"><strong>Open the live map →</strong></a>
+  <a href="https://scootradar.com/map"><strong>Open the map</strong></a>
+  &nbsp;&nbsp;
+  <a href="https://scootradar.com">scootradar.com</a>
 </p>
 
 <p align="center">
-  <img src="docs/scootradar-map.png" width="390" alt="ScootRadar showing fictional demo scooters around Zürich on a phone">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/readme/hero-dark.webp">
+    <img src="docs/readme/hero-light.webp" width="860" alt="ScootRadar in Zürich, with real scooter positions: the web map shows 550 scooters from seven providers, and the iPhone app, by the Fraumünster, names the nearest scooter of each provider with its walking time.">
+  </picture>
 </p>
 
-ScootRadar puts the shared scooters of 23 providers on one map, in an
-installable web app. It speaks German, French, Italian, Dutch, Norwegian,
-Portuguese, Spanish, Icelandic and English. There is also a native SwiftUI app
-for iPhone.
+Every scooter company has its own app, and each app shows only its own fleet.
+By Zürich main station, seven companies can have a scooter within two
+minutes' walk away, and finding the nearest one means opening seven apps.
+ScootRadar reads the feeds the operators publish and puts every scooter on one
+map, so the nearest one is simply the nearest one.
 
-- **Near you.** Tap *Near me*, or search a city, a street or an address, and
-  the dock at the bottom of the map counts the scooters nearby and says how
-  fresh the data is. Search finds streets and addresses in every country the
-  app covers, typed in the country's own script too.
-- **One scooter.** Tap a marker for its battery and range, the walking time, an
-  estimate of what a ride costs, directions, and a button that opens the
-  provider's app. Opening the app does not reserve the scooter.
-- **Your choices.** Filter by provider and by battery. In Settings, pick the
-  language, an appearance that follows the system or stays light or dark, a
-  calm or a detailed map, and a preview of the operators' ride and parking
-  zones (off unless turned on).
-- **When something is off.** The app says so in plain words: a provider that is
-  not sharing data, positions that are out of date, an area without scooter
-  data and the closest cities that have it, location that is switched off and
-  how to turn it back on.
-- **On a desktop.** The providers form a legend, a scooter's card opens beside
-  its marker, hovering a marker shows a short tip, and `/`, `L`, `+`, `−` and
-  `Esc` work from the keyboard.
+It's free, with no account and no ads. Use it in the browser, install it as a
+web app, or build the native iPhone app from this repository.
 
-**Supported providers:** Bolt, Bird, Dott, Hopp, Lime, Voi, Pony, PubliBike / Velospot, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob', Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo and JOLT.
+## What it tells you
 
-Switzerland's scooters come from its national open-data platform, the other
-countries' from the feeds their operators and national platforms publish.
-[DATA_SOURCES.md](DATA_SOURCES.md) lists each country's feeds and links its
-audit; what is not covered yet, and why, is listed in
-[Coverage gaps](docs/coverage-gaps.md).
+- **Which scooter is closest?** Tap *Near me*, or search a city, a street or
+  an address, in the country's own script too. Every provider's scooters are
+  on the map, with the walking time to each.
+- **Will it get me there?** A scooter shows its battery and range when its
+  provider publishes them. Set a minimum and the flat ones disappear.
+- **What will the ride cost?** An estimate from the provider's published rates,
+  for a ride of 5 to 30 minutes, before you walk over.
+- **Where can I leave it?** At street zoom, the operators' parking bays show as
+  **P** markers, with the rules each operator publishes, and closed bays are
+  left out. Settings can also show the ride and parking zones. Coverage
+  depends on each operator's feed, so check its app before ending a ride.
+- **Then what?** One tap opens the provider's own app, where you unlock and pay
+  as usual. Opening it doesn't reserve the scooter.
+- **What if something's off?** The map says so in plain words: a provider that
+  isn't sharing data, positions that are out of date, a town whose scooters are
+  away for the winter, or an area with no data and the closest cities that have
+  it.
+
+It speaks English, German, French, Italian, Dutch, Norwegian, Portuguese,
+Spanish and Icelandic. It follows your device's light or dark appearance, or
+keeps the one you pick. On a desktop, the providers form a legend, a scooter's
+card opens beside its marker, and `/`, `L`, `+`, `−` and `Esc` work from the
+keyboard.
+
+<p align="center">
+  <img src="public/landing/en-dark.webp" width="260" alt="The iPhone app at night by Zürich main station, each scooter a dot in its provider's colour.">
+  &nbsp;
+  <img src="public/landing/en-pier-day.webp" width="260" alt="The iPhone app by day at Santa Monica Pier, in 3D, with the Veo and Bird scooters around it.">
+  &nbsp;
+  <img src="public/landing/en-pier-night.webp" width="260" alt="The same pier at night, in the dark appearance.">
+</p>
+
+## Where the scooters come from
+
+Switzerland's scooters come from its national open-data platform, the
+[Open data platform mobility Switzerland](https://data.opentransportdata.swiss/en/dataset/sharedmobility).
+The other countries' come from the feeds their operators and national platforms
+publish. [DATA_SOURCES.md](DATA_SOURCES.md) lists each country's feeds and links
+its audit, and [Coverage gaps](docs/coverage-gaps.md) lists what isn't covered
+yet, and why.
+
+Address search comes from Geoapify (OpenStreetMap and other open data), with
+komoot's Photon standing in, and the web map is drawn from OpenFreeMap tiles of
+OpenStreetMap data. The app keeps no account and no location history; see
+[Privacy](PRIVACY.md).
 
 ## Run it locally
 
@@ -66,159 +95,36 @@ npm ci
 npm run dev
 ```
 
-Open [localhost:3000](http://localhost:3000). That is it—there are no required
-environment variables, API keys, databases, or accounts.
+Open [localhost:3000](http://localhost:3000). That's all: there are no
+environment variables, API keys, databases or accounts to set up.
 
-To run the checks:
+[CONTRIBUTING.md](CONTRIBUTING.md) lists the checks to run before a pull
+request, and [Adding a country](docs/adding-a-country.md) walks through a new
+country's feeds.
 
-```bash
-npm run check:dependencies
-npm run check:providers
-npm run check:api-contract
-npm run lint
-npm test
-npm run test:e2e
-npm run build
-```
+## iPhone app
 
-The dependency check fails on moderate or higher npm advisories. Its only
-exception is [GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm)
-in the development-only `eslint-config-next → @next/eslint-plugin-next →
-fast-glob → micromatch → braces@3.0.3` chain: upstream has no patched release,
-and these tools read repository-controlled glob patterns during linting. The
-exception also covers npm's inherited findings along that chain, but rejects
-other advisories and any production dependency affected by this advisory.
-Remove the exception when a patched upstream release is available.
+Open `ios/ScootRadar.xcodeproj` in Xcode 26+, choose a development team, and
+run the `ScootRadar` scheme. [ios/README.md](ios/README.md) has the details.
 
-Provider metadata shared by the web and iPhone apps is generated from
-`data/providers.json`; the same generator includes the service areas of every covered country
-coverage for native provider filters. Run `npm run generate:providers` after
-changing the provider or service-area catalogs.
-The scooter API wire types are generated for both clients from
-`data/scooter-api.schema.json`; run `npm run generate:api-contract` after
-changing the response contract.
-
-### Adding a country
-
-1. Write its catalog, `data/<adjective>-scooter-feeds.json` (`canadian`,
-   `mexican`, `american`), and its guide, `docs/<adjective>-scooter-feeds.md`,
-   with the evidence for each feed. A service area with no scooters part of
-   the year, as Montréal each winter, says so with `seasonal`: `{ "from":
-   "11-16", "until": "04-15", "timeZone": "America/Toronto" }`, its first day
-   without scooters and the first day they are back, local dates (on a
-   system, for each of its areas that sets none); `"until": "clear"` where
-   they come back once the streets are clear, on no set day, as in Skien.
-   Outside Europe each service area gives its `timeZone`, `"America/Chicago"`, by its name today:
-   the feeds' own are older names (`US/Central`, `Asia/Tel_Aviv`) or wrong
-   (`Etc/UTC`), and are never read.
-   A seasonal pause is in its town's zone, and so is a night ban. Inside the window the map
-   says "back in April" rather than that the operator is not sharing data,
-   and the feed's alerts are muted; `src/lib/seasonalPauses.ts` explains.
-   A feed whose plain stations are all where rides must end, as Lime's in
-   Vancouver, says so with `"stationParking": true`, and the map shows them
-   as required bays. A feed whose stations hold scooters its vehicle status
-   does not list, as Divvy's in Chicago, says so with `"stationScooters":
-   true`, and each scooter its station status counts is shown at its station.
-2. Add one entry to `data/countries.json`:
-   - `code`, `continent` (`europe`, `north-america`, Central America and the
-     Caribbean included, `asia`, the Middle East included, or `oceania`),
-     `catalog` and `source`, the key of its feeds in the API's `meta.sources`;
-   - `names` in the nine languages of the apps, and the `searchWords` that,
-     typed after a city, say which country is meant: written as the search
-     reads them (`src/lib/searchText.ts`), lower case, without accents and
-     with one space between two words, in any script: `united kingdom`,
-     `ελλαδα`, `ישראל`, `الامارات` (not `الإمارات`). No word that is also a
-     common word of names: `ksa` for Saudi Arabia, never `sa`;
-   - `anchor`, where its total stands zoomed out, with an `anchorNote` saying
-     why there;
-   - `featuredCities`, the city ids the landing page names;
-   - `credits`: its `attribution` in the `X-Mobility-Data-Source` header, the
-     providers its GBFS feeds are credited for (`gbfs`, one line per
-     continent), and the `links` a licence asks for;
-   - `pricesBeforeTax: true` where ride prices are given before sales tax,
-     as in the US and Canada: there a plan's `is_taxable` shows "+ tax".
-     Leave it out where prices include VAT or GST, which is all `is_taxable`
-     means elsewhere;
-   - `regions`, for a country whose towns share names across states or
-     provinces, as in North America: their `list` (`code`, `name`, and
-     `names` where a language of the apps writes one otherwise), whether
-     `showInCityNames`, and whether its `totals`, zoomed out, are its
-     regions' rather than one for the country; each region then has an
-     `anchor` (and an `anchorNote`). Every service area of its catalog has a
-     `region` (or its system has one for all its areas), and its cities' ids
-     include it: `us:or:Portland`, shown as "Portland, OR".
-
-   A country outside Europe also says how it writes an address, in
-   `ADDRESS_FORMATS` of `src/app/api/geocode/addressFormats.ts`: whether the
-   house number comes first, its town line ("Sydney NSW 2000"), and its
-   postcode as riders type it after the town; `addressFormats.test.ts` fails
-   until it does. The search looks for places within its continent's boxes,
-   `CONTINENT_BOXES` in `src/app/api/geocode/route.ts`, once a country's
-   `anchor` is in one. Where the nearest box would take in countries the map
-   doesn't cover, give the country a box of its own, as Central America's and
-   Bonaire's keep Colombia and Venezuela out.
-
-   Where towns touch, as in Gush Dan around Tel Aviv, around Lille or in west
-   Los Angeles, a rectangle per town can't tell a scooter's town: each box
-   takes in parts of its neighbours. So too where one town's feed reaches into
-   another, as Flamingo's Porirua feed does into Tawa, which is in Wellington.
-   List each town's municipal boundary in `data/town-outlines.json` (its city
-   id and where to read it: an OpenStreetMap relation, a Norwegian kommune at
-   Kartverket, a British district at the ONS or an American place's GEOID at
-   the Census Bureau) and run `node scripts/update-town-outlines.mjs`, which
-   fetches and simplifies it. A scooter inside a town's outline then counts
-   under that town, under the smaller where two nest, as Roubaix's inside
-   Lille Métropole's; and a feed keeps no scooter inside the outline of a town
-   of its country where its operator runs no service. The generator checks
-   that the smallest outline holding each covered town's centre is that
-   town's own. If a feed reaches into a town where its operator has no area,
-   give the feed an area there, as Ryde Stavanger's in Sandnes, or its
-   scooters there are dropped.
-
-   The generator fails when a city's merged bounds are wider than 150 km, as
-   two towns of one name merged into one would be; a city that really is wider
-   is listed in `WIDE_CITIES` in `scripts/country-catalog.mjs`, with the reason.
-
-   Countries are listed in the order they were added; `landingFirst` keeps
-   Switzerland and its neighbours first on the landing page.
-3. Run `npm run generate:providers`. It checks the entry and writes
-   `src/generated/countries.ts`, `src/generated/countryCatalogs.ts` and the
-   iOS `ProviderCatalog.generated.swift`. `node scripts/check-french-feeds.mjs
-   --countries=<code>` checks the feeds live; `npm run check:catalogs` checks
-   every country.
-
-A new provider still needs its entry in `data/providers.json` and its link
-policy in `src/lib/rentalLinks.ts` and the iOS `ScooterRentalLinkPolicy`; a
-night ban goes in `data/rental-curfews.json`.
-
-## Deploy your own
+## Host your own
 
 The included configuration targets Cloudflare Workers through OpenNext. Give
 your fork a Worker name and hostname in `wrangler.jsonc`. Deploy the persistent
 cache with `server/Dockerfile` and a `/data` volume, and set
 `SCOOTER_SNAPSHOT_API_URL` to that origin. Configure the same
-`SCOOTER_SNAPSHOT_API_TOKEN` secret on the cache and Worker (see the initial
-rollout order in [DEPLOY.md](DEPLOY.md)). Then:
+`SCOOTER_SNAPSHOT_API_TOKEN` secret on the cache and the Worker (see the first
+rollout's order in [DEPLOY.md](DEPLOY.md)). Then:
 
 ```bash
 npx wrangler login
 npm run deploy
 ```
 
-See [DEPLOY.md](DEPLOY.md) for rate limits, previews, production checks, and
-rollback notes.
+[DEPLOY.md](DEPLOY.md) covers rate limits, previews, production checks and
+rollbacks.
 
-## iPhone app
-
-Open `ios/ScootRadar.xcodeproj` in Xcode 26+, choose a development team, and
-run the `ScootRadar` scheme. More details are in [ios/README.md](ios/README.md).
-
-## Data, privacy, and contributing
-
-Scooter locations come from the
-[Open data platform mobility Switzerland](https://data.opentransportdata.swiss/en/dataset/sharedmobility),
-address search comes from Geoapify (OpenStreetMap and other open data), with komoot's Photon (OpenStreetMap) standing in, and the web map is drawn from OpenFreeMap tiles of OpenStreetMap data.
-The app stores no account or location history.
+## More
 
 - [Data sources and attribution](DATA_SOURCES.md)
 - [Privacy](PRIVACY.md)
@@ -227,8 +133,3 @@ The app stores no account or location history.
 - [Security](SECURITY.md)
 
 ScootRadar is open source under the [MIT License](LICENSE). Come build with us.
-
-Published operator parking bays appear as **P** markers at street zoom. Tap a bay
-for the provider, published parking requirement and directions. Closed return
-locations are removed when the operator publishes that status. Coverage depends
-on the operator's public feed; check its app before ending a ride.

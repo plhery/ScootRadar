@@ -19,7 +19,7 @@ Thanks for helping improve ScootRadar.
 5. Run:
 
    ```bash
-   npm audit --audit-level=moderate
+   npm run check:dependencies
    npm run check:providers
    npm run check:api-contract
    npm run lint
@@ -31,9 +31,22 @@ Thanks for helping improve ScootRadar.
 6. If native code changed, run the `ScootRadar` unit-test scheme in Xcode.
 7. Open a pull request using the repository template.
 
+The dependency check fails on moderate or higher npm advisories. Its only
+exception is [GHSA-vfj7-8cjw-p6xm](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm)
+in the development-only `eslint-config-next → @next/eslint-plugin-next →
+fast-glob → micromatch → braces@3.0.3` chain: upstream has no patched release,
+and these tools read repository-controlled glob patterns during linting. The
+exception also covers npm's inherited findings along that chain, but rejects
+other advisories and any production dependency affected by this advisory.
+Remove the exception when a patched upstream release is available.
+
 Provider names, colors, marker labels, and upstream system-ID matches live in
 `data/providers.json`. After editing that catalog, run `npm run
 generate:providers` and commit both generated TypeScript and Swift files.
+The same generator writes the service areas of every covered country, which
+the iPhone app's provider filters read too, so run it after changing a
+service-area catalog as well. [Adding a country](docs/adding-a-country.md)
+walks through a new country's catalog and entry.
 
 The public scooter response is defined by `data/scooter-api.schema.json`.
 After changing it, run `npm run generate:api-contract` and commit the generated
