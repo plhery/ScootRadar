@@ -4,7 +4,7 @@ import { Red_Hat_Display, Red_Hat_Text } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { MOVED_MAP_SCRIPT } from '@/lib/mapAddress';
 import { SITE_URL } from '@/lib/site';
-import { sitePageOf, sitePaths, type SitePage } from '@/lib/sitePages';
+import { sitePageOf, sitePagePath, sitePaths, type SitePage } from '@/lib/sitePages';
 import '../landing.css';
 
 // One family in two cuts: Display for the headlines and the figures, Text for
@@ -41,6 +41,13 @@ const DAY = '#f4f5f7';
 /** The landing page is dark whatever the appearance of the system: it is the map at night. The guides follow it. */
 function followsSystem(page: SitePage): boolean {
   return page.kind !== 'landing';
+}
+
+/** The title a page is counted under: the landing page's has been the same since it was first counted. */
+function countedTitle(page: SitePage): string {
+  if (page.kind === 'landing') return 'About — ScootRadar';
+  if (page.kind === 'guides') return 'Guides — ScootRadar';
+  return `${page.guide.name} — ScootRadar`;
 }
 
 export async function generateViewport({ params }: Props): Promise<Viewport> {
@@ -89,7 +96,7 @@ export default async function LandingLayout({
       </head>
       <body>
         {children}
-        <PageView />
+        <PageView path={sitePagePath(page)} title={countedTitle(page)} />
       </body>
     </html>
   );

@@ -32,6 +32,13 @@ export function sitePageOf(segments: string[] | undefined): SitePage | null {
   return guide ? { kind: 'guide', locale, guide } : null;
 }
 
+/** The address of a page of the site. */
+export function sitePagePath(page: SitePage): string {
+  if (page.kind === 'landing') return landingPath(page.locale);
+  if (page.kind === 'guides') return guidesPath(page.locale);
+  return guidePath(page.guide);
+}
+
 /** Every page there is, as its segments: what is built. */
 export function sitePaths(): string[][] {
   const segments = (path: string) => path.split('/').filter(Boolean);

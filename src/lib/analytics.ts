@@ -11,7 +11,7 @@ export type AnalyticsEvent =
   | 'vehicle_select' | 'vehicle_dismiss' | 'cluster_select' | 'parking_select' | 'directions_open' | 'rental_open'
   | 'route_result' | 'route_arrived'
   | 'map_zoom' | 'compass_reset' | 'refresh' | 'refresh_result' | 'data_error' | 'data_expired'
-  | 'app_install' | 'app_open';
+  | 'app_install' | 'app_open' | 'map_open';
 export interface AnalyticsData {
   provider?: string; enabled?: boolean; source?: 'quick' | 'filters';
   value?: number; count?: number; result?: string; style?: string;
@@ -32,8 +32,9 @@ export function analyticsEnabled(): boolean {
   try { return !localStorage.getItem('umami.disabled'); } catch { return false; }
 }
 
-// The pages of the site, with the title each is counted under. The landing
-// page is one per language, English at "/": src/lib/landingCopy.ts.
+// The pages of the app, with the title each is counted under, and the landing
+// page, one per language, English at "/": src/lib/landingCopy.ts. The pages of
+// the site (the landing page, the guides and their lists) give theirs: PageView.
 const PUBLIC_PAGES = new Map([
   [MAP_PATH, 'ScootRadar'],
   ['/privacy', 'Privacy — ScootRadar'],
@@ -48,21 +49,27 @@ const PUBLIC_PAGES = new Map([
   ['/is', 'About — ScootRadar'],
 ]);
 
+/** A page of the site, counted under its address and title as its layout gives them. */
+export interface CountedPage { path: string; title: string }
+// The form of every address of the site (src/lib/sitePages.ts): what isn't is counted as below.
+export const SITE_PATH = /^\/[a-z0-9/-]{0,160}$/;
+
 let cache: string | undefined;
 let disabledByServer = false;
 let pending = 0;
 let chain = Promise.resolve();
 
-export function track(event?: AnalyticsEvent, data: AnalyticsData = {}): void {
+export function track(event?: AnalyticsEvent, data: AnalyticsData = {}, page?: CountedPage): void {
   if (!analyticsEnabled() || disabledByServer || pending >= 30) return;
+  const counted = page && SITE_PATH.test(page.path) ? page : undefined;
   const platform = window.matchMedia('(display-mode: standalone)').matches ||
     (navigator as Navigator & { standalone?: boolean }).standalone ? 'pwa' : 'web';
   const payload = {
     website: ANALYTICS_WEBSITE, hostname: ANALYTICS_HOST,
     // Only these public screens exist. Exclude even unknown paths, all query strings and fragments:
     // what is not one of them is counted as the map, which sends every event but the page views.
-    url: PUBLIC_PAGES.has(window.location.pathname) ? window.location.pathname : MAP_PATH,
-    title: PUBLIC_PAGES.get(window.location.pathname) ?? 'ScootRadar',
+    url: counted?.path ?? (PUBLIC_PAGES.has(window.location.pathname) ? window.location.pathname : MAP_PATH),
+    title: counted?.title.slice(0, 120) ?? PUBLIC_PAGES.get(window.location.pathname) ?? 'ScootRadar',
     referrer: '', language: navigator.language, tag: platform,
     ...(event ? { name: event, data: { ...safeAnalyticsData(data), platform } } : {}),
   };

@@ -70,6 +70,24 @@ describe('analytics privacy boundary', () => {
     expect(await sent('/sv')).toMatchObject({ url: '/map', title: 'ScootRadar' });
     expect(await sent('/en/anything')).toMatchObject({ url: '/map', title: 'ScootRadar' });
   });
+  it('counts a page of the site under the address and title its layout gives, if it has the form of one', async () => {
+    const fetcher = vi.fn().mockResolvedValue({ ok: true, json: async () => ({}) });
+    vi.stubGlobal('fetch', fetcher);
+    const { track } = await import('./analytics');
+    vi.stubGlobal('location', { ...location, pathname: '/guides/e-scooters-bristol' });
+    const guide = { path: '/guides/e-scooters-bristol', title: 'E-scooter hire in Bristol — ScootRadar' };
+    track(undefined, {}, guide);
+    track('map_open', { result: 'city' }, guide);
+    track(undefined, {}, { path: 'https://elsewhere.example/guides', title: 'Elsewhere' });
+    track(undefined, {}, { path: '/guides/e-scooters-bristol?from=mail', title: 'Bristol' });
+    await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(4));
+    const [view, opened, outside, query] = fetcher.mock.calls.map(call => JSON.parse(call[1].body).payload);
+    expect(view).toMatchObject({ url: '/guides/e-scooters-bristol', title: 'E-scooter hire in Bristol — ScootRadar', referrer: '' });
+    expect(view).not.toHaveProperty('name');
+    expect(opened).toMatchObject({ url: '/guides/e-scooters-bristol', name: 'map_open', data: { result: 'city', platform: 'web' } });
+    expect(outside).toMatchObject({ url: '/map', title: 'ScootRadar' });
+    expect(query).toMatchObject({ url: '/map', title: 'ScootRadar' });
+  });
   it('bounds the queue and survives network failures without retries', async () => {
     const fetcher = vi.fn().mockRejectedValue(new Error('offline'));
     vi.stubGlobal('fetch', fetcher);

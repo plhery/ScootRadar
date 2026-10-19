@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 16 October 2026
+Last updated: 19 October 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches.
@@ -60,7 +60,8 @@ Questions: `hello@scootradar.com`.
 ## Usage analytics
 
 The public web/PWA and native iOS app send page/screen views and named actions
-(search result counts, filters, selections, directions/rental taps, preferences,
+(the website pages viewed, such as guides, and links to the map followed from them;
+search result counts, filters, selections, directions/rental taps, preferences,
 and generic failures) to our self-hosted Umami at `u.plhery.com`. Platform tags
 separate web, PWA and iOS. We do not collect search text, precise coordinates,
 vehicle IDs, URL queries/fragments, advertising IDs, or session recordings.

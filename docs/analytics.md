@@ -6,15 +6,20 @@ Both clients POST to `https://u.plhery.com/api/send`, using the public website I
 `6e60b4ab-b4ee-4785-9699-a7f32127b358`. No API/admin secret is shipped. The Umami
 admin dashboard remains protected independently of its existing public collector.
 Filter by **Tag** (`web`, `pwa`, `ios`) to compare platforms. Named events also
-carry `platform` in event data. Web page views contain only `/map`, `/privacy` or
-the landing page of a language (`/` for English, `/de`, `/fr`, `/it`); native
-screen views use `/`, `/filters`, `/settings`. Until the landing page took the
+carry `platform` in event data. Web page views contain only `/map`, `/privacy` and
+the pages of the site, each under its own address: the landing page of a language
+(`/` for English, `/de`, `/fr`, `/it`…), each guide (`/guides/e-scooters-bristol`,
+`/de/ratgeber/…`) and each language's list of guides (`/guides`, `/de/ratgeber`…).
+Native screen views use `/`, `/filters`, `/settings`. Until the landing page took the
 root, the web map was counted under `/`: web views of `/` before that are the map.
+From the first guides on 12 October 2026 until 19 October 2026, the guides and their
+lists were counted as `/map`: web views of `/map` in that week include them.
 
 ## Event catalog
 
 | Flow | Events | Data |
 | --- | --- | --- |
+| Site | `map_open` (web) | a link to the map followed from a page of the site (the landing page, a guide, a list of guides), counted under that page's address; `result`: `city` (a city's map) or `map` (the map) |
 | Lifecycle | `app_open`, `app_install` (PWA), `app_foreground` (iOS), `link_open` (iOS) | platform; for `link_open`, a scootradar.com link to the map opened in the app, `result`: `city` (a city's centre, chosen like a city in the search), `place` (another point) or `map` (no place) |
 | Search | `search_open`, `search_close`, `search_results`, `search_error`, `search_select`, `search_clear` | result count only (`count` web, `value` iOS) |
 | Filters | `filters_open`, `provider_filter`, `providers_all`, `filters_reset`, `battery_filter` | provider, enabled/result, quick/filter source (web), value |
@@ -26,7 +31,8 @@ root, the web map was counted under `/`: web views of `/` before that are the ma
 | Reliability | `refresh`, `refresh_result` (web), `data_error`, `data_expired` (web) | generic outcome only (`success`/`error`; `timeout`/`request_failed`) |
 | Price tools (iOS) | `ride_duration`, `ride_pass_change` | duration, provider; never pass expiry or financial details |
 
-Useful funnel: `app_open` → `vehicle_select` → `rental_open`. A rental click is
+Useful funnels: `app_open` → `vehicle_select` → `rental_open`, and for the guides,
+a guide's page views → its `map_open` events (filter by its URL). A rental click is
 intent, not a confirmed ride. No provider callback exists to verify a booking.
 Continuous map coordinates, motion/heading readings, typed searches, chosen
 places and vehicle IDs are excluded.

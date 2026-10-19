@@ -18,7 +18,8 @@ import {
 } from '@/lib/guides';
 import { LANDING_LOCALES, landingPath } from '@/lib/landingCopy';
 import { MAP_PATH } from '@/lib/mapAddress';
-import { sitePageOf, sitePaths } from '@/lib/sitePages';
+import { sitePageOf, sitePagePath, sitePaths } from '@/lib/sitePages';
+import { SITE_PATH } from '@/lib/analytics';
 
 /** Every string of a value by its path, the functions called with something to say. */
 function strings(value: unknown, path = ''): [string, string][] {
@@ -270,6 +271,14 @@ describe('the pages of the site', () => {
     expect(built.length).toBe(
       LANDING_LOCALES.length + GUIDES.length + LANDING_LOCALES.filter(locale => guidesIn(locale).length > 0).length,
     );
+  });
+
+  it('gives each page its address back, in the form analytics counts it under', () => {
+    for (const path of sitePaths()) {
+      const address = sitePagePath(sitePageOf(path)!);
+      expect(address).toBe(`/${path.join('/')}`);
+      expect(address, address).toMatch(SITE_PATH);
+    }
   });
 
   it('lists the guides of a language in its footer, the list of all of them last', () => {

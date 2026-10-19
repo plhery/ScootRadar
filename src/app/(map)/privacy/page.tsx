@@ -19,7 +19,7 @@ export default function PrivacyPage() {
       <article className="legal-content">
         <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
         <h1>Privacy</h1>
-        <p>Last updated: 16 October 2026</p>
+        <p>Last updated: 19 October 2026</p>
 
         <h2>Overview</h2>
         <p>
@@ -85,9 +85,10 @@ export default function PrivacyPage() {
         <h2>Usage analytics</h2>
         <p>
           The public website and iOS app send page or screen views and actions to our
-          self-hosted Umami service at u.plhery.com. These include searches (only result counts),
-          filters, map selections, directions and rental button taps, settings changes, and
-          generic error outcomes. Events distinguish web, installed web app, and iOS usage.
+          self-hosted Umami service at u.plhery.com. These include which page of the website
+          you view, a guide for example, and whether you open the map from it; searches (only
+          result counts), filters, map selections, directions and rental button taps, settings
+          changes, and generic error outcomes. Events distinguish web, installed web app, and iOS usage.
           Rental taps do not tell us whether you actually rented a vehicle.
         </p>
         <p>
