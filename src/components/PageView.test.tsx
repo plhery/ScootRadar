@@ -52,7 +52,7 @@ describe('the views of a page of the site', () => {
     const { unmount } = guide();
     const link = screen.getByText('Open the map');
     unmount();
-    document.body.append(link);
+    document.body.appendChild(link);
     fireEvent.click(link);
     expect(track).toHaveBeenCalledTimes(1);
     link.remove();
