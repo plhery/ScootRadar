@@ -1,6 +1,6 @@
 import { mkdir, rename, rm } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
-import { dirname } from 'node:path';
+import { dirname, join } from 'node:path';
 import { discoverCollectableFeeds, independentCollectableFeeds, planRefreshCounts, type CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import { buildCityOverview, overviewNeedsRefresh, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { REGIONAL_SCOOTER_SYSTEMS, regionalSource } from '../src/lib/regionalScooterSystems';
@@ -25,6 +25,10 @@ for (const host of new Set(REGIONAL_SCOOTER_SYSTEMS.map(system => new URL(system
   if (host.endsWith('.rideatom.com')) upstreamJsonCache.paceHost(host, 500);
 }
 const snapshotPath = process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json';
+// Each save is written to a temporary file and renamed over the snapshot. The temporary file sits in
+// its own folder beside the snapshot, on the same volume so the rename stays atomic, which lets the
+// host's backup skip it: one vanishing while restic read it failed the backup on 19 Oct 2026.
+const temporaryDirectory = join(dirname(snapshotPath), 'tmp');
 // The snapshot is saved a feed at a time (snapshotFile.ts), at most once a minute and on shutdown:
 // a restart loses at most a minute of collections, which it makes again. Saved whole every five
 // seconds, 150,000 vehicles took 0.6 s of every five, and 300,000 a gigabyte of memory each time.
@@ -156,9 +160,9 @@ async function persist(final = false) {
   savedAt = now;
   const saved = snapshot;
   persisting = (async () => {
-    const temporaryPath = `${snapshotPath}.${randomUUID()}.tmp`;
+    const temporaryPath = join(temporaryDirectory, `scooters.${randomUUID()}.json.tmp`);
     try {
-      await mkdir(dirname(snapshotPath), { recursive: true });
+      await mkdir(temporaryDirectory, { recursive: true });
       await writeSnapshot(temporaryPath, saved);
       await rename(temporaryPath, snapshotPath);
     } catch (error) {
