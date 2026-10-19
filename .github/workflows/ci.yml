@@ -45,11 +45,45 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      # Runner images don't always carry the simulator the tests used to name, and on 18 Oct 2026
+      # (6ffba80) one carried none, so take an iPhone on the newest iOS runtime, preferring the
+      # iPhone 17 Pro, create one if the runtime has none, and skip the tests with a warning if
+      # the runner has no iOS runtime at all.
+      - name: Pick a simulator
+        id: simulator
+        run: |
+          set -uo pipefail
+          runtimes=$(xcrun simctl list runtimes available --json || echo '{}')
+          devices=$(xcrun simctl list devices available --json || echo '{}')
+          # shellcheck disable=SC2016
+          newest_first='[($runtimes.runtimes // [])[] | select(.platform == "iOS")] | sort_by(.version | split(".") | map(tonumber)) | reverse'
+          udid=$(jq -rn --argjson runtimes "$runtimes" --argjson devices "$devices" "$newest_first"'
+            | map(. as $runtime | ($devices.devices[$runtime.identifier] // [])
+                | map(select(.name | contains("iPhone"))) | sort_by(.name != "iPhone 17 Pro"))
+            | flatten | first | .udid // empty')
+          if [ -z "$udid" ]; then
+            read -r runtime devicetype < <(jq -rn --argjson runtimes "$runtimes" "$newest_first"'
+              | first // empty
+              | [.identifier, ((.supportedDeviceTypes // []) | map(select(.productFamily == "iPhone")) | first | .identifier // empty)]
+              | select(length == 2) | join(" ")') || true
+            if [ -n "${devicetype:-}" ]; then
+              udid=$(xcrun simctl create "CI iPhone" "$devicetype" "$runtime") || udid=""
+            fi
+          fi
+          if [ -z "$udid" ]; then
+            echo "::warning title=iOS tests skipped::This runner has no iOS simulator and none could be created."
+            echo "iOS tests skipped: the runner had no iOS simulator." >> "$GITHUB_STEP_SUMMARY"
+          else
+            xcrun simctl list devices | grep "$udid" || true
+          fi
+          echo "udid=$udid" >> "$GITHUB_OUTPUT"
+
       - name: Run iOS tests
+        if: steps.simulator.outputs.udid != ''
         run: >-
           xcodebuild test
           -project ios/ScootRadar.xcodeproj
           -scheme ScootRadar
-          -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5'
+          -destination 'platform=iOS Simulator,id=${{ steps.simulator.outputs.udid }}'
           -derivedDataPath "$RUNNER_TEMP/ScootRadarDerivedData"
           CODE_SIGNING_ALLOWED=NO
