@@ -338,9 +338,10 @@ stays open at night.
     e-bikes, which the map leaves out. Malvik listed 15 to 17 available
     scooters in 27 polls on the evening of 13 October 2026 and 12 at midday
     on the 14th, but none was ridden: Dott deployed two, swapped a low one
-    for a charged one and collected another, all without a ride. Check it on
-    the afternoon of Saturday 17 October, matching scooters by position,
-    since Entur renews their ids, and add it if they are ridden. Melhus had
+    for a charged one and collected another, all without a ride. On Sunday
+    18 October it held 17, and none moved in 16 polls from 12:07 to 13:23.
+    Check it again in April 2027, matching scooters by position, since
+    Entur renews their ids, and add it if they are ridden. Melhus had
     a few rides but held 7 to 11, and no more than 10 at midday, and Skaun
     6 or 7.
   - Seven Bolt systems in Entur are empty.

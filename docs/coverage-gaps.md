@@ -157,9 +157,10 @@ banned shared scooters, and feeds that were empty when checked.
     ten minutes on 15 October 2026, are left out since that evening: Bolt has
     no area in either town, whose outlines now decide.
   - Dott Malvik held 15 to 17 available scooters on 13 and 14 October 2026,
-    but none was ridden while it was polled; check it on Saturday 17
-    October. Dott Melhus (7 to 11 available, a few of them ridden) and Skaun
-    (6 or 7) are too small.
+    and 17 on Sunday 18 October, but none was ridden while it was polled:
+    none moved in 16 polls from 12:07 to 13:23 that Sunday. Check it again
+    in April 2027. Dott Melhus (7 to 11 available, a few of them ridden) and
+    Skaun (6 or 7) are too small.
 - **United Kingdom** ([guide](belgian-norwegian-british-scooter-feeds.md#known-gaps)):
   - Voi (London, Oxford, Cambridge, Essex, Northamptonshire and more) and Lime
     (London, West Midlands, Salford) publish no public feed. TfL publishes no
@@ -709,13 +710,9 @@ Bonaire had feeds to add. Survey files are in
   ([Roma Servizi per la Mobilità](https://romamobilita.it/eventi-e-news/selezione-operatori-servizi-di-micromobilita-sharing/)).
   Check that Bird Roma still publishes after both dates, and whether the
   winners do.
-- **Saturday 17 or Sunday 18 October 2026, in the afternoon:** Hopp Wałcz,
-  which had no ride while polled on a Tuesday evening.
-- **Saturday 17 October 2026, 12:00 to 18:00:** Dott Malvik, in Norway, from
-  Entur. It listed 15 to 17 available scooters on the evening of 13 October
-  and at midday on the 14th, and Dott deployed and swapped some, but none
-  was ridden while it was polled. Entur renews the ids, so match scooters by
-  position, and add it if they are ridden.
+- **Saturday 24 October 2026, in the afternoon:** Hopp Wałcz, which had no
+  ride while polled on a Tuesday evening. The check planned for 17 and 18
+  October wasn't made.
 - **20 October 2026:** Zeus's move to ATOM Mobility. Probe the ids that
   answer "GBFS disabled" and the empty ones (82, 183, 184, 186, 187, 191, 192,
   193) for the ten moved towns, and MobiData BW's listing for new Zeus feeds.
@@ -914,6 +911,11 @@ Bonaire had feeds to add. Survey files are in
 - **April 2027:** Bogotá's rules for shared scooters, which Yango's launch
   there waits for; and new tenders in Hobart, Launceston, Bendigo and the
   Sunshine Coast, whose schemes ended or paused in 2024–26.
+- **April 2027:** Dott Malvik, in Norway, from Entur. It listed 15 to 17
+  available scooters on 13 and 14 October 2026 and 17 on Sunday 18 October,
+  and none was ridden while it was polled. Poll it on a weekend afternoon;
+  Entur renews the ids, so match scooters by position, and add it if they
+  are ridden.
 - **April 2027:** Turkey's season. Check `gbfs.heyhop.app`,
   `gbfs.martitech.com`, BinBin, and Istanbul's, İzmir's and Konya's open-data
   portals for a public scooter feed.
