@@ -143,7 +143,7 @@ export interface LandingCopy {
   };
   know: {
     title: string;
-    /** "Seven" is the number of providers in src/lib/landingSnapshot.ts, which the text names. */
+    /** The text names the providers of src/lib/landingSnapshot.ts, by Zürich main station. */
     all: {
       title: string;
       text: string;
@@ -233,12 +233,12 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     know: {
       title: 'Everything you want to know before you start walking.',
       all: {
-        title: 'All seven. One map.',
-        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi and PubliBike each have an app that shows only their own fleet. ScootRadar shows the lot, so the nearest one is simply the nearest one.',
+        title: 'Every provider. One map.',
+        text: 'In a city like Zürich, Bird, Bolt, Dott, Hopp, Lime, Voi and PubliBike each have an app that shows only their own fleet. ScootRadar shows the lot, so the nearest one is simply the nearest one.',
         close: (first, firstDistance, second, secondDistance) =>
-          `Here, a ${first} is ${firstDistance} away and a ${second} is ${secondDistance}. It takes two apps to learn that, or one map.`,
+          `By Zürich main station, a ${first} is ${firstDistance} away and a ${second} is ${secondDistance}. It takes two apps to learn that, or one map.`,
         providers: 'Providers in Zürich',
-        alt: 'The same streets by day, with the dots of every provider on one map.',
+        alt: 'The app by day beside the Fraumünster in Zürich, the nearest scooter of each provider named with its walking time.',
       },
       walk: {
         title: 'Know the walk.',
@@ -267,8 +267,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       looks: {
         title: 'Light by day. Dark by night.',
         text: 'The map follows your device’s appearance, or you pick one and keep it. In English, German, French, Italian, Dutch, Norwegian, Portuguese, Spanish or Icelandic.',
-        light: 'The map in its light appearance.',
-        dark: 'The same map in its dark appearance.',
+        light: 'Santa Monica Pier by day, in the map’s light appearance.',
+        dark: 'The same pier at night, in its dark appearance.',
       },
     },
     cities: {
@@ -363,12 +363,12 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     know: {
       title: 'Alles, was du wissen willst, bevor du losläufst.',
       all: {
-        title: 'Alle sieben. Eine Karte.',
-        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi und PubliBike haben je eine eigene App, und jede zeigt nur die eigene Flotte. ScootRadar zeigt alle. Dann ist der nächste Scooter auch wirklich der nächste.',
+        title: 'Alle Anbieter. Eine Karte.',
+        text: 'In einer Stadt wie Zürich haben Bird, Bolt, Dott, Hopp, Lime, Voi und PubliBike je eine eigene App, und jede zeigt nur die eigene Flotte. ScootRadar zeigt alle. Dann ist der nächste Scooter auch wirklich der nächste.',
         close: (first, firstDistance, second, secondDistance) =>
-          `Hier steht ein ${first} in ${firstDistance} Entfernung und ein ${second} in ${secondDistance}. Dafür brauchst du zwei Apps. Oder eine Karte.`,
+          `Am Zürcher Hauptbahnhof steht ein ${first} in ${firstDistance} Entfernung und ein ${second} in ${secondDistance}. Dafür brauchst du zwei Apps. Oder eine Karte.`,
         providers: 'Anbieter in Zürich',
-        alt: 'Dieselben Strassen bei Tag, mit den Punkten aller Anbieter auf einer Karte.',
+        alt: 'Die App bei Tag am Fraumünster in Zürich, der nächste Scooter jedes Anbieters mit Namen und Gehzeit.',
       },
       walk: {
         title: 'Wissen, wie weit es ist.',
@@ -397,8 +397,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       looks: {
         title: 'Hell bei Tag. Dunkel bei Nacht.',
         text: 'Die Karte folgt dem Erscheinungsbild deines Geräts, oder du wählst eines und bleibst dabei. Auf Deutsch, Englisch, Französisch, Italienisch, Niederländisch, Norwegisch, Portugiesisch, Spanisch oder Isländisch.',
-        light: 'Die Karte im hellen Erscheinungsbild.',
-        dark: 'Dieselbe Karte im dunklen Erscheinungsbild.',
+        light: 'Der Santa Monica Pier bei Tag, im hellen Erscheinungsbild der Karte.',
+        dark: 'Derselbe Pier bei Nacht, im dunklen Erscheinungsbild.',
       },
     },
     cities: {
@@ -493,12 +493,12 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     know: {
       title: 'Tout ce que vous voulez savoir avant de vous mettre en route.',
       all: {
-        title: 'Les sept. Une seule carte.',
-        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi et PubliBike ont chacun leur app, qui ne montre que leur propre flotte. ScootRadar montre toutes les flottes : la trottinette la plus proche est donc simplement la plus proche.',
+        title: 'Tous les opérateurs. Une seule carte.',
+        text: 'Dans une ville comme Zurich, Bird, Bolt, Dott, Hopp, Lime, Voi et PubliBike ont chacun leur app, qui ne montre que leur propre flotte. ScootRadar montre toutes les flottes : la trottinette la plus proche est donc simplement la plus proche.',
         close: (first, firstDistance, second, secondDistance) =>
-          `Ici, une ${first} est à ${firstDistance} et une ${second} à ${secondDistance}. Pour le savoir, il faut deux apps, ou une seule carte.`,
+          `Près de la gare centrale de Zurich, une ${first} est à ${firstDistance} et une ${second} à ${secondDistance}. Pour le savoir, il faut deux apps, ou une seule carte.`,
         providers: 'Opérateurs à Zurich',
-        alt: 'Les mêmes rues de jour, avec les points de tous les opérateurs sur une seule carte.',
+        alt: 'L’app, de jour, près du Fraumünster à Zurich, la trottinette la plus proche de chaque opérateur avec son nom et le temps de marche.',
       },
       walk: {
         title: 'Sachez jusqu’où marcher.',
@@ -527,8 +527,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       looks: {
         title: 'Claire le jour. Sombre la nuit.',
         text: 'La carte suit l’apparence de votre appareil, ou vous en choisissez une et vous la gardez. En français, allemand, italien, anglais, néerlandais, norvégien, portugais, espagnol ou islandais.',
-        light: 'La carte en mode clair.',
-        dark: 'La même carte en mode sombre.',
+        light: 'La jetée de Santa Monica de jour, la carte en mode clair.',
+        dark: 'La même jetée de nuit, en mode sombre.',
       },
     },
     cities: {
@@ -623,12 +623,12 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     know: {
       title: 'Tutto quello che vuoi sapere prima di metterti in cammino.',
       all: {
-        title: 'Tutti e sette. Una sola mappa.',
-        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi e PubliBike hanno ciascuno la sua app, che mostra solo la propria flotta. ScootRadar li mostra tutti: il mezzo più vicino è semplicemente il più vicino.',
+        title: 'Tutti gli operatori. Una sola mappa.',
+        text: 'In una città come Zurigo, Bird, Bolt, Dott, Hopp, Lime, Voi e PubliBike hanno ciascuno la sua app, che mostra solo la propria flotta. ScootRadar li mostra tutti: il mezzo più vicino è semplicemente il più vicino.',
         close: (first, firstDistance, second, secondDistance) =>
-          `Qui un ${first} è a ${firstDistance} e un ${second} a ${secondDistance}. Per saperlo servono due app, oppure una sola mappa.`,
+          `Vicino alla stazione centrale di Zurigo, un ${first} è a ${firstDistance} e un ${second} a ${secondDistance}. Per saperlo servono due app, oppure una sola mappa.`,
         providers: 'Operatori a Zurigo',
-        alt: 'Le stesse strade di giorno, con i punti di tutti gli operatori su una sola mappa.',
+        alt: 'L’app di giorno vicino al Fraumünster di Zurigo, il monopattino più vicino di ogni operatore con il nome e i minuti a piedi.',
       },
       walk: {
         title: 'Sai quanto c’è da camminare.',
@@ -657,8 +657,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       looks: {
         title: 'Chiara di giorno. Scura di notte.',
         text: 'La mappa segue l’aspetto del tuo dispositivo, oppure ne scegli uno e lo tieni. In italiano, tedesco, francese, inglese, olandese, norvegese, portoghese, spagnolo o islandese.',
-        light: 'La mappa con l’aspetto chiaro.',
-        dark: 'La stessa mappa con l’aspetto scuro.',
+        light: 'Il molo di Santa Monica di giorno, con l’aspetto chiaro della mappa.',
+        dark: 'Lo stesso molo di notte, con l’aspetto scuro.',
       },
     },
     cities: {
@@ -753,12 +753,12 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     know: {
       title: 'Alt du vil vite før du begynner å gå.',
       all: {
-        title: 'Alle sju. Ett kart.',
-        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi og PubliBike har hver sin app, og hver app viser bare sin egen flåte. ScootRadar viser alle sammen, så den nærmeste er rett og slett den nærmeste.',
+        title: 'Alle operatørene. Ett kart.',
+        text: 'I en by som Zürich har Bird, Bolt, Dott, Hopp, Lime, Voi og PubliBike hver sin app, og hver app viser bare sin egen flåte. ScootRadar viser alle sammen, så den nærmeste er rett og slett den nærmeste.',
         close: (first, firstDistance, second, secondDistance) =>
-          `Her står en ${first} ${firstDistance} unna, og en ${second} ${secondDistance} unna. For å vite det trenger du to apper, eller ett kart.`,
+          `Ved Zürich hovedstasjon står en ${first} ${firstDistance} unna, og en ${second} ${secondDistance} unna. For å vite det trenger du to apper, eller ett kart.`,
         providers: 'Operatører i Zürich',
-        alt: 'De samme gatene om dagen, med prikkene fra alle operatørene på ett kart.',
+        alt: 'Appen om dagen ved Fraumünster i Zürich, den nærmeste elsparkesykkelen fra hver operatør med navn og gangtid.',
       },
       walk: {
         title: 'Vit hvor langt det er.',
@@ -787,8 +787,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       looks: {
         title: 'Lyst om dagen. Mørkt om natten.',
         text: 'Kartet følger utseendet på enheten din, eller du velger ett og beholder det. På norsk, engelsk, tysk, fransk, italiensk, nederlandsk, portugisisk, spansk eller islandsk.',
-        light: 'Kartet med lyst utseende.',
-        dark: 'Det samme kartet med mørkt utseende.',
+        light: 'Santa Monica Pier om dagen, med kartets lyse utseende.',
+        dark: 'Den samme piren om natten, med mørkt utseende.',
       },
     },
     cities: {
@@ -883,12 +883,12 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     know: {
       title: 'Alles wat je wilt weten voor je op pad gaat.',
       all: {
-        title: 'Alle zeven. Eén kaart.',
-        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi en PubliBike hebben elk een eigen app die alleen hun eigen vloot toont. ScootRadar toont ze allemaal, dus de dichtstbijzijnde is gewoon de dichtstbijzijnde.',
+        title: 'Alle aanbieders. Eén kaart.',
+        text: 'In een stad als Zürich hebben Bird, Bolt, Dott, Hopp, Lime, Voi en PubliBike elk een eigen app die alleen hun eigen vloot toont. ScootRadar toont ze allemaal, dus de dichtstbijzijnde is gewoon de dichtstbijzijnde.',
         close: (first, firstDistance, second, secondDistance) =>
-          `Hier staat een ${first} op ${firstDistance} en een ${second} op ${secondDistance}. Daarvoor heb je twee apps nodig, of één kaart.`,
+          `Bij het centraal station van Zürich staat een ${first} op ${firstDistance} en een ${second} op ${secondDistance}. Daarvoor heb je twee apps nodig, of één kaart.`,
         providers: 'Aanbieders in Zürich',
-        alt: 'Dezelfde straten overdag, met de puntjes van alle aanbieders op één kaart.',
+        alt: 'De app overdag bij het Fraumünster in Zürich, de dichtstbijzijnde deelstep van elke aanbieder met naam en minuten te voet.',
       },
       walk: {
         title: 'Weet hoe ver het is.',
@@ -917,8 +917,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       looks: {
         title: 'Licht overdag. Donker ’s nachts.',
         text: 'De kaart volgt de weergave van je apparaat, of je kiest er zelf een en houdt die. In het Nederlands, Engels, Duits, Frans, Italiaans, Noors, Portugees, Spaans of IJslands.',
-        light: 'De kaart in lichte weergave.',
-        dark: 'Dezelfde kaart in donkere weergave.',
+        light: 'Santa Monica Pier overdag, in de lichte weergave van de kaart.',
+        dark: 'Dezelfde pier ’s nachts, in donkere weergave.',
       },
     },
     cities: {
@@ -1012,12 +1012,12 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     know: {
       title: 'Tudo o que quer saber antes de se pôr a caminho.',
       all: {
-        title: 'Os sete. Um só mapa.',
-        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi e PubliBike têm cada um a sua app, que só mostra a própria frota. O ScootRadar mostra as frotas todas juntas: a trotinete mais próxima é mesmo a mais próxima.',
+        title: 'Todos os operadores. Um só mapa.',
+        text: 'Numa cidade como Zurique, Bird, Bolt, Dott, Hopp, Lime, Voi e PubliBike têm cada um a sua app, que só mostra a própria frota. O ScootRadar mostra as frotas todas juntas: a trotinete mais próxima é mesmo a mais próxima.',
         close: (first, firstDistance, second, secondDistance) =>
-          `Aqui, há uma ${first} a ${firstDistance} e uma ${second} a ${secondDistance}. Para saber isto, são precisas duas apps. Ou um mapa.`,
+          `Junto à estação central de Zurique, há uma ${first} a ${firstDistance} e uma ${second} a ${secondDistance}. Para saber isto, são precisas duas apps. Ou um mapa.`,
         providers: 'Operadores em Zurique',
-        alt: 'As mesmas ruas de dia, com os pontos de todos os operadores num só mapa.',
+        alt: 'A app de dia junto ao Fraumünster, em Zurique, a trotinete mais próxima de cada operador com o nome e o tempo a pé.',
       },
       walk: {
         title: 'Saiba quanto tem de andar.',
@@ -1046,8 +1046,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       looks: {
         title: 'Claro de dia. Escuro à noite.',
         text: 'O mapa segue o aspeto do seu dispositivo, ou fica com o que escolher. Em português, inglês, alemão, francês, italiano, neerlandês, norueguês, espanhol ou islandês.',
-        light: 'O mapa com o aspeto claro.',
-        dark: 'O mesmo mapa com o aspeto escuro.',
+        light: 'O pontão de Santa Monica de dia, com o aspeto claro do mapa.',
+        dark: 'O mesmo pontão à noite, com o aspeto escuro.',
       },
     },
     cities: {
@@ -1141,12 +1141,12 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     know: {
       title: 'Todo lo que quieres saber antes de echar a andar.',
       all: {
-        title: 'Los siete. Un solo mapa.',
-        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi y PubliBike tienen cada uno su app, y cada app solo muestra su propia flota. ScootRadar las muestra todas, así que el más cercano es, sin más, el más cercano.',
+        title: 'Todos los operadores. Un solo mapa.',
+        text: 'En una ciudad como Zúrich, Bird, Bolt, Dott, Hopp, Lime, Voi y PubliBike tienen cada uno su app, y cada app solo muestra su propia flota. ScootRadar las muestra todas, así que el más cercano es, sin más, el más cercano.',
         close: (first, firstDistance, second, secondDistance) =>
-          `Aquí, un ${first} está a ${firstDistance} y un ${second}, a ${secondDistance}. Para saberlo hacen falta dos apps, o un solo mapa.`,
+          `Junto a la estación central de Zúrich, un ${first} está a ${firstDistance} y un ${second}, a ${secondDistance}. Para saberlo hacen falta dos apps, o un solo mapa.`,
         providers: 'Operadores en Zúrich',
-        alt: 'Las mismas calles de día, con los puntos de todos los operadores en un solo mapa.',
+        alt: 'La app de día junto al Fraumünster de Zúrich, el patinete más cercano de cada operador con su nombre y el tiempo a pie.',
       },
       walk: {
         title: 'Cuánto hay que andar.',
@@ -1175,8 +1175,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       looks: {
         title: 'Claro de día. Oscuro de noche.',
         text: 'El mapa sigue el aspecto de tu dispositivo, o eliges uno y te quedas con él. En español, inglés, alemán, francés, italiano, neerlandés, noruego, portugués o islandés.',
-        light: 'El mapa en modo claro.',
-        dark: 'El mismo mapa en modo oscuro.',
+        light: 'El muelle de Santa Mónica de día, con el mapa en modo claro.',
+        dark: 'El mismo muelle de noche, en modo oscuro.',
       },
     },
     cities: {
@@ -1273,12 +1273,12 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     know: {
       title: 'Allt sem þú vilt vita áður en þú leggur af stað.',
       all: {
-        title: 'Öll sjö. Eitt kort.',
-        text: 'Bird, Bolt, Dott, Hopp, Lime, Voi og PubliBike hafa hvert sitt app, sem sýnir aðeins eigin flota. ScootRadar sýnir þá alla, svo næsta rafskúta er einfaldlega sú næsta.',
+        title: 'Öll fyrirtækin. Eitt kort.',
+        text: 'Í borg eins og Zürich hafa Bird, Bolt, Dott, Hopp, Lime, Voi og PubliBike hvert sitt app, sem sýnir aðeins eigin flota. ScootRadar sýnir þá alla, svo næsta rafskúta er einfaldlega sú næsta.',
         close: (first, firstDistance, second, secondDistance) =>
-          `Hér er ${first}-rafskúta í ${firstDistance} fjarlægð og ${second}-rafskúta í ${secondDistance}. Það þarf tvö öpp til að komast að því, eða eitt kort.`,
+          `Við aðallestarstöðina í Zürich er ${first}-rafskúta í ${firstDistance} fjarlægð og ${second}-rafskúta í ${secondDistance}. Það þarf tvö öpp til að komast að því, eða eitt kort.`,
         providers: 'Fyrirtæki í Zürich',
-        alt: 'Sömu götur að degi til, með deplum allra fyrirtækjanna á einu korti.',
+        alt: 'Appið að degi til við Fraumünster í Zürich, næsta rafskúta frá hverju fyrirtæki merkt með nafni og göngutíma.',
       },
       walk: {
         title: 'Gangan á hreinu.',
@@ -1307,8 +1307,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       looks: {
         title: 'Ljóst á daginn. Dökkt á nóttunni.',
         text: 'Kortið fylgir útliti tækisins, eða þú velur ljóst eða dökkt og heldur þig við það. Á íslensku, ensku, þýsku, frönsku, ítölsku, hollensku, norsku, portúgölsku eða spænsku.',
-        light: 'Kortið í ljósu útliti.',
-        dark: 'Sama kortið í dökku útliti.',
+        light: 'Santa Monica-bryggjan að degi til, með ljósu útliti kortsins.',
+        dark: 'Sama bryggjan að nóttu til, með dökku útliti.',
       },
     },
     cities: {

@@ -1,9 +1,15 @@
 // Takes the pictures of the landing page (public/landing) from the iPhone app
-// in a simulator: in each language, by night and by day in front of Zürich
-// main station, and by night before the phone is located, over the cities
-// around Switzerland.
+// in a simulator, in each language: by night in front of Zürich main station,
+// by night before the phone is located, over the cities around Switzerland,
+// and two landmarks in 3D, Zürich's Fraumünster by day and Santa Monica Pier
+// by day and by night.
 //
 //   npm run generate:landing-images
+//   npm run generate:landing-images -- landmarks
+//
+// Named after the command, only those sets are taken: "cities", "station" or
+// "landmarks". Only the station's pictures have to agree with
+// src/lib/landingSnapshot.ts, so the others can be taken again on their own.
 //
 // It needs Xcode and a simulator of an iPhone Pro, whose screen has the
 // proportions of the phone on the page. It looks for one named "Scooters
@@ -47,10 +53,30 @@ const LOCALES = ['en', 'de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is'];
 // two device pixels per unit, and 1695 down the proportions of an iPhone Pro.
 const PICTURE = { width: 780, height: 1695 };
 // The map, its scooters and their names are drawn three seconds after the app
-// opens, and a change of appearance within one. Longer waits would not fit
-// nine languages between two renewals of the data.
+// opens. Longer waits would not fit nine languages between two renewals of the data.
 const OPENED_MS = 5_000;
-const APPEARANCE_MS = 2_000;
+// The landmarks open on a camera of the Debug build (ios/ScootRadar/Views/
+// ScooterMapView.swift): the point looked at, the camera's distance from it in
+// metres, its pitch and its heading. Apple's 3D models take longer to draw
+// than the flat map. Each rider stands in a public place in front of the camera.
+const LANDMARKS = [
+  { name: 'zurich', camera: '47.37015,8.54215,700,50,240', rider: { latitude: 47.37033, longitude: 8.54316 }, scenes: { day: 'light' } },
+  {
+    name: 'pier',
+    camera: '34.00980,-118.49600,700,50,230',
+    rider: { latitude: 34.01016, longitude: -118.49496 },
+    scenes: { day: 'light', night: 'dark' },
+  },
+];
+const LANDMARK_MS = 15_000;
+const SETS = ['cities', 'station', 'landmarks'];
+const asked = process.argv.slice(2);
+const unknown = asked.filter(set => !SETS.includes(set));
+if (unknown.length) {
+  console.error(`No set is called ${unknown.join(', ')}: name ${SETS.join(', ')} or none for all.`);
+  process.exit(1);
+}
+const takes = set => asked.length === 0 || asked.includes(set);
 
 const run = promisify(execFile);
 const simctl = (...args) => run('xcrun', ['simctl', ...args], { maxBuffer: 64 * 1024 * 1024 });
@@ -67,14 +93,14 @@ const work = mkdtempSync(path.join(os.tmpdir(), 'scootradar-landing-'));
 mkdirSync(out, { recursive: true });
 
 /** The scooters around the station as the server has them now, past any cache: no two calls ask the same box. */
-let asked = 0;
+let calls = 0;
 async function scootersNow(retries = 3) {
-  asked += 1;
+  calls += 1;
   const box = {
     south: RIDER.latitude - 0.004,
     west: RIDER.longitude - 0.006,
     north: RIDER.latitude + 0.004,
-    east: RIDER.longitude + 0.006 + asked * 0.00001,
+    east: RIDER.longitude + 0.006 + calls * 0.00001,
   };
   const query = new URLSearchParams({ ...Object.fromEntries(Object.entries(box).map(([side, degrees]) => [side, degrees.toFixed(5)])), zoom: '17' });
   const response = await fetch(`${API}?${query}`, { headers: { Accept: 'application/json' } });
@@ -102,9 +128,9 @@ async function renewal() {
   throw new Error('The server has not renewed its data in twelve minutes.');
 }
 
-async function open(locale) {
+async function open(locale, ...args) {
   await simctl('terminate', udid, BUNDLE).catch(() => {});
-  await simctl('launch', udid, BUNDLE, '-AppleLanguages', `(${locale})`, '-AppleLocale', `${locale}_CH`);
+  await simctl('launch', udid, BUNDLE, '-AppleLanguages', `(${locale})`, '-AppleLocale', `${locale}_CH`, ...args);
 }
 
 async function picture(name) {
@@ -145,39 +171,57 @@ try {
     '--batteryState', 'discharging', '--batteryLevel', '100'
   );
 
-  // An app that has not asked for the position yet opens on the cities.
-  await simctl('privacy', udid, 'reset', 'location', BUNDLE);
-  await simctl('ui', udid, 'appearance', 'dark');
-  for (const locale of LOCALES) {
-    await open(locale);
-    // The first of these draws a map the phone has never loaded.
-    await sleep(locale === LOCALES[0] ? 3 * OPENED_MS : OPENED_MS);
-    await picture(`${locale}-overview`);
+  if (takes('cities')) {
+    // An app that has not asked for the position yet opens on the cities.
+    await simctl('privacy', udid, 'reset', 'location', BUNDLE);
+    await simctl('ui', udid, 'appearance', 'dark');
+    for (const locale of LOCALES) {
+      await open(locale);
+      // The first of these draws a map the phone has never loaded.
+      await sleep(locale === LOCALES[0] ? 3 * OPENED_MS : OPENED_MS);
+      await picture(`${locale}-overview`);
+    }
   }
 
-  // Allowed to, the app locates by itself as it opens. A first look a few
-  // metres away puts the streets on the phone before the pictures that are timed.
+  // Allowed to, the app locates by itself as it opens.
   await simctl('privacy', udid, 'grant', 'location', BUNDLE);
-  await simctl('location', udid, 'set', `${RIDER.latitude + 0.0004},${RIDER.longitude}`);
-  await open(LOCALES[0]);
-  await sleep(3 * OPENED_MS);
-  await simctl('location', udid, 'set', `${RIDER.latitude},${RIDER.longitude}`);
 
-  for (;;) {
-    console.log('Waiting for the server to renew its data…');
-    street = await renewal();
-    for (const locale of LOCALES) {
-      await simctl('ui', udid, 'appearance', 'dark');
-      await open(locale);
-      await sleep(OPENED_MS);
-      await picture(`${locale}-dark`);
-      await simctl('ui', udid, 'appearance', 'light');
-      await sleep(APPEARANCE_MS);
-      await picture(`${locale}-nearby`);
+  if (takes('station')) {
+    // A first look a few metres away puts the streets on the phone before the pictures that are timed.
+    await simctl('location', udid, 'set', `${RIDER.latitude + 0.0004},${RIDER.longitude}`);
+    await simctl('ui', udid, 'appearance', 'dark');
+    await open(LOCALES[0]);
+    await sleep(3 * OPENED_MS);
+    await simctl('location', udid, 'set', `${RIDER.latitude},${RIDER.longitude}`);
+
+    for (;;) {
+      console.log('Waiting for the server to renew its data…');
+      street = await renewal();
+      for (const locale of LOCALES) {
+        await open(locale);
+        await sleep(OPENED_MS);
+        await picture(`${locale}-dark`);
+      }
+      // The last language asked for its scooters as it opened, a few seconds ago.
+      if (scene(await scootersNow()) === scene(street)) break;
+      console.log('The data was renewed between two languages: taking the pictures by the station again.');
     }
-    // The last language asked for its scooters as it opened, a few seconds ago.
-    if (scene(await scootersNow()) === scene(street)) break;
-    console.log('The data was renewed between two languages: taking the pictures by the station again.');
+  }
+
+  if (takes('landmarks')) {
+    // With a camera set, the app leaves the map where it put it when it locates the rider.
+    for (const { name, camera, rider, scenes } of LANDMARKS) {
+      await simctl('location', udid, 'set', `${rider.latitude},${rider.longitude}`);
+      for (const [time, appearance] of Object.entries(scenes)) {
+        await simctl('ui', udid, 'appearance', appearance);
+        for (const locale of LOCALES) {
+          console.log(`${name} by ${time}, ${locale}`);
+          await open(locale, '-ScreenshotCamera', camera, '-ScreenshotTerrain', 'realistic');
+          await sleep(LANDMARK_MS);
+          await picture(`${locale}-${name}-${time}`);
+        }
+      }
+    }
   }
 } finally {
   await simctl('terminate', udid, BUNDLE).catch(() => {});
@@ -185,6 +229,8 @@ try {
   if (bootedHere) await simctl('shutdown', udid).catch(() => {});
   rmSync(work, { recursive: true, force: true });
 }
+
+if (!street) process.exit(0);
 
 // The distance as the app measures it, near enough: to the metre at this range.
 function metres(lat, lng) {

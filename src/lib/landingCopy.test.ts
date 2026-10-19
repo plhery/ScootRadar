@@ -197,7 +197,7 @@ describe('the links of the landing page', () => {
 
 describe('what the landing page says of the snapshot', () => {
   it('names every provider it counts', () => {
-    // "All seven" is spelled out in each language.
+    // The first card names the seven by Zürich main station, in each language.
     expect(LANDING_NEAREST).toHaveLength(7);
     for (const locale of LANDING_LOCALES) {
       for (const { name } of LANDING_NEAREST) expect(LANDING_COPY[locale].know.all.text, locale).toContain(name);

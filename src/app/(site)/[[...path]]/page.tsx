@@ -366,7 +366,7 @@ function LandingPage({ locale }: { locale: LandingLocale }) {
                 </ul>
               </div>
               <div className="cell-shot">
-                <Phone className="phone--day" src={picture('nearby')} alt={copy.know.all.alt} />
+                <Phone className="phone--day" src={picture('zurich-day')} alt={copy.know.all.alt} />
               </div>
             </div>
 
@@ -446,8 +446,8 @@ function LandingPage({ locale }: { locale: LandingLocale }) {
                 <p>{copy.know.looks.text}</p>
               </div>
               <div className="cell-shot cell-shot--pair">
-                <Phone className="phone--day" src={picture('nearby')} alt={copy.know.looks.light} />
-                <Phone className="phone--night" src={picture('dark')} alt={copy.know.looks.dark} />
+                <Phone className="phone--day" src={picture('pier-day')} alt={copy.know.looks.light} />
+                <Phone className="phone--night" src={picture('pier-night')} alt={copy.know.looks.dark} />
               </div>
             </div>
           </div>
