@@ -96,12 +96,11 @@ describe('GET /api/scooters', () => {
     expect(response.status).toBe(200);
     expect(response.headers.get('x-mobility-data-status')).toBe('partial');
     expect(response.headers.get('cache-control')).toContain('max-age=10');
-    const body = await response.json();
-    expect(body).toMatchObject({
+    await expect(response.json()).resolves.toMatchObject({
       vehicles: [], clusters: [], providers: {},
-      meta: { partial: true, failedSources: ['uk:beryl_gb_leeds'], totalVehicles: 0, zoom: 16 },
+      meta: { partial: true, failedSources: ['uk:beryl_gb_leeds'], totalVehicles: 0, zoom: 16,
+        sources: { uk: 'failed', national: 'skipped' } },
     });
-    expect(body.meta.sources).toMatchObject({ uk: 'failed', national: 'skipped' });
   });
 
   it('caps large responses and marks partial results as degraded', async () => {
