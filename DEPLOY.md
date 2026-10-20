@@ -196,7 +196,11 @@ app name and canonical domain are ScootRadar and `scootradar.com`.
 - Persistent named volume: `mouc13tsnvylg0v9ee9wp5v5-scooter-snapshots`, mounted at `/data`.
 - Resource limits: 1 CPU, 1536 MiB. No host port is exposed.
 - Network alias `scootradar-cache` on the `coolify` network, where Prometheus scrapes
-  `scootradar-cache:3001/metrics` (job `scootradar-cache`).
+  `scootradar-cache:3001/metrics` for the gauges and `up` (job `scootradar-cache`), and
+  each container the alias resolves to for the counters (job
+  `scootradar-cache-containers`, relabelled `job="scootradar-cache"`), so a deploy's
+  overlap does not inflate `increase()`; see
+  [Metrics](docs/OBSERVABILITY.md#metrics).
 - Secrets: `SCOOTER_SNAPSHOT_API_TOKEN`, `METRICS_TOKEN` and `SENTRY_DSN`.
 - Custom Docker options `--dns 1.1.1.1 --dns 8.8.8.8`: since 11 October 2026
   netcup's resolvers answer SERVFAIL for `data.lillemetropole.fr`, Lille's

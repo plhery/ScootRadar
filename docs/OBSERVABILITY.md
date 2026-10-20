@@ -17,8 +17,21 @@ to Geoapify reaches Prometheus, through the cache (see below).
 
 `GET /metrics` answers 404 unless `METRICS_TOKEN` is set, and 401 without it as a
 bearer token. Production requires at least 32 characters. Prometheus reaches the
-container over the `coolify` network as `scootradar-cache:3001` (a Coolify network
-alias), with job `scootradar-cache`; the token is in its `prometheus.yml`.
+container over the `coolify` network through `scootradar-cache`, a Coolify network
+alias, in two jobs; the token is in its `prometheus.yml`.
+
+- Job `scootradar-cache` scrapes `scootradar-cache:3001` as one target and keeps the
+  gauges and `up`, which "target down" reads.
+- Job `scootradar-cache-containers` finds each container behind the alias through
+  Docker's DNS (its `instance` is the container's address, port 3001) and keeps only
+  the counters and the durations' `_sum` and `_count`, relabelled
+  `job="scootradar-cache"`. Its own `up` keeps the job's name.
+
+During a deploy the alias answers from the old and the new container in turn. A gauge
+survives that, but a counter read through it falls each time the new container answers
+after the old one, and `increase()` and `rate()` took each drop for a restart and counted it
+again. Since 20 October 2026 at 16:52 UTC each container's counters are series of
+their own, so a query adds them up with `sum`.
 
 Labels hold feed ids, sources, providers, countries, routes and status codes only. The
 feed series follow the snapshot at each scrape, with the states of the
