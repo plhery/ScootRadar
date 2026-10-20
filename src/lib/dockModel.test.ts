@@ -450,6 +450,23 @@ describe('dock hints', () => {
     // Also in the overview, where there is then no city to tap.
     expect(summary({ count: 0, providerCounts: {}, unfilteredCount: 0, meta: meta({ overview: true }) }).hint?.kind).toBe('empty');
   });
+
+  it('leaves the notice alone to explain an area whose every provider is down', () => {
+    const leeds = (overrides: Partial<DockInput> = {}) => summary({
+      count: 0, providerCounts: {}, providersInView: new Set(), unfilteredCount: 0, viewportProviders: ['beryl'],
+      viewportCenter: [53.7997, -1.5492], meta: meta({ partial: true, failedSources: ['uk:beryl_gb_leeds'], totalVehicles: 0 }),
+      ...overrides,
+    });
+    expect(leeds()).toMatchObject({ status: null, hint: null,
+      notices: [{ kind: 'providers', text: { key: 'dock.down.one', values: { name: 'Beryl' } } }] });
+    expect(leeds({ lastUpdated: NOW - 5 * 60_000 }).status).toBeNull();
+    // A refresh that failed still says so.
+    expect(leeds({ failure: 'unavailable' }).status?.kind).toBe('failure');
+    // With a provider here that is not down, the area is merely empty.
+    expect(summary({ count: 0, providerCounts: {}, providersInView: new Set(), unfilteredCount: 0,
+      meta: meta({ partial: true, failedSources: ['national:bird_zurich'], totalVehicles: 0 }) }))
+      .toMatchObject({ status: { kind: 'live' }, hint: { kind: 'empty' } });
+  });
 });
 
 describe('dock cards', () => {

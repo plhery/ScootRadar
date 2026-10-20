@@ -361,6 +361,10 @@ export function dockModel(input: DockInput): DockModel {
   if (input.loading === 'load' && input.count === 0 && !input.failure) return pending('finding', chips);
 
   const scope = input.originInViewport ? 'nearby' : 'onMap';
+  // Every provider here is down: the notice explains the empty map, which is then
+  // neither live, of no scooters at all, nor empty for the want of any.
+  const allDown = health.down.length > 0 && input.viewportProviders.every(provider => health.down.some(key => key === provider));
+  const { status, retry } = dockStatus(input);
   return {
     kind: 'summary',
     phase: 'ready',
@@ -378,11 +382,12 @@ export function dockModel(input: DockInput): DockModel {
           place: input.nearest.place,
         }
       : null,
-    ...dockStatus(input),
+    status: allDown && (status?.kind === 'live' || status?.kind === 'updated') ? null : status,
+    retry,
     busy,
     notices: dockNotices(input, health),
     chips,
-    hint: nothing?.kind === 'empty'
+    hint: nothing?.kind === 'empty' && !allDown
       ? { kind: 'empty', text: { key: 'dock.empty' } }
       : input.meta?.overview && input.count > 0
         ? { kind: 'cityHint', text: { key: 'dock.cityHint' } }
