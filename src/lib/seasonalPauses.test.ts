@@ -147,9 +147,10 @@ describe('a city with a winter pause', () => {
     expect(quiet.vehicles).toEqual([]);
     expect(quiet.meta).toMatchObject({ failedSources: [], partial: false });
     expect(quiet.meta.sources).toMatchObject({ canada: 'skipped' });
-    // Lime is not in its pause in Laval, so it is down.
-    expect(() => querySnapshot(snapshot([bird, lime]), query(['bird', 'lime']), 14, JANUARY))
-      .toThrow(expect.objectContaining({ failedSources: ['canada:lime_quebec'] }));
+    // Lime is not in its pause in Laval, so it is down, and named.
+    const down = querySnapshot(snapshot([bird, lime]), query(['bird', 'lime']), 14, JANUARY);
+    expect(down.vehicles).toEqual([]);
+    expect(down.meta).toMatchObject({ failedSources: ['canada:lime_quebec'], partial: true });
     // Bird back early is served.
     const vehicle = { provider: 'bird', lat: 45.5, lng: -73.57, battery: 80, range_m: null, vehicle_id: 'b1', deep_link: null, distance_m: null };
     const back = querySnapshot(snapshot([{ ...bird, failed: false, observedAt: JANUARY - 60_000, vehicles: [vehicle] }]),
@@ -157,8 +158,8 @@ describe('a city with a winter pause', () => {
     expect(back.vehicles).toHaveLength(1);
     expect(back.meta.sources).toMatchObject({ canada: 'fresh' });
     // Out of its pause, Bird failing is down.
-    expect(() => querySnapshot(snapshot([{ ...bird, observedAt: JULY - 3_600_000 }]), query(['bird']), 14, JULY))
-      .toThrow(expect.objectContaining({ failedSources: ['canada:bird_montreal'] }));
+    expect(querySnapshot(snapshot([{ ...bird, observedAt: JULY - 3_600_000 }]), query(['bird']), 14, JULY).meta)
+      .toMatchObject({ failedSources: ['canada:bird_montreal'], partial: true });
   });
 
   it('says so in the dock, in every language, with the month the scooters are back', () => {

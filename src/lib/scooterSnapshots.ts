@@ -63,6 +63,12 @@ function emptyHealth(): ScooterFetchMetadata {
 export const showsPositions = (feed: FeedSnapshot, now: number) => now - feed.observedAt <= VEHICLE_MAX_AGE_MS;
 
 /**
+ * Whether the operator's feed failed its last collection (an error, a missing
+ * file, an old timestamp), unlike one the cache has yet to collect.
+ */
+const failedAtOperator = (feed: FeedSnapshot) => feed.failed && feed.attemptedAt > 0;
+
+/**
  * A feed in its seasonal pause that serves nothing and is not on its way is expected to be quiet:
  * neither failed nor served, as if it had not been asked (seasonalPauses.ts).
  */
@@ -227,7 +233,11 @@ function overviewResponse(snapshot: MobilitySnapshot, query: FeedQuery, zoom: nu
   meta.partial = meta.failedSources.length > 0;
   meta.stale = Object.values(meta.sources).some(source => source === 'stale') || now - snapshot.overview.generatedAt > OVERVIEW_REFRESH_MS + 120_000;
   const attempted = Object.values(meta.sources).filter(source => source !== 'skipped');
-  if (attempted.length > 0 && attempted.every(source => source === 'failed')) throw new ScooterFeedsUnavailableError(meta.failedSources);
+  // As at street zoom: an operator whose feed fails is named, so the map says it is not sharing data.
+  const failing = new Set(snapshot.feeds.filter(failedAtOperator).map(feed => feed.id));
+  if (attempted.length > 0 && attempted.every(source => source === 'failed') && !meta.failedSources.some(id => failing.has(id))) {
+    throw new ScooterFeedsUnavailableError(meta.failedSources);
+  }
   return {
     vehicles: [], clusters, providers,
     meta: { ...meta, generatedAt: new Date(snapshot.overview.generatedAt).toISOString(),
@@ -266,7 +276,10 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   const refreshing = relevant.some(feed => !feed.skipped && options.refreshing?.has(feed.id));
   // A city whose every feed is in its seasonal pause has nothing to show, which is no failure.
   const asked = relevant.filter(feed => !feed.skipped && !quietInPause(feed, now, candidate => showsPositions(candidate, now), options.refreshing));
-  if (asked.length > 0 && !refreshing && asked.every(feed => !showsPositions(feed, now))) {
+  // Nothing to show is unavailable only while the cache is behind or starting. When an operator's
+  // feed fails, the answer names it, and the map says who is not sharing data rather than
+  // that it could not refresh.
+  if (asked.length > 0 && !refreshing && asked.every(feed => !showsPositions(feed, now) && !failedAtOperator(feed))) {
     throw new ScooterFeedsUnavailableError(meta.failedSources);
   }
   const unique = new Map<string, Vehicle>();

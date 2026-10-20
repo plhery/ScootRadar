@@ -93,7 +93,10 @@ describe('persistent map snapshots', () => {
     expect(response.meta).toMatchObject({ partial: true, stale: true,
       expiresAt: new Date(now + 15 * 60_000).toISOString(), refreshAfterSeconds: 60 });
     expect(querySnapshot(cached, query, 16, now + 15 * 60_000).vehicles).toHaveLength(2);
-    expect(() => querySnapshot(cached, query, 16, now + VEHICLE_MAX_AGE_MS + 1)).toThrow(ScooterFeedsUnavailableError);
+    // Then it shows none and names the feed: its operator, not the map, is failing.
+    const expired = querySnapshot(cached, query, 16, now + VEHICLE_MAX_AGE_MS + 1);
+    expect(expired.vehicles).toEqual([]);
+    expect(expired.meta).toMatchObject({ partial: true, failedSources: ['france:dott_fr_lyon'], refreshAfterSeconds: 60 });
   });
 
   it('reports an unavailable provider without rejecting a successfully collected eight-minute observation', () => {
@@ -109,7 +112,9 @@ describe('persistent map snapshots', () => {
     expect(providersDownNotice(providerHealth({
       meta: response.meta, viewportProviders: ['dott', 'voi'], inView: new Set(['dott']),
     }))).toEqual({ key: 'dock.down.one', values: { name: 'Voi' } });
-    expect(() => querySnapshot(cached, query, 16, now + 420_001)).toThrow(ScooterFeedsUnavailableError);
+    // Once Dott's positions are too old as well, the answer is empty and names both.
+    expect(querySnapshot(cached, query, 16, now + 420_001)).toMatchObject({
+      vehicles: [], meta: { failedSources: ['france:dott_fr_lyon', 'france:voi'] } });
   });
 
   it('does not confuse an empty operating area with an upstream failure', () => {
@@ -127,8 +132,16 @@ describe('persistent map snapshots', () => {
     expect(() => querySnapshot(snapshot([feed()]), query, 8, now + 4 * 3600_000)).toThrow(ScooterFeedsUnavailableError);
   });
 
-  it('reports unavailable city counts when every relevant feed failed before the overview was built', () => {
-    expect(() => querySnapshot(snapshot([feed({ observedAt: 0, failed: true, vehicles: [] })]), query, 8, now)).toThrow(ScooterFeedsUnavailableError);
+  it('names the operator of a city whose every feed failed before the overview was built', () => {
+    const response = querySnapshot(snapshot([feed({ observedAt: 0, failed: true, vehicles: [] })]), query, 8, now);
+    expect(response.clusters).toEqual([]);
+    expect(response.meta).toMatchObject({ overview: true, partial: true, failedSources: ['france:dott_fr_lyon'] });
+  });
+
+  it('answers unavailable while every feed in view is yet to be collected', () => {
+    const placeholder = feed({ observedAt: 0, attemptedAt: 0, failed: true, stale: true, vehicles: [] });
+    expect(() => querySnapshot(snapshot([placeholder]), query, 16, now)).toThrow(ScooterFeedsUnavailableError);
+    expect(() => querySnapshot(snapshot([placeholder]), query, 8, now)).toThrow(ScooterFeedsUnavailableError);
   });
 });
 

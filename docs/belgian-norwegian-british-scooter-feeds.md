@@ -147,6 +147,14 @@ directory.
   Poole feed went from about 660 scooters to none, and back, at the first
   collection after 22:00 and after 05:00 every night: 22:17 and 05:17 on 15–16
   October, as nobody watched it and the cache collected it every 20 minutes.
+- **Beryl's outage of 20 October 2026:** from 06:37 UTC its host, the same
+  Firebase site as `gbfs.beryl.cc`, served an incomplete copy that did not
+  change. Every scheme's station files answered 404, and so did
+  `free_bike_status` in Bournemouth / Christchurch / Poole, Brighton, Leeds and
+  Norwich. Cornwall's and Plymouth's stayed at 06:31. The discovery files still
+  listed every feed. Dott and Bolt in Britain were not affected. All six areas
+  have only Beryl, so the cache answered them 503 and the map said it couldn't
+  refresh; it now names Beryl as not sharing data.
 - **Bounds** enclose the scooters' positions over several polls, without strays
   far from the median, plus padding. In Norway they are also cut at municipal
   lines. Geofencing cannot set them there, because Ryde's zones include a
