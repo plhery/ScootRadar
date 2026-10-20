@@ -713,7 +713,10 @@ Bonaire had feeds to add. Survey files are in
 - **Saturday 24 October 2026, in the afternoon:** Hopp Wałcz, which had no
   ride while polled on a Tuesday evening. The check planned for 17 and 18
   October wasn't made.
-- **20 October 2026:** Zeus's move to ATOM Mobility. Probe the ids that
+- **Tuesday 10 November 2026:** Zeus's move to ATOM Mobility. Nothing had
+  changed on 20 October 2026: the 26 ids still answered "GBFS disabled", the
+  empty ones still listed no vehicle, MobiData BW still had the same 11 Zeus
+  feeds, and the four `zeus.city` towns were still live. Probe the ids that
   answer "GBFS disabled" and the empty ones (82, 183, 184, 186, 187, 191, 192,
   193) for the ten moved towns, and MobiData BW's listing for new Zeus feeds.
   Check that `zeus.city` still lists available scooters in Bamberg,

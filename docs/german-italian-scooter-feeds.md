@@ -257,7 +257,10 @@ discovery's origin and under its directory, and publishes no `license_url`.
 - **The four towns read from `zeus.city` are still live:** Bamberg (89 to 91
   available), Ludwigsburg (141 or 142), Regensburg (195 to 197) and
   Schweinfurt (154 or 155), with scooters leaving and arriving between polls.
-  Their ATOM ids answer but list no vehicles: 184 ("Bamberg/Memmelsdorf"), 82
+  They still were on 20 October 2026, polled four times from 11:32 to 11:58
+  CEST: Bamberg (72 or 73), Ludwigsburg (130, none rented), Regensburg (193
+  or 194) and Schweinfurt (135 to 138). Every ATOM id below answered as it had
+  on 13 October. Their ATOM ids answer but list no vehicles: 184 ("Bamberg/Memmelsdorf"), 82
   (Ludwigsburg, which MobiData BW's empty `zeus_ludwigsburg` mirrors), 192
   (Regensburg) and 193 (Schweinfurt). When one of these `zeus.city` feeds lists
   only disabled scooters, read the town from its ATOM id instead, or from
