@@ -86,19 +86,22 @@ describe('GET /api/scooters', () => {
     }));
   });
 
-  it('returns 503 with source metadata when all feeds fail', async () => {
+  it('answers no scooters and names the failed feeds when all of them fail', async () => {
     mocks.fetchScooters.mockRejectedValue(
-      new ScooterFeedsUnavailableError(['national'])
+      new ScooterFeedsUnavailableError(['uk:beryl_gb_leeds'])
     );
 
-    const response = await GET(request());
+    const response = await GET(request('?south=53.79&west=-1.56&north=53.81&east=-1.54&zoom=16'));
 
-    expect(response.status).toBe(503);
-    expect(response.headers.get('x-mobility-data-status')).toBe('unavailable');
-    expect(response.headers.get('cache-control')).toContain('no-store');
-    await expect(response.json()).resolves.toMatchObject({
-      meta: { failedSources: ['national'] },
+    expect(response.status).toBe(200);
+    expect(response.headers.get('x-mobility-data-status')).toBe('partial');
+    expect(response.headers.get('cache-control')).toContain('max-age=10');
+    const body = await response.json();
+    expect(body).toMatchObject({
+      vehicles: [], clusters: [], providers: {},
+      meta: { partial: true, failedSources: ['uk:beryl_gb_leeds'], totalVehicles: 0, zoom: 16 },
     });
+    expect(body.meta.sources).toMatchObject({ uk: 'failed', national: 'skipped' });
   });
 
   it('caps large responses and marks partial results as degraded', async () => {

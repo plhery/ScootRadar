@@ -5,7 +5,8 @@ import {
 } from '@/lib/scooterFeeds';
 import { rateLimitAllows } from '@/lib/rateLimit';
 import { parseScooterQuery } from '@/lib/scooterQuery';
-import { MOBILITY_SOURCE, scooterResponse, scooterResponseHeaders } from '@/lib/scooterResponse';
+import { scooterResponse, scooterResponseHeaders } from '@/lib/scooterResponse';
+import { skippedSources } from '@/lib/scooterSources';
 
 export async function GET(request: NextRequest) {
   if (!await rateLimitAllows(request, 'SCOOTER_API_RATE_LIMITER')) {
@@ -35,21 +36,18 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(body, { headers: scooterResponseHeaders(body) });
   } catch (error) {
     if (error instanceof ScooterFeedsUnavailableError) {
-      return NextResponse.json(
-        {
-          error: 'Scooter data is temporarily unavailable. Please try again shortly.',
-          meta: { failedSources: error.failedSources },
-        },
-        {
-          status: 503,
-          headers: {
-            'Cache-Control': 'private, no-store',
-            'Retry-After': '30',
-            'X-Mobility-Data-Source': MOBILITY_SOURCE,
-            'X-Mobility-Data-Status': 'unavailable',
-          },
-        }
-      );
+      // As the cache answers: no scooters, and the failed feeds named, so the map
+      // says who is not sharing data rather than that it could not refresh.
+      const sources = skippedSources();
+      for (const id of error.failedSources) {
+        const source = id.split(':')[0];
+        if (source in sources) sources[source as keyof typeof sources] = 'failed';
+      }
+      const body = scooterResponse({
+        vehicles: [],
+        meta: { partial: true, stale: false, failedSources: error.failedSources, sources },
+      }, parsed.zoom);
+      return NextResponse.json(body, { headers: scooterResponseHeaders(body) });
     }
 
     const message = error instanceof Error ? error.message : String(error);
