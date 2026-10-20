@@ -140,10 +140,41 @@ Before setting `PHOTON_API_URL`, update the privacy notice (PRIVACY.md and
 `src/app/(map)/privacy/page.tsx`), which names komoot as the recipient of
 address text when Geoapify cannot answer or finds nothing.
 
+## Deploys wait for CI
+
+Production deploys a commit only once CI has passed on it. Workers Builds and
+Coolify deploy from two branches that only CI moves, not from `main`:
+
+- `production`: the website and its Worker, through Workers Builds;
+- `production-cache`: the scooter cache, through Coolify.
+
+When the "Web and backend" and "iOS" jobs have both passed on a commit pushed to
+`main`, CI's Deploy job (`scripts/deploy-after-ci.mjs`) fast-forwards
+`production` to it. It moves `production-cache` too when a file the cache is
+built from, as listed in
+[`server/deploy-watch-paths.txt`](server/deploy-watch-paths.txt), changed
+between the commit `production-cache` is at and this one. A failed or cancelled
+job moves nothing, and the next commit that passes carries the change. A push
+goes live about 15 minutes later: CI takes 12 to 15 minutes, then Workers Builds
+and Coolify about a minute and a half each. Every commit on `main` runs CI to
+the end, so a later push does not hold up an earlier one, and a branch never
+moves back to a commit whose CI ends after a later one's.
+
+The job leaves `production-cache` where it is from 23:00 to 05:30 Paris time
+(AGENTS.md), and when every commit since says `[skip cd]` (or `[skip ci]`): the
+change goes with the next commit that passes outside those hours. The job's
+notices in the run's summary say what moved and why not.
+
+To deploy a commit of `main` without waiting, push it to the branch, for
+example `git push origin <commit>:production-cache`. A branch only moves
+forward: never force-push one, or the next Deploy job fails until it is behind
+`main` again. Rolling back is done in Cloudflare and Coolify (Rollback below).
+
 ## Cloudflare Workers Builds
 
-The GitHub repository can remain connected to Cloudflare Workers Builds.
-Use `main` as the production branch with:
+The GitHub repository is connected to Cloudflare Workers Builds. Its production
+branch is `production`, chosen in the Worker's Settings › Build › Branch
+control, with:
 
 ```bash
 npx opennextjs-cloudflare build
@@ -160,7 +191,7 @@ app name and canonical domain are ScootRadar and `scootradar.com`.
 
 - Coolify project: `wj03x2nl1vvq9pqdnj9a5177` (Swiss Scooters).
 - Application: `mouc13tsnvylg0v9ee9wp5v5` (Scooter feed cache).
-- Repository: `plhery/ScootRadar`, branch `main`, Dockerfile `/server/Dockerfile`.
+- Repository: `plhery/ScootRadar`, branch `production-cache`, Dockerfile `/server/Dockerfile`.
 - Origin: `https://scooter-data.plhery.com`, container port 3001.
 - Persistent named volume: `mouc13tsnvylg0v9ee9wp5v5-scooter-snapshots`, mounted at `/data`.
 - Resource limits: 1 CPU, 1536 MiB. No host port is exposed.
@@ -175,22 +206,23 @@ app name and canonical domain are ScootRadar and `scootradar.com`.
 - Netcup tunnel: `b1f36e92-77d5-4c92-846c-28848a492643`; exact hostname rule to
   `http://127.0.0.1:80`, routed by Coolify's proxy.
 
-A push to `main` deploys this application when it changes a file the cache is
-built from. GitHub sends push events to Coolify's manual GitHub webhook,
+The application deploys the branch `production-cache`, which CI moves when a
+commit that passed changes a file the cache is built from (Deploys wait for CI,
+above). GitHub sends push events to Coolify's manual GitHub webhook,
 `https://coolify.plhery.com/webhooks/source/github/events/manual`, signed with
-the application's GitHub webhook secret. The application's Watch Paths are
+the application's GitHub webhook secret, and Coolify deploys the application
+for a push to its branch. It has no Watch Paths: CI decides, from
 [`server/deploy-watch-paths.txt`](server/deploy-watch-paths.txt), and
-`server/deployWatchPaths.test.ts` checks that they match every file of the
-bundle; when that list changes, paste it into Coolify too. Coolify matches the
-webhook to the application by repository name, so a renamed repository must be
-renamed in Coolify as well. A push whose every commit message carries
-`[skip cd]` leaves the cache alone. After a deploy, `/health` and `/ready`
-return 200 again.
+`server/deployWatchPaths.test.ts` checks that the list matches every file of
+the bundle. Coolify matches the webhook to the application by repository name,
+so a renamed repository must be renamed in Coolify as well. After a deploy,
+`/health` and `/ready` return 200 again.
 
-Workers Builds deploys the website from the same push, a few minutes before the
-cache is ready. When the website needs a cache change first, as the
+Workers Builds deploys the website from the same commit, at about the same time
+as the cache. When the website needs a cache change first, as the
 origin-authentication migration above did, push the cache change alone, wait
-for `/ready`, then push the rest. A cache can also be deployed by hand from Coolify.
+for `/ready`, then push the rest. Coolify's Deploy button deploys
+`production-cache` as it is.
 Coolify remains the source of truth for the application, storage, and resource limits.
 
 The collector schedules each feed independently, with six concurrent systems

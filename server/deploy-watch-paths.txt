@@ -1,3 +1,6 @@
+# The files the scooter cache is built from. When a commit on main passes CI and changes one,
+# CI's deploy job moves production-cache to it and Coolify redeploys the cache (DEPLOY.md).
+# * stays within a folder, ** crosses folders, the last matching line wins and "!" excludes.
 server/**
 data/**
 src/generated/**

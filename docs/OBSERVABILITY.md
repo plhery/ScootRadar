@@ -167,11 +167,11 @@ alert and fired it anyway, as for six Beryl feeds on 12 October 2026.
 
 "Cache restarting" counts the restarts of one build, by joining the start time with
 `scootradar_build_info`: a deploy starts another build, so its series begins without a
-change. Every push that changes the cache deploys it, and for about a minute the old
-and the new container both answer on `scootradar-cache:3001`, so Prometheus reads one,
-then the other. When the rule counted every change of the start time, one deploy made
-three, and the second deploy within an hour fired it: seven times from 11 to 13
-October 2026, with no crash.
+change. Every commit that changes the cache deploys it once CI passes, and for about a
+minute the old and the new container both answer on `scootradar-cache:3001`, so
+Prometheus reads one, then the other. When the rule counted every change of the start
+time, one deploy made three, and the second deploy within an hour fired it: seven times
+from 11 to 13 October 2026, with no crash.
 
 The default notification policy sends them all to the `telegram-paul` contact point,
 reminding every 4 hours while they fire. "Feed empty" goes there through its own

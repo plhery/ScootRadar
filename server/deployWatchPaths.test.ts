@@ -1,22 +1,9 @@
-import { readFileSync } from 'node:fs';
 import { build } from 'esbuild';
 import { expect, it } from 'vitest';
+import { cacheDeploys as deploys } from '../scripts/deploy-watch-paths.mjs';
 
-// Coolify redeploys the cache when a push to main changes a file these paths
-// match: they are its application's Watch Paths (DEPLOY.md). Read as Coolify
-// reads them: * stays within a folder, ** crosses folders, the last matching
-// line wins and a "!" line excludes.
-const lines = readFileSync(new URL('./deploy-watch-paths.txt', import.meta.url), 'utf8')
-  .split('\n').map(line => line.trim()).filter(Boolean);
-
-const pattern = (glob: string) => new RegExp(`^${glob
-  .replace(/[.+^${}()|\\]/g, '\\$&')
-  .replace(/\*\*\/?|\*|\?/g, wildcard => wildcard === '?' ? '[^/]' : wildcard === '*' ? '[^/]*' : '.*')}$`);
-
-const deploys = (file: string) => lines.reduce<boolean | null>((included, line) => {
-  const exclusion = line.startsWith('!');
-  return pattern(exclusion ? line.slice(1) : line).test(file) ? !exclusion : included;
-}, null) === true;
+// CI's deploy job redeploys the cache when a commit that passed changes a file
+// server/deploy-watch-paths.txt matches (DEPLOY.md).
 
 it('redeploys the cache for every file of the repository it is built from', async () => {
   // The bundle server/Dockerfile builds, without the packages it installs.
