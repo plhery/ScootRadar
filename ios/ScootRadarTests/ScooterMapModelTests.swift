@@ -1002,7 +1002,7 @@ extension ScooterMapModelTests {
         XCTAssertEqual(model.mapScootersRevision, revision, "Markers stay exactly as they are")
         guard case let .summary(offline) = model.dock else { return XCTFail("Expected the dock summary") }
         XCTAssertEqual(offline.status(at: clock.now), .offline(showing: shownAt))
-        XCTAssertTrue(offline.status(at: clock.now).isWarning)
+        XCTAssertEqual(offline.status(at: clock.now)?.isWarning, true)
         XCTAssertTrue(offline.showsTryAgain)
         XCTAssertEqual(offline.count, 1)
 
@@ -1023,7 +1023,7 @@ extension ScooterMapModelTests {
         XCTAssertTrue(recovered)
         guard case let .summary(healthy) = model.dock else { return XCTFail("Expected the dock summary") }
         XCTAssertFalse(healthy.showsTryAgain)
-        XCTAssertFalse(healthy.status(at: clock.now).isWarning)
+        XCTAssertEqual(healthy.status(at: clock.now)?.isWarning, false)
     }
 
     func testFailedRefreshKeepsScootersForFifteenMinutesAtMost() async {
@@ -1500,6 +1500,10 @@ extension ScooterMapModelTests {
         XCTAssertEqual(summary.chips.map(\.provider), [.dott])
         XCTAssertEqual(summary.chips.map(\.isDown), [true])
         XCTAssertEqual(model.filterProviders.map(\.isDown), [true])
+        // The notice alone explains the empty map: no "Live", and no hint to look elsewhere.
+        XCTAssertTrue(summary.everyProviderDown)
+        XCTAssertNil(summary.status())
+        XCTAssertNil(summary.hint)
     }
 
     func testProviderWithAFailedFeedAndScootersInViewIsNotReportedAsDown() async {

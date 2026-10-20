@@ -952,7 +952,7 @@ extension ScooterModelsTests {
                 isOverview: overview, isDelayed: delayed, notices: [], hint: nil, chips: []
             )
         }
-        func status(after seconds: TimeInterval) -> ScooterDockStatus {
+        func status(after seconds: TimeInterval) -> ScooterDockStatus? {
             summary().status(at: updated.addingTimeInterval(seconds))
         }
 
@@ -978,6 +978,18 @@ extension ScooterModelsTests {
         }
         XCTAssertTrue(summary(failure: .busy).showsTryAgain)
         XCTAssertFalse(summary().showsTryAgain)
+
+        // With every provider here down, there is no line, unless a refresh failed or the data is delayed.
+        var down = summary()
+        down.everyProviderDown = true
+        XCTAssertNil(down.status(at: updated))
+        XCTAssertNil(down.status(at: later))
+        var downFailed = summary(failure: .timeout)
+        downFailed.everyProviderDown = true
+        XCTAssertEqual(downFailed.status(at: later), .refreshFailed(showing: updated))
+        var downDelayed = summary(delayed: true)
+        downDelayed.everyProviderDown = true
+        XCTAssertEqual(downDelayed.status(at: later), .delayed(showing: updated))
     }
 
     func testDockStatusTextCarriesTheTimeOrTheMinutes() {

@@ -561,8 +561,10 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         }
 
         let isOverview = responseMetadata?.overview == true
+        let down = providerHealth.downProviders
+        let everyProviderDown = !down.isEmpty && Set(availableProviders).isSubset(of: down)
         let hint: ScooterDockHint? = if isEmpty {
-            .emptyArea
+            everyProviderDown ? nil : .emptyArea
         } else {
             isOverview && visibleCount > 0 ? .tapCity : nil
         }
@@ -576,7 +578,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             notices: dockNotices,
             hint: hint,
             chips: dockChips,
-            lead: isOverview ? nil : dockLead
+            lead: isOverview ? nil : dockLead,
+            everyProviderDown: everyProviderDown
         ))
     }
 

@@ -291,8 +291,7 @@ struct ScooterControlDock: View {
                     // While all is well the status stays out of the way; a
                     // delay, old data or a failed refresh is always said.
                     TimelineView(.periodic(from: .now, by: 30)) { context in
-                        let status = summary.status(at: context.date)
-                        if !status.isLive || summary.showsTryAgain {
+                        if let status = summary.status(at: context.date), !status.isLive || summary.showsTryAgain {
                             header {
                                 DockStatusLabel(status: status)
                                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -311,7 +310,9 @@ struct ScooterControlDock: View {
                         countLine(summary)
 
                         TimelineView(.periodic(from: .now, by: 30)) { context in
-                            DockStatusLabel(status: summary.status(at: context.date))
+                            if let status = summary.status(at: context.date) {
+                                DockStatusLabel(status: status)
+                            }
                         }
                     }
                     .frame(

@@ -1547,6 +1547,9 @@ struct ScooterDockSummary: Equatable, Sendable {
     /// The nearest scooter in view, which takes the place of the count while
     /// the rider or the searched place is on the map and no scooter is grouped.
     var lead: ScooterDockLead? = nil
+    /// Every provider in the viewport is down: the notice that says so explains the
+    /// empty map, which is then neither live nor merely empty.
+    var everyProviderDown = false
 
     /// "scooters nearby" or "scooters on this map"; the view renders the number.
     var countLabel: String { countContext.label(for: count) }
@@ -1554,8 +1557,8 @@ struct ScooterDockSummary: Equatable, Sendable {
     /// The Try again pill at the right of the dock header.
     var showsTryAgain: Bool { refreshFailure != nil }
 
-    /// The status line. It changes as the data ages, so ask again over time.
-    func status(at now: Date = .now) -> ScooterDockStatus {
+    /// The status line, nil when there is none. It changes as the data ages, so ask again over time.
+    func status(at now: Date = .now) -> ScooterDockStatus? {
         if let refreshFailure {
             return refreshFailure == .offline
                 ? .offline(showing: lastUpdated)
@@ -1564,6 +1567,8 @@ struct ScooterDockSummary: Equatable, Sendable {
         // Delayed data says so at every zoom, city totals included.
         if isDelayed { return .delayed(showing: lastUpdated) }
         if isOverview { return .cityTotals }
+        // "Live", or an age, would be of no scooters at all.
+        if everyProviderDown { return nil }
 
         let age = max(0, now.timeIntervalSince(lastUpdated))
         if age < ScooterDockStatus.liveWindow { return .live }
