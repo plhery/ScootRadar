@@ -62,32 +62,45 @@ links no third-party SDK.
 
 ## Screenshots
 
-iPhone only, portrait, PNG without alpha, from the simulator with live data:
+iPhone only, portrait, PNG without alpha, one set for each listing language:
 
-- `screenshots/<locale>/6.3/`: 1206×2622 (iPhone 17 Pro), the size App Store
-  Connect requires (`APP_IPHONE_61` in the API);
 - `screenshots/<locale>/6.9/`: 1320×2868 (iPhone 17 Pro Max), for the large
-  iPhones (`APP_IPHONE_67`).
+  iPhones (`APP_IPHONE_67` in the API);
+- `screenshots/<locale>/6.3/`: the same frames scaled to 1206×2622 (iPhone 17
+  Pro), the size App Store Connect requires (`APP_IPHONE_61`).
 
-The English set, taken on 16 October 2026 at Zürich main station with the
-simulator's location there, serves every language that has none of its own:
-the nearest scooters, a scooter's card, the walking route, the city at night,
-the filters and the street at night. The German (`de-DE`) and French (`fr-FR`)
-sets show the same scenes in Zürich, which has the most operators on the map
-(central Paris bans shared scooters).
-To take them again: set the simulator's location
-(`xcrun simctl location <device> set 47.3779,8.5403`), the status bar
-(`xcrun simctl status_bar <device> override --time 9:41 …`) and the app's
-language and region (`defaults write com.plhery.scootradar AppleLanguages
--array de` and `AppleLocale de_CH`, through `xcrun simctl spawn <device>`;
-`en_CH`, `fr_CH` for the others, so distances are in metres), then save each
+Each frame, made on 20 October 2026, sets a headline on blue above a drawn
+iPhone showing the app with live data, and lifts the part of the screen the
+headline is about forward at full size. The headlines are in
+`screenshots/captions.json`, written for each language rather than
+translated. `en-US` and `es-MX` open on Santa Monica Pier; the other languages
+open on the providers and show the pier second:
+
+- the pier in 3D, from `-ScreenshotCamera "34.00980,-118.49600,700,50,230"`
+  with the location at 34.01016,-118.49496 and the flat terrain users get;
+- every provider around Zürich main station (location 47.3763,8.5395), with
+  the providers' row lifted;
+- the price on a Voi scooter's card;
+- the route to a scooter 3 to 5 minutes' walk away;
+- the battery filter at 60%+ (set it back to Any afterwards: the app keeps
+  it);
+- the same street at night;
+- Europe at night, with each city's count.
+
+To take them again, launch the app in each language with a region whose units
+and words fit (`-AppleLanguages "(de)" -AppleLocale de_CH`): `en_US` (feet),
+`en_GB` (yards), `de_CH`, `fr_CH`, `it_CH`, `es_ES`, `es_MX` (where the app
+says "scooter"), `nl_NL`, `nb_NO` and `pt_PT`. Set the simulator's location
+(`xcrun simctl location <device> set 47.3763,8.5395`) and the status bar
+(`xcrun simctl status_bar <device> override --time 9:41 …`), and save each
 capture without alpha (`ffmpeg -i shot.png -pix_fmt rgb24 out.png`).
 
 A Debug build opens on a chosen view, such as a landmark in 3D, with
 `xcrun simctl launch <device> com.plhery.scootradar -ScreenshotCamera
-"37.79554,-122.39400,650,62,55" -ScreenshotTerrain realistic`: the point
-looked at, the camera's distance from it in metres, the pitch and the
-heading. With location allowed, the simulator's location then gives the
+"37.79554,-122.39400,650,62,55"`: the point looked at, the camera's distance
+from it in metres, the pitch and the heading. `-ScreenshotTerrain realistic`
+draws the ground in 3D, which the app itself does not, so the store frames
+leave it out. With location allowed, the simulator's location then gives the
 walking times and the map stays where the camera put it. Release builds
 leave both arguments out.
 
@@ -182,7 +195,7 @@ year and the `applinks:scootradar.com` entitlement.
 export ASC_KEY_ID=<key id> ASC_ISSUER_ID=<issuer id>
 node scripts/app-store-connect.mjs check
 node scripts/app-store-connect.mjs listing --apply
-node scripts/app-store-connect.mjs screenshots --apply
+node scripts/app-store-connect.mjs screenshots --apply --replace
 node scripts/app-store-connect.mjs availability --territories CHE,FRA,ISL --apply
 node scripts/app-store-connect.mjs testflight --apply
 ```
@@ -191,7 +204,9 @@ Without `--apply` each command only prints what it would send; `check` also
 measures every field against App Store Connect's limits. `listing` sends the
 categories, the texts of each language, the URLs, the copyright, the age
 rating answers and the review notes above, and attaches the newest processed
-build of the version when none is. The app record itself, the App
+build of the version when none is. `screenshots --replace` deletes each set's
+screenshots before uploading the folder's, so the listing shows only those.
+The app record itself, the App
 Privacy answers, the EU trader status and the review contact are entered on
 the web. Nothing here submits the version for review.
 

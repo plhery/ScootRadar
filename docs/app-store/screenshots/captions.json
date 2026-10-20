@@ -1,0 +1,302 @@
+{
+  "en-US": {
+    "pier": [
+      "The nearest scooter, in 3D.",
+      "Every scooter around Santa Monica Pier"
+    ],
+    "providers": [
+      "Every provider. One map.",
+      "Every shared e-scooter around you, whoever runs it"
+    ],
+    "price": [
+      "Price, before you commit.",
+      "The unlock fee, the per-minute rate, and an estimate for your ride"
+    ],
+    "walk": [
+      "Know the walk.",
+      "Minutes on foot to each scooter, with the route on the map"
+    ],
+    "battery": [
+      "Skip the dead ones.",
+      "Set a minimum battery level, or keep only the providers you use"
+    ],
+    "night": [
+      "Light by day. Dark by night.",
+      "The map follows your iPhone’s appearance, or the one you pick"
+    ],
+    "cities": [
+      "Every city at a glance.",
+      "How many scooters each city has, updated hourly"
+    ]
+  },
+  "en-GB": {
+    "pier": [
+      "The nearest scooter, in 3D.",
+      "Every scooter around Santa Monica Pier"
+    ],
+    "providers": [
+      "Every provider. One map.",
+      "Every shared e-scooter around you, whoever runs it"
+    ],
+    "price": [
+      "Price, before you commit.",
+      "The unlock fee, the per-minute rate and an estimate for your ride"
+    ],
+    "walk": [
+      "Know the walk.",
+      "Minutes on foot to each scooter, with the route on the map"
+    ],
+    "battery": [
+      "Skip the flat ones.",
+      "Set a minimum battery level, or keep only the providers you use"
+    ],
+    "night": [
+      "Light by day. Dark by night.",
+      "The map follows your iPhone’s appearance, or the one you pick"
+    ],
+    "cities": [
+      "Every city at a glance.",
+      "How many scooters each city has, updated hourly"
+    ]
+  },
+  "de-DE": {
+    "pier": [
+      "Der nächste E-Scooter, in 3D.",
+      "Alle E-Scooter rund um den Santa Monica Pier"
+    ],
+    "providers": [
+      "Alle Anbieter. Eine Karte.",
+      "Alle E-Scooter in deiner Nähe, egal von welchem Anbieter"
+    ],
+    "price": [
+      "Den Preis kennen, bevor du fährst.",
+      "Entsperrgebühr, Minutenpreis und eine Schätzung für deine Fahrt"
+    ],
+    "walk": [
+      "Wissen, wie weit es ist.",
+      "Die Gehzeit zu jedem Scooter und die Route auf der Karte"
+    ],
+    "battery": [
+      "Leere Akkus ausblenden.",
+      "Mindestladestand festlegen oder nur deine Anbieter zeigen"
+    ],
+    "night": [
+      "Hell bei Tag. Dunkel bei Nacht.",
+      "Die Karte folgt deinem iPhone, oder du wählst selbst"
+    ],
+    "cities": [
+      "Jede Stadt auf einen Blick.",
+      "Wie viele Scooter jede Stadt hat, stündlich aktualisiert"
+    ]
+  },
+  "fr-FR": {
+    "pier": [
+      "La plus proche, en 3D.",
+      "Toutes les trottinettes autour de la jetée de Santa Monica"
+    ],
+    "providers": [
+      "Tous les opérateurs. Une seule carte.",
+      "Toutes les trottinettes autour de vous, quel que soit l’opérateur"
+    ],
+    "price": [
+      "Le prix, avant de vous décider.",
+      "Le déverrouillage, le prix à la minute et une estimation du trajet"
+    ],
+    "walk": [
+      "Sachez jusqu’où marcher.",
+      "Le temps à pied jusqu’à chaque trottinette, avec l’itinéraire"
+    ],
+    "battery": [
+      "Écartez les batteries à plat.",
+      "Fixez un seuil de batterie ou ne gardez que vos opérateurs"
+    ],
+    "night": [
+      "Claire le jour. Sombre la nuit.",
+      "La carte suit l’apparence de votre iPhone, ou celle de votre choix"
+    ],
+    "cities": [
+      "Chaque ville d’un coup d’œil.",
+      "Le nombre de trottinettes par ville, actualisé toutes les heures"
+    ]
+  },
+  "it": {
+    "pier": [
+      "Il più vicino, in 3D.",
+      "Tutti i monopattini intorno al molo di Santa Monica"
+    ],
+    "providers": [
+      "Tutti gli operatori. Una sola mappa.",
+      "Tutti i monopattini in sharing intorno a te, di qualunque operatore"
+    ],
+    "price": [
+      "Il prezzo, prima di decidere.",
+      "Sblocco, prezzo al minuto e una stima per la tua corsa"
+    ],
+    "walk": [
+      "Sai quanto c’è da camminare.",
+      "Il tempo a piedi fino a ogni monopattino, con il percorso sulla mappa"
+    ],
+    "battery": [
+      "Salta quelli scarichi.",
+      "Imposta una carica minima o mostra solo i tuoi operatori"
+    ],
+    "night": [
+      "Chiara di giorno. Scura di notte.",
+      "La mappa segue l’aspetto del tuo iPhone, o quello che scegli tu"
+    ],
+    "cities": [
+      "Ogni città a colpo d’occhio.",
+      "Il numero di monopattini in ogni città, aggiornato ogni ora"
+    ]
+  },
+  "es-ES": {
+    "pier": [
+      "El más cercano, en 3D.",
+      "Todos los patinetes alrededor del muelle de Santa Mónica"
+    ],
+    "providers": [
+      "Todos los operadores. Un solo mapa.",
+      "Todos los patinetes compartidos cerca de ti, sea cual sea el operador"
+    ],
+    "price": [
+      "El precio, antes de decidirte.",
+      "Desbloqueo, precio por minuto y el coste estimado del trayecto"
+    ],
+    "walk": [
+      "Cuánto hay que andar.",
+      "El tiempo a pie hasta cada patinete, con la ruta en el mapa"
+    ],
+    "battery": [
+      "Sáltate los descargados.",
+      "Fija un mínimo de batería o deja solo los operadores que usas"
+    ],
+    "night": [
+      "Claro de día. Oscuro de noche.",
+      "El mapa sigue el aspecto de tu iPhone o el que tú elijas"
+    ],
+    "cities": [
+      "Cada ciudad, de un vistazo.",
+      "El número de patinetes de cada ciudad, actualizado cada hora"
+    ]
+  },
+  "es-MX": {
+    "pier": [
+      "El scooter más cercano, en 3D.",
+      "Todos los scooters alrededor del muelle de Santa Mónica"
+    ],
+    "providers": [
+      "Todos los operadores. Un solo mapa.",
+      "Todos los scooters compartidos cerca de ti, sin importar el operador"
+    ],
+    "price": [
+      "El precio, antes de decidirte.",
+      "Desbloqueo, precio por minuto y el costo estimado de tu viaje"
+    ],
+    "walk": [
+      "Cuánto vas a caminar.",
+      "El tiempo a pie hasta cada scooter, con la ruta en el mapa"
+    ],
+    "battery": [
+      "Olvídate de los descargados.",
+      "Elige un mínimo de batería o muestra solo los operadores que usas"
+    ],
+    "night": [
+      "Claro de día. Oscuro de noche.",
+      "El mapa sigue el modo claro u oscuro de tu iPhone, o el que elijas"
+    ],
+    "cities": [
+      "Cada ciudad, de un vistazo.",
+      "El número de scooters en cada ciudad, actualizado cada hora"
+    ]
+  },
+  "nl-NL": {
+    "pier": [
+      "De dichtstbijzijnde, in 3D.",
+      "Alle deelsteps rond de pier van Santa Monica"
+    ],
+    "providers": [
+      "Alle aanbieders. Eén kaart.",
+      "Alle deelsteps om je heen, van welke aanbieder ook"
+    ],
+    "price": [
+      "De prijs, voor je opstapt.",
+      "Ontgrendelkosten, prijs per minuut en een schatting voor je rit"
+    ],
+    "walk": [
+      "Weet hoe ver het is.",
+      "Hoeveel minuten lopen naar elke deelstep, met de route op de kaart"
+    ],
+    "battery": [
+      "Sla de lege over.",
+      "Stel een minimaal batterijniveau in, of kies je aanbieders"
+    ],
+    "night": [
+      "Licht overdag. Donker ’s nachts.",
+      "De kaart volgt je iPhone, of de weergave die je zelf kiest"
+    ],
+    "cities": [
+      "Elke stad in één oogopslag.",
+      "Het aantal deelsteps per stad, elk uur bijgewerkt"
+    ]
+  },
+  "no": {
+    "pier": [
+      "Den nærmeste, i 3D.",
+      "Alle elsparkesykler rundt Santa Monica Pier"
+    ],
+    "providers": [
+      "Alle operatørene. Ett kart.",
+      "Alle elsparkesykler til leie rundt deg, uansett operatør"
+    ],
+    "price": [
+      "Prisen, før du bestemmer deg.",
+      "Opplåsing, minuttpris og et prisanslag for turen din"
+    ],
+    "walk": [
+      "Vit hvor langt det er.",
+      "Gangtid til hver elsparkesykkel, med ruten på kartet"
+    ],
+    "battery": [
+      "Styr unna tomme batterier.",
+      "Velg et minimum for batteriet, eller bare operatørene du bruker"
+    ],
+    "night": [
+      "Lyst om dagen. Mørkt om natten.",
+      "Kartet følger utseendet på iPhonen din, eller det du velger selv"
+    ],
+    "cities": [
+      "Hver by med ett blikk.",
+      "Antall elsparkesykler i hver by, oppdatert hver time"
+    ]
+  },
+  "pt-PT": {
+    "pier": [
+      "A mais próxima, em 3D.",
+      "Todas as trotinetes à volta do cais de Santa Monica"
+    ],
+    "providers": [
+      "Todos os operadores. Um só mapa.",
+      "Todas as trotinetes partilhadas perto de si, seja qual for o operador"
+    ],
+    "price": [
+      "O preço, antes de se decidir.",
+      "Desbloqueio, preço por minuto e o custo estimado da viagem"
+    ],
+    "walk": [
+      "Saiba quanto tem de andar.",
+      "O tempo a pé até cada trotinete, com o itinerário no mapa"
+    ],
+    "battery": [
+      "Esqueça as descarregadas.",
+      "Defina um mínimo de bateria ou mostre só os operadores que usa"
+    ],
+    "night": [
+      "Claro de dia. Escuro à noite.",
+      "O mapa segue o aspeto do seu iPhone ou o que escolher"
+    ],
+    "cities": [
+      "Cada cidade num relance.",
+      "O número de trotinetes em cada cidade, atualizado de hora a hora"
+    ]
+  }
+}
