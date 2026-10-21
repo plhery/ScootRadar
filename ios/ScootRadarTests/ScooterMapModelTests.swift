@@ -608,20 +608,61 @@ final class ScooterMapModelTests: XCTestCase {
         defer { ScooterLanguage.current = .atLaunch }
         XCTAssertEqual(model.language, .atLaunch)
 
-        model.language = .fr
+        model.languageChoice = .language(.fr)
+        XCTAssertEqual(model.language, .fr)
         XCTAssertEqual(ScooterLanguage.current, .fr)
         XCTAssertEqual(AppleMapStyle.quiet.label, "Épuré")
         XCTAssertEqual(ScooterAppearance.dark.label, "Sombre")
         XCTAssertEqual(ScooterLanguage.current.locale.language.languageCode?.identifier, "fr")
         XCTAssertEqual(defaults.stringArray(forKey: "AppleLanguages"), ["fr"])
 
-        model.language = .de
+        model.languageChoice = .language(.de)
         XCTAssertEqual(AppleMapStyle.quiet.label, "Ruhig")
         XCTAssertEqual(ScooterAppearance.dark.label, "Dunkel")
         // The numbers keep to the region of the iPhone, whichever the language.
         XCTAssertEqual(ScooterLanguage.current.locale.language.languageCode?.identifier, "de")
         XCTAssertEqual(ScooterLanguage.current.locale.region, Locale.current.region)
         XCTAssertEqual(defaults.stringArray(forKey: "AppleLanguages"), ["de"])
+    }
+
+    func testAutomaticTakesTheChosenLanguageAwayAndShowsTheIPhonesAtOnce() throws {
+        let suiteName = "ScootRadarTests.\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
+        defaults.removePersistentDomain(forName: suiteName)
+        var iPhoneLanguages = ["ja-JP", "is-IS", "en-GB"]
+        let model = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+            locationManager: CLLocationManager(),
+            defaults: defaults,
+            iPhoneLanguages: { iPhoneLanguages }
+        )
+        defer { ScooterLanguage.current = .atLaunch }
+        // The first of the iPhone's languages the app is translated into.
+        XCTAssertEqual(model.iPhoneLanguage, .is)
+
+        // From whatever the app was launched with.
+        model.languageChoice = .automatic
+        model.languageChoice = .language(.fr)
+        XCTAssertEqual(defaults.persistentDomain(forName: suiteName)?["AppleLanguages"] as? [String], ["fr"])
+
+        model.languageChoice = .automatic
+        // Gone from the app's own defaults, so that iOS follows the iPhone at the next launch.
+        XCTAssertNil(defaults.persistentDomain(forName: suiteName)?["AppleLanguages"])
+        XCTAssertEqual(model.languageChoice, .automatic)
+        XCTAssertEqual(model.language, .is)
+        XCTAssertEqual(ScooterLanguage.current, .is)
+        XCTAssertEqual(ScooterAppearance.dark.label, "Dökkt")
+
+        // A language chosen again is kept again.
+        model.languageChoice = .language(.it)
+        XCTAssertEqual(defaults.persistentDomain(forName: suiteName)?["AppleLanguages"] as? [String], ["it"])
+        XCTAssertEqual(ScooterAppearance.automatic.label, "Automatico")
+
+        // An iPhone in none of the app's languages is followed in English.
+        iPhoneLanguages = ["ja-JP", "zh-Hans-CN"]
+        model.languageChoice = .automatic
+        XCTAssertEqual(model.language, .en)
+        XCTAssertNil(defaults.persistentDomain(forName: suiteName)?["AppleLanguages"])
     }
 
     func testRideDurationAndProviderPassesPersistIndependently() {

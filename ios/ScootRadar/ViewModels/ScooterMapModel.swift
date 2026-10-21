@@ -185,18 +185,41 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         }
     }
 
-    /// The language the app is shown in. A choice changes the app's own text
-    /// at once, and is kept where iOS reads the app's language at launch,
-    /// which is where the Settings of the iPhone keep the one chosen there.
-    var language = ScooterLanguage.current {
+    /// What the app's language follows: the iPhone's languages, or one chosen
+    /// in Settings. A choice changes the app's own text at once. A language
+    /// is kept where iOS reads the app's language at launch, which is where
+    /// the Settings of the iPhone keep the one chosen there; Automatic takes
+    /// it away, so that iOS follows the iPhone's languages again.
+    var languageChoice = ScooterLanguageChoice.atLaunch {
+        didSet {
+            guard oldValue != languageChoice else { return }
+            switch languageChoice {
+            case .automatic:
+                ScooterAnalytics.shared.track("language_change", result: "auto")
+                defaults.removeObject(forKey: ScooterLanguageChoice.key)
+                language = iPhoneLanguage
+            case let .language(chosen):
+                ScooterAnalytics.shared.track("language_change", result: chosen.rawValue)
+                defaults.set([chosen.rawValue], forKey: ScooterLanguageChoice.key)
+                language = chosen
+            }
+        }
+    }
+
+    /// The language the app is shown in.
+    private(set) var language = ScooterLanguage.current {
         didSet {
             guard oldValue != language else { return }
-            ScooterAnalytics.shared.track("language_change", result: language.rawValue)
             ScooterLanguage.current = language
-            defaults.set([language.rawValue], forKey: Self.languagesKey)
             // Countries are named in it.
             rebuildMapClusters()
         }
+    }
+
+    /// The language the app follows on Automatic: the first of the iPhone's
+    /// languages it is translated into, or else English.
+    var iPhoneLanguage: ScooterLanguage {
+        ScooterLanguage(preferences: iPhoneLanguages())
     }
 
     private(set) var rideEstimateMinutes: Int
@@ -212,6 +235,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     @ObservationIgnored private let clock: () -> Date
     @ObservationIgnored private let directions: any WalkingDirectionsClient
     @ObservationIgnored private let openInMaps: @MainActor (ScooterWalkTarget) -> Void
+    @ObservationIgnored private let iPhoneLanguages: () -> [String]
     /// The route being found, and the number of the latest request: an
     /// answer to an earlier one is not wanted any more.
     @ObservationIgnored private var routeTask: Task<Void, Never>?
@@ -270,7 +294,6 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     private static let minimumBatteryKey = "minimum-battery"
     private static let mapStyleKey = "apple-map-style"
     private static let appearanceKey = "appearance"
-    private static let languagesKey = "AppleLanguages"
     private static let enabledProvidersKey = "enabled-providers"
     private static let rideEstimateMinutesKey = "ride-estimate-minutes-v1"
     private static let ridePassesKey = "provider-ride-passes-v1"
@@ -293,6 +316,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         now: @escaping () -> Date = Date.init,
         directions: any WalkingDirectionsClient = MapKitWalkingDirections(),
         openInMaps: @escaping @MainActor (ScooterWalkTarget) -> Void = { $0.openInMaps() },
+        iPhoneLanguages: @escaping () -> [String] = { ScooterLanguage.iPhoneLanguages },
         start: ScooterMapStart = .switzerland
     ) {
         startCenter = start.center
@@ -303,6 +327,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         self.api = api
         self.directions = directions
         self.openInMaps = openInMaps
+        self.iPhoneLanguages = iPhoneLanguages
         self.locationManager = locationManager
         self.defaults = defaults
         self.locationTimeout = locationTimeout

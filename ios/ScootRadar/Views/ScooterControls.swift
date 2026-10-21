@@ -1849,8 +1849,10 @@ struct ScooterSettingsSheet: View {
                 Section("Language") {
                     // The sheet reads the language here, so its titles are
                     // written again when another is chosen.
-                    SettingsLanguageTiles(title: String(localized: "Language"), selection: model.language) {
-                        model.language = $0
+                    NavigationLink {
+                        ScooterLanguageSettings(model: model)
+                    } label: {
+                        languageRow
                     }
                 }
 
@@ -1926,7 +1928,39 @@ struct ScooterSettingsSheet: View {
             }
             .sensoryFeedback(.selection, trigger: model.appearance)
             .sensoryFeedback(.selection, trigger: model.mapStyle)
-            .sensoryFeedback(.selection, trigger: model.language)
+            .sensoryFeedback(.selection, trigger: model.languageChoice)
+        }
+    }
+
+    /// The language the app is shown in, by its own name, and Automatic
+    /// beside it while the app follows the iPhone.
+    @ViewBuilder private var languageRow: some View {
+        let name = Text(verbatim: model.language.name)
+            // For VoiceOver, which reads a text in the language of its locale.
+            .environment(\.locale, Locale(identifier: model.language.rawValue))
+        let automatic = model.languageChoice == .automatic
+            ? String(localized: "Automatic (language)")
+            : nil
+        if dynamicTypeSize.isAccessibilitySize {
+            // Very large text: Automatic goes under the name, so neither is cut off.
+            VStack(alignment: .leading, spacing: 2) {
+                name
+                if let automatic {
+                    Text(automatic)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        } else {
+            HStack {
+                name
+                Spacer(minLength: 8)
+                if let automatic {
+                    Text(automatic)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+            }
         }
     }
 
@@ -1951,6 +1985,73 @@ struct ScooterSettingsSheet: View {
         return benefits.isEmpty
             ? String(localized: "Pass active")
             : benefits.joined(separator: " · ")
+    }
+}
+
+/// Settings › Language: Automatic, which follows the iPhone, then each
+/// language of the app by its own name, with its name in the language shown.
+/// A tap shows the app in it at once.
+struct ScooterLanguageSettings: View {
+    @Bindable var model: ScooterMapModel
+
+    var body: some View {
+        Form {
+            Section {
+                row(for: .automatic) {
+                    Text(String(localized: "Automatic (language)"))
+                    Text(String(format: String(localized: "%@, the language of your iPhone"), model.iPhoneLanguage.name))
+                        .font(.subheadline)
+                        .foregroundStyle(Color.secondary)
+                }
+            } footer: {
+                Text(String(localized: "Follows your iPhone’s language, if you change it there."))
+            }
+
+            Section {
+                ForEach(ScooterLanguage.byName) { language in
+                    row(for: .language(language)) {
+                        Text(verbatim: language.name)
+                            // For VoiceOver, which reads a text in the language of its locale.
+                            .environment(\.locale, Locale(identifier: language.rawValue))
+                        if let name = language.name(in: model.language) {
+                            Text(name)
+                                .font(.subheadline)
+                                .foregroundStyle(Color.secondary)
+                        }
+                    }
+                }
+            }
+        }
+        // As a string: a title given as a key stays in the language it was first shown in.
+        .navigationTitle(String(localized: "Language"))
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    /// A choice, ticked once chosen. Its text wraps under very large text.
+    private func row(
+        for choice: ScooterLanguageChoice,
+        @ViewBuilder label: () -> some View
+    ) -> some View {
+        let isSelected = model.languageChoice == choice
+        return Button {
+            model.languageChoice = choice
+        } label: {
+            HStack(spacing: 12) {
+                // Color.primary, not .primary: in a button, .primary is the tint.
+                VStack(alignment: .leading, spacing: 2) {
+                    label()
+                }
+                .foregroundStyle(Color.primary)
+                Spacer(minLength: 8)
+                Image(systemName: "checkmark")
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(.tint)
+                    .opacity(isSelected ? 1 : 0)
+                    .accessibilityHidden(true)
+            }
+            .contentShape(Rectangle())
+        }
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 

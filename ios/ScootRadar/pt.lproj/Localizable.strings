@@ -195,6 +195,11 @@
 "Source code on GitHub" = "Código-fonte no GitHub";
 "Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter." = "A disponibilidade é atualizada automaticamente. Abrir a app de um operador não reserva nenhuma trotinete.";
 
+/* Settings › Language. "Automatic" has its own key here: Italian writes it in the feminine of "lingua", Automatica. */
+"Automatic (language)" = "Automático";
+"%@, the language of your iPhone" = "%@, o idioma do seu iPhone";
+"Follows your iPhone’s language, if you change it there." = "Segue o idioma do seu iPhone, mesmo que o altere.";
+
 /* Map look: the nearest scooter in the dock, and the figures of the scooter card */
 "to the nearest scooter" = "até à trotinete mais próxima";
 "%1$@, %2$lld min on foot" = "%1$@, %2$lld min a pé";

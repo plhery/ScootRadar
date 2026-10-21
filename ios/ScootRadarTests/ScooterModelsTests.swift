@@ -1141,6 +1141,78 @@ extension ScooterModelsTests {
         XCTAssertEqual(german.localizedString(forKey: "Hidden", value: nil, table: nil), "Ausgeblendet")
     }
 
+    func testSettingsListTheLanguagesByTheirOwnNamesAndNameThemInTheLanguageShown() {
+        XCTAssertEqual(
+            ScooterLanguage.byName.map(\.name),
+            ["Deutsch", "English", "Español", "Français", "Íslenska", "Italiano", "Nederlands", "Norsk", "Português"]
+        )
+        XCTAssertEqual(Set(ScooterLanguage.byName), Set(ScooterLanguage.allCases))
+
+        XCTAssertEqual(ScooterLanguage.de.name(in: .fr), "Allemand")
+        XCTAssertEqual(ScooterLanguage.de.name(in: .it), "Tedesco")
+        XCTAssertEqual(ScooterLanguage.is.name(in: .en), "Icelandic")
+        XCTAssertEqual(ScooterLanguage.is.name(in: .nl), "IJslands")
+        XCTAssertEqual(ScooterLanguage.nb.name(in: .en), "Norwegian")
+        XCTAssertEqual(ScooterLanguage.en.name(in: .is), "Enska")
+        // A language shown in itself has no second name.
+        for language in ScooterLanguage.allCases {
+            XCTAssertNil(language.name(in: language), language.rawValue)
+        }
+    }
+
+    func testAutomaticPicksTheFirstOfTheIPhonesLanguagesTheAppIsTranslatedInto() {
+        XCTAssertEqual(ScooterLanguage(preferences: ["ja-JP", "de-CH", "fr-CH"]), .de)
+        XCTAssertEqual(ScooterLanguage(preferences: ["pt-BR"]), .pt)
+        XCTAssertEqual(ScooterLanguage(preferences: ["es-419"]), .es)
+        XCTAssertEqual(ScooterLanguage(preferences: ["nb-NO", "en"]), .nb)
+        XCTAssertEqual(ScooterLanguage(preferences: ["is-IS"]), .is)
+        XCTAssertEqual(ScooterLanguage(preferences: ["ja-JP", "zh-Hans-CN"]), .en)
+        XCTAssertEqual(ScooterLanguage(preferences: []), .en)
+        XCTAssertFalse(ScooterLanguage.iPhoneLanguages.isEmpty)
+
+        // The app follows the iPhone until its own defaults name a language,
+        // as its Settings or the iPhone's write it.
+        XCTAssertEqual(ScooterLanguageChoice(appDefaults: [:], shown: .de), .automatic)
+        XCTAssertEqual(ScooterLanguageChoice(appDefaults: ["has-located-once": true], shown: .de), .automatic)
+        XCTAssertEqual(ScooterLanguageChoice(appDefaults: ["AppleLanguages": ["fr"]], shown: .fr), .language(.fr))
+    }
+
+    func testTheIPhonesLanguagesStayTheIPhonesOnceTheAppHasOneOfItsOwn() {
+        // Automatic says "English, the language of your iPhone" after French
+        // was chosen for the app, not "Français": Locale.preferredLanguages
+        // would give the app's.
+        let iPhone = ScooterLanguage.iPhoneLanguages
+        let chosen = iPhone.first?.hasPrefix("is") == true ? "nl" : "is"
+        let appDefaults = Bundle.main.bundleIdentifier.flatMap(UserDefaults.standard.persistentDomain(forName:))
+        UserDefaults.standard.set([chosen], forKey: ScooterLanguageChoice.key)
+        defer { UserDefaults.standard.set(appDefaults?[ScooterLanguageChoice.key], forKey: ScooterLanguageChoice.key) }
+
+        XCTAssertEqual(Locale.preferredLanguages.first, chosen)
+        XCTAssertEqual(ScooterLanguage.iPhoneLanguages, iPhone)
+    }
+
+    func testEveryLanguageWritesTheLanguageChoices() throws {
+        let keys = [
+            "Automatic (language)",
+            "%@, the language of your iPhone",
+            "Follows your iPhone’s language, if you change it there."
+        ]
+        for language in ScooterLanguage.allCases {
+            let strings = try XCTUnwrap(
+                Bundle.main.path(forResource: language.rawValue, ofType: "lproj").flatMap(Bundle.init(path:))
+            )
+            for key in keys {
+                let text = strings.localizedString(forKey: key, value: "?", table: nil)
+                XCTAssertNotEqual(text, "?", "\(language.rawValue): \(key)")
+                XCTAssertEqual(text.contains("%@"), key.contains("%@"), "\(language.rawValue): \(text)")
+            }
+        }
+        // Italian says Automatico of the appearance, Automatica of the language: "lingua" is feminine.
+        let italian = try XCTUnwrap(Bundle.main.path(forResource: "it", ofType: "lproj").flatMap(Bundle.init(path:)))
+        XCTAssertEqual(italian.localizedString(forKey: "Automatic", value: nil, table: nil), "Automatico")
+        XCTAssertEqual(italian.localizedString(forKey: "Automatic (language)", value: nil, table: nil), "Automatica")
+    }
+
     func testFrenchAndItalianNameTheOperatorWithOneWordAndFrenchShowsNothingInTheSingular() throws {
         func strings(_ language: String) throws -> Bundle {
             try XCTUnwrap(Bundle.main.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:)))

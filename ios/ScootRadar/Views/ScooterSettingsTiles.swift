@@ -53,40 +53,6 @@ struct SettingsTile<Picture: View>: View {
     }
 }
 
-/// The languages of the app, two to a line, each under its own name.
-struct SettingsLanguageTiles: View {
-    let title: String
-    let selection: ScooterLanguage
-    let onSelect: (ScooterLanguage) -> Void
-
-    var body: some View {
-        LazyVGrid(columns: [GridItem(.flexible(), spacing: 8), GridItem(.flexible())], spacing: 8) {
-            ForEach(ScooterLanguage.allCases) { language in
-                let isSelected = language == selection
-                Button {
-                    onSelect(language)
-                } label: {
-                    Text(verbatim: language.name)
-                        .font(.subheadline.weight(isSelected ? .semibold : .medium))
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.75)
-                        .padding(8)
-                        .frame(maxWidth: .infinity, minHeight: 44)
-                        .settingsTile(isSelected: isSelected, cornerRadius: 14)
-                }
-                .buttonStyle(.plain)
-                // For VoiceOver, which reads a text in the language of its locale.
-                .environment(\.locale, Locale(identifier: language.rawValue))
-                .accessibilityAddTraits(isSelected ? .isSelected : [])
-            }
-        }
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel(title)
-        .listRowInsets(EdgeInsets())
-        .listRowBackground(Color.clear)
-    }
-}
-
 private extension View {
     /// The frame of a tile: a hairline around a faint fill, blue once chosen.
     func settingsTile(isSelected: Bool, cornerRadius: CGFloat) -> some View {

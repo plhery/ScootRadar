@@ -1,7 +1,7 @@
 import Foundation
 import Synchronization
 
-/// The languages the app is translated into, in the order Settings lists them.
+/// The languages the app is translated into.
 enum ScooterLanguage: String, CaseIterable, Identifiable, Sendable {
     case de
     case fr
@@ -30,12 +30,49 @@ enum ScooterLanguage: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
+    /// The languages as Settings lists them, by their own names: Deutsch,
+    /// English, Español… A letter with an accent sorts with the letter.
+    static let byName = allCases.sorted { $0.sortingName < $1.sortingName }
+
+    private var sortingName: String {
+        name.folding(options: [.caseInsensitive, .diacriticInsensitive], locale: nil)
+    }
+
+    /// Its name in another language, as a line of a list starts: "Allemand"
+    /// for German in French. Nil where it is its own name, as English is in
+    /// English.
+    func name(in language: ScooterLanguage) -> String? {
+        let locale = Locale(identifier: language.rawValue)
+        // Norwegian, as its own name Norsk says, not "Norwegian Bokmål".
+        guard let name = locale.localizedString(forLanguageCode: self == .nb ? "no" : rawValue),
+              let first = name.first
+        else { return nil }
+        let capitalised = String(first).uppercased(with: locale) + name.dropFirst()
+        return capitalised == self.name ? nil : capitalised
+    }
+
     /// The language of the first localization, as a bundle lists the ones it
     /// prefers; English when the app is not translated into it.
     init(localizations: [String]) {
         self = localizations.first
             .flatMap { Locale(identifier: $0).language.languageCode?.identifier }
             .flatMap(ScooterLanguage.init(rawValue:)) ?? .en
+    }
+
+    /// The language iOS picks for the app from a list of languages in order,
+    /// such as the iPhone's: the first the app is translated into, or else
+    /// English.
+    init(preferences: [String], localizations: [String] = Bundle.main.localizations) {
+        self.init(localizations: Bundle.preferredLocalizations(from: localizations, forPreferences: preferences))
+    }
+
+    /// The iPhone's languages in its order, whichever was chosen for the app.
+    /// They are read from the iPhone's own preferences: once the app has a
+    /// language of its own, Locale.preferredLanguages gives that one instead,
+    /// and the app cannot read the global domain through UserDefaults.
+    static var iPhoneLanguages: [String] {
+        CFPreferencesCopyAppValue(ScooterLanguageChoice.key as CFString, kCFPreferencesAnyApplication) as? [String]
+            ?? Locale.preferredLanguages
     }
 
     /// The language iOS chose for this run of the app: the one chosen in
@@ -98,6 +135,30 @@ enum ScooterLanguage: String, CaseIterable, Identifiable, Sendable {
     /// Where the strings of the language are.
     fileprivate var strings: Bundle {
         Self.strings[self] ?? .main
+    }
+}
+
+/// What the language of the app follows: the iPhone's languages, or one
+/// chosen for the app, in its Settings or in the iPhone's.
+enum ScooterLanguageChoice: Hashable, Sendable {
+    case automatic
+    case language(ScooterLanguage)
+
+    /// Where iOS reads, at launch, the language chosen for the app: in the
+    /// app's own defaults, where the Settings of the iPhone keep theirs too.
+    /// Without it, iOS follows the iPhone's languages.
+    static let key = "AppleLanguages"
+
+    /// The choice this run of the app was launched with.
+    static let atLaunch = ScooterLanguageChoice(
+        appDefaults: Bundle.main.bundleIdentifier.flatMap(UserDefaults.standard.persistentDomain(forName:)) ?? [:],
+        shown: .atLaunch
+    )
+
+    /// A language when the app's own defaults name one, the one shown;
+    /// else Automatic.
+    init(appDefaults: [String: Any], shown: ScooterLanguage) {
+        self = appDefaults[Self.key] == nil ? .automatic : .language(shown)
     }
 }
 
