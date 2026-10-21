@@ -114,6 +114,11 @@ function organization() {
   };
 }
 
+/** Who writes the guides, named where it's cited too, for a reader that doesn't follow the `@id`. */
+function byScootRadar() {
+  return { '@type': 'Organization', '@id': `${SITE_URL}/#organization`, name: SITE_NAME, url: `${SITE_URL}/` };
+}
+
 /** The way from the site to the page, for a search engine: the trail above the headline. */
 function breadcrumbs(locale: LandingLocale, guide?: Guide) {
   const steps = [
@@ -148,8 +153,8 @@ function guideStructuredData(guide: Guide) {
         datePublished: guide.published,
         dateModified: guide.updated,
         image: absolute(shareImage(guide.locale)),
-        author: { '@id': `${SITE_URL}/#organization` },
-        publisher: { '@id': `${SITE_URL}/#organization` },
+        author: byScootRadar(),
+        publisher: byScootRadar(),
         mainEntityOfPage: url,
       },
       breadcrumbs(guide.locale, guide),

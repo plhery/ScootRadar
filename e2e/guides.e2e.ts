@@ -70,6 +70,8 @@ test('a guide tells a search engine where it is in the other languages, and what
   const described = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent() ?? '');
   const types = described['@graph'].map((entity: { '@type': string }) => entity['@type']);
   expect(types).toEqual(['Organization', 'Article', 'BreadcrumbList', 'FAQPage']);
+  const by = { '@type': 'Organization', '@id': `${SITE}/#organization`, name: 'ScootRadar', url: `${SITE}/` };
+  expect(described['@graph'][1]).toMatchObject({ author: by, publisher: by });
   const asked = described['@graph'][3].mainEntity.map((question: { name: string }) => question.name);
   await expect(page.locator('.guide-faq dt')).toHaveText(asked);
 
