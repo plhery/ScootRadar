@@ -377,9 +377,12 @@ banned shared scooters, and feeds that were empty when checked.
     Spin feed any. Another, from 12:00 to 14:00 EDT on 16 October, found Bird
     Orlando and UCF still unridden, and Bird Miami with three rides at most
     ([guide](american-scooter-feeds.md#bird-and-lime)). Spin University of
-    Utah is checked again on 20 October 2026, after the fall break, Bird Miami
-    on the evening of 21 October, Orlando and UCF on 15 January 2027, and East
-    Lansing on 15 April 2027.
+    Utah's check after the fall break, due on the evening of 20 October 2026,
+    was missed; polled instead from 23:33 to 23:48 MDT that night, its 325 to
+    331 scooters made one move of about 1.1 km, and three were set down
+    together. It is checked again on the evening of 21 October, as is Bird
+    Miami; Orlando and UCF are checked on 15 January 2027, and East Lansing on
+    15 April 2027.
   - **Outside their operator's towns:** since 15 October 2026 a feed keeps no
     scooter inside the outline of a town where its operator has no area, so
     Bird Cleveland's 2 in Cleveland Heights, Veo Santa Monica's 1 or 2 in
@@ -799,8 +802,10 @@ Bonaire had feeds to add. Survey files are in
   art. 124 of Ley 9078 on SCIJ, and update the
   [Costa Rican guide's rules](costa-rican-scooter-feeds.md#rules) if either
   says anything of e-scooters.
-- **Tuesday 20 October 2026, 17:00 to 21:00 Mountain time:** Spin
-  University of Utah, after the fall break.
+- **Wednesday 21 October 2026, 17:00 to 21:00 Mountain time:** Spin
+  University of Utah, after the fall break; the check planned for 20 October
+  was missed. If its scooters still don't move, check it again on 15 January
+  2027.
 - **Wednesday 21 October 2026, 17:00 to 21:00 EDT:** Bird Miami, beside a
   Bird feed on the map as a yardstick. Bird renews its ids at every request,
   so match scooters by place; add Miami if its scooters leave places they
