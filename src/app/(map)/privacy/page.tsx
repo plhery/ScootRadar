@@ -19,7 +19,7 @@ export default function PrivacyPage() {
       <article className="legal-content">
         <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
         <h1>Privacy</h1>
-        <p>Last updated: 19 October 2026</p>
+        <p>Last updated: 22 October 2026</p>
 
         <h2>Overview</h2>
         <p>
@@ -92,8 +92,15 @@ export default function PrivacyPage() {
           Rental taps do not tell us whether you actually rented a vehicle.
         </p>
         <p>
+          With the first page you open, the website also sends where the visit came from: the
+          website that linked to it, by its domain alone (google.com, for example), and the
+          campaign tags of the link, such as utm_source=chatgpt.com, so we know which sites and
+          apps bring visitors.
+        </p>
+        <p>
           Analytics never includes address text, precise coordinates, vehicle identifiers,
-          full URLs, or advertising identifiers. Umami processes your IP address and user agent
+          the page of another website you came from, other parts of the addresses you open,
+          or advertising identifiers. Umami processes your IP address and user agent
           to derive approximate location, device information, and short-lived session statistics.
           It does not store raw IP addresses. We use no analytics cookies or persistent user IDs,
           and do not record your screen or replay sessions.

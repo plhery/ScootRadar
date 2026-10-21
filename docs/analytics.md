@@ -76,8 +76,13 @@ What the events mean on the web:
 
 Events are best effort with a bounded queue of 30, a five-second request timeout,
 no retry/offline persistence, and in-memory Umami session-cache reuse. Blocking
-analytics never prevents map use or outbound navigation. External referrers,
-query strings, fragments and arbitrary page titles are excluded. The collector
+analytics never prevents map use or outbound navigation. The first page view of
+a page load says where the visit came from (`visitSource` in `src/lib/analytics.ts`):
+the referring website's origin alone, or, for a link without one whose `utm_source`
+names an AI assistant (ChatGPT's links carry `utm_source=chatgpt.com`), that
+assistant's site; and the link's `utm_source`, `utm_medium` and `utm_campaign`, each
+a short code. Referrer paths and queries, other query strings, fragments and
+arbitrary page titles are excluded. Visits before 22 October 2026 have no source. The collector
 receives normal IP/user-agent network metadata; Umami derives coarse geography
 and short-lived session/device statistics without storing raw IP addresses.
 See PRIVACY.md and the public privacy page for the user-facing notice.

@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { analyticsEnabled, safeAnalyticsData } from './analytics';
+import { analyticsEnabled, safeAnalyticsData, visitSource } from './analytics';
 
 const location = { hostname: 'scootradar.com', pathname: '/map', search: '?lat=47.3&lng=8.5', hash: '#private' };
 beforeEach(() => {
@@ -9,7 +9,10 @@ beforeEach(() => {
   vi.stubGlobal('location', location);
   vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false })));
 });
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  Object.defineProperty(document, 'referrer', { value: '', configurable: true });
+});
 
 describe('analytics privacy boundary', () => {
   it('drops arbitrary data and address-like values', () => {
@@ -34,7 +37,7 @@ describe('analytics privacy boundary', () => {
     vi.stubGlobal('navigator', { globalPrivacyControl: true });
     expect(analyticsEnabled()).toBe(false);
   });
-  it('sends only safe paths, no referrers or identities, and reuses the session cache', async () => {
+  it('sends only safe paths, no queries, referrers or identities of its own, and reuses the session cache', async () => {
     const fetcher = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ cache: 'session-cache' }) });
     vi.stubGlobal('fetch', fetcher);
     const { track } = await import('./analytics');
@@ -87,6 +90,33 @@ describe('analytics privacy boundary', () => {
     expect(opened).toMatchObject({ url: '/guides/e-scooters-bristol', name: 'map_open', data: { result: 'city', platform: 'web' } });
     expect(outside).toMatchObject({ url: '/map', title: 'ScootRadar' });
     expect(query).toMatchObject({ url: '/map', title: 'ScootRadar' });
+  });
+  it('sends where a visit came from with its first page view only: the linking site by its origin, and the campaign tags', async () => {
+    const fetcher = vi.fn().mockResolvedValue({ ok: true, json: async () => ({}) });
+    vi.stubGlobal('fetch', fetcher);
+    vi.stubGlobal('location', { ...location, pathname: '/',
+      search: '?lat=47.3&utm_source=newsletter&utm_medium=email&utm_campaign=autumn-26&utm_term=zurich' });
+    Object.defineProperty(document, 'referrer', { value: 'https://www.example.org/search?q=private', configurable: true });
+    const { track } = await import('./analytics');
+    track();
+    track('app_open');
+    track();
+    await vi.waitFor(() => expect(fetcher).toHaveBeenCalledTimes(3));
+    const [first, event, next] = fetcher.mock.calls.map(call => JSON.parse(call[1].body).payload);
+    expect(first).toMatchObject({ url: '/?utm_source=newsletter&utm_medium=email&utm_campaign=autumn-26', referrer: 'https://www.example.org/' });
+    expect(event).toMatchObject({ url: '/', referrer: '', name: 'app_open' });
+    expect(next).toMatchObject({ url: '/', referrer: '' });
+    expect(fetcher.mock.calls[0][1].body).not.toMatch(/search|private|47\.3|zurich|utm_term/);
+  });
+  it('gives a visit without a referrer the AI assistant its link names, and nothing for the site itself or odd tags', () => {
+    expect(visitSource('', '?utm_source=chatgpt.com')).toEqual({ referrer: 'https://chatgpt.com/', query: '?utm_source=chatgpt.com' });
+    expect(visitSource('', '?utm_source=Perplexity')).toEqual({ referrer: 'https://perplexity.ai/', query: '?utm_source=Perplexity' });
+    expect(visitSource('https://www.bing.com/', '?utm_source=chatgpt.com')).toEqual({ referrer: 'https://www.bing.com/', query: '?utm_source=chatgpt.com' });
+    expect(visitSource('android-app://com.google.android.googlequicksearchbox/', '')).toEqual({ referrer: 'android-app://com.google.android.googlequicksearchbox/', query: '' });
+    expect(visitSource('https://scootradar.com/guides', '')).toEqual({ referrer: '', query: '' });
+    expect(visitSource('https://www.scootradar.com/', '')).toEqual({ referrer: '', query: '' });
+    expect(visitSource('not an address', `?utm_source=someone%40example.com&utm_medium=a+b&utm_campaign=${'x'.repeat(61)}`))
+      .toEqual({ referrer: '', query: '' });
   });
   it('bounds the queue and survives network failures without retries', async () => {
     const fetcher = vi.fn().mockRejectedValue(new Error('offline'));

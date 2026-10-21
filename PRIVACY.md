@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 19 October 2026
+Last updated: 22 October 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches.
@@ -63,8 +63,11 @@ The public web/PWA and native iOS app send page/screen views and named actions
 (the website pages viewed, such as guides, and links to the map followed from them;
 search result counts, filters, selections, directions/rental taps, preferences,
 and generic failures) to our self-hosted Umami at `u.plhery.com`. Platform tags
-separate web, PWA and iOS. We do not collect search text, precise coordinates,
-vehicle IDs, URL queries/fragments, advertising IDs, or session recordings.
+separate web, PWA and iOS. With the first page view of a page load, the website
+also sends where the visit came from: the referring website's origin alone (no
+path or query) and the link's `utm_source`, `utm_medium` and `utm_campaign` tags.
+We do not collect search text, precise coordinates, vehicle IDs, other URL
+queries, fragments, advertising IDs, or session recordings.
 Umami processes IP/user-agent information to derive approximate geography,
 device information and short-lived sessions; it does not store raw IPs. No
 analytics cookies or persistent user IDs are used. Session cache stays in memory.

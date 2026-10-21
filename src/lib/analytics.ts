@@ -54,7 +54,44 @@ export interface CountedPage { path: string; title: string }
 // The form of every address of the site (src/lib/sitePages.ts): what isn't is counted as below.
 export const SITE_PATH = /^\/[a-z0-9/-]{0,160}$/;
 
+// Where a visit came from, sent with the first page view of a page load only, as Umami counts
+// sources: the website that linked here, by its origin alone (browsers send no more by default),
+// or, where the link gave none, the AI assistant its campaign names (ChatGPT's links carry
+// utm_source=chatgpt.com and no referrer); and the link's campaign tags, each a short code.
+// Nothing else of either address.
+const CAMPAIGN_TAGS = ['utm_source', 'utm_medium', 'utm_campaign'];
+const CAMPAIGN_VALUE = /^[a-zA-Z0-9._-]{1,60}$/;
+const ASSISTANTS = new Map([
+  ['chatgpt.com', 'chatgpt.com'], ['chatgpt', 'chatgpt.com'], ['chat.openai.com', 'chatgpt.com'],
+  ['perplexity.ai', 'perplexity.ai'], ['perplexity', 'perplexity.ai'],
+  ['copilot.microsoft.com', 'copilot.microsoft.com'], ['copilot.com', 'copilot.microsoft.com'], ['copilot', 'copilot.microsoft.com'],
+  ['gemini.google.com', 'gemini.google.com'], ['gemini', 'gemini.google.com'],
+  ['claude.ai', 'claude.ai'], ['claude', 'claude.ai'],
+]);
+
+export function visitSource(referrer: string, search: string): { referrer: string; query: string } {
+  const given = new URLSearchParams(search);
+  const tags = new URLSearchParams();
+  for (const tag of CAMPAIGN_TAGS) {
+    const value = given.get(tag)?.trim();
+    if (value && CAMPAIGN_VALUE.test(value)) tags.set(tag, value);
+  }
+  let origin = '';
+  try {
+    const from = new URL(referrer);
+    const own = from.hostname === ANALYTICS_HOST || from.hostname.endsWith(`.${ANALYTICS_HOST}`);
+    // Android's apps, the Google app among them, give the app instead.
+    if (/^https?:$/.test(from.protocol) && !own) origin = `${from.origin}/`;
+    else if (from.protocol === 'android-app:' && from.hostname) origin = `android-app://${from.hostname}/`;
+  } catch { /* No referrer, or not an address. */ }
+  const assistant = ASSISTANTS.get(tags.get('utm_source')?.toLowerCase().replace(/^www\./, '') ?? '');
+  if (!origin && assistant) origin = `https://${assistant}/`;
+  const query = tags.toString();
+  return { referrer: origin, query: query && `?${query}` };
+}
+
 let cache: string | undefined;
+let landing = true;
 let disabledByServer = false;
 let pending = 0;
 let chain = Promise.resolve();
@@ -64,13 +101,17 @@ export function track(event?: AnalyticsEvent, data: AnalyticsData = {}, page?: C
   const counted = page && SITE_PATH.test(page.path) ? page : undefined;
   const platform = window.matchMedia('(display-mode: standalone)').matches ||
     (navigator as Navigator & { standalone?: boolean }).standalone ? 'pwa' : 'web';
+  const source = !event && landing ? visitSource(document.referrer, window.location.search) : undefined;
+  if (!event) landing = false;
   const payload = {
     website: ANALYTICS_WEBSITE, hostname: ANALYTICS_HOST,
-    // Only these public screens exist. Exclude even unknown paths, all query strings and fragments:
-    // what is not one of them is counted as the map, which sends every event but the page views.
-    url: counted?.path ?? (PUBLIC_PAGES.has(window.location.pathname) ? window.location.pathname : MAP_PATH),
+    // Only these public screens exist. Exclude even unknown paths, fragments and every query but the
+    // first view's campaign tags: what is not one of them is counted as the map, which sends every
+    // event but the page views.
+    url: (counted?.path ?? (PUBLIC_PAGES.has(window.location.pathname) ? window.location.pathname : MAP_PATH)) +
+      (source?.query ?? ''),
     title: counted?.title.slice(0, 120) ?? PUBLIC_PAGES.get(window.location.pathname) ?? 'ScootRadar',
-    referrer: '', language: navigator.language, tag: platform,
+    referrer: source?.referrer ?? '', language: navigator.language, tag: platform,
     ...(event ? { name: event, data: { ...safeAnalyticsData(data), platform } } : {}),
   };
   pending++;
