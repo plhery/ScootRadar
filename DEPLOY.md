@@ -165,6 +165,19 @@ The job leaves `production-cache` where it is from 23:00 to 05:30 Paris time
 change goes with the next commit that passes outside those hours. The job's
 notices in the run's summary say what moved and why not.
 
+When it moves `production`, the job then tells IndexNow, which Bing and the
+engines that read its index use, about the pages the deploy added to the
+sitemap or redated ([`scripts/indexnow.mjs`](scripts/indexnow.mjs)). It saves
+the live sitemap before moving the branch, waits up to eight minutes for the
+website to serve the commit, and compares. Workers Builds names the build after
+its commit (`WORKERS_CI_COMMIT_SHA`, in `next.config.ts`), and every page
+carries the name. The key is public by design, in the file of its name at the
+root of `public`, which Workers serves before `worker.ts` runs. A refusal, or a
+build that is not live in time, shows as a warning and never fails the deploy;
+in the second case no page is sent, so once the site is live run
+`node scripts/indexnow.mjs --all https://scootradar.com` to submit every page
+of the sitemap (`--dry-run` lists them and sends nothing).
+
 To deploy a commit of `main` without waiting, push it to the branch, for
 example `git push origin <commit>:production-cache`. A branch only moves
 forward: never force-push one, or the next Deploy job fails until it is behind

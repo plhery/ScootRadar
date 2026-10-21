@@ -122,7 +122,9 @@ npm run deploy
 ```
 
 [DEPLOY.md](DEPLOY.md) covers rate limits, previews, production checks and
-rollbacks.
+rollbacks. CI's Deploy job tells IndexNow about new pages of scootradar.com with
+ScootRadar's key (`scripts/indexnow.mjs`): give your fork a key and address of
+its own, or remove those steps.
 
 ## More
 

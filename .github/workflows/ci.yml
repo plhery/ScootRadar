@@ -92,17 +92,20 @@ jobs:
   # Production deploys from two branches only this job moves (DEPLOY.md): Workers Builds deploys
   # production, the website and its Worker, and Coolify production-cache, the scooter cache. So a
   # commit deploys once both jobs above have passed on it, and not at all if one fails.
+  # Once the website is live, IndexNow hears of the pages it added to the sitemap or redated.
   deploy:
     name: Deploy
     needs: [web, ios]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     concurrency:
       group: deploy
       cancel-in-progress: false
     permissions:
       contents: write
+    env:
+      SITE: https://scootradar.com
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -114,4 +117,46 @@ jobs:
         with:
           node-version: 26
 
-      - run: node scripts/deploy-after-ci.mjs
+      # IndexNow hears of the pages this deploy adds to the sitemap or redates: the live one is
+      # kept to compare with. Without it, IndexNow is told nothing; the deploy goes ahead.
+      - name: Save the sitemap before the deploy
+        continue-on-error: true
+        timeout-minutes: 1
+        run: |
+          curl --silent --show-error --fail --max-time 20 -H 'Cache-Control: no-cache' \
+            -o "$RUNNER_TEMP/sitemap-before.xml" "$SITE/sitemap.xml" \
+            || { rm -f "$RUNNER_TEMP/sitemap-before.xml"; echo '::warning::The sitemap could not be saved: IndexNow will hear of no pages.'; }
+
+      - name: Move the production branches
+        id: deploy
+        run: node scripts/deploy-after-ci.mjs
+
+      # Workers Builds deploys production a minute or two after it moves. It names the build after
+      # the commit (next.config.ts), and every page carries that name, so the website is this
+      # commit once the landing page holds it. The next Deploy job waits for this one, so it
+      # saves the sitemap this one put live.
+      - name: Wait for the website to serve this commit
+        id: live
+        if: steps.deploy.outputs.website == 'moved'
+        continue-on-error: true
+        timeout-minutes: 9
+        run: |
+          deadline=$((SECONDS + 480))
+          while (( SECONDS < deadline )); do
+            page=$(curl --silent --max-time 20 -H 'Cache-Control: no-cache' "$SITE/" || true)
+            if [[ "$page" == *"$GITHUB_SHA"* ]]; then
+              echo "$SITE serves ${GITHUB_SHA::7} after $SECONDS seconds."
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::warning title=IndexNow not told::$SITE did not serve ${GITHUB_SHA::7} within 8 minutes. Once it does, run: node scripts/indexnow.mjs --all $SITE"
+          exit 1
+
+      # The pages new or redated in the sitemap go to IndexNow, which Bing and the engines that use
+      # its index read (scripts/indexnow.mjs). A refusal is shown but never fails the deploy.
+      - name: Tell IndexNow about new and redated pages
+        if: steps.live.outcome == 'success'
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/indexnow.mjs "--before=$RUNNER_TEMP/sitemap-before.xml" "$SITE"

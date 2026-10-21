@@ -4,6 +4,7 @@
 // scooter cache. A branch only moves forward: a commit whose CI ends after a later one's is left
 // out, as the later one carries it.
 import { execFileSync } from 'node:child_process';
+import { appendFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { cacheDeploys } from './deploy-watch-paths.mjs';
 
@@ -60,7 +61,10 @@ function main() {
   let failed = false;
   for (const branch of [CACHE_BRANCH, WEBSITE_BRANCH]) {
     try {
-      advance(branch, commit);
+      // The job's next steps wait for Workers Builds to put the website live, then tell IndexNow.
+      if (advance(branch, commit) && branch === WEBSITE_BRANCH && process.env.GITHUB_OUTPUT) {
+        appendFileSync(process.env.GITHUB_OUTPUT, 'website=moved\n');
+      }
     } catch (error) {
       console.error(`::error title=${branch} not moved::${/** @type {Error} */ (error).message}`);
       failed = true;
@@ -69,12 +73,15 @@ function main() {
   if (failed) process.exitCode = 1;
 }
 
-/** Moves the branch to the commit, if the commit is newer and, for the cache, should deploy. */
+/**
+ * Moves the branch to the commit, if the commit is newer and, for the cache, should deploy.
+ * Returns whether it moved.
+ */
 function advance(/** @type {string} */ branch, /** @type {string} */ commit) {
   const tip = git('rev-parse', `refs/remotes/origin/${branch}`);
   if (carries(tip, commit)) {
     console.log(`${branch} is at ${short(tip)}, which carries ${short(commit)} already.`);
-    return;
+    return false;
   }
   if (!carries(commit, tip)) throw new Error(`${branch} (${short(tip)}) is not an ancestor of ${short(commit)}: move it by hand (DEPLOY.md).`);
   if (branch === CACHE_BRANCH) {
@@ -85,12 +92,13 @@ function advance(/** @type {string} */ branch, /** @type {string} */ commit) {
     });
     if (!decision.deploy) {
       console.log(`::notice title=Cache not deployed::${branch} stays at ${short(tip)}: ${decision.reason}.`);
-      return;
+      return false;
     }
     console.log(`The cache's files changed since ${short(tip)}: ${decision.changed.join(', ')}`);
   }
   execFileSync('git', ['push', 'origin', `${commit}:refs/heads/${branch}`], { stdio: 'inherit' });
   console.log(`::notice title=Deployed::${branch} moved from ${short(tip)} to ${short(commit)}.`);
+  return true;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();
