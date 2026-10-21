@@ -239,6 +239,20 @@ Miami's scooters move, in Brickell, Shenandoah and Coconut Grove: over the two
 hours, three appeared 390 m to 1.1 km from any earlier one. That's three rides
 at most, so Miami waits for the evening recheck on 21 October.
 
+**Rechecked on Wednesday 21 October 2026,** from 17:32 to 19:34 EDT, in 26
+polls five minutes apart, beside Bird Indianapolis. Scooters were grouped by
+place, within 30 m, so that one parked beside others still counts: a place
+whose count falls has lost a scooter, and one that gains a scooter where none
+left in the previous hour, within 60 m, has had one arrive.
+
+| Feed | Scooters | Lost from their place, an hour | Arrived elsewhere, in two hours |
+| --- | --- | --- | --- |
+| Bird Indianapolis (on the map) | 639 to 684 | 120 (18%) | 148 |
+| Bird Miami | 16 to 18 | 0 | 2 |
+
+Miami's fleet is half what it was a week before, and isn't ridden in the
+evening either: it waits for a recheck in January with Orlando and UCF.
+
 Search also finds St. Louis as Saint Louis and St Louis, Indianapolis as
 Indy, and San Francisco as SF.
 
@@ -456,6 +470,12 @@ Sarasota, Asbury Park and Rutgers. Left out until a recheck (see
   between two places. The university's fall break runs from 10 to 18
   October 2026
   ([registrar](https://registrar.utah.edu/academic-calendars/fall2026.php)).
+  After it, polled beside Bird Indianapolis as in
+  [Bird's recheck](#bird-and-lime) from 15:32 to 17:34 MDT on 21 October,
+  its 296 to 305 available scooters lost about 48 from their places an hour,
+  16% of the fleet, against Indianapolis's 18%, and 61 arrived where none had
+  left. At midnight the night before it lost 1.5% an hour. It is ridden, and
+  is to be added (see [Coverage gaps](coverage-gaps.md#found-not-added-yet)).
 - **Spin East Lansing** (`east_lansing`, the city's feed, not Michigan
   State's): 10 to 12 scooters, a few of them last reported days before. By
   22:14 EDT three had left places, two of them together, and none had
