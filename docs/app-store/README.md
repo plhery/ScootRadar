@@ -73,13 +73,12 @@ Each frame, made on 20 October 2026, sets a headline on blue above a drawn
 iPhone showing the app with live data, and lifts the part of the screen the
 headline is about forward at full size. The headlines are in
 `screenshots/captions.json`, written for each language rather than
-translated. `en-US` and `es-MX` open on Santa Monica Pier; the other languages
-open on the providers and show the pier second:
+translated. Every language opens on the providers and shows the pier second:
 
-- the pier in 3D, from `-ScreenshotCamera "34.00980,-118.49600,700,50,230"`
-  with the location at 34.01016,-118.49496 and the flat terrain users get;
 - every provider around Zürich main station (location 47.3763,8.5395), with
   the providers' row lifted;
+- the pier in 3D, from `-ScreenshotCamera "34.00980,-118.49600,700,50,230"`
+  with the location at 34.01016,-118.49496 and the flat terrain users get;
 - the price on a Voi scooter's card;
 - the route to a scooter 3 to 5 minutes' walk away;
 - the battery filter at 60%+ (set it back to Any afterwards: the app keeps

@@ -663,10 +663,13 @@ async function pushScreenshots(sets, report) {
       }
       existing = [];
     }
-    const present = new Set(existing.map(shot => shot.attributes.fileName));
+    // A screenshot counts as there by its name or by its content, so a renamed file isn't sent twice.
+    const present = new Set(existing.flatMap(shot => [shot.attributes.fileName, shot.attributes.sourceFileChecksum]));
     const files = set.files.filter(fileName => {
-      if (present.has(fileName)) console.log(`${label}: ${fileName} is already there (--replace uploads the set again)`);
-      return !present.has(fileName);
+      const checksum = createHash('md5').update(readFileSync(join(set.dir, fileName))).digest('hex');
+      const there = present.has(fileName) || present.has(checksum);
+      if (there) console.log(`${label}: ${fileName} is already there (--replace uploads the set again)`);
+      return !there;
     });
     if (existing.length + files.length > 10) {
       report.problems.push(`${label}: ${existing.length} screenshots already there and ${files.length} new ones are more than 10; use --replace`);
