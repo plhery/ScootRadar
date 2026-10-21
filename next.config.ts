@@ -9,6 +9,10 @@ initOpenNextCloudflareForDev();
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Workers Builds names the build after its commit, which every page carries (as "b" in its
+  // data), so CI's Deploy job can tell when its commit is live (DEPLOY.md). Elsewhere Next
+  // makes one up.
+  generateBuildId: () => process.env.WORKERS_CI_COMMIT_SHA || null,
   async redirects() {
     // English is the landing page at the root; its code alone is not a second address for it.
     return [{ source: '/en', destination: '/', permanent: true }];
