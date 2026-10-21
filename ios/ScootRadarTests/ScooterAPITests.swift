@@ -1,5 +1,6 @@
 import Foundation
 import MapKit
+import Synchronization
 import XCTest
 @testable import ScootRadar
 
@@ -467,46 +468,62 @@ final class AddressSearchModelTests: XCTestCase {
     }
 
     func testASearchRefusedAsOneTooManyWaitsAsLongAsTheServerAsks() async {
-        // The server asks for a second; the pause for a refusal that names none is far shorter.
-        let api = RateLimitedAddressSearchClient(retryAfter: .seconds(1), places: [zurich])
-        let model = SwissAddressSearchModel(api: api, debounce: .zero, rateLimitPause: .milliseconds(20))
-        var seen: [SwissAddressSearchStatus] = []
+        // The server asks for three seconds; the pause for a refusal that names none is far shorter.
+        let clock = TestSearchClock()
+        let api = RateLimitedAddressSearchClient(retryAfter: .seconds(3), places: [zurich], clock: clock)
+        let model = SwissAddressSearchModel(
+            api: api, debounce: .zero, rateLimitPause: .milliseconds(20), clock: clock
+        )
 
         model.query = "Paradeplatz"
-        for _ in 0 ..< 400 where model.status == .searching || seen.isEmpty {
-            seen.append(model.status)
-            try? await Task.sleep(for: .milliseconds(10))
-        }
+        let waiting = await waitUntil { clock.waits == 1 }
+        XCTAssertTrue(waiting)
 
-        // "Searching…" stayed up through the wait; "Try again" never showed.
-        XCTAssertTrue(seen.allSatisfy { $0 == .searching }, "\(seen)")
+        // "Searching…" stays up through the wait; "Try again" never shows.
+        XCTAssertEqual(model.status, .searching)
+        clock.advance(by: .seconds(3) - .milliseconds(1))
+        XCTAssertEqual(clock.waits, 1)
+        XCTAssertEqual(model.status, .searching)
+        var queries = await api.queries
+        XCTAssertEqual(queries, ["Paradeplatz"])
+
+        clock.advance(by: .milliseconds(1))
+        let settled = await waitUntil { model.status != .searching }
+        XCTAssertTrue(settled)
         XCTAssertEqual(model.status, .results([zurich]))
         // Asked once, then again once the server allowed it, and not before.
-        let queries = await api.queries
+        queries = await api.queries
         XCTAssertEqual(queries, ["Paradeplatz", "Paradeplatz"])
         let refusals = await api.refusals
         XCTAssertEqual(refusals, 1)
     }
 
     func testTextTypedDuringTheWaitIsAskedForOnlyOnceTheServerAllowsIt() async {
-        let api = RateLimitedAddressSearchClient(retryAfter: .seconds(1), places: [zurich])
-        let model = SwissAddressSearchModel(api: api, debounce: .zero, rateLimitPause: .milliseconds(20))
+        let clock = TestSearchClock()
+        let api = RateLimitedAddressSearchClient(retryAfter: .seconds(1), places: [zurich], clock: clock)
+        let model = SwissAddressSearchModel(
+            api: api, debounce: .zero, rateLimitPause: .milliseconds(20), clock: clock
+        )
 
+        // Refused, the search waits for the moment the server named.
         model.query = "Par"
-        var settled = await waitUntil { await api.queries == ["Par"] }
+        var settled = await waitUntil { clock.waits == 1 }
         XCTAssertTrue(settled)
-        try? await Task.sleep(for: .milliseconds(30))
 
         // Typing on asks nothing while the server refuses searches, and "Searching…" stays up.
+        // Each text cancels the previous one's wait and starts its own.
         model.query = "Para"
-        try? await Task.sleep(for: .milliseconds(100))
+        settled = await waitUntil { clock.waits == 1 }
+        XCTAssertTrue(settled)
         model.query = "Parade"
-        try? await Task.sleep(for: .milliseconds(100))
+        settled = await waitUntil { clock.waits == 1 }
+        XCTAssertTrue(settled)
         var queries = await api.queries
         XCTAssertEqual(queries, ["Par"])
         XCTAssertEqual(model.status, .searching)
 
         // Once it allows them again, only the latest text is asked for.
+        clock.advance(by: .seconds(1))
         settled = await waitUntil { model.status != .searching }
         XCTAssertTrue(settled)
         XCTAssertEqual(model.status, .results([zurich]))
@@ -602,8 +619,10 @@ final class AddressSearchModelTests: XCTestCase {
         XCTAssertEqual(languages, [shownIn, other.rawValue])
     }
 
+    /// Up to about ten seconds: CI's simulator can stall for seconds (one of these
+    /// tests took 17 s there on 20 Oct), and a wait that ends in time costs nothing.
     private func waitUntil(_ condition: () async -> Bool) async -> Bool {
-        for _ in 0 ..< 200 {
+        for _ in 0 ..< 1000 {
             if await condition() { return true }
             try? await Task.sleep(for: .milliseconds(10))
         }
@@ -646,18 +665,20 @@ private actor StubAddressSearchClient: AddressSearchAPIClient {
 private actor RateLimitedAddressSearchClient: AddressSearchAPIClient {
     private let retryAfter: Duration
     private let places: [AddressSearchResult]
+    private let clock: TestSearchClock
     private var allowedFrom: ContinuousClock.Instant?
     private(set) var queries: [String] = []
     private(set) var refusals = 0
 
-    init(retryAfter: Duration, places: [AddressSearchResult]) {
+    init(retryAfter: Duration, places: [AddressSearchResult], clock: TestSearchClock) {
         self.retryAfter = retryAfter
         self.places = places
+        self.clock = clock
     }
 
     func search(query: String, language: String, near: GeoPoint?) async throws -> [AddressSearchResult] {
         queries.append(query)
-        let now = ContinuousClock.now
+        let now = clock.now
         let allowedFrom = allowedFrom ?? now + retryAfter
         self.allowedFrom = allowedFrom
         guard now >= allowedFrom else {
@@ -665,6 +686,70 @@ private actor RateLimitedAddressSearchClient: AddressSearchAPIClient {
             throw AddressSearchAPIError.rateLimited(retryAfter: retryAfter)
         }
         return places
+    }
+}
+
+/// Stands still until a test moves it. A wait for a moment it has reached ends
+/// at once; any other ends when `advance(by:)` reaches its moment, or as soon as
+/// its task is cancelled.
+private final class TestSearchClock: SearchClock {
+    private struct Wait {
+        let deadline: ContinuousClock.Instant
+        let continuation: CheckedContinuation<Void, any Error>
+    }
+
+    private struct State {
+        var now = ContinuousClock.now
+        var nextWait = 0
+        var waits: [Int: Wait] = [:]
+    }
+
+    private let state = Mutex(State())
+
+    var now: ContinuousClock.Instant {
+        state.withLock { $0.now }
+    }
+
+    /// The waits that have not ended yet.
+    var waits: Int {
+        state.withLock { $0.waits.count }
+    }
+
+    func sleep(until deadline: ContinuousClock.Instant, tolerance: Duration?) async throws {
+        let id = state.withLock { state in
+            state.nextWait += 1
+            return state.nextWait
+        }
+        try await withTaskCancellationHandler {
+            try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
+                state.withLock { state in
+                    if Task.isCancelled {
+                        continuation.resume(throwing: CancellationError())
+                    } else if deadline <= state.now {
+                        continuation.resume()
+                    } else {
+                        state.waits[id] = Wait(deadline: deadline, continuation: continuation)
+                    }
+                }
+            }
+        } onCancel: {
+            state.withLock { $0.waits.removeValue(forKey: id) }?
+                .continuation.resume(throwing: CancellationError())
+        }
+    }
+
+    func advance(by duration: Duration) {
+        let ended = state.withLock { state in
+            state.now += duration
+            let ended = state.waits.filter { $0.value.deadline <= state.now }
+            for id in ended.keys {
+                state.waits[id] = nil
+            }
+            return Array(ended.values)
+        }
+        for wait in ended {
+            wait.continuation.resume()
+        }
     }
 }
 

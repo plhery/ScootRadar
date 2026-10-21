@@ -652,6 +652,15 @@ enum SwissAddressSearchStatus: Equatable, Sendable {
     case failed
 }
 
+/// What the search's waits are timed by: the device's clock in the app, one the
+/// tests move by hand.
+protocol SearchClock: Sendable {
+    var now: ContinuousClock.Instant { get }
+    func sleep(until deadline: ContinuousClock.Instant, tolerance: Duration?) async throws
+}
+
+extension ContinuousClock: SearchClock {}
+
 @MainActor
 @Observable
 final class SwissAddressSearchModel {
@@ -669,6 +678,7 @@ final class SwissAddressSearchModel {
     @ObservationIgnored private let language: String?
     /// Sent with every search, so places near the map come first.
     @ObservationIgnored var near: GeoPoint?
+    @ObservationIgnored private let clock: any SearchClock
     @ObservationIgnored private var searchTask: Task<Void, Never>?
     /// Until when the server refuses searches as too many. Nothing is sent
     /// before then, whatever is typed meanwhile.
@@ -678,12 +688,14 @@ final class SwissAddressSearchModel {
         api: any AddressSearchAPIClient = AddressSearchAPI(),
         debounce: Duration = .milliseconds(350),
         rateLimitPause: Duration = .seconds(10),
-        language: String? = nil
+        language: String? = nil,
+        clock: any SearchClock = ContinuousClock()
     ) {
         self.api = api
         self.debounce = debounce
         self.rateLimitPause = rateLimitPause
         self.language = language
+        self.clock = clock
     }
 
     /// The place Return chooses.
@@ -724,9 +736,9 @@ final class SwissAddressSearchModel {
         }
 
         status = .searching
-        searchTask = Task { [weak self] in
+        searchTask = Task { [weak self, clock] in
             do {
-                try await Task.sleep(for: delay)
+                try await clock.sleep(until: clock.now + delay, tolerance: nil)
                 try await self?.search(trimmedQuery)
             } catch is CancellationError {
                 return
@@ -747,7 +759,7 @@ final class SwissAddressSearchModel {
     /// and only the latest is asked for then.
     private func search(_ text: String) async throws {
         if let rateLimitedUntil {
-            try await Task.sleep(until: rateLimitedUntil)
+            try await clock.sleep(until: rateLimitedUntil, tolerance: nil)
         }
         let results: [AddressSearchResult]
         do {
@@ -759,7 +771,7 @@ final class SwissAddressSearchModel {
         } catch let AddressSearchAPIError.rateLimited(retryAfter) {
             // Between a second and a minute, as on the web.
             let wait = min(max(retryAfter ?? rateLimitPause, .seconds(1)), .seconds(60))
-            rateLimitedUntil = ContinuousClock.now + wait
+            rateLimitedUntil = clock.now + wait
             return try await search(text)
         }
         try Task.checkCancellation()
