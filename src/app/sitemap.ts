@@ -8,11 +8,18 @@ import { SITE_URL as SITE } from '@/lib/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const address = (path: string) => new URL(path, SITE).href;
-  // The landing page is one page per language, English at the root, and each names the others.
-  const languages = Object.fromEntries(LANDING_LOCALES.map(locale => [locale, address(landingPath(locale))]));
+  // The landing page is one page per language, English at the root, and each names the others, with the
+  // English one for a reader of none of them, as the pages themselves do.
+  const languages = {
+    ...Object.fromEntries(LANDING_LOCALES.map(locale => [locale, address(landingPath(locale))])),
+    'x-default': address(landingPath(DEFAULT_LANDING_LOCALE)),
+  };
   // The guides are listed in each language that has some; a guide names itself in the others it is written in.
   const listed = LANDING_LOCALES.filter(locale => guidesIn(locale).length > 0);
-  const lists = Object.fromEntries(listed.map(locale => [locale, address(guidesPath(locale))]));
+  const lists = {
+    ...Object.fromEntries(listed.map(locale => [locale, address(guidesPath(locale))])),
+    'x-default': address(guidesPath(DEFAULT_LANDING_LOCALE)),
+  };
   const lastUpdate = (locale: (typeof LANDING_LOCALES)[number]) =>
     new Date(guidesIn(locale).map(guide => guide.updated).sort().at(-1)!);
 
@@ -24,9 +31,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: locale === DEFAULT_LANDING_LOCALE ? 1 : 0.8,
       alternates: { languages },
     })),
+    // The map has no date: what it shows is live.
     {
       url: `${SITE}${MAP_PATH}`,
-      lastModified: new Date('2026-09-08'),
       changeFrequency: 'weekly',
       priority: 0.9,
     },
@@ -39,6 +46,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...GUIDES.map(guide => {
       const translations = translationsOf(guide);
+      const english = translations.find(translation => translation.locale === DEFAULT_LANDING_LOCALE);
       return {
         url: address(guidePath(guide)),
         lastModified: new Date(guide.updated),
@@ -46,14 +54,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.7,
         ...(translations.length > 1 && {
           alternates: {
-            languages: Object.fromEntries(translations.map(translation => [translation.locale, address(guidePath(translation))])),
+            languages: {
+              ...Object.fromEntries(translations.map(translation => [translation.locale, address(guidePath(translation))])),
+              ...(english ? { 'x-default': address(guidePath(english)) } : {}),
+            },
           },
         }),
       };
     }),
     {
       url: `${SITE}/privacy`,
-      lastModified: new Date('2026-09-08'),
+      // The day the notice says it was last updated.
+      lastModified: new Date('2026-10-19'),
       changeFrequency: 'yearly',
       priority: 0.3,
     },
