@@ -29,7 +29,7 @@
     "grafana:sync": "node scripts/sync-grafana.mjs"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "^1.20.8",
+    "@opennextjs/cloudflare": "^1.20.13",
     "@tomickigrzegorz/leaflet-rotate": "0.2.4",
     "leaflet": "^1.9.4",
     "next": "^16.4.2",
@@ -59,6 +59,9 @@
     "wrangler": "4.149.0"
   },
   "overrides": {
+    "@node-minify/core": {
+      "glob": "10.5.0"
+    },
     "postcss": "^8.5.25"
   }
 }
