@@ -139,6 +139,7 @@ import nashvilleEn from './en/e-scooters-nashville';
 import flughafenZuerichDe from './de/e-trottinett-flughafen-zuerich';
 import gainesvilleEn from './en/e-scooters-gainesville';
 import zurichAirportEn from './en/e-scooters-zurich-airport';
+import santaMonicaEn from './en/e-scooters-santa-monica';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -278,4 +279,5 @@ export const GUIDES: readonly Guide[] = [
   flughafenZuerichDe,
   gainesvilleEn,
   zurichAirportEn,
+  santaMonicaEn,
 ];
