@@ -501,14 +501,19 @@ enum ScooterChromeLayout: Equatable {
     }
 }
 
-/// A sheet on the trailing side of the window, where iOS 27 can put one.
+/// A sheet on the trailing side of the window, where iOS 27 can put one. CI
+/// builds with the iOS 26 SDK, which doesn't have the placement.
 private struct TrailingPresentation: ViewModifier {
     func body(content: Content) -> some View {
+        #if compiler(>=6.4)
         if #available(iOS 27.0, *) {
             content.presentationPlacement(.trailing)
         } else {
             content
         }
+        #else
+        content
+        #endif
     }
 }
 
