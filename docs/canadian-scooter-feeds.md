@@ -145,9 +145,9 @@ no alert either.
 
 ## Winter
 
-Only Ottawa sets its season by a standing rule, so only Ottawa has a seasonal
-window in the catalog: from 16 November until 30 April, Toronto time, for both
-Bird and Lime. Council's report ACS2025-PDB-TP-0002 of 16 April 2025
+Only Ottawa sets its season by a standing rule. Its seasonal window in the
+catalog runs from 16 November until 30 April, Toronto time, for both Bird and
+Lime. Council's report ACS2025-PDB-TP-0002 of 16 April 2025
 ([eScribe](https://pub-ottawa.escribemeetings.com/filestream.ashx?DocumentId=232935))
 set the seasons of 2026 to 2029 at "approximately April 30 to November 15,
 weather permitting", and the city's
@@ -156,6 +156,18 @@ says "The 2026 shared e-scooter season is set to launch in late April and will
 run until November 15 (weather permitting)". In that window the map says the
 scooters are back in April, in the app's language, and the feeds' alerts are
 muted.
+
+Leduc publishes no season, but Bird took its scooters in on 20 and 21 October
+2026: the feed held 26 to 28 available scooters until the afternoon of the
+20th, Edmonton time, 17 to 19 from then through the 21st, and none from 20:30
+that evening (02:30 UTC on the 22nd, the scooter cache's counts). From then it lists no
+vehicle, with `last_updated` 0. So that "feed empty" doesn't report it, the
+catalog pauses Leduc from 22 October until 1 May, Edmonton time: the map says
+the scooters are back in May, and the alerts are muted. Bird's
+[release of 4 May 2022](https://www.businesswire.com/news/home/20220504005452/en/More-Cities-in-Alberta-Adopt-Micromobility-Leduc-Medicine-Hat-and-St.-Albert-Welcome-Bird-Canada-e-Scooters)
+had Leduc "kicking off the scooting season in the coming weeks"; the window's
+dates are 2026's, so check in late April 2027 when the scooters come back
+([coverage gaps](coverage-gaps.md)).
 
 Elsewhere the winter stop is announced each year, or is the operator's own,
 so the catalog sets no window, and an empty feed shows as an empty town (see
@@ -179,8 +191,8 @@ above):
   ([town page](https://www.beaumont.ab.ca/recreation-activities/outdoor-spaces/e-scooters/)).
 - **Calgary** offers scooters "year-round"
   ([info sheet](https://www.calgary.ca/content/dam/www/uep/esm/publishingimages/electric-mobility/electric-micromobility-info-sheet.pdf));
-  **Edmonton**, **Hamilton**, **Leduc**, **St. Albert**, **Airdrie**,
-  **Kelowna** and **Vancouver** publish no season.
+  **Edmonton**, **Hamilton**, **St. Albert**, **Airdrie**, **Kelowna** and
+  **Vancouver** publish no season.
 
 ## Night bans
 

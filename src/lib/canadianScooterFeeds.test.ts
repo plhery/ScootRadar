@@ -165,7 +165,7 @@ describe('Canada', () => {
       { data: { stations: [{ station_id: 'mississauga', name: 'Mississauga, ON', lat: 43.5797, lon: -79.6556 }] } }, {})).toEqual([]);
   });
 
-  it('says Ottawa\'s scooters are away from 16 November until 30 April, by Ottawa\'s clock, and no other town\'s', () => {
+  it('says Ottawa\'s scooters are away from 16 November until 30 April and Leduc\'s from 22 October until 1 May, by each town\'s clock', () => {
     const ottawa: [number, number] = [45.4215, -75.6972];
     // 23:30 on 15 November in Ottawa is still in season; 00:30 on the 16th is not.
     expect(activeSeasonalPause(ottawa, Date.UTC(2026, 10, 16, 4, 30))).toBeNull();
@@ -175,11 +175,19 @@ describe('Canada', () => {
     const winter = Date.UTC(2027, 0, 15, 12);
     expect(feedPaused('canada:bird_ca_ottawa', winter)).toBe(true);
     expect(feedPaused('canada:lime_ca_ottawa', winter)).toBe(true);
-    // Only Ottawa sets its season by a standing rule; the other towns' winters are announced each year.
+    // Bird took Leduc's scooters in on 20 and 21 October 2026; the window is that winter's.
+    const leduc: [number, number] = [53.2645, -113.5593];
+    // 23:30 on 21 October in Leduc is still in season; 00:30 on the 22nd is not.
+    expect(activeSeasonalPause(leduc, Date.UTC(2026, 9, 22, 5, 30))).toBeNull();
+    expect(activeSeasonalPause(leduc, Date.UTC(2026, 9, 22, 6, 30))).toEqual({ city: 'Leduc, AB', month: 5 });
+    expect(activeSeasonalPause(leduc, Date.UTC(2027, 3, 30, 18))).toEqual({ city: 'Leduc, AB', month: 5 });
+    expect(activeSeasonalPause(leduc, Date.UTC(2027, 4, 1, 18))).toBeNull();
+    expect(feedPaused('canada:bird_ca_leduc', winter)).toBe(true);
+    // The other towns' winters are announced each year, or are the operator's own.
     for (const [id, point] of [['ca:on:Mississauga', [43.589, -79.6441]], ['ca:ab:Calgary', [51.0447, -114.0719]],
       ['ca:ns:Halifax', [44.6488, -63.5752]], ['ca:on:Vaughan', [43.8361, -79.4983]]] as const) {
       expect(activeSeasonalPause([...point], winter), id).toBeNull();
     }
-    expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA' && entry.pauses).map(entry => entry.id)).toEqual(['ca:on:Ottawa']);
+    expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA' && entry.pauses).map(entry => entry.id)).toEqual(['ca:ab:Leduc', 'ca:on:Ottawa']);
   });
 });

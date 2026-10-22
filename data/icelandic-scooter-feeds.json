@@ -69,6 +69,11 @@
         "east": -18.5043
       },
       "discoveryUrl": "https://api.hopp.bike/gbfs/is-dalvik/gbfs.json",
+      "seasonal": {
+        "from": "10-21",
+        "until": "05-01",
+        "timeZone": "Atlantic/Reykjavik"
+      },
       "aliases": [
         "Dalvik"
       ]

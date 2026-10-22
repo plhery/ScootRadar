@@ -187,6 +187,21 @@ under its directory.
   kroner that no scooter used.
 - **Time zone:** both feeds give `UTC`, which is Iceland's time all year.
 
+## Hopp Dalvík's winter, October 2026
+
+Hopp took its Dalvík scooters in on 19 and 20 October 2026: the feed held 7 or
+8 available scooters on the 19th, 4 that evening, 2 at 18:30 on the 20th and
+none from 19:00 (UTC, the scooter cache's counts). On 22 October it listed one
+scooter, not available. Neither Hopp ([locations](https://hopp.bike/locations))
+nor Dalvíkurbyggð publishes a season; the municipality's
+[notice of 26 April 2024](https://www.dalvikurbyggd.is/is/frettir-og-tilkynningar/hopp-til-dalvikurbyggdar)
+says Hopp had just started there with 20 scooters. So that "feed empty" doesn't
+report the town all winter, the catalog pauses Dalvík from 21 October until 1
+May, in `Atlantic/Reykjavik`: the map says the scooters are back in May, and the
+alerts are muted. The dates are 2026's; check in late April 2027 when the
+scooters come back ([coverage gaps](coverage-gaps.md)). Siglufjörður, emptied a
+week earlier, left the catalog instead (see [Known gaps](#known-gaps)).
+
 ## Data handling
 
 - **Bird's "madrid" feed is Getafe.** Its scooters stand in Getafe's

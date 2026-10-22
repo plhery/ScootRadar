@@ -100,7 +100,12 @@
         "west": -113.6265,
         "east": -113.4739
       },
-      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/leduc/gbfs.json"
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/leduc/gbfs.json",
+      "seasonal": {
+        "from": "10-22",
+        "until": "05-01",
+        "timeZone": "America/Edmonton"
+      }
     },
     {
       "id": "bird_ca_ottawa",

@@ -901,6 +901,13 @@ Bonaire had feeds to add. Survey files are in
   16 November until 30 April, from council's "approximately April 30 to
   November 15"; if the city announces another start, change `until` for Bird
   and Lime.
+- **Late April 2027:** Hopp Dalvík and Bird Leduc. Neither town publishes a
+  season, so the catalog pauses Dalvík from 21 October and Leduc from 22
+  October until 1 May, from the days their feeds emptied in 2026. Check each
+  from mid-April: if its scooters come back before 1 May, move `until` to that
+  day, as the map says they are back in May even while they stand on it; if
+  they are not back by 1 May, "feed empty" reports the feed about 4 May. In
+  October 2027, move `from` to the day each feed empties, if it differs.
 - **April 2027:** Pony Liège held 8 or 9 available scooters on 13 October
   2026, most of which never moved; add it if it holds ten or more and they
   are ridden. The season starts in Belarus, Georgia, Armenia, Azerbaijan and
