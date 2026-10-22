@@ -1666,6 +1666,17 @@ enum ScooterDockStatus: Equatable, Sendable {
         }
     }
 
+    /// The same in fewer words where the count stands before it, on the line
+    /// of a folded panel: "3'784 scooters · 6 min ago".
+    var briefText: String {
+        switch self {
+        case let .updatedMinutesAgo(minutes):
+            String(format: String(localized: "%lld min ago"), Int64(minutes))
+        default:
+            text
+        }
+    }
+
     /// "14:02", the time of day in the user's format. For a place in another
     /// time zone, given, the time by the place's clock, named after it where the
     /// iPhone's clock reads otherwise: Oslo's night ban ends at "05:00 GMT+2"
@@ -1684,6 +1695,36 @@ enum ScooterDockStatus: Equatable, Sendable {
     static func outOfDateBody(_ failure: ScooterLoadFailure, lastUpdate: Date) -> String {
         "\(String(format: String(localized: "Last update %@."), clockTime(lastUpdate))) \(failure.message)"
     }
+}
+
+/// What the dock shows, in one line: the panel of a large window, folded,
+/// shows it under its search bar. "23 m · Bird · 1 min · Live".
+struct ScooterDockLine: Equatable, Sendable {
+    enum Mark: Equatable, Sendable {
+        /// A dot in the provider's colour: the nearest scooter, a scooter's card or a bay's.
+        case provider(ScooterProvider?)
+        /// A spinner while scooters are being found.
+        case progress
+        /// The symbol of one of the dock's other cards.
+        case symbol(String)
+    }
+
+    let mark: Mark
+    /// What the line is about: "23 m", "22 scooters", "Finding scooters…".
+    let title: String
+    /// What follows it: "Bird", "1 min".
+    var details: [String] = []
+    /// How fresh the data is, last: "Live", or a failed refresh in the warning colour.
+    var status: ScooterDockStatus? = nil
+    /// The mark is a warning: the positions on the map are out of date.
+    var isWarning = false
+
+    /// The parts of the line, in order; it is written with a dot between them,
+    /// and wraps between them, never inside one.
+    var parts: [String] { [title] + details + (status.map { [$0.briefText] } ?? []) }
+
+    /// What VoiceOver reads: the same parts with a pause between them rather than a dot.
+    var accessibilityLabel: String { parts.joined(separator: ", ") }
 }
 
 enum ScooterDockNotice: Hashable, Identifiable, Sendable {

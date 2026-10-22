@@ -229,3 +229,11 @@
 "You’re there." = "Ci sei.";
 "Route shown: ≈%1$lld min walk · %2$@" = "Percorso mostrato: ≈%1$lld min a piedi · %2$@";
 "No longer on the map. Someone may have taken it." = "Non è più sulla mappa. Forse qualcuno l’ha preso.";
+
+/* The panel of a large window: the grabber that folds it, and its folded line */
+"Collapse panel" = "Comprimi il pannello";
+"Expand panel" = "Espandi il pannello";
+"Collapsed" = "Compresso";
+"Expanded" = "Espanso";
+"Expands the panel" = "Espande il pannello";
+"%lld min ago" = "%lld min fa";

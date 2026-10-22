@@ -140,6 +140,10 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             if selectedParkingID != oldValue { endWalkIfTargetLeftSelection() }
         }
     }
+    /// The panel of a large window folded down to its search bar and one line
+    /// under it, as the card of Maps folds. Choosing a scooter or a bay opens
+    /// it again, since their cards are in it. A phone's dock never folds.
+    var isPanelCollapsed = false
     var searchedDestination: MapDestination? {
         didSet {
             if searchedDestination != oldValue { walkOriginDidChange() }
@@ -647,6 +651,68 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         }
     }
 
+    /// What the dock shows, in the one line a folded panel has under its
+    /// search bar: the nearest scooter as "23 m · Bird · 1 min · Live", the
+    /// count with the status where there is none, and the title of any other
+    /// card. The map is beside it, so it says no more than a glance needs and
+    /// fits the panel's width at the standard text size: "3'784 scooters",
+    /// not "on this map". The status changes as the data ages, so ask again
+    /// over time.
+    func dockLine(at now: Date) -> ScooterDockLine {
+        switch dock {
+        case let .scooter(scooter):
+            // The provider's name with its colour beside it says which card it is.
+            let walk = approximateWalkingMinutes(to: scooter).map { walkPart(minutes: $0) }
+            return ScooterDockLine(
+                mark: .provider(scooter.providerInfo),
+                title: scooter.providerInfo?.briefName ?? scooter.provider.capitalized,
+                details: [walk, formattedDistance(for: scooter)].compactMap { $0 }
+            )
+        case let .parking(parking):
+            let walk = approximateWalkingMinutes(to: parking).map { walkPart(minutes: $0) }
+            return ScooterDockLine(
+                mark: .provider(parking.providerInfo),
+                title: parking.bayTitle,
+                details: [parking.name.isEmpty ? nil : parking.name, walk].compactMap { $0 }
+            )
+        case .outOfDate:
+            return ScooterDockLine(
+                mark: .symbol("clock"),
+                title: String(localized: "These positions are out of date"),
+                isWarning: true
+            )
+        case .finding:
+            return ScooterDockLine(mark: .progress, title: String(localized: "Finding scooters…"))
+        case .waiting:
+            return ScooterDockLine(mark: .symbol("hourglass"), title: String(localized: "Waiting for scooter data"))
+        case .outsideCoverage:
+            return ScooterDockLine(mark: .symbol("map"), title: String(localized: "No scooter data here yet"))
+        case let .filtersHideEverything(summary):
+            return ScooterDockLine(
+                mark: .symbol("line.3.horizontal.decrease"),
+                title: summary.title,
+                details: summary.body.isEmpty ? [] : [summary.body]
+            )
+        case let .summary(summary):
+            // Beside the nearest scooter the dock leaves "Live" out; alone on
+            // its line the status is the only one in view, so it is always said.
+            let status = summary.status(at: now)
+            if let lead = summary.lead {
+                return ScooterDockLine(
+                    mark: .provider(lead.scooter.providerInfo),
+                    title: lead.distance,
+                    details: [lead.briefProviderName, String(format: String(localized: "%lld min"), Int64(lead.minutes))],
+                    status: status
+                )
+            }
+            let count = summary.count.formatted(.number.locale(ScooterLanguage.current.locale))
+            let noun = ScooterPlural.isSingular(summary.count)
+                ? String(localized: "scooter")
+                : String(localized: "scooters")
+            return ScooterDockLine(mark: .symbol("scooter"), title: "\(count) \(noun)", status: status)
+        }
+    }
+
     /// Whether the data on the map was loaded for the area on screen. Only then
     /// is an empty map a fact about the area rather than a load in progress.
     private var viewportIsLoaded: Bool {
@@ -731,17 +797,22 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// without an origin.
     func parkingSubtitle(for parking: ScooterParking) -> String {
         guard let minutes = approximateWalkingMinutes(to: parking) else { return parking.name }
-        let walk = if let searchedDestination {
-            String(
-                format: String(localized: "≈%1$lld min walk from %2$@"),
-                Int64(minutes),
-                searchedDestination.title.isolated
-            )
-        } else {
-            String(format: String(localized: "≈%lld min walk"), Int64(minutes))
-        }
+        let walk = walkPart(minutes: minutes)
         guard !parking.name.isEmpty else { return walk }
         return String(format: String(localized: "%1$@ · %2$@"), parking.name.isolated, walk)
+    }
+
+    /// "≈3 min walk", or "≈3 min walk from Zürich HB" when the origin is a
+    /// searched place.
+    private func walkPart(minutes: Int) -> String {
+        guard let searchedDestination else {
+            return String(format: String(localized: "≈%lld min walk"), Int64(minutes))
+        }
+        return String(
+            format: String(localized: "≈%1$lld min walk from %2$@"),
+            Int64(minutes),
+            searchedDestination.title.isolated
+        )
     }
 
     func setRideEstimateMinutes(_ minutes: Int) {
@@ -1093,6 +1164,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         guard id != selectedScooterID else { return }
         ScooterAnalytics.shared.track(id == nil ? "vehicle_dismiss" : "vehicle_select", provider: id.flatMap { vehiclesByID[$0]?.provider })
         selectedScooterID = id
+        // Its card opens in the panel, which unfolds to show it.
+        if id != nil { isPanelCollapsed = false }
     }
 
     /// Selects a parking bay by id, or closes the bay card with nil. The map
@@ -1101,6 +1174,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         guard id != selectedParkingID else { return }
         if id != nil { selectedScooterID = nil }
         selectedParkingID = id
+        if id != nil { isPanelCollapsed = false }
     }
 
     /// A tap on the map background: closes the scooter or the bay card.

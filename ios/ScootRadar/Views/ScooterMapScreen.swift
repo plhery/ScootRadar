@@ -17,6 +17,8 @@ struct ScooterMapScreen: View {
     @State private var chromeLayout = ScooterChromeLayout.dock
     @State private var panelFrame = CGRect.null
     @State private var panelNoticesHeight: CGFloat = 0
+    /// Whether the panel was left folded, kept with the window across launches.
+    @SceneStorage("panelCollapsed") private var panelCollapsed = false
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -100,6 +102,16 @@ struct ScooterMapScreen: View {
             }
         }
         .onDisappear { model.becameInactive() }
+        // The panel opens folded if it was left so, without folding before the eyes.
+        .onAppear {
+            guard panelCollapsed else { return }
+            var transaction = Transaction()
+            transaction.disablesAnimations = true
+            withTransaction(transaction) { model.isPanelCollapsed = true }
+        }
+        .onChange(of: model.isPanelCollapsed) { _, collapsed in
+            panelCollapsed = collapsed
+        }
         // A scootradar.com link to the map: its place shows on the map, not
         // under a sheet or the search.
         .onOpenURL { url in
@@ -248,6 +260,8 @@ struct ScooterMapScreen: View {
     /// notices and the dock's card one under the other in a panel down the
     /// leading side, over the map, and the locate button in the map's
     /// trailing corner. The open search covers the panel, and nothing else.
+    /// The card folds down to one line, and the map then shows, and takes
+    /// taps, under the panel; the notices stay.
     @ViewBuilder
     private func panelChrome(in proxy: GeometryProxy) -> some View {
         ZStack(alignment: .top) {
@@ -282,6 +296,7 @@ struct ScooterMapScreen: View {
 
                 ScooterControlDock(
                     model: model,
+                    layout: .panel,
                     maximumContentHeight: panelDockHeightLimit(in: proxy),
                     onEditFilters: { filtersPresented = true },
                     onHeightChange: { dockHeight = $0 }
@@ -396,10 +411,10 @@ struct ScooterMapScreen: View {
         max(64, panelRoomUnderSearch(in: proxy) / 2)
     }
 
-    /// The dock's content takes the rest, inside its own padding.
+    /// The dock's content takes the rest, inside its own padding and above its grabber.
     private func panelDockHeightLimit(in proxy: GeometryProxy) -> CGFloat {
         let notices = hasTopNotices ? panelNoticesHeight + 8 : 0
-        return max(160, panelRoomUnderSearch(in: proxy) - notices - 32)
+        return max(160, panelRoomUnderSearch(in: proxy) - notices - 16 - ScooterControlDock.panelFoot)
     }
 
     @ViewBuilder

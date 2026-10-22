@@ -229,3 +229,11 @@
 "You’re there." = "Je bent er.";
 "Route shown: ≈%1$lld min walk · %2$@" = "Route getoond: ≈%1$lld min te voet · %2$@";
 "No longer on the map. Someone may have taken it." = "Niet meer op de kaart. Misschien heeft iemand hem genomen.";
+
+/* The panel of a large window: the grabber that folds it, and its folded line */
+"Collapse panel" = "Paneel inklappen";
+"Expand panel" = "Paneel uitklappen";
+"Collapsed" = "Ingeklapt";
+"Expanded" = "Uitgeklapt";
+"Expands the panel" = "Klapt het paneel uit";
+"%lld min ago" = "%lld min geleden";
