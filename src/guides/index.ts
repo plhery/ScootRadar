@@ -130,6 +130,7 @@ import skienNb from './nb/elsparkesykkel-skien';
 import portimaoPt from './pt/trotinetes-portimao';
 import ottawaEn from './en/e-scooters-ottawa';
 import konstanzDe from './de/e-scooter-konstanz';
+import tonsbergNb from './nb/elsparkesykkel-tonsberg';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -260,4 +261,5 @@ export const GUIDES: readonly Guide[] = [
   portimaoPt,
   ottawaEn,
   konstanzDe,
+  tonsbergNb,
 ];
