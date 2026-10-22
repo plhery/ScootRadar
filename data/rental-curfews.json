@@ -4486,9 +4486,9 @@
           "until": "06:00"
         }
       ],
-      "source": "https://library.municode.com/fl/gainesville/codes/code_of_ordinances?nodeId=PTIICOOR_CH26TRMOVE_ARTVIIMISE",
-      "rule": "City Code § 26-196(e)",
-      "note": "Operators disable their fleets each night until 06:00, on the University of Florida's campus too, whose TAPS page gives the same hours.",
+      "source": "https://taps.ufl.edu/alternative-transportation/micromobility/",
+      "rule": "Micromobility, UF Transportation and Parking Services",
+      "note": "The University of Florida's page on the City's Micromobility Program, read 23 October 2026: \"E-scooters are available for rent each day from 6 AM – midnight\", in the city and on campus. The rule is City Code § 26-196(e), on municode, which refuses scripts.",
       "boundary": {
         "source": "census",
         "id": "1225175"
