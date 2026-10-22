@@ -237,3 +237,9 @@
 "Expanded" = "Expandido";
 "Expands the panel" = "Expande o painel";
 "%lld min ago" = "há %lld min";
+
+/* The keyboard's shortcuts on the map: ⌘F, ⌘+, ⌘− and Esc */
+"Search" = "Pesquisar";
+"Zoom in" = "Ampliar";
+"Zoom out" = "Reduzir";
+"Close" = "Fechar";

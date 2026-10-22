@@ -237,3 +237,9 @@
 "Expanded" = "Uitgeklapt";
 "Expands the panel" = "Klapt het paneel uit";
 "%lld min ago" = "%lld min geleden";
+
+/* The keyboard's shortcuts on the map: ⌘F, ⌘+, ⌘− and Esc */
+"Search" = "Zoeken";
+"Zoom in" = "Inzoomen";
+"Zoom out" = "Uitzoomen";
+"Close" = "Sluiten";

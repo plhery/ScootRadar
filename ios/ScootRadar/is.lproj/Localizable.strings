@@ -237,3 +237,9 @@
 "Expanded" = "Opið";
 "Expands the panel" = "Opnar spjaldið";
 "%lld min ago" = "fyrir %lld mín.";
+
+/* The keyboard's shortcuts on the map: ⌘F, ⌘+, ⌘− and Esc */
+"Search" = "Leita";
+"Zoom in" = "Auka aðdrátt";
+"Zoom out" = "Minnka aðdrátt";
+"Close" = "Loka";

@@ -3797,3 +3797,221 @@ private struct TextSized<Content: View>: View {
         content.environment(\.dynamicTypeSize, textSize.size ?? given)
     }
 }
+
+// The keyboard's shortcuts.
+extension ScooterMapModelTests {
+    func testTheKeyboardsShortcutsEachHaveTheirOwnKeys() {
+        let keys = ScooterKeyCommand.allCases.map { "\($0.modifiers.rawValue) \($0.key.character)" }
+        XCTAssertEqual(Set(keys).count, keys.count, "\(keys)")
+        XCTAssertEqual(ScooterKeyCommand.search.modifiers, .command)
+        XCTAssertEqual(ScooterKeyCommand.filters.key, ScooterKeyCommand.search.key)
+        XCTAssertEqual(ScooterKeyCommand.filters.modifiers, [.command, .option])
+        XCTAssertEqual(ScooterKeyCommand.close.key, .escape)
+        XCTAssertEqual(ScooterKeyCommand.fold.key.character, "\\")
+        // Only "/" and Esc go without ⌘.
+        XCTAssertEqual(
+            Set(ScooterKeyCommand.allCases.filter { !$0.modifiers.contains(.command) }),
+            [.searchWithSlash, .close]
+        )
+    }
+
+    /// The keys a sheet or a popover doesn't take go on to the screen that
+    /// presented it: while the filters or Settings are open the screen
+    /// makes none, so that a "/" typed there, or an Esc meant for it, stays
+    /// there.
+    func testTheShortcutsStandDownWhileTheFiltersOrSettingsAreOpen() {
+        for layout in [ScooterChromeLayout.dock, .panel] {
+            for isSearching in [false, true] {
+                for hasCard in [false, true] {
+                    let situation = ScooterKeyCommand.Situation(
+                        layout: layout,
+                        isSearching: isSearching,
+                        isPresenting: true,
+                        hasCard: hasCard
+                    )
+                    XCTAssertEqual(ScooterKeyCommand.available(in: situation), [], "\(situation)")
+                }
+            }
+        }
+    }
+
+    func testSlashSearchesOnlyWhileTheSearchsFieldIsntThereToTakeIt() {
+        let atRest = ScooterKeyCommand.available(in: .init(layout: .panel))
+        XCTAssertTrue(atRest.contains(.searchWithSlash))
+        XCTAssertTrue(atRest.contains(.search))
+
+        let searching = ScooterKeyCommand.available(in: .init(layout: .panel, isSearching: true))
+        XCTAssertFalse(searching.contains(.searchWithSlash))
+        // ⌘ keys aren't typed into the field: they still go.
+        XCTAssertTrue(searching.contains(.search))
+        XCTAssertTrue(searching.contains(.nearMe))
+    }
+
+    func testEscClosesTheSearchFirstThenTheCardAndIsLeftAloneWithNothingToClose() {
+        typealias Situation = ScooterKeyCommand.Situation
+        XCTAssertEqual(ScooterKeyCommand.closing(in: Situation(layout: .panel, isSearching: true, hasCard: true)), .search)
+        XCTAssertEqual(ScooterKeyCommand.closing(in: Situation(layout: .dock, isSearching: true, hasCard: true)), .search)
+        XCTAssertEqual(ScooterKeyCommand.closing(in: Situation(layout: .panel, hasCard: true)), .card)
+        XCTAssertEqual(ScooterKeyCommand.closing(in: Situation(layout: .dock, isSearching: true)), .search)
+        XCTAssertNil(ScooterKeyCommand.closing(in: Situation(layout: .panel)))
+
+        XCTAssertFalse(ScooterKeyCommand.available(in: Situation(layout: .panel)).contains(.close))
+        XCTAssertTrue(ScooterKeyCommand.available(in: Situation(layout: .dock, hasCard: true)).contains(.close))
+        XCTAssertTrue(ScooterKeyCommand.available(in: Situation(layout: .dock, isSearching: true)).contains(.close))
+    }
+
+    func testFoldingStandsBesideAPanelAndLocatingNotWhileLocating() {
+        XCTAssertTrue(ScooterKeyCommand.available(in: .init(layout: .panel)).contains(.fold))
+        XCTAssertFalse(ScooterKeyCommand.available(in: .init(layout: .dock)).contains(.fold))
+        XCTAssertEqual(ScooterKeyCommand.fold.title(in: .init(layout: .panel)), String(localized: "Collapse panel"))
+        XCTAssertEqual(ScooterKeyCommand.fold.title(in: .init(layout: .panel, isFolded: true)), String(localized: "Expand panel"))
+        XCTAssertFalse(ScooterKeyCommand.available(in: .init(layout: .panel, isLocating: true)).contains(.nearMe))
+    }
+
+    func testTheShortcutsAreNamedInEveryLanguage() throws {
+        for language in ["en", "de", "fr", "it", "nl", "nb", "pt", "es", "is"] {
+            let strings = try XCTUnwrap(
+                Bundle.main.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:))
+            )
+            for key in ["Search", "Zoom in", "Zoom out", "Close", "Near me", "Filters", "Settings", "Collapse panel", "Expand panel"] {
+                let name = strings.localizedString(forKey: key, value: "-", table: nil)
+                XCTAssertNotEqual(name, "-", "\(language): \(key)")
+                XCTAssertFalse(name.isEmpty, "\(language): \(key)")
+            }
+        }
+    }
+
+    func testZoomingFromTheKeyboardAsksTheMapForAStepEachTime() {
+        let model = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+            locationManager: StubLocationManager(status: .denied),
+            defaults: isolatedDefaults()
+        )
+        XCTAssertNil(model.zoomRequest)
+        model.zoom(by: 1)
+        let first = model.zoomRequest
+        XCTAssertEqual(first?.steps, 1)
+        model.zoom(by: 1)
+        XCTAssertEqual(model.zoomRequest?.steps, 1)
+        XCTAssertNotEqual(model.zoomRequest?.token, first?.token)
+        model.zoom(by: -1)
+        XCTAssertEqual(model.zoomRequest?.steps, -1)
+
+        XCTAssertEqual(ScooterMapCameraPolicy.distance(1_000, zoomedBy: 1), 500, accuracy: 0.001)
+        XCTAssertEqual(ScooterMapCameraPolicy.distance(1_000, zoomedBy: -1), 2_000, accuracy: 0.001)
+    }
+
+    /// ⌘+ and ⌘− beside the panel: the camera comes a step in, then goes
+    /// two out, and what was in the middle of the map stays there.
+    func testTheMapZoomsAStepAtATimeAroundItsMiddle() async throws {
+        let (model, manager) = modelLocatedByTheTest()
+        let (window, mapView) = try await panelWindow(showing: model)
+        defer { window.isHidden = true }
+        model.locationManager(manager, didUpdateLocations: [fix(at: Self.rider)])
+        let located = await waitUntil(attempts: 400) { self.isBesideThePanel(Self.rider, on: mapView) }
+        XCTAssertTrue(located)
+        try await Task.sleep(for: .milliseconds(800))
+        let start = mapView.camera.centerCoordinateDistance
+
+        model.zoom(by: 1)
+        let closer = await waitUntil(attempts: 300) {
+            abs(mapView.camera.centerCoordinateDistance - start / 2) < start * 0.02
+        }
+        XCTAssertTrue(closer, "\(start) → \(mapView.camera.centerCoordinateDistance)")
+        try await Task.sleep(for: .milliseconds(600))
+        XCTAssertTrue(isBesideThePanel(Self.rider, on: mapView), "\(mapView.convert(Self.rider, toPointTo: mapView))")
+
+        model.zoom(by: -2)
+        let further = await waitUntil(attempts: 300) {
+            abs(mapView.camera.centerCoordinateDistance - start * 2) < start * 0.04
+        }
+        XCTAssertTrue(further, "\(start) → \(mapView.camera.centerCoordinateDistance)")
+        try await Task.sleep(for: .milliseconds(600))
+        XCTAssertTrue(isBesideThePanel(Self.rider, on: mapView), "\(mapView.convert(Self.rider, toPointTo: mapView))")
+    }
+
+    /// The screen in a window makes its shortcuts as key commands; the
+    /// keyboard can't be pressed here, so they are looked for and run.
+    func testTheScreenMakesItsShortcutsAndTheyActOnIt() async throws {
+        let (model, _) = modelLocatedByTheTest()
+        let (window, _) = try await panelWindow(showing: model)
+        defer { window.isHidden = true }
+        try await Task.sleep(for: .milliseconds(300))
+
+        let atRest = keyCommands(in: window)
+        XCTAssertEqual(command(input: "f", flags: .command, in: atRest)?.title, String(localized: "Search"))
+        XCTAssertNotNil(command(input: "/", flags: [], in: atRest))
+        XCTAssertNil(command(input: UIKeyCommand.inputEscape, flags: [], in: atRest))
+
+        try perform("2", .command, in: window)
+        let quiet = await waitUntil { model.mapStyle == .quiet }
+        XCTAssertTrue(quiet)
+
+        try perform("\\", .command, in: window)
+        let folded = await waitUntil { model.isPanelCollapsed }
+        XCTAssertTrue(folded)
+        try perform("\\", .command, in: window)
+        let opened = await waitUntil { !model.isPanelCollapsed }
+        XCTAssertTrue(opened)
+
+        // A card, then the search over it: Esc closes the search in front,
+        // then the card.
+        model.selectScooter("lime:test")
+        try perform("f", .command, in: window)
+        let searching = await waitUntil {
+            self.command(input: "/", flags: [], in: self.keyCommands(in: window)) == nil
+        }
+        XCTAssertTrue(searching, "the field takes a typed /")
+        try perform(UIKeyCommand.inputEscape, [], in: window)
+        let searchClosed = await waitUntil {
+            self.command(input: "/", flags: [], in: self.keyCommands(in: window)) != nil
+        }
+        XCTAssertTrue(searchClosed)
+        XCTAssertEqual(model.selectedScooterID, "lime:test", "the card stays")
+        try perform(UIKeyCommand.inputEscape, [], in: window)
+        let cardClosed = await waitUntil {
+            model.selectedScooterID == nil
+                && self.command(input: UIKeyCommand.inputEscape, flags: [], in: self.keyCommands(in: window)) == nil
+        }
+        XCTAssertTrue(cardClosed)
+
+        // The filters open, and the screen leaves every key to them.
+        try perform("f", [.command, .alternate], in: window)
+        let presenting = await waitUntil { self.keyCommands(in: window).isEmpty }
+        XCTAssertTrue(presenting, "\(keyCommands(in: window).map { $0.input ?? "?" })")
+    }
+
+    /// The key commands of every responder in a window.
+    private func keyCommands(in window: UIWindow) -> [UIKeyCommand] {
+        var responders: [UIResponder] = []
+        func visit(_ view: UIView) {
+            responders.append(view)
+            view.subviews.forEach(visit)
+        }
+        func visit(_ controller: UIViewController) {
+            responders.append(controller)
+            controller.children.forEach(visit)
+        }
+        visit(window as UIView)
+        window.rootViewController.map(visit)
+        return responders.flatMap { $0.keyCommands ?? [] }
+    }
+
+    private func command(input: String, flags: UIKeyModifierFlags, in commands: [UIKeyCommand]) -> UIKeyCommand? {
+        commands.first { $0.input == input && $0.modifierFlags == flags }
+    }
+
+    /// Runs the screen's key command for a key, as the keyboard would.
+    private func perform(_ input: String, _ flags: UIKeyModifierFlags, in window: UIWindow) throws {
+        let command = try XCTUnwrap(
+            command(input: input, flags: flags, in: keyCommands(in: window)),
+            "no key command for \(flags.rawValue) \(input)"
+        )
+        let action = try XCTUnwrap(command.action)
+        // Up the responder chain from the screen, as UIKit sends it.
+        let target = try XCTUnwrap(
+            window.rootViewController?.view.target(forAction: action, withSender: command) as? NSObject
+        )
+        target.perform(action, with: command)
+    }
+}

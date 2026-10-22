@@ -45,6 +45,13 @@ or a swipe on it; a tap on the line opens it again, and so does choosing a
 scooter or a parking bay on the map. The notices stay while it is folded, the
 map shows under it, and each window keeps it folded or open across launches.
 
+With a keyboard, as in Maps: ⌘F, or / while nothing takes text, opens the
+search; ⌘L locates; ⌘+ and ⌘− zoom; ⌥⌘F opens the filters; ⌘1, ⌘2 and ⌘3
+choose the standard, quiet or satellite map; ⌘, opens Settings; Esc closes the
+search, then the card of a scooter or a bay; and ⌘\ folds or opens the panel.
+They are the screen's own, made without menus, and stand down while the
+filters or Settings are open, so that what is typed there stays there.
+
 **Map.** Zoomed out, each city shows its total; closer, clusters; from street
 level, one dot per scooter in its provider's colour, at its exact place, larger
 and brighter the shorter the walk to it. Scooters parked on one spot stand side

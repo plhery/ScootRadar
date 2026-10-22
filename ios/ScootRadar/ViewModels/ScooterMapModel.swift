@@ -153,6 +153,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// privacy notice promises that precise origins are not stored.
     private(set) var recentPlaces: [MapDestination] = []
     var focusRequest: MapFocusRequest?
+    /// A step in or out asked from the keyboard, ⌘+ and ⌘−.
+    private(set) var zoomRequest: MapZoomRequest?
     /// The walk to the selected scooter or bay, from a tap on Directions until
     /// the route is hidden, the card closes or the walk ends on its own. Nil
     /// while the card simply offers Directions.
@@ -280,6 +282,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     @ObservationIgnored private var placeChoices = 0
     @ObservationIgnored private var placeChoicesAtLocate = 0
     @ObservationIgnored private var focusToken = 0
+    @ObservationIgnored private var zoomToken = 0
     @ObservationIgnored private var hasStarted = false
     @ObservationIgnored private var isApplyingResponse = false
     /// Scooters are asked for, and walks measured, from here until the iPhone's location is known.
@@ -1067,6 +1070,14 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             isLocating = true
             requestLocationAccess()
         }
+    }
+
+    /// ⌘+ and ⌘−: the map comes `steps` closer in, or goes out with a
+    /// negative number, around what is in the middle of it.
+    func zoom(by steps: Int) {
+        guard steps != 0 else { return }
+        zoomToken += 1
+        zoomRequest = MapZoomRequest(steps: steps, token: zoomToken)
     }
 
     /// "Turn on location to see walking time" on a card: locates like Near me,

@@ -109,6 +109,12 @@ enum ScooterMapCameraPolicy {
         return CGRect(x: minX, y: band.minY, width: maxX - minX, height: band.height)
     }
 
+    /// The camera's distance `steps` in, or out when negative: each step
+    /// halves or doubles it, as a double tap or a tap with two fingers does.
+    static func distance(_ distance: CLLocationDistance, zoomedBy steps: Int) -> CLLocationDistance {
+        distance / pow(2, Double(steps))
+    }
+
     /// The widest phone. Its spans were chosen on phones.
     static let phoneWidth: CGFloat = 440
 
@@ -157,6 +163,8 @@ struct ScooterMapView: UIViewRepresentable {
     let mapStyle: AppleMapStyle
     let showsUserLocation: Bool
     let focusRequest: MapFocusRequest?
+    /// A step in or out asked from the keyboard.
+    var zoomRequest: MapZoomRequest? = nil
     let destination: MapDestination?
     let selectedScooterID: String?
     var interactionExclusionFrame: CGRect = .null
@@ -272,6 +280,7 @@ struct ScooterMapView: UIViewRepresentable {
         // with, and a change of them doesn't stop a move begun in this update.
         context.coordinator.updateMargins(on: mapView)
         context.coordinator.applyFocus(focusRequest, on: mapView)
+        context.coordinator.applyZoom(zoomRequest, on: mapView)
         context.coordinator.keepSelectionClearOfPanel(on: mapView)
         context.coordinator.applyTrail(walkTrail, on: mapView)
         context.coordinator.updateUserHeading(on: mapView, animated: true)
@@ -292,6 +301,7 @@ struct ScooterMapView: UIViewRepresentable {
         /// map has come to rest somewhere new. A screen at rest adds to neither.
         fileprivate(set) var updates = 0
         private(set) var regionChanges = 0
+        private var lastZoomToken: Int?
         private var appliedSelectionID: String?
         private var appliedParkingID: String?
         private var reconciledScooterRevision: Int?
@@ -581,6 +591,42 @@ struct ScooterMapView: UIViewRepresentable {
         private func leadingMargin(of mapView: MKMapView) -> CGFloat {
             panelMargins?.leading ?? restingMargins?.leading
                 ?? Self.withoutSafeArea(mapView.directionalLayoutMargins, of: mapView).leading
+        }
+
+        /// A step in or out from the keyboard: the camera comes closer or goes
+        /// further, keeps its tilt and its turn, and what is in the middle of
+        /// the part of the map left in view stays there. The camera looks at
+        /// another point than that beside a panel or under a tilt: zoomed
+        /// around it, the rider just located slid away from the middle.
+        func applyZoom(_ request: MapZoomRequest?, on mapView: MKMapView) {
+            guard let request, request.token != lastZoomToken else { return }
+            lastZoomToken = request.token
+            guard mapView.bounds.width > 0, mapView.bounds.height > 0 else { return }
+            // A step from the keyboard moves the map as the person's hand does.
+            focusUnderWay = nil
+            let visible = visibleRect(of: mapView)
+            let middle = CGPoint(x: visible.midX, y: visible.midY)
+            let kept = mapView.convert(middle, toCoordinateFrom: mapView)
+            let starting = mapView.camera.copy() as! MKMapCamera
+            var target = starting.copy() as! MKMapCamera
+            target.centerCoordinateDistance = ScooterMapCameraPolicy.distance(
+                starting.centerCoordinateDistance,
+                zoomedBy: request.steps
+            )
+            // Where the middle goes is measured on the map as the camera will show it.
+            mapView.setCamera(target, animated: false)
+            let shown = mapView.convert(kept, toPointTo: mapView)
+            let lookedAt = mapView.convert(target.centerCoordinate, toPointTo: mapView)
+            target = target.copy() as! MKMapCamera
+            target.centerCoordinate = mapView.convert(
+                CGPoint(x: lookedAt.x + shown.x - middle.x, y: lookedAt.y + shown.y - middle.y),
+                toCoordinateFrom: mapView
+            )
+            let animated = !UIAccessibility.isReduceMotionEnabled
+            if animated {
+                mapView.setCamera(starting, animated: false)
+            }
+            mapView.setCamera(target, animated: animated)
         }
 
         /// Moves the map to show the place asked for in the middle of the part

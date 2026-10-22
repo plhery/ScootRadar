@@ -1296,6 +1296,14 @@ struct MapFocusRequest: Equatable, Sendable {
     }
 }
 
+/// A step closer in, or further out, asked of the map from the keyboard.
+/// The map takes each token once.
+struct MapZoomRequest: Equatable, Sendable {
+    /// In when positive, out when negative.
+    let steps: Int
+    let token: Int
+}
+
 extension MapFocusRequest {
     /// The span the map zooms to when a city total is tapped: 0.08° by 0.12°.
     static func city(_ point: GeoPoint, token: Int) -> MapFocusRequest {

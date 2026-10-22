@@ -237,3 +237,9 @@
 "Expanded" = "Utvidet";
 "Expands the panel" = "Utvider panelet";
 "%lld min ago" = "for %lld min siden";
+
+/* The keyboard's shortcuts on the map: ⌘F, ⌘+, ⌘− and Esc */
+"Search" = "Søk";
+"Zoom in" = "Zoom inn";
+"Zoom out" = "Zoom ut";
+"Close" = "Lukk";

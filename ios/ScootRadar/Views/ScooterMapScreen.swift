@@ -51,6 +51,7 @@ struct ScooterMapScreen: View {
                     mapStyle: model.mapStyle,
                     showsUserLocation: model.userLocation != nil,
                     focusRequest: model.focusRequest,
+                    zoomRequest: model.zoomRequest,
                     destination: model.searchedDestination,
                     selectedScooterID: model.selectedScooterID,
                     interactionExclusionFrame: layout == .dock ? topChromeFrame : .null,
@@ -152,6 +153,13 @@ struct ScooterMapScreen: View {
         }
         .sensoryFeedback(.selection, trigger: model.selectedScooterID)
         .sensoryFeedback(.selection, trigger: model.selectedParkingID)
+        .background {
+            KeyCommandButtons(
+                commands: ScooterKeyCommand.available(in: keySituation),
+                situation: keySituation,
+                perform: perform
+            )
+        }
         .background(WindowAppearance(style: model.appearance.interfaceStyle))
         .background(InterfaceOrientationProbe { model.setHeadingOrientation(ScooterHeadingPolicy.deviceOrientation(for: $0)) })
         .environment(\.locale, model.language.locale)
@@ -445,6 +453,53 @@ struct ScooterMapScreen: View {
         }
     }
 
+    /// The screen as the keyboard finds it.
+    private var keySituation: ScooterKeyCommand.Situation {
+        ScooterKeyCommand.Situation(
+            layout: chromeLayout,
+            isSearching: searchIsExpanded,
+            isPresenting: filtersPresented || settingsPresented,
+            hasCard: model.selectedScooterID != nil || model.selectedParkingID != nil,
+            isFolded: model.isPanelCollapsed,
+            isLocating: model.isLocating
+        )
+    }
+
+    /// What a key does: what the button or the gesture it stands for does.
+    private func perform(_ command: ScooterKeyCommand) {
+        switch command {
+        case .search, .searchWithSlash:
+            searchIsExpanded = true
+        case .nearMe:
+            searchIsExpanded = false
+            model.focusOnUser()
+        case .zoomIn, .zoomInWithoutShift:
+            model.zoom(by: 1)
+        case .zoomOut:
+            model.zoom(by: -1)
+        case .filters:
+            searchIsExpanded = false
+            filtersPresented = true
+        case .standardMap:
+            model.mapStyle = .standard
+        case .quietMap:
+            model.mapStyle = .quiet
+        case .satelliteMap:
+            model.mapStyle = .satellite
+        case .settings:
+            searchIsExpanded = false
+            settingsPresented = true
+        case .close:
+            switch ScooterKeyCommand.closing(in: keySituation) {
+            case .card: model.clearSelection()
+            case .search: searchIsExpanded = false
+            case nil: break
+            }
+        case .fold:
+            model.isPanelCollapsed.toggle()
+        }
+    }
+
     private func openLocationSettings() {
         guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
         UIApplication.shared.open(settingsURL)
@@ -513,6 +568,136 @@ enum ScooterChromeLayout: Equatable {
         guard regularWidth, regularHeight else { return .dock }
         let both = panelWidth(largeText: largeText) + minimumMapWidth
         return width >= (current == .panel ? both : both + slack) ? .panel : .dock
+    }
+}
+
+/// The keys of a hardware keyboard on the map screen, as in Maps: ⌘F or /
+/// opens the search, ⌘L locates, ⌘+ and ⌘− zoom, ⌥⌘F opens the filters, ⌘1
+/// to ⌘3 choose the map's look, ⌘, opens Settings, Esc closes the search and
+/// then the card, and ⌘\ folds or opens the panel of a large window.
+enum ScooterKeyCommand: CaseIterable, Hashable {
+    case search
+    case searchWithSlash
+    case nearMe
+    case zoomIn
+    /// ⌘= is ⌘+ on a keyboard where + takes Shift.
+    case zoomInWithoutShift
+    case zoomOut
+    case filters
+    case standardMap
+    case quietMap
+    case satelliteMap
+    case settings
+    case close
+    case fold
+
+    /// The screen as the keyboard finds it.
+    struct Situation: Equatable {
+        var layout: ScooterChromeLayout
+        var isSearching = false
+        /// The filters or Settings are open, in a sheet or a popover.
+        var isPresenting = false
+        /// The card of a scooter or a bay.
+        var hasCard = false
+        var isFolded = false
+        var isLocating = false
+    }
+
+    /// What Esc closes.
+    enum Closing: Equatable {
+        case card
+        case search
+    }
+
+    var key: KeyEquivalent {
+        switch self {
+        case .search, .filters: "f"
+        case .searchWithSlash: "/"
+        case .nearMe: "l"
+        case .zoomIn: "+"
+        case .zoomInWithoutShift: "="
+        case .zoomOut: "-"
+        case .standardMap: "1"
+        case .quietMap: "2"
+        case .satelliteMap: "3"
+        case .settings: ","
+        case .close: .escape
+        case .fold: "\\"
+        }
+    }
+
+    var modifiers: EventModifiers {
+        switch self {
+        case .searchWithSlash, .close: []
+        case .filters: [.command, .option]
+        default: .command
+        }
+    }
+
+    /// What the keyboard's list of shortcuts calls it.
+    func title(in situation: Situation) -> String {
+        switch self {
+        case .search, .searchWithSlash: String(localized: "Search")
+        case .nearMe: String(localized: "Near me")
+        case .zoomIn, .zoomInWithoutShift: String(localized: "Zoom in")
+        case .zoomOut: String(localized: "Zoom out")
+        case .filters: String(localized: "Filters")
+        case .standardMap: AppleMapStyle.standard.label
+        case .quietMap: AppleMapStyle.quiet.label
+        case .satelliteMap: AppleMapStyle.satellite.label
+        case .settings: String(localized: "Settings")
+        case .close: String(localized: "Close")
+        case .fold: situation.isFolded ? String(localized: "Expand panel") : String(localized: "Collapse panel")
+        }
+    }
+
+    /// The shortcuts that stand. Only these are made, so that the others
+    /// take no key from anything. None while the filters or Settings are
+    /// open: the keys a sheet or a popover doesn't take go on to the screen
+    /// that presented it, and a "/" typed in it, or an Esc meant for it,
+    /// would act on the map under it. "/" stands only while the search's
+    /// field isn't there to take it, Esc only while there is something to
+    /// close, ⌘L not while locating, as the locate button, and ⌘\ only
+    /// beside a panel, since a phone's dock doesn't fold.
+    static func available(in situation: Situation) -> [ScooterKeyCommand] {
+        guard !situation.isPresenting else { return [] }
+        return allCases.filter { command in
+            switch command {
+            case .searchWithSlash: !situation.isSearching
+            case .close: closing(in: situation) != nil
+            case .nearMe: !situation.isLocating
+            case .fold: situation.layout == .panel
+            default: true
+            }
+        }
+    }
+
+    /// Esc closes what is in front first: the search, which covers the
+    /// card, then the card of a scooter or a bay.
+    static func closing(in situation: Situation) -> Closing? {
+        if situation.isSearching { return .search }
+        if situation.hasCard { return .card }
+        return nil
+    }
+}
+
+/// The screen's keyboard shortcuts, on buttons that don't show: each does
+/// what the button or the gesture it stands for does.
+private struct KeyCommandButtons: View {
+    let commands: [ScooterKeyCommand]
+    let situation: ScooterKeyCommand.Situation
+    let perform: (ScooterKeyCommand) -> Void
+
+    var body: some View {
+        ZStack {
+            ForEach(commands, id: \.self) { command in
+                Button(command.title(in: situation)) { perform(command) }
+                    .keyboardShortcut(command.key, modifiers: command.modifiers)
+            }
+        }
+        .frame(width: 0, height: 0)
+        .opacity(0)
+        .accessibilityHidden(true)
     }
 }
 
