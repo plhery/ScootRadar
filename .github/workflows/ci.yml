@@ -18,8 +18,8 @@ jobs:
   web:
     name: Web and backend
     runs-on: ubuntu-latest
-    # About 12 minutes as a rule. On 22 Oct 2026 the runners' Ubuntu mirror stalled 30 s on one
-    # package in ten, Playwright's system packages took 7 to 18 minutes, and three runs ran out of 20.
+    # 12 to 16 minutes as a rule, 10 to 13 of them end-to-end tests, so 20 left no room for a slow
+    # package mirror (see below), which ran three runs out of time on 22 Oct 2026.
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -36,6 +36,16 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: docker build -f server/Dockerfile -t scooter-cache:ci .
+      # The runners list Azure's Ubuntu mirror first, then Ubuntu's own archive. On 22 Oct 2026 Azure's
+      # stalled 30 s on one package in ten, and Playwright's 181 system packages took up to 20 minutes
+      # instead of one, so take them from Ubuntu's archive, while the list names another mirror.
+      - name: Skip Azure's Ubuntu mirror
+        run: |
+          mirrors=/etc/apt/apt-mirrors.txt
+          if [ -f "$mirrors" ] && grep -qv 'azure\.archive\.ubuntu\.com' "$mirrors"; then
+            sudo sed -i '/azure\.archive\.ubuntu\.com/d' "$mirrors"
+          fi
+          cat "$mirrors" || true
       - run: npx playwright install --with-deps chromium webkit
       - run: npm run test:e2e
       - run: npm run cf-typegen
