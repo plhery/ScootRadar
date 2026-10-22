@@ -4233,8 +4233,8 @@ extension ScooterMapModelTests {
         }
         XCTAssertTrue(closer, "\(start) → \(mapView.camera.centerCoordinateDistance)")
         try await Task.sleep(for: .milliseconds(600))
-        expectingAMissOnIOS26 {
-            XCTAssertTrue(isBesideThePanel(Self.rider, on: mapView), whereTheMiddleShows(on: mapView))
+        expectingAMissOnIOS26(whereTheMiddleShows(on: mapView)) { shown in
+            XCTAssertTrue(isBesideThePanel(Self.rider, on: mapView), shown)
         }
 
         model.zoom(by: -2)
@@ -4243,16 +4243,20 @@ extension ScooterMapModelTests {
         }
         XCTAssertTrue(further, "\(start) → \(mapView.camera.centerCoordinateDistance)")
         try await Task.sleep(for: .milliseconds(600))
-        expectingAMissOnIOS26 {
-            XCTAssertTrue(isBesideThePanel(Self.rider, on: mapView), whereTheMiddleShows(on: mapView))
+        expectingAMissOnIOS26(whereTheMiddleShows(on: mapView)) { shown in
+            XCTAssertTrue(isBesideThePanel(Self.rider, on: mapView), shown)
         }
     }
 
-    private func expectingAMissOnIOS26(_ check: () -> Void) {
+    /// The reason carries what was shown: the result bundle keeps an
+    /// expected failure's reason but not its message.
+    private func expectingAMissOnIOS26(_ shown: String, _ check: (String) -> Void) {
         if #available(iOS 27, *) {
-            check()
+            check(shown)
         } else {
-            XCTExpectFailure("The step ends away from the middle beside a panel on iOS 26", strict: false, failingBlock: check)
+            XCTExpectFailure("Away from the middle beside a panel on iOS 26: \(shown)", strict: false) {
+                check(shown)
+            }
         }
     }
 
@@ -4262,7 +4266,7 @@ extension ScooterMapModelTests {
         let rider = mapView.convert(Self.rider, toPointTo: mapView)
         let camera = mapView.convert(mapView.camera.centerCoordinate, toPointTo: mapView)
         let centre = mapView.convert(mapView.centerCoordinate, toPointTo: mapView)
-        return "rider \(rider), camera \(camera), centre \(centre), margins \(mapView.directionalLayoutMargins), safe area \(mapView.safeAreaInsets)"
+        return "rider \(rider), camera \(camera), centre \(centre), bounds \(mapView.bounds.size), margins \(mapView.directionalLayoutMargins), safe area \(mapView.safeAreaInsets)"
     }
 
     /// The screen in a window makes its shortcuts as key commands; the
