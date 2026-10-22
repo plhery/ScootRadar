@@ -317,11 +317,17 @@ the dock and each scooter's card state the ban and when renting resumes.
     scooters, but it is unlicensed and hadn't been updated since 8 October
     2026 when polled on the 16th. Lime has no feed for Porto or Faro (404),
     and Link and Whoosh have left Portugal.
-  - Lisboa plans to suspend shared scooters: Mayor Moedas announced it on 15
-    October 2026, and the council discusses ending the agreements with Lime,
-    Bolt and Bird on 21 October, with removal by the end of 2026 or January 2027
-    ([Observador](https://observador.pt/2026/10/15/camara-de-lisboa-avanca-com-suspensao-do-sistema-de-trotinetes-partilhadas-ate-ao-final-do-ano/),
-    [ECO](https://eco.sapo.pt/2026/10/16/moedas-anuncia-suspensao-de-trotinetes-partilhadas-em-lisboa/)).
+  - Lisboa is ending shared scooters. Mayor Moedas announced it on 15 October
+    2026 ([Observador](https://observador.pt/2026/10/15/camara-de-lisboa-avanca-com-suspensao-do-sistema-de-trotinetes-partilhadas-ate-ao-final-do-ano/),
+    [ECO](https://eco.sapo.pt/2026/10/16/moedas-anuncia-suspensao-de-trotinetes-partilhadas-em-lisboa/)),
+    and on 21 October the council approved, with Livre and IL against, ending
+    its 2023 agreement with the operators "por razões de interesse público"
+    and banning their scooters from riding and parking in the municipality.
+    After 10 days for the operators to answer in writing, they have 60 days
+    to remove every scooter, by the end of the year by Lusa's account; then
+    the council may remove them at their cost
+    ([Observador, 21 October](https://observador.pt/2026/10/21/camara-de-lisboa-aprova-suspensao-das-trotinetes-partilhadas-livre-e-il-votaram-contra/)).
+    Bird and Lime Lisboa will then empty; see [coverage gaps](coverage-gaps.md).
   - Braga banned shared scooters in September 2026; Espinho, Vila Real and
     Figueira da Foz ended or suspended them. Bird's Braga and Faro feeds are
     dead, and seven smaller Bird towns are empty.

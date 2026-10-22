@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'Trotinetes em Lisboa 2026: regras, preços e minutos grátis',
   description: 'Trotinetes em Lisboa: Bolt, Lime e Bird, o limite de 20 km/h, as zonas proibidas, os hotspots e como ter minutos grátis com o passe Navegante.',
   headline: 'Trotinetes em Lisboa: operadores, zonas proibidas, hotspots e minutos grátis com o Navegante',
-  lede: 'As trotinetes em Lisboa alugam-se nas apps da Bolt, da Lime e da Bird, que mostram o preço antes de desbloquear: nenhuma publica uma tarifa para a cidade. As regras vêm de um acordo entre a Câmara e os operadores: 20 km/h no máximo, nada de passeios, vias BUS, jardins ou praças, e a viagem só termina num hotspot, um local de estacionamento autorizado. Quem vive em Lisboa e tem o passe Navegante mensal tem até 200 minutos grátis por mês, no máximo 10 por viagem.',
+  lede: 'As trotinetes em Lisboa alugam-se nas apps da Bolt, da Lime e da Bird, que mostram o preço antes de desbloquear: nenhuma publica uma tarifa para a cidade. As regras vêm de um acordo entre a Câmara e os operadores: 20 km/h no máximo, nada de passeios, vias BUS, jardins ou praças, e a viagem só termina num hotspot, um local de estacionamento autorizado. Quem vive em Lisboa e tem o passe Navegante mensal tem até 200 minutos grátis por mês, no máximo 10 por viagem. A 21 de outubro de 2026, a Câmara aprovou o fim das trotinetes partilhadas: os operadores têm 60 dias para as retirar.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-22',
   city: 'pt:Lisboa',
   sections: [
     {
@@ -137,15 +137,20 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Vai haver referendo às trotinetes em Lisboa?',
+      heading: 'As trotinetes partilhadas vão acabar em Lisboa?',
       blocks: [
-        'Pode vir a haver, mas nada está decidido. Em agosto de 2026, o Automóvel Club de Portugal (ACP) lançou uma petição para um referendo local e, a 23 de setembro, dizia ter cerca de 20 mil assinaturas, quando eram precisas 5000. O referendo perguntaria se a Câmara deve deixar de autorizar as trotinetes partilhadas.',
-        'O pedido tem de ser aprovado pela Assembleia Municipal e verificado pelo Tribunal Constitucional antes de se marcar a votação; tanto quanto sabemos, a Assembleia ainda não tinha decidido a 13 de outubro de 2026. Mesmo com um «sim», nada mudaria antes do fim das autorizações atuais, e o acordo de 2023 não tem data de fim.',
-        'A 28 de setembro de 2026, o presidente da Câmara, Carlos Moedas, prometeu medidas contra a circulação em contramão e o «caos» no estacionamento, sem dizer quais.',
+        'Sim, se nada mudar. A 21 de outubro de 2026, a Câmara aprovou a resolução unilateral, «por razões de interesse público», do acordo de 2023 com os operadores, e a proibição da circulação e do estacionamento das trotinetes partilhadas em todo o concelho. Os operadores têm 60 dias para retirar todas as trotinetes, ou seja, até ao fim do ano, segundo a Lusa; depois, a Câmara pode removê-las e cobrar-lhes os custos.',
+        'Antes disso, os operadores têm 10 dias para responder por escrito; sem resposta, a deliberação torna-se definitiva. A Câmara invoca o aumento das reclamações e das ocorrências, como a circulação em contramão e nos passeios, apesar de haver menos trotinetes. Votaram contra o Livre e a IL; PS, BE e PCP abstiveram-se.',
+        'A Câmara promete também mais estações e bicicletas na rede Gira e um projeto de Regulamento Municipal para a Mobilidade Suave no prazo de um ano, sem dizer se as trotinetes partilhadas poderão voltar. Até serem retiradas, as apps funcionam como antes, e o [mapa de Lisboa](map:pt:Lisboa) mostra as trotinetes da Lime e da Bird enquanto estiverem na rua.',
+        'Em agosto de 2026, o Automóvel Club de Portugal (ACP) tinha lançado uma petição para um referendo local com a mesma pergunta: se a Câmara deve deixar de autorizar as trotinetes partilhadas.',
       ],
     },
   ],
   faq: [
+    {
+      question: 'Até quando há trotinetes partilhadas em Lisboa?',
+      answer: 'Até ao fim de 2026, previsivelmente. A Câmara aprovou a 21 de outubro de 2026 a suspensão das trotinetes partilhadas, e os operadores têm 60 dias para as retirar. Até lá, alugam-se nas apps da Bolt, da Lime e da Bird, como antes.',
+    },
     {
       question: 'Porque é que a app não me deixa terminar a viagem?',
       answer: 'Provavelmente não está num hotspot, ou está numa zona onde é proibido estacionar, como um jardim, uma praça ou a zona de uma estação. Abra o mapa da app, vá até ao hotspot mais próximo e tente de novo.',
@@ -174,7 +179,7 @@ const guide: Guide = {
     { title: 'Assembleia da República: Projeto de Lei 622/XVII (PSD), capacete obrigatório', url: 'https://www.parlamento.pt/ActividadeParlamentar/Paginas/DetalheIniciativa.aspx?BID=356782' },
     { title: 'Código da Estrada, versão consolidada (PGDL)', url: 'https://www.pgdlisboa.pt/leis/lei_mostra_articulado.php?nid=349&tabela=leis' },
     { title: 'ACP: referendo às trotinetes partilhadas em Lisboa', url: 'https://trotinetessimounao.acp.pt' },
-    { title: 'Observador: Moedas garante medidas para combater problemas com trotinetes em Lisboa, 28 de setembro de 2026', url: 'https://observador.pt/2026/09/28/moedas-garante-medidas-para-combater-problemas-com-trotinetes-em-lisboa/' },
+    { title: 'Observador: Câmara de Lisboa aprova suspensão das trotinetes partilhadas, 21 de outubro de 2026', url: 'https://observador.pt/2026/10/21/camara-de-lisboa-aprova-suspensao-das-trotinetes-partilhadas-livre-e-il-votaram-contra/' },
   ],
 };
 

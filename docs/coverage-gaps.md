@@ -169,9 +169,10 @@ banned shared scooters, and feeds that were empty when checked.
 - **Portugal** ([guide](portuguese-spanish-icelandic-scooter-feeds.md#known-gaps)):
   - Bolt (Lisboa, Porto, Faro, Coimbra) offers its GBFS only on request, on
     Portugal's access point, and Lime has no feed for Porto or Faro.
-  - Lisboa plans to suspend shared scooters: its council discusses ending the
-    agreements with Lime, Bolt and Bird on 21 October 2026, with removal by the
-    end of 2026 or January 2027. Bird and Lime Lisboa would then empty.
+  - Lisboa is ending shared scooters: its council approved on 21 October 2026
+    ending its agreement with the operators and banning their scooters from
+    the municipality, with 60 days to remove them, by the end of 2026. Bird and
+    Lime Lisboa will then empty (January 2027 below).
   - Braga banned shared scooters in September 2026. Bird Braga and Faro are
     dead, and Bird Vila Nova de Gaia's 7 scooters never moved.
 - **Spain** ([guide](portuguese-spanish-icelandic-scooter-feeds.md#known-gaps)):
@@ -807,6 +808,17 @@ Bonaire had feeds to add. Survey files are in
   through the winter, look for the city's dates and add a `seasonal` window.
 - **1 January 2027:** Brussels's ban starts; Bolt and Dott Bruxelles should
   empty.
+- **Early January 2027:** Bird and Lime Lisboa. Lisboa's council approved on
+  21 October 2026 ending its agreement with the operators and banning shared
+  scooters from the municipality: after 10 days for the operators to answer
+  in writing, they have 60 days to remove them, by the end of the year by
+  Lusa's account, or the council removes them at their cost. "Feed empty"
+  reports each feed 3 days after it empties: that is the ban, not an outage.
+  Then take both out of the catalog and Lisboa out of the map's towns, and
+  update the Lisbon guides (`src/guides/pt/trotinetes-lisboa.ts`,
+  `src/guides/en/e-scooters-lisbon.ts`) and the Portuguese guide. If a feed
+  still lists scooters just outside the municipality, narrow its bounds
+  instead.
 - **January 2027:** Spin Pawtucket. The pilot was extended to the end of
   2025 "with the potential for a one-year renewal through 2026", and its
   2023 rules ban renting from 23:00 to 05:00, but its scooters were ridden
