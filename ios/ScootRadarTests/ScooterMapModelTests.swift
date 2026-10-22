@@ -4136,12 +4136,13 @@ extension ScooterMapModelTests {
         line: UInt = #line
     ) async throws {
         _ = await waitUntil(attempts: 300) { self.shows(Self.rider, at: point, on: mapView, within: 8) }
-        try await Task.sleep(for: .milliseconds(600))
+        try await waitUntilAtRest(mapView)
         let shown = mapView.convert(Self.rider, toPointTo: mapView)
         XCTAssertTrue(shows(Self.rider, at: point, on: mapView, within: 8), "\(shown) for \(point)", file: file, line: line)
         let distance = mapView.camera.centerCoordinateDistance
         model.focusOnUser()
-        try await Task.sleep(for: .milliseconds(1200))
+        try await Task.sleep(for: .milliseconds(600))
+        try await waitUntilAtRest(mapView)
         let relocated = mapView.convert(Self.rider, toPointTo: mapView)
         XCTAssertEqual(relocated.x, shown.x, accuracy: 3, "\(shown) → \(relocated)", file: file, line: line)
         XCTAssertEqual(relocated.y, shown.y, accuracy: 3, "\(shown) → \(relocated)", file: file, line: line)
@@ -4149,6 +4150,27 @@ extension ScooterMapModelTests {
             mapView.camera.centerCoordinateDistance, distance, accuracy: distance * 0.01,
             "zoom", file: file, line: line
         )
+    }
+
+    /// Waits for the rider to keep its place and the camera its distance for
+    /// 600 ms, for 5 s at most. A move made again waits for a region change,
+    /// and on a slow runner the map came near the place, then was measured
+    /// 600 ms later while its last move was still to come: the rider 7 pt
+    /// low, where locating left it in the middle (run 39852766517).
+    private func waitUntilAtRest(_ mapView: MKMapView) async throws {
+        var shown = mapView.convert(Self.rider, toPointTo: mapView)
+        var distance = mapView.camera.centerCoordinateDistance
+        var still = 0
+        for _ in 0 ..< 50 {
+            try await Task.sleep(for: .milliseconds(100))
+            let now = mapView.convert(Self.rider, toPointTo: mapView)
+            let nowDistance = mapView.camera.centerCoordinateDistance
+            let moved = hypot(now.x - shown.x, now.y - shown.y) > 0.5 || abs(nowDistance / distance - 1) > 0.001
+            still = moved ? 0 : still + 1
+            if still == 6 { return }
+            shown = now
+            distance = nowDistance
+        }
     }
 
     /// Whether a place shows at `point` on the map, within a little.
