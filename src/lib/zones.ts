@@ -14,8 +14,11 @@ export const ZONES_MAX_SPAN_DEGREES = 1;
 export const ZONES_MAX_POINTS = 60_000;
 /** Corners closer than this to the line between their neighbours are dropped. */
 const SIMPLIFY_TOLERANCE_M = 2;
-/** At most this fast is a slow zone: 20 km/h, the usual limit in Europe, is not. */
-const SLOW_ZONE_MAX_KPH = 15;
+/**
+ * At most this fast is a slow zone: the UK's 10 mph zones (16 or 16.1 km/h) are. 19 km/h, which Dott sets over whole
+ * cities in Germany and the UAE, and 20 km/h, the usual limit in Europe, are not.
+ */
+const SLOW_ZONE_MAX_KPH = 18;
 
 /** What a zone forbids a scooter: riding in it at all, ending a ride in it, or going fast. */
 export type ZoneKind = 'noRide' | 'noParking' | 'slow';

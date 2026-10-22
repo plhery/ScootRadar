@@ -35,6 +35,21 @@ describe('operator zones', () => {
     expect(zones[0].bounds).toEqual({ south: 47.37, west: 8.54, north: 47.371, east: 8.5415 });
   });
 
+  it('counts the UK\'s 10 mph zones and Norway\'s 18 km/h ones as slow, but not the 19 km/h Dott sets over a whole city', () => {
+    const zones = normalizeZones('f', 'dott', types, feed(
+      // Dott's and Bolt's ways of writing 10 mph.
+      [{ ride_allowed: true, ride_through_allowed: true, maximum_speed_kph: 16 }],
+      [{ ride_allowed: true, ride_through_allowed: true, maximum_speed_kph: 16.1 }],
+      [{ ride_allowed: true, ride_through_allowed: true, maximum_speed_kph: 18 }],
+      [{ ride_allowed: true, ride_through_allowed: true, maximum_speed_kph: 19 }],
+    ));
+    expect(zones.map(zone => [zone.id, zone.kind, zone.maxSpeedKph])).toEqual([
+      ['f:0', 'slow', 16],
+      ['f:1', 'slow', 16.1],
+      ['f:2', 'slow', 18],
+    ]);
+  });
+
   it('follows the first rule that names a scooter, and draws nothing for bikes or a feed without scooters', () => {
     const zones = normalizeZones('f', 'lime', types, feed(
       [{ vehicle_type_ids: ['bike'], ride_through_allowed: false }, { vehicle_type_ids: ['scooter'], ride_allowed: false, ride_through_allowed: true }],

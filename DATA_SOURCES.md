@@ -355,8 +355,9 @@ Hopp's towns and the regional GBFS systems publish in `geofencing_zones`:
 
 - No riding (`ride_through_allowed=false`, or a limit of 0 km/h), no parking
   (`ride_allowed=false`, or GBFS 3 `ride_end_allowed=false`) and slow zones (a
-  limit of 15 km/h or less). Zones whose rules allow everything else, such as
-  operating areas and zones that ask for parking at a station, are not drawn.
+  limit of 18 km/h or less, so the UK's 10 mph zones count). Zones whose rules
+  allow everything else, such as operating areas, the 19 km/h Dott sets over a
+  whole city and zones that ask for parking at a station, are not drawn.
 - A zone is read by its first rule for a scooter type, or for every type; zones
   for bikes only, and zones outside their `start` and `end`, are left out.
 - Each zone is drawn whole: a parking spot a feed lists before the no-parking
