@@ -97,7 +97,7 @@ minutes, or the battery or the range where there is no price; without a place
 to walk from, the battery, the range and the price. What is not among the
 figures is the line under the name. Under them, **Open in** the provider's app
 and **Directions**. Opening the provider's app does not reserve the scooter.
-Where the feed links no scooter, as Lime's and Bird's never do, **Open in**
+Where the feed links no scooter, as Lime's, Bird's and PubliBike's never do, **Open in**
 opens the provider's app on its universal link, or its App Store page when the
 app is not installed; the app never asks iOS which apps are installed.
 Tapping the header centres the scooter in the part of the map the card leaves

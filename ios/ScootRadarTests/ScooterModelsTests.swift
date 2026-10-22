@@ -444,6 +444,7 @@ final class ScooterModelsTests: XCTestCase {
         let lime = scooter("lime")
         XCTAssertEqual(lime.operatorApp?.link.absoluteString, "https://lime.bike/")
         XCTAssertEqual(scooter("bird").operatorApp?.appStore.absoluteString, "https://apps.apple.com/app/id1260842311")
+        XCTAssertEqual(scooter("publibike").operatorApp?.link.absoluteString, "https://app.publibike.ch/")
 
         // With Lime installed, its universal link opens it; only an app may take that link.
         var tried: [String] = []

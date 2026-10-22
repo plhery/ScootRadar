@@ -65,7 +65,8 @@
     "systemIds": {
       "exact": ["velospot"],
       "prefixes": ["publibike"]
-    }
+    },
+    "app": { "link": "https://app.publibike.ch/", "appStoreId": 6739938966 }
   },
   {
     "key": "zeus",

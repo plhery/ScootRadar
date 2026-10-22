@@ -16,7 +16,7 @@ const PROVIDER_DEFINITIONS = {
   lime: { name: "Lime", color: "#32cd32", initial: "L", app: { link: "https://lime.bike/", appStoreId: 1199780189 } },
   voi: { name: "Voi", color: "#ff1493", initial: "V" },
   pony: { name: "Pony", color: "#00a7a0", initial: "P" },
-  publibike: { name: "PubliBike / Velospot", color: "#9b59b6", initial: "PB" },
+  publibike: { name: "PubliBike / Velospot", color: "#9b59b6", initial: "PB", app: { link: "https://app.publibike.ch/", appStoreId: 6739938966 } },
   zeus: { name: "Zeus", color: "#f82519", initial: "Z" },
   beryl: { name: "Beryl", color: "#00c896", initial: "Be" },
   ryde: { name: "Ryde", color: "#2f8413", initial: "R" },

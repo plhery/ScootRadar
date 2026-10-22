@@ -100,6 +100,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         switch self {
         case .bird: OperatorApp(link: URL(string: "https://ride.bird.co/")!, appStore: URL(string: "https://apps.apple.com/app/id1260842311")!)
         case .lime: OperatorApp(link: URL(string: "https://lime.bike/")!, appStore: URL(string: "https://apps.apple.com/app/id1199780189")!)
+        case .publibike: OperatorApp(link: URL(string: "https://app.publibike.ch/")!, appStore: URL(string: "https://apps.apple.com/app/id6739938966")!)
         default: nil
         }
     }

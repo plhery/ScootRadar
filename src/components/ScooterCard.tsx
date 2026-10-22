@@ -88,7 +88,7 @@ export default function ScooterCard({ selection, onClose, onLocate, locating = f
   const name = provider?.name ?? vehicle.provider;
   const platform = typeof navigator === 'undefined' ? 'web' : rentalPlatform(navigator.userAgent, navigator.maxTouchPoints);
   const scooterLink = rentalLinkForPlatform(vehicle, platform);
-  // Lime's and Bird's feeds link no scooter: a phone opens their app instead, or its store page.
+  // Lime's, Bird's and PubliBike's feeds link no scooter: a phone opens their app instead, or its store page.
   const appLink = scooterLink ? null : operatorAppLink(vehicle.provider, platform);
   const rentalLink = scooterLink ?? appLink;
   const quote = vehicle.pricing ? ridePriceQuote(vehicle.pricing, duration) : null;
