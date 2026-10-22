@@ -142,22 +142,17 @@ struct ScooterControlDock: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.colorScheme) private var colorScheme
-    /// A phone's dock at the bottom, or the card of a large window's panel,
-    /// which lists the providers one under the other and folds.
-    private let layout: ScooterChromeLayout
     private let maximumContentHeight: CGFloat
     private let onEditFilters: () -> Void
     private let onHeightChange: (CGFloat) -> Void
 
     init(
         model: ScooterMapModel,
-        layout: ScooterChromeLayout = .dock,
         maximumContentHeight: CGFloat = .infinity,
         onEditFilters: @escaping () -> Void = {},
         onHeightChange: @escaping (CGFloat) -> Void = { _ in }
     ) {
         self.model = model
-        self.layout = layout
         self.maximumContentHeight = maximumContentHeight
         self.onEditFilters = onEditFilters
         self.onHeightChange = onHeightChange
@@ -165,15 +160,20 @@ struct ScooterControlDock: View {
 
     var body: some View {
         let content = model.dock
-        // Only the panel folds; a phone's dock always shows all it has.
-        let isFolded = layout == .panel && model.isPanelCollapsed
 
-        card(content, isFolded: isFolded)
-        .foregroundStyle(ScooterPalette.dockText)
-        .frame(maxWidth: 560)
-        .background {
-            if !isFolded { cardGlow(content) }
+        // Content taller than the room above the dock scrolls, as with large text.
+        HeightLimit(maximum: maximumContentHeight) {
+            ViewThatFits(in: .vertical) {
+                dockContent(content)
+                ScrollView(.vertical) {
+                    dockContent(content)
+                }
+            }
         }
+        .foregroundStyle(ScooterPalette.dockText)
+        .padding(16)
+        .frame(maxWidth: 560)
+        .background { cardGlow(content) }
         .chromeGlass(in: Self.shape)
         .overlay {
             Self.shape
@@ -182,16 +182,6 @@ struct ScooterControlDock: View {
         }
         .shadow(color: .black.opacity(colorScheme == .dark ? 0.3 : 0.1), radius: 16, y: 10)
         .contentShape(Self.shape)
-        .overlay(alignment: .bottom) {
-            if layout == .panel {
-                PanelGrabber(isFolded: isFolded) { folded in
-                    model.isPanelCollapsed = folded
-                }
-                // Its 44 pt reach from the foot of the card to just past its
-                // edge, and the handle shows 12 pt above the edge.
-                .offset(y: Self.grabberOverhang)
-            }
-        }
         .onGeometryChange(for: CGFloat.self) { proxy in
             proxy.size.height
         } action: { height in
@@ -201,7 +191,6 @@ struct ScooterControlDock: View {
             reduceMotion ? nil : .snappy(duration: 0.28, extraBounce: 0.06),
             value: content.kind
         )
-        .animation(reduceMotion ? nil : .snappy(duration: 0.3), value: isFolded)
         .onChange(of: content.kind) {
             // A card opens down here while VoiceOver is still on the marker,
             // and the out-of-date card replaces the count unasked.
@@ -219,69 +208,6 @@ struct ScooterControlDock: View {
     }
 
     private static let shape = RoundedRectangle(cornerRadius: 28, style: .continuous)
-
-    /// Under the content of the panel's card, the room its grabber takes.
-    static let panelFoot: CGFloat = 34
-    /// Under the line of a folded card, where the grabber reaches up over the
-    /// line's own foot: both unfold the card.
-    private static let foldedFoot: CGFloat = 22
-    /// How far the grabber's reach goes past the card's edge.
-    private static let grabberOverhang: CGFloat = 10
-
-    /// What the card holds, inside its edges: all of the content, which
-    /// scrolls when taller than the room, or in a folded panel one line.
-    @ViewBuilder
-    private func card(_ content: ScooterDockContent, isFolded: Bool) -> some View {
-        switch layout {
-        case .dock:
-            fullContent(content)
-                .padding(16)
-        case .panel:
-            if isFolded {
-                foldedLine
-                    .padding(.top, 4)
-                    .padding(.bottom, Self.foldedFoot)
-                    .padding(.horizontal, 16)
-                    .transition(.opacity)
-            } else {
-                fullContent(content)
-                    .padding(.top, 16)
-                    .padding(.bottom, Self.panelFoot)
-                    .padding(.horizontal, 16)
-                    .transition(.opacity)
-            }
-        }
-    }
-
-    /// Content taller than the room above the dock scrolls, as with large text.
-    private func fullContent(_ content: ScooterDockContent) -> some View {
-        HeightLimit(maximum: maximumContentHeight) {
-            ViewThatFits(in: .vertical) {
-                dockContent(content)
-                ScrollView(.vertical) {
-                    dockContent(content)
-                }
-            }
-        }
-    }
-
-    /// The line a folded panel shows under its search bar. A tap on it opens
-    /// the panel again, as the grabber does.
-    private var foldedLine: some View {
-        TimelineView(.periodic(from: .now, by: 30)) { context in
-            let line = model.dockLine(at: context.date)
-            Button {
-                model.isPanelCollapsed = false
-            } label: {
-                FoldedDockLine(line: line)
-                    .frame(minHeight: 44)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(line.accessibilityLabel)
-            .accessibilityHint(String(localized: "Expands the panel"))
-        }
-    }
 
     /// A soft light in the provider's colour from the top left corner of a
     /// scooter's card.
@@ -328,7 +254,7 @@ struct ScooterControlDock: View {
                 .frame(maxWidth: .infinity, minHeight: Self.headerHeight, alignment: .leading)
 
                 if !chips.isEmpty {
-                    providerFilters(chips)
+                    providerChips(chips)
                 }
             }
         case .waiting:
@@ -415,7 +341,7 @@ struct ScooterControlDock: View {
                 }
             }
 
-            providerFilters(summary.chips)
+            providerChips(summary.chips)
 
             if let hint = summary.hint {
                 DockNoteRow(
@@ -437,16 +363,6 @@ struct ScooterControlDock: View {
         return Text(count + label)
             .contentTransition(.numericText())
             .fixedSize(horizontal: false, vertical: true)
-    }
-
-    /// The providers: chips side by side in a phone's dock, and in the panel
-    /// of a large window a list.
-    @ViewBuilder
-    private func providerFilters(_ chips: [ScooterProviderEntry]) -> some View {
-        switch layout {
-        case .dock: providerChips(chips)
-        case .panel: providerList(chips)
-        }
     }
 
     private func providerChips(_ chips: [ScooterProviderEntry]) -> some View {
@@ -492,44 +408,6 @@ struct ScooterControlDock: View {
             model.toggleQuickProvider(entry.provider)
         }
         .accessibilityHint(quickProviderHint(entry.provider))
-    }
-
-    /// The providers one under the other, as the website's legend beside the
-    /// map on a computer: "All providers", then each provider with its dot,
-    /// its count and a check while it is shown. A row does what its chip
-    /// does, so folding an iPhone Duo between the panel and the dock changes
-    /// nothing but the look.
-    private func providerList(_ chips: [ScooterProviderEntry]) -> some View {
-        VStack(spacing: 0) {
-            ProviderListRow(
-                title: String(localized: "All providers"),
-                accessibilityTitle: String(localized: "All providers"),
-                count: model.allProviderCount,
-                color: nil,
-                isShown: model.allProvidersSelected,
-                action: model.showAllProviders
-            )
-
-            ForEach(chips) { entry in
-                ProviderListRow(
-                    title: entry.provider.name,
-                    accessibilityTitle: entry.isDown ? entry.downLabel : entry.provider.name,
-                    count: entry.count,
-                    color: providerAccent(entry.provider, colorScheme: colorScheme),
-                    isShown: entry.isEnabled,
-                    isDown: entry.isDown
-                ) {
-                    model.toggleQuickProvider(entry.provider)
-                }
-                .accessibilityHint(quickProviderHint(entry.provider))
-            }
-        }
-        .animation(
-            reduceMotion ? nil : .snappy(duration: 0.25),
-            value: chips.map(\.provider)
-        )
-        // The rows and the lines between them run to the edges of the card.
-        .padding(.horizontal, -16)
     }
 
     private func quickProviderHint(_ provider: ScooterProvider) -> String {
@@ -1123,271 +1001,15 @@ private struct QuickProviderFilterChip: View {
     }
 
     private var accessibilityLabel: String {
-        Self.accessibilityLabel(title: accessibilityTitle, count: count, isDown: isDown)
-    }
-
-    /// "Lime, 12 scooters", or what is said of a provider that isn't sharing
-    /// data. The rows of the panel's list read the same.
-    static func accessibilityLabel(title: String, count: Int, isDown: Bool) -> String {
-        if isDown { return title }
+        if isDown { return accessibilityTitle }
         if count == 1 {
-            return String(format: String(localized: "%@, one scooter"), title)
+            return String(format: String(localized: "%@, one scooter"), accessibilityTitle)
         }
         return String(
             format: String(localized: "%@, %lld scooters"),
-            title,
+            accessibilityTitle,
             Int64(count)
         )
-    }
-}
-
-/// A provider in the panel's list, as in the website's legend: its dot, its
-/// name, its count and a check while its scooters are shown. One that isn't
-/// sharing data is quiet, as its chip is, with a warning in place of the
-/// count and, while it is chosen, a dashed circle in place of the check.
-private struct ProviderListRow: View {
-    let title: String
-    let accessibilityTitle: String
-    let count: Int
-    /// The provider's colour; nil for "All providers".
-    let color: Color?
-    /// Shown on the map: the check, and the selected state for VoiceOver.
-    let isShown: Bool
-    var isDown = false
-    let action: () -> Void
-    @ScaledMetric(relativeTo: .subheadline) private var checkSize: CGFloat = 20
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 10) {
-                if let color {
-                    Circle()
-                        .fill(isDown ? ScooterPalette.dockQuiet : color)
-                        .frame(width: 10, height: 10)
-                }
-
-                Text(title)
-                    .designFont(14.5, .semibold, relativeTo: .subheadline)
-                    .foregroundStyle(isShown && !isDown ? ScooterPalette.dockText : ScooterPalette.dockQuiet)
-                    .multilineTextAlignment(.leading)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                if isDown {
-                    Image(systemName: "exclamationmark.triangle")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(ScooterPalette.warning)
-                } else {
-                    Text(count, format: .number)
-                        .designFont(12.5, .semibold, relativeTo: .footnote)
-                        .monospacedDigit()
-                        .foregroundStyle(ScooterPalette.dockQuiet)
-                        .contentTransition(.numericText())
-                }
-
-                check
-                    .frame(width: checkSize, height: checkSize)
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 6)
-            .frame(minHeight: 44)
-            .overlay(alignment: .top) {
-                Rectangle()
-                    .fill(ScooterPalette.dockHairline)
-                    .frame(height: 1)
-            }
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(
-            QuickProviderFilterChip.accessibilityLabel(title: accessibilityTitle, count: count, isDown: isDown)
-        )
-        .accessibilityValue(isShown ? String(localized: "Shown") : String(localized: "Hidden"))
-        .accessibilityAddTraits(isShown ? .isSelected : [])
-    }
-
-    @ViewBuilder
-    private var check: some View {
-        if isShown && isDown {
-            Circle()
-                .strokeBorder(ScooterPalette.dockQuiet, style: StrokeStyle(lineWidth: 1.5, dash: [3.5, 3]))
-                .padding(2)
-        } else if isShown {
-            Image(systemName: "checkmark")
-                .designFont(14, .bold, relativeTo: .subheadline)
-                .foregroundStyle(ScooterPalette.actionText)
-        }
-    }
-}
-
-/// The line of a folded panel: a mark, then what the dock shows in a few
-/// words, the first of them standing out. With large text it wraps between
-/// its parts, never inside one, unless a part is wider than the line.
-struct FoldedDockLine: View {
-    let line: ScooterDockLine
-    @Environment(\.colorScheme) private var colorScheme
-    /// The mark's column and the height of the first line of text, beside
-    /// which it stands, grow with the text: a symbol drawn at the text's size
-    /// stays inside the card at every size.
-    @ScaledMetric(relativeTo: .subheadline) private var markWidth: CGFloat = 18
-    @ScaledMetric(relativeTo: .subheadline) private var lineHeight: CGFloat = 20
-    @ScaledMetric(relativeTo: .subheadline) private var dotSize: CGFloat = 10
-    /// The room of a space between two parts.
-    @ScaledMetric(relativeTo: .subheadline) private var gap: CGFloat = 4
-
-    var body: some View {
-        HStack(alignment: .top, spacing: 10) {
-            mark
-                .fixedSize()
-                .frame(minWidth: markWidth, minHeight: lineHeight)
-                .accessibilityHidden(true)
-
-            PartsFlow(spacing: gap) {
-                ForEach(Array(line.parts.enumerated()), id: \.offset) { index, part in
-                    Text(text(of: part, at: index))
-                        .multilineTextAlignment(.leading)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-    }
-
-    @ViewBuilder
-    private var mark: some View {
-        switch line.mark {
-        case let .provider(provider):
-            Circle()
-                .fill(providerAccent(provider, colorScheme: colorScheme))
-                .frame(width: dotSize, height: dotSize)
-        case .progress:
-            ProgressView()
-                .controlSize(.small)
-        case let .symbol(name):
-            Image(systemName: name)
-                .font(.footnote.weight(.semibold))
-                .foregroundStyle(line.isWarning ? ScooterPalette.warning : ScooterPalette.actionText)
-        }
-    }
-
-    /// A part as it is written: the first in bold, the status last, in the
-    /// warning colour after a failed refresh, and every part but the last
-    /// followed by a dot, which stays at the end of a line when the line wraps.
-    private func text(of part: String, at index: Int) -> AttributedString {
-        let parts = line.parts
-        let isStatus = line.status != nil && index == parts.count - 1
-        var text = AttributedString(part)
-        text.swiftUI.font = index == 0
-            ? .subheadline.weight(.semibold).monospacedDigit()
-            : .subheadline.monospacedDigit()
-        if index > 0 {
-            text.swiftUI.foregroundColor = isStatus && line.status?.isWarning == true
-                ? ScooterPalette.warning
-                : ScooterPalette.dockQuiet
-        }
-        guard index < parts.count - 1 else { return text }
-        var dot = AttributedString("\u{00A0}·")
-        dot.swiftUI.font = .subheadline
-        dot.swiftUI.foregroundColor = ScooterPalette.dockQuiet
-        return text + dot
-    }
-}
-
-/// Lays out its parts as the words of a paragraph: side by side while they
-/// fit, and the next on a new row when it doesn't. A part is never broken,
-/// unless it is wider than a row on its own; it then takes a row of its own
-/// and wraps inside it.
-struct PartsFlow: Layout {
-    var spacing: CGFloat
-
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        let frames = arrange(subviews, in: proposal.width ?? .infinity)
-        return CGSize(
-            width: frames.map(\.maxX).max() ?? 0,
-            height: frames.map(\.maxY).max() ?? 0
-        )
-    }
-
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        let frames = arrange(subviews, in: bounds.width)
-        for (subview, frame) in zip(subviews, frames) {
-            subview.place(
-                at: CGPoint(x: bounds.minX + frame.minX, y: bounds.minY + frame.minY),
-                proposal: ProposedViewSize(frame.size)
-            )
-        }
-    }
-
-    private func arrange(_ subviews: Subviews, in width: CGFloat) -> [CGRect] {
-        Self.frames(
-            of: subviews.map { subview in subview.sizeThatFits(.unspecified) },
-            in: width,
-            spacing: spacing,
-            wrapped: { index, width in subviews[index].sizeThatFits(ProposedViewSize(width: width, height: nil)) }
-        )
-    }
-
-    /// Where each part goes, row after row, in a width, from the size each
-    /// takes on one line and the size `wrapped` gives one wrapped to a width.
-    static func frames(
-        of sizes: [CGSize],
-        in width: CGFloat,
-        spacing: CGFloat,
-        wrapped: (Int, CGFloat) -> CGSize
-    ) -> [CGRect] {
-        var frames: [CGRect] = []
-        var x: CGFloat = 0
-        var y: CGFloat = 0
-        var rowHeight: CGFloat = 0
-        for (index, oneLine) in sizes.enumerated() {
-            var size = oneLine
-            if x > 0, x + spacing + size.width > width {
-                y += rowHeight
-                x = 0
-                rowHeight = 0
-            }
-            if size.width > width {
-                // Wider than a row: it wraps, in a row of its own.
-                size = wrapped(index, width)
-            }
-            let originX = x > 0 ? x + spacing : 0
-            frames.append(CGRect(origin: CGPoint(x: originX, y: y), size: size))
-            x = originX + size.width
-            rowHeight = max(rowHeight, size.height)
-        }
-        return frames
-    }
-}
-
-/// The handle at the foot of the panel's card, as on the card of Maps: a tap
-/// folds the card down to one line under the search bar or opens it again,
-/// and so does a swipe up or down on it.
-private struct PanelGrabber: View {
-    let isFolded: Bool
-    let setFolded: (Bool) -> Void
-
-    var body: some View {
-        Button {
-            setFolded(!isFolded)
-        } label: {
-            Capsule()
-                .fill(ScooterPalette.dockQuiet.opacity(0.55))
-                .frame(width: 36, height: 5)
-                // The width of the card and 44 pt high take the tap.
-                .frame(maxWidth: .infinity, minHeight: 44)
-                .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .highPriorityGesture(
-            DragGesture(minimumDistance: 10)
-                .onEnded { drag in
-                    let distance = drag.translation.height
-                    guard abs(distance) >= 16 else { return }
-                    setFolded(distance < 0)
-                }
-        )
-        .accessibilityLabel(isFolded ? String(localized: "Expand panel") : String(localized: "Collapse panel"))
-        .accessibilityValue(isFolded ? String(localized: "Collapsed") : String(localized: "Expanded"))
     }
 }
 

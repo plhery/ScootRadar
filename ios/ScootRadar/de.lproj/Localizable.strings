@@ -229,11 +229,3 @@
 "You’re there." = "Angekommen.";
 "Route shown: ≈%1$lld min walk · %2$@" = "Route angezeigt: ≈%1$lld Min. zu Fuss · %2$@";
 "No longer on the map. Someone may have taken it." = "Nicht mehr auf der Karte. Vielleicht hat ihn jemand genommen.";
-
-/* The panel of a large window: the grabber that folds it, and its folded line */
-"Collapse panel" = "Bereich einklappen";
-"Expand panel" = "Bereich ausklappen";
-"Collapsed" = "Eingeklappt";
-"Expanded" = "Ausgeklappt";
-"Expands the panel" = "Klappt den Bereich aus";
-"%lld min ago" = "vor %lld Min.";

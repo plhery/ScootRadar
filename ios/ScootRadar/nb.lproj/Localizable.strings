@@ -229,11 +229,3 @@
 "You’re there." = "Du er fremme.";
 "Route shown: ≈%1$lld min walk · %2$@" = "Rute vist: ≈%1$lld min gange · %2$@";
 "No longer on the map. Someone may have taken it." = "Ikke lenger på kartet. Kanskje noen har tatt den.";
-
-/* The panel of a large window: the grabber that folds it, and its folded line */
-"Collapse panel" = "Slå sammen panelet";
-"Expand panel" = "Utvid panelet";
-"Collapsed" = "Slått sammen";
-"Expanded" = "Utvidet";
-"Expands the panel" = "Utvider panelet";
-"%lld min ago" = "for %lld min siden";
