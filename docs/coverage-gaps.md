@@ -811,8 +811,11 @@ Bonaire had feeds to add. Survey files are in
 - **Early January 2027:** Bird and Lime Lisboa. Lisboa's council approved on
   21 October 2026 ending its agreement with the operators and banning shared
   scooters from the municipality: after 10 days for the operators to answer
-  in writing, they have 60 days to remove them, by the end of the year by
-  Lusa's account, or the council removes them at their cost. "Feed empty"
+  in writing, they have 60 days from formal notice to remove them, by the end
+  of the year by Lusa's account, or the council removes them at their cost.
+  The vice-mayor, Gonçalo Reis, expected none left by the end of January
+  ([RTP](https://www.rtp.pt/noticias/pais/nao-prevemos-regresso-camara-espera-ja-nao-ter-trotinetas-em-lisboa-em-janeiro-de-2027_n1772050)):
+  if the feeds still list scooters, look again in February. "Feed empty"
   reports each feed 3 days after it empties: that is the ban, not an outage.
   Then take both out of the catalog and Lisboa out of the map's towns, and
   update the Lisbon guides (`src/guides/pt/trotinetes-lisboa.ts`,
