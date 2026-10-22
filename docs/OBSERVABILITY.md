@@ -206,7 +206,8 @@ Winterthur, Zug and Wetzikon systems were the first, empty since at least 11 Oct
 2026; they are left out of collection since 15 October 2026, and Hopp Siglufjörður,
 Dott Tignes (now paused out of season) and Dott Bourgoin-Jallieu were settled the same
 day. Hopp Dalvík and Bird Leduc, emptied for the winter on 20 and 21 October 2026, were
-paused on 22 October, before their alerts were due.
+paused on 22 October, before their alerts were due, and Hopp Ólafsvík, emptied on the
+22nd, from the 23rd.
 
 - **Not a quiet night or a snow day.** Beryl empties Bournemouth and Brighton every
   night and Voi its Oslo feed during the night ban; Bird lists nothing in Calgary on a

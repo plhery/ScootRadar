@@ -159,6 +159,11 @@
         "east": -23.6805
       },
       "discoveryUrl": "https://api.hopp.bike/gbfs/is-olafsvik/gbfs.json",
+      "seasonal": {
+        "from": "10-23",
+        "until": "05-01",
+        "timeZone": "Atlantic/Reykjavik"
+      },
       "areas": [
         {
           "city": "Ólafsvík",

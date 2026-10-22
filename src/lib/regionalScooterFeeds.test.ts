@@ -507,6 +507,18 @@ describe('German and Italian scooter coverage', () => {
     expect(activeSeasonalPause([65.6835, -18.0878], winter)).toBeNull();
     expect(feedPaused('iceland:hopp_is_akureyri', winter)).toBe(false);
   });
+  it('takes Hopp\'s scooters off in Ólafsvík and Hellissandur from 23 October until 1 May, as its feed emptied on 22 October 2026', () => {
+    const olafsvik: [number, number] = [64.8959, -23.7084];
+    const hellissandur: [number, number] = [64.9172, -23.8825];
+    // 23:30 on 22 October is still in season; 00:30 on the 23rd is not.
+    expect(activeSeasonalPause(olafsvik, Date.UTC(2026, 9, 22, 23, 30))).toBeNull();
+    expect(activeSeasonalPause(olafsvik, Date.UTC(2026, 9, 23, 0, 30))).toEqual({ city: 'Ólafsvík', month: 5 });
+    expect(activeSeasonalPause(hellissandur, Date.UTC(2027, 3, 30, 12))).toEqual({ city: 'Hellissandur', month: 5 });
+    expect(activeSeasonalPause(olafsvik, Date.UTC(2027, 4, 1, 12))).toBeNull();
+    expect(feedPaused('iceland:hopp_is_olafsvik', Date.UTC(2027, 0, 15, 12))).toBe(true);
+    // Stykkishólmur's scooters, across the peninsula, set no season.
+    expect(feedPaused('iceland:hopp_is_stykkisholmur', Date.UTC(2027, 0, 15, 12))).toBe(false);
+  });
 
   it('takes Tromsø\'s scooters off from 2 November to 1 May, and Trondheim\'s from 2 December to 15 March, as their rules set the season', () => {
     const tromso: [number, number] = [69.6492, 18.9553];
