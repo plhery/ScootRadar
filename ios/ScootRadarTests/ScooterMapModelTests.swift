@@ -980,6 +980,56 @@ private final class TestClock {
     }
 }
 
+/// Ends the run once the main thread has run for `cpuSeconds` of its own time
+/// from now on. A loop that never gives the main thread back can't let a test
+/// fail by itself, so this ends it rather than leaving it to hang. It counts the
+/// thread's CPU time, not the clock's: CI's runners stall for a minute or more
+/// with no loop at all, and the main thread then runs for next to nothing. A
+/// main thread stuck without running ends the run after `clockSeconds`.
+private final class MainThreadWatchdog: @unchecked Sendable {
+    private let timer = DispatchSource.makeTimerSource(queue: .global())
+
+    @MainActor
+    init(_ message: String, cpuSeconds: Double = 15, clockSeconds: Double = 300) {
+        // The main thread's port, taken on it. pthread_mach_thread_np takes no
+        // right on the port, so there is none to give back.
+        let thread = pthread_mach_thread_np(pthread_self())
+        let start = Self.cpuSeconds(of: thread)
+        let deadline = DispatchTime.now() + clockSeconds
+        // Not on the main actor, which the test holds: the handler runs on another thread.
+        timer.setEventHandler { @Sendable in
+            let spent = Self.cpuSeconds(of: thread) - start
+            if spent > cpuSeconds {
+                fatalError("\(message): the main thread ran for \(Int(spent)) s without giving the test back")
+            }
+            if DispatchTime.now() > deadline {
+                fatalError("\(message): the main thread didn't give the test back in \(Int(clockSeconds)) s")
+            }
+        }
+        timer.schedule(deadline: .now() + 0.25, repeating: 0.25)
+        timer.resume()
+    }
+
+    func cancel() {
+        timer.cancel()
+    }
+
+    private static func cpuSeconds(of thread: mach_port_t) -> Double {
+        var info = thread_basic_info()
+        var count = mach_msg_type_number_t(MemoryLayout<thread_basic_info>.size / MemoryLayout<integer_t>.size)
+        let result = withUnsafeMutablePointer(to: &info) {
+            $0.withMemoryRebound(to: integer_t.self, capacity: Int(count)) {
+                thread_info(thread, thread_flavor_t(THREAD_BASIC_INFO), $0, &count)
+            }
+        }
+        guard result == KERN_SUCCESS else { return 0 }
+        func seconds(_ time: time_value_t) -> Double {
+            Double(time.seconds) + Double(time.microseconds) / 1_000_000
+        }
+        return seconds(info.user_time) + seconds(info.system_time)
+    }
+}
+
 private final class StubLocationManager: CLLocationManager {
     /// Tests change it to answer the permission prompt.
     var status: CLAuthorizationStatus
@@ -2684,7 +2734,9 @@ extension ScooterMapModelTests {
     }
 
     /// With very large text a card can be taller than the room above the dock
-    /// and scrolls. Opening one in a dock already on screen froze the app.
+    /// and scrolls. Opening one in a dock already on screen froze the app. A
+    /// screen that kept updating itself would freeze it as surely: the card
+    /// updates the map a few times as it opens, and then nothing moves.
     func testATallCardOpensOnTheMapScreenWithVeryLargeText() async throws {
         let tall = Scooter(
             provider: "publibike", latitude: 47.3769, longitude: 8.5417, battery: 82, rangeMeters: 24_000,
@@ -2710,18 +2762,34 @@ extension ScooterMapModelTests {
         window.layoutIfNeeded()
         try await Task.sleep(for: .milliseconds(600))
         guard case .summary = model.dock else { return XCTFail("Expected the summary") }
-
-        // A freeze never gives the main thread back, so the test could not fail by
-        // itself: this ends the run instead of leaving it to hang.
-        let watchdog = DispatchWorkItem {
-            fatalError("The map screen froze while a tall card opened with very large text")
+        func map(in view: UIView) -> MKMapView? {
+            (view as? MKMapView) ?? view.subviews.lazy.compactMap(map(in:)).first
         }
-        DispatchQueue.global().asyncAfter(deadline: .now() + 20, execute: watchdog)
-        model.selectScooter("publibike:tall")
-        try await Task.sleep(for: .milliseconds(600))
-        watchdog.cancel()
+        let mapView = try XCTUnwrap(map(in: window))
+        let coordinator = try XCTUnwrap(mapView.delegate as? ScooterMapView.Coordinator)
 
+        let watchdog = MainThreadWatchdog("The map screen froze while a tall card opened with very large text")
+        defer { watchdog.cancel() }
+        let before = (updates: coordinator.updates, regionChanges: coordinator.regionChanges)
+        model.selectScooter("publibike:tall")
+        try await Task.sleep(for: .seconds(1))
         guard case .scooter = model.dock else { return XCTFail("Expected the scooter card") }
+
+        // A few updates as the card opens; 3 on iOS 27, none of them moving the map.
+        let opened = (updates: coordinator.updates, regionChanges: coordinator.regionChanges)
+        XCTAssertLessThanOrEqual(opened.updates - before.updates, 10, "Updates of the map as the card opened")
+        XCTAssertLessThanOrEqual(opened.regionChanges - before.regionChanges, 1, "Moves of the map as the card opened")
+
+        // Then a second at rest: the dock keeps its height and the map its place. A
+        // timer of the model's may fire in it on a runner that stalled, never more.
+        var dockTops: Set<CGFloat?> = [coordinator.parent.bottomChromeTop]
+        for _ in 0..<20 {
+            try await Task.sleep(for: .milliseconds(50))
+            dockTops.insert(coordinator.parent.bottomChromeTop)
+        }
+        XCTAssertLessThanOrEqual(coordinator.updates - opened.updates, 2, "Updates of the map once the card was open")
+        XCTAssertLessThanOrEqual(coordinator.regionChanges - opened.regionChanges, 0, "Moves of the map once the card was open")
+        XCTAssertLessThanOrEqual(dockTops.count, 1, "Heights of the dock once the card was open: \(dockTops)")
     }
 
     func testMapOpensSlightlyTiltedAndKeepsItsTiltWhenTheAppMovesIt() throws {

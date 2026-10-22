@@ -255,6 +255,7 @@ struct ScooterMapView: UIViewRepresentable {
 
     func updateUIView(_ mapView: MKMapView, context: Context) {
         context.coordinator.parent = self
+        context.coordinator.updates += 1
         context.coordinator.applyMapStyle(mapStyle, to: mapView)
         if mapView.showsUserLocation != showsUserLocation {
             mapView.showsUserLocation = showsUserLocation
@@ -285,6 +286,10 @@ struct ScooterMapView: UIViewRepresentable {
         private var parkingAnnotationsByID: [String: ScooterParkingAnnotation] = [:]
         private var reconciledParking: [ScooterParking] = []
         private(set) var lastFocusToken: Int?
+        /// How many times SwiftUI has updated the map, and how many times the
+        /// map has come to rest somewhere new. A screen at rest adds to neither.
+        fileprivate(set) var updates = 0
+        private(set) var regionChanges = 0
         private var appliedSelectionID: String?
         private var appliedParkingID: String?
         private var reconciledScooterRevision: Int?
@@ -706,6 +711,7 @@ struct ScooterMapView: UIViewRepresentable {
         }
 
         func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+            regionChanges += 1
             // The camera has fitted a new route: it draws itself now. Not on
             // what the fit itself does at once, before its move.
             if let pendingReveal, pendingReveal.revision == trail.revision,
