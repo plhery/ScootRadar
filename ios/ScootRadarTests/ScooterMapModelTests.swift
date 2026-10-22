@@ -989,8 +989,11 @@ private final class StubLocationManager: CLLocationManager {
         super.init()
     }
 
+    /// The fix Core Location keeps from before, as at a relaunch.
+    var cachedLocation: CLLocation?
+
     override var authorizationStatus: CLAuthorizationStatus { status }
-    override var location: CLLocation? { nil }
+    override var location: CLLocation? { cachedLocation }
     override func requestWhenInUseAuthorization() {}
     override func startUpdatingLocation() {}
     override func startUpdatingHeading() {}
@@ -3461,5 +3464,118 @@ extension ScooterMapModelTests {
             XCTAssertGreaterThan(height, 0, "\(name), \(scheme), \(size)", file: file, line: line)
             return height
         }
+    }
+}
+
+// Where locating puts the rider on the map.
+extension ScooterMapModelTests {
+    /// Beside a panel, locating puts the rider in the middle of the part of
+    /// the map beside it, at the first fix and again with the locate button
+    /// once the map was moved. MapKit reads its margins back with the safe
+    /// area added: compared with what was set, they never matched, the map
+    /// was re-centred at every update, and each move stopped where it began,
+    /// with the rider off the bottom of the screen.
+    func testLocatingBesideThePanelPutsTheRiderInTheMiddleOfTheMapBesideIt() async throws {
+        let (model, manager) = modelLocatedByTheTest()
+        let (window, mapView) = try await panelWindow(showing: model)
+        defer { window.isHidden = true }
+        let besidePanel = await waitUntil { mapView.directionalLayoutMargins.leading >= 16 + 380 + 16 }
+        XCTAssertTrue(besidePanel, "\(mapView.directionalLayoutMargins)")
+        try await Task.sleep(for: .milliseconds(500))
+
+        model.locationManager(manager, didUpdateLocations: [fix(at: Self.rider)])
+        let located = await waitUntil(attempts: 400) { self.isBesideThePanel(Self.rider, on: mapView) }
+        XCTAssertTrue(located, "\(mapView.convert(Self.rider, toPointTo: mapView))")
+
+        mapView.setCenter(CLLocationCoordinate2D(latitude: 47.3790, longitude: 8.5450), animated: false)
+        XCTAssertFalse(isBesideThePanel(Self.rider, on: mapView))
+        model.focusOnUser()
+        let locatedAgain = await waitUntil(attempts: 400) { self.isBesideThePanel(Self.rider, on: mapView) }
+        XCTAssertTrue(locatedAgain, "\(mapView.convert(Self.rider, toPointTo: mapView))")
+    }
+
+    /// At a relaunch the model starts with the fix Core Location kept, as
+    /// the panel takes its place and before SwiftUI has sized the map. The
+    /// centre kept for the panel was held back by MapKit until the map had
+    /// its size and then set over the move to the rider, which took the map
+    /// back to where it opened, with the rider off the bottom of the screen.
+    func testTheFixKeptFromBeforeLocatesTheRiderBesideThePanelAtLaunch() async throws {
+        let manager = StubLocationManager(status: .authorizedWhenInUse)
+        manager.cachedLocation = fix(at: Self.rider)
+        let model = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+            locationManager: manager,
+            defaults: isolatedDefaults()
+        )
+        let (window, mapView) = try await panelWindow(showing: model)
+        defer { window.isHidden = true }
+        let located = await waitUntil(attempts: 400) { self.isBesideThePanel(Self.rider, on: mapView) }
+        XCTAssertTrue(located, "\(mapView.convert(Self.rider, toPointTo: mapView))")
+        XCTAssertNotNil(model.focusRequest)
+        // And it stays there once the map has settled.
+        try await Task.sleep(for: .milliseconds(800))
+        XCTAssertTrue(isBesideThePanel(Self.rider, on: mapView), "\(mapView.convert(Self.rider, toPointTo: mapView))")
+    }
+
+    /// A first fix can also come before the map is made at all: the move
+    /// set out at the size the map opens with goes on to the rider beside
+    /// the panel rather than stop where it was when the margins moved.
+    func testAFirstFixBeforeThePanelIsInPlaceStillEndsBesideIt() async throws {
+        let (model, manager) = modelLocatedByTheTest()
+        model.locationManager(manager, didUpdateLocations: [fix(at: Self.rider)])
+        XCTAssertNotNil(model.focusRequest)
+        let (window, mapView) = try await panelWindow(showing: model)
+        defer { window.isHidden = true }
+        let located = await waitUntil(attempts: 400) { self.isBesideThePanel(Self.rider, on: mapView) }
+        XCTAssertTrue(located, "\(mapView.convert(Self.rider, toPointTo: mapView))")
+    }
+
+    private static let rider = CLLocationCoordinate2D(latitude: 47.3720, longitude: 8.5390)
+
+    /// A model allowed to locate that hears only the fixes the test gives
+    /// it, whatever the simulator's own location is.
+    private func modelLocatedByTheTest() -> (ScooterMapModel, CLLocationManager) {
+        let manager = StubLocationManager(status: .authorizedWhenInUse)
+        let model = ScooterMapModel(
+            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+            locationManager: manager,
+            defaults: isolatedDefaults()
+        )
+        return (model, manager)
+    }
+
+    private func fix(at coordinate: CLLocationCoordinate2D) -> CLLocation {
+        CLLocation(coordinate: coordinate, altitude: 400, horizontalAccuracy: 5, verticalAccuracy: 5, timestamp: .now)
+    }
+
+    /// The map screen in a window of an open iPhone Duo held sideways, which
+    /// is on screen, with its safe area, before the screen is put in it, as
+    /// the app's window is at launch.
+    private func panelWindow(showing model: ScooterMapModel) async throws -> (UIWindow, MKMapView) {
+        func map(in view: UIView) -> MKMapView? {
+            (view as? MKMapView) ?? view.subviews.lazy.compactMap(map(in:)).first
+        }
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+        let window = UIWindow(windowScene: scene)
+        window.frame = CGRect(x: 0, y: 0, width: 951, height: 669)
+        window.rootViewController = UIViewController()
+        window.isHidden = false
+        window.layoutIfNeeded()
+        try await Task.sleep(for: .milliseconds(300))
+        window.rootViewController = UIHostingController(
+            rootView: ScooterMapScreen(model: model)
+                .environment(\.horizontalSizeClass, .regular)
+                .environment(\.verticalSizeClass, .regular)
+        )
+        window.layoutIfNeeded()
+        return (window, try XCTUnwrap(map(in: window)))
+    }
+
+    /// Whether a place is in the middle of the map right of the panel, 16 pt
+    /// from the edge and 380 pt wide, within a little.
+    private func isBesideThePanel(_ coordinate: CLLocationCoordinate2D, on mapView: MKMapView) -> Bool {
+        let point = mapView.convert(coordinate, toPointTo: mapView)
+        let middle = CGPoint(x: (16 + 380 + mapView.bounds.maxX) / 2, y: mapView.bounds.midY)
+        return abs(point.x - middle.x) <= 24 && abs(point.y - middle.y) <= 24
     }
 }
