@@ -3530,6 +3530,20 @@ extension ScooterMapModelTests {
         XCTAssertTrue(located, "\(mapView.convert(Self.rider, toPointTo: mapView))")
     }
 
+    /// On a slow runner the first layout can take longer than a move to a
+    /// place was once given before it counted as over: the map, without a
+    /// size when the panel took its place, then kept where it opened, with
+    /// the rider off to the side. The move waits for the map's size however
+    /// long that takes.
+    func testAFirstFixStillEndsBesideThePanelAfterASlowFirstLayout() async throws {
+        let (model, manager) = modelLocatedByTheTest()
+        model.locationManager(manager, didUpdateLocations: [fix(at: Self.rider)])
+        let (window, mapView) = try await panelWindow(showing: model, firstLayoutTaking: 2)
+        defer { window.isHidden = true }
+        let located = await waitUntil(attempts: 400) { self.isBesideThePanel(Self.rider, on: mapView) }
+        XCTAssertTrue(located, "\(mapView.convert(Self.rider, toPointTo: mapView))")
+    }
+
     private static let rider = CLLocationCoordinate2D(latitude: 47.3720, longitude: 8.5390)
 
     /// A model allowed to locate that hears only the fixes the test gives
@@ -3551,7 +3565,10 @@ extension ScooterMapModelTests {
     /// The map screen in a window of an open iPhone Duo held sideways, which
     /// is on screen, with its safe area, before the screen is put in it, as
     /// the app's window is at launch.
-    private func panelWindow(showing model: ScooterMapModel) async throws -> (UIWindow, MKMapView) {
+    private func panelWindow(
+        showing model: ScooterMapModel,
+        firstLayoutTaking slowness: TimeInterval = 0
+    ) async throws -> (UIWindow, MKMapView) {
         func map(in view: UIView) -> MKMapView? {
             (view as? MKMapView) ?? view.subviews.lazy.compactMap(map(in:)).first
         }
@@ -3562,8 +3579,19 @@ extension ScooterMapModelTests {
         window.isHidden = false
         window.layoutIfNeeded()
         try await Task.sleep(for: .milliseconds(300))
+        var slowed = false
         window.rootViewController = UIHostingController(
             rootView: ScooterMapScreen(model: model)
+                // Holds up the end of the first layout, between the map's
+                // first update and the panel taking its place, as a slow
+                // runner does.
+                .background {
+                    Color.clear.onGeometryChange(for: CGSize.self, of: \.size) { _ in
+                        guard slowness > 0, !slowed else { return }
+                        slowed = true
+                        usleep(useconds_t(slowness * 1_000_000))
+                    }
+                }
                 .environment(\.horizontalSizeClass, .regular)
                 .environment(\.verticalSizeClass, .regular)
         )

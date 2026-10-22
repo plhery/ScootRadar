@@ -308,8 +308,10 @@ struct ScooterMapView: UIViewRepresentable {
         private var restingMargins: NSDirectionalEdgeInsets?
         /// The margins set beside the panel, as they were set.
         private var panelMargins: NSDirectionalEdgeInsets?
-        /// The place last asked for, until its move is over.
-        private var focusUnderWay: (request: MapFocusRequest, until: TimeInterval)?
+        /// The place last asked for, from its move until the person moves the
+        /// map or chooses something else to show, or another place is asked
+        /// for. Until then a change of the margins takes the map on to it.
+        private var focusUnderWay: MapFocusRequest?
         /// A selection just made, until when it is brought out from under a panel.
         private var watchedSelection: (key: String, until: TimeInterval)?
         private var appliedMapStyle: AppleMapStyle?
@@ -559,7 +561,7 @@ struct ScooterMapView: UIViewRepresentable {
             // waits for the layout; the first region change then applies it.
             guard mapView.bounds.width > 0, mapView.bounds.height > 0 else { return }
             lastFocusToken = request.token
-            focusUnderWay = (request, ProcessInfo.processInfo.systemUptime + Self.focusMoveDuration)
+            focusUnderWay = request
             move(to: request, on: mapView)
         }
 
@@ -675,10 +677,13 @@ struct ScooterMapView: UIViewRepresentable {
         /// of the part left in view, the rider's place after locating, goes to
         /// the middle of the part left in view now, as a panel comes or goes.
         ///
-        /// A move to a place just asked for may still be under way: the
-        /// rider's first fix can come before the panel has its place. It goes
-        /// on to the place, measured beside the panel; keeping the centre
-        /// would stop it where it was, short of the place.
+        /// A move to a place asked for may still be under way: the rider's
+        /// first fix can come before the panel has its place. Until the person
+        /// moves the map or chooses something else, the map goes on to the
+        /// place, measured beside the panel; keeping the centre would stop it
+        /// where it was, short of the place. However long the first layout
+        /// takes: a move given a second and a half to be over left the rider
+        /// in the middle of the whole map after a slow one.
         ///
         /// A map SwiftUI hasn't given a size yet shows nothing to keep, and
         /// MapKit holds back a centre or a camera given to it until it has
@@ -690,23 +695,19 @@ struct ScooterMapView: UIViewRepresentable {
         private func setMargins(_ margins: NSDirectionalEdgeInsets, on mapView: MKMapView) {
             let centre = mapView.centerCoordinate
             mapView.directionalLayoutMargins = margins
-            let moving = focusUnderWay.map { ProcessInfo.processInfo.systemUptime < $0.until } ?? false
             guard mapView.bounds.width > 0, mapView.bounds.height > 0 else {
-                if moving {
+                if focusUnderWay != nil {
                     lastFocusToken = nil
                     focusUnderWay = nil
                 }
                 return
             }
-            if moving, let focusUnderWay {
-                move(to: focusUnderWay.request, on: mapView)
+            if let focusUnderWay {
+                move(to: focusUnderWay, on: mapView)
             } else {
                 mapView.setCenter(centre, animated: false)
             }
         }
-
-        /// About as long as MapKit takes to fly to a place.
-        private static let focusMoveDuration: TimeInterval = 1.5
 
         /// A scooter or bay doesn't move the map when it is chosen. Beside a
         /// panel, though, its card opens in the panel, which may then grow over
@@ -717,6 +718,8 @@ struct ScooterMapView: UIViewRepresentable {
             let now = ProcessInfo.processInfo.systemUptime
             if key != watchedSelection?.key {
                 watchedSelection = key.map { ($0, now + 1) }
+                // A scooter or a bay chosen is what the map shows now.
+                if key != nil { focusUnderWay = nil }
             }
             guard let watched = watchedSelection, now < watched.until,
                   let panel = panel(in: mapView) else { return }
@@ -768,6 +771,22 @@ struct ScooterMapView: UIViewRepresentable {
                     mapView.selectAnnotation(annotation, animated: false)
                 }
             }
+        }
+
+        func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+            // The person moving the map ends the move to a place asked for.
+            if Self.isMovedByHand(mapView) { focusUnderWay = nil }
+        }
+
+        /// Whether one of the map's gestures, a pan, a pinch, a turn, a tilt
+        /// or a double tap, is moving it.
+        private static func isMovedByHand(_ mapView: MKMapView) -> Bool {
+            func moving(_ view: UIView, depth: Int) -> Bool {
+                let recognizers = view.gestureRecognizers ?? []
+                if recognizers.contains(where: { [.began, .changed, .ended].contains($0.state) }) { return true }
+                return depth > 0 && view.subviews.contains { moving($0, depth: depth - 1) }
+            }
+            return moving(mapView, depth: 2)
         }
 
         func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
@@ -1420,6 +1439,7 @@ struct ScooterMapView: UIViewRepresentable {
 
             if let cluster = view.annotation as? ScooterServerClusterAnnotation {
                 ScooterAnalytics.shared.track("cluster_select")
+                focusUnderWay = nil
                 // A city's span is a phone's, as when a city is chosen.
                 let city = ScooterMapCameraPolicy.spanScale(across: min(mapView.bounds.width, mapView.bounds.height))
                 let visible = visibleRect(of: mapView)
@@ -1585,6 +1605,7 @@ struct ScooterMapView: UIViewRepresentable {
         /// beside the panel, turned and tilted as the map is, no closer than
         /// street level.
         private func fitRoute(_ walkTrail: WalkTrail, on mapView: MKMapView, animated: Bool) {
+            focusUnderWay = nil
             fit(walkTrail.points.map(\.coordinate), on: mapView, animated: animated)
         }
 
@@ -1592,6 +1613,7 @@ struct ScooterMapView: UIViewRepresentable {
         /// like a route into the part of the map left visible; on a phone
         /// MapKit shows them, as it always has.
         private func showMembers(of cluster: MKClusterAnnotation, on mapView: MKMapView) {
+            focusUnderWay = nil
             guard panel(in: mapView) != nil else {
                 mapView.showAnnotations(cluster.memberAnnotations, animated: true)
                 return
