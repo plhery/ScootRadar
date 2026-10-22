@@ -267,13 +267,11 @@ struct ScooterMapView: UIViewRepresentable {
         context.coordinator.applySelection(selectedScooterID, on: mapView)
         context.coordinator.applyParkingSelection(selectedParkingID, on: mapView)
         context.coordinator.applyWalking(on: mapView)
-        // The margins first: a move is measured with the margins it is shown
-        // with, and a change of them doesn't stop a move begun in this update.
-        context.coordinator.updateMargins(on: mapView)
         context.coordinator.applyFocus(focusRequest, on: mapView)
         context.coordinator.keepSelectionClearOfPanel(on: mapView)
         context.coordinator.applyTrail(walkTrail, on: mapView)
         context.coordinator.updateUserHeading(on: mapView, animated: true)
+        context.coordinator.updateMargins(on: mapView)
         context.coordinator.updateCompass(on: mapView)
         context.coordinator.updateLook(on: mapView)
         // The dock may have grown over a name.
@@ -306,12 +304,6 @@ struct ScooterMapView: UIViewRepresentable {
         private var scaleBesidePanel: NSLayoutConstraint?
         /// The map's layout margins before a panel moved them.
         private var restingMargins: NSDirectionalEdgeInsets?
-        /// The margins set beside the panel, as they were set.
-        private var panelMargins: NSDirectionalEdgeInsets?
-        /// The place last asked for, from its move until the person moves the
-        /// map or chooses something else to show, or another place is asked
-        /// for. Until then a change of the margins takes the map on to it.
-        private var focusUnderWay: MapFocusRequest?
         /// A selection just made, until when it is brought out from under a panel.
         private var watchedSelection: (key: String, until: TimeInterval)?
         private var appliedMapStyle: AppleMapStyle?
@@ -561,13 +553,6 @@ struct ScooterMapView: UIViewRepresentable {
             // waits for the layout; the first region change then applies it.
             guard mapView.bounds.width > 0, mapView.bounds.height > 0 else { return }
             lastFocusToken = request.token
-            focusUnderWay = request
-            move(to: request, on: mapView)
-        }
-
-        /// Moves the map to show the place asked for in the middle of the part
-        /// of it left in view.
-        private func move(to request: MapFocusRequest, on mapView: MKMapView) {
             let visible = visibleRect(of: mapView)
             guard !request.keepsZoom else {
                 mapView.setCenter(
@@ -626,24 +611,15 @@ struct ScooterMapView: UIViewRepresentable {
         /// Apple's logo and the Legal link sit inside the map's layout margins:
         /// beside a panel the leading margin reaches past it, so that they stay
         /// in view. Without a panel the margins are left as they were.
-        ///
-        /// UIKit reads a view's margins back with its safe area added to the
-        /// margins set, so the margins are compared with those last set, and
-        /// the resting ones are taken without the safe area. Compared with
-        /// what is read back, they never matched beside a panel once the map
-        /// had a safe area: the map was set again and re-centred at every
-        /// update, which stopped every move of the camera where it began, and
-        /// locating left the rider off the screen.
         func updateMargins(on mapView: MKMapView) {
             guard let panel = panel(in: mapView) else {
                 if let restingMargins {
                     setMargins(restingMargins, on: mapView)
                     self.restingMargins = nil
-                    panelMargins = nil
                 }
                 return
             }
-            let resting = restingMargins ?? Self.withoutSafeArea(mapView.directionalLayoutMargins, of: mapView)
+            let resting = restingMargins ?? mapView.directionalLayoutMargins
             restingMargins = resting
             // Measured from the map's safe area, as its margins are.
             let bounds = mapView.bounds
@@ -652,61 +628,19 @@ struct ScooterMapView: UIViewRepresentable {
                 : panel.maxX - bounds.minX - mapView.safeAreaInsets.left
             var margins = resting
             margins.leading = max(resting.leading, reach + Self.panelGap)
-            guard margins != panelMargins else { return }
-            panelMargins = margins
-            setMargins(margins, on: mapView)
-        }
-
-        /// Margins as read back from the map, without the safe area UIKit adds to them.
-        private static func withoutSafeArea(
-            _ margins: NSDirectionalEdgeInsets,
-            of mapView: MKMapView
-        ) -> NSDirectionalEdgeInsets {
-            let safe = mapView.safeAreaInsets
-            let isRightToLeft = mapView.effectiveUserInterfaceLayoutDirection == .rightToLeft
-            return NSDirectionalEdgeInsets(
-                top: max(0, margins.top - safe.top),
-                leading: max(0, margins.leading - (isRightToLeft ? safe.right : safe.left)),
-                bottom: max(0, margins.bottom - safe.bottom),
-                trailing: max(0, margins.trailing - (isRightToLeft ? safe.left : safe.right))
-            )
+            if mapView.directionalLayoutMargins != margins {
+                setMargins(margins, on: mapView)
+            }
         }
 
         /// MapKit shows the map's centre in the middle of its margins, and
         /// leaves the map where it is when they change: what was in the middle
         /// of the part left in view, the rider's place after locating, goes to
         /// the middle of the part left in view now, as a panel comes or goes.
-        ///
-        /// A move to a place asked for may still be under way: the rider's
-        /// first fix can come before the panel has its place. Until the person
-        /// moves the map or chooses something else, the map goes on to the
-        /// place, measured beside the panel; keeping the centre would stop it
-        /// where it was, short of the place. However long the first layout
-        /// takes: a move given a second and a half to be over left the rider
-        /// in the middle of the whole map after a slow one.
-        ///
-        /// A map SwiftUI hasn't given a size yet shows nothing to keep, and
-        /// MapKit holds back a centre or a camera given to it until it has
-        /// one, then sets it over any move made in between: at launch the panel
-        /// takes its place then, and the centre kept for it took the map back
-        /// from the rider's first fix, with the rider off the bottom of the
-        /// screen. Such a map only takes the margins, and a move under way is
-        /// made again once the map has its size, at its first region change.
         private func setMargins(_ margins: NSDirectionalEdgeInsets, on mapView: MKMapView) {
             let centre = mapView.centerCoordinate
             mapView.directionalLayoutMargins = margins
-            guard mapView.bounds.width > 0, mapView.bounds.height > 0 else {
-                if focusUnderWay != nil {
-                    lastFocusToken = nil
-                    focusUnderWay = nil
-                }
-                return
-            }
-            if let focusUnderWay {
-                move(to: focusUnderWay, on: mapView)
-            } else {
-                mapView.setCenter(centre, animated: false)
-            }
+            mapView.setCenter(centre, animated: false)
         }
 
         /// A scooter or bay doesn't move the map when it is chosen. Beside a
@@ -718,8 +652,6 @@ struct ScooterMapView: UIViewRepresentable {
             let now = ProcessInfo.processInfo.systemUptime
             if key != watchedSelection?.key {
                 watchedSelection = key.map { ($0, now + 1) }
-                // A scooter or a bay chosen is what the map shows now.
-                if key != nil { focusUnderWay = nil }
             }
             guard let watched = watchedSelection, now < watched.until,
                   let panel = panel(in: mapView) else { return }
@@ -771,22 +703,6 @@ struct ScooterMapView: UIViewRepresentable {
                     mapView.selectAnnotation(annotation, animated: false)
                 }
             }
-        }
-
-        func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
-            // The person moving the map ends the move to a place asked for.
-            if Self.isMovedByHand(mapView) { focusUnderWay = nil }
-        }
-
-        /// Whether one of the map's gestures, a pan, a pinch, a turn, a tilt
-        /// or a double tap, is moving it.
-        private static func isMovedByHand(_ mapView: MKMapView) -> Bool {
-            func moving(_ view: UIView, depth: Int) -> Bool {
-                let recognizers = view.gestureRecognizers ?? []
-                if recognizers.contains(where: { [.began, .changed, .ended].contains($0.state) }) { return true }
-                return depth > 0 && view.subviews.contains { moving($0, depth: depth - 1) }
-            }
-            return moving(mapView, depth: 2)
         }
 
         func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
@@ -1439,7 +1355,6 @@ struct ScooterMapView: UIViewRepresentable {
 
             if let cluster = view.annotation as? ScooterServerClusterAnnotation {
                 ScooterAnalytics.shared.track("cluster_select")
-                focusUnderWay = nil
                 // A city's span is a phone's, as when a city is chosen.
                 let city = ScooterMapCameraPolicy.spanScale(across: min(mapView.bounds.width, mapView.bounds.height))
                 let visible = visibleRect(of: mapView)
@@ -1605,7 +1520,6 @@ struct ScooterMapView: UIViewRepresentable {
         /// beside the panel, turned and tilted as the map is, no closer than
         /// street level.
         private func fitRoute(_ walkTrail: WalkTrail, on mapView: MKMapView, animated: Bool) {
-            focusUnderWay = nil
             fit(walkTrail.points.map(\.coordinate), on: mapView, animated: animated)
         }
 
@@ -1613,7 +1527,6 @@ struct ScooterMapView: UIViewRepresentable {
         /// like a route into the part of the map left visible; on a phone
         /// MapKit shows them, as it always has.
         private func showMembers(of cluster: MKClusterAnnotation, on mapView: MKMapView) {
-            focusUnderWay = nil
             guard panel(in: mapView) != nil else {
                 mapView.showAnnotations(cluster.memberAnnotations, animated: true)
                 return
