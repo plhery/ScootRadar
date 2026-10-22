@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Elsparkesykkel i Sandefjord: Ryde, priser, vinterpause og veien til Torp',
   lede: 'Vil du leie elsparkesykkel i Sandefjord, er det bare Ryde som har kommunens tillatelse i 2026. Det koster 10,90 kr å låse opp og 2,50 kr per minutt (17. oktober 2026), og Ryde krever at du har fylt 16 år. Utleien er stengt fra kl. 01 til 05 hver natt. Etter et politisk vedtak skal sparkesyklene bort fra offentlig grunn innen første snøfall, og senest 1. november 2026. Kjøreområdet dekker selve byen, ikke Torp, Stokke eller Andebu.',
   published: '2026-10-17',
-  updated: '2026-10-17',
+  updated: '2026-10-22',
   city: 'no:Sandefjord',
   sections: [
     {
@@ -109,7 +109,7 @@ const guide: Guide = {
     {
       heading: 'Tønsberg og Larvik',
       blocks: [
-        'I [Tønsberg](map:no:Tønsberg) kjører også Ryde, og på kartet sto det rundt 440 sparkesykler der 17. oktober 2026, til samme pris som i Sandefjord. Tønsberg stenger tidligere i helgen: fra kl. 23 til 05 natt til lørdag, søndag og helligdager, ellers fra kl. 01 til 05. Der tas sparkesyklene inn når det er fare for snø og is. VKTs linje 1 går mellom Sandefjord og Tønsberg.',
+        'I [Tønsberg](map:no:Tønsberg) kjører også Ryde, og på kartet sto det rundt 440 sparkesykler i Tønsberg og på Nøtterøy 17. oktober 2026, til samme pris som i Sandefjord. Tønsberg stenger tidligere i helgen: fra kl. 23 til 05 natt til lørdag, søndag og bevegelige helligdager, ellers fra kl. 01 til 05. Der tas sparkesyklene inn når det er fare for snø og is. VKTs linje 1 går mellom Sandefjord og Tønsberg.',
         'Ryde kjører også i Larvik. Ifølge Larvik kommune hadde Ryde 350 sparkesykler og 3000 brukere der per 1. juni 2026, og antallet turer steg fra 7700 i mars til 20 100 i mai. Larvik har sin egen forskrift fra juni 2025. Ryde publiserer ingen åpne data for Larvik, så kartet viser ikke sparkesyklene der.',
       ],
     },

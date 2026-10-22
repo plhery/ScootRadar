@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Regler for elsparkesykkel i Norge: alder, hjelm, promille og bøter',
   lede: 'Reglene for elsparkesykkel i Norge er enkle å huske: Du må ha fylt 12 år, du må ha hjelm hvis du er under 15, og promillegrensen er 0,2, den samme som for bil. En aldersgrense på 16 år er foreslått, men ikke vedtatt, og operatørene som leier ut, har ofte høyere grense enn loven. Du kjører på veien, i sykkelfeltet eller på sykkelveien, og på fortauet når det er lite folk, men forbi gående holder du gangfart. Bare én person får stå på sparkesykkelen, og i Oslo er utleien stengt hver natt fra kl. 23 til 05.',
   published: '2026-10-12',
-  updated: '2026-10-18',
+  updated: '2026-10-22',
   city: 'no:Oslo',
   sections: [
     {
@@ -163,7 +163,7 @@ const guide: Guide = {
               ['Kristiansand', 'Forskriften: 00–05 natt til lørdag og søndag. Voi stenger allerede kl. 23', 'Opptil to operatører, i dag Voi og Ryde, med avtale til 31. mars 2027. Sparkesyklene tas inn ved fare for snø og is.'],
               ['Tromsø', '23–06 natt til lørdag, søndag og helligdager', 'Ny forskrift fra 1. januar 2026: inntil to operatører (i 2026 bare Ryde) og maks 200 kjøretøy i sentrum.'],
               ['Skien og Porsgrunn', 'Porsgrunn: 23–05 hver natt i hele kommunen. Skien: ikke stengt', 'Maks 12 km/t i sentrum fra kl. 00 til 05. Ingen utleie fra 15. desember til det er snø- og isfritt om våren.'],
-              ['Tønsberg', '23–05 natt til lørdag, søndag og helligdager, ellers 01–05', 'Maks 300 kjøretøy. Tas inn ved fare for snø og is.'],
+              ['Tønsberg', '23–05 natt til lørdag, søndag og bevegelige helligdager, ellers 01–05', 'Maks 300 kjøretøy, elsykler medregnet. Tas inn ved fare for snø og is.'],
               ['Fredrikstad og Sarpsborg', 'Ikke stengt', 'Maks 10 km/t kl. 23–05 natt til lørdag og søndag. Voi og Ryde har felles tillatelse til 31. mars 2027, med 1500 kjøretøy til sammen. Sparkesyklene tas inn når det snør.'],
               ['Arendal', '00–05 hver natt', 'Tillatelsene gjelder for to sesonger.'],
               ['Sandefjord', '01–05', 'Alle kvalifiserte operatører får ettårig tillatelse.'],
