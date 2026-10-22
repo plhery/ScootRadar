@@ -3979,7 +3979,11 @@ extension ScooterMapModelTests {
     /// shows, at locating's zoom there. iOS moves the fold inside an
     /// animation, and the margins set in it reached MapKit only at its end:
     /// the rider ended 45 pt off the middle, and opening again kept the
-    /// zoom of the fold.
+    /// zoom of the fold. The move made again was measured in it too, where
+    /// MapKit takes a point on the tilted map back to another place: the
+    /// rider landed up to 3.4 pt from where locating again leaves it, more
+    /// than the 3 pt allowed only on the open Duo held upright. Measured
+    /// outside it, the move lands just there, so the tests allow a point.
     func testFoldingAndOpeningWhileLocatingLandsWhereLocatingWould() async throws {
         let fold = CGRect(x: 465, y: 0, width: 20, height: 669)
         let hinge = TestHinge()
@@ -3998,17 +4002,17 @@ extension ScooterMapModelTests {
         let middleBesidePanel = CGPoint(x: (16 + 380 + 951) / 2, y: 669 / 2)
         let trailingHalf = CGPoint(x: (fold.maxX + 951) / 2, y: 669 / 2)
         try await turn(hinge, to: fold, in: window)
-        try await assertLanded(at: trailingHalf, on: mapView, model: model)
+        try await assertLanded(at: trailingHalf, on: mapView, model: model, within: 1)
         let folded = mapView.camera.centerCoordinateDistance
         // The same place fitted into the narrower half.
         XCTAssertGreaterThan(folded, open * 1.1)
 
         try await turn(hinge, to: nil, in: window)
-        try await assertLanded(at: middleBesidePanel, on: mapView, model: model)
+        try await assertLanded(at: middleBesidePanel, on: mapView, model: model, within: 1)
         XCTAssertEqual(mapView.camera.centerCoordinateDistance, open, accuracy: open * 0.02)
 
         try await turn(hinge, to: fold, in: window)
-        try await assertLanded(at: trailingHalf, on: mapView, model: model)
+        try await assertLanded(at: trailingHalf, on: mapView, model: model, within: 1)
         XCTAssertEqual(mapView.camera.centerCoordinateDistance, folded, accuracy: folded * 0.02)
     }
 
@@ -4030,11 +4034,11 @@ extension ScooterMapModelTests {
         let folded = mapView.camera.centerCoordinateDistance
 
         try await turn(hinge, to: nil, in: window)
-        try await assertLanded(at: CGPoint(x: (16 + 380 + 951) / 2, y: 669 / 2), on: mapView, model: model)
+        try await assertLanded(at: CGPoint(x: (16 + 380 + 951) / 2, y: 669 / 2), on: mapView, model: model, within: 1)
         XCTAssertLessThan(mapView.camera.centerCoordinateDistance, folded / 1.1)
 
         try await turn(hinge, to: fold, in: window)
-        try await assertLanded(at: trailingHalf, on: mapView, model: model)
+        try await assertLanded(at: trailingHalf, on: mapView, model: model, within: 1)
         XCTAssertEqual(mapView.camera.centerCoordinateDistance, folded, accuracy: folded * 0.02)
     }
 
@@ -4127,11 +4131,13 @@ extension ScooterMapModelTests {
     }
 
     /// The rider is at `point` once the map has settled, and locating again
-    /// leaves the map where it is: it is where locating puts it, at its zoom.
+    /// leaves the map where it is, within `tolerance` points: it is where
+    /// locating puts it, at its zoom.
     private func assertLanded(
         at point: CGPoint,
         on mapView: MKMapView,
         model: ScooterMapModel,
+        within tolerance: CGFloat = 3,
         file: StaticString = #filePath,
         line: UInt = #line
     ) async throws {
@@ -4144,8 +4150,8 @@ extension ScooterMapModelTests {
         try await Task.sleep(for: .milliseconds(600))
         try await waitUntilAtRest(mapView)
         let relocated = mapView.convert(Self.rider, toPointTo: mapView)
-        XCTAssertEqual(relocated.x, shown.x, accuracy: 3, "\(shown) → \(relocated)", file: file, line: line)
-        XCTAssertEqual(relocated.y, shown.y, accuracy: 3, "\(shown) → \(relocated)", file: file, line: line)
+        XCTAssertEqual(relocated.x, shown.x, accuracy: tolerance, "\(shown) → \(relocated)", file: file, line: line)
+        XCTAssertEqual(relocated.y, shown.y, accuracy: tolerance, "\(shown) → \(relocated)", file: file, line: line)
         XCTAssertEqual(
             mapView.camera.centerCoordinateDistance, distance, accuracy: distance * 0.01,
             "zoom", file: file, line: line
@@ -4383,6 +4389,11 @@ extension ScooterMapModelTests {
 
     /// The key commands of every responder in a window.
     private func keyCommands(in window: UIWindow) -> [UIKeyCommand] {
+        responders(in: window).flatMap { $0.keyCommands ?? [] }
+    }
+
+    /// The window's views and view controllers.
+    private func responders(in window: UIWindow) -> [UIResponder] {
         var responders: [UIResponder] = []
         func visit(_ view: UIView) {
             responders.append(view)
@@ -4394,7 +4405,7 @@ extension ScooterMapModelTests {
         }
         visit(window as UIView)
         window.rootViewController.map(visit)
-        return responders.flatMap { $0.keyCommands ?? [] }
+        return responders
     }
 
     private func command(input: String, flags: UIKeyModifierFlags, in commands: [UIKeyCommand]) -> UIKeyCommand? {
@@ -4408,9 +4419,16 @@ extension ScooterMapModelTests {
             "no key command for \(flags.rawValue) \(input)"
         )
         let action = try XCTUnwrap(command.action)
-        // Up the responder chain from the screen, as UIKit sends it.
+        // Up the responder chain from the screen that makes the command, as
+        // UIKit sends it. The screen was taken as the window's root, as in the
+        // app, but where the window takes the simulator's shape, as on the
+        // open Duo held upright, it is a child of the root (panelWindow), and
+        // the chain from the root never reached its hosting view.
+        let screen = try XCTUnwrap(
+            responders(in: window).first { self.command(input: input, flags: flags, in: $0.keyCommands ?? []) != nil }
+        )
         let target = try XCTUnwrap(
-            window.rootViewController?.view.target(forAction: action, withSender: command) as? NSObject
+            ((screen as? UIViewController)?.view ?? screen).target(forAction: action, withSender: command) as? NSObject
         )
         target.perform(action, with: command)
     }

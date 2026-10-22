@@ -48,19 +48,27 @@ enum ScooterMapCameraPolicy {
             return
         }
 
-        mapView.setRegion(region, animated: false)
-        var targetCamera = mapView.camera.copy() as! MKMapCamera
-        targetCamera.pitch = pitch
-        targetCamera.heading = heading
-        if let beside {
-            // Where the centre goes is measured on the map as the camera will show it.
-            mapView.setCamera(targetCamera, animated: false)
-            targetCamera = targetCamera.copy() as! MKMapCamera
-            targetCamera.centerCoordinate = center(showing: region.center, on: mapView, visible: beside)
-        }
+        // iOS folds and turns the screen inside an animation, and a move made
+        // again for it was measured in it: there MapKit took a point on the
+        // tilted map back to another place than it does outside one, and the
+        // rider landed 1.5 to 3.4 pt from where locating leaves it. The move
+        // is measured outside any animation, and only made in it.
+        var targetCamera = startingCamera
+        UIView.performWithoutAnimation {
+            mapView.setRegion(region, animated: false)
+            targetCamera = mapView.camera.copy() as! MKMapCamera
+            targetCamera.pitch = pitch
+            targetCamera.heading = heading
+            if let beside {
+                // Where the centre goes is measured on the map as the camera will show it.
+                mapView.setCamera(targetCamera, animated: false)
+                targetCamera = targetCamera.copy() as! MKMapCamera
+                targetCamera.centerCoordinate = center(showing: region.center, on: mapView, visible: beside)
+            }
 
-        if animated {
-            mapView.setCamera(startingCamera, animated: false)
+            if animated {
+                mapView.setCamera(startingCamera, animated: false)
+            }
         }
         mapView.setCamera(targetCamera, animated: animated)
     }
