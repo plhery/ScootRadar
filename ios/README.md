@@ -45,6 +45,16 @@ or a swipe on it; a tap on the line opens it again, and so does choosing a
 scooter or a parking bay on the map. The notices stay while it is folded, the
 map shows under it, and each window keeps it folded or open across launches.
 
+On an iPhone Duo partly open, the controls keep off the fold. Open like a book
+and held sideways, the panel keeps to the leading half and the map centres what
+it shows in the trailing one, with Apple's logo past the fold. Standing like a
+laptop, upright, the map takes the upright half, and the search bar, the
+notices, the locate button and the dock go down to the half lying flat, within
+reach; the map still runs under them. Folded or opened while the map is on its
+way to a place, it still lands there, in the middle of the part in view; once
+the map has been moved, what is in the middle stays there. The app reads the
+fold from iOS 27.1; built with an older SDK, it lays out as on a flat screen.
+
 With a keyboard, as in Maps: ⌘F, or / while nothing takes text, opens the
 search; ⌘L locates; ⌘+ and ⌘− zoom; ⌥⌘F opens the filters; ⌘1, ⌘2 and ⌘3
 choose the standard, quiet or satellite map; ⌘, opens Settings; Esc closes the

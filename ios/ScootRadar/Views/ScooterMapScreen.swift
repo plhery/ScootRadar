@@ -24,10 +24,16 @@ struct ScooterMapScreen: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.verticalSizeClass) private var verticalSizeClass
+    @Environment(\.layoutDirection) private var layoutDirection
 
-    /// Tests hand in a model with the state they want to see.
-    init(model: ScooterMapModel = ScooterMapModel()) {
+    /// The fold tests hand in, in window coordinates; only a partly open
+    /// iPhone Duo reports one.
+    private let foldForTests: CGRect?
+
+    /// Tests hand in a model with the state they want to see, and a fold.
+    init(model: ScooterMapModel = ScooterMapModel(), fold: CGRect? = nil) {
         _model = State(initialValue: model)
+        foldForTests = fold
     }
 
     var body: some View {
@@ -41,6 +47,7 @@ struct ScooterMapScreen: View {
                 largeText: dynamicTypeSize.isAccessibilitySize,
                 current: chromeLayout
             )
+            let fold = foldForTests ?? reservedFold(in: proxy)
             ZStack {
                 ScooterMapView(
                     scooters: model.mapScooters,
@@ -58,6 +65,7 @@ struct ScooterMapScreen: View {
                     bottomChromeTop: layout == .dock ? bottomChromeTop : nil,
                     bottomChromeFrames: layout == .dock ? [locateButtonFrame, dockFrame] : [locateButtonFrame],
                     panelFrame: layout == .panel ? panelFrame : .null,
+                    foldFrame: fold ?? .null,
                     onRegionChange: { model.updateViewport($0, zoom: $1, zoomLevel: $2) },
                     onSelectionChange: model.selectScooter,
                     userHeading: model.userHeading,
@@ -76,9 +84,9 @@ struct ScooterMapScreen: View {
 
                 switch layout {
                 case .dock:
-                    dockChrome(in: proxy)
+                    dockChrome(in: proxy, below: ScooterFold.chromeTop(below: fold, in: proxy.frame(in: .global)))
                 case .panel:
-                    panelChrome(in: proxy)
+                    panelChrome(in: proxy, beside: fold)
                 }
             }
             .onChange(of: layout, initial: true) { _, layout in
@@ -166,9 +174,11 @@ struct ScooterMapScreen: View {
     }
 
     /// A phone's: the search bar and its notices at the top, the dock at the
-    /// bottom, and the locate button above the dock.
+    /// bottom, and the locate button above the dock. The search bar starts
+    /// `chromeTop` down: under the fold of an iPhone Duo standing like a
+    /// laptop, so that all of them are on the half lying flat.
     @ViewBuilder
-    private func dockChrome(in proxy: GeometryProxy) -> some View {
+    private func dockChrome(in proxy: GeometryProxy, below chromeTop: CGFloat) -> some View {
         VStack(spacing: 8) {
             // The search bar and what sits under it shield the map
             // from taps, and the compass stays clear of them.
@@ -178,7 +188,7 @@ struct ScooterMapScreen: View {
                 if !searchIsExpanded, hasTopNotices {
                     // With large text a banner and a card can be taller than
                     // the room above the locate button; then they scroll.
-                    HeightLimit(maximum: topNoticesHeightLimit(in: proxy)) {
+                    HeightLimit(maximum: topNoticesHeightLimit(in: proxy, below: chromeTop)) {
                         ViewThatFits(in: .vertical) {
                             VStack(spacing: 8) { topNotices }
                             ScrollView(.vertical) {
@@ -201,8 +211,9 @@ struct ScooterMapScreen: View {
 
             Spacer(minLength: 0)
         }
-        .padding(.top, 8)
+        .padding(.top, 8 + chromeTop)
         .padding(.horizontal, 12)
+        .animation(reduceMotion ? nil : .snappy(duration: 0.28), value: chromeTop)
         .zIndex(20)
         // Made anew in another language: much of what is over the
         // map is text that was written when it was drawn.
@@ -241,7 +252,7 @@ struct ScooterMapScreen: View {
                 model: model,
                 maximumContentHeight: max(
                     160,
-                    proxy.size.height - (dynamicTypeSize.isAccessibilitySize ? 300 : 220)
+                    proxy.size.height - chromeTop - (dynamicTypeSize.isAccessibilitySize ? 300 : 220)
                         // With large text a notice under the search bar needs room too.
                         - (dynamicTypeSize.isAccessibilitySize && hasTopNotices ? 120 : 0)
                 ),
@@ -269,9 +280,10 @@ struct ScooterMapScreen: View {
     /// leading side, over the map, and the locate button in the map's
     /// trailing corner. The open search covers the panel, and nothing else.
     /// The card folds down to one line, and the map then shows, and takes
-    /// taps, under the panel; the notices stay.
+    /// taps, under the panel; the notices stay. Beside the fold of an iPhone
+    /// Duo open like a book the panel keeps to its half.
     @ViewBuilder
-    private func panelChrome(in proxy: GeometryProxy) -> some View {
+    private func panelChrome(in proxy: GeometryProxy, beside fold: CGRect?) -> some View {
         ZStack(alignment: .top) {
             searchIsland(in: proxy)
                 // Off the panel's search bar, with the map beside the panel in
@@ -319,7 +331,13 @@ struct ScooterMapScreen: View {
             .accessibilityHidden(searchIsExpanded)
             .animation(reduceMotion ? nil : .snappy(duration: 0.24), value: searchIsExpanded)
         }
-        .frame(width: ScooterChromeLayout.panelWidth(largeText: dynamicTypeSize.isAccessibilitySize))
+        .frame(width: ScooterFold.panelWidth(
+            ScooterChromeLayout.panelWidth(largeText: dynamicTypeSize.isAccessibilitySize),
+            beside: fold,
+            in: proxy.frame(in: .global),
+            inset: 16,
+            rightToLeft: layoutDirection == .rightToLeft
+        ))
         // The map shows a scooter beside the panel, and keeps its names,
         // its taps and Apple's logo off it.
         .onGeometryChange(for: CGRect.self) { geometry in
@@ -402,9 +420,9 @@ struct ScooterMapScreen: View {
     }
 
     /// The room between the search bar and the locate button above the dock.
-    private func topNoticesHeightLimit(in proxy: GeometryProxy) -> CGFloat {
+    private func topNoticesHeightLimit(in proxy: GeometryProxy, below chromeTop: CGFloat) -> CGFloat {
         let dockAndGap = dockHeight + max(proxy.safeAreaInsets.bottom, 8) + 10
-        let room = proxy.size.height - 8 - searchBarHeight - 8 - 8 - locateButtonHeight - dockAndGap
+        let room = proxy.size.height - chromeTop - 8 - searchBarHeight - 8 - 8 - locateButtonHeight - dockAndGap
         // Never less than a banner, or the title of a card.
         return max(64, room)
     }
@@ -500,6 +518,23 @@ struct ScooterMapScreen: View {
         }
     }
 
+    /// The fold of a partly open iPhone Duo, where iOS 27.1 reserves a
+    /// division of the window, in window coordinates. CI builds with the
+    /// iOS 26 SDK, which doesn't have it.
+    private func reservedFold(in proxy: GeometryProxy) -> CGRect? {
+        #if compiler(>=6.4)
+        if #available(iOS 27.1, *) {
+            // Fixed, not mirrored right to left: the map reads window coordinates.
+            let regions = proxy.reservedRegions(kind: .division, layoutDirectionBehavior: .fixed)
+            return ScooterFold.frame(
+                among: regions.filter(\.isActive).map(\.frame),
+                in: proxy.frame(in: .global)
+            )
+        }
+        #endif
+        return nil
+    }
+
     private func openLocationSettings() {
         guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
         UIApplication.shared.open(settingsURL)
@@ -568,6 +603,56 @@ enum ScooterChromeLayout: Equatable {
         guard regularWidth, regularHeight else { return .dock }
         let both = panelWidth(largeText: largeText) + minimumMapWidth
         return width >= (current == .panel ? both : both + slack) ? .panel : .dock
+    }
+}
+
+/// The fold of a partly open iPhone Duo, which iOS reserves as a division of
+/// the window: active while the device is partly open, inactive and of no
+/// width flat. Open like a book and held sideways, it runs down the middle of
+/// the window: the panel keeps to the leading half and the map centres what
+/// it shows in the trailing one. Standing like a laptop, upright, it runs
+/// across: the map takes the upright half, and the search bar, the notices
+/// and the dock go down to the half lying flat, within reach. The map stays
+/// whole under both, and only what has to moves.
+enum ScooterFold {
+    /// The fold among the active `regions` read in `container`, the frame
+    /// of the screen in window coordinates, in window coordinates too.
+    static func frame(among regions: [CGRect], in container: CGRect) -> CGRect? {
+        regions
+            .first { !$0.isNull && !$0.isEmpty }
+            .map { $0.offsetBy(dx: container.minX, dy: container.minY) }
+    }
+
+    /// Whether the fold runs across the window, standing like a laptop,
+    /// rather than down it, open like a book.
+    static func isAcross(_ fold: CGRect) -> Bool {
+        fold.width > fold.height
+    }
+
+    /// How far below the top of `container`, the screen in window
+    /// coordinates, the search bar starts: under a fold across it, and at
+    /// its top otherwise.
+    static func chromeTop(below fold: CGRect?, in container: CGRect) -> CGFloat {
+        guard let fold, isAcross(fold), fold.maxY > container.minY, fold.maxY < container.maxY else { return 0 }
+        return fold.maxY - container.minY
+    }
+
+    /// The narrowest the panel gets to keep clear of a fold.
+    static let minimumPanelWidth: CGFloat = 320
+
+    /// The panel's `width` beside a fold down `container`, `inset` from its
+    /// leading edge: as wide as it is, unless that would reach the fold.
+    static func panelWidth(
+        _ width: CGFloat,
+        beside fold: CGRect?,
+        in container: CGRect,
+        inset: CGFloat,
+        rightToLeft: Bool
+    ) -> CGFloat {
+        guard let fold, !isAcross(fold) else { return width }
+        let room = rightToLeft ? container.maxX - inset - fold.maxX : fold.minX - container.minX - inset
+        guard room > 0, room < width else { return width }
+        return max(minimumPanelWidth, room)
     }
 }
 

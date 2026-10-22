@@ -3738,19 +3738,21 @@ extension ScooterMapModelTests {
     /// the app's window is at launch.
     private func panelWindow(
         showing model: ScooterMapModel,
+        size: CGSize = CGSize(width: 951, height: 669),
+        hinge: TestHinge = TestHinge(),
         firstLayoutTaking slowness: TimeInterval = 0,
         textSize: TextSize = TextSize()
     ) async throws -> (UIWindow, MKMapView) {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
         let window = UIWindow(windowScene: scene)
-        window.frame = CGRect(x: 0, y: 0, width: 951, height: 669)
+        window.frame = CGRect(origin: .zero, size: size)
         window.rootViewController = UIViewController()
         window.isHidden = false
         window.layoutIfNeeded()
         try await Task.sleep(for: .milliseconds(300))
         var slowed = false
-        window.rootViewController = UIHostingController(
-            rootView: TextSized(textSize: textSize) { ScooterMapScreen(model: model) }
+        let host = UIHostingController(
+            rootView: TextSized(textSize: textSize) { HingedScreen(model: model, hinge: hinge) }
                 // Holds up the end of the first layout, between the map's
                 // first update and the panel taking its place, as a slow
                 // runner does.
@@ -3764,6 +3766,18 @@ extension ScooterMapModelTests {
                 .environment(\.horizontalSizeClass, .regular)
                 .environment(\.verticalSizeClass, .regular)
         )
+        if window.bounds.size == size {
+            window.rootViewController = host
+        } else {
+            // The window takes the simulator's shape: the screen gets a view
+            // of the size asked for inside it.
+            let container = UIViewController()
+            container.addChild(host)
+            host.view.frame = CGRect(origin: .zero, size: size)
+            container.view.addSubview(host.view)
+            host.didMove(toParent: container)
+            window.rootViewController = container
+        }
         window.layoutIfNeeded()
         return (window, try XCTUnwrap(map(in: window)))
     }
@@ -3795,6 +3809,304 @@ private struct TextSized<Content: View>: View {
 
     var body: some View {
         content.environment(\.dynamicTypeSize, textSize.size ?? given)
+    }
+}
+
+// The fold of a partly open iPhone Duo.
+extension ScooterMapModelTests {
+    func testTheFoldIsTheActiveDivisionMovedIntoWindowCoordinates() {
+        let screen = CGRect(x: 0, y: 24, width: 669, height: 927)
+        XCTAssertEqual(
+            ScooterFold.frame(among: [CGRect(x: 0, y: 441, width: 669, height: 20)], in: screen),
+            CGRect(x: 0, y: 465, width: 669, height: 20)
+        )
+        XCTAssertNil(ScooterFold.frame(among: [], in: screen))
+        // Flat, a fold has no width.
+        XCTAssertNil(ScooterFold.frame(among: [CGRect(x: 465, y: 0, width: 0, height: 669)], in: screen))
+        XCTAssertTrue(ScooterFold.isAcross(CGRect(x: 0, y: 465, width: 669, height: 20)))
+        XCTAssertFalse(ScooterFold.isAcross(CGRect(x: 465, y: 0, width: 20, height: 669)))
+    }
+
+    func testStandingLikeALaptopTheSearchBarStartsUnderTheFold() {
+        let upright = CGRect(x: 0, y: 30, width: 669, height: 921)
+        XCTAssertEqual(ScooterFold.chromeTop(below: CGRect(x: 0, y: 465, width: 669, height: 20), in: upright), 455)
+        XCTAssertEqual(ScooterFold.chromeTop(below: nil, in: upright), 0)
+        XCTAssertEqual(ScooterFold.chromeTop(below: CGRect(x: 465, y: 0, width: 20, height: 669), in: upright), 0)
+    }
+
+    func testOpenLikeABookThePanelKeepsToItsHalf() {
+        let fold = CGRect(x: 465, y: 0, width: 20, height: 669)
+        // The status bar on the trailing side: the panel has room to spare.
+        XCTAssertEqual(
+            ScooterFold.panelWidth(380, beside: fold, in: CGRect(x: 0, y: 0, width: 891, height: 669), inset: 16, rightToLeft: false),
+            380
+        )
+        // On the leading side, with a wider fold, the panel stops short of it.
+        XCTAssertEqual(
+            ScooterFold.panelWidth(
+                380, beside: CGRect(x: 455, y: 0, width: 40, height: 669),
+                in: CGRect(x: 60, y: 0, width: 891, height: 669), inset: 16, rightToLeft: false
+            ),
+            379
+        )
+        // Right to left the panel is on the right.
+        XCTAssertEqual(
+            ScooterFold.panelWidth(
+                380, beside: CGRect(x: 456, y: 0, width: 40, height: 669),
+                in: CGRect(x: 0, y: 0, width: 891, height: 669), inset: 16, rightToLeft: true
+            ),
+            379
+        )
+        XCTAssertEqual(
+            ScooterFold.panelWidth(380, beside: CGRect(x: 200, y: 0, width: 20, height: 669), in: CGRect(x: 0, y: 0, width: 891, height: 669), inset: 16, rightToLeft: false),
+            ScooterFold.minimumPanelWidth
+        )
+        XCTAssertEqual(
+            ScooterFold.panelWidth(380, beside: CGRect(x: 0, y: 300, width: 891, height: 20), in: CGRect(x: 0, y: 0, width: 891, height: 669), inset: 16, rightToLeft: false),
+            380
+        )
+        XCTAssertEqual(
+            ScooterFold.panelWidth(380, beside: nil, in: CGRect(x: 0, y: 0, width: 891, height: 669), inset: 16, rightToLeft: false),
+            380
+        )
+    }
+
+    func testTheMapShowsOnTheFarSideOfAFoldFromThePanelAndAboveOneAcrossIt() {
+        let book = CGRect(x: 465, y: 0, width: 20, height: 669)
+        let panel = CGRect(x: 16, y: 16, width: 380, height: 300)
+        XCTAssertEqual(ScooterMapCameraPolicy.side(of: book, panel: panel, rightToLeft: false), .right)
+        XCTAssertEqual(ScooterMapCameraPolicy.side(of: book, panel: panel.offsetBy(dx: 539, dy: 0), rightToLeft: true), .left)
+        XCTAssertEqual(ScooterMapCameraPolicy.side(of: book, panel: nil, rightToLeft: false), .right)
+        XCTAssertEqual(ScooterMapCameraPolicy.side(of: book, panel: nil, rightToLeft: true), .left)
+        XCTAssertEqual(ScooterMapCameraPolicy.side(of: CGRect(x: 0, y: 465, width: 669, height: 20), panel: nil, rightToLeft: false), .above)
+    }
+
+    func testBesideAFoldTheMapCentresInTheHalfItShowsOn() {
+        // Open like a book: beside the panel, then past the fold.
+        let besidePanel = CGRect(x: 396, y: 0, width: 555, height: 669)
+        let book = CGRect(x: 465, y: 0, width: 20, height: 669)
+        XCTAssertEqual(
+            ScooterMapCameraPolicy.visibleRect(besidePanel, safeTop: 0, beside: book, on: .right),
+            CGRect(x: 485, y: 0, width: 466, height: 669)
+        )
+        XCTAssertEqual(
+            ScooterMapCameraPolicy.visibleRect(CGRect(x: 0, y: 0, width: 555, height: 669), safeTop: 0, beside: book, on: .left),
+            CGRect(x: 0, y: 0, width: 465, height: 669)
+        )
+
+        // Standing like a laptop: the search bar and the dock lie under the
+        // fold and cover nothing above it.
+        let laptop = CGRect(x: 0, y: 465, width: 669, height: 20)
+        let betweenSearchAndDock = CGRect(x: 0, y: 560, width: 669, height: 200)
+        XCTAssertEqual(
+            ScooterMapCameraPolicy.visibleRect(betweenSearchAndDock, safeTop: 30, beside: laptop, on: .above),
+            CGRect(x: 0, y: 30, width: 669, height: 435)
+        )
+        // A search bar above the fold still covers the map.
+        XCTAssertEqual(
+            ScooterMapCameraPolicy.visibleRect(CGRect(x: 0, y: 110, width: 669, height: 650), safeTop: 30, beside: laptop, on: .above),
+            CGRect(x: 0, y: 110, width: 669, height: 355)
+        )
+
+        // With hardly any room left beside it, the fold is let be.
+        XCTAssertEqual(
+            ScooterMapCameraPolicy.visibleRect(besidePanel, safeTop: 0, beside: CGRect(x: 920, y: 0, width: 20, height: 669), on: .right),
+            besidePanel
+        )
+    }
+
+    /// Open like a book, the panel on the leading half: locating puts the
+    /// rider in the middle of the trailing half, not on the fold side of it,
+    /// and Apple's logo goes past the fold.
+    func testOpenLikeABookLocatingPutsTheRiderInTheMiddleOfTheTrailingHalf() async throws {
+        let fold = CGRect(x: 465, y: 0, width: 20, height: 669)
+        let (model, manager) = modelLocatedByTheTest()
+        let (window, mapView) = try await panelWindow(showing: model, hinge: TestHinge(fold: fold))
+        defer { window.isHidden = true }
+        let pastTheFold = await waitUntil { mapView.layoutMargins.left >= fold.maxX + 15 }
+        XCTAssertTrue(pastTheFold, "\(mapView.layoutMargins)")
+        try await Task.sleep(for: .milliseconds(500))
+
+        let middle = CGPoint(x: (fold.maxX + 951) / 2, y: 669 / 2)
+        model.locationManager(manager, didUpdateLocations: [fix(at: Self.rider)])
+        let located = await waitUntil(attempts: 400) { self.shows(Self.rider, at: middle, on: mapView) }
+        XCTAssertTrue(located, "\(mapView.convert(Self.rider, toPointTo: mapView))")
+
+        mapView.setCenter(CLLocationCoordinate2D(latitude: 47.3790, longitude: 8.5450), animated: false)
+        model.focusOnUser()
+        let locatedAgain = await waitUntil(attempts: 400) { self.shows(Self.rider, at: middle, on: mapView) }
+        XCTAssertTrue(locatedAgain, "\(mapView.convert(Self.rider, toPointTo: mapView))")
+    }
+
+    /// Standing like a laptop, upright: the search bar goes down under the
+    /// fold with the dock, and locating puts the rider in the middle of the
+    /// upright half, not on the fold, nor under the search bar.
+    func testStandingLikeALaptopTheMapTakesTheUprightHalf() async throws {
+        let fold = CGRect(x: 0, y: 465, width: 669, height: 20)
+        let (model, manager) = modelLocatedByTheTest()
+        let (window, mapView) = try await panelWindow(
+            showing: model,
+            size: CGSize(width: 669, height: 951),
+            hinge: TestHinge(fold: fold)
+        )
+        defer { window.isHidden = true }
+        let coordinator = try XCTUnwrap(mapView.delegate as? ScooterMapView.Coordinator)
+        let searchUnderTheFold = await waitUntil {
+            let search = coordinator.parent.interactionExclusionFrame
+            return !search.isNull && search.minY >= fold.maxY
+        }
+        XCTAssertTrue(searchUnderTheFold, "\(coordinator.parent.interactionExclusionFrame)")
+        XCTAssertTrue(coordinator.parent.panelFrame.isNull, "a phone's layout")
+        XCTAssertTrue(coordinator.parent.bottomChromeFrames.allSatisfy { $0.isNull || $0.minY >= fold.maxY })
+        let marginsAboveTheFold = await waitUntil { mapView.layoutMargins.bottom >= 951 - fold.minY }
+        XCTAssertTrue(marginsAboveTheFold, "\(mapView.layoutMargins)")
+        try await Task.sleep(for: .milliseconds(500))
+
+        let middle = CGPoint(x: 669 / 2, y: (mapView.safeAreaInsets.top + fold.minY) / 2)
+        model.locationManager(manager, didUpdateLocations: [fix(at: Self.rider)])
+        let located = await waitUntil(attempts: 400) { self.shows(Self.rider, at: middle, on: mapView) }
+        XCTAssertTrue(located, "\(mapView.convert(Self.rider, toPointTo: mapView)) for \(middle)")
+    }
+
+    /// Folded open like a book and opened again while the move to the
+    /// rider is under way, nothing having touched the map: the map lands
+    /// each time where locating would, in the middle of the half where it
+    /// shows, at locating's zoom there. iOS moves the fold inside an
+    /// animation, and the margins set in it reached MapKit only at its end:
+    /// the rider ended 45 pt off the middle, and opening again kept the
+    /// zoom of the fold.
+    func testFoldingAndOpeningWhileLocatingLandsWhereLocatingWould() async throws {
+        let fold = CGRect(x: 465, y: 0, width: 20, height: 669)
+        let hinge = TestHinge()
+        let (model, manager) = modelLocatedByTheTest()
+        let (window, mapView) = try await panelWindow(showing: model, hinge: hinge)
+        defer { window.isHidden = true }
+        let besidePanel = await waitUntil { mapView.directionalLayoutMargins.leading >= 16 + 380 + 16 }
+        XCTAssertTrue(besidePanel, "\(mapView.directionalLayoutMargins)")
+        try await Task.sleep(for: .milliseconds(500))
+        model.locationManager(manager, didUpdateLocations: [fix(at: Self.rider)])
+        let located = await waitUntil(attempts: 400) { self.isBesideThePanel(Self.rider, on: mapView) }
+        XCTAssertTrue(located, "\(mapView.convert(Self.rider, toPointTo: mapView))")
+        try await Task.sleep(for: .milliseconds(800))
+        let open = mapView.camera.centerCoordinateDistance
+
+        let middleBesidePanel = CGPoint(x: (16 + 380 + 951) / 2, y: 669 / 2)
+        let trailingHalf = CGPoint(x: (fold.maxX + 951) / 2, y: 669 / 2)
+        try await turn(hinge, to: fold, in: window)
+        try await assertLanded(at: trailingHalf, on: mapView, model: model)
+        let folded = mapView.camera.centerCoordinateDistance
+        // The same place fitted into the narrower half.
+        XCTAssertGreaterThan(folded, open * 1.1)
+
+        try await turn(hinge, to: nil, in: window)
+        try await assertLanded(at: middleBesidePanel, on: mapView, model: model)
+        XCTAssertEqual(mapView.camera.centerCoordinateDistance, open, accuracy: open * 0.02)
+
+        try await turn(hinge, to: fold, in: window)
+        try await assertLanded(at: trailingHalf, on: mapView, model: model)
+        XCTAssertEqual(mapView.camera.centerCoordinateDistance, folded, accuracy: folded * 0.02)
+    }
+
+    /// The other way: located open like a book, then opened and folded again.
+    func testOpeningAndFoldingAfterLocatingInTheBookPoseLandsWhereLocatingWould() async throws {
+        let fold = CGRect(x: 465, y: 0, width: 20, height: 669)
+        let hinge = TestHinge(fold: fold)
+        let (model, manager) = modelLocatedByTheTest()
+        let (window, mapView) = try await panelWindow(showing: model, hinge: hinge)
+        defer { window.isHidden = true }
+        let pastTheFold = await waitUntil { mapView.layoutMargins.left >= fold.maxX + 15 }
+        XCTAssertTrue(pastTheFold, "\(mapView.layoutMargins)")
+        try await Task.sleep(for: .milliseconds(500))
+        let trailingHalf = CGPoint(x: (fold.maxX + 951) / 2, y: 669 / 2)
+        model.locationManager(manager, didUpdateLocations: [fix(at: Self.rider)])
+        let located = await waitUntil(attempts: 400) { self.shows(Self.rider, at: trailingHalf, on: mapView) }
+        XCTAssertTrue(located, "\(mapView.convert(Self.rider, toPointTo: mapView))")
+        try await Task.sleep(for: .milliseconds(800))
+        let folded = mapView.camera.centerCoordinateDistance
+
+        try await turn(hinge, to: nil, in: window)
+        try await assertLanded(at: CGPoint(x: (16 + 380 + 951) / 2, y: 669 / 2), on: mapView, model: model)
+        XCTAssertLessThan(mapView.camera.centerCoordinateDistance, folded / 1.1)
+
+        try await turn(hinge, to: fold, in: window)
+        try await assertLanded(at: trailingHalf, on: mapView, model: model)
+        XCTAssertEqual(mapView.camera.centerCoordinateDistance, folded, accuracy: folded * 0.02)
+    }
+
+    /// Once the person has moved the map, here a step in from the keyboard,
+    /// the fold takes what was in the middle beside the panel to the middle
+    /// of the trailing half, and opening brings it back, at the zoom it has.
+    func testFoldingAndOpeningAfterTheMapWasMovedKeepsWhatIsInTheMiddle() async throws {
+        let fold = CGRect(x: 465, y: 0, width: 20, height: 669)
+        let hinge = TestHinge()
+        let (model, manager) = modelLocatedByTheTest()
+        let (window, mapView) = try await panelWindow(showing: model, hinge: hinge)
+        defer { window.isHidden = true }
+        model.locationManager(manager, didUpdateLocations: [fix(at: Self.rider)])
+        let located = await waitUntil(attempts: 400) { self.isBesideThePanel(Self.rider, on: mapView) }
+        XCTAssertTrue(located, "\(mapView.convert(Self.rider, toPointTo: mapView))")
+        try await Task.sleep(for: .milliseconds(800))
+        model.zoom(by: 1)
+        try await Task.sleep(for: .milliseconds(1200))
+        let middleBesidePanel = CGPoint(x: (16 + 380 + 951) / 2, y: 669 / 2)
+        let kept = mapView.convert(middleBesidePanel, toCoordinateFrom: mapView)
+        let zoomed = mapView.camera.centerCoordinateDistance
+
+        try await turn(hinge, to: fold, in: window)
+        try await Task.sleep(for: .milliseconds(1200))
+        let trailingHalf = CGPoint(x: (fold.maxX + 951) / 2, y: 669 / 2)
+        XCTAssertTrue(shows(kept, at: trailingHalf, on: mapView, within: 8), "\(mapView.convert(kept, toPointTo: mapView))")
+        XCTAssertEqual(mapView.camera.centerCoordinateDistance, zoomed, accuracy: zoomed * 0.01)
+
+        try await turn(hinge, to: nil, in: window)
+        try await Task.sleep(for: .milliseconds(1200))
+        XCTAssertTrue(shows(kept, at: middleBesidePanel, on: mapView, within: 8), "\(mapView.convert(kept, toPointTo: mapView))")
+        XCTAssertEqual(mapView.camera.centerCoordinateDistance, zoomed, accuracy: zoomed * 0.01)
+    }
+
+    /// Opens or folds the Duo as iOS does, inside an animation, and lets it end.
+    private func turn(_ hinge: TestHinge, to fold: CGRect?, in window: UIWindow) async throws {
+        UIView.animate(withDuration: 0.5) {
+            hinge.fold = fold
+            window.layoutIfNeeded()
+        }
+        try await Task.sleep(for: .milliseconds(1200))
+    }
+
+    /// The rider is at `point` once the map has settled, and locating again
+    /// leaves the map where it is: it is where locating puts it, at its zoom.
+    private func assertLanded(
+        at point: CGPoint,
+        on mapView: MKMapView,
+        model: ScooterMapModel,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) async throws {
+        _ = await waitUntil(attempts: 300) { self.shows(Self.rider, at: point, on: mapView, within: 8) }
+        try await Task.sleep(for: .milliseconds(600))
+        let shown = mapView.convert(Self.rider, toPointTo: mapView)
+        XCTAssertTrue(shows(Self.rider, at: point, on: mapView, within: 8), "\(shown) for \(point)", file: file, line: line)
+        let distance = mapView.camera.centerCoordinateDistance
+        model.focusOnUser()
+        try await Task.sleep(for: .milliseconds(1200))
+        let relocated = mapView.convert(Self.rider, toPointTo: mapView)
+        XCTAssertEqual(relocated.x, shown.x, accuracy: 3, "\(shown) → \(relocated)", file: file, line: line)
+        XCTAssertEqual(relocated.y, shown.y, accuracy: 3, "\(shown) → \(relocated)", file: file, line: line)
+        XCTAssertEqual(
+            mapView.camera.centerCoordinateDistance, distance, accuracy: distance * 0.01,
+            "zoom", file: file, line: line
+        )
+    }
+
+    /// Whether a place shows at `point` on the map, within a little.
+    private func shows(
+        _ coordinate: CLLocationCoordinate2D,
+        at point: CGPoint,
+        on mapView: MKMapView,
+        within tolerance: CGFloat = 24
+    ) -> Bool {
+        let shown = mapView.convert(coordinate, toPointTo: mapView)
+        return abs(shown.x - point.x) <= tolerance && abs(shown.y - point.y) <= tolerance
     }
 }
 
@@ -4013,5 +4325,26 @@ extension ScooterMapModelTests {
             window.rootViewController?.view.target(forAction: action, withSender: command) as? NSObject
         )
         target.perform(action, with: command)
+    }
+}
+
+/// The hinge of the iPhone Duo a test puts the map screen in: the fold it
+/// reserves, in window coordinates, which the test can open and close.
+@Observable
+private final class TestHinge {
+    var fold: CGRect?
+
+    init(fold: CGRect? = nil) {
+        self.fold = fold
+    }
+}
+
+/// The map screen beside the fold of a test's hinge.
+private struct HingedScreen: View {
+    let model: ScooterMapModel
+    let hinge: TestHinge
+
+    var body: some View {
+        ScooterMapScreen(model: model, fold: hinge.fold)
     }
 }

@@ -71,12 +71,14 @@ enum ScooterMapCameraPolicy {
     /// visible by what covers it, at the current zoom. The search bar, the
     /// locate button and above all the dock cover the map, and in a large
     /// window a panel down one side: centred on the point itself, a scooter
-    /// can end up behind its own card.
+    /// can end up behind its own card. `marginsMoved` says that the map's
+    /// margins were moved past a panel or a fold.
     @MainActor
     static func center(
         showing coordinate: CLLocationCoordinate2D,
         on mapView: MKMapView,
-        visible: CGRect
+        visible: CGRect,
+        marginsMoved: Bool = false
     ) -> CLLocationCoordinate2D {
         let bounds = mapView.bounds
         let top = max(bounds.minY, visible.minY)
@@ -84,9 +86,9 @@ enum ScooterMapCameraPolicy {
         let leading = max(bounds.minX, visible.minX)
         let trailing = min(bounds.maxX, visible.maxX)
         // MapKit shows the centre in the middle of the map's layout margins,
-        // which a panel moves past it: beside one, the offset is measured from
-        // where the centre is shown, not from the middle of the map.
-        let middle = trailing - leading < bounds.width
+        // which a panel or a fold moves past it: then the offset is measured
+        // from where the centre is shown, not from the middle of the map.
+        let middle = marginsMoved || trailing - leading < bounds.width
             ? mapView.convert(mapView.centerCoordinate, toPointTo: mapView)
             : CGPoint(x: bounds.midX, y: bounds.midY)
         // With hardly anything left to show it in, the plain centre is as good.
@@ -107,6 +109,45 @@ enum ScooterMapCameraPolicy {
         let minX = panel.midX < bounds.midX ? min(max(panel.maxX, bounds.minX), bounds.maxX) : bounds.minX
         let maxX = panel.midX < bounds.midX ? bounds.maxX : max(min(panel.minX, bounds.maxX), bounds.minX)
         return CGRect(x: minX, y: band.minY, width: maxX - minX, height: band.height)
+    }
+
+    /// Where the map shows what it centres beside the fold of a partly open
+    /// iPhone Duo.
+    enum FoldSide: Equatable {
+        /// Above a fold across the map, standing like a laptop: the upright
+        /// half, with the search bar, the notices and the dock on the flat one.
+        case above
+        /// Left or right of a fold down the map, open like a book: the half
+        /// away from the panel, or the trailing one without a panel.
+        case left
+        case right
+    }
+
+    static func side(of fold: CGRect, panel: CGRect?, rightToLeft: Bool) -> FoldSide {
+        if ScooterFold.isAcross(fold) { return .above }
+        if let panel, !panel.isNull, !panel.isEmpty { return panel.midX < fold.midX ? .right : .left }
+        return rightToLeft ? .left : .right
+    }
+
+    /// The part of `visible` on the `side` of a `fold` where the map shows.
+    /// What covers the map on the other side covers none of it: above a fold
+    /// across the map, the search bar lying under it with the dock doesn't,
+    /// and the map shows from the top of its safe area, `safeTop`, down to
+    /// the fold. With hardly any room left the fold is let be.
+    static func visibleRect(_ visible: CGRect, safeTop: CGFloat, beside fold: CGRect, on side: FoldSide) -> CGRect {
+        let rect: CGRect
+        switch side {
+        case .above:
+            let top = visible.minY < fold.minY ? visible.minY : safeTop
+            rect = CGRect(x: visible.minX, y: top, width: visible.width, height: min(visible.maxY, fold.minY) - top)
+        case .right:
+            let minX = max(visible.minX, fold.maxX)
+            rect = CGRect(x: minX, y: visible.minY, width: visible.maxX - minX, height: visible.height)
+        case .left:
+            let maxX = min(visible.maxX, fold.minX)
+            rect = CGRect(x: visible.minX, y: visible.minY, width: maxX - visible.minX, height: visible.height)
+        }
+        return rect.width >= 44 && rect.height >= 44 ? rect : visible
     }
 
     /// The camera's distance `steps` in, or out when negative: each step
@@ -178,6 +219,10 @@ struct ScooterMapView: UIViewRepresentable {
     /// coordinates. The map shows a scooter beside it, keeps names and taps
     /// off it, and moves Apple's logo and Legal link out from under it.
     var panelFrame: CGRect = .null
+    /// The fold of a partly open iPhone Duo, in window coordinates. The map
+    /// shows a scooter above it, or on the far side of it from the panel,
+    /// and keeps names, the compass and Apple's logo off it.
+    var foldFrame: CGRect = .null
     /// The region, the zoom asked of the server and the zoom as drawn.
     let onRegionChange: (MKCoordinateRegion, Int, Double) -> Void
     let onSelectionChange: (String?) -> Void
@@ -319,15 +364,16 @@ struct ScooterMapView: UIViewRepresentable {
         /// The scale's leading edge: at the map's safe area, or beside a panel.
         private var scaleBesideSafeArea: NSLayoutConstraint?
         private var scaleBesidePanel: NSLayoutConstraint?
-        /// The map's layout margins before a panel moved them.
+        /// The map's layout margins before a panel or a fold moved them.
         private var restingMargins: NSDirectionalEdgeInsets?
-        /// The margins set beside the panel, as they were set.
-        private var panelMargins: NSDirectionalEdgeInsets?
+        /// The margins set beside the panel or the fold, as they were set.
+        private var movedMargins: NSDirectionalEdgeInsets?
         /// The place last asked for, from its move until the person moves the
         /// map or chooses something else to show, or another place is asked
         /// for. Once made, the move is done for the margins it was made with:
-        /// only the panel's leading margin moving takes the map on to the
-        /// place again, measured beside the panel as it now is.
+        /// only the leading margin moving, with the panel or a fold down the
+        /// map, takes the map on to the place again, measured beside them as
+        /// they now are.
         private var focusUnderWay: FocusUnderWay?
         /// How many moves to a place asked for were made, first moves and
         /// moves made again: tests hold it to one for each place and a few
@@ -415,11 +461,17 @@ struct ScooterMapView: UIViewRepresentable {
             let searchFrame = parent.interactionExclusionFrame
             let panel = panel(in: mapView)
             let top: CGFloat
+            let search = searchFrame.isNull || searchFrame.isEmpty ? nil : mapView.convert(searchFrame, from: nil)
             if let panel {
                 // Beside a panel, level with its top, the compass on the far
                 // side of the map and the scale next to the panel.
                 top = panel.minY
-            } else if searchFrame.isNull || searchFrame.isEmpty {
+            } else if let fold = fold(in: mapView), ScooterFold.isAcross(fold),
+                      search.map({ $0.minY >= fold.minY }) ?? true {
+                // Above a fold across the map, with the search bar on the flat
+                // half under it: at the top of the upright half.
+                top = mapView.safeAreaInsets.top + 12
+            } else if search == nil {
                 top = mapView.safeAreaInsets.top + 80
             } else {
                 top = mapView.convert(
@@ -582,15 +634,14 @@ struct ScooterMapView: UIViewRepresentable {
             // waits for the layout; the first region change then applies it.
             guard mapView.bounds.width > 0, mapView.bounds.height > 0 else { return }
             lastFocusToken = request.token
-            focusUnderWay = FocusUnderWay(request: request, leading: leadingMargin(of: mapView))
+            focusUnderWay = FocusUnderWay(request: request, margins: margins(of: mapView))
             move(to: request, on: mapView)
         }
 
-        /// The leading margin as last set, or as the map has it, without the
-        /// safe area UIKit adds to it.
-        private func leadingMargin(of mapView: MKMapView) -> CGFloat {
-            panelMargins?.leading ?? restingMargins?.leading
-                ?? Self.withoutSafeArea(mapView.directionalLayoutMargins, of: mapView).leading
+        /// The margins as last set, or as the map has them, without the safe
+        /// area UIKit adds to them.
+        private func margins(of mapView: MKMapView) -> NSDirectionalEdgeInsets {
+            movedMargins ?? restingMargins ?? Self.withoutSafeArea(mapView.directionalLayoutMargins, of: mapView)
         }
 
         /// A step in or out from the keyboard: the camera comes closer or goes
@@ -639,7 +690,8 @@ struct ScooterMapView: UIViewRepresentable {
                     ScooterMapCameraPolicy.center(
                         showing: request.point.coordinate,
                         on: mapView,
-                        visible: visible
+                        visible: visible,
+                        marginsMoved: movedMargins != nil
                     ),
                     animated: !UIAccessibility.isReduceMotionEnabled
                 )
@@ -662,7 +714,8 @@ struct ScooterMapView: UIViewRepresentable {
 
         /// The part of the map between the search bar and the locate button
         /// with the dock under it, and beside the panel of a large window,
-        /// unless `besidePanel` is false.
+        /// unless `besidePanel` is false. Beside the fold of a partly open
+        /// iPhone Duo, only the part on the side where the map shows.
         private func visibleRect(of mapView: MKMapView, besidePanel: Bool = true) -> CGRect {
             let topFrame = parent.interactionExclusionFrame
             let top = topFrame.isNull || topFrame.isEmpty
@@ -670,11 +723,18 @@ struct ScooterMapView: UIViewRepresentable {
                 : mapView.convert(CGPoint(x: topFrame.midX, y: topFrame.maxY), from: nil).y
             let bottom = parent.bottomChromeTop
                 .map { mapView.convert(CGPoint(x: 0, y: $0), from: nil).y } ?? mapView.bounds.maxY
-            return ScooterMapCameraPolicy.visibleRect(
+            let visible = ScooterMapCameraPolicy.visibleRect(
                 in: mapView.bounds,
                 top: top,
                 bottom: bottom,
                 beside: besidePanel ? panel(in: mapView) : nil
+            )
+            guard let fold = fold(in: mapView) else { return visible }
+            return ScooterMapCameraPolicy.visibleRect(
+                visible,
+                safeTop: mapView.safeAreaInsets.top,
+                beside: fold,
+                on: foldSide(fold, on: mapView)
             )
         }
 
@@ -685,30 +745,49 @@ struct ScooterMapView: UIViewRepresentable {
             return mapView.convert(frame, from: nil)
         }
 
-        /// Between the panel and Apple's logo, and the scale, beside it.
+        /// The fold of a partly open iPhone Duo, in the map's own coordinates.
+        private func fold(in mapView: MKMapView) -> CGRect? {
+            let frame = parent.foldFrame
+            guard !frame.isNull, !frame.isEmpty else { return nil }
+            let fold = mapView.convert(frame, from: nil)
+            return fold.intersects(mapView.bounds) ? fold : nil
+        }
+
+        private func foldSide(_ fold: CGRect, on mapView: MKMapView) -> ScooterMapCameraPolicy.FoldSide {
+            ScooterMapCameraPolicy.side(
+                of: fold,
+                panel: panel(in: mapView),
+                rightToLeft: mapView.effectiveUserInterfaceLayoutDirection == .rightToLeft
+            )
+        }
+
+        /// Between the panel or the fold and Apple's logo, and the scale, beside it.
         private static let panelGap: CGFloat = 16
 
         /// A move to a place asked for, made on a map with a size, with what
         /// it was measured with.
         private struct FocusUnderWay {
             let request: MapFocusRequest
-            /// The leading margin, without the safe area, the move was last
-            /// made with.
-            var leading: CGFloat
+            /// The margins, without the safe area, the move was last made with.
+            var margins: NSDirectionalEdgeInsets
             /// How many times it was made again since.
             var madeAgain = 0
         }
 
         /// The most times a move is made again: each is a real change of the
-        /// panel's leading margin, which a move of the camera doesn't change,
-        /// and a panel, a turn of the screen and larger text are about all
+        /// leading margin, which a move of the camera doesn't change, and a
+        /// panel, a fold, a turn of the screen and larger text are about all
         /// that changes it. Past this the move is over, whatever else might
         /// keep moving the margin.
         private static let mostMovesAgain = 6
 
         /// Apple's logo and the Legal link sit inside the map's layout margins:
         /// beside a panel the leading margin reaches past it, so that they stay
-        /// in view. Without a panel the margins are left as they were.
+        /// in view. Beside the fold of a partly open iPhone Duo the margin on
+        /// its far side from the map reaches past it too: the bottom one above
+        /// a fold across the map, so that the map centres what it shows in the
+        /// upright half, a side one beside a fold down it. Without either the
+        /// margins are left as they were.
         ///
         /// UIKit reads a view's margins back with its safe area added to the
         /// margins set, so the margins are compared with those last set, and
@@ -718,28 +797,61 @@ struct ScooterMapView: UIViewRepresentable {
         /// update, which stopped every move of the camera where it began, and
         /// locating left the rider off the screen.
         func updateMargins(on mapView: MKMapView) {
-            guard let panel = panel(in: mapView) else {
+            let panel = panel(in: mapView)
+            let fold = fold(in: mapView)
+            guard panel != nil || fold != nil else {
                 if let restingMargins {
                     setMargins(restingMargins, on: mapView)
                     self.restingMargins = nil
-                    panelMargins = nil
+                    movedMargins = nil
                 }
                 return
             }
             let resting = restingMargins ?? Self.withoutSafeArea(mapView.directionalLayoutMargins, of: mapView)
             restingMargins = resting
-            // Measured from the map's safe area, as its margins are.
+            // Measured from the map's safe area, as its margins are, on the
+            // left and the right as they show.
             let bounds = mapView.bounds
-            let reach = mapView.effectiveUserInterfaceLayoutDirection == .rightToLeft
-                ? bounds.maxX - mapView.safeAreaInsets.right - panel.minX
-                : panel.maxX - bounds.minX - mapView.safeAreaInsets.left
-            var margins = resting
-            margins.leading = max(resting.leading, reach + Self.panelGap)
+            let safe = mapView.safeAreaInsets
+            let isRightToLeft = mapView.effectiveUserInterfaceLayoutDirection == .rightToLeft
+            var left = isRightToLeft ? resting.trailing : resting.leading
+            var right = isRightToLeft ? resting.leading : resting.trailing
+            var bottom = resting.bottom
+            if let panel {
+                if isRightToLeft {
+                    right = max(right, bounds.maxX - safe.right - panel.minX + Self.panelGap)
+                } else {
+                    left = max(left, panel.maxX - bounds.minX - safe.left + Self.panelGap)
+                }
+            }
+            if let fold {
+                switch foldSide(fold, on: mapView) {
+                case .above: bottom = max(bottom, bounds.maxY - safe.bottom - fold.minY + Self.panelGap)
+                case .right: left = max(left, fold.maxX - bounds.minX - safe.left + Self.panelGap)
+                case .left: right = max(right, bounds.maxX - safe.right - fold.minX + Self.panelGap)
+                }
+            }
+            let margins = NSDirectionalEdgeInsets(
+                top: resting.top,
+                leading: isRightToLeft ? right : left,
+                bottom: bottom,
+                trailing: isRightToLeft ? left : right
+            )
             // A frame converted between views may differ in its last digits
-            // from one update to the next: that is no move of the panel.
-            if let panelMargins, abs(margins.leading - panelMargins.leading) < 0.5 { return }
-            panelMargins = margins
+            // from one update to the next: that is no move of the panel or
+            // the fold.
+            if let movedMargins, Self.nearlyEqual(margins, movedMargins, within: 0.5) { return }
+            movedMargins = margins
             setMargins(margins, on: mapView)
+        }
+
+        private static func nearlyEqual(
+            _ some: NSDirectionalEdgeInsets,
+            _ other: NSDirectionalEdgeInsets,
+            within tolerance: CGFloat
+        ) -> Bool {
+            abs(some.top - other.top) < tolerance && abs(some.leading - other.leading) < tolerance
+                && abs(some.bottom - other.bottom) < tolerance && abs(some.trailing - other.trailing) < tolerance
         }
 
         /// Margins as read back from the map, without the safe area UIKit adds to them.
@@ -770,11 +882,13 @@ struct ScooterMapView: UIViewRepresentable {
         /// takes: a move given a second and a half to be over left the rider
         /// in the middle of the whole map after a slow one.
         ///
-        /// The move is made again only when the panel's leading margin really
-        /// moves, once for each time, and no more than a few times in all:
-        /// nothing the camera shows, such as the dock or a card, moves it.
-        /// Made again at every change of the margins, it had no bound but the
-        /// changes, as long as the person left the map alone.
+        /// The move is made again only when the leading margin really moves,
+        /// with the panel or a fold down the map, once for each time, and no
+        /// more than a few times in all: nothing the camera shows, such as the
+        /// dock or a card, moves it. Made again at every change of the margins,
+        /// it had no bound but the changes, as long as the person left the map
+        /// alone. Any other margin moving, the bottom one rising to the fold of
+        /// a Duo standing like a laptop, ends it, and the map keeps its centre.
         ///
         /// A map SwiftUI hasn't given a size yet shows nothing to keep, and
         /// MapKit holds back a centre or a camera given to it until it has
@@ -783,9 +897,18 @@ struct ScooterMapView: UIViewRepresentable {
         /// from the rider's first fix, with the rider off the bottom of the
         /// screen. Such a map only takes the margins, and a move under way is
         /// made again once the map has its size, at its first region change.
+        ///
+        /// iOS opens and folds an iPhone Duo inside an animation, as it turns
+        /// the screen. Margins set in it reached MapKit only at its end, after
+        /// the move had been measured against the old ones: the rider ended
+        /// off the middle by half their change, at the zoom that fitted the old
+        /// margins. The map takes them at once, outside the animation.
         private func setMargins(_ margins: NSDirectionalEdgeInsets, on mapView: MKMapView) {
             let centre = mapView.centerCoordinate
-            mapView.directionalLayoutMargins = margins
+            UIView.performWithoutAnimation {
+                mapView.directionalLayoutMargins = margins
+                mapView.layoutIfNeeded()
+            }
             guard mapView.bounds.width > 0, mapView.bounds.height > 0 else {
                 if focusUnderWay != nil {
                     lastFocusToken = nil
@@ -798,13 +921,14 @@ struct ScooterMapView: UIViewRepresentable {
                 return
             }
             // Margins much as the move had them leave it on its way.
-            guard abs(margins.leading - focus.leading) >= 1 else { return }
-            guard focus.madeAgain < Self.mostMovesAgain else {
+            guard !Self.nearlyEqual(margins, focus.margins, within: 1) else { return }
+            guard abs(margins.leading - focus.margins.leading) >= 1,
+                  focus.madeAgain < Self.mostMovesAgain else {
                 focusUnderWay = nil
                 mapView.setCenter(centre, animated: false)
                 return
             }
-            focus.leading = margins.leading
+            focus.margins = margins
             focus.madeAgain += 1
             focusUnderWay = focus
             move(to: focus.request, on: mapView)
@@ -830,7 +954,12 @@ struct ScooterMapView: UIViewRepresentable {
                   panel.contains(mapView.convert(coordinate, toPointTo: mapView)) else { return }
             watchedSelection = (watched.key, 0)
             mapView.setCenter(
-                ScooterMapCameraPolicy.center(showing: coordinate, on: mapView, visible: visibleRect(of: mapView)),
+                ScooterMapCameraPolicy.center(
+                    showing: coordinate,
+                    on: mapView,
+                    visible: visibleRect(of: mapView),
+                    marginsMoved: movedMargins != nil
+                ),
                 animated: !UIAccessibility.isReduceMotionEnabled
             )
         }
@@ -1095,13 +1224,22 @@ struct ScooterMapView: UIViewRepresentable {
             guard !namedIDs.isEmpty else { return [] }
             // A panel covers only as far down as it reaches: below it the
             // names show as anywhere else.
-            let chrome = (parent.bottomChromeFrames + [parent.panelFrame])
+            var chrome = (parent.bottomChromeFrames + [parent.panelFrame])
                 .filter { !$0.isNull && !$0.isEmpty }
                 .map { mapView.convert($0, from: nil) }
             // Beside the locate button the map is free down to the dock.
             var visible = visibleRect(of: mapView, besidePanel: false)
             if !chrome.isEmpty {
                 visible.size.height = mapView.bounds.maxY - visible.minY
+            }
+            // Beside the fold of a partly open iPhone Duo the names show on
+            // both halves, off the fold and what covers either of them.
+            if let fold = fold(in: mapView) {
+                let top = mapView.safeAreaInsets.top
+                visible = CGRect(x: mapView.bounds.minX, y: top, width: mapView.bounds.width, height: mapView.bounds.maxY - top)
+                chrome.append(fold)
+                let search = parent.interactionExclusionFrame
+                if !search.isNull, !search.isEmpty { chrome.append(mapView.convert(search, from: nil)) }
             }
 
             var requests: [ScooterPillRequest] = []
@@ -1711,12 +1849,12 @@ struct ScooterMapView: UIViewRepresentable {
             fit(walkTrail.points.map(\.coordinate), on: mapView, animated: animated)
         }
 
-        /// A cluster opens onto its scooters. Beside a panel they are fitted
-        /// like a route into the part of the map left visible; on a phone
-        /// MapKit shows them, as it always has.
+        /// A cluster opens onto its scooters. Beside a panel or a fold they
+        /// are fitted like a route into the part of the map left visible; on
+        /// a phone MapKit shows them, as it always has.
         private func showMembers(of cluster: MKClusterAnnotation, on mapView: MKMapView) {
             focusUnderWay = nil
-            guard panel(in: mapView) != nil else {
+            guard movedMargins != nil else {
                 mapView.showAnnotations(cluster.memberAnnotations, animated: true)
                 return
             }
@@ -1728,9 +1866,9 @@ struct ScooterMapView: UIViewRepresentable {
             guard bounds.width > 0, bounds.height > 0, let first = coordinates.first else { return }
             var band = visibleRect(of: mapView)
             // MapKit frames a region within the map's layout margins, which a
-            // panel moves past it.
+            // panel or a fold moves past it.
             var frame = bounds
-            if panel(in: mapView) != nil {
+            if movedMargins != nil {
                 frame = bounds.inset(by: mapView.layoutMargins)
                 band = band.intersection(frame)
             }
