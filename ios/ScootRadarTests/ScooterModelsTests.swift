@@ -1,3 +1,4 @@
+import CoreLocation
 import Foundation
 import XCTest
 @testable import ScootRadar
@@ -272,6 +273,15 @@ final class ScooterModelsTests: XCTestCase {
         XCTAssertFalse(ScooterMapScalePolicy.showsScale(locale: Locale(identifier: "en_CH")))
         XCTAssertFalse(ScooterMapScalePolicy.showsScale(locale: Locale(identifier: "fr_CA")))
         XCTAssertFalse(ScooterMapScalePolicy.showsScale(locale: Locale(identifier: "es_MX")))
+    }
+
+    func testTheHeadingIsTakenFromTheTopOfTheScreenAsItShows() {
+        XCTAssertEqual(ScooterHeadingPolicy.deviceOrientation(for: .portrait), .portrait)
+        XCTAssertEqual(ScooterHeadingPolicy.deviceOrientation(for: .portraitUpsideDown), .portraitUpsideDown)
+        // A screen turned left shows on a device turned right.
+        XCTAssertEqual(ScooterHeadingPolicy.deviceOrientation(for: .landscapeLeft), .landscapeRight)
+        XCTAssertEqual(ScooterHeadingPolicy.deviceOrientation(for: .landscapeRight), .landscapeLeft)
+        XCTAssertEqual(ScooterHeadingPolicy.deviceOrientation(for: .unknown), .portrait)
     }
 
     private func plainSpaces(_ text: String) -> String {

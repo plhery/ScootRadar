@@ -1,3 +1,4 @@
+import CoreLocation
 import SwiftUI
 import UIKit
 
@@ -79,6 +80,9 @@ struct ScooterMapScreen: View {
                                 settingsPresented = true
                             }
                         )
+                        // In an iPad window the bar makes room for the window's
+                        // buttons in its top corner.
+                        .containerCornerOffset(.leading, sizeToFit: true)
                         .onGeometryChange(for: CGFloat.self) { geometry in
                             geometry.size.height
                         } action: { height in
@@ -225,6 +229,7 @@ struct ScooterMapScreen: View {
         .sensoryFeedback(.selection, trigger: model.selectedScooterID)
         .sensoryFeedback(.selection, trigger: model.selectedParkingID)
         .background(WindowAppearance(style: model.appearance.interfaceStyle))
+        .background(InterfaceOrientationProbe { model.setHeadingOrientation(ScooterHeadingPolicy.deviceOrientation(for: $0)) })
         .environment(\.locale, model.language.locale)
     }
 
@@ -303,6 +308,48 @@ private struct WindowAppearance: UIViewRepresentable {
         override func didMoveToWindow() {
             super.didMoveToWindow()
             window?.overrideUserInterfaceStyle = style
+        }
+    }
+}
+
+/// The compass reads the heading from the top of the device held upright. The
+/// direction someone faces is the top of the screen as it shows, so a screen
+/// shown sideways, as an open iPhone Duo shows the map, turns it with it.
+enum ScooterHeadingPolicy {
+    static func deviceOrientation(for interface: UIInterfaceOrientation) -> CLDeviceOrientation {
+        switch interface {
+        case .portraitUpsideDown: .portraitUpsideDown
+        // The interface turns the other way from the device.
+        case .landscapeLeft: .landscapeRight
+        case .landscapeRight: .landscapeLeft
+        default: .portrait
+        }
+    }
+}
+
+/// Which way up the window shows, now and each time it turns.
+private struct InterfaceOrientationProbe: UIViewRepresentable {
+    let onChange: (UIInterfaceOrientation) -> Void
+
+    func makeUIView(context: Context) -> Probe {
+        Probe()
+    }
+
+    func updateUIView(_ probe: Probe, context: Context) {
+        probe.onChange = onChange
+    }
+
+    final class Probe: UIView {
+        var onChange: ((UIInterfaceOrientation) -> Void)?
+        private var observation: NSKeyValueObservation?
+
+        override func didMoveToWindow() {
+            super.didMoveToWindow()
+            observation = window?.windowScene?.observe(\.effectiveGeometry, options: [.initial, .new]) { [weak self] scene, _ in
+                MainActor.assumeIsolated {
+                    self?.onChange?(scene.effectiveGeometry.interfaceOrientation)
+                }
+            }
         }
     }
 }

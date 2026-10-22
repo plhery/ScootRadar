@@ -825,6 +825,12 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         locationManager.startUpdatingHeading()
     }
 
+    /// Which way up the screen shows, for the heading to be the way the person faces.
+    func setHeadingOrientation(_ orientation: CLDeviceOrientation) {
+        guard locationManager.headingOrientation != orientation else { return }
+        locationManager.headingOrientation = orientation
+    }
+
     private func stopHeadingUpdates() {
         locationManager.stopUpdatingHeading()
         isTrackingHeading = false
