@@ -32,6 +32,12 @@ One screen: a full-screen Apple map, a search bar at the top, a dock at the
 bottom and a locate button above the dock. Filters and Settings open as sheets
 from the search bar.
 
+In a large window, such as an open iPhone Duo held sideways, the search bar, the
+notices and the dock's card stand in a panel down the leading side instead, as
+on the website on a computer, and the map centres what it shows on the part
+beside the panel. Filters then open in a popover from the panel's search bar,
+and Settings in a form at the side.
+
 **Map.** Zoomed out, each city shows its total; closer, clusters; from street
 level, one dot per scooter in its provider's colour, at its exact place, larger
 and brighter the shorter the walk to it. Scooters parked on one spot stand side

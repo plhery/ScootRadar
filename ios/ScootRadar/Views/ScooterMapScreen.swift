@@ -120,15 +120,23 @@ struct ScooterMapScreen: View {
             ScooterAnalytics.shared.track(open ? "settings_open" : "panel_close")
             if open { ScooterAnalytics.shared.track(screen: "/settings") }
         }
-        .sheet(isPresented: $filtersPresented) {
+        .sheet(isPresented: filtersSheetPresented) {
             ScooterFilterSheet(model: model)
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $settingsPresented) {
-            ScooterSettingsSheet(model: model)
-                .presentationDetents([.medium, .large])
-                .presentationDragIndicator(.visible)
+            if chromeLayout == .panel {
+                // A form at the trailing side, clear of the panel and of
+                // most of the map.
+                ScooterSettingsSheet(model: model)
+                    .presentationSizing(.form)
+                    .modifier(TrailingPresentation())
+            } else {
+                ScooterSettingsSheet(model: model)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
+            }
         }
         .sensoryFeedback(.selection, trigger: model.selectedScooterID)
         .sensoryFeedback(.selection, trigger: model.selectedParkingID)
@@ -244,6 +252,12 @@ struct ScooterMapScreen: View {
     private func panelChrome(in proxy: GeometryProxy) -> some View {
         ZStack(alignment: .top) {
             searchIsland(in: proxy)
+                // Off the panel's search bar, with the map beside the panel in
+                // view, where what the filters change shows as they change.
+                .popover(isPresented: $filtersPresented, arrowEdge: .trailing) {
+                    ScooterFilterSheet(model: model)
+                        .frame(minWidth: 360, idealWidth: 400, minHeight: 440, idealHeight: 620)
+                }
                 .zIndex(1)
 
             VStack(spacing: 8) {
@@ -342,6 +356,15 @@ struct ScooterMapScreen: View {
         } action: { height in
             if !searchIsExpanded { searchBarHeight = height }
         }
+    }
+
+    /// Filters open in a sheet over a phone's layout. Beside a panel they
+    /// open in a popover from its search bar instead.
+    private var filtersSheetPresented: Binding<Bool> {
+        Binding(
+            get: { filtersPresented && chromeLayout == .dock },
+            set: { filtersPresented = $0 }
+        )
     }
 
     /// Only a first load that failed is reported under the search bar; later
@@ -475,6 +498,17 @@ enum ScooterChromeLayout: Equatable {
         guard regularWidth, regularHeight else { return .dock }
         let both = panelWidth(largeText: largeText) + minimumMapWidth
         return width >= (current == .panel ? both : both + slack) ? .panel : .dock
+    }
+}
+
+/// A sheet on the trailing side of the window, where iOS 27 can put one.
+private struct TrailingPresentation: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 27.0, *) {
+            content.presentationPlacement(.trailing)
+        } else {
+            content
+        }
     }
 }
 
