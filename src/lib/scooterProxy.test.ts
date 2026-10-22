@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { proxyScooterSnapshot } from './scooterProxy';
+import { proxyScooterSnapshot, type LastGoodStore } from './scooterProxy';
 
 const env = { SCOOTER_SNAPSHOT_API_TOKEN: 'test-service-token', SCOOTER_SNAPSHOT_API_URL: 'https://cache.example',
   SCOOTER_API_RATE_LIMITER: { limit: vi.fn(async () => ({ success: true })) } };
@@ -87,4 +87,91 @@ it('rejects an origin redirect without forwarding it to clients or following it 
   expect(response.headers.has('Location')).toBe(false);
   expect(fetcher).toHaveBeenCalledOnce();
   expect(fetcher).toHaveBeenCalledWith(expect.any(URL), expect.objectContaining({ redirect: 'manual' }));
+});
+
+describe('last good answer', () => {
+  const memory = () => {
+    const entries = new Map<string, Response>();
+    const pending: Promise<unknown>[] = [];
+    const store: LastGoodStore = {
+      cache: { match: async key => entries.get(key)?.clone(), put: async (key, response) => { entries.set(key, response); } },
+      waitUntil: promise => { pending.push(promise); },
+    };
+    return { entries, store, settled: () => Promise.all(pending) };
+  };
+  const answer = (meta: Record<string, unknown>, policy = 'public, max-age=30') => Response.json({ vehicles: [{ id: 'a' }], meta },
+    { headers: { 'Cache-Control': 'private, no-store', 'X-Scooter-Public-Cache-Control': policy } });
+
+  it('gives the last good answer again, marked stale, when the origin fails', async () => {
+    const { entries, store, settled } = memory();
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(answer({ stale: false, generatedAt: '2026-10-22T00:00:00Z' }));
+    expect((await proxyScooterSnapshot(request(), env, store)).status).toBe(200);
+    await settled();
+    expect([...entries.keys()]).toEqual(['https://map.example/last-good/api/scooters?east=4.9&north=45.8&south=45.72&west=4.79&zoom=13']);
+    expect(entries.values().next().value?.headers.get('Cache-Control')).toBe('public, max-age=900');
+
+    const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
+    fetcher.mockResolvedValueOnce(Response.json({ error: 'Scooter data is temporarily unavailable.' }, { status: 503 }));
+    // The same view, its parameters in another order.
+    const stale = await proxyScooterSnapshot(new Request('https://map.example/api/scooters?zoom=13&south=45.72&west=4.79&north=45.8&east=4.9'), env, store);
+    expect(stale.status).toBe(200);
+    expect(await stale.json()).toEqual({ vehicles: [{ id: 'a' }], meta: { stale: true, generatedAt: '2026-10-22T00:00:00Z' } });
+    expect(stale.headers.get('Cache-Control')).toBe('private, no-store');
+    expect(stale.headers.get('X-Mobility-Data-Status')).toBe('stale');
+    expect(stale.headers.get('X-Scooter-Last-Good-Age')).toBe('0');
+    expect(logged.mock.calls.map(([line]) => JSON.parse(line))).toEqual([{ event: 'scooter_origin_failure', status: 503, lastGoodAge: 0 }]);
+  });
+
+  it('keeps the zones for a day, and gives them stale when the origin times out', async () => {
+    const { store, settled } = memory();
+    const now = vi.spyOn(Date, 'now').mockReturnValue(Date.parse('2026-10-22T00:00:00Z'));
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(Response.json({ zones: [{ id: 'z' }], meta: { pending: false } },
+      { headers: { 'X-Scooter-Public-Cache-Control': 'public, max-age=300' } }));
+    const zones = () => new Request('https://map.example/api/zones?south=47.36&west=8.53&north=47.38&east=8.55&zoom=15');
+    await proxyScooterSnapshot(zones(), env, store);
+    await settled();
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    fetcher.mockRejectedValue(new DOMException('The operation timed out.', 'TimeoutError'));
+    now.mockReturnValue(Date.parse('2026-10-22T20:00:00Z'));
+    const stale = await proxyScooterSnapshot(zones(), env, store);
+    expect(await stale.json()).toEqual({ zones: [{ id: 'z' }], meta: { pending: false, stale: true } });
+    expect(stale.headers.get('X-Scooter-Last-Good-Age')).toBe('72000');
+    now.mockReturnValue(Date.parse('2026-10-23T00:00:01Z'));
+    expect((await proxyScooterSnapshot(zones(), env, store)).status).toBe(503);
+  });
+
+  it('gives no scooters older than the map shows', async () => {
+    const { store, settled } = memory();
+    const now = vi.spyOn(Date, 'now').mockReturnValue(Date.parse('2026-10-22T00:00:00Z'));
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(answer({ stale: false }));
+    await proxyScooterSnapshot(request(), env, store);
+    await settled();
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    fetcher.mockRejectedValue(new TypeError('Network connection lost.'));
+    now.mockReturnValue(Date.parse('2026-10-22T00:15:00Z'));
+    expect((await proxyScooterSnapshot(request(), env, store)).status).toBe(200);
+    now.mockReturnValue(Date.parse('2026-10-22T00:15:01Z'));
+    const expired = await proxyScooterSnapshot(request(), env, store);
+    expect(expired.status).toBe(503);
+    expect(expired.headers.get('Retry-After')).toBe('30');
+  });
+
+  it('keeps only answers the public may keep, and none of another view', async () => {
+    const { entries, store, settled } = memory();
+    vi.spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(answer({ refreshing: true }, 'no-store'))
+      .mockResolvedValueOnce(Response.json({ error: 'Invalid scooter search parameters' }, { status: 400 }))
+      .mockResolvedValueOnce(answer({ stale: false }))
+      .mockResolvedValue(new Response(null, { status: 502 }));
+    await proxyScooterSnapshot(request(), env, store);
+    expect((await proxyScooterSnapshot(request(), env, store)).status).toBe(400);
+    await settled();
+    expect(entries.size).toBe(0);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    await proxyScooterSnapshot(request(), env, store);
+    await settled();
+    const elsewhere = new Request('https://map.example/api/scooters?south=45.72&west=4.79&north=45.8&east=4.91&zoom=13');
+    expect((await proxyScooterSnapshot(elsewhere, env, store)).status).toBe(503);
+    expect((await proxyScooterSnapshot(request(), env, store)).status).toBe(200);
+  });
 });

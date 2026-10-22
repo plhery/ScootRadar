@@ -292,9 +292,14 @@ the map says the provider is not sharing data), with the age of its data. That
 includes a feed that expires between two collections without any error. Netcup's
 Alloy keeps these lines in Loki for 30 days under `app="scootradar-cache"`; in
 Grafana: `{app="scootradar-cache", event="snapshot_feed_state"} | json | feed="national:voiscooters.com"`.
-The Worker logs `scooter_origin_failure` with the origin status or error name
-when the map's "temporarily unavailable" banner would show; read it in the
-Worker's Logs in the Cloudflare dashboard. The cache's Prometheus metrics, Grafana
+When the origin fails, the Worker answers again with the last good answer to
+the same request that its Cloudflare data centre keeps, up to 15 minutes old
+for scooters and a day for zones (`src/lib/scooterProxy.ts`): `meta.stale` is
+true, which the apps show as delayed, and `X-Scooter-Last-Good-Age` gives its
+age in seconds. Without one, the map shows its "temporarily unavailable"
+banner. Either way the Worker logs `scooter_origin_failure` with the origin
+status or error name, and `lastGoodAge` when it gave a last good answer; read
+it in the Worker's Logs in the Cloudflare dashboard. The cache's Prometheus metrics, Grafana
 dashboard and alerts, and Sentry reports are described in
 [docs/OBSERVABILITY.md](docs/OBSERVABILITY.md).
 
