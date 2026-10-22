@@ -10,15 +10,8 @@ out, and remove an entry once it's added or settled for good.
 These feeds are public and were live when checked. Nothing blocks them except
 the work.
 
-- **Spin University of Utah**
-  (`https://gbfs.spin.pm/api/gbfs/v2_3/university_of_utah/gbfs`), after the
-  fall break: 296 to 305 available scooters, polled 26 times from 15:32 to
-  17:34 MDT on 21 October 2026, lost about 48 from their places an hour, 16%
-  of the fleet, against 18% for Bird Indianapolis, polled alongside, and 61
-  arrived where none had left in the previous hour
-  ([guide](american-scooter-feeds.md#veo-spin-and-lyft)). The campus lies in
-  Salt Lake City, whose outline Veo's feed already uses, so Spin needs its
-  own area there.
+None at the moment: every live feed found is covered, or listed below with
+why it isn't.
 
 ## Waiting on a decision
 
@@ -352,7 +345,7 @@ banned shared scooters, and feeds that were empty when checked.
   - Systems 65, 67 and 68 on 3electra's host answer 400.
 
 - **United States** ([guide](american-scooter-feeds.md)): Hopp (Bolt) and Veo
-  in Washington, DC, Bird in 24 towns, Lime in 17, Veo in 39 more, Spin in 28
+  in Washington, DC, Bird in 24 towns, Lime in 17, Veo in 39 more, Spin in 29
   and Lyft in Chicago and Portland are covered.
   - **No public feed:** a survey on 16 October 2026 found no unread US feed.
     Fleet sizes are from [Ride Report](https://public.ridereport.com/)'s
@@ -375,21 +368,18 @@ banned shared scooters, and feeds that were empty when checked.
   - **No ride seen:** Bird Miami (33 to 39 available scooters), Bird
     University of Central Florida (286 to 299) and Bird Orlando (451 to 467)
     were live but showed no ride, or one at most, in 59 polls from 16:34 to
-    21:24 EDT on 14 October 2026. So were Spin University of Utah (321 to
-    328), in the university's fall break, and Spin East Lansing, the city's
-    feed (10 to 12, a few last reported days before), in 69 polls to 22:14
-    EDT. A recheck in 24 polls from 17:47 to 19:44 EDT on 15 October found
-    the same: Bird Orlando's 468 to 474 scooters made one new position, the
-    University of Central Florida's none, Miami's 35 to 41 two, and neither
-    Spin feed any. Another, from 12:00 to 14:00 EDT on 16 October, found Bird
+    21:24 EDT on 14 October 2026. So was Spin East Lansing, the city's feed
+    (10 to 12, a few last reported days before), in 69 polls to 22:14 EDT.
+    A recheck in 24 polls from 17:47 to 19:44 EDT on 15 October found the
+    same: Bird Orlando's 468 to 474 scooters made one new position, the
+    University of Central Florida's none, Miami's 35 to 41 two, and Spin
+    East Lansing none. Another, from 12:00 to 14:00 EDT on 16 October, found Bird
     Orlando and UCF still unridden, and Bird Miami with three rides at most
     ([guide](american-scooter-feeds.md#bird-and-lime)). On the
     evening of 21 October, from 17:32 to 19:34 EDT, Bird Miami's 16 to 18
     scooters, half last week's, lost none from their places and gained two
     elsewhere, while Bird Indianapolis lost about 120 an hour. Miami, Orlando
     and UCF are checked on 15 January 2027, and East Lansing on 15 April 2027.
-    Spin University of Utah was ridden that evening, after the fall break,
-    and is listed in [Found, not added yet](#found-not-added-yet).
   - **Outside their operator's towns:** since 15 October 2026 a feed keeps no
     scooter inside the outline of a town where its operator has no area, so
     Bird Cleveland's 2 in Cleveland Heights, Veo Santa Monica's 1 or 2 in

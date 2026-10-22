@@ -12,8 +12,8 @@ rider APIs are used. The catalog is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
 The map covers 87 towns in 32 states and the District: Washington, DC (Hopp
-and Veo), 24 towns of Bird's, 17 of Lime's, 39 more of Veo's, 28 of Spin's,
-and Lyft's Chicago and Portland. In 22 of them, from Tempe and the Bronx to
+and Veo), 24 towns of Bird's, 17 of Lime's, 39 more of Veo's, 29 of Spin's,
+and Lyft's Chicago and Portland. In 23 of them, from Tempe and the Bronx to
 Chicago and Columbus, two or three operators run, and the map counts their
 scooters as one town's. Ten of the towns ban renting at night; see
 [Night bans](#night-bans).
@@ -294,6 +294,7 @@ counted by place, as for Bird and Lime.
 | Spin | Pawtucket, RI | 77 to 97 | 50 / 37 | zones + 1 km |
 | Spin | Providence, RI | 574 to 603 | 147 / 152 | zones + 1 km |
 | Spin | Nashville, TN | 398 to 410 | 52 / 55 | zones + 1 km |
+| Spin | Salt Lake City, UT (University of Utah) | 296 to 305 | added 22 October, see below | zone + 1 km |
 | Spin | St. George, UT | 143 to 147 | 17 / 22 | zones + 1 km |
 | Spin | Richmond, VA | 255 to 269 | 89 / 98 | zones + 1 km |
 | Spin | Roanoke, VA | 83 to 86 | 3 / 7 | zones + 1 km |
@@ -329,14 +330,15 @@ counted by place, as for Bird and Lime.
 | Veo | Charlottesville, VA | 493 to 524 | 116 / 129 | scooters + 1 km |
 
 That is 66 towns besides Washington, 50 of them new to the map, and 10 more
-states: Veo in 39 towns with 14,400 to 14,500 scooters, Spin in 28 with
-12,500 to 12,700, and Lyft in Chicago and Portland with 1,900 to 2,000. Where
+states: Veo in 39 towns with 14,400 to 14,500 scooters, Spin in 29 with
+12,800 to 13,000, and Lyft in Chicago and Portland with 1,900 to 2,000. Where
 two operators run in one town, their feeds use the same name and state, and
 the map counts their scooters as one town's: Spin with Bird or Lime in
 Baltimore, Detroit, Durham, Lexington, Nashville, Richmond and San Francisco;
 Veo with Bird or Lime in the Bronx, Queens, Cleveland, Los Angeles, Santa
 Monica, Newark and San Antonio; Lyft with Lime in Chicago; Spin and Veo in
-Columbus (OH) and Fayetteville (AR), and with Bird in Gainesville (FL).
+Columbus (OH), Fayetteville (AR) and Salt Lake City, and with Bird in
+Gainesville (FL).
 Spin's Raleigh and NC State feeds are both Raleigh's.
 
 Spin's feeds are at `gbfs.spin.pm/api/gbfs/v2_3/<town>/gbfs`, GBFS 2.3;
@@ -384,10 +386,11 @@ including Canada (1 a poll, an Edmonton scooter under St. Albert), the
 boxes name nearly every scooter's town, and have no outlines.
 
 Campus feeds take their town's name: Spin's UC Davis feed is Davis, its
-Michigan State one East Lansing, its NC State one Raleigh, and its San Diego
-feed is the UC San Diego campus, in La Jolla, where the map centres San
-Diego. Search finds them by the university too: UC Davis, Michigan State
-University and MSU, NC State, UC San Diego and UCSD, University of Arkansas,
+Michigan State one East Lansing, its NC State one Raleigh, its University of
+Utah one Salt Lake City, and its San Diego feed is the UC San Diego campus,
+in La Jolla, where the map centres San Diego. Search finds them by the
+university too: UC Davis, Michigan State University and MSU, NC State,
+University of Utah, U of U and UofU, UC San Diego and UCSD, University of Arkansas,
 Oklahoma State University, Purdue, Kansas State University and K-State,
 Southern Illinois University and SIU, University of Oklahoma, UVA, Rutgers,
 University of Maryland and UMD, UC Berkeley, Yale, UAB and John Carroll
@@ -462,24 +465,51 @@ in every poll, so their scooters are on and reporting. Eight feeds that
 were rechecks in the survey had rides in the evening, and are added: Spin
 Tallahassee, Roanoke, St. Paul, Stillwater and Fayetteville, and Veo
 Sarasota, Asbury Park and Rutgers. Left out until a recheck (see
-[Coverage gaps](coverage-gaps.md)):
+[Coverage gaps](coverage-gaps.md)): **Spin East Lansing** (`east_lansing`,
+the city's feed, not Michigan State's), 10 to 12 scooters, a few of them
+last reported days before. By 22:14 EDT three had left places, two of them
+together, and none had arrived at a new one.
 
-- **Spin University of Utah:** 321 to 328 scooters, all reporting every few
-  minutes. By 20:14 in Salt Lake City, two had left one spot together, one a
-  second, and one had appeared at a new place two hours before: no ride
-  between two places. The university's fall break runs from 10 to 18
-  October 2026
-  ([registrar](https://registrar.utah.edu/academic-calendars/fall2026.php)).
-  After it, polled beside Bird Indianapolis as in
-  [Bird's recheck](#bird-and-lime) from 15:32 to 17:34 MDT on 21 October,
-  its 296 to 305 available scooters lost about 48 from their places an hour,
-  16% of the fleet, against Indianapolis's 18%, and 61 arrived where none had
-  left. At midnight the night before it lost 1.5% an hour. It is ridden, and
-  is to be added (see [Coverage gaps](coverage-gaps.md#found-not-added-yet)).
-- **Spin East Lansing** (`east_lansing`, the city's feed, not Michigan
-  State's): 10 to 12 scooters, a few of them last reported days before. By
-  22:14 EDT three had left places, two of them together, and none had
-  arrived at a new one.
+**Spin University of Utah** (`university_of_utah`), added on 22 October
+2026 as Salt Lake City. On 14 October its 321 to 328 scooters, all
+reporting every few minutes, made no ride between two places: by 20:14 in
+Salt Lake City, two had left one spot together, one a second, and one had
+appeared at a new place two hours before. The university's fall break ran
+from 10 to 18 October 2026
+([registrar](https://registrar.utah.edu/academic-calendars/fall2026.php)).
+After it, polled beside Bird Indianapolis as in
+[Bird's recheck](#bird-and-lime) from 15:32 to 17:34 MDT on 21 October, its
+296 to 305 available scooters lost about 48 from their places an hour, 16%
+of the fleet, against Indianapolis's 18%, and 61 arrived where none had
+left in the previous hour. At midnight the night before it lost 1.5% an
+hour. Polled four more times, 5 to 6½ minutes apart, from 17:42 to 17:59
+MDT, a quieter quarter-hour: 299 to 303 available, 4 lost from their places
+and 6 gained, one where none had stood. Every scooter stood in Spin's ride
+zone and inside Salt Lake City's outline, its last report a median two
+minutes old.
+
+- **Bounds.** The feed's one zone where a ride may end is the campus,
+  40.751° N to 40.774° N and 111.852° W to 111.817° W; its other zones, in
+  and around it, forbid riding or parking. The bounds are that zone plus
+  1 km, 40.7418° N to 40.7834° N and 111.8643° W to 111.8051° W.
+- **Town.** The campus is in Salt Lake City, whose outline the map already
+  holds for Veo's feed (see **Town outlines** above). The feed's area is
+  Salt Lake City's, so Spin has an area in the town and keeps the scooters
+  inside its outline; they count under Salt Lake City, centred downtown as
+  for Veo. South Salt Lake's outline ends at 40.726° N, south of the box.
+- **Veo.** Spin's box lies inside Veo's Salt Lake City box. At 17:45 MDT,
+  20 of Veo's 283 available scooters stood in Spin's box, 2 of them at the
+  edge of the campus zone; the two feeds' scooters count as one town's.
+  The city's [Shared Mobility page](https://www.slc.gov/transportation/sharedmobility)
+  names Veo and Lime as its operators; Commuter Services says Spin's
+  scooters "are licensed to operate in Salt Lake City", but the zones in
+  Spin's feed let a ride end only on the campus.
+- **The other Salt Lake City feeds** stay out (see
+  [Coverage gaps](coverage-gaps.md)): Spin's city feed (`salt_lake_city`)
+  listed 2 scooters that evening, 420 m and 590 m from any of the
+  university feed's, and Bird's scooters there are stale.
+- Its `vehicle_types` lists an e-bike too; none was in the feed. No rule
+  sets riding hours (see [Night bans](#night-bans)).
 
 **No seasons.** St. Paul's operating season is "typically from mid-April to
 mid-November each year"
@@ -658,12 +688,26 @@ Rules that read like bans but are not, or that no primary source confirms:
   licence agreement with Spin sets no hours.
 - **Fort Collins:** Spin stopped from 01:00 to 03:00 until the city's 2023
   annual report: "Spin expanded service hours to 24 hours per day."
-- **Denver, Portland, Columbus, Berkeley, Emeryville, Davis, Salt Lake City,
-  Tampa, Fayetteville, Wichita, Manhattan, Charlottesville, Hartford, New
-  Haven, Rochester, Syracuse, Akron, Cedar Rapids, West Lafayette and
-  Carbondale:** no hours in what was read of their rules; SIU's page says
-  Veo runs "24 hours per day, seven days per week." College Park, like
-  Durham, limits only its university's campus.
+- **Denver, Portland, Columbus, Berkeley, Emeryville, Davis, Tampa,
+  Fayetteville, Wichita, Manhattan, Charlottesville, Hartford, New Haven,
+  Rochester, Syracuse, Akron, Cedar Rapids, West Lafayette and Carbondale:**
+  no hours in what was read of their rules; SIU's page says Veo runs "24
+  hours per day, seven days per week." College Park, like Durham, limits
+  only its university's campus.
+- **Salt Lake City and the University of Utah:** read on 22 October 2026,
+  no rule sets hours. The City Code's chapters on shared mobility programs
+  ([5.67](https://codelibrary.amlegal.com/codes/saltlakecityut/latest/saltlakecity_ut/0-0-0-76867),
+  Ord. 56-20 of 2020) and on motor assisted scooters
+  ([12.82](https://codelibrary.amlegal.com/codes/saltlakecityut/latest/saltlakecity_ut/0-0-0-76675))
+  set none, and leave the rest to the department's rules and the city's
+  contracts, none of which was found published with hours. The city's
+  [Shared Mobility page](https://www.slc.gov/transportation/sharedmobility)
+  gives none. On the campus, Commuter Services'
+  [Biking & Rolling page](https://commuterservices.utah.edu/biking-rolling/),
+  which carries the Spin program (updated 5 October 2026), and University
+  [Policy 3-232](https://regulations.utah.edu/administration/3-232.php)
+  (Revision 3, 15 August 2023) set none either, and Spin's zones have no
+  times.
 - **Not read yet:** Norman, St. George, Meridian, Stillwater, Tallahassee,
   St. Paul, Roanoke, Cleveland Heights, University Heights, South Euclid,
   University Park, South Salt Lake, Sarasota, Asbury Park, New Brunswick,

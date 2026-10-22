@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fetchScooters, unlinkedScooterPlan } from './scooterFeeds';
 import { upstreamJsonCache } from './upstreamJsonCache';
 import { REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, searchRegionalScooterCities, serviceAreas } from './regionalScooterSystems';
+import { outlinedTown, systemServesPoint } from './townOutlines';
 import { namedCities } from '@/app/api/geocode/cities';
 import { providerKeyForSystemId } from '@/generated/providers';
 
@@ -44,6 +45,18 @@ describe('the United States', () => {
     expect(system('lime_us_detroit').timeZone).toBe('America/Detroit');
     expect(system('lime_us_louisville').timeZone).toBe('America/Kentucky/Louisville');
     expect(system('bird_us_indianapolis').timeZone).toBe('America/Indiana/Indianapolis');
+  });
+
+  it('keeps Spin\'s University of Utah scooters, on the campus inside Salt Lake City\'s outline, under Salt Lake City', () => {
+    const spin = system('spin_us_salt_lake_city');
+    expect(spin.discoveryUrl).toBe('https://gbfs.spin.pm/api/gbfs/v2_3/university_of_utah/gbfs');
+    const american = REGIONAL_SCOOTER_CITIES.filter(city => city.country === 'US');
+    expect(american.filter(city => city.id === 'us:ut:Salt Lake City')).toHaveLength(1);
+    // Its northernmost, southernmost, westernmost and easternmost available scooters at 17:47 MDT on 21 October 2026.
+    for (const [lat, lng] of [[40.7722, -111.8405], [40.75191, -111.83224], [40.76079, -111.85211], [40.76479, -111.82378]]) {
+      expect(outlinedTown(american, lat, lng)?.id).toBe('us:ut:Salt Lake City');
+      expect(systemServesPoint(spin, lat, lng), `${lat}, ${lng}`).toBe(true);
+    }
   });
 
   it('opens Hopp, Bolt\'s brand in Washington, DC, and reads its GBFS 3.0 feed: USD 1 to start and USD 0.16 a minute', async () => {
@@ -254,6 +267,7 @@ describe('the United States', () => {
     ['UC Davis', 'Davis, CA'], ['Purdue', 'West Lafayette, IN'], ['UCSD', 'San Diego, CA'], ['K-State', 'Manhattan, KS'],
     ['Rutgers', 'New Brunswick, NJ'], ['University of Maryland', 'College Park, MD'], ['Michigan State University', 'East Lansing, MI'],
     ['NC State', 'Raleigh, NC'], ['Saint Paul', 'St. Paul, MN'], ['NYC', 'Bronx, NY'], ['New York', 'Bronx, NY'],
+    ['University of Utah', 'Salt Lake City, UT'], ['U of U', 'Salt Lake City, UT'], ['UofU', 'Salt Lake City, UT'],
   ])('finds the town of a campus or a borough by its other name: "%s"', (query, title) => {
     expect(namedCities(query)[0].city.title).toBe(title);
   });

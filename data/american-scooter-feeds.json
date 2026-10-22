@@ -1608,6 +1608,31 @@
       "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/roanoke_va/gbfs"
     },
     {
+      "id": "spin_us_salt_lake_city",
+      "country": "US",
+      "provider": "spin",
+      "city": "Salt Lake City",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "center": [
+        40.7608,
+        -111.891
+      ],
+      "bounds": {
+        "south": 40.7418,
+        "north": 40.7834,
+        "west": -111.8643,
+        "east": -111.8051
+      },
+      "discoveryUrl": "https://gbfs.spin.pm/api/gbfs/v2_3/university_of_utah/gbfs",
+      "aliases": [
+        "SLC",
+        "University of Utah",
+        "U of U",
+        "UofU"
+      ]
+    },
+    {
       "id": "veo_us_birmingham",
       "country": "US",
       "provider": "veo",
