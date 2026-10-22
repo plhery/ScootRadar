@@ -18,7 +18,9 @@ jobs:
   web:
     name: Web and backend
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # About 12 minutes as a rule. On 22 Oct 2026 the runners' Ubuntu mirror stalled 30 s on one
+    # package in ten, Playwright's system packages took 7 to 18 minutes, and three runs ran out of 20.
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
