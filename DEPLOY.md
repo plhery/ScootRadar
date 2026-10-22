@@ -215,9 +215,10 @@ app name and canonical domain are ScootRadar and `scootradar.com`.
   overlap does not inflate `increase()`; see
   [Metrics](docs/OBSERVABILITY.md#metrics).
 - Secrets: `SCOOTER_SNAPSHOT_API_TOKEN`, `METRICS_TOKEN` and `SENTRY_DSN`.
-- Custom Docker options `--dns 1.1.1.1 --dns 8.8.8.8`: since 11 October 2026
-  netcup's resolvers answer SERVFAIL for `data.lillemetropole.fr`, Lille's
-  parking inventory, which Cloudflare and Google resolve.
+- No custom Docker options. The container resolves through the host's unbound,
+  which asks Cloudflare and Quad9 before netcup's resolvers: those answered
+  SERVFAIL for `data.lillemetropole.fr`, Lille's parking inventory, from
+  11 October 2026.
 - Coolify HTTP health check: `http://127.0.0.1:3001/health`, 15-second start
   period. Use the IPv4 address because the server binds to `0.0.0.0`.
 - Netcup tunnel: `b1f36e92-77d5-4c92-846c-28848a492643`; exact hostname rule to
