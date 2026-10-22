@@ -148,10 +148,11 @@ banned shared scooters, and feeds that were empty when checked.
   - Lime Antwerp answers 404, Dott Liège 403 and Dott Kortrijk 404. Bird
     Antwerp is empty.
 - **Norway** ([guide](belgian-norwegian-british-scooter-feeds.md#known-gaps)):
-  - Bergen (~9,000 scooters: Ryde, Lime, RideMovi), Drammen, Larvik and Bodø
-    have no public source.
-  - Ryde's fleets in Bærum, Lillestrøm, Lørenskog and Kristiansand are missing
-    from Entur.
+  - Bergen (~9,000 scooters: Ryde, Lime, RideMovi), Drammen and Larvik have
+    no public source.
+  - Ryde's fleet in Kristiansand is missing from Entur. Its fleets in Asker,
+    Bærum, Bodø, Lillestrøm and Lørenskog are on the map since 22 October
+    2026. Dott publishes nothing for Bodø.
   - Lime Oslo is empty, and seven Bolt systems in Entur are empty.
   - Bolt Oslo's 2 scooters in Lørenskog and 1 in Bærum, which didn't move in
     ten minutes on 15 October 2026, are left out since that evening: Bolt has
@@ -800,6 +801,14 @@ Bonaire had feeds to add. Survey files are in
   art. 124 of Ley 9078 on SCIJ, and update the
   [Costa Rican guide's rules](costa-rican-scooter-feeds.md#rules) if either
   says anything of e-scooters.
+- **Mid-November 2026:** Bærum's and Asker's winter dates. Both towns close
+  renting in winter on dates each year's announcement sets (Bærum's season
+  ended on 10 December in 2025), and none was published by 22 October 2026.
+  Once they are, give Voi's Bærum / Asker feed and Ryde's Asker and Bærum
+  feeds a `seasonal` window, as Lillestrøm's.
+- **Early December 2026:** Ryde Bodø, paused from 1 December to 1 April by
+  the season Bodø kommune gave for 2025. If its scooters are still ridden
+  after 1 December, the 2026 terms changed: drop the pause.
 - **Late November 2026:** Spin St. Paul's season is "typically" mid-April to
   mid-November, Veo Cedar Rapids' may run through November, the University of
   Toledo's Veo fleet goes from mid-November, and Veo Rochester's in

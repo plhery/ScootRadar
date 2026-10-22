@@ -8,6 +8,7 @@ import { normalizeParkingLocations } from './parking';
 import { buildCityOverview, querySnapshot, type FeedSnapshot } from './scooterSnapshots';
 import { boundsContainPoint } from './geo';
 import { activeSeasonalPause, feedPaused } from './seasonalPauses';
+import { systemServesPoint } from './townOutlines';
 
 const berlin = { south: 52.49, north: 52.55, west: 13.37, east: 13.44 };
 const rome = { south: 41.88, north: 41.93, west: 12.46, east: 12.53 };
@@ -454,7 +455,7 @@ describe('German and Italian scooter coverage', () => {
     expect(boundsContainPoint(bounds('hoppy_be_blankenberge'), 51.3124, 3.121)).toBe(true);
     expect(bounds('hoppy_be_oostende').east).toBeLessThan(bounds('hoppy_be_blankenberge').west);
   });
-  it('takes Voi Lillestrøm and Lørenskog\'s scooters off for December to February, as the towns allow no renting in winter', () => {
+  it('takes Voi\'s and Ryde\'s Lillestrøm and Lørenskog scooters off for December to February, as the towns allow no renting in winter', () => {
     const lillestrom: [number, number] = [59.9556, 11.0492];
     // 23:30 on 30 November in Lillestrøm is still in season; 00:30 on 1 December is not.
     expect(activeSeasonalPause(lillestrom, Date.UTC(2026, 10, 30, 22, 30))).toBeNull();
@@ -462,10 +463,36 @@ describe('German and Italian scooter coverage', () => {
     expect(activeSeasonalPause(lillestrom, Date.UTC(2027, 1, 28, 12))).toEqual({ city: 'Lillestrøm', month: 3 });
     expect(activeSeasonalPause(lillestrom, Date.UTC(2027, 2, 1, 12))).toBeNull();
     const winter = Date.UTC(2027, 0, 15, 12);
-    expect(feedPaused('norway:voi_no_lillestrom_lorenskog', winter)).toBe(true);
+    for (const feed of ['voi_no_lillestrom_lorenskog', 'ryde_no_lillestrom', 'ryde_no_lorenskog']) {
+      expect(feedPaused(`norway:${feed}`, winter), feed).toBe(true);
+    }
+    // By Triaden, in Lørenskog, east of where Oslo's box ends.
+    expect(activeSeasonalPause([59.9286, 10.9616], winter)).toEqual({ city: 'Lørenskog', month: 3 });
     // Oslo's scooters stay out all winter.
     expect(activeSeasonalPause([59.9139, 10.7522], winter)).toBeNull();
     expect(feedPaused('norway:voi_no_oslo', winter)).toBe(false);
+  });
+  it('takes Ryde Bodø\'s scooters off from 1 December until 1 April, the season Bodø\'s permits set', () => {
+    const bodo: [number, number] = [67.2804, 14.4049];
+    // 23:30 on 30 November in Bodø is still in season; 00:30 on 1 December is not.
+    expect(activeSeasonalPause(bodo, Date.UTC(2026, 10, 30, 22, 30))).toBeNull();
+    expect(activeSeasonalPause(bodo, Date.UTC(2026, 10, 30, 23, 30))).toEqual({ city: 'Bodø', month: 4 });
+    expect(activeSeasonalPause(bodo, Date.UTC(2027, 2, 31, 12))).toEqual({ city: 'Bodø', month: 4 });
+    expect(activeSeasonalPause(bodo, Date.UTC(2027, 3, 1, 12))).toBeNull();
+    expect(feedPaused('norway:ryde_no_bodo', Date.UTC(2027, 0, 15, 12))).toBe(true);
+    expect(feedPaused('norway:ryde_no_bodo', Date.UTC(2026, 9, 22, 12))).toBe(false);
+  });
+  it('shows Ryde in Asker and Bærum beside Voi, all year until their winter dates are known', () => {
+    const winter = Date.UTC(2027, 0, 15, 12);
+    for (const feed of ['ryde_no_asker', 'ryde_no_baerum', 'voi_no_baerum_asker']) {
+      expect(feedPaused(`norway:${feed}`, winter), feed).toBe(false);
+    }
+    const system = (id: string) => REGIONAL_SCOOTER_SYSTEMS.find(entry => entry.id === id)!;
+    expect(system('ryde_no_asker')).toMatchObject({ provider: 'ryde', city: 'Asker' });
+    expect(system('ryde_no_baerum')).toMatchObject({ provider: 'ryde', city: 'Bærum' });
+    // Asker sentrum and Sandvika.
+    expect(systemServesPoint(system('ryde_no_asker'), 59.8337, 10.4349)).toBe(true);
+    expect(systemServesPoint(system('ryde_no_baerum'), 59.8908, 10.5236)).toBe(true);
   });
   it('takes Hopp Dalvík\'s scooters off from 21 October until 1 May, as Hopp took them in on 20 October 2026', () => {
     const dalvik: [number, number] = [65.9711, -18.5304];

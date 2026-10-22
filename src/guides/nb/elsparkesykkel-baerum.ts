@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Elsparkesykkel i Bærum: operatører, priser, parkering og grensen mot Oslo',
   lede: 'Vil du leie elsparkesykkel i Bærum, velger du mellom Voi og Ryde, som har kommunens tillatelse fram til 31. mars 2028. Bolt har ikke tillatelse i Bærum. Hos Voi koster det 10 kr å låse opp og 2,50 kr per minutt (17. oktober 2026), og både Voi og Ryde krever at du har fylt 16 år. Kommunen har ikke innført nattestenging, men i sentrum av Sandvika, Bekkestua og Lysaker må du parkere på oppmerkede plasser eller i stativ. Krysser du Lysakerelva, gjelder Oslos regler.',
   published: '2026-10-17',
-  updated: '2026-10-17',
+  updated: '2026-10-22',
   city: 'no:Bærum',
   sections: [
     {
@@ -20,21 +20,21 @@ const guide: Guide = {
         '**Bolt har ikke tillatelse i Bærum.** Hos Ruter står Bolt bare oppført for Oslo, og Bolt-sparkesyklene du ser ved Lysaker, hører til Oslo.',
         'Ordningen bygger på kommunens utleieforskrift fra 4. februar 2026. Den gir plass til to operatører i opptil fire år, og operatørene betaler et gebyr som dekker kommunens kostnader: 689 500 kr hver for perioden fram til 31. mars 2027.',
         'Elsparkesykler til leie har vært i Bærum siden 2020, først i et prøveprosjekt med Tier, Ruter og Asker. I 2025 ble det kjørt over 1,2 millioner turer med fire operatører, men Surf og Dott trakk seg ut tidlig på høsten.',
-        'På [kartet over Bærum](map:no:Bærum) sto det rundt 460 Voi-sparkesykler innenfor kommunegrensen på ettermiddagen 17. oktober 2026. Det er en telling på kartet den dagen, ikke hele flåten. Ryde publiserer ingen åpne data for Bærum, så kartet viser ikke Rydes sparkesykler her. Bolt- og Ryde-sparkesyklene du ser øst for Lysakerelva, står i Oslo.',
+        'På [kartet over Bærum](map:no:Bærum) sto det rundt 460 Voi-sparkesykler innenfor kommunegrensen på ettermiddagen 17. oktober 2026. Det er en telling på kartet den dagen, ikke hele flåten. Siden 22. oktober 2026 viser kartet også Rydes sparkesykler i Bærum, rundt 1700 i Rydes åpne data den dagen. Sparkesyklene du ser øst for Lysakerelva, står i Oslo.',
         'Du låser opp i operatørens app eller i Ruter-appen. I Ruter-appen betaler du enkeltturer med kort, til operatørens pris, og du tar bilde av parkeringen etter turen. Operatørens pass gjelder ikke der. Hvordan du registrerer deg og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Hva koster det å leie elsparkesykkel i Bærum?',
       blocks: [
-        'Voi oppgir prisen for Bærum på sin egen nettside: 10 kr for å låse opp og 2,50 kr per minutt. Ryde publiserer ingen pris for Bærum, så tabellen viser hva Ryde tok i **Oslo** samme dag. Sjekk prisen i appen før du låser opp.',
+        'Voi oppgir prisen for Bærum på sin egen nettside: 10 kr for å låse opp og 2,50 kr per minutt. I Rydes åpne data for Bærum kostet det 10,90 kr å låse opp og 2,50 kr per minutt 22. oktober 2026, det samme som i Oslo. Sjekk prisen i appen før du låser opp.',
         {
           table: {
-            caption: 'Priser 17. oktober 2026 (Ryde: prisen i Oslo) og aldersgrenser',
+            caption: 'Priser 17. oktober 2026 (Ryde: 22. oktober) og aldersgrenser',
             head: ['Operatør', 'Opplåsing', 'Per minutt', '10 minutter', '20 minutter', 'Aldersgrense'],
             rows: [
               ['Voi, Bærum', '10 kr', '2,50 kr', '35 kr', '60 kr', '16 år'],
-              ['Ryde, Oslo-pris', '10,90 kr', '2,50 kr', '35,90 kr', '60,90 kr', '16 år'],
+              ['Ryde, Bærum', '10,90 kr', '2,50 kr', '35,90 kr', '60,90 kr', '16 år'],
             ],
           },
         },
@@ -86,7 +86,7 @@ const guide: Guide = {
       blocks: [
         'Lysakerelva er grensen mot Oslo, og mange pendler over den, for eksempel mellom Lysaker og Lilleaker. I [Oslo](map:no:Oslo) gjelder Oslos regler: Bolt, Ryde og Voi har tillatelse der, og du kan ikke leie mellom kl. 23 og 05. Oslo har også egne parkeringsforbud og saktesoner. Alt står i [guiden om Oslo](guide:oslo).',
         'Voi og Ryde kjører på begge sider av grensen. Om du kan avslutte turen på den andre siden, og hva som gjelder etter kl. 23, ser du i appen før du kjører.',
-        'I [Asker](map:no:Asker) er det også Ryde og Voi, ifølge Ruter og Asker kommune, og Ruter oppgir begge som døgnåpne. Asker har sin egen forskrift fra 3. februar 2026 med opptil to operatører, tak på antallet i Asker sentrum og vinterstengt utleie. I sentrum parkerer du på oppmerkede områder. I Voi-appen er det en saktesone på 15 km/t i Asker sentrum og kjøreforbud ved Solvang ungdomsskole. På kartet sto det rundt 90 Voi-sparkesykler i Asker 17. oktober 2026. Rydes sparkesykler vises ikke der heller.',
+        'I [Asker](map:no:Asker) er det også Ryde og Voi, ifølge Ruter og Asker kommune, og Ruter oppgir begge som døgnåpne. Asker har sin egen forskrift fra 3. februar 2026 med opptil to operatører, tak på antallet i Asker sentrum og vinterstengt utleie. I sentrum parkerer du på oppmerkede områder. I Voi-appen er det en saktesone på 15 km/t i Asker sentrum og kjøreforbud ved Solvang ungdomsskole. På kartet sto det rundt 90 Voi-sparkesykler i Asker 17. oktober 2026, og siden 22. oktober viser kartet også Rydes, rundt 660 i Rydes åpne data for Asker den dagen.',
       ],
     },
     {
@@ -169,6 +169,8 @@ const guide: Guide = {
     { title: 'Vy: Sykkel på toget', url: 'https://www.vy.no/alt-om-reisen/tog/praktisk-informasjon/sykkel-pa-toget' },
     { title: 'Voi: Elsparkesykler til leie i Bærum', url: 'https://www.voi.com/nb/by/baerum' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
+    { title: 'Ryde: Åpne data for Bærum (GBFS via Entur)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydebaerum/gbfs' },
+    { title: 'Ryde: Åpne data for Asker (GBFS via Entur)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydeasker/gbfs' },
     { title: 'Lovdata: Askers forskrift om utleie av små elektriske kjøretøy på offentlig grunn', url: 'https://lovdata.no/dokument/LF/forskrift/2026-02-03-213' },
     { title: 'Asker kommune: To aktører tilbyr elsparkesykler i Asker', url: 'https://www.asker.kommune.no/klima-og-natur/siste-nytt-om-klima-og-natur/na-kan-du-leie-elsparkesykler/' },
     { title: 'Fornebubanen: Ett års forsinkelse og økte kostnader for Fornebu stasjon og base (12. november 2025)', url: 'https://afk.no/_f/p104/i1beb9328-349c-47b0-abcd-9a95dfc9896d/fornebubanen-orientering-om-forsinket-fremdrift-og-okt-kostnadsprognose.pdf' },

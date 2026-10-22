@@ -12,6 +12,9 @@ its directory. No account credentials or private rider APIs are used.
 Hoppy's scooters in Ostend, Mechelen, Sint-Niklaas and Blankenberge were added
 on 14 October 2026; see
 [Hoppy's Flemish towns, October 2026](#hoppys-flemish-towns-october-2026).
+Ryde's scooters in Asker, Bærum, Bodø, Lillestrøm and Lørenskog were added on
+22 October 2026; see
+[Ryde's five Entur systems, October 2026](#rydes-five-entur-systems-october-2026).
 
 | Country | Operator | Enabled feeds | Coverage | Available scooters |
 | --- | --- | ---: | --- | ---: |
@@ -21,14 +24,14 @@ on 14 October 2026; see
 | Belgium | Voi | 1 | Antwerpen | 925 |
 | Belgium | Hoppy | 5 | Blankenberge, Kortrijk, Mechelen, Oostende (with Bredene), Sint-Niklaas | 1,225 |
 | Norway | Voi | 9 | Oslo, Bærum / Asker, Lillestrøm / Lørenskog, Trondheim, Stavanger / Sandnes, Kristiansand / Vennesla, Arendal, Moss, Fredrikstad / Sarpsborg | 13,850 |
-| Norway | Ryde | 11 | Oslo, Trondheim, Stavanger, Tromsø, Sandefjord, Ålesund, Skien, Fredrikstad, Tønsberg, Porsgrunn, Sarpsborg | 12,800 |
+| Norway | Ryde | 16 | Oslo, Trondheim, Stavanger, Bærum, Lillestrøm, Tromsø, Lørenskog, Sandefjord, Bodø, Asker, Ålesund, Skien, Fredrikstad, Tønsberg, Porsgrunn, Sarpsborg | 18,000 |
 | Norway | Bolt | 1 | Oslo | 4,930 |
 | Norway | Dott | 2 | Trondheim, Stjørdal | 950 |
 | United Kingdom | Beryl | 6 | Bournemouth / Christchurch / Poole, Brighton, Cornwall (Falmouth, Newquay, Penzance, Truro), Leeds, Norwich (with Wymondham), Plymouth | 2,200 |
 | United Kingdom | Dott | 4 | Bath, Bristol (with Yate), Milton Keynes, Nottingham | 3,450 |
 | United Kingdom | Bolt | 1 | Liverpool | 1,830 |
 
-Belgium has 8 cities, Norway 21 and the United Kingdom 18, once multi-town
+Belgium has 8 cities, Norway 22 and the United Kingdom 18, once multi-town
 feeds are routed per town. The bounds, discovery URLs and aliases are in
 [`belgian-scooter-feeds.json`](../data/belgian-scooter-feeds.json),
 [`norwegian-scooter-feeds.json`](../data/norwegian-scooter-feeds.json) and
@@ -107,6 +110,47 @@ directory.
   requests an hour to `hoppy.rideatom.com`, and at most about 65 each while
   watched; see
   [ATOM's request rate](german-italian-scooter-feeds.md#atoms-request-rate-october-2026).
+
+## Ryde's five Entur systems, October 2026
+
+Entur's manifest listed 81 systems on 22 October 2026, against 76 on
+16 October: the five new ones are Ryde's, `rydeasker`, `rydebaerum`,
+`rydebodo`, `rydelillestrom` and `rydelorenskog`. They come through the same
+API as Ryde's eleven others, as keyless GBFS 3.0 under Entur's NLOD licence,
+and every feed URL is https, on the discovery's origin and under its
+directory.
+
+- **Liveness:** Ryde's `vehicle_id` changes, so each scooter was followed by
+  the IMEI in its rental link. In four polls five minutes apart from 13:36 to
+  13:51 on Thursday 22 October 2026, a scooter moved more than 150 m between
+  two polls, or left one and came back more than 150 m away, 60 times in
+  Bærum, 26 in Lørenskog, 23 in Bodø, 10 in Lillestrøm and 6 in Asker. Bærum
+  listed about 1,700 available scooters, Lillestrøm 1,230, Lørenskog 880,
+  Bodø 720 and Asker 660. Every vehicle listed was a scooter, though the
+  feeds also define an e-bike type.
+- **Prices:** NOK 10.90 to unlock and NOK 2.50 a minute, or NOK 2.20 in
+  Lillestrøm.
+- **Towns:** Asker, Bærum, Lillestrøm and Lørenskog are already towns of
+  Voi's feeds, so each Ryde feed takes its town's name and centre. Bodø is a
+  new town, with Bodo and Bodoe as aliases. Bærum, Lillestrøm and Lørenskog
+  have their kommune's outline, which says where a scooter near a line
+  counts; Asker and Bodø have none. As Ryde now runs in Bærum and Lørenskog,
+  the scooters of Ryde's Oslo feed standing over the line there stay on the
+  map, under those towns, while Bolt's are still left out.
+- **Bounds:** the scooters seen, plus about 330 m (0.003° of latitude and
+  0.006° of longitude). Ryde's zones include a world polygon, so they can't
+  set them. Three disabled scooters of Lillestrøm's feed stood up to 35 km
+  north; the map leaves out disabled scooters anyway.
+- **Seasons and nights:** Lillestrøm's and Lørenskog's feeds pause from
+  1 December to 1 March, as Voi's there, and Bodø's from 1 December to
+  1 April; Asker and Bærum close in winter on dates not yet published (see
+  [Night bans](#night-bans)). Lillestrøm's and Rælingen's weekend night bans
+  already cover Ryde's scooters, by each kommune's boundary. Asker, Bærum and
+  Lørenskog ban no hours, and Bodø kommune's page names none; its forskrift
+  of 16 June 2022 could not be read, as Lovdata refused our requests.
+- **Bodø:** the kommune's page names Ryde and Dott as the 2025 permit
+  holders, with 250 scooters each. Ryde listed about 720 available on
+  22 October 2026, and Dott publishes nothing for Bodø.
 
 ## Data handling
 
@@ -250,7 +294,23 @@ stays open at night.
   ([Canadian feeds](canadian-scooter-feeds.md#winter)):
   - Lillestrøm, Lørenskog and Rælingen: March through November ("Vinterdrift
     tillates ikke", each forskrift's § 7 e), so Voi's Lillestrøm and Lørenskog
-    feed pauses from 1 December to 1 March.
+    feed and Ryde's two feeds pause from 1 December to 1 March.
+  - Bodø: 1 April through 30 November. Bodø kommune's
+    [page on rental e-scooters](https://bodo.kommune.no/tjenester/vei-vann-og-avlop/vei/elsparkesykkel/)
+    (last changed 7 July 2026) gives the permits' season "i perioden 1. april
+    til og med 30. november i 2025", so Ryde's feed pauses from 1 December to
+    1 April. The page gives no terms for 2026; if Ryde's scooters are still
+    ridden there in December, the season has changed and the pause goes.
+  - Bærum and Asker close in winter too, on dates the town sets each year
+    ([FOR-2026-02-04-201](https://lovdata.no/dokument/LF/forskrift/2026-02-04-201),
+    [FOR-2026-02-03-213](https://lovdata.no/dokument/LF/forskrift/2026-02-03-213)).
+    The draft Bærum put to consultation in October 2025 said in § 13:
+    "Tjenesten er vinterstengt. Sesongstart og avslutning vil komme fram i
+    kunngjøringen"
+    ([høringsutkast](https://www.baerum.kommune.no/globalassets/politikk-og-samfunn/politikk/kunngjoringer-og-horinger/horingsutkast-til-forskrift-om-utleie-av-sma-elektriske-kjoretoy-pa-offentlig-grunn-barum-kommune.pdf)),
+    and its season ended on 10 December in 2025. Neither town had published
+    its dates for 2026–27 by 22 October 2026, so Voi's and Ryde's feeds there
+    have no pause yet.
   - Tromsø: 1 May through 1 November
     ([FOR-2025-09-03-1800](https://lovdata.no/dokument/LF/forskrift/2025-09-03-1800)
     § 2 f), so Ryde's feed pauses from 2 November to 1 May.
@@ -337,11 +397,13 @@ stays open at night.
     system (1522) held 6 e-bikes.
 - **Norway:**
   - Bergen (Ryde, Lime and RideMovi, about 9,000 scooters), Drammen (Ryde,
-    Gogo), Larvik and Bodø (Ryde) have scooters but no public source. Entur,
+    Gogo) and Larvik (Ryde) have scooters but no public source. Entur,
     Norway's only public aggregator, has none of them: its GraphQL API sees no
-    scooter its manifest lacks, and guessed system ids answer 404. Ryde
-    publishes only the 11 systems in the catalog, so its fleets in Bærum,
-    Lillestrøm, Lørenskog and Kristiansand are missing too.
+    scooter its manifest lacks, and guessed system ids answer 404. Ryde's
+    fleet in Kristiansand is missing too: of Ryde's towns that Entur lacked
+    until October 2026, only Asker, Bærum, Bodø, Lillestrøm and Lørenskog were
+    in its manifest on 22 October 2026. Dott, Bodø's other permit holder in
+    2025, publishes nothing for Bodø.
   - Dott Malvik, Melhus and Skaun hold fewer than twenty scooters each, and
     e-bikes, which the map leaves out. Malvik listed 15 to 17 available
     scooters in 27 polls on the evening of 13 October 2026 and 12 at midday

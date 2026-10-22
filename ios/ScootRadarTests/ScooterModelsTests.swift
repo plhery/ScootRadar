@@ -1625,10 +1625,10 @@ extension ScooterModelsTests {
         // Of the catalogs' cities, Tignes pauses from 8 September until 22 June, Trondheim from
         // 2 December until 15 March, Porsgrunn and Skien from 15 December until the streets are
         // clear, Tromsø from 2 November until 1 May, Lillestrøm and Lørenskog from 1 December until
-        // 1 March, Dalvík from 21 October and Leduc from 22 October until 1 May, and Ottawa from
-        // 16 November until 30 April, each by its own clock.
+        // 1 March, Bodø from 1 December until 1 April, Dalvík from 21 October and Leduc from
+        // 22 October until 1 May, and Ottawa from 16 November until 30 April, each by its own clock.
         XCTAssertEqual(ScooterCityCatalog.cities.filter { !$0.pauses.isEmpty }.map(\.id),
-                       ["fr:Tignes", "no:Trondheim", "no:Porsgrunn", "no:Skien", "no:Tromsø", "no:Lillestrøm", "no:Lørenskog",
+                       ["fr:Tignes", "no:Trondheim", "no:Bodø", "no:Lillestrøm", "no:Lørenskog", "no:Porsgrunn", "no:Skien", "no:Tromsø",
                         "is:Dalvík", "ca:ab:Leduc", "ca:on:Ottawa"])
         let tignes = GeoPoint(latitude: 45.4687, longitude: 6.9063)
         XCTAssertEqual(ScooterSeasonalPause.active(at: tignes, on: january), ScooterSeasonalPause.Active(city: "Tignes", back: .month(6)))
@@ -1650,6 +1650,12 @@ extension ScooterModelsTests {
         XCTAssertNil(ScooterSeasonalPause.active(at: leduc, on: try at("2026-10-22T05:30:00Z")))
         XCTAssertNotNil(ScooterSeasonalPause.active(at: leduc, on: try at("2026-10-22T06:30:00Z")))
         XCTAssertNil(ScooterSeasonalPause.active(at: leduc, on: try at("2027-05-01T18:00:00Z")))
+        // Bodø keeps Oslo's clock, one hour ahead of UTC in winter.
+        let bodo = GeoPoint(latitude: 67.2804, longitude: 14.4049)
+        XCTAssertEqual(ScooterSeasonalPause.active(at: bodo, on: january), ScooterSeasonalPause.Active(city: "Bodø", back: .month(4)))
+        XCTAssertNil(ScooterSeasonalPause.active(at: bodo, on: try at("2026-11-30T22:30:00Z")))
+        XCTAssertNotNil(ScooterSeasonalPause.active(at: bodo, on: try at("2026-11-30T23:30:00Z")))
+        XCTAssertNil(ScooterSeasonalPause.active(at: bodo, on: try at("2027-04-01T12:00:00Z")))
 
         // After a night ban, before providers down, with a calendar, calm.
         XCTAssertEqual(

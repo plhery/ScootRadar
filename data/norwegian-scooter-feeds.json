@@ -84,6 +84,70 @@
       ]
     },
     {
+      "id": "ryde_no_asker",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Asker",
+      "center": [
+        59.8335,
+        10.4345
+      ],
+      "bounds": {
+        "south": 59.8103,
+        "north": 59.8829,
+        "west": 10.3778,
+        "east": 10.5414
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydeasker/gbfs"
+    },
+    {
+      "id": "ryde_no_baerum",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Bærum",
+      "center": [
+        59.8926,
+        10.5245
+      ],
+      "bounds": {
+        "south": 59.8704,
+        "north": 59.9607,
+        "west": 10.4612,
+        "east": 10.648
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydebaerum/gbfs",
+      "aliases": [
+        "Baerum",
+        "Barum"
+      ]
+    },
+    {
+      "id": "ryde_no_bodo",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Bodø",
+      "center": [
+        67.2804,
+        14.4049
+      ],
+      "bounds": {
+        "south": 67.2666,
+        "north": 67.3252,
+        "west": 14.3304,
+        "east": 14.6166
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydebodo/gbfs",
+      "seasonal": {
+        "from": "12-01",
+        "until": "04-01",
+        "timeZone": "Europe/Oslo"
+      },
+      "aliases": [
+        "Bodo",
+        "Bodoe"
+      ]
+    },
+    {
       "id": "ryde_no_fredrikstad",
       "country": "NO",
       "provider": "ryde",
@@ -99,6 +163,58 @@
         "east": 11.0266
       },
       "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydefredrikstad/gbfs"
+    },
+    {
+      "id": "ryde_no_lillestrom",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Lillestrøm",
+      "center": [
+        59.9534,
+        11.0452
+      ],
+      "bounds": {
+        "south": 59.9167,
+        "north": 60.0009,
+        "west": 10.9712,
+        "east": 11.0948
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydelillestrom/gbfs",
+      "seasonal": {
+        "from": "12-01",
+        "until": "03-01",
+        "timeZone": "Europe/Oslo"
+      },
+      "aliases": [
+        "Lillestrom",
+        "Lillestroem"
+      ]
+    },
+    {
+      "id": "ryde_no_lorenskog",
+      "country": "NO",
+      "provider": "ryde",
+      "city": "Lørenskog",
+      "center": [
+        59.9277,
+        10.9572
+      ],
+      "bounds": {
+        "south": 59.9085,
+        "north": 59.9547,
+        "west": 10.9196,
+        "east": 11.0068
+      },
+      "discoveryUrl": "https://api.entur.io/mobility/v2/gbfs/v3/rydelorenskog/gbfs",
+      "seasonal": {
+        "from": "12-01",
+        "until": "03-01",
+        "timeZone": "Europe/Oslo"
+      },
+      "aliases": [
+        "Lorenskog",
+        "Loerenskog"
+      ]
     },
     {
       "id": "ryde_no_oslo",

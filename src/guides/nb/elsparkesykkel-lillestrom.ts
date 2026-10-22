@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Elsparkesykkel i Lillestrøm: operatører, priser, sesong og parkering',
   lede: 'Vil du leie elsparkesykkel i Lillestrøm, velger du mellom Voi og Ryde, som har kommunens tillatelse fram til 30. november 2027. Bolt har ikke tillatelse her. Hos Voi koster det 10 kr å låse opp og 2,50 kr per minutt (17. oktober 2026), og både Voi og Ryde krever at du har fylt 16 år. Kommunen stenger utleien kl. 00–05 natt til lørdag og natt til søndag, og Voi stenger allerede kl. 23 de to nettene. Utleien er bare åpen fra mars til og med november: Om vinteren finnes det ingen sparkesykler å leie.',
   published: '2026-10-17',
-  updated: '2026-10-17',
+  updated: '2026-10-22',
   city: 'no:Lillestrøm',
   sections: [
     {
@@ -19,21 +19,21 @@ const guide: Guide = {
         'Lillestrøm kommune har gitt tillatelse til to operatører: **Voi og Ryde**. Hver av dem kan ha opptil 900 kjøretøy ute, og tillatelsene gjelder fra 1. mars 2026 til **30. november 2027**. Kommunen kan forlenge dem med ett år av gangen, for 2028 og 2029. I februar 2026 lyste kommunen ut plass til opptil tre operatører og 1800 kjøretøy til sammen.',
         '**Bolt har ikke tillatelse i Lillestrøm.** Kommunen sendte utlysningen også til Bolt, Dott og Lime, men postjournalen viser bare søknader fra Voi og Ryde, og de to fikk tillatelse 25. mars 2026. Hos Ruter står Bolt bare oppført for Oslo.',
         'Ordningen bygger på kommunens utleieforskrift fra 15. juni 2022. Operatørene betaler et gebyr som skal dekke kommunens kostnader, 417 kr per kjøretøy i 2026, og kommunen følger med på sparkesyklene gjennom plattformen Nivel. Surf og Dott hadde tillatelse tidligere, men sparkesyklene deres som fortsatt står ute, er ikke en del av dagens ordning: Kommunen ba selskapene 19. mai 2026 om å hente dem.',
-        'På [ScootRadar-kartet over Lillestrøm](map:no:Lillestrøm) sto det rundt 830 Voi-sparkesykler kl. 19.25 den 17. oktober 2026. Det er det kartet viste akkurat da, ikke hele flåten, og tallet gjelder **Lillestrøm og Rælingen til sammen**, fordi kartet ikke har noen egen grense for Rælingen. Kl. 20.30 samme kveld sto rundt 600 Voi-sparkesykler i Lillestrøm kommune og rundt 230 i Rælingen, ifølge Vois åpne data. **Ryde publiserer ingen åpne data for Lillestrøm**, så kartet viser ikke Rydes sparkesykler, selv om de er mange: 8. oktober 2026 skrev kommunen til Ryde at selskapet den siste uken hadde hatt 1200–1350 sparkesykler ute, mot en kvote på 900.',
+        'På [ScootRadar-kartet over Lillestrøm](map:no:Lillestrøm) sto det rundt 830 Voi-sparkesykler kl. 19.25 den 17. oktober 2026. Det er det kartet viste akkurat da, ikke hele flåten, og tallet gjelder **Lillestrøm og Rælingen til sammen**, fordi kartet ikke har noen egen grense for Rælingen. Kl. 20.30 samme kveld sto rundt 600 Voi-sparkesykler i Lillestrøm kommune og rundt 230 i Rælingen, ifølge Vois åpne data. Siden 22. oktober 2026 viser kartet også Rydes sparkesykler, og de er mange: rundt 1230 i Rydes åpne data for Lillestrøm den dagen. 8. oktober 2026 skrev kommunen til Ryde at selskapet den siste uken hadde hatt 1200–1350 sparkesykler ute, mot en kvote på 900.',
         'Du låser opp i operatørens app eller i Ruter-appen. I Ruter-appen betaler du enkeltturer med kort, til operatørens pris, og du tar bilde av parkeringen etter turen. Operatørens pass gjelder ikke der. Hvordan du registrerer deg og avslutter turen, står i [guiden om å leie elsparkesykkel](guide:how-to-rent).',
       ],
     },
     {
       heading: 'Hva koster det å leie elsparkesykkel i Lillestrøm?',
       blocks: [
-        'Voi oppgir prisen for Lillestrøm på sin egen nettside: 10 kr for å låse opp og 2,50 kr per minutt. Ryde publiserer ingen pris for Lillestrøm, så tabellen viser hva Ryde tok i **Oslo** samme kveld. Sjekk prisen i appen før du låser opp.',
+        'Voi oppgir prisen for Lillestrøm på sin egen nettside: 10 kr for å låse opp og 2,50 kr per minutt. I Rydes åpne data for Lillestrøm kostet det 10,90 kr å låse opp og 2,20 kr per minutt 22. oktober 2026, litt mindre enn i Oslo. Sjekk prisen i appen før du låser opp.',
         {
           table: {
-            caption: 'Priser 17. oktober 2026 (Ryde: prisen i Oslo) og aldersgrenser',
+            caption: 'Priser 17. oktober 2026 (Ryde: 22. oktober) og aldersgrenser',
             head: ['Operatør', 'Opplåsing', 'Per minutt', '10 minutter', '20 minutter', 'Aldersgrense'],
             rows: [
               ['Voi, Lillestrøm', '10 kr', '2,50 kr', '35 kr', '60 kr', '16 år'],
-              ['Ryde, Oslo-pris', '10,90 kr', '2,50 kr', '35,90 kr', '60,90 kr', '16 år'],
+              ['Ryde, Lillestrøm', '10,90 kr', '2,20 kr', '32,90 kr', '54,90 kr', '16 år'],
             ],
           },
         },
@@ -93,7 +93,7 @@ const guide: Guide = {
     {
       heading: 'Over grensen til Lørenskog, Rælingen og Oslo',
       blocks: [
-        'Voi og Ryde kjører også i [Lørenskog](map:no:Lørenskog) og Rælingen, ifølge Ruter. Lørenskog har sin egen forskrift: Der er utleien åpen hele døgnet fra mars til og med november, men operatørene stenger selv natt til lørdag og natt til søndag, som tabellen over viser. Operatørene skal sørge for minst 2 meter fri passasje på fortau og gang- og sykkelveier. På kartet sto det rundt 390 Voi-sparkesykler i Lørenskog kl. 19.25 den 17. oktober 2026, og Rydes sparkesykler vises ikke der heller.',
+        'Voi og Ryde kjører også i [Lørenskog](map:no:Lørenskog) og Rælingen, ifølge Ruter. Lørenskog har sin egen forskrift: Der er utleien åpen hele døgnet fra mars til og med november, men operatørene stenger selv natt til lørdag og natt til søndag, som tabellen over viser. Operatørene skal sørge for minst 2 meter fri passasje på fortau og gang- og sykkelveier. På kartet sto det rundt 390 Voi-sparkesykler i Lørenskog kl. 19.25 den 17. oktober 2026, og siden 22. oktober viser kartet også Rydes, rundt 880 i Rydes åpne data for Lørenskog den dagen.',
         'I Rælingen stenger forskriften utleien kl. 23–05 natt til lørdag og natt til søndag, en time tidligere enn i Lillestrøm. Voi-sparkesyklene i Rælingen telles under Lillestrøm på kartet.',
         'Vest for Skjetten grenser Lillestrøm mot [Oslo](map:no:Oslo). Der har Bolt, Ryde og Voi tillatelse, og du kan ikke leie mellom kl. 23 og 05. Oslo har egne parkeringsforbud og saktesoner, og alt står i [guiden om Oslo](guide:oslo). Om du kan avslutte turen på den andre siden av kommunegrensen, ser du i appen før du kjører.',
       ],
@@ -177,6 +177,8 @@ const guide: Guide = {
     { title: 'Flytoget: Bagasje', url: 'https://flytoget.no/reiseinformasjon/praktisk-informasjon/bagasje/' },
     { title: 'Voi: Elsparkesykler til leie i Lillestrøm', url: 'https://www.voi.com/nb/by/lillestrom' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
+    { title: 'Ryde: Åpne data for Lillestrøm (GBFS via Entur)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydelillestrom/gbfs' },
+    { title: 'Ryde: Åpne data for Lørenskog (GBFS via Entur)', url: 'https://api.entur.io/mobility/v2/gbfs/v3/rydelorenskog/gbfs' },
     { title: 'NOVA Spektrum: Adkomst', url: 'https://novaspektrum.no/adkomst/' },
   ],
 };

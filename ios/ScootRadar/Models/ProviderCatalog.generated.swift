@@ -330,7 +330,12 @@ enum ScooterProviderCoverage {
         (.dott, GeoBounds(south: 63.4299, west: 10.8165, north: 63.5147, east: 10.997)),
         (.dott, GeoBounds(south: 63.3797, west: 10.3315, north: 63.4618, east: 10.5549)),
         (.ryde, GeoBounds(south: 62.425, west: 6.0945, north: 62.4861, east: 6.4232)),
+        (.ryde, GeoBounds(south: 59.8103, west: 10.3778, north: 59.8829, east: 10.5414)),
+        (.ryde, GeoBounds(south: 59.8704, west: 10.4612, north: 59.9607, east: 10.648)),
+        (.ryde, GeoBounds(south: 67.2666, west: 14.3304, north: 67.3252, east: 14.6166)),
         (.ryde, GeoBounds(south: 59.1885, west: 10.8815, north: 59.2585, east: 11.0266)),
+        (.ryde, GeoBounds(south: 59.9167, west: 10.9712, north: 60.0009, east: 11.0948)),
+        (.ryde, GeoBounds(south: 59.9085, west: 10.9196, north: 59.9547, east: 11.0068)),
         (.ryde, GeoBounds(south: 59.8542, west: 10.6173, north: 59.9788, east: 10.9523)),
         (.ryde, GeoBounds(south: 59.1153, west: 9.6191, north: 59.1616, east: 9.6952)),
         (.ryde, GeoBounds(south: 59.0932, west: 10.164, north: 59.1633, east: 10.2922)),
@@ -823,7 +828,12 @@ enum ScooterCityCatalog {
         ScooterCity(id: "no:Stjørdal", name: "Stjørdal", countryCode: "NO", center: GeoPoint(latitude: 63.4714, longitude: 10.9139), bounds: GeoBounds(south: 63.4299, west: 10.8165, north: 63.5147, east: 10.997)),
         ScooterCity(id: "no:Trondheim", name: "Trondheim", countryCode: "NO", center: GeoPoint(latitude: 63.4304, longitude: 10.3953), bounds: GeoBounds(south: 63.3352, west: 10.306, north: 63.4618, east: 10.5549), pauses: [ScooterSeasonalPause(from: "12-02", until: "03-15", timeZone: "Europe/Oslo")]),
         ScooterCity(id: "no:Ålesund", name: "Ålesund", countryCode: "NO", center: GeoPoint(latitude: 62.4712, longitude: 6.1538), bounds: GeoBounds(south: 62.425, west: 6.0945, north: 62.4861, east: 6.4232)),
+        ScooterCity(id: "no:Asker", name: "Asker", countryCode: "NO", center: GeoPoint(latitude: 59.8335, longitude: 10.4345), bounds: GeoBounds(south: 59.8079, west: 10.3717, north: 59.8829, east: 10.5414)),
+        ScooterCity(id: "no:Bærum", name: "Bærum", countryCode: "NO", center: GeoPoint(latitude: 59.8926, longitude: 10.5245), bounds: GeoBounds(south: 59.8704, west: 10.4612, north: 59.9607, east: 10.6494)),
+        ScooterCity(id: "no:Bodø", name: "Bodø", countryCode: "NO", center: GeoPoint(latitude: 67.2804, longitude: 14.4049), bounds: GeoBounds(south: 67.2666, west: 14.3304, north: 67.3252, east: 14.6166), pauses: [ScooterSeasonalPause(from: "12-01", until: "04-01", timeZone: "Europe/Oslo")]),
         ScooterCity(id: "no:Fredrikstad", name: "Fredrikstad", countryCode: "NO", center: GeoPoint(latitude: 59.209, longitude: 10.9503), bounds: GeoBounds(south: 59.1759, west: 10.872, north: 59.275, east: 11.0299)),
+        ScooterCity(id: "no:Lillestrøm", name: "Lillestrøm", countryCode: "NO", center: GeoPoint(latitude: 59.9534, longitude: 11.0452), bounds: GeoBounds(south: 59.8947, west: 10.9712, north: 60.0214, east: 11.106), pauses: [ScooterSeasonalPause(from: "12-01", until: "03-01", timeZone: "Europe/Oslo")]),
+        ScooterCity(id: "no:Lørenskog", name: "Lørenskog", countryCode: "NO", center: GeoPoint(latitude: 59.9277, longitude: 10.9572), bounds: GeoBounds(south: 59.9032, west: 10.9151, north: 59.9916, east: 11.0068), pauses: [ScooterSeasonalPause(from: "12-01", until: "03-01", timeZone: "Europe/Oslo")]),
         ScooterCity(id: "no:Porsgrunn", name: "Porsgrunn", countryCode: "NO", center: GeoPoint(latitude: 59.1411, longitude: 9.6555), bounds: GeoBounds(south: 59.1153, west: 9.6191, north: 59.1616, east: 9.6952), pauses: [ScooterSeasonalPause(from: "12-15", until: "clear", timeZone: "Europe/Oslo")]),
         ScooterCity(id: "no:Sandefjord", name: "Sandefjord", countryCode: "NO", center: GeoPoint(latitude: 59.1301, longitude: 10.2255), bounds: GeoBounds(south: 59.0932, west: 10.164, north: 59.1633, east: 10.2922)),
         ScooterCity(id: "no:Sarpsborg", name: "Sarpsborg", countryCode: "NO", center: GeoPoint(latitude: 59.2842, longitude: 11.1101), bounds: GeoBounds(south: 59.2598, west: 11.021, north: 59.3078, east: 11.1466)),
@@ -833,12 +843,8 @@ enum ScooterCityCatalog {
         ScooterCity(id: "no:Tønsberg", name: "Tønsberg", countryCode: "NO", center: GeoPoint(latitude: 59.2677, longitude: 10.4081), bounds: GeoBounds(south: 59.2303, west: 10.3765, north: 59.3091, east: 10.4904)),
         ScooterCity(id: "no:Tromsø", name: "Tromsø", countryCode: "NO", center: GeoPoint(latitude: 69.6514, longitude: 18.9586), bounds: GeoBounds(south: 69.5976, west: 18.8764, north: 69.7169, east: 19.0959), pauses: [ScooterSeasonalPause(from: "11-02", until: "05-01", timeZone: "Europe/Oslo")]),
         ScooterCity(id: "no:Arendal", name: "Arendal", countryCode: "NO", center: GeoPoint(latitude: 58.4615, longitude: 8.7663), bounds: GeoBounds(south: 58.4301, west: 8.6955, north: 58.4883, east: 8.8325)),
-        ScooterCity(id: "no:Bærum", name: "Bærum", countryCode: "NO", center: GeoPoint(latitude: 59.8926, longitude: 10.5245), bounds: GeoBounds(south: 59.8794, west: 10.4669, north: 59.9558, east: 10.6494)),
-        ScooterCity(id: "no:Asker", name: "Asker", countryCode: "NO", center: GeoPoint(latitude: 59.8335, longitude: 10.4345), bounds: GeoBounds(south: 59.8079, west: 10.3717, north: 59.8793, east: 10.5109)),
         ScooterCity(id: "no:Kristiansand", name: "Kristiansand", countryCode: "NO", center: GeoPoint(latitude: 58.1463, longitude: 7.996), bounds: GeoBounds(south: 58.0678, west: 7.754, north: 58.1969, east: 8.1385)),
         ScooterCity(id: "no:Vennesla", name: "Vennesla", countryCode: "NO", center: GeoPoint(latitude: 58.2688, longitude: 7.9724), bounds: GeoBounds(south: 58.2505, west: 7.9539, north: 58.2926, east: 7.9974)),
-        ScooterCity(id: "no:Lillestrøm", name: "Lillestrøm", countryCode: "NO", center: GeoPoint(latitude: 59.9534, longitude: 11.0452), bounds: GeoBounds(south: 59.8947, west: 11, north: 60.0214, east: 11.106), pauses: [ScooterSeasonalPause(from: "12-01", until: "03-01", timeZone: "Europe/Oslo")]),
-        ScooterCity(id: "no:Lørenskog", name: "Lørenskog", countryCode: "NO", center: GeoPoint(latitude: 59.9277, longitude: 10.9572), bounds: GeoBounds(south: 59.9032, west: 10.9151, north: 59.9916, east: 10.9999), pauses: [ScooterSeasonalPause(from: "12-01", until: "03-01", timeZone: "Europe/Oslo")]),
         ScooterCity(id: "no:Moss", name: "Moss", countryCode: "NO", center: GeoPoint(latitude: 59.432, longitude: 10.6573), bounds: GeoBounds(south: 59.4038, west: 10.6092, north: 59.4596, east: 10.7152)),
         ScooterCity(id: "gb:Bournemouth", name: "Bournemouth", countryCode: "GB", center: GeoPoint(latitude: 50.7204, longitude: -1.8796), bounds: GeoBounds(south: 50.7028, west: -1.915, north: 50.7899, east: -1.7851)),
         ScooterCity(id: "gb:Christchurch", name: "Christchurch", countryCode: "GB", center: GeoPoint(latitude: 50.7354, longitude: -1.7787), bounds: GeoBounds(south: 50.7128, west: -1.785, north: 50.7639, east: -1.6868)),
@@ -1069,7 +1075,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 383
+    static let cityCount = 384
     static let countryCount = 27
 
     /// Cities by distance from the point to their centre, nearest first.

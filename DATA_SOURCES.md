@@ -426,7 +426,7 @@ Pony, Belgium's national access point
 [transportdata.be](https://transportdata.be/dataset/pony_charleroi), which
 lists its feed with the key the URL needs.
 
-Norway's 23 feeds across 21 towns (Voi, Ryde, Bolt and Dott) all come from
+Norway's 28 feeds across 22 towns (Voi, Ryde, Bolt and Dott) all come from
 [Entur's Mobility API](https://developer.entur.no/docs/open-services/mobility),
 Norway's national access point for shared mobility. Requests identify the app
 with `ET-Client-Name: scootradar-map`, as Entur requires. Entur's
