@@ -391,9 +391,12 @@ struct ScooterMapView: UIViewRepresentable {
         /// map or chooses something else to show, or another place is asked
         /// for. Once made, the move is done for the margins it was made with:
         /// only the leading margin moving, with the panel or a fold down the
-        /// map, takes the map on to the place again, measured beside them as
-        /// they now are.
+        /// map, or the map taking another size or safe area, as the screen
+        /// turns, takes the map on to the place again, measured as it now is.
         private var focusUnderWay: FocusUnderWay?
+        /// The move made again for the map's new size, while it waits for
+        /// MapKit to have scaled its camera to it.
+        private var moveForNewSizeWaiting: Task<Void, Never>?
         /// How many moves to a place asked for were made, first moves and
         /// moves made again: tests hold it to one for each place and a few
         /// more for the panel moving, which no loop could keep to.
@@ -704,6 +707,8 @@ struct ScooterMapView: UIViewRepresentable {
         /// of it left in view.
         private func move(to request: MapFocusRequest, on mapView: MKMapView) {
             movesToPlaces += 1
+            focusUnderWay?.size = mapView.bounds.size
+            focusUnderWay?.safeArea = mapView.safeAreaInsets
             let visible = visibleRect(of: mapView)
             guard !request.keepsZoom else {
                 mapView.setCenter(
@@ -790,15 +795,18 @@ struct ScooterMapView: UIViewRepresentable {
             let request: MapFocusRequest
             /// The margins, without the safe area, the move was last made with.
             var margins: NSDirectionalEdgeInsets
+            /// The map's size and safe area the move was last made at.
+            var size: CGSize = .zero
+            var safeArea: UIEdgeInsets = .zero
             /// How many times it was made again since.
             var madeAgain = 0
         }
 
         /// The most times a move is made again: each is a real change of the
-        /// leading margin, which a move of the camera doesn't change, and a
-        /// panel, a fold, a turn of the screen and larger text are about all
-        /// that changes it. Past this the move is over, whatever else might
-        /// keep moving the margin.
+        /// leading margin, or of the map's size or safe area, which a move of
+        /// the camera doesn't change, and a panel, a fold, a turn of the screen
+        /// and larger text are about all that changes them. Past this the move
+        /// is over, whatever else might keep moving them.
         private static let mostMovesAgain = 6
 
         /// Apple's logo and the Legal link sit inside the map's layout margins:
@@ -954,6 +962,50 @@ struct ScooterMapView: UIViewRepresentable {
             move(to: focus.request, on: mapView)
         }
 
+        /// The screen turns inside an animation, and the panel takes its place
+        /// before the map takes its new size: the move made again for the
+        /// panel's margin was measured on the map as it was, upright, and
+        /// fitted the place into the sliver beside the panel, far out. Nothing
+        /// moved the margins after, and the rider stayed there. A move under
+        /// way is made again once the map has another size or safe area, seen
+        /// at its next region change, as for the leading margin, and within
+        /// the same bound.
+        ///
+        /// MapKit reports the new size, then a moment later scales its camera
+        /// to it, with a region change of its own. A move made in between was
+        /// scaled with it: on the Duo the rider landed in the middle, but by
+        /// the turn's change of width, half as far out again as locating
+        /// takes it. The move waits for a tenth of a second without a region
+        /// change that shows the new size.
+        private func moveAgainForNewSize(on mapView: MKMapView) {
+            guard let focus = focusUnderWay, Self.hasNewSize(mapView, since: focus) else { return }
+            moveForNewSizeWaiting?.cancel()
+            moveForNewSizeWaiting = Task { @MainActor [weak self, weak mapView] in
+                try? await Task.sleep(for: .milliseconds(100))
+                guard !Task.isCancelled, let self else { return }
+                moveForNewSizeWaiting = nil
+                guard let mapView, var focus = focusUnderWay, Self.hasNewSize(mapView, since: focus) else { return }
+                guard focus.madeAgain < Self.mostMovesAgain else {
+                    focusUnderWay = nil
+                    return
+                }
+                focus.madeAgain += 1
+                focusUnderWay = focus
+                move(to: focus.request, on: mapView)
+            }
+        }
+
+        /// Whether the map has another size or safe area than the move under
+        /// way was last made at.
+        private static func hasNewSize(_ mapView: MKMapView, since focus: FocusUnderWay) -> Bool {
+            let size = mapView.bounds.size
+            let safe = mapView.safeAreaInsets
+            guard size.width > 0, size.height > 0 else { return false }
+            return abs(size.width - focus.size.width) >= 1 || abs(size.height - focus.size.height) >= 1
+                || abs(safe.top - focus.safeArea.top) >= 1 || abs(safe.bottom - focus.safeArea.bottom) >= 1
+                || abs(safe.left - focus.safeArea.left) >= 1 || abs(safe.right - focus.safeArea.right) >= 1
+        }
+
         /// A scooter or bay doesn't move the map when it is chosen. Beside a
         /// panel, though, its card opens in the panel, which may then grow over
         /// it: the map brings it out once, in the second after it was chosen.
@@ -1048,6 +1100,7 @@ struct ScooterMapView: UIViewRepresentable {
                 revealPendingRoute()
             }
             trail.mapDidMove(on: mapView)
+            moveAgainForNewSize(on: mapView)
             applyFocus(parent.focusRequest, on: mapView)
             updateClusteringMode(on: mapView)
             updateLook(on: mapView)

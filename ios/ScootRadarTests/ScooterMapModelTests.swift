@@ -3742,7 +3742,8 @@ extension ScooterMapModelTests {
         hinge: TestHinge = TestHinge(),
         firstLayoutTaking slowness: TimeInterval = 0,
         textSize: TextSize = TextSize(),
-        safeArea: UIEdgeInsets = .zero
+        safeArea: UIEdgeInsets = .zero,
+        resizable: Bool = false
     ) async throws -> (UIWindow, MKMapView) {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
         let window = UIWindow(windowScene: scene)
@@ -3769,11 +3770,12 @@ extension ScooterMapModelTests {
         )
         // Added to what the simulator's own screen gives the window.
         host.additionalSafeAreaInsets = safeArea
-        if window.bounds.size == size {
+        if window.bounds.size == size, !resizable {
             window.rootViewController = host
         } else {
             // The window takes the simulator's shape: the screen gets a view
-            // of the size asked for inside it.
+            // of the size asked for inside it. A test turns a resizable one
+            // by giving it another size.
             let container = UIViewController()
             container.addChild(host)
             host.view.frame = CGRect(origin: .zero, size: size)
@@ -4065,6 +4067,54 @@ extension ScooterMapModelTests {
         try await Task.sleep(for: .milliseconds(1200))
         XCTAssertTrue(shows(kept, at: middleBesidePanel, on: mapView, within: 8), "\(mapView.convert(kept, toPointTo: mapView))")
         XCTAssertEqual(mapView.camera.centerCoordinateDistance, zoomed, accuracy: zoomed * 0.01)
+    }
+
+    /// Upright and located, then turned sideways inside an animation, as
+    /// the Duo is: the rider lands beside the panel where locating would,
+    /// at locating's zoom. The panel took its place while the map was still
+    /// upright, and the move fitted the place into the sliver beside it:
+    /// once the map had turned, the rider was off the middle, zoomed far out.
+    func testTurnedSidewaysWhileLocatingTheRiderLandsBesideThePanel() async throws {
+        let (model, manager) = modelLocatedByTheTest()
+        let (window, mapView) = try await panelWindow(showing: model, size: CGSize(width: 669, height: 951), resizable: true)
+        defer { window.isHidden = true }
+        try await Task.sleep(for: .milliseconds(500))
+        model.locationManager(manager, didUpdateLocations: [fix(at: Self.rider)])
+        try await Task.sleep(for: .milliseconds(1500))
+        let screen = try XCTUnwrap(window.rootViewController?.children.first?.view)
+        UIView.animate(withDuration: 0.3) {
+            screen.frame = CGRect(x: 0, y: 0, width: 951, height: 669)
+            window.layoutIfNeeded()
+        }
+        try await Task.sleep(for: .milliseconds(1500))
+        try await assertLanded(at: CGPoint(x: (16 + 380 + 951) / 2, y: 669 / 2), on: mapView, model: model)
+    }
+
+    /// On the Duo the map takes its new size as the screen turns and its new
+    /// safe area only once it is on its way to the rider: the status bar's
+    /// room, still at the top, leaves it then.
+    func testTurnedSidewaysTheRiderLandsBesideThePanelOnceTheSafeAreaHasTurned() async throws {
+        let (model, manager) = modelLocatedByTheTest()
+        let (window, mapView) = try await panelWindow(showing: model, size: CGSize(width: 669, height: 951), resizable: true)
+        defer { window.isHidden = true }
+        let host = try XCTUnwrap(window.rootViewController?.children.first)
+        host.additionalSafeAreaInsets = UIEdgeInsets(top: 48, left: 0, bottom: 0, right: 0)
+        try await Task.sleep(for: .milliseconds(500))
+        model.locationManager(manager, didUpdateLocations: [fix(at: Self.rider)])
+        try await Task.sleep(for: .milliseconds(1500))
+        let upright = mapView.camera.centerCoordinateDistance
+        UIView.animate(withDuration: 0.3) {
+            host.view.frame = CGRect(x: 0, y: 0, width: 951, height: 669)
+            window.layoutIfNeeded()
+        }
+        let onItsWay = await waitUntil(attempts: 150) {
+            abs(mapView.camera.centerCoordinateDistance / upright - 1) > 0.01
+        }
+        XCTAssertTrue(onItsWay)
+        host.additionalSafeAreaInsets = .zero
+        window.layoutIfNeeded()
+        try await Task.sleep(for: .milliseconds(1500))
+        try await assertLanded(at: CGPoint(x: (16 + 380 + 951) / 2, y: 669 / 2), on: mapView, model: model)
     }
 
     /// Opens or folds the Duo as iOS does, inside an animation, and lets it end.

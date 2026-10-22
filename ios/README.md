@@ -35,8 +35,10 @@ from the search bar.
 In a large window, such as an open iPhone Duo held sideways, the search bar, the
 notices and the dock's card stand in a panel down the leading side instead, as
 on the website on a computer, and the map centres what it shows on the part
-beside the panel. Filters then open in a popover from the panel's search bar,
-and Settings in a form at the side. The providers stand in the panel's card as
+beside the panel. Turned sideways while it is on its way to a place, as when
+locating, it still lands there, in the middle of that part and as close in.
+Filters then open in a popover from the panel's search bar, and Settings in a
+form at the side. The providers stand in the panel's card as
 a list, one row each with its colour, its count and a check, under an "All
 providers" row, where the dock of a phone has a row of chips. Like the card of
 Maps, the panel's card folds down to one line under the search bar, "23 m ·
