@@ -41,11 +41,9 @@ enum ScooterMapCameraPolicy {
         let startingCamera = mapView.camera.copy() as! MKMapCamera
         let pitch = startingCamera.pitch
         let heading = startingCamera.heading
-        let bounds = mapView.bounds
-        let beside = visible.map { CGRect(x: $0.minX, y: bounds.minY, width: $0.width, height: bounds.height) }
-        let movesAside = beside.map { abs($0.intersection(bounds).midX - bounds.midX) >= 1 } ?? false
+        let beside = aside(visible, in: mapView.bounds)
 
-        guard pitch > 0 || heading != 0 || movesAside else {
+        guard pitch > 0 || heading != 0 || beside != nil else {
             mapView.setRegion(region, animated: animated)
             return
         }
@@ -54,7 +52,7 @@ enum ScooterMapCameraPolicy {
         var targetCamera = mapView.camera.copy() as! MKMapCamera
         targetCamera.pitch = pitch
         targetCamera.heading = heading
-        if movesAside, let beside {
+        if let beside {
             // Where the centre goes is measured on the map as the camera will show it.
             mapView.setCamera(targetCamera, animated: false)
             targetCamera = targetCamera.copy() as! MKMapCamera
@@ -97,6 +95,27 @@ enum ScooterMapCameraPolicy {
         guard abs(offsetX) >= 1 || abs(offsetY) >= 1 else { return coordinate }
         let point = mapView.convert(coordinate, toPointTo: mapView)
         return mapView.convert(CGPoint(x: point.x + offsetX, y: point.y + offsetY), toCoordinateFrom: mapView)
+    }
+
+    /// What a region is centred in beside a panel or a fold: as wide as the
+    /// part of the map left `visible`, as tall as the map. None where nothing
+    /// covers a side, and the region keeps to the middle of the map's margins.
+    static func aside(_ visible: CGRect?, in bounds: CGRect) -> CGRect? {
+        guard let visible else { return nil }
+        let beside = CGRect(x: visible.minX, y: bounds.minY, width: visible.width, height: bounds.height)
+        return abs(beside.intersection(bounds).midX - bounds.midX) >= 1 ? beside : nil
+    }
+
+    /// Where a move to a place shows it, so where a step in or out keeps
+    /// what is shown: beside a panel or a fold, the middle of the part of the
+    /// map left `visible` across and of the whole map up and down; elsewhere
+    /// where MapKit shows the centre, the middle of the map's margins.
+    @MainActor
+    static func focus(on mapView: MKMapView, visible: CGRect) -> CGPoint {
+        let shown = mapView.convert(mapView.centerCoordinate, toPointTo: mapView)
+        guard let beside = aside(visible, in: mapView.bounds) else { return shown }
+        let across = beside.intersection(mapView.bounds)
+        return CGPoint(x: across.width >= 44 ? across.midX : shown.x, y: mapView.bounds.midY)
     }
 
     /// The part of a map of `bounds` left visible between what covers its
@@ -645,18 +664,19 @@ struct ScooterMapView: UIViewRepresentable {
         }
 
         /// A step in or out from the keyboard: the camera comes closer or goes
-        /// further, keeps its tilt and its turn, and what is in the middle of
-        /// the part of the map left in view stays there. The camera looks at
-        /// another point than that beside a panel or under a tilt: zoomed
-        /// around it, the rider just located slid away from the middle.
+        /// further, keeps its tilt and its turn, and what is shown where a move
+        /// to a place shows it stays there. The camera looks at another point
+        /// than that beside a panel: zoomed around it, the rider just located
+        /// slid away from the middle. Up and down that is the middle of the
+        /// whole map, where locating leaves it, not of the part under the
+        /// status bar.
         func applyZoom(_ request: MapZoomRequest?, on mapView: MKMapView) {
             guard let request, request.token != lastZoomToken else { return }
             lastZoomToken = request.token
             guard mapView.bounds.width > 0, mapView.bounds.height > 0 else { return }
             // A step from the keyboard moves the map as the person's hand does.
             focusUnderWay = nil
-            let visible = visibleRect(of: mapView)
-            let middle = CGPoint(x: visible.midX, y: visible.midY)
+            let middle = ScooterMapCameraPolicy.focus(on: mapView, visible: visibleRect(of: mapView))
             let kept = mapView.convert(middle, toCoordinateFrom: mapView)
             let starting = mapView.camera.copy() as! MKMapCamera
             var target = starting.copy() as! MKMapCamera

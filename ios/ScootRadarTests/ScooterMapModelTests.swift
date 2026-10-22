@@ -3741,7 +3741,8 @@ extension ScooterMapModelTests {
         size: CGSize = CGSize(width: 951, height: 669),
         hinge: TestHinge = TestHinge(),
         firstLayoutTaking slowness: TimeInterval = 0,
-        textSize: TextSize = TextSize()
+        textSize: TextSize = TextSize(),
+        safeArea: UIEdgeInsets = .zero
     ) async throws -> (UIWindow, MKMapView) {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
         let window = UIWindow(windowScene: scene)
@@ -3766,6 +3767,8 @@ extension ScooterMapModelTests {
                 .environment(\.horizontalSizeClass, .regular)
                 .environment(\.verticalSizeClass, .regular)
         )
+        // Added to what the simulator's own screen gives the window.
+        host.additionalSafeAreaInsets = safeArea
         if window.bounds.size == size {
             window.rootViewController = host
         } else {
@@ -4214,12 +4217,14 @@ extension ScooterMapModelTests {
     }
 
     /// ⌘+ and ⌘− beside the panel: the camera comes a step in, then goes
-    /// two out, and what was in the middle of the map stays there. On iOS 26
-    /// the rider ends away from the middle (CI, 26.5), not yet explained;
-    /// the panel shows only on iOS 27 until the app runs natively on iPad.
+    /// two out, and what was in the middle of the map stays there. A status
+    /// bar over the map leaves the middle where locating puts it.
     func testTheMapZoomsAStepAtATimeAroundItsMiddle() async throws {
         let (model, manager) = modelLocatedByTheTest()
-        let (window, mapView) = try await panelWindow(showing: model)
+        let (window, mapView) = try await panelWindow(
+            showing: model,
+            safeArea: UIEdgeInsets(top: 40, left: 0, bottom: 0, right: 0)
+        )
         defer { window.isHidden = true }
         model.locationManager(manager, didUpdateLocations: [fix(at: Self.rider)])
         let located = await waitUntil(attempts: 400) { self.isBesideThePanel(Self.rider, on: mapView) }
@@ -4233,9 +4238,7 @@ extension ScooterMapModelTests {
         }
         XCTAssertTrue(closer, "\(start) → \(mapView.camera.centerCoordinateDistance)")
         try await Task.sleep(for: .milliseconds(600))
-        expectingAMissOnIOS26(whereTheMiddleShows(on: mapView)) { shown in
-            XCTAssertTrue(isBesideThePanel(Self.rider, on: mapView), shown)
-        }
+        XCTAssertTrue(isBesideThePanel(Self.rider, on: mapView), whereTheMiddleShows(on: mapView))
 
         model.zoom(by: -2)
         let further = await waitUntil(attempts: 300) {
@@ -4243,21 +4246,7 @@ extension ScooterMapModelTests {
         }
         XCTAssertTrue(further, "\(start) → \(mapView.camera.centerCoordinateDistance)")
         try await Task.sleep(for: .milliseconds(600))
-        expectingAMissOnIOS26(whereTheMiddleShows(on: mapView)) { shown in
-            XCTAssertTrue(isBesideThePanel(Self.rider, on: mapView), shown)
-        }
-    }
-
-    /// The reason carries what was shown: the result bundle keeps an
-    /// expected failure's reason but not its message.
-    private func expectingAMissOnIOS26(_ shown: String, _ check: (String) -> Void) {
-        if #available(iOS 27, *) {
-            check(shown)
-        } else {
-            XCTExpectFailure("Away from the middle beside a panel on iOS 26: \(shown)", strict: false) {
-                check(shown)
-            }
-        }
+        XCTAssertTrue(isBesideThePanel(Self.rider, on: mapView), whereTheMiddleShows(on: mapView))
     }
 
     /// The rider, the camera's centre and the map's centre as shown, and the
