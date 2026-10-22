@@ -2769,6 +2769,131 @@ extension ScooterMapModelTests {
         XCTAssertTrue(automatic)
     }
 
+    /// The layout of a window `width` points across, from either layout.
+    private func layouts(
+        width: CGFloat,
+        regularWidth: Bool = true,
+        regularHeight: Bool = true,
+        largeText: Bool = false
+    ) -> [ScooterChromeLayout] {
+        [ScooterChromeLayout.dock, .panel].map {
+            ScooterChromeLayout.resolve(
+                width: width,
+                regularWidth: regularWidth,
+                regularHeight: regularHeight,
+                largeText: largeText,
+                current: $0
+            )
+        }
+    }
+
+    func testEveryPhoneKeepsItsDockUprightAndSideways() {
+        for largeText in [false, true] {
+            // Upright an iPhone is compact across; the widest is 440 pt.
+            for width: CGFloat in [320, 375, 390, 393, 402, 414, 428, 430, 440] {
+                XCTAssertEqual(
+                    layouts(width: width, regularWidth: false, largeText: largeText), [.dock, .dock], "\(width)"
+                )
+                // However it is described, it is narrower than a panel and a map.
+                XCTAssertEqual(layouts(width: width, largeText: largeText), [.dock, .dock], "\(width)")
+            }
+            // Sideways it is compact up and down, the larger ones regular across.
+            for width: CGFloat in [568, 667, 736, 812, 844, 852, 874, 896, 926, 932, 956] {
+                XCTAssertEqual(
+                    layouts(width: width, regularWidth: false, regularHeight: false, largeText: largeText),
+                    [.dock, .dock],
+                    "\(width)"
+                )
+                XCTAssertEqual(
+                    layouts(width: width, regularHeight: false, largeText: largeText), [.dock, .dock], "\(width)"
+                )
+            }
+        }
+    }
+
+    func testTheDuoKeepsItsDockOnItsCoverAndUprightInside() {
+        // The cover upright and sideways, the inner display upright, and with
+        // its bar down the side: too narrow whatever the size classes say.
+        for width: CGFloat in [466, 678, 330, 669] {
+            for largeText in [false, true] {
+                XCTAssertEqual(layouts(width: width, largeText: largeText), [.dock, .dock], "\(width)")
+                XCTAssertEqual(
+                    layouts(width: width, regularWidth: false, largeText: largeText), [.dock, .dock], "\(width)"
+                )
+            }
+        }
+    }
+
+    func testTheOpenDuoShowsThePanel() {
+        // 951 pt across, less its 60 pt bar down the side.
+        XCTAssertEqual(layouts(width: 891), [.panel, .panel])
+        XCTAssertEqual(layouts(width: 891, largeText: true), [.panel, .panel])
+    }
+
+    func testAnIPadShowsThePanelWhenTheMapStillHasRoomBesideIt() {
+        // iPad mini upright keeps the dock, even turned from sideways.
+        XCTAssertEqual(layouts(width: 744), [.dock, .dock])
+        XCTAssertEqual(layouts(width: 744, largeText: true), [.dock, .dock])
+        for width: CGFloat in [820, 1032, 1180, 1376] {
+            XCTAssertEqual(layouts(width: width), [.panel, .panel], "\(width)")
+            XCTAssertEqual(layouts(width: width, largeText: true), [.panel, .panel], "\(width)")
+        }
+        // A window compact one way or the other has the dock, however wide.
+        XCTAssertEqual(layouts(width: 1376, regularWidth: false), [.dock, .dock])
+        XCTAssertEqual(layouts(width: 1376, regularHeight: false), [.dock, .dock])
+    }
+
+    func testAWindowResizedAcrossTheThresholdDoesNotFlipBackAndForth() {
+        // A 380 pt panel and 380 pt of map: the panel opens with 20 pt to
+        // spare, and stays until the map would get less than 380.
+        XCTAssertEqual(layouts(width: 779), [.dock, .panel])
+        XCTAssertEqual(layouts(width: 780), [.panel, .panel])
+        XCTAssertEqual(layouts(width: 760), [.dock, .panel])
+        XCTAssertEqual(layouts(width: 759), [.dock, .dock])
+
+        // With very large text the panel is 420 pt.
+        XCTAssertEqual(ScooterChromeLayout.panelWidth(largeText: false), 380)
+        XCTAssertEqual(ScooterChromeLayout.panelWidth(largeText: true), 420)
+        XCTAssertEqual(layouts(width: 819, largeText: true), [.dock, .panel])
+        XCTAssertEqual(layouts(width: 820, largeText: true), [.panel, .panel])
+        XCTAssertEqual(layouts(width: 800, largeText: true), [.dock, .panel])
+        XCTAssertEqual(layouts(width: 799, largeText: true), [.dock, .dock])
+    }
+
+    /// Apple's logo and Legal link sit in the map's leading margin, which a
+    /// panel moves past itself; on a phone the margins are MapKit's.
+    func testAPanelMovesTheMapsLeadingMarginPastItAndAPhoneLeavesItAlone() async throws {
+        func map(in view: UIView) -> MKMapView? {
+            (view as? MKMapView) ?? view.subviews.lazy.compactMap(map(in:)).first
+        }
+
+        let phone = try window(showing: ScooterMapScreen(
+            model: makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
+        ))
+        defer { phone.isHidden = true }
+        let phoneMap = try XCTUnwrap(map(in: phone))
+        let resting = phoneMap.directionalLayoutMargins
+        try await Task.sleep(for: .milliseconds(300))
+        XCTAssertEqual(phoneMap.directionalLayoutMargins, resting)
+        XCTAssertLessThan(phoneMap.directionalLayoutMargins.leading, 100)
+
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+        let large = UIWindow(windowScene: scene)
+        large.frame = CGRect(x: 0, y: 0, width: 1376, height: 1032)
+        large.rootViewController = UIHostingController(
+            rootView: ScooterMapScreen(model: makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: []))))
+                .environment(\.horizontalSizeClass, .regular)
+                .environment(\.verticalSizeClass, .regular)
+        )
+        large.isHidden = false
+        defer { large.isHidden = true }
+        large.layoutIfNeeded()
+        let largeMap = try XCTUnwrap(map(in: large))
+        // 16 pt from the edge, 380 pt of panel, and 16 pt to spare.
+        let moved = await waitUntil { largeMap.directionalLayoutMargins.leading >= 16 + 380 + 16 }
+        XCTAssertTrue(moved, "\(largeMap.directionalLayoutMargins)")
+    }
+
     /// A window of the size of a phone with the view on screen in it.
     private func window(showing view: some View) throws -> UIWindow {
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)

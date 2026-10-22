@@ -118,7 +118,9 @@ final class ScooterFilteringTests: XCTestCase {
         )
 
         // The search bar ends at 110 pt and a tall card begins at 380 pt: the middle is at 245 pt.
-        let center = ScooterMapCameraPolicy.center(showing: scooter, on: mapView, visibleTop: 110, visibleBottom: 380)
+        let center = ScooterMapCameraPolicy.center(
+            showing: scooter, on: mapView, visible: CGRect(x: 0, y: 110, width: 390, height: 270)
+        )
         XCTAssertLessThan(center.latitude, scooter.latitude)
         XCTAssertEqual(center.longitude, scooter.longitude, accuracy: 0.0001)
 
@@ -128,10 +130,104 @@ final class ScooterFilteringTests: XCTestCase {
         XCTAssertEqual(shown.x, 195, accuracy: 3)
 
         // Nothing covers the map, or nearly all of it is covered: the scooter itself is the centre.
-        let uncovered = ScooterMapCameraPolicy.center(showing: scooter, on: mapView, visibleTop: 0, visibleBottom: 844)
+        let uncovered = ScooterMapCameraPolicy.center(
+            showing: scooter, on: mapView, visible: CGRect(x: 0, y: 0, width: 390, height: 844)
+        )
         XCTAssertEqual(uncovered.latitude, scooter.latitude, accuracy: 0.000_001)
-        let covered = ScooterMapCameraPolicy.center(showing: scooter, on: mapView, visibleTop: 400, visibleBottom: 420)
+        let covered = ScooterMapCameraPolicy.center(
+            showing: scooter, on: mapView, visible: CGRect(x: 0, y: 400, width: 390, height: 20)
+        )
         XCTAssertEqual(covered.latitude, scooter.latitude, accuracy: 0.000_001)
+    }
+
+    func testWithoutAPanelTheMapLeftVisibleIsTheBandBetweenTheSearchBarAndTheDock() {
+        let phone = CGRect(x: 0, y: 0, width: 390, height: 844)
+        let band = CGRect(x: 0, y: 110, width: 390, height: 270)
+        XCTAssertEqual(ScooterMapCameraPolicy.visibleRect(in: phone, top: 110, bottom: 380, beside: nil), band)
+        XCTAssertEqual(ScooterMapCameraPolicy.visibleRect(in: phone, top: 110, bottom: 380, beside: .null), band)
+        XCTAssertEqual(ScooterMapCameraPolicy.visibleRect(in: phone, top: 110, bottom: 380, beside: .zero), band)
+    }
+
+    func testBesideAPanelTheMapLeftVisibleStartsWhereThePanelEnds() {
+        let window = CGRect(x: 0, y: 0, width: 1376, height: 1032)
+        // A short panel still takes its side of the map from top to bottom:
+        // a card opened in it may grow down.
+        let leading = ScooterMapCameraPolicy.visibleRect(
+            in: window, top: 24, bottom: 1032, beside: CGRect(x: 16, y: 40, width: 380, height: 300)
+        )
+        XCTAssertEqual(leading, CGRect(x: 396, y: 24, width: 980, height: 1008))
+
+        // Right to left the panel is on the right.
+        let trailing = ScooterMapCameraPolicy.visibleRect(
+            in: window, top: 24, bottom: 1032, beside: CGRect(x: 980, y: 40, width: 380, height: 300)
+        )
+        XCTAssertEqual(trailing, CGRect(x: 0, y: 24, width: 980, height: 1008))
+    }
+
+    func testSpansChosenOnAPhoneAreUnchangedOnEveryPhone() {
+        // Every iPhone's shorter side, the widest the Pro Max's.
+        for width: CGFloat in [320, 375, 390, 393, 402, 414, 428, 430, 440] {
+            XCTAssertEqual(ScooterMapCameraPolicy.spanScale(across: width), 1, "\(width)")
+        }
+    }
+
+    func testALargerMapShowsMoreGroundAroundTheSameStreets() {
+        XCTAssertEqual(ScooterMapCameraPolicy.spanScale(across: 466), 466.0 / 440, accuracy: 0.000_1)
+        XCTAssertEqual(ScooterMapCameraPolicy.spanScale(across: 744), 744.0 / 440, accuracy: 0.000_1)
+        XCTAssertEqual(ScooterMapCameraPolicy.spanScale(across: 1032), 1032.0 / 440, accuracy: 0.000_1)
+        XCTAssertLessThan(
+            ScooterMapCameraPolicy.spanScale(across: 669),
+            ScooterMapCameraPolicy.spanScale(across: 1032)
+        )
+    }
+
+    @MainActor
+    func testCentringAScooterBesideAPanelShowsItInTheMiddleOfTheMapLeftVisible() {
+        let scooter = CLLocationCoordinate2D(latitude: 47.3769, longitude: 8.5417)
+        let mapView = MKMapView(frame: CGRect(x: 0, y: 0, width: 1376, height: 1032))
+        mapView.setRegion(
+            MKCoordinateRegion(center: scooter, latitudinalMeters: 850, longitudinalMeters: 850),
+            animated: false
+        )
+
+        // A panel 380 pt wide 16 pt from the edge: the middle of the rest is at 886 pt.
+        let center = ScooterMapCameraPolicy.center(
+            showing: scooter, on: mapView, visible: CGRect(x: 396, y: 0, width: 980, height: 1032)
+        )
+        mapView.setCenter(center, animated: false)
+        let shown = mapView.convert(scooter, toPointTo: mapView)
+        XCTAssertEqual(shown.x, 886, accuracy: 3)
+        XCTAssertEqual(shown.y, 516, accuracy: 3)
+    }
+
+    @MainActor
+    func testARegionBesideAPanelIsShownInTheMiddleOfTheMapLeftVisibleAtTheSameZoom() {
+        let scooter = CLLocationCoordinate2D(latitude: 47.3769, longitude: 8.5417)
+        let region = MKCoordinateRegion(center: scooter, latitudinalMeters: 850, longitudinalMeters: 850)
+        let bounds = CGRect(x: 0, y: 0, width: 1376, height: 1032)
+
+        // As on a phone: the band between the search bar and the dock leaves
+        // the sides alone, and the region is MapKit's own.
+        let alone = MKMapView(frame: bounds)
+        ScooterMapCameraPolicy.setRegionPreservingPerspective(
+            region, on: alone, animated: false, visible: CGRect(x: 0, y: 110, width: 1376, height: 700)
+        )
+        let centred = alone.convert(scooter, toPointTo: alone)
+        XCTAssertEqual(centred.x, 688, accuracy: 3)
+        XCTAssertEqual(centred.y, 516, accuracy: 3)
+
+        let beside = MKMapView(frame: bounds)
+        ScooterMapCameraPolicy.setRegionPreservingPerspective(
+            region, on: beside, animated: false, visible: CGRect(x: 396, y: 24, width: 980, height: 1008)
+        )
+        let shown = beside.convert(scooter, toPointTo: beside)
+        XCTAssertEqual(shown.x, 886, accuracy: 3)
+        XCTAssertEqual(shown.y, 516, accuracy: 3)
+        XCTAssertEqual(
+            beside.camera.centerCoordinateDistance,
+            alone.camera.centerCoordinateDistance,
+            accuracy: alone.camera.centerCoordinateDistance * 0.01
+        )
     }
 
     @MainActor

@@ -27,26 +27,39 @@ enum ScooterMapCameraPolicy {
         mapView.setCamera(camera, animated: false)
     }
 
-    /// Moves the map and keeps the tilt and the turn it has.
+    /// Moves the map and keeps the tilt and the turn it has. Beside a panel the
+    /// region's centre goes to the middle of the part of the map left `visible`
+    /// beside it. Up and down it stays the middle of the whole map, as a region
+    /// always was on a phone, where nothing covers the sides.
     @MainActor
     static func setRegionPreservingPerspective(
         _ region: MKCoordinateRegion,
         on mapView: MKMapView,
-        animated: Bool
+        animated: Bool,
+        visible: CGRect? = nil
     ) {
         let startingCamera = mapView.camera.copy() as! MKMapCamera
         let pitch = startingCamera.pitch
         let heading = startingCamera.heading
+        let bounds = mapView.bounds
+        let beside = visible.map { CGRect(x: $0.minX, y: bounds.minY, width: $0.width, height: bounds.height) }
+        let movesAside = beside.map { abs($0.intersection(bounds).midX - bounds.midX) >= 1 } ?? false
 
-        guard pitch > 0 || heading != 0 else {
+        guard pitch > 0 || heading != 0 || movesAside else {
             mapView.setRegion(region, animated: animated)
             return
         }
 
         mapView.setRegion(region, animated: false)
-        let targetCamera = mapView.camera.copy() as! MKMapCamera
+        var targetCamera = mapView.camera.copy() as! MKMapCamera
         targetCamera.pitch = pitch
         targetCamera.heading = heading
+        if movesAside, let beside {
+            // Where the centre goes is measured on the map as the camera will show it.
+            mapView.setCamera(targetCamera, animated: false)
+            targetCamera = targetCamera.copy() as! MKMapCamera
+            targetCamera.centerCoordinate = center(showing: region.center, on: mapView, visible: beside)
+        }
 
         if animated {
             mapView.setCamera(startingCamera, animated: false)
@@ -55,25 +68,56 @@ enum ScooterMapCameraPolicy {
     }
 
     /// The centre that shows a point in the middle of the part of the map left
-    /// visible between what covers its top and its bottom, at the current zoom.
-    /// The search bar, the locate button and above all the dock cover the map:
-    /// centred on the point itself, a scooter can end up behind its own card.
+    /// visible by what covers it, at the current zoom. The search bar, the
+    /// locate button and above all the dock cover the map, and in a large
+    /// window a panel down one side: centred on the point itself, a scooter
+    /// can end up behind its own card.
     @MainActor
     static func center(
         showing coordinate: CLLocationCoordinate2D,
         on mapView: MKMapView,
-        visibleTop: CGFloat,
-        visibleBottom: CGFloat
+        visible: CGRect
     ) -> CLLocationCoordinate2D {
         let bounds = mapView.bounds
-        let top = max(bounds.minY, visibleTop)
-        let bottom = min(bounds.maxY, visibleBottom)
+        let top = max(bounds.minY, visible.minY)
+        let bottom = min(bounds.maxY, visible.maxY)
+        let leading = max(bounds.minX, visible.minX)
+        let trailing = min(bounds.maxX, visible.maxX)
+        // MapKit shows the centre in the middle of the map's layout margins,
+        // which a panel moves past it: beside one, the offset is measured from
+        // where the centre is shown, not from the middle of the map.
+        let middle = trailing - leading < bounds.width
+            ? mapView.convert(mapView.centerCoordinate, toPointTo: mapView)
+            : CGPoint(x: bounds.midX, y: bounds.midY)
         // With hardly anything left to show it in, the plain centre is as good.
-        guard bottom - top >= 44 else { return coordinate }
-        let offset = bounds.midY - (top + bottom) / 2
-        guard abs(offset) >= 1 else { return coordinate }
+        let offsetY = bottom - top >= 44 ? middle.y - (top + bottom) / 2 : 0
+        let offsetX = trailing - leading >= 44 ? middle.x - (leading + trailing) / 2 : 0
+        guard abs(offsetX) >= 1 || abs(offsetY) >= 1 else { return coordinate }
         let point = mapView.convert(coordinate, toPointTo: mapView)
-        return mapView.convert(CGPoint(x: point.x, y: point.y + offset), toCoordinateFrom: mapView)
+        return mapView.convert(CGPoint(x: point.x + offsetX, y: point.y + offsetY), toCoordinateFrom: mapView)
+    }
+
+    /// The part of a map of `bounds` left visible between what covers its
+    /// `top` and its `bottom`, and beside `panel`, the panel down one side of
+    /// a large window. The panel counts as tall as the map, as far down as a
+    /// card in it may grow. On a phone nothing covers the sides.
+    static func visibleRect(in bounds: CGRect, top: CGFloat, bottom: CGFloat, beside panel: CGRect?) -> CGRect {
+        let band = CGRect(x: bounds.minX, y: top, width: bounds.width, height: bottom - top)
+        guard let panel, !panel.isNull, !panel.isEmpty else { return band }
+        let minX = panel.midX < bounds.midX ? min(max(panel.maxX, bounds.minX), bounds.maxX) : bounds.minX
+        let maxX = panel.midX < bounds.midX ? bounds.maxX : max(min(panel.minX, bounds.maxX), bounds.minX)
+        return CGRect(x: minX, y: band.minY, width: maxX - minX, height: band.height)
+    }
+
+    /// The widest phone. Its spans were chosen on phones.
+    static let phoneWidth: CGFloat = 440
+
+    /// How much more ground than asked a map `length` points across shows, so
+    /// that a span chosen on a phone looks there as it does on a phone instead
+    /// of closer in: locating shows the same streets, larger windows more of
+    /// them around. 1 up to the widest phone, so phones are as they were.
+    static func spanScale(across length: CGFloat) -> Double {
+        max(1, Double(length / phoneWidth))
     }
 }
 
@@ -122,6 +166,10 @@ struct ScooterMapView: UIViewRepresentable {
     /// The locate button and the dock, in window coordinates. The names of
     /// the scooters keep clear of them.
     var bottomChromeFrames: [CGRect] = []
+    /// The panel down the leading side of a large window, in window
+    /// coordinates. The map shows a scooter beside it, keeps names and taps
+    /// off it, and moves Apple's logo and Legal link out from under it.
+    var panelFrame: CGRect = .null
     /// The region, the zoom asked of the server and the zoom as drawn.
     let onRegionChange: (MKCoordinateRegion, Int, Double) -> Void
     let onSelectionChange: (String?) -> Void
@@ -220,8 +268,10 @@ struct ScooterMapView: UIViewRepresentable {
         context.coordinator.applyParkingSelection(selectedParkingID, on: mapView)
         context.coordinator.applyWalking(on: mapView)
         context.coordinator.applyFocus(focusRequest, on: mapView)
+        context.coordinator.keepSelectionClearOfPanel(on: mapView)
         context.coordinator.applyTrail(walkTrail, on: mapView)
         context.coordinator.updateUserHeading(on: mapView, animated: true)
+        context.coordinator.updateMargins(on: mapView)
         context.coordinator.updateCompass(on: mapView)
         context.coordinator.updateLook(on: mapView)
         // The dock may have grown over a name.
@@ -249,6 +299,13 @@ struct ScooterMapView: UIViewRepresentable {
         private var compassTopConstraint: NSLayoutConstraint?
         private var scaleView: MKScaleView?
         private var scaleTopConstraint: NSLayoutConstraint?
+        /// The scale's leading edge: at the map's safe area, or beside a panel.
+        private var scaleBesideSafeArea: NSLayoutConstraint?
+        private var scaleBesidePanel: NSLayoutConstraint?
+        /// The map's layout margins before a panel moved them.
+        private var restingMargins: NSDirectionalEdgeInsets?
+        /// A selection just made, until when it is brought out from under a panel.
+        private var watchedSelection: (key: String, until: TimeInterval)?
         private var appliedMapStyle: AppleMapStyle?
         private var appliedLook: LookInputs?
         /// The scooters that carry their name, in the order the names are placed.
@@ -316,19 +373,24 @@ struct ScooterMapView: UIViewRepresentable {
             scale.accessibilityIdentifier = "map-scale"
             mapView.addSubview(scale)
             let top = scale.topAnchor.constraint(equalTo: mapView.topAnchor)
-            NSLayoutConstraint.activate([
-                top,
-                scale.leadingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.leadingAnchor, constant: 16)
-            ])
+            let leading = scale.leadingAnchor.constraint(equalTo: mapView.safeAreaLayoutGuide.leadingAnchor, constant: 16)
+            NSLayoutConstraint.activate([top, leading])
             scaleView = scale
             scaleTopConstraint = top
+            scaleBesideSafeArea = leading
+            scaleBesidePanel = scale.leadingAnchor.constraint(equalTo: mapView.layoutMarginsGuide.leadingAnchor)
             updateCompass(on: mapView)
         }
 
         func updateCompass(on mapView: MKMapView) {
             let searchFrame = parent.interactionExclusionFrame
+            let panel = panel(in: mapView)
             let top: CGFloat
-            if searchFrame.isNull || searchFrame.isEmpty {
+            if let panel {
+                // Beside a panel, level with its top, the compass on the far
+                // side of the map and the scale next to the panel.
+                top = panel.minY
+            } else if searchFrame.isNull || searchFrame.isEmpty {
                 top = mapView.safeAreaInsets.top + 80
             } else {
                 top = mapView.convert(
@@ -338,6 +400,12 @@ struct ScooterMapView: UIViewRepresentable {
             }
             if let scaleView {
                 scaleTopConstraint?.constant = top
+                let besidePanel = panel != nil
+                if besidePanel != (scaleBesidePanel?.isActive == true) {
+                    // The one in place goes first, so that the two never pull at once.
+                    (besidePanel ? scaleBesideSafeArea : scaleBesidePanel)?.isActive = false
+                    (besidePanel ? scaleBesidePanel : scaleBesideSafeArea)?.isActive = true
+                }
                 mapView.bringSubviewToFront(scaleView)
             }
             guard let compassButton else { return }
@@ -485,41 +553,117 @@ struct ScooterMapView: UIViewRepresentable {
             // waits for the layout; the first region change then applies it.
             guard mapView.bounds.width > 0, mapView.bounds.height > 0 else { return }
             lastFocusToken = request.token
+            let visible = visibleRect(of: mapView)
             guard !request.keepsZoom else {
-                let visible = visibleBand(of: mapView)
                 mapView.setCenter(
                     ScooterMapCameraPolicy.center(
                         showing: request.point.coordinate,
                         on: mapView,
-                        visibleTop: visible.minY,
-                        visibleBottom: visible.maxY
+                        visible: visible
                     ),
                     animated: !UIAccessibility.isReduceMotionEnabled
                 )
                 return
             }
+            // A span fits the map's shorter side.
+            let scale = ScooterMapCameraPolicy.spanScale(across: min(mapView.bounds.width, mapView.bounds.height))
             let region = MKCoordinateRegion(
                 center: request.point.coordinate,
-                latitudinalMeters: request.latitudinalMeters,
-                longitudinalMeters: request.longitudinalMeters
+                latitudinalMeters: request.latitudinalMeters * scale,
+                longitudinalMeters: request.longitudinalMeters * scale
             )
             ScooterMapCameraPolicy.setRegionPreservingPerspective(
                 region,
                 on: mapView,
-                animated: !UIAccessibility.isReduceMotionEnabled
+                animated: !UIAccessibility.isReduceMotionEnabled,
+                visible: visible
             )
         }
 
         /// The part of the map between the search bar and the locate button
-        /// with the dock under it.
-        private func visibleBand(of mapView: MKMapView) -> CGRect {
+        /// with the dock under it, and beside the panel of a large window,
+        /// unless `besidePanel` is false.
+        private func visibleRect(of mapView: MKMapView, besidePanel: Bool = true) -> CGRect {
             let topFrame = parent.interactionExclusionFrame
             let top = topFrame.isNull || topFrame.isEmpty
                 ? mapView.safeAreaInsets.top
                 : mapView.convert(CGPoint(x: topFrame.midX, y: topFrame.maxY), from: nil).y
             let bottom = parent.bottomChromeTop
                 .map { mapView.convert(CGPoint(x: 0, y: $0), from: nil).y } ?? mapView.bounds.maxY
-            return CGRect(x: mapView.bounds.minX, y: top, width: mapView.bounds.width, height: bottom - top)
+            return ScooterMapCameraPolicy.visibleRect(
+                in: mapView.bounds,
+                top: top,
+                bottom: bottom,
+                beside: besidePanel ? panel(in: mapView) : nil
+            )
+        }
+
+        /// The panel of a large window, in the map's own coordinates.
+        private func panel(in mapView: MKMapView) -> CGRect? {
+            let frame = parent.panelFrame
+            guard !frame.isNull, !frame.isEmpty else { return nil }
+            return mapView.convert(frame, from: nil)
+        }
+
+        /// Between the panel and Apple's logo, and the scale, beside it.
+        private static let panelGap: CGFloat = 16
+
+        /// Apple's logo and the Legal link sit inside the map's layout margins:
+        /// beside a panel the leading margin reaches past it, so that they stay
+        /// in view. Without a panel the margins are left as they were.
+        func updateMargins(on mapView: MKMapView) {
+            guard let panel = panel(in: mapView) else {
+                if let restingMargins {
+                    setMargins(restingMargins, on: mapView)
+                    self.restingMargins = nil
+                }
+                return
+            }
+            let resting = restingMargins ?? mapView.directionalLayoutMargins
+            restingMargins = resting
+            // Measured from the map's safe area, as its margins are.
+            let bounds = mapView.bounds
+            let reach = mapView.effectiveUserInterfaceLayoutDirection == .rightToLeft
+                ? bounds.maxX - mapView.safeAreaInsets.right - panel.minX
+                : panel.maxX - bounds.minX - mapView.safeAreaInsets.left
+            var margins = resting
+            margins.leading = max(resting.leading, reach + Self.panelGap)
+            if mapView.directionalLayoutMargins != margins {
+                setMargins(margins, on: mapView)
+            }
+        }
+
+        /// MapKit shows the map's centre in the middle of its margins, and
+        /// leaves the map where it is when they change: what was in the middle
+        /// of the part left in view, the rider's place after locating, goes to
+        /// the middle of the part left in view now, as a panel comes or goes.
+        private func setMargins(_ margins: NSDirectionalEdgeInsets, on mapView: MKMapView) {
+            let centre = mapView.centerCoordinate
+            mapView.directionalLayoutMargins = margins
+            mapView.setCenter(centre, animated: false)
+        }
+
+        /// A scooter or bay doesn't move the map when it is chosen. Beside a
+        /// panel, though, its card opens in the panel, which may then grow over
+        /// it: the map brings it out once, in the second after it was chosen.
+        func keepSelectionClearOfPanel(on mapView: MKMapView) {
+            let key = parent.selectedScooterID.map { "scooter:\($0)" }
+                ?? parent.selectedParkingID.map { "parking:\($0)" }
+            let now = ProcessInfo.processInfo.systemUptime
+            if key != watchedSelection?.key {
+                watchedSelection = key.map { ($0, now + 1) }
+            }
+            guard let watched = watchedSelection, now < watched.until,
+                  let panel = panel(in: mapView) else { return }
+            let annotation: MKAnnotation? = parent.selectedScooterID.flatMap { annotationsByID[$0] }
+                ?? parent.selectedParkingID.flatMap { parkingAnnotationsByID[$0] }
+            guard let coordinate = annotation?.coordinate,
+                  panel.contains(mapView.convert(coordinate, toPointTo: mapView)) else { return }
+            watchedSelection = (watched.key, 0)
+            mapView.setCenter(
+                ScooterMapCameraPolicy.center(showing: coordinate, on: mapView, visible: visibleRect(of: mapView)),
+                animated: !UIAccessibility.isReduceMotionEnabled
+            )
         }
 
         func applyDestination(_ destination: MapDestination?, on mapView: MKMapView) {
@@ -763,11 +907,13 @@ struct ScooterMapView: UIViewRepresentable {
         /// Chooses a side for each name. Returns the scooters whose name moved.
         private func placePills(on mapView: MKMapView) -> [ScooterMapAnnotation] {
             guard !namedIDs.isEmpty else { return [] }
-            let chrome = parent.bottomChromeFrames
+            // A panel covers only as far down as it reaches: below it the
+            // names show as anywhere else.
+            let chrome = (parent.bottomChromeFrames + [parent.panelFrame])
                 .filter { !$0.isNull && !$0.isEmpty }
                 .map { mapView.convert($0, from: nil) }
             // Beside the locate button the map is free down to the dock.
-            var visible = visibleBand(of: mapView)
+            var visible = visibleRect(of: mapView, besidePanel: false)
             if !chrome.isEmpty {
                 visible.size.height = mapView.bounds.maxY - visible.minY
             }
@@ -1044,6 +1190,7 @@ struct ScooterMapView: UIViewRepresentable {
         private func isExcludedFromMapInteraction(_ point: CGPoint, on mapView: MKMapView) -> Bool {
             let windowPoint = mapView.convert(point, to: nil)
             return Self.point(windowPoint, isInside: parent.interactionExclusionFrame)
+                || Self.point(windowPoint, isInside: parent.panelFrame)
         }
 
         static func point(_ point: CGPoint, isInside exclusionFrame: CGRect) -> Bool {
@@ -1208,18 +1355,22 @@ struct ScooterMapView: UIViewRepresentable {
 
             if let cluster = view.annotation as? ScooterServerClusterAnnotation {
                 ScooterAnalytics.shared.track("cluster_select")
+                // A city's span is a phone's, as when a city is chosen.
+                let city = ScooterMapCameraPolicy.spanScale(across: min(mapView.bounds.width, mapView.bounds.height))
+                let visible = visibleRect(of: mapView)
                 // A group opens onto its cities, each a total of its own again.
                 if let bounds = cluster.cluster.bounds {
                     ScooterMapCameraPolicy.setRegionPreservingPerspective(
                         MKCoordinateRegion(
                             center: bounds.center.coordinate,
                             span: MKCoordinateSpan(
-                                latitudeDelta: max((bounds.north - bounds.south) * 1.6, 0.08),
-                                longitudeDelta: max(bounds.longitudeSpan * 1.6, 0.12)
+                                latitudeDelta: max((bounds.north - bounds.south) * 1.6, 0.08 * city),
+                                longitudeDelta: max(bounds.longitudeSpan * 1.6, 0.12 * city)
                             )
                         ),
                         on: mapView,
-                        animated: !UIAccessibility.isReduceMotionEnabled
+                        animated: !UIAccessibility.isReduceMotionEnabled,
+                        visible: visible
                     )
                     mapView.deselectAnnotation(cluster, animated: false)
                     return
@@ -1229,12 +1380,13 @@ struct ScooterMapView: UIViewRepresentable {
                     MKCoordinateRegion(
                         center: cluster.coordinate,
                         span: MKCoordinateSpan(
-                            latitudeDelta: cluster.cluster.city == nil ? span.latitudeDelta / 4 : 0.08,
-                            longitudeDelta: cluster.cluster.city == nil ? span.longitudeDelta / 4 : 0.12
+                            latitudeDelta: cluster.cluster.city == nil ? span.latitudeDelta / 4 : 0.08 * city,
+                            longitudeDelta: cluster.cluster.city == nil ? span.longitudeDelta / 4 : 0.12 * city
                         )
                     ),
                     on: mapView,
-                    animated: !UIAccessibility.isReduceMotionEnabled
+                    animated: !UIAccessibility.isReduceMotionEnabled,
+                    visible: visible
                 )
                 mapView.deselectAnnotation(cluster, animated: false)
                 return
@@ -1242,7 +1394,7 @@ struct ScooterMapView: UIViewRepresentable {
 
             if let cluster = view.annotation as? MKClusterAnnotation {
                 ScooterAnalytics.shared.track("cluster_select")
-                mapView.showAnnotations(cluster.memberAnnotations, animated: true)
+                showMembers(of: cluster, on: mapView)
                 mapView.deselectAnnotation(cluster, animated: false)
                 return
             }
@@ -1364,23 +1516,49 @@ struct ScooterMapView: UIViewRepresentable {
             trail.revealRoute(animated: !UIAccessibility.isReduceMotionEnabled)
         }
 
-        /// Shows the whole route between the search bar and the dock, turned
-        /// and tilted as the map is, no closer than street level.
+        /// Shows the whole route between the search bar and the dock, or
+        /// beside the panel, turned and tilted as the map is, no closer than
+        /// street level.
         private func fitRoute(_ walkTrail: WalkTrail, on mapView: MKMapView, animated: Bool) {
+            fit(walkTrail.points.map(\.coordinate), on: mapView, animated: animated)
+        }
+
+        /// A cluster opens onto its scooters. Beside a panel they are fitted
+        /// like a route into the part of the map left visible; on a phone
+        /// MapKit shows them, as it always has.
+        private func showMembers(of cluster: MKClusterAnnotation, on mapView: MKMapView) {
+            guard panel(in: mapView) != nil else {
+                mapView.showAnnotations(cluster.memberAnnotations, animated: true)
+                return
+            }
+            fit(cluster.memberAnnotations.map(\.coordinate), on: mapView, animated: !UIAccessibility.isReduceMotionEnabled)
+        }
+
+        private func fit(_ coordinates: [CLLocationCoordinate2D], on mapView: MKMapView, animated: Bool) {
             let bounds = mapView.bounds
-            guard bounds.width > 0, bounds.height > 0, let first = walkTrail.points.first else { return }
-            let band = visibleBand(of: mapView)
+            guard bounds.width > 0, bounds.height > 0, let first = coordinates.first else { return }
+            var band = visibleRect(of: mapView)
+            // MapKit frames a region within the map's layout margins, which a
+            // panel moves past it.
+            var frame = bounds
+            if panel(in: mapView) != nil {
+                frame = bounds.inset(by: mapView.layoutMargins)
+                band = band.intersection(frame)
+            }
             var visible = band.insetBy(dx: WalkTrailLook.fitMargin, dy: WalkTrailLook.fitMargin)
             // With very little room left, the margin goes first.
             if visible.width < 88 || visible.height < 88 { visible = band }
-            if visible.width < 44 || visible.height < 44 { visible = bounds }
+            if visible.isNull || visible.width < 44 || visible.height < 44 { visible = frame }
+            // Street level is a phone's: measured across the map's width, as
+            // locating shows it across the shorter side of a larger one.
             let minimumScale = MKMapPointsPerMeterAtLatitude(first.latitude)
-                * WalkTrailLook.closestFitWidth / Double(bounds.width)
+                * WalkTrailLook.closestFitWidth
+                * ScooterMapCameraPolicy.spanScale(across: bounds.width) / Double(bounds.width)
             guard let rect = ScooterMapCameraPolicy.rect(
-                fitting: walkTrail.points.map { MKMapPoint($0.coordinate) },
+                fitting: coordinates.map { MKMapPoint($0) },
                 heading: mapView.camera.heading,
-                size: bounds.size,
-                visible: visible.offsetBy(dx: -bounds.minX, dy: -bounds.minY),
+                size: frame.size,
+                visible: visible.offsetBy(dx: -frame.minX, dy: -frame.minY),
                 minimumScale: minimumScale
             ) else { return }
             ScooterMapCameraPolicy.setRegionPreservingPerspective(
