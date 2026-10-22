@@ -101,7 +101,22 @@ jobs:
           -scheme ScootRadar
           -destination 'platform=iOS Simulator,id=${{ steps.simulator.outputs.udid }}'
           -derivedDataPath "$RUNNER_TEMP/ScootRadarDerivedData"
+          -resultBundlePath "$RUNNER_TEMP/ScootRadar.xcresult"
           CODE_SIGNING_ALLOWED=NO
+
+      # The tests run on clones of the simulator, whose log names a failed test but not what
+      # failed: the result bundle has the messages, those of expected failures as well.
+      - name: Show the tests' failures
+        if: always() && steps.simulator.outputs.udid != ''
+        run: |
+          set -uo pipefail
+          bundle="$RUNNER_TEMP/ScootRadar.xcresult"
+          [ -d "$bundle" ] || exit 0
+          xcrun xcresulttool get test-results tests --path "$bundle" --compact \
+            | jq -r '.. | objects | select(.nodeType? == "Test Case" and (.result == "Failed" or .result == "Expected Failure"))
+                | "\(.result): \(.nodeIdentifier // .name)",
+                  ([.. | objects | select(.nodeType? == "Failure Message" or .nodeType? == "Expected Failure") | "  \(.name)"] | unique | .[])' \
+            || true
 
   # Production deploys from two branches only this job moves (DEPLOY.md): Workers Builds deploys
   # production, the website and its Worker, and Coolify production-cache, the scooter cache. So a
