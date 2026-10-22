@@ -32,7 +32,7 @@ const guide: Guide = {
             head: ['Stadt', 'Auf der Karte', 'Regeln der Stadt'],
             rows: [
               ['Kloten', 'Rund 180 Trottis: Bolt und Bird je rund 50, Hopp 40, Dott rund 35, Voi 6', 'Betriebsbewilligung der Stadt (im März 2025 für CHF 300.–), höchstens 50 Trottis pro Anbieter, seit dem 1. September 2025 eine Gebühr von 20 Rappen pro Trotti und Tag'],
-              ['Opfikon mit Glattbrugg und Glattpark', 'Rund 160 Trottis: Dott, Voi und Bolt je rund 40, Lime rund 30, dazu 4 von Hopp und eines von PubliBike', 'Seit dem 1. Januar 2025 eine Vereinbarung mit der Stadt für drei Jahre, höchstens vier Anbieter und 160 Trottis insgesamt, keine Gebühr für den öffentlichen Grund'],
+              ['Opfikon mit Glattbrugg und Glattpark', 'Rund 160 Trottis: Dott, Voi und Bolt je rund 40, Lime rund 30, dazu 4 von Hopp und ein E-Trottinett aus dem Zürcher Angebot von PubliBike', 'Seit dem 1. Januar 2025 eine Vereinbarung mit der Stadt für drei Jahre, höchstens vier Anbieter und 160 Trottis insgesamt, keine Gebühr für den öffentlichen Grund'],
             ],
           },
         },
@@ -110,7 +110,7 @@ const guide: Guide = {
             '**Zur Arbeit am Flughafen und im Circle:** Mit dem Trotti bis vor die Sperrzone, etwa nach Kloten oder Glattbrugg, dann weiter mit Bus oder Tram.',
             '**Bahnhöfe:** Auf dem Bahnhofareal steigst du ab; die SBB verbietet das Fahren auf Perrons, Rampen und in Unterführungen.',
             '**Glattbrugg und Glattpark:** Das Tram 10 und das Tram 12 der Glattalbahn verbinden beide in 5 bis 9 Minuten mit dem Flughafen. Am Lindbergh-Platz und am Sirius-Platz parkierst du nur in der Zone.',
-            '**Nach Oerlikon:** Bolt, Dott und Voi führen Kloten, Opfikon und die Stadt Zürich als ein Gebiet. Du kannst also von Glattbrugg (Luftlinie 2,4 km) oder vom Glattpark (1,4 km) nach Oerlikon fahren und die Fahrt dort beenden, nur nicht am Bahnhof Oerlikon: Dort gilt ein Parkverbot.',
+            '**Nach Oerlikon:** Bolt und Dott führen Kloten, Opfikon und die Stadt Zürich als ein Gebiet. Du kannst also von Glattbrugg (Luftlinie 2,4 km) oder vom Glattpark (1,4 km) nach Oerlikon fahren und die Fahrt dort beenden, nur nicht am Bahnhof Oerlikon: Dort gilt ein Parkverbot.',
             '**Weiter nach Zürich:** In der Stadt gelten Zürichs eigene Zonen; die stehen unter [E-Trottinett in Zürich](guide:zurich), die Trottis zeigt die [Karte von Zürich](map:ch:zurich). Vom Bahnhof Kloten bis Oerlikon sind es Luftlinie rund 5 km, die S7 braucht 7 Minuten.',
             '**Bird und Hopp** führen in ihren Daten nur Kloten als Gebiet: Mit ihnen beendest du die Fahrt wieder in Kloten.',
           ],
@@ -166,7 +166,7 @@ const guide: Guide = {
     },
     {
       question: 'Kann ich mit dem Trotti von Glattbrugg nach Zürich Oerlikon fahren?',
-      answer: 'Ja, mit Bolt, Dott oder Voi: Ihr Gebiet reicht über die Stadtgrenze, du kannst die Fahrt in Zürich beenden. Am Bahnhof Oerlikon selbst gilt aber ein Parkverbot.',
+      answer: 'Ja, mit Bolt oder Dott: Ihr Gebiet reicht über die Stadtgrenze, du kannst die Fahrt in Zürich beenden. Am Bahnhof Oerlikon selbst gilt aber ein Parkverbot.',
     },
     {
       question: 'Warum lässt mich die App die Fahrt nicht beenden?',
