@@ -644,15 +644,32 @@ Rules that read like bans but are not, or that no primary source confirms:
   and 5:00AM Eastern Time" (§ 4). But the pilot ran to the end of 2025,
   with scooters out all night in the summer of 2025, and nothing says what
   its renewal for 2026 keeps. On 14 October a scooter left its place
-  between 23:29 and 23:34 EDT, and one appeared 1.5 km away by 23:44. Left
-  out until the city confirms the hours.
+  between 23:29 and 23:34 EDT, and one appeared 1.5 km away by 23:44. Polled
+  again every five minutes from 19:38 EDT on 21 October to 00:30, beside
+  Spin Providence, its 77 to 79 available scooters stayed available after
+  23:00, and from 23:30 to midnight 3 left their places and 2 arrived where
+  none had left, as many as in the evening's quieter half hours (1 to 5).
+  The city's [program page](https://pawtucketri.gov/public-works-department/micromobility-scooter-pilot-program/)
+  links only the 2023 rules, and its
+  [release of 2 May 2025](https://pawtucketri.gov/city-of-pawtucket-and-spin-expand-electric-scooter-pilot-program-ahead-of-centreville-bank-stadium-opening-weekend/)
+  extended the pilot to 31 December 2025 "with the potential for a one-year
+  renewal through 2026"; nothing newer is published. Left out: the fleet
+  runs past 23:00, and no rule in force says it shouldn't.
 - **San Diego:** the Municipal Code bars providers from letting devices be
   reserved or activated from midnight to 02:30 (§ 83.0308(i), from
   O-21467, 2022). But the map's San Diego is UC San Diego's own Spin fleet,
   nearly all of it on the campus, which is state land; the university's
   [page](https://transportation.ucsd.edu/campus/shared.html) sets no hours,
   and the city's program pages are gone, so whether the campus fleet
-  answers to the city's contract rules is unconfirmed.
+  answers to the city's contract rules is unconfirmed. Polled every five
+  minutes from 16:38 PDT on 21 October to 00:38, beside Spin UC Davis, its
+  727 to 734 available scooters stayed available after midnight, and from
+  midnight to 00:38 single scooters kept leaving their places (29) and
+  turning up 140 m to 1.2 km from any that had left (17), about as often as
+  from 22:30 to 23:30 (40 and 35). The code's hours bind providers that hold
+  a contract with the city (§ 83.0304); the campus fleet is the university's
+  [partnership with Spin](https://ipps.ucsd.edu/cpp/partners/spin.html), and
+  its riders aren't stopped at midnight, so the map shows no ban there.
 - **Toledo:** the city's release of 25 March 2022 moved the curfew to
   02:00–05:00, and UToledo's Veo page says midnight to 05:00, but no rule in
   force today repeats either, and the city's

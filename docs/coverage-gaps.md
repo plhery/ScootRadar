@@ -799,14 +799,6 @@ Bonaire had feeds to add. Survey files are in
   art. 124 of Ley 9078 on SCIJ, and update the
   [Costa Rican guide's rules](costa-rican-scooter-feeds.md#rules) if either
   says anything of e-scooters.
-- **Night of 21 to 22 October 2026:** Spin Pawtucket from 22:30 to 00:30 EDT
-  and Spin San Diego (UC San Diego) from 23:30 to 01:30 PDT, polled every 5
-  minutes. Pawtucket's 2023 pilot rules ban renting from 23:00, and San
-  Diego's code from midnight to 02:30, but neither is confirmed for these
-  fleets today (see the guide's
-  [Night bans](american-scooter-feeds.md#night-bans)). If rides stop at the
-  hour, and Pawtucket's Public Works or UC San Diego confirms it, add the
-  ban.
 - **Late November 2026:** Spin St. Paul's season is "typically" mid-April to
   mid-November, Veo Cedar Rapids' may run through November, the University of
   Toledo's Veo fleet goes from mid-November, and Veo Rochester's in
@@ -815,6 +807,15 @@ Bonaire had feeds to add. Survey files are in
   through the winter, look for the city's dates and add a `seasonal` window.
 - **1 January 2027:** Brussels's ban starts; Bolt and Dott Bruxelles should
   empty.
+- **January 2027:** Spin Pawtucket. The pilot was extended to the end of
+  2025 "with the potential for a one-year renewal through 2026", and its
+  2023 rules ban renting from 23:00 to 05:00, but its scooters were ridden
+  after 23:00 on 14 and 21 October 2026 and no newer rule is published (see
+  the guide's [Night bans](american-scooter-feeds.md#night-bans)). Check
+  that the city publishes terms for 2027, add their hours if they set any,
+  and take the feed out if the program ends. UC San Diego's fleet, ridden
+  after midnight on 21 October despite the city code's ban from midnight to
+  02:30, needs no recheck.
 - **15 January 2027:** Bird Orlando and Bird University of Central Florida,
   live but unridden on 14 and 16 October 2026, and Bird Miami, unridden on
   the evening of 21 October. Poll each on a weekday
