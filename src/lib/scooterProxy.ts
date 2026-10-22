@@ -9,7 +9,7 @@ interface SnapshotProxyEnvironment {
   SCOOTER_API_RATE_LIMITER: { limit(options: { key: string }): Promise<{ success: boolean }> };
 }
 
-/** The data centre's cache (`caches.default` in worker.ts) and the invocation's waitUntil. */
+/** A cache of the data centre (`caches.open` in worker.ts) and the invocation's waitUntil. */
 export interface LastGoodStore {
   cache: { match(key: string): Promise<Response | undefined>; put(key: string, response: Response): Promise<void> };
   waitUntil(promise: Promise<unknown>): void;
@@ -74,7 +74,7 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     // The apps ask in different orders.
     const search = new URLSearchParams(url.search);
     search.sort();
-    kept = { key: `${url.origin}/last-good${url.pathname}?${search}`, seconds: LAST_GOOD_SECONDS[zones ? 'zones' : 'scooters'] };
+    kept = { key: `${url.origin}${url.pathname}?${search}`, seconds: LAST_GOOD_SECONDS[zones ? 'zones' : 'scooters'] };
     if (!env.SCOOTER_SNAPSHOT_API_TOKEN) throw new Error('Missing origin credential');
     const upstream = new URL(zones ? '/api/zones' : '/api/scooters', env.SCOOTER_SNAPSHOT_API_URL);
     upstream.search = url.search;

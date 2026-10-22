@@ -97,7 +97,7 @@ const scootRadarWorker = {
 
     const { pathname } = new URL(request.url);
     if ((pathname === '/api/scooters' || pathname === '/api/zones') && env.SCOOTER_SNAPSHOT_API_URL) {
-      return proxyScooterSnapshot(request, env, { cache: caches.default, waitUntil: promise => ctx.waitUntil(promise) });
+      return proxyScooterSnapshot(request, env, { cache: await caches.open('scooter-last-good'), waitUntil: promise => ctx.waitUntil(promise) });
     }
 
     const response = await openNextWorker.fetch(pageRequest(request), env, ctx);

@@ -107,7 +107,7 @@ describe('last good answer', () => {
     const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(answer({ stale: false, generatedAt: '2026-10-22T00:00:00Z' }));
     expect((await proxyScooterSnapshot(request(), env, store)).status).toBe(200);
     await settled();
-    expect([...entries.keys()]).toEqual(['https://map.example/last-good/api/scooters?east=4.9&north=45.8&south=45.72&west=4.79&zoom=13']);
+    expect([...entries.keys()]).toEqual(['https://map.example/api/scooters?east=4.9&north=45.8&south=45.72&west=4.79&zoom=13']);
     expect(entries.values().next().value?.headers.get('Cache-Control')).toBe('public, max-age=900');
 
     const logged = vi.spyOn(console, 'error').mockImplementation(() => {});

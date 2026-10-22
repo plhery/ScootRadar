@@ -50,11 +50,11 @@ it('keeps the last good answer in the runtime\'s cache and gives it stale while 
   const bundle = await build({
     stdin: {
       contents: `import { proxyScooterSnapshot } from './src/lib/scooterProxy';
-        export default { fetch(request, env, ctx) { return proxyScooterSnapshot(request, {
+        export default { async fetch(request, env, ctx) { return proxyScooterSnapshot(request, {
           SCOOTER_SNAPSHOT_API_URL: 'https://origin.example',
           SCOOTER_SNAPSHOT_API_TOKEN: 'runtime-test-token',
           SCOOTER_API_RATE_LIMITER: { limit: async () => ({ success: true }) },
-        }, { cache: caches.default, waitUntil: promise => ctx.waitUntil(promise) }); } };`,
+        }, { cache: await caches.open('scooter-last-good'), waitUntil: promise => ctx.waitUntil(promise) }); } };`,
       resolveDir: process.cwd(), loader: 'ts',
     },
     bundle: true, write: false, format: 'esm', platform: 'browser',
