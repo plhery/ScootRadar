@@ -137,6 +137,7 @@ import tempeEn from './en/e-scooters-tempe';
 import askerNb from './nb/elsparkesykkel-asker';
 import nashvilleEn from './en/e-scooters-nashville';
 import flughafenZuerichDe from './de/e-trottinett-flughafen-zuerich';
+import gainesvilleEn from './en/e-scooters-gainesville';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -274,4 +275,5 @@ export const GUIDES: readonly Guide[] = [
   askerNb,
   nashvilleEn,
   flughafenZuerichDe,
+  gainesvilleEn,
 ];
