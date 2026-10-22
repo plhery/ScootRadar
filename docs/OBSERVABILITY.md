@@ -248,8 +248,9 @@ startup. Tracing is off, and no trace headers go to the operators' feeds.
 - **Feed stopped being served**: a warning each time a feed becomes `expired` by its
   cadence's rule (an idle feed after 30 minutes without a successful collection) and is
   still expired 5 minutes later (15 for Voi Switzerland, whose feed runs 2 or 3 minutes
-  short of expiring and which Voi stalled for up to 21 minutes three times on 16 and 17
-  October 2026, back within 10 minutes of expiring each time), outside its seasonal pause. Under a night ban at all its
+  short of expiring: on some weekday mornings sharedmobility.ch cuts most of its downloads off
+  (see Logs), and it expired 3 times on 17 October 2026 and 9 on the 22nd, back within 8
+  minutes each time but once, after 16 minutes on the 22nd), outside its seasonal pause. Under a night ban at all its
   service areas, it waits for the ban to end and tells only if the feed is still expired
   30 minutes after: Dott takes Trondheim's feed down on Friday and Saturday nights, which
   Entur keeps serving as it last was, and brought it back 7.5 minutes after the ban on
@@ -277,7 +278,12 @@ feeds on each cadence) are JSON lines. So is `upstream_stale_fallback`, a reques
 operator that failed while an earlier answer could still be served: its host and path,
 and the HTTP status, or the error's type, Node's code for a network error (`errorCode`,
 as `ECONNRESET` or `UND_ERR_SOCKET`) and whether it failed before the operator answered
-or while reading what it sent (`stage`: `request` or `body`). In Grafana's Loki data source:
+or while reading what it sent (`stage`: `request` or `body`). A body the operator cuts
+off (`UND_ERR_SOCKET` or `ECONNRESET` while reading it) is asked for once more at once,
+logged as `upstream_body_retry` with its host, path and `errorCode`; only a second cut
+falls back. sharedmobility.ch cuts Voi's Swiss vehicles off on some weekday mornings: about
+three requests in four from 06:40 to 10:00 on 22 October 2026, and more than half from
+07:00 to 10:00 on the 17th, with the others going through in between. In Grafana's Loki data source:
 
 ```logql
 {app="scootradar-cache", event="snapshot_feed_state"} | json | feed="national:voiscooters.com"

@@ -43,6 +43,17 @@ function errorCode(error: unknown): { errorCode?: string } {
   return typeof code === 'string' && /^[A-Z][A-Z0-9_]{1,40}$/.test(code) ? { errorCode: code } : {};
 }
 
+/**
+ * Whether the operator closed the connection halfway through the body. sharedmobility.ch does so
+ * with Voi's Swiss vehicles on some weekday mornings: about three in four from 06:40 to 10:00
+ * on 22 October 2026, with the others going through in between, so a second request at once
+ * often gets the document the first lost.
+ */
+function cutOff(error: unknown): boolean {
+  const { errorCode: code } = errorCode(error);
+  return code === 'UND_ERR_SOCKET' || code === 'ECONNRESET';
+}
+
 interface CacheEntry {
   fetchedAt: number;
   freshUntil: number;
@@ -169,20 +180,30 @@ export class UpstreamJsonCache {
     // Whether the operator answered, and the request failed reading or checking what it sent.
     let answered = false;
     try {
-      if (this.hostIntervals.size) await this.waitForHost(url);
-      this.requests[options.freshSeconds <= 60 ? 'status' : 'metadata']++;
-      const response = await this.fetcher(url, {
-        headers: options.headers,
-        cache: 'no-store',
-        signal: AbortSignal.timeout(options.timeoutMs),
-      });
-      answered = true;
-      if (!response.ok) {
-        const body = await response.text().catch(() => '');
-        throw new UpstreamHttpError(response.status, new URL(url).hostname, /\bERR_[A-Z_]+\b/.exec(body)?.[0]);
+      let data: T;
+      // A body cut off is asked for once more at once (cutOff); a second cut falls back as any failure.
+      for (let attempt = 1; ; attempt++) {
+        if (this.hostIntervals.size) await this.waitForHost(url);
+        this.requests[options.freshSeconds <= 60 ? 'status' : 'metadata']++;
+        answered = false;
+        const response = await this.fetcher(url, {
+          headers: options.headers,
+          cache: 'no-store',
+          signal: AbortSignal.timeout(options.timeoutMs),
+        });
+        answered = true;
+        if (!response.ok) {
+          const body = await response.text().catch(() => '');
+          throw new UpstreamHttpError(response.status, new URL(url).hostname, /\bERR_[A-Z_]+\b/.exec(body)?.[0]);
+        }
+        try {
+          data = await response.json() as T;
+          break;
+        } catch (error) {
+          if (attempt > 1 || !cutOff(error)) throw error;
+          console.warn(JSON.stringify({ event: 'upstream_body_retry', ...safeUpstreamTarget(url), ...errorCode(error) }));
+        }
       }
-
-      const data = await response.json() as T;
       options.validate?.(data);
       const completedAt = this.now();
       entry.fetchedAt = completedAt;

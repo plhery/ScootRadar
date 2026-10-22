@@ -160,14 +160,56 @@ describe('UpstreamJsonCache', () => {
     cut = true;
     await expect(cache.fetch('https://sharedmobility.ch/v2/gbfs/voiscooters.com/free_bike_status', options))
       .resolves.toMatchObject({ stale: true });
-    expect(JSON.parse(String(warning.mock.calls[0][0]))).toEqual({
+    // The body is asked for once more at once, and the second cut falls back to the stale document.
+    expect(fetcher).toHaveBeenCalledTimes(3);
+    expect(cache.requests.status).toBe(3);
+    expect(warning.mock.calls.map(call => JSON.parse(String(call[0])))).toEqual([{
+      event: 'upstream_body_retry',
+      host: 'sharedmobility.ch',
+      path: '/v2/gbfs/voiscooters.com/free_bike_status',
+      errorCode: 'UND_ERR_SOCKET',
+    }, {
       event: 'upstream_stale_fallback',
       host: 'sharedmobility.ch',
       path: '/v2/gbfs/voiscooters.com/free_bike_status',
       errorType: 'TypeError',
       errorCode: 'UND_ERR_SOCKET',
       stage: 'body',
+    }]);
+    warning.mockRestore();
+  });
+
+  it('asks once more at once for a body cut off, and serves it fresh when it comes whole', async () => {
+    const warning = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    let calls = 0;
+    const fetcher = vi.fn(async () => {
+      if (++calls > 1) return jsonResponse({ version: 2 });
+      const body = new ReadableStream({ pull: () => { throw new TypeError('terminated', { cause: { code: 'UND_ERR_SOCKET' } }); } });
+      return new Response(body, { status: 200 });
     });
+    const cache = new UpstreamJsonCache({ fetcher, now: () => 0 });
+    await expect(cache.fetch('https://sharedmobility.ch/v2/gbfs/voiscooters.com/free_bike_status', options))
+      .resolves.toEqual({ data: { version: 2 }, stale: false, fetchedAt: 0 });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(warning).toHaveBeenCalledOnce();
+    expect(JSON.parse(String(warning.mock.calls[0][0]))).toMatchObject({ event: 'upstream_body_retry' });
+    warning.mockRestore();
+  });
+
+  it('does not ask again after a refused request, a timeout or a body that is not JSON', async () => {
+    const warning = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    for (const failure of [
+      async () => { throw new TypeError('fetch failed', { cause: { code: 'ECONNREFUSED' } }); },
+      async () => { throw new DOMException('The operation was aborted due to timeout', 'TimeoutError'); },
+      async () => new Response('<html>busy</html>', { status: 200 }),
+      async () => jsonResponse({ error: 'busy' }, 503),
+    ]) {
+      const fetcher = vi.fn(failure);
+      const cache = new UpstreamJsonCache({ fetcher, now: () => 0 });
+      await expect(cache.fetch('https://example.com/feed', options)).rejects.toThrow();
+      expect(fetcher).toHaveBeenCalledOnce();
+    }
+    expect(warning).not.toHaveBeenCalled();
     warning.mockRestore();
   });
 
