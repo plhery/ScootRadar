@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'E-scooter Basel 2026: prices, no-go zones, Rhine parking',
   description: 'Rent an e-scooter in Basel: the six apps, what ten minutes cost, where the old town stops your scooter, why you can’t park on the Rhine, and the border rules.',
   headline: 'E-scooters in Basel: six apps, prices, no-go zones and parking by the Rhine',
-  lede: 'To rent an e-scooter in Basel, open the app of Lime, Voi, Dott, Bird, Bolt or Hopp, scan the QR code and ride on the bike lane at up to 20 km/h. Ten minutes cost CHF 4.85 to CHF 5.60: about CHF 1 to unlock plus CHF 0.39 to CHF 0.46 a minute (published rates on 12 October 2026). In the old town the scooter brakes to a halt, you can’t end a ride on the Rhine bridges, and rental scooters can’t cross into Germany or France or reach EuroAirport.',
+  lede: 'To rent an e-scooter in Basel, open the app of Lime, Voi, Dott, Bird, Bolt or Hopp, scan the QR code and ride on the bike lane at up to 20 km/h. Ten minutes cost CHF 4.90 to CHF 5.60: CHF 1 to unlock plus CHF 0.39 to CHF 0.46 a minute (published rates on 23 October 2026). In the old town the scooter brakes to a halt, you can’t end a ride on the Rhine bridges, and rental scooters can’t cross into Germany or France or reach EuroAirport.',
   published: '2026-10-12',
-  updated: '2026-10-13',
+  updated: '2026-10-23',
   city: 'ch:basel',
   sections: [
     {
@@ -31,13 +31,13 @@ const guide: Guide = {
     {
       heading: 'What does an e-scooter cost in Basel?',
       blocks: [
-        'You pay to unlock, then by the minute. Five of the six brands publish their Basel rates in open data feeds; here they are as of 12 October 2026. Rates can vary by zone and time (Bolt says so itself), and the app shows the final price before you unlock.',
+        'You pay to unlock, then by the minute. Five of the six brands publish their Basel rates in open data feeds; here they are as of 23 October 2026. Rates can vary by zone and time (Bolt says so itself), and the app shows the final price before you unlock.',
         {
           table: {
-            caption: 'Published e-scooter rates in Basel (operators’ data feeds, 12 October 2026)',
+            caption: 'Published e-scooter rates in Basel (operators’ data feeds, 23 October 2026)',
             head: ['Operator', 'Unlock', 'Per minute', '10 minutes', '20 minutes'],
             rows: [
-              ['Dott', 'CHF 0.95', 'CHF 0.39', 'CHF 4.85', 'CHF 8.75'],
+              ['Dott', 'CHF 1.00', 'CHF 0.39', 'CHF 4.90', 'CHF 8.80'],
               ['Voi', 'CHF 1.00', 'CHF 0.39', 'CHF 4.90', 'CHF 8.80'],
               ['Bolt', 'CHF 1.00', 'CHF 0.45', 'CHF 5.50', 'CHF 10.00'],
               ['Hopp', 'CHF 1.00', 'CHF 0.45', 'CHF 5.50', 'CHF 10.00'],
@@ -46,7 +46,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Dott and Voi were the cheapest that day and Lime the most expensive, CHF 1.45 apart after 20 minutes. Bolt sells weekly and monthly passes (for the others, check their apps) and says it asks for a short reaction test before you unlock at peak hours. To compare Basel with other Swiss cities, see [e-scooter prices in Switzerland](guide:swiss-prices).',
+        'Dott and Voi were the cheapest that day and Lime the most expensive, CHF 1.40 apart after 20 minutes. Bolt sells weekly and monthly passes (for the others, check their apps) and says it asks for a short reaction test before you unlock at peak hours. To compare Basel with other Swiss cities, see [e-scooter prices in Switzerland](guide:swiss-prices).',
       ],
     },
     {

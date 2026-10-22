@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'E-Trottinett Basel 2026: Anbieter, Preise, Sperrzonen',
   description: 'E-Trottinett Basel: sechs Anbieter, was zehn Minuten kosten, wo das Trotti in der Altstadt stoppt, warum du am Rhein nicht parkierst und was an Anlässen gilt.',
   headline: 'E-Trottinett Basel: Anbieter, Preise, Sperrzonen und Parkieren am Rhein',
-  lede: 'Ein E-Trottinett in Basel mietest du in der App von Lime, Voi, Dott, Bird, Bolt oder Hopp: QR-Code scannen, entsperren und auf dem Velostreifen losfahren. Zehn Minuten kosten CHF 4.85 bis 5.60: 95 Rappen oder CHF 1.– fürs Entsperren plus 39 bis 46 Rappen pro Minute (veröffentlichte Tarife vom 12. Oktober 2026). In der Altstadt, etwa auf dem Marktplatz oder in der Freien Strasse, bremst das Trotti bis zum Stillstand, und auf den Rheinbrücken kannst du die Fahrt nicht beenden. Nach Deutschland, nach Frankreich und an den EuroAirport kommst du damit nicht.',
+  lede: 'Ein E-Trottinett in Basel mietest du in der App von Lime, Voi, Dott, Bird, Bolt oder Hopp: QR-Code scannen, entsperren und auf dem Velostreifen losfahren. Zehn Minuten kosten CHF 4.90 bis 5.60: CHF 1.– fürs Entsperren plus 39 bis 46 Rappen pro Minute (veröffentlichte Tarife vom 23. Oktober 2026). In der Altstadt, etwa auf dem Marktplatz oder in der Freien Strasse, bremst das Trotti bis zum Stillstand, und auf den Rheinbrücken kannst du die Fahrt nicht beenden. Nach Deutschland, nach Frankreich und an den EuroAirport kommst du damit nicht.',
   published: '2026-10-12',
-  updated: '2026-10-13',
+  updated: '2026-10-23',
   city: 'ch:basel',
   sections: [
     {
@@ -34,10 +34,10 @@ const guide: Guide = {
         'Du zahlst eine Gebühr fürs Entsperren und einen Minutenpreis. Fünf der sechs Anbieter veröffentlichen ihre Basler Tarife in offenen Datenfeeds. Je nach Zone und Tageszeit können sie abweichen; Bolt nennt seinen Minutenpreis selbst variabel. Den Endpreis zeigt dir die App, bevor du entsperrst.',
         {
           table: {
-            caption: 'Veröffentlichte Tarife für E-Trottinette in Basel (Datenfeeds der Anbieter vom 12. Oktober 2026)',
+            caption: 'Veröffentlichte Tarife für E-Trottinette in Basel (Datenfeeds der Anbieter vom 23. Oktober 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
-              ['Dott', '95 Rappen', '39 Rappen', 'CHF 4.85', 'CHF 8.75'],
+              ['Dott', 'CHF 1.–', '39 Rappen', 'CHF 4.90', 'CHF 8.80'],
               ['Voi', 'CHF 1.–', '39 Rappen', 'CHF 4.90', 'CHF 8.80'],
               ['Bolt', 'CHF 1.–', '45 Rappen', 'CHF 5.50', 'CHF 10.–'],
               ['Hopp', 'CHF 1.–', '45 Rappen', 'CHF 5.50', 'CHF 10.–'],
@@ -46,7 +46,7 @@ const guide: Guide = {
             ],
           },
         },
-        'An diesem Tag waren Dott und Voi am günstigsten und Lime am teuersten; nach 20 Minuten macht das CHF 1.45 aus. Bolt verkauft Wochen- und Monatspässe und verlangt laut eigener Website zu Stosszeiten vor dem Entsperren einen kurzen Reaktionstest. Ob die anderen in Basel Pässe anbieten, siehst du in ihrer App.',
+        'An diesem Tag waren Dott und Voi am günstigsten und Lime am teuersten; nach 20 Minuten macht das CHF 1.40 aus. Bolt verkauft Wochen- und Monatspässe und verlangt laut eigener Website zu Stosszeiten vor dem Entsperren einen kurzen Reaktionstest. Ob die anderen in Basel Pässe anbieten, siehst du in ihrer App.',
       ],
     },
     {

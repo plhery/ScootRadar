@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'E-Trottinett-Preise Schweiz 2026: Was eine Fahrt kostet',
   description: 'E-Trottinett-Preise in der Schweiz: Entsperrgebühr und Minutenpreis je Anbieter und Stadt, was 5, 10 und 20 Minuten kosten, Abos und teure Zusatzgebühren.',
   headline: 'E-Trottinett-Preise in der Schweiz: So viel kostet ein Sharing-Trottinett, Stadt für Stadt',
-  lede: 'Die E-Trottinett-Preise in der Schweiz setzen sich fast immer gleich zusammen: CHF 1.– fürs Entsperren, dann 39 bis 48 Rappen pro Minute, so die Tarife, die Bolt, Hopp und Voi am 12. Oktober 2026 veröffentlichten. Zehn Minuten kosten damit CHF 4.90 bis CHF 5.80. Günstiger fährst du mit PubliBike in Zürich und Biel: CHF 1.– plus 20 Rappen pro Minute laut Preisliste, Stand Oktober 2026. Dott verlangt je nach Ort 95 Rappen bis CHF 1.50 fürs Entsperren, Bird veröffentlicht keine Tarife, und bei allen Anbietern zeigt die App den Endpreis, bevor du entsperrst.',
+  lede: 'Die E-Trottinett-Preise in der Schweiz setzen sich fast immer gleich zusammen: CHF 1.– fürs Entsperren, dann 39 bis 48 Rappen pro Minute, so die Tarife, die Bolt, Hopp und Voi am 12. Oktober 2026 veröffentlichten. Zehn Minuten kosten damit CHF 4.90 bis CHF 5.80. Günstiger fährst du mit PubliBike in Zürich und Biel: CHF 1.– plus 20 Rappen pro Minute laut Preisliste, Stand Oktober 2026. Dott verlangt je nach Ort CHF 1.– bis CHF 1.50 fürs Entsperren, Bird veröffentlicht keine Tarife, und bei allen Anbietern zeigt die App den Endpreis, bevor du entsperrst.',
   published: '2026-10-12',
-  updated: '2026-10-18',
+  updated: '2026-10-23',
   sections: [
     {
       heading: 'Was kostet es, ein E-Trottinett zu mieten?',
@@ -22,16 +22,16 @@ const guide: Guide = {
     {
       heading: 'E-Trottinett-Preise nach Anbieter und Stadt',
       blocks: [
-        'Bolt, Hopp, Voi und Zeus veröffentlichen ihre Tarife in den offenen Datenfeeds, aus denen auch die Karte liest. Am Morgen des 12. Oktober 2026 standen dort diese Preise. Die Basler Tarife von Lime und Dott stammen aus ihren eigenen Datenfeeds (gelesen am Abend desselben Tages), die übrigen Schweizer Tarife von Dott aus den offenen Daten vom 13. Oktober, die von Lime aus denen vom 15. Oktober, der Tarif von PubliBike aus seiner eigenen Preisliste. Am 15. Oktober zeigten die offenen Daten die übrigen Tarife unverändert:',
+        'Bolt, Hopp, Voi und Zeus veröffentlichen ihre Tarife in den offenen Datenfeeds, aus denen auch die Karte liest. Am Morgen des 12. Oktober 2026 standen dort diese Preise. Der Basler Tarif von Lime stammt aus seinem eigenen Datenfeed (gelesen am Abend desselben Tages), die übrigen Tarife von Lime aus den offenen Daten vom 15. Oktober, die von Dott aus seinen eigenen Datenfeeds vom 23. Oktober, der Tarif von PubliBike aus seiner eigenen Preisliste. Am 15. Oktober zeigten die offenen Daten die übrigen Tarife unverändert:',
         {
           table: {
-            caption: 'Veröffentlichte Tarife vom 12. Oktober 2026 (Dott ausserhalb Basels: 13. Oktober; Lime ausserhalb Basels: 15. Oktober): Entsperrgebühr und Preis pro Minute',
+            caption: 'Veröffentlichte Tarife vom 12. Oktober 2026 (Dott: 23. Oktober; Lime ausserhalb Basels: 15. Oktober): Entsperrgebühr und Preis pro Minute',
             head: ['Gebiet', 'Anbieter', 'Entsperren', 'Pro Minute'],
             rows: [
               ['Region Zürich', 'Voi', 'CHF 1.–', '42 Rappen (einzelne 39 Rappen)'],
               ['Region Zürich', 'Bolt', 'CHF 1.–', '42 Rappen (einzelne 48 Rappen)'],
               ['Region Zürich', 'Hopp', 'CHF 1.–', '40 Rappen (Kloten: 42 Rappen)'],
-              ['Region Zürich', 'Dott', '95 Rappen', '41 Rappen'],
+              ['Region Zürich', 'Dott', 'CHF 1.–', '41 Rappen'],
               ['Region Zürich', 'Lime', 'CHF 1.–', '40 bis 49 Rappen, je nach Tageszeit (Uster: 49 Rappen)'],
               ['Winterthur und Frauenfeld', 'Voi', 'CHF 1.–', '42 Rappen'],
               ['Bern', 'Voi', 'CHF 1.–', '42 Rappen'],
@@ -39,7 +39,7 @@ const guide: Guide = {
               ['Basel', 'Bolt', 'CHF 1.–', '45 Rappen'],
               ['Basel', 'Hopp', 'CHF 1.–', '45 Rappen'],
               ['Basel', 'Lime (eigener Datenfeed)', 'CHF 1.–', '46 Rappen'],
-              ['Basel', 'Dott (eigener Datenfeed)', '95 Rappen', '39 Rappen'],
+              ['Basel', 'Dott', 'CHF 1.–', '39 Rappen'],
               ['Basel', 'Bird', 'nicht veröffentlicht', 'in der App'],
               ['Biel/Bienne', 'Voi', 'CHF 1.–', '39 Rappen'],
               ['St. Gallen, Rorschach, Gossau, Flawil, Uzwil und Wil', 'Dott', 'CHF 1.20', '45 Rappen'],
@@ -52,7 +52,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Voi verlangt also in Basel und Biel 39 Rappen pro Minute, in Bern 42 Rappen, Bolt je nach Gebiet 42, 45 oder 48 Rappen, und fürs Entsperren verlangt Dott in Basel und Zürich 95 Rappen, in Romanshorn CHF 1.50. Selbst innerhalb eines Gebiets fahren einzelne Trottinette zu einem anderen Tarif, und bei Lime ändert er sich über den Tag: Am 15. Oktober um 6.30 Uhr kosteten alle Lime-Trottinette in Zürich 42 Rappen pro Minute, um 8.20 Uhr ein Drittel 49 und ein Viertel 40 Rappen. Massgebend ist darum der Preis in der App.',
+        'Voi verlangt also in Basel und Biel 39 Rappen pro Minute, in Bern 42 Rappen, Bolt je nach Gebiet 42, 45 oder 48 Rappen, und fürs Entsperren verlangt Dott in Basel und Zürich CHF 1.–, in Romanshorn CHF 1.50. Selbst innerhalb eines Gebiets fahren einzelne Trottinette zu einem anderen Tarif, und bei Lime ändert er sich über den Tag: Am 15. Oktober um 6.30 Uhr kosteten alle Lime-Trottinette in Zürich 42 Rappen pro Minute, um 8.20 Uhr ein Drittel 49 und ein Viertel 40 Rappen. Massgebend ist darum der Preis in der App.',
         'In Schaffhausen zeigte der Feed von Voi gar keine Entsperrgebühr; zehn Minuten kämen so auf CHF 3.90. Die Zeus-Trottinette, die die Karte bei Schaffhausen zeigt, stehen jenseits der Grenze in Singen (Deutschland) und werden in Euro abgerechnet.',
         'Der Standardtarif von PubliBike (B-Quick National) beträgt für die E-Scooter in Zürich und Biel/Bienne CHF 1.– plus 20 Rappen pro Minute, Stand Oktober 2026. Im Tessin kannst du sie mit diesem Tarif nicht ausleihen: Du brauchst das Abo B-Fit Local Tessin (CHF 69.– pro Jahr), dann kosten je 15 Minuten CHF 3.–.',
       ],
@@ -63,14 +63,13 @@ const guide: Guide = {
         'Minuten mal Minutenpreis, plus Entsperrgebühr: CHF 1.– + 10 × 42 Rappen = CHF 5.20 für zehn Minuten mit Voi in Bern. Die Tabelle rechnet in ganzen Minuten, ohne Zuschläge für Zonen oder andere Gebühren.',
         {
           table: {
-            caption: 'Was eine Fahrt zu den Tarifen vom 12. Oktober 2026 kostet (Dott ausserhalb Basels: 13. Oktober; Lime ausserhalb Basels: 15. Oktober; PubliBike: Preisliste, Oktober 2026)',
+            caption: 'Was eine Fahrt zu den Tarifen vom 12. Oktober 2026 kostet (Dott: 23. Oktober; Lime ausserhalb Basels: 15. Oktober; PubliBike: Preisliste, Oktober 2026)',
             head: ['Tarif (wo)', '5 Minuten', '10 Minuten', '20 Minuten'],
             rows: [
               ['PubliBike, CHF 1.– + 20 Rp. (Zürich, Biel)', 'CHF 2.–', 'CHF 3.–', 'CHF 5.–'],
-              ['Dott, 95 Rp. + 39 Rp. (Basel)', 'CHF 2.90', 'CHF 4.85', 'CHF 8.75'],
-              ['Voi, CHF 1.– + 39 Rp. (Basel, Biel)', 'CHF 2.95', 'CHF 4.90', 'CHF 8.80'],
+              ['Dott oder Voi, CHF 1.– + 39 Rp. (Basel; Voi auch in Biel)', 'CHF 2.95', 'CHF 4.90', 'CHF 8.80'],
               ['Hopp, CHF 1.– + 40 Rp. (Region Zürich)', 'CHF 3.–', 'CHF 5.–', 'CHF 9.–'],
-              ['Dott, 95 Rp. + 41 Rp. (Zürich)', 'CHF 3.–', 'CHF 5.05', 'CHF 9.15'],
+              ['Dott, CHF 1.– + 41 Rp. (Zürich)', 'CHF 3.05', 'CHF 5.10', 'CHF 9.20'],
               ['Voi oder Bolt, CHF 1.– + 42 Rp. (Zürich; Voi auch in Winterthur, Frauenfeld und Bern)', 'CHF 3.10', 'CHF 5.20', 'CHF 9.40'],
               ['Bolt oder Hopp, CHF 1.– + 45 Rp. (Basel)', 'CHF 3.25', 'CHF 5.50', 'CHF 10.–'],
               ['Lime, CHF 1.– + 46 Rp. (Basel)', 'CHF 3.30', 'CHF 5.60', 'CHF 10.20'],
