@@ -229,3 +229,11 @@
 "You’re there." = "Þú ert á staðnum.";
 "Route shown: ≈%1$lld min walk · %2$@" = "Leið sýnd: ≈%1$lld mín. gangur · %2$@";
 "No longer on the map. Someone may have taken it." = "Ekki lengur á kortinu. Kannski hefur einhver tekið hana.";
+
+/* The panel of a large window: the grabber that folds it, and its folded line */
+"Collapse panel" = "Fella spjaldið saman";
+"Expand panel" = "Opna spjaldið";
+"Collapsed" = "Fellt saman";
+"Expanded" = "Opið";
+"Expands the panel" = "Opnar spjaldið";
+"%lld min ago" = "fyrir %lld mín.";

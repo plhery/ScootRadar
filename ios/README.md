@@ -36,7 +36,14 @@ In a large window, such as an open iPhone Duo held sideways, the search bar, the
 notices and the dock's card stand in a panel down the leading side instead, as
 on the website on a computer, and the map centres what it shows on the part
 beside the panel. Filters then open in a popover from the panel's search bar,
-and Settings in a form at the side.
+and Settings in a form at the side. The providers stand in the panel's card as
+a list, one row each with its colour, its count and a check, under an "All
+providers" row, where the dock of a phone has a row of chips. Like the card of
+Maps, the panel's card folds down to one line under the search bar, "23 m ·
+Bird · 1 min · Live" or what the card says instead, with the grabber at its foot
+or a swipe on it; a tap on the line opens it again, and so does choosing a
+scooter or a parking bay on the map. The notices stay while it is folded, the
+map shows under it, and each window keeps it folded or open across launches.
 
 **Map.** Zoomed out, each city shows its total; closer, clusters; from street
 level, one dot per scooter in its provider's colour, at its exact place, larger

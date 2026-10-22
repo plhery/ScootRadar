@@ -229,3 +229,11 @@
 "You’re there." = "You’re there.";
 "Route shown: ≈%1$lld min walk · %2$@" = "Route shown: ≈%1$lld min walk · %2$@";
 "No longer on the map. Someone may have taken it." = "No longer on the map. Someone may have taken it.";
+
+/* The panel of a large window: the grabber that folds it, and its folded line */
+"Collapse panel" = "Collapse panel";
+"Expand panel" = "Expand panel";
+"Collapsed" = "Collapsed";
+"Expanded" = "Expanded";
+"Expands the panel" = "Expands the panel";
+"%lld min ago" = "%lld min ago";
