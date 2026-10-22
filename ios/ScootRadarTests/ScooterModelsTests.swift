@@ -1625,10 +1625,11 @@ extension ScooterModelsTests {
         // Of the catalogs' cities, Tignes pauses from 8 September until 22 June, Trondheim from
         // 2 December until 15 March, Porsgrunn and Skien from 15 December until the streets are
         // clear, Tromsø from 2 November until 1 May, Lillestrøm and Lørenskog from 1 December until
-        // 1 March, and Ottawa from 16 November until 30 April, each by its own clock.
+        // 1 March, Dalvík from 21 October and Leduc from 22 October until 1 May, and Ottawa from
+        // 16 November until 30 April, each by its own clock.
         XCTAssertEqual(ScooterCityCatalog.cities.filter { !$0.pauses.isEmpty }.map(\.id),
                        ["fr:Tignes", "no:Trondheim", "no:Porsgrunn", "no:Skien", "no:Tromsø", "no:Lillestrøm", "no:Lørenskog",
-                        "ca:on:Ottawa"])
+                        "is:Dalvík", "ca:ab:Leduc", "ca:on:Ottawa"])
         let tignes = GeoPoint(latitude: 45.4687, longitude: 6.9063)
         XCTAssertEqual(ScooterSeasonalPause.active(at: tignes, on: january), ScooterSeasonalPause.Active(city: "Tignes", back: .month(6)))
         XCTAssertNil(ScooterSeasonalPause.active(at: tignes, on: try at("2026-09-07T21:30:00Z")))
@@ -1639,6 +1640,16 @@ extension ScooterModelsTests {
         XCTAssertNil(ScooterSeasonalPause.active(at: ottawa, on: try at("2026-11-16T04:30:00Z")))
         XCTAssertNotNil(ScooterSeasonalPause.active(at: ottawa, on: try at("2026-11-16T05:30:00Z")))
         XCTAssertNil(ScooterSeasonalPause.active(at: ottawa, on: try at("2027-04-30T12:00:00Z")))
+        // Iceland keeps UTC all year; Leduc is six hours behind it in October.
+        let dalvik = GeoPoint(latitude: 65.9711, longitude: -18.5304)
+        XCTAssertEqual(ScooterSeasonalPause.active(at: dalvik, on: january), ScooterSeasonalPause.Active(city: "Dalvík", back: .month(5)))
+        XCTAssertNil(ScooterSeasonalPause.active(at: dalvik, on: try at("2026-10-20T23:30:00Z")))
+        XCTAssertNotNil(ScooterSeasonalPause.active(at: dalvik, on: try at("2026-10-21T00:30:00Z")))
+        let leduc = GeoPoint(latitude: 53.2645, longitude: -113.5593)
+        XCTAssertEqual(ScooterSeasonalPause.active(at: leduc, on: january), ScooterSeasonalPause.Active(city: "Leduc, AB", back: .month(5)))
+        XCTAssertNil(ScooterSeasonalPause.active(at: leduc, on: try at("2026-10-22T05:30:00Z")))
+        XCTAssertNotNil(ScooterSeasonalPause.active(at: leduc, on: try at("2026-10-22T06:30:00Z")))
+        XCTAssertNil(ScooterSeasonalPause.active(at: leduc, on: try at("2027-05-01T18:00:00Z")))
 
         // After a night ban, before providers down, with a calendar, calm.
         XCTAssertEqual(
