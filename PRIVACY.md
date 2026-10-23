@@ -1,6 +1,6 @@
 # Privacy
 
-Last updated: 22 October 2026
+Last updated: 23 October 2026
 
 ScootRadar has no accounts or advertising. It does not intentionally retain precise user locations or address
 searches.
@@ -32,9 +32,10 @@ searches.
 - OpenFreeMap receives normal map tile requests from the user's device, with the website origin as the referrer (no page path or query string). The tiles hold OpenStreetMap data and are drawn on the device.
 - Language, filters, appearance, map style, the ride length chosen for price
   estimates and, in the iOS app, the ride passes entered are stored locally, as is the fact that the device has found its
-  location before (a yes or no, never the position). Precise map origins are not
-  persisted, and the places chosen in the search are kept in memory only, until
-  the app is closed.
+  location before (a yes or no, never the position). For its rating prompt the
+  iOS app also keeps the number of days it was used, the time "Open in" was last
+  tapped and when it last asked. Precise map origins are not persisted, and the
+  places chosen in the search are kept in memory only, until the app is closed.
 - Cloudflare hosts and protects the service. Persisted Worker invocation logs
   are disabled so full coordinate-bearing request URLs are not retained in the
   application's log stream.

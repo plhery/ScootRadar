@@ -22,7 +22,7 @@ export default function PrivacyPage() {
       <article className="legal-content">
         <Link className="legal-back" href="/map">← Back to ScootRadar</Link>
         <h1>Privacy</h1>
-        <p>Last updated: 22 October 2026</p>
+        <p>Last updated: 23 October 2026</p>
 
         <h2>Overview</h2>
         <p>
@@ -121,10 +121,12 @@ export default function PrivacyPage() {
           Appearance, map style, language, filters, the ride length you choose for price
           estimates and, in the iOS app, the ride passes you enter are stored locally on your
           device, as is the fact that this device has found
-          your location before (a yes or no, never the position). Precise map origins are not
-          persisted, and the places you choose in the search are kept in memory only, until you
-          close the app. A service worker caches the application shell and static
-          assets for faster and offline launches. You can remove this data through your browser
+          your location before (a yes or no, never the position). For its rating prompt the iOS
+          app also keeps the number of days you used it, the time you last tapped
+          &ldquo;Open in&rdquo; and when it last asked. Precise map origins are not persisted, and
+          the places you choose in the search are kept in memory only, until you close the app. A
+          service worker caches the application shell and static assets for faster and offline
+          launches. You can remove this data through your browser
           or by deleting the app.
         </p>
 
