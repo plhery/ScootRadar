@@ -290,9 +290,11 @@ struct ScooterMapScreen: View {
     private func panelChrome(in proxy: GeometryProxy, beside fold: CGRect?) -> some View {
         ZStack(alignment: .top) {
             searchIsland(in: proxy)
-                // Off the panel's search bar, with the map beside the panel in
-                // view, where what the filters change shows as they change.
-                .popover(isPresented: $filtersPresented, arrowEdge: .trailing) {
+                // Under the panel's search bar, with the map beside the panel
+                // in view, where what the filters change shows as they change.
+                // The system places it there; a trailing arrow edge squeezed
+                // it into the window's leading margin, its controls cut off.
+                .popover(isPresented: $filtersPresented) {
                     ScooterFilterSheet(model: model)
                         .frame(minWidth: 360, idealWidth: 400, minHeight: 440, idealHeight: 620)
                 }
