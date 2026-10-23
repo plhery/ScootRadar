@@ -780,7 +780,11 @@ no winter clause.
   `system_information` calls each system "provider null" and its town, its
   operator "Bird Rides, Inc.", which has owned Spin since 2023, and gives
   Bird's apps and Bird's licence. Its `system_pricing_plans` is empty and its
-  scooters carry no link, so the map shows neither. Each scooter's
+  scooters carry no link, so the map shows neither. Since 23 October 2026,
+  by the user's choice, a phone's "Open in Spin" opens `https://www.spin.app/`,
+  whose page links both stores; no Spin host is claimed by its app, so the
+  iPhone app opens Spin's App Store page (see the note on links in
+  [the French audit](french-scooter-feeds.md)). Each scooter's
   `last_reported` is its own, mostly under five minutes old. Some feeds list
   e-bikes too, which are not shown.
 - **Bird and Spin** give `bird://charger-onboarding`, the sign-up for chargers,

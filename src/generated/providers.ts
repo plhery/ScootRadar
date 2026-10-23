@@ -4,7 +4,7 @@ export interface ProviderConfig {
   name: string;
   color: string;
   initial: string;
-  /** The operator's app, for scooters whose feed gives no link: a universal link the app claims, whose page sends a phone without the app to its store. */
+  /** The operator's app, for scooters whose feed gives no link: a universal link the app claims, whose page sends a phone without the app to its store. Spin's site is the one link no app claims. */
   app?: { link: string; appStoreId: number };
 }
 
@@ -26,7 +26,7 @@ const PROVIDER_DEFINITIONS = {
   naolib: { name: "Naolib Micromob’", color: "#60a400", initial: "NM" },
   elerent: { name: "Elerent", color: "#6e7d18", initial: "E" },
   zelectra: { name: "3electra", color: "#0f6f86", initial: "3e" },
-  spin: { name: "Spin", color: "#ff5436", initial: "Sp" },
+  spin: { name: "Spin", color: "#ff5436", initial: "Sp", app: { link: "https://www.spin.app/", appStoreId: 1241808993 } },
   veo: { name: "Veo", color: "#059a8e", initial: "Ve" },
   lyft: { name: "Lyft", color: "#ff00bf", initial: "Ly" },
   bolt_hopp: { name: "Hopp", color: "#2a9c64", initial: "H" },

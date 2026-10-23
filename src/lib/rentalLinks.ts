@@ -82,6 +82,7 @@ const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
     httpsHosts: ['zelectra.app.link', '3electra.com.ua'],
   },
   // Spin's feeds give no link of their own, and their app's, as Bird's, is the charger sign-up.
+  // Its "Open in" button is its site, www.spin.app, which no app claims.
   spin: {
     schemes: [],
     httpsHosts: ['spin.app', 'spin.pm'],
@@ -226,7 +227,8 @@ export function rentalLinkForPlatform(
 /**
  * Where the feed links no scooter, as Lime's and Bird's never do, a phone still opens the
  * operator's app: on its universal link, whose page sends a phone without the app to the app's
- * store. A computer has no app to open.
+ * store. Spin's app claims no link, so its site opens, which links both stores. A computer has no
+ * app to open.
  */
 export function operatorAppLink(provider: string, platform: RentalPlatform): string | null {
   return platform === 'web' ? null : PROVIDERS[provider]?.app?.link ?? null;

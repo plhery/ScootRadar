@@ -100,7 +100,7 @@ struct Scooter: Identifiable, Hashable, Sendable {
         return nil
     }
 
-    /// The operator's app, where the feed links no scooter: Lime's, Bird's and PubliBike's never do.
+    /// The operator's app, where the feed links no scooter: Lime's, Bird's, PubliBike's and Spin's never do.
     var operatorApp: ScooterProvider.OperatorApp? {
         rentalURLs.isEmpty ? providerInfo?.app : nil
     }

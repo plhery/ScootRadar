@@ -90,7 +90,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     }
 
     /// The operator's app, for scooters whose feed gives no link: a universal link the app claims
-    /// and its App Store page.
+    /// and its App Store page. Spin's site is the one link no app claims, so its App Store page opens.
     struct OperatorApp: Equatable, Sendable {
         let link: URL
         let appStore: URL
@@ -101,6 +101,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .bird: OperatorApp(link: URL(string: "https://ride.bird.co/")!, appStore: URL(string: "https://apps.apple.com/app/id1260842311")!)
         case .lime: OperatorApp(link: URL(string: "https://lime.bike/")!, appStore: URL(string: "https://apps.apple.com/app/id1199780189")!)
         case .publibike: OperatorApp(link: URL(string: "https://app.publibike.ch/")!, appStore: URL(string: "https://apps.apple.com/app/id6739938966")!)
+        case .spin: OperatorApp(link: URL(string: "https://www.spin.app/")!, appStore: URL(string: "https://apps.apple.com/app/id1241808993")!)
         default: nil
         }
     }

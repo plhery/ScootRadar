@@ -44,7 +44,9 @@ function validateCatalog() {
       throw new Error(`Provider ${provider.key} needs a system ID matcher`);
     }
     // The operator's app, for scooters whose feed gives no link: a universal link the app claims,
-    // whose page sends a phone without the app to its store, and the app's App Store id.
+    // whose page sends a phone without the app to its store, and the app's App Store id. Spin's is
+    // the exception: no Spin host is claimed, so its link is its site, whose page links both stores,
+    // and the iPhone opens its App Store page (the user's choice, 23 October 2026).
     if (provider.app !== undefined && !(
       /^https:\/\/[a-z0-9.-]+\/$/.test(provider.app.link) && Number.isInteger(provider.app.appStoreId) && provider.app.appStoreId > 0
     )) {
@@ -73,7 +75,7 @@ export interface ProviderConfig {
   name: string;
   color: string;
   initial: string;
-  /** The operator's app, for scooters whose feed gives no link: a universal link the app claims, whose page sends a phone without the app to its store. */
+  /** The operator's app, for scooters whose feed gives no link: a universal link the app claims, whose page sends a phone without the app to its store. Spin's site is the one link no app claims. */
   app?: { link: string; appStoreId: number };
 }
 
@@ -158,7 +160,7 @@ ${initials}
     }
 
     /// The operator's app, for scooters whose feed gives no link: a universal link the app claims
-    /// and its App Store page.
+    /// and its App Store page. Spin's site is the one link no app claims, so its App Store page opens.
     struct OperatorApp: Equatable, Sendable {
         let link: URL
         let appStore: URL

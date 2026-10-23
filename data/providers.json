@@ -136,7 +136,8 @@
     "name": "Spin",
     "color": "#ff5436",
     "initial": "Sp",
-    "systemIds": { "prefixes": ["spin"] }
+    "systemIds": { "prefixes": ["spin"] },
+    "app": { "link": "https://www.spin.app/", "appStoreId": 1241808993 }
   },
   {
     "key": "veo",
