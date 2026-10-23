@@ -1538,9 +1538,9 @@
           "until": "05:00"
         }
       ],
-      "source": "https://www.arendal.kommune.no/tjenester/vei-parkering-og-havn/parkering/elsparkesykler/",
-      "rule": "Begrensninger for bruk",
-      "note": "The rule (FOR-2025-02-27-363 § 6 c) says 00:00–05:00, the city page 23:00–06:00 and Voi, the only operator, 23:00–05:00. The hours two of the three agree on are kept.",
+      "source": "https://api.entur.io/mobility/v2/gbfs/v3/voiarendal/gbfs",
+      "rule": "Voi's Arendal feed, 16 to 23 October 2026",
+      "note": "The hours Voi, the only operator, enforces: its feed lists no scooters from 23:00 (23:20 on two nights) to 05:00, every night from 16 to 23 October 2026. The regulation, FOR-2025-02-27-363 § 6 c (2) (https://lovdata.no/forskrift/2025-02-27-363), bans renting from 24:00 to 05:00 every day and lets the kommunedirektør tighten that. The city page (https://www.arendal.kommune.no/tjenester/vei-parkering-og-havn/parkering/elsparkesykler/, Begrensninger for bruk, changed 7 July 2026) says renting isn't possible from 23:00 to 06:00.",
       "boundary": {
         "source": "kartverket",
         "id": "4203"

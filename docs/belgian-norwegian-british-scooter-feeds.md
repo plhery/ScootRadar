@@ -272,7 +272,7 @@ stays open at night.
 | Sandefjord | Every night, 01:00–05:00 | [FOR-2022-06-22-1166](https://lovdata.no/dokument/LF/forskrift/2022-06-22-1166) § 7 e |
 | Lillestrøm | Friday and Saturday, 00:00–05:00 | [FOR-2022-06-15-1545](https://lovdata.no/dokument/LF/forskrift/2022-06-15-1545) § 7 e |
 | Rælingen | Friday and Saturday, 23:00–05:00 | [FOR-2022-12-07-2621](https://lovdata.no/dokument/LF/forskrift/2022-12-07-2621) § 7 e |
-| Arendal | Every night, 23:00–05:00 | [City page](https://www.arendal.kommune.no/tjenester/vei-parkering-og-havn/parkering/elsparkesykler/) |
+| Arendal | Every night, 23:00–05:00 | [Voi's feed](https://api.entur.io/mobility/v2/gbfs/v3/voiarendal/gbfs), 16–23 Oct 2026 |
 | Porsgrunn | Every night, 23:00–05:00 | [Announcement 2026–27](https://skien.kommune.no/media/mrcb2f5v/2-kunngjoeringsdokument.pdf), "Tidspunkt for utleie" |
 | Bournemouth, Christchurch, Poole | Every night, 22:00–05:00 | [Beryl](https://help-bikes.beryl.cc/en/articles/16098480-when-are-beryl-e-scooters-available-to-hire) |
 | Brighton and Hove | Every night, 00:00–05:00 | [Council](https://www.brighton-hove.gov.uk/travel-and-road-safety/travel-transport-and-road-safety/beryl-e-scooters-trial) |
@@ -280,8 +280,13 @@ stays open at night.
 - A night is named after its evening: Friday's runs into Saturday morning.
 - **Trondheim's** rule bans every night, but lets the city trial weekday
   nights, and Voi and Ryde open them. Only Friday and Saturday are sure.
-- **Arendal's** rule says 00:00–05:00, its city page 23:00–06:00 and Voi, the
-  only operator, 23:00–05:00. The map keeps the hours two of them agree on.
+- **Arendal's** hours are those Voi, the only operator, enforces: its feed
+  listed no scooters from 23:00 (23:20 on two nights) to 05:00 every night
+  from 16 to 23 October 2026. The rule,
+  [FOR-2025-02-27-363](https://lovdata.no/forskrift/2025-02-27-363) § 6 c (2),
+  bans renting from 24:00 to 05:00 and lets the kommunedirektør tighten that;
+  the [city page](https://www.arendal.kommune.no/tjenester/vei-parkering-og-havn/parkering/elsparkesykler/),
+  changed 7 July 2026, says 23:00 to 06:00.
 - Stavanger, Tromsø and Tønsberg also close on the eve of public holidays,
   which the map leaves out.
 - **Rælingen** has no town outline, so the map counts its scooters, from Voi's

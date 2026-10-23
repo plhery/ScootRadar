@@ -457,7 +457,9 @@ NLOD, Beryl's licence and Pony's dataset. See the
 systems, the gaps and the recheck command.
 
 Night bans on renting, in `data/rental-curfews.json`, come from each town's
-rules: Lovdata for Norway, the council or the operator for Britain, the
+rules: Lovdata for Norway, except Arendal, whose regulation and city page
+disagree, where the hours are those Voi's feed keeps; the council or the
+operator for Britain, the
 municipal regulation for Matosinhos in Portugal, the Kyiv City Military
 Administration's curfew order for Kyiv, and each American city's code,
 permit rules or program page. Their areas are municipal
