@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter hire in the UK: where you can rent one, who runs it and what it costs',
   lede: 'E-scooter hire in the UK is legal only in 21 government trial areas, all in England, and the trials are due to run until May 2028. Voi, Beryl, Lime, Dott and Bolt run the schemes. You need a full or provisional driving licence, and every operator we checked rents only to riders aged 18 or over. Pay as you go, unlocking costs £0 to £1 and riding 20p to 29p a minute, so 15 minutes cost £3.75 to £4.75 at the rates published on 12 October 2026. In London, Lime and Voi hire out e-scooters in 11 boroughs, and every ride ends in a marked bay.',
   published: '2026-10-12',
-  updated: '2026-10-18',
+  updated: '2026-10-23',
   sections: [
     {
       heading: 'E-scooter hire in the UK: the 21 trial areas and who runs them',
@@ -171,7 +171,7 @@ const guide: Guide = {
     },
     {
       question: 'Will the app accept my foreign driving licence?',
-      answer: 'Legally, a full EU or EEA licence works, and so does another country’s full car, moped or motorcycle licence if you entered the UK in the last 12 months. Each app decides what it accepts: Beryl takes “supported” international licences in Leeds, Cornwall and Plymouth but asks for a UK licence in Norwich, Dott non-EU ones within those 12 months, and Transport for West Midlands asks Lime riders there for a valid UK licence. Upload yours before you travel.',
+      answer: 'Legally, a full EU or EEA licence works, and so does another country’s full car, moped or motorcycle licence if you entered the UK in the last 12 months. Each app decides what it accepts: Beryl’s Cornwall and Plymouth pages say “supported international licences may also be accepted”, but Beryl’s rider requirements and Leeds City Council ask for a UK licence, as Beryl does in Norwich; Dott takes non-EU ones within those 12 months, and Transport for West Midlands asks Lime riders there for a valid UK licence. Upload yours before you travel.',
     },
     {
       question: 'Are hire e-scooters insured?',
@@ -204,6 +204,7 @@ const guide: Guide = {
     { title: 'Beryl Help Centre: Who can hire a Beryl e-scooter', url: 'https://help-bikes.beryl.cc/en/articles/11711908-who-can-hire-a-beryl-e-scooter' },
     { title: 'Beryl Help Centre: Riding a Beryl e-scooter', url: 'https://help-bikes.beryl.cc/en/articles/11706501-riding-a-beryl-e-scooter' },
     { title: 'Beryl: E-scooters in Cornwall', url: 'https://beryl.cc/e-scooters-cornwall' },
+    { title: 'Leeds City Council: LNER Beryl Bikes', url: 'https://www.leeds.gov.uk/parking-roads-and-travel/connecting-leeds-and-transforming-travel/cycling/lner-beryl-bikes' },
     { title: 'Cornwall Council: Beryl bikes and scooters in Cornwall', url: 'https://www.cornwall.gov.uk/transport-parking-and-streets/sustainable-transport/active-travel-walking-and-cycling/beryl-bikes-and-scooters-in-cornwall/' },
     { title: 'Norfolk County Council: Extension of Norwich e-scooter trial (March 2026)', url: 'https://norfolkcc.cmis.uk.com/norfolkcc/DelegatedDecisions/tabid/67/ctl/ViewCMIS_DecisionDetails/mid/391/Id/2006/Default.aspx' },
   ],
