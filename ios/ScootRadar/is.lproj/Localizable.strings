@@ -193,6 +193,8 @@
 "Map & data credits" = "Heimildir korts og gagna";
 "Read the privacy notice" = "Lesa persónuverndarstefnuna";
 "Source code on GitHub" = "Frumkóði á GitHub";
+"Send feedback" = "Senda ábendingu";
+"Version %@" = "Útgáfa %@";
 "Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter." = "Framboðið uppfærist sjálfkrafa. Rafskúta er ekki tekin frá þótt þú opnir app fyrirtækisins.";
 
 /* Settings › Language. "Automatic" has its own key here: Italian writes it in the feminine of "lingua", Automatica. */

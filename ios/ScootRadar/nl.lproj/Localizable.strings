@@ -193,6 +193,8 @@
 "Map & data credits" = "Kaart- en databronnen";
 "Read the privacy notice" = "Privacyverklaring lezen";
 "Source code on GitHub" = "Broncode op GitHub";
+"Send feedback" = "Feedback sturen";
+"Version %@" = "Versie %@";
 "Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter." = "De beschikbaarheid wordt automatisch bijgewerkt. Een app van een aanbieder openen reserveert geen deelstep.";
 
 /* Settings › Language. "Automatic" has its own key here: Italian writes it in the feminine of "lingua", Automatica. */

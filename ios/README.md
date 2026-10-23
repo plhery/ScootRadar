@@ -164,8 +164,9 @@ what it gives: the appearance (Automatic, Light, Dark; Automatic follows the
 iPhone), the map style (Standard, Quiet, Satellite) and the language. Then the
 passes per provider (free unlock, free minutes, optional expiry date), listed
 for the providers that operate where the map is or that already have a pass;
-and About: map and data credits, Privacy with the usage switch and the privacy
-notice, and the source code on GitHub.
+and About: **Send feedback**, a mail to hello@scootradar.com whose subject names
+the version, shown under it; map and data credits, Privacy with the usage switch
+and the privacy notice, and the source code on GitHub.
 
 The app is translated into English, German, French, Italian, Dutch, Norwegian,
 Portuguese, Spanish and Icelandic, and starts in the first of the iPhone's

@@ -2190,7 +2190,8 @@ struct ScooterFilterSheet: View {
 }
 
 /// Settings: how the app and its map look, the language, the rider's passes,
-/// and About with the credits, the privacy choice and the source code.
+/// and About with a mail for feedback and the version, the credits, the privacy
+/// choice and the source code.
 struct ScooterSettingsSheet: View {
     @Bindable var model: ScooterMapModel
     @Environment(\.dismiss) private var dismiss
@@ -2272,6 +2273,15 @@ struct ScooterSettingsSheet: View {
                 }
 
                 Section {
+                    // A way to write rather than rate, open to every rider.
+                    Link(destination: ScooterLinks.feedback) {
+                        ExternalLinkRow(
+                            title: String(localized: "Send feedback"),
+                            detail: String(format: String(localized: "Version %@"), ScooterLinks.appVersion),
+                            systemImage: "envelope"
+                        )
+                    }
+
                     NavigationLink {
                         ScooterCreditsList()
                     } label: {
@@ -2436,6 +2446,16 @@ struct ScooterLanguageSettings: View {
 enum ScooterLinks {
     static let privacyNotice = URL(string: "https://scootradar.com/privacy")!
     static let sourceCode = URL(string: "https://github.com/plhery/ScootRadar")!
+    /// The version on sale, such as "1.0.1".
+    static let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    /// A mail to ScootRadar whose subject names the version: "ScootRadar 1.0.1 feedback", with an empty body.
+    static var feedback: URL {
+        var mail = URLComponents()
+        mail.scheme = "mailto"
+        mail.path = "hello@scootradar.com"
+        mail.queryItems = [URLQueryItem(name: "subject", value: "ScootRadar \(appVersion) feedback")]
+        return mail.url!
+    }
 }
 
 /// Settings › About › Privacy: the one choice about usage data, and the notice.
@@ -2535,20 +2555,20 @@ struct ScooterCreditsList: View {
 /// A row that leaves the app: its text, and an arrow that says so.
 private struct ExternalLinkRow: View {
     let title: String
+    /// A smaller line under the title.
+    var detail: String?
     var systemImage: String?
 
     var body: some View {
         HStack(spacing: 8) {
             if let systemImage {
                 Label {
-                    Text(title)
-                        .foregroundStyle(Color.primary)
+                    text
                 } icon: {
                     Image(systemName: systemImage)
                 }
             } else {
-                Text(title)
-                    .foregroundStyle(Color.primary)
+                text
             }
 
             Spacer(minLength: 8)
@@ -2559,6 +2579,18 @@ private struct ExternalLinkRow: View {
                 .accessibilityHidden(true)
         }
         .multilineTextAlignment(.leading)
+    }
+
+    private var text: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title)
+                .foregroundStyle(Color.primary)
+            if let detail {
+                Text(detail)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+        }
     }
 }
 

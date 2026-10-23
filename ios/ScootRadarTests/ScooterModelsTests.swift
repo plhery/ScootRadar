@@ -1768,3 +1768,27 @@ extension ScooterModelsTests {
         }
     }
 }
+
+// Settings › About › Send feedback.
+extension ScooterModelsTests {
+    func testTheFeedbackMailNamesTheVersionInItsSubject() {
+        XCTAssertFalse(ScooterLinks.appVersion.isEmpty)
+        XCTAssertEqual(
+            ScooterLinks.feedback.absoluteString,
+            "mailto:hello@scootradar.com?subject=ScootRadar%20\(ScooterLinks.appVersion)%20feedback"
+        )
+    }
+
+    func testEveryLanguageSaysSendFeedbackAndNamesTheVersion() throws {
+        for language in ["en", "de", "fr", "it", "nl", "nb", "pt", "es", "is"] {
+            let strings = try XCTUnwrap(
+                Bundle.main.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:))
+            )
+            // A missing translation would read as the English key.
+            let feedback = strings.localizedString(forKey: "Send feedback", value: nil, table: nil)
+            XCTAssertEqual(feedback == "Send feedback", language == "en", "\(language): \(feedback)")
+            let version = strings.localizedString(forKey: "Version %@", value: nil, table: nil)
+            XCTAssertEqual(version.components(separatedBy: "%@").count, 2, "\(language): \(version)")
+        }
+    }
+}

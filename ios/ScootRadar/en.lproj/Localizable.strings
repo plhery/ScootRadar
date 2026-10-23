@@ -193,6 +193,8 @@
 "Map & data credits" = "Map & data credits";
 "Read the privacy notice" = "Read the privacy notice";
 "Source code on GitHub" = "Source code on GitHub";
+"Send feedback" = "Send feedback";
+"Version %@" = "Version %@";
 "Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter." = "Availability refreshes automatically. Opening a provider app doesn’t reserve a scooter.";
 
 /* Settings › Language. "Automatic" has its own key here: Italian writes it in the feminine of "lingua", Automatica. */
