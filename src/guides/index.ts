@@ -141,6 +141,7 @@ import gainesvilleEn from './en/e-scooters-gainesville';
 import zurichAirportEn from './en/e-scooters-zurich-airport';
 import santaMonicaEn from './en/e-scooters-santa-monica';
 import leedsEn from './en/e-scooters-leeds';
+import christchurchEn from './en/e-scooters-christchurch';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -282,4 +283,5 @@ export const GUIDES: readonly Guide[] = [
   zurichAirportEn,
   santaMonicaEn,
   leedsEn,
+  christchurchEn,
 ];
