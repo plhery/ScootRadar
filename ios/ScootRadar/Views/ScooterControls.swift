@@ -2589,7 +2589,8 @@ private struct ExternalLinkRow: View {
             if let detail {
                 Text(detail)
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    // Grey, not `.secondary`: inside a `Link` that takes the accent tint.
+                    .foregroundStyle(Color(uiColor: .secondaryLabel))
             }
         }
     }
