@@ -1,9 +1,10 @@
-import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 import {
-  DEFAULT_ENDPOINT, INDEXNOW_KEY, MAX_URLS_PER_REQUEST, decodeXml, pagesToSubmit, parseSitemap, requestBodies, run, submit,
+  DEFAULT_ENDPOINT, INDEXNOW_KEY, MAX_URLS_PER_REQUEST, decodeXml, pagesToSubmit, parseSitemap, readSubmitted, requestBodies, run, submit,
 } from './indexnow.mjs';
 
 const origin = 'https://scootradar.example.test';
@@ -132,36 +133,82 @@ describe('submitting', () => {
 describe('the command', () => {
   const directory = mkdtempSync(path.join(tmpdir(), 'indexnow-'));
   afterAll(() => rmSync(directory, { recursive: true, force: true }));
-  const saved = (/** @type {string} */ name, /** @type {string} */ text) => {
-    const file = path.join(directory, name);
-    writeFileSync(file, text);
-    return file;
+  const ref = 'refs/indexnow/submitted';
+  // A clone whose origin is a bare repository, as CI's checkout of the site's.
+  let clones = 0;
+  const repository = () => {
+    const root = path.join(directory, `repository-${clones += 1}`);
+    const clone = path.join(root, 'clone');
+    mkdirSync(clone, { recursive: true });
+    const git = (/** @type {string[]} */ ...args) => execFileSync('git', args, { cwd: clone, encoding: 'utf8' }).trim();
+    execFileSync('git', ['init', '--quiet', '--bare', path.join(root, 'origin.git')]);
+    git('init', '--quiet');
+    git('config', 'user.name', 'CI');
+    git('config', 'user.email', 'ci@example.com');
+    git('remote', 'add', 'origin', path.join(root, 'origin.git'));
+    const atOrigin = () => git('ls-remote', 'origin', ref).split('\t')[0] || null;
+    return { clone, git, atOrigin };
   };
   const live = sitemap([page(`${origin}/`), page(`${origin}/guides/a`, '2026-10-17'), page(`${origin}/guides/new`, '2026-10-17')]);
-  const command = async (/** @type {string[]} */ args, /** @type {string | null} */ xml = live, status = 200) => {
+  const command = async (/** @type {string[]} */ args, /** @type {string | null} */ xml = live, status = 200, cwd = directory) => {
     /** @type {string[]} */
     const lines = [];
     const io = engine(xml, status);
-    const code = await run(args, { fetchImpl: io.fetchImpl, log: line => lines.push(line) });
+    const code = await run(args, { fetchImpl: io.fetchImpl, log: line => lines.push(line), cwd });
     return { code, lines, ...io };
   };
 
-  it('submits what changed since the sitemap saved before the deploy', async () => {
-    const before = saved('before.xml', sitemap([page(`${origin}/`), page(`${origin}/guides/a`, '2026-10-01')]));
-    const { code, lines, gets, posts } = await command([`--before=${before}`, `${origin}/`]);
+  it('starts the ref at the live sitemap, submitting nothing, where origin has none', async () => {
+    const { clone, atOrigin } = repository();
+    const dry = await command([`--since=${ref}`, '--dry-run', origin], live, 200, clone);
+    expect([dry.code, dry.posts.length, atOrigin()]).toEqual([0, 0, null]);
+    const { code, lines, posts } = await command([`--since=${ref}`, origin], live, 200, clone);
+    expect(code).toBe(0);
+    expect(posts).toHaveLength(0);
+    expect(lines.join('\n')).toMatch(/nothing is submitted/);
+    expect(readSubmitted(ref, clone)?.xml).toBe(live);
+  });
+
+  it('submits what changed since the sitemap IndexNow last took, then moves the ref to the live one', async () => {
+    const { clone, git, atOrigin } = repository();
+    const earlier = sitemap([page(`${origin}/`), page(`${origin}/guides/a`, '2026-10-01'), page(`${origin}/guides/gone`, '2026-10-01')]);
+    await command([`--since=${ref}`, origin], earlier, 200, clone);
+    const start = atOrigin();
+    const { code, lines, gets, posts } = await command([`--since=${ref}`, `${origin}/`], live, 200, clone);
     expect(code).toBe(0);
     expect(gets).toEqual([`${origin}/sitemap.xml`]);
     expect(posts.map(post => post.body.urlList)).toEqual([[`${origin}/guides/a`, `${origin}/guides/new`]]);
-    expect(lines.at(-1)).toBe(`Submitted 2 of 2 pages to ${DEFAULT_ENDPOINT}.`);
+    expect(lines).toContain(`Submitted 2 of 2 pages to ${DEFAULT_ENDPOINT}.`);
+    expect(readSubmitted(ref, clone)?.xml).toBe(live);
+    expect(git('rev-parse', `${atOrigin()}^`)).toBe(start);
   });
 
-  it('submits nothing, and says so, without a saved sitemap', async () => {
-    for (const before of [path.join(directory, 'missing.xml'), saved('empty.xml', ''), saved('error.html', '<html>Bad gateway</html>')]) {
-      const { code, lines, gets, posts } = await command([`--before=${before}`, origin]);
-      expect(code).toBe(0);
-      expect(gets.length + posts.length).toBe(0);
-      expect(lines.join('\n')).toMatch(/nothing is submitted/);
-    }
+  it('keeps the ref where it is until IndexNow takes the pages, so a later run sends them', async () => {
+    const { clone, atOrigin } = repository();
+    await command([`--since=${ref}`, origin], sitemap([page(`${origin}/`)]), 200, clone);
+    const start = atOrigin();
+    // A refusal, then a deploy that changed nothing: the pages wait for a run IndexNow answers.
+    expect((await command([`--since=${ref}`, origin], live, 429, clone)).code).toBe(1);
+    expect(atOrigin()).toBe(start);
+    const { code, posts } = await command([`--since=${ref}`, origin], live, 200, clone);
+    expect(code).toBe(0);
+    expect(posts.map(post => post.body.urlList)).toEqual([[`${origin}/guides/a`, `${origin}/guides/new`]]);
+    expect(atOrigin()).not.toBe(start);
+    // Then nothing is new, and the ref stays.
+    const moved = atOrigin();
+    const again = await command([`--since=${ref}`, origin], live, 200, clone);
+    expect([again.code, again.posts.length, again.lines.at(-1), atOrigin()]).toEqual([0, 0, 'Nothing to submit.', moved]);
+  });
+
+  it('lists the pages without sending them or moving the ref on a dry run', async () => {
+    const { clone, atOrigin } = repository();
+    await command([`--since=${ref}`, origin], sitemap([page(`${origin}/`)]), 200, clone);
+    const start = atOrigin();
+    const { code, lines, posts } = await command([`--since=${ref}`, '--dry-run', origin], live, 200, clone);
+    expect(code).toBe(0);
+    expect(posts).toHaveLength(0);
+    expect(lines.at(-1)).toMatch(/^Dry run: 2 pages would go to .* in 1 requests\. Nothing was sent\.$/);
+    expect(atOrigin()).toBe(start);
   });
 
   it('submits every page with --all, to the engine asked', async () => {
@@ -171,17 +218,11 @@ describe('the command', () => {
     expect(posts[0].body.urlList).toHaveLength(3);
   });
 
-  it('lists the pages without sending them on a dry run', async () => {
-    const { code, lines, posts } = await command(['--all', '--dry-run', origin]);
-    expect(code).toBe(0);
-    expect(posts).toHaveLength(0);
-    expect(lines.at(-1)).toMatch(/^Dry run: 3 pages would go to .* in 1 requests\. Nothing was sent\.$/);
-  });
-
-  it('exits with 1 when IndexNow refuses or the sitemap cannot be read, and 2 when misused', async () => {
+  it('exits with 1 when IndexNow refuses or the sitemap cannot be read or lists nothing, and 2 when misused', async () => {
     expect((await command(['--all', origin], live, 429)).code).toBe(1);
     expect((await command(['--all', origin], null)).code).toBe(1);
-    for (const args of [[origin], ['--all', `--before=${path.join(directory, 'x')}`, origin], ['--all'],
+    expect((await command(['--all', origin], '<html>Bad gateway</html>')).code).toBe(1);
+    for (const args of [[origin], ['--all', `--since=${ref}`, origin], [`--since=indexnow`, origin], ['--all'],
       ['--all', 'scootradar.example.test'], ['--all', '--endpoint=nowhere', origin], ['--all', '--everything', origin]]) {
       expect((await command(args)).code, args.join(' ')).toBe(2);
     }

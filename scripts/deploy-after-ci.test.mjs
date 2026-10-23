@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -59,10 +59,14 @@ describe('the branches CI moves', () => {
     };
     const first = commit('README.md', 'First');
     git('push', '--quiet', 'origin', 'HEAD:production', 'HEAD:production-cache');
+    const output = path.join(root, 'output');
+    // Runs the job's script on a commit and returns what it gave the job's next steps.
     const deploy = (/** @type {string} */ at) => {
       git('fetch', '--quiet', 'origin');
       git('checkout', '--quiet', '--detach', at);
-      return execFileSync('node', [script], { cwd: clone, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+      writeFileSync(output, '');
+      execFileSync('node', [script], { cwd: clone, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, GITHUB_OUTPUT: output } });
+      return readFileSync(output, 'utf8');
     };
     const tip = (/** @type {string} */ branch) => git('rev-parse', `origin/${branch}`);
     return { first, commit, deploy, tip, git, done: () => rmSync(root, { recursive: true, force: true }) };
@@ -73,16 +77,18 @@ describe('the branches CI moves', () => {
     const repo = repository();
     try {
       const website = repo.commit('src/app/page.tsx', 'Website');
-      repo.deploy(website);
+      expect(repo.deploy(website)).toBe(`website=${website}\n`);
       expect([repo.tip('production'), repo.tip('production-cache')]).toEqual([website, repo.first]);
       const cache = repo.commit('server/collectFeed.ts', 'Cache');
       const later = repo.commit('README.md', 'Docs');
       repo.deploy(later);
       expect(repo.tip('production')).toBe(later);
       expect(repo.tip('production-cache')).toBe(inNightBanHours(new Date()) ? repo.first : later);
-      // A commit whose CI ends after a later one's moves nothing back.
-      repo.deploy(cache);
+      // A commit whose CI ends after a later one's moves nothing back, and the job waits for the
+      // later one, which carries it; so does a re-run.
+      expect(repo.deploy(cache)).toBe(`website=${later}\n`);
       expect(repo.tip('production')).toBe(later);
+      expect(repo.deploy(later)).toBe(`website=${later}\n`);
     } finally {
       repo.done();
     }

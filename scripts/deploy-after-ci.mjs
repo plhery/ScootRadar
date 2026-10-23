@@ -61,10 +61,10 @@ function main() {
   let failed = false;
   for (const branch of [CACHE_BRANCH, WEBSITE_BRANCH]) {
     try {
-      // The job's next steps wait for Workers Builds to put the website live, then tell IndexNow.
-      if (advance(branch, commit) && branch === WEBSITE_BRANCH && process.env.GITHUB_OUTPUT) {
-        appendFileSync(process.env.GITHUB_OUTPUT, 'website=moved\n');
-      }
+      const at = advance(branch, commit);
+      // The job's next steps wait for Workers Builds to put that commit live, then tell IndexNow,
+      // also when production carried this one already: a re-run, or a later commit's job.
+      if (branch === WEBSITE_BRANCH && process.env.GITHUB_OUTPUT) appendFileSync(process.env.GITHUB_OUTPUT, `website=${at}\n`);
     } catch (error) {
       console.error(`::error title=${branch} not moved::${/** @type {Error} */ (error).message}`);
       failed = true;
@@ -75,13 +75,13 @@ function main() {
 
 /**
  * Moves the branch to the commit, if the commit is newer and, for the cache, should deploy.
- * Returns whether it moved.
+ * Returns the commit the branch is at then.
  */
 function advance(/** @type {string} */ branch, /** @type {string} */ commit) {
   const tip = git('rev-parse', `refs/remotes/origin/${branch}`);
   if (carries(tip, commit)) {
     console.log(`${branch} is at ${short(tip)}, which carries ${short(commit)} already.`);
-    return false;
+    return tip;
   }
   if (!carries(commit, tip)) throw new Error(`${branch} (${short(tip)}) is not an ancestor of ${short(commit)}: move it by hand (DEPLOY.md).`);
   if (branch === CACHE_BRANCH) {
@@ -92,13 +92,13 @@ function advance(/** @type {string} */ branch, /** @type {string} */ commit) {
     });
     if (!decision.deploy) {
       console.log(`::notice title=Cache not deployed::${branch} stays at ${short(tip)}: ${decision.reason}.`);
-      return false;
+      return tip;
     }
     console.log(`The cache's files changed since ${short(tip)}: ${decision.changed.join(', ')}`);
   }
   execFileSync('git', ['push', 'origin', `${commit}:refs/heads/${branch}`], { stdio: 'inherit' });
   console.log(`::notice title=Deployed::${branch} moved from ${short(tip)} to ${short(commit)}.`);
-  return true;
+  return commit;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();
