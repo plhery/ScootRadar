@@ -10,13 +10,13 @@ const guide: Guide = {
   headline: 'E-scooter hire in Norwich: Beryl’s prices, the parking bays and where you can ride',
   lede: 'You can hire an e-scooter in Norwich from Beryl, the only operator, in a trial that now runs to 31 May 2028. It costs £1 to unlock and 22p a minute, so 10 minutes cost £3.20, and you must be 18 or over with a full or provisional driving licence. End every ride in a Beryl bay or pay £10. The area stretches to Norwich Airport, UEA, Hethersett and Wymondham. Your own e-scooter is illegal on Norwich’s roads and pavements.',
   published: '2026-10-17',
-  updated: '2026-10-18',
+  updated: '2026-10-23',
   city: 'gb:Norwich',
   sections: [
     {
       heading: 'Norwich e-scooter hire: Beryl, in a trial that now runs to 2028',
       blocks: [
-        'One company, **Beryl**, runs Norwich’s hire e-scooters, alongside its pedal bikes and e-bikes, in a scheme with Norfolk County Council that opened on 17 March 2020. E-scooters joined on 14 September 2020 for the Department for Transport’s rental trial: 100 at first, and 500 by February 2026, the county council says.',
+        'One company, **Beryl**, runs Norwich’s hire e-scooters, alongside its pedal bikes and e-bikes, in a scheme with Norfolk County Council that opened on 17 March 2020. E-scooters joined on 14 September 2020 for the Department for Transport’s rental trial, the county council says, and by February 2026 there were 500 of them, up from 100 at first.',
         'On 10 March 2026 Graham Plant, the county council’s cabinet member for highways, extended the trial to **31 May 2028**, the date the Department for Transport has set for the end of all 21 trials. Pages that give an earlier end date are out of date.',
         'In the early hours of 17 October 2026 the [map of Norwich](map:gb:Norwich) showed about 550 Beryl e-scooters, and the [map of Wymondham](map:gb:Wymondham) 24 more: a snapshot at night, not the fleet size. The map shows e-scooters only, not Beryl’s bikes and e-bikes. You unlock and pay in the Beryl app.',
       ],
@@ -64,7 +64,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Beryl offers free Scoot Happy training, online and face to face, which it launched with the county council. It’s optional: Beryl’s Norwich help pages list only the licence and selfie checks before your first ride. The national rules are in [our guide to e-scooter law in the UK](guide:uk-law).',
+        'Beryl offers free Scoot Happy training, online and face to face; it launched the online course with the county council in 2022. It’s optional: Beryl’s Norwich help pages list only the licence and selfie checks before your first ride. The national rules are in [our guide to e-scooter law in the UK](guide:uk-law).',
         {
           note: 'A private e-scooter is illegal on Norwich’s roads, pavements and cycle lanes and in its parks. Riding one means a £300 fixed penalty and 6 points for having no insurance, and the police can seize it; since 29 June 2026 they can seize a vehicle ridden anti-socially without a warning first. Anti-social riding on Beryl’s own scooters earns a warning or a ban from Beryl, the county council says.',
         },
@@ -111,7 +111,7 @@ const guide: Guide = {
     {
       heading: 'Norwich station, the bus station, the airport, trains and buses',
       blocks: [
-        '**No e-scooters on Greater Anglia trains.** It has banned them on all its trains since 1 June 2023, citing the fire risk from their batteries; e-bikes and mobility scooters are exempt. First’s buses don’t take them either: its Eastern Counties conditions of travel (March 2026) say electric scooters “are not permitted to be brought on board”. Ask Konectbus and other bus companies before you travel.',
+        '**No e-scooters on Greater Anglia trains.** It has banned them on all its trains since 1 June 2023, citing the risk from their batteries; e-bikes and mobility scooters are exempt. First’s buses don’t take them either: its Eastern Counties conditions of travel (March 2026) say electric scooters “are not permitted to be brought on board”. Ask Konectbus and other bus companies before you travel.',
         {
           list: [
             '**Norwich station:** the bay “Riverside/Norwich Train Station”, with room for 20 vehicles, is about 120 metres from the station entrance.',
@@ -137,7 +137,7 @@ const guide: Guide = {
         {
           list: [
             '**London Street was the first existing shopping street in the UK to be pedestrianised**, on 17 July 1967, the Norwich Society says. Today you walk your Beryl scooter along it.',
-            '**Norwich was a UK first for shared transport.** It was the first scheme to offer bikes, e-bikes and e-scooters in one app, Beryl’s chief executive said in a county council release.',
+            '**Norwich was a UK first for shared transport.** It was the first scheme in the UK to offer several modes in one app, Beryl’s chief executive said in 2023.',
             '**A trial first meant to end in 2021 now runs to 2028.** The first 100 e-scooters arrived in September 2020; the trial has been extended ever since, and the fleet reached 500 by February 2026.',
             '**Over 1.2 million e-scooter rides** had been made by March 2026, council officers said, with each scooter used 2.4 times a day and an average trip of about two miles.',
             '**Norfolk’s other trial is over.** Ginger’s e-scooters in Great Yarmouth launched in March 2021 and were suspended in 2024.',
@@ -181,12 +181,14 @@ const guide: Guide = {
     { title: 'Beryl: Terms of service', url: 'https://beryl.cc/terms' },
     { title: 'Beryl: open data for Norwich', url: 'https://beryl-gbfs-production.web.app/v2_2/Norwich/gbfs.json' },
     { title: 'Norfolk County Council: Extension of Norwich e-scooter trial (March 2026)', url: 'https://norfolkcc.cmis.uk.com/norfolkcc/DelegatedDecisions/tabid/67/ctl/ViewCMIS_DecisionDetails/mid/391/Id/2006/Default.aspx' },
-    { title: 'Norfolk County Council: Beryl’s Norwich scheme hits major double landmark', url: 'https://www.norfolk.gov.uk/article/44337/Beryls-Norwich-scheme-hits-major-double-landmark' },
+    { title: 'Beryl: Beryl’s Norwich scheme hits major double landmark (21 June 2023)', url: 'https://beryl.cc/news/2023/06/21/beryls-norwich-scheme-hits-major-double-landmark' },
+    { title: 'Beryl: Double million milestone for Norwich scheme (13 December 2024)', url: 'https://beryl.cc/news/2024/12/13/double-million-milestone-norwich-scheme' },
+    { title: 'Beryl: Beryl launches Scoot Happy tour (31 March 2022)', url: 'https://beryl.cc/news/2022/03/31/beryl-launches-scoot-happy-tour' },
     { title: 'Department for Transport: E-scooter trials, guidance for local areas and rental operators', url: 'https://www.gov.uk/government/publications/e-scooter-trials-guidance-for-local-areas-and-rental-operators/e-scooter-trials-guidance-for-local-areas-and-rental-operators' },
     { title: 'Norwich Evening News: E-scooter trial in Norwich extended until May 2028 (6 April 2026)', url: 'https://www.eveningnews24.co.uk/news/25990151.e-scooter-trial-norwich-extended-may-2028/' },
     { title: 'First Bus: Conditions of travel, Eastern Counties (March 2026)', url: 'https://www.firstbus.co.uk/sites/default/files/public/node_images/Conditions%20of%20Travel%20-%20Eastern%20Counties%20-%20%20March%2026%20_0.pdf' },
-    { title: 'Greater Anglia: Greater Anglia to ban e-scooters from 1 June (24 May 2023)', url: 'https://www.greateranglia.co.uk/about-us/news-desk/news-articles/greater-anglia-ban-e-scooters-1-june' },
-    { title: 'Greater Anglia: Cycling', url: 'https://www.greateranglia.co.uk/travel-information/your-journey/cycling' },
+    { title: 'Colchester Gazette: Greater Anglia bans e-scooters from Thursday, June 1 (26 May 2023)', url: 'https://www.gazette-news.co.uk/news/23551203.greater-anglia-bans-e-scooters-thursday-june-1/' },
+    { title: 'East Suffolk Lines Community Rail Partnership: Bicycles', url: 'https://eastsuffolklines.co.uk/bicycles' },
     { title: 'The Norwich Society: The ‘Foot Street’ revolution (2017)', url: 'https://www.norwich.gov.uk/download/downloads/id/3997/booklet_on_london_street_history.pdf' },
   ],
 };
