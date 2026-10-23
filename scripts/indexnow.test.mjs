@@ -4,7 +4,8 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterAll, describe, expect, it } from 'vitest';
 import {
-  DEFAULT_ENDPOINT, INDEXNOW_KEY, MAX_URLS_PER_REQUEST, decodeXml, pagesToSubmit, parseSitemap, readSubmitted, requestBodies, run, submit,
+  DEFAULT_ENDPOINT, INDEXNOW_KEY, MAX_URLS_PER_REQUEST, STALE_READS, decodeXml, pagesToSubmit, parseSitemap, readSubmitted, requestBodies,
+  run, submit,
 } from './indexnow.mjs';
 
 const origin = 'https://scootradar.example.test';
@@ -17,8 +18,11 @@ const sitemap = (/** @type {{ url: string, lastmod: string | null }[]} */ pages)
     + (lastmod ? `<lastmod>${lastmod}</lastmod>\n` : '') + '<changefreq>monthly</changefreq>\n</url>\n').join('')
   + '</urlset>\n';
 
-/** A fetch that serves `xml` as the live sitemap and answers IndexNow with `status`. */
-function engine(/** @type {string | null} */ xml, status = 200) {
+/**
+ * A fetch that serves `xml` as the live sitemap and answers IndexNow with `status`. The sitemaps of
+ * `stale` come first, marked as Next.js marks the build before's while it renders the new one.
+ */
+function engine(/** @type {string | null} */ xml, status = 200, /** @type {string[]} */ stale = []) {
   /** @type {{ url: string, body: { urlList: string[] } }[]} */
   const posts = [];
   /** @type {string[]} */
@@ -30,6 +34,8 @@ function engine(/** @type {string | null} */ xml, status = 200) {
       return new Response(null, { status });
     }
     gets.push(String(url));
+    const before = stale[gets.length - 1];
+    if (before !== undefined) return new Response(before, { status: 200, headers: { 'x-nextjs-cache': 'STALE' } });
     return xml === null ? new Response('gone', { status: 503 }) : new Response(xml, { status: 200 });
   };
   return { fetchImpl, posts, gets };
@@ -150,12 +156,15 @@ describe('the command', () => {
     return { clone, git, atOrigin };
   };
   const live = sitemap([page(`${origin}/`), page(`${origin}/guides/a`, '2026-10-17'), page(`${origin}/guides/new`, '2026-10-17')]);
-  const command = async (/** @type {string[]} */ args, /** @type {string | null} */ xml = live, status = 200, cwd = directory) => {
+  const command = async (/** @type {string[]} */ args, /** @type {string | null} */ xml = live, status = 200, cwd = directory,
+    /** @type {string[]} */ stale = []) => {
     /** @type {string[]} */
     const lines = [];
-    const io = engine(xml, status);
-    const code = await run(args, { fetchImpl: io.fetchImpl, log: line => lines.push(line), cwd });
-    return { code, lines, ...io };
+    /** @type {number[]} */
+    const waits = [];
+    const io = engine(xml, status, stale);
+    const code = await run(args, { fetchImpl: io.fetchImpl, log: line => lines.push(line), cwd, wait: async ms => waits.push(ms) });
+    return { code, lines, waits, ...io };
   };
 
   it('starts the ref at the live sitemap, submitting nothing, where origin has none', async () => {
@@ -198,6 +207,29 @@ describe('the command', () => {
     const moved = atOrigin();
     const again = await command([`--since=${ref}`, origin], live, 200, clone);
     expect([again.code, again.posts.length, again.lines.at(-1), atOrigin()]).toEqual([0, 0, 'Nothing to submit.', moved]);
+  });
+
+  it('reads the sitemap again while Next.js serves the build before\'s, and submits the new one', async () => {
+    const { clone } = repository();
+    const earlier = sitemap([page(`${origin}/`)]);
+    await command([`--since=${ref}`, origin], earlier, 200, clone);
+    const { code, gets, waits, posts } = await command([`--since=${ref}`, origin], live, 200, clone, [earlier, earlier]);
+    expect(code).toBe(0);
+    expect([gets.length, waits]).toEqual([3, [5000, 5000]]);
+    expect(posts.map(post => post.body.urlList)).toEqual([[`${origin}/guides/a`, `${origin}/guides/new`]]);
+    expect(readSubmitted(ref, clone)?.xml).toBe(live);
+  });
+
+  it('sends nothing and keeps the ref when the sitemap stays stale, so a later run sends the pages', async () => {
+    const { clone, atOrigin } = repository();
+    const earlier = sitemap([page(`${origin}/`)]);
+    await command([`--since=${ref}`, origin], earlier, 200, clone);
+    const start = atOrigin();
+    const stale = Array(STALE_READS).fill(earlier);
+    const { code, lines, gets, waits, posts } = await command([`--since=${ref}`, origin], live, 200, clone, stale);
+    expect([code, gets.length, waits.length, posts.length]).toEqual([1, STALE_READS, STALE_READS - 1, 0]);
+    expect(lines).toEqual([`${origin}/sitemap.xml could not be read: still stale after ${STALE_READS} reads`]);
+    expect(atOrigin()).toBe(start);
   });
 
   it('lists the pages without sending them or moving the ref on a dry run', async () => {

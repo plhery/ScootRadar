@@ -165,25 +165,28 @@ The job leaves `production-cache` where it is from 23:00 to 05:30 Paris time
 change goes with the next commit that passes outside those hours. The job's
 notices in the run's summary say what moved and why not.
 
-Then the job tells IndexNow, which Bing and the engines that read its index
-use, about the pages added to the sitemap or redated since it last took them
+Then the job tells IndexNow, which Bing and the engines that read its index use,
+about the pages added to the sitemap or redated since it last took them
 ([`scripts/indexnow.mjs`](scripts/indexnow.mjs)). It waits up to eight minutes
 for the website to serve the commit `production` is at, which is this one or a
 later one that carries it (a re-run, or a later commit's job that ended first).
 Workers Builds names the build after its commit (`WORKERS_CI_COMMIT_SHA`, in
 `next.config.ts`), and every page carries the name. It then compares the live
-sitemap with the one IndexNow last took, which the ref
-`refs/indexnow/submitted` keeps (a commit of `sitemap.xml`; `git fetch origin
-refs/indexnow/submitted` and `git log -p FETCH_HEAD` show it). The ref moves to
-the live sitemap only once IndexNow takes every page, so a page a deploy could
-not send, because the build was not live in time or IndexNow refused, goes with
-the next deploy. Neither fails the deploy; each shows as a warning. To send
-them sooner, run `node scripts/indexnow.mjs --since=refs/indexnow/submitted
-https://scootradar.com` once the site is live (`--dry-run` lists the pages and
-sends and moves nothing; `--all` submits every page of the sitemap and leaves
-the ref alone). Where the ref is missing, the job sends nothing and starts it at
-the live sitemap. The key is public by design, in the file of its name at the
-root of `public`, which Workers serves before `worker.ts` runs.
+sitemap with the one IndexNow last took, which the ref `refs/indexnow/submitted`
+keeps (a commit of `sitemap.xml`; `git fetch origin refs/indexnow/submitted` and
+`git log -p FETCH_HEAD` show it). Right after a deploy, Next.js can answer with
+the sitemap of the build before, marked `x-nextjs-cache: STALE`, while it
+renders the new one: the job reads it again every 5 seconds, up to 10 times. The
+ref moves to the live sitemap only once IndexNow takes every page, so a page a
+deploy could not send, because the build was not live in time, its sitemap
+stayed stale or IndexNow refused, goes with the next deploy. None of these fails
+the deploy; each shows as a warning. To send them sooner, run `node
+scripts/indexnow.mjs --since=refs/indexnow/submitted https://scootradar.com`
+once the site is live (`--dry-run` lists the pages and sends and moves nothing;
+`--all` submits every page of the sitemap and leaves the ref alone). Where the
+ref is missing, the job sends nothing and starts it at the live sitemap. The key
+is public by design, in the file of its name at the root of `public`, which
+Workers serves before `worker.ts` runs.
 
 To deploy a commit of `main` without waiting, push it to the branch, for
 example `git push origin <commit>:production-cache`. A branch only moves

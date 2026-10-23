@@ -11,9 +11,12 @@
 // IndexNow takes them all, the ref moves to the sitemap just read, and only then: the pages of a
 // deploy that told IndexNow nothing (a build not live in time, a refusal, a re-run) go with the
 // next run. Where origin has no such ref, nothing is submitted and the ref starts at the live
-// sitemap. --dry-run lists the pages, and sends and moves nothing; --endpoint=<url> asks one
-// engine directly, such as https://www.bing.com/indexnow. A refusal or an unreachable engine
-// exits with 1, which the deploy shows but ignores.
+// sitemap. Right after a deploy, Next.js can answer with the sitemap of the build before
+// (`x-nextjs-cache: STALE`) while it renders the new one: a stale sitemap is read again, and one
+// still stale after STALE_READS reads sends nothing. --dry-run lists the pages, and sends and
+// moves nothing; --endpoint=<url> asks one engine directly, such as https://www.bing.com/indexnow.
+// A stale sitemap, a refusal or an unreachable engine exits with 1, which the deploy shows but
+// ignores.
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 
@@ -25,6 +28,9 @@ export const INDEXNOW_KEY = 'f165a5c7a3d4199af0d0bc0b01c6e4e7'; // gitleaks:allo
 export const DEFAULT_ENDPOINT = 'https://api.indexnow.org/indexnow';
 export const MAX_URLS_PER_REQUEST = 10_000;
 const TIMEOUT_MS = 30_000;
+/** How many times a stale sitemap is read, and how long apart. */
+export const STALE_READS = 10;
+const STALE_WAIT_MS = 5_000;
 const USAGE = 'Usage: node scripts/indexnow.mjs (--since=<ref> | --all) [--dry-run] [--endpoint=<url>] https://scootradar.com';
 /** The file of the ref's commits that holds the sitemap. */
 const SITEMAP_FILE = 'sitemap.xml';
@@ -128,13 +134,27 @@ export async function submit(urls, origin, { endpoint = DEFAULT_ENDPOINT, fetchI
   return accepted;
 }
 
-async function readSitemap(/** @type {string} */ origin, /** @type {typeof fetch} */ fetchImpl) {
-  const response = await fetchImpl(new URL('/sitemap.xml', origin).href, {
-    headers: { 'Cache-Control': 'no-cache' },
-    signal: AbortSignal.timeout(TIMEOUT_MS),
-  });
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return response.text();
+const sleep = (/** @type {number} */ ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+/**
+ * The live sitemap's text. A stale one is read again, STALE_WAIT_MS apart, until Next.js serves
+ * the one it rendered for the new build.
+ * @param {string} origin
+ * @param {typeof fetch} fetchImpl
+ * @param {(ms: number) => Promise<unknown>} wait
+ */
+async function readSitemap(origin, fetchImpl, wait) {
+  for (let read = 1; ; read += 1) {
+    const response = await fetchImpl(new URL('/sitemap.xml', origin).href, {
+      headers: { 'Cache-Control': 'no-cache' },
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    if (response.headers.get('x-nextjs-cache')?.toUpperCase() !== 'STALE') return response.text();
+    await response.body?.cancel().catch(() => {});
+    if (read === STALE_READS) throw new Error(`still stale after ${STALE_READS} reads`);
+    await wait(STALE_WAIT_MS);
+  }
 }
 
 const git = (/** @type {string} */ cwd, /** @type {string[]} */ args, /** @type {string} */ input = '') => execFileSync('git', args, {
@@ -178,11 +198,11 @@ function httpOrigin(/** @type {string} */ address) {
 
 /**
  * Runs the command line `args` and returns its exit code. `cwd` is the clone of the repository
- * whose origin keeps the ref of --since.
+ * whose origin keeps the ref of --since; `wait` pauses between reads of a stale sitemap.
  * @param {string[]} args
- * @param {{ fetchImpl?: typeof fetch, log?: (line: string) => void, cwd?: string }} [options]
+ * @param {{ fetchImpl?: typeof fetch, log?: (line: string) => void, cwd?: string, wait?: (ms: number) => Promise<unknown> }} [options]
  */
-export async function run(args, { fetchImpl = fetch, log = console.log, cwd = process.cwd() } = {}) {
+export async function run(args, { fetchImpl = fetch, log = console.log, cwd = process.cwd(), wait = sleep } = {}) {
   const flags = new Set();
   const values = new Map();
   const positional = [];
@@ -212,7 +232,7 @@ export async function run(args, { fetchImpl = fetch, log = console.log, cwd = pr
   }
   let xml;
   try {
-    xml = await readSitemap(origin, fetchImpl);
+    xml = await readSitemap(origin, fetchImpl, wait);
   } catch (error) {
     log(`${origin}/sitemap.xml could not be read: ${reason(error)}`);
     return 1;
