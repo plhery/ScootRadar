@@ -146,28 +146,42 @@ user in App Store Connect.
 ## Availability
 
 The storefronts are the account holder's choice, set with the `availability`
-command below or on the web (Pricing and Availability). The recommendation,
-from the markets lane's readiness summary of 16 October 2026 (in its notes,
-outside this public repository), is a launch in stages:
+command below or on the web (Pricing and Availability).
 
-1. **Now:** Switzerland, France and Iceland, rated ready.
-   `--territories CHE,FRA,ISL`
-2. **Then:** Germany, Norway, Belgium, Portugal and Spain, rated almost ready:
-   the map is useful in their main cities, with gaps a local rider would
-   notice.
-   `--territories CHE,FRA,ISL,DEU,NOR,BEL,PRT,ESP`
-3. **After about a week of monitoring each:** the United States, Canada,
-   Israel, New Zealand and Bonaire, also almost ready but live only since 15
-   or 16 October. In the US and Canada, Lime and Bird carry most of the
-   scooters with no price or rental link, so the summary suggests an "Open in
-   Lime / Bird" button first.
-   `--territories CHE,FRA,ISL,DEU,NOR,BEL,PRT,ESP,USA,CAN,ISR,NZL`
+Since 23 October 2026 the app is offered in 110 of Apple's 175 storefronts.
+That is every storefront except the 65 where shared scooters or bikes are
+known to run but the map shows them poorly or not at all, so a local rider
+would find it thin or empty there. Countries with no known shared scooters or bikes
+are in, since there is nothing there for the map to miss. "New territories"
+stays off, so Apple adds no storefront on its own.
+
+Left out on 23 October 2026, from the markets lane's readiness summary (in
+its notes, outside this public repository):
+- **Europe, thin on the map:** Portugal (Lisboa ends shared scooters by the
+  end of 2026, and Bolt publishes no feed), Italy, the United Kingdom, Sweden,
+  Finland, Greece, Poland, Latvia, Hungary, Croatia, Cyprus and Ukraine.
+- **Europe, nothing on the map:** Austria, the Netherlands, Denmark, Czechia,
+  Slovakia, Bulgaria, Romania, Lithuania, Estonia, Slovenia, Luxembourg,
+  Ireland, Belarus and Russia.
+- **Middle East and Africa:** the United Arab Emirates and Saudi Arabia (one
+  or two operators of several on the map), Qatar, Kuwait, Oman, Bahrain,
+  Jordan, Egypt, Turkey, South Africa and Rwanda.
+- **Asia:** Japan, South Korea, China, Taiwan, Hong Kong, Singapore, Malaysia,
+  Indonesia, Thailand, the Philippines, Vietnam, India, Georgia, Armenia,
+  Azerbaijan, Kazakhstan, Kyrgyzstan, Uzbekistan and Mongolia.
+- **Oceania and the Americas:** Australia, Mexico, Brazil, Chile, Colombia,
+  Peru, Argentina, Costa Rica and the Dominican Republic.
+
+A country joins once the map covers it, by adding its code to the list:
+
+```
+--territories AFG,AGO,AIA,ALB,ATG,BEL,BEN,BFA,BHS,BIH,BLZ,BMU,BOL,BRB,BRN,BTN,BWA,CAN,CHE,CIV,CMR,COD,COG,CPV,CYM,DEU,DMA,DZA,ECU,ESP,FJI,FRA,FSM,GAB,GHA,GMB,GNB,GRD,GTM,GUY,HND,IRQ,ISL,ISR,JAM,KEN,KHM,KNA,LAO,LBN,LBR,LBY,LCA,LKA,MAC,MAR,MDA,MDG,MDV,MKD,MLI,MLT,MMR,MNE,MOZ,MRT,MSR,MUS,MWI,NAM,NER,NGA,NIC,NOR,NPL,NRU,NZL,PAK,PAN,PLW,PNG,PRY,SEN,SLB,SLE,SLV,SRB,STP,SUR,SWZ,SYC,TCA,TCD,TJK,TKM,TON,TTO,TUN,TZA,UGA,URY,USA,VCT,VEN,VGB,VUT,XKS,YEM,ZMB,ZWE
+```
 
 Apple has no storefront for Bonaire (Caribbean Netherlands), so it cannot be
-ticked. Markets the summary rates "not yet" are left out. Whatever the
-storefronts, the map covers every country in the catalogue: a rider from a
-launch country sees scooters abroad too, and so does anyone in Bonaire who has
-the app from another store.
+ticked. Whatever the storefronts, the map covers every country in the
+catalogue: a rider from an included country sees scooters abroad too, and so
+does anyone in Bonaire who has the app from another store.
 
 ## Build and upload
 
@@ -195,7 +209,7 @@ export ASC_KEY_ID=<key id> ASC_ISSUER_ID=<issuer id>
 node scripts/app-store-connect.mjs check
 node scripts/app-store-connect.mjs listing --apply
 node scripts/app-store-connect.mjs screenshots --apply --replace
-node scripts/app-store-connect.mjs availability --territories CHE,FRA,ISL --apply
+node scripts/app-store-connect.mjs availability --territories <the list under Availability> --apply
 node scripts/app-store-connect.mjs testflight --apply
 ```
 
