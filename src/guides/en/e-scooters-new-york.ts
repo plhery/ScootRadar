@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'E-scooters in New York City 2026: Lime, Bird, Veo, rules',
   description: 'E-scooters in New York City: where Lime, Bird and Veo run in the Bronx and Queens, what a ride costs, the age and sidewalk rules, and why Manhattan has none.',
   headline: 'E-scooters in New York City: where to ride in the Bronx and Queens, what it costs, and the rules',
-  lede: 'E-scooters in New York City can be rented only in the East Bronx and eastern Queens, from Bird, Lime and Veo, under an NYC DOT programme that runs until 2029. Manhattan, Brooklyn and Staten Island have no shared scooters. Lime charges $1 to unlock plus $0.45 to $0.50 a minute and Veo $1 plus $0.42 or $0.45 a minute plus tax (published rates, 17 October 2026); Bird shows its price in the app. DOT’s programme sets the minimum age at 18, and state law caps e-scooters at 15 mph and keeps them off the sidewalk.',
+  lede: 'E-scooters in New York City can be rented only in the East Bronx and eastern Queens, from Bird, Lime and Veo, under an NYC DOT programme that runs until 2029. Manhattan, Brooklyn and Staten Island have no shared scooters. Veo charges $1 to unlock plus $0.42 or $0.45 a minute plus tax (its published rates, 17 October 2026); for Bird and Lime, check the app before you unlock. DOT’s programme sets the minimum age at 18, and state law caps e-scooters at 15 mph and keeps them off the sidewalk.',
   published: '2026-10-17',
-  updated: '2026-10-17',
+  updated: '2026-10-23',
   city: 'us:ny:Bronx',
   sections: [
     {
@@ -31,21 +31,21 @@ const guide: Guide = {
     {
       heading: 'How much does a scooter cost in NYC?',
       blocks: [
-        'DOT doesn’t set prices. Lime and Veo publish theirs; Bird shows its price only in the app.',
+        'DOT doesn’t set prices. Veo publishes its rates in its open data; Bird and Lime publish none there, so check their apps. Gothamist put a 30-minute Lime ride at $16 in May 2026.',
         {
           table: {
-            caption: 'Published e-scooter prices in New York City, 17 October 2026 (Veo adds tax)',
-            head: ['Ride', 'Lime', 'Veo, Bronx', 'Veo, Queens'],
+            caption: 'Veo’s published e-scooter prices in New York City, 17 October 2026 (plus tax)',
+            head: ['Ride', 'Veo, Bronx', 'Veo, Queens'],
             rows: [
-              ['Unlock', '$1', '$1', '$1'],
-              ['Per minute', '$0.45 to $0.50', '$0.42', '$0.45'],
-              ['10 minutes', '$5.50 to $6', '$5.20', '$5.50'],
-              ['20 minutes', '$10 to $11', '$9.40', '$10'],
+              ['Unlock', '$1', '$1'],
+              ['Per minute', '$0.42', '$0.45'],
+              ['10 minutes', '$5.20', '$5.50'],
+              ['20 minutes', '$9.40', '$10'],
             ],
           },
         },
         '**Discounts.** Bird, Lime and Veo each run a reduced-fare membership: if you get SNAP, live in NYCHA housing or are on Fair Fares, DOT says you may qualify for Bird Access, Lime Access or Veo Access, and you can join one, two or all three.',
-        '**No card or no smartphone?** Lime takes PayPal and prepaid cards, and cash through PayNearMe at over 1,000 shops in the city, such as 7-Eleven, Walgreens and CVS, with no surcharge. Once money is on your Lime account, you can unlock a scooter by text message.',
+        '**No card or no smartphone?** The operators must give riders without a bank account or a smartphone a way to ride, such as paying in cash or using the service by text message, DOT’s 2022 pilot report says. Ask the operator how.',
       ],
     },
     {
@@ -89,12 +89,12 @@ const guide: Guide = {
     {
       heading: 'Parking a scooter in NYC: the furniture zone and corrals',
       blocks: [
-        'Most of each zone is free-floating: park upright in the furniture zone, the strip of sidewalk nearest the road where trees, parking signs and bike racks stand. Lime asks you to leave 6 feet clear for people walking.',
+        'Most of each zone is free-floating: park upright in the furniture zone, the strip of sidewalk nearest the road where trees, parking signs and bike racks stand, and keep the path for people walking clear.',
         {
           list: [
-            '**Never block** ramps, curb cuts, driveways, bus stops, subway entrances or fire hydrants, and don’t park on grass, on private property or in the roadway.',
+            '**Never block** ramps, curb cuts, driveways, bus stops or fire hydrants, and don’t park on grass, on private property or in the roadway.',
             '**Corral zones**: on busy shopping streets, such as downtown Flushing and downtown Jamaica, a trip ends only inside a corral, a box painted on the sidewalk or the road; some exist only in the app. In the Bronx, corrals line White Plains Road and stand around Westchester Square, among other places.',
-            '**Lime’s fees**: two warnings, then $5 for a third bad parking job, with a 48-hour suspension on top for the fourth and a 30-day one for the fifth.',
+            '**Rider accountability**: DOT makes each company run policies to discourage poor rider behaviour and to stop account sharing.',
           ],
         },
         'Report a scooter in the way on the phone number printed on it, through the operator’s app, or on 311.',
@@ -103,8 +103,8 @@ const guide: Guide = {
     {
       heading: 'The subway, buses and the airports',
       blocks: [
-        '**No shared scooters on trains or buses.** A ride must end inside the zone, and Lime tells riders not to take its scooters on transit. End the trip near the station or bus stop, clear of the entrance and the stop.',
-        '**Your own scooter** counts as a bike for the MTA: it may go on the subway, and on local and Select Bus Service buses only if it folds, but never inside an express bus. On the LIRR and Metro-North, the railroads’ bike rules apply.',
+        '**Shared scooters stay in their zone.** A ride must start and end inside it, so end the trip near the station or bus stop, without blocking the stop or the path for people walking.',
+        '**Your own scooter**: check the MTA’s rules before you take it on a subway, bus or commuter train.',
         'The Bronx zone takes in 26 subway stops and the Queens zone seven, Streetsblog reported in April 2026.',
         '**JFK.** Both airports lie outside the zones. From the Queens zone, ride to downtown Jamaica, leave the scooter in a corral, and take the AirTrain from Jamaica station: $8.75 one way, paid by tapping a contactless bank card, a phone or an OMNY card.',
         '**LaGuardia.** The Q90 bus links the airport with Flushing-Main St, in the Queens zone. The free Q70 LaGuardia Link runs to Jackson Heights, outside it.',
@@ -116,7 +116,7 @@ const guide: Guide = {
         {
           list: [
             '**Winter.** Scooters run all year: riders took about 181,000 trips in January 2026 and 128,000 in February, against about 549,000 in August and 539,000 in September, DOT’s reports show. DOT has restricted riding in bad weather before, during Hurricane Henri in 2021 and a snowstorm in January 2022.',
-            '**Night.** Lime says it runs round the clock in New York, though a new rider’s first three trips can’t start overnight.',
+            '**Night.** Under DOT’s Beginner Mode, a new rider’s first three trips can’t start overnight.',
             '**Expansion.** Lime wants to push the zones west, towards Fordham, Yankee Stadium and Citi Field, Streetsblog reported in April 2026; the Mamdani administration has no plans to cut the programme back but wouldn’t say whether it will grow. By 17 October 2026 DOT had announced no new areas.',
           ],
         },
@@ -152,11 +152,11 @@ const guide: Guide = {
     },
     {
       question: 'How much is a Lime scooter in NYC?',
-      answer: 'Lime charges $1 to unlock plus $0.45 to $0.50 a minute in New York (published rate, 17 October 2026), so 10 minutes costs $5.50 to $6. Riders on SNAP, NYCHA residents and Fair Fares members may qualify for Lime Access discounts, DOT says.',
+      answer: 'Lime publishes no New York rate in its open data, so check the app. Gothamist put a 30-minute Lime ride at $16 in May 2026, against $17.29 on a Citi Bike e-bike without a membership. Riders on SNAP, NYCHA residents and Fair Fares members may qualify for Lime Access discounts, DOT says.',
     },
     {
-      question: 'Can you take a shared scooter on the subway in New York?',
-      answer: 'No. Rides must end inside the zone, and Lime tells riders not to bring its scooters on public transit. Park near the station, clear of the entrance.',
+      question: 'Can you ride a shared scooter to the subway in New York?',
+      answer: 'Yes, inside the zones: the Bronx zone takes in 26 subway stops and the Queens zone seven, Streetsblog reported in April 2026. A ride must end inside the zone, so park in the furniture zone near the station, clear of the path for people walking.',
     },
     {
       question: 'Can you ride a scooter to JFK or LaGuardia?',
@@ -175,20 +175,16 @@ const guide: Guide = {
     { title: 'NYC DOT: electric bicycles and more', url: 'https://www.nyc.gov/html/dot/html/bicyclists/ebikes.shtml' },
     { title: 'NYC DOT: bicycle rules, March 2026 (PDF)', url: 'https://www.nyc.gov/html/dot/downloads/pdf/bicyclerules-english.pdf' },
     { title: 'NYC Rules: e-bike and e-scooter speed limits, 2025', url: 'https://rules.cityofnewyork.us/rule/speed-limits-for-e-bikes-e-scooters-and-pedal-assist-commercial-bicycles/' },
-    { title: 'New York Vehicle and Traffic Law § 1282: operating electric scooters', url: 'https://www.nysenate.gov/legislation/laws/VAT/1282' },
-    { title: 'New York Vehicle and Traffic Law § 1284: where to ride', url: 'https://www.nysenate.gov/legislation/laws/VAT/1284' },
-    { title: 'New York Vehicle and Traffic Law § 1286: helmets', url: 'https://www.nysenate.gov/legislation/laws/VAT/1286' },
-    { title: 'New York Vehicle and Traffic Law § 1289: alcohol and drugs', url: 'https://www.nysenate.gov/legislation/laws/VAT/1289' },
-    { title: 'NYC Administrative Code §§ 19-176 and 19-176.2: sidewalks and scooters', url: 'https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-31165' },
-    { title: 'Lime: e-scooter rentals in New York', url: 'https://www.li.me/locations/new-york' },
+    { title: 'New York State: 2020 budget law that added the Vehicle and Traffic Law’s e-scooter rules, §§ 114-e and 1280–1289 (S7508-B, Part XX)', url: 'https://nyassembly.gov/leg/?default_fld=&leg_video=&bn=S07508&term=2019&Summary=Y&Text=Y' },
+    { title: 'NYC Council: Local Law 72 of 2020, electric scooters (Administrative Code § 19-176.2)', url: 'https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=3763645&GUID=1B9B8689-094C-46D1-8F0C-8BB71C99E149' },
+    { title: 'NYC Council: Local Law 14 of 2002, bicycles on sidewalks (Administrative Code § 19-176)', url: 'https://legistar.council.nyc.gov/LegislationDetail.aspx?ID=437558&GUID=0D753C13-0DAB-484D-8BF4-B117F633E7E7' },
     { title: 'Veo: Bronx open data (GBFS)', url: 'https://cluster-prod.veoride.com/api/shares/name/nyc/gbfs' },
     { title: 'Bird: New York open data (GBFS)', url: 'https://mds.bird.co/gbfs/v2/public/new-york/gbfs.json' },
-    { title: 'MTA: personal electric vehicle policy', url: 'https://www.mta.info/safety-and-security/personal-electric-vehicle-policy' },
-    { title: 'MTA: bikes on public transit', url: 'https://www.mta.info/guides/bikes' },
     { title: 'JFK Airport: AirTrain', url: 'https://www.jfkairport.com/to-from-airport/air-train' },
     { title: 'LaGuardia Airport: public transportation', url: 'https://www.laguardiaairport.com/to-from-airport/public-transportation' },
     { title: 'NYC Open Data: population by borough', url: 'https://data.cityofnewyork.us/City-Government/New-York-City-Population-by-Borough-1950-2040/xywu-7bv9' },
     { title: 'Streetsblog NYC: Lime wants to bring more e-scooters to New York City, 30 April 2026', url: 'https://nyc.streetsblog.org/2026/04/30/lime-wants-to-bring-more-e-scooters-to-new-york-city' },
+    { title: 'Gothamist: Lime pushes for NYC e-scooters expansion, 1 May 2026', url: 'https://gothamist.com/news/lime-pushes-for-nyc-e-scooters-expansion-to-break-up-citi-bikes-micromobility-monopoly' },
   ],
 };
 

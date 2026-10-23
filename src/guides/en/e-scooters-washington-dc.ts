@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Scooter rental in Washington, DC: Hopp, Lime and Veo, what a ride costs, the rules and where you can ride on the National Mall',
   lede: 'Scooter rental in Washington, DC works through three apps with a DDOT permit: Hopp, Lime and Veo. Hopp charges $1 to unlock plus $0.16 a minute and Veo $1 plus $0.46 a minute plus tax (published rates, 16 October 2026); Lime shows its price in the app. You must be 18, shared scooters are capped at 10 mph and you can’t ride on downtown sidewalks. On the National Mall, since 11 September 2026, you keep to the sidewalks along the roads and the trails, at 8 mph at most.',
   published: '2026-10-16',
-  updated: '2026-10-16',
+  updated: '2026-10-23',
   city: 'us:dc:Washington',
   sections: [
     {
@@ -20,7 +20,7 @@ const guide: Guide = {
         {
           list: [
             '**Hopp**, Bolt’s scooter brand, in its own Hopp app. DDOT caps it at 2,290 scooters.',
-            '**Lime**, in DC since 2017, with up to 5,000 scooters and 3,775 e-bikes, the e-bikes also in the Uber app. **Our map doesn’t show Lime’s DC scooters**: Lime’s DC data feed returns an error, so look for one in the Lime app.',
+            '**Lime**, in DC since 2017, with up to 5,000 scooters and 3,775 e-bikes, the e-bikes also in the Uber app. **Our map doesn’t show Lime’s DC scooters yet**, so look for one in the Lime app.',
             '**Veo**, mostly seated, throttle-powered Cosmo and Apollo e-bikes (DDOT counts them as bikes), plus a few hundred stand-up scooters in its open data.',
           ],
         },
@@ -46,7 +46,7 @@ const guide: Guide = {
           },
         },
         '**Capital Bikeshare**, the docked system, is the main alternative: $1 to unlock plus $0.15 a minute on a classic bike or $0.35 on an e-bike, or $10 for a day pass ([prices](https://capitalbikeshare.com/pricing) on 16 October 2026). Riders of 16 and 17 need a parent’s consent and stick to classic bikes.',
-        '**Low-income riders.** Each operator must offer unlimited trips under 30 minutes, with no deposit and a cash option, to people at or below 200% of the federal poverty line. Hopp for All costs $5 a month; Lime Access and Veo Access take proof of benefits such as SNAP.',
+        '**Low-income riders.** Each operator must offer unlimited trips under 30 minutes, with no deposit and a cash option, to people at or below 200% of the federal poverty line. Sign up with each company, for Hopp for All, Lime Access or Veo Access: DDOT says they may ask for ID and proof of benefits such as SNAP. Hopp for All costs $29.99 a month (Hopp’s page, 23 October 2026).',
       ],
     },
     {
@@ -58,7 +58,7 @@ const guide: Guide = {
             caption: 'Shared e-scooter rules in Washington, DC on 16 October 2026, and who sets them',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
-              ['Age', '18 to rent; nobody under 16 may ride a shared scooter', 'DDOT and the operators’ terms; DC Code'],
+              ['Age', '18 to rent; nobody under 16 may ride a shared scooter', 'DDOT; DC Code'],
               ['Helmet', 'Advised for adults; required under 16, and under 18 on electric devices, DDOT says', 'DC Code; DDOT'],
               ['Speed', 'Capped at 10 mph; 8 mph on the National Mall', 'DDOT regulations; National Park Service'],
               ['Sidewalks', 'Banned in the Central Business District; elsewhere legal but best avoided, and pedestrians come first', 'DC Code; DDOT'],
@@ -66,7 +66,7 @@ const guide: Guide = {
               ['Stop signs', 'Treat as a yield sign; right on red after a full stop', 'DC Code'],
               ['Passengers', 'One rider only', 'DC Code'],
               ['Hands and ears', 'Carry nothing that keeps a hand off the handlebars; no headphones in both ears', 'DC Code'],
-              ['Phone', 'Don’t use one while riding', 'Lime’s and Hopp’s terms'],
+              ['Phone', 'Don’t use one while riding', 'Hopp’s terms'],
               ['Alcohol', 'DUI law applies to scooter riders', 'DC Code; federal rules on park land'],
             ],
           },
@@ -119,8 +119,8 @@ const guide: Guide = {
     {
       heading: 'Scooters across the river in Arlington, Virginia',
       blocks: [
-        '[Arlington County](https://www.arlingtonva.us/Government/Programs/Transportation/Scooters-and-Dockless-Bikeshare) issues its own permits, now to Bird, Lime and GCOO. On 16 October 2026 the [Arlington map](map:us:va:Arlington) showed about 470 Lime and 300 Bird scooters on the Virginia side (the Hopp and Veo ones there are in DC); GCOO isn’t on it.',
-        'The county’s rules also say 18, but sidewalks and paved trails are allowed, at 6 mph or less when passing people, unless a protected bike lane runs the same way. County code allows 15 mph on streets and trails; the Mount Vernon Trail, federal land, stays off-limits.',
+        'Arlington County issues its own permits. On 16 October 2026 the [Arlington map](map:us:va:Arlington) showed about 470 Lime and 300 Bird scooters on the Virginia side (the Hopp and Veo ones there are in DC).',
+        'The county’s rules differ from DC’s. Its 2019 ordinance lets you ride on sidewalks at 6 mph at most, except where a protected bike lane runs the same way, and at up to 15 mph on streets and multi-use trails; give an audible signal before passing people on foot. The Mount Vernon Trail, federal land, stays off-limits.',
       ],
     },
     {
@@ -143,7 +143,7 @@ const guide: Guide = {
         {
           list: [
             '**DC’s shared bikes and scooters have made over 30 million trips since 2019**, and covered more than 11 million miles in 2024 alone, DDOT says.',
-            '**Washington was Hopp’s first US city.** Bolt’s scooter brand launched there on 28 January 2025 with over 700 scooters.',
+            '**Washington was Hopp’s first US city.** Bolt’s scooter brand launched there in January 2025 with 720 scooters.',
             '**The Park Service’s 2026 rule calls the National Mall and Memorial Parks “filled with e-scooters on a daily basis.”**',
           ],
         },
@@ -153,7 +153,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'How old do you have to be to ride a Lime scooter in DC?',
-      answer: '18: DDOT and all three operators rent only to adults, and DDOT has every app check riders’ ages. DC law also bars anyone under 16 from riding a shared scooter.',
+      answer: '18: DDOT says all three operators rent only to riders of 18 and up, and has every app check riders’ ages. DC law also bars anyone under 16 from riding a shared scooter.',
     },
     {
       question: 'Can you ride an electric scooter on the sidewalk in DC?',
@@ -179,16 +179,24 @@ const guide: Guide = {
   sources: [
     { title: 'DDOT: Shared Mobility DC', url: 'https://sharedmobilitydc-dcgis.hub.arcgis.com/' },
     { title: 'DDOT: 2027–2028 shared fleet device permits', url: 'https://sharedmobilitydc-dcgis.hub.arcgis.com/pages/2025-2026-permits' },
+    { title: 'DDOT: permitted providers for the 2023–2024 shared fleet devices program, January 2023', url: 'https://ddot.dc.gov/release/ddot-announces-new-permitted-providers-2023-2024-shared-fleet-devices-program-launches' },
+    { title: 'DDOT: Dockless Demonstration Evaluation Report, January 2019 (PDF)', url: 'https://ddot.dc.gov/sites/default/files/dc/sites/ddot/publication/attachments/Dockless%20Demonstration%20Evaluation%20010319.pdf' },
     { title: 'DC Code § 50-2201.03c: operation of shared fleet devices', url: 'https://code.dccouncil.gov/us/dc/council/code/sections/50-2201.03c' },
     { title: 'DDOT: Central Business District sidewalk map (PDF)', url: 'https://ddotwiki.atlassian.net/wiki/download/attachments/2069268277/Central%20Business%20District%20-%20No%20Bicycle%20Riding%20Sidewalk%20Map.pdf?api=v2' },
-    { title: 'Federal Register: NPS rule on powered micromobility, 12 August 2026', url: 'https://www.federalregister.gov/d/2026-16388' },
+    { title: 'Federal Register: NPS rule on powered micromobility, 12 August 2026 (PDF, GovInfo)', url: 'https://www.govinfo.gov/content/pkg/FR-2026-08-12/pdf/2026-16388.pdf' },
     { title: 'National Mall and Memorial Parks: Superintendent’s Compendium, 11 September 2026', url: 'https://www.nps.gov/nama/learn/management/superintendent-s-compendium.htm' },
     { title: 'George Washington Memorial Parkway: Superintendent’s Compendium', url: 'https://www.nps.gov/gwmp/learn/management/superintendent-s-compendium.htm' },
     { title: 'Capitol Police Board: Capitol Grounds traffic regulations (PDF)', url: 'https://www.uscp.gov/sites/evo-subsites/uscp.house.gov/files/evo-media-document/CTR-Amended-February-2025-with-Appendices.pdf' },
     { title: 'Hopp: Washington, DC open data (GBFS)', url: 'https://mds.bolt.eu/gbfs/3/23/gbfs' },
+    { title: 'Hopp: Terms and Conditions, micromobility (US)', url: 'https://gethopp.com/en-us/legal/tnc-micromobility/' },
+    { title: 'Hopp: Hopp for All', url: 'https://gethopp.com/en-us/scooters/access/' },
+    { title: 'Hopp: The technology behind 1.8 million DC rides', url: 'https://gethopp.com/en-us/blog/hopp-technology-behind-1-8-million-dc-rides/' },
+    { title: 'FOX 5 DC: ‘Hopp’ on the newest DC scooter operator, 19 February 2025', url: 'https://www.fox5dc.com/news/hopp-newest-dc-scooter-operator' },
     { title: 'Veo: Washington, DC open data (GBFS)', url: 'https://cluster-prod.veoride.com/api/shares/name/xdc/gbfs' },
     { title: 'WMATA: bikes and scooters on Metrorail', url: 'https://www.wmata.com/ride/guides/bikes/bikes-on-rail.html' },
     { title: 'Reagan National Airport: biking and walking', url: 'https://www.flyreagan.com/parking-transportation/biking-walking' },
+    { title: 'Arlington County Board: micro-mobility amendments to County Code Chapter 14.2, Board Report #41, 16 November 2019 (PDF)', url: 'https://arlington.granicus.com/MetaViewer.php?view_id=2&clip_id=3689&meta_id=190316' },
+    { title: 'Arlington County Board: minutes of 16 November 2019, item 41 (PDF)', url: 'https://arlington.granicus.com/DocumentViewer.php?file=arlington_d9ce658504e5ee039db6e0014d6bb5e0.pdf&view=1' },
   ],
 };
 

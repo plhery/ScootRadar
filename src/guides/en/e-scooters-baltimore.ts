@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'E-scooters in Baltimore 2026: Spin, Lime, rules and zones',
   description: 'E-scooters in Baltimore: Spin and Lime, prices, Maryland and City rules, sidewalks, the Inner Harbor, stadium no-ride zones, parking, MTA and BWI.',
   headline: 'E-scooters in Baltimore: Spin and Lime, the rules, the Inner Harbor and where you can’t ride',
-  lede: 'E-scooters in Baltimore come from Spin and Lime, the two companies holding permits from the Baltimore City Department of Transportation (BCDOT). Neither publishes its prices: the app shows them. Both require you to be 18; scooters are held to 15 mph, and to 8 mph on the waterfront from the Inner Harbor to Canton. You may ride on the sidewalk only beside a street posted at 30 mph or more, at 6 mph at most, and the scooters cut out around Camden Yards and M&T Bank Stadium at all times.',
+  lede: 'E-scooters in Baltimore come from Spin and Lime, the two companies holding permits from the Baltimore City Department of Transportation (BCDOT). Neither publishes its Baltimore prices in its open data: the app shows them. Spin requires you to be 18; scooters are held to 15 mph, and to 8 mph on the waterfront from the Inner Harbor to Canton. You may ride on the sidewalk only beside a street posted at 30 mph or more, at 6 mph at most, and the scooters cut out around Camden Yards and M&T Bank Stadium at all times.',
   published: '2026-10-17',
-  updated: '2026-10-17',
+  updated: '2026-10-23',
   city: 'us:md:Baltimore',
   sections: [
     {
@@ -20,7 +20,7 @@ const guide: Guide = {
         {
           list: [
             '**Spin**, the orange scooters. Spin has joined forces with Bird. BCDOT and Spin’s website point to the Spin app, but Spin’s Baltimore open data names Bird as operator and links to Bird’s app.',
-            '**Lime**, the green ones, which you can also book through the Uber app.',
+            '**Lime**, the green ones.',
           ],
         },
         'At 1:25 pm on 17 October 2026 the [map of Baltimore](map:us:md:Baltimore) showed about 1,900 Spin and 1,800 Lime scooters in the city: what was parked at that moment, not the fleets. E-bikes aren’t counted.',
@@ -30,7 +30,7 @@ const guide: Guide = {
     {
       heading: 'How much does a scooter cost in Baltimore?',
       blocks: [
-        'Spin and Lime publish no Baltimore prices, on their websites or in their open data: the app shows the price before you unlock. The City sets no fare, but its permit rules make every company offer:',
+        'Spin and Lime publish no Baltimore prices in their open data, and Spin none on its website: the app shows the price before you unlock. The City sets no fare, but its permit rules make every company offer:',
         {
           list: [
             'a way to pay in cash, and a way to ride without a smartphone;',
@@ -38,7 +38,7 @@ const guide: Guide = {
             'a discount when you end your ride in a BCDOT parking corral.',
           ],
         },
-        'Lime takes PayPal, prepaid debit cards and Uber gift cards bought for cash, at the same price, and unlocks by text message. Spin Access riders can unlock by text too, and buy credit with cash at Spin’s Baltimore office.',
+        'BCDOT’s page points to both plans, Spin Access and Lime Access. Spin Access riders can unlock by text message, and buy credit with cash, $10 at least, at Spin’s Baltimore office, 101 N Haven St. For Lime’s options, check its app.',
       ],
     },
     {
@@ -50,7 +50,7 @@ const guide: Guide = {
             caption: 'Shared e-scooter rules in Baltimore on 17 October 2026, and who sets them',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
-              ['Age', 'No state or City minimum; Spin and Lime require 18', 'Operators’ terms'],
+              ['Age', 'No state or City minimum; Spin requires 18', 'Spin’s terms'],
               ['Licence', 'None: the state counts an e-scooter as a bicycle, not a motor vehicle', 'Maryland §§ 11-104, 11-135, 16-101'],
               ['Helmet', 'Required under 16. The state only gives a warning; the City can fine $20', 'Maryland § 21-1207.1; City Code Art. 31 § 38-18'],
               ['Speed', '15 mph at most; 8 mph in BCDOT’s slow zones', 'City Code § 38-18; BCDOT permit rules'],
@@ -124,9 +124,9 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Riders took 1,623,111 trips in 2024**, a record, BCDOT reported: the median trip was 0.83 mile, and the average lasted 10 minutes 40 seconds.',
+            '**Riders took more than 1.3 million trips in 2023** on the City’s shared scooters and e-bikes, BCDOT reported, and about 110,000 in May 2024 alone.',
             '**The companies pay the City $0.10 for every rental**, under BCDOT’s rules.',
-            '**Lime Assist** brings an accessible vehicle to your door in Baltimore at no cost, and collects it 24 hours later.',
+            '**Lime came back in 2024 with adaptive vehicles** for riders with disabilities, and seated scooters, BCDOT said when it renewed the permits.',
           ],
         },
       ],
@@ -139,11 +139,11 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Lime or Spin scooter cost in Baltimore?',
-      answer: 'Neither company publishes its Baltimore rates: the app shows the price before you unlock. On a low income, Spin Access or Lime Access waive the unlock fee and cut at least 80% off at least four rides a day, a City requirement, and ending a ride in a BCDOT corral earns a discount.',
+      answer: 'Neither company publishes its Baltimore rates in its open data: the app shows the price before you unlock. On a low income, Spin Access or Lime Access waive the unlock fee and cut at least 80% off at least four rides a day, a City requirement, and ending a ride in a BCDOT corral earns a discount.',
     },
     {
       question: 'Do you need a helmet to ride an e-scooter in Maryland?',
-      answer: 'Only under 16: Maryland law requires one, enforced with a warning, and Baltimore’s City Code adds a $20 fine. Spin and Lime rent only to riders of 18 or over, and no law makes adults wear one.',
+      answer: 'Only under 16: Maryland law requires one, enforced with a warning, and Baltimore’s City Code adds a $20 fine. Spin rents only to riders of 18 or over, and no law makes adults wear one.',
     },
     {
       question: 'Can you ride a scooter at the Inner Harbor?',
@@ -165,13 +165,12 @@ const guide: Guide = {
     { title: 'Baltimore City Code, Article 1, § 41-14: Civil citation fines', url: 'https://codes.baltimorecity.gov/us/md/cities/baltimore/code/1/41-14' },
     { title: 'BCDOT: Baltimore City Policy API (zones, corrals and caps)', url: 'https://maps.populus.ai/baltimore/policies' },
     { title: 'City of Baltimore: Dockless Vehicle Program permit holders announced, 27 June 2024', url: 'https://www.baltimorecity.gov/transportation/news/city-of-baltimore-announces-dockless-vehicle-program-permit-holders' },
-    { title: 'BCDOT: Dockless Vehicle Program, to the Baltimore Metropolitan Council, March 2025 (PDF)', url: 'https://www.baltometro.org/sites/default/files/bmc_documents/committee/presentations/bpag/BPAG250318pres_Baltimore-Dockless-Vehicle-Program.pdf' },
-    { title: 'BCDOT: Promenade Bicycle Access Pilot Project, archived August 2023', url: 'https://web.archive.org/web/20230817024910/https://transportation.baltimorecity.gov/node/11028' },
+    { title: 'BCDOT: Promenade Bicycle Access Pilot Project (page since removed; archived August 2023)', url: 'https://web.archive.org/web/20230817024910/https://transportation.baltimorecity.gov/node/11028' },
     { title: 'Department of Recreation and Parks: Park Management and Use rules (PDF)', url: 'https://codes.baltimorecity.gov/us/md/cities/baltimore/cobra/attachments/22.08-Park_Management_and_Use.pdf' },
     { title: 'Maryland Transportation Article § 11-104: Bicycle', url: 'https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtr&section=11-104&enactments=false' },
     { title: 'Maryland Transportation Article § 21-1207.1: Helmets', url: 'https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtr&section=21-1207.1&enactments=false' },
     { title: 'Maryland Transportation Article § 21-902: Driving under the influence', url: 'https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtr&section=21-902&enactments=false' },
-    { title: 'Lime: Baltimore', url: 'https://www.li.me/locations/baltimore' },
+    { title: 'Spin: Terms of Service (US)', url: 'https://www.spin.app/policies/terms-us' },
     { title: 'Spin: Spin Access', url: 'https://www.spin.app/spin-access' },
     { title: 'MDOT MTA: Bikes, e-bikes and e-scooters on transit', url: 'https://www.mta.maryland.gov/bike' },
     { title: 'MDOT MTA: Bikes on MARC', url: 'https://www.mta.maryland.gov/MARCbikes' },
