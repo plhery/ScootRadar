@@ -21,7 +21,7 @@ in `screenshots/<locale>/`.
 | Privacy policy URL | https://scootradar.com/privacy |
 | Copyright | 2026 Paul-Louis Hery |
 | Version | 1.0 |
-| Devices | iPhone only (`TARGETED_DEVICE_FAMILY = 1`), iOS 26 or newer |
+| Devices | iPhone and iPad (`TARGETED_DEVICE_FAMILY = "1,2"`), iOS 26 or newer. iPhones keep the app upright; iPads turn it every way |
 | Export compliance | `ITSAppUsesNonExemptEncryption = NO` in the build: the app only uses HTTPS through Apple's APIs |
 | Sign-in for review | none: the app has no accounts |
 | Content rights | The app shows third-party content: public vehicle feeds (GBFS) published by operators and public authorities under open licences, credited in Settings › About |
@@ -62,12 +62,14 @@ links no third-party SDK.
 
 ## Screenshots
 
-iPhone only, portrait, PNG without alpha, one set for each listing language:
+Portrait, PNG without alpha, one set for each listing language:
 
 - `screenshots/<locale>/6.9/`: 1320×2868 (iPhone 17 Pro Max), for the large
   iPhones (`APP_IPHONE_67` in the API);
 - `screenshots/<locale>/6.3/`: the same frames scaled to 1206×2622 (iPhone 17
-  Pro), the size App Store Connect requires (`APP_IPHONE_61`).
+  Pro), the size App Store Connect requires (`APP_IPHONE_61`);
+- 2064×2752 (iPad Pro 13-inch), which App Store Connect requires since the app
+  runs on iPad: not made yet.
 
 Each frame, made on 20 October 2026, sets a headline on blue above a drawn
 iPhone showing the app with live data, and lifts the part of the screen the
