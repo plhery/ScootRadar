@@ -1444,7 +1444,12 @@ extension ScooterMapModelTests {
         ))
         let model = makeModel(api: api, clock: clock)
         model.updateViewport(zurichRegion, zoom: 16)
-        let loaded = await waitUntil { model.lastUpdated != nil && !model.isLoading }
+        // At once, instead of the map's fetch, which first waits 180 ms of real time.
+        model.refresh()
+        // Each wait asks the stub first, so it queues behind the request it waits for rather than
+        // looking 200 times before a busy CI simulator has run that request. The wait for the failed
+        // refresh below did not ask and ran out on CI on 22 and 23 Oct 2026; the one that asked passed.
+        let loaded = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
         XCTAssertTrue(loaded)
 
         // Just generated: the bays stay and the dock reads Live.
@@ -1468,7 +1473,7 @@ extension ScooterMapModelTests {
         await api.setFailure(.offline)
         clock.advance(60)
         model.autoRefreshIfNeeded()
-        let failed = await waitUntil { model.loadIssue != nil && !model.isLoading }
+        let failed = await waitUntil { await api.snapshot().calls == 3 && model.loadIssue != nil && !model.isLoading }
         XCTAssertTrue(failed)
         XCTAssertEqual(model.loadIssue, .refreshFailed(.offline, showing: receivedAt))
         XCTAssertEqual(model.mapScooters.count, 1)
@@ -1485,7 +1490,8 @@ extension ScooterMapModelTests {
         clock.advance(420)
         model.autoRefreshIfNeeded()
         let expired = await waitUntil {
-            model.loadIssue == .outOfDate(.offline, lastUpdate: receivedAt) && !model.isLoading
+            await api.snapshot().calls == 4
+                && model.loadIssue == .outOfDate(.offline, lastUpdate: receivedAt) && !model.isLoading
         }
         XCTAssertTrue(expired)
         XCTAssertTrue(model.mapScooters.isEmpty)
