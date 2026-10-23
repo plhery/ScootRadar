@@ -188,6 +188,7 @@ struct ScooterMapScreen: View {
                 perform: perform
             )
         }
+        .focusedSceneValue(\.scooterMenu, ScooterMenuBar.shown ? ScooterMenu(situation: keySituation, mapStyle: model.mapStyle, perform: perform) : nil)
         .background(WindowAppearance(style: model.appearance.interfaceStyle))
         .background(InterfaceOrientationProbe { model.setHeadingOrientation(ScooterHeadingPolicy.deviceOrientation(for: $0)) })
         .environment(\.locale, model.language.locale)
@@ -762,6 +763,16 @@ enum ScooterKeyCommand: CaseIterable, Hashable {
         }
     }
 
+    /// The look of the map it chooses, for ⌘1 to ⌘3.
+    var mapStyle: AppleMapStyle? {
+        switch self {
+        case .standardMap: .standard
+        case .quietMap: .quiet
+        case .satelliteMap: .satellite
+        default: nil
+        }
+    }
+
     /// What the keyboard's list of shortcuts calls it.
     func title(in situation: Situation) -> String {
         switch self {
@@ -826,6 +837,77 @@ private struct KeyCommandButtons: View {
         .frame(width: 0, height: 0)
         .opacity(0)
         .accessibilityHidden(true)
+    }
+}
+
+/// The menu bar of an iPad, and of a Mac running the iPad app, as in Maps:
+/// Settings in the app's menu, a Map menu, and the map's looks and the panel
+/// in View. The screen says what stands now, so an item is dimmed where its
+/// key would do nothing. The screen keeps its own key buttons as well: a
+/// phone has no menu bar, and where both answer a key they do the same
+/// thing. "/", ⌘= and Esc stay off the menus.
+enum ScooterMenuBar {
+    /// Whether the screen tells the menu bar what it can do. A phone's
+    /// menus stay dimmed and out of the way.
+    @MainActor static let shown = UIDevice.current.userInterfaceIdiom == .pad
+
+    /// The Map menu, in groups between dividers.
+    static let map: [[ScooterKeyCommand]] = [[.search, .nearMe], [.zoomIn, .zoomOut], [.filters]]
+
+    /// What View lists before its own items: the map's looks, then the panel.
+    static let view: [[ScooterKeyCommand]] = [[.standardMap, .quietMap, .satelliteMap], [.fold]]
+}
+
+/// The map screen as the menu bar finds it, published while it is in front.
+struct ScooterMenu {
+    let situation: ScooterKeyCommand.Situation
+    let mapStyle: AppleMapStyle
+    let perform: (ScooterKeyCommand) -> Void
+}
+
+extension FocusedValues {
+    @Entry var scooterMenu: ScooterMenu?
+}
+
+struct ScooterCommands: Commands {
+    @FocusedValue(\.scooterMenu) private var menu
+
+    var body: some Commands {
+        CommandGroup(replacing: .appSettings) {
+            item(.settings)
+        }
+        CommandMenu(String(localized: "Map")) {
+            items(ScooterMenuBar.map)
+        }
+        CommandGroup(before: .toolbar) {
+            items(ScooterMenuBar.view)
+            Divider()
+        }
+    }
+
+    private func items(_ groups: [[ScooterKeyCommand]]) -> some View {
+        ForEach(Array(groups.enumerated()), id: \.offset) { index, group in
+            if index > 0 { Divider() }
+            ForEach(group, id: \.self) { command in
+                item(command)
+            }
+        }
+    }
+
+    /// A look of the map is ticked while the map shows it.
+    @ViewBuilder
+    private func item(_ command: ScooterKeyCommand) -> some View {
+        let title = command.title(in: menu?.situation ?? .init(layout: .dock))
+        let stands = menu.map { ScooterKeyCommand.available(in: $0.situation).contains(command) } ?? false
+        if let style = command.mapStyle {
+            Toggle(title, isOn: Binding(get: { menu?.mapStyle == style }, set: { _ in menu?.perform(command) }))
+                .keyboardShortcut(command.key, modifiers: command.modifiers)
+                .disabled(!stands)
+        } else {
+            Button(title) { menu?.perform(command) }
+                .keyboardShortcut(command.key, modifiers: command.modifiers)
+                .disabled(!stands)
+        }
     }
 }
 

@@ -4358,11 +4358,27 @@ extension ScooterMapModelTests {
             let strings = try XCTUnwrap(
                 Bundle.main.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:))
             )
-            for key in ["Search", "Zoom in", "Zoom out", "Close", "Near me", "Filters", "Settings", "Collapse panel", "Expand panel"] {
+            for key in ["Search", "Zoom in", "Zoom out", "Close", "Near me", "Filters", "Settings", "Collapse panel", "Expand panel", "Map"] {
                 let name = strings.localizedString(forKey: key, value: "-", table: nil)
                 XCTAssertNotEqual(name, "-", "\(language): \(key)")
                 XCTAssertFalse(name.isEmpty, "\(language): \(key)")
             }
+        }
+    }
+
+    /// The menu bar lists each shortcut once, with Settings in the app's
+    /// menu; "/", ⌘= and Esc stand in for others or close, and stay off it.
+    func testTheMenuBarListsEveryShortcutButTheOnesThatStandInOnce() {
+        let listed = (ScooterMenuBar.map + ScooterMenuBar.view).flatMap { $0 } + [.settings]
+        XCTAssertEqual(Set(listed).count, listed.count, "\(listed)")
+        XCTAssertEqual(
+            Set(ScooterKeyCommand.allCases).subtracting(listed),
+            [.searchWithSlash, .zoomInWithoutShift, .close]
+        )
+        XCTAssertEqual(ScooterMenuBar.view.first?.compactMap(\.mapStyle), AppleMapStyle.allCases)
+        // A phone has no menu bar: the screen's own keys answer, as before.
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            XCTAssertFalse(ScooterMenuBar.shown)
         }
     }
 

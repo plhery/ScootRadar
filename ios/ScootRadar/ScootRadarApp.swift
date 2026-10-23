@@ -13,5 +13,6 @@ struct ScootRadarApp: App {
             ScooterMapScreen()
                 .tint(.blue)
         }
+        .commands { ScooterCommands() }
     }
 }
