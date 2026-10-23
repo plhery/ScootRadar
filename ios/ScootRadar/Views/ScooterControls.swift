@@ -1625,7 +1625,7 @@ private struct ScooterCard: View {
     private func figures(_ figures: [ScooterCardFigure]) -> some View {
         let cells = dynamicTypeSize.isAccessibilitySize
             ? AnyLayout(VStackLayout(spacing: 8))
-            : AnyLayout(HStackLayout(spacing: 8))
+            : AnyLayout(CardFigureRow())
 
         return cells {
             ForEach(figures) { figure in
@@ -1700,6 +1700,57 @@ private struct ScooterCard: View {
     }
 }
 
+/// The card's figures side by side in equal cells as tall as the tallest, as
+/// on every iPhone. In a window narrower than any iPhone's, such as an iPad's
+/// narrowest, three would cut what each measures short ("CHF, 10…"), so the
+/// third goes under the other two, at their width.
+struct CardFigureRow: Layout {
+    private static let spacing: CGFloat = 8
+
+    /// Whether three cells across `width` go two over one. A 375 pt iPhone's
+    /// card gives them 321 pt.
+    static func wraps(_ count: Int, across width: CGFloat?) -> Bool {
+        guard count == 3, let width else { return false }
+        return width < 300
+    }
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let width = proposal.width ?? subviews.reduce(Self.spacing * CGFloat(max(subviews.count - 1, 0))) {
+            $0 + $1.sizeThatFits(.unspecified).width
+        }
+        let heights = rows(of: subviews, across: width).map(\.height)
+        return CGSize(width: width, height: heights.reduce(0, +) + Self.spacing * CGFloat(max(heights.count - 1, 0)))
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        var y = bounds.minY
+        for row in rows(of: subviews, across: bounds.width) {
+            for (column, cell) in row.cells.enumerated() {
+                subviews[cell].place(
+                    at: CGPoint(x: bounds.minX + CGFloat(column) * (row.cellWidth + Self.spacing), y: y),
+                    proposal: ProposedViewSize(width: row.cellWidth, height: row.height)
+                )
+            }
+            y += row.height + Self.spacing
+        }
+    }
+
+    private struct Row {
+        let cells: Range<Int>
+        let cellWidth: CGFloat
+        let height: CGFloat
+    }
+
+    private func rows(of subviews: Subviews, across width: CGFloat) -> [Row] {
+        let ranges = Self.wraps(subviews.count, across: width) ? [0..<2, 2..<3] : [0..<subviews.count]
+        return ranges.map { cells in
+            let cellWidth = (width - Self.spacing * CGFloat(max(cells.count - 1, 0))) / CGFloat(max(cells.count, 1))
+            let height = cells.map { subviews[$0].sizeThatFits(ProposedViewSize(width: cellWidth, height: nil)).height }.max() ?? 0
+            return Row(cells: cells, cellWidth: cellWidth, height: height)
+        }
+    }
+}
+
 /// One figure of the scooter card: a large number with its unit, and what it
 /// measures under it.
 private struct CardFigureCell: View {
@@ -1709,6 +1760,7 @@ private struct CardFigureCell: View {
     var symbol: String? = nil
     /// The cell opens a menu: its label says so with a small mark.
     var opensMenu = false
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private static let shape = RoundedRectangle(cornerRadius: 16, style: .continuous)
 
@@ -1734,9 +1786,11 @@ private struct CardFigureCell: View {
                         .foregroundStyle(tint ?? ScooterPalette.dockQuiet)
                         .accessibilityHidden(true)
                 }
+                // With text larger than standard, two lines rather than
+                // "de dista…"; at the standard size it shrinks a little.
                 Text(figure.label)
                     .monospacedDigit()
-                    .lineLimit(1)
+                    .lineLimit(dynamicTypeSize > .large ? 2 : 1)
                     .minimumScaleFactor(0.8)
                 if opensMenu {
                     Image(systemName: "chevron.up.chevron.down")

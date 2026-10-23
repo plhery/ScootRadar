@@ -4382,6 +4382,26 @@ extension ScooterMapModelTests {
         }
     }
 
+    /// A 375 pt iPhone's card gives its figures 321 pt and keeps them side by
+    /// side; a 320 pt window's gives them 266 and puts the third under the
+    /// other two, so that the price keeps its ride length.
+    func testTheCardsFiguresGoTwoOverOneOnlyInAWindowNarrowerThanAPhone() {
+        XCTAssertFalse(CardFigureRow.wraps(3, across: 321))
+        XCTAssertTrue(CardFigureRow.wraps(3, across: 266))
+        XCTAssertFalse(CardFigureRow.wraps(2, across: 266))
+        XCTAssertFalse(CardFigureRow.wraps(3, across: nil))
+
+        func size(across width: CGFloat) -> CGSize {
+            ImageRenderer(content: CardFigureRow {
+                Color.red.frame(maxWidth: .infinity).frame(height: 50)
+                Color.green.frame(maxWidth: .infinity).frame(height: 60)
+                Color.blue.frame(maxWidth: .infinity).frame(height: 40)
+            }.frame(width: width)).uiImage?.size ?? .zero
+        }
+        XCTAssertEqual(size(across: 321), CGSize(width: 321, height: 60))
+        XCTAssertEqual(size(across: 266), CGSize(width: 266, height: 60 + 8 + 40))
+    }
+
     func testZoomingFromTheKeyboardAsksTheMapForAStepEachTime() {
         let model = ScooterMapModel(
             api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
