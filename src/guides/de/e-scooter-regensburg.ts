@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Regensburg: Preise, Abstellflächen in der Altstadt und was an Uni und Bahnhof gilt',
   lede: 'Einen E-Scooter in Regensburg leihst du ab 18 und ohne Führerschein, laut Stadt (Stand November 2025) bei Lime, Voi, Dott oder Zeus; unsere Karte zeigt nur Zeus. Zeus verlangte laut Datenfeed am 23. Oktober 2026 je nach Scooter 0 €, 0,50 € oder 1 € fürs Entsperren und immer 0,23 € pro Minute. In der Altstadt, auf den Wöhrden, in Stadtamhof und am Bahnhof stellst du einen Leih-Scooter seit Juli 2024 nur auf einer der rund 40 markierten Abstellflächen ab, und durch die Fussgängerzone fährst du bis Ende Februar 2027 nicht. Ein Nachtverbot nennen weder die Stadt noch Zeus.',
   published: '2026-10-23',
-  updated: '2026-10-23',
+  updated: '2026-10-24',
   city: 'de:Regensburg',
   sections: [
     {
@@ -74,12 +74,12 @@ const guide: Guide = {
             '**Radweg nehmen**, wo es einen gibt, auch wenn er für Radfahrer nicht vorgeschrieben ist, etwa am Hochweg, in der Puricellistrasse und an der Konrad-Adenauer-Allee. Gibt es einen Schutz- oder Radfahrstreifen, fährst du darauf, sonst auf der Fahrbahn, nie auf dem Gehweg.',
             '**Keine Fussgängerzone:** Die Zusatzschilder «Radfahrer frei» in der Altstadt erlauben nur Fahrräder.',
             '**Wege in Grünanlagen** sind in der Regel tabu: Sie sind als Fussweg mit «Radfahrer frei» oder als für Kraftfahrzeuge gesperrt beschildert.',
-            '**Einbahnstrassen**, die für Radfahrer in Gegenrichtung offen sind, sind es für E-Scooter nicht.',
+            '**Einbahnstrassen**, die für Radfahrer in Gegenrichtung freigegeben sind, darfst du nach der Strassenverkehrs-Ordnung auch mit dem E-Scooter gegen die Fahrtrichtung fahren, auch wenn die Stadt auf ihrer Seite noch das Gegenteil schreibt.',
             '**Wohnverkehrsstrassen** wie die Gesandtenstrasse sind als gemeinsame Geh- und Radwege beschildert: Dort darfst du fahren, musst aber die Einbahnregeln beachten, etwa in Ludwigstrasse, Gesandtenstrasse und Rote-Hahnen-Gasse.',
           ],
         },
         'Zur Steinernen Brücke sagt die Stadt auf dieser Seite nichts: Fahren darfst du dort, wenn die Schilder es erlauben. Einen Leih-Scooter stellst du auf der Brücke nicht ab, denn sie liegt in der Verbotszone und hat keine Fläche.',
-        'Ab 1. März 2027 gilt «Radverkehr frei» auch für E-Scooter: Auf so beschilderten Gehwegen und in Fussgängerzonen fährst du dann im Schritttempo, und so freigegebene Einbahnstrassen darfst du auch in Gegenrichtung nehmen. Die Stadt kann E-Scooter per Schild trotzdem ausschliessen. Den Radweg musst du dann nur noch nehmen, wo ein blaues Radwegschild steht.',
+        'Ab 1. März 2027 gilt «Radverkehr frei» auch für E-Scooter: Auf so beschilderten Gehwegen und in Fussgängerzonen fährst du dann im Schritttempo. Die Stadt kann E-Scooter per Schild trotzdem ausschliessen. Den Radweg musst du dann nur noch nehmen, wo ein blaues Radwegschild steht.',
       ],
     },
     {
@@ -174,6 +174,7 @@ const guide: Guide = {
     { title: 'Mobilitätsreferat München: Antwort zu «E-Scooter-Chaos beenden» (1. Juli 2026)', url: 'https://risi.muenchen.de/risi/dokument/v/9788061' },
     { title: 'Bundesgesetzblatt 2026 I Nr. 32: Änderung der StVO und der eKFV', url: 'https://recht.bund.de/bgbl/1/2026/32/VO.html' },
     { title: 'Bundesverkehrsministerium: FAQ zur Novelle der Elektrokleinstfahrzeuge-Verordnung', url: 'https://www.bmv.de/SharedDocs/DE/Artikel/StV/Strassenverkehr/elektrokleinstfahrzeuge-verordnung-faq-novelle.html' },
+    { title: 'Strassenverkehrs-Ordnung, Anlage 2 (Vorschriftzeichen), aktuelle Fassung', url: 'https://www.gesetze-im-internet.de/stvo_2013/anlage_2.html' },
     { title: 'Zeus: Datenfeed Regensburg (GBFS)', url: 'https://zeus.city/api/v1/mds/gbfs/regensburg/gbfs.json' },
     { title: 'Zeus: Preise und Pässe', url: 'https://zeusscooters.com/' },
     { title: 'Zeus: Golden Scooters (September 2025)', url: 'https://zeusscooters.com/2025/09/make-every-hour-golden-with-zeus-scooters/' },

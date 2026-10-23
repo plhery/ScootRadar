@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter-Regeln in Deutschland: was heute gilt und was sich am 1. März 2027 ändert',
   lede: 'Die E-Scooter-Regeln in Deutschland ändern sich in zwei Schritten: Seit dem 1. April 2026 gelten neue Bauvorschriften für neue Fahrzeuge, ab dem 1. März 2027 neue Verkehrsregeln und Bussgelder. Heute gilt: Ab 14 Jahren darfst du ohne Führerschein fahren, auf dem Radweg statt auf dem Gehweg, nur allein und mit denselben Promillegrenzen wie im Auto. Leih-Scooter bekommst du bei Lime, Voi, Bolt, Dott und Zeus erst ab 18.',
   published: '2026-10-12',
-  updated: '2026-10-18',
+  updated: '2026-10-24',
   sections: [
     {
       heading: 'E-Scooter-Regeln heute und ab 1. März 2027',
@@ -32,7 +32,7 @@ const guide: Guide = {
               ['Gehweg', 'Verboten, ausser mit «Elektrokleinstfahrzeuge frei», dann im Schritttempo', 'Auch «Radverkehr frei» gibt ihn frei, im Schritttempo'],
               ['Fussgängerzone', 'Verboten, ausser mit «Elektrokleinstfahrzeuge frei»', 'Auch mit «Radverkehr frei» erlaubt, im Schritttempo'],
               ['Radweg', 'Pflicht, wo es einen gibt, auch Radfahr- und Schutzstreifen', 'Pflicht wie für Fahrräder: wo ein blaues Radwegschild steht'],
-              ['Einbahnstrasse in Gegenrichtung', 'Nur mit «Elektrokleinstfahrzeuge frei»', 'Auch mit «Radverkehr frei»'],
+              ['Einbahnstrasse in Gegenrichtung', 'Erlaubt, wo «Radverkehr frei» sie für Radfahrende öffnet', 'Unverändert'],
               ['Nebeneinander fahren', 'Verboten', 'Erlaubt, wenn niemand behindert wird'],
               ['Grünpfeil für Radfahrende', 'Gilt nicht für E-Scooter', 'Gilt auch für E-Scooter'],
             ],
@@ -190,6 +190,7 @@ const guide: Guide = {
   ],
   sources: [
     { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV), aktuelle Fassung', url: 'https://www.gesetze-im-internet.de/ekfv/BJNR075610019.html' },
+    { title: 'Strassenverkehrs-Ordnung, Anlage 2 (Vorschriftzeichen), aktuelle Fassung', url: 'https://www.gesetze-im-internet.de/stvo_2013/anlage_2.html' },
     { title: 'Verordnung zur Änderung der eKFV, BGBl. 2026 I Nr. 32', url: 'https://recht.bund.de/bgbl/1/2026/32/VO.html' },
     { title: 'Bundesministerium für Verkehr: Fragen und Antworten zur eKFV-Novelle', url: 'https://www.bmv.de/SharedDocs/DE/Artikel/StV/Strassenverkehr/elektrokleinstfahrzeuge-verordnung-faq-novelle.html' },
     { title: 'Bundesministerium für Verkehr: Fragen und Antworten zu Elektrokleinstfahrzeugen', url: 'https://www.bmv.de/SharedDocs/DE/Artikel/StV/Strassenverkehr/elektrokleinstfahrzeuge-verordnung-faq.html' },
