@@ -166,6 +166,7 @@ describe('the command', () => {
     const code = await run(args, { fetchImpl: io.fetchImpl, log: line => lines.push(line), cwd, wait: async ms => waits.push(ms) });
     return { code, lines, waits, ...io };
   };
+  const staleLine = (/** @type {number} */ read) => `${origin}/sitemap.xml is stale, reading again in 5 s (read ${read} of ${STALE_READS}).`;
 
   it('starts the ref at the live sitemap, submitting nothing, where origin has none', async () => {
     const { clone, atOrigin } = repository();
@@ -213,9 +214,10 @@ describe('the command', () => {
     const { clone } = repository();
     const earlier = sitemap([page(`${origin}/`)]);
     await command([`--since=${ref}`, origin], earlier, 200, clone);
-    const { code, gets, waits, posts } = await command([`--since=${ref}`, origin], live, 200, clone, [earlier, earlier]);
+    const { code, lines, gets, waits, posts } = await command([`--since=${ref}`, origin], live, 200, clone, [earlier, earlier]);
     expect(code).toBe(0);
     expect([gets.length, waits]).toEqual([3, [5000, 5000]]);
+    expect(lines.slice(0, 2)).toEqual([staleLine(1), staleLine(2)]);
     expect(posts.map(post => post.body.urlList)).toEqual([[`${origin}/guides/a`, `${origin}/guides/new`]]);
     expect(readSubmitted(ref, clone)?.xml).toBe(live);
   });
@@ -228,7 +230,10 @@ describe('the command', () => {
     const stale = Array(STALE_READS).fill(earlier);
     const { code, lines, gets, waits, posts } = await command([`--since=${ref}`, origin], live, 200, clone, stale);
     expect([code, gets.length, waits.length, posts.length]).toEqual([1, STALE_READS, STALE_READS - 1, 0]);
-    expect(lines).toEqual([`${origin}/sitemap.xml could not be read: still stale after ${STALE_READS} reads`]);
+    expect(lines).toEqual([
+      ...Array.from({ length: STALE_READS - 1 }, (_, index) => staleLine(index + 1)),
+      `${origin}/sitemap.xml could not be read: still stale after ${STALE_READS} reads`,
+    ]);
     expect(atOrigin()).toBe(start);
   });
 

@@ -176,17 +176,17 @@ sitemap with the one IndexNow last took, which the ref `refs/indexnow/submitted`
 keeps (a commit of `sitemap.xml`; `git fetch origin refs/indexnow/submitted` and
 `git log -p FETCH_HEAD` show it). Right after a deploy, Next.js can answer with
 the sitemap of the build before, marked `x-nextjs-cache: STALE`, while it
-renders the new one: the job reads it again every 5 seconds, up to 10 times. The
-ref moves to the live sitemap only once IndexNow takes every page, so a page a
-deploy could not send, because the build was not live in time, its sitemap
-stayed stale or IndexNow refused, goes with the next deploy. None of these fails
-the deploy; each shows as a warning. To send them sooner, run `node
-scripts/indexnow.mjs --since=refs/indexnow/submitted https://scootradar.com`
-once the site is live (`--dry-run` lists the pages and sends and moves nothing;
-`--all` submits every page of the sitemap and leaves the ref alone). Where the
-ref is missing, the job sends nothing and starts it at the live sitemap. The key
-is public by design, in the file of its name at the root of `public`, which
-Workers serves before `worker.ts` runs.
+renders the new one: the job reads it again every 5 seconds, up to 10 times, and
+logs each such read. The ref moves to the live sitemap only once IndexNow takes
+every page, so a page a deploy could not send, because the build was not live in
+time, its sitemap stayed stale or IndexNow refused, goes with the next deploy.
+None of these fails the deploy; each shows as a warning. To send them sooner,
+run `node scripts/indexnow.mjs --since=refs/indexnow/submitted
+https://scootradar.com` once the site is live (`--dry-run` lists the pages and
+sends and moves nothing; `--all` submits every page of the sitemap and leaves
+the ref alone). Where the ref is missing, the job sends nothing and starts it at
+the live sitemap. The key is public by design, in the file of its name at the
+root of `public`, which Workers serves before `worker.ts` runs.
 
 To deploy a commit of `main` without waiting, push it to the branch, for
 example `git push origin <commit>:production-cache`. A branch only moves

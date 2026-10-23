@@ -138,12 +138,13 @@ const sleep = (/** @type {number} */ ms) => new Promise(resolve => setTimeout(re
 
 /**
  * The live sitemap's text. A stale one is read again, STALE_WAIT_MS apart, until Next.js serves
- * the one it rendered for the new build.
+ * the one it rendered for the new build; each such read is logged.
  * @param {string} origin
  * @param {typeof fetch} fetchImpl
  * @param {(ms: number) => Promise<unknown>} wait
+ * @param {(line: string) => void} log
  */
-async function readSitemap(origin, fetchImpl, wait) {
+async function readSitemap(origin, fetchImpl, wait, log) {
   for (let read = 1; ; read += 1) {
     const response = await fetchImpl(new URL('/sitemap.xml', origin).href, {
       headers: { 'Cache-Control': 'no-cache' },
@@ -153,6 +154,7 @@ async function readSitemap(origin, fetchImpl, wait) {
     if (response.headers.get('x-nextjs-cache')?.toUpperCase() !== 'STALE') return response.text();
     await response.body?.cancel().catch(() => {});
     if (read === STALE_READS) throw new Error(`still stale after ${STALE_READS} reads`);
+    log(`${origin}/sitemap.xml is stale, reading again in ${STALE_WAIT_MS / 1000} s (read ${read} of ${STALE_READS}).`);
     await wait(STALE_WAIT_MS);
   }
 }
@@ -232,7 +234,7 @@ export async function run(args, { fetchImpl = fetch, log = console.log, cwd = pr
   }
   let xml;
   try {
-    xml = await readSitemap(origin, fetchImpl, wait);
+    xml = await readSitemap(origin, fetchImpl, wait, log);
   } catch (error) {
     log(`${origin}/sitemap.xml could not be read: ${reason(error)}`);
     return 1;
