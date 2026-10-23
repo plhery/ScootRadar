@@ -143,7 +143,16 @@ in Nantes, Lime in New York, Lime and Spin in San Francisco, and, from the
 city's or programme's page, Lime in Colorado Springs, Lime and Spin in Durham,
 Spin in Raleigh, Fort Collins and Davis, and Bird in Windsor. Bird publishes no
 prices on its sites, and Lime only for New York and San Francisco, so most of
-their systems still show none. The weekly
+their systems still show none.
+
+A listed price can also be for some days of the week only, where an operator
+charges differently on them and its feed gives one price all week: on those
+days it goes before the feed's price. Beryl charges £1 and 22p a minute for its
+scooters in Brighton and Hove on Saturdays and Sundays, by its Brighton pricing
+guide and the council's trial page, and 20p on weekdays, which is all its feed
+gives; so at weekends the card shows 22p, "published price, checked 23 Oct".
+
+The weekly
 [catalog check](.github/workflows/catalog-check.yml) runs
 `npm run check:listed-prices`, which fails once a price was read more than 90
 days ago or its page is gone; the map stops showing a price 180 days after it

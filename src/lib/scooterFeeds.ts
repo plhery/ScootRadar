@@ -427,8 +427,9 @@ function toVehicle(
     ? Math.round(haversineM(query.origin[0], query.origin[1], lat, lng) * 10) / 10
     : null;
   const planId = raw.pricing_plan_id ?? type?.default_pricing_plan_id ?? scooterPlanId;
-  // Where the feed prices none, as Lime's, Bird's and Spin's, the operator's listed price.
-  const pricing = (planId ? plans.pricing.get(planId) : undefined) ?? listedPricing(systemId, lat, lng, Date.now());
+  // Where the feed prices none, as Lime's, Bird's and Spin's, the operator's listed price; and on
+  // the days the operator charges what its feed doesn't say, as Beryl in Brighton at weekends.
+  const pricing = listedPricing(systemId, lat, lng, Date.now(), planId ? plans.pricing.get(planId) : undefined);
   if (planId && !plans.listed.has(planId)) unlisted?.add(planId);
 
   return {

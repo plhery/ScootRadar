@@ -1,5 +1,6 @@
 import catalog from '../../data/listed-prices.json';
 import { boundsContainPoint } from '@/lib/geo';
+import { WEEKDAYS, localClock } from '@/lib/rentalCurfews';
 import type { MapBounds, RidePricing } from '@/lib/types';
 
 // Prices for the systems whose feeds publish none, such as Lime's, Bird's and
@@ -7,13 +8,22 @@ import type { MapBounds, RidePricing } from '@/lib/types';
 // data/listed-prices.json. Their scooters get their town's price with the day
 // it was checked, which the card shows. An entry is dropped once it is
 // staleAfterDays old; the weekly catalog check (scripts/check-listed-prices.mjs)
-// asks for a recheck well before.
+// asks for a recheck well before. An entry for some days of the week goes before
+// the feed's own price on those days, which a feed can't vary by day.
 
 export interface ListedPrice {
   /** The systems this price is for, by catalog id: "lime_us_chicago". */
   systems: string[];
   /** Where a system's towns charge differently: the part of it this price is for. */
   bounds?: MapBounds;
+  /**
+   * The days this price is for, where the operator charges differently on them and its feed gives
+   * the same price every day: Beryl's Brighton feed gives its weekday 20p at weekends too. On those
+   * days it goes before the feed's price.
+   */
+  days?: (typeof WEEKDAYS)[number][];
+  /** The zone whose days those are, "Europe/London"; given with days. */
+  timeZone?: string;
   currency: string;
   unlock_fee_minor_units: number;
   minute_fee_minor_units: number;
@@ -40,9 +50,14 @@ export function listedPriceAge(entry: Pick<ListedPrice, 'checked'>, now: number)
   return Math.floor((now - Date.parse(`${entry.checked}T00:00:00Z`)) / DAY_MS);
 }
 
-type ListedPriceLookup = (systemId: string, lat: number, lng: number, now: number) => RidePricing | undefined;
+type ListedPriceLookup = (
+  systemId: string, lat: number, lng: number, now: number, feedPricing?: RidePricing
+) => RidePricing | undefined;
 
-/** Looks up a scooter's listed price among those entries, leaving out any older than staleAfterDays. */
+/**
+ * Looks up a scooter's price among those entries, leaving out any older than staleAfterDays: its
+ * listed price for the day, else the feed's, else its listed price for every day.
+ */
 export function listedPriceLookup(entries: ListedPrice[], staleAfterDays: number): ListedPriceLookup {
   const bySystem = new Map<string, { entry: ListedPrice; pricing: RidePricing }[]>();
   for (const entry of entries) {
@@ -61,11 +76,14 @@ export function listedPriceLookup(entries: ListedPrice[], staleAfterDays: number
       bySystem.set(system, prices);
     }
   }
-  return (systemId, lat, lng, now) => {
-    const match = bySystem.get(systemId)?.find(({ entry }) => !entry.bounds || boundsContainPoint(entry.bounds, lat, lng));
-    return match && listedPriceAge(match.entry, now) <= staleAfterDays ? match.pricing : undefined;
+  return (systemId, lat, lng, now, feedPricing) => {
+    const here = bySystem.get(systemId)?.filter(({ entry }) => !entry.bounds || boundsContainPoint(entry.bounds, lat, lng)) ?? [];
+    const today = here.find(({ entry }) => entry.days?.includes(WEEKDAYS[localClock(now, entry.timeZone ?? 'UTC').weekday]));
+    const match = today ?? (feedPricing ? undefined : here.find(({ entry }) => !entry.days));
+    if (!match) return feedPricing;
+    return listedPriceAge(match.entry, now) <= staleAfterDays ? match.pricing : feedPricing;
   };
 }
 
-/** The listed price for a scooter of that system at that point, unless it is too old to show. */
+/** The price for a scooter of that system at that point, given the feed's, as listedPriceLookup says. */
 export const listedPricing = listedPriceLookup(LISTED_PRICES, STALE_AFTER_DAYS);

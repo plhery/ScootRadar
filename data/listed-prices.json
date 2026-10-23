@@ -1,5 +1,5 @@
 {
-  "about": "Prices for the systems whose feeds publish none, copied by hand from the operator's public price list, or from the city's where the operator publishes none. Where the operator gives a range a minute, `minute_fee_minor_units` is its lowest and `minute_fee_from` is true, and the card says \"from\". A fee charged on every ride, such as San Francisco's permit fee, goes with the unlock fee. `checked` is the day the price was last read at `url`, and `quote` is what the page said. The map shows an entry's price until it is `staleAfterDays` old; the weekly catalog check fails from `recheckAfterDays`, so that someone reads the page again and updates the price and the day.",
+  "about": "Prices for the systems whose feeds publish none, copied by hand from the operator's public price list, or from the city's where the operator publishes none. An entry with `days` (\"sat\", \"sun\", told by the clock of `timeZone`) is the price on those days only, and goes before the feed's own price then, for an operator that charges differently on them while its feed gives one price all week. Where the operator gives a range a minute, `minute_fee_minor_units` is its lowest and `minute_fee_from` is true, and the card says \"from\". A fee charged on every ride, such as San Francisco's permit fee, goes with the unlock fee. `checked` is the day the price was last read at `url`, and `quote` is what the page said. The map shows an entry's price until it is `staleAfterDays` old; the weekly catalog check fails from `recheckAfterDays`, so that someone reads the page again and updates the price and the day.",
   "recheckAfterDays": 90,
   "staleAfterDays": 180,
   "prices": [
@@ -179,6 +179,24 @@
       "url": "https://www.citywindsor.ca/residents/recreation/outdoor-recreation/cycle-windsor/Bird-E-Scooter-and-E-Bike-Share-Program",
       "quote": "The cost to rent one of Bird's e-scooters is $1.15 to unlock the device and $0.42 per minute.",
       "checked": "2026-10-18"
+    },
+    {
+      "systems": [
+        "beryl_gb_brighton"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "timeZone": "Europe/London",
+      "currency": "GBP",
+      "unlock_fee_minor_units": 100,
+      "minute_fee_minor_units": 22,
+      "plus_tax": false,
+      "source": "operator",
+      "url": "https://help-bikes.beryl.cc/en/articles/11654747-brighton-pricing-guide",
+      "quote": "On the Weekend: £1 unlock fee … 22p per minute - e-Scooter",
+      "checked": "2026-10-23"
     }
   ]
 }

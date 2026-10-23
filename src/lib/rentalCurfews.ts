@@ -47,7 +47,7 @@ function minutesOfDay(time: string): number {
 const clocks = new Map<string, Intl.DateTimeFormat>();
 
 /** The wall clock of the zone at that instant: minutes since midnight, and the day (0 for Monday). */
-function localClock(time: number, timeZone: string): { minutes: number; weekday: number } {
+export function localClock(time: number, timeZone: string): { minutes: number; weekday: number } {
   let clock = clocks.get(timeZone);
   if (!clock) {
     clock = new Intl.DateTimeFormat('en-GB', {

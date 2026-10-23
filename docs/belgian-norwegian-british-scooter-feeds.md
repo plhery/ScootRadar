@@ -174,8 +174,11 @@ directory.
   declared ttl of 120 s. It was 5–12 minutes old on every read, which leaves
   about three minutes before the fifteen-minute cut-off. Its vehicles carry
   range but no battery level, rental link or pricing plan.
-- **Prices** show for every operator but Beryl, which links no plan to its
-  vehicles. Ryde and Dott start their per-minute band at minute 1, while their
+- **Prices** show for every operator. Beryl links no plan to its vehicles, so
+  its scooters take the "Pay As You Ride" scooter plan each town's feed lists
+  (`unlinkedScooterPlan`). Brighton's feed gives the weekday 20p every day, but
+  Beryl charges 22p at weekends there, so a listed price
+  (`data/listed-prices.json`) gives 22p on Saturdays and Sundays. Ryde and Dott start their per-minute band at minute 1, while their
   descriptions charge every minute; the parser reads it that way, so a ride
   estimate is at most one minute's fee above the letter of the band.
 - **Night bans:** most Norwegian towns ban renting at night (see

@@ -305,6 +305,36 @@ describe('German and Italian scooter coverage', () => {
     expect(unsure.vehicles).toHaveLength(1);
     expect(unsure.vehicles[0].pricing).toBeUndefined();
   });
+  it('prices Beryl\'s Brighton scooters at 22p a minute at weekends, which its feed gives as its weekday 20p', async () => {
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'beryl_gb_brighton')!;
+    const base = new URL('.', system.discoveryUrl).toString();
+    const scooter = { bike_id: 'one', is_reserved: false, is_disabled: false, vehicle_type_id: 'scooter', lat: 50.8243, lon: -0.1427 };
+    vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+      if (url === system.discoveryUrl) return response({ data: { en: { feeds: ['vehicle_types', 'free_bike_status', 'system_pricing_plans']
+        .map(name => ({ name, url: `${base}${name}.json` })) } } });
+      if (url === `${base}vehicle_types.json`) return response({ data: { vehicle_types: [
+        { vehicle_type_id: 'scooter', form_factor: 'scooter', propulsion_type: 'electric', name: 'Beryl e-Scooter' }] } });
+      if (url === `${base}free_bike_status.json`) return response({ last_updated: Math.floor(Date.now() / 1000), data: { bikes: [scooter] } });
+      // As Beryl's Brighton feed gives it every day.
+      if (url === `${base}system_pricing_plans.json`) return response({ data: { plans: [{ plan_id: '1147-escooter', name: 'Pay As You Ride',
+        currency: 'GBP', price: 1, is_taxable: false, per_min_pricing: [{ start: 0, rate: 0.2, interval: 1, vehicle_type_id: 'escooter' }] }] } });
+      throw new Error(`Unexpected upstream ${url}`);
+    }));
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      const priced = async (iso: string) => {
+        vi.setSystemTime(new Date(iso));
+        upstreamJsonCache.clear();
+        const result = await fetchScooters({ bounds: system.bounds, minBattery: 0, providers: new Set(['beryl']) });
+        return result.vehicles[0]?.pricing;
+      };
+      expect(await priced('2026-10-23T12:00:00Z')).toEqual({ currency: 'GBP', unlock_fee_minor_units: 100, minute_fee_minor_units: 20 });
+      expect(await priced('2026-10-24T12:00:00Z')).toEqual({ currency: 'GBP', unlock_fee_minor_units: 100, minute_fee_minor_units: 22,
+        listed_on: '2026-10-23' });
+    } finally {
+      vi.useRealTimers();
+    }
+  });
   it('reads Hoppy Rijeka\'s GBFS 3.0 feed: EUR 0 to start and EUR 0.19 a minute, range only, and a link to each scooter', async () => {
     const system = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'hoppy_hr_rijeka')!;
     expect(system).toMatchObject({ country: 'HR', city: 'Rijeka' });
