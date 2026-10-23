@@ -10,13 +10,13 @@ const guide: Guide = {
   headline: 'E-scooters in San Antonio: Bird and Veo, what a ride costs, the rules and where you can’t ride',
   lede: 'E-scooters in San Antonio come from two companies, Bird and Veo, each allowed up to 1,000 vehicles under City contracts since October 2023; the City sought new bids in 2026, so the line-up may change. On 22 October 2026 a Veo cost $1 to unlock and $0.43 a minute plus tax, stand-up or seated; Bird publishes no prices, so check its app. The City Code sets the riding age at 16, bans riding on sidewalks and keeps scooters off the River Walk, Alamo Plaza, parks and trails.',
   published: '2026-10-22',
-  updated: '2026-10-22',
+  updated: '2026-10-23',
   city: 'us:tx:San Antonio',
   sections: [
     {
       heading: 'Which e-scooter apps work in San Antonio?',
       blocks: [
-        'The City’s Downtown Operations department runs the programme. Its contracts with Bird and Veo began on 1 October 2023 and cap each company at 1,000 vehicles, 2,000 in all; in November 2025 the City Council extended them by a year, to 30 September 2026, City staff said. In May 2026 the City sought new bids (RFP 26-077) from two operators with 1,000 vehicles each. We found no new contract on a Council agenda by 21 October, and both companies were still running on 22 October 2026: check the City’s dockless vehicles page for any change.',
+        'The City’s Center City Development and Operations department runs the programme. Its contracts with Bird and Veo began on 1 October 2023 and cap each company at 1,000 vehicles, 2,000 in all; in November 2025 the City Council extended them by a year, to 30 September 2026, City staff said. In May 2026 the City sought new bids (RFP 26-077) from two operators with 1,000 vehicles each. We found no new contract on a Council agenda by 21 October, and both companies were still running on 22 October 2026: check the apps for any change.',
         {
           list: [
             '**Bird**: stand-up scooters in the Bird app, under contract with the City since January 2020.',
@@ -25,7 +25,7 @@ const guide: Guide = {
           ],
         },
         'At 14:25 on 17 October 2026 the [San Antonio map](map:us:tx:San Antonio) showed about 850 Bird and 295 Veo scooters: what was on the map at that moment, not the fleets. The map shows stand-up scooters only, so Veo’s seated scooters, which its open data lists as bicycles, aren’t on it; before dawn on 22 October Veo listed about 640 seated scooters and 310 stand-up ones.',
-        '**Visiting?** Install the Bird or Veo app and add a payment card before you set out. If something goes wrong, the City lists both companies’ help lines: Bird 1-855-237-9944, Veo 1-855-836-2256. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
+        '**Visiting?** Install the Bird or Veo app and add a payment card before you set out. If something goes wrong, Veo’s help line is 1-855-836-2256 and Bird’s support address is hello@bird.co. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
@@ -45,14 +45,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Both companies have cheaper plans for eligible riders, which the City listed on its dockless vehicles page on 22 October 2026:',
-        {
-          list: [
-            '**Bird Community Pricing**: half price on the unlock and per-minute fees for people on low incomes, seniors, Pell Grant recipients, and staff of approved nonprofits.',
-            '**Bird Access**: two free rides a day of up to 30 minutes each, paying only a $0.50 unlock fee.',
-            '**Veo Access**: $5 a month for no unlock fees and 30 free minutes a day, then $0.20 a minute.',
-          ],
-        },
+        'Riders on lower incomes can sign up for free or cheaper trips through the City’s equity programmes with the two companies, City staff told a Council committee in October 2025: ask in the app. **Bird Community & Access Pricing** discounts rides for people aged 65 or over, US veterans, Medicaid or SNAP recipients and people on income-based utility discounts.',
       ],
     },
     {
@@ -110,7 +103,7 @@ const guide: Guide = {
             'trails, creekways, plazas and parks, the River Walk included, and bike-share docks.',
           ],
         },
-        'A company must move a scooter parked in a banned spot or blocking an ADA ramp within an hour of being told, and fix other faults within two hours; after that the City may impound it and charge the company $100. Bird asks for a photo when you park and says blocking access “is subject to fees”. Report a scooter in the way to 311 (210-207-6000).',
+        'A company must move a scooter parked in a banned spot or blocking an ADA ramp within an hour of being told, and fix other faults within two hours; after that the City may impound it and charge the company $100. Bird asks for a photo when you park and says blocking access “is subject to fees”. To report a scooter in the way, call the 24-hour number the City Code makes each company put on every scooter.',
       ],
     },
     {
@@ -125,7 +118,7 @@ const guide: Guide = {
     {
       heading: 'Can you ride a scooter at night in San Antonio?',
       blocks: [
-        'Yes. The City banned scooter rides between 11 pm and 6 am from February 2019 until December 2019, when the City Council lifted the curfew, at first for a trial, with the contracts that began in January 2020. Neither the City Code nor the City’s dockless vehicles page sets night hours today; at 4 am on 22 October 2026 Veo listed about 950 vehicles available, seated ones included, and Bird about 860 scooters.',
+        'Yes. The City banned scooter rides between 11 pm and 6 am from February 2019 until December 2019, when the City Council lifted the curfew, at first for a trial, with the contracts that began in January 2020. The City Code sets no night hours today; at 4 am on 22 October 2026 Veo listed about 950 vehicles available, seated ones included, and Bird about 860 scooters.',
       ],
     },
     {
@@ -133,7 +126,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Riders took 5,176,583 trips** from 1 January 2020 to 18 October 2026, the City’s dashboard says, and almost 90% of them started in Council District 1, which takes in downtown.',
+            '**Riders took 5,176,583 trips** from 1 January 2020 to 18 October 2026, San Antonio’s public shared-mobility dashboard says, and almost 90% of them started in Council District 1, which takes in downtown.',
             '**The river swallowed dozens of scooters.** When the City drained the downtown channel in January 2020, crews pulled “dozens” of sunken scooters from the riverbed.',
             '**San Antonio once had about 16,000 permitted scooters** from seven companies, in 2019. Today’s cap is 2,000.',
             '**In Texas law a scooter can have a seat.** The Transportation Code defines a motor-assisted scooter as having a deck to stand or sit on, which is why Veo’s seated Cosmo counts as one.',
@@ -169,12 +162,12 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'City of San Antonio: Dockless Vehicles', url: 'https://www.sa.gov/Directory/Departments/DTOPS/Permits-Policies/Dockless-Vehicles' },
-    { title: 'San Antonio City Code, Chapter 19, Article XIX: Motor-assisted scooters, electric bicycles and bicycles equipped with GPS', url: 'https://library.municode.com/tx/san_antonio/codes/code_of_ordinances?nodeId=PTIICO_CH19MOVETR_ARTXIXMOSISCELBIBIEQGP' },
+    { title: 'City of San Antonio: City Code, Chapter 19, Article XIX: Motor-assisted scooters, electric bicycles and bicycles equipped with GPS (RFP 22-123, Exhibit 10, PDF), 2022', url: 'https://webapp1.sanantonio.gov/RFPFiles/RFP_4944_202209300813060.pdf' },
+    { title: 'City of San Antonio: Transportation and Infrastructure Committee, 7 October 2025 (video)', url: 'https://sanantoniotx.new.swagit.com/videos/357519' },
     { title: 'City of San Antonio: City Council A Session, 13 November 2025, item 15', url: 'https://sanantoniotx.new.swagit.com/events/43093' },
     { title: 'City of San Antonio: RFP 26-077, Dockless Vehicle Operations on City Right-of-Way (PDF), May 2026', url: 'https://webapp1.sanantonio.gov/RFPFiles/RFP_6189_202605130658060.pdf' },
     { title: 'City of San Antonio: Audit and Accountability Committee, 6 May 2026 (video)', url: 'https://sanantoniotx.new.swagit.com/videos/386063' },
-    { title: 'City of San Antonio: Micromobility public dashboard', url: 'https://app.populus.ai/san_antonio/public/routes' },
+    { title: 'San Antonio Shared Mobility: public dashboard', url: 'https://app.populus.ai/san_antonio/public/routes' },
     { title: 'Texas Transportation Code, Chapter 551', url: 'https://statutes.capitol.texas.gov/Docs/TN/htm/TN.551.htm' },
     { title: 'Bird: Terms of service', url: 'https://www.bird.co/terms/' },
     { title: 'Bird: How to ride', url: 'https://www.bird.co/how/' },

@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'E-scooters in Seattle 2026: Lime, prices, helmets and rules',
   description: 'E-scooters in Seattle: Lime is the only operator. What a ride costs, the helmet and sidewalk rules, parking, Link light rail and where you can’t ride.',
   headline: 'E-scooters in Seattle: Lime, what a ride costs, the rules, and where you can’t ride',
-  lede: 'E-scooters in Seattle come from one app: Lime, the only company in the City’s programme through 2026, with standing scooters and seated ones called Gliders. Lime shows its Seattle price only in the app, and the City bans surge pricing. Lime riders must be 18, the City’s code requires a helmet, sidewalks are off-limits and scooters top out at 15 mph. Shared scooters can’t board Link trains or buses, and Sea-Tac Airport, outside the city, has no Lime scooters.',
+  lede: 'E-scooters in Seattle come from one app: Lime, the only company in the City’s programme through 2026, with standing scooters and seated ones called Gliders. Lime shows its Seattle price in the app, and the City bans surge pricing. Lime riders must be 18, SDOT tells you to wear a helmet under the City’s code, sidewalks are off-limits and scooters top out at 15 mph. Shared scooters can’t board Link trains or buses, and Sea-Tac Airport, outside the city, has no Lime scooters.',
   published: '2026-10-17',
-  updated: '2026-10-17',
+  updated: '2026-10-23',
   city: 'us:wa:Seattle',
   sections: [
     {
@@ -31,7 +31,7 @@ const guide: Guide = {
     {
       heading: 'How much does a scooter cost in Seattle?',
       blocks: [
-        'Lime shows its Seattle price only in the app and publishes no rates in its open data. SDOT’s permit still shapes what you pay:',
+        'Lime shows its Seattle price in the app and publishes no rates in its open data. SDOT’s permit still shapes what you pay:',
         {
           list: [
             '**No surge pricing.** Lime may not raise rates at busy times, and must show every rate, fee and penalty before you unlock.',
@@ -44,7 +44,7 @@ const guide: Guide = {
     {
       heading: 'Seattle scooter rules: age, helmets, speed and sidewalks',
       blocks: [
-        'Washington state law sets the frame for what it calls motorized foot scooters, the Seattle Municipal Code adds the city’s rules, and SDOT’s permit sets what Lime must enforce. King County’s Board of Health repealed its all-ages bike helmet law on 17 February 2022, but Seattle’s own code still requires a helmet on a scooter.',
+        'Washington state law sets the frame for what it calls motorized foot scooters, the Seattle Municipal Code adds the city’s rules, and SDOT’s permit sets what Lime must enforce. King County’s Board of Health repealed its all-ages bike helmet law on 17 February 2022, but SDOT still tells scooter riders to wear one, citing Seattle’s own code.',
         {
           table: {
             caption: 'Shared e-scooter rules in Seattle on 17 October 2026, and who sets them',
@@ -52,15 +52,15 @@ const guide: Guide = {
             rows: [
               ['Age', '18 and over to ride Lime. State law bars under-16s unless a city allows them', 'SDOT; RCW 46.20.500'],
               ['Driving licence', 'Not needed', 'RCW 46.20.500'],
-              ['Helmet', 'Required: a helmet designed for bicycle safety', 'Municipal Code 11.46.020'],
-              ['Speed', '15 mph at most; 8 mph in slow zones and on your first ride; 5 mph on sidewalks, crosswalks and pedestrian zones in areas SDOT marks as slow', 'RCW 46.20.500; SDOT permit; Municipal Code 11.46.020'],
+              ['Helmet', 'Wear one: SDOT cites the City’s code for it', 'SDOT; Municipal Code 11.46.020'],
+              ['Speed', '15 mph at most; 8 mph in slow zones and on your first ride', 'RCW 46.20.500; SDOT permit'],
               ['Where to ride', 'Streets, bike lanes, alleys, shoulders and public paths', 'Municipal Code 11.46.010'],
               ['Sidewalks', 'Banned, unless a sidewalk is part of a bike or pedestrian path with no other way through', 'Municipal Code 11.46.010; RCW 46.61.710'],
-              ['People walking', 'Give way to them, and warn them before you pass', 'Municipal Code 11.46.020'],
-              ['Lights', 'White front light and red rear reflector from half an hour after sunset', 'Municipal Code 11.46.020'],
-              ['Passengers', 'One rider only', 'Municipal Code 11.46.020'],
+              ['People walking', 'Give way to them, and use your voice or the bell before you pass', 'SDOT'],
+              ['Lights', 'Reflectors from half an hour after sunset; Lime’s scooters must carry a white front light and a red taillight', 'RCW 46.20.500; SDOT permit'],
+              ['Passengers', 'One rider only', 'SDOT'],
               ['Alcohol', 'Don’t ride intoxicated; at night the app asks “safe to ride” questions', 'SDOT'],
-              ['Fines', 'Breaking the traffic code is an infraction: up to $250 per offence plus fixed fees', 'Municipal Code 11.31.120'],
+              ['Fines', 'Breaking a state or City traffic rule is an infraction, not a crime: up to $250 per offence', 'RCW 46.63.020, 46.63.110'],
             ],
           },
         },
@@ -76,7 +76,6 @@ const guide: Guide = {
             '**Sidewalks**, across the city. People on bikes may use them; people on scooters may not.',
             '**Most parks.** SDOT says most parks are no-ride zones, apart from their shared-use paths and roads.',
             '**The waterfront promenade.** Scooters may use the 1.2-mile protected bike lane along Waterfront Park, from Pioneer Square to Belltown, open since March 2025, but no wheeled devices are allowed on the walking promenade beside it.',
-            '**School playfields and playgrounds**, under the City code.',
             '**Fast roads.** State law keeps scooters off limited-access highways, and SDOT tells riders to keep off streets posted above 25 mph.',
           ],
         },
@@ -139,7 +138,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Do you need a helmet to ride a scooter in Seattle?',
-      answer: 'Yes. Seattle’s Municipal Code requires a bicycle helmet on a motorized scooter, although King County dropped its bike helmet law in 2022.',
+      answer: 'Yes. SDOT tells scooter riders to wear one and cites Seattle’s Municipal Code for it, although King County dropped its bike helmet law in 2022.',
     },
     {
       question: 'Can you ride an electric scooter on the sidewalk in Seattle?',
@@ -147,7 +146,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Lime scooter cost in Seattle?',
-      answer: 'Lime shows its Seattle price only in the app, and the City bans surge pricing. Riders on low incomes can join Lime Access: $0.75 to unlock and $0.01 a minute.',
+      answer: 'Lime shows its Seattle price in the app, and the City bans surge pricing. Riders on low incomes can join Lime Access: $0.75 to unlock and $0.01 a minute.',
     },
     {
       question: 'How old do you have to be to ride a scooter in Seattle?',
@@ -167,10 +166,10 @@ const guide: Guide = {
     { title: 'SDOT: shared micromobility permit requirements 6.0, 2026 (PDF)', url: 'https://www.seattle.gov/documents/departments/sdot/newmobilityprogram/shared%20micromobility%20permit%20requirements%206.0%202026%20final.pdf' },
     { title: 'SDOT: shared micromobility update, April 2026 (PDF)', url: 'https://seattle.gov/documents/Departments/SDOT/BoardsCommittees/SPAB/2026/SPAB%20SBAB_Shared%20Micromobility%20Updates.pdf' },
     { title: 'SDOT Blog: new permit rules for bike and scooter share, 14 May 2026', url: 'https://sdotblog.seattle.gov/2026/05/14/e-scooter-safety/' },
-    { title: 'Seattle Municipal Code 11.46: scooter rules', url: 'https://library.municode.com/wa/seattle/codes/municipal_code?nodeId=TIT11VETR_SUBTITLE_ITRCO_PT4PEHIBISHSTEPMOFOSCRU_CH11.46RUEPMOFOSC' },
-    { title: 'Seattle Municipal Code 11.31.120: penalties', url: 'https://library.municode.com/wa/seattle/codes/municipal_code?nodeId=TIT11VETR_SUBTITLE_ITRCO_PT3EN_CH11.31DITROF_11.31.120MOPE' },
+    { title: 'City of Seattle: Ordinance 126160, where scooters may ride (SMC 11.46.010), 2020 (PDF)', url: 'https://legistar2.granicus.com/seattle/attachments/e2a745c4-a661-4816-aefc-4924fd25f9dc.pdf' },
     { title: 'RCW 46.20.500: scooter age and licence', url: 'https://app.leg.wa.gov/RCW/default.aspx?cite=46.20.500' },
     { title: 'RCW 46.61.710: where scooters may be ridden', url: 'https://app.leg.wa.gov/RCW/default.aspx?cite=46.61.710' },
+    { title: 'RCW 46.63.110: traffic infraction penalties', url: 'https://app.leg.wa.gov/RCW/default.aspx?cite=46.63.110' },
     { title: 'Public Health Insider: King County’s bike helmet policy, 17 February 2022', url: 'https://publichealthinsider.com/2022/02/17/with-a-commitment-to-equity-board-of-health-updates-king-countys-bike-helmet-policy/' },
     { title: 'Seattle Parks: multi-use trail policy, 2020 (PDF)', url: 'https://www.seattle.gov/Documents/Departments/ParksAndRecreation/PoliciesPlanning/Multi-Use%20Trail%20Policy.pdf' },
     { title: 'SDOT Blog: new protected bike lanes at Waterfront Park, 5 March 2025', url: 'https://sdotblog.seattle.gov/2025/03/05/waterfront-seattle-celebrate-new-protected-bike-lanes/' },
