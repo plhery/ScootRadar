@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Nashville: Bird, Spin and Lime, the rules, the midnight curfew and where you can’t ride',
   lede: 'E-scooters in Nashville come from three companies, Bird, Spin and Lime, under Metro permits. Metro intends to give a new contract to Lime alone, but on 22 October 2026 that award was still pending. Bird and Spin publish no Nashville prices, so check the app. You must be 18 or over, scooters stop from midnight to 5 am, and you may not ride on the sidewalk in a business district, nor on the Vanderbilt and Belmont campuses.',
   published: '2026-10-22',
-  updated: '2026-10-22',
+  updated: '2026-10-23',
   city: 'us:tn:Nashville',
   sections: [
     {
@@ -44,7 +44,7 @@ const guide: Guide = {
     {
       heading: 'Nashville e-scooter rules: age, sidewalks, helmets and alcohol',
       blocks: [
-        'Nashville’s rules for rental scooters come from Metro, in Chapter 12.62 of the Metro Code and the TLC’s rules (last filed on 16 September 2026), and from the companies’ terms. Tennessee law applies on top: the TLC’s fines come in addition to any penalty under state law.',
+        'Nashville’s rules for rental scooters come from Metro, in the TLC’s rules (last filed on 16 September 2026), and from the companies’ terms. Tennessee law applies on top: the TLC’s fines come in addition to any penalty under state law.',
         {
           table: {
             caption: 'Shared e-scooter rules in Nashville on 22 October 2026, and who sets them',
@@ -109,7 +109,7 @@ const guide: Guide = {
         'Out on Broadway, with a bachelorette party or not? Four things to know before the ride home:',
         {
           list: [
-            '**Alcohol.** Bird and Spin both forbid riding under the influence of alcohol or drugs, and Metro chooses its scooter companies partly on their commitment to keeping riders within the DUI laws.',
+            '**Alcohol.** Bird and Spin both forbid riding under the influence of alcohol or drugs.',
             '**One to a scooter.** No passengers, and every rider must be 18.',
             '**Midnight.** After it, the ride back to the hotel means an e-bike, a bus or a car.',
             '**The weather.** At the airport the normal July high is 91°F, so carry water; May is the wettest month.',
@@ -168,7 +168,6 @@ const guide: Guide = {
   sources: [
     { title: 'Metro Nashville: Shared Bike and Scooter Program', url: 'https://www.nashville.gov/departments/transportation/transportation-licensing/shared-bike-and-scooter-program' },
     { title: 'Metropolitan Transportation Licensing Commission: Rules and Procedures, filed 16 September 2026 (PDF)', url: 'https://www.nashville.gov/sites/default/files/2026-10/TLC_Rules_9-16-2026.pdf' },
-    { title: 'Metro Code, Chapter 12.62: Shared Urban Mobility Devices', url: 'https://library.municode.com/tn/metro_government_of_nashville_and_davidson_county/codes/code_of_ordinances?nodeId=CD_TIT12VETR_CH12.62SHURMODE' },
     { title: 'Metro Nashville: Notice of Intent to Award, RFQ GG000053, Dockless Shared Urban Mobility Devices, 8 June 2026 (PDF)', url: 'https://www.nashville.gov/sites/default/files/2026-06/Intent_to_Award_RFQ_GG000053_Dockless_Shared_Urban_Mobility_Devices_Signed.pdf' },
     { title: 'Metro Nashville: Protest hearing, RFQ GG000053, 22 July 2026', url: 'https://www.nashville.gov/departments/finance/events/protest-hearing-rfq-gg000053-dockless-shared-urban-mobility-devices' },
     { title: 'Transportation Licensing Commission: Minutes, 16 June 2026 (PDF)', url: 'https://www.nashville.gov/sites/default/files/2026-07/TLC_Minutes_JUN2026.pdf' },
