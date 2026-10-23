@@ -164,6 +164,10 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// What VoiceOver is told about the walk: that the way is being found,
     /// the route that was found, that none was, or that the rider is there.
     private(set) var walkAnnouncement: ScooterWalkAnnouncement?
+    /// Goes up with each moment to ask for a rating: the screen asks once the map has rested.
+    private(set) var reviewMoments = 0
+    /// The moment to ask for a rating came, and the screen has not asked yet (`takeReviewMoment`).
+    @ObservationIgnored private(set) var reviewDue = false
 
     var minimumBattery: Double {
         didSet {
@@ -251,6 +255,10 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// How precise the last location was: a location this vague may lie that
     /// far from the path without the rider having left it.
     @ObservationIgnored private var locationAccuracy: CLLocationAccuracy = 0
+    /// Says when to ask for a rating (ScooterReviewPrompt).
+    @ObservationIgnored private var reviewPrompt: ScooterReviewPrompt
+    /// The rider is back from a ride: the load that follows says whether this is the moment to ask.
+    @ObservationIgnored private var awaitsReviewLoad = false
     // What the data on the map was requested for. Observed, because the dock
     // only reports an area as empty once the data covers it.
     private var queryBounds: GeoBounds?
@@ -342,9 +350,13 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         clock = now
         knownAuthorizationStatus = locationManager.authorizationStatus
         hasLocatedOnce = defaults.bool(forKey: Self.hasLocatedOnceKey)
+        reviewPrompt = ScooterReviewPrompt(defaults: defaults, version: ScooterLinks.appVersion)
         #if DEBUG
         // A screenshot's camera stays where it was set when the rider is located.
         keepsMapOnFirstFix = defaults.string(forKey: "ScreenshotCamera") != nil
+        // The first fresh feed is a return from a ride, and the moment to ask.
+        reviewPrompt.alwaysDue = defaults.bool(forKey: "ReviewPromptDue")
+        awaitsReviewLoad = reviewPrompt.alwaysDue
         #endif
 
         let savedBattery = defaults.object(forKey: Self.minimumBatteryKey) as? Int ?? 0
@@ -855,6 +867,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     func start() {
         guard !hasStarted else { return }
         hasStarted = true
+        // iOS may have closed the app during the ride.
+        noteReturnFromRide()
 
         switch locationManager.authorizationStatus {
         case .authorizedAlways, .authorizedWhenInUse:
@@ -877,9 +891,13 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         isSceneActive = true
         if hasStarted { startHeadingUpdates() }
         expireParkingIfNeeded()
+        noteReturnFromRide()
         // Back in the foreground a due refresh starts at once. The old data
         // stays on the map until the outcome is known.
         refreshIfDue(respectingAttemptGap: false)
+        // Data not due for a refresh is as fresh as one would make it. Before
+        // the first load, as while the first fix is found, that load decides.
+        if awaitsReviewLoad, fetchTask == nil, lastSuccessAt != nil { reviewAfterLoad() }
     }
 
     func becameInactive() {
@@ -887,6 +905,9 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         stopHeadingUpdates()
         refreshTimerTask?.cancel()
         refreshTimerTask = nil
+        // A moment to ask for a rating ends when the rider leaves.
+        awaitsReviewLoad = false
+        reviewDue = false
     }
 
     private func startHeadingUpdates() {
@@ -1356,6 +1377,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 scheduleDataExpiry(response.meta, receivedAt: receivedAt, clockOffset: response.clockOffset)
                 expireParkingIfNeeded()
                 clearSelectionIfHidden()
+                reviewAfterLoad()
             } catch is CancellationError {
                 return
             } catch {
@@ -1367,6 +1389,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                 lastAttemptAt = clock()
                 followUpGap = nil
                 handleLoadFailure(ScooterLoadFailure(error))
+                reviewAfterLoad()
             }
 
         }
@@ -2059,5 +2082,66 @@ extension ScooterMapModel {
         case let .searchedDestination(place): .place(place)
         case .userLocation: .rider
         }
+    }
+}
+
+// MARK: - Rating
+
+extension ScooterMapModel {
+    /// "Open in" took the rider to the operator's app: the return from the ride may be the moment to ask for a rating.
+    func rentalOpened() {
+        reviewPrompt.noteRentalOpened(at: clock())
+    }
+
+    /// The screen asks for a rating now, once the map has rested since the moment came: true once, while the map is
+    /// still calm and nothing went wrong meanwhile.
+    func takeReviewMoment() -> Bool {
+        guard reviewDue else { return false }
+        reviewDue = false
+        let now = clock()
+        guard reviewPrompt.isDue(at: now, calm: reviewCalm) else { return false }
+        reviewPrompt.asked(at: now)
+        return true
+    }
+
+    /// Something went over the map, or changed on it, before the wait was over: this return asks no more.
+    func dropReviewMoment() {
+        reviewDue = false
+    }
+
+    /// Back in front: a return 5 minutes to 2 hours after "Open in" waits for the next load.
+    private func noteReturnFromRide() {
+        if reviewPrompt.takeRentalReturn(at: clock()) { awaitsReviewLoad = true }
+    }
+
+    /// After each load: a fresh feed counts the day with use, and trouble keeps the day from asking. A return from a
+    /// ride that waited for this load is the moment to ask when the map is calm.
+    private func reviewAfterLoad() {
+        let now = clock()
+        if loadIssue == nil, responseMetadata?.stale != true { reviewPrompt.noteUse(at: now) }
+        if reviewTrouble { reviewPrompt.noteBadMoment(at: now) }
+        guard awaitsReviewLoad else { return }
+        awaitsReviewLoad = false
+        guard reviewPrompt.isDue(at: now, calm: reviewCalm) else { return }
+        reviewDue = true
+        reviewMoments += 1
+    }
+
+    /// The map at rest with a healthy feed: the count and its chips, in the dock or the panel, folded or not, not a
+    /// card or a reason for an empty map; no location being found or gone wrong, no walk. What is over the map, the
+    /// search, the sheets and the popover, is the screen's.
+    private var reviewCalm: Bool {
+        guard case .summary = dock, !isLocating, locationIssue == nil, !isWalking else { return false }
+        return !reviewTrouble
+    }
+
+    /// What makes a bad day: the feed failed or is out of date, the data shown is delayed (the card's status), every
+    /// provider here is down, or the rider is where no operator shares data.
+    private var reviewTrouble: Bool {
+        if loadIssue != nil || cardStatus != nil { return true }
+        let down = Set(providerHealth.downProviders)
+        if !down.isEmpty, Set(availableProviders).isSubset(of: down) { return true }
+        guard let userLocation else { return false }
+        return !ScooterProviderCoverage.contains(latitude: userLocation.latitude, longitude: userLocation.longitude)
     }
 }

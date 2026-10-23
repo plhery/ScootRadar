@@ -26,6 +26,8 @@
 		A0000000000000000000001A /* ScooterMapLookTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000022 /* ScooterMapLookTests.swift */; };
 		A0000000000000000000001B /* ScooterLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000023 /* ScooterLanguage.swift */; };
 		A00000000000000000005A01 /* ScooterStartPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000005A01 /* ScooterStartPlace.swift */; };
+		A00000000000000000005B01 /* ScooterReviewPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000005B01 /* ScooterReviewPrompt.swift */; };
+		A00000000000000000005B02 /* ScooterReviewPromptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000005B02 /* ScooterReviewPromptTests.swift */; };
 		A00000000000000000005A02 /* TimeZones.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000005A02 /* TimeZones.generated.swift */; };
 		A0000000000000000000001C /* ScooterSettingsTiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000024 /* ScooterSettingsTiles.swift */; };
 		A0000000000000000000001D /* WalkRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000025 /* WalkRoute.swift */; };
@@ -80,6 +82,8 @@
 		B00000000000000000000022 /* ScooterMapLookTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterMapLookTests.swift; sourceTree = "<group>"; };
 		B00000000000000000000023 /* ScooterLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterLanguage.swift; sourceTree = "<group>"; };
 		B00000000000000000005A01 /* ScooterStartPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterStartPlace.swift; sourceTree = "<group>"; };
+		B00000000000000000005B01 /* ScooterReviewPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterReviewPrompt.swift; sourceTree = "<group>"; };
+		B00000000000000000005B02 /* ScooterReviewPromptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterReviewPromptTests.swift; sourceTree = "<group>"; };
 		B00000000000000000005A02 /* TimeZones.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeZones.generated.swift; sourceTree = "<group>"; };
 		B00000000000000000000024 /* ScooterSettingsTiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScooterSettingsTiles.swift; sourceTree = "<group>"; };
 		B00000000000000000000025 /* WalkRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkRoute.swift; sourceTree = "<group>"; };
@@ -191,6 +195,7 @@
 				B00000000000000000000020 /* ScooterMapLook.swift */,
 				B00000000000000000000023 /* ScooterLanguage.swift */,
 				B00000000000000000005A01 /* ScooterStartPlace.swift */,
+				B00000000000000000005B01 /* ScooterReviewPrompt.swift */,
 				B00000000000000000005A02 /* TimeZones.generated.swift */,
 				B00000000000000000000025 /* WalkRoute.swift */,
 				B0000000000000000000002A /* ScooterMapLink.swift */,
@@ -246,6 +251,7 @@
 				B00000000000000000000010 /* ScooterMapModelTests.swift */,
 				B00000000000000000000011 /* ScooterAPITests.swift */,
 				B0000000000000000000002B /* ScooterMapLinkTests.swift */,
+				B00000000000000000005B02 /* ScooterReviewPromptTests.swift */,
 			);
 			path = ScootRadarTests;
 			sourceTree = "<group>";
@@ -432,6 +438,7 @@
 				A00000000000000000000018 /* ScooterMapLook.swift in Sources */,
 				A0000000000000000000001B /* ScooterLanguage.swift in Sources */,
 				A00000000000000000005A01 /* ScooterStartPlace.swift in Sources */,
+				A00000000000000000005B01 /* ScooterReviewPrompt.swift in Sources */,
 				A00000000000000000005A02 /* TimeZones.generated.swift in Sources */,
 				A0000000000000000000001C /* ScooterSettingsTiles.swift in Sources */,
 				A00000000000000000000019 /* ScooterMarkerArt.swift in Sources */,
@@ -460,6 +467,7 @@
 				A0000000000000000000000E /* ScooterMapModelTests.swift in Sources */,
 				A0000000000000000000000F /* ScooterAPITests.swift in Sources */,
 				A00000000000000000000023 /* ScooterMapLinkTests.swift in Sources */,
+				A00000000000000000005B02 /* ScooterReviewPromptTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

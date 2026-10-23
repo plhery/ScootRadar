@@ -1506,6 +1506,7 @@ private struct ScooterCard: View {
             DockActionRow(weights: scooter.rentalURL == nil && scooter.operatorApp == nil ? [] : [1.5, 1]) {
                 if scooter.rentalURL != nil || scooter.operatorApp != nil {
                     Button {
+                        model.rentalOpened()
                         if scooter.rentalURL != nil {
                             ScooterAnalytics.shared.track("rental_open", provider: scooter.provider)
                             Task { await scooter.openRental() }

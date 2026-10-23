@@ -105,6 +105,11 @@ leave it out. With location allowed, the simulator's location then gives the
 walking times and the map stays where the camera put it. Release builds
 leave both arguments out.
 
+`-ReviewPromptDue YES` makes a Debug build ask for a rating on its first fresh
+feed, as on the return from a ride, so that the simulator shows Apple's rating
+prompt over the map (development builds always show it; TestFlight never does).
+Release builds leave it out.
+
 ## Review notes
 
 Paste into App Review Information › Notes:

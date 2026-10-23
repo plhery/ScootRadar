@@ -4546,3 +4546,85 @@ private struct HingedScreen: View {
         ScooterMapScreen(model: model, fold: hinge.fold)
     }
 }
+
+// Asking for a rating when the rider is back from a ride.
+extension ScooterMapModelTests {
+    func testAReturnFromARideIsTheMomentOnceTheMapIsCalmWithAFreshFeed() async throws {
+        let clock = TestClock()
+        let (model, api) = await reviewModel(clock: clock)
+
+        // Back within minutes: the rental mostly did not happen.
+        await returnFromRide(model, api, after: 2 * 60, clock: clock)
+        XCTAssertEqual(model.reviewMoments, 0)
+
+        // Back to the card of a scooter still on the map: the rider is choosing.
+        let id = try XCTUnwrap(model.mapScooters.first?.id)
+        model.selectScooter(id)
+        await returnFromRide(model, api, after: 20 * 60, clock: clock)
+        XCTAssertEqual(model.reviewMoments, 0)
+
+        // That return was its one try; the next ride's return, to the map at rest, is the moment.
+        model.clearSelection()
+        await returnFromRide(model, api, after: 20 * 60, clock: clock)
+        XCTAssertEqual(model.reviewMoments, 1)
+        XCTAssertTrue(model.reviewDue)
+        XCTAssertTrue(model.takeReviewMoment())
+        XCTAssertFalse(model.takeReviewMoment())
+
+        // This version asked.
+        await returnFromRide(model, api, after: 20 * 60, clock: clock)
+        XCTAssertEqual(model.reviewMoments, 1)
+    }
+
+    func testAFailedRefreshKeepsTheRestOfTheDayFromAsking() async throws {
+        let clock = TestClock()
+        let (model, api) = await reviewModel(clock: clock)
+
+        await api.setFailure(.offline)
+        await returnFromRide(model, api, after: 20 * 60, clock: clock)
+        XCTAssertNotNil(model.loadIssue)
+        XCTAssertEqual(model.reviewMoments, 0)
+
+        // Back online later that day: still no ask.
+        await api.setFailure(nil)
+        await returnFromRide(model, api, after: 20 * 60, clock: clock)
+        XCTAssertNil(model.loadIssue)
+        XCTAssertEqual(model.reviewMoments, 0)
+
+        // The next day, a calm return asks.
+        clock.advance(86_400)
+        await returnFromRide(model, api, after: 20 * 60, clock: clock)
+        XCTAssertEqual(model.reviewMoments, 1)
+    }
+
+    /// A model with a fresh feed on the map and two earlier days with one: the third day.
+    private func reviewModel(clock: TestClock) async -> (ScooterMapModel, StubScooterAPI) {
+        let defaults = isolatedDefaults()
+        let earlier = ScooterReviewPrompt(defaults: defaults, version: ScooterLinks.appVersion)
+        earlier.noteUse(at: clock.now.addingTimeInterval(-2 * 86_400))
+        earlier.noteUse(at: clock.now.addingTimeInterval(-86_400))
+        let api = StubScooterAPI(response: ScooterResponse(vehicles: [scooter(id: "one", provider: "lime")]))
+        let model = ScooterMapModel(api: api, locationManager: CLLocationManager(), defaults: defaults, now: { clock.now })
+        model.refresh()
+        let loaded = await waitUntil { model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+        XCTAssertEqual(model.reviewMoments, 0, "Not without a ride")
+        return (model, api)
+    }
+
+    /// "Open in", the app in the background for `seconds`, then in front again until the refresh is in.
+    private func returnFromRide(
+        _ model: ScooterMapModel,
+        _ api: StubScooterAPI,
+        after seconds: TimeInterval,
+        clock: TestClock
+    ) async {
+        model.rentalOpened()
+        model.becameInactive()
+        clock.advance(seconds)
+        let calls = await api.snapshot().calls
+        model.becameActive()
+        let refreshed = await waitUntil { await api.snapshot().calls == calls + 1 && !model.isLoading }
+        XCTAssertTrue(refreshed)
+    }
+}

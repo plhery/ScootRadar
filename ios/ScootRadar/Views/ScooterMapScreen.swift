@@ -1,4 +1,5 @@
 import CoreLocation
+import StoreKit
 import SwiftUI
 import UIKit
 
@@ -25,6 +26,7 @@ struct ScooterMapScreen: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @Environment(\.layoutDirection) private var layoutDirection
+    @Environment(\.requestReview) private var requestReview
 
     /// The fold tests hand in, in window coordinates; only a partly open
     /// iPhone Duo reports one.
@@ -140,6 +142,24 @@ struct ScooterMapScreen: View {
         .onChange(of: settingsPresented) { _, open in
             ScooterAnalytics.shared.track(open ? "settings_open" : "panel_close")
             if open { ScooterAnalytics.shared.track(screen: "/settings") }
+        }
+        .task(id: ReviewWait(
+            moments: model.reviewMoments,
+            nothingOver: nothingOverTheMap,
+            scooter: model.selectedScooterID,
+            bay: model.selectedParkingID
+        )) {
+            // A return from a ride that is the moment to ask for a rating
+            // (ScooterReviewPrompt): after the map has rested a few seconds
+            // with nothing over it, never from a button. Anything over the
+            // map or changing on it before then ends this try.
+            guard model.reviewDue else { return }
+            guard nothingOverTheMap else { return model.dropReviewMoment() }
+            try? await Task.sleep(for: ScooterReviewPrompt.settle)
+            guard !Task.isCancelled else { return model.dropReviewMoment() }
+            guard model.takeReviewMoment() else { return }
+            requestReview()
+            ScooterAnalytics.shared.track("review_ask", result: "rental_return")
         }
         .sheet(isPresented: filtersSheetPresented) {
             ScooterFilterSheet(model: model)
@@ -419,6 +439,23 @@ struct ScooterMapScreen: View {
     private var firstLoadFailure: ScooterLoadFailure? {
         guard case let .firstLoadFailed(failure) = model.loadIssue else { return nil }
         return failure
+    }
+
+    /// The app is in front and the map has nothing over it: no search, no
+    /// sheet or popover (beside a panel, the filters' popover and the
+    /// settings' form), no location being found or gone wrong.
+    private var nothingOverTheMap: Bool {
+        scenePhase == .active && !searchIsExpanded && !filtersPresented && !settingsPresented
+            && !model.isLocating && model.locationIssue == nil
+    }
+
+    /// What the ask for a rating waits on: each moment to ask, what is over
+    /// the map, and the scooter or bay chosen on it.
+    private struct ReviewWait: Equatable {
+        var moments: Int
+        var nothingOver: Bool
+        var scooter: String?
+        var bay: String?
     }
 
     private var hasTopNotices: Bool {

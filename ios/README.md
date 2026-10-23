@@ -168,6 +168,18 @@ and About: **Send feedback**, a mail to hello@scootradar.com whose subject names
 the version, shown under it; map and data credits, Privacy with the usage switch
 and the privacy notice, and the source code on GitHub.
 
+**Rating.** The app asks for a rating only with Apple's prompt, and only when a
+rider is back from the operator's app 5 minutes to 2 hours after **Open in**:
+once the refresh shows a fresh feed, after 5 seconds on the map with nothing
+over it (no card in the dock or the panel, no search, sheet, popover or
+location card). It asks from the third day
+with a fresh feed, once per version and 30 days apart at the soonest, and never
+on a day a load failed, the data was delayed, every provider in view was down or
+the rider was outside the area any operator covers
+(`Models/ScooterReviewPrompt.swift`). iOS shows the prompt at most three times a
+year, and never in TestFlight. A Debug build launched with `-ReviewPromptDue YES`
+asks on the first fresh feed, so a simulator shows the prompt.
+
 The app is translated into English, German, French, Italian, Dutch, Norwegian,
 Portuguese, Spanish and Icelandic, and starts in the first of the iPhone's
 languages it speaks. A language chosen in Settings changes the app's own text at
@@ -208,9 +220,11 @@ There is no refresh button. **Try again** appears only when something failed:
 
 The filters, the appearance, the map style, the language, the passes, the ride
 length used for price estimates, the usage choice and whether the phone was
-ever located are kept in the app's settings. Your location, the places you
-searched and the text you typed are never stored; recent places live in memory
-until the app closes.
+ever located are kept in the app's settings, and for the rating prompt the
+number of days with a fresh feed, the last day something went wrong, the
+version and day of the last ask and the time of the last **Open in**. Your
+location, the places you searched and the text you typed are never stored;
+recent places live in memory until the app closes.
 
 ## Usage analytics
 

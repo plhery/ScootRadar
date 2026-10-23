@@ -30,6 +30,7 @@ lists were counted as `/map`: web views of `/map` in that week include them.
 | Walking routes | `route_result`, `route_arrived` | web: `success`/`no_route`/`busy`/`failed`/`too_far`; iOS: `success`/`error`/`too_far`, with provider and vehicle/parking target |
 | Reliability | `refresh`, `refresh_result` (web), `data_error`, `data_expired` (web) | generic outcome only (`success`/`error`; `timeout`/`request_failed`) |
 | Price tools (iOS) | `ride_duration`, `ride_pass_change` | duration, provider; never pass expiry or financial details |
+| Rating (iOS) | `review_ask` | `result`: the moment the app asked for a rating with Apple's prompt, `rental_return` (back from the operator's app 5 minutes to 2 hours after **Open in**). It counts asks, not prompts shown: iOS decides whether the prompt appears, at most three times a year |
 
 Useful funnels: `app_open` → `vehicle_select` → `rental_open`, and for the guides,
 a guide's page views → its `map_open` events (filter by its URL). The site's links
