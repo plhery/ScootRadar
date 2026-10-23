@@ -8,20 +8,20 @@ const guide: Guide = {
   title: 'E-scooters in Edmonton 2026: Bird, Lime, rules and fines',
   description: 'E-scooters in Edmonton: Bird and Lime, the $250 sidewalk ticket, where you may ride, Whyte Avenue, the LRT, the airport and riding into winter.',
   headline: 'E-scooters in Edmonton: Bird and Lime, where you may ride, the fines, the LRT and winter',
-  lede: 'You can rent an e-scooter in Edmonton from Bird or Lime, the two companies the City licenses, at prices shown only in their apps. You must be 18, you need no licence, and a helmet is optional on a scooter. Scooters top out at 20 km/h and may use bike lanes, shared pathways and roads posted at 50 km/h or less, but not sidewalks: that’s a $250 ticket. Whyte Avenue is off limits, you can walk a scooter onto the LRT but not a bus, and there are none at the airport. The City’s licences allow riding all year, but no last day for 2026 has been published.',
+  lede: 'You can rent an e-scooter in Edmonton from Bird or Lime, the two companies the City licenses; we found no price outside their apps. You must be 18, you need no licence, and a helmet is optional on a scooter. Bird caps its scooters at 20 km/h, and you may ride in bike lanes, on shared pathways and on roads posted at 50 km/h or less, but not on sidewalks: that’s a $250 ticket. Whyte Avenue is off limits, you can walk a scooter onto the LRT but not a bus, and there are none at the airport. The City’s licences allow riding all year, weather permitting, but we found no last day announced for 2026.',
   published: '2026-10-17',
-  updated: '2026-10-17',
+  updated: '2026-10-23',
   city: 'ca:ab:Edmonton',
   sections: [
     {
       heading: 'Which e-scooter apps work in Edmonton, and what do they cost?',
       blocks: [
-        'The City of Edmonton lists two approved companies for shared e-scooters and e-bikes in October 2026: **Bird**, run by Bird Canada, and **Lime**. Neuron, which joined them in June 2024, was still listed in June 2026 but no longer is.',
+        'The City of Edmonton lists two approved companies for shared e-scooters and e-bikes in October 2026: **Bird**, run by Bird Canada, and **Lime**. Neuron, which joined them in June 2024, is no longer listed.',
         {
           list: [
-            '**The licences.** Bird and Lime hold three-year Licences of Occupation from 2024, which the City’s page said in 2024–25 run to 31 December 2026; nothing has been announced for 2027. The City sets the speed, zones and parking rules.',
-            '**The fleets.** At the 2026 peak the City counted 3,385 shared e-scooters and 827 e-bikes. Each company must make at least 15% of its fleet e-bikes.',
-            '**Prices.** Neither company publishes an Edmonton price outside its app, which shows the fare before you unlock. Bird charges an unlock fee and a rate per minute, plus taxes and “compliance fees”, and sells ride passes and a Bird Plus subscription. Lime’s Edmonton page lists Lime Access and cash payment, but no fares.',
+            '**The licences.** In 2024 the City gave Bird and Lime three-year, year-round licences; we found nothing announced on what follows them. The City sets the speed, zones and parking rules.',
+            '**The fleets.** Each company must run e-bikes as well as scooters, and in 2024 the City dropped its cap on fleet sizes, charging the companies per vehicle per day instead. Riders took more than 1.4 million trips on them in 2025, City staff reported.',
+            '**Prices.** We found no Edmonton price outside the apps, which show the fare before you unlock. Bird charges an unlock fee and a rate per minute, plus taxes and “compliance fees”, and sells ride passes and a Bird Plus subscription.',
           ],
         },
         'Around 8:30 on the morning of 17 October 2026 the [map of Edmonton](map:ca:ab:Edmonton) showed about 1,450 Lime and 850 Bird scooters: a snapshot, not the fleets. Our map doesn’t show the companies’ e-bikes.',
@@ -31,16 +31,16 @@ const guide: Guide = {
     {
       heading: 'Edmonton e-scooter rules: age, helmets, speed and sidewalks',
       blocks: [
-        'Alberta’s Traffic Safety Act doesn’t provide for private e-scooters, so they’re banned on City property; Bird and Lime run under a provincial exemption. Edmonton’s bylaws set where you may ride and the fines, its licences the speed and the zones; Canada’s Criminal Code covers impaired riding.',
+        'Alberta’s Traffic Safety Act doesn’t provide for private e-scooters, so they’re banned on City property; Bird and Lime run under a provincial exemption. Edmonton’s bylaws set where you may ride and the fines, and the City requires the companies to cap speeds and build in its zones; Canada’s Criminal Code covers impaired riding.',
         {
           table: {
-            caption: 'Shared e-scooter rules in Edmonton on 17 October 2026, and who sets them',
+            caption: 'Shared e-scooter rules in Edmonton on 23 October 2026, and who sets them',
             head: ['Rule', 'What applies', 'Set by'],
             rows: [
-              ['Age', '18 or over', 'City licence terms, through Bird’s and Lime’s user agreements'],
+              ['Age', '18 or over', 'Bird and Lime, as the City’s page states'],
               ['Licence', 'None needed', 'City of Edmonton'],
               ['Helmet', 'Not required, though the City strongly recommends one', 'Alberta: the Traffic Safety Act has no e-scooter helmet rule'],
-              ['Top speed', '20 km/h, built in; 10 km/h in slow zones', 'City licence terms'],
+              ['Top speed', 'Capped by the company: 20 km/h on Bird; 10 km/h in the City’s slow zones', 'City; Bird'],
               ['Roads', 'Only roads posted at 50 km/h or less: $250', 'Traffic Bylaw s. 75(4)'],
               ['Bike lanes and shared pathways', 'Allowed', 'City of Edmonton'],
               ['Sidewalks', 'Banned: $250', 'Public Spaces Bylaw s. 78'],
@@ -60,20 +60,18 @@ const guide: Guide = {
       ],
     },
     {
-      heading: 'Where you can’t ride: Whyte Avenue, the Legislature, the river valley and Mill Woods',
+      heading: 'Where you can’t ride: Whyte Avenue, slow zones, the river valley and Mill Woods',
       blocks: [
-        'The City sets zones that the companies build into their apps. In a no-ride zone the scooter slows, then cuts its motor, and you can’t end your ride there. The City’s page and its 11 August 2026 report name these:',
+        'The City sets zones that the companies build into their apps, and it can add more. In a no-ride zone the scooter slows, then cuts its motor, and you can’t end your ride there. The City’s page names these:',
         {
           list: [
             '**Whyte (82) Avenue**, between 112 Street and 97 Street: no riding and no parking. Cross it at intersections and use the protected bike lane on 83 Avenue.',
-            '**The Alberta Legislature Grounds** and the **EPCOR Water Treatment Plant** are permanent no-ride zones, and the report lists the **Ice District** among the no-ride zones too.',
-            '**Slow zones.** Jasper Avenue and other busy pedestrian areas, and festival sites such as Churchill Square and the Fringe, slow you to 10 km/h.',
-            '**Event zones.** The City adds temporary ones: no-ride zones throughout the Ice District during the Oilers’ 2025 playoff run, no parking around the High Level Bridge and River Valley Road on Canada Day.',
-            '**The river valley.** Ride on the paved shared pathways, not on park trails the City doesn’t maintain. The City’s River Valley Trail Strategy will assess conflicts between shared scooters and other people on the valley’s trails.',
+            '**Slow zones.** Jasper Avenue and other busy pedestrian areas slow you to 10 km/h.',
+            '**The river valley.** Ride on the paved shared pathways, not on park trails the City doesn’t maintain.',
             '**Mill Woods.** Since 5 August 2026 a pilot lets you ride only on Mill Woods Road and the City’s bike lanes and pathways. Stray more than 50 m from them and the scooter slows to 10 km/h, then stops. End your ride in one of the corrals, about 200 m apart, or you keep paying by the minute.',
           ],
         },
-        'Bird’s open data adds 365 no-parking zones, such as Hawrelak Park and West Edmonton Mall. Lime publishes none: check the app map.',
+        'Bird’s open data adds 365 no-parking zones, such as the Alberta Legislature Grounds, Rogers Place, Hawrelak Park and West Edmonton Mall. Lime publishes none: check the app map.',
       ],
     },
     {
@@ -88,7 +86,7 @@ const guide: Guide = {
             '**Narrow sidewalk?** Where it’s under 1.8 m wide, you may park in the parking lane by the curb, but not in an EPark, loading, accessible or no-stopping spot.',
           ],
         },
-        'See one in the way? Report it to the company: Bird on 1-866-205-2442, Lime on 1-888-546-3345. The City makes them deal with reports within four hours, from 8 a.m. to 5 p.m.',
+        'See one in the way? Report it to the company, which the City says is the fastest way to get it moved: Bird on 1-866-205-2442, Lime on 1-888-546-3345.',
       ],
     },
     {
@@ -109,8 +107,8 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**The season.** The City’s licences have allowed year-round riding since 2022, though the companies may still run seasonally. In 2024–25 its page added that they had to clear every scooter off the street when 2 cm of snow or more was forecast, and could return them 72 hours after it stopped; today’s page no longer says so. No last day for 2026 or return date for 2027 has been published: once snow arrives, check the app.',
-            '**Past winters.** The City counted 825 e-scooters out in the last quarter of 2023, against 1,980 in summer, and Lime kept its scooters out well into November that year.',
+            '**The season.** The City’s 2024 licences let the companies keep their scooters out all year, as long as the weather allows. We found no last day announced for 2026, or a return date for 2027: once snow arrives, check the app.',
+            '**Past winters.** In 2023 the big snow didn’t come until after Christmas, and Lime kept its scooters out well into November, Global News reported.',
             '**Night.** We found no curfew in the City’s rules, and Bird said in 2024 its scooters would be available 24/7. The Traffic Bylaw requires a headlamp, a red tail lamp and a rear reflector on any scooter ridden on a road.',
             '**St. Albert**, the separate city to the north, has its own rules: you ride on sidewalks and paved trails but never on streets, at up to 15 km/h, from age 16, and a helmet is compulsory at any age. Bird and Lime are both approved, and about 170 Lime scooters were on the [St. Albert map](map:ca:ab:St. Albert) on the morning of 17 October. Its rental scooters can’t cross into Edmonton.',
           ],
@@ -122,8 +120,8 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Canada Day is the busiest day.** Riders took 14,243 trips on scooters and e-bikes on 1 July 2025, the City’s peak for the year.',
-            '**One trip in five starts or ends at transit**: in 2025, 20% of trips began or ended within 100 m of an LRT station or transit centre.',
+            '**Edmonton is a big Lime city.** Lime said that in 2023 Edmonton was at times among its top three cities worldwide for demand, with a record 920,000 Lime trips.',
+            '**One trip in five starts or ends at transit**: about 20% of trips begin or end within 100 m of an LRT station or transit centre, a City report found in 2026.',
             '**The company can be charged too.** Edmonton’s Traffic Bylaw treats the company holding the share permit as the scooter’s owner, guilty of any bylaw offence the scooter is involved in; the rider may be liable as well.',
           ],
         },
@@ -141,7 +139,7 @@ const guide: Guide = {
     },
     {
       question: 'How old do you have to be to ride an e-scooter in Edmonton?',
-      answer: '18. The City has Bird and Lime set that age in their user agreements. You don’t need a driving licence.',
+      answer: '18: the City says Bird and Lime require it. You don’t need a driving licence.',
     },
     {
       question: 'Are private e-scooters legal in Edmonton?',
@@ -153,18 +151,12 @@ const guide: Guide = {
     },
     {
       question: 'Are e-scooters available in Edmonton in winter?',
-      answer: 'The City’s licences let Bird and Lime run all year, but the companies may pull scooters in snow, and no last day for 2026 has been published. Check the app once snow and ice arrive.',
+      answer: 'The City’s licences let Bird and Lime run all year, as long as the weather allows, and we found no last day announced for 2026. Check the app once snow and ice arrive.',
     },
   ],
   sources: [
     { title: 'City of Edmonton: Shared Micromobility Program', url: 'https://www.edmonton.ca/transportation/cycling_walking/bike-electric-scooter-sharing' },
-    { title: 'City of Edmonton: Shared Micromobility Program page, archived 12 December 2024', url: 'https://web.archive.org/web/20241212171152/https://www.edmonton.ca/transportation/cycling_walking/bike-electric-scooter-sharing' },
     { title: 'City of Edmonton: shared e-scooter and e-bike rules (PDF)', url: 'https://www.edmonton.ca/sites/default/files/public-files/Poster_Shared-EScooter-Bike-Rules.pdf' },
-    { title: 'City of Edmonton: Licences for E-scooters and E-bikes, 2 May 2024 (PDF)', url: 'https://pub-edmonton.escribemeetings.com/filestream.ashx?DocumentId=221284' },
-    { title: 'Same report, Attachment 2: trips and fleets 2022–2023 (PDF)', url: 'https://pub-edmonton.escribemeetings.com/filestream.ashx?DocumentId=221286' },
-    { title: 'City of Edmonton: Micromobility Program Update, 11 August 2026 (PDF)', url: 'https://pub-edmonton.escribemeetings.com/filestream.ashx?DocumentId=301965' },
-    { title: 'Same report, Attachment 1: programme figures (PDF)', url: 'https://pub-edmonton.escribemeetings.com/filestream.ashx?DocumentId=301966' },
-    { title: 'Same report, Attachment 3: zones and enforcement (PDF)', url: 'https://pub-edmonton.escribemeetings.com/filestream.ashx?DocumentId=301968' },
     { title: 'Edmonton Public Spaces Bylaw 20700 (PDF)', url: 'https://www.edmonton.ca/sites/default/files/public-files/C20700.pdf' },
     { title: 'Edmonton Traffic Bylaw 5590 (PDF)', url: 'https://www.edmonton.ca/sites/default/files/public-files/C5590.pdf' },
     { title: 'Alberta Traffic Safety Act (PDF)', url: 'https://kings-printer.alberta.ca/documents/Acts/T06.pdf' },
@@ -175,10 +167,12 @@ const guide: Guide = {
     { title: 'Bird Canada: Edmonton', url: 'https://birdcanada.ca/locations/edmonton-alberta/' },
     { title: 'Bird Canada: rental agreement', url: 'https://birdcanada.ca/rental-policy/' },
     { title: 'Bird: Edmonton open data (GBFS)', url: 'https://mds.bird.co/gbfs/v2/public/edmonton/gbfs.json' },
-    { title: 'Lime: Edmonton', url: 'https://www.li.me/locations/edmonton' },
     { title: 'City of St. Albert: common e-scooter questions', url: 'https://stalbert.ca/city/eps/rcmp/traffic-safety/e-scooters/faq/' },
+    { title: 'Global News: where are the scooters? Edmonton’s new contracts, 2 May 2024', url: 'https://globalnews.ca/news/10465522/edmonton-e-scooters-bikes-may-2024/' },
     { title: 'Global News: Lime, Bird scooters and e-bikes returning year-round, 28 May 2024', url: 'https://globalnews.ca/news/10529937/edmonton-scooters-ebikes-2024/' },
+    { title: 'CTV News: e-scooters and e-bikes return to Edmonton streets, 28 May 2024', url: 'https://www.ctvnews.ca/edmonton/article/e-scooters-e-bikes-return-to-edmonton-streets-on-wednesday/' },
     { title: 'CTV News: Neuron launches in Edmonton, June 2024', url: 'https://edmonton.ctvnews.ca/new-e-scooters-launch-in-edmonton-friday-1.6916210' },
+    { title: 'CTV News: more dedicated parking areas for e-scooters likely, 11 August 2026', url: 'https://www.ctvnews.ca/edmonton/article/more-dedicated-parking-areas-for-e-scooters-in-edmonton-likely-on-horizon/' },
   ],
 };
 
