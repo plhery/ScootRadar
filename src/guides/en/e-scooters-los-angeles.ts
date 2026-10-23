@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Los Angeles: Bird, Veo and Lime, what a ride costs, the rules, and where you can’t ride',
   lede: 'E-scooters in Los Angeles come from Bird, Veo and Lime, under permits from LADOT, the city’s transportation department. Veo charges $1 to unlock plus $0.50 a minute plus tax (published rate, 16 October 2026); Bird and Lime show their prices in the app. LADOT and the operators require you to be 18, state law asks for a driving licence, scooters top out at 15 mph, and LADOT puts the sidewalk fine at $197. You can’t ride on the Venice Beach boardwalk or inside Metro stations, and Bird’s app blocks riding around the LAX terminals.',
   published: '2026-10-17',
-  updated: '2026-10-17',
+  updated: '2026-10-23',
   city: 'us:ca:Los Angeles',
   sections: [
     {
@@ -21,13 +21,13 @@ const guide: Guide = {
           list: [
             '**Bird**, by far the biggest, across the city, almost all with stand-up scooters.',
             '**Veo**, on the west side: Santa Monica and, next door in LA, Venice, Mar Vista and West LA. That fleet is mostly seated Cosmo e-bikes, with about 650 stand-up scooters in its open data on 17 October 2026.',
-            '**Lime**, in LA since 2017, which added e-bikes in April 2025 and announced seated LimeGliders that October. **Our map doesn’t show Lime’s LA scooters**: Lime publishes no open data for LA, so look for one in the Lime app.',
+            '**Lime**, which added e-bikes in April 2025 and announced seated LimeGliders that October. **Our map doesn’t show Lime’s LA scooters**: Lime publishes no open data for LA, so look for one in the Lime app.',
             '**GCOO** is also on LADOT’s list. It publishes no open data either, and we couldn’t confirm where it runs.',
           ],
         },
         'On the evening of 16 October 2026 the [map of Los Angeles](map:us:ca:Los Angeles) showed about 7,400 Bird and 600 Veo scooters. That’s our map’s Los Angeles view that evening, not the fleets or a city-limits count: it also takes in neighbouring cities such as Santa Monica, Culver City and Beverly Hills. E-bikes aren’t shown.',
         'Each operator may deploy 500 to 6,000 vehicles under a permit of up to a year, which costs it $20,000 plus a fee per trip. On 13 October 2026 the City Council adopted an ordinance raising the fee to $150,000 a year; on 17 October it could still be reconsidered and needed the Mayor’s approval. It changes nothing for riders.',
-        '**Visiting?** Get the app before you go: you need a smartphone with data to unlock and end a ride. State law asks for “a valid driver’s license or instruction permit”, and lets a visitor over 18 drive on a valid licence from home. LADOT’s page asks for “a valid California driver’s license”, but its permit rules just say “Driver’s License”. Carry yours. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
+        '**Visiting?** Get the app before you go: you need a smartphone with data to unlock and end a ride. State law asks for “a valid driver’s license or instruction permit”. LADOT’s page asks for “a valid California driver’s license”, but its permit rules just say “Driver’s License”. Carry yours. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
@@ -54,7 +54,7 @@ const guide: Guide = {
     {
       heading: 'Los Angeles scooter rules: age, helmets, speed and sidewalks',
       blocks: [
-        'Most rules come from the California Vehicle Code (CVC), which gives a scooter rider a driver’s duties; LADOT adds its permit rules. You need no insurance, registration or plates.',
+        'Most rules come from the California Vehicle Code (CVC), which gives a scooter rider a driver’s duties; LADOT adds its permit rules.',
         {
           table: {
             caption: 'Shared e-scooter rules in Los Angeles on 17 October 2026, and who sets them',
@@ -63,14 +63,14 @@ const guide: Guide = {
               ['Age', '18 to ride a shared scooter', 'LADOT permit rules; operators’ terms'],
               ['Licence', 'A valid driving licence or instruction permit', 'CVC § 21235; LADOT'],
               ['Helmet', 'Required under 18; recommended for adults', 'CVC § 21235; LADOT'],
-              ['Speed', '15 mph at most, bike lanes included', 'CVC §§ 21235 and 22411; LADOT'],
+              ['Speed', '15 mph at most, even where the posted limit is higher', 'CVC § 22411; LADOT'],
               ['Which streets', 'Not on streets posted above 25 mph unless you ride in a bike lane or protected bike lane', 'CVC § 21235'],
               ['Bike lanes', 'Ride in the bike lane where there is one, otherwise close to the right curb', 'CVC §§ 21228 and 21229'],
-              ['Left turns', 'Stop at the right curb, get off and cross on foot', 'CVC §§ 21228 and 21229'],
+              ['Left turns', 'On a two-way street, get off and walk the scooter across the crosswalk', 'CVC § 21228'],
               ['Passengers', 'One rider only', 'CVC § 21235'],
-              ['Hands and ears', 'Carry nothing that keeps both hands off the handlebars; no earphones in both ears', 'CVC §§ 21235 and 27400'],
+              ['Hands and ears', 'Keep at least one hand on the handlebars; no earphones in both ears', 'CVC §§ 21235 and 27400'],
               ['Phone', 'Don’t use one while riding', 'Bird’s terms'],
-              ['Alcohol', 'Riding under the influence is illegal: fine up to $250', 'CVC § 21221.5'],
+              ['Alcohol', 'Riding under the influence of alcohol or drugs is illegal', 'CVC § 21221.5'],
             ],
           },
         },
@@ -82,14 +82,14 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Venice Beach.** The Municipal Code bans e-scooters on any boardwalk, sidewalk or bike path in the beach park between the Santa Monica city line and Washington Boulevard, so Ocean Front Walk and the beach bike path are off-limits. A first offence costs $100; later ones $250, or a misdemeanour charge. Bird’s app also marks the Venice beachfront and the Venice Canals as no-ride zones.',
+            '**Venice Beach.** Ocean Front Walk is for pedestrians only, and e-scooters are “not legal to ride on the beach bike path or Ocean Front Walk”, in the words of a 2021 City Council motion; since 2022 rental shops nearby must tell their customers so. Bird’s app also marks the Venice beachfront and the Venice Canals as no-ride zones.',
             '**Hollywood Walk of Fame.** Bird’s app blocks riding on Hollywood Boulevard from La Brea Avenue to about Vine Street, and parking further east towards Gower Street. Walk the stars.',
-            '**Beverly Hills and West Hollywood.** Bird’s app marks both cities as no-ride zones, so you can’t ride a Bird into either. West Hollywood runs its own scooter programme: its page names Lime as the only operator since April 2024.',
-            '**Parks.** Bird’s app marks Elysian Park as no-ride, and the Municipal Code keeps scooters off the walkway round Lake Balboa.',
+            '**Beverly Hills and West Hollywood.** Bird’s app marks both cities as no-ride zones, so you can’t ride a Bird into either. West Hollywood runs its own scooter programme, operated by Lime; since 7 August 2026 Lime riders there must end their trips in parking areas shown in the app.',
+            '**Parks.** Bird’s app marks Elysian Park as no-ride.',
             '**Campuses.** UCLA has a contract with Bird: other operators’ scooters may cross on campus roads but are impounded if parked there. Bird’s app marks USC’s University Park campus as no-ride.',
           ],
         },
-        'State law lets scooters use bike paths unless a local ordinance bans them, and Bird’s app allows the LA River path through Elysian Valley. The 25 mph rule keeps you off freeways and off big boulevards without a bike lane.',
+        'State law lets scooters use bike paths, trails and bikeways unless they’re banned there, and Bird’s app allows the LA River path through Elysian Valley. The 25 mph rule keeps you off freeways and off big boulevards without a bike lane.',
       ],
     },
     {
@@ -112,7 +112,7 @@ const guide: Guide = {
       blocks: [
         '**Metro.** Its code of conduct bans riding any wheeled device, kick scooters included, in stations and on trains and buses. Its carry-on rules cover bikes and e-bikes, not scooters, so end a shared ride outside the station. A ride costs $1.75 when you tap a bank card or phone, with free transfers for two hours and caps of $5 a day and $18 over seven days.',
         '**Union Station.** The B and D lines start here. Bird’s app bars parking on the forecourt, so end your ride a block away.',
-        '**LAX.** Bird’s app blocks riding around the terminals, including LAX-it, the taxi and ride-app lot by Terminal 1. The LAX/Metro Transit Center at Aviation Boulevard and 96th Street, open since June 2025, lies outside that zone: it serves the C and K lines and has a bike hub, and free airport shuttles run from it to the terminals. LAX’s SkyLink train was still in testing on 17 October 2026, so take the shuttle.',
+        '**LAX.** Bird’s app blocks riding around the terminals. The LAX/Metro Transit Center at Aviation Boulevard and 96th Street, open since June 2025, lies outside that zone: it serves the C and K lines and has a bike hub, and airport shuttles run from it to the terminals. LAX’s SkyLink train has been delayed again, to January 2027, so take the shuttle.',
       ],
     },
     {
@@ -122,7 +122,7 @@ const guide: Guide = {
         {
           list: [
             '**Santa Monica.** On the evening of 16 October 2026 the [Santa Monica map](map:us:ca:Santa Monica), which also takes in Venice and other LA neighbourhoods next door, showed about 1,400 Bird and 540 Veo scooters. The City’s rules, updated in November 2025, make shared scooters shut off or slow to 1 mph on the Pier and Pier Bridge, Third Street Promenade, city parks, the beach bike path, Ocean Front Walk and the rest of the beach. End your ride in a drop zone shown in the app, and the operator must take $1 off; otherwise use the furniture zone.',
-            '**Culver City.** The city’s page, last updated in March 2024, names only Bird and tells every rider to wear a helmet; the [Culver City map](map:us:ca:Culver City), which also covers parts of LA around it, showed about 1,250 Bird and 60 Veo scooters.',
+            '**Culver City.** Bird is the City’s operator, under an agreement that caps scooters at 15 mph and has them shut off or slow to 1 mph in areas the City picks; the [Culver City map](map:us:ca:Culver City), which also covers parts of LA around it, showed about 1,250 Bird and 60 Veo scooters.',
           ],
         },
       ],
@@ -145,9 +145,7 @@ const guide: Guide = {
         {
           list: [
             '**LADOT calls its pilot the largest dockless programme in the country.** Launched in March 2019, it permitted 36,170 vehicles from eight operators.',
-            '**Rental shops near Ocean Front Walk must hand over their bikes and scooters at least 300 feet inland**, under a 2022 city ordinance that spares the shared operators LADOT permits.',
-            '**LADOT may not hand scooter trip data to police** without a subpoena, a warrant or a legal duty to do so, the Municipal Code has said since 2022.',
-          ],
+            '**Rental shops near Ocean Front Walk must hand over their bikes and scooters at least 300 feet inland**, under a 2022 city ordinance that spares the shared operators LADOT permits.',          ],
         },
       ],
     },
@@ -159,11 +157,11 @@ const guide: Guide = {
     },
     {
       question: 'Do you need a driving licence to ride a scooter in LA?',
-      answer: 'Yes. State law requires a valid driving licence or instruction permit, and LADOT and the operators also require you to be 18. California lets visitors over 18 drive on a valid licence from home; carry it.',
+      answer: 'Yes. State law requires a valid driving licence or instruction permit, and LADOT and the operators also require you to be 18. Carry your licence when you ride.',
     },
     {
       question: 'Can you ride a scooter on the Venice Beach boardwalk?',
-      answer: 'No. E-scooters are banned on Ocean Front Walk and the beach bike path from Santa Monica to Washington Boulevard. The fine is $100 the first time and $250 after that, or a misdemeanour charge.',
+      answer: 'No. Ocean Front Walk is for pedestrians only, and the City says e-scooters may not be ridden on it or on the beach bike path. Bird’s app also marks the Venice beachfront as a no-ride zone.',
     },
     {
       question: 'Do you need a helmet on a scooter in California?',
@@ -171,7 +169,7 @@ const guide: Guide = {
     },
     {
       question: 'Can you ride a scooter to LAX?',
-      answer: 'Not to the terminals: Bird’s app blocks riding around them. End your ride at the LAX/Metro Transit Center and take the free airport shuttle.',
+      answer: 'Not to the terminals: Bird’s app blocks riding around them. End your ride at the LAX/Metro Transit Center and take the airport shuttle to your terminal.',
     },
     {
       question: 'Is Lime in Los Angeles?',
@@ -182,23 +180,22 @@ const guide: Guide = {
     { title: 'LADOT: Micromobility', url: 'https://ladot.lacity.gov/projects/transportation-services/shared-mobility/micromobility' },
     { title: 'LADOT: On-Demand Mobility Rules and Guidelines (PDF)', url: 'https://ladot.lacity.gov/sites/default/files/2026-04/final-year-two-rules-and-guidelines-updated-sla.pdf' },
     { title: 'LA City Council File 17-1125: dockless mobility', url: 'https://cityclerk.lacity.org/lacityclerkconnect/index.cfm?fa=ccfi.viewrecord&cfnumber=17-1125' },
-    { title: 'California Vehicle Code: operation of motorized scooters', url: 'https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?lawCode=VEH&division=11.&title=&part=&chapter=1.&article=5.' },
-    { title: 'California Vehicle Code § 12502: nonresident drivers', url: 'https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=12502.' },
-    { title: 'Los Angeles Municipal Code § 63.44: park rules', url: 'https://codelibrary.amlegal.com/codes/los_angeles/latest/lamc/0-0-0-159191' },
-    { title: 'Los Angeles Municipal Code § 71.31: rentals at Venice Beach', url: 'https://codelibrary.amlegal.com/codes/los_angeles/latest/lamc/0-0-0-359670' },
+    { title: 'UCLA Transportation: California e-scooter laws', url: 'https://transportation.ucla.edu/micromobility/safety' },
+    { title: 'CHP: motorcycles and similar vehicles', url: 'https://www.chp.ca.gov/programs-services/programs/california-motorcyclist-safety/motorcycles-and-similar-vehicles/' },
+    { title: 'LA City Council motion on Ocean Front Walk rentals, 5 October 2021 (PDF)', url: 'https://cityclerk.lacity.org/onlinedocs/2021/21-1119_mot_10-05-21.pdf' },
+    { title: 'LA Ordinance 187667: rentals at Venice Beach, 2022 (PDF)', url: 'https://cityclerk.lacity.org/onlinedocs/2021/21-1119_ord_187667_12-19-22.pdf' },
     { title: 'Bird: Los Angeles open data (GBFS)', url: 'https://mds.bird.co/gbfs/v2/public/los-angeles/gbfs.json' },
     { title: 'Veo: Los Angeles open data (GBFS)', url: 'https://cluster-prod.veoride.com/api/shares/name/xla/gbfs' },
     { title: 'Bird: US rental agreement', url: 'https://bird.co/rental-agreements/united-states/' },
-    { title: 'KTLA: Lime adds e-bikes in Los Angeles, 30 April 2025', url: 'https://ktla.com/news/local-news/more-limes-are-coming-to-los-angeles-but-they-arent-scooters/' },
+    { title: 'NBC Los Angeles: Lime to introduce LimeGliders in Los Angeles, 24 October 2025', url: 'https://www.nbclosangeles.com/news/local/lime-to-introduce-limegliders-in-los-angeles/3795604/' },
     { title: 'Metro: Customer Code of Conduct (PDF)', url: 'https://media.metro.net/about_us/ethics/images/codeofconduct_customer.pdf' },
     { title: 'Metro: biking with Metro', url: 'https://www.metro.net/riding/biking-on-metro/' },
     { title: 'Metro: LAX/Metro Transit Center opens', url: 'https://www.metro.net/about/media-relations/now-boarding-metros-lax-metro-transit-center-station-officially-opens-connecting-communities-bringing-faster-easier-travel-for-angelenos-visitors/' },
-    { title: 'LAX: SkyLink', url: 'https://www.flylax.com/skylink' },
+    { title: 'NBC Los Angeles: LAX people mover delayed to 2027, 24 September 2026', url: 'https://www.nbclosangeles.com/news/local/lax-automated-people-mover-opening-2027/3947154/' },
     { title: 'Santa Monica: shared mobility rules, November 2025 (PDF)', url: 'https://www.santamonica.gov/media/SM-AdminGuidelines_Fall2025Update.pdf' },
-    { title: 'Culver City: Shared Micromobility Program', url: 'https://www.culvercity.gov/Services/Parking-Streets-Transportation/Shared-Micromobility-Program' },
-    { title: 'City of West Hollywood: Dockless Mobility Pilot Program', url: 'https://www.weho.org/city-government/city-departments/public-works/transportation-mobility/dockless-mobility-pilot-program' },
-    { title: 'UCLA Transportation: approved scooter and bike vendors', url: 'https://transportation.ucla.edu/content/approved-electric-scooter-and-electric-bike-vendors' },
-  ],
+    { title: 'Culver City: operating agreement with Bird, July 2026 to June 2027 (PDF)', url: 'https://culver-city.legistar1.com/culver-city/attachments/568c9f8a-1c97-4317-b103-96ed9a4ea1a5.pdf' },
+    { title: 'City of West Hollywood: Dockless Mobility', url: 'https://engage.weho.org/dockless-mobility' },
+    { title: 'UCLA Transportation: approved scooter and bike vendors', url: 'https://transportation.ucla.edu/content/approved-electric-scooter-and-electric-bike-vendors' },  ],
 };
 
 export default guide;

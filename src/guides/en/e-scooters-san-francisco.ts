@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'E-scooters in San Francisco 2026: Lime, Spin, prices, rules',
   description: 'E-scooters in San Francisco: Lime and Spin, what a ride costs, the helmet and sidewalk rules, how to park, BART and SFO, and where you can’t ride.',
   headline: 'E-scooters in San Francisco: Lime and Spin, what a ride costs, the rules, and where you can’t ride',
-  lede: 'E-scooters in San Francisco come from two companies, Lime and Spin, the only ones with SFMTA permits, which run to 30 June 2027. Lime charges $1 to unlock and $0.55 a minute plus city fees; Spin shows its price only in the app. Lime and Spin require you to be 18, state law asks for a driving licence, scooters top out at 15 mph, sidewalks are off-limits, and you lock the scooter to a bike rack where there is one. You can’t ride on the Embarcadero Promenade or across the Golden Gate Bridge, shared scooters can’t board Muni or BART, and there are none at SFO.',
+  lede: 'E-scooters in San Francisco come from two companies, Lime and Spin, the only ones with SFMTA permits, which run to 30 June 2027. Lime’s SFMTA permit application gives $1 to unlock and $0.55 a minute; Spin shows its price only in the app. Lime and Spin require you to be 18, state law asks for a driving licence, scooters top out at 15 mph, sidewalks are off-limits, and you lock the scooter to a bike rack where there is one. You can’t ride on the Embarcadero Promenade or across the Golden Gate Bridge, shared scooters can’t board Muni or BART, and there are none at SFO.',
   published: '2026-10-17',
-  updated: '2026-10-17',
+  updated: '2026-10-23',
   city: 'us:ca:San Francisco',
   sections: [
     {
@@ -26,23 +26,23 @@ const guide: Guide = {
           ],
         },
         'On the evening of 16 October 2026 the [map of San Francisco](map:us:ca:San Francisco) showed about 3,050 Spin and 3,000 Lime scooters: what’s on the map, not the fleets. SFMTA counted 2,618 Lime and 2,120 Spin scooters out on an average day in 2025.',
-        '**Visiting?** Get the app before you go; Lime and Spin both take a debit or credit card. State law asks for “a valid driver’s license or instruction permit”, and lets a visitor over 18 drive on a valid licence from home. Carry yours. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
+        '**Visiting?** Get the app before you go; Lime and Spin both take a debit or credit card. State law asks for “a valid driver’s license or instruction permit”. Carry yours. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {
       heading: 'How much does a scooter cost in San Francisco?',
       blocks: [
-        'Lime publishes its San Francisco price on its website. Spin publishes none, so check the app, and neither company puts prices in its open data.',
+        'Lime’s published price is the one in its May 2024 permit application, which its SFMTA permit takes in; the app shows today’s, with any fees. Spin publishes none, so check its app, and neither company puts prices in its open data.',
         {
           table: {
-            caption: 'Lime’s published rates in San Francisco on 17 October 2026',
+            caption: 'Lime’s prices in its SFMTA permit application, May 2024',
             head: ['Option', 'What you pay'],
             rows: [
-              ['Standard ride', '$1 to unlock, then $0.55 a minute, plus a $0.35 San Francisco permit fee and $0.13 in local costs'],
-              ['10-minute ride', '$6.50, plus the fees'],
-              ['20-minute ride', '$12.00, plus the fees'],
-              ['LimePrime', '$5.99 a month: rides up to 20 minutes for a flat $2.85, rides under 5 minutes for $1.50'],
-              ['Lime Access', '$0.50 to unlock, then $0.24 a minute'],
+              ['Standard ride', '$1 to unlock, then $0.55 a minute'],
+              ['10-minute ride', '$6.50'],
+              ['20-minute ride', '$12.00'],
+              ['LimePrime and passes', '$5.99 a month for free unlocks; 30 minutes for $7.99, 60 minutes for $14.99'],
+              ['Lime Access', '50% off for eligible riders on low incomes'],
             ],
           },
         },
@@ -52,7 +52,7 @@ const guide: Guide = {
     {
       heading: 'San Francisco scooter rules: age, licence, helmets, speed and sidewalks',
       blocks: [
-        'Most rules come from the California Vehicle Code (CVC), which gives a scooter rider a driver’s duties; San Francisco’s Transportation Code and SFMTA’s permits set what Lime and Spin must do, and their terms add the rest. You need no insurance, registration or plates.',
+        'Most rules come from the California Vehicle Code (CVC), which gives a scooter rider a driver’s duties; San Francisco’s Transportation Code and SFMTA’s permits set what Lime and Spin must do, and their terms add the rest.',
         {
           table: {
             caption: 'Shared e-scooter rules in San Francisco on 17 October 2026, and who sets them',
@@ -61,15 +61,15 @@ const guide: Guide = {
               ['Age', '18 to ride Lime or Spin', 'Lime’s and Spin’s terms'],
               ['Licence', 'A valid driving licence or instruction permit', 'CVC § 21235'],
               ['Helmet', 'Required under 18; recommended for adults', 'CVC § 21235'],
-              ['Speed', '15 mph at most, bike lanes included', 'CVC §§ 21235 and 22411; SFMTA permit'],
+              ['Speed', '15 mph at most, even where the posted limit is higher', 'CVC § 22411; SFMTA permit'],
               ['Which streets', 'Not on streets posted above 25 mph unless you ride in a bike lane or protected bike lane', 'CVC § 21235'],
               ['Bike lanes', 'Ride in the bike lane where there is one, otherwise close to the right curb', 'CVC §§ 21228 and 21229'],
-              ['Left turns', 'Stop at the right curb, get off and cross on foot', 'CVC §§ 21228 and 21229'],
+              ['Left turns', 'On a two-way street, get off and walk the scooter across the crosswalk', 'CVC § 21228'],
               ['Sidewalks', 'Banned, except to enter or leave an adjacent property; shared scooters detect it and warn you', 'CVC § 21235; SF Transportation Code § 916'],
               ['Passengers', 'One rider only', 'CVC § 21235'],
-              ['Hands and ears', 'Carry nothing that keeps both hands off the handlebars; no earphones in both ears', 'CVC §§ 21235 and 27400'],
+              ['Hands and ears', 'Keep at least one hand on the handlebars; no earphones in both ears', 'CVC §§ 21235 and 27400'],
               ['Phone', 'Don’t use one while riding', 'Lime’s and Spin’s terms'],
-              ['Alcohol', 'Riding under the influence is illegal: fine up to $250', 'CVC § 21221.5'],
+              ['Alcohol', 'Riding under the influence of alcohol or drugs is illegal', 'CVC § 21221.5'],
             ],
           },
         },
@@ -89,7 +89,7 @@ const guide: Guide = {
             '**Chinatown** is an SFMTA no-parking zone, roughly between Broadway, Kearny Street, California Street and Powell Street.',
             '**The Golden Gate Bridge.** The bridge district doesn’t allow e-scooters on the bridge sidewalks, though e-bikes may cross, and Spin’s app makes the bridge a no-ride zone.',
             '**Spin’s app zones.** No riding at Fort Mason, Japantown’s Peace Plaza or Stonestown Galleria. You may ride through but not park in the Presidio and Crissy Field, in Golden Gate Park and the Panhandle, on the Embarcadero from the Ferry Building to Pier 39, in Chinatown and at Coit Tower.',
-            '**City parks.** The Park Code keeps motorised vehicles on paved roads, off lawns, planted areas and fire trails.',
+            '**Yerba Buena Gardens.** The Park Code bans riding bicycles and e-scooters in the Gardens, as the Board of Supervisors confirmed in 2024.',
           ],
         },
         'Lime publishes no zones, so check its app map too.',
@@ -125,7 +125,7 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Hills.** Lime’s terms say terrain and weather can drain a battery faster, and make checking the charge your job: do it before a long climb.',
+            '**Hills.** Lime’s terms say weather and road conditions can drain a battery, and make checking the charge your job: do it before a long climb.',
             '**Fog and wet streets.** Spin’s terms say not to ride when weather or the road surface makes it unsafe.',
             '**Night.** The permits set no curfew. After dark state law requires a white front light and reflectors, which SFMTA makes the companies fit.',
             '**Oakland.** Across the bay, the [Oakland map](map:us:ca:Oakland) showed about 310 Lime scooters on the evening of 16 October.',
@@ -158,7 +158,7 @@ const guide: Guide = {
     },
     {
       question: 'How much does a Lime scooter cost in San Francisco?',
-      answer: '$1 to unlock and $0.55 a minute, plus a $0.35 San Francisco permit fee and $0.13 in local costs. LimePrime, at $5.99 a month, makes rides up to 20 minutes a flat $2.85.',
+      answer: '$1 to unlock and $0.55 a minute, the price Lime gave SFMTA in its 2024 permit application; the app shows today’s, with any fees. LimePrime, at $5.99 a month, makes unlocking free.',
     },
     {
       question: 'Can you ride a scooter across the Golden Gate Bridge?',
@@ -179,13 +179,11 @@ const guide: Guide = {
     { title: 'SFMTA: temporary fleet expansion to 26 November 2026, 27 August 2026 (PDF)', url: 'https://www.sfmta.com/media/45745/download' },
     { title: 'SFMTA: no-parking zones on the waterfront and in Chinatown, September 2025 (PDF)', url: 'https://www.sfmta.com/media/43308/download' },
     { title: 'SFMTA Board: scooter share permit extension, 5 May 2026 (PDF)', url: 'https://www.sfmta.com/media/44948/download' },
-    { title: 'SF Transportation Code § 916: Powered Scooter Share Program', url: 'https://codelibrary.amlegal.com/codes/san_francisco/latest/sf_transportation/0-0-0-53585' },
-    { title: 'SF Park Code, Article 6: vehicles in parks', url: 'https://codelibrary.amlegal.com/codes/san_francisco/latest/sf_park/0-0-0-302' },
+    { title: 'SFMTA Board: sidewalk riding detection, Resolution 230418-034, 18 April 2023 (PDF)', url: 'https://www.sfmta.com/media/35095/download' },
+    { title: 'SFMTA: Lime’s permit application, 1 May 2024 (PDF)', url: 'https://www.sfmta.com/media/39705/download' },
+    { title: 'Board of Supervisors Ordinance 228-24: Yerba Buena Gardens (PDF)', url: 'https://sfbos.archive.sf.gov/sites/default/files/o0228-24.pdf' },
     { title: 'Board of Supervisors Resolution 540-25: sidewalk riding (PDF)', url: 'https://sfbos.archive.sf.gov/sites/default/files/r0540-25.pdf' },
-    { title: 'California Vehicle Code: operation of motorized scooters', url: 'https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?lawCode=VEH&division=11.&title=&part=&chapter=1.&article=5.' },
-    { title: 'California Vehicle Code § 12502: nonresident drivers', url: 'https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=VEH&sectionNum=12502.' },
-    { title: 'Lime: San Francisco', url: 'https://www.li.me/locations/san-francisco' },
-    { title: 'Lime: user agreement', url: 'https://www.li.me/en-us/user-agreement' },
+    { title: 'UCLA Transportation: California e-scooter laws', url: 'https://transportation.ucla.edu/micromobility/safety' },
     { title: 'Spin: terms of use', url: 'https://www.spin.app/policies/terms-us' },
     { title: 'Spin: Spin joins Bird, September 2023', url: 'https://www.spin.app/blog-posts/spin-joins-bird-will-continue-to-operate-as-independent-subsidiary-under-spin-brand' },
     { title: 'Spin: San Francisco open data (GBFS)', url: 'https://gbfs.spin.pm/api/gbfs/v2_3/san_francisco/gbfs' },

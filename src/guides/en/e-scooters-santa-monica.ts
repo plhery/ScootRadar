@@ -58,7 +58,7 @@ const guide: Guide = {
             rows: [
               ['Age', '18 or over to rent a Bird; state law sets 16 as the minimum to ride', 'Bird’s terms; state (DMV)'],
               ['Licence', 'A valid driving licence or permit; the scooter companies must check it', 'State (DMV, CHP); City rules for operators'],
-              ['Helmet', 'The DMV and CHP say a helmet is required; the City’s rider FAQ says under 18. Bird recommends one for everyone: wear one', 'State (DMV, CHP); City; Bird’s terms'],
+              ['Helmet', 'Required under 18; Bird recommends one for everyone', 'State (CVC § 21235); City; Bird’s terms'],
               ['Speed', '15 mph at most; shared scooters are limited to 15 mph', 'State (DMV, CHP); City rules for operators'],
               ['Streets and bike lanes', 'Ride in the bike lane; on a street posted above 25 mph, only in a bike lane', 'City; state (CHP)'],
               ['Sidewalks', 'Never', 'State (DMV); City'],
@@ -142,7 +142,7 @@ const guide: Guide = {
     },
     {
       question: 'Do you need a helmet to ride a scooter in Santa Monica?',
-      answer: 'Wear one. The DMV and the CHP say a helmet is required to ride a motorized scooter, the City’s rider FAQ says under 18, and Bird recommends one for everyone.',
+      answer: 'Under 18, yes: state law (CVC § 21235) requires a helmet for riders under 18, as the City’s rider FAQ also says. Over 18 the choice is yours, but Bird recommends one for everyone.',
     },
     {
       question: 'Can you ride an e-scooter on the sidewalk in Santa Monica?',
@@ -164,6 +164,7 @@ const guide: Guide = {
     { title: 'City of Santa Monica open data: Speed limits', url: 'https://gis.santamonica.gov/server/rest/services/Speed_Limits/FeatureServer/0' },
     { title: 'California DMV: Motorcycles, mopeds, and scooters', url: 'https://www.dmv.ca.gov/portal/vehicle-registration/new-registration/motorcycles-mopeds-and-scooters/' },
     { title: 'California Highway Patrol: Motorcycles and similar vehicles', url: 'https://www.chp.ca.gov/programs-services/programs/california-motorcyclist-safety/motorcycles-and-similar-vehicles/' },
+    { title: 'UCLA Transportation: California e-scooter laws', url: 'https://transportation.ucla.edu/micromobility/safety' },
     { title: 'Bird: US rental agreement', url: 'https://bird.co/rental-agreements/united-states/' },
     { title: 'Bird: Community & Access Pricing', url: 'https://www.bird.co/access/' },
     { title: 'Bird: Santa Monica open data (GBFS)', url: 'https://mds.bird.co/gbfs/v2/public/santa-monica-california/gbfs.json' },
