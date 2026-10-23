@@ -198,8 +198,8 @@ late. City totals are aggregated hourly. Each scooter counts under the
 nearest town whose bounds hold it; outside Switzerland the towns its own
 feed serves come first, so a scooter in east Oslo is Oslo's, though
 Lørenskog's centre is nearer. Where a town's municipal boundary is listed in
-`data/town-outlines.json`, as in Gush Dan, around Lille and Oslo, or in west
-Los Angeles, a scooter inside it counts under that town first, under the
+`data/town-outlines.json`, as in Gush Dan, around Lille, Oslo and Heilbronn,
+or in west Los Angeles, a scooter inside it counts under that town first, under the
 smaller of two outlines that nest. The outlines are OpenStreetMap's (ODbL),
 Kartverket's for Norway (CC BY 4.0), the ONS's for Bournemouth, Christchurch
 and Poole (OGL v3.0) and the Census Bureau's for American towns (public

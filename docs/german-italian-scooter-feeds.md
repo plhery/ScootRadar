@@ -101,10 +101,20 @@ The complete reviewed city bounds, public discovery URLs and aliases are in
   areas: Erlenbach's under Weinsberg, Neckarsulm's under Untereisesheim, all
   of which counted under Heilbronn before. Hanover, Tuebingen and Muenster now
   find Hannover, Tübingen and Münster.
+- **Heilbronn and Neckarsulm by outline**: Dott's Heilbronn area runs north
+  over Neckarsulm, whose 50 to 55 scooters counted under Heilbronn, and no box
+  could take Neckarsulm without Heilbronn's own streets. Since 23 October 2026
+  Heilbronn, Neckarsulm, Weinsberg and Untereisesheim have their OpenStreetMap
+  outlines in `data/town-outlines.json`, and Neckarsulm is an area of Dott's
+  feed: its boundary, plus 1 km on the north and east (49.1696–49.2288 N,
+  9.1596–9.3325 E). In that evening's poll of 363 scooters, 284 counted under
+  Heilbronn (282 inside its boundary), 57 under Neckarsulm (50 inside, 7 in Bad
+  Friedrichshall next to it), 11 under Untereisesheim and 10 under Weinsberg.
+  Before, the Weinsberg box also took Heilbronn scooters on its east side.
 - **Not given a town**: suburbs joined to the city, where a box would take in
   the city's own streets: Langenhagen (386 to 396 Dott scooters), Garbsen (114
   to 120) and Laatzen (90 to 104) under Hannover; Hattersheim am Main (86 or
-  87 Lime scooters) under Frankfurt; Neckarsulm (50 to 55) under Heilbronn;
+  87 Lime scooters) under Frankfurt;
   Unterföhring (44 to 46), Gröbenzell (22 or 23) and Puchheim (16 or 17)
   under München; Tamm (11 to 21) and Asperg (9 to 11) under Zeus's
   Ludwigsburg. Dott München's 19 scooters at Munich Airport, in Freising,

@@ -271,6 +271,7 @@ enum ScooterProviderCoverage {
         (.dott, GeoBounds(south: 49.0791, west: 9.0868, north: 49.2308, east: 9.3189)),
         (.dott, GeoBounds(south: 49.139, west: 9.2412, north: 49.1781, east: 9.3173)),
         (.dott, GeoBounds(south: 49.2015, west: 9.1785, north: 49.2246, east: 9.2168)),
+        (.dott, GeoBounds(south: 49.1696, west: 9.1596, north: 49.2288, east: 9.3325)),
         (.dott, GeoBounds(south: 49.3892, west: 7.6348, north: 49.4986, east: 7.8377)),
         (.dott, GeoBounds(south: 51.0544, west: 6.8995, north: 51.1576, east: 7.0137)),
         (.dott, GeoBounds(south: 51.2569, west: 12.2412, north: 51.4182, east: 12.5247)),
@@ -781,6 +782,7 @@ enum ScooterCityCatalog {
         ScooterCity(id: "de:Heilbronn", name: "Heilbronn", countryCode: "DE", center: GeoPoint(latitude: 49.1426, longitude: 9.2168), bounds: GeoBounds(south: 49.0791, west: 9.0868, north: 49.2308, east: 9.3189)),
         ScooterCity(id: "de:Weinsberg", name: "Weinsberg", countryCode: "DE", center: GeoPoint(latitude: 49.1513, longitude: 9.2876), bounds: GeoBounds(south: 49.139, west: 9.2412, north: 49.1781, east: 9.3173)),
         ScooterCity(id: "de:Untereisesheim", name: "Untereisesheim", countryCode: "DE", center: GeoPoint(latitude: 49.2111, longitude: 9.2019), bounds: GeoBounds(south: 49.2015, west: 9.1785, north: 49.2246, east: 9.2168)),
+        ScooterCity(id: "de:Neckarsulm", name: "Neckarsulm", countryCode: "DE", center: GeoPoint(latitude: 49.1918, longitude: 9.2246), bounds: GeoBounds(south: 49.1696, west: 9.1596, north: 49.2288, east: 9.3325)),
         ScooterCity(id: "de:Kaiserslautern", name: "Kaiserslautern", countryCode: "DE", center: GeoPoint(latitude: 49.4426, longitude: 7.766), bounds: GeoBounds(south: 49.3892, west: 7.6348, north: 49.4986, east: 7.8377)),
         ScooterCity(id: "de:Langenfeld", name: "Langenfeld", countryCode: "DE", center: GeoPoint(latitude: 51.1188, longitude: 6.9563), bounds: GeoBounds(south: 51.0544, west: 6.8995, north: 51.1576, east: 7.0137)),
         ScooterCity(id: "de:Leipzig", name: "Leipzig", countryCode: "DE", center: GeoPoint(latitude: 51.3439, longitude: 12.3787), bounds: GeoBounds(south: 51.2569, west: 12.2412, north: 51.4182, east: 12.5247)),
@@ -1076,7 +1078,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 384
+    static let cityCount = 385
     static let countryCount = 27
 
     /// Cities by distance from the point to their centre, nearest first.

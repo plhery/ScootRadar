@@ -112,6 +112,17 @@ banned shared scooters, and feeds that were empty when checked.
     Rottweil have no feed at all. Castrop-Rauxel, Duisburg, Friedberg, Gera,
     Herne, Jena, Marburg and Reutlingen list no available scooter.
   - Voi publishes eight Baden-Württemberg cities only, through MobiData BW.
+  - Operators the city guides name that publish no feed, checked on 23
+    October 2026: Dott in Erfurt and Regensburg (both regions closed in
+    September; 404), Lime in Regensburg (404), Voi in Regensburg and Bolt in
+    Potsdam (neither publishes outside Baden-Württemberg). So Erfurt shows Yoio
+    only, Regensburg Zeus only and Potsdam Dott only. Zeus Heilbronn still lists
+    15 scooters, all disabled. Neither Erfurt nor Regensburg publishes its
+    no-parking zones or parking spots as data, and the map draws only the
+    operators' zones: Zeus's Regensburg feed lacks the Altstadt no-parking zone
+    and the city's spots, and Yoio's Erfurt zones cover only part of the city's
+    list (Anger, Krämerbrücke, Venedig, Fischmarkt, Domplatz, Wenigemarkt,
+    Benediktsplatz).
   - Hopp Augsburg listed 42 scooters, all disabled and unchanged, on the
     evening of 13 October 2026; check it in spring.
 - **Italy** ([guide](german-italian-scooter-feeds.md#known-gaps)): Bird in
