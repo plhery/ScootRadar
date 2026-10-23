@@ -16,6 +16,7 @@ import { createSnapshotMetrics } from './metrics';
 import { initErrorReporting, reportError, reportFeedExpired } from './errorReporting';
 import { cadenceFromEnv } from './cadence';
 import { answerZones, createZoneStore } from './zoneStore';
+import { createStrayHold } from './strayHold';
 
 initErrorReporting();
 upstreamJsonCache.paceHost('gbfs.api.ridedott.com', 150);
@@ -43,6 +44,8 @@ const records = new Map<string, FeedSnapshot>();
 // The last collection error of each failing feed, for its Sentry report should it expire.
 const lastErrors = new Map<string, string>();
 const regionalSystems = new Map(REGIONAL_SCOOTER_SYSTEMS.map(system => [`${regionalSource(system)}:${system.id}`, system]));
+// A scooter a feed puts far away for a while, as 3electra puts Kyiv's in Lima, keeps its last place.
+const holdStrays = createStrayHold();
 // The feeds collected now, whose zones are read when someone asks for them.
 let collectable: CollectableScooterFeed[] = [];
 const zoneStore = createZoneStore({ onError: (feed, error) => console.warn(JSON.stringify({ event: 'zones_feed_failed', feed,
@@ -101,7 +104,7 @@ async function collect(definition: CollectableScooterFeed) {
       const result = await definition.collect();
       metrics.recordCollection(definition, false, (performance.now() - started) / 1000);
       lastErrors.delete(definition.id);
-      return result;
+      return holdStrays(definition.id, result, records.get(definition.id), Date.now());
     } catch (error) {
       failed = true;
       metrics.recordCollection(definition, true, (performance.now() - started) / 1000);

@@ -639,7 +639,9 @@ Mobility's `zelectra.rideatom.com`, found through
 [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
 which lists no other Ukrainian system. The feed places the scooters 3electra
 doesn't show in Lima, Peru; the scooter cache collects Kyiv within its bounds,
-so they never reach the map, its totals or its health. The cache paces
+so they never reach the map, its totals or its health. A scooter it had in Kyiv
+keeps its last place there for ten minutes, then is dropped, so a short hop
+doesn't move Kyiv's count. The cache paces
 `zelectra.rideatom.com` to about two requests a second, as every ATOM host.
 
 3electra publishes no licence in its feed. The map's credits name it under the

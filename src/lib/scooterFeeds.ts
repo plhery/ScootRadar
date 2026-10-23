@@ -246,6 +246,8 @@ interface SourceVehicles {
   stale: boolean;
   skipped?: boolean;
   failedSources?: string[];
+  /** The ids of the vehicles the feed put far from its system, which the cache holds a while (strayHold.ts). */
+  strayIds?: string[];
 }
 
 export interface CollectableScooterFeed {
@@ -1331,6 +1333,7 @@ async function fetchRegionalSystemFeeds(
   }
 
   const raw = docked ? [...rawVehicles(status.data), ...docked.vehicles] : rawVehicles(status.data);
+  const strayIds = strayVehicleIds(system, raw);
   return {
     observedAt: Math.min(statusObservedAt(status.data), docked?.observedAt ?? Infinity),
     vehicles: (await pricedScooters(plans, (prices, unlisted) => filterVehicles(system.id, raw, typesById, {
@@ -1339,7 +1342,27 @@ async function fetchRegionalSystemFeeds(
     }, prices, unlinkedScooterPlan(system.provider, typesById, prices), unlisted)))
       .filter(vehicle => systemServesPoint(system, vehicle.lat, vehicle.lng)),
     stale: discovery.stale || types.stale || status.stale || Boolean(docked?.stale),
+    ...(strayIds.length ? { strayIds } : {}),
   };
+}
+
+// Farther than any van takes a scooter: 3electra puts Kyiv's in Lima, 12,000 km away
+// (ukrainian-scooter-feeds.md), and they come back metres from where they left.
+const STRAY_DISTANCE_M = 1_000_000;
+
+/** The ids of the vehicles a feed puts so far from its system's bounds that they can't be there. */
+function strayVehicleIds(system: RegionalScooterSystem, vehicles: RawVehicle[]): string[] {
+  const { south, north, west, east } = system.bounds;
+  return vehicles.flatMap(raw => {
+    const lat = raw.lat;
+    const lng = raw.lon ?? raw.lng;
+    if (lat == null || lng == null || !Number.isFinite(lat) || !Number.isFinite(lng)) return [];
+    const nearestLat = Math.min(Math.max(lat, south), north);
+    const nearestLng = Math.min(Math.max(lng, west), east);
+    if (haversineM(lat, lng, nearestLat, nearestLng) <= STRAY_DISTANCE_M) return [];
+    const id = vehicleId(system.id, raw);
+    return id ? [id] : [];
+  });
 }
 
 /** The scooters docked at the stations of a system whose catalog entry has stationScooters. */

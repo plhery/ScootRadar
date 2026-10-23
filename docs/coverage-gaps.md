@@ -353,7 +353,8 @@ banned shared scooters, and feeds that were empty when checked.
   Kyiv is covered.
   - E-wings and Bolt run scooters in Kyiv with no public feed.
   - 3electra's feed puts scooters it doesn't show in Lima, Peru, by the
-    hundred in the evening, and the map drops them with the city's bounds.
+    hundred in the evening. The map keeps each at its last place in Kyiv
+    for ten minutes, then drops it with the city's bounds.
     Why, and when, isn't published; only 3electra can say.
   - Systems 65, 67 and 68 on 3electra's host answer 400.
 

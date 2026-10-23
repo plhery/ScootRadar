@@ -399,9 +399,12 @@ describe('German and Italian scooter coverage', () => {
       rental_uris: { android: 'https://zelectra.app.link/Z3106', ios: 'https://zelectra.app.link/Z3106', web: 'https://zelectra.app.link/' },
     });
     // The cache collects within Kyiv's bounds, so no snapshot, total or health figure ever holds Lima.
+    // It holds a while, at their last place in Kyiv, the scooters the feed put that far (strayHold.ts).
     const collector = independentCollectableFeeds().find(feed => feed.id === 'ukraine:zelectra_ua_kyiv')!;
     expect(collector.coverage).toEqual([system.bounds]);
-    expect((await collector.collect()).vehicles).toEqual([kyiv]);
+    const collected = await collector.collect();
+    expect(collected.vehicles).toEqual([kyiv]);
+    expect(collected.strayIds).toEqual(['zelectra_ua_kyiv:lima', 'zelectra_ua_kyiv:galapagos']);
     upstreamJsonCache.clear();
     const result = await fetchScooters({ bounds: system.bounds, minBattery: 0, providers: new Set(['zelectra']) });
     expect(result.meta.sources.ukraine).toBe('fresh');
