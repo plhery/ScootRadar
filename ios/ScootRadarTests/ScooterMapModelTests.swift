@@ -3718,11 +3718,11 @@ extension ScooterMapModelTests {
     private static let rider = CLLocationCoordinate2D(latitude: 47.3720, longitude: 8.5390)
 
     /// A model allowed to locate that hears only the fixes the test gives
-    /// it, whatever the simulator's own location is.
-    private func modelLocatedByTheTest() -> (ScooterMapModel, CLLocationManager) {
+    /// it, whatever the simulator's own location is, with `vehicles` about.
+    private func modelLocatedByTheTest(vehicles: [Scooter] = []) -> (ScooterMapModel, CLLocationManager) {
         let manager = StubLocationManager(status: .authorizedWhenInUse)
         let model = ScooterMapModel(
-            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+            api: StubScooterAPI(response: ScooterResponse(vehicles: vehicles)),
             locationManager: manager,
             defaults: isolatedDefaults()
         )
@@ -4042,6 +4042,51 @@ extension ScooterMapModelTests {
         XCTAssertEqual(mapView.camera.centerCoordinateDistance, folded, accuracy: folded * 0.02)
     }
 
+    /// The card's header centres its scooter at the zoom the map has, and
+    /// folding like a book makes that move again, inside the fold's
+    /// animation: the scooter lands where the header puts it, in the middle
+    /// of the half where the map shows, at the same zoom. Its centre is
+    /// measured outside the animation, as a move that fits a region is;
+    /// measured inside it, on the open Duo held upright, it came out the same.
+    func testFoldingAfterTheCardHeaderCentresAScooterLandsWhereTheHeaderWould() async throws {
+        let fold = CGRect(x: 465, y: 0, width: 20, height: 669)
+        let hinge = TestHinge()
+        let parked = scooter(id: "one", provider: "lime", latitude: 47.3728, longitude: 8.5412)
+        let (model, manager) = modelLocatedByTheTest(vehicles: [parked])
+        let (window, mapView) = try await panelWindow(showing: model, hinge: hinge)
+        defer { window.isHidden = true }
+        let besidePanel = await waitUntil { mapView.directionalLayoutMargins.leading >= 16 + 380 + 16 }
+        XCTAssertTrue(besidePanel, "\(mapView.directionalLayoutMargins)")
+        try await Task.sleep(for: .milliseconds(500))
+        model.locationManager(manager, didUpdateLocations: [fix(at: Self.rider)])
+        let located = await waitUntil(attempts: 400) { self.isBesideThePanel(Self.rider, on: mapView) }
+        XCTAssertTrue(located, "\(mapView.convert(Self.rider, toPointTo: mapView))")
+        let loaded = await waitUntil(attempts: 400) { model.mapScooters.contains { $0.id == parked.id } }
+        XCTAssertTrue(loaded)
+        // The header is on the card of the scooter chosen.
+        model.selectScooter(parked.id)
+        try await Task.sleep(for: .milliseconds(1500))
+        model.focusOnScooter(parked)
+        let centred = await waitUntil(attempts: 300) {
+            self.shows(parked.coordinate, at: CGPoint(x: (16 + 380 + 951) / 2, y: 669 / 2), on: mapView, within: 80)
+        }
+        XCTAssertTrue(centred, "\(mapView.convert(parked.coordinate, toPointTo: mapView))")
+        try await waitUntilAtRest(mapView, showing: parked.coordinate)
+        let open = mapView.convert(parked.coordinate, toPointTo: mapView)
+        let distance = mapView.camera.centerCoordinateDistance
+
+        try await turn(hinge, to: fold, in: window)
+        try await assertLanded(
+            parked.coordinate,
+            at: CGPoint(x: (fold.maxX + 951) / 2, y: open.y),
+            on: mapView,
+            model: model,
+            within: 1,
+            movingAgain: { model.focusOnScooter(parked) }
+        )
+        XCTAssertEqual(mapView.camera.centerCoordinateDistance, distance, accuracy: distance * 0.01)
+    }
+
     /// Once the person has moved the map, here a step in from the keyboard,
     /// the fold takes what was in the middle beside the panel to the middle
     /// of the trailing half, and opening brings it back, at the zoom it has.
@@ -4130,26 +4175,29 @@ extension ScooterMapModelTests {
         try await Task.sleep(for: .milliseconds(1200))
     }
 
-    /// The rider is at `point` once the map has settled, and locating again
-    /// leaves the map where it is, within `tolerance` points: it is where
-    /// locating puts it, at its zoom.
+    /// The rider, or `place`, is at `point` once the map has settled, and
+    /// locating again, or moving there again as `moveAgain` does, leaves the
+    /// map where it is, within `tolerance` points: it is where that move
+    /// puts it, at its zoom.
     private func assertLanded(
+        _ place: CLLocationCoordinate2D = ScooterMapModelTests.rider,
         at point: CGPoint,
         on mapView: MKMapView,
         model: ScooterMapModel,
         within tolerance: CGFloat = 3,
+        movingAgain moveAgain: (() -> Void)? = nil,
         file: StaticString = #filePath,
         line: UInt = #line
     ) async throws {
-        _ = await waitUntil(attempts: 300) { self.shows(Self.rider, at: point, on: mapView, within: 8) }
-        try await waitUntilAtRest(mapView)
-        let shown = mapView.convert(Self.rider, toPointTo: mapView)
-        XCTAssertTrue(shows(Self.rider, at: point, on: mapView, within: 8), "\(shown) for \(point)", file: file, line: line)
+        _ = await waitUntil(attempts: 300) { self.shows(place, at: point, on: mapView, within: 8) }
+        try await waitUntilAtRest(mapView, showing: place)
+        let shown = mapView.convert(place, toPointTo: mapView)
+        XCTAssertTrue(shows(place, at: point, on: mapView, within: 8), "\(shown) for \(point)", file: file, line: line)
         let distance = mapView.camera.centerCoordinateDistance
-        model.focusOnUser()
+        if let moveAgain { moveAgain() } else { model.focusOnUser() }
         try await Task.sleep(for: .milliseconds(600))
-        try await waitUntilAtRest(mapView)
-        let relocated = mapView.convert(Self.rider, toPointTo: mapView)
+        try await waitUntilAtRest(mapView, showing: place)
+        let relocated = mapView.convert(place, toPointTo: mapView)
         XCTAssertEqual(relocated.x, shown.x, accuracy: tolerance, "\(shown) → \(relocated)", file: file, line: line)
         XCTAssertEqual(relocated.y, shown.y, accuracy: tolerance, "\(shown) → \(relocated)", file: file, line: line)
         XCTAssertEqual(
@@ -4158,18 +4206,21 @@ extension ScooterMapModelTests {
         )
     }
 
-    /// Waits for the rider to keep its place and the camera its distance for
-    /// 600 ms, for 5 s at most. A move made again waits for a region change,
-    /// and on a slow runner the map came near the place, then was measured
-    /// 600 ms later while its last move was still to come: the rider 7 pt
-    /// low, where locating left it in the middle (run 39852766517).
-    private func waitUntilAtRest(_ mapView: MKMapView) async throws {
-        var shown = mapView.convert(Self.rider, toPointTo: mapView)
+    /// Waits for the rider, or `place`, to keep its place and the camera its
+    /// distance for 600 ms, for 5 s at most. A move made again waits for a
+    /// region change, and on a slow runner the map came near the place, then
+    /// was measured 600 ms later while its last move was still to come: the
+    /// rider 7 pt low, where locating left it in the middle (run 39852766517).
+    private func waitUntilAtRest(
+        _ mapView: MKMapView,
+        showing place: CLLocationCoordinate2D = ScooterMapModelTests.rider
+    ) async throws {
+        var shown = mapView.convert(place, toPointTo: mapView)
         var distance = mapView.camera.centerCoordinateDistance
         var still = 0
         for _ in 0 ..< 50 {
             try await Task.sleep(for: .milliseconds(100))
-            let now = mapView.convert(Self.rider, toPointTo: mapView)
+            let now = mapView.convert(place, toPointTo: mapView)
             let nowDistance = mapView.camera.centerCoordinateDistance
             let moved = hypot(now.x - shown.x, now.y - shown.y) > 0.5 || abs(nowDistance / distance - 1) > 0.001
             still = moved ? 0 : still + 1

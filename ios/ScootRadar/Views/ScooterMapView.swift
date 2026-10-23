@@ -719,15 +719,23 @@ struct ScooterMapView: UIViewRepresentable {
             focusUnderWay?.safeArea = mapView.safeAreaInsets
             let visible = visibleRect(of: mapView)
             guard !request.keepsZoom else {
-                mapView.setCenter(
-                    ScooterMapCameraPolicy.center(
+                // A fold makes this move again inside its animation, where
+                // MapKit took a point on the tilted map back to another place
+                // once the camera had been set in it (see
+                // setRegionPreservingPerspective). Nothing sets it here first,
+                // and on the Duo both measured the same, but the centre is
+                // measured outside any animation all the same, and only the
+                // move is made in it.
+                var centre = mapView.centerCoordinate
+                UIView.performWithoutAnimation {
+                    centre = ScooterMapCameraPolicy.center(
                         showing: request.point.coordinate,
                         on: mapView,
                         visible: visible,
                         marginsMoved: movedMargins != nil
-                    ),
-                    animated: !UIAccessibility.isReduceMotionEnabled
-                )
+                    )
+                }
+                mapView.setCenter(centre, animated: !UIAccessibility.isReduceMotionEnabled)
                 return
             }
             // A span fits the map's shorter side.
