@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Konstanz: Anbieter, Preise und Verbotszonen zwischen Altstadt, Uni und Schweizer Grenze',
   lede: 'Einen E-Scooter in Konstanz leihst du ab 18 und ohne Führerschein bei Hopp, Lime oder Zeus. Alle drei verlangen laut ihren Datenfeeds 1 € fürs Entsperren, dazu 0,25 € pro Minute bei Hopp und Zeus und 0,31 € bei Lime (Stand 22. Oktober 2026). Im Kern der Altstadt, am Bahnhof, an der Seestrasse und auf der Alten Rheinbrücke und der Fahrradbrücke beendest du laut den Feeds bei keinem eine Fahrt, an der Laube am Rand der Altstadt bei allen dreien. In Kreuzlingen endet keine Leih-Fahrt, und ein Nachtverbot ist nicht bekannt.',
   published: '2026-10-22',
-  updated: '2026-10-22',
+  updated: '2026-10-23',
   city: 'de:Konstanz',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Im Oktober 2026 vermieten **Hopp**, **Lime** und **Zeus** E-Scooter in Konstanz; Zeus fährt hier seit November 2020. Hopp ist ein Franchise-System aus Island; im Datenfeed heisst das Konstanzer System «Hopp Konstanz» und läuft seit 16. Januar 2025. Wer es betreibt, nennt Hopp nicht, und auf Hopps eigener Standortliste fehlt Konstanz (Stand 22. Oktober 2026). Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Am 22. Oktober 2026 um 10:01 Uhr zeigte die [Karte von Konstanz](map:de:Konstanz) rund 290 Scooter: rund 110 von Hopp, rund 90 von Lime und rund 90 von Zeus. Das ist eine Momentaufnahme der offenen Datenfeeds, keine Flottengrösse. Laut Stadt darf jeder Anbieter höchstens 150 Scooter aufstellen (Mitteilung vom Januar 2024).',
-        '**Bolt, Voi und Dott** fanden wir in Konstanz nicht: Bolt und Dott nennen die Stadt nicht auf ihren Standortlisten, Voi hat keine Seite für Konstanz und laut Datenfeed kein Gebiet dort (Stand 22. Oktober 2026). Auch MobiData BW, die Datenplattform des Landes, führt für Konstanz nur Hopp, Lime und Zeus. Zeus vermietet auch in Singen: Die [Karte von Singen](map:de:Singen) zeigte am selben Morgen rund 270 Zeus-Scooter.',
+        '**Bolt, Voi und Dott** fanden wir in Konstanz nicht: Bolt und Dott nennen die Stadt nicht auf ihren Standortlisten, und Voi hat laut Datenfeed kein Gebiet dort (Stand 23. Oktober 2026). Auch MobiData BW, die Datenplattform des Landes, führt für Konstanz nur Hopp, Lime und Zeus. Zeus vermietet auch in Singen: Die [Karte von Singen](map:de:Singen) zeigte am selben Morgen rund 270 Zeus-Scooter.',
       ],
     },
     {
@@ -103,7 +103,7 @@ const guide: Guide = {
       heading: 'Mit dem E-Scooter nach Kreuzlingen?',
       blocks: [
         'Kreuzlingen in der Schweiz grenzt direkt an Paradies und Altstadt. Laut den Datenfeeds sperrt Lime auf Schweizer Seite das Fahren, Zeus drosselt dort auf 1 km/h, und Hopps Gebiet reicht nicht über die Grenze. Beenden kannst du eine Fahrt drüben bei keinem der drei.',
-        'Leih-Scooter in Kreuzlingen selbst fanden wir nicht: Lime, Bolt und Dott nennen die Stadt nicht, und Voi hat dort laut Datenfeed kein Gebiet (Stand Oktober 2026). Donkey Republic verleiht in Kreuzlingen Fahrräder, E-Bikes und E-Lastenräder an Stationen.',
+        'Leih-Scooter in Kreuzlingen selbst fanden wir nicht: Bolt und Dott nennen die Stadt nicht, und MobiData BW, die auch Schweizer Systeme wie das von Voi führt, hat dort keinen Scooter-Anbieter (Stand Oktober 2026). Donkey Republic verleiht in Kreuzlingen Fahrräder, E-Bikes und E-Lastenräder an Stationen.',
         'Fährst du einen eigenen E-Scooter über die Grenze, gelten drüben die Schweizer Regeln. Das E-Trottinett ist dort ein Leicht-Motorfahrrad, das du ab 16 ohne Führerausweis fährst, mit 14 und 15 nur mit Ausweis der Kategorie M. Das Licht brennt auch am Tag, auf dem Trottoir, also dem Gehweg, fährst du nicht (CHF 40.–), und die Grenze von 0,5 Promille gilt für alle, auch unter 21. Mehr in den [E-Trottinett-Regeln der Schweiz](guide:swiss-rules).',
       ],
     },
@@ -119,7 +119,7 @@ const guide: Guide = {
       heading: 'Wie Konstanz E-Scooter regelt: Sondernutzungserlaubnis und Obergrenze',
       blocks: [
         'Seit 1. Januar 2024 braucht jeder Anbieter eine Sondernutzungserlaubnis, um Scooter auf öffentliche Flächen zu stellen. So teilte es die Stadt im Januar 2024 mit: Jeder darf höchstens 150 Scooter aufstellen und zahlt 120 € pro Scooter und Jahr. Falsch abgestellte Scooter soll er binnen zwei Stunden umstellen, ungenutzte spätestens nach 36 Stunden.',
-        'Im Paradies und am Altstadtring wollte die Stadt damals als Pilot Abstellflächen markieren; bewähren sie sich, sollen sie in der ganzen Stadt folgen. Ob sich an Obergrenze, Gebühr oder Abstellflächen seither etwas geändert hat, konnten wir nicht prüfen: Die Website der Stadt war am 22. Oktober 2026 nicht erreichbar.',
+        'Im Paradies und am Altstadtring wollte die Stadt damals als Pilot Abstellflächen markieren; bewähren sie sich, sollen sie in der ganzen Stadt folgen. Ob sich an Obergrenze, Gebühr oder Abstellflächen seither etwas geändert hat, konnten wir nicht prüfen: Auf der Website der Stadt fanden wir dazu im Oktober 2026 keine aktuelle Seite.',
       ],
     },
     {
@@ -172,7 +172,8 @@ const guide: Guide = {
     { title: 'Hopp: Standorte', url: 'https://hopp.bike/locations' },
     { title: 'Hopp: Nutzungsbedingungen für Deutschland', url: 'https://hopp.bike/tos?group=389FGQfb9eqWNoxBiQlENu' },
     { title: 'Hopp: E-Scooter und E-Bikes, Preise', url: 'https://hopp.bike/two-wheels' },
-    { title: 'Lime: Standorte', url: 'https://www.li.me/de-de/locations' },
+    { title: 'MobiData BW: Verzeichnis der Sharing-Datenfeeds (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/manifest.json' },
+    { title: 'MobiData BW: Datenfeed von Voi in Deutschland (GBFS)', url: 'https://api.mobidata-bw.de/sharing/gbfs/v3/voi_de/gbfs' },
     { title: 'Bolt: Städte', url: 'https://bolt.eu/de-de/cities/' },
     { title: 'Dott: Standorte', url: 'https://ridedott.com/de/locations' },
     { title: 'Stadtwerke Konstanz: Fahrradmietsystem konrad', url: 'https://www.stadtwerke-konstanz.de/fahrrad/fahrradmietsystem/' },

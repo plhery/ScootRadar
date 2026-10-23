@@ -8,35 +8,34 @@ const guide: Guide = {
   title: 'E-Scooter Leipzig 2026: Anbieter, Preise, Stationen, LVB',
   description: 'E-Scooter Leipzig: Dott und Voi, was zehn Minuten kosten, warum du nur an Mobilitätsstationen abstellst und warum kein Scooter in die Strassenbahn darf.',
   headline: 'E-Scooter Leipzig: Dott und Voi, Preise, Mobilitätsstationen und was in Innenstadt und Strassenbahn gilt',
-  lede: 'Einen E-Scooter in Leipzig leihst du ab 18 und ohne Führerschein bei Dott, früher TIER, oder bei Voi, in deren Apps oder in LeipzigMOVE, der App der Leipziger Verkehrsbetriebe (LVB). Beide verlangen 1 € fürs Entsperren und 0,22 € pro Minute, zehn Minuten kosten also 3,20 € (Stand 17. Oktober 2026). Abstellen darfst du nur an markierten Stationen, meist Mobilitätsstationen der LVB, und innerhalb des Promenadenrings um die Innenstadt gibt es kaum welche. In Strassenbahnen und Bussen der LVB darf seit dem 1. Mai 2024 kein E-Scooter mehr mit, auch kein eigener.',
+  lede: 'Einen E-Scooter in Leipzig leihst du ab 18 und ohne Führerschein bei Dott, früher TIER, oder bei Voi, in deren Apps oder in LeipzigMOVE, der App der Leipziger Verkehrsbetriebe (LVB). In LeipzigMOVE kostet jeder Scooter 1 € fürs Entsperren und 0,22 € pro Minute, in der Dott-App ebenso; zehn Minuten kosten also 3,20 € (Stand 17. Oktober 2026). Abstellen darfst du nur an markierten Stationen, meist Mobilitätsstationen der LVB, und innerhalb des Promenadenrings um die Innenstadt gibt es kaum welche. In Strassenbahnen und Bussen der LVB darf seit dem 1. Mai 2024 kein E-Scooter mehr mit, auch kein eigener.',
   published: '2026-10-17',
-  updated: '2026-10-17',
+  updated: '2026-10-23',
   city: 'de:Leipzig',
   sections: [
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Leipzig?',
       blocks: [
         'Im Oktober 2026 vermieten zwei Anbieter E-Scooter in Leipzig: **Dott**, das früher TIER hiess, und **Voi**. Die LVB hatten das Angebot 2021 an TIER und Voi vergeben; wie lange die Vereinbarung läuft, sagen weder LVB noch Stadt. Du mietest in der App des Anbieters oder in **LeipzigMOVE**, wo du mit einem Konto auch Fahrkarten, nextbike-Räder und Taxis buchst. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        '**Lime und Bolt gibt es in Leipzig nicht.** Lime führt Leipzig nicht auf seiner Städteliste, Dresden dagegen schon. Bolt bietet in Leipzig laut seiner Website nur Fahrten mit Fahrer und Taxis an.',
+        '**Bolt gibt es in Leipzig nur als Fahrdienst.** Laut seiner Website bietet Bolt in Leipzig Fahrten mit Fahrer und Taxis an, aber keine E-Scooter.',
         '**Voi fehlt auf unserer Karte.** ScootRadar zeigt auf der [Karte von Leipzig](map:de:Leipzig) nur Dott, weil nur Dott für Leipzig offene Standortdaten veröffentlicht: am Abend des 16. Oktober 2026 und in der Nacht darauf jeweils rund 300 Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Wo Voi-Scooter stehen, zeigen nur die Voi-App und LeipzigMOVE.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Leipzig?',
       blocks: [
-        'Dott, Voi und die LVB in LeipzigMOVE veröffentlichen denselben Tarif.',
+        'Dott und die LVB in LeipzigMOVE veröffentlichen denselben Tarif; in LeipzigMOVE gilt er für Dott und Voi. Was Voi in der eigenen App verlangt, zeigt dir die Voi-App.',
         {
           table: {
             caption: 'E-Scooter-Preise in Leipzig (veröffentlichte Tarife, Stand 17. Oktober 2026)',
             head: ['Wo du mietest', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Dott-App', '1,00 €', '0,22 €', '3,20 €', '5,40 €'],
-              ['Voi-App', '1,00 €', '0,22 €', '3,20 €', '5,40 €'],
               ['LeipzigMOVE (Dott und Voi)', '1,00 €', '0,22 €', '3,20 €', '5,40 €'],
             ],
           },
         },
-        'Jede angefangene Minute zählt. In LeipzigMOVE endet eine Miete laut LVB nach spätestens 60 Minuten, Pausen eingerechnet. Sie endet auch von selbst, wenn du einen Voi-Scooter 10 Minuten oder einen Dott-Scooter länger als 30 Minuten nicht bewegst. Voi verkauft ausserdem Minutenpakete und den Voi Pass, die in ganz Deutschland gelten. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Jede angefangene Minute zählt. In LeipzigMOVE endet eine Miete laut LVB nach spätestens 60 Minuten, Pausen eingerechnet. Sie endet auch von selbst, wenn du einen Voi-Scooter 10 Minuten oder einen Dott-Scooter länger als 30 Minuten nicht bewegst. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
         '**Günstiger mit dem Rad:** nextbike hat laut LVB 1500 Räder in Leipzig; in LeipzigMOVE kostet jede angefangene Viertelstunde 1 €. Zurückgeben kannst du das Rad gratis an jeder Mobilitätsstation und in der blauen Zone der App, in der pinken Zone für 1 € extra; ausserhalb kostet es mindestens 20 €.',
         'Den nächsten Dott-Scooter mit Akkustand und eine Preisschätzung für deinen Weg zeigt die [Live-Karte von Leipzig](map:de:Leipzig).',
       ],
@@ -45,7 +44,7 @@ const guide: Guide = {
       heading: 'E-Scooter in Leipzig abstellen: nur an Stationen',
       blocks: [
         'Leipzig lässt E-Scooter nur an festen Stationen verleihen. Einen Verleih ohne Stationen nennt die Stadt «nicht genehmigungsfähig», weil sich Auflagen dann kaum kontrollieren und durchsetzen liessen. Scooter-Stationen innerhalb des Promenadenrings lehnt sie ab. Dotts Datenfeed zeigt dort im Oktober 2026 nur eine, an der Markgrafenstrasse am Südende der Petersstrasse.',
-        'Du beendest jede Fahrt also auf einer markierten E-Scooter-Fläche; in LeipzigMOVE erkennst du sie am lila Scooter-Symbol. Woanders lässt sich die Fahrt nicht beenden, die Minuten laufen weiter, und LeipzigMOVE berechnet 25 € Strafgebühr. Auch Voi schreibt für Leipzig vor, auf einem ausgewiesenen Parkplatz zu parken.',
+        'Du beendest jede Fahrt also auf einer markierten E-Scooter-Fläche; in LeipzigMOVE erkennst du sie am lila Scooter-Symbol. Woanders lässt sich die Fahrt nicht beenden, die Minuten laufen weiter, und LeipzigMOVE berechnet 25 € Strafgebühr. Das gilt laut LVB für alle Fahrten mit Leipziger E-Scootern.',
         {
           note: 'Liegt dein Ziel in der Altstadt, endet die Fahrt meist am Ring, etwa am Hauptbahnhof, am Augustusplatz oder am Goerdelerring. Den Rest gehst du zu Fuss. Such dir die Station vor dem Losfahren aus, sonst bezahlst du die Suche nach einem freien Platz mit.',
         },
@@ -105,7 +104,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter in Strassenbahn und Bus: Was bei LVB und MDV gilt',
       blocks: [
-        'Seit dem 1. Mai 2024 darfst du in Bussen, Strassenbahnen und Flexa-Fahrzeugen der LVB keinen E-Scooter mehr mitnehmen, wegen der Brandgefahr der Akkus. Die Beförderungsbedingungen des Mitteldeutschen Verkehrsverbunds (MDV), gültig seit 1. August 2026, schliessen E-Scooter in den Fahrzeugen der LVB und der HAVAG in Halle weiterhin aus. Erlaubt bleiben Pedelecs, Elektrorollstühle und vierrädrige Elektromobile für Menschen mit Gehbehinderung.',
+        'Seit dem 1. Mai 2024 darfst du in Bussen, Strassenbahnen und Flexa-Fahrzeugen der LVB keinen E-Scooter mehr mitnehmen, wegen der Brandgefahr der Akkus. Die Beförderungsbedingungen des Mitteldeutschen Verkehrsverbunds (MDV), gültig seit 1. August 2026, schliessen E-Scooter in den Fahrzeugen der LVB und der HAVAG in Halle weiterhin aus. Erlaubt bleiben Pedelecs, Elektrorollstühle und vierrädrige Elektromobile für mobilitätseingeschränkte Menschen.',
         'In S-Bahn und Regionalzügen im MDV darfst du deinen eigenen E-Scooter dagegen zusammengeklappt mitnehmen, wenn Platz ist.',
         'Mit dem Leih-Scooter ist der Umstieg einfach: Viele Mobilitätsstationen liegen direkt an Haltestellen. Du beendest die Fahrt dort und fährst mit der Strassenbahn weiter, in LeipzigMOVE mit demselben Konto.',
       ],
@@ -113,7 +112,7 @@ const guide: Guide = {
     {
       heading: 'Hauptbahnhof, Messe, Red Bull Arena: Tipps für Leipzig',
       blocks: [
-        '**Ankunft am Hauptbahnhof:** Die Mobilitätsstation Nr. 4 auf der Westseite entstand 2015 als eine der ersten der Stadt und bekam beim Ausbau 2022 Platz für 24 E-Scooter. Fahrkarten und Auskunft gibt es im LVB-Mobilitätszentrum am Hauptbahnhof (Willy-Brandt-Platz).',
+        '**Ankunft am Hauptbahnhof:** Die Mobilitätsstation Nr. 4 auf der Westseite entstand 2015 als eine der ersten der Stadt und bekam beim Ausbau 2022 Platz für 24 E-Scooter. Mit Fragen kannst du dich persönlich an das LVB-Mobilitätszentrum am Hauptbahnhof (Willy-Brandt-Platz) wenden.',
         '**Red Bull Arena:** Die meisten Dott-Plätze in der Nähe hat die Arena Leipzig (20), gut 500 m vom Stadion. An der näheren Wettiner Strasse sind es nur 3.',
         '**Messe:** An der Neuen Messe im Norden gibt es keinen Dott-Abstellort. Zur Leipziger Buchmesse, das nächste Mal vom 18. bis 21. März 2027, nimmst du besser die Strassenbahn 16 ab Hauptbahnhof: 2026 fuhr sie zur Buchmesse alle fünf Minuten, und die Eintrittskarte galt als Fahrkarte in der Tarifzone 110 (Leipzig).',
         '**Uni und HTWK:** Die Stationen Augustusplatz und Richard-Lehmann-Strasse (HTWK) haben laut Dotts Datenfeed nur je 3 Plätze.',
@@ -164,17 +163,16 @@ const guide: Guide = {
     { title: 'Stadt Leipzig: Polizeiverordnung über öffentliche Sicherheit und Ordnung (2020, PDF)', url: 'https://www.leipzig.de/service-portal/satzungen/details/satzung/3-01/download' },
     { title: 'LeipzigMOVE (LVB): E-Scooter von Voi und Dott, Preise und Abstellen', url: 'https://leipzig-move.de/sharing-funktionen/' },
     { title: 'LeipzigMOVE (LVB): Mobilitätsstationen', url: 'https://leipzig-move.de/mobilitaetsstationen/' },
-    { title: 'LVB: Im Sinne der Sicherheit, LVB schliesst E-Tretroller aus (16. April 2024)', url: 'https://www.l.de/presse/meldung/im-sinne-der-sicherheit-lvb-schliesst-e-tretroller-aus-8076/' },
+    { title: 'LeipzigMOVE (LVB): Über uns, Kontakt und Servicestellen', url: 'https://leipzig-move.de/ueber-uns/' },
+    { title: 'Leipziger Zeitung: Gefährliche Akkus, keine E-Tretroller mehr in LVB-Fahrzeugen ab 1. Mai (16. April 2024)', url: 'https://www.l-iz.de/wirtschaft/mobilitaet/2024/04/gefahrliche-akkus-mitnahme-e-tretroller-lvb-fahrzeuge-1-mai-nicht-gestattet-585404' },
     { title: 'MDV: Beförderungsbedingungen und Tarifbestimmungen, gültig ab 1. August 2026 (PDF)', url: 'https://www.mdv.de/media/file/aa3ecdcc' },
     { title: 'Bundesministerium für Verkehr: Fragen und Antworten zur eKFV-Novelle', url: 'https://www.bmv.de/SharedDocs/DE/Artikel/StV/Strassenverkehr/elektrokleinstfahrzeuge-verordnung-faq-novelle.html' },
-    { title: 'Voi: E-Scooter in Leipzig', url: 'https://www.voi.com/de/city/leipzig' },
     { title: 'Dott: Tarif und Abstellorte für Leipzig im offenen Datenfeed (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/leipzig/gbfs.json' },
     { title: 'Waldgesetz für den Freistaat Sachsen (SächsWaldG), § 11', url: 'https://www.revosax.sachsen.de/vorschrift/5405-SaechsWaldG' },
     { title: 'Leipziger Zeitung: Scooter und E-Fahrräder haben auf Parkwegen nichts zu suchen (September 2025)', url: 'https://www.l-iz.de/politik/leipzig/2025/09/der-stadtrat-tagte-scooter-e-fahrrader-parkwege-video-632706' },
     { title: 'Leipziger Zeitung: LeipzigMOVE, LVB melden 570 000 registrierte Nutzer in fünf Jahren (Juni 2025)', url: 'https://www.l-iz.de/wirtschaft/mobilitaet/2025/06/mobilitatsapp-leipzigmove-lvb-570-000-registrierte-nutzer-fun-jahren-626475' },
     { title: 'Leipziger Zeitung: Mit den LVB auf die Leipziger Buchmesse (März 2026)', url: 'https://www.l-iz.de/melder/verkehrsmelder/2026/03/mit-den-lvb-auf-die-leipziger-buchmesse-650312' },
     { title: 'Leipziger Buchmesse: 18. bis 21. März 2027', url: 'https://www.leipziger-buchmesse.de/' },
-    { title: 'Lime: Standorte', url: 'https://www.li.me/de-de/locations' },
     { title: 'Bolt: Leipzig', url: 'https://bolt.eu/de-de/cities/leipzig/' },
   ],
 };

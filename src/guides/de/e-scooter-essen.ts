@@ -8,15 +8,15 @@ const guide: Guide = {
   title: 'E-Scooter Essen 2026: Anbieter, Preise, Abstellflächen',
   description: 'E-Scooter Essen: fünf Anbieter, was zehn Minuten kosten, wo du in der Innenstadt die Fahrt beendest und warum Scooter nicht in Bus und Bahn der Ruhrbahn dürfen.',
   headline: 'E-Scooter Essen: Anbieter, Preise, Abstellflächen, Sperrzonen und was in der Ruhrbahn gilt',
-  lede: 'Einen E-Scooter in Essen leihst du ab 18 und ohne Führerschein bei Dott, Bolt, Lime, Voi oder Ryde. Zehn Minuten kosten bei Voi laut Website 1,80 €, bei Dott laut Datenfeed 3,50 € (Stand 17. Oktober 2026). In der Innenstadt beendest du die Fahrt seit dem 1. Januar 2026 nur auf einer der rund 54 markierten Abstellflächen, sonst läuft die Miete weiter. In Bussen und Bahnen der Ruhrbahn ist die Mitnahme von E-Scootern seit dem 1. März 2024 untersagt.',
+  lede: 'Einen E-Scooter in Essen leihst du ab 18 und ohne Führerschein bei Dott, Bolt, Lime, Voi oder Ryde. Zehn Minuten kosten bei Dott laut Datenfeed 3,50 € (Stand 17. Oktober 2026); die anderen zeigen ihren Preis in der App. In der Innenstadt beendest du die Fahrt seit dem 1. Januar 2026 nur auf einer der rund 54 markierten Abstellflächen, sonst läuft die Miete weiter. In Bussen und Bahnen der Ruhrbahn ist die Mitnahme von E-Scootern seit dem 1. März 2024 untersagt.',
   published: '2026-10-17',
-  updated: '2026-10-17',
+  updated: '2026-10-23',
   city: 'de:Essen',
   sections: [
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Essen?',
       blocks: [
-        'Mindestens fünf Anbieter vermieten im Oktober 2026 E-Scooter in Essen: **Dott** (früher TIER), **Bolt**, **Lime**, **Voi** und **Ryde** aus Norwegen. Dott, Bolt und Lime gaben Radio Essen im Oktober 2026 Auskunft; Dott, Lime, Voi und Ryde führen Essen auf ihren Websites (Stand 17. Oktober 2026). Ryde fährt laut Radio Bochum spätestens seit Juni 2026 auch in Essen. **Ridemovi** nannte die Stadt im Dezember 2024 mit 400 Scootern; eine neuere Quelle dazu gibt es nicht.',
+        'Mindestens fünf Anbieter vermieten 2026 E-Scooter in Essen: **Dott** (früher TIER), **Bolt**, **Lime**, **Voi** und **Ryde** aus Norwegen. Dott, Bolt und Lime gaben Radio Essen im Oktober 2026 Auskunft, Voi war im Januar 2026 beim Parktest des Senders dabei. Dott und Ryde führen Essen auf ihren Websites (Stand 23. Oktober 2026). Ryde fährt laut Radio Bochum spätestens seit Juni 2026 auch in Essen. **Ridemovi** nannte die Stadt im Dezember 2024 mit 400 Scootern; eine neuere Quelle dazu gibt es nicht.',
         'Ende 2024 waren laut Stadt 3100 Leih-Scooter zugelassen, im November 2025 knapp 3800. Radio Essen sprach im Oktober 2026 von mehr als 2000.',
         'Gemietet wird in der App des Anbieters. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Auf der [Karte von Essen](map:de:Essen) zeigt ScootRadar nur Dott: am 17. Oktober 2026 gegen 13:30 Uhr rund 430 Scooter. Das ist der Stand eines Tages, keine Flottengrösse. Im Süden endet Dotts Gebiet laut Datenfeed auf Höhe der Messe: In Bredeney, Werden, Kettwig und am Baldeneysee hat Dott keine Zone. Bolt, Lime, Voi und Ryde veröffentlichen für Essen keine offenen Standortdaten; ihre Scooter findest du nur in ihren Apps.',
@@ -30,15 +30,15 @@ const guide: Guide = {
             caption: 'E-Scooter-Preise in Essen (Stand und Quelle in der ersten Spalte)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
-              ['Voi (Website, 17. Oktober 2026)', '0,00 €', '0,18 €', '1,80 €', '3,60 €'],
               ['Dott (Datenfeed, 17. Oktober 2026)', '1,00 €', '0,25 €', '3,50 €', '6,00 €'],
               ['Bolt', 'in der App', 'in der App', 'in der App', 'in der App'],
               ['Lime', 'in der App', 'in der App', 'in der App', 'in der App'],
+              ['Voi', 'in der App', 'in der App', 'in der App', 'in der App'],
               ['Ryde', 'in der App', 'in der App', 'in der App', 'in der App'],
             ],
           },
         },
-        'Bolt, Lime und Ryde veröffentlichen für Essen keinen Preis. Für Ryde nannte Radio Bochum im Juni 2026 0,18 € pro Minute; das ist der Bochumer Tarif, nicht unbedingt der Essener. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Bei Bolt, Lime, Voi und Ryde siehst du den Essener Preis in der App. Für Ryde nannte Radio Bochum im Juni 2026 0,18 € pro Minute; das ist der Bochumer Tarif, nicht unbedingt der Essener. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
       ],
     },
     {
@@ -122,7 +122,7 @@ const guide: Guide = {
         '**Stadion an der Hafenstrasse:** Das Dott-Gebiet endet laut Feed rund 200 m vor dem Stadion von Rot-Weiss Essen.',
         '**Zeche Zollverein und Baldeneysee:** Beide liegen rund 2 km ausserhalb des Dott-Gebiets; am See gilt zudem die Sperrzone der Stadt. Ob andere Anbieter dorthin fahren, zeigen ihre Apps.',
         '**Rüttenscheid:** Die Rü und der Rüttenscheider Stern liegen im Dott-Gebiet. Städtische Abstellflächen kommen hier erst mit Phase 3; Dott führt am Stern schon eine eigene Abstellzone.',
-        '**Nachts:** Eine Sperrzeit nennen weder Stadt noch Anbieter; Voi vermietet laut Website rund um die Uhr. Freie Dott-Scooter in deiner Nähe zeigt die [Live-Karte von Essen](map:de:Essen).',
+        '**Nachts:** Eine nächtliche Sperrzeit nennt die Stadt nicht. Freie Dott-Scooter in deiner Nähe zeigt die [Live-Karte von Essen](map:de:Essen).',
       ],
     },
     {
@@ -156,11 +156,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-Apps kann ich in Essen nutzen?',
-      answer: 'Die von Dott, Bolt, Lime, Voi und Ryde, Stand Oktober 2026. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Dott-Scooter zeigt auch die [Live-Karte von Essen](map:de:Essen), die der anderen Anbieter nur ihre eigenen Apps.',
+      answer: 'Die von Dott, Bolt, Lime, Voi und Ryde (Stand 2026). Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Dott-Scooter zeigt auch die [Live-Karte von Essen](map:de:Essen), die der anderen Anbieter nur ihre eigenen Apps.',
     },
     {
       question: 'Was kosten zehn Minuten E-Scooter in Essen?',
-      answer: 'Bei Voi 1,80 € (0,18 € pro Minute, Entsperren gratis), bei Dott 3,50 € (1 € Entsperren plus 0,25 € pro Minute), Stand 17. Oktober 2026. Bolt, Lime und Ryde zeigen ihren Preis nur in der App.',
+      answer: 'Bei Dott 3,50 € (1 € Entsperren plus 0,25 € pro Minute), Stand 17. Oktober 2026. Bei Bolt, Lime, Voi und Ryde zeigt dir die App den Preis.',
     },
     {
       question: 'Warum kann ich meine Fahrt in der Essener Innenstadt nicht beenden?',
@@ -187,7 +187,7 @@ const guide: Guide = {
     { title: 'Ruhrbahn: Ab 1. März keine E-Tretroller mehr in Bus und Bahn (23. Februar 2024)', url: 'https://www.ruhrbahn.de/essen/aktuelles/meldung/ab-1-maerz-keine-e-tretroller-mehr-in-bus-und-bahn' },
     { title: 'VRR: Handbuch Tarif und Vertrieb (Stand 1. Juli 2026, PDF)', url: 'https://www.vrr.de/fileadmin/user_upload/pdf/service/downloads/Tarifhandbuch/VRR_Handbuch_2026.pdf' },
     { title: 'Dott: offener Datenfeed für Essen (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/essen/gbfs.json' },
-    { title: 'Voi: E-Scooter in Essen', url: 'https://www.voi.com/de/city/essen' },
+    { title: 'Dott: Standorte', url: 'https://ridedott.com/de/locations' },
     { title: 'Ryde: Standorte', url: 'https://www.ryde-technology.com/Locations' },
     { title: 'Radio Essen: Leih-E-Scooter in Essen, wie gut funktionieren die Parkzonen? (13. Oktober 2026)', url: 'https://www.radioessen.de/artikel/leih-e-scooter-in-essen-wie-gut-funktionieren-die-parkzonen-2765055' },
     { title: 'Radio Essen: E-Scooter-Parkplätze in Essen im Test (30. Januar 2026)', url: 'https://www.radioessen.de/artikel/e-scooter-parkplaetze-in-essen-im-test-2558688' },
