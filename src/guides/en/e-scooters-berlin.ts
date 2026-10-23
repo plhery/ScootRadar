@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Berlin: apps, prices, parking zones and the rules',
   lede: 'To rent an e-scooter in Berlin, use the Lime, Bolt, Voi or Dott app (Zeus in Spandau and Reinickendorf): you must be 18 and have a payment card, but need no driving licence. Dott charges €0.75 to unlock plus €0.29 a minute, about €3.65 for ten minutes (published rate on 12 October 2026); the others show their price in the app. Ride on the bike lane, never on the pavement or through a park, and around the sights of Mitte end your ride only at a marked bay such as a Jelbi point.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-23',
   city: 'de:Berlin',
   sections: [
     {
@@ -20,7 +20,7 @@ const guide: Guide = {
         {
           list: [
             '**Lime**, **Bolt** and **Voi**: city-wide, and also bookable in Jelbi, the app of Berlin’s transport company BVG.',
-            '**Dott**: city-wide. Dott merged with Tier, and Tier riders have used the Dott app since October 2024.',
+            '**Dott**: city-wide, and also bookable in Jelbi. Dott merged with Tier, and Tier riders have used the Dott app since October 2024.',
             '**Zeus**: only in the outer districts of Spandau and Reinickendorf.',
           ],
         },
@@ -135,7 +135,7 @@ const guide: Guide = {
       heading: 'U-Bahn, Jelbi and BER airport',
       blocks: [
         'Since 1 May 2024, BVG has banned e-scooters from its U-Bahn trains, trams, buses and U-Bahn stations, folded or not. With a rental, end the ride outside the station and rent another at the other end.',
-        '**Jelbi** is BVG’s mobility app: public transport tickets plus Lime, Bolt and Voi scooters, with a Jelbi account of its own. Dott can’t be booked in Jelbi, but its scooters stand at Jelbi stations.',
+        '**Jelbi** is BVG’s mobility app: public transport tickets plus Lime, Bolt, Voi and Dott scooters, with a Jelbi account of its own.',
         '**BER airport:** Dott’s area ends well north of the airport, and BER’s own travel page lists no e-scooter sharing. Take the FEX airport express or the S-Bahn into town and pick up a scooter there.',
         '**Prefer to pedal?** nextbike and DB Call a Bike rent out bikes in Berlin, and so do Lime, Bolt and Voi.',
       ],
@@ -188,7 +188,7 @@ const guide: Guide = {
     { title: 'Berlin Senate: Sharing Strategy 2035 (German)', url: 'https://www.berlin.de/sen/uvk/mobilitaet-und-verkehr/verkehrsplanung/geteilte-mobilitaet/sharing-strategie-2035/' },
     { title: 'BVG: ban on e-scooters (German)', url: 'https://www.bvg.de/de/service-und-kontakt/e-tretroller-verbot' },
     { title: 'Tempelhof-Schöneberg district: public parks and the tulip sign (German)', url: 'https://www.berlin.de/ba-tempelhof-schoeneberg/politik-und-verwaltung/aemter/strassen-und-gruenflaechenamt/strassen-gruenflaechen-verwaltung/artikel.349752.php' },
-    { title: 'Jelbi: mobility partners', url: 'https://www.jelbi.de/en/mobility-partners/' },
+    { title: 'Jelbi: frequently asked questions (German)', url: 'https://www.jelbi.de/faq-de/' },
     { title: 'Dott: public price feed for Berlin (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/berlin/system_pricing_plans.json' },
     { title: 'Federal Ministry for Transport: questions and answers on e-scooters (German)', url: 'https://www.bmv.de/SharedDocs/DE/Artikel/StV/Strassenverkehr/elektrokleinstfahrzeuge-verordnung-faq.html' },
   ],

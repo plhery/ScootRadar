@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'How to rent an e-scooter: from the app to the end of your ride',
   lede: 'How to rent an e-scooter, in short: install the operator’s app, sign up with your phone number and a card, scan the QR code on the handlebar and ride, then park where the app allows and take a photo to end the ride. Almost every operator rents only to riders aged 18 or over, and in the UK you also need a driving licence. You pay an unlock fee plus a rate per minute: Voi published CHF 1 plus CHF 0.42 a minute in Bern on 12 October 2026, so ten minutes cost CHF 5.20.',
   published: '2026-10-12',
-  updated: '2026-10-17',
+  updated: '2026-10-23',
   sections: [
     {
       heading: 'How to rent (or hire) an e-scooter, step by step',
@@ -155,7 +155,7 @@ const guide: Guide = {
         {
           list: [
             '**Maps that hand you over.** [ScootRadar](/map) puts on one map the operators whose open data it reads, with battery and range where shared, the walking time and a price estimate from published rates. It’s free, with no account and no ads, in a browser or as an iPhone app. It can’t reserve or unlock: a button opens the operator’s app, and positions can be a few minutes old. Google Maps also shows nearby scooters with prices in the cities it covers, then opens the operator’s app.',
-            '**Apps you can book in.** Uber rents Lime scooters in some cities, Zürich among them: tap Services, then 2-Wheels. In Berlin the Jelbi app books Voi, Lime and Bolt; in Munich, MVGO books Voi and Dott; around Oslo, the Ruter app rents Bolt, Ryde and Voi, paid per trip by card.',
+            '**Apps you can book in.** Uber rents Lime scooters in some cities, Zürich among them: tap Services, then 2-Wheels. In Berlin the Jelbi app books Voi, Lime, Bolt and Dott; in Munich, MVGO books Voi and Dott; around Oslo, the Ruter app rents Bolt, Ryde and Voi, paid per trip by card.',
           ],
         },
         'Your operator pass usually doesn’t count in a booking app, as Ruter points out, and a map shows only the operators that share their data. [Open the map](/map) to see who has a scooter near you.',
@@ -194,7 +194,7 @@ const guide: Guide = {
     { title: 'Dott Help: Payment methods', url: 'https://help.ridedott.com/en/articles/209' },
     { title: 'Dott: Reserve a vehicle for free', url: 'https://ridedott.com/reservations/' },
     { title: 'Bolt: Electric scooters', url: 'https://bolt.eu/en/scooters/' },
-    { title: 'Jelbi (BVG): Frequently asked questions', url: 'https://www.jelbi.de/en/faq/' },
+    { title: 'Jelbi (BVG): Frequently asked questions (German)', url: 'https://www.jelbi.de/faq-de/' },
     { title: 'Ryde: terms and conditions for Norway', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
   ],
 };

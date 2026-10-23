@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter mieten: So funktioniert’s, von der App bis zum Ende der Fahrt',
   lede: 'E-Scooter mieten funktioniert in der Schweiz und in Deutschland fast überall gleich: App des Anbieters laden, mit Handynummer und Zahlungsmittel registrieren, QR-Code am Lenker scannen und losfahren, am Ziel in einer erlaubten Zone abstellen und die Fahrt mit einem Foto beenden. Die grossen Anbieter vermieten in beiden Ländern erst ab 18; einen Führerausweis oder Führerschein brauchst du nicht. Du zahlst eine Entsperrgebühr und einen Minutenpreis: Voi veröffentlichte am 12. Oktober 2026 für Bern CHF 1.– plus 42 Rappen pro Minute und für Stuttgart 0,49 € plus 0,24 € pro Minute; zehn Minuten kosten also CHF 5.20 oder 2,89 €.',
   published: '2026-10-12',
-  updated: '2026-10-17',
+  updated: '2026-10-23',
   sections: [
     {
       heading: 'E-Scooter oder E-Trottinett mieten: Schritt für Schritt',
@@ -178,7 +178,7 @@ const guide: Guide = {
         {
           list: [
             '**Karten, die dich zur App des Anbieters weiterleiten.** [ScootRadar](/map) zeigt auf einer Karte die Scooter aller Anbieter, die offene Daten veröffentlichen: mit Gehzeit, Akku und Reichweite, wo angegeben, und einer Preisschätzung aus den veröffentlichten Tarifen. Gratis, ohne Konto und ohne Werbung, im Browser oder als iPhone-App. Reservieren oder entsperren kann sie nicht: Ein Button öffnet die App des Anbieters, und die Standorte können einige Minuten alt sein. Auch Google Maps zeigt in manchen Städten Scooter mit Preis und leitet zur App weiter.',
-            '**Apps, in denen du direkt buchst.** Lime kannst du in manchen Städten über die Uber-App mieten, in Zürich zum Beispiel. In Berlin buchst du in der BVG-App Jelbi Scooter von Voi, Lime und Bolt, aber noch nicht von Dott; in München in der MVGO-App Scooter von Voi und Dott.',
+            '**Apps, in denen du direkt buchst.** Lime kannst du in manchen Städten über die Uber-App mieten, in Zürich zum Beispiel. In Berlin buchst du in der BVG-App Jelbi Scooter von Voi, Lime, Bolt und Dott; in München in der MVGO-App Scooter von Voi und Dott.',
           ],
         },
         'In einer Buchungs-App gelten deine Pässe beim Anbieter oft nicht; die Osloer Ruter-App schliesst sie ausdrücklich aus. [Öffne die Karte](/map) und sieh nach, wer in deiner Nähe einen Scooter hat.',
@@ -215,7 +215,7 @@ const guide: Guide = {
     { title: 'Dott Hilfe: Zahlungsarten (englisch)', url: 'https://help.ridedott.com/en/articles/209' },
     { title: 'Dott: Fahrzeug gratis reservieren (englisch)', url: 'https://ridedott.com/reservations/' },
     { title: 'Bolt: E-Scooter mieten', url: 'https://bolt.eu/de-de/scooters/' },
-    { title: 'Jelbi (BVG): Häufige Fragen (englisch)', url: 'https://www.jelbi.de/en/faq/' },
+    { title: 'Jelbi (BVG): Häufige Fragen', url: 'https://www.jelbi.de/faq-de/' },
     { title: 'MVG: MVGO, die Mobilitäts-App für München', url: 'https://www.mvg.de/services/mobile-services/mvgo.html' },
     { title: 'Ryde: Nutzungsbedingungen für Norwegen (englisch und norwegisch)', url: 'https://www.ryde-technology.com/terms-conditions-norway' },
   ],

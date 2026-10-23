@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Berlin: Anbieter, Preise, Parkzonen und was du wissen musst',
   lede: 'E-Scooter in Berlin mietest du bei Lime, Bolt, Voi oder Dott, in Spandau und Reinickendorf auch bei Zeus: App laden, ab 18 und ohne Führerschein registrieren, QR-Code scannen. Dott verlangt 0,75 € fürs Entsperren und 0,29 € pro Minute, zehn Minuten kosten also rund 3,65 € (veröffentlichter Tarif vom 12. Oktober 2026); die anderen zeigen den Preis in der App. Du fährst auf dem Radweg, nie auf dem Gehweg oder durch Parks, und rund um die Sehenswürdigkeiten in Mitte beendest du die Fahrt nur an markierten Flächen wie den Jelbi-Punkten.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-23',
   city: 'de:Berlin',
   sections: [
     {
@@ -20,7 +20,7 @@ const guide: Guide = {
         {
           list: [
             '**Lime**, **Bolt** und **Voi**: in der ganzen Stadt, auch über die BVG-App Jelbi buchbar.',
-            '**Dott**: in der ganzen Stadt. Tier und Dott haben fusioniert; wer früher Tier fuhr, nutzt seit Oktober 2024 die Dott-App.',
+            '**Dott**: in der ganzen Stadt, ebenfalls über Jelbi buchbar. Tier und Dott haben fusioniert; wer früher Tier fuhr, nutzt seit Oktober 2024 die Dott-App.',
             '**Zeus**: nur in Spandau und Reinickendorf.',
           ],
         },
@@ -130,7 +130,7 @@ const guide: Guide = {
       heading: 'BVG, Jelbi und Flughafen BER: E-Scooter und Nahverkehr',
       blocks: [
         'Seit dem 1. Mai 2024 verbietet die BVG E-Tretroller in U-Bahn, Tram, Bus und U-Bahnhöfen, auch zusammengeklappt. Mit dem Leih-Scooter heisst das: Fahrt vor dem Bahnhof beenden und am Ziel einen neuen mieten.',
-        '**Jelbi** ist die Mobilitäts-App der BVG: Darin kaufst du VBB-Tickets und buchst E-Scooter von Lime, Bolt und Voi, mit einem eigenen Jelbi-Konto. Dott kannst du in Jelbi nicht buchen, seine Scooter stehen aber an den Jelbi-Stationen. Am Hauptbahnhof liegt der Jelbi-Punkt S+U Hauptbahnhof/Heidestrasse.',
+        '**Jelbi** ist die Mobilitäts-App der BVG: Darin kaufst du VBB-Tickets und buchst E-Scooter von Lime, Bolt, Voi und Dott, mit einem eigenen Jelbi-Konto. Am Hauptbahnhof liegt der Jelbi-Punkt S+U Hauptbahnhof/Heidestrasse.',
         '**Flughafen BER:** Das Gebiet von Dott endet weit nördlich des Flughafens, und die Anreiseseite des BER nennt kein E-Scooter-Sharing. Nimm den Flughafen-Express FEX oder die S-Bahn in die Stadt und steig dort auf den Scooter um.',
         '**Lieber Fahrrad fahren?** Fahrräder verleihen in Berlin nextbike und DB Call a Bike, dazu Lime, Bolt und Voi.',
       ],
@@ -190,6 +190,7 @@ const guide: Guide = {
     { title: 'Bezirksamt Mitte: Virtuelle Parkverbotszone für Leihfahrzeuge (März 2024)', url: 'https://www.berlin.de/ba-mitte/aktuelles/pressemitteilungen/2024/pressemitteilung.1426019.php' },
     { title: 'Senatsverwaltung für Mobilität: Sharing-Strategie 2035', url: 'https://www.berlin.de/sen/uvk/mobilitaet-und-verkehr/verkehrsplanung/geteilte-mobilitaet/sharing-strategie-2035/' },
     { title: 'BVG: Verbot von E-Tretrollern', url: 'https://www.bvg.de/de/service-und-kontakt/e-tretroller-verbot' },
+    { title: 'Jelbi (BVG): Häufige Fragen', url: 'https://www.jelbi.de/faq-de/' },
     { title: 'Bezirksamt Tempelhof-Schöneberg: Grünanlagen und Tulpenschild', url: 'https://www.berlin.de/ba-tempelhof-schoeneberg/politik-und-verwaltung/aemter/strassen-und-gruenflaechenamt/strassen-gruenflaechen-verwaltung/artikel.349752.php' },
     { title: 'Dott: offener Tarif-Feed für Berlin (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/berlin/system_pricing_plans.json' },
   ],
