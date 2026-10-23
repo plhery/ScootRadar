@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Stuttgart: Anbieter, Preise, Parkzonen und was auf dem Wasen gilt',
   lede: 'Einen E-Scooter in Stuttgart leihst du ab 18 und ohne Führerschein bei Voi, Dott (früher TIER), Lime oder Bolt. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 13. Oktober 2026) zwischen 2,89 € bei Voi und 3,29 € bei Dott. In der City beendest du die Fahrt nur an markierten Flächen, in Fussgängerzonen, in Parks, am Flughafen und an der Messe gar nicht. Deinen eigenen Scooter nimmst du zusammengeklappt jederzeit kostenlos in Bus und Bahn des VVS mit, einen Leih-Scooter nie.',
   published: '2026-10-13',
-  updated: '2026-10-14',
+  updated: '2026-10-23',
   city: 'de:Stuttgart',
   sections: [
     {
@@ -145,7 +145,7 @@ const guide: Guide = {
       blocks: [
         'Seit einem Beschluss des Gemeinderats vom 22. Juni 2023 brauchen die Anbieter eine Sondernutzungserlaubnis der Stadt. Erlaubt sind höchstens 6000 Leih-Scooter, 1500 je Anbieter, davon je Anbieter höchstens 100 in der Kernstadt. Pro Scooter und angefangenem Monat zahlen sie laut dem seit Januar 2026 geltenden Gebührenverzeichnis 7,50 € in der Kernstadt, 6 € in den übrigen Innenstadtbezirken und 4,50 € im Rest der Stadt, damit die Scooter auch in die Stadtteile kommen.',
         'Die aktuellen Erlaubnisse vergab die Stadt im Dezember 2024 nach einem Auswahlverfahren; sie gelten vom 1. Januar 2025 bis zum 31. Dezember 2026. Danach vergibt die Stadt sie laut einer Antwort an den Landtag vom September 2025 in einem neuen Auswahlverfahren, bei dem sich bisherige und neue Anbieter aus ganz Deutschland bewerben können. Eine Ausschreibung oder Gewinner hatte die Stadt bis zum 14. Oktober 2026 nicht veröffentlicht: Wer ab 2027 in Stuttgart E-Scooter verleiht, ist noch offen.',
-        'Ab 1. März 2027 gilt das gewerbliche Aufstellen von Leih-Scootern bundesweit als Sondernutzung; Stuttgart behandelt es schon heute so.',
+        'Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr, sodass die Städte es als Sondernutzung erlauben können; Stuttgart behandelt es schon heute so.',
       ],
     },
     {
@@ -190,6 +190,8 @@ const guide: Guide = {
     { title: 'Gemeinderat Stuttgart, GRDrs 760/2022: Sondernutzungserlaubnisse für E-Scooter (PDF)', url: 'https://www.domino1.stuttgart.de/web/ksd/ksdRedSystem.nsf/0/350AA0B9CA670B13C12589CD005861D1/$File/04C74C52FD177BE1C12588EF00446ED2.pdf' },
     { title: 'Landtag Baden-Württemberg, Drucksache 17/9326: E-Scooter in Stuttgart (September 2025, PDF)', url: 'https://www.landtag-bw.de/files/live/sites/LTBW/files/dokumente/WP17/Drucksachen/9000/17_9326_D.pdf' },
     { title: 'Stuttgarter Zeitung: E-Scooter beim Cannstatter Volksfest (25. September 2026)', url: 'https://www.stuttgarter-zeitung.de/lokales/stuttgart/cannstatter-volksfest-e-scooter-sollen-nicht-zur-stolperfalle-werden-wasen-wird-wieder-verbotszone-79046921.html' },
+    { title: 'Bundesgesetzblatt 2026 I Nr. 32: Änderung der StVO und der eKFV', url: 'https://recht.bund.de/bgbl/1/2026/32/VO.html' },
+    { title: 'Bundesverkehrsministerium: FAQ zur Novelle der Elektrokleinstfahrzeuge-Verordnung', url: 'https://www.bmv.de/SharedDocs/DE/Artikel/StV/Strassenverkehr/elektrokleinstfahrzeuge-verordnung-faq-novelle.html' },
     { title: 'VVS: Fahrradmitnahme', url: 'https://www.vvs.de/fahrradmitnahme' },
     { title: 'SSB: Regeln für die Zahnradbahn (PDF)', url: 'https://www.ssb-ag.de/fileadmin/Images/News/Presse/Regeln_Zahnradbahn.pdf' },
     { title: 'RegioRadStuttgart: Tarife', url: 'https://www.regioradstuttgart.de/de/start' },

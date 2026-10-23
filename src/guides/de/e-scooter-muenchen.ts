@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter München: Anbieter, Preise, Abstellflächen und was auf der Wiesn gilt',
   lede: 'Einen E-Scooter in München mietest du ab 18 und ohne Führerschein bei Dott, Lime, Voi oder Bolt. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 12. Oktober 2026) bei Dott 4 € und bei Voi 3,59 €; bei Lime und Bolt zeigt die App den Preis. Innerhalb des Altstadtrings beendest du die Fahrt nur auf ausgewiesenen Abstellflächen, im Englischen Garten sind E-Scooter verboten, und in U-Bahn, Tram und Bus der MVG darfst du sie nicht mitnehmen.',
   published: '2026-10-12',
-  updated: '2026-10-14',
+  updated: '2026-10-23',
   city: 'de:München',
   sections: [
     {
@@ -141,7 +141,7 @@ const guide: Guide = {
         },
         'Alles Weitere, auch was sich am 1. März 2027 ändert, steht in den [E-Scooter-Regeln für Deutschland](guide:german-rules).',
         'Die Anbieter brauchen in Bayern bisher keine Genehmigung und zahlen der Stadt keine Gebühren. Alle haben die freiwillige Selbstverpflichtung in der Fassung vom April 2022 unterschrieben: je Anbieter höchstens 100 Scooter in der Altstadt und 1000 weitere innerhalb des Mittleren Rings, höchstens vier an einem Standort, falsch geparkte binnen 24 Stunden einsammeln.',
-        'Die Flotte ist stark gewachsen: Laut Polizei waren es 2019 rund 4000 Leih-Scooter und 2022 rund 12 000; im April 2024 kam die Stadt laut Presse auf 18 698. Ab 1. März 2027 gilt das gewerbliche Aufstellen von Leih-Scootern bundesweit als Sondernutzung, die die Stadt genehmigen muss. München will die freiwilligen Regeln dann in eine solche Sondernutzung mit Obergrenzen und Gebühren überführen. Einen Stadtratsbeschluss, Obergrenzen oder Gebührenbeträge dazu haben wir bis zum 12. Oktober 2026 nicht gefunden.',
+        'Die Flotte ist stark gewachsen: Laut Polizei waren es 2019 rund 4000 Leih-Scooter und 2022 rund 12 000; im April 2024 kam die Stadt laut Presse auf 18 698. Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr; die Stadt kann es dann als Sondernutzung genehmigen. München will die freiwilligen Regeln dann in eine solche Sondernutzung mit Obergrenzen und Gebühren überführen. Einen Stadtratsbeschluss, Obergrenzen oder Gebührenbeträge dazu haben wir bis zum 12. Oktober 2026 nicht gefunden.',
       ],
     },
   ],

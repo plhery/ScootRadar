@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Freiburg: Zeus und Yoio, Preise, Parkzonen und was in der Altstadt gilt',
   lede: 'Einen E-Scooter in Freiburg im Breisgau leihst du ab 18 und ohne Führerschein bei Zeus oder Yoio. Zehn Minuten kosten nach den Tarifen in ihren offenen Datenfeeds (Stand 14. Oktober 2026) 3,50 € bei Zeus und 3,59 € oder 3,99 € bei Yoio, je nach Scooter. In der Fussgängerzone der Altstadt darfst du nicht fahren, und beenden kannst du die Fahrt dort ebenso wenig wie in Parks oder näher als 50 m an der Dreisam. Deinen eigenen E-Scooter nimmt die VAG in Strassenbahn und Bus sogar aufgeklappt mit, einen Leih-Scooter nie.',
   published: '2026-10-14',
-  updated: '2026-10-14',
+  updated: '2026-10-23',
   city: 'de:Freiburg im Breisgau',
   sections: [
     {
@@ -38,7 +38,7 @@ const guide: Guide = {
           },
         },
         'Eine Viertelstunde kostet damit 4,75 € bei Zeus und 4,84 € oder 5,44 € bei Yoio. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
-        'Eine allgemeine Hilfeseite von Zeus (Stand März 2025) nennt zusätzlich 0,39 € Servicegebühr. Im Freiburger Datenfeed steht sie nicht; ob sie anfällt, zeigt erst die App. Laut Yoios Gebührenordnung (Stand 2021) gibt es mit einer Jahreskarte des örtlichen Nahverkehrs 25 € Guthaben im Jahr.',
+        'Laut Yoios Gebührenordnung (Stand 2021) gibt es mit einer Jahreskarte des örtlichen Nahverkehrs 25 € Guthaben im Jahr.',
         'Günstiger für kurze Wege ist das Leihrad Frelo (siehe unten). Den nächsten Scooter und eine Preisschätzung zeigt die [Live-Karte von Freiburg](map:de:Freiburg im Breisgau).',
       ],
     },
@@ -145,7 +145,7 @@ const guide: Guide = {
       blocks: [
         'Freiburg vergibt keine Erlaubnisse in einem Auswahlverfahren. Seit einem Beschluss des Gemeinderats vom 30. Juni 2020 schliesst die Stadt mit jedem Anbieter eine freiwillige Vereinbarung über Geschäftsgebiet, Parkverbotszonen, Zahl der Scooter je Stadtteil, Laden mit Ökostrom und Daten.',
         'Obergrenzen und Laufzeit dieser Vereinbarungen hat die Stadt bis zum 14. Oktober 2026 nicht veröffentlicht. Im Doppelhaushalt 2025/2026 plante der Gemeinderat eine Gebühr von 10 € pro Scooter und Monat ein; der Antrag dazu verweist auf [Stuttgart](guide:stuttgart), wo die Anbieter schon pro Scooter zahlen. Ob Freiburg die Gebühr erhebt, ist offen: Die geltende Gebührensatzung nennt E-Scooter nicht.',
-        'Ab 1. März 2027 gilt das gewerbliche Aufstellen von Leih-Scootern bundesweit als Sondernutzung. Ob Freiburg danach etwas ändert, hat die Stadt nicht angekündigt.',
+        'Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr; die Städte können es dann als Sondernutzung erlauben und an Auflagen knüpfen. Ob Freiburg danach etwas ändert, hat die Stadt nicht angekündigt.',
       ],
     },
     {
@@ -189,6 +189,8 @@ const guide: Guide = {
     { title: 'VAG Freiburg: Beförderungsbedingungen', url: 'https://www.vag-freiburg.de/befoerderungsbedingungen-vag' },
     { title: 'Frelo: Tarife', url: 'https://www.frelo.de/de/' },
     { title: 'visit.freiburg.de: Top-Events in Freiburg', url: 'https://visit.freiburg.de/events/top-10-events' },
+    { title: 'Bundesgesetzblatt 2026 I Nr. 32: Änderung der StVO und der eKFV', url: 'https://recht.bund.de/bgbl/1/2026/32/VO.html' },
+    { title: 'Bundesverkehrsministerium: FAQ zur Novelle der Elektrokleinstfahrzeuge-Verordnung', url: 'https://www.bmv.de/SharedDocs/DE/Artikel/StV/Strassenverkehr/elektrokleinstfahrzeuge-verordnung-faq-novelle.html' },
     { title: 'Polizeipräsidium Freiburg: Unfallbarometer 2025, Stadtkreis Freiburg (PDF)', url: 'https://www.presseportal.de/download/document/6995b7d5270000fd2cbf70e0-unfallbarometer2025freiburg.pdf' },
   ],
 };
