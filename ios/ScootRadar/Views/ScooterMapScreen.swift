@@ -233,7 +233,11 @@ struct ScooterMapScreen: View {
                         locateButtonFrame = frame
                     }
             }
-            .padding(.trailing, 12)
+            // At the dock's trailing edge, which on a window wider than
+            // the dock is not the window's.
+            .padding(.trailing, 2)
+            .frame(maxWidth: 560)
+            .padding(.horizontal, 10)
             .padding(
                 .bottom,
                 dockHeight + max(proxy.safeAreaInsets.bottom, 8) + 10
