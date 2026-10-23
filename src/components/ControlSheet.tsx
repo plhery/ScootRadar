@@ -11,6 +11,8 @@ import { isSingular } from '@/lib/uiText';
 import { PROVIDERS, PROVIDER_KEYS } from '@/lib/types';
 import { providerSurfaceColor } from '@/lib/providerColor';
 import { selectionFeedback } from '@/lib/feedback';
+import { appStoreUrl } from '@/lib/appStore';
+import { useIPhone } from '@/lib/useIPhone';
 import Icon from './Icon';
 import { CreditsList } from './MapCredits';
 import ModalSheet from './ModalSheet';
@@ -102,6 +104,7 @@ export default function ControlSheet({
   const titleRef = useRef<HTMLHeadingElement>(null);
   const languageRowRef = useRef<HTMLButtonElement>(null);
   const creditsRowRef = useRef<HTMLButtonElement>(null);
+  const iPhone = useIPhone();
   const [viewShown, setViewShown] = useState<SettingsView | null>(null);
   const [wasOpen, setWasOpen] = useState(open);
   // The settings open on their first view, whatever they showed when they were closed.
@@ -325,6 +328,19 @@ export default function ControlSheet({
           <section className="settings-section">
             <h3>{t('set.about')}</h3>
             <div className="settings-group about-rows">
+              {iPhone && (
+                <a href={appStoreUrl('web-map-settings')}>
+                  <span className="app-row-name">
+                    {/* eslint-disable-next-line @next/next/no-img-element -- The app's own icon, kept offline with the map. */}
+                    <img className="app-row-icon" src="/icon-180.png" alt="" width={30} height={30} />
+                    {t('set.iphoneApp')}
+                  </span>
+                  <span className="row-value">
+                    App Store
+                    <Icon name="chevron" size={16} strokeWidth={2.2} />
+                  </span>
+                </a>
+              )}
               <button ref={creditsRowRef} type="button" onClick={showView('credits')}>
                 {t('set.credits')}
                 <Icon name="chevron" size={16} strokeWidth={2.2} />

@@ -4,6 +4,7 @@ import { cleanup, fireEvent, render, screen, within } from '@testing-library/rea
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import ControlSheet from '@/components/ControlSheet';
 import { track } from '@/lib/analytics';
+import { appStoreUrl } from '@/lib/appStore';
 import { I18nProvider } from '@/lib/i18n';
 import { PROVIDER_KEYS } from '@/lib/types';
 
@@ -378,6 +379,39 @@ describe('ControlSheet settings', () => {
     expect(source).toHaveAttribute('href', 'https://github.com/plhery/ScootRadar');
     expect(source).toHaveAttribute('target', '_blank');
     expect(source).toHaveAttribute('rel', 'noreferrer');
+  });
+
+  it.each([
+    ['Safari', 'Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1'],
+    ['Chrome', 'Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/141.0.0.0 Mobile/15E148 Safari/604.1'],
+  ])('leads first from About to the iPhone app on an iPhone, in %s', (_browser, userAgent) => {
+    const agent = vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue(userAgent);
+    try {
+      settings();
+      const about = screen.getByRole('heading', { name: 'About' }).nextElementSibling!;
+      const app = within(about as HTMLElement).getAllByRole('link')[0];
+      expect(app.querySelector('.app-row-name')).toHaveTextContent(/^iPhone app$/);
+      expect(app).toHaveAttribute('href', appStoreUrl('web-map-settings'));
+      expect(app.querySelector('img')).toHaveAttribute('src', '/icon-180.png');
+      expect(app.querySelector('.row-value')).toHaveTextContent('App Store');
+    } finally {
+      agent.mockRestore();
+    }
+  });
+
+  it.each([
+    ['an iPad', 'Mozilla/5.0 (iPad; CPU OS 26_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Mobile/15E148 Safari/604.1'],
+    ['a Mac', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15'],
+    ['Android', 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36'],
+  ])('does not lead to the iPhone app on %s', (_device, userAgent) => {
+    const agent = vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue(userAgent);
+    try {
+      settings();
+      expect(screen.queryByRole('link', { name: /iPhone app/ })).toBeNull();
+      expect(screen.getAllByRole('link').map(link => link.textContent)).toEqual(['Privacy notice', 'Source code on GitHub']);
+    } finally {
+      agent.mockRestore();
+    }
   });
 
   it('opens the credits list from About, and leads back to where it was opened', () => {

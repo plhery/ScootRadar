@@ -233,6 +233,43 @@ img {
   transform: translateY(0) scale(0.98);
 }
 
+/* The QR code of the App Store link, beside its button: on a computer, whose
+   screen a phone can look at, and not on the phone itself. */
+.app-qr {
+  display: none;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 22px 8px 8px;
+  border-radius: 22px;
+  background: var(--raised);
+  box-shadow: inset 0 0 0 1px var(--line);
+  text-align: left;
+}
+
+@media (min-width: 1000px), (min-width: 640px) and (pointer: fine) {
+  .app-qr {
+    display: flex;
+  }
+}
+
+/* Black on white whatever the page, as a camera reads a code best. */
+.app-qr svg {
+  flex: none;
+  width: 104px;
+  height: 104px;
+  border-radius: 14px;
+  background: #ffffff;
+  fill: #000000;
+}
+
+.app-qr p {
+  max-width: 8.5em;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--soft);
+}
+
 /* The bar at the top */
 
 .top {

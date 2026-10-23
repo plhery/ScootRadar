@@ -149,7 +149,9 @@ city's **Open the map** in a guide, opens in the app when it is installed
 `ScootRadar.entitlements`). `Models/ScooterMapLink.swift` reads it as the web
 map does: a city's centre opens like the city chosen in the search, any other
 point moves the map there, and `minBattery` sets the battery filter. The first
-location fix after a link leaves the map where the link put it. Try it with
+location fix after a link leaves the map where the link put it. Safari's Smart
+App Banner on the site names the page it is on, with the link's parameters, so
+its **Open** lands in the same place. Try it with
 `xcrun simctl openurl booted "https://scootradar.com/map?origin=47.3769,8.5417"`.
 
 **Filters.** One battery choice (Any, 30%+, 60%+, 80%+) and one provider list

@@ -5,13 +5,14 @@ import { AppLink, Linked, SiteBar, SiteFooter } from '../chrome';
 import { GuideIndex, GuidePage, guideIndexMetadata, guideMetadata } from '../guides';
 import Icon from '@/components/Icon';
 import StageDepth from '@/components/StageDepth';
+import { APP_STORE_QR } from '@/generated/appStoreQr';
 import { PROVIDERS } from '@/generated/providers';
+import { appStoreUrl, smartAppBanner, SMART_APP_BANNER } from '@/lib/appStore';
 import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL } from '@/lib/coveredCities';
 import { formatLocale } from '@/lib/formatLocale';
 import type { TranslationKey } from '@/lib/i18n';
 import { landingCountries } from '@/lib/landingCities';
 import {
-  APP_STORE_URL,
   LANDING_COPY,
   LANDING_LOCALES,
   SOURCE_URL,
@@ -29,7 +30,7 @@ import type { RidePricing } from '@/lib/types';
 import { MAP_PATH } from '@/lib/mapAddress';
 import { inkOn } from '@/lib/providerColor';
 import { OPEN_GRAPH_ALTERNATE_LOCALES, OPEN_GRAPH_LOCALES, SITE_NAME, SITE_URL, shareImage } from '@/lib/site';
-import { sitePageOf } from '@/lib/sitePages';
+import { sitePageOf, sitePagePath, type SitePage } from '@/lib/sitePages';
 import { formatDistance, walkingMinutes } from '@/lib/walking';
 
 type Props = Readonly<{ params: Promise<{ path?: string[] }> }>;
@@ -44,15 +45,19 @@ const TILE_COLORS: Record<string, string> = { bird: '#f4f5f7' };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const page = sitePageOf((await params).path);
-  switch (page?.kind) {
+  if (!page) return {};
+  // Safari offers the iPhone app above every page, to open on it.
+  return { ...pageMetadata(page), other: { [SMART_APP_BANNER]: smartAppBanner(new URL(sitePagePath(page), SITE_URL)) } };
+}
+
+function pageMetadata(page: SitePage): Metadata {
+  switch (page.kind) {
     case 'landing':
       return landingMetadata(page.locale);
     case 'guides':
       return guideIndexMetadata(page.locale);
     case 'guide':
       return guideMetadata(page.guide);
-    default:
-      return {};
   }
 }
 
@@ -229,14 +234,6 @@ function Phone({ src, alt, className, first = false }: {
   );
 }
 
-function AppleMark() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M16.37 12.6c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.19-1.73-1.36-.14-2.65.8-3.34.8-.69 0-1.75-.78-2.88-.76-1.48.02-2.85.86-3.61 2.19-1.54 2.67-.39 6.62 1.11 8.79.73 1.06 1.6 2.25 2.75 2.21 1.1-.04 1.52-.71 2.85-.71 1.33 0 1.71.71 2.88.69 1.19-.02 1.94-1.08 2.67-2.15.84-1.23 1.19-2.42 1.21-2.48-.03-.01-2.31-.89-2.33-3.54ZM14.2 6.13c.61-.74 1.02-1.76.91-2.78-.88.04-1.94.59-2.57 1.32-.56.65-1.06 1.7-.93 2.7.98.08 1.98-.5 2.59-1.24Z" />
-    </svg>
-  );
-}
-
 /** The mark of GitHub, beside the words that lead to the code there. */
 function GitHubMark() {
   return (
@@ -246,13 +243,36 @@ function GitHubMark() {
   );
 }
 
-function Actions({ copy }: { copy: LandingCopy }) {
+/**
+ * The QR code of the App Store link, beside its button where the page is read
+ * on a computer: one look from an iPhone. Drawn when the site is built
+ * (scripts/generate-app-store-qr.mjs), in the quiet zone of its white tile.
+ */
+function AppStoreQr({ copy }: { copy: LandingCopy }) {
+  const quiet = 3;
+  const side = APP_STORE_QR.size + 2 * quiet;
+  return (
+    <div className="app-qr">
+      <svg viewBox={`${-quiet} ${-quiet} ${side} ${side}`} shapeRendering="crispEdges" aria-hidden="true">
+        <path d={APP_STORE_QR.path} />
+      </svg>
+      <p>{copy.scanQr}</p>
+    </div>
+  );
+}
+
+/** The two ways in: the map, and the iPhone app, each link to it counted where it is. */
+function Actions({ copy, campaign, qr = false }: {
+  copy: LandingCopy;
+  campaign: 'web-hero' | 'web-closing';
+  /** With the QR code of the App Store link beside them. */
+  qr?: boolean;
+}) {
   return (
     <div className="cta-row">
       <AppLink className="btn btn--solid" href={MAP_PATH}>{copy.openMap}</AppLink>
-      {APP_STORE_URL && (
-        <a className="btn btn--line" href={APP_STORE_URL}><AppleMark />{copy.iphoneApp}</a>
-      )}
+      <a className="btn btn--line" href={appStoreUrl(campaign)}><Icon name="phone" size={20} />{copy.iphoneApp}</a>
+      {qr && <AppStoreQr copy={copy} />}
     </div>
   );
 }
@@ -306,7 +326,7 @@ function LandingPage({ locale }: { locale: LandingLocale }) {
         <section className="hero">
           <h1 className="display">{copy.hero.title(nearby)}</h1>
           <p className="lede">{copy.hero.lede}</p>
-          <Actions copy={copy} />
+          <Actions copy={copy} campaign="web-hero" qr />
           <p className="note">
             {copy.hero.note}{' '}
             <a href={SOURCE_URL}><GitHubMark />{copy.hero.openSource}</a>.
@@ -492,7 +512,7 @@ function LandingPage({ locale }: { locale: LandingLocale }) {
         <section className="closing" style={glow}>
           <div className="orb orb--closing" aria-hidden="true" />
           <h2 className="display">{copy.closing.title}</h2>
-          <Actions copy={copy} />
+          <Actions copy={copy} campaign="web-closing" />
           <p className="note"><Linked sentence={copy.closing.note} links={{ source: SOURCE_URL }} /></p>
         </section>
       </main>

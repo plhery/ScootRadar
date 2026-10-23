@@ -117,6 +117,13 @@ const paths = {
       <path d="M3.5 10h17M8 3v4M16 3v4" />
     </>
   ),
+  // A phone in outline: the landing page's button to the iPhone app, where Apple's logo is not ours to use.
+  phone: (
+    <>
+      <rect x="6.5" y="2.5" width="11" height="19" rx="3" />
+      <path d="M10.5 5.6h3" />
+    </>
+  ),
 } as const;
 
 export default function Icon({

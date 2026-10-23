@@ -96,10 +96,6 @@ export function linkedParts(sentence: string): { text: string; link?: string }[]
   return [...parts, { text: sentence.slice(read) }].filter(part => part.text);
 }
 
-// The App Store page of the iPhone app, once it has one. The buttons that lead
-// to it are left out until then.
-export const APP_STORE_URL = null as string | null;
-
 export type LandingCountry = CountryCode;
 
 // The countries' names in one language, from data/countries.json.
@@ -123,7 +119,10 @@ export interface LandingCopy {
     others: string;
   };
   openMap: string;
+  /** The button to the App Store, under "Open the map" at the top of the page and at its end. */
   iphoneApp: string;
+  /** Beside the QR code of the App Store link, on a wide screen. */
+  scanQr: string;
   hero: {
     /** The number is the one on the capture beside the headline: the scooters in view there. */
     title: (scooters: number) => string;
@@ -215,6 +214,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     openMap: 'Open the map',
     iphoneApp: 'Get the iPhone app',
+    scanQr: 'Scan with your iPhone’s camera',
     hero: {
       title: scooters => `There are ${scooters} scooters around you.`,
       lede: 'ScootRadar puts every shared e-scooter around you on one map, whoever runs it, so the closest way home is the first thing you see.',
@@ -345,6 +345,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     openMap: 'Karte öffnen',
     iphoneApp: 'iPhone-App laden',
+    scanQr: 'Mit der Kamera deines iPhone scannen',
     hero: {
       title: scooters => `Um dich herum stehen ${scooters} E-Scooter.`,
       lede: 'ScootRadar zeigt alle E-Scooter in deiner Nähe auf einer Karte, egal von welchem Sharing-Anbieter. So ist der schnellste Weg nach Hause das Erste, was du siehst.',
@@ -475,6 +476,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     openMap: 'Ouvrir la carte',
     iphoneApp: 'Télécharger l’app iPhone',
+    scanQr: 'Scannez avec l’appareil photo de votre iPhone',
     hero: {
       title: scooters => `Il y a ${scooters} trottinettes autour de vous.`,
       lede: 'ScootRadar réunit sur une seule carte toutes les trottinettes électriques en libre-service autour de vous, quel que soit l’opérateur. Le plus court chemin pour rentrer est ainsi la première chose que vous voyez.',
@@ -605,6 +607,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     openMap: 'Apri la mappa',
     iphoneApp: 'Scarica l’app per iPhone',
+    scanQr: 'Inquadra il codice con la fotocamera dell’iPhone',
     hero: {
       title: scooters => `Ci sono ${scooters} monopattini intorno a te.`,
       lede: 'ScootRadar mette su una sola mappa tutti i monopattini elettrici in sharing intorno a te, di qualunque operatore. Così la strada più breve per tornare a casa è la prima cosa che vedi.',
@@ -735,6 +738,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     openMap: 'Åpne kartet',
     iphoneApp: 'Last ned iPhone-appen',
+    scanQr: 'Skann med kameraet på iPhonen din',
     hero: {
       title: scooters => `Det står ${scooters} elsparkesykler rundt deg.`,
       lede: 'ScootRadar samler alle elsparkesykler til leie rundt deg på ett kart, uansett hvem som leier dem ut, så den korteste veien hjem er det første du ser.',
@@ -865,6 +869,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     openMap: 'Open de kaart',
     iphoneApp: 'Download de iPhone-app',
+    scanQr: 'Scan met de camera van je iPhone',
     hero: {
       title: scooters => `Er staan ${scooters} deelsteps om je heen.`,
       lede: 'ScootRadar zet alle deelsteps om je heen op één kaart, van welke aanbieder ook. Zo is de snelste weg naar huis het eerste wat je ziet.',
@@ -994,6 +999,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     openMap: 'Abrir o mapa',
     iphoneApp: 'Descarregar a app para iPhone',
+    scanQr: 'Aponte a câmara do seu iPhone',
     hero: {
       title: scooters => (scooters === 1 ? 'Há uma trotinete à sua volta.' : `Há ${scooters} trotinetes à sua volta.`),
       lede: 'O ScootRadar reúne num só mapa todas as trotinetes elétricas partilhadas à sua volta, seja qual for o operador. Assim, o caminho mais curto para casa é a primeira coisa que vê.',
@@ -1123,6 +1129,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     openMap: 'Abrir el mapa',
     iphoneApp: 'Descargar la app para iPhone',
+    scanQr: 'Escanéalo con la cámara del iPhone',
     hero: {
       title: scooters => (scooters === 1 ? 'Hay un patinete a tu alrededor.' : `Hay ${scooters} patinetes a tu alrededor.`),
       lede: 'ScootRadar reúne en un solo mapa todos los patinetes eléctricos compartidos que tienes alrededor, sea cual sea el operador. Así, el camino más rápido a casa es lo primero que ves.',
@@ -1252,6 +1259,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     openMap: 'Opna kortið',
     iphoneApp: 'Sækja iPhone-appið',
+    scanQr: 'Skannaðu með myndavélinni í iPhone-símanum',
     hero: {
       title: scooters =>
         scooters % 10 === 1 && scooters % 100 !== 11

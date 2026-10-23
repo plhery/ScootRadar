@@ -4,6 +4,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import LocationHelpSheet from '@/components/LocationHelpSheet';
+import { appStoreUrl } from '@/lib/appStore';
 import { I18nProvider } from '@/lib/i18n';
 
 const SAFARI_IPHONE = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1';
@@ -77,6 +78,28 @@ describe('LocationHelpSheet', () => {
     expect(steps()).toEqual(expected);
   });
 
+  it('ends on an iPhone with the iPhone app, which asks once and remembers', () => {
+    browser(SAFARI_IPHONE, 5);
+    renderSheet();
+
+    const dialog = screen.getByRole('dialog');
+    expect(dialog.querySelector('.help-app')).toHaveTextContent(/^Or use the iPhone app: it asks once and remembers\.$/);
+    expect(within(dialog).getByRole('link', { name: 'iPhone app' })).toHaveAttribute('href', appStoreUrl('web-map-location'));
+  });
+
+  it.each([
+    ['an iPad', SAFARI_IPAD_AS_MAC, 5],
+    ['a Mac', SAFARI_IPAD_AS_MAC, 0],
+    ['Android', CHROME_ANDROID, 5],
+    ['Linux', FIREFOX_LINUX, 0],
+  ])('says nothing of the app on %s, which it is not made for', (_name, userAgent, maxTouchPoints) => {
+    browser(userAgent, maxTouchPoints);
+    renderSheet();
+
+    expect(within(screen.getByRole('dialog')).queryByRole('link')).toBeNull();
+    expect(screen.getByRole('dialog')).not.toHaveTextContent('iPhone');
+  });
+
   it('leaves out the device step on a system it does not know', () => {
     browser(FIREFOX_LINUX);
     renderSheet();
@@ -96,6 +119,8 @@ describe('LocationHelpSheet', () => {
     const dialog = await screen.findByRole('dialog', { name: 'Standort wieder aktivieren' });
     expect(steps()[0]).toBe('1Öffne in Safari das Seitenmenü in der Adressleiste, wähle «Website-Einstellungen» und setze «Standort» auf «Erlauben».');
     expect(dialog).toHaveTextContent('Komm dann zurück und tippe auf «In meiner Nähe».');
+    expect(dialog.querySelector('.help-app')).toHaveTextContent('Oder nutze die iPhone-App, die einmal fragt und es sich merkt.');
+    expect(within(dialog).getByRole('link', { name: 'iPhone-App' })).toBeInTheDocument();
     expect(within(dialog).getByRole('button', { name: 'Fertig' })).toBeInTheDocument();
   });
 

@@ -2,9 +2,11 @@ import Analytics from "@/components/Analytics";
 import type { Metadata, Viewport } from "next";
 import { Geist, Red_Hat_Display, Red_Hat_Text } from "next/font/google";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
+import { SMART_APP_BANNER, smartAppBanner } from "@/lib/appStore";
 import { FIRST_PAINT_THEME_SCRIPT } from "@/lib/firstPaintTheme";
 import { formatLocale } from "@/lib/formatLocale";
 import { I18nProvider } from "@/lib/i18n";
+import { MAP_PATH } from "@/lib/mapAddress";
 import { ROTATE_PANES_STYLE, ROTATE_PANES_STYLE_ID } from "@/lib/mapRotation";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import "../globals.css";
@@ -74,6 +76,9 @@ export const metadata: Metadata = {
     statusBarStyle: "black-translucent",
     title: SITE_NAME,
   },
+  // Safari offers the iPhone app above the map. The Worker writes in the link
+  // the map was opened with, so the app opens on the same place.
+  other: { [SMART_APP_BANNER]: smartAppBanner(new URL(MAP_PATH, SITE_URL)) },
 };
 
 export const viewport: Viewport = {

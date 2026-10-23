@@ -22,6 +22,9 @@ const PUBLIC_ASSET_PATHS = new Set([
   "/manifest.json",
 ]);
 const MAX_ASSET_ENTRIES = 80;
+// The address in Safari's Smart App Banner, which the iPhone app opens on. The
+// Worker writes in the one each page was asked for (src/lib/appStore.ts).
+const BANNER_ARGUMENT = /(<meta name="apple-itunes-app" content="[^"]*?app-argument=)[^,"]*/;
 
 let shellRefreshPromise = null;
 // The pages the kept shell opened. It can be of an older release than the
@@ -207,7 +210,7 @@ async function serveAppShell(request, refresh, clientId) {
     // new shell. Clearing the marker prevents a second, unnecessary reload.
     if (updatePending) await cache.delete(UPDATE_MARKER_URL);
     if (clientId) openedFromKeptShell.add(clientId);
-    return cached;
+    return openedAt(cached, request.url);
   }
 
   return (
@@ -255,6 +258,21 @@ function refreshAppShell(request) {
   return shellRefreshPromise;
 }
 
+// The kept map was served for another link: its banner is given the link it
+// opens now, as the Worker would have written it.
+async function openedAt(response, address) {
+  const url = new URL(address);
+  url.hash = "";
+  const argument = url.href.replaceAll(",", "%2C").replaceAll("&", "&amp;");
+  const html = await response.clone().text();
+  const opened = html.replace(BANNER_ARGUMENT, (_, tag) => `${tag}${argument}`);
+  if (opened === html) return response;
+
+  const headers = new Headers(response.headers);
+  headers.delete("Content-Length");
+  return new Response(opened, { status: response.status, statusText: response.statusText, headers });
+}
+
 function responseNonce(response) {
   const contentSecurityPolicy =
     response.headers.get("Content-Security-Policy") ?? "";
@@ -266,11 +284,13 @@ async function comparableAppShell(response) {
   const nonce = responseNonce(response);
   const contentSecurityPolicy =
     response.headers.get("Content-Security-Policy") ?? "";
-  if (!nonce) return `${contentSecurityPolicy}\n${html}`;
+  // The link a response was asked for, in its banner, makes no new version.
+  const page = html.replace(BANNER_ARGUMENT, "$1<link>");
+  if (!nonce) return `${contentSecurityPolicy}\n${page}`;
 
-  // A fresh nonce changes every rendered response. Normalize it in both the
+  // Nor does the fresh nonce of every rendered response. Normalize it in both the
   // policy and document so update checks still detect only meaningful changes.
-  return `${contentSecurityPolicy.replaceAll(nonce, "<nonce>")}\n${html.replaceAll(
+  return `${contentSecurityPolicy.replaceAll(nonce, "<nonce>")}\n${page.replaceAll(
     nonce,
     "<nonce>"
   )}`;

@@ -36,7 +36,7 @@ function appWorker(server: Record<string, () => Response>) {
   };
   const navigationPreload = { enable: vi.fn().mockResolvedValue(undefined), disable: vi.fn().mockResolvedValue(undefined) };
   runInNewContext(script, {
-    URL, Request, Response, fetch,
+    URL, Request, Response, Headers, fetch,
     caches: {
       open: async (name: string) => cache(name),
       keys: async () => [...caches.keys()],
@@ -82,9 +82,9 @@ function appWorker(server: Record<string, () => Response>) {
   };
 }
 
-function launch(worker: ReturnType<typeof appWorker>, id: string) {
+function launch(worker: ReturnType<typeof appWorker>, id: string, link = `${shellUrl}?theme=dark`) {
   // Only a browser makes navigations.
-  const request = Object.defineProperty(new Request(`${shellUrl}?theme=dark`), 'mode', { value: 'navigate' });
+  const request = Object.defineProperty(new Request(link), 'mode', { value: 'navigate' });
   // As Safari gives it for a launch answered from the cache: never settled.
   const preloadResponse = new Promise<never>(() => {});
   return worker.request(shellUrl, { request, preloadResponse, resultingClientId: id });
@@ -149,4 +149,23 @@ it('keeps only the files of the map, so the pages around it do not push them out
   // What the map keeps, the other pages are given from the cache all the same.
   expect(await (await worker.request(mapChunk, { clientId: 'landing' }))!.text()).toBe('map');
   expect(worker.fetch).toHaveBeenCalledTimes(2);
+});
+
+// As the Worker writes it for the link the map was asked for (src/lib/appStore.ts).
+const linkedShell = (release: string, link: string) => new Response(
+  `<meta name="apple-itunes-app" content="app-id=6823614854, app-argument=${link}, affiliate-data=pt=129628155&amp;ct=web-banner"/><script src="/_next/static/chunks/${release}.js"></script>`,
+  { headers: { 'Content-Security-Policy': `script-src 'nonce-${release}'`, 'Content-Length': '999' } },
+);
+const bannerOf = async (response: Response | undefined) => (await response!.text()).match(/app-argument=([^,"]*)/)?.[1];
+
+it('names the link the kept map opens in its Smart App Banner, so the iPhone app opens there too', async () => {
+  const worker = appWorker({ '/map': () => linkedShell('same', `${origin}/map?origin=47.37%2C8.54`) });
+  await worker.appCache().put(shellUrl, linkedShell('same', `${origin}/map`));
+
+  const response = await launch(worker, 'kept', `${shellUrl}?origin=47.37,8.54&minBattery=60#here`);
+  expect(response!.headers.get('Content-Length')).toBeNull();
+  expect(await bannerOf(response)).toBe(`${origin}/map?origin=47.37%2C8.54&amp;minBattery=60`);
+  // A link the map was opened with is no new release to reload for.
+  expect(await worker.appCache().match('https://scootradar.com/__pwa-update-pending__')).toBeUndefined();
+  expect(await bannerOf(await launch(worker, 'plain', shellUrl))).toBe(`${origin}/map`);
 });

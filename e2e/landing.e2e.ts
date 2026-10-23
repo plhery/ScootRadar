@@ -226,6 +226,44 @@ test('the landing page leads to the map, and to the map of a city', async ({ pag
   await expect(page.locator('.app-shell')).toBeVisible();
 });
 
+test('the landing page leads to the iPhone app, with its code to scan beside the first button on a computer', async ({ page, isMobile }) => {
+  await page.goto('/de');
+  const store = (campaign: string) => `https://apps.apple.com/app/apple-store/id6823614854?pt=129628155&ct=${campaign}&mt=8`;
+  const hero = page.locator('.hero').getByRole('link', { name: 'iPhone-App laden' });
+  const closing = page.locator('.closing').getByRole('link', { name: 'iPhone-App laden' });
+  // Each button counted where it is.
+  await expect(hero).toHaveAttribute('href', store('web-hero'));
+  await expect(closing).toHaveAttribute('href', store('web-closing'));
+  // A phone drawn in outline beside the words, not Apple's mark.
+  await expect(hero.locator('svg rect')).toHaveCount(1);
+  await expect(hero.locator('svg')).toHaveAttribute('aria-hidden', 'true');
+
+  // A phone opens the link itself; a computer has a code for the phone to scan, which says so.
+  const code = page.locator('.hero .app-qr');
+  if (isMobile) {
+    await expect(code).toBeHidden();
+  } else {
+    await expect(code).toBeVisible();
+    await expect(code).toHaveText('Mit der Kamera deines iPhone scannen');
+    const box = (await code.locator('svg').boundingBox())!;
+    expect(box.width).toBeGreaterThanOrEqual(100);
+    expect(box.height).toBe(box.width);
+    await expect(page.locator('.closing .app-qr')).toHaveCount(0);
+  }
+
+  // Safari offers the app above the page too, to open on it.
+  const banner = 'meta[name="apple-itunes-app"]';
+  await expect(page.locator(banner)).toHaveAttribute(
+    'content',
+    'app-id=6823614854, app-argument=https://scootradar.com/de, affiliate-data=pt=129628155&ct=web-banner',
+  );
+  await page.goto('/guides/e-scooters-zurich');
+  await expect(page.locator(banner)).toHaveAttribute(
+    'content',
+    'app-id=6823614854, app-argument=https://scootradar.com/guides/e-scooters-zurich, affiliate-data=pt=129628155&ct=web-banner',
+  );
+});
+
 test('the landing page says it is open source under its first button, with a link to the code', async ({ page }) => {
   await page.goto('/fr');
   const code = 'https://github.com/plhery/ScootRadar';

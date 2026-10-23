@@ -1,11 +1,14 @@
 import AnalyticsPreference from '@/components/AnalyticsPreference';
 import type { Metadata, Viewport } from 'next';
 import Link from 'next/link';
+import { SMART_APP_BANNER, smartAppBanner } from '@/lib/appStore';
+import { SITE_URL } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Privacy — ScootRadar',
   description: 'How ScootRadar handles location, search, and service data.',
   alternates: { canonical: '/privacy' },
+  other: { [SMART_APP_BANNER]: smartAppBanner(new URL('/privacy', SITE_URL)) },
 };
 
 // This page is light whatever the appearance of the app.

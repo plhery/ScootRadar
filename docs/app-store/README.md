@@ -241,3 +241,23 @@ Test in the simulator:
 ```sh
 xcrun simctl openurl booted "https://scootradar.com/map?origin=47.3769,8.5417"
 ```
+
+## Links from the website
+
+Every link from scootradar.com to the App Store is a campaign link, built by
+`appStoreUrl()` in `src/lib/appStore.ts`: the provider token `pt=129628155`
+and a campaign `ct` for where it sits, which App Analytics counts under
+Sources › Campaigns.
+
+- `web-hero` and `web-closing`: the landing page's two **Get the iPhone app**
+  buttons.
+- `web-qr`: the QR code beside the first one on a computer, drawn when the site
+  is built (`npm run generate:app-store-qr`; `src/lib/appStore.test.ts` reads
+  it back).
+- `web-map-settings` and `web-map-location`: the map on an iPhone, in
+  Settings › About and at the end of the help to turn location back on.
+- `web-banner`: Safari's Smart App Banner, the `apple-itunes-app` tag of every
+  page. Its `app-argument` is the page's address; the Worker writes in the one
+  each page was opened with, and the service worker does the same for the map
+  it keeps, so the banner's **Open** lands on the link's place
+  (`ScooterMapLink`).

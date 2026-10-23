@@ -744,10 +744,19 @@ test('every link gets the same page, without the parameters of the link in it', 
     const body = await response.text();
     // Served as it was built, not rendered for this request.
     expect(response.headers()['x-nextjs-cache'], path).toBe('HIT');
-    return nonce ? body.replaceAll(nonce, '') : body;
+    // Like the nonce, the link in Safari's Smart App Banner is written into each
+    // response alone, for the iPhone app to open on.
+    const page = body.replace(/(app-argument=)[^,"]*/, '$1');
+    return nonce ? page.replaceAll(nonce, '') : page;
   };
   const plain = await shell('/map');
   expect(plain).toContain('class="app-shell"');
+  const banner = async (path: string) =>
+    (await (await request.get(path)).text()).match(/<meta name="apple-itunes-app" content="([^"]*)"/)?.[1];
+  expect(await banner('/map?origin=47.3769,8.5417&theme=dark')).toBe(
+    'app-id=6823614854, app-argument=https://scootradar.com/map?origin=47.3769%2C8.5417&amp;theme=dark, affiliate-data=pt=129628155&amp;ct=web-banner',
+  );
+  expect(await banner('/map')).toBe('app-id=6823614854, app-argument=https://scootradar.com/map, affiliate-data=pt=129628155&amp;ct=web-banner');
   // A render shared between requests that arrive together would hand a visitor
   // the page of someone else's request: a link with coordinates, the router's
   // own request with its parameter, or a crawler's, which is rendered differently.
@@ -855,6 +864,16 @@ test('See how explains how to turn location back on in this browser and on this 
         '2If it is still off: Settings › Privacy & security › Location, and allow apps to use your location.',
       ]);
   await expect(help.getByText('Then come back and tap Near me.')).toBeVisible();
+  // On an iPhone, the app that asks once and remembers; it is not made for the other.
+  if (browserName === 'webkit') {
+    await expect(help.locator('.help-app')).toHaveText('Or use the iPhone app: it asks once and remembers.');
+    await expect(help.getByRole('link', { name: 'iPhone app' })).toHaveAttribute(
+      'href',
+      'https://apps.apple.com/app/apple-store/id6823614854?pt=129628155&ct=web-map-location&mt=8',
+    );
+  } else {
+    await expect(help.getByRole('link')).toHaveCount(0);
+  }
   await help.evaluate(element => Promise.all(element.getAnimations({ subtree: true }).map(animation => animation.finished)));
   const accessibility = await new AxeBuilder({ page }).include('.control-sheet').withTags(['wcag2a', 'wcag2aa']).analyze();
   expect(accessibility.violations).toEqual([]);
@@ -883,7 +902,9 @@ test('See how explains how to turn location back on in this browser and on this 
   expect(box.y).toBeGreaterThanOrEqual(0);
   expect(box.y + box.height).toBeLessThanOrEqual(568);
   await expect(hilfe.getByRole('button', { name: 'Fertig' })).toBeInViewport({ ratio: 1 });
-  const last = hilfe.getByText('Komm dann zurück und tippe auf «In meiner Nähe».');
+  const last = hilfe.getByText(browserName === 'webkit'
+    ? 'Oder nutze die iPhone-App, die einmal fragt und es sich merkt.'
+    : 'Komm dann zurück und tippe auf «In meiner Nähe».');
   await last.scrollIntoViewIfNeeded();
   await expect(last).toBeInViewport({ ratio: 1 });
 });
@@ -1851,7 +1872,7 @@ test('links and settings saved with the old map style carry over', async ({ page
   expect(await page.evaluate(() => localStorage.getItem('scooters-params'))).toBe('{"minBattery":"30","theme":"dark"}');
 });
 
-test('the settings name the languages, and About leads to the credits, the privacy notice and the source code', async ({ page }) => {
+test('the settings name the languages, and About leads to the credits, the privacy notice and the source code', async ({ page, browserName }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/map');
   const trigger = page.getByRole('button', { name: 'Settings', exact: true });
@@ -1911,8 +1932,17 @@ test('the settings name the languages, and About leads to the credits, the priva
   const accessibility = await new AxeBuilder({ page }).include('.control-sheet').withTags(['wcag2a', 'wcag2aa']).analyze();
   expect(accessibility.violations).toEqual([]);
 
-  // The sources that the footer used to list in English live in the credits.
-  await expect(settings.getByRole('link')).toHaveText(['Privacy notice', 'Source code on GitHub']);
+  // The sources that the footer used to list in English live in the credits. On
+  // an iPhone, About leads first to the iPhone app; it is not made for the other.
+  if (browserName === 'webkit') {
+    await expect(settings.getByRole('link')).toHaveText([/^iPhone app\s*App Store$/, 'Privacy notice', 'Source code on GitHub']);
+    const app = settings.getByRole('link', { name: 'iPhone app App Store', exact: true });
+    await expect(app).toHaveAttribute('href', 'https://apps.apple.com/app/apple-store/id6823614854?pt=129628155&ct=web-map-settings&mt=8');
+    await expect(app.locator('img')).toHaveJSProperty('complete', true);
+    expect(await app.locator('img').evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(180);
+  } else {
+    await expect(settings.getByRole('link')).toHaveText(['Privacy notice', 'Source code on GitHub']);
+  }
   await settings.getByRole('button', { name: 'Map & data credits' }).click();
   const credits = page.getByRole('dialog', { name: 'Map & data credits', exact: true });
   await expect(credits.getByRole('heading', { name: 'Map & data credits', level: 2 })).toBeFocused();
@@ -1987,6 +2017,26 @@ test('the settings fit a small screen and scroll to their last row', async ({ pa
   await expect(langues.getByRole('button', { name: 'Nederlands Néerlandais', exact: true })).toBeVisible();
   for (const choice of await langues.locator('button[aria-pressed]').all()) {
     expect(await choice.evaluate(element => element.scrollWidth <= element.clientWidth)).toBe(true);
+  }
+});
+
+test('the settings rise no higher than under the search bar, and scroll to what does not fit', async ({ page }) => {
+  await page.goto('/map');
+  const trigger = page.getByRole('button', { name: 'Settings', exact: true });
+  const settings = page.getByRole('dialog', { name: 'Settings', exact: true });
+  for (const [width, height] of [[390, 844], [375, 667], [320, 568]]) {
+    await page.setViewportSize({ width, height });
+    await trigger.click();
+    await settings.evaluate(element => Promise.all(element.getAnimations({ subtree: true }).map(animation => animation.finished)));
+    const island = (await page.locator('.search-island').boundingBox())!;
+    const sheet = (await settings.boundingBox())!;
+    expect(sheet.y, `${width}×${height}`).toBeGreaterThanOrEqual(island.y + island.height + 9.5);
+    await expect(settings.getByRole('button', { name: 'Done' })).toBeInViewport({ ratio: 1 });
+    const last = settings.getByRole('link', { name: 'Source code on GitHub' });
+    await last.scrollIntoViewIfNeeded();
+    await expect(last).toBeInViewport({ ratio: 1 });
+    await page.keyboard.press('Escape');
+    await expect(settings).not.toBeVisible();
   }
 });
 

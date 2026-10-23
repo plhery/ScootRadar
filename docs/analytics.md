@@ -32,7 +32,9 @@ lists were counted as `/map`: web views of `/map` in that week include them.
 | Price tools (iOS) | `ride_duration`, `ride_pass_change` | duration, provider; never pass expiry or financial details |
 
 Useful funnels: `app_open` → `vehicle_select` → `rental_open`, and for the guides,
-a guide's page views → its `map_open` events (filter by its URL). A rental click is
+a guide's page views → its `map_open` events (filter by its URL). The site's links
+to the App Store send no event: App Store Connect counts them by campaign
+([docs/app-store/README.md](app-store/README.md)). A rental click is
 intent, not a confirmed ride. No provider callback exists to verify a booking.
 Continuous map coordinates, motion/heading readings, typed searches, chosen
 places and vehicle IDs are excluded.

@@ -34,7 +34,8 @@ ScootRadar reads the feeds the operators publish and puts every scooter on one
 map, so the nearest one is simply the nearest one.
 
 It's free, with no account and no ads. Use it in the browser, install it as a
-web app, or build the native iPhone app from this repository.
+web app, or get the iPhone app on the
+[App Store](https://apps.apple.com/app/id6823614854).
 
 ## What it tells you
 
@@ -104,8 +105,10 @@ country's feeds.
 
 ## iPhone app
 
-Open `ios/ScootRadar.xcodeproj` in Xcode 26+, choose a development team, and
-run the `ScootRadar` scheme. [ios/README.md](ios/README.md) has the details.
+The app is on the [App Store](https://apps.apple.com/app/id6823614854), for
+iOS 26 or newer. To build it yourself, open `ios/ScootRadar.xcodeproj` in Xcode
+26+, choose a development team, and run the `ScootRadar` scheme.
+[ios/README.md](ios/README.md) has the details.
 
 ## Host your own
 
