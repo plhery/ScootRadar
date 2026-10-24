@@ -28,7 +28,8 @@ Signer certificate SHA-256 fingerprints, in the same order:
 - BinBin: `00322cdcce6a48f8ba36fa400fae62c503b0b5de6e567621b18ec5d0a8927294`.
 - Hop: `544e46ec17bde4ecbfc8b23cabea40fa555ca9dd2cf6e4c306a0822cd12e4b47`.
 
-APKs, decompiled code and raw live responses stay outside the repository.
+APKs, decompiled code and raw vehicle responses stay outside the repository.
+The public Hop map files below are archived for a later integration.
 
 ## BinBin: working guest read, incomplete selection
 
@@ -258,6 +259,23 @@ The app also reads two working static files:
   Turkey, Greece and Montenegro, including Istanbul's separate areas.
 - [`park-prod.json`](https://storage.googleapis.com/temphop/park-prod.json):
   578 parking records using `ID`, `LAT` and `LONG`.
+
+Byte-for-byte snapshots fetched on 24 October 2026 are saved as
+[`prod.json`](hop-public-map/2026-10-24/prod.json) and
+[`park-prod.json`](hop-public-map/2026-10-24/park-prod.json).
+Their [manifest](hop-public-map/2026-10-24/manifest.json) records the source
+URLs, retrieval times, Last-Modified headers, ETags, SHA-256 hashes and counts.
+They are archived under documentation for later use and are not imported by
+the production map or cache.
+
+All polygon rings are closed and have at least four positions, but the
+`service` feature (`2cc71990-dd3b-4c7c-aa1a-a0a8c879e17c`) has two invalid
+latitude values of -180 in its outer ring. The source is preserved unchanged;
+that mask must be handled before any rendering or restriction inference.
+The other 1,674 features have coordinates within longitude/latitude ranges.
+All polygon and parking IDs are unique within their respective files, and
+all parking coordinates are within range. The parking file supplies no
+capacity, occupancy, availability, mandatory-parking flag or update timestamp.
 
 These supply map boundaries and parking points, not current scooter
 positions, availability or proof that a region is operating. They do not

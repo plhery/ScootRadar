@@ -1,0 +1,91 @@
+{
+  "provider": "Hop",
+  "androidPackage": "com.hoplagit.rider",
+  "purpose": "Public map snapshots saved for a future integration; not read by the production map or cache.",
+  "preservation": "Source response bodies are retained byte for byte, including the malformed service mask.",
+  "limitations": [
+    "These files describe map areas and parking points, not live scooter locations, availability or active service.",
+    "The service feature 2cc71990-dd3b-4c7c-aa1a-a0a8c879e17c has an invalid outer ring with two latitude values of -180. Do not render it as valid GeoJSON or infer riding restrictions from it.",
+    "Parking records supply no capacity, occupancy, availability, mandatory-parking flag or update timestamp."
+  ],
+  "files": [
+    {
+      "file": "prod.json",
+      "url": "https://storage.googleapis.com/temphop/prod.json",
+      "retrievedAt": "2026-10-24T14:46:45Z",
+      "lastModified": "Thu, 22 Oct 2026 04:19:25 GMT",
+      "etag": "\"5a124a432b6eb89153a0dafe7da89375\"",
+      "contentType": "application/geo+json",
+      "bytes": 1364172,
+      "sha256": "e329845c275cdfdc7693937bf70cd7b44fdf562043f7366eab1b01441690c42a",
+      "features": 1675,
+      "geometryTypes": {
+        "Polygon": 1675
+      },
+      "zoneTypes": {
+        "noPark": 1595,
+        "region": 79,
+        "service": 1
+      },
+      "regions": [
+        "ankara",
+        "antalya",
+        "athens",
+        "bodrum",
+        "bursa",
+        "eskisehir",
+        "fethiye",
+        "gaziantep",
+        "iskenderun",
+        "ist-asia",
+        "ist-avcilar",
+        "ist-eu",
+        "izmir",
+        "izmir-aliaga",
+        "kayseri",
+        "konya",
+        "marmaris",
+        "mersin",
+        "patras",
+        "podgorica",
+        "thessaloniki",
+        "volos"
+      ],
+      "coordinatePositions": 37259,
+      "outOfRangePositions": [
+        {
+          "pointer": "/features/1674/geometry/coordinates/0/1",
+          "position": [
+            -90,
+            -180
+          ],
+          "featureId": "2cc71990-dd3b-4c7c-aa1a-a0a8c879e17c"
+        },
+        {
+          "pointer": "/features/1674/geometry/coordinates/0/2",
+          "position": [
+            90,
+            -180
+          ],
+          "featureId": "2cc71990-dd3b-4c7c-aa1a-a0a8c879e17c"
+        }
+      ]
+    },
+    {
+      "file": "park-prod.json",
+      "url": "https://storage.googleapis.com/temphop/park-prod.json",
+      "retrievedAt": "2026-10-24T14:46:45Z",
+      "lastModified": "Thu, 30 Jul 2026 11:53:48 GMT",
+      "etag": "\"2ef388303f5aba6f771d0f69b0cd15d5\"",
+      "contentType": "application/json",
+      "bytes": 39443,
+      "sha256": "bc0425300f3f0620cafdd384d303a641a4436346be928c1b5682a235216440b8",
+      "records": 578,
+      "fields": [
+        "ID",
+        "LAT",
+        "LONG"
+      ]
+    }
+  ]
+}
