@@ -26,6 +26,6 @@ OOK
 • Dynamic Type, VoiceOver en Verminder beweging
 • Nederlands, Engels, Duits, Frans, Italiaans, Noors, Portugees, Spaans en IJslands
 
-De posities komen uit de openbare datafeeds (GBFS) die aanbieders en overheden publiceren, en kunnen een paar minuten oud zijn. Op de kaart staan onder meer Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Xingxing, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe en Zippy, afhankelijk van de stad.
+De posities komen van de aanbieders en overheden, en kunnen een paar minuten oud zijn. Op de kaart staan onder meer Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Xingxing, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe en Zippy, afhankelijk van de stad.
 
 ScootRadar is onafhankelijk en niet verbonden aan de aanbieders; hun namen zijn handelsmerken van hun eigenaars. ScootRadar is open source.

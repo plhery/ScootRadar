@@ -24,7 +24,7 @@ in `screenshots/<locale>/`.
 | Devices | iPhone and iPad (`TARGETED_DEVICE_FAMILY = "1,2"`), iOS 26 or newer. iPhones keep the app upright; iPads turn it every way |
 | Export compliance | `ITSAppUsesNonExemptEncryption = NO` in the build: the app only uses HTTPS through Apple's APIs |
 | Sign-in for review | none: the app has no accounts |
-| Content rights | The app shows third-party content: public vehicle feeds (GBFS) published by operators and public authorities under open licences, credited in Settings › About |
+| Content rights | The app shows third-party content: the operators' public vehicle feeds (GBFS), public authorities' open data and, where an operator publishes no feed, the vehicle map of its own rider app, credited in Settings › About |
 
 ## Age rating
 
@@ -141,12 +141,13 @@ To try it:
 5. Links to the map on scootradar.com open in the app, e.g.
    https://scootradar.com/map?origin=47.3769,8.5417 opens it on Zürich.
 
-The positions come from public GBFS data feeds published by the operators and
-public authorities (for example opentransportdata.swiss and
-transport.data.gouv.fr) under open-data licences; Settings › About lists the
-sources. ScootRadar is independent of the operators and says so in its
-description. Location is used only while the app is open, to centre the map
-and compute walking times; the app works fully without it (search a place).
+The positions come from the operators' public GBFS feeds and public
+authorities' open data (for example opentransportdata.swiss and
+transport.data.gouv.fr) and, where an operator publishes none, from the
+vehicle map its own rider app shows; Settings › About lists the sources.
+ScootRadar is independent of the operators and says so in its description.
+Location is used only while the app is open, to centre the map and compute
+walking times; the app works fully without it (search a place).
 ```
 
 Contact for review: the account holder's name, phone and email, entered by the

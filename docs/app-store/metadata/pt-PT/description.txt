@@ -26,6 +26,6 @@ E AINDA
 • Dynamic Type, VoiceOver e Reduzir movimento
 • Português, inglês, alemão, francês, italiano, neerlandês, norueguês, espanhol e islandês
 
-As posições vêm dos dados abertos (GBFS) que os operadores e as autoridades publicam, e podem ter alguns minutos de atraso. No mapa estão, entre outros, Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Xingxing, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe e Zippy, consoante a cidade.
+As posições vêm dos operadores e das autoridades, e podem ter alguns minutos de atraso. No mapa estão, entre outros, Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Xingxing, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe e Zippy, consoante a cidade.
 
 O ScootRadar é independente e não tem qualquer ligação aos operadores; os nomes destes são marcas dos respetivos titulares. O ScootRadar é de código aberto.
