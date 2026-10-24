@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Tempe: Lime and Bird, the rules, and where you can’t ride',
   lede: 'E-scooters in Tempe come from Lime and Bird. Neither publishes its prices, so check the app, and Bird rents only to riders 18 or over. Arizona law gives a scooter rider a cyclist’s rights and duties and lets Tempe add its own rules, which it updated in July 2026; both companies tell you to stay off the sidewalk. Arizona State University bans motorised scooters on its Tempe campus.',
   published: '2026-10-22',
-  updated: '2026-10-23',
+  updated: '2026-10-24',
   city: 'us:az:Tempe',
   sections: [
     {
@@ -98,7 +98,7 @@ const guide: Guide = {
     {
       heading: 'Phoenix next door',
       blocks: [
-        'Phoenix runs its own programme: the City permits the companies, and its page names Lime and Spin. The City asks you to park upright in the designated spots, keep 5 feet clear, stay off the sidewalk and be at least 18. The [Phoenix map](map:us:az:Phoenix) shows Spin only: Lime publishes no open data for Phoenix, so open the Lime app to find its scooters there.',
+        'Phoenix runs its own programme: the City permits the companies, and its page names Lime and Spin. The City asks you to park upright in the designated spots, keep 5 feet clear and stay off the sidewalk. City Code lets you ride from 16, but Spin and Lime rent only to riders 18 or over. The [Phoenix map](map:us:az:Phoenix) shows Spin only: Lime publishes no open data for Phoenix, so open the Lime app to find its scooters there.',
       ],
     },
     {
@@ -163,6 +163,7 @@ const guide: Guide = {
     { title: 'Lime: Tempe open data (GBFS)', url: 'https://data.lime.bike/api/partners/v2/gbfs/tempe/gbfs.json' },
     { title: 'Phoenix Sky Harbor: PHX Sky Train', url: 'https://www.skyharbor.com/ground-transportation/phx-sky-train/' },
     { title: 'City of Phoenix: Shared micromobility program', url: 'https://www.phoenix.gov/administration/departments/streets/requests-services/active-transportation/shared-micromobility-program.html' },
+    { title: 'Phoenix Police: E-bikes, e-scooters and motor-driven cycles', url: 'https://www.phoenix.gov/administration/departments/police/community-resources/laws-ordinances/e-bikes.html' },
     { title: 'City of Phoenix: Heat safety', url: 'https://www.phoenix.gov/administration/departments/heat/heat-response-programs/heat-safety.html' },
     { title: 'National Weather Service, Phoenix: Heat safety', url: 'https://www.weather.gov/psr/heat' },
     { title: 'AZFamily: Ride slower or risk a ticket: Tempe enforces new electric bike, scooter rules, 4 August 2026', url: 'https://www.azfamily.com/2026/08/04/ride-slower-or-risk-ticket-tempe-enforces-new-electric-bike-scooter-rules/' },
