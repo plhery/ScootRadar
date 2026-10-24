@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Committing
 
-When a change is done and the checks pass, commit it and push straight to `main`; no branch or pull request is needed. It deploys once CI passes on it, about 15 minutes later, and not at all if CI fails (DEPLOY.md, "Deploys wait for CI"): fix a red run forward.
+When a change is done and the checks pass, commit it and push straight to `main`; no branch or pull request is needed. It deploys once CI passes on it, about 15 minutes later, and not at all if CI fails (DEPLOY.md, "Deploys wait for CI"): fix a red run forward. CI runs one commit of `main` at a time: a commit pushed during a run waits for it, up to 15 minutes more, and a later push cancels that waiting run and carries the commit, which is not a failure.
 
 The scooter cache is not deployed between 23:00 and 05:30 Paris time. Norway's night bans run 23:00–05:00, and Sentry watches for 30 minutes after them. A restart takes each feed's state at that moment as its baseline, so a feed its operator took down for the ban (Dott in Trondheim) would not be reported if it never came back. CI's Deploy job holds back a change to the cache (a path matched by `server/deploy-watch-paths.txt`; see DEPLOY.md) whose CI passes in those hours, and the next commit that passes after 05:30 carries it; `[skip cd]` in every commit message holds it back the same way at any hour. So don't deploy the cache by hand then, from Coolify or with a push to `production-cache`. The website's own changes are not affected.
 

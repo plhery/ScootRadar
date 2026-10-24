@@ -165,7 +165,7 @@ built from, as listed in
 [`server/deploy-watch-paths.txt`](server/deploy-watch-paths.txt), changed
 between the commit `production-cache` is at and this one. A failed or cancelled
 job moves nothing, and the next commit that passes carries the change. A push
-goes live about 15 minutes later: CI takes 12 to 15 minutes, then Workers Builds
+goes live about 15 minutes later: CI takes 11 to 13 minutes, then Workers Builds
 and Coolify about a minute and a half each. CI runs on one commit of `main` at a
 time, to the end. Of the commits pushed meanwhile only the newest waits for it,
 and it carries the others: GitHub cancels a waiting run when a later push queues

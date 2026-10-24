@@ -22,8 +22,9 @@ jobs:
   web:
     name: Web and backend
     runs-on: ubuntu-latest
-    # 12 to 16 minutes as a rule, 10 to 13 of them end-to-end tests, so 20 left no room for a slow
-    # package mirror (see below), which ran three runs out of time on 22 Oct 2026.
+    # 9 to 13 minutes as a rule, 6.5 to 10 of them end-to-end tests on two workers (24 Oct 2026), and
+    # 20 left no room for a slow package mirror (see below), which ran three runs out of time on
+    # 22 Oct 2026.
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -58,8 +59,8 @@ jobs:
   ios:
     name: iOS
     runs-on: macos-26
-    # The tests take 7 to 17 minutes as a rule but up to 23 on a slow runner, and three runs ran
-    # out of 20 on 22 Oct 2026.
+    # 10.5 to 13 minutes as a rule since the tests run without clones (24 Oct 2026). On clones they
+    # took up to 23 on a slow runner, and three runs ran out of 20 on 22 Oct 2026.
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
