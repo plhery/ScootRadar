@@ -143,5 +143,52 @@
         "scooters": 767
       }
     ]
+  },
+  "viewDispatchSample": {
+    "halfSpanDegrees": 0.003,
+    "markets": [
+      {
+        "country": "RO",
+        "city": "Deva",
+        "enclosingGroups": 2,
+        "ownedCellGroups": 2
+      },
+      {
+        "country": "CZ",
+        "city": "České Budějovice",
+        "enclosingGroups": 3,
+        "ownedCellGroups": 3
+      },
+      {
+        "country": "MX",
+        "city": "Querétaro",
+        "enclosingGroups": 2,
+        "ownedCellGroups": 1
+      },
+      {
+        "country": "JP",
+        "city": "Naha",
+        "enclosingGroups": 3,
+        "ownedCellGroups": 2
+      },
+      {
+        "country": "QA",
+        "city": "Doha",
+        "enclosingGroups": 3,
+        "ownedCellGroups": 1
+      },
+      {
+        "country": "CL",
+        "city": "Santiago",
+        "enclosingGroups": 5,
+        "ownedCellGroups": 2
+      },
+      {
+        "country": "AU",
+        "city": "Brisbane",
+        "enclosingGroups": 5,
+        "ownedCellGroups": 2
+      }
+    ]
   }
 }

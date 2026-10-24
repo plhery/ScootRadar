@@ -19,6 +19,72 @@
         "west": 14.43596,
         "east": 14.49751317
       },
+      "areas": [
+        {
+          "city": "České Budějovice",
+          "center": [
+            48.97447,
+            14.47434
+          ],
+          "aliases": [
+            "Budweis"
+          ],
+          "bounds": {
+            "south": 48.94881,
+            "north": 48.96228467,
+            "west": 14.45647772,
+            "east": 14.47699545
+          }
+        },
+        {
+          "city": "České Budějovice",
+          "center": [
+            48.97447,
+            14.47434
+          ],
+          "aliases": [
+            "Budweis"
+          ],
+          "bounds": {
+            "south": 48.94881,
+            "north": 48.96228467,
+            "west": 14.47699545,
+            "east": 14.49751317
+          }
+        },
+        {
+          "city": "České Budějovice",
+          "center": [
+            48.97447,
+            14.47434
+          ],
+          "aliases": [
+            "Budweis"
+          ],
+          "bounds": {
+            "south": 48.96228467,
+            "north": 48.97575934,
+            "west": 14.43596,
+            "east": 14.45647772
+          }
+        },
+        {
+          "city": "České Budějovice",
+          "center": [
+            48.97447,
+            14.47434
+          ],
+          "aliases": [
+            "Budweis"
+          ],
+          "bounds": {
+            "south": 48.96228467,
+            "north": 48.97575934,
+            "west": 14.45647772,
+            "east": 14.47699545
+          }
+        }
+      ],
       "timeZone": "Europe/Prague",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -67,6 +133,72 @@
         "west": 14.43596,
         "east": 14.50798
       },
+      "areas": [
+        {
+          "city": "České Budějovice",
+          "center": [
+            48.97447,
+            14.47434
+          ],
+          "aliases": [
+            "Budweis"
+          ],
+          "bounds": {
+            "south": 48.96228467,
+            "north": 48.97575934,
+            "west": 14.47699545,
+            "east": 14.49751317
+          }
+        },
+        {
+          "city": "České Budějovice",
+          "center": [
+            48.97447,
+            14.47434
+          ],
+          "aliases": [
+            "Budweis"
+          ],
+          "bounds": {
+            "south": 48.96228467,
+            "north": 48.97575934,
+            "west": 14.49751317,
+            "east": 14.50798
+          }
+        },
+        {
+          "city": "České Budějovice",
+          "center": [
+            48.97447,
+            14.47434
+          ],
+          "aliases": [
+            "Budweis"
+          ],
+          "bounds": {
+            "south": 48.97575934,
+            "north": 48.989234,
+            "west": 14.43596,
+            "east": 14.45647772
+          }
+        },
+        {
+          "city": "České Budějovice",
+          "center": [
+            48.97447,
+            14.47434
+          ],
+          "aliases": [
+            "Budweis"
+          ],
+          "bounds": {
+            "south": 48.97575934,
+            "north": 48.989234,
+            "west": 14.45647772,
+            "east": 14.47699545
+          }
+        }
+      ],
       "timeZone": "Europe/Prague",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -115,6 +247,72 @@
         "west": 14.43596,
         "east": 14.50798
       },
+      "areas": [
+        {
+          "city": "České Budějovice",
+          "center": [
+            48.97447,
+            14.47434
+          ],
+          "aliases": [
+            "Budweis"
+          ],
+          "bounds": {
+            "south": 48.97575934,
+            "north": 48.989234,
+            "west": 14.47699545,
+            "east": 14.49751317
+          }
+        },
+        {
+          "city": "České Budějovice",
+          "center": [
+            48.97447,
+            14.47434
+          ],
+          "aliases": [
+            "Budweis"
+          ],
+          "bounds": {
+            "south": 48.97575934,
+            "north": 48.989234,
+            "west": 14.49751317,
+            "east": 14.50798
+          }
+        },
+        {
+          "city": "České Budějovice",
+          "center": [
+            48.97447,
+            14.47434
+          ],
+          "aliases": [
+            "Budweis"
+          ],
+          "bounds": {
+            "south": 48.989234,
+            "north": 49.00077,
+            "west": 14.43596,
+            "east": 14.45647772
+          }
+        },
+        {
+          "city": "České Budějovice",
+          "center": [
+            48.97447,
+            14.47434
+          ],
+          "aliases": [
+            "Budweis"
+          ],
+          "bounds": {
+            "south": 48.989234,
+            "north": 49.00077,
+            "west": 14.45647772,
+            "east": 14.47699545
+          }
+        }
+      ],
       "timeZone": "Europe/Prague",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -163,6 +361,24 @@
         "west": 14.47699545,
         "east": 14.49751317
       },
+      "areas": [
+        {
+          "city": "České Budějovice",
+          "center": [
+            48.97447,
+            14.47434
+          ],
+          "aliases": [
+            "Budweis"
+          ],
+          "bounds": {
+            "south": 48.989234,
+            "north": 49.00077,
+            "west": 14.47699545,
+            "east": 14.49751317
+          }
+        }
+      ],
       "timeZone": "Europe/Prague",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,

@@ -1,6 +1,8 @@
 import { expect, it } from 'vitest';
 import { limeAppCatalogs, limeAuditFingerprint } from './lime-app-catalog.mjs';
 import { decodeLimeArea, limeAreaTiles, LIME_TILE_GROUP_SIZE } from '../server/limeAreas';
+import { boundsContainPoint } from '../src/lib/geo';
+import { serviceAreas } from '../src/lib/regionalScooterSystems';
 
 it('partitions the complete service grid into bounded groups and preserves public feeds and their provenance', () => {
   const publicFeed = { id: 'public', provider: 'lime', city: 'Public city', discoveryUrl: 'https://example.com/gbfs.json' };
@@ -21,6 +23,10 @@ it('partitions the complete service grid into bounded groups and preserves publi
   const expected = limeAreaTiles([decodeLimeArea(market.serviceAreas[0].polygon)]);
   expect(tiles).toHaveLength(expected.length);
   expect(new Set(tiles.map(b => JSON.stringify(b))).size).toBe(expected.length);
+  // The first group wraps onto the next row. Its enclosing rectangle also
+  // contains the next group's cells; a street view there must wake only its owner.
+  expect(app.filter(s => boundsContainPoint(s.bounds, .02, .02))).toHaveLength(2);
+  expect(app.filter(s => serviceAreas(s).some(area => boundsContainPoint(area.bounds, .02, .02)))).toHaveLength(1);
 });
 
 it('keeps geometry audit evidence valid across label changes and invalidates it when a tile changes', () => {

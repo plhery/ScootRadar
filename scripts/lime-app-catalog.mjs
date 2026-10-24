@@ -28,6 +28,8 @@ export function limeAppCatalogs(source, countries, readCatalog, geometry) {
         ...(market.aliases?.length ? { aliases: market.aliases } : {}),
         bounds: { south: Math.min(...group.map(b => b.south)), north: Math.max(...group.map(b => b.north)),
           west: Math.min(...group.map(b => b.west)), east: Math.max(...group.map(b => b.east)) },
+        areas: group.map(bounds => ({ city: market.city, center: market.center,
+          ...(market.aliases?.length ? { aliases: market.aliases } : {}), bounds })),
         timeZone: market.timeZone, discoveryUrl: 'https://web-production.lime.bike/api/rider/v2/map/bike_pins',
         limeAppMap: true, limeAppRegion: market.regionToken, limeMapTiles: group });
     }

@@ -216,6 +216,72 @@
         "west": -70.63677956,
         "east": -70.55611217
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.58564,
+            "north": -33.57216533,
+            "west": -70.63677956,
+            "east": -70.62064608
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.58564,
+            "north": -33.57216533,
+            "west": -70.62064608,
+            "east": -70.60451261
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.57216533,
+            "north": -33.55869066,
+            "west": -70.58837913,
+            "east": -70.57224565
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.57216533,
+            "north": -33.55869066,
+            "west": -70.57224565,
+            "east": -70.55611217
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -264,6 +330,72 @@
         "west": -70.68518,
         "east": -70.60451261
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.55869066,
+            "north": -33.545216,
+            "west": -70.68518,
+            "east": -70.66904652
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.55869066,
+            "north": -33.545216,
+            "west": -70.66904652,
+            "east": -70.65291304
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.55869066,
+            "north": -33.545216,
+            "west": -70.65291304,
+            "east": -70.63677956
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.55869066,
+            "north": -33.545216,
+            "west": -70.62064608,
+            "east": -70.60451261
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -312,6 +444,72 @@
         "west": -70.60451261,
         "east": -70.53997869
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.55869066,
+            "north": -33.545216,
+            "west": -70.60451261,
+            "east": -70.58837913
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.55869066,
+            "north": -33.545216,
+            "west": -70.58837913,
+            "east": -70.57224565
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.55869066,
+            "north": -33.545216,
+            "west": -70.57224565,
+            "east": -70.55611217
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.55869066,
+            "north": -33.545216,
+            "west": -70.55611217,
+            "east": -70.53997869
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -360,6 +558,72 @@
         "west": -70.68518,
         "east": -70.60451261
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.545216,
+            "north": -33.53174133,
+            "west": -70.68518,
+            "east": -70.66904652
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.545216,
+            "north": -33.53174133,
+            "west": -70.66904652,
+            "east": -70.65291304
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.545216,
+            "north": -33.53174133,
+            "west": -70.65291304,
+            "east": -70.63677956
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.545216,
+            "north": -33.53174133,
+            "west": -70.62064608,
+            "east": -70.60451261
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -408,6 +672,72 @@
         "west": -70.60451261,
         "east": -70.53997869
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.545216,
+            "north": -33.53174133,
+            "west": -70.60451261,
+            "east": -70.58837913
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.545216,
+            "north": -33.53174133,
+            "west": -70.58837913,
+            "east": -70.57224565
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.545216,
+            "north": -33.53174133,
+            "west": -70.57224565,
+            "east": -70.55611217
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.545216,
+            "north": -33.53174133,
+            "west": -70.55611217,
+            "east": -70.53997869
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -456,6 +786,72 @@
         "west": -70.68518,
         "east": -70.52384521
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.545216,
+            "north": -33.53174133,
+            "west": -70.53997869,
+            "east": -70.52384521
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.53174133,
+            "north": -33.51826666,
+            "west": -70.68518,
+            "east": -70.66904652
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.53174133,
+            "north": -33.51826666,
+            "west": -70.66904652,
+            "east": -70.65291304
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.53174133,
+            "north": -33.51826666,
+            "west": -70.65291304,
+            "east": -70.63677956
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -504,6 +900,72 @@
         "west": -70.63677956,
         "east": -70.57224565
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.53174133,
+            "north": -33.51826666,
+            "west": -70.63677956,
+            "east": -70.62064608
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.53174133,
+            "north": -33.51826666,
+            "west": -70.62064608,
+            "east": -70.60451261
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.53174133,
+            "north": -33.51826666,
+            "west": -70.60451261,
+            "east": -70.58837913
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.53174133,
+            "north": -33.51826666,
+            "west": -70.58837913,
+            "east": -70.57224565
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -552,6 +1014,72 @@
         "west": -70.68518,
         "east": -70.53997869
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.53174133,
+            "north": -33.51826666,
+            "west": -70.57224565,
+            "east": -70.55611217
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.53174133,
+            "north": -33.51826666,
+            "west": -70.55611217,
+            "east": -70.53997869
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.51826666,
+            "north": -33.50479199,
+            "west": -70.68518,
+            "east": -70.66904652
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.51826666,
+            "north": -33.50479199,
+            "west": -70.66904652,
+            "east": -70.65291304
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -600,6 +1128,72 @@
         "west": -70.65291304,
         "east": -70.58837913
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.51826666,
+            "north": -33.50479199,
+            "west": -70.65291304,
+            "east": -70.63677956
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.51826666,
+            "north": -33.50479199,
+            "west": -70.63677956,
+            "east": -70.62064608
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.51826666,
+            "north": -33.50479199,
+            "west": -70.62064608,
+            "east": -70.60451261
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.51826666,
+            "north": -33.50479199,
+            "west": -70.60451261,
+            "east": -70.58837913
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -648,6 +1242,72 @@
         "west": -70.66904652,
         "east": -70.55611217
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.51826666,
+            "north": -33.50479199,
+            "west": -70.58837913,
+            "east": -70.57224565
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.51826666,
+            "north": -33.50479199,
+            "west": -70.57224565,
+            "east": -70.55611217
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.50479199,
+            "north": -33.49131733,
+            "west": -70.66904652,
+            "east": -70.65291304
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.50479199,
+            "north": -33.49131733,
+            "west": -70.65291304,
+            "east": -70.63677956
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -696,6 +1356,72 @@
         "west": -70.66904652,
         "east": -70.60451261
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.50479199,
+            "north": -33.49131733,
+            "west": -70.63677956,
+            "east": -70.62064608
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.50479199,
+            "north": -33.49131733,
+            "west": -70.62064608,
+            "east": -70.60451261
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.49131733,
+            "north": -33.47784266,
+            "west": -70.66904652,
+            "east": -70.65291304
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.49131733,
+            "north": -33.47784266,
+            "west": -70.65291304,
+            "east": -70.63677956
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -744,6 +1470,72 @@
         "west": -70.66904652,
         "east": -70.60451261
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.49131733,
+            "north": -33.47784266,
+            "west": -70.63677956,
+            "east": -70.62064608
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.49131733,
+            "north": -33.47784266,
+            "west": -70.62064608,
+            "east": -70.60451261
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.47784266,
+            "north": -33.46436799,
+            "west": -70.66904652,
+            "east": -70.65291304
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.47784266,
+            "north": -33.46436799,
+            "west": -70.65291304,
+            "east": -70.63677956
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -792,6 +1584,72 @@
         "west": -70.63677956,
         "east": -70.52384521
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.47784266,
+            "north": -33.46436799,
+            "west": -70.63677956,
+            "east": -70.62064608
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.46436799,
+            "north": -33.45089332,
+            "west": -70.57224565,
+            "east": -70.55611217
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.46436799,
+            "north": -33.45089332,
+            "west": -70.55611217,
+            "east": -70.53997869
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.46436799,
+            "north": -33.45089332,
+            "west": -70.53997869,
+            "east": -70.52384521
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -840,6 +1698,72 @@
         "west": -70.58837913,
         "east": -70.50771173
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.46436799,
+            "north": -33.45089332,
+            "west": -70.52384521,
+            "east": -70.50771173
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.45089332,
+            "north": -33.43741866,
+            "west": -70.58837913,
+            "east": -70.57224565
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.45089332,
+            "north": -33.43741866,
+            "west": -70.57224565,
+            "east": -70.55611217
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.45089332,
+            "north": -33.43741866,
+            "west": -70.55611217,
+            "east": -70.53997869
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -888,6 +1812,72 @@
         "west": -70.60451261,
         "east": -70.52384521
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.45089332,
+            "north": -33.43741866,
+            "west": -70.53997869,
+            "east": -70.52384521
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.43741866,
+            "north": -33.42394399,
+            "west": -70.60451261,
+            "east": -70.58837913
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.43741866,
+            "north": -33.42394399,
+            "west": -70.58837913,
+            "east": -70.57224565
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.43741866,
+            "north": -33.42394399,
+            "west": -70.57224565,
+            "east": -70.55611217
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -936,6 +1926,72 @@
         "west": -70.62064608,
         "east": -70.52384521
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.43741866,
+            "north": -33.42394399,
+            "west": -70.55611217,
+            "east": -70.53997869
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.43741866,
+            "north": -33.42394399,
+            "west": -70.53997869,
+            "east": -70.52384521
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.42394399,
+            "north": -33.41046932,
+            "west": -70.62064608,
+            "east": -70.60451261
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.42394399,
+            "north": -33.41046932,
+            "west": -70.60451261,
+            "east": -70.58837913
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -984,6 +2040,72 @@
         "west": -70.58837913,
         "east": -70.52384521
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.42394399,
+            "north": -33.41046932,
+            "west": -70.58837913,
+            "east": -70.57224565
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.42394399,
+            "north": -33.41046932,
+            "west": -70.57224565,
+            "east": -70.55611217
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.42394399,
+            "north": -33.41046932,
+            "west": -70.55611217,
+            "east": -70.53997869
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.42394399,
+            "north": -33.41046932,
+            "west": -70.53997869,
+            "east": -70.52384521
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -1032,6 +2154,72 @@
         "west": -70.62064608,
         "east": -70.49341
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.42394399,
+            "north": -33.41046932,
+            "west": -70.52384521,
+            "east": -70.50771173
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.42394399,
+            "north": -33.41046932,
+            "west": -70.50771173,
+            "east": -70.49341
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.41046932,
+            "north": -33.39699465,
+            "west": -70.62064608,
+            "east": -70.60451261
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.41046932,
+            "north": -33.39699465,
+            "west": -70.60451261,
+            "east": -70.58837913
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -1080,6 +2268,72 @@
         "west": -70.58837913,
         "east": -70.52384521
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.41046932,
+            "north": -33.39699465,
+            "west": -70.58837913,
+            "east": -70.57224565
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.41046932,
+            "north": -33.39699465,
+            "west": -70.57224565,
+            "east": -70.55611217
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.41046932,
+            "north": -33.39699465,
+            "west": -70.55611217,
+            "east": -70.53997869
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.41046932,
+            "north": -33.39699465,
+            "west": -70.53997869,
+            "east": -70.52384521
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -1128,6 +2382,72 @@
         "west": -70.60451261,
         "east": -70.49341
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.41046932,
+            "north": -33.39699465,
+            "west": -70.52384521,
+            "east": -70.50771173
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.41046932,
+            "north": -33.39699465,
+            "west": -70.50771173,
+            "east": -70.49341
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.39699465,
+            "north": -33.38351999,
+            "west": -70.60451261,
+            "east": -70.58837913
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.39699465,
+            "north": -33.38351999,
+            "west": -70.58837913,
+            "east": -70.57224565
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -1176,6 +2496,72 @@
         "west": -70.57224565,
         "east": -70.50771173
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.39699465,
+            "north": -33.38351999,
+            "west": -70.57224565,
+            "east": -70.55611217
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.39699465,
+            "north": -33.38351999,
+            "west": -70.55611217,
+            "east": -70.53997869
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.39699465,
+            "north": -33.38351999,
+            "west": -70.53997869,
+            "east": -70.52384521
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.39699465,
+            "north": -33.38351999,
+            "west": -70.52384521,
+            "east": -70.50771173
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -1224,6 +2610,72 @@
         "west": -70.60451261,
         "east": -70.49341
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.39699465,
+            "north": -33.38351999,
+            "west": -70.50771173,
+            "east": -70.49341
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.38351999,
+            "north": -33.37004532,
+            "west": -70.60451261,
+            "east": -70.58837913
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.38351999,
+            "north": -33.37004532,
+            "west": -70.58837913,
+            "east": -70.57224565
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.38351999,
+            "north": -33.37004532,
+            "west": -70.57224565,
+            "east": -70.55611217
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -1272,6 +2724,72 @@
         "west": -70.55611217,
         "east": -70.49341
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.38351999,
+            "north": -33.37004532,
+            "west": -70.55611217,
+            "east": -70.53997869
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.38351999,
+            "north": -33.37004532,
+            "west": -70.53997869,
+            "east": -70.52384521
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.38351999,
+            "north": -33.37004532,
+            "west": -70.52384521,
+            "east": -70.50771173
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.38351999,
+            "north": -33.37004532,
+            "west": -70.50771173,
+            "east": -70.49341
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -1320,6 +2838,72 @@
         "west": -70.58837913,
         "east": -70.50771173
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.37004532,
+            "north": -33.36342,
+            "west": -70.58837913,
+            "east": -70.57224565
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.37004532,
+            "north": -33.36342,
+            "west": -70.57224565,
+            "east": -70.55611217
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.37004532,
+            "north": -33.36342,
+            "west": -70.55611217,
+            "east": -70.53997869
+          }
+        },
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.37004532,
+            "north": -33.36342,
+            "west": -70.52384521,
+            "east": -70.50771173
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -1368,6 +2952,24 @@
         "west": -70.50771173,
         "east": -70.49341
       },
+      "areas": [
+        {
+          "city": "Santiago",
+          "center": [
+            -33.3976605,
+            -70.55056619999999
+          ],
+          "aliases": [
+            "Santiago de Chile"
+          ],
+          "bounds": {
+            "south": -33.37004532,
+            "north": -33.36342,
+            "west": -70.50771173,
+            "east": -70.49341
+          }
+        }
+      ],
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,

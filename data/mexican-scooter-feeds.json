@@ -113,6 +113,72 @@
         "west": -100.41509,
         "east": -100.35703
       },
+      "areas": [
+        {
+          "city": "Querétaro",
+          "center": [
+            20.58806,
+            -100.38806
+          ],
+          "aliases": [
+            "Santiago de Querétaro"
+          ],
+          "bounds": {
+            "south": 20.55756,
+            "north": 20.57103467,
+            "west": -100.38630781,
+            "east": -100.37191672
+          }
+        },
+        {
+          "city": "Querétaro",
+          "center": [
+            20.58806,
+            -100.38806
+          ],
+          "aliases": [
+            "Santiago de Querétaro"
+          ],
+          "bounds": {
+            "south": 20.55756,
+            "north": 20.57103467,
+            "west": -100.37191672,
+            "east": -100.35752562
+          }
+        },
+        {
+          "city": "Querétaro",
+          "center": [
+            20.58806,
+            -100.38806
+          ],
+          "aliases": [
+            "Santiago de Querétaro"
+          ],
+          "bounds": {
+            "south": 20.55756,
+            "north": 20.57103467,
+            "west": -100.35752562,
+            "east": -100.35703
+          }
+        },
+        {
+          "city": "Querétaro",
+          "center": [
+            20.58806,
+            -100.38806
+          ],
+          "aliases": [
+            "Santiago de Querétaro"
+          ],
+          "bounds": {
+            "south": 20.57103467,
+            "north": 20.58450934,
+            "west": -100.41509,
+            "east": -100.40069891
+          }
+        }
+      ],
       "timeZone": "America/Mexico_City",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -161,6 +227,72 @@
         "west": -100.41509,
         "east": -100.35752562
       },
+      "areas": [
+        {
+          "city": "Querétaro",
+          "center": [
+            20.58806,
+            -100.38806
+          ],
+          "aliases": [
+            "Santiago de Querétaro"
+          ],
+          "bounds": {
+            "south": 20.57103467,
+            "north": 20.58450934,
+            "west": -100.40069891,
+            "east": -100.38630781
+          }
+        },
+        {
+          "city": "Querétaro",
+          "center": [
+            20.58806,
+            -100.38806
+          ],
+          "aliases": [
+            "Santiago de Querétaro"
+          ],
+          "bounds": {
+            "south": 20.57103467,
+            "north": 20.58450934,
+            "west": -100.38630781,
+            "east": -100.37191672
+          }
+        },
+        {
+          "city": "Querétaro",
+          "center": [
+            20.58806,
+            -100.38806
+          ],
+          "aliases": [
+            "Santiago de Querétaro"
+          ],
+          "bounds": {
+            "south": 20.57103467,
+            "north": 20.58450934,
+            "west": -100.37191672,
+            "east": -100.35752562
+          }
+        },
+        {
+          "city": "Querétaro",
+          "center": [
+            20.58806,
+            -100.38806
+          ],
+          "aliases": [
+            "Santiago de Querétaro"
+          ],
+          "bounds": {
+            "south": 20.58450934,
+            "north": 20.597984,
+            "west": -100.41509,
+            "east": -100.40069891
+          }
+        }
+      ],
       "timeZone": "America/Mexico_City",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -209,6 +341,72 @@
         "west": -100.41509,
         "east": -100.35752562
       },
+      "areas": [
+        {
+          "city": "Querétaro",
+          "center": [
+            20.58806,
+            -100.38806
+          ],
+          "aliases": [
+            "Santiago de Querétaro"
+          ],
+          "bounds": {
+            "south": 20.58450934,
+            "north": 20.597984,
+            "west": -100.40069891,
+            "east": -100.38630781
+          }
+        },
+        {
+          "city": "Querétaro",
+          "center": [
+            20.58806,
+            -100.38806
+          ],
+          "aliases": [
+            "Santiago de Querétaro"
+          ],
+          "bounds": {
+            "south": 20.58450934,
+            "north": 20.597984,
+            "west": -100.38630781,
+            "east": -100.37191672
+          }
+        },
+        {
+          "city": "Querétaro",
+          "center": [
+            20.58806,
+            -100.38806
+          ],
+          "aliases": [
+            "Santiago de Querétaro"
+          ],
+          "bounds": {
+            "south": 20.58450934,
+            "north": 20.597984,
+            "west": -100.37191672,
+            "east": -100.35752562
+          }
+        },
+        {
+          "city": "Querétaro",
+          "center": [
+            20.58806,
+            -100.38806
+          ],
+          "aliases": [
+            "Santiago de Querétaro"
+          ],
+          "bounds": {
+            "south": 20.597984,
+            "north": 20.61145867,
+            "west": -100.41509,
+            "east": -100.40069891
+          }
+        }
+      ],
       "timeZone": "America/Mexico_City",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -257,6 +455,72 @@
         "west": -100.40069891,
         "east": -100.37191672
       },
+      "areas": [
+        {
+          "city": "Querétaro",
+          "center": [
+            20.58806,
+            -100.38806
+          ],
+          "aliases": [
+            "Santiago de Querétaro"
+          ],
+          "bounds": {
+            "south": 20.597984,
+            "north": 20.61145867,
+            "west": -100.40069891,
+            "east": -100.38630781
+          }
+        },
+        {
+          "city": "Querétaro",
+          "center": [
+            20.58806,
+            -100.38806
+          ],
+          "aliases": [
+            "Santiago de Querétaro"
+          ],
+          "bounds": {
+            "south": 20.597984,
+            "north": 20.61145867,
+            "west": -100.38630781,
+            "east": -100.37191672
+          }
+        },
+        {
+          "city": "Querétaro",
+          "center": [
+            20.58806,
+            -100.38806
+          ],
+          "aliases": [
+            "Santiago de Querétaro"
+          ],
+          "bounds": {
+            "south": 20.61145867,
+            "north": 20.6161,
+            "west": -100.40069891,
+            "east": -100.38630781
+          }
+        },
+        {
+          "city": "Querétaro",
+          "center": [
+            20.58806,
+            -100.38806
+          ],
+          "aliases": [
+            "Santiago de Querétaro"
+          ],
+          "bounds": {
+            "south": 20.61145867,
+            "north": 20.6161,
+            "west": -100.38630781,
+            "east": -100.37191672
+          }
+        }
+      ],
       "timeZone": "America/Mexico_City",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,

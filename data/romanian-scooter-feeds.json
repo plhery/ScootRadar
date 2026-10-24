@@ -16,6 +16,60 @@
         "west": 22.89478,
         "east": 22.92735
       },
+      "areas": [
+        {
+          "city": "Deva",
+          "center": [
+            45.88333,
+            22.9
+          ],
+          "bounds": {
+            "south": 45.85633,
+            "north": 45.86980467,
+            "west": 22.89478,
+            "east": 22.91412737
+          }
+        },
+        {
+          "city": "Deva",
+          "center": [
+            45.88333,
+            22.9
+          ],
+          "bounds": {
+            "south": 45.85633,
+            "north": 45.86980467,
+            "west": 22.91412737,
+            "east": 22.92735
+          }
+        },
+        {
+          "city": "Deva",
+          "center": [
+            45.88333,
+            22.9
+          ],
+          "bounds": {
+            "south": 45.86980467,
+            "north": 45.88327934,
+            "west": 22.89478,
+            "east": 22.91412737
+          }
+        },
+        {
+          "city": "Deva",
+          "center": [
+            45.88333,
+            22.9
+          ],
+          "bounds": {
+            "south": 45.86980467,
+            "north": 45.88327934,
+            "west": 22.91412737,
+            "east": 22.92735
+          }
+        }
+      ],
       "timeZone": "Europe/Bucharest",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -61,6 +115,21 @@
         "west": 22.89478,
         "east": 22.91412737
       },
+      "areas": [
+        {
+          "city": "Deva",
+          "center": [
+            45.88333,
+            22.9
+          ],
+          "bounds": {
+            "south": 45.88327934,
+            "north": 45.89326,
+            "west": 22.89478,
+            "east": 22.91412737
+          }
+        }
+      ],
       "timeZone": "Europe/Bucharest",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,

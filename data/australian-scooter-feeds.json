@@ -228,6 +228,60 @@
         "west": 153.00391287,
         "east": 153.06455861
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.53263,
+            "north": -27.51915533,
+            "west": 153.00391287,
+            "east": 153.0190743
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.53263,
+            "north": -27.51915533,
+            "west": 153.0190743,
+            "east": 153.03423574
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.53263,
+            "north": -27.51915533,
+            "west": 153.03423574,
+            "east": 153.04939717
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.53263,
+            "north": -27.51915533,
+            "west": 153.04939717,
+            "east": 153.06455861
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -273,6 +327,60 @@
         "west": 152.97359,
         "east": 153.07972004
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.53263,
+            "north": -27.51915533,
+            "west": 153.06455861,
+            "east": 153.07972004
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.51915533,
+            "north": -27.50568066,
+            "west": 152.97359,
+            "east": 152.98875143
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.51915533,
+            "north": -27.50568066,
+            "west": 152.98875143,
+            "east": 153.00391287
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.51915533,
+            "north": -27.50568066,
+            "west": 153.00391287,
+            "east": 153.0190743
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -318,6 +426,60 @@
         "west": 153.0190743,
         "east": 153.07972004
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.51915533,
+            "north": -27.50568066,
+            "west": 153.0190743,
+            "east": 153.03423574
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.51915533,
+            "north": -27.50568066,
+            "west": 153.03423574,
+            "east": 153.04939717
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.51915533,
+            "north": -27.50568066,
+            "west": 153.04939717,
+            "east": 153.06455861
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.51915533,
+            "north": -27.50568066,
+            "west": 153.06455861,
+            "east": 153.07972004
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -363,6 +525,60 @@
         "west": 152.97359,
         "east": 153.03423574
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.50568066,
+            "north": -27.492206,
+            "west": 152.97359,
+            "east": 152.98875143
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.50568066,
+            "north": -27.492206,
+            "west": 152.98875143,
+            "east": 153.00391287
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.50568066,
+            "north": -27.492206,
+            "west": 153.00391287,
+            "east": 153.0190743
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.50568066,
+            "north": -27.492206,
+            "west": 153.0190743,
+            "east": 153.03423574
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -408,6 +624,60 @@
         "west": 152.97359,
         "east": 153.07972004
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.50568066,
+            "north": -27.492206,
+            "west": 153.03423574,
+            "east": 153.04939717
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.50568066,
+            "north": -27.492206,
+            "west": 153.04939717,
+            "east": 153.06455861
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.50568066,
+            "north": -27.492206,
+            "west": 153.06455861,
+            "east": 153.07972004
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.492206,
+            "north": -27.47873133,
+            "west": 152.97359,
+            "east": 152.98875143
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -453,6 +723,60 @@
         "west": 152.98875143,
         "east": 153.04939717
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.492206,
+            "north": -27.47873133,
+            "west": 152.98875143,
+            "east": 153.00391287
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.492206,
+            "north": -27.47873133,
+            "west": 153.00391287,
+            "east": 153.0190743
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.492206,
+            "north": -27.47873133,
+            "west": 153.0190743,
+            "east": 153.03423574
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.492206,
+            "north": -27.47873133,
+            "west": 153.03423574,
+            "east": 153.04939717
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -498,6 +822,60 @@
         "west": 152.97359,
         "east": 153.07972004
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.492206,
+            "north": -27.47873133,
+            "west": 153.04939717,
+            "east": 153.06455861
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.492206,
+            "north": -27.47873133,
+            "west": 153.06455861,
+            "east": 153.07972004
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.47873133,
+            "north": -27.46525666,
+            "west": 152.97359,
+            "east": 152.98875143
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.47873133,
+            "north": -27.46525666,
+            "west": 152.98875143,
+            "east": 153.00391287
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -543,6 +921,60 @@
         "west": 153.00391287,
         "east": 153.06455861
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.47873133,
+            "north": -27.46525666,
+            "west": 153.00391287,
+            "east": 153.0190743
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.47873133,
+            "north": -27.46525666,
+            "west": 153.0190743,
+            "east": 153.03423574
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.47873133,
+            "north": -27.46525666,
+            "west": 153.03423574,
+            "east": 153.04939717
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.47873133,
+            "north": -27.46525666,
+            "west": 153.04939717,
+            "east": 153.06455861
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -588,6 +1020,60 @@
         "west": 152.97359,
         "east": 153.19579
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.47873133,
+            "north": -27.46525666,
+            "west": 153.06455861,
+            "east": 153.07972004
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.47873133,
+            "north": -27.46525666,
+            "west": 153.17068865,
+            "east": 153.18585008
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.47873133,
+            "north": -27.46525666,
+            "west": 153.18585008,
+            "east": 153.19579
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.46525666,
+            "north": -27.45178199,
+            "west": 152.97359,
+            "east": 152.98875143
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -633,6 +1119,60 @@
         "west": 152.98875143,
         "east": 153.04939717
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.46525666,
+            "north": -27.45178199,
+            "west": 152.98875143,
+            "east": 153.00391287
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.46525666,
+            "north": -27.45178199,
+            "west": 153.00391287,
+            "east": 153.0190743
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.46525666,
+            "north": -27.45178199,
+            "west": 153.0190743,
+            "east": 153.03423574
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.46525666,
+            "north": -27.45178199,
+            "west": 153.03423574,
+            "east": 153.04939717
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -678,6 +1218,60 @@
         "west": 153.04939717,
         "east": 153.19579
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.46525666,
+            "north": -27.45178199,
+            "west": 153.04939717,
+            "east": 153.06455861
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.46525666,
+            "north": -27.45178199,
+            "west": 153.06455861,
+            "east": 153.07972004
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.46525666,
+            "north": -27.45178199,
+            "west": 153.17068865,
+            "east": 153.18585008
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.46525666,
+            "north": -27.45178199,
+            "west": 153.18585008,
+            "east": 153.19579
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -723,6 +1317,60 @@
         "west": 152.98875143,
         "east": 153.04939717
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.45178199,
+            "north": -27.43830733,
+            "west": 152.98875143,
+            "east": 153.00391287
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.45178199,
+            "north": -27.43830733,
+            "west": 153.00391287,
+            "east": 153.0190743
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.45178199,
+            "north": -27.43830733,
+            "west": 153.0190743,
+            "east": 153.03423574
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.45178199,
+            "north": -27.43830733,
+            "west": 153.03423574,
+            "east": 153.04939717
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -768,6 +1416,60 @@
         "west": 153.04939717,
         "east": 153.17068865
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.45178199,
+            "north": -27.43830733,
+            "west": 153.04939717,
+            "east": 153.06455861
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.45178199,
+            "north": -27.43830733,
+            "west": 153.06455861,
+            "east": 153.07972004
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.45178199,
+            "north": -27.43830733,
+            "west": 153.07972004,
+            "east": 153.09488147
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.45178199,
+            "north": -27.43830733,
+            "west": 153.15552721,
+            "east": 153.17068865
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -813,6 +1515,60 @@
         "west": 153.00391287,
         "east": 153.19579
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.45178199,
+            "north": -27.43830733,
+            "west": 153.17068865,
+            "east": 153.18585008
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.45178199,
+            "north": -27.43830733,
+            "west": 153.18585008,
+            "east": 153.19579
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.43830733,
+            "north": -27.42483266,
+            "west": 153.00391287,
+            "east": 153.0190743
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.43830733,
+            "north": -27.42483266,
+            "west": 153.0190743,
+            "east": 153.03423574
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -858,6 +1614,60 @@
         "west": 153.03423574,
         "east": 153.17068865
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.43830733,
+            "north": -27.42483266,
+            "west": 153.03423574,
+            "east": 153.04939717
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.43830733,
+            "north": -27.42483266,
+            "west": 153.04939717,
+            "east": 153.06455861
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.43830733,
+            "north": -27.42483266,
+            "west": 153.06455861,
+            "east": 153.07972004
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.43830733,
+            "north": -27.42483266,
+            "west": 153.15552721,
+            "east": 153.17068865
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -903,6 +1713,60 @@
         "west": 153.0190743,
         "east": 153.18585008
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.43830733,
+            "north": -27.42483266,
+            "west": 153.17068865,
+            "east": 153.18585008
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.42483266,
+            "north": -27.41135799,
+            "west": 153.0190743,
+            "east": 153.03423574
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.42483266,
+            "north": -27.41135799,
+            "west": 153.03423574,
+            "east": 153.04939717
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.42483266,
+            "north": -27.41135799,
+            "west": 153.04939717,
+            "east": 153.06455861
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -948,6 +1812,60 @@
         "west": 153.04939717,
         "east": 153.17068865
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.42483266,
+            "north": -27.41135799,
+            "west": 153.15552721,
+            "east": 153.17068865
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.34398465,
+            "north": -27.33050999,
+            "west": 153.04939717,
+            "east": 153.06455861
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.34398465,
+            "north": -27.33050999,
+            "west": 153.06455861,
+            "east": 153.07972004
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.34398465,
+            "north": -27.33050999,
+            "west": 153.07972004,
+            "east": 153.09488147
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -993,6 +1911,60 @@
         "west": 153.04939717,
         "east": 153.09488147
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.33050999,
+            "north": -27.31703532,
+            "west": 153.04939717,
+            "east": 153.06455861
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.33050999,
+            "north": -27.31703532,
+            "west": 153.06455861,
+            "east": 153.07972004
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.33050999,
+            "north": -27.31703532,
+            "west": 153.07972004,
+            "east": 153.09488147
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.31703532,
+            "north": -27.30356065,
+            "west": 153.04939717,
+            "east": 153.06455861
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -1038,6 +2010,60 @@
         "west": 153.04939717,
         "east": 153.07972004
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.31703532,
+            "north": -27.30356065,
+            "west": 153.06455861,
+            "east": 153.07972004
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.30356065,
+            "north": -27.29008598,
+            "west": 153.04939717,
+            "east": 153.06455861
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.30356065,
+            "north": -27.29008598,
+            "west": 153.06455861,
+            "east": 153.07972004
+          }
+        },
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.29008598,
+            "north": -27.28388,
+            "west": 153.04939717,
+            "east": 153.06455861
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
@@ -1083,6 +2109,21 @@
         "west": 153.06455861,
         "east": 153.07972004
       },
+      "areas": [
+        {
+          "city": "Brisbane",
+          "center": [
+            -27.46794,
+            153.02809
+          ],
+          "bounds": {
+            "south": -27.29008598,
+            "north": -27.28388,
+            "west": 153.06455861,
+            "east": 153.07972004
+          }
+        }
+      ],
       "timeZone": "Australia/Brisbane",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
       "limeAppMap": true,
