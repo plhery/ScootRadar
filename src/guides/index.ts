@@ -155,6 +155,7 @@ import pforzheimDe from './de/e-scooter-pforzheim';
 import sanDiegoEn from './en/e-scooters-san-diego';
 import reutlingenDe from './de/e-scooter-reutlingen';
 import phoenixEn from './en/e-scooters-phoenix';
+import villingenSchwenningenDe from './de/e-scooter-villingen-schwenningen';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -310,4 +311,5 @@ export const GUIDES: readonly Guide[] = [
   sanDiegoEn,
   reutlingenDe,
   phoenixEn,
+  villingenSchwenningenDe,
 ];
