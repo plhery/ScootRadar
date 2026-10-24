@@ -123,6 +123,8 @@ const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
     schemes: [],
     httpsHosts: ['joltscooters.co.nz'],
   },
+  // Beam's map provides no reviewed rental URI. Keep every supplied link disabled.
+  beam: { schemes: [], httpsHosts: [] },
   // BinBin's map links no scooter; its app claims binbin.tech.
   binbin: {
     schemes: [],

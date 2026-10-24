@@ -12,7 +12,9 @@ The reviewed catalogs contain 54 collection regions: 11 in Australia, ten in
 Malaysia, 28 in South Korea and five in Türkiye. Some app regions combine towns
 or campuses, so these are collection regions rather than 54 municipal fleets.
 The initial complete samples contained 44,585 standing scooters. Counts are
-observations, not expected fleet totals.
+observations, not expected fleet totals. Country notes list the reviewed feeds
+for [Australia](australian-scooter-feeds.md), [Malaysia](malaysian-scooter-feeds.md),
+[South Korea](south-korean-scooter-feeds.md) and [Türkiye](turkish-scooter-feeds.md).
 
 `server/beamApp.ts` reads `POST https://gateway.ridebeam.com/query`:
 

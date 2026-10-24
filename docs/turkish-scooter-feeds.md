@@ -111,3 +111,12 @@ city.
 node scripts/update-binbin-areas.mjs --check
 node scripts/check-french-feeds.mjs --countries=TR --json
 ```
+
+## Beam rider map
+
+The catalog also includes five authenticated Beam collection regions, verified
+on 24 October 2026: Ankara, Antalya, Fethiye, Marmaris and Mersin, initially
+2,617 standing scooters in total. These are separate entries from BinBin's
+guest map. The [shared Beam collector](beam-app-map.md) verifies complete H3
+sweeps, filters standing scooters by city id and bounds, and renews its
+private rider session. All five regions use Europe/Istanbul.

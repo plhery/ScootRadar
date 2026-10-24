@@ -2368,7 +2368,10 @@ enum ScooterCountryCatalog {
         // In Central Anatolia, south of Eskişehir: on land, amid BinBin's towns from İstanbul to
         // Antalya and Gaziantep, away from the Black Sea and the Mediterranean.
         "tr": (39.4, 31),
+        // On land in Peninsular Malaysia, among the reviewed western regions; Sarawak remains part
+        // of the same country total.
         "my": (4.5, 102),
+        // On land in central South Korea, among the reviewed city regions.
         "kr": (36.4, 127.8),
     ]
 

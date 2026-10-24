@@ -15,3 +15,12 @@ are excluded. Public feeds remain preferred wherever available.
 
 See [Lime collection and session requirements](lime-app-map.md) for the local
 view protocol, completeness checks, request quota and refresh cadence.
+
+## Beam rider map
+
+The catalog also includes 11 authenticated Beam collection regions, verified
+on 24 October 2026: Adelaide, Broome, Bunbury, Cairns, Darwin, Esperance,
+Geraldton, Hervey Bay, Mackay, Perth and Port Douglas. The initial samples
+contained 2,821 standing scooters. These entries preserve Lime's Brisbane
+coverage and use the [shared Beam collector](beam-app-map.md), with reviewed
+city ids, bounds and each city's canonical local time zone.

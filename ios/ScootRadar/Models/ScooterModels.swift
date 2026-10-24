@@ -430,6 +430,8 @@ enum ScooterRentalLinkPolicy {
             schemes: [],
             httpsHosts: ["joltscooters.co.nz"]
         ),
+        // Beam's map provides no reviewed rental URI.
+        "beam": ProviderPolicy(schemes: [], httpsHosts: []),
         // BinBin's map links no scooter; its app claims binbin.tech.
         "binbin": ProviderPolicy(
             schemes: [],

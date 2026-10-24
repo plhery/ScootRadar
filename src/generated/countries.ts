@@ -294,7 +294,10 @@ export const COUNTRY_ANCHORS: Record<CountryCode, readonly [number, number]> = {
   // In Central Anatolia, south of Eskişehir: on land, amid BinBin's towns from İstanbul to Antalya
   // and Gaziantep, away from the Black Sea and the Mediterranean.
   TR: [39.4, 31],
+  // On land in Peninsular Malaysia, among the reviewed western regions; Sarawak remains part of the
+  // same country total.
   MY: [4.5, 102],
+  // On land in central South Korea, among the reviewed city regions.
   KR: [36.4, 127.8],
 };
 
