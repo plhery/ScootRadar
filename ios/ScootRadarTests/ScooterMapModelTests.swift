@@ -4488,7 +4488,10 @@ extension ScooterMapModelTests {
 
     /// ⌘+ and ⌘− beside the panel: the camera comes a step in, then goes
     /// two out, and what was in the middle of the map stays there. A status
-    /// bar over the map leaves the middle where locating puts it.
+    /// bar over the map leaves the middle where locating puts it. Each step
+    /// waits for the map to be at rest: on a slow runner the rider showed
+    /// beside the panel while locating was still under way, and the step
+    /// out was measured from where locating ended (run 40047027732).
     func testTheMapZoomsAStepAtATimeAroundItsMiddle() async throws {
         let (model, manager) = modelLocatedByTheTest()
         let (window, mapView) = try await panelWindow(
@@ -4499,7 +4502,7 @@ extension ScooterMapModelTests {
         model.locationManager(manager, didUpdateLocations: [fix(at: Self.rider)])
         let located = await waitUntil(attempts: 400) { self.isBesideThePanel(Self.rider, on: mapView) }
         XCTAssertTrue(located)
-        try await Task.sleep(for: .milliseconds(800))
+        try await waitUntilAtRest(mapView)
         let start = mapView.camera.centerCoordinateDistance
 
         model.zoom(by: 1)
@@ -4507,7 +4510,8 @@ extension ScooterMapModelTests {
             abs(mapView.camera.centerCoordinateDistance - start / 2) < start * 0.02
         }
         XCTAssertTrue(closer, "\(start) → \(mapView.camera.centerCoordinateDistance)")
-        try await Task.sleep(for: .milliseconds(600))
+        try await waitUntilAtRest(mapView)
+        XCTAssertEqual(mapView.camera.centerCoordinateDistance, start / 2, accuracy: start * 0.02, "the step in held")
         XCTAssertTrue(isBesideThePanel(Self.rider, on: mapView), whereTheMiddleShows(on: mapView))
 
         model.zoom(by: -2)
@@ -4515,7 +4519,7 @@ extension ScooterMapModelTests {
             abs(mapView.camera.centerCoordinateDistance - start * 2) < start * 0.04
         }
         XCTAssertTrue(further, "\(start) → \(mapView.camera.centerCoordinateDistance)")
-        try await Task.sleep(for: .milliseconds(600))
+        try await waitUntilAtRest(mapView)
         XCTAssertTrue(isBesideThePanel(Self.rider, on: mapView), whereTheMiddleShows(on: mapView))
     }
 
