@@ -61,25 +61,42 @@ jobs:
             browser: webkit
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Every commit, but the files of this one only, to compare it with production.
+          fetch-depth: 0
+          filter: blob:none
+
+      # Not when only the app, docs/ or the Markdown files at the top changed since the commit CI
+      # last passed on: 17 of the 109 commits of 24 Oct 2026 changed only documentation.
+      - name: See whether the website changed
+        id: changed
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || 'origin/production' }}
+        run: bash scripts/ci-changed.sh e2e
 
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        if: steps.changed.outputs.needed == 'true'
         with:
           node-version: 26
           cache: npm
 
-      - run: npm ci
+      - if: steps.changed.outputs.needed == 'true'
+        run: npm ci
       # The runners list Azure's Ubuntu mirror first, then Ubuntu's own archive. On 22 Oct 2026 Azure's
       # stalled 30 s on one package in ten, and Playwright's 181 system packages took up to 20 minutes
       # instead of one, so take them from Ubuntu's archive, while the list names another mirror.
       - name: Skip Azure's Ubuntu mirror
+        if: steps.changed.outputs.needed == 'true'
         run: |
           mirrors=/etc/apt/apt-mirrors.txt
           if [ -f "$mirrors" ] && grep -qv 'azure\.archive\.ubuntu\.com' "$mirrors"; then
             sudo sed -i '/azure\.archive\.ubuntu\.com/d' "$mirrors"
           fi
           cat "$mirrors" || true
-      - run: npx playwright install --with-deps ${{ matrix.browser }}
-      - run: npm run test:e2e -- --project=${{ matrix.project }}
+      - if: steps.changed.outputs.needed == 'true'
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+      - if: steps.changed.outputs.needed == 'true'
+        run: npm run test:e2e -- --project=${{ matrix.project }}
 
   ios:
     name: iOS
@@ -89,6 +106,18 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Every commit, but the files of this one only, to compare it with production.
+          fetch-depth: 0
+          filter: blob:none
+
+      # Not when no file of the app changed since the commit CI last passed on: 77 of the 109 commits
+      # of 24 Oct 2026 left ios/ alone.
+      - name: See whether the app changed
+        id: changed
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || 'origin/production' }}
+        run: bash scripts/ci-changed.sh ios
 
       # Runner images don't always carry the simulator the tests used to name, and on 18 Oct 2026
       # (6ffba80) one carried none, so take an iPhone on the newest iOS runtime, preferring the
@@ -96,6 +125,7 @@ jobs:
       # the runner has no iOS runtime at all.
       - name: Pick a simulator
         id: simulator
+        if: steps.changed.outputs.needed == 'true'
         run: |
           set -uo pipefail
           runtimes=$(xcrun simctl list runtimes available --json || echo '{}')

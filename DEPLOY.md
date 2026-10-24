@@ -172,6 +172,12 @@ and it carries the others: GitHub cancels a waiting run when a later push queues
 another. So a commit pushed during a run goes live with the next one, up to a
 run later, and a branch never moves back to an earlier commit.
 
+The iOS job skips its tests when no file under `ios/` changed since the commit
+`production` is at, which CI last passed on, and the end-to-end jobs skip theirs
+when only `ios/`, `docs/` or the Markdown files at the top of the repository
+changed (`scripts/ci-changed.sh`). A skipped job passes, with a notice that says
+so. The web job's checks, lint and unit tests run on every commit.
+
 The job leaves `production-cache` where it is from 23:00 to 05:30 Paris time
 (AGENTS.md), and when every commit since says `[skip cd]` (or `[skip ci]`): the
 change goes with the next commit that passes outside those hours. The job's
