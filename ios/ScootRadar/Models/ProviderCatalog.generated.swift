@@ -2654,7 +2654,7 @@ enum ScooterCountryCatalog {
         ("PT: DGT boundaries · CC BY 4.0", "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop"),
         ("DE/SE: Qick map", "https://www.qickscooters.com/"),
         ("DE/AT/IT/ES/PL/HU/GR/FI: Dott map", "https://ridedott.com/"),
-        ("DE/AT/IT/NO/GB/DK/SE/FI: Voi map", "https://www.voi.com/"),
+        ("DE/AT/IT/NO/UK/DK/SE/FI: Voi map", "https://www.voi.com/"),
         ("CA: MoVe rider map", "https://move-mobility.app.link/"),
         ("NZ: Flamingo · CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/"),
         ("CH/FR/PT/ES/PL/FI/UA/IL/NZ: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),

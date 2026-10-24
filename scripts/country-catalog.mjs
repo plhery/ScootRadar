@@ -277,6 +277,9 @@ export function validateCountries({ countries, landingFirst }, readCatalog, citi
       (credits.links ?? []).some(link => !link.label || !link.href?.startsWith('https://'))) {
       throw new Error(`${code}: credits need an attribution, and their links a label and an https address`);
     }
+    // A link credited to a country carries the code its other credits use, "UK" for Britain.
+    const foreign = (credits.links ?? []).find(link => /^[A-Z]{2}: /.test(link.label) && !link.label.startsWith(`${credits.code ?? code}: `));
+    if (foreign) throw new Error(`${code}: the credit ${foreign.label} names another code than ${credits.code ?? code}`);
   }
   if (!landingFirst.every(code => codes.has(code))) throw new Error('landingFirst names a country that is not listed');
   // The credits are listed by their label, on the web and on iOS.

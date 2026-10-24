@@ -170,7 +170,7 @@
         "links": [
           { "label": "UK: Beryl · CDLA-Permissive-2.0", "href": "https://cdla.dev/permissive-2-0/" },
           { "label": "UK: ONS boundaries · OGL v3.0", "href": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" },
-          { "label": "GB: Voi map", "href": "https://www.voi.com/" }
+          { "label": "UK: Voi map", "href": "https://www.voi.com/" }
         ]
       }
     },
@@ -282,6 +282,7 @@
         "attribution": "Sweden: Lime, Hopp GBFS; Voi authenticated rider map; Qick authenticated ATOM rider map",
         "gbfs": ["Lime", "Hopp"],
         "links": [
+          { "label": "SE: Voi map", "href": "https://www.voi.com/" },
           { "label": "SE: Qick map", "href": "https://www.qickscooters.com/" }
         ]
       }
@@ -316,8 +317,7 @@
         "gbfs": ["Dott", "Hopp"],
         "links": [
           { "label": "PL: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
-          { "label": "PL: Dott map", "href": "https://ridedott.com/" },
-          { "label": "SE: Voi map", "href": "https://www.voi.com/" }
+          { "label": "PL: Dott map", "href": "https://ridedott.com/" }
         ]
       }
     },

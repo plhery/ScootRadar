@@ -91,7 +91,7 @@ describe('the countries of data/countries.json', () => {
       // OpenStreetMap's boundaries, which several countries give, are credited once.
       'DE/SE: Qick map',
       'DE/AT/IT/ES/PL/HU/GR/FI: Dott map',
-      'DE/AT/IT/NO/GB/DK/SE/FI: Voi map',
+      'DE/AT/IT/NO/UK/DK/SE/FI: Voi map',
       'CH/FR/PT/ES/PL/FI/UA: OpenStreetMap boundaries · ODbL', 'BY: Whoosh map', 'RO/CZ: Lime map', 'RO/CZ: GeoNames · CC BY 4.0', 'TR: BinBin map', 'TR: Beam map',
       'CA: City of Toronto · OGL Toronto',
     ]);
@@ -112,6 +112,8 @@ describe('the countries of data/countries.json', () => {
     expect(() => generate(withCanada({ featuredCities: ['ca:Montréal'] }))).toThrow('CA: featured cities not in its catalog: ca:Montréal');
     expect(() => generate(withCanada({ credits: { ...canada.credits,
       links: [{ label: 'MobiData BW', href: 'https://www.mobidata-bw.de/' }] } }))).toThrow('share a label');
+    expect(() => generate(withCanada({ credits: { ...canada.credits,
+      links: [{ label: 'US: Bird map', href: 'https://www.bird.co/' }] } }))).toThrow('CA: the credit US: Bird map names another code than CA');
   });
 
   it('lists the countries whose prices are given before sales tax, and only with true', () => {

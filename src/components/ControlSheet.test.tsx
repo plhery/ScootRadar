@@ -444,7 +444,7 @@ describe('ControlSheet settings', () => {
       'PT: DGT boundaries · CC BY 4.0',
       'DE/SE: Qick map',
       'DE/AT/IT/ES/PL/HU/GR/FI: Dott map',
-      'DE/AT/IT/NO/GB/DK/SE/FI: Voi map',
+      'DE/AT/IT/NO/UK/DK/SE/FI: Voi map',
       'CA: MoVe rider map',
       'NZ: Flamingo · CC BY 4.0',
       'CH/FR/PT/ES/PL/FI/UA/IL/NZ: OpenStreetMap boundaries · ODbL',

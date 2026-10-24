@@ -483,7 +483,7 @@ export const COUNTRY_CREDIT_LINKS: readonly { label: string; href: string }[] = 
   { label: "PT: DGT boundaries · CC BY 4.0", href: "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop" },
   { label: "DE/SE: Qick map", href: "https://www.qickscooters.com/" },
   { label: "DE/AT/IT/ES/PL/HU/GR/FI: Dott map", href: "https://ridedott.com/" },
-  { label: "DE/AT/IT/NO/GB/DK/SE/FI: Voi map", href: "https://www.voi.com/" },
+  { label: "DE/AT/IT/NO/UK/DK/SE/FI: Voi map", href: "https://www.voi.com/" },
   { label: "CA: MoVe rider map", href: "https://move-mobility.app.link/" },
   { label: "NZ: Flamingo · CC BY 4.0", href: "https://creativecommons.org/licenses/by/4.0/" },
   { label: "CH/FR/PT/ES/PL/FI/UA/IL/NZ: OpenStreetMap boundaries · ODbL", href: "https://opendatacommons.org/licenses/odbl/" },
