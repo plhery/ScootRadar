@@ -115,6 +115,12 @@ export function isRegionalSource(source: string): source is RegionalSource {
   return Object.values(COUNTRY_SOURCES).some(value => value === source);
 }
 
+const APP_MAP_FEEDS = new Set(REGIONAL_SCOOTER_SYSTEMS.filter(isAppMapSystem).map(system => `${regionalSource(system)}:${system.id}`));
+/** Whether the feed collects parking: a regional one, but no app map's, as they have none (server/scooter-cache.ts). */
+export function collectsParking(feed: { id: string; source: string }) {
+  return isRegionalSource(feed.source) && !APP_MAP_FEEDS.has(feed.id);
+}
+
 /**
  * The id of the city a system's service area is in: "no:Oslo", or, where the country has
  * regions, "us:or:Portland", so that Portland, Maine is another city.

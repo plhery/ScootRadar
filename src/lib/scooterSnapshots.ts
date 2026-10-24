@@ -1,7 +1,6 @@
 import { SWISS_SCOOTER_AREAS, coverageIntersects } from '@/lib/feedCoverage';
 import {
-  REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, COUNTRY_SOURCES, isAppMapSystem, isRegionalSource, regionalCityId, regionalSource,
-  serviceAreas,
+  REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, COUNTRY_SOURCES, collectsParking, isRegionalSource, regionalCityId, serviceAreas,
 } from '@/lib/regionalScooterSystems';
 import { boundsContainPoint, haversineM } from '@/lib/geo';
 import { CITY_OVERVIEW_MAX_ZOOM, providersForViewport } from '@/lib/mapCoverage';
@@ -13,8 +12,6 @@ import { outlinedTown } from '@/lib/townOutlines';
 import { ScooterFeedsUnavailableError, type FeedQuery, type ScooterFetchMetadata } from '@/lib/scooterFeeds';
 import type { MapBounds, ScooterCluster, ScooterResponse, Vehicle } from '@/lib/types';
 import { VEHICLE_MAX_AGE_MS } from './dataFreshness';
-
-const APP_MAP_FEEDS = new Set(REGIONAL_SCOOTER_SYSTEMS.filter(isAppMapSystem).map(system => `${regionalSource(system)}:${system.id}`));
 
 export { VEHICLE_MAX_AGE_MS } from './dataFreshness';
 export const OVERVIEW_REFRESH_MS = 60 * 60_000;
@@ -311,8 +308,8 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     availableProviders: providersForViewport(query.bounds),
   });
   if (zoom !== null && zoom >= PARKING_MIN_ZOOM) {
-    // The app maps' feeds collect no parking (server/scooter-cache.ts), so none of theirs is missing.
-    const systems = relevant.filter(feed => isRegionalSource(feed.source) && !APP_MAP_FEEDS.has(feed.id));
+    // The app maps' feeds collect no parking, so none of theirs is missing.
+    const systems = relevant.filter(collectsParking);
     const available = systems.filter(feed => feed.parking && now - feed.parking.observedAt <= PARKING_MAX_AGE_MS);
     response.meta.parkingExpiresAt = new Date(Math.min(now, ...available.map(feed => feed.parking!.observedAt)) + PARKING_MAX_AGE_MS).toISOString();
     response.parking = available.flatMap(feed => feed.parking!.locations)

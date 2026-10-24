@@ -1,6 +1,6 @@
 import { monitorEventLoopDelay } from 'node:perf_hooks';
 import { COUNTRY_NAMES } from '../src/generated/countries';
-import { COUNTRY_SOURCES, isRegionalSource } from '../src/lib/regionalScooterSystems';
+import { COUNTRY_SOURCES, collectsParking } from '../src/lib/regionalScooterSystems';
 import type { MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { feedCurfewed, feedPaused } from '../src/lib/seasonalPauses';
 import { ALWAYS_FAST, feedState, parkingUp, type FeedCadence, type FeedState } from './feedStateLog';
@@ -129,8 +129,8 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         feeds.filter(feed => feed.observedAt > 0).map(feed => [labelsOf(feed), seconds(feed.observedAt)]));
       metric('scootradar_feed_attempt_timestamp_seconds', 'gauge', 'When the feed was last collected, successfully or not.',
         feeds.map(feed => [labelsOf(feed), seconds(feed.attemptedAt)]));
-      metric('scootradar_feed_parking_up', 'gauge', 'Whether the feed\'s parking availability is as fresh as its cadence promises, for regional feeds.',
-        feeds.filter(feed => isRegionalSource(feed.source)).map(feed => [labelsOf(feed), parkingUp(feed, now, cadence) ? 1 : 0]));
+      metric('scootradar_feed_parking_up', 'gauge', 'Whether the feed\'s parking availability is as fresh as its cadence promises, for the regional feeds that collect parking (not the app maps).',
+        feeds.filter(collectsParking).map(feed => [labelsOf(feed), parkingUp(feed, now, cadence) ? 1 : 0]));
       if (sources.cadenceModes) {
         metric('scootradar_feeds_by_cadence', 'gauge',
           'Feeds by cadence: always (collected every minute), watched (someone looked recently, every minute), idle.',

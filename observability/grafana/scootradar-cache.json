@@ -1107,7 +1107,7 @@
       "id": 17,
       "type": "timeseries",
       "title": "Parking on time (regional feeds)",
-      "description": "The map shows parking availability up to 5 minutes old. A feed collected every minute is on time within 5 minutes; an idle one within its interval and ten minutes, as it is collected again when someone looks.",
+      "description": "The map shows parking availability up to 5 minutes old. A feed collected every minute is on time within 5 minutes; an idle one within its interval and ten minutes, as it is collected again when someone looks. The app maps (Dott, Voi, Lime, Qick and the others read from an operator's app) collect no parking and are left out.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"

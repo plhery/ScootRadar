@@ -21,6 +21,7 @@ it('exports the state of every attempted feed as the map sees it', () => {
     feed({ id: 'national:lime_zurich', provider: 'lime', failed: true }),
     feed({ id: 'italy:never', source: 'italy', attemptedAt: 0, observedAt: 0 }),
     feed({ id: 'national:skipped', skipped: true }),
+    feed({ id: 'sweden:qick_se_orebro', source: 'sweden', provider: 'qick' }),
   ]), now);
   const voi = 'feed="national:voiscooters.com",source="national",provider="voi"';
   const leipzig = 'feed="germany:dott_de_leipzig",source="germany",provider="dott"';
@@ -35,6 +36,9 @@ it('exports the state of every attempted feed as the map sees it', () => {
   expect(sample(text, `scootradar_feed_priced_vehicles{${leipzig}}`)).toBe('0');
   expect(sample(text, `scootradar_feed_observation_timestamp_seconds{${voi}}`)).toBe(String((now - 60_000) / 1000));
   expect(sample(text, `scootradar_feed_parking_up{${leipzig}}`)).toBe('0');
+  // An app map collects no parking, so it has none to miss.
+  expect(sample(text, 'scootradar_feed_state{feed="sweden:qick_se_orebro",source="sweden",provider="qick",state="ok"}')).toBe('1');
+  expect(text).not.toContain('scootradar_feed_parking_up{feed="sweden:qick_se_orebro"');
   expect(text).not.toContain('italy:never');
   expect(text).not.toContain('national:skipped');
   expect(sample(text, 'scootradar_build_info{version="abc123"}')).toBe('1');

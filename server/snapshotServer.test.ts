@@ -42,11 +42,12 @@ describe('snapshot origin boundary', () => {
     expect((await fetch(url, { headers: { Authorization: `Bearer ${token}` } })).status).toBe(503);
   });
 
-  it('does not count a skipped regional feed as failed parking', async () => {
+  it('does not count a skipped regional feed or an app map, which collects none, as failed parking', async () => {
     const now = Date.now();
     const feed = { source: 'france' as const, provider: 'dott' as const, coverage: [], vehicles: [],
       observedAt: now, attemptedAt: now, stale: false, failed: false };
-    const feeds = [{ ...feed, id: 'france:dott_fr_tignes', skipped: true }, { ...feed, id: 'france:dott_fr_paris', skipped: false }];
+    const feeds = [{ ...feed, id: 'france:dott_fr_tignes', skipped: true }, { ...feed, id: 'france:dott_fr_paris', skipped: false },
+      { ...feed, id: 'sweden:qick_se_orebro', source: 'sweden' as const, provider: 'qick' as const, skipped: false }];
     const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview([], now) });
     const health = await (await fetch(`http://127.0.0.1:${port}/health`)).json() as { failedParkingFeeds: string[] };
     expect(health.failedParkingFeeds).toEqual(['france:dott_fr_paris']);

@@ -5,7 +5,7 @@ import { parseScooterQuery } from '../src/lib/scooterQuery';
 import { feedsForQuery, querySnapshot, showsPositions, VEHICLE_MAX_AGE_MS, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { ScooterFeedsUnavailableError } from '../src/lib/scooterFeeds';
 import { scooterResponseHeaders } from '../src/lib/scooterResponse';
-import { isRegionalSource } from '../src/lib/regionalScooterSystems';
+import { collectsParking } from '../src/lib/regionalScooterSystems';
 import { zoneQueryError, type ZoneResponse } from '../src/lib/zones';
 import type { FeedQuery } from '../src/lib/scooterFeeds';
 import type { SnapshotMetrics } from './metrics';
@@ -101,7 +101,8 @@ export function createSnapshotServer(options: ServerOptions) {
         warmingFeeds: feeds.filter(feed => feed.attemptedAt === 0).map(feed => feed.id),
         oldestUsableAgeSeconds: usable.length ? Math.round(Math.max(...usable.map(feed => now - feed.observedAt)) / 1000) : null,
         parkingLocations: feeds.reduce((sum, feed) => sum + (feed.parking?.locations.length ?? 0), 0),
-        failedParkingFeeds: feeds.filter(feed => isRegionalSource(feed.source) && !parkingUp(feed, now, cadence)).map(feed => feed.id),
+        // The app maps collect no parking, so only the feeds that do can miss it.
+        failedParkingFeeds: attempted.filter(feed => collectsParking(feed) && !parkingUp(feed, now, cadence)).map(feed => feed.id),
         cities: snapshot?.overview.cities.length, version: options.version ?? 'local' }));
       return;
     }

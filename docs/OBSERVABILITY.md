@@ -64,10 +64,12 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
 - `scootradar_feed_info{country}`: 1, with the feed's country in English
   (`Switzerland` for the national, Hopp and PubliBike sources), for alerts to name.
 - `scootradar_feed_observation_timestamp_seconds`: the source's own timestamp of the
-  positions held. `time() -` it is their age; an idle feed's may pass 15 minutes.
+  positions held, none for a feed with no positions yet. `time() -` it is their age; an
+  idle feed's may pass 15 minutes.
 - `scootradar_feed_attempt_timestamp_seconds`, and `scootradar_feed_parking_up` for
   regional feeds: parking as fresh as the cadence promises (5 minutes for a feed
-  collected every minute, 30 for an idle one).
+  collected every minute, 30 for an idle one). Not for the app maps, which collect no
+  parking; `/ready`'s `failedParkingFeeds` leaves them out likewise.
 - `scootradar_feeds_by_cadence{cadence="always|watched|idle"}`: feeds on each cadence now.
 - `scootradar_collections_started_total{reason}`: `always`, `watched`, `wake` (a request
   found the data over a minute old), `idle` and `retry` (an idle feed that failed).
