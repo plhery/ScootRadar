@@ -1856,8 +1856,8 @@
       "provider": "dott",
       "city": "Oberhausen",
       "center": [
-        51.4543,
-        6.8735
+        51.4696,
+        6.8514
       ],
       "bounds": {
         "south": 51.4043,
@@ -2300,8 +2300,8 @@
         {
           "city": "Oberhausen",
           "center": [
-            51.4543,
-            6.8735
+            51.4696,
+            6.8514
           ],
           "bounds": {
             "south": 51.4397,

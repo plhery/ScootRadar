@@ -448,7 +448,15 @@ Bolt and Lime publish no Italian feed.
   Ruhr (12). Fewer, as Mülheim's, count under the nearest of the feed's towns.
   Siegburg and Witten are new towns; the others were Dott's already. Dott's
   Sankt Augustin centre, the middle of its app region's box, lay 200 m from
-  Siegburg's, so it is now the town's own (OpenStreetMap's).
+  Siegburg's, and its Oberhausen centre outside Oberhausen, so both are now
+  the towns' own (OpenStreetMap's).
+- **Outlines:** by nearest centre alone, at 15:05 Oberhausen counted 403 of
+  Voi's scooters for the 257 inside it, north Duisburg's, and Neuss 185 for
+  140. So Duisburg, Oberhausen, Düsseldorf, Neuss, Bochum, Herne and Witten
+  have their OpenStreetMap outlines, and a scooter counts under the one it
+  stands in. An outline also drops an operator's scooters in a town it
+  doesn't serve (`systemServesPoint`); at 15:15 the only operator other than
+  Voi there without a town of its own was Dott in Witten, with no scooter.
 - **Bounds:** each town's outline plus about 1 km (0.009° of latitude and
   0.014° of longitude); a system's bounds take in all its towns'. They leave
   out at most six of a system's scooters.
@@ -459,13 +467,13 @@ Bolt and Lime publish no Italian feed.
   credits say "Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0,
   modified", and the Voi data the API serves is offered under the same licence.
 - **Not yet:** Bolt Services DE GmbH's four systems (CC BY 4.0) and LimeBike
-  Germany GmbH's two (dl-de/by-2-0) go on the map once their documents update
-  again. Bolt's Düsseldorf-Mönchengladbach system had 1 scooter in
-  Mönchengladbach and its Köln-Bonn system none in Bonn on 24 October; their
-  scooters stood in Düsseldorf, Neuss, Solingen, Monheim am Rhein and Hilden,
-  and in Köln and Brühl. The towns are routed by bounds and nearest centre,
-  not yet by outlines, which would also drop other operators' scooters in
-  towns they don't serve (`systemServesPoint`).
+  Germany GmbH's two (dl-de/by-2-0) answer, but NRW.Mobidrom updates all six
+  together, now and then: at 13:52, 13:55, 14:12 and 14:54 on 24 October,
+  gaps of up to 42 minutes, while the map shows no position older than 15.
+  They go on the map once they update as often as Voi's. Bolt's
+  Düsseldorf-Mönchengladbach system had 1 scooter in Mönchengladbach and its
+  Köln-Bonn system none in Bonn that day; their scooters stood in Düsseldorf,
+  Neuss, Solingen, Monheim am Rhein and Hilden, and in Köln and Brühl.
 
 ## ATOM's request rate, October 2026
 
