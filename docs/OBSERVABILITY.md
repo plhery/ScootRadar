@@ -241,10 +241,11 @@ The SDK runs only with `SENTRY_DSN`. Its release is the deployed commit
 and URL, query included, so its map bounds, zoom and filters reproduce it; its headers
 and the user are dropped before sending, since they hold the Worker's token and the
 visitor's address. The privacy notice (`PRIVACY.md`, `/privacy`) says so: change it
-with this. Stack frames carry their local variables (plain objects one level deep,
-class instances by name only); to read them the SDK opens Node's inspector on a random 127.0.0.1 port
-inside the container, hence the `Debugger listening on ws://127.0.0.1:…` line at
-startup. Tracing is off, and no trace headers go to the operators' feeds.
+with this. Stack frames go without their local variables (`includeLocalVariables`), since
+24 October 2026: to read them the SDK opened Node's inspector on a random 127.0.0.1 port
+inside the container (the `Debugger listening on ws://127.0.0.1:…` line at startup) and
+paused the cache at every exception, caught ones included, while a worker read them.
+Tracing is off, and no trace headers go to the operators' feeds.
 
 - **Feed stopped being served**: a warning each time a feed becomes `expired` by its
   cadence's rule (an idle feed after 30 minutes without a successful collection) and is

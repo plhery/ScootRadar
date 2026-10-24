@@ -31,7 +31,7 @@ it('stays off without a DSN, and sends a request\'s URL but never its headers', 
   const options = vi.mocked(Sentry.init).mock.calls[0][0]!;
   expect(options).toMatchObject({ environment: 'production', release: 'abc123', tracePropagationTargets: [],
     integrations: [{ name: 'OnUnhandledRejection', options: { mode: 'strict' } }] });
-  expect(options).toMatchObject({ includeLocalVariables: true, dataCollection: { userInfo: false } });
+  expect(options).toMatchObject({ includeLocalVariables: false, dataCollection: { userInfo: false } });
   const event = { request: { method: 'GET', url: 'http://localhost/api/scooters', query_string: 'south=47.3&zoom=16',
     headers: { 'x-scooter-client-ip': '192.0.2.1', authorization: 'Bearer secret' }, cookies: { a: 'b' } },
   user: { ip_address: '192.0.2.1' }, message: 'failed', type: undefined } satisfies ErrorEvent;

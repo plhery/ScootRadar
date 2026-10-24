@@ -10,8 +10,8 @@ const lastReportedAt = new Map<string, number>();
  * Sentry, enabled only with SENTRY_DSN. A failing request keeps its method and
  * URL, query included: the map bounds, zoom and filters that reproduce it. Its
  * headers are dropped: they hold the Worker's token and the visitor's address.
- * Stack frames keep their local variables, but any IP address in the event, the
- * rate limiter's key included, is replaced before it leaves (see withoutIps).
+ * Stack frames go without their local variables, and any IP address in the event
+ * is replaced before it leaves (see withoutIps).
  * Routine feed failures are not reported, only a feed that stops being served for
  * a while (see reportFeedExpired); Prometheus and the logs cover the rest.
  */
@@ -23,7 +23,9 @@ export function initErrorReporting(env: Record<string, string | undefined> = pro
     environment: env.SENTRY_ENVIRONMENT?.trim() || env.NODE_ENV || 'development',
     release: env.SOURCE_COMMIT?.trim() || undefined,
     dataCollection: { userInfo: false, httpBodies: [] },
-    includeLocalVariables: true,
+    // Reading them opens Node's inspector on a 127.0.0.1 port ("Debugger listening" at start)
+    // and pauses the cache at every exception, caught ones included, while a worker reads them.
+    includeLocalVariables: false,
     // Google's token endpoint carries its client API key in the URL. Keep authentication
     // requests out of HTTP breadcrumbs; their status is reported by the collector itself.
     beforeBreadcrumb(breadcrumb) {
