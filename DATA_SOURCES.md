@@ -247,6 +247,18 @@ record the source and the request wording. The country-specific GBFS audits
 below describe their original checks; this supplement supersedes their
 claims that these Dott regions have no usable source.
 
+## Beam rider app
+
+Since 24 October 2026, Beam's authenticated GraphQL rider map supplies 54
+reviewed regions in Australia, Malaysia, South Korea and Türkiye. The Node
+cache queries bounded H3 cells with a private rider token and publishes only
+standing scooters, with stable ids, positions and percentage charge. Bicycles,
+seated scooters, unclassified vehicles and neighboring cities are excluded.
+Complete sweeps are required before publication. Beam access and refresh
+tokens stay in a mode-0600 file on the cache's persistent volume; no Google
+credentials or visitor location are sent to Beam. Zones and parking guidance
+are not published yet. See [coverage, session renewal and live verification](docs/beam-app-map.md).
+
 ## LUUP rider app
 
 Since 24 October 2026, LUUP's authenticated rider map supplies standing-scooter

@@ -66,6 +66,10 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
    * sweeps ten nearest scooters at a time.
    */
   binbinAppArea?: string;
+  /** Beam rider-map city id, collected in bounded H3 cells by the Node cache. */
+  beamAppCity?: number;
+  /** Reviewed disjoint operating envelopes, to avoid querying empty gaps between campuses. */
+  beamAppAreas?: MapBounds[];
   /** Published subregions of a shared feed; fetched once, routed per city. */
   areas?: ScooterServiceArea[];
   /**
@@ -93,7 +97,7 @@ export const REGIONAL_SCOOTER_SYSTEMS = CATALOG_SYSTEMS as RegionalScooterSystem
 
 export function isAppMapSystem(system: RegionalScooterSystem) {
   return Boolean(system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount || system.luupAppCities ||
-    system.jetAppMap || system.whooshAppRegion || system.binbinAppArea);
+    system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.beamAppCity);
 }
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {

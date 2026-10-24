@@ -10,6 +10,15 @@ describe('the address formats', () => {
     expect(townLine('ZA', { town: 'Langebaan', postcode: '7357', region: region('Western Cape') })).toBe('Langebaan 7357');
   });
 
+  it('formats the new Beam countries, retaining Korean road-number order in Hangul', () => {
+    expect(streetAddress('MY', 'Jalan Kenari', '66')).toBe('66 Jalan Kenari');
+    expect(townLine('MY', { town: 'Kajang', postcode: '43000', region: region('Selangor') })).toBe('43000 Kajang');
+    expect(streetAddress('KR', 'Beobwonbuk-ro', '33')).toBe('33 Beobwonbuk-ro');
+    expect(streetAddress('KR', '법원북로', '33')).toBe('법원북로 33');
+    expect(townLine('KR', { town: 'Busan', postcode: '47502', region: region('') })).toBe('Busan 47502');
+    expect(streetAddress('TR', 'İstiklal Caddesi', '48')).toBe('İstiklal Caddesi 48');
+  });
+
   it('are given for every country outside Europe', () => {
     const missing = COUNTRY_CODES.filter(code => COUNTRY_CONTINENTS[code] !== 'europe' && !ADDRESS_FORMATS[code]);
     expect(missing, 'add each to ADDRESS_FORMATS in src/app/api/geocode/addressFormats.ts').toEqual([]);

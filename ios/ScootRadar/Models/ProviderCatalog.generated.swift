@@ -35,6 +35,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     case move
     case zippy
     case binbin
+    case beam
 
     var id: String { rawValue }
 
@@ -71,6 +72,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .move: "MoVe"
         case .zippy: "Zippy"
         case .binbin: "BinBin"
+        case .beam: "Beam"
         }
     }
 
@@ -107,6 +109,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .move: "M"
         case .zippy: "Z"
         case .binbin: "Bb"
+        case .beam: "B"
         }
     }
 
@@ -167,6 +170,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .move: UIColor(red: 0.541176, green: 0.454902, blue: 0.000000, alpha: 1)
         case .zippy: UIColor(red: 0.854902, green: 0.070588, blue: 0.070588, alpha: 1)
         case .binbin: UIColor(red: 0.000000, green: 0.768627, blue: 0.843137, alpha: 1)
+        case .beam: UIColor(red: 0.454902, green: 0.254902, blue: 1.000000, alpha: 1)
         }
     }
 
@@ -185,6 +189,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         (.hoppy, [], ["hoppy"]),
         (.saham, [], ["saham"]),
         (.move, [], ["move_"]),
+        (.beam, [], ["beam_"]),
         (.bolt, [], ["bolt"]),
         (.bird, [], ["bird"]),
         (.dott, [], ["dott"]),
@@ -1124,6 +1129,17 @@ enum ScooterProviderCoverage {
         (.lime, GeoBounds(south: 25.37009868, west: 51.47597449, north: 25.38357335, east: 51.53550048)),
         (.lime, GeoBounds(south: 25.37009868, west: 51.43133, north: 25.39361, east: 51.55038198)),
         (.lime, GeoBounds(south: 25.38357335, west: 51.47597449, north: 25.39361, east: 51.50573748)),
+        (.beam, GeoBounds(south: -34.943739, west: 138.57500639999998, north: -34.887522999999995, east: 138.6435044)),
+        (.beam, GeoBounds(south: -18.0055940869565, west: 122.1985178444571, north: -17.918882, east: 122.24731657644007)),
+        (.beam, GeoBounds(south: -33.352264327650005, west: 115.618578, north: -33.307725, east: 115.698066)),
+        (.beam, GeoBounds(south: -16.960565, west: 145.739454, north: -16.895878, east: 145.782737)),
+        (.beam, GeoBounds(south: -12.473780000000001, west: 130.810601, north: -12.336188, east: 130.91584)),
+        (.beam, GeoBounds(south: -33.898646, west: 121.818805, north: -33.810136, east: 121.942786)),
+        (.beam, GeoBounds(south: -28.830987999999998, west: 114.576288, north: -28.725296, east: 114.644229)),
+        (.beam, GeoBounds(south: -25.31263, west: 152.795253, north: -25.242209000000003, east: 152.912238)),
+        (.beam, GeoBounds(south: -21.187051999999998, west: 149.13411599999998, north: -21.070922, east: 149.22705000000002)),
+        (.beam, GeoBounds(south: -31.914666, west: 115.74886400000001, north: -31.843548000000002, east: 115.823606)),
+        (.beam, GeoBounds(south: -16.545178, west: 145.456089, north: -16.477207, east: 145.47833300000002)),
         (.lime, GeoBounds(south: -27.53263, west: 153.00391287, north: -27.51915533, east: 153.06455861)),
         (.lime, GeoBounds(south: -27.53263, west: 152.97359, north: -27.50568066, east: 153.07972004)),
         (.lime, GeoBounds(south: -27.51915533, west: 153.0190743, north: -27.50568066, east: 153.07972004)),
@@ -1157,6 +1173,49 @@ enum ScooterProviderCoverage {
         (.binbin, GeoBounds(south: 36.46754, west: 31.96715, north: 36.56011, east: 32.12278)),
         (.binbin, GeoBounds(south: 40.73457, west: 30.32067, north: 40.81613, east: 30.43402)),
         (.binbin, GeoBounds(south: 37.02191, west: 37.30337, north: 37.09106, east: 37.38447)),
+        (.beam, GeoBounds(south: 39.857991999999996, west: 32.594919999999995, north: 40.138448000000004, east: 32.969954)),
+        (.beam, GeoBounds(south: 36.44495, west: 30.53284, north: 36.935665, east: 32.138625000000005)),
+        (.beam, GeoBounds(south: 36.604504999999996, west: 29.08031925789807, north: 36.687972, east: 29.208493999999998)),
+        (.beam, GeoBounds(south: 36.784875, west: 28.205607, north: 36.887838947981805, east: 28.292610999999997)),
+        (.beam, GeoBounds(south: 36.722321343100596, west: 34.49301282568111, north: 36.819913, east: 34.638218)),
+        (.beam, GeoBounds(south: 1.394025, west: 102.714203, north: 2.590063, east: 103.904297)),
+        (.beam, GeoBounds(south: 3.0430620000000004, west: 101.61356400000001, north: 3.2326699999999997, east: 101.751621)),
+        (.beam, GeoBounds(south: 3.7930750000000004, west: 103.265944, north: 3.8779429999999997, east: 103.33143)),
+        (.beam, GeoBounds(south: 2.184842, west: 102.243539, north: 2.2226559999999997, east: 102.273794)),
+        (.beam, GeoBounds(south: 3.715441, west: 103.117328, north: 3.735854, east: 103.128935)),
+        (.beam, GeoBounds(south: 5.288024, west: 100.287211, north: 5.355436, east: 100.32185299999999)),
+        (.beam, GeoBounds(south: 4.171338, west: 100.602553, north: 4.613759, east: 101.226873)),
+        (.beam, GeoBounds(south: 3.1675310000000003, west: 113.028434, north: 4.406809, east: 113.999558)),
+        (.beam, GeoBounds(south: 2.822144, west: 101.415692, north: 3.263295, east: 101.80005)),
+        (.beam, GeoBounds(south: 5.278537, west: 103.058942, north: 5.417827, east: 103.176733)),
+        (.beam, GeoBounds(south: 37.274819, west: 126.764024, north: 37.354352000000006, east: 126.88072199999999)),
+        (.beam, GeoBounds(south: 37.462637, west: 126.726346, north: 37.53491497327775, east: 126.828007)),
+        (.beam, GeoBounds(south: 35.19047, west: 128.603013, north: 35.270655000000005, east: 128.724589)),
+        (.beam, GeoBounds(south: 36.5906519934978, west: 127.40170869057393, north: 36.7473484416684, east: 127.52716199999999)),
+        (.beam, GeoBounds(south: 35.626734, west: 128.387047, north: 35.962223, east: 128.861211)),
+        (.beam, GeoBounds(south: 36.314509, west: 127.323369, north: 36.399436, east: 127.430049)),
+        (.beam, GeoBounds(south: 37.778655, west: 126.955622, north: 37.938570000000006, east: 127.17698299999999)),
+        (.beam, GeoBounds(south: 37.189527, west: 126.967177, north: 37.22263, east: 127.053499)),
+        (.beam, GeoBounds(south: 36.091846999999994, west: 127.440897, north: 36.199499, east: 127.505078)),
+        (.beam, GeoBounds(south: 36.11054495816675, west: 128.073686710939, north: 36.15462055786906, east: 128.2020056129547)),
+        (.beam, GeoBounds(south: 35.160537999999995, west: 128.70755499999999, north: 35.319331000000005, east: 128.92595400000002)),
+        (.beam, GeoBounds(south: 37.577268, west: 126.611537, north: 37.665165, east: 126.738969)),
+        (.beam, GeoBounds(south: 37.610116999999995, west: 126.729095, north: 37.708361000000004, east: 126.857924)),
+        (.beam, GeoBounds(south: 35.11423336907953, west: 126.76583971391851, north: 35.23667935880794, east: 126.94829493395827)),
+        (.beam, GeoBounds(south: 34.914424, west: 127.557748, north: 34.988956, east: 127.76409788380748)),
+        (.beam, GeoBounds(south: 36.891587099999995, west: 127.5225971, north: 37.005990000000004, east: 127.949958)),
+        (.beam, GeoBounds(south: 37.533252999999995, west: 127.17346, north: 37.579287, east: 127.23031605290103)),
+        (.beam, GeoBounds(south: 35.92302507095647, west: 126.92265816090386, north: 35.978682309156056, east: 127.02280383674638)),
+        (.beam, GeoBounds(south: 37.394312, west: 126.628628, north: 37.469663000000004, east: 126.71705999999999)),
+        (.beam, GeoBounds(south: 35.075120999999996, west: 128.779124, north: 35.112747000000006, east: 128.836802)),
+        (.beam, GeoBounds(south: 35.095028, west: 128.483625, north: 35.278105000000004, east: 128.614111)),
+        (.beam, GeoBounds(south: 37.592273999999996, west: 127.09599800000001, north: 37.676208, east: 127.182659)),
+        (.beam, GeoBounds(south: 36.996046, west: 127.01791300000001, north: 37.080891, east: 127.119524)),
+        (.beam, GeoBounds(south: 37.268221, west: 127.02046091527585, north: 37.348109, east: 127.136455)),
+        (.beam, GeoBounds(south: 37.473147999999995, west: 126.893015, north: 37.579112, east: 127.147505)),
+        (.beam, GeoBounds(south: 37.460395999999996, west: 127.123399, north: 37.503742, east: 127.16587)),
+        (.beam, GeoBounds(south: 36.557863, west: 128.46049, north: 36.582816, east: 128.520296)),
+        (.beam, GeoBounds(south: 37.223088, west: 127.610338, north: 37.316423, east: 127.68516199999999)),
     ]
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
@@ -1881,9 +1940,20 @@ enum ScooterCityCatalog {
         ScooterCity(id: "ro:Deva", name: "Deva", countryCode: "RO", center: GeoPoint(latitude: 45.88333, longitude: 22.9), bounds: GeoBounds(south: 45.85633, west: 22.89478, north: 45.89326, east: 22.92735)),
         ScooterCity(id: "cz:České Budějovice", name: "České Budějovice", countryCode: "CZ", center: GeoPoint(latitude: 48.97447, longitude: 14.47434), bounds: GeoBounds(south: 48.94881, west: 14.43596, north: 49.00077, east: 14.50798)),
         ScooterCity(id: "qa:Doha", name: "Doha", countryCode: "QA", center: GeoPoint(latitude: 25.28545, longitude: 51.53096), bounds: GeoBounds(south: 25.11408, west: 51.43133, north: 25.39361, east: 51.60065)),
+        ScooterCity(id: "au:Adelaide", name: "Adelaide", countryCode: "AU", center: GeoPoint(latitude: -34.9285, longitude: 138.6007), bounds: GeoBounds(south: -34.943739, west: 138.57500639999998, north: -34.887522999999995, east: 138.6435044)),
+        ScooterCity(id: "au:Broome", name: "Broome", countryCode: "AU", center: GeoPoint(latitude: -17.94932, longitude: 122.217464), bounds: GeoBounds(south: -18.0055940869565, west: 122.1985178444571, north: -17.918882, east: 122.24731657644007)),
+        ScooterCity(id: "au:Bunbury", name: "Bunbury", countryCode: "AU", center: GeoPoint(latitude: -33.330399, longitude: 115.659874), bounds: GeoBounds(south: -33.352264327650005, west: 115.618578, north: -33.307725, east: 115.698066)),
+        ScooterCity(id: "au:Cairns", name: "Cairns", countryCode: "AU", center: GeoPoint(latitude: -16.922857, longitude: 145.767151), bounds: GeoBounds(south: -16.960565, west: 145.739454, north: -16.895878, east: 145.782737)),
+        ScooterCity(id: "au:Darwin", name: "Darwin", countryCode: "AU", center: GeoPoint(latitude: -12.4634, longitude: 130.8456), bounds: GeoBounds(south: -12.473780000000001, west: 130.810601, north: -12.336188, east: 130.91584)),
+        ScooterCity(id: "au:Esperance", name: "Esperance", countryCode: "AU", center: GeoPoint(latitude: -33.852711, longitude: 121.883446), bounds: GeoBounds(south: -33.898646, west: 121.818805, north: -33.810136, east: 121.942786)),
+        ScooterCity(id: "au:Geraldton", name: "Geraldton", countryCode: "AU", center: GeoPoint(latitude: -28.77, longitude: 114.61), bounds: GeoBounds(south: -28.830987999999998, west: 114.576288, north: -28.725296, east: 114.644229)),
+        ScooterCity(id: "au:Hervey Bay", name: "Hervey Bay", countryCode: "AU", center: GeoPoint(latitude: -25.283472, longitude: 152.854095), bounds: GeoBounds(south: -25.31263, west: 152.795253, north: -25.242209000000003, east: 152.912238)),
+        ScooterCity(id: "au:Mackay", name: "Mackay", countryCode: "AU", center: GeoPoint(latitude: -21.150888, longitude: 149.209462), bounds: GeoBounds(south: -21.187051999999998, west: 149.13411599999998, north: -21.070922, east: 149.22705000000002)),
+        ScooterCity(id: "au:Perth", name: "Perth", countryCode: "AU", center: GeoPoint(latitude: -31.882626, longitude: 115.784912), bounds: GeoBounds(south: -31.914666, west: 115.74886400000001, north: -31.843548000000002, east: 115.823606)),
+        ScooterCity(id: "au:Port Douglas", name: "Port Douglas", countryCode: "AU", center: GeoPoint(latitude: -16.509497, longitude: 145.462601), bounds: GeoBounds(south: -16.545178, west: 145.456089, north: -16.477207, east: 145.47833300000002)),
         ScooterCity(id: "au:Brisbane", name: "Brisbane", countryCode: "AU", center: GeoPoint(latitude: -27.46794, longitude: 153.02809), bounds: GeoBounds(south: -27.53263, west: 152.97359, north: -27.28388, east: 153.19579)),
         ScooterCity(id: "tr:İstanbul", name: "İstanbul", countryCode: "TR", center: GeoPoint(latitude: 41.00824, longitude: 28.97836), bounds: GeoBounds(south: 40.75167, west: 28.57288, north: 41.11293, east: 29.4595)),
-        ScooterCity(id: "tr:Antalya", name: "Antalya", countryCode: "TR", center: GeoPoint(latitude: 36.88414, longitude: 30.70563), bounds: GeoBounds(south: 36.83465, west: 30.5839, north: 36.94623, east: 30.88775)),
+        ScooterCity(id: "tr:Antalya", name: "Antalya", countryCode: "TR", center: GeoPoint(latitude: 36.88414, longitude: 30.70563), bounds: GeoBounds(south: 36.44495, west: 30.53284, north: 36.94623, east: 32.138625000000005)),
         ScooterCity(id: "tr:İzmir", name: "İzmir", countryCode: "TR", center: GeoPoint(latitude: 38.41885, longitude: 27.12872), bounds: GeoBounds(south: 38.36482, west: 27.03696, north: 38.4841, east: 27.24384)),
         ScooterCity(id: "tr:Samsun", name: "Samsun", countryCode: "TR", center: GeoPoint(latitude: 41.28667, longitude: 36.33), bounds: GeoBounds(south: 41.26071, west: 36.20146, north: 41.39424, east: 36.37265)),
         ScooterCity(id: "tr:Konya", name: "Konya", countryCode: "TR", center: GeoPoint(latitude: 37.87135, longitude: 32.48464), bounds: GeoBounds(south: 37.84635, west: 32.43842, north: 38.03728, east: 32.5375)),
@@ -1894,12 +1964,54 @@ enum ScooterCityCatalog {
         ScooterCity(id: "tr:Alanya", name: "Alanya", countryCode: "TR", center: GeoPoint(latitude: 36.54375, longitude: 31.99982), bounds: GeoBounds(south: 36.46754, west: 31.96715, north: 36.56011, east: 32.12278)),
         ScooterCity(id: "tr:Sakarya", name: "Sakarya", countryCode: "TR", center: GeoPoint(latitude: 40.78056, longitude: 30.40333), bounds: GeoBounds(south: 40.73457, west: 30.32067, north: 40.81613, east: 30.43402)),
         ScooterCity(id: "tr:Gaziantep", name: "Gaziantep", countryCode: "TR", center: GeoPoint(latitude: 37.05964, longitude: 37.33749), bounds: GeoBounds(south: 37.02191, west: 37.30337, north: 37.09106, east: 37.38447)),
+        ScooterCity(id: "tr:Ankara", name: "Ankara", countryCode: "TR", center: GeoPoint(latitude: 39.933477, longitude: 32.788358), bounds: GeoBounds(south: 39.857991999999996, west: 32.594919999999995, north: 40.138448000000004, east: 32.969954)),
+        ScooterCity(id: "tr:Fethiye", name: "Fethiye", countryCode: "TR", center: GeoPoint(latitude: 36.649535, longitude: 29.143076), bounds: GeoBounds(south: 36.604504999999996, west: 29.08031925789807, north: 36.687972, east: 29.208493999999998)),
+        ScooterCity(id: "tr:Marmaris", name: "Marmaris", countryCode: "TR", center: GeoPoint(latitude: 36.835077, longitude: 28.241062), bounds: GeoBounds(south: 36.784875, west: 28.205607, north: 36.887838947981805, east: 28.292610999999997)),
+        ScooterCity(id: "tr:Mersin", name: "Mersin", countryCode: "TR", center: GeoPoint(latitude: 36.770245, longitude: 34.565804), bounds: GeoBounds(south: 36.722321343100596, west: 34.49301282568111, north: 36.819913, east: 34.638218)),
+        ScooterCity(id: "my:Johor", name: "Johor", countryCode: "MY", center: GeoPoint(latitude: 1.49, longitude: 103.74), bounds: GeoBounds(south: 1.394025, west: 102.714203, north: 2.590063, east: 103.904297)),
+        ScooterCity(id: "my:Kuala Lumpur", name: "Kuala Lumpur", countryCode: "MY", center: GeoPoint(latitude: 3.143626, longitude: 101.690022), bounds: GeoBounds(south: 3.0430620000000004, west: 101.61356400000001, north: 3.2326699999999997, east: 101.751621)),
+        ScooterCity(id: "my:Kuantan", name: "Kuantan", countryCode: "MY", center: GeoPoint(latitude: 3.80706, longitude: 103.326164), bounds: GeoBounds(south: 3.7930750000000004, west: 103.265944, north: 3.8779429999999997, east: 103.33143)),
+        ScooterCity(id: "my:Malacca", name: "Malacca", countryCode: "MY", center: GeoPoint(latitude: 2.195523, longitude: 102.250572), bounds: GeoBounds(south: 2.184842, west: 102.243539, north: 2.2226559999999997, east: 102.273794)),
+        ScooterCity(id: "my:Pahang", name: "Pahang", countryCode: "MY", center: GeoPoint(latitude: 3.724961, longitude: 103.124458), bounds: GeoBounds(south: 3.715441, west: 103.117328, north: 3.735854, east: 103.128935)),
+        ScooterCity(id: "my:Penang", name: "Penang", countryCode: "MY", center: GeoPoint(latitude: 5.334965, longitude: 100.30146), bounds: GeoBounds(south: 5.288024, west: 100.287211, north: 5.355436, east: 100.32185299999999)),
+        ScooterCity(id: "my:Perak", name: "Perak", countryCode: "MY", center: GeoPoint(latitude: 4.566995, longitude: 100.938261), bounds: GeoBounds(south: 4.171338, west: 100.602553, north: 4.613759, east: 101.226873)),
+        ScooterCity(id: "my:Sarawak", name: "Sarawak", countryCode: "MY", center: GeoPoint(latitude: 3.235641, longitude: 113.075287), bounds: GeoBounds(south: 3.1675310000000003, west: 113.028434, north: 4.406809, east: 113.999558)),
+        ScooterCity(id: "my:Selangor", name: "Selangor", countryCode: "MY", center: GeoPoint(latitude: 3.076382, longitude: 101.588654), bounds: GeoBounds(south: 2.822144, west: 101.415692, north: 3.263295, east: 101.80005)),
+        ScooterCity(id: "my:Terengganu", name: "Terengganu", countryCode: "MY", center: GeoPoint(latitude: 5.34947, longitude: 103.134827), bounds: GeoBounds(south: 5.278537, west: 103.058942, north: 5.417827, east: 103.176733)),
+        ScooterCity(id: "kr:Ansan", name: "Ansan", countryCode: "KR", center: GeoPoint(latitude: 37.314523, longitude: 126.820676), bounds: GeoBounds(south: 37.274819, west: 126.764024, north: 37.354352000000006, east: 126.88072199999999)),
+        ScooterCity(id: "kr:Bucheon/Bupyeong", name: "Bucheon/Bupyeong", countryCode: "KR", center: GeoPoint(latitude: 37.500627, longitude: 126.761946), bounds: GeoBounds(south: 37.462637, west: 126.726346, north: 37.53491497327775, east: 126.828007)),
+        ScooterCity(id: "kr:Changwon", name: "Changwon", countryCode: "KR", center: GeoPoint(latitude: 35.225483, longitude: 128.656403), bounds: GeoBounds(south: 35.19047, west: 128.603013, north: 35.270655000000005, east: 128.724589)),
+        ScooterCity(id: "kr:Cheongju", name: "Cheongju", countryCode: "KR", center: GeoPoint(latitude: 36.604984, longitude: 127.419595), bounds: GeoBounds(south: 36.5906519934978, west: 127.40170869057393, north: 36.7473484416684, east: 127.52716199999999)),
+        ScooterCity(id: "kr:Daegu", name: "Daegu", countryCode: "KR", center: GeoPoint(latitude: 35.830305, longitude: 128.640751), bounds: GeoBounds(south: 35.626734, west: 128.387047, north: 35.962223, east: 128.861211)),
+        ScooterCity(id: "kr:Daejeon", name: "Daejeon", countryCode: "KR", center: GeoPoint(latitude: 36.352219, longitude: 127.406158), bounds: GeoBounds(south: 36.314509, west: 127.323369, north: 36.399436, east: 127.430049)),
+        ScooterCity(id: "kr:Dongducheon", name: "Dongducheon", countryCode: "KR", center: GeoPoint(latitude: 37.867597, longitude: 127.076861), bounds: GeoBounds(south: 37.778655, west: 126.955622, north: 37.938570000000006, east: 127.17698299999999)),
+        ScooterCity(id: "kr:Dongtan", name: "Dongtan", countryCode: "KR", center: GeoPoint(latitude: 37.207409, longitude: 127.025368), bounds: GeoBounds(south: 37.189527, west: 126.967177, north: 37.22263, east: 127.053499)),
+        ScooterCity(id: "kr:Geumsan", name: "Geumsan", countryCode: "KR", center: GeoPoint(latitude: 36.119021, longitude: 127.478225), bounds: GeoBounds(south: 36.091846999999994, west: 127.440897, north: 36.199499, east: 127.505078)),
+        ScooterCity(id: "kr:Gimcheon", name: "Gimcheon", countryCode: "KR", center: GeoPoint(latitude: 36.130676, longitude: 128.121185), bounds: GeoBounds(south: 36.11054495816675, west: 128.073686710939, north: 36.15462055786906, east: 128.2020056129547)),
+        ScooterCity(id: "kr:Gimhae", name: "Gimhae", countryCode: "KR", center: GeoPoint(latitude: 35.272542, longitude: 128.845482), bounds: GeoBounds(south: 35.160537999999995, west: 128.70755499999999, north: 35.319331000000005, east: 128.92595400000002)),
+        ScooterCity(id: "kr:Gimpo", name: "Gimpo", countryCode: "KR", center: GeoPoint(latitude: 37.629666, longitude: 126.688524), bounds: GeoBounds(south: 37.577268, west: 126.611537, north: 37.665165, east: 126.738969)),
+        ScooterCity(id: "kr:Goyang-Paju", name: "Goyang-Paju", countryCode: "KR", center: GeoPoint(latitude: 37.658951, longitude: 126.793648), bounds: GeoBounds(south: 37.610116999999995, west: 126.729095, north: 37.708361000000004, east: 126.857924)),
+        ScooterCity(id: "kr:Gwangju", name: "Gwangju", countryCode: "KR", center: GeoPoint(latitude: 35.156239, longitude: 126.835236), bounds: GeoBounds(south: 35.11423336907953, west: 126.76583971391851, north: 35.23667935880794, east: 126.94829493395827)),
+        ScooterCity(id: "kr:Gwangyang", name: "Gwangyang", countryCode: "KR", center: GeoPoint(latitude: 34.940037, longitude: 127.679565), bounds: GeoBounds(south: 34.914424, west: 127.557748, north: 34.988956, east: 127.76409788380748)),
+        ScooterCity(id: "kr:Gyeonggi 1", name: "Gyeonggi 1", countryCode: "KR", center: GeoPoint(latitude: 37.004766, longitude: 127.651892), bounds: GeoBounds(south: 36.891587099999995, west: 127.5225971, north: 37.005990000000004, east: 127.949958)),
+        ScooterCity(id: "kr:Hanam", name: "Hanam", countryCode: "KR", center: GeoPoint(latitude: 37.548942, longitude: 127.200014), bounds: GeoBounds(south: 37.533252999999995, west: 127.17346, north: 37.579287, east: 127.23031605290103)),
+        ScooterCity(id: "kr:Iksan", name: "Iksan", countryCode: "KR", center: GeoPoint(latitude: 35.950134, longitude: 126.971848), bounds: GeoBounds(south: 35.92302507095647, west: 126.92265816090386, north: 35.978682309156056, east: 127.02280383674638)),
+        ScooterCity(id: "kr:Incheon", name: "Incheon", countryCode: "KR", center: GeoPoint(latitude: 37.461175, longitude: 126.670949), bounds: GeoBounds(south: 37.394312, west: 126.628628, north: 37.469663000000004, east: 126.71705999999999)),
+        ScooterCity(id: "kr:Jinhae", name: "Jinhae", countryCode: "KR", center: GeoPoint(latitude: 35.092805, longitude: 128.808892), bounds: GeoBounds(south: 35.075120999999996, west: 128.779124, north: 35.112747000000006, east: 128.836802)),
+        ScooterCity(id: "kr:Masan", name: "Masan", countryCode: "KR", center: GeoPoint(latitude: 35.150119, longitude: 128.508977), bounds: GeoBounds(south: 35.095028, west: 128.483625, north: 35.278105000000004, east: 128.614111)),
+        ScooterCity(id: "kr:Namyangju", name: "Namyangju", countryCode: "KR", center: GeoPoint(latitude: 37.641178, longitude: 127.158353), bounds: GeoBounds(south: 37.592273999999996, west: 127.09599800000001, north: 37.676208, east: 127.182659)),
+        ScooterCity(id: "kr:Pyeongtaek", name: "Pyeongtaek", countryCode: "KR", center: GeoPoint(latitude: 37.039253, longitude: 127.06916), bounds: GeoBounds(south: 36.996046, west: 127.01791300000001, north: 37.080891, east: 127.119524)),
+        ScooterCity(id: "kr:Seongnam-Suwon", name: "Seongnam-Suwon", countryCode: "KR", center: GeoPoint(latitude: 37.339693, longitude: 127.094448), bounds: GeoBounds(south: 37.268221, west: 127.02046091527585, north: 37.348109, east: 127.136455)),
+        ScooterCity(id: "kr:Seoul", name: "Seoul", countryCode: "KR", center: GeoPoint(latitude: 37.553203, longitude: 126.991089), bounds: GeoBounds(south: 37.473147999999995, west: 126.893015, north: 37.579112, east: 127.147505)),
+        ScooterCity(id: "kr:Wirye", name: "Wirye", countryCode: "KR", center: GeoPoint(latitude: 37.475168, longitude: 127.15517), bounds: GeoBounds(south: 37.460395999999996, west: 127.123399, north: 37.503742, east: 127.16587)),
+        ScooterCity(id: "kr:Yecheon", name: "Yecheon", countryCode: "KR", center: GeoPoint(latitude: 36.57193, longitude: 128.485779), bounds: GeoBounds(south: 36.557863, west: 128.46049, north: 36.582816, east: 128.520296)),
+        ScooterCity(id: "kr:Yeoju", name: "Yeoju", countryCode: "KR", center: GeoPoint(latitude: 37.270362, longitude: 127.638371), bounds: GeoBounds(south: 37.223088, west: 127.610338, north: 37.316423, east: 127.68516199999999)),
     ]
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 694
-    static let countryCount = 44
+    static let cityCount = 747
+    static let countryCount = 46
 
     /// Cities by distance from the point to their centre, nearest first.
     static func nearest(to point: GeoPoint, count: Int) -> [ScooterCityDistance] {
@@ -2256,6 +2368,8 @@ enum ScooterCountryCatalog {
         // In Central Anatolia, south of Eskişehir: on land, amid BinBin's towns from İstanbul to
         // Antalya and Gaziantep, away from the Black Sea and the Mediterranean.
         "tr": (39.4, 31),
+        "my": (4.5, 102),
+        "kr": (36.4, 127.8),
     ]
 
     /// The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences.
@@ -2285,6 +2399,7 @@ enum ScooterCountryCatalog {
         ("JP/CL/MX/RO/CZ/QA/AU: Lime map", "https://www.li.me/"),
         ("JP/CL/MX/RO/CZ/QA/AU: GeoNames · CC BY 4.0", "https://www.geonames.org/about.html"),
         ("TR: BinBin map", "https://www.binbin.tech/"),
+        ("AU/TR/MY/KR: Beam map", "https://www.ridebeam.com/"),
     ]
 
     /// The countries whose totals, zoomed out, are their states' or provinces', and those by code.

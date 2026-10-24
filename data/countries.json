@@ -1290,7 +1290,7 @@
         "au:Brisbane"
       ],
       "credits": {
-        "attribution": "Australia: Lime authenticated rider map; city centres from GeoNames",
+        "attribution": "Australia: Lime authenticated rider map; city centres from GeoNames; Beam authenticated rider map",
         "links": [
           {
             "label": "AU: Lime map",
@@ -1299,6 +1299,10 @@
           {
             "label": "AU: GeoNames · CC BY 4.0",
             "href": "https://www.geonames.org/about.html"
+          },
+          {
+            "label": "AU: Beam map",
+            "href": "https://www.ridebeam.com/"
           }
         ]
       }
@@ -1342,11 +1346,112 @@
         "tr:Samsun"
       ],
       "credits": {
-        "attribution": "Turkey: BinBin anonymous app map",
+        "attribution": "Turkey: BinBin anonymous app map; Beam authenticated rider map",
         "links": [
           {
             "label": "TR: BinBin map",
             "href": "https://www.binbin.tech/"
+          },
+          {
+            "label": "TR: Beam map",
+            "href": "https://www.ridebeam.com/"
+          }
+        ]
+      }
+    },
+    {
+      "code": "MY",
+      "continent": "asia",
+      "catalog": "data/malaysian-scooter-feeds.json",
+      "source": "malaysia",
+      "names": {
+        "en": "Malaysia",
+        "de": "Malaysia",
+        "fr": "Malaisie",
+        "it": "Malesia",
+        "nl": "Maleisië",
+        "nb": "Malaysia",
+        "pt": "Malásia",
+        "es": "Malasia",
+        "is": "Malasía"
+      },
+      "searchWords": [
+        "malaysia",
+        "malaisie",
+        "malesia",
+        "maleisie",
+        "malasia"
+      ],
+      "anchor": [
+        4.5,
+        102
+      ],
+      "featuredCities": [
+        "my:Kuala Lumpur",
+        "my:Selangor",
+        "my:Johor",
+        "my:Penang",
+        "my:Sarawak",
+        "my:Perak"
+      ],
+      "credits": {
+        "attribution": "Malaysia: Beam authenticated rider map",
+        "links": [
+          {
+            "label": "MY: Beam map",
+            "href": "https://www.ridebeam.com/"
+          }
+        ]
+      }
+    },
+    {
+      "code": "KR",
+      "continent": "asia",
+      "catalog": "data/south-korean-scooter-feeds.json",
+      "source": "korea",
+      "names": {
+        "en": "South Korea",
+        "de": "Südkorea",
+        "fr": "Corée du Sud",
+        "it": "Corea del Sud",
+        "nl": "Zuid-Korea",
+        "nb": "Sør-Korea",
+        "pt": "Coreia do Sul",
+        "es": "Corea del Sur",
+        "is": "Suður-Kórea"
+      },
+      "searchWords": [
+        "south korea",
+        "sudkorea",
+        "coree du sud",
+        "corea del sud",
+        "zuid korea",
+        "sor korea",
+        "coreia do sul",
+        "corea del sur",
+        "sudur korea",
+        "korea",
+        "대한민국",
+        "한국"
+      ],
+      "anchor": [
+        36.4,
+        127.8
+      ],
+      "featuredCities": [
+        "kr:Seoul",
+        "kr:Daegu",
+        "kr:Incheon",
+        "kr:Gwangju",
+        "kr:Cheongju",
+        "kr:Daejeon"
+      ],
+      "credits": {
+        "attribution": "South Korea: Beam authenticated rider map",
+        "links": [
+          {
+            "label": "KR: Beam map",
+            "href": "https://www.ridebeam.com/"
           }
         ]
       }

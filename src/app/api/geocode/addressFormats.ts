@@ -47,6 +47,11 @@ export const ADDRESS_FORMATS: Readonly<Record<string, AddressFormat>> = {
   QA: { numberFirst: true, townLine: '{town}' },
   MX: { townLine: '{postcode} {town}, {region}', postcode: /\d{5}/ },
   KZ: { postcode: /\d{6}/ },
+  // UPU Malaysia: house number before the road, five-digit postcode before the locality.
+  MY: { numberFirst: true, postcode: /\d{5}/ },
+  // Korea Post uses number + road in Roman text; Korean road names keep the number after it.
+  KR: { numberFirst: true, townLine: '{town} {postcode}', postcode: /\d{5}/ },
+  TR: { postcode: /\d{5}/ },
   AZ: {},
   GE: {},
 };
@@ -54,7 +59,8 @@ export const ADDRESS_FORMATS: Readonly<Record<string, AddressFormat>> = {
 /** A street with its house number, as the country writes it. A street named in Hebrew or Arabic keeps its number after it, as it is written there: "שדרות רוטשילד 22". */
 export function streetAddress(country: string, street: string, number: string): string {
   if (!street || !number) return street;
-  return ADDRESS_FORMATS[country]?.numberFirst && !RIGHT_TO_LEFT.test(street) ? `${number} ${street}` : `${street} ${number}`;
+  return ADDRESS_FORMATS[country]?.numberFirst && !RIGHT_TO_LEFT.test(street) &&
+    !(country === 'KR' && /\p{Script=Hangul}/u.test(street)) ? `${number} ${street}` : `${street} ${number}`;
 }
 
 /** The line of the town, as the country writes it; the parts it lacks left out with their commas: "Austin, TX 78701", "Sydney NSW 2000", "8004 Zürich". */

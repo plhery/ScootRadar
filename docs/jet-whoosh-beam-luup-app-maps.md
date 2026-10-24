@@ -15,7 +15,7 @@ integration notes record the live tests.
 | JET's Go Jet (Brazil, Chile, Mexico, Kazakhstan, Georgia, Azerbaijan) | `GET api.gojet.app/api/v1/geo/transports` | 200 with individual scooters after app signing | Not needed for the map | Signed app requests; TLS 1.2 on Netcup. App Check is not required for map reads |
 | JET (Kazakhstan, Georgia, Uzbekistan, Mongolia) | `GET service.jetscooters.fun/gatewayclient/api/v6/transports` | 401, `WWW-Authenticate: Bearer` | Phone and SMS code, the request behind an hCaptcha | None found |
 | Whoosh | `POST api.whoosh.bike/client/devices/searches` | 401 `{"message":"Unauthorized"}` | Kazakhstan phone login verified; Google/Apple in Latin America | None found |
-| Beam | GraphQL `vehiclesByH3` at `gateway.ridebeam.com/query` | 200 with an `Unauthorized` error | Phone and SMS code, or Google, Apple, Facebook, Kakao or Microsoft | Its SMS request is signed, and its login probably checks an encrypted fraud header |
+| Beam | GraphQL `vehiclesByH3` at `gateway.ridebeam.com/query` | 200 with an `Unauthorized` error | Google sign-in verified; Android phone login is for existing accounts | None on the signed-in map or session renewal (verified) |
 | LUUP | `GET mobileApiDBReader-ports/by-location` on LUUP's Cloud Functions | 403 `Forbidden` | Phone and SMS code | None on the port reader |
 
 Some signed-out reads do answer: Beam's zones, region list and parking-spot
@@ -165,6 +165,13 @@ but has no Play Integrity, SafetyNet, App Check or request signing.
 
 ## Beam
 
+**Signed-in follow-up:** the user completed Google sign-in. The integrated
+[54-region collector](beam-app-map.md) covers Australia, Malaysia, South Korea
+and Türkiye; map reads and session renewal work from Netcup without the fraud
+header. The current Android phone path logs in existing accounts only and
+sends no SMS for an unregistered number. The signed-out findings below remain
+the original investigation.
+
 Beam's Flutter app talks to one GraphQL endpoint,
 `POST https://gateway.ridebeam.com/query`, whose introspection is open. The
 map reads vehicles in H3 resolution-8 cells around its centre:
@@ -295,11 +302,11 @@ privately. What each would add, outside Russia:
 | --- | --- | --- |
 | JET (Central Asia) | Phone and SMS code | Almaty (about 22,500 scooters, JET over 70%), Ulaanbaatar (3,000+), Tashkent, Tbilisi and Batumi |
 | Whoosh | Kazakhstan phone login verified; Google or Apple in Latin America | Chile (8,000+), São Paulo, Curitiba, Florianópolis, Medellín (about 400), Monterrey and San Pedro Garza García, Mexico City, Almaty |
-| Beam | Phone and SMS code, or Google or Apple | Malaysia (5,500+), Australia, Thailand, Indonesia, New Zealand, South Korea, Türkiye and two US towns |
+| Beam | Integrated; Google sign-in and renewal verified | [54 reviewed regions](beam-app-map.md) in Australia, Malaysia, South Korea and Türkiye; sampled other markets were empty |
 | LUUP | Phone and SMS code | Japan's ports, with counts of scooters, e-bikes and seated scooters |
 
 Go Jet's signed-out integration reproduces its app signature and has verified
-complete sweeps on Netcup. Whoosh and LUUP also have integrated collectors;
+complete sweeps on Netcup. Beam, Whoosh and LUUP also have integrated collectors;
 see their linked notes for session renewal, response caps and production
-checks. JET's separate Central Asian app and Beam still need a rider login
+checks. JET's separate Central Asian app still needs a rider login
 and equivalent checks.

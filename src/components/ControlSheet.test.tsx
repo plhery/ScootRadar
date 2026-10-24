@@ -455,6 +455,7 @@ describe('ControlSheet settings', () => {
       'JP/CL/MX/RO/CZ/QA/AU: Lime map',
       'JP/CL/MX/RO/CZ/QA/AU: GeoNames · CC BY 4.0',
       'TR: BinBin map',
+      'AU/TR/MY/KR: Beam map',
       'Search · Geoapify',
       'Search · Photon, komoot',
       'Parking · Métropole Européenne de Lille',

@@ -3,6 +3,218 @@
   "catalogSource": "https://www.li.me/locations",
   "systems": [
     {
+      "id": "beam_au_adelaide",
+      "country": "AU",
+      "provider": "beam",
+      "city": "Adelaide",
+      "timeZone": "Australia/Adelaide",
+      "center": [
+        -34.9285,
+        138.6007
+      ],
+      "bounds": {
+        "south": -34.943739,
+        "north": -34.887522999999995,
+        "west": 138.57500639999998,
+        "east": 138.6435044
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 7089
+    },
+    {
+      "id": "beam_au_broome",
+      "country": "AU",
+      "provider": "beam",
+      "city": "Broome",
+      "timeZone": "Australia/Perth",
+      "center": [
+        -17.94932,
+        122.217464
+      ],
+      "bounds": {
+        "south": -18.0055940869565,
+        "north": -17.918882,
+        "west": 122.1985178444571,
+        "east": 122.24731657644007
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 1709
+    },
+    {
+      "id": "beam_au_bunbury",
+      "country": "AU",
+      "provider": "beam",
+      "city": "Bunbury",
+      "timeZone": "Australia/Perth",
+      "center": [
+        -33.330399,
+        115.659874
+      ],
+      "bounds": {
+        "south": -33.352264327650005,
+        "north": -33.307725,
+        "west": 115.618578,
+        "east": 115.698066
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 300
+    },
+    {
+      "id": "beam_au_cairns",
+      "country": "AU",
+      "provider": "beam",
+      "city": "Cairns",
+      "timeZone": "Australia/Brisbane",
+      "center": [
+        -16.922857,
+        145.767151
+      ],
+      "bounds": {
+        "south": -16.960565,
+        "north": -16.895878,
+        "west": 145.739454,
+        "east": 145.782737
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 1476
+    },
+    {
+      "id": "beam_au_darwin",
+      "country": "AU",
+      "provider": "beam",
+      "city": "Darwin",
+      "timeZone": "Australia/Darwin",
+      "center": [
+        -12.4634,
+        130.8456
+      ],
+      "bounds": {
+        "south": -12.473780000000001,
+        "north": -12.336188,
+        "west": 130.810601,
+        "east": 130.91584
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 1091
+    },
+    {
+      "id": "beam_au_esperance",
+      "country": "AU",
+      "provider": "beam",
+      "city": "Esperance",
+      "timeZone": "Australia/Perth",
+      "center": [
+        -33.852711,
+        121.883446
+      ],
+      "bounds": {
+        "south": -33.898646,
+        "north": -33.810136,
+        "west": 121.818805,
+        "east": 121.942786
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 1190
+    },
+    {
+      "id": "beam_au_geraldton",
+      "country": "AU",
+      "provider": "beam",
+      "city": "Geraldton",
+      "timeZone": "Australia/Perth",
+      "center": [
+        -28.77,
+        114.61
+      ],
+      "bounds": {
+        "south": -28.830987999999998,
+        "north": -28.725296,
+        "west": 114.576288,
+        "east": 114.644229
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 1636
+    },
+    {
+      "id": "beam_au_hervey_bay",
+      "country": "AU",
+      "provider": "beam",
+      "city": "Hervey Bay",
+      "timeZone": "Australia/Brisbane",
+      "center": [
+        -25.283472,
+        152.854095
+      ],
+      "bounds": {
+        "south": -25.31263,
+        "north": -25.242209000000003,
+        "west": 152.795253,
+        "east": 152.912238
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 2155
+    },
+    {
+      "id": "beam_au_mackay",
+      "country": "AU",
+      "provider": "beam",
+      "city": "Mackay",
+      "timeZone": "Australia/Brisbane",
+      "center": [
+        -21.150888,
+        149.209462
+      ],
+      "bounds": {
+        "south": -21.187051999999998,
+        "north": -21.070922,
+        "west": 149.13411599999998,
+        "east": 149.22705000000002
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 1096
+    },
+    {
+      "id": "beam_au_perth",
+      "country": "AU",
+      "provider": "beam",
+      "city": "Perth",
+      "timeZone": "Australia/Perth",
+      "center": [
+        -31.882626,
+        115.784912
+      ],
+      "bounds": {
+        "south": -31.914666,
+        "north": -31.843548000000002,
+        "west": 115.74886400000001,
+        "east": 115.823606
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 17
+    },
+    {
+      "id": "beam_au_port_douglas",
+      "country": "AU",
+      "provider": "beam",
+      "city": "Port Douglas",
+      "timeZone": "Australia/Brisbane",
+      "center": [
+        -16.509497,
+        145.462601
+      ],
+      "bounds": {
+        "south": -16.545178,
+        "north": -16.477207,
+        "west": 145.456089,
+        "east": 145.47833300000002
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 1036,
+      "aliases": [
+        "PortDouglas"
+      ]
+    },
+    {
       "id": "lime_au_app_brisbane_000",
       "provider": "lime",
       "city": "Brisbane",
@@ -888,5 +1100,8 @@
   "limeVerifiedOn": "2026-10-24",
   "limeServiceAreaSources": [
     "https://assets.lime.bike/zones_attributes/Brisbane_2639_exclude_new_type.json"
-  ]
+  ],
+  "notes": "Beam entries use reviewed authenticated rider-map regions. Empty, test and retired Beam regions are omitted; rider credentials remain private to the Node cache.",
+  "beamVerifiedOn": "2026-10-24",
+  "beamCatalogSource": "https://www.ridebeam.com/"
 }

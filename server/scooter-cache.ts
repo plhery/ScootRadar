@@ -23,12 +23,13 @@ import { atomMapRequests, withAtomAppCollectors } from './atomApp';
 import { luupMapRequests, withLuupAppCollectors } from './luupApp';
 import { jetMapRequests, withJetAppCollectors } from './jetApp';
 import { whooshMapRequests, withWhooshAppCollectors } from './whooshApp';
+import { beamMapRequests, withBeamAppCollectors } from './beamApp';
 import { LIME_IDLE_INTERVAL_MS, limeMapRequests, withLimeAppCollectors } from './limeApp';
 import { BINBIN_IDLE_INTERVAL_MS, binbinMapRequests, withBinbinAppCollectors } from './binbinApp';
 
 const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
   withDottAppCollectors, withVoiAppCollectors, withAtomAppCollectors, withLuupAppCollectors,
-  withJetAppCollectors, withWhooshAppCollectors, withLimeAppCollectors,
+  withJetAppCollectors, withWhooshAppCollectors, withLimeAppCollectors, withBeamAppCollectors,
   // BinBin's sweeps start from where its scooters stood at the last one.
   (current: CollectableScooterFeed[], systems: typeof REGIONAL_SCOOTER_SYSTEMS) =>
     withBinbinAppCollectors(current, systems, id => records.get(id)?.vehicles),
@@ -93,8 +94,8 @@ const countedAt = (now: number) => (feed: FeedSnapshot) => feedState(feed, now, 
 const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
   cadenceModes: now => scheduler.modes(now), upstreamRequests: () => ({
     status: upstreamJsonCache.requests.status + dottMapRequests.status + voiMapRequests.status + atomMapRequests.status + luupMapRequests.status + jetMapRequests.status + whooshMapRequests.status + limeMapRequests.status +
-      binbinMapRequests.status,
-    metadata: upstreamJsonCache.requests.metadata + voiMapRequests.metadata + atomMapRequests.metadata + luupMapRequests.metadata + whooshMapRequests.metadata + limeMapRequests.metadata,
+      binbinMapRequests.status + beamMapRequests.status,
+    metadata: upstreamJsonCache.requests.metadata + voiMapRequests.metadata + atomMapRequests.metadata + luupMapRequests.metadata + whooshMapRequests.metadata + limeMapRequests.metadata + beamMapRequests.metadata,
   }),
   planRefreshes: () => planRefreshCounts,
   upstreamCache: () => ({ entries: upstreamJsonCache.size, capacity: upstreamJsonCache.capacity,

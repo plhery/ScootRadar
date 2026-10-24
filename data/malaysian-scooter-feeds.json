@@ -1,0 +1,547 @@
+{
+  "verifiedOn": "2026-10-24",
+  "catalogSource": "https://www.ridebeam.com/",
+  "notes": "Reviewed authenticated Beam rider-map regions. Empty, test and retired regions are omitted. Only standing scooters are collected; credentials remain private to the Node cache.",
+  "systems": [
+    {
+      "id": "beam_my_johor",
+      "country": "MY",
+      "provider": "beam",
+      "city": "Johor",
+      "timeZone": "Asia/Kuala_Lumpur",
+      "center": [
+        1.49,
+        103.74
+      ],
+      "bounds": {
+        "south": 1.394025,
+        "north": 2.590063,
+        "west": 102.714203,
+        "east": 103.904297
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 353,
+      "beamAppAreas": [
+        {
+          "south": 2.019279,
+          "north": 2.0255089999999996,
+          "west": 103.31152,
+          "east": 103.321164
+        },
+        {
+          "south": 2.029653,
+          "north": 2.0349239999999997,
+          "west": 103.316643,
+          "east": 103.32167799999999
+        },
+        {
+          "south": 2.038177,
+          "north": 2.045261,
+          "west": 103.32295400000001,
+          "east": 103.329145
+        },
+        {
+          "south": 2.134646,
+          "north": 2.178572,
+          "west": 102.714203,
+          "east": 102.752106
+        },
+        {
+          "south": 1.447182,
+          "north": 1.481171,
+          "west": 103.73505200000001,
+          "east": 103.781559
+        },
+        {
+          "south": 1.473717,
+          "north": 1.481583,
+          "west": 103.719897,
+          "east": 103.727025
+        },
+        {
+          "south": 1.474489,
+          "north": 1.484688,
+          "west": 103.732102,
+          "east": 103.739717
+        },
+        {
+          "south": 1.478118,
+          "north": 1.489281,
+          "west": 103.740937,
+          "east": 103.751412
+        },
+        {
+          "south": 1.54757,
+          "north": 1.558777,
+          "west": 103.74054500000001,
+          "east": 103.74875
+        },
+        {
+          "south": 1.537616,
+          "north": 1.579196,
+          "west": 103.762839,
+          "east": 103.79525
+        },
+        {
+          "south": 1.394025,
+          "north": 1.435823,
+          "west": 103.61847200000001,
+          "east": 103.64980899999999
+        },
+        {
+          "south": 1.457736,
+          "north": 1.468965,
+          "west": 103.893302,
+          "east": 103.904297
+        },
+        {
+          "south": 2.495022,
+          "north": 2.501235,
+          "west": 102.866348,
+          "east": 102.872929
+        },
+        {
+          "south": 2.4985370000000002,
+          "north": 2.5054369999999997,
+          "west": 102.863237,
+          "east": 102.86929699999999
+        },
+        {
+          "south": 2.5047970000000004,
+          "north": 2.513728,
+          "west": 102.812055,
+          "east": 102.819537
+        },
+        {
+          "south": 2.505949,
+          "north": 2.5165469999999996,
+          "west": 102.815821,
+          "east": 102.83386
+        },
+        {
+          "south": 2.584616,
+          "north": 2.590063,
+          "west": 102.905938,
+          "east": 102.911526
+        },
+        {
+          "south": 1.84733,
+          "north": 1.869559,
+          "west": 103.072804,
+          "east": 103.094656
+        }
+      ]
+    },
+    {
+      "id": "beam_my_kuala_lumpur",
+      "country": "MY",
+      "provider": "beam",
+      "city": "Kuala Lumpur",
+      "timeZone": "Asia/Kuala_Lumpur",
+      "center": [
+        3.143626,
+        101.690022
+      ],
+      "bounds": {
+        "south": 3.0430620000000004,
+        "north": 3.2326699999999997,
+        "west": 101.61356400000001,
+        "east": 101.751621
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 12
+    },
+    {
+      "id": "beam_my_kuantan",
+      "country": "MY",
+      "provider": "beam",
+      "city": "Kuantan",
+      "timeZone": "Asia/Kuala_Lumpur",
+      "center": [
+        3.80706,
+        103.326164
+      ],
+      "bounds": {
+        "south": 3.7930750000000004,
+        "north": 3.8779429999999997,
+        "west": 103.265944,
+        "east": 103.33143
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 1443,
+      "aliases": [
+        "Kuantan Franchise"
+      ]
+    },
+    {
+      "id": "beam_my_malacca",
+      "country": "MY",
+      "provider": "beam",
+      "city": "Malacca",
+      "timeZone": "Asia/Kuala_Lumpur",
+      "center": [
+        2.195523,
+        102.250572
+      ],
+      "bounds": {
+        "south": 2.184842,
+        "north": 2.2226559999999997,
+        "west": 102.243539,
+        "east": 102.273794
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 1061,
+      "aliases": [
+        "Melaka"
+      ]
+    },
+    {
+      "id": "beam_my_pahang",
+      "country": "MY",
+      "provider": "beam",
+      "city": "Pahang",
+      "timeZone": "Asia/Kuala_Lumpur",
+      "center": [
+        3.724961,
+        103.124458
+      ],
+      "bounds": {
+        "south": 3.715441,
+        "north": 3.735854,
+        "west": 103.117328,
+        "east": 103.128935
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 2685
+    },
+    {
+      "id": "beam_my_penang",
+      "country": "MY",
+      "provider": "beam",
+      "city": "Penang",
+      "timeZone": "Asia/Kuala_Lumpur",
+      "center": [
+        5.334965,
+        100.30146
+      ],
+      "bounds": {
+        "south": 5.288024,
+        "north": 5.355436,
+        "west": 100.287211,
+        "east": 100.32185299999999
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 354
+    },
+    {
+      "id": "beam_my_perak",
+      "country": "MY",
+      "provider": "beam",
+      "city": "Perak",
+      "timeZone": "Asia/Kuala_Lumpur",
+      "center": [
+        4.566995,
+        100.938261
+      ],
+      "bounds": {
+        "south": 4.171338,
+        "north": 4.613759,
+        "west": 100.602553,
+        "east": 101.226873
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 1263,
+      "beamAppAreas": [
+        {
+          "south": 4.171338,
+          "north": 4.186523,
+          "west": 101.212979,
+          "east": 101.226873
+        },
+        {
+          "south": 4.594595,
+          "north": 4.602679999999999,
+          "west": 101.084664,
+          "east": 101.09377099999999
+        },
+        {
+          "south": 4.592263,
+          "north": 4.613759,
+          "west": 101.07077000000001,
+          "east": 101.107075
+        },
+        {
+          "south": 4.188750000000001,
+          "north": 4.196731,
+          "west": 100.659845,
+          "east": 100.667847
+        },
+        {
+          "south": 4.183303,
+          "north": 4.1930499999999995,
+          "west": 100.602553,
+          "east": 100.613355
+        },
+        {
+          "south": 4.192674,
+          "north": 4.199523,
+          "west": 100.66059700000001,
+          "east": 100.667385
+        },
+        {
+          "south": 4.195748,
+          "north": 4.201535,
+          "west": 100.666905,
+          "east": 100.672702
+        },
+        {
+          "south": 4.231143,
+          "north": 4.239402,
+          "west": 100.62697200000001,
+          "east": 100.64419
+        },
+        {
+          "south": 4.3482840000000005,
+          "north": 4.36587,
+          "west": 100.950039,
+          "east": 100.965454
+        }
+      ]
+    },
+    {
+      "id": "beam_my_sarawak",
+      "country": "MY",
+      "provider": "beam",
+      "city": "Sarawak",
+      "timeZone": "Asia/Kuching",
+      "center": [
+        3.235641,
+        113.075287
+      ],
+      "bounds": {
+        "south": 3.1675310000000003,
+        "north": 4.406809,
+        "west": 113.028434,
+        "east": 113.999558
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 2258,
+      "beamAppAreas": [
+        {
+          "south": 3.1675310000000003,
+          "north": 3.1908939999999997,
+          "west": 113.028434,
+          "east": 113.046016
+        },
+        {
+          "south": 3.1752740000000004,
+          "north": 3.1862229999999996,
+          "west": 113.039232,
+          "east": 113.04846099999999
+        },
+        {
+          "south": 3.199234,
+          "north": 3.2089459999999996,
+          "west": 113.054985,
+          "east": 113.063107
+        },
+        {
+          "south": 3.2051900000000004,
+          "north": 3.2219559999999996,
+          "west": 113.041382,
+          "east": 113.05705599999999
+        },
+        {
+          "south": 3.22351,
+          "north": 3.239601,
+          "west": 113.06399,
+          "east": 113.089012
+        },
+        {
+          "south": 3.1990190000000003,
+          "north": 3.2056129999999996,
+          "west": 113.05155900000001,
+          "east": 113.058622
+        },
+        {
+          "south": 4.3140350000000005,
+          "north": 4.325702,
+          "west": 113.959041,
+          "east": 113.96728999999999
+        },
+        {
+          "south": 4.379949,
+          "north": 4.393058,
+          "west": 113.98921200000001,
+          "east": 113.999558
+        },
+        {
+          "south": 4.361474,
+          "north": 4.370203,
+          "west": 113.976788,
+          "east": 113.9832
+        },
+        {
+          "south": 4.364802,
+          "north": 4.406809,
+          "west": 113.96343,
+          "east": 113.997503
+        }
+      ]
+    },
+    {
+      "id": "beam_my_selangor",
+      "country": "MY",
+      "provider": "beam",
+      "city": "Selangor",
+      "timeZone": "Asia/Kuala_Lumpur",
+      "center": [
+        3.076382,
+        101.588654
+      ],
+      "bounds": {
+        "south": 2.822144,
+        "north": 3.263295,
+        "west": 101.415692,
+        "east": 101.80005
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 349,
+      "beamAppAreas": [
+        {
+          "south": 3.0928370000000003,
+          "north": 3.1189039999999997,
+          "west": 101.625665,
+          "east": 101.65439599999999
+        },
+        {
+          "south": 2.887124,
+          "north": 2.899867,
+          "west": 101.66882600000001,
+          "east": 101.68295499999999
+        },
+        {
+          "south": 2.9750270000000003,
+          "north": 2.9804839999999997,
+          "west": 101.788765,
+          "east": 101.80005
+        },
+        {
+          "south": 2.864478,
+          "north": 2.8869569999999998,
+          "west": 101.641399,
+          "east": 101.67008299999999
+        },
+        {
+          "south": 2.822144,
+          "north": 2.8442309999999997,
+          "west": 101.692046,
+          "east": 101.71539999999999
+        },
+        {
+          "south": 3.0657310000000004,
+          "north": 3.084495,
+          "west": 101.507749,
+          "east": 101.528739
+        },
+        {
+          "south": 2.958441,
+          "north": 2.982563,
+          "west": 101.716891,
+          "east": 101.739905
+        },
+        {
+          "south": 3.2428820000000003,
+          "north": 3.263295,
+          "west": 101.725943,
+          "east": 101.747543
+        },
+        {
+          "south": 3.130015,
+          "north": 3.1346150527836807,
+          "west": 101.613004,
+          "east": 101.61735917147962
+        },
+        {
+          "south": 3.1306396856289402,
+          "north": 3.170435,
+          "west": 101.59527100000001,
+          "east": 101.622209
+        },
+        {
+          "south": 3.1431470000000004,
+          "north": 3.1647559999999997,
+          "west": 101.563514,
+          "east": 101.602318
+        },
+        {
+          "south": 3.1676100000000003,
+          "north": 3.1901859999999997,
+          "west": 101.49686600000001,
+          "east": 101.52077899999999
+        },
+        {
+          "south": 3.1362850000000004,
+          "north": 3.1731089999999997,
+          "west": 101.738286,
+          "east": 101.77891799999999
+        },
+        {
+          "south": 3.0729670000000002,
+          "north": 3.0807659999999997,
+          "west": 101.584027,
+          "east": 101.592383
+        },
+        {
+          "south": 3.0813170000000003,
+          "north": 3.103007,
+          "west": 101.415692,
+          "east": 101.435227
+        },
+        {
+          "south": 3.0783300000000002,
+          "north": 3.0846169999999997,
+          "west": 101.582165,
+          "east": 101.589755
+        },
+        {
+          "south": 3.0398690000000004,
+          "north": 3.0485179999999996,
+          "west": 101.559233,
+          "east": 101.568114
+        },
+        {
+          "south": 3.104347,
+          "north": 3.1292479999999996,
+          "west": 101.564565,
+          "east": 101.59588099999999
+        },
+        {
+          "south": 3.0898610000000004,
+          "north": 3.0987009999999997,
+          "west": 101.642948,
+          "east": 101.652462
+        }
+      ]
+    },
+    {
+      "id": "beam_my_terengganu",
+      "country": "MY",
+      "provider": "beam",
+      "city": "Terengganu",
+      "timeZone": "Asia/Kuala_Lumpur",
+      "center": [
+        5.34947,
+        103.134827
+      ],
+      "bounds": {
+        "south": 5.278537,
+        "north": 5.417827,
+        "west": 103.058942,
+        "east": 103.176733
+      },
+      "discoveryUrl": "https://gateway.ridebeam.com/query",
+      "beamAppCity": 2139
+    }
+  ]
+}

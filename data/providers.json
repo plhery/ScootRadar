@@ -277,5 +277,16 @@
       "link": "https://binbin.tech/",
       "appStoreId": 1483635924
     }
+  },
+  {
+    "key": "beam",
+    "name": "Beam",
+    "color": "#7441ff",
+    "initial": "B",
+    "systemIds": {
+      "prefixes": [
+        "beam_"
+      ]
+    }
   }
 ]

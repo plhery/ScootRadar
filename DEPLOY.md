@@ -424,6 +424,12 @@ and watched regions can take several minutes. The operator's season flag
 produces a clean empty fleet for winter storage. See
 [the session format and live verification](docs/whoosh-app-map.md).
 
+Beam's rider map reads mode-0600 `/data/beam-session.json`, owned by Node UID
+1000 (`BEAM_SESSION_PATH` overrides it). It holds Beam access and refresh tokens
+and the rider id, with no Google credentials. Renewals are saved atomically in
+the same private file. Its H3 batches share a 700 ms queue, and every batch of
+a region must succeed before publication. See [coverage and renewal](docs/beam-app-map.md).
+
 LUUP's Japanese rider map reads `LUUP_REFRESH_TOKEN` and `LUUP_FIREBASE_API_KEY`
 from private, runtime-only Coolify environment secrets on the Node cache.
 Neither is a Worker or build variable. ID tokens stay in memory; refresh-token
