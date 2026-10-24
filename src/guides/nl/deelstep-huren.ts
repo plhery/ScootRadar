@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Deelstep huren in België: van de app tot het einde van je rit',
   lede: 'Een deelstep huren gaat zo: je installeert de app van de aanbieder, maakt een account aan met je gsm-nummer en een betaalkaart, scant de QR-code op het stuur en rijdt weg. Op het einde zet je de step op een toegelaten plek, in Brussel en binnen de Antwerpse Leien in een dropzone, en neem je een foto. Bolt, Dott en Lime vragen 18 jaar, Voi in Antwerpen en Hoppy in Kortrijk 16, en in Brussel scan je één keer je identiteitsbewijs. Je betaalt om te ontgrendelen en per minuut: Voi publiceerde in Antwerpen op 12 oktober 2026 € 0,99 plus € 0,25 per minuut, dus € 3,49 voor tien minuten.',
   published: '2026-10-12',
-  updated: '2026-10-17',
+  updated: '2026-10-24',
   sections: [
     {
       heading: 'Deelstep huren: hoe werkt het, stap voor stap?',
@@ -105,7 +105,7 @@ const guide: Guide = {
             rows: [
               ['Bolt (vanaf 1 november 2026)', '€ 20 automatisch buiten een toegelaten zone', 'Tot € 100 om de step op te halen; boetes doorgerekend, plus tot € 30 kosten'],
               ['Dott (voorwaarden van 23 september 2025)', 'Tot € 300 om de step op te halen', '€ 50 per inbreuk op de voorwaarden; boetes doorgerekend, plus € 50 kosten'],
-              ['Hoppy', 'Tot € 100 als de step onbereikbaar of buiten het toegelaten gebied staat', 'Tot € 100 om hem op te halen'],
+              ['Hoppy (voorwaarden van 27 juli 2026)', '€ 100 als je de step buiten het toegelaten gebied achterlaat; tot € 100 als Hoppy er niet bij kan', 'Tot € 100 om hem op te halen; € 150 als je hem zonder melding achterlaat'],
             ],
           },
         },
