@@ -79,7 +79,7 @@ const guide: Guide = {
         {
           list: [
             '**12.5 mph** top speed.',
-            '**Bays only:** start and end every ride in a marked bay; TfL counted more than 1,600 by September 2025.',
+            '**Bays only:** start and end every ride in a marked bay; TfL counted about 1,900 in September 2026.',
             '**Lesson and lights:** an in-app lesson before your first ride, and lights on for the whole ride.',
             '**Cycle tracks:** you may use TfL’s cycle tracks in the boroughs taking part.',
             '**Price:** Voi charges no unlock fee and 27p a minute, around the clock; Lime shows its London price only in its app. Both have discount schemes.',
@@ -155,7 +155,7 @@ const guide: Guide = {
     {
       heading: 'How long will the e-scooter trials last?',
       blocks: [
-        'The trials began in July 2020 and were meant to end in November 2021. Extended five times, they now run until May 2028 (31 May in London, says TfL), so a council page that still says May 2026 is out of date. Nothing is settled for after that: the government has promised to consult on e-scooter rules but has put no bill before Parliament (see [our guide to UK e-scooter law](guide:uk-law)).',
+        'The trials began in July 2020 and were meant to end in November 2021. Extended five times, they now run until May 2028 (31 May 2028, says TfL), so a council page that still says May 2026 is out of date. Nothing is settled for after that: the government has promised to consult on e-scooter rules but has put no bill before Parliament (see [our guide to UK e-scooter law](guide:uk-law)).',
         'Areas come and go. By December 2021 riders had taken 14.5 million trips in trials launched across 32 areas of England; today there are 21. York’s riders took over half a million journeys, yet Tier pulled out on 31 May 2024 because the scheme wasn’t profitable.',
       ],
     },
@@ -193,6 +193,7 @@ const guide: Guide = {
     { title: 'Department for Transport: Government response to the e-scooter trials evaluation report', url: 'https://www.gov.uk/government/publications/government-response-to-the-e-scooter-trials-evaluation-report/government-response-to-the-e-scooter-trials-evaluation-report' },
     { title: 'Transport for London: E-scooter rental trial', url: 'https://tfl.gov.uk/modes/driving/electric-scooter-rental-trial' },
     { title: 'Transport for London: E-scooter rental trial report, 24 August to 20 September 2026', url: 'https://tfl.gov.uk/cdn/static/cms/documents/london-escooter-rental-trial-phase-2-trial-period-39-24-aug-to-20-sept-2026.pdf' },
+    { title: 'Transport for London: Commissioner’s report, September 2026', url: 'https://content.tfl.gov.uk/commissioners-report-september-2026.pdf' },
     { title: 'Find a Tender: TfL contract details notice, E-scooter trial phase 3 (17 September 2026)', url: 'https://www.find-tender.service.gov.uk/Notice/088384-2026' },
     { title: 'Voi: E-scooters and e-bikes in London', url: 'https://www.voi.com/city/london' },
     { title: 'Transport for West Midlands: E-scooters in the West Midlands', url: 'https://www.tfwm.org.uk/plan-your-journey/ways-to-travel/e-scooters-in-the-west-midlands/' },

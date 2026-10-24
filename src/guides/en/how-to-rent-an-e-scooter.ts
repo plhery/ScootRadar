@@ -21,7 +21,7 @@ const guide: Guide = {
             '**Install the app and sign up** with your phone number or email.',
             '**Prove your age if asked.** Some cities make you scan an ID; in the UK you scan your driving licence.',
             '**Add a way to pay:** a card, or Apple Pay, Google Pay or PayPal where the operator offers them.',
-            '**Do the in-app lesson.** It’s compulsory in London and with Beryl, and every UK operator must offer one.',
+            '**Do the in-app lesson.** It’s compulsory in London and with Beryl in Plymouth, and every UK operator must offer one.',
             '**Check the price:** tap or scan the scooter to see the unlock fee and the rate per minute.',
             '**Scan the QR code** on the handlebar, or type the number printed under it.',
             '**Check the brakes, tyres, lights and battery.** If the scooter doesn’t work, report it: Voi and Dott don’t charge for one that fails after you unlock it.',
