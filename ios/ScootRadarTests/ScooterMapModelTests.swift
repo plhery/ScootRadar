@@ -34,7 +34,7 @@ final class ScooterMapModelTests: XCTestCase {
         model.viewport = GeoBounds(south: 52.49, west: 13.37, north: 52.55, east: 13.44)
         XCTAssertEqual(model.availableProviders, [.dott])
         model.viewport = GeoBounds(south: 41.88, west: 12.46, north: 41.93, east: 12.53)
-        XCTAssertEqual(model.availableProviders, [.bird])
+        XCTAssertEqual(model.availableProviders, [.bird, .dott])
         XCTAssertEqual(model.enabledProviders, selected)
         model.viewport = GeoBounds(south: 48.19, west: 9.16, north: 48.21, east: 9.19)
         XCTAssertFalse(model.availableProviders.contains(.lime))
