@@ -4,6 +4,9 @@ Update, 24 October 2026: additional Dott regions now use its anonymous app
 map. The audit below records the original GBFS investigation; the current
 catalog and [Dott adapter evidence](dott-app-map.md) supersede its Dott gaps.
 
+Qick's [authenticated ATOM map](atom-app-map.md) also now supplies Kassel,
+Münster and Göttingen. Those app-map systems are separate from this GBFS audit.
+
 
 Verified 8 September 2026. The audit checked 156 scooter candidates from the
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),

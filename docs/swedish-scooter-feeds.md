@@ -1,5 +1,10 @@
 # Swedish scooter feeds
 
+Update, 24 October 2026: Qick's authenticated ATOM map now supplies Örebro,
+Linköping, Norrköping, Jönköping, Eskilstuna, Falun and Borlänge. See the
+[ATOM adapter evidence](atom-app-map.md). The following audit describes
+the original public GBFS feeds; Qick is a separate source with its own credit.
+
 Verified 13 October 2026. The audit started from the
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
 and Dott's Swedish listing, then probed the URL patterns of Lime, Hopp and Bolt
@@ -112,8 +117,11 @@ No covered Swedish town bans renting at night, so
   Gävle (0) list only disabled scooters, last reported in 2022 and 2023.
 - **Hopp** answers 404 for every other Swedish town tried, Gällivare and Visby
   among them.
-- **Qick** (Örebro, Linköping, Norrköping, Västerås) runs on ATOM Mobility,
-  but its systems 5, 10, 53 and 104 answer "GBFS disabled" (18 October 2026).
+- **Qick** runs on ATOM Mobility. Its GBFS systems 5, 10, 53 and 104
+  answer "GBFS disabled", but its [authenticated app map](atom-app-map.md)
+  now supplies Örebro, Linköping, Norrköping, Jönköping, Eskilstuna, Falun
+  and Borlänge. Västerås, Stockholm and Trollhättan were empty in the app
+  check on 24 October 2026.
 - **Public data:** Sweden's national access point,
   [trafficdata.se](https://trafficdata.se), lists no shared-mobility
   dataset. Stockholm's [open data](https://openstreetgs.stockholm.se/Home/Data)

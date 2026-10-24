@@ -3027,6 +3027,60 @@
       "timeZone": "Europe/Berlin",
       "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=181&include_suggestion=false",
       "voiAppZone": "181"
+    },
+    {
+      "id": "qick_de_kassel",
+      "country": "DE",
+      "provider": "qick",
+      "city": "Kassel",
+      "center": [
+        51.3127,
+        9.4797
+      ],
+      "bounds": {
+        "south": 51.264893,
+        "west": 9.404046,
+        "north": 51.353084,
+        "east": 9.566549
+      },
+      "discoveryUrl": "https://app.rideatom.com/api/v1/user/vehicles",
+      "atomAppAccount": "qick-de"
+    },
+    {
+      "id": "qick_de_munster",
+      "country": "DE",
+      "provider": "qick",
+      "city": "Münster",
+      "center": [
+        51.9583,
+        7.6259
+      ],
+      "bounds": {
+        "south": 51.891661,
+        "west": 7.555496,
+        "north": 52.004049,
+        "east": 7.698929
+      },
+      "discoveryUrl": "https://app.rideatom.com/api/v1/user/vehicles",
+      "atomAppAccount": "qick-de"
+    },
+    {
+      "id": "qick_de_gottingen",
+      "country": "DE",
+      "provider": "qick",
+      "city": "Göttingen",
+      "center": [
+        51.5413,
+        9.9158
+      ],
+      "bounds": {
+        "south": 51.505101,
+        "west": 9.878137,
+        "north": 51.57076,
+        "east": 10.007672
+      },
+      "discoveryUrl": "https://app.rideatom.com/api/v1/user/vehicles",
+      "atomAppAccount": "qick-de"
     }
   ]
 }

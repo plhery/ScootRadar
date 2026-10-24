@@ -89,6 +89,7 @@ describe('the countries of data/countries.json', () => {
       'MobiData BW', 'Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified', 'BE: Pony · transportdata.be', 'NO: Entur AS · NLOD', 'NO: Kartverket boundaries · CC BY 4.0',
       'UK: Beryl · CDLA-Permissive-2.0', 'UK: ONS boundaries · OGL v3.0', 'PT: DGT boundaries · CC BY 4.0',
       // OpenStreetMap's boundaries, which several countries give, are credited once.
+      'DE/SE: Qick map',
       'DE/AT/IT/ES/PL/HU/GR/FI: Dott map',
       'DE/AT/IT/NO/GB/DK/SE/FI: Voi map',
       'CH/FR/PT/ES/PL/FI/UA: OpenStreetMap boundaries · ODbL', 'CA: City of Toronto · OGL Toronto',

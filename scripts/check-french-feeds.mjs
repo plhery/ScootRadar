@@ -102,8 +102,8 @@ async function appCollector(provider) {
 async function inspect(system) {
   const result = { system: system.id, country: system.country, city: system.city, provider: system.provider, discoveryUrl: system.discoveryUrl };
   try {
-    if (system.dottAppRegion || system.voiAppZone || system.limeAppMap) {
-      const collect = await appCollector(system.provider);
+    if (system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount) {
+      const collect = await appCollector(system.atomAppAccount ? 'atom' : system.provider);
       const snapshot = await collect(system);
       return { ...result, state: 'ok', version: 'app-map', availableScooters: snapshot.vehicles.length,
         withBattery: snapshot.vehicles.filter(v => v.battery !== null).length, withRange: 0, withRentalLink: 0,

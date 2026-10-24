@@ -28,6 +28,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     case saham
     case flamingo
     case jolt
+    case qick
 
     var id: String { rawValue }
 
@@ -57,6 +58,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .saham: "SAHAM"
         case .flamingo: "Flamingo"
         case .jolt: "JOLT"
+        case .qick: "Qick"
         }
     }
 
@@ -86,6 +88,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .saham: "Sa"
         case .flamingo: "Fl"
         case .jolt: "J"
+        case .qick: "Q"
         }
     }
 
@@ -102,6 +105,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .lime: OperatorApp(link: URL(string: "https://lime.bike/")!, appStore: URL(string: "https://apps.apple.com/app/id1199780189")!)
         case .publibike: OperatorApp(link: URL(string: "https://app.publibike.ch/")!, appStore: URL(string: "https://apps.apple.com/app/id6739938966")!)
         case .spin: OperatorApp(link: URL(string: "https://www.spin.app/")!, appStore: URL(string: "https://apps.apple.com/app/id1241808993")!)
+        case .qick: OperatorApp(link: URL(string: "https://qickscooters.app.link/")!, appStore: URL(string: "https://apps.apple.com/app/id1480390337")!)
         default: nil
         }
     }
@@ -134,6 +138,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .saham: UIColor(red: 0.117647, green: 0.662745, blue: 0.882353, alpha: 1)
         case .flamingo: UIColor(red: 1.000000, green: 0.125490, blue: 0.431373, alpha: 1)
         case .jolt: UIColor(red: 0.101961, green: 0.101961, blue: 0.101961, alpha: 1)
+        case .qick: UIColor(red: 0.109804, green: 0.631373, blue: 0.654902, alpha: 1)
         }
     }
 
@@ -160,6 +165,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         (.spin, [], ["spin"]),
         (.lyft, [], ["lyft"]),
         (.jolt, [], ["jolt"]),
+        (.qick, [], ["qick"]),
         (.voi, [], ["voi"]),
         (.veo, [], ["veo"]),
     ]
@@ -420,6 +426,9 @@ enum ScooterProviderCoverage {
         (.voi, GeoBounds(south: 49.7244748082939, west: 8.45072655515728, north: 49.987662962682, east: 8.87669813339172)),
         (.voi, GeoBounds(south: 53.63491483484561, west: 10.319019787929623, north: 54.10546451711241, east: 11.058746731289023)),
         (.voi, GeoBounds(south: 54.2415568529537, west: 9.98725891113281, north: 54.4117378402846, east: 10.3230285644531)),
+        (.qick, GeoBounds(south: 51.264893, west: 9.404046, north: 51.353084, east: 9.566549)),
+        (.qick, GeoBounds(south: 51.891661, west: 7.555496, north: 52.004049, east: 7.698929)),
+        (.qick, GeoBounds(south: 51.505101, west: 9.878137, north: 51.57076, east: 10.007672)),
         (.dott, GeoBounds(south: 47.9753, west: 16.1998, north: 48.0189, east: 16.2796)),
         (.dott, GeoBounds(south: 47.4355, west: 9.6622, north: 47.584, east: 9.7976)),
         (.dott, GeoBounds(south: 47.3797, west: 9.6916, north: 47.4558, east: 9.7715)),
@@ -621,6 +630,13 @@ enum ScooterProviderCoverage {
         (.voi, GeoBounds(south: 56.48372869256887, west: 12.56561279296875, north: 56.857982669693584, east: 13.38134765625)),
         (.voi, GeoBounds(south: 59.559431, west: 16.411313, north: 59.683119, east: 16.672767)),
         (.voi, GeoBounds(south: 55.503978, west: 12.809006, north: 55.661015, east: 13.167879)),
+        (.qick, GeoBounds(south: 59.237656, west: 15.151384, north: 59.306636, east: 15.268032)),
+        (.qick, GeoBounds(south: 58.371166, west: 15.493934, north: 58.437915, east: 15.713755)),
+        (.qick, GeoBounds(south: 58.558753, west: 16.121776, north: 58.624559, east: 16.243879)),
+        (.qick, GeoBounds(south: 57.757437, west: 14.11968, north: 57.798462, east: 14.260196)),
+        (.qick, GeoBounds(south: 59.339476, west: 16.433246, north: 59.406399, east: 16.562471)),
+        (.qick, GeoBounds(south: 60.568036, west: 15.583741, north: 60.630238, east: 15.707035)),
+        (.qick, GeoBounds(south: 60.455159, west: 15.376463, north: 60.526219, east: 15.486713)),
         (.ride_mobility, GeoBounds(south: 56.862, west: 23.8878, north: 57.0871, east: 24.3426)),
         (.dott, GeoBounds(south: 50.0153, west: 19.1853, north: 50.0623, east: 19.2617)),
         (.dott, GeoBounds(south: 50.2488, west: 19.0917, north: 50.3188, east: 19.2153)),
@@ -1053,7 +1069,7 @@ enum ScooterCityCatalog {
         ScooterCity(id: "de:Sindelfingen", name: "Sindelfingen", countryCode: "DE", center: GeoPoint(latitude: 48.7084, longitude: 9.0035), bounds: GeoBounds(south: 48.6625, west: 8.95, north: 48.738, east: 9.058)),
         ScooterCity(id: "de:Erfurt", name: "Erfurt", countryCode: "DE", center: GeoPoint(latitude: 50.9787, longitude: 11.0328), bounds: GeoBounds(south: 50.9374, west: 10.9742, north: 51.031, east: 11.1075)),
         ScooterCity(id: "de:Freiburg im Breisgau", name: "Freiburg im Breisgau", countryCode: "DE", center: GeoPoint(latitude: 47.999, longitude: 7.8421), bounds: GeoBounds(south: 47.958, west: 7.746, north: 48.0667, east: 7.9323)),
-        ScooterCity(id: "de:Göttingen", name: "Göttingen", countryCode: "DE", center: GeoPoint(latitude: 51.5413, longitude: 9.9158), bounds: GeoBounds(south: 51.4953, west: 9.8716, north: 51.6057, east: 9.9978)),
+        ScooterCity(id: "de:Göttingen", name: "Göttingen", countryCode: "DE", center: GeoPoint(latitude: 51.5413, longitude: 9.9158), bounds: GeoBounds(south: 51.4953, west: 9.8716, north: 51.6057, east: 10.007672)),
         ScooterCity(id: "de:Bovenden", name: "Bovenden", countryCode: "DE", center: GeoPoint(latitude: 51.5884, longitude: 9.9222), bounds: GeoBounds(south: 51.5795, west: 9.9159, north: 51.6057, east: 9.9474)),
         ScooterCity(id: "de:Bamberg", name: "Bamberg", countryCode: "DE", center: GeoPoint(latitude: 49.8988, longitude: 10.9028), bounds: GeoBounds(south: 49.8549, west: 10.83, north: 49.9301, east: 10.9481)),
         ScooterCity(id: "de:Donaueschingen", name: "Donaueschingen", countryCode: "DE", center: GeoPoint(latitude: 47.9531, longitude: 8.5033), bounds: GeoBounds(south: 47.9204, west: 8.4496, north: 47.9818, east: 8.5362)),
@@ -1131,6 +1147,7 @@ enum ScooterCityCatalog {
         ScooterCity(id: "de:Mainz", name: "Mainz", countryCode: "DE", center: GeoPoint(latitude: 50, longitude: 8.27), bounds: GeoBounds(south: 49.8629916997857, west: 7.94021781950754, north: 50.025, east: 8.39298161072504)),
         ScooterCity(id: "de:Augsburg", name: "Augsburg", countryCode: "DE", center: GeoPoint(latitude: 48.37796, longitude: 10.89844), bounds: GeoBounds(south: 48.2411382384804, west: 10.65673828125, north: 48.5147849720974, east: 11.14013671875)),
         ScooterCity(id: "de:Lübeck", name: "Lübeck", countryCode: "DE", center: GeoPoint(latitude: 53.87019, longitude: 10.68888), bounds: GeoBounds(south: 53.63491483484561, west: 10.319019787929623, north: 54.10546451711241, east: 11.058746731289023)),
+        ScooterCity(id: "de:Kassel", name: "Kassel", countryCode: "DE", center: GeoPoint(latitude: 51.3127, longitude: 9.4797), bounds: GeoBounds(south: 51.264893, west: 9.404046, north: 51.353084, east: 9.566549)),
         ScooterCity(id: "at:Baden", name: "Baden", countryCode: "AT", center: GeoPoint(latitude: 48.004, longitude: 16.2423), bounds: GeoBounds(south: 47.9753, west: 16.1998, north: 48.0189, east: 16.2796)),
         ScooterCity(id: "at:Bregenz", name: "Bregenz", countryCode: "AT", center: GeoPoint(latitude: 47.4981, longitude: 9.7371), bounds: GeoBounds(south: 47.4355, west: 9.6622, north: 47.584, east: 9.7976)),
         ScooterCity(id: "at:Dornbirn", name: "Dornbirn", countryCode: "AT", center: GeoPoint(latitude: 47.4159, longitude: 9.7382), bounds: GeoBounds(south: 47.3797, west: 9.6916, north: 47.4558, east: 9.7715)),
@@ -1303,6 +1320,10 @@ enum ScooterCityCatalog {
         ScooterCity(id: "se:Halmstad", name: "Halmstad", countryCode: "SE", center: GeoPoint(latitude: 56.67152, longitude: 12.97145), bounds: GeoBounds(south: 56.48372869256887, west: 12.56561279296875, north: 56.857982669693584, east: 13.38134765625)),
         ScooterCity(id: "se:Västerås", name: "Västerås", countryCode: "SE", center: GeoPoint(latitude: 59.62134, longitude: 16.5418), bounds: GeoBounds(south: 59.559431, west: 16.411313, north: 59.683119, east: 16.672767)),
         ScooterCity(id: "se:Malmö", name: "Malmö", countryCode: "SE", center: GeoPoint(latitude: 55.5825, longitude: 12.98844), bounds: GeoBounds(south: 55.503978, west: 12.809006, north: 55.661015, east: 13.167879)),
+        ScooterCity(id: "se:Jönköping", name: "Jönköping", countryCode: "SE", center: GeoPoint(latitude: 57.7826, longitude: 14.1618), bounds: GeoBounds(south: 57.757437, west: 14.11968, north: 57.798462, east: 14.260196)),
+        ScooterCity(id: "se:Eskilstuna", name: "Eskilstuna", countryCode: "SE", center: GeoPoint(latitude: 59.3712, longitude: 16.5098), bounds: GeoBounds(south: 59.339476, west: 16.433246, north: 59.406399, east: 16.562471)),
+        ScooterCity(id: "se:Falun", name: "Falun", countryCode: "SE", center: GeoPoint(latitude: 60.6065, longitude: 15.6355), bounds: GeoBounds(south: 60.568036, west: 15.583741, north: 60.630238, east: 15.707035)),
+        ScooterCity(id: "se:Borlänge", name: "Borlänge", countryCode: "SE", center: GeoPoint(latitude: 60.4843, longitude: 15.433), bounds: GeoBounds(south: 60.455159, west: 15.376463, north: 60.526219, east: 15.486713)),
         ScooterCity(id: "lv:Rīga", name: "Rīga", countryCode: "LV", center: GeoPoint(latitude: 56.9496, longitude: 24.1052), bounds: GeoBounds(south: 56.862, west: 23.8878, north: 57.0871, east: 24.3426)),
         ScooterCity(id: "pl:Oświęcim", name: "Oświęcim", countryCode: "PL", center: GeoPoint(latitude: 50.0382, longitude: 19.2214), bounds: GeoBounds(south: 50.0153, west: 19.1853, north: 50.0623, east: 19.2617)),
         ScooterCity(id: "pl:Sosnowiec", name: "Sosnowiec", countryCode: "PL", center: GeoPoint(latitude: 50.2781, longitude: 19.1343), bounds: GeoBounds(south: 50.2488, west: 19.0917, north: 50.3188, east: 19.2153)),
@@ -1530,7 +1551,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 584
+    static let cityCount = 589
     static let countryCount = 29
 
     /// Cities by distance from the point to their centre, nearest first.
@@ -1838,6 +1859,7 @@ enum ScooterCountryCatalog {
         ("UK: Beryl · CDLA-Permissive-2.0", "https://cdla.dev/permissive-2-0/"),
         ("UK: ONS boundaries · OGL v3.0", "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"),
         ("PT: DGT boundaries · CC BY 4.0", "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop"),
+        ("DE/SE: Qick map", "https://www.qickscooters.com/"),
         ("DE/AT/IT/ES/PL/HU/GR/FI: Dott map", "https://ridedott.com/"),
         ("DE/AT/IT/NO/GB/DK/SE/FI: Voi map", "https://www.voi.com/"),
         ("NZ: Flamingo · CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/"),

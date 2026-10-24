@@ -325,6 +325,132 @@
       "timeZone": "Europe/Stockholm",
       "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=7&include_suggestion=false",
       "voiAppZone": "7"
+    },
+    {
+      "id": "qick_se_orebro",
+      "country": "SE",
+      "provider": "qick",
+      "city": "Örebro",
+      "center": [
+        59.27537,
+        15.24203
+      ],
+      "bounds": {
+        "south": 59.237656,
+        "west": 15.151384,
+        "north": 59.306636,
+        "east": 15.268032
+      },
+      "discoveryUrl": "https://app.rideatom.com/api/v1/user/vehicles",
+      "atomAppAccount": "qick-se"
+    },
+    {
+      "id": "qick_se_linkoping",
+      "country": "SE",
+      "provider": "qick",
+      "city": "Linköping",
+      "center": [
+        58.41244,
+        15.62333
+      ],
+      "bounds": {
+        "south": 58.371166,
+        "west": 15.493934,
+        "north": 58.437915,
+        "east": 15.713755
+      },
+      "discoveryUrl": "https://app.rideatom.com/api/v1/user/vehicles",
+      "atomAppAccount": "qick-se"
+    },
+    {
+      "id": "qick_se_norrkoping",
+      "country": "SE",
+      "provider": "qick",
+      "city": "Norrköping",
+      "center": [
+        58.57866,
+        16.2325
+      ],
+      "bounds": {
+        "south": 58.558753,
+        "west": 16.121776,
+        "north": 58.624559,
+        "east": 16.243879
+      },
+      "discoveryUrl": "https://app.rideatom.com/api/v1/user/vehicles",
+      "atomAppAccount": "qick-se"
+    },
+    {
+      "id": "qick_se_jonkoping",
+      "country": "SE",
+      "provider": "qick",
+      "city": "Jönköping",
+      "center": [
+        57.7826,
+        14.1618
+      ],
+      "bounds": {
+        "south": 57.757437,
+        "west": 14.11968,
+        "north": 57.798462,
+        "east": 14.260196
+      },
+      "discoveryUrl": "https://app.rideatom.com/api/v1/user/vehicles",
+      "atomAppAccount": "qick-se"
+    },
+    {
+      "id": "qick_se_eskilstuna",
+      "country": "SE",
+      "provider": "qick",
+      "city": "Eskilstuna",
+      "center": [
+        59.3712,
+        16.5098
+      ],
+      "bounds": {
+        "south": 59.339476,
+        "west": 16.433246,
+        "north": 59.406399,
+        "east": 16.562471
+      },
+      "discoveryUrl": "https://app.rideatom.com/api/v1/user/vehicles",
+      "atomAppAccount": "qick-se"
+    },
+    {
+      "id": "qick_se_falun",
+      "country": "SE",
+      "provider": "qick",
+      "city": "Falun",
+      "center": [
+        60.6065,
+        15.6355
+      ],
+      "bounds": {
+        "south": 60.568036,
+        "west": 15.583741,
+        "north": 60.630238,
+        "east": 15.707035
+      },
+      "discoveryUrl": "https://app.rideatom.com/api/v1/user/vehicles",
+      "atomAppAccount": "qick-se"
+    },
+    {
+      "id": "qick_se_borlange",
+      "country": "SE",
+      "provider": "qick",
+      "city": "Borlänge",
+      "center": [
+        60.4843,
+        15.433
+      ],
+      "bounds": {
+        "south": 60.455159,
+        "west": 15.376463,
+        "north": 60.526219,
+        "east": 15.486713
+      },
+      "discoveryUrl": "https://app.rideatom.com/api/v1/user/vehicles",
+      "atomAppAccount": "qick-se"
     }
   ]
 }

@@ -61,6 +61,10 @@ const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
     schemes: [],
     httpsHosts: ['ride-hoppy.app.link', 'behoppy.eu'],
   },
+  qick: {
+    schemes: [],
+    httpsHosts: ['qickscooters.app.link', 'qickscooters.com'],
+  },
   // Ride Mobility runs on ATOM Mobility, as Hoppy does, and links each scooter the same way.
   ride_mobility: {
     schemes: [],

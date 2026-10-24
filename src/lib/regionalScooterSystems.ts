@@ -46,6 +46,8 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   voiAppZone?: string;
   /** Bounded scooter viewports, collected completely using the cache's private Lime session. */
   limeAppMap?: true;
+  /** ATOM rider-map account, whose app identifiers and rider token are private to the Node cache. */
+  atomAppAccount?: string;
   /** Published subregions of a shared feed; fetched once, routed per city. */
   areas?: ScooterServiceArea[];
   /**
@@ -72,7 +74,7 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
 export const REGIONAL_SCOOTER_SYSTEMS = CATALOG_SYSTEMS as RegionalScooterSystem[];
 
 export function isAppMapSystem(system: RegionalScooterSystem) {
-  return Boolean(system.dottAppRegion || system.voiAppZone || system.limeAppMap);
+  return Boolean(system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount);
 }
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {

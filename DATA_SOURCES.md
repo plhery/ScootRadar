@@ -242,6 +242,24 @@ record the source and the request wording. The country-specific GBFS audits
 below describe their original checks; this supplement supersedes their
 claims that these Dott regions have no usable source.
 
+## ATOM rider app
+
+Since 24 October 2026, Qick's authenticated ATOM map supplies Örebro,
+Linköping, Norrköping, Jönköping, Eskilstuna, Falun and Borlänge in Sweden,
+and Kassel, Münster and Göttingen in Germany. These are app-map systems,
+separate from the existing public ATOM GBFS feeds. The user authorized
+creating the test rider account; credentials stay in the cache's private
+volume and the apps' credits link to Qick.
+
+Each native request covers a two-kilometre circle. The collector sweeps
+overlapping views across reviewed city bounds, preserving battery charge,
+deduplicating scooters and excluding hidden or active vehicles. All views
+must succeed before a city's snapshot changes. Rate limiting requires
+four seconds between reads across both accounts, so concurrent watched
+cities can refresh more slowly than once a minute. See the
+[protocol, coverage and session guide](docs/atom-app-map.md). Other ATOM
+brands require their own verified app/account access.
+
 ## Address data
 
 Supported city names and aliases are found in the local, reviewed

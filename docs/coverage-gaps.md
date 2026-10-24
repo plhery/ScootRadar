@@ -242,8 +242,10 @@ banned shared scooters, and feeds that were empty when checked.
   - Lime Stockholm, Göteborg and Malmö answer 404.
   - Zeus Borlänge, Falun, Halmstad, Karlstad and Gävle list only disabled
     scooters, last reported in 2022 and 2023.
-  - Qick (Örebro, Linköping, Norrköping, Västerås) is on ATOM Mobility, but
-    its systems 5, 10, 53 and 104 answer "GBFS disabled" (18 October 2026).
+  - Qick's GBFS systems 5, 10, 53 and 104 answer "GBFS disabled", but its
+    [authenticated ATOM map](atom-app-map.md) now supplies Örebro,
+    Linköping, Norrköping, Jönköping, Eskilstuna, Falun and Borlänge.
+    Västerås, Stockholm and Trollhättan were empty on 24 October 2026.
   - Sweden's national access point (trafficdata.se) has no shared-mobility
     data, and Stockholm's open data has scooter parking bays only, behind a
     key.

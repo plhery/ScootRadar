@@ -180,5 +180,20 @@
     "color": "#1a1a1a",
     "initial": "J",
     "systemIds": { "prefixes": ["jolt"] }
+  },
+  {
+    "key": "qick",
+    "name": "Qick",
+    "color": "#1ca1a7",
+    "initial": "Q",
+    "systemIds": {
+      "prefixes": [
+        "qick"
+      ]
+    },
+    "app": {
+      "link": "https://qickscooters.app.link/",
+      "appStoreId": 1480390337
+    }
   }
 ]

@@ -19,9 +19,10 @@ import { answerZones, createZoneStore } from './zoneStore';
 import { createStrayHold } from './strayHold';
 import { dottMapRequests, withDottAppCollectors } from './dottApp';
 import { voiMapRequests, withVoiAppCollectors } from './voiApp';
+import { atomMapRequests, withAtomAppCollectors } from './atomApp';
 
-const withAppCollectors = (feeds: CollectableScooterFeed[]) => withVoiAppCollectors(
-  withDottAppCollectors(feeds, REGIONAL_SCOOTER_SYSTEMS), REGIONAL_SCOOTER_SYSTEMS);
+const withAppCollectors = (feeds: CollectableScooterFeed[]) => withAtomAppCollectors(withVoiAppCollectors(
+  withDottAppCollectors(feeds, REGIONAL_SCOOTER_SYSTEMS), REGIONAL_SCOOTER_SYSTEMS), REGIONAL_SCOOTER_SYSTEMS);
 
 initErrorReporting();
 upstreamJsonCache.paceHost('gbfs.api.ridedott.com', 150);
@@ -76,8 +77,8 @@ const holdStrays = createStrayHold((id, now) => scheduler.fastSince(id, now) ===
 const countedAt = (now: number) => (feed: FeedSnapshot) => feedState(feed, now, cadence) !== 'expired';
 const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
   cadenceModes: now => scheduler.modes(now), upstreamRequests: () => ({
-    status: upstreamJsonCache.requests.status + dottMapRequests.status + voiMapRequests.status,
-    metadata: upstreamJsonCache.requests.metadata + voiMapRequests.metadata,
+    status: upstreamJsonCache.requests.status + dottMapRequests.status + voiMapRequests.status + atomMapRequests.status,
+    metadata: upstreamJsonCache.requests.metadata + voiMapRequests.metadata + atomMapRequests.metadata,
   }),
   planRefreshes: () => planRefreshCounts,
   upstreamCache: () => ({ entries: upstreamJsonCache.size, capacity: upstreamJsonCache.capacity,

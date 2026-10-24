@@ -378,6 +378,10 @@ enum ScooterRentalLinkPolicy {
             schemes: [],
             httpsHosts: ["ride-hoppy.app.link", "behoppy.eu"]
         ),
+        "qick": ProviderPolicy(
+            schemes: [],
+            httpsHosts: ["qickscooters.app.link", "qickscooters.com"]
+        ),
         "ride_mobility": ProviderPolicy(
             schemes: [],
             httpsHosts: ["ridemobility.app.link", "ridemobility.eu"]
