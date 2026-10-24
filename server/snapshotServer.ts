@@ -2,20 +2,24 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { isIP } from 'node:net';
 import { parseScooterQuery } from '../src/lib/scooterQuery';
-import { feedsForQuery, querySnapshot, showsPositions, VEHICLE_MAX_AGE_MS, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
+import { feedsForQuery, querySnapshot, showsLastSeen, showsPositions, VEHICLE_MAX_AGE_MS, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { ScooterFeedsUnavailableError } from '../src/lib/scooterFeeds';
 import { scooterResponseHeaders } from '../src/lib/scooterResponse';
 import { collectsParking } from '../src/lib/regionalScooterSystems';
 import { zoneQueryError, type ZoneResponse } from '../src/lib/zones';
 import type { FeedQuery } from '../src/lib/scooterFeeds';
+import type { MapBounds } from '../src/lib/types';
 import type { SnapshotMetrics } from './metrics';
 import { reportError } from './errorReporting';
 import { ALWAYS_FAST, feedState, parkingUp, type FeedCadence } from './feedStateLog';
 
 /** Collects feeds on demand: the scheduler. */
 export interface FeedRefresher {
-  /** Marks the feeds as watched, and collects at once those last collected over an active interval ago. */
-  demand(ids: string[], now: number): void;
+  /**
+   * Marks the feeds as watched, and collects at once those last collected over an active interval
+   * ago; their sweeps start where `focus`, the area asked for, is.
+   */
+  demand(ids: string[], now: number, focus?: MapBounds): void;
   /** A collection a request asked for is queued or under way. */
   refreshing(id: string): boolean;
   /** Resolves with true once the feeds' collections have finished, or with false after timeoutMs. */
@@ -27,6 +31,12 @@ export interface FeedRefresher {
  * Worker gives the origin 5 seconds (src/lib/scooterProxy.ts).
  */
 export const COLD_WAIT_MS = 3_000;
+/**
+ * How long it waits instead when every such feed can show where its scooters were last seen,
+ * faded, or what its sweep under way has found: long enough for the quick app maps, as Dott's and
+ * Voi's, to answer at once, without holding up a slow sweep's.
+ */
+export const LAST_SEEN_WAIT_MS = 1_000;
 
 interface ServerOptions {
   snapshot: () => MobilitySnapshot | undefined;
@@ -41,6 +51,8 @@ interface ServerOptions {
   refresher?: FeedRefresher;
   /** COLD_WAIT_MS by default. */
   coldWaitMs?: number;
+  /** LAST_SEEN_WAIT_MS by default. */
+  lastSeenWaitMs?: number;
   /** Answers /api/zones, the zones of the feeds in the area; it answers 404 without. */
   zones?: (query: FeedQuery) => Promise<ZoneResponse>;
 }
@@ -147,11 +159,15 @@ export function createSnapshotServer(options: ServerOptions) {
     if (refresher) {
       // The feeds this answer uses are watched for a while, and collected again now if their data is over a minute old.
       const watched = feedsForQuery(snapshot, parsed.query, parsed.zoom).filter(feed => !feed.skipped);
-      refresher.demand(watched.map(feed => feed.id), now);
-      // Positions too old to show would leave the map empty: wait a moment for those likely to come back.
-      const cold = watched.filter(feed => !feed.failed && !showsPositions(feed, now) && refresher.refreshing(feed.id));
+      refresher.demand(watched.map(feed => feed.id), now, parsed.query.bounds);
+      // Positions too old to show would leave the map empty: wait a moment for those likely to come back,
+      // less long when all of them have something to show meanwhile.
+      const coming = new Set(watched.filter(feed => refresher.refreshing(feed.id)).map(feed => feed.id));
+      const cold = watched.filter(feed => !feed.failed && !showsPositions(feed, now) && coming.has(feed.id));
       if (cold.length) {
-        options.metrics?.recordWait(await refresher.wait(cold.map(feed => feed.id), options.coldWaitMs ?? COLD_WAIT_MS));
+        const bare = cold.some(feed => !feed.sweep && !showsLastSeen(feed, now, coming));
+        options.metrics?.recordWait(await refresher.wait(cold.map(feed => feed.id),
+          bare ? options.coldWaitMs ?? COLD_WAIT_MS : options.lastSeenWaitMs ?? LAST_SEEN_WAIT_MS));
         snapshot = options.snapshot() ?? snapshot;
       }
       refreshing = new Set(watched.filter(feed => refresher.refreshing(feed.id)).map(feed => feed.id));

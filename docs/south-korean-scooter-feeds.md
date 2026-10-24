@@ -200,7 +200,7 @@ keeping road numbers after Hangul street names and before Roman ones.
 ## Load
 
 The cache collects each Kickgoing, Xingxing and Swing town every 20 minutes,
-each GCOO town every hour (`GCOO_IDLE_INTERVAL_MS`), and any town every minute
+each GCOO town every two hours (`GCOO_IDLE_INTERVAL_MS`), and any town every minute
 while someone looks at it. A round of every town takes about:
 
 - GCOO: 3,300 requests in Korea, over 636 tiles and their parts, and about

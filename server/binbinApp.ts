@@ -2,6 +2,9 @@ import areaCatalog from '../data/binbin-areas.json';
 import { boundsContainPoint, haversineM, polygonContainsPoint } from '../src/lib/geo';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
+import type { MapBounds, Vehicle } from '../src/lib/types';
+import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
+import { Pacer, SweepProgress } from './sweeps';
 
 const ORIGIN = 'https://gatewayapi-sp.binbinapp.com';
 const LIST_PATH = '/binbin/api/v1/vehicles/list';
@@ -14,7 +17,7 @@ export const BINBIN_PAGE = 10;
 export const BINBIN_REACH_M = 15_000;
 const RETRY_MS = 60_000;
 /** An area nobody looks at is swept every two hours: a round of all 13 takes thousands of requests. */
-export const BINBIN_IDLE_INTERVAL_MS = 2 * 60 * 60_000;
+export const BINBIN_IDLE_INTERVAL_MS = APP_MAP_IDLE_INTERVAL_MS;
 export const binbinMapRequests = { status: 0, metadata: 0 };
 
 export interface BinbinScooter { id: string; lat: number; lng: number; battery: number | null }
@@ -63,23 +66,20 @@ export function parseBinbinReply(payload: unknown, lat: number, lng: number, rad
 export class BinbinClient {
   private readonly fetch: typeof fetch;
   private readonly now: () => number;
-  private readonly intervalMs: number;
+  private readonly pace: Pacer;
   private readonly timeoutMs: number;
-  private nextStart = 0;
   private blockedUntil = 0;
 
   constructor(options: ClientOptions = {}) {
     this.fetch = options.fetch ?? fetch;
     this.now = options.now ?? Date.now;
-    this.intervalMs = options.intervalMs ?? 250;
+    this.pace = new Pacer(options.intervalMs ?? 250, this.now);
     this.timeoutMs = options.timeoutMs ?? 15_000;
   }
 
   async nearest(lat: number, lng: number, radiusM = BINBIN_REACH_M): Promise<BinbinReply> {
     if (this.now() < this.blockedUntil) throw new Error('BinBin is temporarily rate limited');
-    const wait = Math.max(0, this.nextStart - this.now());
-    this.nextStart = this.now() + wait + this.intervalMs;
-    if (wait) await new Promise(resolve => setTimeout(resolve, wait));
+    await this.pace.turn();
     if (this.now() < this.blockedUntil) throw new Error('BinBin is temporarily rate limited');
     binbinMapRequests.status++;
     let response: Response;
@@ -387,15 +387,22 @@ export interface BinbinSweep { scooters: BinbinScooter[]; requests: number; plan
 const IN_FLIGHT = 3;
 interface Limits { requests: number; milliseconds: number; retryMs: number }
 
+/** The square inside the circle a reply lists every scooter of. */
+function heldSquare(lat: number, lng: number, radiusM: number): MapBounds {
+  const dLat = radiusM / Math.SQRT2 / 111_320;
+  const dLng = dLat / Math.max(Math.cos(lat * Math.PI / 180), 0.01);
+  return { south: lat - dLat, north: lat + dLat, west: lng - dLng, east: lng + dLng };
+}
+
 /**
  * A complete sweep of one service area: every point of its outline ends within a reply that
  * lists every scooter that near it. A sweep that cannot finish within its limits fails, and the
  * cache keeps the area's last sweep. Each scooter it sees, inside the outline or not, is in found
- * as soon as it is seen.
+ * as soon as it is seen, and `done` hears of the square each reply answers for.
  */
 export async function sweepBinbinArea(api: Pick<BinbinClient, 'nearest'>, rings: readonly Ring[],
   previous: readonly { lat: number; lng: number }[], limits: Limits = { requests: 3_000, milliseconds: 20 * 60_000, retryMs: 3_000 },
-  found = new Map<string, BinbinScooter>()): Promise<BinbinSweep> {
+  found = new Map<string, BinbinScooter>(), done?: (part: MapBounds) => void): Promise<BinbinSweep> {
   const startedAt = Date.now();
   const discs = new Discs();
   const piles = { count: 0 };
@@ -412,6 +419,7 @@ export async function sweepBinbinArea(api: Pick<BinbinClient, 'nearest'>, rings:
     // The later of two sightings of a scooter ridden meanwhile wins.
     for (const scooter of reply.scooters) found.set(scooter.id, scooter);
     discs.add({ lat, lng, r: reply.completeM });
+    done?.(heldSquare(lat, lng, reply.completeM));
   };
   // Up to IN_FLIGHT at once, and none started once one has failed. Each lane works through its own
   // run of the items, which openCells lists neighbours next to neighbours: a reply can spare the
@@ -466,8 +474,17 @@ export async function collectBinbinArea(system: RegionalScooterSystem, previous:
   const known = new Map<string, Position>(previous.map(({ vehicle_id, lat, lng }) => [vehicle_id ?? `${lat},${lng}`, { lat, lng }]));
   for (const [id, position] of sightings.get(system.id) ?? []) known.set(id, position);
   const seen = new Map<string, BinbinScooter>();
+  const published = (scooters: Iterable<BinbinScooter>): Vehicle[] => [...scooters]
+    .filter(scooter => boundsContainPoint(system.bounds, scooter.lat, scooter.lng)).map(scooter => ({
+      provider: 'binbin', vehicle_id: `${system.id}:${scooter.id}`, lat: scooter.lat, lng: scooter.lng,
+      battery: scooter.battery, range_m: null, deep_link: null, distance_m: null,
+    }));
+  const progress = new SweepProgress(() => published([...seen.values()]
+    .filter(scooter => rings.some(ring => polygonContainsPoint(ring, scooter.lat, scooter.lng)))));
   let sweep: BinbinSweep;
-  try { sweep = await sweepBinbinArea(api, rings, [...known.values()], undefined, seen); } catch (error) {
+  try {
+    sweep = await sweepBinbinArea(api, rings, [...known.values()], undefined, seen, part => progress.done(part));
+  } catch (error) {
     for (const { id, lat, lng } of seen.values()) known.set(`${system.id}:${id}`, { lat, lng });
     sightings.set(system.id, known);
     throw error;
@@ -476,11 +493,7 @@ export async function collectBinbinArea(system: RegionalScooterSystem, previous:
   console.log(JSON.stringify({ event: 'binbin_sweep', system: system.id, scooters: sweep.scooters.length,
     requests: sweep.requests, planned: sweep.planned, piles: sweep.piles, seconds: Math.round((Date.now() - sweep.startedAt) / 1000) }));
   // Positions as old as the sweep's first reply.
-  return { observedAt: sweep.startedAt, stale: false,
-    vehicles: sweep.scooters.filter(scooter => boundsContainPoint(system.bounds, scooter.lat, scooter.lng)).map(scooter => ({
-      provider: 'binbin', vehicle_id: `${system.id}:${scooter.id}`, lat: scooter.lat, lng: scooter.lng,
-      battery: scooter.battery, range_m: null, deep_link: null, distance_m: null,
-    })) };
+  return { observedAt: sweep.startedAt, stale: false, vehicles: published(sweep.scooters) };
 }
 
 const client = new BinbinClient();

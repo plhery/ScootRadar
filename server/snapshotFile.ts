@@ -31,7 +31,10 @@ export async function writeSnapshot(path: string, snapshot: MobilitySnapshot): P
   await pipeline(function* lines() {
     // JSON.stringify never writes a line break of its own: one inside a name is written \n.
     yield `${JSON.stringify(rest).slice(0, -1)}${FEEDS_START}\n`;
-    for (const [index, feed] of feeds.entries()) yield `${JSON.stringify(feed)}${index < feeds.length - 1 ? ',' : ''}\n`;
+    // A sweep under way is not kept: a restart ends it.
+    for (const [index, feed] of feeds.entries()) {
+      yield `${JSON.stringify(feed.sweep ? { ...feed, sweep: undefined } : feed)}${index < feeds.length - 1 ? ',' : ''}\n`;
+    }
     yield `${FEEDS_END}\n`;
   }, createWriteStream(path));
 }

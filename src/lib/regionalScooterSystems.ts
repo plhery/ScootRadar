@@ -119,6 +119,8 @@ export function isRegionalSource(source: string): source is RegionalSource {
 }
 
 const APP_MAP_FEEDS = new Set(REGIONAL_SCOOTER_SYSTEMS.filter(isAppMapSystem).map(system => `${regionalSource(system)}:${system.id}`));
+/** Whether the feed is an operator's app map, read in views as its app does (DATA_SOURCES.md). */
+export const isAppMapFeed = (feed: { id: string }) => APP_MAP_FEEDS.has(feed.id);
 /** Whether the feed collects parking: a regional one, but no app map's, as they have none (server/scooter-cache.ts). */
 export function collectsParking(feed: { id: string; source: string }) {
   return isRegionalSource(feed.source) && !APP_MAP_FEEDS.has(feed.id);

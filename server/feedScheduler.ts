@@ -1,4 +1,5 @@
 import { reportError } from './errorReporting';
+import type { MapBounds } from '../src/lib/types';
 
 export interface ScheduledFeed {
   id: string;
@@ -25,6 +26,14 @@ export interface CollectionOutcome {
  */
 export type CollectionReason = 'always' | 'wake' | 'watched' | 'idle' | 'retry';
 export type FeedCadenceMode = 'always' | 'watched' | 'idle';
+
+/** What a collection under way can ask of the scheduler (sweeps.ts). */
+export interface CollectionAttention {
+  /** Someone is looking at the feed: a request is waiting for it, or one has asked within the watch. */
+  urgent(): boolean;
+  /** Where the last request for the feed looked, while it is watched. */
+  focus(): MapBounds | undefined;
+}
 
 export interface SchedulerOptions<T extends ScheduledFeed> {
   /** How often always-fast and watched feeds are collected. */
@@ -71,6 +80,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
   private readonly failures = new Map<string, number>();
   private readonly watchedSince = new Map<string, number>();
   private readonly watchedUntil = new Map<string, number>();
+  private readonly focusOf = new Map<string, MapBounds>();
   // Collections a request asked for, until they finish.
   private readonly woken = new Set<string>();
   private readonly waiters = new Map<string, Set<() => void>>();
@@ -78,7 +88,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
   private timer?: ReturnType<typeof setTimeout>;
   private stopped = true;
 
-  constructor(private readonly collect: (feed: T) => Promise<CollectionOutcome | void>,
+  constructor(private readonly collect: (feed: T, attention: CollectionAttention) => Promise<CollectionOutcome | void>,
     options: Partial<SchedulerOptions<T>> = {}) {
     this.options = { ...DEFAULT_SCHEDULE, alwaysFast: () => false, ...options };
   }
@@ -87,7 +97,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
     this.definitions = definitions;
     const now = Date.now();
     const ids = new Set(definitions.map(feed => feed.id));
-    for (const map of [this.due, this.startedAt, this.failures, this.watchedSince, this.watchedUntil, this.byId]) {
+    for (const map of [this.due, this.startedAt, this.failures, this.watchedSince, this.watchedUntil, this.focusOf, this.byId]) {
       for (const id of map.keys()) if (!ids.has(id)) map.delete(id);
     }
     for (const id of this.woken) if (!ids.has(id) && !this.running.has(id)) this.settle(id);
@@ -113,14 +123,16 @@ export class FeedScheduler<T extends ScheduledFeed> {
    * Marks the feeds as watched. Those last collected over an active interval
    * ago are collected at once, or their collection under way now counts as
    * asked for; the others are collected an active interval after their last.
+   * `focus` is where the request looked, which their sweeps collect first.
    */
-  demand(ids: Iterable<string>, now = Date.now()): void {
+  demand(ids: Iterable<string>, now = Date.now(), focus?: MapBounds): void {
     let changed = false;
     for (const id of ids) {
       const feed = this.byId.get(id);
       if (!feed) continue;
       if (!this.watched(id, now)) this.watchedSince.set(id, now);
       this.watchedUntil.set(id, now + this.options.watchMs);
+      if (focus) this.focusOf.set(id, focus);
       if (this.options.alwaysFast(feed) || this.woken.has(id)) continue;
       // A collection already under way answers the request.
       if (this.running.has(id)) { this.woken.add(id); continue; }
@@ -221,8 +233,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
     // idle feeds on other hosts went uncollected for over half an hour.
     let shared = [...this.running.values()].filter(feed => !feed.paced).length;
     for (const feed of pending) {
-      if (rank(feed) > now || (!feed.paced && shared >= MAX_RUNNING) ||
-        [...this.running.values()].filter(running => running.host === feed.host).length >= MAX_RUNNING_PER_HOST) continue;
+      if (rank(feed) > now || (!feed.paced && shared >= MAX_RUNNING) || this.hostFull(feed)) continue;
       this.run(feed, now);
       if (!feed.paced) shared++;
     }
@@ -232,6 +243,17 @@ export class FeedScheduler<T extends ScheduledFeed> {
     if (nextDue.length) this.timer = setTimeout(() => this.pump(), Math.max(1, Math.min(...nextDue) - now));
   }
 
+  /**
+   * A paced client spaces its host's requests whatever runs, and gives a feed someone looks at
+   * its turns first (sweeps.ts): such a feed asked for by a request has slots of its own on the
+   * host, so a town opened while idle sweeps hold the others starts at once.
+   */
+  private hostFull(feed: T): boolean {
+    const own = feed.paced && this.woken.has(feed.id)
+      ? (running: T) => this.woken.has(running.id) : () => true;
+    return [...this.running.values()].filter(running => running.host === feed.host && own(running)).length >= MAX_RUNNING_PER_HOST;
+  }
+
   private run(feed: T, now: number): void {
     const reason: CollectionReason = this.options.alwaysFast(feed) ? 'always' : this.woken.has(feed.id) ? 'wake'
       : this.watched(feed.id, now) ? 'watched' : this.failures.has(feed.id) ? 'retry' : 'idle';
@@ -239,7 +261,10 @@ export class FeedScheduler<T extends ScheduledFeed> {
     this.startedAt.set(feed.id, now);
     this.options.onStart?.(feed, reason);
     let failed = true;
-    void this.collect(feed).then(outcome => { failed = outcome?.failed ?? false; }, error => {
+    void this.collect(feed, {
+      urgent: () => this.woken.has(feed.id) || this.watched(feed.id, Date.now()),
+      focus: () => this.watched(feed.id, Date.now()) ? this.focusOf.get(feed.id) : undefined,
+    }).then(outcome => { failed = outcome?.failed ?? false; }, error => {
       console.error('Feed collection failed', feed.id, error instanceof Error ? error.name : 'UnknownError');
       reportError(`collect:${feed.id}`, error);
     }).finally(() => {

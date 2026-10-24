@@ -4,10 +4,12 @@ import { dirname, join } from 'node:path';
 import { discoverCollectableFeeds, independentCollectableFeeds, planRefreshCounts, type CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import { buildCityOverview, overviewNeedsRefresh, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
+import type { MapBounds, Vehicle } from '../src/lib/types';
 import { feedCurfewed, snapshotPaused } from '../src/lib/seasonalPauses';
 import { upstreamCacheEntriesFor, upstreamJsonCache } from '../src/lib/upstreamJsonCache';
 import { fetchRegionalParking } from '../src/lib/parkingFeeds';
-import { FeedScheduler } from './feedScheduler';
+import { FeedScheduler, type CollectionAttention } from './feedScheduler';
+import { withinCollection } from './sweeps';
 import { COLD_WAIT_MS, createSnapshotServer } from './snapshotServer';
 import { readSnapshot, writeSnapshot } from './snapshotFile';
 import { collectSnapshotFeed } from './collectFeed';
@@ -128,13 +130,23 @@ function publish() {
   dirty = true;
 }
 
-async function collect(definition: CollectableScooterFeed) {
+async function collect(definition: CollectableScooterFeed, attention: CollectionAttention) {
   const system = regionalSystems.get(definition.id);
   let failed = false;
+  let running = true;
+  const startedAt = Date.now();
+  // What an app map's sweep has found so far, shown until it ends (sweeps.ts): the record it ends
+  // with has no sweep.
+  const progress = (vehicles: Vehicle[], swept: MapBounds[]) => {
+    const record = records.get(definition.id);
+    if (!running || stopping || !record) return;
+    records.set(definition.id, { ...record, sweep: { startedAt, vehicles, swept } });
+    publish();
+  };
   const timed = async () => {
     const started = performance.now();
     try {
-      const result = await definition.collect();
+      const result = await withinCollection({ ...attention, progress }, () => definition.collect()).finally(() => { running = false; });
       metrics.recordCollection(definition, false, (performance.now() - started) / 1000);
       lastErrors.delete(definition.id);
       return holdStrays(definition.id, result, records.get(definition.id), Date.now());

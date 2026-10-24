@@ -4,7 +4,9 @@ import { dirname, join } from 'node:path';
 import { boundsContainPoint } from '../src/lib/geo';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
-import type { MapBounds } from '../src/lib/types';
+import type { MapBounds, Vehicle } from '../src/lib/types';
+import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
+import { Pacer, SweepProgress, nearestFirst } from './sweeps';
 
 const ORIGIN = 'https://app.rideatom.com/api/v1/';
 const RETRY_MS = 60_000;
@@ -55,9 +57,8 @@ export class AtomClient {
   private readonly sessionPath: string;
   private readonly fetch: typeof fetch;
   private readonly now: () => number;
-  private readonly intervalMs: number;
+  private readonly pace: Pacer;
   private readonly timeoutMs: number;
-  private nextStart = 0;
   private blockedUntil = 0;
   private readonly renewing = new Map<string, Promise<Credentials>>();
   private readonly rejected = new Map<string, { token: string; until: number }>();
@@ -70,9 +71,8 @@ export class AtomClient {
     this.now = options.now ?? Date.now;
     // The rider API rejected a 21st view even with starts 1.1 s apart. Keep all
     // accounts together below 20 requests/minute, including cold starts and refreshes.
-    this.intervalMs = options.intervalMs ?? 4000;
+    this.pace = new Pacer(options.intervalMs ?? 4000, this.now, this.now() + (options.startHoldMs ?? 0));
     this.timeoutMs = options.timeoutMs ?? 10_000;
-    this.nextStart = this.now() + (options.startHoldMs ?? 0);
   }
 
   private async sessions(): Promise<Sessions> {
@@ -107,9 +107,7 @@ export class AtomClient {
 
   private async request(path: string, credentials: Credentials, kind: 'status' | 'metadata') {
     if (this.now() < this.blockedUntil) throw new Error('ATOM is temporarily rate limited');
-    const wait = Math.max(0, this.nextStart - this.now());
-    this.nextStart = this.now() + wait + this.intervalMs;
-    if (wait) await new Promise(resolve => setTimeout(resolve, wait));
+    await this.pace.turn();
     if (this.now() < this.blockedUntil) throw new Error('ATOM is temporarily rate limited');
     atomMapRequests[kind]++;
     let response: Response;
@@ -197,6 +195,11 @@ export class AtomClient {
 
 /** Qick's native map returns a 2 km circle. A 2.5 km grid keeps even cell corners inside it. */
 export function atomMapCenters(bounds: MapBounds): [number, number][] {
+  return atomMapViews(bounds).map(view => view.center);
+}
+
+/** The views of atomMapCenters, each with the cell of the grid around its centre. */
+export function atomMapViews(bounds: MapBounds): { center: [number, number]; cell: MapBounds }[] {
   const { south, west, north, east } = bounds;
   if (![south, west, north, east].every(Number.isFinite) || south >= north || west >= east ||
     south < -85 || north > 85 || west < -180 || east > 180) throw new Error('Invalid ATOM map bounds');
@@ -204,10 +207,14 @@ export function atomMapCenters(bounds: MapBounds): [number, number][] {
   const rows = Math.ceil((north - south) * 111_320 / 2500);
   const columns = Math.ceil((east - west) * 111_320 * Math.cos(nearestEquator * Math.PI / 180) / 2500);
   if (rows * columns > 64) throw new Error('ATOM map bounds exceed the collection budget');
-  return Array.from({ length: rows * columns }, (_, index) => [
-    south + (Math.floor(index / columns) + 0.5) * (north - south) / rows,
-    west + (index % columns + 0.5) * (east - west) / columns,
-  ]);
+  return Array.from({ length: rows * columns }, (_, index) => {
+    const row = Math.floor(index / columns), column = index % columns;
+    return {
+      center: [south + (row + 0.5) * (north - south) / rows, west + (column + 0.5) * (east - west) / columns],
+      cell: { south: south + row * (north - south) / rows, north: south + (row + 1) * (north - south) / rows,
+        west: west + column * (east - west) / columns, east: west + (column + 1) * (east - west) / columns },
+    };
+  });
 }
 
 interface AtomScooter { id: number; lat: number; lng: number; battery: number | null }
@@ -244,28 +251,32 @@ export async function collectAtomRegion(system: RegionalScooterSystem, api: Pick
   const unavailable = new Set<number>();
   let closed = true;
   const observedAt = Date.now();
-  const centers = system.atomAppFullMap ? [system.center] : atomMapCenters(system.bounds);
+  // The views nearest where people look go first (sweeps.ts).
+  const views = system.atomAppFullMap ? [{ center: system.center, cell: system.bounds }]
+    : nearestFirst(atomMapViews(system.bounds), view => view.cell);
   const bounds = system.atomAppFullMap && system.areas?.length
     ? system.areas.map(area => area.bounds) : [system.bounds];
-  for (const center of centers) {
+  const published = (): Vehicle[] => [...vehicles.values()].filter(vehicle => !unavailable.has(vehicle.id) &&
+    bounds.some(area => boundsContainPoint(area, vehicle.lat, vehicle.lng))).map(vehicle => ({
+    provider: system.provider, vehicle_id: `${system.id}:${vehicle.id}`, lat: vehicle.lat, lng: vehicle.lng,
+    battery: vehicle.battery, range_m: null, deep_link: null, distance_m: null,
+  }));
+  const progress = new SweepProgress(published);
+  for (const { center, cell } of views) {
     const view = parseAtomVehicles(await api.vehicles(system.atomAppAccount, center));
     closed &&= view.closed;
     for (const id of view.unavailable) unavailable.add(id);
     if (!view.closed) for (const vehicle of view.vehicles) vehicles.set(vehicle.id, vehicle);
+    progress.done(cell);
   }
   // Publish only a complete sweep. A failed view leaves the caller's previous snapshot intact.
-  return { observedAt, stale: false, ...(closed ? { skipped: true } : {}),
-    vehicles: [...vehicles.values()].filter(vehicle => !unavailable.has(vehicle.id) &&
-      bounds.some(area => boundsContainPoint(area, vehicle.lat, vehicle.lng))).map(vehicle => ({
-      provider: system.provider, vehicle_id: `${system.id}:${vehicle.id}`, lat: vehicle.lat, lng: vehicle.lng,
-      battery: vehicle.battery, range_m: null, deep_link: null, distance_m: null,
-    })) };
+  return { observedAt, stale: false, ...(closed ? { skipped: true } : {}), vehicles: published() };
 }
 
 export function withAtomAppCollectors(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[]) {
   const regions = new Map(systems.filter(system => system.atomAppAccount).map(system => [system.id, system]));
   return feeds.map(feed => {
     const region = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return region ? { ...feed, paced: true, collect: () => collectAtomRegion(region) } : feed;
+    return region ? { ...feed, idleIntervalMs: APP_MAP_IDLE_INTERVAL_MS, paced: true, collect: () => collectAtomRegion(region) } : feed;
   });
 }

@@ -42,6 +42,11 @@ export interface Vehicle {
   distance_m: number | null;
 }
 
+export interface LastSeen {
+  vehicles: Vehicle[];
+  clusters: ScooterCluster[];
+}
+
 export interface ScooterCluster {
   id: string;
   lat: number;
@@ -63,6 +68,7 @@ export interface ScooterResponseMeta {
   overview?: boolean;
   refreshAfterSeconds?: number;
   refreshing?: boolean;
+  lastSeenAt?: string;
   availableProviders?: string[];
   seasonOver?: string[];
   truncated: boolean;
@@ -75,6 +81,7 @@ export interface ScooterResponse {
   parking?: ParkingLocation[];
   vehicles: Vehicle[];
   clusters: ScooterCluster[];
+  lastSeen?: LastSeen;
   providers: Record<string, number>;
   meta: ScooterResponseMeta;
 }

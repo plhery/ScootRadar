@@ -112,17 +112,32 @@ looks:
   its last collection is over a minute old, the request starts one at once.
 - **Idle**: every other feed every 20 minutes, each at its own time in the interval
   (from a hash of its id), so about eight a minute start. A failed collection is
-  retried after 1, 2, 4, 8, then every 10 minutes, half the interval. Two app maps
-  are slower when idle, for the requests they take: Lime's hourly
-  ([guide](lime-app-map.md)) and BinBin's every two hours
-  ([guide](binbin-app-map.md#pace-and-failures)). Each expires 10 minutes after its
-  own interval and waits up to half of it between retries.
+  retried after 1, 2, 4, 8, then every 10 minutes, half the interval. The app maps
+  read in slow paced sweeps are collected every two hours when idle, for the requests
+  they take (`APP_MAP_IDLE_INTERVAL_MS` in `server/appMapCadence.ts`): Lime's
+  ([guide](lime-app-map.md)), BinBin's ([guide](binbin-app-map.md#pace-and-failures)),
+  GCOO's, ATOM's and Whoosh's. Each expires 10 minutes after its own interval and
+  waits up to half of it between retries. The app maps read in a few requests keep
+  the 20 minutes, so that one that stops answering is reported within half an hour.
 
 A request whose feeds hold positions over 15 minutes old waits up to 3 seconds for
 their collection, then answers. When a collection it started is still under way, the
 answer carries `meta.refreshing: true` with `refreshAfterSeconds: 3`, is not cached,
 and the web and iOS apps ask once more 3 seconds later. Older apps ask again after
 their usual 10 seconds.
+
+An app map's sweep can take minutes, so while one runs for a request:
+
+- it starts where the request looked, and follows the view when the next request
+  looks elsewhere; its client gives a town someone looks at the next turn before
+  idle sweeps of other towns (`Pacer` in `server/sweeps.ts`), and the scheduler
+  gives it two slots of its own on its host;
+- each part it finishes is published at once (at most every 2 seconds), and the
+  answer shows the scooters found so far;
+- the answer carries `lastSeen`, the feed's previous positions up to 3 hours old
+  where the sweep has not looked yet, and `meta.lastSeenAt`; the apps draw them faded,
+  count them nowhere, and keep asking every 3 seconds while they stand. The request
+  then waits 1 second rather than 3 (`LAST_SEEN_WAIT_MS`).
 
 The cadence comes from the cache's environment, every value with a default:
 

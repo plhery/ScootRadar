@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { FeedScheduler, idPhase, type CollectionReason, type SchedulerOptions } from './feedScheduler';
+import { FeedScheduler, idPhase, type CollectionAttention, type CollectionReason, type SchedulerOptions } from './feedScheduler';
 
 interface Feed { id: string; host: string; fast?: boolean; paced?: boolean }
 const MINUTE = 60_000;
@@ -13,15 +13,17 @@ function schedule(feeds: Feed[], options: Partial<SchedulerOptions<Feed>> = {},
   outcome: (feed: Feed) => Promise<{ failed: boolean } | void> = async () => {}) {
   const calls: Array<{ id: string; at: number; reason?: CollectionReason }> = [];
   const reasons = new Map<string, CollectionReason>();
-  const scheduler = new FeedScheduler<Feed>(feed => {
+  const attention = new Map<string, CollectionAttention>();
+  const scheduler = new FeedScheduler<Feed>((feed, heard) => {
     calls.push({ id: feed.id, at: Date.now() - T0, reason: reasons.get(feed.id) });
+    attention.set(feed.id, heard);
     return outcome(feed);
   }, { alwaysFast: feed => feed.fast === true, phase: () => 0, ...options,
     onStart: (feed, reason) => reasons.set(feed.id, reason) });
   scheduler.setFeeds(feeds);
   scheduler.start();
   const times = (id: string) => calls.filter(call => call.id === id).map(call => call.at / MINUTE);
-  return { scheduler, calls, times };
+  return { scheduler, calls, times, attention };
 }
 
 it('refreshes a healthy host on schedule while many jobs on another host are stuck', async () => {
@@ -69,6 +71,29 @@ it('runs paced sweeps on their hosts\' two slots, beside six other collections',
     await vi.advanceTimersByTimeAsync(0);
     expect(calls.filter(call => call.id.startsWith('sweep'))).toHaveLength(8);
     expect(calls.filter(call => call.id.startsWith('feed'))).toHaveLength(6);
+  } finally { scheduler.stop(); }
+});
+
+it('starts a paced town someone opens while idle sweeps hold its host, and tells it where they look', async () => {
+  // Lime's idle sweeps held both its slots, so a town opened on 25 October 2026 waited minutes for one.
+  const sweeps = ['lime-a', 'lime-b', 'lime-c'].map(id => ({ id, host: 'lime', paced: true }));
+  const others = ['fr-a', 'fr-b', 'fr-c'].map(id => ({ id, host: 'fr' }));
+  const { scheduler, times, attention } = schedule([...sweeps, ...others], {}, () => new Promise(() => {}));
+  const lyon = { south: 45.7, west: 4.7, north: 45.9, east: 5.0 };
+  try {
+    await vi.advanceTimersByTimeAsync(0);
+    expect(times('lime-c')).toEqual([]);
+    expect(attention.get('lime-a')?.urgent()).toBe(false);
+    scheduler.demand(['lime-c', 'lime-a', 'fr-c'], Date.now(), lyon);
+    expect(times('lime-c')).toEqual([0]);
+    expect(attention.get('lime-c')?.urgent()).toBe(true);
+    expect(attention.get('lime-c')?.focus()).toEqual(lyon);
+    // The idle sweep under way is looked at now, and gives its turns first too.
+    expect(attention.get('lime-a')?.urgent()).toBe(true);
+    // A feed whose client paces nothing still waits for a slot on its host.
+    expect(times('fr-c')).toEqual([]);
+    await vi.advanceTimersByTimeAsync(11 * MINUTE);
+    expect(attention.get('lime-a')?.focus()).toBeUndefined();
   } finally { scheduler.stop(); }
 });
 

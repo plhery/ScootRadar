@@ -4,7 +4,9 @@ import { dirname, join } from 'node:path';
 import { boundsContainPoint } from '../src/lib/geo';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
-import type { MapBounds } from '../src/lib/types';
+import type { MapBounds, Vehicle } from '../src/lib/types';
+import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
+import { Pacer, SweepProgress, nearestFirst } from './sweeps';
 
 const ORIGIN = 'https://api.whoosh.bike';
 const COGNITO = 'https://cognito.whoosh.bike/';
@@ -24,6 +26,8 @@ interface Lease { idToken: string; accessToken: string; expiresAt: number; crede
 interface Options { sessionPath?: string; fetch?: typeof fetch; now?: () => number; intervalMs?: number; timeoutMs?: number }
 interface Metadata { closed: boolean; areas: MapBounds[]; expiresAt: number }
 interface WhooshScooter { id: string; lat: number; lng: number; battery: number | null; range: number | null }
+/** A sweep's scooters as it finds them, and a call for each view it finishes. */
+interface WhooshSweep { found: Map<string, WhooshScooter>; done(view: MapBounds): void }
 
 async function jsonBody(response: Response, maxBytes: number): Promise<unknown> {
   const reader = response.body?.getReader();
@@ -142,9 +146,8 @@ export class WhooshClient {
   private readonly sessionPath: string;
   private readonly fetch: typeof fetch;
   private readonly now: () => number;
-  private readonly intervalMs: number;
+  private readonly pace: Pacer;
   private readonly timeoutMs: number;
-  private nextStart = 0;
   private blockedUntil = 0;
   private retryAt = 0;
   private lease?: Lease;
@@ -159,7 +162,7 @@ export class WhooshClient {
       join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'whoosh-session.json');
     this.fetch = options.fetch ?? fetch;
     this.now = options.now ?? Date.now;
-    this.intervalMs = options.intervalMs ?? 1000;
+    this.pace = new Pacer(options.intervalMs ?? 1000, this.now);
     this.timeoutMs = options.timeoutMs ?? 20_000;
   }
 
@@ -178,9 +181,7 @@ export class WhooshClient {
 
   private async request(url: string, init: RequestInit, kind: 'status' | 'metadata') {
     if (this.now() < this.blockedUntil) throw new Error('Whoosh is temporarily rate limited');
-    const wait = Math.max(0, this.nextStart - this.now());
-    this.nextStart = this.now() + wait + this.intervalMs;
-    if (wait) await new Promise(resolve => setTimeout(resolve, wait));
+    await this.pace.turn();
     if (this.now() < this.blockedUntil) throw new Error('Whoosh is temporarily rate limited');
     whooshMapRequests[kind]++;
     let response: Response;
@@ -283,7 +284,8 @@ export class WhooshClient {
     return (await this.region(region)).closed;
   }
 
-  async vehicles(region: string, coverage: MapBounds): Promise<WhooshScooter[]> {
+  /** The views nearest where people look go first (sweeps.ts). */
+  async vehicles(region: string, coverage: MapBounds, sweep?: WhooshSweep): Promise<WhooshScooter[]> {
     if (!validBounds(coverage)) throw new Error('Invalid Whoosh map coverage');
     const metadata = await this.region(region);
     if (metadata.closed) return [];
@@ -293,8 +295,8 @@ export class WhooshClient {
       console.warn(JSON.stringify({ event: 'whoosh_areas_outside_coverage', region, outside, areas: metadata.areas.length }));
     }
     this.outside.set(region, outside);
-    const targets = whooshMapViews(metadata.areas, coverage);
-    const vehicles = new Map<string, WhooshScooter>();
+    const targets = nearestFirst(whooshMapViews(metadata.areas, coverage), view => view);
+    const vehicles = sweep?.found ?? new Map<string, WhooshScooter>();
     let requests = 0;
     const collect = async (bounds: MapBounds, depth: number): Promise<void> => {
       if (++requests > REQUEST_BUDGET) throw new Error('Whoosh collection exceeds the request budget');
@@ -323,6 +325,7 @@ export class WhooshClient {
         }
         if (boundsContainPoint(coverage, vehicle.lat, vehicle.lng)) vehicles.set(vehicle.id, vehicle);
       }
+      sweep?.done(bounds);
     };
     for (const view of targets) await collect(view, 0);
     return [...vehicles.values()];
@@ -336,16 +339,20 @@ export async function collectWhooshRegion(system: RegionalScooterSystem,
   // A region closed for the season, as Almaty each winter, is paused by its operator until it
   // says the season is open again, on no day it announces (seasonalPauses.ts).
   if (await api.seasonOver(system.whooshAppRegion)) return { observedAt: Date.now(), stale: false, vehicles: [], seasonOver: true };
-  const vehicles = await api.vehicles(system.whooshAppRegion, system.bounds);
-  return { observedAt: Date.now(), stale: false, vehicles: vehicles.map(vehicle => ({ provider: 'whoosh',
+  const published = (vehicle: WhooshScooter): Vehicle => ({ provider: 'whoosh',
     vehicle_id: `${system.id}:${vehicle.id}`, lat: vehicle.lat, lng: vehicle.lng, battery: vehicle.battery,
-    range_m: vehicle.range, deep_link: null, distance_m: null })) };
+    range_m: vehicle.range, deep_link: null, distance_m: null });
+  const found = new Map<string, WhooshScooter>();
+  const progress = new SweepProgress(() => [...found.values()].map(published));
+  const vehicles = await api.vehicles(system.whooshAppRegion, system.bounds, { found, done: view => progress.done(view) });
+  return { observedAt: Date.now(), stale: false, vehicles: vehicles.map(published) };
 }
 
 export function withWhooshAppCollectors(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[]) {
   const regions = new Map(systems.filter(system => system.whooshAppRegion).map(system => [system.id, system]));
   return feeds.map(feed => {
     const region = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return region ? { ...feed, collect: () => collectWhooshRegion(region) } : feed;
+    // Its client spaces every request, and sweeps take up to three minutes: idle every two hours.
+    return region ? { ...feed, idleIntervalMs: APP_MAP_IDLE_INTERVAL_MS, paced: true, collect: () => collectWhooshRegion(region) } : feed;
   });
 }

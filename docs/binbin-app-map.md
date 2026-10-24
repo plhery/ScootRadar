@@ -115,10 +115,12 @@ An area nobody looks at is swept every two hours
 (`BINBIN_IDLE_INTERVAL_MS`), where other feeds are collected every 20 minutes.
 The 13 areas take 3,600 to 4,900 requests a round, by the numbers above: half
 a request a second to two thirds on average, where every 20 minutes would be
-three, close to the client's four. The street view hides positions over 15
-minutes old, so the first person to look at an idle area waits for its sweep,
-which the request starts at once: under a minute in Eskişehir, a few minutes
-in İstanbul. Zoomed out, the city's total is the last sweep's. An idle area
+three, close to the client's four. The street view shows no live position over
+15 minutes old, so the first person to look at an idle area waits for its
+sweep, which the request starts at once: under a minute in Eskişehir, a few
+minutes in İstanbul. Meanwhile the area's last positions, up to three hours
+old, stand faded where they were, and each ring of the sweep, nearest the view
+first, replaces them as it is done. Zoomed out, the city's total is the last sweep's. An idle area
 expires, for monitoring, after two hours and ten minutes without a sweep.
 
 A watched area is swept again a minute after its last sweep started;

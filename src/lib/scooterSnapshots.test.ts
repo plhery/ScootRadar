@@ -7,6 +7,7 @@ import { providersForViewport, mapRepresentationsMatch } from './mapCoverage';
 import type { Vehicle } from './types';
 import { providerHealth, providersDownNotice } from './dataHealth';
 import { PARKING_MAX_AGE_MS } from './dataFreshness';
+import { REGIONAL_SCOOTER_SYSTEMS, regionalSource } from './regionalScooterSystems';
 
 const now = Date.parse('2026-09-08T12:00:00Z');
 const lyon = { south: 45.70, west: 4.7, north: 45.9, east: 5.0 };
@@ -219,6 +220,65 @@ describe('feeds collected on demand', () => {
     const failed = { ...added, attemptedAt: now - 1_000 };
     expect(querySnapshot(snapshot([failed, voi]), query, 16, now, { refreshing: new Set([added.id]) }).meta.failedSources)
       .toEqual([added.id]);
+  });
+
+  describe('an app map being collected again', () => {
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(item => item.limeAppMap)!;
+    const scooter = (id: string, lat = 45.75, lng = 4.85): Vehicle => ({ ...vehicle(id), provider: 'lime', lat, lng });
+    const lime = (values: Partial<FeedSnapshot> = {}) => feed({ id: `${regionalSource(system)}:${system.id}`, provider: 'lime',
+      vehicles: [scooter('north', 45.85), scooter('south', 45.72)], observedAt: now - minutes(40), ...values });
+    const refreshing = (item: FeedSnapshot) => ({ refreshing: new Set([item.id]) });
+
+    it('shows its scooters where they were last seen, up to three hours ago, counted nowhere', () => {
+      const old = lime();
+      const response = querySnapshot(snapshot([old, voi]), query, 16, now, refreshing(old));
+      expect(response.vehicles.map(item => item.vehicle_id)).toEqual(['three']);
+      expect(response.lastSeen?.vehicles.map(item => item.vehicle_id)).toEqual(['north', 'south']);
+      expect(response.lastSeen?.clusters).toEqual([]);
+      expect(response.meta).toMatchObject({ refreshing: true, lastSeenAt: new Date(now - minutes(40)).toISOString(), totalVehicles: 1 });
+      expect(response.providers).toEqual({ voi: 1 });
+      // Alone in view, it answers with them rather than empty.
+      expect(querySnapshot(snapshot([old]), query, 16, now, refreshing(old)).lastSeen?.vehicles).toHaveLength(2);
+      // Not while nothing collects it, nor once older than three hours.
+      expect(querySnapshot(snapshot([old, voi]), query, 16, now).lastSeen).toBeUndefined();
+      const older = lime({ observedAt: now - minutes(181) });
+      expect(querySnapshot(snapshot([older, voi]), query, 16, now, refreshing(older)).lastSeen).toBeUndefined();
+    });
+
+    it('keeps the fifteen minutes of a licensed feed', () => {
+      const old = feed({ observedAt: now - minutes(40) });
+      const response = querySnapshot(snapshot([old, voi]), query, 16, now, refreshing(old));
+      expect(response.lastSeen).toBeUndefined();
+      expect(response.meta.lastSeenAt).toBeUndefined();
+    });
+
+    it('shows its sweep under way, and last-seen scooters only where the sweep has yet to look', () => {
+      const southHalf = { south: 45.70, west: 4.7, north: 45.8, east: 5.0 };
+      const sweeping = lime({ vehicles: [scooter('north', 45.85), scooter('south', 45.72), scooter('gone', 45.71), scooter('moved', 45.88)],
+        sweep: { startedAt: now - 30_000, vehicles: [scooter('moved', 45.73), scooter('new', 45.74)], swept: [southHalf] } });
+      const response = querySnapshot(snapshot([sweeping]), query, 16, now, refreshing(sweeping));
+      expect(response.vehicles.map(item => item.vehicle_id)).toEqual(['moved', 'new']);
+      expect(response.lastSeen?.vehicles.map(item => item.vehicle_id)).toEqual(['north']);
+      expect(response.meta.generatedAt).toBe(new Date(now - 30_000).toISOString());
+      // Once the sweep has ended, its collection shows, and nothing stands faded.
+      const done = lime({ observedAt: now - 10_000, vehicles: [scooter('moved', 45.73)] });
+      expect(querySnapshot(snapshot([done]), query, 16, now, refreshing(done)).lastSeen).toBeUndefined();
+      // A sweep that started more than fifteen minutes ago is not shown.
+      const stalled = { ...sweeping, sweep: { ...sweeping.sweep!, startedAt: now - minutes(16) } };
+      const late = querySnapshot(snapshot([stalled]), query, 16, now, refreshing(stalled));
+      expect(late.vehicles).toEqual([]);
+      expect(late.lastSeen?.vehicles.map(item => item.vehicle_id)).toEqual(['north', 'south', 'gone', 'moved']);
+    });
+
+    it('groups its last-seen scooters apart from the others', () => {
+      const old = lime({ vehicles: [scooter('a'), scooter('b'), scooter('c', 45.85)] });
+      const fresh = feed({ vehicles: [vehicle('one'), vehicle('two')] });
+      const response = querySnapshot(snapshot([fresh, old]), query, 13, now, refreshing(old));
+      expect(response.clusters.map(cluster => cluster.count)).toEqual([2]);
+      expect(response.lastSeen?.clusters.map(cluster => [cluster.count, cluster.providers])).toEqual([[2, { lime: 2 }]]);
+      expect(response.lastSeen?.clusters[0].id).toBe(`seen:${response.clusters[0].id}`);
+      expect(response.lastSeen?.vehicles.map(item => item.vehicle_id)).toEqual(['c']);
+    });
   });
 
   it('counts in the city totals an idle feed whose positions are older than the map shows', () => {

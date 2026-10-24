@@ -7,6 +7,7 @@ import { createSnapshotMetrics } from './metrics';
 import { FeedScheduler } from './feedScheduler';
 import { buildCityOverview, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import type { ScooterResponse } from '../src/lib/types';
+import { REGIONAL_SCOOTER_SYSTEMS, regionalSource } from '../src/lib/regionalScooterSystems';
 
 const token = 'a-test-origin-token-with-at-least-32-characters';
 const servers: Server[] = [];
@@ -219,6 +220,20 @@ describe('collection on demand', () => {
     expect(body.vehicles).toEqual([]);
     expect(body.meta).toMatchObject({ refreshing: true, failedSources: [], partial: false });
     expect(body.meta.sources.france).toBe('stale');
+  });
+
+  it('answers an app map\'s last-seen positions within a second while its sweep goes on', async () => {
+    const lime = REGIONAL_SCOOTER_SYSTEMS.find(system => system.limeAppMap)!;
+    const id = `${regionalSource(lime)}:${lime.id}`;
+    const { scheduler, snapshot } = cache([feed(id, lyon, Date.now() - minutes(40), { provider: 'lime' })], null);
+    stops.push(() => scheduler.stop());
+    const { port } = await start(undefined, { snapshot, refresher: scheduler, coldWaitMs: 5_000, lastSeenWaitMs: 100 });
+    const started = Date.now();
+    const body = await (await fetch(lyonUrl(port), { headers })).json() as ScooterResponse;
+    expect(Date.now() - started).toBeLessThan(1_000);
+    expect(body.vehicles).toEqual([]);
+    expect(body.lastSeen?.vehicles.map(item => item.vehicle_id)).toEqual([`${id}-old`]);
+    expect(body.meta).toMatchObject({ refreshing: true, refreshAfterSeconds: 3, failedSources: [] });
   });
 
   it('does not wait for a feed whose last collection failed', async () => {

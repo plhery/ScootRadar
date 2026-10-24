@@ -1,6 +1,7 @@
 import { SWISS_SCOOTER_AREAS, coverageIntersects } from '@/lib/feedCoverage';
 import {
-  REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, COUNTRY_SOURCES, collectsParking, isRegionalSource, regionalCityId, serviceAreas,
+  REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, COUNTRY_SOURCES, collectsParking, isAppMapFeed, isRegionalSource, regionalCityId,
+  serviceAreas,
 } from '@/lib/regionalScooterSystems';
 import { boundsContainPoint, haversineM } from '@/lib/geo';
 import { CITY_OVERVIEW_MAX_ZOOM, providersForViewport } from '@/lib/mapCoverage';
@@ -11,9 +12,9 @@ import { skippedSources } from '@/lib/scooterSources';
 import { outlinedTown } from '@/lib/townOutlines';
 import { ScooterFeedsUnavailableError, type FeedQuery, type ScooterFetchMetadata } from '@/lib/scooterFeeds';
 import type { MapBounds, ScooterCluster, ScooterResponse, ScooterResponseMeta, Vehicle } from '@/lib/types';
-import { VEHICLE_MAX_AGE_MS } from './dataFreshness';
+import { LAST_SEEN_MAX_AGE_MS, VEHICLE_MAX_AGE_MS } from './dataFreshness';
 
-export { VEHICLE_MAX_AGE_MS } from './dataFreshness';
+export { LAST_SEEN_MAX_AGE_MS, VEHICLE_MAX_AGE_MS } from './dataFreshness';
 export const OVERVIEW_REFRESH_MS = 60 * 60_000;
 const OVERVIEW_MAX_AGE_MS = 3 * OVERVIEW_REFRESH_MS;
 /** The delay a response suggests while the feeds it asked for are being collected again. */
@@ -27,6 +28,11 @@ export interface FeedSnapshot {
   coverage: MapBounds[];
   vehicles: Vehicle[];
   observedAt: number;
+  /**
+   * An app map's sweep under way: the scooters it has found since it started, and the parts of
+   * the area it has finished. The map shows them before the sweep ends; its end replaces them.
+   */
+  sweep?: { startedAt: number; vehicles: Vehicle[]; swept: MapBounds[] };
   attemptedAt: number;
   /** When the last successful collection finished; absent from snapshots saved before it existed. */
   collectedAt?: number;
@@ -64,8 +70,25 @@ function emptyHealth(): ScooterFetchMetadata {
     sources: skippedSources() };
 }
 
+/** One scooter, whichever feeds list it. */
+const vehicleKey = (vehicle: Vehicle) => `${vehicle.provider}:${vehicle.vehicle_id ?? `${vehicle.lat}:${vehicle.lng}`}`;
+
 /** Whether a feed's positions are recent enough to show on the map. */
 export const showsPositions = (feed: FeedSnapshot, now: number) => now - feed.observedAt <= VEHICLE_MAX_AGE_MS;
+
+/** The sweep under way that the map shows, of a feed whose last positions are too old to. */
+const shownSweep = (feed: FeedSnapshot, now: number) =>
+  !showsPositions(feed, now) && feed.sweep && now - feed.sweep.startedAt <= VEHICLE_MAX_AGE_MS ? feed.sweep : undefined;
+
+/**
+ * Whether an app map's last positions stand, faded, where its scooters were last seen: those too
+ * old to show, of three hours at most, while a request has it collected again. Its slow sweeps
+ * would otherwise leave the map empty of it for minutes. Only the app maps, which no licence
+ * binds to fifteen minutes.
+ */
+export const showsLastSeen = (feed: FeedSnapshot, now: number, refreshing?: ReadonlySet<string>) =>
+  !feed.skipped && isAppMapFeed(feed) && !showsPositions(feed, now) && now - feed.observedAt <= LAST_SEEN_MAX_AGE_MS &&
+  feed.vehicles.length > 0 && refreshing?.has(feed.id) === true;
 
 /**
  * Whether the operator's feed failed its last collection (an error, a missing
@@ -203,7 +226,7 @@ export function buildCityOverview(feeds: FeedSnapshot[], now: number,
     if (!cities.length) continue;
     const own = ownTowns(feed);
     for (const vehicle of feed.vehicles) {
-      const key = `${vehicle.provider}:${vehicle.vehicle_id ?? `${vehicle.lat}:${vehicle.lng}`}`;
+      const key = vehicleKey(vehicle);
       if (seen.has(key)) continue;
       seen.add(key);
       // Assign each scooter once, including where neighbouring service areas overlap.
@@ -298,31 +321,52 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   if (asked.length > 0 && !refreshing && asked.every(feed => !showsPositions(feed, now) && !failedAtOperator(feed))) {
     throw new ScooterFeedsUnavailableError(meta.failedSources);
   }
-  const unique = new Map<string, Vehicle>();
-  for (const feed of relevant) {
-    if (feed.skipped || now - feed.observedAt > VEHICLE_MAX_AGE_MS) continue;
-    for (const vehicle of feed.vehicles) {
+  const pick = (into: Map<string, Vehicle>, vehicles: Vehicle[], skip?: (vehicle: Vehicle, key: string) => boolean) => {
+    for (const vehicle of vehicles) {
       if (!boundsContainPoint(query.bounds, vehicle.lat, vehicle.lng)) continue;
       if (query.minBattery > 0 && (vehicle.battery === null || vehicle.battery < query.minBattery)) continue;
-      const key = `${vehicle.provider}:${vehicle.vehicle_id ?? `${vehicle.lat}:${vehicle.lng}`}`;
-      unique.set(key, query.origin ? { ...vehicle,
+      const key = vehicleKey(vehicle);
+      if (skip?.(vehicle, key)) continue;
+      into.set(key, query.origin ? { ...vehicle,
         distance_m: Math.round(haversineM(...query.origin, vehicle.lat, vehicle.lng) * 10) / 10,
       } : vehicle);
     }
+  };
+  const unique = new Map<string, Vehicle>();
+  // When each feed's positions shown were seen: its last collection's, or its sweep's under way.
+  const shownSince: number[] = [];
+  for (const feed of relevant) {
+    if (feed.skipped) continue;
+    const sweep = shownSweep(feed, now);
+    if (showsPositions(feed, now)) shownSince.push(feed.observedAt);
+    else if (sweep) shownSince.push(sweep.startedAt);
+    else continue;
+    pick(unique, sweep?.vehicles ?? feed.vehicles);
+  }
+  // Each scooter last seen where the sweep under way has yet to look, unless it has been seen since.
+  const lastSeen = new Map<string, Vehicle>();
+  const lastSeenTimes: number[] = [];
+  for (const feed of relevant) {
+    if (!showsLastSeen(feed, now, options.refreshing)) continue;
+    const swept = shownSweep(feed, now)?.swept ?? [];
+    const before = lastSeen.size;
+    pick(lastSeen, feed.vehicles, (vehicle, key) => unique.has(key) ||
+      swept.some(part => boundsContainPoint(part, vehicle.lat, vehicle.lng)));
+    if (lastSeen.size > before) lastSeenTimes.push(feed.observedAt);
   }
   const vehicles = [...unique.values()];
-  if (query.origin) vehicles.sort((a, b) => (a.distance_m ?? 0) - (b.distance_m ?? 0));
-  const usableTimes = relevant.filter(feed => !feed.skipped && now - feed.observedAt <= VEHICLE_MAX_AGE_MS)
-    .map(feed => feed.observedAt);
-  const observedAt = Math.min(now, ...usableTimes);
+  const previous = [...lastSeen.values()];
+  if (query.origin) for (const list of [vehicles, previous]) list.sort((a, b) => (a.distance_m ?? 0) - (b.distance_m ?? 0));
+  const observedAt = Math.min(now, ...shownSince);
   const response = scooterResponse({ vehicles, meta }, zoom, {
     generatedAt: new Date(observedAt).toISOString(),
     expiresAt: new Date(observedAt + VEHICLE_MAX_AGE_MS).toISOString(),
     refreshAfterSeconds: refreshing ? REFRESHING_RETRY_SECONDS : 60,
     ...(refreshing ? { refreshing: true } : {}),
+    ...(lastSeenTimes.length ? { lastSeenAt: new Date(Math.min(...lastSeenTimes)).toISOString() } : {}),
     availableProviders: providersForViewport(query.bounds),
     ...seasonOverIn(snapshot, query.bounds),
-  });
+  }, previous);
   if (zoom !== null && zoom >= PARKING_MIN_ZOOM) {
     // The app maps' feeds collect no parking, so none of theirs is missing.
     const systems = relevant.filter(collectsParking);

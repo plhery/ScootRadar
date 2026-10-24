@@ -33,6 +33,13 @@ describe('the saved snapshot', () => {
     expect(await readSnapshot(path)).toEqual(saved);
   });
 
+  it('leaves out a sweep under way, which a restart ends', async () => {
+    const path = join(directory, 'scooters.json');
+    const sweeping = { ...feed('fr:a'), sweep: { startedAt: 2_500, vehicles: [], swept: [] } };
+    await writeSnapshot(path, snapshot([sweeping]));
+    expect(await readSnapshot(path)).toEqual(snapshot([feed('fr:a')]));
+  });
+
   it('stays one JSON document, which the versions before this one read whole', async () => {
     const path = join(directory, 'scooters.json');
     const saved = snapshot([feed('fr:a'), feed('fr:b')]);

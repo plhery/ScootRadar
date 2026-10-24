@@ -75,6 +75,11 @@ struct ScooterVehiclePayload: Decodable, Sendable {
     }
 }
 
+struct ScooterLastSeenPayload: Decodable, Sendable {
+    let vehicles: [ScooterVehiclePayload]
+    let clusters: [ScooterClusterPayload]
+}
+
 struct ScooterClusterPayload: Decodable, Sendable {
     let id: String
     let latitude: Double
@@ -105,6 +110,7 @@ struct ScooterResponseMetadataPayload: Decodable, Sendable {
     let overview: Bool?
     let refreshAfterSeconds: Int?
     let refreshing: Bool?
+    let lastSeenAt: String?
     let availableProviders: [String]?
     let seasonOver: [String]?
     let truncated: Bool
@@ -117,6 +123,7 @@ struct ScooterAPIResponsePayload: Decodable, Sendable {
     let parking: [ScooterParkingLocationPayload]?
     let vehicles: [ScooterVehiclePayload]
     let clusters: [ScooterClusterPayload]
+    let lastSeen: ScooterLastSeenPayload?
     let providers: [String: Int]
     let meta: ScooterResponseMetadataPayload
 }

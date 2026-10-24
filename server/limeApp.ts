@@ -8,7 +8,8 @@ export { LIME_IDLE_INTERVAL_MS } from './limeAreas';
 import limeRegions from '../data/lime-app-regions.json';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
-import type { MapBounds } from '../src/lib/types';
+import type { MapBounds, Vehicle } from '../src/lib/types';
+import { Pacer, SweepProgress, takeNearest } from './sweeps';
 
 const ORIGIN = 'https://web-production.lime.bike';
 const RETRY_MS = 60_000;
@@ -77,19 +78,18 @@ export function limeClientAssertion(privateKey: string, now: number): string {
 export class LimeClient {
   private session?: Session;
   private renewing?: Promise<Session>;
-  private nextStart = 0;
+  private readonly pace: Pacer;
   private blockedUntil = 0;
   private retryAt = 0;
   private failure?: Error;
   private readonly sessionPath: string;
   private readonly now: () => number;
-  private readonly intervalMs: number;
   private readonly transport: Transport;
   constructor(options: { sessionPath?: string; now?: () => number; intervalMs?: number; transport?: Transport } = {}) {
     this.sessionPath = options.sessionPath ?? process.env.LIME_SESSION_PATH ??
       join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'lime-session.json');
     this.now = options.now ?? Date.now;
-    this.intervalMs = options.intervalMs ?? LIME_QUERY_INTERVAL_MS;
+    this.pace = new Pacer(options.intervalMs ?? LIME_QUERY_INTERVAL_MS, this.now);
     this.transport = options.transport ?? transport;
   }
   private async load(): Promise<Session> {
@@ -119,9 +119,7 @@ export class LimeClient {
   }
   private async call(path: string, session: Session, body?: string) {
     if (this.now() < this.blockedUntil) throw new Error('Lime is temporarily rate limited');
-    const wait = Math.max(0, this.nextStart - this.now());
-    this.nextStart = this.now() + wait + this.intervalMs;
-    if (wait) await new Promise(resolve => setTimeout(resolve, wait));
+    await this.pace.turn();
     if (this.now() < this.blockedUntil) throw new Error('Lime is temporarily rate limited');
     limeMapRequests[body === undefined ? 'status' : 'metadata']++;
     let reply: Reply;
@@ -224,7 +222,10 @@ export function limeCellCovered(result: ReturnType<typeof parseLimePins>, bounds
 }
 
 interface Cell { bounds: MapBounds; depth: number; probe?: true }
-/** A capped viewport is never published as a complete fleet. Empty leaves remain in the plan. */
+/**
+ * A capped viewport is never published as a complete fleet. Empty leaves remain in the plan. The
+ * cell nearest where people look goes next, and each one found complete is reported (sweeps.ts).
+ */
 export class LimeMapCollector {
   private plans = new Map<string, Cell[]>();
   constructor(private readonly api: Pick<LimeClient, 'pins'>, private readonly limits = { requests: 256, depth: 9, milliseconds: 900_000 }) {}
@@ -237,10 +238,14 @@ export class LimeMapCollector {
     if (cells.length > this.limits.requests) throw new Error('Lime service area exceeds the collection budget');
     const leaves: Cell[] = [];
     const vehicles = new Map<string, LimeScooter>();
+    const published = (v: LimeScooter): Vehicle => ({
+      provider: 'lime', vehicle_id: `${system.limeAppRegion ?? system.id}:${v.id}`, lat: v.lat, lng: v.lng, battery: v.battery,
+      range_m: null, deep_link: null, distance_m: null,
+    });
+    const progress = new SweepProgress(() => [...vehicles.values()].map(published));
     let calls = 0;
-    for (let i = 0; i < cells.length; i++) {
+    for (let cell = takeNearest(cells, c => c.bounds); cell; cell = takeNearest(cells, c => c.bounds)) {
       if (++calls > this.limits.requests || Date.now() - started > this.limits.milliseconds) throw new Error('Lime map completeness budget exceeded');
-      const cell = cells[i];
       const result = parseLimePins(await this.api.pins(cell.bounds));
       // A narrower reply can omit a valid pin seen in its parent. Preserve all
       // observed pins, and keep querying parent views on subsequent refreshes.
@@ -258,13 +263,11 @@ export class LimeMapCollector {
         }
       } else {
         leaves.push(cell);
+        progress.done(cell.bounds);
       }
     }
     this.plans.set(system.id, leaves);
-    return { observedAt: started, stale: false, vehicles: [...vehicles.values()].map(v => ({
-      provider: 'lime', vehicle_id: `${system.limeAppRegion ?? system.id}:${v.id}`, lat: v.lat, lng: v.lng, battery: v.battery,
-      range_m: null, deep_link: null, distance_m: null,
-    })) };
+    return { observedAt: started, stale: false, vehicles: [...vehicles.values()].map(published) };
   }
 }
 const collector = new LimeMapCollector(new LimeClient());

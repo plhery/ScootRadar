@@ -3,12 +3,14 @@ import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import { systemServesPoint } from '../src/lib/townOutlines';
 import type { MapBounds, Vehicle } from '../src/lib/types';
+import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
+import { Pacer, SweepProgress, nearestFirst } from './sweeps';
 
 const ORIGIN = 'https://live.api.gbike-api.com/api/v1/locations/markers';
 const RETRY_MS = 60_000;
 // A round of every town, about 3,550 requests, took over half an hour on the host's two slots
-// on 24 October 2026: a town nobody looks at is collected every hour, not every 20 minutes.
-export const GCOO_IDLE_INTERVAL_MS = 60 * 60_000;
+// on 24 October 2026: a town nobody looks at is collected every two hours, not every 20 minutes.
+export const GCOO_IDLE_INTERVAL_MS = APP_MAP_IDLE_INTERVAL_MS;
 // The app's table of scooter models (SCT): ES4, MAX, MAXPro, K, MAXPlus, K2, MAXPlusX and K3.
 // Its bicycles, and ids it doesn't list, as 10006 on some B4 bicycles, are left out.
 const SCOOTER_MODELS = new Set([9, 10, 11, 12, 13, 16, 19, 23]);
@@ -87,16 +89,15 @@ export function parseGcooMarkers(payload: unknown): GcooMarkers {
 export class GcooClient {
   private readonly fetch: typeof fetch;
   private readonly now: () => number;
-  private readonly intervalMs: number;
+  private readonly pace: Pacer;
   private readonly timeoutMs: number;
   private readonly cache = new Map<string, { at: number; markers: Promise<TimedMarkers> }>();
-  private nextStart = 0;
   private blockedUntil = 0;
 
   constructor(options: ClientOptions = {}) {
     this.fetch = options.fetch ?? fetch;
     this.now = options.now ?? Date.now;
-    this.intervalMs = options.intervalMs ?? 250;
+    this.pace = new Pacer(options.intervalMs ?? 250, this.now);
     this.timeoutMs = options.timeoutMs ?? 15_000;
   }
 
@@ -117,9 +118,7 @@ export class GcooClient {
 
   private async read(url: string): Promise<TimedMarkers> {
     if (this.now() < this.blockedUntil) throw new Error('GCOO is temporarily rate limited');
-    const wait = Math.max(0, this.nextStart - this.now());
-    this.nextStart = this.now() + wait + this.intervalMs;
-    if (wait) await new Promise(resolve => setTimeout(resolve, wait));
+    await this.pace.turn();
     if (this.now() < this.blockedUntil) throw new Error('GCOO is temporarily rate limited');
     gcooMapRequests.status++;
     const at = this.now();
@@ -162,14 +161,18 @@ function split(box: MapBounds, parts: number): MapBounds[] {
   });
 }
 
+/** A sweep's scooters as it finds them, and a call for each tile it finishes. */
+interface GcooSweep { found: Map<number, GcooScooter>; done(tile: MapBounds): void }
+
 /**
  * Every idle scooter in the bounds: each tile of the grid, then the quarters of a tile
  * near the clusters it returned, halved again where clusters remain. A cluster's
  * vehicles can stand a little beyond its centre, so a quarter is read when a cluster
- * is within half a quarter's width of it.
+ * is within half a quarter's width of it. The tiles nearest where people look go first
+ * (sweeps.ts).
  */
-export async function collectGcooScooters(bounds: MapBounds, api: Pick<GcooClient, 'markers'>) {
-  const vehicles = new Map<number, GcooScooter>();
+export async function collectGcooScooters(bounds: MapBounds, api: Pick<GcooClient, 'markers'>, sweep?: GcooSweep) {
+  const vehicles = sweep?.found ?? new Map<number, GcooScooter>();
   let requests = 0, observedAt = Infinity;
   const read = async (box: MapBounds) => {
     if (++requests > MAX_REQUESTS) throw new Error('GCOO map exceeds the collection budget');
@@ -191,12 +194,12 @@ export async function collectGcooScooters(bounds: MapBounds, api: Pick<GcooClien
       if (boundsIntersect(part, bounds) && near(part, clusters, 0.5)) await leaf(part, splits - 1);
     }
   };
-  for (const tile of gcooTiles(bounds)) {
+  for (const tile of nearestFirst(gcooTiles(bounds), tile => tile)) {
     const clusters = await read(tile);
-    if (!clusters.length) continue;
-    for (const quarter of split(tile, QUARTERS)) {
+    for (const quarter of clusters.length ? split(tile, QUARTERS) : []) {
       if (boundsIntersect(quarter, bounds) && near(quarter, clusters, 0.5)) await leaf(quarter, SPLITS);
     }
+    sweep?.done(tile);
   }
   return { observedAt, requests, scooters: [...vehicles.values()] };
 }
@@ -204,13 +207,16 @@ export async function collectGcooScooters(bounds: MapBounds, api: Pick<GcooClien
 const client = new GcooClient();
 export async function collectGcooRegion(system: RegionalScooterSystem, api: Pick<GcooClient, 'markers'> = client): Promise<SourceVehicles> {
   if (!system.gcooAppMap) throw new Error('Not a GCOO app map region');
-  const { observedAt, scooters } = await collectGcooScooters(system.bounds, api);
-  const vehicles: Vehicle[] = scooters.filter(scooter => systemServesPoint(system, scooter.lat, scooter.lng)).map(scooter => ({
-    // By the operator's own id, so a scooter where two towns' bounds overlap is shown once.
-    provider: system.provider, vehicle_id: `gcoo:${scooter.id}`, lat: scooter.lat, lng: scooter.lng,
-    battery: scooter.battery, range_m: scooter.range_m, deep_link: null, distance_m: null,
-  }));
-  return { observedAt, stale: false, vehicles };
+  const published = (scooters: Iterable<GcooScooter>): Vehicle[] => [...scooters]
+    .filter(scooter => systemServesPoint(system, scooter.lat, scooter.lng)).map(scooter => ({
+      // By the operator's own id, so a scooter where two towns' bounds overlap is shown once.
+      provider: system.provider, vehicle_id: `gcoo:${scooter.id}`, lat: scooter.lat, lng: scooter.lng,
+      battery: scooter.battery, range_m: scooter.range_m, deep_link: null, distance_m: null,
+    }));
+  const found = new Map<number, GcooScooter>();
+  const progress = new SweepProgress(() => published(found.values()));
+  const { observedAt, scooters } = await collectGcooScooters(system.bounds, api, { found, done: tile => progress.done(tile) });
+  return { observedAt, stale: false, vehicles: published(scooters) };
 }
 
 export function withGcooAppCollectors(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[]) {

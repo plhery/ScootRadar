@@ -100,14 +100,16 @@ groups are served in arrival order so repeated polling cannot postpone an
 area still waiting for its first refresh. Viewed groups
 are selected by their individual assigned cells, including where a group's
 enclosing rectangle spans a gap between rows or disconnected polygons. They
-use the normal active cadence; idle groups scan hourly to fit the upstream
-request quota. The seven reference windows select 13 groups with this cell
+use the normal active cadence; idle groups scan every two hours to fit the
+upstream request quota. The seven reference windows select 13 groups with this cell
 coverage, compared with 23 using enclosing rectangles (see the public audit).
 Restored snapshots adopt these current coverage cells immediately while
 keeping their scooter observations and timestamps. Monitoring uses that idle
 interval plus ten minutes, while the
 active 15-minute expiry remains unchanged. Street-level positions older than
-15 minutes are excluded. Country totals fill as the background scan completes;
+15 minutes are not shown live: while a group is swept again for a request, they
+stand faded where they were, up to three hours old, and each view the sweep
+finishes, the requested one first, replaces them as it goes. Country totals fill as the background scan completes;
 they describe the latest completed inventory, not simultaneous fleet counts.
 
 Calls start at most once every five seconds across Lime feeds. HTTP 429 pauses

@@ -286,10 +286,13 @@ and at most two per host. A slow host cannot monopolize collection slots, and a
 feed collected every minute takes the next free slot before any idle feed, so a
 deploy that adds hundreds of feeds does not hold Switzerland back. An app-map
 sweep whose client spaces every request to its host (BinBin, Beam, GCOO,
-Kickgoing, Lime, Qick and Swing) takes one of its host's two slots but none of
+Kickgoing, Lime, Qick, Swing and Whoosh) takes one of its host's two slots but none of
 the six: it waits on that pace, not on the cache. On 24 October 2026 such
 sweeps held all six, and idle feeds elsewhere went uncollected for over half an
-hour. A restart goes on with the feeds longest overdue, then those with no
+hour. A sweep a request asked for has two slots of its own on its host, and its
+client gives it the next turn before idle sweeps: until 25 October 2026 a town
+opened while two idle Lime sweeps ran waited for one to end, then shared Lime's
+one request every five seconds with the other. A restart goes on with the feeds longest overdue, then those with no
 record yet; it once took them in the catalog's order, and after that stall
 feeds 29 minutes old waited behind ones of 21 and expired.
 Switzerland is collected every minute; any other feed every 20 minutes, or every
@@ -310,7 +313,10 @@ plan ids) has that feed's plans fetched again, at most every two minutes or
 their ttl if longer, and backing off for a plan still missing. The map shows
 positions only while their timestamp is within fifteen minutes; failed feeds
 retain vehicles only until that observation expires. A request for a feed whose
-positions are older waits up to three seconds for the collection it starts. Parking availability expires after five minutes.
+positions are older waits up to three seconds for the collection it starts. An
+app map's positions up to three hours old are shown faded meanwhile, and its
+sweep publishes each part as it finishes, so such a request waits a second (see
+[docs/OBSERVABILITY.md](docs/OBSERVABILITY.md#collection-cadence)). Parking availability expires after five minutes.
 Cached metadata is reported as degraded independently and does not prevent live
 vehicle timestamps advancing.
 Both clients honor response expiry times, including parking expiry, during outages. Snapshots
@@ -489,7 +495,7 @@ Node cache. It is never a Worker or build variable, and never in Git: the
 repository is public. Without it every Swing feed fails with "Swing one-time
 code secret is missing or invalid". GCOO's and Kickgoing's maps need no
 credential. See [the Korean catalog](docs/south-korean-scooter-feeds.md#swing).
-A GCOO town nobody looks at is collected every hour (`GCOO_IDLE_INTERVAL_MS`),
-not every 20 minutes, and expires after an hour and ten minutes without one: a
-feed that sets its own idle interval, as GCOO, Lime and BinBin do, expires ten
-minutes after it, read from the feed itself.
+A GCOO town nobody looks at is collected every two hours (`GCOO_IDLE_INTERVAL_MS`),
+not every 20 minutes, and expires after two hours and ten minutes without one: a
+feed that sets its own idle interval, as GCOO, Lime, ATOM, Whoosh and BinBin do
+(`APP_MAP_IDLE_INTERVAL_MS`), expires ten minutes after it, read from the feed itself.

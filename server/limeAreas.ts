@@ -1,10 +1,11 @@
 import { boundsContainPoint, polygonContainsPoint } from '../src/lib/geo';
 import { limeGridCell, limeGridRuns, limeGridTiles, type LimeMapGrid } from '../src/lib/limeGrid';
 import type { MapBounds } from '../src/lib/types';
+import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
 
 export const LIME_MAP_PROTOCOL = 'whole-service-local-nearest-v1';
 export const LIME_QUERY_INTERVAL_MS = 5_000;
-export const LIME_IDLE_INTERVAL_MS = 60 * 60_000;
+export const LIME_IDLE_INTERVAL_MS = APP_MAP_IDLE_INTERVAL_MS;
 export { LIME_TILE_GROUP_SIZE, limeGridGroups } from '../src/lib/limeGrid';
 
 export type LimeArea = [number, number][];

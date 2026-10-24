@@ -90,6 +90,8 @@ All requests share a one-second queue, including renewals and cold starts.
 Metadata is cached for an hour; 429 respects Retry-After with a bounded cooldown.
 A token rejected with 401 gets one renewal/retry before authentication backs off.
 Cold sweeps and watched regions can take longer than the normal minute interval.
+A region nobody looks at is swept every two hours (`APP_MAP_IDLE_INTERVAL_MS`),
+not every 20 minutes.
 
 ## Private session
 

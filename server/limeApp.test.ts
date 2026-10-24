@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import { LimeClient, limeClientAssertion, LimeMapCollector, parseLimePins, limeCellCovered } from './limeApp';
+import { withinCollection } from './sweeps';
 
 const http = vi.hoisted(() => ({ request: vi.fn() }));
 vi.mock('node:https', () => ({ request: http.request }));
@@ -176,6 +177,23 @@ describe('complete Lime scooter maps', () => {
     expect(api.pins.mock.calls.length).toBeGreaterThan(1);
     expect(result.vehicles.length).toBe(api.pins.mock.calls.length);
     expect(result.vehicles.some(v => v.lat > .02 && v.lng > .02)).toBe(true);
+  });
+  it('starts where people look and reports each view it finishes, before the sweep ends', async () => {
+    const large = { ...system, bounds: { south: 0, north: .03, west: 0, east: .03 },
+      limeServiceAreas: ['???ozD' + 'ozD??nzDnzD?'] };
+    const api = { pins: vi.fn(async (bounds: typeof system.bounds) => map(pin(
+      String(bounds.south) + ':' + String(bounds.west), (bounds.south + bounds.north) / 2, (bounds.west + bounds.east) / 2))) };
+    const focus = { south: .028, west: .028, north: .029, east: .029 };
+    const reports: { found: string[]; swept: typeof focus[] }[] = [];
+    const result = await withinCollection({ urgent: () => true, focus: () => focus,
+      progress: (found, swept) => { reports.push({ found: found.map(v => v.vehicle_id!), swept }); } },
+    () => new LimeMapCollector(api).collect(large));
+    const first = api.pins.mock.calls[0][0];
+    expect(first.north).toBeGreaterThanOrEqual(focus.north);
+    expect(first.east).toBeGreaterThanOrEqual(focus.east);
+    // The first view is reported at once, the others at most every two seconds, and the sweep's end replaces them.
+    expect(reports[0]).toEqual({ found: [`lime_cz_test:${first.south}:${first.west}`], swept: [first] });
+    expect(result.vehicles).toHaveLength(api.pins.mock.calls.length);
   });
   it('uses a capped nearest set only when its radius covers every cell corner with a margin', () => {
     const near = parseLimePins(map(...Array.from({ length: 200 }, (_, i) => pin(String(i)))));
