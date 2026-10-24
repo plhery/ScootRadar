@@ -10,8 +10,12 @@ out, and remove an entry once it's added or settled for good.
 These feeds are public and were live when checked. Nothing blocks them except
 the work.
 
-None at the moment: every live feed found is covered, or listed below with
-why it isn't.
+**BinBin in Turkey:** the app's guest map returned scooters in Istanbul,
+Antalya and Eskişehir on 24 October 2026, including a successful check from
+Netcup. It returns truncated local selections (10 per sampled request),
+so city totals need a collection strategy with measured coverage and a
+bounded request budget; availability and freshness semantics also remain
+to be established. See [the app investigation](turkish-app-maps.md).
 
 ## Waiting on a decision
 
@@ -652,7 +656,7 @@ a licence. Neither is published by its operator:
 | Estonia, Lithuania | Bolt and Ride Mobility publish no feed |
 | Slovakia, Bulgaria, Romania, Moldova | Dott and Bolt publish no feed; nothing else found. Romania's PBSC bike-share feeds list a scooter type with no scooters. Hopp's `ro-bucharest` feed answers but held no scooter at night or in 7 polls from 08:30 to 09:30 on Sunday 18 October 2026, and Hopp's site no longer lists Bucharest; check it again in April 2027. (Slovenia: see above) |
 | Serbia | Belgrade suspended its call for 2,000 scooters on 15 July 2026, a day after opening it; check again in January 2027 |
-| Turkey | Martı, BinBin and Hop publish no feed: `gbfs.heyhop.app` answers 404, and no `gbfs.` or `api.` host answers for Martı or BinBin (18 October 2026). Turkey had 93,221 licensed scooters at the end of 2022; Martı averaged 20,400 vehicles a day in early 2026, mopeds and e-bikes included, and BinBin runs in 8 Turkish towns. Since December 2025 operators report rides to the transport ministry's U-NET system, which isn't public. Istanbul's, İzmir's and Konya's open-data portals hold static parking and routes only; AAR Bike Konya's feed is bicycles. Check again about April 2027, or sooner if U-NET's data is opened |
+| Turkey | No public GBFS found, but **BinBin's app guest map works**, verified in Istanbul, Antalya and Eskişehir on 24 October 2026; its truncated local selections cannot yet supply complete city totals. Martı's native map requires a stored rider token, and its map and public configuration requests both received HTML 403 from the Mac and Netcup. Hop's actual app host is `api.hoplagit.com`: configuration works, but the nearby-scooters route returns JSON 403 without a rider session; no guest flow verified. See [routes, provenance and remaining work](turkish-app-maps.md). U-NET is not public, and Istanbul's, İzmir's and Konya's open-data portals hold static parking and routes only; AAR Bike Konya is bicycles |
 | Malta | Rental scooters banned since March 2024 |
 | Luxembourg, Monaco, Liechtenstein | Bikes and e-bikes only; MonaBike lists a scooter type with no scooters |
 | Belarus, Georgia, Armenia, Azerbaijan, Kazakhstan | Bolt, with scooters in Tbilisi, Kutaisi, Baku and Almaty, answers 401, and so does Whoosh (`api.whoosh.bike/gbfs`). Eleven, Yandex Go, Urent, JET, Mimo, BusyFly, YerevanRide, Ozim and Scroll publish nothing, and Kolobike has closed; JET's site has no map and its other site is behind a bot challenge. No registry rows, no ATOM Mobility systems, nothing on the national open-data portals. Almaty is the biggest fleet: about 22,500 scooters in April 2026, with JET holding over 70% of the market. Yerevan has about 1,500 (JET and YerevanRide) |
@@ -971,9 +975,12 @@ Bonaire had feeds to add. Survey files are in
   and none was ridden while it was polled. Poll it on a weekend afternoon;
   Entur renews the ids, so match scooters by position, and add it if they
   are ridden.
-- **April 2027:** Turkey's season. Check `gbfs.heyhop.app`,
-  `gbfs.martitech.com`, BinBin, and Istanbul's, İzmir's and Konya's open-data
-  portals for a public scooter feed.
+- **April 2027:** Turkey's season. Check for public GBFS and new data on
+  Istanbul's, İzmir's and Konya's open-data portals. BinBin's guest app map
+  already works and need not wait for the season; next work is collection
+  completeness, availability and freshness. For Martı and Hop, follow
+  [the verified app hosts and access blockers](turkish-app-maps.md), rather
+  than treating `gbfs.heyhop.app` as the investigated Hop app's endpoint.
 - **1 May 2027:** Bird's other Canadian towns (Lethbridge, Red Deer, Kamloops,
   Vernon, Brampton, Oshawa, Laval and the rest listed above) and Lime's
   former Neuron towns (Red Deer, Saskatoon, Regina, Waterloo Region): probe
