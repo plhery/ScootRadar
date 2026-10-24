@@ -13,6 +13,7 @@ import { readSnapshot, writeSnapshot } from './snapshotFile';
 import { collectSnapshotFeed } from './collectFeed';
 import { createFeedStateLog, expiredReportDelay, feedState, waitOutCurfew, type FeedCadence } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
+import { registerFeedDefinitions } from './feedDefinitions';
 import { initErrorReporting, reportError, reportFeedExpired } from './errorReporting';
 import { cadenceFromEnv } from './cadence';
 import { answerZones, createZoneStore } from './zoneStore';
@@ -158,11 +159,7 @@ function setDefinitions(definitions: CollectableScooterFeed[], retireMissing: bo
     for (const id of records.keys()) if (!active.has(id)) records.delete(id);
     for (const id of lastErrors.keys()) if (!active.has(id)) lastErrors.delete(id);
   }
-  for (const definition of definitions) if (!records.has(definition.id)) {
-    records.set(definition.id, { id: definition.id, source: definition.source, provider: definition.provider,
-      coverage: definition.coverage, vehicles: [], observedAt: 0, attemptedAt: 0,
-      stale: true, failed: true, skipped: false });
-  }
+  registerFeedDefinitions(records, definitions);
   publish();
   // Every feed's documents stay in memory between its collections, however many countries are added.
   upstreamJsonCache.reserve(upstreamCacheEntriesFor(definitions.length));

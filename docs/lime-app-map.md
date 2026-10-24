@@ -94,7 +94,10 @@ are selected by their individual assigned cells, including where a group's
 enclosing rectangle spans a gap between rows or disconnected polygons. They
 use the normal active cadence; idle groups scan hourly to fit the upstream
 request quota. The seven reference windows select 13 groups with this cell
-coverage, compared with 23 using enclosing rectangles (see the public audit). Monitoring uses that idle interval plus ten minutes, while the
+coverage, compared with 23 using enclosing rectangles (see the public audit).
+Restored snapshots adopt these current coverage cells immediately while
+keeping their scooter observations and timestamps. Monitoring uses that idle
+interval plus ten minutes, while the
 active 15-minute expiry remains unchanged. Street-level positions older than
 15 minutes are excluded. Country totals fill as the background scan completes;
 they describe the latest completed inventory, not simultaneous fleet counts.
