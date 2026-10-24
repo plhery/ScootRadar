@@ -146,6 +146,9 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 26
+          # This job installs no packages, so there is no npm cache to keep, which packageManager in
+          # package.json would otherwise turn on.
+          package-manager-cache: false
 
       - name: Move the production branches
         id: deploy
@@ -154,11 +157,12 @@ jobs:
       # Workers Builds deploys production a minute or two after it moves. It names the build after
       # the commit (next.config.ts), and every page carries that name, so the website is the commit
       # production is at once the landing page holds it: this one, or a later one that carries it
-      # (a re-run, or a later commit's job that ended first). Deploy jobs run one at a time.
+      # (a re-run, or a later commit's job that ended first). Deploy jobs run one at a time. When it
+      # never does, the Workers build failed or hangs, and only Cloudflare's dashboard shows it, so
+      # the job fails rather than warns.
       - name: Wait for the website to serve production
         id: live
         if: steps.deploy.outputs.website != ''
-        continue-on-error: true
         timeout-minutes: 9
         env:
           BUILD: ${{ steps.deploy.outputs.website }}
@@ -172,7 +176,7 @@ jobs:
             fi
             sleep 15
           done
-          echo "::warning title=IndexNow not told::$SITE did not serve ${BUILD::7} within 8 minutes. The next deploy tells IndexNow of its pages; to do it sooner, once it serves it, run: node scripts/indexnow.mjs --since=refs/indexnow/submitted $SITE"
+          echo "::error title=Website not deployed::$SITE did not serve ${BUILD::7} within 8 minutes: see its Workers build in Cloudflare's dashboard (Workers & Pages › swiss-scooters › Deployments). IndexNow was not told; the next deploy tells it of the pages, or once the site serves it, run: node scripts/indexnow.mjs --since=refs/indexnow/submitted $SITE"
           exit 1
 
       # The pages new or redated in the sitemap since IndexNow last took them go to it, which Bing

@@ -2,6 +2,7 @@
   "name": "scootradar",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "npm@11.20.0",
   "scripts": {
     "generate:providers": "node scripts/generate-provider-catalog.mjs",
     "check:providers": "node scripts/generate-provider-catalog.mjs --check",

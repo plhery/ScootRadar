@@ -171,7 +171,10 @@ about the pages added to the sitemap or redated since it last took them
 for the website to serve the commit `production` is at, which is this one or a
 later one that carries it (a re-run, or a later commit's job that ended first).
 Workers Builds names the build after its commit (`WORKERS_CI_COMMIT_SHA`, in
-`next.config.ts`), and every page carries the name. It then compares the live
+`next.config.ts`), and every page carries the name. If the website still does
+not serve it then, the job fails: the Workers build failed or hangs, the site
+keeps the build before, and the log is only in Cloudflare's dashboard (Workers
+& Pages › swiss-scooters › Deployments). It then compares the live
 sitemap with the one IndexNow last took, which the ref `refs/indexnow/submitted`
 keeps (a commit of `sitemap.xml`; `git fetch origin refs/indexnow/submitted` and
 `git log -p FETCH_HEAD` show it). Right after a deploy, Next.js can answer with
@@ -180,7 +183,7 @@ renders the new one: the job reads it again every 5 seconds, up to 10 times, and
 logs each such read. The ref moves to the live sitemap only once IndexNow takes
 every page, so a page a deploy could not send, because the build was not live in
 time, its sitemap stayed stale or IndexNow refused, goes with the next deploy.
-None of these fails the deploy; each shows as a warning. To send them sooner,
+A stale sitemap or a refusal shows as a warning, not a failure. To send them sooner,
 run `node scripts/indexnow.mjs --since=refs/indexnow/submitted
 https://scootradar.com` once the site is live (`--dry-run` lists the pages and
 sends and moves nothing; `--all` submits every page of the sitemap and leaves
@@ -203,6 +206,12 @@ control, with:
 npx opennextjs-cloudflare build
 npx wrangler deploy
 ```
+
+Before them it runs `npm ci` with the npm that `packageManager` in
+`package.json` names, not its image's default: npm 10.9.2 rejected the
+lockfile npm 11 writes once it holds `overrides.miniflare.undici`, and every
+build failed from 23 to 24 October 2026. Keep `packageManager` at the npm that
+writes `package-lock.json`.
 
 Use `npx wrangler versions upload` for non-production branch previews. After a
 GitHub repository or Worker rename, verify the build connection in Cloudflare;
