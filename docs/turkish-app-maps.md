@@ -7,8 +7,9 @@ are truncated local selections, so they cannot yet supply complete city
 totals. Martı and Hop have identifiable map routes, but neither returned
 vehicles without a rider session in these checks.
 
-No production collector or country entry was added. No rider login, SMS,
-registration or vehicle action was performed.
+No production collector or country entry was added. The official apps were
+also checked while signed out on an Android 15 emulator. No rider login,
+SMS, registration or vehicle action was performed.
 
 ## App provenance
 
@@ -99,7 +100,7 @@ that it can produce a complete fleet snapshot. The operator's
 [locations page](https://www.binbin.tech/lokasyonlar/) also lists Balkan
 markets; their current app data has not been checked here.
 
-## Martı: map identified, HTTP access blocked
+## Martı: map and phone flow traced, access still blocked
 
 The scooter map lives in the native Kotlin part of this combined app;
 the Flutter binary largely covers TAG driver functionality.
@@ -115,10 +116,25 @@ Content-Type: application/json
 ```
 
 The coordinates, zoom and vehicle-type list are defined by
-`ListAvailablesRequest`. The live public bootstrap at
-[`d1sygrhnji9maa.cloudfront.net/index.txt`](https://d1sygrhnji9maa.cloudfront.net/index.txt)
-is base64 JSON naming `https://customer.martiscooter.com` as `rider_url`.
-The APK fallback is `https://customer.pss101.com`.
+`ListAvailablesRequest`. The startup builders also send the current
+latitude and longitude with all four bounds set to zero, zoom 16 or 18,
+and vehicle types `[1,2,3,4]`. `MartiVehicleTypes` identifies scooter as 1,
+e-bike as 2, moped as 3 and Mobilet as 4. These are request contracts from
+the APK, not a successfully retrieved vehicle list.
+
+The current bootstrap begins by fetching images and base64-decoding their
+EXIF `ImageDescription`. Both checked images,
+[`marti_default_page-0001.jpg`](https://d2ohz7o7aejcmt.cloudfront.net/operator-icons/marti_default_page-0001.jpg)
+and [`bos-marti.jpeg`](https://d2ohz7o7aejcmt.cloudfront.net/operator-icons/bos-marti.jpeg),
+point to
+[`/operator/index.txt`](https://d1sygrhnji9maa.cloudfront.net/operator/index.txt).
+That file is base64 JSON; `passenger.mm_api` is
+`https://customer.martiscooter.com`. The current `BaseUrlModel` reads this
+nested schema. The plain `/index.txt` used in the earlier check is only
+the fallback and has an older, flat schema. The interceptor's APK fallback
+host is `https://customer.pss101.com`. Following the image bootstrap
+therefore corrected the configuration flow but did not reveal a different
+live rider host.
 
 The interceptor requires a stored token for this map route and sends it
 as `X-ACCESS-TOKEN`. The route is absent from `AUTH_FREE_ENDPOINTS` in
@@ -129,36 +145,125 @@ User-Agent, `platform: And`, `user-type: 2`, `timezone`, `vendor-id`,
 
 The configured host returned HTML HTTP 403 for both the map request and
 the explicitly auth-free `/app/getConfig`, from the Mac and Netcup.
-The APK fallback host returned the same responses on the Mac. These
-failures therefore do not isolate backend authentication from HTTP-edge
-filtering. Login alone is not proven sufficient to resolve the blocker.
-The phone sign-in and verification routes are `/customer/signin` and
-`/customer/validatePhone`; neither was invoked. No vehicle response schema
-or fleet count has been verified live.
+The APK fallback host returned the same responses on the Mac. HTTP/1.1,
+TLS 1.2, complete signed-out app headers (including empty `INTEGRATIONID`
+and `oneSignalId`), and a normal Chromium same-origin POST all received
+the same `server: awselb/2.0` rejection. A geographic restriction is not
+established by these checks. Login alone is not proven sufficient to
+resolve the HTTP blocker.
 
-## Hop: nearby map refuses signed-out requests
+The separate public
+[`passengerConfig.json`](https://everest-config-files.martiscooter.com/passengerConfig.json)
+does load without authorization. Its guest-booking flags concern TAG
+bookings; they do not establish a guest scooter map. On the Android 15
+emulator, the genuine APK displayed onboarding but then stopped at
+**"Invalid installation source. This app can only be installed from
+official stores."** This did not verify the live scooter API with the
+official Android transport. An official-store installation is needed for
+that comparison; a newly created rider account does not remove this local
+installation check.
+
+The supported phone flow is statically traced:
+
+- `POST /customer/signin`: `mobilePhoneCountryCode` without `+`, the
+  national `mobilePhone`, `oneSignalId`, and optional delivery `type`.
+- `POST /customer/validatePhone`: `mobilePhoneCountryCode`, `mobilePhone`,
+  `smsCode`, delivery `type` (`sms` or `whatsapp`), and optional
+  `socialToken`. The UI collects a four-digit code. The verified reply's
+  `accessToken` is saved for subsequent `X-ACCESS-TOKEN` requests.
+- A separate `/customer/socialSignin` accepts provider, identity token,
+  raw nonce and notification id; it is not a guest sign-in.
+
+The map response classes define `data.response` as a list with `code`,
+`batteryPercentage`, coordinates, `statusId`, `lastUpdateTime`,
+`vehicleType`, unlock and minute prices, and reservation/incentive fields.
+Availability, timestamp and price units still need a live response checked
+against the app. No fleet count or phone login was verified.
+
+## Hop: exact map and SMS flow traced; phone login required by the app
 
 The official [hoplagit.com](https://hoplagit.com/) download link targets
-the investigated package. Its Flutter binary names
-`https://api.hoplagit.com`, `/v0/config`, `/v1/scooters:nearby`,
-`/v1/auth`, `/token`, `grant_type`, `access_token`, `refresh_token`,
-`msisdn`, phone-number login text and OTP verification screens.
+the investigated package. A second, ARM64 variant of the same 2.8.0 build
+2080004 was obtained from APKPure's variant download link. Every base and
+split APK signature verifies and matches the publisher signer above.
+The downloader's ARM64 option had returned an ARM32 archive; the native
+library's ELF architecture was checked independently.
+
+The ARM64 build uses Dart 3.13.5 and the newer `_kDartSnapshotData` /
+`_kDartSnapshotText` format. A compatible object-pool dump plus direct
+ARM64 instruction references established the actual request builders.
+The main host remains `https://api.hoplagit.com`.
+
+```http
+GET https://api.hoplagit.com/v1/scooters:nearby?lat=41.043&lng=29.0094&r=500
+```
+
+The exact query names are `lat`, `lng`, `r`, and optional `vehicle_type`.
+The scooter filter value is `scooter`; the bike value is `ebike`. The
+earlier `latitude` / `longitude` / `distance` probe did not reproduce this
+builder. The client sends `accept-language`, a `hop-rider/` User-Agent
+derived from its stored device information (fallback `hop-rider/()`),
+and Bearer authorization from a stored rider token.
 
 `GET /v0/config` succeeds without login from the Mac and Netcup and
 returns Turkish configuration (`currency: "TRY"`). Its
 `verification_required: false` flag does not establish anonymous map access.
-`GET /v1/scooters:nearby`, including a check with `latitude`, `longitude`
-and `distance`, returns HTTP 403 JSON `{"code":3,"msg":"Forbidden."}`
-on both networks with the Dart User-Agent. The map query names were
-suggested by binary strings; their exact serialization remains unverified
-because access was refused before any vehicle payload was returned.
+The exact nearby query above still returned HTTP 403 JSON
+`{"code":3,"msg":"Forbidden."}`, including with `hop-rider/()` and
+`accept-language: en`. Changing to the native app User-Agent did not grant
+guest map access.
 
-`POST /v1/auth/token` exists: an empty JSON request returns HTTP 400
-`Incorrect field.` naming `grant_type`. This does not establish a supported
-anonymous grant, a working phone login or a usable guest session. The
-downloaded native split is ARM32; string extraction is weaker evidence
-than a reconstructed Flutter request builder. No authenticated map was
-tested, and no fleet size is known.
+The Android app was also opened on a fresh, signed-out installation with
+its virtual location set to the sampled Istanbul point. Skipping the
+introductory pages and handling the notification/location prompts led to
+**"Welcome to hop!"**, a phone field and **"Next"**, with text requiring
+a phone number to log in. No guest-map control appeared on that screen.
+The phone field was left blank.
+
+The native login sequence is:
+
+1. Run Prelude's mobile SDK `dispatchSignals` and obtain a dispatch id.
+2. `POST /v1/auth:reqSMS` with JSON
+   `{"phone":"<international phone>","prelude_dispatch_id":"<SDK result>"}`.
+3. `POST /v1/auth/token` with JSON
+   `{"phone":"<same phone>","code":"<received code>","grant_type":"sms","source":"riders"}`.
+4. Store the issued rider credentials privately and use the access token
+   for the map. The refresh builder sends `grant_type: "refresh_token"`
+   and the stored `refresh_token` to the same token route.
+
+The SMS builder awaits the Prelude dispatch before calling Hop; an SDK
+failure is not treated as a successful SMS request. A plain HTTP-only login
+is therefore not established. No dispatch id was fabricated, and no SMS
+was sent. An `anonymous` grant check returned HTTP 400 naming
+`grant_type`, without issuing a token; the earlier `anonymous` binary
+string did not establish a guest OAuth grant. Validating the `sms` grant
+with no phone/code also returned 400, as expected, without creating an
+account. A rider account remains the supported route to test next; no
+authenticated map or fleet size has been verified.
+
+The vehicle parser names `id`, `code`, `battery`, `remaining_mileage`,
+`coord`, `fare`, and `vehicle_type`; the coordinate parser uses `lat` and
+`lng`, and the fare parser includes `preauth`, `per_minute`, and `unlock`.
+Units, availability, freshness and completeness must be checked against
+an authenticated response before collection.
+
+### Public zones and parking need no account
+
+The app also reads two working static files:
+
+- [`prod.json`](https://storage.googleapis.com/temphop/prod.json): GeoJSON
+  with 1,675 polygon features on 24 October 2026, last modified 22 October:
+  1,595 `noPark`, 79 `region`, and one `service` feature. Properties include
+  `zoneType` and `region`; there are 22 nonempty region labels spanning
+  Turkey, Greece and Montenegro, including Istanbul's separate areas.
+- [`park-prod.json`](https://storage.googleapis.com/temphop/park-prod.json):
+  578 parking records using `ID`, `LAT` and `LONG`.
+
+These supply map boundaries and parking points, not current scooter
+positions, availability or proof that a region is operating. They do not
+replace the authenticated live map or justify city fleet totals. The
+published MDS root `https://api.hoplagit.com/mds/` returned 404 and did not
+provide a live alternative.
 
 The earlier `gbfs.heyhop.app` 404 is not evidence about this app's map.
 [`heyhop.app`'s association](https://heyhop.app/.well-known/assetlinks.json)
