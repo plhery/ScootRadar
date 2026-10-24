@@ -6,11 +6,11 @@ import { boundsContainPoint, haversineM } from '@/lib/geo';
 import { CITY_OVERVIEW_MAX_ZOOM, providersForViewport } from '@/lib/mapCoverage';
 import { PARKING_MAX_AGE_MS, PARKING_MIN_ZOOM, type ParkingSnapshot } from '@/lib/parking';
 import { scooterResponse } from '@/lib/scooterResponse';
-import { feedPaused } from '@/lib/seasonalPauses';
+import { snapshotPaused } from '@/lib/seasonalPauses';
 import { skippedSources } from '@/lib/scooterSources';
 import { outlinedTown } from '@/lib/townOutlines';
 import { ScooterFeedsUnavailableError, type FeedQuery, type ScooterFetchMetadata } from '@/lib/scooterFeeds';
-import type { MapBounds, ScooterCluster, ScooterResponse, Vehicle } from '@/lib/types';
+import type { MapBounds, ScooterCluster, ScooterResponse, ScooterResponseMeta, Vehicle } from '@/lib/types';
 import { VEHICLE_MAX_AGE_MS } from './dataFreshness';
 
 export { VEHICLE_MAX_AGE_MS } from './dataFreshness';
@@ -33,6 +33,11 @@ export interface FeedSnapshot {
   stale: boolean;
   failed: boolean;
   skipped: boolean;
+  /**
+   * The operator says the feed's season is over (Whoosh's seasonIsOver): a pause it declares,
+   * which ends when it says the season is open again (seasonalPauses.ts).
+   */
+  seasonOver?: boolean;
 }
 
 interface CityTotals {
@@ -74,7 +79,17 @@ const failedAtOperator = (feed: FeedSnapshot) => feed.failed && feed.attemptedAt
  */
 function quietInPause(feed: FeedSnapshot, now: number, usable: (feed: FeedSnapshot) => boolean,
   refreshing?: ReadonlySet<string>): boolean {
-  return !usable(feed) && (feed.failed || !refreshing?.has(feed.id)) && feedPaused(feed.id, now);
+  return !usable(feed) && (feed.failed || !refreshing?.has(feed.id)) && snapshotPaused(feed, now);
+}
+
+/**
+ * The feeds in view whose operator says their season is over, whichever providers are shown: the
+ * dock shows their town paused for the season (seasonalPauses.ts).
+ */
+function seasonOverIn(snapshot: MobilitySnapshot, bounds: MapBounds): Pick<ScooterResponseMeta, 'seasonOver'> {
+  const seasonOver = snapshot.feeds.filter(feed => feed.seasonOver && coverageIntersects(feed.coverage, bounds))
+    .map(feed => feed.id).sort();
+  return seasonOver.length ? { seasonOver } : {};
 }
 
 /**
@@ -245,7 +260,7 @@ function overviewResponse(snapshot: MobilitySnapshot, query: FeedQuery, zoom: nu
       expiresAt: new Date(snapshot.overview.generatedAt + OVERVIEW_MAX_AGE_MS).toISOString(),
       truncated: false, totalVehicles: Object.values(providers).reduce((a, b) => a + b, 0),
       mode: 'clusters', zoom, overview: true, refreshAfterSeconds: 3600,
-      availableProviders: providersForViewport(query.bounds) },
+      availableProviders: providersForViewport(query.bounds), ...seasonOverIn(snapshot, query.bounds) },
   };
 }
 
@@ -306,6 +321,7 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     refreshAfterSeconds: refreshing ? REFRESHING_RETRY_SECONDS : 60,
     ...(refreshing ? { refreshing: true } : {}),
     availableProviders: providersForViewport(query.bounds),
+    ...seasonOverIn(snapshot, query.bounds),
   });
   if (zoom !== null && zoom >= PARKING_MIN_ZOOM) {
     // The app maps' feeds collect no parking, so none of theirs is missing.

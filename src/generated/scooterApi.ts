@@ -64,6 +64,7 @@ export interface ScooterResponseMeta {
   refreshAfterSeconds?: number;
   refreshing?: boolean;
   availableProviders?: string[];
+  seasonOver?: string[];
   truncated: boolean;
   totalVehicles: number;
   mode: ScooterResponseMode;

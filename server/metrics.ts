@@ -27,7 +27,7 @@ interface MetricsSources {
   planRefreshes?: () => Record<string, number>;
   /** How full the cache of operators' documents is, and how many it dropped to make room. */
   upstreamCache?: () => { entries: number; capacity: number; evictions: number };
-  /** Whether the feed is in its seasonal pause; feedPaused from the catalogs by default. */
+  /** Whether the feed is in its seasonal pause; feedPaused from the catalogs by default. A feed whose operator says its season is over is paused too. */
   paused?: (feedId: string, now: number) => boolean;
   /** Whether a night ban holds at every service area of the feed; feedCurfewed by default. */
   curfewed?: (feedId: string, now: number) => boolean;
@@ -113,8 +113,8 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
           return FEED_STATES.map((candidate): [Labels, number] => [{ ...labelsOf(feed), state: candidate }, candidate === state ? 1 : 0]);
         }));
       metric('scootradar_feed_paused', 'gauge',
-        'Whether every service area of the feed is in its seasonal pause, as Montréal each winter: it may serve nothing, the map says when its scooters are back, and the feed-stopped and feed-empty alerts ignore it.',
-        counted.map(feed => [labelsOf(feed), paused(feed.id, now) ? 1 : 0]));
+        'Whether every service area of the feed is in its seasonal pause, as Montréal each winter, or its operator says its season is over, as Whoosh in Almaty: it may serve nothing, the map says the town is paused for the season, and the feed-stopped and feed-empty alerts ignore it.',
+        counted.map(feed => [labelsOf(feed), feed.seasonOver || paused(feed.id, now) ? 1 : 0]));
       metric('scootradar_feed_curfewed', 'gauge',
         'Whether a night ban holds at every service area of the feed, as in Trondheim on Friday and Saturday nights: its operator may take the feed down until morning, and the feed-stopped alert waits for the ban to end.',
         counted.map(feed => [labelsOf(feed), curfewed(feed.id, now) ? 1 : 0]));

@@ -264,11 +264,14 @@ function dockNotices(input: DockInput, health: ProviderHealth): DockNotice[] {
   }
   // Its operators may list nothing or stop answering: they are not named as down (scooterSnapshots.ts).
   // A pause until the streets are clear has no end to wait for: it gives way once scooters are in view.
-  const season = activeSeasonalPause(input.viewportCenter, input.now);
+  // So does a town whose operators have closed its season: they say when it opens again.
+  const season = activeSeasonalPause(input.viewportCenter, input.now, undefined, new Set(meta?.seasonOver));
   if (season && 'month' in season) {
     notices.push({ kind: 'season', text: { key: 'dock.season', values: { city: season.city }, month: season.month } });
   } else if (season && (input.unfilteredCount ?? input.count) === 0) {
-    notices.push({ kind: 'season', text: { key: 'dock.seasonUntilClear', values: { city: season.city }, date: season.from } });
+    notices.push({ kind: 'season', text: 'from' in season
+      ? { key: 'dock.seasonUntilClear', values: { city: season.city }, date: season.from }
+      : { key: 'dock.seasonOver', values: { city: season.city } } });
   }
   const providers = providersDownNotice(health);
   if (providers) notices.push({ kind: 'providers', text: providers });

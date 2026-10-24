@@ -45,3 +45,19 @@ it('collects no parking for a skipped feed and drops the parking it had', async 
   expect(published).toHaveLength(1);
   expect(published[0]).toMatchObject({ skipped: true, parking: undefined });
 });
+
+it('keeps a region closed for the season closed through a failed collection', async () => {
+  const now = Date.now();
+  const bounds = { south: 51.0, west: 71.2, north: 51.3, east: 71.7 };
+  const definition = { id: 'kazakhstan:whoosh_kz_nqz', provider: 'whoosh' as const, source: 'kazakhstan' as const,
+    host: 'test', coverage: [bounds], collect: async () => ({ vehicles: [], observedAt: now, stale: false, seasonOver: true }) };
+  const published: FeedSnapshot[] = [];
+  await collectSnapshotFeed(definition, undefined, record => published.push(record));
+  expect(published[0]).toMatchObject({ failed: false, seasonOver: true });
+  await collectSnapshotFeed({ ...definition, collect: async () => { throw new Error('Whoosh map HTTP 502'); } },
+    published[0], record => published.push(record));
+  expect(published[1]).toMatchObject({ failed: true, seasonOver: true });
+  await collectSnapshotFeed({ ...definition, collect: async () => ({ vehicles: [], observedAt: now, stale: false }) },
+    published[1], record => published.push(record));
+  expect(published[2].seasonOver).toBeUndefined();
+});

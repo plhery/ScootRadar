@@ -4,7 +4,7 @@ import { dirname, join } from 'node:path';
 import { discoverCollectableFeeds, independentCollectableFeeds, planRefreshCounts, type CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import { buildCityOverview, overviewNeedsRefresh, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
-import { feedCurfewed, feedPaused } from '../src/lib/seasonalPauses';
+import { feedCurfewed, snapshotPaused } from '../src/lib/seasonalPauses';
 import { upstreamCacheEntriesFor, upstreamJsonCache } from '../src/lib/upstreamJsonCache';
 import { fetchRegionalParking } from '../src/lib/parkingFeeds';
 import { FeedScheduler } from './feedScheduler';
@@ -238,8 +238,9 @@ const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afte
   // on 16 October 2026: Sentry hears of it only if it is not back 15 minutes after the ban.
   wait: waitOutCurfew(feedCurfewed),
   report: (change, feed) => {
-    // In its seasonal pause, a feed is expected to stop; the log still says it did.
-    if (!feedPaused(feed.id, Date.now())) reportFeedExpired(change, feed, lastErrors.get(feed.id));
+    // In its seasonal pause, or closed by its operator for the season, a feed is expected to stop;
+    // the log still says it did.
+    if (!snapshotPaused(feed, Date.now())) reportFeedExpired(change, feed, lastErrors.get(feed.id));
   } });
 const persistenceTimer = setInterval(() => {
   if (snapshot) logFeedStates(snapshot.feeds);

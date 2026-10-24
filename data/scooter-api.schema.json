@@ -267,6 +267,11 @@
           "type": "boolean"
         },
         "availableProviders": { "type": "array", "items": { "type": "string" } },
+        "seasonOver": {
+          "description": "Feeds in view whose operator says their season is over, as Whoosh for Astana each winter: the map shows their town paused for the season.",
+          "type": "array",
+          "items": { "type": "string" }
+        },
         "truncated": { "type": "boolean" },
         "totalVehicles": { "type": "integer", "minimum": 0 },
         "mode": { "$ref": "#/$defs/ScooterResponseMode" },

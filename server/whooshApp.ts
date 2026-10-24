@@ -264,6 +264,11 @@ export class WhooshClient {
     return loading;
   }
 
+  /** Whether the operator says the region's season is over, from its metadata, read once an hour. */
+  async seasonOver(region: string): Promise<boolean> {
+    return (await this.region(region)).closed;
+  }
+
   async vehicles(region: string, coverage: MapBounds): Promise<WhooshScooter[]> {
     if (!validBounds(coverage)) throw new Error('Invalid Whoosh map coverage');
     const metadata = await this.region(region);
@@ -305,8 +310,12 @@ export class WhooshClient {
 }
 
 const client = new WhooshClient();
-export async function collectWhooshRegion(system: RegionalScooterSystem, api: Pick<WhooshClient, 'vehicles'> = client): Promise<SourceVehicles> {
+export async function collectWhooshRegion(system: RegionalScooterSystem,
+  api: Pick<WhooshClient, 'seasonOver' | 'vehicles'> = client): Promise<SourceVehicles> {
   if (system.provider !== 'whoosh' || !system.whooshAppRegion) throw new Error('Not a Whoosh app map region');
+  // A region closed for the season, as Almaty each winter, is paused by its operator until it
+  // says the season is open again, on no day it announces (seasonalPauses.ts).
+  if (await api.seasonOver(system.whooshAppRegion)) return { observedAt: Date.now(), stale: false, vehicles: [], seasonOver: true };
   const vehicles = await api.vehicles(system.whooshAppRegion, system.bounds);
   return { observedAt: Date.now(), stale: false, vehicles: vehicles.map(vehicle => ({ provider: 'whoosh',
     vehicle_id: `${system.id}:${vehicle.id}`, lat: vehicle.lat, lng: vehicle.lng, battery: vehicle.battery,

@@ -26,9 +26,14 @@ The Node-only adapter is [server/whooshApp.ts](../server/whooshApp.ts).
   header gave Russia/Kazakhstan/Belarus; a Santiago header gave Latin America.
 - `GET /regions/location/{id}/info` supplies identity, status, time zone and
   `seasonIsOver`. A closed season is a successful empty fleet, not a feed error,
-  and no map search is sent. The cache does not count it as a pause, so "feed
-  empty" reports a region closed for 3 days: Almaty, Astana and Zapopan, closed
-  on 24 October 2026, from the 27th.
+  and no map search is sent. It pauses the feed, as a catalog's seasonal window
+  does ([seasonalPauses.ts](../src/lib/seasonalPauses.ts)): `scootradar_feed_paused`
+  is 1, so "feed empty" and "feed stopped" ignore it and Sentry is not told it
+  stopped, and the answers name it in `meta.seasonOver`, so the website's dock
+  says the town is off season where no other operator runs (Astana and Zapopan,
+  not Almaty, which has JET). The region info is read again each hour, and the
+  pause ends as soon as it says the season is open. Almaty, Astana and Zapopan
+  closed on 24 October 2026. The iOS app does not show the closure yet.
 - `GET /regions/location/{id}/areas` supplies ride polygons. The app's
   `MapAreaUiAssembler` uses enabled `LIMITED` polygons as holes in the global
   out-of-ride-area mask. These are the collection areas. Forbidden polygons

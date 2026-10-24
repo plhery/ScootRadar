@@ -2,7 +2,7 @@ import { SWISS_SCOOTER_AREAS } from '@/lib/feedCoverage';
 import { boundsContainPoint } from '@/lib/geo';
 import { activeCurfew } from '@/lib/rentalCurfews';
 import {
-  REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas,
+  REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, regionalCityId, regionalSource, serviceAreas,
   type RegionalScooterCity, type RegionalScooterSystem,
 } from '@/lib/regionalScooterSystems';
 
@@ -18,6 +18,12 @@ import {
 // holds until CLEAR_BY at the latest, so the alerts are back by then if the scooters are not, and
 // the dock shows it only while the map has no scooter in view (dockModel.ts), so it gives way as
 // soon as the operator brings them back, whichever day that is.
+//
+// Some operators say themselves when a town's season is over: Whoosh closed Almaty, Astana and
+// Zapopan on 24 October 2026. The cache keeps it on the feed's snapshot (`seasonOver`), and it
+// pauses the feed as a catalog's window does, until the operator says the season is open again.
+// The answers name those feeds (`meta.seasonOver`), so the dock shows the town paused, as one
+// until the streets are clear, while no scooter is in view. The iOS app does not show it yet.
 
 export interface SeasonalPause {
   /** Local "MM-DD": the first day without scooters. */
@@ -42,7 +48,8 @@ export const CLEAR_BY = '05-01';
  */
 export type SeasonalReturn = { month: number } | { from: string };
 
-export type ActiveSeasonalPause = { city: string } & SeasonalReturn;
+/** A city in its pause: when its scooters come back, or that its operators have closed its season. */
+export type ActiveSeasonalPause = { city: string } & (SeasonalReturn | { seasonOver: true });
 
 const dates = new Map<string, Intl.DateTimeFormat>();
 
@@ -109,6 +116,15 @@ export function feedPaused(feedId: string, now: number, systems: ReadonlyMap<str
 }
 
 /**
+ * Whether the feed is paused: its every service area in its seasonal pause (feedPaused), or its
+ * operator saying its season is over.
+ */
+export function snapshotPaused(feed: { id: string; seasonOver?: boolean }, now: number,
+  systems: ReadonlyMap<string, RegionalScooterSystem> = SYSTEMS_BY_FEED): boolean {
+  return !!feed.seasonOver || feedPaused(feed.id, now, systems);
+}
+
+/**
  * Whether a night ban holds at every one of the feed's service areas (rentalCurfews.ts): its
  * operator may then take the feed down until morning, as Dott takes Trondheim's on Friday and
  * Saturday nights, while Entur keeps serving its last positions. The map already says renting is
@@ -119,18 +135,44 @@ export function feedCurfewed(feedId: string, now: number, systems: ReadonlyMap<s
   return !!system && serviceAreas(system).every(area => activeCurfew(area.center, now) !== null);
 }
 
+// The feed and pause of each service area, by city id.
+let cityAreas: Map<string, { feed: string; pause: SeasonalPause | undefined }[]> | undefined;
+
+/**
+ * Whether the city's operators have all closed its season, or are in their own pause, and one
+ * at least has closed it: `seasonOver` holds the feeds whose operator says so.
+ */
+function closedForSeason(cityId: string, now: number, seasonOver: ReadonlySet<string>): boolean {
+  if (!seasonOver.size) return false;
+  if (!cityAreas) {
+    cityAreas = new Map();
+    for (const system of REGIONAL_SCOOTER_SYSTEMS) {
+      for (const area of serviceAreas(system)) {
+        const id = regionalCityId(system, area);
+        cityAreas.set(id, [...cityAreas.get(id) ?? [],
+          { feed: `${regionalSource(system)}:${system.id}`, pause: area.seasonal ?? system.seasonal }]);
+      }
+    }
+  }
+  const areas = cityAreas.get(cityId) ?? [];
+  return areas.some(area => seasonOver.has(area.feed))
+    && areas.every(area => seasonOver.has(area.feed) || (area.pause !== undefined && pauseHolds(area.pause, now)));
+}
+
 /**
  * The city at that point whose scooters are away for the season, and when they come back.
  * Null outside every city, or where one of the cities around the point, Swiss ones included,
- * has scooters now.
+ * has scooters now. `seasonOver` holds the feeds whose operator says their season is over.
  */
 export function activeSeasonalPause(point: [number, number] | null, now: number,
-  cities: readonly RegionalScooterCity[] = REGIONAL_SCOOTER_CITIES): ActiveSeasonalPause | null {
+  cities: readonly RegionalScooterCity[] = REGIONAL_SCOOTER_CITIES,
+  seasonOver: ReadonlySet<string> = new Set()): ActiveSeasonalPause | null {
   if (!point || SWISS_SCOOTER_AREAS.some(area => boundsContainPoint(area.bounds, point[0], point[1]))) return null;
   let found: ActiveSeasonalPause | null = null;
   for (const city of cities) {
     if (!boundsContainPoint(city.bounds, point[0], point[1])) continue;
-    const back = pausesReturn(city.pauses, now);
+    const back = pausesReturn(city.pauses, now)
+      ?? (closedForSeason(city.id, now, seasonOver) ? { seasonOver: true as const } : null);
     if (back === null) return null;
     found ??= { city: city.city, ...back };
   }

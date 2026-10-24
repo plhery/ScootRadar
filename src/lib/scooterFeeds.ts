@@ -246,6 +246,8 @@ export interface SourceVehicles {
   vehicles: Vehicle[];
   stale: boolean;
   skipped?: boolean;
+  /** The operator says the feed's season is over, as Whoosh does for a region closed for the winter. */
+  seasonOver?: boolean;
   failedSources?: string[];
   /** The ids of the vehicles the feed put far from its system, which the cache holds a while (strayHold.ts). */
   strayIds?: string[];

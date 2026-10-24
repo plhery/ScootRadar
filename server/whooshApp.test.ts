@@ -2,7 +2,15 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { WhooshClient, parseWhooshRideAreas, parseWhooshVehicles, whooshMapViews } from './whooshApp';
+import { dockModel, type DockInput } from '../src/lib/dockModel';
+import { translate, type AppLocale } from '../src/lib/i18n';
+import { REGIONAL_SCOOTER_SYSTEMS, regionalSource } from '../src/lib/regionalScooterSystems';
+import { buildCityOverview, querySnapshot, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
+import { activeSeasonalPause, snapshotPaused } from '../src/lib/seasonalPauses';
+import { formatUiText } from '../src/lib/uiText';
+import { collectSnapshotFeed } from './collectFeed';
+import { createSnapshotMetrics } from './metrics';
+import { WhooshClient, collectWhooshRegion, parseWhooshRideAreas, parseWhooshVehicles, whooshMapViews } from './whooshApp';
 
 const REGION = '11111111-1111-1111-1111-111111111111';
 const coverage = { south: 1.001, north: 1.019, west: 2.001, east: 2.019 };
@@ -124,5 +132,121 @@ describe('Whoosh map contract', () => {
     await expect(rejected.client.vehicles(REGION, coverage)).rejects.toThrow('Whoosh map HTTP 401');
     await expect(rejected.client.vehicles(REGION, coverage)).rejects.toThrow('awaiting retry');
     expect(rejected.counts()).toEqual({ maps: 2, renewals: 2 });
+  });
+});
+
+describe('Whoosh closed seasons', () => {
+  // Whoosh closed these three on 24 October 2026; Jet still runs in Almaty.
+  const towns = ['whoosh_kz_ala', 'whoosh_kz_nqz', 'whoosh_mx_zap'].map(id => REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === id)!);
+  const feedId = (system: (typeof towns)[number]) => `${regionalSource(system)}:${system.id}`;
+  const sample = (text: string, line: string) => text.split('\n').find(candidate => candidate.startsWith(`${line} `))?.split(' ')[1];
+  afterEach(() => { vi.useRealTimers(); });
+
+  // Synthetic region info: each town's season is over until `open` lists its region.
+  async function regions(open: Set<string>) {
+    const dir = await mkdtemp(join(tmpdir(), 'whoosh-test-')); directories.push(dir);
+    const sessionPath = join(dir, 'session.json');
+    await writeFile(sessionPath, JSON.stringify({ version: 1, clientId: 'client123456', deviceId: 'device123456',
+      refreshToken: 'private-refresh', apiKey: 'private-key' }), { mode: 0o600 });
+    const byRegion = new Map(towns.map(system => [system.whooshAppRegion!, system]));
+    let maps = 0;
+    const mock = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
+      const url = String(input);
+      if (url === 'https://cognito.whoosh.bike/') {
+        const claims = Buffer.from(JSON.stringify({ aud: 'client123456', exp: Math.floor(Date.now() / 1000) + 86_400 })).toString('base64url');
+        return json({ AuthenticationResult: { IdToken: `header.${claims}.signature`, AccessToken: 'private-access' } });
+      }
+      const region = new Headers(init?.headers).get('x-region-id')!;
+      const [lat, lng] = byRegion.get(region)!.center;
+      if (url.endsWith('/info')) return json({ region: { id: region, status: 'ACTIVE', seasonIsOver: !open.has(region) } });
+      if (url.endsWith('/areas')) return json({ areas: [{ enabled: true, type: 'LIMITED', borders: { coordinates: [
+        { lat: lat - 0.004, lng: lng - 0.004 }, { lat: lat + 0.004, lng: lng - 0.004 },
+        { lat: lat + 0.004, lng: lng + 0.004 }, { lat: lat - 0.004, lng: lng + 0.004 },
+      ] } }] });
+      if (url.endsWith('/client/devices/searches')) {
+        maps++;
+        const { upperLeft, bottomRight } = JSON.parse(String(init?.body)).clientSearchDevicesParams.visibleArea;
+        const inView = lat >= upperLeft.lat && lat <= bottomRight.lat && lng >= upperLeft.lng && lng <= bottomRight.lng;
+        return json({ devices: inView ? [device(1, lat, lng)] : [] });
+      }
+      throw new Error('Unexpected URL');
+    });
+    return { client: new WhooshClient({ sessionPath, fetch: mock as typeof fetch, intervalMs: 0 }), maps: () => maps };
+  }
+
+  it('pauses Almaty, Astana and Zapopan while Whoosh says their season is over, until it opens again', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(Date.parse('2026-10-28T09:00:00Z'));
+    const open = new Set<string>();
+    const { client, maps } = await regions(open);
+    const records = new Map<string, FeedSnapshot>();
+    const collect = async () => {
+      for (const system of towns) {
+        await collectSnapshotFeed({ id: feedId(system), source: regionalSource(system), provider: 'whoosh',
+          coverage: [system.bounds], host: 'api.whoosh.bike', collect: () => collectWhooshRegion(system, client) },
+        records.get(feedId(system)), record => records.set(record.id, record));
+      }
+      const feeds = [...records.values()];
+      return { version: 1, updatedAt: Date.now(), feeds, overview: buildCityOverview(feeds, Date.now()) } satisfies MobilitySnapshot;
+    };
+    const paused = (snapshot: MobilitySnapshot) => {
+      const text = createSnapshotMetrics('test').render(snapshot, Date.now());
+      return Object.fromEntries(towns.map(system => [system.city,
+        sample(text, `scootradar_feed_paused{feed="${feedId(system)}",source="${regionalSource(system)}",provider="whoosh"}`)]));
+    };
+    const street = (snapshot: MobilitySnapshot, system: (typeof towns)[number]) =>
+      querySnapshot(snapshot, { bounds: system.bounds, minBattery: 0 }, 15, Date.now());
+    const dock = (snapshot: MobilitySnapshot, system: (typeof towns)[number]) => {
+      const response = street(snapshot, system);
+      const input: DockInput = {
+        count: response.vehicles.length, originInViewport: false, nearest: null, loading: null, failure: null,
+        outOfDate: false, hasData: true, meta: response.meta, lastUpdated: Date.now() - 30_000, now: Date.now(),
+        representedCount: response.vehicles.length, viewportProviders: ['whoosh'], viewportCenter: system.center,
+        providerCounts: {}, providersInView: new Set(), enabledProviders: new Set(['whoosh']), minBattery: 0,
+        unfilteredCount: response.vehicles.length,
+      };
+      const model = dockModel(input);
+      if (model.kind !== 'summary') throw new Error(`Expected the summary, got ${model.kind}`);
+      return model.notices.find(entry => entry.kind === 'season');
+    };
+
+    const closed = await collect();
+    expect(maps()).toBe(0);
+    for (const system of towns) {
+      const record = records.get(feedId(system))!;
+      expect(record).toMatchObject({ vehicles: [], failed: false, skipped: false, seasonOver: true });
+      // Sentry is not told the feed stopped, and the answer names it rather than failing.
+      expect(snapshotPaused(record, Date.now())).toBe(true);
+      expect(street(closed, system).meta).toMatchObject({ seasonOver: [feedId(system)], failedSources: [], partial: false });
+    }
+    // "Feed empty" and "feed stopped" ignore a paused feed.
+    expect(paused(closed)).toEqual({ Almaty: '1', Astana: '1', Zapopan: '1' });
+    // The website shows Astana and Zapopan paused for the season; Almaty has Jet.
+    const [almaty, astana, zapopan] = towns;
+    expect(activeSeasonalPause(almaty.center, Date.now(), undefined, new Set([feedId(almaty)]))).toBeNull();
+    expect(dock(closed, almaty)).toBeUndefined();
+    expect(dock(closed, astana)).toEqual({ kind: 'season', text: { key: 'dock.seasonOver', values: { city: 'Astana' } } });
+    const notice = dock(closed, zapopan)!;
+    expect(notice).toEqual({ kind: 'season', text: { key: 'dock.seasonOver', values: { city: 'Zapopan' } } });
+    const say = (locale: AppLocale, region?: string) => formatUiText(notice.text, { locale, region,
+      t: (key, values) => translate(locale, key, values, region), formatNumber: String });
+    expect(say('en')).toBe('Off season in Zapopan: scooters are back when the operator reopens');
+    expect(say('es', 'MX')).toBe('Pausa de temporada en Zapopan: los scooters vuelven cuando el operador reabra');
+    expect(say('de')).toBe('Saisonpause in Zapopan: Scooter wieder, sobald der Anbieter die Saison eröffnet');
+
+    // Whoosh opens the season again: once its region info is read again, within the hour, the towns are back.
+    for (const system of towns) open.add(system.whooshAppRegion!);
+    vi.setSystemTime(Date.now() + 61 * 60_000);
+    const reopened = await collect();
+    expect(maps()).toBeGreaterThanOrEqual(3);
+    for (const system of towns) {
+      const record = records.get(feedId(system))!;
+      expect(record.vehicles).toHaveLength(1);
+      expect(record.seasonOver).toBeUndefined();
+      expect(snapshotPaused(record, Date.now())).toBe(false);
+      expect(street(reopened, system).meta.seasonOver).toBeUndefined();
+      expect(dock(reopened, system)).toBeUndefined();
+    }
+    expect(paused(reopened)).toEqual({ Almaty: '0', Astana: '0', Zapopan: '0' });
   });
 });

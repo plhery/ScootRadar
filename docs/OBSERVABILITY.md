@@ -47,7 +47,8 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   watched feed expires when its positions are over 15 minutes old; an idle feed only
   after 30 minutes without a successful collection.
 - `scootradar_feed_paused`: 1 while every service area of the feed is in its seasonal
-  pause (`seasonal` in its catalog, as Montréal each winter), else 0. The feed may then
+  pause (`seasonal` in its catalog, as Montréal each winter), or while its operator says
+  its season is over (Whoosh's `seasonIsOver`, as in Almaty since 24 October 2026), else 0. The feed may then
   serve nothing: the map says when its scooters are back rather than that the provider is
   not sharing data, Sentry is not told it stopped, and "feed stopped" and "feed empty"
   ignore it.
@@ -221,7 +222,9 @@ paused on 22 October, before their alerts were due, and Hopp Ólafsvík, emptied
 - **Not in a seasonal pause.** A feed paused at any time in the last 3 days is left
   out, so one whose season has ended has 3 days to bring its scooters back. A pause
   with no set end, until the streets are clear (Ryde in Skien and Porsgrunn from 15
-  December), ends on 1 May at the latest, so the alerts are back by then.
+  December), ends on 1 May at the latest, so the alerts are back by then. A region
+  Whoosh says is closed for the season (Almaty, Astana and Zapopan from 24 October
+  2026) is paused the same way until Whoosh says it is open again.
 - **Feeds that list nothing at all.** Bird's town with no scooter and no time (read
   as an empty town since its Canadian feeds), a Dott region it has paused (403
   `ERR_REGION_OFFLINE`) and a feed without a scooter type are skipped: they have no
