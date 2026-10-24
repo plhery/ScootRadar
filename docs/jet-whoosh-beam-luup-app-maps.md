@@ -228,6 +228,12 @@ Integrity, App Check, SafetyNet or reCAPTCHA was found.
 
 ## LUUP
 
+**Signed-in follow-up:** the user has since completed phone verification.
+The port reader and session renewal work from the cache runtime, and the
+collector now supports 19 Japanese cities. See [the integration and private
+configuration](luup-app-map.md). The signed-out findings below remain the
+original investigation.
+
 LUUP's app reads Firebase project `luup-prod` through
 `https://asia-northeast1-luup-prod.cloudfunctions.net/`, with only
 `Authorization: Bearer <Firebase ID token>`:

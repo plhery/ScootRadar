@@ -140,8 +140,8 @@ describe('the search in Oceania and West Asia', () => {
       // Cyprus is in Europe's, north of West Asia's.
       '-32,27.5,45,72',
       '-170,14,-50,72',
-      // No country of the catalog in East Asia yet: anywhere.
-      null,
+      // Japan brings East Asia into the catalog.
+      '95,-11,150,46',
     ]);
   });
 

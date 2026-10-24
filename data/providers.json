@@ -195,5 +195,16 @@
       "link": "https://qickscooters.app.link/",
       "appStoreId": 1480390337
     }
+  },
+  {
+    "key": "luup",
+    "name": "LUUP",
+    "color": "#00bda5",
+    "initial": "L",
+    "systemIds": {
+      "prefixes": [
+        "luup"
+      ]
+    }
   }
 ]

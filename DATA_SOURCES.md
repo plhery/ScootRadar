@@ -242,6 +242,20 @@ record the source and the request wording. The country-specific GBFS audits
 below describe their original checks; this supplement supersedes their
 claims that these Dott regions have no usable source.
 
+## LUUP rider app
+
+Since 24 October 2026, LUUP's authenticated rider map supplies standing-scooter
+counts at ports in 19 Japanese cities. The user signed in with the official
+app; the cache's runtime-only Coolify secrets hold the refresh token and Firebase
+API key. Neither credentials nor profile data enter the public catalog or API.
+E-bikes and seated scooters are excluded. Each standing scooter is represented
+at its port with a stable ordinal id and unknown charge and range, as with
+PubliBike's station counts. Closed ports are excluded, including local opening
+hours, with conservative handling of holiday schedules. Complete city reads
+are filtered by reviewed LUUP region ids and bounds. See [coverage, credential
+renewal and live verification](docs/luup-app-map.md). Zone completeness is not
+established, so no LUUP zones or parking guidance are published.
+
 ## ATOM rider app
 
 Since 24 October 2026, Qick's authenticated ATOM map supplies Örebro,

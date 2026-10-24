@@ -24,6 +24,13 @@ export function initErrorReporting(env: Record<string, string | undefined> = pro
     release: env.SOURCE_COMMIT?.trim() || undefined,
     dataCollection: { userInfo: false, httpBodies: [] },
     includeLocalVariables: true,
+    // Google's token endpoint carries its client API key in the URL. Keep authentication
+    // requests out of HTTP breadcrumbs; their status is reported by the collector itself.
+    beforeBreadcrumb(breadcrumb) {
+      const url = breadcrumb.data?.url;
+      if (typeof url === 'string' && url.startsWith('https://securetoken.googleapis.com/')) return null;
+      return breadcrumb;
+    },
     beforeSend(event) {
       if (event.request) {
         const { method, url, query_string } = event.request;

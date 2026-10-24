@@ -29,6 +29,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     case flamingo
     case jolt
     case qick
+    case luup
 
     var id: String { rawValue }
 
@@ -59,6 +60,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .flamingo: "Flamingo"
         case .jolt: "JOLT"
         case .qick: "Qick"
+        case .luup: "LUUP"
         }
     }
 
@@ -89,6 +91,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .flamingo: "Fl"
         case .jolt: "J"
         case .qick: "Q"
+        case .luup: "L"
         }
     }
 
@@ -139,6 +142,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .flamingo: UIColor(red: 1.000000, green: 0.125490, blue: 0.431373, alpha: 1)
         case .jolt: UIColor(red: 0.101961, green: 0.101961, blue: 0.101961, alpha: 1)
         case .qick: UIColor(red: 0.109804, green: 0.631373, blue: 0.654902, alpha: 1)
+        case .luup: UIColor(red: 0.000000, green: 0.741176, blue: 0.647059, alpha: 1)
         }
     }
 
@@ -166,6 +170,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         (.lyft, [], ["lyft"]),
         (.jolt, [], ["jolt"]),
         (.qick, [], ["qick"]),
+        (.luup, [], ["luup"]),
         (.voi, [], ["voi"]),
         (.veo, [], ["veo"]),
     ]
@@ -915,6 +920,25 @@ enum ScooterProviderCoverage {
         (.jolt, GeoBounds(south: -43.6426, west: 172.3437, north: -43.5743, east: 172.4189)),
         (.hopp, GeoBounds(south: 10.2754, west: -85.8619, north: 10.3161, east: -85.8241)),
         (.hopp, GeoBounds(south: 12.0102, west: -68.368, north: 12.2527, east: -68.2127)),
+        (.luup, GeoBounds(south: 35.518323, west: 139.349154, north: 35.890346, east: 140.005906)),
+        (.luup, GeoBounds(south: 34.538111, west: 135.365909, north: 34.809842, east: 135.612006)),
+        (.luup, GeoBounds(south: 34.888411, west: 135.647448, north: 35.10257, east: 135.852601)),
+        (.luup, GeoBounds(south: 35.031867, west: 136.789827, north: 35.26233, east: 137.062802)),
+        (.luup, GeoBounds(south: 35.448648, west: 139.445924, north: 35.644652, east: 139.835001)),
+        (.luup, GeoBounds(south: 35.352222, west: 139.474385, north: 35.574119, east: 139.732105)),
+        (.luup, GeoBounds(south: 38.207057, west: 140.808699, north: 38.311792, east: 140.945118)),
+        (.luup, GeoBounds(south: 33.490234, west: 130.238019, north: 33.744721, east: 130.541539)),
+        (.luup, GeoBounds(south: 34.339447, west: 132.383955, north: 34.456412, east: 132.53805)),
+        (.luup, GeoBounds(south: 34.63793, west: 135.117492, north: 34.749767, east: 135.261687)),
+        (.luup, GeoBounds(south: 36.461935, west: 139.74053, north: 36.7289, east: 139.97321)),
+        (.luup, GeoBounds(south: 34.2494, west: 133.950413, north: 34.403953, east: 134.179118)),
+        (.luup, GeoBounds(south: 34.64347, west: 137.670973, north: 34.778709, east: 137.804896)),
+        (.luup, GeoBounds(south: 42.974023, west: 141.234508, north: 43.155372, east: 141.510427)),
+        (.luup, GeoBounds(south: 33.816174, west: 130.817259, north: 33.91838, east: 130.912412)),
+        (.luup, GeoBounds(south: 34.693312, west: 136.462755, north: 34.77194, east: 136.539497)),
+        (.luup, GeoBounds(south: 26.183935, west: 127.658267, north: 26.259677, east: 127.732023)),
+        (.luup, GeoBounds(south: 33.485799, west: 130.455693, north: 33.558566, east: 130.528143)),
+        (.luup, GeoBounds(south: 34.918412, west: 137.129298, north: 34.993089, east: 137.191384)),
     ]
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
@@ -1547,12 +1571,31 @@ enum ScooterCityCatalog {
         ScooterCity(id: "nz:can:Rolleston", name: "Rolleston", countryCode: "NZ", center: GeoPoint(latitude: -43.5956, longitude: 172.382), bounds: GeoBounds(south: -43.6426, west: 172.3437, north: -43.5743, east: 172.4189)),
         ScooterCity(id: "cr:Tamarindo", name: "Tamarindo", countryCode: "CR", center: GeoPoint(latitude: 10.2984, longitude: -85.84), bounds: GeoBounds(south: 10.2754, west: -85.8619, north: 10.3161, east: -85.8241)),
         ScooterCity(id: "bq:Kralendijk", name: "Kralendijk", countryCode: "BQ", center: GeoPoint(latitude: 12.1473, longitude: -68.274), bounds: GeoBounds(south: 12.0102, west: -68.368, north: 12.2527, east: -68.2127)),
+        ScooterCity(id: "jp:Tokyo", name: "Tokyo", countryCode: "JP", center: GeoPoint(latitude: 35.704335, longitude: 139.67753), bounds: GeoBounds(south: 35.518323, west: 139.349154, north: 35.890346, east: 140.005906)),
+        ScooterCity(id: "jp:Osaka", name: "Osaka", countryCode: "JP", center: GeoPoint(latitude: 34.673977, longitude: 135.488957), bounds: GeoBounds(south: 34.538111, west: 135.365909, north: 34.809842, east: 135.612006)),
+        ScooterCity(id: "jp:Kyoto", name: "Kyoto", countryCode: "JP", center: GeoPoint(latitude: 34.995491, longitude: 135.750024), bounds: GeoBounds(south: 34.888411, west: 135.647448, north: 35.10257, east: 135.852601)),
+        ScooterCity(id: "jp:Nagoya", name: "Nagoya", countryCode: "JP", center: GeoPoint(latitude: 35.147098, longitude: 136.926314), bounds: GeoBounds(south: 35.031867, west: 136.789827, north: 35.26233, east: 137.062802)),
+        ScooterCity(id: "jp:Kawasaki", name: "Kawasaki", countryCode: "JP", center: GeoPoint(latitude: 35.54665, longitude: 139.640463), bounds: GeoBounds(south: 35.448648, west: 139.445924, north: 35.644652, east: 139.835001)),
+        ScooterCity(id: "jp:Yokohama", name: "Yokohama", countryCode: "JP", center: GeoPoint(latitude: 35.463171, longitude: 139.603245), bounds: GeoBounds(south: 35.352222, west: 139.474385, north: 35.574119, east: 139.732105)),
+        ScooterCity(id: "jp:Sendai", name: "Sendai", countryCode: "JP", center: GeoPoint(latitude: 38.259424, longitude: 140.876909), bounds: GeoBounds(south: 38.207057, west: 140.808699, north: 38.311792, east: 140.945118)),
+        ScooterCity(id: "jp:Fukuoka", name: "Fukuoka", countryCode: "JP", center: GeoPoint(latitude: 33.617477, longitude: 130.389779), bounds: GeoBounds(south: 33.490234, west: 130.238019, north: 33.744721, east: 130.541539)),
+        ScooterCity(id: "jp:Hiroshima", name: "Hiroshima", countryCode: "JP", center: GeoPoint(latitude: 34.39793, longitude: 132.461003), bounds: GeoBounds(south: 34.339447, west: 132.383955, north: 34.456412, east: 132.53805)),
+        ScooterCity(id: "jp:Kobe", name: "Kobe", countryCode: "JP", center: GeoPoint(latitude: 34.693849, longitude: 135.18959), bounds: GeoBounds(south: 34.63793, west: 135.117492, north: 34.749767, east: 135.261687)),
+        ScooterCity(id: "jp:Utsunomiya", name: "Utsunomiya", countryCode: "JP", center: GeoPoint(latitude: 36.595417, longitude: 139.85687), bounds: GeoBounds(south: 36.461935, west: 139.74053, north: 36.7289, east: 139.97321)),
+        ScooterCity(id: "jp:Takamatsu", name: "Takamatsu", countryCode: "JP", center: GeoPoint(latitude: 34.326677, longitude: 134.064765), bounds: GeoBounds(south: 34.2494, west: 133.950413, north: 34.403953, east: 134.179118)),
+        ScooterCity(id: "jp:Hamamatsu", name: "Hamamatsu", countryCode: "JP", center: GeoPoint(latitude: 34.711089, longitude: 137.737934), bounds: GeoBounds(south: 34.64347, west: 137.670973, north: 34.778709, east: 137.804896)),
+        ScooterCity(id: "jp:Sapporo", name: "Sapporo", countryCode: "JP", center: GeoPoint(latitude: 43.064698, longitude: 141.372467), bounds: GeoBounds(south: 42.974023, west: 141.234508, north: 43.155372, east: 141.510427)),
+        ScooterCity(id: "jp:Kitakyushu", name: "Kitakyushu", countryCode: "JP", center: GeoPoint(latitude: 33.867277, longitude: 130.864835), bounds: GeoBounds(south: 33.816174, west: 130.817259, north: 33.91838, east: 130.912412)),
+        ScooterCity(id: "jp:Tsu", name: "Tsu", countryCode: "JP", center: GeoPoint(latitude: 34.732626, longitude: 136.501126), bounds: GeoBounds(south: 34.693312, west: 136.462755, north: 34.77194, east: 136.539497)),
+        ScooterCity(id: "jp:Naha", name: "Naha", countryCode: "JP", center: GeoPoint(latitude: 26.221806, longitude: 127.695145), bounds: GeoBounds(south: 26.183935, west: 127.658267, north: 26.259677, east: 127.732023)),
+        ScooterCity(id: "jp:Onojo", name: "Onojo", countryCode: "JP", center: GeoPoint(latitude: 33.522182, longitude: 130.491918), bounds: GeoBounds(south: 33.485799, west: 130.455693, north: 33.558566, east: 130.528143)),
+        ScooterCity(id: "jp:Okazaki", name: "Okazaki", countryCode: "JP", center: GeoPoint(latitude: 34.95575, longitude: 137.160341), bounds: GeoBounds(south: 34.918412, west: 137.129298, north: 34.993089, east: 137.191384)),
     ]
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 589
-    static let countryCount = 29
+    static let cityCount = 608
+    static let countryCount = 30
 
     /// Cities by distance from the point to their centre, nearest first.
     static func nearest(to point: GeoPoint, count: Int) -> [ScooterCityDistance] {
@@ -1843,6 +1886,7 @@ enum ScooterCountryCatalog {
         // On Bonaire, north of Kralendijk, where all the Caribbean Netherlands' scooters are: on
         // land, away from Curaçao and from Venezuela's coast.
         "bq": (12.17, -68.27),
+        "jp": (36.2, 138.1),
     ]
 
     /// The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences.
@@ -1864,6 +1908,7 @@ enum ScooterCountryCatalog {
         ("DE/AT/IT/NO/GB/DK/SE/FI: Voi map", "https://www.voi.com/"),
         ("NZ: Flamingo · CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/"),
         ("CH/FR/PT/ES/PL/FI/UA/IL/NZ: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
+        ("JP: LUUP map", "https://luup.sc/"),
     ]
 
     /// The countries whose totals, zoomed out, are their states' or provinces', and those by code.

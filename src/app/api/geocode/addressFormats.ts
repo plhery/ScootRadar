@@ -35,6 +35,8 @@ export const ADDRESS_FORMATS: Readonly<Record<string, AddressFormat>> = {
   // Bonaire and Curaçao have no postcodes; their addresses are written the Dutch way: "Kaya Grandi 22".
   BQ: { townLine: '{town}' },
   CW: { townLine: '{town}' },
+  // Japan Post's Latin-script order: block number and neighborhood, town/prefecture, seven-digit postcode.
+  JP: { numberFirst: true, townLine: '{town}, {region} {postcode}', postcode: /\d{3}-?\d{4}/ },
 };
 
 /** A street with its house number, as the country writes it. A street named in Hebrew or Arabic keeps its number after it, as it is written there: "שדרות רוטשילד 22". */

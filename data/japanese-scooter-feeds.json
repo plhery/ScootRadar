@@ -1,0 +1,445 @@
+{
+  "verifiedOn": "2026-10-24",
+  "catalogSource": "https://luup.sc/",
+  "systems": [
+    {
+      "id": "luup_jp_shibuya",
+      "provider": "luup",
+      "city": "Tokyo",
+      "aliases": [
+        "東京"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        35.704335,
+        139.67753
+      ],
+      "bounds": {
+        "south": 35.518323,
+        "north": 35.890346,
+        "west": 139.349154,
+        "east": 140.005906
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "shibuya",
+        "tokyo-east"
+      ]
+    },
+    {
+      "id": "luup_jp_osaka",
+      "provider": "luup",
+      "city": "Osaka",
+      "aliases": [
+        "大阪"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        34.673977,
+        135.488957
+      ],
+      "bounds": {
+        "south": 34.538111,
+        "north": 34.809842,
+        "west": 135.365909,
+        "east": 135.612006
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "osaka",
+        "yodogawa"
+      ]
+    },
+    {
+      "id": "luup_jp_kyoto",
+      "provider": "luup",
+      "city": "Kyoto",
+      "aliases": [
+        "京都"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        34.995491,
+        135.750024
+      ],
+      "bounds": {
+        "south": 34.888411,
+        "north": 35.10257,
+        "west": 135.647448,
+        "east": 135.852601
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "kyoto"
+      ]
+    },
+    {
+      "id": "luup_jp_nagoya",
+      "provider": "luup",
+      "city": "Nagoya",
+      "aliases": [
+        "名古屋"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        35.147098,
+        136.926314
+      ],
+      "bounds": {
+        "south": 35.031867,
+        "north": 35.26233,
+        "west": 136.789827,
+        "east": 137.062802
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "nagoya"
+      ]
+    },
+    {
+      "id": "luup_jp_kawasaki",
+      "provider": "luup",
+      "city": "Kawasaki",
+      "aliases": [
+        "川崎"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        35.54665,
+        139.640463
+      ],
+      "bounds": {
+        "south": 35.448648,
+        "north": 35.644652,
+        "west": 139.445924,
+        "east": 139.835001
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "kawasaki"
+      ]
+    },
+    {
+      "id": "luup_jp_yokohama",
+      "provider": "luup",
+      "city": "Yokohama",
+      "aliases": [
+        "横浜"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        35.463171,
+        139.603245
+      ],
+      "bounds": {
+        "south": 35.352222,
+        "north": 35.574119,
+        "west": 139.474385,
+        "east": 139.732105
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "yokohama"
+      ]
+    },
+    {
+      "id": "luup_jp_sendai",
+      "provider": "luup",
+      "city": "Sendai",
+      "aliases": [
+        "仙台"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        38.259424,
+        140.876909
+      ],
+      "bounds": {
+        "south": 38.207057,
+        "north": 38.311792,
+        "west": 140.808699,
+        "east": 140.945118
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "sendai"
+      ]
+    },
+    {
+      "id": "luup_jp_fukuoka",
+      "provider": "luup",
+      "city": "Fukuoka",
+      "aliases": [
+        "福岡"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        33.617477,
+        130.389779
+      ],
+      "bounds": {
+        "south": 33.490234,
+        "north": 33.744721,
+        "west": 130.238019,
+        "east": 130.541539
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "fukuoka"
+      ]
+    },
+    {
+      "id": "luup_jp_hiroshima-city",
+      "provider": "luup",
+      "city": "Hiroshima",
+      "aliases": [
+        "広島"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        34.39793,
+        132.461003
+      ],
+      "bounds": {
+        "south": 34.339447,
+        "north": 34.456412,
+        "west": 132.383955,
+        "east": 132.53805
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "hiroshima-city"
+      ]
+    },
+    {
+      "id": "luup_jp_kobe",
+      "provider": "luup",
+      "city": "Kobe",
+      "aliases": [
+        "神戸"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        34.693849,
+        135.18959
+      ],
+      "bounds": {
+        "south": 34.63793,
+        "north": 34.749767,
+        "west": 135.117492,
+        "east": 135.261687
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "kobe"
+      ]
+    },
+    {
+      "id": "luup_jp_utsunomiya",
+      "provider": "luup",
+      "city": "Utsunomiya",
+      "aliases": [
+        "宇都宮"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        36.595417,
+        139.85687
+      ],
+      "bounds": {
+        "south": 36.461935,
+        "north": 36.7289,
+        "west": 139.74053,
+        "east": 139.97321
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "utsunomiya"
+      ]
+    },
+    {
+      "id": "luup_jp_takamatsu-city",
+      "provider": "luup",
+      "city": "Takamatsu",
+      "aliases": [
+        "高松"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        34.326677,
+        134.064765
+      ],
+      "bounds": {
+        "south": 34.2494,
+        "north": 34.403953,
+        "west": 133.950413,
+        "east": 134.179118
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "takamatsu-city"
+      ]
+    },
+    {
+      "id": "luup_jp_hamamatsu",
+      "provider": "luup",
+      "city": "Hamamatsu",
+      "aliases": [
+        "浜松"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        34.711089,
+        137.737934
+      ],
+      "bounds": {
+        "south": 34.64347,
+        "north": 34.778709,
+        "west": 137.670973,
+        "east": 137.804896
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "hamamatsu"
+      ]
+    },
+    {
+      "id": "luup_jp_sapporo",
+      "provider": "luup",
+      "city": "Sapporo",
+      "aliases": [
+        "札幌"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        43.064698,
+        141.372467
+      ],
+      "bounds": {
+        "south": 42.974023,
+        "north": 43.155372,
+        "west": 141.234508,
+        "east": 141.510427
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "sapporo"
+      ]
+    },
+    {
+      "id": "luup_jp_kitakyushu",
+      "provider": "luup",
+      "city": "Kitakyushu",
+      "aliases": [
+        "北九州"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        33.867277,
+        130.864835
+      ],
+      "bounds": {
+        "south": 33.816174,
+        "north": 33.91838,
+        "west": 130.817259,
+        "east": 130.912412
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "kitakyushu"
+      ]
+    },
+    {
+      "id": "luup_jp_tsushi",
+      "provider": "luup",
+      "city": "Tsu",
+      "aliases": [
+        "津"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        34.732626,
+        136.501126
+      ],
+      "bounds": {
+        "south": 34.693312,
+        "north": 34.77194,
+        "west": 136.462755,
+        "east": 136.539497
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "tsushi"
+      ]
+    },
+    {
+      "id": "luup_jp_naha",
+      "provider": "luup",
+      "city": "Naha",
+      "aliases": [
+        "那覇"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        26.221806,
+        127.695145
+      ],
+      "bounds": {
+        "south": 26.183935,
+        "north": 26.259677,
+        "west": 127.658267,
+        "east": 127.732023
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "naha"
+      ]
+    },
+    {
+      "id": "luup_jp_onojo",
+      "provider": "luup",
+      "city": "Onojo",
+      "aliases": [
+        "大野城"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        33.522182,
+        130.491918
+      ],
+      "bounds": {
+        "south": 33.485799,
+        "north": 33.558566,
+        "west": 130.455693,
+        "east": 130.528143
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "onojo"
+      ]
+    },
+    {
+      "id": "luup_jp_okazaki",
+      "provider": "luup",
+      "city": "Okazaki",
+      "aliases": [
+        "岡崎"
+      ],
+      "timeZone": "Asia/Tokyo",
+      "center": [
+        34.95575,
+        137.160341
+      ],
+      "bounds": {
+        "south": 34.918412,
+        "north": 34.993089,
+        "west": 137.129298,
+        "east": 137.191384
+      },
+      "discoveryUrl": "https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location",
+      "luupAppCities": [
+        "okazaki"
+      ]
+    }
+  ]
+}

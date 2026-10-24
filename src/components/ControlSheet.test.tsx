@@ -447,6 +447,7 @@ describe('ControlSheet settings', () => {
       'DE/AT/IT/NO/GB/DK/SE/FI: Voi map',
       'NZ: Flamingo · CC BY 4.0',
       'CH/FR/PT/ES/PL/FI/UA/IL/NZ: OpenStreetMap boundaries · ODbL',
+      'JP: LUUP map',
       'Search · Geoapify',
       'Search · Photon, komoot',
       'Parking · Métropole Européenne de Lille',

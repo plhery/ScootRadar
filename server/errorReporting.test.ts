@@ -14,6 +14,16 @@ const { initErrorReporting, reportError, reportFeedExpired } = await import('./e
 
 beforeEach(() => vi.clearAllMocks());
 
+it('omits Google authentication URLs containing a runtime API key from breadcrumbs', () => {
+  initErrorReporting({ SENTRY_DSN: 'https://key@o1.ingest.sentry.io/1' });
+  const options = vi.mocked(Sentry.init).mock.calls[0][0]!;
+  expect(options.beforeBreadcrumb!({ category: 'fetch', data: {
+    url: 'https://securetoken.googleapis.com/v1/token?key=private-test-key', status_code: 200,
+  } }, {})).toBeNull();
+  const portRead = { category: 'fetch', data: { url: 'https://asia-northeast1-luup-prod.cloudfunctions.net/mobileApiDBReader-ports/by-location' } };
+  expect(options.beforeBreadcrumb!(portRead, {})).toEqual(portRead);
+});
+
 it('stays off without a DSN, and sends a request\'s URL but never its headers', () => {
   expect(initErrorReporting({})).toBe(false);
   expect(Sentry.init).not.toHaveBeenCalled();

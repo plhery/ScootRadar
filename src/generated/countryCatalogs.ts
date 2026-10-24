@@ -28,6 +28,7 @@ import israeliCatalog from '../../data/israeli-scooter-feeds.json';
 import newZealandCatalog from '../../data/new-zealand-scooter-feeds.json';
 import costaRicanCatalog from '../../data/costa-rican-scooter-feeds.json';
 import caribbeanNetherlandsCatalog from '../../data/caribbean-netherlands-scooter-feeds.json';
+import japaneseCatalog from '../../data/japanese-scooter-feeds.json';
 
 /** Every catalog's systems, each with its country, in the order of data/countries.json. */
 export const CATALOG_SYSTEMS = [
@@ -59,4 +60,5 @@ export const CATALOG_SYSTEMS = [
   ...newZealandCatalog.systems.map(system => ({ ...system, country: 'NZ' as const })),
   ...costaRicanCatalog.systems.map(system => ({ ...system, country: 'CR' as const })),
   ...caribbeanNetherlandsCatalog.systems.map(system => ({ ...system, country: 'BQ' as const })),
+  ...japaneseCatalog.systems.map(system => ({ ...system, country: 'JP' as const })),
 ];

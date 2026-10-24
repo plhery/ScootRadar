@@ -636,6 +636,52 @@
         "attribution": "Caribbean Netherlands: Hopp GBFS",
         "gbfs": ["Hopp"]
       }
+    },
+    {
+      "code": "JP",
+      "continent": "asia",
+      "catalog": "data/japanese-scooter-feeds.json",
+      "source": "japan",
+      "names": {
+        "en": "Japan",
+        "de": "Japan",
+        "fr": "Japon",
+        "it": "Giappone",
+        "nl": "Japan",
+        "nb": "Japan",
+        "pt": "Japão",
+        "es": "Japón",
+        "is": "Japan"
+      },
+      "searchWords": [
+        "japan",
+        "japon",
+        "giappone",
+        "日本",
+        "nippon",
+        "nihon"
+      ],
+      "anchor": [
+        36.2,
+        138.1
+      ],
+      "featuredCities": [
+        "jp:Tokyo",
+        "jp:Osaka",
+        "jp:Kyoto",
+        "jp:Nagoya",
+        "jp:Yokohama",
+        "jp:Fukuoka"
+      ],
+      "credits": {
+        "attribution": "Japan: LUUP authenticated rider map, standing scooters counted at their ports",
+        "links": [
+          {
+            "label": "JP: LUUP map",
+            "href": "https://luup.sc/"
+          }
+        ]
+      }
     }
   ]
 }

@@ -404,3 +404,10 @@ cities can refresh more slowly than once a minute. Keep the mode-0600
 overrides its location). Its app identifiers and rider tokens belong only
 there, never in Git or build variables. See [the session format and
 verification](docs/atom-app-map.md#session-configuration-and-verification).
+
+LUUP's Japanese rider map reads `LUUP_REFRESH_TOKEN` and `LUUP_FIREBASE_API_KEY`
+from private, runtime-only Coolify environment secrets on the Node cache.
+Neither is a Worker or build variable. ID tokens stay in memory; refresh-token
+rotations are saved mode 0600 in `/data/luup-session.json` (`LUUP_SESSION_PATH`
+overrides the path). A replacement runtime token supersedes a previous login's
+saved rotation. See [coverage, renewal and verification](docs/luup-app-map.md).

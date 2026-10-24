@@ -20,6 +20,7 @@ describe('the address formats', () => {
     expect(streetAddress('SA', 'King Fahd Road', '2')).toBe('2 King Fahd Road');
     expect(streetAddress('CR', 'Calle Central', '5')).toBe('Calle Central 5');
     expect(streetAddress('BQ', 'Kaya Grandi', '22')).toBe('Kaya Grandi 22');
+    expect(streetAddress('JP', 'Kasumigaseki', '1-3-2')).toBe('1-3-2 Kasumigaseki');
     expect(streetAddress('XX', 'Main Street', '3')).toBe('Main Street 3');
     expect(streetAddress('NZ', 'Queen Street', '')).toBe('Queen Street');
   });
@@ -39,6 +40,7 @@ describe('the address formats', () => {
     expect(townLine('AE', { town: 'Dubai', postcode: '', region: region('Dubai') })).toBe('Dubai');
     expect(townLine('CR', { town: 'Tamarindo', postcode: '50309', region: region('Guanacaste') })).toBe('Tamarindo 50309');
     expect(townLine('BQ', { town: 'Kralendijk', postcode: '', region: region('Nederland') })).toBe('Kralendijk');
+    expect(townLine('JP', { town: 'Chiyoda-ku', postcode: '100-8798', region: region('Tokyo') })).toBe('Chiyoda-ku, Tokyo 100-8798');
   });
 
   it('leave out what OpenStreetMap gives as an Emirati postcode, which the Emirates do not use', () => {
