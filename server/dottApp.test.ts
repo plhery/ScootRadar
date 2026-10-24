@@ -82,7 +82,8 @@ describe('Dott collection', () => {
     await upstream(stream => {
       closed = once(stream, 'close');
       stream.on('data', chunk => {
-        request = Buffer.concat([request, chunk]);
+        // Without an encoding set, the stream's chunks are Buffers.
+        request = Buffer.concat([request, chunk as Buffer]);
         stream.respond({ ':status': 200, 'content-type': 'application/grpc+proto' });
         stream.write(Buffer.concat([sync(2), vehicle(), sync(1)]));
       });
