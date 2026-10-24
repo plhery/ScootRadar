@@ -160,6 +160,7 @@ import openingHoursNb from './nb/elsparkesykkel-apningstider';
 import oeirasPt from './pt/trotinetes-oeiras';
 import matosinhosPt from './pt/trotinetes-matosinhos';
 import bielDe from './de/e-trottinett-biel';
+import gijonEs from './es/alquiler-patinete-electrico-gijon';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -320,4 +321,5 @@ export const GUIDES: readonly Guide[] = [
   oeirasPt,
   matosinhosPt,
   bielDe,
+  gijonEs,
 ];
