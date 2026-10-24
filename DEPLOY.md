@@ -275,7 +275,9 @@ for `/ready`, then push the rest. Coolify's Deploy button deploys
 Coolify remains the source of truth for the application, storage, and resource limits.
 
 The collector schedules each feed independently, with six concurrent systems
-and at most two per host. A slow host cannot monopolize collection slots.
+and at most two per host. A slow host cannot monopolize collection slots, and a
+feed collected every minute takes the next free slot before any idle feed, so a
+deploy that adds hundreds of feeds does not hold Switzerland back.
 Switzerland is collected every minute; any other feed every 20 minutes, or every
 minute for 10 minutes after a map request covers it, the request starting a
 collection at once when the last is over a minute old (see

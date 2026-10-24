@@ -38,6 +38,19 @@ it('refreshes a healthy host on schedule while many jobs on another host are stu
   } finally { scheduler.stop(); }
 });
 
+it('collects the always-fast feeds every minute while a deploy\'s new feeds keep every host busy', async () => {
+  // A deploy added 202 feeds on 24 October 2026; their slow first collections on three hosts held Zürich's back.
+  const added = Array.from({ length: 60 }, (_, i) => ({ id: `new-${i}`, host: `new-${i % 4}` }));
+  const { scheduler, times } = schedule([{ id: 'zurich', host: 'ch', fast: true }, ...added],
+    { lastCollectedAt: feed => feed.id === 'zurich' ? T0 - 30_000 : undefined },
+    feed => feed.host === 'ch' ? Promise.resolve() : new Promise(resolve => setTimeout(resolve, 20_000)));
+  try {
+    await vi.advanceTimersByTimeAsync(3 * MINUTE);
+    // Due 30 seconds in, it takes the first slot a collection frees, then keeps its minute.
+    expect(times('zurich').map(minutes => Math.round(minutes * 60))).toEqual([40, 100, 160]);
+  } finally { scheduler.stop(); }
+});
+
 it('runs at most six collections at once', async () => {
   const feeds = Array.from({ length: 10 }, (_, i) => ({ id: `feed-${i}`, host: `host-${i}`, fast: true }));
   const { scheduler, calls } = schedule(feeds, {}, () => new Promise(() => {}));

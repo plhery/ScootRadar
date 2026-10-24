@@ -196,7 +196,12 @@ export class FeedScheduler<T extends ScheduledFeed> {
     clearTimeout(this.timer);
     const now = Date.now();
     const rank = (feed: T) => this.woken.has(feed.id) ? -Infinity : this.due.get(feed.id) ?? 0;
-    const pending = this.definitions.filter(feed => !this.running.has(feed.id)).sort((a, b) => rank(a) - rank(b));
+    // A feed on the active interval goes before an idle one. A deploy on 24 October 2026 added 202
+    // feeds, due at once; slow sweeps on three hosts held every slot, and Zürich's feeds, due a
+    // minute later, waited behind them for over ten minutes.
+    const idle = (feed: T) => this.mode(feed, now) === 'idle' && !this.woken.has(feed.id) ? 1 : 0;
+    const pending = this.definitions.filter(feed => !this.running.has(feed.id))
+      .sort((a, b) => idle(a) - idle(b) || rank(a) - rank(b));
     for (const feed of pending) {
       if (this.running.size >= MAX_RUNNING) break;
       if (rank(feed) > now || [...this.running.values()].filter(host => host === feed.host).length >= MAX_RUNNING_PER_HOST) continue;
