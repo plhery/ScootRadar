@@ -316,7 +316,7 @@ struct ScooterControlDock: View {
             ParkingBayCard(model: model, parking: parking)
         case let .outOfDate(failure, lastUpdate):
             outOfDateCard(failure, lastUpdate: lastUpdate)
-        case let .finding(chips):
+        case let .finding(chips, notices):
             VStack(alignment: .leading, spacing: 10) {
                 HStack(spacing: 8) {
                     ProgressView()
@@ -326,6 +326,10 @@ struct ScooterControlDock: View {
                         .font(.subheadline.weight(.semibold))
                 }
                 .frame(maxWidth: .infinity, minHeight: Self.headerHeight, alignment: .leading)
+
+                if !notices.isEmpty {
+                    noticeRows(notices)
+                }
 
                 if !chips.isEmpty {
                     providerFilters(chips)
@@ -404,15 +408,7 @@ struct ScooterControlDock: View {
             }
 
             if !summary.notices.isEmpty {
-                VStack(alignment: .leading, spacing: 4) {
-                    ForEach(summary.notices) { notice in
-                        DockNoteRow(
-                            systemImage: notice.systemImage,
-                            text: notice.text,
-                            tint: notice.isCalm ? ScooterPalette.actionText : nil
-                        )
-                    }
-                }
+                noticeRows(summary.notices)
             }
 
             providerFilters(summary.chips)
@@ -421,6 +417,18 @@ struct ScooterControlDock: View {
                 DockNoteRow(
                     systemImage: hint == .tapCity ? "mappin.and.ellipse" : "scooter",
                     text: hint.text
+                )
+            }
+        }
+    }
+
+    private func noticeRows(_ notices: [ScooterDockNotice]) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            ForEach(notices) { notice in
+                DockNoteRow(
+                    systemImage: notice.systemImage,
+                    text: notice.text,
+                    tint: notice.isCalm ? ScooterPalette.actionText : nil
                 )
             }
         }
@@ -749,6 +757,10 @@ private struct DockStatusLabel: View {
         HStack(spacing: 5) {
             if status.isLive {
                 LiveIndicator()
+            } else if status.isUpdating {
+                ProgressView()
+                    .controlSize(.mini)
+                    .accessibilityHidden(true)
             } else if status.isWarning {
                 Image(systemName: "exclamationmark.triangle")
                     .font(.caption2.weight(.semibold))

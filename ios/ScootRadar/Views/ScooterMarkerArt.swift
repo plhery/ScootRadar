@@ -21,8 +21,19 @@ enum ScooterDotArt {
         let isDark: Bool
     }
 
+    /// A scooter where it was last seen, while the server collects it again.
+    struct LastSeenKey: Hashable {
+        let provider: ScooterProvider?
+        let isDark: Bool
+    }
+
+    /// Smaller than the others' dots, which stand out over it, as on the web.
+    static let lastSeenDiameter: CGFloat = 10
+
     private static var dots: [Key: UIImage] = [:]
     private static var clusters: [ClusterKey: UIImage] = [:]
+    private static var lastSeenDots: [LastSeenKey: UIImage] = [:]
+    private static var lastSeenClusters: [ClusterKey: UIImage] = [:]
     /// Zooming through every scale draws many sizes; they are not all kept.
     private static let maximumDots = 600
 
@@ -38,6 +49,20 @@ enum ScooterDotArt {
         if let image = clusters[key] { return image }
         let image = draw(key)
         clusters[key] = image
+        return image
+    }
+
+    static func lastSeenImage(for key: LastSeenKey) -> UIImage {
+        if let image = lastSeenDots[key] { return image }
+        let image = draw(key)
+        lastSeenDots[key] = image
+        return image
+    }
+
+    static func lastSeenClusterImage(for key: ClusterKey) -> UIImage {
+        if let image = lastSeenClusters[key] { return image }
+        let image = drawLastSeen(key)
+        lastSeenClusters[key] = image
         return image
     }
 
@@ -151,6 +176,43 @@ enum ScooterDotArt {
             }
             context.setLineWidth(1.5)
             context.strokeEllipse(in: disc.insetBy(dx: 0.75, dy: 0.75))
+        }
+    }
+
+    /// The dot in the provider's colour inside a thin ring, without a glow or a shadow.
+    private static func draw(_ key: LastSeenKey) -> UIImage {
+        let ring: CGFloat = 1.5
+        let side = lastSeenDiameter + 2 * ring
+        let ground = key.isDark ? ScooterMapLook.darkGround : UIColor.white
+        return UIGraphicsImageRenderer(size: CGSize(width: side, height: side)).image { renderer in
+            let context = renderer.cgContext
+            context.setFillColor(ground.cgColor)
+            context.fillEllipse(in: CGRect(x: 0, y: 0, width: side, height: side))
+            context.setFillColor(ScooterMapLook.dotColor(key.provider, isDark: key.isDark).cgColor)
+            context.fillEllipse(in: CGRect(x: ring, y: ring, width: lastSeenDiameter, height: lastSeenDiameter))
+        }
+    }
+
+    /// A group of them: a dashed ring in the colour of the provider with the most
+    /// of them, around a disc that lets the map through. The number is a label over it.
+    private static func drawLastSeen(_ key: ClusterKey) -> UIImage {
+        let tint = ScooterMapLook.dotColor(key.provider, isDark: key.isDark)
+        let ground = key.isDark ? ScooterMapLook.darkGround : UIColor.white
+        let line: CGFloat = 2
+        let disc = CGRect(x: 0, y: 0, width: key.diameter, height: key.diameter)
+        let ring = disc.insetBy(dx: line / 2, dy: line / 2)
+        // Dashes of 4 pt with gaps of 3, stretched a little so that they go round evenly.
+        let circumference = .pi * ring.width
+        let period = circumference / (circumference / 7).rounded()
+
+        return UIGraphicsImageRenderer(size: disc.size).image { renderer in
+            let context = renderer.cgContext
+            context.setFillColor(ground.withAlphaComponent(0.8).cgColor)
+            context.fillEllipse(in: disc)
+            context.setStrokeColor(tint.cgColor)
+            context.setLineWidth(line)
+            context.setLineDash(phase: 0, lengths: [period * 4 / 7, period * 3 / 7])
+            context.strokeEllipse(in: ring)
         }
     }
 

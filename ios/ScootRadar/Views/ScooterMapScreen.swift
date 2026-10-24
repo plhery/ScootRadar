@@ -87,7 +87,10 @@ struct ScooterMapScreen: View {
                     isWalking: model.isWalking,
                     walkRemainingMetres: model.walkRemainingMetres,
                     zones: model.mapZones,
-                    zonesRevision: model.mapZonesRevision
+                    zonesRevision: model.mapZonesRevision,
+                    lastSeenScooters: model.mapLastSeenScooters,
+                    lastSeenClusters: model.mapLastSeenClusters,
+                    lastSeenRevision: model.mapLastSeenRevision
                 )
                 .ignoresSafeArea()
 

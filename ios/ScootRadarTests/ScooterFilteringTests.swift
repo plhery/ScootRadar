@@ -287,6 +287,103 @@ final class ScooterFilteringTests: XCTestCase {
     }
 
     @MainActor
+    func testScootersLastSeenLieFadedUnderTheOthersAndAreNeitherTappedNorRead() throws {
+        let annotation = ScooterLastSeenAnnotation(
+            id: "v:lime:seen",
+            coordinate: CLLocationCoordinate2D(latitude: 47.3769, longitude: 8.5417),
+            mark: .scooter(.lime)
+        )
+        let view = ScooterLastSeenView(annotation: annotation, reuseIdentifier: nil)
+        let live = ScooterAnnotationView(annotation: nil, reuseIdentifier: nil)
+
+        XCTAssertEqual(view.zPriority, .min)
+        XCTAssertLessThan(view.zPriority.rawValue, live.zPriority.rawValue)
+        XCTAssertEqual(view.displayPriority, .required)
+        XCTAssertEqual(view.collisionMode, .none)
+        XCTAssertNil(view.clusteringIdentifier)
+        XCTAssertFalse(view.isEnabled)
+        XCTAssertFalse(view.isUserInteractionEnabled)
+        XCTAssertFalse(view.isAccessibilityElement)
+        XCTAssertTrue(view.accessibilityElementsHidden)
+        XCTAssertFalse(view.canShowCallout)
+        // A 10 pt dot inside a ring of 1.5 pt.
+        XCTAssertEqual(
+            ScooterDotArt.lastSeenImage(for: .init(provider: .lime, isDark: false)).size,
+            CGSize(width: 13, height: 13)
+        )
+        XCTAssertEqual(
+            ScooterDotArt.lastSeenClusterImage(for: .init(provider: .lime, diameter: 40, isDark: true)).size,
+            CGSize(width: 40, height: 40)
+        )
+
+        // It breathes once it is on screen, and stands still with Reduce Motion.
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+        let window = UIWindow(windowScene: scene)
+        window.addSubview(view)
+        let faded = try XCTUnwrap(view.subviews.first)
+        if UIAccessibility.isReduceMotionEnabled {
+            XCTAssertNil(faded.layer.animation(forKey: "breath"))
+            XCTAssertEqual(faded.layer.opacity, ScooterLastSeenView.still)
+        } else {
+            let breath = try XCTUnwrap(faded.layer.animation(forKey: "breath") as? CABasicAnimation)
+            XCTAssertEqual(breath.fromValue as? Float, ScooterLastSeenView.faintest)
+            XCTAssertEqual(breath.toValue as? Float, ScooterLastSeenView.strongest)
+            XCTAssertEqual(breath.duration, 1.6)
+            XCTAssertTrue(breath.autoreverses)
+        }
+        view.removeFromSuperview()
+        XCTAssertNil(faded.layer.animation(forKey: "breath"))
+    }
+
+    @MainActor
+    func testFadedMarkersAreKeptAndMovedWhileTheirScootersStay() {
+        let parent = ScooterMapView(
+            scooters: [],
+            scooterRevision: 0,
+            clusters: [],
+            clusterRevision: 0,
+            usesServerClusters: true,
+            mapStyle: .standard,
+            showsUserLocation: false,
+            focusRequest: nil,
+            destination: nil,
+            selectedScooterID: nil,
+            onRegionChange: { _, _, _ in },
+            onSelectionChange: { _ in }
+        )
+        let coordinator = ScooterMapView.Coordinator(parent: parent)
+        let mapView = MKMapView()
+        let seen = scooter(id: "seen", provider: "lime", battery: 80)
+        let group = ScooterCluster(id: "seen:13:4290:2868", latitude: 47.38, longitude: 8.54,
+            count: 12, providers: ["lime": 5, "bird": 7])
+        func faded() -> [ScooterLastSeenAnnotation] {
+            mapView.annotations.compactMap { $0 as? ScooterLastSeenAnnotation }.sorted { $0.id < $1.id }
+        }
+
+        coordinator.reconcileLastSeen([seen], [group], revision: 1, on: mapView)
+        let first = faded()
+        XCTAssertEqual(first.map(\.id), ["c:seen:13:4290:2868", "v:lime:seen"])
+        // The ring takes the colour of the provider with the most of them.
+        XCTAssertEqual(first[0].mark, .group(count: 12, provider: .bird))
+        XCTAssertEqual(first[1].mark, .scooter(.lime))
+
+        // The same revision changes nothing.
+        coordinator.reconcileLastSeen([], [], revision: 1, on: mapView)
+        XCTAssertEqual(faded().count, 2)
+
+        // A scooter that moved keeps its marker; a group that went takes its marker with it.
+        let moved = scooter(id: "seen", provider: "lime", battery: 80, latitude: 47.3779)
+        coordinator.reconcileLastSeen([moved], [], revision: 2, on: mapView)
+        let second = faded()
+        XCTAssertEqual(second.map(\.id), ["v:lime:seen"])
+        XCTAssertTrue(second[0] === first[1])
+        XCTAssertEqual(second[0].coordinate.latitude, 47.3779)
+
+        coordinator.reconcileLastSeen([], [], revision: 3, on: mapView)
+        XCTAssertTrue(faded().isEmpty)
+    }
+
+    @MainActor
     func testSelectedScooterTakesItsRingAndReturnsToItsDot() {
         let annotation = ScooterMapAnnotation(scooter: scooter(id: "voi", provider: "voi", battery: 82))
         let view = ScooterAnnotationView(annotation: annotation, reuseIdentifier: nil)

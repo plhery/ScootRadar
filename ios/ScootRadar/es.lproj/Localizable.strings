@@ -117,6 +117,7 @@
 "Couldn’t refresh · showing %@" = "No se ha podido actualizar · datos de las %@";
 "You’re offline · showing %@" = "Sin conexión · datos de las %@";
 "Data delayed · showing %@" = "Datos con retraso · actualizados a las %@";
+"Updating · faded ones seen at %@" = "Actualizando · los tenues, vistos a las %@";
 "%@ isn’t sharing data right now." = "%@ no comparte datos ahora mismo.";
 "%1$@ and %2$@ aren’t sharing data right now." = "%1$@ y %2$@ no comparten datos ahora mismo.";
 "%lld providers aren’t sharing data right now." = "%lld operadores no comparten datos ahora mismo.";

@@ -152,6 +152,44 @@ final class ScooterModelsTests: XCTestCase {
         )
     }
 
+    func testScootersLastSeenDecodeAsTheOthersApart() throws {
+        let data = Data(#"""
+        {
+          "vehicles": [],
+          "clusters": [],
+          "lastSeen": {
+            "vehicles": [{"provider": "lime", "lat": 47.3769, "lng": 8.5417, "battery": 64, "vehicle_id": "seen-1"}],
+            "clusters": [{"id": "seen:13:4290:2868", "lat": 47.38, "lng": 8.54, "count": 9, "providers": {"lime": 9}}]
+          },
+          "providers": {},
+          "meta": {
+            "partial": false, "stale": false, "failedSources": [], "sources": {},
+            "generatedAt": "2026-10-25T10:02:00.000Z", "refreshing": true, "lastSeenAt": "2026-10-25T09:40:00.000Z",
+            "truncated": false, "totalVehicles": 0, "mode": "clusters", "zoom": 13
+          }
+        }
+        """#.utf8)
+
+        let response = try JSONDecoder().decode(ScooterAPIResponsePayload.self, from: data).model
+
+        XCTAssertTrue(response.vehicles.isEmpty)
+        XCTAssertTrue(response.clusters.isEmpty)
+        XCTAssertEqual(response.lastSeenVehicles.map(\.id), ["lime:seen-1"])
+        XCTAssertEqual(response.lastSeenVehicles.first?.battery, 64)
+        XCTAssertEqual(response.lastSeenClusters.map(\.id), ["seen:13:4290:2868"])
+        XCTAssertEqual(response.meta?.lastSeenAt, "2026-10-25T09:40:00.000Z")
+
+        // Without them, as from a server that sends none.
+        let plain = try JSONDecoder().decode(ScooterAPIResponsePayload.self, from: Data(#"""
+        {"vehicles": [], "clusters": [], "providers": {}, "meta": {"partial": false, "stale": false,
+         "failedSources": [], "sources": {}, "generatedAt": "2026-10-25T10:02:00.000Z",
+         "truncated": false, "totalVehicles": 0, "mode": "vehicles"}}
+        """#.utf8)).model
+        XCTAssertTrue(plain.lastSeenVehicles.isEmpty)
+        XCTAssertTrue(plain.lastSeenClusters.isEmpty)
+        XCTAssertNil(plain.meta?.lastSeenAt)
+    }
+
     func testCoordinateIdentityIsUsedWhenVehicleIDIsMissing() throws {
         let scooter = try makeScooter(provider: "bird", latitude: 47.1, longitude: 8.2, vehicleID: nil)
         XCTAssertEqual(scooter.id, "bird:47.1:8.2")
@@ -1003,6 +1041,30 @@ extension ScooterModelsTests {
         var downDelayed = summary(delayed: true)
         downDelayed.everyProviderDown = true
         XCTAssertEqual(downDelayed.status(at: later), .delayed(showing: updated))
+
+        // While scooters stand faded where they were last seen, an update rather than a delay; a failure first.
+        let seenAt = updated.addingTimeInterval(-900)
+        var updating = summary(overview: true, delayed: true)
+        updating.lastSeenAt = seenAt
+        XCTAssertEqual(updating.status(at: later), .updating(seenAt: seenAt))
+        XCTAssertEqual(updating.status(at: later)?.isUpdating, true)
+        XCTAssertEqual(updating.status(at: later)?.isWarning, false)
+        var updatingFailed = summary(failure: .timeout)
+        updatingFailed.lastSeenAt = seenAt
+        XCTAssertEqual(updatingFailed.status(at: later), .refreshFailed(showing: updated))
+        XCTAssertEqual(ScooterDockStatus.live.isUpdating, false)
+    }
+
+    func testEveryLanguageSaysWhenTheFadedScootersWereSeen() throws {
+        for language in ["en", "de", "fr", "it", "nl", "nb", "pt", "es", "is"] {
+            let strings = try XCTUnwrap(
+                Bundle.main.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:))
+            )
+            let text = strings.localizedString(forKey: "Updating · faded ones seen at %@", value: "?", table: nil)
+            XCTAssertNotEqual(text, "?", language)
+            XCTAssertEqual(text.components(separatedBy: "%@").count, 2, "\(language): \(text)")
+            XCTAssertTrue(text.contains(" · "), "\(language): \(text)")
+        }
     }
 
     func testDockStatusTextCarriesTheTimeOrTheMinutes() {

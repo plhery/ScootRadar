@@ -117,6 +117,7 @@
 "Couldn’t refresh · showing %@" = "Uppfærsla mistókst · staðan kl. %@";
 "You’re offline · showing %@" = "Engin nettenging · staðan kl. %@";
 "Data delayed · showing %@" = "Seinkun á gögnum · staðan kl. %@";
+"Updating · faded ones seen at %@" = "Uppfærist · daufar sáust kl. %@";
 "%@ isn’t sharing data right now." = "%@ deilir ekki gögnum eins og er.";
 "%1$@ and %2$@ aren’t sharing data right now." = "%1$@ og %2$@ deila ekki gögnum eins og er.";
 "%lld providers aren’t sharing data right now." = "%lld fyrirtæki deila ekki gögnum eins og er.";

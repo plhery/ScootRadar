@@ -117,6 +117,7 @@
 "Couldn’t refresh · showing %@" = "Bijwerken mislukt · data van %@";
 "You’re offline · showing %@" = "Je bent offline · data van %@";
 "Data delayed · showing %@" = "Data vertraagd · bijgewerkt om %@";
+"Updating · faded ones seen at %@" = "Bijwerken · vervaagd: gezien om %@";
 "%@ isn’t sharing data right now." = "%@ deelt nu geen data.";
 "%1$@ and %2$@ aren’t sharing data right now." = "%1$@ en %2$@ delen nu geen data.";
 "%lld providers aren’t sharing data right now." = "%lld aanbieders delen nu geen data.";

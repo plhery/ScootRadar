@@ -117,6 +117,7 @@
 "Couldn’t refresh · showing %@" = "Couldn’t refresh · showing %@";
 "You’re offline · showing %@" = "You’re offline · showing %@";
 "Data delayed · showing %@" = "Data delayed · showing %@";
+"Updating · faded ones seen at %@" = "Updating · faded ones seen at %@";
 "%@ isn’t sharing data right now." = "%@ isn’t sharing data right now.";
 "%1$@ and %2$@ aren’t sharing data right now." = "%1$@ and %2$@ aren’t sharing data right now.";
 "%lld providers aren’t sharing data right now." = "%lld providers aren’t sharing data right now.";

@@ -2288,6 +2288,249 @@ extension ScooterMapModelTests {
     }
 }
 
+// Where scooters were last seen, while the server collects an app's map again.
+extension ScooterMapModelTests {
+    func testScootersLastSeenAreDrawnFadedFilteredAsTheOthersAndCountedNowhere() async throws {
+        let clock = TestClock()
+        let seenAt = clock.now.addingTimeInterval(-600)
+        let api = StubScooterAPI(response: fillingResponse(
+            vehicles: [scooter(id: "found", provider: "lime")],
+            lastSeen: [
+                scooter(id: "seen-bird", provider: "bird", battery: 80),
+                scooter(id: "seen-low", provider: "lime", battery: 20),
+                // Drawn as the others are wherever they are, but not in view to count.
+                scooter(id: "seen-far", provider: "voi", latitude: 47.5, longitude: 8.7)
+            ],
+            seenAt: seenAt,
+            generatedAt: clock.now
+        ))
+        let model = makeModel(api: api, clock: clock)
+        model.updateViewport(zurichRegion, zoom: 16)
+        let loaded = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+
+        XCTAssertEqual(model.mapScooters.map(\.id), ["lime:found"])
+        XCTAssertEqual(Set(model.mapLastSeenScooters.map(\.id)), ["bird:seen-bird", "lime:seen-low", "voi:seen-far"])
+        XCTAssertEqual(model.lastSeenAt, seenAt)
+        XCTAssertEqual(model.visibleCount, 1, "The faded ones are counted nowhere")
+        XCTAssertEqual(model.count(for: .bird), 0)
+        XCTAssertEqual(model.visibleLastSeenCount, 2)
+
+        let revision = model.mapLastSeenRevision
+        model.showProviders([.lime])
+        XCTAssertEqual(model.mapLastSeenScooters.map(\.id), ["lime:seen-low"])
+        XCTAssertGreaterThan(model.mapLastSeenRevision, revision)
+        model.setMinimumBattery(30)
+        XCTAssertTrue(model.mapLastSeenScooters.isEmpty)
+        XCTAssertEqual(model.visibleLastSeenCount, 0)
+        model.resetFilters()
+        XCTAssertEqual(model.mapLastSeenScooters.count, 3)
+
+        // Data that expired and cannot be renewed goes, and the faded scooters with it.
+        await api.setFailure(.httpStatus(503))
+        clock.advance(301)
+        model.autoRefreshIfNeeded()
+        let expired = await waitUntil {
+            guard await api.snapshot().calls == 2 else { return false }
+            if case .outOfDate = model.loadIssue { return !model.isLoading }
+            return false
+        }
+        XCTAssertTrue(expired)
+        XCTAssertTrue(model.lastSeenVehicles.isEmpty)
+        XCTAssertTrue(model.mapLastSeenScooters.isEmpty)
+        XCTAssertEqual(model.visibleLastSeenCount, 0)
+        XCTAssertNil(model.lastSeenAt)
+    }
+
+    func testGroupsLastSeenKeepTheProvidersShownAndGoWithTheGroupsWhenTheMinimumChanges() async throws {
+        let api = StubScooterAPI(response: ScooterResponse(
+            vehicles: [],
+            clusters: [ScooterCluster(id: "13:4290:2868", latitude: 47.3769, longitude: 8.5417,
+                count: 4, providers: ["lime": 4])],
+            lastSeenClusters: [ScooterCluster(id: "seen:13:4290:2869", latitude: 47.377, longitude: 8.542,
+                count: 12, providers: ["lime": 5, "bird": 7])],
+            meta: ScooterResponseMetadata(partial: false, failedSources: [], mode: "clusters", zoom: 13,
+                refreshAfterSeconds: 3, refreshing: true, lastSeenAt: "2026-10-12T10:00:00Z")
+        ))
+        let model = makeModel(api: api)
+        model.updateViewport(zurichRegion, zoom: 13)
+        let loaded = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+
+        XCTAssertEqual(model.mapLastSeenClusters.map(\.count), [12])
+        XCTAssertEqual(model.visibleCount, 4)
+        XCTAssertEqual(model.visibleLastSeenCount, 12)
+
+        model.showProviders([.lime])
+        XCTAssertEqual(model.mapLastSeenClusters.map(\.providers), [["lime": 5]])
+        XCTAssertEqual(model.visibleLastSeenCount, 5)
+
+        // The server leaves the scooters under the minimum out of its groups, faded or not: they are asked for again.
+        model.setMinimumBattery(60)
+        XCTAssertTrue(model.mapLastSeenClusters.isEmpty)
+        XCTAssertEqual(model.visibleLastSeenCount, 0)
+        let asked = await waitUntil { await api.snapshot().calls == 2 && !model.isLoading }
+        XCTAssertTrue(asked)
+        let snapshot = await api.snapshot()
+        XCTAssertEqual(snapshot.lastMinimumBattery, 60)
+    }
+
+    func testAMapStillBeingCollectedIsAskedForSoonAfterEveryAnswerWithFadedScooters() async {
+        let clock = TestClock()
+        let api = StubScooterAPI(response: fillingResponse(
+            lastSeen: [scooter(id: "seen", provider: "lime")],
+            seenAt: clock.now,
+            generatedAt: clock.now
+        ))
+        let model = makeModel(api: api, clock: clock)
+        model.refresh()
+        var answered = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(answered)
+
+        // After the three seconds the server suggests, every time: its sweep replaces them as it goes.
+        for call in 2 ... 3 {
+            if call == 3 {
+                // Still being collected, with nothing faded left.
+                await api.setResponse(fillingResponse(lastSeen: [], seenAt: nil, generatedAt: clock.now))
+            }
+            clock.advance(2)
+            model.autoRefreshIfNeeded()
+            await settle()
+            let calls = await api.snapshot().calls
+            XCTAssertEqual(calls, call - 1, "Not before three seconds")
+            clock.advance(1)
+            model.autoRefreshIfNeeded()
+            answered = await waitUntil { await api.snapshot().calls == call && !model.isLoading }
+            XCTAssertTrue(answered, "Call \(call) three seconds after the one before")
+        }
+
+        // Once more soon was the follow-up already: the usual ten seconds now.
+        clock.advance(3)
+        model.autoRefreshIfNeeded()
+        await settle()
+        var calls = await api.snapshot().calls
+        XCTAssertEqual(calls, 3)
+        clock.advance(7)
+        model.autoRefreshIfNeeded()
+        answered = await waitUntil { await api.snapshot().calls == 4 && !model.isLoading }
+        XCTAssertTrue(answered)
+        calls = await api.snapshot().calls
+        XCTAssertEqual(calls, 4)
+    }
+
+    func testOnlyFadedScootersInViewReadFindingScootersWithTheNightBanRatherThanAnEmptyMap() async throws {
+        let clock = TestClock()
+        // 23:30 in Oslo, during its night ban.
+        clock.now = try XCTUnwrap(ISO8601DateFormatter().date(from: "2026-10-12T21:30:00Z"))
+        let oslo = GeoPoint(latitude: 59.9139, longitude: 10.7522)
+        let osloRegion = MKCoordinateRegion(
+            center: oslo.coordinate,
+            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        )
+        let api = StubScooterAPI(response: fillingResponse(
+            lastSeen: [scooter(id: "seen", provider: "voi", latitude: oslo.latitude, longitude: oslo.longitude)],
+            seenAt: clock.now.addingTimeInterval(-900),
+            generatedAt: clock.now
+        ))
+        let model = makeModel(api: api, clock: clock)
+        model.updateViewport(osloRegion, zoom: 16)
+        let loaded = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+
+        let curfew = try XCTUnwrap(RentalCurfew.active(at: model.viewport.center, on: clock.now))
+        guard case let .finding(chips, notices) = model.dock else { return XCTFail("Expected Finding scooters…") }
+        XCTAssertEqual(chips, model.dockChips)
+        XCTAssertFalse(chips.isEmpty)
+        XCTAssertEqual(notices.first, .curfew(curfew))
+        XCTAssertEqual(model.dockLine(at: clock.now).title, String(localized: "Finding scooters…"))
+        assertRenders(ScooterControlDock(model: model), "finding with a night ban")
+
+        // The sweep reached it: a count, without the status of an update.
+        await api.setResponse(ScooterResponse(
+            vehicles: [scooter(id: "found", provider: "voi", latitude: oslo.latitude, longitude: oslo.longitude)],
+            meta: ScooterResponseMetadata(partial: false, failedSources: [],
+                generatedAt: ISO8601DateFormatter().string(from: clock.now))
+        ))
+        clock.advance(3)
+        model.autoRefreshIfNeeded()
+        let found = await waitUntil { await api.snapshot().calls == 2 && !model.isLoading }
+        XCTAssertTrue(found)
+        guard case let .summary(summary) = model.dock else { return XCTFail("Expected the dock summary") }
+        XCTAssertEqual(summary.count, 1)
+        XCTAssertNil(summary.lastSeenAt)
+        XCTAssertEqual(summary.status(at: clock.now), .live)
+    }
+
+    func testFadedScootersBesideFoundOnesReadUpdatingRatherThanDelayedAndAFailureFirst() async throws {
+        let clock = TestClock()
+        let seenAt = clock.now.addingTimeInterval(-600)
+        let api = StubScooterAPI(response: fillingResponse(
+            vehicles: [scooter(id: "found", provider: "lime")],
+            lastSeen: [scooter(id: "seen", provider: "bird")],
+            seenAt: seenAt,
+            generatedAt: clock.now,
+            stale: true
+        ))
+        let model = makeModel(api: api, clock: clock)
+        model.updateViewport(zurichRegion, zoom: 16)
+        let loaded = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
+        XCTAssertTrue(loaded)
+        let shownAt = try XCTUnwrap(model.lastUpdated)
+
+        guard case let .summary(summary) = model.dock else { return XCTFail("Expected the dock summary") }
+        XCTAssertEqual(summary.count, 1)
+        XCTAssertEqual(summary.status(at: clock.now), .updating(seenAt: seenAt))
+        XCTAssertEqual(summary.status(at: clock.now)?.isUpdating, true)
+        assertRenders(ScooterControlDock(model: model), "updating")
+        // A card says nothing of a delay that the dock reports as an update.
+        model.selectScooter("lime:found")
+        XCTAssertNil(model.cardStatus)
+        model.clearSelection()
+
+        // With the faded ones hidden by the filters, the delay is said again.
+        model.showProviders([.lime])
+        guard case let .summary(filtered) = model.dock else { return XCTFail("Expected the dock summary") }
+        XCTAssertEqual(filtered.status(at: clock.now), .delayed(showing: shownAt))
+        model.resetFilters()
+
+        // A failed refresh is said before anything else.
+        await api.setFailure(.offline)
+        clock.advance(3)
+        model.autoRefreshIfNeeded()
+        let failed = await waitUntil { await api.snapshot().calls == 2 && model.loadIssue != nil && !model.isLoading }
+        XCTAssertTrue(failed)
+        guard case let .summary(offline) = model.dock else { return XCTFail("Expected the dock summary") }
+        XCTAssertEqual(offline.status(at: clock.now), .offline(showing: shownAt))
+        XCTAssertEqual(model.cardStatus, .offline(showing: shownAt))
+    }
+
+    /// An answer while the server collects an app's map again: the scooters its
+    /// sweep has found so far, and where it saw the others last time.
+    private func fillingResponse(
+        vehicles: [Scooter] = [],
+        lastSeen: [Scooter],
+        seenAt: Date?,
+        generatedAt: Date,
+        stale: Bool = false
+    ) -> ScooterResponse {
+        let formatter = ISO8601DateFormatter()
+        return ScooterResponse(
+            vehicles: vehicles,
+            lastSeenVehicles: lastSeen,
+            meta: ScooterResponseMetadata(
+                partial: false,
+                stale: stale,
+                failedSources: [],
+                generatedAt: formatter.string(from: generatedAt),
+                refreshAfterSeconds: 3,
+                refreshing: true,
+                lastSeenAt: seenAt.map(formatter.string(from:)),
+                expiresAt: formatter.string(from: generatedAt.addingTimeInterval(300))
+            )
+        )
+    }
+}
+
 // Location, search, filters and settings.
 extension ScooterMapModelTests {
     func testAnsweringTheLocationPromptSlowlyStillKeepsTheMapAndTheCard() async throws {

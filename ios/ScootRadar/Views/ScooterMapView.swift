@@ -273,6 +273,11 @@ struct ScooterMapView: UIViewRepresentable {
     /// The operators' zones, under everything else drawn on the map, while they are turned on.
     var zones: [ScooterZone] = []
     var zonesRevision = 0
+    /// Where scooters still being collected again were last seen: drawn faded
+    /// under the other markers, never selected and passed by VoiceOver.
+    var lastSeenScooters: [Scooter] = []
+    var lastSeenClusters: [ScooterCluster] = []
+    var lastSeenRevision = 0
 
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
@@ -312,6 +317,10 @@ struct ScooterMapView: UIViewRepresentable {
         )
         mapView.register(MKMarkerAnnotationView.self,
             forAnnotationViewWithReuseIdentifier: ScooterParkingAnnotation.reuseIdentifier)
+        mapView.register(
+            ScooterLastSeenView.self,
+            forAnnotationViewWithReuseIdentifier: ScooterLastSeenAnnotation.reuseIdentifier
+        )
         // MapKit can defer didSelect while resolving dense, overlapping annotations.
         // Publish direct scooter taps immediately and keep the delegate as a fallback.
         let scooterTapRecognizer = UITapGestureRecognizer(
@@ -350,6 +359,7 @@ struct ScooterMapView: UIViewRepresentable {
         context.coordinator.updateClusteringMode(on: mapView)
         context.coordinator.reconcile(scooters, revision: scooterRevision, on: mapView)
         context.coordinator.reconcile(clusters, revision: clusterRevision, on: mapView)
+        context.coordinator.reconcileLastSeen(lastSeenScooters, lastSeenClusters, revision: lastSeenRevision, on: mapView)
         context.coordinator.reconcileParking(parking, on: mapView)
         context.coordinator.applyDestination(destination, on: mapView)
         context.coordinator.applySelection(selectedScooterID, on: mapView)
@@ -376,6 +386,8 @@ struct ScooterMapView: UIViewRepresentable {
         private var clusterAnnotationsByID: [String: ScooterServerClusterAnnotation] = [:]
         private var parkingAnnotationsByID: [String: ScooterParkingAnnotation] = [:]
         private var reconciledParking: [ScooterParking] = []
+        private var lastSeenAnnotationsByID: [String: ScooterLastSeenAnnotation] = [:]
+        private var reconciledLastSeenRevision: Int?
         private(set) var lastFocusToken: Int?
         /// How many times SwiftUI has updated the map, and how many times the
         /// map has come to rest somewhere new. A screen at rest adds to neither.
@@ -629,6 +641,55 @@ struct ScooterMapView: UIViewRepresentable {
                 } else {
                     let annotation = ScooterServerClusterAnnotation(cluster: cluster)
                     clusterAnnotationsByID[cluster.id] = annotation
+                    additions.append(annotation)
+                }
+            }
+
+            if !additions.isEmpty {
+                mapView.addAnnotations(additions)
+            }
+        }
+
+        /// The faded markers, one for each scooter and group, moved or drawn
+        /// again in place when they change.
+        func reconcileLastSeen(
+            _ scooters: [Scooter],
+            _ clusters: [ScooterCluster],
+            revision: Int,
+            on mapView: MKMapView
+        ) {
+            guard revision != reconciledLastSeenRevision else { return }
+            reconciledLastSeenRevision = revision
+
+            var incoming: [String: (coordinate: CLLocationCoordinate2D, mark: ScooterLastSeenAnnotation.Mark)] = [:]
+            incoming.reserveCapacity(scooters.count + clusters.count)
+            for scooter in scooters {
+                incoming["v:\(scooter.id)"] = (scooter.coordinate, .scooter(scooter.providerInfo))
+            }
+            for cluster in clusters {
+                incoming["c:\(cluster.id)"] = (cluster.coordinate, .group(of: cluster))
+            }
+
+            let removedAnnotations = lastSeenAnnotationsByID.compactMap { id, annotation in
+                incoming[id] == nil ? annotation : nil
+            }
+            if !removedAnnotations.isEmpty {
+                mapView.removeAnnotations(removedAnnotations)
+                for annotation in removedAnnotations {
+                    lastSeenAnnotationsByID.removeValue(forKey: annotation.id)
+                }
+            }
+
+            var additions: [ScooterLastSeenAnnotation] = []
+            for (id, entry) in incoming {
+                if let annotation = lastSeenAnnotationsByID[id] {
+                    if annotation.update(coordinate: entry.coordinate, mark: entry.mark),
+                       let view = mapView.view(for: annotation) as? ScooterLastSeenView {
+                        view.refreshAppearance()
+                    }
+                } else {
+                    let annotation = ScooterLastSeenAnnotation(id: id, coordinate: entry.coordinate, mark: entry.mark)
+                    lastSeenAnnotationsByID[id] = annotation
                     additions.append(annotation)
                 }
             }
@@ -1193,6 +1254,9 @@ struct ScooterMapView: UIViewRepresentable {
                 for case let view as ScooterClusterAnnotationView in mapView.annotations.compactMap(mapView.view(for:)) {
                     view.usesDarkArt = inputs.isDark
                 }
+                for annotation in lastSeenAnnotationsByID.values {
+                    (mapView.view(for: annotation) as? ScooterLastSeenView)?.usesDarkArt = inputs.isDark
+                }
             }
             if let previous, previous.language != inputs.language {
                 // What VoiceOver reads of the map was written when it was drawn.
@@ -1530,6 +1594,16 @@ struct ScooterMapView: UIViewRepresentable {
                     withIdentifier: ScooterServerClusterAnnotation.reuseIdentifier,
                     for: cluster
                 ) as! ScooterClusterAnnotationView
+                view.usesDarkArt = appliedLook?.isDark ?? false
+                view.refreshAppearance()
+                return view
+            }
+
+            if let lastSeen = annotation as? ScooterLastSeenAnnotation {
+                let view = mapView.dequeueReusableAnnotationView(
+                    withIdentifier: ScooterLastSeenAnnotation.reuseIdentifier,
+                    for: lastSeen
+                ) as! ScooterLastSeenView
                 view.usesDarkArt = appliedLook?.isDark ?? false
                 view.refreshAppearance()
                 return view
@@ -2141,6 +2215,50 @@ final class ScooterServerClusterAnnotation: NSObject, MKAnnotation {
     }
 }
 
+/// A scooter, or a group of them, where it was last seen while the server
+/// collects it again.
+final class ScooterLastSeenAnnotation: NSObject, MKAnnotation {
+    static let reuseIdentifier = "last-seen-scooter"
+
+    enum Mark: Equatable {
+        case scooter(ScooterProvider?)
+        /// The number in the ring, and the provider with the most of them, whose colour the ring takes.
+        case group(count: Int, provider: ScooterProvider?)
+
+        static func group(of cluster: ScooterCluster) -> Mark {
+            let leading = ScooterProvider.allCases.max { first, second in
+                (cluster.providers[first.rawValue] ?? 0) < (cluster.providers[second.rawValue] ?? 0)
+            }
+            return .group(
+                count: cluster.count,
+                provider: leading.flatMap { cluster.providers[$0.rawValue] == nil ? nil : $0 }
+            )
+        }
+    }
+
+    /// "v:" and the scooter's id, or "c:" and the group's.
+    let id: String
+    @objc dynamic var coordinate: CLLocationCoordinate2D
+    private(set) var mark: Mark
+
+    init(id: String, coordinate: CLLocationCoordinate2D, mark: Mark) {
+        self.id = id
+        self.coordinate = coordinate
+        self.mark = mark
+        super.init()
+    }
+
+    @discardableResult
+    func update(coordinate: CLLocationCoordinate2D, mark: Mark) -> Bool {
+        let coordinateChanged = self.coordinate.latitude != coordinate.latitude ||
+            self.coordinate.longitude != coordinate.longitude
+        guard coordinateChanged || self.mark != mark else { return false }
+        if coordinateChanged { self.coordinate = coordinate }
+        self.mark = mark
+        return true
+    }
+}
+
 final class ScooterAnnotationView: MKAnnotationView {
     static let reuseIdentifier = "scooter"
     static let clusteringIdentifier = "scooters"
@@ -2487,12 +2605,10 @@ final class ScooterClusterAnnotationView: MKAnnotationView {
         }
         let key = ScooterDotArt.ClusterKey(
             provider: leading.flatMap { renderedProviderCounts[$0] == nil ? nil : $0 },
-            diameter: renderedCount < 100 ? 36 : renderedCount < 1_000 ? 40 : 44,
+            diameter: Self.diameter(count: renderedCount),
             isDark: usesDarkArt
         )
-        countLabel.textColor = usesDarkArt
-            ? UIColor(red: 0.957, green: 0.961, blue: 0.969, alpha: 1)
-            : UIColor(red: 0.063, green: 0.075, blue: 0.102, alpha: 1)
+        countLabel.textColor = Self.countColor(isDark: usesDarkArt)
         guard key != art else { return }
         art = key
         let image = ScooterDotArt.clusterImage(for: key)
@@ -2503,6 +2619,16 @@ final class ScooterClusterAnnotationView: MKAnnotationView {
         discLayer.bounds = CGRect(origin: .zero, size: image.size)
         CATransaction.commit()
         setNeedsLayout()
+    }
+
+    static func diameter(count: Int) -> CGFloat {
+        count < 100 ? 36 : count < 1_000 ? 40 : 44
+    }
+
+    static func countColor(isDark: Bool) -> UIColor {
+        isDark
+            ? UIColor(red: 0.957, green: 0.961, blue: 0.969, alpha: 1)
+            : UIColor(red: 0.063, green: 0.075, blue: 0.102, alpha: 1)
     }
 
     /// "Zürich, 1’288 scooters" for a city total, so a rider who cannot see the
@@ -2523,5 +2649,148 @@ final class ScooterClusterAnnotationView: MKAnnotationView {
             city,
             Int64(count)
         )
+    }
+}
+
+/// A scooter where it was last seen, or a group of them, while the server
+/// collects it again: faded and breathing under every other marker. A tap goes
+/// through it to the map, and VoiceOver passes it by, as it is counted nowhere.
+final class ScooterLastSeenView: MKAnnotationView {
+    /// The light breathes between these, one way in `breath` seconds and back, as on the web.
+    static let faintest: Float = 0.35
+    static let strongest: Float = 0.65
+    static let breath: CFTimeInterval = 1.6
+    /// With Reduce Motion it stands still.
+    static let still: Float = 0.5
+
+    /// The picture and the number, which breathe together.
+    private let content = UIView()
+    private let artLayer = CALayer()
+    private let countLabel = UILabel()
+    /// Dark appearance, and the satellite picture in either appearance.
+    var usesDarkArt = false {
+        didSet {
+            if usesDarkArt != oldValue { refreshAppearance() }
+        }
+    }
+
+    override var annotation: MKAnnotation? {
+        didSet { refreshAppearance() }
+    }
+
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        configureView()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        configureView()
+    }
+
+    private func configureView() {
+        bounds = CGRect(x: 0, y: 0, width: 44, height: 44)
+        centerOffset = .zero
+        // Under every other marker, and never hiding one, hidden or gathered with them.
+        zPriority = .min
+        selectedZPriority = .min
+        displayPriority = .required
+        collisionMode = .none
+        clusteringIdentifier = nil
+        canShowCallout = false
+        isEnabled = false
+        isUserInteractionEnabled = false
+        isAccessibilityElement = false
+        accessibilityElementsHidden = true
+        backgroundColor = .clear
+
+        content.isUserInteractionEnabled = false
+        content.layer.masksToBounds = false
+        content.layer.addSublayer(artLayer)
+        countLabel.textAlignment = .center
+        countLabel.font = .monospacedDigitSystemFont(ofSize: 13, weight: .bold)
+        countLabel.adjustsFontSizeToFitWidth = true
+        countLabel.minimumScaleFactor = 0.6
+        countLabel.baselineAdjustment = .alignCenters
+        content.addSubview(countLabel)
+        addSubview(content)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(reduceMotionDidChange),
+            name: UIAccessibility.reduceMotionStatusDidChangeNotification,
+            object: nil
+        )
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        content.frame = bounds
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        artLayer.position = CGPoint(x: bounds.midX, y: bounds.midY)
+        CATransaction.commit()
+        let diameter = artLayer.bounds.width
+        countLabel.bounds = CGRect(x: 0, y: 0, width: max(0, diameter - 8), height: max(0, diameter - 8))
+        countLabel.center = CGPoint(x: bounds.midX, y: bounds.midY)
+    }
+
+    // The breath stops while the view is out of a window, so it starts again when the view is back.
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        breathe()
+    }
+
+    @objc private func reduceMotionDidChange() {
+        breathe()
+    }
+
+    func refreshAppearance() {
+        guard let annotation = annotation as? ScooterLastSeenAnnotation else { return }
+        let image: UIImage
+        switch annotation.mark {
+        case let .scooter(provider):
+            image = ScooterDotArt.lastSeenImage(for: .init(provider: provider, isDark: usesDarkArt))
+            countLabel.isHidden = true
+        case let .group(count, provider):
+            image = ScooterDotArt.lastSeenClusterImage(for: .init(
+                provider: provider,
+                diameter: ScooterClusterAnnotationView.diameter(count: count),
+                isDark: usesDarkArt
+            ))
+            countLabel.text = "\(count)"
+            countLabel.textColor = ScooterClusterAnnotationView.countColor(isDark: usesDarkArt)
+            countLabel.isHidden = false
+        }
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        artLayer.contents = image.cgImage
+        artLayer.contentsScale = image.scale
+        artLayer.bounds = CGRect(origin: .zero, size: image.size)
+        CATransaction.commit()
+        setNeedsLayout()
+    }
+
+    /// Every faded marker breathes in step with the others, whenever it appeared.
+    private func breathe() {
+        let layer = content.layer
+        layer.removeAnimation(forKey: "breath")
+        guard window != nil, !UIAccessibility.isReduceMotionEnabled else {
+            layer.opacity = Self.still
+            return
+        }
+        layer.opacity = Self.faintest
+        let breath = CABasicAnimation(keyPath: "opacity")
+        breath.fromValue = Self.faintest
+        breath.toValue = Self.strongest
+        breath.duration = Self.breath
+        breath.autoreverses = true
+        breath.repeatCount = .infinity
+        breath.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        // Kept while the app is away, and begun at the same moment as every other's.
+        breath.isRemovedOnCompletion = false
+        let now = layer.convertTime(CACurrentMediaTime(), from: nil)
+        breath.beginTime = now - now.truncatingRemainder(dividingBy: 2 * Self.breath)
+        layer.add(breath, forKey: "breath")
     }
 }

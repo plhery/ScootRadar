@@ -745,6 +745,11 @@ struct ScooterParking: Identifiable, Equatable, Sendable {
 struct ScooterResponse: Sendable {
     let vehicles: [Scooter]
     let clusters: [ScooterCluster]
+    /// While the server collects an app's map of this area again, the scooters
+    /// and groups it saw there last time, which its sweep has not reached yet.
+    /// Drawn faded and counted nowhere.
+    let lastSeenVehicles: [Scooter]
+    let lastSeenClusters: [ScooterCluster]
     let providers: [String: Int]
     let meta: ScooterResponseMetadata?
     let parking: [ScooterParking]
@@ -755,6 +760,8 @@ struct ScooterResponse: Sendable {
     init(
         vehicles: [Scooter],
         clusters: [ScooterCluster] = [],
+        lastSeenVehicles: [Scooter] = [],
+        lastSeenClusters: [ScooterCluster] = [],
         providers: [String: Int] = [:],
         meta: ScooterResponseMetadata? = nil,
         parking: [ScooterParking] = [],
@@ -762,6 +769,8 @@ struct ScooterResponse: Sendable {
     ) {
         self.vehicles = vehicles
         self.clusters = clusters
+        self.lastSeenVehicles = lastSeenVehicles
+        self.lastSeenClusters = lastSeenClusters
         self.providers = providers
         self.meta = meta
         self.parking = parking
@@ -783,6 +792,8 @@ struct ScooterResponseMetadata: Sendable {
     let refreshAfterSeconds: Int?
     /// The server is collecting feeds of this answer again: ask once more after `refreshAfterSeconds`.
     let refreshing: Bool
+    /// When the oldest of the last-seen scooters were seen, while there are any.
+    let lastSeenAt: String?
     let parkingStatus: String?
     let expiresAt: String?
     let parkingExpiresAt: String?
@@ -803,6 +814,7 @@ struct ScooterResponseMetadata: Sendable {
         overview: Bool = false,
         refreshAfterSeconds: Int? = nil,
         refreshing: Bool = false,
+        lastSeenAt: String? = nil,
         parkingStatus: String? = nil,
         expiresAt: String? = nil,
         parkingExpiresAt: String? = nil,
@@ -820,6 +832,7 @@ struct ScooterResponseMetadata: Sendable {
         self.overview = overview
         self.refreshAfterSeconds = refreshAfterSeconds
         self.refreshing = refreshing
+        self.lastSeenAt = lastSeenAt
         self.parkingStatus = parkingStatus
         self.expiresAt = expiresAt
         self.parkingExpiresAt = parkingExpiresAt
@@ -888,6 +901,7 @@ extension ScooterResponseMetadataPayload {
             overview: overview ?? false,
             refreshAfterSeconds: refreshAfterSeconds,
             refreshing: refreshing ?? false,
+            lastSeenAt: lastSeenAt,
             parkingStatus: parkingStatus?.rawValue,
             expiresAt: expiresAt,
             parkingExpiresAt: parkingExpiresAt,
@@ -901,6 +915,8 @@ extension ScooterAPIResponsePayload {
         ScooterResponse(
             vehicles: vehicles.map(\.model),
             clusters: clusters.map(\.model),
+            lastSeenVehicles: (lastSeen?.vehicles ?? []).map(\.model),
+            lastSeenClusters: (lastSeen?.clusters ?? []).map(\.model),
             providers: providers,
             meta: meta.model,
             parking: (parking ?? []).map { ScooterParking(id: $0.id, provider: $0.provider,
@@ -1568,8 +1584,10 @@ enum ScooterDockContent: Equatable, Sendable {
     /// The out-of-date card with a Refresh button, instead of count and chips.
     case outOfDate(ScooterLoadFailure, lastUpdate: Date)
     /// The answer for this view is on its way: "Finding scooters…" instead of
-    /// a count. The chips are empty until something has loaded.
-    case finding(chips: [ScooterProviderEntry])
+    /// a count. The chips are empty until something has loaded. While the
+    /// server collects an app's map again and only faded scooters stand in
+    /// view, which can last a minute or two, the notices show as well.
+    case finding(chips: [ScooterProviderEntry], notices: [ScooterDockNotice] = [])
     /// Nothing has loaded and the load failed: "Waiting for scooter data", no count, no chips.
     case waiting
     /// No provider operates here: the three closest covered cities.
@@ -1602,6 +1620,9 @@ struct ScooterDockSummary: Equatable, Sendable {
     /// Every provider in the viewport is down: the notice that says so explains the
     /// empty map, which is then neither live nor merely empty.
     var everyProviderDown = false
+    /// Set while scooters stand faded where they were last seen, at that time:
+    /// the server is collecting them again.
+    var lastSeenAt: Date? = nil
 
     /// "scooters nearby" or "scooters on this map"; the view renders the number.
     var countLabel: String { countContext.label(for: count) }
@@ -1616,6 +1637,8 @@ struct ScooterDockSummary: Equatable, Sendable {
                 ? .offline(showing: lastUpdated)
                 : .refreshFailed(showing: lastUpdated)
         }
+        // Rather than delayed: the faded scooters are the old positions, and the others are coming in.
+        if let lastSeenAt { return .updating(seenAt: lastSeenAt) }
         // Delayed data says so at every zoom, city totals included.
         if isDelayed { return .delayed(showing: lastUpdated) }
         if isOverview { return .cityTotals }
@@ -1681,6 +1704,8 @@ enum ScooterDockStatus: Equatable, Sendable {
     case offline(showing: Date)
     case cityTotals
     case delayed(showing: Date)
+    /// Scooters stand faded where they were last seen while they are collected again.
+    case updating(seenAt: Date)
     case live
     case updatedMinutesAgo(Int)
     case updatedAt(Date)
@@ -1699,6 +1724,14 @@ enum ScooterDockStatus: Equatable, Sendable {
     /// The green dot in front of "Live".
     var isLive: Bool { self == .live }
 
+    /// The small spinner in front of "Updating".
+    var isUpdating: Bool {
+        switch self {
+        case .updating: true
+        default: false
+        }
+    }
+
     var text: String {
         switch self {
         case let .refreshFailed(date):
@@ -1709,6 +1742,8 @@ enum ScooterDockStatus: Equatable, Sendable {
             String(localized: "City totals · refreshed hourly")
         case let .delayed(date):
             String(format: String(localized: "Data delayed · showing %@"), Self.clockTime(date))
+        case let .updating(date):
+            String(format: String(localized: "Updating · faded ones seen at %@"), Self.clockTime(date))
         case .live:
             String(localized: "Live")
         case let .updatedMinutesAgo(minutes):
