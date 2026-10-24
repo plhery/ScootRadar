@@ -8,25 +8,25 @@ const guide: Guide = {
   title: 'Alquilar patinete eléctrico con app: dónde, precio y casco',
   description: 'Cómo alquilar un patinete eléctrico con app en España: dónde quedan, paso a paso, precios, edad, casco obligatorio, dónde aparcar y qué hacer si te caes.',
   headline: 'Cómo alquilar un patinete eléctrico con app en España: paso a paso, precios y dónde quedan',
-  lede: 'Para alquilar un patinete eléctrico con app, descarga la del operador, regístrate con tu móvil y una tarjeta, escanea el código QR del manillar y, al acabar, aparca donde te deje la app y haz la foto. Necesitas 18 años y, desde el 1 de octubre de 2026, tu propio casco. A 14 de octubre de 2026 no hay patinetes compartidos en Madrid, Barcelona, Valencia, Sevilla ni Málaga: quedan sobre todo en Gijón, Getafe, Canarias (el sur de Tenerife, Fuerteventura y Lanzarote) y la Costa Blanca, con Hoppy, Bird o Hopp. Pagas un desbloqueo más cada minuto: en Torrevieja, diez minutos salen por 4,29 € con Hopp y de 3,80 a 4,50 € con Hoppy.',
+  lede: 'Para alquilar un patinete eléctrico con app, descarga la del operador, regístrate con tu móvil y una tarjeta, escanea el código QR del manillar y, al acabar, aparca donde te deje la app y haz la foto. Necesitas 18 años y, desde el 1 de octubre de 2026, tu propio casco. En octubre de 2026 no hay patinetes compartidos en Madrid, Barcelona, Valencia, Sevilla ni Málaga: quedan sobre todo en Gijón, Getafe, Canarias (Tenerife, Fuerteventura y Lanzarote) y la Costa Blanca, con Hoppy, Bird, Hopp o Dott. Pagas un desbloqueo más cada minuto: en Torrevieja, diez minutos salen por 4,29 € con Hopp y de 3,80 a 4,50 € con Hoppy.',
   published: '2026-10-13',
-  updated: '2026-10-14',
+  updated: '2026-10-24',
   sections: [
     {
       heading: '¿Hay patinetes de alquiler en Madrid? Dónde quedan en España',
       blocks: [
         'Antes de descargar ninguna app, comprueba si en tu ciudad quedan patinetes. En **Madrid** no hay desde octubre de 2024: el Ayuntamiento revocó en septiembre los permisos de Lime, Dott y Tier (6000 patinetes) y no concederá otros nuevos. Según la prensa, tampoco los hay en **Barcelona**, que nunca los autorizó, ni en **Valencia, Sevilla, Málaga, Palma ni Bilbao**, y Tarragona se quedó sin ellos en septiembre de 2026.',
-        'Esta guía va del alquiler con app, por minutos, del patinete que coges en la calle, no de las tiendas que alquilan por horas o por meses. A 14 de octubre de 2026, los patinetes compartidos quedan sobre todo en ciudades medianas y zonas turísticas:',
+        'Esta guía va del alquiler con app, por minutos, del patinete que coges en la calle, no de las tiendas que alquilan por horas o por meses. En octubre de 2026, los patinetes compartidos quedan sobre todo en ciudades medianas y zonas turísticas:',
         {
           list: [
             '**Hoppy:** el sur de Tenerife, de Los Cristianos a Costa Adeje; Fuerteventura (Caleta de Fuste y Corralejo); Lanzarote (Puerto del Carmen); y, en la Costa Blanca, Torrevieja y la Marina Baixa (Altea, L’Albir, L’Alfàs del Pi y La Nucía).',
             '**Bird:** [Gijón](map:es:Gijón), [Getafe](map:es:Getafe), el sur de Tenerife y Fuerteventura (Caleta de Fuste, Costa Calma y Morro Jable).',
             '**Hopp:** [Torrevieja](map:es:Torrevieja) y Pilar de la Horadada, en la Costa Blanca; Jávea (y Dénia, según su web), en la Marina Alta; y el sur de Tenerife, en [Playa de las Américas](map:es:Playa de las Américas) y Golf del Sur.',
-            '**Dott** tiene condiciones y seguro para España y Canarias; según el Ayuntamiento, alquila patinetes en Santa Cruz de Tenerife desde 2024, pero no publica datos que nuestro mapa pueda leer.',
+            '**Dott:** el sur de Tenerife, Santa Cruz de Tenerife (desde 2024, según el Ayuntamiento) y Estepona, en la Costa del Sol. Tiene condiciones y seguro para España y Canarias; su tarifa, solo en la app.',
           ],
         },
         'En Oviedo, según la prensa, Bird gestiona desde junio de 2025 el servicio municipal, con 200 patinetes en 171 puntos fijos.',
-        'Para ver juntos los de Hoppy, Bird y Hopp en estos lugares, abre [nuestro mapa](/map): verás el tiempo a pie y, en Hoppy y Hopp, una estimación del precio; un botón te lleva a la app del operador. No incluye Oviedo, donde Bird no publica sus datos, y otros operadores pueden funcionar sin publicarlos.',
+        'Para ver juntos los de Hoppy, Bird, Hopp y Dott en estos lugares, abre [nuestro mapa](/map): verás el tiempo a pie y, en Hoppy y Hopp, una estimación del precio; un botón te lleva a la app del operador. No incluye Oviedo, donde Bird no publica sus datos, y otros operadores pueden funcionar sin publicarlos.',
       ],
     },
     {
@@ -73,7 +73,7 @@ const guide: Guide = {
     {
       heading: '¿Cuánto cuesta alquilar un patinete eléctrico?',
       blocks: [
-        'Pagas un desbloqueo y cada minuto que tienes el patinete desbloqueado, en marcha o parado. Hoppy y Hopp publican sus tarifas; Bird no, así que su precio solo lo ves en la app, antes de desbloquear. En Hoppy, el minuto cuesta más o menos según el patinete.',
+        'Pagas un desbloqueo y cada minuto que tienes el patinete desbloqueado, en marcha o parado. Hoppy y Hopp publican sus tarifas; Bird y Dott no, así que su precio solo lo ves en la app, antes de desbloquear. En Hoppy, el minuto cuesta más o menos según el patinete.',
         {
           table: {
             caption: 'Tarifas de Hoppy y Hopp publicadas el 14 de octubre de 2026 y lo que cuesta un trayecto',
@@ -188,7 +188,7 @@ const guide: Guide = {
     },
     {
       question: '¿Cómo se llama la app para alquilar patinetes eléctricos?',
-      answer: 'No hay una sola: cada operador tiene la suya, y en España son sobre todo Hoppy, Bird y Hopp. La de Hoppy se llama «Hoppy Mobility» en las tiendas de apps. ScootRadar los reúne en un mapa, en las zonas que cubre, y te lleva a la app de cada uno, que es donde desbloqueas y pagas.',
+      answer: 'No hay una sola: cada operador tiene la suya, y en España son sobre todo Hoppy, Bird, Hopp y Dott. La de Hoppy se llama «Hoppy Mobility» en las tiendas de apps. ScootRadar los reúne en un mapa, en las zonas que cubre, y te lleva a la app de cada uno, que es donde desbloqueas y pagas.',
     },
   ],
   sources: [
@@ -204,6 +204,8 @@ const guide: Guide = {
     { title: 'Hopp: ubicaciones y tarifas', url: 'https://hopp.bike/locations' },
     { title: 'Hopp: condiciones del servicio', url: 'https://hopp.bike/tos' },
     { title: 'Hopp: retención temporal en la tarjeta (en inglés)', url: 'https://support.hopp.bike/en/articles/109688' },
+    { title: 'Dott: nuestras sedes', url: 'https://ridedott.com/es/nuestras-sedes/' },
+    { title: 'Dott: términos y condiciones para España', url: 'https://ridedott.com/es/terminos-condiciones/espana/' },
     { title: 'Dott: seguro en España y Canarias', url: 'https://ridedott.com/es/seguro/espana/' },
     { title: 'Dott Ayuda: importe bloqueado en tu cuenta bancaria', url: 'https://help.ridedott.com/es/articles/197' },
   ],

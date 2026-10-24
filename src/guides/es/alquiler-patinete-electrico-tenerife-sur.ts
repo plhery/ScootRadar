@@ -5,35 +5,36 @@ const guide: Guide = {
   slug: 'alquiler-patinete-electrico-tenerife-sur',
   topic: 'tenerife',
   name: 'Alquiler de patinete eléctrico en Tenerife sur',
-  title: 'Alquiler patinete eléctrico Tenerife sur: Hoppy, Bird y Hopp',
-  description: 'Alquiler de patinete eléctrico en Tenerife sur con Hoppy, Bird y Hopp: precios, casco obligatorio, paseos prohibidos, dónde aparcar y cómo ir al aeropuerto.',
-  headline: 'Alquiler de patinete eléctrico en Tenerife sur: Hoppy, Bird y Hopp, precios, casco y paseos prohibidos',
-  lede: 'Para el alquiler de patinete eléctrico en Tenerife sur tienes Hoppy, Bird y Hopp, en la costa que va de Los Cristianos a La Caleta, pasando por Playa de las Américas y Costa Adeje; Hopp tiene además una pequeña zona en Golf del Sur. Diez minutos cuestan de 4,50 a 4,70 € con Hoppy y 3,45 € con Hopp, y Bird solo muestra su precio en la app. Necesitas 18 años para alquilar y, desde el 1 de octubre de 2026, casco: ningún operador lo presta, así que lleva el tuyo. Y no vayas por el paseo marítimo entre Los Cristianos y Las Américas: Arona prohíbe allí los patinetes y la policía lo vigila.',
+  title: 'Alquiler patinete eléctrico Tenerife sur: Hoppy, Dott y Bird',
+  description: 'Alquiler de patinete eléctrico en Tenerife sur: Hoppy, Dott, Bird y Hopp, precios, casco obligatorio, paseos prohibidos, dónde aparcar y cómo ir al aeropuerto.',
+  headline: 'Alquiler de patinete eléctrico en Tenerife sur: Hoppy, Dott, Bird y Hopp, precios, casco y paseos prohibidos',
+  lede: 'Para el alquiler de patinete eléctrico en Tenerife sur tienes Hoppy, Dott, Bird y Hopp, en la costa que va de Los Cristianos a La Caleta, pasando por Playa de las Américas y Costa Adeje; Hopp tiene además una pequeña zona en Golf del Sur. Diez minutos cuestan de 4,50 a 4,70 € con Hoppy y 3,45 € con Hopp, y Dott y Bird solo muestran su precio en la app. Necesitas 18 años para alquilar y, desde el 1 de octubre de 2026, casco, que ningún operador presta: lleva el tuyo. Y no vayas por el paseo marítimo entre Los Cristianos y Las Américas: Arona prohíbe allí los patinetes y la policía lo vigila.',
   published: '2026-10-13',
-  updated: '2026-10-16',
+  updated: '2026-10-24',
   city: 'es:Playa de las Américas',
   sections: [
     {
       heading: '¿Qué patinetes de alquiler hay en el sur de Tenerife?',
       blocks: [
-        'Esta guía, como nuestro mapa, va de los patinetes eléctricos compartidos: los que encuentras en la calle, desbloqueas con el móvil y pagas por minutos. No trata de los scooters de movilidad reducida ni de las motos, que es casi todo lo que sale al buscar «alquiler scooter Tenerife»: para una moto necesitas carné.',
-        'A 14 de octubre de 2026, nuestro mapa muestra tres operadores en el sur:',
+        'Esta guía, como nuestro mapa, va de los patinetes eléctricos compartidos, que desbloqueas con el móvil y pagas por minutos; no de los scooters de movilidad reducida ni de las motos, que es casi todo lo que sale al buscar «alquiler scooter Tenerife».',
+        'A 24 de octubre de 2026, nuestro mapa muestra cuatro operadores en el sur:',
         {
           list: [
             '**Hoppy**, una marca belga, de Los Cristianos a Costa Adeje. En España contratas con Hoppylectrico S.L., de Elche.',
+            '**Dott**, que incluye Tenerife Sur entre sus ciudades sin publicar zona ni precio: el 24 de octubre, sus patinetes estaban entre Los Cristianos y Costa Adeje.',
             '**Bird**, en una sola franja que va de Los Cristianos a La Caleta por Playa de las Américas y Costa Adeje.',
             '**Hopp**, una marca islandesa que aquí gestiona una franquicia local, en casi la misma franja y en una pequeña zona aparte en **Golf del Sur**, en San Miguel de Abona.',
           ],
         },
-        'La tarde del 14 de octubre de 2026, el [mapa de Playa de las Américas](map:es:Playa de las Américas) mostraba unos 1000 patinetes de Hoppy, 540 de Bird y 30 de Hopp, y el de [Golf del Sur](map:es:Golf del Sur), otros 16 de Hopp: una foto de sus datos abiertos, no el tamaño de sus flotas.',
+        'A las 12:26 del 24 de octubre de 2026, el [mapa de Playa de las Américas](map:es:Playa de las Américas) mostraba unos 1000 patinetes de Hoppy, 500 de Dott, 370 de Bird y 30 de Hopp, y el de [Golf del Sur](map:es:Golf del Sur), otros 16 de Hopp: una foto, no el tamaño de sus flotas.',
         'Adeje exige ahora un título municipal a las empresas de alquiler; en Arona y San Miguel de Abona no hemos encontrado licencia, concurso ni límite de flota publicados.',
-        'Otras dos apps, sin datos abiertos, no salen en nuestro mapa. Dott funciona desde 2024 en Santa Cruz, la capital; su lista de ciudades incluye también «Sout Tenerife», pero sin página, precio ni datos. ISLA Ride, de diciembre de 2025, anuncia patinetes en Tenerife, pero no publica dónde ni a qué precio.',
+        'En Santa Cruz, la capital, Dott funciona desde 2024; a esa hora, el [mapa de Santa Cruz](map:es:Santa Cruz de Tenerife) mostraba unos 130. ISLA Ride, de diciembre de 2025, anuncia patinetes en Tenerife, pero no publica dónde ni a qué precio, y no sale en nuestro mapa.',
       ],
     },
     {
       heading: 'Precios del alquiler de patinete eléctrico en Tenerife sur',
       blocks: [
-        'Hoppy y Hopp publican su tarifa; la de Hoppy depende del modelo. Bird no publica la suya para Tenerife.',
+        'La tarifa de Hoppy depende del modelo; Dott y Bird no publican la suya para Tenerife.',
         {
           table: {
             caption: 'Precios del alquiler de patinete en Tenerife sur (tarifas publicadas a 14 de octubre de 2026)',
@@ -41,12 +42,13 @@ const guide: Guide = {
             rows: [
               ['Hoppy', '1 €', '0,35-0,37 €', '4,50-4,70 €', '8-8,40 €', 'Solo en uno de sus puntos de aparcamiento'],
               ['Hopp', '0,95 €', '0,25 €', '3,45 €', '5,95 €', 'Donde no estorbe, dentro de sus dos zonas, con foto'],
+              ['Dott', 'En la app', 'En la app', 'En la app', 'En la app', 'Donde lo permita el mapa de su app'],
               ['Bird', 'En la app', 'En la app', 'En la app', 'En la app', 'Solo en uno de sus 199 puntos de aparcamiento'],
             ],
           },
         },
-        'Pagas cada minuto desbloqueado, en marcha o parado. Si es tu primera vez, mira cómo [alquilar un patinete eléctrico](guide:how-to-rent) paso a paso.',
-        'Para un día de excursión, la guagua sale más barata: el bono turístico de un día de TITSA cuesta 10 € (más 2 € de la tarjeta ten+), con guaguas y tranvía sin límite durante 24 horas; 40 minutos en un Hopp cuestan 10,95 €.',
+        'Pagas cada minuto desbloqueado, en marcha o parado. Si es tu primera vez, mira cómo [alquilar un patinete eléctrico](guide:how-to-rent).',
+        'Para un día de excursión, sale más barato el bono turístico de TITSA: 10 € (más 2 € de la tarjeta ten+) por 24 horas de guaguas y tranvía sin límite; 40 minutos en un Hopp cuestan 10,95 €.',
       ],
     },
     {
@@ -75,13 +77,13 @@ const guide: Guide = {
             ],
           },
         },
-        'Las multas del ayuntamiento van aparte: en Arona, la policía denuncia los patinetes mal aparcados, y Adeje pide dejarlos en una zona señalizada sin estorbar el paso.',
+        'Las multas del ayuntamiento van aparte, y Adeje pide dejarlos en una zona señalizada sin estorbar el paso.',
       ],
     },
     {
       heading: 'Normativa del patinete eléctrico en Tenerife: casco, edad y acera',
       blocks: [
-        'En Tenerife rige la normativa de toda España, que cambió el 1 de octubre de 2026. No necesitas carné, y el registro en la DGT y el seguro son cosa del operador. Lo que te toca a ti:',
+        'En Tenerife rige la normativa de toda España, que cambió el 1 de octubre de 2026. No necesitas carné, y el registro en la DGT y el seguro son cosa del operador.',
         {
           table: {
             caption: 'Lo esencial para ir en un patinete de alquiler, a 13 de octubre de 2026',
@@ -118,9 +120,9 @@ const guide: Guide = {
       blocks: [
         {
           list: [
-            '**Los paseos se cerraron antes de que hubiera ley del patinete.** Arona los prohibió en 2016, y España no definió el patinete eléctrico (VMP) en su normativa de tráfico hasta enero de 2021.',
+            '**Los paseos se cerraron antes de que hubiera ley del patinete.** Arona los prohibió en 2016, y la ley española no definió el patinete (VMP) hasta enero de 2021.',
             '**En Arona, casi todos los patinetes que se lleva la policía son de alquiler.** Según RTVC, tras el operativo de abril de 2026, «el 99,9 % de los vehículos intervenidos pertenecen a empresas de alquiler».',
-            '**Los Hopp de Las Américas vienen de Islandia.** Hopp nació en Reikiavik en 2019 y creció con franquicias; la primera en el extranjero, Orihuela Costa, en 2020. Hopp Tenerife arrancó el 28 de marzo de 2022, y la misma app vale en Reikiavik.',
+            '**Los Hopp de Las Américas vienen de Islandia.** Hopp nació en Reikiavik en 2019 y creció con franquicias; Hopp Tenerife arrancó el 28 de marzo de 2022.',
           ],
         },
       ],
@@ -129,11 +131,11 @@ const guide: Guide = {
   faq: [
     {
       question: '¿Cuánto cuesta alquilar un patinete eléctrico en Tenerife sur?',
-      answer: 'Con Hoppy, 1 € por desbloquear y de 0,35 a 0,37 € por minuto (diez minutos, de 4,50 a 4,70 €); con Hopp, 0,95 € y 0,25 € por minuto (diez minutos, 3,45 €), según sus tarifas a 14 de octubre de 2026. Bird no publica su precio para Tenerife: míralo en la app.',
+      answer: 'Con Hoppy, 1 € por desbloquear y de 0,35 a 0,37 € por minuto (diez minutos, de 4,50 a 4,70 €); con Hopp, 0,95 € y 0,25 € por minuto (diez minutos, 3,45 €), según sus tarifas a 14 de octubre de 2026. Dott y Bird no publican su precio para Tenerife: míralo en la app.',
     },
     {
       question: '¿Qué app de patinetes eléctricos funciona en Tenerife?',
-      answer: 'En el sur, Hoppy, Bird y Hopp, cada uno con la suya: necesitas la del patinete que vas a coger. [Nuestro mapa](map:es:Playa de las Américas) muestra los tres y te lleva a la app de cada uno.',
+      answer: 'En el sur, Hoppy, Dott, Bird y Hopp, cada uno con la suya: necesitas la del patinete que vas a coger. [Nuestro mapa](map:es:Playa de las Américas) muestra los cuatro y te lleva a la app de cada uno. En Santa Cruz, Dott.',
     },
     {
       question: '¿Es obligatorio el casco en patinete en Tenerife?',
@@ -161,6 +163,8 @@ const guide: Guide = {
     { title: 'Hoppy: datos abiertos de Tenerife Sur (GBFS)', url: 'https://hoppy.rideatom.com/gbfs/1193/v3.0/gbfs' },
     { title: 'Hopp: ubicaciones y tarifas', url: 'https://hopp.bike/locations' },
     { title: 'Bird: datos abiertos del sur de Tenerife (GBFS)', url: 'https://mds.bird.co/gbfs/v2/public/adeje/gbfs.json' },
+    { title: 'Dott: nuestras sedes', url: 'https://ridedott.com/es/nuestras-sedes/' },
+    { title: 'Dott: términos y condiciones para España', url: 'https://ridedott.com/es/terminos-condiciones/espana/' },
     { title: 'TITSA: guaguas al aeropuerto Tenerife Sur', url: 'https://titsa.com/index.php/tenerife-en-guagua/lineas-de-aeropuertos/aeropuerto-tenerife-sur' },
     { title: 'Metrotenerife: guía del usuario del tranvía', url: 'https://metrotenerife.com/guia-del-usuario/' },
     { title: 'AEMET: valores climatológicos normales del aeropuerto Tenerife Sur', url: 'https://www.aemet.es/es/serviciosclimaticos/datosclimatologicos/valoresclimatologicos?l=C429I&k=coo' },
