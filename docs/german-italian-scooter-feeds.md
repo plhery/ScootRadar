@@ -455,7 +455,7 @@ Bolt and Lime publish no Italian feed.
   140. So Duisburg, Oberhausen, Düsseldorf, Neuss, Bochum, Herne and Witten
   have their OpenStreetMap outlines, and a scooter counts under the one it
   stands in. An outline also drops an operator's scooters in a town it
-  doesn't serve (`systemServesPoint`); at 15:15 the only operator other than
+  doesn't serve (`systemServesPoint`); at 15:05 the only operator other than
   Voi there without a town of its own was Dott in Witten, with no scooter.
 - **Bounds:** each town's outline plus about 1 km (0.009° of latitude and
   0.014° of longitude); a system's bounds take in all its towns'. They leave
