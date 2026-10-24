@@ -15,7 +15,7 @@ ETT TRYKK TIL RIKTIG APP
 «Åpne i» tar deg til operatørens egen app, der du låser opp og betaler som vanlig. ScootRadar leier ikke ut og reserverer ikke elsparkesykler.
 
 HVOR DET FUNGERER
-Nesten 400 byer og tettsteder i Sveits, Frankrike, Tyskland, Norge, Island, Belgia, Portugal, Spania, Storbritannia, USA, Canada, Israel, New Zealand og flere land. Der ingen operatør publiserer data, sier kartet ifra og viser de nærmeste byene som har det.
+Sparkesyklene til 35 operatører, i over 800 byer og tettsteder i 46 land: Norge, Sveits, Frankrike, Tyskland, Italia, Storbritannia, Belgia, Spania, Polen, Sverige, Finland og flere land i Europa; USA og Canada; Brasil, Chile og Mexico; Japan, Sør-Korea og Australia; Israel, Tyrkia, New Zealand og flere. Blant dem er Oslo, Berlin, Tokyo, Chicago, Santiago, Roma, São Paulo, Stockholm, Seoul og Zürich. Der ingen operatør publiserer data, sier kartet ifra og viser de nærmeste byene som har det.
 
 INNEBYGD PERSONVERN
 Ingen konto og ingen reklame. Posisjonen din brukes på iPhonen din, for å sentrere kartet og regne ut gangtider; serveren får bare den delen av kartet du ser på. Anonym bruksstatistikk kan slås av i Innstillinger.
@@ -26,6 +26,6 @@ OGSÅ
 • Dynamic Type, VoiceOver og Reduser bevegelse
 • Norsk, engelsk, tysk, fransk, italiensk, nederlandsk, portugisisk, spansk og islandsk
 
-Posisjonene kommer fra de offentlige datastrømmene (GBFS) som operatørene og myndighetene publiserer, og kan være noen minutter gamle. På kartet finner du blant annet Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Ryde, Hoppy, Beryl, Spin, Veo og Lyft, avhengig av byen.
+Posisjonene kommer fra de offentlige datastrømmene (GBFS) som operatørene og myndighetene publiserer, og kan være noen minutter gamle. På kartet finner du blant annet Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Xingxing, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe og Zippy, avhengig av byen.
 
 ScootRadar er uavhengig og ikke tilknyttet operatørene; navnene deres er varemerker som tilhører eierne. ScootRadar har åpen kildekode.

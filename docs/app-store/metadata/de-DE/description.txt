@@ -15,7 +15,7 @@ EIN FINGERTIPP ZUR RICHTIGEN APP
 «In … öffnen» bringt dich zur App des Anbieters. Entsperrt und bezahlt wird dort wie gewohnt. ScootRadar vermietet und reserviert keine Scooter.
 
 WO ES FUNKTIONIERT
-Fast 400 Städte und Gemeinden: in der Schweiz, in Frankreich, Deutschland, Norwegen, Island, Belgien, Portugal und Spanien, im Vereinigten Königreich, in den Vereinigten Staaten, in Kanada, Israel, Neuseeland und weiteren Ländern. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten.
+Die Scooter von 35 Anbietern, in über 800 Städten und Gemeinden in 46 Ländern: in der Schweiz, in Deutschland, Frankreich, Italien, Belgien, Spanien, Polen, Norwegen, Schweden und Finnland, im Vereinigten Königreich und in weiteren Ländern Europas; in den Vereinigten Staaten und Kanada; in Brasilien, Chile und Mexiko; in Japan, Südkorea und Australien; in Israel, in der Türkei, in Neuseeland und anderswo. Darunter sind Berlin, Oslo, Tokio, Chicago, Santiago de Chile, Rom, São Paulo, Stockholm, Seoul und Zürich. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten.
 
 PRIVAT VON GRUND AUF
 Kein Konto, keine Werbung. Dein Standort wird auf deinem iPhone genutzt, um die Karte zu zentrieren und die Gehzeiten zu berechnen; der Server erhält nur den Kartenausschnitt, den du gerade ansiehst. Anonyme Nutzungsstatistiken lassen sich in den Einstellungen ausschalten.
@@ -26,6 +26,6 @@ AUSSERDEM
 • Dynamic Type, VoiceOver und Bewegung reduzieren
 • Deutsch, Englisch, Französisch, Italienisch, Niederländisch, Norwegisch, Portugiesisch, Spanisch und Isländisch
 
-Die Positionen stammen aus den öffentlichen Datenfeeds (GBFS) der Anbieter und Behörden und können einige Minuten alt sein. Auf der Karte sind je nach Stadt unter anderem Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Ryde, Hoppy, Beryl, Spin, Veo und Lyft.
+Die Positionen stammen aus den öffentlichen Datenfeeds (GBFS) der Anbieter und Behörden und können einige Minuten alt sein. Auf der Karte sind je nach Stadt unter anderem Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Xingxing, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe und Zippy.
 
 ScootRadar ist unabhängig und steht in keiner Verbindung zu den Anbietern; deren Namen sind Marken ihrer jeweiligen Inhaber. ScootRadar ist Open Source.

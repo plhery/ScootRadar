@@ -15,7 +15,7 @@ L’APP GIUSTA, CON UN TOCCO
 «Apri in» ti porta all’app dell’operatore, dove sblocchi e paghi come sempre. ScootRadar non noleggia né prenota monopattini.
 
 DOVE FUNZIONA
-Quasi 400 città e comuni in Svizzera, Francia, Germania, Norvegia, Islanda, Belgio, Portogallo e Spagna, nel Regno Unito, negli Stati Uniti, in Canada, Israele, Nuova Zelanda e altri paesi. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno.
+I monopattini di 35 operatori, in oltre 800 città e comuni di 46 paesi: Svizzera, Italia, Francia, Germania, Regno Unito, Belgio, Spagna, Polonia, Norvegia, Svezia, Finlandia e altri paesi d’Europa; Stati Uniti e Canada; Brasile, Cile e Messico; Giappone, Corea del Sud e Australia; Israele, Turchia, Nuova Zelanda e altri ancora. Tra queste ci sono Berlino, Oslo, Tokyo, Chicago, Santiago del Cile, Roma, San Paolo, Stoccolma, Seul e Zurigo. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno.
 
 PRIVACY FIN DALLA PROGETTAZIONE
 Niente account, niente pubblicità. La tua posizione viene usata sul tuo iPhone, per centrare la mappa e calcolare i tempi a piedi; il server riceve solo la parte di mappa che stai guardando. Le statistiche di utilizzo anonime si possono disattivare in Impostazioni.
@@ -26,6 +26,6 @@ E ANCHE
 • Dynamic Type, VoiceOver e Riduci movimento
 • Italiano, tedesco, francese, inglese, olandese, norvegese, portoghese, spagnolo e islandese
 
-Le posizioni provengono dai feed di dati pubblici (GBFS) diffusi dagli operatori e dalle autorità, e possono risalire a qualche minuto fa. Sulla mappa, a seconda della città, ci sono tra gli altri Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Ryde, Hoppy, Beryl, Spin, Veo e Lyft.
+Le posizioni provengono dai feed di dati pubblici (GBFS) diffusi dagli operatori e dalle autorità, e possono risalire a qualche minuto fa. Sulla mappa, a seconda della città, ci sono tra gli altri Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Xingxing, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe e Zippy.
 
 ScootRadar è un’app indipendente, non affiliata agli operatori; i loro nomi sono marchi dei rispettivi titolari. ScootRadar è open source.

@@ -6,6 +6,7 @@ import { PROVIDERS } from '@/generated/providers';
 import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, COVERED_PROVIDER_TOTAL } from '@/lib/coveredCities';
 import { LANDING_NEAREST } from '@/lib/landingSnapshot';
 import { DEFAULT_RIDE_DURATION, RIDE_DURATIONS } from '@/lib/ridePrice';
+import { formatLocale } from '@/lib/formatLocale';
 
 /** Every string of a language by its path, the functions called with something to say. */
 function strings(value: unknown, path = ''): [string, string][] {
@@ -134,6 +135,47 @@ describe('the cities of the landing page', () => {
   });
 });
 
+describe('the description of the landing page', () => {
+  /** A sentence as written here, each count held to its noun by a no-break space. */
+  const held = (sentence: string) => sentence.replace(/(\d) /g, '$1\u00a0');
+
+  it('opens with the providers, the cities and the countries, each noun in the form its count takes', () => {
+    expect(LANDING_LOCALES.map(locale => LANDING_COPY[locale].meta.description(35, 837, 46).split(/[.:] /)[1])).toEqual([
+      '35 providers in 837 cities and 46 countries',
+      '35 Anbieter in 837 Städten und 46 Ländern',
+      '35 opérateurs dans 837 villes et 46 pays',
+      '35 operatori in 837 città e 46 paesi',
+      '35 aanbieders in 837 steden en 46 landen',
+      '35 operatører i 837 byer og 46 land',
+      '35 operadores em 837 cidades e 46 países',
+      '35 operadores en 837 ciudades y 46 países',
+      '35 fyrirtæki á 837 stöðum í 46 löndum',
+    ].map(held));
+    expect(LANDING_LOCALES.map(locale => LANDING_COPY[locale].meta.description(1, 1, 1).split(/[.:] /)[1])).toEqual([
+      '1 provider in 1 city and 1 country',
+      '1 Anbieter in 1 Stadt und 1 Land',
+      '1 opérateur dans 1 ville et 1 pays',
+      '1 operatore in 1 città e 1 paese',
+      '1 aanbieder in 1 stad en 1 land',
+      '1 operatør i 1 by og 1 land',
+      '1 operador em 1 cidade e 1 país',
+      '1 operador en 1 ciudad y 1 país',
+      '1 fyrirtæki á 1 stað í 1 landi',
+    ].map(held));
+    expect(LANDING_COPY.en.meta.description(35, 837, 46)).toMatch(/^Every shared e-scooter near you on one live map: 35\u00a0providers in 837\u00a0cities and 46\u00a0countries\. Free, no account\. Lime, Bolt, /);
+  });
+
+  it('gives the counts before a search engine cuts it', () => {
+    // Google shows about the first 155 characters of a description.
+    for (const locale of LANDING_LOCALES) {
+      const shown = LANDING_COPY[locale].meta.description(COVERED_PROVIDER_TOTAL, COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL).slice(0, 155);
+      for (const count of [COVERED_PROVIDER_TOTAL, COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL]) {
+        expect(shown, locale).toContain(`${new Intl.NumberFormat(formatLocale(locale)).format(count)}\u00a0`);
+      }
+    }
+  });
+});
+
 describe('the links of the landing page', () => {
   /** The names a sentence gives its links, in order. */
   const linked = (sentence: string) => linkedParts(sentence).flatMap(({ link }) => link ?? []);
@@ -219,7 +261,7 @@ describe('what the landing page says of the snapshot', () => {
       const { meta, faq: { items: [first] } } = LANDING_COPY[locale];
       for (const { name } of Object.values(PROVIDERS)) {
         const short = name.split(' / ')[0];
-        expect(meta.description(0), locale).toContain(short);
+        expect(meta.description(0, 0, 0), locale).toContain(short);
         expect(`${first.question} ${first.answer}`, locale).toContain(short);
       }
     }

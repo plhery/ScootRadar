@@ -1,1 +1,1 @@
-Todas as trotinetes elétricas partilhadas perto de si num mapa em tempo real, seja qual for o operador: tempo a pé, bateria e preço estimado antes de se pôr a caminho.
+Todas as trotinetes partilhadas perto de si num mapa em tempo real: 35 operadores em mais de 800 cidades e 46 países, com tempo a pé, bateria e preço estimado.

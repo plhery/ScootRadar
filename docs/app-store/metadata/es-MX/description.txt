@@ -15,7 +15,7 @@ LA APP CORRECTA, CON UN TOQUE
 “Abrir en” te lleva a la app del propio operador, donde desbloqueas y pagas como siempre. ScootRadar no renta ni reserva scooters.
 
 DÓNDE FUNCIONA
-Casi 400 ciudades y pueblos en Suiza, Francia, Alemania, Noruega, Islandia, Bélgica, Portugal, España, el Reino Unido, Estados Unidos, Canadá, Israel, Nueva Zelanda y otros países. Donde ningún operador publica sus datos, el mapa te lo dice y te muestra las ciudades más cercanas que sí los tienen.
+Los scooters de 35 operadores, en más de 800 ciudades y pueblos de 46 países: México, Brasil, Chile, Colombia y Costa Rica; Estados Unidos y Canadá; España, Francia, Suiza, Alemania, Italia, el Reino Unido, Polonia, Noruega, Suecia, Finlandia y otros países de Europa; Japón, Corea del Sur y Australia; Israel, Turquía, Nueva Zelanda y otros. Entre ellas están Monterrey, Santiago de Chile, São Paulo, Medellín, Chicago, Berlín, Oslo, Tokio, Roma y Seúl. Donde ningún operador publica sus datos, el mapa te lo dice y te muestra las ciudades más cercanas que sí los tienen.
 
 PRIVACIDAD DESDE EL DISEÑO
 Sin cuenta y sin anuncios. Tu ubicación se usa en tu iPhone, para centrar el mapa y calcular los tiempos a pie; el servidor solo recibe la parte del mapa que estás viendo. Las estadísticas de uso anónimas se pueden desactivar en Ajustes.
@@ -26,6 +26,6 @@ ADEMÁS
 • Dynamic Type, VoiceOver y Reducir movimiento
 • Español, inglés, alemán, francés, italiano, neerlandés, noruego, portugués e islandés
 
-Las posiciones vienen de los datos abiertos (GBFS) que publican los operadores y las autoridades, y pueden tener unos minutos de retraso. En el mapa están, entre otros, Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Ryde, Hoppy, Beryl, Spin, Veo y Lyft, según la ciudad.
+Las posiciones vienen de los datos abiertos (GBFS) que publican los operadores y las autoridades, y pueden tener unos minutos de retraso. En el mapa están, entre otros, Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Xingxing, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe y Zippy, según la ciudad.
 
 ScootRadar es independiente y no está vinculado a los operadores; sus nombres son marcas de sus respectivos titulares. ScootRadar es de código abierto.

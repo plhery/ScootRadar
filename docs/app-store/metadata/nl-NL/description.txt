@@ -15,7 +15,7 @@ EÉN TIK NAAR DE JUISTE APP
 ‘Openen in’ brengt je naar de eigen app van de aanbieder, waar je zoals gewoonlijk ontgrendelt en betaalt. ScootRadar verhuurt en reserveert geen deelsteps.
 
 WAAR HET WERKT
-Bijna 400 steden en gemeenten in Zwitserland, Frankrijk, Duitsland, Noorwegen, IJsland, België, Portugal, Spanje, het Verenigd Koninkrijk, de Verenigde Staten, Canada, Israël, Nieuw-Zeeland en meer. Waar geen enkele aanbieder zijn data publiceert, zegt de kaart dat en krijg je de dichtstbijzijnde steden die wel data hebben.
+De steps van 35 aanbieders, in meer dan 800 steden en gemeenten in 46 landen: Zwitserland, Frankrijk, Duitsland, België, Italië, het Verenigd Koninkrijk, Spanje, Polen, Noorwegen, Zweden, Finland en elders in Europa; de Verenigde Staten en Canada; Brazilië, Chili en Mexico; Japan, Zuid-Korea en Australië; Israël, Turkije, Nieuw-Zeeland en meer. Daaronder zijn Berlijn, Brussel, Oslo, Tokio, Chicago, Santiago, Rome, São Paulo, Stockholm, Seoul en Zürich. Waar geen enkele aanbieder zijn data publiceert, zegt de kaart dat en krijg je de dichtstbijzijnde steden die wel data hebben.
 
 PRIVACY INGEBOUWD
 Geen account en geen reclame. Je locatie wordt op je iPhone gebruikt, om de kaart te centreren en de tijd te voet te berekenen; de server krijgt alleen het deel van de kaart waar je naar kijkt. Anonieme gebruiksstatistieken kun je uitzetten in Instellingen.
@@ -26,6 +26,6 @@ OOK
 • Dynamic Type, VoiceOver en Verminder beweging
 • Nederlands, Engels, Duits, Frans, Italiaans, Noors, Portugees, Spaans en IJslands
 
-De posities komen uit de openbare datafeeds (GBFS) die aanbieders en overheden publiceren, en kunnen een paar minuten oud zijn. Op de kaart staan onder meer Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Ryde, Hoppy, Beryl, Spin, Veo en Lyft, afhankelijk van de stad.
+De posities komen uit de openbare datafeeds (GBFS) die aanbieders en overheden publiceren, en kunnen een paar minuten oud zijn. Op de kaart staan onder meer Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Xingxing, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe en Zippy, afhankelijk van de stad.
 
 ScootRadar is onafhankelijk en niet verbonden aan de aanbieders; hun namen zijn handelsmerken van hun eigenaars. ScootRadar is open source.

@@ -63,7 +63,7 @@ function pageMetadata(page: SitePage): Metadata {
 
 function landingMetadata(locale: LandingLocale): Metadata {
   const { meta } = LANDING_COPY[locale];
-  const description = meta.description(COVERED_CITY_TOTAL);
+  const description = meta.description(COVERED_PROVIDER_TOTAL, COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL);
   const share = { url: shareImage(locale), width: 1200, height: 630, alt: meta.share.alt };
   return {
     title: meta.title,
@@ -124,7 +124,7 @@ function structuredData(locale: LandingLocale, copy: LandingCopy) {
         '@id': `${SITE_URL}${MAP_PATH}#app`,
         name: SITE_NAME,
         url: `${SITE_URL}${MAP_PATH}`,
-        description: copy.meta.description(COVERED_CITY_TOTAL),
+        description: copy.meta.description(COVERED_PROVIDER_TOTAL, COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL),
         applicationCategory: 'TravelApplication',
         operatingSystem: 'Any',
         browserRequirements: 'Requires JavaScript',
