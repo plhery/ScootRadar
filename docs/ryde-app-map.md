@@ -6,6 +6,24 @@ Checked 24 October 2026 against the official Android `com.ryde_android`
 No authenticated map retrieval, collector, catalog addition or deployment
 has been completed.
 
+## Deferred and how to resume
+
+Deferred at the user's request on 24 October 2026. The emulator is rejected
+before phone verification; further SMS attempts on that setup have no new
+evidence to justify them. Request signing has been reproduced, but a working
+rider session and authenticated response decryption remain unverified.
+
+Resume with the official app on a physical Android phone that meets Ryde's
+device-integrity requirements, using a number available at that time. First
+confirm that login reaches code entry and completes. Then verify read-only
+map retrieval, response decryption and session renewal before considering a
+collector. A successful phone login alone does not establish that its session
+can be used by a server.
+
+The `ScootRadar_Ryde_Play` AVD is retained for reference. Verified APKs and
+private diagnostics are kept outside Git; the local provider-auth progress
+note records their locations. Bolt's saved rider session is separate.
+
 ## Map protocol and the earlier signing blocker
 
 The app defines `POST https://api.ryde.vip/appRyde/getNearScootersNew`, with
