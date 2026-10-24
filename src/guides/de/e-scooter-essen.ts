@@ -136,7 +136,7 @@ const guide: Guide = {
             '**Bochum:** Ryde startete am 1. Juni 2026 nach eigenen Angaben mit rund 900 Scootern, laut Radio Bochum zu 0,18 € pro Minute.',
           ],
         },
-        'Für keine dieser Städte zeigt ScootRadar bisher Scooter (Stand Oktober 2026).',
+        'Auf der Karte siehst du seit dem 24. Oktober 2026 Dott und Voi in [Bochum](map:de:Bochum) und Oberhausen, Dott auch in Mülheim; in Gelsenkirchen zeigt sie keine Scooter.',
       ],
     },
     {
