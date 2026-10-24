@@ -6,10 +6,14 @@ on:
     branches:
       - main
 
-# A newer push to a pull request cancels its run; each commit on main runs to the end, so it can deploy.
+# A newer push to a pull request cancels its run. On main a run that has started ends, as only that
+# deploys (DEPLOY.md), and runs go one at a time: of the pushes made meanwhile only the newest waits,
+# GitHub cancelling a waiting run when another queues, and its commit carries the others. When each
+# commit ran, the 15 pushed in 40 minutes on 24 Oct 2026 kept iOS jobs waiting up to 15 minutes for one
+# of the account's five Macs.
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref == 'refs/heads/main' && github.sha || github.ref }}
-  cancel-in-progress: true
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 permissions:
   contents: read

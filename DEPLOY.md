@@ -166,9 +166,11 @@ built from, as listed in
 between the commit `production-cache` is at and this one. A failed or cancelled
 job moves nothing, and the next commit that passes carries the change. A push
 goes live about 15 minutes later: CI takes 12 to 15 minutes, then Workers Builds
-and Coolify about a minute and a half each. Every commit on `main` runs CI to
-the end, so a later push does not hold up an earlier one, and a branch never
-moves back to a commit whose CI ends after a later one's.
+and Coolify about a minute and a half each. CI runs on one commit of `main` at a
+time, to the end. Of the commits pushed meanwhile only the newest waits for it,
+and it carries the others: GitHub cancels a waiting run when a later push queues
+another. So a commit pushed during a run goes live with the next one, up to a
+run later, and a branch never moves back to an earlier commit.
 
 The job leaves `production-cache` where it is from 23:00 to 05:30 Paris time
 (AGENTS.md), and when every commit since says `[skip cd]` (or `[skip ci]`): the
