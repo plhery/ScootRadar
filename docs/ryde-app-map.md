@@ -54,9 +54,38 @@ environment still failed before code entry, displaying:
 
 > An error has occurred. Please contact our support.
 
-This does not identify a country restriction or prove that the earlier
-Integrity issue was the only blocker. A currently available European number
-would provide a useful comparison. Ryde's
+The German comparison also returned to sign-in without code entry, and the
+user received no SMS. Country selection did not explain these failures.
+
+Tracing `LoginMainActivity` identified an earlier prerequisite: phone login
+first fetches `/appRyde/getTimeService`. If that returns no usable result,
+the app displays its generic error before checking the number. The app's
+`MobileType` header is exactly
+`Android/<Build.MANUFACTURER>/<Build.MODEL>/<Build.BRAND>`.
+
+A controlled, unauthenticated check of that time endpoint found:
+
+| Request headers | HTTP result |
+| --- | --- |
+| Android app/version headers, no `MobileType` | 200, JSON status 200 |
+| Same, with `X-Frame-Options: DENY` | 200, JSON status 200 |
+| Same, with `MobileType: Android/Google/sdk_gphone64_arm64/google` | 403, HTML |
+| Same emulator header and `X-Frame-Options: DENY` | 403, HTML |
+| Change only the model in that last request to `Pixel 7` | 200, JSON status 200 |
+
+This establishes a request-header blocker independently of phone country.
+The reference-model request was a read-only diagnostic comparison, not a
+successful login. Neither app/device identity nor an integrity verdict was
+modified in the official client. Its public time response also reports
+`deviceBlacklistMode: 1`, `playVerdictRequire: "DEVICE"`,
+`playIntegrityDegraded: 0` and `attestFailPolicy: 1`. That is further evidence
+that a working verification-service connection alone is insufficient;
+successful device attestation and an authenticated map remain unverified.
+Further country changes should not be treated as a fix for this emulator.
+A real-device sign-in is the next useful compatibility test, and would not
+by itself establish a portable server session.
+
+Ryde's
 [login help](https://www.ryde-technology.com/help/login-issues) asks users to
 check SMS reception, the country code and the app version, but supplies no
 complete list of countries supported for SMS verification. Do not describe
