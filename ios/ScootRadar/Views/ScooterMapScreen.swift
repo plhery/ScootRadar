@@ -19,6 +19,8 @@ struct ScooterMapScreen: View {
     @State private var chromeLayout = ScooterChromeLayout.dock
     @State private var panelFrame = CGRect.null
     @State private var panelNoticesHeight: CGFloat = 0
+    /// The window's whole height, which a sheet's half height is half of.
+    @State private var windowHeight = CGFloat.infinity
     /// Whether the panel was left folded, kept with the window across launches.
     @SceneStorage("panelCollapsed") private var panelCollapsed = false
     @Environment(\.scenePhase) private var scenePhase
@@ -103,6 +105,11 @@ struct ScooterMapScreen: View {
         // Keep the dock anchored to the screen while search dismisses. Otherwise
         // it fades back in within the keyboard's shrinking safe area and jumps.
         .ignoresSafeArea(.keyboard, edges: .bottom)
+        .onGeometryChange(for: CGFloat.self) { geometry in
+            geometry.size.height + geometry.safeAreaInsets.top + geometry.safeAreaInsets.bottom
+        } action: { height in
+            windowHeight = height
+        }
         .background(Color(.systemBackground))
         .task {
             ScooterAnalytics.shared.track()
@@ -168,7 +175,9 @@ struct ScooterMapScreen: View {
         }
         .sheet(isPresented: filtersSheetPresented) {
             ScooterFilterSheet(model: model)
-                .presentationDetents([.medium, .large])
+                // Half of a short window shows the first settings only, so
+                // there Filters opens at full height, its providers in view.
+                .presentationDetents(windowHeight < 700 ? [.large] : [.medium, .large])
                 .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $settingsPresented) {
