@@ -1,11 +1,17 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
-  binbinAreasProblem, catalogSystems, cityKm, countryCreditLinks, curfewZoneProblem, scooterCities, seasonalProblem, swiftCityFeeds, swiftCityPauses,
+  binbinAreasProblem, catalogSystems, cityKm, coverageAreas, countryCreditLinks, curfewZoneProblem, scooterCities, seasonalProblem, swiftCityFeeds, swiftCityPauses,
   swiftCountries, timeZoneProblem, townOutlinesProblem, typescriptCatalogs, typescriptCountries, validateCityWidths, validateCountries,
 } from './country-catalog.mjs';
+import { limeGridGroups } from '../src/lib/limeGrid';
 
 const readJson = path => JSON.parse(readFileSync(path, 'utf8'));
+// A catalog's Lime market is a system for each of its refresh groups, as the generator reads it.
+const readCatalog = path => {
+  const catalog = readJson(path);
+  return { ...catalog, systems: catalog.systems.flatMap(limeGridGroups) };
+};
 const countries = readJson('data/countries.json');
 // The fixtures below stand for North America's countries, the real ones aside.
 const europe = { ...countries, countries: countries.countries.filter(country => country.continent === 'europe') };
@@ -60,7 +66,7 @@ const newZealandCatalog = { systems: [{ id: 'lime_auckland', provider: 'lime', c
   discoveryUrl: 'https://data.lime.bike/api/partners/v2/gbfs/auckland/gbfs.json' }] };
 const fixtures = { 'data/canadian-scooter-feeds.json': canadianCatalog, 'data/american-scooter-feeds.json': americanCatalog,
   'data/new-zealand-scooter-feeds.json': newZealandCatalog };
-const read = path => fixtures[path] ?? readJson(path);
+const read = path => fixtures[path] ?? readCatalog(path);
 
 function generate(data, readCatalog = read) {
   const systems = catalogSystems(data.countries, readCatalog);
@@ -296,7 +302,7 @@ describe('the countries of data/countries.json', () => {
       .toThrow('flamingo_auckland in Auckland has NZ, an older name of Pacific/Auckland: write that');
     expect(() => catalogSystems([newZealand], () => ({ systems: [{ ...auckland, timeZone: 'Pacific/Auckland' }] }))).not.toThrow();
     // Europe's towns need none, and the one they give is checked all the same.
-    expect(() => catalogSystems(europe.countries.filter(({ code }) => code === 'FR'), path => readJson(path))).not.toThrow();
+    expect(() => catalogSystems(europe.countries.filter(({ code }) => code === 'FR'), readCatalog)).not.toThrow();
     expect(timeZoneProblem(undefined, 'CH')).toBe('needs its time zone, timeZone');
     expect(timeZoneProblem('Europe/Zurich', 'CH')).toBeNull();
     expect(timeZoneProblem('Europe/Berlin', 'CH')).toBe('has Europe/Berlin, a time zone of DE');
@@ -336,7 +342,7 @@ describe('the countries of data/countries.json', () => {
       .toBe('data/town-outlines.json: the outline of il:A holds the centre of il:B, which has none');
     expect(problem(outline('il:A', square(34.8, 34.9)))).toBe('data/town-outlines.json: the outline of il:A misses the centre of il:A');
     const real = readJson('data/town-outlines.json');
-    expect(townOutlinesProblem(real, scooterCities(swissAreas, catalogSystems(countries.countries, readJson), countries.countries))).toBeNull();
+    expect(townOutlinesProblem(real, scooterCities(swissAreas, catalogSystems(countries.countries, readCatalog), countries.countries))).toBeNull();
   });
 
   it('sweeps each BinBin area for one BinBin system, within its bounds and around its centre', () => {
@@ -357,11 +363,28 @@ describe('the countries of data/countries.json', () => {
     expect(binbinAreasProblem([{ ...system, center: [37.05, 30.2] }], areas))
       .toBe('binbin_tr_a: its centre is outside the outline of BinBin\'s area 1');
     expect(binbinAreasProblem([], areas)).toBe('data/binbin-areas.json: no system sweeps 1');
-    expect(binbinAreasProblem(catalogSystems(countries.countries, readJson), readJson('data/binbin-areas.json'))).toBeNull();
+    expect(binbinAreasProblem(catalogSystems(countries.countries, readCatalog), readJson('data/binbin-areas.json'))).toBeNull();
   });
 
   it('keeps each system in the country of its catalog', () => {
     const misplaced = { systems: [{ ...canadianCatalog.systems[0], country: 'US' }] };
     expect(() => catalogSystems([canada], () => misplaced)).toThrow('bird_toronto is in US, not CA');
+  });
+
+  it('joins a Lime market\'s local views along each row for iOS, and keeps every other area as it is', () => {
+    const tile = (south, west) => ({ south, north: south + 1, west, east: west + 1 });
+    const systems = [
+      { provider: 'bird', bounds: tile(9, 9), areas: [{ bounds: tile(5, 5) }, { bounds: tile(6, 6) }] },
+      { provider: 'lime', limeAppRegion: 'A', limeMapTiles: [tile(0, 0), tile(0, 1), tile(0, 2), tile(1, 0)] },
+      { provider: 'lime', limeAppRegion: 'A', limeMapTiles: [tile(1, 1), tile(1, 3)] },
+      { provider: 'lime', limeAppRegion: 'B', limeMapTiles: [tile(1, 4)] },
+    ];
+    expect(coverageAreas(systems)).toEqual([
+      { provider: 'bird', bounds: tile(5, 5) }, { provider: 'bird', bounds: tile(6, 6) },
+      { provider: 'lime', bounds: { south: 0, north: 1, west: 0, east: 3 } },
+      { provider: 'lime', bounds: { south: 1, north: 2, west: 0, east: 2 } },
+      { provider: 'lime', bounds: tile(1, 3) },
+      { provider: 'lime', bounds: tile(1, 4) },
+    ]);
   });
 });

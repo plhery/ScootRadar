@@ -220,6 +220,28 @@ export function swiftCityPauses(city) {
   return `, pauses: [${city.pauses.map(swiftPause).join(', ')}]`;
 }
 
+/**
+ * The service areas the iOS app tests a viewport against for each provider, as the web's
+ * serviceAreas: a Lime market's local views joined where they touch along a row, of which
+ * thousands would otherwise each be a statement of ProviderCatalog.generated.swift.
+ */
+export function coverageAreas(systems) {
+  const areas = [];
+  for (const system of systems) {
+    if (!system.limeMapTiles) {
+      for (const area of system.areas ?? [system]) areas.push({ provider: system.provider, bounds: area.bounds });
+      continue;
+    }
+    for (const tile of system.limeMapTiles) {
+      const last = areas.at(-1);
+      if (last?.market === system.limeAppRegion && last.bounds.south === tile.south && last.bounds.north === tile.north &&
+        last.bounds.east === tile.west) last.bounds = { ...last.bounds, east: tile.east };
+      else areas.push({ provider: system.provider, market: system.limeAppRegion, bounds: tile });
+    }
+  }
+  return areas.map(({ provider, bounds }) => ({ provider, bounds }));
+}
+
 /** The feeds argument of a city's ScooterCity in Swift, after its pauses; none for a Swiss one. */
 export function swiftCityFeeds(city) {
   if (!city.feeds?.length) return '';

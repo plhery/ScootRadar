@@ -1,6 +1,7 @@
 import { CATALOG_SYSTEMS } from '@/generated/countryCatalogs';
 import { COUNTRY_NAMES, COUNTRY_REGIONS, COUNTRY_SEARCH_WORDS, COUNTRY_SOURCES, type CatalogCountry } from '@/generated/countries';
 import type { ProviderKey } from '@/generated/providers';
+import { limeGridGroups, type LimeMapGrid } from '@/lib/limeGrid';
 import { searchText, searchWords } from '@/lib/searchText';
 import type { SeasonalPause } from '@/lib/seasonalPauses';
 import type { MapBounds } from '@/lib/types';
@@ -60,6 +61,8 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   limeServiceAreas?: string[];
   /** Local views assigned to this independently refreshed part of the service area. */
   limeMapTiles?: MapBounds[];
+  /** A catalog's Lime market, whose refresh groups are the systems here (limeGrid.ts). */
+  limeMapGrid?: LimeMapGrid;
   limeAppRegion?: string;
   /**
    * BinBin's guest map: the id of its service area in data/binbin-areas.json, which the Node cache
@@ -99,7 +102,7 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
 }
 
 // Reviewed service regions and endpoints, never an unvalidated runtime registry download.
-export const REGIONAL_SCOOTER_SYSTEMS = CATALOG_SYSTEMS as RegionalScooterSystem[];
+export const REGIONAL_SCOOTER_SYSTEMS = (CATALOG_SYSTEMS as RegionalScooterSystem[]).flatMap(limeGridGroups);
 
 export function isAppMapSystem(system: RegionalScooterSystem) {
   return Boolean(system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount || system.luupAppCities ||

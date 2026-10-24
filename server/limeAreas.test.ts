@@ -25,7 +25,8 @@ describe('Lime publisher service outlines', () => {
       expect(tiles.some(tile => boundsContainPoint(tile, lat, lng))).toBe(true);
     }
     expect(tiles.some(tile => boundsContainPoint(tile, .05, .05))).toBe(false);
-    expect(tiles.every(tile => (tile.north - tile.south) * 111_320 <= 1500.00001)).toBe(true);
-    expect(tiles.every(tile => (tile.east - tile.west) * 111_320 <= 1500.00001)).toBe(true);
+    // To a hundred-millionth of a degree, a millimetre.
+    expect(tiles.every(tile => (tile.north - tile.south) * 111_320 <= 1500.002)).toBe(true);
+    expect(tiles.every(tile => (tile.east - tile.west) * 111_320 <= 1500.002)).toBe(true);
   });
 });

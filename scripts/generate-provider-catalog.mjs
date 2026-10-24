@@ -1,7 +1,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
+import { transform } from 'esbuild';
 import {
-  binbinAreasProblem, catalogSystems, curfewZoneProblem, scooterCities, swiftCityFeeds, swiftCityPauses, swiftCountries, townOutlinesProblem,
+  binbinAreasProblem, catalogSystems, coverageAreas, curfewZoneProblem, scooterCities, swiftCityFeeds, swiftCityPauses, swiftCountries, townOutlinesProblem,
   typescriptCatalogs, typescriptCountries, validateCountries,
 } from './country-catalog.mjs';
 
@@ -12,13 +13,21 @@ const swiftPath = resolve(root, 'ios/ScootRadar/Models/ProviderCatalog.generated
 const checkOnly = process.argv.includes('--check');
 
 const readJson = path => JSON.parse(readFileSync(resolve(root, path), 'utf8'));
+// A catalog's Lime market is one entry there, and a system for each of its refresh groups
+// everywhere else, as src/lib/regionalScooterSystems.ts reads it.
+const { code: limeGrid } = await transform(readFileSync(resolve(root, 'src/lib/limeGrid.ts'), 'utf8'), { loader: 'ts', format: 'esm' });
+const { limeGridGroups } = await import(`data:text/javascript;base64,${Buffer.from(limeGrid).toString('base64')}`);
+const readCatalog = path => {
+  const catalog = readJson(path);
+  return { ...catalog, systems: catalog.systems.flatMap(limeGridGroups) };
+};
 const providers = JSON.parse(readFileSync(sourcePath, 'utf8'));
 const swissAreas = readJson('data/swiss-scooter-areas.json');
 const countriesPath = resolve(root, 'src/generated/countries.ts');
 const catalogsPath = resolve(root, 'src/generated/countryCatalogs.ts');
 const { landingFirst, countries } = readJson('data/countries.json');
 // Every catalog's systems, in the order of data/countries.json, each with its country.
-const regionalSystems = catalogSystems(countries, readJson);
+const regionalSystems = catalogSystems(countries, readCatalog);
 const curfews = readJson('data/rental-curfews.json').curfews;
 
 function validateCatalog() {
@@ -227,7 +236,7 @@ ${swissAreas.map(area => `        ${swiftBounds(area.bounds)},`).join('\n')}
     // A statement an area, as ScooterCityCatalog's cities: one literal of them all is costly to type-check.
     private static func makeRegionalSystems() -> [(ScooterProvider, GeoBounds)] {
         var systems: [(ScooterProvider, GeoBounds)] = []
-${regionalSystems.flatMap(system => (system.areas ?? [system]).map(area => `        systems.append((.${system.provider}, ${swiftBounds(area.bounds)}))`)).join('\n')}
+${coverageAreas(regionalSystems).map(area => `        systems.append((.${area.provider}, ${swiftBounds(area.bounds)}))`).join('\n')}
         return systems
     }
 
@@ -402,7 +411,7 @@ ${areas.join('\n')}
 }
 
 validateCatalog();
-validateCountries({ landingFirst, countries }, readJson, scooterCities(swissAreas, regionalSystems, countries));
+validateCountries({ landingFirst, countries }, readCatalog, scooterCities(swissAreas, regionalSystems, countries));
 // Read by src/lib/townOutlines.ts as it is; the apps have no copy.
 const outlineProblem = townOutlinesProblem(readJson('data/town-outlines.json'), scooterCities(swissAreas, regionalSystems, countries));
 if (outlineProblem) throw new Error(outlineProblem);

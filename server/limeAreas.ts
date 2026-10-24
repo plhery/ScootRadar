@@ -1,10 +1,11 @@
 import { boundsContainPoint, polygonContainsPoint } from '../src/lib/geo';
+import { limeGridCell, limeGridRuns, limeGridTiles, type LimeMapGrid } from '../src/lib/limeGrid';
 import type { MapBounds } from '../src/lib/types';
 
 export const LIME_MAP_PROTOCOL = 'whole-service-local-nearest-v1';
 export const LIME_QUERY_INTERVAL_MS = 5_000;
 export const LIME_IDLE_INTERVAL_MS = 60 * 60_000;
-export const LIME_TILE_GROUP_SIZE = 4;
+export { LIME_TILE_GROUP_SIZE, limeGridGroups } from '../src/lib/limeGrid';
 
 export type LimeArea = [number, number][];
 export function decodeLimeArea(encoded: string): LimeArea {
@@ -58,18 +59,18 @@ export function limeAreaMeetsBox(area: LimeArea, box: MapBounds) {
 }
 
 /** Wide, uncapped map requests still omit vehicles. Every service polygon needs local views. */
-export function limeAreaTiles(areas: LimeArea[], sideM = 1500): MapBounds[] {
+export function limeAreaGrid(areas: LimeArea[], sideM = 1500): LimeMapGrid {
   const bounds = limeAreaBounds(areas);
   const latStep = sideM / 111_320;
   const lngStep = latStep / Math.max(Math.cos(bounds.south * Math.PI / 180), Math.cos(bounds.north * Math.PI / 180));
   const rows = Math.max(1, Math.ceil((bounds.north - bounds.south) / latStep));
   const columns = Math.max(1, Math.ceil((bounds.east - bounds.west) / lngStep));
   if (rows * columns > 20_000) throw new Error('Lime service area is too large for local map collection');
-  const tiles: MapBounds[] = [];
+  const grid = { south: bounds.south, west: bounds.west, north: bounds.north, east: bounds.east, latStep, lngStep, cells: '' };
+  const cells: number[] = [];
   for (let row = 0; row < rows; row++) for (let column = 0; column < columns; column++) {
-    const box = { south: bounds.south + row * latStep, north: Math.min(bounds.north, bounds.south + (row + 1) * latStep),
-      west: bounds.west + column * lngStep, east: Math.min(bounds.east, bounds.west + (column + 1) * lngStep) };
-    if (areas.some(area => limeAreaMeetsBox(area, box))) tiles.push(box);
+    if (areas.some(area => limeAreaMeetsBox(area, limeGridCell(grid, row, column)))) cells.push(row * columns + column);
   }
-  return tiles;
+  return { ...grid, cells: limeGridRuns(cells) };
 }
+export const limeAreaTiles = (areas: LimeArea[], sideM = 1500): MapBounds[] => limeGridTiles(limeAreaGrid(areas, sideM));

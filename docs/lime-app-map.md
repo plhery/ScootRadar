@@ -80,9 +80,15 @@ keeps the city centre already registered by the other operators. City coordinate
 
 ## Cache behaviour
 
-`npm run generate:providers` builds groups of at most four local cells from
-these outlines, then generates the web and iOS catalogs. The same command
-preserves public GBFS systems already in a country catalog.
+`npm run generate:providers` lays the local cells over these outlines, then
+generates the web and iOS catalogs. The same command preserves public GBFS
+systems already in a country catalog. A country catalog keeps one entry per
+market, its `limeMapGrid`: the grid's corner, its steps, and the cells that meet
+a polygon as runs of their indexes (`src/lib/limeGrid.ts`). The site, the cache
+and the generators expand it into groups of at most four cells,
+`lime_cz_app_ceske_budejovice_000` and on, and the iOS catalog joins a row's
+neighbouring cells into one coverage rectangle. Written out cell by cell, each
+group added more than a kilobyte to the scripts every map page loads.
 `npm run check:providers` checks both generated outputs and requires a successful
 full-area audit matching the registered polygons, tile groups and query strategy.
 The verified warm query plan, including parent views, must also fit the

@@ -1,7 +1,8 @@
 import { expect, it } from 'vitest';
 import { limeAppCatalogs, limeAuditFingerprint } from './lime-app-catalog.mjs';
-import { decodeLimeArea, limeAreaTiles, LIME_TILE_GROUP_SIZE } from '../server/limeAreas';
+import { decodeLimeArea, limeAreaGrid, limeAreaTiles } from '../server/limeAreas';
 import { boundsContainPoint } from '../src/lib/geo';
+import { limeGridGroups } from '../src/lib/limeGrid';
 import { serviceAreas } from '../src/lib/regionalScooterSystems';
 
 it('partitions the complete service grid into bounded groups and preserves public feeds and their provenance', () => {
@@ -11,13 +12,16 @@ it('partitions the complete service grid into bounded groups and preserves publi
   const market = { country: 'RO', city: 'Deva', center: [.015, .015], timeZone: 'Europe/Bucharest', regionToken: 'region',
     serviceAreas: [{ polygon: '???ozDozD??nzDnzD?' }], sourceDocuments: ['https://assets.lime.bike/zones_attributes/example.json'] };
   const result = limeAppCatalogs({ verifiedOn: '2026-10-24', markets: [market] },
-    [{ code: 'RO', catalog: 'ro.json' }], () => previous, { decodeLimeArea, limeAreaTiles, LIME_TILE_GROUP_SIZE }).get('ro.json');
+    [{ code: 'RO', catalog: 'ro.json' }], () => previous, { decodeLimeArea, limeAreaGrid }).get('ro.json');
   expect(result.catalogSource).toBe(previous.catalogSource);
   expect(result.serviceAreaSources).toEqual(previous.serviceAreaSources);
   expect(result.verifiedOn).toBe('2026-10-25');
   expect(result.systems[0]).toBe(publicFeed);
   expect(result.systems.some(s => s.id === 'old-app-group')).toBe(false);
-  const app = result.systems.filter(s => s.limeAppMap);
+  // The market is one entry, as compact as its grid; its refresh groups are made from it.
+  expect(result.systems.filter(s => s.limeAppMap).map(s => s.id)).toEqual(['lime_ro_app_deva']);
+  const app = result.systems.filter(s => s.limeAppMap).flatMap(limeGridGroups);
+  expect(app.map(s => s.id)).toEqual(app.map((_, i) => `lime_ro_app_deva_${String(i).padStart(3, '0')}`));
   expect(app.every(s => s.limeMapTiles.length <= 4 && s.limeMapTiles.length > 0)).toBe(true);
   const tiles = app.flatMap(s => s.limeMapTiles);
   const expected = limeAreaTiles([decodeLimeArea(market.serviceAreas[0].polygon)]);

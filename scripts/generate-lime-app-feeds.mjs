@@ -22,7 +22,7 @@ if (process.argv.includes('--check')) {
   const audit = read('data/lime-app-audit.json');
   for (const market of source.markets) {
     const country = read('data/countries.json').countries.find(c => c.code === market.country);
-    const systems = read(country.catalog).systems.filter(s => s.limeAppRegion === market.regionToken);
+    const systems = read(country.catalog).systems.filter(s => s.limeAppRegion === market.regionToken).flatMap(geometry.limeGridGroups);
     const cells = systems.reduce((count, system) => count + system.limeMapTiles.length, 0);
     const verified = audit.markets.find(row => row.regionToken === market.regionToken && row.country === market.country);
     if (!verified || verified.fingerprint !== limeAuditFingerprint(geometry.LIME_MAP_PROTOCOL, market, systems) ||
