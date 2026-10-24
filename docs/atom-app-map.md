@@ -214,3 +214,6 @@ overlap deduplication, partial-sweep rejection, account selection, credential
 renewal and replacement, rate-limit backoff, response limits and sanitized
 errors. Additional ATOM brands need their own verified app/account session,
 coverage audit and provider entry before using the same adapter.
+
+The [other ATOM operator app investigation](atom-operator-apps.md) records
+eight more verified apps, their market leads and guest-access results.
