@@ -5,6 +5,14 @@ country's guide has the evidence and the details; this page lists every gap in
 one place. Started 12 October 2026. Add to it when an audit leaves something
 out, and remove an entry once it's added or settled for good.
 
+## Lime operating areas added on 24 October 2026
+
+The authenticated Lime adapter covers the complete published operating
+polygons in Deva, České Budějovice, Querétaro, Naha, Doha, Santiago and Brisbane,
+including their disconnected service areas. The adapter adds Lime coverage in Romania,
+Czechia, Mexico, Japan, Qatar, Chile and Australia; other Lime markets remain
+gaps. See [the collection and validation evidence](lime-app-map.md).
+
 ## Found, not added yet
 
 These feeds are public and were live when checked. Nothing blocks them except
@@ -669,11 +677,11 @@ a licence. Neither is published by its operator:
 | --- | --- |
 
 | Netherlands | No shared standing scooters: the national data hub (CROW) lists 27,000 shared vehicles and no scooter. They need type approval and, since July 2025, a plate. Check and Felyx run mopeds, and 7 Felyx feeds answer 410 |
-| Denmark | Lime (Copenhagen, Odense) and Voi publish no feed; Dott lists e-bikes only. Hopp Roskilde held 1 disabled scooter on 13 October 2026 |
-| Czechia | Prague banned shared scooters from 1 January 2026; Golemio's feed needs a token. Bolt reportedly left the other towns |
+| Denmark | Voi’s authenticated map now supplies Aarhus, Odense and Aalborg. Lime Copenhagen and Odense remain outside the enabled rider-map markets; Hopp Roskilde held 1 disabled scooter on 13 October 2026 |
+| Czechia | Lime České Budějovice is now mapped through its full operating polygons. Other markets remain gaps. Prague banned shared scooters from 1 January 2026; Golemio's feed needs a token. Bolt reportedly left the other towns |
 | Ireland | Bolt's Wexford trial (2024) publishes nothing; Moby and Bleeper are bikes. Public funding for scooter schemes was paused in July 2026. The registry files Beryl Belfast under Ireland; it is in the United Kingdom and lists no scooter |
 | Estonia, Lithuania | Bolt and Ride Mobility publish no feed |
-| Slovakia, Bulgaria, Romania, Moldova | Dott and Bolt publish no feed; nothing else found. Romania's PBSC bike-share feeds list a scooter type with no scooters. Hopp's `ro-bucharest` feed answers but held no scooter at night or in 7 polls from 08:30 to 09:30 on Sunday 18 October 2026, and Hopp's site no longer lists Bucharest; check it again in April 2027. (Slovenia: see above) |
+| Slovakia, Bulgaria, Moldova | Dott and Bolt publish no feed; nothing else found. Lime Deva is now covered in Romania; Romania's other markets remain gaps. Its PBSC bike-share feeds list a scooter type with no scooters. Hopp's `ro-bucharest` feed answers but held no scooter at night or in 7 polls from 08:30 to 09:30 on Sunday 18 October 2026, and Hopp's site no longer lists Bucharest; check it again in April 2027. (Slovenia: see above) |
 | Serbia | Belgrade suspended its call for 2,000 scooters on 15 July 2026, a day after opening it; check again in January 2027 |
 | Turkey | No public GBFS found, but **BinBin's app guest map works**, verified in Istanbul, Antalya and Eskişehir on 24 October 2026; its truncated local selections cannot yet supply complete city totals. Martı's native map requires a stored rider token, and its map and public configuration requests both received HTML 403 from the Mac and Netcup. Hop's actual app host is `api.hoplagit.com`: configuration works, but the nearby-scooters route returns JSON 403 without a rider session; no guest flow verified. See [routes, provenance and remaining work](turkish-app-maps.md). U-NET is not public, and Istanbul's, İzmir's and Konya's open-data portals hold static parking and routes only; AAR Bike Konya is bicycles |
 | Malta | Rental scooters banned since March 2024 |

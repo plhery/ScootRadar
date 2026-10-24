@@ -672,14 +672,23 @@
         "jp:Kyoto",
         "jp:Nagoya",
         "jp:Yokohama",
-        "jp:Fukuoka"
+        "jp:Fukuoka",
+        "jp:Naha"
       ],
       "credits": {
-        "attribution": "Japan: LUUP authenticated rider map, standing scooters counted at their ports",
+        "attribution": "Japan: LUUP authenticated rider map, standing scooters counted at their ports; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
         "links": [
           {
             "label": "JP: LUUP map",
             "href": "https://luup.sc/"
+          },
+          {
+            "label": "JP: Lime map",
+            "href": "https://www.li.me/"
+          },
+          {
+            "label": "JP: GeoNames · CC BY 4.0",
+            "href": "https://www.geonames.org/about.html"
           }
         ]
       }
@@ -764,7 +773,7 @@
         -70.67
       ],
       "credits": {
-        "attribution": "Chile: JET signed-out Go Jet app map; Whoosh authenticated rider map",
+        "attribution": "Chile: JET signed-out Go Jet app map; Whoosh authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
         "links": [
           {
             "label": "CL: JET map",
@@ -773,6 +782,14 @@
           {
             "label": "CL: Whoosh map",
             "href": "https://whoosh.bike/"
+          },
+          {
+            "label": "CL: Lime map",
+            "href": "https://www.li.me/"
+          },
+          {
+            "label": "CL: GeoNames · CC BY 4.0",
+            "href": "https://www.geonames.org/about.html"
           }
         ]
       },
@@ -813,7 +830,7 @@
         -102.5
       ],
       "credits": {
-        "attribution": "Mexico: JET signed-out Go Jet app map; Whoosh authenticated rider map",
+        "attribution": "Mexico: JET signed-out Go Jet app map; Whoosh authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
         "links": [
           {
             "label": "MX: JET map",
@@ -822,13 +839,22 @@
           {
             "label": "MX: Whoosh map",
             "href": "https://whoosh.bike/"
+          },
+          {
+            "label": "MX: Lime map",
+            "href": "https://www.li.me/"
+          },
+          {
+            "label": "MX: GeoNames · CC BY 4.0",
+            "href": "https://www.geonames.org/about.html"
           }
         ]
       },
       "featuredCities": [
         "mx:Monterrey",
         "mx:Ciudad de México",
-        "mx:Zapopan"
+        "mx:Zapopan",
+        "mx:Querétaro"
       ]
     },
     {
@@ -1092,6 +1118,187 @@
           {
             "label": "ZA: Zippy rider map",
             "href": "https://zippyride.app.link/"
+          }
+        ]
+      }
+    },
+    {
+      "code": "RO",
+      "continent": "europe",
+      "catalog": "data/romanian-scooter-feeds.json",
+      "source": "romania",
+      "names": {
+        "en": "Romania",
+        "de": "Rumänien",
+        "fr": "Roumanie",
+        "it": "Romania",
+        "nl": "Roemenië",
+        "nb": "Romania",
+        "pt": "Romênia",
+        "es": "Rumanía",
+        "is": "Rúmenía"
+      },
+      "searchWords": [
+        "romania",
+        "rumanien",
+        "roumanie",
+        "roemenie",
+        "romenia",
+        "rumania",
+        "rumenia"
+      ],
+      "anchor": [
+        45.9,
+        24.9
+      ],
+      "featuredCities": [
+        "ro:Deva"
+      ],
+      "credits": {
+        "attribution": "Romania: Lime authenticated rider map; city centres from GeoNames",
+        "links": [
+          {
+            "label": "RO: Lime map",
+            "href": "https://www.li.me/"
+          },
+          {
+            "label": "RO: GeoNames · CC BY 4.0",
+            "href": "https://www.geonames.org/about.html"
+          }
+        ]
+      }
+    },
+    {
+      "code": "CZ",
+      "continent": "europe",
+      "catalog": "data/czech-scooter-feeds.json",
+      "source": "czechia",
+      "names": {
+        "en": "Czechia",
+        "de": "Tschechien",
+        "fr": "Tchéquie",
+        "it": "Cechia",
+        "nl": "Tsjechië",
+        "nb": "Tsjekkia",
+        "pt": "Chéquia",
+        "es": "Chequia",
+        "is": "Tékkland"
+      },
+      "searchWords": [
+        "czechia",
+        "czech republic",
+        "tschechien",
+        "tchequie",
+        "cechia",
+        "tsjechie",
+        "tsjekkia",
+        "chequia",
+        "tekkland",
+        "cesko"
+      ],
+      "anchor": [
+        49.8,
+        15.5
+      ],
+      "featuredCities": [
+        "cz:České Budějovice"
+      ],
+      "credits": {
+        "attribution": "Czechia: Lime authenticated rider map; city centres from GeoNames",
+        "links": [
+          {
+            "label": "CZ: Lime map",
+            "href": "https://www.li.me/"
+          },
+          {
+            "label": "CZ: GeoNames · CC BY 4.0",
+            "href": "https://www.geonames.org/about.html"
+          }
+        ]
+      }
+    },
+    {
+      "code": "QA",
+      "continent": "asia",
+      "catalog": "data/qatari-scooter-feeds.json",
+      "source": "qatar",
+      "names": {
+        "en": "Qatar",
+        "de": "Katar",
+        "fr": "Qatar",
+        "it": "Qatar",
+        "nl": "Qatar",
+        "nb": "Qatar",
+        "pt": "Catar",
+        "es": "Catar",
+        "is": "Katar"
+      },
+      "searchWords": [
+        "qatar",
+        "katar",
+        "catar",
+        "قطر"
+      ],
+      "anchor": [
+        25.3,
+        51.2
+      ],
+      "featuredCities": [
+        "qa:Doha"
+      ],
+      "credits": {
+        "attribution": "Qatar: Lime authenticated rider map; city centres from GeoNames",
+        "links": [
+          {
+            "label": "QA: Lime map",
+            "href": "https://www.li.me/"
+          },
+          {
+            "label": "QA: GeoNames · CC BY 4.0",
+            "href": "https://www.geonames.org/about.html"
+          }
+        ]
+      }
+    },
+    {
+      "code": "AU",
+      "continent": "oceania",
+      "catalog": "data/australian-scooter-feeds.json",
+      "source": "australia",
+      "names": {
+        "en": "Australia",
+        "de": "Australien",
+        "fr": "Australie",
+        "it": "Australia",
+        "nl": "Australië",
+        "nb": "Australia",
+        "pt": "Austrália",
+        "es": "Australia",
+        "is": "Ástralía"
+      },
+      "searchWords": [
+        "australia",
+        "australien",
+        "australie",
+        "astralia"
+      ],
+      "anchor": [
+        -25,
+        134
+      ],
+      "featuredCities": [
+        "au:Brisbane"
+      ],
+      "credits": {
+        "attribution": "Australia: Lime authenticated rider map; city centres from GeoNames",
+        "links": [
+          {
+            "label": "AU: Lime map",
+            "href": "https://www.li.me/"
+          },
+          {
+            "label": "AU: GeoNames · CC BY 4.0",
+            "href": "https://www.geonames.org/about.html"
           }
         ]
       }

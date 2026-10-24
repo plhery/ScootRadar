@@ -21,7 +21,8 @@
    true`, and each scooter its station status counts is shown at its station.
 2. Add one entry to `data/countries.json`:
    - `code`, `continent` (`europe`, `north-america`, Central America and the
-     Caribbean included, `asia`, the Middle East included, or `oceania`),
+     Caribbean included, `asia`, the Middle East included, `oceania`, or
+     `south-america`),
      `catalog` and `source`, the key of its feeds in the API's `meta.sources`;
    - `names` in the nine languages of the apps, and the `searchWords` that,
      typed after a city, say which country is meant: written as the search
@@ -90,3 +91,9 @@
 A new provider still needs its entry in `data/providers.json` and its link
 policy in `src/lib/rentalLinks.ts` and the iOS `ScooterRentalLinkPolicy`; a
 night ban goes in `data/rental-curfews.json`.
+
+Lime rider-map catalogs are generated from reviewed publisher service polygons
+in `data/lime-app-regions.json`. Add markets there and retain their source
+documents; `npm run generate:providers` creates the complete local tile groups
+and preserves any public GBFS systems in those catalogs. See
+[Lime collection](lime-app-map.md) before registering new groups.

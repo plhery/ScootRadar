@@ -1,0 +1,147 @@
+{
+  "verifiedOn": "2026-10-24",
+  "clientVersion": "3.286.0",
+  "protocol": "whole-service-local-nearest-v1",
+  "queryIntervalMs": 5000,
+  "idleIntervalMs": 3600000,
+  "note": "Live inventory snapshots collected at different times. Counts change; these measurements verify the complete local query grids and request budget.",
+  "markets": [
+    {
+      "country": "RO",
+      "city": "Deva",
+      "regionToken": "E7CO5RS5CDCVW",
+      "fingerprint": "314ca4935d02eb7a3d990570681d4815a7bd589fd3e1b347b29ce01b93ca9e21",
+      "groups": 2,
+      "localCells": 5,
+      "coldMapRequests": 5,
+      "warmMapRequests": 5,
+      "scooters": 126,
+      "stationaryReferences": 110,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-24T14:38:34.297Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Deva_250_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CZ",
+      "city": "České Budějovice",
+      "regionToken": "N7I62XA6DMPA7",
+      "fingerprint": "121f2773099c8cafe310c8e8bb61fc046b889967416f525140f224a057c4fb14",
+      "groups": 4,
+      "localCells": 13,
+      "coldMapRequests": 13,
+      "warmMapRequests": 13,
+      "scooters": 344,
+      "stationaryReferences": 198,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-24T14:39:49.521Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Ceske_Budejovice_108_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "MX",
+      "city": "Querétaro",
+      "regionToken": "ZNW45XILOWWZ4",
+      "fingerprint": "5a9239a69c8b3223a3e42865ebec6f497eeca5c0c1178cfdc6725913e13ca8dc",
+      "groups": 4,
+      "localCells": 16,
+      "coldMapRequests": 20,
+      "warmMapRequests": 20,
+      "scooters": 579,
+      "stationaryReferences": 199,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-24T14:41:39.306Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Queretaro_158_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "JP",
+      "city": "Naha",
+      "regionToken": "N67TS4UDQBFZG",
+      "fingerprint": "9413e5d2198ddc9795160e9e0647252ba9f5f61717b0497164a20a78401586d3",
+      "groups": 6,
+      "localCells": 22,
+      "coldMapRequests": 22,
+      "warmMapRequests": 22,
+      "scooters": 234,
+      "stationaryReferences": 186,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-24T14:43:39.265Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Naha_188_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "QA",
+      "city": "Doha",
+      "regionToken": "44PQ275VZZH56",
+      "fingerprint": "f761b7051f10055746c1ad0d8bd13170b0101229e6e779d8a0722f140b2a5c22",
+      "groups": 32,
+      "localCells": 126,
+      "coldMapRequests": 126,
+      "warmMapRequests": 126,
+      "scooters": 325,
+      "stationaryReferences": 25,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-24T14:54:19.143Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Doha_113_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CL",
+      "city": "Santiago",
+      "regionToken": "WT2NYSACDT47J",
+      "fingerprint": "fb771b172219fdfa4d0b1366d828a716cd10901051a57467de7a81fe2fa896af",
+      "groups": 25,
+      "localCells": 97,
+      "coldMapRequests": 113,
+      "warmMapRequests": 113,
+      "scooters": 2656,
+      "stationaryReferences": 188,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-24T15:03:54.606Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Santiago_379_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "AU",
+      "city": "Brisbane",
+      "regionToken": "GDXLUXEILIOHF",
+      "fingerprint": "22863d369bdc7bd6ecbd86c2e676e042a950c513b1fbea5ff8aa104dca58bce8",
+      "groups": 20,
+      "localCells": 77,
+      "coldMapRequests": 117,
+      "warmMapRequests": 117,
+      "scooters": 3146,
+      "stationaryReferences": 185,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-24T15:38:06.378Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Brisbane_2639_exclude_new_type.json"
+      ]
+    }
+  ],
+  "performanceSample": {
+    "system": "lime_au_app_brisbane_007",
+    "finishedAt": "2026-10-24T15:41:48.246Z",
+    "rows": [
+      {
+        "mode": "cold",
+        "requests": 16,
+        "seconds": 76,
+        "scooters": 766
+      },
+      {
+        "mode": "warm",
+        "requests": 16,
+        "seconds": 80,
+        "scooters": 767
+      }
+    ]
+  }
+}

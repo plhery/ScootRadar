@@ -4,6 +4,11 @@ ScootRadar does not own the mobility, address, or map data it displays.
 
 ## Mobility data
 
+Lime's authenticated rider map now supplements public feeds in the complete
+operating areas recorded in [the Lime catalog](docs/lime-app-map.md). Local
+views cover every recorded service polygon; the cache keeps credentials
+private, limits requests, and refreshes viewed groups independently.
+
 The main source is the [Open data platform mobility Switzerland shared
 mobility dataset](https://data.opentransportdata.swiss/en/dataset/sharedmobility),
 published by the Swiss Federal Office of Energy. Its terms permit processing,

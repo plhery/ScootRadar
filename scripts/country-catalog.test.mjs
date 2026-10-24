@@ -72,13 +72,13 @@ function generate(data, readCatalog = read) {
 describe('the countries of data/countries.json', () => {
   it('turns one more entry and its catalog into a covered country on the web and on iOS', () => {
     const { typescript, catalogs, swift } = generate({ ...europe, countries: [...europe.countries, canada] });
-    expect(typescript).toMatch(/export const COUNTRY_CODES = \[.*"UA", "BY", "CA"\] as const;/);
-    expect(typescript).toMatch(/export type CatalogCountry = .*'UA' \| 'BY' \| 'CA';/);
+    expect(typescript).toMatch(/export const COUNTRY_CODES = \[.*"CA"\] as const;/);
+    expect(typescript).toMatch(/export type CatalogCountry = .*'CA';/);
     expect(typescript).toContain("  CA: 'canada',\n} as const;");
     expect(typescript).toContain('  // In Ontario, between Toronto and Winnipeg.\n  CA: [50, -85],');
     expect(typescript).toContain('  CA: { en: "Canada", de: "Kanada", fr: "Canada"');
-    expect(typescript).toMatch(/LANDING_COUNTRY_ORDER: readonly CountryCode\[\] = \["CH", "DE", "FR", "IT", .*"UA", "BY", "CA"\];/);
-    expect(typescript).toMatch(/COUNTRY_DATA_ATTRIBUTION = ".*; Ukraine: 3electra GBFS; Belarus: Whoosh authenticated rider map; Canada: Bird, Neuron GBFS";/);
+    expect(typescript).toMatch(/LANDING_COUNTRY_ORDER: readonly CountryCode\[\] = \["CH", "DE", "FR", "IT", .*"CA"\];/);
+    expect(typescript).toMatch(/COUNTRY_DATA_ATTRIBUTION = ".*; Canada: Bird, Neuron GBFS";/);
     expect(catalogs).toContain("import canadianCatalog from '../../data/canadian-scooter-feeds.json';");
     expect(catalogs).toContain("  ...canadianCatalog.systems.map(system => ({ ...system, country: 'CA' as const })),");
     expect(swift).toContain('        // In Ontario, between Toronto and Winnipeg.\n        "ca": (50, -85),');
@@ -92,7 +92,7 @@ describe('the countries of data/countries.json', () => {
       'DE/SE: Qick map',
       'DE/AT/IT/ES/PL/HU/GR/FI: Dott map',
       'DE/AT/IT/NO/GB/DK/SE/FI: Voi map',
-      'CH/FR/PT/ES/PL/FI/UA: OpenStreetMap boundaries · ODbL', 'BY: Whoosh map', 'CA: City of Toronto · OGL Toronto',
+      'CH/FR/PT/ES/PL/FI/UA: OpenStreetMap boundaries · ODbL', 'BY: Whoosh map', 'RO/CZ: Lime map', 'RO/CZ: GeoNames · CC BY 4.0', 'CA: City of Toronto · OGL Toronto',
     ]);
   });
 

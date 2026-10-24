@@ -23,9 +23,12 @@ import { atomMapRequests, withAtomAppCollectors } from './atomApp';
 import { luupMapRequests, withLuupAppCollectors } from './luupApp';
 import { jetMapRequests, withJetAppCollectors } from './jetApp';
 import { whooshMapRequests, withWhooshAppCollectors } from './whooshApp';
+import { LIME_IDLE_INTERVAL_MS, limeMapRequests, withLimeAppCollectors } from './limeApp';
 
-const withAppCollectors = (feeds: CollectableScooterFeed[]) => withWhooshAppCollectors(withJetAppCollectors(withLuupAppCollectors(withAtomAppCollectors(withVoiAppCollectors(
-  withDottAppCollectors(feeds, REGIONAL_SCOOTER_SYSTEMS), REGIONAL_SCOOTER_SYSTEMS), REGIONAL_SCOOTER_SYSTEMS), REGIONAL_SCOOTER_SYSTEMS), REGIONAL_SCOOTER_SYSTEMS), REGIONAL_SCOOTER_SYSTEMS);
+const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
+  withDottAppCollectors, withVoiAppCollectors, withAtomAppCollectors, withLuupAppCollectors,
+  withJetAppCollectors, withWhooshAppCollectors, withLimeAppCollectors,
+].reduce((current, wrap) => wrap(current, REGIONAL_SCOOTER_SYSTEMS), feeds);
 
 initErrorReporting();
 upstreamJsonCache.paceHost('gbfs.api.ridedott.com', 150);
@@ -71,7 +74,8 @@ const scheduler = new FeedScheduler(collect, { ...schedule,
     return record && !record.failed ? record.collectedAt ?? (record.attemptedAt || undefined) : undefined;
   },
   onStart: (_feed, reason) => metrics.recordCollectionStart(reason) });
-const cadence: FeedCadence = { fastSince: (id, now) => scheduler.fastSince(id, now), idleExpiryMs: schedule.idleExpiryMs };
+const cadence: FeedCadence = { fastSince: (id, now) => scheduler.fastSince(id, now), idleExpiryMs: schedule.idleExpiryMs,
+  idleExpiryMsForFeed: id => regionalSystems.get(id)?.limeAppMap ? LIME_IDLE_INTERVAL_MS + 10 * 60_000 : undefined };
 // A scooter a feed puts far away for a while, as 3electra puts Kyiv's in Lima, keeps its last place
 // for ten minutes, or until the feed's next collection when that is later.
 const holdStrays = createStrayHold((id, now) => scheduler.fastSince(id, now) === undefined
@@ -80,8 +84,8 @@ const holdStrays = createStrayHold((id, now) => scheduler.fastSince(id, now) ===
 const countedAt = (now: number) => (feed: FeedSnapshot) => feedState(feed, now, cadence) !== 'expired';
 const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
   cadenceModes: now => scheduler.modes(now), upstreamRequests: () => ({
-    status: upstreamJsonCache.requests.status + dottMapRequests.status + voiMapRequests.status + atomMapRequests.status + luupMapRequests.status + jetMapRequests.status + whooshMapRequests.status,
-    metadata: upstreamJsonCache.requests.metadata + voiMapRequests.metadata + atomMapRequests.metadata + luupMapRequests.metadata + whooshMapRequests.metadata,
+    status: upstreamJsonCache.requests.status + dottMapRequests.status + voiMapRequests.status + atomMapRequests.status + luupMapRequests.status + jetMapRequests.status + whooshMapRequests.status + limeMapRequests.status,
+    metadata: upstreamJsonCache.requests.metadata + voiMapRequests.metadata + atomMapRequests.metadata + luupMapRequests.metadata + whooshMapRequests.metadata + limeMapRequests.metadata,
   }),
   planRefreshes: () => planRefreshCounts,
   upstreamCache: () => ({ entries: upstreamJsonCache.size, capacity: upstreamJsonCache.capacity,

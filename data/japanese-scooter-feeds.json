@@ -440,6 +440,292 @@
       "luupAppCities": [
         "okazaki"
       ]
+    },
+    {
+      "id": "lime_jp_app_naha_000",
+      "provider": "lime",
+      "city": "Naha",
+      "center": [
+        26.213,
+        127.67851
+      ],
+      "aliases": [
+        "那覇",
+        "那覇市"
+      ],
+      "bounds": {
+        "south": 26.18862,
+        "north": 26.20209467,
+        "west": 127.6583,
+        "east": 127.71836453
+      },
+      "timeZone": "Asia/Tokyo",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "N67TS4UDQBFZG",
+      "limeMapTiles": [
+        {
+          "south": 26.18862,
+          "north": 26.20209467,
+          "west": 127.6583,
+          "east": 127.67331613
+        },
+        {
+          "south": 26.18862,
+          "north": 26.20209467,
+          "west": 127.67331613,
+          "east": 127.68833227
+        },
+        {
+          "south": 26.18862,
+          "north": 26.20209467,
+          "west": 127.68833227,
+          "east": 127.7033484
+        },
+        {
+          "south": 26.18862,
+          "north": 26.20209467,
+          "west": 127.7033484,
+          "east": 127.71836453
+        }
+      ]
+    },
+    {
+      "id": "lime_jp_app_naha_001",
+      "provider": "lime",
+      "city": "Naha",
+      "center": [
+        26.213,
+        127.67851
+      ],
+      "aliases": [
+        "那覇",
+        "那覇市"
+      ],
+      "bounds": {
+        "south": 26.18862,
+        "north": 26.21556934,
+        "west": 127.6583,
+        "east": 127.73307
+      },
+      "timeZone": "Asia/Tokyo",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "N67TS4UDQBFZG",
+      "limeMapTiles": [
+        {
+          "south": 26.18862,
+          "north": 26.20209467,
+          "west": 127.71836453,
+          "east": 127.73307
+        },
+        {
+          "south": 26.20209467,
+          "north": 26.21556934,
+          "west": 127.6583,
+          "east": 127.67331613
+        },
+        {
+          "south": 26.20209467,
+          "north": 26.21556934,
+          "west": 127.67331613,
+          "east": 127.68833227
+        },
+        {
+          "south": 26.20209467,
+          "north": 26.21556934,
+          "west": 127.68833227,
+          "east": 127.7033484
+        }
+      ]
+    },
+    {
+      "id": "lime_jp_app_naha_002",
+      "provider": "lime",
+      "city": "Naha",
+      "center": [
+        26.213,
+        127.67851
+      ],
+      "aliases": [
+        "那覇",
+        "那覇市"
+      ],
+      "bounds": {
+        "south": 26.20209467,
+        "north": 26.229044,
+        "west": 127.6583,
+        "east": 127.73307
+      },
+      "timeZone": "Asia/Tokyo",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "N67TS4UDQBFZG",
+      "limeMapTiles": [
+        {
+          "south": 26.20209467,
+          "north": 26.21556934,
+          "west": 127.7033484,
+          "east": 127.71836453
+        },
+        {
+          "south": 26.20209467,
+          "north": 26.21556934,
+          "west": 127.71836453,
+          "east": 127.73307
+        },
+        {
+          "south": 26.21556934,
+          "north": 26.229044,
+          "west": 127.6583,
+          "east": 127.67331613
+        },
+        {
+          "south": 26.21556934,
+          "north": 26.229044,
+          "west": 127.67331613,
+          "east": 127.68833227
+        }
+      ]
+    },
+    {
+      "id": "lime_jp_app_naha_003",
+      "provider": "lime",
+      "city": "Naha",
+      "center": [
+        26.213,
+        127.67851
+      ],
+      "aliases": [
+        "那覇",
+        "那覇市"
+      ],
+      "bounds": {
+        "south": 26.21556934,
+        "north": 26.24251867,
+        "west": 127.6583,
+        "east": 127.73307
+      },
+      "timeZone": "Asia/Tokyo",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "N67TS4UDQBFZG",
+      "limeMapTiles": [
+        {
+          "south": 26.21556934,
+          "north": 26.229044,
+          "west": 127.68833227,
+          "east": 127.7033484
+        },
+        {
+          "south": 26.21556934,
+          "north": 26.229044,
+          "west": 127.7033484,
+          "east": 127.71836453
+        },
+        {
+          "south": 26.21556934,
+          "north": 26.229044,
+          "west": 127.71836453,
+          "east": 127.73307
+        },
+        {
+          "south": 26.229044,
+          "north": 26.24251867,
+          "west": 127.6583,
+          "east": 127.67331613
+        }
+      ]
+    },
+    {
+      "id": "lime_jp_app_naha_004",
+      "provider": "lime",
+      "city": "Naha",
+      "center": [
+        26.213,
+        127.67851
+      ],
+      "aliases": [
+        "那覇",
+        "那覇市"
+      ],
+      "bounds": {
+        "south": 26.229044,
+        "north": 26.245,
+        "west": 127.6583,
+        "east": 127.71836453
+      },
+      "timeZone": "Asia/Tokyo",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "N67TS4UDQBFZG",
+      "limeMapTiles": [
+        {
+          "south": 26.229044,
+          "north": 26.24251867,
+          "west": 127.67331613,
+          "east": 127.68833227
+        },
+        {
+          "south": 26.229044,
+          "north": 26.24251867,
+          "west": 127.68833227,
+          "east": 127.7033484
+        },
+        {
+          "south": 26.229044,
+          "north": 26.24251867,
+          "west": 127.7033484,
+          "east": 127.71836453
+        },
+        {
+          "south": 26.24251867,
+          "north": 26.245,
+          "west": 127.6583,
+          "east": 127.67331613
+        }
+      ]
+    },
+    {
+      "id": "lime_jp_app_naha_005",
+      "provider": "lime",
+      "city": "Naha",
+      "center": [
+        26.213,
+        127.67851
+      ],
+      "aliases": [
+        "那覇",
+        "那覇市"
+      ],
+      "bounds": {
+        "south": 26.24251867,
+        "north": 26.245,
+        "west": 127.67331613,
+        "east": 127.7033484
+      },
+      "timeZone": "Asia/Tokyo",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "N67TS4UDQBFZG",
+      "limeMapTiles": [
+        {
+          "south": 26.24251867,
+          "north": 26.245,
+          "west": 127.67331613,
+          "east": 127.68833227
+        },
+        {
+          "south": 26.24251867,
+          "north": 26.245,
+          "west": 127.68833227,
+          "east": 127.7033484
+        }
+      ]
     }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Naha_188_exclude_new_type.json"
   ]
 }

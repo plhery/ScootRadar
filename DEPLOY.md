@@ -34,6 +34,14 @@ The cache also reads `METRICS_TOKEN` (at least 32 characters in production), whi
 opens `/metrics` to Prometheus, and `SENTRY_DSN`, which turns on Sentry. Both are
 optional Coolify secrets; see [docs/OBSERVABILITY.md](docs/OBSERVABILITY.md).
 
+The authenticated rider adapters use private files beside the snapshot:
+`voi-session.json` and `lime-session.json` by default, overridden with
+`VOI_SESSION_PATH` and `LIME_SESSION_PATH`. They must be owned by the cache
+user with mode `0600`. Seed them over stdin into the existing persistent
+volume, never in Git, command arguments or Worker variables. Token rotation
+is saved atomically under that volume. See [Voi](docs/voi-app-map.md) and
+[Lime](docs/lime-app-map.md) for the file schemas and renewal requirements.
+
 ## Validate locally
 
 ```bash

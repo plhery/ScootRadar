@@ -200,3 +200,15 @@ describe('cadence', () => {
     expect(lines).toEqual([]);
   });
 });
+
+it('monitors a quota-limited idle scan at its declared cadence and keeps the active age limit', () => {
+  const minute = 60_000;
+  const now = 1_800_000_000_000;
+  const idle: FeedCadence = { fastSince: () => undefined, idleExpiryMs: 30 * minute,
+    idleExpiryMsForFeed: id => id === 'romania:lime_ro_area' ? 70 * minute : undefined };
+  const lime = feed({ id: 'romania:lime_ro_area', provider: 'lime', observedAt: now, collectedAt: now, attemptedAt: now });
+  expect(feedState(lime, now + 40 * minute, idle)).toBe('ok');
+  expect(feedState(lime, now + 71 * minute, idle)).toBe('expired');
+  expect(feedState(lime, now + 40 * minute, { ...idle, fastSince: () => now })).toBe('expired');
+  expect(feedState({ ...lime, id: 'germany:public' }, now + 31 * minute, idle)).toBe('expired');
+});

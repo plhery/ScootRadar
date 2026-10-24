@@ -1,0 +1,218 @@
+{
+  "verifiedOn": "2026-10-24",
+  "clientVersion": "3.286.0",
+  "source": "https://web-production.lime.bike/api/rider/v2/map/static_elements",
+  "markets": [
+    {
+      "country": "RO",
+      "city": "Deva",
+      "center": [
+        45.88333,
+        22.9
+      ],
+      "timeZone": "Europe/Bucharest",
+      "regionToken": "E7CO5RS5CDCVW",
+      "serviceAreas": [
+        {
+          "name": "[Deva][SZ][Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "qhbwGqlwjCvUqJxOvc@|t@oc@xUzG~b@{G~l@yJdXuIgWyd@oL{G{Yw}@|[mTlAyFiC{DciA|u@ef@|b@mUpU_q@zToFvDhFhd@??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Deva_250_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CZ",
+      "city": "České Budějovice",
+      "center": [
+        48.97447,
+        14.47434
+      ],
+      "timeZone": "Europe/Prague",
+      "regionToken": "N7I62XA6DMPA7",
+      "serviceAreas": [
+        {
+          "name": "[Prague][SZ][Ceske Budejovice_28_2_2024][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "w|_jHo_gwAap@p[pCpi@pq@xAfWxdAny@oHrDwk@hYke@vBe_AQaUps@TjAgHbb@rEzUtIne@cGH_Xw|@eYsD_R}FgO@@so@co@Hmd@jIss@}W_Vgc@iW_a@bxAkDrb@iZhPoa@s[sM_b@sIxAa@fZrApOte@``@fH~Zmi@dG\\xUdM`W|Ad`A"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Ceske_Budejovice_108_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Budweis"
+      ]
+    },
+    {
+      "country": "MX",
+      "city": "Querétaro",
+      "center": [
+        20.58806,
+        -100.38806
+      ],
+      "timeZone": "America/Mexico_City",
+      "regionToken": "ZNW45XILOWWZ4",
+      "serviceAreas": [
+        {
+          "name": "[Queretaro][SZ Queretaro][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "iou|Bhi{cR|q@oNrb@mb@sLsJrOaHnPcPmLaIcIyJqIuQwE}PvZaK`VcB{Fke@bMHeHst@zQmHjFWnNAdPf@vChKrBpQnX_V[gCrA{E]}EvJiJnE_ZsB_LfLiHaIaNg`@{Le`@rI_QzDyk@dLgJdL{CAsFeFwBk@eJbB}JhDiAhCiDhB{B~AeMjM}RbTeYrXaGlDk^rH}HxCyIxGkExF_HdJmTxYqEdQQ|AfPuAhVcHm@uFxHgDjb@fm@~B`@ApXfAzOd[_CpBdEj@``@GnDuAhGPjJz@`KfE|F\\jF"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Queretaro_158_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Santiago de Querétaro"
+      ]
+    },
+    {
+      "country": "JP",
+      "city": "Naha",
+      "center": [
+        26.213,
+        127.67851
+      ],
+      "timeZone": "Asia/Tokyo",
+      "regionToken": "N67TS4UDQBFZG",
+      "serviceAreas": [
+        {
+          "name": "[Naha][Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "i{d_DujfjW}AesA|Ue_Al^lS~Rmn@`@mm@ja@sl@nJ_f@fOmzA||@cAbEtn@zI~BnXdDlZfLjJ`h@~[rM`NeGpHhJ|PhVoHdKgCbMaO|PgI`FgCjSj@tJlFxU{FfTeWxc@mK|KzJpg@lb@lz@jDnP@xA\\bH}@lG}SgDiu@sOa^{VgA`Aio@ng@}\\qNcd@y{AeJPqAlj@orAF"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Naha_188_exclude_new_type.json"
+      ],
+      "aliases": [
+        "那覇",
+        "那覇市"
+      ]
+    },
+    {
+      "country": "QA",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "timeZone": "Asia/Qatar",
+      "regionToken": "44PQ275VZZH56",
+      "serviceAreas": [
+        {
+          "name": "[Doha][SZ][MAIN][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "sjcyCarpyH|tAe}@rG`j@pGpcAw@t`@zaAbqAl^_e@tJym@Fs^gJow@}DqOww@a|EWcB_@Zk@qAyxCbpAkSdL_WvWuZtc@{W}JsICabAhEpNp{AvHxURbLaF`ZaOvKk]xLeC~g@qMdEoGm`@d\\giA_Ego@sHwe@rBqE|KkOtPiJxT}BsAcg@mDqXjAsMjQ_[fA{ErUcTwBkFoTlLgt@oE{LhUkEcKgGsDgJj@eH|Y|ArEdHkFrIrYzXbQzInOBfReB`HsFxQ_KpHkEfHkDvEH~]_EIBvTdFxCdDdRmGjTaGpQaGnWyR~KoD`JkChE}Js@uDwByHjD}DmB_DeEkBX{DYgHs@{FyB}E_E}GgJgHqYyDcPg@gCm@wDq@_C{@s@XkB_DwJ{ErQi@u@{ChLaRoTtDeApE}@uDmEkHiIo@mJyIaJuNfHm@r@sF~@yHrEgItGmE~Kf@rSt@t^}AfNqLnIySdEiQcDwTqCuMkVc@iKqTkIyM`BmAjd@}Me@iDkCmBuBie@~H_b@RcUwI{Qv@qLcGZ}UeHgPgTcXjLv~@pNpWeShGpCpJnd@gJvUz@j_@vGhAt^dTx\\|@rXuMfTwOrAmKhJ{Li@kL}I{JqX}f@m~AoDlArUnz@nD`WZfp@u~@dAsb@`La@|GnZno@x~@nvBcnAt]ve@h{Agk@bVxXv|@`DuAgWaw@fg@wRtLr_@~LuE~a@|Ndc@mJdp@a`@__@gbBfmAkf@vVcS`Jns@|GkEeJw~@~Z}Ink@}HxLYp@e_ApC{PhQsb@`NmWjq@ji@rTvMfO|BvV_FbTlj@l@bPiCnr@zAr\\lkAoJpFwn@rF~@rIwWhPvKxMkGzF|LxX_O`HnwAlb@kJpI`o@dUlr@xLne@~\\}M`s@xlCvE]pAuc@h\\aAcGq]wa@k}AmYyq@_]_o@sMm]dWsLtYoUsl@imA_r@etAn^_YvJkMnNmj@|Au|@wAko@xi@k\\fE|SNje@lEdC"
+        },
+        {
+          "name": "[Doha][SZ][Qatar Aeronautical Academy Track]",
+          "polygon": "wnhyC}lwyHlB~Bx\\uW`Mz@rKgJ\\cHd{@c[nOvBrJ{Gt@sHfpA}^r[jHhf@|jAdBuAui@mnAe[eFstAv`@eAdIeHbDgOoBi_Ab^ObHmG`DyMi@a^l[??"
+        },
+        {
+          "name": "[Doha][SZ][Al Wukair Cycle Track - SZ]",
+          "polygon": "eymxCc~kyHeCgMigCxAaZcYwfAclDdc@uf@`hAmcAhFsDfGlLtIsD_@wPvOyVrd@}S|IbElIsDcBcHrZgUlt@{^rLh@rAwB^kH|R_FfXoB`_@r@xf@jH{CiVaQwg@_EvBnQbf@t@pJq^iGw`@IiWbDyXxFKlI{KNsfApk@cMdMt@nFsAr@wHiGui@vXqMxNiFpU{BuEuINsoAzmAcc@bi@sCNaFyJaThJm|@hOyVtLwEdPvNvn@|b@`mApf@`p@|Pz@OzKld@~j@~_@hl@`UjDn@|A_IfQxg@zgBxTcAeIeEwO}Ly^qpA~HeTmA_CqU{Cy_@ql@{b@{h@d@aO}PmAih@sp@ea@sjAiMql@vGePt`@sKny@mMdQ`HdeApjDt^t\\~nC}B??"
+        },
+        {
+          "name": "[Doha][SZ][Al Warkah Sports Club Track - SZ]",
+          "polygon": "c_xxC_`|yHt@zQv_@vBlIjZp_AzRhg@jLpLOxMY}@cDyU`@uYqGq|@gQgOsCoAcBiHiXaIh@gF}@{D]}DMgCq@IcPkBtA??"
+        },
+        {
+          "name": "[Doha][SZ][Ras Bu Funtas Track - SZ]",
+          "polygon": "g~~xC{oxyHbCFg^qw@mJaVdBuLhD}Ar[k@dYzGjSfNbLjSwFdWmn@vXh@`B`o@}YxDmEdBoTkMuTiU}OeXwFi^z@iEnBkDpNlj@doA??"
+        },
+        {
+          "name": "[Doha][SZ][Al Warqah Cycle Track - SZ]",
+          "polygon": "eouxCqhsyHrXaMbZeV|l@_o@hv@io@xe@iV`e@yUbiAkk@vDeCxVqGtVeKrF}DhRqNzI}E`OwGw@uAak@p[{DiNyJ{i@weAxS?lErRoBvLhu@FdBaBf@yo@t_@{fB|}@gMdIaFbEuE]wCqGwCDVtE}FtTy`B`zAaO{DwFaVmPlEvEvQsJjSqoAdWqM}D_Qa]o`AaqDhEcOnsBm`AkDkDs~Ars@kRfJeInUlcAztDjSha@`M|Drd@cHbd@{KtIN~MwB|NcH??"
+        },
+        {
+          "name": "Mushairab [service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ydjyCydnyHdXsArKqCwGwTmH_QuPjD}@ph@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Doha_113_exclude_new_type.json"
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ]
+    },
+    {
+      "country": "CL",
+      "city": "Santiago",
+      "center": [
+        -33.3976605,
+        -70.55056619999999
+      ],
+      "timeZone": "America/Santiago",
+      "regionToken": "WT2NYSACDT47J",
+      "serviceAreas": [
+        {
+          "name": "[Santiago][SZ][[Santiago][SZ][Las condes y vitacura]][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "|dwjEvwzmLtMlY|JfLhN|HvVnMlUdCdf@?|WnJ~]vHhD{BfDsCjB{AN_@BWAQPPxDnCbEoIhAeLl@iCVWNYVKF]Dc@j@}@ze@{r@~j@wt@xAuAOcEW{FS_FWcR_@}VK}UaA_q@]aMFaFGwTcCoc@mBq^mB_^eKqAmGeBqXyAkLTiQtEeA}T`@}JzAcCe@mPiQk@p@iTmJiMbBsqA_Eq_@c`AnW]yTcYb@gXwJoO}WyTdC}pCen@fy@hwCgNhKvPte@nPld@CzZuFz[wLd@cIpHqMhAuKlF}KdCzPpq@bRfv@}`@rgAzR~gAtdAgBzLzYzGrSxA`F"
+        },
+        {
+          "name": "San Miguel - Service Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "`kikE|wfnLzvEvbBxU{oAnKkz@pKgbACgD}aExYoNpq@uMgBlIsj@um@XSxb@s@rj@?fA"
+        },
+        {
+          "name": "La Florida[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "vkokE~y~mLlH_DrIeJfNy@`sAwGzeApAtv@zAVwOTaMKyF`Ca`B|kAiM`c@{IKaCa\\ifDitAn_AaShGLulA~Gqa@cVbFqBue@eJ{b@aPoEeRp^}GnaAc`@pDsMnBwMIaFz@uEvA_BbAeB`A_F~@mB^eQbHoPbDy@tPfAjKiEt`AeC`iA_PfcD"
+        },
+        {
+          "name": "[SZ] La Reina Demo[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "rt`kExyxmLhCoBnCeD~FeKhF{N`CcLtB}FdC_ElaBiOmAaa@{Cma@oGymA~@sSbj@bKbBa]}j@cEr@oRr@cQjByc@tA{PrIcGFkMsJuQ}@LSpCIfAKhAyBhp@sE[}Gx@cPdDcKhM{OpKsDzMoHk@yNrFsGd@mF`@aFhCoJdF{M`@xIvaBFzTE~E^xNTbOn@f_@AjJHpJRbNP~LPxLVnIL~CJrC"
+        },
+        {
+          "name": "La Cisterna[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "|bpkEt{inLxzBb|@tAUnAo@xCeBxBpJt@~@vGxCxCzAnVtKxe@ugBbEyHvHc}@h@OlBkTeW{EEg@mZcFeDH{cAyRo@_@ucAkRmCvVaCpRmGvf@yUzoA"
+        },
+        {
+          "name": "[SZ] La Planina[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "fl~kEr{_nL`F`y@}ARXbB`Co@qDuo@q@sKcAMgSv@oDye@i@eI_OfB|Eho@jc@{A"
+        },
+        {
+          "name": "[SZ] San Joaquin[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "jiikEpibnLp@hI|An]QxR|XQbT{fAvZ?pj@wGiBxdAjhAcIde@{Dva@}BkC}i@kAwOyAkFwDuKcJwS_@iCaGu^AiUoMv@qB~A{FfGmH|C?CeD`@uLvA_JbAqDb@{ATk@Hi@FmSpCiSpCwJpAwJrAiYfEgMlHiYnHo]vEfGbx@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Santiago_379_exclude_new_type.json"
+      ],
+      "originalCityCenter": [
+        -33.45694,
+        -70.64827
+      ],
+      "centerNote": "Lime’s published main service zone supplies the map anchor; central Santiago lies outside its operating polygons.",
+      "aliases": [
+        "Santiago de Chile"
+      ]
+    },
+    {
+      "country": "AU",
+      "city": "Brisbane",
+      "center": [
+        -27.46794,
+        153.02809
+      ],
+      "timeZone": "Australia/Brisbane",
+      "regionToken": "GDXLUXEILIOHF",
+      "serviceAreas": [
+        {
+          "name": "[Brisbane][Brisbane Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "nw_gDctbe\\fTzBd@kA{P{ZwD{DiAeDsAkCiDsAaCiAmA}CGkG_@cDgAkBs@y@uDqHsBkD_FiJuHgOs@kA]H}Weg@eLiT{BoDeCyBwC_AkCk@kFi@u@h@uAMs@a@}CAAc@mCOy@p@kAW_IHiGdBmF?r@{JuSwB{@~JiPcBaM{AgHaAc@M]OOUs@??bAcAxKYlAYnI_CpEoAfE_A|GFj@`BpIZbD|@lMqKu@kPhFoGUkG_AcNeHcNzD}Ea@mBiCm@_DoI_BcA|@wD{AqDaFgCcDeOqHkHsAaGgLcDkEoA`@_LrNay@kIqAuCoGtCel@{FgI_AKCwG?|AiNvBgNtDwTnCs\\{C[gMjJeFdFmC~D_ApI_C|W{Du@{EpQ_AxTQfBgAb@k@n@eBGg@CsZoC_Ch_@w@zJiBbC_CtCkE~CeCQoA`R[hDUb@HlAsEhm@oQ{A{BOBf@qBvWUJk@hKhD^c@zFcA`NYd@Jv@cAjNcBzTqC]UpEvCf@jIp@pEPlCT|C|B`BlAtC^c@nFO|B^xClBLfCPbCZ|@aBpI|@XaCtIiB|D\\lCRXz@r@|@xAb@OdDrAdDdBvCv@lCLpA]zGKnA}AbDkLlPuHrEPl@rBkAXZb@DCl@b@BJm@pKlAxAXmEri@oOdICj@\\\\n@bBnGoApJwGfIt^rFcBt@IrYhAlBe@nAbAbAR^z@p@lBl@`AjAzA\\r@K`@Lx@T@TrBzD|F~@lAgBzByB`D{CbFR`BPnBt@zCp@xBMbDyCjACx@ShFeBFHp@dC|J}CxARr@zCwATl@~AjA\\C|@q@DP?p@?n@^AfBMrAi@tACDtBtHMTl@?r@d@CGeBs@iBD_Cl@OC}@JqBUy@KaAXGxFl@\\yC\\}F`A_LhC}Ab@{@z@iE|EgBjAwHtCyJpDpBlCtCvHdAbAVz@rBNpB`@lBdBjDBr@[z@i@pAKd@QT[x@{@tB_@fKjABZSBWnCb@~ARvBFdDZnDn@G`@AfBbAN~L|@tB~DkA~PT~BxAhBvDF~Cr@XtA`A{ArAmAG{@g@GeAu@k@gArD]pAJzCHpAx@jCj@x@~DAdD`RzBlS~BvAb@~BVbAXElBSzALxEJh@hEDrIx@nGr@Q|C`@j@xFz@j@`Bp@h@~BRe@dE~\\`E@qBx@eCrJlA`BjB|ClHLkAlBx@nCbB~EjDrEdE~BbDDR^QJw@b@QpN|AXgExDXd@_FV_@pA?VHTXN~ANd@KPGXQdA^FbEt@|Ed@d@yB{E_ESmBTYl@{CnNzAbDm@|CkGzFmG`LmRnCiEyBmIkJ_AnD}FTuCdBwDRsGWiEk@gCu@aAiDoAsB}GTiCpAwAjJUv@cAoBiNqDeC|@_GpThDjGyDbF{V~Am[jEmLjMy@tLtIfE~W~CM@hAbAVLq@RSlADnE_CrDyJs@s_@_HmDp@qCpInALiAoKwAhBiVPmAfDmK|AyDe\\yXgTgRcCuChAuE|AuHlA_E`B{I`HUjCcBzAiExMfB|EkZpAc@hIv@|Cm_@"
+        },
+        {
+          "name": "[Brisbane][Wynnum/Manly SZ][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "f_kfDicze\\fC`@x@x@jV~JdAoBhC_BfG{@z_@{H`LsD|B`NnR{H`^}R|N_QhPkHdMvBhNsP~H_LjJzIjS{T|NgFhIuEp_@iLxBkDhB}F~CyB~GkQ|@aKoFsEkJ}Qqm@hRoNpFsDfDsPoZ}NYgXbDmMlIlFzPp@tKkBxCqDrA_Fm@uBcBuB{CeA@eHlDaDla@iHnOuJpKqFoIg@Bs@bAZbCI~ECrEeA`@kIp@sHfA}ClAwAMaDl@mAhA{BrDsCrBaF~A{CJgD?}I\\_DlCcBvDmG|CkIp@}EyGuFfE{HfK~NjK??"
+        },
+        {
+          "name": "[Brisbane][Sandgate/Shorncliffe SZ][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "dvqeDqfee\\xMoLjPyAz@xHtXKvEaI~R|Q`K_InKlJpMK}BnQ|Tj@hN[fE\\hD{a@~AqOrEbH{DhWrAtBlO{Lx[vd@rApJn]qBpCsWgFaXrHsFmM_ZuRgB{GmI|BiJsTj@|AuQrE]dMcKlH}JzDaIvEkDrDSnBi@pAeATeAO{B_CiFyAUqPiFcBeCo@sEoAmQqAuB}@w@sBm@eD\\iQ`JyHmAWrAzCpD{C`EqJcReCnBvJrQcDdHBdCdArF{@nJAzCoDbHe@xCaArCqL`LuHrFcElCsApAmAx@{@b@gAb@gBb@{Dw@eB`@uA|@kA`Ba@fBOdAJp@wBd@mJ`CaIvBgGf@wHtAqCTwFrAmLlBaFl@uF@iPcAqG_B{F]qCf@cGl@kHIoCEkDRqPhByA`BdCtB~AzB~@fAhPzXl_@d@??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Brisbane_2639_exclude_new_type.json"
+      ]
+    }
+  ]
+}

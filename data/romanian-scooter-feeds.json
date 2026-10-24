@@ -1,0 +1,82 @@
+{
+  "verifiedOn": "2026-10-24",
+  "catalogSource": "https://www.li.me/locations",
+  "systems": [
+    {
+      "id": "lime_ro_app_deva_000",
+      "provider": "lime",
+      "city": "Deva",
+      "center": [
+        45.88333,
+        22.9
+      ],
+      "bounds": {
+        "south": 45.85633,
+        "north": 45.88327934,
+        "west": 22.89478,
+        "east": 22.92735
+      },
+      "timeZone": "Europe/Bucharest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "E7CO5RS5CDCVW",
+      "limeMapTiles": [
+        {
+          "south": 45.85633,
+          "north": 45.86980467,
+          "west": 22.89478,
+          "east": 22.91412737
+        },
+        {
+          "south": 45.85633,
+          "north": 45.86980467,
+          "west": 22.91412737,
+          "east": 22.92735
+        },
+        {
+          "south": 45.86980467,
+          "north": 45.88327934,
+          "west": 22.89478,
+          "east": 22.91412737
+        },
+        {
+          "south": 45.86980467,
+          "north": 45.88327934,
+          "west": 22.91412737,
+          "east": 22.92735
+        }
+      ]
+    },
+    {
+      "id": "lime_ro_app_deva_001",
+      "provider": "lime",
+      "city": "Deva",
+      "center": [
+        45.88333,
+        22.9
+      ],
+      "bounds": {
+        "south": 45.88327934,
+        "north": 45.89326,
+        "west": 22.89478,
+        "east": 22.91412737
+      },
+      "timeZone": "Europe/Bucharest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "E7CO5RS5CDCVW",
+      "limeMapTiles": [
+        {
+          "south": 45.88327934,
+          "north": 45.89326,
+          "west": 22.89478,
+          "east": 22.91412737
+        }
+      ]
+    }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Deva_250_exclude_new_type.json"
+  ]
+}

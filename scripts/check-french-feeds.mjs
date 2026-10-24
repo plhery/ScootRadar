@@ -107,7 +107,7 @@ async function inspect(system) {
       const snapshot = await collect(system);
       return { ...result, state: 'ok', version: 'app-map', availableScooters: snapshot.vehicles.length,
         withBattery: snapshot.vehicles.filter(v => v.battery !== null).length, withRange: snapshot.vehicles.filter(v => typeof v.range_m === 'number').length, withRentalLink: 0,
-        updatedAt: new Date(snapshot.observedAt).toISOString(), ageSeconds: 0 };
+        updatedAt: new Date(snapshot.observedAt).toISOString(), ageSeconds: Math.max(0, Math.round((Date.now() - snapshot.observedAt) / 1000)) };
     }
     const discovery = await json(system.discoveryUrl);
     const entries = feedEntries(discovery);

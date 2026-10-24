@@ -3,6 +3,8 @@ import { reportError } from './errorReporting';
 export interface ScheduledFeed {
   id: string;
   host: string;
+  /** An upstream with a lower request quota can scan idle areas less often. */
+  idleIntervalMs?: number;
 }
 
 /** What a collection reports back: a failed one is retried sooner than an idle feed is due. */
@@ -176,7 +178,8 @@ export class FeedScheduler<T extends ScheduledFeed> {
   private watched(id: string, now: number) { return (this.watchedUntil.get(id) ?? 0) > now; }
 
   private nextDue(feed: T, startedAt: number, finishedAt: number, failed: boolean): number {
-    const { activeIntervalMs, idleIntervalMs, retryMs } = this.options;
+    const { activeIntervalMs, retryMs } = this.options;
+    const idleIntervalMs = feed.idleIntervalMs ?? this.options.idleIntervalMs;
     if (this.mode(feed, finishedAt) !== 'idle') return startedAt + activeIntervalMs;
     if (failed) {
       const failures = this.failures.get(feed.id) ?? 1;

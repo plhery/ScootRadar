@@ -18,6 +18,8 @@ export interface FeedCadence {
   fastSince(id: string, now: number): number | undefined;
   /** An idle feed expires once it has had no successful collection for this long. */
   idleExpiryMs: number;
+  /** A collector whose documented idle scan is slower, by feed id. */
+  idleExpiryMsForFeed?(id: string): number | undefined;
 }
 
 /** Every feed collected every minute: the rule before idle feeds existed. */
@@ -37,7 +39,7 @@ const fastFor = (feed: FeedSnapshot, now: number, cadence: FeedCadence, ms: numb
  * minute, for at least 15 minutes, expires as its positions do on the map.
  */
 export function feedState(feed: FeedSnapshot, now: number, cadence: FeedCadence = ALWAYS_FAST): FeedState {
-  if (now - lastSuccess(feed) > cadence.idleExpiryMs ||
+  if (now - lastSuccess(feed) > (cadence.idleExpiryMsForFeed?.(feed.id) ?? cadence.idleExpiryMs) ||
     (fastFor(feed, now, cadence, VEHICLE_MAX_AGE_MS) && now - feed.observedAt > VEHICLE_MAX_AGE_MS)) return 'expired';
   return feed.failed ? 'failing' : 'ok';
 }
@@ -46,7 +48,7 @@ export function feedState(feed: FeedSnapshot, now: number, cadence: FeedCadence 
 export function parkingUp(feed: FeedSnapshot, now: number, cadence: FeedCadence = ALWAYS_FAST): boolean {
   if (!feed.parking || feed.parking.stale) return false;
   const limit = fastFor(feed, now, cadence, PARKING_MAX_AGE_MS) ? PARKING_MAX_AGE_MS
-    : Math.max(PARKING_MAX_AGE_MS, cadence.idleExpiryMs);
+    : Math.max(PARKING_MAX_AGE_MS, cadence.idleExpiryMsForFeed?.(feed.id) ?? cadence.idleExpiryMs);
   return now - feed.parking.observedAt <= limit;
 }
 

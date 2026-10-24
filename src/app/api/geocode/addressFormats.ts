@@ -43,6 +43,8 @@ export const ADDRESS_FORMATS: Readonly<Record<string, AddressFormat>> = {
   BR: { townLine: '{town}, {region} {postcode}', postcode: /\d{5}-?\d{3}/ },
   CL: { townLine: '{postcode} {town}, {region}', postcode: /\d{7}/ },
   CO: { townLine: '{town}, {region}, {postcode}', postcode: /\d{6}/ },
+  // Qatar has zone, street and building numbers, without a postcode.
+  QA: { numberFirst: true, townLine: '{town}' },
   MX: { townLine: '{postcode} {town}, {region}', postcode: /\d{5}/ },
   KZ: { postcode: /\d{6}/ },
   AZ: {},

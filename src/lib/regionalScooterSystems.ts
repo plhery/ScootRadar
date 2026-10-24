@@ -56,6 +56,11 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   jetAppMap?: true;
   /** Whoosh rider-map region; the Node cache covers its enabled ride polygons with bounded views. */
   whooshAppRegion?: string;
+  /** Publisher service-zone outlines, Google encoded polylines at precision 5. */
+  limeServiceAreas?: string[];
+  /** Local views assigned to this independently refreshed part of the service area. */
+  limeMapTiles?: MapBounds[];
+  limeAppRegion?: string;
   /** Published subregions of a shared feed; fetched once, routed per city. */
   areas?: ScooterServiceArea[];
   /**

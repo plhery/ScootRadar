@@ -1,0 +1,145 @@
+# Lime authenticated operating-area map
+
+The user authorized rider-map access on 24 October 2026 and signed into the
+publisher-signed Android app 3.286.0. Its signer was checked against Lime's
+[app-link association](https://limebike.app.link/.well-known/assetlinks.json).
+This unofficial adapter supplements the existing public feeds. It does not
+replace Swiss national data, public Lime GBFS, or the other operators' feeds.
+
+## Whole operating areas
+
+`data/lime-app-regions.json` records the reviewed markets, publisher service
+polygons and their public source documents. The first markets are Deva,
+České Budějovice, Querétaro, Naha, Doha, Santiago and Brisbane. Coverage includes
+all the recorded operating polygons, including Brisbane's separate
+Wynnum/Manly and Sandgate/Shorncliffe areas and Doha's outlying tracks.
+These are seven complete market footprints, not every Lime market worldwide.
+
+The app's `GET /api/rider/v2/map/static_elements` returns the outline-document
+URLs under `zones_physical_attributes.region_zones`. Each public
+`https://assets.lime.bike/zones_attributes/…` document identifies its region
+and contains `zone_info`. The catalog uses `service_zone` polygons whose
+`vehicle_types` include `scooter`, decoded as Google polylines at precision 5.
+No rider credentials are sent to the assets host. Source URLs and versions
+remain reviewable in the catalog input.
+
+A wide map request can return only vehicles near its centre even when its
+reply has fewer than 200 pins. In a live check, subdividing a wide Czech view
+only when capped missed vehicles from the original view. The collector now
+covers the entire service polygons with local cells at most 1,500 m across,
+including empty portions and separate polygons. Cells outside the polygons
+are omitted. This prevents an uncapped local sample from being mistaken for
+complete coverage of a large box.
+
+The current map response is limited to 200 nearest pins. A capped local view
+covers its cell when the returned radius reaches beyond every cell corner,
+with a 50 m margin; otherwise the collector subdivides it. A capped response
+with mixed or repeated identifiers does not establish that radius. Depth,
+request and time limits fail the collection if completeness cannot be
+established. Parent observations are retained and those parent views are
+queried again on warm refreshes: a live Brisbane child view omitted a valid
+scooter seen in its parent, despite returning no pins. Discarding the parent
+would therefore lose a known available scooter. Nearby pins outside the
+owned cell still count toward the cap;
+only positions inside that cell and a reviewed service polygon are published.
+The source's selection behaviour was checked against a conservative complete
+scan and overlapping reference views. It remains an unofficial protocol.
+
+The conservative České Budějovice scan returned 349 scooters in 65 requests.
+The optimized scan returned 348 in 13 requests a little later. Both recovered
+all 200 vehicles that remained in the centre reference views. Changes in
+counts between scans are expected for a live fleet. Reference checks exclude
+vehicles outside the operating polygons and vehicles that moved between
+reference calls.
+
+The registered grid was retrieved in every market on 24 October 2026.
+[Machine-readable audit](../data/lime-app-audit.json) binds these checks to the
+polygons and local query groups; all 1,091 stationary references were recovered.
+Counts are inventory snapshots at different times, not a simultaneous fleet total.
+
+| Market | Local cells | Refresh groups | Scooters | Stationary references |
+| --- | ---: | ---: | ---: | ---: |
+| Deva | 5 | 2 | 126 | 110 |
+| České Budějovice | 13 | 4 | 344 | 198 |
+| Querétaro | 16 | 4 | 579 | 199 |
+| Naha | 22 | 6 | 234 | 186 |
+| Doha | 126 | 32 | 325 | 25 |
+| Santiago | 97 | 25 | 2,656 | 188 |
+| Brisbane | 77 | 20 | 3,146 | 185 |
+
+The 93 groups cover 356 initial local cells. The observed complete query plan
+uses 416 map requests, including parent views retained on warm refreshes:
+34 minutes 40 seconds at the five-second minimum spacing, before network
+latency. That leaves room in the hourly background budget for viewed groups.
+
+Santiago's geographical city centre is outside the published service areas.
+Its map shortcut uses a point inside Lime's main service polygon, while the
+collector covers every recorded polygon. City coordinates elsewhere include
+[GeoNames data, CC BY 4.0](https://www.geonames.org/about.html).
+
+## Cache behaviour
+
+`npm run generate:providers` builds groups of at most four local cells from
+these outlines, then generates the web and iOS catalogs. The same command
+preserves public GBFS systems already in a country catalog.
+`npm run check:providers` checks both generated outputs and requires a successful
+full-area audit matching the registered polygons, tile groups and query strategy.
+The verified warm query plan, including parent views, must also fit the
+provider’s hourly request budget.
+
+Each group is an independent cache feed. Looking at one part of a market
+wakes its nearby groups rather than rescanning the entire city. Viewed groups
+use the normal active cadence; idle groups scan hourly to fit the upstream
+request quota. Monitoring uses that idle interval plus ten minutes, while the
+active 15-minute expiry remains unchanged. Street-level positions older than
+15 minutes are excluded. Country totals fill as the background scan completes;
+they describe the latest completed inventory, not simultaneous fleet counts.
+
+Calls start at most once every five seconds across Lime feeds. HTTP 429 pauses
+the shared client for Retry-After, with a minimum one-minute cooldown. Requests
+have a 20-second deadline and an 8 MiB response limit. Native requests to
+`web-production.lime.bike` use TLS 1.2: the production Linux Node 26 client
+received 403 with its default TLS 1.3 handshake, while TLS 1.2 succeeded.
+The setting is specific to this provider.
+
+Only actual scooter pins are retained. Battery is a percentage; range, fares,
+vehicle-specific rental links, parking and zone overlays are not supplied by
+this adapter. Stable `secondary_id` values identify vehicles across overlapping
+groups when provided by the source. A collection's
+start time is its observation time, so a slow scan does not make its oldest
+positions appear newly observed. App endpoints never enter GBFS discovery,
+parking or zone collection.
+
+A dense Brisbane group was also timed twice with the final collector: 16
+requests in 76 seconds cold, then 16 in 80 seconds using its cached query
+plan. It returned 766 and 767 scooters respectively. The warm plan retains
+parent observations as well as empty leaves.
+
+## Private session and renewal
+
+The Node cache reads `/data/lime-session.json`, or `LIME_SESSION_PATH`:
+
+```json
+{"version":1,"accessToken":"…","refreshToken":"…","expiresAt":0,"refreshExpiresAt":0,"renewalWindow":900,"deviceToken":"…","privateKey":"<PKCS8 EC P-256 PEM>"}
+```
+
+Expiration timestamps are milliseconds since the epoch; the renewal window is
+seconds. Keep the file owned by the cache user with mode `0600` in its private
+persistent volume. No session credentials enter the repository, Worker,
+browser, generated catalogs or logs. Rotation is saved atomically before a
+renewed access token is used. A replacement login file can be read without
+restarting the cache. The emulator is not required for ongoing collections.
+
+The access token lasts ten hours and renewal is allowed only in its final
+15 minutes. `POST /api/auth/v2/oauth/token` uses a refresh-token grant with an
+ES256 client assertion and its public JWK. The refresh token is bound to that
+key. A server-owned key was installed before the user's second login so the
+server can sign its own proofs. A fresh proof reached the provider's explicit
+early-renewal gate; an actual successful timed renewal has not yet been
+observed. Tests cover successful rotation, restart, concurrency and rejection.
+The observed refresh lifetime is 180 days, subject to upstream revocation.
+
+The OAuth request carries no expired rider bearer header. Map requests carry
+the access token and native app/device headers. A rejected map token gets one
+renewal attempt; repeated authentication failures back off for a minute.
+Session errors omit upstream bodies and credentials.

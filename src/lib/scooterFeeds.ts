@@ -258,6 +258,8 @@ export interface CollectableScooterFeed {
   coverage: MapBounds[];
   collect: () => Promise<SourceVehicles>;
   host: string;
+  /** Node collectors may scan idle areas less often under an upstream request quota. */
+  idleIntervalMs?: number;
   /** Its GBFS documents, for the zones the map draws when asked (zoneFeeds.ts). */
   zoneSource?: ZoneSource;
 }

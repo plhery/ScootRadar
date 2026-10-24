@@ -1,0 +1,1566 @@
+{
+  "verifiedOn": "2026-10-24",
+  "catalogSource": "https://www.li.me/locations",
+  "systems": [
+    {
+      "id": "lime_qa_app_doha_000",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.11408,
+        "north": 25.14102934,
+        "west": 51.56526347,
+        "east": 51.60065
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.11408,
+          "north": 25.12755467,
+          "west": 51.58014497,
+          "east": 51.59502647
+        },
+        {
+          "south": 25.11408,
+          "north": 25.12755467,
+          "west": 51.59502647,
+          "east": 51.60065
+        },
+        {
+          "south": 25.12755467,
+          "north": 25.14102934,
+          "west": 51.56526347,
+          "east": 51.58014497
+        },
+        {
+          "south": 25.12755467,
+          "north": 25.14102934,
+          "west": 51.58014497,
+          "east": 51.59502647
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_001",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.12755467,
+        "north": 25.154504,
+        "west": 51.50573748,
+        "east": 51.60065
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.12755467,
+          "north": 25.14102934,
+          "west": 51.59502647,
+          "east": 51.60065
+        },
+        {
+          "south": 25.14102934,
+          "north": 25.154504,
+          "west": 51.50573748,
+          "east": 51.52061898
+        },
+        {
+          "south": 25.14102934,
+          "north": 25.154504,
+          "west": 51.56526347,
+          "east": 51.58014497
+        },
+        {
+          "south": 25.14102934,
+          "north": 25.154504,
+          "west": 51.58014497,
+          "east": 51.59502647
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_002",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.154504,
+        "north": 25.16797867,
+        "west": 51.46109299,
+        "east": 51.56526347
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.154504,
+          "north": 25.16797867,
+          "west": 51.46109299,
+          "east": 51.47597449
+        },
+        {
+          "south": 25.154504,
+          "north": 25.16797867,
+          "west": 51.47597449,
+          "east": 51.49085599
+        },
+        {
+          "south": 25.154504,
+          "north": 25.16797867,
+          "west": 51.50573748,
+          "east": 51.52061898
+        },
+        {
+          "south": 25.154504,
+          "north": 25.16797867,
+          "west": 51.55038198,
+          "east": 51.56526347
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_003",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.154504,
+        "north": 25.18145334,
+        "west": 51.47597449,
+        "east": 51.59502647
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.154504,
+          "north": 25.16797867,
+          "west": 51.56526347,
+          "east": 51.58014497
+        },
+        {
+          "south": 25.154504,
+          "north": 25.16797867,
+          "west": 51.58014497,
+          "east": 51.59502647
+        },
+        {
+          "south": 25.16797867,
+          "north": 25.18145334,
+          "west": 51.47597449,
+          "east": 51.49085599
+        },
+        {
+          "south": 25.16797867,
+          "north": 25.18145334,
+          "west": 51.49085599,
+          "east": 51.50573748
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_004",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.16797867,
+        "north": 25.18145334,
+        "west": 51.50573748,
+        "east": 51.56526347
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.16797867,
+          "north": 25.18145334,
+          "west": 51.50573748,
+          "east": 51.52061898
+        },
+        {
+          "south": 25.16797867,
+          "north": 25.18145334,
+          "west": 51.52061898,
+          "east": 51.53550048
+        },
+        {
+          "south": 25.16797867,
+          "north": 25.18145334,
+          "west": 51.53550048,
+          "east": 51.55038198
+        },
+        {
+          "south": 25.16797867,
+          "north": 25.18145334,
+          "west": 51.55038198,
+          "east": 51.56526347
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_005",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.16797867,
+        "north": 25.19492801,
+        "west": 51.49085599,
+        "east": 51.59502647
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.16797867,
+          "north": 25.18145334,
+          "west": 51.58014497,
+          "east": 51.59502647
+        },
+        {
+          "south": 25.18145334,
+          "north": 25.19492801,
+          "west": 51.49085599,
+          "east": 51.50573748
+        },
+        {
+          "south": 25.18145334,
+          "north": 25.19492801,
+          "west": 51.50573748,
+          "east": 51.52061898
+        },
+        {
+          "south": 25.18145334,
+          "north": 25.19492801,
+          "west": 51.52061898,
+          "east": 51.53550048
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_006",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.18145334,
+        "north": 25.20840267,
+        "west": 51.50573748,
+        "east": 51.59502647
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.18145334,
+          "north": 25.19492801,
+          "west": 51.53550048,
+          "east": 51.55038198
+        },
+        {
+          "south": 25.18145334,
+          "north": 25.19492801,
+          "west": 51.55038198,
+          "east": 51.56526347
+        },
+        {
+          "south": 25.18145334,
+          "north": 25.19492801,
+          "west": 51.58014497,
+          "east": 51.59502647
+        },
+        {
+          "south": 25.19492801,
+          "north": 25.20840267,
+          "west": 51.50573748,
+          "east": 51.52061898
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_007",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.19492801,
+        "north": 25.20840267,
+        "west": 51.52061898,
+        "east": 51.59502647
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.19492801,
+          "north": 25.20840267,
+          "west": 51.52061898,
+          "east": 51.53550048
+        },
+        {
+          "south": 25.19492801,
+          "north": 25.20840267,
+          "west": 51.53550048,
+          "east": 51.55038198
+        },
+        {
+          "south": 25.19492801,
+          "north": 25.20840267,
+          "west": 51.55038198,
+          "east": 51.56526347
+        },
+        {
+          "south": 25.19492801,
+          "north": 25.20840267,
+          "west": 51.58014497,
+          "east": 51.59502647
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_008",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.20840267,
+        "north": 25.22187734,
+        "west": 51.50573748,
+        "east": 51.56526347
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.20840267,
+          "north": 25.22187734,
+          "west": 51.50573748,
+          "east": 51.52061898
+        },
+        {
+          "south": 25.20840267,
+          "north": 25.22187734,
+          "west": 51.52061898,
+          "east": 51.53550048
+        },
+        {
+          "south": 25.20840267,
+          "north": 25.22187734,
+          "west": 51.53550048,
+          "east": 51.55038198
+        },
+        {
+          "south": 25.20840267,
+          "north": 25.22187734,
+          "west": 51.55038198,
+          "east": 51.56526347
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_009",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.20840267,
+        "north": 25.23535201,
+        "west": 51.50573748,
+        "east": 51.59502647
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.20840267,
+          "north": 25.22187734,
+          "west": 51.56526347,
+          "east": 51.58014497
+        },
+        {
+          "south": 25.20840267,
+          "north": 25.22187734,
+          "west": 51.58014497,
+          "east": 51.59502647
+        },
+        {
+          "south": 25.22187734,
+          "north": 25.23535201,
+          "west": 51.50573748,
+          "east": 51.52061898
+        },
+        {
+          "south": 25.22187734,
+          "north": 25.23535201,
+          "west": 51.52061898,
+          "east": 51.53550048
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_010",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.22187734,
+        "north": 25.23535201,
+        "west": 51.53550048,
+        "east": 51.59502647
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.22187734,
+          "north": 25.23535201,
+          "west": 51.53550048,
+          "east": 51.55038198
+        },
+        {
+          "south": 25.22187734,
+          "north": 25.23535201,
+          "west": 51.55038198,
+          "east": 51.56526347
+        },
+        {
+          "south": 25.22187734,
+          "north": 25.23535201,
+          "west": 51.56526347,
+          "east": 51.58014497
+        },
+        {
+          "south": 25.22187734,
+          "north": 25.23535201,
+          "west": 51.58014497,
+          "east": 51.59502647
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_011",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.23535201,
+        "north": 25.24882668,
+        "west": 51.43133,
+        "east": 51.55038198
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.23535201,
+          "north": 25.24882668,
+          "west": 51.43133,
+          "east": 51.4462115
+        },
+        {
+          "south": 25.23535201,
+          "north": 25.24882668,
+          "west": 51.50573748,
+          "east": 51.52061898
+        },
+        {
+          "south": 25.23535201,
+          "north": 25.24882668,
+          "west": 51.52061898,
+          "east": 51.53550048
+        },
+        {
+          "south": 25.23535201,
+          "north": 25.24882668,
+          "west": 51.53550048,
+          "east": 51.55038198
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_012",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.23535201,
+        "north": 25.26230134,
+        "west": 51.43133,
+        "east": 51.59502647
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.23535201,
+          "north": 25.24882668,
+          "west": 51.55038198,
+          "east": 51.56526347
+        },
+        {
+          "south": 25.23535201,
+          "north": 25.24882668,
+          "west": 51.56526347,
+          "east": 51.58014497
+        },
+        {
+          "south": 25.23535201,
+          "north": 25.24882668,
+          "west": 51.58014497,
+          "east": 51.59502647
+        },
+        {
+          "south": 25.24882668,
+          "north": 25.26230134,
+          "west": 51.43133,
+          "east": 51.4462115
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_013",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.24882668,
+        "north": 25.26230134,
+        "west": 51.4462115,
+        "east": 51.50573748
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.24882668,
+          "north": 25.26230134,
+          "west": 51.4462115,
+          "east": 51.46109299
+        },
+        {
+          "south": 25.24882668,
+          "north": 25.26230134,
+          "west": 51.46109299,
+          "east": 51.47597449
+        },
+        {
+          "south": 25.24882668,
+          "north": 25.26230134,
+          "west": 51.47597449,
+          "east": 51.49085599
+        },
+        {
+          "south": 25.24882668,
+          "north": 25.26230134,
+          "west": 51.49085599,
+          "east": 51.50573748
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_014",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.24882668,
+        "north": 25.26230134,
+        "west": 51.52061898,
+        "east": 51.58014497
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.24882668,
+          "north": 25.26230134,
+          "west": 51.52061898,
+          "east": 51.53550048
+        },
+        {
+          "south": 25.24882668,
+          "north": 25.26230134,
+          "west": 51.53550048,
+          "east": 51.55038198
+        },
+        {
+          "south": 25.24882668,
+          "north": 25.26230134,
+          "west": 51.55038198,
+          "east": 51.56526347
+        },
+        {
+          "south": 25.24882668,
+          "north": 25.26230134,
+          "west": 51.56526347,
+          "east": 51.58014497
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_015",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.24882668,
+        "north": 25.27577601,
+        "west": 51.4462115,
+        "east": 51.59502647
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.24882668,
+          "north": 25.26230134,
+          "west": 51.58014497,
+          "east": 51.59502647
+        },
+        {
+          "south": 25.26230134,
+          "north": 25.27577601,
+          "west": 51.4462115,
+          "east": 51.46109299
+        },
+        {
+          "south": 25.26230134,
+          "north": 25.27577601,
+          "west": 51.46109299,
+          "east": 51.47597449
+        },
+        {
+          "south": 25.26230134,
+          "north": 25.27577601,
+          "west": 51.47597449,
+          "east": 51.49085599
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_016",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.26230134,
+        "north": 25.27577601,
+        "west": 51.49085599,
+        "east": 51.55038198
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.26230134,
+          "north": 25.27577601,
+          "west": 51.49085599,
+          "east": 51.50573748
+        },
+        {
+          "south": 25.26230134,
+          "north": 25.27577601,
+          "west": 51.50573748,
+          "east": 51.52061898
+        },
+        {
+          "south": 25.26230134,
+          "north": 25.27577601,
+          "west": 51.52061898,
+          "east": 51.53550048
+        },
+        {
+          "south": 25.26230134,
+          "north": 25.27577601,
+          "west": 51.53550048,
+          "east": 51.55038198
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_017",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.26230134,
+        "north": 25.28925068,
+        "west": 51.46109299,
+        "east": 51.59502647
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.26230134,
+          "north": 25.27577601,
+          "west": 51.55038198,
+          "east": 51.56526347
+        },
+        {
+          "south": 25.26230134,
+          "north": 25.27577601,
+          "west": 51.56526347,
+          "east": 51.58014497
+        },
+        {
+          "south": 25.26230134,
+          "north": 25.27577601,
+          "west": 51.58014497,
+          "east": 51.59502647
+        },
+        {
+          "south": 25.27577601,
+          "north": 25.28925068,
+          "west": 51.46109299,
+          "east": 51.47597449
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_018",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.27577601,
+        "north": 25.28925068,
+        "west": 51.47597449,
+        "east": 51.53550048
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.27577601,
+          "north": 25.28925068,
+          "west": 51.47597449,
+          "east": 51.49085599
+        },
+        {
+          "south": 25.27577601,
+          "north": 25.28925068,
+          "west": 51.49085599,
+          "east": 51.50573748
+        },
+        {
+          "south": 25.27577601,
+          "north": 25.28925068,
+          "west": 51.50573748,
+          "east": 51.52061898
+        },
+        {
+          "south": 25.27577601,
+          "north": 25.28925068,
+          "west": 51.52061898,
+          "east": 51.53550048
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_019",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.27577601,
+        "north": 25.30272535,
+        "west": 51.46109299,
+        "east": 51.58014497
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.27577601,
+          "north": 25.28925068,
+          "west": 51.53550048,
+          "east": 51.55038198
+        },
+        {
+          "south": 25.27577601,
+          "north": 25.28925068,
+          "west": 51.55038198,
+          "east": 51.56526347
+        },
+        {
+          "south": 25.27577601,
+          "north": 25.28925068,
+          "west": 51.56526347,
+          "east": 51.58014497
+        },
+        {
+          "south": 25.28925068,
+          "north": 25.30272535,
+          "west": 51.46109299,
+          "east": 51.47597449
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_020",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.28925068,
+        "north": 25.30272535,
+        "west": 51.47597449,
+        "east": 51.53550048
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.28925068,
+          "north": 25.30272535,
+          "west": 51.47597449,
+          "east": 51.49085599
+        },
+        {
+          "south": 25.28925068,
+          "north": 25.30272535,
+          "west": 51.49085599,
+          "east": 51.50573748
+        },
+        {
+          "south": 25.28925068,
+          "north": 25.30272535,
+          "west": 51.50573748,
+          "east": 51.52061898
+        },
+        {
+          "south": 25.28925068,
+          "north": 25.30272535,
+          "west": 51.52061898,
+          "east": 51.53550048
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_021",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.28925068,
+        "north": 25.31620001,
+        "west": 51.46109299,
+        "east": 51.58014497
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.28925068,
+          "north": 25.30272535,
+          "west": 51.53550048,
+          "east": 51.55038198
+        },
+        {
+          "south": 25.28925068,
+          "north": 25.30272535,
+          "west": 51.55038198,
+          "east": 51.56526347
+        },
+        {
+          "south": 25.28925068,
+          "north": 25.30272535,
+          "west": 51.56526347,
+          "east": 51.58014497
+        },
+        {
+          "south": 25.30272535,
+          "north": 25.31620001,
+          "west": 51.46109299,
+          "east": 51.47597449
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_022",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.30272535,
+        "north": 25.31620001,
+        "west": 51.47597449,
+        "east": 51.53550048
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.30272535,
+          "north": 25.31620001,
+          "west": 51.47597449,
+          "east": 51.49085599
+        },
+        {
+          "south": 25.30272535,
+          "north": 25.31620001,
+          "west": 51.49085599,
+          "east": 51.50573748
+        },
+        {
+          "south": 25.30272535,
+          "north": 25.31620001,
+          "west": 51.50573748,
+          "east": 51.52061898
+        },
+        {
+          "south": 25.30272535,
+          "north": 25.31620001,
+          "west": 51.52061898,
+          "east": 51.53550048
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_023",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.31620001,
+        "north": 25.32967468,
+        "west": 51.49085599,
+        "east": 51.55038198
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.31620001,
+          "north": 25.32967468,
+          "west": 51.49085599,
+          "east": 51.50573748
+        },
+        {
+          "south": 25.31620001,
+          "north": 25.32967468,
+          "west": 51.50573748,
+          "east": 51.52061898
+        },
+        {
+          "south": 25.31620001,
+          "north": 25.32967468,
+          "west": 51.52061898,
+          "east": 51.53550048
+        },
+        {
+          "south": 25.31620001,
+          "north": 25.32967468,
+          "west": 51.53550048,
+          "east": 51.55038198
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_024",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.32967468,
+        "north": 25.34314935,
+        "west": 51.47597449,
+        "east": 51.53550048
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.32967468,
+          "north": 25.34314935,
+          "west": 51.47597449,
+          "east": 51.49085599
+        },
+        {
+          "south": 25.32967468,
+          "north": 25.34314935,
+          "west": 51.49085599,
+          "east": 51.50573748
+        },
+        {
+          "south": 25.32967468,
+          "north": 25.34314935,
+          "west": 51.50573748,
+          "east": 51.52061898
+        },
+        {
+          "south": 25.32967468,
+          "north": 25.34314935,
+          "west": 51.52061898,
+          "east": 51.53550048
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_025",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.32967468,
+        "north": 25.35662402,
+        "west": 51.46109299,
+        "east": 51.55038198
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.32967468,
+          "north": 25.34314935,
+          "west": 51.53550048,
+          "east": 51.55038198
+        },
+        {
+          "south": 25.34314935,
+          "north": 25.35662402,
+          "west": 51.46109299,
+          "east": 51.47597449
+        },
+        {
+          "south": 25.34314935,
+          "north": 25.35662402,
+          "west": 51.47597449,
+          "east": 51.49085599
+        },
+        {
+          "south": 25.34314935,
+          "north": 25.35662402,
+          "west": 51.49085599,
+          "east": 51.50573748
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_026",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.34314935,
+        "north": 25.37009868,
+        "west": 51.43133,
+        "east": 51.53550048
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.34314935,
+          "north": 25.35662402,
+          "west": 51.50573748,
+          "east": 51.52061898
+        },
+        {
+          "south": 25.34314935,
+          "north": 25.35662402,
+          "west": 51.52061898,
+          "east": 51.53550048
+        },
+        {
+          "south": 25.35662402,
+          "north": 25.37009868,
+          "west": 51.43133,
+          "east": 51.4462115
+        },
+        {
+          "south": 25.35662402,
+          "north": 25.37009868,
+          "west": 51.4462115,
+          "east": 51.46109299
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_027",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.35662402,
+        "north": 25.37009868,
+        "west": 51.46109299,
+        "east": 51.52061898
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.35662402,
+          "north": 25.37009868,
+          "west": 51.46109299,
+          "east": 51.47597449
+        },
+        {
+          "south": 25.35662402,
+          "north": 25.37009868,
+          "west": 51.47597449,
+          "east": 51.49085599
+        },
+        {
+          "south": 25.35662402,
+          "north": 25.37009868,
+          "west": 51.49085599,
+          "east": 51.50573748
+        },
+        {
+          "south": 25.35662402,
+          "north": 25.37009868,
+          "west": 51.50573748,
+          "east": 51.52061898
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_028",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.35662402,
+        "north": 25.38357335,
+        "west": 51.43133,
+        "east": 51.53550048
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.35662402,
+          "north": 25.37009868,
+          "west": 51.52061898,
+          "east": 51.53550048
+        },
+        {
+          "south": 25.37009868,
+          "north": 25.38357335,
+          "west": 51.43133,
+          "east": 51.4462115
+        },
+        {
+          "south": 25.37009868,
+          "north": 25.38357335,
+          "west": 51.4462115,
+          "east": 51.46109299
+        },
+        {
+          "south": 25.37009868,
+          "north": 25.38357335,
+          "west": 51.46109299,
+          "east": 51.47597449
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_029",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.37009868,
+        "north": 25.38357335,
+        "west": 51.47597449,
+        "east": 51.53550048
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.37009868,
+          "north": 25.38357335,
+          "west": 51.47597449,
+          "east": 51.49085599
+        },
+        {
+          "south": 25.37009868,
+          "north": 25.38357335,
+          "west": 51.49085599,
+          "east": 51.50573748
+        },
+        {
+          "south": 25.37009868,
+          "north": 25.38357335,
+          "west": 51.50573748,
+          "east": 51.52061898
+        },
+        {
+          "south": 25.37009868,
+          "north": 25.38357335,
+          "west": 51.52061898,
+          "east": 51.53550048
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_030",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.37009868,
+        "north": 25.39361,
+        "west": 51.43133,
+        "east": 51.55038198
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.37009868,
+          "north": 25.38357335,
+          "west": 51.53550048,
+          "east": 51.55038198
+        },
+        {
+          "south": 25.38357335,
+          "north": 25.39361,
+          "west": 51.43133,
+          "east": 51.4462115
+        },
+        {
+          "south": 25.38357335,
+          "north": 25.39361,
+          "west": 51.4462115,
+          "east": 51.46109299
+        },
+        {
+          "south": 25.38357335,
+          "north": 25.39361,
+          "west": 51.46109299,
+          "east": 51.47597449
+        }
+      ]
+    },
+    {
+      "id": "lime_qa_app_doha_031",
+      "provider": "lime",
+      "city": "Doha",
+      "center": [
+        25.28545,
+        51.53096
+      ],
+      "aliases": [
+        "الدوحة",
+        "Ad Dawhah"
+      ],
+      "bounds": {
+        "south": 25.38357335,
+        "north": 25.39361,
+        "west": 51.47597449,
+        "east": 51.50573748
+      },
+      "timeZone": "Asia/Qatar",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "44PQ275VZZH56",
+      "limeMapTiles": [
+        {
+          "south": 25.38357335,
+          "north": 25.39361,
+          "west": 51.47597449,
+          "east": 51.49085599
+        },
+        {
+          "south": 25.38357335,
+          "north": 25.39361,
+          "west": 51.49085599,
+          "east": 51.50573748
+        }
+      ]
+    }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Doha_113_exclude_new_type.json"
+  ]
+}

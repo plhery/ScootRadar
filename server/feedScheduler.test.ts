@@ -182,3 +182,16 @@ it('counts a collection already under way as the one a request asked for', async
     expect(scheduler.refreshing('lyon')).toBe(false);
   } finally { scheduler.stop(); }
 });
+
+it('uses an upstream-specific idle interval while watched areas still refresh every minute', async () => {
+  const limited = { id: 'lime-area', host: 'lime', idleIntervalMs: 60 * MINUTE };
+  const { scheduler, times } = schedule([limited, { id: 'public', host: 'gbfs' }]);
+  try {
+    await vi.advanceTimersByTimeAsync(41 * MINUTE);
+    expect(times('lime-area')).toEqual([0]);
+    expect(times('public')).toEqual([0, 20, 40]);
+    scheduler.demand(['lime-area']);
+    await vi.advanceTimersByTimeAsync(2 * MINUTE);
+    expect(times('lime-area')).toEqual([0, 41, 42, 43]);
+  } finally { scheduler.stop(); }
+});

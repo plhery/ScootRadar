@@ -452,6 +452,8 @@ describe('ControlSheet settings', () => {
       'BR/CL/MX/KZ/AZ/GE: JET map',
       'BR/CL/MX/KZ/CO/BY: Whoosh map',
       'ZA: Zippy rider map',
+      'JP/CL/MX/RO/CZ/QA/AU: Lime map',
+      'JP/CL/MX/RO/CZ/QA/AU: GeoNames · CC BY 4.0',
       'Search · Geoapify',
       'Search · Photon, komoot',
       'Parking · Métropole Européenne de Lille',

@@ -40,6 +40,21 @@ final class ScooterMapModelTests: XCTestCase {
         XCTAssertFalse(model.availableProviders.contains(.lime))
     }
 
+    func testLimeCoverageReachesTheCompleteMarketsIncludingBrisbanesOuterServiceAreas() {
+        let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
+        // The provider's Wynnum/Manly and Sandgate/Shorncliffe zone icons, beyond central Brisbane.
+        let points: [(Double, Double)] = [
+            (45.88333, 22.9), (48.97447, 14.47434), (20.58806, -100.38806),
+            (26.213, 127.67851), (25.28545, 51.53096), (-33.3976605, -70.5505662),
+            (-27.47658, 153.0306725), (-27.44796, 153.17945), (-27.33526, 153.06117)
+        ]
+        for (lat, lng) in points {
+            model.viewport = GeoBounds(south: lat - 0.0002, west: lng - 0.0002,
+                north: lat + 0.0002, east: lng + 0.0002)
+            XCTAssertTrue(model.availableProviders.contains(.lime), "Lime coverage at \(lat), \(lng)")
+        }
+    }
+
     func testFrenchViewportHidesSwissProvidersWithoutChangingSavedSelection() {
         let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
         let selected = model.enabledProviders
