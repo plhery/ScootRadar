@@ -12,10 +12,17 @@ const LILLESTROM: [number, number] = [59.9556, 11.0492];
 const FJERDINGBY: [number, number] = [59.9253, 11.045];
 const PORSGRUNN: [number, number] = [59.1405, 9.6561];
 const SKIEN: [number, number] = [59.2096, 9.609];
+const GRIMSTAD: [number, number] = [58.3405, 8.5934];
+const LILLESAND: [number, number] = [58.2496, 8.3778];
+const STRAUME: [number, number] = [60.3585, 5.1235];
+const KLEPPESTO: [number, number] = [60.4087, 5.2262];
+const BERGEN: [number, number] = [60.3913, 5.3221];
 const BRIGHTON: [number, number] = [50.8225, -0.1372];
 const POOLE: [number, number] = [50.715, -1.9872];
 const BOURNEMOUTH: [number, number] = [50.7204, -1.8796];
 const CHRISTCHURCH_GB: [number, number] = [50.7354, -1.7787];
+const NORTHAMPTON: [number, number] = [52.2405, -0.9027];
+const KETTERING: [number, number] = [52.3967, -0.7252];
 const MATOSINHOS: [number, number] = [41.1844, -8.6963];
 const PORTO: [number, number] = [41.1496, -8.611];
 const KYIV: [number, number] = [50.4501, 30.5234];
@@ -50,6 +57,17 @@ describe('activeCurfew', () => {
     // Kauniainen is an enclave inside Espoo and has no entry of its own.
     expect(activeCurfew([60.2124, 24.728], at('2026-10-16T21:30:00Z'))).toBeNull();
     expect(activeCurfew([61.4978, 23.761], at('2026-10-16T21:30:00Z'))).toBeNull();
+  });
+
+  it('closes Turku, Lahti and Porvoo after Friday and Saturday only', () => {
+    const towns: [[number, number], string][] = [[[60.4518, 22.2666], 'Turku'], [[60.9827, 25.6612], 'Lahti'], [[60.3923, 25.6651], 'Porvoo']];
+    for (const [point, city] of towns) {
+      // Friday 16 October 2026: 23:30, then 00:30 Saturday, Helsinki time.
+      expect(activeCurfew(point, at('2026-10-16T20:30:00Z'))).toBeNull();
+      expect(activeCurfew(point, at('2026-10-16T21:30:00Z'))).toEqual({ city, until: at('2026-10-17T02:00:00Z'), timeZone: 'Europe/Helsinki' });
+      // Thursday 00:30.
+      expect(activeCurfew(point, at('2026-10-14T21:30:00Z'))).toBeNull();
+    }
   });
 
   it('holds in Oslo from 23:00 to 05:00, Oslo time', () => {
@@ -104,6 +122,18 @@ describe('activeCurfew', () => {
     expect(activeCurfew(PORSGRUNN, at('2026-10-15T03:00:00Z'))).toBeNull();
   });
 
+  it('keeps each southern and western town to its own hours', () => {
+    // Wednesday 14 October 2026, 23:30 in Norway: Lillesand closes from 23:00, Grimstad from midnight.
+    expect(activeCurfew(LILLESAND, at('2026-10-14T21:30:00Z'))).toEqual({ city: 'Lillesand', until: at('2026-10-15T03:00:00Z'), timeZone: 'Europe/Oslo' });
+    expect(activeCurfew(GRIMSTAD, at('2026-10-14T21:30:00Z'))).toBeNull();
+    expect(activeCurfew(GRIMSTAD, at('2026-10-14T22:30:00Z'))).toEqual({ city: 'Grimstad', until: at('2026-10-15T02:00:00Z'), timeZone: 'Europe/Oslo' });
+    // 00:30: Øygarden closes every night, Askøy only after Friday and Saturday, Bergen never.
+    expect(activeCurfew(STRAUME, at('2026-10-14T22:30:00Z'))).toEqual({ city: 'Øygarden', until: at('2026-10-15T03:00:00Z'), timeZone: 'Europe/Oslo' });
+    expect(activeCurfew(KLEPPESTO, at('2026-10-14T22:30:00Z'))).toBeNull();
+    expect(activeCurfew(KLEPPESTO, at('2026-10-16T22:30:00Z'))).toEqual({ city: 'Askøy', until: at('2026-10-17T03:00:00Z'), timeZone: 'Europe/Oslo' });
+    expect(activeCurfew(BERGEN, at('2026-10-16T22:30:00Z'))).toBeNull();
+  });
+
   it('takes the window of the night it is when a city has several', () => {
     // Tønsberg: 23:00–05:00 after Friday and Saturday, 01:00–05:00 after the other evenings.
     expect(activeCurfew(TONSBERG, at('2026-10-13T21:30:00Z'))).toBeNull();
@@ -126,6 +156,10 @@ describe('activeCurfew', () => {
       expect(activeCurfew(point, at('2026-10-12T21:00:00Z'))).toEqual({ city, until: at('2026-10-13T04:00:00Z'), timeZone: 'Europe/London' });
       expect(activeCurfew(point, at('2026-10-13T04:00:00Z'))).toBeNull();
     }
+    // Northampton closes from 23:00 to 04:00; Kettering, on the same Voi map, has no ban.
+    expect(activeCurfew(NORTHAMPTON, at('2026-10-12T21:59:00Z'))).toBeNull();
+    expect(activeCurfew(NORTHAMPTON, at('2026-10-12T22:00:00Z'))).toEqual({ city: 'Northampton', until: at('2026-10-13T03:00:00Z'), timeZone: 'Europe/London' });
+    expect(activeCurfew(KETTERING, at('2026-10-12T22:00:00Z'))).toBeNull();
   });
 
   it('reads Matosinhos in Lisbon time, and stops at Porto', () => {

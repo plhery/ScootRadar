@@ -114,9 +114,10 @@ No law of Åland and no rule of Mariehamn bans renting at night, so
 - **Hopp's terms** ([hopp.bike](https://hopp.bike/tos)) set an age of 18 and
   no hours.
 
-Five mainland towns ban renting at night, in the terms of the micromobility
-permits each gives its operators. Since 24 October, Helsinki, Espoo and Vantaa
-have curfew entries; Turku and Oulu remain absent.
+Seven mainland towns ban renting at night, in the terms of the micromobility
+permits each gives its operators. Helsinki, Espoo, Vantaa, Turku, Lahti and
+Porvoo have curfew entries since 24 October; Oulu, with no scooter on the map,
+has none.
 
 - **Helsinki:** operators must switch their scooters off on the nights from
   Friday to Saturday and from Saturday to Sunday, 23:00 to 05:00, and on Vappu
@@ -134,6 +135,16 @@ have curfew entries; Turku and Oulu remain absent.
   Year's Eve when they fall on a weekday
   ([permit terms](https://www.turku.fi/sites/default/files/document/turun-kaupungin-mikroliikenneluvan-lupaehdot_2026.pdf),
   2026).
+- **Lahti:** no renting from Friday to Saturday and from Saturday to Sunday,
+  00:00 to 05:00, across the whole city, nor on the nights that start on
+  Maundy Thursday, 30 April and the day before Midsummer Eve
+  ([permit terms](https://www.lahti.fi/app/uploads/2026/04/mikroliikenneluvan-ehdot-2026.pdf),
+  section 7, 17 February 2026).
+- **Porvoo:** scooters must not be available from Friday to Saturday and from
+  Saturday to Sunday, 00:00 to 05:00, nor on the nights of Vappu, Midsummer
+  and New Year's Eve; the season runs from 15 April to 31 October
+  ([permit terms](https://www.porvoo.fi/app/uploads/2025/12/Mikroliikenneluvan-lupaehdot_fi_sv.pdf),
+  28 November 2025).
 - **Oulu:** no riding from Friday to Saturday and from Saturday to Sunday,
   00:00 to 05:00, nor on 1 May, 00:00 to 05:00
   ([permit terms](https://www.ouka.fi/media/18301/download), 9 December 2025).
@@ -150,9 +161,10 @@ have curfew entries; Turku and Oulu remain absent.
 
 ## Known gaps
 
-- **Mainland Finland** has no scooter on the map. Voi, Ryde and Dott run in
-  Helsinki, Espoo, Vantaa, Tampere and Turku, with no public feed. Bolt's only
-  public scooter feeds in Europe are Brussels and Liverpool.
+- **Mainland Finland** has no public scooter feed. Since 24 October 2026 the
+  map shows Dott's and Voi's scooters there from their app maps
+  ([Dott](dott-app-map.md), [Voi](voi-app-map.md)); Ryde's and Bolt's are not
+  on it. Bolt's only public scooter feeds in Europe are Brussels and Liverpool.
 - **Dott:** the registry's 40 Finnish regions don't answer. 34 answer 404.
   Six answer 403 `ERR_REGION_OFFLINE`, which means paused, probably for the
   winter: Ekenäs (`tammisaari`), Hamina, Hanko, Imatra, Kalajoki and Kotka.
