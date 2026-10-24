@@ -65,8 +65,12 @@ The scooter cache collects Kyiv within its bounds, so no position in Lima or
 the Galápagos reaches a snapshot, and the city overview, Ukraine's total, feed
 health and metrics only ever count scooters in Kyiv. Since 23 October 2026, by
 the user's choice, a scooter the feed puts more than 1,000 km from Kyiv keeps
-its last place in Kyiv for ten minutes after its last collection there, then
-is dropped (`server/strayHold.ts`). A short hop to Lima no longer moves Kyiv's
+its last place in Kyiv for ten minutes from the first collection that finds it
+far away, then is dropped (`server/strayHold.ts`). When nobody looks at Kyiv,
+the cache collects it every 20 minutes, so a scooter is held until the next
+collection. Until 24 October the ten minutes ran from its last collection in
+Kyiv, so at that pace none was held: a wave from 02:54 that night took Kyiv
+from 812 to 200 within 40 minutes. A short hop to Lima no longer moves Kyiv's
 count; a longer stay, as the 714 in Lima at 00:40 one night, most of them
 back by 02:10, still lowers it after ten minutes, as riders see in 3electra's
 app. The cache holds only a scooter it had in Kyiv, by the id it keeps in

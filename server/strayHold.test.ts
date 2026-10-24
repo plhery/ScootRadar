@@ -23,8 +23,23 @@ it('keeps a scooter the feed puts in Lima at its last place in Kyiv for ten minu
     if (collected.vehicles.length === 2) expect(collected.vehicles[1]).toEqual(kyiv);
     old = record(collected.vehicles, now);
   }
-  expect(counts).toEqual([2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1]);
+  expect(counts).toEqual([2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1]);
   expect(STRAY_HOLD_MS).toBe(600_000);
+});
+
+it('holds a scooter until the next collection when nobody looks and the feed is collected every 20 minutes', () => {
+  const hold = createStrayHold();
+  const start = Date.now();
+  const kyiv = scooter('one', 50.4447, 30.4991);
+  let old = record([kyiv], start);
+  const counts: number[] = [];
+  for (const minutes of [20, 40, 60]) {
+    const now = start + minutes * 60_000;
+    const collected = hold(old.id, { vehicles: [], stale: false, strayIds: [kyiv.vehicle_id] }, old, now);
+    counts.push(collected.vehicles.length);
+    old = record(collected.vehicles, now);
+  }
+  expect(counts).toEqual([1, 0, 0]);
 });
 
 it('holds only the scooters put far away, not those ridden off or back in town', () => {
@@ -39,13 +54,14 @@ it('holds only the scooters put far away, not those ridden off or back in town',
   expect(collected.vehicles).toEqual([back, lima]);
 });
 
-it('holds nothing for a skipped feed, or past ten minutes since the last collection in town', () => {
+it('holds nothing for a skipped feed, or from the old scooters a failed feed keeps', () => {
   const hold = createStrayHold();
   const now = Date.now();
   const lima = scooter('lima', 50.4447, 30.4991);
   const strayed = { vehicles: [], stale: false, strayIds: [lima.vehicle_id] };
   expect(hold('ukraine:zelectra_ua_kyiv', { ...strayed, skipped: true }, record([lima], now - 60_000), now).vehicles).toEqual([]);
-  // A feed failing for half an hour keeps its old scooters, which are too old to hold once it is back.
-  expect(hold('ukraine:zelectra_ua_kyiv', strayed, record([lima], now - 30 * 60_000), now).vehicles).toEqual([]);
+  // A feed failing for half an hour keeps its last scooters, which are too old to hold once it is back.
+  const failed = { ...record([lima], now - 30 * 60_000), attemptedAt: now - 60_000, failed: true };
+  expect(hold('ukraine:zelectra_ua_kyiv', strayed, failed, now).vehicles).toEqual([]);
   expect(hold('ukraine:zelectra_ua_kyiv', strayed, undefined, now).vehicles).toEqual([]);
 });
