@@ -6,7 +6,7 @@
 
 <p align="center">
   Every shared e-scooter around you, on one map.<br>
-  Lime, Bolt, Bird, Voi, Dott, Hopp and 17 more, in over 380 cities in 27 countries.
+  Lime, Bolt, Bird, Voi, Dott, Hopp and 17 more, in over 530 cities in 28 countries.
 </p>
 
 <p align="center">
