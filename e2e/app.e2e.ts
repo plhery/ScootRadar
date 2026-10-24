@@ -1423,6 +1423,8 @@ test('the search bar is a search field until a place is chosen, and shows a loca
 });
 
 test('the bar keeps its second line whole beside the clear button in every language, down to 320 px', async ({ page }) => {
+  // Ten page loads take 18 to 23 s of the usual 30 on mobile WebKit alone, and more beside a second worker.
+  test.slow();
   // Exercise the Linux font fallback on macOS too, where the system font wins.
   await page.addInitScript(() => document.addEventListener('DOMContentLoaded', () => {
     document.body.style.fontFamily = 'var(--font-geist-sans), sans-serif';
