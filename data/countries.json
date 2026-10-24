@@ -706,18 +706,23 @@
         "bresil",
         "brasile",
         "brazilie",
-        "brasilia"
+        "brasilia",
+        "br"
       ],
       "anchor": [
         -14.2,
         -51.9
       ],
       "credits": {
-        "attribution": "Brazil: JET signed-out Go Jet app map",
+        "attribution": "Brazil: JET signed-out Go Jet app map; Whoosh authenticated rider map",
         "links": [
           {
             "label": "BR: JET map",
             "href": "https://jetshr.com/"
+          },
+          {
+            "label": "BR: Whoosh map",
+            "href": "https://whoosh.bike/"
           }
         ]
       },
@@ -750,24 +755,33 @@
         "chile",
         "chili",
         "cile",
-        "sile"
+        "sile",
+        "cl"
       ],
       "anchor": [
         -33.45,
         -70.67
       ],
       "credits": {
-        "attribution": "Chile: JET signed-out Go Jet app map",
+        "attribution": "Chile: JET signed-out Go Jet app map; Whoosh authenticated rider map",
         "links": [
           {
             "label": "CL: JET map",
             "href": "https://jetshr.com/"
+          },
+          {
+            "label": "CL: Whoosh map",
+            "href": "https://whoosh.bike/"
           }
         ]
       },
       "featuredCities": [
         "cl:Santiago",
-        "cl:Temuco"
+        "cl:Temuco",
+        "cl:Viña del Mar",
+        "cl:La Serena",
+        "cl:Rancagua",
+        "cl:Puerto Montt"
       ]
     },
     {
@@ -790,23 +804,30 @@
         "mexico",
         "mexiko",
         "mexique",
-        "messico"
+        "messico",
+        "mx"
       ],
       "anchor": [
         23.6,
         -102.5
       ],
       "credits": {
-        "attribution": "Mexico: JET signed-out Go Jet app map",
+        "attribution": "Mexico: JET signed-out Go Jet app map; Whoosh authenticated rider map",
         "links": [
           {
             "label": "MX: JET map",
             "href": "https://jetshr.com/"
+          },
+          {
+            "label": "MX: Whoosh map",
+            "href": "https://whoosh.bike/"
           }
         ]
       },
       "featuredCities": [
-        "mx:Monterrey"
+        "mx:Monterrey",
+        "mx:Ciudad de México",
+        "mx:Zapopan"
       ]
     },
     {
@@ -835,23 +856,29 @@
         "kazajistan",
         "kasakstan",
         "казахстан",
-        "казакстан"
+        "казакстан",
+        "kz"
       ],
       "anchor": [
         43.3,
         76.94
       ],
       "credits": {
-        "attribution": "Kazakhstan: JET signed-out Go Jet app map",
+        "attribution": "Kazakhstan: JET signed-out Go Jet app map; Whoosh authenticated rider map",
         "links": [
           {
             "label": "KZ: JET map",
             "href": "https://jetshr.com/"
+          },
+          {
+            "label": "KZ: Whoosh map",
+            "href": "https://whoosh.bike/"
           }
         ]
       },
       "featuredCities": [
-        "kz:Almaty"
+        "kz:Almaty",
+        "kz:Astana"
       ]
     },
     {
@@ -937,6 +964,90 @@
       "featuredCities": [
         "ge:Batumi"
       ]
+    },
+    {
+      "code": "CO",
+      "continent": "south-america",
+      "catalog": "data/colombian-scooter-feeds.json",
+      "source": "colombia",
+      "names": {
+        "en": "Colombia",
+        "de": "Kolumbien",
+        "fr": "Colombie",
+        "it": "Colombia",
+        "nl": "Colombia",
+        "nb": "Colombia",
+        "pt": "Colômbia",
+        "es": "Colombia",
+        "is": "Kólumbía"
+      },
+      "searchWords": [
+        "colombia",
+        "kolumbien",
+        "colombie",
+        "kolumbia",
+        "co"
+      ],
+      "anchor": [
+        4.6,
+        -74.1
+      ],
+      "featuredCities": [
+        "co:Medellín"
+      ],
+      "credits": {
+        "attribution": "Colombia: Whoosh authenticated rider map",
+        "links": [
+          {
+            "label": "CO: Whoosh map",
+            "href": "https://whoosh.bike/"
+          }
+        ]
+      }
+    },
+    {
+      "code": "BY",
+      "continent": "europe",
+      "catalog": "data/belarusian-scooter-feeds.json",
+      "source": "belarus",
+      "names": {
+        "en": "Belarus",
+        "de": "Belarus",
+        "fr": "Biélorussie",
+        "it": "Bielorussia",
+        "nl": "Belarus",
+        "nb": "Belarus",
+        "pt": "Bielorrússia",
+        "es": "Bielorrusia",
+        "is": "Hvíta-Rússland"
+      },
+      "searchWords": [
+        "belarus",
+        "bielorussie",
+        "bielorussia",
+        "bielorrussia",
+        "bielorrusia",
+        "hvita russland",
+        "by"
+      ],
+      "anchor": [
+        53.9,
+        27.6
+      ],
+      "featuredCities": [
+        "by:Minsk",
+        "by:Borisov",
+        "by:Soligorsk"
+      ],
+      "credits": {
+        "attribution": "Belarus: Whoosh authenticated rider map",
+        "links": [
+          {
+            "label": "BY: Whoosh map",
+            "href": "https://whoosh.bike/"
+          }
+        ]
+      }
     }
   ]
 }

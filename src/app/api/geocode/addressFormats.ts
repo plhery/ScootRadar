@@ -39,9 +39,10 @@ export const ADDRESS_FORMATS: Readonly<Record<string, AddressFormat>> = {
   JP: { numberFirst: true, townLine: '{town}, {region} {postcode}', postcode: /\d{3}-?\d{4}/ },
   // Correios writes the municipality and state before the eight-digit CEP.
   BR: { townLine: '{town}, {region} {postcode}', postcode: /\d{5}-?\d{3}/ },
-  CL: {},
+  CL: { townLine: '{postcode} {town}, {region}', postcode: /\d{7}/ },
+  CO: { townLine: '{town}, {region}, {postcode}', postcode: /\d{6}/ },
   MX: { townLine: '{postcode} {town}, {region}', postcode: /\d{5}/ },
-  KZ: {},
+  KZ: { postcode: /\d{6}/ },
   AZ: {},
   GE: {},
 };

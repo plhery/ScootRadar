@@ -41,6 +41,11 @@ describe('the address formats', () => {
     expect(townLine('CR', { town: 'Tamarindo', postcode: '50309', region: region('Guanacaste') })).toBe('Tamarindo 50309');
     expect(townLine('BQ', { town: 'Kralendijk', postcode: '', region: region('Nederland') })).toBe('Kralendijk');
     expect(townLine('JP', { town: 'Chiyoda-ku', postcode: '100-8798', region: region('Tokyo') })).toBe('Chiyoda-ku, Tokyo 100-8798');
+    expect(townLine('BR', { town: 'São Paulo', postcode: '01310-100', region: region('SP') })).toBe('São Paulo, SP 01310-100');
+    expect(townLine('CL', { town: 'Santiago', postcode: '8340457', region: region('') })).toBe('8340457 Santiago');
+    expect(townLine('CO', { town: 'Medellín', postcode: '050021', region: region('Antioquia') })).toBe('Medellín, Antioquia, 050021');
+    expect(townLine('MX', { town: 'Monterrey', postcode: '64000', region: region('Nuevo León') })).toBe('64000 Monterrey, Nuevo León');
+    expect(townLine('KZ', { town: 'Almaty', postcode: '050012', region: region('') })).toBe('050012 Almaty');
   });
 
   it('leave out what OpenStreetMap gives as an Emirati postcode, which the Emirates do not use', () => {
@@ -59,9 +64,10 @@ describe('the address formats', () => {
 
   it('read a postcode typed after the town, and no house number', () => {
     for (const typed of ['Austin, TX 78701', 'Austin TX 78701-1234', 'Toronto, ON M5V 2T6', 'Sydney NSW 2000',
-      'Auckland 1010', 'Tel Aviv 6688218', 'Riyadh 12271', 'Tamarindo 50309', 'São Paulo 01311-000']) {
+      'Auckland 1010', 'Tel Aviv 6688218', 'Riyadh 12271', 'Tamarindo 50309', 'São Paulo 01310-100']) {
       expect(typed.replace(POSTCODE_AFTER_TOWN, ''), typed).not.toBe(typed);
     }
+    // Eight digits are now a valid Brazilian CEP; nine unseparated digits match none of these formats.
     for (const typed of ['8001 Zürich', 'Langstrasse 120', 'Tel Aviv 668821811', 'Riyadh 12271a']) {
       expect(typed.replace(POSTCODE_AFTER_TOWN, ''), typed).toBe(typed);
     }

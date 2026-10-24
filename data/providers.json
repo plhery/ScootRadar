@@ -217,5 +217,20 @@
         "jet_"
       ]
     }
+  },
+  {
+    "key": "whoosh",
+    "name": "Whoosh",
+    "color": "#ff6548",
+    "initial": "W",
+    "systemIds": {
+      "prefixes": [
+        "whoosh_"
+      ]
+    },
+    "app": {
+      "link": "https://wsh.bike/",
+      "appStoreId": 1418412616
+    }
   }
 ]

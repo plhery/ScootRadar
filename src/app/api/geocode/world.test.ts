@@ -129,6 +129,16 @@ describe('the fixture', () => {
 });
 
 describe('the search in Oceania and West Asia', () => {
+  it('searches South America and Central Asia when viewing the new Whoosh countries', async () => {
+    const asked = stubUpstreams({});
+    await search('Main Street', { near: [-33.44, -70.65] });
+    await search('Main Street', { near: [43.25, 76.93] });
+    expect(asked(PHOTON_HOST).map(url => url.searchParams.get('bbox')))
+      .toEqual(['-82,-56,-34,13', '40,34,89,56']);
+    expect(countries('São Paulo Brazil')).toContain('BR');
+    expect(countries('Almaty Kazakhstan')).toContain('KZ');
+  });
+
   it('asks Photon within the part of the world the map shows', async () => {
     const asked = stubUpstreams({});
 
@@ -333,7 +343,7 @@ describe('the search in Central America and the Caribbean', () => {
     expect(asked(PHOTON_HOST).map(url => url.searchParams.get('bbox'))).toEqual(['-92.5,7,-77.2,14', '-69.25,11.95,-68.1,12.45', '-170,14,-50,72']);
   });
 
-  it('leaves out Colombia, Venezuela and Aruba, but not Central America, Bonaire or Curaçao', async () => {
+  it('includes covered Medellín while searching Central America and the Caribbean', async () => {
     stubUpstreams({ photon: [
       [{ type: 'city', name: 'San José', state: 'San José', country: 'Costa Rica', countrycode: 'CR' }, 9.9326, -84.0796],
       [{ type: 'city', name: 'Panamá', state: 'Panamá', country: 'Panamá', countrycode: 'PA' }, 8.9714, -79.5342],
@@ -349,19 +359,21 @@ describe('the search in Central America and the Caribbean', () => {
 
     const found = await rows(await search('anything', { near: TAMARINDO }));
 
-    expect(found.map(([title]) => title).sort()).toEqual(['Panamá', 'Rincon', 'San José', 'Willemstad']);
+    expect(found.map(([title]) => title).sort()).toEqual(['Medellín', 'Panamá', 'Rincon', 'San José', 'Willemstad']);
   });
 
-  it('finds no Cartagena of Colombia for a rider in the US, nor in Costa Rica', async () => {
+  it('can find the Cartagenas of South America alongside Spain and Texas', async () => {
     stubUpstreams({ photon: CARTAGENA });
 
     const nearAustin = await rows(await search('Cartagena', { near: AUSTIN }));
     const atHome = await rows(await search('Cartagena', { country: 'US' }));
     const inCostaRica = await rows(await search('Cartagena', { country: 'CR' }));
 
-    // Spain's and Chile's towns precede the street of Texas; Colombia remains outside the searched areas.
-    expect(nearAustin).toEqual([['Cartagena', 'Región de Murcia, España'], ['Cartagena', 'Región de Valparaíso, Chile'], ['Cartagena', 'Bexar, TX']]);
-    expect(atHome).toEqual([['Cartagena', 'Región de Murcia, España'], ['Cartagena', 'Región de Valparaíso, Chile'], ['Cartagena', 'Bexar, TX']]);
+    // Towns precede the street of Texas; the new continent also admits Chile and Colombia.
+    const expected = [['Cartagena', 'Región de Murcia, España'], ['Cartagena', 'Región de Valparaíso, Chile'],
+      ['Cartagena de Indias', 'Bolívar, Colombia'], ['Cartagena', 'Bexar, TX']];
+    expect(nearAustin).toEqual(expected);
+    expect(atHome).toEqual(expected);
     expect(inCostaRica).toEqual(nearAustin);
   });
 

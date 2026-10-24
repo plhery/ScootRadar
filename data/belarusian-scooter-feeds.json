@@ -1,0 +1,75 @@
+{
+  "verifiedOn": "2026-10-24",
+  "catalogSource": "https://api.whoosh.bike/regions/active",
+  "systems": [
+    {
+      "id": "whoosh_by_bors",
+      "country": "BY",
+      "provider": "whoosh",
+      "city": "Borisov",
+      "timeZone": "Europe/Minsk",
+      "center": [
+        54.221869,
+        28.504081
+      ],
+      "bounds": {
+        "south": 53.8326,
+        "north": 54.25149,
+        "west": 27.4068,
+        "east": 28.53523
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "70fdd3b8-e7cb-4406-95ce-ad779d2d2294",
+      "aliases": [
+        "Borisov",
+        "BORS"
+      ]
+    },
+    {
+      "id": "whoosh_by_msq",
+      "country": "BY",
+      "provider": "whoosh",
+      "city": "Minsk",
+      "timeZone": "Europe/Minsk",
+      "center": [
+        53.902284,
+        27.561831
+      ],
+      "bounds": {
+        "south": 53.8326,
+        "north": 54.25149,
+        "west": 27.4068,
+        "east": 28.53523
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "4fdfbd10-3459-46cc-8eea-cfd35935e7d5",
+      "aliases": [
+        "Minsk",
+        "MSQ"
+      ]
+    },
+    {
+      "id": "whoosh_by_slg",
+      "country": "BY",
+      "provider": "whoosh",
+      "city": "Soligorsk",
+      "timeZone": "Europe/Minsk",
+      "center": [
+        52.790668,
+        27.530463
+      ],
+      "bounds": {
+        "south": 52.76991,
+        "north": 52.80366,
+        "west": 27.48468,
+        "east": 27.55641
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "011342b0-ae4c-4331-942f-32806d368163",
+      "aliases": [
+        "Soligorsk",
+        "SLG"
+      ]
+    }
+  ]
+}

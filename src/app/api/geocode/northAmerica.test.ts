@@ -219,7 +219,9 @@ describe('the search in North America', () => {
 
     expect(asked(PHOTON_HOST)[0].searchParams.has('bbox')).toBe(false);
     // After them, the cities of the catalog whose names start so: Limassol.
-    expect(found.filter(([title]) => title === 'Lima')).toEqual([['Lima', 'Ohio, United States'], ['Lima', 'Dalarna, Sweden']]);
+    expect(found.filter(([title]) => title === 'Lima')).toEqual([
+      ['Lima', 'Peru'], ['Lima', 'Ohio, United States'], ['Lima', 'Dalarna, Sweden'],
+    ]);
   });
 
   it('favours the country of the device\'s time zone without a centre, and Switzerland where none is sent', async () => {

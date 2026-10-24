@@ -1,0 +1,29 @@
+{
+  "verifiedOn": "2026-10-24",
+  "catalogSource": "https://api.whoosh.bike/regions/active",
+  "systems": [
+    {
+      "id": "whoosh_co_mde",
+      "country": "CO",
+      "provider": "whoosh",
+      "city": "Medellín",
+      "timeZone": "America/Bogota",
+      "center": [
+        6.243534,
+        -75.579226
+      ],
+      "bounds": {
+        "south": 6.18271,
+        "north": 6.29603,
+        "west": -75.61793,
+        "east": -75.54855
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "c30944b7-724b-43d7-8e6c-2216f5b33b1a",
+      "aliases": [
+        "Medellin",
+        "MDE"
+      ]
+    }
+  ]
+}

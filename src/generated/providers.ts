@@ -36,6 +36,7 @@ const PROVIDER_DEFINITIONS = {
   qick: { name: "Qick", color: "#1ca1a7", initial: "Q", app: { link: "https://qickscooters.app.link/", appStoreId: 1480390337 } },
   luup: { name: "LUUP", color: "#00bda5", initial: "L" },
   jet: { name: "JET", color: "#7b2cff", initial: "J" },
+  whoosh: { name: "Whoosh", color: "#ff6548", initial: "W", app: { link: "https://wsh.bike/", appStoreId: 1418412616 } },
 } as const;
 
 export type ProviderKey = keyof typeof PROVIDER_DEFINITIONS;
@@ -54,6 +55,7 @@ const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: str
   zelectra: {"prefixes":["zelectra"]},
   flamingo: {"prefixes":["flamingo"]},
   elerent: {"prefixes":["elerent"]},
+  whoosh: {"prefixes":["whoosh_"]},
   naolib: {"prefixes":["naolib"]},
   beryl: {"prefixes":["beryl"]},
   hoppy: {"prefixes":["hoppy"]},

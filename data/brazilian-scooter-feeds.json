@@ -1,6 +1,6 @@
 {
   "checkedAt": "2026-10-24",
-  "source": "Go Jet signed-out app map; bounds enclose its rental polygons, with overlapping envelopes merged.",
+  "source": "Go Jet signed-out app map and Whoosh authenticated rider map; reviewed bounded collection areas.",
   "systems": [
     {
       "id": "jet_br_anchieta",
@@ -910,6 +910,213 @@
       "timeZone": "America/Sao_Paulo",
       "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
       "jetAppMap": true
+    },
+    {
+      "id": "whoosh_br_fln",
+      "country": "BR",
+      "provider": "whoosh",
+      "city": "Florianópolis",
+      "timeZone": "America/Sao_Paulo",
+      "center": [
+        -27.592894,
+        -48.54689
+      ],
+      "bounds": {
+        "south": -27.63594,
+        "north": -26.87967,
+        "west": -48.70573,
+        "east": -48.41937
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "249e2c6e-d867-4e2e-af98-14a51fc5c258",
+      "aliases": [
+        "Florianopolis",
+        "FLN"
+      ]
+    },
+    {
+      "id": "whoosh_br_poa",
+      "country": "BR",
+      "provider": "whoosh",
+      "city": "Porto Alegre",
+      "timeZone": "America/Sao_Paulo",
+      "center": [
+        -30.068891,
+        -51.210888
+      ],
+      "bounds": {
+        "south": -30.09712,
+        "north": -30.00374,
+        "west": -51.25218,
+        "east": -51.14004
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "06b925cd-d0ab-41f6-909e-e56a5a1818fc",
+      "aliases": [
+        "Porto Alegre",
+        "POA"
+      ]
+    },
+    {
+      "id": "whoosh_br_gig",
+      "country": "BR",
+      "provider": "whoosh",
+      "city": "Rio de Janeiro",
+      "timeZone": "America/Sao_Paulo",
+      "center": [
+        -22.94598,
+        -43.19508
+      ],
+      "bounds": {
+        "south": -22.99029,
+        "north": -22.89094,
+        "west": -43.40592,
+        "east": -43.16321
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "3fc8e3bc-a5a3-4bac-a12f-65f5bc7bb620",
+      "aliases": [
+        "Rio de Janeiro",
+        "GIG"
+      ]
+    },
+    {
+      "id": "whoosh_br_gru",
+      "country": "BR",
+      "provider": "whoosh",
+      "city": "São Paulo",
+      "timeZone": "America/Sao_Paulo",
+      "center": [
+        -23.544279,
+        -46.636972
+      ],
+      "bounds": {
+        "south": -23.6305,
+        "north": -23.49574,
+        "west": -46.75008,
+        "east": -46.55206
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "9ae85c6f-88d0-4cb3-a0ce-15a331cd217b",
+      "aliases": [
+        "Sao Paulo",
+        "GRU"
+      ]
+    },
+    {
+      "id": "whoosh_br_joi",
+      "country": "BR",
+      "provider": "whoosh",
+      "city": "Joinville",
+      "timeZone": "America/Sao_Paulo",
+      "center": [
+        -25.43699,
+        -49.283064
+      ],
+      "bounds": {
+        "south": -25.47325,
+        "north": -25.40597,
+        "west": -49.3193,
+        "east": -49.2327
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "01a0aa0b-d862-7e45-8871-4062cfc02a2d",
+      "aliases": [
+        "Joinville",
+        "JOI"
+      ]
+    },
+    {
+      "id": "whoosh_br_cgr",
+      "country": "BR",
+      "provider": "whoosh",
+      "city": "Campo Grande",
+      "timeZone": "America/Campo_Grande",
+      "center": [
+        -20.450661,
+        -54.578961
+      ],
+      "bounds": {
+        "south": -20.47173,
+        "north": -20.42416,
+        "west": -54.62322,
+        "east": -54.54795
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "01a09ffb-0541-722d-86be-8714152dee24",
+      "aliases": [
+        "Campo Grande",
+        "CGR"
+      ]
+    },
+    {
+      "id": "whoosh_br_cjd",
+      "country": "BR",
+      "provider": "whoosh",
+      "city": "Campos do Jordão",
+      "timeZone": "America/Sao_Paulo",
+      "center": [
+        -22.7290304,
+        -45.5847613
+      ],
+      "bounds": {
+        "south": -22.76292,
+        "north": -22.69277,
+        "west": -45.61556,
+        "east": -45.53982
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "c5f19814-a5a1-4b8c-94a0-dd94f0a593a7",
+      "aliases": [
+        "Campos do Jordao",
+        "CJD"
+      ]
+    },
+    {
+      "id": "whoosh_br_cwb",
+      "country": "BR",
+      "provider": "whoosh",
+      "city": "Curitiba",
+      "timeZone": "America/Sao_Paulo",
+      "center": [
+        -25.42972,
+        -49.27194
+      ],
+      "bounds": {
+        "south": -25.47325,
+        "north": -25.40597,
+        "west": -49.3193,
+        "east": -49.2327
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "01a05f55-4282-7000-a461-31063322fab3",
+      "aliases": [
+        "Curitiba",
+        "CWB"
+      ]
+    },
+    {
+      "id": "whoosh_br_rec",
+      "country": "BR",
+      "provider": "whoosh",
+      "city": "Recife",
+      "timeZone": "America/Sao_Paulo",
+      "center": [
+        -8.057832,
+        -34.882966
+      ],
+      "bounds": {
+        "south": -8.14695,
+        "north": -8.02252,
+        "west": -34.92407,
+        "east": -34.86337
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "14013945-8468-4938-86ea-22e9822f57d1",
+      "aliases": [
+        "Recife",
+        "REC"
+      ]
     }
   ]
 }

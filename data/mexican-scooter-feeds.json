@@ -1,6 +1,6 @@
 {
   "checkedAt": "2026-10-24",
-  "source": "Go Jet signed-out app map; bounds enclose its rental polygons, with overlapping envelopes merged.",
+  "source": "Go Jet signed-out app map and Whoosh authenticated rider map; reviewed bounded collection areas.",
   "systems": [
     {
       "id": "jet_mx_monterrey-san-pedro",
@@ -22,6 +22,78 @@
       "aliases": [
         "San Pedro Garza García",
         "Monterrey - San Pedro"
+      ]
+    },
+    {
+      "id": "whoosh_mx_spr",
+      "country": "MX",
+      "provider": "whoosh",
+      "city": "Monterrey",
+      "timeZone": "America/Mexico_City",
+      "center": [
+        25.686613,
+        -100.316116
+      ],
+      "bounds": {
+        "south": 25.6341,
+        "north": 25.68824,
+        "west": -100.42479,
+        "east": -100.26807
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "b4392011-21b2-4cb3-9abb-a1f835657812",
+      "aliases": [
+        "San Pedro",
+        "SPR",
+        "San Pedro Garza García"
+      ]
+    },
+    {
+      "id": "whoosh_mx_mmmx",
+      "country": "MX",
+      "provider": "whoosh",
+      "city": "Ciudad de México",
+      "timeZone": "America/Mexico_City",
+      "center": [
+        19.4326,
+        -99.1332
+      ],
+      "bounds": {
+        "south": 19.35517,
+        "north": 19.46072,
+        "west": -99.218,
+        "east": -99.11774
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "4e206156-1b65-4a16-9f12-1859c40a8e58",
+      "aliases": [
+        "Mexico City",
+        "MMMX",
+        "CDMX",
+        "Ciudad de Mexico"
+      ]
+    },
+    {
+      "id": "whoosh_mx_zap",
+      "country": "MX",
+      "provider": "whoosh",
+      "city": "Zapopan",
+      "timeZone": "America/Mexico_City",
+      "center": [
+        20.721331,
+        -103.391882
+      ],
+      "bounds": {
+        "south": 20.63267,
+        "north": 20.74174,
+        "west": -103.44679,
+        "east": -103.37085
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "44fc6ce8-01ab-4389-ac65-804a5c9f899b",
+      "aliases": [
+        "Zapopan",
+        "ZAP"
       ]
     }
   ]

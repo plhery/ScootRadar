@@ -1,6 +1,6 @@
 {
   "checkedAt": "2026-10-24",
-  "source": "Go Jet signed-out app map; bounds enclose its rental polygons, with overlapping envelopes merged.",
+  "source": "Go Jet signed-out app map and Whoosh authenticated rider map; reviewed bounded collection areas.",
   "systems": [
     {
       "id": "jet_kz_almaty",
@@ -21,6 +21,52 @@
       "jetAppMap": true,
       "aliases": [
         "Алматы"
+      ]
+    },
+    {
+      "id": "whoosh_kz_ala",
+      "country": "KZ",
+      "provider": "whoosh",
+      "city": "Almaty",
+      "timeZone": "Asia/Almaty",
+      "center": [
+        43.23493,
+        76.882337
+      ],
+      "bounds": {
+        "south": 43.22016,
+        "north": 43.24751,
+        "west": 76.8602,
+        "east": 76.90581
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "9e0c00bf-3b07-41b6-8b6f-08a4289a021c",
+      "aliases": [
+        "Almaty",
+        "ALA"
+      ]
+    },
+    {
+      "id": "whoosh_kz_nqz",
+      "country": "KZ",
+      "provider": "whoosh",
+      "city": "Astana",
+      "timeZone": "Asia/Almaty",
+      "center": [
+        51.143975,
+        71.43581
+      ],
+      "bounds": {
+        "south": 51.06534,
+        "north": 51.20139,
+        "west": 71.3469,
+        "east": 71.54021
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "8a1f43d5-cc52-4ca2-9b1c-5046160bc4eb",
+      "aliases": [
+        "Astana",
+        "NQZ"
       ]
     }
   ]

@@ -6,14 +6,15 @@ requests. No account was created in that investigation. Those checks stopped
 at Go Jet's signing gate and incorrectly inferred that its map needed a rider
 account. **The follow-up reproduced signing and retrieved its scooters signed
 out**: see [the integrated Go Jet adapter and live evidence](gojet-app-map.md).
-LUUP's subsequent phone sign-in and integration are documented
-[separately](luup-app-map.md).
+Subsequent user-authorized phone sign-ins enabled the
+[Whoosh](whoosh-app-map.md) and [LUUP](luup-app-map.md) collectors; their
+integration notes record the live tests.
 
 | App | Vehicle route | Signed-out reply | Sign-in | Beyond the rider token |
 | --- | --- | --- | --- | --- |
 | JET's Go Jet (Brazil, Chile, Mexico, Kazakhstan, Georgia, Azerbaijan) | `GET api.gojet.app/api/v1/geo/transports` | 200 with individual scooters after app signing | Not needed for the map | Signed app requests; TLS 1.2 on Netcup. App Check is not required for map reads |
 | JET (Kazakhstan, Georgia, Uzbekistan, Mongolia) | `GET service.jetscooters.fun/gatewayclient/api/v6/transports` | 401, `WWW-Authenticate: Bearer` | Phone and SMS code, the request behind an hCaptcha | None found |
-| Whoosh | `POST api.whoosh.bike/client/devices/searches` | 401 `{"message":"Unauthorized"}` | Google or Apple outside Russia | None found |
+| Whoosh | `POST api.whoosh.bike/client/devices/searches` | 401 `{"message":"Unauthorized"}` | Kazakhstan phone login verified; Google/Apple in Latin America | None found |
 | Beam | GraphQL `vehiclesByH3` at `gateway.ridebeam.com/query` | 200 with an `Unauthorized` error | Phone and SMS code, or Google, Apple, Facebook, Kakao or Microsoft | Its SMS request is signed, and its login probably checks an encrypted fraud header |
 | LUUP | `GET mobileApiDBReader-ports/by-location` on LUUP's Cloud Functions | 403 `Forbidden` | Phone and SMS code | None on the port reader |
 
@@ -134,7 +135,7 @@ private GBFS.
 The map is `POST /client/devices/searches` with:
 
 ```json
-{"clientSearchDevicesParams": {"visibleArea": {"upperLeft": {"lat": -33.42, "lng": -70.66}, "bottomRight": {"lat": -33.46, "lng": -70.62}}, "regionIds": ["<region id>"], "type": ["scooter"]}}
+{"clientSearchDevicesParams": {"visibleArea": {"upperLeft": {"lat": -33.43, "lng": -70.62}, "bottomRight": {"lat": -33.41, "lng": -70.59}}, "regionIds": ["<region id>"], "type": ["scooter"]}}
 ```
 
 It answers `{"devices": [...]}`; in the app's model a device has `id`,
@@ -156,10 +157,11 @@ without the key, twice; `regions/active` and `areas` did too.
 
 The region configuration turns phone sign-in off in Latin America
 (`isPhoneAuthAvailable: false`) and Google and Apple sign-in on; phone codes
-and Russian bank logins are the Russian route. One Cognito pool serves every
-region outside Russia, so one account should reach them all (read in the
-code, not tested). The app pins its TLS certificates but has no Play
-Integrity, SafetyNet, App Check or request signing.
+and phone login also works in Kazakhstan. A subsequent Kazakhstan phone
+sign-in was verified against the Latin American map and token renewal. The
+integrated [25-region collector](whoosh-app-map.md) handles small viewports,
+300-device responses and seasonal storage. The app pins its TLS certificates
+but has no Play Integrity, SafetyNet, App Check or request signing.
 
 ## Beam
 
@@ -292,13 +294,12 @@ privately. What each would add, outside Russia:
 | App | Account | Would add |
 | --- | --- | --- |
 | JET (Central Asia) | Phone and SMS code | Almaty (about 22,500 scooters, JET over 70%), Ulaanbaatar (3,000+), Tashkent, Tbilisi and Batumi |
-| Whoosh | Google or Apple | Chile (8,000+), São Paulo, Curitiba, Florianópolis, Medellín (about 400), Monterrey and San Pedro Garza García, Mexico City, Almaty |
+| Whoosh | Kazakhstan phone login verified; Google or Apple in Latin America | Chile (8,000+), São Paulo, Curitiba, Florianópolis, Medellín (about 400), Monterrey and San Pedro Garza García, Mexico City, Almaty |
 | Beam | Phone and SMS code, or Google or Apple | Malaysia (5,500+), Australia, Thailand, Indonesia, New Zealand, South Korea, Türkiye and two US towns |
 | LUUP | Phone and SMS code | Japan's ports, with counts of scooters, e-bikes and seated scooters |
 
-Go Jet, with most of JET's Brazilian fleet and its Chilean and Mexican ones,
-needs its request signature reproduced even with an account, so it isn't a
-plain HTTP read. Once signed in, each still needs checking: whether a
-non-local phone number is accepted, whether one account reaches every
-country, response caps, liveness between polls, and whether Netcup gets the
-same answers as the Mac.
+Go Jet's signed-out integration reproduces its app signature and has verified
+complete sweeps on Netcup. Whoosh and LUUP also have integrated collectors;
+see their linked notes for session renewal, response caps and production
+checks. JET's separate Central Asian app and Beam still need a rider login
+and equivalent checks.

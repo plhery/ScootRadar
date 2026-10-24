@@ -1,6 +1,6 @@
 {
   "checkedAt": "2026-10-24",
-  "source": "Go Jet signed-out app map; bounds enclose its rental polygons, with overlapping envelopes merged.",
+  "source": "Go Jet signed-out app map and Whoosh authenticated rider map; reviewed bounded collection areas.",
   "systems": [
     {
       "id": "jet_cl_santiago",
@@ -37,6 +37,167 @@
       "timeZone": "America/Santiago",
       "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
       "jetAppMap": true
+    },
+    {
+      "id": "whoosh_cl_zpc",
+      "country": "CL",
+      "provider": "whoosh",
+      "city": "Temuco",
+      "timeZone": "America/Santiago",
+      "center": [
+        -38.7397,
+        -72.5984
+      ],
+      "bounds": {
+        "south": -39.2985,
+        "north": -38.69954,
+        "west": -72.67406,
+        "east": -71.93557
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "7eb4843a-1c09-40ad-ac5a-545776a5bc1b",
+      "aliases": [
+        "Temuco",
+        "ZPC"
+      ]
+    },
+    {
+      "id": "whoosh_cl_scvi",
+      "country": "CL",
+      "provider": "whoosh",
+      "city": "Villarrica",
+      "timeZone": "America/Santiago",
+      "center": [
+        -39.251659,
+        -72.094822
+      ],
+      "bounds": {
+        "south": -39.2985,
+        "north": -38.69954,
+        "west": -72.67406,
+        "east": -71.93557
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "e3883d91-a8f7-42a2-aea3-b27382155ec0",
+      "aliases": [
+        "Villarica",
+        "SCVI"
+      ]
+    },
+    {
+      "id": "whoosh_cl_scvm",
+      "country": "CL",
+      "provider": "whoosh",
+      "city": "Viña del Mar",
+      "timeZone": "America/Santiago",
+      "center": [
+        -33.0153009,
+        -71.5500508
+      ],
+      "bounds": {
+        "south": -33.57098,
+        "north": -32.96499,
+        "west": -71.5704,
+        "east": -70.49203
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "32e1a3e0-de88-4474-a517-9c7ca45fd26e",
+      "aliases": [
+        "Viña del Mar",
+        "SCVM"
+      ]
+    },
+    {
+      "id": "whoosh_cl_lsc",
+      "country": "CL",
+      "provider": "whoosh",
+      "city": "La Serena",
+      "timeZone": "America/Santiago",
+      "center": [
+        -29.9092,
+        -71.2491
+      ],
+      "bounds": {
+        "south": -29.99433,
+        "north": -29.89335,
+        "west": -71.35383,
+        "east": -71.24147
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "7cb1c144-4cfd-46c4-a9bb-91d35810497d",
+      "aliases": [
+        "La Serena",
+        "LSC"
+      ]
+    },
+    {
+      "id": "whoosh_cl_pmc",
+      "country": "CL",
+      "provider": "whoosh",
+      "city": "Puerto Montt",
+      "timeZone": "America/Santiago",
+      "center": [
+        -41.465558,
+        -72.947235
+      ],
+      "bounds": {
+        "south": -41.495,
+        "north": -41.37834,
+        "west": -73.01201,
+        "east": -72.85224
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "c1f4ee82-601d-4223-992e-610bfb56bfff",
+      "aliases": [
+        "Puerto Montt",
+        "PMC"
+      ]
+    },
+    {
+      "id": "whoosh_cl_qrc",
+      "country": "CL",
+      "provider": "whoosh",
+      "city": "Rancagua",
+      "timeZone": "America/Santiago",
+      "center": [
+        -34.166728,
+        -70.697146
+      ],
+      "bounds": {
+        "south": -34.19857,
+        "north": -33.3159,
+        "west": -70.77326,
+        "east": -70.49203
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "f60e9f72-0041-4857-a3b4-8ff121d96529",
+      "aliases": [
+        "Rancágua",
+        "QRC"
+      ]
+    },
+    {
+      "id": "whoosh_cl_scl",
+      "country": "CL",
+      "provider": "whoosh",
+      "city": "Santiago",
+      "timeZone": "America/Santiago",
+      "center": [
+        -33.442762,
+        -70.653881
+      ],
+      "bounds": {
+        "south": -34.19857,
+        "north": -32.96499,
+        "west": -71.5704,
+        "east": -70.49203
+      },
+      "discoveryUrl": "https://api.whoosh.bike/",
+      "whooshAppRegion": "a4f231af-7b43-4372-bb73-d03cc552a07c",
+      "aliases": [
+        "Santiago",
+        "SCL"
+      ]
     }
   ]
 }

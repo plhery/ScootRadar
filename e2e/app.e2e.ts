@@ -1119,6 +1119,24 @@ test('a map panned across the 180° line keeps the scooters and the town totals 
   expect(country.east - country.west + 360).toBeLessThan(90);
 });
 
+test('Whoosh in Santiago shows its battery, range and rider-app link', async ({ page, isMobile }) => {
+  await page.route('**/api/scooters?**', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({
+    vehicles: [{ provider: 'whoosh', vehicle_id: 'whoosh-santiago-1', lat: -33.412388, lng: -70.598442,
+      battery: 80, range_m: 19000, deep_link: null, distance_m: null }],
+    clusters: [], providers: { whoosh: 1 },
+    meta: { ...scooterResponse.meta, sources: { chile: 'fresh' }, totalVehicles: 1, mode: 'vehicles', zoom: 16 },
+  }) }));
+  await page.goto('/map?origin=-33.412388,-70.598442');
+  await expect(page.getByRole('button', { name: /^Whoosh, / })).toBeVisible();
+  await expect(page.getByRole('button', { name: /^PubliBike, / })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Whoosh scooter', exact: true }).locator('.scooter-marker').click();
+  const card = page.locator('.dock-card');
+  await expect(card.getByRole('heading', { name: 'Whoosh' })).toBeVisible();
+  await expect(card.locator('.card-figure strong')).toHaveText(['80%', '19km']);
+  await expect(card.getByText('Price shown in the Whoosh app')).toBeVisible();
+  if (isMobile) await expect(card.getByRole('link', { name: 'Open in Whoosh' })).toBeVisible();
+});
+
 test('French map controls omit Swiss providers while keeping the local operator', async ({ page }) => {
   await page.goto('/map?origin=45.75,4.85');
   await expect(page.getByRole('button', { name: /^Dott, / })).toBeVisible();

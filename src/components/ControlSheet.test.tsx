@@ -449,6 +449,7 @@ describe('ControlSheet settings', () => {
       'CH/FR/PT/ES/PL/FI/UA/IL/NZ: OpenStreetMap boundaries · ODbL',
       'JP: LUUP map',
       'BR/CL/MX/KZ/AZ/GE: JET map',
+      'BR/CL/MX/KZ/CO/BY: Whoosh map',
       'Search · Geoapify',
       'Search · Photon, komoot',
       'Parking · Métropole Européenne de Lille',

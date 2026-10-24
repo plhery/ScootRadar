@@ -62,8 +62,8 @@ const PHOTON_LAYERS = ['house', 'street', 'locality', 'district', 'city', 'other
 // - West Asia, from Israel to the Gulf and Yemen, and East Asia, from Burma to
 //   Japan and from Hokkaido to Java; Cyprus, north of 34°N, is in Europe's;
 // - North America, from Hawaii and Alaska to Newfoundland and from the Arctic
-//   to Mexico's southern border; south of 14°N, as boxes of their own so that
-//   South America stays out, Central America, from Guatemala's Pacific coast to
+//   to Mexico's southern border; south of 14°N, as boxes of their own, Central
+//   America, from Guatemala's Pacific coast to
 //   Panama's border with Colombia (a few villages of Colombia's Darién and its
 //   islands of San Andrés and Providencia come with it, not the Gulf of Urabá
 //   nor anything east of it), and Bonaire and Curaçao, off Venezuela's coast but
@@ -72,7 +72,8 @@ const PHOTON_LAYERS = ['house', 'street', 'locality', 'district', 'city', 'other
 // - Europe, from the Azores and the Canaries to the North Cape, without Africa south
 //   of 34°N, from the coast facing the Canaries to Sinai: Egypt, Libya and the south
 //   of Morocco, Algeria and Tunisia. Cyprus, Crete and Malta are north of it.
-// A point is in the first it is in: Israel in West Asia's, not in Europe's.
+// South America follows North America's boxes, which retain the Caribbean islands;
+// Central Asia includes Kazakhstan. A point is in the first box it is in.
 // Only those with the anchor of a country of data/countries.json are searched.
 // Photon is asked within the one around the map centre; Geoapify is not, as in a
 // rectangle that large it finds nothing for "Via Roma 10", nor in a list of
@@ -80,17 +81,14 @@ const PHOTON_LAYERS = ['house', 'street', 'locality', 'district', 'city', 'other
 // left out instead (servedPlace).
 const CONTINENT_BOXES: Record<Continent, Box[]> = {
   oceania: [{ west: 110, south: -48, east: 180, north: -9 }],
-  asia: [{ west: 34, south: 12, east: 60, north: 34 }, { west: 40, south: 34, east: 88, north: 56 },
+  asia: [{ west: 34, south: 12, east: 60, north: 34 }, { west: 40, south: 34, east: 89, north: 56 },
     { west: 95, south: -11, east: 150, north: 46 }],
-  'south-america': [
-    { west: -74, south: -34, east: -34, north: 6 },
-    { west: -76, south: -56, east: -66, north: -17 },
-  ],
   'north-america': [
     { west: -170, south: 14, east: -50, north: 72 },
     { west: -92.5, south: 7, east: -77.2, north: 14 },
     { west: -69.25, south: 11.95, east: -68.1, north: 12.45 },
   ],
+  'south-america': [{ west: -82, south: -56, east: -34, north: 13 }],
   europe: [{ west: -32, south: 27.5, east: 45, north: 72, without: [{ west: -13.2, south: 27.5, east: 34, north: 34 }] }],
 };
 const BOXES = (Object.entries(CONTINENT_BOXES) as [Continent, Box[]][])

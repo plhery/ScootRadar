@@ -405,6 +405,15 @@ overrides its location). Its app identifiers and rider tokens belong only
 there, never in Git or build variables. See [the session format and
 verification](docs/atom-app-map.md#session-configuration-and-verification).
 
+Whoosh's rider map reads `/data/whoosh-session.json` (`WHOOSH_SESSION_PATH`
+overrides it), mode 0600, owned by Node UID 1000. It holds the rider refresh
+token and app identifiers; neither Git nor build variables holds them.
+All regions share one request per second. Ride-area views are subdivided when
+capped, and an entire sweep must finish before publication; cold collection
+and watched regions can take several minutes. The operator's season flag
+produces a clean empty fleet for winter storage. See
+[the session format and live verification](docs/whoosh-app-map.md).
+
 LUUP's Japanese rider map reads `LUUP_REFRESH_TOKEN` and `LUUP_FIREBASE_API_KEY`
 from private, runtime-only Coolify environment secrets on the Node cache.
 Neither is a Worker or build variable. ID tokens stay in memory; refresh-token
