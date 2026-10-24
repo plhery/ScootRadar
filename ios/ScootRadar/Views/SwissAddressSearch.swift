@@ -209,6 +209,67 @@ struct ScooterSearchIsland: View {
     }
 }
 
+/// Where the keyboard's top is in a window, from its frame in the window's
+/// coordinates. A keyboard that covers nothing of the window's bottom leaves
+/// the panel free to run down to it: one hidden or below the window, as under
+/// a window that ends above it in Stage Manager, and a floating one, which
+/// comes as an empty frame or one over the middle of the window.
+enum KeyboardOverlap {
+    static func top(of keyboard: CGRect, windowHeight: CGFloat) -> CGFloat {
+        guard !keyboard.isEmpty, keyboard.minY < windowHeight, keyboard.maxY >= windowHeight - 1 else {
+            return .infinity
+        }
+        return keyboard.minY
+    }
+}
+
+/// Tells where the keyboard's top is in this view's window each time it moves.
+/// Its frame comes in the screen's coordinates, which are the window's only
+/// when the window fills the screen.
+private struct KeyboardTopProbe: UIViewRepresentable {
+    let onChange: (CGFloat) -> Void
+
+    func makeUIView(context: Context) -> Probe {
+        Probe()
+    }
+
+    func updateUIView(_ probe: Probe, context: Context) {
+        probe.onChange = onChange
+    }
+
+    final class Probe: UIView {
+        var onChange: ((CGFloat) -> Void)?
+
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            isUserInteractionEnabled = false
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(keyboardWillChangeFrame(_:)),
+                name: UIResponder.keyboardWillChangeFrameNotification,
+                object: nil
+            )
+        }
+
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        @objc private func keyboardWillChangeFrame(_ notification: Notification) {
+            guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+                return
+            }
+            keyboardMoved(to: frame)
+        }
+
+        private func keyboardMoved(to frame: CGRect) {
+            guard let window, let screen = window.windowScene?.screen else { return }
+            let inWindow = window.convert(frame, from: screen.coordinateSpace)
+            onChange?(KeyboardOverlap.top(of: inWindow, windowHeight: window.bounds.height))
+        }
+    }
+}
+
 /// The open search: the field first, with Cancel beside it. Under it, ways to
 /// start while nothing is typed, and the places found from two characters on.
 struct ScooterSearchPanel: View {
@@ -281,13 +342,10 @@ struct ScooterSearchPanel: View {
                 contentTop = top
             }
         }
-        .onReceive(
-            NotificationCenter.default.publisher(for: UIResponder.keyboardWillChangeFrameNotification)
-        ) { notification in
-            guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
-                return
+        .background {
+            KeyboardTopProbe { top in
+                keyboardTop = top
             }
-            keyboardTop = frame.minY
         }
         .onDisappear {
             searchModel.cancel()
@@ -507,7 +565,7 @@ struct ScooterSearchPanel: View {
             .padding(.leading, 51)
     }
 
-    /// The panel ends above the keyboard, or at the bottom of the screen without one.
+    /// The panel ends above the keyboard, or at the bottom of the window without one.
     private var maximumContentHeight: CGFloat {
         let limit = min(keyboardTop, bottomLimit)
         guard limit.isFinite else { return .infinity }

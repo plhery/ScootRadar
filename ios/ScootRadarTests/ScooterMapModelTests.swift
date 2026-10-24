@@ -3061,7 +3061,9 @@ extension ScooterMapModelTests {
 
     /// Draws the view off screen in light appearance at the standard text
     /// size, in dark appearance with very large text, and on a narrow phone at
-    /// the largest size before the layouts for very large text take over.
+    /// the largest size before the layouts for very large text take over; then
+    /// at both ends of the widths an iPad gives it, in a window narrower than
+    /// any phone and on a wide one.
     private func assertRenders(
         _ view: some View,
         _ name: String,
@@ -3069,7 +3071,8 @@ extension ScooterMapModelTests {
         line: UInt = #line
     ) {
         let passes: [(ColorScheme, DynamicTypeSize, CGFloat)] = [
-            (.light, .large, 390), (.dark, .accessibility3, 390), (.light, .xxxLarge, 375)
+            (.light, .large, 390), (.dark, .accessibility3, 390), (.light, .xxxLarge, 375),
+            (.light, .large, 320), (.dark, .accessibility3, 320), (.light, .large, 466), (.dark, .accessibility3, 466)
         ]
         for (scheme, size, width) in passes {
             let renderer = ImageRenderer(
@@ -4400,6 +4403,25 @@ extension ScooterMapModelTests {
         }
         XCTAssertEqual(size(across: 321), CGSize(width: 321, height: 60))
         XCTAssertEqual(size(across: 266), CGSize(width: 266, height: 60 + 8 + 40))
+    }
+
+    /// The keyboard's frame, turned into the window's coordinates, limits the
+    /// search only when it covers the window's bottom.
+    func testTheSearchEndsAboveOnlyAKeyboardThatCoversTheWindowsBottom() {
+        // A phone: the window is the screen, and the keyboard's top is where it was.
+        XCTAssertEqual(KeyboardOverlap.top(of: CGRect(x: 0, y: 596, width: 402, height: 278), windowHeight: 874), 596)
+        // Its shortcuts bar alone, with a hardware keyboard.
+        XCTAssertEqual(KeyboardOverlap.top(of: CGRect(x: 0, y: 1_312, width: 1_032, height: 64), windowHeight: 1_376), 1_312)
+        // Gone: below the window.
+        XCTAssertEqual(KeyboardOverlap.top(of: CGRect(x: 0, y: 874, width: 402, height: 278), windowHeight: 874), .infinity)
+        // A Stage Manager window 200 pt down the screen, 700 tall, over a keyboard
+        // whose top is 820 down the screen: 620 into the window.
+        XCTAssertEqual(KeyboardOverlap.top(of: CGRect(x: -100, y: 620, width: 1_376, height: 300), windowHeight: 700), 620)
+        // The same window ending above the keyboard.
+        XCTAssertEqual(KeyboardOverlap.top(of: CGRect(x: -100, y: 760, width: 1_376, height: 300), windowHeight: 700), .infinity)
+        // A floating keyboard: an empty frame, or one over the middle of the window.
+        XCTAssertEqual(KeyboardOverlap.top(of: .zero, windowHeight: 874), .infinity)
+        XCTAssertEqual(KeyboardOverlap.top(of: CGRect(x: 300, y: 400, width: 320, height: 250), windowHeight: 1_000), .infinity)
     }
 
     func testZoomingFromTheKeyboardAsksTheMapForAStepEachTime() {
