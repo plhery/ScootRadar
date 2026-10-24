@@ -103,9 +103,24 @@ after login remains unverified.
 
 The next step is a user-authorized rider sign-in for a chosen brand, using
 its own app configuration. Phone sign-in may request a human-completed
-CAPTCHA and SMS code. No SMS request or new account was created during
-this investigation. Keep any resulting credentials in the private ATOM
+CAPTCHA and SMS code. Keep any resulting credentials in the private ATOM
 session bundle described in the Qick guide.
+
+### Reby phone sign-in blocked by network location
+
+A subsequent user-authorized `REGISTRATION` request for a Senegalese
+(`221`) test number reached `POST user/phone/code/request`, using Reby's
+own app configuration and the native signed request. It returned HTTP 400:
+the request IP's country code `CH` is not allowed to authorize in the app,
+with instruction to contact support and error code `11-6`.
+
+No SMS was sent and no account or rider session was created. This response
+does not establish whether the supplied phone number is accepted. Reby
+remains pending an operator-approved sign-in path or a rider session
+obtained through the official app from a permitted location. Its Google
+and Apple alternatives have not been tested against this location rule.
+MoVe and Zippy still need their own authorized number/sign-in; the Reby
+number has not been reused for them.
 
 After sign-in, verify actual available electric scooters, operating bounds,
 viewport completeness, movement and production-network access before adding
