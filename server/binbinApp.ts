@@ -13,6 +13,8 @@ export const BINBIN_PAGE = 10;
  */
 export const BINBIN_REACH_M = 15_000;
 const RETRY_MS = 60_000;
+/** An area nobody looks at is swept every two hours: a round of all 13 takes thousands of requests. */
+export const BINBIN_IDLE_INTERVAL_MS = 2 * 60 * 60_000;
 export const binbinMapRequests = { status: 0, metadata: 0 };
 
 export interface BinbinScooter { id: string; lat: number; lng: number; battery: number | null }
@@ -490,6 +492,7 @@ export function withBinbinAppCollectors(feeds: CollectableScooterFeed[], systems
   const areas = new Map(systems.filter(system => system.binbinAppArea).map(system => [system.id, system]));
   return feeds.map(feed => {
     const area = areas.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return area ? { ...feed, collect: () => collectBinbinArea(area, previous(feed.id) ?? [], api) } : feed;
+    return area ? { ...feed, idleIntervalMs: BINBIN_IDLE_INTERVAL_MS,
+      collect: () => collectBinbinArea(area, previous(feed.id) ?? [], api) } : feed;
   });
 }

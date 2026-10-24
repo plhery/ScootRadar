@@ -108,13 +108,22 @@ after 3 s, then 6 s; a third failure fails the sweep. HTTP 429 stops every
 BinBin request for its `Retry-After`, a minute at least and an hour at most.
 A sweep that needs over 3,000 requests or 20 minutes fails. A failed sweep
 publishes nothing, so the cache keeps the area's last sweep, under the usual
-expiry rules, and the next plans from what it saw.
+expiry rules, and the next plans from what it saw. An idle area's failed
+sweep is tried again after 1, 2, 4… minutes, an hour apart at most.
 
-Idle areas are swept every 20 minutes, as other feeds. The 13 areas then take
-3,600 to 4,900 requests a round, by the numbers above: about three a second
-on average, close to the client's four. A watched area is swept
-again a minute after its last sweep started; İstanbul's sweeps take longer
-than that, so watched İstanbul is swept back to back, a few minutes apart.
+An area nobody looks at is swept every two hours
+(`BINBIN_IDLE_INTERVAL_MS`), where other feeds are collected every 20 minutes.
+The 13 areas take 3,600 to 4,900 requests a round, by the numbers above: half
+a request a second to two thirds on average, where every 20 minutes would be
+three, close to the client's four. The street view hides positions over 15
+minutes old, so the first person to look at an idle area waits for its sweep,
+which the request starts at once: under a minute in Eskişehir, a few minutes
+in İstanbul. Zoomed out, the city's total is the last sweep's. An idle area
+expires, for monitoring, after two hours and ten minutes without a sweep.
+
+A watched area is swept again a minute after its last sweep started;
+İstanbul's sweeps take longer than that, so watched İstanbul is swept back to
+back, a few minutes apart.
 
 A sweep's positions are as old as its start, its `observedAt`, though it
 takes up to a few minutes. A scooter seen twice, ridden meanwhile, keeps its

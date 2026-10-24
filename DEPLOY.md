@@ -443,8 +443,10 @@ most every 250 ms, four a second, across all 13 areas, with three of a sweep's
 under way at once and at most two sweeps on its host. A sweep asks ten
 scooters at a time until its area is proven complete. On 24 October 2026 the 13
 areas took 4,947 requests from nothing and 3,577 planned straight after from
-those positions; swept every 20 minutes when idle, a round planned from
-positions 20 minutes old should take between the two, about three requests a
-second on average. A cold start keeps what failed sweeps saw for the next.
+those positions. An area nobody looks at is swept every two hours
+(`BINBIN_IDLE_INTERVAL_MS`), not every 20 minutes, so a round should take
+between the two, half a request a second to two thirds on average, and an idle
+area expires after two hours and ten minutes without a sweep. A cold start
+keeps what failed sweeps saw for the next.
 HTTP 429 stops every BinBin request for its `Retry-After`. See [pace and
 failures](docs/binbin-app-map.md#pace-and-failures).

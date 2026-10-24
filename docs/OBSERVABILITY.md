@@ -109,7 +109,11 @@ looks:
   its last collection is over a minute old, the request starts one at once.
 - **Idle**: every other feed every 20 minutes, each at its own time in the interval
   (from a hash of its id), so about eight a minute start. A failed collection is
-  retried after 1, 2, 4, 8, then every 10 minutes.
+  retried after 1, 2, 4, 8, then every 10 minutes, half the interval. Two app maps
+  are slower when idle, for the requests they take: Lime's hourly
+  ([guide](lime-app-map.md)) and BinBin's every two hours
+  ([guide](binbin-app-map.md#pace-and-failures)). Each expires 10 minutes after its
+  own interval and waits up to half of it between retries.
 
 A request whose feeds hold positions over 15 minutes old waits up to 3 seconds for
 their collection, then answers. When a collection it started is still under way, the

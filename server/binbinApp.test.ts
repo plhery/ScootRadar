@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { BINBIN_PAGE, BinbinClient, collectBinbinArea, parseBinbinReply, planBinbinSweep, sweepBinbinArea, withBinbinAppCollectors } from './binbinApp';
+import { BINBIN_IDLE_INTERVAL_MS, BINBIN_PAGE, BinbinClient, collectBinbinArea, parseBinbinReply, planBinbinSweep, sweepBinbinArea, withBinbinAppCollectors } from './binbinApp';
 import { haversineM, polygonContainsPoint } from '../src/lib/geo';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
 import { REGIONAL_SCOOTER_SYSTEMS } from '../src/lib/regionalScooterSystems';
@@ -178,7 +178,7 @@ describe('BinBin area sweeps', () => {
 describe('BinBin areas in the cache', () => {
   const eskisehir = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'binbin_tr_eskisehir')!;
 
-  it('collects each BinBin feed by sweeping its area, from the positions last published for it', async () => {
+  it('collects each BinBin feed by sweeping its area, every two hours when idle, from the positions last published for it', async () => {
     const feeds = independentCollectableFeeds();
     const feed = feeds.find(candidate => candidate.id === 'turkey:binbin_tr_eskisehir')!;
     expect(feed).toMatchObject({ provider: 'binbin', source: 'turkey', host: 'gatewayapi-sp.binbinapp.com' });
@@ -197,6 +197,9 @@ describe('BinBin areas in the cache', () => {
     ]);
     expect(wrapped.filter((candidate, i) => candidate !== feeds[i]).map(candidate => candidate.id))
       .toEqual(REGIONAL_SCOOTER_SYSTEMS.filter(system => system.binbinAppArea).map(system => `turkey:${system.id}`));
+    expect(BINBIN_IDLE_INTERVAL_MS).toBe(2 * 60 * 60_000);
+    expect(wrapped.filter((candidate, i) => candidate !== feeds[i]).every(candidate => candidate.idleIntervalMs === BINBIN_IDLE_INTERVAL_MS))
+      .toBe(true);
   });
 
   it('plans the sweep after a failed one from what that one saw', async () => {
@@ -214,7 +217,7 @@ describe('BinBin areas in the cache', () => {
     const ids = (vehicles: { vehicle_id: string | null }[]) => vehicles.map(vehicle => vehicle.vehicle_id).sort();
     expect(ids((await collectBinbinArea(eskisehir, [], api)).vehicles)).toEqual(ids(cold));
     expect(api.nearest.mock.calls.length).toBeLessThan(coldRequests * 0.85);
-  });
+  }, 15_000);
 
   it('refuses a system that is not a BinBin area', async () => {
     const { api } = simulated(() => []);

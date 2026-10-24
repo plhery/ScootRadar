@@ -24,7 +24,7 @@ import { luupMapRequests, withLuupAppCollectors } from './luupApp';
 import { jetMapRequests, withJetAppCollectors } from './jetApp';
 import { whooshMapRequests, withWhooshAppCollectors } from './whooshApp';
 import { LIME_IDLE_INTERVAL_MS, limeMapRequests, withLimeAppCollectors } from './limeApp';
-import { binbinMapRequests, withBinbinAppCollectors } from './binbinApp';
+import { BINBIN_IDLE_INTERVAL_MS, binbinMapRequests, withBinbinAppCollectors } from './binbinApp';
 
 const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
   withDottAppCollectors, withVoiAppCollectors, withAtomAppCollectors, withLuupAppCollectors,
@@ -79,7 +79,11 @@ const scheduler = new FeedScheduler(collect, { ...schedule,
   },
   onStart: (_feed, reason) => metrics.recordCollectionStart(reason) });
 const cadence: FeedCadence = { fastSince: (id, now) => scheduler.fastSince(id, now), idleExpiryMs: schedule.idleExpiryMs,
-  idleExpiryMsForFeed: id => regionalSystems.get(id)?.limeAppMap ? LIME_IDLE_INTERVAL_MS + 10 * 60_000 : undefined };
+  idleExpiryMsForFeed: id => {
+    const system = regionalSystems.get(id);
+    const interval = system?.limeAppMap ? LIME_IDLE_INTERVAL_MS : system?.binbinAppArea ? BINBIN_IDLE_INTERVAL_MS : undefined;
+    return interval === undefined ? undefined : interval + 10 * 60_000;
+  } };
 // A scooter a feed puts far away for a while, as 3electra puts Kyiv's in Lima, keeps its last place
 // for ten minutes, or until the feed's next collection when that is later.
 const holdStrays = createStrayHold((id, now) => scheduler.fastSince(id, now) === undefined

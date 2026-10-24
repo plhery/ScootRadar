@@ -59,8 +59,10 @@ Gaziantep, away from the Black Sea and the Mediterranean.
   geofences of type 2, simplified to within 5 m. The sweep keeps the scooters
   inside the outline, and the system's bounds are the outline's.
   `scripts/update-binbin-areas.mjs` fetches them again.
-- **Freshness:** a sweep's positions are as old as its start. It takes from
-  under a minute in Eskişehir to a few minutes in İstanbul.
+- **Freshness:** an area is swept every two hours while nobody looks at it,
+  and every minute for ten minutes once someone does. A sweep's positions are
+  as old as its start. It takes from under a minute in Eskişehir to a few
+  minutes in İstanbul.
 - **Vehicle types:** the map asks for type 1, electric scooters, and keeps
   only those; BinBin's bikes and mopeds are left out. Every scooter the list
   gives is shown, whatever its `status`, as BinBin's app does.
