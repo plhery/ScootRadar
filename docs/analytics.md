@@ -14,6 +14,9 @@ Native screen views use `/`, `/filters`, `/settings`. Until the landing page too
 root, the web map was counted under `/`: web views of `/` before that are the map.
 From the first guides on 12 October 2026 until 19 October 2026, the guides and their
 lists were counted as `/map`: web views of `/map` in that week include them.
+From 24 October 2026, a visit to `/` from outside the site by a browser that asks
+for another of the site's languages before English is sent on to that language's
+landing page and counted there: views of `/` fall and the others rise from that day.
 
 ## Event catalog
 

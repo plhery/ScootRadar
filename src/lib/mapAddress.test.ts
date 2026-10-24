@@ -59,9 +59,18 @@ describe('the landing page, opened where the map was', () => {
     expect(opened('/', { standalone: true })).toHaveBeenCalledWith(MAP_PATH);
   });
 
-  it('stays in its other languages, which never were the map', () => {
-    expect(opened('/de', { installed: true })).not.toHaveBeenCalled();
+  it('gives way to the map in an app installed from the root that the Worker sent on to its language', () => {
+    expect(opened('/de', { installed: true })).toHaveBeenCalledWith(MAP_PATH);
+    expect(opened('/fr#x', { standalone: true })).toHaveBeenCalledWith(`${MAP_PATH}#x`);
+  });
+
+  it('stays in its other languages for a link the map reads, which never was the map there', () => {
     expect(opened('/fr?theme=dark')).not.toHaveBeenCalled();
+  });
+
+  it('stays on any other page of the site, in an installed app too', () => {
+    expect(opened('/guides', { installed: true })).not.toHaveBeenCalled();
+    expect(opened('/de/ratgeber', { standalone: true })).not.toHaveBeenCalled();
   });
 
   it('does not stop the page where the browser tells it nothing', () => {

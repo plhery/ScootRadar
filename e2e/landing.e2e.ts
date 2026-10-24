@@ -115,6 +115,19 @@ test.describe('in an Italian browser', () => {
     await expect(langue.getByRole('link').nth(1)).toHaveAccessibleName('Italiano');
     await expect(langue.getByRole('link').nth(1)).toHaveAttribute('href', '/it');
   });
+
+  test('the root opens in Italian, and English chosen on the site stays English', async ({ page }) => {
+    await page.goto('/?utm_source=share');
+    await expect(page).toHaveURL(/\/it\?utm_source=share$/);
+    await expect(page.locator('html')).toHaveAttribute('lang', 'it');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(HEADLINES.it);
+
+    await page.getByRole('contentinfo').locator('a[hreflang="en"][href="/"]').click();
+    await expect(page).toHaveURL(/:\d+\/$/);
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+    await page.reload();
+    await expect(page).toHaveURL(/:\d+\/$/);
+  });
 });
 
 test('every language of the site is in the footer, written out', async ({ page }) => {
@@ -340,9 +353,14 @@ test('an app installed while the root was the map opens on the map', async ({ pa
   await expect(page).toHaveURL(/\/map$/);
   await expect(page.locator('.app-shell')).toBeVisible();
 
-  // The other languages never were the map.
+  // The Worker sends the root of a browser in another language to its landing page: the app opens there.
   await page.goto('/de');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText(HEADLINES.de);
+  await expect(page).toHaveURL(/\/map$/);
+  await expect(page.locator('.app-shell')).toBeVisible();
+
+  // The guides never were the map.
+  await page.goto('/guides');
+  await expect(page).toHaveURL(/\/guides$/);
 });
 
 test('English has one address', async ({ request }) => {

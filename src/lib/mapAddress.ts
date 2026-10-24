@@ -1,4 +1,5 @@
 import { CLIENT_PARAMETERS } from '@/lib/clientParams';
+import { LANDING_LOCALES, landingPath } from '@/lib/landingAddress';
 
 /**
  * Where the map is. It was at "/" until the landing page took that place, and
@@ -27,13 +28,15 @@ export function movedMapRedirect(request: Request): Response | null {
  * The same on the landing page itself, before anything is painted: where no
  * Worker answers first, and for an installed web app, which only the browser
  * can tell from a visitor. Written as text because it is not part of any
- * bundle; the Worker gives it the nonce of the response.
+ * bundle; the Worker gives it the nonce of the response. An installed app
+ * opens wherever the Worker sends "/" for its browser's language, so it gives
+ * way on every language's landing page.
  */
 export const MOVED_MAP_SCRIPT = `(function () {
   try {
-    if (location.pathname !== '/') return;
+    if (${JSON.stringify(LANDING_LOCALES.map(landingPath))}.indexOf(location.pathname) < 0) return;
     var link = new URLSearchParams(location.search);
-    var forTheMap = ${JSON.stringify(CLIENT_PARAMETERS)}.some(function (name) { return link.has(name); });
+    var forTheMap = location.pathname === '/' && ${JSON.stringify(CLIENT_PARAMETERS)}.some(function (name) { return link.has(name); });
     var installed = navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
     if (forTheMap || installed) location.replace('${MAP_PATH}' + location.search + location.hash);
   } catch (error) {}

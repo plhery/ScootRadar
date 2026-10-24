@@ -77,7 +77,9 @@ After this one-time migration, keep both sides on the same secret during normal
 releases. Update the secret on both sides before any planned rotation cutover.
 
 OpenNext builds `.open-next/worker.js`; `worker.ts` applies the legacy-host
-redirect, sends a link to the map as it was at `/` on to `/map`, proxies
+redirect, sends a link to the map as it was at `/` on to `/map`, sends a
+visit to `/` from outside the site, by a browser that asks for another of the
+site's languages before English, on to that language's landing page, proxies
 `/api/scooters` and `/api/zones` (the operators' zones of the map's layer, read
 by the cache only for the areas viewed with it on) to `SCOOTER_SNAPSHOT_API_URL`,
 and delegates other requests to

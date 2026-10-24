@@ -8,6 +8,7 @@
 import openNextWorker from './.open-next/worker.js';
 import { SMART_APP_BANNER, smartAppBanner } from './src/lib/appStore';
 import { documentContentSecurityPolicy } from './src/lib/contentSecurityPolicy';
+import { landingLanguageRedirect } from './src/lib/landingAddress';
 import { guessLanguage } from './src/lib/languageGuess';
 import { legacyHostRedirect } from './src/lib/legacyHost';
 import { movedMapRedirect } from './src/lib/mapAddress';
@@ -105,7 +106,7 @@ function guessedLanguage(request: Request) {
 
 const scootRadarWorker = {
   async fetch(request: Request, env: CloudflareEnv, ctx: ExecutionContext) {
-    const redirect = legacyHostRedirect(request) ?? movedMapRedirect(request);
+    const redirect = legacyHostRedirect(request) ?? movedMapRedirect(request) ?? landingLanguageRedirect(request);
     if (redirect) {
       return redirect;
     }

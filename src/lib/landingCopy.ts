@@ -13,30 +13,17 @@
 
 import { COUNTRY_CODES, COUNTRY_NAMES, type CountryCode, type CountryNameLanguage } from '@/generated/countries';
 import { formatLocale } from '@/lib/formatLocale';
+import { DEFAULT_LANDING_LOCALE, type LandingLocale } from '@/lib/landingAddress';
 import { isSingular } from '@/lib/uiText';
 
-export const LANDING_LOCALES = ['en', 'de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is'] as const;
-export type LandingLocale = (typeof LANDING_LOCALES)[number];
-
-export function isLandingLocale(value: string): value is LandingLocale {
-  return (LANDING_LOCALES as readonly string[]).includes(value);
-}
-
-/** The language of the page at "/". The others are under their code. */
-export const DEFAULT_LANDING_LOCALE: LandingLocale = 'en';
-
-export function landingPath(locale: LandingLocale): string {
-  return locale === DEFAULT_LANDING_LOCALE ? '/' : `/${locale}`;
-}
-
-/** The language a path of the site is in, from its segments, if it is the landing page. */
-export function landingLocaleOf(segments: string[] | undefined): LandingLocale | null {
-  if (!segments?.length) return DEFAULT_LANDING_LOCALE;
-
-  const [code, ...rest] = segments;
-  // English has one address, not two.
-  return rest.length === 0 && isLandingLocale(code) && code !== DEFAULT_LANDING_LOCALE ? code : null;
-}
+export {
+  DEFAULT_LANDING_LOCALE,
+  LANDING_LOCALES,
+  isLandingLocale,
+  landingLocaleOf,
+  landingPath,
+  type LandingLocale,
+} from '@/lib/landingAddress';
 
 export const LANGUAGE_NAMES: Record<LandingLocale, string> = {
   en: 'English',
