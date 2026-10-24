@@ -248,6 +248,6 @@ export function withBeamAppCollectors(feeds: CollectableScooterFeed[], systems: 
   const regions = new Map(systems.filter(system => system.beamAppCity).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return system ? { ...feed, collect: () => collectBeamRegion(system) } : feed;
+    return system ? { ...feed, paced: true, collect: () => collectBeamRegion(system) } : feed;
   });
 }

@@ -283,7 +283,12 @@ Coolify remains the source of truth for the application, storage, and resource l
 The collector schedules each feed independently, with six concurrent systems
 and at most two per host. A slow host cannot monopolize collection slots, and a
 feed collected every minute takes the next free slot before any idle feed, so a
-deploy that adds hundreds of feeds does not hold Switzerland back.
+deploy that adds hundreds of feeds does not hold Switzerland back. An app-map
+sweep whose client spaces every request to its host (BinBin, Beam, GCOO,
+Kickgoing, Lime, Qick and Swing) takes one of its host's two slots but none of
+the six: it waits on that pace, not on the cache. On 24 October 2026 such
+sweeps held all six, and idle feeds elsewhere went uncollected for over half an
+hour.
 Switzerland is collected every minute; any other feed every 20 minutes, or every
 minute for 10 minutes after a map request covers it, the request starting a
 collection at once when the last is over a minute old (see
@@ -479,3 +484,5 @@ Node cache. It is never a Worker or build variable, and never in Git: the
 repository is public. Without it every Swing feed fails with "Swing one-time
 code secret is missing or invalid". GCOO's and Kickgoing's maps need no
 credential. See [the Korean catalog](docs/south-korean-scooter-feeds.md#swing).
+A GCOO town nobody looks at is collected every hour (`GCOO_IDLE_INTERVAL_MS`),
+not every 20 minutes, and expires after an hour and ten minutes without one.

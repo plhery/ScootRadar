@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { FeedScheduler, idPhase, type CollectionReason, type SchedulerOptions } from './feedScheduler';
 
-interface Feed { id: string; host: string; fast?: boolean }
+interface Feed { id: string; host: string; fast?: boolean; paced?: boolean }
 const MINUTE = 60_000;
 // A whole number of idle intervals, so a phase of 0 falls on it.
 const T0 = 1_800_000_000_000;
@@ -57,6 +57,18 @@ it('runs at most six collections at once', async () => {
   try {
     await vi.advanceTimersByTimeAsync(5 * MINUTE);
     expect(calls).toHaveLength(6);
+  } finally { scheduler.stop(); }
+});
+
+it('runs paced sweeps on their hosts\' two slots, beside six other collections', async () => {
+  // GCOO's, Kickgoing's, Swing's and Beam's sweeps held every slot after a deploy on 24 October 2026.
+  const sweeps = Array.from({ length: 12 }, (_, i) => ({ id: `sweep-${i}`, host: `app-${i % 4}`, paced: true }));
+  const feeds = Array.from({ length: 10 }, (_, i) => ({ id: `feed-${i}`, host: `host-${i}` }));
+  const { scheduler, calls } = schedule([...sweeps, ...feeds], {}, () => new Promise(() => {}));
+  try {
+    await vi.advanceTimersByTimeAsync(0);
+    expect(calls.filter(call => call.id.startsWith('sweep'))).toHaveLength(8);
+    expect(calls.filter(call => call.id.startsWith('feed'))).toHaveLength(6);
   } finally { scheduler.stop(); }
 });
 

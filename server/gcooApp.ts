@@ -6,6 +6,9 @@ import type { MapBounds, Vehicle } from '../src/lib/types';
 
 const ORIGIN = 'https://live.api.gbike-api.com/api/v1/locations/markers';
 const RETRY_MS = 60_000;
+// A round of every town, about 3,550 requests, took over half an hour on the host's two slots
+// on 24 October 2026: a town nobody looks at is collected every hour, not every 20 minutes.
+export const GCOO_IDLE_INTERVAL_MS = 60 * 60_000;
 // The app's table of scooter models (SCT): ES4, MAX, MAXPro, K, MAXPlus, K2, MAXPlusX and K3.
 // Its bicycles, and ids it doesn't list, as 10006 on some B4 bicycles, are left out.
 const SCOOTER_MODELS = new Set([9, 10, 11, 12, 13, 16, 19, 23]);
@@ -214,6 +217,6 @@ export function withGcooAppCollectors(feeds: CollectableScooterFeed[], systems: 
   const regions = new Map(systems.filter(system => system.gcooAppMap).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return system ? { ...feed, collect: () => collectGcooRegion(system) } : feed;
+    return system ? { ...feed, idleIntervalMs: GCOO_IDLE_INTERVAL_MS, paced: true, collect: () => collectGcooRegion(system) } : feed;
   });
 }

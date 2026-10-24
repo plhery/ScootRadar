@@ -27,7 +27,7 @@ import { whooshMapRequests, withWhooshAppCollectors } from './whooshApp';
 import { beamMapRequests, withBeamAppCollectors } from './beamApp';
 import { LIME_IDLE_INTERVAL_MS, limeMapRequests, withLimeAppCollectors } from './limeApp';
 import { BINBIN_IDLE_INTERVAL_MS, binbinMapRequests, withBinbinAppCollectors } from './binbinApp';
-import { gcooMapRequests, withGcooAppCollectors } from './gcooApp';
+import { GCOO_IDLE_INTERVAL_MS, gcooMapRequests, withGcooAppCollectors } from './gcooApp';
 import { kickgoingMapRequests, withKickgoingAppCollectors } from './kickgoingApp';
 import { swingMapRequests, withSwingAppCollectors } from './swingApp';
 
@@ -87,7 +87,8 @@ const scheduler = new FeedScheduler(collect, { ...schedule,
 const cadence: FeedCadence = { fastSince: (id, now) => scheduler.fastSince(id, now), idleExpiryMs: schedule.idleExpiryMs,
   idleExpiryMsForFeed: id => {
     const system = regionalSystems.get(id);
-    const interval = system?.limeAppMap ? LIME_IDLE_INTERVAL_MS : system?.binbinAppArea ? BINBIN_IDLE_INTERVAL_MS : undefined;
+    const interval = system?.limeAppMap ? LIME_IDLE_INTERVAL_MS : system?.binbinAppArea ? BINBIN_IDLE_INTERVAL_MS
+      : system?.gcooAppMap ? GCOO_IDLE_INTERVAL_MS : undefined;
     return interval === undefined ? undefined : interval + 10 * 60_000;
   } };
 // A scooter a feed puts far away for a while, as 3electra puts Kyiv's in Lima, keeps its last place

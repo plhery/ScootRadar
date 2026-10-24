@@ -273,6 +273,6 @@ export function withLimeAppCollectors(feeds: CollectableScooterFeed[], systems: 
   const regions = new Map(systems.filter(s => s.limeAppMap).map(s => [s.id, s]));
   return feeds.map(feed => {
     const s = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return s ? { ...feed, idleIntervalMs: LIME_IDLE_INTERVAL_MS, collect: () => collectLimeRegion(s) } : feed;
+    return s ? { ...feed, idleIntervalMs: LIME_IDLE_INTERVAL_MS, paced: true, collect: () => collectLimeRegion(s) } : feed;
   });
 }

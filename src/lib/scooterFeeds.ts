@@ -260,6 +260,8 @@ export interface CollectableScooterFeed {
   host: string;
   /** Node collectors may scan idle areas less often under an upstream request quota. */
   idleIntervalMs?: number;
+  /** An app-map sweep whose client spaces every request to its host (FeedScheduler). */
+  paced?: boolean;
   /** Its GBFS documents, for the zones the map draws when asked (zoneFeeds.ts). */
   zoneSource?: ZoneSource;
 }

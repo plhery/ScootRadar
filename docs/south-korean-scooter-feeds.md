@@ -199,14 +199,22 @@ keeping road numbers after Hangul street names and before Roman ones.
 
 ## Load
 
-The cache collects each town every 20 minutes, and every minute while
-someone looks at it. A round of every town takes about:
+The cache collects each Kickgoing, Xingxing and Swing town every 20 minutes,
+each GCOO town every hour (`GCOO_IDLE_INTERVAL_MS`), and any town every minute
+while someone looks at it. A round of every town takes about:
 
 - GCOO: 3,300 requests in Korea, over 636 tiles and their parts, and about
-  250 in the US, starting at least 250 ms apart, so about 15 minutes;
+  250 in the US, starting at least 250 ms apart. A town waits for each reply
+  before its next request, so the first round, on the host's two slots, took
+  about 35 minutes on 24 October 2026;
 - Kickgoing and Xingxing: 1,072 cells, 747 of them different, starting at
   least 300 ms apart, about 5 minutes;
 - Swing: 82 requests, a few more where a box is split.
+
+Each client spaces the requests of all its towns, so the scheduler runs their
+collections on two slots of their host and none of its six shared ones (see
+`DEPLOY.md`): the first rounds, on the shared slots, held back every other
+feed for over half an hour.
 
 Korea's feeds held 186,528 scooters at 00:54 Korea time on 25 October, more
 than the 146,000 or so different ones, as the feeds of neighbouring towns each

@@ -195,6 +195,6 @@ export function withSwingAppCollectors(feeds: CollectableScooterFeed[], systems:
   const regions = new Map(systems.filter(system => system.swingAppMap).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return system ? { ...feed, collect: () => collectSwingRegion(system) } : feed;
+    return system ? { ...feed, paced: true, collect: () => collectSwingRegion(system) } : feed;
   });
 }

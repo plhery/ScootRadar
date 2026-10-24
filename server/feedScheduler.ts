@@ -5,6 +5,11 @@ export interface ScheduledFeed {
   host: string;
   /** An upstream with a lower request quota can scan idle areas less often. */
   idleIntervalMs?: number;
+  /**
+   * Its client spaces every request on the host, whatever the collection: it waits on that pace,
+   * not on the cache, so it takes one of its host's slots but none of the shared ones.
+   */
+  paced?: boolean;
 }
 
 /** What a collection reports back: a failed one is retried sooner than an idle feed is due. */
@@ -61,7 +66,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
   private definitions: T[] = [];
   private readonly byId = new Map<string, T>();
   private readonly due = new Map<string, number>();
-  private readonly running = new Map<string, string>();
+  private readonly running = new Map<string, T>();
   private readonly startedAt = new Map<string, number>();
   private readonly failures = new Map<string, number>();
   private readonly watchedSince = new Map<string, number>();
@@ -208,10 +213,14 @@ export class FeedScheduler<T extends ScheduledFeed> {
       return idle(a) - idle(b) ||
         (aWake !== undefined && bWake !== undefined ? aWake - bWake : rank(a) - rank(b));
     });
+    // After the deploy of 24 October 2026, paced app-map sweeps held every shared slot, and
+    // idle feeds on other hosts went uncollected for over half an hour.
+    let shared = [...this.running.values()].filter(feed => !feed.paced).length;
     for (const feed of pending) {
-      if (this.running.size >= MAX_RUNNING) break;
-      if (rank(feed) > now || [...this.running.values()].filter(host => host === feed.host).length >= MAX_RUNNING_PER_HOST) continue;
+      if (rank(feed) > now || (!feed.paced && shared >= MAX_RUNNING) ||
+        [...this.running.values()].filter(running => running.host === feed.host).length >= MAX_RUNNING_PER_HOST) continue;
       this.run(feed, now);
+      if (!feed.paced) shared++;
     }
     // Blocked hosts are woken by completion; future due times need only one timer.
     const nextDue = this.definitions.filter(feed => !this.running.has(feed.id))
@@ -222,7 +231,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
   private run(feed: T, now: number): void {
     const reason: CollectionReason = this.options.alwaysFast(feed) ? 'always' : this.woken.has(feed.id) ? 'wake'
       : this.watched(feed.id, now) ? 'watched' : this.failures.has(feed.id) ? 'retry' : 'idle';
-    this.running.set(feed.id, feed.host);
+    this.running.set(feed.id, feed);
     this.startedAt.set(feed.id, now);
     this.options.onStart?.(feed, reason);
     let failed = true;

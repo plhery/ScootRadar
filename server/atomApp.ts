@@ -266,6 +266,6 @@ export function withAtomAppCollectors(feeds: CollectableScooterFeed[], systems: 
   const regions = new Map(systems.filter(system => system.atomAppAccount).map(system => [system.id, system]));
   return feeds.map(feed => {
     const region = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return region ? { ...feed, collect: () => collectAtomRegion(region) } : feed;
+    return region ? { ...feed, paced: true, collect: () => collectAtomRegion(region) } : feed;
   });
 }

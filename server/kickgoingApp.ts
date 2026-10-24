@@ -169,6 +169,6 @@ export function withKickgoingAppCollectors(feeds: CollectableScooterFeed[], syst
   const regions = new Map(systems.filter(system => system.kickgoingAppMap).map(system => [system.id, system]));
   return feeds.map(feed => {
     const system = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return system ? { ...feed, collect: () => collectKickgoingRegion(system) } : feed;
+    return system ? { ...feed, paced: true, collect: () => collectKickgoingRegion(system) } : feed;
   });
 }

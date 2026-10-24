@@ -492,7 +492,7 @@ export function withBinbinAppCollectors(feeds: CollectableScooterFeed[], systems
   const areas = new Map(systems.filter(system => system.binbinAppArea).map(system => [system.id, system]));
   return feeds.map(feed => {
     const area = areas.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return area ? { ...feed, idleIntervalMs: BINBIN_IDLE_INTERVAL_MS,
+    return area ? { ...feed, idleIntervalMs: BINBIN_IDLE_INTERVAL_MS, paced: true,
       collect: () => collectBinbinArea(area, previous(feed.id) ?? [], api) } : feed;
   });
 }

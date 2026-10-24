@@ -165,8 +165,8 @@ therefore share a queue with **four seconds between starts**, at most
 back for at least a minute and respects a longer `Retry-After`. A cold
 collection of every Qick city takes about nine minutes; simultaneous watched
 cities can refresh more slowly than the scheduler's nominal one-minute
-interval. Each city is still collected independently, and ATOM occupies
-at most two of the collector's six slots.
+interval. Each city is still collected independently, on at most two
+slots of ATOM's host and none of the collector's six shared ones.
 
 A deploy runs the new cache beside the old one for about a minute (53 to
 64 seconds on 24 October 2026), and both swept Qick on the same schedule:
