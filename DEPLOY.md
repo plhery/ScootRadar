@@ -403,7 +403,9 @@ Korea's three signed-out app maps were added, on 24 October 2026. GCOO's,
 Kickgoing's and Swing's Korean feeds hold about 187,000 scooters at night,
 neighbouring towns' feeds each holding those where their bounds overlap, and
 take about 120 MB more; Beam's 54 regions held about 45,000 in their first
-samples, about 28 MB. The limit went up to 2048 MiB with them. In October
+samples, about 28 MB. The limit went up to 2048 MiB with them. That evening,
+with 777,000 vehicles in all feeds (Korea's 225,000 at night), the heap stayed
+around 790 MB between collections and peaked at 925 MB, of 1,124 MB. In October
 2026, with Europe's 128,000 vehicles, the heap peaked around 575 MiB and the process around 900 MiB while
 the snapshot was saved whole every five seconds: each save built its JSON as
 one string, two bytes a character as one city name is outside Latin-1, then a
