@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Réglementation de la trottinette électrique en France en 2026 : âge, casque, assurance et amendes',
   lede: 'La réglementation de la trottinette électrique en France tient en quelques règles : 14 ans minimum, pas de permis, une assurance si la trottinette vous appartient, 25 km/h au maximum, la piste cyclable ou une route limitée à 50 km/h, le trottoir interdit et personne d’autre à bord. La loi nationale n’impose le casque que sur les routes à 80 km/h ouvertes aux trottinettes, mais un nombre croissant de préfets l’exigent dans leur département : à Paris et en petite couronne depuis le 7 août 2026, dans tout le Rhône, Lyon compris, depuis le 28 septembre 2026. La plupart des amendes sont de 35 € ou de 135 €.',
   published: '2026-10-12',
-  updated: '2026-10-16',
+  updated: '2026-10-24',
   sections: [
     {
       heading: 'Réglementation de la trottinette électrique : ce qui a changé depuis 2023',
@@ -69,6 +69,7 @@ const guide: Guide = {
               ['Rhône, Métropole de Lyon comprise', 'Depuis le 28 septembre 2026', 'Casque et gilet, à toute heure, pistes cyclables comprises, dans tout le département', '135 € sans casque, 35 € sans gilet'],
               ['Seine-et-Marne (Marne-la-Vallée)', 'Arrêté du 2 juillet 2026', 'Casque et équipement réfléchissant', 'Non vérifiée'],
               ['Nord (Métropole de Lille)', 'Depuis le 1er septembre 2026 (arrêté du 30 juillet 2026)', 'Casque attaché, à toute heure, pistes cyclables comprises, dans tout le département', '35 €'],
+              ['Manche (Cherbourg-en-Cotentin)', 'Depuis le 1er septembre 2026', 'Casque et gilet, de jour comme de nuit, location comprise', '135 € sans casque, 35 € sans gilet'],
               ['Alpes-Maritimes (Nice)', 'Arrêté du 2 avril 2026', 'Casque et gilet, de jour comme de nuit', '35 €'],
               ['Cher (Bourges)', 'Arrêté de juillet 2026', 'Casque, pistes cyclables comprises', '135 €'],
               ['Yonne', 'Arrêté du 12 mai 2026', 'Casque et gilet', 'Non vérifiée'],
@@ -77,7 +78,7 @@ const guide: Guide = {
           },
         },
         'Cette liste n’est pas complète et s’allonge vite. Pour Bordeaux, Marseille ou Grenoble, nous n’avons pas trouvé d’arrêté au 12 octobre 2026, sans pouvoir l’exclure. Avant de rouler, consultez le site de la préfecture de votre département.',
-        { note: 'Les arrêtés visent en général tout conducteur d’EDPM, location comprise : vérifiez celui de votre département. Si vous louez une trottinette à Lyon, dans la métropole lilloise, autour de Versailles ou à Marne-la-Vallée, prévoyez votre casque.' },
+        { note: 'Les arrêtés visent en général tout conducteur d’EDPM, location comprise : vérifiez celui de votre département. Si vous louez une trottinette à Lyon, dans la métropole lilloise, autour de Versailles, à Marne-la-Vallée ou à Cherbourg-en-Cotentin, prévoyez votre casque.' },
       ],
     },
     {
@@ -209,6 +210,8 @@ const guide: Guide = {
     { title: 'Sénat : question orale n° 1174S « Port du casque à trottinette », réponse du 16 juin 2026', url: 'https://www.senat.fr/questions/base/2026/qSEQ26061174S.html' },
     { title: 'Assemblée nationale : proposition de loi n° 3256 du 6 octobre 2026 visant à rendre obligatoire le port du casque pour les utilisateurs de trottinettes et autres EDPM', url: 'https://www.assemblee-nationale.fr/dyn/17/dossiers/porte_casque_obligatoire_trottinettes_17e' },
     { title: 'Commune de Vauhallan : De nouvelles règles pour les trottinettes électriques en Essonne (12 octobre 2026)', url: 'https://www.vauhallan.fr/actualites/de-nouvelles-regles-pour-les-trottinettes-electriques-en-essonne-4675' },
+    { title: 'Ville de Cherbourg-en-Cotentin : casque et gilet obligatoires dans la Manche depuis le 1er septembre 2026 (page « Louer une trottinette avec Bird »)', url: 'https://www.cherbourg.fr/au-quotidien/mobilites-et-transports/louer-une-trottinette-avec-bird/' },
+    { title: 'ICI Cotentin : les amendes du casque et du gilet dans la Manche (7 septembre 2026)', url: 'https://www.ici.fr/emissions/l-info-d-ici-ici-cotentin/casque-obligatoire-a-cherbourg-la-societe-bird-souhaite-une-derogation-pour-les-trottinettes-en-libre-service-7274891' },
   ],
 };
 
