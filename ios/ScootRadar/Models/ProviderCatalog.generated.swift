@@ -322,6 +322,8 @@ enum ScooterProviderCoverage {
         (.bolt, GeoBounds(south: 50.7705, west: 4.2448, north: 50.918, east: 4.4816)),
         (.dott, GeoBounds(south: 50.7755, west: 4.2508, north: 50.9224, east: 4.4816)),
         (.dott, GeoBounds(south: 50.3504, west: 4.3494, north: 50.4803, east: 4.5161)),
+        (.dott, GeoBounds(south: 50.552, west: 5.5093, north: 50.7117, east: 5.6894)),
+        (.dott, GeoBounds(south: 50.6458, west: 5.5414, north: 50.7117, east: 5.6715)),
         (.pony, GeoBounds(south: 50.369, west: 4.3459, north: 50.4817, east: 4.5118)),
         (.hoppy, GeoBounds(south: 51.2861, west: 3.0977, north: 51.3268, east: 3.1643)),
         (.hoppy, GeoBounds(south: 50.7643, west: 3.2165, north: 50.8622, east: 3.3118)),
@@ -822,6 +824,8 @@ enum ScooterCityCatalog {
         ScooterCity(id: "it:Catania", name: "Catania", countryCode: "IT", center: GeoPoint(latitude: 37.5023, longitude: 15.0873), bounds: GeoBounds(south: 37.465, west: 15.0445, north: 37.5427, east: 15.1362)),
         ScooterCity(id: "be:Bruxelles", name: "Bruxelles", countryCode: "BE", center: GeoPoint(latitude: 50.8467, longitude: 4.3525), bounds: GeoBounds(south: 50.7705, west: 4.2448, north: 50.9224, east: 4.4816)),
         ScooterCity(id: "be:Charleroi", name: "Charleroi", countryCode: "BE", center: GeoPoint(latitude: 50.4108, longitude: 4.4446), bounds: GeoBounds(south: 50.3504, west: 4.3459, north: 50.4817, east: 4.5161)),
+        ScooterCity(id: "be:Liège", name: "Liège", countryCode: "BE", center: GeoPoint(latitude: 50.6326, longitude: 5.5797), bounds: GeoBounds(south: 50.552, west: 5.5093, north: 50.7117, east: 5.6894)),
+        ScooterCity(id: "be:Herstal", name: "Herstal", countryCode: "BE", center: GeoPoint(latitude: 50.665, longitude: 5.63), bounds: GeoBounds(south: 50.6458, west: 5.5414, north: 50.7117, east: 5.6715)),
         ScooterCity(id: "be:Blankenberge", name: "Blankenberge", countryCode: "BE", center: GeoPoint(latitude: 51.3131, longitude: 3.1316), bounds: GeoBounds(south: 51.2861, west: 3.0977, north: 51.3268, east: 3.1643)),
         ScooterCity(id: "be:Kortrijk", name: "Kortrijk", countryCode: "BE", center: GeoPoint(latitude: 50.8279, longitude: 3.2649), bounds: GeoBounds(south: 50.7643, west: 3.2165, north: 50.8622, east: 3.3118)),
         ScooterCity(id: "be:Mechelen", name: "Mechelen", countryCode: "BE", center: GeoPoint(latitude: 51.0281, longitude: 4.4794), bounds: GeoBounds(south: 50.9977, west: 4.445, north: 51.0485, east: 4.5283)),
@@ -1079,7 +1083,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 385
+    static let cityCount = 387
     static let countryCount = 27
 
     /// Cities by distance from the point to their centre, nearest first.

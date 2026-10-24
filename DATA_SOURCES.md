@@ -198,7 +198,7 @@ late. City totals are aggregated hourly. Each scooter counts under the
 nearest town whose bounds hold it; outside Switzerland the towns its own
 feed serves come first, so a scooter in east Oslo is Oslo's, though
 Lørenskog's centre is nearer. Where a town's municipal boundary is listed in
-`data/town-outlines.json`, as in Gush Dan, around Lille, Oslo and Heilbronn,
+`data/town-outlines.json`, as in Gush Dan, around Lille, Liège, Oslo and Heilbronn,
 or in west Los Angeles, a scooter inside it counts under that town first, under the
 smaller of two outlines that nest. The outlines are OpenStreetMap's (ODbL),
 Kartverket's for Norway (CC BY 4.0), the ONS's for Bournemouth, Christchurch
@@ -424,9 +424,9 @@ Supported city names and aliases are resolved locally before address search.
 
 Reviewed catalogs live in `data/belgian-scooter-feeds.json`,
 `data/norwegian-scooter-feeds.json` and `data/british-scooter-feeds.json`.
-Belgium has 10 feeds across 8 cities: Bolt and Dott in Bruxelles, Dott and Pony
-in Charleroi, Voi in Antwerpen and Hoppy in Blankenberge, Kortrijk, Mechelen,
-Oostende and Sint-Niklaas. The United Kingdom has 11
+Belgium has 11 feeds across 10 cities: Bolt and Dott in Bruxelles, Dott and Pony
+in Charleroi, Dott in Liège and Herstal, Voi in Antwerpen and Hoppy in
+Blankenberge, Kortrijk, Mechelen, Oostende and Sint-Niklaas. The United Kingdom has 11
 feeds across 18 towns: Beryl, Dott and Bolt. Both come from the operators' own
 public GBFS feeds, found through
 [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),

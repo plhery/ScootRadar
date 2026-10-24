@@ -156,8 +156,7 @@ banned shared scooters, and feeds that were empty when checked.
   - Lime Brussels and Kortrijk, Dott Ghent and Mons and Bolt Ghent list
     e-bikes only, as do Hoppy's Vervoerregio West-Vlaanderen, Kempen, Dender
     and Genk systems.
-  - Lime Antwerp answers 404, Dott Liège 403 and Dott Kortrijk 404. Bird
-    Antwerp is empty.
+  - Lime Antwerp and Dott Kortrijk answer 404. Bird Antwerp is empty.
 - **Norway** ([guide](belgian-norwegian-british-scooter-feeds.md#known-gaps)):
   - Bergen (~9,000 scooters: Ryde, Lime, RideMovi), Drammen and Larvik have
     no public source.

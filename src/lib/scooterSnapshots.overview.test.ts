@@ -81,6 +81,9 @@ describe('the town a scooter counts under', () => {
     ['New Brunswick, not Highland Park', 'veo_us_new_brunswick', [40.48273, -74.42509], 'us:nj:New Brunswick'],
     ['Berkeley, not Emeryville', 'veo_us_berkeley', [37.8511, -122.29251], 'us:ca:Berkeley'],
     ['South Euclid, not University Heights', 'veo_us_cleveland', [41.50317, -81.53785], 'us:oh:South Euclid'],
+    // Positions of 24 October 2026, inside both of Dott Liège's areas.
+    ['Herstal, though nearer Liège’s centre', 'dott_be_liege', [50.665919, 5.568636], 'be:Herstal'],
+    ['Liège in Wandre, though nearer Herstal’s centre', 'dott_be_liege', [50.66935, 5.652248], 'be:Liège'],
   ] as const)('is %s', (_case, systemId, [lat, lng], town) => {
     const feed = regional(systemId, [[lat, lng]]);
     expect(countsOf([feed])).toEqual({ [town]: { [feed.provider]: 1 } });

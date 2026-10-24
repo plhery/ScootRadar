@@ -15,11 +15,13 @@ on 14 October 2026; see
 Ryde's scooters in Asker, Bærum, Bodø, Lillestrøm and Lørenskog were added on
 22 October 2026; see
 [Ryde's five Entur systems, October 2026](#rydes-five-entur-systems-october-2026).
+Dott's scooters in Liège and Herstal were added on 24 October 2026; see
+[Dott Liège and Herstal, October 2026](#dott-liège-and-herstal-october-2026).
 
 | Country | Operator | Enabled feeds | Coverage | Available scooters |
 | --- | --- | ---: | --- | ---: |
 | Belgium | Bolt | 1 | Bruxelles | 2,750 |
-| Belgium | Dott | 2 | Bruxelles, Charleroi | 3,750 |
+| Belgium | Dott | 3 | Bruxelles, Charleroi, Liège (with Herstal) | 4,240 |
 | Belgium | Pony | 1 | Charleroi | 220 |
 | Belgium | Voi | 1 | Antwerpen | 925 |
 | Belgium | Hoppy | 5 | Blankenberge, Kortrijk, Mechelen, Oostende (with Bredene), Sint-Niklaas | 1,225 |
@@ -31,7 +33,7 @@ Ryde's scooters in Asker, Bærum, Bodø, Lillestrøm and Lørenskog were added o
 | United Kingdom | Dott | 4 | Bath, Bristol (with Yate), Milton Keynes, Nottingham | 3,450 |
 | United Kingdom | Bolt | 1 | Liverpool | 1,830 |
 
-Belgium has 8 cities, Norway 22 and the United Kingdom 18, once multi-town
+Belgium has 10 cities, Norway 22 and the United Kingdom 18, once multi-town
 feeds are routed per town. The bounds, discovery URLs and aliases are in
 [`belgian-scooter-feeds.json`](../data/belgian-scooter-feeds.json),
 [`norwegian-scooter-feeds.json`](../data/norwegian-scooter-feeds.json) and
@@ -110,6 +112,41 @@ directory.
   requests an hour to `hoppy.rideatom.com`, and at most about 65 each while
   watched; see
   [ATOM's request rate](german-italian-scooter-feeds.md#atoms-request-rate-october-2026).
+
+## Dott Liège and Herstal, October 2026
+
+Dott's Belgian listing still answered 403 for Liège on 16 October 2026, and
+listed it with 447 available scooters at the weekly catalog check on
+19 October. Its feeds are keyless GBFS 2.3 under
+`https://gbfs.api.ridedott.com/public/v2/liege/`, as in Bruxelles and
+Charleroi, and every feed URL is https, on the discovery's origin and under
+its directory.
+
+- **Liveness:** in 21 polls a minute apart from 10:37 to 10:57 on Saturday
+  24 October 2026, the feed listed 487 to 493 available scooters, and its
+  `last_updated` moved on about every two minutes. 19 scooters left and 13
+  new ids appeared, 10 of them 0.5 to 1.6 km from the nearest place a scooter
+  had left. No id moved between polls, so a ridden scooter seems to come back
+  under a new id.
+- **Scooters:** the feed lists scooters with a 30 km range and e-bikes, which
+  the map leaves out. Every scooter carries its battery, its range and rental
+  links.
+- **Towns:** one feed serves both towns, so it has two areas, each with its
+  municipality's OpenStreetMap outline. Of the 492 available scooters at
+  10:45 on Saturday 24 October 2026, 383 stood in Liège, 86 in Herstal and
+  22 in ten municipalities around them, Ans having the most (5). Those
+  count under the nearer of the two towns. Luik, Lüttich, Liegi and Lieja are
+  Liège's aliases.
+- **Bounds:** Herstal's are its outline plus about 1 km (0.009° of latitude
+  and 0.014° of longitude). Liège's, which are also the feed's, take in both
+  outlines with the same margin. One scooter, about 14 km north-west of the
+  centre, lay outside them.
+- **Zones:** rides may end in 78 zones. In the city centre and six smaller
+  zones a scooter can be left only at a parking station, and slow zones of
+  10 to 15 km/h cover parts of the centre.
+- **Prices:** EUR 1 to unlock, then EUR 0.35 a minute.
+- **Night rules:** the feed gives no hours, and no rule or report found
+  names a night ban in Liège or Herstal. No curfew was added.
 
 ## Ryde's five Entur systems, October 2026
 
@@ -374,7 +411,7 @@ stays open at night.
 - **Bolt:** its [GBFS licence](https://bolt.eu/en/legal/micromobility/security-gbfs-license/)
   allows displaying the vehicles. It forbids data older than fifteen minutes
   and use of Bolt's trademarks without written permission.
-- **Dott** publishes no `license_url` in Belgium or the UK. Its
+- **Dott** publishes no `license_url` in Belgium (Liège included) or the UK. Its
   [API licence](https://ridedott.com/api-licence/) raises the same open
   question as in France, Germany and Italy.
 - **Pony:** transportdata.be marks both of its datasets open, under "Other
@@ -398,7 +435,7 @@ stays open at night.
     e-bikes only.
   - Lime Antwerp answers 404.
   - Bird Antwerp has been empty for years.
-  - Dott Liège answers 403, and Dott Kortrijk 404.
+  - Dott Kortrijk answers 404.
   - Hoppy's Vervoerregio West-Vlaanderen (ATOM id 2010), Kempen (1973) and
     Dender & VVA (1663) systems list e-bikes only, about 430, 270 and 360 on
     13 October 2026, and West-Vlaanderen 76 pedal bikes too. Hoppy's Genk
@@ -422,6 +459,7 @@ stays open at night.
     Entur renews their ids, and add it if they are ridden. Melhus had
     a few rides but held 7 to 11, and no more than 10 at midday, and Skaun
     6 or 7.
+  - Dott Orkanger lists e-bikes only: 17 on 24 October 2026.
   - Seven Bolt systems in Entur are empty.
   - Lime Oslo is live but empty, and Zeus Oslo has been dead since 2021.
 - **United Kingdom:**

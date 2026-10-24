@@ -64,6 +64,57 @@
       "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/charleroi/gbfs.json"
     },
     {
+      "id": "dott_be_liege",
+      "country": "BE",
+      "provider": "dott",
+      "city": "Liège",
+      "center": [
+        50.6326,
+        5.5797
+      ],
+      "bounds": {
+        "south": 50.552,
+        "north": 50.7117,
+        "west": 5.5093,
+        "east": 5.6894
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/liege/gbfs.json",
+      "areas": [
+        {
+          "city": "Liège",
+          "center": [
+            50.6326,
+            5.5797
+          ],
+          "bounds": {
+            "south": 50.552,
+            "north": 50.7117,
+            "west": 5.5093,
+            "east": 5.6894
+          },
+          "aliases": [
+            "Luik",
+            "Lüttich",
+            "Liegi",
+            "Lieja"
+          ]
+        },
+        {
+          "city": "Herstal",
+          "center": [
+            50.665,
+            5.63
+          ],
+          "bounds": {
+            "south": 50.6458,
+            "north": 50.7117,
+            "west": 5.5414,
+            "east": 5.6715
+          }
+        }
+      ]
+    },
+    {
       "id": "pony_be_charleroi",
       "country": "BE",
       "provider": "pony",

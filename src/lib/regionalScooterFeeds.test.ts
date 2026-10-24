@@ -51,6 +51,8 @@ describe('German and Italian scooter coverage', () => {
     ['Ostend', 'Oostende, Belgium'], ['Ostende Belgique', 'Oostende, Belgium'],
     ['Bredene', 'Oostende, Belgium'], ['Mechelen', 'Mechelen, Belgium'], ['Malines Belgique', 'Mechelen, Belgium'],
     ['Blankenberge', 'Blankenberge, Belgium'], ['Sint-Niklaas', 'Sint-Niklaas, Belgium'], ['Saint-Nicolas Belgique', 'Sint-Niklaas, Belgium'],
+    ['Liège', 'Liège, Belgium'], ['Liege', 'Liège, Belgium'], ['Luik België', 'Liège, Belgium'], ['Lüttich', 'Liège, Belgium'],
+    ['Liegi Belgio', 'Liège, Belgium'], ['Herstal', 'Herstal, Belgium'],
     ['Puerto del Carmen', 'Puerto del Carmen, Spain'], ['Tias', 'Puerto del Carmen, Spain'], ['Lanzarote Spain', 'Puerto del Carmen, Spain'], ['Catania', 'Catania, Italy'],
     ['Corralejo', 'Corralejo, Spain'], ['La Oliva España', 'Corralejo, Spain'], ['Altea', 'Altea, Spain'], ['Albir', 'L\'Albir, Spain'],
     ['El Albir Spain', 'L\'Albir, Spain'], ['Alfaz del Pi', 'L\'Alfàs del Pi, Spain'], ['L\'Alfas del Pi', 'L\'Alfàs del Pi, Spain'],
