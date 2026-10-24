@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Alugar trotinete elétrica: como funcionam as trotinetes partilhadas, da app ao fim da viagem',
   lede: 'Para alugar uma trotinete elétrica partilhada em Portugal, descarregue a app do operador, adicione um cartão, leia o código QR do guiador e, no fim, estacione onde a app deixar e tire uma fotografia. A Lime, a Bird e a Bolt só alugam a maiores de 18 anos, e a lei não exige carta de condução. Paga um valor pelo desbloqueio e um preço por minuto, que a app mostra antes de desbloquear: a Lime e a Bird não publicam tarifas, e a Bolt anuncia minutos a partir de 0,15 €. Em Lisboa, o passe Navegante dá minutos grátis.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-24',
   sections: [
     {
       heading: 'Como alugar uma trotinete elétrica, passo a passo',
@@ -62,7 +62,8 @@ const guide: Guide = {
             rows: [
               ['Lisboa', 'Bolt, Lime e Bird', 'A viagem só termina num hotspot; 20 km/h no máximo; minutos grátis com o Navegante'],
               ['Porto', 'Bird e Lime', 'A viagem só termina num ponto de partilha, marcado a azul no chão'],
-              ['Oeiras, Almada e Costa da Caparica', 'Bird e Lime', 'Siga as zonas do mapa da app'],
+              ['Oeiras', 'Bird; Lime e Bolt por confirmar', 'A viagem só começa e acaba num ponto move sinalizado'],
+              ['Almada e Costa da Caparica', 'Bird e Lime', 'Siga as zonas do mapa da app'],
               ['Cascais, Maia, Matosinhos, Portimão e Olhão', 'Bird', 'Em Matosinhos, o regulamento municipal de 2022 só permite alugar das 6h00 às 22h00'],
               ['Faro', 'Lime', 'Consta da lista de cidades da Lime'],
               ['Coimbra', 'Bird; a página da Bolt também lista trotinetes', 'Em agosto de 2026, a presidente da Câmara disse que a cidade «não tem condições» para elas e que prepara uma concessão e um regulamento: confirme na app'],

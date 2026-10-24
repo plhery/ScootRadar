@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trotinetes em Cascais: a Bird, as estações, o paredão e a ciclovia do Guincho',
   lede: 'As trotinetes partilhadas em Cascais são da Bird, a única operadora no concelho em outubro de 2026, e apanham-se e deixam-se numa das 157 estações de mobilidade partilhada. A Bird não publica tarifas para Cascais: a app mostra o preço antes de desbloquear. O paredão, entre a Conceição e a Azarujinha, é para peões, e a app não deixa circular em cinco zonas do centro histórico, junto à baía. Para o Guincho, há ciclovia ao longo da costa.',
   published: '2026-10-16',
-  updated: '2026-10-16',
+  updated: '2026-10-24',
   city: 'pt:Cascais',
   sections: [
     {
@@ -22,14 +22,14 @@ const guide: Guide = {
             caption: 'Trotinetes em Cascais: quem as aluga e a que preço (16 de outubro de 2026)',
             head: ['Quem', 'Em Cascais', 'Preço', 'No nosso mapa'],
             rows: [
-              ['Bird', 'Trotinetes e bicicletas elétricas, nas 157 estações', 'Não publicado: veja na app', 'Sim: cerca de 750 trotinetes'],
-              ['Lime', 'Não: está em Oeiras e Lisboa', '–', 'Só em Oeiras'],
+              ['Bird', 'Trotinetes e bicicletas elétricas, nas 157 estações', 'Não publicado: veja na app', 'Sim, só as trotinetes'],
+              ['Lime', 'Não: está em Lisboa e Almada', '–', 'Só em Lisboa e Almada'],
               ['Bolt', 'Não: está em Lisboa', '–', 'Não'],
               ['Quiosques MobiCascais', 'Trotinetes ao balcão, em 4 quiosques', '6 € por 30 minutos', 'Não'],
             ],
           },
         },
-        'O ScootRadar mostra as trotinetes da Bird, com a bateria de cada uma: cerca de 750 no [mapa de Cascais](map:pt:Cascais) a 16 de outubro de 2026. As bicicletas elétricas da Bird não aparecem no mapa. Ao lado, em [Oeiras](map:pt:Oeiras), o mapa mostrava cerca de 850 trotinetes da Bird e 110 da Lime. Nunca alugou uma? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
+        'O ScootRadar mostra as trotinetes da Bird, com a bateria de cada uma: cerca de 640 no [mapa de Cascais](map:pt:Cascais) na manhã de 24 de outubro de 2026. As bicicletas elétricas da Bird não aparecem no mapa. Ao lado, em [Oeiras](map:pt:Oeiras), o mapa mostrava cerca de 390 trotinetes, todas da Bird. Nunca alugou uma? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
       ],
     },
     {
@@ -155,7 +155,7 @@ const guide: Guide = {
     },
     {
       question: 'Há trotinetes Lime ou Bolt em Cascais?',
-      answer: 'Não, em outubro de 2026. A Lime opera ao lado, em Oeiras, e em Lisboa; a Bolt, em Lisboa. Em Cascais, as trotinetes partilhadas são da Bird.',
+      answer: 'Não, em outubro de 2026. A Lime opera em Lisboa e em Almada (chegou a Oeiras em 2024, mas se ainda lá opera está por confirmar); a Bolt, em Lisboa. Em Cascais, as trotinetes partilhadas são da Bird.',
     },
   ],
   sources: [
