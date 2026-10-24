@@ -170,6 +170,7 @@ import londonEn from './en/e-scooters-london';
 import nurembergDe from './de/e-scooter-nuernberg';
 import bonnDe from './de/e-scooter-bonn';
 import kielDe from './de/e-scooter-kiel';
+import dortmundDe from './de/e-scooter-dortmund';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -340,4 +341,5 @@ export const GUIDES: readonly Guide[] = [
   nurembergDe,
   bonnDe,
   kielDe,
+  dortmundDe,
 ];
