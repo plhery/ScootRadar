@@ -49,10 +49,10 @@
         -72.5984
       ],
       "bounds": {
-        "south": -39.2985,
-        "north": -38.69954,
-        "west": -72.67406,
-        "east": -71.93557
+        "south": -38.76915,
+        "north": -38.69955,
+        "west": -72.67405,
+        "east": -72.54585
       },
       "discoveryUrl": "https://api.whoosh.bike/",
       "whooshAppRegion": "7eb4843a-1c09-40ad-ac5a-545776a5bc1b",
@@ -65,23 +65,54 @@
       "id": "whoosh_cl_scvi",
       "country": "CL",
       "provider": "whoosh",
-      "city": "Villarrica",
+      "city": "Pucón",
       "timeZone": "America/Santiago",
       "center": [
-        -39.251659,
-        -72.094822
+        -39.27807,
+        -71.95947
       ],
       "bounds": {
         "south": -39.2985,
-        "north": -38.69954,
-        "west": -72.67406,
+        "north": -39.26521,
+        "west": -72.24041,
         "east": -71.93557
       },
       "discoveryUrl": "https://api.whoosh.bike/",
       "whooshAppRegion": "e3883d91-a8f7-42a2-aea3-b27382155ec0",
       "aliases": [
-        "Villarica",
+        "Pucon",
         "SCVI"
+      ],
+      "areas": [
+        {
+          "city": "Pucón",
+          "center": [
+            -39.27807,
+            -71.95947
+          ],
+          "aliases": [
+            "Pucon"
+          ],
+          "bounds": {
+            "south": -39.29093,
+            "north": -39.26521,
+            "west": -71.98336,
+            "east": -71.93557
+          }
+        },
+        {
+          "city": "Villarrica",
+          "center": [
+            -39.28573,
+            -72.22597
+          ],
+          "bounds": {
+            "south": -39.2985,
+            "north": -39.27297,
+            "west": -72.24041,
+            "east": -72.21153
+          }
+        }
       ]
     },
     {

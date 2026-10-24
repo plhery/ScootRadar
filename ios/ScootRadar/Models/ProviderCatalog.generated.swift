@@ -1075,15 +1075,16 @@ enum ScooterProviderCoverage {
         (.whoosh, GeoBounds(south: -30.09712, west: -51.25218, north: -30.00374, east: -51.14004)),
         (.whoosh, GeoBounds(south: -22.99029, west: -43.40592, north: -22.89094, east: -43.16321)),
         (.whoosh, GeoBounds(south: -23.6305, west: -46.75008, north: -23.49574, east: -46.55206)),
-        (.whoosh, GeoBounds(south: -25.47325, west: -49.3193, north: -25.40597, east: -49.2327)),
+        (.whoosh, GeoBounds(south: -26.45213, west: -49.20084, north: -26.07424, east: -48.72326)),
         (.whoosh, GeoBounds(south: -20.47173, west: -54.62322, north: -20.42416, east: -54.54795)),
         (.whoosh, GeoBounds(south: -22.76292, west: -45.61556, north: -22.69277, east: -45.53982)),
         (.whoosh, GeoBounds(south: -25.47325, west: -49.3193, north: -25.40597, east: -49.2327)),
         (.whoosh, GeoBounds(south: -8.14695, west: -34.92407, north: -8.02252, east: -34.86337)),
         (.jet, GeoBounds(south: -33.764879, west: -70.787597, north: -33.336412, east: -70.490242)),
         (.jet, GeoBounds(south: -38.758488, west: -72.671215, north: -38.700512, east: -72.547196)),
-        (.whoosh, GeoBounds(south: -39.2985, west: -72.67406, north: -38.69954, east: -71.93557)),
-        (.whoosh, GeoBounds(south: -39.2985, west: -72.67406, north: -38.69954, east: -71.93557)),
+        (.whoosh, GeoBounds(south: -38.76915, west: -72.67405, north: -38.69955, east: -72.54585)),
+        (.whoosh, GeoBounds(south: -39.29093, west: -71.98336, north: -39.26521, east: -71.93557)),
+        (.whoosh, GeoBounds(south: -39.2985, west: -72.24041, north: -39.27297, east: -72.21153)),
         (.whoosh, GeoBounds(south: -33.57098, west: -71.5704, north: -32.96499, east: -70.49203)),
         (.whoosh, GeoBounds(south: -29.99433, west: -71.35383, north: -29.89335, east: -71.24147)),
         (.whoosh, GeoBounds(south: -41.495, west: -73.01201, north: -41.37834, east: -72.85224)),
@@ -2396,7 +2397,7 @@ enum ScooterCityCatalog {
         ScooterCity(id: "br:Itanhaém", name: "Itanhaém", countryCode: "BR", center: GeoPoint(latitude: -24.187737, longitude: -46.794216), bounds: GeoBounds(south: -24.204152, west: -46.822681, north: -24.171195, east: -46.766093)),
         ScooterCity(id: "br:Itapema", name: "Itapema", countryCode: "BR", center: GeoPoint(latitude: -27.108775, longitude: -48.596325), bounds: GeoBounds(south: -27.169478, west: -48.619451, north: -27.085856, east: -48.528392)),
         ScooterCity(id: "br:Jaboatão dos Guararapes", name: "Jaboatão dos Guararapes", countryCode: "BR", center: GeoPoint(latitude: -8.192915, longitude: -34.920569), bounds: GeoBounds(south: -8.222971, west: -34.929777, north: -8.159607, east: -34.910859)),
-        ScooterCity(id: "br:Joinville", name: "Joinville", countryCode: "BR", center: GeoPoint(latitude: -26.270188, longitude: -48.866831), bounds: GeoBounds(south: -26.325474, west: -49.3193, north: -25.40597, east: -48.837308)),
+        ScooterCity(id: "br:Joinville", name: "Joinville", countryCode: "BR", center: GeoPoint(latitude: -26.270188, longitude: -48.866831), bounds: GeoBounds(south: -26.45213, west: -49.20084, north: -26.07424, east: -48.72326)),
         ScooterCity(id: "br:Londrina", name: "Londrina", countryCode: "BR", center: GeoPoint(latitude: -23.292444, longitude: -51.188514), bounds: GeoBounds(south: -23.354938, west: -51.230723, north: -23.25601, east: -51.134939)),
         ScooterCity(id: "br:Maceió", name: "Maceió", countryCode: "BR", center: GeoPoint(latitude: -9.645789, longitude: -35.711892), bounds: GeoBounds(south: -9.686505, west: -35.760168, north: -9.606097, east: -35.684825)),
         ScooterCity(id: "br:Matinhos", name: "Matinhos", countryCode: "BR", center: GeoPoint(latitude: -25.831209, longitude: -48.539125), bounds: GeoBounds(south: -25.850742, west: -48.550056, north: -25.813225, east: -48.528326)),
@@ -2419,8 +2420,9 @@ enum ScooterCityCatalog {
         ScooterCity(id: "br:Vila Velha", name: "Vila Velha", countryCode: "BR", center: GeoPoint(latitude: -20.361785, longitude: -40.308233), bounds: GeoBounds(south: -20.422664, west: -40.339696, north: -20.323335, east: -40.266473)),
         ScooterCity(id: "br:Rio de Janeiro", name: "Rio de Janeiro", countryCode: "BR", center: GeoPoint(latitude: -22.94598, longitude: -43.19508), bounds: GeoBounds(south: -22.99029, west: -43.40592, north: -22.89094, east: -43.16321)),
         ScooterCity(id: "cl:Santiago", name: "Santiago", countryCode: "CL", center: GeoPoint(latitude: -33.506119, longitude: -70.654009), bounds: GeoBounds(south: -34.19857, west: -71.5704, north: -32.96499, east: -70.490242)),
-        ScooterCity(id: "cl:Temuco", name: "Temuco", countryCode: "CL", center: GeoPoint(latitude: -38.736777, longitude: -72.616194), bounds: GeoBounds(south: -39.2985, west: -72.67406, north: -38.69954, east: -71.93557)),
-        ScooterCity(id: "cl:Villarrica", name: "Villarrica", countryCode: "CL", center: GeoPoint(latitude: -39.251659, longitude: -72.094822), bounds: GeoBounds(south: -39.2985, west: -72.67406, north: -38.69954, east: -71.93557)),
+        ScooterCity(id: "cl:Temuco", name: "Temuco", countryCode: "CL", center: GeoPoint(latitude: -38.736777, longitude: -72.616194), bounds: GeoBounds(south: -38.76915, west: -72.67405, north: -38.69955, east: -72.54585)),
+        ScooterCity(id: "cl:Pucón", name: "Pucón", countryCode: "CL", center: GeoPoint(latitude: -39.27807, longitude: -71.95947), bounds: GeoBounds(south: -39.29093, west: -71.98336, north: -39.26521, east: -71.93557)),
+        ScooterCity(id: "cl:Villarrica", name: "Villarrica", countryCode: "CL", center: GeoPoint(latitude: -39.28573, longitude: -72.22597), bounds: GeoBounds(south: -39.2985, west: -72.24041, north: -39.27297, east: -72.21153)),
         ScooterCity(id: "cl:Viña del Mar", name: "Viña del Mar", countryCode: "CL", center: GeoPoint(latitude: -33.0153009, longitude: -71.5500508), bounds: GeoBounds(south: -33.57098, west: -71.5704, north: -32.96499, east: -70.49203)),
         ScooterCity(id: "cl:La Serena", name: "La Serena", countryCode: "CL", center: GeoPoint(latitude: -29.9092, longitude: -71.2491), bounds: GeoBounds(south: -29.99433, west: -71.35383, north: -29.89335, east: -71.24147)),
         ScooterCity(id: "cl:Puerto Montt", name: "Puerto Montt", countryCode: "CL", center: GeoPoint(latitude: -41.465558, longitude: -72.947235), bounds: GeoBounds(south: -41.495, west: -73.01201, north: -41.37834, east: -72.85224)),
@@ -2599,7 +2601,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 836
+    static let cityCount = 837
     static let countryCount = 46
 
     /// Cities by distance from the point to their centre, nearest first.

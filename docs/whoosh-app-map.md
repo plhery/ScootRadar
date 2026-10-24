@@ -38,7 +38,26 @@ The Node-only adapter is [server/whooshApp.ts](../server/whooshApp.ts).
 - `GET /regions/location/{id}/areas` supplies ride polygons. The app's
   `MapAreaUiAssembler` uses enabled `LIMITED` polygons as holes in the global
   out-of-ride-area mask. These are the collection areas. Forbidden polygons
-  alone do not define coverage.
+  alone do not define coverage. The list also holds the nearest region's
+  polygons (the info's `nearestRegions`): Temuco's and Villarrica's are the
+  same three, and Joinville's, while its season was over on 24 October 2026,
+  only Curitiba's. The collector skips a polygon wholly outside the region's
+  coverage, which is the other region's to collect, and logs
+  `whoosh_areas_outside_coverage` once, and again when that count changes; one
+  that crosses the coverage's edge still fails the sweep, and so does a region
+  with no polygon inside its coverage.
+
+  The catalog first took each region's bounds from that list, so Joinville
+  had Curitiba's and Temuco and Villarrica the box around all three towns.
+  Since 24 October 2026 Joinville's are its municipality's
+  ([OpenStreetMap relation 296650](https://www.openstreetmap.org/relation/296650)),
+  around Whoosh's region coordinate (-26.3016, -48.8480). `ZPC`, Pucón's
+  airport code, is Temuco's region: Whoosh names it "Temuco" and places it in
+  Temuco's polygon, where Whoosh has run since 2023
+  ([Reporte Minero](https://www.reporteminero.cl/noticia/noticias/2023/11/e-scooters-temuco)).
+  Villarrica's region (`SCVI`) holds the Pucón and Villarrica polygons, and
+  all its 172 scooters on the evening of 24 October 2026 were in Pucón; it is now
+  two service areas, Pucón and Villarrica.
 - `POST /client/devices/searches` returns `devices`, with the request below.
   Despite the field names, the app sends southwest as `upperLeft` and northeast
   as `bottomRight`, rounded to six decimals.

@@ -1010,14 +1010,14 @@
       "city": "Joinville",
       "timeZone": "America/Sao_Paulo",
       "center": [
-        -25.43699,
-        -49.283064
+        -26.301575,
+        -48.848014
       ],
       "bounds": {
-        "south": -25.47325,
-        "north": -25.40597,
-        "west": -49.3193,
-        "east": -49.2327
+        "south": -26.45213,
+        "north": -26.07424,
+        "west": -49.20084,
+        "east": -48.72326
       },
       "discoveryUrl": "https://api.whoosh.bike/",
       "whooshAppRegion": "01a0aa0b-d862-7e45-8871-4062cfc02a2d",

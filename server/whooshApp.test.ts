@@ -77,6 +77,10 @@ describe('Whoosh map contract', () => {
     expect(views.every(v => v.north - v.south < 0.040001 && v.east - v.west < 0.040001)).toBe(true);
     expect(views.some(v => v.south > 1.08 && v.north < 1.16)).toBe(false);
     expect(() => whooshMapViews(ride, { ...coverage, north: 1.005 })).toThrow('exceeds reviewed');
+    // The nearest region's polygons, as Curitiba's in Joinville's list, are left to that region.
+    const neighbour = { south: 3, north: 3.01, west: 4, east: 4.01 };
+    expect(whooshMapViews([...ride, neighbour], coverage)).toEqual(whooshMapViews(ride, coverage));
+    expect(() => whooshMapViews([neighbour], coverage)).toThrow('no ride area in its reviewed coverage');
     expect(() => parseWhooshRideAreas({ areas: [{ enabled: true, type: 'LIMITED', borders: { coordinates: [] } }] })).toThrow();
   });
 

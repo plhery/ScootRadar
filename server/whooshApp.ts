@@ -77,11 +77,21 @@ export function parseWhooshRideAreas(payload: unknown): MapBounds[] {
 }
 
 /** Large, otherwise valid views can return zero; views can also stop at 300 devices. */
+/**
+ * Whether the ride area lies wholly outside the coverage. The areas endpoint also lists the nearest
+ * region's polygons: Joinville's lists Curitiba's, Temuco's and Villarrica's the same three. Those
+ * are the other region's to collect; one that crosses the coverage's edge is an unreviewed expansion.
+ */
+export const outsideCoverage = (area: MapBounds, coverage: MapBounds) => area.north < coverage.south ||
+  area.south > coverage.north || area.east < coverage.west || area.west > coverage.east;
+
 export function whooshMapViews(areas: readonly MapBounds[], coverage: MapBounds): MapBounds[] {
   if (!validBounds(coverage) || !areas.length) throw new Error('Whoosh region has no reviewed ride coverage');
   const views = new Map<string, MapBounds>();
   for (const area of areas) {
-    if (!validBounds(area) || area.south < coverage.south || area.north > coverage.north ||
+    if (!validBounds(area)) throw new Error('Invalid Whoosh ride bounds');
+    if (outsideCoverage(area, coverage)) continue;
+    if (area.south < coverage.south || area.north > coverage.north ||
       area.west < coverage.west || area.east > coverage.east) throw new Error('Whoosh ride area exceeds reviewed coverage');
     // A small margin includes scooters on a ride-area boundary. Do not bridge disjoint polygons.
     const south = Math.max(coverage.south, area.south - 0.0001), north = Math.min(coverage.north, area.north + 0.0001);
@@ -95,7 +105,9 @@ export function whooshMapViews(areas: readonly MapBounds[], coverage: MapBounds)
       }
     }
   }
-  return [...views.values()].filter(validBounds);
+  const targets = [...views.values()].filter(validBounds);
+  if (!targets.length) throw new Error('Whoosh region has no ride area in its reviewed coverage');
+  return targets;
 }
 
 export function parseWhooshVehicles(payload: unknown): WhooshScooter[] {
@@ -138,6 +150,8 @@ export class WhooshClient {
   private lease?: Lease;
   private renewing?: Promise<Lease>;
   private readonly metadata = new Map<string, Metadata>();
+  // How many of each region's ride polygons lie outside its coverage, last time it was swept.
+  private readonly outside = new Map<string, number>();
   private readonly loading = new Map<string, Promise<Metadata>>();
 
   constructor(options: Options = {}) {
@@ -273,6 +287,12 @@ export class WhooshClient {
     if (!validBounds(coverage)) throw new Error('Invalid Whoosh map coverage');
     const metadata = await this.region(region);
     if (metadata.closed) return [];
+    // Said once, and again when it changes: a new polygon outside the coverage may be the region's own.
+    const outside = metadata.areas.filter(area => outsideCoverage(area, coverage)).length;
+    if ((this.outside.get(region) ?? 0) !== outside) {
+      console.warn(JSON.stringify({ event: 'whoosh_areas_outside_coverage', region, outside, areas: metadata.areas.length }));
+    }
+    this.outside.set(region, outside);
     const targets = whooshMapViews(metadata.areas, coverage);
     const vehicles = new Map<string, WhooshScooter>();
     let requests = 0;
