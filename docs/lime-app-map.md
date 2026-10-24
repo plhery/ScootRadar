@@ -89,7 +89,9 @@ The verified warm query plan, including parent views, must also fit the
 provider’s hourly request budget.
 
 Each group is an independent cache feed. Looking at one part of a market
-wakes its nearby groups rather than rescanning the entire city. Viewed groups
+wakes its nearby groups rather than rescanning the entire city. Requested
+groups are served in arrival order so repeated polling cannot postpone an
+area still waiting for its first refresh. Viewed groups
 are selected by their individual assigned cells, including where a group's
 enclosing rectangle spans a gap between rows or disconnected polygons. They
 use the normal active cadence; idle groups scan hourly to fit the upstream

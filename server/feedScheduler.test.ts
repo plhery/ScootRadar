@@ -208,3 +208,20 @@ it('uses an upstream-specific idle interval while watched areas still refresh ev
     expect(times('lime-area')).toEqual([0, 41, 42, 43]);
   } finally { scheduler.stop(); }
 });
+
+it('serves older requested areas before areas a polling client requests again', async () => {
+  const feeds = ['a', 'b', 'c', 'd', 'e', 'f'].map(id => ({ id, host: 'limited' }));
+  const { scheduler, calls } = schedule(feeds, {}, () => new Promise(resolve => {
+    setTimeout(() => resolve({ failed: false }), 40_000);
+  }));
+  scheduler.demand(feeds.map(feed => feed.id));
+  const polling = setInterval(() => scheduler.demand(feeds.map(feed => feed.id)), 3_000);
+  try {
+    await vi.advanceTimersByTimeAsync(120_000);
+    expect(calls.find(call => call.id === 'e')?.at).toBe(80_000);
+    expect(calls.find(call => call.id === 'f')?.at).toBe(80_000);
+  } finally {
+    clearInterval(polling);
+    scheduler.stop();
+  }
+});

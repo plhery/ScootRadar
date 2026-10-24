@@ -200,8 +200,14 @@ export class FeedScheduler<T extends ScheduledFeed> {
     // feeds, due at once; slow sweeps on three hosts held every slot, and Zürich's feeds, due a
     // minute later, waited behind them for over ten minutes.
     const idle = (feed: T) => this.mode(feed, now) === 'idle' && !this.woken.has(feed.id) ? 1 : 0;
-    const pending = this.definitions.filter(feed => !this.running.has(feed.id))
-      .sort((a, b) => idle(a) - idle(b) || rank(a) - rank(b));
+    // A polling client must not keep re-queuing earlier feeds ahead of areas
+    // still waiting for their first requested collection.
+    const wakeOrder = new Map([...this.woken].map((id, index) => [id, index]));
+    const pending = this.definitions.filter(feed => !this.running.has(feed.id)).sort((a, b) => {
+      const aWake = wakeOrder.get(a.id), bWake = wakeOrder.get(b.id);
+      return idle(a) - idle(b) ||
+        (aWake !== undefined && bWake !== undefined ? aWake - bWake : rank(a) - rank(b));
+    });
     for (const feed of pending) {
       if (this.running.size >= MAX_RUNNING) break;
       if (rank(feed) > now || [...this.running.values()].filter(host => host === feed.host).length >= MAX_RUNNING_PER_HOST) continue;
