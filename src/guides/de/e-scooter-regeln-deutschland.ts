@@ -96,7 +96,7 @@ const guide: Guide = {
           note: 'Ein paar Bier vor der Fahrt können dich den Autoführerschein kosten: Das Fahrverbot ab 0,5 Promille gilt auch fürs Auto, und ab 1,1 Promille entzieht dir das Gericht in der Regel die Fahrerlaubnis.',
         },
         'Bei einer Straftat ist der Führerschein laut ADAC mindestens sechs Monate weg, die Geldstrafe liegt bei etwa einem Netto-Monatsgehalt, dazu kommen 3 Punkte. Dass die Fahrerlaubnis auch nach einer E-Scooter-Fahrt und bei Ersttätern in der Regel weg ist, hat das Oberlandesgericht Hamm 2025 bestätigt. Die 1,1 Promille stehen nicht im Gesetz: Die Oberlandesgerichte wenden sie einhellig an, der Bundesgerichtshof hat die Frage offengelassen.',
-        'Bolt verbietet in seinen Bedingungen jeden Alkohol (0,0 Promille), die anderen Anbieter das Fahren unter Alkohol- oder Drogeneinfluss.',
+        'Bolt verbietet in seinen Bedingungen jeden Alkohol (0,0 Promille); für Voi nennt die Hamburger App hvv switch 0,00 % als Alkoholgrenze. Die anderen Anbieter verbieten das Fahren unter Alkohol- oder Drogeneinfluss.',
       ],
     },
     {
@@ -142,7 +142,7 @@ const guide: Guide = {
             head: ['Stadt', 'Obergrenze', 'Was beim Abstellen gilt'],
             rows: [
               ['Berlin', '19 000 im S-Bahn-Ring, ausserhalb keine', 'Auf dem Gehweg 2,30 m frei lassen; nicht an Haltestellen, Kreuzungen, Radwegen, in Grünanlagen und Fussgängerzonen. Im Umkreis von mindestens 100 m um eine Jelbi-Abstellfläche nur dort. Foto am Fahrtende'],
-              ['Hamburg', '5000 innerhalb von Ring 2', 'Mindestens 1,60 m Gehweg frei. Verbotszonen in Grünanlagen, an belebten Orten der Innenstadt und am Wasser. Bussgelder fürs Falschparken gibt der Anbieter an dich weiter'],
+              ['Hamburg', '5000 E-Scooter und 5000 E-Bikes innerhalb des Ring 2, gleichmässig auf die Anbieter verteilt; ausserhalb keine', 'Mindestens 1,60 m Gehweg frei. Verbotszonen in Grünanlagen, an belebten Orten der Innenstadt und am Wasser. Bussgelder fürs Falschparken gibt der Anbieter an dich weiter'],
               ['[München](map:de:München)', 'Freiwillig: je Anbieter 100 in der Altstadt und 1000 weitere innerhalb des Mittleren Rings', 'Altstadt nur an festen Abstellflächen, sonst bis 100 m um jede Fläche nur dort. Tabu: Fussgängerzonen, Grünanlagen, südlicher Englischer Garten, 10 m rund um Haltestellen'],
               ['[Köln](map:de:Köln)', 'Seit 2022: 500 je Anbieter in der Innenstadt', 'Kein Fahrtende in Fussgängerzonen, auf Brücken, am Rheinufer und in Grünanlagen; in Altstadt und Kolumbaviertel nur an festen Stationen. Nächte auf Samstag und Sonntag (20–6 Uhr): auch nicht an den Ringen zwischen Friesen- und Rudolfplatz, an der Zülpicher Strasse und im Belgischen Viertel. 1,50 m Gehweg frei, sonst 15 €'],
               ['Stuttgart', '6000, je Anbieter 1500, davon 100 in der Kernstadt', 'Kein Fahrtende in Fussgängerzonen, Grünflächen und Parks; 2 m Gehweg frei'],
@@ -201,6 +201,7 @@ const guide: Guide = {
     { title: 'MVV: Scootersharing in München', url: 'https://www.mvv-muenchen.de/vernetzte-mobilitaet/shared-mobility/scootersharing/' },
     { title: 'Statistisches Bundesamt: Unfälle mit E-Scootern 2025', url: 'https://www.destatis.de/DE/Presse/Pressemitteilungen/2026/07/PD26_N049_462.html' },
     { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge in Deutschland (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'hvv switch: Fragen und Antworten zu E-Scootern', url: 'https://www.hvv-switch.de/de/faq/kategorie/e-scooter/' },
   ],
 };
 
