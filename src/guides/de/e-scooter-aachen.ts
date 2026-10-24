@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'E-Scooter Aachen 2026: Anbieter, Preise, Parken, Grenze',
   description: 'E-Scooter Aachen: vier Anbieter, was zehn Minuten kosten, wo du an Dom und Hauptbahnhof parkst und was im ASEAG-Bus und in Vaals oder Kelmis gilt.',
   headline: 'E-Scooter Aachen: Anbieter, Preise, Abstellflächen, ASEAG-Bus und die Grenze zu Vaals und Kelmis',
-  lede: 'Einen E-Scooter in Aachen leihst du ab 18 und ohne Führerschein bei Dott, Voi, RideMovi oder Ryde, laut Stadt je 500 Stück (Stand Oktober 2026). Zehn Minuten kosten bei Voi im Standardtarif 2,89 €, bei Dott 4,20 €. Rund um Dom, Markt und Elisenbrunnen endet eine Dott-Fahrt nur an einer Station, sonst läuft die Miete weiter. Nach Vaals oder Kelmis kommst du mit Dott nicht: Das Gebiet endet noch auf Aachener Seite.',
+  lede: 'Einen E-Scooter in Aachen leihst du ab 18 und ohne Führerschein bei Dott, Voi, RideMovi oder Ryde, laut Stadt je 500 Stück (Stand Oktober 2026). Zehn Minuten kosten bei Voi im Standardtarif 2,89 €, bei Dott 4,30 €. Rund um Dom, Markt und Elisenbrunnen endet eine Dott-Fahrt nur an einer Station, sonst läuft die Miete weiter. Nach Vaals oder Kelmis kommst du mit Dott nicht: Das Gebiet endet noch auf Aachener Seite.',
   published: '2026-10-17',
-  updated: '2026-10-17',
+  updated: '2026-10-24',
   city: 'de:Aachen',
   sections: [
     {
@@ -27,7 +27,7 @@ const guide: Guide = {
         },
         'Bolt fährt in Aachen laut Website nur mit Auto und Taxi, Lime gar nicht (Stand 17. Oktober 2026).',
         'Gemietet wird in der App des Anbieters: [So mietest du einen E-Scooter](guide:how-to-rent). Laut Stadt kannst du die E-Scooter aller Anbieter auch in der App movA buchen, zusammen mit Bus und Bahn.',
-        'Auf der [Karte von Aachen](map:de:Aachen) zeigt ScootRadar nur Dott: am 17. Oktober 2026 um 19:25 Uhr 423 Scooter. Das ist der Stand eines Abends, keine Flottengrösse. Voi und Ryde geben ihre Aachener Daten nur an die Datendrehscheibe des Landes (MDD NRW), die Verkehrsunternehmen und Kommunen nutzen, nicht die Öffentlichkeit. Von RideMovi gibt es keine öffentlichen Daten. Ihre Scooter siehst du nur in ihren Apps.',
+        'Auf der [Karte von Aachen](map:de:Aachen) zeigt ScootRadar Dott und seit dem 24. Oktober 2026 auch Voi: an jenem Samstag kurz nach 15 Uhr rund 430 Dott- und 450 Voi-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. RideMovi und Ryde fehlen auf der Karte; ihre Scooter siehst du nur in ihren Apps.',
       ],
     },
     {
@@ -39,7 +39,7 @@ const guide: Guide = {
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi, Standardtarif (Website, 17. Oktober 2026)', '0,49 €', '0,24 €', '2,89 €', '5,29 €'],
-              ['Dott (Datenfeed, 17. Oktober 2026)', '1,00 €', '0,32 €', '4,20 €', '7,40 €'],
+              ['Dott (Datenfeed, 24. Oktober 2026)', '1,00 €', '0,33 €', '4,30 €', '7,60 €'],
             ],
           },
         },
@@ -124,7 +124,7 @@ const guide: Guide = {
     {
       heading: 'Mit dem E-Scooter nach Vaals oder Kelmis?',
       blocks: [
-        'Mit Dott nicht: Das Gebiet endet laut Datenfeed noch auf Aachener Seite, an der Vaalser Strasse rund 750 m vor der Grenze und etwa 1,5 km vor dem Ortskern von Vaals. Bis Kelmis fehlen rund 6 km. Schon Vaalserquartier und Seffent liegen ausserhalb. Die Gebiete von Voi, RideMovi und Ryde sind nicht öffentlich: Prüf die Zone in der App, bevor du losfährst.',
+        'Mit Dott nicht: Das Gebiet endet laut Datenfeed noch auf Aachener Seite, an der Vaalser Strasse rund 750 m vor der Grenze und etwa 1,5 km vor dem Ortskern von Vaals. Bis Kelmis fehlen rund 6 km. Schon Vaalserquartier und Seffent liegen ausserhalb. Bei Voi, RideMovi und Ryde prüfst du die Zone in der App, bevor du losfährst.',
         'Für den eigenen Scooter gelten jenseits der Grenze andere Regeln:',
         {
           list: [
@@ -149,11 +149,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-Apps kann ich in Aachen nutzen?',
-      answer: 'Die von Dott, Voi, RideMovi und Ryde, Stand Oktober 2026. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Dott-Scooter zeigt auch die [Live-Karte von Aachen](map:de:Aachen), die der anderen Anbieter nur ihre eigenen Apps.',
+      answer: 'Die von Dott, Voi, RideMovi und Ryde, Stand Oktober 2026. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Dott- und Voi-Scooter zeigt auch die [Live-Karte von Aachen](map:de:Aachen), die von RideMovi und Ryde nur deren Apps.',
     },
     {
       question: 'Was kosten zehn Minuten E-Scooter in Aachen?',
-      answer: 'Bei Voi im Standardtarif 2,89 € (0,49 € Entsperren plus 0,24 € pro Minute), bei Dott 4,20 € (1 € Entsperren plus 0,32 € pro Minute), Stand 17. Oktober 2026. RideMovi und Ryde zeigen ihren Preis in der App.',
+      answer: 'Bei Voi im Standardtarif 2,89 € (0,49 € Entsperren plus 0,24 € pro Minute), bei Dott 4,30 € (1 € Entsperren plus 0,33 € pro Minute), Stand 24. Oktober 2026. RideMovi und Ryde zeigen ihren Preis in der App.',
     },
     {
       question: 'Warum kann ich meine Fahrt am Dom oder am Elisenbrunnen nicht beenden?',
@@ -180,7 +180,7 @@ const guide: Guide = {
     { title: 'Stadt Aachen: E-Tretroller fahren nun bis nach Verlautenheide (8. Juni 2026)', url: 'https://www.aachen.de/services/presse/pressemitteilungen/2026/juni/080626-verlautenheide-e-tretroller' },
     { title: 'Dott: offener Datenfeed für Aachen (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/aachen/gbfs.json' },
     { title: 'Voi: E-Scooter in Aachen', url: 'https://www.voi.com/de/city/aachen' },
-    { title: 'Multimodale Datendrehscheibe NRW: Datenkatalog', url: 'https://ckan.mdd.gorheinland.com/de/dataset/' },
+    { title: 'NRW.Mobidrom: Mobilitätsdaten des Landes NRW, mit Vois offenen Datenfeeds', url: 'https://www.mobilitaetsdaten.nrw' },
     { title: 'ASEAG: Das gilt für E-Tretroller in den Bussen der ASEAG (20. März 2024)', url: 'https://www.aseag.de/aktuelles/detail/e-tretroller' },
     { title: 'AVV: E-Tretroller dürfen in Bus und Bahn transportiert werden (17. Juli 2019)', url: 'https://avv.de/de/aktuelles/neuigkeiten/e-tretroller-duerfen-in-bus-und-bahn-transportiert-werden' },
     { title: 'Deutsche Bahn: E-Scooter im Fernverkehr', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },

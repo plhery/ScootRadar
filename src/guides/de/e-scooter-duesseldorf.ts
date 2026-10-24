@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'E-Scooter Düsseldorf 2026: Anbieter, Preise, Parken, Kirmes',
   description: 'E-Scooter Düsseldorf: die vier Anbieter, was zehn Minuten kosten, wo du in der Altstadt parkst, wer zum Flughafen fährt und was die Rheinbahn verbietet.',
   headline: 'E-Scooter Düsseldorf: Anbieter, Preise, Sharingstationen und was an Karneval und zur Kirmes gilt',
-  lede: 'Einen E-Scooter in Düsseldorf leihst du ab 18 und ohne Führerschein bei Bolt, Dott (früher TIER), Lime oder Voi. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 13. Oktober 2026) bei Voi 3 € und bei Dott 4,10 €, bei Lime und Bolt zeigt die App den Preis. In Altstadt, Carlstadt, Stadtmitte und auf der Kö beendest du die Fahrt nur an einer markierten Sharingstation, sonst zahlst du weiter. In Bussen und Bahnen der Rheinbahn sind E-Scooter seit dem 1. März 2024 verboten, auch zusammengeklappt.',
+  lede: 'Einen E-Scooter in Düsseldorf leihst du ab 18 und ohne Führerschein bei Bolt, Dott (früher TIER), Lime oder Voi. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 24. Oktober 2026) bei Voi 3 € und bei Dott 4,20 €, bei Lime und Bolt zeigt die App den Preis. In Altstadt, Carlstadt, Stadtmitte und auf der Kö beendest du die Fahrt nur an einer markierten Sharingstation, sonst zahlst du weiter. In Bussen und Bahnen der Rheinbahn sind E-Scooter seit dem 1. März 2024 verboten, auch zusammengeklappt.',
   published: '2026-10-13',
-  updated: '2026-10-14',
+  updated: '2026-10-24',
   city: 'de:Düsseldorf',
   sections: [
     {
@@ -18,27 +18,27 @@ const guide: Guide = {
       blocks: [
         'Laut Connected Mobility Düsseldorf (CMD), der städtischen Mobilitätsgesellschaft, vermieten vier Anbieter E-Scooter: **Bolt**, **Dott**, **Lime** und **Voi**. Dott hiess früher TIER; wer TIER fuhr, nutzt seit Oktober 2024 die Dott-App.',
         'Gemietet wird in der App des Anbieters, ab 18, obwohl das Gesetz E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Auf der [Karte rund um Düsseldorf](map:de:Düsseldorf) zeigt ScootRadar nur Dott, weil es für Düsseldorf nur von Dott offene Standortdaten bekommt: am Vormittag des 13. Oktober 2026 rund 1800 Scooter. Das ist eine Momentaufnahme, keine Flottengrösse; die Stadt erlaubt allen Anbietern zusammen bis zu 8400. Die Scooter von Bolt, Lime und Voi findest du in deren Apps.',
+        'Auf der [Karte rund um Düsseldorf](map:de:Düsseldorf) zeigt ScootRadar Dott und seit dem 24. Oktober 2026 auch Voi: an jenem Samstag kurz nach 15 Uhr rund 1700 Dott- und 2000 Voi-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse; die Stadt erlaubt allen Anbietern zusammen bis zu 8400. Bolt und Lime findest du nur in ihren Apps.',
         'Mit «E-Roller» sind oft auch Elektro-Mopeds zum Sitzen gemeint: Für die brauchst du Führerschein und Helm, um sie geht es hier nicht.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Düsseldorf?',
       blocks: [
-        'Einen Tarif für Düsseldorf veröffentlichen nur Voi auf seiner Website und Dott in seinem offenen Datenfeed.',
+        'Einen Tarif für Düsseldorf veröffentlichen Voi und Dott, beide in offenen Datenfeeds.',
         {
           table: {
-            caption: 'E-Scooter-Preise in Düsseldorf (veröffentlichte Tarife, Stand 13. Oktober 2026)',
+            caption: 'E-Scooter-Preise in Düsseldorf (veröffentlichte Tarife, Stand 24. Oktober 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
               ['Voi', '0,00 €', '0,30 €', '3,00 €', '6,00 €'],
-              ['Dott', '1,00 €', '0,31 €', '4,10 €', '7,20 €'],
+              ['Dott', '1,00 €', '0,32 €', '4,20 €', '7,40 €'],
               ['Bolt, Lime', 'in der App', 'in der App', 'in der App', 'in der App'],
             ],
           },
         },
-        'Eine Viertelstunde kostet damit 4,50 € bei Voi und 5,65 € bei Dott. Voi verkauft ausserdem Minutenpakete und den Voi Pass. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
-        'Günstiger für kurze Wege ist das Leihrad Düsselbike mit 1 € pro 15 Minuten (siehe unten). Den nächsten Dott und eine Preisschätzung für deinen Weg zeigt die [Live-Karte von Düsseldorf](map:de:Düsseldorf).',
+        'Eine Viertelstunde kostet damit 4,50 € bei Voi und 5,80 € bei Dott. Voi verkauft ausserdem Minutenpakete und den Voi Pass. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Günstiger für kurze Wege ist das Leihrad Düsselbike mit 1 € pro 15 Minuten (siehe unten). Den nächsten Dott oder Voi und eine Preisschätzung für deinen Weg zeigt die [Live-Karte von Düsseldorf](map:de:Düsseldorf).',
       ],
     },
     {
@@ -72,7 +72,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Zu den Gehry-Bauten gehst du mit Dott also das letzte Stück zu Fuss. Lime, Voi und Bolt nutzen dieselben Sharingstationen; ihre genauen Zonen veröffentlichen sie nicht offen. Das Netz wächst laufend: Massgeblich ist die Karte in deiner App.',
+        'Zu den Gehry-Bauten gehst du mit Dott also das letzte Stück zu Fuss. Lime, Voi und Bolt nutzen dieselben Sharingstationen. Das Netz wächst laufend: Massgeblich ist die Karte in deiner App.',
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Parkverbotszone oder neben statt auf der Station. Am Rand einer Station kann auch das GPS danebenliegen: Schieb den Scooter ein Stück weiter auf die Fläche. Solange die Fahrt läuft, zahlst du weiter.',
         },
@@ -163,11 +163,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App kann ich in Düsseldorf nutzen?',
-      answer: 'Die von Bolt, Dott (früher TIER), Lime oder Voi, den vier Anbietern in der Stadt. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Dott-Scooter zeigt auch die [Live-Karte von Düsseldorf](map:de:Düsseldorf), die der anderen nur ihre eigenen Apps.',
+      answer: 'Die von Bolt, Dott (früher TIER), Lime oder Voi, den vier Anbietern in der Stadt. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Dott- und Voi-Scooter zeigt auch die [Live-Karte von Düsseldorf](map:de:Düsseldorf), die von Bolt und Lime nur deren Apps.',
     },
     {
       question: 'Wie viel kosten zehn Minuten E-Scooter in Düsseldorf?',
-      answer: 'Bei Voi 3 € (0,30 € pro Minute, Entsperren gratis), bei Dott 4,10 € (1 € Entsperren plus 0,31 € pro Minute), nach den veröffentlichten Tarifen vom 13. Oktober 2026. Lime und Bolt zeigen ihren Preis in der App.',
+      answer: 'Bei Voi 3 € (0,30 € pro Minute, Entsperren gratis), bei Dott 4,20 € (1 € Entsperren plus 0,32 € pro Minute), nach den veröffentlichten Tarifen vom 24. Oktober 2026. Lime und Bolt zeigen ihren Preis in der App.',
     },
     {
       question: 'Warum kann ich meine Fahrt in der Altstadt nicht beenden?',
@@ -189,6 +189,7 @@ const guide: Guide = {
     { title: 'Stadt Düsseldorf: Gebührentarif zur Sondernutzungssatzung', url: 'https://www.duesseldorf.de/stadtrecht/6/66/66-101-1' },
     { title: 'Dott: offener Datenfeed für Düsseldorf (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/dusseldorf/gbfs.json' },
     { title: 'Voi: E-Scooter in Düsseldorf', url: 'https://www.voi.com/de/city/dusseldorf' },
+    { title: 'NRW.Mobidrom: Mobilitätsdaten des Landes NRW, mit Vois offenen Datenfeeds', url: 'https://www.mobilitaetsdaten.nrw' },
     { title: 'CMD: Sharingstationen an Karneval 2026', url: 'https://www.cmd.nrw/blog/duesseldorf-helau-so-kommt-ihr-zu-euren-karnevalsveranstaltungen' },
     { title: 'Rheinbahn: Sicherheit in Bus und Bahn', url: 'https://www.rheinbahn.de/fahren/gut-zu-wissen/sicherheit' },
     { title: 'Flughafen Düsseldorf: DUSsharing hub', url: 'https://www.dus.com/de-de/anreisen/dussharing-hub' },

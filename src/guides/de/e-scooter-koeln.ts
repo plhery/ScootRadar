@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Köln: Anbieter, Preise, Parkzonen und was an Karneval gilt',
   lede: 'Einen E-Scooter in Köln leihst du ab 18 und ohne Führerschein bei Bolt, Dott, Lime, RideMovi, Ryde oder Voi. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 13. Oktober 2026) bei Dott 4 € und bei Voi 3 €, bei den anderen zeigt die App den Preis. In der Altstadt beendest du die Fahrt nur an Stationen, am Rheinufer, auf Brücken und in Parks gar nicht, und an Karneval sperrt die Stadt Ausleihe und Rückgabe in den Feierzonen. In Bahnen und Bussen der KVB sind E-Scooter verboten.',
   published: '2026-10-13',
-  updated: '2026-10-14',
+  updated: '2026-10-24',
   city: 'de:Köln',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Sechs Anbieter vermieten in Köln E-Scooter: **Bolt**, **Dott**, **Lime**, **RideMovi**, **Ryde** und **Voi**, laut Stadt 2026 zusammen fast 20 000 Scooter. Tier heisst heute Dott: Wer früher Tier fuhr, nutzt seit Oktober 2024 die Dott-App.',
         'Du leihst den Scooter in der App des Anbieters, laut Stadt ab 18, obwohl das Gesetz E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte rund um Köln](map:de:Köln) nur Dott, weil es in Köln nur von Dott offene Standortdaten bekommt: am 13. Oktober 2026 rund 2600 Scooter, also nur einen Teil der Flotte. Die anderen fünf findest du in ihren eigenen Apps.',
+        'ScootRadar zeigt auf der [Karte rund um Köln](map:de:Köln) Dott und seit dem 24. Oktober 2026 auch Voi: an jenem Samstag kurz nach 15 Uhr rund 2850 Dott- und 4100 Voi-Scooter. Bolt, Lime, RideMovi und Ryde findest du nur in ihren Apps.',
       ],
     },
     {
@@ -36,7 +36,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Eine Viertelstunde kostet damit 5,50 € bei Dott und 4,50 € bei Voi. Verbindlich ist der Preis in der App. Günstiger für kurze Wege: KVB-Rad mit 1 € pro 15 Minuten (siehe unten). Den nächsten Dott und eine Preisschätzung für deinen Weg zeigt die [Live-Karte von Köln](map:de:Köln).',
+        'Eine Viertelstunde kostet damit 5,50 € bei Dott und 4,50 € bei Voi. Verbindlich ist der Preis in der App. Günstiger für kurze Wege: KVB-Rad mit 1 € pro 15 Minuten (siehe unten). Den nächsten Dott oder Voi und eine Preisschätzung für deinen Weg zeigt die [Live-Karte von Köln](map:de:Köln).',
       ],
     },
     {
@@ -178,7 +178,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App kann ich in Köln nutzen?',
-      answer: 'Die von Bolt, Dott, Lime, RideMovi, Ryde oder Voi: Diese sechs Anbieter vermieten laut Stadt in Köln E-Scooter. Einen Führerschein brauchst du nicht, aber du musst 18 sein. Freie Dott-Scooter zeigt auch die [Live-Karte von Köln](map:de:Köln).',
+      answer: 'Die von Bolt, Dott, Lime, RideMovi, Ryde oder Voi: Diese sechs Anbieter vermieten laut Stadt in Köln E-Scooter. Einen Führerschein brauchst du nicht, aber du musst 18 sein. Freie Dott- und Voi-Scooter zeigt auch die [Live-Karte von Köln](map:de:Köln).',
     },
     {
       question: 'Wie viel kosten zehn Minuten E-Scooter in Köln?',

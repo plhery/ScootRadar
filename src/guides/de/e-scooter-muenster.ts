@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'E-Scooter Münster 2026: Anbieter, Preise, Parkzonen',
   description: 'E-Scooter Münster: die vier Anbieter, was zehn Minuten kosten, wo du in der Innenstadt parkst, ob du auf der Promenade fahren darfst und was im Bus gilt.',
   headline: 'E-Scooter Münster: Anbieter, Preise, Parkzonen und was auf der Promenade gilt',
-  lede: 'Einen E-Scooter in Münster leihst du ab 18 und ohne Führerschein bei Dott (früher TIER), Bolt, Voi oder Qick. Zehn Minuten kosten bei Dott nach seinem veröffentlichten Tarif 3,90 € (Stand 14. Oktober 2026), bei den anderen zeigt die App den Preis. Innerhalb der Promenade, am Ring und an den grossen Ausfallstrassen beendest du die Fahrt nur in einer der 433 ausgewiesenen Parkzonen, sonst zahlst du weiter. Auf der Promenade musst du bis Ende Februar 2027 wohl schieben, und in die Stadtbusse darf kein E-Scooter, auch kein zusammengeklappter.',
+  lede: 'Einen E-Scooter in Münster leihst du ab 18 und ohne Führerschein bei Dott (früher TIER), Bolt, Voi oder Qick. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 24. Oktober 2026) bei Voi 2,50 € und bei Dott 4 €, bei Bolt und Qick zeigt die App den Preis. Innerhalb der Promenade, am Ring und an den grossen Ausfallstrassen beendest du die Fahrt nur in einer der 433 ausgewiesenen Parkzonen, sonst zahlst du weiter. Auf der Promenade musst du bis Ende Februar 2027 wohl schieben, und in die Stadtbusse darf kein E-Scooter, auch kein zusammengeklappter.',
   published: '2026-10-14',
-  updated: '2026-10-14',
+  updated: '2026-10-24',
   city: 'de:Münster',
   sections: [
     {
@@ -18,27 +18,27 @@ const guide: Guide = {
       blocks: [
         'Laut Stadt vermieten vier Anbieter in Münster E-Scooter: **Dott**, **Bolt**, **Voi** und **Qick**. Dott hiess früher TIER; wer TIER fuhr, nutzt heute die Dott-App. Qick aus Schweden ist seit März 2026 mit gelben Scootern in der Stadt und wird oft «Quick» geschrieben. Lime hat sich laut Stadt zurückgezogen, Bird ist ebenfalls weg.',
         'Du leihst den Scooter in der App des Anbieters, ab 18, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte rund um Münster](map:de:Münster) nur Dott, weil nur Dott für Münster offene Standortdaten veröffentlicht: am Nachmittag des 14. Oktober 2026 waren es rund 1200 Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Die Scooter von Bolt, Voi und Qick siehst du nur in deren Apps.',
-        'Die letzte offizielle Zahl aller Leih-Scooter nannte die Stadt für Anfang 2024: 4150. Seitdem ist Qick dazugekommen.',
+        'ScootRadar zeigt auf der [Karte rund um Münster](map:de:Münster) Dott und seit dem 24. Oktober 2026 auch Voi: an jenem Samstag kurz nach 15 Uhr rund 1300 Dott- und 1050 Voi-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Die Scooter von Bolt und Qick siehst du nur in deren Apps.',
         'Handorf, Wolbeck, Roxel, Amelsbüren und das Zentrum von Kinderhaus liegen laut Dotts Datenfeed ausserhalb seines Gebiets; ob die anderen dort fahren, zeigt nur deren App.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Münster?',
       blocks: [
-        'Einen Tarif für Münster veröffentlicht nur Dott, in seinem offenen Datenfeed; Bolt, Voi und Qick zeigen ihre Preise nur in der App.',
+        'Einen Tarif für Münster veröffentlichen Dott und Voi in ihren offenen Datenfeeds; Bolt und Qick zeigen ihre Preise nur in der App.',
         {
           table: {
-            caption: 'E-Scooter-Preise in Münster (Dott: veröffentlichter Tarif, Stand 14. Oktober 2026)',
+            caption: 'E-Scooter-Preise in Münster (veröffentlichte Tarife, Stand 24. Oktober 2026)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
-              ['Dott', '1,00 €', '0,29 €', '3,90 €', '6,80 €'],
-              ['Bolt, Voi, Qick', 'in der App', 'in der App', 'in der App', 'in der App'],
+              ['Voi', '0,00 €', '0,25 €', '2,50 €', '5,00 €'],
+              ['Dott', '1,00 €', '0,30 €', '4,00 €', '7,00 €'],
+              ['Bolt, Qick', 'in der App', 'in der App', 'in der App', 'in der App'],
             ],
           },
         },
-        'Eine Viertelstunde kostet bei Dott damit 5,35 €, und jede angefangene Minute zählt voll. Pässe und Abos gibt es nur in den Apps; verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
-        'Den nächsten Dott und eine Preisschätzung für deinen Weg zeigt die [Live-Karte von Münster](map:de:Münster).',
+        'Eine Viertelstunde kostet damit 3,75 € bei Voi und 5,50 € bei Dott; bei Dott zählt jede angefangene Minute voll. Pässe und Abos gibt es nur in den Apps; verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
+        'Den nächsten Dott oder Voi und eine Preisschätzung für deinen Weg zeigt die [Live-Karte von Münster](map:de:Münster).',
       ],
     },
     {
@@ -169,7 +169,6 @@ const guide: Guide = {
         {
           list: [
             '**433 Parkzonen, zusammen rund 2,2 Hektar.** Die Parkverbotsflächen um sie herum messen rund 20 km², nach unserer Auswertung der Zonenkarte der Stadt.',
-            '**Der Send ist nach einer Synode benannt,** der Versammlung der Geistlichen, die seit dem 9. Jahrhundert zweimal im Jahr tagte.',
             '**Kaum ein Hügel.** Ganz Münster liegt zwischen 44 m an der Ems und 97 m am Mühlenberg.',
             '**Wieder Fahrradstadt Nummer eins.** Im ADFC-Fahrradklima-Test 2024 lag Münster unter den Städten über 200 000 Einwohnern vorn, vor Freiburg und Karlsruhe.',
           ],
@@ -180,11 +179,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App brauche ich in Münster?',
-      answer: 'Die von Dott (früher TIER), Bolt, Voi oder Qick, den vier Anbietern laut Stadt; die gelben Scooter gehören zu Qick. Freie Dott-Scooter zeigt auch die [Live-Karte von Münster](map:de:Münster), die anderen nur ihre eigenen Apps.',
+      answer: 'Die von Dott (früher TIER), Bolt, Voi oder Qick, den vier Anbietern laut Stadt; die gelben Scooter gehören zu Qick. Freie Dott- und Voi-Scooter zeigt auch die [Live-Karte von Münster](map:de:Münster), die von Bolt und Qick nur deren Apps.',
     },
     {
       question: 'Wie viel kosten zehn Minuten E-Scooter in Münster?',
-      answer: 'Bei Dott 3,90 €: 1 € fürs Entsperren plus 0,29 € pro Minute, nach dem veröffentlichten Tarif vom 14. Oktober 2026. Bolt, Voi und Qick zeigen ihren Preis nur in der App.',
+      answer: 'Bei Voi 2,50 € (0,25 € pro Minute, Entsperren gratis), bei Dott 4 € (1 € Entsperren plus 0,30 € pro Minute), nach den veröffentlichten Tarifen vom 24. Oktober 2026. Bolt und Qick zeigen ihren Preis nur in der App.',
     },
     {
       question: 'Warum kann ich meine Fahrt in der Innenstadt nicht beenden?',
@@ -205,6 +204,7 @@ const guide: Guide = {
     { title: 'Stadt Münster, Vorlage V/0031/2024: Digitales Parkraummanagement für E-Scooter (PDF)', url: 'https://oparl.stadt-muenster.de/bodies/0001/downloadfiles/00541103.pdf' },
     { title: 'Stadt Münster: Gebühren für Sondernutzungen', url: 'https://www.stadt-muenster.de/ordnungsamt/sondernutzung-an-oeffentlichen-strassen/gebuehren.html' },
     { title: 'Dott: offener Datenfeed für Münster (GBFS)', url: 'https://gbfs.api.ridedott.com/public/v2/munster/gbfs.json' },
+    { title: 'NRW.Mobidrom: Mobilitätsdaten des Landes NRW, mit Vois offenen Datenfeeds', url: 'https://www.mobilitaetsdaten.nrw' },
     { title: 'Elektrokleinstfahrzeuge-Verordnung (eKFV), § 12', url: 'https://www.gesetze-im-internet.de/ekfv/BJNR075610019.html' },
     { title: 'Stadtwerke Münster: Fragen rund um Mobilität', url: 'https://www.stadtwerke-muenster.de/hilfe/mobilitaet/faq-rund-um-mobilitaet' },
     { title: 'Beförderungsbedingungen Nahverkehr NRW ab 1. Januar 2026, Mobilitätsgarantie (PDF)', url: 'https://www.westfalentarif.de/fileadmin/documents/Tarifbestimmungen_und_Bef%C3%B6rderungsbedingungen_Preise/BB_Nahverkehr_NRW_zum_01.01.2026.pdf' },

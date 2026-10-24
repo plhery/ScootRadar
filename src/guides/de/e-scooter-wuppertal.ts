@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'E-Scooter Wuppertal 2026: Anbieter, Preise, Parkzonen',
   description: 'E-Scooter Wuppertal: vier Anbieter, was zehn Minuten kosten, wo du die Fahrt beendest und was in der Schwebebahn und auf der Nordbahntrasse gilt.',
   headline: 'E-Scooter Wuppertal: Anbieter, Preise, Parkzonen, Schwebebahn und Nordbahntrasse',
-  lede: 'Einen E-Scooter in Wuppertal leihst du ab 18 und ohne Führerschein bei Lime, Voi, Ridemovi oder Ryde. Zehn Minuten kosten bei Voi laut Website 1,80 € (Stand 16. Oktober 2026), bei Ryde laut Presse vom Juli 2026 ebenso viel; Lime zeigt seinen Preis nur in der App. In Fussgängerzonen, Parks, auf Brücken und rund um die Schwebebahnhöfe beendest du keine Fahrt. In Bussen und in der Schwebebahn der WSW sind E-Scooter seit dem 18. März 2024 verboten.',
+  lede: 'Einen E-Scooter in Wuppertal leihst du ab 18 und ohne Führerschein bei Lime, Voi, Ridemovi oder Ryde. Zehn Minuten kosten bei Voi laut Datenfeed 1,80 € (Stand 24. Oktober 2026), bei Ryde laut Presse vom Juli 2026 ebenso viel; Lime zeigt seinen Preis nur in der App. In Fussgängerzonen, Parks, auf Brücken und rund um die Schwebebahnhöfe beendest du keine Fahrt. In Bussen und in der Schwebebahn der WSW sind E-Scooter seit dem 18. März 2024 verboten.',
   published: '2026-10-16',
-  updated: '2026-10-16',
+  updated: '2026-10-24',
   city: 'de:Wuppertal',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Im Oktober 2026 vermieten vier Anbieter E-Scooter in Wuppertal: **Lime** seit Oktober 2023, **Voi** seit April 2024, **Ridemovi** aus Mailand seit dem 9. Juni 2026 und **Ryde** aus Oslo seit Juli 2026. Eine Liste veröffentlicht die Stadt nicht; Lime, Voi und Ryde führen Wuppertal auf ihren Websites, Ridemovi nennt bisher nur die Lokalpresse. Dott und Bolt haben ihren Betrieb laut Wuppertaler Rundschau 2025 wieder eingestellt.',
         'Gemietet wird in der App des Anbieters, ab 18, obwohl das Gesetz E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Auf der [Karte von Wuppertal](map:de:Wuppertal) zeigt ScootRadar nur Lime, weil es für Wuppertal nur von Lime offene Standortdaten bekommt: am Abend des 16. Oktober 2026 rund 950 Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Die Scooter von Voi, Ridemovi und Ryde findest du nur in deren Apps.',
+        'Auf der [Karte von Wuppertal](map:de:Wuppertal) zeigt ScootRadar Lime und seit dem 24. Oktober 2026 auch Voi: an jenem Samstag kurz nach 15 Uhr rund 950 Lime- und 1000 Voi-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Die Scooter von Ridemovi und Ryde findest du nur in deren Apps.',
       ],
     },
     {
@@ -29,7 +29,7 @@ const guide: Guide = {
             caption: 'E-Scooter-Preise in Wuppertal (Stand und Quelle in der ersten Spalte)',
             head: ['Anbieter', 'Entsperren', 'Pro Minute', '10 Minuten', '20 Minuten'],
             rows: [
-              ['Voi (Website, 16. Oktober 2026)', '0,00 €', '0,18 €', '1,80 €', '3,60 €'],
+              ['Voi (Datenfeed, 24. Oktober 2026)', '0,00 €', '0,18 €', '1,80 €', '3,60 €'],
               ['Ryde (Presse, Juli 2026)', '0,00 €', '0,18 €', '1,80 €', '3,60 €'],
               ['Ridemovi (Presse, Juni 2026)', 'nicht genannt', '0,19 €', 'ab 1,90 €', 'ab 3,80 €'],
               ['Lime', 'in der App', 'in der App', 'in der App', 'in der App'],
@@ -46,7 +46,7 @@ const guide: Guide = {
         '**«Radverkehr frei» gilt nicht für dich:** Unter dem Schild Gehweg oder Fussgängerzone erlaubt dieses Zusatzzeichen nur Fahrräder. Einen Bürgerantrag, solche Stellen stadtweit auch für E-Scooter freizugeben, lehnte der Verkehrsausschuss im Juni 2024 ab; die Stadt prüft nur im Einzelfall. Ab dem 1. März 2027 darfst du dort mit Schrittgeschwindigkeit fahren.',
         '**Elberfeld und Barmen:** Zur Fussgängerzone gehören laut Stadt in Elberfeld unter anderem Poststrasse, Alte Freiheit, Herzogstrasse, Kerstenplatz und Willy-Brandt-Platz, in Barmen Werth, Alter Markt, Rolingswerth und Johannes-Rau-Platz, dazu der Wupperfelder Markt. Dort steigst du ab und schiebst.',
         '**Nordbahntrasse:** Die Stadt beschreibt sie als rund 23 km langen, autofreien und nahezu kreuzungsfreien Fuss-, Rad- und Skateweg von Vohwinkel bis Schee, eröffnet am 19. Dezember 2014. Laut dem Verein Wuppertalbewegung ist sie für nichtmotorisierten Verkehr und Pedelecs gewidmet; ein E-Scooter ist rechtlich ein Kraftfahrzeug. Zu E-Scootern sagt die Stadt auf ihrer Trassen-Seite nichts (Stand Oktober 2026). Halte dich an die Schilder an den Zugängen. Fährst du, dann langsam und auf dem Asphalt, nicht auf dem Pflaster für Fussgänger: Innerstädtisch ist die Trasse laut Wuppertalbewegung stark genutzt und eher zu eng.',
-        '**Steile Strassen:** Vom Tal auf die Höhen, etwa zur Uni auf dem Grifflenberg, geht es steil hinauf, und bergauf leert sich der Akku schneller. Laut Lime-Datenfeed hatte am Abend des 16. Oktober 2026 gut die Hälfte der Lime-Scooter weniger als 6 km Restreichweite. Die [Live-Karte](map:de:Wuppertal) zeigt die Reichweite jedes Lime-Scooters, bevor du losgehst.',
+        '**Steile Strassen:** Vom Tal auf die Höhen, etwa zur Uni auf dem Grifflenberg, geht es steil hinauf, und bergauf leert sich der Akku schneller. Laut Lime-Datenfeed hatte am Abend des 16. Oktober 2026 gut die Hälfte der Lime-Scooter weniger als 6 km Restreichweite. Die [Live-Karte](map:de:Wuppertal) zeigt die Reichweite jedes Lime- und Voi-Scooters, bevor du losgehst.',
       ],
     },
     {
@@ -109,10 +109,10 @@ const guide: Guide = {
       heading: 'Uni, Stadion, Feste: Tipps für Wuppertal',
       blocks: [
         '**Uni Grifflenberg:** Am Abend des 16. Oktober 2026 standen laut Lime-Datenfeed rund 60 Lime-Fahrzeuge im Umkreis von 1 km um den Campus. Wer den Berg nicht hinauffahren will, nimmt ab Hauptbahnhof die Linien 615 oder 645 oder ab der Historischen Stadthalle den Uni-Express.',
-        '**Ronsdorf und Cronenberg:** Im Umkreis von 2 km um den Ronsdorfer Markt und um Cronenberg-Mitte stand am selben Abend kein Lime-Scooter. Ob Voi, Ridemovi oder Ryde dort fahren, zeigen nur deren Apps.',
+        '**Ronsdorf und Cronenberg:** Im Umkreis von 2 km um den Ronsdorfer Markt und um Cronenberg-Mitte stand am selben Abend kein Lime-Scooter, am Nachmittag des 24. Oktober auch kein Voi. Ob Ridemovi oder Ryde dort fahren, zeigen nur deren Apps.',
         '**Stadion am Zoo:** Der Wuppertaler SV (Oberliga Niederrhein) spielt hier als Nächstes am 6. und am 27. November 2026, jeweils um 19:30 Uhr. Am Vorplatz Stadion/Zoo gibt es eine markierte Abstellfläche, die Schwebebahn hält an der Station Zoo/Stadion.',
         '**Feste und Baustellen:** Bei genehmigten Veranstaltungen müssen die Anbieter ihre Scooter laut Auflagen binnen 3 Stunden aus dem Bereich holen. Dort kannst du dann keine Fahrt beginnen oder beenden; die App sagt es dir.',
-        '**Lieber Rad:** Lime vermietet in Wuppertal auch E-Bikes, in derselben App. An der Nordbahntrasse leihst du laut Wuppertalbewegung in Dorp und an der Mirke Fahrräder, Lastenräder und Pedelecs.',
+        '**Lieber Rad:** Lime und laut Datenfeed auch Voi vermieten in Wuppertal E-Bikes; die Karte zeigt sie nicht. An der Nordbahntrasse leihst du laut Wuppertalbewegung in Dorp und an der Mirke Fahrräder, Lastenräder und Pedelecs.',
       ],
     },
     {
@@ -141,11 +141,11 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-Apps kann ich in Wuppertal nutzen?',
-      answer: 'Die von Lime, Voi, Ridemovi und Ryde, Stand Oktober 2026. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Lime-Scooter zeigt auch die [Live-Karte von Wuppertal](map:de:Wuppertal), die der anderen nur ihre eigenen Apps.',
+      answer: 'Die von Lime, Voi, Ridemovi und Ryde, Stand Oktober 2026. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Lime- und Voi-Scooter zeigt auch die [Live-Karte von Wuppertal](map:de:Wuppertal), die von Ridemovi und Ryde nur deren Apps.',
     },
     {
       question: 'Was kosten zehn Minuten E-Scooter in Wuppertal?',
-      answer: 'Bei Voi 1,80 € (0,18 € pro Minute, Entsperren gratis, Stand 16. Oktober 2026), bei Ryde laut Presse vom Juli 2026 ebenso viel. Ridemovi kostete beim Start im Juni 2026 laut Presse 0,19 € pro Minute. Lime zeigt seinen Preis nur in der App.',
+      answer: 'Bei Voi 1,80 € (0,18 € pro Minute, Entsperren gratis, Stand 24. Oktober 2026), bei Ryde laut Presse vom Juli 2026 ebenso viel. Ridemovi kostete beim Start im Juni 2026 laut Presse 0,19 € pro Minute. Lime zeigt seinen Preis nur in der App.',
     },
     {
       question: 'Darf ich einen E-Scooter in der Schwebebahn mitnehmen?',
@@ -170,6 +170,7 @@ const guide: Guide = {
     { title: 'Stadt Wuppertal: Nordbahntrasse', url: 'https://www.wuppertal.de/rathaus-buergerservice/verkehr/mobil_sein/nordbahntrasse.php' },
     { title: 'Wuppertalbewegung: FAQ zur Nordbahntrasse', url: 'https://www.wuppertalbewegung.de/faq' },
     { title: 'Voi: E-Scooter in Wuppertal', url: 'https://www.voi.com/de/city/wuppertal' },
+    { title: 'NRW.Mobidrom: Mobilitätsdaten des Landes NRW, mit Vois offenen Datenfeeds', url: 'https://www.mobilitaetsdaten.nrw' },
     { title: 'Wuppertaler Rundschau: Ein neuer E-Scooter-Anbieter in Wuppertal (13. Juni 2026)', url: 'https://www.wuppertaler-rundschau.de/lokales/ein-neuer-e-scooter-anbieter-in-wuppertal_aid-149815559' },
     { title: 'WZ: «Ryde», weiterer E-Scooter-Anbieter in Wuppertal (11. Juli 2026)', url: 'https://www.wz.de/nrw/wuppertal/ryde-weiterer-e-scooter-anbieter-in-wuppertal_aid-151344003' },
     { title: 'Wuppertaler Rundschau: Weiterer E-Scooter-Anbieter in Wuppertal gestartet (18. Juli 2026)', url: 'https://www.wuppertaler-rundschau.de/lokales/weiterer-e-scooter-anbieter-in-wuppertal-gestartet_aid-151691979' },
