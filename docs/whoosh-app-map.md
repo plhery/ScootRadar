@@ -33,7 +33,8 @@ The Node-only adapter is [server/whooshApp.ts](../server/whooshApp.ts).
   says the town is off season where no other operator runs (Astana and Zapopan,
   not Almaty, which has JET). The region info is read again each hour, and the
   pause ends as soon as it says the season is open. Almaty, Astana and Zapopan
-  closed on 24 October 2026. The iOS app does not show the closure yet.
+  closed on 24 October 2026, and so was the region listed as Temuco (`ZPC`),
+  where Go Jet runs. The iOS app does not show the closure yet.
 - `GET /regions/location/{id}/areas` supplies ride polygons. The app's
   `MapAreaUiAssembler` uses enabled `LIMITED` polygons as holes in the global
   out-of-ride-area mask. These are the collection areas. Forbidden polygons
