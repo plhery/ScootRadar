@@ -5,7 +5,8 @@ export default defineConfig({
   testMatch: '**/*.e2e.ts',
   fullyParallel: false,
   forbidOnly: Boolean(process.env.CI),
-  workers: process.env.CI ? 1 : undefined,
+  // CI's runner has four cores: a browser for each of two workers, beside the preview server.
+  workers: process.env.CI ? 2 : undefined,
   retries: process.env.CI ? 2 : 0,
   reporter: 'list',
   use: {
