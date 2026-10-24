@@ -75,6 +75,80 @@ final class ScooterZonesTests: XCTestCase {
     }
 }
 
+final class ScooterZoneOverlayTests: XCTestCase {
+    func testTheSameRuleOfSeveralOperatorsIsOneShapeWithinOneEdge() throws {
+        let overlay = ScooterZoneOverlay(zones: [
+            zone("lime:0", .noParking, square(47.37, 8.54)),
+            // The same street, a little further east, and the very same square again.
+            zone("voi:0", .noParking, square(47.37, 8.5405)),
+            zone("bird:0", .noParking, square(47.37, 8.54))
+        ], isDark: false)
+        XCTAssertEqual(overlay.shapes.map(\.kind), [.noParking])
+        assertExtent(try XCTUnwrap(overlay.shapes.first), [47.37, 8.54, 47.371, 8.5415])
+    }
+
+    func testEachKindIsKeptItsOwnZonesApartApartAndHolesOpen() throws {
+        let frame = [
+            square(47.37, 8.54, size: 0.003)[0],
+            [
+                GeoPoint(latitude: 47.371, longitude: 8.541), GeoPoint(latitude: 47.372, longitude: 8.541),
+                GeoPoint(latitude: 47.372, longitude: 8.542), GeoPoint(latitude: 47.371, longitude: 8.542),
+                GeoPoint(latitude: 47.371, longitude: 8.541)
+            ]
+        ]
+        let overlay = ScooterZoneOverlay(zones: [
+            zone("dott:0", .noRide, square(47.37, 8.54)),
+            zone("bolt:0", .noParking, square(47.37, 8.54)),
+            zone("bolt:1", .slow, square(47.37, 8.54), square(47.38, 8.55)),
+            zone("voi:0", .noRide, frame)
+        ], isDark: false)
+        XCTAssertEqual(overlay.shapes.map(\.kind), [.noRide, .noParking, .slow, .slow])
+        // Dott's square lies within the frame of Voi's, whose hole stays open.
+        let noRide = overlay.shapes[0]
+        assertExtent(noRide, [47.37, 8.54, 47.373, 8.543])
+        XCTAssertTrue(covers(noRide, in: overlay, 47.3705, 8.5405))
+        XCTAssertTrue(covers(noRide, in: overlay, 47.3725, 8.5425))
+        XCTAssertFalse(covers(noRide, in: overlay, 47.3715, 8.5415))
+    }
+
+    func testOnlyTheZonesHandedInAreMergedSoOneProviderShownShowsItsOwn() throws {
+        let zones = [zone("lime:0", .noRide, square(47.37, 8.54)), zone("voi:0", .noRide, square(47.37, 8.5405))]
+        assertExtent(try XCTUnwrap(ScooterZoneOverlay(zones: zones, isDark: false).shapes.first), [47.37, 8.54, 47.371, 8.5415])
+        let lime = ScooterZoneOverlay(zones: zones.filter { $0.provider == "lime" }, isDark: false)
+        assertExtent(try XCTUnwrap(lime.shapes.first), [47.37, 8.54, 47.371, 8.541])
+        XCTAssertTrue(ScooterZoneOverlay(zones: [], isDark: false).shapes.isEmpty)
+    }
+
+    /// A square of about 110 m by 110 m in Zürich, from its south-west corner.
+    private func square(_ south: Double, _ west: Double, size: Double = 0.001) -> [[GeoPoint]] {
+        [[
+            GeoPoint(latitude: south, longitude: west), GeoPoint(latitude: south, longitude: west + size),
+            GeoPoint(latitude: south + size, longitude: west + size), GeoPoint(latitude: south + size, longitude: west),
+            GeoPoint(latitude: south, longitude: west)
+        ]]
+    }
+
+    private func zone(_ id: String, _ kind: ScooterZoneKind, _ polygons: [[GeoPoint]]...) -> ScooterZone {
+        ScooterZone(id: id, provider: String(id.prefix { $0 != ":" }), kind: kind, maxSpeedKph: nil, polygons: polygons)
+    }
+
+    /// South, west, north and east, to the centimetre or so.
+    private func assertExtent(_ shape: ScooterZoneOverlay.Shape, _ expected: [Double], line: UInt = #line) {
+        let southWest = MKMapPoint(x: shape.bounds.minX, y: shape.bounds.maxY).coordinate
+        let northEast = MKMapPoint(x: shape.bounds.maxX, y: shape.bounds.minY).coordinate
+        let extent = [southWest.latitude, southWest.longitude, northEast.latitude, northEast.longitude]
+        for (value, wanted) in zip(extent, expected) {
+            XCTAssertEqual(value, wanted, accuracy: 1e-7, "\(extent)", line: line)
+        }
+    }
+
+    private func covers(_ shape: ScooterZoneOverlay.Shape, in overlay: ScooterZoneOverlay, _ latitude: Double, _ longitude: Double) -> Bool {
+        let point = MKMapPoint(CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+        let corner = overlay.boundingMapRect.origin
+        return shape.path.contains(CGPoint(x: point.x - corner.x, y: point.y - corner.y), using: .evenOdd)
+    }
+}
+
 @MainActor
 final class ScooterZonesModelTests: XCTestCase {
     private let zurich = MKCoordinateRegion(

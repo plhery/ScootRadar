@@ -144,11 +144,13 @@ Map, as on the website: from zoom 14 the map draws the zones the operators
 publish, above the roads and under their names, the route and the scooters. No
 riding is hatched red within a solid edge, no parking orange within a dashed
 one and slow zones (18 km/h or less) blue within a dotted one, in the web's
-colours, lighter on a dark map and on satellite. Each kind's fills are one
-translucent layer, so the same rule of five operators over a street looks like
-one. Zones follow the provider filter. A legend beside the locate button says
-what the colours mean, or asks to zoom in, or says that none are published here
-or that they can't be had right now.
+colours, lighter on a dark map and on satellite. Each kind's zones are merged
+into one shape, so the same rule of five operators over a street is drawn once,
+within one edge, and no parking's and slow zones' edges give way within no
+riding's zones and along their edge. Zones follow the provider filter: only the
+providers shown are merged, so one provider shown shows its own. A legend beside
+the locate button says what the colours mean, or asks to zoom in, or says that
+none are published here or that they can't be had right now.
 
 **Location problems.** A card under the search bar: **Location is off** with
 **Open Settings** and **Search a place**; restricted on this device; or not

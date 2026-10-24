@@ -163,6 +163,9 @@ enum ScooterZoneLook {
     }
 
     static let edgeOpacity: CGFloat = 0.9
+    /// How far, in points, no parking's and slow zones' edges keep from no
+    /// riding's edge, and out of its zones (ZONE_EDGE_CLEARANCE).
+    static let edgeClearance: CGFloat = 3
     /// No riding's hatching: lines this far apart and this wide, on a ground
     /// of this opacity, as the web's pattern draws it.
     static let hatchSpacing: CGFloat = 8

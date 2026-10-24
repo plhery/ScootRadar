@@ -2,12 +2,17 @@ import MapKit
 import UIKit
 
 /// The operators' zones as one overlay on the map, drawn above the roads
-/// and under their names, the walking route and the scooters.
+/// and under their names, the walking route and the scooters. Each kind's
+/// zones are merged into one shape, as on the web (zoneShapes.ts): where
+/// several operators forbid the same over a street, it is drawn once, within
+/// one edge. Only the zones handed in are merged, those of the providers
+/// shown, so a filter on one provider leaves its own.
 final class ScooterZoneOverlay: NSObject, MKOverlay, @unchecked Sendable {
-    /// One polygon of a zone: its outer ring, then its holes.
-    struct Shape: Sendable {
+    /// One piece of a kind's merged zones, its outline and its holes, in map
+    /// points from the corner of the overlay.
+    struct Shape {
         let kind: ScooterZoneKind
-        let rings: [[MKMapPoint]]
+        let path: CGPath
         let bounds: MKMapRect
     }
 
@@ -20,35 +25,55 @@ final class ScooterZoneOverlay: NSObject, MKOverlay, @unchecked Sendable {
     }
 
     init(zones: [ScooterZone], isDark: Bool) {
-        shapes = zones.flatMap { zone in
-            zone.polygons.map { polygon in
-                let rings = polygon.map { ring in ring.map { MKMapPoint($0.coordinate) } }
-                return Shape(kind: zone.kind, rings: rings, bounds: Self.bounds(of: rings.first ?? []))
+        let polygons = zones.map { zone in
+            (zone.kind, zone.polygons.map { polygon in polygon.map { ring in ring.map { MKMapPoint($0.coordinate) } } })
+        }
+        let points = polygons.flatMap { $0.1.flatMap { $0.flatMap { $0 } } }
+        let corner = MKMapPoint(x: points.map(\.x).min() ?? 0, y: points.map(\.y).min() ?? 0)
+        boundingMapRect = points.isEmpty ? .null : MKMapRect(
+            x: corner.x, y: corner.y,
+            width: (points.map(\.x).max() ?? 0) - corner.x, height: (points.map(\.y).max() ?? 0) - corner.y
+        )
+        // Near the corner, where a CGFloat has its centimetres to spare.
+        shapes = ScooterZoneKind.allCases.flatMap { kind -> [Shape] in
+            let paths = polygons.filter { $0.0 == kind }.flatMap(\.1).map { polygon in
+                let path = CGMutablePath()
+                for ring in polygon {
+                    path.addLines(between: ring.map { CGPoint(x: $0.x - corner.x, y: $0.y - corner.y) })
+                    path.closeSubpath()
+                }
+                return path as CGPath
+            }
+            guard let merged = Self.union(paths) else { return [] }
+            return merged.componentsSeparated(using: .evenOdd).map { piece in
+                let box = piece.boundingBoxOfPath
+                return Shape(
+                    kind: kind, path: piece,
+                    bounds: MKMapRect(x: corner.x + box.minX, y: corner.y + box.minY, width: box.width, height: box.height)
+                )
             }
         }
-        boundingMapRect = shapes.reduce(MKMapRect.null) { $0.union($1.bounds) }
         self.isDark = isDark
         super.init()
     }
 
-    private static func bounds(of ring: [MKMapPoint]) -> MKMapRect {
-        guard let first = ring.first else { return .null }
-        var minX = first.x, maxX = first.x, minY = first.y, maxY = first.y
-        for point in ring {
-            minX = min(minX, point.x)
-            maxX = max(maxX, point.x)
-            minY = min(minY, point.y)
-            maxY = max(maxY, point.y)
+    /// Two by two, so that each union is of two shapes of about the same size.
+    /// Even-odd, so that a hole is one whichever way its ring turns.
+    private static func union(_ paths: [CGPath]) -> CGPath? {
+        var level = paths
+        while level.count > 1 {
+            level = stride(from: 0, to: level.count, by: 2).map { index in
+                index + 1 < level.count ? level[index].union(level[index + 1], using: .evenOdd) : level[index]
+            }
         }
-        return MKMapRect(x: minX, y: minY, width: maxX - minX, height: maxY - minY)
+        return level.first
     }
 }
 
 /// Draws the zones as the web does (MapComponent.tsx): each kind's fills as
-/// one translucent layer, so that the same rule of five operators over a
-/// street looks like one, the strongest rule on top; then every edge.
-/// MapKit draws tiles of it on several threads at once: all it reads is
-/// made when it is.
+/// one translucent layer, the strongest rule on top; then every edge. MapKit
+/// draws tiles of it on several threads at once: all it reads is made when
+/// it is.
 final class ScooterZoneRenderer: MKOverlayRenderer, @unchecked Sendable {
     private struct Shape {
         let kind: ScooterZoneKind
@@ -66,13 +91,14 @@ final class ScooterZoneRenderer: MKOverlayRenderer, @unchecked Sendable {
         })
         super.init(overlay: overlay)
         // The paths in the renderer's own points, which no zoom changes.
+        let rect = overlay.boundingMapRect
+        let corner = point(for: MKMapPoint(x: rect.minX, y: rect.minY))
+        let step = point(for: MKMapPoint(x: rect.minX + 1, y: rect.minY + 1))
+        var transform = CGAffineTransform(
+            a: step.x - corner.x, b: 0, c: 0, d: step.y - corner.y, tx: corner.x, ty: corner.y
+        )
         shapes = overlay.shapes.map { shape in
-            let path = CGMutablePath()
-            for ring in shape.rings {
-                path.addLines(between: ring.map { point(for: $0) })
-                path.closeSubpath()
-            }
-            return Shape(kind: shape.kind, path: path, bounds: shape.bounds)
+            Shape(kind: shape.kind, path: shape.path.copy(using: &transform) ?? shape.path, bounds: shape.bounds)
         }
     }
 
@@ -104,22 +130,46 @@ final class ScooterZoneRenderer: MKOverlayRenderer, @unchecked Sendable {
             context.restoreGState()
         }
 
-        for shape in near {
-            guard let color = colors[shape.kind] else { continue }
-            let edge = ScooterZoneLook.edge(shape.kind)
+        // Where riding is forbidden, nothing more needs saying: no parking's
+        // and slow zones' edges give way within no riding's zones and along
+        // their edge, which other operators' zones of the same street often
+        // follow to the metre.
+        let noRide = near.filter { $0.kind == .noRide }
+        let giving = near.filter { $0.kind != .noRide }
+        if !giving.isEmpty {
             context.saveGState()
-            context.setAlpha(ScooterZoneLook.edgeOpacity)
-            context.setStrokeColor(color)
-            context.setLineWidth(edge.width * unit)
+            context.beginTransparencyLayer(auxiliaryInfo: nil)
+            for shape in giving { stroke(shape, unit: unit, context: context) }
+            context.setBlendMode(.clear)
+            context.setLineWidth(2 * ScooterZoneLook.edgeClearance * unit)
             context.setLineJoin(.round)
-            context.setLineCap(edge.roundCaps ? .round : .butt)
-            if !edge.dashes.isEmpty {
-                context.setLineDash(phase: 0, lengths: edge.dashes.map { $0 * unit })
+            for shape in noRide {
+                context.addPath(shape.path)
+                context.fillPath(using: .evenOdd)
+                context.addPath(shape.path)
+                context.strokePath()
             }
-            context.addPath(shape.path)
-            context.strokePath()
+            context.endTransparencyLayer()
             context.restoreGState()
         }
+        for shape in noRide { stroke(shape, unit: unit, context: context) }
+    }
+
+    private func stroke(_ shape: Shape, unit: CGFloat, context: CGContext) {
+        guard let color = colors[shape.kind] else { return }
+        let edge = ScooterZoneLook.edge(shape.kind)
+        context.saveGState()
+        context.setAlpha(ScooterZoneLook.edgeOpacity)
+        context.setStrokeColor(color)
+        context.setLineWidth(edge.width * unit)
+        context.setLineJoin(.round)
+        context.setLineCap(edge.roundCaps ? .round : .butt)
+        if !edge.dashes.isEmpty {
+            context.setLineDash(phase: 0, lengths: edge.dashes.map { $0 * unit })
+        }
+        context.addPath(shape.path)
+        context.strokePath()
+        context.restoreGState()
     }
 
     /// No riding: a ground and lines across it at 45°, the lines laid on the
