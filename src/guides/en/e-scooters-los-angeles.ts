@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'E-scooters in Los Angeles 2026: Bird, Veo, Lime and rules',
   description: 'E-scooters in Los Angeles: Bird, Veo and Lime, what a ride costs, the 18+ and sidewalk rules, and where you can’t ride, from Venice Beach to LAX.',
   headline: 'E-scooters in Los Angeles: Bird, Veo and Lime, what a ride costs, the rules, and where you can’t ride',
-  lede: 'E-scooters in Los Angeles come from Bird, Veo and Lime, under permits from LADOT, the city’s transportation department. Veo charges $1 to unlock plus $0.50 a minute plus tax (published rate, 16 October 2026); Bird and Lime show their prices in the app. LADOT and the operators require you to be 18, state law asks for a driving licence, scooters top out at 15 mph, and LADOT puts the sidewalk fine at $197. You can’t ride on the Venice Beach boardwalk or inside Metro stations, and Bird’s app blocks riding around the LAX terminals.',
+  lede: 'E-scooters in Los Angeles come from Bird, Veo, Lime and GCOO, under permits from LADOT, the city’s transportation department. Veo charges $1 to unlock plus $0.50 a minute plus tax (published rate, 16 October 2026); the others show their prices in the app. LADOT and the operators require you to be 18, state law asks for a driving licence, scooters top out at 15 mph, and LADOT puts the sidewalk fine at $197. You can’t ride on the Venice Beach boardwalk or inside Metro stations, and Bird’s app blocks riding around the LAX terminals.',
   published: '2026-10-17',
-  updated: '2026-10-23',
+  updated: '2026-10-25',
   city: 'us:ca:Los Angeles',
   sections: [
     {
@@ -22,7 +22,7 @@ const guide: Guide = {
             '**Bird**, by far the biggest, across the city, almost all with stand-up scooters.',
             '**Veo**, on the west side: Santa Monica and, next door in LA, Venice, Mar Vista and West LA. That fleet is mostly seated Cosmo e-bikes, with about 650 stand-up scooters in its open data on 17 October 2026.',
             '**Lime**, which added e-bikes in April 2025 and announced seated LimeGliders that October. **Our map doesn’t show Lime’s LA scooters**: Lime publishes no open data for LA, so look for one in the Lime app.',
-            '**GCOO** is also on LADOT’s list. It publishes no open data either, and we couldn’t confirm where it runs.',
+            '**GCOO**, also on LADOT’s list. Since 24 October 2026 our map shows its scooters too: about 1,700 at 4 pm that Saturday, most of them Downtown, in Hollywood, in Koreatown and around USC.',
           ],
         },
         'On the evening of 16 October 2026 the [map of Los Angeles](map:us:ca:Los Angeles) showed about 7,400 Bird and 600 Veo scooters. That’s our map’s Los Angeles view that evening, not the fleets or a city-limits count: it also takes in neighbouring cities such as Santa Monica, Culver City and Beverly Hills. E-bikes aren’t shown.',
@@ -33,7 +33,7 @@ const guide: Guide = {
     {
       heading: 'How much does a scooter cost in Los Angeles?',
       blocks: [
-        'Veo publishes its LA rate in its open data, the same for its scooters and Cosmo e-bikes. Bird and Lime show prices only in their apps.',
+        'Veo publishes its LA rate in its open data, the same for its scooters and Cosmo e-bikes. Bird, Lime and GCOO show prices only in their apps.',
         {
           table: {
             caption: 'Published rates in Los Angeles on 16 October 2026, with Metro Bike for comparison',
@@ -136,7 +136,7 @@ const guide: Guide = {
             '**Night.** LADOT’s rules set no curfew, and rental scooters must keep their lights on.',
           ],
         },
-        'The [Los Angeles map](map:us:ca:Los Angeles) shows the nearest Bird or Veo scooter and the walk to it.',
+        'The [Los Angeles map](map:us:ca:Los Angeles) shows the nearest Bird, Veo or GCOO scooter and the walk to it.',
       ],
     },
     {

@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Scooter rental in Washington, DC: Hopp, Lime and Veo, what a ride costs, the rules and where you can ride on the National Mall',
   lede: 'Scooter rental in Washington, DC works through three apps with a DDOT permit: Hopp, Lime and Veo. Hopp charges $1 to unlock plus $0.16 a minute and Veo $1 plus $0.46 a minute plus tax (published rates, 16 October 2026); Lime shows its price in the app. You must be 18, shared scooters are capped at 10 mph and you can’t ride on downtown sidewalks. On the National Mall, since 11 September 2026, you keep to the sidewalks along the roads and the trails, at 8 mph at most.',
   published: '2026-10-16',
-  updated: '2026-10-23',
+  updated: '2026-10-25',
   city: 'us:dc:Washington',
   sections: [
     {
@@ -119,7 +119,7 @@ const guide: Guide = {
     {
       heading: 'Scooters across the river in Arlington, Virginia',
       blocks: [
-        'Arlington County issues its own permits. On 16 October 2026 the [Arlington map](map:us:va:Arlington) showed about 470 Lime and 300 Bird scooters on the Virginia side (the Hopp and Veo ones there are in DC).',
+        'Arlington County issues its own permits. On 16 October 2026 the [Arlington map](map:us:va:Arlington) showed about 470 Lime and 300 Bird scooters on the Virginia side (the Hopp and Veo ones there are in DC). Since 24 October our map also shows GCOO: about 250 of its scooters there and 260 in Alexandria at 7 pm that Saturday.',
         'The county’s rules differ from DC’s. Its 2019 ordinance lets you ride on sidewalks at 6 mph at most, except where a protected bike lane runs the same way, and at up to 15 mph on streets and multi-use trails; give an audible signal before passing people on foot. The Mount Vernon Trail, federal land, stays off-limits.',
       ],
     },
