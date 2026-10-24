@@ -162,6 +162,7 @@ import matosinhosPt from './pt/trotinetes-matosinhos';
 import bielDe from './de/e-trottinett-biel';
 import gijonEs from './es/alquiler-patinete-electrico-gijon';
 import bathEn from './en/e-scooters-bath';
+import mechelenNl from './nl/deelstep-mechelen';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -324,4 +325,5 @@ export const GUIDES: readonly Guide[] = [
   bielDe,
   gijonEs,
   bathEn,
+  mechelenNl,
 ];
