@@ -68,8 +68,10 @@ Portrait, PNG without alpha, one set for each listing language:
   iPhones (`APP_IPHONE_67` in the API);
 - `screenshots/<locale>/6.3/`: the same frames scaled to 1206×2622 (iPhone 17
   Pro), the size App Store Connect requires (`APP_IPHONE_61`);
-- 2064×2752 (iPad Pro 13-inch), which App Store Connect requires since the app
-  runs on iPad: not made yet.
+- `screenshots/<locale>/13/`: 2064×2752 (iPad Pro 13-inch), which App Store
+  Connect requires since the app runs on iPad (`APP_IPAD_PRO_3GEN_129`): the
+  same seven frames, made on 23 October 2026, on a drawn iPad with the panel
+  beside the map, the headlines saying "iPad" where the iPhone's say "iPhone".
 
 Each frame, made on 20 October 2026, sets a headline on blue above a drawn
 iPhone showing the app with live data, and lifts the part of the screen the

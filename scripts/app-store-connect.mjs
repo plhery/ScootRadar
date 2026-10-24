@@ -54,6 +54,7 @@ const storeLocales = new Set(['ar-SA', 'ca', 'cs', 'da', 'de-DE', 'el', 'en-AU',
 export const displayTypes = {
   '6.3': { type: 'APP_IPHONE_61', sizes: ['1206x2622', '1179x2556'] },
   '6.9': { type: 'APP_IPHONE_67', sizes: ['1320x2868', '1290x2796', '1260x2736'] },
+  '13': { type: 'APP_IPAD_PRO_3GEN_129', sizes: ['2064x2752', '2048x2732'] },
 };
 
 // The questionnaire of API 4.5.1. The declaration App Store Connect returns decides
@@ -254,7 +255,7 @@ function loadScreenshots(report) {
     for (const folder of subfolders(join(dir, locale)).sort()) {
       const label = `screenshots/${locale}/${folder}`;
       if (!displayTypes[folder]) {
-        report.warnings.push(`${label}/ is not a size this script uploads (6.3, 6.9); skipped`);
+        report.warnings.push(`${label}/ is not a size this script uploads (6.3, 6.9, 13); skipped`);
         continue;
       }
       const files = readdirSync(join(dir, locale, folder)).filter(name => /\.png$/i.test(name)).sort(byName);

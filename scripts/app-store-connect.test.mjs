@@ -82,6 +82,7 @@ describe('the screenshots', () => {
     assert.deepEqual(screenshotProblems('a.png', '6.3', readPng(png(1206, 2622, 2))), []);
     assert.deepEqual(screenshotProblems('a.png', '6.3', readPng(png(1179, 2556, 2))), []);
     assert.deepEqual(screenshotProblems('a.png', '6.9', readPng(png(1260, 2736, 2))), []);
+    assert.deepEqual(screenshotProblems('a.png', '13', readPng(png(2064, 2752, 2))), []);
     assert.match(screenshotProblems('a.png', '6.3', readPng(png(1320, 2868, 2)))[0], /1320×2868; 6\.3 takes 1206×2622 or 1179×2556/);
     assert.match(screenshotProblems('a.png', '6.9', readPng(png(1320, 2868, 6)))[0], /alpha channel/);
   });
