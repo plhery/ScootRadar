@@ -279,8 +279,11 @@ struct ScooterMapView: UIViewRepresentable {
     }
 
     func makeUIView(context: Context) -> MKMapView {
-        let mapView = MKMapView(frame: ScooterMapCameraPolicy.openingFrame)
+        let mapView = SafeAreaReportingMapView(frame: ScooterMapCameraPolicy.openingFrame)
         mapView.delegate = context.coordinator
+        mapView.safeAreaDidChange = { [weak coordinator = context.coordinator] mapView in
+            coordinator?.safeAreaDidChange(on: mapView)
+        }
         context.coordinator.applyMapStyle(mapStyle, to: mapView)
         mapView.showsUserLocation = false
         mapView.showsCompass = false
@@ -1015,6 +1018,18 @@ struct ScooterMapView: UIViewRepresentable {
                 focusUnderWay = focus
                 move(to: focus.request, on: mapView)
             }
+        }
+
+        /// MapKit makes no region change when only the map's safe area changes,
+        /// as the status bar's room leaves it after the move has landed: the
+        /// move stayed measured with the old one, the rider 1.2 pt off. It is
+        /// made again then too. A new size brings region changes of MapKit's
+        /// own, which make it again once MapKit has scaled its camera.
+        func safeAreaDidChange(on mapView: MKMapView) {
+            guard let focus = focusUnderWay,
+                  abs(mapView.bounds.width - focus.size.width) < 1,
+                  abs(mapView.bounds.height - focus.size.height) < 1 else { return }
+            moveAgainForNewSize(on: mapView)
         }
 
         /// Whether the map has another size or safe area than the move under
@@ -2027,6 +2042,16 @@ struct ScooterMapView: UIViewRepresentable {
             }
             return false
         }
+    }
+}
+
+/// A map that says when its safe area changes, which MapKit doesn't.
+final class SafeAreaReportingMapView: MKMapView {
+    var safeAreaDidChange: ((MKMapView) -> Void)?
+
+    override func safeAreaInsetsDidChange() {
+        super.safeAreaInsetsDidChange()
+        safeAreaDidChange?(self)
     }
 }
 

@@ -4231,6 +4231,27 @@ extension ScooterMapModelTests {
         try await assertLanded(at: CGPoint(x: (16 + 380 + 951) / 2, y: 669 / 2), on: mapView, model: model)
     }
 
+    /// Once the map has landed on the rider, the status bar's room leaving it
+    /// makes no region change: the move is made again for the new safe area
+    /// all the same, and the rider is where locating again puts them.
+    func testTheMoveIsMadeAgainWhenOnlyTheSafeAreaChangesAfterItLanded() async throws {
+        let (model, manager) = modelLocatedByTheTest()
+        let (window, mapView) = try await panelWindow(showing: model, resizable: true)
+        defer { window.isHidden = true }
+        let host = try XCTUnwrap(window.rootViewController?.children.first)
+        host.additionalSafeAreaInsets = UIEdgeInsets(top: 48, left: 0, bottom: 0, right: 0)
+        try await Task.sleep(for: .milliseconds(500))
+        model.locationManager(manager, didUpdateLocations: [fix(at: Self.rider)])
+        let located = await waitUntil(attempts: 400) { self.isBesideThePanel(Self.rider, on: mapView) }
+        XCTAssertTrue(located)
+        try await waitUntilAtRest(mapView)
+        host.additionalSafeAreaInsets = .zero
+        window.layoutIfNeeded()
+        try await assertLanded(
+            at: CGPoint(x: (16 + 380 + 951) / 2, y: 669 / 2), on: mapView, model: model, within: 0.5
+        )
+    }
+
     /// Opens or folds the Duo as iOS does, inside an animation, and lets it end.
     private func turn(_ hinge: TestHinge, to fold: CGRect?, in window: UIWindow) async throws {
         UIView.animate(withDuration: 0.5) {
