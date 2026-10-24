@@ -246,3 +246,14 @@
 "Zoom in" = "Auka aðdrátt";
 "Zoom out" = "Minnka aðdrátt";
 "Close" = "Loka";
+
+/* Ride and parking zones: the switch in Settings, and the legend on the map */
+"Ride and parking zones" = "Aksturs- og stæðasvæði";
+"A preview: where operators forbid riding or parking, or slow scooters down, as their feeds publish it. Each operator’s app has the final word." = "Forskoðun: þar sem rekstraraðilar banna akstur eða að leggja, eða hægja á hlaupahjólum, eins og gögn þeirra sýna. App rekstraraðilans ræður.";
+"Zones" = "Svæði";
+"No riding" = "Akstur bannaður";
+"No parking" = "Bannað að leggja";
+"Slow" = "Hægur akstur";
+"Zoom in to see the zones" = "Þysjaðu inn til að sjá svæðin";
+"No zones published here" = "Engin svæði birt hér";
+"Zones unavailable right now" = "Svæðin eru ekki tiltæk núna";

@@ -2,6 +2,15 @@ import Foundation
 
 protocol ScooterAPIClient: Sendable {
     func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse
+    /// The operators' zones that reach into the area.
+    func zones(in area: ScooterZoneArea) async throws -> ScooterZoneResponse
+}
+
+extension ScooterAPIClient {
+    /// A client that knows no zones has none to give.
+    func zones(in area: ScooterZoneArea) async throws -> ScooterZoneResponse {
+        ScooterZoneResponse(zones: [], pending: false, truncated: false)
+    }
 }
 
 protocol ScooterNetworkSession: Sendable {
@@ -40,18 +49,45 @@ actor ScooterAPI: ScooterAPIClient {
     }
 
     func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse {
-        var components = URLComponents(
-            url: baseURL.appending(path: "api/scooters"),
-            resolvingAgainstBaseURL: false
-        )!
-        components.queryItems = [
+        let (data, httpResponse) = try await get("api/scooters", query: [
             URLQueryItem(name: "south", value: String(format: "%.5f", bounds.south)),
             URLQueryItem(name: "west", value: String(format: "%.5f", bounds.west)),
             URLQueryItem(name: "north", value: String(format: "%.5f", bounds.north)),
             URLQueryItem(name: "east", value: String(format: "%.5f", bounds.east)),
             URLQueryItem(name: "zoom", value: String(zoom)),
             URLQueryItem(name: "minBattery", value: String(minimumBattery))
-        ]
+        ])
+        // The server's times are compared with this device's clock, which may be wrong.
+        let clockOffset = Self.clockOffset(
+            dateHeader: httpResponse.value(forHTTPHeaderField: "Date"),
+            receivedAt: Date()
+        )
+
+        do {
+            var scooters = try JSONDecoder().decode(ScooterAPIResponsePayload.self, from: data).model
+            scooters.clockOffset = clockOffset
+            return scooters
+        } catch {
+            throw ScooterAPIError.invalidData(error)
+        }
+    }
+
+    func zones(in area: ScooterZoneArea) async throws -> ScooterZoneResponse {
+        let (data, _) = try await get("api/zones", query: area.queryItems)
+        do {
+            return try JSONDecoder().decode(ScooterZoneResponse.self, from: data)
+        } catch {
+            throw ScooterAPIError.invalidData(error)
+        }
+    }
+
+    /// A GET to the app's server, with what went wrong told apart as the dock reports it.
+    private func get(_ path: String, query: [URLQueryItem]) async throws -> (Data, HTTPURLResponse) {
+        var components = URLComponents(
+            url: baseURL.appending(path: path),
+            resolvingAgainstBaseURL: false
+        )!
+        components.queryItems = query
 
         guard let url = components.url else {
             throw ScooterAPIError.invalidURL
@@ -91,19 +127,7 @@ actor ScooterAPI: ScooterAPIClient {
         guard (200 ... 299).contains(httpResponse.statusCode) else {
             throw ScooterAPIError.httpStatus(httpResponse.statusCode)
         }
-        // The server's times are compared with this device's clock, which may be wrong.
-        let clockOffset = Self.clockOffset(
-            dateHeader: httpResponse.value(forHTTPHeaderField: "Date"),
-            receivedAt: Date()
-        )
-
-        do {
-            var scooters = try JSONDecoder().decode(ScooterAPIResponsePayload.self, from: data).model
-            scooters.clockOffset = clockOffset
-            return scooters
-        } catch {
-            throw ScooterAPIError.invalidData(error)
-        }
+        return (data, httpResponse)
     }
 
     /// How far the clock of this device is ahead of the server's (negative when

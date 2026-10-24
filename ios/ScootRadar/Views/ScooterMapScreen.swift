@@ -15,6 +15,7 @@ struct ScooterMapScreen: View {
     @State private var bottomChromeTop: CGFloat?
     @State private var locateButtonFrame = CGRect.null
     @State private var dockFrame = CGRect.null
+    @State private var zoneLegendFrame = CGRect.null
     @State private var chromeLayout = ScooterChromeLayout.dock
     @State private var panelFrame = CGRect.null
     @State private var panelNoticesHeight: CGFloat = 0
@@ -65,7 +66,9 @@ struct ScooterMapScreen: View {
                     selectedScooterID: model.selectedScooterID,
                     interactionExclusionFrame: layout == .dock ? topChromeFrame : .null,
                     bottomChromeTop: layout == .dock ? bottomChromeTop : nil,
-                    bottomChromeFrames: layout == .dock ? [locateButtonFrame, dockFrame] : [locateButtonFrame],
+                    bottomChromeFrames: layout == .dock
+                        ? [locateButtonFrame, zoneLegendFrame, dockFrame]
+                        : [locateButtonFrame, zoneLegendFrame],
                     panelFrame: layout == .panel ? panelFrame : .null,
                     foldFrame: fold ?? .null,
                     onRegionChange: { model.updateViewport($0, zoom: $1, zoomLevel: $2) },
@@ -80,7 +83,9 @@ struct ScooterMapScreen: View {
                     language: model.language,
                     walkTrail: model.walkTrail,
                     isWalking: model.isWalking,
-                    walkRemainingMetres: model.walkRemainingMetres
+                    walkRemainingMetres: model.walkRemainingMetres,
+                    zones: model.mapZones,
+                    zonesRevision: model.mapZonesRevision
                 )
                 .ignoresSafeArea()
 
@@ -243,8 +248,10 @@ struct ScooterMapScreen: View {
 
         VStack {
             Spacer()
-            HStack {
-                Spacer()
+            HStack(alignment: .bottom, spacing: 10) {
+                zoneLegend
+                    .padding(.leading, 2)
+                Spacer(minLength: 0)
                 FloatingMapControls(model: model)
                     .onGeometryChange(for: CGRect.self) { geometry in
                         geometry.frame(in: .global)
@@ -380,8 +387,9 @@ struct ScooterMapScreen: View {
 
         VStack {
             Spacer()
-            HStack {
-                Spacer()
+            HStack(alignment: .bottom, spacing: 10) {
+                Spacer(minLength: 0)
+                zoneLegend
                 FloatingMapControls(model: model)
                     .onGeometryChange(for: CGRect.self) { geometry in
                         geometry.frame(in: .global)
@@ -392,6 +400,20 @@ struct ScooterMapScreen: View {
         }
         .padding(16)
         .id(model.language)
+    }
+
+    /// What the zones' colours mean, while they are on; the names on the map keep clear of it.
+    @ViewBuilder
+    private var zoneLegend: some View {
+        if model.zoneState != .off {
+            ZoneLegend(state: model.zoneState, count: model.mapZones.count)
+                .onGeometryChange(for: CGRect.self) { geometry in
+                    geometry.frame(in: .global)
+                } action: { frame in
+                    zoneLegendFrame = frame
+                }
+                .onDisappear { zoneLegendFrame = .null }
+        }
     }
 
     /// The search bar, the same in both layouts.

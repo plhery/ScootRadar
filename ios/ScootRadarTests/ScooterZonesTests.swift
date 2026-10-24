@@ -1,0 +1,250 @@
+import CoreLocation
+import MapKit
+import XCTest
+@testable import ScootRadar
+
+final class ScooterZonesTests: XCTestCase {
+    func testTheAreaIsTheMapsRoundedOutToAFiftiethOfADegree() throws {
+        let area = try XCTUnwrap(ScooterZoneArea(covering: GeoBounds(south: 47.3694, west: 8.5342, north: 47.3844, east: 8.5492)))
+        XCTAssertEqual(area, ScooterZoneArea(covering: GeoBounds(south: 47.361, west: 8.521, north: 47.399, east: 8.559)))
+        XCTAssertEqual(
+            area.queryItems.map { "\($0.name)=\($0.value ?? "")" },
+            ["south=47.36", "west=8.52", "north=47.4", "east=8.56", "zoom=14"]
+        )
+        XCTAssertTrue(area.contains(try XCTUnwrap(ScooterZoneArea(covering: GeoBounds(south: 47.37, west: 8.53, north: 47.38, east: 8.55)))))
+        XCTAssertFalse(area.contains(try XCTUnwrap(ScooterZoneArea(covering: GeoBounds(south: 47.37, west: 8.53, north: 47.41, east: 8.55)))))
+    }
+
+    func testDegreesAreWrittenAsTheWebWritesThem() {
+        XCTAssertEqual(ScooterZoneArea.degrees(2368), "47.36")
+        XCTAssertEqual(ScooterZoneArea.degrees(2370), "47.4")
+        XCTAssertEqual(ScooterZoneArea.degrees(2350), "47")
+        XCTAssertEqual(ScooterZoneArea.degrees(1), "0.02")
+        XCTAssertEqual(ScooterZoneArea.degrees(0), "0")
+        XCTAssertEqual(ScooterZoneArea.degrees(-1), "-0.02")
+        XCTAssertEqual(ScooterZoneArea.degrees(-5), "-0.1")
+        XCTAssertEqual(ScooterZoneArea.degrees(-6170), "-123.4")
+    }
+
+    func testNoAreaIsAskedForAcrossTheDateLineOrWiderThanTheServerAnswers() {
+        XCTAssertNil(ScooterZoneArea(covering: GeoBounds(south: -17.9, west: 179.9, north: -17.8, east: -179.9)))
+        XCTAssertNil(ScooterZoneArea(covering: GeoBounds(south: 47, west: 8, north: 48.5, east: 8.5)))
+    }
+
+    func testZonesAreAskedForAndReadWithoutKindsOrRingsThisVersionCannotDraw() async throws {
+        let body = #"""
+        {"zones":[
+          {"id":"lime:0","provider":"lime","kind":"noRide","polygons":[[[[47.37,8.54],[47.38,8.54],[47.38,8.55],[47.37,8.54]],[[47.371,8.541],[47.372,8.541],[47.372,8.542],[47.371,8.541]]]]},
+          {"id":"bird:3","provider":"bird","kind":"slow","maxSpeedKph":15,"polygons":[[[[47.37,8.54],[47.38,8.54],[47.38,8.55],[47.37,8.54]]]]},
+          {"id":"voi:1","provider":"voi","kind":"parkingRequired","polygons":[[[[47.37,8.54],[47.38,8.54],[47.38,8.55],[47.37,8.54]]]]},
+          {"id":"dott:2","provider":"dott","kind":"noParking","polygons":[[[[47.37,8.54],[47.38,8.54],[47.37,8.54]]]]}
+        ],"meta":{"generatedAt":"2026-10-24T10:00:00.000Z","pending":true,"truncated":false}}
+        """#
+        let session = ZoneNetworkSession(data: Data(body.utf8))
+        let api = ScooterAPI(baseURL: ScooterAPI.productionBaseURL, session: session)
+        let area = try XCTUnwrap(ScooterZoneArea(covering: GeoBounds(south: 47.361, west: 8.521, north: 47.399, east: 8.559)))
+
+        let response = try await api.zones(in: area)
+
+        let request = await session.lastRequest
+        let url = try XCTUnwrap(request?.url)
+        XCTAssertEqual(url.absoluteString, "https://scootradar.com/api/zones?south=47.36&west=8.52&north=47.4&east=8.56&zoom=14")
+        XCTAssertTrue(response.pending)
+        XCTAssertFalse(response.truncated)
+        XCTAssertEqual(response.zones.map(\.id), ["lime:0", "bird:3"])
+        XCTAssertEqual(response.zones.map(\.kind), [.noRide, .slow])
+        XCTAssertEqual(response.zones[0].polygons[0].count, 2, "The outer ring and its hole")
+        XCTAssertEqual(response.zones[0].polygons[0][0][1], GeoPoint(latitude: 47.38, longitude: 8.54))
+        XCTAssertEqual(response.zones[1].maxSpeedKph, 15)
+    }
+
+    func testEveryLanguageNamesTheZones() throws {
+        let keys = [
+            "Ride and parking zones", "Zones", "No riding", "No parking", "Slow",
+            "Zoom in to see the zones", "No zones published here", "Zones unavailable right now"
+        ]
+        for language in ["de", "fr", "it", "nl", "nb", "pt", "es", "is"] {
+            let strings = try XCTUnwrap(Bundle.main.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:)))
+            for key in keys {
+                let text = strings.localizedString(forKey: key, value: "missing", table: nil)
+                XCTAssertNotEqual(text, "missing", "\(language): \(key)")
+            }
+        }
+        let german = try XCTUnwrap(Bundle.main.path(forResource: "de", ofType: "lproj").flatMap(Bundle.init(path:)))
+        XCTAssertEqual(german.localizedString(forKey: "No riding", value: nil, table: nil), "Fahrverbot")
+    }
+}
+
+@MainActor
+final class ScooterZonesModelTests: XCTestCase {
+    private let zurich = MKCoordinateRegion(
+        center: CLLocationCoordinate2D(latitude: 47.3769, longitude: 8.5417),
+        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+    )
+
+    func testZonesAreOffUntilTurnedOnAndTheChoiceIsKept() {
+        let defaults = isolatedDefaults()
+        let model = makeModel(api: ZoneStubAPI(), defaults: defaults)
+        XCTAssertFalse(model.showsZones)
+        XCTAssertEqual(model.zoneState, .off)
+
+        model.showsZones = true
+
+        XCTAssertTrue(makeModel(api: ZoneStubAPI(), defaults: defaults).showsZones)
+    }
+
+    func testTheZonesOfTheMapsAreaAreDrawnForTheProvidersShown() async throws {
+        let api = ZoneStubAPI()
+        let model = makeModel(api: api)
+        model.updateViewport(zurich, zoom: 16)
+        XCTAssertEqual(model.zoneState, .off)
+        let none = await waitUntil { await api.zoneAreas().isEmpty }
+        XCTAssertTrue(none, "Nothing is asked for while the zones are off")
+
+        model.showsZones = true
+
+        let shown = await waitUntil { await api.zoneAreas().count == 1 && model.zoneState == .shown }
+        XCTAssertTrue(shown)
+        let asked = await api.zoneAreas()
+        XCTAssertEqual(asked, [ScooterZoneArea(covering: GeoBounds(south: 47.361, west: 8.521, north: 47.399, east: 8.559))])
+        XCTAssertEqual(model.mapZones.map(\.id), ["lime:0", "bird:0"])
+
+        model.showProviders([.lime])
+        XCTAssertEqual(model.mapZones.map(\.id), ["lime:0"])
+    }
+
+    func testZonesAreNotAskedForFurtherOutThanZoom14AndComeBackWithoutAskingAgain() async throws {
+        let api = ZoneStubAPI()
+        let model = makeModel(api: api)
+        model.showsZones = true
+        model.updateViewport(zurich, zoom: 16)
+        let shown = await waitUntil { await api.zoneAreas().count == 1 && model.zoneState == .shown }
+        XCTAssertTrue(shown)
+        let revision = model.mapZonesRevision
+
+        model.updateViewport(MKCoordinateRegion(center: zurich.center, span: MKCoordinateSpan(latitudeDelta: 0.08, longitudeDelta: 0.08)), zoom: 13)
+        XCTAssertEqual(model.zoneState, .zoomIn)
+        XCTAssertTrue(model.mapZones.isEmpty)
+        XCTAssertGreaterThan(model.mapZonesRevision, revision)
+
+        model.updateViewport(zurich, zoom: 16)
+        XCTAssertEqual(model.zoneState, .shown)
+        XCTAssertEqual(model.mapZones.count, 2)
+        try await Task.sleep(for: .milliseconds(400))
+        let areas = await api.zoneAreas()
+        XCTAssertEqual(areas.count, 1)
+    }
+
+    func testANearbyViewIsServedByTheAnswerAtHandAndAnotherAreaIsAskedFor() async throws {
+        let api = ZoneStubAPI()
+        let model = makeModel(api: api)
+        model.showsZones = true
+        model.updateViewport(zurich, zoom: 16)
+        let first = await waitUntil { await api.zoneAreas().count == 1 && model.zoneState == .shown }
+        XCTAssertTrue(first)
+
+        // A few hundred metres on, within the area answered for.
+        var nearby = zurich
+        nearby.center.longitude += 0.003
+        model.updateViewport(nearby, zoom: 16)
+        XCTAssertEqual(model.zoneState, .shown)
+
+        var bern = zurich
+        bern.center = CLLocationCoordinate2D(latitude: 46.948, longitude: 7.4474)
+        model.updateViewport(bern, zoom: 16)
+        XCTAssertEqual(model.zoneState, .loading)
+        XCTAssertEqual(model.mapZones.count, 2, "Zürich's stay drawn until Bern's come")
+        let second = await waitUntil { await api.zoneAreas().count == 2 && model.zoneState == .shown }
+        XCTAssertTrue(second)
+
+        // Back in Zürich, the answer of a moment ago serves.
+        model.updateViewport(zurich, zoom: 16)
+        XCTAssertEqual(model.zoneState, .shown)
+        try await Task.sleep(for: .milliseconds(400))
+        let areas = await api.zoneAreas()
+        XCTAssertEqual(areas.count, 2)
+    }
+
+    func testAFailureIsToldAndTurningTheZonesOffTakesThemAway() async throws {
+        let api = ZoneStubAPI()
+        await api.setFailure(.httpStatus(503))
+        let model = makeModel(api: api)
+        model.showsZones = true
+        model.updateViewport(zurich, zoom: 16)
+        let failed = await waitUntil { await api.zoneAreas().count == 1 && model.zoneState == .failed }
+        XCTAssertTrue(failed)
+        XCTAssertTrue(model.mapZones.isEmpty)
+
+        await api.setFailure(nil)
+        model.showsZones = false
+        XCTAssertEqual(model.zoneState, .off)
+        model.showsZones = true
+        let shown = await waitUntil { await api.zoneAreas().count == 2 && model.zoneState == .shown }
+        XCTAssertTrue(shown, "Turned on again, the zones are asked for again")
+        model.showsZones = false
+        XCTAssertTrue(model.mapZones.isEmpty)
+    }
+
+    private func makeModel(api: any ScooterAPIClient, defaults: UserDefaults? = nil) -> ScooterMapModel {
+        ScooterMapModel(api: api, locationManager: CLLocationManager(), defaults: defaults ?? isolatedDefaults())
+    }
+
+    private func isolatedDefaults() -> UserDefaults {
+        let suiteName = "ScootRadarTests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defaults.removePersistentDomain(forName: suiteName)
+        return defaults
+    }
+
+    /// Asks the stub first, so that the wait queues behind the request it waits for.
+    private func waitUntil(attempts: Int = 200, condition: @escaping () async -> Bool) async -> Bool {
+        for _ in 0 ..< attempts {
+            if await condition() { return true }
+            try? await Task.sleep(for: .milliseconds(10))
+        }
+        return false
+    }
+}
+
+private actor ZoneStubAPI: ScooterAPIClient {
+    private var failure: ScooterAPIError?
+    private var areas: [ScooterZoneArea] = []
+
+    func scooters(bounds: GeoBounds, zoom: Int, minimumBattery: Int) async throws -> ScooterResponse {
+        ScooterResponse(vehicles: [])
+    }
+
+    func zones(in area: ScooterZoneArea) async throws -> ScooterZoneResponse {
+        areas.append(area)
+        if let failure { throw failure }
+        let ring = [
+            GeoPoint(latitude: 47.37, longitude: 8.54), GeoPoint(latitude: 47.38, longitude: 8.54),
+            GeoPoint(latitude: 47.38, longitude: 8.55), GeoPoint(latitude: 47.37, longitude: 8.54)
+        ]
+        return ScooterZoneResponse(zones: [
+            ScooterZone(id: "lime:0", provider: "lime", kind: .noRide, maxSpeedKph: nil, polygons: [[ring]]),
+            ScooterZone(id: "bird:0", provider: "bird", kind: .noParking, maxSpeedKph: nil, polygons: [[ring]])
+        ], pending: false, truncated: false)
+    }
+
+    func zoneAreas() -> [ScooterZoneArea] { areas }
+
+    func setFailure(_ failure: ScooterAPIError?) {
+        self.failure = failure
+    }
+}
+
+private actor ZoneNetworkSession: ScooterNetworkSession {
+    let data: Data
+    private(set) var lastRequest: URLRequest?
+
+    init(data: Data) {
+        self.data = data
+    }
+
+    func scooterData(for request: URLRequest) async throws -> (Data, URLResponse) {
+        lastRequest = request
+        let response = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: nil)!
+        return (data, response)
+    }
+}

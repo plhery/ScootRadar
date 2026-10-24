@@ -124,6 +124,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             )
             rebuildMapScooters()
             rebuildMapClusters()
+            rebuildMapZones()
             rebuildVisibleCounts()
             clearSelectionIfHidden()
         }
@@ -184,6 +185,21 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
             defaults.set(mapStyle.rawValue, forKey: Self.mapStyleKey)
         }
     }
+
+    /// The operators' zones over the map, a preview that is off unless turned on in Settings.
+    var showsZones: Bool {
+        didSet {
+            guard oldValue != showsZones else { return }
+            ScooterAnalytics.shared.track("zones_toggle", result: showsZones ? "enabled" : "disabled")
+            defaults.set(showsZones, forKey: Self.showsZonesKey)
+            updateZones()
+        }
+    }
+    /// What the zones' legend says.
+    private(set) var zoneState = ScooterZoneState.off
+    /// The zones drawn on the map: those of the providers shown, from zoom 14.
+    private(set) var mapZones: [ScooterZone] = []
+    private(set) var mapZonesRevision = 0
 
     var appearance: ScooterAppearance {
         didSet {
@@ -303,6 +319,14 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     @ObservationIgnored private let startCenter: GeoPoint
     @ObservationIgnored private var distanceOrigin: GeoPoint
     @ObservationIgnored private var vehiclesByID: [String: Scooter] = [:]
+    /// The zones of the area last answered for, with whether asking failed;
+    /// they stay drawn while a new area's are on their way.
+    @ObservationIgnored private var zoneAnswer: ScooterZoneAnswer?
+    /// Complete answers of the last few minutes, newest first, which serve
+    /// views within their area as the browser's copy does on the web.
+    @ObservationIgnored private var recentZoneAnswers: [ScooterZoneAnswer] = []
+    @ObservationIgnored private var zoneTask: Task<Void, Never>?
+    @ObservationIgnored private var zoneTaskArea: ScooterZoneArea?
     private(set) var mapScooters: [Scooter] = []
     private(set) var mapScootersRevision = 0
     private(set) var mapClusters: [ScooterCluster] = []
@@ -314,6 +338,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
 
     private static let minimumBatteryKey = "minimum-battery"
     private static let mapStyleKey = "apple-map-style"
+    private static let showsZonesKey = "map-zones"
     private static let appearanceKey = "appearance"
     private static let enabledProvidersKey = "enabled-providers"
     private static let rideEstimateMinutesKey = "ride-estimate-minutes-v1"
@@ -372,6 +397,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         // The quiet ground is what the dots are made for; a style chosen in
         // Settings is kept.
         mapStyle = AppleMapStyle(rawValue: savedStyle ?? "") ?? .quiet
+        showsZones = defaults.bool(forKey: Self.showsZonesKey)
         // Day and night until one is chosen in Settings.
         appearance = ScooterAppearance(rawValue: defaults.string(forKey: Self.appearanceKey) ?? "") ?? .sun
 
@@ -1007,6 +1033,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         let nextViewport = GeoBounds(region: region)
         viewport = nextViewport
         viewportZoom = zoom
+        updateZones()
         let nextZoomLevel = zoomLevel ?? Double(zoom)
         if nextZoomLevel != viewportZoomLevel {
             viewportZoomLevel = nextZoomLevel
@@ -2089,6 +2116,130 @@ extension ScooterMapModel {
         case let .searchedDestination(place): .place(place)
         case .userLocation: .rider
         }
+    }
+}
+
+// MARK: - Zones
+
+/// The zones of an area as the server answered, or the failure to get them.
+struct ScooterZoneAnswer: Sendable {
+    let area: ScooterZoneArea
+    let zones: [ScooterZone]
+    let failed: Bool
+    /// Some feeds' zones were still on their way.
+    let pending: Bool
+    let receivedAt: Date
+
+    var isComplete: Bool { !failed && !pending }
+}
+
+extension ScooterMapModel {
+    /// Coalesces the moves of one gesture, as the web does.
+    static let zoneDebounce = Duration.milliseconds(250)
+    /// While some feeds' zones are still being read, the same area is asked for again this much later, a few times.
+    static let zonePendingRetry = Duration.seconds(3)
+    static let zonePendingRetries = 3
+    /// The server lets an answer be kept five minutes.
+    static let zoneAnswerLifetime: TimeInterval = 300
+    private static let recentZoneAnswerLimit = 8
+
+    /// Asks for the zones of the map's area, the area the scooters are asked
+    /// for rounded out to the grid, unless an answer at hand covers it.
+    fileprivate func updateZones() {
+        guard showsZones else {
+            cancelZoneRequest()
+            zoneAnswer = nil
+            setZones(state: .off)
+            return
+        }
+        guard viewportZoom >= ScooterZoneArea.minimumZoom else {
+            // A whole answer is kept for when the map comes close again; any
+            // other is asked for again then.
+            cancelZoneRequest()
+            if zoneAnswer?.isComplete == false { zoneAnswer = nil }
+            setZones(state: .zoomIn)
+            return
+        }
+        guard let area = ScooterZoneArea(covering: viewport.expanded(by: 0.25)) else {
+            cancelZoneRequest()
+            zoneAnswer = nil
+            setZones(state: .shown)
+            return
+        }
+        if let answer = zoneAnswer, answer.area.contains(area) {
+            // Unless a pending answer is being asked for again, it stands.
+            if zoneTaskArea == nil { setZones(state: answer.failed ? .failed : .shown) }
+            return
+        }
+        if let taskArea = zoneTaskArea, taskArea.contains(area) { return }
+        let now = clock()
+        recentZoneAnswers.removeAll { now.timeIntervalSince($0.receivedAt) > Self.zoneAnswerLifetime }
+        if let recent = recentZoneAnswers.first(where: { $0.area.contains(area) }) {
+            cancelZoneRequest()
+            zoneAnswer = recent
+            setZones(state: .shown)
+            return
+        }
+        requestZones(in: area, after: Self.zoneDebounce, retries: Self.zonePendingRetries)
+    }
+
+    private func requestZones(in area: ScooterZoneArea, after delay: Duration, retries: Int) {
+        zoneTask?.cancel()
+        zoneTaskArea = area
+        if zoneAnswer?.area != area { setZones(state: .loading) }
+        zoneTask = Task { [weak self] in
+            do { try await Task.sleep(for: delay) } catch { return }
+            guard let self else { return }
+            let answer: ScooterZoneAnswer
+            do {
+                let response = try await api.zones(in: area)
+                guard !Task.isCancelled, zoneTaskArea == area else { return }
+                answer = ScooterZoneAnswer(
+                    area: area, zones: response.zones, failed: false, pending: response.pending, receivedAt: clock()
+                )
+            } catch {
+                guard !Task.isCancelled, zoneTaskArea == area, !(error is CancellationError) else { return }
+                // The area's zones stay drawn if they were; another area's go.
+                let kept = zoneAnswer?.area == area ? zoneAnswer?.zones ?? [] : []
+                answer = ScooterZoneAnswer(area: area, zones: kept, failed: true, pending: false, receivedAt: clock())
+            }
+            zoneAnswer = answer
+            if answer.pending, retries > 0 {
+                // What came is drawn meanwhile.
+                requestZones(in: area, after: Self.zonePendingRetry, retries: retries - 1)
+            } else {
+                zoneTask = nil
+                zoneTaskArea = nil
+            }
+            if answer.isComplete {
+                recentZoneAnswers.removeAll { $0.area == area }
+                recentZoneAnswers.insert(answer, at: 0)
+                recentZoneAnswers = Array(recentZoneAnswers.prefix(Self.recentZoneAnswerLimit))
+            }
+            setZones(state: answer.failed ? .failed : .shown)
+        }
+    }
+
+    private func cancelZoneRequest() {
+        zoneTask?.cancel()
+        zoneTask = nil
+        zoneTaskArea = nil
+    }
+
+    private func setZones(state: ScooterZoneState) {
+        if zoneState != state { zoneState = state }
+        rebuildMapZones()
+    }
+
+    /// Like the scooters: only the zones of the providers switched on, and
+    /// none further out than zoom 14.
+    fileprivate func rebuildMapZones() {
+        let shown = zoneState == .off || zoneState == .zoomIn ? [] : (zoneAnswer?.zones ?? []).filter { zone in
+            ScooterProvider(rawValue: zone.provider).map { enabledProviders.contains($0) } ?? false
+        }
+        guard shown != mapZones else { return }
+        mapZones = shown
+        mapZonesRevision += 1
     }
 }
 

@@ -246,3 +246,14 @@
 "Zoom in" = "Zoom inn";
 "Zoom out" = "Zoom ut";
 "Close" = "Lukk";
+
+/* Ride and parking zones: the switch in Settings, and the legend on the map */
+"Ride and parking zones" = "Kjøre- og parkeringssoner";
+"A preview: where operators forbid riding or parking, or slow scooters down, as their feeds publish it. Each operator’s app has the final word." = "Forhåndsvisning: der operatørene forbyr kjøring eller parkering, eller senker farten, slik dataene deres viser. Operatørens app har siste ord.";
+"Zones" = "Soner";
+"No riding" = "Kjøreforbud";
+"No parking" = "Parkeringsforbud";
+"Slow" = "Lav fart";
+"Zoom in to see the zones" = "Zoom inn for å se sonene";
+"No zones published here" = "Ingen soner publisert her";
+"Zones unavailable right now" = "Sonene er ikke tilgjengelige nå";

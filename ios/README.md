@@ -139,6 +139,17 @@ Maps**. Closing the card or choosing another scooter or bay ends the walk; until
 then the scooter stays selected wherever the map goes. When fresh data no longer
 lists it, the card stays open with no actions and says someone may have taken it.
 
+**Ride and parking zones.** A preview, off until turned on under Settings ›
+Map, as on the website: from zoom 14 the map draws the zones the operators
+publish, above the roads and under their names, the route and the scooters. No
+riding is hatched red within a solid edge, no parking orange within a dashed
+one and slow zones (18 km/h or less) blue within a dotted one, in the web's
+colours, lighter on a dark map and on satellite. Each kind's fills are one
+translucent layer, so the same rule of five operators over a street looks like
+one. Zones follow the provider filter. A legend beside the locate button says
+what the colours mean, or asks to zoom in, or says that none are published here
+or that they can't be had right now.
+
 **Location problems.** A card under the search bar: **Location is off** with
 **Open Settings** and **Search a place**; restricted on this device; or not
 found, with **Try again**. It stays dismissed until the next attempt.
@@ -192,7 +203,11 @@ and respects Reduce Motion.
 
 The app reads `https://scootradar.com/api/scooters` for the area on screen
 and `https://scootradar.com/api/geocode` for search, to which it sends the
-language it is shown in. An area across the 180° line, east of New Zealand, is
+language it is shown in. With the zones on it reads `/api/zones` for the same
+area rounded out to 1/50° (about 2 km), written as the web writes it, so both
+apps ask the same addresses; an answer serves every view inside its area, and
+the last eight serve for five minutes, in memory. While the server is still
+reading some feeds' zones, the app asks again every 3 seconds, three times. An area across the 180° line, east of New Zealand, is
 asked for in one request whose west is greater than its east, as the web map
 does (`GeoBounds`). The endpoint is set in `Services/ScooterAPI.swift` if a
 local or preview backend is needed.
@@ -218,7 +233,7 @@ There is no refresh button. **Try again** appears only when something failed:
 
 ## What stays on the phone
 
-The filters, the appearance, the map style, the language, the passes, the ride
+The filters, the appearance, the map style, whether the zones are shown, the language, the passes, the ride
 length used for price estimates, the usage choice and whether the phone was
 ever located are kept in the app's settings, and for the rating prompt the
 number of days with a fresh feed, the last day something went wrong, the
@@ -255,7 +270,9 @@ update it.
   refreshing, location, the selection, filters, passes, and what the dock shows.
 - `Views/` — `ScooterMapScreen.swift` lays the screen out; `ScooterMapView.swift`
   is the MapKit map and its markers, `ScooterMarkerArt.swift` their pictures,
-  `WalkTrailOverlay.swift` the dotted walking trail;
+  `WalkTrailOverlay.swift` the dotted walking trail,
+  `ScooterZoneOverlay.swift` the operators' zones (`Models/ScooterZones.swift`
+  reads them and holds their look);
   `ScooterControls.swift` the dock, cards,
   sheets and notices; `SwissAddressSearch.swift` the search bar and panel.
 - `en.lproj`, `de.lproj`, `fr.lproj`, `it.lproj`, `nl.lproj`, `nb.lproj`,

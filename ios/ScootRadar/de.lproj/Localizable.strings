@@ -246,3 +246,14 @@
 "Zoom in" = "Vergrössern";
 "Zoom out" = "Verkleinern";
 "Close" = "Schliessen";
+
+/* Ride and parking zones: the switch in Settings, and the legend on the map */
+"Ride and parking zones" = "Fahr- und Parkzonen";
+"A preview: where operators forbid riding or parking, or slow scooters down, as their feeds publish it. Each operator’s app has the final word." = "Vorschau: wo Anbieter das Fahren oder Parken verbieten oder die Scooter drosseln, wie ihre Daten es angeben. Massgebend ist die App des Anbieters.";
+"Zones" = "Zonen";
+"No riding" = "Fahrverbot";
+"No parking" = "Parkverbot";
+"Slow" = "Langsam";
+"Zoom in to see the zones" = "Vergrössern, um die Zonen zu sehen";
+"No zones published here" = "Hier sind keine Zonen veröffentlicht";
+"Zones unavailable right now" = "Zonen gerade nicht verfügbar";

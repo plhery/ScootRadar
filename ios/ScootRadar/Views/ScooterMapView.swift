@@ -270,6 +270,9 @@ struct ScooterMapView: UIViewRepresentable {
     var isWalking = false
     /// What is left of the route, for the time on the selected scooter's name.
     var walkRemainingMetres: CLLocationDistance? = nil
+    /// The operators' zones, under everything else drawn on the map, while they are turned on.
+    var zones: [ScooterZone] = []
+    var zonesRevision = 0
 
     func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
@@ -329,6 +332,7 @@ struct ScooterMapView: UIViewRepresentable {
             [coordinator = context.coordinator] (mapView: MKMapView, _) in
             coordinator.updateLook(on: mapView)
             coordinator.updateTrailLook(on: mapView)
+            coordinator.applyZones(on: mapView)
         }
         return mapView
     }
@@ -355,6 +359,7 @@ struct ScooterMapView: UIViewRepresentable {
         context.coordinator.applyZoom(zoomRequest, on: mapView)
         context.coordinator.keepSelectionClearOfPanel(on: mapView)
         context.coordinator.applyTrail(walkTrail, on: mapView)
+        context.coordinator.applyZones(on: mapView)
         context.coordinator.updateUserHeading(on: mapView, animated: true)
         context.coordinator.updateCompass(on: mapView)
         context.coordinator.updateLook(on: mapView)
@@ -421,6 +426,7 @@ struct ScooterMapView: UIViewRepresentable {
         /// The dots light up once, the first time they appear.
         private var lightUpEnds: TimeInterval?
         private let trail = WalkTrailOverlay()
+        private let zoneLayer = ScooterZoneLayer()
         /// The scooter walked to, which MapKit never gathers into a cluster.
         private var heldScooterID: String?
         /// A route waits for the camera to fit it before it draws itself.
@@ -1863,7 +1869,12 @@ struct ScooterMapView: UIViewRepresentable {
         // MARK: Walking route
 
         func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
-            trail.renderer(for: overlay) ?? MKOverlayRenderer(overlay: overlay)
+            trail.renderer(for: overlay) ?? zoneLayer.renderer(for: overlay) ?? MKOverlayRenderer(overlay: overlay)
+        }
+
+        /// The zones in the colours of the map: lighter on a dark map and on satellite.
+        func applyZones(on mapView: MKMapView) {
+            zoneLayer.show(parent.zones, revision: parent.zonesRevision, isDark: isDark(mapView), on: mapView)
         }
 
         private func isDark(_ mapView: MKMapView) -> Bool {

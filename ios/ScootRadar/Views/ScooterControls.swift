@@ -2268,7 +2268,7 @@ struct ScooterSettingsSheet: View {
                     }
                 }
 
-                Section("Map") {
+                Section {
                     SettingsTileRow(title: String(localized: "Map")) {
                         ForEach(AppleMapStyle.allCases) { style in
                             SettingsTile(title: style.label, isSelected: model.mapStyle == style) {
@@ -2278,6 +2278,11 @@ struct ScooterSettingsSheet: View {
                             }
                         }
                     }
+                    Toggle("Ride and parking zones", isOn: $model.showsZones)
+                } header: {
+                    Text("Map")
+                } footer: {
+                    Text("A preview: where operators forbid riding or parking, or slow scooters down, as their feeds publish it. Each operator’s app has the final word.")
                 }
 
                 Section("Language") {
@@ -2804,6 +2809,89 @@ struct FloatingMapControls: View {
             }
         }
         .accessibilityHidden(true)
+    }
+}
+
+/// What the colours of the zones mean while they are on, or why none are
+/// drawn, at the foot of the map beside the locate button, as on the web
+/// (ZoneLegend.tsx). Taps go through it to the map.
+struct ZoneLegend: View {
+    let state: ScooterZoneState
+    /// The zones drawn.
+    let count: Int
+
+    var body: some View {
+        Group {
+            if let note {
+                Text(note)
+                    .foregroundStyle(ScooterPalette.dockSecondary)
+            } else {
+                FlowLayout(spacing: 12, lineSpacing: 4) {
+                    ForEach(ScooterZoneKind.allCases, id: \.self) { kind in
+                        HStack(spacing: 6) {
+                            ZoneSwatch(kind: kind)
+                            Text(kind.label)
+                                .lineLimit(1)
+                        }
+                    }
+                }
+                .foregroundStyle(ScooterPalette.dockText)
+            }
+        }
+        .font(.caption.weight(.medium))
+        .padding(.horizontal, 12)
+        .padding(.vertical, 7)
+        .chromeGlass(in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .allowsHitTesting(false)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(String(localized: "Zones"))
+        .accessibilityValue(note ?? ScooterZoneKind.allCases.map(\.label).joined(separator: ", "))
+    }
+
+    private var note: String? {
+        switch state {
+        case .zoomIn: String(localized: "Zoom in to see the zones")
+        case .failed: String(localized: "Zones unavailable right now")
+        case .shown where count == 0: String(localized: "No zones published here")
+        default: nil
+        }
+    }
+}
+
+/// A zone as the map draws it, so that the edge and the hatching tell the
+/// kinds apart without their colours.
+private struct ZoneSwatch: View {
+    let kind: ScooterZoneKind
+    @Environment(\.colorScheme) private var colorScheme
+
+    var body: some View {
+        let color = Color(uiColor: ScooterZoneLook.color(kind, isDark: colorScheme == .dark))
+        let shape = RoundedRectangle(cornerRadius: 3, style: .continuous)
+        ZStack {
+            shape.fill(color.opacity(kind == .slow ? 0.1 : 0.16))
+            if kind == .noRide {
+                Canvas { context, size in
+                    var lines = Path()
+                    for c in stride(from: 0, through: size.width + size.height, by: 4) {
+                        lines.move(to: CGPoint(x: c, y: 0))
+                        lines.addLine(to: CGPoint(x: c - size.height, y: size.height))
+                    }
+                    context.stroke(lines, with: .color(color.opacity(0.55)), lineWidth: 1.5)
+                }
+                .clipShape(shape)
+            }
+            shape.inset(by: 1).stroke(color, style: edge)
+        }
+        .frame(width: 16, height: 12)
+        .accessibilityHidden(true)
+    }
+
+    private var edge: StrokeStyle {
+        switch kind {
+        case .noRide: StrokeStyle(lineWidth: 2)
+        case .noParking: StrokeStyle(lineWidth: 2, dash: [4, 2.5])
+        case .slow: StrokeStyle(lineWidth: 2, lineCap: .round, dash: [0.1, 3.5])
+        }
     }
 }
 
