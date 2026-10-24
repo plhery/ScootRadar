@@ -7,15 +7,19 @@ import type { ZoneKind } from '@/lib/zones';
 
 /**
  * How each kind of zone is drawn: how strongly it is filled (the stronger the rule, the
- * stronger the fill) and its edge, solid, dashed or dotted. The fill is the whole kind's
- * at once, so that the same rule of five operators over a street looks like one. The
- * colours, and no riding's hatching, are the appearance's (map.css).
+ * stronger the fill) and its edge, solid, dashed or dotted. Each kind's zones are merged
+ * into one shape (zoneShapes.ts) and filled at once, so that the same rule of five
+ * operators over a street looks like one. The colours, and no riding's hatching, are the
+ * appearance's (map.css).
  */
 export const ZONE_STYLES: Record<ZoneKind, { fillOpacity: number; edge: PathOptions }> = {
   noRide: { fillOpacity: 0.4, edge: { opacity: 0.9, weight: 1.5 } },
   noParking: { fillOpacity: 0.16, edge: { opacity: 0.9, weight: 1.5, dashArray: '6 4' } },
   slow: { fillOpacity: 0.12, edge: { opacity: 0.9, weight: 2, dashArray: '0.1 4', lineCap: 'round' } },
 };
+
+/** How far, in pixels, no parking's and slow zones' edges keep from no riding's edge, and out of its zones. */
+export const ZONE_EDGE_CLEARANCE = 3;
 
 const KINDS: { kind: ZoneKind; label: TranslationKey }[] = [
   { kind: 'noRide', label: 'zones.noRide' },

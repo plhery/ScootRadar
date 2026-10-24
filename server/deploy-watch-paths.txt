@@ -50,3 +50,4 @@ tsconfig.json
 !src/lib/site.ts
 !src/lib/uiText.ts
 !src/lib/walking.ts
+!src/lib/zoneShapes.ts

@@ -1161,12 +1161,16 @@ test('combines provider filters and resets them together', async ({ page }) => {
 test('the operators\' zones are drawn once turned on, for the providers shown, with what they mean', async ({ page }) => {
   const square = (south: number, west: number) =>
     [[[[south, west], [south, west + 0.003], [south + 0.002, west + 0.003], [south + 0.002, west], [south, west]]]];
+  const edges = page.locator('.leaflet-zones-edges-pane g path');
+  const noRideWidth = () => page.evaluate(() => document.querySelector<SVGPathElement>('.zone-edge-noRide')!.getBBox().width);
   const asked: string[] = [];
   await page.route('**/api/zones?**', route => {
     asked.push(new URL(route.request().url()).search);
     return route.fulfill({ contentType: 'application/json', body: JSON.stringify({
       zones: [
         { id: 'lime:0', provider: 'lime', kind: 'noRide', polygons: square(47.375, 8.538) },
+        // The same rule of another operator, over half of Lime's.
+        { id: 'voi:0', provider: 'voi', kind: 'noRide', polygons: square(47.375, 8.5395) },
         { id: 'bird:0', provider: 'bird', kind: 'noParking', polygons: square(47.377, 8.542) },
         { id: 'bolt:0', provider: 'bolt', kind: 'slow', maxSpeedKph: 10, polygons: square(47.379, 8.539) },
       ],
@@ -1193,9 +1197,15 @@ test('the operators\' zones are drawn once turned on, for the providers shown, w
 
   const legend = page.getByRole('group', { name: 'Zones' });
   await expect(legend).toHaveText('No ridingNo parkingSlow');
-  // One shape and one edge for each zone, under the scooters.
-  await expect(page.locator('.leaflet-zones-edges-pane path')).toHaveCount(3);
+  // One shape and one edge for each kind, the operators' zones merged, under the scooters.
+  await expect(edges).toHaveCount(3);
   expect(asked).toHaveLength(1);
+  const merged = await noRideWidth();
+  // No parking's and slow zones' edges keep clear of no riding's.
+  for (const kind of ['noParking', 'slow']) {
+    await expect(page.locator(`.zone-edge-${kind}`)).toHaveAttribute('mask', 'url(#zone-edges-clear-of-no-riding)');
+  }
+  await expect(page.locator('#zone-edges-clear-of-no-riding path')).toHaveCount(1);
   // Told apart without their colours, on the map as in the legend: no riding hatched
   // within a solid edge, no parking's edge dashed and slow's dotted.
   const drawn = await page.evaluate(() => ({
@@ -1204,15 +1214,16 @@ test('the operators\' zones are drawn once turned on, for the providers shown, w
     swatches: ['noRide', 'noParking', 'slow'].map(kind => getComputedStyle(document.querySelector(`.zone-swatch-${kind}`)!).borderTopStyle),
   }));
   expect(drawn).toEqual({ fill: 'url("#zone-no-ride-hatch")', edges: [null, '6 4', '0.1 4'], swatches: ['solid', 'dashed', 'dotted'] });
-  // Lime alone: its zone alone.
+  // Lime alone: its zone alone, two thirds as wide as the merged one.
   await page.getByRole('button', { name: /^Lime, 1\./ }).click();
   await expect(page.locator('.scooter-marker')).toHaveCount(1);
-  await expect(page.locator('.leaflet-zones-edges-pane path')).toHaveCount(1);
+  await expect(edges).toHaveCount(1);
+  expect((await noRideWidth()) / merged).toBeCloseTo(2 / 3, 1);
 
   // Further out, the zones make way for a word on why there are none.
   await zoomTo(page, 13);
   await expect(legend).toHaveText('Zoom in to see the zones');
-  await expect(page.locator('.leaflet-zones-edges-pane path')).toHaveCount(0);
+  await expect(edges).toHaveCount(0);
 });
 
 test('the filters offer battery presets and providers with their counts, and say what the map will show', async ({ page }) => {

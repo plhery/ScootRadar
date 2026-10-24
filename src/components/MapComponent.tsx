@@ -50,7 +50,8 @@ import { formatDistance as formatWalkingDistance, measurementSystem, walkingMinu
 import { createRouteLayer, type Frame, type RouteLayer } from '@/lib/walkRouteLayer';
 import type { WalkView } from '@/lib/walkState';
 import type { MapZone } from '@/lib/zones';
-import { ZONE_STYLES } from './ZoneLegend';
+import { mergeZones } from '@/lib/zoneShapes';
+import { ZONE_EDGE_CLEARANCE, ZONE_STYLES } from './ZoneLegend';
 import './map.css';
 
 /** The panes of the zones' fills are made in this order, the strongest rule on top. */
@@ -676,11 +677,13 @@ export default function MapComponent({
 
   // The zones are drawn under the rest of what is drawn on the ground, in panes inside the
   // one that turns with the map: each kind's fills in a pane of its own that is translucent
-  // as a whole, so that zones over each other are no darker, then all their edges. SVG, as
-  // the walk's way: leaflet-rotate's renderer patch reads a map Leaflet's canvas does not hand it.
+  // as a whole, so that zones over each other are no darker, then all their edges. Each
+  // kind is one shape, the operators' zones merged, within one edge. SVG, as the walk's
+  // way: leaflet-rotate's renderer patch reads a map Leaflet's canvas does not hand it.
+  const zoneShapes = useMemo(() => mergeZones(zones), [zones]);
   useEffect(() => {
     const map = mapRef.current;
-    if (!readyMap || !map || !zones.length) return;
+    if (!readyMap || !map || !zoneShapes.length) return;
     const pane = (name: string, opacity = 1) => {
       const element = map.getPane(name) ?? map.createPane(name, map.getPane('overlayPane'));
       element.style.zIndex = '-1';
@@ -691,18 +694,44 @@ export default function MapComponent({
       [kind, pane(`zones-${kind}`, ZONE_STYLES[kind].fillOpacity)])) as Record<MapZone['kind'], L.Renderer>;
     const edges = pane('zones-edges');
     const layer = L.layerGroup();
-    for (const zone of zones) {
-      const first = zone.polygons[0]?.[0]?.[0];
-      if (!first) continue;
-      const shift = lngNear(first[1], frameLng) - first[1];
-      const shape = zone.polygons.map(polygon => polygon.map(ring => ring.map(([lat, lng]): [number, number] => [lat, lng + shift])));
-      const style = ZONE_STYLES[zone.kind];
-      L.polygon(shape, { renderer: fills[zone.kind], className: `zone-fill-${zone.kind}`, interactive: false, stroke: false, fillOpacity: 1 }).addTo(layer);
-      L.polygon(shape, { ...style.edge, renderer: edges, className: `zone-edge-${zone.kind}`, interactive: false, fill: false }).addTo(layer);
+    const drawn = new Map<MapZone['kind'], { shape: [number, number][][][]; edge: L.Polygon }>();
+    for (const { kind, polygons } of zoneShapes) {
+      const shape = polygons.map(polygon => {
+        const first = polygon[0]?.[0];
+        const shift = first ? lngNear(first[1], frameLng) - first[1] : 0;
+        return polygon.map(ring => ring.map(([lat, lng]): [number, number] => [lat, lng + shift]));
+      });
+      L.polygon(shape, { renderer: fills[kind], className: `zone-fill-${kind}`, interactive: false, stroke: false, fillOpacity: 1 }).addTo(layer);
+      const edge = L.polygon(shape, { ...ZONE_STYLES[kind].edge, renderer: edges, className: `zone-edge-${kind}`, interactive: false, fill: false }).addTo(layer);
+      drawn.set(kind, { shape, edge });
     }
     layer.addTo(map);
+    // Where riding is forbidden, nothing more needs saying: no parking's and slow zones'
+    // edges give way within no riding's zones and along their edge, which other operators'
+    // zones of the same street often follow to the metre. A mask in the edges' own SVG,
+    // whose no riding Leaflet keeps in step with the map as it does every path.
+    const noRide = drawn.get('noRide');
+    const giving = [drawn.get('noParking'), drawn.get('slow')].flatMap(kind => kind?.edge.getElement() ?? []);
+    const svg = (noRide?.edge.getElement() as SVGPathElement | undefined)?.ownerSVGElement;
+    if (noRide && svg && giving.length) {
+      const clearance = L.polygon(noRide.shape, {
+        renderer: edges, interactive: false, color: '#000', opacity: 1, weight: 2 * ZONE_EDGE_CLEARANCE, lineJoin: 'round',
+        fillColor: '#000', fillOpacity: 1,
+      }).addTo(layer);
+      const svgElement = (name: string, attributes: Record<string, string>) => {
+        const element = document.createElementNS('http://www.w3.org/2000/svg', name);
+        for (const [key, value] of Object.entries(attributes)) element.setAttribute(key, value);
+        return element;
+      };
+      const everywhere = { x: '-1000000', y: '-1000000', width: '2000000', height: '2000000' };
+      const mask = svgElement('mask', { id: 'zone-edges-clear-of-no-riding', maskUnits: 'userSpaceOnUse', ...everywhere });
+      mask.appendChild(svgElement('rect', { ...everywhere, fill: '#fff' }));
+      mask.appendChild(clearance.getElement()!);
+      svg.insertBefore(svgElement('defs', {}), svg.firstChild).appendChild(mask);
+      for (const edge of giving) edge.setAttribute('mask', 'url(#zone-edges-clear-of-no-riding)');
+    }
     return () => { layer.remove(); for (const renderer of [...Object.values(fills), edges]) renderer.remove(); };
-  }, [frameLng, readyMap, zones]);
+  }, [frameLng, readyMap, zoneShapes]);
 
   // The ground: one layer, drawn here from vector tiles in the colours of the
   // appearance. Its address is asked for first; until it is known, and whenever
