@@ -431,8 +431,9 @@
       "anchorNote": "Near Lebanon, Kansas, the geographic centre of the 48 contiguous states. Zoomed in, each state has its own total at its centre of population (US Census Bureau, 2020).",
       "featuredCities": ["us:dc:Washington", "us:ca:Los Angeles", "us:il:Chicago", "us:wa:Seattle", "us:ca:San Francisco", "us:ga:Atlanta"],
       "credits": {
-        "attribution": "United States: Bird, Bolt, Lime, Veo, Spin, Lyft GBFS",
-        "gbfs": ["Bird", "Bolt", "Lime", "Veo", "Spin", "Lyft"]
+        "attribution": "United States: Bird, Bolt, Lime, Veo, Spin, Lyft GBFS; GCOO anonymous app map",
+        "gbfs": ["Bird", "Bolt", "Lime", "Veo", "Spin", "Lyft"],
+        "links": [{ "label": "US: GCOO map", "href": "https://gcoo.io/" }]
       },
       "regions": {
         "showInCityNames": true,
@@ -1423,37 +1424,54 @@
       },
       "searchWords": [
         "south korea",
+        "korea",
+        "republic of korea",
         "sudkorea",
         "coree du sud",
+        "coree",
         "corea del sud",
+        "corea del sur",
+        "corea",
         "zuid korea",
         "sor korea",
         "coreia do sul",
-        "corea del sur",
+        "coreia",
         "sudur korea",
-        "korea",
+        "한국",
         "대한민국",
-        "한국"
+        "남한"
       ],
       "anchor": [
         36.4,
-        127.8
+        127.9
       ],
-      "anchorNote": "On land in central South Korea, among the reviewed city regions.",
+      "anchorNote": "Inland in North Chungcheong, between Daejeon and Gumi: on land at every zoom, midway between Seoul's and Busan's scooters, and far from Japan's total.",
       "featuredCities": [
         "kr:Seoul",
-        "kr:Daegu",
+        "kr:Busan",
         "kr:Incheon",
-        "kr:Gwangju",
-        "kr:Cheongju",
-        "kr:Daejeon"
+        "kr:Daegu",
+        "kr:Daejeon",
+        "kr:Ulsan"
       ],
       "credits": {
-        "attribution": "South Korea: Beam authenticated rider map",
+        "attribution": "South Korea: Beam authenticated rider map; GCOO anonymous app map; Kickgoing anonymous app map, Xingxing's scooters included; Swing anonymous app map",
         "links": [
           {
             "label": "KR: Beam map",
             "href": "https://www.ridebeam.com/"
+          },
+          {
+            "label": "KR: GCOO map",
+            "href": "https://gcoo.io/"
+          },
+          {
+            "label": "KR: Kickgoing map",
+            "href": "https://kickgoing.io/"
+          },
+          {
+            "label": "KR: OpenStreetMap boundaries · ODbL",
+            "href": "https://opendatacommons.org/licenses/odbl/"
           }
         ]
       }

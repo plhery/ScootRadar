@@ -438,20 +438,21 @@ enum ScooterMapLook {
     static let darkGround = UIColor(red: 0.043, green: 0.055, blue: 0.078, alpha: 1)
     static let selectionRing = UIColor(red: 0.039, green: 0.518, blue: 1, alpha: 1)
     private static let nearBlackInk = UIColor(red: 0.063, green: 0.075, blue: 0.102, alpha: 1)
-    private static let birdOnDark = UIColor(red: 0.949, green: 0.949, blue: 0.969, alpha: 1)
+    private static let nearBlackOnDark = UIColor(red: 0.949, green: 0.949, blue: 0.969, alpha: 1)
+    private static let nearBlack: Set<ScooterProvider> = [.bird, .swing]
 
-    /// The provider's colour. Bird's near black cannot be seen on a dark map
+    /// The provider's colour. Bird's and Swing's near black cannot be seen on a dark map
     /// or on a satellite picture: there it is drawn almost white.
     static func dotColor(_ provider: ScooterProvider?, isDark: Bool) -> UIColor {
         guard let provider else { return .systemGray }
-        return provider == .bird && isDark ? birdOnDark : provider.uiColor
+        return nearBlack.contains(provider) && isDark ? nearBlackOnDark : provider.uiColor
     }
 
     /// The colour of what is written on the provider's colour: the initials
     /// on a dot or on the card's tile, and the name on a filled pill. White,
-    /// as on the badge of an app; dark only on Bird's near white of a dark map.
+    /// as on the badge of an app; dark only on Bird's and Swing's near white of a dark map.
     static func ink(on provider: ScooterProvider?, isDark: Bool) -> UIColor {
-        provider == .bird && isDark ? nearBlackInk : .white
+        provider.map(nearBlack.contains) == true && isDark ? nearBlackInk : .white
     }
 
     static func contrastRatio(between first: UIColor, and second: UIColor) -> Double {

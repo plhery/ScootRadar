@@ -133,9 +133,11 @@ body {
   --danger-bg: rgba(255, 69, 58, 0.18);
   --blue-ink: #62b0ff;
   --focus-ring: rgba(64, 156, 255, 0.58);
-  /* Bird's near-black disappears on dark glass: there it takes the colour of the text. */
+  /* Bird's and Swing's near-black disappears on dark glass: there it takes the colour of the text. */
   --provider-bird: #f2f2f7;
   --provider-bird-ink: #10131a;
+  --provider-swing: #f2f2f7;
+  --provider-swing-ink: #10131a;
 }
 /* ...or the system's while the settings say Automatic. The same declarations:
    src/app/theme.test.ts keeps the two blocks identical. */
@@ -185,9 +187,11 @@ body {
     --danger-bg: rgba(255, 69, 58, 0.18);
     --blue-ink: #62b0ff;
     --focus-ring: rgba(64, 156, 255, 0.58);
-    /* Bird's near-black disappears on dark glass: there it takes the colour of the text. */
+    /* Bird's and Swing's near-black disappears on dark glass: there it takes the colour of the text. */
     --provider-bird: #f2f2f7;
     --provider-bird-ink: #10131a;
+    --provider-swing: #f2f2f7;
+    --provider-swing-ink: #10131a;
   }
 }
 /* The page behind the app follows it: the browser's own controls, and the
@@ -756,7 +760,7 @@ svg {
   border-radius: 50%;
   flex-shrink: 0;
 }
-/* Bird's dot is the colour of a filled chip: a thin ring keeps it there. */
+/* Bird's and Swing's dot is the colour of a filled chip: a thin ring keeps it there. */
 .chip-selected .chip-dot {
   box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--chip-on-ink) 55%, transparent);
 }

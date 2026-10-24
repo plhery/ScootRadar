@@ -1,8 +1,4388 @@
 {
   "verifiedOn": "2026-10-24",
-  "catalogSource": "https://www.ridebeam.com/",
-  "notes": "Reviewed authenticated Beam rider-map regions. Empty, test and retired regions are omitted. Only standing scooters are collected; credentials remain private to the Node cache.",
+  "catalogSource": "https://www.gcoo.io/",
+  "notes": "Beam entries use reviewed authenticated rider-map regions, each named after the municipalities it stands in, with the app's region name kept as an alias. Empty, test and retired Beam regions are omitted; rider credentials remain private to the Node cache.",
+  "beamVerifiedOn": "2026-10-24",
+  "beamCatalogSource": "https://www.ridebeam.com/",
   "systems": [
+    {
+      "id": "gcoo_kr_busan",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Busan",
+      "aliases": [
+        "부산광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.1669,
+        129.0788
+      ],
+      "bounds": {
+        "south": 35.0662,
+        "north": 35.289,
+        "west": 128.8568,
+        "east": 129.209
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "kickgoing_kr_busan",
+      "country": "KR",
+      "provider": "kickgoing",
+      "city": "Busan",
+      "aliases": [
+        "부산광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.1669,
+        129.0788
+      ],
+      "bounds": {
+        "south": 35.0568,
+        "north": 35.2887,
+        "west": 128.944,
+        "east": 129.2105
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "xingxing_kr_busan",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Busan",
+      "aliases": [
+        "부산광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.1669,
+        129.0788
+      ],
+      "bounds": {
+        "south": 35.0319,
+        "north": 35.2855,
+        "west": 128.8798,
+        "east": 129.1311
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_busan",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Busan",
+      "aliases": [
+        "부산광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.1669,
+        129.0788
+      ],
+      "bounds": {
+        "south": 35.0922,
+        "north": 35.2992,
+        "west": 128.9948,
+        "east": 129.2616
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "kickgoing_kr_seoul",
+      "country": "KR",
+      "provider": "kickgoing",
+      "city": "Seoul",
+      "aliases": [
+        "서울특별시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.5179,
+        127.0239
+      ],
+      "bounds": {
+        "south": 37.4297,
+        "north": 37.6637,
+        "west": 126.783,
+        "east": 127.104
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "xingxing_kr_seoul",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Seoul",
+      "aliases": [
+        "서울특별시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.5179,
+        127.0239
+      ],
+      "bounds": {
+        "south": 37.4299,
+        "north": 37.6636,
+        "west": 126.8647,
+        "east": 127.1869
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_seoul",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Seoul",
+      "aliases": [
+        "서울특별시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.5179,
+        127.0239
+      ],
+      "bounds": {
+        "south": 37.4261,
+        "north": 37.6622,
+        "west": 126.7967,
+        "east": 127.1505
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_ulsan",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Ulsan",
+      "aliases": [
+        "울산광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.548,
+        129.3395
+      ],
+      "bounds": {
+        "south": 35.5016,
+        "north": 35.6681,
+        "west": 129.233,
+        "east": 129.3808
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_ulsan",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Ulsan",
+      "aliases": [
+        "울산광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.548,
+        129.3395
+      ],
+      "bounds": {
+        "south": 35.4616,
+        "north": 35.6699,
+        "west": 129.2043,
+        "east": 129.4522
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_ulsan",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Ulsan",
+      "aliases": [
+        "울산광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.548,
+        129.3395
+      ],
+      "bounds": {
+        "south": 35.3855,
+        "north": 35.6685,
+        "west": 129.0864,
+        "east": 129.4564
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_daejeon",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Daejeon",
+      "aliases": [
+        "대전광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.3493,
+        127.3877
+      ],
+      "bounds": {
+        "south": 36.2784,
+        "north": 36.4671,
+        "west": 127.274,
+        "east": 127.4834
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_daejeon",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Daejeon",
+      "aliases": [
+        "대전광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.3493,
+        127.3877
+      ],
+      "bounds": {
+        "south": 36.2583,
+        "north": 36.4135,
+        "west": 127.2744,
+        "east": 127.4909
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_daegu",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Daegu",
+      "aliases": [
+        "대구광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.85,
+        128.5491
+      ],
+      "bounds": {
+        "south": 35.7744,
+        "north": 35.9717,
+        "west": 128.4469,
+        "east": 128.7647
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_daegu",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Daegu",
+      "aliases": [
+        "대구광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.85,
+        128.5491
+      ],
+      "bounds": {
+        "south": 35.6267,
+        "north": 35.7425,
+        "west": 128.381,
+        "east": 128.4863
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_daegu",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Daegu",
+      "aliases": [
+        "대구광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.85,
+        128.5491
+      ],
+      "bounds": {
+        "south": 35.7775,
+        "north": 35.9735,
+        "west": 128.4541,
+        "east": 128.7588
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_jeonju",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Jeonju",
+      "aliases": [
+        "전주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.8318,
+        127.1281
+      ],
+      "bounds": {
+        "south": 35.7683,
+        "north": 35.8913,
+        "west": 127.0385,
+        "east": 127.1936
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_jeonju",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Jeonju",
+      "aliases": [
+        "전주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.8318,
+        127.1281
+      ],
+      "bounds": {
+        "south": 35.7685,
+        "north": 35.8942,
+        "west": 127.0392,
+        "east": 127.192
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_jeonju",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Jeonju",
+      "aliases": [
+        "전주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.8318,
+        127.1281
+      ],
+      "bounds": {
+        "south": 35.7742,
+        "north": 35.8994,
+        "west": 127.0344,
+        "east": 127.1991
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_incheon",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Incheon",
+      "aliases": [
+        "인천광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.4568,
+        126.6534
+      ],
+      "bounds": {
+        "south": 37.3448,
+        "north": 37.7665,
+        "west": 126.4548,
+        "east": 126.7623
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "kickgoing_kr_incheon",
+      "country": "KR",
+      "provider": "kickgoing",
+      "city": "Incheon",
+      "aliases": [
+        "인천광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.4568,
+        126.6534
+      ],
+      "bounds": {
+        "south": 37.4655,
+        "north": 37.5388,
+        "west": 126.6863,
+        "east": 126.7766
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_incheon",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Incheon",
+      "aliases": [
+        "인천광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.4568,
+        126.6534
+      ],
+      "bounds": {
+        "south": 37.4004,
+        "north": 37.6373,
+        "west": 126.4499,
+        "east": 126.7764
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_cheongju",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Cheongju",
+      "aliases": [
+        "청주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.6337,
+        127.463
+      ],
+      "bounds": {
+        "south": 36.5829,
+        "north": 36.7571,
+        "west": 127.293,
+        "east": 127.5409
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_cheongju",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Cheongju",
+      "aliases": [
+        "청주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.6337,
+        127.463
+      ],
+      "bounds": {
+        "south": 36.5928,
+        "north": 36.6551,
+        "west": 127.2843,
+        "east": 127.3858
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_cheongju",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Cheongju",
+      "aliases": [
+        "청주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.6337,
+        127.463
+      ],
+      "bounds": {
+        "south": 36.5807,
+        "north": 36.7569,
+        "west": 127.2843,
+        "east": 127.5744
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_hwaseong",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Hwaseong",
+      "aliases": [
+        "화성시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.201,
+        126.9487
+      ],
+      "bounds": {
+        "south": 37.139,
+        "north": 37.2965,
+        "west": 126.7879,
+        "east": 127.1641
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_hwaseong",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Hwaseong",
+      "aliases": [
+        "화성시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.201,
+        126.9487
+      ],
+      "bounds": {
+        "south": 37.1795,
+        "north": 37.2965,
+        "west": 126.7912,
+        "east": 127.0352
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_hwaseong",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Hwaseong",
+      "aliases": [
+        "화성시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.201,
+        126.9487
+      ],
+      "bounds": {
+        "south": 37.0632,
+        "north": 37.2965,
+        "west": 126.773,
+        "east": 127.1516
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_gwangju",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Gwangju",
+      "aliases": [
+        "광주광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.173,
+        126.8824
+      ],
+      "bounds": {
+        "south": 35.0702,
+        "north": 35.2475,
+        "west": 126.738,
+        "east": 126.9605
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "gcoo_kr_seongnam",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Seongnam",
+      "aliases": [
+        "성남시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3899,
+        127.1248
+      ],
+      "bounds": {
+        "south": 37.3307,
+        "north": 37.4775,
+        "west": 127.0401,
+        "east": 127.1963
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_seongnam",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Seongnam",
+      "aliases": [
+        "성남시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3899,
+        127.1248
+      ],
+      "bounds": {
+        "south": 37.3307,
+        "north": 37.4775,
+        "west": 127.0602,
+        "east": 127.1901
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_seongnam",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Seongnam",
+      "aliases": [
+        "성남시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3899,
+        127.1248
+      ],
+      "bounds": {
+        "south": 37.3307,
+        "north": 37.4775,
+        "west": 127.0472,
+        "east": 127.1931
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_suwon",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Suwon",
+      "aliases": [
+        "수원시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.2668,
+        127.0177
+      ],
+      "bounds": {
+        "south": 37.2218,
+        "north": 37.3336,
+        "west": 126.9236,
+        "east": 127.093
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_suwon",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Suwon",
+      "aliases": [
+        "수원시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.2668,
+        127.0177
+      ],
+      "bounds": {
+        "south": 37.2218,
+        "north": 37.3053,
+        "west": 126.9236,
+        "east": 127.0183
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_suwon",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Suwon",
+      "aliases": [
+        "수원시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.2668,
+        127.0177
+      ],
+      "bounds": {
+        "south": 37.2218,
+        "north": 37.341,
+        "west": 126.9236,
+        "east": 127.093
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_changwon",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Changwon",
+      "aliases": [
+        "창원시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.2238,
+        128.6803
+      ],
+      "bounds": {
+        "south": 35.1822,
+        "north": 35.2815,
+        "west": 128.5875,
+        "east": 128.733
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_changwon",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Changwon",
+      "aliases": [
+        "창원시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.2238,
+        128.6803
+      ],
+      "bounds": {
+        "south": 35.1135,
+        "north": 35.2811,
+        "west": 128.4792,
+        "east": 128.7381
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_changwon",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Changwon",
+      "aliases": [
+        "창원시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.2238,
+        128.6803
+      ],
+      "bounds": {
+        "south": 35.0689,
+        "north": 35.3542,
+        "west": 128.4751,
+        "east": 128.8465
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "kickgoing_kr_bucheon",
+      "country": "KR",
+      "provider": "kickgoing",
+      "city": "Bucheon",
+      "aliases": [
+        "부천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.5034,
+        126.7889
+      ],
+      "bounds": {
+        "south": 37.4621,
+        "north": 37.5486,
+        "west": 126.7382,
+        "east": 126.837
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_bucheon",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Bucheon",
+      "aliases": [
+        "부천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.5034,
+        126.7889
+      ],
+      "bounds": {
+        "south": 37.4557,
+        "north": 37.5533,
+        "west": 126.7382,
+        "east": 126.837
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_gumi",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Gumi",
+      "aliases": [
+        "구미시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.1216,
+        128.3944
+      ],
+      "bounds": {
+        "south": 36.0579,
+        "north": 36.1772,
+        "west": 128.2748,
+        "east": 128.4758
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_gumi",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Gumi",
+      "aliases": [
+        "구미시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.1216,
+        128.3944
+      ],
+      "bounds": {
+        "south": 36.0579,
+        "north": 36.2001,
+        "west": 128.2678,
+        "east": 128.4971
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_namyangju",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Namyangju",
+      "aliases": [
+        "남양주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.6493,
+        127.1852
+      ],
+      "bounds": {
+        "south": 37.6211,
+        "north": 37.7587,
+        "west": 127.1609,
+        "east": 127.3286
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_namyangju",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Namyangju",
+      "aliases": [
+        "남양주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.6493,
+        127.1852
+      ],
+      "bounds": {
+        "south": 37.55,
+        "north": 37.7751,
+        "west": 127.0784,
+        "east": 127.3494
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_asan",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Asan",
+      "aliases": [
+        "아산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.7853,
+        127.0636
+      ],
+      "bounds": {
+        "south": 36.7177,
+        "north": 36.8576,
+        "west": 126.9675,
+        "east": 127.1231
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_asan",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Asan",
+      "aliases": [
+        "아산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.7853,
+        127.0636
+      ],
+      "bounds": {
+        "south": 36.7124,
+        "north": 36.9449,
+        "west": 126.9045,
+        "east": 127.1138
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_sejong",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Sejong",
+      "aliases": [
+        "세종특별자치시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.5045,
+        127.255
+      ],
+      "bounds": {
+        "south": 36.4468,
+        "north": 36.6366,
+        "west": 127.2098,
+        "east": 127.3826
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_sejong",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Sejong",
+      "aliases": [
+        "세종특별자치시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.5045,
+        127.255
+      ],
+      "bounds": {
+        "south": 36.4431,
+        "north": 36.6469,
+        "west": 127.202,
+        "east": 127.3256
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_ansan",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Ansan",
+      "aliases": [
+        "안산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3127,
+        126.8374
+      ],
+      "bounds": {
+        "south": 37.2644,
+        "north": 37.3629,
+        "west": 126.7684,
+        "east": 126.9023
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_ansan",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Ansan",
+      "aliases": [
+        "안산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3127,
+        126.8374
+      ],
+      "bounds": {
+        "south": 37.2648,
+        "north": 37.363,
+        "west": 126.7698,
+        "east": 126.9236
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_ansan",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Ansan",
+      "aliases": [
+        "안산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3127,
+        126.8374
+      ],
+      "bounds": {
+        "south": 37.2609,
+        "north": 37.3673,
+        "west": 126.7366,
+        "east": 126.9365
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_cheonan",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Cheonan",
+      "aliases": [
+        "천안시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.8291,
+        127.1435
+      ],
+      "bounds": {
+        "south": 36.7515,
+        "north": 36.8665,
+        "west": 127.0807,
+        "east": 127.3326
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_cheonan",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Cheonan",
+      "aliases": [
+        "천안시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.8291,
+        127.1435
+      ],
+      "bounds": {
+        "south": 36.8095,
+        "north": 36.9343,
+        "west": 127.1039,
+        "east": 127.2191
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_cheonan",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Cheonan",
+      "aliases": [
+        "천안시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.8291,
+        127.1435
+      ],
+      "bounds": {
+        "south": 36.7912,
+        "north": 36.9386,
+        "west": 127.0822,
+        "east": 127.2069
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_gyeongsan",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Gyeongsan",
+      "aliases": [
+        "경산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.894,
+        128.8006
+      ],
+      "bounds": {
+        "south": 35.7828,
+        "north": 35.934,
+        "west": 128.6954,
+        "east": 128.873
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_gyeongsan",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Gyeongsan",
+      "aliases": [
+        "경산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.894,
+        128.8006
+      ],
+      "bounds": {
+        "south": 35.7753,
+        "north": 35.9382,
+        "west": 128.689,
+        "east": 128.8788
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_yongin",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Yongin",
+      "aliases": [
+        "용인시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.2662,
+        127.1531
+      ],
+      "bounds": {
+        "south": 37.2058,
+        "north": 37.3626,
+        "west": 127.0487,
+        "east": 127.2489
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_yongin",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Yongin",
+      "aliases": [
+        "용인시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.2662,
+        127.1531
+      ],
+      "bounds": {
+        "south": 37.182,
+        "north": 37.3702,
+        "west": 127.031,
+        "east": 127.385
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_pyeongtaek",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Pyeongtaek",
+      "aliases": [
+        "평택시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.0414,
+        127.0548
+      ],
+      "bounds": {
+        "south": 36.9724,
+        "north": 37.1396,
+        "west": 126.9848,
+        "east": 127.1575
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_pyeongtaek",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Pyeongtaek",
+      "aliases": [
+        "평택시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.0414,
+        127.0548
+      ],
+      "bounds": {
+        "south": 36.9471,
+        "north": 37.1473,
+        "west": 126.8843,
+        "east": 127.1298
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_paju",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Paju",
+      "aliases": [
+        "파주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.7249,
+        126.7458
+      ],
+      "bounds": {
+        "south": 37.6906,
+        "north": 37.7559,
+        "west": 126.6825,
+        "east": 126.7871
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_paju",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Paju",
+      "aliases": [
+        "파주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.7249,
+        126.7458
+      ],
+      "bounds": {
+        "south": 37.6866,
+        "north": 37.8881,
+        "west": 126.6784,
+        "east": 126.8392
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_goyang",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Goyang",
+      "aliases": [
+        "고양시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.6595,
+        126.8744
+      ],
+      "bounds": {
+        "south": 37.574,
+        "north": 37.717,
+        "west": 126.7016,
+        "east": 126.8916
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "kickgoing_kr_goyang",
+      "country": "KR",
+      "provider": "kickgoing",
+      "city": "Goyang",
+      "aliases": [
+        "고양시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.6595,
+        126.8744
+      ],
+      "bounds": {
+        "south": 37.5691,
+        "north": 37.623,
+        "west": 126.8408,
+        "east": 126.9134
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "xingxing_kr_goyang",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Goyang",
+      "aliases": [
+        "고양시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.6595,
+        126.8744
+      ],
+      "bounds": {
+        "south": 37.5691,
+        "north": 37.6829,
+        "west": 126.8307,
+        "east": 126.9448
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_goyang",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Goyang",
+      "aliases": [
+        "고양시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.6595,
+        126.8744
+      ],
+      "bounds": {
+        "south": 37.58,
+        "north": 37.7384,
+        "west": 126.7252,
+        "east": 126.972
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_pohang",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Pohang",
+      "aliases": [
+        "포항시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.0226,
+        129.3617
+      ],
+      "bounds": {
+        "south": 35.9327,
+        "north": 36.1179,
+        "west": 129.2998,
+        "east": 129.4425
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_pohang",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Pohang",
+      "aliases": [
+        "포항시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.0226,
+        129.3617
+      ],
+      "bounds": {
+        "south": 35.93,
+        "north": 36.1314,
+        "west": 129.2922,
+        "east": 129.4723
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_anyang",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Anyang",
+      "aliases": [
+        "안양시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.396,
+        126.9571
+      ],
+      "bounds": {
+        "south": 37.3561,
+        "north": 37.4251,
+        "west": 126.8672,
+        "east": 126.9862
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "kickgoing_kr_anyang",
+      "country": "KR",
+      "provider": "kickgoing",
+      "city": "Anyang",
+      "aliases": [
+        "안양시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.396,
+        126.9571
+      ],
+      "bounds": {
+        "south": 37.3561,
+        "north": 37.4336,
+        "west": 126.8751,
+        "east": 126.9862
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "xingxing_kr_anyang",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Anyang",
+      "aliases": [
+        "안양시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.396,
+        126.9571
+      ],
+      "bounds": {
+        "south": 37.3561,
+        "north": 37.4328,
+        "west": 126.8753,
+        "east": 126.9862
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_anyang",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Anyang",
+      "aliases": [
+        "안양시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.396,
+        126.9571
+      ],
+      "bounds": {
+        "south": 37.3561,
+        "north": 37.4524,
+        "west": 126.8668,
+        "east": 126.9862
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_uijeongbu",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Uijeongbu",
+      "aliases": [
+        "의정부시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.7399,
+        127.0461
+      ],
+      "bounds": {
+        "south": 37.6885,
+        "north": 37.7759,
+        "west": 127.0021,
+        "east": 127.1372
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_uijeongbu",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Uijeongbu",
+      "aliases": [
+        "의정부시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.7399,
+        127.0461
+      ],
+      "bounds": {
+        "south": 37.684,
+        "north": 37.7779,
+        "west": 126.9983,
+        "east": 127.1044
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_siheung",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Siheung",
+      "aliases": [
+        "시흥시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3667,
+        126.7358
+      ],
+      "bounds": {
+        "south": 37.3221,
+        "north": 37.4635,
+        "west": 126.6851,
+        "east": 126.824
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_siheung",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Siheung",
+      "aliases": [
+        "시흥시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3667,
+        126.7358
+      ],
+      "bounds": {
+        "south": 37.3179,
+        "north": 37.4083,
+        "west": 126.6843,
+        "east": 126.8361
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_siheung",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Siheung",
+      "aliases": [
+        "시흥시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3667,
+        126.7358
+      ],
+      "bounds": {
+        "south": 37.3122,
+        "north": 37.4751,
+        "west": 126.6638,
+        "east": 126.8483
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "xingxing_kr_hanam",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Hanam",
+      "aliases": [
+        "하남시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.5552,
+        127.1979
+      ],
+      "bounds": {
+        "south": 37.4661,
+        "north": 37.5924,
+        "west": 127.1366,
+        "east": 127.2544
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_hanam",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Hanam",
+      "aliases": [
+        "하남시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.5552,
+        127.1979
+      ],
+      "bounds": {
+        "south": 37.5152,
+        "north": 37.5941,
+        "west": 127.1602,
+        "east": 127.2514
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_osan",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Osan",
+      "aliases": [
+        "오산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.1625,
+        127.056
+      ],
+      "bounds": {
+        "south": 37.1226,
+        "north": 37.2032,
+        "west": 127.0047,
+        "east": 127.1064
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_osan",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Osan",
+      "aliases": [
+        "오산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.1625,
+        127.056
+      ],
+      "bounds": {
+        "south": 37.1226,
+        "north": 37.2032,
+        "west": 126.9915,
+        "east": 127.1064
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_icheon",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Icheon",
+      "aliases": [
+        "이천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.2789,
+        127.4499
+      ],
+      "bounds": {
+        "south": 37.2282,
+        "north": 37.3137,
+        "west": 127.4095,
+        "east": 127.5145
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_icheon",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Icheon",
+      "aliases": [
+        "이천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.2789,
+        127.4499
+      ],
+      "bounds": {
+        "south": 37.0987,
+        "north": 37.1436,
+        "west": 127.597,
+        "east": 127.6412
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_icheon",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Icheon",
+      "aliases": [
+        "이천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.2789,
+        127.4499
+      ],
+      "bounds": {
+        "south": 37.186,
+        "north": 37.3283,
+        "west": 127.3266,
+        "east": 127.526
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_gimpo",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Gimpo",
+      "aliases": [
+        "김포시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.6428,
+        126.6716
+      ],
+      "bounds": {
+        "south": 37.5787,
+        "north": 37.711,
+        "west": 126.5712,
+        "east": 126.8021
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_gimpo",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Gimpo",
+      "aliases": [
+        "김포시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.6428,
+        126.6716
+      ],
+      "bounds": {
+        "south": 37.5785,
+        "north": 37.679,
+        "west": 126.5956,
+        "east": 126.7677
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_gangneung",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Gangneung",
+      "aliases": [
+        "강릉시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.7622,
+        128.8787
+      ],
+      "bounds": {
+        "south": 37.72,
+        "north": 37.9184,
+        "west": 128.8031,
+        "east": 128.9672
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_gangneung",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Gangneung",
+      "aliases": [
+        "강릉시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.7622,
+        128.8787
+      ],
+      "bounds": {
+        "south": 37.714,
+        "north": 37.8256,
+        "west": 128.8394,
+        "east": 128.9499
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_chuncheon",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Chuncheon",
+      "aliases": [
+        "춘천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.8689,
+        127.7411
+      ],
+      "bounds": {
+        "south": 37.821,
+        "north": 37.9353,
+        "west": 127.6897,
+        "east": 127.7847
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_chuncheon",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Chuncheon",
+      "aliases": [
+        "춘천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.8689,
+        127.7411
+      ],
+      "bounds": {
+        "south": 37.8284,
+        "north": 37.9302,
+        "west": 127.6843,
+        "east": 127.7902
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_gimhae",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Gimhae",
+      "aliases": [
+        "김해시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.2377,
+        128.8671
+      ],
+      "bounds": {
+        "south": 35.1577,
+        "north": 35.2868,
+        "west": 128.7744,
+        "east": 128.932
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_gimhae",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Gimhae",
+      "aliases": [
+        "김해시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.2377,
+        128.8671
+      ],
+      "bounds": {
+        "south": 35.2096,
+        "north": 35.2881,
+        "west": 128.8204,
+        "east": 128.9396
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_gimhae",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Gimhae",
+      "aliases": [
+        "김해시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.2377,
+        128.8671
+      ],
+      "bounds": {
+        "south": 35.1507,
+        "north": 35.3427,
+        "west": 128.6888,
+        "east": 128.8532
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_jinju",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Jinju",
+      "aliases": [
+        "진주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.1642,
+        128.1043
+      ],
+      "bounds": {
+        "south": 35.1318,
+        "north": 35.2272,
+        "west": 128.0405,
+        "east": 128.1657
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_jinju",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Jinju",
+      "aliases": [
+        "진주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.1642,
+        128.1043
+      ],
+      "bounds": {
+        "south": 35.1349,
+        "north": 35.2308,
+        "west": 128.0299,
+        "east": 128.1694
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_jinju",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Jinju",
+      "aliases": [
+        "진주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.1642,
+        128.1043
+      ],
+      "bounds": {
+        "south": 35.1269,
+        "north": 35.2318,
+        "west": 128.0221,
+        "east": 128.1862
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_wonju",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Wonju",
+      "aliases": [
+        "원주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3344,
+        127.9385
+      ],
+      "bounds": {
+        "south": 37.2639,
+        "north": 37.4007,
+        "west": 127.8496,
+        "east": 128.0103
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_wonju",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Wonju",
+      "aliases": [
+        "원주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3344,
+        127.9385
+      ],
+      "bounds": {
+        "south": 37.2422,
+        "north": 37.406,
+        "west": 127.7686,
+        "east": 128.0103
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_gunsan",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Gunsan",
+      "aliases": [
+        "군산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.9641,
+        126.7055
+      ],
+      "bounds": {
+        "south": 35.9279,
+        "north": 36.0071,
+        "west": 126.6559,
+        "east": 126.8822
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_gunsan",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Gunsan",
+      "aliases": [
+        "군산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.9641,
+        126.7055
+      ],
+      "bounds": {
+        "south": 35.9208,
+        "north": 36.0233,
+        "west": 126.6481,
+        "east": 126.8932
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_gwangju_gyeonggi",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Gwangju (Gyeonggi)",
+      "aliases": [
+        "광주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3949,
+        127.2506
+      ],
+      "bounds": {
+        "south": 37.3241,
+        "north": 37.4481,
+        "west": 127.1292,
+        "east": 127.3673
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_gwangju_gyeonggi",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Gwangju (Gyeonggi)",
+      "aliases": [
+        "광주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3949,
+        127.2506
+      ],
+      "bounds": {
+        "south": 37.3062,
+        "north": 37.4572,
+        "west": 127.1292,
+        "east": 127.3976
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_jeju",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Jeju",
+      "aliases": [
+        "제주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        33.4939,
+        126.5098
+      ],
+      "bounds": {
+        "south": 33.4355,
+        "north": 33.5436,
+        "west": 126.4104,
+        "east": 126.6095
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "gcoo_kr_anseong",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Anseong",
+      "aliases": [
+        "안성시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.0077,
+        127.2319
+      ],
+      "bounds": {
+        "south": 36.9773,
+        "north": 37.0331,
+        "west": 127.119,
+        "east": 127.2957
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_anseong",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Anseong",
+      "aliases": [
+        "안성시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.0077,
+        127.2319
+      ],
+      "bounds": {
+        "south": 36.9788,
+        "north": 37.0809,
+        "west": 127.1959,
+        "east": 127.3891
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_iksan",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Iksan",
+      "aliases": [
+        "익산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.9645,
+        126.9577
+      ],
+      "bounds": {
+        "south": 35.9145,
+        "north": 35.9908,
+        "west": 126.912,
+        "east": 127.0165
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_iksan",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Iksan",
+      "aliases": [
+        "익산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.9645,
+        126.9577
+      ],
+      "bounds": {
+        "south": 35.9136,
+        "north": 35.993,
+        "west": 126.9149,
+        "east": 127.0215
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_yangju",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Yangju",
+      "aliases": [
+        "양주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.8179,
+        127.0873
+      ],
+      "bounds": {
+        "south": 37.7694,
+        "north": 37.8626,
+        "west": 127.0242,
+        "east": 127.1237
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_yangju",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Yangju",
+      "aliases": [
+        "양주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.8179,
+        127.0873
+      ],
+      "bounds": {
+        "south": 37.7688,
+        "north": 37.8741,
+        "west": 127.0163,
+        "east": 127.1256
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "swing_kr_guri",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Guri",
+      "aliases": [
+        "구리시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.6024,
+        127.1356
+      ],
+      "bounds": {
+        "south": 37.5562,
+        "north": 37.6488,
+        "west": 127.0975,
+        "east": 127.174
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_yangsan",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Yangsan",
+      "aliases": [
+        "양산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.3294,
+        129.0143
+      ],
+      "bounds": {
+        "south": 35.2874,
+        "north": 35.3759,
+        "west": 128.9682,
+        "east": 129.0691
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_yangsan",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Yangsan",
+      "aliases": [
+        "양산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.3294,
+        129.0143
+      ],
+      "bounds": {
+        "south": 35.2792,
+        "north": 35.4359,
+        "west": 128.968,
+        "east": 129.1994
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "xingxing_kr_geoje",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Geoje",
+      "aliases": [
+        "거제시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        34.8901,
+        128.6294
+      ],
+      "bounds": {
+        "south": 34.8458,
+        "north": 34.915,
+        "west": 128.5855,
+        "east": 128.7122
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_geoje",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Geoje",
+      "aliases": [
+        "거제시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        34.8901,
+        128.6294
+      ],
+      "bounds": {
+        "south": 34.8418,
+        "north": 34.9203,
+        "west": 128.5804,
+        "east": 128.7213
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "swing_kr_gwangmyeong",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Gwangmyeong",
+      "aliases": [
+        "광명시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.469,
+        126.8688
+      ],
+      "bounds": {
+        "south": 37.3988,
+        "north": 37.4975,
+        "west": 126.8227,
+        "east": 126.9031
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_gyeongju",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Gyeongju",
+      "aliases": [
+        "경주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.8528,
+        129.2117
+      ],
+      "bounds": {
+        "south": 35.8122,
+        "north": 35.898,
+        "west": 129.148,
+        "east": 129.253
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_gyeongju",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Gyeongju",
+      "aliases": [
+        "경주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.8528,
+        129.2117
+      ],
+      "bounds": {
+        "south": 35.8066,
+        "north": 35.9041,
+        "west": 129.1496,
+        "east": 129.2602
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "xingxing_kr_chungju",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Chungju",
+      "aliases": [
+        "충주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.9706,
+        127.9302
+      ],
+      "bounds": {
+        "south": 36.9499,
+        "north": 36.9885,
+        "west": 127.8514,
+        "east": 127.8965
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_chungju",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Chungju",
+      "aliases": [
+        "충주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.9706,
+        127.9302
+      ],
+      "bounds": {
+        "south": 36.9247,
+        "north": 37.0324,
+        "west": 127.8778,
+        "east": 127.9696
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_mokpo",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Mokpo",
+      "aliases": [
+        "목포시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        34.8055,
+        126.4188
+      ],
+      "bounds": {
+        "south": 34.7668,
+        "north": 34.8461,
+        "west": 126.3416,
+        "east": 126.4627
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "gcoo_kr_gunpo",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Gunpo",
+      "aliases": [
+        "군포시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3568,
+        126.9428
+      ],
+      "bounds": {
+        "south": 37.3024,
+        "north": 37.3814,
+        "west": 126.8993,
+        "east": 126.9655
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "kickgoing_kr_gunpo",
+      "country": "KR",
+      "provider": "kickgoing",
+      "city": "Gunpo",
+      "aliases": [
+        "군포시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3568,
+        126.9428
+      ],
+      "bounds": {
+        "south": 37.3269,
+        "north": 37.3814,
+        "west": 126.8994,
+        "east": 126.9655
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "xingxing_kr_gunpo",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Gunpo",
+      "aliases": [
+        "군포시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3568,
+        126.9428
+      ],
+      "bounds": {
+        "south": 37.3333,
+        "north": 37.3814,
+        "west": 126.9037,
+        "east": 126.9655
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_gunpo",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Gunpo",
+      "aliases": [
+        "군포시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3568,
+        126.9428
+      ],
+      "bounds": {
+        "south": 37.3024,
+        "north": 37.3814,
+        "west": 126.9002,
+        "east": 126.9655
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_gimcheon",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Gimcheon",
+      "aliases": [
+        "김천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.1257,
+        128.115
+      ],
+      "bounds": {
+        "south": 36.0981,
+        "north": 36.1611,
+        "west": 128.0591,
+        "east": 128.211
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_gimcheon",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Gimcheon",
+      "aliases": [
+        "김천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.1257,
+        128.115
+      ],
+      "bounds": {
+        "south": 36.0952,
+        "north": 36.1633,
+        "west": 128.0535,
+        "east": 128.2158
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_chilgok",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Chilgok",
+      "aliases": [
+        "칠곡군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.0671,
+        128.3997
+      ],
+      "bounds": {
+        "south": 35.9639,
+        "north": 36.0944,
+        "west": 128.3157,
+        "east": 128.4375
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_chilgok",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Chilgok",
+      "aliases": [
+        "칠곡군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.0671,
+        128.3997
+      ],
+      "bounds": {
+        "south": 35.9589,
+        "north": 36.1038,
+        "west": 128.3101,
+        "east": 128.4424
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "xingxing_kr_hongseong",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Hongseong",
+      "aliases": [
+        "홍성군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.5998,
+        126.6694
+      ],
+      "bounds": {
+        "south": 36.5594,
+        "north": 36.6748,
+        "west": 126.6234,
+        "east": 126.7096
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_sacheon",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Sacheon",
+      "aliases": [
+        "사천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.0703,
+        128.084
+      ],
+      "bounds": {
+        "south": 34.9166,
+        "north": 35.1067,
+        "west": 128.0493,
+        "east": 128.1151
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_sacheon",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Sacheon",
+      "aliases": [
+        "사천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.0703,
+        128.084
+      ],
+      "bounds": {
+        "south": 34.9089,
+        "north": 35.1105,
+        "west": 128.0211,
+        "east": 128.1353
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_suncheon",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Suncheon",
+      "aliases": [
+        "순천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        34.9506,
+        127.5125
+      ],
+      "bounds": {
+        "south": 34.911,
+        "north": 35.005,
+        "west": 127.4564,
+        "east": 127.5716
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "gcoo_kr_uiwang",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Uiwang",
+      "aliases": [
+        "의왕시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3791,
+        126.9775
+      ],
+      "bounds": {
+        "south": 37.2976,
+        "north": 37.4154,
+        "west": 126.9259,
+        "east": 127.0133
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "kickgoing_kr_uiwang",
+      "country": "KR",
+      "provider": "kickgoing",
+      "city": "Uiwang",
+      "aliases": [
+        "의왕시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3791,
+        126.9775
+      ],
+      "bounds": {
+        "south": 37.3308,
+        "north": 37.4182,
+        "west": 126.9445,
+        "east": 127.0113
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "xingxing_kr_uiwang",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Uiwang",
+      "aliases": [
+        "의왕시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3791,
+        126.9775
+      ],
+      "bounds": {
+        "south": 37.3325,
+        "north": 37.4169,
+        "west": 126.9443,
+        "east": 127.0085
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_uiwang",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Uiwang",
+      "aliases": [
+        "의왕시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3791,
+        126.9775
+      ],
+      "bounds": {
+        "south": 37.2976,
+        "north": 37.4182,
+        "west": 126.9259,
+        "east": 127.0273
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "xingxing_kr_eumseong",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Eumseong",
+      "aliases": [
+        "음성군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.9192,
+        127.5582
+      ],
+      "bounds": {
+        "south": 36.8916,
+        "north": 37.1571,
+        "west": 127.5151,
+        "east": 127.6661
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_eumseong",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Eumseong",
+      "aliases": [
+        "음성군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.9192,
+        127.5582
+      ],
+      "bounds": {
+        "south": 36.8855,
+        "north": 36.9471,
+        "west": 127.5106,
+        "east": 127.5887
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "swing_kr_yeongju",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Yeongju",
+      "aliases": [
+        "영주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.8232,
+        128.6054
+      ],
+      "bounds": {
+        "south": 36.7811,
+        "north": 36.902,
+        "west": 128.5009,
+        "east": 128.6609
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "swing_kr_andong",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Andong",
+      "aliases": [
+        "안동시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.5618,
+        128.7314
+      ],
+      "bounds": {
+        "south": 36.521,
+        "north": 36.6075,
+        "west": 128.6325,
+        "east": 128.8255
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_muan",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Muan",
+      "aliases": [
+        "무안군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        34.8125,
+        126.4645
+      ],
+      "bounds": {
+        "south": 34.783,
+        "north": 35.007,
+        "west": 126.4098,
+        "east": 126.5043
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "gcoo_kr_seosan",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Seosan",
+      "aliases": [
+        "서산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.7752,
+        126.4562
+      ],
+      "bounds": {
+        "south": 36.7478,
+        "north": 36.8104,
+        "west": 126.4201,
+        "east": 126.5022
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_seosan",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Seosan",
+      "aliases": [
+        "서산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.7752,
+        126.4562
+      ],
+      "bounds": {
+        "south": 36.6756,
+        "north": 36.7052,
+        "west": 126.56,
+        "east": 126.6055
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_gongju",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Gongju",
+      "aliases": [
+        "공주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.4711,
+        127.1386
+      ],
+      "bounds": {
+        "south": 36.4256,
+        "north": 36.4939,
+        "west": 127.0909,
+        "east": 127.1737
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_jecheon",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Jecheon",
+      "aliases": [
+        "제천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.1555,
+        128.2053
+      ],
+      "bounds": {
+        "south": 37.1064,
+        "north": 37.1962,
+        "west": 128.1666,
+        "east": 128.2468
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_dongducheon",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Dongducheon",
+      "aliases": [
+        "동두천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.8973,
+        127.0563
+      ],
+      "bounds": {
+        "south": 37.8632,
+        "north": 37.9589,
+        "west": 127.0163,
+        "east": 127.092
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "swing_kr_namwon",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Namwon",
+      "aliases": [
+        "남원시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.4078,
+        127.3784
+      ],
+      "bounds": {
+        "south": 35.376,
+        "north": 35.4492,
+        "west": 127.3383,
+        "east": 127.4321
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_sangju",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Sangju",
+      "aliases": [
+        "상주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.3834,
+        128.1499
+      ],
+      "bounds": {
+        "south": 36.3595,
+        "north": 36.5947,
+        "west": 128.1222,
+        "east": 128.2003
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_sangju",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Sangju",
+      "aliases": [
+        "상주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.3834,
+        128.1499
+      ],
+      "bounds": {
+        "south": 36.3577,
+        "north": 36.4542,
+        "west": 128.1202,
+        "east": 128.1956
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_yangpyeong",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Yangpyeong",
+      "aliases": [
+        "양평군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.4921,
+        127.4972
+      ],
+      "bounds": {
+        "south": 37.4632,
+        "north": 37.5144,
+        "west": 127.4568,
+        "east": 127.622
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_yangpyeong",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Yangpyeong",
+      "aliases": [
+        "양평군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.4921,
+        127.4972
+      ],
+      "bounds": {
+        "south": 37.4572,
+        "north": 37.5688,
+        "west": 127.3025,
+        "east": 127.6286
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "swing_kr_dangjin",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Dangjin",
+      "aliases": [
+        "당진시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.8932,
+        126.6372
+      ],
+      "bounds": {
+        "south": 36.8643,
+        "north": 36.9272,
+        "west": 126.5905,
+        "east": 126.6796
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_yeongcheon",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Yeongcheon",
+      "aliases": [
+        "영천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.9725,
+        128.9417
+      ],
+      "bounds": {
+        "south": 35.9355,
+        "north": 36.0029,
+        "west": 128.8932,
+        "east": 128.9895
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_yeongcheon",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Yeongcheon",
+      "aliases": [
+        "영천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.9725,
+        128.9417
+      ],
+      "bounds": {
+        "south": 35.8844,
+        "north": 36.0086,
+        "west": 128.8335,
+        "east": 128.9782
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "xingxing_kr_jincheon",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Jincheon",
+      "aliases": [
+        "진천군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.8991,
+        127.5133
+      ],
+      "bounds": {
+        "south": 36.8798,
+        "north": 36.9266,
+        "west": 127.4794,
+        "east": 127.5606
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_jincheon",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Jincheon",
+      "aliases": [
+        "진천군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.8991,
+        127.5133
+      ],
+      "bounds": {
+        "south": 36.8139,
+        "north": 36.9326,
+        "west": 127.406,
+        "east": 127.5678
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "swing_kr_jeungpyeong",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Jeungpyeong",
+      "aliases": [
+        "증평군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.7811,
+        127.5816
+      ],
+      "bounds": {
+        "south": 36.748,
+        "north": 36.8342,
+        "west": 127.5445,
+        "east": 127.6484
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_jeongeup",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Jeongeup",
+      "aliases": [
+        "정읍시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.5695,
+        126.8564
+      ],
+      "bounds": {
+        "south": 35.5344,
+        "north": 35.6016,
+        "west": 126.8268,
+        "east": 126.8938
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "gcoo_kr_wanju",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Wanju",
+      "aliases": [
+        "완주군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.91,
+        127.0659
+      ],
+      "bounds": {
+        "south": 35.8232,
+        "north": 35.9778,
+        "west": 127.0368,
+        "east": 127.1833
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_wanju",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Wanju",
+      "aliases": [
+        "완주군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.91,
+        127.0659
+      ],
+      "bounds": {
+        "south": 35.8151,
+        "north": 35.9385,
+        "west": 127.0333,
+        "east": 127.1057
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "xingxing_kr_yesan",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Yesan",
+      "aliases": [
+        "예산군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.6711,
+        126.8459
+      ],
+      "bounds": {
+        "south": 36.6443,
+        "north": 36.7132,
+        "west": 126.648,
+        "east": 126.88
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_yesan",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Yesan",
+      "aliases": [
+        "예산군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.6711,
+        126.8459
+      ],
+      "bounds": {
+        "south": 36.6493,
+        "north": 36.7446,
+        "west": 126.8062,
+        "east": 126.8863
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_geochang",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Geochang",
+      "aliases": [
+        "거창군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.6886,
+        127.911
+      ],
+      "bounds": {
+        "south": 35.6609,
+        "north": 35.7084,
+        "west": 127.879,
+        "east": 127.9446
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_yeosu",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Yeosu",
+      "aliases": [
+        "여수시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        34.7637,
+        127.6782
+      ],
+      "bounds": {
+        "south": 34.7049,
+        "north": 34.8015,
+        "west": 127.6138,
+        "east": 127.772
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_naju",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Naju",
+      "aliases": [
+        "나주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.0289,
+        126.775
+      ],
+      "bounds": {
+        "south": 34.9835,
+        "north": 35.0685,
+        "west": 126.6895,
+        "east": 126.8217
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "gcoo_kr_sokcho",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Sokcho",
+      "aliases": [
+        "속초시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        38.1917,
+        128.5833
+      ],
+      "bounds": {
+        "south": 38.1632,
+        "north": 38.2335,
+        "west": 128.5422,
+        "east": 128.6182
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_uljin",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Uljin",
+      "aliases": [
+        "울진군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.9922,
+        129.4012
+      ],
+      "bounds": {
+        "south": 36.9433,
+        "north": 37.0776,
+        "west": 129.3688,
+        "east": 129.4439
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_gimje",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Gimje",
+      "aliases": [
+        "김제시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.8006,
+        126.8909
+      ],
+      "bounds": {
+        "south": 35.7764,
+        "north": 35.8325,
+        "west": 126.8595,
+        "east": 127.0147
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_goesan",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Goesan",
+      "aliases": [
+        "괴산군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.8097,
+        127.7911
+      ],
+      "bounds": {
+        "south": 36.7619,
+        "north": 36.8338,
+        "west": 127.6242,
+        "east": 127.8236
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "swing_kr_tongyeong",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Tongyeong",
+      "aliases": [
+        "통영시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        34.8583,
+        128.4204
+      ],
+      "bounds": {
+        "south": 34.8062,
+        "north": 34.907,
+        "west": 128.3751,
+        "east": 128.4588
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_samcheok",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Samcheok",
+      "aliases": [
+        "삼척시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.4522,
+        129.1622
+      ],
+      "bounds": {
+        "south": 37.4189,
+        "north": 37.4789,
+        "west": 129.1292,
+        "east": 129.196
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_boeun",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Boeun",
+      "aliases": [
+        "보은군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.4858,
+        127.7212
+      ],
+      "bounds": {
+        "south": 36.4569,
+        "north": 36.5142,
+        "west": 127.6845,
+        "east": 127.7613
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_gapyeong",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Gapyeong",
+      "aliases": [
+        "가평군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.826,
+        127.5096
+      ],
+      "bounds": {
+        "south": 37.7184,
+        "north": 37.8667,
+        "west": 127.3935,
+        "east": 127.543
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "gcoo_kr_mungyeong",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Mungyeong",
+      "aliases": [
+        "문경시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.592,
+        128.1951
+      ],
+      "bounds": {
+        "south": 36.5681,
+        "north": 36.6243,
+        "west": 128.1637,
+        "east": 128.2309
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_changnyeong",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Changnyeong",
+      "aliases": [
+        "창녕군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.5405,
+        128.4998
+      ],
+      "bounds": {
+        "south": 35.512,
+        "north": 35.5656,
+        "west": 128.4622,
+        "east": 128.5312
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "swing_kr_yeoncheon",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Yeoncheon",
+      "aliases": [
+        "연천군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        38.0264,
+        127.0703
+      ],
+      "bounds": {
+        "south": 37.9955,
+        "north": 38.0551,
+        "west": 127.0333,
+        "east": 127.0983
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "swing_kr_hongcheon",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Hongcheon",
+      "aliases": [
+        "홍천군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.6906,
+        127.8849
+      ],
+      "bounds": {
+        "south": 37.6619,
+        "north": 37.724,
+        "west": 127.8491,
+        "east": 127.9344
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_goseong",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Goseong",
+      "aliases": [
+        "고성군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        34.9753,
+        128.3244
+      ],
+      "bounds": {
+        "south": 34.9484,
+        "north": 34.995,
+        "west": 128.2905,
+        "east": 128.3506
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_miryang",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Miryang",
+      "aliases": [
+        "밀양시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.4871,
+        128.7514
+      ],
+      "bounds": {
+        "south": 35.435,
+        "north": 35.5276,
+        "west": 128.7111,
+        "east": 128.8303
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_hwasun",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Hwasun",
+      "aliases": [
+        "화순군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.0615,
+        126.9916
+      ],
+      "bounds": {
+        "south": 35.0183,
+        "north": 35.0922,
+        "west": 126.9259,
+        "east": 127.0198
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_buan",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Buan",
+      "aliases": [
+        "부안군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.7228,
+        126.7373
+      ],
+      "bounds": {
+        "south": 35.695,
+        "north": 35.7509,
+        "west": 126.703,
+        "east": 126.7685
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_seogwipo",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Seogwipo",
+      "aliases": [
+        "서귀포시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        33.2539,
+        126.5125
+      ],
+      "bounds": {
+        "south": 33.2218,
+        "north": 33.2783,
+        "west": 126.3906,
+        "east": 126.5908
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_namhae",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Namhae",
+      "aliases": [
+        "남해군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        34.8386,
+        127.8946
+      ],
+      "bounds": {
+        "south": 34.811,
+        "north": 34.8622,
+        "west": 127.8611,
+        "east": 127.9217
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_donghae",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Donghae",
+      "aliases": [
+        "동해시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.5194,
+        129.1123
+      ],
+      "bounds": {
+        "south": 37.4641,
+        "north": 37.5724,
+        "west": 129.0818,
+        "east": 129.1632
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "gcoo_kr_goheung",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Goheung",
+      "aliases": [
+        "고흥군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        34.5319,
+        127.1461
+      ],
+      "bounds": {
+        "south": 34.5107,
+        "north": 34.6249,
+        "west": 127.1167,
+        "east": 127.3091
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_hoengseong",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Hoengseong",
+      "aliases": [
+        "횡성군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.4918,
+        127.9893
+      ],
+      "bounds": {
+        "south": 37.4548,
+        "north": 37.5172,
+        "west": 127.9512,
+        "east": 128.031
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "swing_kr_yeongdong",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Yeongdong",
+      "aliases": [
+        "영동군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.1757,
+        127.7855
+      ],
+      "bounds": {
+        "south": 36.137,
+        "north": 36.2133,
+        "west": 127.7412,
+        "east": 127.8222
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_boryeong",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Boryeong",
+      "aliases": [
+        "보령시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.348,
+        126.6055
+      ],
+      "bounds": {
+        "south": 36.32,
+        "north": 36.3786,
+        "west": 126.569,
+        "east": 126.6395
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_haman",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Haman",
+      "aliases": [
+        "함안군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.2758,
+        128.4076
+      ],
+      "bounds": {
+        "south": 35.2428,
+        "north": 35.3067,
+        "west": 128.3816,
+        "east": 128.5394
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "swing_kr_okcheon",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Okcheon",
+      "aliases": [
+        "옥천군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.2983,
+        127.5706
+      ],
+      "bounds": {
+        "south": 36.2729,
+        "north": 36.3336,
+        "west": 127.535,
+        "east": 127.6066
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "swing_kr_imsil",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Imsil",
+      "aliases": [
+        "임실군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.615,
+        127.2844
+      ],
+      "bounds": {
+        "south": 35.5917,
+        "north": 35.6525,
+        "west": 127.2525,
+        "east": 127.3126
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_buyeo",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Buyeo",
+      "aliases": [
+        "부여군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.2742,
+        126.8948
+      ],
+      "bounds": {
+        "south": 36.255,
+        "north": 36.3149,
+        "west": 126.837,
+        "east": 126.9516
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "gcoo_kr_jangseong",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Jangseong",
+      "aliases": [
+        "장성군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.3008,
+        126.7829
+      ],
+      "bounds": {
+        "south": 35.2801,
+        "north": 35.3199,
+        "west": 126.7578,
+        "east": 126.8063
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "swing_kr_geumsan",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Geumsan",
+      "aliases": [
+        "금산군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.1927,
+        127.4522
+      ],
+      "bounds": {
+        "south": 36.1714,
+        "north": 36.2137,
+        "west": 127.4265,
+        "east": 127.4906
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "swing_kr_wando",
+      "country": "KR",
+      "provider": "swing",
+      "city": "Wando",
+      "aliases": [
+        "완도군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        34.3175,
+        126.7458
+      ],
+      "bounds": {
+        "south": 34.2909,
+        "north": 34.3399,
+        "west": 126.7166,
+        "east": 126.784
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_haenam",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Haenam",
+      "aliases": [
+        "해남군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        34.5709,
+        126.6004
+      ],
+      "bounds": {
+        "south": 34.5515,
+        "north": 34.5927,
+        "west": 126.5747,
+        "east": 126.6264
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "gcoo_kr_gochang",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Gochang",
+      "aliases": [
+        "고창군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.4336,
+        126.7149
+      ],
+      "bounds": {
+        "south": 35.4137,
+        "north": 35.4558,
+        "west": 126.6734,
+        "east": 126.752
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "kickgoing_kr_gwacheon",
+      "country": "KR",
+      "provider": "kickgoing",
+      "city": "Gwacheon",
+      "aliases": [
+        "과천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.4151,
+        126.98
+      ],
+      "bounds": {
+        "south": 37.398,
+        "north": 37.4704,
+        "west": 126.9584,
+        "east": 127.0508
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
+    {
+      "id": "gcoo_kr_yeongam",
+      "country": "KR",
+      "provider": "gcoo",
+      "city": "Yeongam",
+      "aliases": [
+        "영암군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        34.752,
+        126.4582
+      ],
+      "bounds": {
+        "south": 34.7305,
+        "north": 34.797,
+        "west": 126.4352,
+        "east": 126.5004
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "xingxing_kr_seongju",
+      "country": "KR",
+      "provider": "xingxing",
+      "city": "Seongju",
+      "aliases": [
+        "성주군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.9236,
+        128.2813
+      ],
+      "bounds": {
+        "south": 35.9003,
+        "north": 35.9422,
+        "west": 128.2621,
+        "east": 128.3034
+      },
+      "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
+      "kickgoingAppMap": true
+    },
     {
       "id": "beam_kr_ansan",
       "country": "KR",
@@ -29,7 +4409,7 @@
       "id": "beam_kr_bucheon_bupyeong",
       "country": "KR",
       "provider": "beam",
-      "city": "Bucheon/Bupyeong",
+      "city": "Bucheon",
       "timeZone": "Asia/Seoul",
       "center": [
         37.500627,
@@ -45,10 +4425,8 @@
       "beamAppCity": 2292,
       "aliases": [
         "[Franchise] Bucheon/Bupyeong",
-        "Bucheon",
-        "Bupyeong",
-        "부천",
-        "부평"
+        "Bucheon/Bupyeong",
+        "부천"
       ]
     },
     {
@@ -976,6 +5354,37 @@
           "west": 128.51832495664016,
           "east": 128.522437
         }
+      ],
+      "areas": [
+        {
+          "city": "Daegu",
+          "center": [
+            35.85,
+            128.5491
+          ],
+          "bounds": {
+            "south": 35.626734,
+            "north": 35.962223,
+            "west": 128.387047,
+            "east": 128.861211
+          },
+          "aliases": [
+            "대구"
+          ]
+        },
+        {
+          "city": "Gyeongsan",
+          "center": [
+            35.894,
+            128.8006
+          ],
+          "bounds": {
+            "south": 35.70008,
+            "north": 35.962223,
+            "west": 128.68161,
+            "east": 128.861211
+          }
+        }
       ]
     },
     {
@@ -1022,6 +5431,38 @@
       "aliases": [
         "[Franchise] Dongducheon",
         "동두천"
+      ],
+      "areas": [
+        {
+          "city": "Dongducheon",
+          "center": [
+            37.8973,
+            127.0563
+          ],
+          "bounds": {
+            "south": 37.778655,
+            "north": 37.938570000000006,
+            "west": 126.955622,
+            "east": 127.17698299999999
+          },
+          "aliases": [
+            "[Franchise] Dongducheon",
+            "동두천"
+          ]
+        },
+        {
+          "city": "Yangju",
+          "center": [
+            37.8179,
+            127.0873
+          ],
+          "bounds": {
+            "south": 37.778655,
+            "north": 37.93857,
+            "west": 126.955622,
+            "east": 127.12236
+          }
+        }
       ]
     },
     {
@@ -1044,6 +5485,38 @@
       "beamAppCity": 5123,
       "aliases": [
         "동탄"
+      ],
+      "areas": [
+        {
+          "city": "Hwaseong",
+          "center": [
+            37.201,
+            126.9487
+          ],
+          "bounds": {
+            "south": 37.189527,
+            "north": 37.22263,
+            "west": 126.967177,
+            "east": 127.053499
+          },
+          "aliases": [
+            "Dongtan",
+            "동탄"
+          ]
+        },
+        {
+          "city": "Osan",
+          "center": [
+            37.1625,
+            127.056
+          ],
+          "bounds": {
+            "south": 37.189527,
+            "north": 37.2002,
+            "west": 126.99508,
+            "east": 127.053499
+          }
+        }
       ]
     },
     {
@@ -1113,6 +5586,38 @@
       "aliases": [
         "[Franchise] Gimhae",
         "김해"
+      ],
+      "areas": [
+        {
+          "city": "Gimhae",
+          "center": [
+            35.2377,
+            128.8671
+          ],
+          "bounds": {
+            "south": 35.160537999999995,
+            "north": 35.319331000000005,
+            "west": 128.70755499999999,
+            "east": 128.92595400000002
+          },
+          "aliases": [
+            "[Franchise] Gimhae",
+            "김해"
+          ]
+        },
+        {
+          "city": "Busan",
+          "center": [
+            35.1669,
+            129.0788
+          ],
+          "bounds": {
+            "south": 35.160538,
+            "north": 35.319331,
+            "west": 128.75681,
+            "east": 128.925954
+          }
+        }
       ]
     },
     {
@@ -1160,6 +5665,41 @@
         "Paju",
         "고양",
         "파주"
+      ],
+      "areas": [
+        {
+          "city": "Goyang",
+          "center": [
+            37.6595,
+            126.8744
+          ],
+          "bounds": {
+            "south": 37.610116999999995,
+            "north": 37.708361000000004,
+            "west": 126.729095,
+            "east": 126.857924
+          },
+          "aliases": [
+            "Goyang-Paju",
+            "고양"
+          ]
+        },
+        {
+          "city": "Paju",
+          "center": [
+            37.7249,
+            126.7458
+          ],
+          "bounds": {
+            "south": 37.68863,
+            "north": 37.708361,
+            "west": 126.729095,
+            "east": 126.857924
+          },
+          "aliases": [
+            "파주"
+          ]
+        }
       ]
     },
     {
@@ -1279,6 +5819,50 @@
           "west": 127.55170600000001,
           "east": 127.558399
         }
+      ],
+      "areas": [
+        {
+          "city": "Chungju",
+          "center": [
+            36.9706,
+            127.9302
+          ],
+          "bounds": {
+            "south": 36.891587,
+            "north": 37.00599,
+            "west": 127.65085,
+            "east": 127.949958
+          },
+          "aliases": [
+            "[Franchise] Gyeonggi 1"
+          ]
+        },
+        {
+          "city": "Eumseong",
+          "center": [
+            36.9192,
+            127.5582
+          ],
+          "bounds": {
+            "south": 36.891587,
+            "north": 37.00599,
+            "west": 127.522597,
+            "east": 127.79847
+          }
+        },
+        {
+          "city": "Jincheon",
+          "center": [
+            36.8991,
+            127.5133
+          ],
+          "bounds": {
+            "south": 36.891587,
+            "north": 37.00599,
+            "west": 127.522597,
+            "east": 127.58511
+          }
+        }
       ]
     },
     {
@@ -1368,13 +5952,46 @@
       "aliases": [
         "[Franchise] Jinhae",
         "진해"
+      ],
+      "areas": [
+        {
+          "city": "Changwon",
+          "center": [
+            35.2238,
+            128.6803
+          ],
+          "bounds": {
+            "south": 35.075120999999996,
+            "north": 35.112747000000006,
+            "west": 128.779124,
+            "east": 128.836802
+          },
+          "aliases": [
+            "[Franchise] Jinhae",
+            "Jinhae",
+            "진해"
+          ]
+        },
+        {
+          "city": "Busan",
+          "center": [
+            35.1669,
+            129.0788
+          ],
+          "bounds": {
+            "south": 35.075121,
+            "north": 35.112747,
+            "west": 128.779124,
+            "east": 128.836802
+          }
+        }
       ]
     },
     {
       "id": "beam_kr_masan",
       "country": "KR",
       "provider": "beam",
-      "city": "Masan",
+      "city": "Changwon",
       "timeZone": "Asia/Seoul",
       "center": [
         35.150119,
@@ -1390,6 +6007,7 @@
       "beamAppCity": 1762,
       "aliases": [
         "[Franchise] Masan",
+        "Masan",
         "마산"
       ]
     },
@@ -1413,6 +6031,37 @@
       "beamAppCity": 1758,
       "aliases": [
         "남양주"
+      ],
+      "areas": [
+        {
+          "city": "Namyangju",
+          "center": [
+            37.6493,
+            127.1852
+          ],
+          "bounds": {
+            "south": 37.592273999999996,
+            "north": 37.676208,
+            "west": 127.09599800000001,
+            "east": 127.182659
+          },
+          "aliases": [
+            "남양주"
+          ]
+        },
+        {
+          "city": "Guri",
+          "center": [
+            37.6024,
+            127.1356
+          ],
+          "bounds": {
+            "south": 37.592274,
+            "north": 37.64603,
+            "west": 127.10096,
+            "east": 127.17149
+          }
+        }
       ]
     },
     {
@@ -1460,6 +6109,56 @@
         "Suwon",
         "성남",
         "수원"
+      ],
+      "areas": [
+        {
+          "city": "Yongin",
+          "center": [
+            37.2662,
+            127.1531
+          ],
+          "bounds": {
+            "south": 37.268221,
+            "north": 37.348109,
+            "west": 127.020461,
+            "east": 127.136455
+          },
+          "aliases": [
+            "Seongnam-Suwon"
+          ]
+        },
+        {
+          "city": "Suwon",
+          "center": [
+            37.2668,
+            127.0177
+          ],
+          "bounds": {
+            "south": 37.268221,
+            "north": 37.348109,
+            "west": 127.020461,
+            "east": 127.08987
+          },
+          "aliases": [
+            "수원"
+          ]
+        },
+        {
+          "city": "Seongnam",
+          "center": [
+            37.3899,
+            127.1248
+          ],
+          "bounds": {
+            "south": 37.33342,
+            "north": 37.348109,
+            "west": 127.02707,
+            "east": 127.136455
+          },
+          "aliases": [
+            "성남"
+          ]
+        }
       ]
     },
     {
@@ -1504,6 +6203,51 @@
       "beamAppCity": 6453,
       "aliases": [
         "위례"
+      ],
+      "areas": [
+        {
+          "city": "Hanam",
+          "center": [
+            37.5552,
+            127.1979
+          ],
+          "bounds": {
+            "south": 37.46875,
+            "north": 37.503742,
+            "west": 127.13995,
+            "east": 127.16587
+          },
+          "aliases": [
+            "Wirye",
+            "위례"
+          ]
+        },
+        {
+          "city": "Seoul",
+          "center": [
+            37.5179,
+            127.0239
+          ],
+          "bounds": {
+            "south": 37.460396,
+            "north": 37.503742,
+            "west": 127.123399,
+            "east": 127.16587
+          }
+        },
+        {
+          "city": "Seongnam",
+          "center": [
+            37.3899,
+            127.1248
+          ],
+          "bounds": {
+            "south": 37.460396,
+            "north": 37.47481,
+            "west": 127.123399,
+            "east": 127.16587
+          }
+        }
       ]
     },
     {
@@ -1524,9 +6268,37 @@
       },
       "discoveryUrl": "https://gateway.ridebeam.com/query",
       "beamAppCity": 6398,
-      "aliases": [
-        "[Franchise] Yecheon",
-        "예천"
+      "areas": [
+        {
+          "city": "Yecheon",
+          "center": [
+            36.57193,
+            128.485779
+          ],
+          "bounds": {
+            "south": 36.557863,
+            "north": 36.582816,
+            "west": 128.46049,
+            "east": 128.520296
+          },
+          "aliases": [
+            "[Franchise] Yecheon",
+            "예천"
+          ]
+        },
+        {
+          "city": "Andong",
+          "center": [
+            36.5618,
+            128.7314
+          ],
+          "bounds": {
+            "south": 36.557863,
+            "north": 36.582816,
+            "west": 128.46049,
+            "east": 128.520296
+          }
+        }
       ]
     },
     {
@@ -1548,7 +6320,7 @@
       "discoveryUrl": "https://gateway.ridebeam.com/query",
       "beamAppCity": 5294,
       "aliases": [
-        "[Franchise] Yeoju ",
+        "[Franchise] Yeoju",
         "여주"
       ]
     }

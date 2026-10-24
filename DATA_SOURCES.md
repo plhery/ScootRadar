@@ -772,8 +772,8 @@ recheck command.
 
 ## United States
 
-The reviewed catalog lives in `data/american-scooter-feeds.json`: 103 feeds
-in 87 towns. In Washington, DC, Hopp (Bolt) and Veo; Bird in 24 towns and Lime in
+The reviewed catalog lives in `data/american-scooter-feeds.json`: 106 feeds
+in 88 towns. In Washington, DC, Hopp (Bolt) and Veo; Bird in 24 towns and Lime in
 17, from Seattle to Norfolk, their New York feeds each in the Bronx and Queens;
 Veo in 39 more, Spin in 29 and Lyft in Chicago and Portland. Each is the
 operator's own public GBFS feed: Bolt's system 23 at `mds.bolt.eu`, which Bolt
@@ -792,7 +792,11 @@ with data no older than fifteen minutes. Spin, which Bird owns, links the same
 licence from its feeds. Lime's
 [GBFS terms](https://www.li.me/legal/public-gbfs-terms) allow public display
 only where local law requires it, the same open question as in Europe. The
-map's credits name all six under the GBFS line. Ten towns ban renting at
+map's credits name all six under the GBFS line.
+
+Since 24 October 2026, GCOO's fleets in Los Angeles, Alexandria and Arlington
+come from its app's signed-out map, read as in South Korea (below). GCOO
+publishes no licence for it; the credits link to gcoo.io. Ten towns ban renting at
 night, by their codes, permit rules or program pages. See the
 [coverage audit](docs/american-scooter-feeds.md) for the systems, the brand
 Hopp, the bounds, the night bans, the gaps and the recheck command.
@@ -949,3 +953,28 @@ BinBin map", and the API names the source "Turkey: BinBin anonymous app map".
 See the [coverage audit](docs/turkish-scooter-feeds.md) for the systems, the
 town names, the gaps and the recheck command, and
 [the app investigation](docs/turkish-app-maps.md) for Martı and Hop.
+
+## South Korea
+
+The reviewed catalog lives in `data/south-korean-scooter-feeds.json`: 227
+systems in 117 towns, Swing in 82, GCOO in 76, Xingxing in 32, Kickgoing in 9,
+and Beam's 28 regions in 36, read from Beam's rider map (see
+[Beam rider app](#beam-rider-app)). No operator publishes a feed. The other
+four come from the operators' signed-out app maps, with no rider account:
+GCOO's and Kickgoing's with no credential, and Kickgoing's with its ally
+Xingxing's scooters; Swing's with the one-time code its app computes, from a
+key compiled into the app. The user asked for those three maps on 24 October
+2026. Swing's key is a runtime-only secret of the cache, never in Git; the
+IMEI that identifies a Swing scooter is neither stored nor shown, only a keyed
+hash of it.
+
+Each collection reads its town whole, on a bounded request plan, and fails
+rather than publish part of it. Bicycles, e-bikes and mopeds are left out.
+Beam, GCOO and Kickgoing give a battery level, GCOO a range too; Swing gives
+only a band, so its battery stays unknown. None of the signed-out maps gives a
+position's time. None of the four operators publishes a licence or terms for
+this data. The map's credits name them, and link to ridebeam.com, gcoo.io and
+kickgoing.io. Beam's regions are named after the municipalities they stand
+in, Beam's own names kept as aliases. Town outlines are OpenStreetMap
+municipalities (ODbL). See the [coverage audit](docs/south-korean-scooter-feeds.md)
+for the request plans, the load, the survey, the gaps and the recheck command.

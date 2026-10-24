@@ -349,13 +349,16 @@ final class ScooterFilteringTests: XCTestCase {
     @MainActor
     func testProviderInitialsAreWrittenInTheInkOfTheirColour() {
         let white = UIColor.white
-        for provider in ScooterProvider.allCases where provider != .bird {
+        let nearBlack: [ScooterProvider] = [.bird, .swing]
+        for provider in ScooterProvider.allCases where !nearBlack.contains(provider) {
             XCTAssertEqual(ScooterMapLook.ink(on: provider, isDark: false), white, provider.name)
             XCTAssertEqual(ScooterMapLook.ink(on: provider, isDark: true), white, provider.name)
         }
-        // Bird is near black by day and almost white on a dark map.
-        XCTAssertEqual(ScooterMapLook.ink(on: .bird, isDark: false), white)
-        XCTAssertNotEqual(ScooterMapLook.ink(on: .bird, isDark: true), white)
+        // Bird and Swing are near black by day and almost white on a dark map.
+        for provider in nearBlack {
+            XCTAssertEqual(ScooterMapLook.ink(on: provider, isDark: false), white, provider.name)
+            XCTAssertNotEqual(ScooterMapLook.ink(on: provider, isDark: true), white, provider.name)
+        }
     }
 
     @MainActor
@@ -684,10 +687,10 @@ final class ScooterFilteringTests: XCTestCase {
         // boundaries of the night bans included: Switzerland's, France's, each country's
         // own from data/countries.json, then the search's and Lille's.
         XCTAssertEqual(sources.count, 5 + ScooterCountryCatalog.credits.count)
-        XCTAssertEqual(ScooterCountryCatalog.credits.count, 26)
+        XCTAssertEqual(ScooterCountryCatalog.credits.count, 28)
         XCTAssertEqual(Set(sources.map(\.title)).count, sources.count)
         XCTAssertEqual(sources[2].title.prefix(3), "DE/")
-        XCTAssertTrue(sources.contains { $0.title == "CH/FR/PT/ES/PL/FI/UA/IL/NZ: OpenStreetMap boundaries · ODbL" })
+        XCTAssertTrue(sources.contains { $0.title == "CH/FR/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL" })
         XCTAssertTrue(sources.contains { $0.title == "DE/AT/IT/ES/PL/HU/GR/FI: Dott map" })
         XCTAssertTrue(sources.contains { $0.title == "DE/SE: Qick map" })
         XCTAssertTrue(sources.contains { $0.title == "JP: LUUP map" })

@@ -6,14 +6,16 @@ and from the addresses the operators use for their other towns: Bird
 (`mds.bird.co`), Lime (`data.lime.bike`), Spin, Veo
 (`cluster-prod.veoride.com`), Lyft (`gbfs.lyft.com`) and Bolt
 (`mds.bolt.eu`). 215 systems were surveyed. Every feed URL is https, on the
-discovery's origin and under its directory. No account credentials or private
-rider APIs are used. The catalog is
+discovery's origin and under its directory. No account credentials are used,
+and no rider app's API but GCOO's signed-out map, in three towns since 24
+October 2026 (see [GCOO](#gcoo)). The catalog is
 [`american-scooter-feeds.json`](../data/american-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
-The map covers 87 towns in 32 states and the District: Washington, DC (Hopp
+The map covers 88 towns in 32 states and the District: Washington, DC (Hopp
 and Veo), 24 towns of Bird's, 17 of Lime's, 39 more of Veo's, 29 of Spin's,
-and Lyft's Chicago and Portland. In 23 of them, from Tempe and the Bronx to
+Lyft's Chicago and Portland, and GCOO's Los Angeles, Arlington and
+Alexandria, Virginia. In 23 of them, from Tempe and the Bronx to
 Chicago and Columbus, two or three operators run, and the map counts their
 scooters as one town's. Ten of the towns ban renting at night; see
 [Night bans](#night-bans).
@@ -72,7 +74,8 @@ Their outer box is the one above. Left out, in the poll of 16 October 2026:
 - Veo: 11 scooters in Alexandria, 8 of them standing within 30 m of one another
   at 38.808° N 77.097° W, by Eisenhower Avenue, as at a depot. Too few, and too
   still, for an Alexandria area of their own; Alexandria's riders see Bird's and
-  Lime's Arlington scooters near the county line. Earlier also one at 39.030° N
+  Lime's Arlington scooters near the county line, and since 24 October 2026
+  GCOO's own (see [GCOO](#gcoo)). Earlier also one at 39.030° N
   77.105° W, in North Bethesda, Maryland, which moved less than a metre in 20
   minutes, and one at 22.79° N 113.93° E, in Shenzhen, where Veo's test system
   (`xds`) has its scooters.
@@ -521,6 +524,39 @@ Veo fleet goes into storage "in mid-December" and comes back about mid-March
 and Manhattan's agreement allows a winter pause "for a mutually agreed to
 period". None of these is a fixed date, so the catalog pauses none of them;
 a fleet put away leaves its feed, and the map, empty.
+
+## GCOO
+
+GCOO, Gbike's scooter brand from South Korea, runs four American towns and
+publishes no GBFS feed. Since 24 October 2026 three of them come from its
+app's signed-out map, with no credential, read by South Korea's collector on
+its request queue (see [the Korean catalog](south-korean-scooter-feeds.md#gcoo)):
+
+| Town | Feed | Scooters in the feed | Polled |
+| --- | --- | ---: | --- |
+| Los Angeles, CA | `gcoo_us_los_angeles` | 1,712 | 08:54 PDT, 24 October |
+| Arlington, VA | `gcoo_us_arlington` | 302 | 11:54 EDT, 24 October |
+| Alexandria, VA | `gcoo_us_alexandria` | 328 | 11:54 EDT, 24 October |
+
+GCOO publishes its service areas in
+`https://region.gbike.io/us/all_polygons.json.gz`: seven in Los Angeles
+(Koreatown, Downtown, Hollywood, East Hollywood, Fairfax, Hancock Park and
+USC), one each in Arlington and Alexandria, and four in Memphis. A town's
+bounds are the envelope of the scooters standing in its areas, 1.5 km wider.
+Memphis, with 10 scooters in its four areas that day, is left out (see
+[Coverage gaps](coverage-gaps.md)). GCOO has no area in Washington, and none
+of its scooters stood there. The map keeps GCOO's scooter models only, with
+their battery and range; none of the three towns bans renting at night.
+
+**Alexandria.** Arlington's and Alexandria's boxes overlap around Four Mile
+Run: at 12:05 EDT 116 scooters stood in both feeds, and the map shows and
+counts each once. Each would have counted under Arlington, whose feed is read
+first, 46 of them inside Alexandria. Alexandria now has its incorporated
+place's outline in [`town-outlines.json`](../data/town-outlines.json), as
+above, so those count under Alexandria: 254 of the 513 that poll, and 259
+under Arlington, which has none. Bird and Lime have no area in Alexandria,
+so their Arlington feeds keep no scooter inside the outline; at 11:59 EDT none
+of Bird's 284 stood there, nor any of Lime's 495.
 
 ## Night bans
 

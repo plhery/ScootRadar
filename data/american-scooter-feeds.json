@@ -2464,6 +2464,66 @@
           }
         }
       ]
+    },
+    {
+      "id": "gcoo_us_los_angeles",
+      "country": "US",
+      "provider": "gcoo",
+      "city": "Los Angeles",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "center": [
+        34.0522,
+        -118.2437
+      ],
+      "bounds": {
+        "south": 33.9755,
+        "north": 34.1245,
+        "west": -118.3866,
+        "east": -118.2067
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "gcoo_us_arlington",
+      "country": "US",
+      "provider": "gcoo",
+      "city": "Arlington",
+      "region": "VA",
+      "timeZone": "America/New_York",
+      "center": [
+        38.8816,
+        -77.091
+      ],
+      "bounds": {
+        "south": 38.8298,
+        "north": 38.9436,
+        "west": -77.1832,
+        "east": -77.0309
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
+    },
+    {
+      "id": "gcoo_us_alexandria",
+      "country": "US",
+      "provider": "gcoo",
+      "city": "Alexandria",
+      "region": "VA",
+      "timeZone": "America/New_York",
+      "center": [
+        38.8048,
+        -77.0469
+      ],
+      "bounds": {
+        "south": 38.7789,
+        "north": 38.8564,
+        "west": -77.1578,
+        "east": -77.0213
+      },
+      "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
+      "gcooAppMap": true
     }
   ]
 }

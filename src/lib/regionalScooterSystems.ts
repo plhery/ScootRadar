@@ -70,6 +70,12 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   beamAppCity?: number;
   /** Reviewed disjoint operating envelopes, to avoid querying empty gaps between campuses. */
   beamAppAreas?: MapBounds[];
+  /** GCOO's open app map, read box by box by the Node cache. */
+  gcooAppMap?: true;
+  /** Kickgoing's open app map, which also shows Xingxing's scooters, read point by point by the Node cache. */
+  kickgoingAppMap?: true;
+  /** Swing's app map, read by the Node cache with the app's one-time code. */
+  swingAppMap?: true;
   /** Published subregions of a shared feed; fetched once, routed per city. */
   areas?: ScooterServiceArea[];
   /**
@@ -97,7 +103,8 @@ export const REGIONAL_SCOOTER_SYSTEMS = CATALOG_SYSTEMS as RegionalScooterSystem
 
 export function isAppMapSystem(system: RegionalScooterSystem) {
   return Boolean(system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount || system.luupAppCities ||
-    system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.beamAppCity);
+    system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.beamAppCity || system.gcooAppMap || system.kickgoingAppMap ||
+    system.swingAppMap);
 }
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {

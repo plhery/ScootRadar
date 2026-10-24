@@ -288,5 +288,57 @@
         "beam_"
       ]
     }
+  },
+  {
+    "key": "gcoo",
+    "name": "GCOO",
+    "color": "#00a843",
+    "initial": "G",
+    "systemIds": {
+      "prefixes": [
+        "gcoo_"
+      ]
+    },
+    "app": {
+      "link": "https://open.gbike.io/",
+      "appStoreId": 1501264071
+    }
+  },
+  {
+    "key": "kickgoing",
+    "name": "Kickgoing",
+    "color": "#00c2ab",
+    "initial": "K",
+    "systemIds": {
+      "prefixes": [
+        "kickgoing_"
+      ]
+    }
+  },
+  {
+    "key": "xingxing",
+    "name": "Xingxing",
+    "color": "#d99a00",
+    "initial": "X",
+    "systemIds": {
+      "prefixes": [
+        "xingxing_"
+      ]
+    }
+  },
+  {
+    "key": "swing",
+    "name": "Swing",
+    "color": "#111111",
+    "initial": "Sw",
+    "systemIds": {
+      "prefixes": [
+        "swing_"
+      ]
+    },
+    "app": {
+      "link": "https://tswm.link/",
+      "appStoreId": 1459344011
+    }
   }
 ]

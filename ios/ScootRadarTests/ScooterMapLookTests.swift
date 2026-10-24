@@ -422,17 +422,21 @@ final class ScooterMapLookTests: XCTestCase {
         }
     }
 
-    func testBirdIsDrawnAlmostWhiteOnADarkMap() {
-        XCTAssertEqual(ScooterMapLook.dotColor(.bird, isDark: false), ScooterProvider.bird.uiColor)
-        XCTAssertGreaterThanOrEqual(
-            ScooterMapLook.contrastRatio(
-                between: ScooterMapLook.dotColor(.bird, isDark: true),
-                and: ScooterMapLook.darkGround
-            ),
-            10
-        )
+    func testBirdAndSwingAreDrawnAlmostWhiteOnADarkMap() {
+        let nearBlack: [ScooterProvider] = [.bird, .swing]
+        for provider in nearBlack {
+            XCTAssertEqual(ScooterMapLook.dotColor(provider, isDark: false), provider.uiColor)
+            XCTAssertGreaterThanOrEqual(
+                ScooterMapLook.contrastRatio(
+                    between: ScooterMapLook.dotColor(provider, isDark: true),
+                    and: ScooterMapLook.darkGround
+                ),
+                10,
+                provider.name
+            )
+        }
         // The others keep their colour in both appearances.
-        for provider in ScooterProvider.allCases where provider != .bird {
+        for provider in ScooterProvider.allCases where !nearBlack.contains(provider) {
             XCTAssertEqual(ScooterMapLook.dotColor(provider, isDark: true), provider.uiColor)
         }
     }

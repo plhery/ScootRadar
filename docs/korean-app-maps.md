@@ -16,9 +16,10 @@ operators' alliance. GCOO's API also serves its US fleets: it answered
 with scooters in Los Angeles, Alexandria and Memphis.
 
 All three were checked from Netcup as well as the Mac, with the same results.
-No production collector or country entry was added, and no rider login, SMS,
-registration or vehicle action was performed. About 40 requests were made
-in all.
+No rider login, SMS, registration or vehicle action was performed. About 40
+requests were made in all. All three are collected since that evening: see
+[the South Korean feeds](south-korean-scooter-feeds.md) for the catalog, the
+request plans and the load.
 
 ## App provenance
 
@@ -192,16 +193,18 @@ Fetching the first Gangnam request again 5 to 10 minutes later:
 None of the three gives a per-vehicle timestamp, so the age of a position
 can't be checked against the map's fifteen-minute limit.
 
-## Remaining work
+## Since the investigation
 
-- **Decisions:** whether to read Swing by reproducing its app's one-time
-  code, and whether to add South Korea as a country (see
-  [Adding a country](adding-a-country.md)).
-- **Fleet sizes:** not measured. Seoul's samples held no GCOO or Swing
-  scooter, only bikes; their scooters were in Busan, Daegu and Sejong.
-  Kickgoing and Xingxing still had scooters in Gangnam.
-- **Collection:** each operator needs a request plan with a bounded budget:
-  GCOO splitting boxes that cluster, Kickgoing walking its area centres at
-  zoom 16, and Swing tiling its scooter areas in boxes of about 5 km.
-- **Terms:** none of the three publishes a data licence or terms for this
-  data.
+The user asked for all three collectors on 24 October 2026, Swing's one-time
+code included, and South Korea was added as a country. Building them showed:
+
+- **Kickgoing** answers at zoom 15 with every vehicle within 2.4 km, with no
+  cap and `map_radius` 1500, and at zoom 14 and below with clusters only.
+- **Swing** returns scooters only with `VEHICLE=SCOOTER` and
+  `selectedOnly=true` together. Its server reads a box four times as tall and
+  as wide as asked, so one request reads a whole town, and asks for a pause
+  between requests in `meta.throttleMs`.
+- **Fleet sizes:** a sweep around midnight Korea time found 58,741 Swing
+  scooters, 57,338 GCOO, 18,924 Xingxing and 11,365 Kickgoing. Seoul's GCOO
+  and Swing fleets are mostly bikes there.
+- **Terms:** still none published by any of the three.

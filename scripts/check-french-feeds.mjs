@@ -103,8 +103,8 @@ async function inspect(system) {
   const result = { system: system.id, country: system.country, city: system.city, provider: system.provider, discoveryUrl: system.discoveryUrl };
   try {
     if (system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount || system.luupAppCities || system.jetAppMap ||
-      system.whooshAppRegion || system.binbinAppArea || system.beamAppCity) {
-      const collect = await appCollector(system.atomAppAccount ? 'atom' : system.provider);
+      system.whooshAppRegion || system.binbinAppArea || system.beamAppCity || system.gcooAppMap || system.kickgoingAppMap || system.swingAppMap) {
+      const collect = await appCollector(system.atomAppAccount ? 'atom' : system.kickgoingAppMap ? 'kickgoing' : system.provider);
       const snapshot = await collect(system);
       return { ...result, state: 'ok', version: 'app-map', availableScooters: snapshot.vehicles.length,
         withBattery: snapshot.vehicles.filter(v => v.battery !== null).length, withRange: snapshot.vehicles.filter(v => typeof v.range_m === 'number').length, withRentalLink: 0,

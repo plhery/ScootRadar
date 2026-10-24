@@ -41,6 +41,10 @@ const PROVIDER_DEFINITIONS = {
   zippy: { name: "Zippy", color: "#da1212", initial: "Z", app: { link: "https://zippyride.app.link/", appStoreId: 6752651073 } },
   binbin: { name: "BinBin", color: "#00c4d7", initial: "Bb", app: { link: "https://binbin.tech/", appStoreId: 1483635924 } },
   beam: { name: "Beam", color: "#7441ff", initial: "B" },
+  gcoo: { name: "GCOO", color: "#00a843", initial: "G", app: { link: "https://open.gbike.io/", appStoreId: 1501264071 } },
+  kickgoing: { name: "Kickgoing", color: "#00c2ab", initial: "K" },
+  xingxing: { name: "Xingxing", color: "#d99a00", initial: "X" },
+  swing: { name: "Swing", color: "#111111", initial: "Sw", app: { link: "https://tswm.link/", appStoreId: 1459344011 } },
 } as const;
 
 export type ProviderKey = keyof typeof PROVIDER_DEFINITIONS;
@@ -54,8 +58,10 @@ export const SWISS_PROVIDER_KEYS: readonly ProviderKey[] = ["bolt","bird","dott"
 
 const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: string[] }> = {
   ride_mobility: {"prefixes":["ride_mobility"]},
+  kickgoing: {"prefixes":["kickgoing_"]},
   publibike: {"exact":["velospot"],"prefixes":["publibike"]},
   bolt_hopp: {"prefixes":["bolt_hopp"]},
+  xingxing: {"prefixes":["xingxing_"]},
   zelectra: {"prefixes":["zelectra"]},
   flamingo: {"prefixes":["flamingo"]},
   elerent: {"prefixes":["elerent"]},
@@ -63,11 +69,13 @@ const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: str
   naolib: {"prefixes":["naolib"]},
   zippy: {"prefixes":["zippy_"]},
   binbin: {"prefixes":["binbin"]},
+  swing: {"prefixes":["swing_"]},
   beryl: {"prefixes":["beryl"]},
   hoppy: {"prefixes":["hoppy"]},
   saham: {"prefixes":["saham"]},
   move: {"prefixes":["move_"]},
   beam: {"prefixes":["beam_"]},
+  gcoo: {"prefixes":["gcoo_"]},
   bolt: {"prefixes":["bolt"]},
   bird: {"prefixes":["bird"]},
   dott: {"prefixes":["dott"]},

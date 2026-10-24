@@ -238,7 +238,7 @@ app name and canonical domain are ScootRadar and `scootradar.com`.
 - Repository: `plhery/ScootRadar`, branch `production-cache`, Dockerfile `/server/Dockerfile`.
 - Origin: `https://scooter-data.plhery.com`, container port 3001.
 - Persistent named volume: `mouc13tsnvylg0v9ee9wp5v5-scooter-snapshots`, mounted at `/data`.
-- Resource limits: 1 CPU, 1536 MiB. No host port is exposed.
+- Resource limits: 1 CPU, 2048 MiB. No host port is exposed.
 - Network alias `scootradar-cache` on the `coolify` network, where Prometheus scrapes
   `scootradar-cache:3001/metrics` for the gauges and `up` (job `scootradar-cache`), and
   each container the alias resolves to for the counters (job
@@ -380,9 +380,15 @@ and `meta.parkingStatus`; zoom 15 and below omit individual parking locations.
 
 
 The Germany/Italy catalog expands the collector to approximately 80 feeds.
-Allocate 1536 MiB to the cache container. Node gives its heap half of that, 864
-MiB, and the heap is what runs out first. In October 2026, with Europe's 128,000
-vehicles, the heap peaked around 575 MiB and the process around 900 MiB while
+Allocate 2048 MiB to the cache container. Node 26 gives its heap 1072 MiB of
+that (816 MiB of 1536 MiB), and the heap is what runs out first. With 1536 MiB
+and 594 feeds, the heap peaked at 704 MB in the day before Beam and South
+Korea's three signed-out app maps were added, on 24 October 2026. GCOO's,
+Kickgoing's and Swing's Korean feeds hold about 187,000 scooters at night,
+neighbouring towns' feeds each holding those where their bounds overlap, and
+take about 120 MB more; Beam's 54 regions held about 45,000 in their first
+samples, about 28 MB. The limit went up to 2048 MiB with them. In October
+2026, with Europe's 128,000 vehicles, the heap peaked around 575 MiB and the process around 900 MiB while
 the snapshot was saved whole every five seconds: each save built its JSON as
 one string, two bytes a character as one city name is outside Latin-1, then a
 buffer as long again. Measured with the US survey's feeds, each vehicle costs about 630
@@ -456,3 +462,10 @@ area expires after two hours and ten minutes without a sweep. A cold start
 keeps what failed sweeps saw for the next.
 HTTP 429 stops every BinBin request for its `Retry-After`. See [pace and
 failures](docs/binbin-app-map.md#pace-and-failures).
+
+Swing's Korean app map reads `SWING_TOTP_SECRET`, the Base32 key of the app's
+one-time code, from a private, runtime-only Coolify environment secret on the
+Node cache. It is never a Worker or build variable, and never in Git: the
+repository is public. Without it every Swing feed fails with "Swing one-time
+code secret is missing or invalid". GCOO's and Kickgoing's maps need no
+credential. See [the Korean catalog](docs/south-korean-scooter-feeds.md#swing).

@@ -32,10 +32,10 @@ const { LANDING_NEAREST } = await load('src/lib/landingSnapshot.ts');
 const { SITE_NAME } = await load('src/lib/site.ts');
 const providers = JSON.parse(readFileSync(path.join(root, 'data/providers.json'), 'utf8'));
 
-// As on the page: Bird's black would vanish on the night, so its tile is the
-// light one, and the only one too light for the white initials of the others.
-const TILE_COLORS = { bird: '#f4f5f7' };
-const DARK_LETTERS = new Set(['bird']);
+// As on the page: Bird's and Swing's black would vanish on the night, so their tiles
+// are the light ones, and the only ones too light for the white initials of the others.
+const TILE_COLORS = { bird: '#f4f5f7', swing: '#f4f5f7' };
+const DARK_LETTERS = new Set(['bird', 'swing']);
 const tileColor = key => TILE_COLORS[key] ?? providers.find(provider => provider.key === key).color;
 // The tiles share the 600 px of the copy in one row, at most 50 px each.
 const TILE_GAP = 8;

@@ -115,8 +115,17 @@ const BOUNDARIES = {
 
 const lastRequest = new Map();
 
-/** The boundary as GeoJSON polygons of [lng, lat] rings. */
-export async function boundary({ source, id }) {
+/**
+ * The boundary as GeoJSON polygons of [lng, lat] rings. A town no source draws whole, as
+ * Gwangju, whose five districts OpenStreetMap has placed under the Jeonnam-Gwangju special
+ * city since 2026, lists its parts' `ids`.
+ */
+export async function boundary({ source, id, ids }) {
+  if (ids) {
+    const polygons = [];
+    for (const part of ids) polygons.push(...await boundary({ source, id: part }));
+    return polygons;
+  }
   const reader = BOUNDARIES[source];
   if (!reader) throw new Error(`Unknown boundary source: ${source}`);
   const wait = (lastRequest.get(source) ?? 0) + (reader.pause ?? 0) - Date.now();

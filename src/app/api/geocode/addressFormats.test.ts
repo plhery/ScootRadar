@@ -35,13 +35,15 @@ describe('the address formats', () => {
     expect(streetAddress('CR', 'Calle Central', '5')).toBe('Calle Central 5');
     expect(streetAddress('BQ', 'Kaya Grandi', '22')).toBe('Kaya Grandi 22');
     expect(streetAddress('JP', 'Kasumigaseki', '1-3-2')).toBe('1-3-2 Kasumigaseki');
+    expect(streetAddress('KR', 'Sejong-daero', '209')).toBe('209 Sejong-daero');
     expect(streetAddress('XX', 'Main Street', '3')).toBe('Main Street 3');
     expect(streetAddress('NZ', 'Queen Street', '')).toBe('Queen Street');
   });
 
-  it('keep the number after a street named in Hebrew or Arabic, as it is written there', () => {
+  it('keep the number after a street named in Hebrew, Arabic or Hangul, as it is written there', () => {
     expect(streetAddress('IL', 'שדרות רוטשילד', '22')).toBe('שדרות רוטשילד 22');
     expect(streetAddress('SA', 'طريق الملك فهد', '2')).toBe('طريق الملك فهد 2');
+    expect(streetAddress('KR', '세종대로', '209')).toBe('세종대로 209');
   });
 
   it('write the line of the town as the country does', () => {
@@ -60,6 +62,7 @@ describe('the address formats', () => {
     expect(townLine('CO', { town: 'Medellín', postcode: '050021', region: region('Antioquia') })).toBe('Medellín, Antioquia, 050021');
     expect(townLine('MX', { town: 'Monterrey', postcode: '64000', region: region('Nuevo León') })).toBe('64000 Monterrey, Nuevo León');
     expect(townLine('KZ', { town: 'Almaty', postcode: '050012', region: region('') })).toBe('050012 Almaty');
+    expect(townLine('KR', { town: 'Seoul', postcode: '03154', region: region('Seoul') })).toBe('Seoul 03154');
   });
 
   it('leave out what OpenStreetMap gives as an Emirati postcode, which the Emirates do not use', () => {
@@ -78,7 +81,7 @@ describe('the address formats', () => {
 
   it('read a postcode typed after the town, and no house number', () => {
     for (const typed of ['Austin, TX 78701', 'Austin TX 78701-1234', 'Toronto, ON M5V 2T6', 'Sydney NSW 2000',
-      'Auckland 1010', 'Tel Aviv 6688218', 'Riyadh 12271', 'Tamarindo 50309', 'São Paulo 01310-100']) {
+      'Auckland 1010', 'Tel Aviv 6688218', 'Riyadh 12271', 'Tamarindo 50309', 'São Paulo 01310-100', 'Seoul 03154']) {
       expect(typed.replace(POSTCODE_AFTER_TOWN, ''), typed).not.toBe(typed);
     }
     // Eight digits are now a valid Brazilian CEP; nine unseparated digits match none of these formats.
