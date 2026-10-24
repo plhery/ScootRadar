@@ -41,7 +41,7 @@ const guide: Guide = {
             caption: 'Cosa chiedono gli operatori, per Paese (condizioni lette a ottobre 2026)',
             head: ['Paese', 'Età minima', 'Documento o patente', 'Pagamento da sapere'],
             rows: [
-              ['Italia', '18 anni da Lime, Dott, Bird e Voi', 'Patente no. A Roma documento d’identità all’iscrizione; Dott lo chiede anche a Milano, Torino, Monza, Varese, Verona, Jesolo, Arezzo e Modena', 'Satispay da Dott'],
+              ['Italia', '18 anni da Lime, Dott, Bird e Voi', 'Patente no. Documento d’identità con tutti gli operatori a Roma, all’iscrizione, e a Torino, prima del primo noleggio; Dott lo chiede anche a Milano, Monza, Varese, Verona, Jesolo, Arezzo e Modena', 'Satispay da Dott'],
               ['Svizzera, Ticino compreso', '18 anni da Lime, Bolt, Voi, Dott, Bird e PubliBike', 'Licenza di condurre no; un documento solo se l’app lo chiede', 'TWINT: trovato solo da Dott'],
             ],
           },

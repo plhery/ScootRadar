@@ -46,7 +46,7 @@ const guide: Guide = {
               ['United Kingdom', '18', 'Full or provisional driving licence', 'Beryl: card postcode must match your billing address'],
               ['Germany', '18', 'None', 'PayPal at Bolt (Germany only)'],
               ['France', '18; 16 at Pony', 'ID at Dott in Lyon', 'Pony: refundable deposit of €0–25'],
-              ['Italy', '18', 'ID at Dott in Rome, Milan, Turin and more', 'Satispay at Dott'],
+              ['Italy', '18', 'ID with every operator in Rome and Turin; at Dott also in Milan and more', 'Satispay at Dott'],
               ['Belgium', '18; 16 at Voi in Antwerp, Hoppy and Pony', 'Brussels: one-time ID scan', 'Bancontact at Dott'],
               ['Norway', '16 at Bolt, Voi and Ryde', 'Ryde verifies your card by 3-D Secure or Mobile BankID', 'Vipps at Ryde'],
             ],
