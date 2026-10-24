@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Trottinett-Preise in der Schweiz: So viel kostet ein Sharing-Trottinett, Stadt für Stadt',
   lede: 'Die E-Trottinett-Preise in der Schweiz setzen sich fast immer gleich zusammen: CHF 1.– fürs Entsperren, dann 39 bis 48 Rappen pro Minute, so die Tarife, die Bolt, Hopp und Voi am 12. Oktober 2026 veröffentlichten. Zehn Minuten kosten damit CHF 4.90 bis CHF 5.80. Günstiger fährst du mit PubliBike in Zürich und Biel: CHF 1.– plus 20 Rappen pro Minute laut Preisliste, Stand Oktober 2026. Dott verlangt je nach Ort CHF 1.– bis CHF 1.50 fürs Entsperren, Bird veröffentlicht keine Tarife, und bei allen Anbietern zeigt die App den Endpreis, bevor du entsperrst.',
   published: '2026-10-12',
-  updated: '2026-10-23',
+  updated: '2026-10-24',
   sections: [
     {
       heading: 'Was kostet es, ein E-Trottinett zu mieten?',
@@ -130,7 +130,7 @@ const guide: Guide = {
         {
           list: [
             '**Vergleiche, bevor du losläufst.** Das nächste Trottinett spart dir Weg, nicht Geld. In Basel kosteten zehn Minuten zu den Tarifen vom 12. Oktober 2026 mit Voi CHF 4.90 und mit Bolt CHF 5.50. Die [Karte von Basel](map:ch:basel) zeigt beide, jedes mit seiner Schätzung.',
-            '**Halte in Zürich und Biel Ausschau nach PubliBike.** Zehn Minuten kosten dort CHF 3.–, bei 42 Rappen pro Minute dagegen CHF 5.20. Auf der [Karte von Zürich](map:ch:zurich) stehen die E-Scooter von PubliBike zwischen den anderen.',
+            '**Halte in Zürich und Biel Ausschau nach PubliBike.** Zehn Minuten kosten dort CHF 3.–, bei 42 Rappen pro Minute dagegen CHF 5.20. Auf der [Karte von Zürich](map:ch:zurich) stehen die E-Scooter von PubliBike zwischen den anderen. Mehr zu Biel im Ratgeber [E-Trottinett in Biel/Bienne](guide:biel).',
             '**Nimm ein geladenes Trottinett.** Ist der Akku unterwegs leer, kostet das nächste eine zweite Entsperrung.',
             '**Plane, wo du abstellst.** Knapp ausserhalb einer Parkverbotszone anzuhalten ist günstiger, als mit laufender Uhr um sie herumzufahren.',
           ],
