@@ -1188,7 +1188,6 @@ enum ScooterProviderCoverage {
         (.lime, GeoBounds(south: -33.37004532, west: -70.50771173, north: -33.36342, east: -70.49341)),
         (.jet, GeoBounds(south: 25.644225, west: -100.419239, north: 25.686349, east: -100.281766)),
         (.whoosh, GeoBounds(south: 25.6341, west: -100.42479, north: 25.68824, east: -100.26807)),
-        (.whoosh, GeoBounds(south: 19.35517, west: -99.218, north: 19.46072, east: -99.11774)),
         (.whoosh, GeoBounds(south: 20.63267, west: -103.44679, north: 20.74174, east: -103.37085)),
         (.lime, GeoBounds(south: 20.55756, west: -100.38630781, north: 20.57103467, east: -100.37191672)),
         (.lime, GeoBounds(south: 20.55756, west: -100.37191672, north: 20.57103467, east: -100.35752562)),
@@ -2427,7 +2426,6 @@ enum ScooterCityCatalog {
         ScooterCity(id: "cl:Puerto Montt", name: "Puerto Montt", countryCode: "CL", center: GeoPoint(latitude: -41.465558, longitude: -72.947235), bounds: GeoBounds(south: -41.495, west: -73.01201, north: -41.37834, east: -72.85224)),
         ScooterCity(id: "cl:Rancagua", name: "Rancagua", countryCode: "CL", center: GeoPoint(latitude: -34.166728, longitude: -70.697146), bounds: GeoBounds(south: -34.19857, west: -70.77326, north: -33.3159, east: -70.49203)),
         ScooterCity(id: "mx:Monterrey", name: "Monterrey", countryCode: "MX", center: GeoPoint(latitude: 25.660313, longitude: -100.378108), bounds: GeoBounds(south: 25.6341, west: -100.42479, north: 25.68824, east: -100.26807)),
-        ScooterCity(id: "mx:Ciudad de México", name: "Ciudad de México", countryCode: "MX", center: GeoPoint(latitude: 19.4326, longitude: -99.1332), bounds: GeoBounds(south: 19.35517, west: -99.218, north: 19.46072, east: -99.11774)),
         ScooterCity(id: "mx:Zapopan", name: "Zapopan", countryCode: "MX", center: GeoPoint(latitude: 20.721331, longitude: -103.391882), bounds: GeoBounds(south: 20.63267, west: -103.44679, north: 20.74174, east: -103.37085)),
         ScooterCity(id: "mx:Querétaro", name: "Querétaro", countryCode: "MX", center: GeoPoint(latitude: 20.58806, longitude: -100.38806), bounds: GeoBounds(south: 20.55756, west: -100.41509, north: 20.6161, east: -100.35703)),
         ScooterCity(id: "kz:Almaty", name: "Almaty", countryCode: "KZ", center: GeoPoint(latitude: 43.298812, longitude: 76.939435), bounds: GeoBounds(south: 43.178739, west: 76.774937, north: 43.356878, east: 77.013148)),
@@ -2601,7 +2599,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 837
+    static let cityCount = 836
     static let countryCount = 46
 
     /// Cities by distance from the point to their centre, nearest first.

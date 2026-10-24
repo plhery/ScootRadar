@@ -446,7 +446,7 @@ export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {
   JP: ["jp:Tokyo", "jp:Osaka", "jp:Kyoto", "jp:Nagoya", "jp:Yokohama", "jp:Fukuoka", "jp:Naha"],
   BR: ["br:São Paulo", "br:Florianópolis", "br:Salvador", "br:Recife", "br:Porto Alegre", "br:Fortaleza"],
   CL: ["cl:Santiago", "cl:Temuco", "cl:Viña del Mar", "cl:La Serena", "cl:Rancagua", "cl:Puerto Montt"],
-  MX: ["mx:Monterrey", "mx:Ciudad de México", "mx:Zapopan", "mx:Querétaro"],
+  MX: ["mx:Monterrey", "mx:Zapopan", "mx:Querétaro"],
   KZ: ["kz:Almaty", "kz:Astana"],
   AZ: ["az:Baku"],
   GE: ["ge:Batumi"],

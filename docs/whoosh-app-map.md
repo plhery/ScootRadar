@@ -6,11 +6,14 @@ American signup offers Google/Apple instead of phone login, but the Kazakhstan
 session can read those markets too. The account needs no payment card to read
 the map.
 
-The catalog adds 25 reviewed regions: Brazil (9), Chile (7), Colombia (1),
-Mexico (3), Kazakhstan (2), and Belarus (3). Russian regions are excluded.
+The catalog adds 24 reviewed regions: Brazil (9), Chile (7), Colombia (1),
+Mexico (2), Kazakhstan (2), and Belarus (3). Russian regions are excluded.
 Concepción and Ilhabela were listed but season-closed with no ride polygons;
-they were not added. The operator's region centers sometimes lie outside its
-ride polygons, so those map anchors use the nearest ride polygon instead.
+they were not added. Mexico City was added, then removed the same day: its
+region reports its season over because SEMOVI's pilot ended on 31 August 2026
+(see [coverage gaps](coverage-gaps.md)). The operator's region centers
+sometimes lie outside its ride polygons, so those map anchors use the nearest
+ride polygon instead.
 
 ## API and completeness
 
@@ -22,7 +25,10 @@ The Node-only adapter is [server/whooshApp.ts](../server/whooshApp.ts).
   `X-region-id` header also changes which group is returned: a Kazakhstan
   header gave Russia/Kazakhstan/Belarus; a Santiago header gave Latin America.
 - `GET /regions/location/{id}/info` supplies identity, status, time zone and
-  `seasonIsOver`. A closed season is a successful empty fleet, not a feed error.
+  `seasonIsOver`. A closed season is a successful empty fleet, not a feed error,
+  and no map search is sent. The cache does not count it as a pause, so "feed
+  empty" reports a region closed for 3 days: Almaty, Astana and Zapopan, closed
+  on 24 October 2026, from the 27th.
 - `GET /regions/location/{id}/areas` supplies ride polygons. The app's
   `MapAreaUiAssembler` uses enabled `LIMITED` polygons as holes in the global
   out-of-ride-area mask. These are the collection areas. Forbidden polygons

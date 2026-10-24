@@ -657,16 +657,23 @@ No access point held vehicle positions; see 1 December 2026 under
 October with Latin America, now has JET and Whoosh app-map coverage. Its
 public GBFS gaps remain below. Check again on 1 March 2027.
 
-- **Lime Ciudad de México** (`data.lime.bike/api/partners/v2/gbfs/mexico_city`)
-  answers but has listed no vehicle since SEMOVI's pilot ended in September
-  2026, nor at 15:11, 15:50 and 16:04 Mexico City time on 15 October 2026.
+- **Ciudad de México** has no rental scooters. SEMOVI's pilot ended on 31
+  August 2026, when the temporary permits of Lime, JET and Whoosh lapsed, and
+  SEMOVI has not decided whether they return
+  ([Publimetro, 2 September 2026](https://www.publimetro.com.mx/noticias/2026/09/02/semovi-frena-scooters-en-cdmx-termina-piloto-y-evaluara-si-regresan/),
+  [Xataka](https://www.xataka.com.mx/automovil/cdmx-retira-scooters-renta-registrar-117-000-viajes-semovi-evalua-su-regreso-definitivo-nuevas-reglas)).
+  Lime's feed (`data.lime.bike/api/partners/v2/gbfs/mexico_city`) answers
+  but has listed no vehicle since, nor at 15:11, 15:50 and 16:04 Mexico City
+  time on 15 October 2026. Whoosh's Mexico City region (`MMMX`), added with
+  its rider map, reports its season over: it was removed on 24 October 2026,
+  with the city, which has no season to come back in.
 - **Lime** runs scooters in Querétaro (since January 2025) and in Monterrey
   and Guadalupe (since September 2025), with no public feed: about 40 slugs
   tried (`queretaro`, `monterrey`, `guadalupe`, `san_pedro_garza_garcia`,
   `nuevo_leon` and others) answer 404.
 - **Whoosh** is integrated through its [authenticated rider map](whoosh-app-map.md):
-  Monterrey/San Pedro, plus the currently season-closed Mexico City and
-  Zapopan regions. Its GBFS remains private. The [Go Jet adapter](gojet-app-map.md)
+  Monterrey/San Pedro, plus Zapopan, whose region reported its season over
+  on 24 October 2026. Its GBFS remains private. The [Go Jet adapter](gojet-app-map.md)
   supplies Monterrey–San Pedro signed out (491 available scooters in the
   complete sweep). Go Jet listed Mexico City but returned no scooter there.
   **Movo** has left Mexico.
@@ -938,9 +945,10 @@ Bonaire had feeds to add. Survey files are in
   Check `bourgoin-jallieu` and Dott's French listing, and add it again if it
   lists scooters that are ridden.
 - **1 March 2027:** Lime Ciudad de México, empty since SEMOVI's pilot ended
-  in September 2026, and Lime Bogotá (`bogota`), empty on 15 October 2026.
-  Check Lime's Querétaro and Monterrey slugs, Whoosh, JET and Yango again
-  too.
+  on 31 August 2026, and Lime Bogotá (`bogota`), empty on 15 October 2026.
+  Check Lime's Querétaro and Monterrey slugs, Whoosh (its Mexico City region,
+  removed on 24 October 2026, and Zapopan), JET and Yango again too, and
+  whether SEMOVI has let scooters back into Ciudad de México.
 - **1 March 2027:** Korea's TAGO API (data.go.kr dataset 15117668), from
   its page only, without a key: it listed Sejong alone on 18 October 2026.
   If it adds Seoul or another big city, the key is still the obstacle: only
