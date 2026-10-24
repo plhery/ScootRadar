@@ -409,6 +409,11 @@
             "north": 46.162801,
             "west": -64.909284,
             "east": -64.633564
+          },
+          "seasonal": {
+            "from": "11-15",
+            "until": "04-16",
+            "timeZone": "America/Moncton"
           }
         },
         {

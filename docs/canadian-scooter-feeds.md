@@ -160,7 +160,7 @@ no alert either.
 
 ## Winter
 
-Only Ottawa sets its season by a standing rule. Its seasonal window in the
+Ottawa and Moncton set their seasons by a standing rule. Ottawa's seasonal window in the
 catalog runs from 16 November until 30 April, Toronto time, for both Bird and
 Lime. Council's report ACS2025-PDB-TP-0002 of 16 April 2025
 ([eScribe](https://pub-ottawa.escribemeetings.com/filestream.ashx?DocumentId=232935))
@@ -171,6 +171,16 @@ says "The 2026 shared e-scooter season is set to launch in late April and will
 run until November 15 (weather permitting)". In that window the map says the
 scooters are back in April, in the app's language, and the feeds' alerts are
 muted.
+
+Moncton's by-law L-926 on shared micromobility, passed on 17 August 2026
+([PDF](https://www.moncton.ca/sites/default/files/document/l-926_shared_micromobility_licencing.pdf)),
+says in 7(2) that operators start on a date the chief administrative officer
+sets, "not later than April 16", and "shall cease their operations on
+November 15". The catalog pauses the Moncton area of MoVe's New Brunswick feed
+from 15 November until 16 April, Moncton time, so the map says the scooters
+are back in April. The feed also covers Fredericton and Saint John, which set
+no season, so it is not paused and its alerts stay on. The by-law sets no
+hours.
 
 Leduc publishes no season, but Bird took its scooters in on 20 and 21 October
 2026: the feed held 26 to 28 available scooters until the afternoon of the

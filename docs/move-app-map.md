@@ -47,6 +47,10 @@ to the union of the three city areas; intercity points and unreviewed new
 markets are excluded. Operating polygons do not become public riding or
 parking guidance through this adapter.
 
+Moncton's by-law stops shared scooters from 15 November until 16 April at the
+latest, so the catalog pauses the Moncton area for that window
+([Canada's winter section](canadian-scooter-feeds.md#winter)).
+
 The Node collector was tested from the production cache container on
 Netcup: Node 26.12.1 returned HTTP 200 with 337 scooters. The private MoVe
 session was appended to the existing ATOM volume without a restart,

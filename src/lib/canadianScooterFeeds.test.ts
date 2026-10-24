@@ -188,6 +188,21 @@ describe('Canada', () => {
       ['ca:ns:Halifax', [44.6488, -63.5752]], ['ca:on:Vaughan', [43.8361, -79.4983]]] as const) {
       expect(activeSeasonalPause([...point], winter), id).toBeNull();
     }
-    expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA' && entry.pauses).map(entry => entry.id)).toEqual(['ca:ab:Leduc', 'ca:on:Ottawa']);
+    expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA' && entry.pauses).map(entry => entry.id))
+      .toEqual(['ca:ab:Leduc', 'ca:on:Ottawa', 'ca:nb:Moncton']);
+  });
+
+  it('says Moncton\'s scooters are away from 15 November until 16 April at the latest, while Fredericton\'s and Saint John\'s run on', () => {
+    // By-law L-926, 7(2): operators stop on 15 November and start again on a day the city sets, by 16 April.
+    const moncton: [number, number] = [46.0878, -64.7782];
+    // 23:30 on 14 November in Moncton (UTC-4) is still in season; 00:30 on the 15th is not.
+    expect(activeSeasonalPause(moncton, Date.UTC(2026, 10, 15, 3, 30))).toBeNull();
+    expect(activeSeasonalPause(moncton, Date.UTC(2026, 10, 15, 4, 30))).toEqual({ city: 'Moncton, NB', month: 4 });
+    expect(activeSeasonalPause(moncton, Date.UTC(2027, 3, 16, 12))).toBeNull();
+    const winter = Date.UTC(2027, 0, 15, 12);
+    expect(activeSeasonalPause([45.9636, -66.6431], winter)).toBeNull();
+    expect(activeSeasonalPause([45.2733, -66.0633], winter)).toBeNull();
+    // One feed covers the three towns, so it is not paused, and its alerts stay on.
+    expect(feedPaused('canada:move_ca_new_brunswick', winter)).toBe(false);
   });
 });
