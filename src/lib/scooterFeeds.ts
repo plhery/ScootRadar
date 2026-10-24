@@ -22,6 +22,7 @@ import { isElectricScooter, type GbfsVehicleType } from '@/lib/scooterTypes';
 import { systemServesPoint } from '@/lib/townOutlines';
 import type { MapBounds, Vehicle } from '@/lib/types';
 import { legacyRentalLink, normalizeRentalUris } from '@/lib/rentalLinks';
+import { ClientCredentialsToken, type UpstreamAuth } from '@/lib/clientCredentialsToken';
 import { upstreamJsonCache, UpstreamHttpError, type CachedJson } from '@/lib/upstreamJsonCache';
 import type { ZoneSource } from '@/lib/zoneFeeds';
 import {
@@ -344,6 +345,16 @@ export const HOST_HEADERS: Record<string, Record<string, string>> = {
   'api.entur.io': { 'ET-Client-Name': 'scootradar-map' },
 };
 
+// NRW.Mobidrom, North Rhine-Westphalia's mobility data platform, serves Voi's, Bolt's and Lime's
+// feeds there only with an OAuth token, for the client it gives its registered users. One token
+// serves every NRW feed; the client's id and secret are set on the cache, which alone reads feeds.
+export const HOST_AUTH: Record<string, UpstreamAuth> = {
+  'www.mobilitaetsdaten.nrw': new ClientCredentialsToken({
+    tokenUrl: 'https://www.mobilitaetsdaten.nrw/keycloak/realms/mobidrom/protocol/openid-connect/token',
+    credentials: () => ({ clientId: process.env.MOBIDROM_CLIENT_ID, clientSecret: process.env.MOBIDROM_CLIENT_SECRET }),
+  }),
+};
+
 // Lime's servers sometimes take 12 to 26 seconds before sending a big city's
 // vehicles (Chicago, Seattle: about 3 MB), and answer in about a second otherwise.
 export const HOST_TIMEOUTS_MS: Record<string, number> = {
@@ -364,6 +375,7 @@ export async function fetchJson<T>(
 
   return upstreamJsonCache.fetch<T>(url, {
     headers,
+    auth: HOST_AUTH[host],
     validate: options.validate,
     freshSeconds: options.revalidate,
     staleIfErrorSeconds: options.revalidate === STATUS_REVALIDATE_SECONDS

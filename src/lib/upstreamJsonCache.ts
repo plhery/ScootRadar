@@ -1,3 +1,5 @@
+import type { UpstreamAuth } from './clientCredentialsToken';
+
 // The floor for a process that never says how many feeds it collects, such as a web worker.
 const DEFAULT_MAX_ENTRIES = 2048;
 /**
@@ -73,6 +75,8 @@ export interface CachedJson<T> {
 export interface UpstreamJsonOptions {
   validate?: (value: unknown) => void;
   headers: Record<string, string>;
+  /** The token of a host that wants one, sent as each request's Authorization header. */
+  auth?: UpstreamAuth;
   freshSeconds: number;
   staleIfErrorSeconds: number;
   timeoutMs: number;
@@ -182,16 +186,27 @@ export class UpstreamJsonCache {
     try {
       let data: T;
       // A body cut off is asked for once more at once (cutOff); a second cut falls back as any failure.
-      for (let attempt = 1; ; attempt++) {
+      // So is a request whose token the host refuses, with a new token; a second 401 is a failure.
+      let cutRetried = false;
+      let renewed = false;
+      for (;;) {
         if (this.hostIntervals.size) await this.waitForHost(url);
-        this.requests[options.freshSeconds <= 60 ? 'status' : 'metadata']++;
         answered = false;
+        const authorization = options.auth ? await options.auth.authorization() : undefined;
+        this.requests[options.freshSeconds <= 60 ? 'status' : 'metadata']++;
         const response = await this.fetcher(url, {
-          headers: options.headers,
+          headers: authorization ? { ...options.headers, Authorization: authorization } : options.headers,
           cache: 'no-store',
           signal: AbortSignal.timeout(options.timeoutMs),
         });
         answered = true;
+        if (response.status === 401 && authorization && !renewed) {
+          await response.body?.cancel();
+          options.auth?.renew(authorization);
+          renewed = true;
+          console.warn(JSON.stringify({ event: 'upstream_token_refused', ...safeUpstreamTarget(url) }));
+          continue;
+        }
         if (!response.ok) {
           const body = await response.text().catch(() => '');
           throw new UpstreamHttpError(response.status, new URL(url).hostname, /\bERR_[A-Z_]+\b/.exec(body)?.[0]);
@@ -200,7 +215,8 @@ export class UpstreamJsonCache {
           data = await response.json() as T;
           break;
         } catch (error) {
-          if (attempt > 1 || !cutOff(error)) throw error;
+          if (cutRetried || !cutOff(error)) throw error;
+          cutRetried = true;
           console.warn(JSON.stringify({ event: 'upstream_body_retry', ...safeUpstreamTarget(url), ...errorCode(error) }));
         }
       }

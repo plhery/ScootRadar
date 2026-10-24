@@ -435,6 +435,7 @@ describe('ControlSheet settings', () => {
       'AE/SA/IL: Dott, SAHAM, Bird, Lime',
       'NZ: Flamingo, JOLT',
       'MobiData BW',
+      'Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified',
       'BE: Pony · transportdata.be',
       'NO: Entur AS · NLOD',
       'NO: Kartverket boundaries · CC BY 4.0',

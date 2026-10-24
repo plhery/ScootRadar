@@ -21,6 +21,8 @@ import { dottMapRequests, withDottAppCollectors } from './dottApp';
 
 initErrorReporting();
 upstreamJsonCache.paceHost('gbfs.api.ridedott.com', 150);
+// NRW.Mobidrom serves Voi's, Bolt's and Lime's 18 feeds of North Rhine-Westphalia from one host.
+upstreamJsonCache.paceHost('www.mobilitaetsdaten.nrw', 150);
 // ATOM Mobility hosts its operators (Hoppy, Ride Mobility, Yoio) under rideatom.com and refuses
 // bursts, so each of its hosts gets at most two requests a second, cold starts included.
 for (const host of new Set(REGIONAL_SCOOTER_SYSTEMS.map(system => new URL(system.discoveryUrl).hostname))) {

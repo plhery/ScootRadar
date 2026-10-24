@@ -411,9 +411,9 @@ Hopp's towns and the regional GBFS systems publish in `geofencing_zones`:
 ## Germany and Italy
 
 Reviewed catalogs live in `data/german-scooter-feeds.json` and
-`data/italian-scooter-feeds.json`. Germany has 40 verified feeds across 42 cities:
+`data/italian-scooter-feeds.json`. Germany has 53 verified GBFS feeds across 60 cities:
 Dott, Bolt, Hopp, Lime, Voi, Zeus and Yoio. Dott made its GBFS private in September 2026; the
-catalog keeps the 15 German regions its public listing still names. Italy has 4
+catalog keeps the 16 German regions its public listing still names. Italy has 4
 feeds: Bird in Roma, Palermo and Napoli, and Elerent in Catania; the other
 tested Italian scooter feeds were empty, stale or unavailable. See the [coverage audit](docs/german-italian-scooter-feeds.md).
 
@@ -424,6 +424,19 @@ MobiData BW supplies the reviewed Bolt, Hopp, Lime and Voi GBFS 3.0 systems and
 ten of the fourteen Zeus systems; its Voi feed covers eight Baden-Württemberg
 cities, not all of Germany. Zeus's own feeds supply Bamberg, Ludwigsburg,
 Regensburg and Schweinfurt.
+
+[NRW.Mobidrom](https://www.mobilitaetsdaten.nrw), North Rhine-Westphalia's
+mobility data platform, supplies Voi's 12 feeds there, in 18 towns from Köln
+to Münster and Paderborn. They answer only with an OAuth token, for the client
+the platform's dataset descriptions publish for all users; the scooter cache
+keeps its id and secret in its environment, never in this repository, and one
+token in memory for every NRW feed. Voi Technology Germany GmbH licenses this
+data under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). The
+map credits it as "Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0,
+modified", and the Voi data of North Rhine-Westphalia that our API serves is
+offered under CC BY-SA 4.0 as well. Bolt's and Lime's NRW feeds (CC BY 4.0 and
+dl-de/by-2-0) are not read yet; see the
+[coverage audit](docs/german-italian-scooter-feeds.md#voi-in-north-rhine-westphalia-october-2026).
 
 Zeus is moving its towns from `zeus.city` to ATOM Mobility
 (`zeus.rideatom.com`), whose feeds publish no licence. MobiData BW's ten Zeus

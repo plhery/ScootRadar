@@ -41,10 +41,11 @@
       "anchor": [51.1, 10.4],
       "featuredCities": ["de:Berlin", "de:München", "de:Köln", "de:Frankfurt", "de:Stuttgart", "de:Düsseldorf"],
       "credits": {
-        "attribution": "Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW; Dott anonymous app map",
+        "attribution": "Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW; Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified; Dott anonymous app map",
         "gbfs": ["Dott", "Bolt", "Hopp", "Lime", "Voi", "Zeus", "Yoio"],
         "links": [
           { "label": "MobiData BW", "href": "https://www.mobidata-bw.de/" },
+          { "label": "Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified", "href": "https://creativecommons.org/licenses/by-sa/4.0/" },
           { "label": "DE: Dott map", "href": "https://ridedott.com/" }
         ]
       }

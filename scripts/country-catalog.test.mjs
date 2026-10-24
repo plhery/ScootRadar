@@ -86,7 +86,7 @@ describe('the countries of data/countries.json', () => {
     expect(countryCreditLinks([...europe.countries, canada]).map(link => link.label)).toEqual([
       'DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio, Bird, Elerent, Hoppy, Ride Mobility, 3electra',
       'CA: Bird, Neuron',
-      'MobiData BW', 'BE: Pony · transportdata.be', 'NO: Entur AS · NLOD', 'NO: Kartverket boundaries · CC BY 4.0',
+      'MobiData BW', 'Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified', 'BE: Pony · transportdata.be', 'NO: Entur AS · NLOD', 'NO: Kartverket boundaries · CC BY 4.0',
       'UK: Beryl · CDLA-Permissive-2.0', 'UK: ONS boundaries · OGL v3.0', 'PT: DGT boundaries · CC BY 4.0',
       // OpenStreetMap's boundaries, which several countries give, are credited once.
       'DE/AT/IT/ES/PL/HU/GR/FI: Dott map',

@@ -2072,8 +2072,8 @@
       "provider": "dott",
       "city": "Sankt Augustin",
       "center": [
-        50.791,
-        7.2062
+        50.7753,
+        7.1896
       ],
       "bounds": {
         "south": 50.7504,
@@ -2249,6 +2249,348 @@
       },
       "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
       "dottAppRegion": "fHlmkLM4HKiMIvqutrey"
+    },
+    {
+      "id": "voi_de_muenster",
+      "country": "DE",
+      "provider": "voi",
+      "city": "Münster",
+      "center": [
+        51.9583,
+        7.6259
+      ],
+      "bounds": {
+        "south": 51.8311,
+        "north": 52.069,
+        "west": 7.4598,
+        "east": 7.7884
+      },
+      "discoveryUrl": "https://www.mobilitaetsdaten.nrw/api/systemadapter-gbfs-provider/feed/v3.0/voi-nrw/source-voi-muenster/gbfs.json"
+    },
+    {
+      "id": "voi_de_duisburg_oberhausen",
+      "country": "DE",
+      "provider": "voi",
+      "city": "Duisburg / Oberhausen",
+      "center": [
+        51.4154,
+        6.7249
+      ],
+      "bounds": {
+        "south": 51.3244,
+        "north": 51.589,
+        "west": 6.6116,
+        "east": 6.9445
+      },
+      "discoveryUrl": "https://www.mobilitaetsdaten.nrw/api/systemadapter-gbfs-provider/feed/v3.0/voi-nrw/source-voi-duisburg-oberhausen/gbfs.json",
+      "areas": [
+        {
+          "city": "Duisburg",
+          "center": [
+            51.4154,
+            6.7249
+          ],
+          "bounds": {
+            "south": 51.3244,
+            "north": 51.5691,
+            "west": 6.6116,
+            "east": 6.8443
+          }
+        },
+        {
+          "city": "Oberhausen",
+          "center": [
+            51.4543,
+            6.8735
+          ],
+          "bounds": {
+            "south": 51.4397,
+            "north": 51.589,
+            "west": 6.7633,
+            "east": 6.9445
+          }
+        }
+      ]
+    },
+    {
+      "id": "voi_de_bonn",
+      "country": "DE",
+      "provider": "voi",
+      "city": "Bonn / Siegburg / Sankt Augustin",
+      "center": [
+        50.7214,
+        7.1155
+      ],
+      "bounds": {
+        "south": 50.6237,
+        "north": 50.837,
+        "west": 7.0085,
+        "east": 7.3245
+      },
+      "discoveryUrl": "https://www.mobilitaetsdaten.nrw/api/systemadapter-gbfs-provider/feed/v3.0/voi-nrw/source-voi-bonn/gbfs.json",
+      "areas": [
+        {
+          "city": "Bonn",
+          "center": [
+            50.7214,
+            7.1155
+          ],
+          "bounds": {
+            "south": 50.6237,
+            "north": 50.7834,
+            "west": 7.0085,
+            "east": 7.2247
+          }
+        },
+        {
+          "city": "Siegburg",
+          "center": [
+            50.7928,
+            7.2071
+          ],
+          "bounds": {
+            "south": 50.7708,
+            "north": 50.837,
+            "west": 7.1602,
+            "east": 7.3245
+          }
+        },
+        {
+          "city": "Sankt Augustin",
+          "center": [
+            50.7753,
+            7.1896
+          ],
+          "bounds": {
+            "south": 50.7304,
+            "north": 50.8095,
+            "west": 7.1114,
+            "east": 7.2597
+          }
+        }
+      ]
+    },
+    {
+      "id": "voi_de_duesseldorf",
+      "country": "DE",
+      "provider": "voi",
+      "city": "Düsseldorf / Neuss",
+      "center": [
+        51.2213,
+        6.7886
+      ],
+      "bounds": {
+        "south": 51.1078,
+        "north": 51.3615,
+        "west": 6.6008,
+        "east": 6.9539
+      },
+      "discoveryUrl": "https://www.mobilitaetsdaten.nrw/api/systemadapter-gbfs-provider/feed/v3.0/voi-nrw/source-voi-duesseldorf/gbfs.json",
+      "areas": [
+        {
+          "city": "Düsseldorf",
+          "center": [
+            51.2213,
+            6.7886
+          ],
+          "bounds": {
+            "south": 51.1154,
+            "north": 51.3615,
+            "west": 6.6748,
+            "east": 6.9539
+          }
+        },
+        {
+          "city": "Neuss",
+          "center": [
+            51.2035,
+            6.6837
+          ],
+          "bounds": {
+            "south": 51.1078,
+            "north": 51.2446,
+            "west": 6.6008,
+            "east": 6.8124
+          }
+        }
+      ]
+    },
+    {
+      "id": "voi_de_dortmund",
+      "country": "DE",
+      "provider": "voi",
+      "city": "Dortmund",
+      "center": [
+        51.5129,
+        7.4649
+      ],
+      "bounds": {
+        "south": 51.4067,
+        "north": 51.609,
+        "west": 7.2884,
+        "east": 7.6522
+      },
+      "discoveryUrl": "https://www.mobilitaetsdaten.nrw/api/systemadapter-gbfs-provider/feed/v3.0/voi-nrw/source-voi-dortmund/gbfs.json"
+    },
+    {
+      "id": "voi_de_moenchengladbach",
+      "country": "DE",
+      "provider": "voi",
+      "city": "Mönchengladbach",
+      "center": [
+        51.1917,
+        6.4409
+      ],
+      "bounds": {
+        "south": 51.0768,
+        "north": 51.2569,
+        "west": 6.2771,
+        "east": 6.5506
+      },
+      "discoveryUrl": "https://www.mobilitaetsdaten.nrw/api/systemadapter-gbfs-provider/feed/v3.0/voi-nrw/source-voi-moenchengladbach/gbfs.json"
+    },
+    {
+      "id": "voi_de_wuppertal",
+      "country": "DE",
+      "provider": "voi",
+      "city": "Wuppertal",
+      "center": [
+        51.2669,
+        7.1769
+      ],
+      "bounds": {
+        "south": 51.1567,
+        "north": 51.3271,
+        "west": 7.0001,
+        "east": 7.3274
+      },
+      "discoveryUrl": "https://www.mobilitaetsdaten.nrw/api/systemadapter-gbfs-provider/feed/v3.0/voi-nrw/source-voi-wuppertal/gbfs.json"
+    },
+    {
+      "id": "voi_de_paderborn",
+      "country": "DE",
+      "provider": "voi",
+      "city": "Paderborn",
+      "center": [
+        51.7199,
+        8.7528
+      ],
+      "bounds": {
+        "south": 51.6452,
+        "north": 51.8098,
+        "west": 8.6223,
+        "east": 8.9146
+      },
+      "discoveryUrl": "https://www.mobilitaetsdaten.nrw/api/systemadapter-gbfs-provider/feed/v3.0/voi-nrw/source-voi-paderborn/gbfs.json"
+    },
+    {
+      "id": "voi_de_koeln",
+      "country": "DE",
+      "provider": "voi",
+      "city": "Köln",
+      "center": [
+        50.9375,
+        6.9603
+      ],
+      "bounds": {
+        "south": 50.8214,
+        "north": 51.094,
+        "west": 6.7585,
+        "east": 7.176
+      },
+      "discoveryUrl": "https://www.mobilitaetsdaten.nrw/api/systemadapter-gbfs-provider/feed/v3.0/voi-nrw/source-voi-koeln/gbfs.json"
+    },
+    {
+      "id": "voi_de_bochum",
+      "country": "DE",
+      "provider": "voi",
+      "city": "Bochum / Herne / Witten",
+      "center": [
+        51.4695,
+        7.1963
+      ],
+      "bounds": {
+        "south": 51.3611,
+        "north": 51.5823,
+        "west": 7.0881,
+        "east": 7.4375
+      },
+      "discoveryUrl": "https://www.mobilitaetsdaten.nrw/api/systemadapter-gbfs-provider/feed/v3.0/voi-nrw/source-voi-bochum/gbfs.json",
+      "areas": [
+        {
+          "city": "Bochum",
+          "center": [
+            51.4695,
+            7.1963
+          ],
+          "bounds": {
+            "south": 51.4015,
+            "north": 51.5404,
+            "west": 7.0881,
+            "east": 7.3633
+          }
+        },
+        {
+          "city": "Herne",
+          "center": [
+            51.5407,
+            7.2061
+          ],
+          "bounds": {
+            "south": 51.4941,
+            "north": 51.5823,
+            "west": 7.1096,
+            "east": 7.3105
+          }
+        },
+        {
+          "city": "Witten",
+          "center": [
+            51.437,
+            7.3351
+          ],
+          "bounds": {
+            "south": 51.3611,
+            "north": 51.4933,
+            "west": 7.2321,
+            "east": 7.4375
+          }
+        }
+      ]
+    },
+    {
+      "id": "voi_de_aachen",
+      "country": "DE",
+      "provider": "voi",
+      "city": "Aachen",
+      "center": [
+        50.7773,
+        6.0895
+      ],
+      "bounds": {
+        "south": 50.6531,
+        "north": 50.8662,
+        "west": 5.9608,
+        "east": 6.2321
+      },
+      "discoveryUrl": "https://www.mobilitaetsdaten.nrw/api/systemadapter-gbfs-provider/feed/v3.0/voi-nrw/source-voi-aachen/gbfs.json"
+    },
+    {
+      "id": "voi_de_essen",
+      "country": "DE",
+      "provider": "voi",
+      "city": "Essen",
+      "center": [
+        51.4508,
+        7.0085
+      ],
+      "bounds": {
+        "south": 51.3386,
+        "north": 51.5432,
+        "west": 6.8803,
+        "east": 7.1516
+      },
+      "discoveryUrl": "https://www.mobilitaetsdaten.nrw/api/systemadapter-gbfs-provider/feed/v3.0/voi-nrw/source-voi-essen/gbfs.json"
     }
   ]
 }

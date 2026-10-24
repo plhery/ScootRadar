@@ -37,6 +37,12 @@ Zeus is moving its towns from `zeus.city` to ATOM Mobility. As checked on
 moved publish no feed with scooters; see
 [Zeus's move to ATOM Mobility, October 2026](#zeuss-move-to-atom-mobility-october-2026).
 
+Voi's 12 feeds in North Rhine-Westphalia joined the map on 24 October 2026,
+read from the state's data platform NRW.Mobidrom with a token: about 16,500
+available scooters in 18 towns. Bolt's and Lime's feeds there wait for their
+data to update again; see
+[Voi in North Rhine-Westphalia, October 2026](#voi-in-north-rhine-westphalia-october-2026).
+
 Italy grew from Rome to three cities on 13 October 2026, with Bird Palermo and
 Bird Napoli; see [Italy, October 2026](#italy-october-2026). Elerent's
 scooters in Catania followed on 14 October 2026; see
@@ -48,13 +54,14 @@ scooters in Catania followed on 14 October 2026; see
 | Germany | Bolt | 3 | Karlsruhe, Stuttgart, Reutlingen / Tübingen |
 | Germany | Hopp | 1 | Konstanz |
 | Germany | Lime | 3 | Frankfurt, Wuppertal, Stuttgart / Konstanz |
-| Germany | Voi | 1 | Karlsruhe, Pforzheim, Mannheim, Ludwigshafen am Rhein, Stuttgart, Böblingen, Sindelfingen, Tübingen and Reutlingen |
+| Germany | Voi | 13 | Karlsruhe, Pforzheim, Mannheim, Ludwigshafen am Rhein, Stuttgart, Böblingen, Sindelfingen, Tübingen and Reutlingen (MobiData BW); Köln, Düsseldorf / Neuss, Essen, Dortmund, Bochum / Herne / Witten, Bonn / Siegburg / Sankt Augustin, Duisburg / Oberhausen, Münster, Wuppertal, Mönchengladbach, Aachen and Paderborn (NRW.Mobidrom) |
 | Germany | Zeus | 14 | Bamberg, Donaueschingen, Freiburg im Breisgau, Leimen / Walldorf / Wiesloch, Konstanz, Ludwigsburg, Neustadt an der Weinstraße, Regensburg, Renningen, Schweinfurt, Singen, Tuttlingen, Villingen-Schwenningen and Würzburg |
 | Germany | Yoio | 3 | Erfurt, Freiburg im Breisgau and Göttingen |
 | Italy | Bird | 3 | Roma, Palermo and Napoli |
 | Italy | Elerent | 1 | Catania |
 
-German coverage contains 47 distinct cities, Italian coverage 4.
+German GBFS coverage contains 60 distinct cities (106 with Dott's anonymous
+app map), Italian coverage 4.
 The complete reviewed city bounds, public discovery URLs and aliases are in
 [`german-scooter-feeds.json`](../data/german-scooter-feeds.json) and
 [`italian-scooter-feeds.json`](../data/italian-scooter-feeds.json).
@@ -404,6 +411,61 @@ Bolt and Lime publish no Italian feed.
 - **Left out:** Elerent's Bologna feed (id 1887) listed one scooter, with
   e-bikes and petrol mopeds. Elerent also runs in Ragusa and Siracusa, with no
   public feed found.
+
+## Voi in North Rhine-Westphalia, October 2026
+
+- **Source:** [NRW.Mobidrom](https://www.mobilitaetsdaten.nrw), the state's
+  mobility data platform, publishes each operator's systems as GBFS 3.0 in a
+  bundle of its own (`voi-nrw`, `bolt-nrw`, `lime-nrw`) and all of them again
+  in `e-scooter-sharing-nrw`. The catalog reads the operators' bundles, one
+  feed per system, at
+  `https://www.mobilitaetsdaten.nrw/api/systemadapter-gbfs-provider/feed/v3.0/<bundle>/source-<operator>-<system>/gbfs.json`.
+- **Access:** the feeds answer 401 without an OAuth token. The scooter cache
+  asks for one with the client the datasets' descriptions publish for all
+  users, whose id and secret it keeps in its environment
+  (`MOBIDROM_CLIENT_ID`, `MOBIDROM_CLIENT_SECRET`), never in this repository.
+  One token, valid eight hours, serves every NRW feed; it is renewed two
+  minutes before it expires, and once at once when a feed answers 401
+  (`src/lib/clientCredentialsToken.ts`). The website reads no feed, so only
+  the cache has the client.
+- **Liveness:** at 14:12 on Saturday 24 October 2026 every Voi document was
+  one to two minutes old, and 1 to 2 % of a system's scooters changed from
+  one poll to the next, five minutes apart. Bolt's and Lime's documents
+  updated at 13:52 and 13:55 and then not again for at least 20 minutes, so
+  they are not on the map yet.
+- **Scooters:** through the cache's own code at 14:12, Voi had 16,455
+  available scooters: Köln 4,074, Düsseldorf / Neuss 2,192, Bonn / Siegburg /
+  Sankt Augustin 1,803, Dortmund 1,393, Duisburg / Oberhausen 1,293, Essen
+  1,259, Münster 1,069, Wuppertal 1,003, Mönchengladbach 855, Bochum / Herne /
+  Witten 640, Aachen 449 and Paderborn 425. No vehicle id appeared in two
+  systems. Wuppertal's feed also lists 131 e-bikes, which are left out.
+- **Towns:** a system's towns are those where at least about 20 of its
+  scooters stood at 14:03, by the municipalities' OpenStreetMap outlines:
+  Voi Bonn's 1,809 stood in Bonn (1,485), Siegburg (168) and Sankt Augustin
+  (153); Voi Düsseldorf's 2,184 in Düsseldorf (2,034) and Neuss (140); Voi
+  Bochum's 640 in Bochum (341), Herne (231) and Witten (66); Voi Duisburg /
+  Oberhausen's 1,289 in Duisburg (1,017), Oberhausen (257) and Mülheim an der
+  Ruhr (12). Fewer, as Mülheim's, count under the nearest of the feed's towns.
+  Siegburg and Witten are new towns; the others were Dott's already. Dott's
+  Sankt Augustin centre, the middle of its app region's box, lay 200 m from
+  Siegburg's, so it is now the town's own (OpenStreetMap's).
+- **Bounds:** each town's outline plus about 1 km (0.009° of latitude and
+  0.014° of longitude); a system's bounds take in all its towns'. They leave
+  out at most six of a system's scooters.
+- **Zones and prices:** each feed has its geofencing zones (Köln 406) and
+  pricing plans: in Köln no unlock fee and €0.30 a minute.
+- **Licence:** Voi Technology Germany GmbH licenses the data under
+  [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). The map's
+  credits say "Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0,
+  modified", and the Voi data the API serves is offered under the same licence.
+- **Not yet:** Bolt Services DE GmbH's four systems (CC BY 4.0) and LimeBike
+  Germany GmbH's two (dl-de/by-2-0) go on the map once their documents update
+  again. Bolt's Düsseldorf-Mönchengladbach system had 1 scooter in
+  Mönchengladbach and its Köln-Bonn system none in Bonn on 24 October; their
+  scooters stood in Düsseldorf, Neuss, Solingen, Monheim am Rhein and Hilden,
+  and in Köln and Brühl. The towns are routed by bounds and nearest centre,
+  not yet by outlines, which would also drop other operators' scooters in
+  towns they don't serve (`systemServesPoint`).
 
 ## ATOM's request rate, October 2026
 
