@@ -10,14 +10,14 @@ const guide: Guide = {
   headline: 'E-scooters in Munich: apps, prices, parking and the Oktoberfest rules',
   lede: 'To rent an e-scooter in Munich, use the Dott, Lime, Voi or Bolt app: you must be 18 and have a payment card, but need no driving licence. Ten minutes cost €4.00 with Dott and €3.59 with Voi (published rates, 12 October 2026); Lime and Bolt show their price in the app. In the old town you end a ride only at a marked bay, the English Garden is off limits, and MVG bans e-scooters from its U-Bahn, trams and buses.',
   published: '2026-10-13',
-  updated: '2026-10-14',
+  updated: '2026-10-24',
   city: 'de:München',
   sections: [
     {
       heading: 'Which e-scooter apps work in Munich?',
       blocks: [
         'The city and MVV, Munich’s public transport network, list four e-scooter operators: **Dott**, **Lime**, **Voi** and **Bolt**. If an older guide mentions Tier, that’s Dott now: the two merged.',
-        'ScootRadar shows Dott’s scooters on the [map around Munich](map:de:München): about 3,600 on 12 October 2026. Lime, Voi and Bolt run here too but aren’t on the map; find them in their own apps.',
+        'ScootRadar shows Dott and, since 24 October 2026, Voi on the [map around Munich](map:de:München): at 15:55 that Saturday, about 3,600 Dott and 6,800 Voi scooters, a snapshot, not the fleets. Find Lime and Bolt in their own apps.',
         'You rent in the operator’s app; Dott and Voi also work in **MVGO**, the app of MVG, Munich’s transport company, with an M-Login account. All four rent only to riders of 18 or over, although German law allows e-scooters from 14. Step by step: [how to rent an e-scooter](guide:how-to-rent).',
         'MVV also lists **emmy**, but it rents e-mopeds, not e-scooters: they need a driving licence and a helmet.',
       ],
@@ -124,7 +124,7 @@ const guide: Guide = {
             '**With an MVG subscription (not the €365 pupils’ ticket) or a Deutschlandticket bought in the MVV app:** the first 30 minutes are free on a bike, €1.50 on an e-bike.',
           ],
         },
-        'Book in the MVV app, the nextbike app or **MVGO**, where your M-Login also unlocks Dott and Voi scooters (but not Lime or Bolt). To see where the nearest Dott stands right now, open the [live map of Munich](map:de:München).',
+        'Book in the MVV app, the nextbike app or **MVGO**, where your M-Login also unlocks Dott and Voi scooters (but not Lime or Bolt). To see where the nearest Dott or Voi stands right now, open the [live map of Munich](map:de:München).',
       ],
     },
     {

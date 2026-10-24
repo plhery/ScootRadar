@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Berlin: apps, prices, parking zones and the rules',
   lede: 'To rent an e-scooter in Berlin, use the Lime, Bolt, Voi or Dott app (Zeus in Spandau and Reinickendorf): you must be 18 and have a payment card, but need no driving licence. Dott charges €0.75 to unlock plus €0.29 a minute, about €3.65 for ten minutes (published rate on 12 October 2026); the others show their price in the app. Ride on the bike lane, never on the pavement or through a park, and around the sights of Mitte end your ride only at a marked bay such as a Jelbi point.',
   published: '2026-10-12',
-  updated: '2026-10-23',
+  updated: '2026-10-24',
   city: 'de:Berlin',
   sections: [
     {
@@ -26,7 +26,7 @@ const guide: Guide = {
         },
         'Bird no longer runs in Berlin. Inside the S-Bahn ring, the circle line around the centre, the city allows at most 19,000 rental e-scooters, split evenly among the four operators there; outside it there is no cap.',
         'At the end of every ride you take a photo of the parked scooter: Berlin’s permits require proof like this. Step-by-step help is in [how to rent an e-scooter](guide:how-to-rent).',
-        'ScootRadar can read live data only from Dott in Berlin: on 12 October 2026 the [map around Berlin](map:de:Berlin) showed about 4,900 Dott scooters. Find the other four in their own apps.',
+        'ScootRadar shows Dott and, since 24 October 2026, Voi on the [map around Berlin](map:de:Berlin): at 15:55 that Saturday, about 4,800 Dott and 14,400 Voi scooters, a snapshot, not the fleets. Find Lime, Bolt and Zeus in their own apps.',
       ],
     },
     {
@@ -108,7 +108,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Each operator maps the city’s zones itself, and they change often, so the map in your app has the final word. To see where Dott scooters are right now, open the [live map of Berlin](map:de:Berlin).',
+        'Each operator maps the city’s zones itself, and they change often, so the map in your app has the final word. To see where Dott and Voi scooters are right now, open the [live map of Berlin](map:de:Berlin).',
       ],
     },
     {

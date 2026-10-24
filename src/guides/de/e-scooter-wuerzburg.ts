@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Würzburg 2026: Preise, Parken, Altstadt',
   description: 'E-Scooter Würzburg: was Zeus pro Minute kostet, wo du in Altstadt, am Main und an der Residenz nicht fahren oder parken darfst und ob er in die Tram darf.',
   headline: 'E-Scooter Würzburg: Preise, Fahrverbot in der Fussgängerzone und was an Main, Residenz und Uni gilt',
-  lede: 'Einen E-Scooter in Würzburg leihst du ab 18 und ohne Führerschein; unsere Karte zeigt Zeus. Laut Datenfeed kostete eine Zeus-Fahrt am Abend des 23. Oktober 2026 1 € fürs Entsperren und 0,25 € pro Minute, zehn Minuten also 3,50 €. Du fährst auf dem Radweg oder der Fahrbahn, nie durch die Fussgängerzone der Altstadt, über die Alte Mainbrücke, auf Gehwegen oder auf Wegen in Parks. Abstellen darfst du wie ein Fahrrad, aber nicht in der Fussgängerzone, in Grünanlagen und an Haltestellen; Zeus lässt dich zudem am Mainufer, am Residenzplatz und im Hofgarten keine Fahrt beenden. In Bus und Strassenbahn darf kein E-Scooter mit.',
+  lede: 'Einen E-Scooter in Würzburg leihst du ab 18 und ohne Führerschein; unsere Karte zeigt Zeus und Voi. Laut Datenfeed kostete eine Zeus-Fahrt am Abend des 23. Oktober 2026 1 € fürs Entsperren und 0,25 € pro Minute, zehn Minuten also 3,50 €. Du fährst auf dem Radweg oder der Fahrbahn, nie durch die Fussgängerzone der Altstadt, über die Alte Mainbrücke, auf Gehwegen oder auf Wegen in Parks. Abstellen darfst du wie ein Fahrrad, aber nicht in der Fussgängerzone, in Grünanlagen und an Haltestellen; Zeus lässt dich zudem am Mainufer, am Residenzplatz und im Hofgarten keine Fahrt beenden. In Bus und Strassenbahn darf kein E-Scooter mit.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'de:Würzburg',
@@ -16,8 +16,8 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Würzburg?',
       blocks: [
-        'Auf ihrer undatierten E-Scooter-Seite nennt die Stadt zwei Anbieter, die ihre Selbstverpflichtung unterschrieben haben: **Zeus** und **Voi**. Voi meldete seinen Start in Würzburg zum 28. März 2025; ob Voi heute noch hier fährt, konnten wir nicht prüfen. Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Die [Karte von Würzburg](map:de:Würzburg) zeigt nur Zeus: Am 23. Oktober 2026 um 15:18 Uhr waren es rund 175 Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Offene Daten von Voi für Würzburg haben wir nicht gefunden.',
+        'Auf ihrer undatierten E-Scooter-Seite nennt die Stadt zwei Anbieter, die ihre Selbstverpflichtung unterschrieben haben: **Zeus** und **Voi**. Voi meldete seinen Start in Würzburg zum 28. März 2025. Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
+        'Die [Karte von Würzburg](map:de:Würzburg) zeigt Zeus und seit dem 24. Oktober 2026 auch Voi: An jenem Samstag kurz vor 16 Uhr waren es rund 170 Zeus- und 230 Voi-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse.',
         'Im November 2025 meldete ein Stadtrat Beschwerden über herumstehende Roller eines insolventen Anbieters. Im März und April 2026 sagte Bürgermeisterin Vorlová, die ungenutzten grünen Roller würden nach und nach weggeräumt, von einer anderen Firma als dem Anbieter.',
       ],
     },
@@ -160,7 +160,7 @@ const guide: Guide = {
     },
     {
       question: 'Welche E-Scooter-App brauche ich in Würzburg?',
-      answer: 'Die von Zeus, den auch die [Live-Karte von Würzburg](map:de:Würzburg) zeigt. Die Stadt nennt zudem Voi; ob Voi heute hier fährt, konnten wir nicht prüfen. Du musst 18 sein, einen Führerschein brauchst du nicht.',
+      answer: 'Die von Zeus oder Voi, den beiden Anbietern, die die Stadt nennt; beide zeigt auch die [Live-Karte von Würzburg](map:de:Würzburg). Du musst 18 sein, einen Führerschein brauchst du nicht.',
     },
   ],
   sources: [

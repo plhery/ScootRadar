@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter hire in the UK: where you can rent one, who runs it and what it costs',
   lede: 'E-scooter hire in the UK is legal only in 21 government trial areas, all in England, and the trials are due to run until May 2028. Voi, Beryl, Lime, Dott and Bolt run the schemes. You need a full or provisional driving licence, and every operator we checked rents only to riders aged 18 or over. Pay as you go, unlocking costs £0 to £1 and riding 20p to 29p a minute, so 15 minutes cost £3.75 to £4.75 at the rates published on 12 October 2026. In London, Lime and Voi hire out e-scooters in 11 boroughs, and every ride ends in a marked bay.',
   published: '2026-10-12',
-  updated: '2026-10-23',
+  updated: '2026-10-24',
   sections: [
     {
       heading: 'E-scooter hire in the UK: the 21 trial areas and who runs them',
@@ -52,8 +52,8 @@ const guide: Guide = {
     {
       heading: 'E-scooter hire near me: which towns are on the live map?',
       blocks: [
-        'ScootRadar shows live Beryl, Bolt and Dott e-scooters in 10 of the 21 areas: [Bournemouth, Christchurch and Poole](map:gb:Bournemouth), Brighton, Cornwall, Leeds, Liverpool, Milton Keynes (Dott only), Norwich, Nottingham, Plymouth, and Bristol, Bath and Yate. It doesn’t show Voi or Lime, so **London isn’t on the map**, nor are Birmingham, Cambridge, Oxford or Salford; use the operator’s app there.',
-        'On 12 October 2026 the map showed about 2,200 vehicles around [Bristol](map:gb:Bristol), 1,800 around [Liverpool](map:gb:Liverpool) and 780 around [Nottingham](map:gb:Nottingham). Tap one to open the operator’s app, where you unlock and pay; positions can be a few minutes old.',
+        'ScootRadar shows live Beryl, Bolt, Dott and, since 24 October 2026, Voi e-scooters in 19 of the 21 areas: [Bournemouth, Christchurch and Poole](map:gb:Bournemouth), Brighton, Cornwall, Leeds, Liverpool, Milton Keynes (Dott only), Norwich, Nottingham, Plymouth, and Bristol, Bath and Yate, plus Voi’s nine areas, [London](map:gb:London) included. It doesn’t show Lime, so **Birmingham and Salford aren’t on the map**, nor are Lime’s London scooters; use the Lime app there.',
+        'At 14:55 on Saturday 24 October 2026 the map showed about 2,400 vehicles around [Bristol](map:gb:Bristol), 1,900 around [Liverpool](map:gb:Liverpool), 1,600 Voi in London, 1,200 around [Northampton](map:gb:Northampton) and 820 around [Nottingham](map:gb:Nottingham). Tap one to open the operator’s app, where you unlock and pay; positions can be a few minutes old.',
       ],
     },
     {

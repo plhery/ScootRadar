@@ -145,7 +145,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Per trovare il monopattino più vicino, di qualunque operatore che pubblica i suoi dati, guarda la [mappa](/map): un pulsante ti porta nell’app dell’operatore, dove sblocchi e paghi.',
+        'Per trovare il monopattino più vicino guarda la [mappa](/map), che mostra i mezzi di molti operatori: un pulsante ti porta nell’app dell’operatore, dove sblocchi e paghi.',
         '**Se sei in Italia in vacanza.** Le regole valgono anche per te, casco compreso: nella prima settimana di controlli sul contrassegno a Roma, riportano i giornali, su oltre 1.000 controlli le violazioni sono state più di 400, soprattutto per il casco, turisti compresi.',
         'Il contrassegno viene rilasciato solo a chi risiede in Italia o ci vive almeno 185 giorni l’anno («residenza normale»). Non abbiamo trovato indicazioni ufficiali per i turisti, ma stando alle norme chi è solo di passaggio non può mettere in regola il proprio monopattino: meglio noleggiare. In Svizzera, Ticino compreso, le regole sono diverse: le trovi nella [guida alle regole svizzere](guide:swiss-rules).',
       ],

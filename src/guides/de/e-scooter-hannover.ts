@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Hannover: Anbieter, Preise, Parkzonen und was die neuen Regeln ändern',
   lede: 'Einen E-Scooter in Hannover leihst du ab 18 und ohne Führerschein bei Bolt, Dott (früher Tier), Lime, Voi oder Ryde. Zehn Minuten kosten im Standardtarif bei Voi 2,20 € und bei Dott 3,90 € (Stand Oktober 2026); verbindlich ist der Preis in der App. In der Innenstadt parkst du auf markierten Abstellflächen, in Parks wie der Eilenriede und am Maschsee gar nicht. In Stadtbahnen und Bussen der ÜSTRA sind E-Scooter seit dem 1. April 2024 verboten, auch zusammengeklappt.',
   published: '2026-10-13',
-  updated: '2026-10-14',
+  updated: '2026-10-24',
   city: 'de:Hannover',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Laut Stadt vermieten fünf Anbieter in Hannover E-Scooter: **Bolt**, **Dott**, **Lime**, **Voi** und **Ryde**. Dott hiess früher Tier; wer Tier fuhr, nutzt heute die Dott-App. Ryde aus Norwegen ist erst seit Mai 2026 in der Stadt.',
         'Du leihst den Scooter in der App des Anbieters, laut Stadt ab 18, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte rund um Hannover](map:de:Hannover) nur Dott, weil es in Hannover nur von Dott offene Standortdaten bekommt: am Vormittag des 13. Oktober 2026 rund 2100 Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Bolt, Lime, Voi und Ryde fehlen auf der Karte; ihre Scooter findest du in ihren eigenen Apps.',
+        'ScootRadar zeigt auf der [Karte rund um Hannover](map:de:Hannover) Dott und seit dem 24. Oktober 2026 auch Voi: an jenem Samstag kurz vor 16 Uhr rund 2150 Dott- und 2750 Voi-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Bolt, Lime und Ryde fehlen auf der Karte; ihre Scooter findest du nur in ihren Apps.',
         'Dotts Gebiet reicht über die Stadtgrenze hinaus bis Langenhagen, Laatzen und Garbsen; Voi fährt laut eigener Mitteilung auch in Garbsen und Ronnenberg.',
       ],
     },
@@ -39,7 +39,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Ausgerechnet Dott, der Anbieter auf unserer Karte, ist damit im Standardtarif der teuerste.',
+        'Dott ist damit im Standardtarif der teuerste.',
         'Die Preise von Abos und Pässen zeigen alle Anbieter nur in der App. Laut HAZ spart, wer oft fährt: Mit Dotts 30-Tage-Abo «Flex» für 0,99 € kostet jede Fahrt bis 30 Minuten 1,60 €. Voi und Ryde verkaufen Monatspässe mit bis zu 300 Minuten für 24,99 €, Bolt einen 30-Tage-Pass mit 150 Minuten für 12,99 €.',
         'Die Anbieter ändern ihre Preise oft; verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Den nächsten Dott und eine Preisschätzung für deinen Weg zeigt die [Live-Karte von Hannover](map:de:Hannover).',
       ],
@@ -172,7 +172,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App kann ich in Hannover nutzen?',
-      answer: 'Die von Bolt, Dott, Lime, Voi oder Ryde: Diese fünf Anbieter vermieten laut Stadt in Hannover E-Scooter. Du musst mindestens 18 sein, einen Führerschein brauchst du nicht. Freie Dott-Scooter zeigt auch die [Live-Karte von Hannover](map:de:Hannover).',
+      answer: 'Die von Bolt, Dott, Lime, Voi oder Ryde: Diese fünf Anbieter vermieten laut Stadt in Hannover E-Scooter. Du musst mindestens 18 sein, einen Führerschein brauchst du nicht. Freie Dott- und Voi-Scooter zeigt auch die [Live-Karte von Hannover](map:de:Hannover).',
     },
     {
       question: 'Welcher E-Scooter-Anbieter ist in Hannover am günstigsten?',

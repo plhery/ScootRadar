@@ -150,7 +150,7 @@ const guide: Guide = {
         'Elke app toont alleen zijn eigen steps. Twee soorten apps tonen er meer:',
         {
           list: [
-            '**Kaarten die je doorsturen.** [ScootRadar](/map) zet de steps van de aanbieders die open data publiceren op één kaart, met batterij en bereik als de aanbieder die deelt, de tijd te voet en een geschatte prijs volgens de gepubliceerde tarieven. Gratis, zonder account en zonder reclame, in je browser of als iPhone-app. Reserveren of ontgrendelen kan het niet: een knop opent de app van de aanbieder, en de posities kunnen een paar minuten oud zijn. Google Maps toont in de steden die het dekt ook de dichtstbijzijnde step met zijn prijs, en opent dan de app van de aanbieder.',
+            '**Kaarten die je doorsturen.** [ScootRadar](/map) zet de steps van veel aanbieders op één kaart, met batterij en bereik als de aanbieder die deelt, de tijd te voet en een geschatte prijs volgens de gepubliceerde tarieven. Gratis, zonder account en zonder reclame, in je browser of als iPhone-app. Reserveren of ontgrendelen kan het niet: een knop opent de app van de aanbieder, en de posities kunnen een paar minuten oud zijn. Google Maps toont in de steden die het dekt ook de dichtstbijzijnde step met zijn prijs, en opent dan de app van de aanbieder.',
             '**Apps waarin je huurt.** In de Uber-app kan je in sommige steden een Lime huren; welke steden, vermeldt Lime niet.',
           ],
         },

@@ -10,14 +10,14 @@ const guide: Guide = {
   headline: 'Monopattini sharing a Napoli: operatori, prezzi, zone vietate e parcheggio nel 2026',
   lede: 'I monopattini sharing a Napoli, a ottobre 2026, sono quelli di Bird e Voi, autorizzati dal Comune con 700 mezzi ciascuno fino al 30 giugno 2027. Voi costa 1 euro di sblocco più 0,28 euro al minuto; il prezzo di Bird lo vedi nell’app. Servono 18 anni, un documento d’identità e il casco, obbligatorio per tutti, che porti tu. Nel centro storico, in piazza del Plebiscito e su via Partenope il Comune vieta la sosta libera, anche se a volte l’app ti lascia chiudere la corsa.',
   published: '2026-10-13',
-  updated: '2026-10-14',
+  updated: '2026-10-24',
   city: 'it:Napoli',
   sections: [
     {
       heading: 'Quali monopattini in sharing ci sono a Napoli',
       blocks: [
         'A Napoli possono offrire monopattini in sharing solo gli operatori autorizzati dal Comune: a ottobre 2026 sono **Bird** e **Voi**. Il 1° luglio 2025 il Comune ha rinnovato le loro autorizzazioni, 700 monopattini ciascuno, fino al **30 giugno 2027**; al 14 ottobre 2026 non ha ancora annunciato cosa succederà dopo. L’avviso pubblico del 2023 ammette fino a tre operatori e 2.100 monopattini in tutto.',
-        'Il 13 ottobre 2026 sulla [mappa di Napoli](map:it:Napoli) c’erano circa 500 monopattini Bird, soprattutto in centro e a Chiaia; nella periferia nord ed est quasi nessuno. ScootRadar mostra Bird; Voi non pubblica dati che possiamo leggere, quindi i suoi monopattini non compaiono: apri anche l’app di Voi.',
+        'Sulla [mappa di Napoli](map:it:Napoli) ScootRadar mostra Bird e, dal 24 ottobre 2026, anche Voi: quel sabato alle 15:55 c’erano circa 620 monopattini Bird e 450 Voi, una fotografia del momento, non le flotte. Il 13 ottobre i Bird erano soprattutto in centro e a Chiaia; nella periferia nord ed est quasi nessuno.',
         'Si noleggia giorno e notte, tutti i giorni, ma con il maltempo il servizio può essere sospeso.',
       ],
     },
@@ -26,7 +26,7 @@ const guide: Guide = {
       blocks: [
         {
           steps: [
-            'Cerca un Bird sulla [mappa](map:it:Napoli), o un Voi nella sua app.',
+            'Cerca un Bird o un Voi sulla [mappa](map:it:Napoli) o nell’app dell’operatore.',
             'Iscriviti nell’app con un documento d’identità (se sei turista va bene il passaporto) e una carta. Prima del primo noleggio il Comune impone la registrazione del documento e un test sulle regole, nell’app. Bird e Voi chiedono **18 anni**; la patente non serve.',
             'Metti il casco, controlla freni e luci e verifica che ci sia il contrassegno, sul parafango posteriore o davanti al piantone dello sterzo.',
             'Inquadra il QR code e guida su strada o su pista ciclabile, mai sul marciapiede.',
@@ -162,7 +162,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quali app servono per i monopattini a Napoli?',
-      answer: 'Quelle di Bird e Voi, autorizzati fino al 30 giugno 2027 con 700 monopattini ciascuno. Sulla mappa di ScootRadar trovi i Bird, i Voi solo nella loro app: conviene averle tutte e due.',
+      answer: 'Quelle di Bird e Voi, autorizzati fino al 30 giugno 2027 con 700 monopattini ciascuno. Sulla mappa di ScootRadar trovi i Bird e, dal 24 ottobre 2026, anche i Voi, ma noleggi solo dalle loro app: conviene averle tutte e due.',
     },
     {
       question: 'Il casco è obbligatorio anche per i maggiorenni?',

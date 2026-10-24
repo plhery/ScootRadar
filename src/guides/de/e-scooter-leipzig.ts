@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Leipzig: Dott und Voi, Preise, Mobilitätsstationen und was in Innenstadt und Strassenbahn gilt',
   lede: 'Einen E-Scooter in Leipzig leihst du ab 18 und ohne Führerschein bei Dott, früher TIER, oder bei Voi, in deren Apps oder in LeipzigMOVE, der App der Leipziger Verkehrsbetriebe (LVB). In LeipzigMOVE kostet jeder Scooter 1 € fürs Entsperren und 0,22 € pro Minute, in der Dott-App ebenso; zehn Minuten kosten also 3,20 € (Stand 17. Oktober 2026). Abstellen darfst du nur an markierten Stationen, meist Mobilitätsstationen der LVB, und innerhalb des Promenadenrings um die Innenstadt gibt es kaum welche. In Strassenbahnen und Bussen der LVB darf seit dem 1. Mai 2024 kein E-Scooter mehr mit, auch kein eigener.',
   published: '2026-10-17',
-  updated: '2026-10-23',
+  updated: '2026-10-24',
   city: 'de:Leipzig',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Im Oktober 2026 vermieten zwei Anbieter E-Scooter in Leipzig: **Dott**, das früher TIER hiess, und **Voi**. Die LVB hatten das Angebot 2021 an TIER und Voi vergeben; wie lange die Vereinbarung läuft, sagen weder LVB noch Stadt. Du mietest in der App des Anbieters oder in **LeipzigMOVE**, wo du mit einem Konto auch Fahrkarten, nextbike-Räder und Taxis buchst. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         '**Bolt gibt es in Leipzig nur als Fahrdienst.** Laut seiner Website bietet Bolt in Leipzig Fahrten mit Fahrer und Taxis an, aber keine E-Scooter.',
-        '**Voi fehlt auf unserer Karte.** ScootRadar zeigt auf der [Karte von Leipzig](map:de:Leipzig) nur Dott, weil nur Dott für Leipzig offene Standortdaten veröffentlicht: am Abend des 16. Oktober 2026 und in der Nacht darauf jeweils rund 300 Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Wo Voi-Scooter stehen, zeigen nur die Voi-App und LeipzigMOVE.',
+        'ScootRadar zeigt auf der [Karte von Leipzig](map:de:Leipzig) Dott und seit dem 24. Oktober 2026 auch Voi: an jenem Samstag kurz vor 16 Uhr rund 350 Dott- und 300 Voi-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse.',
       ],
     },
     {
@@ -135,7 +135,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App brauche ich in Leipzig?',
-      answer: 'Die von Dott oder Voi, oder LeipzigMOVE der LVB, das beide Anbieter zeigt. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Dott-Scooter zeigt auch die [Live-Karte von Leipzig](map:de:Leipzig), Voi-Scooter nur die Voi-App und LeipzigMOVE.',
+      answer: 'Die von Dott oder Voi, oder LeipzigMOVE der LVB, das beide Anbieter zeigt. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Dott- und Voi-Scooter zeigt auch die [Live-Karte von Leipzig](map:de:Leipzig).',
     },
     {
       question: 'Gibt es TIER noch in Leipzig?',

@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Hvernig á að leigja rafskútu (rafhlaupahjól): frá appinu þar til ferðinni lýkur',
   lede: 'Til að leigja rafskútu sækirðu Hopp-appið, skráir þig með símanúmeri, Apple ID eða Google og bætir við greiðslukorti. Svo skannarðu QR-kóðann á stýrinu og ferð af stað, og í lok ferðar leggurðu skútunni þar sem appið leyfir og tekur mynd af henni. Hopp leigir aðeins þeim sem eru orðnir 18 ára, þótt lögin leyfi 13 ára börnum að keyra rafskútu. Ferðin kostar 115 kr. í upphafsgjald og 45 kr. á mínútu (birt verð Hopp 13. október 2026), svo tíu mínútur kosta 565 kr.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-24',
   sections: [
     {
       heading: 'Hvernig leigi ég rafskútu? Skref fyrir skref',
@@ -162,7 +162,7 @@ const guide: Guide = {
       heading: 'Hvernig finn ég næstu rafskútu?',
       blocks: [
         'Í júní 2024 fór Strætó að sýna rafskútur á rauntímakortinu á vefnum og í Klappinu, og með því að smella á skútu opnaðist hún í appi fyrirtækisins; hvort það virkar enn höfum við ekki fengið staðfest.',
-        '[ScootRadar](/map) sýnir á einu korti rafskútur allra fyrirtækja sem birta opin gögn, með hleðslu, göngutíma og áætluðu verði, ókeypis og án skráningar. Á Íslandi á það við um Hopp: 13. október 2026 voru um 2.800 Hopp-skútur á kortinu, um 2.200 á [höfuðborgarsvæðinu](map:is:Reykjavík), um 180 á [Akureyri](map:is:Akureyri) og hinar í 15 öðrum bæjum: Selfossi, Reykjanesbæ, Akranesi, Vestmannaeyjum, Sauðárkróki, Stykkishólmi, Borgarnesi, Ólafsvík, Vík, Húsavík, Dalvík, Hellissandi, Sandgerði, Vogum og Garði.',
+        '[ScootRadar](/map) sýnir á einu korti rafskútur margra fyrirtækja, með hleðslu, göngutíma og áætluðu verði, ókeypis og án skráningar. Á Íslandi á það við um Hopp: 13. október 2026 voru um 2.800 Hopp-skútur á kortinu, um 2.200 á [höfuðborgarsvæðinu](map:is:Reykjavík), um 180 á [Akureyri](map:is:Akureyri) og hinar í 15 öðrum bæjum: Selfossi, Reykjanesbæ, Akranesi, Vestmannaeyjum, Sauðárkróki, Stykkishólmi, Borgarnesi, Ólafsvík, Vík, Húsavík, Dalvík, Hellissandi, Sandgerði, Vogum og Garði.',
         'Bolt birtir engin opin gögn og sést því ekki. Kortið getur hvorki tekið frá né aflæst skútu: hnappur opnar Hopp-appið, þar sem þú aflæsir og borgar, og staðsetningarnar geta verið nokkurra mínútna gamlar.',
       ],
     },

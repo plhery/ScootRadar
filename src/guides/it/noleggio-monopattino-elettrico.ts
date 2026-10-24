@@ -143,11 +143,11 @@ const guide: Guide = {
         'L’app di ogni operatore mostra solo i suoi mezzi. Per vederne di più ci sono due tipi di app:',
         {
           list: [
-            '**Mappe che ti rimandano all’app dell’operatore.** [ScootRadar](/map) mette su una sola mappa i monopattini degli operatori che pubblicano dati aperti, con batteria e autonomia quando ci sono, il tempo a piedi e una stima del prezzo dalle tariffe pubblicate. È gratis, senza account e senza pubblicità, nel browser o come app per iPhone. Non prenota e non sblocca: un pulsante apre l’app dell’operatore, e le posizioni possono risalire a qualche minuto prima. Anche Google Maps, nelle città che copre, mostra il mezzo più vicino e poi apre l’app dell’operatore.',
+            '**Mappe che ti rimandano all’app dell’operatore.** [ScootRadar](/map) mette su una sola mappa i monopattini di molti operatori, con batteria e autonomia quando ci sono, il tempo a piedi e una stima del prezzo dalle tariffe pubblicate. È gratis, senza account e senza pubblicità, nel browser o come app per iPhone. Non prenota e non sblocca: un pulsante apre l’app dell’operatore, e le posizioni possono risalire a qualche minuto prima. Anche Google Maps, nelle città che copre, mostra il mezzo più vicino e poi apre l’app dell’operatore.',
             '**App in cui prenoti e paghi.** In alcune città, Zurigo compresa, noleggi i Lime dall’app di Uber; a Berlino, Monaco e Oslo lo fanno le app dei trasporti pubblici, per alcuni operatori. Lì i pass dell’operatore di solito non valgono.',
           ],
         },
-        'In Italia la mappa copre [Roma](map:it:Roma) e [Palermo](map:it:Palermo), con Bird e Dott (Lime lo trovi nella sua app), i Bird di [Napoli](map:it:Napoli), i monopattini di Elerent a [Catania](map:it:Catania) e, dal 24 ottobre 2026, i Dott di altre città, come [Milano](map:it:Milano) e [Torino](map:it:Torino). In Ticino, intorno a [Locarno](map:ch:locarno), mostra i mezzi PubliBike, che prendi e riconsegni in una stazione. [Apri la mappa](/map) per vedere chi ha un monopattino vicino a te.',
+        'In Italia la mappa copre [Roma](map:it:Roma) e [Palermo](map:it:Palermo), con Bird e Dott (Lime lo trovi nella sua app), i Bird di [Napoli](map:it:Napoli) e i monopattini di Elerent a [Catania](map:it:Catania); dal 24 ottobre 2026 mostra anche i Dott di altre città, come [Milano](map:it:Milano) e [Torino](map:it:Torino), e i Voi di Napoli e [Reggio Emilia](map:it:Reggio nell\'Emilia). In Ticino, intorno a [Locarno](map:ch:locarno), mostra i mezzi PubliBike, che prendi e riconsegni in una stazione. [Apri la mappa](/map) per vedere chi ha un monopattino vicino a te.',
       ],
     },
   ],

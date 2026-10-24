@@ -148,7 +148,7 @@ const guide: Guide = {
         'Hver app viser bare sin egen flåte. To typer apper viser flere:',
         {
           list: [
-            '**Kart som sender deg videre.** [ScootRadar](/map) viser elsparkesyklene til alle operatører som publiserer åpne data, på ett kart, med batteri og rekkevidde der operatøren deler det, gangtid og et prisanslag ut fra publiserte priser. Det er gratis, uten konto og uten reklame, i nettleseren eller som iPhone-app. Det kan ikke reservere eller låse opp: En knapp åpner operatørens app, og posisjonene kan være noen minutter gamle. Google Maps viser også nærmeste sparkesykkel med pris i byene det dekker, og åpner så operatørens app.',
+            '**Kart som sender deg videre.** [ScootRadar](/map) viser elsparkesyklene til mange operatører på ett kart, med batteri og rekkevidde der operatøren deler det, gangtid og et prisanslag ut fra publiserte priser. Det er gratis, uten konto og uten reklame, i nettleseren eller som iPhone-app. Det kan ikke reservere eller låse opp: En knapp åpner operatørens app, og posisjonene kan være noen minutter gamle. Google Maps viser også nærmeste sparkesykkel med pris i byene det dekker, og åpner så operatørens app.',
             '**Apper du kan leie i.** I Ruter-appen kan du leie Bolt, Ryde og Voi i Oslo, Bærum, Asker, Lørenskog, Lillestrøm og Rælingen. Ruter sjekker alderen din før du kan leie, du betaler enkeltturer med kort til samme pris som i operatørens app, og passene dine hos operatøren gjelder ikke der.',
           ],
         },

@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter mieten: So funktioniert’s, von der App bis zum Ende der Fahrt',
   lede: 'E-Scooter mieten funktioniert in der Schweiz und in Deutschland fast überall gleich: App des Anbieters laden, mit Handynummer und Zahlungsmittel registrieren, QR-Code am Lenker scannen und losfahren, am Ziel in einer erlaubten Zone abstellen und die Fahrt mit einem Foto beenden. Die grossen Anbieter vermieten in beiden Ländern erst ab 18; einen Führerausweis oder Führerschein brauchst du nicht. Du zahlst eine Entsperrgebühr und einen Minutenpreis: Voi veröffentlichte am 12. Oktober 2026 für Bern CHF 1.– plus 42 Rappen pro Minute und für Stuttgart 0,49 € plus 0,24 € pro Minute; zehn Minuten kosten also CHF 5.20 oder 2,89 €.',
   published: '2026-10-12',
-  updated: '2026-10-23',
+  updated: '2026-10-24',
   sections: [
     {
       heading: 'E-Scooter oder E-Trottinett mieten: Schritt für Schritt',
@@ -177,7 +177,7 @@ const guide: Guide = {
         'Die App eines Anbieters zeigt nur seine eigenen Scooter. Mehrere Anbieter auf einmal zeigen dir zwei Arten von Apps:',
         {
           list: [
-            '**Karten, die dich zur App des Anbieters weiterleiten.** [ScootRadar](/map) zeigt auf einer Karte die Scooter aller Anbieter, die offene Daten veröffentlichen: mit Gehzeit, Akku und Reichweite, wo angegeben, und einer Preisschätzung aus den veröffentlichten Tarifen. Gratis, ohne Konto und ohne Werbung, im Browser oder als iPhone-App. Reservieren oder entsperren kann sie nicht: Ein Button öffnet die App des Anbieters, und die Standorte können einige Minuten alt sein. Auch Google Maps zeigt in manchen Städten Scooter mit Preis und leitet zur App weiter.',
+            '**Karten, die dich zur App des Anbieters weiterleiten.** [ScootRadar](/map) zeigt auf einer Karte die Scooter vieler Anbieter: mit Gehzeit, Akku und Reichweite, wo angegeben, und einer Preisschätzung aus den veröffentlichten Tarifen. Gratis, ohne Konto und ohne Werbung, im Browser oder als iPhone-App. Reservieren oder entsperren kann sie nicht: Ein Button öffnet die App des Anbieters, und die Standorte können einige Minuten alt sein. Auch Google Maps zeigt in manchen Städten Scooter mit Preis und leitet zur App weiter.',
             '**Apps, in denen du direkt buchst.** Lime kannst du in manchen Städten über die Uber-App mieten, in Zürich zum Beispiel. In Berlin buchst du in der BVG-App Jelbi Scooter von Voi, Lime, Bolt und Dott; in München in der MVGO-App Scooter von Voi und Dott.',
           ],
         },

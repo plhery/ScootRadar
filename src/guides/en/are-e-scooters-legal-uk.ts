@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Are e-scooters legal in the UK? What you can ride, where, and what it costs if you get it wrong',
   lede: 'E-scooters are legal in the UK only as rentals in an official trial area. A privately owned e-scooter is illegal on public roads, pavements and cycle lanes and in parks; you may ride it only on private land with the landowner’s permission. The rental trials run in 21 areas, all in England, until May 2028, and you need a full or provisional driving licence to ride. As of 12 October 2026 the government has promised a new law but has not put a bill before Parliament.',
   published: '2026-10-12',
-  updated: '2026-10-18',
+  updated: '2026-10-24',
   sections: [
     {
       heading: 'Are e-scooters legal in the UK? Private vs rental',
@@ -99,7 +99,7 @@ const guide: Guide = {
     {
       heading: 'E-scooter rental trial areas in 2026',
       blocks: [
-        'According to the government’s list, last updated on 7 July 2026, you can ride a rental e-scooter in these 21 areas, all in England. Every area has an operator, but not every operator publishes open data on where its scooters are, so in 11 areas our map shows nothing. The last column names the operator you’ll find on the map; some areas have more than one operator.',
+        'According to the government’s list, last updated on 7 July 2026, you can ride a rental e-scooter in these 21 areas, all in England. Every area has an operator, but in 2 areas, Salford and the West Midlands, our map shows nothing. The last column names the operator you’ll find on the map, Voi since 24 October 2026; some areas have more than one operator.',
         {
           table: {
             caption: 'Rental e-scooter trial areas, as of the government list updated 7 July 2026',
@@ -107,23 +107,23 @@ const guide: Guide = {
             rows: [
               ['Bournemouth and Poole', 'Bournemouth, Christchurch, Poole', 'Beryl'],
               ['Brighton and Hove', 'Brighton and Hove, since July 2026', 'Beryl'],
-              ['Buckinghamshire', 'Aylesbury, High Wycombe', 'Not shown'],
-              ['Cambridge', 'Cambridge', 'Not shown'],
+              ['Buckinghamshire', 'Aylesbury, High Wycombe', 'Voi'],
+              ['Cambridge', 'Cambridge', 'Voi'],
               ['Cornwall', 'Falmouth, Newquay, Penzance, Truro, since summer 2026', 'Beryl'],
-              ['Essex', 'Braintree, Chelmsford', 'Not shown'],
-              ['Gloucestershire', 'Cheltenham, Gloucester and surrounding areas', 'Not shown'],
+              ['Essex', 'Braintree, Chelmsford', 'Voi'],
+              ['Gloucestershire', 'Cheltenham, Gloucester and surrounding areas', 'Voi'],
               ['Leeds', 'Leeds, since 19 March 2026', 'Beryl'],
               ['Liverpool', 'Liverpool', 'Bolt'],
-              ['London', '11 boroughs (see below)', 'Not shown (Lime and Voi run it)'],
+              ['London', '11 boroughs (see below)', 'Voi (Lime not shown)'],
               ['Milton Keynes', 'Milton Keynes', 'Dott'],
-              ['North and West Northamptonshire', 'Northampton, Kettering, Corby, Wellingborough, Rushden, Higham Ferrers', 'Not shown'],
+              ['North and West Northamptonshire', 'Northampton, Kettering, Corby, Wellingborough, Rushden, Higham Ferrers', 'Voi'],
               ['Norwich', 'Norwich, Hethersett and Wymondham', 'Beryl'],
               ['Nottingham', 'Nottingham', 'Dott'],
-              ['Oxford', 'Oxford', 'Not shown'],
+              ['Oxford', 'Oxford', 'Voi'],
               ['Plymouth', 'Plymouth, since 28 July 2026', 'Beryl'],
               ['Salford', 'Salford', 'Not shown'],
-              ['Slough', 'Slough', 'Not shown'],
-              ['Solent', 'Isle of Wight, Portsmouth, Southampton', 'Not shown'],
+              ['Slough', 'Slough', 'Voi'],
+              ['Solent', 'Isle of Wight, Portsmouth, Southampton', 'Voi'],
               ['West Midlands', 'Birmingham, Coventry (for now e-scooters only in Birmingham and at the University of Warwick)', 'Not shown'],
               ['West of England', 'Bristol, Bath, parts of South Gloucestershire', 'Dott'],
             ],
@@ -146,7 +146,7 @@ const guide: Guide = {
           ],
         },
         'Don’t take an e-scooter on the Tube or a bus. Since 13 December 2021 private e-scooters and e-unicycles have been banned from all TfL services and stations, even when folded, after battery fires; the fine is up to £1,000. Rental e-scooters have never been allowed on board either. A kick scooter without a motor is fine if you carry it.',
-        'London’s scooters don’t appear on our map, so use the Lime or Voi app there.',
+        'Since 24 October 2026 our [map of London](map:gb:London) has shown Voi’s scooters: about 1,600 at 14:55 that Saturday, a snapshot, not the fleet. Lime’s aren’t on it, so use the Lime app for those.',
       ],
     },
     {
