@@ -1866,7 +1866,39 @@
         "east": 6.9324
       },
       "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
-      "dottAppRegion": "kEhECXiFquicoB3acJuH"
+      "dottAppRegion": "kEhECXiFquicoB3acJuH",
+      "areas": [
+        {
+          "city": "Oberhausen",
+          "center": [
+            51.4696,
+            6.8514
+          ],
+          "bounds": {
+            "south": 51.4397,
+            "north": 51.5638,
+            "west": 6.7978,
+            "east": 6.9324
+          }
+        },
+        {
+          "city": "Mülheim an der Ruhr",
+          "aliases": [
+            "Muelheim an der Ruhr",
+            "Mulheim an der Ruhr"
+          ],
+          "center": [
+            51.4273,
+            6.8829
+          ],
+          "bounds": {
+            "south": 51.4043,
+            "north": 51.4804,
+            "west": 6.7978,
+            "east": 6.9324
+          }
+        }
+      ]
     },
     {
       "id": "dott_de_osnabruck",

@@ -497,5 +497,5 @@ export const COUNTRY_CREDIT_LINKS: readonly { label: string; href: string }[] = 
   { label: "AU/TR/MY/KR: Beam map", href: "https://www.ridebeam.com/" },
   { label: "US/KR: GCOO map", href: "https://gcoo.io/" },
   { label: "KR: Kickgoing map", href: "https://kickgoing.io/" },
-  { label: "CH/FR/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL", href: "https://opendatacommons.org/licenses/odbl/" },
+  { label: "CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL", href: "https://opendatacommons.org/licenses/odbl/" },
 ];

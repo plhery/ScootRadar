@@ -48,7 +48,8 @@
           {"label": "Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified", "href": "https://creativecommons.org/licenses/by-sa/4.0/"},
           { "label": "DE: Dott map", "href": "https://ridedott.com/" },
           { "label": "DE: Voi map", "href": "https://www.voi.com/" },
-          { "label": "DE: Qick map", "href": "https://www.qickscooters.com/" }
+          { "label": "DE: Qick map", "href": "https://www.qickscooters.com/" },
+          { "label": "DE: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
         ]
       }
     },
@@ -105,7 +106,8 @@
         "attribution": "Italy: Bird, Elerent GBFS; Dott anonymous app map; Voi authenticated rider map",
         "gbfs": ["Bird", "Elerent"],
         "links": [{ "label": "IT: Dott map", "href": "https://ridedott.com/" },
-          { "label": "IT: Voi map", "href": "https://www.voi.com/" }
+          { "label": "IT: Voi map", "href": "https://www.voi.com/" },
+          { "label": "IT: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
         ]
       }
     },
@@ -122,7 +124,8 @@
         "attribution": "Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be)",
         "gbfs": ["Bolt", "Dott", "Voi", "Hoppy"],
         "links": [
-          { "label": "BE: Pony · transportdata.be", "href": "https://transportdata.be/dataset/pony_charleroi" }
+          { "label": "BE: Pony · transportdata.be", "href": "https://transportdata.be/dataset/pony_charleroi" },
+          { "label": "BE: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
         ]
       }
     },

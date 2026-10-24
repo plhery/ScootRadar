@@ -448,7 +448,10 @@ Bolt and Lime publish no Italian feed.
   (153); Voi Düsseldorf's 2,184 in Düsseldorf (2,034) and Neuss (140); Voi
   Bochum's 640 in Bochum (341), Herne (231) and Witten (66); Voi Duisburg /
   Oberhausen's 1,289 in Duisburg (1,017), Oberhausen (257) and Mülheim an der
-  Ruhr (12). Fewer, as Mülheim's, count under the nearest of the feed's towns.
+  Ruhr (12). Fewer count under the nearest of the feed's towns, but Mülheim
+  has had its own outline since 25 October 2026, for Dott's 300 scooters there
+  ([Dott's app map](dott-app-map.md#towns-inside-a-region)), so Voi's few in
+  Mülheim, outside its operating area, are dropped.
   Siegburg and Witten are new towns; the others were Dott's already. Dott's
   Sankt Augustin centre, the middle of its app region's box, lay 200 m from
   Siegburg's, and its Oberhausen centre outside Oberhausen, so both are now
@@ -485,6 +488,9 @@ Bolt and Lime publish no Italian feed.
   Düsseldorf-Mönchengladbach system had 1 scooter in Mönchengladbach and its
   Köln-Bonn system none in Bonn that day; their scooters stood in Düsseldorf,
   Neuss, Solingen, Monheim am Rhein and Hilden, and in Köln and Brühl.
+  Overnight to 25 October they still updated once an hour, every 59 to 61
+  minutes from 16:54 to 23:55; Bolt Essen-Duisburg listed 1,143 available
+  scooters, and again none moved between updates.
 
 ## ATOM's request rate, October 2026
 

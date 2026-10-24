@@ -93,6 +93,25 @@ Sources: [Helsinki](https://www.hel.fi/en/urban-environment-and-traffic/cycling/
 [Espoo](https://www.espoo.fi/en/transport-and-streets/sustainable-forms-transport),
 [Vantaa's 2026 permit terms, §6.1](https://www.vantaa.fi/sites/default/files/document/Vantaa-mikroliikennelupa-ehdot-2026.pdf).
 
+### Towns inside a region
+
+A region can span several towns. As for Voi in North Rhine-Westphalia, a
+region's towns are those where at least about 20 of its scooters stand, by
+the municipalities' OpenStreetMap outlines, and each town's bounds are its
+outline plus about 1 km, here kept inside the region's own box, which the
+collector asks for. Counted on the night of 24 to 25 October 2026:
+
+- **Oberhausen** (`kEhECXiFquicoB3acJuH`): 239 scooters in Oberhausen and 301
+  in Mülheim an der Ruhr, which all counted under Oberhausen. The region
+  reaches no further south than 51.4075°, so the box was not widened.
+  Mülheim's outline also drops Voi's few scooters there (9): Voi Duisburg /
+  Oberhausen's operating area stops at the town line, and its feed's global
+  rule allows no ride to start outside it.
+- **Torino** (`C5CS6ie5FIim6JaKNx68`): of 1,789, Torino 1,216, Settimo
+  Torinese 123, Moncalieri 122, Collegno 120, Nichelino 100, Rivoli 60,
+  Grugliasco 24 and Borgaro Torinese 18 (18 again in a second count);
+  Venaria Reale's 6 count under the nearest of these towns.
+
 ## Official access and email
 
 Dott documents authenticated partner GBFS through

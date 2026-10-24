@@ -181,8 +181,8 @@
       "provider": "dott",
       "city": "Torino",
       "center": [
-        45.07,
-        7.6621
+        45.0678,
+        7.6825
       ],
       "bounds": {
         "south": 44.9259,
@@ -194,6 +194,115 @@
       "dottAppRegion": "C5CS6ie5FIim6JaKNx68",
       "aliases": [
         "Turin"
+      ],
+      "areas": [
+        {
+          "city": "Torino",
+          "aliases": [
+            "Turin"
+          ],
+          "center": [
+            45.0678,
+            7.6825
+          ],
+          "bounds": {
+            "south": 44.9978,
+            "north": 45.1492,
+            "west": 7.5651,
+            "east": 7.7861
+          }
+        },
+        {
+          "city": "Settimo Torinese",
+          "center": [
+            45.1372,
+            7.7713
+          ],
+          "bounds": {
+            "south": 45.1024,
+            "north": 45.1778,
+            "west": 7.7046,
+            "east": 7.8341
+          }
+        },
+        {
+          "city": "Moncalieri",
+          "center": [
+            45.0005,
+            7.6848
+          ],
+          "bounds": {
+            "south": 44.9259,
+            "north": 45.0402,
+            "west": 7.6353,
+            "east": 7.7698
+          }
+        },
+        {
+          "city": "Collegno",
+          "center": [
+            45.0775,
+            7.5724
+          ],
+          "bounds": {
+            "south": 45.0602,
+            "north": 45.1292,
+            "west": 7.5419,
+            "east": 7.6356
+          }
+        },
+        {
+          "city": "Nichelino",
+          "center": [
+            44.9955,
+            7.6466
+          ],
+          "bounds": {
+            "south": 44.954,
+            "north": 45.0202,
+            "west": 7.5672,
+            "east": 7.6757
+          }
+        },
+        {
+          "city": "Rivoli",
+          "center": [
+            45.0697,
+            7.5177
+          ],
+          "bounds": {
+            "south": 45.0301,
+            "north": 45.1049,
+            "west": 7.4693,
+            "east": 7.5926
+          }
+        },
+        {
+          "city": "Grugliasco",
+          "center": [
+            45.068,
+            7.5776
+          ],
+          "bounds": {
+            "south": 45.0247,
+            "north": 45.0801,
+            "west": 7.542,
+            "east": 7.638
+          }
+        },
+        {
+          "city": "Borgaro Torinese",
+          "center": [
+            45.1521,
+            7.658
+          ],
+          "bounds": {
+            "south": 45.1156,
+            "north": 45.1736,
+            "west": 7.6245,
+            "east": 7.7066
+          }
+        }
       ]
     },
     {

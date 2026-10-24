@@ -457,7 +457,7 @@ describe('ControlSheet settings', () => {
       'AU/TR/MY/KR: Beam map',
       'US/KR: GCOO map',
       'KR: Kickgoing map',
-      'CH/FR/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL',
+      'CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL',
       'Search · Geoapify',
       'Search · Photon, komoot',
       'Parking · Métropole Européenne de Lille',

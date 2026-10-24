@@ -428,7 +428,8 @@ enum ScooterProviderCoverage {
         systems.append((.dott, GeoBounds(south: 51.0649, west: 6.8748, north: 51.1302, east: 6.9184)))
         systems.append((.dott, GeoBounds(south: 54.0399, west: 9.9342, north: 54.1434, east: 10.0445)))
         systems.append((.dott, GeoBounds(south: 51.1527, west: 6.6248, north: 51.2372, east: 6.7433)))
-        systems.append((.dott, GeoBounds(south: 51.4043, west: 6.7978, north: 51.5638, east: 6.9324)))
+        systems.append((.dott, GeoBounds(south: 51.4397, west: 6.7978, north: 51.5638, east: 6.9324)))
+        systems.append((.dott, GeoBounds(south: 51.4043, west: 6.7978, north: 51.4804, east: 6.9324)))
         systems.append((.dott, GeoBounds(south: 52.2434, west: 7.9823, north: 52.3128, east: 8.1044)))
         systems.append((.dott, GeoBounds(south: 51.6932, west: 8.706, north: 51.7624, east: 8.8131)))
         systems.append((.dott, GeoBounds(south: 52.2976, west: 10.1587, north: 52.3585, east: 10.2898)))
@@ -516,7 +517,14 @@ enum ScooterProviderCoverage {
         systems.append((.dott, GeoBounds(south: 45.7766, west: 8.735, north: 45.8859, east: 8.8719)))
         systems.append((.dott, GeoBounds(south: 44.7985, west: 11.5342, north: 44.9095, east: 11.6801)))
         systems.append((.dott, GeoBounds(south: 45.4732, west: 12.5305, north: 45.6019, east: 12.7466)))
-        systems.append((.dott, GeoBounds(south: 44.9259, west: 7.4693, north: 45.1778, east: 7.8341)))
+        systems.append((.dott, GeoBounds(south: 44.9978, west: 7.5651, north: 45.1492, east: 7.7861)))
+        systems.append((.dott, GeoBounds(south: 45.1024, west: 7.7046, north: 45.1778, east: 7.8341)))
+        systems.append((.dott, GeoBounds(south: 44.9259, west: 7.6353, north: 45.0402, east: 7.7698)))
+        systems.append((.dott, GeoBounds(south: 45.0602, west: 7.5419, north: 45.1292, east: 7.6356)))
+        systems.append((.dott, GeoBounds(south: 44.954, west: 7.5672, north: 45.0202, east: 7.6757)))
+        systems.append((.dott, GeoBounds(south: 45.0301, west: 7.4693, north: 45.1049, east: 7.5926)))
+        systems.append((.dott, GeoBounds(south: 45.0247, west: 7.542, north: 45.0801, east: 7.638)))
+        systems.append((.dott, GeoBounds(south: 45.1156, west: 7.6245, north: 45.1736, east: 7.7066)))
         systems.append((.dott, GeoBounds(south: 45.3847, west: 9.0389, north: 45.5588, east: 9.3113)))
         systems.append((.dott, GeoBounds(south: 44.5609, west: 10.7799, north: 44.7283, east: 11.0137)))
         systems.append((.dott, GeoBounds(south: 45.5513, west: 9.2262, north: 45.6342, east: 9.3269)))
@@ -1511,7 +1519,7 @@ enum ScooterCityCatalog {
     // checker over 30 GB, and CI's Macs, which have 7, killed the compiler (24 Oct 2026).
     private static func makeCities() -> [ScooterCity] {
         var cities: [ScooterCity] = []
-        cities.reserveCapacity(838)
+        cities.reserveCapacity(846)
         cities.append(ScooterCity(id: "ch:amriswil", name: "Amriswil", countryCode: "CH", center: GeoPoint(latitude: 47.547, longitude: 9.2959), bounds: GeoBounds(south: 47.513, west: 9.234, north: 47.5773, east: 9.3262)))
         cities.append(ScooterCity(id: "ch:basel", name: "Basel", countryCode: "CH", center: GeoPoint(latitude: 47.5596, longitude: 7.5886), bounds: GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82)))
         cities.append(ScooterCity(id: "ch:bern", name: "Bern", countryCode: "CH", center: GeoPoint(latitude: 46.948, longitude: 7.4474), bounds: GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7)))
@@ -1676,7 +1684,8 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "de:Monheim am Rhein", name: "Monheim am Rhein", countryCode: "DE", center: GeoPoint(latitude: 51.0924, longitude: 6.8909), bounds: GeoBounds(south: 51.0649, west: 6.8748, north: 51.1302, east: 6.9184), feeds: [ScooterCityFeed(id: "germany:dott_de_monheim_am_rhein")]))
         cities.append(ScooterCity(id: "de:Neumünster", name: "Neumünster", countryCode: "DE", center: GeoPoint(latitude: 54.0726, longitude: 9.9808), bounds: GeoBounds(south: 54.0399, west: 9.9342, north: 54.1434, east: 10.0445), feeds: [ScooterCityFeed(id: "germany:dott_de_neumunster")]))
         cities.append(ScooterCity(id: "de:Neuss", name: "Neuss", countryCode: "DE", center: GeoPoint(latitude: 51.2035, longitude: 6.6837), bounds: GeoBounds(south: 51.1078, west: 6.6008, north: 51.2446, east: 6.8124), feeds: [ScooterCityFeed(id: "germany:dott_de_neuss"), ScooterCityFeed(id: "germany:voi_de_duesseldorf")]))
-        cities.append(ScooterCity(id: "de:Oberhausen", name: "Oberhausen", countryCode: "DE", center: GeoPoint(latitude: 51.4696, longitude: 6.8514), bounds: GeoBounds(south: 51.4043, west: 6.7633, north: 51.589, east: 6.9445), feeds: [ScooterCityFeed(id: "germany:dott_de_oberhausen"), ScooterCityFeed(id: "germany:voi_de_duisburg_oberhausen")]))
+        cities.append(ScooterCity(id: "de:Oberhausen", name: "Oberhausen", countryCode: "DE", center: GeoPoint(latitude: 51.4696, longitude: 6.8514), bounds: GeoBounds(south: 51.4397, west: 6.7633, north: 51.589, east: 6.9445), feeds: [ScooterCityFeed(id: "germany:dott_de_oberhausen"), ScooterCityFeed(id: "germany:voi_de_duisburg_oberhausen")]))
+        cities.append(ScooterCity(id: "de:Mülheim an der Ruhr", name: "Mülheim an der Ruhr", countryCode: "DE", center: GeoPoint(latitude: 51.4273, longitude: 6.8829), bounds: GeoBounds(south: 51.4043, west: 6.7978, north: 51.4804, east: 6.9324), feeds: [ScooterCityFeed(id: "germany:dott_de_oberhausen")]))
         cities.append(ScooterCity(id: "de:Osnabrück", name: "Osnabrück", countryCode: "DE", center: GeoPoint(latitude: 52.2747, longitude: 8.0482), bounds: GeoBounds(south: 52.16868682934638, west: 7.825808742511623, north: 52.443396171197, east: 8.336312202190538), feeds: [ScooterCityFeed(id: "germany:dott_de_osnabruck"), ScooterCityFeed(id: "germany:voi_de_app_378")]))
         cities.append(ScooterCity(id: "de:Paderborn", name: "Paderborn", countryCode: "DE", center: GeoPoint(latitude: 51.7199, longitude: 8.7528), bounds: GeoBounds(south: 51.6452, west: 8.6223, north: 51.8098, east: 8.9146), feeds: [ScooterCityFeed(id: "germany:dott_de_paderborn"), ScooterCityFeed(id: "germany:voi_de_paderborn")]))
         cities.append(ScooterCity(id: "de:Peine", name: "Peine", countryCode: "DE", center: GeoPoint(latitude: 52.3266, longitude: 10.2323), bounds: GeoBounds(south: 52.2976, west: 10.1587, north: 52.3585, east: 10.2898), feeds: [ScooterCityFeed(id: "germany:dott_de_peine")]))
@@ -1723,7 +1732,14 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "it:Varese", name: "Varese", countryCode: "IT", center: GeoPoint(latitude: 45.8176, longitude: 8.8299), bounds: GeoBounds(south: 45.7766, west: 8.735, north: 45.8859, east: 8.8719), feeds: [ScooterCityFeed(id: "italy:dott_it_varese")]))
         cities.append(ScooterCity(id: "it:Ferrara", name: "Ferrara", countryCode: "IT", center: GeoPoint(latitude: 44.839, longitude: 11.6119), bounds: GeoBounds(south: 44.7985, west: 11.5342, north: 44.9095, east: 11.6801), feeds: [ScooterCityFeed(id: "italy:dott_it_ferrara")]))
         cities.append(ScooterCity(id: "it:Jesolo", name: "Jesolo", countryCode: "IT", center: GeoPoint(latitude: 45.4974, longitude: 12.6184), bounds: GeoBounds(south: 45.4732, west: 12.5305, north: 45.6019, east: 12.7466), feeds: [ScooterCityFeed(id: "italy:dott_it_jesolo")]))
-        cities.append(ScooterCity(id: "it:Torino", name: "Torino", countryCode: "IT", center: GeoPoint(latitude: 45.07, longitude: 7.6621), bounds: GeoBounds(south: 44.9259, west: 7.4693, north: 45.1778, east: 7.8341), feeds: [ScooterCityFeed(id: "italy:dott_it_torino")]))
+        cities.append(ScooterCity(id: "it:Torino", name: "Torino", countryCode: "IT", center: GeoPoint(latitude: 45.0678, longitude: 7.6825), bounds: GeoBounds(south: 44.9978, west: 7.5651, north: 45.1492, east: 7.7861), feeds: [ScooterCityFeed(id: "italy:dott_it_torino")]))
+        cities.append(ScooterCity(id: "it:Settimo Torinese", name: "Settimo Torinese", countryCode: "IT", center: GeoPoint(latitude: 45.1372, longitude: 7.7713), bounds: GeoBounds(south: 45.1024, west: 7.7046, north: 45.1778, east: 7.8341), feeds: [ScooterCityFeed(id: "italy:dott_it_torino")]))
+        cities.append(ScooterCity(id: "it:Moncalieri", name: "Moncalieri", countryCode: "IT", center: GeoPoint(latitude: 45.0005, longitude: 7.6848), bounds: GeoBounds(south: 44.9259, west: 7.6353, north: 45.0402, east: 7.7698), feeds: [ScooterCityFeed(id: "italy:dott_it_torino")]))
+        cities.append(ScooterCity(id: "it:Collegno", name: "Collegno", countryCode: "IT", center: GeoPoint(latitude: 45.0775, longitude: 7.5724), bounds: GeoBounds(south: 45.0602, west: 7.5419, north: 45.1292, east: 7.6356), feeds: [ScooterCityFeed(id: "italy:dott_it_torino")]))
+        cities.append(ScooterCity(id: "it:Nichelino", name: "Nichelino", countryCode: "IT", center: GeoPoint(latitude: 44.9955, longitude: 7.6466), bounds: GeoBounds(south: 44.954, west: 7.5672, north: 45.0202, east: 7.6757), feeds: [ScooterCityFeed(id: "italy:dott_it_torino")]))
+        cities.append(ScooterCity(id: "it:Rivoli", name: "Rivoli", countryCode: "IT", center: GeoPoint(latitude: 45.0697, longitude: 7.5177), bounds: GeoBounds(south: 45.0301, west: 7.4693, north: 45.1049, east: 7.5926), feeds: [ScooterCityFeed(id: "italy:dott_it_torino")]))
+        cities.append(ScooterCity(id: "it:Grugliasco", name: "Grugliasco", countryCode: "IT", center: GeoPoint(latitude: 45.068, longitude: 7.5776), bounds: GeoBounds(south: 45.0247, west: 7.542, north: 45.0801, east: 7.638), feeds: [ScooterCityFeed(id: "italy:dott_it_torino")]))
+        cities.append(ScooterCity(id: "it:Borgaro Torinese", name: "Borgaro Torinese", countryCode: "IT", center: GeoPoint(latitude: 45.1521, longitude: 7.658), bounds: GeoBounds(south: 45.1156, west: 7.6245, north: 45.1736, east: 7.7066), feeds: [ScooterCityFeed(id: "italy:dott_it_torino")]))
         cities.append(ScooterCity(id: "it:Milano", name: "Milano", countryCode: "IT", center: GeoPoint(latitude: 45.4771, longitude: 9.2001), bounds: GeoBounds(south: 45.3847, west: 9.0389, north: 45.5588, east: 9.3113), feeds: [ScooterCityFeed(id: "italy:dott_it_milano")]))
         cities.append(ScooterCity(id: "it:Modena", name: "Modena", countryCode: "IT", center: GeoPoint(latitude: 44.6452, longitude: 10.9307), bounds: GeoBounds(south: 44.5609, west: 10.7799, north: 44.7283, east: 11.0137), feeds: [ScooterCityFeed(id: "italy:dott_it_modena")]))
         cities.append(ScooterCity(id: "it:Monza", name: "Monza", countryCode: "IT", center: GeoPoint(latitude: 45.578, longitude: 9.274), bounds: GeoBounds(south: 45.5513, west: 9.2262, north: 45.6342, east: 9.3269), feeds: [ScooterCityFeed(id: "italy:dott_it_monza")]))
@@ -2355,7 +2371,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 838
+    static let cityCount = 846
     static let countryCount = 46
 
     /// Cities by distance from the point to their centre, nearest first.
@@ -2750,7 +2766,7 @@ enum ScooterCountryCatalog {
         ("AU/TR/MY/KR: Beam map", "https://www.ridebeam.com/"),
         ("US/KR: GCOO map", "https://gcoo.io/"),
         ("KR: Kickgoing map", "https://kickgoing.io/"),
-        ("CH/FR/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
+        ("CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
     ]
 
     /// The countries whose totals, zoomed out, are their states' or provinces', and those by code.

@@ -118,9 +118,14 @@ banned shared scooters, and feeds that were empty when checked.
     feeds for Köln, Düsseldorf, Essen, Dortmund and other towns, but only
     transport bodies and municipalities may use it. The state's other
     platform, NRW.Mobidrom, offers Voi's, Bolt's and Lime's feeds after a
-    free registration (see [Waiting on a decision](#waiting-on-a-decision)).
+    free registration: Voi's are on the map since 24 October 2026, Bolt's and
+    Lime's wait (see [Waiting on a decision](#waiting-on-a-decision)).
   - Lime Hamburg answers 404; Lime Dresden, Oberhausen and Solingen (6
     scooters) were too small or empty.
+  - Duisburg (25 October 2026): Bolt's Essen-Duisburg system on NRW.Mobidrom
+    still updates once an hour. Ryde's and Lime's Duisburg feeds are only on
+    the closed NRW hub (Ryde's answers 401), and Lime's own `duisburg` answers
+    404.
   - Zeus is moving its towns to ATOM Mobility. Rüsselsheim, Straubing,
     Kempten, Pforzheim, Göppingen, Schwäbisch Gmünd, Tübingen, Hagen,
     Hattingen and Heilbronn list only disabled scooters on `zeus.city`, and
@@ -156,7 +161,15 @@ banned shared scooters, and feeds that were empty when checked.
     and Siracusa fleets have no public feed.
   - Bird Milano, Firenze, Torino, Moncalieri, Collegno, Rivoli, Nichelino and
     Sesto Fiorentino are empty, with a timestamp of 0. Milano revoked Bird's
-    permit in July 2026, over scooters without plates.
+    permit in July 2026, over scooters without plates. Torino and its four
+    neighbours were still empty on 25 October 2026, while Bird Roma listed
+    about 4,500.
+  - Torino: Voi publishes no feed for Italy, and Lime's `torino` and `turin`
+    answer 404 (25 October 2026). Torino's rules send operators' feeds only to
+    the Comune and 5T. The Città metropolitana's new service, from about
+    5 November 2026 at the latest, authorises only Dott (EM Transit) and Voi
+    for scooters ([DD 3782, 7 August 2026](https://www.cittametropolitana.torino.it/sites/default/files/pagina/allegati/trasporti/SHARING/DD%20n.3782%20del%2007.08.2026_Autorizzazione%20al%20servizio%20in%20sharing.pdf));
+    Bird and Lime run only until it starts.
   - Firenze banned shared scooters from 1 April 2026, and BIT's service in
     Prato ended on 31 December 2025.
   - Zeus's Italian feeds are stale or empty (Anzio, Augusta, Mazara, Teramo,

@@ -690,7 +690,7 @@ final class ScooterFilteringTests: XCTestCase {
         XCTAssertEqual(ScooterCountryCatalog.credits.count, 28)
         XCTAssertEqual(Set(sources.map(\.title)).count, sources.count)
         XCTAssertEqual(sources[2].title.prefix(3), "DE/")
-        XCTAssertTrue(sources.contains { $0.title == "CH/FR/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL" })
+        XCTAssertTrue(sources.contains { $0.title == "CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL" })
         XCTAssertTrue(sources.contains { $0.title == "DE/AT/IT/ES/PL/HU/GR/FI: Dott map" })
         XCTAssertTrue(sources.contains { $0.title == "DE/SE: Qick map" })
         XCTAssertTrue(sources.contains { $0.title == "JP: LUUP map" })
