@@ -8,15 +8,15 @@ const guide: Guide = {
   title: 'E-scooter Bristol 2026: Dott prices, no-go zones, parking',
   description: 'E-scooter hire in Bristol with Dott: £1 to unlock and 25p a minute, passes and discounts, who can ride, the no-go zones, parking bays and the £10 charge.',
   headline: 'E-scooter hire in Bristol: Dott’s prices, the no-go zones and where to park',
-  lede: 'You can hire an e-scooter in Bristol from Dott, the only operator of the West of England’s scheme, at any hour: it has run around the clock since 1 October 2025. It costs £1 to unlock and 25p a minute, so 10 minutes cost £3.50, and you must be 18 or over with a full or provisional driving licence. End every ride in a parking bay shown in the app, or you risk a £10 charge. Your own e-scooter is illegal on Bristol’s roads and pavements.',
+  lede: 'You can hire an e-scooter in Bristol from Dott, the only operator of the West of England’s scheme, at any hour: Travelwest lists it as available 24/7. It costs £1 to unlock and 25p a minute, so 10 minutes cost £3.50, and you must be 18 or over with a full or provisional driving licence. End every ride in a parking bay shown in the app, or you risk a £10 charge. Your own e-scooter is illegal on Bristol’s roads and pavements.',
   published: '2026-10-13',
-  updated: '2026-10-14',
+  updated: '2026-10-24',
   city: 'gb:Bristol',
   sections: [
     {
       heading: 'Bristol e-scooter hire: Dott, and what replaced Voi',
       blocks: [
-        'One company, **Dott**, runs Bristol’s shared e-scooters and e-bikes, under a contract with the West of England Mayoral Combined Authority (WECA). Its zones cover Bristol, Bath and parts of South Gloucestershire, but not North Somerset, where the airport is. There is no Lime, Voi, Bolt or Beryl here.',
+        'One company, **Dott**, runs Bristol’s shared e-scooters and e-bikes, under a contract with the West of England Mayoral Combined Authority (WECA). Its zones cover Bristol, [Bath](guide:bath) and parts of South Gloucestershire, but not North Somerset, where the airport is. There is no Lime, Voi, Bolt or Beryl here.',
         '**Voi** launched the trial on 29 October 2020. **Tier** took over Bristol on 14 October 2023 and added e-bikes, and since 3 September 2024, after Tier merged with Dott, the scheme has carried the **Dott** name. The contract, extended in January 2025, ends in 2027.',
         'On 25 August 2026 WECA issued an invitation to tender for the next contract; no winner had been announced by 14 October 2026. The national trial that makes hire e-scooters legal is due to run until May 2028.',
         'On the morning of 13 October 2026 the [map of Bristol](map:gb:Bristol) showed about 2,200 Dott e-scooters around the city: a snapshot, not the fleet size. The map shows Dott’s e-scooters but not its e-bikes. Tap a scooter to open the Dott app, where you unlock and pay.',
@@ -162,7 +162,7 @@ const guide: Guide = {
     },
     {
       question: 'Is Dott 24 hours in Bristol?',
-      answer: 'Yes. Since 1 October 2025 you can hire Dott’s e-scooters and e-bikes around the clock. Drink-drive law applies at any hour.',
+      answer: 'Yes. Travelwest lists Dott’s e-scooters and e-bikes as available 24/7 in the West of England. Drink-drive law applies at any hour.',
     },
     {
       question: 'Can I ride my own e-scooter in Bristol?',
