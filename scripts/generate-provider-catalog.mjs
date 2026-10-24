@@ -222,9 +222,14 @@ enum ScooterProviderCoverage {
     private static let swissAreas: [GeoBounds] = [
 ${swissAreas.map(area => `        ${swiftBounds(area.bounds)},`).join('\n')}
     ]
-    private static let regionalSystems: [(ScooterProvider, GeoBounds)] = [
-${regionalSystems.flatMap(system => (system.areas ?? [system]).map(area => `        (.${system.provider}, ${swiftBounds(area.bounds)}),`)).join('\n')}
-    ]
+    private static let regionalSystems: [(ScooterProvider, GeoBounds)] = makeRegionalSystems()
+
+    // A statement an area, as ScooterCityCatalog's cities: one literal of them all is costly to type-check.
+    private static func makeRegionalSystems() -> [(ScooterProvider, GeoBounds)] {
+        var systems: [(ScooterProvider, GeoBounds)] = []
+${regionalSystems.flatMap(system => (system.areas ?? [system]).map(area => `        systems.append((.${system.provider}, ${swiftBounds(area.bounds)}))`)).join('\n')}
+        return systems
+    }
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
     static let swissProviders: [ScooterProvider] = [${providers.filter(provider => provider.switzerland).map(provider => `.${provider.key}`).join(', ')}]
@@ -254,8 +259,8 @@ function swiftCities() {
     if (!countries.some(country => country.code === city.country) || !city.center.every(Number.isFinite)) {
       throw new Error(`Invalid covered city: ${city.id}`);
     }
-    return `        ScooterCity(id: ${JSON.stringify(city.id)}, name: ${JSON.stringify(city.name)}, countryCode: ${JSON.stringify(city.country)}, ` +
-      `center: GeoPoint(latitude: ${city.center[0]}, longitude: ${city.center[1]}), bounds: ${swiftBounds(city.bounds)}${swiftCityPauses(city)}${swiftCityFeeds(city)}),`;
+    return `        cities.append(ScooterCity(id: ${JSON.stringify(city.id)}, name: ${JSON.stringify(city.name)}, countryCode: ${JSON.stringify(city.country)}, ` +
+      `center: GeoPoint(latitude: ${city.center[0]}, longitude: ${city.center[1]}), bounds: ${swiftBounds(city.bounds)}${swiftCityPauses(city)}${swiftCityFeeds(city)}))`;
   }).join('\n');
 
   return `
@@ -290,9 +295,16 @@ struct ScooterCityDistance: Identifiable, Equatable, Sendable {
 
 /// Every city with scooter data, one entry per city, like COVERED_CITIES on the web.
 enum ScooterCityCatalog {
-    static let cities: [ScooterCity] = [
+    static let cities: [ScooterCity] = makeCities()
+
+    // A statement a city: as one array literal, the cities with their feeds took Swift's type
+    // checker over 30 GB, and CI's Macs, which have 7, killed the compiler (24 Oct 2026).
+    private static func makeCities() -> [ScooterCity] {
+        var cities: [ScooterCity] = []
+        cities.reserveCapacity(${covered.length})
 ${cities}
-    ]
+        return cities
+    }
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.

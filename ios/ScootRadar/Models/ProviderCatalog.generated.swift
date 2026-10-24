@@ -264,1461 +264,1466 @@ enum ScooterProviderCoverage {
         GeoBounds(south: 47.38, west: 8.53, north: 47.64, east: 8.97),
         GeoBounds(south: 47.27, west: 8.34, north: 47.49, east: 8.73),
     ]
-    private static let regionalSystems: [(ScooterProvider, GeoBounds)] = [
-        (.bird, GeoBounds(south: 44.17, west: 0.59, north: 44.22, east: 0.66)),
-        (.bird, GeoBounds(south: 41.8879, west: 8.5984, north: 41.9581, east: 8.7953)),
-        (.bird, GeoBounds(south: 47.5477, west: 1.2701, north: 47.6332, east: 1.3711)),
-        (.bird, GeoBounds(south: 48.9259, west: 4.2961, north: 48.9944, east: 4.4173)),
-        (.bird, GeoBounds(south: 49.584, west: -1.7346, north: 49.6874, east: -1.5299)),
-        (.bird, GeoBounds(south: 48.0366, west: -0.8698, north: 48.1153, east: -0.7185)),
-        (.bird, GeoBounds(south: 46.0785, west: 3.354, north: 46.1945, east: 3.5438)),
-        (.dott, GeoBounds(south: 44.7393, west: -0.7862, north: 44.9989, east: -0.3947)),
-        (.dott, GeoBounds(south: 45.7065, west: 4.757, north: 45.8489, east: 4.9294)),
-        (.dott, GeoBounds(south: 48.8049, west: 2.6477, north: 48.8931, east: 2.7887)),
-        (.dott, GeoBounds(south: 45.36, west: 6.81, north: 45.56, east: 7)),
-        (.dott, GeoBounds(south: 48.8054, west: 2.0894, north: 48.8498, east: 2.1564)),
-        (.dott, GeoBounds(south: 48.8262, west: 2.0963, north: 48.8787, east: 2.1728)),
-        (.dott, GeoBounds(south: 48.8424, west: 2.1085, north: 48.876, east: 2.1701)),
-        (.lime, GeoBounds(south: 50.4906, west: 2.7749, north: 50.8037, east: 3.2867)),
-        (.lime, GeoBounds(south: 50.6658, west: 3.1471, north: 50.7117, east: 3.2214)),
-        (.lime, GeoBounds(south: 50.6901, west: 3.1147, north: 50.752, east: 3.2008)),
-        (.lime, GeoBounds(south: 50.6541, west: 3.1321, north: 50.6966, east: 3.1779)),
-        (.lime, GeoBounds(south: 50.6479, west: 3.1054, north: 50.6973, east: 3.1538)),
-        (.lime, GeoBounds(south: 50.5961, west: 3.1119, north: 50.6764, east: 3.2118)),
-        (.lime, GeoBounds(south: 50.6854, west: 3.1673, north: 50.7402, east: 3.2656)),
-        (.lime, GeoBounds(south: 50.6304, west: 3.1577, north: 50.6758, east: 3.2248)),
-        (.lime, GeoBounds(south: 43.1605, west: 5.2163, north: 43.4002, east: 5.545)),
-        (.lime, GeoBounds(south: 48.8672, west: 2.1062, north: 48.8938, east: 2.1623)),
-        (.lime, GeoBounds(south: 48.913, west: 2.164, north: 48.9402, east: 2.2092)),
-        (.lime, GeoBounds(south: 48.8741, west: 2.0802, north: 48.9108, east: 2.1242)),
-        (.lime, GeoBounds(south: 48.8689, west: 2.097, north: 48.8927, east: 2.1238)),
-        (.lime, GeoBounds(south: 48.8729, west: 2.108, north: 48.9127, east: 2.1545)),
-        (.lime, GeoBounds(south: 48.8435, west: 2.0649, north: 48.8884, east: 2.1135)),
-        (.lime, GeoBounds(south: 48.8999, west: 2.1091, north: 48.9382, east: 2.1671)),
-        (.lime, GeoBounds(south: 48.9173, west: 2.1386, north: 48.9576, east: 2.2103)),
-        (.naolib, GeoBounds(south: 47.274, west: -1.536, north: 47.3, east: -1.492)),
-        (.naolib, GeoBounds(south: 47.21, west: -1.66, north: 47.244, east: -1.622)),
-        (.pony, GeoBounds(south: 47.4052, west: -0.6573, north: 47.543, east: -0.4546)),
-        (.pony, GeoBounds(south: 49.3973, west: 2.0343, north: 49.4768, east: 2.1367)),
-        (.pony, GeoBounds(south: 44.7425, west: -0.7866, north: 44.9725, east: -0.458)),
-        (.pony, GeoBounds(south: 47.0315, west: 2.3471, north: 47.134, east: 2.4562)),
-        (.pony, GeoBounds(south: 48.6007, west: 2.3773, north: 48.6587, east: 2.476)),
-        (.pony, GeoBounds(south: 49.176, west: -0.382, north: 49.3021, east: -0.2309)),
-        (.pony, GeoBounds(south: 46.6384, west: -1.4684, north: 46.7073, east: -1.3833)),
-        (.pony, GeoBounds(south: 47.7171, west: -3.4203, north: 47.7831, east: -3.335)),
-        (.pony, GeoBounds(south: 42.6116, west: 2.7174, north: 42.7818, east: 3.0648)),
-        (.pony, GeoBounds(south: 42.7636, west: 2.9899, north: 42.9527, east: 3.0736)),
-        (.pony, GeoBounds(south: 46.5056, west: 0.236, north: 46.6815, east: 0.4341)),
-        (.pony, GeoBounds(south: 46.4175, west: 0.0921, north: 46.4571, east: 0.1525)),
-        (.voi, GeoBounds(south: 48.8829, west: 1.967, north: 48.9653, east: 2.0833)),
-        (.voi, GeoBounds(south: 48.9218, west: 1.9902, north: 48.9726, east: 2.0628)),
-        (.voi, GeoBounds(south: 48.9508, west: 2.0121, north: 49.0051, east: 2.0874)),
-        (.voi, GeoBounds(south: 48.9761, west: 2.0586, north: 49.0268, east: 2.1408)),
-        (.voi, GeoBounds(south: 48.9604, west: 1.8627, north: 49.0157, east: 1.975)),
-        (.voi, GeoBounds(south: 48.9857, west: 1.8504, north: 49.0501, east: 1.9518)),
-        (.voi, GeoBounds(south: 48.9735, west: 1.6435, north: 49.0189, east: 1.7394)),
-        (.voi, GeoBounds(south: 48.9527, west: 1.6736, north: 48.9981, east: 1.7476)),
-        (.voi, GeoBounds(south: 48.9609, west: 1.6421, north: 49.0044, east: 1.7161)),
-        (.voi, GeoBounds(south: 48.9591, west: 1.6955, north: 49.0234, east: 1.7777)),
-        (.voi, GeoBounds(south: 45.1054, west: 5.6232, north: 45.2809, east: 5.8865)),
-        (.voi, GeoBounds(south: 49.4671, west: 0.0529, north: 49.5982, east: 0.2092)),
-        (.voi, GeoBounds(south: 43.2016, west: 5.3287, north: 43.37, east: 5.5404)),
-        (.voi, GeoBounds(south: 48.6853, west: 1.8814, north: 48.8452, east: 2.1199)),
-        (.bolt, GeoBounds(south: 48.9703, west: 8.3087, north: 49.0445, east: 8.4931)),
-        (.bolt, GeoBounds(south: 48.4312, west: 9.1335, north: 48.5396, east: 9.2596)),
-        (.bolt, GeoBounds(south: 48.4824, west: 9.0088, north: 48.5647, east: 9.1103)),
-        (.bolt, GeoBounds(south: 48.6977, west: 9.0717, north: 48.8618, east: 9.2897)),
-        (.dott, GeoBounds(south: 50.7249, west: 6.023, north: 50.8211, east: 6.1962)),
-        (.dott, GeoBounds(south: 52.4275, west: 13.1051, north: 52.6548, east: 13.6436)),
-        (.dott, GeoBounds(south: 50.8217, west: 6.796, north: 51.0145, east: 7.1351)),
-        (.dott, GeoBounds(south: 51.1371, west: 6.6843, north: 51.294, east: 6.8991)),
-        (.dott, GeoBounds(south: 51.4073, west: 6.915, north: 51.5455, east: 7.1088)),
-        (.dott, GeoBounds(south: 52.26, west: 9.5647, north: 52.5007, east: 9.893)),
-        (.dott, GeoBounds(south: 49.3288, west: 8.6176, north: 49.4539, east: 8.7379)),
-        (.dott, GeoBounds(south: 49.3288, west: 8.62, north: 49.37, east: 8.73)),
-        (.dott, GeoBounds(south: 49.0791, west: 9.0868, north: 49.2308, east: 9.3189)),
-        (.dott, GeoBounds(south: 49.139, west: 9.2412, north: 49.1781, east: 9.3173)),
-        (.dott, GeoBounds(south: 49.2015, west: 9.1785, north: 49.2246, east: 9.2168)),
-        (.dott, GeoBounds(south: 49.1696, west: 9.1596, north: 49.2288, east: 9.3325)),
-        (.dott, GeoBounds(south: 49.3892, west: 7.6348, north: 49.4986, east: 7.8377)),
-        (.dott, GeoBounds(south: 51.0544, west: 6.8995, north: 51.1576, east: 7.0137)),
-        (.dott, GeoBounds(south: 51.2569, west: 12.2412, north: 51.4182, east: 12.5247)),
-        (.dott, GeoBounds(south: 48.0524, west: 11.3135, north: 48.3714, east: 11.7866)),
-        (.dott, GeoBounds(south: 48.1047, west: 11.3336, north: 48.1448, east: 11.3921)),
-        (.dott, GeoBounds(south: 51.8732, west: 7.538, north: 52.023, east: 7.7053)),
-        (.dott, GeoBounds(south: 52.3368, west: 12.9564, north: 52.4514, east: 13.1474)),
-        (.dott, GeoBounds(south: 48.6983, west: 9.0659, north: 48.8556, east: 9.2723)),
-        (.hopp, GeoBounds(south: 47.64, west: 9.1, north: 47.74, east: 9.25)),
-        (.lime, GeoBounds(south: 48.6983, west: 9.0659, north: 48.8556, east: 9.2723)),
-        (.lime, GeoBounds(south: 47.64, west: 9.1, north: 47.74, east: 9.25)),
-        (.lime, GeoBounds(south: 49.9311, west: 8.4319, north: 50.2246, east: 8.7884)),
-        (.lime, GeoBounds(south: 51.2053, west: 7.0316, north: 51.314, east: 7.2833)),
-        (.voi, GeoBounds(south: 48.9649, west: 8.2776, north: 49.059, east: 8.5008)),
-        (.voi, GeoBounds(south: 48.83, west: 8.59, north: 48.96, east: 8.81)),
-        (.voi, GeoBounds(south: 49.4082, west: 8.3311, north: 49.569, east: 8.589)),
-        (.voi, GeoBounds(south: 49.4287, west: 8.3322, north: 49.5538, east: 8.4587)),
-        (.voi, GeoBounds(south: 48.6983, west: 9.0659, north: 48.8556, east: 9.29)),
-        (.voi, GeoBounds(south: 48.658, west: 8.95, north: 48.697, east: 9.058)),
-        (.voi, GeoBounds(south: 48.697, west: 8.95, north: 48.738, east: 9.058)),
-        (.voi, GeoBounds(south: 48.4824, west: 9.0088, north: 48.5647, east: 9.1103)),
-        (.voi, GeoBounds(south: 48.4312, west: 9.1335, north: 48.5396, east: 9.2596)),
-        (.yoio, GeoBounds(south: 50.9374, west: 10.9742, north: 51.031, east: 11.1075)),
-        (.yoio, GeoBounds(south: 47.9649, west: 7.746, north: 48.0667, east: 7.9134)),
-        (.yoio, GeoBounds(south: 51.4953, west: 9.8716, north: 51.6057, east: 9.9978)),
-        (.yoio, GeoBounds(south: 51.5795, west: 9.9159, north: 51.6057, east: 9.9474)),
-        (.zeus, GeoBounds(south: 49.8549, west: 10.83, north: 49.9301, east: 10.9481)),
-        (.zeus, GeoBounds(south: 47.9204, west: 8.4496, north: 47.9818, east: 8.5362)),
-        (.zeus, GeoBounds(south: 47.958, west: 7.7695, north: 48.051, east: 7.9323)),
-        (.zeus, GeoBounds(south: 47.648, west: 9.1149, north: 47.7104, east: 9.2302)),
-        (.zeus, GeoBounds(south: 49.315, west: 8.62, north: 49.37, east: 8.73)),
-        (.zeus, GeoBounds(south: 49.27, west: 8.61, north: 49.315, east: 8.67)),
-        (.zeus, GeoBounds(south: 49.27, west: 8.67, north: 49.315, east: 8.73)),
-        (.zeus, GeoBounds(south: 48.8639, west: 9.0968, north: 48.9418, east: 9.2575)),
-        (.zeus, GeoBounds(south: 49.2999, west: 8.0802, north: 49.3882, east: 8.2034)),
-        (.zeus, GeoBounds(south: 48.9782, west: 12.0233, north: 49.0733, east: 12.1766)),
-        (.zeus, GeoBounds(south: 48.7448, west: 8.8783, north: 48.8027, east: 8.9661)),
-        (.zeus, GeoBounds(south: 49.9972, west: 10.1714, north: 50.096, east: 10.2795)),
-        (.zeus, GeoBounds(south: 47.7258, west: 8.7975, north: 47.7938, east: 8.9068)),
-        (.zeus, GeoBounds(south: 47.9438, west: 8.7493, north: 48.0254, east: 8.8891)),
-        (.zeus, GeoBounds(south: 48.0102, west: 8.4072, north: 48.1116, east: 8.5943)),
-        (.zeus, GeoBounds(south: 49.7282, west: 9.8551, north: 49.8351, east: 10.0214)),
-        (.dott, GeoBounds(south: 51.9368, west: 8.4745, north: 52.0619, east: 8.6263)),
-        (.dott, GeoBounds(south: 51.4387, west: 7.1133, north: 51.5003, east: 7.2793)),
-        (.dott, GeoBounds(south: 50.6479, west: 7.0245, north: 50.7748, east: 7.2027)),
-        (.dott, GeoBounds(south: 53.4275, west: 9.7932, north: 53.6837, east: 10.2659)),
-        (.dott, GeoBounds(south: 52.2046, west: 10.4612, north: 52.326, east: 10.6041)),
-        (.dott, GeoBounds(south: 53.4848, west: 8.557, north: 53.6278, east: 8.6482)),
-        (.dott, GeoBounds(south: 49.9403, west: 8.0858, north: 50.1076, east: 8.3284)),
-        (.dott, GeoBounds(south: 52.5787, west: 9.9977, north: 52.6482, east: 10.1239)),
-        (.dott, GeoBounds(south: 50.7881, west: 12.868, north: 50.8627, east: 12.975)),
-        (.dott, GeoBounds(south: 51.7152, west: 14.2875, north: 51.7946, east: 14.3962)),
-        (.dott, GeoBounds(south: 49.8397, west: 8.6128, north: 49.9019, east: 8.6939)),
-        (.dott, GeoBounds(south: 51.9152, west: 8.8186, north: 51.9615, east: 8.9235)),
-        (.dott, GeoBounds(south: 54.0619, west: 12.0236, north: 54.1841, east: 12.1837)),
-        (.dott, GeoBounds(south: 51.4822, west: 7.3854, north: 51.5375, east: 7.5289)),
-        (.dott, GeoBounds(south: 52.0317, west: 10.2792, north: 52.1779, east: 10.4017)),
-        (.dott, GeoBounds(south: 50.9554, west: 10.9877, north: 51.0154, east: 11.0893)),
-        (.dott, GeoBounds(south: 49.538, west: 10.9411, north: 49.6163, east: 11.0567)),
-        (.dott, GeoBounds(south: 54.7386, west: 9.3658, north: 54.8309, east: 9.5003)),
-        (.dott, GeoBounds(south: 47.6383, west: 9.3898, north: 47.7126, east: 9.526)),
-        (.dott, GeoBounds(south: 50.833, west: 12.0462, north: 50.9074, east: 12.1027)),
-        (.dott, GeoBounds(south: 52.4527, west: 10.5053, north: 52.5122, east: 10.5789)),
-        (.dott, GeoBounds(south: 51.5376, west: 6.9602, north: 51.5978, east: 7.0307)),
-        (.dott, GeoBounds(south: 51.6517, west: 7.7216, north: 51.7214, east: 7.934)),
-        (.dott, GeoBounds(south: 50.7574, west: 7.2451, north: 50.7895, east: 7.3268)),
-        (.dott, GeoBounds(south: 52.0744, west: 8.6128, north: 52.1414, east: 8.7214)),
-        (.dott, GeoBounds(south: 51.5103, west: 7.1469, north: 51.5667, east: 7.2704)),
-        (.dott, GeoBounds(south: 51.5744, west: 7.1148, north: 51.629, east: 7.1645)),
-        (.dott, GeoBounds(south: 51.1401, west: 6.8934, north: 51.1906, east: 6.9892)),
-        (.dott, GeoBounds(south: 52.109, west: 9.8983, north: 52.184, east: 10.0044)),
-        (.dott, GeoBounds(south: 51.3816, west: 6.6794, north: 51.4401, east: 6.8021)),
-        (.dott, GeoBounds(south: 48.7047, west: 11.3364, north: 48.82, east: 11.5852)),
-        (.dott, GeoBounds(south: 50.8762, west: 11.556, north: 50.9542, east: 11.6352)),
-        (.dott, GeoBounds(south: 48.9779, west: 8.2906, north: 49.046, east: 8.4878)),
-        (.dott, GeoBounds(south: 54.2864, west: 10.0418, north: 54.37, east: 10.2026)),
-        (.dott, GeoBounds(south: 47.5373, west: 9.6521, north: 47.5962, east: 9.7398)),
-        (.dott, GeoBounds(south: 48.8747, west: 9.1394, north: 48.9251, east: 9.2755)),
-        (.dott, GeoBounds(south: 49.4212, west: 8.3441, north: 49.556, east: 8.576)),
-        (.dott, GeoBounds(south: 52.2631, west: 8.8586, north: 52.3174, east: 8.9693)),
-        (.dott, GeoBounds(south: 51.1194, west: 6.3764, north: 51.2309, east: 6.4858)),
-        (.dott, GeoBounds(south: 51.0649, west: 6.8748, north: 51.1302, east: 6.9184)),
-        (.dott, GeoBounds(south: 54.0399, west: 9.9342, north: 54.1434, east: 10.0445)),
-        (.dott, GeoBounds(south: 51.1527, west: 6.6248, north: 51.2372, east: 6.7433)),
-        (.dott, GeoBounds(south: 51.4043, west: 6.7978, north: 51.5638, east: 6.9324)),
-        (.dott, GeoBounds(south: 52.2434, west: 7.9823, north: 52.3128, east: 8.1044)),
-        (.dott, GeoBounds(south: 51.6932, west: 8.706, north: 51.7624, east: 8.8131)),
-        (.dott, GeoBounds(south: 52.2976, west: 10.1587, north: 52.3585, east: 10.2898)),
-        (.dott, GeoBounds(south: 48.9801, west: 12.0357, north: 49.0376, east: 12.1529)),
-        (.dott, GeoBounds(south: 51.557, west: 7.1605, north: 51.6334, east: 7.2856)),
-        (.dott, GeoBounds(south: 51.8035, west: 8.2557, north: 51.8672, east: 8.3701)),
-        (.dott, GeoBounds(south: 48.4442, west: 9.1465, north: 48.5266, east: 9.2466)),
-        (.dott, GeoBounds(south: 52.251, west: 7.3794, north: 52.3224, east: 7.5204)),
-        (.dott, GeoBounds(south: 53.0462, west: 8.5949, north: 53.1983, east: 8.8953)),
-        (.dott, GeoBounds(south: 49.9551, west: 8.3819, north: 50.0067, east: 8.4651)),
-        (.dott, GeoBounds(south: 49.1732, west: 6.884, north: 49.297, east: 7.0758)),
-        (.dott, GeoBounds(south: 50.7504, west: 7.1312, north: 50.8153, east: 7.2821)),
-        (.dott, GeoBounds(south: 48.6625, west: 8.972, north: 48.7301, east: 9.0493)),
-        (.dott, GeoBounds(south: 51.1323, west: 6.9853, north: 51.2187, east: 7.1275)),
-        (.dott, GeoBounds(south: 50.7701, west: 7.0808, north: 50.8467, east: 7.1904)),
-        (.dott, GeoBounds(south: 47.7479, west: 9.1316, north: 47.7827, east: 9.2051)),
-        (.dott, GeoBounds(south: 48.4954, west: 9.0218, north: 48.5517, east: 9.0973)),
-        (.dott, GeoBounds(south: 48.3409, west: 9.9187, north: 48.4485, east: 10.0788)),
-        (.dott, GeoBounds(south: 49.3932, west: 10.9423, north: 49.5011, east: 11.1488)),
-        (.dott, GeoBounds(south: 52.3652, west: 10.6754, north: 52.4678, east: 10.869)),
-        (.dott, GeoBounds(south: 50.7018, west: 12.4519, north: 50.7432, east: 12.524)),
-        (.voi, GeoBounds(south: 51.8311, west: 7.4598, north: 52.069, east: 7.7884)),
-        (.voi, GeoBounds(south: 51.3244, west: 6.6116, north: 51.5691, east: 6.8443)),
-        (.voi, GeoBounds(south: 51.4397, west: 6.7633, north: 51.589, east: 6.9445)),
-        (.voi, GeoBounds(south: 50.6237, west: 7.0085, north: 50.7834, east: 7.2247)),
-        (.voi, GeoBounds(south: 50.7708, west: 7.1602, north: 50.837, east: 7.3245)),
-        (.voi, GeoBounds(south: 50.7304, west: 7.1114, north: 50.8095, east: 7.2597)),
-        (.voi, GeoBounds(south: 51.1154, west: 6.6748, north: 51.3615, east: 6.9539)),
-        (.voi, GeoBounds(south: 51.1078, west: 6.6008, north: 51.2446, east: 6.8124)),
-        (.voi, GeoBounds(south: 51.4067, west: 7.2884, north: 51.609, east: 7.6522)),
-        (.voi, GeoBounds(south: 51.0768, west: 6.2771, north: 51.2569, east: 6.5506)),
-        (.voi, GeoBounds(south: 51.1567, west: 7.0001, north: 51.3271, east: 7.3274)),
-        (.voi, GeoBounds(south: 51.6452, west: 8.6223, north: 51.8098, east: 8.9146)),
-        (.voi, GeoBounds(south: 50.8214, west: 6.7585, north: 51.094, east: 7.176)),
-        (.voi, GeoBounds(south: 51.4015, west: 7.0881, north: 51.5404, east: 7.3633)),
-        (.voi, GeoBounds(south: 51.4941, west: 7.1096, north: 51.5823, east: 7.3105)),
-        (.voi, GeoBounds(south: 51.3611, west: 7.2321, north: 51.4933, east: 7.4375)),
-        (.voi, GeoBounds(south: 50.6531, west: 5.9608, north: 50.8662, east: 6.2321)),
-        (.voi, GeoBounds(south: 51.3386, west: 6.8803, north: 51.5432, east: 7.1516)),
-        (.voi, GeoBounds(south: 47.9255452234188, west: 11.1703491210938, north: 48.3744967168233, east: 11.9544982910156)),
-        (.voi, GeoBounds(south: 53.50118693001041, west: 11.180565993281183, north: 53.73805436614699, east: 11.62999014469931)),
-        (.voi, GeoBounds(south: 49.59438795057588, west: 9.647576391929467, north: 50.09741775872257, east: 10.343510459340342)),
-        (.voi, GeoBounds(south: 49.1953468350688, west: 10.6919663057816, north: 49.7690097902586, east: 11.7203467479068)),
-        (.voi, GeoBounds(south: 53.9528531996685, west: 11.7869567871094, north: 54.2812619308271, east: 12.3802185058594)),
-        (.voi, GeoBounds(south: 54.736947921648124, west: 9.32485827632354, north: 54.84332146888549, east: 9.532999087961745)),
-        (.voi, GeoBounds(south: 51.91202302178859, west: 11.210910807618658, north: 52.42622268230737, east: 12.15325949173283)),
-        (.voi, GeoBounds(south: 53.35187788260681, west: 9.656523897434674, north: 53.7802844117601, east: 10.394393931884132)),
-        (.voi, GeoBounds(south: 52.13666385481394, west: 12.601229331022722, north: 52.90186135994416, east: 13.905921424498281)),
-        (.voi, GeoBounds(south: 52.16868682934638, west: 7.825808742511623, north: 52.443396171197, east: 8.336312202190538)),
-        (.voi, GeoBounds(south: 52.141481911281275, west: 12.619117304499001, north: 52.53966716354237, east: 13.207903201789064)),
-        (.voi, GeoBounds(south: 52.18091169285216, west: 10.338107665613677, north: 52.360484871521294, east: 10.699520921206044)),
-        (.voi, GeoBounds(south: 48.90090174566317, west: 11.9249269981186, north: 49.10323589689486, east: 12.271586420039228)),
-        (.voi, GeoBounds(south: 49.25901779678085, west: 8.56430459193761, north: 49.49783733196581, east: 9.023205481851134)),
-        (.voi, GeoBounds(south: 49.8629916997857, west: 7.94021781950754, north: 50.025, east: 8.39298161072504)),
-        (.voi, GeoBounds(south: 50.025, west: 7.94021781950754, north: 50.191938680772, east: 8.39298161072504)),
-        (.voi, GeoBounds(south: 48.2411382384804, west: 10.65673828125, north: 48.5147849720974, east: 11.14013671875)),
-        (.voi, GeoBounds(south: 52.202975, west: 9.265968, north: 52.578291, east: 10.030858)),
-        (.voi, GeoBounds(south: 50.02177904841051, west: 8.433982597851667, north: 50.2395825267524, east: 9.029169329130355)),
-        (.voi, GeoBounds(south: 51.2177592669659, west: 12.139831975626, north: 51.464315824471, east: 12.595557430528)),
-        (.voi, GeoBounds(south: 49.7244748082939, west: 8.45072655515728, north: 49.987662962682, east: 8.87669813339172)),
-        (.voi, GeoBounds(south: 53.63491483484561, west: 10.319019787929623, north: 54.10546451711241, east: 11.058746731289023)),
-        (.voi, GeoBounds(south: 54.2415568529537, west: 9.98725891113281, north: 54.4117378402846, east: 10.3230285644531)),
-        (.qick, GeoBounds(south: 51.264893, west: 9.404046, north: 51.353084, east: 9.566549)),
-        (.qick, GeoBounds(south: 51.891661, west: 7.555496, north: 52.004049, east: 7.698929)),
-        (.qick, GeoBounds(south: 51.505101, west: 9.878137, north: 51.57076, east: 10.007672)),
-        (.dott, GeoBounds(south: 47.9753, west: 16.1998, north: 48.0189, east: 16.2796)),
-        (.dott, GeoBounds(south: 47.4355, west: 9.6622, north: 47.584, east: 9.7976)),
-        (.dott, GeoBounds(south: 47.3797, west: 9.6916, north: 47.4558, east: 9.7715)),
-        (.dott, GeoBounds(south: 47.2448, west: 11.2994, north: 47.3044, east: 11.4881)),
-        (.dott, GeoBounds(south: 46.5887, west: 14.1948, north: 46.6488, east: 14.3747)),
-        (.dott, GeoBounds(south: 47.3494, west: 15.0269, north: 47.4042, east: 15.1521)),
-        (.dott, GeoBounds(south: 48.2424, west: 14.2643, north: 48.3402, east: 14.3302)),
-        (.dott, GeoBounds(south: 48.0383, west: 16.2556, north: 48.096, east: 16.3323)),
-        (.dott, GeoBounds(south: 48.1172, west: 13.9296, north: 48.1943, east: 14.0667)),
-        (.dott, GeoBounds(south: 46.5811, west: 13.8111, north: 46.6664, east: 13.9161)),
-        (.dott, GeoBounds(south: 47.7881, west: 16.1933, north: 47.8492, east: 16.2855)),
-        (.voi, GeoBounds(south: 47.15953685076627, west: 11.228975654139106, north: 47.38419043001886, east: 11.57644596129552)),
-        (.voi, GeoBounds(south: 48.04584185842637, west: 16.11420143738522, north: 48.339707387160644, east: 16.688542048345653)),
-        (.bird, GeoBounds(south: 40.7844, west: 14.1066, north: 40.921, east: 14.3912)),
-        (.bird, GeoBounds(south: 38.0876, west: 13.3064, north: 38.2158, east: 13.388)),
-        (.bird, GeoBounds(south: 41.6884, west: 12.2183, north: 42.0928, east: 12.7268)),
-        (.elerent, GeoBounds(south: 37.465, west: 15.0445, north: 37.5427, east: 15.1362)),
-        (.dott, GeoBounds(south: 41.0421, west: 16.7286, north: 41.172, east: 17.0146)),
-        (.dott, GeoBounds(south: 45.6534, west: 9.6174, north: 45.7334, east: 9.7157)),
-        (.dott, GeoBounds(south: 45.7766, west: 8.735, north: 45.8859, east: 8.8719)),
-        (.dott, GeoBounds(south: 44.7985, west: 11.5342, north: 44.9095, east: 11.6801)),
-        (.dott, GeoBounds(south: 45.4732, west: 12.5305, north: 45.6019, east: 12.7466)),
-        (.dott, GeoBounds(south: 44.9259, west: 7.4693, north: 45.1778, east: 7.8341)),
-        (.dott, GeoBounds(south: 45.3847, west: 9.0389, north: 45.5588, east: 9.3113)),
-        (.dott, GeoBounds(south: 44.5609, west: 10.7799, north: 44.7283, east: 11.0137)),
-        (.dott, GeoBounds(south: 45.5513, west: 9.2262, north: 45.6342, east: 9.3269)),
-        (.dott, GeoBounds(south: 45.2723, west: 11.7037, north: 45.517, east: 12.029)),
-        (.dott, GeoBounds(south: 38.0935, west: 13.26, north: 38.2183, east: 13.3791)),
-        (.dott, GeoBounds(south: 44.6393, west: 10.5755, north: 44.7301, east: 10.6878)),
-        (.dott, GeoBounds(south: 41.7032, west: 12.2499, north: 42.0224, east: 12.7145)),
-        (.dott, GeoBounds(south: 39.1842, west: 9.0798, north: 39.2658, east: 9.2271)),
-        (.dott, GeoBounds(south: 46.03, west: 11.0796, north: 46.1382, east: 11.1395)),
-        (.dott, GeoBounds(south: 45.3474, west: 10.8749, north: 45.5438, east: 11.1259)),
-        (.voi, GeoBounds(south: 40.7520051863504, west: 14.130893162343051, north: 40.93720778574244, east: 14.37571256389413)),
-        (.voi, GeoBounds(south: 44.64130208928131, west: 10.537329582127876, north: 44.76818909778005, east: 10.739203350602189)),
-        (.bolt, GeoBounds(south: 50.7705, west: 4.2448, north: 50.918, east: 4.4816)),
-        (.dott, GeoBounds(south: 50.7755, west: 4.2508, north: 50.9224, east: 4.4816)),
-        (.dott, GeoBounds(south: 50.3504, west: 4.3494, north: 50.4803, east: 4.5161)),
-        (.dott, GeoBounds(south: 50.552, west: 5.5093, north: 50.7117, east: 5.6894)),
-        (.dott, GeoBounds(south: 50.6458, west: 5.5414, north: 50.7117, east: 5.6715)),
-        (.pony, GeoBounds(south: 50.369, west: 4.3459, north: 50.4817, east: 4.5118)),
-        (.hoppy, GeoBounds(south: 51.2861, west: 3.0977, north: 51.3268, east: 3.1643)),
-        (.hoppy, GeoBounds(south: 50.7643, west: 3.2165, north: 50.8622, east: 3.3118)),
-        (.hoppy, GeoBounds(south: 50.9977, west: 4.445, north: 51.0485, east: 4.5283)),
-        (.hoppy, GeoBounds(south: 51.187, west: 2.8483, north: 51.2612, east: 2.9994)),
-        (.hoppy, GeoBounds(south: 51.1416, west: 4.1029, north: 51.1882, east: 4.1829)),
-        (.voi, GeoBounds(south: 51.1544, west: 4.3381, north: 51.2709, east: 4.4885)),
-        (.bolt, GeoBounds(south: 59.8134, west: 10.6189, north: 59.9862, east: 10.9552)),
-        (.dott, GeoBounds(south: 63.4299, west: 10.8165, north: 63.5147, east: 10.997)),
-        (.dott, GeoBounds(south: 63.3797, west: 10.3315, north: 63.4618, east: 10.5549)),
-        (.ryde, GeoBounds(south: 62.425, west: 6.0945, north: 62.4861, east: 6.4232)),
-        (.ryde, GeoBounds(south: 59.8103, west: 10.3778, north: 59.8829, east: 10.5414)),
-        (.ryde, GeoBounds(south: 59.8704, west: 10.4612, north: 59.9607, east: 10.648)),
-        (.ryde, GeoBounds(south: 67.2666, west: 14.3304, north: 67.3252, east: 14.6166)),
-        (.ryde, GeoBounds(south: 59.1885, west: 10.8815, north: 59.2585, east: 11.0266)),
-        (.ryde, GeoBounds(south: 59.9167, west: 10.9712, north: 60.0009, east: 11.0948)),
-        (.ryde, GeoBounds(south: 59.9085, west: 10.9196, north: 59.9547, east: 11.0068)),
-        (.ryde, GeoBounds(south: 59.8542, west: 10.6173, north: 59.9788, east: 10.9523)),
-        (.ryde, GeoBounds(south: 59.1153, west: 9.6191, north: 59.1616, east: 9.6952)),
-        (.ryde, GeoBounds(south: 59.0932, west: 10.164, north: 59.1633, east: 10.2922)),
-        (.ryde, GeoBounds(south: 59.261, west: 11.021, north: 59.3078, east: 11.1466)),
-        (.ryde, GeoBounds(south: 59.1385, west: 9.52, north: 59.2656, east: 9.6801)),
-        (.ryde, GeoBounds(south: 59.1153, west: 9.6191, north: 59.1616, east: 9.6952)),
-        (.ryde, GeoBounds(south: 58.8788, west: 5.6365, north: 59.0118, east: 5.7765)),
-        (.ryde, GeoBounds(south: 58.8788, west: 5.695, north: 58.896, east: 5.755)),
-        (.ryde, GeoBounds(south: 59.2303, west: 10.3765, north: 59.3091, east: 10.4904)),
-        (.ryde, GeoBounds(south: 69.5976, west: 18.8764, north: 69.7169, east: 19.0959)),
-        (.ryde, GeoBounds(south: 63.3387, west: 10.3167, north: 63.461, east: 10.5444)),
-        (.voi, GeoBounds(south: 58.4301, west: 8.6955, north: 58.4883, east: 8.8325)),
-        (.voi, GeoBounds(south: 59.8794, west: 10.4669, north: 59.9558, east: 10.6494)),
-        (.voi, GeoBounds(south: 59.8079, west: 10.3717, north: 59.8793, east: 10.5109)),
-        (.voi, GeoBounds(south: 59.1759, west: 10.872, north: 59.275, east: 11.0299)),
-        (.voi, GeoBounds(south: 59.2598, west: 11.03, north: 59.3076, east: 11.1427)),
-        (.voi, GeoBounds(south: 58.0678, west: 7.754, north: 58.1969, east: 8.1385)),
-        (.voi, GeoBounds(south: 58.2505, west: 7.9539, north: 58.2926, east: 7.9974)),
-        (.voi, GeoBounds(south: 59.8947, west: 11, north: 60.0214, east: 11.106)),
-        (.voi, GeoBounds(south: 59.9032, west: 10.9151, north: 59.9916, east: 10.9999)),
-        (.voi, GeoBounds(south: 59.4038, west: 10.6092, north: 59.4596, east: 10.7152)),
-        (.voi, GeoBounds(south: 59.8219, west: 10.6158, north: 59.9871, east: 10.9574)),
-        (.voi, GeoBounds(south: 58.868, west: 5.5629, north: 59.0144, east: 5.777)),
-        (.voi, GeoBounds(south: 58.765, west: 5.6738, north: 58.896, east: 5.7891)),
-        (.voi, GeoBounds(south: 63.3352, west: 10.306, north: 63.4603, east: 10.5386)),
-        (.voi, GeoBounds(south: 58.230132386860056, west: 8.353023308105405, north: 58.45957412949791, east: 8.761492197536528)),
-        (.voi, GeoBounds(south: 58.162260423993764, west: 8.20978524035672, north: 58.349742838363994, east: 8.509530083720346)),
-        (.voi, GeoBounds(south: 60.38575997506088, west: 4.989212125836212, north: 60.53661390222527, east: 5.265346602135307)),
-        (.voi, GeoBounds(south: 60.501100695222156, west: 5.093784297130105, north: 60.61408450360314, east: 5.3925787949326836)),
-        (.voi, GeoBounds(south: 58.683892473715765, west: 5.770594724002848, north: 58.80832406497031, east: 6.074248012778891)),
-        (.voi, GeoBounds(south: 60.26833512198984, west: 4.852930244659245, north: 60.44292611183713, east: 5.169747342512637)),
-        (.voi, GeoBounds(south: 58.67779851596129, west: 5.468832476586199, north: 58.80327487699317, east: 5.8050357814337685)),
-        (.beryl, GeoBounds(south: 50.7028, west: -1.915, north: 50.7899, east: -1.7851)),
-        (.beryl, GeoBounds(south: 50.7128, west: -1.785, north: 50.7639, east: -1.6868)),
-        (.beryl, GeoBounds(south: 50.6776, west: -2.0378, north: 50.7942, east: -1.9151)),
-        (.beryl, GeoBounds(south: 50.8081, west: -0.2167, north: 50.8724, east: -0.0935)),
-        (.beryl, GeoBounds(south: 50.1339, west: -5.1335, north: 50.1772, east: -5.0427)),
-        (.beryl, GeoBounds(south: 50.3955, west: -5.1244, north: 50.4283, east: -5.0188)),
-        (.beryl, GeoBounds(south: 50.0795, west: -5.5629, north: 50.1351, east: -5.4533)),
-        (.beryl, GeoBounds(south: 50.2396, west: -5.1299, north: 50.2715, east: -5.0141)),
-        (.beryl, GeoBounds(south: 53.7731, west: -1.6112, north: 53.8524, east: -1.4765)),
-        (.beryl, GeoBounds(south: 52.5913, west: 1.1644, north: 52.6952, east: 1.3887)),
-        (.beryl, GeoBounds(south: 52.5508, west: 1.0968, north: 52.5953, east: 1.1503)),
-        (.beryl, GeoBounds(south: 50.3576, west: -4.1953, north: 50.4207, east: -4.0967)),
-        (.bolt, GeoBounds(south: 53.3314, west: -3.0113, north: 53.4755, east: -2.8194)),
-        (.dott, GeoBounds(south: 51.3473, west: -2.4118, north: 51.4195, east: -2.291)),
-        (.dott, GeoBounds(south: 51.3973, west: -2.7053, north: 51.5499, east: -2.4519)),
-        (.dott, GeoBounds(south: 51.5197, west: -2.4504, north: 51.5649, east: -2.3796)),
-        (.dott, GeoBounds(south: 51.9723, west: -0.8446, north: 52.0904, east: -0.6559)),
-        (.dott, GeoBounds(south: 52.8911, west: -1.2505, north: 53.0217, east: -1.1045)),
-        (.voi, GeoBounds(south: 52.35028, west: -0.77627, north: 52.43409, east: -0.654055871022936)),
-        (.voi, GeoBounds(south: 52.28, west: -0.751, north: 52.329, east: -0.652)),
-        (.voi, GeoBounds(south: 51.802125353332514, west: -2.15, north: 51.976019433793624, east: -1.9274823780819745)),
-        (.voi, GeoBounds(south: 51.802125353332514, west: -2.359735850790898, north: 51.976019433793624, east: -2.15)),
-        (.voi, GeoBounds(south: 52.266, west: -0.642, north: 52.328, east: -0.552)),
-        (.voi, GeoBounds(south: 51.65752, west: -1.35811, north: 51.85516, east: -1.12534)),
-        (.voi, GeoBounds(south: 50.535367023678354, west: -1.654052658845761, north: 50.792267403779235, east: -1.0340508111103688)),
-        (.voi, GeoBounds(south: 52.0942173949546, west: -0.01478658747473105, north: 52.27488998377251, east: 0.2705901847699579)),
-        (.voi, GeoBounds(south: 51.75143574538053, west: -1.0259084965180603, north: 51.925731156124236, east: -0.6372224109644254)),
-        (.voi, GeoBounds(south: 51.842084429902044, west: 0.4733700577157839, north: 51.92795220891488, east: 0.609286891627528)),
-        (.voi, GeoBounds(south: 51.57373959030601, west: -0.8645395546969359, north: 51.68184581972984, east: -0.6284906648417216)),
-        (.voi, GeoBounds(south: 51.461967823955305, west: -0.7024455566334863, north: 51.57999246444064, east: -0.5100853796062739)),
-        (.voi, GeoBounds(south: 51.66862380002616, west: 0.32576439644858224, north: 51.80814494225751, east: 0.580091663388791)),
-        (.voi, GeoBounds(south: 50.77, west: -1.147, north: 50.869, east: -0.999)),
-        (.voi, GeoBounds(south: 52.448, west: -0.787, north: 52.5304382962175, east: -0.59)),
-        (.voi, GeoBounds(south: 50.875, west: -1.482, north: 50.957, east: -1.324)),
-        (.voi, GeoBounds(south: 52.190351431892886, west: -0.9908294677734375, north: 52.29672861135593, east: -0.800628662109375)),
-        (.voi, GeoBounds(south: 51.30515851278135, west: -0.4506786666871926, north: 51.6669733453627, east: 0.19414977493520894)),
-        (.bird, GeoBounds(south: 38.6461, west: -9.205, north: 38.6941, east: -9.1394)),
-        (.bird, GeoBounds(south: 38.6051, west: -9.2506, north: 38.6795, east: -9.2051)),
-        (.bird, GeoBounds(south: 38.6716, west: -9.4824, north: 38.7592, east: -9.3048)),
-        (.bird, GeoBounds(south: 40.179, west: -8.4718, north: 40.2378, east: -8.3837)),
-        (.bird, GeoBounds(south: 38.6868, west: -9.2341, north: 38.7951, east: -9.0842)),
-        (.bird, GeoBounds(south: 41.1957, west: -8.6761, north: 41.2748, east: -8.5498)),
-        (.bird, GeoBounds(south: 41.1675, west: -8.7233, north: 41.2315, east: -8.5906)),
-        (.bird, GeoBounds(south: 38.6708, west: -9.3567, north: 38.7512, east: -9.2033)),
-        (.bird, GeoBounds(south: 37.0174, west: -7.8629, north: 37.0559, east: -7.8152)),
-        (.bird, GeoBounds(south: 37.1099, west: -8.6041, north: 37.1623, east: -8.5214)),
-        (.bird, GeoBounds(south: 41.1351, west: -8.6946, north: 41.1868, east: -8.5741)),
-        (.lime, GeoBounds(south: 38.6549, west: -9.205, north: 38.69, east: -9.1425)),
-        (.lime, GeoBounds(south: 38.6033, west: -9.2516, north: 38.6798, east: -9.2051)),
-        (.lime, GeoBounds(south: 38.6874, west: -9.234, north: 38.7991, east: -9.0836)),
-        (.bird, GeoBounds(south: 28.3622, west: -13.8857, north: 28.4199, east: -13.8442)),
-        (.bird, GeoBounds(south: 40.3098, west: -3.7197, north: 40.3377, east: -3.6545)),
-        (.bird, GeoBounds(south: 43.5042, west: -5.7134, north: 43.5546, east: -5.5986)),
-        (.bird, GeoBounds(south: 28.1311, west: -14.2536, north: 28.1799, east: -14.2029)),
-        (.bird, GeoBounds(south: 28.041, west: -14.3561, north: 28.0831, east: -14.2967)),
-        (.bird, GeoBounds(south: 28.0407, west: -16.763, north: 28.115, east: -16.6956)),
-        (.hopp, GeoBounds(south: 37.9392, west: -0.7395, north: 38.0354, east: -0.6426)),
-        (.hopp, GeoBounds(south: 37.8382, west: -0.8007, north: 37.8943, east: -0.7462)),
-        (.hopp, GeoBounds(south: 38.7636, west: 0.16, north: 38.7994, east: 0.2006)),
-        (.hopp, GeoBounds(south: 28.0452, west: -16.7408, north: 28.0935, east: -16.6976)),
-        (.hopp, GeoBounds(south: 28.0188, west: -16.6251, north: 28.0377, east: -16.5879)),
-        (.hoppy, GeoBounds(south: 28.363, west: -13.8885, north: 28.4207, east: -13.8412)),
-        (.hoppy, GeoBounds(south: 28.7018, west: -13.8863, north: 28.749, east: -13.8462)),
-        (.hoppy, GeoBounds(south: 38.58, west: -0.08, north: 38.6464, east: 0.0195)),
-        (.hoppy, GeoBounds(south: 38.5537, west: -0.08, north: 38.5799, east: -0.0526)),
-        (.hoppy, GeoBounds(south: 38.5544, west: -0.122, north: 38.6238, east: -0.0801)),
-        (.hoppy, GeoBounds(south: 38.5634, west: -0.1596, north: 38.634, east: -0.1221)),
-        (.hoppy, GeoBounds(south: 28.9145, west: -13.6887, north: 28.9412, east: -13.6057)),
-        (.hoppy, GeoBounds(south: 28.0375, west: -16.7953, north: 28.1375, east: -16.6901)),
-        (.hoppy, GeoBounds(south: 37.9395, west: -0.7523, north: 38.0344, east: -0.6383)),
-        (.dott, GeoBounds(south: 36.4076, west: -5.1754, north: 36.5881, east: -4.5935)),
-        (.dott, GeoBounds(south: 28.0391, west: -16.7822, north: 28.1332, east: -16.6955)),
-        (.dott, GeoBounds(south: 28.4441, west: -16.2945, north: 28.5106, east: -16.1859)),
-        (.hopp, GeoBounds(south: 64.3078, west: -22.1074, north: 64.333, east: -22.0223)),
-        (.hopp, GeoBounds(south: 65.6486, west: -18.1687, north: 65.71, east: -18.0277)),
-        (.hopp, GeoBounds(south: 64.5283, west: -21.9425, north: 64.563, east: -21.8808)),
-        (.hopp, GeoBounds(south: 65.9611, west: -18.5579, north: 65.983, east: -18.5043)),
-        (.hopp, GeoBounds(south: 65.2474, west: -14.4586, north: 65.3089, east: -14.3682)),
-        (.hopp, GeoBounds(south: 66.0289, west: -17.3699, north: 66.0549, east: -17.316)),
-        (.hopp, GeoBounds(south: 63.9852, west: -21.2262, north: 64.0277, east: -21.1619)),
-        (.hopp, GeoBounds(south: 64.8836, west: -23.7189, north: 64.9001, east: -23.6805)),
-        (.hopp, GeoBounds(south: 64.9091, west: -23.9007, north: 64.9305, east: -23.801)),
-        (.hopp, GeoBounds(south: 63.9551, west: -22.636, north: 64.0158, east: -22.4649)),
-        (.hopp, GeoBounds(south: 64.0228, west: -22.7256, north: 64.0496, east: -22.6789)),
-        (.hopp, GeoBounds(south: 64.0635, west: -22.6826, north: 64.0761, east: -22.634)),
-        (.hopp, GeoBounds(south: 63.969, west: -22.3931, north: 63.9868, east: -22.3458)),
-        (.hopp, GeoBounds(south: 64.0284, west: -22.0287, north: 64.1917, east: -21.6403)),
-        (.hopp, GeoBounds(south: 65.7279, west: -19.6659, north: 65.7643, east: -19.6194)),
-        (.hopp, GeoBounds(south: 63.9058, west: -21.0713, north: 63.9574, east: -20.9586)),
-        (.hopp, GeoBounds(south: 65.0584, west: -22.762, north: 65.0856, east: -22.7041)),
-        (.hopp, GeoBounds(south: 63.4233, west: -20.3143, north: 63.454, east: -20.2472)),
-        (.hopp, GeoBounds(south: 63.4101, west: -19.029, north: 63.4284, east: -18.9801)),
-        (.voi, GeoBounds(south: 56.0639863543046, west: 10.0751495361328, north: 56.2383895039888, east: 10.3113555908203)),
-        (.voi, GeoBounds(south: 55.3010107944959, west: 10.2351379394531, north: 55.4796317138773, east: 10.5317687988281)),
-        (.voi, GeoBounds(south: 56.9610753568483, west: 9.678955078125, north: 57.15374754486, east: 10.1321411132812)),
-        (.hopp, GeoBounds(south: 67.8205, west: 20.1797, north: 67.8801, east: 20.3641)),
-        (.lime, GeoBounds(south: 59.8076, west: 17.5747, north: 59.9021, east: 17.7203)),
-        (.voi, GeoBounds(south: 58.22198604038249, west: 12.178586968862646, north: 58.350640965615526, east: 12.432170960613973)),
-        (.voi, GeoBounds(south: 58.32391453794888, west: 15.38360595703125, north: 58.50051103764058, east: 15.864257812499998)),
-        (.voi, GeoBounds(south: 55.9878199697891, west: 12.6459503173828, north: 56.0906186777103, east: 12.7880859375)),
-        (.voi, GeoBounds(south: 60.55196567741403, west: 16.821384148535337, north: 60.7924380425801, east: 17.407666443488193)),
-        (.voi, GeoBounds(south: 55.66383765593185, west: 13.091239929199219, north: 55.76112258901995, east: 13.301010131835936)),
-        (.voi, GeoBounds(south: 56.78393274747651, west: 14.6345498644896, north: 56.99355104735682, east: 14.977844230643655)),
-        (.voi, GeoBounds(south: 59.8037426244997, west: 17.5266265869141, north: 59.9049511141442, east: 17.7975082397461)),
-        (.voi, GeoBounds(south: 58.419637, west: 15.889286, north: 58.737686, east: 16.575714)),
-        (.voi, GeoBounds(south: 59.204953, west: 17.795002, north: 59.455496, east: 18.356363)),
-        (.voi, GeoBounds(south: 59.23252752806556, west: 15.140533447265625, north: 59.318126631430424, east: 15.343780517578123)),
-        (.voi, GeoBounds(south: 57.633271, west: 11.851058, north: 57.770117, east: 12.125706)),
-        (.voi, GeoBounds(south: 57.67887906685692, west: 12.829605193225632, north: 57.7794562167397, east: 13.073384591047272)),
-        (.voi, GeoBounds(south: 56.48372869256887, west: 12.56561279296875, north: 56.857982669693584, east: 13.38134765625)),
-        (.voi, GeoBounds(south: 59.559431, west: 16.411313, north: 59.683119, east: 16.672767)),
-        (.voi, GeoBounds(south: 55.503978, west: 12.809006, north: 55.661015, east: 13.167879)),
-        (.qick, GeoBounds(south: 59.237656, west: 15.151384, north: 59.306636, east: 15.268032)),
-        (.qick, GeoBounds(south: 58.371166, west: 15.493934, north: 58.437915, east: 15.713755)),
-        (.qick, GeoBounds(south: 58.558753, west: 16.121776, north: 58.624559, east: 16.243879)),
-        (.qick, GeoBounds(south: 57.757437, west: 14.11968, north: 57.798462, east: 14.260196)),
-        (.qick, GeoBounds(south: 59.339476, west: 16.433246, north: 59.406399, east: 16.562471)),
-        (.qick, GeoBounds(south: 60.568036, west: 15.583741, north: 60.630238, east: 15.707035)),
-        (.qick, GeoBounds(south: 60.455159, west: 15.376463, north: 60.526219, east: 15.486713)),
-        (.ride_mobility, GeoBounds(south: 56.862, west: 23.8878, north: 57.0871, east: 24.3426)),
-        (.dott, GeoBounds(south: 50.0153, west: 19.1853, north: 50.0623, east: 19.2617)),
-        (.dott, GeoBounds(south: 50.2488, west: 19.0917, north: 50.3188, east: 19.2153)),
-        (.dott, GeoBounds(south: 52.3218, west: 21.211, north: 52.3675, east: 21.2883)),
-        (.dott, GeoBounds(south: 52.3148, west: 21.164, north: 52.3578, east: 21.2498)),
-        (.dott, GeoBounds(south: 52.392, west: 21.149, north: 52.4303, east: 21.2185)),
-        (.hopp, GeoBounds(south: 50.1984, west: 18.6242, north: 50.2455, east: 18.6968)),
-        (.hopp, GeoBounds(south: 52.3069, west: 17.5272, north: 52.3432, east: 17.6078)),
-        (.hopp, GeoBounds(south: 53.3449, west: 17.0006, north: 53.3832, east: 17.0833)),
-        (.dott, GeoBounds(south: 50.8404, west: 17.4434, north: 50.8678, east: 17.4904)),
-        (.dott, GeoBounds(south: 52.1229, west: 20.7372, north: 52.3642, east: 21.1523)),
-        (.dott, GeoBounds(south: 50.224, west: 18.8997, north: 50.3328, east: 19.0642)),
-        (.dott, GeoBounds(south: 50.1139, west: 19.3527, north: 50.1825, east: 19.4852)),
-        (.dott, GeoBounds(south: 54.288, west: 18.193, north: 54.6152, east: 18.675)),
-        (.dott, GeoBounds(south: 50.7735, west: 19.0697, north: 50.8636, east: 19.1564)),
-        (.dott, GeoBounds(south: 53.5378, west: 14.8022, north: 53.5783, east: 14.872)),
-        (.dott, GeoBounds(south: 54.1496, west: 15.5146, north: 54.1944, east: 15.6203)),
-        (.dott, GeoBounds(south: 54.1048, west: 17.8512, north: 54.1417, east: 18.008)),
-        (.dott, GeoBounds(south: 54.5206, west: 17.7122, north: 54.5606, east: 17.7727)),
-        (.dott, GeoBounds(south: 50.0182, west: 19.8716, north: 50.1089, east: 20.0422)),
-        (.dott, GeoBounds(south: 52.3607, west: 20.8789, north: 52.4545, east: 20.9989)),
-        (.dott, GeoBounds(south: 51.8159, west: 16.531, north: 51.8759, east: 16.6109)),
-        (.dott, GeoBounds(south: 50.6523, west: 18.6321, north: 50.7003, east: 18.7105)),
-        (.dott, GeoBounds(south: 51.9068, west: 22.3316, north: 51.9576, east: 22.4408)),
-        (.dott, GeoBounds(south: 54.009, west: 19.0008, north: 54.0735, east: 19.0779)),
-        (.dott, GeoBounds(south: 53.9123, west: 14.4235, north: 53.9406, east: 14.4661)),
-        (.dott, GeoBounds(south: 52.0703, west: 20.5789, north: 52.1588, east: 20.7645)),
-        (.dott, GeoBounds(south: 53.6566, west: 15.0872, north: 53.6952, east: 15.1624)),
-        (.dott, GeoBounds(south: 52.4103, west: 20.656, north: 52.4544, east: 20.7632)),
-        (.dott, GeoBounds(south: 49.4564, west: 19.9914, north: 49.5074, east: 20.0695)),
-        (.dott, GeoBounds(south: 51.1933, west: 17.3591, north: 51.232, east: 17.419)),
-        (.dott, GeoBounds(south: 52.5131, west: 19.6491, north: 52.5889, east: 19.7893)),
-        (.dott, GeoBounds(south: 52.317, west: 16.7855, north: 52.4824, east: 17.0168)),
-        (.dott, GeoBounds(south: 54.2368, west: 18.5911, north: 54.3004, east: 18.6878)),
-        (.dott, GeoBounds(south: 50.3156, west: 18.8317, north: 50.4151, east: 18.9512)),
-        (.dott, GeoBounds(south: 54.0474, west: 14.9014, north: 54.1034, east: 15.1019)),
-        (.dott, GeoBounds(south: 49.9513, west: 19.8048, north: 49.9968, east: 19.8609)),
-        (.dott, GeoBounds(south: 53.9326, west: 18.4822, north: 53.9999, east: 18.5511)),
-        (.dott, GeoBounds(south: 50.8232, west: 16.4564, north: 50.8666, east: 16.5274)),
-        (.dott, GeoBounds(south: 53.8991, west: 14.2168, north: 53.9278, east: 14.2808)),
-        (.dott, GeoBounds(south: 53.389, west: 14.4537, north: 53.4647, east: 14.5795)),
-        (.dott, GeoBounds(south: 53.3607, west: 14.6022, north: 53.4102, east: 14.7028)),
-        (.dott, GeoBounds(south: 50.4212, west: 18.8014, north: 50.467, east: 18.8886)),
-        (.dott, GeoBounds(south: 54.0654, west: 18.745, north: 54.1157, east: 18.8133)),
-        (.dott, GeoBounds(south: 51.0373, west: 16.8837, north: 51.1751, east: 17.0929)),
-        (.dott, GeoBounds(south: 50.4685, west: 19.3794, north: 50.5201, east: 19.4743)),
-        (.hopp, GeoBounds(south: 46.0199, west: 18.1584, north: 46.0962, east: 18.2795)),
-        (.hopp, GeoBounds(south: 46.6404, west: 21.0275, north: 46.7058, east: 21.1674)),
-        (.dott, GeoBounds(south: 47.4516, west: 19.0064, north: 47.5727, east: 19.1202)),
-        (.dott, GeoBounds(south: 47.6203, west: 17.5781, north: 47.7337, east: 17.7437)),
-        (.dott, GeoBounds(south: 47.6244, west: 19.6164, north: 47.7006, east: 19.7327)),
-        (.dott, GeoBounds(south: 47.2757, west: 17.4281, north: 47.362, east: 17.5295)),
-        (.dott, GeoBounds(south: 46.9225, west: 18.8867, north: 47.0021, east: 18.9638)),
-        (.hopp, GeoBounds(south: 36.302, west: 28.1756, north: 36.39, east: 28.2465)),
-        (.hopp, GeoBounds(south: 37.9208, west: 23.602, north: 37.9967, east: 23.6771)),
-        (.hopp, GeoBounds(south: 38.1459, west: 20.4613, north: 38.1995, east: 20.5084)),
-        (.hopp, GeoBounds(south: 39.5875, west: 20.7955, north: 39.6989, east: 20.9053)),
-        (.hoppy, GeoBounds(south: 36.8666, west: 27.174, north: 36.9192, east: 27.3618)),
-        (.hoppy, GeoBounds(south: 35.3476, west: 24.4431, north: 35.395, east: 24.6181)),
-        (.hoppy, GeoBounds(south: 37.7052, west: 20.8408, north: 37.8097, east: 20.9481)),
-        (.hoppy, GeoBounds(south: 36.3823, west: 28.187, north: 36.4612, east: 28.2492)),
-        (.hoppy, GeoBounds(south: 36.4062, west: 28.1137, north: 36.4278, east: 28.1869)),
-        (.hoppy, GeoBounds(south: 36.2953, west: 28.1747, north: 36.3822, east: 28.247)),
-        (.hoppy, GeoBounds(south: 36.2745, west: 28.1567, north: 36.2952, east: 28.1895)),
-        (.hoppy, GeoBounds(south: 36.2372, west: 28.1335, north: 36.271, east: 28.1787)),
-        (.dott, GeoBounds(south: 40.5586, west: 22.8837, north: 40.7779, east: 23.1412)),
-        (.dott, GeoBounds(south: 37.904, west: 23.6145, north: 38.0306, east: 23.7848)),
-        (.hopp, GeoBounds(south: 34.7243, west: 32.3084, north: 34.9182, east: 32.4919)),
-        (.hopp, GeoBounds(south: 34.6397, west: 32.9752, north: 34.7227, east: 33.1875)),
-        (.hopp, GeoBounds(south: 60.0657, west: 19.8824, north: 60.1438, east: 19.9972)),
-        (.dott, GeoBounds(south: 60.142, west: 24.8378, north: 60.2492, east: 25.1316)),
-        (.dott, GeoBounds(south: 60.5971, west: 24.8052, north: 60.6613, east: 24.9088)),
-        (.dott, GeoBounds(south: 60.4442, west: 25.0546, north: 60.5143, east: 25.1493)),
-        (.dott, GeoBounds(south: 63.6536, west: 22.6697, north: 63.7204, east: 22.7709)),
-        (.dott, GeoBounds(south: 60.13, west: 24.5696, north: 60.2579, east: 24.8505)),
-        (.dott, GeoBounds(south: 60.368, west: 25.0462, north: 60.4487, east: 25.1548)),
-        (.dott, GeoBounds(south: 60.1006, west: 24.4087, north: 60.1425, east: 24.4854)),
-        (.dott, GeoBounds(south: 63.8083, west: 22.9845, north: 63.869, east: 23.1959)),
-        (.dott, GeoBounds(south: 60.8436, west: 26.6004, north: 60.9126, east: 26.8024)),
-        (.dott, GeoBounds(south: 60.9309, west: 25.4995, north: 61.0259, east: 25.8)),
-        (.dott, GeoBounds(south: 61.0276, west: 28.0774, north: 61.0883, east: 28.2747)),
-        (.dott, GeoBounds(south: 61.4476, west: 23.4438, north: 61.506, east: 23.5892)),
-        (.dott, GeoBounds(south: 60.3613, west: 24.6676, north: 60.4088, east: 24.7946)),
-        (.dott, GeoBounds(south: 60.362, west: 25.6151, north: 60.4165, east: 25.7197)),
-        (.dott, GeoBounds(south: 61.091, west: 21.462, north: 61.1653, east: 21.6019)),
-        (.dott, GeoBounds(south: 60.7039, west: 24.7296, north: 60.763, east: 24.8407)),
-        (.dott, GeoBounds(south: 60.3578, west: 23.034, north: 60.4281, east: 23.1946)),
-        (.dott, GeoBounds(south: 61.4267, west: 23.5622, north: 61.5399, east: 23.9504)),
-        (.dott, GeoBounds(south: 63.0673, west: 21.5541, north: 63.1361, east: 21.7417)),
-        (.dott, GeoBounds(south: 60.2682, west: 24.9406, north: 60.334, east: 25.0849)),
-        (.voi, GeoBounds(south: 61.439752329021, west: 23.6171722412109, north: 61.54364147555, east: 23.9076232910156)),
-        (.voi, GeoBounds(south: 60.3775571287457, west: 22.0763397216797, north: 60.5008635236931, east: 22.4176025390625)),
-        (.voi, GeoBounds(south: 62.1706311981245, west: 25.5150604248047, north: 62.3107081604266, east: 25.9737396240234)),
-        (.voi, GeoBounds(south: 59.995685, west: 24.347465, north: 60.39054, east: 25.525976)),
-        (.hoppy, GeoBounds(south: 45.3081, west: 14.353, north: 45.3587, east: 14.4896)),
-        (.zelectra, GeoBounds(south: 50.3748, west: 30.4036, north: 50.5282, east: 30.663)),
-        (.bolt_hopp, GeoBounds(south: 38.87, west: -77.1309, north: 39.0046, east: -76.8978)),
-        (.bolt_hopp, GeoBounds(south: 38.82, west: -77.041, north: 38.87, east: -76.8978)),
-        (.bolt_hopp, GeoBounds(south: 38.7862, west: -77.03, north: 38.82, east: -76.8978)),
-        (.veo, GeoBounds(south: 38.87, west: -77.1309, north: 39.0046, east: -76.8978)),
-        (.veo, GeoBounds(south: 38.82, west: -77.041, north: 38.87, east: -76.8978)),
-        (.veo, GeoBounds(south: 38.7862, west: -77.03, north: 38.82, east: -76.8978)),
-        (.bird, GeoBounds(south: 33.3205, west: -111.9874, north: 33.4673, east: -111.8718)),
-        (.bird, GeoBounds(south: 33.9689, west: -118.4584, north: 34.043, east: -118.3606)),
-        (.bird, GeoBounds(south: 33.6944, west: -118.6727, north: 34.3465, east: -118.1549)),
-        (.bird, GeoBounds(south: 33.9876, west: -118.5266, north: 34.0597, east: -118.4328)),
-        (.bird, GeoBounds(south: 29.5934, west: -82.4282, north: 29.6975, east: -82.2754)),
-        (.bird, GeoBounds(south: 33.6399, west: -84.5607, north: 33.894, east: -84.279)),
-        (.bird, GeoBounds(south: 39.6833, west: -86.2872, north: 39.9113, east: -85.9597)),
-        (.bird, GeoBounds(south: 37.9449, west: -84.6279, north: 38.117, east: -84.375)),
-        (.bird, GeoBounds(south: 38.8986, west: -94.697, north: 39.1367, east: -94.4578)),
-        (.bird, GeoBounds(south: 38.5269, west: -90.3726, north: 38.6969, east: -90.1695)),
-        (.bird, GeoBounds(south: 36.038, west: -79.858, north: 36.1141, east: -79.7297)),
-        (.bird, GeoBounds(south: 40.6722, west: -74.2394, north: 40.7963, east: -74.1075)),
-        (.bird, GeoBounds(south: 39.4775, west: -119.8535, north: 39.5656, east: -119.7681)),
-        (.bird, GeoBounds(south: 40.7964, west: -73.9149, north: 40.9224, east: -73.771)),
-        (.bird, GeoBounds(south: 40.658, west: -73.8496, north: 40.7741, east: -73.7337)),
-        (.bird, GeoBounds(south: 41.3826, west: -81.89, north: 41.6067, east: -81.5219)),
-        (.bird, GeoBounds(south: 35.0662, west: -90.0967, north: 35.2023, east: -89.7846)),
-        (.bird, GeoBounds(south: 36.0305, west: -86.8825, north: 36.2506, east: -86.6261)),
-        (.bird, GeoBounds(south: 32.6108, west: -97.0038, north: 33.0209, east: -96.5463)),
-        (.bird, GeoBounds(south: 29.3863, west: -98.685, north: 29.6104, east: -98.4483)),
-        (.bird, GeoBounds(south: 38.8194, west: -77.1829, north: 38.9435, east: -77.0157)),
-        (.bird, GeoBounds(south: 38.8151, west: -77.3484, north: 38.8792, east: -77.2572)),
-        (.bird, GeoBounds(south: 37.4602, west: -77.6193, north: 37.6122, east: -77.3805)),
-        (.bird, GeoBounds(south: 44.785, west: -91.5415, north: 44.8311, east: -91.462)),
-        (.lime, GeoBounds(south: 33.3148, west: -111.989, north: 33.4651, east: -111.8703)),
-        (.lime, GeoBounds(south: 37.7706, west: -122.3348, north: 37.8602, east: -122.2005)),
-        (.lime, GeoBounds(south: 37.6991, west: -122.5253, north: 37.8178, east: -122.351)),
-        (.lime, GeoBounds(south: 37.2116, west: -121.9903, north: 37.4377, east: -121.7473)),
-        (.lime, GeoBounds(south: 38.7595, west: -104.8979, north: 38.9287, east: -104.7017)),
-        (.lime, GeoBounds(south: 33.6597, west: -84.5506, north: 33.88, east: -84.301)),
-        (.lime, GeoBounds(south: 41.6355, west: -87.8562, north: 42.032, east: -87.5125)),
-        (.lime, GeoBounds(south: 38.1771, west: -85.8445, north: 38.2854, east: -85.6587)),
-        (.lime, GeoBounds(south: 39.1917, west: -76.7226, north: 39.3811, east: -76.5183)),
-        (.lime, GeoBounds(south: 42.254, west: -83.2911, north: 42.4571, east: -82.9003)),
-        (.lime, GeoBounds(south: 35.9138, west: -78.994, north: 36.0771, east: -78.8326)),
-        (.lime, GeoBounds(south: 40.7828, west: -96.7279, north: 40.8458, east: -96.6416)),
-        (.lime, GeoBounds(south: 40.7968, west: -73.8969, north: 40.9158, east: -73.7899)),
-        (.lime, GeoBounds(south: 40.6575, west: -73.848, north: 40.7742, east: -73.7345)),
-        (.lime, GeoBounds(south: 38.8232, west: -77.1736, north: 38.9375, east: -77.0277)),
-        (.lime, GeoBounds(south: 36.8133, west: -76.3305, north: 36.9771, east: -76.1662)),
-        (.lime, GeoBounds(south: 47.4887, west: -122.4475, north: 47.7457, east: -122.2291)),
-        (.lyft, GeoBounds(south: 41.7482, west: -87.7999, north: 42.0313, east: -87.5437)),
-        (.lyft, GeoBounds(south: 45.4331, west: -122.764, north: 45.6023, east: -122.4778)),
-        (.spin, GeoBounds(south: 41.0098, west: -81.6218, north: 41.1781, east: -81.4094)),
-        (.spin, GeoBounds(south: 42.2155, west: -83.889, north: 42.3342, east: -83.6496)),
-        (.spin, GeoBounds(south: 39.1886, west: -76.723, north: 39.3803, east: -76.5124)),
-        (.spin, GeoBounds(south: 39.8522, west: -83.1551, north: 40.1481, east: -82.8317)),
-        (.spin, GeoBounds(south: 42.246, west: -83.3, north: 42.4979, east: -82.8982)),
-        (.spin, GeoBounds(south: 35.9411, west: -78.9726, north: 36.0479, east: -78.8525)),
-        (.spin, GeoBounds(south: 40.471, west: -105.1691, north: 40.629, east: -104.9807)),
-        (.spin, GeoBounds(south: 29.5924, west: -82.4291, north: 29.6977, east: -82.2744)),
-        (.spin, GeoBounds(south: 37.944, west: -84.6289, north: 38.1166, east: -84.376)),
-        (.spin, GeoBounds(south: 39.5179, west: -104.9184, north: 39.633, east: -104.8278)),
-        (.spin, GeoBounds(south: 42.694, west: -84.5099, north: 42.7479, east: -84.4483)),
-        (.spin, GeoBounds(south: 44.8835, west: -93.3417, north: 45.0603, east: -93.189)),
-        (.spin, GeoBounds(south: 36.0296, west: -86.8834, north: 36.2505, east: -86.6253)),
-        (.spin, GeoBounds(south: 35.7313, west: -78.7468, north: 35.8458, east: -78.5618)),
-        (.spin, GeoBounds(south: 35.7313, west: -78.7468, north: 35.8458, east: -78.5618)),
-        (.spin, GeoBounds(south: 41.8475, west: -71.4342, north: 41.9094, east: -71.3219)),
-        (.spin, GeoBounds(south: 41.7634, west: -71.4893, north: 41.9094, east: -71.3219)),
-        (.spin, GeoBounds(south: 33.3539, west: -112.1275, north: 33.5193, east: -111.9717)),
-        (.spin, GeoBounds(south: 37.4592, west: -77.6202, north: 37.6124, east: -77.381)),
-        (.spin, GeoBounds(south: 32.853, west: -117.2679, north: 32.9033, east: -117.2018)),
-        (.spin, GeoBounds(south: 37.6992, west: -122.5259, north: 37.8216, east: -122.3469)),
-        (.spin, GeoBounds(south: 36.9905, west: -113.6861, north: 37.2257, east: -113.4632)),
-        (.spin, GeoBounds(south: 27.8124, west: -82.6231, north: 28.1804, east: -82.2439)),
-        (.spin, GeoBounds(south: 38.5073, west: -121.8245, north: 38.5846, east: -121.6643)),
-        (.spin, GeoBounds(south: 36.0154, west: -94.2474, north: 36.1582, east: -94.1004)),
-        (.spin, GeoBounds(south: 36.0739, west: -97.1434, north: 36.1917, east: -97.0032)),
-        (.spin, GeoBounds(south: 30.401, west: -84.3722, north: 30.4818, east: -84.2118)),
-        (.spin, GeoBounds(south: 44.8784, west: -93.2213, north: 45.001, east: -92.9918)),
-        (.spin, GeoBounds(south: 37.2006, west: -80.0516, north: 37.3483, east: -79.8652)),
-        (.spin, GeoBounds(south: 40.7418, west: -111.8643, north: 40.7834, east: -111.8051)),
-        (.veo, GeoBounds(south: 33.4682, west: -86.8757, north: 33.5524, east: -86.7212)),
-        (.veo, GeoBounds(south: 39.8698, west: -83.1335, north: 40.1149, east: -82.8566)),
-        (.veo, GeoBounds(south: 41.9153, west: -91.7281, north: 42.0241, east: -91.5999)),
-        (.veo, GeoBounds(south: 41.4195, west: -81.8052, north: 41.555, east: -81.5637)),
-        (.veo, GeoBounds(south: 41.4869, west: -81.6067, north: 41.5454, east: -81.5204)),
-        (.veo, GeoBounds(south: 41.4799, west: -81.5607, north: 41.5091, east: -81.5152)),
-        (.veo, GeoBounds(south: 41.4924, west: -81.5532, north: 41.5469, east: -81.494)),
-        (.veo, GeoBounds(south: 38.9629, west: -76.9659, north: 39.0313, east: -76.8985)),
-        (.veo, GeoBounds(south: 38.9577, west: -76.9624, north: 38.9852, east: -76.9105)),
-        (.veo, GeoBounds(south: 37.9994, west: -78.5392, north: 38.0785, east: -78.4405)),
-        (.veo, GeoBounds(south: 39.6047, west: -105.0935, north: 39.8229, east: -104.7276)),
-        (.veo, GeoBounds(south: 36.026, west: -94.2394, north: 36.1576, east: -94.1075)),
-        (.veo, GeoBounds(south: 29.6058, west: -82.4095, north: 29.695, east: -82.2773)),
-        (.veo, GeoBounds(south: 41.715, west: -72.7301, north: 41.8158, east: -72.6415)),
-        (.veo, GeoBounds(south: 39.1607, west: -96.6445, north: 39.232, east: -96.5413)),
-        (.veo, GeoBounds(south: 41.2859, west: -72.9588, north: 41.3418, east: -72.8754)),
-        (.veo, GeoBounds(south: 40.8835, west: -73.8118, north: 40.9407, east: -73.7534)),
-        (.veo, GeoBounds(south: 40.6918, west: -74.255, north: 40.7978, east: -74.1217)),
-        (.veo, GeoBounds(south: 40.7987, west: -73.8939, north: 40.9151, east: -73.7913)),
-        (.veo, GeoBounds(south: 40.6575, west: -73.8512, north: 40.7737, east: -73.7345)),
-        (.veo, GeoBounds(south: 35.1626, west: -97.4996, north: 35.257, east: -97.3867)),
-        (.veo, GeoBounds(south: 40.4057, west: -86.9576, north: 40.481, east: -86.8865)),
-        (.veo, GeoBounds(south: 43.1044, west: -77.6881, north: 43.2084, east: -77.5337)),
-        (.veo, GeoBounds(south: 37.6848, west: -89.2673, north: 37.7612, east: -89.1719)),
-        (.veo, GeoBounds(south: 40.6976, west: -111.9584, north: 40.7951, east: -111.7979)),
-        (.veo, GeoBounds(south: 40.6781, west: -111.9115, north: 40.7344, east: -111.8689)),
-        (.veo, GeoBounds(south: 29.396, west: -98.5246, north: 29.4867, east: -98.4505)),
-        (.veo, GeoBounds(south: 42.9926, west: -76.212, north: 43.0917, east: -76.0577)),
-        (.veo, GeoBounds(south: 41.5856, west: -83.6966, north: 41.7378, east: -83.4676)),
-        (.veo, GeoBounds(south: 37.663, west: -97.4373, north: 37.7414, east: -97.2863)),
-        (.veo, GeoBounds(south: 37.8163, west: -122.3148, north: 37.9076, east: -122.2255)),
-        (.veo, GeoBounds(south: 37.8182, west: -122.3069, north: 37.855, east: -122.2664)),
-        (.veo, GeoBounds(south: 33.9873, west: -118.5274, north: 34.0539, east: -118.4353)),
-        (.veo, GeoBounds(south: 33.9215, west: -118.5508, north: 34.0829, east: -118.3949)),
-        (.veo, GeoBounds(south: 27.2936, west: -82.5909, north: 27.4162, east: -82.4897)),
-        (.veo, GeoBounds(south: 40.2062, west: -74.0482, north: 40.2534, east: -73.9868)),
-        (.veo, GeoBounds(south: 40.4658, west: -74.4902, north: 40.5346, east: -74.4054)),
-        (.veo, GeoBounds(south: 40.5031, west: -74.4823, north: 40.5369, east: -74.42)),
-        (.veo, GeoBounds(south: 40.4798, west: -74.4535, north: 40.5174, east: -74.4006)),
-        (.gcoo, GeoBounds(south: 33.9755, west: -118.3866, north: 34.1245, east: -118.2067)),
-        (.gcoo, GeoBounds(south: 38.8298, west: -77.1832, north: 38.9436, east: -77.0309)),
-        (.gcoo, GeoBounds(south: 38.7789, west: -77.1578, north: 38.8564, east: -77.0213)),
-        (.bird, GeoBounds(south: 50.9416, west: -114.2441, north: 51.16, east: -113.9083)),
-        (.bird, GeoBounds(south: 53.4218, west: -113.6709, north: 53.6382, east: -113.33)),
-        (.bird, GeoBounds(south: 44.586, west: -63.7068, north: 44.7269, east: -63.4358)),
-        (.bird, GeoBounds(south: 43.1875, west: -80.0054, north: 43.3108, east: -79.7437)),
-        (.bird, GeoBounds(south: 53.2264, west: -113.6265, north: 53.323, east: -113.4739)),
-        (.bird, GeoBounds(south: 45.3695, west: -75.7756, north: 45.4591, east: -75.6245)),
-        (.bird, GeoBounds(south: 43.765, west: -79.603, north: 43.8931, east: -79.4076)),
-        (.bird, GeoBounds(south: 42.225, west: -83.1112, north: 42.3527, east: -82.8324)),
-        (.lime, GeoBounds(south: 50.9417, west: -114.2139, north: 51.1414, east: -113.9182)),
-        (.lime, GeoBounds(south: 51.2409, west: -114.0605, north: 51.316, east: -113.9659)),
-        (.lime, GeoBounds(south: 53.4232, west: -113.6583, north: 53.6263, east: -113.3326)),
-        (.lime, GeoBounds(south: 53.5963, west: -113.6858, north: 53.6747, east: -113.5601)),
-        (.lime, GeoBounds(south: 53.3297, west: -113.459, north: 53.3752, east: -113.377)),
-        (.lime, GeoBounds(south: 49.78, west: -119.5355, north: 49.9733, east: -119.361)),
-        (.lime, GeoBounds(south: 43.4744, west: -79.8043, north: 43.6832, east: -79.5394)),
-        (.lime, GeoBounds(south: 45.3613, west: -75.7701, north: 45.4581, east: -75.6275)),
-        (.lime, GeoBounds(south: 49.2181, west: -123.179, north: 49.3026, east: -123.0101)),
-        (.move, GeoBounds(south: 45.896829, west: -66.716137, north: 45.998963, east: -66.577678)),
-        (.move, GeoBounds(south: 46.028446, west: -64.909284, north: 46.162801, east: -64.633564)),
-        (.move, GeoBounds(south: 45.222753, west: -66.151545, north: 45.338903, east: -65.95369)),
-        (.dott, GeoBounds(south: 25.0536, west: 55.1151, north: 25.2925, east: 55.5142)),
-        (.dott, GeoBounds(south: 25.0797, west: 55.2242, north: 25.1268, east: 55.2674)),
-        (.dott, GeoBounds(south: 24.3979, west: 54.307, north: 24.5216, east: 54.6349)),
-        (.saham, GeoBounds(south: 24.5521, west: 46.4871, north: 25.0316, east: 46.8692)),
-        (.dott, GeoBounds(south: 21.6246, west: 39.0907, north: 21.6661, east: 39.1151)),
-        (.bird, GeoBounds(south: 32.0207, west: 34.7309, north: 32.1556, east: 34.8589)),
-        (.bird, GeoBounds(south: 32.0318, west: 34.7889, north: 32.1143, east: 34.8645)),
-        (.bird, GeoBounds(south: 31.9809, west: 34.7451, north: 32.0474, east: 34.8231)),
-        (.bird, GeoBounds(south: 31.9838, west: 34.7246, north: 32.0423, east: 34.7721)),
-        (.bird, GeoBounds(south: 32.0498, west: 34.7877, north: 32.0907, east: 34.8313)),
-        (.bird, GeoBounds(south: 32.1354, west: 34.7774, north: 32.2119, east: 34.875)),
-        (.bird, GeoBounds(south: 31.9349, west: 34.7203, north: 32.0162, east: 34.8567)),
-        (.bird, GeoBounds(south: 31.7561, west: 34.603, north: 31.8442, east: 34.683)),
-        (.bird, GeoBounds(south: 32.0604, west: 34.8112, north: 32.1172, east: 34.8588)),
-        (.bird, GeoBounds(south: 32.1109, west: 34.7854, north: 32.1674, east: 34.8758)),
-        (.dott, GeoBounds(south: 32.0207, west: 34.7289, north: 32.1556, east: 34.8625)),
-        (.dott, GeoBounds(south: 32.0274, west: 34.7889, north: 32.1143, east: 34.8649)),
-        (.dott, GeoBounds(south: 32.0583, west: 34.836, north: 32.1208, east: 34.9304)),
-        (.dott, GeoBounds(south: 31.9853, west: 34.7451, north: 32.0474, east: 34.8207)),
-        (.dott, GeoBounds(south: 31.991, west: 34.723, north: 32.0427, east: 34.7721)),
-        (.dott, GeoBounds(south: 32.0498, west: 34.7877, north: 32.0907, east: 34.8313)),
-        (.dott, GeoBounds(south: 32.1354, west: 34.7866, north: 32.1879, east: 34.8622)),
-        (.dott, GeoBounds(south: 32.0624, west: 34.8112, north: 32.1164, east: 34.858)),
-        (.lime, GeoBounds(south: 32.0251, west: 34.7391, north: 32.1489, east: 34.8491)),
-        (.lime, GeoBounds(south: 32.0329, west: 34.7943, north: 32.1069, east: 34.8577)),
-        (.lime, GeoBounds(south: 32.0624, west: 34.8414, north: 32.1172, east: 34.9241)),
-        (.lime, GeoBounds(south: 31.9889, west: 34.7515, north: 32.0411, east: 34.8133)),
-        (.lime, GeoBounds(south: 32.0547, west: 34.7928, north: 32.0863, east: 34.826)),
-        (.lime, GeoBounds(south: 32.1425, west: 34.7942, north: 32.1816, east: 34.8566)),
-        (.lime, GeoBounds(south: 32.0293, west: 34.8337, north: 32.0722, east: 34.8718)),
-        (.lime, GeoBounds(south: 32.0648, west: 34.8165, north: 32.1107, east: 34.8515)),
-        (.lime, GeoBounds(south: 32.0613, west: 34.8399, north: 32.0913, east: 34.8651)),
-        (.lime, GeoBounds(south: 32.0243, west: 34.8502, north: 32.0457, east: 34.8655)),
-        (.flamingo, GeoBounds(south: -36.9398, west: 174.664, north: -36.6989, east: 174.8976)),
-        (.flamingo, GeoBounds(south: -43.591, west: 172.5084, north: -43.4437, east: 172.7826)),
-        (.flamingo, GeoBounds(south: -41.3618, west: 174.7174, north: -41.1958, east: 174.8515)),
-        (.flamingo, GeoBounds(south: -41.1656, west: 174.8117, north: -41.0235, east: 174.9192)),
-        (.flamingo, GeoBounds(south: -41.1959, west: 174.8052, north: -41.143, east: 174.8511)),
-        (.flamingo, GeoBounds(south: -45.9268, west: 170.3708, north: -45.7984, east: 170.6397)),
-        (.flamingo, GeoBounds(south: -37.7585, west: 176.096, north: -37.6208, east: 176.3668)),
-        (.flamingo, GeoBounds(south: -40.4026, west: 175.5589, north: -40.3038, east: 175.6786)),
-        (.flamingo, GeoBounds(south: -43.3414, west: 172.5563, north: -43.2778, east: 172.6231)),
-        (.flamingo, GeoBounds(south: -43.4029, west: 172.6202, north: -43.3456, east: 172.6867)),
-        (.jolt, GeoBounds(south: -39.1064, west: 174.0067, north: -39.0087, east: 174.1857)),
-        (.jolt, GeoBounds(south: -43.6426, west: 172.3437, north: -43.5743, east: 172.4189)),
-        (.hopp, GeoBounds(south: 10.2754, west: -85.8619, north: 10.3161, east: -85.8241)),
-        (.hopp, GeoBounds(south: 12.0102, west: -68.368, north: 12.2527, east: -68.2127)),
-        (.luup, GeoBounds(south: 35.518323, west: 139.349154, north: 35.890346, east: 140.005906)),
-        (.luup, GeoBounds(south: 34.538111, west: 135.365909, north: 34.809842, east: 135.612006)),
-        (.luup, GeoBounds(south: 34.888411, west: 135.647448, north: 35.10257, east: 135.852601)),
-        (.luup, GeoBounds(south: 35.031867, west: 136.789827, north: 35.26233, east: 137.062802)),
-        (.luup, GeoBounds(south: 35.448648, west: 139.445924, north: 35.644652, east: 139.835001)),
-        (.luup, GeoBounds(south: 35.352222, west: 139.474385, north: 35.574119, east: 139.732105)),
-        (.luup, GeoBounds(south: 38.207057, west: 140.808699, north: 38.311792, east: 140.945118)),
-        (.luup, GeoBounds(south: 33.490234, west: 130.238019, north: 33.744721, east: 130.541539)),
-        (.luup, GeoBounds(south: 34.339447, west: 132.383955, north: 34.456412, east: 132.53805)),
-        (.luup, GeoBounds(south: 34.63793, west: 135.117492, north: 34.749767, east: 135.261687)),
-        (.luup, GeoBounds(south: 36.461935, west: 139.74053, north: 36.7289, east: 139.97321)),
-        (.luup, GeoBounds(south: 34.2494, west: 133.950413, north: 34.403953, east: 134.179118)),
-        (.luup, GeoBounds(south: 34.64347, west: 137.670973, north: 34.778709, east: 137.804896)),
-        (.luup, GeoBounds(south: 42.974023, west: 141.234508, north: 43.155372, east: 141.510427)),
-        (.luup, GeoBounds(south: 33.816174, west: 130.817259, north: 33.91838, east: 130.912412)),
-        (.luup, GeoBounds(south: 34.693312, west: 136.462755, north: 34.77194, east: 136.539497)),
-        (.luup, GeoBounds(south: 26.183935, west: 127.658267, north: 26.259677, east: 127.732023)),
-        (.luup, GeoBounds(south: 33.485799, west: 130.455693, north: 33.558566, east: 130.528143)),
-        (.luup, GeoBounds(south: 34.918412, west: 137.129298, north: 34.993089, east: 137.191384)),
-        (.lime, GeoBounds(south: 26.18862, west: 127.6583, north: 26.20209467, east: 127.67331613)),
-        (.lime, GeoBounds(south: 26.18862, west: 127.67331613, north: 26.20209467, east: 127.68833227)),
-        (.lime, GeoBounds(south: 26.18862, west: 127.68833227, north: 26.20209467, east: 127.7033484)),
-        (.lime, GeoBounds(south: 26.18862, west: 127.7033484, north: 26.20209467, east: 127.71836453)),
-        (.lime, GeoBounds(south: 26.18862, west: 127.71836453, north: 26.20209467, east: 127.73307)),
-        (.lime, GeoBounds(south: 26.20209467, west: 127.6583, north: 26.21556934, east: 127.67331613)),
-        (.lime, GeoBounds(south: 26.20209467, west: 127.67331613, north: 26.21556934, east: 127.68833227)),
-        (.lime, GeoBounds(south: 26.20209467, west: 127.68833227, north: 26.21556934, east: 127.7033484)),
-        (.lime, GeoBounds(south: 26.20209467, west: 127.7033484, north: 26.21556934, east: 127.71836453)),
-        (.lime, GeoBounds(south: 26.20209467, west: 127.71836453, north: 26.21556934, east: 127.73307)),
-        (.lime, GeoBounds(south: 26.21556934, west: 127.6583, north: 26.229044, east: 127.67331613)),
-        (.lime, GeoBounds(south: 26.21556934, west: 127.67331613, north: 26.229044, east: 127.68833227)),
-        (.lime, GeoBounds(south: 26.21556934, west: 127.68833227, north: 26.229044, east: 127.7033484)),
-        (.lime, GeoBounds(south: 26.21556934, west: 127.7033484, north: 26.229044, east: 127.71836453)),
-        (.lime, GeoBounds(south: 26.21556934, west: 127.71836453, north: 26.229044, east: 127.73307)),
-        (.lime, GeoBounds(south: 26.229044, west: 127.6583, north: 26.24251867, east: 127.67331613)),
-        (.lime, GeoBounds(south: 26.229044, west: 127.67331613, north: 26.24251867, east: 127.68833227)),
-        (.lime, GeoBounds(south: 26.229044, west: 127.68833227, north: 26.24251867, east: 127.7033484)),
-        (.lime, GeoBounds(south: 26.229044, west: 127.7033484, north: 26.24251867, east: 127.71836453)),
-        (.lime, GeoBounds(south: 26.24251867, west: 127.6583, north: 26.245, east: 127.67331613)),
-        (.lime, GeoBounds(south: 26.24251867, west: 127.67331613, north: 26.245, east: 127.68833227)),
-        (.lime, GeoBounds(south: 26.24251867, west: 127.68833227, north: 26.245, east: 127.7033484)),
-        (.jet, GeoBounds(south: -20.842135, west: -40.657602, north: -20.793475, east: -40.615198)),
-        (.jet, GeoBounds(south: -11.027778, west: -37.111293, north: -10.918502, east: -37.033944)),
-        (.jet, GeoBounds(south: -27.013175, west: -48.675304, north: -26.900558, east: -48.601548)),
-        (.jet, GeoBounds(south: -19.941846, west: -44.007746, north: -19.836743, east: -43.917018)),
-        (.jet, GeoBounds(south: -1.475859, west: -48.508042, north: -1.113471, east: -48.428043)),
-        (.jet, GeoBounds(south: -23.856664, west: -46.146502, north: -23.782008, east: -45.99955)),
-        (.jet, GeoBounds(south: -26.946332, west: -49.102315, north: -26.884235, east: -49.053597)),
-        (.jet, GeoBounds(south: -15.880949, west: -48.059861, north: -15.731449, east: -47.858235)),
-        (.jet, GeoBounds(south: -22.915281, west: -47.076842, north: -22.869931, east: -47.038723)),
-        (.jet, GeoBounds(south: -20.470476, west: -54.621646, north: -20.425641, east: -54.550904)),
-        (.jet, GeoBounds(south: -22.756085, west: -45.61246, north: -22.714865, east: -45.562328)),
-        (.jet, GeoBounds(south: -23.661268, west: -45.440281, north: -23.608924, east: -45.370625)),
-        (.jet, GeoBounds(south: -8.292565, west: -35.991677, north: -8.25595, east: -35.95617)),
-        (.jet, GeoBounds(south: -25.453714, west: -49.319163, north: -25.409825, east: -49.253681)),
-        (.jet, GeoBounds(south: -27.620655, west: -48.599688, north: -27.570229, east: -48.491279)),
-        (.jet, GeoBounds(south: -27.769255, west: -48.576079, north: -27.651882, east: -48.47473)),
-        (.jet, GeoBounds(south: -27.470802, west: -48.51714, north: -27.415975, east: -48.374651)),
-        (.jet, GeoBounds(south: -3.771152, west: -38.587129, north: -3.70551, east: -38.436192)),
-        (.jet, GeoBounds(south: -29.397954, west: -50.885509, north: -29.366945, east: -50.867998)),
-        (.jet, GeoBounds(south: -20.68965, west: -40.518664, north: -20.631935, east: -40.470637)),
-        (.jet, GeoBounds(south: -25.91086, west: -48.58504, north: -25.865841, east: -48.558699)),
-        (.jet, GeoBounds(south: -24.016906, west: -46.291572, north: -23.9742, east: -46.194503)),
-        (.jet, GeoBounds(south: -23.83297, west: -45.392932, north: -23.767882, east: -45.349393)),
-        (.jet, GeoBounds(south: -14.845977, west: -39.06076, north: -14.775448, east: -39.023183)),
-        (.jet, GeoBounds(south: -24.204152, west: -46.822681, north: -24.171195, east: -46.766093)),
-        (.jet, GeoBounds(south: -27.169478, west: -48.619451, north: -27.085856, east: -48.528392)),
-        (.jet, GeoBounds(south: -8.222971, west: -34.929777, north: -8.159607, east: -34.910859)),
-        (.jet, GeoBounds(south: -26.325474, west: -48.892455, north: -26.230107, east: -48.837308)),
-        (.jet, GeoBounds(south: -23.354938, west: -51.230723, north: -23.25601, east: -51.134939)),
-        (.jet, GeoBounds(south: -9.686505, west: -35.760168, north: -9.606097, east: -35.684825)),
-        (.jet, GeoBounds(south: -25.850742, west: -48.550056, north: -25.813225, east: -48.528326)),
-        (.jet, GeoBounds(south: -5.895927, west: -35.214735, north: -5.758028, east: -35.161687)),
-        (.jet, GeoBounds(south: -29.703312, west: -51.137771, north: -29.677942, east: -51.113943)),
-        (.jet, GeoBounds(south: -27.681937, west: -48.707164, north: -27.616051, east: -48.637159)),
-        (.jet, GeoBounds(south: -7.956795, west: -34.904784, north: -7.878679, east: -34.819158)),
-        (.jet, GeoBounds(south: -24.331899, west: -47.005426, north: -24.268912, east: -46.929831)),
-        (.jet, GeoBounds(south: -30.096349, west: -51.251672, north: -30.013725, east: -51.178965)),
-        (.jet, GeoBounds(south: -24.099362, west: -46.626644, north: -23.990364, east: -46.392123)),
-        (.jet, GeoBounds(south: -8.157131, west: -34.921892, north: -8.024373, east: -34.857121)),
-        (.jet, GeoBounds(south: -23.723048, west: -46.427204, north: -23.702558, east: -46.396294)),
-        (.jet, GeoBounds(south: -13.021698, west: -38.540352, north: -12.907894, east: -38.309914)),
-        (.jet, GeoBounds(south: -20.208172, west: -40.270367, north: -20.11835, east: -40.172515)),
-        (.jet, GeoBounds(south: -23.540498, west: -47.476888, north: -23.465076, east: -47.400918)),
-        (.jet, GeoBounds(south: -23.254195, west: -45.925783, north: -23.163122, east: -45.869345)),
-        (.jet, GeoBounds(south: -23.712152, west: -46.747762, north: -23.509931, east: -46.493185)),
-        (.jet, GeoBounds(south: -29.347669, west: -49.741659, north: -29.325042, east: -49.712762)),
-        (.jet, GeoBounds(south: -23.481581, west: -45.093139, north: -23.414899, east: -45.049957)),
-        (.jet, GeoBounds(south: -20.422664, west: -40.339696, north: -20.323335, east: -40.266473)),
-        (.whoosh, GeoBounds(south: -27.63594, west: -48.70573, north: -26.87967, east: -48.41937)),
-        (.whoosh, GeoBounds(south: -30.09712, west: -51.25218, north: -30.00374, east: -51.14004)),
-        (.whoosh, GeoBounds(south: -22.99029, west: -43.40592, north: -22.89094, east: -43.16321)),
-        (.whoosh, GeoBounds(south: -23.6305, west: -46.75008, north: -23.49574, east: -46.55206)),
-        (.whoosh, GeoBounds(south: -26.45213, west: -49.20084, north: -26.07424, east: -48.72326)),
-        (.whoosh, GeoBounds(south: -20.47173, west: -54.62322, north: -20.42416, east: -54.54795)),
-        (.whoosh, GeoBounds(south: -22.76292, west: -45.61556, north: -22.69277, east: -45.53982)),
-        (.whoosh, GeoBounds(south: -25.47325, west: -49.3193, north: -25.40597, east: -49.2327)),
-        (.whoosh, GeoBounds(south: -8.14695, west: -34.92407, north: -8.02252, east: -34.86337)),
-        (.jet, GeoBounds(south: -33.764879, west: -70.787597, north: -33.336412, east: -70.490242)),
-        (.jet, GeoBounds(south: -38.758488, west: -72.671215, north: -38.700512, east: -72.547196)),
-        (.whoosh, GeoBounds(south: -38.76915, west: -72.67405, north: -38.69955, east: -72.54585)),
-        (.whoosh, GeoBounds(south: -39.29093, west: -71.98336, north: -39.26521, east: -71.93557)),
-        (.whoosh, GeoBounds(south: -39.2985, west: -72.24041, north: -39.27297, east: -72.21153)),
-        (.whoosh, GeoBounds(south: -33.0351, west: -71.5704, north: -32.99056, east: -71.53132)),
-        (.whoosh, GeoBounds(south: -33.02399, west: -71.31724, north: -32.965, east: -71.24916)),
-        (.whoosh, GeoBounds(south: -29.99433, west: -71.35383, north: -29.89335, east: -71.24147)),
-        (.whoosh, GeoBounds(south: -41.495, west: -73.01201, north: -41.37834, east: -72.85224)),
-        (.whoosh, GeoBounds(south: -34.19856, west: -70.76981, north: -34.12064, east: -70.63991)),
-        (.whoosh, GeoBounds(south: -33.57097, west: -70.77325, north: -33.31591, east: -70.49203)),
-        (.lime, GeoBounds(south: -33.58564, west: -70.63677956, north: -33.57216533, east: -70.62064608)),
-        (.lime, GeoBounds(south: -33.58564, west: -70.62064608, north: -33.57216533, east: -70.60451261)),
-        (.lime, GeoBounds(south: -33.57216533, west: -70.58837913, north: -33.55869066, east: -70.57224565)),
-        (.lime, GeoBounds(south: -33.57216533, west: -70.57224565, north: -33.55869066, east: -70.55611217)),
-        (.lime, GeoBounds(south: -33.55869066, west: -70.68518, north: -33.545216, east: -70.66904652)),
-        (.lime, GeoBounds(south: -33.55869066, west: -70.66904652, north: -33.545216, east: -70.65291304)),
-        (.lime, GeoBounds(south: -33.55869066, west: -70.65291304, north: -33.545216, east: -70.63677956)),
-        (.lime, GeoBounds(south: -33.55869066, west: -70.62064608, north: -33.545216, east: -70.60451261)),
-        (.lime, GeoBounds(south: -33.55869066, west: -70.60451261, north: -33.545216, east: -70.58837913)),
-        (.lime, GeoBounds(south: -33.55869066, west: -70.58837913, north: -33.545216, east: -70.57224565)),
-        (.lime, GeoBounds(south: -33.55869066, west: -70.57224565, north: -33.545216, east: -70.55611217)),
-        (.lime, GeoBounds(south: -33.55869066, west: -70.55611217, north: -33.545216, east: -70.53997869)),
-        (.lime, GeoBounds(south: -33.545216, west: -70.68518, north: -33.53174133, east: -70.66904652)),
-        (.lime, GeoBounds(south: -33.545216, west: -70.66904652, north: -33.53174133, east: -70.65291304)),
-        (.lime, GeoBounds(south: -33.545216, west: -70.65291304, north: -33.53174133, east: -70.63677956)),
-        (.lime, GeoBounds(south: -33.545216, west: -70.62064608, north: -33.53174133, east: -70.60451261)),
-        (.lime, GeoBounds(south: -33.545216, west: -70.60451261, north: -33.53174133, east: -70.58837913)),
-        (.lime, GeoBounds(south: -33.545216, west: -70.58837913, north: -33.53174133, east: -70.57224565)),
-        (.lime, GeoBounds(south: -33.545216, west: -70.57224565, north: -33.53174133, east: -70.55611217)),
-        (.lime, GeoBounds(south: -33.545216, west: -70.55611217, north: -33.53174133, east: -70.53997869)),
-        (.lime, GeoBounds(south: -33.545216, west: -70.53997869, north: -33.53174133, east: -70.52384521)),
-        (.lime, GeoBounds(south: -33.53174133, west: -70.68518, north: -33.51826666, east: -70.66904652)),
-        (.lime, GeoBounds(south: -33.53174133, west: -70.66904652, north: -33.51826666, east: -70.65291304)),
-        (.lime, GeoBounds(south: -33.53174133, west: -70.65291304, north: -33.51826666, east: -70.63677956)),
-        (.lime, GeoBounds(south: -33.53174133, west: -70.63677956, north: -33.51826666, east: -70.62064608)),
-        (.lime, GeoBounds(south: -33.53174133, west: -70.62064608, north: -33.51826666, east: -70.60451261)),
-        (.lime, GeoBounds(south: -33.53174133, west: -70.60451261, north: -33.51826666, east: -70.58837913)),
-        (.lime, GeoBounds(south: -33.53174133, west: -70.58837913, north: -33.51826666, east: -70.57224565)),
-        (.lime, GeoBounds(south: -33.53174133, west: -70.57224565, north: -33.51826666, east: -70.55611217)),
-        (.lime, GeoBounds(south: -33.53174133, west: -70.55611217, north: -33.51826666, east: -70.53997869)),
-        (.lime, GeoBounds(south: -33.51826666, west: -70.68518, north: -33.50479199, east: -70.66904652)),
-        (.lime, GeoBounds(south: -33.51826666, west: -70.66904652, north: -33.50479199, east: -70.65291304)),
-        (.lime, GeoBounds(south: -33.51826666, west: -70.65291304, north: -33.50479199, east: -70.63677956)),
-        (.lime, GeoBounds(south: -33.51826666, west: -70.63677956, north: -33.50479199, east: -70.62064608)),
-        (.lime, GeoBounds(south: -33.51826666, west: -70.62064608, north: -33.50479199, east: -70.60451261)),
-        (.lime, GeoBounds(south: -33.51826666, west: -70.60451261, north: -33.50479199, east: -70.58837913)),
-        (.lime, GeoBounds(south: -33.51826666, west: -70.58837913, north: -33.50479199, east: -70.57224565)),
-        (.lime, GeoBounds(south: -33.51826666, west: -70.57224565, north: -33.50479199, east: -70.55611217)),
-        (.lime, GeoBounds(south: -33.50479199, west: -70.66904652, north: -33.49131733, east: -70.65291304)),
-        (.lime, GeoBounds(south: -33.50479199, west: -70.65291304, north: -33.49131733, east: -70.63677956)),
-        (.lime, GeoBounds(south: -33.50479199, west: -70.63677956, north: -33.49131733, east: -70.62064608)),
-        (.lime, GeoBounds(south: -33.50479199, west: -70.62064608, north: -33.49131733, east: -70.60451261)),
-        (.lime, GeoBounds(south: -33.49131733, west: -70.66904652, north: -33.47784266, east: -70.65291304)),
-        (.lime, GeoBounds(south: -33.49131733, west: -70.65291304, north: -33.47784266, east: -70.63677956)),
-        (.lime, GeoBounds(south: -33.49131733, west: -70.63677956, north: -33.47784266, east: -70.62064608)),
-        (.lime, GeoBounds(south: -33.49131733, west: -70.62064608, north: -33.47784266, east: -70.60451261)),
-        (.lime, GeoBounds(south: -33.47784266, west: -70.66904652, north: -33.46436799, east: -70.65291304)),
-        (.lime, GeoBounds(south: -33.47784266, west: -70.65291304, north: -33.46436799, east: -70.63677956)),
-        (.lime, GeoBounds(south: -33.47784266, west: -70.63677956, north: -33.46436799, east: -70.62064608)),
-        (.lime, GeoBounds(south: -33.46436799, west: -70.57224565, north: -33.45089332, east: -70.55611217)),
-        (.lime, GeoBounds(south: -33.46436799, west: -70.55611217, north: -33.45089332, east: -70.53997869)),
-        (.lime, GeoBounds(south: -33.46436799, west: -70.53997869, north: -33.45089332, east: -70.52384521)),
-        (.lime, GeoBounds(south: -33.46436799, west: -70.52384521, north: -33.45089332, east: -70.50771173)),
-        (.lime, GeoBounds(south: -33.45089332, west: -70.58837913, north: -33.43741866, east: -70.57224565)),
-        (.lime, GeoBounds(south: -33.45089332, west: -70.57224565, north: -33.43741866, east: -70.55611217)),
-        (.lime, GeoBounds(south: -33.45089332, west: -70.55611217, north: -33.43741866, east: -70.53997869)),
-        (.lime, GeoBounds(south: -33.45089332, west: -70.53997869, north: -33.43741866, east: -70.52384521)),
-        (.lime, GeoBounds(south: -33.43741866, west: -70.60451261, north: -33.42394399, east: -70.58837913)),
-        (.lime, GeoBounds(south: -33.43741866, west: -70.58837913, north: -33.42394399, east: -70.57224565)),
-        (.lime, GeoBounds(south: -33.43741866, west: -70.57224565, north: -33.42394399, east: -70.55611217)),
-        (.lime, GeoBounds(south: -33.43741866, west: -70.55611217, north: -33.42394399, east: -70.53997869)),
-        (.lime, GeoBounds(south: -33.43741866, west: -70.53997869, north: -33.42394399, east: -70.52384521)),
-        (.lime, GeoBounds(south: -33.42394399, west: -70.62064608, north: -33.41046932, east: -70.60451261)),
-        (.lime, GeoBounds(south: -33.42394399, west: -70.60451261, north: -33.41046932, east: -70.58837913)),
-        (.lime, GeoBounds(south: -33.42394399, west: -70.58837913, north: -33.41046932, east: -70.57224565)),
-        (.lime, GeoBounds(south: -33.42394399, west: -70.57224565, north: -33.41046932, east: -70.55611217)),
-        (.lime, GeoBounds(south: -33.42394399, west: -70.55611217, north: -33.41046932, east: -70.53997869)),
-        (.lime, GeoBounds(south: -33.42394399, west: -70.53997869, north: -33.41046932, east: -70.52384521)),
-        (.lime, GeoBounds(south: -33.42394399, west: -70.52384521, north: -33.41046932, east: -70.50771173)),
-        (.lime, GeoBounds(south: -33.42394399, west: -70.50771173, north: -33.41046932, east: -70.49341)),
-        (.lime, GeoBounds(south: -33.41046932, west: -70.62064608, north: -33.39699465, east: -70.60451261)),
-        (.lime, GeoBounds(south: -33.41046932, west: -70.60451261, north: -33.39699465, east: -70.58837913)),
-        (.lime, GeoBounds(south: -33.41046932, west: -70.58837913, north: -33.39699465, east: -70.57224565)),
-        (.lime, GeoBounds(south: -33.41046932, west: -70.57224565, north: -33.39699465, east: -70.55611217)),
-        (.lime, GeoBounds(south: -33.41046932, west: -70.55611217, north: -33.39699465, east: -70.53997869)),
-        (.lime, GeoBounds(south: -33.41046932, west: -70.53997869, north: -33.39699465, east: -70.52384521)),
-        (.lime, GeoBounds(south: -33.41046932, west: -70.52384521, north: -33.39699465, east: -70.50771173)),
-        (.lime, GeoBounds(south: -33.41046932, west: -70.50771173, north: -33.39699465, east: -70.49341)),
-        (.lime, GeoBounds(south: -33.39699465, west: -70.60451261, north: -33.38351999, east: -70.58837913)),
-        (.lime, GeoBounds(south: -33.39699465, west: -70.58837913, north: -33.38351999, east: -70.57224565)),
-        (.lime, GeoBounds(south: -33.39699465, west: -70.57224565, north: -33.38351999, east: -70.55611217)),
-        (.lime, GeoBounds(south: -33.39699465, west: -70.55611217, north: -33.38351999, east: -70.53997869)),
-        (.lime, GeoBounds(south: -33.39699465, west: -70.53997869, north: -33.38351999, east: -70.52384521)),
-        (.lime, GeoBounds(south: -33.39699465, west: -70.52384521, north: -33.38351999, east: -70.50771173)),
-        (.lime, GeoBounds(south: -33.39699465, west: -70.50771173, north: -33.38351999, east: -70.49341)),
-        (.lime, GeoBounds(south: -33.38351999, west: -70.60451261, north: -33.37004532, east: -70.58837913)),
-        (.lime, GeoBounds(south: -33.38351999, west: -70.58837913, north: -33.37004532, east: -70.57224565)),
-        (.lime, GeoBounds(south: -33.38351999, west: -70.57224565, north: -33.37004532, east: -70.55611217)),
-        (.lime, GeoBounds(south: -33.38351999, west: -70.55611217, north: -33.37004532, east: -70.53997869)),
-        (.lime, GeoBounds(south: -33.38351999, west: -70.53997869, north: -33.37004532, east: -70.52384521)),
-        (.lime, GeoBounds(south: -33.38351999, west: -70.52384521, north: -33.37004532, east: -70.50771173)),
-        (.lime, GeoBounds(south: -33.38351999, west: -70.50771173, north: -33.37004532, east: -70.49341)),
-        (.lime, GeoBounds(south: -33.37004532, west: -70.58837913, north: -33.36342, east: -70.57224565)),
-        (.lime, GeoBounds(south: -33.37004532, west: -70.57224565, north: -33.36342, east: -70.55611217)),
-        (.lime, GeoBounds(south: -33.37004532, west: -70.55611217, north: -33.36342, east: -70.53997869)),
-        (.lime, GeoBounds(south: -33.37004532, west: -70.52384521, north: -33.36342, east: -70.50771173)),
-        (.lime, GeoBounds(south: -33.37004532, west: -70.50771173, north: -33.36342, east: -70.49341)),
-        (.jet, GeoBounds(south: 25.644225, west: -100.419239, north: 25.686349, east: -100.281766)),
-        (.whoosh, GeoBounds(south: 25.6341, west: -100.42479, north: 25.68824, east: -100.26807)),
-        (.whoosh, GeoBounds(south: 20.63267, west: -103.44679, north: 20.74174, east: -103.37085)),
-        (.lime, GeoBounds(south: 20.55756, west: -100.38630781, north: 20.57103467, east: -100.37191672)),
-        (.lime, GeoBounds(south: 20.55756, west: -100.37191672, north: 20.57103467, east: -100.35752562)),
-        (.lime, GeoBounds(south: 20.55756, west: -100.35752562, north: 20.57103467, east: -100.35703)),
-        (.lime, GeoBounds(south: 20.57103467, west: -100.41509, north: 20.58450934, east: -100.40069891)),
-        (.lime, GeoBounds(south: 20.57103467, west: -100.40069891, north: 20.58450934, east: -100.38630781)),
-        (.lime, GeoBounds(south: 20.57103467, west: -100.38630781, north: 20.58450934, east: -100.37191672)),
-        (.lime, GeoBounds(south: 20.57103467, west: -100.37191672, north: 20.58450934, east: -100.35752562)),
-        (.lime, GeoBounds(south: 20.58450934, west: -100.41509, north: 20.597984, east: -100.40069891)),
-        (.lime, GeoBounds(south: 20.58450934, west: -100.40069891, north: 20.597984, east: -100.38630781)),
-        (.lime, GeoBounds(south: 20.58450934, west: -100.38630781, north: 20.597984, east: -100.37191672)),
-        (.lime, GeoBounds(south: 20.58450934, west: -100.37191672, north: 20.597984, east: -100.35752562)),
-        (.lime, GeoBounds(south: 20.597984, west: -100.41509, north: 20.61145867, east: -100.40069891)),
-        (.lime, GeoBounds(south: 20.597984, west: -100.40069891, north: 20.61145867, east: -100.38630781)),
-        (.lime, GeoBounds(south: 20.597984, west: -100.38630781, north: 20.61145867, east: -100.37191672)),
-        (.lime, GeoBounds(south: 20.61145867, west: -100.40069891, north: 20.6161, east: -100.38630781)),
-        (.lime, GeoBounds(south: 20.61145867, west: -100.38630781, north: 20.6161, east: -100.37191672)),
-        (.jet, GeoBounds(south: 43.178739, west: 76.774937, north: 43.356878, east: 77.013148)),
-        (.whoosh, GeoBounds(south: 43.22016, west: 76.8602, north: 43.24751, east: 76.90581)),
-        (.whoosh, GeoBounds(south: 51.06534, west: 71.3469, north: 51.20139, east: 71.54021)),
-        (.jet, GeoBounds(south: 40.335093, west: 49.790085, north: 40.440305, east: 49.987929)),
-        (.jet, GeoBounds(south: 41.615822, west: 41.583057, north: 41.662751, east: 41.680613)),
-        (.whoosh, GeoBounds(south: 6.18271, west: -75.61793, north: 6.29603, east: -75.54855)),
-        (.whoosh, GeoBounds(south: 54.18871, west: 28.45654, north: 54.25148, east: 28.53523)),
-        (.whoosh, GeoBounds(south: 53.83261, west: 27.40681, north: 54.01826, east: 27.72876)),
-        (.whoosh, GeoBounds(south: 52.76991, west: 27.48468, north: 52.80366, east: 27.55641)),
-        (.zippy, GeoBounds(south: -33.05338, west: 18.03341, north: -33.04052, east: 18.04983)),
-        (.lime, GeoBounds(south: 45.85633, west: 22.89478, north: 45.86980467, east: 22.91412737)),
-        (.lime, GeoBounds(south: 45.85633, west: 22.91412737, north: 45.86980467, east: 22.92735)),
-        (.lime, GeoBounds(south: 45.86980467, west: 22.89478, north: 45.88327934, east: 22.91412737)),
-        (.lime, GeoBounds(south: 45.86980467, west: 22.91412737, north: 45.88327934, east: 22.92735)),
-        (.lime, GeoBounds(south: 45.88327934, west: 22.89478, north: 45.89326, east: 22.91412737)),
-        (.lime, GeoBounds(south: 48.94881, west: 14.45647772, north: 48.96228467, east: 14.47699545)),
-        (.lime, GeoBounds(south: 48.94881, west: 14.47699545, north: 48.96228467, east: 14.49751317)),
-        (.lime, GeoBounds(south: 48.96228467, west: 14.43596, north: 48.97575934, east: 14.45647772)),
-        (.lime, GeoBounds(south: 48.96228467, west: 14.45647772, north: 48.97575934, east: 14.47699545)),
-        (.lime, GeoBounds(south: 48.96228467, west: 14.47699545, north: 48.97575934, east: 14.49751317)),
-        (.lime, GeoBounds(south: 48.96228467, west: 14.49751317, north: 48.97575934, east: 14.50798)),
-        (.lime, GeoBounds(south: 48.97575934, west: 14.43596, north: 48.989234, east: 14.45647772)),
-        (.lime, GeoBounds(south: 48.97575934, west: 14.45647772, north: 48.989234, east: 14.47699545)),
-        (.lime, GeoBounds(south: 48.97575934, west: 14.47699545, north: 48.989234, east: 14.49751317)),
-        (.lime, GeoBounds(south: 48.97575934, west: 14.49751317, north: 48.989234, east: 14.50798)),
-        (.lime, GeoBounds(south: 48.989234, west: 14.43596, north: 49.00077, east: 14.45647772)),
-        (.lime, GeoBounds(south: 48.989234, west: 14.45647772, north: 49.00077, east: 14.47699545)),
-        (.lime, GeoBounds(south: 48.989234, west: 14.47699545, north: 49.00077, east: 14.49751317)),
-        (.lime, GeoBounds(south: 25.11408, west: 51.58014497, north: 25.12755467, east: 51.59502647)),
-        (.lime, GeoBounds(south: 25.11408, west: 51.59502647, north: 25.12755467, east: 51.60065)),
-        (.lime, GeoBounds(south: 25.12755467, west: 51.56526347, north: 25.14102934, east: 51.58014497)),
-        (.lime, GeoBounds(south: 25.12755467, west: 51.58014497, north: 25.14102934, east: 51.59502647)),
-        (.lime, GeoBounds(south: 25.12755467, west: 51.59502647, north: 25.14102934, east: 51.60065)),
-        (.lime, GeoBounds(south: 25.14102934, west: 51.50573748, north: 25.154504, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.14102934, west: 51.56526347, north: 25.154504, east: 51.58014497)),
-        (.lime, GeoBounds(south: 25.14102934, west: 51.58014497, north: 25.154504, east: 51.59502647)),
-        (.lime, GeoBounds(south: 25.154504, west: 51.46109299, north: 25.16797867, east: 51.47597449)),
-        (.lime, GeoBounds(south: 25.154504, west: 51.47597449, north: 25.16797867, east: 51.49085599)),
-        (.lime, GeoBounds(south: 25.154504, west: 51.50573748, north: 25.16797867, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.154504, west: 51.55038198, north: 25.16797867, east: 51.56526347)),
-        (.lime, GeoBounds(south: 25.154504, west: 51.56526347, north: 25.16797867, east: 51.58014497)),
-        (.lime, GeoBounds(south: 25.154504, west: 51.58014497, north: 25.16797867, east: 51.59502647)),
-        (.lime, GeoBounds(south: 25.16797867, west: 51.47597449, north: 25.18145334, east: 51.49085599)),
-        (.lime, GeoBounds(south: 25.16797867, west: 51.49085599, north: 25.18145334, east: 51.50573748)),
-        (.lime, GeoBounds(south: 25.16797867, west: 51.50573748, north: 25.18145334, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.16797867, west: 51.52061898, north: 25.18145334, east: 51.53550048)),
-        (.lime, GeoBounds(south: 25.16797867, west: 51.53550048, north: 25.18145334, east: 51.55038198)),
-        (.lime, GeoBounds(south: 25.16797867, west: 51.55038198, north: 25.18145334, east: 51.56526347)),
-        (.lime, GeoBounds(south: 25.16797867, west: 51.58014497, north: 25.18145334, east: 51.59502647)),
-        (.lime, GeoBounds(south: 25.18145334, west: 51.49085599, north: 25.19492801, east: 51.50573748)),
-        (.lime, GeoBounds(south: 25.18145334, west: 51.50573748, north: 25.19492801, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.18145334, west: 51.52061898, north: 25.19492801, east: 51.53550048)),
-        (.lime, GeoBounds(south: 25.18145334, west: 51.53550048, north: 25.19492801, east: 51.55038198)),
-        (.lime, GeoBounds(south: 25.18145334, west: 51.55038198, north: 25.19492801, east: 51.56526347)),
-        (.lime, GeoBounds(south: 25.18145334, west: 51.58014497, north: 25.19492801, east: 51.59502647)),
-        (.lime, GeoBounds(south: 25.19492801, west: 51.50573748, north: 25.20840267, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.19492801, west: 51.52061898, north: 25.20840267, east: 51.53550048)),
-        (.lime, GeoBounds(south: 25.19492801, west: 51.53550048, north: 25.20840267, east: 51.55038198)),
-        (.lime, GeoBounds(south: 25.19492801, west: 51.55038198, north: 25.20840267, east: 51.56526347)),
-        (.lime, GeoBounds(south: 25.19492801, west: 51.58014497, north: 25.20840267, east: 51.59502647)),
-        (.lime, GeoBounds(south: 25.20840267, west: 51.50573748, north: 25.22187734, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.20840267, west: 51.52061898, north: 25.22187734, east: 51.53550048)),
-        (.lime, GeoBounds(south: 25.20840267, west: 51.53550048, north: 25.22187734, east: 51.55038198)),
-        (.lime, GeoBounds(south: 25.20840267, west: 51.55038198, north: 25.22187734, east: 51.56526347)),
-        (.lime, GeoBounds(south: 25.20840267, west: 51.56526347, north: 25.22187734, east: 51.58014497)),
-        (.lime, GeoBounds(south: 25.20840267, west: 51.58014497, north: 25.22187734, east: 51.59502647)),
-        (.lime, GeoBounds(south: 25.22187734, west: 51.50573748, north: 25.23535201, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.22187734, west: 51.52061898, north: 25.23535201, east: 51.53550048)),
-        (.lime, GeoBounds(south: 25.22187734, west: 51.53550048, north: 25.23535201, east: 51.55038198)),
-        (.lime, GeoBounds(south: 25.22187734, west: 51.55038198, north: 25.23535201, east: 51.56526347)),
-        (.lime, GeoBounds(south: 25.22187734, west: 51.56526347, north: 25.23535201, east: 51.58014497)),
-        (.lime, GeoBounds(south: 25.22187734, west: 51.58014497, north: 25.23535201, east: 51.59502647)),
-        (.lime, GeoBounds(south: 25.23535201, west: 51.43133, north: 25.24882668, east: 51.4462115)),
-        (.lime, GeoBounds(south: 25.23535201, west: 51.50573748, north: 25.24882668, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.23535201, west: 51.52061898, north: 25.24882668, east: 51.53550048)),
-        (.lime, GeoBounds(south: 25.23535201, west: 51.53550048, north: 25.24882668, east: 51.55038198)),
-        (.lime, GeoBounds(south: 25.23535201, west: 51.55038198, north: 25.24882668, east: 51.56526347)),
-        (.lime, GeoBounds(south: 25.23535201, west: 51.56526347, north: 25.24882668, east: 51.58014497)),
-        (.lime, GeoBounds(south: 25.23535201, west: 51.58014497, north: 25.24882668, east: 51.59502647)),
-        (.lime, GeoBounds(south: 25.24882668, west: 51.43133, north: 25.26230134, east: 51.4462115)),
-        (.lime, GeoBounds(south: 25.24882668, west: 51.4462115, north: 25.26230134, east: 51.46109299)),
-        (.lime, GeoBounds(south: 25.24882668, west: 51.46109299, north: 25.26230134, east: 51.47597449)),
-        (.lime, GeoBounds(south: 25.24882668, west: 51.47597449, north: 25.26230134, east: 51.49085599)),
-        (.lime, GeoBounds(south: 25.24882668, west: 51.49085599, north: 25.26230134, east: 51.50573748)),
-        (.lime, GeoBounds(south: 25.24882668, west: 51.52061898, north: 25.26230134, east: 51.53550048)),
-        (.lime, GeoBounds(south: 25.24882668, west: 51.53550048, north: 25.26230134, east: 51.55038198)),
-        (.lime, GeoBounds(south: 25.24882668, west: 51.55038198, north: 25.26230134, east: 51.56526347)),
-        (.lime, GeoBounds(south: 25.24882668, west: 51.56526347, north: 25.26230134, east: 51.58014497)),
-        (.lime, GeoBounds(south: 25.24882668, west: 51.58014497, north: 25.26230134, east: 51.59502647)),
-        (.lime, GeoBounds(south: 25.26230134, west: 51.4462115, north: 25.27577601, east: 51.46109299)),
-        (.lime, GeoBounds(south: 25.26230134, west: 51.46109299, north: 25.27577601, east: 51.47597449)),
-        (.lime, GeoBounds(south: 25.26230134, west: 51.47597449, north: 25.27577601, east: 51.49085599)),
-        (.lime, GeoBounds(south: 25.26230134, west: 51.49085599, north: 25.27577601, east: 51.50573748)),
-        (.lime, GeoBounds(south: 25.26230134, west: 51.50573748, north: 25.27577601, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.26230134, west: 51.52061898, north: 25.27577601, east: 51.53550048)),
-        (.lime, GeoBounds(south: 25.26230134, west: 51.53550048, north: 25.27577601, east: 51.55038198)),
-        (.lime, GeoBounds(south: 25.26230134, west: 51.55038198, north: 25.27577601, east: 51.56526347)),
-        (.lime, GeoBounds(south: 25.26230134, west: 51.56526347, north: 25.27577601, east: 51.58014497)),
-        (.lime, GeoBounds(south: 25.26230134, west: 51.58014497, north: 25.27577601, east: 51.59502647)),
-        (.lime, GeoBounds(south: 25.27577601, west: 51.46109299, north: 25.28925068, east: 51.47597449)),
-        (.lime, GeoBounds(south: 25.27577601, west: 51.47597449, north: 25.28925068, east: 51.49085599)),
-        (.lime, GeoBounds(south: 25.27577601, west: 51.49085599, north: 25.28925068, east: 51.50573748)),
-        (.lime, GeoBounds(south: 25.27577601, west: 51.50573748, north: 25.28925068, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.27577601, west: 51.52061898, north: 25.28925068, east: 51.53550048)),
-        (.lime, GeoBounds(south: 25.27577601, west: 51.53550048, north: 25.28925068, east: 51.55038198)),
-        (.lime, GeoBounds(south: 25.27577601, west: 51.55038198, north: 25.28925068, east: 51.56526347)),
-        (.lime, GeoBounds(south: 25.27577601, west: 51.56526347, north: 25.28925068, east: 51.58014497)),
-        (.lime, GeoBounds(south: 25.28925068, west: 51.46109299, north: 25.30272535, east: 51.47597449)),
-        (.lime, GeoBounds(south: 25.28925068, west: 51.47597449, north: 25.30272535, east: 51.49085599)),
-        (.lime, GeoBounds(south: 25.28925068, west: 51.49085599, north: 25.30272535, east: 51.50573748)),
-        (.lime, GeoBounds(south: 25.28925068, west: 51.50573748, north: 25.30272535, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.28925068, west: 51.52061898, north: 25.30272535, east: 51.53550048)),
-        (.lime, GeoBounds(south: 25.28925068, west: 51.53550048, north: 25.30272535, east: 51.55038198)),
-        (.lime, GeoBounds(south: 25.28925068, west: 51.55038198, north: 25.30272535, east: 51.56526347)),
-        (.lime, GeoBounds(south: 25.28925068, west: 51.56526347, north: 25.30272535, east: 51.58014497)),
-        (.lime, GeoBounds(south: 25.30272535, west: 51.46109299, north: 25.31620001, east: 51.47597449)),
-        (.lime, GeoBounds(south: 25.30272535, west: 51.47597449, north: 25.31620001, east: 51.49085599)),
-        (.lime, GeoBounds(south: 25.30272535, west: 51.49085599, north: 25.31620001, east: 51.50573748)),
-        (.lime, GeoBounds(south: 25.30272535, west: 51.50573748, north: 25.31620001, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.30272535, west: 51.52061898, north: 25.31620001, east: 51.53550048)),
-        (.lime, GeoBounds(south: 25.31620001, west: 51.49085599, north: 25.32967468, east: 51.50573748)),
-        (.lime, GeoBounds(south: 25.31620001, west: 51.50573748, north: 25.32967468, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.31620001, west: 51.52061898, north: 25.32967468, east: 51.53550048)),
-        (.lime, GeoBounds(south: 25.31620001, west: 51.53550048, north: 25.32967468, east: 51.55038198)),
-        (.lime, GeoBounds(south: 25.32967468, west: 51.47597449, north: 25.34314935, east: 51.49085599)),
-        (.lime, GeoBounds(south: 25.32967468, west: 51.49085599, north: 25.34314935, east: 51.50573748)),
-        (.lime, GeoBounds(south: 25.32967468, west: 51.50573748, north: 25.34314935, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.32967468, west: 51.52061898, north: 25.34314935, east: 51.53550048)),
-        (.lime, GeoBounds(south: 25.32967468, west: 51.53550048, north: 25.34314935, east: 51.55038198)),
-        (.lime, GeoBounds(south: 25.34314935, west: 51.46109299, north: 25.35662402, east: 51.47597449)),
-        (.lime, GeoBounds(south: 25.34314935, west: 51.47597449, north: 25.35662402, east: 51.49085599)),
-        (.lime, GeoBounds(south: 25.34314935, west: 51.49085599, north: 25.35662402, east: 51.50573748)),
-        (.lime, GeoBounds(south: 25.34314935, west: 51.50573748, north: 25.35662402, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.34314935, west: 51.52061898, north: 25.35662402, east: 51.53550048)),
-        (.lime, GeoBounds(south: 25.35662402, west: 51.43133, north: 25.37009868, east: 51.4462115)),
-        (.lime, GeoBounds(south: 25.35662402, west: 51.4462115, north: 25.37009868, east: 51.46109299)),
-        (.lime, GeoBounds(south: 25.35662402, west: 51.46109299, north: 25.37009868, east: 51.47597449)),
-        (.lime, GeoBounds(south: 25.35662402, west: 51.47597449, north: 25.37009868, east: 51.49085599)),
-        (.lime, GeoBounds(south: 25.35662402, west: 51.49085599, north: 25.37009868, east: 51.50573748)),
-        (.lime, GeoBounds(south: 25.35662402, west: 51.50573748, north: 25.37009868, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.35662402, west: 51.52061898, north: 25.37009868, east: 51.53550048)),
-        (.lime, GeoBounds(south: 25.37009868, west: 51.43133, north: 25.38357335, east: 51.4462115)),
-        (.lime, GeoBounds(south: 25.37009868, west: 51.4462115, north: 25.38357335, east: 51.46109299)),
-        (.lime, GeoBounds(south: 25.37009868, west: 51.46109299, north: 25.38357335, east: 51.47597449)),
-        (.lime, GeoBounds(south: 25.37009868, west: 51.47597449, north: 25.38357335, east: 51.49085599)),
-        (.lime, GeoBounds(south: 25.37009868, west: 51.49085599, north: 25.38357335, east: 51.50573748)),
-        (.lime, GeoBounds(south: 25.37009868, west: 51.50573748, north: 25.38357335, east: 51.52061898)),
-        (.lime, GeoBounds(south: 25.37009868, west: 51.52061898, north: 25.38357335, east: 51.53550048)),
-        (.lime, GeoBounds(south: 25.37009868, west: 51.53550048, north: 25.38357335, east: 51.55038198)),
-        (.lime, GeoBounds(south: 25.38357335, west: 51.43133, north: 25.39361, east: 51.4462115)),
-        (.lime, GeoBounds(south: 25.38357335, west: 51.4462115, north: 25.39361, east: 51.46109299)),
-        (.lime, GeoBounds(south: 25.38357335, west: 51.46109299, north: 25.39361, east: 51.47597449)),
-        (.lime, GeoBounds(south: 25.38357335, west: 51.47597449, north: 25.39361, east: 51.49085599)),
-        (.lime, GeoBounds(south: 25.38357335, west: 51.49085599, north: 25.39361, east: 51.50573748)),
-        (.beam, GeoBounds(south: -34.943739, west: 138.57500639999998, north: -34.887522999999995, east: 138.6435044)),
-        (.beam, GeoBounds(south: -18.0055940869565, west: 122.1985178444571, north: -17.918882, east: 122.24731657644007)),
-        (.beam, GeoBounds(south: -33.352264327650005, west: 115.618578, north: -33.307725, east: 115.698066)),
-        (.beam, GeoBounds(south: -16.960565, west: 145.739454, north: -16.895878, east: 145.782737)),
-        (.beam, GeoBounds(south: -12.473780000000001, west: 130.810601, north: -12.336188, east: 130.91584)),
-        (.beam, GeoBounds(south: -33.898646, west: 121.818805, north: -33.810136, east: 121.942786)),
-        (.beam, GeoBounds(south: -28.830987999999998, west: 114.576288, north: -28.725296, east: 114.644229)),
-        (.beam, GeoBounds(south: -25.31263, west: 152.795253, north: -25.242209000000003, east: 152.912238)),
-        (.beam, GeoBounds(south: -21.187051999999998, west: 149.13411599999998, north: -21.070922, east: 149.22705000000002)),
-        (.beam, GeoBounds(south: -31.914666, west: 115.74886400000001, north: -31.843548000000002, east: 115.823606)),
-        (.beam, GeoBounds(south: -16.545178, west: 145.456089, north: -16.477207, east: 145.47833300000002)),
-        (.lime, GeoBounds(south: -27.53263, west: 153.00391287, north: -27.51915533, east: 153.0190743)),
-        (.lime, GeoBounds(south: -27.53263, west: 153.0190743, north: -27.51915533, east: 153.03423574)),
-        (.lime, GeoBounds(south: -27.53263, west: 153.03423574, north: -27.51915533, east: 153.04939717)),
-        (.lime, GeoBounds(south: -27.53263, west: 153.04939717, north: -27.51915533, east: 153.06455861)),
-        (.lime, GeoBounds(south: -27.53263, west: 153.06455861, north: -27.51915533, east: 153.07972004)),
-        (.lime, GeoBounds(south: -27.51915533, west: 152.97359, north: -27.50568066, east: 152.98875143)),
-        (.lime, GeoBounds(south: -27.51915533, west: 152.98875143, north: -27.50568066, east: 153.00391287)),
-        (.lime, GeoBounds(south: -27.51915533, west: 153.00391287, north: -27.50568066, east: 153.0190743)),
-        (.lime, GeoBounds(south: -27.51915533, west: 153.0190743, north: -27.50568066, east: 153.03423574)),
-        (.lime, GeoBounds(south: -27.51915533, west: 153.03423574, north: -27.50568066, east: 153.04939717)),
-        (.lime, GeoBounds(south: -27.51915533, west: 153.04939717, north: -27.50568066, east: 153.06455861)),
-        (.lime, GeoBounds(south: -27.51915533, west: 153.06455861, north: -27.50568066, east: 153.07972004)),
-        (.lime, GeoBounds(south: -27.50568066, west: 152.97359, north: -27.492206, east: 152.98875143)),
-        (.lime, GeoBounds(south: -27.50568066, west: 152.98875143, north: -27.492206, east: 153.00391287)),
-        (.lime, GeoBounds(south: -27.50568066, west: 153.00391287, north: -27.492206, east: 153.0190743)),
-        (.lime, GeoBounds(south: -27.50568066, west: 153.0190743, north: -27.492206, east: 153.03423574)),
-        (.lime, GeoBounds(south: -27.50568066, west: 153.03423574, north: -27.492206, east: 153.04939717)),
-        (.lime, GeoBounds(south: -27.50568066, west: 153.04939717, north: -27.492206, east: 153.06455861)),
-        (.lime, GeoBounds(south: -27.50568066, west: 153.06455861, north: -27.492206, east: 153.07972004)),
-        (.lime, GeoBounds(south: -27.492206, west: 152.97359, north: -27.47873133, east: 152.98875143)),
-        (.lime, GeoBounds(south: -27.492206, west: 152.98875143, north: -27.47873133, east: 153.00391287)),
-        (.lime, GeoBounds(south: -27.492206, west: 153.00391287, north: -27.47873133, east: 153.0190743)),
-        (.lime, GeoBounds(south: -27.492206, west: 153.0190743, north: -27.47873133, east: 153.03423574)),
-        (.lime, GeoBounds(south: -27.492206, west: 153.03423574, north: -27.47873133, east: 153.04939717)),
-        (.lime, GeoBounds(south: -27.492206, west: 153.04939717, north: -27.47873133, east: 153.06455861)),
-        (.lime, GeoBounds(south: -27.492206, west: 153.06455861, north: -27.47873133, east: 153.07972004)),
-        (.lime, GeoBounds(south: -27.47873133, west: 152.97359, north: -27.46525666, east: 152.98875143)),
-        (.lime, GeoBounds(south: -27.47873133, west: 152.98875143, north: -27.46525666, east: 153.00391287)),
-        (.lime, GeoBounds(south: -27.47873133, west: 153.00391287, north: -27.46525666, east: 153.0190743)),
-        (.lime, GeoBounds(south: -27.47873133, west: 153.0190743, north: -27.46525666, east: 153.03423574)),
-        (.lime, GeoBounds(south: -27.47873133, west: 153.03423574, north: -27.46525666, east: 153.04939717)),
-        (.lime, GeoBounds(south: -27.47873133, west: 153.04939717, north: -27.46525666, east: 153.06455861)),
-        (.lime, GeoBounds(south: -27.47873133, west: 153.06455861, north: -27.46525666, east: 153.07972004)),
-        (.lime, GeoBounds(south: -27.47873133, west: 153.17068865, north: -27.46525666, east: 153.18585008)),
-        (.lime, GeoBounds(south: -27.47873133, west: 153.18585008, north: -27.46525666, east: 153.19579)),
-        (.lime, GeoBounds(south: -27.46525666, west: 152.97359, north: -27.45178199, east: 152.98875143)),
-        (.lime, GeoBounds(south: -27.46525666, west: 152.98875143, north: -27.45178199, east: 153.00391287)),
-        (.lime, GeoBounds(south: -27.46525666, west: 153.00391287, north: -27.45178199, east: 153.0190743)),
-        (.lime, GeoBounds(south: -27.46525666, west: 153.0190743, north: -27.45178199, east: 153.03423574)),
-        (.lime, GeoBounds(south: -27.46525666, west: 153.03423574, north: -27.45178199, east: 153.04939717)),
-        (.lime, GeoBounds(south: -27.46525666, west: 153.04939717, north: -27.45178199, east: 153.06455861)),
-        (.lime, GeoBounds(south: -27.46525666, west: 153.06455861, north: -27.45178199, east: 153.07972004)),
-        (.lime, GeoBounds(south: -27.46525666, west: 153.17068865, north: -27.45178199, east: 153.18585008)),
-        (.lime, GeoBounds(south: -27.46525666, west: 153.18585008, north: -27.45178199, east: 153.19579)),
-        (.lime, GeoBounds(south: -27.45178199, west: 152.98875143, north: -27.43830733, east: 153.00391287)),
-        (.lime, GeoBounds(south: -27.45178199, west: 153.00391287, north: -27.43830733, east: 153.0190743)),
-        (.lime, GeoBounds(south: -27.45178199, west: 153.0190743, north: -27.43830733, east: 153.03423574)),
-        (.lime, GeoBounds(south: -27.45178199, west: 153.03423574, north: -27.43830733, east: 153.04939717)),
-        (.lime, GeoBounds(south: -27.45178199, west: 153.04939717, north: -27.43830733, east: 153.06455861)),
-        (.lime, GeoBounds(south: -27.45178199, west: 153.06455861, north: -27.43830733, east: 153.07972004)),
-        (.lime, GeoBounds(south: -27.45178199, west: 153.07972004, north: -27.43830733, east: 153.09488147)),
-        (.lime, GeoBounds(south: -27.45178199, west: 153.15552721, north: -27.43830733, east: 153.17068865)),
-        (.lime, GeoBounds(south: -27.45178199, west: 153.17068865, north: -27.43830733, east: 153.18585008)),
-        (.lime, GeoBounds(south: -27.45178199, west: 153.18585008, north: -27.43830733, east: 153.19579)),
-        (.lime, GeoBounds(south: -27.43830733, west: 153.00391287, north: -27.42483266, east: 153.0190743)),
-        (.lime, GeoBounds(south: -27.43830733, west: 153.0190743, north: -27.42483266, east: 153.03423574)),
-        (.lime, GeoBounds(south: -27.43830733, west: 153.03423574, north: -27.42483266, east: 153.04939717)),
-        (.lime, GeoBounds(south: -27.43830733, west: 153.04939717, north: -27.42483266, east: 153.06455861)),
-        (.lime, GeoBounds(south: -27.43830733, west: 153.06455861, north: -27.42483266, east: 153.07972004)),
-        (.lime, GeoBounds(south: -27.43830733, west: 153.15552721, north: -27.42483266, east: 153.17068865)),
-        (.lime, GeoBounds(south: -27.43830733, west: 153.17068865, north: -27.42483266, east: 153.18585008)),
-        (.lime, GeoBounds(south: -27.42483266, west: 153.0190743, north: -27.41135799, east: 153.03423574)),
-        (.lime, GeoBounds(south: -27.42483266, west: 153.03423574, north: -27.41135799, east: 153.04939717)),
-        (.lime, GeoBounds(south: -27.42483266, west: 153.04939717, north: -27.41135799, east: 153.06455861)),
-        (.lime, GeoBounds(south: -27.42483266, west: 153.15552721, north: -27.41135799, east: 153.17068865)),
-        (.lime, GeoBounds(south: -27.34398465, west: 153.04939717, north: -27.33050999, east: 153.06455861)),
-        (.lime, GeoBounds(south: -27.34398465, west: 153.06455861, north: -27.33050999, east: 153.07972004)),
-        (.lime, GeoBounds(south: -27.34398465, west: 153.07972004, north: -27.33050999, east: 153.09488147)),
-        (.lime, GeoBounds(south: -27.33050999, west: 153.04939717, north: -27.31703532, east: 153.06455861)),
-        (.lime, GeoBounds(south: -27.33050999, west: 153.06455861, north: -27.31703532, east: 153.07972004)),
-        (.lime, GeoBounds(south: -27.33050999, west: 153.07972004, north: -27.31703532, east: 153.09488147)),
-        (.lime, GeoBounds(south: -27.31703532, west: 153.04939717, north: -27.30356065, east: 153.06455861)),
-        (.lime, GeoBounds(south: -27.31703532, west: 153.06455861, north: -27.30356065, east: 153.07972004)),
-        (.lime, GeoBounds(south: -27.30356065, west: 153.04939717, north: -27.29008598, east: 153.06455861)),
-        (.lime, GeoBounds(south: -27.30356065, west: 153.06455861, north: -27.29008598, east: 153.07972004)),
-        (.lime, GeoBounds(south: -27.29008598, west: 153.04939717, north: -27.28388, east: 153.06455861)),
-        (.lime, GeoBounds(south: -27.29008598, west: 153.06455861, north: -27.28388, east: 153.07972004)),
-        (.binbin, GeoBounds(south: 40.95108, west: 28.57288, north: 41.11293, east: 29.0613)),
-        (.binbin, GeoBounds(south: 40.75167, west: 29.00335, north: 41.06423, east: 29.4595)),
-        (.binbin, GeoBounds(south: 36.83465, west: 30.5839, north: 36.94623, east: 30.88775)),
-        (.binbin, GeoBounds(south: 38.36482, west: 27.03696, north: 38.4841, east: 27.24384)),
-        (.binbin, GeoBounds(south: 41.26071, west: 36.20146, north: 41.39424, east: 36.37265)),
-        (.binbin, GeoBounds(south: 37.84635, west: 32.43842, north: 38.03728, east: 32.5375)),
-        (.binbin, GeoBounds(south: 39.74038, west: 30.43542, north: 39.80315, east: 30.55629)),
-        (.binbin, GeoBounds(south: 36.99224, west: 35.2382, north: 37.06665, east: 35.37584)),
-        (.binbin, GeoBounds(south: 40.1802, west: 28.825, north: 40.26635, east: 29.07401)),
-        (.binbin, GeoBounds(south: 40.70145, west: 29.78391, north: 40.78516, east: 30.03083)),
-        (.binbin, GeoBounds(south: 36.46754, west: 31.96715, north: 36.56011, east: 32.12278)),
-        (.binbin, GeoBounds(south: 40.73457, west: 30.32067, north: 40.81613, east: 30.43402)),
-        (.binbin, GeoBounds(south: 37.02191, west: 37.30337, north: 37.09106, east: 37.38447)),
-        (.beam, GeoBounds(south: 39.857991999999996, west: 32.594919999999995, north: 40.138448000000004, east: 32.969954)),
-        (.beam, GeoBounds(south: 36.44495, west: 30.53284, north: 36.935665, east: 32.138625000000005)),
-        (.beam, GeoBounds(south: 36.604504999999996, west: 29.08031925789807, north: 36.687972, east: 29.208493999999998)),
-        (.beam, GeoBounds(south: 36.784875, west: 28.205607, north: 36.887838947981805, east: 28.292610999999997)),
-        (.beam, GeoBounds(south: 36.722321343100596, west: 34.49301282568111, north: 36.819913, east: 34.638218)),
-        (.beam, GeoBounds(south: 1.394025, west: 102.714203, north: 2.590063, east: 103.904297)),
-        (.beam, GeoBounds(south: 3.0430620000000004, west: 101.61356400000001, north: 3.2326699999999997, east: 101.751621)),
-        (.beam, GeoBounds(south: 3.7930750000000004, west: 103.265944, north: 3.8779429999999997, east: 103.33143)),
-        (.beam, GeoBounds(south: 2.184842, west: 102.243539, north: 2.2226559999999997, east: 102.273794)),
-        (.beam, GeoBounds(south: 3.715441, west: 103.117328, north: 3.735854, east: 103.128935)),
-        (.beam, GeoBounds(south: 5.288024, west: 100.287211, north: 5.355436, east: 100.32185299999999)),
-        (.beam, GeoBounds(south: 4.171338, west: 100.602553, north: 4.613759, east: 101.226873)),
-        (.beam, GeoBounds(south: 3.1675310000000003, west: 113.028434, north: 4.406809, east: 113.999558)),
-        (.beam, GeoBounds(south: 2.822144, west: 101.415692, north: 3.263295, east: 101.80005)),
-        (.beam, GeoBounds(south: 5.278537, west: 103.058942, north: 5.417827, east: 103.176733)),
-        (.gcoo, GeoBounds(south: 35.0662, west: 128.8568, north: 35.289, east: 129.209)),
-        (.kickgoing, GeoBounds(south: 35.0568, west: 128.944, north: 35.2887, east: 129.2105)),
-        (.xingxing, GeoBounds(south: 35.0319, west: 128.8798, north: 35.2855, east: 129.1311)),
-        (.swing, GeoBounds(south: 35.0922, west: 128.9948, north: 35.2992, east: 129.2616)),
-        (.kickgoing, GeoBounds(south: 37.4297, west: 126.783, north: 37.6637, east: 127.104)),
-        (.xingxing, GeoBounds(south: 37.4299, west: 126.8647, north: 37.6636, east: 127.1869)),
-        (.swing, GeoBounds(south: 37.4261, west: 126.7967, north: 37.6622, east: 127.1505)),
-        (.gcoo, GeoBounds(south: 35.5016, west: 129.233, north: 35.6681, east: 129.3808)),
-        (.xingxing, GeoBounds(south: 35.4616, west: 129.2043, north: 35.6699, east: 129.4522)),
-        (.swing, GeoBounds(south: 35.3855, west: 129.0864, north: 35.6685, east: 129.4564)),
-        (.gcoo, GeoBounds(south: 36.2784, west: 127.274, north: 36.4671, east: 127.4834)),
-        (.swing, GeoBounds(south: 36.2583, west: 127.2744, north: 36.4135, east: 127.4909)),
-        (.gcoo, GeoBounds(south: 35.7744, west: 128.4469, north: 35.9717, east: 128.7647)),
-        (.xingxing, GeoBounds(south: 35.6267, west: 128.381, north: 35.7425, east: 128.4863)),
-        (.swing, GeoBounds(south: 35.7775, west: 128.4541, north: 35.9735, east: 128.7588)),
-        (.gcoo, GeoBounds(south: 35.7683, west: 127.0385, north: 35.8913, east: 127.1936)),
-        (.xingxing, GeoBounds(south: 35.7685, west: 127.0392, north: 35.8942, east: 127.192)),
-        (.swing, GeoBounds(south: 35.7742, west: 127.0344, north: 35.8994, east: 127.1991)),
-        (.gcoo, GeoBounds(south: 37.3448, west: 126.4548, north: 37.7665, east: 126.7623)),
-        (.kickgoing, GeoBounds(south: 37.4655, west: 126.6863, north: 37.5388, east: 126.7766)),
-        (.swing, GeoBounds(south: 37.4004, west: 126.4499, north: 37.6373, east: 126.7764)),
-        (.gcoo, GeoBounds(south: 36.5829, west: 127.293, north: 36.7571, east: 127.5409)),
-        (.xingxing, GeoBounds(south: 36.5928, west: 127.2843, north: 36.6551, east: 127.3858)),
-        (.swing, GeoBounds(south: 36.5807, west: 127.2843, north: 36.7569, east: 127.5744)),
-        (.gcoo, GeoBounds(south: 37.139, west: 126.7879, north: 37.2965, east: 127.1641)),
-        (.xingxing, GeoBounds(south: 37.1795, west: 126.7912, north: 37.2965, east: 127.0352)),
-        (.swing, GeoBounds(south: 37.0632, west: 126.773, north: 37.2965, east: 127.1516)),
-        (.gcoo, GeoBounds(south: 35.0702, west: 126.738, north: 35.2475, east: 126.9605)),
-        (.gcoo, GeoBounds(south: 37.3307, west: 127.0401, north: 37.4775, east: 127.1963)),
-        (.xingxing, GeoBounds(south: 37.3307, west: 127.0602, north: 37.4775, east: 127.1901)),
-        (.swing, GeoBounds(south: 37.3307, west: 127.0472, north: 37.4775, east: 127.1931)),
-        (.gcoo, GeoBounds(south: 37.2218, west: 126.9236, north: 37.3336, east: 127.093)),
-        (.xingxing, GeoBounds(south: 37.2218, west: 126.9236, north: 37.3053, east: 127.0183)),
-        (.swing, GeoBounds(south: 37.2218, west: 126.9236, north: 37.341, east: 127.093)),
-        (.gcoo, GeoBounds(south: 35.1822, west: 128.5875, north: 35.2815, east: 128.733)),
-        (.xingxing, GeoBounds(south: 35.1135, west: 128.4792, north: 35.2811, east: 128.7381)),
-        (.swing, GeoBounds(south: 35.0689, west: 128.4751, north: 35.3542, east: 128.8465)),
-        (.kickgoing, GeoBounds(south: 37.4621, west: 126.7382, north: 37.5486, east: 126.837)),
-        (.swing, GeoBounds(south: 37.4557, west: 126.7382, north: 37.5533, east: 126.837)),
-        (.gcoo, GeoBounds(south: 36.0579, west: 128.2748, north: 36.1772, east: 128.4758)),
-        (.swing, GeoBounds(south: 36.0579, west: 128.2678, north: 36.2001, east: 128.4971)),
-        (.gcoo, GeoBounds(south: 37.6211, west: 127.1609, north: 37.7587, east: 127.3286)),
-        (.swing, GeoBounds(south: 37.55, west: 127.0784, north: 37.7751, east: 127.3494)),
-        (.gcoo, GeoBounds(south: 36.7177, west: 126.9675, north: 36.8576, east: 127.1231)),
-        (.swing, GeoBounds(south: 36.7124, west: 126.9045, north: 36.9449, east: 127.1138)),
-        (.gcoo, GeoBounds(south: 36.4468, west: 127.2098, north: 36.6366, east: 127.3826)),
-        (.swing, GeoBounds(south: 36.4431, west: 127.202, north: 36.6469, east: 127.3256)),
-        (.gcoo, GeoBounds(south: 37.2644, west: 126.7684, north: 37.3629, east: 126.9023)),
-        (.xingxing, GeoBounds(south: 37.2648, west: 126.7698, north: 37.363, east: 126.9236)),
-        (.swing, GeoBounds(south: 37.2609, west: 126.7366, north: 37.3673, east: 126.9365)),
-        (.gcoo, GeoBounds(south: 36.7515, west: 127.0807, north: 36.8665, east: 127.3326)),
-        (.xingxing, GeoBounds(south: 36.8095, west: 127.1039, north: 36.9343, east: 127.2191)),
-        (.swing, GeoBounds(south: 36.7912, west: 127.0822, north: 36.9386, east: 127.2069)),
-        (.gcoo, GeoBounds(south: 35.7828, west: 128.6954, north: 35.934, east: 128.873)),
-        (.swing, GeoBounds(south: 35.7753, west: 128.689, north: 35.9382, east: 128.8788)),
-        (.gcoo, GeoBounds(south: 37.2058, west: 127.0487, north: 37.3626, east: 127.2489)),
-        (.swing, GeoBounds(south: 37.182, west: 127.031, north: 37.3702, east: 127.385)),
-        (.gcoo, GeoBounds(south: 36.9724, west: 126.9848, north: 37.1396, east: 127.1575)),
-        (.swing, GeoBounds(south: 36.9471, west: 126.8843, north: 37.1473, east: 127.1298)),
-        (.gcoo, GeoBounds(south: 37.6906, west: 126.6825, north: 37.7559, east: 126.7871)),
-        (.swing, GeoBounds(south: 37.6866, west: 126.6784, north: 37.8881, east: 126.8392)),
-        (.gcoo, GeoBounds(south: 37.574, west: 126.7016, north: 37.717, east: 126.8916)),
-        (.kickgoing, GeoBounds(south: 37.5691, west: 126.8408, north: 37.623, east: 126.9134)),
-        (.xingxing, GeoBounds(south: 37.5691, west: 126.8307, north: 37.6829, east: 126.9448)),
-        (.swing, GeoBounds(south: 37.58, west: 126.7252, north: 37.7384, east: 126.972)),
-        (.gcoo, GeoBounds(south: 35.9327, west: 129.2998, north: 36.1179, east: 129.4425)),
-        (.swing, GeoBounds(south: 35.93, west: 129.2922, north: 36.1314, east: 129.4723)),
-        (.gcoo, GeoBounds(south: 37.3561, west: 126.8672, north: 37.4251, east: 126.9862)),
-        (.kickgoing, GeoBounds(south: 37.3561, west: 126.8751, north: 37.4336, east: 126.9862)),
-        (.xingxing, GeoBounds(south: 37.3561, west: 126.8753, north: 37.4328, east: 126.9862)),
-        (.swing, GeoBounds(south: 37.3561, west: 126.8668, north: 37.4524, east: 126.9862)),
-        (.gcoo, GeoBounds(south: 37.6885, west: 127.0021, north: 37.7759, east: 127.1372)),
-        (.swing, GeoBounds(south: 37.684, west: 126.9983, north: 37.7779, east: 127.1044)),
-        (.gcoo, GeoBounds(south: 37.3221, west: 126.6851, north: 37.4635, east: 126.824)),
-        (.xingxing, GeoBounds(south: 37.3179, west: 126.6843, north: 37.4083, east: 126.8361)),
-        (.swing, GeoBounds(south: 37.3122, west: 126.6638, north: 37.4751, east: 126.8483)),
-        (.xingxing, GeoBounds(south: 37.4661, west: 127.1366, north: 37.5924, east: 127.2544)),
-        (.swing, GeoBounds(south: 37.5152, west: 127.1602, north: 37.5941, east: 127.2514)),
-        (.gcoo, GeoBounds(south: 37.1226, west: 127.0047, north: 37.2032, east: 127.1064)),
-        (.swing, GeoBounds(south: 37.1226, west: 126.9915, north: 37.2032, east: 127.1064)),
-        (.gcoo, GeoBounds(south: 37.2282, west: 127.4095, north: 37.3137, east: 127.5145)),
-        (.xingxing, GeoBounds(south: 37.0987, west: 127.597, north: 37.1436, east: 127.6412)),
-        (.swing, GeoBounds(south: 37.186, west: 127.3266, north: 37.3283, east: 127.526)),
-        (.gcoo, GeoBounds(south: 37.5787, west: 126.5712, north: 37.711, east: 126.8021)),
-        (.swing, GeoBounds(south: 37.5785, west: 126.5956, north: 37.679, east: 126.7677)),
-        (.gcoo, GeoBounds(south: 37.72, west: 128.8031, north: 37.9184, east: 128.9672)),
-        (.xingxing, GeoBounds(south: 37.714, west: 128.8394, north: 37.8256, east: 128.9499)),
-        (.gcoo, GeoBounds(south: 37.821, west: 127.6897, north: 37.9353, east: 127.7847)),
-        (.swing, GeoBounds(south: 37.8284, west: 127.6843, north: 37.9302, east: 127.7902)),
-        (.gcoo, GeoBounds(south: 35.1577, west: 128.7744, north: 35.2868, east: 128.932)),
-        (.xingxing, GeoBounds(south: 35.2096, west: 128.8204, north: 35.2881, east: 128.9396)),
-        (.swing, GeoBounds(south: 35.1507, west: 128.6888, north: 35.3427, east: 128.8532)),
-        (.gcoo, GeoBounds(south: 35.1318, west: 128.0405, north: 35.2272, east: 128.1657)),
-        (.xingxing, GeoBounds(south: 35.1349, west: 128.0299, north: 35.2308, east: 128.1694)),
-        (.swing, GeoBounds(south: 35.1269, west: 128.0221, north: 35.2318, east: 128.1862)),
-        (.gcoo, GeoBounds(south: 37.2639, west: 127.8496, north: 37.4007, east: 128.0103)),
-        (.swing, GeoBounds(south: 37.2422, west: 127.7686, north: 37.406, east: 128.0103)),
-        (.gcoo, GeoBounds(south: 35.9279, west: 126.6559, north: 36.0071, east: 126.8822)),
-        (.swing, GeoBounds(south: 35.9208, west: 126.6481, north: 36.0233, east: 126.8932)),
-        (.gcoo, GeoBounds(south: 37.3241, west: 127.1292, north: 37.4481, east: 127.3673)),
-        (.swing, GeoBounds(south: 37.3062, west: 127.1292, north: 37.4572, east: 127.3976)),
-        (.gcoo, GeoBounds(south: 33.4355, west: 126.4104, north: 33.5436, east: 126.6095)),
-        (.gcoo, GeoBounds(south: 36.9773, west: 127.119, north: 37.0331, east: 127.2957)),
-        (.swing, GeoBounds(south: 36.9788, west: 127.1959, north: 37.0809, east: 127.3891)),
-        (.gcoo, GeoBounds(south: 35.9145, west: 126.912, north: 35.9908, east: 127.0165)),
-        (.swing, GeoBounds(south: 35.9136, west: 126.9149, north: 35.993, east: 127.0215)),
-        (.gcoo, GeoBounds(south: 37.7694, west: 127.0242, north: 37.8626, east: 127.1237)),
-        (.swing, GeoBounds(south: 37.7688, west: 127.0163, north: 37.8741, east: 127.1256)),
-        (.swing, GeoBounds(south: 37.5562, west: 127.0975, north: 37.6488, east: 127.174)),
-        (.gcoo, GeoBounds(south: 35.2874, west: 128.9682, north: 35.3759, east: 129.0691)),
-        (.swing, GeoBounds(south: 35.2792, west: 128.968, north: 35.4359, east: 129.1994)),
-        (.xingxing, GeoBounds(south: 34.8458, west: 128.5855, north: 34.915, east: 128.7122)),
-        (.swing, GeoBounds(south: 34.8418, west: 128.5804, north: 34.9203, east: 128.7213)),
-        (.swing, GeoBounds(south: 37.3988, west: 126.8227, north: 37.4975, east: 126.9031)),
-        (.gcoo, GeoBounds(south: 35.8122, west: 129.148, north: 35.898, east: 129.253)),
-        (.swing, GeoBounds(south: 35.8066, west: 129.1496, north: 35.9041, east: 129.2602)),
-        (.xingxing, GeoBounds(south: 36.9499, west: 127.8514, north: 36.9885, east: 127.8965)),
-        (.swing, GeoBounds(south: 36.9247, west: 127.8778, north: 37.0324, east: 127.9696)),
-        (.gcoo, GeoBounds(south: 34.7668, west: 126.3416, north: 34.8461, east: 126.4627)),
-        (.gcoo, GeoBounds(south: 37.3024, west: 126.8993, north: 37.3814, east: 126.9655)),
-        (.kickgoing, GeoBounds(south: 37.3269, west: 126.8994, north: 37.3814, east: 126.9655)),
-        (.xingxing, GeoBounds(south: 37.3333, west: 126.9037, north: 37.3814, east: 126.9655)),
-        (.swing, GeoBounds(south: 37.3024, west: 126.9002, north: 37.3814, east: 126.9655)),
-        (.gcoo, GeoBounds(south: 36.0981, west: 128.0591, north: 36.1611, east: 128.211)),
-        (.swing, GeoBounds(south: 36.0952, west: 128.0535, north: 36.1633, east: 128.2158)),
-        (.gcoo, GeoBounds(south: 35.9639, west: 128.3157, north: 36.0944, east: 128.4375)),
-        (.swing, GeoBounds(south: 35.9589, west: 128.3101, north: 36.1038, east: 128.4424)),
-        (.xingxing, GeoBounds(south: 36.5594, west: 126.6234, north: 36.6748, east: 126.7096)),
-        (.gcoo, GeoBounds(south: 34.9166, west: 128.0493, north: 35.1067, east: 128.1151)),
-        (.swing, GeoBounds(south: 34.9089, west: 128.0211, north: 35.1105, east: 128.1353)),
-        (.gcoo, GeoBounds(south: 34.911, west: 127.4564, north: 35.005, east: 127.5716)),
-        (.gcoo, GeoBounds(south: 37.2976, west: 126.9259, north: 37.4154, east: 127.0133)),
-        (.kickgoing, GeoBounds(south: 37.3308, west: 126.9445, north: 37.4182, east: 127.0113)),
-        (.xingxing, GeoBounds(south: 37.3325, west: 126.9443, north: 37.4169, east: 127.0085)),
-        (.swing, GeoBounds(south: 37.2976, west: 126.9259, north: 37.4182, east: 127.0273)),
-        (.xingxing, GeoBounds(south: 36.8916, west: 127.5151, north: 37.1571, east: 127.6661)),
-        (.swing, GeoBounds(south: 36.8855, west: 127.5106, north: 36.9471, east: 127.5887)),
-        (.swing, GeoBounds(south: 36.7811, west: 128.5009, north: 36.902, east: 128.6609)),
-        (.swing, GeoBounds(south: 36.521, west: 128.6325, north: 36.6075, east: 128.8255)),
-        (.gcoo, GeoBounds(south: 34.783, west: 126.4098, north: 35.007, east: 126.5043)),
-        (.gcoo, GeoBounds(south: 36.7478, west: 126.4201, north: 36.8104, east: 126.5022)),
-        (.xingxing, GeoBounds(south: 36.6756, west: 126.56, north: 36.7052, east: 126.6055)),
-        (.gcoo, GeoBounds(south: 36.4256, west: 127.0909, north: 36.4939, east: 127.1737)),
-        (.xingxing, GeoBounds(south: 37.1064, west: 128.1666, north: 37.1962, east: 128.2468)),
-        (.swing, GeoBounds(south: 37.8632, west: 127.0163, north: 37.9589, east: 127.092)),
-        (.swing, GeoBounds(south: 35.376, west: 127.3383, north: 35.4492, east: 127.4321)),
-        (.gcoo, GeoBounds(south: 36.3595, west: 128.1222, north: 36.5947, east: 128.2003)),
-        (.swing, GeoBounds(south: 36.3577, west: 128.1202, north: 36.4542, east: 128.1956)),
-        (.gcoo, GeoBounds(south: 37.4632, west: 127.4568, north: 37.5144, east: 127.622)),
-        (.swing, GeoBounds(south: 37.4572, west: 127.3025, north: 37.5688, east: 127.6286)),
-        (.swing, GeoBounds(south: 36.8643, west: 126.5905, north: 36.9272, east: 126.6796)),
-        (.gcoo, GeoBounds(south: 35.9355, west: 128.8932, north: 36.0029, east: 128.9895)),
-        (.swing, GeoBounds(south: 35.8844, west: 128.8335, north: 36.0086, east: 128.9782)),
-        (.xingxing, GeoBounds(south: 36.8798, west: 127.4794, north: 36.9266, east: 127.5606)),
-        (.swing, GeoBounds(south: 36.8139, west: 127.406, north: 36.9326, east: 127.5678)),
-        (.swing, GeoBounds(south: 36.748, west: 127.5445, north: 36.8342, east: 127.6484)),
-        (.gcoo, GeoBounds(south: 35.5344, west: 126.8268, north: 35.6016, east: 126.8938)),
-        (.gcoo, GeoBounds(south: 35.8232, west: 127.0368, north: 35.9778, east: 127.1833)),
-        (.swing, GeoBounds(south: 35.8151, west: 127.0333, north: 35.9385, east: 127.1057)),
-        (.xingxing, GeoBounds(south: 36.6443, west: 126.648, north: 36.7132, east: 126.88)),
-        (.swing, GeoBounds(south: 36.6493, west: 126.8062, north: 36.7446, east: 126.8863)),
-        (.gcoo, GeoBounds(south: 35.6609, west: 127.879, north: 35.7084, east: 127.9446)),
-        (.swing, GeoBounds(south: 34.7049, west: 127.6138, north: 34.8015, east: 127.772)),
-        (.gcoo, GeoBounds(south: 34.9835, west: 126.6895, north: 35.0685, east: 126.8217)),
-        (.gcoo, GeoBounds(south: 38.1632, west: 128.5422, north: 38.2335, east: 128.6182)),
-        (.swing, GeoBounds(south: 36.9433, west: 129.3688, north: 37.0776, east: 129.4439)),
-        (.gcoo, GeoBounds(south: 35.7764, west: 126.8595, north: 35.8325, east: 127.0147)),
-        (.swing, GeoBounds(south: 36.7619, west: 127.6242, north: 36.8338, east: 127.8236)),
-        (.swing, GeoBounds(south: 34.8062, west: 128.3751, north: 34.907, east: 128.4588)),
-        (.gcoo, GeoBounds(south: 37.4189, west: 129.1292, north: 37.4789, east: 129.196)),
-        (.swing, GeoBounds(south: 36.4569, west: 127.6845, north: 36.5142, east: 127.7613)),
-        (.gcoo, GeoBounds(south: 37.7184, west: 127.3935, north: 37.8667, east: 127.543)),
-        (.gcoo, GeoBounds(south: 36.5681, west: 128.1637, north: 36.6243, east: 128.2309)),
-        (.swing, GeoBounds(south: 35.512, west: 128.4622, north: 35.5656, east: 128.5312)),
-        (.swing, GeoBounds(south: 37.9955, west: 127.0333, north: 38.0551, east: 127.0983)),
-        (.swing, GeoBounds(south: 37.6619, west: 127.8491, north: 37.724, east: 127.9344)),
-        (.gcoo, GeoBounds(south: 34.9484, west: 128.2905, north: 34.995, east: 128.3506)),
-        (.swing, GeoBounds(south: 35.435, west: 128.7111, north: 35.5276, east: 128.8303)),
-        (.gcoo, GeoBounds(south: 35.0183, west: 126.9259, north: 35.0922, east: 127.0198)),
-        (.swing, GeoBounds(south: 35.695, west: 126.703, north: 35.7509, east: 126.7685)),
-        (.gcoo, GeoBounds(south: 33.2218, west: 126.3906, north: 33.2783, east: 126.5908)),
-        (.swing, GeoBounds(south: 34.811, west: 127.8611, north: 34.8622, east: 127.9217)),
-        (.gcoo, GeoBounds(south: 37.4641, west: 129.0818, north: 37.5724, east: 129.1632)),
-        (.gcoo, GeoBounds(south: 34.5107, west: 127.1167, north: 34.6249, east: 127.3091)),
-        (.swing, GeoBounds(south: 37.4548, west: 127.9512, north: 37.5172, east: 128.031)),
-        (.swing, GeoBounds(south: 36.137, west: 127.7412, north: 36.2133, east: 127.8222)),
-        (.gcoo, GeoBounds(south: 36.32, west: 126.569, north: 36.3786, east: 126.6395)),
-        (.xingxing, GeoBounds(south: 35.2428, west: 128.3816, north: 35.3067, east: 128.5394)),
-        (.swing, GeoBounds(south: 36.2729, west: 127.535, north: 36.3336, east: 127.6066)),
-        (.swing, GeoBounds(south: 35.5917, west: 127.2525, north: 35.6525, east: 127.3126)),
-        (.gcoo, GeoBounds(south: 36.255, west: 126.837, north: 36.3149, east: 126.9516)),
-        (.gcoo, GeoBounds(south: 35.2801, west: 126.7578, north: 35.3199, east: 126.8063)),
-        (.swing, GeoBounds(south: 36.1714, west: 127.4265, north: 36.2137, east: 127.4906)),
-        (.swing, GeoBounds(south: 34.2909, west: 126.7166, north: 34.3399, east: 126.784)),
-        (.gcoo, GeoBounds(south: 34.5515, west: 126.5747, north: 34.5927, east: 126.6264)),
-        (.gcoo, GeoBounds(south: 35.4137, west: 126.6734, north: 35.4558, east: 126.752)),
-        (.kickgoing, GeoBounds(south: 37.398, west: 126.9584, north: 37.4704, east: 127.0508)),
-        (.gcoo, GeoBounds(south: 34.7305, west: 126.4352, north: 34.797, east: 126.5004)),
-        (.xingxing, GeoBounds(south: 35.9003, west: 128.2621, north: 35.9422, east: 128.3034)),
-        (.beam, GeoBounds(south: 37.274819, west: 126.764024, north: 37.354352000000006, east: 126.88072199999999)),
-        (.beam, GeoBounds(south: 37.462637, west: 126.726346, north: 37.53491497327775, east: 126.828007)),
-        (.beam, GeoBounds(south: 35.19047, west: 128.603013, north: 35.270655000000005, east: 128.724589)),
-        (.beam, GeoBounds(south: 36.5906519934978, west: 127.40170869057393, north: 36.7473484416684, east: 127.52716199999999)),
-        (.beam, GeoBounds(south: 35.626734, west: 128.387047, north: 35.962223, east: 128.861211)),
-        (.beam, GeoBounds(south: 35.70008, west: 128.68161, north: 35.962223, east: 128.861211)),
-        (.beam, GeoBounds(south: 36.314509, west: 127.323369, north: 36.399436, east: 127.430049)),
-        (.beam, GeoBounds(south: 37.778655, west: 126.955622, north: 37.938570000000006, east: 127.17698299999999)),
-        (.beam, GeoBounds(south: 37.778655, west: 126.955622, north: 37.93857, east: 127.12236)),
-        (.beam, GeoBounds(south: 37.189527, west: 126.967177, north: 37.22263, east: 127.053499)),
-        (.beam, GeoBounds(south: 37.189527, west: 126.99508, north: 37.2002, east: 127.053499)),
-        (.beam, GeoBounds(south: 36.091846999999994, west: 127.440897, north: 36.199499, east: 127.505078)),
-        (.beam, GeoBounds(south: 36.11054495816675, west: 128.073686710939, north: 36.15462055786906, east: 128.2020056129547)),
-        (.beam, GeoBounds(south: 35.160537999999995, west: 128.70755499999999, north: 35.319331000000005, east: 128.92595400000002)),
-        (.beam, GeoBounds(south: 35.160538, west: 128.75681, north: 35.319331, east: 128.925954)),
-        (.beam, GeoBounds(south: 37.577268, west: 126.611537, north: 37.665165, east: 126.738969)),
-        (.beam, GeoBounds(south: 37.610116999999995, west: 126.729095, north: 37.708361000000004, east: 126.857924)),
-        (.beam, GeoBounds(south: 37.68863, west: 126.729095, north: 37.708361, east: 126.857924)),
-        (.beam, GeoBounds(south: 35.11423336907953, west: 126.76583971391851, north: 35.23667935880794, east: 126.94829493395827)),
-        (.beam, GeoBounds(south: 34.914424, west: 127.557748, north: 34.988956, east: 127.76409788380748)),
-        (.beam, GeoBounds(south: 36.891587, west: 127.65085, north: 37.00599, east: 127.949958)),
-        (.beam, GeoBounds(south: 36.891587, west: 127.522597, north: 37.00599, east: 127.79847)),
-        (.beam, GeoBounds(south: 36.891587, west: 127.522597, north: 37.00599, east: 127.58511)),
-        (.beam, GeoBounds(south: 37.533252999999995, west: 127.17346, north: 37.579287, east: 127.23031605290103)),
-        (.beam, GeoBounds(south: 35.92302507095647, west: 126.92265816090386, north: 35.978682309156056, east: 127.02280383674638)),
-        (.beam, GeoBounds(south: 37.394312, west: 126.628628, north: 37.469663000000004, east: 126.71705999999999)),
-        (.beam, GeoBounds(south: 35.075120999999996, west: 128.779124, north: 35.112747000000006, east: 128.836802)),
-        (.beam, GeoBounds(south: 35.075121, west: 128.779124, north: 35.112747, east: 128.836802)),
-        (.beam, GeoBounds(south: 35.095028, west: 128.483625, north: 35.278105000000004, east: 128.614111)),
-        (.beam, GeoBounds(south: 37.592273999999996, west: 127.09599800000001, north: 37.676208, east: 127.182659)),
-        (.beam, GeoBounds(south: 37.592274, west: 127.10096, north: 37.64603, east: 127.17149)),
-        (.beam, GeoBounds(south: 36.996046, west: 127.01791300000001, north: 37.080891, east: 127.119524)),
-        (.beam, GeoBounds(south: 37.268221, west: 127.020461, north: 37.348109, east: 127.136455)),
-        (.beam, GeoBounds(south: 37.268221, west: 127.020461, north: 37.348109, east: 127.08987)),
-        (.beam, GeoBounds(south: 37.33342, west: 127.02707, north: 37.348109, east: 127.136455)),
-        (.beam, GeoBounds(south: 37.473147999999995, west: 126.893015, north: 37.579112, east: 127.147505)),
-        (.beam, GeoBounds(south: 37.46875, west: 127.13995, north: 37.503742, east: 127.16587)),
-        (.beam, GeoBounds(south: 37.460396, west: 127.123399, north: 37.503742, east: 127.16587)),
-        (.beam, GeoBounds(south: 37.460396, west: 127.123399, north: 37.47481, east: 127.16587)),
-        (.beam, GeoBounds(south: 36.557863, west: 128.46049, north: 36.582816, east: 128.520296)),
-        (.beam, GeoBounds(south: 36.557863, west: 128.46049, north: 36.582816, east: 128.520296)),
-        (.beam, GeoBounds(south: 37.223088, west: 127.610338, north: 37.316423, east: 127.68516199999999)),
-    ]
+    private static let regionalSystems: [(ScooterProvider, GeoBounds)] = makeRegionalSystems()
+
+    // A statement an area, as ScooterCityCatalog's cities: one literal of them all is costly to type-check.
+    private static func makeRegionalSystems() -> [(ScooterProvider, GeoBounds)] {
+        var systems: [(ScooterProvider, GeoBounds)] = []
+        systems.append((.bird, GeoBounds(south: 44.17, west: 0.59, north: 44.22, east: 0.66)))
+        systems.append((.bird, GeoBounds(south: 41.8879, west: 8.5984, north: 41.9581, east: 8.7953)))
+        systems.append((.bird, GeoBounds(south: 47.5477, west: 1.2701, north: 47.6332, east: 1.3711)))
+        systems.append((.bird, GeoBounds(south: 48.9259, west: 4.2961, north: 48.9944, east: 4.4173)))
+        systems.append((.bird, GeoBounds(south: 49.584, west: -1.7346, north: 49.6874, east: -1.5299)))
+        systems.append((.bird, GeoBounds(south: 48.0366, west: -0.8698, north: 48.1153, east: -0.7185)))
+        systems.append((.bird, GeoBounds(south: 46.0785, west: 3.354, north: 46.1945, east: 3.5438)))
+        systems.append((.dott, GeoBounds(south: 44.7393, west: -0.7862, north: 44.9989, east: -0.3947)))
+        systems.append((.dott, GeoBounds(south: 45.7065, west: 4.757, north: 45.8489, east: 4.9294)))
+        systems.append((.dott, GeoBounds(south: 48.8049, west: 2.6477, north: 48.8931, east: 2.7887)))
+        systems.append((.dott, GeoBounds(south: 45.36, west: 6.81, north: 45.56, east: 7)))
+        systems.append((.dott, GeoBounds(south: 48.8054, west: 2.0894, north: 48.8498, east: 2.1564)))
+        systems.append((.dott, GeoBounds(south: 48.8262, west: 2.0963, north: 48.8787, east: 2.1728)))
+        systems.append((.dott, GeoBounds(south: 48.8424, west: 2.1085, north: 48.876, east: 2.1701)))
+        systems.append((.lime, GeoBounds(south: 50.4906, west: 2.7749, north: 50.8037, east: 3.2867)))
+        systems.append((.lime, GeoBounds(south: 50.6658, west: 3.1471, north: 50.7117, east: 3.2214)))
+        systems.append((.lime, GeoBounds(south: 50.6901, west: 3.1147, north: 50.752, east: 3.2008)))
+        systems.append((.lime, GeoBounds(south: 50.6541, west: 3.1321, north: 50.6966, east: 3.1779)))
+        systems.append((.lime, GeoBounds(south: 50.6479, west: 3.1054, north: 50.6973, east: 3.1538)))
+        systems.append((.lime, GeoBounds(south: 50.5961, west: 3.1119, north: 50.6764, east: 3.2118)))
+        systems.append((.lime, GeoBounds(south: 50.6854, west: 3.1673, north: 50.7402, east: 3.2656)))
+        systems.append((.lime, GeoBounds(south: 50.6304, west: 3.1577, north: 50.6758, east: 3.2248)))
+        systems.append((.lime, GeoBounds(south: 43.1605, west: 5.2163, north: 43.4002, east: 5.545)))
+        systems.append((.lime, GeoBounds(south: 48.8672, west: 2.1062, north: 48.8938, east: 2.1623)))
+        systems.append((.lime, GeoBounds(south: 48.913, west: 2.164, north: 48.9402, east: 2.2092)))
+        systems.append((.lime, GeoBounds(south: 48.8741, west: 2.0802, north: 48.9108, east: 2.1242)))
+        systems.append((.lime, GeoBounds(south: 48.8689, west: 2.097, north: 48.8927, east: 2.1238)))
+        systems.append((.lime, GeoBounds(south: 48.8729, west: 2.108, north: 48.9127, east: 2.1545)))
+        systems.append((.lime, GeoBounds(south: 48.8435, west: 2.0649, north: 48.8884, east: 2.1135)))
+        systems.append((.lime, GeoBounds(south: 48.8999, west: 2.1091, north: 48.9382, east: 2.1671)))
+        systems.append((.lime, GeoBounds(south: 48.9173, west: 2.1386, north: 48.9576, east: 2.2103)))
+        systems.append((.naolib, GeoBounds(south: 47.274, west: -1.536, north: 47.3, east: -1.492)))
+        systems.append((.naolib, GeoBounds(south: 47.21, west: -1.66, north: 47.244, east: -1.622)))
+        systems.append((.pony, GeoBounds(south: 47.4052, west: -0.6573, north: 47.543, east: -0.4546)))
+        systems.append((.pony, GeoBounds(south: 49.3973, west: 2.0343, north: 49.4768, east: 2.1367)))
+        systems.append((.pony, GeoBounds(south: 44.7425, west: -0.7866, north: 44.9725, east: -0.458)))
+        systems.append((.pony, GeoBounds(south: 47.0315, west: 2.3471, north: 47.134, east: 2.4562)))
+        systems.append((.pony, GeoBounds(south: 48.6007, west: 2.3773, north: 48.6587, east: 2.476)))
+        systems.append((.pony, GeoBounds(south: 49.176, west: -0.382, north: 49.3021, east: -0.2309)))
+        systems.append((.pony, GeoBounds(south: 46.6384, west: -1.4684, north: 46.7073, east: -1.3833)))
+        systems.append((.pony, GeoBounds(south: 47.7171, west: -3.4203, north: 47.7831, east: -3.335)))
+        systems.append((.pony, GeoBounds(south: 42.6116, west: 2.7174, north: 42.7818, east: 3.0648)))
+        systems.append((.pony, GeoBounds(south: 42.7636, west: 2.9899, north: 42.9527, east: 3.0736)))
+        systems.append((.pony, GeoBounds(south: 46.5056, west: 0.236, north: 46.6815, east: 0.4341)))
+        systems.append((.pony, GeoBounds(south: 46.4175, west: 0.0921, north: 46.4571, east: 0.1525)))
+        systems.append((.voi, GeoBounds(south: 48.8829, west: 1.967, north: 48.9653, east: 2.0833)))
+        systems.append((.voi, GeoBounds(south: 48.9218, west: 1.9902, north: 48.9726, east: 2.0628)))
+        systems.append((.voi, GeoBounds(south: 48.9508, west: 2.0121, north: 49.0051, east: 2.0874)))
+        systems.append((.voi, GeoBounds(south: 48.9761, west: 2.0586, north: 49.0268, east: 2.1408)))
+        systems.append((.voi, GeoBounds(south: 48.9604, west: 1.8627, north: 49.0157, east: 1.975)))
+        systems.append((.voi, GeoBounds(south: 48.9857, west: 1.8504, north: 49.0501, east: 1.9518)))
+        systems.append((.voi, GeoBounds(south: 48.9735, west: 1.6435, north: 49.0189, east: 1.7394)))
+        systems.append((.voi, GeoBounds(south: 48.9527, west: 1.6736, north: 48.9981, east: 1.7476)))
+        systems.append((.voi, GeoBounds(south: 48.9609, west: 1.6421, north: 49.0044, east: 1.7161)))
+        systems.append((.voi, GeoBounds(south: 48.9591, west: 1.6955, north: 49.0234, east: 1.7777)))
+        systems.append((.voi, GeoBounds(south: 45.1054, west: 5.6232, north: 45.2809, east: 5.8865)))
+        systems.append((.voi, GeoBounds(south: 49.4671, west: 0.0529, north: 49.5982, east: 0.2092)))
+        systems.append((.voi, GeoBounds(south: 43.2016, west: 5.3287, north: 43.37, east: 5.5404)))
+        systems.append((.voi, GeoBounds(south: 48.6853, west: 1.8814, north: 48.8452, east: 2.1199)))
+        systems.append((.bolt, GeoBounds(south: 48.9703, west: 8.3087, north: 49.0445, east: 8.4931)))
+        systems.append((.bolt, GeoBounds(south: 48.4312, west: 9.1335, north: 48.5396, east: 9.2596)))
+        systems.append((.bolt, GeoBounds(south: 48.4824, west: 9.0088, north: 48.5647, east: 9.1103)))
+        systems.append((.bolt, GeoBounds(south: 48.6977, west: 9.0717, north: 48.8618, east: 9.2897)))
+        systems.append((.dott, GeoBounds(south: 50.7249, west: 6.023, north: 50.8211, east: 6.1962)))
+        systems.append((.dott, GeoBounds(south: 52.4275, west: 13.1051, north: 52.6548, east: 13.6436)))
+        systems.append((.dott, GeoBounds(south: 50.8217, west: 6.796, north: 51.0145, east: 7.1351)))
+        systems.append((.dott, GeoBounds(south: 51.1371, west: 6.6843, north: 51.294, east: 6.8991)))
+        systems.append((.dott, GeoBounds(south: 51.4073, west: 6.915, north: 51.5455, east: 7.1088)))
+        systems.append((.dott, GeoBounds(south: 52.26, west: 9.5647, north: 52.5007, east: 9.893)))
+        systems.append((.dott, GeoBounds(south: 49.3288, west: 8.6176, north: 49.4539, east: 8.7379)))
+        systems.append((.dott, GeoBounds(south: 49.3288, west: 8.62, north: 49.37, east: 8.73)))
+        systems.append((.dott, GeoBounds(south: 49.0791, west: 9.0868, north: 49.2308, east: 9.3189)))
+        systems.append((.dott, GeoBounds(south: 49.139, west: 9.2412, north: 49.1781, east: 9.3173)))
+        systems.append((.dott, GeoBounds(south: 49.2015, west: 9.1785, north: 49.2246, east: 9.2168)))
+        systems.append((.dott, GeoBounds(south: 49.1696, west: 9.1596, north: 49.2288, east: 9.3325)))
+        systems.append((.dott, GeoBounds(south: 49.3892, west: 7.6348, north: 49.4986, east: 7.8377)))
+        systems.append((.dott, GeoBounds(south: 51.0544, west: 6.8995, north: 51.1576, east: 7.0137)))
+        systems.append((.dott, GeoBounds(south: 51.2569, west: 12.2412, north: 51.4182, east: 12.5247)))
+        systems.append((.dott, GeoBounds(south: 48.0524, west: 11.3135, north: 48.3714, east: 11.7866)))
+        systems.append((.dott, GeoBounds(south: 48.1047, west: 11.3336, north: 48.1448, east: 11.3921)))
+        systems.append((.dott, GeoBounds(south: 51.8732, west: 7.538, north: 52.023, east: 7.7053)))
+        systems.append((.dott, GeoBounds(south: 52.3368, west: 12.9564, north: 52.4514, east: 13.1474)))
+        systems.append((.dott, GeoBounds(south: 48.6983, west: 9.0659, north: 48.8556, east: 9.2723)))
+        systems.append((.hopp, GeoBounds(south: 47.64, west: 9.1, north: 47.74, east: 9.25)))
+        systems.append((.lime, GeoBounds(south: 48.6983, west: 9.0659, north: 48.8556, east: 9.2723)))
+        systems.append((.lime, GeoBounds(south: 47.64, west: 9.1, north: 47.74, east: 9.25)))
+        systems.append((.lime, GeoBounds(south: 49.9311, west: 8.4319, north: 50.2246, east: 8.7884)))
+        systems.append((.lime, GeoBounds(south: 51.2053, west: 7.0316, north: 51.314, east: 7.2833)))
+        systems.append((.voi, GeoBounds(south: 48.9649, west: 8.2776, north: 49.059, east: 8.5008)))
+        systems.append((.voi, GeoBounds(south: 48.83, west: 8.59, north: 48.96, east: 8.81)))
+        systems.append((.voi, GeoBounds(south: 49.4082, west: 8.3311, north: 49.569, east: 8.589)))
+        systems.append((.voi, GeoBounds(south: 49.4287, west: 8.3322, north: 49.5538, east: 8.4587)))
+        systems.append((.voi, GeoBounds(south: 48.6983, west: 9.0659, north: 48.8556, east: 9.29)))
+        systems.append((.voi, GeoBounds(south: 48.658, west: 8.95, north: 48.697, east: 9.058)))
+        systems.append((.voi, GeoBounds(south: 48.697, west: 8.95, north: 48.738, east: 9.058)))
+        systems.append((.voi, GeoBounds(south: 48.4824, west: 9.0088, north: 48.5647, east: 9.1103)))
+        systems.append((.voi, GeoBounds(south: 48.4312, west: 9.1335, north: 48.5396, east: 9.2596)))
+        systems.append((.yoio, GeoBounds(south: 50.9374, west: 10.9742, north: 51.031, east: 11.1075)))
+        systems.append((.yoio, GeoBounds(south: 47.9649, west: 7.746, north: 48.0667, east: 7.9134)))
+        systems.append((.yoio, GeoBounds(south: 51.4953, west: 9.8716, north: 51.6057, east: 9.9978)))
+        systems.append((.yoio, GeoBounds(south: 51.5795, west: 9.9159, north: 51.6057, east: 9.9474)))
+        systems.append((.zeus, GeoBounds(south: 49.8549, west: 10.83, north: 49.9301, east: 10.9481)))
+        systems.append((.zeus, GeoBounds(south: 47.9204, west: 8.4496, north: 47.9818, east: 8.5362)))
+        systems.append((.zeus, GeoBounds(south: 47.958, west: 7.7695, north: 48.051, east: 7.9323)))
+        systems.append((.zeus, GeoBounds(south: 47.648, west: 9.1149, north: 47.7104, east: 9.2302)))
+        systems.append((.zeus, GeoBounds(south: 49.315, west: 8.62, north: 49.37, east: 8.73)))
+        systems.append((.zeus, GeoBounds(south: 49.27, west: 8.61, north: 49.315, east: 8.67)))
+        systems.append((.zeus, GeoBounds(south: 49.27, west: 8.67, north: 49.315, east: 8.73)))
+        systems.append((.zeus, GeoBounds(south: 48.8639, west: 9.0968, north: 48.9418, east: 9.2575)))
+        systems.append((.zeus, GeoBounds(south: 49.2999, west: 8.0802, north: 49.3882, east: 8.2034)))
+        systems.append((.zeus, GeoBounds(south: 48.9782, west: 12.0233, north: 49.0733, east: 12.1766)))
+        systems.append((.zeus, GeoBounds(south: 48.7448, west: 8.8783, north: 48.8027, east: 8.9661)))
+        systems.append((.zeus, GeoBounds(south: 49.9972, west: 10.1714, north: 50.096, east: 10.2795)))
+        systems.append((.zeus, GeoBounds(south: 47.7258, west: 8.7975, north: 47.7938, east: 8.9068)))
+        systems.append((.zeus, GeoBounds(south: 47.9438, west: 8.7493, north: 48.0254, east: 8.8891)))
+        systems.append((.zeus, GeoBounds(south: 48.0102, west: 8.4072, north: 48.1116, east: 8.5943)))
+        systems.append((.zeus, GeoBounds(south: 49.7282, west: 9.8551, north: 49.8351, east: 10.0214)))
+        systems.append((.dott, GeoBounds(south: 51.9368, west: 8.4745, north: 52.0619, east: 8.6263)))
+        systems.append((.dott, GeoBounds(south: 51.4387, west: 7.1133, north: 51.5003, east: 7.2793)))
+        systems.append((.dott, GeoBounds(south: 50.6479, west: 7.0245, north: 50.7748, east: 7.2027)))
+        systems.append((.dott, GeoBounds(south: 53.4275, west: 9.7932, north: 53.6837, east: 10.2659)))
+        systems.append((.dott, GeoBounds(south: 52.2046, west: 10.4612, north: 52.326, east: 10.6041)))
+        systems.append((.dott, GeoBounds(south: 53.4848, west: 8.557, north: 53.6278, east: 8.6482)))
+        systems.append((.dott, GeoBounds(south: 49.9403, west: 8.0858, north: 50.1076, east: 8.3284)))
+        systems.append((.dott, GeoBounds(south: 52.5787, west: 9.9977, north: 52.6482, east: 10.1239)))
+        systems.append((.dott, GeoBounds(south: 50.7881, west: 12.868, north: 50.8627, east: 12.975)))
+        systems.append((.dott, GeoBounds(south: 51.7152, west: 14.2875, north: 51.7946, east: 14.3962)))
+        systems.append((.dott, GeoBounds(south: 49.8397, west: 8.6128, north: 49.9019, east: 8.6939)))
+        systems.append((.dott, GeoBounds(south: 51.9152, west: 8.8186, north: 51.9615, east: 8.9235)))
+        systems.append((.dott, GeoBounds(south: 54.0619, west: 12.0236, north: 54.1841, east: 12.1837)))
+        systems.append((.dott, GeoBounds(south: 51.4822, west: 7.3854, north: 51.5375, east: 7.5289)))
+        systems.append((.dott, GeoBounds(south: 52.0317, west: 10.2792, north: 52.1779, east: 10.4017)))
+        systems.append((.dott, GeoBounds(south: 50.9554, west: 10.9877, north: 51.0154, east: 11.0893)))
+        systems.append((.dott, GeoBounds(south: 49.538, west: 10.9411, north: 49.6163, east: 11.0567)))
+        systems.append((.dott, GeoBounds(south: 54.7386, west: 9.3658, north: 54.8309, east: 9.5003)))
+        systems.append((.dott, GeoBounds(south: 47.6383, west: 9.3898, north: 47.7126, east: 9.526)))
+        systems.append((.dott, GeoBounds(south: 50.833, west: 12.0462, north: 50.9074, east: 12.1027)))
+        systems.append((.dott, GeoBounds(south: 52.4527, west: 10.5053, north: 52.5122, east: 10.5789)))
+        systems.append((.dott, GeoBounds(south: 51.5376, west: 6.9602, north: 51.5978, east: 7.0307)))
+        systems.append((.dott, GeoBounds(south: 51.6517, west: 7.7216, north: 51.7214, east: 7.934)))
+        systems.append((.dott, GeoBounds(south: 50.7574, west: 7.2451, north: 50.7895, east: 7.3268)))
+        systems.append((.dott, GeoBounds(south: 52.0744, west: 8.6128, north: 52.1414, east: 8.7214)))
+        systems.append((.dott, GeoBounds(south: 51.5103, west: 7.1469, north: 51.5667, east: 7.2704)))
+        systems.append((.dott, GeoBounds(south: 51.5744, west: 7.1148, north: 51.629, east: 7.1645)))
+        systems.append((.dott, GeoBounds(south: 51.1401, west: 6.8934, north: 51.1906, east: 6.9892)))
+        systems.append((.dott, GeoBounds(south: 52.109, west: 9.8983, north: 52.184, east: 10.0044)))
+        systems.append((.dott, GeoBounds(south: 51.3816, west: 6.6794, north: 51.4401, east: 6.8021)))
+        systems.append((.dott, GeoBounds(south: 48.7047, west: 11.3364, north: 48.82, east: 11.5852)))
+        systems.append((.dott, GeoBounds(south: 50.8762, west: 11.556, north: 50.9542, east: 11.6352)))
+        systems.append((.dott, GeoBounds(south: 48.9779, west: 8.2906, north: 49.046, east: 8.4878)))
+        systems.append((.dott, GeoBounds(south: 54.2864, west: 10.0418, north: 54.37, east: 10.2026)))
+        systems.append((.dott, GeoBounds(south: 47.5373, west: 9.6521, north: 47.5962, east: 9.7398)))
+        systems.append((.dott, GeoBounds(south: 48.8747, west: 9.1394, north: 48.9251, east: 9.2755)))
+        systems.append((.dott, GeoBounds(south: 49.4212, west: 8.3441, north: 49.556, east: 8.576)))
+        systems.append((.dott, GeoBounds(south: 52.2631, west: 8.8586, north: 52.3174, east: 8.9693)))
+        systems.append((.dott, GeoBounds(south: 51.1194, west: 6.3764, north: 51.2309, east: 6.4858)))
+        systems.append((.dott, GeoBounds(south: 51.0649, west: 6.8748, north: 51.1302, east: 6.9184)))
+        systems.append((.dott, GeoBounds(south: 54.0399, west: 9.9342, north: 54.1434, east: 10.0445)))
+        systems.append((.dott, GeoBounds(south: 51.1527, west: 6.6248, north: 51.2372, east: 6.7433)))
+        systems.append((.dott, GeoBounds(south: 51.4043, west: 6.7978, north: 51.5638, east: 6.9324)))
+        systems.append((.dott, GeoBounds(south: 52.2434, west: 7.9823, north: 52.3128, east: 8.1044)))
+        systems.append((.dott, GeoBounds(south: 51.6932, west: 8.706, north: 51.7624, east: 8.8131)))
+        systems.append((.dott, GeoBounds(south: 52.2976, west: 10.1587, north: 52.3585, east: 10.2898)))
+        systems.append((.dott, GeoBounds(south: 48.9801, west: 12.0357, north: 49.0376, east: 12.1529)))
+        systems.append((.dott, GeoBounds(south: 51.557, west: 7.1605, north: 51.6334, east: 7.2856)))
+        systems.append((.dott, GeoBounds(south: 51.8035, west: 8.2557, north: 51.8672, east: 8.3701)))
+        systems.append((.dott, GeoBounds(south: 48.4442, west: 9.1465, north: 48.5266, east: 9.2466)))
+        systems.append((.dott, GeoBounds(south: 52.251, west: 7.3794, north: 52.3224, east: 7.5204)))
+        systems.append((.dott, GeoBounds(south: 53.0462, west: 8.5949, north: 53.1983, east: 8.8953)))
+        systems.append((.dott, GeoBounds(south: 49.9551, west: 8.3819, north: 50.0067, east: 8.4651)))
+        systems.append((.dott, GeoBounds(south: 49.1732, west: 6.884, north: 49.297, east: 7.0758)))
+        systems.append((.dott, GeoBounds(south: 50.7504, west: 7.1312, north: 50.8153, east: 7.2821)))
+        systems.append((.dott, GeoBounds(south: 48.6625, west: 8.972, north: 48.7301, east: 9.0493)))
+        systems.append((.dott, GeoBounds(south: 51.1323, west: 6.9853, north: 51.2187, east: 7.1275)))
+        systems.append((.dott, GeoBounds(south: 50.7701, west: 7.0808, north: 50.8467, east: 7.1904)))
+        systems.append((.dott, GeoBounds(south: 47.7479, west: 9.1316, north: 47.7827, east: 9.2051)))
+        systems.append((.dott, GeoBounds(south: 48.4954, west: 9.0218, north: 48.5517, east: 9.0973)))
+        systems.append((.dott, GeoBounds(south: 48.3409, west: 9.9187, north: 48.4485, east: 10.0788)))
+        systems.append((.dott, GeoBounds(south: 49.3932, west: 10.9423, north: 49.5011, east: 11.1488)))
+        systems.append((.dott, GeoBounds(south: 52.3652, west: 10.6754, north: 52.4678, east: 10.869)))
+        systems.append((.dott, GeoBounds(south: 50.7018, west: 12.4519, north: 50.7432, east: 12.524)))
+        systems.append((.voi, GeoBounds(south: 51.8311, west: 7.4598, north: 52.069, east: 7.7884)))
+        systems.append((.voi, GeoBounds(south: 51.3244, west: 6.6116, north: 51.5691, east: 6.8443)))
+        systems.append((.voi, GeoBounds(south: 51.4397, west: 6.7633, north: 51.589, east: 6.9445)))
+        systems.append((.voi, GeoBounds(south: 50.6237, west: 7.0085, north: 50.7834, east: 7.2247)))
+        systems.append((.voi, GeoBounds(south: 50.7708, west: 7.1602, north: 50.837, east: 7.3245)))
+        systems.append((.voi, GeoBounds(south: 50.7304, west: 7.1114, north: 50.8095, east: 7.2597)))
+        systems.append((.voi, GeoBounds(south: 51.1154, west: 6.6748, north: 51.3615, east: 6.9539)))
+        systems.append((.voi, GeoBounds(south: 51.1078, west: 6.6008, north: 51.2446, east: 6.8124)))
+        systems.append((.voi, GeoBounds(south: 51.4067, west: 7.2884, north: 51.609, east: 7.6522)))
+        systems.append((.voi, GeoBounds(south: 51.0768, west: 6.2771, north: 51.2569, east: 6.5506)))
+        systems.append((.voi, GeoBounds(south: 51.1567, west: 7.0001, north: 51.3271, east: 7.3274)))
+        systems.append((.voi, GeoBounds(south: 51.6452, west: 8.6223, north: 51.8098, east: 8.9146)))
+        systems.append((.voi, GeoBounds(south: 50.8214, west: 6.7585, north: 51.094, east: 7.176)))
+        systems.append((.voi, GeoBounds(south: 51.4015, west: 7.0881, north: 51.5404, east: 7.3633)))
+        systems.append((.voi, GeoBounds(south: 51.4941, west: 7.1096, north: 51.5823, east: 7.3105)))
+        systems.append((.voi, GeoBounds(south: 51.3611, west: 7.2321, north: 51.4933, east: 7.4375)))
+        systems.append((.voi, GeoBounds(south: 50.6531, west: 5.9608, north: 50.8662, east: 6.2321)))
+        systems.append((.voi, GeoBounds(south: 51.3386, west: 6.8803, north: 51.5432, east: 7.1516)))
+        systems.append((.voi, GeoBounds(south: 47.9255452234188, west: 11.1703491210938, north: 48.3744967168233, east: 11.9544982910156)))
+        systems.append((.voi, GeoBounds(south: 53.50118693001041, west: 11.180565993281183, north: 53.73805436614699, east: 11.62999014469931)))
+        systems.append((.voi, GeoBounds(south: 49.59438795057588, west: 9.647576391929467, north: 50.09741775872257, east: 10.343510459340342)))
+        systems.append((.voi, GeoBounds(south: 49.1953468350688, west: 10.6919663057816, north: 49.7690097902586, east: 11.7203467479068)))
+        systems.append((.voi, GeoBounds(south: 53.9528531996685, west: 11.7869567871094, north: 54.2812619308271, east: 12.3802185058594)))
+        systems.append((.voi, GeoBounds(south: 54.736947921648124, west: 9.32485827632354, north: 54.84332146888549, east: 9.532999087961745)))
+        systems.append((.voi, GeoBounds(south: 51.91202302178859, west: 11.210910807618658, north: 52.42622268230737, east: 12.15325949173283)))
+        systems.append((.voi, GeoBounds(south: 53.35187788260681, west: 9.656523897434674, north: 53.7802844117601, east: 10.394393931884132)))
+        systems.append((.voi, GeoBounds(south: 52.13666385481394, west: 12.601229331022722, north: 52.90186135994416, east: 13.905921424498281)))
+        systems.append((.voi, GeoBounds(south: 52.16868682934638, west: 7.825808742511623, north: 52.443396171197, east: 8.336312202190538)))
+        systems.append((.voi, GeoBounds(south: 52.141481911281275, west: 12.619117304499001, north: 52.53966716354237, east: 13.207903201789064)))
+        systems.append((.voi, GeoBounds(south: 52.18091169285216, west: 10.338107665613677, north: 52.360484871521294, east: 10.699520921206044)))
+        systems.append((.voi, GeoBounds(south: 48.90090174566317, west: 11.9249269981186, north: 49.10323589689486, east: 12.271586420039228)))
+        systems.append((.voi, GeoBounds(south: 49.25901779678085, west: 8.56430459193761, north: 49.49783733196581, east: 9.023205481851134)))
+        systems.append((.voi, GeoBounds(south: 49.8629916997857, west: 7.94021781950754, north: 50.025, east: 8.39298161072504)))
+        systems.append((.voi, GeoBounds(south: 50.025, west: 7.94021781950754, north: 50.191938680772, east: 8.39298161072504)))
+        systems.append((.voi, GeoBounds(south: 48.2411382384804, west: 10.65673828125, north: 48.5147849720974, east: 11.14013671875)))
+        systems.append((.voi, GeoBounds(south: 52.202975, west: 9.265968, north: 52.578291, east: 10.030858)))
+        systems.append((.voi, GeoBounds(south: 50.02177904841051, west: 8.433982597851667, north: 50.2395825267524, east: 9.029169329130355)))
+        systems.append((.voi, GeoBounds(south: 51.2177592669659, west: 12.139831975626, north: 51.464315824471, east: 12.595557430528)))
+        systems.append((.voi, GeoBounds(south: 49.7244748082939, west: 8.45072655515728, north: 49.987662962682, east: 8.87669813339172)))
+        systems.append((.voi, GeoBounds(south: 53.63491483484561, west: 10.319019787929623, north: 54.10546451711241, east: 11.058746731289023)))
+        systems.append((.voi, GeoBounds(south: 54.2415568529537, west: 9.98725891113281, north: 54.4117378402846, east: 10.3230285644531)))
+        systems.append((.qick, GeoBounds(south: 51.264893, west: 9.404046, north: 51.353084, east: 9.566549)))
+        systems.append((.qick, GeoBounds(south: 51.891661, west: 7.555496, north: 52.004049, east: 7.698929)))
+        systems.append((.qick, GeoBounds(south: 51.505101, west: 9.878137, north: 51.57076, east: 10.007672)))
+        systems.append((.dott, GeoBounds(south: 47.9753, west: 16.1998, north: 48.0189, east: 16.2796)))
+        systems.append((.dott, GeoBounds(south: 47.4355, west: 9.6622, north: 47.584, east: 9.7976)))
+        systems.append((.dott, GeoBounds(south: 47.3797, west: 9.6916, north: 47.4558, east: 9.7715)))
+        systems.append((.dott, GeoBounds(south: 47.2448, west: 11.2994, north: 47.3044, east: 11.4881)))
+        systems.append((.dott, GeoBounds(south: 46.5887, west: 14.1948, north: 46.6488, east: 14.3747)))
+        systems.append((.dott, GeoBounds(south: 47.3494, west: 15.0269, north: 47.4042, east: 15.1521)))
+        systems.append((.dott, GeoBounds(south: 48.2424, west: 14.2643, north: 48.3402, east: 14.3302)))
+        systems.append((.dott, GeoBounds(south: 48.0383, west: 16.2556, north: 48.096, east: 16.3323)))
+        systems.append((.dott, GeoBounds(south: 48.1172, west: 13.9296, north: 48.1943, east: 14.0667)))
+        systems.append((.dott, GeoBounds(south: 46.5811, west: 13.8111, north: 46.6664, east: 13.9161)))
+        systems.append((.dott, GeoBounds(south: 47.7881, west: 16.1933, north: 47.8492, east: 16.2855)))
+        systems.append((.voi, GeoBounds(south: 47.15953685076627, west: 11.228975654139106, north: 47.38419043001886, east: 11.57644596129552)))
+        systems.append((.voi, GeoBounds(south: 48.04584185842637, west: 16.11420143738522, north: 48.339707387160644, east: 16.688542048345653)))
+        systems.append((.bird, GeoBounds(south: 40.7844, west: 14.1066, north: 40.921, east: 14.3912)))
+        systems.append((.bird, GeoBounds(south: 38.0876, west: 13.3064, north: 38.2158, east: 13.388)))
+        systems.append((.bird, GeoBounds(south: 41.6884, west: 12.2183, north: 42.0928, east: 12.7268)))
+        systems.append((.elerent, GeoBounds(south: 37.465, west: 15.0445, north: 37.5427, east: 15.1362)))
+        systems.append((.dott, GeoBounds(south: 41.0421, west: 16.7286, north: 41.172, east: 17.0146)))
+        systems.append((.dott, GeoBounds(south: 45.6534, west: 9.6174, north: 45.7334, east: 9.7157)))
+        systems.append((.dott, GeoBounds(south: 45.7766, west: 8.735, north: 45.8859, east: 8.8719)))
+        systems.append((.dott, GeoBounds(south: 44.7985, west: 11.5342, north: 44.9095, east: 11.6801)))
+        systems.append((.dott, GeoBounds(south: 45.4732, west: 12.5305, north: 45.6019, east: 12.7466)))
+        systems.append((.dott, GeoBounds(south: 44.9259, west: 7.4693, north: 45.1778, east: 7.8341)))
+        systems.append((.dott, GeoBounds(south: 45.3847, west: 9.0389, north: 45.5588, east: 9.3113)))
+        systems.append((.dott, GeoBounds(south: 44.5609, west: 10.7799, north: 44.7283, east: 11.0137)))
+        systems.append((.dott, GeoBounds(south: 45.5513, west: 9.2262, north: 45.6342, east: 9.3269)))
+        systems.append((.dott, GeoBounds(south: 45.2723, west: 11.7037, north: 45.517, east: 12.029)))
+        systems.append((.dott, GeoBounds(south: 38.0935, west: 13.26, north: 38.2183, east: 13.3791)))
+        systems.append((.dott, GeoBounds(south: 44.6393, west: 10.5755, north: 44.7301, east: 10.6878)))
+        systems.append((.dott, GeoBounds(south: 41.7032, west: 12.2499, north: 42.0224, east: 12.7145)))
+        systems.append((.dott, GeoBounds(south: 39.1842, west: 9.0798, north: 39.2658, east: 9.2271)))
+        systems.append((.dott, GeoBounds(south: 46.03, west: 11.0796, north: 46.1382, east: 11.1395)))
+        systems.append((.dott, GeoBounds(south: 45.3474, west: 10.8749, north: 45.5438, east: 11.1259)))
+        systems.append((.voi, GeoBounds(south: 40.7520051863504, west: 14.130893162343051, north: 40.93720778574244, east: 14.37571256389413)))
+        systems.append((.voi, GeoBounds(south: 44.64130208928131, west: 10.537329582127876, north: 44.76818909778005, east: 10.739203350602189)))
+        systems.append((.bolt, GeoBounds(south: 50.7705, west: 4.2448, north: 50.918, east: 4.4816)))
+        systems.append((.dott, GeoBounds(south: 50.7755, west: 4.2508, north: 50.9224, east: 4.4816)))
+        systems.append((.dott, GeoBounds(south: 50.3504, west: 4.3494, north: 50.4803, east: 4.5161)))
+        systems.append((.dott, GeoBounds(south: 50.552, west: 5.5093, north: 50.7117, east: 5.6894)))
+        systems.append((.dott, GeoBounds(south: 50.6458, west: 5.5414, north: 50.7117, east: 5.6715)))
+        systems.append((.pony, GeoBounds(south: 50.369, west: 4.3459, north: 50.4817, east: 4.5118)))
+        systems.append((.hoppy, GeoBounds(south: 51.2861, west: 3.0977, north: 51.3268, east: 3.1643)))
+        systems.append((.hoppy, GeoBounds(south: 50.7643, west: 3.2165, north: 50.8622, east: 3.3118)))
+        systems.append((.hoppy, GeoBounds(south: 50.9977, west: 4.445, north: 51.0485, east: 4.5283)))
+        systems.append((.hoppy, GeoBounds(south: 51.187, west: 2.8483, north: 51.2612, east: 2.9994)))
+        systems.append((.hoppy, GeoBounds(south: 51.1416, west: 4.1029, north: 51.1882, east: 4.1829)))
+        systems.append((.voi, GeoBounds(south: 51.1544, west: 4.3381, north: 51.2709, east: 4.4885)))
+        systems.append((.bolt, GeoBounds(south: 59.8134, west: 10.6189, north: 59.9862, east: 10.9552)))
+        systems.append((.dott, GeoBounds(south: 63.4299, west: 10.8165, north: 63.5147, east: 10.997)))
+        systems.append((.dott, GeoBounds(south: 63.3797, west: 10.3315, north: 63.4618, east: 10.5549)))
+        systems.append((.ryde, GeoBounds(south: 62.425, west: 6.0945, north: 62.4861, east: 6.4232)))
+        systems.append((.ryde, GeoBounds(south: 59.8103, west: 10.3778, north: 59.8829, east: 10.5414)))
+        systems.append((.ryde, GeoBounds(south: 59.8704, west: 10.4612, north: 59.9607, east: 10.648)))
+        systems.append((.ryde, GeoBounds(south: 67.2666, west: 14.3304, north: 67.3252, east: 14.6166)))
+        systems.append((.ryde, GeoBounds(south: 59.1885, west: 10.8815, north: 59.2585, east: 11.0266)))
+        systems.append((.ryde, GeoBounds(south: 59.9167, west: 10.9712, north: 60.0009, east: 11.0948)))
+        systems.append((.ryde, GeoBounds(south: 59.9085, west: 10.9196, north: 59.9547, east: 11.0068)))
+        systems.append((.ryde, GeoBounds(south: 59.8542, west: 10.6173, north: 59.9788, east: 10.9523)))
+        systems.append((.ryde, GeoBounds(south: 59.1153, west: 9.6191, north: 59.1616, east: 9.6952)))
+        systems.append((.ryde, GeoBounds(south: 59.0932, west: 10.164, north: 59.1633, east: 10.2922)))
+        systems.append((.ryde, GeoBounds(south: 59.261, west: 11.021, north: 59.3078, east: 11.1466)))
+        systems.append((.ryde, GeoBounds(south: 59.1385, west: 9.52, north: 59.2656, east: 9.6801)))
+        systems.append((.ryde, GeoBounds(south: 59.1153, west: 9.6191, north: 59.1616, east: 9.6952)))
+        systems.append((.ryde, GeoBounds(south: 58.8788, west: 5.6365, north: 59.0118, east: 5.7765)))
+        systems.append((.ryde, GeoBounds(south: 58.8788, west: 5.695, north: 58.896, east: 5.755)))
+        systems.append((.ryde, GeoBounds(south: 59.2303, west: 10.3765, north: 59.3091, east: 10.4904)))
+        systems.append((.ryde, GeoBounds(south: 69.5976, west: 18.8764, north: 69.7169, east: 19.0959)))
+        systems.append((.ryde, GeoBounds(south: 63.3387, west: 10.3167, north: 63.461, east: 10.5444)))
+        systems.append((.voi, GeoBounds(south: 58.4301, west: 8.6955, north: 58.4883, east: 8.8325)))
+        systems.append((.voi, GeoBounds(south: 59.8794, west: 10.4669, north: 59.9558, east: 10.6494)))
+        systems.append((.voi, GeoBounds(south: 59.8079, west: 10.3717, north: 59.8793, east: 10.5109)))
+        systems.append((.voi, GeoBounds(south: 59.1759, west: 10.872, north: 59.275, east: 11.0299)))
+        systems.append((.voi, GeoBounds(south: 59.2598, west: 11.03, north: 59.3076, east: 11.1427)))
+        systems.append((.voi, GeoBounds(south: 58.0678, west: 7.754, north: 58.1969, east: 8.1385)))
+        systems.append((.voi, GeoBounds(south: 58.2505, west: 7.9539, north: 58.2926, east: 7.9974)))
+        systems.append((.voi, GeoBounds(south: 59.8947, west: 11, north: 60.0214, east: 11.106)))
+        systems.append((.voi, GeoBounds(south: 59.9032, west: 10.9151, north: 59.9916, east: 10.9999)))
+        systems.append((.voi, GeoBounds(south: 59.4038, west: 10.6092, north: 59.4596, east: 10.7152)))
+        systems.append((.voi, GeoBounds(south: 59.8219, west: 10.6158, north: 59.9871, east: 10.9574)))
+        systems.append((.voi, GeoBounds(south: 58.868, west: 5.5629, north: 59.0144, east: 5.777)))
+        systems.append((.voi, GeoBounds(south: 58.765, west: 5.6738, north: 58.896, east: 5.7891)))
+        systems.append((.voi, GeoBounds(south: 63.3352, west: 10.306, north: 63.4603, east: 10.5386)))
+        systems.append((.voi, GeoBounds(south: 58.230132386860056, west: 8.353023308105405, north: 58.45957412949791, east: 8.761492197536528)))
+        systems.append((.voi, GeoBounds(south: 58.162260423993764, west: 8.20978524035672, north: 58.349742838363994, east: 8.509530083720346)))
+        systems.append((.voi, GeoBounds(south: 60.38575997506088, west: 4.989212125836212, north: 60.53661390222527, east: 5.265346602135307)))
+        systems.append((.voi, GeoBounds(south: 60.501100695222156, west: 5.093784297130105, north: 60.61408450360314, east: 5.3925787949326836)))
+        systems.append((.voi, GeoBounds(south: 58.683892473715765, west: 5.770594724002848, north: 58.80832406497031, east: 6.074248012778891)))
+        systems.append((.voi, GeoBounds(south: 60.26833512198984, west: 4.852930244659245, north: 60.44292611183713, east: 5.169747342512637)))
+        systems.append((.voi, GeoBounds(south: 58.67779851596129, west: 5.468832476586199, north: 58.80327487699317, east: 5.8050357814337685)))
+        systems.append((.beryl, GeoBounds(south: 50.7028, west: -1.915, north: 50.7899, east: -1.7851)))
+        systems.append((.beryl, GeoBounds(south: 50.7128, west: -1.785, north: 50.7639, east: -1.6868)))
+        systems.append((.beryl, GeoBounds(south: 50.6776, west: -2.0378, north: 50.7942, east: -1.9151)))
+        systems.append((.beryl, GeoBounds(south: 50.8081, west: -0.2167, north: 50.8724, east: -0.0935)))
+        systems.append((.beryl, GeoBounds(south: 50.1339, west: -5.1335, north: 50.1772, east: -5.0427)))
+        systems.append((.beryl, GeoBounds(south: 50.3955, west: -5.1244, north: 50.4283, east: -5.0188)))
+        systems.append((.beryl, GeoBounds(south: 50.0795, west: -5.5629, north: 50.1351, east: -5.4533)))
+        systems.append((.beryl, GeoBounds(south: 50.2396, west: -5.1299, north: 50.2715, east: -5.0141)))
+        systems.append((.beryl, GeoBounds(south: 53.7731, west: -1.6112, north: 53.8524, east: -1.4765)))
+        systems.append((.beryl, GeoBounds(south: 52.5913, west: 1.1644, north: 52.6952, east: 1.3887)))
+        systems.append((.beryl, GeoBounds(south: 52.5508, west: 1.0968, north: 52.5953, east: 1.1503)))
+        systems.append((.beryl, GeoBounds(south: 50.3576, west: -4.1953, north: 50.4207, east: -4.0967)))
+        systems.append((.bolt, GeoBounds(south: 53.3314, west: -3.0113, north: 53.4755, east: -2.8194)))
+        systems.append((.dott, GeoBounds(south: 51.3473, west: -2.4118, north: 51.4195, east: -2.291)))
+        systems.append((.dott, GeoBounds(south: 51.3973, west: -2.7053, north: 51.5499, east: -2.4519)))
+        systems.append((.dott, GeoBounds(south: 51.5197, west: -2.4504, north: 51.5649, east: -2.3796)))
+        systems.append((.dott, GeoBounds(south: 51.9723, west: -0.8446, north: 52.0904, east: -0.6559)))
+        systems.append((.dott, GeoBounds(south: 52.8911, west: -1.2505, north: 53.0217, east: -1.1045)))
+        systems.append((.voi, GeoBounds(south: 52.35028, west: -0.77627, north: 52.43409, east: -0.654055871022936)))
+        systems.append((.voi, GeoBounds(south: 52.28, west: -0.751, north: 52.329, east: -0.652)))
+        systems.append((.voi, GeoBounds(south: 51.802125353332514, west: -2.15, north: 51.976019433793624, east: -1.9274823780819745)))
+        systems.append((.voi, GeoBounds(south: 51.802125353332514, west: -2.359735850790898, north: 51.976019433793624, east: -2.15)))
+        systems.append((.voi, GeoBounds(south: 52.266, west: -0.642, north: 52.328, east: -0.552)))
+        systems.append((.voi, GeoBounds(south: 51.65752, west: -1.35811, north: 51.85516, east: -1.12534)))
+        systems.append((.voi, GeoBounds(south: 50.535367023678354, west: -1.654052658845761, north: 50.792267403779235, east: -1.0340508111103688)))
+        systems.append((.voi, GeoBounds(south: 52.0942173949546, west: -0.01478658747473105, north: 52.27488998377251, east: 0.2705901847699579)))
+        systems.append((.voi, GeoBounds(south: 51.75143574538053, west: -1.0259084965180603, north: 51.925731156124236, east: -0.6372224109644254)))
+        systems.append((.voi, GeoBounds(south: 51.842084429902044, west: 0.4733700577157839, north: 51.92795220891488, east: 0.609286891627528)))
+        systems.append((.voi, GeoBounds(south: 51.57373959030601, west: -0.8645395546969359, north: 51.68184581972984, east: -0.6284906648417216)))
+        systems.append((.voi, GeoBounds(south: 51.461967823955305, west: -0.7024455566334863, north: 51.57999246444064, east: -0.5100853796062739)))
+        systems.append((.voi, GeoBounds(south: 51.66862380002616, west: 0.32576439644858224, north: 51.80814494225751, east: 0.580091663388791)))
+        systems.append((.voi, GeoBounds(south: 50.77, west: -1.147, north: 50.869, east: -0.999)))
+        systems.append((.voi, GeoBounds(south: 52.448, west: -0.787, north: 52.5304382962175, east: -0.59)))
+        systems.append((.voi, GeoBounds(south: 50.875, west: -1.482, north: 50.957, east: -1.324)))
+        systems.append((.voi, GeoBounds(south: 52.190351431892886, west: -0.9908294677734375, north: 52.29672861135593, east: -0.800628662109375)))
+        systems.append((.voi, GeoBounds(south: 51.30515851278135, west: -0.4506786666871926, north: 51.6669733453627, east: 0.19414977493520894)))
+        systems.append((.bird, GeoBounds(south: 38.6461, west: -9.205, north: 38.6941, east: -9.1394)))
+        systems.append((.bird, GeoBounds(south: 38.6051, west: -9.2506, north: 38.6795, east: -9.2051)))
+        systems.append((.bird, GeoBounds(south: 38.6716, west: -9.4824, north: 38.7592, east: -9.3048)))
+        systems.append((.bird, GeoBounds(south: 40.179, west: -8.4718, north: 40.2378, east: -8.3837)))
+        systems.append((.bird, GeoBounds(south: 38.6868, west: -9.2341, north: 38.7951, east: -9.0842)))
+        systems.append((.bird, GeoBounds(south: 41.1957, west: -8.6761, north: 41.2748, east: -8.5498)))
+        systems.append((.bird, GeoBounds(south: 41.1675, west: -8.7233, north: 41.2315, east: -8.5906)))
+        systems.append((.bird, GeoBounds(south: 38.6708, west: -9.3567, north: 38.7512, east: -9.2033)))
+        systems.append((.bird, GeoBounds(south: 37.0174, west: -7.8629, north: 37.0559, east: -7.8152)))
+        systems.append((.bird, GeoBounds(south: 37.1099, west: -8.6041, north: 37.1623, east: -8.5214)))
+        systems.append((.bird, GeoBounds(south: 41.1351, west: -8.6946, north: 41.1868, east: -8.5741)))
+        systems.append((.lime, GeoBounds(south: 38.6549, west: -9.205, north: 38.69, east: -9.1425)))
+        systems.append((.lime, GeoBounds(south: 38.6033, west: -9.2516, north: 38.6798, east: -9.2051)))
+        systems.append((.lime, GeoBounds(south: 38.6874, west: -9.234, north: 38.7991, east: -9.0836)))
+        systems.append((.bird, GeoBounds(south: 28.3622, west: -13.8857, north: 28.4199, east: -13.8442)))
+        systems.append((.bird, GeoBounds(south: 40.3098, west: -3.7197, north: 40.3377, east: -3.6545)))
+        systems.append((.bird, GeoBounds(south: 43.5042, west: -5.7134, north: 43.5546, east: -5.5986)))
+        systems.append((.bird, GeoBounds(south: 28.1311, west: -14.2536, north: 28.1799, east: -14.2029)))
+        systems.append((.bird, GeoBounds(south: 28.041, west: -14.3561, north: 28.0831, east: -14.2967)))
+        systems.append((.bird, GeoBounds(south: 28.0407, west: -16.763, north: 28.115, east: -16.6956)))
+        systems.append((.hopp, GeoBounds(south: 37.9392, west: -0.7395, north: 38.0354, east: -0.6426)))
+        systems.append((.hopp, GeoBounds(south: 37.8382, west: -0.8007, north: 37.8943, east: -0.7462)))
+        systems.append((.hopp, GeoBounds(south: 38.7636, west: 0.16, north: 38.7994, east: 0.2006)))
+        systems.append((.hopp, GeoBounds(south: 28.0452, west: -16.7408, north: 28.0935, east: -16.6976)))
+        systems.append((.hopp, GeoBounds(south: 28.0188, west: -16.6251, north: 28.0377, east: -16.5879)))
+        systems.append((.hoppy, GeoBounds(south: 28.363, west: -13.8885, north: 28.4207, east: -13.8412)))
+        systems.append((.hoppy, GeoBounds(south: 28.7018, west: -13.8863, north: 28.749, east: -13.8462)))
+        systems.append((.hoppy, GeoBounds(south: 38.58, west: -0.08, north: 38.6464, east: 0.0195)))
+        systems.append((.hoppy, GeoBounds(south: 38.5537, west: -0.08, north: 38.5799, east: -0.0526)))
+        systems.append((.hoppy, GeoBounds(south: 38.5544, west: -0.122, north: 38.6238, east: -0.0801)))
+        systems.append((.hoppy, GeoBounds(south: 38.5634, west: -0.1596, north: 38.634, east: -0.1221)))
+        systems.append((.hoppy, GeoBounds(south: 28.9145, west: -13.6887, north: 28.9412, east: -13.6057)))
+        systems.append((.hoppy, GeoBounds(south: 28.0375, west: -16.7953, north: 28.1375, east: -16.6901)))
+        systems.append((.hoppy, GeoBounds(south: 37.9395, west: -0.7523, north: 38.0344, east: -0.6383)))
+        systems.append((.dott, GeoBounds(south: 36.4076, west: -5.1754, north: 36.5881, east: -4.5935)))
+        systems.append((.dott, GeoBounds(south: 28.0391, west: -16.7822, north: 28.1332, east: -16.6955)))
+        systems.append((.dott, GeoBounds(south: 28.4441, west: -16.2945, north: 28.5106, east: -16.1859)))
+        systems.append((.hopp, GeoBounds(south: 64.3078, west: -22.1074, north: 64.333, east: -22.0223)))
+        systems.append((.hopp, GeoBounds(south: 65.6486, west: -18.1687, north: 65.71, east: -18.0277)))
+        systems.append((.hopp, GeoBounds(south: 64.5283, west: -21.9425, north: 64.563, east: -21.8808)))
+        systems.append((.hopp, GeoBounds(south: 65.9611, west: -18.5579, north: 65.983, east: -18.5043)))
+        systems.append((.hopp, GeoBounds(south: 65.2474, west: -14.4586, north: 65.3089, east: -14.3682)))
+        systems.append((.hopp, GeoBounds(south: 66.0289, west: -17.3699, north: 66.0549, east: -17.316)))
+        systems.append((.hopp, GeoBounds(south: 63.9852, west: -21.2262, north: 64.0277, east: -21.1619)))
+        systems.append((.hopp, GeoBounds(south: 64.8836, west: -23.7189, north: 64.9001, east: -23.6805)))
+        systems.append((.hopp, GeoBounds(south: 64.9091, west: -23.9007, north: 64.9305, east: -23.801)))
+        systems.append((.hopp, GeoBounds(south: 63.9551, west: -22.636, north: 64.0158, east: -22.4649)))
+        systems.append((.hopp, GeoBounds(south: 64.0228, west: -22.7256, north: 64.0496, east: -22.6789)))
+        systems.append((.hopp, GeoBounds(south: 64.0635, west: -22.6826, north: 64.0761, east: -22.634)))
+        systems.append((.hopp, GeoBounds(south: 63.969, west: -22.3931, north: 63.9868, east: -22.3458)))
+        systems.append((.hopp, GeoBounds(south: 64.0284, west: -22.0287, north: 64.1917, east: -21.6403)))
+        systems.append((.hopp, GeoBounds(south: 65.7279, west: -19.6659, north: 65.7643, east: -19.6194)))
+        systems.append((.hopp, GeoBounds(south: 63.9058, west: -21.0713, north: 63.9574, east: -20.9586)))
+        systems.append((.hopp, GeoBounds(south: 65.0584, west: -22.762, north: 65.0856, east: -22.7041)))
+        systems.append((.hopp, GeoBounds(south: 63.4233, west: -20.3143, north: 63.454, east: -20.2472)))
+        systems.append((.hopp, GeoBounds(south: 63.4101, west: -19.029, north: 63.4284, east: -18.9801)))
+        systems.append((.voi, GeoBounds(south: 56.0639863543046, west: 10.0751495361328, north: 56.2383895039888, east: 10.3113555908203)))
+        systems.append((.voi, GeoBounds(south: 55.3010107944959, west: 10.2351379394531, north: 55.4796317138773, east: 10.5317687988281)))
+        systems.append((.voi, GeoBounds(south: 56.9610753568483, west: 9.678955078125, north: 57.15374754486, east: 10.1321411132812)))
+        systems.append((.hopp, GeoBounds(south: 67.8205, west: 20.1797, north: 67.8801, east: 20.3641)))
+        systems.append((.lime, GeoBounds(south: 59.8076, west: 17.5747, north: 59.9021, east: 17.7203)))
+        systems.append((.voi, GeoBounds(south: 58.22198604038249, west: 12.178586968862646, north: 58.350640965615526, east: 12.432170960613973)))
+        systems.append((.voi, GeoBounds(south: 58.32391453794888, west: 15.38360595703125, north: 58.50051103764058, east: 15.864257812499998)))
+        systems.append((.voi, GeoBounds(south: 55.9878199697891, west: 12.6459503173828, north: 56.0906186777103, east: 12.7880859375)))
+        systems.append((.voi, GeoBounds(south: 60.55196567741403, west: 16.821384148535337, north: 60.7924380425801, east: 17.407666443488193)))
+        systems.append((.voi, GeoBounds(south: 55.66383765593185, west: 13.091239929199219, north: 55.76112258901995, east: 13.301010131835936)))
+        systems.append((.voi, GeoBounds(south: 56.78393274747651, west: 14.6345498644896, north: 56.99355104735682, east: 14.977844230643655)))
+        systems.append((.voi, GeoBounds(south: 59.8037426244997, west: 17.5266265869141, north: 59.9049511141442, east: 17.7975082397461)))
+        systems.append((.voi, GeoBounds(south: 58.419637, west: 15.889286, north: 58.737686, east: 16.575714)))
+        systems.append((.voi, GeoBounds(south: 59.204953, west: 17.795002, north: 59.455496, east: 18.356363)))
+        systems.append((.voi, GeoBounds(south: 59.23252752806556, west: 15.140533447265625, north: 59.318126631430424, east: 15.343780517578123)))
+        systems.append((.voi, GeoBounds(south: 57.633271, west: 11.851058, north: 57.770117, east: 12.125706)))
+        systems.append((.voi, GeoBounds(south: 57.67887906685692, west: 12.829605193225632, north: 57.7794562167397, east: 13.073384591047272)))
+        systems.append((.voi, GeoBounds(south: 56.48372869256887, west: 12.56561279296875, north: 56.857982669693584, east: 13.38134765625)))
+        systems.append((.voi, GeoBounds(south: 59.559431, west: 16.411313, north: 59.683119, east: 16.672767)))
+        systems.append((.voi, GeoBounds(south: 55.503978, west: 12.809006, north: 55.661015, east: 13.167879)))
+        systems.append((.qick, GeoBounds(south: 59.237656, west: 15.151384, north: 59.306636, east: 15.268032)))
+        systems.append((.qick, GeoBounds(south: 58.371166, west: 15.493934, north: 58.437915, east: 15.713755)))
+        systems.append((.qick, GeoBounds(south: 58.558753, west: 16.121776, north: 58.624559, east: 16.243879)))
+        systems.append((.qick, GeoBounds(south: 57.757437, west: 14.11968, north: 57.798462, east: 14.260196)))
+        systems.append((.qick, GeoBounds(south: 59.339476, west: 16.433246, north: 59.406399, east: 16.562471)))
+        systems.append((.qick, GeoBounds(south: 60.568036, west: 15.583741, north: 60.630238, east: 15.707035)))
+        systems.append((.qick, GeoBounds(south: 60.455159, west: 15.376463, north: 60.526219, east: 15.486713)))
+        systems.append((.ride_mobility, GeoBounds(south: 56.862, west: 23.8878, north: 57.0871, east: 24.3426)))
+        systems.append((.dott, GeoBounds(south: 50.0153, west: 19.1853, north: 50.0623, east: 19.2617)))
+        systems.append((.dott, GeoBounds(south: 50.2488, west: 19.0917, north: 50.3188, east: 19.2153)))
+        systems.append((.dott, GeoBounds(south: 52.3218, west: 21.211, north: 52.3675, east: 21.2883)))
+        systems.append((.dott, GeoBounds(south: 52.3148, west: 21.164, north: 52.3578, east: 21.2498)))
+        systems.append((.dott, GeoBounds(south: 52.392, west: 21.149, north: 52.4303, east: 21.2185)))
+        systems.append((.hopp, GeoBounds(south: 50.1984, west: 18.6242, north: 50.2455, east: 18.6968)))
+        systems.append((.hopp, GeoBounds(south: 52.3069, west: 17.5272, north: 52.3432, east: 17.6078)))
+        systems.append((.hopp, GeoBounds(south: 53.3449, west: 17.0006, north: 53.3832, east: 17.0833)))
+        systems.append((.dott, GeoBounds(south: 50.8404, west: 17.4434, north: 50.8678, east: 17.4904)))
+        systems.append((.dott, GeoBounds(south: 52.1229, west: 20.7372, north: 52.3642, east: 21.1523)))
+        systems.append((.dott, GeoBounds(south: 50.224, west: 18.8997, north: 50.3328, east: 19.0642)))
+        systems.append((.dott, GeoBounds(south: 50.1139, west: 19.3527, north: 50.1825, east: 19.4852)))
+        systems.append((.dott, GeoBounds(south: 54.288, west: 18.193, north: 54.6152, east: 18.675)))
+        systems.append((.dott, GeoBounds(south: 50.7735, west: 19.0697, north: 50.8636, east: 19.1564)))
+        systems.append((.dott, GeoBounds(south: 53.5378, west: 14.8022, north: 53.5783, east: 14.872)))
+        systems.append((.dott, GeoBounds(south: 54.1496, west: 15.5146, north: 54.1944, east: 15.6203)))
+        systems.append((.dott, GeoBounds(south: 54.1048, west: 17.8512, north: 54.1417, east: 18.008)))
+        systems.append((.dott, GeoBounds(south: 54.5206, west: 17.7122, north: 54.5606, east: 17.7727)))
+        systems.append((.dott, GeoBounds(south: 50.0182, west: 19.8716, north: 50.1089, east: 20.0422)))
+        systems.append((.dott, GeoBounds(south: 52.3607, west: 20.8789, north: 52.4545, east: 20.9989)))
+        systems.append((.dott, GeoBounds(south: 51.8159, west: 16.531, north: 51.8759, east: 16.6109)))
+        systems.append((.dott, GeoBounds(south: 50.6523, west: 18.6321, north: 50.7003, east: 18.7105)))
+        systems.append((.dott, GeoBounds(south: 51.9068, west: 22.3316, north: 51.9576, east: 22.4408)))
+        systems.append((.dott, GeoBounds(south: 54.009, west: 19.0008, north: 54.0735, east: 19.0779)))
+        systems.append((.dott, GeoBounds(south: 53.9123, west: 14.4235, north: 53.9406, east: 14.4661)))
+        systems.append((.dott, GeoBounds(south: 52.0703, west: 20.5789, north: 52.1588, east: 20.7645)))
+        systems.append((.dott, GeoBounds(south: 53.6566, west: 15.0872, north: 53.6952, east: 15.1624)))
+        systems.append((.dott, GeoBounds(south: 52.4103, west: 20.656, north: 52.4544, east: 20.7632)))
+        systems.append((.dott, GeoBounds(south: 49.4564, west: 19.9914, north: 49.5074, east: 20.0695)))
+        systems.append((.dott, GeoBounds(south: 51.1933, west: 17.3591, north: 51.232, east: 17.419)))
+        systems.append((.dott, GeoBounds(south: 52.5131, west: 19.6491, north: 52.5889, east: 19.7893)))
+        systems.append((.dott, GeoBounds(south: 52.317, west: 16.7855, north: 52.4824, east: 17.0168)))
+        systems.append((.dott, GeoBounds(south: 54.2368, west: 18.5911, north: 54.3004, east: 18.6878)))
+        systems.append((.dott, GeoBounds(south: 50.3156, west: 18.8317, north: 50.4151, east: 18.9512)))
+        systems.append((.dott, GeoBounds(south: 54.0474, west: 14.9014, north: 54.1034, east: 15.1019)))
+        systems.append((.dott, GeoBounds(south: 49.9513, west: 19.8048, north: 49.9968, east: 19.8609)))
+        systems.append((.dott, GeoBounds(south: 53.9326, west: 18.4822, north: 53.9999, east: 18.5511)))
+        systems.append((.dott, GeoBounds(south: 50.8232, west: 16.4564, north: 50.8666, east: 16.5274)))
+        systems.append((.dott, GeoBounds(south: 53.8991, west: 14.2168, north: 53.9278, east: 14.2808)))
+        systems.append((.dott, GeoBounds(south: 53.389, west: 14.4537, north: 53.4647, east: 14.5795)))
+        systems.append((.dott, GeoBounds(south: 53.3607, west: 14.6022, north: 53.4102, east: 14.7028)))
+        systems.append((.dott, GeoBounds(south: 50.4212, west: 18.8014, north: 50.467, east: 18.8886)))
+        systems.append((.dott, GeoBounds(south: 54.0654, west: 18.745, north: 54.1157, east: 18.8133)))
+        systems.append((.dott, GeoBounds(south: 51.0373, west: 16.8837, north: 51.1751, east: 17.0929)))
+        systems.append((.dott, GeoBounds(south: 50.4685, west: 19.3794, north: 50.5201, east: 19.4743)))
+        systems.append((.hopp, GeoBounds(south: 46.0199, west: 18.1584, north: 46.0962, east: 18.2795)))
+        systems.append((.hopp, GeoBounds(south: 46.6404, west: 21.0275, north: 46.7058, east: 21.1674)))
+        systems.append((.dott, GeoBounds(south: 47.4516, west: 19.0064, north: 47.5727, east: 19.1202)))
+        systems.append((.dott, GeoBounds(south: 47.6203, west: 17.5781, north: 47.7337, east: 17.7437)))
+        systems.append((.dott, GeoBounds(south: 47.6244, west: 19.6164, north: 47.7006, east: 19.7327)))
+        systems.append((.dott, GeoBounds(south: 47.2757, west: 17.4281, north: 47.362, east: 17.5295)))
+        systems.append((.dott, GeoBounds(south: 46.9225, west: 18.8867, north: 47.0021, east: 18.9638)))
+        systems.append((.hopp, GeoBounds(south: 36.302, west: 28.1756, north: 36.39, east: 28.2465)))
+        systems.append((.hopp, GeoBounds(south: 37.9208, west: 23.602, north: 37.9967, east: 23.6771)))
+        systems.append((.hopp, GeoBounds(south: 38.1459, west: 20.4613, north: 38.1995, east: 20.5084)))
+        systems.append((.hopp, GeoBounds(south: 39.5875, west: 20.7955, north: 39.6989, east: 20.9053)))
+        systems.append((.hoppy, GeoBounds(south: 36.8666, west: 27.174, north: 36.9192, east: 27.3618)))
+        systems.append((.hoppy, GeoBounds(south: 35.3476, west: 24.4431, north: 35.395, east: 24.6181)))
+        systems.append((.hoppy, GeoBounds(south: 37.7052, west: 20.8408, north: 37.8097, east: 20.9481)))
+        systems.append((.hoppy, GeoBounds(south: 36.3823, west: 28.187, north: 36.4612, east: 28.2492)))
+        systems.append((.hoppy, GeoBounds(south: 36.4062, west: 28.1137, north: 36.4278, east: 28.1869)))
+        systems.append((.hoppy, GeoBounds(south: 36.2953, west: 28.1747, north: 36.3822, east: 28.247)))
+        systems.append((.hoppy, GeoBounds(south: 36.2745, west: 28.1567, north: 36.2952, east: 28.1895)))
+        systems.append((.hoppy, GeoBounds(south: 36.2372, west: 28.1335, north: 36.271, east: 28.1787)))
+        systems.append((.dott, GeoBounds(south: 40.5586, west: 22.8837, north: 40.7779, east: 23.1412)))
+        systems.append((.dott, GeoBounds(south: 37.904, west: 23.6145, north: 38.0306, east: 23.7848)))
+        systems.append((.hopp, GeoBounds(south: 34.7243, west: 32.3084, north: 34.9182, east: 32.4919)))
+        systems.append((.hopp, GeoBounds(south: 34.6397, west: 32.9752, north: 34.7227, east: 33.1875)))
+        systems.append((.hopp, GeoBounds(south: 60.0657, west: 19.8824, north: 60.1438, east: 19.9972)))
+        systems.append((.dott, GeoBounds(south: 60.142, west: 24.8378, north: 60.2492, east: 25.1316)))
+        systems.append((.dott, GeoBounds(south: 60.5971, west: 24.8052, north: 60.6613, east: 24.9088)))
+        systems.append((.dott, GeoBounds(south: 60.4442, west: 25.0546, north: 60.5143, east: 25.1493)))
+        systems.append((.dott, GeoBounds(south: 63.6536, west: 22.6697, north: 63.7204, east: 22.7709)))
+        systems.append((.dott, GeoBounds(south: 60.13, west: 24.5696, north: 60.2579, east: 24.8505)))
+        systems.append((.dott, GeoBounds(south: 60.368, west: 25.0462, north: 60.4487, east: 25.1548)))
+        systems.append((.dott, GeoBounds(south: 60.1006, west: 24.4087, north: 60.1425, east: 24.4854)))
+        systems.append((.dott, GeoBounds(south: 63.8083, west: 22.9845, north: 63.869, east: 23.1959)))
+        systems.append((.dott, GeoBounds(south: 60.8436, west: 26.6004, north: 60.9126, east: 26.8024)))
+        systems.append((.dott, GeoBounds(south: 60.9309, west: 25.4995, north: 61.0259, east: 25.8)))
+        systems.append((.dott, GeoBounds(south: 61.0276, west: 28.0774, north: 61.0883, east: 28.2747)))
+        systems.append((.dott, GeoBounds(south: 61.4476, west: 23.4438, north: 61.506, east: 23.5892)))
+        systems.append((.dott, GeoBounds(south: 60.3613, west: 24.6676, north: 60.4088, east: 24.7946)))
+        systems.append((.dott, GeoBounds(south: 60.362, west: 25.6151, north: 60.4165, east: 25.7197)))
+        systems.append((.dott, GeoBounds(south: 61.091, west: 21.462, north: 61.1653, east: 21.6019)))
+        systems.append((.dott, GeoBounds(south: 60.7039, west: 24.7296, north: 60.763, east: 24.8407)))
+        systems.append((.dott, GeoBounds(south: 60.3578, west: 23.034, north: 60.4281, east: 23.1946)))
+        systems.append((.dott, GeoBounds(south: 61.4267, west: 23.5622, north: 61.5399, east: 23.9504)))
+        systems.append((.dott, GeoBounds(south: 63.0673, west: 21.5541, north: 63.1361, east: 21.7417)))
+        systems.append((.dott, GeoBounds(south: 60.2682, west: 24.9406, north: 60.334, east: 25.0849)))
+        systems.append((.voi, GeoBounds(south: 61.439752329021, west: 23.6171722412109, north: 61.54364147555, east: 23.9076232910156)))
+        systems.append((.voi, GeoBounds(south: 60.3775571287457, west: 22.0763397216797, north: 60.5008635236931, east: 22.4176025390625)))
+        systems.append((.voi, GeoBounds(south: 62.1706311981245, west: 25.5150604248047, north: 62.3107081604266, east: 25.9737396240234)))
+        systems.append((.voi, GeoBounds(south: 59.995685, west: 24.347465, north: 60.39054, east: 25.525976)))
+        systems.append((.hoppy, GeoBounds(south: 45.3081, west: 14.353, north: 45.3587, east: 14.4896)))
+        systems.append((.zelectra, GeoBounds(south: 50.3748, west: 30.4036, north: 50.5282, east: 30.663)))
+        systems.append((.bolt_hopp, GeoBounds(south: 38.87, west: -77.1309, north: 39.0046, east: -76.8978)))
+        systems.append((.bolt_hopp, GeoBounds(south: 38.82, west: -77.041, north: 38.87, east: -76.8978)))
+        systems.append((.bolt_hopp, GeoBounds(south: 38.7862, west: -77.03, north: 38.82, east: -76.8978)))
+        systems.append((.veo, GeoBounds(south: 38.87, west: -77.1309, north: 39.0046, east: -76.8978)))
+        systems.append((.veo, GeoBounds(south: 38.82, west: -77.041, north: 38.87, east: -76.8978)))
+        systems.append((.veo, GeoBounds(south: 38.7862, west: -77.03, north: 38.82, east: -76.8978)))
+        systems.append((.bird, GeoBounds(south: 33.3205, west: -111.9874, north: 33.4673, east: -111.8718)))
+        systems.append((.bird, GeoBounds(south: 33.9689, west: -118.4584, north: 34.043, east: -118.3606)))
+        systems.append((.bird, GeoBounds(south: 33.6944, west: -118.6727, north: 34.3465, east: -118.1549)))
+        systems.append((.bird, GeoBounds(south: 33.9876, west: -118.5266, north: 34.0597, east: -118.4328)))
+        systems.append((.bird, GeoBounds(south: 29.5934, west: -82.4282, north: 29.6975, east: -82.2754)))
+        systems.append((.bird, GeoBounds(south: 33.6399, west: -84.5607, north: 33.894, east: -84.279)))
+        systems.append((.bird, GeoBounds(south: 39.6833, west: -86.2872, north: 39.9113, east: -85.9597)))
+        systems.append((.bird, GeoBounds(south: 37.9449, west: -84.6279, north: 38.117, east: -84.375)))
+        systems.append((.bird, GeoBounds(south: 38.8986, west: -94.697, north: 39.1367, east: -94.4578)))
+        systems.append((.bird, GeoBounds(south: 38.5269, west: -90.3726, north: 38.6969, east: -90.1695)))
+        systems.append((.bird, GeoBounds(south: 36.038, west: -79.858, north: 36.1141, east: -79.7297)))
+        systems.append((.bird, GeoBounds(south: 40.6722, west: -74.2394, north: 40.7963, east: -74.1075)))
+        systems.append((.bird, GeoBounds(south: 39.4775, west: -119.8535, north: 39.5656, east: -119.7681)))
+        systems.append((.bird, GeoBounds(south: 40.7964, west: -73.9149, north: 40.9224, east: -73.771)))
+        systems.append((.bird, GeoBounds(south: 40.658, west: -73.8496, north: 40.7741, east: -73.7337)))
+        systems.append((.bird, GeoBounds(south: 41.3826, west: -81.89, north: 41.6067, east: -81.5219)))
+        systems.append((.bird, GeoBounds(south: 35.0662, west: -90.0967, north: 35.2023, east: -89.7846)))
+        systems.append((.bird, GeoBounds(south: 36.0305, west: -86.8825, north: 36.2506, east: -86.6261)))
+        systems.append((.bird, GeoBounds(south: 32.6108, west: -97.0038, north: 33.0209, east: -96.5463)))
+        systems.append((.bird, GeoBounds(south: 29.3863, west: -98.685, north: 29.6104, east: -98.4483)))
+        systems.append((.bird, GeoBounds(south: 38.8194, west: -77.1829, north: 38.9435, east: -77.0157)))
+        systems.append((.bird, GeoBounds(south: 38.8151, west: -77.3484, north: 38.8792, east: -77.2572)))
+        systems.append((.bird, GeoBounds(south: 37.4602, west: -77.6193, north: 37.6122, east: -77.3805)))
+        systems.append((.bird, GeoBounds(south: 44.785, west: -91.5415, north: 44.8311, east: -91.462)))
+        systems.append((.lime, GeoBounds(south: 33.3148, west: -111.989, north: 33.4651, east: -111.8703)))
+        systems.append((.lime, GeoBounds(south: 37.7706, west: -122.3348, north: 37.8602, east: -122.2005)))
+        systems.append((.lime, GeoBounds(south: 37.6991, west: -122.5253, north: 37.8178, east: -122.351)))
+        systems.append((.lime, GeoBounds(south: 37.2116, west: -121.9903, north: 37.4377, east: -121.7473)))
+        systems.append((.lime, GeoBounds(south: 38.7595, west: -104.8979, north: 38.9287, east: -104.7017)))
+        systems.append((.lime, GeoBounds(south: 33.6597, west: -84.5506, north: 33.88, east: -84.301)))
+        systems.append((.lime, GeoBounds(south: 41.6355, west: -87.8562, north: 42.032, east: -87.5125)))
+        systems.append((.lime, GeoBounds(south: 38.1771, west: -85.8445, north: 38.2854, east: -85.6587)))
+        systems.append((.lime, GeoBounds(south: 39.1917, west: -76.7226, north: 39.3811, east: -76.5183)))
+        systems.append((.lime, GeoBounds(south: 42.254, west: -83.2911, north: 42.4571, east: -82.9003)))
+        systems.append((.lime, GeoBounds(south: 35.9138, west: -78.994, north: 36.0771, east: -78.8326)))
+        systems.append((.lime, GeoBounds(south: 40.7828, west: -96.7279, north: 40.8458, east: -96.6416)))
+        systems.append((.lime, GeoBounds(south: 40.7968, west: -73.8969, north: 40.9158, east: -73.7899)))
+        systems.append((.lime, GeoBounds(south: 40.6575, west: -73.848, north: 40.7742, east: -73.7345)))
+        systems.append((.lime, GeoBounds(south: 38.8232, west: -77.1736, north: 38.9375, east: -77.0277)))
+        systems.append((.lime, GeoBounds(south: 36.8133, west: -76.3305, north: 36.9771, east: -76.1662)))
+        systems.append((.lime, GeoBounds(south: 47.4887, west: -122.4475, north: 47.7457, east: -122.2291)))
+        systems.append((.lyft, GeoBounds(south: 41.7482, west: -87.7999, north: 42.0313, east: -87.5437)))
+        systems.append((.lyft, GeoBounds(south: 45.4331, west: -122.764, north: 45.6023, east: -122.4778)))
+        systems.append((.spin, GeoBounds(south: 41.0098, west: -81.6218, north: 41.1781, east: -81.4094)))
+        systems.append((.spin, GeoBounds(south: 42.2155, west: -83.889, north: 42.3342, east: -83.6496)))
+        systems.append((.spin, GeoBounds(south: 39.1886, west: -76.723, north: 39.3803, east: -76.5124)))
+        systems.append((.spin, GeoBounds(south: 39.8522, west: -83.1551, north: 40.1481, east: -82.8317)))
+        systems.append((.spin, GeoBounds(south: 42.246, west: -83.3, north: 42.4979, east: -82.8982)))
+        systems.append((.spin, GeoBounds(south: 35.9411, west: -78.9726, north: 36.0479, east: -78.8525)))
+        systems.append((.spin, GeoBounds(south: 40.471, west: -105.1691, north: 40.629, east: -104.9807)))
+        systems.append((.spin, GeoBounds(south: 29.5924, west: -82.4291, north: 29.6977, east: -82.2744)))
+        systems.append((.spin, GeoBounds(south: 37.944, west: -84.6289, north: 38.1166, east: -84.376)))
+        systems.append((.spin, GeoBounds(south: 39.5179, west: -104.9184, north: 39.633, east: -104.8278)))
+        systems.append((.spin, GeoBounds(south: 42.694, west: -84.5099, north: 42.7479, east: -84.4483)))
+        systems.append((.spin, GeoBounds(south: 44.8835, west: -93.3417, north: 45.0603, east: -93.189)))
+        systems.append((.spin, GeoBounds(south: 36.0296, west: -86.8834, north: 36.2505, east: -86.6253)))
+        systems.append((.spin, GeoBounds(south: 35.7313, west: -78.7468, north: 35.8458, east: -78.5618)))
+        systems.append((.spin, GeoBounds(south: 35.7313, west: -78.7468, north: 35.8458, east: -78.5618)))
+        systems.append((.spin, GeoBounds(south: 41.8475, west: -71.4342, north: 41.9094, east: -71.3219)))
+        systems.append((.spin, GeoBounds(south: 41.7634, west: -71.4893, north: 41.9094, east: -71.3219)))
+        systems.append((.spin, GeoBounds(south: 33.3539, west: -112.1275, north: 33.5193, east: -111.9717)))
+        systems.append((.spin, GeoBounds(south: 37.4592, west: -77.6202, north: 37.6124, east: -77.381)))
+        systems.append((.spin, GeoBounds(south: 32.853, west: -117.2679, north: 32.9033, east: -117.2018)))
+        systems.append((.spin, GeoBounds(south: 37.6992, west: -122.5259, north: 37.8216, east: -122.3469)))
+        systems.append((.spin, GeoBounds(south: 36.9905, west: -113.6861, north: 37.2257, east: -113.4632)))
+        systems.append((.spin, GeoBounds(south: 27.8124, west: -82.6231, north: 28.1804, east: -82.2439)))
+        systems.append((.spin, GeoBounds(south: 38.5073, west: -121.8245, north: 38.5846, east: -121.6643)))
+        systems.append((.spin, GeoBounds(south: 36.0154, west: -94.2474, north: 36.1582, east: -94.1004)))
+        systems.append((.spin, GeoBounds(south: 36.0739, west: -97.1434, north: 36.1917, east: -97.0032)))
+        systems.append((.spin, GeoBounds(south: 30.401, west: -84.3722, north: 30.4818, east: -84.2118)))
+        systems.append((.spin, GeoBounds(south: 44.8784, west: -93.2213, north: 45.001, east: -92.9918)))
+        systems.append((.spin, GeoBounds(south: 37.2006, west: -80.0516, north: 37.3483, east: -79.8652)))
+        systems.append((.spin, GeoBounds(south: 40.7418, west: -111.8643, north: 40.7834, east: -111.8051)))
+        systems.append((.veo, GeoBounds(south: 33.4682, west: -86.8757, north: 33.5524, east: -86.7212)))
+        systems.append((.veo, GeoBounds(south: 39.8698, west: -83.1335, north: 40.1149, east: -82.8566)))
+        systems.append((.veo, GeoBounds(south: 41.9153, west: -91.7281, north: 42.0241, east: -91.5999)))
+        systems.append((.veo, GeoBounds(south: 41.4195, west: -81.8052, north: 41.555, east: -81.5637)))
+        systems.append((.veo, GeoBounds(south: 41.4869, west: -81.6067, north: 41.5454, east: -81.5204)))
+        systems.append((.veo, GeoBounds(south: 41.4799, west: -81.5607, north: 41.5091, east: -81.5152)))
+        systems.append((.veo, GeoBounds(south: 41.4924, west: -81.5532, north: 41.5469, east: -81.494)))
+        systems.append((.veo, GeoBounds(south: 38.9629, west: -76.9659, north: 39.0313, east: -76.8985)))
+        systems.append((.veo, GeoBounds(south: 38.9577, west: -76.9624, north: 38.9852, east: -76.9105)))
+        systems.append((.veo, GeoBounds(south: 37.9994, west: -78.5392, north: 38.0785, east: -78.4405)))
+        systems.append((.veo, GeoBounds(south: 39.6047, west: -105.0935, north: 39.8229, east: -104.7276)))
+        systems.append((.veo, GeoBounds(south: 36.026, west: -94.2394, north: 36.1576, east: -94.1075)))
+        systems.append((.veo, GeoBounds(south: 29.6058, west: -82.4095, north: 29.695, east: -82.2773)))
+        systems.append((.veo, GeoBounds(south: 41.715, west: -72.7301, north: 41.8158, east: -72.6415)))
+        systems.append((.veo, GeoBounds(south: 39.1607, west: -96.6445, north: 39.232, east: -96.5413)))
+        systems.append((.veo, GeoBounds(south: 41.2859, west: -72.9588, north: 41.3418, east: -72.8754)))
+        systems.append((.veo, GeoBounds(south: 40.8835, west: -73.8118, north: 40.9407, east: -73.7534)))
+        systems.append((.veo, GeoBounds(south: 40.6918, west: -74.255, north: 40.7978, east: -74.1217)))
+        systems.append((.veo, GeoBounds(south: 40.7987, west: -73.8939, north: 40.9151, east: -73.7913)))
+        systems.append((.veo, GeoBounds(south: 40.6575, west: -73.8512, north: 40.7737, east: -73.7345)))
+        systems.append((.veo, GeoBounds(south: 35.1626, west: -97.4996, north: 35.257, east: -97.3867)))
+        systems.append((.veo, GeoBounds(south: 40.4057, west: -86.9576, north: 40.481, east: -86.8865)))
+        systems.append((.veo, GeoBounds(south: 43.1044, west: -77.6881, north: 43.2084, east: -77.5337)))
+        systems.append((.veo, GeoBounds(south: 37.6848, west: -89.2673, north: 37.7612, east: -89.1719)))
+        systems.append((.veo, GeoBounds(south: 40.6976, west: -111.9584, north: 40.7951, east: -111.7979)))
+        systems.append((.veo, GeoBounds(south: 40.6781, west: -111.9115, north: 40.7344, east: -111.8689)))
+        systems.append((.veo, GeoBounds(south: 29.396, west: -98.5246, north: 29.4867, east: -98.4505)))
+        systems.append((.veo, GeoBounds(south: 42.9926, west: -76.212, north: 43.0917, east: -76.0577)))
+        systems.append((.veo, GeoBounds(south: 41.5856, west: -83.6966, north: 41.7378, east: -83.4676)))
+        systems.append((.veo, GeoBounds(south: 37.663, west: -97.4373, north: 37.7414, east: -97.2863)))
+        systems.append((.veo, GeoBounds(south: 37.8163, west: -122.3148, north: 37.9076, east: -122.2255)))
+        systems.append((.veo, GeoBounds(south: 37.8182, west: -122.3069, north: 37.855, east: -122.2664)))
+        systems.append((.veo, GeoBounds(south: 33.9873, west: -118.5274, north: 34.0539, east: -118.4353)))
+        systems.append((.veo, GeoBounds(south: 33.9215, west: -118.5508, north: 34.0829, east: -118.3949)))
+        systems.append((.veo, GeoBounds(south: 27.2936, west: -82.5909, north: 27.4162, east: -82.4897)))
+        systems.append((.veo, GeoBounds(south: 40.2062, west: -74.0482, north: 40.2534, east: -73.9868)))
+        systems.append((.veo, GeoBounds(south: 40.4658, west: -74.4902, north: 40.5346, east: -74.4054)))
+        systems.append((.veo, GeoBounds(south: 40.5031, west: -74.4823, north: 40.5369, east: -74.42)))
+        systems.append((.veo, GeoBounds(south: 40.4798, west: -74.4535, north: 40.5174, east: -74.4006)))
+        systems.append((.gcoo, GeoBounds(south: 33.9755, west: -118.3866, north: 34.1245, east: -118.2067)))
+        systems.append((.gcoo, GeoBounds(south: 38.8298, west: -77.1832, north: 38.9436, east: -77.0309)))
+        systems.append((.gcoo, GeoBounds(south: 38.7789, west: -77.1578, north: 38.8564, east: -77.0213)))
+        systems.append((.bird, GeoBounds(south: 50.9416, west: -114.2441, north: 51.16, east: -113.9083)))
+        systems.append((.bird, GeoBounds(south: 53.4218, west: -113.6709, north: 53.6382, east: -113.33)))
+        systems.append((.bird, GeoBounds(south: 44.586, west: -63.7068, north: 44.7269, east: -63.4358)))
+        systems.append((.bird, GeoBounds(south: 43.1875, west: -80.0054, north: 43.3108, east: -79.7437)))
+        systems.append((.bird, GeoBounds(south: 53.2264, west: -113.6265, north: 53.323, east: -113.4739)))
+        systems.append((.bird, GeoBounds(south: 45.3695, west: -75.7756, north: 45.4591, east: -75.6245)))
+        systems.append((.bird, GeoBounds(south: 43.765, west: -79.603, north: 43.8931, east: -79.4076)))
+        systems.append((.bird, GeoBounds(south: 42.225, west: -83.1112, north: 42.3527, east: -82.8324)))
+        systems.append((.lime, GeoBounds(south: 50.9417, west: -114.2139, north: 51.1414, east: -113.9182)))
+        systems.append((.lime, GeoBounds(south: 51.2409, west: -114.0605, north: 51.316, east: -113.9659)))
+        systems.append((.lime, GeoBounds(south: 53.4232, west: -113.6583, north: 53.6263, east: -113.3326)))
+        systems.append((.lime, GeoBounds(south: 53.5963, west: -113.6858, north: 53.6747, east: -113.5601)))
+        systems.append((.lime, GeoBounds(south: 53.3297, west: -113.459, north: 53.3752, east: -113.377)))
+        systems.append((.lime, GeoBounds(south: 49.78, west: -119.5355, north: 49.9733, east: -119.361)))
+        systems.append((.lime, GeoBounds(south: 43.4744, west: -79.8043, north: 43.6832, east: -79.5394)))
+        systems.append((.lime, GeoBounds(south: 45.3613, west: -75.7701, north: 45.4581, east: -75.6275)))
+        systems.append((.lime, GeoBounds(south: 49.2181, west: -123.179, north: 49.3026, east: -123.0101)))
+        systems.append((.move, GeoBounds(south: 45.896829, west: -66.716137, north: 45.998963, east: -66.577678)))
+        systems.append((.move, GeoBounds(south: 46.028446, west: -64.909284, north: 46.162801, east: -64.633564)))
+        systems.append((.move, GeoBounds(south: 45.222753, west: -66.151545, north: 45.338903, east: -65.95369)))
+        systems.append((.dott, GeoBounds(south: 25.0536, west: 55.1151, north: 25.2925, east: 55.5142)))
+        systems.append((.dott, GeoBounds(south: 25.0797, west: 55.2242, north: 25.1268, east: 55.2674)))
+        systems.append((.dott, GeoBounds(south: 24.3979, west: 54.307, north: 24.5216, east: 54.6349)))
+        systems.append((.saham, GeoBounds(south: 24.5521, west: 46.4871, north: 25.0316, east: 46.8692)))
+        systems.append((.dott, GeoBounds(south: 21.6246, west: 39.0907, north: 21.6661, east: 39.1151)))
+        systems.append((.bird, GeoBounds(south: 32.0207, west: 34.7309, north: 32.1556, east: 34.8589)))
+        systems.append((.bird, GeoBounds(south: 32.0318, west: 34.7889, north: 32.1143, east: 34.8645)))
+        systems.append((.bird, GeoBounds(south: 31.9809, west: 34.7451, north: 32.0474, east: 34.8231)))
+        systems.append((.bird, GeoBounds(south: 31.9838, west: 34.7246, north: 32.0423, east: 34.7721)))
+        systems.append((.bird, GeoBounds(south: 32.0498, west: 34.7877, north: 32.0907, east: 34.8313)))
+        systems.append((.bird, GeoBounds(south: 32.1354, west: 34.7774, north: 32.2119, east: 34.875)))
+        systems.append((.bird, GeoBounds(south: 31.9349, west: 34.7203, north: 32.0162, east: 34.8567)))
+        systems.append((.bird, GeoBounds(south: 31.7561, west: 34.603, north: 31.8442, east: 34.683)))
+        systems.append((.bird, GeoBounds(south: 32.0604, west: 34.8112, north: 32.1172, east: 34.8588)))
+        systems.append((.bird, GeoBounds(south: 32.1109, west: 34.7854, north: 32.1674, east: 34.8758)))
+        systems.append((.dott, GeoBounds(south: 32.0207, west: 34.7289, north: 32.1556, east: 34.8625)))
+        systems.append((.dott, GeoBounds(south: 32.0274, west: 34.7889, north: 32.1143, east: 34.8649)))
+        systems.append((.dott, GeoBounds(south: 32.0583, west: 34.836, north: 32.1208, east: 34.9304)))
+        systems.append((.dott, GeoBounds(south: 31.9853, west: 34.7451, north: 32.0474, east: 34.8207)))
+        systems.append((.dott, GeoBounds(south: 31.991, west: 34.723, north: 32.0427, east: 34.7721)))
+        systems.append((.dott, GeoBounds(south: 32.0498, west: 34.7877, north: 32.0907, east: 34.8313)))
+        systems.append((.dott, GeoBounds(south: 32.1354, west: 34.7866, north: 32.1879, east: 34.8622)))
+        systems.append((.dott, GeoBounds(south: 32.0624, west: 34.8112, north: 32.1164, east: 34.858)))
+        systems.append((.lime, GeoBounds(south: 32.0251, west: 34.7391, north: 32.1489, east: 34.8491)))
+        systems.append((.lime, GeoBounds(south: 32.0329, west: 34.7943, north: 32.1069, east: 34.8577)))
+        systems.append((.lime, GeoBounds(south: 32.0624, west: 34.8414, north: 32.1172, east: 34.9241)))
+        systems.append((.lime, GeoBounds(south: 31.9889, west: 34.7515, north: 32.0411, east: 34.8133)))
+        systems.append((.lime, GeoBounds(south: 32.0547, west: 34.7928, north: 32.0863, east: 34.826)))
+        systems.append((.lime, GeoBounds(south: 32.1425, west: 34.7942, north: 32.1816, east: 34.8566)))
+        systems.append((.lime, GeoBounds(south: 32.0293, west: 34.8337, north: 32.0722, east: 34.8718)))
+        systems.append((.lime, GeoBounds(south: 32.0648, west: 34.8165, north: 32.1107, east: 34.8515)))
+        systems.append((.lime, GeoBounds(south: 32.0613, west: 34.8399, north: 32.0913, east: 34.8651)))
+        systems.append((.lime, GeoBounds(south: 32.0243, west: 34.8502, north: 32.0457, east: 34.8655)))
+        systems.append((.flamingo, GeoBounds(south: -36.9398, west: 174.664, north: -36.6989, east: 174.8976)))
+        systems.append((.flamingo, GeoBounds(south: -43.591, west: 172.5084, north: -43.4437, east: 172.7826)))
+        systems.append((.flamingo, GeoBounds(south: -41.3618, west: 174.7174, north: -41.1958, east: 174.8515)))
+        systems.append((.flamingo, GeoBounds(south: -41.1656, west: 174.8117, north: -41.0235, east: 174.9192)))
+        systems.append((.flamingo, GeoBounds(south: -41.1959, west: 174.8052, north: -41.143, east: 174.8511)))
+        systems.append((.flamingo, GeoBounds(south: -45.9268, west: 170.3708, north: -45.7984, east: 170.6397)))
+        systems.append((.flamingo, GeoBounds(south: -37.7585, west: 176.096, north: -37.6208, east: 176.3668)))
+        systems.append((.flamingo, GeoBounds(south: -40.4026, west: 175.5589, north: -40.3038, east: 175.6786)))
+        systems.append((.flamingo, GeoBounds(south: -43.3414, west: 172.5563, north: -43.2778, east: 172.6231)))
+        systems.append((.flamingo, GeoBounds(south: -43.4029, west: 172.6202, north: -43.3456, east: 172.6867)))
+        systems.append((.jolt, GeoBounds(south: -39.1064, west: 174.0067, north: -39.0087, east: 174.1857)))
+        systems.append((.jolt, GeoBounds(south: -43.6426, west: 172.3437, north: -43.5743, east: 172.4189)))
+        systems.append((.hopp, GeoBounds(south: 10.2754, west: -85.8619, north: 10.3161, east: -85.8241)))
+        systems.append((.hopp, GeoBounds(south: 12.0102, west: -68.368, north: 12.2527, east: -68.2127)))
+        systems.append((.luup, GeoBounds(south: 35.518323, west: 139.349154, north: 35.890346, east: 140.005906)))
+        systems.append((.luup, GeoBounds(south: 34.538111, west: 135.365909, north: 34.809842, east: 135.612006)))
+        systems.append((.luup, GeoBounds(south: 34.888411, west: 135.647448, north: 35.10257, east: 135.852601)))
+        systems.append((.luup, GeoBounds(south: 35.031867, west: 136.789827, north: 35.26233, east: 137.062802)))
+        systems.append((.luup, GeoBounds(south: 35.448648, west: 139.445924, north: 35.644652, east: 139.835001)))
+        systems.append((.luup, GeoBounds(south: 35.352222, west: 139.474385, north: 35.574119, east: 139.732105)))
+        systems.append((.luup, GeoBounds(south: 38.207057, west: 140.808699, north: 38.311792, east: 140.945118)))
+        systems.append((.luup, GeoBounds(south: 33.490234, west: 130.238019, north: 33.744721, east: 130.541539)))
+        systems.append((.luup, GeoBounds(south: 34.339447, west: 132.383955, north: 34.456412, east: 132.53805)))
+        systems.append((.luup, GeoBounds(south: 34.63793, west: 135.117492, north: 34.749767, east: 135.261687)))
+        systems.append((.luup, GeoBounds(south: 36.461935, west: 139.74053, north: 36.7289, east: 139.97321)))
+        systems.append((.luup, GeoBounds(south: 34.2494, west: 133.950413, north: 34.403953, east: 134.179118)))
+        systems.append((.luup, GeoBounds(south: 34.64347, west: 137.670973, north: 34.778709, east: 137.804896)))
+        systems.append((.luup, GeoBounds(south: 42.974023, west: 141.234508, north: 43.155372, east: 141.510427)))
+        systems.append((.luup, GeoBounds(south: 33.816174, west: 130.817259, north: 33.91838, east: 130.912412)))
+        systems.append((.luup, GeoBounds(south: 34.693312, west: 136.462755, north: 34.77194, east: 136.539497)))
+        systems.append((.luup, GeoBounds(south: 26.183935, west: 127.658267, north: 26.259677, east: 127.732023)))
+        systems.append((.luup, GeoBounds(south: 33.485799, west: 130.455693, north: 33.558566, east: 130.528143)))
+        systems.append((.luup, GeoBounds(south: 34.918412, west: 137.129298, north: 34.993089, east: 137.191384)))
+        systems.append((.lime, GeoBounds(south: 26.18862, west: 127.6583, north: 26.20209467, east: 127.67331613)))
+        systems.append((.lime, GeoBounds(south: 26.18862, west: 127.67331613, north: 26.20209467, east: 127.68833227)))
+        systems.append((.lime, GeoBounds(south: 26.18862, west: 127.68833227, north: 26.20209467, east: 127.7033484)))
+        systems.append((.lime, GeoBounds(south: 26.18862, west: 127.7033484, north: 26.20209467, east: 127.71836453)))
+        systems.append((.lime, GeoBounds(south: 26.18862, west: 127.71836453, north: 26.20209467, east: 127.73307)))
+        systems.append((.lime, GeoBounds(south: 26.20209467, west: 127.6583, north: 26.21556934, east: 127.67331613)))
+        systems.append((.lime, GeoBounds(south: 26.20209467, west: 127.67331613, north: 26.21556934, east: 127.68833227)))
+        systems.append((.lime, GeoBounds(south: 26.20209467, west: 127.68833227, north: 26.21556934, east: 127.7033484)))
+        systems.append((.lime, GeoBounds(south: 26.20209467, west: 127.7033484, north: 26.21556934, east: 127.71836453)))
+        systems.append((.lime, GeoBounds(south: 26.20209467, west: 127.71836453, north: 26.21556934, east: 127.73307)))
+        systems.append((.lime, GeoBounds(south: 26.21556934, west: 127.6583, north: 26.229044, east: 127.67331613)))
+        systems.append((.lime, GeoBounds(south: 26.21556934, west: 127.67331613, north: 26.229044, east: 127.68833227)))
+        systems.append((.lime, GeoBounds(south: 26.21556934, west: 127.68833227, north: 26.229044, east: 127.7033484)))
+        systems.append((.lime, GeoBounds(south: 26.21556934, west: 127.7033484, north: 26.229044, east: 127.71836453)))
+        systems.append((.lime, GeoBounds(south: 26.21556934, west: 127.71836453, north: 26.229044, east: 127.73307)))
+        systems.append((.lime, GeoBounds(south: 26.229044, west: 127.6583, north: 26.24251867, east: 127.67331613)))
+        systems.append((.lime, GeoBounds(south: 26.229044, west: 127.67331613, north: 26.24251867, east: 127.68833227)))
+        systems.append((.lime, GeoBounds(south: 26.229044, west: 127.68833227, north: 26.24251867, east: 127.7033484)))
+        systems.append((.lime, GeoBounds(south: 26.229044, west: 127.7033484, north: 26.24251867, east: 127.71836453)))
+        systems.append((.lime, GeoBounds(south: 26.24251867, west: 127.6583, north: 26.245, east: 127.67331613)))
+        systems.append((.lime, GeoBounds(south: 26.24251867, west: 127.67331613, north: 26.245, east: 127.68833227)))
+        systems.append((.lime, GeoBounds(south: 26.24251867, west: 127.68833227, north: 26.245, east: 127.7033484)))
+        systems.append((.jet, GeoBounds(south: -20.842135, west: -40.657602, north: -20.793475, east: -40.615198)))
+        systems.append((.jet, GeoBounds(south: -11.027778, west: -37.111293, north: -10.918502, east: -37.033944)))
+        systems.append((.jet, GeoBounds(south: -27.013175, west: -48.675304, north: -26.900558, east: -48.601548)))
+        systems.append((.jet, GeoBounds(south: -19.941846, west: -44.007746, north: -19.836743, east: -43.917018)))
+        systems.append((.jet, GeoBounds(south: -1.475859, west: -48.508042, north: -1.113471, east: -48.428043)))
+        systems.append((.jet, GeoBounds(south: -23.856664, west: -46.146502, north: -23.782008, east: -45.99955)))
+        systems.append((.jet, GeoBounds(south: -26.946332, west: -49.102315, north: -26.884235, east: -49.053597)))
+        systems.append((.jet, GeoBounds(south: -15.880949, west: -48.059861, north: -15.731449, east: -47.858235)))
+        systems.append((.jet, GeoBounds(south: -22.915281, west: -47.076842, north: -22.869931, east: -47.038723)))
+        systems.append((.jet, GeoBounds(south: -20.470476, west: -54.621646, north: -20.425641, east: -54.550904)))
+        systems.append((.jet, GeoBounds(south: -22.756085, west: -45.61246, north: -22.714865, east: -45.562328)))
+        systems.append((.jet, GeoBounds(south: -23.661268, west: -45.440281, north: -23.608924, east: -45.370625)))
+        systems.append((.jet, GeoBounds(south: -8.292565, west: -35.991677, north: -8.25595, east: -35.95617)))
+        systems.append((.jet, GeoBounds(south: -25.453714, west: -49.319163, north: -25.409825, east: -49.253681)))
+        systems.append((.jet, GeoBounds(south: -27.620655, west: -48.599688, north: -27.570229, east: -48.491279)))
+        systems.append((.jet, GeoBounds(south: -27.769255, west: -48.576079, north: -27.651882, east: -48.47473)))
+        systems.append((.jet, GeoBounds(south: -27.470802, west: -48.51714, north: -27.415975, east: -48.374651)))
+        systems.append((.jet, GeoBounds(south: -3.771152, west: -38.587129, north: -3.70551, east: -38.436192)))
+        systems.append((.jet, GeoBounds(south: -29.397954, west: -50.885509, north: -29.366945, east: -50.867998)))
+        systems.append((.jet, GeoBounds(south: -20.68965, west: -40.518664, north: -20.631935, east: -40.470637)))
+        systems.append((.jet, GeoBounds(south: -25.91086, west: -48.58504, north: -25.865841, east: -48.558699)))
+        systems.append((.jet, GeoBounds(south: -24.016906, west: -46.291572, north: -23.9742, east: -46.194503)))
+        systems.append((.jet, GeoBounds(south: -23.83297, west: -45.392932, north: -23.767882, east: -45.349393)))
+        systems.append((.jet, GeoBounds(south: -14.845977, west: -39.06076, north: -14.775448, east: -39.023183)))
+        systems.append((.jet, GeoBounds(south: -24.204152, west: -46.822681, north: -24.171195, east: -46.766093)))
+        systems.append((.jet, GeoBounds(south: -27.169478, west: -48.619451, north: -27.085856, east: -48.528392)))
+        systems.append((.jet, GeoBounds(south: -8.222971, west: -34.929777, north: -8.159607, east: -34.910859)))
+        systems.append((.jet, GeoBounds(south: -26.325474, west: -48.892455, north: -26.230107, east: -48.837308)))
+        systems.append((.jet, GeoBounds(south: -23.354938, west: -51.230723, north: -23.25601, east: -51.134939)))
+        systems.append((.jet, GeoBounds(south: -9.686505, west: -35.760168, north: -9.606097, east: -35.684825)))
+        systems.append((.jet, GeoBounds(south: -25.850742, west: -48.550056, north: -25.813225, east: -48.528326)))
+        systems.append((.jet, GeoBounds(south: -5.895927, west: -35.214735, north: -5.758028, east: -35.161687)))
+        systems.append((.jet, GeoBounds(south: -29.703312, west: -51.137771, north: -29.677942, east: -51.113943)))
+        systems.append((.jet, GeoBounds(south: -27.681937, west: -48.707164, north: -27.616051, east: -48.637159)))
+        systems.append((.jet, GeoBounds(south: -7.956795, west: -34.904784, north: -7.878679, east: -34.819158)))
+        systems.append((.jet, GeoBounds(south: -24.331899, west: -47.005426, north: -24.268912, east: -46.929831)))
+        systems.append((.jet, GeoBounds(south: -30.096349, west: -51.251672, north: -30.013725, east: -51.178965)))
+        systems.append((.jet, GeoBounds(south: -24.099362, west: -46.626644, north: -23.990364, east: -46.392123)))
+        systems.append((.jet, GeoBounds(south: -8.157131, west: -34.921892, north: -8.024373, east: -34.857121)))
+        systems.append((.jet, GeoBounds(south: -23.723048, west: -46.427204, north: -23.702558, east: -46.396294)))
+        systems.append((.jet, GeoBounds(south: -13.021698, west: -38.540352, north: -12.907894, east: -38.309914)))
+        systems.append((.jet, GeoBounds(south: -20.208172, west: -40.270367, north: -20.11835, east: -40.172515)))
+        systems.append((.jet, GeoBounds(south: -23.540498, west: -47.476888, north: -23.465076, east: -47.400918)))
+        systems.append((.jet, GeoBounds(south: -23.254195, west: -45.925783, north: -23.163122, east: -45.869345)))
+        systems.append((.jet, GeoBounds(south: -23.712152, west: -46.747762, north: -23.509931, east: -46.493185)))
+        systems.append((.jet, GeoBounds(south: -29.347669, west: -49.741659, north: -29.325042, east: -49.712762)))
+        systems.append((.jet, GeoBounds(south: -23.481581, west: -45.093139, north: -23.414899, east: -45.049957)))
+        systems.append((.jet, GeoBounds(south: -20.422664, west: -40.339696, north: -20.323335, east: -40.266473)))
+        systems.append((.whoosh, GeoBounds(south: -27.63594, west: -48.70573, north: -26.87967, east: -48.41937)))
+        systems.append((.whoosh, GeoBounds(south: -30.09712, west: -51.25218, north: -30.00374, east: -51.14004)))
+        systems.append((.whoosh, GeoBounds(south: -22.99029, west: -43.40592, north: -22.89094, east: -43.16321)))
+        systems.append((.whoosh, GeoBounds(south: -23.6305, west: -46.75008, north: -23.49574, east: -46.55206)))
+        systems.append((.whoosh, GeoBounds(south: -26.45213, west: -49.20084, north: -26.07424, east: -48.72326)))
+        systems.append((.whoosh, GeoBounds(south: -20.47173, west: -54.62322, north: -20.42416, east: -54.54795)))
+        systems.append((.whoosh, GeoBounds(south: -22.76292, west: -45.61556, north: -22.69277, east: -45.53982)))
+        systems.append((.whoosh, GeoBounds(south: -25.47325, west: -49.3193, north: -25.40597, east: -49.2327)))
+        systems.append((.whoosh, GeoBounds(south: -8.14695, west: -34.92407, north: -8.02252, east: -34.86337)))
+        systems.append((.jet, GeoBounds(south: -33.764879, west: -70.787597, north: -33.336412, east: -70.490242)))
+        systems.append((.jet, GeoBounds(south: -38.758488, west: -72.671215, north: -38.700512, east: -72.547196)))
+        systems.append((.whoosh, GeoBounds(south: -38.76915, west: -72.67405, north: -38.69955, east: -72.54585)))
+        systems.append((.whoosh, GeoBounds(south: -39.29093, west: -71.98336, north: -39.26521, east: -71.93557)))
+        systems.append((.whoosh, GeoBounds(south: -39.2985, west: -72.24041, north: -39.27297, east: -72.21153)))
+        systems.append((.whoosh, GeoBounds(south: -33.0351, west: -71.5704, north: -32.99056, east: -71.53132)))
+        systems.append((.whoosh, GeoBounds(south: -33.02399, west: -71.31724, north: -32.965, east: -71.24916)))
+        systems.append((.whoosh, GeoBounds(south: -29.99433, west: -71.35383, north: -29.89335, east: -71.24147)))
+        systems.append((.whoosh, GeoBounds(south: -41.495, west: -73.01201, north: -41.37834, east: -72.85224)))
+        systems.append((.whoosh, GeoBounds(south: -34.19856, west: -70.76981, north: -34.12064, east: -70.63991)))
+        systems.append((.whoosh, GeoBounds(south: -33.57097, west: -70.77325, north: -33.31591, east: -70.49203)))
+        systems.append((.lime, GeoBounds(south: -33.58564, west: -70.63677956, north: -33.57216533, east: -70.62064608)))
+        systems.append((.lime, GeoBounds(south: -33.58564, west: -70.62064608, north: -33.57216533, east: -70.60451261)))
+        systems.append((.lime, GeoBounds(south: -33.57216533, west: -70.58837913, north: -33.55869066, east: -70.57224565)))
+        systems.append((.lime, GeoBounds(south: -33.57216533, west: -70.57224565, north: -33.55869066, east: -70.55611217)))
+        systems.append((.lime, GeoBounds(south: -33.55869066, west: -70.68518, north: -33.545216, east: -70.66904652)))
+        systems.append((.lime, GeoBounds(south: -33.55869066, west: -70.66904652, north: -33.545216, east: -70.65291304)))
+        systems.append((.lime, GeoBounds(south: -33.55869066, west: -70.65291304, north: -33.545216, east: -70.63677956)))
+        systems.append((.lime, GeoBounds(south: -33.55869066, west: -70.62064608, north: -33.545216, east: -70.60451261)))
+        systems.append((.lime, GeoBounds(south: -33.55869066, west: -70.60451261, north: -33.545216, east: -70.58837913)))
+        systems.append((.lime, GeoBounds(south: -33.55869066, west: -70.58837913, north: -33.545216, east: -70.57224565)))
+        systems.append((.lime, GeoBounds(south: -33.55869066, west: -70.57224565, north: -33.545216, east: -70.55611217)))
+        systems.append((.lime, GeoBounds(south: -33.55869066, west: -70.55611217, north: -33.545216, east: -70.53997869)))
+        systems.append((.lime, GeoBounds(south: -33.545216, west: -70.68518, north: -33.53174133, east: -70.66904652)))
+        systems.append((.lime, GeoBounds(south: -33.545216, west: -70.66904652, north: -33.53174133, east: -70.65291304)))
+        systems.append((.lime, GeoBounds(south: -33.545216, west: -70.65291304, north: -33.53174133, east: -70.63677956)))
+        systems.append((.lime, GeoBounds(south: -33.545216, west: -70.62064608, north: -33.53174133, east: -70.60451261)))
+        systems.append((.lime, GeoBounds(south: -33.545216, west: -70.60451261, north: -33.53174133, east: -70.58837913)))
+        systems.append((.lime, GeoBounds(south: -33.545216, west: -70.58837913, north: -33.53174133, east: -70.57224565)))
+        systems.append((.lime, GeoBounds(south: -33.545216, west: -70.57224565, north: -33.53174133, east: -70.55611217)))
+        systems.append((.lime, GeoBounds(south: -33.545216, west: -70.55611217, north: -33.53174133, east: -70.53997869)))
+        systems.append((.lime, GeoBounds(south: -33.545216, west: -70.53997869, north: -33.53174133, east: -70.52384521)))
+        systems.append((.lime, GeoBounds(south: -33.53174133, west: -70.68518, north: -33.51826666, east: -70.66904652)))
+        systems.append((.lime, GeoBounds(south: -33.53174133, west: -70.66904652, north: -33.51826666, east: -70.65291304)))
+        systems.append((.lime, GeoBounds(south: -33.53174133, west: -70.65291304, north: -33.51826666, east: -70.63677956)))
+        systems.append((.lime, GeoBounds(south: -33.53174133, west: -70.63677956, north: -33.51826666, east: -70.62064608)))
+        systems.append((.lime, GeoBounds(south: -33.53174133, west: -70.62064608, north: -33.51826666, east: -70.60451261)))
+        systems.append((.lime, GeoBounds(south: -33.53174133, west: -70.60451261, north: -33.51826666, east: -70.58837913)))
+        systems.append((.lime, GeoBounds(south: -33.53174133, west: -70.58837913, north: -33.51826666, east: -70.57224565)))
+        systems.append((.lime, GeoBounds(south: -33.53174133, west: -70.57224565, north: -33.51826666, east: -70.55611217)))
+        systems.append((.lime, GeoBounds(south: -33.53174133, west: -70.55611217, north: -33.51826666, east: -70.53997869)))
+        systems.append((.lime, GeoBounds(south: -33.51826666, west: -70.68518, north: -33.50479199, east: -70.66904652)))
+        systems.append((.lime, GeoBounds(south: -33.51826666, west: -70.66904652, north: -33.50479199, east: -70.65291304)))
+        systems.append((.lime, GeoBounds(south: -33.51826666, west: -70.65291304, north: -33.50479199, east: -70.63677956)))
+        systems.append((.lime, GeoBounds(south: -33.51826666, west: -70.63677956, north: -33.50479199, east: -70.62064608)))
+        systems.append((.lime, GeoBounds(south: -33.51826666, west: -70.62064608, north: -33.50479199, east: -70.60451261)))
+        systems.append((.lime, GeoBounds(south: -33.51826666, west: -70.60451261, north: -33.50479199, east: -70.58837913)))
+        systems.append((.lime, GeoBounds(south: -33.51826666, west: -70.58837913, north: -33.50479199, east: -70.57224565)))
+        systems.append((.lime, GeoBounds(south: -33.51826666, west: -70.57224565, north: -33.50479199, east: -70.55611217)))
+        systems.append((.lime, GeoBounds(south: -33.50479199, west: -70.66904652, north: -33.49131733, east: -70.65291304)))
+        systems.append((.lime, GeoBounds(south: -33.50479199, west: -70.65291304, north: -33.49131733, east: -70.63677956)))
+        systems.append((.lime, GeoBounds(south: -33.50479199, west: -70.63677956, north: -33.49131733, east: -70.62064608)))
+        systems.append((.lime, GeoBounds(south: -33.50479199, west: -70.62064608, north: -33.49131733, east: -70.60451261)))
+        systems.append((.lime, GeoBounds(south: -33.49131733, west: -70.66904652, north: -33.47784266, east: -70.65291304)))
+        systems.append((.lime, GeoBounds(south: -33.49131733, west: -70.65291304, north: -33.47784266, east: -70.63677956)))
+        systems.append((.lime, GeoBounds(south: -33.49131733, west: -70.63677956, north: -33.47784266, east: -70.62064608)))
+        systems.append((.lime, GeoBounds(south: -33.49131733, west: -70.62064608, north: -33.47784266, east: -70.60451261)))
+        systems.append((.lime, GeoBounds(south: -33.47784266, west: -70.66904652, north: -33.46436799, east: -70.65291304)))
+        systems.append((.lime, GeoBounds(south: -33.47784266, west: -70.65291304, north: -33.46436799, east: -70.63677956)))
+        systems.append((.lime, GeoBounds(south: -33.47784266, west: -70.63677956, north: -33.46436799, east: -70.62064608)))
+        systems.append((.lime, GeoBounds(south: -33.46436799, west: -70.57224565, north: -33.45089332, east: -70.55611217)))
+        systems.append((.lime, GeoBounds(south: -33.46436799, west: -70.55611217, north: -33.45089332, east: -70.53997869)))
+        systems.append((.lime, GeoBounds(south: -33.46436799, west: -70.53997869, north: -33.45089332, east: -70.52384521)))
+        systems.append((.lime, GeoBounds(south: -33.46436799, west: -70.52384521, north: -33.45089332, east: -70.50771173)))
+        systems.append((.lime, GeoBounds(south: -33.45089332, west: -70.58837913, north: -33.43741866, east: -70.57224565)))
+        systems.append((.lime, GeoBounds(south: -33.45089332, west: -70.57224565, north: -33.43741866, east: -70.55611217)))
+        systems.append((.lime, GeoBounds(south: -33.45089332, west: -70.55611217, north: -33.43741866, east: -70.53997869)))
+        systems.append((.lime, GeoBounds(south: -33.45089332, west: -70.53997869, north: -33.43741866, east: -70.52384521)))
+        systems.append((.lime, GeoBounds(south: -33.43741866, west: -70.60451261, north: -33.42394399, east: -70.58837913)))
+        systems.append((.lime, GeoBounds(south: -33.43741866, west: -70.58837913, north: -33.42394399, east: -70.57224565)))
+        systems.append((.lime, GeoBounds(south: -33.43741866, west: -70.57224565, north: -33.42394399, east: -70.55611217)))
+        systems.append((.lime, GeoBounds(south: -33.43741866, west: -70.55611217, north: -33.42394399, east: -70.53997869)))
+        systems.append((.lime, GeoBounds(south: -33.43741866, west: -70.53997869, north: -33.42394399, east: -70.52384521)))
+        systems.append((.lime, GeoBounds(south: -33.42394399, west: -70.62064608, north: -33.41046932, east: -70.60451261)))
+        systems.append((.lime, GeoBounds(south: -33.42394399, west: -70.60451261, north: -33.41046932, east: -70.58837913)))
+        systems.append((.lime, GeoBounds(south: -33.42394399, west: -70.58837913, north: -33.41046932, east: -70.57224565)))
+        systems.append((.lime, GeoBounds(south: -33.42394399, west: -70.57224565, north: -33.41046932, east: -70.55611217)))
+        systems.append((.lime, GeoBounds(south: -33.42394399, west: -70.55611217, north: -33.41046932, east: -70.53997869)))
+        systems.append((.lime, GeoBounds(south: -33.42394399, west: -70.53997869, north: -33.41046932, east: -70.52384521)))
+        systems.append((.lime, GeoBounds(south: -33.42394399, west: -70.52384521, north: -33.41046932, east: -70.50771173)))
+        systems.append((.lime, GeoBounds(south: -33.42394399, west: -70.50771173, north: -33.41046932, east: -70.49341)))
+        systems.append((.lime, GeoBounds(south: -33.41046932, west: -70.62064608, north: -33.39699465, east: -70.60451261)))
+        systems.append((.lime, GeoBounds(south: -33.41046932, west: -70.60451261, north: -33.39699465, east: -70.58837913)))
+        systems.append((.lime, GeoBounds(south: -33.41046932, west: -70.58837913, north: -33.39699465, east: -70.57224565)))
+        systems.append((.lime, GeoBounds(south: -33.41046932, west: -70.57224565, north: -33.39699465, east: -70.55611217)))
+        systems.append((.lime, GeoBounds(south: -33.41046932, west: -70.55611217, north: -33.39699465, east: -70.53997869)))
+        systems.append((.lime, GeoBounds(south: -33.41046932, west: -70.53997869, north: -33.39699465, east: -70.52384521)))
+        systems.append((.lime, GeoBounds(south: -33.41046932, west: -70.52384521, north: -33.39699465, east: -70.50771173)))
+        systems.append((.lime, GeoBounds(south: -33.41046932, west: -70.50771173, north: -33.39699465, east: -70.49341)))
+        systems.append((.lime, GeoBounds(south: -33.39699465, west: -70.60451261, north: -33.38351999, east: -70.58837913)))
+        systems.append((.lime, GeoBounds(south: -33.39699465, west: -70.58837913, north: -33.38351999, east: -70.57224565)))
+        systems.append((.lime, GeoBounds(south: -33.39699465, west: -70.57224565, north: -33.38351999, east: -70.55611217)))
+        systems.append((.lime, GeoBounds(south: -33.39699465, west: -70.55611217, north: -33.38351999, east: -70.53997869)))
+        systems.append((.lime, GeoBounds(south: -33.39699465, west: -70.53997869, north: -33.38351999, east: -70.52384521)))
+        systems.append((.lime, GeoBounds(south: -33.39699465, west: -70.52384521, north: -33.38351999, east: -70.50771173)))
+        systems.append((.lime, GeoBounds(south: -33.39699465, west: -70.50771173, north: -33.38351999, east: -70.49341)))
+        systems.append((.lime, GeoBounds(south: -33.38351999, west: -70.60451261, north: -33.37004532, east: -70.58837913)))
+        systems.append((.lime, GeoBounds(south: -33.38351999, west: -70.58837913, north: -33.37004532, east: -70.57224565)))
+        systems.append((.lime, GeoBounds(south: -33.38351999, west: -70.57224565, north: -33.37004532, east: -70.55611217)))
+        systems.append((.lime, GeoBounds(south: -33.38351999, west: -70.55611217, north: -33.37004532, east: -70.53997869)))
+        systems.append((.lime, GeoBounds(south: -33.38351999, west: -70.53997869, north: -33.37004532, east: -70.52384521)))
+        systems.append((.lime, GeoBounds(south: -33.38351999, west: -70.52384521, north: -33.37004532, east: -70.50771173)))
+        systems.append((.lime, GeoBounds(south: -33.38351999, west: -70.50771173, north: -33.37004532, east: -70.49341)))
+        systems.append((.lime, GeoBounds(south: -33.37004532, west: -70.58837913, north: -33.36342, east: -70.57224565)))
+        systems.append((.lime, GeoBounds(south: -33.37004532, west: -70.57224565, north: -33.36342, east: -70.55611217)))
+        systems.append((.lime, GeoBounds(south: -33.37004532, west: -70.55611217, north: -33.36342, east: -70.53997869)))
+        systems.append((.lime, GeoBounds(south: -33.37004532, west: -70.52384521, north: -33.36342, east: -70.50771173)))
+        systems.append((.lime, GeoBounds(south: -33.37004532, west: -70.50771173, north: -33.36342, east: -70.49341)))
+        systems.append((.jet, GeoBounds(south: 25.644225, west: -100.419239, north: 25.686349, east: -100.281766)))
+        systems.append((.whoosh, GeoBounds(south: 25.6341, west: -100.42479, north: 25.68824, east: -100.26807)))
+        systems.append((.whoosh, GeoBounds(south: 20.63267, west: -103.44679, north: 20.74174, east: -103.37085)))
+        systems.append((.lime, GeoBounds(south: 20.55756, west: -100.38630781, north: 20.57103467, east: -100.37191672)))
+        systems.append((.lime, GeoBounds(south: 20.55756, west: -100.37191672, north: 20.57103467, east: -100.35752562)))
+        systems.append((.lime, GeoBounds(south: 20.55756, west: -100.35752562, north: 20.57103467, east: -100.35703)))
+        systems.append((.lime, GeoBounds(south: 20.57103467, west: -100.41509, north: 20.58450934, east: -100.40069891)))
+        systems.append((.lime, GeoBounds(south: 20.57103467, west: -100.40069891, north: 20.58450934, east: -100.38630781)))
+        systems.append((.lime, GeoBounds(south: 20.57103467, west: -100.38630781, north: 20.58450934, east: -100.37191672)))
+        systems.append((.lime, GeoBounds(south: 20.57103467, west: -100.37191672, north: 20.58450934, east: -100.35752562)))
+        systems.append((.lime, GeoBounds(south: 20.58450934, west: -100.41509, north: 20.597984, east: -100.40069891)))
+        systems.append((.lime, GeoBounds(south: 20.58450934, west: -100.40069891, north: 20.597984, east: -100.38630781)))
+        systems.append((.lime, GeoBounds(south: 20.58450934, west: -100.38630781, north: 20.597984, east: -100.37191672)))
+        systems.append((.lime, GeoBounds(south: 20.58450934, west: -100.37191672, north: 20.597984, east: -100.35752562)))
+        systems.append((.lime, GeoBounds(south: 20.597984, west: -100.41509, north: 20.61145867, east: -100.40069891)))
+        systems.append((.lime, GeoBounds(south: 20.597984, west: -100.40069891, north: 20.61145867, east: -100.38630781)))
+        systems.append((.lime, GeoBounds(south: 20.597984, west: -100.38630781, north: 20.61145867, east: -100.37191672)))
+        systems.append((.lime, GeoBounds(south: 20.61145867, west: -100.40069891, north: 20.6161, east: -100.38630781)))
+        systems.append((.lime, GeoBounds(south: 20.61145867, west: -100.38630781, north: 20.6161, east: -100.37191672)))
+        systems.append((.jet, GeoBounds(south: 43.178739, west: 76.774937, north: 43.356878, east: 77.013148)))
+        systems.append((.whoosh, GeoBounds(south: 43.22016, west: 76.8602, north: 43.24751, east: 76.90581)))
+        systems.append((.whoosh, GeoBounds(south: 51.06534, west: 71.3469, north: 51.20139, east: 71.54021)))
+        systems.append((.jet, GeoBounds(south: 40.335093, west: 49.790085, north: 40.440305, east: 49.987929)))
+        systems.append((.jet, GeoBounds(south: 41.615822, west: 41.583057, north: 41.662751, east: 41.680613)))
+        systems.append((.whoosh, GeoBounds(south: 6.18271, west: -75.61793, north: 6.29603, east: -75.54855)))
+        systems.append((.whoosh, GeoBounds(south: 54.18871, west: 28.45654, north: 54.25148, east: 28.53523)))
+        systems.append((.whoosh, GeoBounds(south: 53.83261, west: 27.40681, north: 54.01826, east: 27.72876)))
+        systems.append((.whoosh, GeoBounds(south: 52.76991, west: 27.48468, north: 52.80366, east: 27.55641)))
+        systems.append((.zippy, GeoBounds(south: -33.05338, west: 18.03341, north: -33.04052, east: 18.04983)))
+        systems.append((.lime, GeoBounds(south: 45.85633, west: 22.89478, north: 45.86980467, east: 22.91412737)))
+        systems.append((.lime, GeoBounds(south: 45.85633, west: 22.91412737, north: 45.86980467, east: 22.92735)))
+        systems.append((.lime, GeoBounds(south: 45.86980467, west: 22.89478, north: 45.88327934, east: 22.91412737)))
+        systems.append((.lime, GeoBounds(south: 45.86980467, west: 22.91412737, north: 45.88327934, east: 22.92735)))
+        systems.append((.lime, GeoBounds(south: 45.88327934, west: 22.89478, north: 45.89326, east: 22.91412737)))
+        systems.append((.lime, GeoBounds(south: 48.94881, west: 14.45647772, north: 48.96228467, east: 14.47699545)))
+        systems.append((.lime, GeoBounds(south: 48.94881, west: 14.47699545, north: 48.96228467, east: 14.49751317)))
+        systems.append((.lime, GeoBounds(south: 48.96228467, west: 14.43596, north: 48.97575934, east: 14.45647772)))
+        systems.append((.lime, GeoBounds(south: 48.96228467, west: 14.45647772, north: 48.97575934, east: 14.47699545)))
+        systems.append((.lime, GeoBounds(south: 48.96228467, west: 14.47699545, north: 48.97575934, east: 14.49751317)))
+        systems.append((.lime, GeoBounds(south: 48.96228467, west: 14.49751317, north: 48.97575934, east: 14.50798)))
+        systems.append((.lime, GeoBounds(south: 48.97575934, west: 14.43596, north: 48.989234, east: 14.45647772)))
+        systems.append((.lime, GeoBounds(south: 48.97575934, west: 14.45647772, north: 48.989234, east: 14.47699545)))
+        systems.append((.lime, GeoBounds(south: 48.97575934, west: 14.47699545, north: 48.989234, east: 14.49751317)))
+        systems.append((.lime, GeoBounds(south: 48.97575934, west: 14.49751317, north: 48.989234, east: 14.50798)))
+        systems.append((.lime, GeoBounds(south: 48.989234, west: 14.43596, north: 49.00077, east: 14.45647772)))
+        systems.append((.lime, GeoBounds(south: 48.989234, west: 14.45647772, north: 49.00077, east: 14.47699545)))
+        systems.append((.lime, GeoBounds(south: 48.989234, west: 14.47699545, north: 49.00077, east: 14.49751317)))
+        systems.append((.lime, GeoBounds(south: 25.11408, west: 51.58014497, north: 25.12755467, east: 51.59502647)))
+        systems.append((.lime, GeoBounds(south: 25.11408, west: 51.59502647, north: 25.12755467, east: 51.60065)))
+        systems.append((.lime, GeoBounds(south: 25.12755467, west: 51.56526347, north: 25.14102934, east: 51.58014497)))
+        systems.append((.lime, GeoBounds(south: 25.12755467, west: 51.58014497, north: 25.14102934, east: 51.59502647)))
+        systems.append((.lime, GeoBounds(south: 25.12755467, west: 51.59502647, north: 25.14102934, east: 51.60065)))
+        systems.append((.lime, GeoBounds(south: 25.14102934, west: 51.50573748, north: 25.154504, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.14102934, west: 51.56526347, north: 25.154504, east: 51.58014497)))
+        systems.append((.lime, GeoBounds(south: 25.14102934, west: 51.58014497, north: 25.154504, east: 51.59502647)))
+        systems.append((.lime, GeoBounds(south: 25.154504, west: 51.46109299, north: 25.16797867, east: 51.47597449)))
+        systems.append((.lime, GeoBounds(south: 25.154504, west: 51.47597449, north: 25.16797867, east: 51.49085599)))
+        systems.append((.lime, GeoBounds(south: 25.154504, west: 51.50573748, north: 25.16797867, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.154504, west: 51.55038198, north: 25.16797867, east: 51.56526347)))
+        systems.append((.lime, GeoBounds(south: 25.154504, west: 51.56526347, north: 25.16797867, east: 51.58014497)))
+        systems.append((.lime, GeoBounds(south: 25.154504, west: 51.58014497, north: 25.16797867, east: 51.59502647)))
+        systems.append((.lime, GeoBounds(south: 25.16797867, west: 51.47597449, north: 25.18145334, east: 51.49085599)))
+        systems.append((.lime, GeoBounds(south: 25.16797867, west: 51.49085599, north: 25.18145334, east: 51.50573748)))
+        systems.append((.lime, GeoBounds(south: 25.16797867, west: 51.50573748, north: 25.18145334, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.16797867, west: 51.52061898, north: 25.18145334, east: 51.53550048)))
+        systems.append((.lime, GeoBounds(south: 25.16797867, west: 51.53550048, north: 25.18145334, east: 51.55038198)))
+        systems.append((.lime, GeoBounds(south: 25.16797867, west: 51.55038198, north: 25.18145334, east: 51.56526347)))
+        systems.append((.lime, GeoBounds(south: 25.16797867, west: 51.58014497, north: 25.18145334, east: 51.59502647)))
+        systems.append((.lime, GeoBounds(south: 25.18145334, west: 51.49085599, north: 25.19492801, east: 51.50573748)))
+        systems.append((.lime, GeoBounds(south: 25.18145334, west: 51.50573748, north: 25.19492801, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.18145334, west: 51.52061898, north: 25.19492801, east: 51.53550048)))
+        systems.append((.lime, GeoBounds(south: 25.18145334, west: 51.53550048, north: 25.19492801, east: 51.55038198)))
+        systems.append((.lime, GeoBounds(south: 25.18145334, west: 51.55038198, north: 25.19492801, east: 51.56526347)))
+        systems.append((.lime, GeoBounds(south: 25.18145334, west: 51.58014497, north: 25.19492801, east: 51.59502647)))
+        systems.append((.lime, GeoBounds(south: 25.19492801, west: 51.50573748, north: 25.20840267, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.19492801, west: 51.52061898, north: 25.20840267, east: 51.53550048)))
+        systems.append((.lime, GeoBounds(south: 25.19492801, west: 51.53550048, north: 25.20840267, east: 51.55038198)))
+        systems.append((.lime, GeoBounds(south: 25.19492801, west: 51.55038198, north: 25.20840267, east: 51.56526347)))
+        systems.append((.lime, GeoBounds(south: 25.19492801, west: 51.58014497, north: 25.20840267, east: 51.59502647)))
+        systems.append((.lime, GeoBounds(south: 25.20840267, west: 51.50573748, north: 25.22187734, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.20840267, west: 51.52061898, north: 25.22187734, east: 51.53550048)))
+        systems.append((.lime, GeoBounds(south: 25.20840267, west: 51.53550048, north: 25.22187734, east: 51.55038198)))
+        systems.append((.lime, GeoBounds(south: 25.20840267, west: 51.55038198, north: 25.22187734, east: 51.56526347)))
+        systems.append((.lime, GeoBounds(south: 25.20840267, west: 51.56526347, north: 25.22187734, east: 51.58014497)))
+        systems.append((.lime, GeoBounds(south: 25.20840267, west: 51.58014497, north: 25.22187734, east: 51.59502647)))
+        systems.append((.lime, GeoBounds(south: 25.22187734, west: 51.50573748, north: 25.23535201, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.22187734, west: 51.52061898, north: 25.23535201, east: 51.53550048)))
+        systems.append((.lime, GeoBounds(south: 25.22187734, west: 51.53550048, north: 25.23535201, east: 51.55038198)))
+        systems.append((.lime, GeoBounds(south: 25.22187734, west: 51.55038198, north: 25.23535201, east: 51.56526347)))
+        systems.append((.lime, GeoBounds(south: 25.22187734, west: 51.56526347, north: 25.23535201, east: 51.58014497)))
+        systems.append((.lime, GeoBounds(south: 25.22187734, west: 51.58014497, north: 25.23535201, east: 51.59502647)))
+        systems.append((.lime, GeoBounds(south: 25.23535201, west: 51.43133, north: 25.24882668, east: 51.4462115)))
+        systems.append((.lime, GeoBounds(south: 25.23535201, west: 51.50573748, north: 25.24882668, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.23535201, west: 51.52061898, north: 25.24882668, east: 51.53550048)))
+        systems.append((.lime, GeoBounds(south: 25.23535201, west: 51.53550048, north: 25.24882668, east: 51.55038198)))
+        systems.append((.lime, GeoBounds(south: 25.23535201, west: 51.55038198, north: 25.24882668, east: 51.56526347)))
+        systems.append((.lime, GeoBounds(south: 25.23535201, west: 51.56526347, north: 25.24882668, east: 51.58014497)))
+        systems.append((.lime, GeoBounds(south: 25.23535201, west: 51.58014497, north: 25.24882668, east: 51.59502647)))
+        systems.append((.lime, GeoBounds(south: 25.24882668, west: 51.43133, north: 25.26230134, east: 51.4462115)))
+        systems.append((.lime, GeoBounds(south: 25.24882668, west: 51.4462115, north: 25.26230134, east: 51.46109299)))
+        systems.append((.lime, GeoBounds(south: 25.24882668, west: 51.46109299, north: 25.26230134, east: 51.47597449)))
+        systems.append((.lime, GeoBounds(south: 25.24882668, west: 51.47597449, north: 25.26230134, east: 51.49085599)))
+        systems.append((.lime, GeoBounds(south: 25.24882668, west: 51.49085599, north: 25.26230134, east: 51.50573748)))
+        systems.append((.lime, GeoBounds(south: 25.24882668, west: 51.52061898, north: 25.26230134, east: 51.53550048)))
+        systems.append((.lime, GeoBounds(south: 25.24882668, west: 51.53550048, north: 25.26230134, east: 51.55038198)))
+        systems.append((.lime, GeoBounds(south: 25.24882668, west: 51.55038198, north: 25.26230134, east: 51.56526347)))
+        systems.append((.lime, GeoBounds(south: 25.24882668, west: 51.56526347, north: 25.26230134, east: 51.58014497)))
+        systems.append((.lime, GeoBounds(south: 25.24882668, west: 51.58014497, north: 25.26230134, east: 51.59502647)))
+        systems.append((.lime, GeoBounds(south: 25.26230134, west: 51.4462115, north: 25.27577601, east: 51.46109299)))
+        systems.append((.lime, GeoBounds(south: 25.26230134, west: 51.46109299, north: 25.27577601, east: 51.47597449)))
+        systems.append((.lime, GeoBounds(south: 25.26230134, west: 51.47597449, north: 25.27577601, east: 51.49085599)))
+        systems.append((.lime, GeoBounds(south: 25.26230134, west: 51.49085599, north: 25.27577601, east: 51.50573748)))
+        systems.append((.lime, GeoBounds(south: 25.26230134, west: 51.50573748, north: 25.27577601, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.26230134, west: 51.52061898, north: 25.27577601, east: 51.53550048)))
+        systems.append((.lime, GeoBounds(south: 25.26230134, west: 51.53550048, north: 25.27577601, east: 51.55038198)))
+        systems.append((.lime, GeoBounds(south: 25.26230134, west: 51.55038198, north: 25.27577601, east: 51.56526347)))
+        systems.append((.lime, GeoBounds(south: 25.26230134, west: 51.56526347, north: 25.27577601, east: 51.58014497)))
+        systems.append((.lime, GeoBounds(south: 25.26230134, west: 51.58014497, north: 25.27577601, east: 51.59502647)))
+        systems.append((.lime, GeoBounds(south: 25.27577601, west: 51.46109299, north: 25.28925068, east: 51.47597449)))
+        systems.append((.lime, GeoBounds(south: 25.27577601, west: 51.47597449, north: 25.28925068, east: 51.49085599)))
+        systems.append((.lime, GeoBounds(south: 25.27577601, west: 51.49085599, north: 25.28925068, east: 51.50573748)))
+        systems.append((.lime, GeoBounds(south: 25.27577601, west: 51.50573748, north: 25.28925068, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.27577601, west: 51.52061898, north: 25.28925068, east: 51.53550048)))
+        systems.append((.lime, GeoBounds(south: 25.27577601, west: 51.53550048, north: 25.28925068, east: 51.55038198)))
+        systems.append((.lime, GeoBounds(south: 25.27577601, west: 51.55038198, north: 25.28925068, east: 51.56526347)))
+        systems.append((.lime, GeoBounds(south: 25.27577601, west: 51.56526347, north: 25.28925068, east: 51.58014497)))
+        systems.append((.lime, GeoBounds(south: 25.28925068, west: 51.46109299, north: 25.30272535, east: 51.47597449)))
+        systems.append((.lime, GeoBounds(south: 25.28925068, west: 51.47597449, north: 25.30272535, east: 51.49085599)))
+        systems.append((.lime, GeoBounds(south: 25.28925068, west: 51.49085599, north: 25.30272535, east: 51.50573748)))
+        systems.append((.lime, GeoBounds(south: 25.28925068, west: 51.50573748, north: 25.30272535, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.28925068, west: 51.52061898, north: 25.30272535, east: 51.53550048)))
+        systems.append((.lime, GeoBounds(south: 25.28925068, west: 51.53550048, north: 25.30272535, east: 51.55038198)))
+        systems.append((.lime, GeoBounds(south: 25.28925068, west: 51.55038198, north: 25.30272535, east: 51.56526347)))
+        systems.append((.lime, GeoBounds(south: 25.28925068, west: 51.56526347, north: 25.30272535, east: 51.58014497)))
+        systems.append((.lime, GeoBounds(south: 25.30272535, west: 51.46109299, north: 25.31620001, east: 51.47597449)))
+        systems.append((.lime, GeoBounds(south: 25.30272535, west: 51.47597449, north: 25.31620001, east: 51.49085599)))
+        systems.append((.lime, GeoBounds(south: 25.30272535, west: 51.49085599, north: 25.31620001, east: 51.50573748)))
+        systems.append((.lime, GeoBounds(south: 25.30272535, west: 51.50573748, north: 25.31620001, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.30272535, west: 51.52061898, north: 25.31620001, east: 51.53550048)))
+        systems.append((.lime, GeoBounds(south: 25.31620001, west: 51.49085599, north: 25.32967468, east: 51.50573748)))
+        systems.append((.lime, GeoBounds(south: 25.31620001, west: 51.50573748, north: 25.32967468, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.31620001, west: 51.52061898, north: 25.32967468, east: 51.53550048)))
+        systems.append((.lime, GeoBounds(south: 25.31620001, west: 51.53550048, north: 25.32967468, east: 51.55038198)))
+        systems.append((.lime, GeoBounds(south: 25.32967468, west: 51.47597449, north: 25.34314935, east: 51.49085599)))
+        systems.append((.lime, GeoBounds(south: 25.32967468, west: 51.49085599, north: 25.34314935, east: 51.50573748)))
+        systems.append((.lime, GeoBounds(south: 25.32967468, west: 51.50573748, north: 25.34314935, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.32967468, west: 51.52061898, north: 25.34314935, east: 51.53550048)))
+        systems.append((.lime, GeoBounds(south: 25.32967468, west: 51.53550048, north: 25.34314935, east: 51.55038198)))
+        systems.append((.lime, GeoBounds(south: 25.34314935, west: 51.46109299, north: 25.35662402, east: 51.47597449)))
+        systems.append((.lime, GeoBounds(south: 25.34314935, west: 51.47597449, north: 25.35662402, east: 51.49085599)))
+        systems.append((.lime, GeoBounds(south: 25.34314935, west: 51.49085599, north: 25.35662402, east: 51.50573748)))
+        systems.append((.lime, GeoBounds(south: 25.34314935, west: 51.50573748, north: 25.35662402, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.34314935, west: 51.52061898, north: 25.35662402, east: 51.53550048)))
+        systems.append((.lime, GeoBounds(south: 25.35662402, west: 51.43133, north: 25.37009868, east: 51.4462115)))
+        systems.append((.lime, GeoBounds(south: 25.35662402, west: 51.4462115, north: 25.37009868, east: 51.46109299)))
+        systems.append((.lime, GeoBounds(south: 25.35662402, west: 51.46109299, north: 25.37009868, east: 51.47597449)))
+        systems.append((.lime, GeoBounds(south: 25.35662402, west: 51.47597449, north: 25.37009868, east: 51.49085599)))
+        systems.append((.lime, GeoBounds(south: 25.35662402, west: 51.49085599, north: 25.37009868, east: 51.50573748)))
+        systems.append((.lime, GeoBounds(south: 25.35662402, west: 51.50573748, north: 25.37009868, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.35662402, west: 51.52061898, north: 25.37009868, east: 51.53550048)))
+        systems.append((.lime, GeoBounds(south: 25.37009868, west: 51.43133, north: 25.38357335, east: 51.4462115)))
+        systems.append((.lime, GeoBounds(south: 25.37009868, west: 51.4462115, north: 25.38357335, east: 51.46109299)))
+        systems.append((.lime, GeoBounds(south: 25.37009868, west: 51.46109299, north: 25.38357335, east: 51.47597449)))
+        systems.append((.lime, GeoBounds(south: 25.37009868, west: 51.47597449, north: 25.38357335, east: 51.49085599)))
+        systems.append((.lime, GeoBounds(south: 25.37009868, west: 51.49085599, north: 25.38357335, east: 51.50573748)))
+        systems.append((.lime, GeoBounds(south: 25.37009868, west: 51.50573748, north: 25.38357335, east: 51.52061898)))
+        systems.append((.lime, GeoBounds(south: 25.37009868, west: 51.52061898, north: 25.38357335, east: 51.53550048)))
+        systems.append((.lime, GeoBounds(south: 25.37009868, west: 51.53550048, north: 25.38357335, east: 51.55038198)))
+        systems.append((.lime, GeoBounds(south: 25.38357335, west: 51.43133, north: 25.39361, east: 51.4462115)))
+        systems.append((.lime, GeoBounds(south: 25.38357335, west: 51.4462115, north: 25.39361, east: 51.46109299)))
+        systems.append((.lime, GeoBounds(south: 25.38357335, west: 51.46109299, north: 25.39361, east: 51.47597449)))
+        systems.append((.lime, GeoBounds(south: 25.38357335, west: 51.47597449, north: 25.39361, east: 51.49085599)))
+        systems.append((.lime, GeoBounds(south: 25.38357335, west: 51.49085599, north: 25.39361, east: 51.50573748)))
+        systems.append((.beam, GeoBounds(south: -34.943739, west: 138.57500639999998, north: -34.887522999999995, east: 138.6435044)))
+        systems.append((.beam, GeoBounds(south: -18.0055940869565, west: 122.1985178444571, north: -17.918882, east: 122.24731657644007)))
+        systems.append((.beam, GeoBounds(south: -33.352264327650005, west: 115.618578, north: -33.307725, east: 115.698066)))
+        systems.append((.beam, GeoBounds(south: -16.960565, west: 145.739454, north: -16.895878, east: 145.782737)))
+        systems.append((.beam, GeoBounds(south: -12.473780000000001, west: 130.810601, north: -12.336188, east: 130.91584)))
+        systems.append((.beam, GeoBounds(south: -33.898646, west: 121.818805, north: -33.810136, east: 121.942786)))
+        systems.append((.beam, GeoBounds(south: -28.830987999999998, west: 114.576288, north: -28.725296, east: 114.644229)))
+        systems.append((.beam, GeoBounds(south: -25.31263, west: 152.795253, north: -25.242209000000003, east: 152.912238)))
+        systems.append((.beam, GeoBounds(south: -21.187051999999998, west: 149.13411599999998, north: -21.070922, east: 149.22705000000002)))
+        systems.append((.beam, GeoBounds(south: -31.914666, west: 115.74886400000001, north: -31.843548000000002, east: 115.823606)))
+        systems.append((.beam, GeoBounds(south: -16.545178, west: 145.456089, north: -16.477207, east: 145.47833300000002)))
+        systems.append((.lime, GeoBounds(south: -27.53263, west: 153.00391287, north: -27.51915533, east: 153.0190743)))
+        systems.append((.lime, GeoBounds(south: -27.53263, west: 153.0190743, north: -27.51915533, east: 153.03423574)))
+        systems.append((.lime, GeoBounds(south: -27.53263, west: 153.03423574, north: -27.51915533, east: 153.04939717)))
+        systems.append((.lime, GeoBounds(south: -27.53263, west: 153.04939717, north: -27.51915533, east: 153.06455861)))
+        systems.append((.lime, GeoBounds(south: -27.53263, west: 153.06455861, north: -27.51915533, east: 153.07972004)))
+        systems.append((.lime, GeoBounds(south: -27.51915533, west: 152.97359, north: -27.50568066, east: 152.98875143)))
+        systems.append((.lime, GeoBounds(south: -27.51915533, west: 152.98875143, north: -27.50568066, east: 153.00391287)))
+        systems.append((.lime, GeoBounds(south: -27.51915533, west: 153.00391287, north: -27.50568066, east: 153.0190743)))
+        systems.append((.lime, GeoBounds(south: -27.51915533, west: 153.0190743, north: -27.50568066, east: 153.03423574)))
+        systems.append((.lime, GeoBounds(south: -27.51915533, west: 153.03423574, north: -27.50568066, east: 153.04939717)))
+        systems.append((.lime, GeoBounds(south: -27.51915533, west: 153.04939717, north: -27.50568066, east: 153.06455861)))
+        systems.append((.lime, GeoBounds(south: -27.51915533, west: 153.06455861, north: -27.50568066, east: 153.07972004)))
+        systems.append((.lime, GeoBounds(south: -27.50568066, west: 152.97359, north: -27.492206, east: 152.98875143)))
+        systems.append((.lime, GeoBounds(south: -27.50568066, west: 152.98875143, north: -27.492206, east: 153.00391287)))
+        systems.append((.lime, GeoBounds(south: -27.50568066, west: 153.00391287, north: -27.492206, east: 153.0190743)))
+        systems.append((.lime, GeoBounds(south: -27.50568066, west: 153.0190743, north: -27.492206, east: 153.03423574)))
+        systems.append((.lime, GeoBounds(south: -27.50568066, west: 153.03423574, north: -27.492206, east: 153.04939717)))
+        systems.append((.lime, GeoBounds(south: -27.50568066, west: 153.04939717, north: -27.492206, east: 153.06455861)))
+        systems.append((.lime, GeoBounds(south: -27.50568066, west: 153.06455861, north: -27.492206, east: 153.07972004)))
+        systems.append((.lime, GeoBounds(south: -27.492206, west: 152.97359, north: -27.47873133, east: 152.98875143)))
+        systems.append((.lime, GeoBounds(south: -27.492206, west: 152.98875143, north: -27.47873133, east: 153.00391287)))
+        systems.append((.lime, GeoBounds(south: -27.492206, west: 153.00391287, north: -27.47873133, east: 153.0190743)))
+        systems.append((.lime, GeoBounds(south: -27.492206, west: 153.0190743, north: -27.47873133, east: 153.03423574)))
+        systems.append((.lime, GeoBounds(south: -27.492206, west: 153.03423574, north: -27.47873133, east: 153.04939717)))
+        systems.append((.lime, GeoBounds(south: -27.492206, west: 153.04939717, north: -27.47873133, east: 153.06455861)))
+        systems.append((.lime, GeoBounds(south: -27.492206, west: 153.06455861, north: -27.47873133, east: 153.07972004)))
+        systems.append((.lime, GeoBounds(south: -27.47873133, west: 152.97359, north: -27.46525666, east: 152.98875143)))
+        systems.append((.lime, GeoBounds(south: -27.47873133, west: 152.98875143, north: -27.46525666, east: 153.00391287)))
+        systems.append((.lime, GeoBounds(south: -27.47873133, west: 153.00391287, north: -27.46525666, east: 153.0190743)))
+        systems.append((.lime, GeoBounds(south: -27.47873133, west: 153.0190743, north: -27.46525666, east: 153.03423574)))
+        systems.append((.lime, GeoBounds(south: -27.47873133, west: 153.03423574, north: -27.46525666, east: 153.04939717)))
+        systems.append((.lime, GeoBounds(south: -27.47873133, west: 153.04939717, north: -27.46525666, east: 153.06455861)))
+        systems.append((.lime, GeoBounds(south: -27.47873133, west: 153.06455861, north: -27.46525666, east: 153.07972004)))
+        systems.append((.lime, GeoBounds(south: -27.47873133, west: 153.17068865, north: -27.46525666, east: 153.18585008)))
+        systems.append((.lime, GeoBounds(south: -27.47873133, west: 153.18585008, north: -27.46525666, east: 153.19579)))
+        systems.append((.lime, GeoBounds(south: -27.46525666, west: 152.97359, north: -27.45178199, east: 152.98875143)))
+        systems.append((.lime, GeoBounds(south: -27.46525666, west: 152.98875143, north: -27.45178199, east: 153.00391287)))
+        systems.append((.lime, GeoBounds(south: -27.46525666, west: 153.00391287, north: -27.45178199, east: 153.0190743)))
+        systems.append((.lime, GeoBounds(south: -27.46525666, west: 153.0190743, north: -27.45178199, east: 153.03423574)))
+        systems.append((.lime, GeoBounds(south: -27.46525666, west: 153.03423574, north: -27.45178199, east: 153.04939717)))
+        systems.append((.lime, GeoBounds(south: -27.46525666, west: 153.04939717, north: -27.45178199, east: 153.06455861)))
+        systems.append((.lime, GeoBounds(south: -27.46525666, west: 153.06455861, north: -27.45178199, east: 153.07972004)))
+        systems.append((.lime, GeoBounds(south: -27.46525666, west: 153.17068865, north: -27.45178199, east: 153.18585008)))
+        systems.append((.lime, GeoBounds(south: -27.46525666, west: 153.18585008, north: -27.45178199, east: 153.19579)))
+        systems.append((.lime, GeoBounds(south: -27.45178199, west: 152.98875143, north: -27.43830733, east: 153.00391287)))
+        systems.append((.lime, GeoBounds(south: -27.45178199, west: 153.00391287, north: -27.43830733, east: 153.0190743)))
+        systems.append((.lime, GeoBounds(south: -27.45178199, west: 153.0190743, north: -27.43830733, east: 153.03423574)))
+        systems.append((.lime, GeoBounds(south: -27.45178199, west: 153.03423574, north: -27.43830733, east: 153.04939717)))
+        systems.append((.lime, GeoBounds(south: -27.45178199, west: 153.04939717, north: -27.43830733, east: 153.06455861)))
+        systems.append((.lime, GeoBounds(south: -27.45178199, west: 153.06455861, north: -27.43830733, east: 153.07972004)))
+        systems.append((.lime, GeoBounds(south: -27.45178199, west: 153.07972004, north: -27.43830733, east: 153.09488147)))
+        systems.append((.lime, GeoBounds(south: -27.45178199, west: 153.15552721, north: -27.43830733, east: 153.17068865)))
+        systems.append((.lime, GeoBounds(south: -27.45178199, west: 153.17068865, north: -27.43830733, east: 153.18585008)))
+        systems.append((.lime, GeoBounds(south: -27.45178199, west: 153.18585008, north: -27.43830733, east: 153.19579)))
+        systems.append((.lime, GeoBounds(south: -27.43830733, west: 153.00391287, north: -27.42483266, east: 153.0190743)))
+        systems.append((.lime, GeoBounds(south: -27.43830733, west: 153.0190743, north: -27.42483266, east: 153.03423574)))
+        systems.append((.lime, GeoBounds(south: -27.43830733, west: 153.03423574, north: -27.42483266, east: 153.04939717)))
+        systems.append((.lime, GeoBounds(south: -27.43830733, west: 153.04939717, north: -27.42483266, east: 153.06455861)))
+        systems.append((.lime, GeoBounds(south: -27.43830733, west: 153.06455861, north: -27.42483266, east: 153.07972004)))
+        systems.append((.lime, GeoBounds(south: -27.43830733, west: 153.15552721, north: -27.42483266, east: 153.17068865)))
+        systems.append((.lime, GeoBounds(south: -27.43830733, west: 153.17068865, north: -27.42483266, east: 153.18585008)))
+        systems.append((.lime, GeoBounds(south: -27.42483266, west: 153.0190743, north: -27.41135799, east: 153.03423574)))
+        systems.append((.lime, GeoBounds(south: -27.42483266, west: 153.03423574, north: -27.41135799, east: 153.04939717)))
+        systems.append((.lime, GeoBounds(south: -27.42483266, west: 153.04939717, north: -27.41135799, east: 153.06455861)))
+        systems.append((.lime, GeoBounds(south: -27.42483266, west: 153.15552721, north: -27.41135799, east: 153.17068865)))
+        systems.append((.lime, GeoBounds(south: -27.34398465, west: 153.04939717, north: -27.33050999, east: 153.06455861)))
+        systems.append((.lime, GeoBounds(south: -27.34398465, west: 153.06455861, north: -27.33050999, east: 153.07972004)))
+        systems.append((.lime, GeoBounds(south: -27.34398465, west: 153.07972004, north: -27.33050999, east: 153.09488147)))
+        systems.append((.lime, GeoBounds(south: -27.33050999, west: 153.04939717, north: -27.31703532, east: 153.06455861)))
+        systems.append((.lime, GeoBounds(south: -27.33050999, west: 153.06455861, north: -27.31703532, east: 153.07972004)))
+        systems.append((.lime, GeoBounds(south: -27.33050999, west: 153.07972004, north: -27.31703532, east: 153.09488147)))
+        systems.append((.lime, GeoBounds(south: -27.31703532, west: 153.04939717, north: -27.30356065, east: 153.06455861)))
+        systems.append((.lime, GeoBounds(south: -27.31703532, west: 153.06455861, north: -27.30356065, east: 153.07972004)))
+        systems.append((.lime, GeoBounds(south: -27.30356065, west: 153.04939717, north: -27.29008598, east: 153.06455861)))
+        systems.append((.lime, GeoBounds(south: -27.30356065, west: 153.06455861, north: -27.29008598, east: 153.07972004)))
+        systems.append((.lime, GeoBounds(south: -27.29008598, west: 153.04939717, north: -27.28388, east: 153.06455861)))
+        systems.append((.lime, GeoBounds(south: -27.29008598, west: 153.06455861, north: -27.28388, east: 153.07972004)))
+        systems.append((.binbin, GeoBounds(south: 40.95108, west: 28.57288, north: 41.11293, east: 29.0613)))
+        systems.append((.binbin, GeoBounds(south: 40.75167, west: 29.00335, north: 41.06423, east: 29.4595)))
+        systems.append((.binbin, GeoBounds(south: 36.83465, west: 30.5839, north: 36.94623, east: 30.88775)))
+        systems.append((.binbin, GeoBounds(south: 38.36482, west: 27.03696, north: 38.4841, east: 27.24384)))
+        systems.append((.binbin, GeoBounds(south: 41.26071, west: 36.20146, north: 41.39424, east: 36.37265)))
+        systems.append((.binbin, GeoBounds(south: 37.84635, west: 32.43842, north: 38.03728, east: 32.5375)))
+        systems.append((.binbin, GeoBounds(south: 39.74038, west: 30.43542, north: 39.80315, east: 30.55629)))
+        systems.append((.binbin, GeoBounds(south: 36.99224, west: 35.2382, north: 37.06665, east: 35.37584)))
+        systems.append((.binbin, GeoBounds(south: 40.1802, west: 28.825, north: 40.26635, east: 29.07401)))
+        systems.append((.binbin, GeoBounds(south: 40.70145, west: 29.78391, north: 40.78516, east: 30.03083)))
+        systems.append((.binbin, GeoBounds(south: 36.46754, west: 31.96715, north: 36.56011, east: 32.12278)))
+        systems.append((.binbin, GeoBounds(south: 40.73457, west: 30.32067, north: 40.81613, east: 30.43402)))
+        systems.append((.binbin, GeoBounds(south: 37.02191, west: 37.30337, north: 37.09106, east: 37.38447)))
+        systems.append((.beam, GeoBounds(south: 39.857991999999996, west: 32.594919999999995, north: 40.138448000000004, east: 32.969954)))
+        systems.append((.beam, GeoBounds(south: 36.44495, west: 30.53284, north: 36.935665, east: 32.138625000000005)))
+        systems.append((.beam, GeoBounds(south: 36.604504999999996, west: 29.08031925789807, north: 36.687972, east: 29.208493999999998)))
+        systems.append((.beam, GeoBounds(south: 36.784875, west: 28.205607, north: 36.887838947981805, east: 28.292610999999997)))
+        systems.append((.beam, GeoBounds(south: 36.722321343100596, west: 34.49301282568111, north: 36.819913, east: 34.638218)))
+        systems.append((.beam, GeoBounds(south: 1.394025, west: 102.714203, north: 2.590063, east: 103.904297)))
+        systems.append((.beam, GeoBounds(south: 3.0430620000000004, west: 101.61356400000001, north: 3.2326699999999997, east: 101.751621)))
+        systems.append((.beam, GeoBounds(south: 3.7930750000000004, west: 103.265944, north: 3.8779429999999997, east: 103.33143)))
+        systems.append((.beam, GeoBounds(south: 2.184842, west: 102.243539, north: 2.2226559999999997, east: 102.273794)))
+        systems.append((.beam, GeoBounds(south: 3.715441, west: 103.117328, north: 3.735854, east: 103.128935)))
+        systems.append((.beam, GeoBounds(south: 5.288024, west: 100.287211, north: 5.355436, east: 100.32185299999999)))
+        systems.append((.beam, GeoBounds(south: 4.171338, west: 100.602553, north: 4.613759, east: 101.226873)))
+        systems.append((.beam, GeoBounds(south: 3.1675310000000003, west: 113.028434, north: 4.406809, east: 113.999558)))
+        systems.append((.beam, GeoBounds(south: 2.822144, west: 101.415692, north: 3.263295, east: 101.80005)))
+        systems.append((.beam, GeoBounds(south: 5.278537, west: 103.058942, north: 5.417827, east: 103.176733)))
+        systems.append((.gcoo, GeoBounds(south: 35.0662, west: 128.8568, north: 35.289, east: 129.209)))
+        systems.append((.kickgoing, GeoBounds(south: 35.0568, west: 128.944, north: 35.2887, east: 129.2105)))
+        systems.append((.xingxing, GeoBounds(south: 35.0319, west: 128.8798, north: 35.2855, east: 129.1311)))
+        systems.append((.swing, GeoBounds(south: 35.0922, west: 128.9948, north: 35.2992, east: 129.2616)))
+        systems.append((.kickgoing, GeoBounds(south: 37.4297, west: 126.783, north: 37.6637, east: 127.104)))
+        systems.append((.xingxing, GeoBounds(south: 37.4299, west: 126.8647, north: 37.6636, east: 127.1869)))
+        systems.append((.swing, GeoBounds(south: 37.4261, west: 126.7967, north: 37.6622, east: 127.1505)))
+        systems.append((.gcoo, GeoBounds(south: 35.5016, west: 129.233, north: 35.6681, east: 129.3808)))
+        systems.append((.xingxing, GeoBounds(south: 35.4616, west: 129.2043, north: 35.6699, east: 129.4522)))
+        systems.append((.swing, GeoBounds(south: 35.3855, west: 129.0864, north: 35.6685, east: 129.4564)))
+        systems.append((.gcoo, GeoBounds(south: 36.2784, west: 127.274, north: 36.4671, east: 127.4834)))
+        systems.append((.swing, GeoBounds(south: 36.2583, west: 127.2744, north: 36.4135, east: 127.4909)))
+        systems.append((.gcoo, GeoBounds(south: 35.7744, west: 128.4469, north: 35.9717, east: 128.7647)))
+        systems.append((.xingxing, GeoBounds(south: 35.6267, west: 128.381, north: 35.7425, east: 128.4863)))
+        systems.append((.swing, GeoBounds(south: 35.7775, west: 128.4541, north: 35.9735, east: 128.7588)))
+        systems.append((.gcoo, GeoBounds(south: 35.7683, west: 127.0385, north: 35.8913, east: 127.1936)))
+        systems.append((.xingxing, GeoBounds(south: 35.7685, west: 127.0392, north: 35.8942, east: 127.192)))
+        systems.append((.swing, GeoBounds(south: 35.7742, west: 127.0344, north: 35.8994, east: 127.1991)))
+        systems.append((.gcoo, GeoBounds(south: 37.3448, west: 126.4548, north: 37.7665, east: 126.7623)))
+        systems.append((.kickgoing, GeoBounds(south: 37.4655, west: 126.6863, north: 37.5388, east: 126.7766)))
+        systems.append((.swing, GeoBounds(south: 37.4004, west: 126.4499, north: 37.6373, east: 126.7764)))
+        systems.append((.gcoo, GeoBounds(south: 36.5829, west: 127.293, north: 36.7571, east: 127.5409)))
+        systems.append((.xingxing, GeoBounds(south: 36.5928, west: 127.2843, north: 36.6551, east: 127.3858)))
+        systems.append((.swing, GeoBounds(south: 36.5807, west: 127.2843, north: 36.7569, east: 127.5744)))
+        systems.append((.gcoo, GeoBounds(south: 37.139, west: 126.7879, north: 37.2965, east: 127.1641)))
+        systems.append((.xingxing, GeoBounds(south: 37.1795, west: 126.7912, north: 37.2965, east: 127.0352)))
+        systems.append((.swing, GeoBounds(south: 37.0632, west: 126.773, north: 37.2965, east: 127.1516)))
+        systems.append((.gcoo, GeoBounds(south: 35.0702, west: 126.738, north: 35.2475, east: 126.9605)))
+        systems.append((.gcoo, GeoBounds(south: 37.3307, west: 127.0401, north: 37.4775, east: 127.1963)))
+        systems.append((.xingxing, GeoBounds(south: 37.3307, west: 127.0602, north: 37.4775, east: 127.1901)))
+        systems.append((.swing, GeoBounds(south: 37.3307, west: 127.0472, north: 37.4775, east: 127.1931)))
+        systems.append((.gcoo, GeoBounds(south: 37.2218, west: 126.9236, north: 37.3336, east: 127.093)))
+        systems.append((.xingxing, GeoBounds(south: 37.2218, west: 126.9236, north: 37.3053, east: 127.0183)))
+        systems.append((.swing, GeoBounds(south: 37.2218, west: 126.9236, north: 37.341, east: 127.093)))
+        systems.append((.gcoo, GeoBounds(south: 35.1822, west: 128.5875, north: 35.2815, east: 128.733)))
+        systems.append((.xingxing, GeoBounds(south: 35.1135, west: 128.4792, north: 35.2811, east: 128.7381)))
+        systems.append((.swing, GeoBounds(south: 35.0689, west: 128.4751, north: 35.3542, east: 128.8465)))
+        systems.append((.kickgoing, GeoBounds(south: 37.4621, west: 126.7382, north: 37.5486, east: 126.837)))
+        systems.append((.swing, GeoBounds(south: 37.4557, west: 126.7382, north: 37.5533, east: 126.837)))
+        systems.append((.gcoo, GeoBounds(south: 36.0579, west: 128.2748, north: 36.1772, east: 128.4758)))
+        systems.append((.swing, GeoBounds(south: 36.0579, west: 128.2678, north: 36.2001, east: 128.4971)))
+        systems.append((.gcoo, GeoBounds(south: 37.6211, west: 127.1609, north: 37.7587, east: 127.3286)))
+        systems.append((.swing, GeoBounds(south: 37.55, west: 127.0784, north: 37.7751, east: 127.3494)))
+        systems.append((.gcoo, GeoBounds(south: 36.7177, west: 126.9675, north: 36.8576, east: 127.1231)))
+        systems.append((.swing, GeoBounds(south: 36.7124, west: 126.9045, north: 36.9449, east: 127.1138)))
+        systems.append((.gcoo, GeoBounds(south: 36.4468, west: 127.2098, north: 36.6366, east: 127.3826)))
+        systems.append((.swing, GeoBounds(south: 36.4431, west: 127.202, north: 36.6469, east: 127.3256)))
+        systems.append((.gcoo, GeoBounds(south: 37.2644, west: 126.7684, north: 37.3629, east: 126.9023)))
+        systems.append((.xingxing, GeoBounds(south: 37.2648, west: 126.7698, north: 37.363, east: 126.9236)))
+        systems.append((.swing, GeoBounds(south: 37.2609, west: 126.7366, north: 37.3673, east: 126.9365)))
+        systems.append((.gcoo, GeoBounds(south: 36.7515, west: 127.0807, north: 36.8665, east: 127.3326)))
+        systems.append((.xingxing, GeoBounds(south: 36.8095, west: 127.1039, north: 36.9343, east: 127.2191)))
+        systems.append((.swing, GeoBounds(south: 36.7912, west: 127.0822, north: 36.9386, east: 127.2069)))
+        systems.append((.gcoo, GeoBounds(south: 35.7828, west: 128.6954, north: 35.934, east: 128.873)))
+        systems.append((.swing, GeoBounds(south: 35.7753, west: 128.689, north: 35.9382, east: 128.8788)))
+        systems.append((.gcoo, GeoBounds(south: 37.2058, west: 127.0487, north: 37.3626, east: 127.2489)))
+        systems.append((.swing, GeoBounds(south: 37.182, west: 127.031, north: 37.3702, east: 127.385)))
+        systems.append((.gcoo, GeoBounds(south: 36.9724, west: 126.9848, north: 37.1396, east: 127.1575)))
+        systems.append((.swing, GeoBounds(south: 36.9471, west: 126.8843, north: 37.1473, east: 127.1298)))
+        systems.append((.gcoo, GeoBounds(south: 37.6906, west: 126.6825, north: 37.7559, east: 126.7871)))
+        systems.append((.swing, GeoBounds(south: 37.6866, west: 126.6784, north: 37.8881, east: 126.8392)))
+        systems.append((.gcoo, GeoBounds(south: 37.574, west: 126.7016, north: 37.717, east: 126.8916)))
+        systems.append((.kickgoing, GeoBounds(south: 37.5691, west: 126.8408, north: 37.623, east: 126.9134)))
+        systems.append((.xingxing, GeoBounds(south: 37.5691, west: 126.8307, north: 37.6829, east: 126.9448)))
+        systems.append((.swing, GeoBounds(south: 37.58, west: 126.7252, north: 37.7384, east: 126.972)))
+        systems.append((.gcoo, GeoBounds(south: 35.9327, west: 129.2998, north: 36.1179, east: 129.4425)))
+        systems.append((.swing, GeoBounds(south: 35.93, west: 129.2922, north: 36.1314, east: 129.4723)))
+        systems.append((.gcoo, GeoBounds(south: 37.3561, west: 126.8672, north: 37.4251, east: 126.9862)))
+        systems.append((.kickgoing, GeoBounds(south: 37.3561, west: 126.8751, north: 37.4336, east: 126.9862)))
+        systems.append((.xingxing, GeoBounds(south: 37.3561, west: 126.8753, north: 37.4328, east: 126.9862)))
+        systems.append((.swing, GeoBounds(south: 37.3561, west: 126.8668, north: 37.4524, east: 126.9862)))
+        systems.append((.gcoo, GeoBounds(south: 37.6885, west: 127.0021, north: 37.7759, east: 127.1372)))
+        systems.append((.swing, GeoBounds(south: 37.684, west: 126.9983, north: 37.7779, east: 127.1044)))
+        systems.append((.gcoo, GeoBounds(south: 37.3221, west: 126.6851, north: 37.4635, east: 126.824)))
+        systems.append((.xingxing, GeoBounds(south: 37.3179, west: 126.6843, north: 37.4083, east: 126.8361)))
+        systems.append((.swing, GeoBounds(south: 37.3122, west: 126.6638, north: 37.4751, east: 126.8483)))
+        systems.append((.xingxing, GeoBounds(south: 37.4661, west: 127.1366, north: 37.5924, east: 127.2544)))
+        systems.append((.swing, GeoBounds(south: 37.5152, west: 127.1602, north: 37.5941, east: 127.2514)))
+        systems.append((.gcoo, GeoBounds(south: 37.1226, west: 127.0047, north: 37.2032, east: 127.1064)))
+        systems.append((.swing, GeoBounds(south: 37.1226, west: 126.9915, north: 37.2032, east: 127.1064)))
+        systems.append((.gcoo, GeoBounds(south: 37.2282, west: 127.4095, north: 37.3137, east: 127.5145)))
+        systems.append((.xingxing, GeoBounds(south: 37.0987, west: 127.597, north: 37.1436, east: 127.6412)))
+        systems.append((.swing, GeoBounds(south: 37.186, west: 127.3266, north: 37.3283, east: 127.526)))
+        systems.append((.gcoo, GeoBounds(south: 37.5787, west: 126.5712, north: 37.711, east: 126.8021)))
+        systems.append((.swing, GeoBounds(south: 37.5785, west: 126.5956, north: 37.679, east: 126.7677)))
+        systems.append((.gcoo, GeoBounds(south: 37.72, west: 128.8031, north: 37.9184, east: 128.9672)))
+        systems.append((.xingxing, GeoBounds(south: 37.714, west: 128.8394, north: 37.8256, east: 128.9499)))
+        systems.append((.gcoo, GeoBounds(south: 37.821, west: 127.6897, north: 37.9353, east: 127.7847)))
+        systems.append((.swing, GeoBounds(south: 37.8284, west: 127.6843, north: 37.9302, east: 127.7902)))
+        systems.append((.gcoo, GeoBounds(south: 35.1577, west: 128.7744, north: 35.2868, east: 128.932)))
+        systems.append((.xingxing, GeoBounds(south: 35.2096, west: 128.8204, north: 35.2881, east: 128.9396)))
+        systems.append((.swing, GeoBounds(south: 35.1507, west: 128.6888, north: 35.3427, east: 128.8532)))
+        systems.append((.gcoo, GeoBounds(south: 35.1318, west: 128.0405, north: 35.2272, east: 128.1657)))
+        systems.append((.xingxing, GeoBounds(south: 35.1349, west: 128.0299, north: 35.2308, east: 128.1694)))
+        systems.append((.swing, GeoBounds(south: 35.1269, west: 128.0221, north: 35.2318, east: 128.1862)))
+        systems.append((.gcoo, GeoBounds(south: 37.2639, west: 127.8496, north: 37.4007, east: 128.0103)))
+        systems.append((.swing, GeoBounds(south: 37.2422, west: 127.7686, north: 37.406, east: 128.0103)))
+        systems.append((.gcoo, GeoBounds(south: 35.9279, west: 126.6559, north: 36.0071, east: 126.8822)))
+        systems.append((.swing, GeoBounds(south: 35.9208, west: 126.6481, north: 36.0233, east: 126.8932)))
+        systems.append((.gcoo, GeoBounds(south: 37.3241, west: 127.1292, north: 37.4481, east: 127.3673)))
+        systems.append((.swing, GeoBounds(south: 37.3062, west: 127.1292, north: 37.4572, east: 127.3976)))
+        systems.append((.gcoo, GeoBounds(south: 33.4355, west: 126.4104, north: 33.5436, east: 126.6095)))
+        systems.append((.gcoo, GeoBounds(south: 36.9773, west: 127.119, north: 37.0331, east: 127.2957)))
+        systems.append((.swing, GeoBounds(south: 36.9788, west: 127.1959, north: 37.0809, east: 127.3891)))
+        systems.append((.gcoo, GeoBounds(south: 35.9145, west: 126.912, north: 35.9908, east: 127.0165)))
+        systems.append((.swing, GeoBounds(south: 35.9136, west: 126.9149, north: 35.993, east: 127.0215)))
+        systems.append((.gcoo, GeoBounds(south: 37.7694, west: 127.0242, north: 37.8626, east: 127.1237)))
+        systems.append((.swing, GeoBounds(south: 37.7688, west: 127.0163, north: 37.8741, east: 127.1256)))
+        systems.append((.swing, GeoBounds(south: 37.5562, west: 127.0975, north: 37.6488, east: 127.174)))
+        systems.append((.gcoo, GeoBounds(south: 35.2874, west: 128.9682, north: 35.3759, east: 129.0691)))
+        systems.append((.swing, GeoBounds(south: 35.2792, west: 128.968, north: 35.4359, east: 129.1994)))
+        systems.append((.xingxing, GeoBounds(south: 34.8458, west: 128.5855, north: 34.915, east: 128.7122)))
+        systems.append((.swing, GeoBounds(south: 34.8418, west: 128.5804, north: 34.9203, east: 128.7213)))
+        systems.append((.swing, GeoBounds(south: 37.3988, west: 126.8227, north: 37.4975, east: 126.9031)))
+        systems.append((.gcoo, GeoBounds(south: 35.8122, west: 129.148, north: 35.898, east: 129.253)))
+        systems.append((.swing, GeoBounds(south: 35.8066, west: 129.1496, north: 35.9041, east: 129.2602)))
+        systems.append((.xingxing, GeoBounds(south: 36.9499, west: 127.8514, north: 36.9885, east: 127.8965)))
+        systems.append((.swing, GeoBounds(south: 36.9247, west: 127.8778, north: 37.0324, east: 127.9696)))
+        systems.append((.gcoo, GeoBounds(south: 34.7668, west: 126.3416, north: 34.8461, east: 126.4627)))
+        systems.append((.gcoo, GeoBounds(south: 37.3024, west: 126.8993, north: 37.3814, east: 126.9655)))
+        systems.append((.kickgoing, GeoBounds(south: 37.3269, west: 126.8994, north: 37.3814, east: 126.9655)))
+        systems.append((.xingxing, GeoBounds(south: 37.3333, west: 126.9037, north: 37.3814, east: 126.9655)))
+        systems.append((.swing, GeoBounds(south: 37.3024, west: 126.9002, north: 37.3814, east: 126.9655)))
+        systems.append((.gcoo, GeoBounds(south: 36.0981, west: 128.0591, north: 36.1611, east: 128.211)))
+        systems.append((.swing, GeoBounds(south: 36.0952, west: 128.0535, north: 36.1633, east: 128.2158)))
+        systems.append((.gcoo, GeoBounds(south: 35.9639, west: 128.3157, north: 36.0944, east: 128.4375)))
+        systems.append((.swing, GeoBounds(south: 35.9589, west: 128.3101, north: 36.1038, east: 128.4424)))
+        systems.append((.xingxing, GeoBounds(south: 36.5594, west: 126.6234, north: 36.6748, east: 126.7096)))
+        systems.append((.gcoo, GeoBounds(south: 34.9166, west: 128.0493, north: 35.1067, east: 128.1151)))
+        systems.append((.swing, GeoBounds(south: 34.9089, west: 128.0211, north: 35.1105, east: 128.1353)))
+        systems.append((.gcoo, GeoBounds(south: 34.911, west: 127.4564, north: 35.005, east: 127.5716)))
+        systems.append((.gcoo, GeoBounds(south: 37.2976, west: 126.9259, north: 37.4154, east: 127.0133)))
+        systems.append((.kickgoing, GeoBounds(south: 37.3308, west: 126.9445, north: 37.4182, east: 127.0113)))
+        systems.append((.xingxing, GeoBounds(south: 37.3325, west: 126.9443, north: 37.4169, east: 127.0085)))
+        systems.append((.swing, GeoBounds(south: 37.2976, west: 126.9259, north: 37.4182, east: 127.0273)))
+        systems.append((.xingxing, GeoBounds(south: 36.8916, west: 127.5151, north: 37.1571, east: 127.6661)))
+        systems.append((.swing, GeoBounds(south: 36.8855, west: 127.5106, north: 36.9471, east: 127.5887)))
+        systems.append((.swing, GeoBounds(south: 36.7811, west: 128.5009, north: 36.902, east: 128.6609)))
+        systems.append((.swing, GeoBounds(south: 36.521, west: 128.6325, north: 36.6075, east: 128.8255)))
+        systems.append((.gcoo, GeoBounds(south: 34.783, west: 126.4098, north: 35.007, east: 126.5043)))
+        systems.append((.gcoo, GeoBounds(south: 36.7478, west: 126.4201, north: 36.8104, east: 126.5022)))
+        systems.append((.xingxing, GeoBounds(south: 36.6756, west: 126.56, north: 36.7052, east: 126.6055)))
+        systems.append((.gcoo, GeoBounds(south: 36.4256, west: 127.0909, north: 36.4939, east: 127.1737)))
+        systems.append((.xingxing, GeoBounds(south: 37.1064, west: 128.1666, north: 37.1962, east: 128.2468)))
+        systems.append((.swing, GeoBounds(south: 37.8632, west: 127.0163, north: 37.9589, east: 127.092)))
+        systems.append((.swing, GeoBounds(south: 35.376, west: 127.3383, north: 35.4492, east: 127.4321)))
+        systems.append((.gcoo, GeoBounds(south: 36.3595, west: 128.1222, north: 36.5947, east: 128.2003)))
+        systems.append((.swing, GeoBounds(south: 36.3577, west: 128.1202, north: 36.4542, east: 128.1956)))
+        systems.append((.gcoo, GeoBounds(south: 37.4632, west: 127.4568, north: 37.5144, east: 127.622)))
+        systems.append((.swing, GeoBounds(south: 37.4572, west: 127.3025, north: 37.5688, east: 127.6286)))
+        systems.append((.swing, GeoBounds(south: 36.8643, west: 126.5905, north: 36.9272, east: 126.6796)))
+        systems.append((.gcoo, GeoBounds(south: 35.9355, west: 128.8932, north: 36.0029, east: 128.9895)))
+        systems.append((.swing, GeoBounds(south: 35.8844, west: 128.8335, north: 36.0086, east: 128.9782)))
+        systems.append((.xingxing, GeoBounds(south: 36.8798, west: 127.4794, north: 36.9266, east: 127.5606)))
+        systems.append((.swing, GeoBounds(south: 36.8139, west: 127.406, north: 36.9326, east: 127.5678)))
+        systems.append((.swing, GeoBounds(south: 36.748, west: 127.5445, north: 36.8342, east: 127.6484)))
+        systems.append((.gcoo, GeoBounds(south: 35.5344, west: 126.8268, north: 35.6016, east: 126.8938)))
+        systems.append((.gcoo, GeoBounds(south: 35.8232, west: 127.0368, north: 35.9778, east: 127.1833)))
+        systems.append((.swing, GeoBounds(south: 35.8151, west: 127.0333, north: 35.9385, east: 127.1057)))
+        systems.append((.xingxing, GeoBounds(south: 36.6443, west: 126.648, north: 36.7132, east: 126.88)))
+        systems.append((.swing, GeoBounds(south: 36.6493, west: 126.8062, north: 36.7446, east: 126.8863)))
+        systems.append((.gcoo, GeoBounds(south: 35.6609, west: 127.879, north: 35.7084, east: 127.9446)))
+        systems.append((.swing, GeoBounds(south: 34.7049, west: 127.6138, north: 34.8015, east: 127.772)))
+        systems.append((.gcoo, GeoBounds(south: 34.9835, west: 126.6895, north: 35.0685, east: 126.8217)))
+        systems.append((.gcoo, GeoBounds(south: 38.1632, west: 128.5422, north: 38.2335, east: 128.6182)))
+        systems.append((.swing, GeoBounds(south: 36.9433, west: 129.3688, north: 37.0776, east: 129.4439)))
+        systems.append((.gcoo, GeoBounds(south: 35.7764, west: 126.8595, north: 35.8325, east: 127.0147)))
+        systems.append((.swing, GeoBounds(south: 36.7619, west: 127.6242, north: 36.8338, east: 127.8236)))
+        systems.append((.swing, GeoBounds(south: 34.8062, west: 128.3751, north: 34.907, east: 128.4588)))
+        systems.append((.gcoo, GeoBounds(south: 37.4189, west: 129.1292, north: 37.4789, east: 129.196)))
+        systems.append((.swing, GeoBounds(south: 36.4569, west: 127.6845, north: 36.5142, east: 127.7613)))
+        systems.append((.gcoo, GeoBounds(south: 37.7184, west: 127.3935, north: 37.8667, east: 127.543)))
+        systems.append((.gcoo, GeoBounds(south: 36.5681, west: 128.1637, north: 36.6243, east: 128.2309)))
+        systems.append((.swing, GeoBounds(south: 35.512, west: 128.4622, north: 35.5656, east: 128.5312)))
+        systems.append((.swing, GeoBounds(south: 37.9955, west: 127.0333, north: 38.0551, east: 127.0983)))
+        systems.append((.swing, GeoBounds(south: 37.6619, west: 127.8491, north: 37.724, east: 127.9344)))
+        systems.append((.gcoo, GeoBounds(south: 34.9484, west: 128.2905, north: 34.995, east: 128.3506)))
+        systems.append((.swing, GeoBounds(south: 35.435, west: 128.7111, north: 35.5276, east: 128.8303)))
+        systems.append((.gcoo, GeoBounds(south: 35.0183, west: 126.9259, north: 35.0922, east: 127.0198)))
+        systems.append((.swing, GeoBounds(south: 35.695, west: 126.703, north: 35.7509, east: 126.7685)))
+        systems.append((.gcoo, GeoBounds(south: 33.2218, west: 126.3906, north: 33.2783, east: 126.5908)))
+        systems.append((.swing, GeoBounds(south: 34.811, west: 127.8611, north: 34.8622, east: 127.9217)))
+        systems.append((.gcoo, GeoBounds(south: 37.4641, west: 129.0818, north: 37.5724, east: 129.1632)))
+        systems.append((.gcoo, GeoBounds(south: 34.5107, west: 127.1167, north: 34.6249, east: 127.3091)))
+        systems.append((.swing, GeoBounds(south: 37.4548, west: 127.9512, north: 37.5172, east: 128.031)))
+        systems.append((.swing, GeoBounds(south: 36.137, west: 127.7412, north: 36.2133, east: 127.8222)))
+        systems.append((.gcoo, GeoBounds(south: 36.32, west: 126.569, north: 36.3786, east: 126.6395)))
+        systems.append((.xingxing, GeoBounds(south: 35.2428, west: 128.3816, north: 35.3067, east: 128.5394)))
+        systems.append((.swing, GeoBounds(south: 36.2729, west: 127.535, north: 36.3336, east: 127.6066)))
+        systems.append((.swing, GeoBounds(south: 35.5917, west: 127.2525, north: 35.6525, east: 127.3126)))
+        systems.append((.gcoo, GeoBounds(south: 36.255, west: 126.837, north: 36.3149, east: 126.9516)))
+        systems.append((.gcoo, GeoBounds(south: 35.2801, west: 126.7578, north: 35.3199, east: 126.8063)))
+        systems.append((.swing, GeoBounds(south: 36.1714, west: 127.4265, north: 36.2137, east: 127.4906)))
+        systems.append((.swing, GeoBounds(south: 34.2909, west: 126.7166, north: 34.3399, east: 126.784)))
+        systems.append((.gcoo, GeoBounds(south: 34.5515, west: 126.5747, north: 34.5927, east: 126.6264)))
+        systems.append((.gcoo, GeoBounds(south: 35.4137, west: 126.6734, north: 35.4558, east: 126.752)))
+        systems.append((.kickgoing, GeoBounds(south: 37.398, west: 126.9584, north: 37.4704, east: 127.0508)))
+        systems.append((.gcoo, GeoBounds(south: 34.7305, west: 126.4352, north: 34.797, east: 126.5004)))
+        systems.append((.xingxing, GeoBounds(south: 35.9003, west: 128.2621, north: 35.9422, east: 128.3034)))
+        systems.append((.beam, GeoBounds(south: 37.274819, west: 126.764024, north: 37.354352000000006, east: 126.88072199999999)))
+        systems.append((.beam, GeoBounds(south: 37.462637, west: 126.726346, north: 37.53491497327775, east: 126.828007)))
+        systems.append((.beam, GeoBounds(south: 35.19047, west: 128.603013, north: 35.270655000000005, east: 128.724589)))
+        systems.append((.beam, GeoBounds(south: 36.5906519934978, west: 127.40170869057393, north: 36.7473484416684, east: 127.52716199999999)))
+        systems.append((.beam, GeoBounds(south: 35.626734, west: 128.387047, north: 35.962223, east: 128.861211)))
+        systems.append((.beam, GeoBounds(south: 35.70008, west: 128.68161, north: 35.962223, east: 128.861211)))
+        systems.append((.beam, GeoBounds(south: 36.314509, west: 127.323369, north: 36.399436, east: 127.430049)))
+        systems.append((.beam, GeoBounds(south: 37.778655, west: 126.955622, north: 37.938570000000006, east: 127.17698299999999)))
+        systems.append((.beam, GeoBounds(south: 37.778655, west: 126.955622, north: 37.93857, east: 127.12236)))
+        systems.append((.beam, GeoBounds(south: 37.189527, west: 126.967177, north: 37.22263, east: 127.053499)))
+        systems.append((.beam, GeoBounds(south: 37.189527, west: 126.99508, north: 37.2002, east: 127.053499)))
+        systems.append((.beam, GeoBounds(south: 36.091846999999994, west: 127.440897, north: 36.199499, east: 127.505078)))
+        systems.append((.beam, GeoBounds(south: 36.11054495816675, west: 128.073686710939, north: 36.15462055786906, east: 128.2020056129547)))
+        systems.append((.beam, GeoBounds(south: 35.160537999999995, west: 128.70755499999999, north: 35.319331000000005, east: 128.92595400000002)))
+        systems.append((.beam, GeoBounds(south: 35.160538, west: 128.75681, north: 35.319331, east: 128.925954)))
+        systems.append((.beam, GeoBounds(south: 37.577268, west: 126.611537, north: 37.665165, east: 126.738969)))
+        systems.append((.beam, GeoBounds(south: 37.610116999999995, west: 126.729095, north: 37.708361000000004, east: 126.857924)))
+        systems.append((.beam, GeoBounds(south: 37.68863, west: 126.729095, north: 37.708361, east: 126.857924)))
+        systems.append((.beam, GeoBounds(south: 35.11423336907953, west: 126.76583971391851, north: 35.23667935880794, east: 126.94829493395827)))
+        systems.append((.beam, GeoBounds(south: 34.914424, west: 127.557748, north: 34.988956, east: 127.76409788380748)))
+        systems.append((.beam, GeoBounds(south: 36.891587, west: 127.65085, north: 37.00599, east: 127.949958)))
+        systems.append((.beam, GeoBounds(south: 36.891587, west: 127.522597, north: 37.00599, east: 127.79847)))
+        systems.append((.beam, GeoBounds(south: 36.891587, west: 127.522597, north: 37.00599, east: 127.58511)))
+        systems.append((.beam, GeoBounds(south: 37.533252999999995, west: 127.17346, north: 37.579287, east: 127.23031605290103)))
+        systems.append((.beam, GeoBounds(south: 35.92302507095647, west: 126.92265816090386, north: 35.978682309156056, east: 127.02280383674638)))
+        systems.append((.beam, GeoBounds(south: 37.394312, west: 126.628628, north: 37.469663000000004, east: 126.71705999999999)))
+        systems.append((.beam, GeoBounds(south: 35.075120999999996, west: 128.779124, north: 35.112747000000006, east: 128.836802)))
+        systems.append((.beam, GeoBounds(south: 35.075121, west: 128.779124, north: 35.112747, east: 128.836802)))
+        systems.append((.beam, GeoBounds(south: 35.095028, west: 128.483625, north: 35.278105000000004, east: 128.614111)))
+        systems.append((.beam, GeoBounds(south: 37.592273999999996, west: 127.09599800000001, north: 37.676208, east: 127.182659)))
+        systems.append((.beam, GeoBounds(south: 37.592274, west: 127.10096, north: 37.64603, east: 127.17149)))
+        systems.append((.beam, GeoBounds(south: 36.996046, west: 127.01791300000001, north: 37.080891, east: 127.119524)))
+        systems.append((.beam, GeoBounds(south: 37.268221, west: 127.020461, north: 37.348109, east: 127.136455)))
+        systems.append((.beam, GeoBounds(south: 37.268221, west: 127.020461, north: 37.348109, east: 127.08987)))
+        systems.append((.beam, GeoBounds(south: 37.33342, west: 127.02707, north: 37.348109, east: 127.136455)))
+        systems.append((.beam, GeoBounds(south: 37.473147999999995, west: 126.893015, north: 37.579112, east: 127.147505)))
+        systems.append((.beam, GeoBounds(south: 37.46875, west: 127.13995, north: 37.503742, east: 127.16587)))
+        systems.append((.beam, GeoBounds(south: 37.460396, west: 127.123399, north: 37.503742, east: 127.16587)))
+        systems.append((.beam, GeoBounds(south: 37.460396, west: 127.123399, north: 37.47481, east: 127.16587)))
+        systems.append((.beam, GeoBounds(south: 36.557863, west: 128.46049, north: 36.582816, east: 128.520296)))
+        systems.append((.beam, GeoBounds(south: 36.557863, west: 128.46049, north: 36.582816, east: 128.520296)))
+        systems.append((.beam, GeoBounds(south: 37.223088, west: 127.610338, north: 37.316423, east: 127.68516199999999)))
+        return systems
+    }
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
     static let swissProviders: [ScooterProvider] = [.bolt, .bird, .dott, .hopp, .lime, .voi, .publibike]
@@ -1771,846 +1776,853 @@ struct ScooterCityDistance: Identifiable, Equatable, Sendable {
 
 /// Every city with scooter data, one entry per city, like COVERED_CITIES on the web.
 enum ScooterCityCatalog {
-    static let cities: [ScooterCity] = [
-        ScooterCity(id: "ch:amriswil", name: "Amriswil", countryCode: "CH", center: GeoPoint(latitude: 47.547, longitude: 9.2959), bounds: GeoBounds(south: 47.513, west: 9.234, north: 47.5773, east: 9.3262)),
-        ScooterCity(id: "ch:basel", name: "Basel", countryCode: "CH", center: GeoPoint(latitude: 47.5596, longitude: 7.5886), bounds: GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82)),
-        ScooterCity(id: "ch:bern", name: "Bern", countryCode: "CH", center: GeoPoint(latitude: 46.948, longitude: 7.4474), bounds: GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7)),
-        ScooterCity(id: "ch:biel", name: "Biel/Bienne", countryCode: "CH", center: GeoPoint(latitude: 47.1368, longitude: 7.2468), bounds: GeoBounds(south: 47.03, west: 7.05, north: 47.27, east: 7.45)),
-        ScooterCity(id: "ch:flawil", name: "Flawil", countryCode: "CH", center: GeoPoint(latitude: 47.413, longitude: 9.1832), bounds: GeoBounds(south: 47.3753, west: 9.1561, north: 47.4376, east: 9.2125)),
-        ScooterCity(id: "ch:frauenfeld", name: "Frauenfeld", countryCode: "CH", center: GeoPoint(latitude: 47.565, longitude: 8.91), bounds: GeoBounds(south: 47.45, west: 8.72, north: 47.68, east: 9.1)),
-        ScooterCity(id: "ch:gossau", name: "Gossau", countryCode: "CH", center: GeoPoint(latitude: 47.4155, longitude: 9.2548), bounds: GeoBounds(south: 47.3868, west: 9.2125, north: 47.4639, east: 9.2915)),
-        ScooterCity(id: "ch:illnau-effretikon", name: "Illnau-Effretikon", countryCode: "CH", center: GeoPoint(latitude: 47.44, longitude: 8.73), bounds: GeoBounds(south: 47.33, west: 8.58, north: 47.55, east: 8.88)),
-        ScooterCity(id: "ch:kloten", name: "Kloten", countryCode: "CH", center: GeoPoint(latitude: 47.4515, longitude: 8.5849), bounds: GeoBounds(south: 47.4287, west: 8.5477, north: 47.4829, east: 8.6213)),
-        ScooterCity(id: "ch:locarno", name: "Locarno", countryCode: "CH", center: GeoPoint(latitude: 46.169, longitude: 8.799), bounds: GeoBounds(south: 46.1, west: 8.67, north: 46.25, east: 8.9)),
-        ScooterCity(id: "ch:opfikon", name: "Opfikon", countryCode: "CH", center: GeoPoint(latitude: 47.4317, longitude: 8.5759), bounds: GeoBounds(south: 47.4156, west: 8.5533, north: 47.4568, east: 8.6208)),
-        ScooterCity(id: "ch:romanshorn", name: "Romanshorn", countryCode: "CH", center: GeoPoint(latitude: 47.555, longitude: 9.39), bounds: GeoBounds(south: 47.45, west: 9.2, north: 47.66, east: 9.58)),
-        ScooterCity(id: "ch:rorschach", name: "Rorschach", countryCode: "CH", center: GeoPoint(latitude: 47.478, longitude: 9.493), bounds: GeoBounds(south: 47.36, west: 9.3, north: 47.58, east: 9.68)),
-        ScooterCity(id: "ch:schaffhausen", name: "Schaffhausen", countryCode: "CH", center: GeoPoint(latitude: 47.715, longitude: 8.65), bounds: GeoBounds(south: 47.6, west: 8.42, north: 47.83, east: 8.88)),
-        ScooterCity(id: "ch:st-gallen", name: "St. Gallen", countryCode: "CH", center: GeoPoint(latitude: 47.4245, longitude: 9.3767), bounds: GeoBounds(south: 47.28, west: 9.1, north: 47.6, east: 9.65)),
-        ScooterCity(id: "ch:uster", name: "Uster", countryCode: "CH", center: GeoPoint(latitude: 47.34, longitude: 8.719999999999999), bounds: GeoBounds(south: 47.25, west: 8.58, north: 47.43, east: 8.86)),
-        ScooterCity(id: "ch:uzwil", name: "Uzwil", countryCode: "CH", center: GeoPoint(latitude: 47.4365, longitude: 9.1342), bounds: GeoBounds(south: 47.4149, west: 9.0528, north: 47.4735, east: 9.1565)),
-        ScooterCity(id: "ch:wadenswil", name: "Wädenswil", countryCode: "CH", center: GeoPoint(latitude: 47.2297, longitude: 8.6722), bounds: GeoBounds(south: 47.168, west: 8.62, north: 47.258, east: 8.72)),
-        ScooterCity(id: "ch:wil", name: "Wil", countryCode: "CH", center: GeoPoint(latitude: 47.4625, longitude: 9.045), bounds: GeoBounds(south: 47.441, west: 9, north: 47.5, east: 9.103)),
-        ScooterCity(id: "ch:winterthur", name: "Winterthur", countryCode: "CH", center: GeoPoint(latitude: 47.499, longitude: 8.7241), bounds: GeoBounds(south: 47.38, west: 8.53, north: 47.64, east: 8.97)),
-        ScooterCity(id: "ch:zurich", name: "Zürich", countryCode: "CH", center: GeoPoint(latitude: 47.3769, longitude: 8.5417), bounds: GeoBounds(south: 47.27, west: 8.34, north: 47.49, east: 8.73)),
-        ScooterCity(id: "fr:Agen", name: "Agen", countryCode: "FR", center: GeoPoint(latitude: 44.2033, longitude: 0.6163), bounds: GeoBounds(south: 44.17, west: 0.59, north: 44.22, east: 0.66), feeds: [ScooterCityFeed(id: "france:bird_fr_agen")]),
-        ScooterCity(id: "fr:Ajaccio", name: "Ajaccio", countryCode: "FR", center: GeoPoint(latitude: 41.9192, longitude: 8.7386), bounds: GeoBounds(south: 41.8879, west: 8.5984, north: 41.9581, east: 8.7953), feeds: [ScooterCityFeed(id: "france:bird_fr_ajaccio")]),
-        ScooterCity(id: "fr:Blois", name: "Blois", countryCode: "FR", center: GeoPoint(latitude: 47.5861, longitude: 1.3359), bounds: GeoBounds(south: 47.5477, west: 1.2701, north: 47.6332, east: 1.3711), feeds: [ScooterCityFeed(id: "france:bird_fr_blois-france")]),
-        ScooterCity(id: "fr:Châlons-en-Champagne", name: "Châlons-en-Champagne", countryCode: "FR", center: GeoPoint(latitude: 48.9566, longitude: 4.3523), bounds: GeoBounds(south: 48.9259, west: 4.2961, north: 48.9944, east: 4.4173), feeds: [ScooterCityFeed(id: "france:bird_fr_chalonsenchampagne")]),
-        ScooterCity(id: "fr:Cherbourg-en-Cotentin", name: "Cherbourg-en-Cotentin", countryCode: "FR", center: GeoPoint(latitude: 49.6424, longitude: -1.6244), bounds: GeoBounds(south: 49.584, west: -1.7346, north: 49.6874, east: -1.5299), feeds: [ScooterCityFeed(id: "france:bird_fr_cherbourg")]),
-        ScooterCity(id: "fr:Laval", name: "Laval", countryCode: "FR", center: GeoPoint(latitude: 48.0706, longitude: -0.7733), bounds: GeoBounds(south: 48.0366, west: -0.8698, north: 48.1153, east: -0.7185), feeds: [ScooterCityFeed(id: "france:bird_fr_laval")]),
-        ScooterCity(id: "fr:Vichy", name: "Vichy", countryCode: "FR", center: GeoPoint(latitude: 46.1278, longitude: 3.4266), bounds: GeoBounds(south: 46.0785, west: 3.354, north: 46.1945, east: 3.5438), feeds: [ScooterCityFeed(id: "france:bird_fr_vichy")]),
-        ScooterCity(id: "fr:Bordeaux", name: "Bordeaux", countryCode: "FR", center: GeoPoint(latitude: 44.8378, longitude: -0.5792), bounds: GeoBounds(south: 44.7393, west: -0.7866, north: 44.9989, east: -0.3947), feeds: [ScooterCityFeed(id: "france:dott_fr_bordeaux"), ScooterCityFeed(id: "france:pony_fr_bordeaux")]),
-        ScooterCity(id: "fr:Lyon", name: "Lyon", countryCode: "FR", center: GeoPoint(latitude: 45.7578, longitude: 4.832), bounds: GeoBounds(south: 45.7065, west: 4.757, north: 45.8489, east: 4.9294), feeds: [ScooterCityFeed(id: "france:dott_fr_lyon")]),
-        ScooterCity(id: "fr:Marne-la-Vallée (SIEMU)", name: "Marne-la-Vallée (SIEMU)", countryCode: "FR", center: GeoPoint(latitude: 48.855, longitude: 2.7067), bounds: GeoBounds(south: 48.8049, west: 2.6477, north: 48.8931, east: 2.7887), feeds: [ScooterCityFeed(id: "france:dott_fr_siemu")]),
-        ScooterCity(id: "fr:Tignes", name: "Tignes", countryCode: "FR", center: GeoPoint(latitude: 45.4687, longitude: 6.9063), bounds: GeoBounds(south: 45.36, west: 6.81, north: 45.56, east: 7), pauses: [ScooterSeasonalPause(from: "09-08", until: "06-22", timeZone: "Europe/Paris")], feeds: [ScooterCityFeed(id: "france:dott_fr_tignes", pause: ScooterSeasonalPause(from: "09-08", until: "06-22", timeZone: "Europe/Paris"))]),
-        ScooterCity(id: "fr:Le Chesnay-Rocquencourt", name: "Le Chesnay-Rocquencourt", countryCode: "FR", center: GeoPoint(latitude: 48.8265, longitude: 2.1253), bounds: GeoBounds(south: 48.8054, west: 2.0894, north: 48.8498, east: 2.1564), feeds: [ScooterCityFeed(id: "france:dott_fr_versailles-grand-parc")]),
-        ScooterCity(id: "fr:La Celle-Saint-Cloud", name: "La Celle-Saint-Cloud", countryCode: "FR", center: GeoPoint(latitude: 48.8484, longitude: 2.1362), bounds: GeoBounds(south: 48.8262, west: 2.0963, north: 48.8787, east: 2.1728), feeds: [ScooterCityFeed(id: "france:dott_fr_versailles-grand-parc")]),
-        ScooterCity(id: "fr:Bougival", name: "Bougival", countryCode: "FR", center: GeoPoint(latitude: 48.8608, longitude: 2.1398), bounds: GeoBounds(south: 48.8424, west: 2.1085, north: 48.876, east: 2.1701), feeds: [ScooterCityFeed(id: "france:dott_fr_versailles-grand-parc")]),
-        ScooterCity(id: "fr:Lille Métropole", name: "Lille Métropole", countryCode: "FR", center: GeoPoint(latitude: 50.6292, longitude: 3.0573), bounds: GeoBounds(south: 50.4906, west: 2.7749, north: 50.8037, east: 3.2867), feeds: [ScooterCityFeed(id: "france:lime_fr_lille")]),
-        ScooterCity(id: "fr:Roubaix", name: "Roubaix", countryCode: "FR", center: GeoPoint(latitude: 50.691, longitude: 3.1741), bounds: GeoBounds(south: 50.6658, west: 3.1471, north: 50.7117, east: 3.2214), feeds: [ScooterCityFeed(id: "france:lime_fr_lille")]),
-        ScooterCity(id: "fr:Tourcoing", name: "Tourcoing", countryCode: "FR", center: GeoPoint(latitude: 50.724, longitude: 3.161), bounds: GeoBounds(south: 50.6901, west: 3.1147, north: 50.752, east: 3.2008), feeds: [ScooterCityFeed(id: "france:lime_fr_lille")]),
-        ScooterCity(id: "fr:Croix", name: "Croix", countryCode: "FR", center: GeoPoint(latitude: 50.6804, longitude: 3.156), bounds: GeoBounds(south: 50.6541, west: 3.1321, north: 50.6966, east: 3.1779), feeds: [ScooterCityFeed(id: "france:lime_fr_lille")]),
-        ScooterCity(id: "fr:Wasquehal", name: "Wasquehal", countryCode: "FR", center: GeoPoint(latitude: 50.6695, longitude: 3.1308), bounds: GeoBounds(south: 50.6479, west: 3.1054, north: 50.6973, east: 3.1538), feeds: [ScooterCityFeed(id: "france:lime_fr_lille")]),
-        ScooterCity(id: "fr:Villeneuve-d'Ascq", name: "Villeneuve-d'Ascq", countryCode: "FR", center: GeoPoint(latitude: 50.6195, longitude: 3.1318), bounds: GeoBounds(south: 50.5961, west: 3.1119, north: 50.6764, east: 3.2118), feeds: [ScooterCityFeed(id: "france:lime_fr_lille")]),
-        ScooterCity(id: "fr:Wattrelos", name: "Wattrelos", countryCode: "FR", center: GeoPoint(latitude: 50.7018, longitude: 3.2156), bounds: GeoBounds(south: 50.6854, west: 3.1673, north: 50.7402, east: 3.2656), feeds: [ScooterCityFeed(id: "france:lime_fr_lille")]),
-        ScooterCity(id: "fr:Hem", name: "Hem", countryCode: "FR", center: GeoPoint(latitude: 50.6542, longitude: 3.1841), bounds: GeoBounds(south: 50.6304, west: 3.1577, north: 50.6758, east: 3.2248), feeds: [ScooterCityFeed(id: "france:lime_fr_lille")]),
-        ScooterCity(id: "fr:Marseille", name: "Marseille", countryCode: "FR", center: GeoPoint(latitude: 43.2965, longitude: 5.3698), bounds: GeoBounds(south: 43.1605, west: 5.2163, north: 43.4002, east: 5.545), feeds: [ScooterCityFeed(id: "france:lime_fr_marseille"), ScooterCityFeed(id: "france:voi_fr_66")]),
-        ScooterCity(id: "fr:Croissy-sur-Seine", name: "Croissy-sur-Seine", countryCode: "FR", center: GeoPoint(latitude: 48.8805, longitude: 2.1342), bounds: GeoBounds(south: 48.8672, west: 2.1062, north: 48.8938, east: 2.1623), feeds: [ScooterCityFeed(id: "france:lime_fr_paris_west")]),
-        ScooterCity(id: "fr:Houilles", name: "Houilles", countryCode: "FR", center: GeoPoint(latitude: 48.9266, longitude: 2.1866), bounds: GeoBounds(south: 48.913, west: 2.164, north: 48.9402, east: 2.2092), feeds: [ScooterCityFeed(id: "france:lime_fr_paris_west")]),
-        ScooterCity(id: "fr:Le Pecq", name: "Le Pecq", countryCode: "FR", center: GeoPoint(latitude: 48.8924, longitude: 2.1022), bounds: GeoBounds(south: 48.8741, west: 2.0802, north: 48.9108, east: 2.1242), feeds: [ScooterCityFeed(id: "france:lime_fr_paris_west")]),
-        ScooterCity(id: "fr:Le Port-Marly", name: "Le Port-Marly", countryCode: "FR", center: GeoPoint(latitude: 48.8808, longitude: 2.1104), bounds: GeoBounds(south: 48.8689, west: 2.097, north: 48.8927, east: 2.1238), feeds: [ScooterCityFeed(id: "france:lime_fr_paris_west")]),
-        ScooterCity(id: "fr:Le Vésinet", name: "Le Vésinet", countryCode: "FR", center: GeoPoint(latitude: 48.8928, longitude: 2.1312), bounds: GeoBounds(south: 48.8729, west: 2.108, north: 48.9127, east: 2.1545), feeds: [ScooterCityFeed(id: "france:lime_fr_paris_west")]),
-        ScooterCity(id: "fr:Marly-le-Roi", name: "Marly-le-Roi", countryCode: "FR", center: GeoPoint(latitude: 48.866, longitude: 2.0892), bounds: GeoBounds(south: 48.8435, west: 2.0649, north: 48.8884, east: 2.1135), feeds: [ScooterCityFeed(id: "france:lime_fr_paris_west")]),
-        ScooterCity(id: "fr:Montesson", name: "Montesson", countryCode: "FR", center: GeoPoint(latitude: 48.919, longitude: 2.1381), bounds: GeoBounds(south: 48.8999, west: 2.1091, north: 48.9382, east: 2.1671), feeds: [ScooterCityFeed(id: "france:lime_fr_paris_west")]),
-        ScooterCity(id: "fr:Sartrouville", name: "Sartrouville", countryCode: "FR", center: GeoPoint(latitude: 48.9374, longitude: 2.1744), bounds: GeoBounds(south: 48.9173, west: 2.1386, north: 48.9576, east: 2.2103), feeds: [ScooterCityFeed(id: "france:lime_fr_paris_west")]),
-        ScooterCity(id: "fr:Nantes", name: "Nantes", countryCode: "FR", center: GeoPoint(latitude: 47.2873, longitude: -1.5142), bounds: GeoBounds(south: 47.274, west: -1.536, north: 47.3, east: -1.492), feeds: [ScooterCityFeed(id: "france:naolib_fr_nantes")]),
-        ScooterCity(id: "fr:Saint-Herblain", name: "Saint-Herblain", countryCode: "FR", center: GeoPoint(latitude: 47.2271, longitude: -1.6407), bounds: GeoBounds(south: 47.21, west: -1.66, north: 47.244, east: -1.622), feeds: [ScooterCityFeed(id: "france:naolib_fr_nantes")]),
-        ScooterCity(id: "fr:Angers", name: "Angers", countryCode: "FR", center: GeoPoint(latitude: 47.4784, longitude: -0.5632), bounds: GeoBounds(south: 47.4052, west: -0.6573, north: 47.543, east: -0.4546), feeds: [ScooterCityFeed(id: "france:pony_fr_angers")]),
-        ScooterCity(id: "fr:Beauvais", name: "Beauvais", countryCode: "FR", center: GeoPoint(latitude: 49.4295, longitude: 2.0807), bounds: GeoBounds(south: 49.3973, west: 2.0343, north: 49.4768, east: 2.1367), feeds: [ScooterCityFeed(id: "france:pony_fr_beauvais")]),
-        ScooterCity(id: "fr:Bourges", name: "Bourges", countryCode: "FR", center: GeoPoint(latitude: 47.081, longitude: 2.3988), bounds: GeoBounds(south: 47.0315, west: 2.3471, north: 47.134, east: 2.4562), feeds: [ScooterCityFeed(id: "france:pony_fr_bourges")]),
-        ScooterCity(id: "fr:Évry-Courcouronnes", name: "Évry-Courcouronnes", countryCode: "FR", center: GeoPoint(latitude: 48.624, longitude: 2.429), bounds: GeoBounds(south: 48.6007, west: 2.3773, north: 48.6587, east: 2.476), feeds: [ScooterCityFeed(id: "france:pony_fr_evry")]),
-        ScooterCity(id: "fr:Hérouville-Saint-Clair", name: "Hérouville-Saint-Clair", countryCode: "FR", center: GeoPoint(latitude: 49.2032, longitude: -0.3261), bounds: GeoBounds(south: 49.176, west: -0.382, north: 49.3021, east: -0.2309), feeds: [ScooterCityFeed(id: "france:pony_fr_herouville")]),
-        ScooterCity(id: "fr:La Roche-sur-Yon", name: "La Roche-sur-Yon", countryCode: "FR", center: GeoPoint(latitude: 46.6706, longitude: -1.4269), bounds: GeoBounds(south: 46.6384, west: -1.4684, north: 46.7073, east: -1.3833), feeds: [ScooterCityFeed(id: "france:pony_fr_la_roche_sur_yon")]),
-        ScooterCity(id: "fr:Lorient", name: "Lorient", countryCode: "FR", center: GeoPoint(latitude: 47.7483, longitude: -3.3702), bounds: GeoBounds(south: 47.7171, west: -3.4203, north: 47.7831, east: -3.335), feeds: [ScooterCityFeed(id: "france:pony_fr_lorient")]),
-        ScooterCity(id: "fr:Perpignan", name: "Perpignan", countryCode: "FR", center: GeoPoint(latitude: 42.6887, longitude: 2.8948), bounds: GeoBounds(south: 42.6116, west: 2.7174, north: 42.7818, east: 3.0648), feeds: [ScooterCityFeed(id: "france:pony_fr_perpignan")]),
-        ScooterCity(id: "fr:Le Barcarès", name: "Le Barcarès", countryCode: "FR", center: GeoPoint(latitude: 42.7893, longitude: 3.0345), bounds: GeoBounds(south: 42.7636, west: 2.9899, north: 42.9527, east: 3.0736), feeds: [ScooterCityFeed(id: "france:pony_fr_perpignan")]),
-        ScooterCity(id: "fr:Poitiers", name: "Poitiers", countryCode: "FR", center: GeoPoint(latitude: 46.5802, longitude: 0.3404), bounds: GeoBounds(south: 46.5056, west: 0.236, north: 46.6815, east: 0.4341), feeds: [ScooterCityFeed(id: "france:pony_fr_poitiers")]),
-        ScooterCity(id: "fr:Lusignan", name: "Lusignan", countryCode: "FR", center: GeoPoint(latitude: 46.4349, longitude: 0.1228), bounds: GeoBounds(south: 46.4175, west: 0.0921, north: 46.4571, east: 0.1525), feeds: [ScooterCityFeed(id: "france:pony_fr_poitiers")]),
-        ScooterCity(id: "fr:Poissy", name: "Poissy", countryCode: "FR", center: GeoPoint(latitude: 48.9273, longitude: 2.0427), bounds: GeoBounds(south: 48.8829, west: 1.967, north: 48.9653, east: 2.0833), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]),
-        ScooterCity(id: "fr:Carrières-sous-Poissy", name: "Carrières-sous-Poissy", countryCode: "FR", center: GeoPoint(latitude: 48.9438, longitude: 2.0342), bounds: GeoBounds(south: 48.9218, west: 1.9902, north: 48.9726, east: 2.0628), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]),
-        ScooterCity(id: "fr:Andrésy", name: "Andrésy", countryCode: "FR", center: GeoPoint(latitude: 48.9823, longitude: 2.0606), bounds: GeoBounds(south: 48.9508, west: 2.0121, north: 49.0051, east: 2.0874), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]),
-        ScooterCity(id: "fr:Conflans-Sainte-Honorine", name: "Conflans-Sainte-Honorine", countryCode: "FR", center: GeoPoint(latitude: 48.9938, longitude: 2.0947), bounds: GeoBounds(south: 48.9761, west: 2.0586, north: 49.0268, east: 2.1408), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]),
-        ScooterCity(id: "fr:Les Mureaux", name: "Les Mureaux", countryCode: "FR", center: GeoPoint(latitude: 48.9934, longitude: 1.9093), bounds: GeoBounds(south: 48.9604, west: 1.8627, north: 49.0157, east: 1.975), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]),
-        ScooterCity(id: "fr:Meulan-en-Yvelines", name: "Meulan-en-Yvelines", countryCode: "FR", center: GeoPoint(latitude: 49.0051, longitude: 1.9099), bounds: GeoBounds(south: 48.9857, west: 1.8504, north: 49.0501, east: 1.9518), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]),
-        ScooterCity(id: "fr:Mantes-la-Jolie", name: "Mantes-la-Jolie", countryCode: "FR", center: GeoPoint(latitude: 48.9889, longitude: 1.7153), bounds: GeoBounds(south: 48.9735, west: 1.6435, north: 49.0189, east: 1.7394), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]),
-        ScooterCity(id: "fr:Mantes-la-Ville", name: "Mantes-la-Ville", countryCode: "FR", center: GeoPoint(latitude: 48.9779, longitude: 1.7135), bounds: GeoBounds(south: 48.9527, west: 1.6736, north: 48.9981, east: 1.7476), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]),
-        ScooterCity(id: "fr:Buchelay", name: "Buchelay", countryCode: "FR", center: GeoPoint(latitude: 48.9804, longitude: 1.6724), bounds: GeoBounds(south: 48.9609, west: 1.6421, north: 49.0044, east: 1.7161), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]),
-        ScooterCity(id: "fr:Limay", name: "Limay", countryCode: "FR", center: GeoPoint(latitude: 48.9921, longitude: 1.7358), bounds: GeoBounds(south: 48.9591, west: 1.6955, north: 49.0234, east: 1.7777), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]),
-        ScooterCity(id: "fr:Grenoble", name: "Grenoble", countryCode: "FR", center: GeoPoint(latitude: 45.1885, longitude: 5.7245), bounds: GeoBounds(south: 45.1054, west: 5.6232, north: 45.2809, east: 5.8865), feeds: [ScooterCityFeed(id: "france:voi_fr_358")]),
-        ScooterCity(id: "fr:Le Havre", name: "Le Havre", countryCode: "FR", center: GeoPoint(latitude: 49.4944, longitude: 0.1079), bounds: GeoBounds(south: 49.4671, west: 0.0529, north: 49.5982, east: 0.2092), feeds: [ScooterCityFeed(id: "france:voi_fr_336")]),
-        ScooterCity(id: "fr:Saint-Quentin-en-Yvelines", name: "Saint-Quentin-en-Yvelines", countryCode: "FR", center: GeoPoint(latitude: 48.787, longitude: 2.0446), bounds: GeoBounds(south: 48.6853, west: 1.8814, north: 48.8452, east: 2.1199), feeds: [ScooterCityFeed(id: "france:voi_fr_355")]),
-        ScooterCity(id: "de:Karlsruhe", name: "Karlsruhe", countryCode: "DE", center: GeoPoint(latitude: 49.0069, longitude: 8.4037), bounds: GeoBounds(south: 48.9649, west: 8.2776, north: 49.059, east: 8.5008), feeds: [ScooterCityFeed(id: "germany:bolt_de_karlsruhe"), ScooterCityFeed(id: "germany:voi_de_bw"), ScooterCityFeed(id: "germany:dott_de_karlsruhe")]),
-        ScooterCity(id: "de:Reutlingen", name: "Reutlingen", countryCode: "DE", center: GeoPoint(latitude: 48.4914, longitude: 9.2043), bounds: GeoBounds(south: 48.4312, west: 9.1335, north: 48.5396, east: 9.2596), feeds: [ScooterCityFeed(id: "germany:bolt_de_reutlingen_tuebingen"), ScooterCityFeed(id: "germany:voi_de_bw"), ScooterCityFeed(id: "germany:dott_de_reutlingen")]),
-        ScooterCity(id: "de:Tübingen", name: "Tübingen", countryCode: "DE", center: GeoPoint(latitude: 48.5216, longitude: 9.0576), bounds: GeoBounds(south: 48.4824, west: 9.0088, north: 48.5647, east: 9.1103), feeds: [ScooterCityFeed(id: "germany:bolt_de_reutlingen_tuebingen"), ScooterCityFeed(id: "germany:voi_de_bw"), ScooterCityFeed(id: "germany:dott_de_tubingen")]),
-        ScooterCity(id: "de:Stuttgart", name: "Stuttgart", countryCode: "DE", center: GeoPoint(latitude: 48.7758, longitude: 9.1829), bounds: GeoBounds(south: 48.6977, west: 9.0659, north: 48.8618, east: 9.29), feeds: [ScooterCityFeed(id: "germany:bolt_de_stuttgart"), ScooterCityFeed(id: "germany:dott_de_stuttgart"), ScooterCityFeed(id: "germany:lime_de_bw"), ScooterCityFeed(id: "germany:voi_de_bw")]),
-        ScooterCity(id: "de:Aachen", name: "Aachen", countryCode: "DE", center: GeoPoint(latitude: 50.7773, longitude: 6.0895), bounds: GeoBounds(south: 50.6531, west: 5.9608, north: 50.8662, east: 6.2321), feeds: [ScooterCityFeed(id: "germany:dott_de_aachen"), ScooterCityFeed(id: "germany:voi_de_aachen")]),
-        ScooterCity(id: "de:Berlin", name: "Berlin", countryCode: "DE", center: GeoPoint(latitude: 52.52, longitude: 13.405), bounds: GeoBounds(south: 52.13666385481394, west: 12.601229331022722, north: 52.90186135994416, east: 13.905921424498281), feeds: [ScooterCityFeed(id: "germany:dott_de_berlin"), ScooterCityFeed(id: "germany:voi_de_app_145")]),
-        ScooterCity(id: "de:Köln", name: "Köln", countryCode: "DE", center: GeoPoint(latitude: 50.9375, longitude: 6.9603), bounds: GeoBounds(south: 50.8214, west: 6.7585, north: 51.094, east: 7.176), feeds: [ScooterCityFeed(id: "germany:dott_de_cologne"), ScooterCityFeed(id: "germany:voi_de_koeln")]),
-        ScooterCity(id: "de:Düsseldorf", name: "Düsseldorf", countryCode: "DE", center: GeoPoint(latitude: 51.2213, longitude: 6.7886), bounds: GeoBounds(south: 51.1154, west: 6.6748, north: 51.3615, east: 6.9539), feeds: [ScooterCityFeed(id: "germany:dott_de_dusseldorf"), ScooterCityFeed(id: "germany:voi_de_duesseldorf")]),
-        ScooterCity(id: "de:Essen", name: "Essen", countryCode: "DE", center: GeoPoint(latitude: 51.4508, longitude: 7.0085), bounds: GeoBounds(south: 51.3386, west: 6.8803, north: 51.5455, east: 7.1516), feeds: [ScooterCityFeed(id: "germany:dott_de_essen"), ScooterCityFeed(id: "germany:voi_de_essen")]),
-        ScooterCity(id: "de:Hannover", name: "Hannover", countryCode: "DE", center: GeoPoint(latitude: 52.3903, longitude: 9.7399), bounds: GeoBounds(south: 52.202975, west: 9.265968, north: 52.578291, east: 10.030858), feeds: [ScooterCityFeed(id: "germany:dott_de_hannover"), ScooterCityFeed(id: "germany:voi_de_app_292")]),
-        ScooterCity(id: "de:Heidelberg", name: "Heidelberg", countryCode: "DE", center: GeoPoint(latitude: 49.4037, longitude: 8.6752), bounds: GeoBounds(south: 49.25901779678085, west: 8.56430459193761, north: 49.49783733196581, east: 9.023205481851134), feeds: [ScooterCityFeed(id: "germany:dott_de_heidelberg"), ScooterCityFeed(id: "germany:voi_de_app_404")]),
-        ScooterCity(id: "de:Leimen", name: "Leimen", countryCode: "DE", center: GeoPoint(latitude: 49.3483, longitude: 8.6911), bounds: GeoBounds(south: 49.315, west: 8.62, north: 49.37, east: 8.73), feeds: [ScooterCityFeed(id: "germany:dott_de_heidelberg"), ScooterCityFeed(id: "germany:zeus_de_leimen_walldorf_wiesloch")]),
-        ScooterCity(id: "de:Heilbronn", name: "Heilbronn", countryCode: "DE", center: GeoPoint(latitude: 49.1426, longitude: 9.2168), bounds: GeoBounds(south: 49.0791, west: 9.0868, north: 49.2308, east: 9.3189), feeds: [ScooterCityFeed(id: "germany:dott_de_heilbronn")]),
-        ScooterCity(id: "de:Weinsberg", name: "Weinsberg", countryCode: "DE", center: GeoPoint(latitude: 49.1513, longitude: 9.2876), bounds: GeoBounds(south: 49.139, west: 9.2412, north: 49.1781, east: 9.3173), feeds: [ScooterCityFeed(id: "germany:dott_de_heilbronn")]),
-        ScooterCity(id: "de:Untereisesheim", name: "Untereisesheim", countryCode: "DE", center: GeoPoint(latitude: 49.2111, longitude: 9.2019), bounds: GeoBounds(south: 49.2015, west: 9.1785, north: 49.2246, east: 9.2168), feeds: [ScooterCityFeed(id: "germany:dott_de_heilbronn")]),
-        ScooterCity(id: "de:Neckarsulm", name: "Neckarsulm", countryCode: "DE", center: GeoPoint(latitude: 49.1918, longitude: 9.2246), bounds: GeoBounds(south: 49.1696, west: 9.1596, north: 49.2288, east: 9.3325), feeds: [ScooterCityFeed(id: "germany:dott_de_heilbronn")]),
-        ScooterCity(id: "de:Kaiserslautern", name: "Kaiserslautern", countryCode: "DE", center: GeoPoint(latitude: 49.4426, longitude: 7.766), bounds: GeoBounds(south: 49.3892, west: 7.6348, north: 49.4986, east: 7.8377), feeds: [ScooterCityFeed(id: "germany:dott_de_kaiserslautern")]),
-        ScooterCity(id: "de:Langenfeld", name: "Langenfeld", countryCode: "DE", center: GeoPoint(latitude: 51.1188, longitude: 6.9563), bounds: GeoBounds(south: 51.0544, west: 6.8995, north: 51.1576, east: 7.0137), feeds: [ScooterCityFeed(id: "germany:dott_de_langenfeld")]),
-        ScooterCity(id: "de:Leipzig", name: "Leipzig", countryCode: "DE", center: GeoPoint(latitude: 51.3439, longitude: 12.3787), bounds: GeoBounds(south: 51.2177592669659, west: 12.139831975626, north: 51.464315824471, east: 12.595557430528), feeds: [ScooterCityFeed(id: "germany:dott_de_leipzig"), ScooterCityFeed(id: "germany:voi_de_app_247")]),
-        ScooterCity(id: "de:München", name: "München", countryCode: "DE", center: GeoPoint(latitude: 48.1372, longitude: 11.5756), bounds: GeoBounds(south: 47.9255452234188, west: 11.1703491210938, north: 48.3744967168233, east: 11.9544982910156), feeds: [ScooterCityFeed(id: "germany:dott_de_munich"), ScooterCityFeed(id: "germany:voi_de_app_150")]),
-        ScooterCity(id: "de:Germering", name: "Germering", countryCode: "DE", center: GeoPoint(latitude: 48.1339, longitude: 11.3765), bounds: GeoBounds(south: 48.1047, west: 11.3336, north: 48.1448, east: 11.3921), feeds: [ScooterCityFeed(id: "germany:dott_de_munich")]),
-        ScooterCity(id: "de:Münster", name: "Münster", countryCode: "DE", center: GeoPoint(latitude: 51.9583, longitude: 7.6259), bounds: GeoBounds(south: 51.8311, west: 7.4598, north: 52.069, east: 7.7884), feeds: [ScooterCityFeed(id: "germany:dott_de_munster"), ScooterCityFeed(id: "germany:voi_de_muenster"), ScooterCityFeed(id: "germany:qick_de_munster")]),
-        ScooterCity(id: "de:Potsdam", name: "Potsdam", countryCode: "DE", center: GeoPoint(latitude: 52.395, longitude: 13.0639), bounds: GeoBounds(south: 52.141481911281275, west: 12.619117304499001, north: 52.53966716354237, east: 13.207903201789064), feeds: [ScooterCityFeed(id: "germany:dott_de_potsdam"), ScooterCityFeed(id: "germany:voi_de_app_147")]),
-        ScooterCity(id: "de:Konstanz", name: "Konstanz", countryCode: "DE", center: GeoPoint(latitude: 47.6603, longitude: 9.1758), bounds: GeoBounds(south: 47.64, west: 9.1, north: 47.74, east: 9.25), feeds: [ScooterCityFeed(id: "germany:hopp_de_konstanz"), ScooterCityFeed(id: "germany:lime_de_bw"), ScooterCityFeed(id: "germany:zeus_de_konstanz")]),
-        ScooterCity(id: "de:Frankfurt", name: "Frankfurt", countryCode: "DE", center: GeoPoint(latitude: 50.1155, longitude: 8.6683), bounds: GeoBounds(south: 49.9311, west: 8.4319, north: 50.2395825267524, east: 9.029169329130355), feeds: [ScooterCityFeed(id: "germany:lime_de_frankfurt"), ScooterCityFeed(id: "germany:voi_de_app_192")]),
-        ScooterCity(id: "de:Wuppertal", name: "Wuppertal", countryCode: "DE", center: GeoPoint(latitude: 51.2669, longitude: 7.1769), bounds: GeoBounds(south: 51.1567, west: 7.0001, north: 51.3271, east: 7.3274), feeds: [ScooterCityFeed(id: "germany:lime_de_wuppertal"), ScooterCityFeed(id: "germany:voi_de_wuppertal")]),
-        ScooterCity(id: "de:Pforzheim", name: "Pforzheim", countryCode: "DE", center: GeoPoint(latitude: 48.8926, longitude: 8.6946), bounds: GeoBounds(south: 48.83, west: 8.59, north: 48.96, east: 8.81), feeds: [ScooterCityFeed(id: "germany:voi_de_bw")]),
-        ScooterCity(id: "de:Mannheim", name: "Mannheim", countryCode: "DE", center: GeoPoint(latitude: 49.4875, longitude: 8.466), bounds: GeoBounds(south: 49.4082, west: 8.3311, north: 49.569, east: 8.589), feeds: [ScooterCityFeed(id: "germany:voi_de_bw")]),
-        ScooterCity(id: "de:Ludwigshafen am Rhein", name: "Ludwigshafen am Rhein", countryCode: "DE", center: GeoPoint(latitude: 49.4812, longitude: 8.4464), bounds: GeoBounds(south: 49.4212, west: 8.3322, north: 49.556, east: 8.576), feeds: [ScooterCityFeed(id: "germany:voi_de_bw"), ScooterCityFeed(id: "germany:dott_de_ludwigshafen_am_rhein")]),
-        ScooterCity(id: "de:Böblingen", name: "Böblingen", countryCode: "DE", center: GeoPoint(latitude: 48.685, longitude: 9.0113), bounds: GeoBounds(south: 48.658, west: 8.95, north: 48.697, east: 9.058), feeds: [ScooterCityFeed(id: "germany:voi_de_bw")]),
-        ScooterCity(id: "de:Sindelfingen", name: "Sindelfingen", countryCode: "DE", center: GeoPoint(latitude: 48.7084, longitude: 9.0035), bounds: GeoBounds(south: 48.6625, west: 8.95, north: 48.738, east: 9.058), feeds: [ScooterCityFeed(id: "germany:voi_de_bw"), ScooterCityFeed(id: "germany:dott_de_sindelfingen")]),
-        ScooterCity(id: "de:Erfurt", name: "Erfurt", countryCode: "DE", center: GeoPoint(latitude: 50.9787, longitude: 11.0328), bounds: GeoBounds(south: 50.9374, west: 10.9742, north: 51.031, east: 11.1075), feeds: [ScooterCityFeed(id: "germany:yoio_de_erfurt"), ScooterCityFeed(id: "germany:dott_de_erfurt")]),
-        ScooterCity(id: "de:Freiburg im Breisgau", name: "Freiburg im Breisgau", countryCode: "DE", center: GeoPoint(latitude: 47.999, longitude: 7.8421), bounds: GeoBounds(south: 47.958, west: 7.746, north: 48.0667, east: 7.9323), feeds: [ScooterCityFeed(id: "germany:yoio_de_freiburg"), ScooterCityFeed(id: "germany:zeus_de_freiburg")]),
-        ScooterCity(id: "de:Göttingen", name: "Göttingen", countryCode: "DE", center: GeoPoint(latitude: 51.5413, longitude: 9.9158), bounds: GeoBounds(south: 51.4953, west: 9.8716, north: 51.6057, east: 10.007672), feeds: [ScooterCityFeed(id: "germany:yoio_de_goettingen"), ScooterCityFeed(id: "germany:qick_de_gottingen")]),
-        ScooterCity(id: "de:Bovenden", name: "Bovenden", countryCode: "DE", center: GeoPoint(latitude: 51.5884, longitude: 9.9222), bounds: GeoBounds(south: 51.5795, west: 9.9159, north: 51.6057, east: 9.9474), feeds: [ScooterCityFeed(id: "germany:yoio_de_goettingen")]),
-        ScooterCity(id: "de:Bamberg", name: "Bamberg", countryCode: "DE", center: GeoPoint(latitude: 49.8988, longitude: 10.9028), bounds: GeoBounds(south: 49.8549, west: 10.83, north: 49.9301, east: 10.9481), feeds: [ScooterCityFeed(id: "germany:zeus_de_bamberg")]),
-        ScooterCity(id: "de:Donaueschingen", name: "Donaueschingen", countryCode: "DE", center: GeoPoint(latitude: 47.9531, longitude: 8.5033), bounds: GeoBounds(south: 47.9204, west: 8.4496, north: 47.9818, east: 8.5362), feeds: [ScooterCityFeed(id: "germany:zeus_de_donaueschingen")]),
-        ScooterCity(id: "de:Walldorf", name: "Walldorf", countryCode: "DE", center: GeoPoint(latitude: 49.3064, longitude: 8.6428), bounds: GeoBounds(south: 49.27, west: 8.61, north: 49.315, east: 8.67), feeds: [ScooterCityFeed(id: "germany:zeus_de_leimen_walldorf_wiesloch")]),
-        ScooterCity(id: "de:Wiesloch", name: "Wiesloch", countryCode: "DE", center: GeoPoint(latitude: 49.2942, longitude: 8.6986), bounds: GeoBounds(south: 49.27, west: 8.67, north: 49.315, east: 8.73), feeds: [ScooterCityFeed(id: "germany:zeus_de_leimen_walldorf_wiesloch")]),
-        ScooterCity(id: "de:Ludwigsburg", name: "Ludwigsburg", countryCode: "DE", center: GeoPoint(latitude: 48.8975, longitude: 9.1922), bounds: GeoBounds(south: 48.8639, west: 9.0968, north: 48.9418, east: 9.2755), feeds: [ScooterCityFeed(id: "germany:zeus_de_ludwigsburg"), ScooterCityFeed(id: "germany:dott_de_ludwigsburg")]),
-        ScooterCity(id: "de:Neustadt an der Weinstraße", name: "Neustadt an der Weinstraße", countryCode: "DE", center: GeoPoint(latitude: 49.3501, longitude: 8.1389), bounds: GeoBounds(south: 49.2999, west: 8.0802, north: 49.3882, east: 8.2034), feeds: [ScooterCityFeed(id: "germany:zeus_de_neustadt")]),
-        ScooterCity(id: "de:Regensburg", name: "Regensburg", countryCode: "DE", center: GeoPoint(latitude: 49.0134, longitude: 12.1016), bounds: GeoBounds(south: 48.90090174566317, west: 11.9249269981186, north: 49.10323589689486, east: 12.271586420039228), feeds: [ScooterCityFeed(id: "germany:zeus_de_regensburg"), ScooterCityFeed(id: "germany:dott_de_regensburg"), ScooterCityFeed(id: "germany:voi_de_app_368")]),
-        ScooterCity(id: "de:Renningen", name: "Renningen", countryCode: "DE", center: GeoPoint(latitude: 48.7656, longitude: 8.9347), bounds: GeoBounds(south: 48.7448, west: 8.8783, north: 48.8027, east: 8.9661), feeds: [ScooterCityFeed(id: "germany:zeus_de_renningen")]),
-        ScooterCity(id: "de:Schweinfurt", name: "Schweinfurt", countryCode: "DE", center: GeoPoint(latitude: 50.0492, longitude: 10.2194), bounds: GeoBounds(south: 49.9972, west: 10.1714, north: 50.096, east: 10.2795), feeds: [ScooterCityFeed(id: "germany:zeus_de_schweinfurt")]),
-        ScooterCity(id: "de:Singen", name: "Singen", countryCode: "DE", center: GeoPoint(latitude: 47.7594, longitude: 8.8403), bounds: GeoBounds(south: 47.7258, west: 8.7975, north: 47.7938, east: 8.9068), feeds: [ScooterCityFeed(id: "germany:zeus_de_singen")]),
-        ScooterCity(id: "de:Tuttlingen", name: "Tuttlingen", countryCode: "DE", center: GeoPoint(latitude: 47.9844, longitude: 8.8167), bounds: GeoBounds(south: 47.9438, west: 8.7493, north: 48.0254, east: 8.8891), feeds: [ScooterCityFeed(id: "germany:zeus_de_tuttlingen")]),
-        ScooterCity(id: "de:Villingen-Schwenningen", name: "Villingen-Schwenningen", countryCode: "DE", center: GeoPoint(latitude: 48.0622, longitude: 8.4936), bounds: GeoBounds(south: 48.0102, west: 8.4072, north: 48.1116, east: 8.5943), feeds: [ScooterCityFeed(id: "germany:zeus_de_villingen_schwenningen")]),
-        ScooterCity(id: "de:Würzburg", name: "Würzburg", countryCode: "DE", center: GeoPoint(latitude: 49.7913, longitude: 9.9534), bounds: GeoBounds(south: 49.59438795057588, west: 9.647576391929467, north: 50.09741775872257, east: 10.343510459340342), feeds: [ScooterCityFeed(id: "germany:zeus_de_wurzburg"), ScooterCityFeed(id: "germany:voi_de_app_365")]),
-        ScooterCity(id: "de:Bielefeld", name: "Bielefeld", countryCode: "DE", center: GeoPoint(latitude: 52.024, longitude: 8.5372), bounds: GeoBounds(south: 51.9368, west: 8.4745, north: 52.0619, east: 8.6263), feeds: [ScooterCityFeed(id: "germany:dott_de_bielefeld")]),
-        ScooterCity(id: "de:Bochum", name: "Bochum", countryCode: "DE", center: GeoPoint(latitude: 51.4695, longitude: 7.1963), bounds: GeoBounds(south: 51.4015, west: 7.0881, north: 51.5404, east: 7.3633), feeds: [ScooterCityFeed(id: "germany:dott_de_bochum"), ScooterCityFeed(id: "germany:voi_de_bochum")]),
-        ScooterCity(id: "de:Bonn", name: "Bonn", countryCode: "DE", center: GeoPoint(latitude: 50.7214, longitude: 7.1155), bounds: GeoBounds(south: 50.6237, west: 7.0085, north: 50.7834, east: 7.2247), feeds: [ScooterCityFeed(id: "germany:dott_de_bonn"), ScooterCityFeed(id: "germany:voi_de_bonn")]),
-        ScooterCity(id: "de:Hamburg", name: "Hamburg", countryCode: "DE", center: GeoPoint(latitude: 53.5718, longitude: 9.9948), bounds: GeoBounds(south: 53.35187788260681, west: 9.656523897434674, north: 53.7802844117601, east: 10.394393931884132), feeds: [ScooterCityFeed(id: "germany:dott_de_hamburg"), ScooterCityFeed(id: "germany:voi_de_app_151")]),
-        ScooterCity(id: "de:Braunschweig", name: "Braunschweig", countryCode: "DE", center: GeoPoint(latitude: 52.2627, longitude: 10.5257), bounds: GeoBounds(south: 52.18091169285216, west: 10.338107665613677, north: 52.360484871521294, east: 10.699520921206044), feeds: [ScooterCityFeed(id: "germany:dott_de_braunschweig"), ScooterCityFeed(id: "germany:voi_de_app_364")]),
-        ScooterCity(id: "de:Bremerhaven", name: "Bremerhaven", countryCode: "DE", center: GeoPoint(latitude: 53.5566, longitude: 8.5966), bounds: GeoBounds(south: 53.4848, west: 8.557, north: 53.6278, east: 8.6482), feeds: [ScooterCityFeed(id: "germany:dott_de_bremerhaven")]),
-        ScooterCity(id: "de:Wiesbaden", name: "Wiesbaden", countryCode: "DE", center: GeoPoint(latitude: 50.077, longitude: 8.2347), bounds: GeoBounds(south: 49.9403, west: 7.94021781950754, north: 50.191938680772, east: 8.39298161072504), feeds: [ScooterCityFeed(id: "germany:dott_de_wiesbaden"), ScooterCityFeed(id: "germany:voi_de_app_305")]),
-        ScooterCity(id: "de:Celle", name: "Celle", countryCode: "DE", center: GeoPoint(latitude: 52.6113, longitude: 10.0542), bounds: GeoBounds(south: 52.5787, west: 9.9977, north: 52.6482, east: 10.1239), feeds: [ScooterCityFeed(id: "germany:dott_de_celle")]),
-        ScooterCity(id: "de:Chemnitz", name: "Chemnitz", countryCode: "DE", center: GeoPoint(latitude: 50.8097, longitude: 12.9138), bounds: GeoBounds(south: 50.7881, west: 12.868, north: 50.8627, east: 12.975), feeds: [ScooterCityFeed(id: "germany:dott_de_chemnitz")]),
-        ScooterCity(id: "de:Cottbus", name: "Cottbus", countryCode: "DE", center: GeoPoint(latitude: 51.7565, longitude: 14.3316), bounds: GeoBounds(south: 51.7152, west: 14.2875, north: 51.7946, east: 14.3962), feeds: [ScooterCityFeed(id: "germany:dott_de_cottbus")]),
-        ScooterCity(id: "de:Darmstadt", name: "Darmstadt", countryCode: "DE", center: GeoPoint(latitude: 49.8719, longitude: 8.6468), bounds: GeoBounds(south: 49.7244748082939, west: 8.45072655515728, north: 49.987662962682, east: 8.87669813339172), feeds: [ScooterCityFeed(id: "germany:dott_de_darmstadt"), ScooterCityFeed(id: "germany:voi_de_app_306")]),
-        ScooterCity(id: "de:Detmold", name: "Detmold", countryCode: "DE", center: GeoPoint(latitude: 51.9442, longitude: 8.8749), bounds: GeoBounds(south: 51.9152, west: 8.8186, north: 51.9615, east: 8.9235), feeds: [ScooterCityFeed(id: "germany:dott_de_detmold")]),
-        ScooterCity(id: "de:Rostock", name: "Rostock", countryCode: "DE", center: GeoPoint(latitude: 54.1379, longitude: 12.0695), bounds: GeoBounds(south: 53.9528531996685, west: 11.7869567871094, north: 54.2812619308271, east: 12.3802185058594), feeds: [ScooterCityFeed(id: "germany:dott_de_rostock"), ScooterCityFeed(id: "germany:voi_de_app_182")]),
-        ScooterCity(id: "de:Dortmund", name: "Dortmund", countryCode: "DE", center: GeoPoint(latitude: 51.5129, longitude: 7.4649), bounds: GeoBounds(south: 51.4067, west: 7.2884, north: 51.609, east: 7.6522), feeds: [ScooterCityFeed(id: "germany:dott_de_dortmund"), ScooterCityFeed(id: "germany:voi_de_dortmund")]),
-        ScooterCity(id: "de:Salzgitter", name: "Salzgitter", countryCode: "DE", center: GeoPoint(latitude: 52.1519, longitude: 10.3332), bounds: GeoBounds(south: 52.0317, west: 10.2792, north: 52.1779, east: 10.4017), feeds: [ScooterCityFeed(id: "germany:dott_de_salzgitter")]),
-        ScooterCity(id: "de:Erlangen", name: "Erlangen", countryCode: "DE", center: GeoPoint(latitude: 49.5917, longitude: 11.012), bounds: GeoBounds(south: 49.538, west: 10.9411, north: 49.6163, east: 11.0567), feeds: [ScooterCityFeed(id: "germany:dott_de_erlangen")]),
-        ScooterCity(id: "de:Flensburg", name: "Flensburg", countryCode: "DE", center: GeoPoint(latitude: 54.7849, longitude: 9.4364), bounds: GeoBounds(south: 54.736947921648124, west: 9.32485827632354, north: 54.84332146888549, east: 9.532999087961745), feeds: [ScooterCityFeed(id: "germany:dott_de_flensburg"), ScooterCityFeed(id: "germany:voi_de_app_360")]),
-        ScooterCity(id: "de:Friedrichshafen", name: "Friedrichshafen", countryCode: "DE", center: GeoPoint(latitude: 47.6688, longitude: 9.4748), bounds: GeoBounds(south: 47.6383, west: 9.3898, north: 47.7126, east: 9.526), feeds: [ScooterCityFeed(id: "germany:dott_de_friedrichshafen")]),
-        ScooterCity(id: "de:Gera", name: "Gera", countryCode: "DE", center: GeoPoint(latitude: 50.8622, longitude: 12.0767), bounds: GeoBounds(south: 50.833, west: 12.0462, north: 50.9074, east: 12.1027), feeds: [ScooterCityFeed(id: "germany:dott_de_gera")]),
-        ScooterCity(id: "de:Gifhorn", name: "Gifhorn", countryCode: "DE", center: GeoPoint(latitude: 52.4863, longitude: 10.5383), bounds: GeoBounds(south: 52.4527, west: 10.5053, north: 52.5122, east: 10.5789), feeds: [ScooterCityFeed(id: "germany:dott_de_gifhorn")]),
-        ScooterCity(id: "de:Gladbeck", name: "Gladbeck", countryCode: "DE", center: GeoPoint(latitude: 51.5683, longitude: 6.999), bounds: GeoBounds(south: 51.5376, west: 6.9602, north: 51.5978, east: 7.0307), feeds: [ScooterCityFeed(id: "germany:dott_de_gladbeck")]),
-        ScooterCity(id: "de:Hamm", name: "Hamm", countryCode: "DE", center: GeoPoint(latitude: 51.682, longitude: 7.7974), bounds: GeoBounds(south: 51.6517, west: 7.7216, north: 51.7214, east: 7.934), feeds: [ScooterCityFeed(id: "germany:dott_de_hamm")]),
-        ScooterCity(id: "de:Hennef", name: "Hennef", countryCode: "DE", center: GeoPoint(latitude: 50.7694, longitude: 7.2961), bounds: GeoBounds(south: 50.7574, west: 7.2451, north: 50.7895, east: 7.3268), feeds: [ScooterCityFeed(id: "germany:dott_de_hennef")]),
-        ScooterCity(id: "de:Herford", name: "Herford", countryCode: "DE", center: GeoPoint(latitude: 52.1173, longitude: 8.6697), bounds: GeoBounds(south: 52.0744, west: 8.6128, north: 52.1414, east: 8.7214), feeds: [ScooterCityFeed(id: "germany:dott_de_herford")]),
-        ScooterCity(id: "de:Herne", name: "Herne", countryCode: "DE", center: GeoPoint(latitude: 51.5407, longitude: 7.2061), bounds: GeoBounds(south: 51.4941, west: 7.1096, north: 51.5823, east: 7.3105), feeds: [ScooterCityFeed(id: "germany:dott_de_herne"), ScooterCityFeed(id: "germany:voi_de_bochum")]),
-        ScooterCity(id: "de:Herten", name: "Herten", countryCode: "DE", center: GeoPoint(latitude: 51.5995, longitude: 7.1443), bounds: GeoBounds(south: 51.5744, west: 7.1148, north: 51.629, east: 7.1645), feeds: [ScooterCityFeed(id: "germany:dott_de_herten")]),
-        ScooterCity(id: "de:Hilden", name: "Hilden", countryCode: "DE", center: GeoPoint(latitude: 51.1692, longitude: 6.9372), bounds: GeoBounds(south: 51.1401, west: 6.8934, north: 51.1906, east: 6.9892), feeds: [ScooterCityFeed(id: "germany:dott_de_hilden")]),
-        ScooterCity(id: "de:Hildesheim", name: "Hildesheim", countryCode: "DE", center: GeoPoint(latitude: 52.1517, longitude: 9.9584), bounds: GeoBounds(south: 52.109, west: 9.8983, north: 52.184, east: 10.0044), feeds: [ScooterCityFeed(id: "germany:dott_de_hildesheim")]),
-        ScooterCity(id: "de:Duisburg", name: "Duisburg", countryCode: "DE", center: GeoPoint(latitude: 51.4154, longitude: 6.7249), bounds: GeoBounds(south: 51.3244, west: 6.6116, north: 51.5691, east: 6.8443), feeds: [ScooterCityFeed(id: "germany:dott_de_duisburg"), ScooterCityFeed(id: "germany:voi_de_duisburg_oberhausen")]),
-        ScooterCity(id: "de:Ingolstadt", name: "Ingolstadt", countryCode: "DE", center: GeoPoint(latitude: 48.7689, longitude: 11.4361), bounds: GeoBounds(south: 48.7047, west: 11.3364, north: 48.82, east: 11.5852), feeds: [ScooterCityFeed(id: "germany:dott_de_ingolstadt")]),
-        ScooterCity(id: "de:Jena", name: "Jena", countryCode: "DE", center: GeoPoint(latitude: 50.9253, longitude: 11.5832), bounds: GeoBounds(south: 50.8762, west: 11.556, north: 50.9542, east: 11.6352), feeds: [ScooterCityFeed(id: "germany:dott_de_jena")]),
-        ScooterCity(id: "de:Kiel", name: "Kiel", countryCode: "DE", center: GeoPoint(latitude: 54.3278, longitude: 10.13), bounds: GeoBounds(south: 54.2415568529537, west: 9.98725891113281, north: 54.4117378402846, east: 10.3230285644531), feeds: [ScooterCityFeed(id: "germany:dott_de_kiel"), ScooterCityFeed(id: "germany:voi_de_app_181")]),
-        ScooterCity(id: "de:Lindau", name: "Lindau", countryCode: "DE", center: GeoPoint(latitude: 47.5575, longitude: 9.6958), bounds: GeoBounds(south: 47.5373, west: 9.6521, north: 47.5962, east: 9.7398), feeds: [ScooterCityFeed(id: "germany:dott_de_lindau")]),
-        ScooterCity(id: "de:Minden", name: "Minden", countryCode: "DE", center: GeoPoint(latitude: 52.2898, longitude: 8.8973), bounds: GeoBounds(south: 52.2631, west: 8.8586, north: 52.3174, east: 8.9693), feeds: [ScooterCityFeed(id: "germany:dott_de_minden")]),
-        ScooterCity(id: "de:Mönchengladbach", name: "Mönchengladbach", countryCode: "DE", center: GeoPoint(latitude: 51.1917, longitude: 6.4409), bounds: GeoBounds(south: 51.0768, west: 6.2771, north: 51.2569, east: 6.5506), feeds: [ScooterCityFeed(id: "germany:dott_de_monchengladbach"), ScooterCityFeed(id: "germany:voi_de_moenchengladbach")]),
-        ScooterCity(id: "de:Monheim am Rhein", name: "Monheim am Rhein", countryCode: "DE", center: GeoPoint(latitude: 51.0924, longitude: 6.8909), bounds: GeoBounds(south: 51.0649, west: 6.8748, north: 51.1302, east: 6.9184), feeds: [ScooterCityFeed(id: "germany:dott_de_monheim_am_rhein")]),
-        ScooterCity(id: "de:Neumünster", name: "Neumünster", countryCode: "DE", center: GeoPoint(latitude: 54.0726, longitude: 9.9808), bounds: GeoBounds(south: 54.0399, west: 9.9342, north: 54.1434, east: 10.0445), feeds: [ScooterCityFeed(id: "germany:dott_de_neumunster")]),
-        ScooterCity(id: "de:Neuss", name: "Neuss", countryCode: "DE", center: GeoPoint(latitude: 51.2035, longitude: 6.6837), bounds: GeoBounds(south: 51.1078, west: 6.6008, north: 51.2446, east: 6.8124), feeds: [ScooterCityFeed(id: "germany:dott_de_neuss"), ScooterCityFeed(id: "germany:voi_de_duesseldorf")]),
-        ScooterCity(id: "de:Oberhausen", name: "Oberhausen", countryCode: "DE", center: GeoPoint(latitude: 51.4696, longitude: 6.8514), bounds: GeoBounds(south: 51.4043, west: 6.7633, north: 51.589, east: 6.9445), feeds: [ScooterCityFeed(id: "germany:dott_de_oberhausen"), ScooterCityFeed(id: "germany:voi_de_duisburg_oberhausen")]),
-        ScooterCity(id: "de:Osnabrück", name: "Osnabrück", countryCode: "DE", center: GeoPoint(latitude: 52.2747, longitude: 8.0482), bounds: GeoBounds(south: 52.16868682934638, west: 7.825808742511623, north: 52.443396171197, east: 8.336312202190538), feeds: [ScooterCityFeed(id: "germany:dott_de_osnabruck"), ScooterCityFeed(id: "germany:voi_de_app_378")]),
-        ScooterCity(id: "de:Paderborn", name: "Paderborn", countryCode: "DE", center: GeoPoint(latitude: 51.7199, longitude: 8.7528), bounds: GeoBounds(south: 51.6452, west: 8.6223, north: 51.8098, east: 8.9146), feeds: [ScooterCityFeed(id: "germany:dott_de_paderborn"), ScooterCityFeed(id: "germany:voi_de_paderborn")]),
-        ScooterCity(id: "de:Peine", name: "Peine", countryCode: "DE", center: GeoPoint(latitude: 52.3266, longitude: 10.2323), bounds: GeoBounds(south: 52.2976, west: 10.1587, north: 52.3585, east: 10.2898), feeds: [ScooterCityFeed(id: "germany:dott_de_peine")]),
-        ScooterCity(id: "de:Recklinghausen", name: "Recklinghausen", countryCode: "DE", center: GeoPoint(latitude: 51.6083, longitude: 7.2034), bounds: GeoBounds(south: 51.557, west: 7.1605, north: 51.6334, east: 7.2856), feeds: [ScooterCityFeed(id: "germany:dott_de_recklinghausen")]),
-        ScooterCity(id: "de:Rheda-Wiedenbrück", name: "Rheda-Wiedenbrück", countryCode: "DE", center: GeoPoint(latitude: 51.845, longitude: 8.3056), bounds: GeoBounds(south: 51.8035, west: 8.2557, north: 51.8672, east: 8.3701), feeds: [ScooterCityFeed(id: "germany:dott_de_rheda_wiedenbruck")]),
-        ScooterCity(id: "de:Rheine", name: "Rheine", countryCode: "DE", center: GeoPoint(latitude: 52.2812, longitude: 7.4417), bounds: GeoBounds(south: 52.251, west: 7.3794, north: 52.3224, east: 7.5204), feeds: [ScooterCityFeed(id: "germany:dott_de_rheine")]),
-        ScooterCity(id: "de:Bremen", name: "Bremen", countryCode: "DE", center: GeoPoint(latitude: 53.0971, longitude: 8.7907), bounds: GeoBounds(south: 53.0462, west: 8.5949, north: 53.1983, east: 8.8953), feeds: [ScooterCityFeed(id: "germany:dott_de_bremen")]),
-        ScooterCity(id: "de:Rüsselsheim", name: "Rüsselsheim", countryCode: "DE", center: GeoPoint(latitude: 49.9917, longitude: 8.4248), bounds: GeoBounds(south: 49.9551, west: 8.3819, north: 50.0067, east: 8.4651), feeds: [ScooterCityFeed(id: "germany:dott_de_russelsheim")]),
-        ScooterCity(id: "de:Saarbrücken", name: "Saarbrücken", countryCode: "DE", center: GeoPoint(latitude: 49.2375, longitude: 6.9972), bounds: GeoBounds(south: 49.1732, west: 6.884, north: 49.297, east: 7.0758), feeds: [ScooterCityFeed(id: "germany:dott_de_saarbrucken")]),
-        ScooterCity(id: "de:Sankt Augustin", name: "Sankt Augustin", countryCode: "DE", center: GeoPoint(latitude: 50.7753, longitude: 7.1896), bounds: GeoBounds(south: 50.7304, west: 7.1114, north: 50.8153, east: 7.2821), feeds: [ScooterCityFeed(id: "germany:dott_de_sankt_augustin"), ScooterCityFeed(id: "germany:voi_de_bonn")]),
-        ScooterCity(id: "de:Solingen", name: "Solingen", countryCode: "DE", center: GeoPoint(latitude: 51.1688, longitude: 7.0646), bounds: GeoBounds(south: 51.1323, west: 6.9853, north: 51.2187, east: 7.1275), feeds: [ScooterCityFeed(id: "germany:dott_de_solingen")]),
-        ScooterCity(id: "de:Troisdorf", name: "Troisdorf", countryCode: "DE", center: GeoPoint(latitude: 50.8129, longitude: 7.1252), bounds: GeoBounds(south: 50.7701, west: 7.0808, north: 50.8467, east: 7.1904), feeds: [ScooterCityFeed(id: "germany:dott_de_troisdorf")]),
-        ScooterCity(id: "de:Überlingen", name: "Überlingen", countryCode: "DE", center: GeoPoint(latitude: 47.7677, longitude: 9.1761), bounds: GeoBounds(south: 47.7479, west: 9.1316, north: 47.7827, east: 9.2051), feeds: [ScooterCityFeed(id: "germany:dott_de_uberlingen")]),
-        ScooterCity(id: "de:Ulm", name: "Ulm", countryCode: "DE", center: GeoPoint(latitude: 48.3985, longitude: 9.9925), bounds: GeoBounds(south: 48.3409, west: 9.9187, north: 48.4485, east: 10.0788), feeds: [ScooterCityFeed(id: "germany:dott_de_ulm")]),
-        ScooterCity(id: "de:Nürnberg", name: "Nürnberg", countryCode: "DE", center: GeoPoint(latitude: 49.4527, longitude: 11.0761), bounds: GeoBounds(south: 49.1953468350688, west: 10.6919663057816, north: 49.7690097902586, east: 11.7203467479068), feeds: [ScooterCityFeed(id: "germany:dott_de_nurnberg"), ScooterCityFeed(id: "germany:voi_de_app_169")]),
-        ScooterCity(id: "de:Wolfsburg", name: "Wolfsburg", countryCode: "DE", center: GeoPoint(latitude: 52.4223, longitude: 10.7873), bounds: GeoBounds(south: 52.3652, west: 10.6754, north: 52.4678, east: 10.869), feeds: [ScooterCityFeed(id: "germany:dott_de_wolfsburg")]),
-        ScooterCity(id: "de:Zwickau", name: "Zwickau", countryCode: "DE", center: GeoPoint(latitude: 50.7334, longitude: 12.4792), bounds: GeoBounds(south: 50.7018, west: 12.4519, north: 50.7432, east: 12.524), feeds: [ScooterCityFeed(id: "germany:dott_de_zwickau")]),
-        ScooterCity(id: "de:Siegburg", name: "Siegburg", countryCode: "DE", center: GeoPoint(latitude: 50.7928, longitude: 7.2071), bounds: GeoBounds(south: 50.7708, west: 7.1602, north: 50.837, east: 7.3245), feeds: [ScooterCityFeed(id: "germany:voi_de_bonn")]),
-        ScooterCity(id: "de:Witten", name: "Witten", countryCode: "DE", center: GeoPoint(latitude: 51.437, longitude: 7.3351), bounds: GeoBounds(south: 51.3611, west: 7.2321, north: 51.4933, east: 7.4375), feeds: [ScooterCityFeed(id: "germany:voi_de_bochum")]),
-        ScooterCity(id: "de:Schwerin", name: "Schwerin", countryCode: "DE", center: GeoPoint(latitude: 53.61888, longitude: 11.40799), bounds: GeoBounds(south: 53.50118693001041, west: 11.180565993281183, north: 53.73805436614699, east: 11.62999014469931), feeds: [ScooterCityFeed(id: "germany:voi_de_app_361")]),
-        ScooterCity(id: "de:Magdeburg", name: "Magdeburg", countryCode: "DE", center: GeoPoint(latitude: 52.15753, longitude: 11.65951), bounds: GeoBounds(south: 51.91202302178859, west: 11.210910807618658, north: 52.42622268230737, east: 12.15325949173283), feeds: [ScooterCityFeed(id: "germany:voi_de_app_382")]),
-        ScooterCity(id: "de:Mainz", name: "Mainz", countryCode: "DE", center: GeoPoint(latitude: 50, longitude: 8.27), bounds: GeoBounds(south: 49.8629916997857, west: 7.94021781950754, north: 50.025, east: 8.39298161072504), feeds: [ScooterCityFeed(id: "germany:voi_de_app_305")]),
-        ScooterCity(id: "de:Augsburg", name: "Augsburg", countryCode: "DE", center: GeoPoint(latitude: 48.37796, longitude: 10.89844), bounds: GeoBounds(south: 48.2411382384804, west: 10.65673828125, north: 48.5147849720974, east: 11.14013671875), feeds: [ScooterCityFeed(id: "germany:voi_de_app_162")]),
-        ScooterCity(id: "de:Lübeck", name: "Lübeck", countryCode: "DE", center: GeoPoint(latitude: 53.87019, longitude: 10.68888), bounds: GeoBounds(south: 53.63491483484561, west: 10.319019787929623, north: 54.10546451711241, east: 11.058746731289023), feeds: [ScooterCityFeed(id: "germany:voi_de_app_157")]),
-        ScooterCity(id: "de:Kassel", name: "Kassel", countryCode: "DE", center: GeoPoint(latitude: 51.3127, longitude: 9.4797), bounds: GeoBounds(south: 51.264893, west: 9.404046, north: 51.353084, east: 9.566549), feeds: [ScooterCityFeed(id: "germany:qick_de_kassel")]),
-        ScooterCity(id: "at:Baden", name: "Baden", countryCode: "AT", center: GeoPoint(latitude: 48.004, longitude: 16.2423), bounds: GeoBounds(south: 47.9753, west: 16.1998, north: 48.0189, east: 16.2796), feeds: [ScooterCityFeed(id: "austria:dott_at_baden")]),
-        ScooterCity(id: "at:Bregenz", name: "Bregenz", countryCode: "AT", center: GeoPoint(latitude: 47.4981, longitude: 9.7371), bounds: GeoBounds(south: 47.4355, west: 9.6622, north: 47.584, east: 9.7976), feeds: [ScooterCityFeed(id: "austria:dott_at_bregenz")]),
-        ScooterCity(id: "at:Dornbirn", name: "Dornbirn", countryCode: "AT", center: GeoPoint(latitude: 47.4159, longitude: 9.7382), bounds: GeoBounds(south: 47.3797, west: 9.6916, north: 47.4558, east: 9.7715), feeds: [ScooterCityFeed(id: "austria:dott_at_dornbirn")]),
-        ScooterCity(id: "at:Innsbruck", name: "Innsbruck", countryCode: "AT", center: GeoPoint(latitude: 47.2651, longitude: 11.3988), bounds: GeoBounds(south: 47.15953685076627, west: 11.228975654139106, north: 47.38419043001886, east: 11.57644596129552), feeds: [ScooterCityFeed(id: "austria:dott_at_innsbruck"), ScooterCityFeed(id: "austria:voi_at_app_381")]),
-        ScooterCity(id: "at:Klagenfurt", name: "Klagenfurt", countryCode: "AT", center: GeoPoint(latitude: 46.6207, longitude: 14.3109), bounds: GeoBounds(south: 46.5887, west: 14.1948, north: 46.6488, east: 14.3747), feeds: [ScooterCityFeed(id: "austria:dott_at_klagenfurt")]),
-        ScooterCity(id: "at:Leoben", name: "Leoben", countryCode: "AT", center: GeoPoint(latitude: 47.3823, longitude: 15.0941), bounds: GeoBounds(south: 47.3494, west: 15.0269, north: 47.4042, east: 15.1521), feeds: [ScooterCityFeed(id: "austria:dott_at_leoben")]),
-        ScooterCity(id: "at:Linz", name: "Linz", countryCode: "AT", center: GeoPoint(latitude: 48.2962, longitude: 14.2939), bounds: GeoBounds(south: 48.2424, west: 14.2643, north: 48.3402, east: 14.3302), feeds: [ScooterCityFeed(id: "austria:dott_at_linz")]),
-        ScooterCity(id: "at:Mödling", name: "Mödling", countryCode: "AT", center: GeoPoint(latitude: 48.0784, longitude: 16.2948), bounds: GeoBounds(south: 48.0383, west: 16.2556, north: 48.096, east: 16.3323), feeds: [ScooterCityFeed(id: "austria:dott_at_modling")]),
-        ScooterCity(id: "at:Wels", name: "Wels", countryCode: "AT", center: GeoPoint(latitude: 48.1645, longitude: 14.019), bounds: GeoBounds(south: 48.1172, west: 13.9296, north: 48.1943, east: 14.0667), feeds: [ScooterCityFeed(id: "austria:dott_at_wels")]),
-        ScooterCity(id: "at:Villach", name: "Villach", countryCode: "AT", center: GeoPoint(latitude: 46.6179, longitude: 13.8474), bounds: GeoBounds(south: 46.5811, west: 13.8111, north: 46.6664, east: 13.9161), feeds: [ScooterCityFeed(id: "austria:dott_at_villach")]),
-        ScooterCity(id: "at:Wiener Neustadt", name: "Wiener Neustadt", countryCode: "AT", center: GeoPoint(latitude: 47.8206, longitude: 16.2406), bounds: GeoBounds(south: 47.7881, west: 16.1933, north: 47.8492, east: 16.2855), feeds: [ScooterCityFeed(id: "austria:dott_at_wiener_neustadt")]),
-        ScooterCity(id: "at:Wien", name: "Wien", countryCode: "AT", center: GeoPoint(latitude: 48.19277, longitude: 16.40137), bounds: GeoBounds(south: 48.04584185842637, west: 16.11420143738522, north: 48.339707387160644, east: 16.688542048345653), feeds: [ScooterCityFeed(id: "austria:voi_at_app_317")]),
-        ScooterCity(id: "it:Napoli", name: "Napoli", countryCode: "IT", center: GeoPoint(latitude: 40.8518, longitude: 14.2681), bounds: GeoBounds(south: 40.7520051863504, west: 14.1066, north: 40.93720778574244, east: 14.3912), feeds: [ScooterCityFeed(id: "italy:bird_it_napoli"), ScooterCityFeed(id: "italy:voi_it_app_322")]),
-        ScooterCity(id: "it:Palermo", name: "Palermo", countryCode: "IT", center: GeoPoint(latitude: 38.1157, longitude: 13.3613), bounds: GeoBounds(south: 38.0876, west: 13.26, north: 38.2183, east: 13.388), feeds: [ScooterCityFeed(id: "italy:bird_it_palermo"), ScooterCityFeed(id: "italy:dott_it_palermo")]),
-        ScooterCity(id: "it:Roma", name: "Roma", countryCode: "IT", center: GeoPoint(latitude: 41.9028, longitude: 12.4964), bounds: GeoBounds(south: 41.6884, west: 12.2183, north: 42.0928, east: 12.7268), feeds: [ScooterCityFeed(id: "italy:bird_it_rome"), ScooterCityFeed(id: "italy:dott_it_roma")]),
-        ScooterCity(id: "it:Catania", name: "Catania", countryCode: "IT", center: GeoPoint(latitude: 37.5023, longitude: 15.0873), bounds: GeoBounds(south: 37.465, west: 15.0445, north: 37.5427, east: 15.1362), feeds: [ScooterCityFeed(id: "italy:elerent_it_catania")]),
-        ScooterCity(id: "it:Bari", name: "Bari", countryCode: "IT", center: GeoPoint(latitude: 41.1166, longitude: 16.8625), bounds: GeoBounds(south: 41.0421, west: 16.7286, north: 41.172, east: 17.0146), feeds: [ScooterCityFeed(id: "italy:dott_it_bari")]),
-        ScooterCity(id: "it:Bergamo", name: "Bergamo", countryCode: "IT", center: GeoPoint(latitude: 45.6952, longitude: 9.6742), bounds: GeoBounds(south: 45.6534, west: 9.6174, north: 45.7334, east: 9.7157), feeds: [ScooterCityFeed(id: "italy:dott_it_bergamo")]),
-        ScooterCity(id: "it:Varese", name: "Varese", countryCode: "IT", center: GeoPoint(latitude: 45.8176, longitude: 8.8299), bounds: GeoBounds(south: 45.7766, west: 8.735, north: 45.8859, east: 8.8719), feeds: [ScooterCityFeed(id: "italy:dott_it_varese")]),
-        ScooterCity(id: "it:Ferrara", name: "Ferrara", countryCode: "IT", center: GeoPoint(latitude: 44.839, longitude: 11.6119), bounds: GeoBounds(south: 44.7985, west: 11.5342, north: 44.9095, east: 11.6801), feeds: [ScooterCityFeed(id: "italy:dott_it_ferrara")]),
-        ScooterCity(id: "it:Jesolo", name: "Jesolo", countryCode: "IT", center: GeoPoint(latitude: 45.4974, longitude: 12.6184), bounds: GeoBounds(south: 45.4732, west: 12.5305, north: 45.6019, east: 12.7466), feeds: [ScooterCityFeed(id: "italy:dott_it_jesolo")]),
-        ScooterCity(id: "it:Torino", name: "Torino", countryCode: "IT", center: GeoPoint(latitude: 45.07, longitude: 7.6621), bounds: GeoBounds(south: 44.9259, west: 7.4693, north: 45.1778, east: 7.8341), feeds: [ScooterCityFeed(id: "italy:dott_it_torino")]),
-        ScooterCity(id: "it:Milano", name: "Milano", countryCode: "IT", center: GeoPoint(latitude: 45.4771, longitude: 9.2001), bounds: GeoBounds(south: 45.3847, west: 9.0389, north: 45.5588, east: 9.3113), feeds: [ScooterCityFeed(id: "italy:dott_it_milano")]),
-        ScooterCity(id: "it:Modena", name: "Modena", countryCode: "IT", center: GeoPoint(latitude: 44.6452, longitude: 10.9307), bounds: GeoBounds(south: 44.5609, west: 10.7799, north: 44.7283, east: 11.0137), feeds: [ScooterCityFeed(id: "italy:dott_it_modena")]),
-        ScooterCity(id: "it:Monza", name: "Monza", countryCode: "IT", center: GeoPoint(latitude: 45.578, longitude: 9.274), bounds: GeoBounds(south: 45.5513, west: 9.2262, north: 45.6342, east: 9.3269), feeds: [ScooterCityFeed(id: "italy:dott_it_monza")]),
-        ScooterCity(id: "it:Padova", name: "Padova", countryCode: "IT", center: GeoPoint(latitude: 45.4148, longitude: 11.8819), bounds: GeoBounds(south: 45.2723, west: 11.7037, north: 45.517, east: 12.029), feeds: [ScooterCityFeed(id: "italy:dott_it_padova")]),
-        ScooterCity(id: "it:Reggio nell'Emilia", name: "Reggio nell'Emilia", countryCode: "IT", center: GeoPoint(latitude: 44.6976, longitude: 10.6311), bounds: GeoBounds(south: 44.6393, west: 10.537329582127876, north: 44.76818909778005, east: 10.739203350602189), feeds: [ScooterCityFeed(id: "italy:dott_it_reggio_nell_emilia"), ScooterCityFeed(id: "italy:voi_it_app_252")]),
-        ScooterCity(id: "it:Cagliari", name: "Cagliari", countryCode: "IT", center: GeoPoint(latitude: 39.2257, longitude: 9.1257), bounds: GeoBounds(south: 39.1842, west: 9.0798, north: 39.2658, east: 9.2271), feeds: [ScooterCityFeed(id: "italy:dott_it_cagliari")]),
-        ScooterCity(id: "it:Trento", name: "Trento", countryCode: "IT", center: GeoPoint(latitude: 46.0672, longitude: 11.1203), bounds: GeoBounds(south: 46.03, west: 11.0796, north: 46.1382, east: 11.1395), feeds: [ScooterCityFeed(id: "italy:dott_it_trento")]),
-        ScooterCity(id: "it:Verona", name: "Verona", countryCode: "IT", center: GeoPoint(latitude: 45.4379, longitude: 10.9919), bounds: GeoBounds(south: 45.3474, west: 10.8749, north: 45.5438, east: 11.1259), feeds: [ScooterCityFeed(id: "italy:dott_it_verona")]),
-        ScooterCity(id: "be:Bruxelles", name: "Bruxelles", countryCode: "BE", center: GeoPoint(latitude: 50.8467, longitude: 4.3525), bounds: GeoBounds(south: 50.7705, west: 4.2448, north: 50.9224, east: 4.4816), feeds: [ScooterCityFeed(id: "belgium:bolt_be_bruxelles"), ScooterCityFeed(id: "belgium:dott_be_bruxelles")]),
-        ScooterCity(id: "be:Charleroi", name: "Charleroi", countryCode: "BE", center: GeoPoint(latitude: 50.4108, longitude: 4.4446), bounds: GeoBounds(south: 50.3504, west: 4.3459, north: 50.4817, east: 4.5161), feeds: [ScooterCityFeed(id: "belgium:dott_be_charleroi"), ScooterCityFeed(id: "belgium:pony_be_charleroi")]),
-        ScooterCity(id: "be:Liège", name: "Liège", countryCode: "BE", center: GeoPoint(latitude: 50.6326, longitude: 5.5797), bounds: GeoBounds(south: 50.552, west: 5.5093, north: 50.7117, east: 5.6894), feeds: [ScooterCityFeed(id: "belgium:dott_be_liege")]),
-        ScooterCity(id: "be:Herstal", name: "Herstal", countryCode: "BE", center: GeoPoint(latitude: 50.665, longitude: 5.63), bounds: GeoBounds(south: 50.6458, west: 5.5414, north: 50.7117, east: 5.6715), feeds: [ScooterCityFeed(id: "belgium:dott_be_liege")]),
-        ScooterCity(id: "be:Blankenberge", name: "Blankenberge", countryCode: "BE", center: GeoPoint(latitude: 51.3131, longitude: 3.1316), bounds: GeoBounds(south: 51.2861, west: 3.0977, north: 51.3268, east: 3.1643), feeds: [ScooterCityFeed(id: "belgium:hoppy_be_blankenberge")]),
-        ScooterCity(id: "be:Kortrijk", name: "Kortrijk", countryCode: "BE", center: GeoPoint(latitude: 50.8279, longitude: 3.2649), bounds: GeoBounds(south: 50.7643, west: 3.2165, north: 50.8622, east: 3.3118), feeds: [ScooterCityFeed(id: "belgium:hoppy_be_kortrijk")]),
-        ScooterCity(id: "be:Mechelen", name: "Mechelen", countryCode: "BE", center: GeoPoint(latitude: 51.0281, longitude: 4.4794), bounds: GeoBounds(south: 50.9977, west: 4.445, north: 51.0485, east: 4.5283), feeds: [ScooterCityFeed(id: "belgium:hoppy_be_mechelen")]),
-        ScooterCity(id: "be:Oostende", name: "Oostende", countryCode: "BE", center: GeoPoint(latitude: 51.2253, longitude: 2.9197), bounds: GeoBounds(south: 51.187, west: 2.8483, north: 51.2612, east: 2.9994), feeds: [ScooterCityFeed(id: "belgium:hoppy_be_oostende")]),
-        ScooterCity(id: "be:Sint-Niklaas", name: "Sint-Niklaas", countryCode: "BE", center: GeoPoint(latitude: 51.165, longitude: 4.1395), bounds: GeoBounds(south: 51.1416, west: 4.1029, north: 51.1882, east: 4.1829), feeds: [ScooterCityFeed(id: "belgium:hoppy_be_sint_niklaas")]),
-        ScooterCity(id: "be:Antwerpen", name: "Antwerpen", countryCode: "BE", center: GeoPoint(latitude: 51.2211, longitude: 4.3997), bounds: GeoBounds(south: 51.1544, west: 4.3381, north: 51.2709, east: 4.4885), feeds: [ScooterCityFeed(id: "belgium:voi_be_antwerpen")]),
-        ScooterCity(id: "no:Oslo", name: "Oslo", countryCode: "NO", center: GeoPoint(latitude: 59.9109, longitude: 10.7528), bounds: GeoBounds(south: 59.8134, west: 10.6158, north: 59.9871, east: 10.9574), feeds: [ScooterCityFeed(id: "norway:bolt_no_oslo"), ScooterCityFeed(id: "norway:ryde_no_oslo"), ScooterCityFeed(id: "norway:voi_no_oslo")]),
-        ScooterCity(id: "no:Stjørdal", name: "Stjørdal", countryCode: "NO", center: GeoPoint(latitude: 63.4714, longitude: 10.9139), bounds: GeoBounds(south: 63.4299, west: 10.8165, north: 63.5147, east: 10.997), feeds: [ScooterCityFeed(id: "norway:dott_no_stjordal")]),
-        ScooterCity(id: "no:Trondheim", name: "Trondheim", countryCode: "NO", center: GeoPoint(latitude: 63.4304, longitude: 10.3953), bounds: GeoBounds(south: 63.3352, west: 10.306, north: 63.4618, east: 10.5549), pauses: [ScooterSeasonalPause(from: "12-02", until: "03-15", timeZone: "Europe/Oslo")], feeds: [ScooterCityFeed(id: "norway:dott_no_trondheim", pause: ScooterSeasonalPause(from: "12-02", until: "03-15", timeZone: "Europe/Oslo")), ScooterCityFeed(id: "norway:ryde_no_trondheim", pause: ScooterSeasonalPause(from: "12-02", until: "03-15", timeZone: "Europe/Oslo")), ScooterCityFeed(id: "norway:voi_no_trondheim", pause: ScooterSeasonalPause(from: "12-02", until: "03-15", timeZone: "Europe/Oslo"))]),
-        ScooterCity(id: "no:Ålesund", name: "Ålesund", countryCode: "NO", center: GeoPoint(latitude: 62.4712, longitude: 6.1538), bounds: GeoBounds(south: 62.425, west: 6.0945, north: 62.4861, east: 6.4232), feeds: [ScooterCityFeed(id: "norway:ryde_no_alesund")]),
-        ScooterCity(id: "no:Asker", name: "Asker", countryCode: "NO", center: GeoPoint(latitude: 59.8335, longitude: 10.4345), bounds: GeoBounds(south: 59.8079, west: 10.3717, north: 59.8829, east: 10.5414), feeds: [ScooterCityFeed(id: "norway:ryde_no_asker"), ScooterCityFeed(id: "norway:voi_no_baerum_asker")]),
-        ScooterCity(id: "no:Bærum", name: "Bærum", countryCode: "NO", center: GeoPoint(latitude: 59.8926, longitude: 10.5245), bounds: GeoBounds(south: 59.8704, west: 10.4612, north: 59.9607, east: 10.6494), feeds: [ScooterCityFeed(id: "norway:ryde_no_baerum"), ScooterCityFeed(id: "norway:voi_no_baerum_asker")]),
-        ScooterCity(id: "no:Bodø", name: "Bodø", countryCode: "NO", center: GeoPoint(latitude: 67.2804, longitude: 14.4049), bounds: GeoBounds(south: 67.2666, west: 14.3304, north: 67.3252, east: 14.6166), pauses: [ScooterSeasonalPause(from: "12-01", until: "04-01", timeZone: "Europe/Oslo")], feeds: [ScooterCityFeed(id: "norway:ryde_no_bodo", pause: ScooterSeasonalPause(from: "12-01", until: "04-01", timeZone: "Europe/Oslo"))]),
-        ScooterCity(id: "no:Fredrikstad", name: "Fredrikstad", countryCode: "NO", center: GeoPoint(latitude: 59.209, longitude: 10.9503), bounds: GeoBounds(south: 59.1759, west: 10.872, north: 59.275, east: 11.0299), feeds: [ScooterCityFeed(id: "norway:ryde_no_fredrikstad"), ScooterCityFeed(id: "norway:voi_no_fredrikstad_sarpsborg")]),
-        ScooterCity(id: "no:Lillestrøm", name: "Lillestrøm", countryCode: "NO", center: GeoPoint(latitude: 59.9534, longitude: 11.0452), bounds: GeoBounds(south: 59.8947, west: 10.9712, north: 60.0214, east: 11.106), pauses: [ScooterSeasonalPause(from: "12-01", until: "03-01", timeZone: "Europe/Oslo")], feeds: [ScooterCityFeed(id: "norway:ryde_no_lillestrom", pause: ScooterSeasonalPause(from: "12-01", until: "03-01", timeZone: "Europe/Oslo")), ScooterCityFeed(id: "norway:voi_no_lillestrom_lorenskog", pause: ScooterSeasonalPause(from: "12-01", until: "03-01", timeZone: "Europe/Oslo"))]),
-        ScooterCity(id: "no:Lørenskog", name: "Lørenskog", countryCode: "NO", center: GeoPoint(latitude: 59.9277, longitude: 10.9572), bounds: GeoBounds(south: 59.9032, west: 10.9151, north: 59.9916, east: 11.0068), pauses: [ScooterSeasonalPause(from: "12-01", until: "03-01", timeZone: "Europe/Oslo")], feeds: [ScooterCityFeed(id: "norway:ryde_no_lorenskog", pause: ScooterSeasonalPause(from: "12-01", until: "03-01", timeZone: "Europe/Oslo")), ScooterCityFeed(id: "norway:voi_no_lillestrom_lorenskog", pause: ScooterSeasonalPause(from: "12-01", until: "03-01", timeZone: "Europe/Oslo"))]),
-        ScooterCity(id: "no:Porsgrunn", name: "Porsgrunn", countryCode: "NO", center: GeoPoint(latitude: 59.1411, longitude: 9.6555), bounds: GeoBounds(south: 59.1153, west: 9.6191, north: 59.1616, east: 9.6952), pauses: [ScooterSeasonalPause(from: "12-15", until: "clear", timeZone: "Europe/Oslo")], feeds: [ScooterCityFeed(id: "norway:ryde_no_porsgrunn", pause: ScooterSeasonalPause(from: "12-15", until: "clear", timeZone: "Europe/Oslo")), ScooterCityFeed(id: "norway:ryde_no_skien", pause: ScooterSeasonalPause(from: "12-15", until: "clear", timeZone: "Europe/Oslo"))]),
-        ScooterCity(id: "no:Sandefjord", name: "Sandefjord", countryCode: "NO", center: GeoPoint(latitude: 59.1301, longitude: 10.2255), bounds: GeoBounds(south: 59.0932, west: 10.164, north: 59.1633, east: 10.2922), feeds: [ScooterCityFeed(id: "norway:ryde_no_sandefjord")]),
-        ScooterCity(id: "no:Sarpsborg", name: "Sarpsborg", countryCode: "NO", center: GeoPoint(latitude: 59.2842, longitude: 11.1101), bounds: GeoBounds(south: 59.2598, west: 11.021, north: 59.3078, east: 11.1466), feeds: [ScooterCityFeed(id: "norway:ryde_no_sarpsborg"), ScooterCityFeed(id: "norway:voi_no_fredrikstad_sarpsborg")]),
-        ScooterCity(id: "no:Skien", name: "Skien", countryCode: "NO", center: GeoPoint(latitude: 59.2075, longitude: 9.6107), bounds: GeoBounds(south: 59.1385, west: 9.52, north: 59.2656, east: 9.6801), pauses: [ScooterSeasonalPause(from: "12-15", until: "clear", timeZone: "Europe/Oslo")], feeds: [ScooterCityFeed(id: "norway:ryde_no_skien", pause: ScooterSeasonalPause(from: "12-15", until: "clear", timeZone: "Europe/Oslo"))]),
-        ScooterCity(id: "no:Stavanger", name: "Stavanger", countryCode: "NO", center: GeoPoint(latitude: 58.9701, longitude: 5.7315), bounds: GeoBounds(south: 58.868, west: 5.5629, north: 59.0144, east: 5.777), feeds: [ScooterCityFeed(id: "norway:ryde_no_stavanger"), ScooterCityFeed(id: "norway:voi_no_stavanger_sandnes")]),
-        ScooterCity(id: "no:Sandnes", name: "Sandnes", countryCode: "NO", center: GeoPoint(latitude: 58.8523, longitude: 5.7366), bounds: GeoBounds(south: 58.765, west: 5.6738, north: 58.896, east: 5.7891), feeds: [ScooterCityFeed(id: "norway:ryde_no_stavanger"), ScooterCityFeed(id: "norway:voi_no_stavanger_sandnes")]),
-        ScooterCity(id: "no:Tønsberg", name: "Tønsberg", countryCode: "NO", center: GeoPoint(latitude: 59.2677, longitude: 10.4081), bounds: GeoBounds(south: 59.2303, west: 10.3765, north: 59.3091, east: 10.4904), feeds: [ScooterCityFeed(id: "norway:ryde_no_tonsberg")]),
-        ScooterCity(id: "no:Tromsø", name: "Tromsø", countryCode: "NO", center: GeoPoint(latitude: 69.6514, longitude: 18.9586), bounds: GeoBounds(south: 69.5976, west: 18.8764, north: 69.7169, east: 19.0959), pauses: [ScooterSeasonalPause(from: "11-02", until: "05-01", timeZone: "Europe/Oslo")], feeds: [ScooterCityFeed(id: "norway:ryde_no_tromso", pause: ScooterSeasonalPause(from: "11-02", until: "05-01", timeZone: "Europe/Oslo"))]),
-        ScooterCity(id: "no:Arendal", name: "Arendal", countryCode: "NO", center: GeoPoint(latitude: 58.4615, longitude: 8.7663), bounds: GeoBounds(south: 58.4301, west: 8.6955, north: 58.4883, east: 8.8325), feeds: [ScooterCityFeed(id: "norway:voi_no_arendal")]),
-        ScooterCity(id: "no:Kristiansand", name: "Kristiansand", countryCode: "NO", center: GeoPoint(latitude: 58.1463, longitude: 7.996), bounds: GeoBounds(south: 58.0678, west: 7.754, north: 58.1969, east: 8.1385), feeds: [ScooterCityFeed(id: "norway:voi_no_kristiansand_vennesla")]),
-        ScooterCity(id: "no:Vennesla", name: "Vennesla", countryCode: "NO", center: GeoPoint(latitude: 58.2688, longitude: 7.9724), bounds: GeoBounds(south: 58.2505, west: 7.9539, north: 58.2926, east: 7.9974), feeds: [ScooterCityFeed(id: "norway:voi_no_kristiansand_vennesla")]),
-        ScooterCity(id: "no:Moss", name: "Moss", countryCode: "NO", center: GeoPoint(latitude: 59.432, longitude: 10.6573), bounds: GeoBounds(south: 59.4038, west: 10.6092, north: 59.4596, east: 10.7152), feeds: [ScooterCityFeed(id: "norway:voi_no_moss")]),
-        ScooterCity(id: "no:Grimstad", name: "Grimstad", countryCode: "NO", center: GeoPoint(latitude: 58.34812, longitude: 8.55545), bounds: GeoBounds(south: 58.230132386860056, west: 8.353023308105405, north: 58.45957412949791, east: 8.761492197536528), feeds: [ScooterCityFeed(id: "norway:voi_no_app_408")]),
-        ScooterCity(id: "no:Lillesand", name: "Lillesand", countryCode: "NO", center: GeoPoint(latitude: 58.25724, longitude: 8.36125), bounds: GeoBounds(south: 58.162260423993764, west: 8.20978524035672, north: 58.349742838363994, east: 8.509530083720346), feeds: [ScooterCityFeed(id: "norway:voi_no_app_409")]),
-        ScooterCity(id: "no:Askøy", name: "Askøy", countryCode: "NO", center: GeoPoint(latitude: 60.46235, longitude: 5.13254), bounds: GeoBounds(south: 60.38575997506088, west: 4.989212125836212, north: 60.53661390222527, east: 5.265346602135307), feeds: [ScooterCityFeed(id: "norway:voi_no_app_411")]),
-        ScooterCity(id: "no:Knarvik", name: "Knarvik", countryCode: "NO", center: GeoPoint(latitude: 60.55542, longitude: 5.24812), bounds: GeoBounds(south: 60.501100695222156, west: 5.093784297130105, north: 60.61408450360314, east: 5.3925787949326836), feeds: [ScooterCityFeed(id: "norway:voi_no_app_412")]),
-        ScooterCity(id: "no:Ålgård", name: "Ålgård", countryCode: "NO", center: GeoPoint(latitude: 58.74605, longitude: 5.91758), bounds: GeoBounds(south: 58.683892473715765, west: 5.770594724002848, north: 58.80832406497031, east: 6.074248012778891), feeds: [ScooterCityFeed(id: "norway:voi_no_app_414")]),
-        ScooterCity(id: "no:Sotra", name: "Sotra", countryCode: "NO", center: GeoPoint(latitude: 60.34556, longitude: 5.02329), bounds: GeoBounds(south: 60.26833512198984, west: 4.852930244659245, north: 60.44292611183713, east: 5.169747342512637), feeds: [ScooterCityFeed(id: "norway:voi_no_app_354")]),
-        ScooterCity(id: "no:Bryne", name: "Bryne", countryCode: "NO", center: GeoPoint(latitude: 58.73931, longitude: 5.6302), bounds: GeoBounds(south: 58.67779851596129, west: 5.468832476586199, north: 58.80327487699317, east: 5.8050357814337685), feeds: [ScooterCityFeed(id: "norway:voi_no_app_415")]),
-        ScooterCity(id: "gb:Bournemouth", name: "Bournemouth", countryCode: "GB", center: GeoPoint(latitude: 50.7204, longitude: -1.8796), bounds: GeoBounds(south: 50.7028, west: -1.915, north: 50.7899, east: -1.7851), feeds: [ScooterCityFeed(id: "uk:beryl_gb_bournemouth_christchurch_poole")]),
-        ScooterCity(id: "gb:Christchurch", name: "Christchurch", countryCode: "GB", center: GeoPoint(latitude: 50.7354, longitude: -1.7787), bounds: GeoBounds(south: 50.7128, west: -1.785, north: 50.7639, east: -1.6868), feeds: [ScooterCityFeed(id: "uk:beryl_gb_bournemouth_christchurch_poole")]),
-        ScooterCity(id: "gb:Poole", name: "Poole", countryCode: "GB", center: GeoPoint(latitude: 50.716, longitude: -1.984), bounds: GeoBounds(south: 50.6776, west: -2.0378, north: 50.7942, east: -1.9151), feeds: [ScooterCityFeed(id: "uk:beryl_gb_bournemouth_christchurch_poole")]),
-        ScooterCity(id: "gb:Brighton", name: "Brighton", countryCode: "GB", center: GeoPoint(latitude: 50.8243, longitude: -0.1427), bounds: GeoBounds(south: 50.8081, west: -0.2167, north: 50.8724, east: -0.0935), feeds: [ScooterCityFeed(id: "uk:beryl_gb_brighton")]),
-        ScooterCity(id: "gb:Falmouth", name: "Falmouth", countryCode: "GB", center: GeoPoint(latitude: 50.1531, longitude: -5.0716), bounds: GeoBounds(south: 50.1339, west: -5.1335, north: 50.1772, east: -5.0427), feeds: [ScooterCityFeed(id: "uk:beryl_gb_cornwall")]),
-        ScooterCity(id: "gb:Newquay", name: "Newquay", countryCode: "GB", center: GeoPoint(latitude: 50.415, longitude: -5.076), bounds: GeoBounds(south: 50.3955, west: -5.1244, north: 50.4283, east: -5.0188), feeds: [ScooterCityFeed(id: "uk:beryl_gb_cornwall")]),
-        ScooterCity(id: "gb:Penzance", name: "Penzance", countryCode: "GB", center: GeoPoint(latitude: 50.1186, longitude: -5.5372), bounds: GeoBounds(south: 50.0795, west: -5.5629, north: 50.1351, east: -5.4533), feeds: [ScooterCityFeed(id: "uk:beryl_gb_cornwall")]),
-        ScooterCity(id: "gb:Truro", name: "Truro", countryCode: "GB", center: GeoPoint(latitude: 50.2626, longitude: -5.0508), bounds: GeoBounds(south: 50.2396, west: -5.1299, north: 50.2715, east: -5.0141), feeds: [ScooterCityFeed(id: "uk:beryl_gb_cornwall")]),
-        ScooterCity(id: "gb:Leeds", name: "Leeds", countryCode: "GB", center: GeoPoint(latitude: 53.7958, longitude: -1.5471), bounds: GeoBounds(south: 53.7731, west: -1.6112, north: 53.8524, east: -1.4765), feeds: [ScooterCityFeed(id: "uk:beryl_gb_leeds")]),
-        ScooterCity(id: "gb:Norwich", name: "Norwich", countryCode: "GB", center: GeoPoint(latitude: 52.6285, longitude: 1.2925), bounds: GeoBounds(south: 52.5913, west: 1.1644, north: 52.6952, east: 1.3887), feeds: [ScooterCityFeed(id: "uk:beryl_gb_norwich")]),
-        ScooterCity(id: "gb:Wymondham", name: "Wymondham", countryCode: "GB", center: GeoPoint(latitude: 52.5703, longitude: 1.1157), bounds: GeoBounds(south: 52.5508, west: 1.0968, north: 52.5953, east: 1.1503), feeds: [ScooterCityFeed(id: "uk:beryl_gb_norwich")]),
-        ScooterCity(id: "gb:Plymouth", name: "Plymouth", countryCode: "GB", center: GeoPoint(latitude: 50.3705, longitude: -4.1422), bounds: GeoBounds(south: 50.3576, west: -4.1953, north: 50.4207, east: -4.0967), feeds: [ScooterCityFeed(id: "uk:beryl_gb_plymouth")]),
-        ScooterCity(id: "gb:Liverpool", name: "Liverpool", countryCode: "GB", center: GeoPoint(latitude: 53.4074, longitude: -2.9776), bounds: GeoBounds(south: 53.3314, west: -3.0113, north: 53.4755, east: -2.8194), feeds: [ScooterCityFeed(id: "uk:bolt_gb_liverpool")]),
-        ScooterCity(id: "gb:Bath", name: "Bath", countryCode: "GB", center: GeoPoint(latitude: 51.3814, longitude: -2.359), bounds: GeoBounds(south: 51.3473, west: -2.4118, north: 51.4195, east: -2.291), feeds: [ScooterCityFeed(id: "uk:dott_gb_bath")]),
-        ScooterCity(id: "gb:Bristol", name: "Bristol", countryCode: "GB", center: GeoPoint(latitude: 51.4536, longitude: -2.5974), bounds: GeoBounds(south: 51.3973, west: -2.7053, north: 51.5499, east: -2.4519), feeds: [ScooterCityFeed(id: "uk:dott_gb_bristol")]),
-        ScooterCity(id: "gb:Yate", name: "Yate", countryCode: "GB", center: GeoPoint(latitude: 51.5405, longitude: -2.418), bounds: GeoBounds(south: 51.5197, west: -2.4504, north: 51.5649, east: -2.3796), feeds: [ScooterCityFeed(id: "uk:dott_gb_bristol")]),
-        ScooterCity(id: "gb:Milton Keynes", name: "Milton Keynes", countryCode: "GB", center: GeoPoint(latitude: 52.0406, longitude: -0.7594), bounds: GeoBounds(south: 51.9723, west: -0.8446, north: 52.0904, east: -0.6559), feeds: [ScooterCityFeed(id: "uk:dott_gb_milton_keynes")]),
-        ScooterCity(id: "gb:Nottingham", name: "Nottingham", countryCode: "GB", center: GeoPoint(latitude: 52.9529, longitude: -1.1498), bounds: GeoBounds(south: 52.8911, west: -1.2505, north: 53.0217, east: -1.1045), feeds: [ScooterCityFeed(id: "uk:dott_gb_nottingham")]),
-        ScooterCity(id: "gb:Kettering", name: "Kettering", countryCode: "GB", center: GeoPoint(latitude: 52.39219, longitude: -0.71516), bounds: GeoBounds(south: 52.35028, west: -0.77627, north: 52.43409, east: -0.654055871022936), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_219")]),
-        ScooterCity(id: "gb:Wellingborough", name: "Wellingborough", countryCode: "GB", center: GeoPoint(latitude: 52.3045, longitude: -0.7015), bounds: GeoBounds(south: 52.28, west: -0.751, north: 52.329, east: -0.652), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_231")]),
-        ScooterCity(id: "gb:Cheltenham", name: "Cheltenham", countryCode: "GB", center: GeoPoint(latitude: 51.9, longitude: -2.08), bounds: GeoBounds(south: 51.802125353332514, west: -2.15, north: 51.976019433793624, east: -1.9274823780819745), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_324")]),
-        ScooterCity(id: "gb:Gloucester", name: "Gloucester", countryCode: "GB", center: GeoPoint(latitude: 51.864, longitude: -2.238), bounds: GeoBounds(south: 51.802125353332514, west: -2.359735850790898, north: 51.976019433793624, east: -2.15), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_324")]),
-        ScooterCity(id: "gb:Rushden & Higham Ferrers", name: "Rushden & Higham Ferrers", countryCode: "GB", center: GeoPoint(latitude: 52.297, longitude: -0.597), bounds: GeoBounds(south: 52.266, west: -0.642, north: 52.328, east: -0.552), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_232")]),
-        ScooterCity(id: "gb:Oxford", name: "Oxford", countryCode: "GB", center: GeoPoint(latitude: 51.7564, longitude: -1.24198), bounds: GeoBounds(south: 51.65752, west: -1.35811, north: 51.85516, east: -1.12534), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_229")]),
-        ScooterCity(id: "gb:Isle of Wight", name: "Isle of Wight", countryCode: "GB", center: GeoPoint(latitude: 50.66404, longitude: -1.31078), bounds: GeoBounds(south: 50.535367023678354, west: -1.654052658845761, north: 50.792267403779235, east: -1.0340508111103688), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_340")]),
-        ScooterCity(id: "gb:Cambridge", name: "Cambridge", countryCode: "GB", center: GeoPoint(latitude: 52.18816, longitude: 0.11933), bounds: GeoBounds(south: 52.0942173949546, west: -0.01478658747473105, north: 52.27488998377251, east: 0.2705901847699579), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_211")]),
-        ScooterCity(id: "gb:Aylesbury", name: "Aylesbury", countryCode: "GB", center: GeoPoint(latitude: 51.8354, longitude: -0.82327), bounds: GeoBounds(south: 51.75143574538053, west: -1.0259084965180603, north: 51.925731156124236, east: -0.6372224109644254), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_349")]),
-        ScooterCity(id: "gb:Braintree", name: "Braintree", countryCode: "GB", center: GeoPoint(latitude: 51.88476, longitude: 0.54181), bounds: GeoBounds(south: 51.842084429902044, west: 0.4733700577157839, north: 51.92795220891488, east: 0.609286891627528), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_390")]),
-        ScooterCity(id: "gb:High Wycombe", name: "High Wycombe", countryCode: "GB", center: GeoPoint(latitude: 51.62756, longitude: -0.7478), bounds: GeoBounds(south: 51.57373959030601, west: -0.8645395546969359, north: 51.68184581972984, east: -0.6284906648417216), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_350")]),
-        ScooterCity(id: "gb:Slough", name: "Slough", countryCode: "GB", center: GeoPoint(latitude: 51.51806, longitude: -0.60217), bounds: GeoBounds(south: 51.461967823955305, west: -0.7024455566334863, north: 51.57999246444064, east: -0.5100853796062739), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_348")]),
-        ScooterCity(id: "gb:Chelmsford", name: "Chelmsford", countryCode: "GB", center: GeoPoint(latitude: 51.73802, longitude: 0.45288), bounds: GeoBounds(south: 51.66862380002616, west: 0.32576439644858224, north: 51.80814494225751, east: 0.580091663388791), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_391")]),
-        ScooterCity(id: "gb:Portsmouth", name: "Portsmouth", countryCode: "GB", center: GeoPoint(latitude: 50.8195, longitude: -1.073), bounds: GeoBounds(south: 50.77, west: -1.147, north: 50.869, east: -0.999), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_235")]),
-        ScooterCity(id: "gb:Corby", name: "Corby", countryCode: "GB", center: GeoPoint(latitude: 52.48922, longitude: -0.6885), bounds: GeoBounds(south: 52.448, west: -0.787, north: 52.5304382962175, east: -0.59), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_230")]),
-        ScooterCity(id: "gb:Southampton", name: "Southampton", countryCode: "GB", center: GeoPoint(latitude: 50.91603, longitude: -1.40307), bounds: GeoBounds(south: 50.875, west: -1.482, north: 50.957, east: -1.324), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_236")]),
-        ScooterCity(id: "gb:Northampton", name: "Northampton", countryCode: "GB", center: GeoPoint(latitude: 52.24358, longitude: -0.89584), bounds: GeoBounds(south: 52.190351431892886, west: -0.9908294677734375, north: 52.29672861135593, east: -0.800628662109375), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_205")]),
-        ScooterCity(id: "gb:London", name: "London", countryCode: "GB", center: GeoPoint(latitude: 51.48426, longitude: -0.1286), bounds: GeoBounds(south: 51.30515851278135, west: -0.4506786666871926, north: 51.6669733453627, east: 0.19414977493520894), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_327")]),
-        ScooterCity(id: "pt:Almada", name: "Almada", countryCode: "PT", center: GeoPoint(latitude: 38.6831, longitude: -9.1576), bounds: GeoBounds(south: 38.6461, west: -9.205, north: 38.6941, east: -9.1394), feeds: [ScooterCityFeed(id: "portugal:bird_pt_almada"), ScooterCityFeed(id: "portugal:lime_pt_almada")]),
-        ScooterCity(id: "pt:Costa da Caparica", name: "Costa da Caparica", countryCode: "PT", center: GeoPoint(latitude: 38.6445, longitude: -9.2336), bounds: GeoBounds(south: 38.6033, west: -9.2516, north: 38.6798, east: -9.2051), feeds: [ScooterCityFeed(id: "portugal:bird_pt_almada"), ScooterCityFeed(id: "portugal:lime_pt_almada")]),
-        ScooterCity(id: "pt:Cascais", name: "Cascais", countryCode: "PT", center: GeoPoint(latitude: 38.6969, longitude: -9.4204), bounds: GeoBounds(south: 38.6716, west: -9.4824, north: 38.7592, east: -9.3048), feeds: [ScooterCityFeed(id: "portugal:bird_pt_cascais")]),
-        ScooterCity(id: "pt:Coimbra", name: "Coimbra", countryCode: "PT", center: GeoPoint(latitude: 40.2112, longitude: -8.4291), bounds: GeoBounds(south: 40.179, west: -8.4718, north: 40.2378, east: -8.3837), feeds: [ScooterCityFeed(id: "portugal:bird_pt_coimbra")]),
-        ScooterCity(id: "pt:Lisboa", name: "Lisboa", countryCode: "PT", center: GeoPoint(latitude: 38.7078, longitude: -9.1366), bounds: GeoBounds(south: 38.6868, west: -9.2341, north: 38.7991, east: -9.0836), feeds: [ScooterCityFeed(id: "portugal:bird_pt_lisboa"), ScooterCityFeed(id: "portugal:lime_pt_lisboa")]),
-        ScooterCity(id: "pt:Maia", name: "Maia", countryCode: "PT", center: GeoPoint(latitude: 41.233, longitude: -8.6222), bounds: GeoBounds(south: 41.1957, west: -8.6761, north: 41.2748, east: -8.5498), feeds: [ScooterCityFeed(id: "portugal:bird_pt_maia")]),
-        ScooterCity(id: "pt:Matosinhos", name: "Matosinhos", countryCode: "PT", center: GeoPoint(latitude: 41.1807, longitude: -8.6822), bounds: GeoBounds(south: 41.1675, west: -8.7233, north: 41.2315, east: -8.5906), feeds: [ScooterCityFeed(id: "portugal:bird_pt_matosinhos")]),
-        ScooterCity(id: "pt:Oeiras", name: "Oeiras", countryCode: "PT", center: GeoPoint(latitude: 38.6926, longitude: -9.3123), bounds: GeoBounds(south: 38.6708, west: -9.3567, north: 38.7512, east: -9.2033), feeds: [ScooterCityFeed(id: "portugal:bird_pt_oeiras")]),
-        ScooterCity(id: "pt:Olhão", name: "Olhão", countryCode: "PT", center: GeoPoint(latitude: 37.027, longitude: -7.8411), bounds: GeoBounds(south: 37.0174, west: -7.8629, north: 37.0559, east: -7.8152), feeds: [ScooterCityFeed(id: "portugal:bird_pt_olhao")]),
-        ScooterCity(id: "pt:Portimão", name: "Portimão", countryCode: "PT", center: GeoPoint(latitude: 37.1376, longitude: -8.5368), bounds: GeoBounds(south: 37.1099, west: -8.6041, north: 37.1623, east: -8.5214), feeds: [ScooterCityFeed(id: "portugal:bird_pt_portimao")]),
-        ScooterCity(id: "pt:Porto", name: "Porto", countryCode: "PT", center: GeoPoint(latitude: 41.1502, longitude: -8.6103), bounds: GeoBounds(south: 41.1351, west: -8.6946, north: 41.1868, east: -8.5741), feeds: [ScooterCityFeed(id: "portugal:bird_pt_porto")]),
-        ScooterCity(id: "es:Caleta de Fuste", name: "Caleta de Fuste", countryCode: "ES", center: GeoPoint(latitude: 28.3983, longitude: -13.8602), bounds: GeoBounds(south: 28.3622, west: -13.8885, north: 28.4207, east: -13.8412), feeds: [ScooterCityFeed(id: "spain:bird_es_caleta_de_fuste"), ScooterCityFeed(id: "spain:hoppy_es_caleta_de_fuste")]),
-        ScooterCity(id: "es:Getafe", name: "Getafe", countryCode: "ES", center: GeoPoint(latitude: 40.3179, longitude: -3.6871), bounds: GeoBounds(south: 40.3098, west: -3.7197, north: 40.3377, east: -3.6545), feeds: [ScooterCityFeed(id: "spain:bird_es_getafe")]),
-        ScooterCity(id: "es:Gijón", name: "Gijón", countryCode: "ES", center: GeoPoint(latitude: 43.5449, longitude: -5.6627), bounds: GeoBounds(south: 43.5042, west: -5.7134, north: 43.5546, east: -5.5986), feeds: [ScooterCityFeed(id: "spain:bird_es_gijon")]),
-        ScooterCity(id: "es:Costa Calma", name: "Costa Calma", countryCode: "ES", center: GeoPoint(latitude: 28.1608, longitude: -14.2301), bounds: GeoBounds(south: 28.1311, west: -14.2536, north: 28.1799, east: -14.2029), feeds: [ScooterCityFeed(id: "spain:bird_es_pajara")]),
-        ScooterCity(id: "es:Morro Jable", name: "Morro Jable", countryCode: "ES", center: GeoPoint(latitude: 28.0502, longitude: -14.3522), bounds: GeoBounds(south: 28.041, west: -14.3561, north: 28.0831, east: -14.2967), feeds: [ScooterCityFeed(id: "spain:bird_es_pajara")]),
-        ScooterCity(id: "es:Playa de las Américas", name: "Playa de las Américas", countryCode: "ES", center: GeoPoint(latitude: 28.0602, longitude: -16.7311), bounds: GeoBounds(south: 28.0375, west: -16.7953, north: 28.1375, east: -16.6901), feeds: [ScooterCityFeed(id: "spain:bird_es_playa_de_las_americas"), ScooterCityFeed(id: "spain:hopp_es_tenerife"), ScooterCityFeed(id: "spain:hoppy_es_tenerife_sur"), ScooterCityFeed(id: "spain:dott_es_playa_de_las_americas")]),
-        ScooterCity(id: "es:Torrevieja", name: "Torrevieja", countryCode: "ES", center: GeoPoint(latitude: 37.9775, longitude: -0.6828), bounds: GeoBounds(south: 37.9392, west: -0.7523, north: 38.0354, east: -0.6383), feeds: [ScooterCityFeed(id: "spain:hopp_es_costa_blanca"), ScooterCityFeed(id: "spain:hoppy_es_torrevieja")]),
-        ScooterCity(id: "es:Pilar de la Horadada", name: "Pilar de la Horadada", countryCode: "ES", center: GeoPoint(latitude: 37.8675, longitude: -0.7926), bounds: GeoBounds(south: 37.8382, west: -0.8007, north: 37.8943, east: -0.7462), feeds: [ScooterCityFeed(id: "spain:hopp_es_costa_blanca")]),
-        ScooterCity(id: "es:Jávea", name: "Jávea", countryCode: "ES", center: GeoPoint(latitude: 38.7894, longitude: 0.1634), bounds: GeoBounds(south: 38.7636, west: 0.16, north: 38.7994, east: 0.2006), feeds: [ScooterCityFeed(id: "spain:hopp_es_javea")]),
-        ScooterCity(id: "es:Golf del Sur", name: "Golf del Sur", countryCode: "ES", center: GeoPoint(latitude: 28.033, longitude: -16.6077), bounds: GeoBounds(south: 28.0188, west: -16.6251, north: 28.0377, east: -16.5879), feeds: [ScooterCityFeed(id: "spain:hopp_es_tenerife")]),
-        ScooterCity(id: "es:Corralejo", name: "Corralejo", countryCode: "ES", center: GeoPoint(latitude: 28.7289, longitude: -13.8691), bounds: GeoBounds(south: 28.7018, west: -13.8863, north: 28.749, east: -13.8462), feeds: [ScooterCityFeed(id: "spain:hoppy_es_corralejo")]),
-        ScooterCity(id: "es:Altea", name: "Altea", countryCode: "ES", center: GeoPoint(latitude: 38.5995, longitude: -0.0518), bounds: GeoBounds(south: 38.58, west: -0.08, north: 38.6464, east: 0.0195), feeds: [ScooterCityFeed(id: "spain:hoppy_es_marina_baixa")]),
-        ScooterCity(id: "es:L'Albir", name: "L'Albir", countryCode: "ES", center: GeoPoint(latitude: 38.5698, longitude: -0.0716), bounds: GeoBounds(south: 38.5537, west: -0.08, north: 38.5799, east: -0.0526), feeds: [ScooterCityFeed(id: "spain:hoppy_es_marina_baixa")]),
-        ScooterCity(id: "es:L'Alfàs del Pi", name: "L'Alfàs del Pi", countryCode: "ES", center: GeoPoint(latitude: 38.5815, longitude: -0.1021), bounds: GeoBounds(south: 38.5544, west: -0.122, north: 38.6238, east: -0.0801), feeds: [ScooterCityFeed(id: "spain:hoppy_es_marina_baixa")]),
-        ScooterCity(id: "es:La Nucía", name: "La Nucía", countryCode: "ES", center: GeoPoint(latitude: 38.6024, longitude: -0.1296), bounds: GeoBounds(south: 38.5634, west: -0.1596, north: 38.634, east: -0.1221), feeds: [ScooterCityFeed(id: "spain:hoppy_es_marina_baixa")]),
-        ScooterCity(id: "es:Puerto del Carmen", name: "Puerto del Carmen", countryCode: "ES", center: GeoPoint(latitude: 28.9236, longitude: -13.663), bounds: GeoBounds(south: 28.9145, west: -13.6887, north: 28.9412, east: -13.6057), feeds: [ScooterCityFeed(id: "spain:hoppy_es_puerto_del_carmen")]),
-        ScooterCity(id: "es:Marbella", name: "Marbella", countryCode: "ES", center: GeoPoint(latitude: 36.427, longitude: -5.1504), bounds: GeoBounds(south: 36.4076, west: -5.1754, north: 36.5881, east: -4.5935), feeds: [ScooterCityFeed(id: "spain:dott_es_marbella")]),
-        ScooterCity(id: "es:Santa Cruz de Tenerife", name: "Santa Cruz de Tenerife", countryCode: "ES", center: GeoPoint(latitude: 28.4723, longitude: -16.2537), bounds: GeoBounds(south: 28.4441, west: -16.2945, north: 28.5106, east: -16.1859), feeds: [ScooterCityFeed(id: "spain:dott_es_santa_cruz_de_tenerife")]),
-        ScooterCity(id: "is:Akranes", name: "Akranes", countryCode: "IS", center: GeoPoint(latitude: 64.3171, longitude: -22.0834), bounds: GeoBounds(south: 64.3078, west: -22.1074, north: 64.333, east: -22.0223), feeds: [ScooterCityFeed(id: "iceland:hopp_is_akranes")]),
-        ScooterCity(id: "is:Akureyri", name: "Akureyri", countryCode: "IS", center: GeoPoint(latitude: 65.6826, longitude: -18.0913), bounds: GeoBounds(south: 65.6486, west: -18.1687, north: 65.71, east: -18.0277), feeds: [ScooterCityFeed(id: "iceland:hopp_is_akureyri")]),
-        ScooterCity(id: "is:Borgarnes", name: "Borgarnes", countryCode: "IS", center: GeoPoint(latitude: 64.5383, longitude: -21.9202), bounds: GeoBounds(south: 64.5283, west: -21.9425, north: 64.563, east: -21.8808), feeds: [ScooterCityFeed(id: "iceland:hopp_is_borgarnes")]),
-        ScooterCity(id: "is:Dalvík", name: "Dalvík", countryCode: "IS", center: GeoPoint(latitude: 65.9711, longitude: -18.5304), bounds: GeoBounds(south: 65.9611, west: -18.5579, north: 65.983, east: -18.5043), pauses: [ScooterSeasonalPause(from: "10-21", until: "05-01", timeZone: "Atlantic/Reykjavik")], feeds: [ScooterCityFeed(id: "iceland:hopp_is_dalvik", pause: ScooterSeasonalPause(from: "10-21", until: "05-01", timeZone: "Atlantic/Reykjavik"))]),
-        ScooterCity(id: "is:Egilsstaðir", name: "Egilsstaðir", countryCode: "IS", center: GeoPoint(latitude: 65.262, longitude: -14.4035), bounds: GeoBounds(south: 65.2474, west: -14.4586, north: 65.3089, east: -14.3682), feeds: [ScooterCityFeed(id: "iceland:hopp_is_egilsstadir")]),
-        ScooterCity(id: "is:Húsavík", name: "Húsavík", countryCode: "IS", center: GeoPoint(latitude: 66.0433, longitude: -17.341), bounds: GeoBounds(south: 66.0289, west: -17.3699, north: 66.0549, east: -17.316), feeds: [ScooterCityFeed(id: "iceland:hopp_is_husavik")]),
-        ScooterCity(id: "is:Hveragerði", name: "Hveragerði", countryCode: "IS", center: GeoPoint(latitude: 63.9976, longitude: -21.1868), bounds: GeoBounds(south: 63.9852, west: -21.2262, north: 64.0277, east: -21.1619), feeds: [ScooterCityFeed(id: "iceland:hopp_is_hveragerdi")]),
-        ScooterCity(id: "is:Ólafsvík", name: "Ólafsvík", countryCode: "IS", center: GeoPoint(latitude: 64.8959, longitude: -23.7084), bounds: GeoBounds(south: 64.8836, west: -23.7189, north: 64.9001, east: -23.6805), pauses: [ScooterSeasonalPause(from: "10-23", until: "05-01", timeZone: "Atlantic/Reykjavik")], feeds: [ScooterCityFeed(id: "iceland:hopp_is_olafsvik", pause: ScooterSeasonalPause(from: "10-23", until: "05-01", timeZone: "Atlantic/Reykjavik"))]),
-        ScooterCity(id: "is:Hellissandur", name: "Hellissandur", countryCode: "IS", center: GeoPoint(latitude: 64.9172, longitude: -23.8825), bounds: GeoBounds(south: 64.9091, west: -23.9007, north: 64.9305, east: -23.801), pauses: [ScooterSeasonalPause(from: "10-23", until: "05-01", timeZone: "Atlantic/Reykjavik")], feeds: [ScooterCityFeed(id: "iceland:hopp_is_olafsvik", pause: ScooterSeasonalPause(from: "10-23", until: "05-01", timeZone: "Atlantic/Reykjavik"))]),
-        ScooterCity(id: "is:Reykjanesbær", name: "Reykjanesbær", countryCode: "IS", center: GeoPoint(latitude: 63.9833, longitude: -22.5561), bounds: GeoBounds(south: 63.9551, west: -22.636, north: 64.0158, east: -22.4649), feeds: [ScooterCityFeed(id: "iceland:hopp_is_reykjanesbaer")]),
-        ScooterCity(id: "is:Sandgerði", name: "Sandgerði", countryCode: "IS", center: GeoPoint(latitude: 64.0388, longitude: -22.7059), bounds: GeoBounds(south: 64.0228, west: -22.7256, north: 64.0496, east: -22.6789), feeds: [ScooterCityFeed(id: "iceland:hopp_is_reykjanesbaer")]),
-        ScooterCity(id: "is:Garður", name: "Garður", countryCode: "IS", center: GeoPoint(latitude: 64.0704, longitude: -22.6512), bounds: GeoBounds(south: 64.0635, west: -22.6826, north: 64.0761, east: -22.634), feeds: [ScooterCityFeed(id: "iceland:hopp_is_reykjanesbaer")]),
-        ScooterCity(id: "is:Vogar", name: "Vogar", countryCode: "IS", center: GeoPoint(latitude: 63.9832, longitude: -22.3874), bounds: GeoBounds(south: 63.969, west: -22.3931, north: 63.9868, east: -22.3458), feeds: [ScooterCityFeed(id: "iceland:hopp_is_reykjanesbaer")]),
-        ScooterCity(id: "is:Reykjavík", name: "Reykjavík", countryCode: "IS", center: GeoPoint(latitude: 64.146, longitude: -21.9422), bounds: GeoBounds(south: 64.0284, west: -22.0287, north: 64.1917, east: -21.6403), feeds: [ScooterCityFeed(id: "iceland:hopp_is_reykjavik")]),
-        ScooterCity(id: "is:Sauðárkrókur", name: "Sauðárkrókur", countryCode: "IS", center: GeoPoint(latitude: 65.7443, longitude: -19.6386), bounds: GeoBounds(south: 65.7279, west: -19.6659, north: 65.7643, east: -19.6194), feeds: [ScooterCityFeed(id: "iceland:hopp_is_saudarkrokur")]),
-        ScooterCity(id: "is:Selfoss", name: "Selfoss", countryCode: "IS", center: GeoPoint(latitude: 63.9368, longitude: -21.0035), bounds: GeoBounds(south: 63.9058, west: -21.0713, north: 63.9574, east: -20.9586), feeds: [ScooterCityFeed(id: "iceland:hopp_is_selfoss")]),
-        ScooterCity(id: "is:Stykkishólmur", name: "Stykkishólmur", countryCode: "IS", center: GeoPoint(latitude: 65.0743, longitude: -22.7303), bounds: GeoBounds(south: 65.0584, west: -22.762, north: 65.0856, east: -22.7041), feeds: [ScooterCityFeed(id: "iceland:hopp_is_stykkisholmur")]),
-        ScooterCity(id: "is:Vestmannaeyjar", name: "Vestmannaeyjar", countryCode: "IS", center: GeoPoint(latitude: 63.4401, longitude: -20.2786), bounds: GeoBounds(south: 63.4233, west: -20.3143, north: 63.454, east: -20.2472), feeds: [ScooterCityFeed(id: "iceland:hopp_is_vestmannaeyjar")]),
-        ScooterCity(id: "is:Vík", name: "Vík", countryCode: "IS", center: GeoPoint(latitude: 63.4188, longitude: -19.0055), bounds: GeoBounds(south: 63.4101, west: -19.029, north: 63.4284, east: -18.9801), feeds: [ScooterCityFeed(id: "iceland:hopp_is_vik")]),
-        ScooterCity(id: "dk:Aarhus", name: "Aarhus", countryCode: "DK", center: GeoPoint(latitude: 56.15119, longitude: 10.19325), bounds: GeoBounds(south: 56.0639863543046, west: 10.0751495361328, north: 56.2383895039888, east: 10.3113555908203), feeds: [ScooterCityFeed(id: "denmark:voi_dk_app_59")]),
-        ScooterCity(id: "dk:Odense", name: "Odense", countryCode: "DK", center: GeoPoint(latitude: 55.39032, longitude: 10.38345), bounds: GeoBounds(south: 55.3010107944959, west: 10.2351379394531, north: 55.4796317138773, east: 10.5317687988281), feeds: [ScooterCityFeed(id: "denmark:voi_dk_app_146")]),
-        ScooterCity(id: "dk:Aalborg", name: "Aalborg", countryCode: "DK", center: GeoPoint(latitude: 57.05741, longitude: 9.90555), bounds: GeoBounds(south: 56.9610753568483, west: 9.678955078125, north: 57.15374754486, east: 10.1321411132812), feeds: [ScooterCityFeed(id: "denmark:voi_dk_app_187")]),
-        ScooterCity(id: "se:Kiruna", name: "Kiruna", countryCode: "SE", center: GeoPoint(latitude: 67.8496, longitude: 20.3063), bounds: GeoBounds(south: 67.8205, west: 20.1797, north: 67.8801, east: 20.3641), feeds: [ScooterCityFeed(id: "sweden:hopp_se_kiruna")]),
-        ScooterCity(id: "se:Uppsala", name: "Uppsala", countryCode: "SE", center: GeoPoint(latitude: 59.8586, longitude: 17.6387), bounds: GeoBounds(south: 59.8037426244997, west: 17.5266265869141, north: 59.9049511141442, east: 17.7975082397461), feeds: [ScooterCityFeed(id: "sweden:lime_se_uppsala"), ScooterCityFeed(id: "sweden:voi_se_app_48")]),
-        ScooterCity(id: "se:Trollhättan", name: "Trollhättan", countryCode: "SE", center: GeoPoint(latitude: 58.28631, longitude: 12.30538), bounds: GeoBounds(south: 58.22198604038249, west: 12.178586968862646, north: 58.350640965615526, east: 12.432170960613973), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_425")]),
-        ScooterCity(id: "se:Linköping", name: "Linköping", countryCode: "SE", center: GeoPoint(latitude: 58.41244, longitude: 15.62333), bounds: GeoBounds(south: 58.32391453794888, west: 15.38360595703125, north: 58.50051103764058, east: 15.864257812499998), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_184"), ScooterCityFeed(id: "sweden:qick_se_linkoping")]),
-        ScooterCity(id: "se:Helsingborg", name: "Helsingborg", countryCode: "SE", center: GeoPoint(latitude: 56.03922, longitude: 12.71702), bounds: GeoBounds(south: 55.9878199697891, west: 12.6459503173828, north: 56.0906186777103, east: 12.7880859375), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_127")]),
-        ScooterCity(id: "se:Gävle", name: "Gävle", countryCode: "SE", center: GeoPoint(latitude: 60.67245, longitude: 17.11683), bounds: GeoBounds(south: 60.55196567741403, west: 16.821384148535337, north: 60.7924380425801, east: 17.407666443488193), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_296")]),
-        ScooterCity(id: "se:Lund", name: "Lund", countryCode: "SE", center: GeoPoint(latitude: 55.71252, longitude: 13.19599), bounds: GeoBounds(south: 55.66383765593185, west: 13.091239929199219, north: 55.76112258901995, east: 13.301010131835936), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_281")]),
-        ScooterCity(id: "se:Växjö", name: "Växjö", countryCode: "SE", center: GeoPoint(latitude: 56.88874, longitude: 14.8062), bounds: GeoBounds(south: 56.78393274747651, west: 14.6345498644896, north: 56.99355104735682, east: 14.977844230643655), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_373")]),
-        ScooterCity(id: "se:Norrköping", name: "Norrköping", countryCode: "SE", center: GeoPoint(latitude: 58.57866, longitude: 16.2325), bounds: GeoBounds(south: 58.419637, west: 15.889286, north: 58.737686, east: 16.575714), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_238"), ScooterCityFeed(id: "sweden:qick_se_norrkoping")]),
-        ScooterCity(id: "se:Stockholm", name: "Stockholm", countryCode: "SE", center: GeoPoint(latitude: 59.33022, longitude: 18.07568), bounds: GeoBounds(south: 59.204953, west: 17.795002, north: 59.455496, east: 18.356363), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_1")]),
-        ScooterCity(id: "se:Örebro", name: "Örebro", countryCode: "SE", center: GeoPoint(latitude: 59.27537, longitude: 15.24203), bounds: GeoBounds(south: 59.23252752806556, west: 15.140533447265625, north: 59.318126631430424, east: 15.343780517578123), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_185"), ScooterCityFeed(id: "sweden:qick_se_orebro")]),
-        ScooterCity(id: "se:Göteborg", name: "Göteborg", countryCode: "SE", center: GeoPoint(latitude: 57.70169, longitude: 11.98838), bounds: GeoBounds(south: 57.633271, west: 11.851058, north: 57.770117, east: 12.125706), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_5")]),
-        ScooterCity(id: "se:Borås", name: "Borås", countryCode: "SE", center: GeoPoint(latitude: 57.72917, longitude: 12.95149), bounds: GeoBounds(south: 57.67887906685692, west: 12.829605193225632, north: 57.7794562167397, east: 13.073384591047272), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_282")]),
-        ScooterCity(id: "se:Halmstad", name: "Halmstad", countryCode: "SE", center: GeoPoint(latitude: 56.67152, longitude: 12.97145), bounds: GeoBounds(south: 56.48372869256887, west: 12.56561279296875, north: 56.857982669693584, east: 13.38134765625), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_283")]),
-        ScooterCity(id: "se:Västerås", name: "Västerås", countryCode: "SE", center: GeoPoint(latitude: 59.62134, longitude: 16.5418), bounds: GeoBounds(south: 59.559431, west: 16.411313, north: 59.683119, east: 16.672767), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_171")]),
-        ScooterCity(id: "se:Malmö", name: "Malmö", countryCode: "SE", center: GeoPoint(latitude: 55.5825, longitude: 12.98844), bounds: GeoBounds(south: 55.503978, west: 12.809006, north: 55.661015, east: 13.167879), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_7")]),
-        ScooterCity(id: "se:Jönköping", name: "Jönköping", countryCode: "SE", center: GeoPoint(latitude: 57.7826, longitude: 14.1618), bounds: GeoBounds(south: 57.757437, west: 14.11968, north: 57.798462, east: 14.260196), feeds: [ScooterCityFeed(id: "sweden:qick_se_jonkoping")]),
-        ScooterCity(id: "se:Eskilstuna", name: "Eskilstuna", countryCode: "SE", center: GeoPoint(latitude: 59.3712, longitude: 16.5098), bounds: GeoBounds(south: 59.339476, west: 16.433246, north: 59.406399, east: 16.562471), feeds: [ScooterCityFeed(id: "sweden:qick_se_eskilstuna")]),
-        ScooterCity(id: "se:Falun", name: "Falun", countryCode: "SE", center: GeoPoint(latitude: 60.6065, longitude: 15.6355), bounds: GeoBounds(south: 60.568036, west: 15.583741, north: 60.630238, east: 15.707035), feeds: [ScooterCityFeed(id: "sweden:qick_se_falun")]),
-        ScooterCity(id: "se:Borlänge", name: "Borlänge", countryCode: "SE", center: GeoPoint(latitude: 60.4843, longitude: 15.433), bounds: GeoBounds(south: 60.455159, west: 15.376463, north: 60.526219, east: 15.486713), feeds: [ScooterCityFeed(id: "sweden:qick_se_borlange")]),
-        ScooterCity(id: "lv:Rīga", name: "Rīga", countryCode: "LV", center: GeoPoint(latitude: 56.9496, longitude: 24.1052), bounds: GeoBounds(south: 56.862, west: 23.8878, north: 57.0871, east: 24.3426), feeds: [ScooterCityFeed(id: "latvia:ride_mobility_lv_riga")]),
-        ScooterCity(id: "pl:Oświęcim", name: "Oświęcim", countryCode: "PL", center: GeoPoint(latitude: 50.0382, longitude: 19.2214), bounds: GeoBounds(south: 50.0153, west: 19.1853, north: 50.0623, east: 19.2617), feeds: [ScooterCityFeed(id: "poland:dott_pl_oswiecim")]),
-        ScooterCity(id: "pl:Sosnowiec", name: "Sosnowiec", countryCode: "PL", center: GeoPoint(latitude: 50.2781, longitude: 19.1343), bounds: GeoBounds(south: 50.2488, west: 19.0917, north: 50.3188, east: 19.2153), feeds: [ScooterCityFeed(id: "poland:dott_pl_sosnowiec")]),
-        ScooterCity(id: "pl:Wołomin", name: "Wołomin", countryCode: "PL", center: GeoPoint(latitude: 52.3469, longitude: 21.242), bounds: GeoBounds(south: 52.3218, west: 21.211, north: 52.3675, east: 21.2883), feeds: [ScooterCityFeed(id: "poland:dott_pl_wolomin")]),
-        ScooterCity(id: "pl:Kobyłka", name: "Kobyłka", countryCode: "PL", center: GeoPoint(latitude: 52.3387, longitude: 21.1965), bounds: GeoBounds(south: 52.3148, west: 21.164, north: 52.3578, east: 21.2498), feeds: [ScooterCityFeed(id: "poland:dott_pl_wolomin")]),
-        ScooterCity(id: "pl:Radzymin", name: "Radzymin", countryCode: "PL", center: GeoPoint(latitude: 52.4176, longitude: 21.1808), bounds: GeoBounds(south: 52.392, west: 21.149, north: 52.4303, east: 21.2185), feeds: [ScooterCityFeed(id: "poland:dott_pl_wolomin")]),
-        ScooterCity(id: "pl:Knurów", name: "Knurów", countryCode: "PL", center: GeoPoint(latitude: 50.2217, longitude: 18.6707), bounds: GeoBounds(south: 50.1984, west: 18.6242, north: 50.2455, east: 18.6968), feeds: [ScooterCityFeed(id: "poland:hopp_pl_knurow")]),
-        ScooterCity(id: "pl:Września", name: "Września", countryCode: "PL", center: GeoPoint(latitude: 52.3251, longitude: 17.5652), bounds: GeoBounds(south: 52.3069, west: 17.5272, north: 52.3432, east: 17.6078), feeds: [ScooterCityFeed(id: "poland:hopp_pl_wrzesnia")]),
-        ScooterCity(id: "pl:Złotów", name: "Złotów", countryCode: "PL", center: GeoPoint(latitude: 53.3632, longitude: 17.0347), bounds: GeoBounds(south: 53.3449, west: 17.0006, north: 53.3832, east: 17.0833), feeds: [ScooterCityFeed(id: "poland:hopp_pl_zlotow")]),
-        ScooterCity(id: "pl:Brzeg", name: "Brzeg", countryCode: "PL", center: GeoPoint(latitude: 50.8551, longitude: 17.4722), bounds: GeoBounds(south: 50.8404, west: 17.4434, north: 50.8678, east: 17.4904), feeds: [ScooterCityFeed(id: "poland:dott_pl_brzeg")]),
-        ScooterCity(id: "pl:Warszawa", name: "Warszawa", countryCode: "PL", center: GeoPoint(latitude: 52.2336, longitude: 21.0025), bounds: GeoBounds(south: 52.1229, west: 20.7372, north: 52.3642, east: 21.1523), feeds: [ScooterCityFeed(id: "poland:dott_pl_warszawa")]),
-        ScooterCity(id: "pl:Katowice / Chorzów", name: "Katowice / Chorzów", countryCode: "PL", center: GeoPoint(latitude: 50.2849, longitude: 18.9938), bounds: GeoBounds(south: 50.224, west: 18.8997, north: 50.3328, east: 19.0642), feeds: [ScooterCityFeed(id: "poland:dott_pl_katowice_chorzow")]),
-        ScooterCity(id: "pl:Chrzanów", name: "Chrzanów", countryCode: "PL", center: GeoPoint(latitude: 50.1442, longitude: 19.4142), bounds: GeoBounds(south: 50.1139, west: 19.3527, north: 50.1825, east: 19.4852), feeds: [ScooterCityFeed(id: "poland:dott_pl_chrzanow")]),
-        ScooterCity(id: "pl:Gdańsk / Gdynia / Sopot", name: "Gdańsk / Gdynia / Sopot", countryCode: "PL", center: GeoPoint(latitude: 54.3823, longitude: 18.5811), bounds: GeoBounds(south: 54.288, west: 18.193, north: 54.6152, east: 18.675), feeds: [ScooterCityFeed(id: "poland:dott_pl_gdansk_gdynia_sopot")]),
-        ScooterCity(id: "pl:Częstochowa", name: "Częstochowa", countryCode: "PL", center: GeoPoint(latitude: 50.813, longitude: 19.1171), bounds: GeoBounds(south: 50.7735, west: 19.0697, north: 50.8636, east: 19.1564), feeds: [ScooterCityFeed(id: "poland:dott_pl_czestochowa")]),
-        ScooterCity(id: "pl:Goleniów", name: "Goleniów", countryCode: "PL", center: GeoPoint(latitude: 53.5631, longitude: 14.8305), bounds: GeoBounds(south: 53.5378, west: 14.8022, north: 53.5783, east: 14.872), feeds: [ScooterCityFeed(id: "poland:dott_pl_goleniow")]),
-        ScooterCity(id: "pl:Kołobrzeg", name: "Kołobrzeg", countryCode: "PL", center: GeoPoint(latitude: 54.1804, longitude: 15.5666), bounds: GeoBounds(south: 54.1496, west: 15.5146, north: 54.1944, east: 15.6203), feeds: [ScooterCityFeed(id: "poland:dott_pl_kolobrzeg")]),
-        ScooterCity(id: "pl:Kościerzyna", name: "Kościerzyna", countryCode: "PL", center: GeoPoint(latitude: 54.121, longitude: 17.977), bounds: GeoBounds(south: 54.1048, west: 17.8512, north: 54.1417, east: 18.008), feeds: [ScooterCityFeed(id: "poland:dott_pl_koscierzyna")]),
-        ScooterCity(id: "pl:Lębork", name: "Lębork", countryCode: "PL", center: GeoPoint(latitude: 54.5398, longitude: 17.7296), bounds: GeoBounds(south: 54.5206, west: 17.7122, north: 54.5606, east: 17.7727), feeds: [ScooterCityFeed(id: "poland:dott_pl_lebork")]),
-        ScooterCity(id: "pl:Kraków", name: "Kraków", countryCode: "PL", center: GeoPoint(latitude: 50.0653, longitude: 19.9407), bounds: GeoBounds(south: 50.0182, west: 19.8716, north: 50.1089, east: 20.0422), feeds: [ScooterCityFeed(id: "poland:dott_pl_krakow")]),
-        ScooterCity(id: "pl:Legionowo", name: "Legionowo", countryCode: "PL", center: GeoPoint(latitude: 52.4013, longitude: 20.9324), bounds: GeoBounds(south: 52.3607, west: 20.8789, north: 52.4545, east: 20.9989), feeds: [ScooterCityFeed(id: "poland:dott_pl_legionowo")]),
-        ScooterCity(id: "pl:Leszno", name: "Leszno", countryCode: "PL", center: GeoPoint(latitude: 51.8468, longitude: 16.5735), bounds: GeoBounds(south: 51.8159, west: 16.531, north: 51.8759, east: 16.6109), feeds: [ScooterCityFeed(id: "poland:dott_pl_leszno")]),
-        ScooterCity(id: "pl:Lubliniec", name: "Lubliniec", countryCode: "PL", center: GeoPoint(latitude: 50.6734, longitude: 18.679), bounds: GeoBounds(south: 50.6523, west: 18.6321, north: 50.7003, east: 18.7105), feeds: [ScooterCityFeed(id: "poland:dott_pl_lubliniec")]),
-        ScooterCity(id: "pl:Łuków", name: "Łuków", countryCode: "PL", center: GeoPoint(latitude: 51.9263, longitude: 22.3838), bounds: GeoBounds(south: 51.9068, west: 22.3316, north: 51.9576, east: 22.4408), feeds: [ScooterCityFeed(id: "poland:dott_pl_lukow")]),
-        ScooterCity(id: "pl:Malbork", name: "Malbork", countryCode: "PL", center: GeoPoint(latitude: 54.0366, longitude: 19.0452), bounds: GeoBounds(south: 54.009, west: 19.0008, north: 54.0735, east: 19.0779), feeds: [ScooterCityFeed(id: "poland:dott_pl_malbork")]),
-        ScooterCity(id: "pl:Międzyzdroje", name: "Międzyzdroje", countryCode: "PL", center: GeoPoint(latitude: 53.9273, longitude: 14.4472), bounds: GeoBounds(south: 53.9123, west: 14.4235, north: 53.9406, east: 14.4661), feeds: [ScooterCityFeed(id: "poland:dott_pl_miedzyzdroje")]),
-        ScooterCity(id: "pl:Milanówek", name: "Milanówek", countryCode: "PL", center: GeoPoint(latitude: 52.1146, longitude: 20.6471), bounds: GeoBounds(south: 52.0703, west: 20.5789, north: 52.1588, east: 20.7645), feeds: [ScooterCityFeed(id: "poland:dott_pl_milanowek")]),
-        ScooterCity(id: "pl:Nowogard", name: "Nowogard", countryCode: "PL", center: GeoPoint(latitude: 53.6682, longitude: 15.121), bounds: GeoBounds(south: 53.6566, west: 15.0872, north: 53.6952, east: 15.1624), feeds: [ScooterCityFeed(id: "poland:dott_pl_nowogard")]),
-        ScooterCity(id: "pl:Nowy Dwór Mazowiecki", name: "Nowy Dwór Mazowiecki", countryCode: "PL", center: GeoPoint(latitude: 52.4297, longitude: 20.7218), bounds: GeoBounds(south: 52.4103, west: 20.656, north: 52.4544, east: 20.7632), feeds: [ScooterCityFeed(id: "poland:dott_pl_nowy_dwor_mazowiecki")]),
-        ScooterCity(id: "pl:Nowy Targ", name: "Nowy Targ", countryCode: "PL", center: GeoPoint(latitude: 49.4812, longitude: 20.0218), bounds: GeoBounds(south: 49.4564, west: 19.9914, north: 49.5074, east: 20.0695), feeds: [ScooterCityFeed(id: "poland:dott_pl_nowy_targ")]),
-        ScooterCity(id: "pl:Oleśnica", name: "Oleśnica", countryCode: "PL", center: GeoPoint(latitude: 51.2108, longitude: 17.3842), bounds: GeoBounds(south: 51.1933, west: 17.3591, north: 51.232, east: 17.419), feeds: [ScooterCityFeed(id: "poland:dott_pl_olesnica")]),
-        ScooterCity(id: "pl:Płock", name: "Płock", countryCode: "PL", center: GeoPoint(latitude: 52.542, longitude: 19.7503), bounds: GeoBounds(south: 52.5131, west: 19.6491, north: 52.5889, east: 19.7893), feeds: [ScooterCityFeed(id: "poland:dott_pl_plock")]),
-        ScooterCity(id: "pl:Poznań", name: "Poznań", countryCode: "PL", center: GeoPoint(latitude: 52.4036, longitude: 16.9103), bounds: GeoBounds(south: 52.317, west: 16.7855, north: 52.4824, east: 17.0168), feeds: [ScooterCityFeed(id: "poland:dott_pl_poznan")]),
-        ScooterCity(id: "pl:Pruszcz Gdański", name: "Pruszcz Gdański", countryCode: "PL", center: GeoPoint(latitude: 54.2643, longitude: 18.6365), bounds: GeoBounds(south: 54.2368, west: 18.5911, north: 54.3004, east: 18.6878), feeds: [ScooterCityFeed(id: "poland:dott_pl_pruszcz_gdanski")]),
-        ScooterCity(id: "pl:Radzionków", name: "Radzionków", countryCode: "PL", center: GeoPoint(latitude: 50.3495, longitude: 18.8997), bounds: GeoBounds(south: 50.3156, west: 18.8317, north: 50.4151, east: 18.9512), feeds: [ScooterCityFeed(id: "poland:dott_pl_radzionkow")]),
-        ScooterCity(id: "pl:Rewal", name: "Rewal", countryCode: "PL", center: GeoPoint(latitude: 54.0821, longitude: 15.0232), bounds: GeoBounds(south: 54.0474, west: 14.9014, north: 54.1034, east: 15.1019), feeds: [ScooterCityFeed(id: "poland:dott_pl_rewal")]),
-        ScooterCity(id: "pl:Skawina", name: "Skawina", countryCode: "PL", center: GeoPoint(latitude: 49.9758, longitude: 19.8259), bounds: GeoBounds(south: 49.9513, west: 19.8048, north: 49.9968, east: 19.8609), feeds: [ScooterCityFeed(id: "poland:dott_pl_skawina")]),
-        ScooterCity(id: "pl:Starogard Gdański", name: "Starogard Gdański", countryCode: "PL", center: GeoPoint(latitude: 53.9645, longitude: 18.5274), bounds: GeoBounds(south: 53.9326, west: 18.4822, north: 53.9999, east: 18.5511), feeds: [ScooterCityFeed(id: "poland:dott_pl_starogard_gdanski")]),
-        ScooterCity(id: "pl:Świdnica", name: "Świdnica", countryCode: "PL", center: GeoPoint(latitude: 50.8424, longitude: 16.489), bounds: GeoBounds(south: 50.8232, west: 16.4564, north: 50.8666, east: 16.5274), feeds: [ScooterCityFeed(id: "poland:dott_pl_swidnica")]),
-        ScooterCity(id: "pl:Świnoujście", name: "Świnoujście", countryCode: "PL", center: GeoPoint(latitude: 53.9146, longitude: 14.2416), bounds: GeoBounds(south: 53.8991, west: 14.2168, north: 53.9278, east: 14.2808), feeds: [ScooterCityFeed(id: "poland:dott_pl_swinoujscie")]),
-        ScooterCity(id: "pl:Szczecin", name: "Szczecin", countryCode: "PL", center: GeoPoint(latitude: 53.4317, longitude: 14.5368), bounds: GeoBounds(south: 53.3607, west: 14.4537, north: 53.4647, east: 14.7028), feeds: [ScooterCityFeed(id: "poland:dott_pl_szczecin"), ScooterCityFeed(id: "poland:dott_pl_szczecin_east")]),
-        ScooterCity(id: "pl:Tarnowskie Góry", name: "Tarnowskie Góry", countryCode: "PL", center: GeoPoint(latitude: 50.4467, longitude: 18.8494), bounds: GeoBounds(south: 50.4212, west: 18.8014, north: 50.467, east: 18.8886), feeds: [ScooterCityFeed(id: "poland:dott_pl_tarnowskie_gory")]),
-        ScooterCity(id: "pl:Tczew", name: "Tczew", countryCode: "PL", center: GeoPoint(latitude: 54.0924, longitude: 18.7859), bounds: GeoBounds(south: 54.0654, west: 18.745, north: 54.1157, east: 18.8133), feeds: [ScooterCityFeed(id: "poland:dott_pl_tczew")]),
-        ScooterCity(id: "pl:Wrocław", name: "Wrocław", countryCode: "PL", center: GeoPoint(latitude: 51.0947, longitude: 17.0298), bounds: GeoBounds(south: 51.0373, west: 16.8837, north: 51.1751, east: 17.0929), feeds: [ScooterCityFeed(id: "poland:dott_pl_wroclaw")]),
-        ScooterCity(id: "pl:Zawiercie", name: "Zawiercie", countryCode: "PL", center: GeoPoint(latitude: 50.4863, longitude: 19.4261), bounds: GeoBounds(south: 50.4685, west: 19.3794, north: 50.5201, east: 19.4743), feeds: [ScooterCityFeed(id: "poland:dott_pl_zawiercie")]),
-        ScooterCity(id: "hu:Pécs", name: "Pécs", countryCode: "HU", center: GeoPoint(latitude: 46.0765, longitude: 18.228), bounds: GeoBounds(south: 46.0199, west: 18.1584, north: 46.0962, east: 18.2795), feeds: [ScooterCityFeed(id: "hungary:hopp_hu_pecs")]),
-        ScooterCity(id: "hu:Békéscsaba", name: "Békéscsaba", countryCode: "HU", center: GeoPoint(latitude: 46.6798, longitude: 21.0985), bounds: GeoBounds(south: 46.6404, west: 21.0275, north: 46.7058, east: 21.1674), feeds: [ScooterCityFeed(id: "hungary:hopp_hu_bekescsaba")]),
-        ScooterCity(id: "hu:Budapest", name: "Budapest", countryCode: "HU", center: GeoPoint(latitude: 47.5016, longitude: 19.0626), bounds: GeoBounds(south: 47.4516, west: 19.0064, north: 47.5727, east: 19.1202), feeds: [ScooterCityFeed(id: "hungary:dott_hu_budapest")]),
-        ScooterCity(id: "hu:Győr", name: "Győr", countryCode: "HU", center: GeoPoint(latitude: 47.6824, longitude: 17.6408), bounds: GeoBounds(south: 47.6203, west: 17.5781, north: 47.7337, east: 17.7437), feeds: [ScooterCityFeed(id: "hungary:dott_hu_gyor")]),
-        ScooterCity(id: "hu:Hatvan", name: "Hatvan", countryCode: "HU", center: GeoPoint(latitude: 47.6655, longitude: 19.6669), bounds: GeoBounds(south: 47.6244, west: 19.6164, north: 47.7006, east: 19.7327), feeds: [ScooterCityFeed(id: "hungary:dott_hu_hatvan")]),
-        ScooterCity(id: "hu:Pápa", name: "Pápa", countryCode: "HU", center: GeoPoint(latitude: 47.3268, longitude: 17.4652), bounds: GeoBounds(south: 47.2757, west: 17.4281, north: 47.362, east: 17.5295), feeds: [ScooterCityFeed(id: "hungary:dott_hu_papa")]),
-        ScooterCity(id: "hu:Dunaújváros", name: "Dunaújváros", countryCode: "HU", center: GeoPoint(latitude: 46.9634, longitude: 18.9339), bounds: GeoBounds(south: 46.9225, west: 18.8867, north: 47.0021, east: 18.9638), feeds: [ScooterCityFeed(id: "hungary:dott_hu_dunaujvaros")]),
-        ScooterCity(id: "gr:Faliraki", name: "Faliraki", countryCode: "GR", center: GeoPoint(latitude: 36.3403, longitude: 28.202), bounds: GeoBounds(south: 36.2953, west: 28.1747, north: 36.39, east: 28.247), feeds: [ScooterCityFeed(id: "greece:hopp_gr_rhodes"), ScooterCityFeed(id: "greece:hoppy_gr_rhodes")]),
-        ScooterCity(id: "gr:Piraeus", name: "Piraeus", countryCode: "GR", center: GeoPoint(latitude: 37.9432, longitude: 23.6471), bounds: GeoBounds(south: 37.904, west: 23.602, north: 38.0306, east: 23.7848), feeds: [ScooterCityFeed(id: "greece:hopp_gr_piraeus"), ScooterCityFeed(id: "greece:dott_gr_piraeus")]),
-        ScooterCity(id: "gr:Argostoli", name: "Argostoli", countryCode: "GR", center: GeoPoint(latitude: 38.1757, longitude: 20.4879), bounds: GeoBounds(south: 38.1459, west: 20.4613, north: 38.1995, east: 20.5084), feeds: [ScooterCityFeed(id: "greece:hopp_gr_kefalonia")]),
-        ScooterCity(id: "gr:Ioannina", name: "Ioannina", countryCode: "GR", center: GeoPoint(latitude: 39.664, longitude: 20.8523), bounds: GeoBounds(south: 39.5875, west: 20.7955, north: 39.6989, east: 20.9053), feeds: [ScooterCityFeed(id: "greece:hopp_gr_ioannina")]),
-        ScooterCity(id: "gr:Kos", name: "Kos", countryCode: "GR", center: GeoPoint(latitude: 36.8938, longitude: 27.2877), bounds: GeoBounds(south: 36.8666, west: 27.174, north: 36.9192, east: 27.3618), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_kos")]),
-        ScooterCity(id: "gr:Rethymno", name: "Rethymno", countryCode: "GR", center: GeoPoint(latitude: 35.3668, longitude: 24.4823), bounds: GeoBounds(south: 35.3476, west: 24.4431, north: 35.395, east: 24.6181), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_rethymno")]),
-        ScooterCity(id: "gr:Zakynthos", name: "Zakynthos", countryCode: "GR", center: GeoPoint(latitude: 37.7811, longitude: 20.8983), bounds: GeoBounds(south: 37.7052, west: 20.8408, north: 37.8097, east: 20.9481), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_zakynthos")]),
-        ScooterCity(id: "gr:Rhodes", name: "Rhodes", countryCode: "GR", center: GeoPoint(latitude: 36.4437, longitude: 28.2274), bounds: GeoBounds(south: 36.3823, west: 28.187, north: 36.4612, east: 28.2492), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_rhodes")]),
-        ScooterCity(id: "gr:Ialysos", name: "Ialysos", countryCode: "GR", center: GeoPoint(latitude: 36.4156, longitude: 28.1582), bounds: GeoBounds(south: 36.4062, west: 28.1137, north: 36.4278, east: 28.1869), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_rhodes")]),
-        ScooterCity(id: "gr:Afantou", name: "Afantou", countryCode: "GR", center: GeoPoint(latitude: 36.2845, longitude: 28.1735), bounds: GeoBounds(south: 36.2745, west: 28.1567, north: 36.2952, east: 28.1895), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_rhodes")]),
-        ScooterCity(id: "gr:Kolymbia", name: "Kolymbia", countryCode: "GR", center: GeoPoint(latitude: 36.2532, longitude: 28.1611), bounds: GeoBounds(south: 36.2372, west: 28.1335, north: 36.271, east: 28.1787), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_rhodes")]),
-        ScooterCity(id: "gr:Thessaloniki", name: "Thessaloniki", countryCode: "GR", center: GeoPoint(latitude: 40.627, longitude: 22.9512), bounds: GeoBounds(south: 40.5586, west: 22.8837, north: 40.7779, east: 23.1412), feeds: [ScooterCityFeed(id: "greece:dott_gr_thessaloniki")]),
-        ScooterCity(id: "cy:Paphos", name: "Paphos", countryCode: "CY", center: GeoPoint(latitude: 34.7756, longitude: 32.4243), bounds: GeoBounds(south: 34.7243, west: 32.3084, north: 34.9182, east: 32.4919), feeds: [ScooterCityFeed(id: "cyprus:hopp_cy_paphos")]),
-        ScooterCity(id: "cy:Limassol", name: "Limassol", countryCode: "CY", center: GeoPoint(latitude: 34.6727, longitude: 33.0418), bounds: GeoBounds(south: 34.6397, west: 32.9752, north: 34.7227, east: 33.1875), feeds: [ScooterCityFeed(id: "cyprus:hopp_cy_cyprus")]),
-        ScooterCity(id: "fi:Mariehamn", name: "Mariehamn", countryCode: "FI", center: GeoPoint(latitude: 60.0973, longitude: 19.9348), bounds: GeoBounds(south: 60.0657, west: 19.8824, north: 60.1438, east: 19.9972), feeds: [ScooterCityFeed(id: "finland:hopp_fi_mariehamn")]),
-        ScooterCity(id: "fi:Helsinki", name: "Helsinki", countryCode: "FI", center: GeoPoint(latitude: 60.1801, longitude: 24.9385), bounds: GeoBounds(south: 59.995685, west: 24.347465, north: 60.39054, east: 25.525976), feeds: [ScooterCityFeed(id: "finland:dott_fi_helsinki"), ScooterCityFeed(id: "finland:voi_fi_app_49")]),
-        ScooterCity(id: "fi:Hyvinkää", name: "Hyvinkää", countryCode: "FI", center: GeoPoint(latitude: 60.6288, longitude: 24.8559), bounds: GeoBounds(south: 60.5971, west: 24.8052, north: 60.6613, east: 24.9088), feeds: [ScooterCityFeed(id: "finland:dott_fi_hyvinkaa")]),
-        ScooterCity(id: "fi:Järvenpää", name: "Järvenpää", countryCode: "FI", center: GeoPoint(latitude: 60.4771, longitude: 25.0931), bounds: GeoBounds(south: 60.4442, west: 25.0546, north: 60.5143, east: 25.1493), feeds: [ScooterCityFeed(id: "finland:dott_fi_jarvenpaa")]),
-        ScooterCity(id: "fi:Pietarsaari", name: "Pietarsaari", countryCode: "FI", center: GeoPoint(latitude: 63.676, longitude: 22.7141), bounds: GeoBounds(south: 63.6536, west: 22.6697, north: 63.7204, east: 22.7709), feeds: [ScooterCityFeed(id: "finland:dott_fi_pietarsaari")]),
-        ScooterCity(id: "fi:Espoo", name: "Espoo", countryCode: "FI", center: GeoPoint(latitude: 60.2045, longitude: 24.7657), bounds: GeoBounds(south: 60.13, west: 24.5696, north: 60.2579, east: 24.8505), feeds: [ScooterCityFeed(id: "finland:dott_fi_espoo")]),
-        ScooterCity(id: "fi:Kerava", name: "Kerava", countryCode: "FI", center: GeoPoint(latitude: 60.4033, longitude: 25.1036), bounds: GeoBounds(south: 60.368, west: 25.0462, north: 60.4487, east: 25.1548), feeds: [ScooterCityFeed(id: "finland:dott_fi_kerava")]),
-        ScooterCity(id: "fi:Kirkkonummi", name: "Kirkkonummi", countryCode: "FI", center: GeoPoint(latitude: 60.124, longitude: 24.4411), bounds: GeoBounds(south: 60.1006, west: 24.4087, north: 60.1425, east: 24.4854), feeds: [ScooterCityFeed(id: "finland:dott_fi_kirkkonummi")]),
-        ScooterCity(id: "fi:Kokkola", name: "Kokkola", countryCode: "FI", center: GeoPoint(latitude: 63.8374, longitude: 23.1319), bounds: GeoBounds(south: 63.8083, west: 22.9845, north: 63.869, east: 23.1959), feeds: [ScooterCityFeed(id: "finland:dott_fi_kokkola")]),
-        ScooterCity(id: "fi:Kouvola", name: "Kouvola", countryCode: "FI", center: GeoPoint(latitude: 60.8702, longitude: 26.7038), bounds: GeoBounds(south: 60.8436, west: 26.6004, north: 60.9126, east: 26.8024), feeds: [ScooterCityFeed(id: "finland:dott_fi_kouvola")]),
-        ScooterCity(id: "fi:Lahti", name: "Lahti", countryCode: "FI", center: GeoPoint(latitude: 60.9816, longitude: 25.6597), bounds: GeoBounds(south: 60.9309, west: 25.4995, north: 61.0259, east: 25.8), feeds: [ScooterCityFeed(id: "finland:dott_fi_lahti")]),
-        ScooterCity(id: "fi:Lappeenranta", name: "Lappeenranta", countryCode: "FI", center: GeoPoint(latitude: 61.0575, longitude: 28.1795), bounds: GeoBounds(south: 61.0276, west: 28.0774, north: 61.0883, east: 28.2747), feeds: [ScooterCityFeed(id: "finland:dott_fi_lappeenranta")]),
-        ScooterCity(id: "fi:Nokia", name: "Nokia", countryCode: "FI", center: GeoPoint(latitude: 61.4786, longitude: 23.4927), bounds: GeoBounds(south: 61.4476, west: 23.4438, north: 61.506, east: 23.5892), feeds: [ScooterCityFeed(id: "finland:dott_fi_nokia")]),
-        ScooterCity(id: "fi:Nurmijärvi", name: "Nurmijärvi", countryCode: "FI", center: GeoPoint(latitude: 60.3776, longitude: 24.7502), bounds: GeoBounds(south: 60.3613, west: 24.6676, north: 60.4088, east: 24.7946), feeds: [ScooterCityFeed(id: "finland:dott_fi_nurmijarvi")]),
-        ScooterCity(id: "fi:Porvoo", name: "Porvoo", countryCode: "FI", center: GeoPoint(latitude: 60.3925, longitude: 25.6718), bounds: GeoBounds(south: 60.362, west: 25.6151, north: 60.4165, east: 25.7197), feeds: [ScooterCityFeed(id: "finland:dott_fi_porvoo")]),
-        ScooterCity(id: "fi:Rauma", name: "Rauma", countryCode: "FI", center: GeoPoint(latitude: 61.1297, longitude: 21.507), bounds: GeoBounds(south: 61.091, west: 21.462, north: 61.1653, east: 21.6019), feeds: [ScooterCityFeed(id: "finland:dott_fi_rauma")]),
-        ScooterCity(id: "fi:Riihimäki", name: "Riihimäki", countryCode: "FI", center: GeoPoint(latitude: 60.7361, longitude: 24.7767), bounds: GeoBounds(south: 60.7039, west: 24.7296, north: 60.763, east: 24.8407), feeds: [ScooterCityFeed(id: "finland:dott_fi_riihimaki")]),
-        ScooterCity(id: "fi:Salo", name: "Salo", countryCode: "FI", center: GeoPoint(latitude: 60.3888, longitude: 23.1277), bounds: GeoBounds(south: 60.3578, west: 23.034, north: 60.4281, east: 23.1946), feeds: [ScooterCityFeed(id: "finland:dott_fi_salo")]),
-        ScooterCity(id: "fi:Tampere", name: "Tampere", countryCode: "FI", center: GeoPoint(latitude: 61.4981, longitude: 23.7639), bounds: GeoBounds(south: 61.4267, west: 23.5622, north: 61.54364147555, east: 23.9504), feeds: [ScooterCityFeed(id: "finland:dott_fi_tampere"), ScooterCityFeed(id: "finland:voi_fi_app_136")]),
-        ScooterCity(id: "fi:Vaasa", name: "Vaasa", countryCode: "FI", center: GeoPoint(latitude: 63.0981, longitude: 21.6182), bounds: GeoBounds(south: 63.0673, west: 21.5541, north: 63.1361, east: 21.7417), feeds: [ScooterCityFeed(id: "finland:dott_fi_vaasa")]),
-        ScooterCity(id: "fi:Vantaa", name: "Vantaa", countryCode: "FI", center: GeoPoint(latitude: 60.2953, longitude: 25.0376), bounds: GeoBounds(south: 60.2682, west: 24.9406, north: 60.334, east: 25.0849), feeds: [ScooterCityFeed(id: "finland:dott_fi_vantaa")]),
-        ScooterCity(id: "fi:Turku", name: "Turku", countryCode: "FI", center: GeoPoint(latitude: 60.43921, longitude: 22.24697), bounds: GeoBounds(south: 60.3775571287457, west: 22.0763397216797, north: 60.5008635236931, east: 22.4176025390625), feeds: [ScooterCityFeed(id: "finland:voi_fi_app_122")]),
-        ScooterCity(id: "fi:Jyväskylä", name: "Jyväskylä", countryCode: "FI", center: GeoPoint(latitude: 62.24067, longitude: 25.7444), bounds: GeoBounds(south: 62.1706311981245, west: 25.5150604248047, north: 62.3107081604266, east: 25.9737396240234), feeds: [ScooterCityFeed(id: "finland:voi_fi_app_275")]),
-        ScooterCity(id: "hr:Rijeka", name: "Rijeka", countryCode: "HR", center: GeoPoint(latitude: 45.327, longitude: 14.4425), bounds: GeoBounds(south: 45.3081, west: 14.353, north: 45.3587, east: 14.4896), feeds: [ScooterCityFeed(id: "croatia:hoppy_hr_rijeka")]),
-        ScooterCity(id: "ua:Kyiv", name: "Kyiv", countryCode: "UA", center: GeoPoint(latitude: 50.444, longitude: 30.518), bounds: GeoBounds(south: 50.3748, west: 30.4036, north: 50.5282, east: 30.663), feeds: [ScooterCityFeed(id: "ukraine:zelectra_ua_kyiv")]),
-        ScooterCity(id: "us:dc:Washington", name: "Washington, DC", countryCode: "US", center: GeoPoint(latitude: 38.9072, longitude: -77.0369), bounds: GeoBounds(south: 38.7862, west: -77.1309, north: 39.0046, east: -76.8978), feeds: [ScooterCityFeed(id: "us:bolt_hopp_us_washington"), ScooterCityFeed(id: "us:veo_us_washington")]),
-        ScooterCity(id: "us:az:Tempe", name: "Tempe, AZ", countryCode: "US", center: GeoPoint(latitude: 33.4255, longitude: -111.94), bounds: GeoBounds(south: 33.3148, west: -111.989, north: 33.4673, east: -111.8703), feeds: [ScooterCityFeed(id: "us:bird_us_tempe"), ScooterCityFeed(id: "us:lime_us_tempe")]),
-        ScooterCity(id: "us:ca:Culver City", name: "Culver City, CA", countryCode: "US", center: GeoPoint(latitude: 34.0211, longitude: -118.3965), bounds: GeoBounds(south: 33.9689, west: -118.4584, north: 34.043, east: -118.3606), feeds: [ScooterCityFeed(id: "us:bird_us_culver_city")]),
-        ScooterCity(id: "us:ca:Los Angeles", name: "Los Angeles, CA", countryCode: "US", center: GeoPoint(latitude: 34.0522, longitude: -118.2437), bounds: GeoBounds(south: 33.6944, west: -118.6727, north: 34.3465, east: -118.1549), feeds: [ScooterCityFeed(id: "us:bird_us_los_angeles"), ScooterCityFeed(id: "us:veo_us_santa_monica"), ScooterCityFeed(id: "us:gcoo_us_los_angeles")]),
-        ScooterCity(id: "us:ca:Santa Monica", name: "Santa Monica, CA", countryCode: "US", center: GeoPoint(latitude: 34.0195, longitude: -118.4912), bounds: GeoBounds(south: 33.9873, west: -118.5274, north: 34.0597, east: -118.4328), feeds: [ScooterCityFeed(id: "us:bird_us_santa_monica"), ScooterCityFeed(id: "us:veo_us_santa_monica")]),
-        ScooterCity(id: "us:fl:Gainesville", name: "Gainesville, FL", countryCode: "US", center: GeoPoint(latitude: 29.6516, longitude: -82.3248), bounds: GeoBounds(south: 29.5924, west: -82.4291, north: 29.6977, east: -82.2744), feeds: [ScooterCityFeed(id: "us:bird_us_gainesville"), ScooterCityFeed(id: "us:spin_us_gainesville"), ScooterCityFeed(id: "us:veo_us_gainesville")]),
-        ScooterCity(id: "us:ga:Atlanta", name: "Atlanta, GA", countryCode: "US", center: GeoPoint(latitude: 33.749, longitude: -84.388), bounds: GeoBounds(south: 33.6399, west: -84.5607, north: 33.894, east: -84.279), feeds: [ScooterCityFeed(id: "us:bird_us_atlanta"), ScooterCityFeed(id: "us:lime_us_atlanta")]),
-        ScooterCity(id: "us:in:Indianapolis", name: "Indianapolis, IN", countryCode: "US", center: GeoPoint(latitude: 39.7684, longitude: -86.1581), bounds: GeoBounds(south: 39.6833, west: -86.2872, north: 39.9113, east: -85.9597), feeds: [ScooterCityFeed(id: "us:bird_us_indianapolis")]),
-        ScooterCity(id: "us:ky:Lexington", name: "Lexington, KY", countryCode: "US", center: GeoPoint(latitude: 38.0406, longitude: -84.5037), bounds: GeoBounds(south: 37.944, west: -84.6289, north: 38.117, east: -84.375), feeds: [ScooterCityFeed(id: "us:bird_us_lexington"), ScooterCityFeed(id: "us:spin_us_lexington")]),
-        ScooterCity(id: "us:mo:Kansas City", name: "Kansas City, MO", countryCode: "US", center: GeoPoint(latitude: 39.0997, longitude: -94.5786), bounds: GeoBounds(south: 38.8986, west: -94.697, north: 39.1367, east: -94.4578), feeds: [ScooterCityFeed(id: "us:bird_us_kansas_city")]),
-        ScooterCity(id: "us:mo:St. Louis", name: "St. Louis, MO", countryCode: "US", center: GeoPoint(latitude: 38.627, longitude: -90.1994), bounds: GeoBounds(south: 38.5269, west: -90.3726, north: 38.6969, east: -90.1695), feeds: [ScooterCityFeed(id: "us:bird_us_st_louis")]),
-        ScooterCity(id: "us:nc:Greensboro", name: "Greensboro, NC", countryCode: "US", center: GeoPoint(latitude: 36.0726, longitude: -79.792), bounds: GeoBounds(south: 36.038, west: -79.858, north: 36.1141, east: -79.7297), feeds: [ScooterCityFeed(id: "us:bird_us_greensboro")]),
-        ScooterCity(id: "us:nj:Newark", name: "Newark, NJ", countryCode: "US", center: GeoPoint(latitude: 40.7357, longitude: -74.1724), bounds: GeoBounds(south: 40.6722, west: -74.255, north: 40.7978, east: -74.1075), feeds: [ScooterCityFeed(id: "us:bird_us_newark"), ScooterCityFeed(id: "us:veo_us_newark")]),
-        ScooterCity(id: "us:nv:Reno", name: "Reno, NV", countryCode: "US", center: GeoPoint(latitude: 39.5296, longitude: -119.8138), bounds: GeoBounds(south: 39.4775, west: -119.8535, north: 39.5656, east: -119.7681), feeds: [ScooterCityFeed(id: "us:bird_us_reno")]),
-        ScooterCity(id: "us:ny:Bronx", name: "Bronx, NY", countryCode: "US", center: GeoPoint(latitude: 40.8448, longitude: -73.8648), bounds: GeoBounds(south: 40.7964, west: -73.9149, north: 40.9224, east: -73.771), feeds: [ScooterCityFeed(id: "us:bird_us_new_york"), ScooterCityFeed(id: "us:lime_us_new_york"), ScooterCityFeed(id: "us:veo_us_bronx")]),
-        ScooterCity(id: "us:ny:Queens", name: "Queens, NY", countryCode: "US", center: GeoPoint(latitude: 40.7282, longitude: -73.7949), bounds: GeoBounds(south: 40.6575, west: -73.8512, north: 40.7742, east: -73.7337), feeds: [ScooterCityFeed(id: "us:bird_us_new_york"), ScooterCityFeed(id: "us:lime_us_new_york"), ScooterCityFeed(id: "us:veo_us_queens")]),
-        ScooterCity(id: "us:oh:Cleveland", name: "Cleveland, OH", countryCode: "US", center: GeoPoint(latitude: 41.4993, longitude: -81.6944), bounds: GeoBounds(south: 41.3826, west: -81.89, north: 41.6067, east: -81.5219), feeds: [ScooterCityFeed(id: "us:bird_us_cleveland"), ScooterCityFeed(id: "us:veo_us_cleveland")]),
-        ScooterCity(id: "us:tn:Memphis", name: "Memphis, TN", countryCode: "US", center: GeoPoint(latitude: 35.1495, longitude: -90.049), bounds: GeoBounds(south: 35.0662, west: -90.0967, north: 35.2023, east: -89.7846), feeds: [ScooterCityFeed(id: "us:bird_us_memphis")]),
-        ScooterCity(id: "us:tn:Nashville", name: "Nashville, TN", countryCode: "US", center: GeoPoint(latitude: 36.1627, longitude: -86.7816), bounds: GeoBounds(south: 36.0296, west: -86.8834, north: 36.2506, east: -86.6253), feeds: [ScooterCityFeed(id: "us:bird_us_nashville"), ScooterCityFeed(id: "us:spin_us_nashville")]),
-        ScooterCity(id: "us:tx:Dallas", name: "Dallas, TX", countryCode: "US", center: GeoPoint(latitude: 32.7767, longitude: -96.797), bounds: GeoBounds(south: 32.6108, west: -97.0038, north: 33.0209, east: -96.5463), feeds: [ScooterCityFeed(id: "us:bird_us_dallas")]),
-        ScooterCity(id: "us:tx:San Antonio", name: "San Antonio, TX", countryCode: "US", center: GeoPoint(latitude: 29.4241, longitude: -98.4936), bounds: GeoBounds(south: 29.3863, west: -98.685, north: 29.6104, east: -98.4483), feeds: [ScooterCityFeed(id: "us:bird_us_san_antonio"), ScooterCityFeed(id: "us:veo_us_san_antonio")]),
-        ScooterCity(id: "us:va:Arlington", name: "Arlington, VA", countryCode: "US", center: GeoPoint(latitude: 38.8816, longitude: -77.091), bounds: GeoBounds(south: 38.8194, west: -77.1832, north: 38.9436, east: -77.0157), feeds: [ScooterCityFeed(id: "us:bird_us_arlington"), ScooterCityFeed(id: "us:lime_us_arlington"), ScooterCityFeed(id: "us:gcoo_us_arlington")]),
-        ScooterCity(id: "us:va:Fairfax", name: "Fairfax, VA", countryCode: "US", center: GeoPoint(latitude: 38.8462, longitude: -77.3064), bounds: GeoBounds(south: 38.8151, west: -77.3484, north: 38.8792, east: -77.2572), feeds: [ScooterCityFeed(id: "us:bird_us_fairfax")]),
-        ScooterCity(id: "us:va:Richmond", name: "Richmond, VA", countryCode: "US", center: GeoPoint(latitude: 37.5407, longitude: -77.436), bounds: GeoBounds(south: 37.4592, west: -77.6202, north: 37.6124, east: -77.3805), feeds: [ScooterCityFeed(id: "us:bird_us_richmond"), ScooterCityFeed(id: "us:spin_us_richmond")]),
-        ScooterCity(id: "us:wi:Eau Claire", name: "Eau Claire, WI", countryCode: "US", center: GeoPoint(latitude: 44.8113, longitude: -91.4985), bounds: GeoBounds(south: 44.785, west: -91.5415, north: 44.8311, east: -91.462), feeds: [ScooterCityFeed(id: "us:bird_us_eau_claire")]),
-        ScooterCity(id: "us:ca:Oakland", name: "Oakland, CA", countryCode: "US", center: GeoPoint(latitude: 37.8044, longitude: -122.2712), bounds: GeoBounds(south: 37.7706, west: -122.3348, north: 37.8602, east: -122.2005), feeds: [ScooterCityFeed(id: "us:lime_us_oakland")]),
-        ScooterCity(id: "us:ca:San Francisco", name: "San Francisco, CA", countryCode: "US", center: GeoPoint(latitude: 37.7749, longitude: -122.4194), bounds: GeoBounds(south: 37.6991, west: -122.5259, north: 37.8216, east: -122.3469), feeds: [ScooterCityFeed(id: "us:lime_us_san_francisco"), ScooterCityFeed(id: "us:spin_us_san_francisco")]),
-        ScooterCity(id: "us:ca:San Jose", name: "San Jose, CA", countryCode: "US", center: GeoPoint(latitude: 37.3382, longitude: -121.8863), bounds: GeoBounds(south: 37.2116, west: -121.9903, north: 37.4377, east: -121.7473), feeds: [ScooterCityFeed(id: "us:lime_us_san_jose")]),
-        ScooterCity(id: "us:co:Colorado Springs", name: "Colorado Springs, CO", countryCode: "US", center: GeoPoint(latitude: 38.8339, longitude: -104.8214), bounds: GeoBounds(south: 38.7595, west: -104.8979, north: 38.9287, east: -104.7017), feeds: [ScooterCityFeed(id: "us:lime_us_colorado_springs")]),
-        ScooterCity(id: "us:il:Chicago", name: "Chicago, IL", countryCode: "US", center: GeoPoint(latitude: 41.8781, longitude: -87.6298), bounds: GeoBounds(south: 41.6355, west: -87.8562, north: 42.032, east: -87.5125), feeds: [ScooterCityFeed(id: "us:lime_us_chicago"), ScooterCityFeed(id: "us:lyft_us_chicago")]),
-        ScooterCity(id: "us:ky:Louisville", name: "Louisville, KY", countryCode: "US", center: GeoPoint(latitude: 38.2527, longitude: -85.7585), bounds: GeoBounds(south: 38.1771, west: -85.8445, north: 38.2854, east: -85.6587), feeds: [ScooterCityFeed(id: "us:lime_us_louisville")]),
-        ScooterCity(id: "us:md:Baltimore", name: "Baltimore, MD", countryCode: "US", center: GeoPoint(latitude: 39.2904, longitude: -76.6122), bounds: GeoBounds(south: 39.1886, west: -76.723, north: 39.3811, east: -76.5124), feeds: [ScooterCityFeed(id: "us:lime_us_baltimore"), ScooterCityFeed(id: "us:spin_us_baltimore")]),
-        ScooterCity(id: "us:mi:Detroit", name: "Detroit, MI", countryCode: "US", center: GeoPoint(latitude: 42.3314, longitude: -83.0458), bounds: GeoBounds(south: 42.246, west: -83.3, north: 42.4979, east: -82.8982), feeds: [ScooterCityFeed(id: "us:lime_us_detroit"), ScooterCityFeed(id: "us:spin_us_detroit")]),
-        ScooterCity(id: "us:nc:Durham", name: "Durham, NC", countryCode: "US", center: GeoPoint(latitude: 35.994, longitude: -78.8986), bounds: GeoBounds(south: 35.9138, west: -78.994, north: 36.0771, east: -78.8326), feeds: [ScooterCityFeed(id: "us:lime_us_durham"), ScooterCityFeed(id: "us:spin_us_durham")]),
-        ScooterCity(id: "us:ne:Lincoln", name: "Lincoln, NE", countryCode: "US", center: GeoPoint(latitude: 40.8136, longitude: -96.7026), bounds: GeoBounds(south: 40.7828, west: -96.7279, north: 40.8458, east: -96.6416), feeds: [ScooterCityFeed(id: "us:lime_us_lincoln")]),
-        ScooterCity(id: "us:va:Norfolk", name: "Norfolk, VA", countryCode: "US", center: GeoPoint(latitude: 36.8508, longitude: -76.2859), bounds: GeoBounds(south: 36.8133, west: -76.3305, north: 36.9771, east: -76.1662), feeds: [ScooterCityFeed(id: "us:lime_us_norfolk")]),
-        ScooterCity(id: "us:wa:Seattle", name: "Seattle, WA", countryCode: "US", center: GeoPoint(latitude: 47.6062, longitude: -122.3321), bounds: GeoBounds(south: 47.4887, west: -122.4475, north: 47.7457, east: -122.2291), feeds: [ScooterCityFeed(id: "us:lime_us_seattle")]),
-        ScooterCity(id: "us:or:Portland", name: "Portland, OR", countryCode: "US", center: GeoPoint(latitude: 45.5152, longitude: -122.6784), bounds: GeoBounds(south: 45.4331, west: -122.764, north: 45.6023, east: -122.4778), feeds: [ScooterCityFeed(id: "us:lyft_us_portland")]),
-        ScooterCity(id: "us:oh:Akron", name: "Akron, OH", countryCode: "US", center: GeoPoint(latitude: 41.0814, longitude: -81.519), bounds: GeoBounds(south: 41.0098, west: -81.6218, north: 41.1781, east: -81.4094), feeds: [ScooterCityFeed(id: "us:spin_us_akron")]),
-        ScooterCity(id: "us:mi:Ann Arbor", name: "Ann Arbor, MI", countryCode: "US", center: GeoPoint(latitude: 42.2808, longitude: -83.743), bounds: GeoBounds(south: 42.2155, west: -83.889, north: 42.3342, east: -83.6496), feeds: [ScooterCityFeed(id: "us:spin_us_ann_arbor")]),
-        ScooterCity(id: "us:oh:Columbus", name: "Columbus, OH", countryCode: "US", center: GeoPoint(latitude: 39.9612, longitude: -82.9988), bounds: GeoBounds(south: 39.8522, west: -83.1551, north: 40.1481, east: -82.8317), feeds: [ScooterCityFeed(id: "us:spin_us_columbus"), ScooterCityFeed(id: "us:veo_us_columbus")]),
-        ScooterCity(id: "us:co:Fort Collins", name: "Fort Collins, CO", countryCode: "US", center: GeoPoint(latitude: 40.5853, longitude: -105.0844), bounds: GeoBounds(south: 40.471, west: -105.1691, north: 40.629, east: -104.9807), feeds: [ScooterCityFeed(id: "us:spin_us_fort_collins")]),
-        ScooterCity(id: "us:co:Meridian", name: "Meridian, CO", countryCode: "US", center: GeoPoint(latitude: 39.5453, longitude: -104.8604), bounds: GeoBounds(south: 39.5179, west: -104.9184, north: 39.633, east: -104.8278), feeds: [ScooterCityFeed(id: "us:spin_us_meridian")]),
-        ScooterCity(id: "us:mi:East Lansing", name: "East Lansing, MI", countryCode: "US", center: GeoPoint(latitude: 42.737, longitude: -84.4839), bounds: GeoBounds(south: 42.694, west: -84.5099, north: 42.7479, east: -84.4483), feeds: [ScooterCityFeed(id: "us:spin_us_east_lansing")]),
-        ScooterCity(id: "us:mn:Minneapolis", name: "Minneapolis, MN", countryCode: "US", center: GeoPoint(latitude: 44.9778, longitude: -93.265), bounds: GeoBounds(south: 44.8835, west: -93.3417, north: 45.0603, east: -93.189), feeds: [ScooterCityFeed(id: "us:spin_us_minneapolis")]),
-        ScooterCity(id: "us:nc:Raleigh", name: "Raleigh, NC", countryCode: "US", center: GeoPoint(latitude: 35.7796, longitude: -78.6382), bounds: GeoBounds(south: 35.7313, west: -78.7468, north: 35.8458, east: -78.5618), feeds: [ScooterCityFeed(id: "us:spin_us_raleigh"), ScooterCityFeed(id: "us:spin_us_nc_state")]),
-        ScooterCity(id: "us:ri:Pawtucket", name: "Pawtucket, RI", countryCode: "US", center: GeoPoint(latitude: 41.8787, longitude: -71.3826), bounds: GeoBounds(south: 41.8475, west: -71.4342, north: 41.9094, east: -71.3219), feeds: [ScooterCityFeed(id: "us:spin_us_pawtucket")]),
-        ScooterCity(id: "us:ri:Providence", name: "Providence, RI", countryCode: "US", center: GeoPoint(latitude: 41.824, longitude: -71.4128), bounds: GeoBounds(south: 41.7634, west: -71.4893, north: 41.9094, east: -71.3219), feeds: [ScooterCityFeed(id: "us:spin_us_providence")]),
-        ScooterCity(id: "us:az:Phoenix", name: "Phoenix, AZ", countryCode: "US", center: GeoPoint(latitude: 33.4484, longitude: -112.074), bounds: GeoBounds(south: 33.3539, west: -112.1275, north: 33.5193, east: -111.9717), feeds: [ScooterCityFeed(id: "us:spin_us_phoenix")]),
-        ScooterCity(id: "us:ca:San Diego", name: "San Diego, CA", countryCode: "US", center: GeoPoint(latitude: 32.8801, longitude: -117.234), bounds: GeoBounds(south: 32.853, west: -117.2679, north: 32.9033, east: -117.2018), feeds: [ScooterCityFeed(id: "us:spin_us_san_diego")]),
-        ScooterCity(id: "us:ut:St. George", name: "St. George, UT", countryCode: "US", center: GeoPoint(latitude: 37.0965, longitude: -113.5684), bounds: GeoBounds(south: 36.9905, west: -113.6861, north: 37.2257, east: -113.4632), feeds: [ScooterCityFeed(id: "us:spin_us_st_george")]),
-        ScooterCity(id: "us:fl:Tampa", name: "Tampa, FL", countryCode: "US", center: GeoPoint(latitude: 27.9506, longitude: -82.4572), bounds: GeoBounds(south: 27.8124, west: -82.6231, north: 28.1804, east: -82.2439), feeds: [ScooterCityFeed(id: "us:spin_us_tampa")]),
-        ScooterCity(id: "us:ca:Davis", name: "Davis, CA", countryCode: "US", center: GeoPoint(latitude: 38.5382, longitude: -121.7617), bounds: GeoBounds(south: 38.5073, west: -121.8245, north: 38.5846, east: -121.6643), feeds: [ScooterCityFeed(id: "us:spin_us_davis")]),
-        ScooterCity(id: "us:ar:Fayetteville", name: "Fayetteville, AR", countryCode: "US", center: GeoPoint(latitude: 36.0626, longitude: -94.1574), bounds: GeoBounds(south: 36.0154, west: -94.2474, north: 36.1582, east: -94.1004), feeds: [ScooterCityFeed(id: "us:spin_us_fayetteville"), ScooterCityFeed(id: "us:veo_us_fayetteville")]),
-        ScooterCity(id: "us:ok:Stillwater", name: "Stillwater, OK", countryCode: "US", center: GeoPoint(latitude: 36.1156, longitude: -97.0584), bounds: GeoBounds(south: 36.0739, west: -97.1434, north: 36.1917, east: -97.0032), feeds: [ScooterCityFeed(id: "us:spin_us_stillwater")]),
-        ScooterCity(id: "us:fl:Tallahassee", name: "Tallahassee, FL", countryCode: "US", center: GeoPoint(latitude: 30.4383, longitude: -84.2807), bounds: GeoBounds(south: 30.401, west: -84.3722, north: 30.4818, east: -84.2118), feeds: [ScooterCityFeed(id: "us:spin_us_tallahassee")]),
-        ScooterCity(id: "us:mn:St. Paul", name: "St. Paul, MN", countryCode: "US", center: GeoPoint(latitude: 44.9537, longitude: -93.09), bounds: GeoBounds(south: 44.8784, west: -93.2213, north: 45.001, east: -92.9918), feeds: [ScooterCityFeed(id: "us:spin_us_saint_paul")]),
-        ScooterCity(id: "us:va:Roanoke", name: "Roanoke, VA", countryCode: "US", center: GeoPoint(latitude: 37.271, longitude: -79.9414), bounds: GeoBounds(south: 37.2006, west: -80.0516, north: 37.3483, east: -79.8652), feeds: [ScooterCityFeed(id: "us:spin_us_roanoke")]),
-        ScooterCity(id: "us:ut:Salt Lake City", name: "Salt Lake City, UT", countryCode: "US", center: GeoPoint(latitude: 40.7608, longitude: -111.891), bounds: GeoBounds(south: 40.6976, west: -111.9584, north: 40.7951, east: -111.7979), feeds: [ScooterCityFeed(id: "us:spin_us_salt_lake_city"), ScooterCityFeed(id: "us:veo_us_salt_lake_city")]),
-        ScooterCity(id: "us:al:Birmingham", name: "Birmingham, AL", countryCode: "US", center: GeoPoint(latitude: 33.5186, longitude: -86.8104), bounds: GeoBounds(south: 33.4682, west: -86.8757, north: 33.5524, east: -86.7212), feeds: [ScooterCityFeed(id: "us:veo_us_birmingham")]),
-        ScooterCity(id: "us:ia:Cedar Rapids", name: "Cedar Rapids, IA", countryCode: "US", center: GeoPoint(latitude: 41.9779, longitude: -91.6656), bounds: GeoBounds(south: 41.9153, west: -91.7281, north: 42.0241, east: -91.5999), feeds: [ScooterCityFeed(id: "us:veo_us_cedar_rapids")]),
-        ScooterCity(id: "us:oh:Cleveland Heights", name: "Cleveland Heights, OH", countryCode: "US", center: GeoPoint(latitude: 41.5201, longitude: -81.5562), bounds: GeoBounds(south: 41.4869, west: -81.6067, north: 41.5454, east: -81.5204), feeds: [ScooterCityFeed(id: "us:veo_us_cleveland")]),
-        ScooterCity(id: "us:oh:University Heights", name: "University Heights, OH", countryCode: "US", center: GeoPoint(latitude: 41.4978, longitude: -81.5376), bounds: GeoBounds(south: 41.4799, west: -81.5607, north: 41.5091, east: -81.5152), feeds: [ScooterCityFeed(id: "us:veo_us_cleveland")]),
-        ScooterCity(id: "us:oh:South Euclid", name: "South Euclid, OH", countryCode: "US", center: GeoPoint(latitude: 41.5231, longitude: -81.5185), bounds: GeoBounds(south: 41.4924, west: -81.5532, north: 41.5469, east: -81.494), feeds: [ScooterCityFeed(id: "us:veo_us_cleveland")]),
-        ScooterCity(id: "us:md:College Park", name: "College Park, MD", countryCode: "US", center: GeoPoint(latitude: 38.9897, longitude: -76.9378), bounds: GeoBounds(south: 38.9629, west: -76.9659, north: 39.0313, east: -76.8985), feeds: [ScooterCityFeed(id: "us:veo_us_college_park")]),
-        ScooterCity(id: "us:md:University Park", name: "University Park, MD", countryCode: "US", center: GeoPoint(latitude: 38.9709, longitude: -76.9419), bounds: GeoBounds(south: 38.9577, west: -76.9624, north: 38.9852, east: -76.9105), feeds: [ScooterCityFeed(id: "us:veo_us_college_park")]),
-        ScooterCity(id: "us:va:Charlottesville", name: "Charlottesville, VA", countryCode: "US", center: GeoPoint(latitude: 38.0293, longitude: -78.4767), bounds: GeoBounds(south: 37.9994, west: -78.5392, north: 38.0785, east: -78.4405), feeds: [ScooterCityFeed(id: "us:veo_us_charlottesville")]),
-        ScooterCity(id: "us:co:Denver", name: "Denver, CO", countryCode: "US", center: GeoPoint(latitude: 39.7392, longitude: -104.9903), bounds: GeoBounds(south: 39.6047, west: -105.0935, north: 39.8229, east: -104.7276), feeds: [ScooterCityFeed(id: "us:veo_us_denver")]),
-        ScooterCity(id: "us:ct:Hartford", name: "Hartford, CT", countryCode: "US", center: GeoPoint(latitude: 41.7658, longitude: -72.6734), bounds: GeoBounds(south: 41.715, west: -72.7301, north: 41.8158, east: -72.6415), feeds: [ScooterCityFeed(id: "us:veo_us_hartford")]),
-        ScooterCity(id: "us:ks:Manhattan", name: "Manhattan, KS", countryCode: "US", center: GeoPoint(latitude: 39.1836, longitude: -96.5717), bounds: GeoBounds(south: 39.1607, west: -96.6445, north: 39.232, east: -96.5413), feeds: [ScooterCityFeed(id: "us:veo_us_manhattan")]),
-        ScooterCity(id: "us:ct:New Haven", name: "New Haven, CT", countryCode: "US", center: GeoPoint(latitude: 41.3083, longitude: -72.9279), bounds: GeoBounds(south: 41.2859, west: -72.9588, north: 41.3418, east: -72.8754), feeds: [ScooterCityFeed(id: "us:veo_us_new_haven")]),
-        ScooterCity(id: "us:ny:New Rochelle", name: "New Rochelle, NY", countryCode: "US", center: GeoPoint(latitude: 40.9115, longitude: -73.7824), bounds: GeoBounds(south: 40.8835, west: -73.8118, north: 40.9407, east: -73.7534), feeds: [ScooterCityFeed(id: "us:veo_us_new_rochelle")]),
-        ScooterCity(id: "us:ok:Norman", name: "Norman, OK", countryCode: "US", center: GeoPoint(latitude: 35.2226, longitude: -97.4395), bounds: GeoBounds(south: 35.1626, west: -97.4996, north: 35.257, east: -97.3867), feeds: [ScooterCityFeed(id: "us:veo_us_norman")]),
-        ScooterCity(id: "us:in:West Lafayette", name: "West Lafayette, IN", countryCode: "US", center: GeoPoint(latitude: 40.4259, longitude: -86.9081), bounds: GeoBounds(south: 40.4057, west: -86.9576, north: 40.481, east: -86.8865), feeds: [ScooterCityFeed(id: "us:veo_us_west_lafayette")]),
-        ScooterCity(id: "us:ny:Rochester", name: "Rochester, NY", countryCode: "US", center: GeoPoint(latitude: 43.1566, longitude: -77.6088), bounds: GeoBounds(south: 43.1044, west: -77.6881, north: 43.2084, east: -77.5337), feeds: [ScooterCityFeed(id: "us:veo_us_rochester")]),
-        ScooterCity(id: "us:il:Carbondale", name: "Carbondale, IL", countryCode: "US", center: GeoPoint(latitude: 37.7273, longitude: -89.2168), bounds: GeoBounds(south: 37.6848, west: -89.2673, north: 37.7612, east: -89.1719), feeds: [ScooterCityFeed(id: "us:veo_us_carbondale")]),
-        ScooterCity(id: "us:ut:South Salt Lake", name: "South Salt Lake, UT", countryCode: "US", center: GeoPoint(latitude: 40.7188, longitude: -111.8883), bounds: GeoBounds(south: 40.6781, west: -111.9115, north: 40.7344, east: -111.8689), feeds: [ScooterCityFeed(id: "us:veo_us_salt_lake_city")]),
-        ScooterCity(id: "us:ny:Syracuse", name: "Syracuse, NY", countryCode: "US", center: GeoPoint(latitude: 43.0481, longitude: -76.1474), bounds: GeoBounds(south: 42.9926, west: -76.212, north: 43.0917, east: -76.0577), feeds: [ScooterCityFeed(id: "us:veo_us_syracuse")]),
-        ScooterCity(id: "us:oh:Toledo", name: "Toledo, OH", countryCode: "US", center: GeoPoint(latitude: 41.6528, longitude: -83.5379), bounds: GeoBounds(south: 41.5856, west: -83.6966, north: 41.7378, east: -83.4676), feeds: [ScooterCityFeed(id: "us:veo_us_toledo")]),
-        ScooterCity(id: "us:ks:Wichita", name: "Wichita, KS", countryCode: "US", center: GeoPoint(latitude: 37.6872, longitude: -97.3301), bounds: GeoBounds(south: 37.663, west: -97.4373, north: 37.7414, east: -97.2863), feeds: [ScooterCityFeed(id: "us:veo_us_wichita")]),
-        ScooterCity(id: "us:ca:Berkeley", name: "Berkeley, CA", countryCode: "US", center: GeoPoint(latitude: 37.8715, longitude: -122.273), bounds: GeoBounds(south: 37.8163, west: -122.3148, north: 37.9076, east: -122.2255), feeds: [ScooterCityFeed(id: "us:veo_us_berkeley")]),
-        ScooterCity(id: "us:ca:Emeryville", name: "Emeryville, CA", countryCode: "US", center: GeoPoint(latitude: 37.8313, longitude: -122.2852), bounds: GeoBounds(south: 37.8182, west: -122.3069, north: 37.855, east: -122.2664), feeds: [ScooterCityFeed(id: "us:veo_us_berkeley")]),
-        ScooterCity(id: "us:fl:Sarasota", name: "Sarasota, FL", countryCode: "US", center: GeoPoint(latitude: 27.3364, longitude: -82.5307), bounds: GeoBounds(south: 27.2936, west: -82.5909, north: 27.4162, east: -82.4897), feeds: [ScooterCityFeed(id: "us:veo_us_sarasota")]),
-        ScooterCity(id: "us:nj:Asbury Park", name: "Asbury Park, NJ", countryCode: "US", center: GeoPoint(latitude: 40.2204, longitude: -74.0121), bounds: GeoBounds(south: 40.2062, west: -74.0482, north: 40.2534, east: -73.9868), feeds: [ScooterCityFeed(id: "us:veo_us_asbury_park")]),
-        ScooterCity(id: "us:nj:New Brunswick", name: "New Brunswick, NJ", countryCode: "US", center: GeoPoint(latitude: 40.4862, longitude: -74.4518), bounds: GeoBounds(south: 40.4658, west: -74.4902, north: 40.5346, east: -74.4054), feeds: [ScooterCityFeed(id: "us:veo_us_new_brunswick")]),
-        ScooterCity(id: "us:nj:Piscataway", name: "Piscataway, NJ", countryCode: "US", center: GeoPoint(latitude: 40.5235, longitude: -74.4636), bounds: GeoBounds(south: 40.5031, west: -74.4823, north: 40.5369, east: -74.42), feeds: [ScooterCityFeed(id: "us:veo_us_new_brunswick")]),
-        ScooterCity(id: "us:nj:Highland Park", name: "Highland Park, NJ", countryCode: "US", center: GeoPoint(latitude: 40.4996, longitude: -74.4243), bounds: GeoBounds(south: 40.4798, west: -74.4535, north: 40.5174, east: -74.4006), feeds: [ScooterCityFeed(id: "us:veo_us_new_brunswick")]),
-        ScooterCity(id: "us:va:Alexandria", name: "Alexandria, VA", countryCode: "US", center: GeoPoint(latitude: 38.8048, longitude: -77.0469), bounds: GeoBounds(south: 38.7789, west: -77.1578, north: 38.8564, east: -77.0213), feeds: [ScooterCityFeed(id: "us:gcoo_us_alexandria")]),
-        ScooterCity(id: "ca:ab:Calgary", name: "Calgary, AB", countryCode: "CA", center: GeoPoint(latitude: 51.0454, longitude: -114.0714), bounds: GeoBounds(south: 50.9416, west: -114.2441, north: 51.16, east: -113.9083), feeds: [ScooterCityFeed(id: "canada:bird_ca_calgary"), ScooterCityFeed(id: "canada:lime_ca_calgary")]),
-        ScooterCity(id: "ca:ab:Edmonton", name: "Edmonton, AB", countryCode: "CA", center: GeoPoint(latitude: 53.5444, longitude: -113.4909), bounds: GeoBounds(south: 53.4218, west: -113.6709, north: 53.6382, east: -113.33), feeds: [ScooterCityFeed(id: "canada:bird_ca_edmonton"), ScooterCityFeed(id: "canada:lime_ca_edmonton")]),
-        ScooterCity(id: "ca:ns:Halifax", name: "Halifax, NS", countryCode: "CA", center: GeoPoint(latitude: 44.6466, longitude: -63.5906), bounds: GeoBounds(south: 44.586, west: -63.7068, north: 44.7269, east: -63.4358), feeds: [ScooterCityFeed(id: "canada:bird_ca_halifax")]),
-        ScooterCity(id: "ca:on:Hamilton", name: "Hamilton, ON", countryCode: "CA", center: GeoPoint(latitude: 43.2578, longitude: -79.871), bounds: GeoBounds(south: 43.1875, west: -80.0054, north: 43.3108, east: -79.7437), feeds: [ScooterCityFeed(id: "canada:bird_ca_hamilton")]),
-        ScooterCity(id: "ca:ab:Leduc", name: "Leduc, AB", countryCode: "CA", center: GeoPoint(latitude: 53.2645, longitude: -113.5593), bounds: GeoBounds(south: 53.2264, west: -113.6265, north: 53.323, east: -113.4739), pauses: [ScooterSeasonalPause(from: "10-22", until: "05-01", timeZone: "America/Edmonton")], feeds: [ScooterCityFeed(id: "canada:bird_ca_leduc", pause: ScooterSeasonalPause(from: "10-22", until: "05-01", timeZone: "America/Edmonton"))]),
-        ScooterCity(id: "ca:on:Ottawa", name: "Ottawa, ON", countryCode: "CA", center: GeoPoint(latitude: 45.4215, longitude: -75.6915), bounds: GeoBounds(south: 45.3613, west: -75.7756, north: 45.4591, east: -75.6245), pauses: [ScooterSeasonalPause(from: "11-16", until: "04-30", timeZone: "America/Toronto")], feeds: [ScooterCityFeed(id: "canada:bird_ca_ottawa", pause: ScooterSeasonalPause(from: "11-16", until: "04-30", timeZone: "America/Toronto")), ScooterCityFeed(id: "canada:lime_ca_ottawa", pause: ScooterSeasonalPause(from: "11-16", until: "04-30", timeZone: "America/Toronto"))]),
-        ScooterCity(id: "ca:on:Vaughan", name: "Vaughan, ON", countryCode: "CA", center: GeoPoint(latitude: 43.7955, longitude: -79.5323), bounds: GeoBounds(south: 43.765, west: -79.603, north: 43.8931, east: -79.4076), feeds: [ScooterCityFeed(id: "canada:bird_ca_vaughan")]),
-        ScooterCity(id: "ca:on:Windsor", name: "Windsor, ON", countryCode: "CA", center: GeoPoint(latitude: 42.3041, longitude: -83.063), bounds: GeoBounds(south: 42.225, west: -83.1112, north: 42.3527, east: -82.8324), feeds: [ScooterCityFeed(id: "canada:bird_ca_windsor")]),
-        ScooterCity(id: "ca:ab:Airdrie", name: "Airdrie, AB", countryCode: "CA", center: GeoPoint(latitude: 51.2799, longitude: -114.022), bounds: GeoBounds(south: 51.2409, west: -114.0605, north: 51.316, east: -113.9659), feeds: [ScooterCityFeed(id: "canada:lime_ca_calgary")]),
-        ScooterCity(id: "ca:ab:St. Albert", name: "St. Albert, AB", countryCode: "CA", center: GeoPoint(latitude: 53.6369, longitude: -113.6255), bounds: GeoBounds(south: 53.5963, west: -113.6858, north: 53.6747, east: -113.5601), feeds: [ScooterCityFeed(id: "canada:lime_ca_edmonton")]),
-        ScooterCity(id: "ca:ab:Beaumont", name: "Beaumont, AB", countryCode: "CA", center: GeoPoint(latitude: 53.355, longitude: -113.4276), bounds: GeoBounds(south: 53.3297, west: -113.459, north: 53.3752, east: -113.377), feeds: [ScooterCityFeed(id: "canada:lime_ca_edmonton")]),
-        ScooterCity(id: "ca:bc:Kelowna", name: "Kelowna, BC", countryCode: "CA", center: GeoPoint(latitude: 49.8864, longitude: -119.4754), bounds: GeoBounds(south: 49.78, west: -119.5355, north: 49.9733, east: -119.361), feeds: [ScooterCityFeed(id: "canada:lime_ca_kelowna")]),
-        ScooterCity(id: "ca:on:Mississauga", name: "Mississauga, ON", countryCode: "CA", center: GeoPoint(latitude: 43.5797, longitude: -79.6556), bounds: GeoBounds(south: 43.4744, west: -79.8043, north: 43.6832, east: -79.5394), feeds: [ScooterCityFeed(id: "canada:lime_ca_mississauga")]),
-        ScooterCity(id: "ca:bc:Vancouver", name: "Vancouver, BC", countryCode: "CA", center: GeoPoint(latitude: 49.2684, longitude: -123.1047), bounds: GeoBounds(south: 49.2181, west: -123.179, north: 49.3026, east: -123.0101), feeds: [ScooterCityFeed(id: "canada:lime_ca_vancouver")]),
-        ScooterCity(id: "ca:nb:Fredericton", name: "Fredericton, NB", countryCode: "CA", center: GeoPoint(latitude: 45.9636, longitude: -66.6431), bounds: GeoBounds(south: 45.896829, west: -66.716137, north: 45.998963, east: -66.577678), feeds: [ScooterCityFeed(id: "canada:move_ca_new_brunswick")]),
-        ScooterCity(id: "ca:nb:Moncton", name: "Moncton, NB", countryCode: "CA", center: GeoPoint(latitude: 46.0878, longitude: -64.7782), bounds: GeoBounds(south: 46.028446, west: -64.909284, north: 46.162801, east: -64.633564), pauses: [ScooterSeasonalPause(from: "11-15", until: "04-16", timeZone: "America/Moncton")], feeds: [ScooterCityFeed(id: "canada:move_ca_new_brunswick", pause: ScooterSeasonalPause(from: "11-15", until: "04-16", timeZone: "America/Moncton"))]),
-        ScooterCity(id: "ca:nb:Saint John", name: "Saint John, NB", countryCode: "CA", center: GeoPoint(latitude: 45.2733, longitude: -66.0633), bounds: GeoBounds(south: 45.222753, west: -66.151545, north: 45.338903, east: -65.95369), feeds: [ScooterCityFeed(id: "canada:move_ca_new_brunswick")]),
-        ScooterCity(id: "ae:Dubai", name: "Dubai", countryCode: "AE", center: GeoPoint(latitude: 25.2048, longitude: 55.2708), bounds: GeoBounds(south: 25.0536, west: 55.1151, north: 25.2925, east: 55.5142), feeds: [ScooterCityFeed(id: "emirates:dott_ae_dubai"), ScooterCityFeed(id: "emirates:dott_ae_dubai_hills")]),
-        ScooterCity(id: "ae:Abu Dhabi", name: "Abu Dhabi", countryCode: "AE", center: GeoPoint(latitude: 24.4539, longitude: 54.3773), bounds: GeoBounds(south: 24.3979, west: 54.307, north: 24.5216, east: 54.6349), feeds: [ScooterCityFeed(id: "emirates:dott_ae_abu_dhabi")]),
-        ScooterCity(id: "sa:Riyadh", name: "Riyadh", countryCode: "SA", center: GeoPoint(latitude: 24.7136, longitude: 46.6753), bounds: GeoBounds(south: 24.5521, west: 46.4871, north: 25.0316, east: 46.8692), feeds: [ScooterCityFeed(id: "saudiarabia:saham_sa_riyadh")]),
-        ScooterCity(id: "sa:Jeddah", name: "Jeddah", countryCode: "SA", center: GeoPoint(latitude: 21.6394, longitude: 39.1015), bounds: GeoBounds(south: 21.6246, west: 39.0907, north: 21.6661, east: 39.1151), feeds: [ScooterCityFeed(id: "saudiarabia:dott_sa_jeddah")]),
-        ScooterCity(id: "il:Tel Aviv", name: "Tel Aviv", countryCode: "IL", center: GeoPoint(latitude: 32.0853, longitude: 34.7818), bounds: GeoBounds(south: 32.0207, west: 34.7289, north: 32.1556, east: 34.8625), feeds: [ScooterCityFeed(id: "israel:bird_il_israel"), ScooterCityFeed(id: "israel:dott_il_tel_aviv"), ScooterCityFeed(id: "israel:lime_il_tel_aviv")]),
-        ScooterCity(id: "il:Ramat Gan", name: "Ramat Gan", countryCode: "IL", center: GeoPoint(latitude: 32.0687, longitude: 34.8247), bounds: GeoBounds(south: 32.0274, west: 34.7889, north: 32.1143, east: 34.8649), feeds: [ScooterCityFeed(id: "israel:bird_il_israel"), ScooterCityFeed(id: "israel:dott_il_tel_aviv"), ScooterCityFeed(id: "israel:lime_il_tel_aviv")]),
-        ScooterCity(id: "il:Holon", name: "Holon", countryCode: "IL", center: GeoPoint(latitude: 32.0193, longitude: 34.7804), bounds: GeoBounds(south: 31.9809, west: 34.7451, north: 32.0474, east: 34.8231), feeds: [ScooterCityFeed(id: "israel:bird_il_israel"), ScooterCityFeed(id: "israel:dott_il_tel_aviv"), ScooterCityFeed(id: "israel:lime_il_tel_aviv")]),
-        ScooterCity(id: "il:Bat Yam", name: "Bat Yam", countryCode: "IL", center: GeoPoint(latitude: 32.0155, longitude: 34.7505), bounds: GeoBounds(south: 31.9838, west: 34.723, north: 32.0427, east: 34.7721), feeds: [ScooterCityFeed(id: "israel:bird_il_israel"), ScooterCityFeed(id: "israel:dott_il_tel_aviv")]),
-        ScooterCity(id: "il:Givatayim", name: "Givatayim", countryCode: "IL", center: GeoPoint(latitude: 32.073, longitude: 34.8113), bounds: GeoBounds(south: 32.0498, west: 34.7877, north: 32.0907, east: 34.8313), feeds: [ScooterCityFeed(id: "israel:bird_il_israel"), ScooterCityFeed(id: "israel:dott_il_tel_aviv"), ScooterCityFeed(id: "israel:lime_il_tel_aviv")]),
-        ScooterCity(id: "il:Herzliya", name: "Herzliya", countryCode: "IL", center: GeoPoint(latitude: 32.1656, longitude: 34.8469), bounds: GeoBounds(south: 32.1354, west: 34.7774, north: 32.2119, east: 34.875), feeds: [ScooterCityFeed(id: "israel:bird_il_israel"), ScooterCityFeed(id: "israel:dott_il_tel_aviv"), ScooterCityFeed(id: "israel:lime_il_tel_aviv")]),
-        ScooterCity(id: "il:Rishon LeZion", name: "Rishon LeZion", countryCode: "IL", center: GeoPoint(latitude: 31.9636, longitude: 34.8101), bounds: GeoBounds(south: 31.9349, west: 34.7203, north: 32.0162, east: 34.8567), feeds: [ScooterCityFeed(id: "israel:bird_il_israel")]),
-        ScooterCity(id: "il:Ashdod", name: "Ashdod", countryCode: "IL", center: GeoPoint(latitude: 31.7977, longitude: 34.653), bounds: GeoBounds(south: 31.7561, west: 34.603, north: 31.8442, east: 34.683), feeds: [ScooterCityFeed(id: "israel:bird_il_israel")]),
-        ScooterCity(id: "il:Bnei Brak", name: "Bnei Brak", countryCode: "IL", center: GeoPoint(latitude: 32.0874, longitude: 34.8324), bounds: GeoBounds(south: 32.0604, west: 34.8112, north: 32.1172, east: 34.8588), feeds: [ScooterCityFeed(id: "israel:bird_il_israel"), ScooterCityFeed(id: "israel:dott_il_tel_aviv"), ScooterCityFeed(id: "israel:lime_il_tel_aviv")]),
-        ScooterCity(id: "il:Ramat HaSharon", name: "Ramat HaSharon", countryCode: "IL", center: GeoPoint(latitude: 32.1431, longitude: 34.8381), bounds: GeoBounds(south: 32.1109, west: 34.7854, north: 32.1674, east: 34.8758), feeds: [ScooterCityFeed(id: "israel:bird_il_israel")]),
-        ScooterCity(id: "il:Petah Tikva", name: "Petah Tikva", countryCode: "IL", center: GeoPoint(latitude: 32.0878, longitude: 34.886), bounds: GeoBounds(south: 32.0583, west: 34.836, north: 32.1208, east: 34.9304), feeds: [ScooterCityFeed(id: "israel:dott_il_tel_aviv"), ScooterCityFeed(id: "israel:lime_il_tel_aviv")]),
-        ScooterCity(id: "il:Kiryat Ono", name: "Kiryat Ono", countryCode: "IL", center: GeoPoint(latitude: 32.0592, longitude: 34.8594), bounds: GeoBounds(south: 32.0293, west: 34.8337, north: 32.0722, east: 34.8718), feeds: [ScooterCityFeed(id: "israel:lime_il_tel_aviv")]),
-        ScooterCity(id: "il:Givat Shmuel", name: "Givat Shmuel", countryCode: "IL", center: GeoPoint(latitude: 32.0769, longitude: 34.8525), bounds: GeoBounds(south: 32.0613, west: 34.8399, north: 32.0913, east: 34.8651), feeds: [ScooterCityFeed(id: "israel:lime_il_tel_aviv")]),
-        ScooterCity(id: "il:Or Yehuda", name: "Or Yehuda", countryCode: "IL", center: GeoPoint(latitude: 32.027, longitude: 34.863), bounds: GeoBounds(south: 32.0243, west: 34.8502, north: 32.0457, east: 34.8655), feeds: [ScooterCityFeed(id: "israel:lime_il_tel_aviv")]),
-        ScooterCity(id: "nz:auk:Auckland", name: "Auckland", countryCode: "NZ", center: GeoPoint(latitude: -36.8485, longitude: 174.7633), bounds: GeoBounds(south: -36.9398, west: 174.664, north: -36.6989, east: 174.8976), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_auckland")]),
-        ScooterCity(id: "nz:can:Christchurch", name: "Christchurch", countryCode: "NZ", center: GeoPoint(latitude: -43.5309, longitude: 172.6366), bounds: GeoBounds(south: -43.591, west: 172.5084, north: -43.4437, east: 172.7826), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_christchurch")]),
-        ScooterCity(id: "nz:wgn:Wellington", name: "Wellington", countryCode: "NZ", center: GeoPoint(latitude: -41.2865, longitude: 174.7762), bounds: GeoBounds(south: -41.3618, west: 174.7174, north: -41.143, east: 174.8515), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_wellington"), ScooterCityFeed(id: "newzealand:flamingo_nz_porirua")]),
-        ScooterCity(id: "nz:wgn:Porirua", name: "Porirua", countryCode: "NZ", center: GeoPoint(latitude: -41.1339, longitude: 174.8405), bounds: GeoBounds(south: -41.1656, west: 174.8117, north: -41.0235, east: 174.9192), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_porirua")]),
-        ScooterCity(id: "nz:ota:Dunedin", name: "Dunedin", countryCode: "NZ", center: GeoPoint(latitude: -45.8742, longitude: 170.5036), bounds: GeoBounds(south: -45.9268, west: 170.3708, north: -45.7984, east: 170.6397), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_dunedin")]),
-        ScooterCity(id: "nz:bop:Tauranga", name: "Tauranga", countryCode: "NZ", center: GeoPoint(latitude: -37.6878, longitude: 176.1651), bounds: GeoBounds(south: -37.7585, west: 176.096, north: -37.6208, east: 176.3668), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_tauranga")]),
-        ScooterCity(id: "nz:mwt:Palmerston North", name: "Palmerston North", countryCode: "NZ", center: GeoPoint(latitude: -40.3564, longitude: 175.6111), bounds: GeoBounds(south: -40.4026, west: 175.5589, north: -40.3038, east: 175.6786), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_palmerston_north")]),
-        ScooterCity(id: "nz:can:Rangiora", name: "Rangiora", countryCode: "NZ", center: GeoPoint(latitude: -43.3036, longitude: 172.5953), bounds: GeoBounds(south: -43.3414, west: 172.5563, north: -43.2778, east: 172.6231), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_waimakariri")]),
-        ScooterCity(id: "nz:can:Kaiapoi", name: "Kaiapoi", countryCode: "NZ", center: GeoPoint(latitude: -43.3796, longitude: 172.6594), bounds: GeoBounds(south: -43.4029, west: 172.6202, north: -43.3456, east: 172.6867), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_waimakariri")]),
-        ScooterCity(id: "nz:tki:New Plymouth", name: "New Plymouth", countryCode: "NZ", center: GeoPoint(latitude: -39.0572, longitude: 174.0752), bounds: GeoBounds(south: -39.1064, west: 174.0067, north: -39.0087, east: 174.1857), feeds: [ScooterCityFeed(id: "newzealand:jolt_nz_new_plymouth")]),
-        ScooterCity(id: "nz:can:Rolleston", name: "Rolleston", countryCode: "NZ", center: GeoPoint(latitude: -43.5956, longitude: 172.382), bounds: GeoBounds(south: -43.6426, west: 172.3437, north: -43.5743, east: 172.4189), feeds: [ScooterCityFeed(id: "newzealand:jolt_nz_selwyn")]),
-        ScooterCity(id: "cr:Tamarindo", name: "Tamarindo", countryCode: "CR", center: GeoPoint(latitude: 10.2984, longitude: -85.84), bounds: GeoBounds(south: 10.2754, west: -85.8619, north: 10.3161, east: -85.8241), feeds: [ScooterCityFeed(id: "costarica:hopp_cr_tamarindo")]),
-        ScooterCity(id: "bq:Kralendijk", name: "Kralendijk", countryCode: "BQ", center: GeoPoint(latitude: 12.1473, longitude: -68.274), bounds: GeoBounds(south: 12.0102, west: -68.368, north: 12.2527, east: -68.2127), feeds: [ScooterCityFeed(id: "caribbeannetherlands:hopp_bq_bonaire")]),
-        ScooterCity(id: "jp:Tokyo", name: "Tokyo", countryCode: "JP", center: GeoPoint(latitude: 35.704335, longitude: 139.67753), bounds: GeoBounds(south: 35.518323, west: 139.349154, north: 35.890346, east: 140.005906), feeds: [ScooterCityFeed(id: "japan:luup_jp_shibuya")]),
-        ScooterCity(id: "jp:Osaka", name: "Osaka", countryCode: "JP", center: GeoPoint(latitude: 34.673977, longitude: 135.488957), bounds: GeoBounds(south: 34.538111, west: 135.365909, north: 34.809842, east: 135.612006), feeds: [ScooterCityFeed(id: "japan:luup_jp_osaka")]),
-        ScooterCity(id: "jp:Kyoto", name: "Kyoto", countryCode: "JP", center: GeoPoint(latitude: 34.995491, longitude: 135.750024), bounds: GeoBounds(south: 34.888411, west: 135.647448, north: 35.10257, east: 135.852601), feeds: [ScooterCityFeed(id: "japan:luup_jp_kyoto")]),
-        ScooterCity(id: "jp:Nagoya", name: "Nagoya", countryCode: "JP", center: GeoPoint(latitude: 35.147098, longitude: 136.926314), bounds: GeoBounds(south: 35.031867, west: 136.789827, north: 35.26233, east: 137.062802), feeds: [ScooterCityFeed(id: "japan:luup_jp_nagoya")]),
-        ScooterCity(id: "jp:Kawasaki", name: "Kawasaki", countryCode: "JP", center: GeoPoint(latitude: 35.54665, longitude: 139.640463), bounds: GeoBounds(south: 35.448648, west: 139.445924, north: 35.644652, east: 139.835001), feeds: [ScooterCityFeed(id: "japan:luup_jp_kawasaki")]),
-        ScooterCity(id: "jp:Yokohama", name: "Yokohama", countryCode: "JP", center: GeoPoint(latitude: 35.463171, longitude: 139.603245), bounds: GeoBounds(south: 35.352222, west: 139.474385, north: 35.574119, east: 139.732105), feeds: [ScooterCityFeed(id: "japan:luup_jp_yokohama")]),
-        ScooterCity(id: "jp:Sendai", name: "Sendai", countryCode: "JP", center: GeoPoint(latitude: 38.259424, longitude: 140.876909), bounds: GeoBounds(south: 38.207057, west: 140.808699, north: 38.311792, east: 140.945118), feeds: [ScooterCityFeed(id: "japan:luup_jp_sendai")]),
-        ScooterCity(id: "jp:Fukuoka", name: "Fukuoka", countryCode: "JP", center: GeoPoint(latitude: 33.617477, longitude: 130.389779), bounds: GeoBounds(south: 33.490234, west: 130.238019, north: 33.744721, east: 130.541539), feeds: [ScooterCityFeed(id: "japan:luup_jp_fukuoka")]),
-        ScooterCity(id: "jp:Hiroshima", name: "Hiroshima", countryCode: "JP", center: GeoPoint(latitude: 34.39793, longitude: 132.461003), bounds: GeoBounds(south: 34.339447, west: 132.383955, north: 34.456412, east: 132.53805), feeds: [ScooterCityFeed(id: "japan:luup_jp_hiroshima-city")]),
-        ScooterCity(id: "jp:Kobe", name: "Kobe", countryCode: "JP", center: GeoPoint(latitude: 34.693849, longitude: 135.18959), bounds: GeoBounds(south: 34.63793, west: 135.117492, north: 34.749767, east: 135.261687), feeds: [ScooterCityFeed(id: "japan:luup_jp_kobe")]),
-        ScooterCity(id: "jp:Utsunomiya", name: "Utsunomiya", countryCode: "JP", center: GeoPoint(latitude: 36.595417, longitude: 139.85687), bounds: GeoBounds(south: 36.461935, west: 139.74053, north: 36.7289, east: 139.97321), feeds: [ScooterCityFeed(id: "japan:luup_jp_utsunomiya")]),
-        ScooterCity(id: "jp:Takamatsu", name: "Takamatsu", countryCode: "JP", center: GeoPoint(latitude: 34.326677, longitude: 134.064765), bounds: GeoBounds(south: 34.2494, west: 133.950413, north: 34.403953, east: 134.179118), feeds: [ScooterCityFeed(id: "japan:luup_jp_takamatsu-city")]),
-        ScooterCity(id: "jp:Hamamatsu", name: "Hamamatsu", countryCode: "JP", center: GeoPoint(latitude: 34.711089, longitude: 137.737934), bounds: GeoBounds(south: 34.64347, west: 137.670973, north: 34.778709, east: 137.804896), feeds: [ScooterCityFeed(id: "japan:luup_jp_hamamatsu")]),
-        ScooterCity(id: "jp:Sapporo", name: "Sapporo", countryCode: "JP", center: GeoPoint(latitude: 43.064698, longitude: 141.372467), bounds: GeoBounds(south: 42.974023, west: 141.234508, north: 43.155372, east: 141.510427), feeds: [ScooterCityFeed(id: "japan:luup_jp_sapporo")]),
-        ScooterCity(id: "jp:Kitakyushu", name: "Kitakyushu", countryCode: "JP", center: GeoPoint(latitude: 33.867277, longitude: 130.864835), bounds: GeoBounds(south: 33.816174, west: 130.817259, north: 33.91838, east: 130.912412), feeds: [ScooterCityFeed(id: "japan:luup_jp_kitakyushu")]),
-        ScooterCity(id: "jp:Tsu", name: "Tsu", countryCode: "JP", center: GeoPoint(latitude: 34.732626, longitude: 136.501126), bounds: GeoBounds(south: 34.693312, west: 136.462755, north: 34.77194, east: 136.539497), feeds: [ScooterCityFeed(id: "japan:luup_jp_tsushi")]),
-        ScooterCity(id: "jp:Naha", name: "Naha", countryCode: "JP", center: GeoPoint(latitude: 26.221806, longitude: 127.695145), bounds: GeoBounds(south: 26.183935, west: 127.658267, north: 26.259677, east: 127.73307), feeds: [ScooterCityFeed(id: "japan:luup_jp_naha"), ScooterCityFeed(id: "japan:lime_jp_app_naha_000"), ScooterCityFeed(id: "japan:lime_jp_app_naha_001"), ScooterCityFeed(id: "japan:lime_jp_app_naha_002"), ScooterCityFeed(id: "japan:lime_jp_app_naha_003"), ScooterCityFeed(id: "japan:lime_jp_app_naha_004"), ScooterCityFeed(id: "japan:lime_jp_app_naha_005")]),
-        ScooterCity(id: "jp:Onojo", name: "Onojo", countryCode: "JP", center: GeoPoint(latitude: 33.522182, longitude: 130.491918), bounds: GeoBounds(south: 33.485799, west: 130.455693, north: 33.558566, east: 130.528143), feeds: [ScooterCityFeed(id: "japan:luup_jp_onojo")]),
-        ScooterCity(id: "jp:Okazaki", name: "Okazaki", countryCode: "JP", center: GeoPoint(latitude: 34.95575, longitude: 137.160341), bounds: GeoBounds(south: 34.918412, west: 137.129298, north: 34.993089, east: 137.191384), feeds: [ScooterCityFeed(id: "japan:luup_jp_okazaki")]),
-        ScooterCity(id: "br:Anchieta", name: "Anchieta", countryCode: "BR", center: GeoPoint(latitude: -20.818486, longitude: -40.633099), bounds: GeoBounds(south: -20.842135, west: -40.657602, north: -20.793475, east: -40.615198), feeds: [ScooterCityFeed(id: "brazil:jet_br_anchieta")]),
-        ScooterCity(id: "br:Aracaju", name: "Aracaju", countryCode: "BR", center: GeoPoint(latitude: -10.968051, longitude: -37.056069), bounds: GeoBounds(south: -11.027778, west: -37.111293, north: -10.918502, east: -37.033944), feeds: [ScooterCityFeed(id: "brazil:jet_br_aracaju")]),
-        ScooterCity(id: "br:Balneário Camboriú", name: "Balneário Camboriú", countryCode: "BR", center: GeoPoint(latitude: -26.990802, longitude: -48.636422), bounds: GeoBounds(south: -27.013175, west: -48.675304, north: -26.900558, east: -48.601548), feeds: [ScooterCityFeed(id: "brazil:jet_br_balneario-camboriu")]),
-        ScooterCity(id: "br:Belo Horizonte", name: "Belo Horizonte", countryCode: "BR", center: GeoPoint(latitude: -19.889785, longitude: -43.963375), bounds: GeoBounds(south: -19.941846, west: -44.007746, north: -19.836743, east: -43.917018), feeds: [ScooterCityFeed(id: "brazil:jet_br_belo-horizonte")]),
-        ScooterCity(id: "br:Belém", name: "Belém", countryCode: "BR", center: GeoPoint(latitude: -1.290568, longitude: -48.47202), bounds: GeoBounds(south: -1.475859, west: -48.508042, north: -1.113471, east: -48.428043), feeds: [ScooterCityFeed(id: "brazil:jet_br_belem")]),
-        ScooterCity(id: "br:Bertioga", name: "Bertioga", countryCode: "BR", center: GeoPoint(latitude: -23.817937, longitude: -46.077225), bounds: GeoBounds(south: -23.856664, west: -46.146502, north: -23.782008, east: -45.99955), feeds: [ScooterCityFeed(id: "brazil:jet_br_bertioga")]),
-        ScooterCity(id: "br:Blumenau", name: "Blumenau", countryCode: "BR", center: GeoPoint(latitude: -26.91194, longitude: -49.076018), bounds: GeoBounds(south: -26.946332, west: -49.102315, north: -26.884235, east: -49.053597), feeds: [ScooterCityFeed(id: "brazil:jet_br_blumenau")]),
-        ScooterCity(id: "br:Brasília", name: "Brasília", countryCode: "BR", center: GeoPoint(latitude: -15.828275, longitude: -47.96773), bounds: GeoBounds(south: -15.880949, west: -48.059861, north: -15.731449, east: -47.858235), feeds: [ScooterCityFeed(id: "brazil:jet_br_brasilia")]),
-        ScooterCity(id: "br:Campinas", name: "Campinas", countryCode: "BR", center: GeoPoint(latitude: -22.892123, longitude: -47.056802), bounds: GeoBounds(south: -22.915281, west: -47.076842, north: -22.869931, east: -47.038723), feeds: [ScooterCityFeed(id: "brazil:jet_br_campinas")]),
-        ScooterCity(id: "br:Campo Grande", name: "Campo Grande", countryCode: "BR", center: GeoPoint(latitude: -20.452704, longitude: -54.585296), bounds: GeoBounds(south: -20.47173, west: -54.62322, north: -20.42416, east: -54.54795), feeds: [ScooterCityFeed(id: "brazil:jet_br_campo-grande"), ScooterCityFeed(id: "brazil:whoosh_br_cgr")]),
-        ScooterCity(id: "br:Campos do Jordão", name: "Campos do Jordão", countryCode: "BR", center: GeoPoint(latitude: -22.73363, longitude: -45.585672), bounds: GeoBounds(south: -22.76292, west: -45.61556, north: -22.69277, east: -45.53982), feeds: [ScooterCityFeed(id: "brazil:jet_br_campos-do-jordao"), ScooterCityFeed(id: "brazil:whoosh_br_cjd")]),
-        ScooterCity(id: "br:Caraguatatuba", name: "Caraguatatuba", countryCode: "BR", center: GeoPoint(latitude: -23.625299, longitude: -45.406822), bounds: GeoBounds(south: -23.661268, west: -45.440281, north: -23.608924, east: -45.370625), feeds: [ScooterCityFeed(id: "brazil:jet_br_caraguatatuba")]),
-        ScooterCity(id: "br:Caruaru", name: "Caruaru", countryCode: "BR", center: GeoPoint(latitude: -8.276504, longitude: -35.969982), bounds: GeoBounds(south: -8.292565, west: -35.991677, north: -8.25595, east: -35.95617), feeds: [ScooterCityFeed(id: "brazil:jet_br_caruaru")]),
-        ScooterCity(id: "br:Curitiba", name: "Curitiba", countryCode: "BR", center: GeoPoint(latitude: -25.430608, longitude: -49.286673), bounds: GeoBounds(south: -25.47325, west: -49.3193, north: -25.40597, east: -49.2327), feeds: [ScooterCityFeed(id: "brazil:jet_br_curitiba"), ScooterCityFeed(id: "brazil:whoosh_br_cwb")]),
-        ScooterCity(id: "br:Florianópolis", name: "Florianópolis", countryCode: "BR", center: GeoPoint(latitude: -27.596832, longitude: -48.584596), bounds: GeoBounds(south: -27.769255, west: -48.70573, north: -26.87967, east: -48.374651), feeds: [ScooterCityFeed(id: "brazil:jet_br_florianopolis"), ScooterCityFeed(id: "brazil:jet_br_florianopolis-campeche"), ScooterCityFeed(id: "brazil:jet_br_florianopolis-ingleses"), ScooterCityFeed(id: "brazil:whoosh_br_fln")]),
-        ScooterCity(id: "br:Fortaleza", name: "Fortaleza", countryCode: "BR", center: GeoPoint(latitude: -3.736919, longitude: -38.514842), bounds: GeoBounds(south: -3.771152, west: -38.587129, north: -3.70551, east: -38.436192), feeds: [ScooterCityFeed(id: "brazil:jet_br_fortaleza")]),
-        ScooterCity(id: "br:Gramado", name: "Gramado", countryCode: "BR", center: GeoPoint(latitude: -29.382415, longitude: -50.876731), bounds: GeoBounds(south: -29.397954, west: -50.885509, north: -29.366945, east: -50.867998), feeds: [ScooterCityFeed(id: "brazil:jet_br_gramado")]),
-        ScooterCity(id: "br:Guarapari", name: "Guarapari", countryCode: "BR", center: GeoPoint(latitude: -20.659707, longitude: -40.496656), bounds: GeoBounds(south: -20.68965, west: -40.518664, north: -20.631935, east: -40.470637), feeds: [ScooterCityFeed(id: "brazil:jet_br_guarapari")]),
-        ScooterCity(id: "br:Guaratuba", name: "Guaratuba", countryCode: "BR", center: GeoPoint(latitude: -25.887266, longitude: -48.571947), bounds: GeoBounds(south: -25.91086, west: -48.58504, north: -25.865841, east: -48.558699), feeds: [ScooterCityFeed(id: "brazil:jet_br_guaratuba")]),
-        ScooterCity(id: "br:Guarujá", name: "Guarujá", countryCode: "BR", center: GeoPoint(latitude: -23.99129, longitude: -46.245689), bounds: GeoBounds(south: -24.016906, west: -46.291572, north: -23.9742, east: -46.194503), feeds: [ScooterCityFeed(id: "brazil:jet_br_guaruja")]),
-        ScooterCity(id: "br:Ilhabela", name: "Ilhabela", countryCode: "BR", center: GeoPoint(latitude: -23.814959, longitude: -45.364341), bounds: GeoBounds(south: -23.83297, west: -45.392932, north: -23.767882, east: -45.349393), feeds: [ScooterCityFeed(id: "brazil:jet_br_ilhabela")]),
-        ScooterCity(id: "br:Ilhéus", name: "Ilhéus", countryCode: "BR", center: GeoPoint(latitude: -14.802129, longitude: -39.036281), bounds: GeoBounds(south: -14.845977, west: -39.06076, north: -14.775448, east: -39.023183), feeds: [ScooterCityFeed(id: "brazil:jet_br_ilheus")]),
-        ScooterCity(id: "br:Itanhaém", name: "Itanhaém", countryCode: "BR", center: GeoPoint(latitude: -24.187737, longitude: -46.794216), bounds: GeoBounds(south: -24.204152, west: -46.822681, north: -24.171195, east: -46.766093), feeds: [ScooterCityFeed(id: "brazil:jet_br_itanhaem")]),
-        ScooterCity(id: "br:Itapema", name: "Itapema", countryCode: "BR", center: GeoPoint(latitude: -27.108775, longitude: -48.596325), bounds: GeoBounds(south: -27.169478, west: -48.619451, north: -27.085856, east: -48.528392), feeds: [ScooterCityFeed(id: "brazil:jet_br_itapema")]),
-        ScooterCity(id: "br:Jaboatão dos Guararapes", name: "Jaboatão dos Guararapes", countryCode: "BR", center: GeoPoint(latitude: -8.192915, longitude: -34.920569), bounds: GeoBounds(south: -8.222971, west: -34.929777, north: -8.159607, east: -34.910859), feeds: [ScooterCityFeed(id: "brazil:jet_br_jaboatao-dos-guararapes")]),
-        ScooterCity(id: "br:Joinville", name: "Joinville", countryCode: "BR", center: GeoPoint(latitude: -26.270188, longitude: -48.866831), bounds: GeoBounds(south: -26.45213, west: -49.20084, north: -26.07424, east: -48.72326), feeds: [ScooterCityFeed(id: "brazil:jet_br_joinville"), ScooterCityFeed(id: "brazil:whoosh_br_joi")]),
-        ScooterCity(id: "br:Londrina", name: "Londrina", countryCode: "BR", center: GeoPoint(latitude: -23.292444, longitude: -51.188514), bounds: GeoBounds(south: -23.354938, west: -51.230723, north: -23.25601, east: -51.134939), feeds: [ScooterCityFeed(id: "brazil:jet_br_londrina")]),
-        ScooterCity(id: "br:Maceió", name: "Maceió", countryCode: "BR", center: GeoPoint(latitude: -9.645789, longitude: -35.711892), bounds: GeoBounds(south: -9.686505, west: -35.760168, north: -9.606097, east: -35.684825), feeds: [ScooterCityFeed(id: "brazil:jet_br_maceio")]),
-        ScooterCity(id: "br:Matinhos", name: "Matinhos", countryCode: "BR", center: GeoPoint(latitude: -25.831209, longitude: -48.539125), bounds: GeoBounds(south: -25.850742, west: -48.550056, north: -25.813225, east: -48.528326), feeds: [ScooterCityFeed(id: "brazil:jet_br_matinhos")]),
-        ScooterCity(id: "br:Natal", name: "Natal", countryCode: "BR", center: GeoPoint(latitude: -5.828488, longitude: -35.187784), bounds: GeoBounds(south: -5.895927, west: -35.214735, north: -5.758028, east: -35.161687), feeds: [ScooterCityFeed(id: "brazil:jet_br_natal")]),
-        ScooterCity(id: "br:Novo Hamburgo", name: "Novo Hamburgo", countryCode: "BR", center: GeoPoint(latitude: -29.689448, longitude: -51.12657), bounds: GeoBounds(south: -29.703312, west: -51.137771, north: -29.677942, east: -51.113943), feeds: [ScooterCityFeed(id: "brazil:jet_br_novo-hamburgo")]),
-        ScooterCity(id: "br:Palhoça", name: "Palhoça", countryCode: "BR", center: GeoPoint(latitude: -27.638326, longitude: -48.676258), bounds: GeoBounds(south: -27.681937, west: -48.707164, north: -27.616051, east: -48.637159), feeds: [ScooterCityFeed(id: "brazil:jet_br_palhoca")]),
-        ScooterCity(id: "br:Paulista", name: "Paulista", countryCode: "BR", center: GeoPoint(latitude: -7.927582, longitude: -34.857939), bounds: GeoBounds(south: -7.956795, west: -34.904784, north: -7.878679, east: -34.819158), feeds: [ScooterCityFeed(id: "brazil:jet_br_paulista")]),
-        ScooterCity(id: "br:Peruíbe", name: "Peruíbe", countryCode: "BR", center: GeoPoint(latitude: -24.299767, longitude: -46.969324), bounds: GeoBounds(south: -24.331899, west: -47.005426, north: -24.268912, east: -46.929831), feeds: [ScooterCityFeed(id: "brazil:jet_br_peruibe")]),
-        ScooterCity(id: "br:Porto Alegre", name: "Porto Alegre", countryCode: "BR", center: GeoPoint(latitude: -30.038528, longitude: -51.215162), bounds: GeoBounds(south: -30.09712, west: -51.25218, north: -30.00374, east: -51.14004), feeds: [ScooterCityFeed(id: "brazil:jet_br_porto-alegre"), ScooterCityFeed(id: "brazil:whoosh_br_poa")]),
-        ScooterCity(id: "br:Praia Grande", name: "Praia Grande", countryCode: "BR", center: GeoPoint(latitude: -24.029522, longitude: -46.473947), bounds: GeoBounds(south: -24.099362, west: -46.626644, north: -23.990364, east: -46.392123), feeds: [ScooterCityFeed(id: "brazil:jet_br_praia-grande")]),
-        ScooterCity(id: "br:Recife", name: "Recife", countryCode: "BR", center: GeoPoint(latitude: -8.07754, longitude: -34.892936), bounds: GeoBounds(south: -8.157131, west: -34.92407, north: -8.02252, east: -34.857121), feeds: [ScooterCityFeed(id: "brazil:jet_br_recife"), ScooterCityFeed(id: "brazil:whoosh_br_rec")]),
-        ScooterCity(id: "br:Ribeirão Pires", name: "Ribeirão Pires", countryCode: "BR", center: GeoPoint(latitude: -23.712534, longitude: -46.413734), bounds: GeoBounds(south: -23.723048, west: -46.427204, north: -23.702558, east: -46.396294), feeds: [ScooterCityFeed(id: "brazil:jet_br_ribeirao-pires")]),
-        ScooterCity(id: "br:Salvador", name: "Salvador", countryCode: "BR", center: GeoPoint(latitude: -12.946962, longitude: -38.4275), bounds: GeoBounds(south: -13.021698, west: -38.540352, north: -12.907894, east: -38.309914), feeds: [ScooterCityFeed(id: "brazil:jet_br_salvador")]),
-        ScooterCity(id: "br:Serra", name: "Serra", countryCode: "BR", center: GeoPoint(latitude: -20.175586, longitude: -40.220907), bounds: GeoBounds(south: -20.208172, west: -40.270367, north: -20.11835, east: -40.172515), feeds: [ScooterCityFeed(id: "brazil:jet_br_serra")]),
-        ScooterCity(id: "br:Sorocaba", name: "Sorocaba", countryCode: "BR", center: GeoPoint(latitude: -23.49639, longitude: -47.448656), bounds: GeoBounds(south: -23.540498, west: -47.476888, north: -23.465076, east: -47.400918), feeds: [ScooterCityFeed(id: "brazil:jet_br_sorocaba")]),
-        ScooterCity(id: "br:São José dos Campos", name: "São José dos Campos", countryCode: "BR", center: GeoPoint(latitude: -23.214048, longitude: -45.896674), bounds: GeoBounds(south: -23.254195, west: -45.925783, north: -23.163122, east: -45.869345), feeds: [ScooterCityFeed(id: "brazil:jet_br_sao-jose-dos-campos")]),
-        ScooterCity(id: "br:São Paulo", name: "São Paulo", countryCode: "BR", center: GeoPoint(latitude: -23.605043, longitude: -46.633866), bounds: GeoBounds(south: -23.712152, west: -46.75008, north: -23.49574, east: -46.493185), feeds: [ScooterCityFeed(id: "brazil:jet_br_sao-paulo"), ScooterCityFeed(id: "brazil:whoosh_br_gru")]),
-        ScooterCity(id: "br:Torres", name: "Torres", countryCode: "BR", center: GeoPoint(latitude: -29.336607, longitude: -49.726905), bounds: GeoBounds(south: -29.347669, west: -49.741659, north: -29.325042, east: -49.712762), feeds: [ScooterCityFeed(id: "brazil:jet_br_torres")]),
-        ScooterCity(id: "br:Ubatuba", name: "Ubatuba", countryCode: "BR", center: GeoPoint(latitude: -23.447472, longitude: -45.072997), bounds: GeoBounds(south: -23.481581, west: -45.093139, north: -23.414899, east: -45.049957), feeds: [ScooterCityFeed(id: "brazil:jet_br_ubatuba")]),
-        ScooterCity(id: "br:Vila Velha", name: "Vila Velha", countryCode: "BR", center: GeoPoint(latitude: -20.361785, longitude: -40.308233), bounds: GeoBounds(south: -20.422664, west: -40.339696, north: -20.323335, east: -40.266473), feeds: [ScooterCityFeed(id: "brazil:jet_br_vila-velha")]),
-        ScooterCity(id: "br:Rio de Janeiro", name: "Rio de Janeiro", countryCode: "BR", center: GeoPoint(latitude: -22.94598, longitude: -43.19508), bounds: GeoBounds(south: -22.99029, west: -43.40592, north: -22.89094, east: -43.16321), feeds: [ScooterCityFeed(id: "brazil:whoosh_br_gig")]),
-        ScooterCity(id: "cl:Santiago", name: "Santiago", countryCode: "CL", center: GeoPoint(latitude: -33.506119, longitude: -70.654009), bounds: GeoBounds(south: -33.764879, west: -70.787597, north: -33.31591, east: -70.490242), feeds: [ScooterCityFeed(id: "chile:jet_cl_santiago"), ScooterCityFeed(id: "chile:whoosh_cl_scl"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_000"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_001"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_002"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_003"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_004"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_005"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_006"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_007"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_008"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_009"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_010"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_011"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_012"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_013"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_014"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_015"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_016"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_017"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_018"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_019"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_020"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_021"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_022"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_023"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_024")]),
-        ScooterCity(id: "cl:Temuco", name: "Temuco", countryCode: "CL", center: GeoPoint(latitude: -38.736777, longitude: -72.616194), bounds: GeoBounds(south: -38.76915, west: -72.67405, north: -38.69955, east: -72.54585), feeds: [ScooterCityFeed(id: "chile:jet_cl_temuco"), ScooterCityFeed(id: "chile:whoosh_cl_zpc")]),
-        ScooterCity(id: "cl:Pucón", name: "Pucón", countryCode: "CL", center: GeoPoint(latitude: -39.27807, longitude: -71.95947), bounds: GeoBounds(south: -39.29093, west: -71.98336, north: -39.26521, east: -71.93557), feeds: [ScooterCityFeed(id: "chile:whoosh_cl_scvi")]),
-        ScooterCity(id: "cl:Villarrica", name: "Villarrica", countryCode: "CL", center: GeoPoint(latitude: -39.28573, longitude: -72.22597), bounds: GeoBounds(south: -39.2985, west: -72.24041, north: -39.27297, east: -72.21153), feeds: [ScooterCityFeed(id: "chile:whoosh_cl_scvi")]),
-        ScooterCity(id: "cl:Viña del Mar", name: "Viña del Mar", countryCode: "CL", center: GeoPoint(latitude: -33.0153009, longitude: -71.5500508), bounds: GeoBounds(south: -33.0351, west: -71.5704, north: -32.99056, east: -71.53132), feeds: [ScooterCityFeed(id: "chile:whoosh_cl_scvm")]),
-        ScooterCity(id: "cl:Limache", name: "Limache", countryCode: "CL", center: GeoPoint(latitude: -32.99449, longitude: -71.2832), bounds: GeoBounds(south: -33.02399, west: -71.31724, north: -32.965, east: -71.24916), feeds: [ScooterCityFeed(id: "chile:whoosh_cl_scvm")]),
-        ScooterCity(id: "cl:La Serena", name: "La Serena", countryCode: "CL", center: GeoPoint(latitude: -29.9092, longitude: -71.2491), bounds: GeoBounds(south: -29.99433, west: -71.35383, north: -29.89335, east: -71.24147), feeds: [ScooterCityFeed(id: "chile:whoosh_cl_lsc")]),
-        ScooterCity(id: "cl:Puerto Montt", name: "Puerto Montt", countryCode: "CL", center: GeoPoint(latitude: -41.465558, longitude: -72.947235), bounds: GeoBounds(south: -41.495, west: -73.01201, north: -41.37834, east: -72.85224), feeds: [ScooterCityFeed(id: "chile:whoosh_cl_pmc")]),
-        ScooterCity(id: "cl:Rancagua", name: "Rancagua", countryCode: "CL", center: GeoPoint(latitude: -34.166728, longitude: -70.697146), bounds: GeoBounds(south: -34.19856, west: -70.76981, north: -34.12064, east: -70.63991), feeds: [ScooterCityFeed(id: "chile:whoosh_cl_qrc")]),
-        ScooterCity(id: "mx:Monterrey", name: "Monterrey", countryCode: "MX", center: GeoPoint(latitude: 25.660313, longitude: -100.378108), bounds: GeoBounds(south: 25.6341, west: -100.42479, north: 25.68824, east: -100.26807), feeds: [ScooterCityFeed(id: "mexico:jet_mx_monterrey-san-pedro"), ScooterCityFeed(id: "mexico:whoosh_mx_spr")]),
-        ScooterCity(id: "mx:Zapopan", name: "Zapopan", countryCode: "MX", center: GeoPoint(latitude: 20.721331, longitude: -103.391882), bounds: GeoBounds(south: 20.63267, west: -103.44679, north: 20.74174, east: -103.37085), feeds: [ScooterCityFeed(id: "mexico:whoosh_mx_zap")]),
-        ScooterCity(id: "mx:Querétaro", name: "Querétaro", countryCode: "MX", center: GeoPoint(latitude: 20.58806, longitude: -100.38806), bounds: GeoBounds(south: 20.55756, west: -100.41509, north: 20.6161, east: -100.35703), feeds: [ScooterCityFeed(id: "mexico:lime_mx_app_queretaro_000"), ScooterCityFeed(id: "mexico:lime_mx_app_queretaro_001"), ScooterCityFeed(id: "mexico:lime_mx_app_queretaro_002"), ScooterCityFeed(id: "mexico:lime_mx_app_queretaro_003")]),
-        ScooterCity(id: "kz:Almaty", name: "Almaty", countryCode: "KZ", center: GeoPoint(latitude: 43.298812, longitude: 76.939435), bounds: GeoBounds(south: 43.178739, west: 76.774937, north: 43.356878, east: 77.013148), feeds: [ScooterCityFeed(id: "kazakhstan:jet_kz_almaty"), ScooterCityFeed(id: "kazakhstan:whoosh_kz_ala")]),
-        ScooterCity(id: "kz:Astana", name: "Astana", countryCode: "KZ", center: GeoPoint(latitude: 51.143975, longitude: 71.43581), bounds: GeoBounds(south: 51.06534, west: 71.3469, north: 51.20139, east: 71.54021), feeds: [ScooterCityFeed(id: "kazakhstan:whoosh_kz_nqz")]),
-        ScooterCity(id: "az:Baku", name: "Baku", countryCode: "AZ", center: GeoPoint(latitude: 40.406212, longitude: 49.883767), bounds: GeoBounds(south: 40.335093, west: 49.790085, north: 40.440305, east: 49.987929), feeds: [ScooterCityFeed(id: "azerbaijan:jet_az_baku")]),
-        ScooterCity(id: "ge:Batumi", name: "Batumi", countryCode: "GE", center: GeoPoint(latitude: 41.639193, longitude: 41.62466), bounds: GeoBounds(south: 41.615822, west: 41.583057, north: 41.662751, east: 41.680613), feeds: [ScooterCityFeed(id: "georgia:jet_ge_batumi")]),
-        ScooterCity(id: "co:Medellín", name: "Medellín", countryCode: "CO", center: GeoPoint(latitude: 6.243534, longitude: -75.579226), bounds: GeoBounds(south: 6.18271, west: -75.61793, north: 6.29603, east: -75.54855), feeds: [ScooterCityFeed(id: "colombia:whoosh_co_mde")]),
-        ScooterCity(id: "by:Borisov", name: "Borisov", countryCode: "BY", center: GeoPoint(latitude: 54.221869, longitude: 28.504081), bounds: GeoBounds(south: 54.18871, west: 28.45654, north: 54.25148, east: 28.53523), feeds: [ScooterCityFeed(id: "belarus:whoosh_by_bors")]),
-        ScooterCity(id: "by:Minsk", name: "Minsk", countryCode: "BY", center: GeoPoint(latitude: 53.902284, longitude: 27.561831), bounds: GeoBounds(south: 53.83261, west: 27.40681, north: 54.01826, east: 27.72876), feeds: [ScooterCityFeed(id: "belarus:whoosh_by_msq")]),
-        ScooterCity(id: "by:Soligorsk", name: "Soligorsk", countryCode: "BY", center: GeoPoint(latitude: 52.790668, longitude: 27.530463), bounds: GeoBounds(south: 52.76991, west: 27.48468, north: 52.80366, east: 27.55641), feeds: [ScooterCityFeed(id: "belarus:whoosh_by_slg")]),
-        ScooterCity(id: "za:Langebaan", name: "Langebaan", countryCode: "ZA", center: GeoPoint(latitude: -33.04695, longitude: 18.0427), bounds: GeoBounds(south: -33.05338, west: 18.03341, north: -33.04052, east: 18.04983), feeds: [ScooterCityFeed(id: "southafrica:zippy_za_langebaan")]),
-        ScooterCity(id: "ro:Deva", name: "Deva", countryCode: "RO", center: GeoPoint(latitude: 45.88333, longitude: 22.9), bounds: GeoBounds(south: 45.85633, west: 22.89478, north: 45.89326, east: 22.92735), feeds: [ScooterCityFeed(id: "romania:lime_ro_app_deva_000"), ScooterCityFeed(id: "romania:lime_ro_app_deva_001")]),
-        ScooterCity(id: "cz:České Budějovice", name: "České Budějovice", countryCode: "CZ", center: GeoPoint(latitude: 48.97447, longitude: 14.47434), bounds: GeoBounds(south: 48.94881, west: 14.43596, north: 49.00077, east: 14.50798), feeds: [ScooterCityFeed(id: "czechia:lime_cz_app_ceske_budejovice_000"), ScooterCityFeed(id: "czechia:lime_cz_app_ceske_budejovice_001"), ScooterCityFeed(id: "czechia:lime_cz_app_ceske_budejovice_002"), ScooterCityFeed(id: "czechia:lime_cz_app_ceske_budejovice_003")]),
-        ScooterCity(id: "qa:Doha", name: "Doha", countryCode: "QA", center: GeoPoint(latitude: 25.28545, longitude: 51.53096), bounds: GeoBounds(south: 25.11408, west: 51.43133, north: 25.39361, east: 51.60065), feeds: [ScooterCityFeed(id: "qatar:lime_qa_app_doha_000"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_001"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_002"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_003"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_004"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_005"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_006"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_007"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_008"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_009"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_010"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_011"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_012"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_013"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_014"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_015"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_016"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_017"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_018"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_019"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_020"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_021"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_022"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_023"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_024"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_025"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_026"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_027"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_028"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_029"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_030"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_031")]),
-        ScooterCity(id: "au:Adelaide", name: "Adelaide", countryCode: "AU", center: GeoPoint(latitude: -34.9285, longitude: 138.6007), bounds: GeoBounds(south: -34.943739, west: 138.57500639999998, north: -34.887522999999995, east: 138.6435044), feeds: [ScooterCityFeed(id: "australia:beam_au_adelaide")]),
-        ScooterCity(id: "au:Broome", name: "Broome", countryCode: "AU", center: GeoPoint(latitude: -17.94932, longitude: 122.217464), bounds: GeoBounds(south: -18.0055940869565, west: 122.1985178444571, north: -17.918882, east: 122.24731657644007), feeds: [ScooterCityFeed(id: "australia:beam_au_broome")]),
-        ScooterCity(id: "au:Bunbury", name: "Bunbury", countryCode: "AU", center: GeoPoint(latitude: -33.330399, longitude: 115.659874), bounds: GeoBounds(south: -33.352264327650005, west: 115.618578, north: -33.307725, east: 115.698066), feeds: [ScooterCityFeed(id: "australia:beam_au_bunbury")]),
-        ScooterCity(id: "au:Cairns", name: "Cairns", countryCode: "AU", center: GeoPoint(latitude: -16.922857, longitude: 145.767151), bounds: GeoBounds(south: -16.960565, west: 145.739454, north: -16.895878, east: 145.782737), feeds: [ScooterCityFeed(id: "australia:beam_au_cairns")]),
-        ScooterCity(id: "au:Darwin", name: "Darwin", countryCode: "AU", center: GeoPoint(latitude: -12.4634, longitude: 130.8456), bounds: GeoBounds(south: -12.473780000000001, west: 130.810601, north: -12.336188, east: 130.91584), feeds: [ScooterCityFeed(id: "australia:beam_au_darwin")]),
-        ScooterCity(id: "au:Esperance", name: "Esperance", countryCode: "AU", center: GeoPoint(latitude: -33.852711, longitude: 121.883446), bounds: GeoBounds(south: -33.898646, west: 121.818805, north: -33.810136, east: 121.942786), feeds: [ScooterCityFeed(id: "australia:beam_au_esperance")]),
-        ScooterCity(id: "au:Geraldton", name: "Geraldton", countryCode: "AU", center: GeoPoint(latitude: -28.77, longitude: 114.61), bounds: GeoBounds(south: -28.830987999999998, west: 114.576288, north: -28.725296, east: 114.644229), feeds: [ScooterCityFeed(id: "australia:beam_au_geraldton")]),
-        ScooterCity(id: "au:Hervey Bay", name: "Hervey Bay", countryCode: "AU", center: GeoPoint(latitude: -25.283472, longitude: 152.854095), bounds: GeoBounds(south: -25.31263, west: 152.795253, north: -25.242209000000003, east: 152.912238), feeds: [ScooterCityFeed(id: "australia:beam_au_hervey_bay")]),
-        ScooterCity(id: "au:Mackay", name: "Mackay", countryCode: "AU", center: GeoPoint(latitude: -21.150888, longitude: 149.209462), bounds: GeoBounds(south: -21.187051999999998, west: 149.13411599999998, north: -21.070922, east: 149.22705000000002), feeds: [ScooterCityFeed(id: "australia:beam_au_mackay")]),
-        ScooterCity(id: "au:Perth", name: "Perth", countryCode: "AU", center: GeoPoint(latitude: -31.882626, longitude: 115.784912), bounds: GeoBounds(south: -31.914666, west: 115.74886400000001, north: -31.843548000000002, east: 115.823606), feeds: [ScooterCityFeed(id: "australia:beam_au_perth")]),
-        ScooterCity(id: "au:Port Douglas", name: "Port Douglas", countryCode: "AU", center: GeoPoint(latitude: -16.509497, longitude: 145.462601), bounds: GeoBounds(south: -16.545178, west: 145.456089, north: -16.477207, east: 145.47833300000002), feeds: [ScooterCityFeed(id: "australia:beam_au_port_douglas")]),
-        ScooterCity(id: "au:Brisbane", name: "Brisbane", countryCode: "AU", center: GeoPoint(latitude: -27.46794, longitude: 153.02809), bounds: GeoBounds(south: -27.53263, west: 152.97359, north: -27.28388, east: 153.19579), feeds: [ScooterCityFeed(id: "australia:lime_au_app_brisbane_000"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_001"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_002"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_003"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_004"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_005"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_006"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_007"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_008"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_009"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_010"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_011"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_012"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_013"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_014"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_015"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_016"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_017"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_018"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_019")]),
-        ScooterCity(id: "tr:İstanbul", name: "İstanbul", countryCode: "TR", center: GeoPoint(latitude: 41.00824, longitude: 28.97836), bounds: GeoBounds(south: 40.75167, west: 28.57288, north: 41.11293, east: 29.4595), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_istanbul_avrupa"), ScooterCityFeed(id: "turkey:binbin_tr_istanbul_anadolu")]),
-        ScooterCity(id: "tr:Antalya", name: "Antalya", countryCode: "TR", center: GeoPoint(latitude: 36.88414, longitude: 30.70563), bounds: GeoBounds(south: 36.44495, west: 30.53284, north: 36.94623, east: 32.138625000000005), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_antalya"), ScooterCityFeed(id: "turkey:beam_tr_antalya")]),
-        ScooterCity(id: "tr:İzmir", name: "İzmir", countryCode: "TR", center: GeoPoint(latitude: 38.41885, longitude: 27.12872), bounds: GeoBounds(south: 38.36482, west: 27.03696, north: 38.4841, east: 27.24384), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_izmir")]),
-        ScooterCity(id: "tr:Samsun", name: "Samsun", countryCode: "TR", center: GeoPoint(latitude: 41.28667, longitude: 36.33), bounds: GeoBounds(south: 41.26071, west: 36.20146, north: 41.39424, east: 36.37265), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_samsun")]),
-        ScooterCity(id: "tr:Konya", name: "Konya", countryCode: "TR", center: GeoPoint(latitude: 37.87135, longitude: 32.48464), bounds: GeoBounds(south: 37.84635, west: 32.43842, north: 38.03728, east: 32.5375), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_konya")]),
-        ScooterCity(id: "tr:Eskişehir", name: "Eskişehir", countryCode: "TR", center: GeoPoint(latitude: 39.77667, longitude: 30.52056), bounds: GeoBounds(south: 39.74038, west: 30.43542, north: 39.80315, east: 30.55629), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_eskisehir")]),
-        ScooterCity(id: "tr:Adana", name: "Adana", countryCode: "TR", center: GeoPoint(latitude: 37.03382, longitude: 35.30137), bounds: GeoBounds(south: 36.99224, west: 35.2382, north: 37.06665, east: 35.37584), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_adana")]),
-        ScooterCity(id: "tr:Bursa", name: "Bursa", countryCode: "TR", center: GeoPoint(latitude: 40.19559, longitude: 29.06013), bounds: GeoBounds(south: 40.1802, west: 28.825, north: 40.26635, east: 29.07401), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_bursa")]),
-        ScooterCity(id: "tr:Kocaeli", name: "Kocaeli", countryCode: "TR", center: GeoPoint(latitude: 40.76543, longitude: 29.94081), bounds: GeoBounds(south: 40.70145, west: 29.78391, north: 40.78516, east: 30.03083), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_kocaeli")]),
-        ScooterCity(id: "tr:Alanya", name: "Alanya", countryCode: "TR", center: GeoPoint(latitude: 36.54375, longitude: 31.99982), bounds: GeoBounds(south: 36.46754, west: 31.96715, north: 36.56011, east: 32.12278), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_alanya")]),
-        ScooterCity(id: "tr:Sakarya", name: "Sakarya", countryCode: "TR", center: GeoPoint(latitude: 40.78056, longitude: 30.40333), bounds: GeoBounds(south: 40.73457, west: 30.32067, north: 40.81613, east: 30.43402), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_sakarya")]),
-        ScooterCity(id: "tr:Gaziantep", name: "Gaziantep", countryCode: "TR", center: GeoPoint(latitude: 37.05964, longitude: 37.33749), bounds: GeoBounds(south: 37.02191, west: 37.30337, north: 37.09106, east: 37.38447), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_gaziantep")]),
-        ScooterCity(id: "tr:Ankara", name: "Ankara", countryCode: "TR", center: GeoPoint(latitude: 39.933477, longitude: 32.788358), bounds: GeoBounds(south: 39.857991999999996, west: 32.594919999999995, north: 40.138448000000004, east: 32.969954), feeds: [ScooterCityFeed(id: "turkey:beam_tr_ankara")]),
-        ScooterCity(id: "tr:Fethiye", name: "Fethiye", countryCode: "TR", center: GeoPoint(latitude: 36.649535, longitude: 29.143076), bounds: GeoBounds(south: 36.604504999999996, west: 29.08031925789807, north: 36.687972, east: 29.208493999999998), feeds: [ScooterCityFeed(id: "turkey:beam_tr_fethiye")]),
-        ScooterCity(id: "tr:Marmaris", name: "Marmaris", countryCode: "TR", center: GeoPoint(latitude: 36.835077, longitude: 28.241062), bounds: GeoBounds(south: 36.784875, west: 28.205607, north: 36.887838947981805, east: 28.292610999999997), feeds: [ScooterCityFeed(id: "turkey:beam_tr_marmaris")]),
-        ScooterCity(id: "tr:Mersin", name: "Mersin", countryCode: "TR", center: GeoPoint(latitude: 36.770245, longitude: 34.565804), bounds: GeoBounds(south: 36.722321343100596, west: 34.49301282568111, north: 36.819913, east: 34.638218), feeds: [ScooterCityFeed(id: "turkey:beam_tr_mersin")]),
-        ScooterCity(id: "my:Johor", name: "Johor", countryCode: "MY", center: GeoPoint(latitude: 1.49, longitude: 103.74), bounds: GeoBounds(south: 1.394025, west: 102.714203, north: 2.590063, east: 103.904297), feeds: [ScooterCityFeed(id: "malaysia:beam_my_johor")]),
-        ScooterCity(id: "my:Kuala Lumpur", name: "Kuala Lumpur", countryCode: "MY", center: GeoPoint(latitude: 3.143626, longitude: 101.690022), bounds: GeoBounds(south: 3.0430620000000004, west: 101.61356400000001, north: 3.2326699999999997, east: 101.751621), feeds: [ScooterCityFeed(id: "malaysia:beam_my_kuala_lumpur")]),
-        ScooterCity(id: "my:Kuantan", name: "Kuantan", countryCode: "MY", center: GeoPoint(latitude: 3.80706, longitude: 103.326164), bounds: GeoBounds(south: 3.7930750000000004, west: 103.265944, north: 3.8779429999999997, east: 103.33143), feeds: [ScooterCityFeed(id: "malaysia:beam_my_kuantan")]),
-        ScooterCity(id: "my:Malacca", name: "Malacca", countryCode: "MY", center: GeoPoint(latitude: 2.195523, longitude: 102.250572), bounds: GeoBounds(south: 2.184842, west: 102.243539, north: 2.2226559999999997, east: 102.273794), feeds: [ScooterCityFeed(id: "malaysia:beam_my_malacca")]),
-        ScooterCity(id: "my:Pahang", name: "Pahang", countryCode: "MY", center: GeoPoint(latitude: 3.724961, longitude: 103.124458), bounds: GeoBounds(south: 3.715441, west: 103.117328, north: 3.735854, east: 103.128935), feeds: [ScooterCityFeed(id: "malaysia:beam_my_pahang")]),
-        ScooterCity(id: "my:Penang", name: "Penang", countryCode: "MY", center: GeoPoint(latitude: 5.334965, longitude: 100.30146), bounds: GeoBounds(south: 5.288024, west: 100.287211, north: 5.355436, east: 100.32185299999999), feeds: [ScooterCityFeed(id: "malaysia:beam_my_penang")]),
-        ScooterCity(id: "my:Perak", name: "Perak", countryCode: "MY", center: GeoPoint(latitude: 4.566995, longitude: 100.938261), bounds: GeoBounds(south: 4.171338, west: 100.602553, north: 4.613759, east: 101.226873), feeds: [ScooterCityFeed(id: "malaysia:beam_my_perak")]),
-        ScooterCity(id: "my:Sarawak", name: "Sarawak", countryCode: "MY", center: GeoPoint(latitude: 3.235641, longitude: 113.075287), bounds: GeoBounds(south: 3.1675310000000003, west: 113.028434, north: 4.406809, east: 113.999558), feeds: [ScooterCityFeed(id: "malaysia:beam_my_sarawak")]),
-        ScooterCity(id: "my:Selangor", name: "Selangor", countryCode: "MY", center: GeoPoint(latitude: 3.076382, longitude: 101.588654), bounds: GeoBounds(south: 2.822144, west: 101.415692, north: 3.263295, east: 101.80005), feeds: [ScooterCityFeed(id: "malaysia:beam_my_selangor")]),
-        ScooterCity(id: "my:Terengganu", name: "Terengganu", countryCode: "MY", center: GeoPoint(latitude: 5.34947, longitude: 103.134827), bounds: GeoBounds(south: 5.278537, west: 103.058942, north: 5.417827, east: 103.176733), feeds: [ScooterCityFeed(id: "malaysia:beam_my_terengganu")]),
-        ScooterCity(id: "kr:Busan", name: "Busan", countryCode: "KR", center: GeoPoint(latitude: 35.1669, longitude: 129.0788), bounds: GeoBounds(south: 35.0319, west: 128.75681, north: 35.319331, east: 129.2616), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_busan"), ScooterCityFeed(id: "korea:kickgoing_kr_busan"), ScooterCityFeed(id: "korea:xingxing_kr_busan"), ScooterCityFeed(id: "korea:swing_kr_busan"), ScooterCityFeed(id: "korea:beam_kr_gimhae"), ScooterCityFeed(id: "korea:beam_kr_jinhae")]),
-        ScooterCity(id: "kr:Seoul", name: "Seoul", countryCode: "KR", center: GeoPoint(latitude: 37.5179, longitude: 127.0239), bounds: GeoBounds(south: 37.4261, west: 126.783, north: 37.6637, east: 127.1869), feeds: [ScooterCityFeed(id: "korea:kickgoing_kr_seoul"), ScooterCityFeed(id: "korea:xingxing_kr_seoul"), ScooterCityFeed(id: "korea:swing_kr_seoul"), ScooterCityFeed(id: "korea:beam_kr_seoul"), ScooterCityFeed(id: "korea:beam_kr_wirye")]),
-        ScooterCity(id: "kr:Ulsan", name: "Ulsan", countryCode: "KR", center: GeoPoint(latitude: 35.548, longitude: 129.3395), bounds: GeoBounds(south: 35.3855, west: 129.0864, north: 35.6699, east: 129.4564), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_ulsan"), ScooterCityFeed(id: "korea:xingxing_kr_ulsan"), ScooterCityFeed(id: "korea:swing_kr_ulsan")]),
-        ScooterCity(id: "kr:Daejeon", name: "Daejeon", countryCode: "KR", center: GeoPoint(latitude: 36.3493, longitude: 127.3877), bounds: GeoBounds(south: 36.2583, west: 127.274, north: 36.4671, east: 127.4909), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_daejeon"), ScooterCityFeed(id: "korea:swing_kr_daejeon"), ScooterCityFeed(id: "korea:beam_kr_daejeon")]),
-        ScooterCity(id: "kr:Daegu", name: "Daegu", countryCode: "KR", center: GeoPoint(latitude: 35.85, longitude: 128.5491), bounds: GeoBounds(south: 35.6267, west: 128.381, north: 35.9735, east: 128.861211), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_daegu"), ScooterCityFeed(id: "korea:xingxing_kr_daegu"), ScooterCityFeed(id: "korea:swing_kr_daegu"), ScooterCityFeed(id: "korea:beam_kr_daegu")]),
-        ScooterCity(id: "kr:Jeonju", name: "Jeonju", countryCode: "KR", center: GeoPoint(latitude: 35.8318, longitude: 127.1281), bounds: GeoBounds(south: 35.7683, west: 127.0344, north: 35.8994, east: 127.1991), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_jeonju"), ScooterCityFeed(id: "korea:xingxing_kr_jeonju"), ScooterCityFeed(id: "korea:swing_kr_jeonju")]),
-        ScooterCity(id: "kr:Incheon", name: "Incheon", countryCode: "KR", center: GeoPoint(latitude: 37.4568, longitude: 126.6534), bounds: GeoBounds(south: 37.3448, west: 126.4499, north: 37.7665, east: 126.7766), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_incheon"), ScooterCityFeed(id: "korea:kickgoing_kr_incheon"), ScooterCityFeed(id: "korea:swing_kr_incheon"), ScooterCityFeed(id: "korea:beam_kr_incheon")]),
-        ScooterCity(id: "kr:Cheongju", name: "Cheongju", countryCode: "KR", center: GeoPoint(latitude: 36.6337, longitude: 127.463), bounds: GeoBounds(south: 36.5807, west: 127.2843, north: 36.7571, east: 127.5744), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_cheongju"), ScooterCityFeed(id: "korea:xingxing_kr_cheongju"), ScooterCityFeed(id: "korea:swing_kr_cheongju"), ScooterCityFeed(id: "korea:beam_kr_cheongju")]),
-        ScooterCity(id: "kr:Hwaseong", name: "Hwaseong", countryCode: "KR", center: GeoPoint(latitude: 37.201, longitude: 126.9487), bounds: GeoBounds(south: 37.0632, west: 126.773, north: 37.2965, east: 127.1641), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_hwaseong"), ScooterCityFeed(id: "korea:xingxing_kr_hwaseong"), ScooterCityFeed(id: "korea:swing_kr_hwaseong"), ScooterCityFeed(id: "korea:beam_kr_dongtan")]),
-        ScooterCity(id: "kr:Gwangju", name: "Gwangju", countryCode: "KR", center: GeoPoint(latitude: 35.173, longitude: 126.8824), bounds: GeoBounds(south: 35.0702, west: 126.738, north: 35.2475, east: 126.9605), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gwangju"), ScooterCityFeed(id: "korea:beam_kr_gwangju")]),
-        ScooterCity(id: "kr:Seongnam", name: "Seongnam", countryCode: "KR", center: GeoPoint(latitude: 37.3899, longitude: 127.1248), bounds: GeoBounds(south: 37.3307, west: 127.02707, north: 37.4775, east: 127.1963), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_seongnam"), ScooterCityFeed(id: "korea:xingxing_kr_seongnam"), ScooterCityFeed(id: "korea:swing_kr_seongnam"), ScooterCityFeed(id: "korea:beam_kr_seongnam_suwon"), ScooterCityFeed(id: "korea:beam_kr_wirye")]),
-        ScooterCity(id: "kr:Suwon", name: "Suwon", countryCode: "KR", center: GeoPoint(latitude: 37.2668, longitude: 127.0177), bounds: GeoBounds(south: 37.2218, west: 126.9236, north: 37.348109, east: 127.093), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_suwon"), ScooterCityFeed(id: "korea:xingxing_kr_suwon"), ScooterCityFeed(id: "korea:swing_kr_suwon"), ScooterCityFeed(id: "korea:beam_kr_seongnam_suwon")]),
-        ScooterCity(id: "kr:Changwon", name: "Changwon", countryCode: "KR", center: GeoPoint(latitude: 35.2238, longitude: 128.6803), bounds: GeoBounds(south: 35.0689, west: 128.4751, north: 35.3542, east: 128.8465), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_changwon"), ScooterCityFeed(id: "korea:xingxing_kr_changwon"), ScooterCityFeed(id: "korea:swing_kr_changwon"), ScooterCityFeed(id: "korea:beam_kr_changwon"), ScooterCityFeed(id: "korea:beam_kr_jinhae"), ScooterCityFeed(id: "korea:beam_kr_masan")]),
-        ScooterCity(id: "kr:Bucheon", name: "Bucheon", countryCode: "KR", center: GeoPoint(latitude: 37.5034, longitude: 126.7889), bounds: GeoBounds(south: 37.4557, west: 126.726346, north: 37.5533, east: 126.837), feeds: [ScooterCityFeed(id: "korea:kickgoing_kr_bucheon"), ScooterCityFeed(id: "korea:swing_kr_bucheon"), ScooterCityFeed(id: "korea:beam_kr_bucheon_bupyeong")]),
-        ScooterCity(id: "kr:Gumi", name: "Gumi", countryCode: "KR", center: GeoPoint(latitude: 36.1216, longitude: 128.3944), bounds: GeoBounds(south: 36.0579, west: 128.2678, north: 36.2001, east: 128.4971), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gumi"), ScooterCityFeed(id: "korea:swing_kr_gumi")]),
-        ScooterCity(id: "kr:Namyangju", name: "Namyangju", countryCode: "KR", center: GeoPoint(latitude: 37.6493, longitude: 127.1852), bounds: GeoBounds(south: 37.55, west: 127.0784, north: 37.7751, east: 127.3494), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_namyangju"), ScooterCityFeed(id: "korea:swing_kr_namyangju"), ScooterCityFeed(id: "korea:beam_kr_namyangju")]),
-        ScooterCity(id: "kr:Asan", name: "Asan", countryCode: "KR", center: GeoPoint(latitude: 36.7853, longitude: 127.0636), bounds: GeoBounds(south: 36.7124, west: 126.9045, north: 36.9449, east: 127.1231), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_asan"), ScooterCityFeed(id: "korea:swing_kr_asan")]),
-        ScooterCity(id: "kr:Sejong", name: "Sejong", countryCode: "KR", center: GeoPoint(latitude: 36.5045, longitude: 127.255), bounds: GeoBounds(south: 36.4431, west: 127.202, north: 36.6469, east: 127.3826), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_sejong"), ScooterCityFeed(id: "korea:swing_kr_sejong")]),
-        ScooterCity(id: "kr:Ansan", name: "Ansan", countryCode: "KR", center: GeoPoint(latitude: 37.3127, longitude: 126.8374), bounds: GeoBounds(south: 37.2609, west: 126.7366, north: 37.3673, east: 126.9365), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_ansan"), ScooterCityFeed(id: "korea:xingxing_kr_ansan"), ScooterCityFeed(id: "korea:swing_kr_ansan"), ScooterCityFeed(id: "korea:beam_kr_ansan")]),
-        ScooterCity(id: "kr:Cheonan", name: "Cheonan", countryCode: "KR", center: GeoPoint(latitude: 36.8291, longitude: 127.1435), bounds: GeoBounds(south: 36.7515, west: 127.0807, north: 36.9386, east: 127.3326), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_cheonan"), ScooterCityFeed(id: "korea:xingxing_kr_cheonan"), ScooterCityFeed(id: "korea:swing_kr_cheonan")]),
-        ScooterCity(id: "kr:Gyeongsan", name: "Gyeongsan", countryCode: "KR", center: GeoPoint(latitude: 35.894, longitude: 128.8006), bounds: GeoBounds(south: 35.70008, west: 128.68161, north: 35.962223, east: 128.8788), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gyeongsan"), ScooterCityFeed(id: "korea:swing_kr_gyeongsan"), ScooterCityFeed(id: "korea:beam_kr_daegu")]),
-        ScooterCity(id: "kr:Yongin", name: "Yongin", countryCode: "KR", center: GeoPoint(latitude: 37.2662, longitude: 127.1531), bounds: GeoBounds(south: 37.182, west: 127.020461, north: 37.3702, east: 127.385), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_yongin"), ScooterCityFeed(id: "korea:swing_kr_yongin"), ScooterCityFeed(id: "korea:beam_kr_seongnam_suwon")]),
-        ScooterCity(id: "kr:Pyeongtaek", name: "Pyeongtaek", countryCode: "KR", center: GeoPoint(latitude: 37.0414, longitude: 127.0548), bounds: GeoBounds(south: 36.9471, west: 126.8843, north: 37.1473, east: 127.1575), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_pyeongtaek"), ScooterCityFeed(id: "korea:swing_kr_pyeongtaek"), ScooterCityFeed(id: "korea:beam_kr_pyeongtaek")]),
-        ScooterCity(id: "kr:Paju", name: "Paju", countryCode: "KR", center: GeoPoint(latitude: 37.7249, longitude: 126.7458), bounds: GeoBounds(south: 37.6866, west: 126.6784, north: 37.8881, east: 126.857924), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_paju"), ScooterCityFeed(id: "korea:swing_kr_paju"), ScooterCityFeed(id: "korea:beam_kr_goyang_paju")]),
-        ScooterCity(id: "kr:Goyang", name: "Goyang", countryCode: "KR", center: GeoPoint(latitude: 37.6595, longitude: 126.8744), bounds: GeoBounds(south: 37.5691, west: 126.7016, north: 37.7384, east: 126.972), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_goyang"), ScooterCityFeed(id: "korea:kickgoing_kr_goyang"), ScooterCityFeed(id: "korea:xingxing_kr_goyang"), ScooterCityFeed(id: "korea:swing_kr_goyang"), ScooterCityFeed(id: "korea:beam_kr_goyang_paju")]),
-        ScooterCity(id: "kr:Pohang", name: "Pohang", countryCode: "KR", center: GeoPoint(latitude: 36.0226, longitude: 129.3617), bounds: GeoBounds(south: 35.93, west: 129.2922, north: 36.1314, east: 129.4723), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_pohang"), ScooterCityFeed(id: "korea:swing_kr_pohang")]),
-        ScooterCity(id: "kr:Anyang", name: "Anyang", countryCode: "KR", center: GeoPoint(latitude: 37.396, longitude: 126.9571), bounds: GeoBounds(south: 37.3561, west: 126.8668, north: 37.4524, east: 126.9862), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_anyang"), ScooterCityFeed(id: "korea:kickgoing_kr_anyang"), ScooterCityFeed(id: "korea:xingxing_kr_anyang"), ScooterCityFeed(id: "korea:swing_kr_anyang")]),
-        ScooterCity(id: "kr:Uijeongbu", name: "Uijeongbu", countryCode: "KR", center: GeoPoint(latitude: 37.7399, longitude: 127.0461), bounds: GeoBounds(south: 37.684, west: 126.9983, north: 37.7779, east: 127.1372), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_uijeongbu"), ScooterCityFeed(id: "korea:swing_kr_uijeongbu")]),
-        ScooterCity(id: "kr:Siheung", name: "Siheung", countryCode: "KR", center: GeoPoint(latitude: 37.3667, longitude: 126.7358), bounds: GeoBounds(south: 37.3122, west: 126.6638, north: 37.4751, east: 126.8483), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_siheung"), ScooterCityFeed(id: "korea:xingxing_kr_siheung"), ScooterCityFeed(id: "korea:swing_kr_siheung")]),
-        ScooterCity(id: "kr:Hanam", name: "Hanam", countryCode: "KR", center: GeoPoint(latitude: 37.5552, longitude: 127.1979), bounds: GeoBounds(south: 37.4661, west: 127.1366, north: 37.5941, east: 127.2544), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_hanam"), ScooterCityFeed(id: "korea:swing_kr_hanam"), ScooterCityFeed(id: "korea:beam_kr_hanam"), ScooterCityFeed(id: "korea:beam_kr_wirye")]),
-        ScooterCity(id: "kr:Osan", name: "Osan", countryCode: "KR", center: GeoPoint(latitude: 37.1625, longitude: 127.056), bounds: GeoBounds(south: 37.1226, west: 126.9915, north: 37.2032, east: 127.1064), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_osan"), ScooterCityFeed(id: "korea:swing_kr_osan"), ScooterCityFeed(id: "korea:beam_kr_dongtan")]),
-        ScooterCity(id: "kr:Icheon", name: "Icheon", countryCode: "KR", center: GeoPoint(latitude: 37.2789, longitude: 127.4499), bounds: GeoBounds(south: 37.0987, west: 127.3266, north: 37.3283, east: 127.6412), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_icheon"), ScooterCityFeed(id: "korea:xingxing_kr_icheon"), ScooterCityFeed(id: "korea:swing_kr_icheon")]),
-        ScooterCity(id: "kr:Gimpo", name: "Gimpo", countryCode: "KR", center: GeoPoint(latitude: 37.6428, longitude: 126.6716), bounds: GeoBounds(south: 37.577268, west: 126.5712, north: 37.711, east: 126.8021), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gimpo"), ScooterCityFeed(id: "korea:swing_kr_gimpo"), ScooterCityFeed(id: "korea:beam_kr_gimpo")]),
-        ScooterCity(id: "kr:Gangneung", name: "Gangneung", countryCode: "KR", center: GeoPoint(latitude: 37.7622, longitude: 128.8787), bounds: GeoBounds(south: 37.714, west: 128.8031, north: 37.9184, east: 128.9672), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gangneung"), ScooterCityFeed(id: "korea:xingxing_kr_gangneung")]),
-        ScooterCity(id: "kr:Chuncheon", name: "Chuncheon", countryCode: "KR", center: GeoPoint(latitude: 37.8689, longitude: 127.7411), bounds: GeoBounds(south: 37.821, west: 127.6843, north: 37.9353, east: 127.7902), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_chuncheon"), ScooterCityFeed(id: "korea:swing_kr_chuncheon")]),
-        ScooterCity(id: "kr:Gimhae", name: "Gimhae", countryCode: "KR", center: GeoPoint(latitude: 35.2377, longitude: 128.8671), bounds: GeoBounds(south: 35.1507, west: 128.6888, north: 35.3427, east: 128.9396), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gimhae"), ScooterCityFeed(id: "korea:xingxing_kr_gimhae"), ScooterCityFeed(id: "korea:swing_kr_gimhae"), ScooterCityFeed(id: "korea:beam_kr_gimhae")]),
-        ScooterCity(id: "kr:Jinju", name: "Jinju", countryCode: "KR", center: GeoPoint(latitude: 35.1642, longitude: 128.1043), bounds: GeoBounds(south: 35.1269, west: 128.0221, north: 35.2318, east: 128.1862), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_jinju"), ScooterCityFeed(id: "korea:xingxing_kr_jinju"), ScooterCityFeed(id: "korea:swing_kr_jinju")]),
-        ScooterCity(id: "kr:Wonju", name: "Wonju", countryCode: "KR", center: GeoPoint(latitude: 37.3344, longitude: 127.9385), bounds: GeoBounds(south: 37.2422, west: 127.7686, north: 37.406, east: 128.0103), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_wonju"), ScooterCityFeed(id: "korea:swing_kr_wonju")]),
-        ScooterCity(id: "kr:Gunsan", name: "Gunsan", countryCode: "KR", center: GeoPoint(latitude: 35.9641, longitude: 126.7055), bounds: GeoBounds(south: 35.9208, west: 126.6481, north: 36.0233, east: 126.8932), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gunsan"), ScooterCityFeed(id: "korea:swing_kr_gunsan")]),
-        ScooterCity(id: "kr:Gwangju (Gyeonggi)", name: "Gwangju (Gyeonggi)", countryCode: "KR", center: GeoPoint(latitude: 37.3949, longitude: 127.2506), bounds: GeoBounds(south: 37.3062, west: 127.1292, north: 37.4572, east: 127.3976), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gwangju_gyeonggi"), ScooterCityFeed(id: "korea:swing_kr_gwangju_gyeonggi")]),
-        ScooterCity(id: "kr:Jeju", name: "Jeju", countryCode: "KR", center: GeoPoint(latitude: 33.4939, longitude: 126.5098), bounds: GeoBounds(south: 33.4355, west: 126.4104, north: 33.5436, east: 126.6095), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_jeju")]),
-        ScooterCity(id: "kr:Anseong", name: "Anseong", countryCode: "KR", center: GeoPoint(latitude: 37.0077, longitude: 127.2319), bounds: GeoBounds(south: 36.9773, west: 127.119, north: 37.0809, east: 127.3891), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_anseong"), ScooterCityFeed(id: "korea:swing_kr_anseong")]),
-        ScooterCity(id: "kr:Iksan", name: "Iksan", countryCode: "KR", center: GeoPoint(latitude: 35.9645, longitude: 126.9577), bounds: GeoBounds(south: 35.9136, west: 126.912, north: 35.993, east: 127.02280383674638), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_iksan"), ScooterCityFeed(id: "korea:swing_kr_iksan"), ScooterCityFeed(id: "korea:beam_kr_iksan")]),
-        ScooterCity(id: "kr:Yangju", name: "Yangju", countryCode: "KR", center: GeoPoint(latitude: 37.8179, longitude: 127.0873), bounds: GeoBounds(south: 37.7688, west: 126.955622, north: 37.93857, east: 127.1256), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_yangju"), ScooterCityFeed(id: "korea:swing_kr_yangju"), ScooterCityFeed(id: "korea:beam_kr_dongducheon")]),
-        ScooterCity(id: "kr:Guri", name: "Guri", countryCode: "KR", center: GeoPoint(latitude: 37.6024, longitude: 127.1356), bounds: GeoBounds(south: 37.5562, west: 127.0975, north: 37.6488, east: 127.174), feeds: [ScooterCityFeed(id: "korea:swing_kr_guri"), ScooterCityFeed(id: "korea:beam_kr_namyangju")]),
-        ScooterCity(id: "kr:Yangsan", name: "Yangsan", countryCode: "KR", center: GeoPoint(latitude: 35.3294, longitude: 129.0143), bounds: GeoBounds(south: 35.2792, west: 128.968, north: 35.4359, east: 129.1994), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_yangsan"), ScooterCityFeed(id: "korea:swing_kr_yangsan")]),
-        ScooterCity(id: "kr:Geoje", name: "Geoje", countryCode: "KR", center: GeoPoint(latitude: 34.8901, longitude: 128.6294), bounds: GeoBounds(south: 34.8418, west: 128.5804, north: 34.9203, east: 128.7213), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_geoje"), ScooterCityFeed(id: "korea:swing_kr_geoje")]),
-        ScooterCity(id: "kr:Gwangmyeong", name: "Gwangmyeong", countryCode: "KR", center: GeoPoint(latitude: 37.469, longitude: 126.8688), bounds: GeoBounds(south: 37.3988, west: 126.8227, north: 37.4975, east: 126.9031), feeds: [ScooterCityFeed(id: "korea:swing_kr_gwangmyeong")]),
-        ScooterCity(id: "kr:Gyeongju", name: "Gyeongju", countryCode: "KR", center: GeoPoint(latitude: 35.8528, longitude: 129.2117), bounds: GeoBounds(south: 35.8066, west: 129.148, north: 35.9041, east: 129.2602), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gyeongju"), ScooterCityFeed(id: "korea:swing_kr_gyeongju")]),
-        ScooterCity(id: "kr:Chungju", name: "Chungju", countryCode: "KR", center: GeoPoint(latitude: 36.9706, longitude: 127.9302), bounds: GeoBounds(south: 36.891587, west: 127.65085, north: 37.0324, east: 127.9696), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_chungju"), ScooterCityFeed(id: "korea:swing_kr_chungju"), ScooterCityFeed(id: "korea:beam_kr_gyeonggi_1")]),
-        ScooterCity(id: "kr:Mokpo", name: "Mokpo", countryCode: "KR", center: GeoPoint(latitude: 34.8055, longitude: 126.4188), bounds: GeoBounds(south: 34.7668, west: 126.3416, north: 34.8461, east: 126.4627), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_mokpo")]),
-        ScooterCity(id: "kr:Gunpo", name: "Gunpo", countryCode: "KR", center: GeoPoint(latitude: 37.3568, longitude: 126.9428), bounds: GeoBounds(south: 37.3024, west: 126.8993, north: 37.3814, east: 126.9655), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gunpo"), ScooterCityFeed(id: "korea:kickgoing_kr_gunpo"), ScooterCityFeed(id: "korea:xingxing_kr_gunpo"), ScooterCityFeed(id: "korea:swing_kr_gunpo")]),
-        ScooterCity(id: "kr:Gimcheon", name: "Gimcheon", countryCode: "KR", center: GeoPoint(latitude: 36.1257, longitude: 128.115), bounds: GeoBounds(south: 36.0952, west: 128.0535, north: 36.1633, east: 128.2158), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gimcheon"), ScooterCityFeed(id: "korea:swing_kr_gimcheon"), ScooterCityFeed(id: "korea:beam_kr_gimcheon")]),
-        ScooterCity(id: "kr:Chilgok", name: "Chilgok", countryCode: "KR", center: GeoPoint(latitude: 36.0671, longitude: 128.3997), bounds: GeoBounds(south: 35.9589, west: 128.3101, north: 36.1038, east: 128.4424), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_chilgok"), ScooterCityFeed(id: "korea:swing_kr_chilgok")]),
-        ScooterCity(id: "kr:Hongseong", name: "Hongseong", countryCode: "KR", center: GeoPoint(latitude: 36.5998, longitude: 126.6694), bounds: GeoBounds(south: 36.5594, west: 126.6234, north: 36.6748, east: 126.7096), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_hongseong")]),
-        ScooterCity(id: "kr:Sacheon", name: "Sacheon", countryCode: "KR", center: GeoPoint(latitude: 35.0703, longitude: 128.084), bounds: GeoBounds(south: 34.9089, west: 128.0211, north: 35.1105, east: 128.1353), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_sacheon"), ScooterCityFeed(id: "korea:swing_kr_sacheon")]),
-        ScooterCity(id: "kr:Suncheon", name: "Suncheon", countryCode: "KR", center: GeoPoint(latitude: 34.9506, longitude: 127.5125), bounds: GeoBounds(south: 34.911, west: 127.4564, north: 35.005, east: 127.5716), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_suncheon")]),
-        ScooterCity(id: "kr:Uiwang", name: "Uiwang", countryCode: "KR", center: GeoPoint(latitude: 37.3791, longitude: 126.9775), bounds: GeoBounds(south: 37.2976, west: 126.9259, north: 37.4182, east: 127.0273), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_uiwang"), ScooterCityFeed(id: "korea:kickgoing_kr_uiwang"), ScooterCityFeed(id: "korea:xingxing_kr_uiwang"), ScooterCityFeed(id: "korea:swing_kr_uiwang")]),
-        ScooterCity(id: "kr:Eumseong", name: "Eumseong", countryCode: "KR", center: GeoPoint(latitude: 36.9192, longitude: 127.5582), bounds: GeoBounds(south: 36.8855, west: 127.5106, north: 37.1571, east: 127.79847), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_eumseong"), ScooterCityFeed(id: "korea:swing_kr_eumseong"), ScooterCityFeed(id: "korea:beam_kr_gyeonggi_1")]),
-        ScooterCity(id: "kr:Yeongju", name: "Yeongju", countryCode: "KR", center: GeoPoint(latitude: 36.8232, longitude: 128.6054), bounds: GeoBounds(south: 36.7811, west: 128.5009, north: 36.902, east: 128.6609), feeds: [ScooterCityFeed(id: "korea:swing_kr_yeongju")]),
-        ScooterCity(id: "kr:Andong", name: "Andong", countryCode: "KR", center: GeoPoint(latitude: 36.5618, longitude: 128.7314), bounds: GeoBounds(south: 36.521, west: 128.46049, north: 36.6075, east: 128.8255), feeds: [ScooterCityFeed(id: "korea:swing_kr_andong"), ScooterCityFeed(id: "korea:beam_kr_yecheon")]),
-        ScooterCity(id: "kr:Muan", name: "Muan", countryCode: "KR", center: GeoPoint(latitude: 34.8125, longitude: 126.4645), bounds: GeoBounds(south: 34.783, west: 126.4098, north: 35.007, east: 126.5043), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_muan")]),
-        ScooterCity(id: "kr:Seosan", name: "Seosan", countryCode: "KR", center: GeoPoint(latitude: 36.7752, longitude: 126.4562), bounds: GeoBounds(south: 36.6756, west: 126.4201, north: 36.8104, east: 126.6055), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_seosan"), ScooterCityFeed(id: "korea:xingxing_kr_seosan")]),
-        ScooterCity(id: "kr:Gongju", name: "Gongju", countryCode: "KR", center: GeoPoint(latitude: 36.4711, longitude: 127.1386), bounds: GeoBounds(south: 36.4256, west: 127.0909, north: 36.4939, east: 127.1737), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gongju")]),
-        ScooterCity(id: "kr:Jecheon", name: "Jecheon", countryCode: "KR", center: GeoPoint(latitude: 37.1555, longitude: 128.2053), bounds: GeoBounds(south: 37.1064, west: 128.1666, north: 37.1962, east: 128.2468), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_jecheon")]),
-        ScooterCity(id: "kr:Dongducheon", name: "Dongducheon", countryCode: "KR", center: GeoPoint(latitude: 37.8973, longitude: 127.0563), bounds: GeoBounds(south: 37.778655, west: 126.955622, north: 37.9589, east: 127.17698299999999), feeds: [ScooterCityFeed(id: "korea:swing_kr_dongducheon"), ScooterCityFeed(id: "korea:beam_kr_dongducheon")]),
-        ScooterCity(id: "kr:Namwon", name: "Namwon", countryCode: "KR", center: GeoPoint(latitude: 35.4078, longitude: 127.3784), bounds: GeoBounds(south: 35.376, west: 127.3383, north: 35.4492, east: 127.4321), feeds: [ScooterCityFeed(id: "korea:swing_kr_namwon")]),
-        ScooterCity(id: "kr:Sangju", name: "Sangju", countryCode: "KR", center: GeoPoint(latitude: 36.3834, longitude: 128.1499), bounds: GeoBounds(south: 36.3577, west: 128.1202, north: 36.5947, east: 128.2003), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_sangju"), ScooterCityFeed(id: "korea:swing_kr_sangju")]),
-        ScooterCity(id: "kr:Yangpyeong", name: "Yangpyeong", countryCode: "KR", center: GeoPoint(latitude: 37.4921, longitude: 127.4972), bounds: GeoBounds(south: 37.4572, west: 127.3025, north: 37.5688, east: 127.6286), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_yangpyeong"), ScooterCityFeed(id: "korea:swing_kr_yangpyeong")]),
-        ScooterCity(id: "kr:Dangjin", name: "Dangjin", countryCode: "KR", center: GeoPoint(latitude: 36.8932, longitude: 126.6372), bounds: GeoBounds(south: 36.8643, west: 126.5905, north: 36.9272, east: 126.6796), feeds: [ScooterCityFeed(id: "korea:swing_kr_dangjin")]),
-        ScooterCity(id: "kr:Yeongcheon", name: "Yeongcheon", countryCode: "KR", center: GeoPoint(latitude: 35.9725, longitude: 128.9417), bounds: GeoBounds(south: 35.8844, west: 128.8335, north: 36.0086, east: 128.9895), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_yeongcheon"), ScooterCityFeed(id: "korea:swing_kr_yeongcheon")]),
-        ScooterCity(id: "kr:Jincheon", name: "Jincheon", countryCode: "KR", center: GeoPoint(latitude: 36.8991, longitude: 127.5133), bounds: GeoBounds(south: 36.8139, west: 127.406, north: 37.00599, east: 127.58511), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_jincheon"), ScooterCityFeed(id: "korea:swing_kr_jincheon"), ScooterCityFeed(id: "korea:beam_kr_gyeonggi_1")]),
-        ScooterCity(id: "kr:Jeungpyeong", name: "Jeungpyeong", countryCode: "KR", center: GeoPoint(latitude: 36.7811, longitude: 127.5816), bounds: GeoBounds(south: 36.748, west: 127.5445, north: 36.8342, east: 127.6484), feeds: [ScooterCityFeed(id: "korea:swing_kr_jeungpyeong")]),
-        ScooterCity(id: "kr:Jeongeup", name: "Jeongeup", countryCode: "KR", center: GeoPoint(latitude: 35.5695, longitude: 126.8564), bounds: GeoBounds(south: 35.5344, west: 126.8268, north: 35.6016, east: 126.8938), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_jeongeup")]),
-        ScooterCity(id: "kr:Wanju", name: "Wanju", countryCode: "KR", center: GeoPoint(latitude: 35.91, longitude: 127.0659), bounds: GeoBounds(south: 35.8151, west: 127.0333, north: 35.9778, east: 127.1833), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_wanju"), ScooterCityFeed(id: "korea:swing_kr_wanju")]),
-        ScooterCity(id: "kr:Yesan", name: "Yesan", countryCode: "KR", center: GeoPoint(latitude: 36.6711, longitude: 126.8459), bounds: GeoBounds(south: 36.6443, west: 126.648, north: 36.7446, east: 126.8863), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_yesan"), ScooterCityFeed(id: "korea:swing_kr_yesan")]),
-        ScooterCity(id: "kr:Geochang", name: "Geochang", countryCode: "KR", center: GeoPoint(latitude: 35.6886, longitude: 127.911), bounds: GeoBounds(south: 35.6609, west: 127.879, north: 35.7084, east: 127.9446), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_geochang")]),
-        ScooterCity(id: "kr:Yeosu", name: "Yeosu", countryCode: "KR", center: GeoPoint(latitude: 34.7637, longitude: 127.6782), bounds: GeoBounds(south: 34.7049, west: 127.6138, north: 34.8015, east: 127.772), feeds: [ScooterCityFeed(id: "korea:swing_kr_yeosu")]),
-        ScooterCity(id: "kr:Naju", name: "Naju", countryCode: "KR", center: GeoPoint(latitude: 35.0289, longitude: 126.775), bounds: GeoBounds(south: 34.9835, west: 126.6895, north: 35.0685, east: 126.8217), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_naju")]),
-        ScooterCity(id: "kr:Sokcho", name: "Sokcho", countryCode: "KR", center: GeoPoint(latitude: 38.1917, longitude: 128.5833), bounds: GeoBounds(south: 38.1632, west: 128.5422, north: 38.2335, east: 128.6182), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_sokcho")]),
-        ScooterCity(id: "kr:Uljin", name: "Uljin", countryCode: "KR", center: GeoPoint(latitude: 36.9922, longitude: 129.4012), bounds: GeoBounds(south: 36.9433, west: 129.3688, north: 37.0776, east: 129.4439), feeds: [ScooterCityFeed(id: "korea:swing_kr_uljin")]),
-        ScooterCity(id: "kr:Gimje", name: "Gimje", countryCode: "KR", center: GeoPoint(latitude: 35.8006, longitude: 126.8909), bounds: GeoBounds(south: 35.7764, west: 126.8595, north: 35.8325, east: 127.0147), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gimje")]),
-        ScooterCity(id: "kr:Goesan", name: "Goesan", countryCode: "KR", center: GeoPoint(latitude: 36.8097, longitude: 127.7911), bounds: GeoBounds(south: 36.7619, west: 127.6242, north: 36.8338, east: 127.8236), feeds: [ScooterCityFeed(id: "korea:swing_kr_goesan")]),
-        ScooterCity(id: "kr:Tongyeong", name: "Tongyeong", countryCode: "KR", center: GeoPoint(latitude: 34.8583, longitude: 128.4204), bounds: GeoBounds(south: 34.8062, west: 128.3751, north: 34.907, east: 128.4588), feeds: [ScooterCityFeed(id: "korea:swing_kr_tongyeong")]),
-        ScooterCity(id: "kr:Samcheok", name: "Samcheok", countryCode: "KR", center: GeoPoint(latitude: 37.4522, longitude: 129.1622), bounds: GeoBounds(south: 37.4189, west: 129.1292, north: 37.4789, east: 129.196), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_samcheok")]),
-        ScooterCity(id: "kr:Boeun", name: "Boeun", countryCode: "KR", center: GeoPoint(latitude: 36.4858, longitude: 127.7212), bounds: GeoBounds(south: 36.4569, west: 127.6845, north: 36.5142, east: 127.7613), feeds: [ScooterCityFeed(id: "korea:swing_kr_boeun")]),
-        ScooterCity(id: "kr:Gapyeong", name: "Gapyeong", countryCode: "KR", center: GeoPoint(latitude: 37.826, longitude: 127.5096), bounds: GeoBounds(south: 37.7184, west: 127.3935, north: 37.8667, east: 127.543), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gapyeong")]),
-        ScooterCity(id: "kr:Mungyeong", name: "Mungyeong", countryCode: "KR", center: GeoPoint(latitude: 36.592, longitude: 128.1951), bounds: GeoBounds(south: 36.5681, west: 128.1637, north: 36.6243, east: 128.2309), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_mungyeong")]),
-        ScooterCity(id: "kr:Changnyeong", name: "Changnyeong", countryCode: "KR", center: GeoPoint(latitude: 35.5405, longitude: 128.4998), bounds: GeoBounds(south: 35.512, west: 128.4622, north: 35.5656, east: 128.5312), feeds: [ScooterCityFeed(id: "korea:swing_kr_changnyeong")]),
-        ScooterCity(id: "kr:Yeoncheon", name: "Yeoncheon", countryCode: "KR", center: GeoPoint(latitude: 38.0264, longitude: 127.0703), bounds: GeoBounds(south: 37.9955, west: 127.0333, north: 38.0551, east: 127.0983), feeds: [ScooterCityFeed(id: "korea:swing_kr_yeoncheon")]),
-        ScooterCity(id: "kr:Hongcheon", name: "Hongcheon", countryCode: "KR", center: GeoPoint(latitude: 37.6906, longitude: 127.8849), bounds: GeoBounds(south: 37.6619, west: 127.8491, north: 37.724, east: 127.9344), feeds: [ScooterCityFeed(id: "korea:swing_kr_hongcheon")]),
-        ScooterCity(id: "kr:Goseong", name: "Goseong", countryCode: "KR", center: GeoPoint(latitude: 34.9753, longitude: 128.3244), bounds: GeoBounds(south: 34.9484, west: 128.2905, north: 34.995, east: 128.3506), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_goseong")]),
-        ScooterCity(id: "kr:Miryang", name: "Miryang", countryCode: "KR", center: GeoPoint(latitude: 35.4871, longitude: 128.7514), bounds: GeoBounds(south: 35.435, west: 128.7111, north: 35.5276, east: 128.8303), feeds: [ScooterCityFeed(id: "korea:swing_kr_miryang")]),
-        ScooterCity(id: "kr:Hwasun", name: "Hwasun", countryCode: "KR", center: GeoPoint(latitude: 35.0615, longitude: 126.9916), bounds: GeoBounds(south: 35.0183, west: 126.9259, north: 35.0922, east: 127.0198), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_hwasun")]),
-        ScooterCity(id: "kr:Buan", name: "Buan", countryCode: "KR", center: GeoPoint(latitude: 35.7228, longitude: 126.7373), bounds: GeoBounds(south: 35.695, west: 126.703, north: 35.7509, east: 126.7685), feeds: [ScooterCityFeed(id: "korea:swing_kr_buan")]),
-        ScooterCity(id: "kr:Seogwipo", name: "Seogwipo", countryCode: "KR", center: GeoPoint(latitude: 33.2539, longitude: 126.5125), bounds: GeoBounds(south: 33.2218, west: 126.3906, north: 33.2783, east: 126.5908), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_seogwipo")]),
-        ScooterCity(id: "kr:Namhae", name: "Namhae", countryCode: "KR", center: GeoPoint(latitude: 34.8386, longitude: 127.8946), bounds: GeoBounds(south: 34.811, west: 127.8611, north: 34.8622, east: 127.9217), feeds: [ScooterCityFeed(id: "korea:swing_kr_namhae")]),
-        ScooterCity(id: "kr:Donghae", name: "Donghae", countryCode: "KR", center: GeoPoint(latitude: 37.5194, longitude: 129.1123), bounds: GeoBounds(south: 37.4641, west: 129.0818, north: 37.5724, east: 129.1632), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_donghae")]),
-        ScooterCity(id: "kr:Goheung", name: "Goheung", countryCode: "KR", center: GeoPoint(latitude: 34.5319, longitude: 127.1461), bounds: GeoBounds(south: 34.5107, west: 127.1167, north: 34.6249, east: 127.3091), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_goheung")]),
-        ScooterCity(id: "kr:Hoengseong", name: "Hoengseong", countryCode: "KR", center: GeoPoint(latitude: 37.4918, longitude: 127.9893), bounds: GeoBounds(south: 37.4548, west: 127.9512, north: 37.5172, east: 128.031), feeds: [ScooterCityFeed(id: "korea:swing_kr_hoengseong")]),
-        ScooterCity(id: "kr:Yeongdong", name: "Yeongdong", countryCode: "KR", center: GeoPoint(latitude: 36.1757, longitude: 127.7855), bounds: GeoBounds(south: 36.137, west: 127.7412, north: 36.2133, east: 127.8222), feeds: [ScooterCityFeed(id: "korea:swing_kr_yeongdong")]),
-        ScooterCity(id: "kr:Boryeong", name: "Boryeong", countryCode: "KR", center: GeoPoint(latitude: 36.348, longitude: 126.6055), bounds: GeoBounds(south: 36.32, west: 126.569, north: 36.3786, east: 126.6395), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_boryeong")]),
-        ScooterCity(id: "kr:Haman", name: "Haman", countryCode: "KR", center: GeoPoint(latitude: 35.2758, longitude: 128.4076), bounds: GeoBounds(south: 35.2428, west: 128.3816, north: 35.3067, east: 128.5394), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_haman")]),
-        ScooterCity(id: "kr:Okcheon", name: "Okcheon", countryCode: "KR", center: GeoPoint(latitude: 36.2983, longitude: 127.5706), bounds: GeoBounds(south: 36.2729, west: 127.535, north: 36.3336, east: 127.6066), feeds: [ScooterCityFeed(id: "korea:swing_kr_okcheon")]),
-        ScooterCity(id: "kr:Imsil", name: "Imsil", countryCode: "KR", center: GeoPoint(latitude: 35.615, longitude: 127.2844), bounds: GeoBounds(south: 35.5917, west: 127.2525, north: 35.6525, east: 127.3126), feeds: [ScooterCityFeed(id: "korea:swing_kr_imsil")]),
-        ScooterCity(id: "kr:Buyeo", name: "Buyeo", countryCode: "KR", center: GeoPoint(latitude: 36.2742, longitude: 126.8948), bounds: GeoBounds(south: 36.255, west: 126.837, north: 36.3149, east: 126.9516), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_buyeo")]),
-        ScooterCity(id: "kr:Jangseong", name: "Jangseong", countryCode: "KR", center: GeoPoint(latitude: 35.3008, longitude: 126.7829), bounds: GeoBounds(south: 35.2801, west: 126.7578, north: 35.3199, east: 126.8063), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_jangseong")]),
-        ScooterCity(id: "kr:Geumsan", name: "Geumsan", countryCode: "KR", center: GeoPoint(latitude: 36.1927, longitude: 127.4522), bounds: GeoBounds(south: 36.091846999999994, west: 127.4265, north: 36.2137, east: 127.505078), feeds: [ScooterCityFeed(id: "korea:swing_kr_geumsan"), ScooterCityFeed(id: "korea:beam_kr_geumsan")]),
-        ScooterCity(id: "kr:Wando", name: "Wando", countryCode: "KR", center: GeoPoint(latitude: 34.3175, longitude: 126.7458), bounds: GeoBounds(south: 34.2909, west: 126.7166, north: 34.3399, east: 126.784), feeds: [ScooterCityFeed(id: "korea:swing_kr_wando")]),
-        ScooterCity(id: "kr:Haenam", name: "Haenam", countryCode: "KR", center: GeoPoint(latitude: 34.5709, longitude: 126.6004), bounds: GeoBounds(south: 34.5515, west: 126.5747, north: 34.5927, east: 126.6264), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_haenam")]),
-        ScooterCity(id: "kr:Gochang", name: "Gochang", countryCode: "KR", center: GeoPoint(latitude: 35.4336, longitude: 126.7149), bounds: GeoBounds(south: 35.4137, west: 126.6734, north: 35.4558, east: 126.752), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gochang")]),
-        ScooterCity(id: "kr:Gwacheon", name: "Gwacheon", countryCode: "KR", center: GeoPoint(latitude: 37.4151, longitude: 126.98), bounds: GeoBounds(south: 37.398, west: 126.9584, north: 37.4704, east: 127.0508), feeds: [ScooterCityFeed(id: "korea:kickgoing_kr_gwacheon")]),
-        ScooterCity(id: "kr:Yeongam", name: "Yeongam", countryCode: "KR", center: GeoPoint(latitude: 34.752, longitude: 126.4582), bounds: GeoBounds(south: 34.7305, west: 126.4352, north: 34.797, east: 126.5004), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_yeongam")]),
-        ScooterCity(id: "kr:Seongju", name: "Seongju", countryCode: "KR", center: GeoPoint(latitude: 35.9236, longitude: 128.2813), bounds: GeoBounds(south: 35.9003, west: 128.2621, north: 35.9422, east: 128.3034), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_seongju")]),
-        ScooterCity(id: "kr:Gwangyang", name: "Gwangyang", countryCode: "KR", center: GeoPoint(latitude: 34.940037, longitude: 127.679565), bounds: GeoBounds(south: 34.914424, west: 127.557748, north: 34.988956, east: 127.76409788380748), feeds: [ScooterCityFeed(id: "korea:beam_kr_gwangyang")]),
-        ScooterCity(id: "kr:Yecheon", name: "Yecheon", countryCode: "KR", center: GeoPoint(latitude: 36.57193, longitude: 128.485779), bounds: GeoBounds(south: 36.557863, west: 128.46049, north: 36.582816, east: 128.520296), feeds: [ScooterCityFeed(id: "korea:beam_kr_yecheon")]),
-        ScooterCity(id: "kr:Yeoju", name: "Yeoju", countryCode: "KR", center: GeoPoint(latitude: 37.270362, longitude: 127.638371), bounds: GeoBounds(south: 37.223088, west: 127.610338, north: 37.316423, east: 127.68516199999999), feeds: [ScooterCityFeed(id: "korea:beam_kr_yeoju")]),
-    ]
+    static let cities: [ScooterCity] = makeCities()
+
+    // A statement a city: as one array literal, the cities with their feeds took Swift's type
+    // checker over 30 GB, and CI's Macs, which have 7, killed the compiler (24 Oct 2026).
+    private static func makeCities() -> [ScooterCity] {
+        var cities: [ScooterCity] = []
+        cities.reserveCapacity(838)
+        cities.append(ScooterCity(id: "ch:amriswil", name: "Amriswil", countryCode: "CH", center: GeoPoint(latitude: 47.547, longitude: 9.2959), bounds: GeoBounds(south: 47.513, west: 9.234, north: 47.5773, east: 9.3262)))
+        cities.append(ScooterCity(id: "ch:basel", name: "Basel", countryCode: "CH", center: GeoPoint(latitude: 47.5596, longitude: 7.5886), bounds: GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82)))
+        cities.append(ScooterCity(id: "ch:bern", name: "Bern", countryCode: "CH", center: GeoPoint(latitude: 46.948, longitude: 7.4474), bounds: GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7)))
+        cities.append(ScooterCity(id: "ch:biel", name: "Biel/Bienne", countryCode: "CH", center: GeoPoint(latitude: 47.1368, longitude: 7.2468), bounds: GeoBounds(south: 47.03, west: 7.05, north: 47.27, east: 7.45)))
+        cities.append(ScooterCity(id: "ch:flawil", name: "Flawil", countryCode: "CH", center: GeoPoint(latitude: 47.413, longitude: 9.1832), bounds: GeoBounds(south: 47.3753, west: 9.1561, north: 47.4376, east: 9.2125)))
+        cities.append(ScooterCity(id: "ch:frauenfeld", name: "Frauenfeld", countryCode: "CH", center: GeoPoint(latitude: 47.565, longitude: 8.91), bounds: GeoBounds(south: 47.45, west: 8.72, north: 47.68, east: 9.1)))
+        cities.append(ScooterCity(id: "ch:gossau", name: "Gossau", countryCode: "CH", center: GeoPoint(latitude: 47.4155, longitude: 9.2548), bounds: GeoBounds(south: 47.3868, west: 9.2125, north: 47.4639, east: 9.2915)))
+        cities.append(ScooterCity(id: "ch:illnau-effretikon", name: "Illnau-Effretikon", countryCode: "CH", center: GeoPoint(latitude: 47.44, longitude: 8.73), bounds: GeoBounds(south: 47.33, west: 8.58, north: 47.55, east: 8.88)))
+        cities.append(ScooterCity(id: "ch:kloten", name: "Kloten", countryCode: "CH", center: GeoPoint(latitude: 47.4515, longitude: 8.5849), bounds: GeoBounds(south: 47.4287, west: 8.5477, north: 47.4829, east: 8.6213)))
+        cities.append(ScooterCity(id: "ch:locarno", name: "Locarno", countryCode: "CH", center: GeoPoint(latitude: 46.169, longitude: 8.799), bounds: GeoBounds(south: 46.1, west: 8.67, north: 46.25, east: 8.9)))
+        cities.append(ScooterCity(id: "ch:opfikon", name: "Opfikon", countryCode: "CH", center: GeoPoint(latitude: 47.4317, longitude: 8.5759), bounds: GeoBounds(south: 47.4156, west: 8.5533, north: 47.4568, east: 8.6208)))
+        cities.append(ScooterCity(id: "ch:romanshorn", name: "Romanshorn", countryCode: "CH", center: GeoPoint(latitude: 47.555, longitude: 9.39), bounds: GeoBounds(south: 47.45, west: 9.2, north: 47.66, east: 9.58)))
+        cities.append(ScooterCity(id: "ch:rorschach", name: "Rorschach", countryCode: "CH", center: GeoPoint(latitude: 47.478, longitude: 9.493), bounds: GeoBounds(south: 47.36, west: 9.3, north: 47.58, east: 9.68)))
+        cities.append(ScooterCity(id: "ch:schaffhausen", name: "Schaffhausen", countryCode: "CH", center: GeoPoint(latitude: 47.715, longitude: 8.65), bounds: GeoBounds(south: 47.6, west: 8.42, north: 47.83, east: 8.88)))
+        cities.append(ScooterCity(id: "ch:st-gallen", name: "St. Gallen", countryCode: "CH", center: GeoPoint(latitude: 47.4245, longitude: 9.3767), bounds: GeoBounds(south: 47.28, west: 9.1, north: 47.6, east: 9.65)))
+        cities.append(ScooterCity(id: "ch:uster", name: "Uster", countryCode: "CH", center: GeoPoint(latitude: 47.34, longitude: 8.719999999999999), bounds: GeoBounds(south: 47.25, west: 8.58, north: 47.43, east: 8.86)))
+        cities.append(ScooterCity(id: "ch:uzwil", name: "Uzwil", countryCode: "CH", center: GeoPoint(latitude: 47.4365, longitude: 9.1342), bounds: GeoBounds(south: 47.4149, west: 9.0528, north: 47.4735, east: 9.1565)))
+        cities.append(ScooterCity(id: "ch:wadenswil", name: "Wädenswil", countryCode: "CH", center: GeoPoint(latitude: 47.2297, longitude: 8.6722), bounds: GeoBounds(south: 47.168, west: 8.62, north: 47.258, east: 8.72)))
+        cities.append(ScooterCity(id: "ch:wil", name: "Wil", countryCode: "CH", center: GeoPoint(latitude: 47.4625, longitude: 9.045), bounds: GeoBounds(south: 47.441, west: 9, north: 47.5, east: 9.103)))
+        cities.append(ScooterCity(id: "ch:winterthur", name: "Winterthur", countryCode: "CH", center: GeoPoint(latitude: 47.499, longitude: 8.7241), bounds: GeoBounds(south: 47.38, west: 8.53, north: 47.64, east: 8.97)))
+        cities.append(ScooterCity(id: "ch:zurich", name: "Zürich", countryCode: "CH", center: GeoPoint(latitude: 47.3769, longitude: 8.5417), bounds: GeoBounds(south: 47.27, west: 8.34, north: 47.49, east: 8.73)))
+        cities.append(ScooterCity(id: "fr:Agen", name: "Agen", countryCode: "FR", center: GeoPoint(latitude: 44.2033, longitude: 0.6163), bounds: GeoBounds(south: 44.17, west: 0.59, north: 44.22, east: 0.66), feeds: [ScooterCityFeed(id: "france:bird_fr_agen")]))
+        cities.append(ScooterCity(id: "fr:Ajaccio", name: "Ajaccio", countryCode: "FR", center: GeoPoint(latitude: 41.9192, longitude: 8.7386), bounds: GeoBounds(south: 41.8879, west: 8.5984, north: 41.9581, east: 8.7953), feeds: [ScooterCityFeed(id: "france:bird_fr_ajaccio")]))
+        cities.append(ScooterCity(id: "fr:Blois", name: "Blois", countryCode: "FR", center: GeoPoint(latitude: 47.5861, longitude: 1.3359), bounds: GeoBounds(south: 47.5477, west: 1.2701, north: 47.6332, east: 1.3711), feeds: [ScooterCityFeed(id: "france:bird_fr_blois-france")]))
+        cities.append(ScooterCity(id: "fr:Châlons-en-Champagne", name: "Châlons-en-Champagne", countryCode: "FR", center: GeoPoint(latitude: 48.9566, longitude: 4.3523), bounds: GeoBounds(south: 48.9259, west: 4.2961, north: 48.9944, east: 4.4173), feeds: [ScooterCityFeed(id: "france:bird_fr_chalonsenchampagne")]))
+        cities.append(ScooterCity(id: "fr:Cherbourg-en-Cotentin", name: "Cherbourg-en-Cotentin", countryCode: "FR", center: GeoPoint(latitude: 49.6424, longitude: -1.6244), bounds: GeoBounds(south: 49.584, west: -1.7346, north: 49.6874, east: -1.5299), feeds: [ScooterCityFeed(id: "france:bird_fr_cherbourg")]))
+        cities.append(ScooterCity(id: "fr:Laval", name: "Laval", countryCode: "FR", center: GeoPoint(latitude: 48.0706, longitude: -0.7733), bounds: GeoBounds(south: 48.0366, west: -0.8698, north: 48.1153, east: -0.7185), feeds: [ScooterCityFeed(id: "france:bird_fr_laval")]))
+        cities.append(ScooterCity(id: "fr:Vichy", name: "Vichy", countryCode: "FR", center: GeoPoint(latitude: 46.1278, longitude: 3.4266), bounds: GeoBounds(south: 46.0785, west: 3.354, north: 46.1945, east: 3.5438), feeds: [ScooterCityFeed(id: "france:bird_fr_vichy")]))
+        cities.append(ScooterCity(id: "fr:Bordeaux", name: "Bordeaux", countryCode: "FR", center: GeoPoint(latitude: 44.8378, longitude: -0.5792), bounds: GeoBounds(south: 44.7393, west: -0.7866, north: 44.9989, east: -0.3947), feeds: [ScooterCityFeed(id: "france:dott_fr_bordeaux"), ScooterCityFeed(id: "france:pony_fr_bordeaux")]))
+        cities.append(ScooterCity(id: "fr:Lyon", name: "Lyon", countryCode: "FR", center: GeoPoint(latitude: 45.7578, longitude: 4.832), bounds: GeoBounds(south: 45.7065, west: 4.757, north: 45.8489, east: 4.9294), feeds: [ScooterCityFeed(id: "france:dott_fr_lyon")]))
+        cities.append(ScooterCity(id: "fr:Marne-la-Vallée (SIEMU)", name: "Marne-la-Vallée (SIEMU)", countryCode: "FR", center: GeoPoint(latitude: 48.855, longitude: 2.7067), bounds: GeoBounds(south: 48.8049, west: 2.6477, north: 48.8931, east: 2.7887), feeds: [ScooterCityFeed(id: "france:dott_fr_siemu")]))
+        cities.append(ScooterCity(id: "fr:Tignes", name: "Tignes", countryCode: "FR", center: GeoPoint(latitude: 45.4687, longitude: 6.9063), bounds: GeoBounds(south: 45.36, west: 6.81, north: 45.56, east: 7), pauses: [ScooterSeasonalPause(from: "09-08", until: "06-22", timeZone: "Europe/Paris")], feeds: [ScooterCityFeed(id: "france:dott_fr_tignes", pause: ScooterSeasonalPause(from: "09-08", until: "06-22", timeZone: "Europe/Paris"))]))
+        cities.append(ScooterCity(id: "fr:Le Chesnay-Rocquencourt", name: "Le Chesnay-Rocquencourt", countryCode: "FR", center: GeoPoint(latitude: 48.8265, longitude: 2.1253), bounds: GeoBounds(south: 48.8054, west: 2.0894, north: 48.8498, east: 2.1564), feeds: [ScooterCityFeed(id: "france:dott_fr_versailles-grand-parc")]))
+        cities.append(ScooterCity(id: "fr:La Celle-Saint-Cloud", name: "La Celle-Saint-Cloud", countryCode: "FR", center: GeoPoint(latitude: 48.8484, longitude: 2.1362), bounds: GeoBounds(south: 48.8262, west: 2.0963, north: 48.8787, east: 2.1728), feeds: [ScooterCityFeed(id: "france:dott_fr_versailles-grand-parc")]))
+        cities.append(ScooterCity(id: "fr:Bougival", name: "Bougival", countryCode: "FR", center: GeoPoint(latitude: 48.8608, longitude: 2.1398), bounds: GeoBounds(south: 48.8424, west: 2.1085, north: 48.876, east: 2.1701), feeds: [ScooterCityFeed(id: "france:dott_fr_versailles-grand-parc")]))
+        cities.append(ScooterCity(id: "fr:Lille Métropole", name: "Lille Métropole", countryCode: "FR", center: GeoPoint(latitude: 50.6292, longitude: 3.0573), bounds: GeoBounds(south: 50.4906, west: 2.7749, north: 50.8037, east: 3.2867), feeds: [ScooterCityFeed(id: "france:lime_fr_lille")]))
+        cities.append(ScooterCity(id: "fr:Roubaix", name: "Roubaix", countryCode: "FR", center: GeoPoint(latitude: 50.691, longitude: 3.1741), bounds: GeoBounds(south: 50.6658, west: 3.1471, north: 50.7117, east: 3.2214), feeds: [ScooterCityFeed(id: "france:lime_fr_lille")]))
+        cities.append(ScooterCity(id: "fr:Tourcoing", name: "Tourcoing", countryCode: "FR", center: GeoPoint(latitude: 50.724, longitude: 3.161), bounds: GeoBounds(south: 50.6901, west: 3.1147, north: 50.752, east: 3.2008), feeds: [ScooterCityFeed(id: "france:lime_fr_lille")]))
+        cities.append(ScooterCity(id: "fr:Croix", name: "Croix", countryCode: "FR", center: GeoPoint(latitude: 50.6804, longitude: 3.156), bounds: GeoBounds(south: 50.6541, west: 3.1321, north: 50.6966, east: 3.1779), feeds: [ScooterCityFeed(id: "france:lime_fr_lille")]))
+        cities.append(ScooterCity(id: "fr:Wasquehal", name: "Wasquehal", countryCode: "FR", center: GeoPoint(latitude: 50.6695, longitude: 3.1308), bounds: GeoBounds(south: 50.6479, west: 3.1054, north: 50.6973, east: 3.1538), feeds: [ScooterCityFeed(id: "france:lime_fr_lille")]))
+        cities.append(ScooterCity(id: "fr:Villeneuve-d'Ascq", name: "Villeneuve-d'Ascq", countryCode: "FR", center: GeoPoint(latitude: 50.6195, longitude: 3.1318), bounds: GeoBounds(south: 50.5961, west: 3.1119, north: 50.6764, east: 3.2118), feeds: [ScooterCityFeed(id: "france:lime_fr_lille")]))
+        cities.append(ScooterCity(id: "fr:Wattrelos", name: "Wattrelos", countryCode: "FR", center: GeoPoint(latitude: 50.7018, longitude: 3.2156), bounds: GeoBounds(south: 50.6854, west: 3.1673, north: 50.7402, east: 3.2656), feeds: [ScooterCityFeed(id: "france:lime_fr_lille")]))
+        cities.append(ScooterCity(id: "fr:Hem", name: "Hem", countryCode: "FR", center: GeoPoint(latitude: 50.6542, longitude: 3.1841), bounds: GeoBounds(south: 50.6304, west: 3.1577, north: 50.6758, east: 3.2248), feeds: [ScooterCityFeed(id: "france:lime_fr_lille")]))
+        cities.append(ScooterCity(id: "fr:Marseille", name: "Marseille", countryCode: "FR", center: GeoPoint(latitude: 43.2965, longitude: 5.3698), bounds: GeoBounds(south: 43.1605, west: 5.2163, north: 43.4002, east: 5.545), feeds: [ScooterCityFeed(id: "france:lime_fr_marseille"), ScooterCityFeed(id: "france:voi_fr_66")]))
+        cities.append(ScooterCity(id: "fr:Croissy-sur-Seine", name: "Croissy-sur-Seine", countryCode: "FR", center: GeoPoint(latitude: 48.8805, longitude: 2.1342), bounds: GeoBounds(south: 48.8672, west: 2.1062, north: 48.8938, east: 2.1623), feeds: [ScooterCityFeed(id: "france:lime_fr_paris_west")]))
+        cities.append(ScooterCity(id: "fr:Houilles", name: "Houilles", countryCode: "FR", center: GeoPoint(latitude: 48.9266, longitude: 2.1866), bounds: GeoBounds(south: 48.913, west: 2.164, north: 48.9402, east: 2.2092), feeds: [ScooterCityFeed(id: "france:lime_fr_paris_west")]))
+        cities.append(ScooterCity(id: "fr:Le Pecq", name: "Le Pecq", countryCode: "FR", center: GeoPoint(latitude: 48.8924, longitude: 2.1022), bounds: GeoBounds(south: 48.8741, west: 2.0802, north: 48.9108, east: 2.1242), feeds: [ScooterCityFeed(id: "france:lime_fr_paris_west")]))
+        cities.append(ScooterCity(id: "fr:Le Port-Marly", name: "Le Port-Marly", countryCode: "FR", center: GeoPoint(latitude: 48.8808, longitude: 2.1104), bounds: GeoBounds(south: 48.8689, west: 2.097, north: 48.8927, east: 2.1238), feeds: [ScooterCityFeed(id: "france:lime_fr_paris_west")]))
+        cities.append(ScooterCity(id: "fr:Le Vésinet", name: "Le Vésinet", countryCode: "FR", center: GeoPoint(latitude: 48.8928, longitude: 2.1312), bounds: GeoBounds(south: 48.8729, west: 2.108, north: 48.9127, east: 2.1545), feeds: [ScooterCityFeed(id: "france:lime_fr_paris_west")]))
+        cities.append(ScooterCity(id: "fr:Marly-le-Roi", name: "Marly-le-Roi", countryCode: "FR", center: GeoPoint(latitude: 48.866, longitude: 2.0892), bounds: GeoBounds(south: 48.8435, west: 2.0649, north: 48.8884, east: 2.1135), feeds: [ScooterCityFeed(id: "france:lime_fr_paris_west")]))
+        cities.append(ScooterCity(id: "fr:Montesson", name: "Montesson", countryCode: "FR", center: GeoPoint(latitude: 48.919, longitude: 2.1381), bounds: GeoBounds(south: 48.8999, west: 2.1091, north: 48.9382, east: 2.1671), feeds: [ScooterCityFeed(id: "france:lime_fr_paris_west")]))
+        cities.append(ScooterCity(id: "fr:Sartrouville", name: "Sartrouville", countryCode: "FR", center: GeoPoint(latitude: 48.9374, longitude: 2.1744), bounds: GeoBounds(south: 48.9173, west: 2.1386, north: 48.9576, east: 2.2103), feeds: [ScooterCityFeed(id: "france:lime_fr_paris_west")]))
+        cities.append(ScooterCity(id: "fr:Nantes", name: "Nantes", countryCode: "FR", center: GeoPoint(latitude: 47.2873, longitude: -1.5142), bounds: GeoBounds(south: 47.274, west: -1.536, north: 47.3, east: -1.492), feeds: [ScooterCityFeed(id: "france:naolib_fr_nantes")]))
+        cities.append(ScooterCity(id: "fr:Saint-Herblain", name: "Saint-Herblain", countryCode: "FR", center: GeoPoint(latitude: 47.2271, longitude: -1.6407), bounds: GeoBounds(south: 47.21, west: -1.66, north: 47.244, east: -1.622), feeds: [ScooterCityFeed(id: "france:naolib_fr_nantes")]))
+        cities.append(ScooterCity(id: "fr:Angers", name: "Angers", countryCode: "FR", center: GeoPoint(latitude: 47.4784, longitude: -0.5632), bounds: GeoBounds(south: 47.4052, west: -0.6573, north: 47.543, east: -0.4546), feeds: [ScooterCityFeed(id: "france:pony_fr_angers")]))
+        cities.append(ScooterCity(id: "fr:Beauvais", name: "Beauvais", countryCode: "FR", center: GeoPoint(latitude: 49.4295, longitude: 2.0807), bounds: GeoBounds(south: 49.3973, west: 2.0343, north: 49.4768, east: 2.1367), feeds: [ScooterCityFeed(id: "france:pony_fr_beauvais")]))
+        cities.append(ScooterCity(id: "fr:Bourges", name: "Bourges", countryCode: "FR", center: GeoPoint(latitude: 47.081, longitude: 2.3988), bounds: GeoBounds(south: 47.0315, west: 2.3471, north: 47.134, east: 2.4562), feeds: [ScooterCityFeed(id: "france:pony_fr_bourges")]))
+        cities.append(ScooterCity(id: "fr:Évry-Courcouronnes", name: "Évry-Courcouronnes", countryCode: "FR", center: GeoPoint(latitude: 48.624, longitude: 2.429), bounds: GeoBounds(south: 48.6007, west: 2.3773, north: 48.6587, east: 2.476), feeds: [ScooterCityFeed(id: "france:pony_fr_evry")]))
+        cities.append(ScooterCity(id: "fr:Hérouville-Saint-Clair", name: "Hérouville-Saint-Clair", countryCode: "FR", center: GeoPoint(latitude: 49.2032, longitude: -0.3261), bounds: GeoBounds(south: 49.176, west: -0.382, north: 49.3021, east: -0.2309), feeds: [ScooterCityFeed(id: "france:pony_fr_herouville")]))
+        cities.append(ScooterCity(id: "fr:La Roche-sur-Yon", name: "La Roche-sur-Yon", countryCode: "FR", center: GeoPoint(latitude: 46.6706, longitude: -1.4269), bounds: GeoBounds(south: 46.6384, west: -1.4684, north: 46.7073, east: -1.3833), feeds: [ScooterCityFeed(id: "france:pony_fr_la_roche_sur_yon")]))
+        cities.append(ScooterCity(id: "fr:Lorient", name: "Lorient", countryCode: "FR", center: GeoPoint(latitude: 47.7483, longitude: -3.3702), bounds: GeoBounds(south: 47.7171, west: -3.4203, north: 47.7831, east: -3.335), feeds: [ScooterCityFeed(id: "france:pony_fr_lorient")]))
+        cities.append(ScooterCity(id: "fr:Perpignan", name: "Perpignan", countryCode: "FR", center: GeoPoint(latitude: 42.6887, longitude: 2.8948), bounds: GeoBounds(south: 42.6116, west: 2.7174, north: 42.7818, east: 3.0648), feeds: [ScooterCityFeed(id: "france:pony_fr_perpignan")]))
+        cities.append(ScooterCity(id: "fr:Le Barcarès", name: "Le Barcarès", countryCode: "FR", center: GeoPoint(latitude: 42.7893, longitude: 3.0345), bounds: GeoBounds(south: 42.7636, west: 2.9899, north: 42.9527, east: 3.0736), feeds: [ScooterCityFeed(id: "france:pony_fr_perpignan")]))
+        cities.append(ScooterCity(id: "fr:Poitiers", name: "Poitiers", countryCode: "FR", center: GeoPoint(latitude: 46.5802, longitude: 0.3404), bounds: GeoBounds(south: 46.5056, west: 0.236, north: 46.6815, east: 0.4341), feeds: [ScooterCityFeed(id: "france:pony_fr_poitiers")]))
+        cities.append(ScooterCity(id: "fr:Lusignan", name: "Lusignan", countryCode: "FR", center: GeoPoint(latitude: 46.4349, longitude: 0.1228), bounds: GeoBounds(south: 46.4175, west: 0.0921, north: 46.4571, east: 0.1525), feeds: [ScooterCityFeed(id: "france:pony_fr_poitiers")]))
+        cities.append(ScooterCity(id: "fr:Poissy", name: "Poissy", countryCode: "FR", center: GeoPoint(latitude: 48.9273, longitude: 2.0427), bounds: GeoBounds(south: 48.8829, west: 1.967, north: 48.9653, east: 2.0833), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]))
+        cities.append(ScooterCity(id: "fr:Carrières-sous-Poissy", name: "Carrières-sous-Poissy", countryCode: "FR", center: GeoPoint(latitude: 48.9438, longitude: 2.0342), bounds: GeoBounds(south: 48.9218, west: 1.9902, north: 48.9726, east: 2.0628), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]))
+        cities.append(ScooterCity(id: "fr:Andrésy", name: "Andrésy", countryCode: "FR", center: GeoPoint(latitude: 48.9823, longitude: 2.0606), bounds: GeoBounds(south: 48.9508, west: 2.0121, north: 49.0051, east: 2.0874), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]))
+        cities.append(ScooterCity(id: "fr:Conflans-Sainte-Honorine", name: "Conflans-Sainte-Honorine", countryCode: "FR", center: GeoPoint(latitude: 48.9938, longitude: 2.0947), bounds: GeoBounds(south: 48.9761, west: 2.0586, north: 49.0268, east: 2.1408), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]))
+        cities.append(ScooterCity(id: "fr:Les Mureaux", name: "Les Mureaux", countryCode: "FR", center: GeoPoint(latitude: 48.9934, longitude: 1.9093), bounds: GeoBounds(south: 48.9604, west: 1.8627, north: 49.0157, east: 1.975), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]))
+        cities.append(ScooterCity(id: "fr:Meulan-en-Yvelines", name: "Meulan-en-Yvelines", countryCode: "FR", center: GeoPoint(latitude: 49.0051, longitude: 1.9099), bounds: GeoBounds(south: 48.9857, west: 1.8504, north: 49.0501, east: 1.9518), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]))
+        cities.append(ScooterCity(id: "fr:Mantes-la-Jolie", name: "Mantes-la-Jolie", countryCode: "FR", center: GeoPoint(latitude: 48.9889, longitude: 1.7153), bounds: GeoBounds(south: 48.9735, west: 1.6435, north: 49.0189, east: 1.7394), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]))
+        cities.append(ScooterCity(id: "fr:Mantes-la-Ville", name: "Mantes-la-Ville", countryCode: "FR", center: GeoPoint(latitude: 48.9779, longitude: 1.7135), bounds: GeoBounds(south: 48.9527, west: 1.6736, north: 48.9981, east: 1.7476), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]))
+        cities.append(ScooterCity(id: "fr:Buchelay", name: "Buchelay", countryCode: "FR", center: GeoPoint(latitude: 48.9804, longitude: 1.6724), bounds: GeoBounds(south: 48.9609, west: 1.6421, north: 49.0044, east: 1.7161), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]))
+        cities.append(ScooterCity(id: "fr:Limay", name: "Limay", countryCode: "FR", center: GeoPoint(latitude: 48.9921, longitude: 1.7358), bounds: GeoBounds(south: 48.9591, west: 1.6955, north: 49.0234, east: 1.7777), feeds: [ScooterCityFeed(id: "france:voi_fr_422")]))
+        cities.append(ScooterCity(id: "fr:Grenoble", name: "Grenoble", countryCode: "FR", center: GeoPoint(latitude: 45.1885, longitude: 5.7245), bounds: GeoBounds(south: 45.1054, west: 5.6232, north: 45.2809, east: 5.8865), feeds: [ScooterCityFeed(id: "france:voi_fr_358")]))
+        cities.append(ScooterCity(id: "fr:Le Havre", name: "Le Havre", countryCode: "FR", center: GeoPoint(latitude: 49.4944, longitude: 0.1079), bounds: GeoBounds(south: 49.4671, west: 0.0529, north: 49.5982, east: 0.2092), feeds: [ScooterCityFeed(id: "france:voi_fr_336")]))
+        cities.append(ScooterCity(id: "fr:Saint-Quentin-en-Yvelines", name: "Saint-Quentin-en-Yvelines", countryCode: "FR", center: GeoPoint(latitude: 48.787, longitude: 2.0446), bounds: GeoBounds(south: 48.6853, west: 1.8814, north: 48.8452, east: 2.1199), feeds: [ScooterCityFeed(id: "france:voi_fr_355")]))
+        cities.append(ScooterCity(id: "de:Karlsruhe", name: "Karlsruhe", countryCode: "DE", center: GeoPoint(latitude: 49.0069, longitude: 8.4037), bounds: GeoBounds(south: 48.9649, west: 8.2776, north: 49.059, east: 8.5008), feeds: [ScooterCityFeed(id: "germany:bolt_de_karlsruhe"), ScooterCityFeed(id: "germany:voi_de_bw"), ScooterCityFeed(id: "germany:dott_de_karlsruhe")]))
+        cities.append(ScooterCity(id: "de:Reutlingen", name: "Reutlingen", countryCode: "DE", center: GeoPoint(latitude: 48.4914, longitude: 9.2043), bounds: GeoBounds(south: 48.4312, west: 9.1335, north: 48.5396, east: 9.2596), feeds: [ScooterCityFeed(id: "germany:bolt_de_reutlingen_tuebingen"), ScooterCityFeed(id: "germany:voi_de_bw"), ScooterCityFeed(id: "germany:dott_de_reutlingen")]))
+        cities.append(ScooterCity(id: "de:Tübingen", name: "Tübingen", countryCode: "DE", center: GeoPoint(latitude: 48.5216, longitude: 9.0576), bounds: GeoBounds(south: 48.4824, west: 9.0088, north: 48.5647, east: 9.1103), feeds: [ScooterCityFeed(id: "germany:bolt_de_reutlingen_tuebingen"), ScooterCityFeed(id: "germany:voi_de_bw"), ScooterCityFeed(id: "germany:dott_de_tubingen")]))
+        cities.append(ScooterCity(id: "de:Stuttgart", name: "Stuttgart", countryCode: "DE", center: GeoPoint(latitude: 48.7758, longitude: 9.1829), bounds: GeoBounds(south: 48.6977, west: 9.0659, north: 48.8618, east: 9.29), feeds: [ScooterCityFeed(id: "germany:bolt_de_stuttgart"), ScooterCityFeed(id: "germany:dott_de_stuttgart"), ScooterCityFeed(id: "germany:lime_de_bw"), ScooterCityFeed(id: "germany:voi_de_bw")]))
+        cities.append(ScooterCity(id: "de:Aachen", name: "Aachen", countryCode: "DE", center: GeoPoint(latitude: 50.7773, longitude: 6.0895), bounds: GeoBounds(south: 50.6531, west: 5.9608, north: 50.8662, east: 6.2321), feeds: [ScooterCityFeed(id: "germany:dott_de_aachen"), ScooterCityFeed(id: "germany:voi_de_aachen")]))
+        cities.append(ScooterCity(id: "de:Berlin", name: "Berlin", countryCode: "DE", center: GeoPoint(latitude: 52.52, longitude: 13.405), bounds: GeoBounds(south: 52.13666385481394, west: 12.601229331022722, north: 52.90186135994416, east: 13.905921424498281), feeds: [ScooterCityFeed(id: "germany:dott_de_berlin"), ScooterCityFeed(id: "germany:voi_de_app_145")]))
+        cities.append(ScooterCity(id: "de:Köln", name: "Köln", countryCode: "DE", center: GeoPoint(latitude: 50.9375, longitude: 6.9603), bounds: GeoBounds(south: 50.8214, west: 6.7585, north: 51.094, east: 7.176), feeds: [ScooterCityFeed(id: "germany:dott_de_cologne"), ScooterCityFeed(id: "germany:voi_de_koeln")]))
+        cities.append(ScooterCity(id: "de:Düsseldorf", name: "Düsseldorf", countryCode: "DE", center: GeoPoint(latitude: 51.2213, longitude: 6.7886), bounds: GeoBounds(south: 51.1154, west: 6.6748, north: 51.3615, east: 6.9539), feeds: [ScooterCityFeed(id: "germany:dott_de_dusseldorf"), ScooterCityFeed(id: "germany:voi_de_duesseldorf")]))
+        cities.append(ScooterCity(id: "de:Essen", name: "Essen", countryCode: "DE", center: GeoPoint(latitude: 51.4508, longitude: 7.0085), bounds: GeoBounds(south: 51.3386, west: 6.8803, north: 51.5455, east: 7.1516), feeds: [ScooterCityFeed(id: "germany:dott_de_essen"), ScooterCityFeed(id: "germany:voi_de_essen")]))
+        cities.append(ScooterCity(id: "de:Hannover", name: "Hannover", countryCode: "DE", center: GeoPoint(latitude: 52.3903, longitude: 9.7399), bounds: GeoBounds(south: 52.202975, west: 9.265968, north: 52.578291, east: 10.030858), feeds: [ScooterCityFeed(id: "germany:dott_de_hannover"), ScooterCityFeed(id: "germany:voi_de_app_292")]))
+        cities.append(ScooterCity(id: "de:Heidelberg", name: "Heidelberg", countryCode: "DE", center: GeoPoint(latitude: 49.4037, longitude: 8.6752), bounds: GeoBounds(south: 49.25901779678085, west: 8.56430459193761, north: 49.49783733196581, east: 9.023205481851134), feeds: [ScooterCityFeed(id: "germany:dott_de_heidelberg"), ScooterCityFeed(id: "germany:voi_de_app_404")]))
+        cities.append(ScooterCity(id: "de:Leimen", name: "Leimen", countryCode: "DE", center: GeoPoint(latitude: 49.3483, longitude: 8.6911), bounds: GeoBounds(south: 49.315, west: 8.62, north: 49.37, east: 8.73), feeds: [ScooterCityFeed(id: "germany:dott_de_heidelberg"), ScooterCityFeed(id: "germany:zeus_de_leimen_walldorf_wiesloch")]))
+        cities.append(ScooterCity(id: "de:Heilbronn", name: "Heilbronn", countryCode: "DE", center: GeoPoint(latitude: 49.1426, longitude: 9.2168), bounds: GeoBounds(south: 49.0791, west: 9.0868, north: 49.2308, east: 9.3189), feeds: [ScooterCityFeed(id: "germany:dott_de_heilbronn")]))
+        cities.append(ScooterCity(id: "de:Weinsberg", name: "Weinsberg", countryCode: "DE", center: GeoPoint(latitude: 49.1513, longitude: 9.2876), bounds: GeoBounds(south: 49.139, west: 9.2412, north: 49.1781, east: 9.3173), feeds: [ScooterCityFeed(id: "germany:dott_de_heilbronn")]))
+        cities.append(ScooterCity(id: "de:Untereisesheim", name: "Untereisesheim", countryCode: "DE", center: GeoPoint(latitude: 49.2111, longitude: 9.2019), bounds: GeoBounds(south: 49.2015, west: 9.1785, north: 49.2246, east: 9.2168), feeds: [ScooterCityFeed(id: "germany:dott_de_heilbronn")]))
+        cities.append(ScooterCity(id: "de:Neckarsulm", name: "Neckarsulm", countryCode: "DE", center: GeoPoint(latitude: 49.1918, longitude: 9.2246), bounds: GeoBounds(south: 49.1696, west: 9.1596, north: 49.2288, east: 9.3325), feeds: [ScooterCityFeed(id: "germany:dott_de_heilbronn")]))
+        cities.append(ScooterCity(id: "de:Kaiserslautern", name: "Kaiserslautern", countryCode: "DE", center: GeoPoint(latitude: 49.4426, longitude: 7.766), bounds: GeoBounds(south: 49.3892, west: 7.6348, north: 49.4986, east: 7.8377), feeds: [ScooterCityFeed(id: "germany:dott_de_kaiserslautern")]))
+        cities.append(ScooterCity(id: "de:Langenfeld", name: "Langenfeld", countryCode: "DE", center: GeoPoint(latitude: 51.1188, longitude: 6.9563), bounds: GeoBounds(south: 51.0544, west: 6.8995, north: 51.1576, east: 7.0137), feeds: [ScooterCityFeed(id: "germany:dott_de_langenfeld")]))
+        cities.append(ScooterCity(id: "de:Leipzig", name: "Leipzig", countryCode: "DE", center: GeoPoint(latitude: 51.3439, longitude: 12.3787), bounds: GeoBounds(south: 51.2177592669659, west: 12.139831975626, north: 51.464315824471, east: 12.595557430528), feeds: [ScooterCityFeed(id: "germany:dott_de_leipzig"), ScooterCityFeed(id: "germany:voi_de_app_247")]))
+        cities.append(ScooterCity(id: "de:München", name: "München", countryCode: "DE", center: GeoPoint(latitude: 48.1372, longitude: 11.5756), bounds: GeoBounds(south: 47.9255452234188, west: 11.1703491210938, north: 48.3744967168233, east: 11.9544982910156), feeds: [ScooterCityFeed(id: "germany:dott_de_munich"), ScooterCityFeed(id: "germany:voi_de_app_150")]))
+        cities.append(ScooterCity(id: "de:Germering", name: "Germering", countryCode: "DE", center: GeoPoint(latitude: 48.1339, longitude: 11.3765), bounds: GeoBounds(south: 48.1047, west: 11.3336, north: 48.1448, east: 11.3921), feeds: [ScooterCityFeed(id: "germany:dott_de_munich")]))
+        cities.append(ScooterCity(id: "de:Münster", name: "Münster", countryCode: "DE", center: GeoPoint(latitude: 51.9583, longitude: 7.6259), bounds: GeoBounds(south: 51.8311, west: 7.4598, north: 52.069, east: 7.7884), feeds: [ScooterCityFeed(id: "germany:dott_de_munster"), ScooterCityFeed(id: "germany:voi_de_muenster"), ScooterCityFeed(id: "germany:qick_de_munster")]))
+        cities.append(ScooterCity(id: "de:Potsdam", name: "Potsdam", countryCode: "DE", center: GeoPoint(latitude: 52.395, longitude: 13.0639), bounds: GeoBounds(south: 52.141481911281275, west: 12.619117304499001, north: 52.53966716354237, east: 13.207903201789064), feeds: [ScooterCityFeed(id: "germany:dott_de_potsdam"), ScooterCityFeed(id: "germany:voi_de_app_147")]))
+        cities.append(ScooterCity(id: "de:Konstanz", name: "Konstanz", countryCode: "DE", center: GeoPoint(latitude: 47.6603, longitude: 9.1758), bounds: GeoBounds(south: 47.64, west: 9.1, north: 47.74, east: 9.25), feeds: [ScooterCityFeed(id: "germany:hopp_de_konstanz"), ScooterCityFeed(id: "germany:lime_de_bw"), ScooterCityFeed(id: "germany:zeus_de_konstanz")]))
+        cities.append(ScooterCity(id: "de:Frankfurt", name: "Frankfurt", countryCode: "DE", center: GeoPoint(latitude: 50.1155, longitude: 8.6683), bounds: GeoBounds(south: 49.9311, west: 8.4319, north: 50.2395825267524, east: 9.029169329130355), feeds: [ScooterCityFeed(id: "germany:lime_de_frankfurt"), ScooterCityFeed(id: "germany:voi_de_app_192")]))
+        cities.append(ScooterCity(id: "de:Wuppertal", name: "Wuppertal", countryCode: "DE", center: GeoPoint(latitude: 51.2669, longitude: 7.1769), bounds: GeoBounds(south: 51.1567, west: 7.0001, north: 51.3271, east: 7.3274), feeds: [ScooterCityFeed(id: "germany:lime_de_wuppertal"), ScooterCityFeed(id: "germany:voi_de_wuppertal")]))
+        cities.append(ScooterCity(id: "de:Pforzheim", name: "Pforzheim", countryCode: "DE", center: GeoPoint(latitude: 48.8926, longitude: 8.6946), bounds: GeoBounds(south: 48.83, west: 8.59, north: 48.96, east: 8.81), feeds: [ScooterCityFeed(id: "germany:voi_de_bw")]))
+        cities.append(ScooterCity(id: "de:Mannheim", name: "Mannheim", countryCode: "DE", center: GeoPoint(latitude: 49.4875, longitude: 8.466), bounds: GeoBounds(south: 49.4082, west: 8.3311, north: 49.569, east: 8.589), feeds: [ScooterCityFeed(id: "germany:voi_de_bw")]))
+        cities.append(ScooterCity(id: "de:Ludwigshafen am Rhein", name: "Ludwigshafen am Rhein", countryCode: "DE", center: GeoPoint(latitude: 49.4812, longitude: 8.4464), bounds: GeoBounds(south: 49.4212, west: 8.3322, north: 49.556, east: 8.576), feeds: [ScooterCityFeed(id: "germany:voi_de_bw"), ScooterCityFeed(id: "germany:dott_de_ludwigshafen_am_rhein")]))
+        cities.append(ScooterCity(id: "de:Böblingen", name: "Böblingen", countryCode: "DE", center: GeoPoint(latitude: 48.685, longitude: 9.0113), bounds: GeoBounds(south: 48.658, west: 8.95, north: 48.697, east: 9.058), feeds: [ScooterCityFeed(id: "germany:voi_de_bw")]))
+        cities.append(ScooterCity(id: "de:Sindelfingen", name: "Sindelfingen", countryCode: "DE", center: GeoPoint(latitude: 48.7084, longitude: 9.0035), bounds: GeoBounds(south: 48.6625, west: 8.95, north: 48.738, east: 9.058), feeds: [ScooterCityFeed(id: "germany:voi_de_bw"), ScooterCityFeed(id: "germany:dott_de_sindelfingen")]))
+        cities.append(ScooterCity(id: "de:Erfurt", name: "Erfurt", countryCode: "DE", center: GeoPoint(latitude: 50.9787, longitude: 11.0328), bounds: GeoBounds(south: 50.9374, west: 10.9742, north: 51.031, east: 11.1075), feeds: [ScooterCityFeed(id: "germany:yoio_de_erfurt"), ScooterCityFeed(id: "germany:dott_de_erfurt")]))
+        cities.append(ScooterCity(id: "de:Freiburg im Breisgau", name: "Freiburg im Breisgau", countryCode: "DE", center: GeoPoint(latitude: 47.999, longitude: 7.8421), bounds: GeoBounds(south: 47.958, west: 7.746, north: 48.0667, east: 7.9323), feeds: [ScooterCityFeed(id: "germany:yoio_de_freiburg"), ScooterCityFeed(id: "germany:zeus_de_freiburg")]))
+        cities.append(ScooterCity(id: "de:Göttingen", name: "Göttingen", countryCode: "DE", center: GeoPoint(latitude: 51.5413, longitude: 9.9158), bounds: GeoBounds(south: 51.4953, west: 9.8716, north: 51.6057, east: 10.007672), feeds: [ScooterCityFeed(id: "germany:yoio_de_goettingen"), ScooterCityFeed(id: "germany:qick_de_gottingen")]))
+        cities.append(ScooterCity(id: "de:Bovenden", name: "Bovenden", countryCode: "DE", center: GeoPoint(latitude: 51.5884, longitude: 9.9222), bounds: GeoBounds(south: 51.5795, west: 9.9159, north: 51.6057, east: 9.9474), feeds: [ScooterCityFeed(id: "germany:yoio_de_goettingen")]))
+        cities.append(ScooterCity(id: "de:Bamberg", name: "Bamberg", countryCode: "DE", center: GeoPoint(latitude: 49.8988, longitude: 10.9028), bounds: GeoBounds(south: 49.8549, west: 10.83, north: 49.9301, east: 10.9481), feeds: [ScooterCityFeed(id: "germany:zeus_de_bamberg")]))
+        cities.append(ScooterCity(id: "de:Donaueschingen", name: "Donaueschingen", countryCode: "DE", center: GeoPoint(latitude: 47.9531, longitude: 8.5033), bounds: GeoBounds(south: 47.9204, west: 8.4496, north: 47.9818, east: 8.5362), feeds: [ScooterCityFeed(id: "germany:zeus_de_donaueschingen")]))
+        cities.append(ScooterCity(id: "de:Walldorf", name: "Walldorf", countryCode: "DE", center: GeoPoint(latitude: 49.3064, longitude: 8.6428), bounds: GeoBounds(south: 49.27, west: 8.61, north: 49.315, east: 8.67), feeds: [ScooterCityFeed(id: "germany:zeus_de_leimen_walldorf_wiesloch")]))
+        cities.append(ScooterCity(id: "de:Wiesloch", name: "Wiesloch", countryCode: "DE", center: GeoPoint(latitude: 49.2942, longitude: 8.6986), bounds: GeoBounds(south: 49.27, west: 8.67, north: 49.315, east: 8.73), feeds: [ScooterCityFeed(id: "germany:zeus_de_leimen_walldorf_wiesloch")]))
+        cities.append(ScooterCity(id: "de:Ludwigsburg", name: "Ludwigsburg", countryCode: "DE", center: GeoPoint(latitude: 48.8975, longitude: 9.1922), bounds: GeoBounds(south: 48.8639, west: 9.0968, north: 48.9418, east: 9.2755), feeds: [ScooterCityFeed(id: "germany:zeus_de_ludwigsburg"), ScooterCityFeed(id: "germany:dott_de_ludwigsburg")]))
+        cities.append(ScooterCity(id: "de:Neustadt an der Weinstraße", name: "Neustadt an der Weinstraße", countryCode: "DE", center: GeoPoint(latitude: 49.3501, longitude: 8.1389), bounds: GeoBounds(south: 49.2999, west: 8.0802, north: 49.3882, east: 8.2034), feeds: [ScooterCityFeed(id: "germany:zeus_de_neustadt")]))
+        cities.append(ScooterCity(id: "de:Regensburg", name: "Regensburg", countryCode: "DE", center: GeoPoint(latitude: 49.0134, longitude: 12.1016), bounds: GeoBounds(south: 48.90090174566317, west: 11.9249269981186, north: 49.10323589689486, east: 12.271586420039228), feeds: [ScooterCityFeed(id: "germany:zeus_de_regensburg"), ScooterCityFeed(id: "germany:dott_de_regensburg"), ScooterCityFeed(id: "germany:voi_de_app_368")]))
+        cities.append(ScooterCity(id: "de:Renningen", name: "Renningen", countryCode: "DE", center: GeoPoint(latitude: 48.7656, longitude: 8.9347), bounds: GeoBounds(south: 48.7448, west: 8.8783, north: 48.8027, east: 8.9661), feeds: [ScooterCityFeed(id: "germany:zeus_de_renningen")]))
+        cities.append(ScooterCity(id: "de:Schweinfurt", name: "Schweinfurt", countryCode: "DE", center: GeoPoint(latitude: 50.0492, longitude: 10.2194), bounds: GeoBounds(south: 49.9972, west: 10.1714, north: 50.096, east: 10.2795), feeds: [ScooterCityFeed(id: "germany:zeus_de_schweinfurt")]))
+        cities.append(ScooterCity(id: "de:Singen", name: "Singen", countryCode: "DE", center: GeoPoint(latitude: 47.7594, longitude: 8.8403), bounds: GeoBounds(south: 47.7258, west: 8.7975, north: 47.7938, east: 8.9068), feeds: [ScooterCityFeed(id: "germany:zeus_de_singen")]))
+        cities.append(ScooterCity(id: "de:Tuttlingen", name: "Tuttlingen", countryCode: "DE", center: GeoPoint(latitude: 47.9844, longitude: 8.8167), bounds: GeoBounds(south: 47.9438, west: 8.7493, north: 48.0254, east: 8.8891), feeds: [ScooterCityFeed(id: "germany:zeus_de_tuttlingen")]))
+        cities.append(ScooterCity(id: "de:Villingen-Schwenningen", name: "Villingen-Schwenningen", countryCode: "DE", center: GeoPoint(latitude: 48.0622, longitude: 8.4936), bounds: GeoBounds(south: 48.0102, west: 8.4072, north: 48.1116, east: 8.5943), feeds: [ScooterCityFeed(id: "germany:zeus_de_villingen_schwenningen")]))
+        cities.append(ScooterCity(id: "de:Würzburg", name: "Würzburg", countryCode: "DE", center: GeoPoint(latitude: 49.7913, longitude: 9.9534), bounds: GeoBounds(south: 49.59438795057588, west: 9.647576391929467, north: 50.09741775872257, east: 10.343510459340342), feeds: [ScooterCityFeed(id: "germany:zeus_de_wurzburg"), ScooterCityFeed(id: "germany:voi_de_app_365")]))
+        cities.append(ScooterCity(id: "de:Bielefeld", name: "Bielefeld", countryCode: "DE", center: GeoPoint(latitude: 52.024, longitude: 8.5372), bounds: GeoBounds(south: 51.9368, west: 8.4745, north: 52.0619, east: 8.6263), feeds: [ScooterCityFeed(id: "germany:dott_de_bielefeld")]))
+        cities.append(ScooterCity(id: "de:Bochum", name: "Bochum", countryCode: "DE", center: GeoPoint(latitude: 51.4695, longitude: 7.1963), bounds: GeoBounds(south: 51.4015, west: 7.0881, north: 51.5404, east: 7.3633), feeds: [ScooterCityFeed(id: "germany:dott_de_bochum"), ScooterCityFeed(id: "germany:voi_de_bochum")]))
+        cities.append(ScooterCity(id: "de:Bonn", name: "Bonn", countryCode: "DE", center: GeoPoint(latitude: 50.7214, longitude: 7.1155), bounds: GeoBounds(south: 50.6237, west: 7.0085, north: 50.7834, east: 7.2247), feeds: [ScooterCityFeed(id: "germany:dott_de_bonn"), ScooterCityFeed(id: "germany:voi_de_bonn")]))
+        cities.append(ScooterCity(id: "de:Hamburg", name: "Hamburg", countryCode: "DE", center: GeoPoint(latitude: 53.5718, longitude: 9.9948), bounds: GeoBounds(south: 53.35187788260681, west: 9.656523897434674, north: 53.7802844117601, east: 10.394393931884132), feeds: [ScooterCityFeed(id: "germany:dott_de_hamburg"), ScooterCityFeed(id: "germany:voi_de_app_151")]))
+        cities.append(ScooterCity(id: "de:Braunschweig", name: "Braunschweig", countryCode: "DE", center: GeoPoint(latitude: 52.2627, longitude: 10.5257), bounds: GeoBounds(south: 52.18091169285216, west: 10.338107665613677, north: 52.360484871521294, east: 10.699520921206044), feeds: [ScooterCityFeed(id: "germany:dott_de_braunschweig"), ScooterCityFeed(id: "germany:voi_de_app_364")]))
+        cities.append(ScooterCity(id: "de:Bremerhaven", name: "Bremerhaven", countryCode: "DE", center: GeoPoint(latitude: 53.5566, longitude: 8.5966), bounds: GeoBounds(south: 53.4848, west: 8.557, north: 53.6278, east: 8.6482), feeds: [ScooterCityFeed(id: "germany:dott_de_bremerhaven")]))
+        cities.append(ScooterCity(id: "de:Wiesbaden", name: "Wiesbaden", countryCode: "DE", center: GeoPoint(latitude: 50.077, longitude: 8.2347), bounds: GeoBounds(south: 49.9403, west: 7.94021781950754, north: 50.191938680772, east: 8.39298161072504), feeds: [ScooterCityFeed(id: "germany:dott_de_wiesbaden"), ScooterCityFeed(id: "germany:voi_de_app_305")]))
+        cities.append(ScooterCity(id: "de:Celle", name: "Celle", countryCode: "DE", center: GeoPoint(latitude: 52.6113, longitude: 10.0542), bounds: GeoBounds(south: 52.5787, west: 9.9977, north: 52.6482, east: 10.1239), feeds: [ScooterCityFeed(id: "germany:dott_de_celle")]))
+        cities.append(ScooterCity(id: "de:Chemnitz", name: "Chemnitz", countryCode: "DE", center: GeoPoint(latitude: 50.8097, longitude: 12.9138), bounds: GeoBounds(south: 50.7881, west: 12.868, north: 50.8627, east: 12.975), feeds: [ScooterCityFeed(id: "germany:dott_de_chemnitz")]))
+        cities.append(ScooterCity(id: "de:Cottbus", name: "Cottbus", countryCode: "DE", center: GeoPoint(latitude: 51.7565, longitude: 14.3316), bounds: GeoBounds(south: 51.7152, west: 14.2875, north: 51.7946, east: 14.3962), feeds: [ScooterCityFeed(id: "germany:dott_de_cottbus")]))
+        cities.append(ScooterCity(id: "de:Darmstadt", name: "Darmstadt", countryCode: "DE", center: GeoPoint(latitude: 49.8719, longitude: 8.6468), bounds: GeoBounds(south: 49.7244748082939, west: 8.45072655515728, north: 49.987662962682, east: 8.87669813339172), feeds: [ScooterCityFeed(id: "germany:dott_de_darmstadt"), ScooterCityFeed(id: "germany:voi_de_app_306")]))
+        cities.append(ScooterCity(id: "de:Detmold", name: "Detmold", countryCode: "DE", center: GeoPoint(latitude: 51.9442, longitude: 8.8749), bounds: GeoBounds(south: 51.9152, west: 8.8186, north: 51.9615, east: 8.9235), feeds: [ScooterCityFeed(id: "germany:dott_de_detmold")]))
+        cities.append(ScooterCity(id: "de:Rostock", name: "Rostock", countryCode: "DE", center: GeoPoint(latitude: 54.1379, longitude: 12.0695), bounds: GeoBounds(south: 53.9528531996685, west: 11.7869567871094, north: 54.2812619308271, east: 12.3802185058594), feeds: [ScooterCityFeed(id: "germany:dott_de_rostock"), ScooterCityFeed(id: "germany:voi_de_app_182")]))
+        cities.append(ScooterCity(id: "de:Dortmund", name: "Dortmund", countryCode: "DE", center: GeoPoint(latitude: 51.5129, longitude: 7.4649), bounds: GeoBounds(south: 51.4067, west: 7.2884, north: 51.609, east: 7.6522), feeds: [ScooterCityFeed(id: "germany:dott_de_dortmund"), ScooterCityFeed(id: "germany:voi_de_dortmund")]))
+        cities.append(ScooterCity(id: "de:Salzgitter", name: "Salzgitter", countryCode: "DE", center: GeoPoint(latitude: 52.1519, longitude: 10.3332), bounds: GeoBounds(south: 52.0317, west: 10.2792, north: 52.1779, east: 10.4017), feeds: [ScooterCityFeed(id: "germany:dott_de_salzgitter")]))
+        cities.append(ScooterCity(id: "de:Erlangen", name: "Erlangen", countryCode: "DE", center: GeoPoint(latitude: 49.5917, longitude: 11.012), bounds: GeoBounds(south: 49.538, west: 10.9411, north: 49.6163, east: 11.0567), feeds: [ScooterCityFeed(id: "germany:dott_de_erlangen")]))
+        cities.append(ScooterCity(id: "de:Flensburg", name: "Flensburg", countryCode: "DE", center: GeoPoint(latitude: 54.7849, longitude: 9.4364), bounds: GeoBounds(south: 54.736947921648124, west: 9.32485827632354, north: 54.84332146888549, east: 9.532999087961745), feeds: [ScooterCityFeed(id: "germany:dott_de_flensburg"), ScooterCityFeed(id: "germany:voi_de_app_360")]))
+        cities.append(ScooterCity(id: "de:Friedrichshafen", name: "Friedrichshafen", countryCode: "DE", center: GeoPoint(latitude: 47.6688, longitude: 9.4748), bounds: GeoBounds(south: 47.6383, west: 9.3898, north: 47.7126, east: 9.526), feeds: [ScooterCityFeed(id: "germany:dott_de_friedrichshafen")]))
+        cities.append(ScooterCity(id: "de:Gera", name: "Gera", countryCode: "DE", center: GeoPoint(latitude: 50.8622, longitude: 12.0767), bounds: GeoBounds(south: 50.833, west: 12.0462, north: 50.9074, east: 12.1027), feeds: [ScooterCityFeed(id: "germany:dott_de_gera")]))
+        cities.append(ScooterCity(id: "de:Gifhorn", name: "Gifhorn", countryCode: "DE", center: GeoPoint(latitude: 52.4863, longitude: 10.5383), bounds: GeoBounds(south: 52.4527, west: 10.5053, north: 52.5122, east: 10.5789), feeds: [ScooterCityFeed(id: "germany:dott_de_gifhorn")]))
+        cities.append(ScooterCity(id: "de:Gladbeck", name: "Gladbeck", countryCode: "DE", center: GeoPoint(latitude: 51.5683, longitude: 6.999), bounds: GeoBounds(south: 51.5376, west: 6.9602, north: 51.5978, east: 7.0307), feeds: [ScooterCityFeed(id: "germany:dott_de_gladbeck")]))
+        cities.append(ScooterCity(id: "de:Hamm", name: "Hamm", countryCode: "DE", center: GeoPoint(latitude: 51.682, longitude: 7.7974), bounds: GeoBounds(south: 51.6517, west: 7.7216, north: 51.7214, east: 7.934), feeds: [ScooterCityFeed(id: "germany:dott_de_hamm")]))
+        cities.append(ScooterCity(id: "de:Hennef", name: "Hennef", countryCode: "DE", center: GeoPoint(latitude: 50.7694, longitude: 7.2961), bounds: GeoBounds(south: 50.7574, west: 7.2451, north: 50.7895, east: 7.3268), feeds: [ScooterCityFeed(id: "germany:dott_de_hennef")]))
+        cities.append(ScooterCity(id: "de:Herford", name: "Herford", countryCode: "DE", center: GeoPoint(latitude: 52.1173, longitude: 8.6697), bounds: GeoBounds(south: 52.0744, west: 8.6128, north: 52.1414, east: 8.7214), feeds: [ScooterCityFeed(id: "germany:dott_de_herford")]))
+        cities.append(ScooterCity(id: "de:Herne", name: "Herne", countryCode: "DE", center: GeoPoint(latitude: 51.5407, longitude: 7.2061), bounds: GeoBounds(south: 51.4941, west: 7.1096, north: 51.5823, east: 7.3105), feeds: [ScooterCityFeed(id: "germany:dott_de_herne"), ScooterCityFeed(id: "germany:voi_de_bochum")]))
+        cities.append(ScooterCity(id: "de:Herten", name: "Herten", countryCode: "DE", center: GeoPoint(latitude: 51.5995, longitude: 7.1443), bounds: GeoBounds(south: 51.5744, west: 7.1148, north: 51.629, east: 7.1645), feeds: [ScooterCityFeed(id: "germany:dott_de_herten")]))
+        cities.append(ScooterCity(id: "de:Hilden", name: "Hilden", countryCode: "DE", center: GeoPoint(latitude: 51.1692, longitude: 6.9372), bounds: GeoBounds(south: 51.1401, west: 6.8934, north: 51.1906, east: 6.9892), feeds: [ScooterCityFeed(id: "germany:dott_de_hilden")]))
+        cities.append(ScooterCity(id: "de:Hildesheim", name: "Hildesheim", countryCode: "DE", center: GeoPoint(latitude: 52.1517, longitude: 9.9584), bounds: GeoBounds(south: 52.109, west: 9.8983, north: 52.184, east: 10.0044), feeds: [ScooterCityFeed(id: "germany:dott_de_hildesheim")]))
+        cities.append(ScooterCity(id: "de:Duisburg", name: "Duisburg", countryCode: "DE", center: GeoPoint(latitude: 51.4154, longitude: 6.7249), bounds: GeoBounds(south: 51.3244, west: 6.6116, north: 51.5691, east: 6.8443), feeds: [ScooterCityFeed(id: "germany:dott_de_duisburg"), ScooterCityFeed(id: "germany:voi_de_duisburg_oberhausen")]))
+        cities.append(ScooterCity(id: "de:Ingolstadt", name: "Ingolstadt", countryCode: "DE", center: GeoPoint(latitude: 48.7689, longitude: 11.4361), bounds: GeoBounds(south: 48.7047, west: 11.3364, north: 48.82, east: 11.5852), feeds: [ScooterCityFeed(id: "germany:dott_de_ingolstadt")]))
+        cities.append(ScooterCity(id: "de:Jena", name: "Jena", countryCode: "DE", center: GeoPoint(latitude: 50.9253, longitude: 11.5832), bounds: GeoBounds(south: 50.8762, west: 11.556, north: 50.9542, east: 11.6352), feeds: [ScooterCityFeed(id: "germany:dott_de_jena")]))
+        cities.append(ScooterCity(id: "de:Kiel", name: "Kiel", countryCode: "DE", center: GeoPoint(latitude: 54.3278, longitude: 10.13), bounds: GeoBounds(south: 54.2415568529537, west: 9.98725891113281, north: 54.4117378402846, east: 10.3230285644531), feeds: [ScooterCityFeed(id: "germany:dott_de_kiel"), ScooterCityFeed(id: "germany:voi_de_app_181")]))
+        cities.append(ScooterCity(id: "de:Lindau", name: "Lindau", countryCode: "DE", center: GeoPoint(latitude: 47.5575, longitude: 9.6958), bounds: GeoBounds(south: 47.5373, west: 9.6521, north: 47.5962, east: 9.7398), feeds: [ScooterCityFeed(id: "germany:dott_de_lindau")]))
+        cities.append(ScooterCity(id: "de:Minden", name: "Minden", countryCode: "DE", center: GeoPoint(latitude: 52.2898, longitude: 8.8973), bounds: GeoBounds(south: 52.2631, west: 8.8586, north: 52.3174, east: 8.9693), feeds: [ScooterCityFeed(id: "germany:dott_de_minden")]))
+        cities.append(ScooterCity(id: "de:Mönchengladbach", name: "Mönchengladbach", countryCode: "DE", center: GeoPoint(latitude: 51.1917, longitude: 6.4409), bounds: GeoBounds(south: 51.0768, west: 6.2771, north: 51.2569, east: 6.5506), feeds: [ScooterCityFeed(id: "germany:dott_de_monchengladbach"), ScooterCityFeed(id: "germany:voi_de_moenchengladbach")]))
+        cities.append(ScooterCity(id: "de:Monheim am Rhein", name: "Monheim am Rhein", countryCode: "DE", center: GeoPoint(latitude: 51.0924, longitude: 6.8909), bounds: GeoBounds(south: 51.0649, west: 6.8748, north: 51.1302, east: 6.9184), feeds: [ScooterCityFeed(id: "germany:dott_de_monheim_am_rhein")]))
+        cities.append(ScooterCity(id: "de:Neumünster", name: "Neumünster", countryCode: "DE", center: GeoPoint(latitude: 54.0726, longitude: 9.9808), bounds: GeoBounds(south: 54.0399, west: 9.9342, north: 54.1434, east: 10.0445), feeds: [ScooterCityFeed(id: "germany:dott_de_neumunster")]))
+        cities.append(ScooterCity(id: "de:Neuss", name: "Neuss", countryCode: "DE", center: GeoPoint(latitude: 51.2035, longitude: 6.6837), bounds: GeoBounds(south: 51.1078, west: 6.6008, north: 51.2446, east: 6.8124), feeds: [ScooterCityFeed(id: "germany:dott_de_neuss"), ScooterCityFeed(id: "germany:voi_de_duesseldorf")]))
+        cities.append(ScooterCity(id: "de:Oberhausen", name: "Oberhausen", countryCode: "DE", center: GeoPoint(latitude: 51.4696, longitude: 6.8514), bounds: GeoBounds(south: 51.4043, west: 6.7633, north: 51.589, east: 6.9445), feeds: [ScooterCityFeed(id: "germany:dott_de_oberhausen"), ScooterCityFeed(id: "germany:voi_de_duisburg_oberhausen")]))
+        cities.append(ScooterCity(id: "de:Osnabrück", name: "Osnabrück", countryCode: "DE", center: GeoPoint(latitude: 52.2747, longitude: 8.0482), bounds: GeoBounds(south: 52.16868682934638, west: 7.825808742511623, north: 52.443396171197, east: 8.336312202190538), feeds: [ScooterCityFeed(id: "germany:dott_de_osnabruck"), ScooterCityFeed(id: "germany:voi_de_app_378")]))
+        cities.append(ScooterCity(id: "de:Paderborn", name: "Paderborn", countryCode: "DE", center: GeoPoint(latitude: 51.7199, longitude: 8.7528), bounds: GeoBounds(south: 51.6452, west: 8.6223, north: 51.8098, east: 8.9146), feeds: [ScooterCityFeed(id: "germany:dott_de_paderborn"), ScooterCityFeed(id: "germany:voi_de_paderborn")]))
+        cities.append(ScooterCity(id: "de:Peine", name: "Peine", countryCode: "DE", center: GeoPoint(latitude: 52.3266, longitude: 10.2323), bounds: GeoBounds(south: 52.2976, west: 10.1587, north: 52.3585, east: 10.2898), feeds: [ScooterCityFeed(id: "germany:dott_de_peine")]))
+        cities.append(ScooterCity(id: "de:Recklinghausen", name: "Recklinghausen", countryCode: "DE", center: GeoPoint(latitude: 51.6083, longitude: 7.2034), bounds: GeoBounds(south: 51.557, west: 7.1605, north: 51.6334, east: 7.2856), feeds: [ScooterCityFeed(id: "germany:dott_de_recklinghausen")]))
+        cities.append(ScooterCity(id: "de:Rheda-Wiedenbrück", name: "Rheda-Wiedenbrück", countryCode: "DE", center: GeoPoint(latitude: 51.845, longitude: 8.3056), bounds: GeoBounds(south: 51.8035, west: 8.2557, north: 51.8672, east: 8.3701), feeds: [ScooterCityFeed(id: "germany:dott_de_rheda_wiedenbruck")]))
+        cities.append(ScooterCity(id: "de:Rheine", name: "Rheine", countryCode: "DE", center: GeoPoint(latitude: 52.2812, longitude: 7.4417), bounds: GeoBounds(south: 52.251, west: 7.3794, north: 52.3224, east: 7.5204), feeds: [ScooterCityFeed(id: "germany:dott_de_rheine")]))
+        cities.append(ScooterCity(id: "de:Bremen", name: "Bremen", countryCode: "DE", center: GeoPoint(latitude: 53.0971, longitude: 8.7907), bounds: GeoBounds(south: 53.0462, west: 8.5949, north: 53.1983, east: 8.8953), feeds: [ScooterCityFeed(id: "germany:dott_de_bremen")]))
+        cities.append(ScooterCity(id: "de:Rüsselsheim", name: "Rüsselsheim", countryCode: "DE", center: GeoPoint(latitude: 49.9917, longitude: 8.4248), bounds: GeoBounds(south: 49.9551, west: 8.3819, north: 50.0067, east: 8.4651), feeds: [ScooterCityFeed(id: "germany:dott_de_russelsheim")]))
+        cities.append(ScooterCity(id: "de:Saarbrücken", name: "Saarbrücken", countryCode: "DE", center: GeoPoint(latitude: 49.2375, longitude: 6.9972), bounds: GeoBounds(south: 49.1732, west: 6.884, north: 49.297, east: 7.0758), feeds: [ScooterCityFeed(id: "germany:dott_de_saarbrucken")]))
+        cities.append(ScooterCity(id: "de:Sankt Augustin", name: "Sankt Augustin", countryCode: "DE", center: GeoPoint(latitude: 50.7753, longitude: 7.1896), bounds: GeoBounds(south: 50.7304, west: 7.1114, north: 50.8153, east: 7.2821), feeds: [ScooterCityFeed(id: "germany:dott_de_sankt_augustin"), ScooterCityFeed(id: "germany:voi_de_bonn")]))
+        cities.append(ScooterCity(id: "de:Solingen", name: "Solingen", countryCode: "DE", center: GeoPoint(latitude: 51.1688, longitude: 7.0646), bounds: GeoBounds(south: 51.1323, west: 6.9853, north: 51.2187, east: 7.1275), feeds: [ScooterCityFeed(id: "germany:dott_de_solingen")]))
+        cities.append(ScooterCity(id: "de:Troisdorf", name: "Troisdorf", countryCode: "DE", center: GeoPoint(latitude: 50.8129, longitude: 7.1252), bounds: GeoBounds(south: 50.7701, west: 7.0808, north: 50.8467, east: 7.1904), feeds: [ScooterCityFeed(id: "germany:dott_de_troisdorf")]))
+        cities.append(ScooterCity(id: "de:Überlingen", name: "Überlingen", countryCode: "DE", center: GeoPoint(latitude: 47.7677, longitude: 9.1761), bounds: GeoBounds(south: 47.7479, west: 9.1316, north: 47.7827, east: 9.2051), feeds: [ScooterCityFeed(id: "germany:dott_de_uberlingen")]))
+        cities.append(ScooterCity(id: "de:Ulm", name: "Ulm", countryCode: "DE", center: GeoPoint(latitude: 48.3985, longitude: 9.9925), bounds: GeoBounds(south: 48.3409, west: 9.9187, north: 48.4485, east: 10.0788), feeds: [ScooterCityFeed(id: "germany:dott_de_ulm")]))
+        cities.append(ScooterCity(id: "de:Nürnberg", name: "Nürnberg", countryCode: "DE", center: GeoPoint(latitude: 49.4527, longitude: 11.0761), bounds: GeoBounds(south: 49.1953468350688, west: 10.6919663057816, north: 49.7690097902586, east: 11.7203467479068), feeds: [ScooterCityFeed(id: "germany:dott_de_nurnberg"), ScooterCityFeed(id: "germany:voi_de_app_169")]))
+        cities.append(ScooterCity(id: "de:Wolfsburg", name: "Wolfsburg", countryCode: "DE", center: GeoPoint(latitude: 52.4223, longitude: 10.7873), bounds: GeoBounds(south: 52.3652, west: 10.6754, north: 52.4678, east: 10.869), feeds: [ScooterCityFeed(id: "germany:dott_de_wolfsburg")]))
+        cities.append(ScooterCity(id: "de:Zwickau", name: "Zwickau", countryCode: "DE", center: GeoPoint(latitude: 50.7334, longitude: 12.4792), bounds: GeoBounds(south: 50.7018, west: 12.4519, north: 50.7432, east: 12.524), feeds: [ScooterCityFeed(id: "germany:dott_de_zwickau")]))
+        cities.append(ScooterCity(id: "de:Siegburg", name: "Siegburg", countryCode: "DE", center: GeoPoint(latitude: 50.7928, longitude: 7.2071), bounds: GeoBounds(south: 50.7708, west: 7.1602, north: 50.837, east: 7.3245), feeds: [ScooterCityFeed(id: "germany:voi_de_bonn")]))
+        cities.append(ScooterCity(id: "de:Witten", name: "Witten", countryCode: "DE", center: GeoPoint(latitude: 51.437, longitude: 7.3351), bounds: GeoBounds(south: 51.3611, west: 7.2321, north: 51.4933, east: 7.4375), feeds: [ScooterCityFeed(id: "germany:voi_de_bochum")]))
+        cities.append(ScooterCity(id: "de:Schwerin", name: "Schwerin", countryCode: "DE", center: GeoPoint(latitude: 53.61888, longitude: 11.40799), bounds: GeoBounds(south: 53.50118693001041, west: 11.180565993281183, north: 53.73805436614699, east: 11.62999014469931), feeds: [ScooterCityFeed(id: "germany:voi_de_app_361")]))
+        cities.append(ScooterCity(id: "de:Magdeburg", name: "Magdeburg", countryCode: "DE", center: GeoPoint(latitude: 52.15753, longitude: 11.65951), bounds: GeoBounds(south: 51.91202302178859, west: 11.210910807618658, north: 52.42622268230737, east: 12.15325949173283), feeds: [ScooterCityFeed(id: "germany:voi_de_app_382")]))
+        cities.append(ScooterCity(id: "de:Mainz", name: "Mainz", countryCode: "DE", center: GeoPoint(latitude: 50, longitude: 8.27), bounds: GeoBounds(south: 49.8629916997857, west: 7.94021781950754, north: 50.025, east: 8.39298161072504), feeds: [ScooterCityFeed(id: "germany:voi_de_app_305")]))
+        cities.append(ScooterCity(id: "de:Augsburg", name: "Augsburg", countryCode: "DE", center: GeoPoint(latitude: 48.37796, longitude: 10.89844), bounds: GeoBounds(south: 48.2411382384804, west: 10.65673828125, north: 48.5147849720974, east: 11.14013671875), feeds: [ScooterCityFeed(id: "germany:voi_de_app_162")]))
+        cities.append(ScooterCity(id: "de:Lübeck", name: "Lübeck", countryCode: "DE", center: GeoPoint(latitude: 53.87019, longitude: 10.68888), bounds: GeoBounds(south: 53.63491483484561, west: 10.319019787929623, north: 54.10546451711241, east: 11.058746731289023), feeds: [ScooterCityFeed(id: "germany:voi_de_app_157")]))
+        cities.append(ScooterCity(id: "de:Kassel", name: "Kassel", countryCode: "DE", center: GeoPoint(latitude: 51.3127, longitude: 9.4797), bounds: GeoBounds(south: 51.264893, west: 9.404046, north: 51.353084, east: 9.566549), feeds: [ScooterCityFeed(id: "germany:qick_de_kassel")]))
+        cities.append(ScooterCity(id: "at:Baden", name: "Baden", countryCode: "AT", center: GeoPoint(latitude: 48.004, longitude: 16.2423), bounds: GeoBounds(south: 47.9753, west: 16.1998, north: 48.0189, east: 16.2796), feeds: [ScooterCityFeed(id: "austria:dott_at_baden")]))
+        cities.append(ScooterCity(id: "at:Bregenz", name: "Bregenz", countryCode: "AT", center: GeoPoint(latitude: 47.4981, longitude: 9.7371), bounds: GeoBounds(south: 47.4355, west: 9.6622, north: 47.584, east: 9.7976), feeds: [ScooterCityFeed(id: "austria:dott_at_bregenz")]))
+        cities.append(ScooterCity(id: "at:Dornbirn", name: "Dornbirn", countryCode: "AT", center: GeoPoint(latitude: 47.4159, longitude: 9.7382), bounds: GeoBounds(south: 47.3797, west: 9.6916, north: 47.4558, east: 9.7715), feeds: [ScooterCityFeed(id: "austria:dott_at_dornbirn")]))
+        cities.append(ScooterCity(id: "at:Innsbruck", name: "Innsbruck", countryCode: "AT", center: GeoPoint(latitude: 47.2651, longitude: 11.3988), bounds: GeoBounds(south: 47.15953685076627, west: 11.228975654139106, north: 47.38419043001886, east: 11.57644596129552), feeds: [ScooterCityFeed(id: "austria:dott_at_innsbruck"), ScooterCityFeed(id: "austria:voi_at_app_381")]))
+        cities.append(ScooterCity(id: "at:Klagenfurt", name: "Klagenfurt", countryCode: "AT", center: GeoPoint(latitude: 46.6207, longitude: 14.3109), bounds: GeoBounds(south: 46.5887, west: 14.1948, north: 46.6488, east: 14.3747), feeds: [ScooterCityFeed(id: "austria:dott_at_klagenfurt")]))
+        cities.append(ScooterCity(id: "at:Leoben", name: "Leoben", countryCode: "AT", center: GeoPoint(latitude: 47.3823, longitude: 15.0941), bounds: GeoBounds(south: 47.3494, west: 15.0269, north: 47.4042, east: 15.1521), feeds: [ScooterCityFeed(id: "austria:dott_at_leoben")]))
+        cities.append(ScooterCity(id: "at:Linz", name: "Linz", countryCode: "AT", center: GeoPoint(latitude: 48.2962, longitude: 14.2939), bounds: GeoBounds(south: 48.2424, west: 14.2643, north: 48.3402, east: 14.3302), feeds: [ScooterCityFeed(id: "austria:dott_at_linz")]))
+        cities.append(ScooterCity(id: "at:Mödling", name: "Mödling", countryCode: "AT", center: GeoPoint(latitude: 48.0784, longitude: 16.2948), bounds: GeoBounds(south: 48.0383, west: 16.2556, north: 48.096, east: 16.3323), feeds: [ScooterCityFeed(id: "austria:dott_at_modling")]))
+        cities.append(ScooterCity(id: "at:Wels", name: "Wels", countryCode: "AT", center: GeoPoint(latitude: 48.1645, longitude: 14.019), bounds: GeoBounds(south: 48.1172, west: 13.9296, north: 48.1943, east: 14.0667), feeds: [ScooterCityFeed(id: "austria:dott_at_wels")]))
+        cities.append(ScooterCity(id: "at:Villach", name: "Villach", countryCode: "AT", center: GeoPoint(latitude: 46.6179, longitude: 13.8474), bounds: GeoBounds(south: 46.5811, west: 13.8111, north: 46.6664, east: 13.9161), feeds: [ScooterCityFeed(id: "austria:dott_at_villach")]))
+        cities.append(ScooterCity(id: "at:Wiener Neustadt", name: "Wiener Neustadt", countryCode: "AT", center: GeoPoint(latitude: 47.8206, longitude: 16.2406), bounds: GeoBounds(south: 47.7881, west: 16.1933, north: 47.8492, east: 16.2855), feeds: [ScooterCityFeed(id: "austria:dott_at_wiener_neustadt")]))
+        cities.append(ScooterCity(id: "at:Wien", name: "Wien", countryCode: "AT", center: GeoPoint(latitude: 48.19277, longitude: 16.40137), bounds: GeoBounds(south: 48.04584185842637, west: 16.11420143738522, north: 48.339707387160644, east: 16.688542048345653), feeds: [ScooterCityFeed(id: "austria:voi_at_app_317")]))
+        cities.append(ScooterCity(id: "it:Napoli", name: "Napoli", countryCode: "IT", center: GeoPoint(latitude: 40.8518, longitude: 14.2681), bounds: GeoBounds(south: 40.7520051863504, west: 14.1066, north: 40.93720778574244, east: 14.3912), feeds: [ScooterCityFeed(id: "italy:bird_it_napoli"), ScooterCityFeed(id: "italy:voi_it_app_322")]))
+        cities.append(ScooterCity(id: "it:Palermo", name: "Palermo", countryCode: "IT", center: GeoPoint(latitude: 38.1157, longitude: 13.3613), bounds: GeoBounds(south: 38.0876, west: 13.26, north: 38.2183, east: 13.388), feeds: [ScooterCityFeed(id: "italy:bird_it_palermo"), ScooterCityFeed(id: "italy:dott_it_palermo")]))
+        cities.append(ScooterCity(id: "it:Roma", name: "Roma", countryCode: "IT", center: GeoPoint(latitude: 41.9028, longitude: 12.4964), bounds: GeoBounds(south: 41.6884, west: 12.2183, north: 42.0928, east: 12.7268), feeds: [ScooterCityFeed(id: "italy:bird_it_rome"), ScooterCityFeed(id: "italy:dott_it_roma")]))
+        cities.append(ScooterCity(id: "it:Catania", name: "Catania", countryCode: "IT", center: GeoPoint(latitude: 37.5023, longitude: 15.0873), bounds: GeoBounds(south: 37.465, west: 15.0445, north: 37.5427, east: 15.1362), feeds: [ScooterCityFeed(id: "italy:elerent_it_catania")]))
+        cities.append(ScooterCity(id: "it:Bari", name: "Bari", countryCode: "IT", center: GeoPoint(latitude: 41.1166, longitude: 16.8625), bounds: GeoBounds(south: 41.0421, west: 16.7286, north: 41.172, east: 17.0146), feeds: [ScooterCityFeed(id: "italy:dott_it_bari")]))
+        cities.append(ScooterCity(id: "it:Bergamo", name: "Bergamo", countryCode: "IT", center: GeoPoint(latitude: 45.6952, longitude: 9.6742), bounds: GeoBounds(south: 45.6534, west: 9.6174, north: 45.7334, east: 9.7157), feeds: [ScooterCityFeed(id: "italy:dott_it_bergamo")]))
+        cities.append(ScooterCity(id: "it:Varese", name: "Varese", countryCode: "IT", center: GeoPoint(latitude: 45.8176, longitude: 8.8299), bounds: GeoBounds(south: 45.7766, west: 8.735, north: 45.8859, east: 8.8719), feeds: [ScooterCityFeed(id: "italy:dott_it_varese")]))
+        cities.append(ScooterCity(id: "it:Ferrara", name: "Ferrara", countryCode: "IT", center: GeoPoint(latitude: 44.839, longitude: 11.6119), bounds: GeoBounds(south: 44.7985, west: 11.5342, north: 44.9095, east: 11.6801), feeds: [ScooterCityFeed(id: "italy:dott_it_ferrara")]))
+        cities.append(ScooterCity(id: "it:Jesolo", name: "Jesolo", countryCode: "IT", center: GeoPoint(latitude: 45.4974, longitude: 12.6184), bounds: GeoBounds(south: 45.4732, west: 12.5305, north: 45.6019, east: 12.7466), feeds: [ScooterCityFeed(id: "italy:dott_it_jesolo")]))
+        cities.append(ScooterCity(id: "it:Torino", name: "Torino", countryCode: "IT", center: GeoPoint(latitude: 45.07, longitude: 7.6621), bounds: GeoBounds(south: 44.9259, west: 7.4693, north: 45.1778, east: 7.8341), feeds: [ScooterCityFeed(id: "italy:dott_it_torino")]))
+        cities.append(ScooterCity(id: "it:Milano", name: "Milano", countryCode: "IT", center: GeoPoint(latitude: 45.4771, longitude: 9.2001), bounds: GeoBounds(south: 45.3847, west: 9.0389, north: 45.5588, east: 9.3113), feeds: [ScooterCityFeed(id: "italy:dott_it_milano")]))
+        cities.append(ScooterCity(id: "it:Modena", name: "Modena", countryCode: "IT", center: GeoPoint(latitude: 44.6452, longitude: 10.9307), bounds: GeoBounds(south: 44.5609, west: 10.7799, north: 44.7283, east: 11.0137), feeds: [ScooterCityFeed(id: "italy:dott_it_modena")]))
+        cities.append(ScooterCity(id: "it:Monza", name: "Monza", countryCode: "IT", center: GeoPoint(latitude: 45.578, longitude: 9.274), bounds: GeoBounds(south: 45.5513, west: 9.2262, north: 45.6342, east: 9.3269), feeds: [ScooterCityFeed(id: "italy:dott_it_monza")]))
+        cities.append(ScooterCity(id: "it:Padova", name: "Padova", countryCode: "IT", center: GeoPoint(latitude: 45.4148, longitude: 11.8819), bounds: GeoBounds(south: 45.2723, west: 11.7037, north: 45.517, east: 12.029), feeds: [ScooterCityFeed(id: "italy:dott_it_padova")]))
+        cities.append(ScooterCity(id: "it:Reggio nell'Emilia", name: "Reggio nell'Emilia", countryCode: "IT", center: GeoPoint(latitude: 44.6976, longitude: 10.6311), bounds: GeoBounds(south: 44.6393, west: 10.537329582127876, north: 44.76818909778005, east: 10.739203350602189), feeds: [ScooterCityFeed(id: "italy:dott_it_reggio_nell_emilia"), ScooterCityFeed(id: "italy:voi_it_app_252")]))
+        cities.append(ScooterCity(id: "it:Cagliari", name: "Cagliari", countryCode: "IT", center: GeoPoint(latitude: 39.2257, longitude: 9.1257), bounds: GeoBounds(south: 39.1842, west: 9.0798, north: 39.2658, east: 9.2271), feeds: [ScooterCityFeed(id: "italy:dott_it_cagliari")]))
+        cities.append(ScooterCity(id: "it:Trento", name: "Trento", countryCode: "IT", center: GeoPoint(latitude: 46.0672, longitude: 11.1203), bounds: GeoBounds(south: 46.03, west: 11.0796, north: 46.1382, east: 11.1395), feeds: [ScooterCityFeed(id: "italy:dott_it_trento")]))
+        cities.append(ScooterCity(id: "it:Verona", name: "Verona", countryCode: "IT", center: GeoPoint(latitude: 45.4379, longitude: 10.9919), bounds: GeoBounds(south: 45.3474, west: 10.8749, north: 45.5438, east: 11.1259), feeds: [ScooterCityFeed(id: "italy:dott_it_verona")]))
+        cities.append(ScooterCity(id: "be:Bruxelles", name: "Bruxelles", countryCode: "BE", center: GeoPoint(latitude: 50.8467, longitude: 4.3525), bounds: GeoBounds(south: 50.7705, west: 4.2448, north: 50.9224, east: 4.4816), feeds: [ScooterCityFeed(id: "belgium:bolt_be_bruxelles"), ScooterCityFeed(id: "belgium:dott_be_bruxelles")]))
+        cities.append(ScooterCity(id: "be:Charleroi", name: "Charleroi", countryCode: "BE", center: GeoPoint(latitude: 50.4108, longitude: 4.4446), bounds: GeoBounds(south: 50.3504, west: 4.3459, north: 50.4817, east: 4.5161), feeds: [ScooterCityFeed(id: "belgium:dott_be_charleroi"), ScooterCityFeed(id: "belgium:pony_be_charleroi")]))
+        cities.append(ScooterCity(id: "be:Liège", name: "Liège", countryCode: "BE", center: GeoPoint(latitude: 50.6326, longitude: 5.5797), bounds: GeoBounds(south: 50.552, west: 5.5093, north: 50.7117, east: 5.6894), feeds: [ScooterCityFeed(id: "belgium:dott_be_liege")]))
+        cities.append(ScooterCity(id: "be:Herstal", name: "Herstal", countryCode: "BE", center: GeoPoint(latitude: 50.665, longitude: 5.63), bounds: GeoBounds(south: 50.6458, west: 5.5414, north: 50.7117, east: 5.6715), feeds: [ScooterCityFeed(id: "belgium:dott_be_liege")]))
+        cities.append(ScooterCity(id: "be:Blankenberge", name: "Blankenberge", countryCode: "BE", center: GeoPoint(latitude: 51.3131, longitude: 3.1316), bounds: GeoBounds(south: 51.2861, west: 3.0977, north: 51.3268, east: 3.1643), feeds: [ScooterCityFeed(id: "belgium:hoppy_be_blankenberge")]))
+        cities.append(ScooterCity(id: "be:Kortrijk", name: "Kortrijk", countryCode: "BE", center: GeoPoint(latitude: 50.8279, longitude: 3.2649), bounds: GeoBounds(south: 50.7643, west: 3.2165, north: 50.8622, east: 3.3118), feeds: [ScooterCityFeed(id: "belgium:hoppy_be_kortrijk")]))
+        cities.append(ScooterCity(id: "be:Mechelen", name: "Mechelen", countryCode: "BE", center: GeoPoint(latitude: 51.0281, longitude: 4.4794), bounds: GeoBounds(south: 50.9977, west: 4.445, north: 51.0485, east: 4.5283), feeds: [ScooterCityFeed(id: "belgium:hoppy_be_mechelen")]))
+        cities.append(ScooterCity(id: "be:Oostende", name: "Oostende", countryCode: "BE", center: GeoPoint(latitude: 51.2253, longitude: 2.9197), bounds: GeoBounds(south: 51.187, west: 2.8483, north: 51.2612, east: 2.9994), feeds: [ScooterCityFeed(id: "belgium:hoppy_be_oostende")]))
+        cities.append(ScooterCity(id: "be:Sint-Niklaas", name: "Sint-Niklaas", countryCode: "BE", center: GeoPoint(latitude: 51.165, longitude: 4.1395), bounds: GeoBounds(south: 51.1416, west: 4.1029, north: 51.1882, east: 4.1829), feeds: [ScooterCityFeed(id: "belgium:hoppy_be_sint_niklaas")]))
+        cities.append(ScooterCity(id: "be:Antwerpen", name: "Antwerpen", countryCode: "BE", center: GeoPoint(latitude: 51.2211, longitude: 4.3997), bounds: GeoBounds(south: 51.1544, west: 4.3381, north: 51.2709, east: 4.4885), feeds: [ScooterCityFeed(id: "belgium:voi_be_antwerpen")]))
+        cities.append(ScooterCity(id: "no:Oslo", name: "Oslo", countryCode: "NO", center: GeoPoint(latitude: 59.9109, longitude: 10.7528), bounds: GeoBounds(south: 59.8134, west: 10.6158, north: 59.9871, east: 10.9574), feeds: [ScooterCityFeed(id: "norway:bolt_no_oslo"), ScooterCityFeed(id: "norway:ryde_no_oslo"), ScooterCityFeed(id: "norway:voi_no_oslo")]))
+        cities.append(ScooterCity(id: "no:Stjørdal", name: "Stjørdal", countryCode: "NO", center: GeoPoint(latitude: 63.4714, longitude: 10.9139), bounds: GeoBounds(south: 63.4299, west: 10.8165, north: 63.5147, east: 10.997), feeds: [ScooterCityFeed(id: "norway:dott_no_stjordal")]))
+        cities.append(ScooterCity(id: "no:Trondheim", name: "Trondheim", countryCode: "NO", center: GeoPoint(latitude: 63.4304, longitude: 10.3953), bounds: GeoBounds(south: 63.3352, west: 10.306, north: 63.4618, east: 10.5549), pauses: [ScooterSeasonalPause(from: "12-02", until: "03-15", timeZone: "Europe/Oslo")], feeds: [ScooterCityFeed(id: "norway:dott_no_trondheim", pause: ScooterSeasonalPause(from: "12-02", until: "03-15", timeZone: "Europe/Oslo")), ScooterCityFeed(id: "norway:ryde_no_trondheim", pause: ScooterSeasonalPause(from: "12-02", until: "03-15", timeZone: "Europe/Oslo")), ScooterCityFeed(id: "norway:voi_no_trondheim", pause: ScooterSeasonalPause(from: "12-02", until: "03-15", timeZone: "Europe/Oslo"))]))
+        cities.append(ScooterCity(id: "no:Ålesund", name: "Ålesund", countryCode: "NO", center: GeoPoint(latitude: 62.4712, longitude: 6.1538), bounds: GeoBounds(south: 62.425, west: 6.0945, north: 62.4861, east: 6.4232), feeds: [ScooterCityFeed(id: "norway:ryde_no_alesund")]))
+        cities.append(ScooterCity(id: "no:Asker", name: "Asker", countryCode: "NO", center: GeoPoint(latitude: 59.8335, longitude: 10.4345), bounds: GeoBounds(south: 59.8079, west: 10.3717, north: 59.8829, east: 10.5414), feeds: [ScooterCityFeed(id: "norway:ryde_no_asker"), ScooterCityFeed(id: "norway:voi_no_baerum_asker")]))
+        cities.append(ScooterCity(id: "no:Bærum", name: "Bærum", countryCode: "NO", center: GeoPoint(latitude: 59.8926, longitude: 10.5245), bounds: GeoBounds(south: 59.8704, west: 10.4612, north: 59.9607, east: 10.6494), feeds: [ScooterCityFeed(id: "norway:ryde_no_baerum"), ScooterCityFeed(id: "norway:voi_no_baerum_asker")]))
+        cities.append(ScooterCity(id: "no:Bodø", name: "Bodø", countryCode: "NO", center: GeoPoint(latitude: 67.2804, longitude: 14.4049), bounds: GeoBounds(south: 67.2666, west: 14.3304, north: 67.3252, east: 14.6166), pauses: [ScooterSeasonalPause(from: "12-01", until: "04-01", timeZone: "Europe/Oslo")], feeds: [ScooterCityFeed(id: "norway:ryde_no_bodo", pause: ScooterSeasonalPause(from: "12-01", until: "04-01", timeZone: "Europe/Oslo"))]))
+        cities.append(ScooterCity(id: "no:Fredrikstad", name: "Fredrikstad", countryCode: "NO", center: GeoPoint(latitude: 59.209, longitude: 10.9503), bounds: GeoBounds(south: 59.1759, west: 10.872, north: 59.275, east: 11.0299), feeds: [ScooterCityFeed(id: "norway:ryde_no_fredrikstad"), ScooterCityFeed(id: "norway:voi_no_fredrikstad_sarpsborg")]))
+        cities.append(ScooterCity(id: "no:Lillestrøm", name: "Lillestrøm", countryCode: "NO", center: GeoPoint(latitude: 59.9534, longitude: 11.0452), bounds: GeoBounds(south: 59.8947, west: 10.9712, north: 60.0214, east: 11.106), pauses: [ScooterSeasonalPause(from: "12-01", until: "03-01", timeZone: "Europe/Oslo")], feeds: [ScooterCityFeed(id: "norway:ryde_no_lillestrom", pause: ScooterSeasonalPause(from: "12-01", until: "03-01", timeZone: "Europe/Oslo")), ScooterCityFeed(id: "norway:voi_no_lillestrom_lorenskog", pause: ScooterSeasonalPause(from: "12-01", until: "03-01", timeZone: "Europe/Oslo"))]))
+        cities.append(ScooterCity(id: "no:Lørenskog", name: "Lørenskog", countryCode: "NO", center: GeoPoint(latitude: 59.9277, longitude: 10.9572), bounds: GeoBounds(south: 59.9032, west: 10.9151, north: 59.9916, east: 11.0068), pauses: [ScooterSeasonalPause(from: "12-01", until: "03-01", timeZone: "Europe/Oslo")], feeds: [ScooterCityFeed(id: "norway:ryde_no_lorenskog", pause: ScooterSeasonalPause(from: "12-01", until: "03-01", timeZone: "Europe/Oslo")), ScooterCityFeed(id: "norway:voi_no_lillestrom_lorenskog", pause: ScooterSeasonalPause(from: "12-01", until: "03-01", timeZone: "Europe/Oslo"))]))
+        cities.append(ScooterCity(id: "no:Porsgrunn", name: "Porsgrunn", countryCode: "NO", center: GeoPoint(latitude: 59.1411, longitude: 9.6555), bounds: GeoBounds(south: 59.1153, west: 9.6191, north: 59.1616, east: 9.6952), pauses: [ScooterSeasonalPause(from: "12-15", until: "clear", timeZone: "Europe/Oslo")], feeds: [ScooterCityFeed(id: "norway:ryde_no_porsgrunn", pause: ScooterSeasonalPause(from: "12-15", until: "clear", timeZone: "Europe/Oslo")), ScooterCityFeed(id: "norway:ryde_no_skien", pause: ScooterSeasonalPause(from: "12-15", until: "clear", timeZone: "Europe/Oslo"))]))
+        cities.append(ScooterCity(id: "no:Sandefjord", name: "Sandefjord", countryCode: "NO", center: GeoPoint(latitude: 59.1301, longitude: 10.2255), bounds: GeoBounds(south: 59.0932, west: 10.164, north: 59.1633, east: 10.2922), feeds: [ScooterCityFeed(id: "norway:ryde_no_sandefjord")]))
+        cities.append(ScooterCity(id: "no:Sarpsborg", name: "Sarpsborg", countryCode: "NO", center: GeoPoint(latitude: 59.2842, longitude: 11.1101), bounds: GeoBounds(south: 59.2598, west: 11.021, north: 59.3078, east: 11.1466), feeds: [ScooterCityFeed(id: "norway:ryde_no_sarpsborg"), ScooterCityFeed(id: "norway:voi_no_fredrikstad_sarpsborg")]))
+        cities.append(ScooterCity(id: "no:Skien", name: "Skien", countryCode: "NO", center: GeoPoint(latitude: 59.2075, longitude: 9.6107), bounds: GeoBounds(south: 59.1385, west: 9.52, north: 59.2656, east: 9.6801), pauses: [ScooterSeasonalPause(from: "12-15", until: "clear", timeZone: "Europe/Oslo")], feeds: [ScooterCityFeed(id: "norway:ryde_no_skien", pause: ScooterSeasonalPause(from: "12-15", until: "clear", timeZone: "Europe/Oslo"))]))
+        cities.append(ScooterCity(id: "no:Stavanger", name: "Stavanger", countryCode: "NO", center: GeoPoint(latitude: 58.9701, longitude: 5.7315), bounds: GeoBounds(south: 58.868, west: 5.5629, north: 59.0144, east: 5.777), feeds: [ScooterCityFeed(id: "norway:ryde_no_stavanger"), ScooterCityFeed(id: "norway:voi_no_stavanger_sandnes")]))
+        cities.append(ScooterCity(id: "no:Sandnes", name: "Sandnes", countryCode: "NO", center: GeoPoint(latitude: 58.8523, longitude: 5.7366), bounds: GeoBounds(south: 58.765, west: 5.6738, north: 58.896, east: 5.7891), feeds: [ScooterCityFeed(id: "norway:ryde_no_stavanger"), ScooterCityFeed(id: "norway:voi_no_stavanger_sandnes")]))
+        cities.append(ScooterCity(id: "no:Tønsberg", name: "Tønsberg", countryCode: "NO", center: GeoPoint(latitude: 59.2677, longitude: 10.4081), bounds: GeoBounds(south: 59.2303, west: 10.3765, north: 59.3091, east: 10.4904), feeds: [ScooterCityFeed(id: "norway:ryde_no_tonsberg")]))
+        cities.append(ScooterCity(id: "no:Tromsø", name: "Tromsø", countryCode: "NO", center: GeoPoint(latitude: 69.6514, longitude: 18.9586), bounds: GeoBounds(south: 69.5976, west: 18.8764, north: 69.7169, east: 19.0959), pauses: [ScooterSeasonalPause(from: "11-02", until: "05-01", timeZone: "Europe/Oslo")], feeds: [ScooterCityFeed(id: "norway:ryde_no_tromso", pause: ScooterSeasonalPause(from: "11-02", until: "05-01", timeZone: "Europe/Oslo"))]))
+        cities.append(ScooterCity(id: "no:Arendal", name: "Arendal", countryCode: "NO", center: GeoPoint(latitude: 58.4615, longitude: 8.7663), bounds: GeoBounds(south: 58.4301, west: 8.6955, north: 58.4883, east: 8.8325), feeds: [ScooterCityFeed(id: "norway:voi_no_arendal")]))
+        cities.append(ScooterCity(id: "no:Kristiansand", name: "Kristiansand", countryCode: "NO", center: GeoPoint(latitude: 58.1463, longitude: 7.996), bounds: GeoBounds(south: 58.0678, west: 7.754, north: 58.1969, east: 8.1385), feeds: [ScooterCityFeed(id: "norway:voi_no_kristiansand_vennesla")]))
+        cities.append(ScooterCity(id: "no:Vennesla", name: "Vennesla", countryCode: "NO", center: GeoPoint(latitude: 58.2688, longitude: 7.9724), bounds: GeoBounds(south: 58.2505, west: 7.9539, north: 58.2926, east: 7.9974), feeds: [ScooterCityFeed(id: "norway:voi_no_kristiansand_vennesla")]))
+        cities.append(ScooterCity(id: "no:Moss", name: "Moss", countryCode: "NO", center: GeoPoint(latitude: 59.432, longitude: 10.6573), bounds: GeoBounds(south: 59.4038, west: 10.6092, north: 59.4596, east: 10.7152), feeds: [ScooterCityFeed(id: "norway:voi_no_moss")]))
+        cities.append(ScooterCity(id: "no:Grimstad", name: "Grimstad", countryCode: "NO", center: GeoPoint(latitude: 58.34812, longitude: 8.55545), bounds: GeoBounds(south: 58.230132386860056, west: 8.353023308105405, north: 58.45957412949791, east: 8.761492197536528), feeds: [ScooterCityFeed(id: "norway:voi_no_app_408")]))
+        cities.append(ScooterCity(id: "no:Lillesand", name: "Lillesand", countryCode: "NO", center: GeoPoint(latitude: 58.25724, longitude: 8.36125), bounds: GeoBounds(south: 58.162260423993764, west: 8.20978524035672, north: 58.349742838363994, east: 8.509530083720346), feeds: [ScooterCityFeed(id: "norway:voi_no_app_409")]))
+        cities.append(ScooterCity(id: "no:Askøy", name: "Askøy", countryCode: "NO", center: GeoPoint(latitude: 60.46235, longitude: 5.13254), bounds: GeoBounds(south: 60.38575997506088, west: 4.989212125836212, north: 60.53661390222527, east: 5.265346602135307), feeds: [ScooterCityFeed(id: "norway:voi_no_app_411")]))
+        cities.append(ScooterCity(id: "no:Knarvik", name: "Knarvik", countryCode: "NO", center: GeoPoint(latitude: 60.55542, longitude: 5.24812), bounds: GeoBounds(south: 60.501100695222156, west: 5.093784297130105, north: 60.61408450360314, east: 5.3925787949326836), feeds: [ScooterCityFeed(id: "norway:voi_no_app_412")]))
+        cities.append(ScooterCity(id: "no:Ålgård", name: "Ålgård", countryCode: "NO", center: GeoPoint(latitude: 58.74605, longitude: 5.91758), bounds: GeoBounds(south: 58.683892473715765, west: 5.770594724002848, north: 58.80832406497031, east: 6.074248012778891), feeds: [ScooterCityFeed(id: "norway:voi_no_app_414")]))
+        cities.append(ScooterCity(id: "no:Sotra", name: "Sotra", countryCode: "NO", center: GeoPoint(latitude: 60.34556, longitude: 5.02329), bounds: GeoBounds(south: 60.26833512198984, west: 4.852930244659245, north: 60.44292611183713, east: 5.169747342512637), feeds: [ScooterCityFeed(id: "norway:voi_no_app_354")]))
+        cities.append(ScooterCity(id: "no:Bryne", name: "Bryne", countryCode: "NO", center: GeoPoint(latitude: 58.73931, longitude: 5.6302), bounds: GeoBounds(south: 58.67779851596129, west: 5.468832476586199, north: 58.80327487699317, east: 5.8050357814337685), feeds: [ScooterCityFeed(id: "norway:voi_no_app_415")]))
+        cities.append(ScooterCity(id: "gb:Bournemouth", name: "Bournemouth", countryCode: "GB", center: GeoPoint(latitude: 50.7204, longitude: -1.8796), bounds: GeoBounds(south: 50.7028, west: -1.915, north: 50.7899, east: -1.7851), feeds: [ScooterCityFeed(id: "uk:beryl_gb_bournemouth_christchurch_poole")]))
+        cities.append(ScooterCity(id: "gb:Christchurch", name: "Christchurch", countryCode: "GB", center: GeoPoint(latitude: 50.7354, longitude: -1.7787), bounds: GeoBounds(south: 50.7128, west: -1.785, north: 50.7639, east: -1.6868), feeds: [ScooterCityFeed(id: "uk:beryl_gb_bournemouth_christchurch_poole")]))
+        cities.append(ScooterCity(id: "gb:Poole", name: "Poole", countryCode: "GB", center: GeoPoint(latitude: 50.716, longitude: -1.984), bounds: GeoBounds(south: 50.6776, west: -2.0378, north: 50.7942, east: -1.9151), feeds: [ScooterCityFeed(id: "uk:beryl_gb_bournemouth_christchurch_poole")]))
+        cities.append(ScooterCity(id: "gb:Brighton", name: "Brighton", countryCode: "GB", center: GeoPoint(latitude: 50.8243, longitude: -0.1427), bounds: GeoBounds(south: 50.8081, west: -0.2167, north: 50.8724, east: -0.0935), feeds: [ScooterCityFeed(id: "uk:beryl_gb_brighton")]))
+        cities.append(ScooterCity(id: "gb:Falmouth", name: "Falmouth", countryCode: "GB", center: GeoPoint(latitude: 50.1531, longitude: -5.0716), bounds: GeoBounds(south: 50.1339, west: -5.1335, north: 50.1772, east: -5.0427), feeds: [ScooterCityFeed(id: "uk:beryl_gb_cornwall")]))
+        cities.append(ScooterCity(id: "gb:Newquay", name: "Newquay", countryCode: "GB", center: GeoPoint(latitude: 50.415, longitude: -5.076), bounds: GeoBounds(south: 50.3955, west: -5.1244, north: 50.4283, east: -5.0188), feeds: [ScooterCityFeed(id: "uk:beryl_gb_cornwall")]))
+        cities.append(ScooterCity(id: "gb:Penzance", name: "Penzance", countryCode: "GB", center: GeoPoint(latitude: 50.1186, longitude: -5.5372), bounds: GeoBounds(south: 50.0795, west: -5.5629, north: 50.1351, east: -5.4533), feeds: [ScooterCityFeed(id: "uk:beryl_gb_cornwall")]))
+        cities.append(ScooterCity(id: "gb:Truro", name: "Truro", countryCode: "GB", center: GeoPoint(latitude: 50.2626, longitude: -5.0508), bounds: GeoBounds(south: 50.2396, west: -5.1299, north: 50.2715, east: -5.0141), feeds: [ScooterCityFeed(id: "uk:beryl_gb_cornwall")]))
+        cities.append(ScooterCity(id: "gb:Leeds", name: "Leeds", countryCode: "GB", center: GeoPoint(latitude: 53.7958, longitude: -1.5471), bounds: GeoBounds(south: 53.7731, west: -1.6112, north: 53.8524, east: -1.4765), feeds: [ScooterCityFeed(id: "uk:beryl_gb_leeds")]))
+        cities.append(ScooterCity(id: "gb:Norwich", name: "Norwich", countryCode: "GB", center: GeoPoint(latitude: 52.6285, longitude: 1.2925), bounds: GeoBounds(south: 52.5913, west: 1.1644, north: 52.6952, east: 1.3887), feeds: [ScooterCityFeed(id: "uk:beryl_gb_norwich")]))
+        cities.append(ScooterCity(id: "gb:Wymondham", name: "Wymondham", countryCode: "GB", center: GeoPoint(latitude: 52.5703, longitude: 1.1157), bounds: GeoBounds(south: 52.5508, west: 1.0968, north: 52.5953, east: 1.1503), feeds: [ScooterCityFeed(id: "uk:beryl_gb_norwich")]))
+        cities.append(ScooterCity(id: "gb:Plymouth", name: "Plymouth", countryCode: "GB", center: GeoPoint(latitude: 50.3705, longitude: -4.1422), bounds: GeoBounds(south: 50.3576, west: -4.1953, north: 50.4207, east: -4.0967), feeds: [ScooterCityFeed(id: "uk:beryl_gb_plymouth")]))
+        cities.append(ScooterCity(id: "gb:Liverpool", name: "Liverpool", countryCode: "GB", center: GeoPoint(latitude: 53.4074, longitude: -2.9776), bounds: GeoBounds(south: 53.3314, west: -3.0113, north: 53.4755, east: -2.8194), feeds: [ScooterCityFeed(id: "uk:bolt_gb_liverpool")]))
+        cities.append(ScooterCity(id: "gb:Bath", name: "Bath", countryCode: "GB", center: GeoPoint(latitude: 51.3814, longitude: -2.359), bounds: GeoBounds(south: 51.3473, west: -2.4118, north: 51.4195, east: -2.291), feeds: [ScooterCityFeed(id: "uk:dott_gb_bath")]))
+        cities.append(ScooterCity(id: "gb:Bristol", name: "Bristol", countryCode: "GB", center: GeoPoint(latitude: 51.4536, longitude: -2.5974), bounds: GeoBounds(south: 51.3973, west: -2.7053, north: 51.5499, east: -2.4519), feeds: [ScooterCityFeed(id: "uk:dott_gb_bristol")]))
+        cities.append(ScooterCity(id: "gb:Yate", name: "Yate", countryCode: "GB", center: GeoPoint(latitude: 51.5405, longitude: -2.418), bounds: GeoBounds(south: 51.5197, west: -2.4504, north: 51.5649, east: -2.3796), feeds: [ScooterCityFeed(id: "uk:dott_gb_bristol")]))
+        cities.append(ScooterCity(id: "gb:Milton Keynes", name: "Milton Keynes", countryCode: "GB", center: GeoPoint(latitude: 52.0406, longitude: -0.7594), bounds: GeoBounds(south: 51.9723, west: -0.8446, north: 52.0904, east: -0.6559), feeds: [ScooterCityFeed(id: "uk:dott_gb_milton_keynes")]))
+        cities.append(ScooterCity(id: "gb:Nottingham", name: "Nottingham", countryCode: "GB", center: GeoPoint(latitude: 52.9529, longitude: -1.1498), bounds: GeoBounds(south: 52.8911, west: -1.2505, north: 53.0217, east: -1.1045), feeds: [ScooterCityFeed(id: "uk:dott_gb_nottingham")]))
+        cities.append(ScooterCity(id: "gb:Kettering", name: "Kettering", countryCode: "GB", center: GeoPoint(latitude: 52.39219, longitude: -0.71516), bounds: GeoBounds(south: 52.35028, west: -0.77627, north: 52.43409, east: -0.654055871022936), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_219")]))
+        cities.append(ScooterCity(id: "gb:Wellingborough", name: "Wellingborough", countryCode: "GB", center: GeoPoint(latitude: 52.3045, longitude: -0.7015), bounds: GeoBounds(south: 52.28, west: -0.751, north: 52.329, east: -0.652), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_231")]))
+        cities.append(ScooterCity(id: "gb:Cheltenham", name: "Cheltenham", countryCode: "GB", center: GeoPoint(latitude: 51.9, longitude: -2.08), bounds: GeoBounds(south: 51.802125353332514, west: -2.15, north: 51.976019433793624, east: -1.9274823780819745), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_324")]))
+        cities.append(ScooterCity(id: "gb:Gloucester", name: "Gloucester", countryCode: "GB", center: GeoPoint(latitude: 51.864, longitude: -2.238), bounds: GeoBounds(south: 51.802125353332514, west: -2.359735850790898, north: 51.976019433793624, east: -2.15), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_324")]))
+        cities.append(ScooterCity(id: "gb:Rushden & Higham Ferrers", name: "Rushden & Higham Ferrers", countryCode: "GB", center: GeoPoint(latitude: 52.297, longitude: -0.597), bounds: GeoBounds(south: 52.266, west: -0.642, north: 52.328, east: -0.552), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_232")]))
+        cities.append(ScooterCity(id: "gb:Oxford", name: "Oxford", countryCode: "GB", center: GeoPoint(latitude: 51.7564, longitude: -1.24198), bounds: GeoBounds(south: 51.65752, west: -1.35811, north: 51.85516, east: -1.12534), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_229")]))
+        cities.append(ScooterCity(id: "gb:Isle of Wight", name: "Isle of Wight", countryCode: "GB", center: GeoPoint(latitude: 50.66404, longitude: -1.31078), bounds: GeoBounds(south: 50.535367023678354, west: -1.654052658845761, north: 50.792267403779235, east: -1.0340508111103688), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_340")]))
+        cities.append(ScooterCity(id: "gb:Cambridge", name: "Cambridge", countryCode: "GB", center: GeoPoint(latitude: 52.18816, longitude: 0.11933), bounds: GeoBounds(south: 52.0942173949546, west: -0.01478658747473105, north: 52.27488998377251, east: 0.2705901847699579), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_211")]))
+        cities.append(ScooterCity(id: "gb:Aylesbury", name: "Aylesbury", countryCode: "GB", center: GeoPoint(latitude: 51.8354, longitude: -0.82327), bounds: GeoBounds(south: 51.75143574538053, west: -1.0259084965180603, north: 51.925731156124236, east: -0.6372224109644254), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_349")]))
+        cities.append(ScooterCity(id: "gb:Braintree", name: "Braintree", countryCode: "GB", center: GeoPoint(latitude: 51.88476, longitude: 0.54181), bounds: GeoBounds(south: 51.842084429902044, west: 0.4733700577157839, north: 51.92795220891488, east: 0.609286891627528), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_390")]))
+        cities.append(ScooterCity(id: "gb:High Wycombe", name: "High Wycombe", countryCode: "GB", center: GeoPoint(latitude: 51.62756, longitude: -0.7478), bounds: GeoBounds(south: 51.57373959030601, west: -0.8645395546969359, north: 51.68184581972984, east: -0.6284906648417216), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_350")]))
+        cities.append(ScooterCity(id: "gb:Slough", name: "Slough", countryCode: "GB", center: GeoPoint(latitude: 51.51806, longitude: -0.60217), bounds: GeoBounds(south: 51.461967823955305, west: -0.7024455566334863, north: 51.57999246444064, east: -0.5100853796062739), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_348")]))
+        cities.append(ScooterCity(id: "gb:Chelmsford", name: "Chelmsford", countryCode: "GB", center: GeoPoint(latitude: 51.73802, longitude: 0.45288), bounds: GeoBounds(south: 51.66862380002616, west: 0.32576439644858224, north: 51.80814494225751, east: 0.580091663388791), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_391")]))
+        cities.append(ScooterCity(id: "gb:Portsmouth", name: "Portsmouth", countryCode: "GB", center: GeoPoint(latitude: 50.8195, longitude: -1.073), bounds: GeoBounds(south: 50.77, west: -1.147, north: 50.869, east: -0.999), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_235")]))
+        cities.append(ScooterCity(id: "gb:Corby", name: "Corby", countryCode: "GB", center: GeoPoint(latitude: 52.48922, longitude: -0.6885), bounds: GeoBounds(south: 52.448, west: -0.787, north: 52.5304382962175, east: -0.59), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_230")]))
+        cities.append(ScooterCity(id: "gb:Southampton", name: "Southampton", countryCode: "GB", center: GeoPoint(latitude: 50.91603, longitude: -1.40307), bounds: GeoBounds(south: 50.875, west: -1.482, north: 50.957, east: -1.324), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_236")]))
+        cities.append(ScooterCity(id: "gb:Northampton", name: "Northampton", countryCode: "GB", center: GeoPoint(latitude: 52.24358, longitude: -0.89584), bounds: GeoBounds(south: 52.190351431892886, west: -0.9908294677734375, north: 52.29672861135593, east: -0.800628662109375), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_205")]))
+        cities.append(ScooterCity(id: "gb:London", name: "London", countryCode: "GB", center: GeoPoint(latitude: 51.48426, longitude: -0.1286), bounds: GeoBounds(south: 51.30515851278135, west: -0.4506786666871926, north: 51.6669733453627, east: 0.19414977493520894), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_327")]))
+        cities.append(ScooterCity(id: "pt:Almada", name: "Almada", countryCode: "PT", center: GeoPoint(latitude: 38.6831, longitude: -9.1576), bounds: GeoBounds(south: 38.6461, west: -9.205, north: 38.6941, east: -9.1394), feeds: [ScooterCityFeed(id: "portugal:bird_pt_almada"), ScooterCityFeed(id: "portugal:lime_pt_almada")]))
+        cities.append(ScooterCity(id: "pt:Costa da Caparica", name: "Costa da Caparica", countryCode: "PT", center: GeoPoint(latitude: 38.6445, longitude: -9.2336), bounds: GeoBounds(south: 38.6033, west: -9.2516, north: 38.6798, east: -9.2051), feeds: [ScooterCityFeed(id: "portugal:bird_pt_almada"), ScooterCityFeed(id: "portugal:lime_pt_almada")]))
+        cities.append(ScooterCity(id: "pt:Cascais", name: "Cascais", countryCode: "PT", center: GeoPoint(latitude: 38.6969, longitude: -9.4204), bounds: GeoBounds(south: 38.6716, west: -9.4824, north: 38.7592, east: -9.3048), feeds: [ScooterCityFeed(id: "portugal:bird_pt_cascais")]))
+        cities.append(ScooterCity(id: "pt:Coimbra", name: "Coimbra", countryCode: "PT", center: GeoPoint(latitude: 40.2112, longitude: -8.4291), bounds: GeoBounds(south: 40.179, west: -8.4718, north: 40.2378, east: -8.3837), feeds: [ScooterCityFeed(id: "portugal:bird_pt_coimbra")]))
+        cities.append(ScooterCity(id: "pt:Lisboa", name: "Lisboa", countryCode: "PT", center: GeoPoint(latitude: 38.7078, longitude: -9.1366), bounds: GeoBounds(south: 38.6868, west: -9.2341, north: 38.7991, east: -9.0836), feeds: [ScooterCityFeed(id: "portugal:bird_pt_lisboa"), ScooterCityFeed(id: "portugal:lime_pt_lisboa")]))
+        cities.append(ScooterCity(id: "pt:Maia", name: "Maia", countryCode: "PT", center: GeoPoint(latitude: 41.233, longitude: -8.6222), bounds: GeoBounds(south: 41.1957, west: -8.6761, north: 41.2748, east: -8.5498), feeds: [ScooterCityFeed(id: "portugal:bird_pt_maia")]))
+        cities.append(ScooterCity(id: "pt:Matosinhos", name: "Matosinhos", countryCode: "PT", center: GeoPoint(latitude: 41.1807, longitude: -8.6822), bounds: GeoBounds(south: 41.1675, west: -8.7233, north: 41.2315, east: -8.5906), feeds: [ScooterCityFeed(id: "portugal:bird_pt_matosinhos")]))
+        cities.append(ScooterCity(id: "pt:Oeiras", name: "Oeiras", countryCode: "PT", center: GeoPoint(latitude: 38.6926, longitude: -9.3123), bounds: GeoBounds(south: 38.6708, west: -9.3567, north: 38.7512, east: -9.2033), feeds: [ScooterCityFeed(id: "portugal:bird_pt_oeiras")]))
+        cities.append(ScooterCity(id: "pt:Olhão", name: "Olhão", countryCode: "PT", center: GeoPoint(latitude: 37.027, longitude: -7.8411), bounds: GeoBounds(south: 37.0174, west: -7.8629, north: 37.0559, east: -7.8152), feeds: [ScooterCityFeed(id: "portugal:bird_pt_olhao")]))
+        cities.append(ScooterCity(id: "pt:Portimão", name: "Portimão", countryCode: "PT", center: GeoPoint(latitude: 37.1376, longitude: -8.5368), bounds: GeoBounds(south: 37.1099, west: -8.6041, north: 37.1623, east: -8.5214), feeds: [ScooterCityFeed(id: "portugal:bird_pt_portimao")]))
+        cities.append(ScooterCity(id: "pt:Porto", name: "Porto", countryCode: "PT", center: GeoPoint(latitude: 41.1502, longitude: -8.6103), bounds: GeoBounds(south: 41.1351, west: -8.6946, north: 41.1868, east: -8.5741), feeds: [ScooterCityFeed(id: "portugal:bird_pt_porto")]))
+        cities.append(ScooterCity(id: "es:Caleta de Fuste", name: "Caleta de Fuste", countryCode: "ES", center: GeoPoint(latitude: 28.3983, longitude: -13.8602), bounds: GeoBounds(south: 28.3622, west: -13.8885, north: 28.4207, east: -13.8412), feeds: [ScooterCityFeed(id: "spain:bird_es_caleta_de_fuste"), ScooterCityFeed(id: "spain:hoppy_es_caleta_de_fuste")]))
+        cities.append(ScooterCity(id: "es:Getafe", name: "Getafe", countryCode: "ES", center: GeoPoint(latitude: 40.3179, longitude: -3.6871), bounds: GeoBounds(south: 40.3098, west: -3.7197, north: 40.3377, east: -3.6545), feeds: [ScooterCityFeed(id: "spain:bird_es_getafe")]))
+        cities.append(ScooterCity(id: "es:Gijón", name: "Gijón", countryCode: "ES", center: GeoPoint(latitude: 43.5449, longitude: -5.6627), bounds: GeoBounds(south: 43.5042, west: -5.7134, north: 43.5546, east: -5.5986), feeds: [ScooterCityFeed(id: "spain:bird_es_gijon")]))
+        cities.append(ScooterCity(id: "es:Costa Calma", name: "Costa Calma", countryCode: "ES", center: GeoPoint(latitude: 28.1608, longitude: -14.2301), bounds: GeoBounds(south: 28.1311, west: -14.2536, north: 28.1799, east: -14.2029), feeds: [ScooterCityFeed(id: "spain:bird_es_pajara")]))
+        cities.append(ScooterCity(id: "es:Morro Jable", name: "Morro Jable", countryCode: "ES", center: GeoPoint(latitude: 28.0502, longitude: -14.3522), bounds: GeoBounds(south: 28.041, west: -14.3561, north: 28.0831, east: -14.2967), feeds: [ScooterCityFeed(id: "spain:bird_es_pajara")]))
+        cities.append(ScooterCity(id: "es:Playa de las Américas", name: "Playa de las Américas", countryCode: "ES", center: GeoPoint(latitude: 28.0602, longitude: -16.7311), bounds: GeoBounds(south: 28.0375, west: -16.7953, north: 28.1375, east: -16.6901), feeds: [ScooterCityFeed(id: "spain:bird_es_playa_de_las_americas"), ScooterCityFeed(id: "spain:hopp_es_tenerife"), ScooterCityFeed(id: "spain:hoppy_es_tenerife_sur"), ScooterCityFeed(id: "spain:dott_es_playa_de_las_americas")]))
+        cities.append(ScooterCity(id: "es:Torrevieja", name: "Torrevieja", countryCode: "ES", center: GeoPoint(latitude: 37.9775, longitude: -0.6828), bounds: GeoBounds(south: 37.9392, west: -0.7523, north: 38.0354, east: -0.6383), feeds: [ScooterCityFeed(id: "spain:hopp_es_costa_blanca"), ScooterCityFeed(id: "spain:hoppy_es_torrevieja")]))
+        cities.append(ScooterCity(id: "es:Pilar de la Horadada", name: "Pilar de la Horadada", countryCode: "ES", center: GeoPoint(latitude: 37.8675, longitude: -0.7926), bounds: GeoBounds(south: 37.8382, west: -0.8007, north: 37.8943, east: -0.7462), feeds: [ScooterCityFeed(id: "spain:hopp_es_costa_blanca")]))
+        cities.append(ScooterCity(id: "es:Jávea", name: "Jávea", countryCode: "ES", center: GeoPoint(latitude: 38.7894, longitude: 0.1634), bounds: GeoBounds(south: 38.7636, west: 0.16, north: 38.7994, east: 0.2006), feeds: [ScooterCityFeed(id: "spain:hopp_es_javea")]))
+        cities.append(ScooterCity(id: "es:Golf del Sur", name: "Golf del Sur", countryCode: "ES", center: GeoPoint(latitude: 28.033, longitude: -16.6077), bounds: GeoBounds(south: 28.0188, west: -16.6251, north: 28.0377, east: -16.5879), feeds: [ScooterCityFeed(id: "spain:hopp_es_tenerife")]))
+        cities.append(ScooterCity(id: "es:Corralejo", name: "Corralejo", countryCode: "ES", center: GeoPoint(latitude: 28.7289, longitude: -13.8691), bounds: GeoBounds(south: 28.7018, west: -13.8863, north: 28.749, east: -13.8462), feeds: [ScooterCityFeed(id: "spain:hoppy_es_corralejo")]))
+        cities.append(ScooterCity(id: "es:Altea", name: "Altea", countryCode: "ES", center: GeoPoint(latitude: 38.5995, longitude: -0.0518), bounds: GeoBounds(south: 38.58, west: -0.08, north: 38.6464, east: 0.0195), feeds: [ScooterCityFeed(id: "spain:hoppy_es_marina_baixa")]))
+        cities.append(ScooterCity(id: "es:L'Albir", name: "L'Albir", countryCode: "ES", center: GeoPoint(latitude: 38.5698, longitude: -0.0716), bounds: GeoBounds(south: 38.5537, west: -0.08, north: 38.5799, east: -0.0526), feeds: [ScooterCityFeed(id: "spain:hoppy_es_marina_baixa")]))
+        cities.append(ScooterCity(id: "es:L'Alfàs del Pi", name: "L'Alfàs del Pi", countryCode: "ES", center: GeoPoint(latitude: 38.5815, longitude: -0.1021), bounds: GeoBounds(south: 38.5544, west: -0.122, north: 38.6238, east: -0.0801), feeds: [ScooterCityFeed(id: "spain:hoppy_es_marina_baixa")]))
+        cities.append(ScooterCity(id: "es:La Nucía", name: "La Nucía", countryCode: "ES", center: GeoPoint(latitude: 38.6024, longitude: -0.1296), bounds: GeoBounds(south: 38.5634, west: -0.1596, north: 38.634, east: -0.1221), feeds: [ScooterCityFeed(id: "spain:hoppy_es_marina_baixa")]))
+        cities.append(ScooterCity(id: "es:Puerto del Carmen", name: "Puerto del Carmen", countryCode: "ES", center: GeoPoint(latitude: 28.9236, longitude: -13.663), bounds: GeoBounds(south: 28.9145, west: -13.6887, north: 28.9412, east: -13.6057), feeds: [ScooterCityFeed(id: "spain:hoppy_es_puerto_del_carmen")]))
+        cities.append(ScooterCity(id: "es:Marbella", name: "Marbella", countryCode: "ES", center: GeoPoint(latitude: 36.427, longitude: -5.1504), bounds: GeoBounds(south: 36.4076, west: -5.1754, north: 36.5881, east: -4.5935), feeds: [ScooterCityFeed(id: "spain:dott_es_marbella")]))
+        cities.append(ScooterCity(id: "es:Santa Cruz de Tenerife", name: "Santa Cruz de Tenerife", countryCode: "ES", center: GeoPoint(latitude: 28.4723, longitude: -16.2537), bounds: GeoBounds(south: 28.4441, west: -16.2945, north: 28.5106, east: -16.1859), feeds: [ScooterCityFeed(id: "spain:dott_es_santa_cruz_de_tenerife")]))
+        cities.append(ScooterCity(id: "is:Akranes", name: "Akranes", countryCode: "IS", center: GeoPoint(latitude: 64.3171, longitude: -22.0834), bounds: GeoBounds(south: 64.3078, west: -22.1074, north: 64.333, east: -22.0223), feeds: [ScooterCityFeed(id: "iceland:hopp_is_akranes")]))
+        cities.append(ScooterCity(id: "is:Akureyri", name: "Akureyri", countryCode: "IS", center: GeoPoint(latitude: 65.6826, longitude: -18.0913), bounds: GeoBounds(south: 65.6486, west: -18.1687, north: 65.71, east: -18.0277), feeds: [ScooterCityFeed(id: "iceland:hopp_is_akureyri")]))
+        cities.append(ScooterCity(id: "is:Borgarnes", name: "Borgarnes", countryCode: "IS", center: GeoPoint(latitude: 64.5383, longitude: -21.9202), bounds: GeoBounds(south: 64.5283, west: -21.9425, north: 64.563, east: -21.8808), feeds: [ScooterCityFeed(id: "iceland:hopp_is_borgarnes")]))
+        cities.append(ScooterCity(id: "is:Dalvík", name: "Dalvík", countryCode: "IS", center: GeoPoint(latitude: 65.9711, longitude: -18.5304), bounds: GeoBounds(south: 65.9611, west: -18.5579, north: 65.983, east: -18.5043), pauses: [ScooterSeasonalPause(from: "10-21", until: "05-01", timeZone: "Atlantic/Reykjavik")], feeds: [ScooterCityFeed(id: "iceland:hopp_is_dalvik", pause: ScooterSeasonalPause(from: "10-21", until: "05-01", timeZone: "Atlantic/Reykjavik"))]))
+        cities.append(ScooterCity(id: "is:Egilsstaðir", name: "Egilsstaðir", countryCode: "IS", center: GeoPoint(latitude: 65.262, longitude: -14.4035), bounds: GeoBounds(south: 65.2474, west: -14.4586, north: 65.3089, east: -14.3682), feeds: [ScooterCityFeed(id: "iceland:hopp_is_egilsstadir")]))
+        cities.append(ScooterCity(id: "is:Húsavík", name: "Húsavík", countryCode: "IS", center: GeoPoint(latitude: 66.0433, longitude: -17.341), bounds: GeoBounds(south: 66.0289, west: -17.3699, north: 66.0549, east: -17.316), feeds: [ScooterCityFeed(id: "iceland:hopp_is_husavik")]))
+        cities.append(ScooterCity(id: "is:Hveragerði", name: "Hveragerði", countryCode: "IS", center: GeoPoint(latitude: 63.9976, longitude: -21.1868), bounds: GeoBounds(south: 63.9852, west: -21.2262, north: 64.0277, east: -21.1619), feeds: [ScooterCityFeed(id: "iceland:hopp_is_hveragerdi")]))
+        cities.append(ScooterCity(id: "is:Ólafsvík", name: "Ólafsvík", countryCode: "IS", center: GeoPoint(latitude: 64.8959, longitude: -23.7084), bounds: GeoBounds(south: 64.8836, west: -23.7189, north: 64.9001, east: -23.6805), pauses: [ScooterSeasonalPause(from: "10-23", until: "05-01", timeZone: "Atlantic/Reykjavik")], feeds: [ScooterCityFeed(id: "iceland:hopp_is_olafsvik", pause: ScooterSeasonalPause(from: "10-23", until: "05-01", timeZone: "Atlantic/Reykjavik"))]))
+        cities.append(ScooterCity(id: "is:Hellissandur", name: "Hellissandur", countryCode: "IS", center: GeoPoint(latitude: 64.9172, longitude: -23.8825), bounds: GeoBounds(south: 64.9091, west: -23.9007, north: 64.9305, east: -23.801), pauses: [ScooterSeasonalPause(from: "10-23", until: "05-01", timeZone: "Atlantic/Reykjavik")], feeds: [ScooterCityFeed(id: "iceland:hopp_is_olafsvik", pause: ScooterSeasonalPause(from: "10-23", until: "05-01", timeZone: "Atlantic/Reykjavik"))]))
+        cities.append(ScooterCity(id: "is:Reykjanesbær", name: "Reykjanesbær", countryCode: "IS", center: GeoPoint(latitude: 63.9833, longitude: -22.5561), bounds: GeoBounds(south: 63.9551, west: -22.636, north: 64.0158, east: -22.4649), feeds: [ScooterCityFeed(id: "iceland:hopp_is_reykjanesbaer")]))
+        cities.append(ScooterCity(id: "is:Sandgerði", name: "Sandgerði", countryCode: "IS", center: GeoPoint(latitude: 64.0388, longitude: -22.7059), bounds: GeoBounds(south: 64.0228, west: -22.7256, north: 64.0496, east: -22.6789), feeds: [ScooterCityFeed(id: "iceland:hopp_is_reykjanesbaer")]))
+        cities.append(ScooterCity(id: "is:Garður", name: "Garður", countryCode: "IS", center: GeoPoint(latitude: 64.0704, longitude: -22.6512), bounds: GeoBounds(south: 64.0635, west: -22.6826, north: 64.0761, east: -22.634), feeds: [ScooterCityFeed(id: "iceland:hopp_is_reykjanesbaer")]))
+        cities.append(ScooterCity(id: "is:Vogar", name: "Vogar", countryCode: "IS", center: GeoPoint(latitude: 63.9832, longitude: -22.3874), bounds: GeoBounds(south: 63.969, west: -22.3931, north: 63.9868, east: -22.3458), feeds: [ScooterCityFeed(id: "iceland:hopp_is_reykjanesbaer")]))
+        cities.append(ScooterCity(id: "is:Reykjavík", name: "Reykjavík", countryCode: "IS", center: GeoPoint(latitude: 64.146, longitude: -21.9422), bounds: GeoBounds(south: 64.0284, west: -22.0287, north: 64.1917, east: -21.6403), feeds: [ScooterCityFeed(id: "iceland:hopp_is_reykjavik")]))
+        cities.append(ScooterCity(id: "is:Sauðárkrókur", name: "Sauðárkrókur", countryCode: "IS", center: GeoPoint(latitude: 65.7443, longitude: -19.6386), bounds: GeoBounds(south: 65.7279, west: -19.6659, north: 65.7643, east: -19.6194), feeds: [ScooterCityFeed(id: "iceland:hopp_is_saudarkrokur")]))
+        cities.append(ScooterCity(id: "is:Selfoss", name: "Selfoss", countryCode: "IS", center: GeoPoint(latitude: 63.9368, longitude: -21.0035), bounds: GeoBounds(south: 63.9058, west: -21.0713, north: 63.9574, east: -20.9586), feeds: [ScooterCityFeed(id: "iceland:hopp_is_selfoss")]))
+        cities.append(ScooterCity(id: "is:Stykkishólmur", name: "Stykkishólmur", countryCode: "IS", center: GeoPoint(latitude: 65.0743, longitude: -22.7303), bounds: GeoBounds(south: 65.0584, west: -22.762, north: 65.0856, east: -22.7041), feeds: [ScooterCityFeed(id: "iceland:hopp_is_stykkisholmur")]))
+        cities.append(ScooterCity(id: "is:Vestmannaeyjar", name: "Vestmannaeyjar", countryCode: "IS", center: GeoPoint(latitude: 63.4401, longitude: -20.2786), bounds: GeoBounds(south: 63.4233, west: -20.3143, north: 63.454, east: -20.2472), feeds: [ScooterCityFeed(id: "iceland:hopp_is_vestmannaeyjar")]))
+        cities.append(ScooterCity(id: "is:Vík", name: "Vík", countryCode: "IS", center: GeoPoint(latitude: 63.4188, longitude: -19.0055), bounds: GeoBounds(south: 63.4101, west: -19.029, north: 63.4284, east: -18.9801), feeds: [ScooterCityFeed(id: "iceland:hopp_is_vik")]))
+        cities.append(ScooterCity(id: "dk:Aarhus", name: "Aarhus", countryCode: "DK", center: GeoPoint(latitude: 56.15119, longitude: 10.19325), bounds: GeoBounds(south: 56.0639863543046, west: 10.0751495361328, north: 56.2383895039888, east: 10.3113555908203), feeds: [ScooterCityFeed(id: "denmark:voi_dk_app_59")]))
+        cities.append(ScooterCity(id: "dk:Odense", name: "Odense", countryCode: "DK", center: GeoPoint(latitude: 55.39032, longitude: 10.38345), bounds: GeoBounds(south: 55.3010107944959, west: 10.2351379394531, north: 55.4796317138773, east: 10.5317687988281), feeds: [ScooterCityFeed(id: "denmark:voi_dk_app_146")]))
+        cities.append(ScooterCity(id: "dk:Aalborg", name: "Aalborg", countryCode: "DK", center: GeoPoint(latitude: 57.05741, longitude: 9.90555), bounds: GeoBounds(south: 56.9610753568483, west: 9.678955078125, north: 57.15374754486, east: 10.1321411132812), feeds: [ScooterCityFeed(id: "denmark:voi_dk_app_187")]))
+        cities.append(ScooterCity(id: "se:Kiruna", name: "Kiruna", countryCode: "SE", center: GeoPoint(latitude: 67.8496, longitude: 20.3063), bounds: GeoBounds(south: 67.8205, west: 20.1797, north: 67.8801, east: 20.3641), feeds: [ScooterCityFeed(id: "sweden:hopp_se_kiruna")]))
+        cities.append(ScooterCity(id: "se:Uppsala", name: "Uppsala", countryCode: "SE", center: GeoPoint(latitude: 59.8586, longitude: 17.6387), bounds: GeoBounds(south: 59.8037426244997, west: 17.5266265869141, north: 59.9049511141442, east: 17.7975082397461), feeds: [ScooterCityFeed(id: "sweden:lime_se_uppsala"), ScooterCityFeed(id: "sweden:voi_se_app_48")]))
+        cities.append(ScooterCity(id: "se:Trollhättan", name: "Trollhättan", countryCode: "SE", center: GeoPoint(latitude: 58.28631, longitude: 12.30538), bounds: GeoBounds(south: 58.22198604038249, west: 12.178586968862646, north: 58.350640965615526, east: 12.432170960613973), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_425")]))
+        cities.append(ScooterCity(id: "se:Linköping", name: "Linköping", countryCode: "SE", center: GeoPoint(latitude: 58.41244, longitude: 15.62333), bounds: GeoBounds(south: 58.32391453794888, west: 15.38360595703125, north: 58.50051103764058, east: 15.864257812499998), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_184"), ScooterCityFeed(id: "sweden:qick_se_linkoping")]))
+        cities.append(ScooterCity(id: "se:Helsingborg", name: "Helsingborg", countryCode: "SE", center: GeoPoint(latitude: 56.03922, longitude: 12.71702), bounds: GeoBounds(south: 55.9878199697891, west: 12.6459503173828, north: 56.0906186777103, east: 12.7880859375), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_127")]))
+        cities.append(ScooterCity(id: "se:Gävle", name: "Gävle", countryCode: "SE", center: GeoPoint(latitude: 60.67245, longitude: 17.11683), bounds: GeoBounds(south: 60.55196567741403, west: 16.821384148535337, north: 60.7924380425801, east: 17.407666443488193), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_296")]))
+        cities.append(ScooterCity(id: "se:Lund", name: "Lund", countryCode: "SE", center: GeoPoint(latitude: 55.71252, longitude: 13.19599), bounds: GeoBounds(south: 55.66383765593185, west: 13.091239929199219, north: 55.76112258901995, east: 13.301010131835936), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_281")]))
+        cities.append(ScooterCity(id: "se:Växjö", name: "Växjö", countryCode: "SE", center: GeoPoint(latitude: 56.88874, longitude: 14.8062), bounds: GeoBounds(south: 56.78393274747651, west: 14.6345498644896, north: 56.99355104735682, east: 14.977844230643655), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_373")]))
+        cities.append(ScooterCity(id: "se:Norrköping", name: "Norrköping", countryCode: "SE", center: GeoPoint(latitude: 58.57866, longitude: 16.2325), bounds: GeoBounds(south: 58.419637, west: 15.889286, north: 58.737686, east: 16.575714), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_238"), ScooterCityFeed(id: "sweden:qick_se_norrkoping")]))
+        cities.append(ScooterCity(id: "se:Stockholm", name: "Stockholm", countryCode: "SE", center: GeoPoint(latitude: 59.33022, longitude: 18.07568), bounds: GeoBounds(south: 59.204953, west: 17.795002, north: 59.455496, east: 18.356363), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_1")]))
+        cities.append(ScooterCity(id: "se:Örebro", name: "Örebro", countryCode: "SE", center: GeoPoint(latitude: 59.27537, longitude: 15.24203), bounds: GeoBounds(south: 59.23252752806556, west: 15.140533447265625, north: 59.318126631430424, east: 15.343780517578123), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_185"), ScooterCityFeed(id: "sweden:qick_se_orebro")]))
+        cities.append(ScooterCity(id: "se:Göteborg", name: "Göteborg", countryCode: "SE", center: GeoPoint(latitude: 57.70169, longitude: 11.98838), bounds: GeoBounds(south: 57.633271, west: 11.851058, north: 57.770117, east: 12.125706), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_5")]))
+        cities.append(ScooterCity(id: "se:Borås", name: "Borås", countryCode: "SE", center: GeoPoint(latitude: 57.72917, longitude: 12.95149), bounds: GeoBounds(south: 57.67887906685692, west: 12.829605193225632, north: 57.7794562167397, east: 13.073384591047272), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_282")]))
+        cities.append(ScooterCity(id: "se:Halmstad", name: "Halmstad", countryCode: "SE", center: GeoPoint(latitude: 56.67152, longitude: 12.97145), bounds: GeoBounds(south: 56.48372869256887, west: 12.56561279296875, north: 56.857982669693584, east: 13.38134765625), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_283")]))
+        cities.append(ScooterCity(id: "se:Västerås", name: "Västerås", countryCode: "SE", center: GeoPoint(latitude: 59.62134, longitude: 16.5418), bounds: GeoBounds(south: 59.559431, west: 16.411313, north: 59.683119, east: 16.672767), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_171")]))
+        cities.append(ScooterCity(id: "se:Malmö", name: "Malmö", countryCode: "SE", center: GeoPoint(latitude: 55.5825, longitude: 12.98844), bounds: GeoBounds(south: 55.503978, west: 12.809006, north: 55.661015, east: 13.167879), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_7")]))
+        cities.append(ScooterCity(id: "se:Jönköping", name: "Jönköping", countryCode: "SE", center: GeoPoint(latitude: 57.7826, longitude: 14.1618), bounds: GeoBounds(south: 57.757437, west: 14.11968, north: 57.798462, east: 14.260196), feeds: [ScooterCityFeed(id: "sweden:qick_se_jonkoping")]))
+        cities.append(ScooterCity(id: "se:Eskilstuna", name: "Eskilstuna", countryCode: "SE", center: GeoPoint(latitude: 59.3712, longitude: 16.5098), bounds: GeoBounds(south: 59.339476, west: 16.433246, north: 59.406399, east: 16.562471), feeds: [ScooterCityFeed(id: "sweden:qick_se_eskilstuna")]))
+        cities.append(ScooterCity(id: "se:Falun", name: "Falun", countryCode: "SE", center: GeoPoint(latitude: 60.6065, longitude: 15.6355), bounds: GeoBounds(south: 60.568036, west: 15.583741, north: 60.630238, east: 15.707035), feeds: [ScooterCityFeed(id: "sweden:qick_se_falun")]))
+        cities.append(ScooterCity(id: "se:Borlänge", name: "Borlänge", countryCode: "SE", center: GeoPoint(latitude: 60.4843, longitude: 15.433), bounds: GeoBounds(south: 60.455159, west: 15.376463, north: 60.526219, east: 15.486713), feeds: [ScooterCityFeed(id: "sweden:qick_se_borlange")]))
+        cities.append(ScooterCity(id: "lv:Rīga", name: "Rīga", countryCode: "LV", center: GeoPoint(latitude: 56.9496, longitude: 24.1052), bounds: GeoBounds(south: 56.862, west: 23.8878, north: 57.0871, east: 24.3426), feeds: [ScooterCityFeed(id: "latvia:ride_mobility_lv_riga")]))
+        cities.append(ScooterCity(id: "pl:Oświęcim", name: "Oświęcim", countryCode: "PL", center: GeoPoint(latitude: 50.0382, longitude: 19.2214), bounds: GeoBounds(south: 50.0153, west: 19.1853, north: 50.0623, east: 19.2617), feeds: [ScooterCityFeed(id: "poland:dott_pl_oswiecim")]))
+        cities.append(ScooterCity(id: "pl:Sosnowiec", name: "Sosnowiec", countryCode: "PL", center: GeoPoint(latitude: 50.2781, longitude: 19.1343), bounds: GeoBounds(south: 50.2488, west: 19.0917, north: 50.3188, east: 19.2153), feeds: [ScooterCityFeed(id: "poland:dott_pl_sosnowiec")]))
+        cities.append(ScooterCity(id: "pl:Wołomin", name: "Wołomin", countryCode: "PL", center: GeoPoint(latitude: 52.3469, longitude: 21.242), bounds: GeoBounds(south: 52.3218, west: 21.211, north: 52.3675, east: 21.2883), feeds: [ScooterCityFeed(id: "poland:dott_pl_wolomin")]))
+        cities.append(ScooterCity(id: "pl:Kobyłka", name: "Kobyłka", countryCode: "PL", center: GeoPoint(latitude: 52.3387, longitude: 21.1965), bounds: GeoBounds(south: 52.3148, west: 21.164, north: 52.3578, east: 21.2498), feeds: [ScooterCityFeed(id: "poland:dott_pl_wolomin")]))
+        cities.append(ScooterCity(id: "pl:Radzymin", name: "Radzymin", countryCode: "PL", center: GeoPoint(latitude: 52.4176, longitude: 21.1808), bounds: GeoBounds(south: 52.392, west: 21.149, north: 52.4303, east: 21.2185), feeds: [ScooterCityFeed(id: "poland:dott_pl_wolomin")]))
+        cities.append(ScooterCity(id: "pl:Knurów", name: "Knurów", countryCode: "PL", center: GeoPoint(latitude: 50.2217, longitude: 18.6707), bounds: GeoBounds(south: 50.1984, west: 18.6242, north: 50.2455, east: 18.6968), feeds: [ScooterCityFeed(id: "poland:hopp_pl_knurow")]))
+        cities.append(ScooterCity(id: "pl:Września", name: "Września", countryCode: "PL", center: GeoPoint(latitude: 52.3251, longitude: 17.5652), bounds: GeoBounds(south: 52.3069, west: 17.5272, north: 52.3432, east: 17.6078), feeds: [ScooterCityFeed(id: "poland:hopp_pl_wrzesnia")]))
+        cities.append(ScooterCity(id: "pl:Złotów", name: "Złotów", countryCode: "PL", center: GeoPoint(latitude: 53.3632, longitude: 17.0347), bounds: GeoBounds(south: 53.3449, west: 17.0006, north: 53.3832, east: 17.0833), feeds: [ScooterCityFeed(id: "poland:hopp_pl_zlotow")]))
+        cities.append(ScooterCity(id: "pl:Brzeg", name: "Brzeg", countryCode: "PL", center: GeoPoint(latitude: 50.8551, longitude: 17.4722), bounds: GeoBounds(south: 50.8404, west: 17.4434, north: 50.8678, east: 17.4904), feeds: [ScooterCityFeed(id: "poland:dott_pl_brzeg")]))
+        cities.append(ScooterCity(id: "pl:Warszawa", name: "Warszawa", countryCode: "PL", center: GeoPoint(latitude: 52.2336, longitude: 21.0025), bounds: GeoBounds(south: 52.1229, west: 20.7372, north: 52.3642, east: 21.1523), feeds: [ScooterCityFeed(id: "poland:dott_pl_warszawa")]))
+        cities.append(ScooterCity(id: "pl:Katowice / Chorzów", name: "Katowice / Chorzów", countryCode: "PL", center: GeoPoint(latitude: 50.2849, longitude: 18.9938), bounds: GeoBounds(south: 50.224, west: 18.8997, north: 50.3328, east: 19.0642), feeds: [ScooterCityFeed(id: "poland:dott_pl_katowice_chorzow")]))
+        cities.append(ScooterCity(id: "pl:Chrzanów", name: "Chrzanów", countryCode: "PL", center: GeoPoint(latitude: 50.1442, longitude: 19.4142), bounds: GeoBounds(south: 50.1139, west: 19.3527, north: 50.1825, east: 19.4852), feeds: [ScooterCityFeed(id: "poland:dott_pl_chrzanow")]))
+        cities.append(ScooterCity(id: "pl:Gdańsk / Gdynia / Sopot", name: "Gdańsk / Gdynia / Sopot", countryCode: "PL", center: GeoPoint(latitude: 54.3823, longitude: 18.5811), bounds: GeoBounds(south: 54.288, west: 18.193, north: 54.6152, east: 18.675), feeds: [ScooterCityFeed(id: "poland:dott_pl_gdansk_gdynia_sopot")]))
+        cities.append(ScooterCity(id: "pl:Częstochowa", name: "Częstochowa", countryCode: "PL", center: GeoPoint(latitude: 50.813, longitude: 19.1171), bounds: GeoBounds(south: 50.7735, west: 19.0697, north: 50.8636, east: 19.1564), feeds: [ScooterCityFeed(id: "poland:dott_pl_czestochowa")]))
+        cities.append(ScooterCity(id: "pl:Goleniów", name: "Goleniów", countryCode: "PL", center: GeoPoint(latitude: 53.5631, longitude: 14.8305), bounds: GeoBounds(south: 53.5378, west: 14.8022, north: 53.5783, east: 14.872), feeds: [ScooterCityFeed(id: "poland:dott_pl_goleniow")]))
+        cities.append(ScooterCity(id: "pl:Kołobrzeg", name: "Kołobrzeg", countryCode: "PL", center: GeoPoint(latitude: 54.1804, longitude: 15.5666), bounds: GeoBounds(south: 54.1496, west: 15.5146, north: 54.1944, east: 15.6203), feeds: [ScooterCityFeed(id: "poland:dott_pl_kolobrzeg")]))
+        cities.append(ScooterCity(id: "pl:Kościerzyna", name: "Kościerzyna", countryCode: "PL", center: GeoPoint(latitude: 54.121, longitude: 17.977), bounds: GeoBounds(south: 54.1048, west: 17.8512, north: 54.1417, east: 18.008), feeds: [ScooterCityFeed(id: "poland:dott_pl_koscierzyna")]))
+        cities.append(ScooterCity(id: "pl:Lębork", name: "Lębork", countryCode: "PL", center: GeoPoint(latitude: 54.5398, longitude: 17.7296), bounds: GeoBounds(south: 54.5206, west: 17.7122, north: 54.5606, east: 17.7727), feeds: [ScooterCityFeed(id: "poland:dott_pl_lebork")]))
+        cities.append(ScooterCity(id: "pl:Kraków", name: "Kraków", countryCode: "PL", center: GeoPoint(latitude: 50.0653, longitude: 19.9407), bounds: GeoBounds(south: 50.0182, west: 19.8716, north: 50.1089, east: 20.0422), feeds: [ScooterCityFeed(id: "poland:dott_pl_krakow")]))
+        cities.append(ScooterCity(id: "pl:Legionowo", name: "Legionowo", countryCode: "PL", center: GeoPoint(latitude: 52.4013, longitude: 20.9324), bounds: GeoBounds(south: 52.3607, west: 20.8789, north: 52.4545, east: 20.9989), feeds: [ScooterCityFeed(id: "poland:dott_pl_legionowo")]))
+        cities.append(ScooterCity(id: "pl:Leszno", name: "Leszno", countryCode: "PL", center: GeoPoint(latitude: 51.8468, longitude: 16.5735), bounds: GeoBounds(south: 51.8159, west: 16.531, north: 51.8759, east: 16.6109), feeds: [ScooterCityFeed(id: "poland:dott_pl_leszno")]))
+        cities.append(ScooterCity(id: "pl:Lubliniec", name: "Lubliniec", countryCode: "PL", center: GeoPoint(latitude: 50.6734, longitude: 18.679), bounds: GeoBounds(south: 50.6523, west: 18.6321, north: 50.7003, east: 18.7105), feeds: [ScooterCityFeed(id: "poland:dott_pl_lubliniec")]))
+        cities.append(ScooterCity(id: "pl:Łuków", name: "Łuków", countryCode: "PL", center: GeoPoint(latitude: 51.9263, longitude: 22.3838), bounds: GeoBounds(south: 51.9068, west: 22.3316, north: 51.9576, east: 22.4408), feeds: [ScooterCityFeed(id: "poland:dott_pl_lukow")]))
+        cities.append(ScooterCity(id: "pl:Malbork", name: "Malbork", countryCode: "PL", center: GeoPoint(latitude: 54.0366, longitude: 19.0452), bounds: GeoBounds(south: 54.009, west: 19.0008, north: 54.0735, east: 19.0779), feeds: [ScooterCityFeed(id: "poland:dott_pl_malbork")]))
+        cities.append(ScooterCity(id: "pl:Międzyzdroje", name: "Międzyzdroje", countryCode: "PL", center: GeoPoint(latitude: 53.9273, longitude: 14.4472), bounds: GeoBounds(south: 53.9123, west: 14.4235, north: 53.9406, east: 14.4661), feeds: [ScooterCityFeed(id: "poland:dott_pl_miedzyzdroje")]))
+        cities.append(ScooterCity(id: "pl:Milanówek", name: "Milanówek", countryCode: "PL", center: GeoPoint(latitude: 52.1146, longitude: 20.6471), bounds: GeoBounds(south: 52.0703, west: 20.5789, north: 52.1588, east: 20.7645), feeds: [ScooterCityFeed(id: "poland:dott_pl_milanowek")]))
+        cities.append(ScooterCity(id: "pl:Nowogard", name: "Nowogard", countryCode: "PL", center: GeoPoint(latitude: 53.6682, longitude: 15.121), bounds: GeoBounds(south: 53.6566, west: 15.0872, north: 53.6952, east: 15.1624), feeds: [ScooterCityFeed(id: "poland:dott_pl_nowogard")]))
+        cities.append(ScooterCity(id: "pl:Nowy Dwór Mazowiecki", name: "Nowy Dwór Mazowiecki", countryCode: "PL", center: GeoPoint(latitude: 52.4297, longitude: 20.7218), bounds: GeoBounds(south: 52.4103, west: 20.656, north: 52.4544, east: 20.7632), feeds: [ScooterCityFeed(id: "poland:dott_pl_nowy_dwor_mazowiecki")]))
+        cities.append(ScooterCity(id: "pl:Nowy Targ", name: "Nowy Targ", countryCode: "PL", center: GeoPoint(latitude: 49.4812, longitude: 20.0218), bounds: GeoBounds(south: 49.4564, west: 19.9914, north: 49.5074, east: 20.0695), feeds: [ScooterCityFeed(id: "poland:dott_pl_nowy_targ")]))
+        cities.append(ScooterCity(id: "pl:Oleśnica", name: "Oleśnica", countryCode: "PL", center: GeoPoint(latitude: 51.2108, longitude: 17.3842), bounds: GeoBounds(south: 51.1933, west: 17.3591, north: 51.232, east: 17.419), feeds: [ScooterCityFeed(id: "poland:dott_pl_olesnica")]))
+        cities.append(ScooterCity(id: "pl:Płock", name: "Płock", countryCode: "PL", center: GeoPoint(latitude: 52.542, longitude: 19.7503), bounds: GeoBounds(south: 52.5131, west: 19.6491, north: 52.5889, east: 19.7893), feeds: [ScooterCityFeed(id: "poland:dott_pl_plock")]))
+        cities.append(ScooterCity(id: "pl:Poznań", name: "Poznań", countryCode: "PL", center: GeoPoint(latitude: 52.4036, longitude: 16.9103), bounds: GeoBounds(south: 52.317, west: 16.7855, north: 52.4824, east: 17.0168), feeds: [ScooterCityFeed(id: "poland:dott_pl_poznan")]))
+        cities.append(ScooterCity(id: "pl:Pruszcz Gdański", name: "Pruszcz Gdański", countryCode: "PL", center: GeoPoint(latitude: 54.2643, longitude: 18.6365), bounds: GeoBounds(south: 54.2368, west: 18.5911, north: 54.3004, east: 18.6878), feeds: [ScooterCityFeed(id: "poland:dott_pl_pruszcz_gdanski")]))
+        cities.append(ScooterCity(id: "pl:Radzionków", name: "Radzionków", countryCode: "PL", center: GeoPoint(latitude: 50.3495, longitude: 18.8997), bounds: GeoBounds(south: 50.3156, west: 18.8317, north: 50.4151, east: 18.9512), feeds: [ScooterCityFeed(id: "poland:dott_pl_radzionkow")]))
+        cities.append(ScooterCity(id: "pl:Rewal", name: "Rewal", countryCode: "PL", center: GeoPoint(latitude: 54.0821, longitude: 15.0232), bounds: GeoBounds(south: 54.0474, west: 14.9014, north: 54.1034, east: 15.1019), feeds: [ScooterCityFeed(id: "poland:dott_pl_rewal")]))
+        cities.append(ScooterCity(id: "pl:Skawina", name: "Skawina", countryCode: "PL", center: GeoPoint(latitude: 49.9758, longitude: 19.8259), bounds: GeoBounds(south: 49.9513, west: 19.8048, north: 49.9968, east: 19.8609), feeds: [ScooterCityFeed(id: "poland:dott_pl_skawina")]))
+        cities.append(ScooterCity(id: "pl:Starogard Gdański", name: "Starogard Gdański", countryCode: "PL", center: GeoPoint(latitude: 53.9645, longitude: 18.5274), bounds: GeoBounds(south: 53.9326, west: 18.4822, north: 53.9999, east: 18.5511), feeds: [ScooterCityFeed(id: "poland:dott_pl_starogard_gdanski")]))
+        cities.append(ScooterCity(id: "pl:Świdnica", name: "Świdnica", countryCode: "PL", center: GeoPoint(latitude: 50.8424, longitude: 16.489), bounds: GeoBounds(south: 50.8232, west: 16.4564, north: 50.8666, east: 16.5274), feeds: [ScooterCityFeed(id: "poland:dott_pl_swidnica")]))
+        cities.append(ScooterCity(id: "pl:Świnoujście", name: "Świnoujście", countryCode: "PL", center: GeoPoint(latitude: 53.9146, longitude: 14.2416), bounds: GeoBounds(south: 53.8991, west: 14.2168, north: 53.9278, east: 14.2808), feeds: [ScooterCityFeed(id: "poland:dott_pl_swinoujscie")]))
+        cities.append(ScooterCity(id: "pl:Szczecin", name: "Szczecin", countryCode: "PL", center: GeoPoint(latitude: 53.4317, longitude: 14.5368), bounds: GeoBounds(south: 53.3607, west: 14.4537, north: 53.4647, east: 14.7028), feeds: [ScooterCityFeed(id: "poland:dott_pl_szczecin"), ScooterCityFeed(id: "poland:dott_pl_szczecin_east")]))
+        cities.append(ScooterCity(id: "pl:Tarnowskie Góry", name: "Tarnowskie Góry", countryCode: "PL", center: GeoPoint(latitude: 50.4467, longitude: 18.8494), bounds: GeoBounds(south: 50.4212, west: 18.8014, north: 50.467, east: 18.8886), feeds: [ScooterCityFeed(id: "poland:dott_pl_tarnowskie_gory")]))
+        cities.append(ScooterCity(id: "pl:Tczew", name: "Tczew", countryCode: "PL", center: GeoPoint(latitude: 54.0924, longitude: 18.7859), bounds: GeoBounds(south: 54.0654, west: 18.745, north: 54.1157, east: 18.8133), feeds: [ScooterCityFeed(id: "poland:dott_pl_tczew")]))
+        cities.append(ScooterCity(id: "pl:Wrocław", name: "Wrocław", countryCode: "PL", center: GeoPoint(latitude: 51.0947, longitude: 17.0298), bounds: GeoBounds(south: 51.0373, west: 16.8837, north: 51.1751, east: 17.0929), feeds: [ScooterCityFeed(id: "poland:dott_pl_wroclaw")]))
+        cities.append(ScooterCity(id: "pl:Zawiercie", name: "Zawiercie", countryCode: "PL", center: GeoPoint(latitude: 50.4863, longitude: 19.4261), bounds: GeoBounds(south: 50.4685, west: 19.3794, north: 50.5201, east: 19.4743), feeds: [ScooterCityFeed(id: "poland:dott_pl_zawiercie")]))
+        cities.append(ScooterCity(id: "hu:Pécs", name: "Pécs", countryCode: "HU", center: GeoPoint(latitude: 46.0765, longitude: 18.228), bounds: GeoBounds(south: 46.0199, west: 18.1584, north: 46.0962, east: 18.2795), feeds: [ScooterCityFeed(id: "hungary:hopp_hu_pecs")]))
+        cities.append(ScooterCity(id: "hu:Békéscsaba", name: "Békéscsaba", countryCode: "HU", center: GeoPoint(latitude: 46.6798, longitude: 21.0985), bounds: GeoBounds(south: 46.6404, west: 21.0275, north: 46.7058, east: 21.1674), feeds: [ScooterCityFeed(id: "hungary:hopp_hu_bekescsaba")]))
+        cities.append(ScooterCity(id: "hu:Budapest", name: "Budapest", countryCode: "HU", center: GeoPoint(latitude: 47.5016, longitude: 19.0626), bounds: GeoBounds(south: 47.4516, west: 19.0064, north: 47.5727, east: 19.1202), feeds: [ScooterCityFeed(id: "hungary:dott_hu_budapest")]))
+        cities.append(ScooterCity(id: "hu:Győr", name: "Győr", countryCode: "HU", center: GeoPoint(latitude: 47.6824, longitude: 17.6408), bounds: GeoBounds(south: 47.6203, west: 17.5781, north: 47.7337, east: 17.7437), feeds: [ScooterCityFeed(id: "hungary:dott_hu_gyor")]))
+        cities.append(ScooterCity(id: "hu:Hatvan", name: "Hatvan", countryCode: "HU", center: GeoPoint(latitude: 47.6655, longitude: 19.6669), bounds: GeoBounds(south: 47.6244, west: 19.6164, north: 47.7006, east: 19.7327), feeds: [ScooterCityFeed(id: "hungary:dott_hu_hatvan")]))
+        cities.append(ScooterCity(id: "hu:Pápa", name: "Pápa", countryCode: "HU", center: GeoPoint(latitude: 47.3268, longitude: 17.4652), bounds: GeoBounds(south: 47.2757, west: 17.4281, north: 47.362, east: 17.5295), feeds: [ScooterCityFeed(id: "hungary:dott_hu_papa")]))
+        cities.append(ScooterCity(id: "hu:Dunaújváros", name: "Dunaújváros", countryCode: "HU", center: GeoPoint(latitude: 46.9634, longitude: 18.9339), bounds: GeoBounds(south: 46.9225, west: 18.8867, north: 47.0021, east: 18.9638), feeds: [ScooterCityFeed(id: "hungary:dott_hu_dunaujvaros")]))
+        cities.append(ScooterCity(id: "gr:Faliraki", name: "Faliraki", countryCode: "GR", center: GeoPoint(latitude: 36.3403, longitude: 28.202), bounds: GeoBounds(south: 36.2953, west: 28.1747, north: 36.39, east: 28.247), feeds: [ScooterCityFeed(id: "greece:hopp_gr_rhodes"), ScooterCityFeed(id: "greece:hoppy_gr_rhodes")]))
+        cities.append(ScooterCity(id: "gr:Piraeus", name: "Piraeus", countryCode: "GR", center: GeoPoint(latitude: 37.9432, longitude: 23.6471), bounds: GeoBounds(south: 37.904, west: 23.602, north: 38.0306, east: 23.7848), feeds: [ScooterCityFeed(id: "greece:hopp_gr_piraeus"), ScooterCityFeed(id: "greece:dott_gr_piraeus")]))
+        cities.append(ScooterCity(id: "gr:Argostoli", name: "Argostoli", countryCode: "GR", center: GeoPoint(latitude: 38.1757, longitude: 20.4879), bounds: GeoBounds(south: 38.1459, west: 20.4613, north: 38.1995, east: 20.5084), feeds: [ScooterCityFeed(id: "greece:hopp_gr_kefalonia")]))
+        cities.append(ScooterCity(id: "gr:Ioannina", name: "Ioannina", countryCode: "GR", center: GeoPoint(latitude: 39.664, longitude: 20.8523), bounds: GeoBounds(south: 39.5875, west: 20.7955, north: 39.6989, east: 20.9053), feeds: [ScooterCityFeed(id: "greece:hopp_gr_ioannina")]))
+        cities.append(ScooterCity(id: "gr:Kos", name: "Kos", countryCode: "GR", center: GeoPoint(latitude: 36.8938, longitude: 27.2877), bounds: GeoBounds(south: 36.8666, west: 27.174, north: 36.9192, east: 27.3618), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_kos")]))
+        cities.append(ScooterCity(id: "gr:Rethymno", name: "Rethymno", countryCode: "GR", center: GeoPoint(latitude: 35.3668, longitude: 24.4823), bounds: GeoBounds(south: 35.3476, west: 24.4431, north: 35.395, east: 24.6181), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_rethymno")]))
+        cities.append(ScooterCity(id: "gr:Zakynthos", name: "Zakynthos", countryCode: "GR", center: GeoPoint(latitude: 37.7811, longitude: 20.8983), bounds: GeoBounds(south: 37.7052, west: 20.8408, north: 37.8097, east: 20.9481), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_zakynthos")]))
+        cities.append(ScooterCity(id: "gr:Rhodes", name: "Rhodes", countryCode: "GR", center: GeoPoint(latitude: 36.4437, longitude: 28.2274), bounds: GeoBounds(south: 36.3823, west: 28.187, north: 36.4612, east: 28.2492), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_rhodes")]))
+        cities.append(ScooterCity(id: "gr:Ialysos", name: "Ialysos", countryCode: "GR", center: GeoPoint(latitude: 36.4156, longitude: 28.1582), bounds: GeoBounds(south: 36.4062, west: 28.1137, north: 36.4278, east: 28.1869), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_rhodes")]))
+        cities.append(ScooterCity(id: "gr:Afantou", name: "Afantou", countryCode: "GR", center: GeoPoint(latitude: 36.2845, longitude: 28.1735), bounds: GeoBounds(south: 36.2745, west: 28.1567, north: 36.2952, east: 28.1895), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_rhodes")]))
+        cities.append(ScooterCity(id: "gr:Kolymbia", name: "Kolymbia", countryCode: "GR", center: GeoPoint(latitude: 36.2532, longitude: 28.1611), bounds: GeoBounds(south: 36.2372, west: 28.1335, north: 36.271, east: 28.1787), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_rhodes")]))
+        cities.append(ScooterCity(id: "gr:Thessaloniki", name: "Thessaloniki", countryCode: "GR", center: GeoPoint(latitude: 40.627, longitude: 22.9512), bounds: GeoBounds(south: 40.5586, west: 22.8837, north: 40.7779, east: 23.1412), feeds: [ScooterCityFeed(id: "greece:dott_gr_thessaloniki")]))
+        cities.append(ScooterCity(id: "cy:Paphos", name: "Paphos", countryCode: "CY", center: GeoPoint(latitude: 34.7756, longitude: 32.4243), bounds: GeoBounds(south: 34.7243, west: 32.3084, north: 34.9182, east: 32.4919), feeds: [ScooterCityFeed(id: "cyprus:hopp_cy_paphos")]))
+        cities.append(ScooterCity(id: "cy:Limassol", name: "Limassol", countryCode: "CY", center: GeoPoint(latitude: 34.6727, longitude: 33.0418), bounds: GeoBounds(south: 34.6397, west: 32.9752, north: 34.7227, east: 33.1875), feeds: [ScooterCityFeed(id: "cyprus:hopp_cy_cyprus")]))
+        cities.append(ScooterCity(id: "fi:Mariehamn", name: "Mariehamn", countryCode: "FI", center: GeoPoint(latitude: 60.0973, longitude: 19.9348), bounds: GeoBounds(south: 60.0657, west: 19.8824, north: 60.1438, east: 19.9972), feeds: [ScooterCityFeed(id: "finland:hopp_fi_mariehamn")]))
+        cities.append(ScooterCity(id: "fi:Helsinki", name: "Helsinki", countryCode: "FI", center: GeoPoint(latitude: 60.1801, longitude: 24.9385), bounds: GeoBounds(south: 59.995685, west: 24.347465, north: 60.39054, east: 25.525976), feeds: [ScooterCityFeed(id: "finland:dott_fi_helsinki"), ScooterCityFeed(id: "finland:voi_fi_app_49")]))
+        cities.append(ScooterCity(id: "fi:Hyvinkää", name: "Hyvinkää", countryCode: "FI", center: GeoPoint(latitude: 60.6288, longitude: 24.8559), bounds: GeoBounds(south: 60.5971, west: 24.8052, north: 60.6613, east: 24.9088), feeds: [ScooterCityFeed(id: "finland:dott_fi_hyvinkaa")]))
+        cities.append(ScooterCity(id: "fi:Järvenpää", name: "Järvenpää", countryCode: "FI", center: GeoPoint(latitude: 60.4771, longitude: 25.0931), bounds: GeoBounds(south: 60.4442, west: 25.0546, north: 60.5143, east: 25.1493), feeds: [ScooterCityFeed(id: "finland:dott_fi_jarvenpaa")]))
+        cities.append(ScooterCity(id: "fi:Pietarsaari", name: "Pietarsaari", countryCode: "FI", center: GeoPoint(latitude: 63.676, longitude: 22.7141), bounds: GeoBounds(south: 63.6536, west: 22.6697, north: 63.7204, east: 22.7709), feeds: [ScooterCityFeed(id: "finland:dott_fi_pietarsaari")]))
+        cities.append(ScooterCity(id: "fi:Espoo", name: "Espoo", countryCode: "FI", center: GeoPoint(latitude: 60.2045, longitude: 24.7657), bounds: GeoBounds(south: 60.13, west: 24.5696, north: 60.2579, east: 24.8505), feeds: [ScooterCityFeed(id: "finland:dott_fi_espoo")]))
+        cities.append(ScooterCity(id: "fi:Kerava", name: "Kerava", countryCode: "FI", center: GeoPoint(latitude: 60.4033, longitude: 25.1036), bounds: GeoBounds(south: 60.368, west: 25.0462, north: 60.4487, east: 25.1548), feeds: [ScooterCityFeed(id: "finland:dott_fi_kerava")]))
+        cities.append(ScooterCity(id: "fi:Kirkkonummi", name: "Kirkkonummi", countryCode: "FI", center: GeoPoint(latitude: 60.124, longitude: 24.4411), bounds: GeoBounds(south: 60.1006, west: 24.4087, north: 60.1425, east: 24.4854), feeds: [ScooterCityFeed(id: "finland:dott_fi_kirkkonummi")]))
+        cities.append(ScooterCity(id: "fi:Kokkola", name: "Kokkola", countryCode: "FI", center: GeoPoint(latitude: 63.8374, longitude: 23.1319), bounds: GeoBounds(south: 63.8083, west: 22.9845, north: 63.869, east: 23.1959), feeds: [ScooterCityFeed(id: "finland:dott_fi_kokkola")]))
+        cities.append(ScooterCity(id: "fi:Kouvola", name: "Kouvola", countryCode: "FI", center: GeoPoint(latitude: 60.8702, longitude: 26.7038), bounds: GeoBounds(south: 60.8436, west: 26.6004, north: 60.9126, east: 26.8024), feeds: [ScooterCityFeed(id: "finland:dott_fi_kouvola")]))
+        cities.append(ScooterCity(id: "fi:Lahti", name: "Lahti", countryCode: "FI", center: GeoPoint(latitude: 60.9816, longitude: 25.6597), bounds: GeoBounds(south: 60.9309, west: 25.4995, north: 61.0259, east: 25.8), feeds: [ScooterCityFeed(id: "finland:dott_fi_lahti")]))
+        cities.append(ScooterCity(id: "fi:Lappeenranta", name: "Lappeenranta", countryCode: "FI", center: GeoPoint(latitude: 61.0575, longitude: 28.1795), bounds: GeoBounds(south: 61.0276, west: 28.0774, north: 61.0883, east: 28.2747), feeds: [ScooterCityFeed(id: "finland:dott_fi_lappeenranta")]))
+        cities.append(ScooterCity(id: "fi:Nokia", name: "Nokia", countryCode: "FI", center: GeoPoint(latitude: 61.4786, longitude: 23.4927), bounds: GeoBounds(south: 61.4476, west: 23.4438, north: 61.506, east: 23.5892), feeds: [ScooterCityFeed(id: "finland:dott_fi_nokia")]))
+        cities.append(ScooterCity(id: "fi:Nurmijärvi", name: "Nurmijärvi", countryCode: "FI", center: GeoPoint(latitude: 60.3776, longitude: 24.7502), bounds: GeoBounds(south: 60.3613, west: 24.6676, north: 60.4088, east: 24.7946), feeds: [ScooterCityFeed(id: "finland:dott_fi_nurmijarvi")]))
+        cities.append(ScooterCity(id: "fi:Porvoo", name: "Porvoo", countryCode: "FI", center: GeoPoint(latitude: 60.3925, longitude: 25.6718), bounds: GeoBounds(south: 60.362, west: 25.6151, north: 60.4165, east: 25.7197), feeds: [ScooterCityFeed(id: "finland:dott_fi_porvoo")]))
+        cities.append(ScooterCity(id: "fi:Rauma", name: "Rauma", countryCode: "FI", center: GeoPoint(latitude: 61.1297, longitude: 21.507), bounds: GeoBounds(south: 61.091, west: 21.462, north: 61.1653, east: 21.6019), feeds: [ScooterCityFeed(id: "finland:dott_fi_rauma")]))
+        cities.append(ScooterCity(id: "fi:Riihimäki", name: "Riihimäki", countryCode: "FI", center: GeoPoint(latitude: 60.7361, longitude: 24.7767), bounds: GeoBounds(south: 60.7039, west: 24.7296, north: 60.763, east: 24.8407), feeds: [ScooterCityFeed(id: "finland:dott_fi_riihimaki")]))
+        cities.append(ScooterCity(id: "fi:Salo", name: "Salo", countryCode: "FI", center: GeoPoint(latitude: 60.3888, longitude: 23.1277), bounds: GeoBounds(south: 60.3578, west: 23.034, north: 60.4281, east: 23.1946), feeds: [ScooterCityFeed(id: "finland:dott_fi_salo")]))
+        cities.append(ScooterCity(id: "fi:Tampere", name: "Tampere", countryCode: "FI", center: GeoPoint(latitude: 61.4981, longitude: 23.7639), bounds: GeoBounds(south: 61.4267, west: 23.5622, north: 61.54364147555, east: 23.9504), feeds: [ScooterCityFeed(id: "finland:dott_fi_tampere"), ScooterCityFeed(id: "finland:voi_fi_app_136")]))
+        cities.append(ScooterCity(id: "fi:Vaasa", name: "Vaasa", countryCode: "FI", center: GeoPoint(latitude: 63.0981, longitude: 21.6182), bounds: GeoBounds(south: 63.0673, west: 21.5541, north: 63.1361, east: 21.7417), feeds: [ScooterCityFeed(id: "finland:dott_fi_vaasa")]))
+        cities.append(ScooterCity(id: "fi:Vantaa", name: "Vantaa", countryCode: "FI", center: GeoPoint(latitude: 60.2953, longitude: 25.0376), bounds: GeoBounds(south: 60.2682, west: 24.9406, north: 60.334, east: 25.0849), feeds: [ScooterCityFeed(id: "finland:dott_fi_vantaa")]))
+        cities.append(ScooterCity(id: "fi:Turku", name: "Turku", countryCode: "FI", center: GeoPoint(latitude: 60.43921, longitude: 22.24697), bounds: GeoBounds(south: 60.3775571287457, west: 22.0763397216797, north: 60.5008635236931, east: 22.4176025390625), feeds: [ScooterCityFeed(id: "finland:voi_fi_app_122")]))
+        cities.append(ScooterCity(id: "fi:Jyväskylä", name: "Jyväskylä", countryCode: "FI", center: GeoPoint(latitude: 62.24067, longitude: 25.7444), bounds: GeoBounds(south: 62.1706311981245, west: 25.5150604248047, north: 62.3107081604266, east: 25.9737396240234), feeds: [ScooterCityFeed(id: "finland:voi_fi_app_275")]))
+        cities.append(ScooterCity(id: "hr:Rijeka", name: "Rijeka", countryCode: "HR", center: GeoPoint(latitude: 45.327, longitude: 14.4425), bounds: GeoBounds(south: 45.3081, west: 14.353, north: 45.3587, east: 14.4896), feeds: [ScooterCityFeed(id: "croatia:hoppy_hr_rijeka")]))
+        cities.append(ScooterCity(id: "ua:Kyiv", name: "Kyiv", countryCode: "UA", center: GeoPoint(latitude: 50.444, longitude: 30.518), bounds: GeoBounds(south: 50.3748, west: 30.4036, north: 50.5282, east: 30.663), feeds: [ScooterCityFeed(id: "ukraine:zelectra_ua_kyiv")]))
+        cities.append(ScooterCity(id: "us:dc:Washington", name: "Washington, DC", countryCode: "US", center: GeoPoint(latitude: 38.9072, longitude: -77.0369), bounds: GeoBounds(south: 38.7862, west: -77.1309, north: 39.0046, east: -76.8978), feeds: [ScooterCityFeed(id: "us:bolt_hopp_us_washington"), ScooterCityFeed(id: "us:veo_us_washington")]))
+        cities.append(ScooterCity(id: "us:az:Tempe", name: "Tempe, AZ", countryCode: "US", center: GeoPoint(latitude: 33.4255, longitude: -111.94), bounds: GeoBounds(south: 33.3148, west: -111.989, north: 33.4673, east: -111.8703), feeds: [ScooterCityFeed(id: "us:bird_us_tempe"), ScooterCityFeed(id: "us:lime_us_tempe")]))
+        cities.append(ScooterCity(id: "us:ca:Culver City", name: "Culver City, CA", countryCode: "US", center: GeoPoint(latitude: 34.0211, longitude: -118.3965), bounds: GeoBounds(south: 33.9689, west: -118.4584, north: 34.043, east: -118.3606), feeds: [ScooterCityFeed(id: "us:bird_us_culver_city")]))
+        cities.append(ScooterCity(id: "us:ca:Los Angeles", name: "Los Angeles, CA", countryCode: "US", center: GeoPoint(latitude: 34.0522, longitude: -118.2437), bounds: GeoBounds(south: 33.6944, west: -118.6727, north: 34.3465, east: -118.1549), feeds: [ScooterCityFeed(id: "us:bird_us_los_angeles"), ScooterCityFeed(id: "us:veo_us_santa_monica"), ScooterCityFeed(id: "us:gcoo_us_los_angeles")]))
+        cities.append(ScooterCity(id: "us:ca:Santa Monica", name: "Santa Monica, CA", countryCode: "US", center: GeoPoint(latitude: 34.0195, longitude: -118.4912), bounds: GeoBounds(south: 33.9873, west: -118.5274, north: 34.0597, east: -118.4328), feeds: [ScooterCityFeed(id: "us:bird_us_santa_monica"), ScooterCityFeed(id: "us:veo_us_santa_monica")]))
+        cities.append(ScooterCity(id: "us:fl:Gainesville", name: "Gainesville, FL", countryCode: "US", center: GeoPoint(latitude: 29.6516, longitude: -82.3248), bounds: GeoBounds(south: 29.5924, west: -82.4291, north: 29.6977, east: -82.2744), feeds: [ScooterCityFeed(id: "us:bird_us_gainesville"), ScooterCityFeed(id: "us:spin_us_gainesville"), ScooterCityFeed(id: "us:veo_us_gainesville")]))
+        cities.append(ScooterCity(id: "us:ga:Atlanta", name: "Atlanta, GA", countryCode: "US", center: GeoPoint(latitude: 33.749, longitude: -84.388), bounds: GeoBounds(south: 33.6399, west: -84.5607, north: 33.894, east: -84.279), feeds: [ScooterCityFeed(id: "us:bird_us_atlanta"), ScooterCityFeed(id: "us:lime_us_atlanta")]))
+        cities.append(ScooterCity(id: "us:in:Indianapolis", name: "Indianapolis, IN", countryCode: "US", center: GeoPoint(latitude: 39.7684, longitude: -86.1581), bounds: GeoBounds(south: 39.6833, west: -86.2872, north: 39.9113, east: -85.9597), feeds: [ScooterCityFeed(id: "us:bird_us_indianapolis")]))
+        cities.append(ScooterCity(id: "us:ky:Lexington", name: "Lexington, KY", countryCode: "US", center: GeoPoint(latitude: 38.0406, longitude: -84.5037), bounds: GeoBounds(south: 37.944, west: -84.6289, north: 38.117, east: -84.375), feeds: [ScooterCityFeed(id: "us:bird_us_lexington"), ScooterCityFeed(id: "us:spin_us_lexington")]))
+        cities.append(ScooterCity(id: "us:mo:Kansas City", name: "Kansas City, MO", countryCode: "US", center: GeoPoint(latitude: 39.0997, longitude: -94.5786), bounds: GeoBounds(south: 38.8986, west: -94.697, north: 39.1367, east: -94.4578), feeds: [ScooterCityFeed(id: "us:bird_us_kansas_city")]))
+        cities.append(ScooterCity(id: "us:mo:St. Louis", name: "St. Louis, MO", countryCode: "US", center: GeoPoint(latitude: 38.627, longitude: -90.1994), bounds: GeoBounds(south: 38.5269, west: -90.3726, north: 38.6969, east: -90.1695), feeds: [ScooterCityFeed(id: "us:bird_us_st_louis")]))
+        cities.append(ScooterCity(id: "us:nc:Greensboro", name: "Greensboro, NC", countryCode: "US", center: GeoPoint(latitude: 36.0726, longitude: -79.792), bounds: GeoBounds(south: 36.038, west: -79.858, north: 36.1141, east: -79.7297), feeds: [ScooterCityFeed(id: "us:bird_us_greensboro")]))
+        cities.append(ScooterCity(id: "us:nj:Newark", name: "Newark, NJ", countryCode: "US", center: GeoPoint(latitude: 40.7357, longitude: -74.1724), bounds: GeoBounds(south: 40.6722, west: -74.255, north: 40.7978, east: -74.1075), feeds: [ScooterCityFeed(id: "us:bird_us_newark"), ScooterCityFeed(id: "us:veo_us_newark")]))
+        cities.append(ScooterCity(id: "us:nv:Reno", name: "Reno, NV", countryCode: "US", center: GeoPoint(latitude: 39.5296, longitude: -119.8138), bounds: GeoBounds(south: 39.4775, west: -119.8535, north: 39.5656, east: -119.7681), feeds: [ScooterCityFeed(id: "us:bird_us_reno")]))
+        cities.append(ScooterCity(id: "us:ny:Bronx", name: "Bronx, NY", countryCode: "US", center: GeoPoint(latitude: 40.8448, longitude: -73.8648), bounds: GeoBounds(south: 40.7964, west: -73.9149, north: 40.9224, east: -73.771), feeds: [ScooterCityFeed(id: "us:bird_us_new_york"), ScooterCityFeed(id: "us:lime_us_new_york"), ScooterCityFeed(id: "us:veo_us_bronx")]))
+        cities.append(ScooterCity(id: "us:ny:Queens", name: "Queens, NY", countryCode: "US", center: GeoPoint(latitude: 40.7282, longitude: -73.7949), bounds: GeoBounds(south: 40.6575, west: -73.8512, north: 40.7742, east: -73.7337), feeds: [ScooterCityFeed(id: "us:bird_us_new_york"), ScooterCityFeed(id: "us:lime_us_new_york"), ScooterCityFeed(id: "us:veo_us_queens")]))
+        cities.append(ScooterCity(id: "us:oh:Cleveland", name: "Cleveland, OH", countryCode: "US", center: GeoPoint(latitude: 41.4993, longitude: -81.6944), bounds: GeoBounds(south: 41.3826, west: -81.89, north: 41.6067, east: -81.5219), feeds: [ScooterCityFeed(id: "us:bird_us_cleveland"), ScooterCityFeed(id: "us:veo_us_cleveland")]))
+        cities.append(ScooterCity(id: "us:tn:Memphis", name: "Memphis, TN", countryCode: "US", center: GeoPoint(latitude: 35.1495, longitude: -90.049), bounds: GeoBounds(south: 35.0662, west: -90.0967, north: 35.2023, east: -89.7846), feeds: [ScooterCityFeed(id: "us:bird_us_memphis")]))
+        cities.append(ScooterCity(id: "us:tn:Nashville", name: "Nashville, TN", countryCode: "US", center: GeoPoint(latitude: 36.1627, longitude: -86.7816), bounds: GeoBounds(south: 36.0296, west: -86.8834, north: 36.2506, east: -86.6253), feeds: [ScooterCityFeed(id: "us:bird_us_nashville"), ScooterCityFeed(id: "us:spin_us_nashville")]))
+        cities.append(ScooterCity(id: "us:tx:Dallas", name: "Dallas, TX", countryCode: "US", center: GeoPoint(latitude: 32.7767, longitude: -96.797), bounds: GeoBounds(south: 32.6108, west: -97.0038, north: 33.0209, east: -96.5463), feeds: [ScooterCityFeed(id: "us:bird_us_dallas")]))
+        cities.append(ScooterCity(id: "us:tx:San Antonio", name: "San Antonio, TX", countryCode: "US", center: GeoPoint(latitude: 29.4241, longitude: -98.4936), bounds: GeoBounds(south: 29.3863, west: -98.685, north: 29.6104, east: -98.4483), feeds: [ScooterCityFeed(id: "us:bird_us_san_antonio"), ScooterCityFeed(id: "us:veo_us_san_antonio")]))
+        cities.append(ScooterCity(id: "us:va:Arlington", name: "Arlington, VA", countryCode: "US", center: GeoPoint(latitude: 38.8816, longitude: -77.091), bounds: GeoBounds(south: 38.8194, west: -77.1832, north: 38.9436, east: -77.0157), feeds: [ScooterCityFeed(id: "us:bird_us_arlington"), ScooterCityFeed(id: "us:lime_us_arlington"), ScooterCityFeed(id: "us:gcoo_us_arlington")]))
+        cities.append(ScooterCity(id: "us:va:Fairfax", name: "Fairfax, VA", countryCode: "US", center: GeoPoint(latitude: 38.8462, longitude: -77.3064), bounds: GeoBounds(south: 38.8151, west: -77.3484, north: 38.8792, east: -77.2572), feeds: [ScooterCityFeed(id: "us:bird_us_fairfax")]))
+        cities.append(ScooterCity(id: "us:va:Richmond", name: "Richmond, VA", countryCode: "US", center: GeoPoint(latitude: 37.5407, longitude: -77.436), bounds: GeoBounds(south: 37.4592, west: -77.6202, north: 37.6124, east: -77.3805), feeds: [ScooterCityFeed(id: "us:bird_us_richmond"), ScooterCityFeed(id: "us:spin_us_richmond")]))
+        cities.append(ScooterCity(id: "us:wi:Eau Claire", name: "Eau Claire, WI", countryCode: "US", center: GeoPoint(latitude: 44.8113, longitude: -91.4985), bounds: GeoBounds(south: 44.785, west: -91.5415, north: 44.8311, east: -91.462), feeds: [ScooterCityFeed(id: "us:bird_us_eau_claire")]))
+        cities.append(ScooterCity(id: "us:ca:Oakland", name: "Oakland, CA", countryCode: "US", center: GeoPoint(latitude: 37.8044, longitude: -122.2712), bounds: GeoBounds(south: 37.7706, west: -122.3348, north: 37.8602, east: -122.2005), feeds: [ScooterCityFeed(id: "us:lime_us_oakland")]))
+        cities.append(ScooterCity(id: "us:ca:San Francisco", name: "San Francisco, CA", countryCode: "US", center: GeoPoint(latitude: 37.7749, longitude: -122.4194), bounds: GeoBounds(south: 37.6991, west: -122.5259, north: 37.8216, east: -122.3469), feeds: [ScooterCityFeed(id: "us:lime_us_san_francisco"), ScooterCityFeed(id: "us:spin_us_san_francisco")]))
+        cities.append(ScooterCity(id: "us:ca:San Jose", name: "San Jose, CA", countryCode: "US", center: GeoPoint(latitude: 37.3382, longitude: -121.8863), bounds: GeoBounds(south: 37.2116, west: -121.9903, north: 37.4377, east: -121.7473), feeds: [ScooterCityFeed(id: "us:lime_us_san_jose")]))
+        cities.append(ScooterCity(id: "us:co:Colorado Springs", name: "Colorado Springs, CO", countryCode: "US", center: GeoPoint(latitude: 38.8339, longitude: -104.8214), bounds: GeoBounds(south: 38.7595, west: -104.8979, north: 38.9287, east: -104.7017), feeds: [ScooterCityFeed(id: "us:lime_us_colorado_springs")]))
+        cities.append(ScooterCity(id: "us:il:Chicago", name: "Chicago, IL", countryCode: "US", center: GeoPoint(latitude: 41.8781, longitude: -87.6298), bounds: GeoBounds(south: 41.6355, west: -87.8562, north: 42.032, east: -87.5125), feeds: [ScooterCityFeed(id: "us:lime_us_chicago"), ScooterCityFeed(id: "us:lyft_us_chicago")]))
+        cities.append(ScooterCity(id: "us:ky:Louisville", name: "Louisville, KY", countryCode: "US", center: GeoPoint(latitude: 38.2527, longitude: -85.7585), bounds: GeoBounds(south: 38.1771, west: -85.8445, north: 38.2854, east: -85.6587), feeds: [ScooterCityFeed(id: "us:lime_us_louisville")]))
+        cities.append(ScooterCity(id: "us:md:Baltimore", name: "Baltimore, MD", countryCode: "US", center: GeoPoint(latitude: 39.2904, longitude: -76.6122), bounds: GeoBounds(south: 39.1886, west: -76.723, north: 39.3811, east: -76.5124), feeds: [ScooterCityFeed(id: "us:lime_us_baltimore"), ScooterCityFeed(id: "us:spin_us_baltimore")]))
+        cities.append(ScooterCity(id: "us:mi:Detroit", name: "Detroit, MI", countryCode: "US", center: GeoPoint(latitude: 42.3314, longitude: -83.0458), bounds: GeoBounds(south: 42.246, west: -83.3, north: 42.4979, east: -82.8982), feeds: [ScooterCityFeed(id: "us:lime_us_detroit"), ScooterCityFeed(id: "us:spin_us_detroit")]))
+        cities.append(ScooterCity(id: "us:nc:Durham", name: "Durham, NC", countryCode: "US", center: GeoPoint(latitude: 35.994, longitude: -78.8986), bounds: GeoBounds(south: 35.9138, west: -78.994, north: 36.0771, east: -78.8326), feeds: [ScooterCityFeed(id: "us:lime_us_durham"), ScooterCityFeed(id: "us:spin_us_durham")]))
+        cities.append(ScooterCity(id: "us:ne:Lincoln", name: "Lincoln, NE", countryCode: "US", center: GeoPoint(latitude: 40.8136, longitude: -96.7026), bounds: GeoBounds(south: 40.7828, west: -96.7279, north: 40.8458, east: -96.6416), feeds: [ScooterCityFeed(id: "us:lime_us_lincoln")]))
+        cities.append(ScooterCity(id: "us:va:Norfolk", name: "Norfolk, VA", countryCode: "US", center: GeoPoint(latitude: 36.8508, longitude: -76.2859), bounds: GeoBounds(south: 36.8133, west: -76.3305, north: 36.9771, east: -76.1662), feeds: [ScooterCityFeed(id: "us:lime_us_norfolk")]))
+        cities.append(ScooterCity(id: "us:wa:Seattle", name: "Seattle, WA", countryCode: "US", center: GeoPoint(latitude: 47.6062, longitude: -122.3321), bounds: GeoBounds(south: 47.4887, west: -122.4475, north: 47.7457, east: -122.2291), feeds: [ScooterCityFeed(id: "us:lime_us_seattle")]))
+        cities.append(ScooterCity(id: "us:or:Portland", name: "Portland, OR", countryCode: "US", center: GeoPoint(latitude: 45.5152, longitude: -122.6784), bounds: GeoBounds(south: 45.4331, west: -122.764, north: 45.6023, east: -122.4778), feeds: [ScooterCityFeed(id: "us:lyft_us_portland")]))
+        cities.append(ScooterCity(id: "us:oh:Akron", name: "Akron, OH", countryCode: "US", center: GeoPoint(latitude: 41.0814, longitude: -81.519), bounds: GeoBounds(south: 41.0098, west: -81.6218, north: 41.1781, east: -81.4094), feeds: [ScooterCityFeed(id: "us:spin_us_akron")]))
+        cities.append(ScooterCity(id: "us:mi:Ann Arbor", name: "Ann Arbor, MI", countryCode: "US", center: GeoPoint(latitude: 42.2808, longitude: -83.743), bounds: GeoBounds(south: 42.2155, west: -83.889, north: 42.3342, east: -83.6496), feeds: [ScooterCityFeed(id: "us:spin_us_ann_arbor")]))
+        cities.append(ScooterCity(id: "us:oh:Columbus", name: "Columbus, OH", countryCode: "US", center: GeoPoint(latitude: 39.9612, longitude: -82.9988), bounds: GeoBounds(south: 39.8522, west: -83.1551, north: 40.1481, east: -82.8317), feeds: [ScooterCityFeed(id: "us:spin_us_columbus"), ScooterCityFeed(id: "us:veo_us_columbus")]))
+        cities.append(ScooterCity(id: "us:co:Fort Collins", name: "Fort Collins, CO", countryCode: "US", center: GeoPoint(latitude: 40.5853, longitude: -105.0844), bounds: GeoBounds(south: 40.471, west: -105.1691, north: 40.629, east: -104.9807), feeds: [ScooterCityFeed(id: "us:spin_us_fort_collins")]))
+        cities.append(ScooterCity(id: "us:co:Meridian", name: "Meridian, CO", countryCode: "US", center: GeoPoint(latitude: 39.5453, longitude: -104.8604), bounds: GeoBounds(south: 39.5179, west: -104.9184, north: 39.633, east: -104.8278), feeds: [ScooterCityFeed(id: "us:spin_us_meridian")]))
+        cities.append(ScooterCity(id: "us:mi:East Lansing", name: "East Lansing, MI", countryCode: "US", center: GeoPoint(latitude: 42.737, longitude: -84.4839), bounds: GeoBounds(south: 42.694, west: -84.5099, north: 42.7479, east: -84.4483), feeds: [ScooterCityFeed(id: "us:spin_us_east_lansing")]))
+        cities.append(ScooterCity(id: "us:mn:Minneapolis", name: "Minneapolis, MN", countryCode: "US", center: GeoPoint(latitude: 44.9778, longitude: -93.265), bounds: GeoBounds(south: 44.8835, west: -93.3417, north: 45.0603, east: -93.189), feeds: [ScooterCityFeed(id: "us:spin_us_minneapolis")]))
+        cities.append(ScooterCity(id: "us:nc:Raleigh", name: "Raleigh, NC", countryCode: "US", center: GeoPoint(latitude: 35.7796, longitude: -78.6382), bounds: GeoBounds(south: 35.7313, west: -78.7468, north: 35.8458, east: -78.5618), feeds: [ScooterCityFeed(id: "us:spin_us_raleigh"), ScooterCityFeed(id: "us:spin_us_nc_state")]))
+        cities.append(ScooterCity(id: "us:ri:Pawtucket", name: "Pawtucket, RI", countryCode: "US", center: GeoPoint(latitude: 41.8787, longitude: -71.3826), bounds: GeoBounds(south: 41.8475, west: -71.4342, north: 41.9094, east: -71.3219), feeds: [ScooterCityFeed(id: "us:spin_us_pawtucket")]))
+        cities.append(ScooterCity(id: "us:ri:Providence", name: "Providence, RI", countryCode: "US", center: GeoPoint(latitude: 41.824, longitude: -71.4128), bounds: GeoBounds(south: 41.7634, west: -71.4893, north: 41.9094, east: -71.3219), feeds: [ScooterCityFeed(id: "us:spin_us_providence")]))
+        cities.append(ScooterCity(id: "us:az:Phoenix", name: "Phoenix, AZ", countryCode: "US", center: GeoPoint(latitude: 33.4484, longitude: -112.074), bounds: GeoBounds(south: 33.3539, west: -112.1275, north: 33.5193, east: -111.9717), feeds: [ScooterCityFeed(id: "us:spin_us_phoenix")]))
+        cities.append(ScooterCity(id: "us:ca:San Diego", name: "San Diego, CA", countryCode: "US", center: GeoPoint(latitude: 32.8801, longitude: -117.234), bounds: GeoBounds(south: 32.853, west: -117.2679, north: 32.9033, east: -117.2018), feeds: [ScooterCityFeed(id: "us:spin_us_san_diego")]))
+        cities.append(ScooterCity(id: "us:ut:St. George", name: "St. George, UT", countryCode: "US", center: GeoPoint(latitude: 37.0965, longitude: -113.5684), bounds: GeoBounds(south: 36.9905, west: -113.6861, north: 37.2257, east: -113.4632), feeds: [ScooterCityFeed(id: "us:spin_us_st_george")]))
+        cities.append(ScooterCity(id: "us:fl:Tampa", name: "Tampa, FL", countryCode: "US", center: GeoPoint(latitude: 27.9506, longitude: -82.4572), bounds: GeoBounds(south: 27.8124, west: -82.6231, north: 28.1804, east: -82.2439), feeds: [ScooterCityFeed(id: "us:spin_us_tampa")]))
+        cities.append(ScooterCity(id: "us:ca:Davis", name: "Davis, CA", countryCode: "US", center: GeoPoint(latitude: 38.5382, longitude: -121.7617), bounds: GeoBounds(south: 38.5073, west: -121.8245, north: 38.5846, east: -121.6643), feeds: [ScooterCityFeed(id: "us:spin_us_davis")]))
+        cities.append(ScooterCity(id: "us:ar:Fayetteville", name: "Fayetteville, AR", countryCode: "US", center: GeoPoint(latitude: 36.0626, longitude: -94.1574), bounds: GeoBounds(south: 36.0154, west: -94.2474, north: 36.1582, east: -94.1004), feeds: [ScooterCityFeed(id: "us:spin_us_fayetteville"), ScooterCityFeed(id: "us:veo_us_fayetteville")]))
+        cities.append(ScooterCity(id: "us:ok:Stillwater", name: "Stillwater, OK", countryCode: "US", center: GeoPoint(latitude: 36.1156, longitude: -97.0584), bounds: GeoBounds(south: 36.0739, west: -97.1434, north: 36.1917, east: -97.0032), feeds: [ScooterCityFeed(id: "us:spin_us_stillwater")]))
+        cities.append(ScooterCity(id: "us:fl:Tallahassee", name: "Tallahassee, FL", countryCode: "US", center: GeoPoint(latitude: 30.4383, longitude: -84.2807), bounds: GeoBounds(south: 30.401, west: -84.3722, north: 30.4818, east: -84.2118), feeds: [ScooterCityFeed(id: "us:spin_us_tallahassee")]))
+        cities.append(ScooterCity(id: "us:mn:St. Paul", name: "St. Paul, MN", countryCode: "US", center: GeoPoint(latitude: 44.9537, longitude: -93.09), bounds: GeoBounds(south: 44.8784, west: -93.2213, north: 45.001, east: -92.9918), feeds: [ScooterCityFeed(id: "us:spin_us_saint_paul")]))
+        cities.append(ScooterCity(id: "us:va:Roanoke", name: "Roanoke, VA", countryCode: "US", center: GeoPoint(latitude: 37.271, longitude: -79.9414), bounds: GeoBounds(south: 37.2006, west: -80.0516, north: 37.3483, east: -79.8652), feeds: [ScooterCityFeed(id: "us:spin_us_roanoke")]))
+        cities.append(ScooterCity(id: "us:ut:Salt Lake City", name: "Salt Lake City, UT", countryCode: "US", center: GeoPoint(latitude: 40.7608, longitude: -111.891), bounds: GeoBounds(south: 40.6976, west: -111.9584, north: 40.7951, east: -111.7979), feeds: [ScooterCityFeed(id: "us:spin_us_salt_lake_city"), ScooterCityFeed(id: "us:veo_us_salt_lake_city")]))
+        cities.append(ScooterCity(id: "us:al:Birmingham", name: "Birmingham, AL", countryCode: "US", center: GeoPoint(latitude: 33.5186, longitude: -86.8104), bounds: GeoBounds(south: 33.4682, west: -86.8757, north: 33.5524, east: -86.7212), feeds: [ScooterCityFeed(id: "us:veo_us_birmingham")]))
+        cities.append(ScooterCity(id: "us:ia:Cedar Rapids", name: "Cedar Rapids, IA", countryCode: "US", center: GeoPoint(latitude: 41.9779, longitude: -91.6656), bounds: GeoBounds(south: 41.9153, west: -91.7281, north: 42.0241, east: -91.5999), feeds: [ScooterCityFeed(id: "us:veo_us_cedar_rapids")]))
+        cities.append(ScooterCity(id: "us:oh:Cleveland Heights", name: "Cleveland Heights, OH", countryCode: "US", center: GeoPoint(latitude: 41.5201, longitude: -81.5562), bounds: GeoBounds(south: 41.4869, west: -81.6067, north: 41.5454, east: -81.5204), feeds: [ScooterCityFeed(id: "us:veo_us_cleveland")]))
+        cities.append(ScooterCity(id: "us:oh:University Heights", name: "University Heights, OH", countryCode: "US", center: GeoPoint(latitude: 41.4978, longitude: -81.5376), bounds: GeoBounds(south: 41.4799, west: -81.5607, north: 41.5091, east: -81.5152), feeds: [ScooterCityFeed(id: "us:veo_us_cleveland")]))
+        cities.append(ScooterCity(id: "us:oh:South Euclid", name: "South Euclid, OH", countryCode: "US", center: GeoPoint(latitude: 41.5231, longitude: -81.5185), bounds: GeoBounds(south: 41.4924, west: -81.5532, north: 41.5469, east: -81.494), feeds: [ScooterCityFeed(id: "us:veo_us_cleveland")]))
+        cities.append(ScooterCity(id: "us:md:College Park", name: "College Park, MD", countryCode: "US", center: GeoPoint(latitude: 38.9897, longitude: -76.9378), bounds: GeoBounds(south: 38.9629, west: -76.9659, north: 39.0313, east: -76.8985), feeds: [ScooterCityFeed(id: "us:veo_us_college_park")]))
+        cities.append(ScooterCity(id: "us:md:University Park", name: "University Park, MD", countryCode: "US", center: GeoPoint(latitude: 38.9709, longitude: -76.9419), bounds: GeoBounds(south: 38.9577, west: -76.9624, north: 38.9852, east: -76.9105), feeds: [ScooterCityFeed(id: "us:veo_us_college_park")]))
+        cities.append(ScooterCity(id: "us:va:Charlottesville", name: "Charlottesville, VA", countryCode: "US", center: GeoPoint(latitude: 38.0293, longitude: -78.4767), bounds: GeoBounds(south: 37.9994, west: -78.5392, north: 38.0785, east: -78.4405), feeds: [ScooterCityFeed(id: "us:veo_us_charlottesville")]))
+        cities.append(ScooterCity(id: "us:co:Denver", name: "Denver, CO", countryCode: "US", center: GeoPoint(latitude: 39.7392, longitude: -104.9903), bounds: GeoBounds(south: 39.6047, west: -105.0935, north: 39.8229, east: -104.7276), feeds: [ScooterCityFeed(id: "us:veo_us_denver")]))
+        cities.append(ScooterCity(id: "us:ct:Hartford", name: "Hartford, CT", countryCode: "US", center: GeoPoint(latitude: 41.7658, longitude: -72.6734), bounds: GeoBounds(south: 41.715, west: -72.7301, north: 41.8158, east: -72.6415), feeds: [ScooterCityFeed(id: "us:veo_us_hartford")]))
+        cities.append(ScooterCity(id: "us:ks:Manhattan", name: "Manhattan, KS", countryCode: "US", center: GeoPoint(latitude: 39.1836, longitude: -96.5717), bounds: GeoBounds(south: 39.1607, west: -96.6445, north: 39.232, east: -96.5413), feeds: [ScooterCityFeed(id: "us:veo_us_manhattan")]))
+        cities.append(ScooterCity(id: "us:ct:New Haven", name: "New Haven, CT", countryCode: "US", center: GeoPoint(latitude: 41.3083, longitude: -72.9279), bounds: GeoBounds(south: 41.2859, west: -72.9588, north: 41.3418, east: -72.8754), feeds: [ScooterCityFeed(id: "us:veo_us_new_haven")]))
+        cities.append(ScooterCity(id: "us:ny:New Rochelle", name: "New Rochelle, NY", countryCode: "US", center: GeoPoint(latitude: 40.9115, longitude: -73.7824), bounds: GeoBounds(south: 40.8835, west: -73.8118, north: 40.9407, east: -73.7534), feeds: [ScooterCityFeed(id: "us:veo_us_new_rochelle")]))
+        cities.append(ScooterCity(id: "us:ok:Norman", name: "Norman, OK", countryCode: "US", center: GeoPoint(latitude: 35.2226, longitude: -97.4395), bounds: GeoBounds(south: 35.1626, west: -97.4996, north: 35.257, east: -97.3867), feeds: [ScooterCityFeed(id: "us:veo_us_norman")]))
+        cities.append(ScooterCity(id: "us:in:West Lafayette", name: "West Lafayette, IN", countryCode: "US", center: GeoPoint(latitude: 40.4259, longitude: -86.9081), bounds: GeoBounds(south: 40.4057, west: -86.9576, north: 40.481, east: -86.8865), feeds: [ScooterCityFeed(id: "us:veo_us_west_lafayette")]))
+        cities.append(ScooterCity(id: "us:ny:Rochester", name: "Rochester, NY", countryCode: "US", center: GeoPoint(latitude: 43.1566, longitude: -77.6088), bounds: GeoBounds(south: 43.1044, west: -77.6881, north: 43.2084, east: -77.5337), feeds: [ScooterCityFeed(id: "us:veo_us_rochester")]))
+        cities.append(ScooterCity(id: "us:il:Carbondale", name: "Carbondale, IL", countryCode: "US", center: GeoPoint(latitude: 37.7273, longitude: -89.2168), bounds: GeoBounds(south: 37.6848, west: -89.2673, north: 37.7612, east: -89.1719), feeds: [ScooterCityFeed(id: "us:veo_us_carbondale")]))
+        cities.append(ScooterCity(id: "us:ut:South Salt Lake", name: "South Salt Lake, UT", countryCode: "US", center: GeoPoint(latitude: 40.7188, longitude: -111.8883), bounds: GeoBounds(south: 40.6781, west: -111.9115, north: 40.7344, east: -111.8689), feeds: [ScooterCityFeed(id: "us:veo_us_salt_lake_city")]))
+        cities.append(ScooterCity(id: "us:ny:Syracuse", name: "Syracuse, NY", countryCode: "US", center: GeoPoint(latitude: 43.0481, longitude: -76.1474), bounds: GeoBounds(south: 42.9926, west: -76.212, north: 43.0917, east: -76.0577), feeds: [ScooterCityFeed(id: "us:veo_us_syracuse")]))
+        cities.append(ScooterCity(id: "us:oh:Toledo", name: "Toledo, OH", countryCode: "US", center: GeoPoint(latitude: 41.6528, longitude: -83.5379), bounds: GeoBounds(south: 41.5856, west: -83.6966, north: 41.7378, east: -83.4676), feeds: [ScooterCityFeed(id: "us:veo_us_toledo")]))
+        cities.append(ScooterCity(id: "us:ks:Wichita", name: "Wichita, KS", countryCode: "US", center: GeoPoint(latitude: 37.6872, longitude: -97.3301), bounds: GeoBounds(south: 37.663, west: -97.4373, north: 37.7414, east: -97.2863), feeds: [ScooterCityFeed(id: "us:veo_us_wichita")]))
+        cities.append(ScooterCity(id: "us:ca:Berkeley", name: "Berkeley, CA", countryCode: "US", center: GeoPoint(latitude: 37.8715, longitude: -122.273), bounds: GeoBounds(south: 37.8163, west: -122.3148, north: 37.9076, east: -122.2255), feeds: [ScooterCityFeed(id: "us:veo_us_berkeley")]))
+        cities.append(ScooterCity(id: "us:ca:Emeryville", name: "Emeryville, CA", countryCode: "US", center: GeoPoint(latitude: 37.8313, longitude: -122.2852), bounds: GeoBounds(south: 37.8182, west: -122.3069, north: 37.855, east: -122.2664), feeds: [ScooterCityFeed(id: "us:veo_us_berkeley")]))
+        cities.append(ScooterCity(id: "us:fl:Sarasota", name: "Sarasota, FL", countryCode: "US", center: GeoPoint(latitude: 27.3364, longitude: -82.5307), bounds: GeoBounds(south: 27.2936, west: -82.5909, north: 27.4162, east: -82.4897), feeds: [ScooterCityFeed(id: "us:veo_us_sarasota")]))
+        cities.append(ScooterCity(id: "us:nj:Asbury Park", name: "Asbury Park, NJ", countryCode: "US", center: GeoPoint(latitude: 40.2204, longitude: -74.0121), bounds: GeoBounds(south: 40.2062, west: -74.0482, north: 40.2534, east: -73.9868), feeds: [ScooterCityFeed(id: "us:veo_us_asbury_park")]))
+        cities.append(ScooterCity(id: "us:nj:New Brunswick", name: "New Brunswick, NJ", countryCode: "US", center: GeoPoint(latitude: 40.4862, longitude: -74.4518), bounds: GeoBounds(south: 40.4658, west: -74.4902, north: 40.5346, east: -74.4054), feeds: [ScooterCityFeed(id: "us:veo_us_new_brunswick")]))
+        cities.append(ScooterCity(id: "us:nj:Piscataway", name: "Piscataway, NJ", countryCode: "US", center: GeoPoint(latitude: 40.5235, longitude: -74.4636), bounds: GeoBounds(south: 40.5031, west: -74.4823, north: 40.5369, east: -74.42), feeds: [ScooterCityFeed(id: "us:veo_us_new_brunswick")]))
+        cities.append(ScooterCity(id: "us:nj:Highland Park", name: "Highland Park, NJ", countryCode: "US", center: GeoPoint(latitude: 40.4996, longitude: -74.4243), bounds: GeoBounds(south: 40.4798, west: -74.4535, north: 40.5174, east: -74.4006), feeds: [ScooterCityFeed(id: "us:veo_us_new_brunswick")]))
+        cities.append(ScooterCity(id: "us:va:Alexandria", name: "Alexandria, VA", countryCode: "US", center: GeoPoint(latitude: 38.8048, longitude: -77.0469), bounds: GeoBounds(south: 38.7789, west: -77.1578, north: 38.8564, east: -77.0213), feeds: [ScooterCityFeed(id: "us:gcoo_us_alexandria")]))
+        cities.append(ScooterCity(id: "ca:ab:Calgary", name: "Calgary, AB", countryCode: "CA", center: GeoPoint(latitude: 51.0454, longitude: -114.0714), bounds: GeoBounds(south: 50.9416, west: -114.2441, north: 51.16, east: -113.9083), feeds: [ScooterCityFeed(id: "canada:bird_ca_calgary"), ScooterCityFeed(id: "canada:lime_ca_calgary")]))
+        cities.append(ScooterCity(id: "ca:ab:Edmonton", name: "Edmonton, AB", countryCode: "CA", center: GeoPoint(latitude: 53.5444, longitude: -113.4909), bounds: GeoBounds(south: 53.4218, west: -113.6709, north: 53.6382, east: -113.33), feeds: [ScooterCityFeed(id: "canada:bird_ca_edmonton"), ScooterCityFeed(id: "canada:lime_ca_edmonton")]))
+        cities.append(ScooterCity(id: "ca:ns:Halifax", name: "Halifax, NS", countryCode: "CA", center: GeoPoint(latitude: 44.6466, longitude: -63.5906), bounds: GeoBounds(south: 44.586, west: -63.7068, north: 44.7269, east: -63.4358), feeds: [ScooterCityFeed(id: "canada:bird_ca_halifax")]))
+        cities.append(ScooterCity(id: "ca:on:Hamilton", name: "Hamilton, ON", countryCode: "CA", center: GeoPoint(latitude: 43.2578, longitude: -79.871), bounds: GeoBounds(south: 43.1875, west: -80.0054, north: 43.3108, east: -79.7437), feeds: [ScooterCityFeed(id: "canada:bird_ca_hamilton")]))
+        cities.append(ScooterCity(id: "ca:ab:Leduc", name: "Leduc, AB", countryCode: "CA", center: GeoPoint(latitude: 53.2645, longitude: -113.5593), bounds: GeoBounds(south: 53.2264, west: -113.6265, north: 53.323, east: -113.4739), pauses: [ScooterSeasonalPause(from: "10-22", until: "05-01", timeZone: "America/Edmonton")], feeds: [ScooterCityFeed(id: "canada:bird_ca_leduc", pause: ScooterSeasonalPause(from: "10-22", until: "05-01", timeZone: "America/Edmonton"))]))
+        cities.append(ScooterCity(id: "ca:on:Ottawa", name: "Ottawa, ON", countryCode: "CA", center: GeoPoint(latitude: 45.4215, longitude: -75.6915), bounds: GeoBounds(south: 45.3613, west: -75.7756, north: 45.4591, east: -75.6245), pauses: [ScooterSeasonalPause(from: "11-16", until: "04-30", timeZone: "America/Toronto")], feeds: [ScooterCityFeed(id: "canada:bird_ca_ottawa", pause: ScooterSeasonalPause(from: "11-16", until: "04-30", timeZone: "America/Toronto")), ScooterCityFeed(id: "canada:lime_ca_ottawa", pause: ScooterSeasonalPause(from: "11-16", until: "04-30", timeZone: "America/Toronto"))]))
+        cities.append(ScooterCity(id: "ca:on:Vaughan", name: "Vaughan, ON", countryCode: "CA", center: GeoPoint(latitude: 43.7955, longitude: -79.5323), bounds: GeoBounds(south: 43.765, west: -79.603, north: 43.8931, east: -79.4076), feeds: [ScooterCityFeed(id: "canada:bird_ca_vaughan")]))
+        cities.append(ScooterCity(id: "ca:on:Windsor", name: "Windsor, ON", countryCode: "CA", center: GeoPoint(latitude: 42.3041, longitude: -83.063), bounds: GeoBounds(south: 42.225, west: -83.1112, north: 42.3527, east: -82.8324), feeds: [ScooterCityFeed(id: "canada:bird_ca_windsor")]))
+        cities.append(ScooterCity(id: "ca:ab:Airdrie", name: "Airdrie, AB", countryCode: "CA", center: GeoPoint(latitude: 51.2799, longitude: -114.022), bounds: GeoBounds(south: 51.2409, west: -114.0605, north: 51.316, east: -113.9659), feeds: [ScooterCityFeed(id: "canada:lime_ca_calgary")]))
+        cities.append(ScooterCity(id: "ca:ab:St. Albert", name: "St. Albert, AB", countryCode: "CA", center: GeoPoint(latitude: 53.6369, longitude: -113.6255), bounds: GeoBounds(south: 53.5963, west: -113.6858, north: 53.6747, east: -113.5601), feeds: [ScooterCityFeed(id: "canada:lime_ca_edmonton")]))
+        cities.append(ScooterCity(id: "ca:ab:Beaumont", name: "Beaumont, AB", countryCode: "CA", center: GeoPoint(latitude: 53.355, longitude: -113.4276), bounds: GeoBounds(south: 53.3297, west: -113.459, north: 53.3752, east: -113.377), feeds: [ScooterCityFeed(id: "canada:lime_ca_edmonton")]))
+        cities.append(ScooterCity(id: "ca:bc:Kelowna", name: "Kelowna, BC", countryCode: "CA", center: GeoPoint(latitude: 49.8864, longitude: -119.4754), bounds: GeoBounds(south: 49.78, west: -119.5355, north: 49.9733, east: -119.361), feeds: [ScooterCityFeed(id: "canada:lime_ca_kelowna")]))
+        cities.append(ScooterCity(id: "ca:on:Mississauga", name: "Mississauga, ON", countryCode: "CA", center: GeoPoint(latitude: 43.5797, longitude: -79.6556), bounds: GeoBounds(south: 43.4744, west: -79.8043, north: 43.6832, east: -79.5394), feeds: [ScooterCityFeed(id: "canada:lime_ca_mississauga")]))
+        cities.append(ScooterCity(id: "ca:bc:Vancouver", name: "Vancouver, BC", countryCode: "CA", center: GeoPoint(latitude: 49.2684, longitude: -123.1047), bounds: GeoBounds(south: 49.2181, west: -123.179, north: 49.3026, east: -123.0101), feeds: [ScooterCityFeed(id: "canada:lime_ca_vancouver")]))
+        cities.append(ScooterCity(id: "ca:nb:Fredericton", name: "Fredericton, NB", countryCode: "CA", center: GeoPoint(latitude: 45.9636, longitude: -66.6431), bounds: GeoBounds(south: 45.896829, west: -66.716137, north: 45.998963, east: -66.577678), feeds: [ScooterCityFeed(id: "canada:move_ca_new_brunswick")]))
+        cities.append(ScooterCity(id: "ca:nb:Moncton", name: "Moncton, NB", countryCode: "CA", center: GeoPoint(latitude: 46.0878, longitude: -64.7782), bounds: GeoBounds(south: 46.028446, west: -64.909284, north: 46.162801, east: -64.633564), pauses: [ScooterSeasonalPause(from: "11-15", until: "04-16", timeZone: "America/Moncton")], feeds: [ScooterCityFeed(id: "canada:move_ca_new_brunswick", pause: ScooterSeasonalPause(from: "11-15", until: "04-16", timeZone: "America/Moncton"))]))
+        cities.append(ScooterCity(id: "ca:nb:Saint John", name: "Saint John, NB", countryCode: "CA", center: GeoPoint(latitude: 45.2733, longitude: -66.0633), bounds: GeoBounds(south: 45.222753, west: -66.151545, north: 45.338903, east: -65.95369), feeds: [ScooterCityFeed(id: "canada:move_ca_new_brunswick")]))
+        cities.append(ScooterCity(id: "ae:Dubai", name: "Dubai", countryCode: "AE", center: GeoPoint(latitude: 25.2048, longitude: 55.2708), bounds: GeoBounds(south: 25.0536, west: 55.1151, north: 25.2925, east: 55.5142), feeds: [ScooterCityFeed(id: "emirates:dott_ae_dubai"), ScooterCityFeed(id: "emirates:dott_ae_dubai_hills")]))
+        cities.append(ScooterCity(id: "ae:Abu Dhabi", name: "Abu Dhabi", countryCode: "AE", center: GeoPoint(latitude: 24.4539, longitude: 54.3773), bounds: GeoBounds(south: 24.3979, west: 54.307, north: 24.5216, east: 54.6349), feeds: [ScooterCityFeed(id: "emirates:dott_ae_abu_dhabi")]))
+        cities.append(ScooterCity(id: "sa:Riyadh", name: "Riyadh", countryCode: "SA", center: GeoPoint(latitude: 24.7136, longitude: 46.6753), bounds: GeoBounds(south: 24.5521, west: 46.4871, north: 25.0316, east: 46.8692), feeds: [ScooterCityFeed(id: "saudiarabia:saham_sa_riyadh")]))
+        cities.append(ScooterCity(id: "sa:Jeddah", name: "Jeddah", countryCode: "SA", center: GeoPoint(latitude: 21.6394, longitude: 39.1015), bounds: GeoBounds(south: 21.6246, west: 39.0907, north: 21.6661, east: 39.1151), feeds: [ScooterCityFeed(id: "saudiarabia:dott_sa_jeddah")]))
+        cities.append(ScooterCity(id: "il:Tel Aviv", name: "Tel Aviv", countryCode: "IL", center: GeoPoint(latitude: 32.0853, longitude: 34.7818), bounds: GeoBounds(south: 32.0207, west: 34.7289, north: 32.1556, east: 34.8625), feeds: [ScooterCityFeed(id: "israel:bird_il_israel"), ScooterCityFeed(id: "israel:dott_il_tel_aviv"), ScooterCityFeed(id: "israel:lime_il_tel_aviv")]))
+        cities.append(ScooterCity(id: "il:Ramat Gan", name: "Ramat Gan", countryCode: "IL", center: GeoPoint(latitude: 32.0687, longitude: 34.8247), bounds: GeoBounds(south: 32.0274, west: 34.7889, north: 32.1143, east: 34.8649), feeds: [ScooterCityFeed(id: "israel:bird_il_israel"), ScooterCityFeed(id: "israel:dott_il_tel_aviv"), ScooterCityFeed(id: "israel:lime_il_tel_aviv")]))
+        cities.append(ScooterCity(id: "il:Holon", name: "Holon", countryCode: "IL", center: GeoPoint(latitude: 32.0193, longitude: 34.7804), bounds: GeoBounds(south: 31.9809, west: 34.7451, north: 32.0474, east: 34.8231), feeds: [ScooterCityFeed(id: "israel:bird_il_israel"), ScooterCityFeed(id: "israel:dott_il_tel_aviv"), ScooterCityFeed(id: "israel:lime_il_tel_aviv")]))
+        cities.append(ScooterCity(id: "il:Bat Yam", name: "Bat Yam", countryCode: "IL", center: GeoPoint(latitude: 32.0155, longitude: 34.7505), bounds: GeoBounds(south: 31.9838, west: 34.723, north: 32.0427, east: 34.7721), feeds: [ScooterCityFeed(id: "israel:bird_il_israel"), ScooterCityFeed(id: "israel:dott_il_tel_aviv")]))
+        cities.append(ScooterCity(id: "il:Givatayim", name: "Givatayim", countryCode: "IL", center: GeoPoint(latitude: 32.073, longitude: 34.8113), bounds: GeoBounds(south: 32.0498, west: 34.7877, north: 32.0907, east: 34.8313), feeds: [ScooterCityFeed(id: "israel:bird_il_israel"), ScooterCityFeed(id: "israel:dott_il_tel_aviv"), ScooterCityFeed(id: "israel:lime_il_tel_aviv")]))
+        cities.append(ScooterCity(id: "il:Herzliya", name: "Herzliya", countryCode: "IL", center: GeoPoint(latitude: 32.1656, longitude: 34.8469), bounds: GeoBounds(south: 32.1354, west: 34.7774, north: 32.2119, east: 34.875), feeds: [ScooterCityFeed(id: "israel:bird_il_israel"), ScooterCityFeed(id: "israel:dott_il_tel_aviv"), ScooterCityFeed(id: "israel:lime_il_tel_aviv")]))
+        cities.append(ScooterCity(id: "il:Rishon LeZion", name: "Rishon LeZion", countryCode: "IL", center: GeoPoint(latitude: 31.9636, longitude: 34.8101), bounds: GeoBounds(south: 31.9349, west: 34.7203, north: 32.0162, east: 34.8567), feeds: [ScooterCityFeed(id: "israel:bird_il_israel")]))
+        cities.append(ScooterCity(id: "il:Ashdod", name: "Ashdod", countryCode: "IL", center: GeoPoint(latitude: 31.7977, longitude: 34.653), bounds: GeoBounds(south: 31.7561, west: 34.603, north: 31.8442, east: 34.683), feeds: [ScooterCityFeed(id: "israel:bird_il_israel")]))
+        cities.append(ScooterCity(id: "il:Bnei Brak", name: "Bnei Brak", countryCode: "IL", center: GeoPoint(latitude: 32.0874, longitude: 34.8324), bounds: GeoBounds(south: 32.0604, west: 34.8112, north: 32.1172, east: 34.8588), feeds: [ScooterCityFeed(id: "israel:bird_il_israel"), ScooterCityFeed(id: "israel:dott_il_tel_aviv"), ScooterCityFeed(id: "israel:lime_il_tel_aviv")]))
+        cities.append(ScooterCity(id: "il:Ramat HaSharon", name: "Ramat HaSharon", countryCode: "IL", center: GeoPoint(latitude: 32.1431, longitude: 34.8381), bounds: GeoBounds(south: 32.1109, west: 34.7854, north: 32.1674, east: 34.8758), feeds: [ScooterCityFeed(id: "israel:bird_il_israel")]))
+        cities.append(ScooterCity(id: "il:Petah Tikva", name: "Petah Tikva", countryCode: "IL", center: GeoPoint(latitude: 32.0878, longitude: 34.886), bounds: GeoBounds(south: 32.0583, west: 34.836, north: 32.1208, east: 34.9304), feeds: [ScooterCityFeed(id: "israel:dott_il_tel_aviv"), ScooterCityFeed(id: "israel:lime_il_tel_aviv")]))
+        cities.append(ScooterCity(id: "il:Kiryat Ono", name: "Kiryat Ono", countryCode: "IL", center: GeoPoint(latitude: 32.0592, longitude: 34.8594), bounds: GeoBounds(south: 32.0293, west: 34.8337, north: 32.0722, east: 34.8718), feeds: [ScooterCityFeed(id: "israel:lime_il_tel_aviv")]))
+        cities.append(ScooterCity(id: "il:Givat Shmuel", name: "Givat Shmuel", countryCode: "IL", center: GeoPoint(latitude: 32.0769, longitude: 34.8525), bounds: GeoBounds(south: 32.0613, west: 34.8399, north: 32.0913, east: 34.8651), feeds: [ScooterCityFeed(id: "israel:lime_il_tel_aviv")]))
+        cities.append(ScooterCity(id: "il:Or Yehuda", name: "Or Yehuda", countryCode: "IL", center: GeoPoint(latitude: 32.027, longitude: 34.863), bounds: GeoBounds(south: 32.0243, west: 34.8502, north: 32.0457, east: 34.8655), feeds: [ScooterCityFeed(id: "israel:lime_il_tel_aviv")]))
+        cities.append(ScooterCity(id: "nz:auk:Auckland", name: "Auckland", countryCode: "NZ", center: GeoPoint(latitude: -36.8485, longitude: 174.7633), bounds: GeoBounds(south: -36.9398, west: 174.664, north: -36.6989, east: 174.8976), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_auckland")]))
+        cities.append(ScooterCity(id: "nz:can:Christchurch", name: "Christchurch", countryCode: "NZ", center: GeoPoint(latitude: -43.5309, longitude: 172.6366), bounds: GeoBounds(south: -43.591, west: 172.5084, north: -43.4437, east: 172.7826), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_christchurch")]))
+        cities.append(ScooterCity(id: "nz:wgn:Wellington", name: "Wellington", countryCode: "NZ", center: GeoPoint(latitude: -41.2865, longitude: 174.7762), bounds: GeoBounds(south: -41.3618, west: 174.7174, north: -41.143, east: 174.8515), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_wellington"), ScooterCityFeed(id: "newzealand:flamingo_nz_porirua")]))
+        cities.append(ScooterCity(id: "nz:wgn:Porirua", name: "Porirua", countryCode: "NZ", center: GeoPoint(latitude: -41.1339, longitude: 174.8405), bounds: GeoBounds(south: -41.1656, west: 174.8117, north: -41.0235, east: 174.9192), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_porirua")]))
+        cities.append(ScooterCity(id: "nz:ota:Dunedin", name: "Dunedin", countryCode: "NZ", center: GeoPoint(latitude: -45.8742, longitude: 170.5036), bounds: GeoBounds(south: -45.9268, west: 170.3708, north: -45.7984, east: 170.6397), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_dunedin")]))
+        cities.append(ScooterCity(id: "nz:bop:Tauranga", name: "Tauranga", countryCode: "NZ", center: GeoPoint(latitude: -37.6878, longitude: 176.1651), bounds: GeoBounds(south: -37.7585, west: 176.096, north: -37.6208, east: 176.3668), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_tauranga")]))
+        cities.append(ScooterCity(id: "nz:mwt:Palmerston North", name: "Palmerston North", countryCode: "NZ", center: GeoPoint(latitude: -40.3564, longitude: 175.6111), bounds: GeoBounds(south: -40.4026, west: 175.5589, north: -40.3038, east: 175.6786), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_palmerston_north")]))
+        cities.append(ScooterCity(id: "nz:can:Rangiora", name: "Rangiora", countryCode: "NZ", center: GeoPoint(latitude: -43.3036, longitude: 172.5953), bounds: GeoBounds(south: -43.3414, west: 172.5563, north: -43.2778, east: 172.6231), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_waimakariri")]))
+        cities.append(ScooterCity(id: "nz:can:Kaiapoi", name: "Kaiapoi", countryCode: "NZ", center: GeoPoint(latitude: -43.3796, longitude: 172.6594), bounds: GeoBounds(south: -43.4029, west: 172.6202, north: -43.3456, east: 172.6867), feeds: [ScooterCityFeed(id: "newzealand:flamingo_nz_waimakariri")]))
+        cities.append(ScooterCity(id: "nz:tki:New Plymouth", name: "New Plymouth", countryCode: "NZ", center: GeoPoint(latitude: -39.0572, longitude: 174.0752), bounds: GeoBounds(south: -39.1064, west: 174.0067, north: -39.0087, east: 174.1857), feeds: [ScooterCityFeed(id: "newzealand:jolt_nz_new_plymouth")]))
+        cities.append(ScooterCity(id: "nz:can:Rolleston", name: "Rolleston", countryCode: "NZ", center: GeoPoint(latitude: -43.5956, longitude: 172.382), bounds: GeoBounds(south: -43.6426, west: 172.3437, north: -43.5743, east: 172.4189), feeds: [ScooterCityFeed(id: "newzealand:jolt_nz_selwyn")]))
+        cities.append(ScooterCity(id: "cr:Tamarindo", name: "Tamarindo", countryCode: "CR", center: GeoPoint(latitude: 10.2984, longitude: -85.84), bounds: GeoBounds(south: 10.2754, west: -85.8619, north: 10.3161, east: -85.8241), feeds: [ScooterCityFeed(id: "costarica:hopp_cr_tamarindo")]))
+        cities.append(ScooterCity(id: "bq:Kralendijk", name: "Kralendijk", countryCode: "BQ", center: GeoPoint(latitude: 12.1473, longitude: -68.274), bounds: GeoBounds(south: 12.0102, west: -68.368, north: 12.2527, east: -68.2127), feeds: [ScooterCityFeed(id: "caribbeannetherlands:hopp_bq_bonaire")]))
+        cities.append(ScooterCity(id: "jp:Tokyo", name: "Tokyo", countryCode: "JP", center: GeoPoint(latitude: 35.704335, longitude: 139.67753), bounds: GeoBounds(south: 35.518323, west: 139.349154, north: 35.890346, east: 140.005906), feeds: [ScooterCityFeed(id: "japan:luup_jp_shibuya")]))
+        cities.append(ScooterCity(id: "jp:Osaka", name: "Osaka", countryCode: "JP", center: GeoPoint(latitude: 34.673977, longitude: 135.488957), bounds: GeoBounds(south: 34.538111, west: 135.365909, north: 34.809842, east: 135.612006), feeds: [ScooterCityFeed(id: "japan:luup_jp_osaka")]))
+        cities.append(ScooterCity(id: "jp:Kyoto", name: "Kyoto", countryCode: "JP", center: GeoPoint(latitude: 34.995491, longitude: 135.750024), bounds: GeoBounds(south: 34.888411, west: 135.647448, north: 35.10257, east: 135.852601), feeds: [ScooterCityFeed(id: "japan:luup_jp_kyoto")]))
+        cities.append(ScooterCity(id: "jp:Nagoya", name: "Nagoya", countryCode: "JP", center: GeoPoint(latitude: 35.147098, longitude: 136.926314), bounds: GeoBounds(south: 35.031867, west: 136.789827, north: 35.26233, east: 137.062802), feeds: [ScooterCityFeed(id: "japan:luup_jp_nagoya")]))
+        cities.append(ScooterCity(id: "jp:Kawasaki", name: "Kawasaki", countryCode: "JP", center: GeoPoint(latitude: 35.54665, longitude: 139.640463), bounds: GeoBounds(south: 35.448648, west: 139.445924, north: 35.644652, east: 139.835001), feeds: [ScooterCityFeed(id: "japan:luup_jp_kawasaki")]))
+        cities.append(ScooterCity(id: "jp:Yokohama", name: "Yokohama", countryCode: "JP", center: GeoPoint(latitude: 35.463171, longitude: 139.603245), bounds: GeoBounds(south: 35.352222, west: 139.474385, north: 35.574119, east: 139.732105), feeds: [ScooterCityFeed(id: "japan:luup_jp_yokohama")]))
+        cities.append(ScooterCity(id: "jp:Sendai", name: "Sendai", countryCode: "JP", center: GeoPoint(latitude: 38.259424, longitude: 140.876909), bounds: GeoBounds(south: 38.207057, west: 140.808699, north: 38.311792, east: 140.945118), feeds: [ScooterCityFeed(id: "japan:luup_jp_sendai")]))
+        cities.append(ScooterCity(id: "jp:Fukuoka", name: "Fukuoka", countryCode: "JP", center: GeoPoint(latitude: 33.617477, longitude: 130.389779), bounds: GeoBounds(south: 33.490234, west: 130.238019, north: 33.744721, east: 130.541539), feeds: [ScooterCityFeed(id: "japan:luup_jp_fukuoka")]))
+        cities.append(ScooterCity(id: "jp:Hiroshima", name: "Hiroshima", countryCode: "JP", center: GeoPoint(latitude: 34.39793, longitude: 132.461003), bounds: GeoBounds(south: 34.339447, west: 132.383955, north: 34.456412, east: 132.53805), feeds: [ScooterCityFeed(id: "japan:luup_jp_hiroshima-city")]))
+        cities.append(ScooterCity(id: "jp:Kobe", name: "Kobe", countryCode: "JP", center: GeoPoint(latitude: 34.693849, longitude: 135.18959), bounds: GeoBounds(south: 34.63793, west: 135.117492, north: 34.749767, east: 135.261687), feeds: [ScooterCityFeed(id: "japan:luup_jp_kobe")]))
+        cities.append(ScooterCity(id: "jp:Utsunomiya", name: "Utsunomiya", countryCode: "JP", center: GeoPoint(latitude: 36.595417, longitude: 139.85687), bounds: GeoBounds(south: 36.461935, west: 139.74053, north: 36.7289, east: 139.97321), feeds: [ScooterCityFeed(id: "japan:luup_jp_utsunomiya")]))
+        cities.append(ScooterCity(id: "jp:Takamatsu", name: "Takamatsu", countryCode: "JP", center: GeoPoint(latitude: 34.326677, longitude: 134.064765), bounds: GeoBounds(south: 34.2494, west: 133.950413, north: 34.403953, east: 134.179118), feeds: [ScooterCityFeed(id: "japan:luup_jp_takamatsu-city")]))
+        cities.append(ScooterCity(id: "jp:Hamamatsu", name: "Hamamatsu", countryCode: "JP", center: GeoPoint(latitude: 34.711089, longitude: 137.737934), bounds: GeoBounds(south: 34.64347, west: 137.670973, north: 34.778709, east: 137.804896), feeds: [ScooterCityFeed(id: "japan:luup_jp_hamamatsu")]))
+        cities.append(ScooterCity(id: "jp:Sapporo", name: "Sapporo", countryCode: "JP", center: GeoPoint(latitude: 43.064698, longitude: 141.372467), bounds: GeoBounds(south: 42.974023, west: 141.234508, north: 43.155372, east: 141.510427), feeds: [ScooterCityFeed(id: "japan:luup_jp_sapporo")]))
+        cities.append(ScooterCity(id: "jp:Kitakyushu", name: "Kitakyushu", countryCode: "JP", center: GeoPoint(latitude: 33.867277, longitude: 130.864835), bounds: GeoBounds(south: 33.816174, west: 130.817259, north: 33.91838, east: 130.912412), feeds: [ScooterCityFeed(id: "japan:luup_jp_kitakyushu")]))
+        cities.append(ScooterCity(id: "jp:Tsu", name: "Tsu", countryCode: "JP", center: GeoPoint(latitude: 34.732626, longitude: 136.501126), bounds: GeoBounds(south: 34.693312, west: 136.462755, north: 34.77194, east: 136.539497), feeds: [ScooterCityFeed(id: "japan:luup_jp_tsushi")]))
+        cities.append(ScooterCity(id: "jp:Naha", name: "Naha", countryCode: "JP", center: GeoPoint(latitude: 26.221806, longitude: 127.695145), bounds: GeoBounds(south: 26.183935, west: 127.658267, north: 26.259677, east: 127.73307), feeds: [ScooterCityFeed(id: "japan:luup_jp_naha"), ScooterCityFeed(id: "japan:lime_jp_app_naha_000"), ScooterCityFeed(id: "japan:lime_jp_app_naha_001"), ScooterCityFeed(id: "japan:lime_jp_app_naha_002"), ScooterCityFeed(id: "japan:lime_jp_app_naha_003"), ScooterCityFeed(id: "japan:lime_jp_app_naha_004"), ScooterCityFeed(id: "japan:lime_jp_app_naha_005")]))
+        cities.append(ScooterCity(id: "jp:Onojo", name: "Onojo", countryCode: "JP", center: GeoPoint(latitude: 33.522182, longitude: 130.491918), bounds: GeoBounds(south: 33.485799, west: 130.455693, north: 33.558566, east: 130.528143), feeds: [ScooterCityFeed(id: "japan:luup_jp_onojo")]))
+        cities.append(ScooterCity(id: "jp:Okazaki", name: "Okazaki", countryCode: "JP", center: GeoPoint(latitude: 34.95575, longitude: 137.160341), bounds: GeoBounds(south: 34.918412, west: 137.129298, north: 34.993089, east: 137.191384), feeds: [ScooterCityFeed(id: "japan:luup_jp_okazaki")]))
+        cities.append(ScooterCity(id: "br:Anchieta", name: "Anchieta", countryCode: "BR", center: GeoPoint(latitude: -20.818486, longitude: -40.633099), bounds: GeoBounds(south: -20.842135, west: -40.657602, north: -20.793475, east: -40.615198), feeds: [ScooterCityFeed(id: "brazil:jet_br_anchieta")]))
+        cities.append(ScooterCity(id: "br:Aracaju", name: "Aracaju", countryCode: "BR", center: GeoPoint(latitude: -10.968051, longitude: -37.056069), bounds: GeoBounds(south: -11.027778, west: -37.111293, north: -10.918502, east: -37.033944), feeds: [ScooterCityFeed(id: "brazil:jet_br_aracaju")]))
+        cities.append(ScooterCity(id: "br:Balneário Camboriú", name: "Balneário Camboriú", countryCode: "BR", center: GeoPoint(latitude: -26.990802, longitude: -48.636422), bounds: GeoBounds(south: -27.013175, west: -48.675304, north: -26.900558, east: -48.601548), feeds: [ScooterCityFeed(id: "brazil:jet_br_balneario-camboriu")]))
+        cities.append(ScooterCity(id: "br:Belo Horizonte", name: "Belo Horizonte", countryCode: "BR", center: GeoPoint(latitude: -19.889785, longitude: -43.963375), bounds: GeoBounds(south: -19.941846, west: -44.007746, north: -19.836743, east: -43.917018), feeds: [ScooterCityFeed(id: "brazil:jet_br_belo-horizonte")]))
+        cities.append(ScooterCity(id: "br:Belém", name: "Belém", countryCode: "BR", center: GeoPoint(latitude: -1.290568, longitude: -48.47202), bounds: GeoBounds(south: -1.475859, west: -48.508042, north: -1.113471, east: -48.428043), feeds: [ScooterCityFeed(id: "brazil:jet_br_belem")]))
+        cities.append(ScooterCity(id: "br:Bertioga", name: "Bertioga", countryCode: "BR", center: GeoPoint(latitude: -23.817937, longitude: -46.077225), bounds: GeoBounds(south: -23.856664, west: -46.146502, north: -23.782008, east: -45.99955), feeds: [ScooterCityFeed(id: "brazil:jet_br_bertioga")]))
+        cities.append(ScooterCity(id: "br:Blumenau", name: "Blumenau", countryCode: "BR", center: GeoPoint(latitude: -26.91194, longitude: -49.076018), bounds: GeoBounds(south: -26.946332, west: -49.102315, north: -26.884235, east: -49.053597), feeds: [ScooterCityFeed(id: "brazil:jet_br_blumenau")]))
+        cities.append(ScooterCity(id: "br:Brasília", name: "Brasília", countryCode: "BR", center: GeoPoint(latitude: -15.828275, longitude: -47.96773), bounds: GeoBounds(south: -15.880949, west: -48.059861, north: -15.731449, east: -47.858235), feeds: [ScooterCityFeed(id: "brazil:jet_br_brasilia")]))
+        cities.append(ScooterCity(id: "br:Campinas", name: "Campinas", countryCode: "BR", center: GeoPoint(latitude: -22.892123, longitude: -47.056802), bounds: GeoBounds(south: -22.915281, west: -47.076842, north: -22.869931, east: -47.038723), feeds: [ScooterCityFeed(id: "brazil:jet_br_campinas")]))
+        cities.append(ScooterCity(id: "br:Campo Grande", name: "Campo Grande", countryCode: "BR", center: GeoPoint(latitude: -20.452704, longitude: -54.585296), bounds: GeoBounds(south: -20.47173, west: -54.62322, north: -20.42416, east: -54.54795), feeds: [ScooterCityFeed(id: "brazil:jet_br_campo-grande"), ScooterCityFeed(id: "brazil:whoosh_br_cgr")]))
+        cities.append(ScooterCity(id: "br:Campos do Jordão", name: "Campos do Jordão", countryCode: "BR", center: GeoPoint(latitude: -22.73363, longitude: -45.585672), bounds: GeoBounds(south: -22.76292, west: -45.61556, north: -22.69277, east: -45.53982), feeds: [ScooterCityFeed(id: "brazil:jet_br_campos-do-jordao"), ScooterCityFeed(id: "brazil:whoosh_br_cjd")]))
+        cities.append(ScooterCity(id: "br:Caraguatatuba", name: "Caraguatatuba", countryCode: "BR", center: GeoPoint(latitude: -23.625299, longitude: -45.406822), bounds: GeoBounds(south: -23.661268, west: -45.440281, north: -23.608924, east: -45.370625), feeds: [ScooterCityFeed(id: "brazil:jet_br_caraguatatuba")]))
+        cities.append(ScooterCity(id: "br:Caruaru", name: "Caruaru", countryCode: "BR", center: GeoPoint(latitude: -8.276504, longitude: -35.969982), bounds: GeoBounds(south: -8.292565, west: -35.991677, north: -8.25595, east: -35.95617), feeds: [ScooterCityFeed(id: "brazil:jet_br_caruaru")]))
+        cities.append(ScooterCity(id: "br:Curitiba", name: "Curitiba", countryCode: "BR", center: GeoPoint(latitude: -25.430608, longitude: -49.286673), bounds: GeoBounds(south: -25.47325, west: -49.3193, north: -25.40597, east: -49.2327), feeds: [ScooterCityFeed(id: "brazil:jet_br_curitiba"), ScooterCityFeed(id: "brazil:whoosh_br_cwb")]))
+        cities.append(ScooterCity(id: "br:Florianópolis", name: "Florianópolis", countryCode: "BR", center: GeoPoint(latitude: -27.596832, longitude: -48.584596), bounds: GeoBounds(south: -27.769255, west: -48.70573, north: -26.87967, east: -48.374651), feeds: [ScooterCityFeed(id: "brazil:jet_br_florianopolis"), ScooterCityFeed(id: "brazil:jet_br_florianopolis-campeche"), ScooterCityFeed(id: "brazil:jet_br_florianopolis-ingleses"), ScooterCityFeed(id: "brazil:whoosh_br_fln")]))
+        cities.append(ScooterCity(id: "br:Fortaleza", name: "Fortaleza", countryCode: "BR", center: GeoPoint(latitude: -3.736919, longitude: -38.514842), bounds: GeoBounds(south: -3.771152, west: -38.587129, north: -3.70551, east: -38.436192), feeds: [ScooterCityFeed(id: "brazil:jet_br_fortaleza")]))
+        cities.append(ScooterCity(id: "br:Gramado", name: "Gramado", countryCode: "BR", center: GeoPoint(latitude: -29.382415, longitude: -50.876731), bounds: GeoBounds(south: -29.397954, west: -50.885509, north: -29.366945, east: -50.867998), feeds: [ScooterCityFeed(id: "brazil:jet_br_gramado")]))
+        cities.append(ScooterCity(id: "br:Guarapari", name: "Guarapari", countryCode: "BR", center: GeoPoint(latitude: -20.659707, longitude: -40.496656), bounds: GeoBounds(south: -20.68965, west: -40.518664, north: -20.631935, east: -40.470637), feeds: [ScooterCityFeed(id: "brazil:jet_br_guarapari")]))
+        cities.append(ScooterCity(id: "br:Guaratuba", name: "Guaratuba", countryCode: "BR", center: GeoPoint(latitude: -25.887266, longitude: -48.571947), bounds: GeoBounds(south: -25.91086, west: -48.58504, north: -25.865841, east: -48.558699), feeds: [ScooterCityFeed(id: "brazil:jet_br_guaratuba")]))
+        cities.append(ScooterCity(id: "br:Guarujá", name: "Guarujá", countryCode: "BR", center: GeoPoint(latitude: -23.99129, longitude: -46.245689), bounds: GeoBounds(south: -24.016906, west: -46.291572, north: -23.9742, east: -46.194503), feeds: [ScooterCityFeed(id: "brazil:jet_br_guaruja")]))
+        cities.append(ScooterCity(id: "br:Ilhabela", name: "Ilhabela", countryCode: "BR", center: GeoPoint(latitude: -23.814959, longitude: -45.364341), bounds: GeoBounds(south: -23.83297, west: -45.392932, north: -23.767882, east: -45.349393), feeds: [ScooterCityFeed(id: "brazil:jet_br_ilhabela")]))
+        cities.append(ScooterCity(id: "br:Ilhéus", name: "Ilhéus", countryCode: "BR", center: GeoPoint(latitude: -14.802129, longitude: -39.036281), bounds: GeoBounds(south: -14.845977, west: -39.06076, north: -14.775448, east: -39.023183), feeds: [ScooterCityFeed(id: "brazil:jet_br_ilheus")]))
+        cities.append(ScooterCity(id: "br:Itanhaém", name: "Itanhaém", countryCode: "BR", center: GeoPoint(latitude: -24.187737, longitude: -46.794216), bounds: GeoBounds(south: -24.204152, west: -46.822681, north: -24.171195, east: -46.766093), feeds: [ScooterCityFeed(id: "brazil:jet_br_itanhaem")]))
+        cities.append(ScooterCity(id: "br:Itapema", name: "Itapema", countryCode: "BR", center: GeoPoint(latitude: -27.108775, longitude: -48.596325), bounds: GeoBounds(south: -27.169478, west: -48.619451, north: -27.085856, east: -48.528392), feeds: [ScooterCityFeed(id: "brazil:jet_br_itapema")]))
+        cities.append(ScooterCity(id: "br:Jaboatão dos Guararapes", name: "Jaboatão dos Guararapes", countryCode: "BR", center: GeoPoint(latitude: -8.192915, longitude: -34.920569), bounds: GeoBounds(south: -8.222971, west: -34.929777, north: -8.159607, east: -34.910859), feeds: [ScooterCityFeed(id: "brazil:jet_br_jaboatao-dos-guararapes")]))
+        cities.append(ScooterCity(id: "br:Joinville", name: "Joinville", countryCode: "BR", center: GeoPoint(latitude: -26.270188, longitude: -48.866831), bounds: GeoBounds(south: -26.45213, west: -49.20084, north: -26.07424, east: -48.72326), feeds: [ScooterCityFeed(id: "brazil:jet_br_joinville"), ScooterCityFeed(id: "brazil:whoosh_br_joi")]))
+        cities.append(ScooterCity(id: "br:Londrina", name: "Londrina", countryCode: "BR", center: GeoPoint(latitude: -23.292444, longitude: -51.188514), bounds: GeoBounds(south: -23.354938, west: -51.230723, north: -23.25601, east: -51.134939), feeds: [ScooterCityFeed(id: "brazil:jet_br_londrina")]))
+        cities.append(ScooterCity(id: "br:Maceió", name: "Maceió", countryCode: "BR", center: GeoPoint(latitude: -9.645789, longitude: -35.711892), bounds: GeoBounds(south: -9.686505, west: -35.760168, north: -9.606097, east: -35.684825), feeds: [ScooterCityFeed(id: "brazil:jet_br_maceio")]))
+        cities.append(ScooterCity(id: "br:Matinhos", name: "Matinhos", countryCode: "BR", center: GeoPoint(latitude: -25.831209, longitude: -48.539125), bounds: GeoBounds(south: -25.850742, west: -48.550056, north: -25.813225, east: -48.528326), feeds: [ScooterCityFeed(id: "brazil:jet_br_matinhos")]))
+        cities.append(ScooterCity(id: "br:Natal", name: "Natal", countryCode: "BR", center: GeoPoint(latitude: -5.828488, longitude: -35.187784), bounds: GeoBounds(south: -5.895927, west: -35.214735, north: -5.758028, east: -35.161687), feeds: [ScooterCityFeed(id: "brazil:jet_br_natal")]))
+        cities.append(ScooterCity(id: "br:Novo Hamburgo", name: "Novo Hamburgo", countryCode: "BR", center: GeoPoint(latitude: -29.689448, longitude: -51.12657), bounds: GeoBounds(south: -29.703312, west: -51.137771, north: -29.677942, east: -51.113943), feeds: [ScooterCityFeed(id: "brazil:jet_br_novo-hamburgo")]))
+        cities.append(ScooterCity(id: "br:Palhoça", name: "Palhoça", countryCode: "BR", center: GeoPoint(latitude: -27.638326, longitude: -48.676258), bounds: GeoBounds(south: -27.681937, west: -48.707164, north: -27.616051, east: -48.637159), feeds: [ScooterCityFeed(id: "brazil:jet_br_palhoca")]))
+        cities.append(ScooterCity(id: "br:Paulista", name: "Paulista", countryCode: "BR", center: GeoPoint(latitude: -7.927582, longitude: -34.857939), bounds: GeoBounds(south: -7.956795, west: -34.904784, north: -7.878679, east: -34.819158), feeds: [ScooterCityFeed(id: "brazil:jet_br_paulista")]))
+        cities.append(ScooterCity(id: "br:Peruíbe", name: "Peruíbe", countryCode: "BR", center: GeoPoint(latitude: -24.299767, longitude: -46.969324), bounds: GeoBounds(south: -24.331899, west: -47.005426, north: -24.268912, east: -46.929831), feeds: [ScooterCityFeed(id: "brazil:jet_br_peruibe")]))
+        cities.append(ScooterCity(id: "br:Porto Alegre", name: "Porto Alegre", countryCode: "BR", center: GeoPoint(latitude: -30.038528, longitude: -51.215162), bounds: GeoBounds(south: -30.09712, west: -51.25218, north: -30.00374, east: -51.14004), feeds: [ScooterCityFeed(id: "brazil:jet_br_porto-alegre"), ScooterCityFeed(id: "brazil:whoosh_br_poa")]))
+        cities.append(ScooterCity(id: "br:Praia Grande", name: "Praia Grande", countryCode: "BR", center: GeoPoint(latitude: -24.029522, longitude: -46.473947), bounds: GeoBounds(south: -24.099362, west: -46.626644, north: -23.990364, east: -46.392123), feeds: [ScooterCityFeed(id: "brazil:jet_br_praia-grande")]))
+        cities.append(ScooterCity(id: "br:Recife", name: "Recife", countryCode: "BR", center: GeoPoint(latitude: -8.07754, longitude: -34.892936), bounds: GeoBounds(south: -8.157131, west: -34.92407, north: -8.02252, east: -34.857121), feeds: [ScooterCityFeed(id: "brazil:jet_br_recife"), ScooterCityFeed(id: "brazil:whoosh_br_rec")]))
+        cities.append(ScooterCity(id: "br:Ribeirão Pires", name: "Ribeirão Pires", countryCode: "BR", center: GeoPoint(latitude: -23.712534, longitude: -46.413734), bounds: GeoBounds(south: -23.723048, west: -46.427204, north: -23.702558, east: -46.396294), feeds: [ScooterCityFeed(id: "brazil:jet_br_ribeirao-pires")]))
+        cities.append(ScooterCity(id: "br:Salvador", name: "Salvador", countryCode: "BR", center: GeoPoint(latitude: -12.946962, longitude: -38.4275), bounds: GeoBounds(south: -13.021698, west: -38.540352, north: -12.907894, east: -38.309914), feeds: [ScooterCityFeed(id: "brazil:jet_br_salvador")]))
+        cities.append(ScooterCity(id: "br:Serra", name: "Serra", countryCode: "BR", center: GeoPoint(latitude: -20.175586, longitude: -40.220907), bounds: GeoBounds(south: -20.208172, west: -40.270367, north: -20.11835, east: -40.172515), feeds: [ScooterCityFeed(id: "brazil:jet_br_serra")]))
+        cities.append(ScooterCity(id: "br:Sorocaba", name: "Sorocaba", countryCode: "BR", center: GeoPoint(latitude: -23.49639, longitude: -47.448656), bounds: GeoBounds(south: -23.540498, west: -47.476888, north: -23.465076, east: -47.400918), feeds: [ScooterCityFeed(id: "brazil:jet_br_sorocaba")]))
+        cities.append(ScooterCity(id: "br:São José dos Campos", name: "São José dos Campos", countryCode: "BR", center: GeoPoint(latitude: -23.214048, longitude: -45.896674), bounds: GeoBounds(south: -23.254195, west: -45.925783, north: -23.163122, east: -45.869345), feeds: [ScooterCityFeed(id: "brazil:jet_br_sao-jose-dos-campos")]))
+        cities.append(ScooterCity(id: "br:São Paulo", name: "São Paulo", countryCode: "BR", center: GeoPoint(latitude: -23.605043, longitude: -46.633866), bounds: GeoBounds(south: -23.712152, west: -46.75008, north: -23.49574, east: -46.493185), feeds: [ScooterCityFeed(id: "brazil:jet_br_sao-paulo"), ScooterCityFeed(id: "brazil:whoosh_br_gru")]))
+        cities.append(ScooterCity(id: "br:Torres", name: "Torres", countryCode: "BR", center: GeoPoint(latitude: -29.336607, longitude: -49.726905), bounds: GeoBounds(south: -29.347669, west: -49.741659, north: -29.325042, east: -49.712762), feeds: [ScooterCityFeed(id: "brazil:jet_br_torres")]))
+        cities.append(ScooterCity(id: "br:Ubatuba", name: "Ubatuba", countryCode: "BR", center: GeoPoint(latitude: -23.447472, longitude: -45.072997), bounds: GeoBounds(south: -23.481581, west: -45.093139, north: -23.414899, east: -45.049957), feeds: [ScooterCityFeed(id: "brazil:jet_br_ubatuba")]))
+        cities.append(ScooterCity(id: "br:Vila Velha", name: "Vila Velha", countryCode: "BR", center: GeoPoint(latitude: -20.361785, longitude: -40.308233), bounds: GeoBounds(south: -20.422664, west: -40.339696, north: -20.323335, east: -40.266473), feeds: [ScooterCityFeed(id: "brazil:jet_br_vila-velha")]))
+        cities.append(ScooterCity(id: "br:Rio de Janeiro", name: "Rio de Janeiro", countryCode: "BR", center: GeoPoint(latitude: -22.94598, longitude: -43.19508), bounds: GeoBounds(south: -22.99029, west: -43.40592, north: -22.89094, east: -43.16321), feeds: [ScooterCityFeed(id: "brazil:whoosh_br_gig")]))
+        cities.append(ScooterCity(id: "cl:Santiago", name: "Santiago", countryCode: "CL", center: GeoPoint(latitude: -33.506119, longitude: -70.654009), bounds: GeoBounds(south: -33.764879, west: -70.787597, north: -33.31591, east: -70.490242), feeds: [ScooterCityFeed(id: "chile:jet_cl_santiago"), ScooterCityFeed(id: "chile:whoosh_cl_scl"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_000"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_001"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_002"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_003"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_004"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_005"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_006"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_007"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_008"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_009"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_010"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_011"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_012"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_013"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_014"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_015"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_016"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_017"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_018"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_019"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_020"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_021"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_022"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_023"), ScooterCityFeed(id: "chile:lime_cl_app_santiago_024")]))
+        cities.append(ScooterCity(id: "cl:Temuco", name: "Temuco", countryCode: "CL", center: GeoPoint(latitude: -38.736777, longitude: -72.616194), bounds: GeoBounds(south: -38.76915, west: -72.67405, north: -38.69955, east: -72.54585), feeds: [ScooterCityFeed(id: "chile:jet_cl_temuco"), ScooterCityFeed(id: "chile:whoosh_cl_zpc")]))
+        cities.append(ScooterCity(id: "cl:Pucón", name: "Pucón", countryCode: "CL", center: GeoPoint(latitude: -39.27807, longitude: -71.95947), bounds: GeoBounds(south: -39.29093, west: -71.98336, north: -39.26521, east: -71.93557), feeds: [ScooterCityFeed(id: "chile:whoosh_cl_scvi")]))
+        cities.append(ScooterCity(id: "cl:Villarrica", name: "Villarrica", countryCode: "CL", center: GeoPoint(latitude: -39.28573, longitude: -72.22597), bounds: GeoBounds(south: -39.2985, west: -72.24041, north: -39.27297, east: -72.21153), feeds: [ScooterCityFeed(id: "chile:whoosh_cl_scvi")]))
+        cities.append(ScooterCity(id: "cl:Viña del Mar", name: "Viña del Mar", countryCode: "CL", center: GeoPoint(latitude: -33.0153009, longitude: -71.5500508), bounds: GeoBounds(south: -33.0351, west: -71.5704, north: -32.99056, east: -71.53132), feeds: [ScooterCityFeed(id: "chile:whoosh_cl_scvm")]))
+        cities.append(ScooterCity(id: "cl:Limache", name: "Limache", countryCode: "CL", center: GeoPoint(latitude: -32.99449, longitude: -71.2832), bounds: GeoBounds(south: -33.02399, west: -71.31724, north: -32.965, east: -71.24916), feeds: [ScooterCityFeed(id: "chile:whoosh_cl_scvm")]))
+        cities.append(ScooterCity(id: "cl:La Serena", name: "La Serena", countryCode: "CL", center: GeoPoint(latitude: -29.9092, longitude: -71.2491), bounds: GeoBounds(south: -29.99433, west: -71.35383, north: -29.89335, east: -71.24147), feeds: [ScooterCityFeed(id: "chile:whoosh_cl_lsc")]))
+        cities.append(ScooterCity(id: "cl:Puerto Montt", name: "Puerto Montt", countryCode: "CL", center: GeoPoint(latitude: -41.465558, longitude: -72.947235), bounds: GeoBounds(south: -41.495, west: -73.01201, north: -41.37834, east: -72.85224), feeds: [ScooterCityFeed(id: "chile:whoosh_cl_pmc")]))
+        cities.append(ScooterCity(id: "cl:Rancagua", name: "Rancagua", countryCode: "CL", center: GeoPoint(latitude: -34.166728, longitude: -70.697146), bounds: GeoBounds(south: -34.19856, west: -70.76981, north: -34.12064, east: -70.63991), feeds: [ScooterCityFeed(id: "chile:whoosh_cl_qrc")]))
+        cities.append(ScooterCity(id: "mx:Monterrey", name: "Monterrey", countryCode: "MX", center: GeoPoint(latitude: 25.660313, longitude: -100.378108), bounds: GeoBounds(south: 25.6341, west: -100.42479, north: 25.68824, east: -100.26807), feeds: [ScooterCityFeed(id: "mexico:jet_mx_monterrey-san-pedro"), ScooterCityFeed(id: "mexico:whoosh_mx_spr")]))
+        cities.append(ScooterCity(id: "mx:Zapopan", name: "Zapopan", countryCode: "MX", center: GeoPoint(latitude: 20.721331, longitude: -103.391882), bounds: GeoBounds(south: 20.63267, west: -103.44679, north: 20.74174, east: -103.37085), feeds: [ScooterCityFeed(id: "mexico:whoosh_mx_zap")]))
+        cities.append(ScooterCity(id: "mx:Querétaro", name: "Querétaro", countryCode: "MX", center: GeoPoint(latitude: 20.58806, longitude: -100.38806), bounds: GeoBounds(south: 20.55756, west: -100.41509, north: 20.6161, east: -100.35703), feeds: [ScooterCityFeed(id: "mexico:lime_mx_app_queretaro_000"), ScooterCityFeed(id: "mexico:lime_mx_app_queretaro_001"), ScooterCityFeed(id: "mexico:lime_mx_app_queretaro_002"), ScooterCityFeed(id: "mexico:lime_mx_app_queretaro_003")]))
+        cities.append(ScooterCity(id: "kz:Almaty", name: "Almaty", countryCode: "KZ", center: GeoPoint(latitude: 43.298812, longitude: 76.939435), bounds: GeoBounds(south: 43.178739, west: 76.774937, north: 43.356878, east: 77.013148), feeds: [ScooterCityFeed(id: "kazakhstan:jet_kz_almaty"), ScooterCityFeed(id: "kazakhstan:whoosh_kz_ala")]))
+        cities.append(ScooterCity(id: "kz:Astana", name: "Astana", countryCode: "KZ", center: GeoPoint(latitude: 51.143975, longitude: 71.43581), bounds: GeoBounds(south: 51.06534, west: 71.3469, north: 51.20139, east: 71.54021), feeds: [ScooterCityFeed(id: "kazakhstan:whoosh_kz_nqz")]))
+        cities.append(ScooterCity(id: "az:Baku", name: "Baku", countryCode: "AZ", center: GeoPoint(latitude: 40.406212, longitude: 49.883767), bounds: GeoBounds(south: 40.335093, west: 49.790085, north: 40.440305, east: 49.987929), feeds: [ScooterCityFeed(id: "azerbaijan:jet_az_baku")]))
+        cities.append(ScooterCity(id: "ge:Batumi", name: "Batumi", countryCode: "GE", center: GeoPoint(latitude: 41.639193, longitude: 41.62466), bounds: GeoBounds(south: 41.615822, west: 41.583057, north: 41.662751, east: 41.680613), feeds: [ScooterCityFeed(id: "georgia:jet_ge_batumi")]))
+        cities.append(ScooterCity(id: "co:Medellín", name: "Medellín", countryCode: "CO", center: GeoPoint(latitude: 6.243534, longitude: -75.579226), bounds: GeoBounds(south: 6.18271, west: -75.61793, north: 6.29603, east: -75.54855), feeds: [ScooterCityFeed(id: "colombia:whoosh_co_mde")]))
+        cities.append(ScooterCity(id: "by:Borisov", name: "Borisov", countryCode: "BY", center: GeoPoint(latitude: 54.221869, longitude: 28.504081), bounds: GeoBounds(south: 54.18871, west: 28.45654, north: 54.25148, east: 28.53523), feeds: [ScooterCityFeed(id: "belarus:whoosh_by_bors")]))
+        cities.append(ScooterCity(id: "by:Minsk", name: "Minsk", countryCode: "BY", center: GeoPoint(latitude: 53.902284, longitude: 27.561831), bounds: GeoBounds(south: 53.83261, west: 27.40681, north: 54.01826, east: 27.72876), feeds: [ScooterCityFeed(id: "belarus:whoosh_by_msq")]))
+        cities.append(ScooterCity(id: "by:Soligorsk", name: "Soligorsk", countryCode: "BY", center: GeoPoint(latitude: 52.790668, longitude: 27.530463), bounds: GeoBounds(south: 52.76991, west: 27.48468, north: 52.80366, east: 27.55641), feeds: [ScooterCityFeed(id: "belarus:whoosh_by_slg")]))
+        cities.append(ScooterCity(id: "za:Langebaan", name: "Langebaan", countryCode: "ZA", center: GeoPoint(latitude: -33.04695, longitude: 18.0427), bounds: GeoBounds(south: -33.05338, west: 18.03341, north: -33.04052, east: 18.04983), feeds: [ScooterCityFeed(id: "southafrica:zippy_za_langebaan")]))
+        cities.append(ScooterCity(id: "ro:Deva", name: "Deva", countryCode: "RO", center: GeoPoint(latitude: 45.88333, longitude: 22.9), bounds: GeoBounds(south: 45.85633, west: 22.89478, north: 45.89326, east: 22.92735), feeds: [ScooterCityFeed(id: "romania:lime_ro_app_deva_000"), ScooterCityFeed(id: "romania:lime_ro_app_deva_001")]))
+        cities.append(ScooterCity(id: "cz:České Budějovice", name: "České Budějovice", countryCode: "CZ", center: GeoPoint(latitude: 48.97447, longitude: 14.47434), bounds: GeoBounds(south: 48.94881, west: 14.43596, north: 49.00077, east: 14.50798), feeds: [ScooterCityFeed(id: "czechia:lime_cz_app_ceske_budejovice_000"), ScooterCityFeed(id: "czechia:lime_cz_app_ceske_budejovice_001"), ScooterCityFeed(id: "czechia:lime_cz_app_ceske_budejovice_002"), ScooterCityFeed(id: "czechia:lime_cz_app_ceske_budejovice_003")]))
+        cities.append(ScooterCity(id: "qa:Doha", name: "Doha", countryCode: "QA", center: GeoPoint(latitude: 25.28545, longitude: 51.53096), bounds: GeoBounds(south: 25.11408, west: 51.43133, north: 25.39361, east: 51.60065), feeds: [ScooterCityFeed(id: "qatar:lime_qa_app_doha_000"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_001"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_002"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_003"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_004"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_005"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_006"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_007"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_008"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_009"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_010"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_011"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_012"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_013"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_014"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_015"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_016"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_017"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_018"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_019"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_020"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_021"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_022"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_023"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_024"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_025"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_026"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_027"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_028"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_029"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_030"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_031")]))
+        cities.append(ScooterCity(id: "au:Adelaide", name: "Adelaide", countryCode: "AU", center: GeoPoint(latitude: -34.9285, longitude: 138.6007), bounds: GeoBounds(south: -34.943739, west: 138.57500639999998, north: -34.887522999999995, east: 138.6435044), feeds: [ScooterCityFeed(id: "australia:beam_au_adelaide")]))
+        cities.append(ScooterCity(id: "au:Broome", name: "Broome", countryCode: "AU", center: GeoPoint(latitude: -17.94932, longitude: 122.217464), bounds: GeoBounds(south: -18.0055940869565, west: 122.1985178444571, north: -17.918882, east: 122.24731657644007), feeds: [ScooterCityFeed(id: "australia:beam_au_broome")]))
+        cities.append(ScooterCity(id: "au:Bunbury", name: "Bunbury", countryCode: "AU", center: GeoPoint(latitude: -33.330399, longitude: 115.659874), bounds: GeoBounds(south: -33.352264327650005, west: 115.618578, north: -33.307725, east: 115.698066), feeds: [ScooterCityFeed(id: "australia:beam_au_bunbury")]))
+        cities.append(ScooterCity(id: "au:Cairns", name: "Cairns", countryCode: "AU", center: GeoPoint(latitude: -16.922857, longitude: 145.767151), bounds: GeoBounds(south: -16.960565, west: 145.739454, north: -16.895878, east: 145.782737), feeds: [ScooterCityFeed(id: "australia:beam_au_cairns")]))
+        cities.append(ScooterCity(id: "au:Darwin", name: "Darwin", countryCode: "AU", center: GeoPoint(latitude: -12.4634, longitude: 130.8456), bounds: GeoBounds(south: -12.473780000000001, west: 130.810601, north: -12.336188, east: 130.91584), feeds: [ScooterCityFeed(id: "australia:beam_au_darwin")]))
+        cities.append(ScooterCity(id: "au:Esperance", name: "Esperance", countryCode: "AU", center: GeoPoint(latitude: -33.852711, longitude: 121.883446), bounds: GeoBounds(south: -33.898646, west: 121.818805, north: -33.810136, east: 121.942786), feeds: [ScooterCityFeed(id: "australia:beam_au_esperance")]))
+        cities.append(ScooterCity(id: "au:Geraldton", name: "Geraldton", countryCode: "AU", center: GeoPoint(latitude: -28.77, longitude: 114.61), bounds: GeoBounds(south: -28.830987999999998, west: 114.576288, north: -28.725296, east: 114.644229), feeds: [ScooterCityFeed(id: "australia:beam_au_geraldton")]))
+        cities.append(ScooterCity(id: "au:Hervey Bay", name: "Hervey Bay", countryCode: "AU", center: GeoPoint(latitude: -25.283472, longitude: 152.854095), bounds: GeoBounds(south: -25.31263, west: 152.795253, north: -25.242209000000003, east: 152.912238), feeds: [ScooterCityFeed(id: "australia:beam_au_hervey_bay")]))
+        cities.append(ScooterCity(id: "au:Mackay", name: "Mackay", countryCode: "AU", center: GeoPoint(latitude: -21.150888, longitude: 149.209462), bounds: GeoBounds(south: -21.187051999999998, west: 149.13411599999998, north: -21.070922, east: 149.22705000000002), feeds: [ScooterCityFeed(id: "australia:beam_au_mackay")]))
+        cities.append(ScooterCity(id: "au:Perth", name: "Perth", countryCode: "AU", center: GeoPoint(latitude: -31.882626, longitude: 115.784912), bounds: GeoBounds(south: -31.914666, west: 115.74886400000001, north: -31.843548000000002, east: 115.823606), feeds: [ScooterCityFeed(id: "australia:beam_au_perth")]))
+        cities.append(ScooterCity(id: "au:Port Douglas", name: "Port Douglas", countryCode: "AU", center: GeoPoint(latitude: -16.509497, longitude: 145.462601), bounds: GeoBounds(south: -16.545178, west: 145.456089, north: -16.477207, east: 145.47833300000002), feeds: [ScooterCityFeed(id: "australia:beam_au_port_douglas")]))
+        cities.append(ScooterCity(id: "au:Brisbane", name: "Brisbane", countryCode: "AU", center: GeoPoint(latitude: -27.46794, longitude: 153.02809), bounds: GeoBounds(south: -27.53263, west: 152.97359, north: -27.28388, east: 153.19579), feeds: [ScooterCityFeed(id: "australia:lime_au_app_brisbane_000"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_001"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_002"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_003"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_004"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_005"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_006"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_007"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_008"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_009"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_010"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_011"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_012"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_013"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_014"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_015"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_016"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_017"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_018"), ScooterCityFeed(id: "australia:lime_au_app_brisbane_019")]))
+        cities.append(ScooterCity(id: "tr:İstanbul", name: "İstanbul", countryCode: "TR", center: GeoPoint(latitude: 41.00824, longitude: 28.97836), bounds: GeoBounds(south: 40.75167, west: 28.57288, north: 41.11293, east: 29.4595), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_istanbul_avrupa"), ScooterCityFeed(id: "turkey:binbin_tr_istanbul_anadolu")]))
+        cities.append(ScooterCity(id: "tr:Antalya", name: "Antalya", countryCode: "TR", center: GeoPoint(latitude: 36.88414, longitude: 30.70563), bounds: GeoBounds(south: 36.44495, west: 30.53284, north: 36.94623, east: 32.138625000000005), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_antalya"), ScooterCityFeed(id: "turkey:beam_tr_antalya")]))
+        cities.append(ScooterCity(id: "tr:İzmir", name: "İzmir", countryCode: "TR", center: GeoPoint(latitude: 38.41885, longitude: 27.12872), bounds: GeoBounds(south: 38.36482, west: 27.03696, north: 38.4841, east: 27.24384), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_izmir")]))
+        cities.append(ScooterCity(id: "tr:Samsun", name: "Samsun", countryCode: "TR", center: GeoPoint(latitude: 41.28667, longitude: 36.33), bounds: GeoBounds(south: 41.26071, west: 36.20146, north: 41.39424, east: 36.37265), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_samsun")]))
+        cities.append(ScooterCity(id: "tr:Konya", name: "Konya", countryCode: "TR", center: GeoPoint(latitude: 37.87135, longitude: 32.48464), bounds: GeoBounds(south: 37.84635, west: 32.43842, north: 38.03728, east: 32.5375), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_konya")]))
+        cities.append(ScooterCity(id: "tr:Eskişehir", name: "Eskişehir", countryCode: "TR", center: GeoPoint(latitude: 39.77667, longitude: 30.52056), bounds: GeoBounds(south: 39.74038, west: 30.43542, north: 39.80315, east: 30.55629), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_eskisehir")]))
+        cities.append(ScooterCity(id: "tr:Adana", name: "Adana", countryCode: "TR", center: GeoPoint(latitude: 37.03382, longitude: 35.30137), bounds: GeoBounds(south: 36.99224, west: 35.2382, north: 37.06665, east: 35.37584), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_adana")]))
+        cities.append(ScooterCity(id: "tr:Bursa", name: "Bursa", countryCode: "TR", center: GeoPoint(latitude: 40.19559, longitude: 29.06013), bounds: GeoBounds(south: 40.1802, west: 28.825, north: 40.26635, east: 29.07401), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_bursa")]))
+        cities.append(ScooterCity(id: "tr:Kocaeli", name: "Kocaeli", countryCode: "TR", center: GeoPoint(latitude: 40.76543, longitude: 29.94081), bounds: GeoBounds(south: 40.70145, west: 29.78391, north: 40.78516, east: 30.03083), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_kocaeli")]))
+        cities.append(ScooterCity(id: "tr:Alanya", name: "Alanya", countryCode: "TR", center: GeoPoint(latitude: 36.54375, longitude: 31.99982), bounds: GeoBounds(south: 36.46754, west: 31.96715, north: 36.56011, east: 32.12278), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_alanya")]))
+        cities.append(ScooterCity(id: "tr:Sakarya", name: "Sakarya", countryCode: "TR", center: GeoPoint(latitude: 40.78056, longitude: 30.40333), bounds: GeoBounds(south: 40.73457, west: 30.32067, north: 40.81613, east: 30.43402), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_sakarya")]))
+        cities.append(ScooterCity(id: "tr:Gaziantep", name: "Gaziantep", countryCode: "TR", center: GeoPoint(latitude: 37.05964, longitude: 37.33749), bounds: GeoBounds(south: 37.02191, west: 37.30337, north: 37.09106, east: 37.38447), feeds: [ScooterCityFeed(id: "turkey:binbin_tr_gaziantep")]))
+        cities.append(ScooterCity(id: "tr:Ankara", name: "Ankara", countryCode: "TR", center: GeoPoint(latitude: 39.933477, longitude: 32.788358), bounds: GeoBounds(south: 39.857991999999996, west: 32.594919999999995, north: 40.138448000000004, east: 32.969954), feeds: [ScooterCityFeed(id: "turkey:beam_tr_ankara")]))
+        cities.append(ScooterCity(id: "tr:Fethiye", name: "Fethiye", countryCode: "TR", center: GeoPoint(latitude: 36.649535, longitude: 29.143076), bounds: GeoBounds(south: 36.604504999999996, west: 29.08031925789807, north: 36.687972, east: 29.208493999999998), feeds: [ScooterCityFeed(id: "turkey:beam_tr_fethiye")]))
+        cities.append(ScooterCity(id: "tr:Marmaris", name: "Marmaris", countryCode: "TR", center: GeoPoint(latitude: 36.835077, longitude: 28.241062), bounds: GeoBounds(south: 36.784875, west: 28.205607, north: 36.887838947981805, east: 28.292610999999997), feeds: [ScooterCityFeed(id: "turkey:beam_tr_marmaris")]))
+        cities.append(ScooterCity(id: "tr:Mersin", name: "Mersin", countryCode: "TR", center: GeoPoint(latitude: 36.770245, longitude: 34.565804), bounds: GeoBounds(south: 36.722321343100596, west: 34.49301282568111, north: 36.819913, east: 34.638218), feeds: [ScooterCityFeed(id: "turkey:beam_tr_mersin")]))
+        cities.append(ScooterCity(id: "my:Johor", name: "Johor", countryCode: "MY", center: GeoPoint(latitude: 1.49, longitude: 103.74), bounds: GeoBounds(south: 1.394025, west: 102.714203, north: 2.590063, east: 103.904297), feeds: [ScooterCityFeed(id: "malaysia:beam_my_johor")]))
+        cities.append(ScooterCity(id: "my:Kuala Lumpur", name: "Kuala Lumpur", countryCode: "MY", center: GeoPoint(latitude: 3.143626, longitude: 101.690022), bounds: GeoBounds(south: 3.0430620000000004, west: 101.61356400000001, north: 3.2326699999999997, east: 101.751621), feeds: [ScooterCityFeed(id: "malaysia:beam_my_kuala_lumpur")]))
+        cities.append(ScooterCity(id: "my:Kuantan", name: "Kuantan", countryCode: "MY", center: GeoPoint(latitude: 3.80706, longitude: 103.326164), bounds: GeoBounds(south: 3.7930750000000004, west: 103.265944, north: 3.8779429999999997, east: 103.33143), feeds: [ScooterCityFeed(id: "malaysia:beam_my_kuantan")]))
+        cities.append(ScooterCity(id: "my:Malacca", name: "Malacca", countryCode: "MY", center: GeoPoint(latitude: 2.195523, longitude: 102.250572), bounds: GeoBounds(south: 2.184842, west: 102.243539, north: 2.2226559999999997, east: 102.273794), feeds: [ScooterCityFeed(id: "malaysia:beam_my_malacca")]))
+        cities.append(ScooterCity(id: "my:Pahang", name: "Pahang", countryCode: "MY", center: GeoPoint(latitude: 3.724961, longitude: 103.124458), bounds: GeoBounds(south: 3.715441, west: 103.117328, north: 3.735854, east: 103.128935), feeds: [ScooterCityFeed(id: "malaysia:beam_my_pahang")]))
+        cities.append(ScooterCity(id: "my:Penang", name: "Penang", countryCode: "MY", center: GeoPoint(latitude: 5.334965, longitude: 100.30146), bounds: GeoBounds(south: 5.288024, west: 100.287211, north: 5.355436, east: 100.32185299999999), feeds: [ScooterCityFeed(id: "malaysia:beam_my_penang")]))
+        cities.append(ScooterCity(id: "my:Perak", name: "Perak", countryCode: "MY", center: GeoPoint(latitude: 4.566995, longitude: 100.938261), bounds: GeoBounds(south: 4.171338, west: 100.602553, north: 4.613759, east: 101.226873), feeds: [ScooterCityFeed(id: "malaysia:beam_my_perak")]))
+        cities.append(ScooterCity(id: "my:Sarawak", name: "Sarawak", countryCode: "MY", center: GeoPoint(latitude: 3.235641, longitude: 113.075287), bounds: GeoBounds(south: 3.1675310000000003, west: 113.028434, north: 4.406809, east: 113.999558), feeds: [ScooterCityFeed(id: "malaysia:beam_my_sarawak")]))
+        cities.append(ScooterCity(id: "my:Selangor", name: "Selangor", countryCode: "MY", center: GeoPoint(latitude: 3.076382, longitude: 101.588654), bounds: GeoBounds(south: 2.822144, west: 101.415692, north: 3.263295, east: 101.80005), feeds: [ScooterCityFeed(id: "malaysia:beam_my_selangor")]))
+        cities.append(ScooterCity(id: "my:Terengganu", name: "Terengganu", countryCode: "MY", center: GeoPoint(latitude: 5.34947, longitude: 103.134827), bounds: GeoBounds(south: 5.278537, west: 103.058942, north: 5.417827, east: 103.176733), feeds: [ScooterCityFeed(id: "malaysia:beam_my_terengganu")]))
+        cities.append(ScooterCity(id: "kr:Busan", name: "Busan", countryCode: "KR", center: GeoPoint(latitude: 35.1669, longitude: 129.0788), bounds: GeoBounds(south: 35.0319, west: 128.75681, north: 35.319331, east: 129.2616), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_busan"), ScooterCityFeed(id: "korea:kickgoing_kr_busan"), ScooterCityFeed(id: "korea:xingxing_kr_busan"), ScooterCityFeed(id: "korea:swing_kr_busan"), ScooterCityFeed(id: "korea:beam_kr_gimhae"), ScooterCityFeed(id: "korea:beam_kr_jinhae")]))
+        cities.append(ScooterCity(id: "kr:Seoul", name: "Seoul", countryCode: "KR", center: GeoPoint(latitude: 37.5179, longitude: 127.0239), bounds: GeoBounds(south: 37.4261, west: 126.783, north: 37.6637, east: 127.1869), feeds: [ScooterCityFeed(id: "korea:kickgoing_kr_seoul"), ScooterCityFeed(id: "korea:xingxing_kr_seoul"), ScooterCityFeed(id: "korea:swing_kr_seoul"), ScooterCityFeed(id: "korea:beam_kr_seoul"), ScooterCityFeed(id: "korea:beam_kr_wirye")]))
+        cities.append(ScooterCity(id: "kr:Ulsan", name: "Ulsan", countryCode: "KR", center: GeoPoint(latitude: 35.548, longitude: 129.3395), bounds: GeoBounds(south: 35.3855, west: 129.0864, north: 35.6699, east: 129.4564), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_ulsan"), ScooterCityFeed(id: "korea:xingxing_kr_ulsan"), ScooterCityFeed(id: "korea:swing_kr_ulsan")]))
+        cities.append(ScooterCity(id: "kr:Daejeon", name: "Daejeon", countryCode: "KR", center: GeoPoint(latitude: 36.3493, longitude: 127.3877), bounds: GeoBounds(south: 36.2583, west: 127.274, north: 36.4671, east: 127.4909), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_daejeon"), ScooterCityFeed(id: "korea:swing_kr_daejeon"), ScooterCityFeed(id: "korea:beam_kr_daejeon")]))
+        cities.append(ScooterCity(id: "kr:Daegu", name: "Daegu", countryCode: "KR", center: GeoPoint(latitude: 35.85, longitude: 128.5491), bounds: GeoBounds(south: 35.6267, west: 128.381, north: 35.9735, east: 128.861211), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_daegu"), ScooterCityFeed(id: "korea:xingxing_kr_daegu"), ScooterCityFeed(id: "korea:swing_kr_daegu"), ScooterCityFeed(id: "korea:beam_kr_daegu")]))
+        cities.append(ScooterCity(id: "kr:Jeonju", name: "Jeonju", countryCode: "KR", center: GeoPoint(latitude: 35.8318, longitude: 127.1281), bounds: GeoBounds(south: 35.7683, west: 127.0344, north: 35.8994, east: 127.1991), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_jeonju"), ScooterCityFeed(id: "korea:xingxing_kr_jeonju"), ScooterCityFeed(id: "korea:swing_kr_jeonju")]))
+        cities.append(ScooterCity(id: "kr:Incheon", name: "Incheon", countryCode: "KR", center: GeoPoint(latitude: 37.4568, longitude: 126.6534), bounds: GeoBounds(south: 37.3448, west: 126.4499, north: 37.7665, east: 126.7766), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_incheon"), ScooterCityFeed(id: "korea:kickgoing_kr_incheon"), ScooterCityFeed(id: "korea:swing_kr_incheon"), ScooterCityFeed(id: "korea:beam_kr_incheon")]))
+        cities.append(ScooterCity(id: "kr:Cheongju", name: "Cheongju", countryCode: "KR", center: GeoPoint(latitude: 36.6337, longitude: 127.463), bounds: GeoBounds(south: 36.5807, west: 127.2843, north: 36.7571, east: 127.5744), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_cheongju"), ScooterCityFeed(id: "korea:xingxing_kr_cheongju"), ScooterCityFeed(id: "korea:swing_kr_cheongju"), ScooterCityFeed(id: "korea:beam_kr_cheongju")]))
+        cities.append(ScooterCity(id: "kr:Hwaseong", name: "Hwaseong", countryCode: "KR", center: GeoPoint(latitude: 37.201, longitude: 126.9487), bounds: GeoBounds(south: 37.0632, west: 126.773, north: 37.2965, east: 127.1641), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_hwaseong"), ScooterCityFeed(id: "korea:xingxing_kr_hwaseong"), ScooterCityFeed(id: "korea:swing_kr_hwaseong"), ScooterCityFeed(id: "korea:beam_kr_dongtan")]))
+        cities.append(ScooterCity(id: "kr:Gwangju", name: "Gwangju", countryCode: "KR", center: GeoPoint(latitude: 35.173, longitude: 126.8824), bounds: GeoBounds(south: 35.0702, west: 126.738, north: 35.2475, east: 126.9605), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gwangju"), ScooterCityFeed(id: "korea:beam_kr_gwangju")]))
+        cities.append(ScooterCity(id: "kr:Seongnam", name: "Seongnam", countryCode: "KR", center: GeoPoint(latitude: 37.3899, longitude: 127.1248), bounds: GeoBounds(south: 37.3307, west: 127.02707, north: 37.4775, east: 127.1963), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_seongnam"), ScooterCityFeed(id: "korea:xingxing_kr_seongnam"), ScooterCityFeed(id: "korea:swing_kr_seongnam"), ScooterCityFeed(id: "korea:beam_kr_seongnam_suwon"), ScooterCityFeed(id: "korea:beam_kr_wirye")]))
+        cities.append(ScooterCity(id: "kr:Suwon", name: "Suwon", countryCode: "KR", center: GeoPoint(latitude: 37.2668, longitude: 127.0177), bounds: GeoBounds(south: 37.2218, west: 126.9236, north: 37.348109, east: 127.093), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_suwon"), ScooterCityFeed(id: "korea:xingxing_kr_suwon"), ScooterCityFeed(id: "korea:swing_kr_suwon"), ScooterCityFeed(id: "korea:beam_kr_seongnam_suwon")]))
+        cities.append(ScooterCity(id: "kr:Changwon", name: "Changwon", countryCode: "KR", center: GeoPoint(latitude: 35.2238, longitude: 128.6803), bounds: GeoBounds(south: 35.0689, west: 128.4751, north: 35.3542, east: 128.8465), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_changwon"), ScooterCityFeed(id: "korea:xingxing_kr_changwon"), ScooterCityFeed(id: "korea:swing_kr_changwon"), ScooterCityFeed(id: "korea:beam_kr_changwon"), ScooterCityFeed(id: "korea:beam_kr_jinhae"), ScooterCityFeed(id: "korea:beam_kr_masan")]))
+        cities.append(ScooterCity(id: "kr:Bucheon", name: "Bucheon", countryCode: "KR", center: GeoPoint(latitude: 37.5034, longitude: 126.7889), bounds: GeoBounds(south: 37.4557, west: 126.726346, north: 37.5533, east: 126.837), feeds: [ScooterCityFeed(id: "korea:kickgoing_kr_bucheon"), ScooterCityFeed(id: "korea:swing_kr_bucheon"), ScooterCityFeed(id: "korea:beam_kr_bucheon_bupyeong")]))
+        cities.append(ScooterCity(id: "kr:Gumi", name: "Gumi", countryCode: "KR", center: GeoPoint(latitude: 36.1216, longitude: 128.3944), bounds: GeoBounds(south: 36.0579, west: 128.2678, north: 36.2001, east: 128.4971), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gumi"), ScooterCityFeed(id: "korea:swing_kr_gumi")]))
+        cities.append(ScooterCity(id: "kr:Namyangju", name: "Namyangju", countryCode: "KR", center: GeoPoint(latitude: 37.6493, longitude: 127.1852), bounds: GeoBounds(south: 37.55, west: 127.0784, north: 37.7751, east: 127.3494), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_namyangju"), ScooterCityFeed(id: "korea:swing_kr_namyangju"), ScooterCityFeed(id: "korea:beam_kr_namyangju")]))
+        cities.append(ScooterCity(id: "kr:Asan", name: "Asan", countryCode: "KR", center: GeoPoint(latitude: 36.7853, longitude: 127.0636), bounds: GeoBounds(south: 36.7124, west: 126.9045, north: 36.9449, east: 127.1231), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_asan"), ScooterCityFeed(id: "korea:swing_kr_asan")]))
+        cities.append(ScooterCity(id: "kr:Sejong", name: "Sejong", countryCode: "KR", center: GeoPoint(latitude: 36.5045, longitude: 127.255), bounds: GeoBounds(south: 36.4431, west: 127.202, north: 36.6469, east: 127.3826), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_sejong"), ScooterCityFeed(id: "korea:swing_kr_sejong")]))
+        cities.append(ScooterCity(id: "kr:Ansan", name: "Ansan", countryCode: "KR", center: GeoPoint(latitude: 37.3127, longitude: 126.8374), bounds: GeoBounds(south: 37.2609, west: 126.7366, north: 37.3673, east: 126.9365), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_ansan"), ScooterCityFeed(id: "korea:xingxing_kr_ansan"), ScooterCityFeed(id: "korea:swing_kr_ansan"), ScooterCityFeed(id: "korea:beam_kr_ansan")]))
+        cities.append(ScooterCity(id: "kr:Cheonan", name: "Cheonan", countryCode: "KR", center: GeoPoint(latitude: 36.8291, longitude: 127.1435), bounds: GeoBounds(south: 36.7515, west: 127.0807, north: 36.9386, east: 127.3326), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_cheonan"), ScooterCityFeed(id: "korea:xingxing_kr_cheonan"), ScooterCityFeed(id: "korea:swing_kr_cheonan")]))
+        cities.append(ScooterCity(id: "kr:Gyeongsan", name: "Gyeongsan", countryCode: "KR", center: GeoPoint(latitude: 35.894, longitude: 128.8006), bounds: GeoBounds(south: 35.70008, west: 128.68161, north: 35.962223, east: 128.8788), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gyeongsan"), ScooterCityFeed(id: "korea:swing_kr_gyeongsan"), ScooterCityFeed(id: "korea:beam_kr_daegu")]))
+        cities.append(ScooterCity(id: "kr:Yongin", name: "Yongin", countryCode: "KR", center: GeoPoint(latitude: 37.2662, longitude: 127.1531), bounds: GeoBounds(south: 37.182, west: 127.020461, north: 37.3702, east: 127.385), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_yongin"), ScooterCityFeed(id: "korea:swing_kr_yongin"), ScooterCityFeed(id: "korea:beam_kr_seongnam_suwon")]))
+        cities.append(ScooterCity(id: "kr:Pyeongtaek", name: "Pyeongtaek", countryCode: "KR", center: GeoPoint(latitude: 37.0414, longitude: 127.0548), bounds: GeoBounds(south: 36.9471, west: 126.8843, north: 37.1473, east: 127.1575), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_pyeongtaek"), ScooterCityFeed(id: "korea:swing_kr_pyeongtaek"), ScooterCityFeed(id: "korea:beam_kr_pyeongtaek")]))
+        cities.append(ScooterCity(id: "kr:Paju", name: "Paju", countryCode: "KR", center: GeoPoint(latitude: 37.7249, longitude: 126.7458), bounds: GeoBounds(south: 37.6866, west: 126.6784, north: 37.8881, east: 126.857924), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_paju"), ScooterCityFeed(id: "korea:swing_kr_paju"), ScooterCityFeed(id: "korea:beam_kr_goyang_paju")]))
+        cities.append(ScooterCity(id: "kr:Goyang", name: "Goyang", countryCode: "KR", center: GeoPoint(latitude: 37.6595, longitude: 126.8744), bounds: GeoBounds(south: 37.5691, west: 126.7016, north: 37.7384, east: 126.972), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_goyang"), ScooterCityFeed(id: "korea:kickgoing_kr_goyang"), ScooterCityFeed(id: "korea:xingxing_kr_goyang"), ScooterCityFeed(id: "korea:swing_kr_goyang"), ScooterCityFeed(id: "korea:beam_kr_goyang_paju")]))
+        cities.append(ScooterCity(id: "kr:Pohang", name: "Pohang", countryCode: "KR", center: GeoPoint(latitude: 36.0226, longitude: 129.3617), bounds: GeoBounds(south: 35.93, west: 129.2922, north: 36.1314, east: 129.4723), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_pohang"), ScooterCityFeed(id: "korea:swing_kr_pohang")]))
+        cities.append(ScooterCity(id: "kr:Anyang", name: "Anyang", countryCode: "KR", center: GeoPoint(latitude: 37.396, longitude: 126.9571), bounds: GeoBounds(south: 37.3561, west: 126.8668, north: 37.4524, east: 126.9862), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_anyang"), ScooterCityFeed(id: "korea:kickgoing_kr_anyang"), ScooterCityFeed(id: "korea:xingxing_kr_anyang"), ScooterCityFeed(id: "korea:swing_kr_anyang")]))
+        cities.append(ScooterCity(id: "kr:Uijeongbu", name: "Uijeongbu", countryCode: "KR", center: GeoPoint(latitude: 37.7399, longitude: 127.0461), bounds: GeoBounds(south: 37.684, west: 126.9983, north: 37.7779, east: 127.1372), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_uijeongbu"), ScooterCityFeed(id: "korea:swing_kr_uijeongbu")]))
+        cities.append(ScooterCity(id: "kr:Siheung", name: "Siheung", countryCode: "KR", center: GeoPoint(latitude: 37.3667, longitude: 126.7358), bounds: GeoBounds(south: 37.3122, west: 126.6638, north: 37.4751, east: 126.8483), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_siheung"), ScooterCityFeed(id: "korea:xingxing_kr_siheung"), ScooterCityFeed(id: "korea:swing_kr_siheung")]))
+        cities.append(ScooterCity(id: "kr:Hanam", name: "Hanam", countryCode: "KR", center: GeoPoint(latitude: 37.5552, longitude: 127.1979), bounds: GeoBounds(south: 37.4661, west: 127.1366, north: 37.5941, east: 127.2544), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_hanam"), ScooterCityFeed(id: "korea:swing_kr_hanam"), ScooterCityFeed(id: "korea:beam_kr_hanam"), ScooterCityFeed(id: "korea:beam_kr_wirye")]))
+        cities.append(ScooterCity(id: "kr:Osan", name: "Osan", countryCode: "KR", center: GeoPoint(latitude: 37.1625, longitude: 127.056), bounds: GeoBounds(south: 37.1226, west: 126.9915, north: 37.2032, east: 127.1064), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_osan"), ScooterCityFeed(id: "korea:swing_kr_osan"), ScooterCityFeed(id: "korea:beam_kr_dongtan")]))
+        cities.append(ScooterCity(id: "kr:Icheon", name: "Icheon", countryCode: "KR", center: GeoPoint(latitude: 37.2789, longitude: 127.4499), bounds: GeoBounds(south: 37.0987, west: 127.3266, north: 37.3283, east: 127.6412), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_icheon"), ScooterCityFeed(id: "korea:xingxing_kr_icheon"), ScooterCityFeed(id: "korea:swing_kr_icheon")]))
+        cities.append(ScooterCity(id: "kr:Gimpo", name: "Gimpo", countryCode: "KR", center: GeoPoint(latitude: 37.6428, longitude: 126.6716), bounds: GeoBounds(south: 37.577268, west: 126.5712, north: 37.711, east: 126.8021), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gimpo"), ScooterCityFeed(id: "korea:swing_kr_gimpo"), ScooterCityFeed(id: "korea:beam_kr_gimpo")]))
+        cities.append(ScooterCity(id: "kr:Gangneung", name: "Gangneung", countryCode: "KR", center: GeoPoint(latitude: 37.7622, longitude: 128.8787), bounds: GeoBounds(south: 37.714, west: 128.8031, north: 37.9184, east: 128.9672), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gangneung"), ScooterCityFeed(id: "korea:xingxing_kr_gangneung")]))
+        cities.append(ScooterCity(id: "kr:Chuncheon", name: "Chuncheon", countryCode: "KR", center: GeoPoint(latitude: 37.8689, longitude: 127.7411), bounds: GeoBounds(south: 37.821, west: 127.6843, north: 37.9353, east: 127.7902), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_chuncheon"), ScooterCityFeed(id: "korea:swing_kr_chuncheon")]))
+        cities.append(ScooterCity(id: "kr:Gimhae", name: "Gimhae", countryCode: "KR", center: GeoPoint(latitude: 35.2377, longitude: 128.8671), bounds: GeoBounds(south: 35.1507, west: 128.6888, north: 35.3427, east: 128.9396), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gimhae"), ScooterCityFeed(id: "korea:xingxing_kr_gimhae"), ScooterCityFeed(id: "korea:swing_kr_gimhae"), ScooterCityFeed(id: "korea:beam_kr_gimhae")]))
+        cities.append(ScooterCity(id: "kr:Jinju", name: "Jinju", countryCode: "KR", center: GeoPoint(latitude: 35.1642, longitude: 128.1043), bounds: GeoBounds(south: 35.1269, west: 128.0221, north: 35.2318, east: 128.1862), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_jinju"), ScooterCityFeed(id: "korea:xingxing_kr_jinju"), ScooterCityFeed(id: "korea:swing_kr_jinju")]))
+        cities.append(ScooterCity(id: "kr:Wonju", name: "Wonju", countryCode: "KR", center: GeoPoint(latitude: 37.3344, longitude: 127.9385), bounds: GeoBounds(south: 37.2422, west: 127.7686, north: 37.406, east: 128.0103), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_wonju"), ScooterCityFeed(id: "korea:swing_kr_wonju")]))
+        cities.append(ScooterCity(id: "kr:Gunsan", name: "Gunsan", countryCode: "KR", center: GeoPoint(latitude: 35.9641, longitude: 126.7055), bounds: GeoBounds(south: 35.9208, west: 126.6481, north: 36.0233, east: 126.8932), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gunsan"), ScooterCityFeed(id: "korea:swing_kr_gunsan")]))
+        cities.append(ScooterCity(id: "kr:Gwangju (Gyeonggi)", name: "Gwangju (Gyeonggi)", countryCode: "KR", center: GeoPoint(latitude: 37.3949, longitude: 127.2506), bounds: GeoBounds(south: 37.3062, west: 127.1292, north: 37.4572, east: 127.3976), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gwangju_gyeonggi"), ScooterCityFeed(id: "korea:swing_kr_gwangju_gyeonggi")]))
+        cities.append(ScooterCity(id: "kr:Jeju", name: "Jeju", countryCode: "KR", center: GeoPoint(latitude: 33.4939, longitude: 126.5098), bounds: GeoBounds(south: 33.4355, west: 126.4104, north: 33.5436, east: 126.6095), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_jeju")]))
+        cities.append(ScooterCity(id: "kr:Anseong", name: "Anseong", countryCode: "KR", center: GeoPoint(latitude: 37.0077, longitude: 127.2319), bounds: GeoBounds(south: 36.9773, west: 127.119, north: 37.0809, east: 127.3891), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_anseong"), ScooterCityFeed(id: "korea:swing_kr_anseong")]))
+        cities.append(ScooterCity(id: "kr:Iksan", name: "Iksan", countryCode: "KR", center: GeoPoint(latitude: 35.9645, longitude: 126.9577), bounds: GeoBounds(south: 35.9136, west: 126.912, north: 35.993, east: 127.02280383674638), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_iksan"), ScooterCityFeed(id: "korea:swing_kr_iksan"), ScooterCityFeed(id: "korea:beam_kr_iksan")]))
+        cities.append(ScooterCity(id: "kr:Yangju", name: "Yangju", countryCode: "KR", center: GeoPoint(latitude: 37.8179, longitude: 127.0873), bounds: GeoBounds(south: 37.7688, west: 126.955622, north: 37.93857, east: 127.1256), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_yangju"), ScooterCityFeed(id: "korea:swing_kr_yangju"), ScooterCityFeed(id: "korea:beam_kr_dongducheon")]))
+        cities.append(ScooterCity(id: "kr:Guri", name: "Guri", countryCode: "KR", center: GeoPoint(latitude: 37.6024, longitude: 127.1356), bounds: GeoBounds(south: 37.5562, west: 127.0975, north: 37.6488, east: 127.174), feeds: [ScooterCityFeed(id: "korea:swing_kr_guri"), ScooterCityFeed(id: "korea:beam_kr_namyangju")]))
+        cities.append(ScooterCity(id: "kr:Yangsan", name: "Yangsan", countryCode: "KR", center: GeoPoint(latitude: 35.3294, longitude: 129.0143), bounds: GeoBounds(south: 35.2792, west: 128.968, north: 35.4359, east: 129.1994), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_yangsan"), ScooterCityFeed(id: "korea:swing_kr_yangsan")]))
+        cities.append(ScooterCity(id: "kr:Geoje", name: "Geoje", countryCode: "KR", center: GeoPoint(latitude: 34.8901, longitude: 128.6294), bounds: GeoBounds(south: 34.8418, west: 128.5804, north: 34.9203, east: 128.7213), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_geoje"), ScooterCityFeed(id: "korea:swing_kr_geoje")]))
+        cities.append(ScooterCity(id: "kr:Gwangmyeong", name: "Gwangmyeong", countryCode: "KR", center: GeoPoint(latitude: 37.469, longitude: 126.8688), bounds: GeoBounds(south: 37.3988, west: 126.8227, north: 37.4975, east: 126.9031), feeds: [ScooterCityFeed(id: "korea:swing_kr_gwangmyeong")]))
+        cities.append(ScooterCity(id: "kr:Gyeongju", name: "Gyeongju", countryCode: "KR", center: GeoPoint(latitude: 35.8528, longitude: 129.2117), bounds: GeoBounds(south: 35.8066, west: 129.148, north: 35.9041, east: 129.2602), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gyeongju"), ScooterCityFeed(id: "korea:swing_kr_gyeongju")]))
+        cities.append(ScooterCity(id: "kr:Chungju", name: "Chungju", countryCode: "KR", center: GeoPoint(latitude: 36.9706, longitude: 127.9302), bounds: GeoBounds(south: 36.891587, west: 127.65085, north: 37.0324, east: 127.9696), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_chungju"), ScooterCityFeed(id: "korea:swing_kr_chungju"), ScooterCityFeed(id: "korea:beam_kr_gyeonggi_1")]))
+        cities.append(ScooterCity(id: "kr:Mokpo", name: "Mokpo", countryCode: "KR", center: GeoPoint(latitude: 34.8055, longitude: 126.4188), bounds: GeoBounds(south: 34.7668, west: 126.3416, north: 34.8461, east: 126.4627), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_mokpo")]))
+        cities.append(ScooterCity(id: "kr:Gunpo", name: "Gunpo", countryCode: "KR", center: GeoPoint(latitude: 37.3568, longitude: 126.9428), bounds: GeoBounds(south: 37.3024, west: 126.8993, north: 37.3814, east: 126.9655), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gunpo"), ScooterCityFeed(id: "korea:kickgoing_kr_gunpo"), ScooterCityFeed(id: "korea:xingxing_kr_gunpo"), ScooterCityFeed(id: "korea:swing_kr_gunpo")]))
+        cities.append(ScooterCity(id: "kr:Gimcheon", name: "Gimcheon", countryCode: "KR", center: GeoPoint(latitude: 36.1257, longitude: 128.115), bounds: GeoBounds(south: 36.0952, west: 128.0535, north: 36.1633, east: 128.2158), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gimcheon"), ScooterCityFeed(id: "korea:swing_kr_gimcheon"), ScooterCityFeed(id: "korea:beam_kr_gimcheon")]))
+        cities.append(ScooterCity(id: "kr:Chilgok", name: "Chilgok", countryCode: "KR", center: GeoPoint(latitude: 36.0671, longitude: 128.3997), bounds: GeoBounds(south: 35.9589, west: 128.3101, north: 36.1038, east: 128.4424), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_chilgok"), ScooterCityFeed(id: "korea:swing_kr_chilgok")]))
+        cities.append(ScooterCity(id: "kr:Hongseong", name: "Hongseong", countryCode: "KR", center: GeoPoint(latitude: 36.5998, longitude: 126.6694), bounds: GeoBounds(south: 36.5594, west: 126.6234, north: 36.6748, east: 126.7096), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_hongseong")]))
+        cities.append(ScooterCity(id: "kr:Sacheon", name: "Sacheon", countryCode: "KR", center: GeoPoint(latitude: 35.0703, longitude: 128.084), bounds: GeoBounds(south: 34.9089, west: 128.0211, north: 35.1105, east: 128.1353), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_sacheon"), ScooterCityFeed(id: "korea:swing_kr_sacheon")]))
+        cities.append(ScooterCity(id: "kr:Suncheon", name: "Suncheon", countryCode: "KR", center: GeoPoint(latitude: 34.9506, longitude: 127.5125), bounds: GeoBounds(south: 34.911, west: 127.4564, north: 35.005, east: 127.5716), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_suncheon")]))
+        cities.append(ScooterCity(id: "kr:Uiwang", name: "Uiwang", countryCode: "KR", center: GeoPoint(latitude: 37.3791, longitude: 126.9775), bounds: GeoBounds(south: 37.2976, west: 126.9259, north: 37.4182, east: 127.0273), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_uiwang"), ScooterCityFeed(id: "korea:kickgoing_kr_uiwang"), ScooterCityFeed(id: "korea:xingxing_kr_uiwang"), ScooterCityFeed(id: "korea:swing_kr_uiwang")]))
+        cities.append(ScooterCity(id: "kr:Eumseong", name: "Eumseong", countryCode: "KR", center: GeoPoint(latitude: 36.9192, longitude: 127.5582), bounds: GeoBounds(south: 36.8855, west: 127.5106, north: 37.1571, east: 127.79847), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_eumseong"), ScooterCityFeed(id: "korea:swing_kr_eumseong"), ScooterCityFeed(id: "korea:beam_kr_gyeonggi_1")]))
+        cities.append(ScooterCity(id: "kr:Yeongju", name: "Yeongju", countryCode: "KR", center: GeoPoint(latitude: 36.8232, longitude: 128.6054), bounds: GeoBounds(south: 36.7811, west: 128.5009, north: 36.902, east: 128.6609), feeds: [ScooterCityFeed(id: "korea:swing_kr_yeongju")]))
+        cities.append(ScooterCity(id: "kr:Andong", name: "Andong", countryCode: "KR", center: GeoPoint(latitude: 36.5618, longitude: 128.7314), bounds: GeoBounds(south: 36.521, west: 128.46049, north: 36.6075, east: 128.8255), feeds: [ScooterCityFeed(id: "korea:swing_kr_andong"), ScooterCityFeed(id: "korea:beam_kr_yecheon")]))
+        cities.append(ScooterCity(id: "kr:Muan", name: "Muan", countryCode: "KR", center: GeoPoint(latitude: 34.8125, longitude: 126.4645), bounds: GeoBounds(south: 34.783, west: 126.4098, north: 35.007, east: 126.5043), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_muan")]))
+        cities.append(ScooterCity(id: "kr:Seosan", name: "Seosan", countryCode: "KR", center: GeoPoint(latitude: 36.7752, longitude: 126.4562), bounds: GeoBounds(south: 36.6756, west: 126.4201, north: 36.8104, east: 126.6055), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_seosan"), ScooterCityFeed(id: "korea:xingxing_kr_seosan")]))
+        cities.append(ScooterCity(id: "kr:Gongju", name: "Gongju", countryCode: "KR", center: GeoPoint(latitude: 36.4711, longitude: 127.1386), bounds: GeoBounds(south: 36.4256, west: 127.0909, north: 36.4939, east: 127.1737), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gongju")]))
+        cities.append(ScooterCity(id: "kr:Jecheon", name: "Jecheon", countryCode: "KR", center: GeoPoint(latitude: 37.1555, longitude: 128.2053), bounds: GeoBounds(south: 37.1064, west: 128.1666, north: 37.1962, east: 128.2468), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_jecheon")]))
+        cities.append(ScooterCity(id: "kr:Dongducheon", name: "Dongducheon", countryCode: "KR", center: GeoPoint(latitude: 37.8973, longitude: 127.0563), bounds: GeoBounds(south: 37.778655, west: 126.955622, north: 37.9589, east: 127.17698299999999), feeds: [ScooterCityFeed(id: "korea:swing_kr_dongducheon"), ScooterCityFeed(id: "korea:beam_kr_dongducheon")]))
+        cities.append(ScooterCity(id: "kr:Namwon", name: "Namwon", countryCode: "KR", center: GeoPoint(latitude: 35.4078, longitude: 127.3784), bounds: GeoBounds(south: 35.376, west: 127.3383, north: 35.4492, east: 127.4321), feeds: [ScooterCityFeed(id: "korea:swing_kr_namwon")]))
+        cities.append(ScooterCity(id: "kr:Sangju", name: "Sangju", countryCode: "KR", center: GeoPoint(latitude: 36.3834, longitude: 128.1499), bounds: GeoBounds(south: 36.3577, west: 128.1202, north: 36.5947, east: 128.2003), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_sangju"), ScooterCityFeed(id: "korea:swing_kr_sangju")]))
+        cities.append(ScooterCity(id: "kr:Yangpyeong", name: "Yangpyeong", countryCode: "KR", center: GeoPoint(latitude: 37.4921, longitude: 127.4972), bounds: GeoBounds(south: 37.4572, west: 127.3025, north: 37.5688, east: 127.6286), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_yangpyeong"), ScooterCityFeed(id: "korea:swing_kr_yangpyeong")]))
+        cities.append(ScooterCity(id: "kr:Dangjin", name: "Dangjin", countryCode: "KR", center: GeoPoint(latitude: 36.8932, longitude: 126.6372), bounds: GeoBounds(south: 36.8643, west: 126.5905, north: 36.9272, east: 126.6796), feeds: [ScooterCityFeed(id: "korea:swing_kr_dangjin")]))
+        cities.append(ScooterCity(id: "kr:Yeongcheon", name: "Yeongcheon", countryCode: "KR", center: GeoPoint(latitude: 35.9725, longitude: 128.9417), bounds: GeoBounds(south: 35.8844, west: 128.8335, north: 36.0086, east: 128.9895), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_yeongcheon"), ScooterCityFeed(id: "korea:swing_kr_yeongcheon")]))
+        cities.append(ScooterCity(id: "kr:Jincheon", name: "Jincheon", countryCode: "KR", center: GeoPoint(latitude: 36.8991, longitude: 127.5133), bounds: GeoBounds(south: 36.8139, west: 127.406, north: 37.00599, east: 127.58511), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_jincheon"), ScooterCityFeed(id: "korea:swing_kr_jincheon"), ScooterCityFeed(id: "korea:beam_kr_gyeonggi_1")]))
+        cities.append(ScooterCity(id: "kr:Jeungpyeong", name: "Jeungpyeong", countryCode: "KR", center: GeoPoint(latitude: 36.7811, longitude: 127.5816), bounds: GeoBounds(south: 36.748, west: 127.5445, north: 36.8342, east: 127.6484), feeds: [ScooterCityFeed(id: "korea:swing_kr_jeungpyeong")]))
+        cities.append(ScooterCity(id: "kr:Jeongeup", name: "Jeongeup", countryCode: "KR", center: GeoPoint(latitude: 35.5695, longitude: 126.8564), bounds: GeoBounds(south: 35.5344, west: 126.8268, north: 35.6016, east: 126.8938), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_jeongeup")]))
+        cities.append(ScooterCity(id: "kr:Wanju", name: "Wanju", countryCode: "KR", center: GeoPoint(latitude: 35.91, longitude: 127.0659), bounds: GeoBounds(south: 35.8151, west: 127.0333, north: 35.9778, east: 127.1833), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_wanju"), ScooterCityFeed(id: "korea:swing_kr_wanju")]))
+        cities.append(ScooterCity(id: "kr:Yesan", name: "Yesan", countryCode: "KR", center: GeoPoint(latitude: 36.6711, longitude: 126.8459), bounds: GeoBounds(south: 36.6443, west: 126.648, north: 36.7446, east: 126.8863), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_yesan"), ScooterCityFeed(id: "korea:swing_kr_yesan")]))
+        cities.append(ScooterCity(id: "kr:Geochang", name: "Geochang", countryCode: "KR", center: GeoPoint(latitude: 35.6886, longitude: 127.911), bounds: GeoBounds(south: 35.6609, west: 127.879, north: 35.7084, east: 127.9446), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_geochang")]))
+        cities.append(ScooterCity(id: "kr:Yeosu", name: "Yeosu", countryCode: "KR", center: GeoPoint(latitude: 34.7637, longitude: 127.6782), bounds: GeoBounds(south: 34.7049, west: 127.6138, north: 34.8015, east: 127.772), feeds: [ScooterCityFeed(id: "korea:swing_kr_yeosu")]))
+        cities.append(ScooterCity(id: "kr:Naju", name: "Naju", countryCode: "KR", center: GeoPoint(latitude: 35.0289, longitude: 126.775), bounds: GeoBounds(south: 34.9835, west: 126.6895, north: 35.0685, east: 126.8217), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_naju")]))
+        cities.append(ScooterCity(id: "kr:Sokcho", name: "Sokcho", countryCode: "KR", center: GeoPoint(latitude: 38.1917, longitude: 128.5833), bounds: GeoBounds(south: 38.1632, west: 128.5422, north: 38.2335, east: 128.6182), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_sokcho")]))
+        cities.append(ScooterCity(id: "kr:Uljin", name: "Uljin", countryCode: "KR", center: GeoPoint(latitude: 36.9922, longitude: 129.4012), bounds: GeoBounds(south: 36.9433, west: 129.3688, north: 37.0776, east: 129.4439), feeds: [ScooterCityFeed(id: "korea:swing_kr_uljin")]))
+        cities.append(ScooterCity(id: "kr:Gimje", name: "Gimje", countryCode: "KR", center: GeoPoint(latitude: 35.8006, longitude: 126.8909), bounds: GeoBounds(south: 35.7764, west: 126.8595, north: 35.8325, east: 127.0147), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gimje")]))
+        cities.append(ScooterCity(id: "kr:Goesan", name: "Goesan", countryCode: "KR", center: GeoPoint(latitude: 36.8097, longitude: 127.7911), bounds: GeoBounds(south: 36.7619, west: 127.6242, north: 36.8338, east: 127.8236), feeds: [ScooterCityFeed(id: "korea:swing_kr_goesan")]))
+        cities.append(ScooterCity(id: "kr:Tongyeong", name: "Tongyeong", countryCode: "KR", center: GeoPoint(latitude: 34.8583, longitude: 128.4204), bounds: GeoBounds(south: 34.8062, west: 128.3751, north: 34.907, east: 128.4588), feeds: [ScooterCityFeed(id: "korea:swing_kr_tongyeong")]))
+        cities.append(ScooterCity(id: "kr:Samcheok", name: "Samcheok", countryCode: "KR", center: GeoPoint(latitude: 37.4522, longitude: 129.1622), bounds: GeoBounds(south: 37.4189, west: 129.1292, north: 37.4789, east: 129.196), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_samcheok")]))
+        cities.append(ScooterCity(id: "kr:Boeun", name: "Boeun", countryCode: "KR", center: GeoPoint(latitude: 36.4858, longitude: 127.7212), bounds: GeoBounds(south: 36.4569, west: 127.6845, north: 36.5142, east: 127.7613), feeds: [ScooterCityFeed(id: "korea:swing_kr_boeun")]))
+        cities.append(ScooterCity(id: "kr:Gapyeong", name: "Gapyeong", countryCode: "KR", center: GeoPoint(latitude: 37.826, longitude: 127.5096), bounds: GeoBounds(south: 37.7184, west: 127.3935, north: 37.8667, east: 127.543), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gapyeong")]))
+        cities.append(ScooterCity(id: "kr:Mungyeong", name: "Mungyeong", countryCode: "KR", center: GeoPoint(latitude: 36.592, longitude: 128.1951), bounds: GeoBounds(south: 36.5681, west: 128.1637, north: 36.6243, east: 128.2309), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_mungyeong")]))
+        cities.append(ScooterCity(id: "kr:Changnyeong", name: "Changnyeong", countryCode: "KR", center: GeoPoint(latitude: 35.5405, longitude: 128.4998), bounds: GeoBounds(south: 35.512, west: 128.4622, north: 35.5656, east: 128.5312), feeds: [ScooterCityFeed(id: "korea:swing_kr_changnyeong")]))
+        cities.append(ScooterCity(id: "kr:Yeoncheon", name: "Yeoncheon", countryCode: "KR", center: GeoPoint(latitude: 38.0264, longitude: 127.0703), bounds: GeoBounds(south: 37.9955, west: 127.0333, north: 38.0551, east: 127.0983), feeds: [ScooterCityFeed(id: "korea:swing_kr_yeoncheon")]))
+        cities.append(ScooterCity(id: "kr:Hongcheon", name: "Hongcheon", countryCode: "KR", center: GeoPoint(latitude: 37.6906, longitude: 127.8849), bounds: GeoBounds(south: 37.6619, west: 127.8491, north: 37.724, east: 127.9344), feeds: [ScooterCityFeed(id: "korea:swing_kr_hongcheon")]))
+        cities.append(ScooterCity(id: "kr:Goseong", name: "Goseong", countryCode: "KR", center: GeoPoint(latitude: 34.9753, longitude: 128.3244), bounds: GeoBounds(south: 34.9484, west: 128.2905, north: 34.995, east: 128.3506), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_goseong")]))
+        cities.append(ScooterCity(id: "kr:Miryang", name: "Miryang", countryCode: "KR", center: GeoPoint(latitude: 35.4871, longitude: 128.7514), bounds: GeoBounds(south: 35.435, west: 128.7111, north: 35.5276, east: 128.8303), feeds: [ScooterCityFeed(id: "korea:swing_kr_miryang")]))
+        cities.append(ScooterCity(id: "kr:Hwasun", name: "Hwasun", countryCode: "KR", center: GeoPoint(latitude: 35.0615, longitude: 126.9916), bounds: GeoBounds(south: 35.0183, west: 126.9259, north: 35.0922, east: 127.0198), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_hwasun")]))
+        cities.append(ScooterCity(id: "kr:Buan", name: "Buan", countryCode: "KR", center: GeoPoint(latitude: 35.7228, longitude: 126.7373), bounds: GeoBounds(south: 35.695, west: 126.703, north: 35.7509, east: 126.7685), feeds: [ScooterCityFeed(id: "korea:swing_kr_buan")]))
+        cities.append(ScooterCity(id: "kr:Seogwipo", name: "Seogwipo", countryCode: "KR", center: GeoPoint(latitude: 33.2539, longitude: 126.5125), bounds: GeoBounds(south: 33.2218, west: 126.3906, north: 33.2783, east: 126.5908), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_seogwipo")]))
+        cities.append(ScooterCity(id: "kr:Namhae", name: "Namhae", countryCode: "KR", center: GeoPoint(latitude: 34.8386, longitude: 127.8946), bounds: GeoBounds(south: 34.811, west: 127.8611, north: 34.8622, east: 127.9217), feeds: [ScooterCityFeed(id: "korea:swing_kr_namhae")]))
+        cities.append(ScooterCity(id: "kr:Donghae", name: "Donghae", countryCode: "KR", center: GeoPoint(latitude: 37.5194, longitude: 129.1123), bounds: GeoBounds(south: 37.4641, west: 129.0818, north: 37.5724, east: 129.1632), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_donghae")]))
+        cities.append(ScooterCity(id: "kr:Goheung", name: "Goheung", countryCode: "KR", center: GeoPoint(latitude: 34.5319, longitude: 127.1461), bounds: GeoBounds(south: 34.5107, west: 127.1167, north: 34.6249, east: 127.3091), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_goheung")]))
+        cities.append(ScooterCity(id: "kr:Hoengseong", name: "Hoengseong", countryCode: "KR", center: GeoPoint(latitude: 37.4918, longitude: 127.9893), bounds: GeoBounds(south: 37.4548, west: 127.9512, north: 37.5172, east: 128.031), feeds: [ScooterCityFeed(id: "korea:swing_kr_hoengseong")]))
+        cities.append(ScooterCity(id: "kr:Yeongdong", name: "Yeongdong", countryCode: "KR", center: GeoPoint(latitude: 36.1757, longitude: 127.7855), bounds: GeoBounds(south: 36.137, west: 127.7412, north: 36.2133, east: 127.8222), feeds: [ScooterCityFeed(id: "korea:swing_kr_yeongdong")]))
+        cities.append(ScooterCity(id: "kr:Boryeong", name: "Boryeong", countryCode: "KR", center: GeoPoint(latitude: 36.348, longitude: 126.6055), bounds: GeoBounds(south: 36.32, west: 126.569, north: 36.3786, east: 126.6395), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_boryeong")]))
+        cities.append(ScooterCity(id: "kr:Haman", name: "Haman", countryCode: "KR", center: GeoPoint(latitude: 35.2758, longitude: 128.4076), bounds: GeoBounds(south: 35.2428, west: 128.3816, north: 35.3067, east: 128.5394), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_haman")]))
+        cities.append(ScooterCity(id: "kr:Okcheon", name: "Okcheon", countryCode: "KR", center: GeoPoint(latitude: 36.2983, longitude: 127.5706), bounds: GeoBounds(south: 36.2729, west: 127.535, north: 36.3336, east: 127.6066), feeds: [ScooterCityFeed(id: "korea:swing_kr_okcheon")]))
+        cities.append(ScooterCity(id: "kr:Imsil", name: "Imsil", countryCode: "KR", center: GeoPoint(latitude: 35.615, longitude: 127.2844), bounds: GeoBounds(south: 35.5917, west: 127.2525, north: 35.6525, east: 127.3126), feeds: [ScooterCityFeed(id: "korea:swing_kr_imsil")]))
+        cities.append(ScooterCity(id: "kr:Buyeo", name: "Buyeo", countryCode: "KR", center: GeoPoint(latitude: 36.2742, longitude: 126.8948), bounds: GeoBounds(south: 36.255, west: 126.837, north: 36.3149, east: 126.9516), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_buyeo")]))
+        cities.append(ScooterCity(id: "kr:Jangseong", name: "Jangseong", countryCode: "KR", center: GeoPoint(latitude: 35.3008, longitude: 126.7829), bounds: GeoBounds(south: 35.2801, west: 126.7578, north: 35.3199, east: 126.8063), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_jangseong")]))
+        cities.append(ScooterCity(id: "kr:Geumsan", name: "Geumsan", countryCode: "KR", center: GeoPoint(latitude: 36.1927, longitude: 127.4522), bounds: GeoBounds(south: 36.091846999999994, west: 127.4265, north: 36.2137, east: 127.505078), feeds: [ScooterCityFeed(id: "korea:swing_kr_geumsan"), ScooterCityFeed(id: "korea:beam_kr_geumsan")]))
+        cities.append(ScooterCity(id: "kr:Wando", name: "Wando", countryCode: "KR", center: GeoPoint(latitude: 34.3175, longitude: 126.7458), bounds: GeoBounds(south: 34.2909, west: 126.7166, north: 34.3399, east: 126.784), feeds: [ScooterCityFeed(id: "korea:swing_kr_wando")]))
+        cities.append(ScooterCity(id: "kr:Haenam", name: "Haenam", countryCode: "KR", center: GeoPoint(latitude: 34.5709, longitude: 126.6004), bounds: GeoBounds(south: 34.5515, west: 126.5747, north: 34.5927, east: 126.6264), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_haenam")]))
+        cities.append(ScooterCity(id: "kr:Gochang", name: "Gochang", countryCode: "KR", center: GeoPoint(latitude: 35.4336, longitude: 126.7149), bounds: GeoBounds(south: 35.4137, west: 126.6734, north: 35.4558, east: 126.752), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gochang")]))
+        cities.append(ScooterCity(id: "kr:Gwacheon", name: "Gwacheon", countryCode: "KR", center: GeoPoint(latitude: 37.4151, longitude: 126.98), bounds: GeoBounds(south: 37.398, west: 126.9584, north: 37.4704, east: 127.0508), feeds: [ScooterCityFeed(id: "korea:kickgoing_kr_gwacheon")]))
+        cities.append(ScooterCity(id: "kr:Yeongam", name: "Yeongam", countryCode: "KR", center: GeoPoint(latitude: 34.752, longitude: 126.4582), bounds: GeoBounds(south: 34.7305, west: 126.4352, north: 34.797, east: 126.5004), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_yeongam")]))
+        cities.append(ScooterCity(id: "kr:Seongju", name: "Seongju", countryCode: "KR", center: GeoPoint(latitude: 35.9236, longitude: 128.2813), bounds: GeoBounds(south: 35.9003, west: 128.2621, north: 35.9422, east: 128.3034), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_seongju")]))
+        cities.append(ScooterCity(id: "kr:Gwangyang", name: "Gwangyang", countryCode: "KR", center: GeoPoint(latitude: 34.940037, longitude: 127.679565), bounds: GeoBounds(south: 34.914424, west: 127.557748, north: 34.988956, east: 127.76409788380748), feeds: [ScooterCityFeed(id: "korea:beam_kr_gwangyang")]))
+        cities.append(ScooterCity(id: "kr:Yecheon", name: "Yecheon", countryCode: "KR", center: GeoPoint(latitude: 36.57193, longitude: 128.485779), bounds: GeoBounds(south: 36.557863, west: 128.46049, north: 36.582816, east: 128.520296), feeds: [ScooterCityFeed(id: "korea:beam_kr_yecheon")]))
+        cities.append(ScooterCity(id: "kr:Yeoju", name: "Yeoju", countryCode: "KR", center: GeoPoint(latitude: 37.270362, longitude: 127.638371), bounds: GeoBounds(south: 37.223088, west: 127.610338, north: 37.316423, east: 127.68516199999999), feeds: [ScooterCityFeed(id: "korea:beam_kr_yeoju")]))
+        return cities
+    }
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
