@@ -437,3 +437,14 @@ in mode-0600 `/data/jet-config.json`, owned by the cache's `node` user
 The Node collector uses TLS 1.2 and spaces map requests 500 ms apart across
 all regions. Every city's tiles must succeed before its snapshot is replaced.
 See [the configuration format and verified coverage](docs/gojet-app-map.md).
+
+BinBin's Turkish guest map needs no secret. Its one client starts a request at
+most every 250 ms, four a second, across all 13 areas, with three of a sweep's
+under way at once and at most two sweeps on its host. A sweep asks ten
+scooters at a time until its area is proven complete. On 24 October 2026 the 13
+areas took 4,947 requests from nothing and 3,577 planned straight after from
+those positions; swept every 20 minutes when idle, a round planned from
+positions 20 minutes old should take between the two, about three requests a
+second on average. A cold start keeps what failed sweeps saw for the next.
+HTTP 429 stops every BinBin request for its `Retry-After`. See [pace and
+failures](docs/binbin-app-map.md#pace-and-failures).

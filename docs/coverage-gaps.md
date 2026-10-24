@@ -18,12 +18,12 @@ gaps. See [the collection and validation evidence](lime-app-map.md).
 These feeds are public and were live when checked. Nothing blocks them except
 the work.
 
-**BinBin in Turkey:** the app's guest map returned scooters in Istanbul,
-Antalya and Eskişehir on 24 October 2026, including a successful check from
-Netcup. It returns truncated local selections (10 per sampled request),
-so city totals need a collection strategy with measured coverage and a
-bounded request budget; availability and freshness semantics also remain
-to be established. See [the app investigation](turkish-app-maps.md).
+**BinBin in the Balkans:** BinBin's guest map, which the cache already sweeps
+in Turkey ([the collector](binbin-app-map.md)), returned ten scooters each in
+Skopje, Sarajevo, Pristina and Tirana on 24 October 2026, and none in Mostar.
+Their service areas are in the same geofences, so each takes a system per
+area, but each is a new country: North Macedonia, Bosnia and Herzegovina,
+Kosovo and Albania.
 
 **GCOO and Kickgoing in South Korea:** both apps' signed-out maps returned
 vehicles in Seoul, Busan and Daegu on 24 October 2026, also from Netcup, with
@@ -604,6 +604,20 @@ banned shared scooters, and feeds that were empty when checked.
   ([guide](caribbean-netherlands-scooter-feeds.md#known-gaps)): Hopp on
   Bonaire, in Kralendijk, is covered. Nothing was found on Sint Eustatius or
   Saba.
+- **Turkey** ([guide](turkish-scooter-feeds.md#known-gaps)): BinBin's 13
+  service areas in 12 cities are covered by its guest app map since 24
+  October 2026 ([the collector](binbin-app-map.md)). No public GBFS was found,
+  and İstanbul's, İzmir's and Konya's open-data portals hold parking and
+  routes only; U-NET is not public, and AAR Bike Konya is bicycles.
+  - **Martı** runs scooters across Turkey. Its map needs a stored rider
+    token, and its map and public configuration requests got HTML 403 from
+    the Mac and Netcup.
+  - **Hop**'s app host is `api.hoplagit.com`: its configuration answers, but
+    its nearby-scooters route answers JSON 403 without a rider session, and
+    no guest flow was found. `gbfs.heyhop.app` is not that app's endpoint.
+    See [the app investigation](turkish-app-maps.md).
+  - **BinBin at İstanbul Airport** (İGA) is not swept: two scooters on 24
+    October 2026, 15 km north of İstanbul Avrupa.
 
 ## Countries not covered yet
 
@@ -683,7 +697,6 @@ a licence. Neither is published by its operator:
 | Estonia, Lithuania | Bolt and Ride Mobility publish no feed |
 | Slovakia, Bulgaria, Moldova | Dott and Bolt publish no feed; nothing else found. Lime Deva is now covered in Romania; Romania's other markets remain gaps. Its PBSC bike-share feeds list a scooter type with no scooters. Hopp's `ro-bucharest` feed answers but held no scooter at night or in 7 polls from 08:30 to 09:30 on Sunday 18 October 2026, and Hopp's site no longer lists Bucharest; check it again in April 2027. (Slovenia: see above) |
 | Serbia | Belgrade suspended its call for 2,000 scooters on 15 July 2026, a day after opening it; check again in January 2027 |
-| Turkey | No public GBFS found, but **BinBin's app guest map works**, verified in Istanbul, Antalya and Eskişehir on 24 October 2026; its truncated local selections cannot yet supply complete city totals. Martı's native map requires a stored rider token, and its map and public configuration requests both received HTML 403 from the Mac and Netcup. Hop's actual app host is `api.hoplagit.com`: configuration works, but the nearby-scooters route returns JSON 403 without a rider session; no guest flow verified. See [routes, provenance and remaining work](turkish-app-maps.md). U-NET is not public, and Istanbul's, İzmir's and Konya's open-data portals hold static parking and routes only; AAR Bike Konya is bicycles |
 | Malta | Rental scooters banned since March 2024 |
 | Luxembourg, Monaco, Liechtenstein | Bikes and e-bikes only; MonaBike lists a scooter type with no scooters |
 | Belarus, Georgia, Armenia, Azerbaijan, Kazakhstan | Bolt, with scooters in Tbilisi, Kutaisi, Baku and Almaty, answers 401, and so does Whoosh (`api.whoosh.bike/gbfs`). Eleven, Yandex Go, Urent, JET, Mimo, BusyFly, YerevanRide, Ozim and Scroll publish nothing, and Kolobike has closed; the [signed-out Go Jet map](gojet-app-map.md) now supplies Almaty (4,552 available scooters), Baku (3,004) and Batumi (1,422). JET's separate Central Asian app still needs a rider sign-in; Go Jet does not establish Tbilisi, Armenia or the rest of Kazakhstan. Whoosh's [authenticated collector](whoosh-app-map.md) covers Minsk, Borisov, Soligorsk, Almaty and Astana, with Kazakhstan's two regions currently season-closed. No registry rows, no ATOM Mobility systems, nothing on the national open-data portals. Almaty is the biggest fleet: about 22,500 scooters in April 2026, with JET holding over 70% of the market. Yerevan has about 1,500 (JET and YerevanRide) |
@@ -712,7 +725,7 @@ a licence. Neither is published by its operator:
 | Taiwan, Hong Kong, Singapore, Thailand, Indonesia, the Philippines, Vietnam, India | No registry row, and no guessed address answers. Beam, in Indonesia and Thailand (Bangkok's at Chulalongkorn University's Samyan campus), answers 401, and its app map needs a rider sign-in; Moovr, in Manila's BGC and Makati, runs on Joyride, whose feed hosts no longer resolve. Taiwan's shared fleets are seated mopeds, with stand-up scooters only in local pilots; Hong Kong bans e-scooters and Singapore shared ones; India's Yulu runs seated vehicles |
 | Uzbekistan, Mongolia, Kyrgyzstan | JET, which runs in Uzbekistan and Mongolia and in Kazakhstan, Georgia, Armenia and Azerbaijan, publishes no feed, and its app map needs a rider sign-in (see [the app investigation](jet-whoosh-beam-luup-app-maps.md)), nor do Whoosh, Urent, SunRent and E-motion in Bishkek. Ulaanbaatar is the biggest: JET put 3,000 scooters there in 2023 and planned 6,000 more. Silk Road Sharing, in Samarkand (ATOM Mobility system 1976), and IZZY, in Tashkent (1918), still answer "GBFS disabled" on 18 October 2026. Check again on 1 April 2027 |
 | Pacific islands | Pineapple, in Samoa (ATOM Mobility system 1359), answers "GBFS disabled" and its site is down; Kai Ride (2118), whose place is unknown, too. France's access point (transport.data.gouv.fr) has nothing for Nouméa or Papeete |
-| Bosnia and Herzegovina, Montenegro, North Macedonia, Albania, Kosovo, Andorra, San Marino, Gibraltar, Faroe Islands | No scooter feed found (Hopp Tórshavn held 13, all disabled, at night and on the evening of 13 October 2026) |
+| Bosnia and Herzegovina, Montenegro, North Macedonia, Albania, Kosovo, Andorra, San Marino, Gibraltar, Faroe Islands | No scooter feed found (Hopp Tórshavn held 13, all disabled, at night and on the evening of 13 October 2026). BinBin's guest app map has scooters in Skopje, Sarajevo, Pristina and Tirana: see [found, not added yet](#found-not-added-yet) |
 | Colombia | Lime `bogota` answers but lists no vehicle (16:11 to 17:04 Bogotá time, 15 October 2026). Whoosh's [authenticated Medellín map](whoosh-app-map.md) is integrated; its GBFS feeds remain private. Yango, in Valledupar (400+) and licensed in Medellín, publishes no feed; its Bogotá launch waits for the city's rules. datos.gov.co has nothing. Check again on 1 March 2027 |
 | Brazil, Chile | The [signed-out Go Jet adapter](gojet-app-map.md) now supplies 48 Brazilian collection regions (32,263 available scooters) and Santiago and Temuco in Chile (3,713 combined). Brazil has about 45,000 to 55,000 scooters in 50 or more towns, most of them JET's (it claims 40,000 to 50,000 vehicles in 53 cities), with Whoosh in São Paulo, Curitiba and Florianópolis. Chile has about 14,000 in about 20 towns: Whoosh 8,000+, Lime 3,500, JET 2,000+. Whoosh's [authenticated collector](whoosh-app-map.md) now lists nine Brazilian and seven Chilean regions; its GBFS feeds remain private; Go Jet's app signing is reproduced by the Node collector, without a rider account; Lime Chile answers 404 for about 75 slugs. Lime has left Brazil. São Paulo and Rio receive live data for the city's use only, and datos.gob.cl and dados.gov.br have no scooter data. Check again on 1 April 2027 |
 | Peru | No fleet. The scooters 3electra's feed places in Lima at night are Kyiv's, moved there by its mask, with the same codes (see the [Ukrainian guide](ukrainian-scooter-feeds.md)). Whoosh's Lima feed is private, like its others, and on 24 October 2026 its app had no active region there |
@@ -1004,12 +1017,12 @@ Bonaire had feeds to add. Survey files are in
   a Tuesday in October 2026 and 4 on Saturday 24 October, and none was
   ridden while it was polled: none moved from 08:36 to 16:47 that Saturday.
   Poll it on a weekend afternoon, and add it if its scooters are ridden.
-- **April 2027:** Turkey's season. Check for public GBFS and new data on
-  Istanbul's, İzmir's and Konya's open-data portals. BinBin's guest app map
-  already works and need not wait for the season; next work is collection
-  completeness, availability and freshness. For Martı and Hop, follow
-  [the verified app hosts and access blockers](turkish-app-maps.md), rather
-  than treating `gbfs.heyhop.app` as the investigated Hop app's endpoint.
+- **April 2027:** Turkey's season. Check for public GBFS from Martı and Hop
+  and new data on İstanbul's, İzmir's and Konya's open-data portals, and run
+  `node scripts/update-binbin-areas.mjs --check` for BinBin's new areas. For
+  Martı and Hop, follow [the verified app hosts and access
+  blockers](turkish-app-maps.md), rather than treating `gbfs.heyhop.app` as
+  the investigated Hop app's endpoint.
 - **1 May 2027:** Bird's other Canadian towns (Lethbridge, Red Deer, Kamloops,
   Vernon, Brampton, Oshawa, Laval and the rest listed above) and Lime's
   former Neuron towns (Red Deer, Saskatoon, Regina, Waterloo Region): probe

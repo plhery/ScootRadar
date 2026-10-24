@@ -454,6 +454,7 @@ describe('ControlSheet settings', () => {
       'ZA: Zippy rider map',
       'JP/CL/MX/RO/CZ/QA/AU: Lime map',
       'JP/CL/MX/RO/CZ/QA/AU: GeoNames · CC BY 4.0',
+      'TR: BinBin map',
       'Search · Geoapify',
       'Search · Photon, komoot',
       'Parking · Métropole Européenne de Lille',

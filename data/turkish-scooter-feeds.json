@@ -1,0 +1,246 @@
+{
+  "verifiedOn": "2026-10-24",
+  "catalogSource": "https://www.binbin.tech/lokasyonlar/",
+  "systems": [
+    {
+      "id": "binbin_tr_istanbul_avrupa",
+      "provider": "binbin",
+      "city": "İstanbul",
+      "center": [
+        41.00824,
+        28.97836
+      ],
+      "bounds": {
+        "south": 40.95108,
+        "north": 41.11293,
+        "west": 28.57288,
+        "east": 29.0613
+      },
+      "timeZone": "Europe/Istanbul",
+      "discoveryUrl": "https://gatewayapi-sp.binbinapp.com/binbin/api/v1/vehicles/list",
+      "binbinAppArea": "15"
+    },
+    {
+      "id": "binbin_tr_istanbul_anadolu",
+      "provider": "binbin",
+      "city": "İstanbul",
+      "center": [
+        40.99027,
+        29.02773
+      ],
+      "bounds": {
+        "south": 40.75167,
+        "north": 41.06423,
+        "west": 29.00335,
+        "east": 29.4595
+      },
+      "timeZone": "Europe/Istanbul",
+      "discoveryUrl": "https://gatewayapi-sp.binbinapp.com/binbin/api/v1/vehicles/list",
+      "binbinAppArea": "16"
+    },
+    {
+      "id": "binbin_tr_antalya",
+      "provider": "binbin",
+      "city": "Antalya",
+      "center": [
+        36.88414,
+        30.70563
+      ],
+      "bounds": {
+        "south": 36.83465,
+        "north": 36.94623,
+        "west": 30.5839,
+        "east": 30.88775
+      },
+      "timeZone": "Europe/Istanbul",
+      "discoveryUrl": "https://gatewayapi-sp.binbinapp.com/binbin/api/v1/vehicles/list",
+      "binbinAppArea": "5"
+    },
+    {
+      "id": "binbin_tr_izmir",
+      "provider": "binbin",
+      "city": "İzmir",
+      "center": [
+        38.41885,
+        27.12872
+      ],
+      "bounds": {
+        "south": 38.36482,
+        "north": 38.4841,
+        "west": 27.03696,
+        "east": 27.24384
+      },
+      "timeZone": "Europe/Istanbul",
+      "discoveryUrl": "https://gatewayapi-sp.binbinapp.com/binbin/api/v1/vehicles/list",
+      "binbinAppArea": "11"
+    },
+    {
+      "id": "binbin_tr_samsun",
+      "provider": "binbin",
+      "city": "Samsun",
+      "center": [
+        41.28667,
+        36.33
+      ],
+      "bounds": {
+        "south": 41.26071,
+        "north": 41.39424,
+        "west": 36.20146,
+        "east": 36.37265
+      },
+      "timeZone": "Europe/Istanbul",
+      "discoveryUrl": "https://gatewayapi-sp.binbinapp.com/binbin/api/v1/vehicles/list",
+      "binbinAppArea": "4"
+    },
+    {
+      "id": "binbin_tr_konya",
+      "provider": "binbin",
+      "city": "Konya",
+      "center": [
+        37.87135,
+        32.48464
+      ],
+      "bounds": {
+        "south": 37.84635,
+        "north": 38.03728,
+        "west": 32.43842,
+        "east": 32.5375
+      },
+      "timeZone": "Europe/Istanbul",
+      "discoveryUrl": "https://gatewayapi-sp.binbinapp.com/binbin/api/v1/vehicles/list",
+      "binbinAppArea": "2"
+    },
+    {
+      "id": "binbin_tr_eskisehir",
+      "provider": "binbin",
+      "city": "Eskişehir",
+      "center": [
+        39.77667,
+        30.52056
+      ],
+      "bounds": {
+        "south": 39.74038,
+        "north": 39.80315,
+        "west": 30.43542,
+        "east": 30.55629
+      },
+      "timeZone": "Europe/Istanbul",
+      "discoveryUrl": "https://gatewayapi-sp.binbinapp.com/binbin/api/v1/vehicles/list",
+      "binbinAppArea": "9"
+    },
+    {
+      "id": "binbin_tr_adana",
+      "provider": "binbin",
+      "city": "Adana",
+      "center": [
+        37.03382,
+        35.30137
+      ],
+      "bounds": {
+        "south": 36.99224,
+        "north": 37.06665,
+        "west": 35.2382,
+        "east": 35.37584
+      },
+      "timeZone": "Europe/Istanbul",
+      "discoveryUrl": "https://gatewayapi-sp.binbinapp.com/binbin/api/v1/vehicles/list",
+      "binbinAppArea": "24"
+    },
+    {
+      "id": "binbin_tr_bursa",
+      "provider": "binbin",
+      "city": "Bursa",
+      "center": [
+        40.19559,
+        29.06013
+      ],
+      "bounds": {
+        "south": 40.1802,
+        "north": 40.26635,
+        "west": 28.825,
+        "east": 29.07401
+      },
+      "timeZone": "Europe/Istanbul",
+      "discoveryUrl": "https://gatewayapi-sp.binbinapp.com/binbin/api/v1/vehicles/list",
+      "binbinAppArea": "28"
+    },
+    {
+      "id": "binbin_tr_kocaeli",
+      "provider": "binbin",
+      "city": "Kocaeli",
+      "aliases": [
+        "İzmit"
+      ],
+      "center": [
+        40.76543,
+        29.94081
+      ],
+      "bounds": {
+        "south": 40.70145,
+        "north": 40.78516,
+        "west": 29.78391,
+        "east": 30.03083
+      },
+      "timeZone": "Europe/Istanbul",
+      "discoveryUrl": "https://gatewayapi-sp.binbinapp.com/binbin/api/v1/vehicles/list",
+      "binbinAppArea": "14"
+    },
+    {
+      "id": "binbin_tr_alanya",
+      "provider": "binbin",
+      "city": "Alanya",
+      "center": [
+        36.54375,
+        31.99982
+      ],
+      "bounds": {
+        "south": 36.46754,
+        "north": 36.56011,
+        "west": 31.96715,
+        "east": 32.12278
+      },
+      "timeZone": "Europe/Istanbul",
+      "discoveryUrl": "https://gatewayapi-sp.binbinapp.com/binbin/api/v1/vehicles/list",
+      "binbinAppArea": "22"
+    },
+    {
+      "id": "binbin_tr_sakarya",
+      "provider": "binbin",
+      "city": "Sakarya",
+      "aliases": [
+        "Adapazarı"
+      ],
+      "center": [
+        40.78056,
+        30.40333
+      ],
+      "bounds": {
+        "south": 40.73457,
+        "north": 40.81613,
+        "west": 30.32067,
+        "east": 30.43402
+      },
+      "timeZone": "Europe/Istanbul",
+      "discoveryUrl": "https://gatewayapi-sp.binbinapp.com/binbin/api/v1/vehicles/list",
+      "binbinAppArea": "12"
+    },
+    {
+      "id": "binbin_tr_gaziantep",
+      "provider": "binbin",
+      "city": "Gaziantep",
+      "center": [
+        37.05964,
+        37.33749
+      ],
+      "bounds": {
+        "south": 37.02191,
+        "north": 37.09106,
+        "west": 37.30337,
+        "east": 37.38447
+      },
+      "timeZone": "Europe/Istanbul",
+      "discoveryUrl": "https://gatewayapi-sp.binbinapp.com/binbin/api/v1/vehicles/list",
+      "binbinAppArea": "33"
+    }
+  ]
+}

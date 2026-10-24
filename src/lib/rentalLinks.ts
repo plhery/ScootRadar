@@ -123,6 +123,11 @@ const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
     schemes: [],
     httpsHosts: ['joltscooters.co.nz'],
   },
+  // BinBin's map links no scooter; its app claims binbin.tech.
+  binbin: {
+    schemes: [],
+    httpsHosts: ['binbin.tech'],
+  },
 };
 
 // Links that open an operator's app elsewhere than on a scooter. Bird's and Spin's feeds give

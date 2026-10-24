@@ -39,6 +39,7 @@ const PROVIDER_DEFINITIONS = {
   whoosh: { name: "Whoosh", color: "#ff6548", initial: "W", app: { link: "https://wsh.bike/", appStoreId: 1418412616 } },
   move: { name: "MoVe", color: "#8a7400", initial: "M", app: { link: "https://move-mobility.app.link/", appStoreId: 1632973735 } },
   zippy: { name: "Zippy", color: "#da1212", initial: "Z", app: { link: "https://zippyride.app.link/", appStoreId: 6752651073 } },
+  binbin: { name: "BinBin", color: "#00c4d7", initial: "Bb", app: { link: "https://binbin.tech/", appStoreId: 1483635924 } },
 } as const;
 
 export type ProviderKey = keyof typeof PROVIDER_DEFINITIONS;
@@ -60,6 +61,7 @@ const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: str
   whoosh: {"prefixes":["whoosh_"]},
   naolib: {"prefixes":["naolib"]},
   zippy: {"prefixes":["zippy_"]},
+  binbin: {"prefixes":["binbin"]},
   beryl: {"prefixes":["beryl"]},
   hoppy: {"prefixes":["hoppy"]},
   saham: {"prefixes":["saham"]},

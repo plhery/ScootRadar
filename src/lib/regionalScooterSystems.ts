@@ -61,6 +61,11 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   /** Local views assigned to this independently refreshed part of the service area. */
   limeMapTiles?: MapBounds[];
   limeAppRegion?: string;
+  /**
+   * BinBin's guest map: the id of its service area in data/binbin-areas.json, which the Node cache
+   * sweeps ten nearest scooters at a time.
+   */
+  binbinAppArea?: string;
   /** Published subregions of a shared feed; fetched once, routed per city. */
   areas?: ScooterServiceArea[];
   /**
@@ -87,7 +92,8 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
 export const REGIONAL_SCOOTER_SYSTEMS = CATALOG_SYSTEMS as RegionalScooterSystem[];
 
 export function isAppMapSystem(system: RegionalScooterSystem) {
-  return Boolean(system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount || system.luupAppCities || system.jetAppMap || system.whooshAppRegion);
+  return Boolean(system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount || system.luupAppCities ||
+    system.jetAppMap || system.whooshAppRegion || system.binbinAppArea);
 }
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {

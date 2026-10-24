@@ -1302,6 +1302,54 @@
           }
         ]
       }
+    },
+    {
+      "code": "TR",
+      "continent": "europe",
+      "catalog": "data/turkish-scooter-feeds.json",
+      "source": "turkey",
+      "names": {
+        "en": "Turkey",
+        "de": "Türkei",
+        "fr": "Turquie",
+        "it": "Turchia",
+        "nl": "Turkije",
+        "nb": "Tyrkia",
+        "pt": "Turquia",
+        "es": "Turquía",
+        "is": "Tyrkland"
+      },
+      "searchWords": [
+        "turkey",
+        "turkiye",
+        "turkei",
+        "turquie",
+        "turchia",
+        "turkije",
+        "tyrkia",
+        "turquia",
+        "tyrkland"
+      ],
+      "anchor": [
+        39.4,
+        31.0
+      ],
+      "anchorNote": "In Central Anatolia, south of Eskişehir: on land, amid BinBin's towns from İstanbul to Antalya and Gaziantep, away from the Black Sea and the Mediterranean.",
+      "featuredCities": [
+        "tr:İstanbul",
+        "tr:Antalya",
+        "tr:İzmir",
+        "tr:Samsun"
+      ],
+      "credits": {
+        "attribution": "Turkey: BinBin anonymous app map",
+        "links": [
+          {
+            "label": "TR: BinBin map",
+            "href": "https://www.binbin.tech/"
+          }
+        ]
+      }
     }
   ]
 }

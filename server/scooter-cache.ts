@@ -24,10 +24,14 @@ import { luupMapRequests, withLuupAppCollectors } from './luupApp';
 import { jetMapRequests, withJetAppCollectors } from './jetApp';
 import { whooshMapRequests, withWhooshAppCollectors } from './whooshApp';
 import { LIME_IDLE_INTERVAL_MS, limeMapRequests, withLimeAppCollectors } from './limeApp';
+import { binbinMapRequests, withBinbinAppCollectors } from './binbinApp';
 
 const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
   withDottAppCollectors, withVoiAppCollectors, withAtomAppCollectors, withLuupAppCollectors,
   withJetAppCollectors, withWhooshAppCollectors, withLimeAppCollectors,
+  // BinBin's sweeps start from where its scooters stood at the last one.
+  (current: CollectableScooterFeed[], systems: typeof REGIONAL_SCOOTER_SYSTEMS) =>
+    withBinbinAppCollectors(current, systems, id => records.get(id)?.vehicles),
 ].reduce((current, wrap) => wrap(current, REGIONAL_SCOOTER_SYSTEMS), feeds);
 
 initErrorReporting();
@@ -84,7 +88,8 @@ const holdStrays = createStrayHold((id, now) => scheduler.fastSince(id, now) ===
 const countedAt = (now: number) => (feed: FeedSnapshot) => feedState(feed, now, cadence) !== 'expired';
 const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
   cadenceModes: now => scheduler.modes(now), upstreamRequests: () => ({
-    status: upstreamJsonCache.requests.status + dottMapRequests.status + voiMapRequests.status + atomMapRequests.status + luupMapRequests.status + jetMapRequests.status + whooshMapRequests.status + limeMapRequests.status,
+    status: upstreamJsonCache.requests.status + dottMapRequests.status + voiMapRequests.status + atomMapRequests.status + luupMapRequests.status + jetMapRequests.status + whooshMapRequests.status + limeMapRequests.status +
+      binbinMapRequests.status,
     metadata: upstreamJsonCache.requests.metadata + voiMapRequests.metadata + atomMapRequests.metadata + luupMapRequests.metadata + whooshMapRequests.metadata + limeMapRequests.metadata,
   }),
   planRefreshes: () => planRefreshCounts,

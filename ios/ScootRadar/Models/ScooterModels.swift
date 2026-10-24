@@ -430,6 +430,11 @@ enum ScooterRentalLinkPolicy {
             schemes: [],
             httpsHosts: ["joltscooters.co.nz"]
         ),
+        // BinBin's map links no scooter; its app claims binbin.tech.
+        "binbin": ProviderPolicy(
+            schemes: [],
+            httpsHosts: ["binbin.tech"]
+        ),
         "publibike": ProviderPolicy(
             schemes: ["publibike", "velospot"],
             httpsHosts: ["publibike.ch", "velospot.info"]

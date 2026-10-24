@@ -34,6 +34,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     case whoosh
     case move
     case zippy
+    case binbin
 
     var id: String { rawValue }
 
@@ -69,6 +70,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .whoosh: "Whoosh"
         case .move: "MoVe"
         case .zippy: "Zippy"
+        case .binbin: "BinBin"
         }
     }
 
@@ -104,6 +106,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .whoosh: "W"
         case .move: "M"
         case .zippy: "Z"
+        case .binbin: "Bb"
         }
     }
 
@@ -124,6 +127,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .whoosh: OperatorApp(link: URL(string: "https://wsh.bike/")!, appStore: URL(string: "https://apps.apple.com/app/id1418412616")!)
         case .move: OperatorApp(link: URL(string: "https://move-mobility.app.link/")!, appStore: URL(string: "https://apps.apple.com/app/id1632973735")!)
         case .zippy: OperatorApp(link: URL(string: "https://zippyride.app.link/")!, appStore: URL(string: "https://apps.apple.com/app/id6752651073")!)
+        case .binbin: OperatorApp(link: URL(string: "https://binbin.tech/")!, appStore: URL(string: "https://apps.apple.com/app/id1483635924")!)
         default: nil
         }
     }
@@ -162,6 +166,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .whoosh: UIColor(red: 1.000000, green: 0.396078, blue: 0.282353, alpha: 1)
         case .move: UIColor(red: 0.541176, green: 0.454902, blue: 0.000000, alpha: 1)
         case .zippy: UIColor(red: 0.854902, green: 0.070588, blue: 0.070588, alpha: 1)
+        case .binbin: UIColor(red: 0.000000, green: 0.768627, blue: 0.843137, alpha: 1)
         }
     }
 
@@ -175,6 +180,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         (.whoosh, [], ["whoosh_"]),
         (.naolib, [], ["naolib"]),
         (.zippy, [], ["zippy_"]),
+        (.binbin, [], ["binbin"]),
         (.beryl, [], ["beryl"]),
         (.hoppy, [], ["hoppy"]),
         (.saham, [], ["saham"]),
@@ -1138,6 +1144,19 @@ enum ScooterProviderCoverage {
         (.lime, GeoBounds(south: -27.33050999, west: 153.04939717, north: -27.30356065, east: 153.09488147)),
         (.lime, GeoBounds(south: -27.31703532, west: 153.04939717, north: -27.28388, east: 153.07972004)),
         (.lime, GeoBounds(south: -27.29008598, west: 153.06455861, north: -27.28388, east: 153.07972004)),
+        (.binbin, GeoBounds(south: 40.95108, west: 28.57288, north: 41.11293, east: 29.0613)),
+        (.binbin, GeoBounds(south: 40.75167, west: 29.00335, north: 41.06423, east: 29.4595)),
+        (.binbin, GeoBounds(south: 36.83465, west: 30.5839, north: 36.94623, east: 30.88775)),
+        (.binbin, GeoBounds(south: 38.36482, west: 27.03696, north: 38.4841, east: 27.24384)),
+        (.binbin, GeoBounds(south: 41.26071, west: 36.20146, north: 41.39424, east: 36.37265)),
+        (.binbin, GeoBounds(south: 37.84635, west: 32.43842, north: 38.03728, east: 32.5375)),
+        (.binbin, GeoBounds(south: 39.74038, west: 30.43542, north: 39.80315, east: 30.55629)),
+        (.binbin, GeoBounds(south: 36.99224, west: 35.2382, north: 37.06665, east: 35.37584)),
+        (.binbin, GeoBounds(south: 40.1802, west: 28.825, north: 40.26635, east: 29.07401)),
+        (.binbin, GeoBounds(south: 40.70145, west: 29.78391, north: 40.78516, east: 30.03083)),
+        (.binbin, GeoBounds(south: 36.46754, west: 31.96715, north: 36.56011, east: 32.12278)),
+        (.binbin, GeoBounds(south: 40.73457, west: 30.32067, north: 40.81613, east: 30.43402)),
+        (.binbin, GeoBounds(south: 37.02191, west: 37.30337, north: 37.09106, east: 37.38447)),
     ]
 
     /// The providers the Swiss open data names; the others run scooters only abroad.
@@ -1863,12 +1882,24 @@ enum ScooterCityCatalog {
         ScooterCity(id: "cz:České Budějovice", name: "České Budějovice", countryCode: "CZ", center: GeoPoint(latitude: 48.97447, longitude: 14.47434), bounds: GeoBounds(south: 48.94881, west: 14.43596, north: 49.00077, east: 14.50798)),
         ScooterCity(id: "qa:Doha", name: "Doha", countryCode: "QA", center: GeoPoint(latitude: 25.28545, longitude: 51.53096), bounds: GeoBounds(south: 25.11408, west: 51.43133, north: 25.39361, east: 51.60065)),
         ScooterCity(id: "au:Brisbane", name: "Brisbane", countryCode: "AU", center: GeoPoint(latitude: -27.46794, longitude: 153.02809), bounds: GeoBounds(south: -27.53263, west: 152.97359, north: -27.28388, east: 153.19579)),
+        ScooterCity(id: "tr:İstanbul", name: "İstanbul", countryCode: "TR", center: GeoPoint(latitude: 41.00824, longitude: 28.97836), bounds: GeoBounds(south: 40.75167, west: 28.57288, north: 41.11293, east: 29.4595)),
+        ScooterCity(id: "tr:Antalya", name: "Antalya", countryCode: "TR", center: GeoPoint(latitude: 36.88414, longitude: 30.70563), bounds: GeoBounds(south: 36.83465, west: 30.5839, north: 36.94623, east: 30.88775)),
+        ScooterCity(id: "tr:İzmir", name: "İzmir", countryCode: "TR", center: GeoPoint(latitude: 38.41885, longitude: 27.12872), bounds: GeoBounds(south: 38.36482, west: 27.03696, north: 38.4841, east: 27.24384)),
+        ScooterCity(id: "tr:Samsun", name: "Samsun", countryCode: "TR", center: GeoPoint(latitude: 41.28667, longitude: 36.33), bounds: GeoBounds(south: 41.26071, west: 36.20146, north: 41.39424, east: 36.37265)),
+        ScooterCity(id: "tr:Konya", name: "Konya", countryCode: "TR", center: GeoPoint(latitude: 37.87135, longitude: 32.48464), bounds: GeoBounds(south: 37.84635, west: 32.43842, north: 38.03728, east: 32.5375)),
+        ScooterCity(id: "tr:Eskişehir", name: "Eskişehir", countryCode: "TR", center: GeoPoint(latitude: 39.77667, longitude: 30.52056), bounds: GeoBounds(south: 39.74038, west: 30.43542, north: 39.80315, east: 30.55629)),
+        ScooterCity(id: "tr:Adana", name: "Adana", countryCode: "TR", center: GeoPoint(latitude: 37.03382, longitude: 35.30137), bounds: GeoBounds(south: 36.99224, west: 35.2382, north: 37.06665, east: 35.37584)),
+        ScooterCity(id: "tr:Bursa", name: "Bursa", countryCode: "TR", center: GeoPoint(latitude: 40.19559, longitude: 29.06013), bounds: GeoBounds(south: 40.1802, west: 28.825, north: 40.26635, east: 29.07401)),
+        ScooterCity(id: "tr:Kocaeli", name: "Kocaeli", countryCode: "TR", center: GeoPoint(latitude: 40.76543, longitude: 29.94081), bounds: GeoBounds(south: 40.70145, west: 29.78391, north: 40.78516, east: 30.03083)),
+        ScooterCity(id: "tr:Alanya", name: "Alanya", countryCode: "TR", center: GeoPoint(latitude: 36.54375, longitude: 31.99982), bounds: GeoBounds(south: 36.46754, west: 31.96715, north: 36.56011, east: 32.12278)),
+        ScooterCity(id: "tr:Sakarya", name: "Sakarya", countryCode: "TR", center: GeoPoint(latitude: 40.78056, longitude: 30.40333), bounds: GeoBounds(south: 40.73457, west: 30.32067, north: 40.81613, east: 30.43402)),
+        ScooterCity(id: "tr:Gaziantep", name: "Gaziantep", countryCode: "TR", center: GeoPoint(latitude: 37.05964, longitude: 37.33749), bounds: GeoBounds(south: 37.02191, west: 37.30337, north: 37.09106, east: 37.38447)),
     ]
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 682
-    static let countryCount = 43
+    static let cityCount = 694
+    static let countryCount = 44
 
     /// Cities by distance from the point to their centre, nearest first.
     static func nearest(to point: GeoPoint, count: Int) -> [ScooterCityDistance] {
@@ -2222,6 +2253,9 @@ enum ScooterCountryCatalog {
         "cz": (49.8, 15.5),
         "qa": (25.3, 51.2),
         "au": (-25, 134),
+        // In Central Anatolia, south of Eskişehir: on land, amid BinBin's towns from İstanbul to
+        // Antalya and Gaziantep, away from the Black Sea and the Mediterranean.
+        "tr": (39.4, 31),
     ]
 
     /// The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences.
@@ -2250,6 +2284,7 @@ enum ScooterCountryCatalog {
         ("ZA: Zippy rider map", "https://zippyride.app.link/"),
         ("JP/CL/MX/RO/CZ/QA/AU: Lime map", "https://www.li.me/"),
         ("JP/CL/MX/RO/CZ/QA/AU: GeoNames · CC BY 4.0", "https://www.geonames.org/about.html"),
+        ("TR: BinBin map", "https://www.binbin.tech/"),
     ]
 
     /// The countries whose totals, zoomed out, are their states' or provinces', and those by code.

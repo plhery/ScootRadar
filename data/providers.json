@@ -262,5 +262,20 @@
       "link": "https://zippyride.app.link/",
       "appStoreId": 6752651073
     }
+  },
+  {
+    "key": "binbin",
+    "name": "BinBin",
+    "color": "#00c4d7",
+    "initial": "Bb",
+    "systemIds": {
+      "prefixes": [
+        "binbin"
+      ]
+    },
+    "app": {
+      "link": "https://binbin.tech/",
+      "appStoreId": 1483635924
+    }
   }
 ]

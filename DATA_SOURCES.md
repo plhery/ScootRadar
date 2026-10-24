@@ -291,6 +291,22 @@ cities can refresh more slowly than once a minute. See the
 [protocol, coverage and session guide](docs/atom-app-map.md). Other ATOM
 brands require their own verified app/account access.
 
+## BinBin guest app map
+
+Since 24 October 2026, BinBin's scooters in 12 Turkish cities come from the map
+its official app shows riders who have not signed in. The user authorized it
+that day. No rider account, token or device id is used. Each reply lists the
+ten scooters nearest a point, with their distances, so the Node cache sweeps
+each of BinBin's 13 service areas until every point of it lies within a reply
+that listed every scooter that near it, planning each sweep from the positions
+of the last. One client serves every area, at most four requests a second; a
+sweep that fails keeps the area's last snapshot under the usual expiry rules.
+Only electric scooters inside the area's outline are published, with their
+battery charge; the list gives no range, price or position time, so the
+observation time is the sweep's start. The outlines are BinBin's public
+service areas, in `data/binbin-areas.json`. See [the request, the proof of
+completeness and the load](docs/binbin-app-map.md).
+
 ## Address data
 
 Supported city names and aliases are found in the local, reviewed
@@ -905,3 +921,19 @@ Hopp links its privacy policy, not a licence. The map's credits name it under
 the GBFS line. See the
 [coverage audit](docs/caribbean-netherlands-scooter-feeds.md) for the system,
 the town, the rules, the gaps and the recheck command.
+
+## Turkey
+
+The reviewed catalog lives in `data/turkish-scooter-feeds.json`: 13 systems,
+BinBin's service areas in 12 cities, read from its guest app map (see
+[BinBin guest app map](#binbin-guest-app-map)). Turkey has no public scooter
+feed: none from BinBin, Martı or Hop, none in
+[MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
+and İstanbul's, İzmir's and Konya's open-data portals hold parking and
+routes, not scooters.
+
+BinBin publishes no data licence. The map's credits link its site as "TR:
+BinBin map", and the API names the source "Turkey: BinBin anonymous app map".
+See the [coverage audit](docs/turkish-scooter-feeds.md) for the systems, the
+town names, the gaps and the recheck command, and
+[the app investigation](docs/turkish-app-maps.md) for Martı and Hop.

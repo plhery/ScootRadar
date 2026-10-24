@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
-  catalogSystems, cityKm, countryCreditLinks, curfewZoneProblem, scooterCities, seasonalProblem, swiftCityPauses, swiftCountries,
+  binbinAreasProblem, catalogSystems, cityKm, countryCreditLinks, curfewZoneProblem, scooterCities, seasonalProblem, swiftCityPauses, swiftCountries,
   timeZoneProblem, townOutlinesProblem, typescriptCatalogs, typescriptCountries, validateCityWidths, validateCountries,
 } from './country-catalog.mjs';
 
@@ -92,7 +92,8 @@ describe('the countries of data/countries.json', () => {
       'DE/SE: Qick map',
       'DE/AT/IT/ES/PL/HU/GR/FI: Dott map',
       'DE/AT/IT/NO/GB/DK/SE/FI: Voi map',
-      'CH/FR/PT/ES/PL/FI/UA: OpenStreetMap boundaries · ODbL', 'BY: Whoosh map', 'RO/CZ: Lime map', 'RO/CZ: GeoNames · CC BY 4.0', 'CA: City of Toronto · OGL Toronto',
+      'CH/FR/PT/ES/PL/FI/UA: OpenStreetMap boundaries · ODbL', 'BY: Whoosh map', 'RO/CZ: Lime map', 'RO/CZ: GeoNames · CC BY 4.0', 'TR: BinBin map',
+      'CA: City of Toronto · OGL Toronto',
     ]);
   });
 
@@ -328,6 +329,27 @@ describe('the countries of data/countries.json', () => {
     expect(problem(outline('il:A', square(34.8, 34.9)))).toBe('data/town-outlines.json: the outline of il:A misses the centre of il:A');
     const real = readJson('data/town-outlines.json');
     expect(townOutlinesProblem(real, scooterCities(swissAreas, catalogSystems(countries.countries, readJson), countries.countries))).toBeNull();
+  });
+
+  it('sweeps each BinBin area for one BinBin system, within its bounds and around its centre', () => {
+    const ring = [[37, 30], [37.1, 30], [37.1, 30.1], [37, 30.1]];
+    const system = { id: 'binbin_tr_a', provider: 'binbin', binbinAppArea: '1', center: [37.05, 30.05],
+      bounds: { south: 37, west: 30, north: 37.1, east: 30.1 } };
+    const areas = { areas: [{ id: '1', title: 'A', rings: [ring] }] };
+    expect(binbinAreasProblem([system], areas)).toBeNull();
+    expect(binbinAreasProblem([{ ...system, binbinAppArea: undefined }], areas))
+      .toBe('binbin_tr_a: a BinBin system, and only one, names its binbinAppArea');
+    expect(binbinAreasProblem([system, { ...system, id: 'voi_x', provider: 'voi' }], areas))
+      .toBe('voi_x: a BinBin system, and only one, names its binbinAppArea');
+    expect(binbinAreasProblem([{ ...system, binbinAppArea: '2' }], areas)).toBe('binbin_tr_a: data/binbin-areas.json has no area 2');
+    expect(binbinAreasProblem([system, { ...system, id: 'binbin_tr_b' }], areas))
+      .toBe('binbin_tr_b: another system sweeps BinBin\'s area 1');
+    expect(binbinAreasProblem([{ ...system, bounds: { ...system.bounds, north: 37.09 } }], areas))
+      .toBe('binbin_tr_a: the outline of BinBin\'s area 1 reaches beyond its bounds');
+    expect(binbinAreasProblem([{ ...system, center: [37.05, 30.2] }], areas))
+      .toBe('binbin_tr_a: its centre is outside the outline of BinBin\'s area 1');
+    expect(binbinAreasProblem([], areas)).toBe('data/binbin-areas.json: no system sweeps 1');
+    expect(binbinAreasProblem(catalogSystems(countries.countries, readJson), readJson('data/binbin-areas.json'))).toBeNull();
   });
 
   it('keeps each system in the country of its catalog', () => {

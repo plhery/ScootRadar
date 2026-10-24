@@ -3,13 +3,17 @@
 Checked 24 October 2026 by statically inspecting the publisher-signed Android
 apps and making bounded, signed-out map requests. BinBin has a working guest
 map, verified in Istanbul, Antalya and Eskişehir and from Netcup. Its replies
-are truncated local selections, so they cannot yet supply complete city
-totals. Martı and Hop have identifiable map routes, but neither returned
-vehicles without a rider session in these checks.
+are truncated local selections, ten scooters at most. Martı and Hop have
+identifiable map routes, but neither returned vehicles without a rider
+session in these checks.
 
-No production collector or country entry was added. The official apps were
-also checked while signed out on an Android 15 emulator. No rider login,
-SMS, registration or vehicle action was performed.
+The same day, BinBin's guest map was added to the cache: each reply's
+distances bound what it leaves out, so sweeps prove each service area
+complete. See [the collector](binbin-app-map.md) and
+[the country guide](turkish-scooter-feeds.md). No collector was added for
+Martı or Hop. The official apps were also checked while signed out on an
+Android 15 emulator. No rider login, SMS, registration or vehicle action was
+performed.
 
 ## App provenance
 
@@ -94,12 +98,12 @@ unverified. `distance` is distance from the search point, not riding range.
 is unverified, and some values were from the preceding day. The sampled
 list provided no ride price.
 
-Before integration, establish a collection strategy with an acceptable
-request budget and measured coverage, availability semantics and freshness.
-A deduplicated grid might improve coverage, but these checks do not prove
-that it can produce a complete fleet snapshot. The operator's
-[locations page](https://www.binbin.tech/lokasyonlar/) also lists Balkan
-markets; their current app data has not been checked here.
+The ten are the nearest, nearest first, so a reply lists every scooter
+nearer than its tenth: [the collector](binbin-app-map.md#proving-an-area-complete)
+sweeps each service area until every point of it lies within such a reply. It
+shows every scooter the list gives, whatever its status, as the app does. The
+operator's [locations page](https://www.binbin.tech/lokasyonlar/) also lists
+Balkan markets, which are in the same geofences but not swept.
 
 ## Martı: map and phone flow traced, access still blocked
 

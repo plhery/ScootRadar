@@ -344,6 +344,36 @@ export function townOutlinesProblem({ towns }, cities) {
 }
 
 /**
+ * Why the BinBin service areas are wrong, or null. The cache sweeps an area's outline from
+ * data/binbin-areas.json for the BinBin system naming it as its binbinAppArea, and keeps the
+ * scooters inside: each BinBin system names one, each area is named once, and its outline lies
+ * within the system's bounds, around its centre.
+ */
+export function binbinAreasProblem(systems, { areas }) {
+  const byId = new Map(areas.map(area => [area.id, area]));
+  const named = new Set();
+  for (const system of systems) {
+    if ((system.provider === 'binbin') !== (system.binbinAppArea !== undefined)) {
+      return `${system.id}: a BinBin system, and only one, names its binbinAppArea`;
+    }
+    if (system.binbinAppArea === undefined) continue;
+    const area = byId.get(system.binbinAppArea);
+    if (!area) return `${system.id}: data/binbin-areas.json has no area ${system.binbinAppArea}`;
+    if (named.has(area.id)) return `${system.id}: another system sweeps BinBin's area ${area.id}`;
+    named.add(area.id);
+    const { south, west, north, east } = system.bounds;
+    if (!area.rings.flat().every(([lat, lng]) => lat >= south && lat <= north && lng >= west && lng <= east)) {
+      return `${system.id}: the outline of BinBin's area ${area.id} reaches beyond its bounds`;
+    }
+    if (!area.rings.some(ring => ringHolds(ring, system.center))) {
+      return `${system.id}: its centre is outside the outline of BinBin's area ${area.id}`;
+    }
+  }
+  const unnamed = areas.filter(area => !named.has(area.id)).map(area => area.id);
+  return unnamed.length ? `data/binbin-areas.json: no system sweeps ${unnamed.join(', ')}` : null;
+}
+
+/**
  * One line per continent for the GBFS feeds credited together, "DE/IT/…/UA: Dott, Bolt, …",
  * then each country's own links, in the order of data/countries.json. Links that countries
  * share are credited once, where the last gives it: "FR/…/IL: OpenStreetMap boundaries · ODbL".

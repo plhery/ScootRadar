@@ -1,7 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import {
-  catalogSystems, curfewZoneProblem, scooterCities, swiftCityPauses, swiftCountries, townOutlinesProblem, typescriptCatalogs,
+  binbinAreasProblem, catalogSystems, curfewZoneProblem, scooterCities, swiftCityPauses, swiftCountries, townOutlinesProblem, typescriptCatalogs,
   typescriptCountries, validateCountries,
 } from './country-catalog.mjs';
 
@@ -46,7 +46,9 @@ function validateCatalog() {
     // The operator's app, for scooters whose feed gives no link: a universal link the app claims,
     // whose page sends a phone without the app to its store, and the app's App Store id. Spin's is
     // the exception: no Spin host is claimed, so its link is its site, whose page links both stores,
-    // and the iPhone opens its App Store page (the user's choice, 23 October 2026).
+    // and the iPhone opens its App Store page (the user's choice, 23 October 2026). BinBin's app
+    // claims all of binbin.tech on Android, and on the iPhone only paths below its root, as /scooter:
+    // there its link opens the App Store page too.
     if (provider.app !== undefined && !(
       /^https:\/\/[a-z0-9.-]+\/$/.test(provider.app.link) && Number.isInteger(provider.app.appStoreId) && provider.app.appStoreId > 0
     )) {
@@ -381,6 +383,9 @@ validateCountries({ landingFirst, countries }, readJson, scooterCities(swissArea
 // Read by src/lib/townOutlines.ts as it is; the apps have no copy.
 const outlineProblem = townOutlinesProblem(readJson('data/town-outlines.json'), scooterCities(swissAreas, regionalSystems, countries));
 if (outlineProblem) throw new Error(outlineProblem);
+// Read by server/binbinApp.ts as it is.
+const binbinProblem = binbinAreasProblem(regionalSystems, readJson('data/binbin-areas.json'));
+if (binbinProblem) throw new Error(binbinProblem);
 writeOrCheck(typescriptPath, typescriptCatalog());
 writeOrCheck(countriesPath, typescriptCountries({ landingFirst, countries }));
 writeOrCheck(catalogsPath, typescriptCatalogs(countries));
