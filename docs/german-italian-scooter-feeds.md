@@ -465,6 +465,13 @@ Bolt and Lime publish no Italian feed.
   out at most six of a system's scooters.
 - **Zones and prices:** each feed has its geofencing zones (Köln 406) and
   pricing plans: in Köln no unlock fee and €0.30 a minute.
+- **Parking spots:** each spot has a zone of its own, the size of the spot,
+  with `station_parking` true, ahead of the operating area, whose rule has it
+  false. Read as the spot's rule, that zone made every spot required: all 39
+  in Duisburg on 25 October 2026. A zone within a spot's own area is now
+  passed over, and the street around the spot decides. A spot inside a
+  no-parking zone, where a ride can end only at a spot, is required: 4 of
+  Duisburg's 39 and 167 of Köln's 178 (all 178 before).
 - **Licence:** Voi Technology Germany GmbH licenses the data under
   [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). The map's
   credits say "Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0,

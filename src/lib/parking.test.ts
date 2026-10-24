@@ -52,6 +52,21 @@ describe('published scooter parking', () => {
     expect(normalize([station], { data: { global_rules: [{ vehicle_type_ids: ['bike'], station_parking: true }] } })[0].mandatory).toBe(false);
     expect(normalize([station], { data: { global_rules: [{ vehicle_type_ids: ['scooter'], station_parking: true }] } })[0].mandatory).toBe(true);
   });
+  it("reads a bay's rule from the street around it, not from a zone that is only the bay", () => {
+    // Voi Duisburg (25 Oct 2026): a zone per bay, the bay's own area, with station_parking true.
+    const around = (d: number) => [[4.85 - d, 45.75 - d], [4.85 + d, 45.75 - d], [4.85 + d, 45.75 + d], [4.85 - d, 45.75 + d], [4.85 - d, 45.75 - d]];
+    const bay = { ...station, station_area: { type: 'MultiPolygon', coordinates: [[around(0.0001)]] } };
+    const rules = (station_parking: boolean, ride_end_allowed = true) => ({ rules: [{ ride_end_allowed, station_parking }] });
+    const ownZone = { geometry: { type: 'MultiPolygon', coordinates: [[around(0.0001000004)]] }, properties: rules(true) };
+    const noParking = { geometry: { type: 'Polygon', coordinates: [around(0.001)] }, properties: rules(true, false) };
+    const freeFloating = { geometry: { type: 'MultiPolygon', coordinates: [[square]] }, properties: rules(false) };
+    const fencing = (...features: object[]) => ({ data: { geofencing_zones: { features } } }) as ParkingZonesFeed;
+    expect(normalize([bay], fencing(ownZone, freeFloating))[0].mandatory).toBe(false);
+    expect(normalize([bay], fencing(ownZone, noParking, freeFloating))[0].mandatory).toBe(true);
+    expect(normalize([bay], fencing(ownZone))[0].mandatory).toBe(false);
+    expect(normalize([bay], fencing(noParking, freeFloating))[0].mandatory).toBe(true);
+    expect(normalize([station], fencing(ownZone, freeFloating))[0].mandatory).toBe(true);
+  });
   it('ignores expired and future mandatory zones', () => {
     for (const time of [{ end: 1 }, { start: '2099-01-01T00:00:00Z' }]) {
       expect(normalize([station], { data: { geofencing_zones: { features: [{ ...zone,

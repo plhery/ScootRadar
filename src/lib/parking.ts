@@ -1,5 +1,5 @@
 import { serviceAreas, type RegionalScooterSystem } from './regionalScooterSystems';
-import type { ParkingLocation } from './types';
+import type { MapBounds, ParkingLocation } from './types';
 import { boundsContainPoint } from './geo';
 import { isElectricScooter, type GbfsVehicleType } from './scooterTypes';
 
@@ -36,6 +36,19 @@ function polygons(geometry: Geometry): number[][][][] {
   return geometry?.type === 'Polygon' ? [geometry.coordinates as number[][][]]
     : geometry?.type === 'MultiPolygon' ? geometry.coordinates as number[][][][] : [];
 }
+function polygonBounds(parts: number[][][][]): MapBounds | undefined {
+  const points = parts.flat(2);
+  if (!points.length || points.some(point => point.length < 2 || !point.every(Number.isFinite))) return undefined;
+  const bounds = { west: Infinity, east: -Infinity, south: Infinity, north: -Infinity };
+  for (const [x, y] of points) { bounds.west = Math.min(bounds.west, x); bounds.east = Math.max(bounds.east, x);
+    bounds.south = Math.min(bounds.south, y); bounds.north = Math.max(bounds.north, y); }
+  return bounds;
+}
+// Within about a metre: the same shape can come at another precision.
+function boundsWithin(inner: MapBounds, outer: MapBounds, margin = 0.00001): boolean {
+  return inner.west >= outer.west - margin && inner.east <= outer.east + margin &&
+    inner.south >= outer.south - margin && inner.north <= outer.north + margin;
+}
 function timestamp(value: number | string | undefined, fallback: number) {
   return value === undefined ? fallback : typeof value === 'number' ? value * 1000 : Date.parse(value);
 }
@@ -67,12 +80,8 @@ export function normalizeParkingLocations(system: RegionalScooterSystem, types: 
   const zones = (geofencing.data?.geofencing_zones?.features ?? []).flatMap(zone => {
     if (timestamp(zone.properties?.start, -Infinity) > now || timestamp(zone.properties?.end, Infinity) <= now) return [];
     const parts = polygons(zone.geometry);
-    const points = parts.flat(2);
-    if (!points.length || points.some(point => point.length < 2 || !point.every(Number.isFinite))) return [];
-    const bounds = { west: Infinity, east: -Infinity, south: Infinity, north: -Infinity };
-    for (const [x, y] of points) { bounds.west = Math.min(bounds.west, x); bounds.east = Math.max(bounds.east, x);
-      bounds.south = Math.min(bounds.south, y); bounds.north = Math.max(bounds.north, y); }
-    return [{ zone, parts, bounds }];
+    const bounds = polygonBounds(parts);
+    return bounds ? [{ zone, parts, bounds }] : [];
   });
   const ruleFor = (rules: Rule[] | undefined, type: string) => rules?.find(rule => {
     const ids = rule.vehicle_type_ids ?? rule.vehicle_type_id;
@@ -90,11 +99,16 @@ export function normalizeParkingLocations(system: RegionalScooterSystem, types: 
       [station.vehicle_capacity, station.vehicle_type_capacity, station.vehicle_types_capacity, station.vehicle_docks_capacity]
         .every(capacity => hasRoomFor(capacity, type)));
     if (!allowedTypes.length) continue;
+    // A zone no larger than the station's own area is the station itself: Voi in NRW gives each
+    // bay one, with station_parking true. Whether the bay is the only place to stop is the rule of
+    // the street around it (25 Oct 2026: Duisburg's 39 bays were all required, in a free-floating area).
+    const area = station.station_area ? polygonBounds(polygons(station.station_area as Geometry)) : undefined;
     // GBFS rules are ordered: the first matching polygon/rule wins, including holes.
     const mandatory = system.stationParking === true || allowedTypes.every(type => {
       for (const entry of zones) {
         const rule = ruleFor(entry.zone.properties?.rules, type);
-        if (!rule || !boundsContainPoint(entry.bounds, station.lat!, station.lon!)) continue;
+        if (!rule || !boundsContainPoint(entry.bounds, station.lat!, station.lon!) ||
+          (area && boundsWithin(entry.bounds, area))) continue;
         if (entry.parts.some(part => part[0] && ringContains(part[0], station.lon!, station.lat!) &&
           !part.slice(1).some(hole => ringContains(hole, station.lon!, station.lat!)))) return rule.station_parking === true;
       }
