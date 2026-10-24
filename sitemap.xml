@@ -593,7 +593,7 @@
 <xhtml:link rel="alternate" hreflang="en" href="https://scootradar.com/guides/e-scooter-prices-switzerland" />
 <xhtml:link rel="alternate" hreflang="de" href="https://scootradar.com/de/ratgeber/e-trottinett-preise-schweiz" />
 <xhtml:link rel="alternate" hreflang="x-default" href="https://scootradar.com/guides/e-scooter-prices-switzerland" />
-<lastmod>2026-10-23T00:00:00.000Z</lastmod>
+<lastmod>2026-10-24T00:00:00.000Z</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
@@ -1449,6 +1449,12 @@
 </url>
 <url>
 <loc>https://scootradar.com/pt/guias/trotinetes-matosinhos</loc>
+<lastmod>2026-10-24T00:00:00.000Z</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
+<loc>https://scootradar.com/de/ratgeber/e-trottinett-biel</loc>
 <lastmod>2026-10-24T00:00:00.000Z</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
