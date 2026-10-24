@@ -167,6 +167,7 @@ import cherbourgFr from './fr/trottinette-electrique-cherbourg';
 import hamburgDe from './de/e-scooter-hamburg';
 import milanIt from './it/monopattini-sharing-milano';
 import londonEn from './en/e-scooters-london';
+import nurembergDe from './de/e-scooter-nuernberg';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -334,4 +335,5 @@ export const GUIDES: readonly Guide[] = [
   hamburgDe,
   milanIt,
   londonEn,
+  nurembergDe,
 ];
