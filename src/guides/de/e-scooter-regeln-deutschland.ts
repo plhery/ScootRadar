@@ -32,7 +32,7 @@ const guide: Guide = {
               ['Gehweg', 'Verboten, ausser mit «Elektrokleinstfahrzeuge frei», dann im Schritttempo', 'Auch «Radverkehr frei» gibt ihn frei, im Schritttempo'],
               ['Fussgängerzone', 'Verboten, ausser mit «Elektrokleinstfahrzeuge frei»', 'Auch mit «Radverkehr frei» erlaubt, im Schritttempo'],
               ['Radweg', 'Pflicht, wo es einen gibt, auch Radfahr- und Schutzstreifen', 'Pflicht wie für Fahrräder: wo ein blaues Radwegschild steht'],
-              ['Einbahnstrasse in Gegenrichtung', 'Erlaubt, wo «Radverkehr frei» sie für Radfahrende öffnet', 'Unverändert'],
+              ['Einbahnstrasse in Gegenrichtung', 'Bei «Radverkehr frei» widersprüchlich: Die StVO lässt dich mitfahren, die eKFV verlangt «Elektrokleinstfahrzeuge frei»', 'Erlaubt, wo «Radverkehr frei» sie öffnet'],
               ['Nebeneinander fahren', 'Verboten', 'Erlaubt, wenn niemand behindert wird'],
               ['Grünpfeil für Radfahrende', 'Gilt nicht für E-Scooter', 'Gilt auch für E-Scooter'],
             ],

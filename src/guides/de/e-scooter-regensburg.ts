@@ -74,7 +74,7 @@ const guide: Guide = {
             '**Radweg nehmen**, wo es einen gibt, auch wenn er für Radfahrer nicht vorgeschrieben ist, etwa am Hochweg, in der Puricellistrasse und an der Konrad-Adenauer-Allee. Gibt es einen Schutz- oder Radfahrstreifen, fährst du darauf, sonst auf der Fahrbahn, nie auf dem Gehweg.',
             '**Keine Fussgängerzone:** Die Zusatzschilder «Radfahrer frei» in der Altstadt erlauben nur Fahrräder.',
             '**Wege in Grünanlagen** sind in der Regel tabu: Sie sind als Fussweg mit «Radfahrer frei» oder als für Kraftfahrzeuge gesperrt beschildert.',
-            '**Einbahnstrassen**, die für Radfahrer in Gegenrichtung freigegeben sind, darfst du nach der Strassenverkehrs-Ordnung auch mit dem E-Scooter gegen die Fahrtrichtung fahren, auch wenn die Stadt auf ihrer Seite noch das Gegenteil schreibt.',
+            '**Einbahnstrassen**, die für Radfahrer in Gegenrichtung freigegeben sind: Nach der Strassenverkehrs-Ordnung darfst du dort auch mit dem E-Scooter gegen die Fahrtrichtung fahren, die E-Scooter-Verordnung verlangt dafür bis Ende Februar 2027 aber das Schild «Elektrokleinstfahrzeuge frei», und die Stadt schreibt auf ihrer Seite, es sei verboten. Ab 1. März 2027 ist es eindeutig erlaubt.',
             '**Wohnverkehrsstrassen** wie die Gesandtenstrasse sind als gemeinsame Geh- und Radwege beschildert: Dort darfst du fahren, musst aber die Einbahnregeln beachten, etwa in Ludwigstrasse, Gesandtenstrasse und Rote-Hahnen-Gasse.',
           ],
         },
