@@ -3,7 +3,7 @@
   "clientVersion": "3.286.0",
   "protocol": "whole-service-local-nearest-v1",
   "queryIntervalMs": 5000,
-  "idleIntervalMs": 3600000,
+  "idleIntervalMs": 259200000,
   "note": "Live inventory snapshots collected at different times. Counts change; these measurements verify the complete local query grids and request budget.",
   "markets": [
     {

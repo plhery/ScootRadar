@@ -497,5 +497,6 @@ code secret is missing or invalid". GCOO's and Kickgoing's maps need no
 credential. See [the Korean catalog](docs/south-korean-scooter-feeds.md#swing).
 A GCOO town nobody looks at is collected every two hours (`GCOO_IDLE_INTERVAL_MS`),
 not every 20 minutes, and expires after two hours and ten minutes without one: a
-feed that sets its own idle interval, as GCOO, Lime, ATOM, Whoosh and BinBin do
-(`APP_MAP_IDLE_INTERVAL_MS`), expires ten minutes after it, read from the feed itself.
+feed that sets its own idle interval, as GCOO, ATOM, Whoosh and BinBin do
+(`APP_MAP_IDLE_INTERVAL_MS`) and Lime (`LIME_IDLE_INTERVAL_MS`, three days), expires
+ten minutes after it, read from the feed itself.

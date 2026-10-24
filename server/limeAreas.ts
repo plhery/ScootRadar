@@ -1,11 +1,16 @@
 import { boundsContainPoint, polygonContainsPoint } from '../src/lib/geo';
 import { limeGridCell, limeGridRuns, limeGridTiles, type LimeMapGrid } from '../src/lib/limeGrid';
 import type { MapBounds } from '../src/lib/types';
-import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
 
 export const LIME_MAP_PROTOCOL = 'whole-service-local-nearest-v1';
 export const LIME_QUERY_INTERVAL_MS = 5_000;
-export const LIME_IDLE_INTERVAL_MS = APP_MAP_IDLE_INTERVAL_MS;
+/**
+ * Every market Lime's rider map lists takes about 17,500 map requests to sweep, a day at one
+ * request every five seconds. Swept every three days while nobody looks, not every two hours as
+ * the other app maps (APP_MAP_IDLE_INTERVAL_MS), they take a third of the requests, and may take
+ * half (scripts/generate-lime-app-feeds.mjs checks it): the rest is for the towns people look at.
+ */
+export const LIME_IDLE_INTERVAL_MS = 72 * 60 * 60_000;
 export { LIME_TILE_GROUP_SIZE, limeGridGroups } from '../src/lib/limeGrid';
 
 export type LimeArea = [number, number][];

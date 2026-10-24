@@ -114,11 +114,13 @@ looks:
   (from a hash of its id), so about eight a minute start. A failed collection is
   retried after 1, 2, 4, 8, then every 10 minutes, half the interval. The app maps
   read in slow paced sweeps are collected every two hours when idle, for the requests
-  they take (`APP_MAP_IDLE_INTERVAL_MS` in `server/appMapCadence.ts`): Lime's
-  ([guide](lime-app-map.md)), BinBin's ([guide](binbin-app-map.md#pace-and-failures)),
-  GCOO's, ATOM's and Whoosh's. Each expires 10 minutes after its own interval and
-  waits up to half of it between retries. The app maps read in a few requests keep
-  the 20 minutes, so that one that stops answering is reported within half an hour.
+  they take (`APP_MAP_IDLE_INTERVAL_MS` in `server/appMapCadence.ts`): BinBin's
+  ([guide](binbin-app-map.md#pace-and-failures)), GCOO's, ATOM's and Whoosh's. Lime's
+  are every three days, so that sweeping all its markets takes at most half of the
+  requests its one account may send ([guide](lime-app-map.md#cache-behaviour)). Each
+  expires 10 minutes after its own interval and waits up to half of it between
+  retries. The app maps read in a few requests keep the 20 minutes, so that one that
+  stops answering is reported within half an hour.
 
 A request whose feeds hold positions over 15 minutes old waits up to 3 seconds for
 their collection, then answers. When a collection it started is still under way, the
@@ -273,8 +275,8 @@ Tracing is off, and no trace headers go to the operators' feeds.
 
 - **Feed stopped being served**: a warning each time a feed becomes `expired` by its
   cadence's rule (an idle feed after 30 minutes without a successful collection, or ten
-  minutes past its own interval for one collected less often on purpose: an hour and ten
-  for Lime and GCOO, two hours and ten for BinBin) and is
+  minutes past its own interval for one collected less often on purpose: two hours and
+  ten for the app maps read in slow sweeps, three days and ten minutes for Lime) and is
   still expired 5 minutes later (15 for Voi Switzerland, whose feed runs 2 or 3 minutes
   short of expiring: on some weekday mornings sharedmobility.ch cuts most of its downloads off
   (see Logs), and it expired 3 times on 17 October 2026 and 9 on the 22nd, back within 8

@@ -70,7 +70,8 @@ Counts are inventory snapshots at different times, not a simultaneous fleet tota
 The 93 groups cover 356 initial local cells. The observed complete query plan
 uses 416 map requests, including parent views retained on warm refreshes:
 34 minutes 40 seconds at the five-second minimum spacing, before network
-latency. That leaves room in the hourly background budget for viewed groups.
+latency. They were swept every hour while nobody looked until 25 October 2026;
+see below for the cadence that makes room for every Lime market.
 
 Santiago's geographical city centre is outside the published service areas.
 The Lime catalog's reference point is inside its main service polygon, while
@@ -91,8 +92,9 @@ neighbouring cells into one coverage rectangle. Written out cell by cell, each
 group added more than a kilobyte to the scripts every map page loads.
 `npm run check:providers` checks both generated outputs and requires a successful
 full-area audit matching the registered polygons, tile groups and query strategy.
-The verified warm query plan, including parent views, must also fit the
-provider’s hourly request budget.
+The verified warm query plans of all the registered markets, including parent
+views, may take at most half the requests of an idle interval at one every
+five seconds.
 
 Each group is an independent cache feed. Looking at one part of a market
 wakes its nearby groups rather than rescanning the entire city. Requested
@@ -100,8 +102,11 @@ groups are served in arrival order so repeated polling cannot postpone an
 area still waiting for its first refresh. Viewed groups
 are selected by their individual assigned cells, including where a group's
 enclosing rectangle spans a gap between rows or disconnected polygons. They
-use the normal active cadence; idle groups scan every two hours to fit the
-upstream request quota. The seven reference windows select 13 groups with this cell
+use the normal active cadence. Idle groups are swept every three days
+(`LIME_IDLE_INTERVAL_MS`), not every two hours as the other app maps: every
+market Lime's rider map lists takes about 17,500 requests, a day at that pace,
+so the idle sweeps take about a third of the requests, and may take half
+(`npm run check:providers`): the rest is for the towns people look at. The seven reference windows select 13 groups with this cell
 coverage, compared with 23 using enclosing rectangles (see the public audit).
 Restored snapshots adopt these current coverage cells immediately while
 keeping their scooter observations and timestamps. Monitoring uses that idle
@@ -110,10 +115,14 @@ active 15-minute expiry remains unchanged. Street-level positions older than
 15 minutes are not shown live: while a group is swept again for a request, they
 stand faded where they were, up to three hours old, and each view the sweep
 finishes, the requested one first, replaces them as it goes. Country totals fill as the background scan completes;
-they describe the latest completed inventory, not simultaneous fleet counts.
+they describe the latest completed inventory, up to three days old where
+nobody looks, not simultaneous fleet counts.
 
 Calls start at most once every five seconds across Lime feeds. HTTP 429 pauses
-the shared client for Retry-After, with a minimum one-minute cooldown. Requests
+the shared client for Retry-After, with a minimum one-minute cooldown. The
+limit is the account's, not one client's: a second client beside the cache's
+sweeps, starting a call every six seconds and then every nine, received 429
+after 142 and 42 calls on 25 October 2026, without Retry-After. Requests
 have a 20-second deadline and an 8 MiB response limit. Native requests to
 `web-production.lime.bike` use TLS 1.2: the production Linux Node 26 client
 received 403 with its default TLS 1.3 handshake, while TLS 1.2 succeeded.

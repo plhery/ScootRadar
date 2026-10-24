@@ -198,8 +198,9 @@ and allows four concurrent French systems. Individual scooter positions remain
 usable for at most fifteen minutes from their source timestamp, including when a
 refresh fails; missing timestamps and older data are rejected. The operators'
 app maps, which no licence holds to fifteen minutes, differ in three ways
-since 25 October 2026. Those read in slow paced sweeps (Lime, Whoosh, GCOO,
-ATOM and BinBin) are collected every two hours while nobody looks. A sweep
+since 25 October 2026. Those read in slow paced sweeps (Whoosh, GCOO, ATOM
+and BinBin) are collected every two hours while nobody looks, and Lime's many
+markets every three days. A sweep
 starts where the request looked and publishes each part of its area as it
 finishes it, so the map fills in as it goes. And while one is collected
 again, its positions up to three hours old stand faded where they were last

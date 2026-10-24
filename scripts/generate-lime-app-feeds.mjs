@@ -37,7 +37,9 @@ if (process.argv.includes('--check')) {
     }
     warmViews += verified.warmMapRequests;
   }
-  if (!Number.isFinite(warmViews) || warmViews * geometry.LIME_QUERY_INTERVAL_MS >= geometry.LIME_IDLE_INTERVAL_MS) {
-    throw new Error('The verified Lime inventory exceeds its idle request budget');
+  // Sweeping every market while nobody looks may take half the requests of an idle interval at
+  // most: the other half collects the towns people look at, first where the map looks.
+  if (2 * warmViews * geometry.LIME_QUERY_INTERVAL_MS > geometry.LIME_IDLE_INTERVAL_MS) {
+    throw new Error('The verified Lime inventory exceeds half its idle request budget');
   }
 }
