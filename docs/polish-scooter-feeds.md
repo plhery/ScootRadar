@@ -184,8 +184,11 @@ No covered Polish town bans renting at night, so
   - Wałcz listed 13 available scooters out of 22, but not one moved, came or
     went from 23:41 to 09:15, nor in 22 polls four minutes apart from 18:26 to
     19:50 on the Tuesday evening. Between 09:15 and 18:26 one scooter was
-    ridden 2.3 km, with 28 points less charge. It is left out until a check on
-    a weekend afternoon shows rides while it is polled.
+    ridden 2.3 km, with 28 points less charge. On Saturday 24 October it
+    listed 4 available out of 22, and from 08:36 to 16:47 none moved more
+    than 50 metres or lost more than 1 point of charge, polled every few
+    minutes from 14:40 to 15:04 and 16:37 to 16:47. It is left out; check it
+    again in April 2027.
   - Środa Wielkopolska listed 1 available scooter out of 10 until 19:22, then
     Hopp put out freshly charged ones, 7 by 19:50; none was ridden. Under ten.
   - Lublin (3 scooters), Piła (12), Wągrowiec (6) and Szamotuły (1) listed

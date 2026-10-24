@@ -277,8 +277,9 @@ banned shared scooters, and feeds that were empty when checked.
     large cities on the map. Voi doesn't run in Poland.
   - Hopp Wałcz listed 13 available scooters, but none moved between 23:41
     and 09:15 on a Tuesday, nor in 22 polls from 18:26 to 19:50 that
-    evening; one was ridden in between. Check it on a weekend afternoon, and
-    add it if its scooters are ridden. Środa Wielkopolska held 1 to 7, under
+    evening; one was ridden in between. On Saturday 24 October it listed 4
+    of 22, and none moved from 08:36 to 16:47. Check it again in April 2027.
+    Środa Wielkopolska held 1 to 7, under
     ten. Lublin, Piła, Wągrowiec and Szamotuły listed disabled scooters only,
     and Oborniki, Słupca, Zgorzelec, Murowana Goślina and Trzcianka were
     empty. No Hopp feed was found for Gliwice.
@@ -757,9 +758,6 @@ Bonaire had feeds to add. Survey files are in
   ([Roma Servizi per la Mobilità](https://romamobilita.it/eventi-e-news/selezione-operatori-servizi-di-micromobilita-sharing/)).
   Check that Bird Roma still publishes after both dates, and whether the
   winners do.
-- **Saturday 24 October 2026, in the afternoon:** Hopp Wałcz, which had no
-  ride while polled on a Tuesday evening. The check planned for 17 and 18
-  October wasn't made.
 - **Tuesday 10 November 2026:** Zeus's move to ATOM Mobility. Nothing had
   changed on 20 October 2026: the 26 ids still answered "GBFS disabled", the
   empty ones still listed no vehicle, MobiData BW still had the same 11 Zeus
@@ -993,6 +991,10 @@ Bonaire had feeds to add. Survey files are in
   and none was ridden while it was polled. Poll it on a weekend afternoon;
   Entur renews the ids, so match scooters by position, and add it if they
   are ridden.
+- **April 2027:** Hopp Wałcz, in Poland. It listed 13 available scooters on
+  a Tuesday in October 2026 and 4 on Saturday 24 October, and none was
+  ridden while it was polled: none moved from 08:36 to 16:47 that Saturday.
+  Poll it on a weekend afternoon, and add it if its scooters are ridden.
 - **April 2027:** Turkey's season. Check for public GBFS and new data on
   Istanbul's, İzmir's and Konya's open-data portals. BinBin's guest app map
   already works and need not wait for the season; next work is collection
