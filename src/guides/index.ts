@@ -164,6 +164,7 @@ import gijonEs from './es/alquiler-patinete-electrico-gijon';
 import bathEn from './en/e-scooters-bath';
 import mechelenNl from './nl/deelstep-mechelen';
 import cherbourgFr from './fr/trottinette-electrique-cherbourg';
+import hamburgDe from './de/e-scooter-hamburg';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -328,4 +329,5 @@ export const GUIDES: readonly Guide[] = [
   bathEn,
   mechelenNl,
   cherbourgFr,
+  hamburgDe,
 ];
