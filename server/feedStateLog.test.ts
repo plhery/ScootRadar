@@ -41,6 +41,29 @@ it('stays quiet about feeds that keep their state, were never attempted or are s
   expect(lines).toEqual([]);
 });
 
+it('tells of a feed a deploy adds whose first collections fail, with no age for the positions it never had', () => {
+  const lines: string[] = [];
+  const reported: string[] = [];
+  const minutes = (count: number) => count * 60_000;
+  const logStates = createFeedStateLog(line => lines.push(line), undefined, ALWAYS_FAST,
+    { afterMs: minutes(5), report: change => reported.push(change.previous) });
+  const now = 1_000_000_000;
+  const added = feed({ id: 'sweden:qick_se_orebro', provider: 'qick', failed: true, stale: true });
+  logStates([added], now);
+  logStates([{ ...added, attemptedAt: now + minutes(1) }], now + minutes(1));
+  expect(lines.map(line => JSON.parse(line))).toEqual([{ event: 'snapshot_feed_state', feed: 'sweden:qick_se_orebro',
+    state: 'expired', previous: 'warming', secondsInPrevious: 60, observationAgeSeconds: null, attemptAgeSeconds: 0 }]);
+  logStates([{ ...added, attemptedAt: now + minutes(6) }], now + minutes(6));
+  expect(reported).toEqual(['warming']);
+  // One whose first collection succeeds is told as it comes, and not reported.
+  const other = createFeedStateLog(line => lines.push(line), undefined, ALWAYS_FAST,
+    { afterMs: minutes(5), report: change => reported.push(change.feed) });
+  other([added], now);
+  other([{ ...added, observedAt: now + 50_000, attemptedAt: now + 60_000, failed: false, stale: false }], now + 60_000);
+  expect(JSON.parse(lines[1])).toMatchObject({ state: 'ok', previous: 'warming', observationAgeSeconds: 10 });
+  expect(reported).toEqual(['warming']);
+});
+
 it('logs a failed collection while the previous positions are still served', () => {
   const lines: string[] = [];
   const logStates = createFeedStateLog(line => lines.push(line));

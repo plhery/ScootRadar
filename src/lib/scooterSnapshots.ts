@@ -83,7 +83,8 @@ function quietInPause(feed: FeedSnapshot, now: number, usable: (feed: FeedSnapsh
 /**
  * `usable` decides which feeds count. `refreshing` lists feeds being collected
  * again for this request: one whose last collection succeeded and whose
- * positions are merely old is on its way, not failed, and makes its source stale.
+ * positions are merely old, or one not collected yet, is on its way, not
+ * failed, and makes its source stale.
  */
 function healthFor(feeds: FeedSnapshot[], now: number, usable: (feed: FeedSnapshot) => boolean = feed => showsPositions(feed, now),
   refreshing?: ReadonlySet<string>): ScooterFetchMetadata {
@@ -92,7 +93,7 @@ function healthFor(feeds: FeedSnapshot[], now: number, usable: (feed: FeedSnapsh
     const relevant = feeds.filter(feed => feed.source === source && !feed.skipped && !quietInPause(feed, now, usable, refreshing));
     if (!relevant.length) continue;
     const served = relevant.filter(usable);
-    const coming = relevant.filter(feed => !usable(feed) && !feed.failed && refreshing?.has(feed.id));
+    const coming = relevant.filter(feed => !usable(feed) && !failedAtOperator(feed) && refreshing?.has(feed.id));
     const failed = relevant.filter(feed => (feed.failed || !usable(feed)) && !coming.includes(feed));
     // A successfully collected feed is not a fallback just because its provider
     // publishes every few minutes. Observation age still controls hard expiry.

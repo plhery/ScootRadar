@@ -52,6 +52,17 @@ describe('snapshot origin boundary', () => {
     expect(health.failedParkingFeeds).toEqual(['france:dott_fr_paris']);
   });
 
+  it('lists a feed not collected yet, as one a deploy adds, as warming up rather than failed', async () => {
+    const now = Date.now();
+    const feed = { source: 'france' as const, provider: 'dott' as const, coverage: [], vehicles: [],
+      observedAt: now, attemptedAt: now, stale: false, failed: false, skipped: false };
+    const feeds = [{ ...feed, id: 'france:dott_fr_lyon' },
+      { ...feed, id: 'france:dott_fr_paris', observedAt: 0, attemptedAt: 0, stale: true, failed: true }];
+    const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview([], now) });
+    const ready = await (await fetch(`http://127.0.0.1:${port}/ready`)).json() as Record<string, unknown>;
+    expect(ready).toMatchObject({ ready: true, usableFeeds: 1, failedFeeds: [], warmingFeeds: ['france:dott_fr_paris'] });
+  });
+
   it('answers a view across the 180° line with the scooters on its west side', async () => {
     const now = Date.now();
     const scooter = (id: string, lng: number) => ({ vehicle_id: id, lat: -37.69, lng, provider: 'flamingo', battery: 70,

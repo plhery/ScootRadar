@@ -56,9 +56,11 @@ export interface FeedStateChange {
   event: 'snapshot_feed_state';
   feed: string;
   state: FeedState;
-  previous: FeedState;
+  /** warming: not attempted yet, as a feed a deploy adds. */
+  previous: FeedState | 'warming';
   secondsInPrevious: number;
-  observationAgeSeconds: number;
+  /** null for a feed with no observation, rather than an age from 1970. */
+  observationAgeSeconds: number | null;
   attemptAgeSeconds: number;
 }
 
@@ -112,20 +114,25 @@ export function waitOutCurfew(curfewed: (feedId: string, now: number) => boolean
  * Logs every feed whose state changed since the last call. A feed also expires
  * between two collections, without any error, when its time runs out: this
  * runs on a timer, not after collections. The first
- * state seen for a feed is its baseline and is not logged.
+ * state seen for a feed is its baseline and is not logged. A feed not attempted
+ * yet, as one a deploy adds, has 'warming' as its baseline: the state its first
+ * collections leave is a change, so one that never loads is told like any other.
  */
 export function createFeedStateLog(log: (line: string) => void = console.log,
   onChange?: (change: FeedStateChange, feed: FeedSnapshot) => void, cadence: FeedCadence = ALWAYS_FAST,
   stillExpired?: StillExpired) {
-  const known = new Map<string, { state: FeedState; since: number; change?: FeedStateChange }>();
+  const known = new Map<string, { state: FeedState | 'warming'; since: number; change?: FeedStateChange }>();
   return (feeds: readonly FeedSnapshot[], now = Date.now()) => {
     const seen = new Set<string>();
     for (const feed of feeds) {
-      // A feed not attempted yet has no state to speak of.
-      if (feed.skipped || feed.attemptedAt === 0) continue;
+      if (feed.skipped) continue;
       seen.add(feed.id);
-      const state = feedState(feed, now, cadence);
       const previous = known.get(feed.id);
+      if (feed.attemptedAt === 0) {
+        if (!previous) known.set(feed.id, { state: 'warming', since: now });
+        continue;
+      }
+      const state = feedState(feed, now, cadence);
       if (previous?.state === state) {
         if (stillExpired && previous.change?.state === 'expired' && now - previous.since >= reportAfter(stillExpired, feed) &&
           !stillExpired.wait?.(feed, now)) {
@@ -140,7 +147,7 @@ export function createFeedStateLog(log: (line: string) => void = console.log,
       }
       const change: FeedStateChange = { event: 'snapshot_feed_state', feed: feed.id, state, previous: previous.state,
         secondsInPrevious: Math.round((now - previous.since) / 1000),
-        observationAgeSeconds: Math.round((now - feed.observedAt) / 1000),
+        observationAgeSeconds: feed.observedAt ? Math.round((now - feed.observedAt) / 1000) : null,
         attemptAgeSeconds: Math.round((now - feed.attemptedAt) / 1000) };
       known.set(feed.id, { state, since: now, change });
       log(JSON.stringify(change));

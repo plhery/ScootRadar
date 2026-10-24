@@ -8,6 +8,13 @@ import type { MapBounds } from '../src/lib/types';
 
 const ORIGIN = 'https://app.rideatom.com/api/v1/';
 const RETRY_MS = 60_000;
+/**
+ * A deploy starts the new cache while the old one still runs, for about a minute (53 to 64 seconds
+ * on 24 October 2026). Both swept Qick on the same schedule, ATOM answered 429 after each of three
+ * deploys, and the regions failed for up to eight minutes. The new cache sends its first request
+ * after this, when the old one has stopped and its requests have left ATOM's minute.
+ */
+export const ATOM_START_HOLD_MS = 90_000;
 export const atomMapRequests = { status: 0, metadata: 0 };
 const object = (value: unknown): Record<string, unknown> | undefined =>
   value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
@@ -16,7 +23,11 @@ const jwt = (value: unknown): value is string => typeof value === 'string' && va
 
 interface Credentials { token: string; appPublicKey: string; staticPublicKey: string; deviceId: string; appVersion: string }
 interface Sessions { version: 1; accounts: Record<string, Credentials> }
-interface ClientOptions { sessionPath?: string; fetch?: typeof fetch; now?: () => number; intervalMs?: number; timeoutMs?: number }
+interface ClientOptions {
+  sessionPath?: string; fetch?: typeof fetch; now?: () => number; intervalMs?: number; timeoutMs?: number;
+  /** How long after its creation the client sends its first request. */
+  startHoldMs?: number;
+}
 
 async function jsonBody(response: Response, maxBytes: number): Promise<unknown> {
   const reader = response.body?.getReader();
@@ -61,6 +72,7 @@ export class AtomClient {
     // accounts together below 20 requests/minute, including cold starts and refreshes.
     this.intervalMs = options.intervalMs ?? 4000;
     this.timeoutMs = options.timeoutMs ?? 10_000;
+    this.nextStart = this.now() + (options.startHoldMs ?? 0);
   }
 
   private async sessions(): Promise<Sessions> {
@@ -225,7 +237,7 @@ export function parseAtomVehicles(payload: unknown): AtomView {
   return { vehicles, unavailable: unavailable as number[], closed: data.currently_not_operating };
 }
 
-const client = new AtomClient();
+const client = new AtomClient({ startHoldMs: ATOM_START_HOLD_MS });
 export async function collectAtomRegion(system: RegionalScooterSystem, api: Pick<AtomClient, 'vehicles'> = client): Promise<SourceVehicles> {
   if (!system.atomAppAccount) throw new Error('Not an ATOM app map region');
   const vehicles = new Map<number, AtomScooter>();

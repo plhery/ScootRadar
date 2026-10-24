@@ -164,6 +164,16 @@ describe('ATOM rider session transport', () => {
     await expect(f.client.vehicles('qick-se', [59.27, 15.21])).resolves.toMatchObject({ vehicles: [] });
   });
 
+  it('holds its first view after a start, while the cache it replaces may still be sweeping', async () => {
+    const f = await fixture();
+    const client = new AtomClient({ sessionPath: f.sessionPath, fetch: f.fetch, intervalMs: 0, startHoldMs: 200 });
+    const started = Date.now();
+    let sentAt = 0;
+    f.fetch.mockImplementation(async () => { sentAt = Date.now(); return Response.json(map()); });
+    await expect(client.vehicles('qick-se', [59.27, 15.21])).resolves.toMatchObject({ vehicles: [] });
+    expect(sentAt - started).toBeGreaterThanOrEqual(190);
+  });
+
   it('rejects missing credentials, oversized and malformed JSON and sanitizes transport failures', async () => {
     const f = await fixture();
     await expect(new AtomClient({ sessionPath: join(f.directory, 'missing') }).vehicles('qick-se', [59, 15])).rejects.toThrow('missing or unreadable');

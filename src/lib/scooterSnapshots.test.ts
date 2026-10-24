@@ -212,6 +212,15 @@ describe('feeds collected on demand', () => {
     expect(querySnapshot(snapshot([cold]), query, 16, now, { refreshing: new Set([cold.id]) }).vehicles).toEqual([]);
   });
 
+  it('calls a feed not collected yet, as one a deploy adds, on its way while it is collected, and failed once it fails', () => {
+    const added = feed({ vehicles: [], observedAt: 0, attemptedAt: 0, stale: true, failed: true });
+    const response = querySnapshot(snapshot([added, voi]), query, 16, now, { refreshing: new Set([added.id]) });
+    expect(response.meta).toMatchObject({ refreshing: true, failedSources: [], partial: false, stale: true });
+    const failed = { ...added, attemptedAt: now - 1_000 };
+    expect(querySnapshot(snapshot([failed, voi]), query, 16, now, { refreshing: new Set([added.id]) }).meta.failedSources)
+      .toEqual([added.id]);
+  });
+
   it('counts in the city totals an idle feed whose positions are older than the map shows', () => {
     const idle = feed({ observedAt: now - minutes(25), collectedAt: now - minutes(16) });
     const onTime = (item: FeedSnapshot) => now - (item.collectedAt ?? item.observedAt) <= minutes(30);

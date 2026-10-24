@@ -415,7 +415,9 @@ Qick's authenticated ATOM rider map uses a separate, stricter queue on
 `app.rideatom.com`: one request every four seconds across all accounts.
 Its two-kilometre views require a complete city sweep before publishing;
 a cold start across all ten cities takes several minutes, and watched
-cities can refresh more slowly than once a minute. Keep the mode-0600
+cities can refresh more slowly than once a minute. A starting cache waits
+90 seconds before its first request, while the cache it replaces still
+runs (see [ATOM](docs/atom-app-map.md)). Keep the mode-0600
 `atom-sessions.json` in the persistent `/data` volume (`ATOM_SESSION_PATH`
 overrides its location). Its app identifiers and rider tokens belong only
 there, never in Git or build variables. See [the session format and

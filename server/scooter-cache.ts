@@ -180,14 +180,20 @@ async function persist(final = false) {
   if (now - lastHealthLogAt >= 60_000) {
     lastHealthLogAt = now;
     const relevant = snapshot.feeds.filter(feed => !feed.skipped);
+    // A feed not attempted yet, as one a deploy adds, is warming up rather than failed.
+    const attempted = relevant.filter(feed => feed.attemptedAt > 0);
+    // A feed with no observation would count its age from 1970 (1.79 billion seconds).
+    const observed = relevant.filter(feed => feed.observedAt > 0);
     const modes = scheduler.modes(now);
     console.log(JSON.stringify({ event: 'snapshot_health', feeds: relevant.length,
-      failedFeeds: relevant.filter(feed => feed.failed).length,
-      expiredFeeds: relevant.filter(feed => feedState(feed, now, cadence) === 'expired').length,
+      warmingFeeds: relevant.length - attempted.length,
+      failedFeeds: attempted.filter(feed => feed.failed).length,
+      expiredFeeds: attempted.filter(feed => feedState(feed, now, cadence) === 'expired').length,
+      unobservedFeeds: relevant.length - observed.length,
       servedFeeds: relevant.filter(feed => now - feed.observedAt <= VEHICLE_MAX_AGE_MS).length,
       alwaysFeeds: modes.always, watchedFeeds: modes.watched, idleFeeds: modes.idle,
-      oldestObservationAgeSeconds: relevant.length
-        ? Math.round(Math.max(...relevant.map(feed => Date.now() - feed.observedAt)) / 1000) : null }));
+      oldestObservationAgeSeconds: observed.length
+        ? Math.round(Math.max(...observed.map(feed => Date.now() - feed.observedAt)) / 1000) : null }));
   }
   if (!final && now - savedAt < SAVE_EVERY_MS) return;
   dirty = false;

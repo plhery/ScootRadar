@@ -263,7 +263,9 @@ Tracing is off, and no trace headers go to the operators' feeds.
   17 October 2026 and 16 minutes after it on the 18th, when a 10-minute wait in Grafana
   had already told Telegram. A restart takes each feed's state as its baseline, so a feed
   already expired when the cache deploys is not reported: hence no deploys during the
-  ban hours (AGENTS.md). A shorter blip, as Voi
+  ban hours (AGENTS.md). A feed not collected yet, as one a deploy adds, is warming up:
+  the state its first collections leave is a change (`previous: "warming"`), so one that
+  never loads is reported. A shorter blip, as Voi
   Switzerland's 105 seconds on 16 October 2026, is only in the logs. One
   issue per feed (tags `feed`, `source`, `provider`), at most one event an hour for
   each, so a feed that keeps expiring between updates stays quiet. Its `feed` context has the
@@ -280,7 +282,11 @@ Routine feed failures are not sent; the metrics and logs cover them.
 
 `snapshot_feed_state` (a feed changing state), `snapshot_feed_failed` and
 `parking_feed_failed` (with the error), and `snapshot_health` (every minute, with the
-feeds on each cadence) are JSON lines. So is `upstream_stale_fallback`, a request to an
+feeds on each cadence, `warmingFeeds` not collected yet and not counted as failed or
+expired, `unobservedFeeds` with no positions yet, and `oldestObservationAgeSeconds` over
+the feeds that have some, null when none has) are JSON lines.
+`/ready` likewise lists the feeds not collected yet as `warmingFeeds`, apart from
+`failedFeeds`. So is `upstream_stale_fallback`, a request to an
 operator that failed while an earlier answer could still be served: its host and path,
 and the HTTP status, or the error's type, Node's code for a network error (`errorCode`,
 as `ECONNRESET` or `UND_ERR_SOCKET`) and whether it failed before the operator answered

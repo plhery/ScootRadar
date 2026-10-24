@@ -86,6 +86,8 @@ export function createSnapshotServer(options: ServerOptions) {
     const now = Date.now();
     if (url.pathname === '/health' || url.pathname === '/ready') {
       const feeds = (snapshot?.feeds ?? []).filter(feed => !feed.skipped);
+      // Not attempted yet, as a feed a deploy adds: warming up, not failed.
+      const attempted = feeds.filter(feed => feed.attemptedAt > 0);
       const live = !!snapshot && now - snapshot.updatedAt < VEHICLE_MAX_AGE_MS;
       // Usable: collected as often as its cadence promises, so served at once or on the next request.
       const usable = feeds.filter(feed => feedState(feed, now, cadence) !== 'expired');
@@ -95,7 +97,8 @@ export function createSnapshotServer(options: ServerOptions) {
         usableFeeds: usable.length,
         // Positions recent enough to show without collecting again.
         servedFeeds: feeds.filter(feed => showsPositions(feed, now)).length,
-        failedFeeds: feeds.filter(feed => feedState(feed, now, cadence) !== 'ok').map(feed => feed.id),
+        failedFeeds: attempted.filter(feed => feedState(feed, now, cadence) !== 'ok').map(feed => feed.id),
+        warmingFeeds: feeds.filter(feed => feed.attemptedAt === 0).map(feed => feed.id),
         oldestUsableAgeSeconds: usable.length ? Math.round(Math.max(...usable.map(feed => now - feed.observedAt)) / 1000) : null,
         parkingLocations: feeds.reduce((sum, feed) => sum + (feed.parking?.locations.length ?? 0), 0),
         failedParkingFeeds: feeds.filter(feed => isRegionalSource(feed.source) && !parkingUp(feed, now, cadence)).map(feed => feed.id),

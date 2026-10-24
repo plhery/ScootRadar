@@ -168,6 +168,14 @@ cities can refresh more slowly than the scheduler's nominal one-minute
 interval. Each city is still collected independently, and ATOM occupies
 at most two of the collector's six slots.
 
+A deploy runs the new cache beside the old one for about a minute (53 to
+64 seconds on 24 October 2026), and both swept Qick on the same schedule:
+ATOM answered 429 after each of three deploys that day, and Qick's cities
+failed for two to eight minutes. A starting cache now sends its first ATOM
+request 90 seconds after it starts (`ATOM_START_HOLD_MS`), once the old
+one has stopped and its requests have left ATOM's minute. A city not
+collected yet is warming up, not failed, in `/ready` and on the map.
+
 The app's zone endpoint is used for the service-area audit. These app-map
 systems do not advertise GBFS discovery, parking or zone documents to the
 generic collectors.
