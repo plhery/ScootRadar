@@ -228,12 +228,13 @@ recent places live in memory until the app closes.
 
 ## Usage analytics
 
-Screen views and action events go to the same self-hosted Umami dashboard as the
-website, with the `ios` tag. Settings › About › Privacy lets riders turn this
-off. No address text, precise locations, vehicle IDs or advertising IDs are
-sent. Simulators, previews and tests are excluded by default. See
-[the analytics event catalog](../docs/analytics.md). An installed app only
-changes when it is rebuilt and reinstalled; a web deployment does not update it.
+Screen views and action events go to the self-hosted Umami, under "ScootRadar
+iOS" with the `ios` tag; the site's are under "ScootRadar". Settings › About ›
+Privacy lets riders turn this off. No address text, precise locations, vehicle
+IDs or advertising IDs are sent. Simulators, previews and tests are excluded by
+default. See [the analytics event catalog](../docs/analytics.md). An installed
+app only changes when it is rebuilt and reinstalled; a web deployment does not
+update it.
 
 ## Code
 

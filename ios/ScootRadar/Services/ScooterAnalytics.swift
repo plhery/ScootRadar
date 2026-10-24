@@ -6,7 +6,8 @@ import UIKit
 final class ScooterAnalytics {
     static let shared = ScooterAnalytics()
     static let disabledKey = "analytics-disabled"
-    static let website = "6e60b4ab-b4ee-4785-9699-a7f32127b358"
+    // "ScootRadar iOS" in Umami, apart from the website's "ScootRadar" (docs/analytics.md).
+    static let website = "72c49567-e00d-4a92-bfaf-d1ae7b083fd8"
     static let endpoint = URL(string: "https://u.plhery.com/api/send")!
     private var cache: String?
     private var disabledByServer = false
@@ -54,6 +55,13 @@ final class ScooterAnalytics {
         return payload
     }
 
+    /// An iPhone web view's own user agent, without the app's name: Umami drops a bare app's as a bot,
+    /// and from isbot 5.2 (Umami 3.4) any with "radar" in it, so "ScootRadar/1.0" lost every event.
+    static func userAgent(systemVersion: String) -> String {
+        let os = systemVersion.replacingOccurrences(of: ".", with: "_")
+        return "Mozilla/5.0 (iPhone; CPU iPhone OS \(os) like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+    }
+
     func track(_ name: String? = nil, provider: String? = nil, value: Int? = nil,
                result: String? = nil, target: String? = nil, screen: String = "/") {
         guard enabled, pending < 30 else { return }
@@ -69,9 +77,7 @@ final class ScooterAnalytics {
             request.httpMethod = "POST"
             request.httpBody = body
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            let os = UIDevice.current.systemVersion.replacingOccurrences(of: ".", with: "_")
-            let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
-            request.setValue("Mozilla/5.0 (iPhone; CPU iPhone OS \(os) like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 ScootRadar/\(version)", forHTTPHeaderField: "User-Agent")
+            request.setValue(Self.userAgent(systemVersion: UIDevice.current.systemVersion), forHTTPHeaderField: "User-Agent")
             if let cache { request.setValue(cache, forHTTPHeaderField: "x-umami-cache") }
             do {
                 let (data, response) = try await session.data(for: request)

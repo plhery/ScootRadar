@@ -1,22 +1,40 @@
 # ScootRadar analytics
 
-Dashboard: https://umami.plhery.com/websites/6e60b4ab-b4ee-4785-9699-a7f32127b358
+Dashboards, one website each in Umami:
 
-Both clients POST to `https://u.plhery.com/api/send`, using the public website ID
-`6e60b4ab-b4ee-4785-9699-a7f32127b358`. No API/admin secret is shipped. The Umami
-admin dashboard remains protected independently of its existing public collector.
-Filter by **Tag** (`web`, `pwa`, `ios`) to compare platforms. Named events also
-carry `platform` in event data. Web page views contain only `/map`, `/privacy` and
-the pages of the site, each under its own address: the landing page of a language
-(`/` for English, `/de`, `/fr`, `/it`…), each guide (`/guides/e-scooters-bristol`,
-`/de/ratgeber/…`) and each language's list of guides (`/guides`, `/de/ratgeber`…).
-Native screen views use `/`, `/filters`, `/settings`. Until the landing page took the
-root, the web map was counted under `/`: web views of `/` before that are the map.
+- [ScootRadar](https://umami.plhery.com/websites/6e60b4ab-b4ee-4785-9699-a7f32127b358):
+  the website and the web app installed on a home screen.
+- [ScootRadar iOS](https://umami.plhery.com/websites/72c49567-e00d-4a92-bfaf-d1ae7b083fd8):
+  the iPhone and iPad app.
+
+Both clients POST to `https://u.plhery.com/api/send`, each with its public website ID:
+`6e60b4ab-b4ee-4785-9699-a7f32127b358` from the web (`src/lib/analytics.ts`),
+`72c49567-e00d-4a92-bfaf-d1ae7b083fd8` from the app (`ScooterAnalytics.swift`). No
+API/admin secret is shipped. The Umami admin dashboard remains protected
+independently of its existing public collector. In ScootRadar, filter by **Tag**
+(`web`, `pwa`) to tell a browser from the installed web app; everything in ScootRadar
+iOS has the tag `ios`. Named events also carry `platform` in event data. Web page
+views contain only `/map`, `/privacy` and the pages of the site, each under its own
+address: the landing page of a language (`/` for English, `/de`, `/fr`, `/it`…), each
+guide (`/guides/e-scooters-bristol`, `/de/ratgeber/…`) and each language's list of
+guides (`/guides`, `/de/ratgeber`…). The app's screen views are `/` (the map),
+`/filters` and `/settings`. Until the landing page took the root, the web map was
+counted under `/`: web views of `/` before that are the map.
 From the first guides on 12 October 2026 until 19 October 2026, the guides and their
 lists were counted as `/map`: web views of `/map` in that week include them.
 From 24 October 2026, a visit to `/` from outside the site by a browser that asks
 for another of the site's languages before English is sent on to that language's
 landing page and counted there: views of `/` fall and the others rise from that day.
+
+Until 24 October 2026 the app reported to ScootRadar too, with the tag `ios`; that day
+its 552 events since 8 September moved to ScootRadar iOS (Umami's database lists them
+in `backup_scootradar_ios_split_20261024`). Nothing of the app is counted from Umami
+3.4.0, installed on 21 October, until riders have the version after 1.0: that Umami's
+bot filter (isbot 5.2) takes any user agent with "radar" in it for a bot, and up to 1.0
+the app's ended in `ScootRadar/<version>`, so Umami answers `{"beep":"boop"}` and keeps
+nothing. Version 1.0, on the App Store since 22 October, also still sends ScootRadar's
+website ID. The version after it sends ScootRadar iOS's, with an iPhone web view's user
+agent that doesn't name the app.
 
 ## Event catalog
 
@@ -106,5 +124,7 @@ Run lint, web tests, OpenNext build and iOS tests. Deploy with `npm run deploy`
 (the existing Cloudflare auth is required). Check production CSP allows only the
 specific collector origin in `connect-src`; script restrictions stay unchanged.
 Use Chrome to interact with the deployed map and verify named events in Umami.
-Use a simulator smoke launch for native API/transport verification. Smoke visits
-remain visible in production analytics; they can be identified by test time/platform.
+Use a simulator smoke launch for native API/transport verification, and check that
+its visit shows in ScootRadar iOS: Umami answers a user agent it takes for a bot
+with `{"beep":"boop"}` and HTTP 200, so the app sees no error. Smoke visits remain
+visible in production analytics; they can be identified by test time/platform.

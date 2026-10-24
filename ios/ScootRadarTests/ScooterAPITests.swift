@@ -833,4 +833,14 @@ final class ScooterAnalyticsTests: XCTestCase {
         XCTAssertNil(payload["name"])
         XCTAssertNil(payload["data"])
     }
+
+    func testUserAgentIsAWebViewsWithoutTheAppsName() {
+        let userAgent = ScooterAnalytics.userAgent(systemVersion: "26.0.1")
+        XCTAssertEqual(userAgent, "Mozilla/5.0 (iPhone; CPU iPhone OS 26_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148")
+        XCTAssertFalse(userAgent.localizedCaseInsensitiveContains("radar"))
+    }
+
+    func testPayloadGoesToTheAppsOwnWebsite() {
+        XCTAssertEqual(ScooterAnalytics.payload(nil)["website"] as? String, "72c49567-e00d-4a92-bfaf-d1ae7b083fd8")
+    }
 }
