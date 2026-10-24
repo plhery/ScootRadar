@@ -44,8 +44,6 @@ const records = new Map<string, FeedSnapshot>();
 // The last collection error of each failing feed, for its Sentry report should it expire.
 const lastErrors = new Map<string, string>();
 const regionalSystems = new Map(REGIONAL_SCOOTER_SYSTEMS.map(system => [`${regionalSource(system)}:${system.id}`, system]));
-// A scooter a feed puts far away for a while, as 3electra puts Kyiv's in Lima, keeps its last place.
-const holdStrays = createStrayHold();
 // The feeds collected now, whose zones are read when someone asks for them.
 let collectable: CollectableScooterFeed[] = [];
 const zoneStore = createZoneStore({ onError: (feed, error) => console.warn(JSON.stringify({ event: 'zones_feed_failed', feed,
@@ -63,6 +61,10 @@ const scheduler = new FeedScheduler(collect, { ...schedule,
   },
   onStart: (_feed, reason) => metrics.recordCollectionStart(reason) });
 const cadence: FeedCadence = { fastSince: (id, now) => scheduler.fastSince(id, now), idleExpiryMs: schedule.idleExpiryMs };
+// A scooter a feed puts far away for a while, as 3electra puts Kyiv's in Lima, keeps its last place
+// for ten minutes, or until the feed's next collection when that is later.
+const holdStrays = createStrayHold((id, now) => scheduler.fastSince(id, now) === undefined
+  ? schedule.idleIntervalMs : schedule.activeIntervalMs);
 // City totals count the feeds collected on time, whatever the age of their positions.
 const countedAt = (now: number) => (feed: FeedSnapshot) => feedState(feed, now, cadence) !== 'expired';
 const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,

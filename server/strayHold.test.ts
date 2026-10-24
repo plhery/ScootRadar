@@ -9,8 +9,12 @@ const record = (vehicles: ReturnType<typeof scooter>[], collectedAt: number): Fe
   source: 'ukraine', provider: 'zelectra', coverage: [bounds], vehicles, observedAt: collectedAt, attemptedAt: collectedAt,
   collectedAt, stale: false, failed: false, skipped: false });
 
+const MINUTE = 60_000;
+const watched = () => MINUTE;
+const idle = () => 20 * MINUTE;
+
 it('keeps a scooter the feed puts in Lima at its last place in Kyiv for ten minutes, then drops it', () => {
-  const hold = createStrayHold();
+  const hold = createStrayHold(watched);
   const start = Date.now();
   const kyiv = scooter('one', 50.4447, 30.4991);
   const stays = scooter('two', 50.45, 30.52);
@@ -28,13 +32,14 @@ it('keeps a scooter the feed puts in Lima at its last place in Kyiv for ten minu
 });
 
 it('holds a scooter until the next collection when nobody looks and the feed is collected every 20 minutes', () => {
-  const hold = createStrayHold();
+  const hold = createStrayHold(idle);
   const start = Date.now();
   const kyiv = scooter('one', 50.4447, 30.4991);
   let old = record([kyiv], start);
   const counts: number[] = [];
-  for (const minutes of [20, 40, 60]) {
-    const now = start + minutes * 60_000;
+  // A collection takes a few seconds, more one time than the next.
+  for (const at of [20 * MINUTE + 5_000, 40 * MINUTE + 1_000, 60 * MINUTE]) {
+    const now = start + at;
     const collected = hold(old.id, { vehicles: [], stale: false, strayIds: [kyiv.vehicle_id] }, old, now);
     counts.push(collected.vehicles.length);
     old = record(collected.vehicles, now);
@@ -42,8 +47,24 @@ it('holds a scooter until the next collection when nobody looks and the feed is 
   expect(counts).toEqual([1, 0, 0]);
 });
 
+it('still holds a scooter found far away by an idle collection when someone opens the map ten minutes later', () => {
+  const start = Date.now();
+  // Collected every 20 minutes, then every minute from minute 32, when someone opens the map.
+  const hold = createStrayHold((_id, now) => now < start + 32 * MINUTE ? 20 * MINUTE : MINUTE);
+  const kyiv = scooter('one', 50.4447, 30.4991);
+  let old = record([kyiv], start);
+  const counts: number[] = [];
+  for (const minutes of [20, 32, 33, 38, 39, 40]) {
+    const now = start + minutes * MINUTE;
+    const collected = hold(old.id, { vehicles: [], stale: false, strayIds: [kyiv.vehicle_id] }, old, now);
+    counts.push(collected.vehicles.length);
+    old = record(collected.vehicles, now);
+  }
+  expect(counts).toEqual([1, 1, 1, 1, 0, 0]);
+});
+
 it('holds only the scooters put far away, not those ridden off or back in town', () => {
-  const hold = createStrayHold();
+  const hold = createStrayHold(watched);
   const now = Date.now();
   const lima = scooter('lima', 50.4447, 30.4991);
   const rented = scooter('rented', 50.46, 30.51);
@@ -55,7 +76,7 @@ it('holds only the scooters put far away, not those ridden off or back in town',
 });
 
 it('holds nothing for a skipped feed, or from the old scooters a failed feed keeps', () => {
-  const hold = createStrayHold();
+  const hold = createStrayHold(watched);
   const now = Date.now();
   const lima = scooter('lima', 50.4447, 30.4991);
   const strayed = { vehicles: [], stale: false, strayIds: [lima.vehicle_id] };
