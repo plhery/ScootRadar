@@ -22,8 +22,9 @@ jobs:
   web:
     name: Web and backend
     runs-on: ubuntu-latest
-    # 9 to 13 minutes as a rule while it ran the end-to-end tests too (24 Oct 2026).
-    timeout-minutes: 15
+    # 1.5 to 2 minutes since the end-to-end tests have jobs of their own; 9 to 13 while it ran them
+    # too (24 Oct 2026).
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -44,6 +45,7 @@ jobs:
 
   # Each browser on a runner of its own, which spreads its tests over two workers (playwright.config.ts):
   # on one runner, both took 6.5 to 10 minutes on 24 Oct 2026, mobile WebKit's app.e2e.ts 6.1 of them.
+  # Apart, Chromium's take about 5 and mobile WebKit's 6.5 to 7.
   e2e:
     name: End-to-end (${{ matrix.project }})
     runs-on: ubuntu-latest

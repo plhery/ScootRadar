@@ -160,13 +160,14 @@ Coolify deploy from two branches that only CI moves, not from `main`:
 
 When the "Web and backend", the two "End-to-end" (one per browser) and the
 "iOS" jobs have passed on a commit pushed to `main`, CI's Deploy job
-(`scripts/deploy-after-ci.mjs`) fast-forwards `production` to it. It moves `production-cache` too when a file the cache is
-built from, as listed in
+(`scripts/deploy-after-ci.mjs`) fast-forwards `production` to it. It moves
+`production-cache` too when a file the cache is built from, as listed in
 [`server/deploy-watch-paths.txt`](server/deploy-watch-paths.txt), changed
 between the commit `production-cache` is at and this one. A failed or cancelled
 job moves nothing, and the next commit that passes carries the change. A push
-goes live about 15 minutes later: CI takes 11 to 13 minutes, then Workers Builds
-and Coolify about a minute and a half each. CI runs on one commit of `main` at a
+goes live about 15 minutes later: CI takes as long as the iOS job, 10 to 13
+minutes, or about 7 when that skips its tests (below), then Workers Builds and
+Coolify about a minute and a half each. CI runs on one commit of `main` at a
 time, to the end. Of the commits pushed meanwhile only the newest waits for it,
 and it carries the others: GitHub cancels a waiting run when a later push queues
 another. So a commit pushed during a run goes live with the next one, up to a
