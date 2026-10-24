@@ -22,10 +22,8 @@ jobs:
   web:
     name: Web and backend
     runs-on: ubuntu-latest
-    # 9 to 13 minutes as a rule, 6.5 to 10 of them end-to-end tests on two workers (24 Oct 2026), and
-    # 20 left no room for a slow package mirror (see below), which ran three runs out of time on
-    # 22 Oct 2026.
-    timeout-minutes: 30
+    # 9 to 13 minutes as a rule while it ran the end-to-end tests too (24 Oct 2026).
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -41,6 +39,35 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: docker build -f server/Dockerfile -t scooter-cache:ci .
+      - run: npm run cf-typegen
+      - run: npx opennextjs-cloudflare build
+
+  # Each browser on a runner of its own, which spreads its tests over two workers (playwright.config.ts):
+  # on one runner, both took 6.5 to 10 minutes on 24 Oct 2026, mobile WebKit's app.e2e.ts 6.1 of them.
+  e2e:
+    name: End-to-end (${{ matrix.project }})
+    runs-on: ubuntu-latest
+    # 20 left no room for a slow package mirror (see below), which ran three runs out of time on
+    # 22 Oct 2026.
+    timeout-minutes: 30
+    strategy:
+      # Both browsers report, even when one fails.
+      fail-fast: false
+      matrix:
+        include:
+          - project: chromium
+            browser: chromium
+          - project: mobile-webkit
+            browser: webkit
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 26
+          cache: npm
+
+      - run: npm ci
       # The runners list Azure's Ubuntu mirror first, then Ubuntu's own archive. On 22 Oct 2026 Azure's
       # stalled 30 s on one package in ten, and Playwright's 181 system packages took up to 20 minutes
       # instead of one, so take them from Ubuntu's archive, while the list names another mirror.
@@ -51,10 +78,8 @@ jobs:
             sudo sed -i '/azure\.archive\.ubuntu\.com/d' "$mirrors"
           fi
           cat "$mirrors" || true
-      - run: npx playwright install --with-deps chromium webkit
-      - run: npm run test:e2e
-      - run: npm run cf-typegen
-      - run: npx opennextjs-cloudflare build
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - run: npm run test:e2e -- --project=${{ matrix.project }}
 
   ios:
     name: iOS
@@ -129,12 +154,12 @@ jobs:
 
   # Production deploys from two branches only this job moves (DEPLOY.md): Workers Builds deploys
   # production, the website and its Worker, and Coolify production-cache, the scooter cache. So a
-  # commit deploys once both jobs above have passed on it, and not at all if one fails.
+  # commit deploys once the jobs above have passed on it, and not at all if one fails.
   # Once the website is live, IndexNow hears of the pages added to the sitemap or redated since it
   # last took them.
   deploy:
     name: Deploy
-    needs: [web, ios]
+    needs: [web, e2e, ios]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15

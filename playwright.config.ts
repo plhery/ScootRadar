@@ -3,9 +3,11 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './e2e',
   testMatch: '**/*.e2e.ts',
-  fullyParallel: false,
+  // Each test has a page of its own, so the tests of one file can share the workers: kept on one,
+  // mobile WebKit's app.e2e.ts took 6.1 of the 9.5 minutes the tests did on CI (24 Oct 2026).
+  fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
-  // CI's runner has four cores: a browser for each of two workers, beside the preview server.
+  // CI's runners have four cores: a browser for each of two workers, beside the preview server.
   workers: process.env.CI ? 2 : undefined,
   retries: process.env.CI ? 2 : 0,
   reporter: 'list',

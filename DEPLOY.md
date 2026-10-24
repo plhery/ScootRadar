@@ -158,9 +158,9 @@ Coolify deploy from two branches that only CI moves, not from `main`:
 - `production`: the website and its Worker, through Workers Builds;
 - `production-cache`: the scooter cache, through Coolify.
 
-When the "Web and backend" and "iOS" jobs have both passed on a commit pushed to
-`main`, CI's Deploy job (`scripts/deploy-after-ci.mjs`) fast-forwards
-`production` to it. It moves `production-cache` too when a file the cache is
+When the "Web and backend", the two "End-to-end" (one per browser) and the
+"iOS" jobs have passed on a commit pushed to `main`, CI's Deploy job
+(`scripts/deploy-after-ci.mjs`) fast-forwards `production` to it. It moves `production-cache` too when a file the cache is
 built from, as listed in
 [`server/deploy-watch-paths.txt`](server/deploy-watch-paths.txt), changed
 between the commit `production-cache` is at and this one. A failed or cancelled
