@@ -82,7 +82,7 @@ const guide: Guide = {
             rows: [
               ['Dott', 'Bis 300 € fürs Einsammeln, wenn du Anweisungen zum Abstellen oder Abschliessen missachtest; Bussgelder der Behörden plus 50 € Bearbeitungsgebühr'],
               ['Voi', '25 € bei einem Verstoss gegen die Parkregeln, wobei Voi möglichst zuerst mahnen will; Bussgelder und Gebühren der Behörden gibt Voi an dich weiter'],
-              ['Bolt', '15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Gebiets; Bussgelder plus bis 30 € Bearbeitungsgebühr (Bedingungen gültig ab 1. November 2026)'],
+              ['Bolt', '15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Gebiets; Bussgelder plus bis 30 € Bearbeitungsgebühr (Bedingungen gültig ab 1. Dezember 2026)'],
               ['Lime', 'Keine feste Gebühr; Bussgelder, Abschlepp- und Verwahrkosten, die du verursachst, gibt Lime weiter'],
             ],
           },
@@ -140,7 +140,7 @@ const guide: Guide = {
           ],
         },
         'Alles Weitere, auch was sich am 1. März 2027 ändert, steht in den [E-Scooter-Regeln für Deutschland](guide:german-rules).',
-        'Die Anbieter brauchen in Bayern bisher keine Genehmigung und zahlen der Stadt keine Gebühren. Alle haben die freiwillige Selbstverpflichtung in der Fassung vom April 2022 unterschrieben: je Anbieter höchstens 100 Scooter in der Altstadt und 1000 weitere innerhalb des Mittleren Rings, höchstens vier an einem Standort, falsch geparkte binnen 24 Stunden einsammeln.',
+        'In München brauchen die Anbieter bisher keine Genehmigung und zahlen der Stadt keine Gebühren; Nürnberg dagegen verlangt 50 € pro Scooter und Jahr. Alle haben die freiwillige Selbstverpflichtung in der Fassung vom April 2022 unterschrieben: je Anbieter höchstens 100 Scooter in der Altstadt und 1000 weitere innerhalb des Mittleren Rings, höchstens vier an einem Standort, falsch geparkte binnen 24 Stunden einsammeln.',
         'Die Flotte ist stark gewachsen: Laut Polizei waren es 2019 rund 4000 Leih-Scooter und 2022 rund 12 000; im April 2024 kam die Stadt laut Presse auf 18 698. Ab 1. März 2027 ist das gewerbliche Aufstellen von Leih-Scootern laut Strassenverkehrs-Ordnung kein Parken mehr; die Stadt kann es dann als Sondernutzung genehmigen. München will die freiwilligen Regeln dann in eine solche Sondernutzung mit Obergrenzen und Gebühren überführen. Einen Stadtratsbeschluss, Obergrenzen oder Gebührenbeträge dazu haben wir bis zum 12. Oktober 2026 nicht gefunden.',
       ],
     },

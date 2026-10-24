@@ -120,7 +120,7 @@ const guide: Guide = {
             head: ['Anbieter', 'Falsch abgestellt', 'Weitere Gebühren'],
             rows: [
               ['Voi', 'Schweiz: CHF 25.–, nach mehreren Verwarnungen', 'Gebühr für wiederholt schlechte Parkfotos'],
-              ['Bolt', 'Deutschland: 15 € (Bedingungen seit 2023, auch ab 1. November 2026)', 'Abholen ausserhalb des Gebiets: bis CHF 100.– oder 100 €'],
+              ['Bolt', 'Deutschland: 15 € (Bedingungen seit 2023, auch ab 1. Dezember 2026)', 'Abholen ausserhalb des Gebiets: bis CHF 100.– oder 100 €'],
               ['Dott', 'bis 300 € laut Hilfe-Seite', 'Weitergeleitetes Bussgeld: plus 50 € Bearbeitung'],
               ['Lime', 'Strafgebühr, Betrag nicht veröffentlicht', 'Schweiz: Abholung und Bearbeitung je bis CHF 125.–'],
             ],
