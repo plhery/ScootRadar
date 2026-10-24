@@ -1969,6 +1969,10 @@ enum RidePriceFormatter {
 /// once, so the button at the bottom can say what the map will show.
 struct ScooterFilterSheet: View {
     @Bindable var model: ScooterMapModel
+    /// In a popover, it asks for the height that shows the whole list, where the window has it.
+    var inPopover = false
+    /// The list's height with the title bar and the button above and below it.
+    @State private var wholeHeight: CGFloat = 620
     @Environment(\.dismiss) private var dismiss
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.colorScheme) private var colorScheme
@@ -1996,9 +2000,16 @@ struct ScooterFilterSheet: View {
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 showResultsButton
             }
+            .onScrollGeometryChange(for: CGFloat.self) { geometry in
+                geometry.contentSize.height + geometry.contentInsets.top + geometry.contentInsets.bottom
+            } action: { _, height in
+                wholeHeight = height
+            }
             .sensoryFeedback(.selection, trigger: model.enabledProviders)
             .sensoryFeedback(.selection, trigger: model.minimumBattery)
         }
+        // No least height: in a short window the popover gets less, and the list scrolls.
+        .frame(minWidth: inPopover ? 360 : nil, idealWidth: inPopover ? 400 : nil, idealHeight: inPopover ? wholeHeight : nil)
     }
 
     private var batteryFilters: some View {

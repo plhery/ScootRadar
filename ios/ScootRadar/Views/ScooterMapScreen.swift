@@ -324,8 +324,7 @@ struct ScooterMapScreen: View {
                 // The system places it there; a trailing arrow edge squeezed
                 // it into the window's leading margin, its controls cut off.
                 .popover(isPresented: $filtersPresented) {
-                    ScooterFilterSheet(model: model)
-                        .frame(minWidth: 360, idealWidth: 400, minHeight: 440, idealHeight: 620)
+                    ScooterFilterSheet(model: model, inPopover: true)
                 }
                 .zIndex(1)
 
