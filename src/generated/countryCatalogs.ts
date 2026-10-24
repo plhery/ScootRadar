@@ -2,6 +2,7 @@
 
 import frenchCatalog from '../../data/french-scooter-feeds.json';
 import germanCatalog from '../../data/german-scooter-feeds.json';
+import austrianCatalog from '../../data/austrian-scooter-feeds.json';
 import italianCatalog from '../../data/italian-scooter-feeds.json';
 import belgianCatalog from '../../data/belgian-scooter-feeds.json';
 import norwegianCatalog from '../../data/norwegian-scooter-feeds.json';
@@ -31,6 +32,7 @@ import caribbeanNetherlandsCatalog from '../../data/caribbean-netherlands-scoote
 export const CATALOG_SYSTEMS = [
   ...frenchCatalog.systems.map(system => ({ ...system, country: 'FR' as const })),
   ...germanCatalog.systems.map(system => ({ ...system, country: 'DE' as const })),
+  ...austrianCatalog.systems.map(system => ({ ...system, country: 'AT' as const })),
   ...italianCatalog.systems.map(system => ({ ...system, country: 'IT' as const })),
   ...belgianCatalog.systems.map(system => ({ ...system, country: 'BE' as const })),
   ...norwegianCatalog.systems.map(system => ({ ...system, country: 'NO' as const })),

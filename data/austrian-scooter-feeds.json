@@ -1,0 +1,204 @@
+{
+  "verifiedOn": "2026-10-24",
+  "catalogSource": "https://ridedott.com/locations/",
+  "systems": [
+    {
+      "id": "dott_at_baden",
+      "country": "AT",
+      "provider": "dott",
+      "city": "Baden",
+      "center": [
+        48.004,
+        16.2423
+      ],
+      "bounds": {
+        "south": 47.9753,
+        "north": 48.0189,
+        "west": 16.1998,
+        "east": 16.2796
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "Q82ZbYuGj9WQJvsR64WV"
+    },
+    {
+      "id": "dott_at_bregenz",
+      "country": "AT",
+      "provider": "dott",
+      "city": "Bregenz",
+      "center": [
+        47.4981,
+        9.7371
+      ],
+      "bounds": {
+        "south": 47.4355,
+        "north": 47.584,
+        "west": 9.6622,
+        "east": 9.7976
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "7B9l7NhSWZgzskswNbcs"
+    },
+    {
+      "id": "dott_at_dornbirn",
+      "country": "AT",
+      "provider": "dott",
+      "city": "Dornbirn",
+      "center": [
+        47.4159,
+        9.7382
+      ],
+      "bounds": {
+        "south": 47.3797,
+        "north": 47.4558,
+        "west": 9.6916,
+        "east": 9.7715
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "8rERkLse5Vicafsyjzm3"
+    },
+    {
+      "id": "dott_at_innsbruck",
+      "country": "AT",
+      "provider": "dott",
+      "city": "Innsbruck",
+      "center": [
+        47.2651,
+        11.3988
+      ],
+      "bounds": {
+        "south": 47.2448,
+        "north": 47.3044,
+        "west": 11.2994,
+        "east": 11.4881
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "NAkVhzmXOAYfiX0KdIMo"
+    },
+    {
+      "id": "dott_at_klagenfurt",
+      "country": "AT",
+      "provider": "dott",
+      "city": "Klagenfurt",
+      "center": [
+        46.6207,
+        14.3109
+      ],
+      "bounds": {
+        "south": 46.5887,
+        "north": 46.6488,
+        "west": 14.1948,
+        "east": 14.3747
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "di5L6Z44tUl6vUWWqoP3"
+    },
+    {
+      "id": "dott_at_leoben",
+      "country": "AT",
+      "provider": "dott",
+      "city": "Leoben",
+      "center": [
+        47.3823,
+        15.0941
+      ],
+      "bounds": {
+        "south": 47.3494,
+        "north": 47.4042,
+        "west": 15.0269,
+        "east": 15.1521
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "ESGdHrEUkqrlhOFOJ8KX"
+    },
+    {
+      "id": "dott_at_linz",
+      "country": "AT",
+      "provider": "dott",
+      "city": "Linz",
+      "center": [
+        48.2962,
+        14.2939
+      ],
+      "bounds": {
+        "south": 48.2424,
+        "north": 48.3402,
+        "west": 14.2643,
+        "east": 14.3302
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "wbdSH8Dj4POzNLC152NZ"
+    },
+    {
+      "id": "dott_at_modling",
+      "country": "AT",
+      "provider": "dott",
+      "city": "Mödling",
+      "center": [
+        48.0784,
+        16.2948
+      ],
+      "bounds": {
+        "south": 48.0383,
+        "north": 48.096,
+        "west": 16.2556,
+        "east": 16.3323
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "iH3O37CBf5mWrcy3Nk5N"
+    },
+    {
+      "id": "dott_at_wels",
+      "country": "AT",
+      "provider": "dott",
+      "city": "Wels",
+      "center": [
+        48.1645,
+        14.019
+      ],
+      "bounds": {
+        "south": 48.1172,
+        "north": 48.1943,
+        "west": 13.9296,
+        "east": 14.0667
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "JrbyuERhQUTT2XOUHSrD"
+    },
+    {
+      "id": "dott_at_villach",
+      "country": "AT",
+      "provider": "dott",
+      "city": "Villach",
+      "center": [
+        46.6179,
+        13.8474
+      ],
+      "bounds": {
+        "south": 46.5811,
+        "north": 46.6664,
+        "west": 13.8111,
+        "east": 13.9161
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "V7TDXFYEFZ5b1VFxaKIq"
+    },
+    {
+      "id": "dott_at_wiener_neustadt",
+      "country": "AT",
+      "provider": "dott",
+      "city": "Wiener Neustadt",
+      "center": [
+        47.8206,
+        16.2406
+      ],
+      "bounds": {
+        "south": 47.7881,
+        "north": 47.8492,
+        "west": 16.1933,
+        "east": 16.2855
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "zd6S6vkwjWk8hMgZxtIm"
+    }
+  ]
+}

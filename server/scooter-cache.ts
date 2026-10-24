@@ -17,6 +17,7 @@ import { initErrorReporting, reportError, reportFeedExpired } from './errorRepor
 import { cadenceFromEnv } from './cadence';
 import { answerZones, createZoneStore } from './zoneStore';
 import { createStrayHold } from './strayHold';
+import { dottMapRequests, withDottAppCollectors } from './dottApp';
 
 initErrorReporting();
 upstreamJsonCache.paceHost('gbfs.api.ridedott.com', 150);
@@ -68,7 +69,10 @@ const holdStrays = createStrayHold((id, now) => scheduler.fastSince(id, now) ===
 // City totals count the feeds collected on time, whatever the age of their positions.
 const countedAt = (now: number) => (feed: FeedSnapshot) => feedState(feed, now, cadence) !== 'expired';
 const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
-  cadenceModes: now => scheduler.modes(now), upstreamRequests: () => upstreamJsonCache.requests,
+  cadenceModes: now => scheduler.modes(now), upstreamRequests: () => ({
+    status: upstreamJsonCache.requests.status + dottMapRequests.status,
+    metadata: upstreamJsonCache.requests.metadata,
+  }),
   planRefreshes: () => planRefreshCounts,
   upstreamCache: () => ({ entries: upstreamJsonCache.size, capacity: upstreamJsonCache.capacity,
     evictions: upstreamJsonCache.evictions }) });
@@ -119,7 +123,7 @@ async function collect(definition: CollectableScooterFeed) {
     if (stopping || !records.has(definition.id)) return;
     records.set(definition.id, record);
     publish();
-  }, system ? () => fetchRegionalParking(system) : undefined);
+  }, system && !system.dottAppRegion ? () => fetchRegionalParking(system) : undefined);
   return { failed };
 }
 
@@ -185,7 +189,7 @@ let discoveryTimer: ReturnType<typeof setTimeout>;
 async function discover() {
   let retryMs = 3600_000;
   try {
-    const definitions = await discoverCollectableFeeds();
+    const definitions = withDottAppCollectors(await discoverCollectableFeeds(), REGIONAL_SCOOTER_SYSTEMS);
     if (!stopping) setDefinitions(definitions, true);
     metrics.recordDiscovery();
   } catch (error) {
@@ -195,7 +199,7 @@ async function discover() {
   }
   if (!stopping) discoveryTimer = setTimeout(() => void discover(), retryMs);
 }
-setDefinitions(independentCollectableFeeds(), false);
+setDefinitions(withDottAppCollectors(independentCollectableFeeds(), REGIONAL_SCOOTER_SYSTEMS), false);
 scheduler.start();
 void discover();
 // Sentry hears of a feed still expired after 5 minutes, or 15 for Voi's Swiss feed (expiredReportDelay).

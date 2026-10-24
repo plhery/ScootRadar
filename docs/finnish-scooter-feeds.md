@@ -1,5 +1,10 @@
 # Finnish scooter feeds
 
+Update, 24 October 2026: 20 mainland Dott regions now use the anonymous app
+map, including Helsinki, Espoo, Vantaa and Tampere. Helsinki, Espoo and Vantaa
+have their municipal weekend-night curfews in both clients. The audit below
+records the original GBFS investigation; see [Dott adapter evidence](dott-app-map.md).
+
 Verified 13 October 2026. Finland's only usable feed is Hopp's, in Mariehamn,
 on Åland. The
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
@@ -110,9 +115,8 @@ No law of Åland and no rule of Mariehamn bans renting at night, so
   no hours.
 
 Five mainland towns ban renting at night, in the terms of the micromobility
-permits each gives its operators. None of them has a scooter on the map, so
-none has a curfew entry either; add one with the town if a feed there is
-added.
+permits each gives its operators. Since 24 October, Helsinki, Espoo and Vantaa
+have curfew entries; Turku and Oulu remain absent.
 
 - **Helsinki:** operators must switch their scooters off on the nights from
   Friday to Saturday and from Saturday to Sunday, 23:00 to 05:00, and on Vappu

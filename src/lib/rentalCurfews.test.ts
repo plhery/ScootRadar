@@ -34,6 +34,24 @@ const BIRMINGHAM_AL: [number, number] = [33.5186, -86.8104];
 const at = (iso: string) => Date.parse(iso);
 
 describe('activeCurfew', () => {
+  it('uses municipal boundaries and the different weekend hours around Helsinki', () => {
+    const helsinki: [number, number] = [60.1699, 24.9384];
+    const espoo: [number, number] = [60.2055, 24.6559];
+    const vantaa: [number, number] = [60.2934, 25.0378];
+    // Friday at 23:30 EEST: Helsinki is closed; its neighbours close at midnight.
+    expect(activeCurfew(helsinki, at('2026-10-16T20:30:00Z'))?.city).toBe('Helsinki');
+    expect(activeCurfew(espoo, at('2026-10-16T20:30:00Z'))).toBeNull();
+    expect(activeCurfew(vantaa, at('2026-10-16T20:30:00Z'))).toBeNull();
+    for (const point of [helsinki, espoo, vantaa]) {
+      expect(activeCurfew(point, at('2026-10-16T21:30:00Z'))?.until).toBe(at('2026-10-17T02:00:00Z'));
+      expect(activeCurfew(point, at('2026-10-17T02:00:00Z'))).toBeNull();
+      expect(activeCurfew(point, at('2026-10-15T21:30:00Z'))).toBeNull();
+    }
+    // Kauniainen is an enclave inside Espoo and has no entry of its own.
+    expect(activeCurfew([60.2124, 24.728], at('2026-10-16T21:30:00Z'))).toBeNull();
+    expect(activeCurfew([61.4978, 23.761], at('2026-10-16T21:30:00Z'))).toBeNull();
+  });
+
   it('holds in Oslo from 23:00 to 05:00, Oslo time', () => {
     // 22:59 and 23:00 in Oslo, summer time.
     expect(activeCurfew(OSLO, at('2026-10-12T20:59:00Z'))).toBeNull();

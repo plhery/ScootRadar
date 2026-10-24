@@ -1,4 +1,4 @@
-FROM node:24-alpine AS build
+FROM node:26-alpine AS build
 WORKDIR /app
 COPY server/package.json server/package-lock.json ./
 RUN npm ci --ignore-scripts
@@ -6,9 +6,9 @@ COPY tsconfig.json ./
 COPY data ./data
 COPY src ./src
 COPY server ./server
-RUN ./node_modules/.bin/esbuild server/scooter-cache.ts --bundle --platform=node --format=esm --target=node24 --outfile=cache.mjs
+RUN ./node_modules/.bin/esbuild server/scooter-cache.ts --bundle --platform=node --format=esm --target=node26 --outfile=cache.mjs
 
-FROM node:24-alpine
+FROM node:26-alpine
 WORKDIR /app
 RUN mkdir /data && chown node:node /data
 COPY --from=build /app/cache.mjs ./cache.mjs

@@ -41,11 +41,50 @@
       "anchor": [51.1, 10.4],
       "featuredCities": ["de:Berlin", "de:München", "de:Köln", "de:Frankfurt", "de:Stuttgart", "de:Düsseldorf"],
       "credits": {
-        "attribution": "Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW",
+        "attribution": "Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW; Dott anonymous app map",
         "gbfs": ["Dott", "Bolt", "Hopp", "Lime", "Voi", "Zeus", "Yoio"],
         "links": [
-          { "label": "MobiData BW", "href": "https://www.mobidata-bw.de/" }
+          { "label": "MobiData BW", "href": "https://www.mobidata-bw.de/" },
+          { "label": "DE: Dott map", "href": "https://ridedott.com/" }
         ]
+      }
+    },
+    {
+      "code": "AT",
+      "continent": "europe",
+      "catalog": "data/austrian-scooter-feeds.json",
+      "source": "austria",
+      "names": {
+        "en": "Austria",
+        "de": "Österreich",
+        "fr": "Autriche",
+        "it": "Austria",
+        "nl": "Oostenrijk",
+        "nb": "Østerrike",
+        "pt": "Áustria",
+        "es": "Austria",
+        "is": "Austurríki"
+      },
+      "searchWords": [
+        "austria",
+        "osterreich",
+        "autriche",
+        "oostenrijk",
+        "osterrike",
+        "austurriki"
+      ],
+      "anchor": [
+        47.6,
+        14.0
+      ],
+      "featuredCities": [
+        "at:Linz",
+        "at:Innsbruck",
+        "at:Klagenfurt"
+      ],
+      "credits": {
+        "attribution": "Austria: Dott anonymous app map",
+        "links": [{ "label": "AT: Dott map", "href": "https://ridedott.com/" }]
       }
     },
     {
@@ -58,8 +97,9 @@
       "anchor": [43, 12.5],
       "featuredCities": ["it:Roma", "it:Palermo", "it:Napoli", "it:Catania"],
       "credits": {
-        "attribution": "Italy: Bird, Elerent GBFS",
-        "gbfs": ["Bird", "Elerent"]
+        "attribution": "Italy: Bird, Elerent GBFS; Dott anonymous app map",
+        "gbfs": ["Bird", "Elerent"],
+        "links": [{ "label": "IT: Dott map", "href": "https://ridedott.com/" }]
       }
     },
     {
@@ -153,10 +193,11 @@
       "anchor": [40.4, -2.5],
       "featuredCities": ["es:Gijón", "es:Getafe", "es:Torrevieja", "es:Playa de las Américas", "es:Jávea", "es:Pilar de la Horadada"],
       "credits": {
-        "attribution": "Spain: Bird, Hopp, Hoppy GBFS",
+        "attribution": "Spain: Bird, Hopp, Hoppy GBFS; Dott anonymous app map",
         "gbfs": ["Bird", "Hopp", "Hoppy"],
         "links": [
-          { "label": "ES: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
+          { "label": "ES: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
+          { "label": "ES: Dott map", "href": "https://ridedott.com/" }
         ]
       }
     },
@@ -215,10 +256,11 @@
       "anchorNote": "About the middle of the country, near Łódź.",
       "featuredCities": ["pl:Sosnowiec", "pl:Wołomin", "pl:Oświęcim", "pl:Radzymin", "pl:Kobyłka", "pl:Knurów"],
       "credits": {
-        "attribution": "Poland: Dott, Hopp GBFS",
+        "attribution": "Poland: Dott, Hopp GBFS; Dott anonymous app map",
         "gbfs": ["Dott", "Hopp"],
         "links": [
-          { "label": "PL: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
+          { "label": "PL: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
+          { "label": "PL: Dott map", "href": "https://ridedott.com/" }
         ]
       }
     },
@@ -233,8 +275,9 @@
       "anchorNote": "About the middle of the country, south-east of Budapest.",
       "featuredCities": ["hu:Pécs", "hu:Békéscsaba"],
       "credits": {
-        "attribution": "Hungary: Hopp GBFS",
-        "gbfs": ["Hopp"]
+        "attribution": "Hungary: Hopp GBFS; Dott anonymous app map",
+        "gbfs": ["Hopp"],
+        "links": [{ "label": "HU: Dott map", "href": "https://ridedott.com/" }]
       }
     },
     {
@@ -248,8 +291,9 @@
       "anchorNote": "Inland, about the middle of the mainland, west of Lamia.",
       "featuredCities": ["gr:Rhodes", "gr:Faliraki", "gr:Kos", "gr:Piraeus", "gr:Argostoli", "gr:Ioannina"],
       "credits": {
-        "attribution": "Greece: Hopp, Hoppy GBFS",
-        "gbfs": ["Hopp", "Hoppy"]
+        "attribution": "Greece: Hopp, Hoppy GBFS; Dott anonymous app map",
+        "gbfs": ["Hopp", "Hoppy"],
+        "links": [{ "label": "GR: Dott map", "href": "https://ridedott.com/" }]
       }
     },
     {
@@ -275,11 +319,12 @@
       "names": { "en": "Finland", "de": "Finnland", "fr": "Finlande", "it": "Finlandia", "nl": "Finland", "nb": "Finland", "pt": "Finlândia", "es": "Finlandia", "is": "Finnland" },
       "searchWords": ["finland", "finnland", "finlande", "finlandia", "suomi"],
       "anchor": [61.1, 23.8],
-      "anchorNote": "Inland in the south-west, between Turku and Tampere: on the mainland, so it isn't read as Stockholm's, and on the side nearest Mariehamn, on Åland, where all its scooters are.",
+      "anchorNote": "Inland in the south-west, between Turku and Tampere: on the mainland, so it isn't read as Stockholm's, and near the largest Dott fleets in Helsinki and Tampere.",
       "featuredCities": ["fi:Mariehamn"],
       "credits": {
-        "attribution": "Finland: Hopp GBFS",
-        "gbfs": ["Hopp"]
+        "attribution": "Finland: Hopp GBFS; Dott anonymous app map",
+        "gbfs": ["Hopp"],
+        "links": [{ "label": "FI: Dott map", "href": "https://ridedott.com/" }, { "label": "FI: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }]
       }
     },
     {

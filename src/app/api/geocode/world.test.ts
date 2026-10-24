@@ -493,15 +493,15 @@ describe('the search in Hebrew, Arabic and Greek', () => {
       [{ result_type: 'city', name: 'Thessaloniki', city: 'Thessaloniki', state: 'Macedonia and Thrace', country: 'Greece', country_code: 'gr' }, 40.6403, 22.9353],
     ] });
 
-    expect((await rows(await search('Θεσσαλονίκη', { country: 'GR' })))[0]).toEqual(['Thessaloniki', 'Macedonia and Thrace, Greece']);
+    expect((await rows(await search('Θεσσαλονίκη', { country: 'GR' })))[0]).toEqual(['Thessaloniki', 'Greece']);
   });
 
   it('reads the Greek names Photon finds as the words they are', async () => {
     stubUpstreams({ photon: RECORDED_WORLD_PHOTON_ANSWERS['Θεσσαλονίκη'] });
 
-    // The roads named after the city start with what was typed; its English name does not. Each road is a row of its own.
-    expect((await rows(await search('Θεσσαλονίκη', { country: 'GR' }))).map(([title]) => title)).toEqual([
-      'Θεσσαλονίκη - Προμαχώνας', 'Θεσσαλονίκη - Προμαχώνας', 'Θεσσαλονίκη - Προμαχώνας', 'Θεσσαλονίκη - Προμαχώνας', 'Θεσσαλονίκης - Καβάλας',
+    // The inflected street name is not the covered city name. Each road is a row of its own.
+    expect((await rows(await search('Θεσσαλονίκης', { country: 'GR' }))).map(([title]) => title)).toEqual([
+      'Θεσσαλονίκης - Καβάλας', 'Thessaloniki', 'Thessaloniki', 'Θεσσαλονίκη - Προμαχώνας', 'Θεσσαλονίκη - Προμαχώνας',
     ]);
   });
 });

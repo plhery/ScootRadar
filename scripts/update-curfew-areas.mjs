@@ -18,10 +18,11 @@ const catalog = JSON.parse(readFileSync(path, 'utf8'));
 
 for (const curfew of catalog.curfews) {
   const polygons = await boundary(curfew.boundary);
-  // Outer rings only. Kyiv's two holes, enclaves of Kyiv Oblast to the west and
-  // north-east, lie well outside its scooters' bounds. Of the American holes,
+  // Outer rings by default; Espoo preserves its Kauniainen enclave. Kyiv's two
+  // holes, enclaves of Kyiv Oblast to the west and north-east, lie well outside
+  // its scooters' bounds. Of the American holes,
   // only Berry Hill, a city inside Nashville, held a scooter or two.
-  curfew.areas = outerRings(polygons, { minAreaKm2: MIN_AREA_KM2, tolerance: TOLERANCE_M });
+  curfew.areas = outerRings(polygons, { minAreaKm2: MIN_AREA_KM2, tolerance: TOLERANCE_M, holes: curfew.boundary.holes });
   console.log(`${curfew.id}: ${curfew.areas.map(area => area.length).join(' + ')} points`);
 }
 

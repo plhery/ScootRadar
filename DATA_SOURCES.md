@@ -216,6 +216,32 @@ development and commercial/distribution restrictions that need review before
 public deployment. See the [investigation and source terms](docs/french-scooter-feeds.md)
 for the verified cities, sample counts, excluded feeds, and recheck command.
 
+## Dott anonymous app map
+
+Since 24 October 2026, 157 regions not served by the public GBFS feeds use
+Dott's signed-out Android map endpoint. This adds about 69,500 available
+scooters in Austria (11 regions), Germany (63), Spain (3), Finland (20),
+Greece (2), Hungary (5), Italy (16) and Poland (37) in the discovery sweep.
+Bochum also returned to the catalog through its public GBFS feed.
+
+The Node cache makes one bounded HTTP/2 synchronization per region, at most
+two requests a second, on the usual watched/idle schedule. Only electric
+standing scooters with the reviewed region id and coordinates inside its
+bounds are published. A timeout, malformed response or stream ending before
+synchronization fails the collection and retains the previous snapshot under
+the usual expiry rules. No rider account or token is used. Charge, range,
+pricing, selected-vehicle details, parking and geofencing are absent from
+this map view; unknown charge and range stay unknown. The observation time
+is the completed map sync, since the endpoint carries no position timestamp.
+
+Helsinki, Espoo and Vantaa include their municipal weekend-night bans on
+both clients, with OpenStreetMap boundaries (ODbL). The signed-out map route
+was explicitly authorized by the user on 24 October 2026. Official partner
+GBFS access remains preferable; [protocol evidence and contacts](docs/dott-app-map.md)
+record the source and the request wording. The country-specific GBFS audits
+below describe their original checks; this supplement supersedes their
+claims that these Dott regions have no usable source.
+
 ## Address data
 
 Supported city names and aliases are found in the local, reviewed
@@ -358,8 +384,8 @@ e-scooter and e-bike parking](https://www.data.gouv.fr/datasets/espaces-de-stati
 
 ## Ride and parking zones
 
-A preview, off unless turned on (Settings → Map → Ride and parking zones, or
-`/map?zones=1`), draws from zoom 14 the zones that the Swiss national systems,
+A preview, off unless turned on (Settings → Map → Ride and parking zones, on
+the website and in the iOS app, or `/map?zones=1`), draws from zoom 14 the zones that the Swiss national systems,
 Hopp's towns and the regional GBFS systems publish in `geofencing_zones`:
 
 - No riding (`ride_through_allowed=false`, or a limit of 0 km/h), no parking

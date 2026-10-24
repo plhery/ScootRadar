@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-11",
+  "verifiedOn": "2026-10-24",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -1094,6 +1094,1161 @@
       "aliases": [
         "Wuerzburg"
       ]
+    },
+    {
+      "id": "dott_de_bielefeld",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Bielefeld",
+      "center": [
+        52.024,
+        8.5372
+      ],
+      "bounds": {
+        "south": 51.9368,
+        "north": 52.0619,
+        "west": 8.4745,
+        "east": 8.6263
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "egG7jdbfxKAAmMDIhPDb"
+    },
+    {
+      "id": "dott_de_bochum",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Bochum",
+      "center": [
+        51.4695,
+        7.1963
+      ],
+      "bounds": {
+        "south": 51.4387,
+        "north": 51.5003,
+        "west": 7.1133,
+        "east": 7.2793
+      },
+      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/bochum/gbfs.json"
+    },
+    {
+      "id": "dott_de_bonn",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Bonn",
+      "center": [
+        50.7214,
+        7.1155
+      ],
+      "bounds": {
+        "south": 50.6479,
+        "north": 50.7748,
+        "west": 7.0245,
+        "east": 7.2027
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "1qxdUU88WmTfAWoqSlZI"
+    },
+    {
+      "id": "dott_de_hamburg",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Hamburg",
+      "center": [
+        53.5718,
+        9.9948
+      ],
+      "bounds": {
+        "south": 53.4275,
+        "north": 53.6837,
+        "west": 9.7932,
+        "east": 10.2659
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "EaSScjzbissQKPyYpKCn"
+    },
+    {
+      "id": "dott_de_braunschweig",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Braunschweig",
+      "center": [
+        52.2627,
+        10.5257
+      ],
+      "bounds": {
+        "south": 52.2046,
+        "north": 52.326,
+        "west": 10.4612,
+        "east": 10.6041
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "OO5Z0AjwYQmJSWVsliYQ"
+    },
+    {
+      "id": "dott_de_bremerhaven",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Bremerhaven",
+      "center": [
+        53.5566,
+        8.5966
+      ],
+      "bounds": {
+        "south": 53.4848,
+        "north": 53.6278,
+        "west": 8.557,
+        "east": 8.6482
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "ofzVf3qAuqrHNppNmMQ1"
+    },
+    {
+      "id": "dott_de_wiesbaden",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Wiesbaden",
+      "center": [
+        50.077,
+        8.2347
+      ],
+      "bounds": {
+        "south": 49.9403,
+        "north": 50.1076,
+        "west": 8.0858,
+        "east": 8.3284
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "fKByXila7xUSFKLV8GGX"
+    },
+    {
+      "id": "dott_de_celle",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Celle",
+      "center": [
+        52.6113,
+        10.0542
+      ],
+      "bounds": {
+        "south": 52.5787,
+        "north": 52.6482,
+        "west": 9.9977,
+        "east": 10.1239
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "J2Q49IsPHXeY8QcARpQc"
+    },
+    {
+      "id": "dott_de_chemnitz",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Chemnitz",
+      "center": [
+        50.8097,
+        12.9138
+      ],
+      "bounds": {
+        "south": 50.7881,
+        "north": 50.8627,
+        "west": 12.868,
+        "east": 12.975
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "aweJXIje7a6tmeQ402CL"
+    },
+    {
+      "id": "dott_de_cottbus",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Cottbus",
+      "center": [
+        51.7565,
+        14.3316
+      ],
+      "bounds": {
+        "south": 51.7152,
+        "north": 51.7946,
+        "west": 14.2875,
+        "east": 14.3962
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "AJnrxlFeNSgRQWBF7rjz"
+    },
+    {
+      "id": "dott_de_darmstadt",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Darmstadt",
+      "center": [
+        49.8719,
+        8.6468
+      ],
+      "bounds": {
+        "south": 49.8397,
+        "north": 49.9019,
+        "west": 8.6128,
+        "east": 8.6939
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "M3gOcERrqmre9M0LOVVa"
+    },
+    {
+      "id": "dott_de_detmold",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Detmold",
+      "center": [
+        51.9442,
+        8.8749
+      ],
+      "bounds": {
+        "south": 51.9152,
+        "north": 51.9615,
+        "west": 8.8186,
+        "east": 8.9235
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "JpDGTjYH8vqbiSfSneet"
+    },
+    {
+      "id": "dott_de_rostock",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Rostock",
+      "center": [
+        54.1379,
+        12.0695
+      ],
+      "bounds": {
+        "south": 54.0619,
+        "north": 54.1841,
+        "west": 12.0236,
+        "east": 12.1837
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "kJoiHjE8XEEKeSmT9Dge"
+    },
+    {
+      "id": "dott_de_dortmund",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Dortmund",
+      "center": [
+        51.5129,
+        7.4649
+      ],
+      "bounds": {
+        "south": 51.4822,
+        "north": 51.5375,
+        "west": 7.3854,
+        "east": 7.5289
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "VryeqX4HZzQWBvJbfYzT"
+    },
+    {
+      "id": "dott_de_salzgitter",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Salzgitter",
+      "center": [
+        52.1519,
+        10.3332
+      ],
+      "bounds": {
+        "south": 52.0317,
+        "north": 52.1779,
+        "west": 10.2792,
+        "east": 10.4017
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "LkL4ZUyIIaMEFIdVLfsU"
+    },
+    {
+      "id": "dott_de_erfurt",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Erfurt",
+      "center": [
+        50.9787,
+        11.0328
+      ],
+      "bounds": {
+        "south": 50.9554,
+        "north": 51.0154,
+        "west": 10.9877,
+        "east": 11.0893
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "3ZlTTHrS08nz9oyHPMxC"
+    },
+    {
+      "id": "dott_de_erlangen",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Erlangen",
+      "center": [
+        49.5917,
+        11.012
+      ],
+      "bounds": {
+        "south": 49.538,
+        "north": 49.6163,
+        "west": 10.9411,
+        "east": 11.0567
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "Dh1yKbaMUpwpl0TCZ2CD"
+    },
+    {
+      "id": "dott_de_flensburg",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Flensburg",
+      "center": [
+        54.7849,
+        9.4364
+      ],
+      "bounds": {
+        "south": 54.7386,
+        "north": 54.8309,
+        "west": 9.3658,
+        "east": 9.5003
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "gxFhNVknsJ9iDUUnYGPE"
+    },
+    {
+      "id": "dott_de_friedrichshafen",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Friedrichshafen",
+      "center": [
+        47.6688,
+        9.4748
+      ],
+      "bounds": {
+        "south": 47.6383,
+        "north": 47.7126,
+        "west": 9.3898,
+        "east": 9.526
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "Ah8BZSm7K8rLvRZiQSZB"
+    },
+    {
+      "id": "dott_de_gera",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Gera",
+      "center": [
+        50.8622,
+        12.0767
+      ],
+      "bounds": {
+        "south": 50.833,
+        "north": 50.9074,
+        "west": 12.0462,
+        "east": 12.1027
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "e7N9FtjfrhPI60j4zQLo"
+    },
+    {
+      "id": "dott_de_gifhorn",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Gifhorn",
+      "center": [
+        52.4863,
+        10.5383
+      ],
+      "bounds": {
+        "south": 52.4527,
+        "north": 52.5122,
+        "west": 10.5053,
+        "east": 10.5789
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "JtEcVUoQkm5hlJQDrPHq"
+    },
+    {
+      "id": "dott_de_gladbeck",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Gladbeck",
+      "center": [
+        51.5683,
+        6.999
+      ],
+      "bounds": {
+        "south": 51.5376,
+        "north": 51.5978,
+        "west": 6.9602,
+        "east": 7.0307
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "2GLgHsKr8NtpG6ZhMz26"
+    },
+    {
+      "id": "dott_de_hamm",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Hamm",
+      "center": [
+        51.682,
+        7.7974
+      ],
+      "bounds": {
+        "south": 51.6517,
+        "north": 51.7214,
+        "west": 7.7216,
+        "east": 7.934
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "NDsP0p9CJQvEohJVv9u3"
+    },
+    {
+      "id": "dott_de_hennef",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Hennef",
+      "center": [
+        50.7694,
+        7.2961
+      ],
+      "bounds": {
+        "south": 50.7574,
+        "north": 50.7895,
+        "west": 7.2451,
+        "east": 7.3268
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "0dzI5DGHYTsvNcQRvVoW"
+    },
+    {
+      "id": "dott_de_herford",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Herford",
+      "center": [
+        52.1173,
+        8.6697
+      ],
+      "bounds": {
+        "south": 52.0744,
+        "north": 52.1414,
+        "west": 8.6128,
+        "east": 8.7214
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "Sa5g7S2lWZpqWEWLP4Wb"
+    },
+    {
+      "id": "dott_de_herne",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Herne",
+      "center": [
+        51.5407,
+        7.2061
+      ],
+      "bounds": {
+        "south": 51.5103,
+        "north": 51.5667,
+        "west": 7.1469,
+        "east": 7.2704
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "Pt5ycfXMyzAGTr1JvtJW"
+    },
+    {
+      "id": "dott_de_herten",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Herten",
+      "center": [
+        51.5995,
+        7.1443
+      ],
+      "bounds": {
+        "south": 51.5744,
+        "north": 51.629,
+        "west": 7.1148,
+        "east": 7.1645
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "xEAZsiEtirqwmnLfxmnS"
+    },
+    {
+      "id": "dott_de_hilden",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Hilden",
+      "center": [
+        51.1692,
+        6.9372
+      ],
+      "bounds": {
+        "south": 51.1401,
+        "north": 51.1906,
+        "west": 6.8934,
+        "east": 6.9892
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "ImjeliXQK9Z14hKMnjzn"
+    },
+    {
+      "id": "dott_de_hildesheim",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Hildesheim",
+      "center": [
+        52.1517,
+        9.9584
+      ],
+      "bounds": {
+        "south": 52.109,
+        "north": 52.184,
+        "west": 9.8983,
+        "east": 10.0044
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "FGKrvG0G74LSn1lSLhP2"
+    },
+    {
+      "id": "dott_de_duisburg",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Duisburg",
+      "center": [
+        51.4154,
+        6.7249
+      ],
+      "bounds": {
+        "south": 51.3816,
+        "north": 51.4401,
+        "west": 6.6794,
+        "east": 6.8021
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "58Ncbi4tyamK6hRwb2Q6"
+    },
+    {
+      "id": "dott_de_ingolstadt",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Ingolstadt",
+      "center": [
+        48.7689,
+        11.4361
+      ],
+      "bounds": {
+        "south": 48.7047,
+        "north": 48.82,
+        "west": 11.3364,
+        "east": 11.5852
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "lBbakfGkEOpQQX4AOJAs"
+    },
+    {
+      "id": "dott_de_jena",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Jena",
+      "center": [
+        50.9253,
+        11.5832
+      ],
+      "bounds": {
+        "south": 50.8762,
+        "north": 50.9542,
+        "west": 11.556,
+        "east": 11.6352
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "S90bcfrO0345mTNeU2UV"
+    },
+    {
+      "id": "dott_de_karlsruhe",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Karlsruhe",
+      "center": [
+        49.0069,
+        8.4037
+      ],
+      "bounds": {
+        "south": 48.9779,
+        "north": 49.046,
+        "west": 8.2906,
+        "east": 8.4878
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "G6mylkfXBi7iuhYMeBjZ"
+    },
+    {
+      "id": "dott_de_kiel",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Kiel",
+      "center": [
+        54.3278,
+        10.13
+      ],
+      "bounds": {
+        "south": 54.2864,
+        "north": 54.37,
+        "west": 10.0418,
+        "east": 10.2026
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "gJ5bjqUboAgc8dTSfWH0"
+    },
+    {
+      "id": "dott_de_lindau",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Lindau",
+      "center": [
+        47.5575,
+        9.6958
+      ],
+      "bounds": {
+        "south": 47.5373,
+        "north": 47.5962,
+        "west": 9.6521,
+        "east": 9.7398
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "uusOI9OEndkXBY5QnG41"
+    },
+    {
+      "id": "dott_de_ludwigsburg",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Ludwigsburg",
+      "center": [
+        48.8975,
+        9.1922
+      ],
+      "bounds": {
+        "south": 48.8747,
+        "north": 48.9251,
+        "west": 9.1394,
+        "east": 9.2755
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "KqIiGMZQcNY53dnd5w6D"
+    },
+    {
+      "id": "dott_de_ludwigshafen_am_rhein",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Ludwigshafen am Rhein",
+      "center": [
+        49.4812,
+        8.4464
+      ],
+      "bounds": {
+        "south": 49.4212,
+        "north": 49.556,
+        "west": 8.3441,
+        "east": 8.576
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "oK3T6A7SFjqdO9VkywPD"
+    },
+    {
+      "id": "dott_de_minden",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Minden",
+      "center": [
+        52.2898,
+        8.8973
+      ],
+      "bounds": {
+        "south": 52.2631,
+        "north": 52.3174,
+        "west": 8.8586,
+        "east": 8.9693
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "EFRLlsj6ssyR70MvtBmz"
+    },
+    {
+      "id": "dott_de_monchengladbach",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Mönchengladbach",
+      "center": [
+        51.1917,
+        6.4409
+      ],
+      "bounds": {
+        "south": 51.1194,
+        "north": 51.2309,
+        "west": 6.3764,
+        "east": 6.4858
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "XEzcFohyWIZfdTGcbFTS"
+    },
+    {
+      "id": "dott_de_monheim_am_rhein",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Monheim am Rhein",
+      "center": [
+        51.0924,
+        6.8909
+      ],
+      "bounds": {
+        "south": 51.0649,
+        "north": 51.1302,
+        "west": 6.8748,
+        "east": 6.9184
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "MQFyTMyB9tcddBhtKTJW"
+    },
+    {
+      "id": "dott_de_neumunster",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Neumünster",
+      "center": [
+        54.0726,
+        9.9808
+      ],
+      "bounds": {
+        "south": 54.0399,
+        "north": 54.1434,
+        "west": 9.9342,
+        "east": 10.0445
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "2uPeupYMwEjpXgG34x0Q"
+    },
+    {
+      "id": "dott_de_neuss",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Neuss",
+      "center": [
+        51.2035,
+        6.6837
+      ],
+      "bounds": {
+        "south": 51.1527,
+        "north": 51.2372,
+        "west": 6.6248,
+        "east": 6.7433
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "ZnALEzCaKGBcsShLGEU0"
+    },
+    {
+      "id": "dott_de_oberhausen",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Oberhausen",
+      "center": [
+        51.4543,
+        6.8735
+      ],
+      "bounds": {
+        "south": 51.4043,
+        "north": 51.5638,
+        "west": 6.7978,
+        "east": 6.9324
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "kEhECXiFquicoB3acJuH"
+    },
+    {
+      "id": "dott_de_osnabruck",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Osnabrück",
+      "center": [
+        52.2747,
+        8.0482
+      ],
+      "bounds": {
+        "south": 52.2434,
+        "north": 52.3128,
+        "west": 7.9823,
+        "east": 8.1044
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "nBxq1MifM7m9iE5T9LDz"
+    },
+    {
+      "id": "dott_de_paderborn",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Paderborn",
+      "center": [
+        51.7199,
+        8.7528
+      ],
+      "bounds": {
+        "south": 51.6932,
+        "north": 51.7624,
+        "west": 8.706,
+        "east": 8.8131
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "tec0rkH5MXII38nRos8Z"
+    },
+    {
+      "id": "dott_de_peine",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Peine",
+      "center": [
+        52.3266,
+        10.2323
+      ],
+      "bounds": {
+        "south": 52.2976,
+        "north": 52.3585,
+        "west": 10.1587,
+        "east": 10.2898
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "Y0zJ2kJNdu9cg6P5ueEI"
+    },
+    {
+      "id": "dott_de_regensburg",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Regensburg",
+      "center": [
+        49.0134,
+        12.1016
+      ],
+      "bounds": {
+        "south": 48.9801,
+        "north": 49.0376,
+        "west": 12.0357,
+        "east": 12.1529
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "ipmk41JN76t2iTLpafy3"
+    },
+    {
+      "id": "dott_de_recklinghausen",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Recklinghausen",
+      "center": [
+        51.6083,
+        7.2034
+      ],
+      "bounds": {
+        "south": 51.557,
+        "north": 51.6334,
+        "west": 7.1605,
+        "east": 7.2856
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "Qkci3QsqIYKjjczl2Xih"
+    },
+    {
+      "id": "dott_de_rheda_wiedenbruck",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Rheda-Wiedenbrück",
+      "center": [
+        51.845,
+        8.3056
+      ],
+      "bounds": {
+        "south": 51.8035,
+        "north": 51.8672,
+        "west": 8.2557,
+        "east": 8.3701
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "TdEai7jeW9qnb45eRRPg"
+    },
+    {
+      "id": "dott_de_reutlingen",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Reutlingen",
+      "center": [
+        48.4914,
+        9.2043
+      ],
+      "bounds": {
+        "south": 48.4442,
+        "north": 48.5266,
+        "west": 9.1465,
+        "east": 9.2466
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "6qn4gsBsBCA1uUttRE9S"
+    },
+    {
+      "id": "dott_de_rheine",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Rheine",
+      "center": [
+        52.2812,
+        7.4417
+      ],
+      "bounds": {
+        "south": 52.251,
+        "north": 52.3224,
+        "west": 7.3794,
+        "east": 7.5204
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "bHdACgAwWJQfXPf96Gfc"
+    },
+    {
+      "id": "dott_de_bremen",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Bremen",
+      "center": [
+        53.0971,
+        8.7907
+      ],
+      "bounds": {
+        "south": 53.0462,
+        "north": 53.1983,
+        "west": 8.5949,
+        "east": 8.8953
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "y4PexqmeyBZ8Tcgcmer2"
+    },
+    {
+      "id": "dott_de_russelsheim",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Rüsselsheim",
+      "center": [
+        49.9917,
+        8.4248
+      ],
+      "bounds": {
+        "south": 49.9551,
+        "north": 50.0067,
+        "west": 8.3819,
+        "east": 8.4651
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "zesx8ClrOaWwm4tvCLXm"
+    },
+    {
+      "id": "dott_de_saarbrucken",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Saarbrücken",
+      "center": [
+        49.2375,
+        6.9972
+      ],
+      "bounds": {
+        "south": 49.1732,
+        "north": 49.297,
+        "west": 6.884,
+        "east": 7.0758
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "302nCIFHwsMwJUeToPNg"
+    },
+    {
+      "id": "dott_de_sankt_augustin",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Sankt Augustin",
+      "center": [
+        50.791,
+        7.2062
+      ],
+      "bounds": {
+        "south": 50.7504,
+        "north": 50.8153,
+        "west": 7.1312,
+        "east": 7.2821
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "G7H1GPyMujNziqbiiZO8"
+    },
+    {
+      "id": "dott_de_sindelfingen",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Sindelfingen",
+      "center": [
+        48.7084,
+        9.0035
+      ],
+      "bounds": {
+        "south": 48.6625,
+        "north": 48.7301,
+        "west": 8.972,
+        "east": 9.0493
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "IUACuXnotjY7IOBTqrh4"
+    },
+    {
+      "id": "dott_de_solingen",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Solingen",
+      "center": [
+        51.1688,
+        7.0646
+      ],
+      "bounds": {
+        "south": 51.1323,
+        "north": 51.2187,
+        "west": 6.9853,
+        "east": 7.1275
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "pS1EtzRhC4jU8JsmDhwd"
+    },
+    {
+      "id": "dott_de_troisdorf",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Troisdorf",
+      "center": [
+        50.8129,
+        7.1252
+      ],
+      "bounds": {
+        "south": 50.7701,
+        "north": 50.8467,
+        "west": 7.0808,
+        "east": 7.1904
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "sZ1Op3upFcdC7buHLAQa"
+    },
+    {
+      "id": "dott_de_uberlingen",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Überlingen",
+      "center": [
+        47.7677,
+        9.1761
+      ],
+      "bounds": {
+        "south": 47.7479,
+        "north": 47.7827,
+        "west": 9.1316,
+        "east": 9.2051
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "sR0J6Mnryh9hhbJQLuuz"
+    },
+    {
+      "id": "dott_de_tubingen",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Tübingen",
+      "center": [
+        48.5216,
+        9.0576
+      ],
+      "bounds": {
+        "south": 48.4954,
+        "north": 48.5517,
+        "west": 9.0218,
+        "east": 9.0973
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "asJ1kNfPUfsEyMr0ipU3"
+    },
+    {
+      "id": "dott_de_ulm",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Ulm",
+      "center": [
+        48.3985,
+        9.9925
+      ],
+      "bounds": {
+        "south": 48.3409,
+        "north": 48.4485,
+        "west": 9.9187,
+        "east": 10.0788
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "vxDTZnNpccTvaPJfI3Fp"
+    },
+    {
+      "id": "dott_de_nurnberg",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Nürnberg",
+      "center": [
+        49.4527,
+        11.0761
+      ],
+      "bounds": {
+        "south": 49.3932,
+        "north": 49.5011,
+        "west": 10.9423,
+        "east": 11.1488
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "BuDzinMSS7ieMYt0GZs5",
+      "aliases": [
+        "Nuremberg",
+        "Nuernberg"
+      ]
+    },
+    {
+      "id": "dott_de_wolfsburg",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Wolfsburg",
+      "center": [
+        52.4223,
+        10.7873
+      ],
+      "bounds": {
+        "south": 52.3652,
+        "north": 52.4678,
+        "west": 10.6754,
+        "east": 10.869
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "9DNNZJYQFy6NbVklJcCA"
+    },
+    {
+      "id": "dott_de_zwickau",
+      "country": "DE",
+      "provider": "dott",
+      "city": "Zwickau",
+      "center": [
+        50.7334,
+        12.4792
+      ],
+      "bounds": {
+        "south": 50.7018,
+        "north": 50.7432,
+        "west": 12.4519,
+        "east": 12.524
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "fHlmkLM4HKiMIvqutrey"
     }
   ]
 }

@@ -40,6 +40,8 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   country: ScooterCountry;
   provider: ProviderKey;
   discoveryUrl: string;
+  /** Anonymous app map region, collected over HTTP/2 by the Node cache instead of GBFS. */
+  dottAppRegion?: string;
   /** Published subregions of a shared feed; fetched once, routed per city. */
   areas?: ScooterServiceArea[];
   /**

@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-13",
+  "verifiedOn": "2026-10-24",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -84,6 +84,304 @@
       "aliases": [
         "Catane"
       ]
+    },
+    {
+      "id": "dott_it_bari",
+      "country": "IT",
+      "provider": "dott",
+      "city": "Bari",
+      "center": [
+        41.1166,
+        16.8625
+      ],
+      "bounds": {
+        "south": 41.0421,
+        "north": 41.172,
+        "west": 16.7286,
+        "east": 17.0146
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "Az1LzccORsUFxeTqSSYy"
+    },
+    {
+      "id": "dott_it_bergamo",
+      "country": "IT",
+      "provider": "dott",
+      "city": "Bergamo",
+      "center": [
+        45.6952,
+        9.6742
+      ],
+      "bounds": {
+        "south": 45.6534,
+        "north": 45.7334,
+        "west": 9.6174,
+        "east": 9.7157
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "wD2v8JZ53fYAnw9eixhQ"
+    },
+    {
+      "id": "dott_it_varese",
+      "country": "IT",
+      "provider": "dott",
+      "city": "Varese",
+      "center": [
+        45.8176,
+        8.8299
+      ],
+      "bounds": {
+        "south": 45.7766,
+        "north": 45.8859,
+        "west": 8.735,
+        "east": 8.8719
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "ZEjkAieJjdsuAtI4UdrB"
+    },
+    {
+      "id": "dott_it_ferrara",
+      "country": "IT",
+      "provider": "dott",
+      "city": "Ferrara",
+      "center": [
+        44.839,
+        11.6119
+      ],
+      "bounds": {
+        "south": 44.7985,
+        "north": 44.9095,
+        "west": 11.5342,
+        "east": 11.6801
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "qfcLVYWKdrbqB68qhw1U"
+    },
+    {
+      "id": "dott_it_jesolo",
+      "country": "IT",
+      "provider": "dott",
+      "city": "Jesolo",
+      "center": [
+        45.4974,
+        12.6184
+      ],
+      "bounds": {
+        "south": 45.4732,
+        "north": 45.6019,
+        "west": 12.5305,
+        "east": 12.7466
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "w3kwCayYAADvtiJAUrEb"
+    },
+    {
+      "id": "dott_it_torino",
+      "country": "IT",
+      "provider": "dott",
+      "city": "Torino",
+      "center": [
+        45.07,
+        7.6621
+      ],
+      "bounds": {
+        "south": 44.9259,
+        "north": 45.1778,
+        "west": 7.4693,
+        "east": 7.8341
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "C5CS6ie5FIim6JaKNx68",
+      "aliases": [
+        "Turin"
+      ]
+    },
+    {
+      "id": "dott_it_milano",
+      "country": "IT",
+      "provider": "dott",
+      "city": "Milano",
+      "center": [
+        45.4771,
+        9.2001
+      ],
+      "bounds": {
+        "south": 45.3847,
+        "north": 45.5588,
+        "west": 9.0389,
+        "east": 9.3113
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "fe7D3IW3JpeuWxSk3Rko",
+      "aliases": [
+        "Milan",
+        "Mailand"
+      ]
+    },
+    {
+      "id": "dott_it_modena",
+      "country": "IT",
+      "provider": "dott",
+      "city": "Modena",
+      "center": [
+        44.6452,
+        10.9307
+      ],
+      "bounds": {
+        "south": 44.5609,
+        "north": 44.7283,
+        "west": 10.7799,
+        "east": 11.0137
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "7PKZeE6XYtjmPR4boTzC"
+    },
+    {
+      "id": "dott_it_monza",
+      "country": "IT",
+      "provider": "dott",
+      "city": "Monza",
+      "center": [
+        45.578,
+        9.274
+      ],
+      "bounds": {
+        "south": 45.5513,
+        "north": 45.6342,
+        "west": 9.2262,
+        "east": 9.3269
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "nTTnDw9Hvu7qsRjcKo6g"
+    },
+    {
+      "id": "dott_it_padova",
+      "country": "IT",
+      "provider": "dott",
+      "city": "Padova",
+      "center": [
+        45.4148,
+        11.8819
+      ],
+      "bounds": {
+        "south": 45.2723,
+        "north": 45.517,
+        "west": 11.7037,
+        "east": 12.029
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "d0oXzhk290dsJ84NpLI7"
+    },
+    {
+      "id": "dott_it_palermo",
+      "country": "IT",
+      "provider": "dott",
+      "city": "Palermo",
+      "center": [
+        38.1157,
+        13.3613
+      ],
+      "bounds": {
+        "south": 38.0935,
+        "north": 38.2183,
+        "west": 13.26,
+        "east": 13.3791
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "VoG7feE0rUKTMWjcWzQC"
+    },
+    {
+      "id": "dott_it_reggio_nell_emilia",
+      "country": "IT",
+      "provider": "dott",
+      "city": "Reggio nell'Emilia",
+      "center": [
+        44.6976,
+        10.6311
+      ],
+      "bounds": {
+        "south": 44.6393,
+        "north": 44.7301,
+        "west": 10.5755,
+        "east": 10.6878
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "uQIBEH57M3OlvLm5vVf8"
+    },
+    {
+      "id": "dott_it_roma",
+      "country": "IT",
+      "provider": "dott",
+      "city": "Roma",
+      "center": [
+        41.9028,
+        12.4964
+      ],
+      "bounds": {
+        "south": 41.7032,
+        "north": 42.0224,
+        "west": 12.2499,
+        "east": 12.7145
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "ZerexHD2cqWbR0sxyNAg",
+      "aliases": [
+        "Rome"
+      ]
+    },
+    {
+      "id": "dott_it_cagliari",
+      "country": "IT",
+      "provider": "dott",
+      "city": "Cagliari",
+      "center": [
+        39.2257,
+        9.1257
+      ],
+      "bounds": {
+        "south": 39.1842,
+        "north": 39.2658,
+        "west": 9.0798,
+        "east": 9.2271
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "Tk4I7KecinSEZHFKNNJ9"
+    },
+    {
+      "id": "dott_it_trento",
+      "country": "IT",
+      "provider": "dott",
+      "city": "Trento",
+      "center": [
+        46.0672,
+        11.1203
+      ],
+      "bounds": {
+        "south": 46.03,
+        "north": 46.1382,
+        "west": 11.0796,
+        "east": 11.1395
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "cmOxMLWRfqsDVZMKj1IC"
+    },
+    {
+      "id": "dott_it_verona",
+      "country": "IT",
+      "provider": "dott",
+      "city": "Verona",
+      "center": [
+        45.4379,
+        10.9919
+      ],
+      "bounds": {
+        "south": 45.3474,
+        "north": 45.5438,
+        "west": 10.8749,
+        "east": 11.1259
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "TVoGFZEEaEBjFcGUN950"
     }
   ]
 }

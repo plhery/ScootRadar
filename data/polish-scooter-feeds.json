@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-13",
+  "verifiedOn": "2026-10-24",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -162,6 +162,689 @@
       "aliases": [
         "Zlotow"
       ]
+    },
+    {
+      "id": "dott_pl_brzeg",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Brzeg",
+      "center": [
+        50.8551,
+        17.4722
+      ],
+      "bounds": {
+        "south": 50.8404,
+        "north": 50.8678,
+        "west": 17.4434,
+        "east": 17.4904
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "ufnAlEKfprhsuqxLhkAj"
+    },
+    {
+      "id": "dott_pl_warszawa",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Warszawa",
+      "center": [
+        52.2336,
+        21.0025
+      ],
+      "bounds": {
+        "south": 52.1229,
+        "north": 52.3642,
+        "west": 20.7372,
+        "east": 21.1523
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "UYxJtnSV26NIA8UY254A",
+      "aliases": [
+        "Warsaw",
+        "Warschau",
+        "Varsovie"
+      ]
+    },
+    {
+      "id": "dott_pl_katowice_chorzow",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Katowice / Chorzów",
+      "center": [
+        50.2849,
+        18.9938
+      ],
+      "bounds": {
+        "south": 50.224,
+        "north": 50.3328,
+        "west": 18.8997,
+        "east": 19.0642
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "HQgqyzmeQSS8CYzibPa5",
+      "aliases": [
+        "Katowice",
+        "Chorzów",
+        "Chorzow"
+      ]
+    },
+    {
+      "id": "dott_pl_chrzanow",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Chrzanów",
+      "center": [
+        50.1442,
+        19.4142
+      ],
+      "bounds": {
+        "south": 50.1139,
+        "north": 50.1825,
+        "west": 19.3527,
+        "east": 19.4852
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "y3ZW5KjcwUvTHtbsfUYn"
+    },
+    {
+      "id": "dott_pl_gdansk_gdynia_sopot",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Gdańsk / Gdynia / Sopot",
+      "center": [
+        54.3823,
+        18.5811
+      ],
+      "bounds": {
+        "south": 54.288,
+        "north": 54.6152,
+        "west": 18.193,
+        "east": 18.675
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "BHrNuLTXg9JdkxkoV8pg",
+      "aliases": [
+        "Gdańsk",
+        "Gdansk",
+        "Gdynia",
+        "Sopot",
+        "Tricity"
+      ]
+    },
+    {
+      "id": "dott_pl_czestochowa",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Częstochowa",
+      "center": [
+        50.813,
+        19.1171
+      ],
+      "bounds": {
+        "south": 50.7735,
+        "north": 50.8636,
+        "west": 19.0697,
+        "east": 19.1564
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "1XNmoH2aXG9nRsdgZBDI"
+    },
+    {
+      "id": "dott_pl_goleniow",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Goleniów",
+      "center": [
+        53.5631,
+        14.8305
+      ],
+      "bounds": {
+        "south": 53.5378,
+        "north": 53.5783,
+        "west": 14.8022,
+        "east": 14.872
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "FfUei1XUM0x3FHnAkLMm"
+    },
+    {
+      "id": "dott_pl_kolobrzeg",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Kołobrzeg",
+      "center": [
+        54.1804,
+        15.5666
+      ],
+      "bounds": {
+        "south": 54.1496,
+        "north": 54.1944,
+        "west": 15.5146,
+        "east": 15.6203
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "m9yWknybQS4CDuP8bIRM"
+    },
+    {
+      "id": "dott_pl_koscierzyna",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Kościerzyna",
+      "center": [
+        54.121,
+        17.977
+      ],
+      "bounds": {
+        "south": 54.1048,
+        "north": 54.1417,
+        "west": 17.8512,
+        "east": 18.008
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "iJZlvAZMRtDb70AaaT9Q"
+    },
+    {
+      "id": "dott_pl_lebork",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Lębork",
+      "center": [
+        54.5398,
+        17.7296
+      ],
+      "bounds": {
+        "south": 54.5206,
+        "north": 54.5606,
+        "west": 17.7122,
+        "east": 17.7727
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "nmznapeDVA6FJHGkrfX7"
+    },
+    {
+      "id": "dott_pl_krakow",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Kraków",
+      "center": [
+        50.0653,
+        19.9407
+      ],
+      "bounds": {
+        "south": 50.0182,
+        "north": 50.1089,
+        "west": 19.8716,
+        "east": 20.0422
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "pAsVTaPcUw2JLSF2KLDZ"
+    },
+    {
+      "id": "dott_pl_legionowo",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Legionowo",
+      "center": [
+        52.4013,
+        20.9324
+      ],
+      "bounds": {
+        "south": 52.3607,
+        "north": 52.4545,
+        "west": 20.8789,
+        "east": 20.9989
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "qQ6fsxyKZm56h13RjDy5"
+    },
+    {
+      "id": "dott_pl_leszno",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Leszno",
+      "center": [
+        51.8468,
+        16.5735
+      ],
+      "bounds": {
+        "south": 51.8159,
+        "north": 51.8759,
+        "west": 16.531,
+        "east": 16.6109
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "4POOb7yO2FRMZjKc2h32"
+    },
+    {
+      "id": "dott_pl_lubliniec",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Lubliniec",
+      "center": [
+        50.6734,
+        18.679
+      ],
+      "bounds": {
+        "south": 50.6523,
+        "north": 50.7003,
+        "west": 18.6321,
+        "east": 18.7105
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "SNNsERFk8bNjtXxWpHBp"
+    },
+    {
+      "id": "dott_pl_lukow",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Łuków",
+      "center": [
+        51.9263,
+        22.3838
+      ],
+      "bounds": {
+        "south": 51.9068,
+        "north": 51.9576,
+        "west": 22.3316,
+        "east": 22.4408
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "S4O7KShfP22LBfOLZg5S"
+    },
+    {
+      "id": "dott_pl_malbork",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Malbork",
+      "center": [
+        54.0366,
+        19.0452
+      ],
+      "bounds": {
+        "south": 54.009,
+        "north": 54.0735,
+        "west": 19.0008,
+        "east": 19.0779
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "MFQlJwxsIyd0Khjjfpm5"
+    },
+    {
+      "id": "dott_pl_miedzyzdroje",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Międzyzdroje",
+      "center": [
+        53.9273,
+        14.4472
+      ],
+      "bounds": {
+        "south": 53.9123,
+        "north": 53.9406,
+        "west": 14.4235,
+        "east": 14.4661
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "2UDt8bBbAkJUL5L1arev"
+    },
+    {
+      "id": "dott_pl_milanowek",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Milanówek",
+      "center": [
+        52.1146,
+        20.6471
+      ],
+      "bounds": {
+        "south": 52.0703,
+        "north": 52.1588,
+        "west": 20.5789,
+        "east": 20.7645
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "jWTcmZrmejcdtmvSjrJ5"
+    },
+    {
+      "id": "dott_pl_nowogard",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Nowogard",
+      "center": [
+        53.6682,
+        15.121
+      ],
+      "bounds": {
+        "south": 53.6566,
+        "north": 53.6952,
+        "west": 15.0872,
+        "east": 15.1624
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "GeNB9sfvKjnMt4yHVJ2G"
+    },
+    {
+      "id": "dott_pl_nowy_dwor_mazowiecki",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Nowy Dwór Mazowiecki",
+      "center": [
+        52.4297,
+        20.7218
+      ],
+      "bounds": {
+        "south": 52.4103,
+        "north": 52.4544,
+        "west": 20.656,
+        "east": 20.7632
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "tbgxwy1EOxmoDFDkYvSq"
+    },
+    {
+      "id": "dott_pl_nowy_targ",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Nowy Targ",
+      "center": [
+        49.4812,
+        20.0218
+      ],
+      "bounds": {
+        "south": 49.4564,
+        "north": 49.5074,
+        "west": 19.9914,
+        "east": 20.0695
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "eQowH02WurHRgD419Th0"
+    },
+    {
+      "id": "dott_pl_olesnica",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Oleśnica",
+      "center": [
+        51.2108,
+        17.3842
+      ],
+      "bounds": {
+        "south": 51.1933,
+        "north": 51.232,
+        "west": 17.3591,
+        "east": 17.419
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "bfiuzRbidfSwYJGVYigK"
+    },
+    {
+      "id": "dott_pl_plock",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Płock",
+      "center": [
+        52.542,
+        19.7503
+      ],
+      "bounds": {
+        "south": 52.5131,
+        "north": 52.5889,
+        "west": 19.6491,
+        "east": 19.7893
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "CQiJD0uedInWKojJyLwL"
+    },
+    {
+      "id": "dott_pl_poznan",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Poznań",
+      "center": [
+        52.4036,
+        16.9103
+      ],
+      "bounds": {
+        "south": 52.317,
+        "north": 52.4824,
+        "west": 16.7855,
+        "east": 17.0168
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "s8KcSAK6PIkDrvbNp7Ip"
+    },
+    {
+      "id": "dott_pl_pruszcz_gdanski",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Pruszcz Gdański",
+      "center": [
+        54.2643,
+        18.6365
+      ],
+      "bounds": {
+        "south": 54.2368,
+        "north": 54.3004,
+        "west": 18.5911,
+        "east": 18.6878
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "YhNoeTAJBN4dspoyEQJV"
+    },
+    {
+      "id": "dott_pl_radzionkow",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Radzionków",
+      "center": [
+        50.3495,
+        18.8997
+      ],
+      "bounds": {
+        "south": 50.3156,
+        "north": 50.4151,
+        "west": 18.8317,
+        "east": 18.9512
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "2Ae3azCSW6YwtgL7mvXU"
+    },
+    {
+      "id": "dott_pl_rewal",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Rewal",
+      "center": [
+        54.0821,
+        15.0232
+      ],
+      "bounds": {
+        "south": 54.0474,
+        "north": 54.1034,
+        "west": 14.9014,
+        "east": 15.1019
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "eTI4b5qWJ66aVGbL733o"
+    },
+    {
+      "id": "dott_pl_skawina",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Skawina",
+      "center": [
+        49.9758,
+        19.8259
+      ],
+      "bounds": {
+        "south": 49.9513,
+        "north": 49.9968,
+        "west": 19.8048,
+        "east": 19.8609
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "jhQCTam1LGj0kdnEFv6f"
+    },
+    {
+      "id": "dott_pl_starogard_gdanski",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Starogard Gdański",
+      "center": [
+        53.9645,
+        18.5274
+      ],
+      "bounds": {
+        "south": 53.9326,
+        "north": 53.9999,
+        "west": 18.4822,
+        "east": 18.5511
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "szMLvdXlkmZp72rDAFGJ"
+    },
+    {
+      "id": "dott_pl_swidnica",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Świdnica",
+      "center": [
+        50.8424,
+        16.489
+      ],
+      "bounds": {
+        "south": 50.8232,
+        "north": 50.8666,
+        "west": 16.4564,
+        "east": 16.5274
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "Pg1KicIIt5TJIewiz8Zn"
+    },
+    {
+      "id": "dott_pl_swinoujscie",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Świnoujście",
+      "center": [
+        53.9146,
+        14.2416
+      ],
+      "bounds": {
+        "south": 53.8991,
+        "north": 53.9278,
+        "west": 14.2168,
+        "east": 14.2808
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "owxaoCoUZ4WEXU7gH8bJ"
+    },
+    {
+      "id": "dott_pl_szczecin",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Szczecin",
+      "center": [
+        53.4317,
+        14.5368
+      ],
+      "bounds": {
+        "south": 53.389,
+        "north": 53.4647,
+        "west": 14.4537,
+        "east": 14.5795
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "s6PsiHjsHpcihw6c8gCA"
+    },
+    {
+      "id": "dott_pl_szczecin_east",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Szczecin",
+      "center": [
+        53.3786,
+        14.661
+      ],
+      "bounds": {
+        "south": 53.3607,
+        "north": 53.4102,
+        "west": 14.6022,
+        "east": 14.7028
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "rhW7zrmV8ap2tSTES9uq"
+    },
+    {
+      "id": "dott_pl_tarnowskie_gory",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Tarnowskie Góry",
+      "center": [
+        50.4467,
+        18.8494
+      ],
+      "bounds": {
+        "south": 50.4212,
+        "north": 50.467,
+        "west": 18.8014,
+        "east": 18.8886
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "LATXe965LtW30v2CXUfd"
+    },
+    {
+      "id": "dott_pl_tczew",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Tczew",
+      "center": [
+        54.0924,
+        18.7859
+      ],
+      "bounds": {
+        "south": 54.0654,
+        "north": 54.1157,
+        "west": 18.745,
+        "east": 18.8133
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "uVy1pRWOBLuSHdV0W0zY"
+    },
+    {
+      "id": "dott_pl_wroclaw",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Wrocław",
+      "center": [
+        51.0947,
+        17.0298
+      ],
+      "bounds": {
+        "south": 51.0373,
+        "north": 51.1751,
+        "west": 16.8837,
+        "east": 17.0929
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "1NbTWcCfM93NRiMxzCya"
+    },
+    {
+      "id": "dott_pl_zawiercie",
+      "country": "PL",
+      "provider": "dott",
+      "city": "Zawiercie",
+      "center": [
+        50.4863,
+        19.4261
+      ],
+      "bounds": {
+        "south": 50.4685,
+        "north": 50.5201,
+        "west": 19.3794,
+        "east": 19.4743
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "aBWLXbg1SjZagOrrw2vJ"
     }
   ]
 }

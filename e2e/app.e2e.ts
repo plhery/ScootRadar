@@ -1573,9 +1573,10 @@ test('the address search itself finds a typed city with scooter data first, with
   expect(await (await answer).json()).toEqual([
     // display_name stays English for older apps.
     { lat: 47.1368, lng: 7.2468, display_name: 'Biel/Bienne, Switzerland', title: 'Biel/Bienne', subtitle: 'Schweiz', covered: true },
+    { lat: 52.024, lng: 8.5372, display_name: 'Bielefeld, Germany', title: 'Bielefeld', subtitle: 'Deutschland', covered: true },
   ]);
   const options = page.getByRole('listbox', { name: 'Vorschläge' }).getByRole('option');
-  await expect(options).toHaveText(['Biel/BienneSchweiz']);
+  await expect(options).toHaveText(['Biel/BienneSchweiz', 'BielefeldDeutschland']);
 
   // Enter takes the first row, and the map goes to Biel.
   await page.keyboard.press('Enter');
@@ -1959,7 +1960,7 @@ test('the settings name the languages, and About leads to the credits, the priva
   await expect(credits.getByRole('link', { name: 'Search · Photon, komoot' })).toHaveAttribute('href', 'https://photon.komoot.io/');
   await expect(credits.getByRole('link', { name: 'Parking · Métropole Européenne de Lille' })).toBeVisible();
   // Kyiv's curfew area and the towns' outlines are OpenStreetMap's boundaries, whose licence asks for its credit.
-  await expect(credits.getByRole('link', { name: 'CH/FR/PT/ES/PL/UA/IL/NZ: OpenStreetMap boundaries · ODbL' })).toHaveAttribute('href', 'https://opendatacommons.org/licenses/odbl/');
+  await expect(credits.getByRole('link', { name: 'CH/FR/PT/ES/PL/FI/UA/IL/NZ: OpenStreetMap boundaries · ODbL' })).toHaveAttribute('href', 'https://opendatacommons.org/licenses/odbl/');
   for (const control of await credits.getByRole('button').or(credits.getByRole('link')).all()) {
     expect((await control.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   }

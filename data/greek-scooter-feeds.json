@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-13",
+  "verifiedOn": "2026-10-24",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -264,6 +264,51 @@
             "Κολύμπια"
           ]
         }
+      ]
+    },
+    {
+      "id": "dott_gr_thessaloniki",
+      "country": "GR",
+      "provider": "dott",
+      "city": "Thessaloniki",
+      "center": [
+        40.627,
+        22.9512
+      ],
+      "bounds": {
+        "south": 40.5586,
+        "north": 40.7779,
+        "west": 22.8837,
+        "east": 23.1412
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "bXonxudmr1X0FJZVKdYK",
+      "aliases": [
+        "Salonica",
+        "Θεσσαλονίκη"
+      ]
+    },
+    {
+      "id": "dott_gr_piraeus",
+      "country": "GR",
+      "provider": "dott",
+      "city": "Piraeus",
+      "center": [
+        37.9432,
+        23.6471
+      ],
+      "bounds": {
+        "south": 37.904,
+        "north": 38.0306,
+        "west": 23.6145,
+        "east": 23.7848
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "D07sCNSvfDmZ0Xhahl9G",
+      "aliases": [
+        "Pireas",
+        "Pireás",
+        "Πειραιάς"
       ]
     }
   ]

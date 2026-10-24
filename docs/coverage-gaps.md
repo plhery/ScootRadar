@@ -17,7 +17,7 @@ why it isn't.
 
 | What | Blocked on |
 | --- | --- |
-| **Dott** everywhere | Its [API licence](https://ridedott.com/api-licence/) restricts distribution. Since September 2026 most regions need a partner key, which Dott grants through its partner integrations team |
+| **Dott official partner access** | The anonymous app map was authorized on 24 October 2026 and now covers 157 additional regions. Official GBFS credentials and redistribution permission can be requested through the [published GBFS contact](https://transportdata.be/fr/dataset/dott), dunya@ridedott.com (listing updated December 2024); support@ridedott.com can route a request to Partner Integrations. See [adapter evidence](dott-app-map.md) |
 | **Voi** in the United Kingdom | Access is asked from nap@voiapp.io, under a [licence](https://www.voi.com/voi-licencing-agreement) that forbids storing the data, which the scooter cache does |
 | **Fintraffic** in Finland | Its national GBFS feed (`mobility-api.mobility-database.fintraffic.fi/gbfs/v2/gbfs.json`) answers 403 without a free key, ordered with an account on the Mobility Database site, which answered 403 from Switzerland. Seen through Transitous, which has a key, it listed 10,570 Dott scooters in 27 towns on 18 October 2026 (Helsinki 1,720, Tampere 1,347, Lahti 894, Vantaa 826, Espoo 768), Donkey Republic's bikes, and no Voi, Ryde or Bolt. But no scooter moved from 04:55 to 09:00 on that Sunday morning, and it lists scooters in towns Dott reports as paused, so the data looks frozen. Test it with a key of our own before adding; Helsinki's season runs from 1 April to 30 November. Data under CC BY 4.0 ("Fintraffic / Digitraffic"), though some third parties' data may need a permit |
 | **NRW.Mobidrom** in North Rhine-Westphalia | The state's data platform ([mobilitaetsdaten.nrw](https://www.mobilitaetsdaten.nrw)) lists GBFS feeds for Voi in 12 towns (Köln, Düsseldorf, Essen, Dortmund, Bochum, Bonn, Münster, Aachen, Wuppertal, Duisburg-Oberhausen, Paderborn, Mönchengladbach), Bolt in four areas (Köln-Bonn, Düsseldorf-Mönchengladbach, Essen-Duisburg, Dortmund-Bochum) and Lime in Essen and Dortmund, under open licences: Voi CC BY-SA 4.0, Bolt CC BY 4.0, Lime dl-de/by-2-0. Its catalog is open to read, but the feeds answer 401 without a token, and its [terms](https://www.mobilitaetsdaten.nrw/landingpage/nutzungsbedingungen/) (April 2025, § 4) give access after a free registration with name, email and organisation. Unlike the Multimodale Datendrehscheibe, private people and companies may register (§ 2). The datasets' descriptions publish a shared client login, which wasn't used, since the terms ask each user to register. So the feeds' freshness is unknown, and the datasets say the operators must deliver live data from 1 December 2026. Voi's share-alike licence may bind what the scooter cache serves. Checked 18 October 2026 |
@@ -35,6 +35,10 @@ record:
   licence.
 
 ## No public data, in covered countries
+
+Dott's anonymous app map supplements GBFS in eight countries since 24 October
+2026 ([evidence and limitations](dott-app-map.md)). Austria now covers 11 Dott
+regions; Vienna's Lime and Voi and Voi Innsbruck still publish no feed.
 
 Operators that run there but publish nothing the map can read, cities that
 banned shared scooters, and feeds that were empty when checked.
@@ -92,8 +96,10 @@ banned shared scooters, and feeds that were empty when checked.
     closure ([French guide](french-scooter-feeds.md#dott-tignes-and-bourgoin-jallieu-october-2026)).
   - Lime Le Havre needs partner credentials.
 - **Germany** ([guide](german-italian-scooter-feeds.md#known-gaps)):
-  - Dott closed most of its public regions in September 2026, among them
-    Hamburg, Bremen, Nürnberg, Dortmund, Karlsruhe and Mannheim.
+  - Dott closed most of its public regions in September 2026. Since 24 October,
+    63 regions use its anonymous app map, including Hamburg, Bremen, Nürnberg,
+    Dortmund and Karlsruhe; Bochum uses its public GBFS feed again. Regions
+    absent from the app map, such as Mannheim, remain gaps.
   - Bird München and Ulm list no vehicle; Bird left Ulm around 2022.
   - North Rhine-Westphalia's mobility data hub holds Bolt, Voi, Lime and Dott
     feeds for Köln, Düsseldorf, Essen, Dortmund and other towns, but only
@@ -113,10 +119,10 @@ banned shared scooters, and feeds that were empty when checked.
     Herne, Jena, Marburg and Reutlingen list no available scooter.
   - Voi publishes eight Baden-Württemberg cities only, through MobiData BW.
   - Operators the city guides name that publish no feed, checked on 23
-    October 2026: Dott in Erfurt and Regensburg (both regions closed in
-    September; 404), Lime in Regensburg (404), Voi in Regensburg and Bolt in
-    Potsdam (neither publishes outside Baden-Württemberg). So Erfurt shows Yoio
-    only, Regensburg Zeus only and Potsdam Dott only. Zeus Heilbronn still lists
+    October 2026: Lime in Regensburg (404), Voi in Regensburg and Bolt in
+    Potsdam (neither publishes outside Baden-Württemberg). Dott in Erfurt and
+    Regensburg now comes from its app map; Erfurt also shows Yoio and Regensburg
+    Zeus. Potsdam shows Dott only. Zeus Heilbronn still lists
     15 scooters, all disabled. Neither Erfurt nor Regensburg publishes its
     no-parking zones or parking spots as data, and the map draws only the
     operators' zones: Zeus's Regensburg feed lacks the Altstadt no-parking zone
@@ -127,10 +133,10 @@ banned shared scooters, and feeds that were empty when checked.
     evening of 13 October 2026; check it in spring.
 - **Italy** ([guide](german-italian-scooter-feeds.md#known-gaps)): Bird in
   Roma, Palermo and Napoli and Elerent in Catania are covered.
-  - Dott (Roma, Milano, Palermo and others) and Lime (Roma, Milano, Palermo)
-    publish no public feed: Dott's 21 Italian regions answer 404, Catania and
-    Alghero 403, and its API now needs authentication. Lime answers 404
-    everywhere. BIT Mobility (Napoli, Bari and others) is behind a login, and
+  - Dott now covers 16 Italian regions through its anonymous app map, including
+    Roma, Milano, Palermo and Torino. Genoa, Porto Torres, Viadanica and
+    Vigliatore had no available scooter in the app sweep. Lime (Roma, Milano,
+    Palermo) answers 404 everywhere. BIT Mobility (Napoli, Bari and others) is behind a login, and
     RideMovi answers 401. Bolt and Lime, which hold Catania's other permits,
     publish no feed.
   - Elerent Bologna listed one scooter on 13 October 2026. Elerent's Ragusa
@@ -189,8 +195,9 @@ banned shared scooters, and feeds that were empty when checked.
 - **Spain** ([guide](portuguese-spanish-icelandic-scooter-feeds.md#known-gaps)):
   - Madrid, Barcelona, Valencia, Sevilla, Málaga, Zaragoza and the Basque
     Country have no shared scooters.
-  - Dott (Santa Cruz de Tenerife, Lanzarote, Murcia, Tarragona and other
-    towns), Bird in Oviedo and Las Palmas's public Sítyneta scooters have no
+  - Dott now covers Marbella, Playa de las Américas and Santa Cruz de Tenerife
+    through its app map. Its other discovered Spanish regions had no available
+    scooter. Bird in Oviedo and Las Palmas's public Sítyneta scooters have no
     public feed. Neither has Islaride (Grupo Tambor, "more than 500"
     scooters on several Canary Islands): it runs on ATOM Mobility, whose
     system id for it isn't public (18 October 2026).
@@ -245,10 +252,12 @@ banned shared scooters, and feeds that were empty when checked.
   - Dott's Polish site lists 85 places, but its public listing names those
     three regions only. Of its other 74 Polish entries in the registry, 73
     answer 404 (Warsaw, Kraków, Wrocław, Gdańsk, Poznań, Katowice and others)
-    and Brzeg Dolny 403, still on the evening of 13 October 2026.
+    and Brzeg Dolny 403, still on the evening of 13 October 2026. The anonymous
+    app map now supplies 37 more Polish regions, including those large fleets;
+    Brzeg Dolny was empty on 24 October.
   - Lime (14 places, Warsaw and Kraków among them), Bolt (about 20 towns) and
-    blinkee publish no public feed, so Warsaw, Kraków and the other large
-    cities have no scooter on the map. Voi doesn't run in Poland.
+    blinkee publish no public feed. Dott now puts Warsaw, Kraków and the other
+    large cities on the map. Voi doesn't run in Poland.
   - Hopp Wałcz listed 13 available scooters, but none moved between 23:41
     and 09:15 on a Tuesday, nor in 22 polls from 18:26 to 19:50 that
     evening; one was ridden in between. Check it on a weekend afternoon, and
@@ -261,7 +270,8 @@ banned shared scooters, and feeds that were empty when checked.
     bikes.
 - **Hungary** ([guide](hungarian-scooter-feeds.md#known-gaps)): Hopp in Pécs
   and Békéscsaba is covered.
-  - Budapest has no scooter on the map. Lime (Budapest and 16 other places,
+  - Dott now covers Budapest, Győr, Hatvan, Pápa and Dunaújváros through its
+    anonymous app map. Lime (Budapest and 16 other places,
     Szeged, Eger, Sopron and Veszprém among them) and Dott (Budapest, Győr,
     Miskolc, Siófok and four other towns) publish no public feed: Dott's 8
     Hungarian regions in the registry answer 404, its Hungarian listing names
@@ -276,16 +286,17 @@ banned shared scooters, and feeds that were empty when checked.
     ([resolution 149/2025](https://www.erzsebetvaros.hu/uploads/files/php2YGu2i-1746011602-2025_04_29_KT_kivonat_ny%C3%ADlt.pdf);
     [Infostart](https://infostart.hu/belfold/2025/05/16/sebessegsapka-uj-tilalmak-es-egyeb-szabalyok-erzsebetvarosban),
     16 May 2025, press). It sets terms for the district's future contracts;
-    no report says it is enforced. Check it before adding Budapest.
+    no report says it is enforced; this remains unconfirmed. The Dott app
+    supplies the currently available vehicles.
   - MOL Bubi and Donkey Republic are bikes only. The national access point
     (napportal.kozut.hu) lists timetables and road data, no shared mobility,
     and BKK's FUTÁR API needs a key and carries bike stations, not scooters.
 - **Greece** ([guide](greek-scooter-feeds.md#known-gaps)): Hopp in Faliraki,
   Piraeus, Argostoli and Ioannina, and Hoppy on Rhodes, on Kos, in Rethymno
   and on Zakynthos, are covered.
-  - Athens has no scooter on the map. Dott's Athens and Thessaloniki regions
-    in the registry answer 404, Lime's address answers 404 for both cities,
-    and Bolt publishes no feed.
+  - Dott now covers Thessaloniki and Piraeus through its anonymous app map.
+    Its Voula region was empty; central Athens remains a gap. Lime's address
+    answers 404 for Athens and Thessaloniki, and Bolt publishes no feed.
   - Hopp Nafplio listed 17 or 18 available scooters, but none moved, left or
     came back in 35 polls from 12:03 to 16:47 Athens time on a Tuesday, while
     Faliraki, Piraeus, Argostoli and Ioannina had rides, nor in 22 polls from
@@ -318,14 +329,15 @@ banned shared scooters, and feeds that were empty when checked.
     town tried. nextbike Cyprus is bikes and e-bikes only.
 - **Finland** ([guide](finnish-scooter-feeds.md#known-gaps)): Hopp in
   Mariehamn, on Åland, is covered.
-  - The mainland has no scooter on the map. Voi, Ryde and Dott run in
+  - Dott now covers 20 mainland regions through its anonymous app map,
+    including Helsinki, Espoo, Vantaa and Tampere. Voi, Ryde and Dott run in
     Helsinki, Espoo, Vantaa, Tampere and Turku with no public feed, and Bolt
     publishes none. Dott's 40 Finnish regions in the registry don't answer: 34
     answer 404, and 6 (Ekenäs, Hamina, Hanko, Imatra, Kalajoki, Kotka) are
     paused, probably for the winter. Bird Helsinki's feed is empty and stamped
     `last_updated` 0.
-  - Dott's Finnish scooters reach only Fintraffic's national feed, which
-    needs a key and looked frozen on 18 October 2026 (see
+  - Fintraffic's separate national feed needs a key and looked frozen on
+    18 October 2026 (see
     [Waiting on a decision](#waiting-on-a-decision)).
   - Joe Scooter's Rauma feed (ATOM Mobility) answers but listed no scooter at
     night or in 21 polls from 17:00 to 18:01 on a Tuesday. Its other towns'
@@ -336,7 +348,8 @@ banned shared scooters, and feeds that were empty when checked.
     Digitransit needs a key and carries city bikes only. Donkey Republic and
     Helsinki's city bikes are bikes only.
   - Helsinki, Espoo, Vantaa, Turku and Oulu ban renting or riding on weekend
-    nights; add a curfew with any of them.
+    nights. Helsinki, Espoo and Vantaa now have curfew entries; Turku and Oulu
+    are still absent from the map.
 - **Croatia** ([guide](croatian-scooter-feeds.md#known-gaps)): Hoppy in
   Rijeka is covered.
   - Hopp Omiš held 11 scooters, all disabled, at night and on the evening of
@@ -631,7 +644,7 @@ a licence. Neither is published by its operator:
 
 | Country | Why |
 | --- | --- |
-| Austria | Dott's regions are private. Vienna's operators, now only Lime and Voi with about 4,000 scooters, and Voi Innsbruck publish no feed; the access point has Voi's static zones only, behind a registration. Bird Wiener Neustadt lists a scooter type but no vehicle, with a timestamp of 0 |
+
 | Netherlands | No shared standing scooters: the national data hub (CROW) lists 27,000 shared vehicles and no scooter. They need type approval and, since July 2025, a plate. Check and Felyx run mopeds, and 7 Felyx feeds answer 410 |
 | Denmark | Lime (Copenhagen, Odense) and Voi publish no feed; Dott lists e-bikes only. Hopp Roskilde held 1 disabled scooter on 13 October 2026 |
 | Czechia | Prague banned shared scooters from 1 January 2026; Golemio's feed needs a token. Bolt reportedly left the other towns |

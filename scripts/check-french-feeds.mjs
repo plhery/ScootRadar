@@ -88,9 +88,23 @@ function state(system, error) {
   return 'failed';
 }
 
+// Load the same bounded HTTP/2 collector as production only when the catalog needs it.
+let dottApp;
 async function inspect(system) {
   const result = { system: system.id, country: system.country, city: system.city, provider: system.provider, discoveryUrl: system.discoveryUrl };
   try {
+    if (system.dottAppRegion) {
+      dottApp ??= import('esbuild').then(async ({ build }) => {
+        const result = await build({ entryPoints: [new URL('../server/dottApp.ts', import.meta.url).pathname],
+          bundle: true, platform: 'node', format: 'esm', write: false });
+        return import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].text).toString('base64')}`);
+      });
+      const { collectDottRegion } = await dottApp;
+      const snapshot = await collectDottRegion(system);
+      return { ...result, state: 'ok', version: 'app-map', availableScooters: snapshot.vehicles.length,
+        withBattery: 0, withRange: 0, withRentalLink: 0,
+        updatedAt: new Date(snapshot.observedAt).toISOString(), ageSeconds: 0 };
+    }
     const discovery = await json(system.discoveryUrl);
     const entries = feedEntries(discovery);
     if (!Array.isArray(entries)) throw new Error('Invalid GBFS discovery');

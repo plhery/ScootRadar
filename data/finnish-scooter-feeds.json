@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-13",
+  "verifiedOn": "2026-10-24",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -23,6 +23,373 @@
         "Åland",
         "Ahvenanmaa"
       ]
+    },
+    {
+      "id": "dott_fi_helsinki",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Helsinki",
+      "center": [
+        60.1801,
+        24.9385
+      ],
+      "bounds": {
+        "south": 60.142,
+        "north": 60.2492,
+        "west": 24.8378,
+        "east": 25.1316
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "OSHRR7FGU9B7pgaVFsQ5"
+    },
+    {
+      "id": "dott_fi_hyvinkaa",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Hyvinkää",
+      "center": [
+        60.6288,
+        24.8559
+      ],
+      "bounds": {
+        "south": 60.5971,
+        "north": 60.6613,
+        "west": 24.8052,
+        "east": 24.9088
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "JZhDKDCVBylQpyLFjFpM"
+    },
+    {
+      "id": "dott_fi_jarvenpaa",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Järvenpää",
+      "center": [
+        60.4771,
+        25.0931
+      ],
+      "bounds": {
+        "south": 60.4442,
+        "north": 60.5143,
+        "west": 25.0546,
+        "east": 25.1493
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "mwiEGy1eRmtHO1LTD8yL"
+    },
+    {
+      "id": "dott_fi_pietarsaari",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Pietarsaari",
+      "center": [
+        63.676,
+        22.7141
+      ],
+      "bounds": {
+        "south": 63.6536,
+        "north": 63.7204,
+        "west": 22.6697,
+        "east": 22.7709
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "wKJzXkp45xWilEqv38GZ",
+      "aliases": [
+        "Jakobstad"
+      ]
+    },
+    {
+      "id": "dott_fi_espoo",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Espoo",
+      "center": [
+        60.2045,
+        24.7657
+      ],
+      "bounds": {
+        "south": 60.13,
+        "north": 60.2579,
+        "west": 24.5696,
+        "east": 24.8505
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "0Uabg0Q4uO92bSAJvEk2",
+      "aliases": [
+        "Esbo",
+        "Kauniainen"
+      ]
+    },
+    {
+      "id": "dott_fi_kerava",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Kerava",
+      "center": [
+        60.4033,
+        25.1036
+      ],
+      "bounds": {
+        "south": 60.368,
+        "north": 60.4487,
+        "west": 25.0462,
+        "east": 25.1548
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "sHHLs8sWVOa5gvkixAUt"
+    },
+    {
+      "id": "dott_fi_kirkkonummi",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Kirkkonummi",
+      "center": [
+        60.124,
+        24.4411
+      ],
+      "bounds": {
+        "south": 60.1006,
+        "north": 60.1425,
+        "west": 24.4087,
+        "east": 24.4854
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "TXWd7XOomQFiZPrSqN0k"
+    },
+    {
+      "id": "dott_fi_kokkola",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Kokkola",
+      "center": [
+        63.8374,
+        23.1319
+      ],
+      "bounds": {
+        "south": 63.8083,
+        "north": 63.869,
+        "west": 22.9845,
+        "east": 23.1959
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "jRjFlf7ZOe7jL83BQJhU"
+    },
+    {
+      "id": "dott_fi_kouvola",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Kouvola",
+      "center": [
+        60.8702,
+        26.7038
+      ],
+      "bounds": {
+        "south": 60.8436,
+        "north": 60.9126,
+        "west": 26.6004,
+        "east": 26.8024
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "pSF3k3Lh0NC8UJ32SIcX"
+    },
+    {
+      "id": "dott_fi_lahti",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Lahti",
+      "center": [
+        60.9816,
+        25.6597
+      ],
+      "bounds": {
+        "south": 60.9309,
+        "north": 61.0259,
+        "west": 25.4995,
+        "east": 25.8
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "ebNYWBV7EDNxeKiH9Vyx"
+    },
+    {
+      "id": "dott_fi_lappeenranta",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Lappeenranta",
+      "center": [
+        61.0575,
+        28.1795
+      ],
+      "bounds": {
+        "south": 61.0276,
+        "north": 61.0883,
+        "west": 28.0774,
+        "east": 28.2747
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "i0xKghIOVhKHcWSAygPQ"
+    },
+    {
+      "id": "dott_fi_nokia",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Nokia",
+      "center": [
+        61.4786,
+        23.4927
+      ],
+      "bounds": {
+        "south": 61.4476,
+        "north": 61.506,
+        "west": 23.4438,
+        "east": 23.5892
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "zcbWHfLMQw4eFp8jJNDt"
+    },
+    {
+      "id": "dott_fi_nurmijarvi",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Nurmijärvi",
+      "center": [
+        60.3776,
+        24.7502
+      ],
+      "bounds": {
+        "south": 60.3613,
+        "north": 60.4088,
+        "west": 24.6676,
+        "east": 24.7946
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "AV9QDphLDKRbppSzBJSA"
+    },
+    {
+      "id": "dott_fi_porvoo",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Porvoo",
+      "center": [
+        60.3925,
+        25.6718
+      ],
+      "bounds": {
+        "south": 60.362,
+        "north": 60.4165,
+        "west": 25.6151,
+        "east": 25.7197
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "w4KADX9wwXSMQ9qu249j"
+    },
+    {
+      "id": "dott_fi_rauma",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Rauma",
+      "center": [
+        61.1297,
+        21.507
+      ],
+      "bounds": {
+        "south": 61.091,
+        "north": 61.1653,
+        "west": 21.462,
+        "east": 21.6019
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "Gp3OVGWjVyAU08RBRhBP"
+    },
+    {
+      "id": "dott_fi_riihimaki",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Riihimäki",
+      "center": [
+        60.7361,
+        24.7767
+      ],
+      "bounds": {
+        "south": 60.7039,
+        "north": 60.763,
+        "west": 24.7296,
+        "east": 24.8407
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "4jussfUvyBSNadjH8Frc"
+    },
+    {
+      "id": "dott_fi_salo",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Salo",
+      "center": [
+        60.3888,
+        23.1277
+      ],
+      "bounds": {
+        "south": 60.3578,
+        "north": 60.4281,
+        "west": 23.034,
+        "east": 23.1946
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "UudUoH5O7Vak1jI1AIPv"
+    },
+    {
+      "id": "dott_fi_tampere",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Tampere",
+      "center": [
+        61.4981,
+        23.7639
+      ],
+      "bounds": {
+        "south": 61.4267,
+        "north": 61.5399,
+        "west": 23.5622,
+        "east": 23.9504
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "FE4UQxgfqKCE6Z5itRVh"
+    },
+    {
+      "id": "dott_fi_vaasa",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Vaasa",
+      "center": [
+        63.0981,
+        21.6182
+      ],
+      "bounds": {
+        "south": 63.0673,
+        "north": 63.1361,
+        "west": 21.5541,
+        "east": 21.7417
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "T7l8xzdo2KM0fXEyaPqm"
+    },
+    {
+      "id": "dott_fi_vantaa",
+      "country": "FI",
+      "provider": "dott",
+      "city": "Vantaa",
+      "center": [
+        60.2953,
+        25.0376
+      ],
+      "bounds": {
+        "south": 60.2682,
+        "north": 60.334,
+        "west": 24.9406,
+        "east": 25.0849
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "vs4u9bThlkYaxjqRy724"
     }
   ]
 }

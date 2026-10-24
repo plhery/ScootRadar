@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-13",
+  "verifiedOn": "2026-10-24",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -43,6 +43,96 @@
         "Bekescsaba",
         "Békešská Čaba"
       ]
+    },
+    {
+      "id": "dott_hu_budapest",
+      "country": "HU",
+      "provider": "dott",
+      "city": "Budapest",
+      "center": [
+        47.5016,
+        19.0626
+      ],
+      "bounds": {
+        "south": 47.4516,
+        "north": 47.5727,
+        "west": 19.0064,
+        "east": 19.1202
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "JBxXGVTW97k1X8rFI8eU"
+    },
+    {
+      "id": "dott_hu_gyor",
+      "country": "HU",
+      "provider": "dott",
+      "city": "Győr",
+      "center": [
+        47.6824,
+        17.6408
+      ],
+      "bounds": {
+        "south": 47.6203,
+        "north": 47.7337,
+        "west": 17.5781,
+        "east": 17.7437
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "MF4hKWfFkH326WkMYDzJ"
+    },
+    {
+      "id": "dott_hu_hatvan",
+      "country": "HU",
+      "provider": "dott",
+      "city": "Hatvan",
+      "center": [
+        47.6655,
+        19.6669
+      ],
+      "bounds": {
+        "south": 47.6244,
+        "north": 47.7006,
+        "west": 19.6164,
+        "east": 19.7327
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "cdzik6qWMcGVB5OFtLTh"
+    },
+    {
+      "id": "dott_hu_papa",
+      "country": "HU",
+      "provider": "dott",
+      "city": "Pápa",
+      "center": [
+        47.3268,
+        17.4652
+      ],
+      "bounds": {
+        "south": 47.2757,
+        "north": 47.362,
+        "west": 17.4281,
+        "east": 17.5295
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "NgMyeOvT1RfjlHd3PPQY"
+    },
+    {
+      "id": "dott_hu_dunaujvaros",
+      "country": "HU",
+      "provider": "dott",
+      "city": "Dunaújváros",
+      "center": [
+        46.9634,
+        18.9339
+      ],
+      "bounds": {
+        "south": 46.9225,
+        "north": 47.0021,
+        "west": 18.8867,
+        "east": 18.9638
+      },
+      "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
+      "dottAppRegion": "LCPKce22QCyFQUlAmKp1"
     }
   ]
 }

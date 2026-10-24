@@ -3,11 +3,11 @@
 // countries' names or credits don't load every city.
 
 /** Every country with scooter data, in the order of data/countries.json. */
-export const COUNTRY_CODES = ["CH", "FR", "DE", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ", "CR", "BQ"] as const;
+export const COUNTRY_CODES = ["CH", "FR", "DE", "AT", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ", "CR", "BQ"] as const;
 export type CountryCode = typeof COUNTRY_CODES[number];
 
 /** The countries with a catalog of their own, data/<adjective>-scooter-feeds.json: all but Switzerland. */
-export type CatalogCountry = 'FR' | 'DE' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR' | 'UA' | 'US' | 'CA' | 'AE' | 'SA' | 'IL' | 'NZ' | 'CR' | 'BQ';
+export type CatalogCountry = 'FR' | 'DE' | 'AT' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR' | 'UA' | 'US' | 'CA' | 'AE' | 'SA' | 'IL' | 'NZ' | 'CR' | 'BQ';
 
 export type CountryNameLanguage = 'en' | 'de' | 'fr' | 'it' | 'nl' | 'nb' | 'pt' | 'es' | 'is';
 
@@ -17,6 +17,7 @@ export type Continent = 'europe' | 'north-america' | 'asia' | 'oceania';
 export const COUNTRY_SOURCES = {
   FR: 'france',
   DE: 'germany',
+  AT: 'austria',
   IT: 'italy',
   BE: 'belgium',
   NO: 'norway',
@@ -47,6 +48,7 @@ export const COUNTRY_CONTINENTS: Record<CountryCode, Continent> = {
   CH: 'europe',
   FR: 'europe',
   DE: 'europe',
+  AT: 'europe',
   IT: 'europe',
   BE: 'europe',
   NO: 'europe',
@@ -85,6 +87,7 @@ export const COUNTRY_NAMES: Record<CountryCode, Readonly<Record<CountryNameLangu
   CH: { en: "Switzerland", de: "Schweiz", fr: "Suisse", it: "Svizzera", nl: "Zwitserland", nb: "Sveits", pt: "Suíça", es: "Suiza", is: "Sviss" },
   FR: { en: "France", de: "Frankreich", fr: "France", it: "Francia", nl: "Frankrijk", nb: "Frankrike", pt: "França", es: "Francia", is: "Frakkland" },
   DE: { en: "Germany", de: "Deutschland", fr: "Allemagne", it: "Germania", nl: "Duitsland", nb: "Tyskland", pt: "Alemanha", es: "Alemania", is: "Þýskaland" },
+  AT: { en: "Austria", de: "Österreich", fr: "Autriche", it: "Austria", nl: "Oostenrijk", nb: "Østerrike", pt: "Áustria", es: "Austria", is: "Austurríki" },
   IT: { en: "Italy", de: "Italien", fr: "Italie", it: "Italia", nl: "Italië", nb: "Italia", pt: "Itália", es: "Italia", is: "Ítalía" },
   BE: { en: "Belgium", de: "Belgien", fr: "Belgique", it: "Belgio", nl: "België", nb: "Belgia", pt: "Bélgica", es: "Bélgica", is: "Belgía" },
   NO: { en: "Norway", de: "Norwegen", fr: "Norvège", it: "Norvegia", nl: "Noorwegen", nb: "Norge", pt: "Noruega", es: "Noruega", is: "Noregur" },
@@ -116,6 +119,7 @@ export const COUNTRY_SEARCH_WORDS: Record<CountryCode, readonly string[]> = {
   CH: ["switzerland", "schweiz", "suisse", "svizzera", "zwitserland", "sveits", "suica", "suiza", "sviss"],
   FR: ["france", "frankreich", "francia", "frankrijk", "frankrike", "franca", "frakkland"],
   DE: ["germany", "deutschland", "allemagne", "germania", "duitsland", "tyskland", "alemanha", "alemania", "thyskaland"],
+  AT: ["austria", "osterreich", "autriche", "oostenrijk", "osterrike", "austurriki"],
   IT: ["italy", "italia", "italie", "italien"],
   BE: ["belgium", "belgien", "belgique", "belgio", "belgie", "belgia", "belgica"],
   NO: ["norway", "norwegen", "norvege", "norvegia", "noorwegen", "norge", "noruega", "noregur"],
@@ -147,6 +151,7 @@ export const COUNTRY_ANCHORS: Record<CountryCode, readonly [number, number]> = {
   CH: [46.8, 8.2],
   FR: [46.6, 2.4],
   DE: [51.1, 10.4],
+  AT: [47.6, 14],
   IT: [43, 12.5],
   BE: [50.6, 4.6],
   NO: [61, 9.5],
@@ -167,7 +172,7 @@ export const COUNTRY_ANCHORS: Record<CountryCode, readonly [number, number]> = {
   // Inland, in the Troodos mountains, between Paphos and Limassol.
   CY: [34.9, 32.9],
   // Inland in the south-west, between Turku and Tampere: on the mainland, so it isn't read as
-  // Stockholm's, and on the side nearest Mariehamn, on Åland, where all its scooters are.
+  // Stockholm's, and near the largest Dott fleets in Helsinki and Tampere.
   FI: [61.1, 23.8],
   // Inland, at the middle of the country, near Slunj: on Rijeka's side, but off the coast, where it
   // would read as Slovenia's or Trieste's, and about 50 points from Italy's and Hungary's totals at
@@ -315,6 +320,7 @@ export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {
   CH: ["ch:zurich", "ch:basel", "ch:bern", "ch:winterthur", "ch:st-gallen", "ch:biel"],
   FR: ["fr:Lyon", "fr:Marseille", "fr:Bordeaux", "fr:Lille Métropole", "fr:Grenoble", "fr:Angers"],
   DE: ["de:Berlin", "de:München", "de:Köln", "de:Frankfurt", "de:Stuttgart", "de:Düsseldorf"],
+  AT: ["at:Linz", "at:Innsbruck", "at:Klagenfurt"],
   IT: ["it:Roma", "it:Palermo", "it:Napoli", "it:Catania"],
   BE: ["be:Bruxelles", "be:Antwerpen", "be:Oostende", "be:Charleroi", "be:Kortrijk", "be:Mechelen"],
   NO: ["no:Oslo", "no:Trondheim", "no:Stavanger", "no:Kristiansand", "no:Bærum", "no:Tromsø"],
@@ -342,10 +348,10 @@ export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {
 };
 
 /** The order of the countries on the landing page. */
-export const LANDING_COUNTRY_ORDER: readonly CountryCode[] = ["CH", "DE", "FR", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ", "CR", "BQ"];
+export const LANDING_COUNTRY_ORDER: readonly CountryCode[] = ["CH", "DE", "FR", "IT", "AT", "BE", "NO", "GB", "PT", "ES", "IS", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ", "CR", "BQ"];
 
 /** Whose data the map shows, country by country, for the X-Mobility-Data-Source header. */
-export const COUNTRY_DATA_ATTRIBUTION = "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW; Italy: Bird, Elerent GBFS; Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Portugal: Bird, Lime GBFS; Spain: Bird, Hopp, Hoppy GBFS; Iceland: Hopp GBFS; Sweden: Lime, Hopp GBFS; Latvia: Ride Mobility GBFS; Poland: Dott, Hopp GBFS; Hungary: Hopp GBFS; Greece: Hopp, Hoppy GBFS; Cyprus: Hopp GBFS; Finland: Hopp GBFS; Croatia: Hoppy GBFS; Ukraine: 3electra GBFS; United States: Bird, Bolt, Lime, Veo, Spin, Lyft GBFS; Canada: Bird, Lime GBFS; United Arab Emirates: Dott GBFS; Saudi Arabia: SAHAM, Dott GBFS; Israel: Bird, Dott, Lime GBFS; New Zealand: Flamingo GBFS (CC BY 4.0), JOLT GBFS; Costa Rica: Hopp GBFS; Caribbean Netherlands: Hopp GBFS";
+export const COUNTRY_DATA_ATTRIBUTION = "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW; Dott anonymous app map; Austria: Dott anonymous app map; Italy: Bird, Elerent GBFS; Dott anonymous app map; Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Portugal: Bird, Lime GBFS; Spain: Bird, Hopp, Hoppy GBFS; Dott anonymous app map; Iceland: Hopp GBFS; Sweden: Lime, Hopp GBFS; Latvia: Ride Mobility GBFS; Poland: Dott, Hopp GBFS; Dott anonymous app map; Hungary: Hopp GBFS; Dott anonymous app map; Greece: Hopp, Hoppy GBFS; Dott anonymous app map; Cyprus: Hopp GBFS; Finland: Hopp GBFS; Dott anonymous app map; Croatia: Hoppy GBFS; Ukraine: 3electra GBFS; United States: Bird, Bolt, Lime, Veo, Spin, Lyft GBFS; Canada: Bird, Lime GBFS; United Arab Emirates: Dott GBFS; Saudi Arabia: SAHAM, Dott GBFS; Israel: Bird, Dott, Lime GBFS; New Zealand: Flamingo GBFS (CC BY 4.0), JOLT GBFS; Costa Rica: Hopp GBFS; Caribbean Netherlands: Hopp GBFS";
 
 /** The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences. */
 export const COUNTRY_CREDIT_LINKS: readonly { label: string; href: string }[] = [
@@ -360,6 +366,7 @@ export const COUNTRY_CREDIT_LINKS: readonly { label: string; href: string }[] = 
   { label: "UK: Beryl · CDLA-Permissive-2.0", href: "https://cdla.dev/permissive-2-0/" },
   { label: "UK: ONS boundaries · OGL v3.0", href: "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" },
   { label: "PT: DGT boundaries · CC BY 4.0", href: "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop" },
+  { label: "DE/AT/IT/ES/PL/HU/GR/FI: Dott map", href: "https://ridedott.com/" },
   { label: "NZ: Flamingo · CC BY 4.0", href: "https://creativecommons.org/licenses/by/4.0/" },
-  { label: "CH/FR/PT/ES/PL/UA/IL/NZ: OpenStreetMap boundaries · ODbL", href: "https://opendatacommons.org/licenses/odbl/" },
+  { label: "CH/FR/PT/ES/PL/FI/UA/IL/NZ: OpenStreetMap boundaries · ODbL", href: "https://opendatacommons.org/licenses/odbl/" },
 ];

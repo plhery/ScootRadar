@@ -60,11 +60,20 @@ export function simplifyRing(ring, tolerance, digits = 4) {
 }
 
 /** The outer rings of the polygons, those of at least `minAreaKm2`, simplified. */
-export function outerRings(polygons, { minAreaKm2, tolerance, digits }) {
+export function outerRings(polygons, { minAreaKm2, tolerance, digits, holes = false }) {
   return polygons
-    .map(([outer]) => outer)
-    .filter(outer => planeArea(toPlane(outer)) / 1e6 >= minAreaKm2)
-    .map(outer => simplifyRing(outer, tolerance, digits));
+    .filter(([outer]) => planeArea(toPlane(outer)) / 1e6 >= minAreaKm2)
+    .map(([outer, ...inner]) => {
+      let ring = simplifyRing(outer, tolerance, digits);
+      // Preserve enclaves, as Kauniainen inside Espoo, in the single-ring
+      // format. A bridge traversed twice cancels under even-odd containment.
+      // Simplify before adding the bridge, so its two sides remain identical.
+      if (holes) for (const source of inner) {
+        const hole = simplifyRing(source, tolerance, digits);
+        if (hole.length >= 3) ring = [ring[0], ...hole, hole[0], ring[0], ...ring.slice(1)];
+      }
+      return ring;
+    });
 }
 
 // December 2018 districts: Bournemouth, Christchurch and Poole merged the year after.

@@ -1,5 +1,10 @@
 # Hungarian scooter feeds
 
+Update, 24 October 2026: additional Dott regions now use its anonymous app
+map. The audit below records the original GBFS investigation; the current
+catalog and [Dott adapter evidence](dott-app-map.md) supersede its Dott gaps.
+
+
 Verified 13 October 2026. The
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
 lists no Hopp feed for Hungary, and its 8 Hungarian Dott entries answer 404.

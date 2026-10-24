@@ -240,7 +240,7 @@ export interface ScooterFetchResult {
   meta: ScooterFetchMetadata;
 }
 
-interface SourceVehicles {
+export interface SourceVehicles {
   observedAt?: number;
   vehicles: Vehicle[];
   stale: boolean;
@@ -306,7 +306,9 @@ export function independentCollectableFeeds(): CollectableScooterFeed[] {
       id: `${regionalSource(system)}:${system.id}`, source: regionalSource(system), provider: system.provider,
       coverage: serviceAreas(system).map(area => area.bounds),
       collect: () => fetchRegionalSystemVehicles(system, { bounds: system.bounds, minBattery: 0 }),
-      zoneSource: { discoveryUrl: system.discoveryUrl, baseUrl: new URL('.', system.discoveryUrl).toString() },
+      ...(!system.dottAppRegion ? {
+        zoneSource: { discoveryUrl: system.discoveryUrl, baseUrl: new URL('.', system.discoveryUrl).toString() },
+      } : {}),
     })),
   ];
 }
@@ -1283,6 +1285,7 @@ async function fetchRegionalSystemVehicles(
   system: RegionalScooterSystem,
   query: FeedQuery
 ): Promise<SourceVehicles> {
+  if (system.dottAppRegion) throw new Error('Dott app regions require the Node snapshot collector');
   const bounds = boundsIntersection(system.bounds, query.bounds);
   if (!bounds) return { vehicles: [], stale: false, skipped: true };
   return fetchRegionalSystemFeeds(system, query, bounds).catch(skipPausedDottRegion);
