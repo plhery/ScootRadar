@@ -2161,8 +2161,10 @@ test('first launch shows the map at once, a labelled Near me button and compact 
   const box = await nearMe.boundingBox();
   expect(box!.height).toBe(52);
   expect(box!.x + box!.width).toBeLessThanOrEqual(390 - 12);
-  const dockBox = await dock.boundingBox();
-  expect(box!.y + box!.height).toBeLessThan(dockBox!.y);
+  // In one frame: the dock grows as its count comes in, and the button rises with its top.
+  const gap = await dock.evaluate((sheet, button) => sheet.getBoundingClientRect().top - button!.getBoundingClientRect().bottom,
+    await nearMe.elementHandle());
+  expect(gap).toBeGreaterThan(0);
   expect(await page.evaluate(() => localStorage.getItem('scooters-located-once'))).toBeNull();
 
   await expect(page.getByRole('link', { name: '© OpenStreetMap', exact: true })).toBeVisible();
