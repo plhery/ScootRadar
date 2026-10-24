@@ -260,7 +260,8 @@ test('the landing page leads to the iPhone app, with its code to scan beside the
     await expect(code).toHaveText('Mit der Kamera deines iPhone scannen');
     const box = (await code.locator('svg').boundingBox())!;
     expect(box.width).toBeGreaterThanOrEqual(100);
-    expect(box.height).toBe(box.width);
+    // Browser bounding rectangles can differ by fractional pixels for a square SVG.
+    expect(box.height).toBeCloseTo(box.width, 2);
     await expect(page.locator('.closing .app-qr')).toHaveCount(0);
   }
 
