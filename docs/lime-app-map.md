@@ -73,8 +73,9 @@ uses 416 map requests, including parent views retained on warm refreshes:
 latency. That leaves room in the hourly background budget for viewed groups.
 
 Santiago's geographical city centre is outside the published service areas.
-Its map shortcut uses a point inside Lime's main service polygon, while the
-collector covers every recorded polygon. City coordinates elsewhere include
+The Lime catalog's reference point is inside its main service polygon, while
+the collector covers every recorded polygon. The shared Santiago destination
+keeps the city centre already registered by the other operators. City coordinates elsewhere include
 [GeoNames data, CC BY 4.0](https://www.geonames.org/about.html).
 
 ## Cache behaviour

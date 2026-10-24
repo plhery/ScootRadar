@@ -16,6 +16,7 @@ are excluded. Public feeds remain preferred wherever available.
 See [Lime collection and session requirements](lime-app-map.md) for the local
 view protocol, completeness checks, request quota and refresh cadence.
 
-The map shortcut is inside the main northeastern operating area. Lime's
+Lime's reference point is inside the main northeastern operating area. Its
 polygons also cover the separately recorded southern districts; downtown
-Santiago is outside those polygons.
+Santiago is outside those polygons. The shared city shortcut keeps its
+existing centre for the other operators.
