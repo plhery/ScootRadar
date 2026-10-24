@@ -51,7 +51,7 @@ margin. The union is limited to 10,000 cells and a sweep has a 90-second
 budget. All batches must succeed before publication; errors, failed batches
 and malformed GraphQL replies leave the last complete snapshot intact.
 
-Requests start at least 700 ms apart across all regions. HTTP 429 honors
+Requests start at least two seconds apart across all regions. HTTP 429 honors
 `Retry-After`; rejected authentication gets one renewal and retry, then a
 one-minute cooldown. Responses have streaming size limits and deadlines.
 The normal scheduler polls idle regions every 20 minutes and watched regions
@@ -117,6 +117,12 @@ returned 115 standing scooters from Netcup. Early renewal also succeeded;
 the observed refresh token did not rotate. The saved runtime file is mode
 0600 and survives normal cache deployments. The compiled collector also completed
 a full Darwin read from that runtime, returning 706 standing scooters.
+
+The first production startup also returned transient empty maps late in its
+initial burst; complete rereads of the same Korean regions returned scooters.
+The shared request pacing was reduced to two seconds to keep startup sweeps
+gentle. No particular upstream rate-limit threshold is inferred from those
+empty responses.
 
 All 54 raw city samples pass the production parser. Repeated complete city
 reads found 144 moved scooters in Darwin, 122 in Kuala Lumpur, 138 in Seoul,

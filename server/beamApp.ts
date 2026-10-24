@@ -95,7 +95,8 @@ export class BeamClient {
       join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'beam-session.json');
     this.fetch = options.fetch ?? fetch;
     this.now = options.now ?? Date.now;
-    this.intervalMs = options.intervalMs ?? 700;
+    // Keep a fleet-wide startup sweep gentle: rapid bursts have returned transient empty maps.
+    this.intervalMs = options.intervalMs ?? 2000;
     this.timeoutMs = options.timeoutMs ?? 20_000;
   }
 
