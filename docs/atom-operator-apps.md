@@ -2,8 +2,9 @@
 
 Checked on 24 October 2026, after the [Qick integration](atom-app-map.md).
 Eight additional brands have a verified native map route, but none returned
-scooters without a rider login. No fleet is enabled from this investigation:
-an HTTP 401 establishes an access requirement, not an empty or inactive fleet.
+scooters without a rider login. Subsequent authorized sessions enabled
+[MoVe in New Brunswick](move-app-map.md) and [Zippy at Club Mykonos](south-african-scooter-feeds.md). An HTTP 401 establishes
+an access requirement, not an empty or inactive fleet.
 
 ## Candidates and access results
 
@@ -25,10 +26,10 @@ authorization.
 | [MoVe Scooter Rental](https://play.google.com/store/apps/details?id=move.mobility.app) | Halifax and Dartmouth, Canada | `move.mobility.app` | 10.80 | Halifax |
 | [e-moob](https://play.google.com/store/apps/details?id=e.moob.app) | Tamarindo, Costa Rica, and Aruba | `e.moob.app` | 10.80 | Tamarindo |
 
-Zippy, Reby, wer2 and IZZY are useful next candidates for countries with no
-current scooter source. South Africa and Senegal also need an Africa catalog
-entry if an available live fleet is verified. MoVe could add Halifax/Dartmouth
-to Canada, and IslaRide could fill Tenerife gaps. The e-moob
+Reby, wer2 and IZZY remain useful candidates for countries without a
+current scooter source. South Africa now has an Africa catalog entry through Zippy; Senegal remains
+pending Reby access. MoVe's verified map instead adds three New Brunswick cities to Canada;
+IslaRide could fill Tenerife gaps. The e-moob
 [operator case study](https://www.atommobility.com/blog/how-e-moob-became-arubas-leading-scooter-operator)
 describes both Aruba and Costa Rica; neither market's present availability was
 established by the login-only response. Follow the existing coverage notes
@@ -119,8 +120,8 @@ does not establish whether the supplied phone number is accepted. Reby
 remains pending an operator-approved sign-in path or a rider session
 obtained through the official app from a permitted location. Its Google
 and Apple alternatives have not been tested against this location rule.
-MoVe and Zippy still need their own authorized number/sign-in; the Reby
-number has not been reused for them.
+MoVe and Zippy subsequently completed their separately authorized sign-ins;
+the Reby number was not reused for them.
 
 After sign-in, verify actual available electric scooters, operating bounds,
 viewport completeness, movement and production-network access before adding

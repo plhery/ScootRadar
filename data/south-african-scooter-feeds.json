@@ -1,0 +1,29 @@
+{
+  "verifiedOn": "2026-10-24",
+  "catalogSource": "https://play.google.com/store/apps/details?id=zippy.app",
+  "systems": [
+    {
+      "id": "zippy_za_langebaan",
+      "country": "ZA",
+      "provider": "zippy",
+      "city": "Langebaan",
+      "aliases": [
+        "Club Mykonos"
+      ],
+      "timeZone": "Africa/Johannesburg",
+      "center": [
+        -33.04695,
+        18.0427
+      ],
+      "bounds": {
+        "south": -33.05338,
+        "north": -33.04052,
+        "west": 18.03341,
+        "east": 18.04983
+      },
+      "discoveryUrl": "https://app.rideatom.com/api/v1/user/vehicles",
+      "atomAppAccount": "zippy-za",
+      "atomAppFullMap": true
+    }
+  ]
+}

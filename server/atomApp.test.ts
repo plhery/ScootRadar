@@ -78,6 +78,17 @@ describe('ATOM map coverage and availability', () => {
     expect(await collectAtomRegion(region, closed)).toMatchObject({ vehicles: [], skipped: true });
   });
 
+  it('collects a verified full-account map once across distant towns while excluding unavailable and out-of-area scooters', async () => {
+    const full = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'move_ca_new_brunswick')!;
+    const at = (id: number, latitude: number, longitude: number) => scooter(id, { coordinates: { latitude, longitude } });
+    const api = { vehicles: vi.fn(async () => map([at(1, 45.9636, -66.6431), at(2, 46.0878, -64.7782),
+      at(3, 45.2733, -66.0633), at(4, 45.96, -66.64), at(5, 46.08, -64.77), scooter(6), at(7, 45.7, -65.7)],
+    { hidden_vehicles: [{ id: 4 }], active_vehicle_ids: [5] })) };
+    const result = await collectAtomRegion(full, api);
+    expect(api.vehicles).toHaveBeenCalledExactlyOnceWith(full.atomAppAccount, full.center);
+    expect(result.vehicles.map(v => v.vehicle_id)).toEqual([1, 2, 3].map(id => `${full.id}:${id}`));
+  });
+
   it('registers ATOM through the Node collector without treating its endpoint as GBFS', () => {
     const feeds = independentCollectableFeeds();
     const feed = feeds.find(feed => feed.id.endsWith(`:${region.id}`))!;
@@ -85,8 +96,10 @@ describe('ATOM map coverage and availability', () => {
     const configured = withAtomAppCollectors(feeds, REGIONAL_SCOOTER_SYSTEMS);
     expect(configured.find(f => f.id === feed.id)?.collect).not.toBe(feed.collect);
     expect(configured.find(f => f.id === 'publibike')).toBe(feeds.find(f => f.id === 'publibike'));
-    expect(REGIONAL_SCOOTER_SYSTEMS.filter(system => system.atomAppAccount)).toHaveLength(10);
-    for (const system of REGIONAL_SCOOTER_SYSTEMS.filter(system => system.atomAppAccount)) expect(atomMapCenters(system.bounds).length).toBeLessThanOrEqual(64);
+    expect(REGIONAL_SCOOTER_SYSTEMS.filter(system => system.provider === 'qick' && system.atomAppAccount)).toHaveLength(10);
+    for (const system of REGIONAL_SCOOTER_SYSTEMS.filter(system => system.atomAppAccount && !system.atomAppFullMap)) {
+      expect(atomMapCenters(system.bounds).length).toBeLessThanOrEqual(64);
+    }
   });
 });
 

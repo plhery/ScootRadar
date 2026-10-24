@@ -133,7 +133,7 @@ describe('the countries of data/countries.json', () => {
     };
     const withNewZealand = validate(newZealand);
     const typescript = typescriptCountries(withNewZealand);
-    expect(typescript).toContain("export type Continent = 'europe' | 'north-america' | 'south-america' | 'asia' | 'oceania';");
+    expect(typescript).toContain("export type Continent = 'europe' | 'north-america' | 'south-america' | 'africa' | 'asia' | 'oceania';");
     expect(typescript).toContain("  NZ: 'oceania',\n};");
     expect(typescript).toContain('  NZ: ["new zealand", "nz", "neuseeland", "nouvelle zelande", "aotearoa"],');
     // Oceania's feeds are credited on a line of their own.

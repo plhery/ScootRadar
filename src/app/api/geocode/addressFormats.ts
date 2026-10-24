@@ -25,6 +25,8 @@ export const ADDRESS_FORMATS: Readonly<Record<string, AddressFormat>> = {
   CA: { numberFirst: true, townLine: '{town}, {region} {postcode}', postcode: /[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d/ },
   AU: { numberFirst: true, townLine: '{town} {region} {postcode}', postcode: /\d{4}/ },
   NZ: { numberFirst: true, townLine: '{town} {postcode}', postcode: /\d{4}/ },
+  // UPU's South African physical-address order: number + street, locality, four-digit postcode.
+  ZA: { numberFirst: true, townLine: '{town} {postcode}', postcode: /\d{4}/ },
   // Israel Post writes the postcode before the town, "6688218 Tel Aviv-Yafo"; riders type it after it too.
   IL: { numberFirst: true, postcode: /\d{7}/ },
   // Without postcodes: what OpenStreetMap tags as one there is a Makani number ("26661 88056"), a P.O. box or "00000".

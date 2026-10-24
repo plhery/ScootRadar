@@ -5,6 +5,11 @@ import { ADDRESS_FORMATS, POSTCODE_AFTER_TOWN, streetAddress, townLine } from '.
 const region = (code: string) => () => code;
 
 describe('the address formats', () => {
+  it('writes South African physical addresses in UPU order', () => {
+    expect(streetAddress('ZA', 'Mykonos Access Road', '1')).toBe('1 Mykonos Access Road');
+    expect(townLine('ZA', { town: 'Langebaan', postcode: '7357', region: region('Western Cape') })).toBe('Langebaan 7357');
+  });
+
   it('are given for every country outside Europe', () => {
     const missing = COUNTRY_CODES.filter(code => COUNTRY_CONTINENTS[code] !== 'europe' && !ADDRESS_FORMATS[code]);
     expect(missing, 'add each to ADDRESS_FORMATS in src/app/api/geocode/addressFormats.ts').toEqual([]);

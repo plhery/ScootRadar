@@ -42,9 +42,9 @@ describe('Canada', () => {
     expect(canadian.map(entry => entry.id).sort()).toEqual([
       'bird_ca_calgary', 'bird_ca_edmonton', 'bird_ca_halifax', 'bird_ca_hamilton', 'bird_ca_leduc', 'bird_ca_ottawa',
       'bird_ca_vaughan', 'bird_ca_windsor', 'lime_ca_calgary', 'lime_ca_edmonton', 'lime_ca_kelowna', 'lime_ca_mississauga',
-      'lime_ca_ottawa', 'lime_ca_vancouver',
+      'lime_ca_ottawa', 'lime_ca_vancouver', 'move_ca_new_brunswick',
     ]);
-    const zones = { AB: 'America/Edmonton', BC: 'America/Vancouver', ON: 'America/Toronto', NS: 'America/Halifax' };
+    const zones = { AB: 'America/Edmonton', BC: 'America/Vancouver', ON: 'America/Toronto', NS: 'America/Halifax', NB: 'America/Moncton' };
     for (const entry of canadian) {
       for (const area of serviceAreas(entry)) {
         const region = (area.region ?? entry.region) as keyof typeof zones;
@@ -55,8 +55,8 @@ describe('Canada', () => {
     expect(serviceAreas(system('lime_ca_calgary')).map(area => area.city)).toEqual(['Calgary', 'Airdrie']);
     expect(serviceAreas(system('lime_ca_edmonton')).map(area => area.city)).toEqual(['Edmonton', 'St. Albert', 'Beaumont']);
     expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'CA').map(entry => entry.city).sort()).toEqual([
-      'Airdrie, AB', 'Beaumont, AB', 'Calgary, AB', 'Edmonton, AB', 'Halifax, NS', 'Hamilton, ON', 'Kelowna, BC', 'Leduc, AB',
-      'Mississauga, ON', 'Ottawa, ON', 'St. Albert, AB', 'Vancouver, BC', 'Vaughan, ON', 'Windsor, ON',
+      'Airdrie, AB', 'Beaumont, AB', 'Calgary, AB', 'Edmonton, AB', 'Fredericton, NB', 'Halifax, NS', 'Hamilton, ON', 'Kelowna, BC', 'Leduc, AB',
+      'Mississauga, ON', 'Moncton, NB', 'Ottawa, ON', 'Saint John, NB', 'St. Albert, AB', 'Vancouver, BC', 'Vaughan, ON', 'Windsor, ON',
     ]);
     expect(city('ca:on:Ottawa')).toMatchObject({ city: 'Ottawa, ON', country: 'CA', region: 'ON' });
   });

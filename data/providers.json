@@ -232,5 +232,35 @@
       "link": "https://wsh.bike/",
       "appStoreId": 1418412616
     }
+  },
+  {
+    "key": "move",
+    "name": "MoVe",
+    "color": "#8a7400",
+    "initial": "M",
+    "systemIds": {
+      "prefixes": [
+        "move_"
+      ]
+    },
+    "app": {
+      "link": "https://move-mobility.app.link/",
+      "appStoreId": 1632973735
+    }
+  },
+  {
+    "key": "zippy",
+    "name": "Zippy",
+    "color": "#da1212",
+    "initial": "Z",
+    "systemIds": {
+      "prefixes": [
+        "zippy_"
+      ]
+    },
+    "app": {
+      "link": "https://zippyride.app.link/",
+      "appStoreId": 6752651073
+    }
   }
 ]

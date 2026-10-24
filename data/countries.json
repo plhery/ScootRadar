@@ -504,8 +504,9 @@
       "anchorNote": "Inland in Manitoba's Interlake, near Fisher Branch: about the middle of the band of cities from Vancouver to Halifax, and north of the United States' total.",
       "featuredCities": ["ca:bc:Vancouver", "ca:ab:Calgary", "ca:ab:Edmonton", "ca:on:Ottawa", "ca:bc:Kelowna", "ca:on:Hamilton"],
       "credits": {
-        "attribution": "Canada: Bird, Lime GBFS",
-        "gbfs": ["Bird", "Lime"]
+        "attribution": "Canada: Bird, Lime GBFS; MoVe app",
+        "gbfs": ["Bird", "Lime"],
+        "links": [{ "label": "CA: MoVe rider map", "href": "https://move-mobility.app.link/" }]
       },
       "regions": {
         "showInCityNames": true,
@@ -1045,6 +1046,52 @@
           {
             "label": "BY: Whoosh map",
             "href": "https://whoosh.bike/"
+          }
+        ]
+      }
+    },
+    {
+      "code": "ZA",
+      "continent": "africa",
+      "catalog": "data/south-african-scooter-feeds.json",
+      "source": "southafrica",
+      "names": {
+        "en": "South Africa",
+        "de": "Südafrika",
+        "fr": "Afrique du Sud",
+        "it": "Sudafrica",
+        "nl": "Zuid-Afrika",
+        "nb": "Sør-Afrika",
+        "pt": "África do Sul",
+        "es": "Sudáfrica",
+        "is": "Suður-Afríka"
+      },
+      "searchWords": [
+        "south africa",
+        "za",
+        "sudafrika",
+        "afrique du sud",
+        "sudafrica",
+        "zuid afrika",
+        "sor afrika",
+        "africa do sul",
+        "sudur afrika",
+        "suid afrika"
+      ],
+      "anchor": [
+        -30.56,
+        24.7
+      ],
+      "anchorNote": "Inland in the Northern Cape, near South Africa's geographic centre.",
+      "featuredCities": [
+        "za:Langebaan"
+      ],
+      "credits": {
+        "attribution": "South Africa: Zippy rider map",
+        "links": [
+          {
+            "label": "ZA: Zippy rider map",
+            "href": "https://zippyride.app.link/"
           }
         ]
       }

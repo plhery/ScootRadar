@@ -183,7 +183,7 @@ export class AtomClient {
   }
 }
 
-/** ATOM's native map returns a 2 km circle. A 2.5 km grid keeps even cell corners inside it. */
+/** Qick's native map returns a 2 km circle. A 2.5 km grid keeps even cell corners inside it. */
 export function atomMapCenters(bounds: MapBounds): [number, number][] {
   const { south, west, north, east } = bounds;
   if (![south, west, north, east].every(Number.isFinite) || south >= north || west >= east ||
@@ -232,7 +232,10 @@ export async function collectAtomRegion(system: RegionalScooterSystem, api: Pick
   const unavailable = new Set<number>();
   let closed = true;
   const observedAt = Date.now();
-  for (const center of atomMapCenters(system.bounds)) {
+  const centers = system.atomAppFullMap ? [system.center] : atomMapCenters(system.bounds);
+  const bounds = system.atomAppFullMap && system.areas?.length
+    ? system.areas.map(area => area.bounds) : [system.bounds];
+  for (const center of centers) {
     const view = parseAtomVehicles(await api.vehicles(system.atomAppAccount, center));
     closed &&= view.closed;
     for (const id of view.unavailable) unavailable.add(id);
@@ -241,7 +244,7 @@ export async function collectAtomRegion(system: RegionalScooterSystem, api: Pick
   // Publish only a complete sweep. A failed view leaves the caller's previous snapshot intact.
   return { observedAt, stale: false, ...(closed ? { skipped: true } : {}),
     vehicles: [...vehicles.values()].filter(vehicle => !unavailable.has(vehicle.id) &&
-      boundsContainPoint(system.bounds, vehicle.lat, vehicle.lng)).map(vehicle => ({
+      bounds.some(area => boundsContainPoint(area, vehicle.lat, vehicle.lng))).map(vehicle => ({
       provider: system.provider, vehicle_id: `${system.id}:${vehicle.id}`, lat: vehicle.lat, lng: vehicle.lng,
       battery: vehicle.battery, range_m: null, deep_link: null, distance_m: null,
     })) };

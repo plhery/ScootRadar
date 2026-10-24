@@ -265,11 +265,23 @@ separate from the existing public ATOM GBFS feeds. The user authorized
 creating the test rider account; credentials stay in the cache's private
 volume and the apps' credits link to Qick.
 
-Each native request covers a two-kilometre circle. The collector sweeps
+MoVe's separate authorized account adds Fredericton, Moncton and Saint John
+in New Brunswick, Canada. Its native response is account-wide, so one
+shared read supplies three reviewed city areas. The collector keeps
+available electric scooters with charge, excluding hidden/active vehicles
+and positions outside those areas. See the [MoVe verification](docs/move-app-map.md).
+
+Zippy's separately authorized ATOM account adds the Club Mykonos area of
+Langebaan, South Africa, using the same full-account collection mode.
+South Africa is the first African country catalog. The rider session stays
+private; the country and provider credits link to Zippy. See the
+[coverage and verification](docs/south-african-scooter-feeds.md).
+
+Each Qick request covers a two-kilometre circle. The collector sweeps
 overlapping views across reviewed city bounds, preserving battery charge,
 deduplicating scooters and excluding hidden or active vehicles. All views
 must succeed before a city's snapshot changes. Rate limiting requires
-four seconds between reads across both accounts, so concurrent watched
+four seconds between reads across all accounts, so concurrent watched
 cities can refresh more slowly than once a minute. See the
 [protocol, coverage and session guide](docs/atom-app-map.md). Other ATOM
 brands require their own verified app/account access.

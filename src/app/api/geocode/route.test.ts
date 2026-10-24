@@ -958,7 +958,7 @@ describe('Geoapify', () => {
     }]);
   });
 
-  it('leaves out counties, regions, countries, places outside Europe and North America and places without a name or a position', async () => {
+  it('leaves out counties, regions, countries, places in unserved countries and places without a name or a position', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ results: [
       null,
       'Springfield',
@@ -966,7 +966,7 @@ describe('Geoapify', () => {
       { result_type: 'state', name: 'Springfield', country: 'Österreich', country_code: 'at', lat: 47.5, lon: 14.5 },
       { result_type: 'country', name: 'Springfield', country_code: 'xx', lat: 47.5, lon: 14.5 },
       { result_type: 'city', name: 'Springfield', state: 'Illinois', country: 'United States', country_code: 'us', lat: 39.7989, lon: -89.6544 },
-      { result_type: 'city', name: 'Springfield', state: 'Western Cape', country: 'South Africa', country_code: 'za', lat: -33.9, lon: 18.6 },
+      { result_type: 'city', name: 'Springfield', state: 'Greater Accra', country: 'Ghana', country_code: 'gh', lat: 5.55, lon: -0.2 },
       { result_type: 'city', name: 'Springfield', country_code: 'gb' },
       { result_type: 'city', name: 'Springfield', country_code: 'gb', lat: '51.7', lon: '0.5' },
       { result_type: 'building', housenumber: '1', country_code: 'gb', lat: 51.7, lon: 0.5 },

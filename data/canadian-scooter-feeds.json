@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-14",
+  "verifiedOn": "2026-10-24",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -363,6 +363,68 @@
       },
       "discoveryUrl": "https://data.lime.bike/api/partners/v2/gbfs/vancouver_bc/gbfs.json",
       "stationParking": true
+    },
+    {
+      "id": "move_ca_new_brunswick",
+      "country": "CA",
+      "provider": "move",
+      "city": "Fredericton / Moncton / Saint John",
+      "region": "NB",
+      "timeZone": "America/Moncton",
+      "center": [
+        46.0878,
+        -64.7782
+      ],
+      "bounds": {
+        "south": 45.222753,
+        "north": 46.162801,
+        "west": -66.716137,
+        "east": -64.633564
+      },
+      "discoveryUrl": "https://app.rideatom.com/api/v1/user/vehicles",
+      "atomAppAccount": "move-ca",
+      "atomAppFullMap": true,
+      "areas": [
+        {
+          "city": "Fredericton",
+          "center": [
+            45.9636,
+            -66.6431
+          ],
+          "bounds": {
+            "south": 45.896829,
+            "north": 45.998963,
+            "west": -66.716137,
+            "east": -66.577678
+          }
+        },
+        {
+          "city": "Moncton",
+          "center": [
+            46.0878,
+            -64.7782
+          ],
+          "bounds": {
+            "south": 46.028446,
+            "north": 46.162801,
+            "west": -64.909284,
+            "east": -64.633564
+          }
+        },
+        {
+          "city": "Saint John",
+          "center": [
+            45.2733,
+            -66.0633
+          ],
+          "bounds": {
+            "south": 45.222753,
+            "north": 45.338903,
+            "west": -66.151545,
+            "east": -65.95369
+          }
+        }
+      ]
     }
   ]
 }

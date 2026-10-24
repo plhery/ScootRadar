@@ -80,6 +80,8 @@ const PHOTON_LAYERS = ['house', 'street', 'locality', 'district', 'city', 'other
 // Europe's countries "Gare de Lyon" near Paris: the places of both outside are
 // left out instead (servedPlace).
 const CONTINENT_BOXES: Record<Continent, Box[]> = {
+  // Southern Africa; South Africa is the first country catalog here.
+  africa: [{ west: 10, south: -35, east: 41, north: -15 }],
   oceania: [{ west: 110, south: -48, east: 180, north: -9 }],
   asia: [{ west: 34, south: 12, east: 60, north: 34 }, { west: 40, south: 34, east: 89, north: 56 },
     { west: 95, south: -11, east: 150, north: 46 }],

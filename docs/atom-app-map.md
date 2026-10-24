@@ -4,7 +4,9 @@ Checked 24 October 2026 using Qick Scooters for Android, package
 `qickscooters.app`, version 10.80 (build 310800007). This investigation is
 for operators missing from the existing ATOM GBFS integration; enabled
 GBFS feeds continue to use their existing adapters. The Node cache's
-`server/atomApp.ts` collects Qick's authenticated maps in Sweden and Germany.
+`server/atomApp.ts` collects Qick's authenticated maps in Sweden and Germany,
+and the account-wide maps for [MoVe in New Brunswick, Canada](move-app-map.md)
+and [Zippy at Club Mykonos, South Africa](south-african-scooter-feeds.md).
 
 ## Coverage
 
@@ -217,3 +219,6 @@ coverage audit and provider entry before using the same adapter.
 
 The [other ATOM operator app investigation](atom-operator-apps.md) records
 eight more verified apps, their market leads and guest-access results.
+MoVe and Zippy's verified full-account replies use `atomAppFullMap`:
+MoVe has three reviewed city areas, Zippy one resort envelope. Qick retains
+its complete viewport sweeps.

@@ -12,9 +12,24 @@ of 11 and 16 minutes, and three more times from 21:23 to 21:33, five minutes
 apart, before the commit. Alberta is two hours behind, British Columbia
 three. Every feed URL is https, on the discovery's origin and under its
 directory. No account credentials or private
-rider APIs are used. The catalog is
+rider APIs are used by those GBFS feeds. The later MoVe supplement below
+uses its authorized rider map. The catalog is
 [`canadian-scooter-feeds.json`](../data/canadian-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
+
+## MoVe supplement — 24 October 2026
+
+MoVe's authenticated ATOM map adds Fredericton, Moncton and Saint John,
+New Brunswick. One complete collector read returned 337 available scooters
+(73, 146 and 118 respectively), all with battery charge. Ten scooters
+changed position by at least 20 metres across thirteen map checks, with
+movement in every city. One shared account-wide read supplies three
+reviewed city areas. No MoVe scooters in Halifax or Dartmouth were observed;
+its store listing is not the live fleet's location. Credentials stay in
+the cache's private ATOM volume. See the
+[protocol and live evidence](move-app-map.md).
+
+The original GBFS audit follows.
 
 | Operator | Town | Province | Available scooters, last poll (lowest–highest) |
 | --- | --- | --- | ---: |

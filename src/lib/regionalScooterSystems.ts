@@ -48,6 +48,8 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   limeAppMap?: true;
   /** ATOM rider-map account, whose app identifiers and rider token are private to the Node cache. */
   atomAppAccount?: string;
+  /** Verified full-account reply, collected once across the system's published service areas. */
+  atomAppFullMap?: true;
   /** LUUP's reviewed rider-map city ids; station counts are collected by the Node cache. */
   luupAppCities?: string[];
   /** Go Jet's signed-out scooter map, signed privately by the Node cache. */
