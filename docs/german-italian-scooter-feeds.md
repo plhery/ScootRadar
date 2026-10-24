@@ -468,9 +468,10 @@ Bolt and Lime publish no Italian feed.
   modified", and the Voi data the API serves is offered under the same licence.
 - **Not yet:** Bolt Services DE GmbH's four systems (CC BY 4.0) and LimeBike
   Germany GmbH's two (dl-de/by-2-0) answer, but NRW.Mobidrom updates all six
-  together, now and then: at 13:52, 13:55, 14:12 and 14:54 on 24 October,
-  gaps of up to 42 minutes, while the map shows no position older than 15.
-  They go on the map once they update as often as Voi's. Bolt's
+  together, about once an hour: at 13:52, 13:55, 14:12, 14:54 and 15:54 on
+  24 October, while the map shows no position older than 15 minutes. Between
+  updates Bolt's scooters never moved; they left the feed and came back under
+  new ids. They go on the map once they update as often as Voi's. Bolt's
   Düsseldorf-Mönchengladbach system had 1 scooter in Mönchengladbach and its
   Köln-Bonn system none in Bonn that day; their scooters stood in Düsseldorf,
   Neuss, Solingen, Monheim am Rhein and Hilden, and in Köln and Brühl.
