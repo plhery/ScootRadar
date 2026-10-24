@@ -254,7 +254,9 @@ paused the cache at every exception, caught ones included, while a worker read t
 Tracing is off, and no trace headers go to the operators' feeds.
 
 - **Feed stopped being served**: a warning each time a feed becomes `expired` by its
-  cadence's rule (an idle feed after 30 minutes without a successful collection) and is
+  cadence's rule (an idle feed after 30 minutes without a successful collection, or ten
+  minutes past its own interval for one collected less often on purpose: an hour and ten
+  for Lime and GCOO, two hours and ten for BinBin) and is
   still expired 5 minutes later (15 for Voi Switzerland, whose feed runs 2 or 3 minutes
   short of expiring: on some weekday mornings sharedmobility.ch cuts most of its downloads off
   (see Logs), and it expired 3 times on 17 October 2026 and 9 on the 22nd, back within 8

@@ -5,6 +5,8 @@ import { DEFAULT_SCHEDULE } from './feedScheduler';
 /** Switzerland's feeds: sharedmobility.ch, Hopp's Swiss towns and PubliBike. */
 const SWISS_SOURCES = ['national', 'hopp', 'publibike'];
 const ALL_SOURCES = [...SWISS_SOURCES, ...Object.values(COUNTRY_SOURCES)];
+/** How long after its interval a feed off the active interval expires. */
+const EXPIRY_GRACE_MS = 10 * 60_000;
 
 export interface CollectionCadence {
   activeIntervalMs: number;
@@ -55,6 +57,16 @@ export function cadenceFromEnv(env: Record<string, string | undefined> = process
     watchMs: seconds('SCOOTER_WATCH_SECONDS', DEFAULT_SCHEDULE.watchMs, 60_000),
     retryMs: DEFAULT_SCHEDULE.retryMs,
     alwaysFastSources: alwaysFastSources(env.SCOOTER_ALWAYS_FAST ?? 'CH'),
-    idleExpiryMs: Math.max(VEHICLE_MAX_AGE_MS, idleIntervalMs + 10 * 60_000),
+    idleExpiryMs: Math.max(VEHICLE_MAX_AGE_MS, idleIntervalMs + EXPIRY_GRACE_MS),
   };
+}
+
+/**
+ * The idle expiry of each feed collected less often on purpose, as GCOO's towns every hour: its own
+ * interval plus the same ten minutes, read from the feed itself, so that a collector that sets an
+ * interval cannot be told as stopped between two of its collections.
+ */
+export function ownIdleExpiries(feeds: readonly { id: string; idleIntervalMs?: number }[]): (id: string) => number | undefined {
+  const expiries = new Map(feeds.flatMap(feed => feed.idleIntervalMs ? [[feed.id, feed.idleIntervalMs + EXPIRY_GRACE_MS] as const] : []));
+  return id => expiries.get(id);
 }

@@ -15,7 +15,7 @@ import { createFeedStateLog, expiredReportDelay, feedState, waitOutCurfew, type 
 import { createSnapshotMetrics } from './metrics';
 import { registerFeedDefinitions } from './feedDefinitions';
 import { initErrorReporting, reportError, reportFeedExpired } from './errorReporting';
-import { cadenceFromEnv } from './cadence';
+import { cadenceFromEnv, ownIdleExpiries } from './cadence';
 import { answerZones, createZoneStore } from './zoneStore';
 import { createStrayHold } from './strayHold';
 import { dottMapRequests, withDottAppCollectors } from './dottApp';
@@ -25,9 +25,9 @@ import { luupMapRequests, withLuupAppCollectors } from './luupApp';
 import { jetMapRequests, withJetAppCollectors } from './jetApp';
 import { whooshMapRequests, withWhooshAppCollectors } from './whooshApp';
 import { beamMapRequests, withBeamAppCollectors } from './beamApp';
-import { LIME_IDLE_INTERVAL_MS, limeMapRequests, withLimeAppCollectors } from './limeApp';
-import { BINBIN_IDLE_INTERVAL_MS, binbinMapRequests, withBinbinAppCollectors } from './binbinApp';
-import { GCOO_IDLE_INTERVAL_MS, gcooMapRequests, withGcooAppCollectors } from './gcooApp';
+import { limeMapRequests, withLimeAppCollectors } from './limeApp';
+import { binbinMapRequests, withBinbinAppCollectors } from './binbinApp';
+import { gcooMapRequests, withGcooAppCollectors } from './gcooApp';
 import { kickgoingMapRequests, withKickgoingAppCollectors } from './kickgoingApp';
 import { swingMapRequests, withSwingAppCollectors } from './swingApp';
 
@@ -84,13 +84,10 @@ const scheduler = new FeedScheduler(collect, { ...schedule,
     return record && !record.failed ? record.collectedAt ?? (record.attemptedAt || undefined) : undefined;
   },
   onStart: (_feed, reason) => metrics.recordCollectionStart(reason) });
+// The expiry of the feeds collected less often on purpose (Lime, BinBin, GCOO), from their definitions.
+let ownIdleExpiry = ownIdleExpiries([]);
 const cadence: FeedCadence = { fastSince: (id, now) => scheduler.fastSince(id, now), idleExpiryMs: schedule.idleExpiryMs,
-  idleExpiryMsForFeed: id => {
-    const system = regionalSystems.get(id);
-    const interval = system?.limeAppMap ? LIME_IDLE_INTERVAL_MS : system?.binbinAppArea ? BINBIN_IDLE_INTERVAL_MS
-      : system?.gcooAppMap ? GCOO_IDLE_INTERVAL_MS : undefined;
-    return interval === undefined ? undefined : interval + 10 * 60_000;
-  } };
+  idleExpiryMsForFeed: id => ownIdleExpiry(id) };
 // A scooter a feed puts far away for a while, as 3electra puts Kyiv's in Lima, keeps its last place
 // for ten minutes, or until the feed's next collection when that is later.
 const holdStrays = createStrayHold((id, now) => scheduler.fastSince(id, now) === undefined
@@ -159,6 +156,7 @@ async function collect(definition: CollectableScooterFeed) {
 
 function setDefinitions(definitions: CollectableScooterFeed[], retireMissing: boolean) {
   collectable = definitions;
+  ownIdleExpiry = ownIdleExpiries(definitions);
   if (retireMissing) {
     const active = new Set(definitions.map(feed => feed.id));
     for (const id of records.keys()) if (!active.has(id)) records.delete(id);

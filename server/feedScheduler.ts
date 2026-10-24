@@ -95,9 +95,13 @@ export class FeedScheduler<T extends ScheduledFeed> {
       this.byId.set(feed.id, feed);
       if (this.due.has(feed.id) || this.running.has(feed.id)) continue;
       const last = this.options.lastCollectedAt?.(feed);
-      if (!last) { this.due.set(feed.id, 0); continue; }
+      // A feed without a record waits behind the restored ones already overdue: it has no positions to lose.
+      if (!last) { this.due.set(feed.id, now); continue; }
       this.startedAt.set(feed.id, last);
-      this.due.set(feed.id, Math.max(now, this.nextDue(feed, last, last, false)));
+      // A restored feed keeps its turn, even one gone by, so a restart goes on with the longest overdue
+      // rather than in the catalog's order. After the stall of 24 October 2026, feeds 29 minutes old
+      // waited behind ones of 21, and expired (30) on the restart at 19:59.
+      this.due.set(feed.id, this.nextDue(feed, last, last, false));
     }
     this.pump();
   }

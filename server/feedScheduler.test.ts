@@ -190,6 +190,17 @@ it('lets a restored feed wait for its turn instead of collecting everything afte
   } finally { scheduler.stop(); }
 });
 
+it('goes on after a restart with the feeds longest overdue, then new ones, whatever the catalog\'s order', async () => {
+  // Collected 22 and 50 minutes ago: due 20 and 40 minutes ago. One host's two slots, 10 seconds a collection.
+  const last: Record<string, number> = { fresh: T0 - 22 * MINUTE, 'fresh-2': T0 - 22 * MINUTE, stale: T0 - 50 * MINUTE };
+  const { scheduler, calls } = schedule(['new', 'fresh', 'fresh-2', 'stale'].map(id => ({ id, host: 'lime' })),
+    { lastCollectedAt: feed => last[feed.id] }, () => new Promise(resolve => setTimeout(resolve, 10_000)));
+  try {
+    await vi.advanceTimersByTimeAsync(30_000);
+    expect(calls.map(call => [call.id, call.at / 1000])).toEqual([['stale', 0], ['fresh', 0], ['fresh-2', 10], ['new', 10]]);
+  } finally { scheduler.stop(); }
+});
+
 it('counts a collection already under way as the one a request asked for', async () => {
   const finishers = new Map<string, () => void>();
   const finish = () => finishers.get('lyon')!();
