@@ -189,10 +189,16 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         didSet {
             if oldValue != appearance {
                 // Under the name and with the values the web sends.
-                ScooterAnalytics.shared.track("map_style", result: appearance == .automatic ? "auto" : appearance.rawValue)
+                ScooterAnalytics.shared.track("map_style", result: appearance == .system ? "auto" : appearance.rawValue)
             }
             defaults.set(appearance.rawValue, forKey: Self.appearanceKey)
         }
+    }
+
+    /// Light or dark now. Automatic goes by the sun where the rider is, or
+    /// where the map opened until they are located.
+    var interfaceStyle: UIUserInterfaceStyle {
+        appearance.interfaceStyle(at: clock(), in: userLocation ?? startCenter)
     }
 
     /// What the app's language follows: the iPhone's languages, or one chosen
@@ -366,7 +372,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
         // The quiet ground is what the dots are made for; a style chosen in
         // Settings is kept.
         mapStyle = AppleMapStyle(rawValue: savedStyle ?? "") ?? .quiet
-        appearance = ScooterAppearance(rawValue: defaults.string(forKey: Self.appearanceKey) ?? "") ?? .automatic
+        // Day and night until one is chosen in Settings.
+        appearance = ScooterAppearance(rawValue: defaults.string(forKey: Self.appearanceKey) ?? "") ?? .sun
 
         let savedEstimateMinutes = defaults.object(
             forKey: Self.rideEstimateMinutesKey

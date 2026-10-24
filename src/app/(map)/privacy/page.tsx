@@ -32,7 +32,8 @@ export default function PrivacyPage() {
         <h2>Location and map requests</h2>
         <p>
           If you grant location permission, your browser or device provides your position to the
-          app. Your position is used on the device to focus the map and calculate distances. The
+          app. Your position is used on the device to focus the map and calculate distances, and in
+          the iOS app to tell day from night for its Automatic appearance. The
           ScootRadar API receives the visible map bounds needed to find vehicles, but no
           separate user-location coordinate, except for a walking route (see below). These
           values are not stored by the application, except in an error report when a request

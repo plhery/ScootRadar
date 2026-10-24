@@ -892,9 +892,14 @@ extension ScooterAPIResponsePayload {
     }
 }
 
-/// Light, dark, or whichever of the two the iPhone is in.
+/// Light by day and dark by night, whichever of the two the iPhone is in,
+/// light, or dark.
 enum ScooterAppearance: String, CaseIterable, Identifiable, Sendable {
-    case automatic
+    /// Automatic: dark from half an hour after sunset to half an hour before
+    /// sunrise (ScooterDaylight).
+    case sun
+    /// Saved as "automatic", its name while it was the only automatic one.
+    case system = "automatic"
     case light
     case dark
 
@@ -902,16 +907,18 @@ enum ScooterAppearance: String, CaseIterable, Identifiable, Sendable {
 
     var label: String {
         switch self {
-        case .automatic: String(localized: "Automatic")
+        case .sun: String(localized: "Automatic")
+        case .system: String(localized: "System")
         case .light: String(localized: "Light")
         case .dark: String(localized: "Dark")
         }
     }
 
     /// Unspecified leaves the choice to the iPhone.
-    var interfaceStyle: UIUserInterfaceStyle {
+    func interfaceStyle(at date: Date, in place: GeoPoint) -> UIUserInterfaceStyle {
         switch self {
-        case .automatic: .unspecified
+        case .sun: ScooterDaylight.isDark(at: date, in: place) ? .dark : .light
+        case .system: .unspecified
         case .light: .light
         case .dark: .dark
         }

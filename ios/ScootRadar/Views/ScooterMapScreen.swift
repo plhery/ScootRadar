@@ -189,7 +189,8 @@ struct ScooterMapScreen: View {
             )
         }
         .focusedSceneValue(\.scooterMenu, ScooterMenuBar.shown ? ScooterMenu(situation: keySituation, mapStyle: model.mapStyle, perform: perform) : nil)
-        .background(WindowAppearance(style: model.appearance.interfaceStyle))
+        // Automatic turns dark or light within the minute the sun has it.
+        .background(TimelineView(.everyMinute) { _ in WindowAppearance(style: model.interfaceStyle) })
         .background(InterfaceOrientationProbe { model.setHeadingOrientation(ScooterHeadingPolicy.deviceOrientation(for: $0)) })
         .environment(\.locale, model.language.locale)
     }

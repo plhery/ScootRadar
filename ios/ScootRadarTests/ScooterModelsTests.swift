@@ -1204,6 +1204,51 @@ extension ScooterModelsTests {
         XCTAssertEqual(ScooterLanguage.iPhoneLanguages, iPhone)
     }
 
+    func testAutomaticIsDarkFromHalfAnHourAfterSunsetToHalfAnHourBeforeSunrise() throws {
+        let iso = ISO8601DateFormatter()
+        func isDark(_ time: String, in place: GeoPoint) throws -> Bool {
+            ScooterDaylight.isDark(at: try XCTUnwrap(iso.date(from: time)), in: place)
+        }
+        // In Zurich the sun sets at 18:23 on 24 October 2026 and rises at
+        // 06:58 the next morning, once the clocks have gone back.
+        let zurich = GeoPoint(latitude: 47.3769, longitude: 8.5417)
+        XCTAssertFalse(try isDark("2026-10-24T12:00:00+02:00", in: zurich))
+        XCTAssertFalse(try isDark("2026-10-24T18:45:00+02:00", in: zurich))
+        XCTAssertTrue(try isDark("2026-10-24T19:00:00+02:00", in: zurich))
+        XCTAssertTrue(try isDark("2026-10-25T03:00:00+01:00", in: zurich))
+        XCTAssertTrue(try isDark("2026-10-25T06:15:00+01:00", in: zurich))
+        XCTAssertFalse(try isDark("2026-10-25T06:40:00+01:00", in: zurich))
+
+        // In Trondheim at midsummer it sets at 23:37 and rises at 03:02: dark for two and a half hours.
+        let trondheim = GeoPoint(latitude: 63.4305, longitude: 10.3951)
+        XCTAssertFalse(try isDark("2026-06-20T23:55:00+02:00", in: trondheim))
+        XCTAssertTrue(try isDark("2026-06-21T01:00:00+02:00", in: trondheim))
+        XCTAssertFalse(try isDark("2026-06-21T02:45:00+02:00", in: trondheim))
+
+        // In Tromsø it never sets at midsummer and never rises at midwinter.
+        let tromso = GeoPoint(latitude: 69.6492, longitude: 18.9553)
+        XCTAssertFalse(try isDark("2026-06-21T00:30:00+02:00", in: tromso))
+        XCTAssertTrue(try isDark("2026-12-21T12:00:00+01:00", in: tromso))
+        // Days before, an hour and three quarters of sun, from 10:39 to 12:23, and light half an hour either side.
+        XCTAssertTrue(try isDark("2026-11-25T10:00:00+01:00", in: tromso))
+        XCTAssertFalse(try isDark("2026-11-25T10:15:00+01:00", in: tromso))
+        XCTAssertFalse(try isDark("2026-11-25T12:45:00+01:00", in: tromso))
+        XCTAssertTrue(try isDark("2026-11-25T13:00:00+01:00", in: tromso))
+    }
+
+    func testOnlyAutomaticGoesByTheSun() throws {
+        let zurich = GeoPoint(latitude: 47.3769, longitude: 8.5417)
+        let night = try XCTUnwrap(ISO8601DateFormatter().date(from: "2026-10-24T23:00:00+02:00"))
+        let noon = try XCTUnwrap(ISO8601DateFormatter().date(from: "2026-10-24T12:00:00+02:00"))
+        XCTAssertEqual(ScooterAppearance.sun.interfaceStyle(at: night, in: zurich), .dark)
+        XCTAssertEqual(ScooterAppearance.sun.interfaceStyle(at: noon, in: zurich), .light)
+        for date in [night, noon] {
+            XCTAssertEqual(ScooterAppearance.system.interfaceStyle(at: date, in: zurich), .unspecified)
+            XCTAssertEqual(ScooterAppearance.light.interfaceStyle(at: date, in: zurich), .light)
+            XCTAssertEqual(ScooterAppearance.dark.interfaceStyle(at: date, in: zurich), .dark)
+        }
+    }
+
     func testEveryLanguageWritesTheLanguageChoices() throws {
         let keys = [
             "Automatic (language)",

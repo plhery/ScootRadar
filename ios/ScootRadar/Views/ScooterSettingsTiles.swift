@@ -70,7 +70,8 @@ private extension View {
 }
 
 /// The app in small, in the light or in the dark: the map, a few scooters,
-/// the search bar and the dock. Automatic shows half of each.
+/// the search bar and the dock. System shows half of each, and Automatic the
+/// sun over the light half and the moon over the dark one.
 struct AppearancePicture: View {
     let appearance: ScooterAppearance
 
@@ -80,9 +81,37 @@ struct AppearancePicture: View {
             SmallScreen(isDark: false)
         case .dark:
             SmallScreen(isDark: true)
-        case .automatic:
-            SmallScreen(isDark: false)
-                .overlay { SmallScreen(isDark: true).clipShape(LowerHalf()) }
+        case .system:
+            halves
+        case .sun:
+            halves.overlay { SunAndMoon() }
+        }
+    }
+
+    private var halves: some View {
+        SmallScreen(isDark: false)
+            .overlay { SmallScreen(isDark: true).clipShape(LowerHalf()) }
+    }
+
+    /// Between the scooters, clear of the search bar and the dock.
+    private struct SunAndMoon: View {
+        var body: some View {
+            Canvas { context, size in
+                for (symbol, place, colour) in [
+                    ("sun.max.fill", CGPoint(x: 0.14, y: 0.45), Color(red: 1, green: 0.72, blue: 0.1)),
+                    ("moon.fill", CGPoint(x: 0.87, y: 0.3), Color(red: 0.98, green: 0.92, blue: 0.7))
+                ] {
+                    var image = context.resolve(Image(systemName: symbol))
+                    image.shading = .color(colour)
+                    let side: CGFloat = 10
+                    context.draw(image, in: CGRect(
+                        x: place.x * size.width - side / 2,
+                        y: place.y * size.height - side / 2,
+                        width: side,
+                        height: side
+                    ))
+                }
+            }
         }
     }
 

@@ -571,34 +571,50 @@ final class ScooterMapModelTests: XCTestCase {
         XCTAssertEqual(restoredModel.enabledProviders, [.hopp, .publibike])
     }
 
-    func testAppearanceFollowsTheIPhoneUntilOneIsChosenAndIsKept() {
+    func testAppearanceGoesByTheSunUntilOneIsChosenAndIsKept() throws {
         let defaults = isolatedDefaults()
-        let firstModel = ScooterMapModel(
-            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
-            locationManager: CLLocationManager(),
-            defaults: defaults
-        )
-        XCTAssertEqual(firstModel.appearance, .automatic)
-        XCTAssertEqual(firstModel.appearance.interfaceStyle, .unspecified)
+        let clock = TestClock()
+        func makeModel() -> ScooterMapModel {
+            ScooterMapModel(
+                api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
+                locationManager: CLLocationManager(),
+                defaults: defaults,
+                now: { clock.now }
+            )
+        }
+        let iso = ISO8601DateFormatter()
+        let firstModel = makeModel()
+        XCTAssertEqual(firstModel.appearance, .sun)
+        // In Switzerland, where the map opens, until the rider is located.
+        clock.now = try XCTUnwrap(iso.date(from: "2026-10-24T18:45:00+02:00"))
+        XCTAssertEqual(firstModel.interfaceStyle, .light)
+        clock.now = try XCTUnwrap(iso.date(from: "2026-10-24T19:00:00+02:00"))
+        XCTAssertEqual(firstModel.interfaceStyle, .dark)
+        // Where the rider is: in Lisbon it sets at 18:46, an hour and 23 minutes later.
+        firstModel.userLocation = GeoPoint(latitude: 38.7223, longitude: -9.1393)
+        clock.now = try XCTUnwrap(iso.date(from: "2026-10-24T18:00:00+01:00"))
+        XCTAssertEqual(firstModel.interfaceStyle, .light)
+        clock.now = try XCTUnwrap(iso.date(from: "2026-10-24T19:20:00+01:00"))
+        XCTAssertEqual(firstModel.interfaceStyle, .dark)
 
+        firstModel.appearance = .light
+        XCTAssertEqual(firstModel.interfaceStyle, .light)
         firstModel.appearance = .dark
 
-        let restoredModel = ScooterMapModel(
-            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
-            locationManager: CLLocationManager(),
-            defaults: defaults
-        )
+        let restoredModel = makeModel()
         XCTAssertEqual(restoredModel.appearance, .dark)
-        XCTAssertEqual(restoredModel.appearance.interfaceStyle, .dark)
+        XCTAssertEqual(restoredModel.interfaceStyle, .dark)
 
-        // A value the app no longer knows leaves the choice to the iPhone.
+        // Automatic as it was before the sun, chosen in Settings, still
+        // follows the iPhone.
+        defaults.set("automatic", forKey: "appearance")
+        let systemModel = makeModel()
+        XCTAssertEqual(systemModel.appearance, .system)
+        XCTAssertEqual(systemModel.interfaceStyle, .unspecified)
+
+        // A value the app no longer knows goes by the sun.
         defaults.set("sepia", forKey: "appearance")
-        let unknownModel = ScooterMapModel(
-            api: StubScooterAPI(response: ScooterResponse(vehicles: [])),
-            locationManager: CLLocationManager(),
-            defaults: defaults
-        )
-        XCTAssertEqual(unknownModel.appearance, .automatic)
+        XCTAssertEqual(makeModel().appearance, .sun)
     }
 
     func testChosenLanguageChangesTheTextAtOnceAndIsKeptWhereIOSReadsIt() {
@@ -659,7 +675,8 @@ final class ScooterMapModelTests: XCTestCase {
         // A language chosen again is kept again.
         model.languageChoice = .language(.it)
         XCTAssertEqual(defaults.persistentDomain(forName: suiteName)?["AppleLanguages"] as? [String], ["it"])
-        XCTAssertEqual(ScooterAppearance.automatic.label, "Automatico")
+        XCTAssertEqual(ScooterAppearance.sun.label, "Automatico")
+        XCTAssertEqual(ScooterAppearance.system.label, "Sistema")
 
         // An iPhone in none of the app's languages is followed in English.
         iPhoneLanguages = ["ja-JP", "zh-Hans-CN"]
@@ -2849,23 +2866,27 @@ extension ScooterMapModelTests {
 
     /// The appearance is the window's, so a sheet over the screen has it too.
     func testChosenAppearanceIsThatOfTheWholeWindow() async throws {
-        let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
+        let clock = TestClock()
+        // Night in Switzerland, where the map opens.
+        clock.now = try XCTUnwrap(ISO8601DateFormatter().date(from: "2026-10-24T23:00:00+02:00"))
+        let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])), clock: clock)
         let window = try window(showing: ScooterMapScreen(model: model))
         defer { window.isHidden = true }
-        XCTAssertEqual(window.overrideUserInterfaceStyle, .unspecified)
-
-        model.appearance = .dark
-        let dark = await waitUntil { window.overrideUserInterfaceStyle == .dark }
-        XCTAssertTrue(dark)
+        let night = await waitUntil { window.overrideUserInterfaceStyle == .dark }
+        XCTAssertTrue(night)
 
         model.appearance = .light
         let light = await waitUntil { window.overrideUserInterfaceStyle == .light }
         XCTAssertTrue(light)
 
-        // Automatic gives the choice back to the iPhone.
-        model.appearance = .automatic
-        let automatic = await waitUntil { window.overrideUserInterfaceStyle == .unspecified }
-        XCTAssertTrue(automatic)
+        model.appearance = .dark
+        let dark = await waitUntil { window.overrideUserInterfaceStyle == .dark }
+        XCTAssertTrue(dark)
+
+        // System gives the choice back to the iPhone.
+        model.appearance = .system
+        let system = await waitUntil { window.overrideUserInterfaceStyle == .unspecified }
+        XCTAssertTrue(system)
     }
 
     /// The layout of a window `width` points across, from either layout.
