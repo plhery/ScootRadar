@@ -98,7 +98,7 @@ const guide: Guide = {
         {
           list: [
             '**Voi:** 25 € bei einem Verstoss gegen die Parkregeln; Bussgelder der Behörden gibt Voi an dich weiter.',
-            '**Bolt:** 15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Gebiets (Bedingungen gültig ab 1. Dezember 2026).',
+            '**Bolt:** 15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs (Bedingungen gültig ab 1. Dezember 2026).',
             '**Lime:** erst eine Verwarnung, dann eine Strafgebühr, bei Wiederholung die Sperre; Bussgelder und Abschleppkosten gibt Lime weiter.',
           ],
         },
@@ -127,7 +127,7 @@ const guide: Guide = {
       heading: 'E-Scooter-Verbot in U-Bahn und Strassenbahn: VGF, RMV und Call a Bike',
       blocks: [
         'Seit dem 1. Oktober 2024 verbietet die VGF wegen der Brand- und Explosionsgefahr ihrer Akkus E-Tretroller in U-Bahn und Strassenbahn. Das gilt auch für deinen eigenen Scooter; E-Bikes, E-Rollstühle und Seniorenmobile sind nicht betroffen.',
-        'In S-Bahn und Regionalzügen behandelt der RMV einen eigenen E-Scooter wie ein Fahrrad: Er fährt kostenlos mit, wenn Platz ist, einen Anspruch darauf hast du aber nicht, und den Akku darfst du an Bord weder ausbauen noch laden. Leih-Scooter nimmst du nie mit: Fahrt vor dem Bahnhof beenden und am Ziel einen neuen mieten.',
+        'In S-Bahn und Regionalzügen behandelt der RMV einen eigenen E-Scooter wie ein Fahrrad: Er fährt kostenlos mit, wenn Platz ist, einen Anspruch darauf hast du aber nicht, und den Akku darfst du an Bord weder ausbauen noch laden. Für Leih-Scooter hat der RMV keine eigene Regel: Beende die Fahrt am besten vor dem Bahnhof und miete am Ziel einen neuen.',
         'Lieber Fahrrad? **DB Call a Bike** hat in Frankfurt Stationen, an denen du die Räder ausleihst und zurückgibst:',
         {
           list: [
@@ -175,7 +175,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich einen E-Scooter in der Frankfurter S-Bahn mitnehmen?',
-      answer: 'Einen eigenen ja: Der RMV behandelt ihn wie ein Fahrrad und nimmt ihn kostenlos mit, wenn Platz ist. In U-Bahn und Strassenbahn verbietet die VGF E-Scooter seit dem 1. Oktober 2024. Leih-Scooter bleiben immer draussen.',
+      answer: 'Einen eigenen ja: Der RMV behandelt ihn wie ein Fahrrad und nimmt ihn kostenlos mit, wenn Platz ist. In U-Bahn und Strassenbahn verbietet die VGF E-Scooter seit dem 1. Oktober 2024. Für Leih-Scooter hat der RMV keine eigene Regel; beende die Fahrt am besten vor dem Bahnhof.',
     },
     {
       question: 'Gibt es Leih-E-Scooter am Frankfurter Flughafen?',
