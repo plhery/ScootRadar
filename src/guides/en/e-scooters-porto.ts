@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Porto: Bird and Lime, where you can ride and where to park',
   lede: 'You can rent an e-scooter in Porto from Bird or Lime, the two companies the city licensed in 2025; both also rent out e-bikes in the same app. We found no published Porto prices for either: the app shows the price before you unlock. You must end every ride at a municipal sharing point, marked in blue on the ground, and may not ride on pavements, squares, pedestrian streets, bus lanes or the upper deck of the Dom Luís I bridge. Since November 2025 the service may run 24 hours a day.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-24',
   city: 'pt:Porto',
   sections: [
     {
@@ -120,7 +120,7 @@ const guide: Guide = {
             '**Trains.** End your ride before you enter São Bento or Campanhã station: Bird has sharing points near both, and nobody may ride inside a station. Your own scooter rides CP trains free, one per passenger, folded as hand luggage on the Alfa Pendular and Intercidades.',
             '**Metro.** A shared scooter never goes on board, and Metro do Porto’s conditions don’t mention e-scooters, so don’t count on taking your own.',
             '**The airport.** Francisco Sá Carneiro airport is in Maia, inside Bird’s zone there, but on the morning of 13 October 2026 only four Bird vehicles stood within 500 m of the terminal. The centre is about 11 km away and you must end at a Porto sharing point: take the metro in and ride from there.',
-            '**Matosinhos and Maia.** Bird runs in both: with parking points in [Matosinhos](map:pt:Matosinhos), as in Porto, and without them in [Maia](map:pt:Maia). From Foz, follow the seafront north past the Castelo do Queijo to Matosinhos beach; the Parque da Cidade on the way is not for riding.',
+            '**Matosinhos and Maia.** Bird runs in both, with separate fleets: with parking points in [Matosinhos](map:pt:Matosinhos), as in Porto, and without them in [Maia](map:pt:Maia). From Foz, follow the seafront north past the Castelo do Queijo to Matosinhos beach; the Parque da Cidade on the way is not for riding. A Porto scooter can’t end its ride there: Bird’s open data for Porto lists no parking point in Matosinhos, so ride back to one in Porto.',
             '**Students.** The Asprela campus (FEUP, Hospital de São João) has Bird sharing points, though scooters there can be scarce.',
             '**No bike share.** Porto has no docked city bikes; rent a Bird or Lime e-bike in the same app instead.',
           ],

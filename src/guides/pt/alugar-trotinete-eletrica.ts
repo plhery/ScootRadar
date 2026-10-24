@@ -64,7 +64,7 @@ const guide: Guide = {
               ['Porto', 'Bird e Lime', 'A viagem só termina num ponto de partilha, marcado a azul no chão'],
               ['Oeiras', 'Bird; Lime e Bolt por confirmar', 'A viagem só começa e acaba num ponto move sinalizado'],
               ['Almada e Costa da Caparica', 'Bird e Lime', 'Siga as zonas do mapa da app'],
-              ['Cascais, Maia, Matosinhos, Portimão e Olhão', 'Bird', 'Em Matosinhos, o regulamento municipal de 2022 só permite alugar das 6h00 às 22h00'],
+              ['Cascais, Maia, Matosinhos, Portimão e Olhão', 'Bird; em Matosinhos, também a Bolt, com licença desde 2024 (por confirmar)', 'Em Matosinhos, o regulamento municipal de 2022 só permite alugar das 6h00 às 22h00'],
               ['Faro', 'Lime', 'Consta da lista de cidades da Lime'],
               ['Coimbra', 'Bird; a página da Bolt também lista trotinetes', 'Em agosto de 2026, a presidente da Câmara disse que a cidade «não tem condições» para elas e que prepara uma concessão e um regulamento: confirme na app'],
               ['Braga, Vila Nova de Gaia e Espinho', 'Nenhum', 'Braga suspendeu-as, e a Bolt anunciou a recolha para o fim de agosto de 2026; Gaia cancelou o concurso em abril, e Espinho acabou com elas no fim de julho'],
