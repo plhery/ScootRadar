@@ -178,6 +178,15 @@ it('returns parking only at street zoom, separately from scooter counts and batt
   expect(expired.vehicles).toHaveLength(2);
 });
 
+it('expects no parking from an app map, which collects none', () => {
+  const binbin = feed({ id: 'turkey:binbin_tr_gaziantep', source: 'turkey', provider: 'binbin',
+    vehicles: [{ ...vehicle('four'), provider: 'binbin' }] });
+  expect(querySnapshot(snapshot([binbin]), query, 16, now).meta.parkingStatus).toBe('skipped');
+  const location = { id: 'dott_fr_lyon:bay', name: 'Bay', provider: 'dott', lat: 45.75, lng: 4.85, mandatory: true };
+  const beside = feed({ parking: { locations: [location], observedAt: now, stale: false } });
+  expect(querySnapshot(snapshot([beside, binbin]), query, 16, now).meta.parkingStatus).toBe('fresh');
+});
+
 describe('feeds collected on demand', () => {
   const minutes = (count: number) => count * 60_000;
 
