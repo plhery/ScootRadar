@@ -166,13 +166,17 @@ export function cityId(country, region, city) {
 /**
  * The Swiss areas, then REGIONAL_SCOOTER_CITIES as src/lib/regionalScooterSystems.ts merges
  * them: one entry per city, its bounds enclosing every operator's envelope, its name saying its
- * region where the country's names do: "Portland, OR".
+ * region where the country's names do: "Portland, OR". A city of the catalogs also lists the
+ * feeds of its service areas, each with the area's pause, for iOS to tell a town whose operators
+ * have all closed its season, as closedForSeason in src/lib/seasonalPauses.ts.
  */
 export function scooterCities(swissAreas, systems, countries) {
   const cities = new Map(swissAreas.map(area => [area.id, {
     id: area.id, name: area.city, country: 'CH', center: area.center, bounds: area.bounds,
   }]));
   const namedWithRegion = new Set(countries.filter(country => country.regions?.showInCityNames).map(country => country.code));
+  const sources = new Map(countries.map(country => [country.code, country.source]));
+  const samePause = (a, b) => a === b || (!!a && !!b && a.from === b.from && a.until === b.until && a.timeZone === b.timeZone);
   for (const system of systems) {
     for (const area of system.areas ?? [system]) {
       const region = areaRegion(system, area);
@@ -181,14 +185,18 @@ export function scooterCities(swissAreas, systems, countries) {
       // As mergeCities: each pause once, and none where one area has scooters all year.
       const pause = areaSeasonal(system, area);
       const pauses = pause && (!previous || previous.pauses)
-        ? [...previous?.pauses ?? [], pause].filter((entry, index, all) => all.findIndex(other =>
-          other.from === entry.from && other.until === entry.until && other.timeZone === entry.timeZone) === index)
+        ? [...previous?.pauses ?? [], pause].filter((entry, index, all) => all.findIndex(other => samePause(other, entry)) === index)
         : undefined;
+      // A feed id as meta.seasonOver names it: "kazakhstan:whoosh_kz_nqz". Each feed and pause once.
+      const feed = { id: `${sources.get(system.country)}:${system.id}`, ...(pause ? { pause } : {}) };
+      const feeds = [...previous?.feeds ?? [], feed]
+        .filter((entry, index, all) => all.findIndex(other => other.id === entry.id && samePause(other.pause, entry.pause)) === index);
       cities.set(id, {
         id,
         name: region && namedWithRegion.has(system.country) ? `${area.city}, ${region}` : area.city,
         ...(region ? { region } : {}),
         ...(pauses ? { pauses } : {}),
+        feeds,
         country: system.country,
         center: previous?.center ?? area.center,
         bounds: previous ? {
@@ -203,12 +211,21 @@ export function scooterCities(swissAreas, systems, countries) {
   return [...cities.values()];
 }
 
+const swiftPause = pause => `ScooterSeasonalPause(from: ${JSON.stringify(pause.from)}, ` +
+  `until: ${JSON.stringify(pause.until)}, timeZone: ${JSON.stringify(pause.timeZone)})`;
+
 /** The pauses argument of a city's ScooterCity in Swift, after its bounds; none for most. */
 export function swiftCityPauses(city) {
   if (!city.pauses) return '';
-  const pauses = city.pauses.map(pause => `ScooterSeasonalPause(from: ${JSON.stringify(pause.from)}, ` +
-    `until: ${JSON.stringify(pause.until)}, timeZone: ${JSON.stringify(pause.timeZone)})`);
-  return `, pauses: [${pauses.join(', ')}]`;
+  return `, pauses: [${city.pauses.map(swiftPause).join(', ')}]`;
+}
+
+/** The feeds argument of a city's ScooterCity in Swift, after its pauses; none for a Swiss one. */
+export function swiftCityFeeds(city) {
+  if (!city.feeds?.length) return '';
+  const feeds = city.feeds.map(feed => `ScooterCityFeed(id: ${JSON.stringify(feed.id)}` +
+    `${feed.pause ? `, pause: ${swiftPause(feed.pause)}` : ''})`);
+  return `, feeds: [${feeds.join(', ')}]`;
 }
 
 // The widest a city may be, in km. Wider, a merged envelope is most likely two towns of one name

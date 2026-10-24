@@ -128,6 +128,7 @@
 "Night ban in %1$@: no scooter rentals until %2$@" = "Interdiction de nuit à %1$@ : aucune location avant %2$@";
 "Off season in %1$@: scooters are back in %2$@" = "Pause saisonnière à %1$@ : retour des trottinettes en %2$@";
 "Off season in %1$@: from %2$@ until the streets are clear" = "Pause saisonnière à %1$@ : dès le %2$@, jusqu’à ce que les rues soient dégagées";
+"Off season in %@: scooters are back when the operator reopens" = "Pause saisonnière à %@ : retour des trottinettes à la réouverture par l’opérateur";
 "Night ban in %1$@: you can rent it from %2$@" = "Interdiction de nuit à %1$@ : louable à partir de %2$@";
 "No scooters here right now. Zoom out or move the map." = "Aucune trottinette ici pour le moment. Dézoomez ou déplacez la carte.";
 

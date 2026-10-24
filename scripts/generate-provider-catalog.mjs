@@ -1,8 +1,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import {
-  binbinAreasProblem, catalogSystems, curfewZoneProblem, scooterCities, swiftCityPauses, swiftCountries, townOutlinesProblem, typescriptCatalogs,
-  typescriptCountries, validateCountries,
+  binbinAreasProblem, catalogSystems, curfewZoneProblem, scooterCities, swiftCityFeeds, swiftCityPauses, swiftCountries, townOutlinesProblem,
+  typescriptCatalogs, typescriptCountries, validateCountries,
 } from './country-catalog.mjs';
 
 const root = process.cwd();
@@ -255,7 +255,7 @@ function swiftCities() {
       throw new Error(`Invalid covered city: ${city.id}`);
     }
     return `        ScooterCity(id: ${JSON.stringify(city.id)}, name: ${JSON.stringify(city.name)}, countryCode: ${JSON.stringify(city.country)}, ` +
-      `center: GeoPoint(latitude: ${city.center[0]}, longitude: ${city.center[1]}), bounds: ${swiftBounds(city.bounds)}${swiftCityPauses(city)}),`;
+      `center: GeoPoint(latitude: ${city.center[0]}, longitude: ${city.center[1]}), bounds: ${swiftBounds(city.bounds)}${swiftCityPauses(city)}${swiftCityFeeds(city)}),`;
   }).join('\n');
 
   return `
@@ -268,6 +268,17 @@ struct ScooterCity: Identifiable, Equatable, Sendable {
     let bounds: GeoBounds
     /// The seasonal pauses of its service areas when every one has one, like pauses on the web.
     var pauses: [ScooterSeasonalPause] = []
+    /// The feeds of its service areas, each with the area's pause: it is off season once their
+    /// operators have all closed its season or are in their pause, as closedForSeason on the web.
+    var feeds: [ScooterCityFeed] = []
+}
+
+/// A feed with a service area in a city, by the id meta.seasonOver names it with.
+struct ScooterCityFeed: Equatable, Sendable {
+    /// "kazakhstan:whoosh_kz_nqz": the country's source, then the system's id.
+    let id: String
+    /// The seasonal pause of its service area there, if it has one.
+    var pause: ScooterSeasonalPause? = nil
 }
 
 struct ScooterCityDistance: Identifiable, Equatable, Sendable {

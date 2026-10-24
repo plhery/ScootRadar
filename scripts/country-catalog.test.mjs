@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
-  binbinAreasProblem, catalogSystems, cityKm, countryCreditLinks, curfewZoneProblem, scooterCities, seasonalProblem, swiftCityPauses, swiftCountries,
-  timeZoneProblem, townOutlinesProblem, typescriptCatalogs, typescriptCountries, validateCityWidths, validateCountries,
+  binbinAreasProblem, catalogSystems, cityKm, countryCreditLinks, curfewZoneProblem, scooterCities, seasonalProblem, swiftCityFeeds, swiftCityPauses,
+  swiftCountries, timeZoneProblem, townOutlinesProblem, typescriptCatalogs, typescriptCountries, validateCityWidths, validateCountries,
 } from './country-catalog.mjs';
 
 const readJson = path => JSON.parse(readFileSync(path, 'utf8'));
@@ -242,6 +242,12 @@ describe('the countries of data/countries.json', () => {
     expect(swiftCityPauses(city('ca:Toronto'))).toBe(', pauses: [ScooterSeasonalPause(from: "11-16", until: "04-15", ' +
       'timeZone: "America/Toronto"), ScooterSeasonalPause(from: "12-01", until: "04-01", timeZone: "America/Toronto")]');
     expect(swiftCityPauses(city('ca:Mississauga'))).toBe('');
+    // Each feed with its own area's pause, for iOS to tell a town its operators have closed.
+    expect(city('ca:Toronto').feeds).toEqual([{ id: 'canada:bird_toronto', pause: winter },
+      { id: 'canada:lime_toronto', pause: early }, { id: 'canada:neuron_toronto', pause: winter }]);
+    expect(swiftCityFeeds(city('ca:Mississauga'))).toBe(', feeds: [ScooterCityFeed(id: "canada:lime_toronto")]');
+    expect(swiftCityFeeds(city('ca:Toronto'))).toMatch(/^, feeds: \[ScooterCityFeed\(id: "canada:bird_toronto", pause: ScooterSeasonalPause\(from: "11-16", /);
+    expect(swiftCityFeeds(city('ch:zurich'))).toBe('');
 
     expect(seasonalProblem(winter)).toBeNull();
     // Skien's scooters stop on 15 December, back once the streets are clear.

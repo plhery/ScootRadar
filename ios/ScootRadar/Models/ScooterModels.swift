@@ -786,6 +786,9 @@ struct ScooterResponseMetadata: Sendable {
     let parkingStatus: String?
     let expiresAt: String?
     let parkingExpiresAt: String?
+    /// The feeds in view whose operator says their season is over, as Whoosh
+    /// for Astana each winter: "kazakhstan:whoosh_kz_nqz".
+    let seasonOver: Set<String>
 
     init(
         partial: Bool,
@@ -802,7 +805,8 @@ struct ScooterResponseMetadata: Sendable {
         refreshing: Bool = false,
         parkingStatus: String? = nil,
         expiresAt: String? = nil,
-        parkingExpiresAt: String? = nil
+        parkingExpiresAt: String? = nil,
+        seasonOver: Set<String> = []
     ) {
         self.partial = partial
         self.stale = stale
@@ -819,6 +823,7 @@ struct ScooterResponseMetadata: Sendable {
         self.parkingStatus = parkingStatus
         self.expiresAt = expiresAt
         self.parkingExpiresAt = parkingExpiresAt
+        self.seasonOver = seasonOver
     }
 }
 
@@ -885,7 +890,8 @@ extension ScooterResponseMetadataPayload {
             refreshing: refreshing ?? false,
             parkingStatus: parkingStatus?.rawValue,
             expiresAt: expiresAt,
-            parkingExpiresAt: parkingExpiresAt
+            parkingExpiresAt: parkingExpiresAt,
+            seasonOver: Set(seasonOver ?? [])
         )
     }
 }
@@ -1189,7 +1195,10 @@ struct RentalCurfew: Sendable {
 /// The part of the year a city has no scooters, as Montréal each winter, like
 /// src/lib/seasonalPauses.ts. Its operators may list nothing or stop answering
 /// then, so the dock says when the scooters are back. ScooterCity.pauses is
-/// generated from the catalogs' `seasonal` windows.
+/// generated from the catalogs' `seasonal` windows. Some operators say
+/// themselves that a town's season is over, as Whoosh for Astana: the answers
+/// name those feeds (`seasonOver`), and the town is off season once every feed
+/// of ScooterCity.feeds is closed or in its pause.
 struct ScooterSeasonalPause: Equatable, Sendable {
     /// Local "MM-DD": the first day without scooters.
     let from: String
@@ -1211,6 +1220,8 @@ struct ScooterSeasonalPause: Equatable, Sendable {
         case month(Int)
         /// Once the streets are clear, on no set day, after a pause from that local "MM-DD".
         case clear(from: String)
+        /// When its operators open its season again: they have closed it, and set no day.
+        case seasonOver
     }
 
     struct Active: Equatable, Hashable, Sendable {
@@ -1262,13 +1273,28 @@ struct ScooterSeasonalPause: Equatable, Sendable {
 
     /// The city at that point whose scooters are away for the season. Nil outside
     /// every city, or where one of the cities around the point has scooters now.
-    static func active(at point: GeoPoint, on date: Date, among cities: [ScooterCity] = ScooterCityCatalog.cities) -> Active? {
+    /// `seasonOver` holds the feeds whose operator says their season is over.
+    static func active(
+        at point: GeoPoint,
+        on date: Date,
+        among cities: [ScooterCity] = ScooterCityCatalog.cities,
+        seasonOver: Set<String> = []
+    ) -> Active? {
         var found: Active?
         for city in cities where city.bounds.contains(point) {
-            guard let back = back(city.pauses, on: date) else { return nil }
+            guard let back = back(city.pauses, on: date)
+                ?? (closedForSeason(city, on: date, seasonOver: seasonOver) ? .seasonOver : nil) else { return nil }
             if found == nil { found = Active(city: city.name, back: back) }
         }
         return found
+    }
+
+    /// Whether the city's operators have all closed its season, or are in their
+    /// own pause, and one at least has closed it: Almaty is not, while Jet runs
+    /// there besides Whoosh.
+    private static func closedForSeason(_ city: ScooterCity, on date: Date, seasonOver: Set<String>) -> Bool {
+        city.feeds.contains { seasonOver.contains($0.id) }
+            && city.feeds.allSatisfy { seasonOver.contains($0.id) || $0.pause?.holds(on: date) == true }
     }
 
     /// The month's name in the app's language, as it stands in a sentence: "April", "avril".
@@ -1806,6 +1832,11 @@ enum ScooterDockNotice: Hashable, Identifiable, Sendable {
                     season.city,
                     ScooterSeasonalPause.dayName(from)
                 )
+            case .seasonOver:
+                String(
+                    format: String(localized: "Off season in %@: scooters are back when the operator reopens"),
+                    season.city
+                )
             }
         case let .providersDown(providers) where providers.count == 1:
             String(format: String(localized: "%@ isn’t sharing data right now."), providers[0].name)
@@ -1838,7 +1869,8 @@ enum ScooterDockNotice: Hashable, Identifiable, Sendable {
     /// A night ban first, as some operators keep listing their scooters through
     /// it, then the season, providers down, truncation and parking. A pause until
     /// the streets are clear has no end to wait for: it gives way once
-    /// `scootersInView`, whatever the filters hide.
+    /// `scootersInView`, whatever the filters hide. So does a season its
+    /// operators have closed: they say when it opens again.
     static func notices(
         curfew: RentalCurfew.Active? = nil,
         season: ScooterSeasonalPause.Active? = nil,
@@ -1853,7 +1885,7 @@ enum ScooterDockNotice: Hashable, Identifiable, Sendable {
         }
         if let season {
             switch season.back {
-            case .clear where scootersInView: break
+            case .clear where scootersInView, .seasonOver where scootersInView: break
             default: notices.append(.season(season))
             }
         }

@@ -1575,6 +1575,51 @@ extension ScooterMapModelTests {
         XCTAssertEqual(model.dockNotices, [])
     }
 
+    func testATownWhooshClosedIsOffSeasonUntilItsScootersAreBackButNotAlmatyWhereJetRuns() async throws {
+        let clock = TestClock()
+        clock.now = try XCTUnwrap(ISO8601DateFormatter().date(from: "2026-10-28T09:00:00Z"))
+        let formatter = ISO8601DateFormatter()
+        func response(_ vehicles: [Scooter], seasonOver: Set<String>) -> ScooterResponse {
+            ScooterResponse(vehicles: vehicles, meta: ScooterResponseMetadata(
+                partial: false, failedSources: [], generatedAt: formatter.string(from: clock.now),
+                refreshAfterSeconds: 60, expiresAt: formatter.string(from: clock.now.addingTimeInterval(300)),
+                seasonOver: seasonOver
+            ))
+        }
+        // Whoosh closed these three on 24 October 2026: the answers name its feed in each.
+        let towns = [
+            (city: "Astana", feed: "kazakhstan:whoosh_kz_nqz", center: CLLocationCoordinate2D(latitude: 51.143975, longitude: 71.43581)),
+            (city: "Zapopan", feed: "mexico:whoosh_mx_zap", center: CLLocationCoordinate2D(latitude: 20.721331, longitude: -103.391882)),
+            (city: "Almaty", feed: "kazakhstan:whoosh_kz_ala", center: CLLocationCoordinate2D(latitude: 43.298812, longitude: 76.939435)),
+        ]
+        for town in towns {
+            let api = StubScooterAPI(response: response([], seasonOver: [town.feed]))
+            let model = makeModel(api: api, clock: clock)
+            model.updateViewport(MKCoordinateRegion(
+                center: town.center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+            ), zoom: 16)
+            let loaded = await waitUntil { await api.snapshot().calls == 1 && model.lastUpdated != nil && !model.isLoading }
+            XCTAssertTrue(loaded, town.city)
+            guard town.city != "Almaty" else {
+                // Jet runs there besides Whoosh.
+                XCTAssertEqual(model.dockNotices, [], town.city)
+                continue
+            }
+            XCTAssertEqual(model.dockNotices, [.season(ScooterSeasonalPause.Active(city: town.city, back: .seasonOver))], town.city)
+
+            // A scooter in view, even filtered out: the notice gives way.
+            let whoosh = scooter(id: "whoosh", provider: "whoosh", latitude: town.center.latitude, longitude: town.center.longitude)
+            await api.setResponse(response([whoosh], seasonOver: [town.feed]))
+            model.refresh()
+            let back = await waitUntil { await api.snapshot().calls == 2 && !model.mapScooters.isEmpty && !model.isLoading }
+            XCTAssertTrue(back, town.city)
+            XCTAssertEqual(model.dockNotices, [], town.city)
+            model.toggle(provider: .whoosh)
+            XCTAssertEqual(model.visibleCount, 0, town.city)
+            XCTAssertEqual(model.dockNotices, [], town.city)
+        }
+    }
+
     func testDownProvidersAreNamedOnlyWhereTheyOperateAndLeadTheChips() async {
         let api = StubScooterAPI(response: ScooterResponse(
             vehicles: [

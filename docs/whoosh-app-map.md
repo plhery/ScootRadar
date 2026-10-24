@@ -29,12 +29,12 @@ The Node-only adapter is [server/whooshApp.ts](../server/whooshApp.ts).
   and no map search is sent. It pauses the feed, as a catalog's seasonal window
   does ([seasonalPauses.ts](../src/lib/seasonalPauses.ts)): `scootradar_feed_paused`
   is 1, so "feed empty" and "feed stopped" ignore it and Sentry is not told it
-  stopped, and the answers name it in `meta.seasonOver`, so the website's dock
-  says the town is off season where no other operator runs (Astana and Zapopan,
-  not Almaty, which has JET). The region info is read again each hour, and the
-  pause ends as soon as it says the season is open. Almaty, Astana and Zapopan
-  closed on 24 October 2026, and so was the region listed as Temuco (`ZPC`),
-  where Go Jet runs. The iOS app does not show the closure yet.
+  stopped, and the answers name it in `meta.seasonOver`, so the dock, on the
+  website and in the iOS app, says the town is off season where no other
+  operator runs (Astana and Zapopan, not Almaty, which has JET). The region
+  info is read again each hour, and the pause ends as soon as it says the
+  season is open. Almaty, Astana and Zapopan closed on 24 October 2026, and so
+  was the region listed as Temuco (`ZPC`), where Go Jet runs.
 - `GET /regions/location/{id}/areas` supplies ride polygons. The app's
   `MapAreaUiAssembler` uses enabled `LIMITED` polygons as holes in the global
   out-of-ride-area mask. These are the collection areas. Forbidden polygons

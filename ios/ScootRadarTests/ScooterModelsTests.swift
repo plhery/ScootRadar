@@ -1812,6 +1812,95 @@ extension ScooterModelsTests {
             XCTAssertEqual(ScooterDockNotice.season(season).text, sentence, language.rawValue)
         }
     }
+
+    func testATownWhoseOperatorsHaveAllClosedItsSeasonIsOffSeasonUntilTheyReopen() throws {
+        let iso = ISO8601DateFormatter()
+        func at(_ string: String) throws -> Date { try XCTUnwrap(iso.date(from: string)) }
+        let now = try at("2026-10-28T09:00:00Z")
+        // The answers name the feeds in view whose operator says their season is over.
+        let payload = try JSONDecoder().decode(ScooterResponseMetadataPayload.self, from: Data(#"""
+        {"partial": false, "stale": false, "failedSources": [], "sources": {"kazakhstan": "fresh"},
+         "generatedAt": "2026-10-28T09:00:00.000Z", "seasonOver": ["kazakhstan:whoosh_kz_nqz"],
+         "truncated": false, "totalVehicles": 0, "mode": "vehicles"}
+        """#.utf8))
+        XCTAssertEqual(payload.model.seasonOver, ["kazakhstan:whoosh_kz_nqz"])
+        XCTAssertEqual(ScooterResponseMetadata(partial: false, failedSources: []).seasonOver, [])
+
+        // Whoosh closed these three on 24 October 2026; Jet still runs in Almaty.
+        let almaty = GeoPoint(latitude: 43.298812, longitude: 76.939435)
+        let astana = GeoPoint(latitude: 51.143975, longitude: 71.43581)
+        let zapopan = GeoPoint(latitude: 20.721331, longitude: -103.391882)
+        XCTAssertEqual(
+            ScooterCityCatalog.cities.first { $0.id == "kz:Almaty" }?.feeds.map(\.id),
+            ["kazakhstan:jet_kz_almaty", "kazakhstan:whoosh_kz_ala"]
+        )
+        XCTAssertNil(ScooterSeasonalPause.active(at: almaty, on: now, seasonOver: ["kazakhstan:whoosh_kz_ala"]))
+        XCTAssertEqual(
+            ScooterSeasonalPause.active(at: astana, on: now, seasonOver: ["kazakhstan:whoosh_kz_nqz"]),
+            ScooterSeasonalPause.Active(city: "Astana", back: .seasonOver)
+        )
+        XCTAssertEqual(
+            ScooterSeasonalPause.active(at: zapopan, on: now, seasonOver: ["mexico:whoosh_mx_zap"]),
+            ScooterSeasonalPause.Active(city: "Zapopan", back: .seasonOver)
+        )
+        // Open again, or another town's feed closed: no pause.
+        XCTAssertNil(ScooterSeasonalPause.active(at: astana, on: now))
+        XCTAssertNil(ScooterSeasonalPause.active(at: astana, on: now, seasonOver: ["mexico:whoosh_mx_zap"]))
+        // Almaty too once Jet closes as well.
+        XCTAssertEqual(
+            ScooterSeasonalPause.active(at: almaty, on: now, seasonOver: ["kazakhstan:whoosh_kz_ala", "kazakhstan:jet_kz_almaty"]),
+            ScooterSeasonalPause.Active(city: "Almaty", back: .seasonOver)
+        )
+
+        // An operator in its own pause counts as closed; one with scooters does not.
+        let montreal = GeoPoint(latitude: 45.5, longitude: -73.57)
+        let quebec = [ScooterCity(
+            id: "ca:Montréal", name: "Montréal", countryCode: "CA", center: montreal,
+            bounds: GeoBounds(south: 45.41, west: -73.98, north: 45.7, east: -73.47),
+            feeds: [ScooterCityFeed(id: "canada:bird_montreal", pause: Self.winter), ScooterCityFeed(id: "canada:whoosh_montreal")]
+        )]
+        let closed: Set<String> = ["canada:whoosh_montreal"]
+        XCTAssertEqual(
+            ScooterSeasonalPause.active(at: montreal, on: try at("2027-01-20T17:00:00Z"), among: quebec, seasonOver: closed),
+            ScooterSeasonalPause.Active(city: "Montréal", back: .seasonOver)
+        )
+        XCTAssertNil(ScooterSeasonalPause.active(at: montreal, on: try at("2026-11-10T17:00:00Z"), among: quebec, seasonOver: closed))
+        XCTAssertNil(ScooterSeasonalPause.active(at: montreal, on: try at("2027-01-20T17:00:00Z"), among: quebec))
+    }
+
+    func testTheClosedSeasonGivesWayOnceScootersAreInView() throws {
+        defer { ScooterLanguage.current = .atLaunch }
+        let season = ScooterSeasonalPause.Active(city: "Zapopan", back: .seasonOver)
+        let metadata = ScooterResponseMetadata(partial: false, failedSources: [], seasonOver: ["mexico:whoosh_mx_zap"])
+        XCTAssertEqual(ScooterDockNotice.notices(season: season, health: .healthy, metadata: metadata, shownCount: 0),
+                       [.season(season)])
+        XCTAssertEqual(
+            ScooterDockNotice.notices(season: season, scootersInView: true, health: .healthy, metadata: metadata, shownCount: 3),
+            []
+        )
+
+        let sentences: [ScooterLanguage: String] = [
+            .en: "Off season in Zapopan: scooters are back when the operator reopens",
+            .de: "Saisonpause in Zapopan: Scooter wieder, sobald der Anbieter die Saison eröffnet",
+            .fr: "Pause saisonnière à Zapopan : retour des trottinettes à la réouverture par l’opérateur",
+            .it: "Pausa stagionale a Zapopan: monopattini di nuovo alla riapertura dell’operatore",
+            .nl: "Seizoenspauze in Zapopan: deelsteps weer zodra de aanbieder heropent",
+            .nb: "Sesongpause i Zapopan: elsparkesykler igjen når operatøren åpner",
+            .pt: "Pausa sazonal em Zapopan: trotinetes de volta quando o operador reabrir",
+            .es: "Pausa de temporada en Zapopan: los patinetes vuelven cuando el operador reabra",
+            .is: "Zapopan: árstíðabundið hlé, rafskúturnar koma aftur þegar rekstraraðilinn opnar",
+        ]
+        XCTAssertEqual(Set(sentences.keys), Set(ScooterLanguage.allCases))
+        for (language, sentence) in sentences {
+            ScooterLanguage.current = language
+            // Spanish says scooter where the iPhone's region is in Latin America or the US.
+            XCTAssertEqual(ScooterDockNotice.season(season).text, language.written(sentence, in: language.locale.region), language.rawValue)
+        }
+        XCTAssertEqual(
+            ScooterLanguage.es.written(sentences[.es] ?? "", in: Locale.Region("MX")),
+            "Pausa de temporada en Zapopan: los scooters vuelven cuando el operador reabra"
+        )
+    }
 }
 
 // Settings › About › Send feedback.

@@ -23,7 +23,8 @@ import {
 // Zapopan on 24 October 2026. The cache keeps it on the feed's snapshot (`seasonOver`), and it
 // pauses the feed as a catalog's window does, until the operator says the season is open again.
 // The answers name those feeds (`meta.seasonOver`), so the dock shows the town paused, as one
-// until the streets are clear, while no scooter is in view. The iOS app does not show it yet.
+// until the streets are clear, while no scooter is in view. The iOS app does the same from
+// ScooterCity.feeds, each city's feeds with their pauses, generated from the same catalogs.
 
 export interface SeasonalPause {
   /** Local "MM-DD": the first day without scooters. */

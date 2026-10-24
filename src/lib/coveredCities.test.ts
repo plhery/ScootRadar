@@ -8,7 +8,9 @@ import {
 import { SWISS_SCOOTER_AREAS } from '@/lib/feedCoverage';
 import { boundsContainPoint } from '@/lib/geo';
 import { providersForViewport } from '@/lib/mapCoverage';
-import { REGIONAL_SCOOTER_CITIES } from '@/lib/regionalScooterSystems';
+import {
+  REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, regionalCityId, regionalSource, serviceAreas,
+} from '@/lib/regionalScooterSystems';
 
 const PARADEPLATZ: [number, number] = [47.369, 8.539];
 const LUNGERN: [number, number] = [46.7741, 8.1558];
@@ -179,8 +181,9 @@ describe('iOS city catalogue', () => {
       `ScooterCity\\(id: ${text}, name: ${text}, countryCode: ${text}, ` +
       `center: GeoPoint\\(latitude: ${number}, longitude: ${number}\\), ` +
       `bounds: GeoBounds\\(south: ${number}, west: ${number}, north: ${number}, east: ${number}\\)` +
-      // A town with a winter pause, Ottawa's, lists it after its bounds.
-      `(?:, pauses: \\[[^\\]]*\\])?\\)`,
+      // A town with a winter pause, Ottawa's, lists it after its bounds, then a town of the
+      // catalogs its feeds.
+      `(?:, pauses: \\[[^\\]]*\\])?(?:, feeds: \\[[^\\]]*\\])?\\)`,
       'g'
     );
     const cities = [...swift.matchAll(pattern)].map(([, id, name, country, lat, lng, south, west, north, east]) => ({
@@ -192,6 +195,34 @@ describe('iOS city catalogue', () => {
     }));
 
     expect(cities).toEqual(COVERED_CITIES);
+  });
+
+  // The app tells a town whose operators have all closed its season as closedForSeason does
+  // in seasonalPauses.ts: from each feed with a service area there, and that area's pause.
+  it('is generated with the feeds of each town, and their pauses', () => {
+    const swift = readFileSync('ios/ScootRadar/Models/ProviderCatalog.generated.swift', 'utf8');
+    const feed = /ScooterCityFeed\(id: "([^"]+)"(?:, pause: ScooterSeasonalPause\(from: "([^"]+)", until: "([^"]+)", timeZone: "([^"]+)"\))?\)/g;
+    const generated = new Map([...swift.matchAll(/ScooterCity\(id: ("(?:[^"\\]|\\.)*")[^\n]*?, feeds: \[([^\]]*)\]\)/g)]
+      .map(([, id, feeds]) => [JSON.parse(id) as string, [...feeds.matchAll(feed)]
+        .map(([, feedId, from, until, timeZone]) => (from ? { id: feedId, pause: { from, until, timeZone } } : { id: feedId }))]));
+    type Feed = { id: string; pause?: { from: string; until: string; timeZone: string } };
+    const same = (a: Feed, b: Feed) => a.id === b.id && a.pause?.from === b.pause?.from
+      && a.pause?.until === b.pause?.until && a.pause?.timeZone === b.pause?.timeZone;
+    const expected = new Map<string, Feed[]>();
+    for (const system of REGIONAL_SCOOTER_SYSTEMS) {
+      for (const area of serviceAreas(system)) {
+        const id = regionalCityId(system, area);
+        const pause = area.seasonal ?? system.seasonal;
+        const entry: Feed = { id: `${regionalSource(system)}:${system.id}`,
+          ...(pause ? { pause: { from: pause.from, until: pause.until, timeZone: pause.timeZone } } : {}) };
+        const feeds = expected.get(id) ?? [];
+        if (!feeds.some(other => same(other, entry))) expected.set(id, [...feeds, entry]);
+      }
+    }
+
+    expect(generated).toEqual(expected);
+    // Jet runs in Almaty besides Whoosh.
+    expect(generated.get('kz:Almaty')).toEqual([{ id: 'kazakhstan:jet_kz_almaty' }, { id: 'kazakhstan:whoosh_kz_ala' }]);
   });
 
   it('is generated with the same count of cities and countries', () => {
