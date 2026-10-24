@@ -72,12 +72,12 @@ describe('parseScooterQuery', () => {
 
   it('marks views outside supported coverage so feeds can be skipped', () => {
     const result = parseScooterQuery(new URLSearchParams({
-      lat: '51.5',
-      lng: '-0.1',
-      south: '51.4',
-      north: '51.6',
-      west: '-0.3',
-      east: '0.1',
+      lat: '6.5',
+      lng: '3.4',
+      south: '6.4',
+      north: '6.6',
+      west: '3.3',
+      east: '3.5',
     }));
 
     expect(result.ok).toBe(true);

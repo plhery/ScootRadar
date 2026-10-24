@@ -90,6 +90,7 @@ describe('the countries of data/countries.json', () => {
       'UK: Beryl · CDLA-Permissive-2.0', 'UK: ONS boundaries · OGL v3.0', 'PT: DGT boundaries · CC BY 4.0',
       // OpenStreetMap's boundaries, which several countries give, are credited once.
       'DE/AT/IT/ES/PL/HU/GR/FI: Dott map',
+      'DE/AT/IT/NO/GB/DK/SE/FI: Voi map',
       'CH/FR/PT/ES/PL/FI/UA: OpenStreetMap boundaries · ODbL', 'CA: City of Toronto · OGL Toronto',
     ]);
   });

@@ -771,6 +771,132 @@
         "until": "03-15",
         "timeZone": "Europe/Oslo"
       }
+    },
+    {
+      "id": "voi_no_app_408",
+      "provider": "voi",
+      "city": "Grimstad",
+      "center": [
+        58.34812,
+        8.55545
+      ],
+      "bounds": {
+        "south": 58.230132386860056,
+        "north": 58.45957412949791,
+        "west": 8.353023308105405,
+        "east": 8.761492197536528
+      },
+      "timeZone": "Europe/Oslo",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=408&include_suggestion=false",
+      "voiAppZone": "408"
+    },
+    {
+      "id": "voi_no_app_409",
+      "provider": "voi",
+      "city": "Lillesand",
+      "center": [
+        58.25724,
+        8.36125
+      ],
+      "bounds": {
+        "south": 58.162260423993764,
+        "north": 58.349742838363994,
+        "west": 8.20978524035672,
+        "east": 8.509530083720346
+      },
+      "timeZone": "Europe/Oslo",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=409&include_suggestion=false",
+      "voiAppZone": "409"
+    },
+    {
+      "id": "voi_no_app_411",
+      "provider": "voi",
+      "city": "Askøy",
+      "center": [
+        60.46235,
+        5.13254
+      ],
+      "bounds": {
+        "south": 60.38575997506088,
+        "north": 60.53661390222527,
+        "west": 4.989212125836212,
+        "east": 5.265346602135307
+      },
+      "timeZone": "Europe/Oslo",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=411&include_suggestion=false",
+      "voiAppZone": "411"
+    },
+    {
+      "id": "voi_no_app_412",
+      "provider": "voi",
+      "city": "Knarvik",
+      "center": [
+        60.55542,
+        5.24812
+      ],
+      "bounds": {
+        "south": 60.501100695222156,
+        "north": 60.61408450360314,
+        "west": 5.093784297130105,
+        "east": 5.3925787949326836
+      },
+      "timeZone": "Europe/Oslo",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=412&include_suggestion=false",
+      "voiAppZone": "412"
+    },
+    {
+      "id": "voi_no_app_414",
+      "provider": "voi",
+      "city": "Ålgård",
+      "center": [
+        58.74605,
+        5.91758
+      ],
+      "bounds": {
+        "south": 58.683892473715765,
+        "north": 58.80832406497031,
+        "west": 5.770594724002848,
+        "east": 6.074248012778891
+      },
+      "timeZone": "Europe/Oslo",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=414&include_suggestion=false",
+      "voiAppZone": "414"
+    },
+    {
+      "id": "voi_no_app_354",
+      "provider": "voi",
+      "city": "Sotra",
+      "center": [
+        60.34556,
+        5.02329
+      ],
+      "bounds": {
+        "south": 60.26833512198984,
+        "north": 60.44292611183713,
+        "west": 4.852930244659245,
+        "east": 5.169747342512637
+      },
+      "timeZone": "Europe/Oslo",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=354&include_suggestion=false",
+      "voiAppZone": "354"
+    },
+    {
+      "id": "voi_no_app_415",
+      "provider": "voi",
+      "city": "Bryne",
+      "center": [
+        58.73931,
+        5.6302
+      ],
+      "bounds": {
+        "south": 58.67779851596129,
+        "north": 58.80327487699317,
+        "west": 5.468832476586199,
+        "east": 5.8050357814337685
+      },
+      "timeZone": "Europe/Oslo",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=415&include_suggestion=false",
+      "voiAppZone": "415"
     }
   ]
 }

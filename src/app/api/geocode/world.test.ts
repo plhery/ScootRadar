@@ -269,9 +269,9 @@ describe('the search in Oceania and West Asia', () => {
     expect(found).toEqual([
       ['Times Square', 'Dresden'],
       ['Times Square Musikcafe', 'Sudetenstraße 121, 87600 Kaufbeuren'],
-      ['Times Square', 'New York, NY'],
       ['Times Square', 'Groß-London'],
-      ['Times Square', 'Newcastle upon Tyne'],
+      ['Times Square', 'Throwley Way, SM1 4AE Groß-London'],
+      ['Times Square', 'New York, NY'],
     ]);
   });
 

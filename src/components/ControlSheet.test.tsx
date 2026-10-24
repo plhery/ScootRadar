@@ -443,6 +443,7 @@ describe('ControlSheet settings', () => {
       'UK: ONS boundaries · OGL v3.0',
       'PT: DGT boundaries · CC BY 4.0',
       'DE/AT/IT/ES/PL/HU/GR/FI: Dott map',
+      'DE/AT/IT/NO/GB/DK/SE/FI: Voi map',
       'NZ: Flamingo · CC BY 4.0',
       'CH/FR/PT/ES/PL/FI/UA/IL/NZ: OpenStreetMap boundaries · ODbL',
       'Search · Geoapify',

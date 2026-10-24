@@ -382,6 +382,48 @@
       },
       "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
       "dottAppRegion": "TVoGFZEEaEBjFcGUN950"
+    },
+    {
+      "id": "voi_it_app_322",
+      "provider": "voi",
+      "city": "Napoli",
+      "center": [
+        40.84462,
+        14.2533
+      ],
+      "bounds": {
+        "south": 40.7520051863504,
+        "north": 40.93720778574244,
+        "west": 14.130893162343051,
+        "east": 14.37571256389413
+      },
+      "timeZone": "Europe/Rome",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=322&include_suggestion=false",
+      "voiAppZone": "322",
+      "aliases": [
+        "Naples"
+      ]
+    },
+    {
+      "id": "voi_it_app_252",
+      "provider": "voi",
+      "city": "Reggio nell'Emilia",
+      "center": [
+        44.70479,
+        10.63816
+      ],
+      "bounds": {
+        "south": 44.64130208928131,
+        "north": 44.76818909778005,
+        "west": 10.537329582127876,
+        "east": 10.739203350602189
+      },
+      "timeZone": "Europe/Rome",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=252&include_suggestion=false",
+      "voiAppZone": "252",
+      "aliases": [
+        "Reggio Emilia"
+      ]
     }
   ]
 }

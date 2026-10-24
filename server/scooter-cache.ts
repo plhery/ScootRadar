@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { discoverCollectableFeeds, independentCollectableFeeds, planRefreshCounts, type CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import { buildCityOverview, overviewNeedsRefresh, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
-import { REGIONAL_SCOOTER_SYSTEMS, regionalSource } from '../src/lib/regionalScooterSystems';
+import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
 import { feedCurfewed, feedPaused } from '../src/lib/seasonalPauses';
 import { upstreamCacheEntriesFor, upstreamJsonCache } from '../src/lib/upstreamJsonCache';
 import { fetchRegionalParking } from '../src/lib/parkingFeeds';
@@ -18,6 +18,10 @@ import { cadenceFromEnv } from './cadence';
 import { answerZones, createZoneStore } from './zoneStore';
 import { createStrayHold } from './strayHold';
 import { dottMapRequests, withDottAppCollectors } from './dottApp';
+import { voiMapRequests, withVoiAppCollectors } from './voiApp';
+
+const withAppCollectors = (feeds: CollectableScooterFeed[]) => withVoiAppCollectors(
+  withDottAppCollectors(feeds, REGIONAL_SCOOTER_SYSTEMS), REGIONAL_SCOOTER_SYSTEMS);
 
 initErrorReporting();
 upstreamJsonCache.paceHost('gbfs.api.ridedott.com', 150);
@@ -72,8 +76,8 @@ const holdStrays = createStrayHold((id, now) => scheduler.fastSince(id, now) ===
 const countedAt = (now: number) => (feed: FeedSnapshot) => feedState(feed, now, cadence) !== 'expired';
 const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
   cadenceModes: now => scheduler.modes(now), upstreamRequests: () => ({
-    status: upstreamJsonCache.requests.status + dottMapRequests.status,
-    metadata: upstreamJsonCache.requests.metadata,
+    status: upstreamJsonCache.requests.status + dottMapRequests.status + voiMapRequests.status,
+    metadata: upstreamJsonCache.requests.metadata + voiMapRequests.metadata,
   }),
   planRefreshes: () => planRefreshCounts,
   upstreamCache: () => ({ entries: upstreamJsonCache.size, capacity: upstreamJsonCache.capacity,
@@ -125,7 +129,7 @@ async function collect(definition: CollectableScooterFeed) {
     if (stopping || !records.has(definition.id)) return;
     records.set(definition.id, record);
     publish();
-  }, system && !system.dottAppRegion ? () => fetchRegionalParking(system) : undefined);
+  }, system && !isAppMapSystem(system) ? () => fetchRegionalParking(system) : undefined);
   return { failed };
 }
 
@@ -191,7 +195,7 @@ let discoveryTimer: ReturnType<typeof setTimeout>;
 async function discover() {
   let retryMs = 3600_000;
   try {
-    const definitions = withDottAppCollectors(await discoverCollectableFeeds(), REGIONAL_SCOOTER_SYSTEMS);
+    const definitions = withAppCollectors(await discoverCollectableFeeds());
     if (!stopping) setDefinitions(definitions, true);
     metrics.recordDiscovery();
   } catch (error) {
@@ -201,7 +205,7 @@ async function discover() {
   }
   if (!stopping) discoveryTimer = setTimeout(() => void discover(), retryMs);
 }
-setDefinitions(withDottAppCollectors(independentCollectableFeeds(), REGIONAL_SCOOTER_SYSTEMS), false);
+setDefinitions(withAppCollectors(independentCollectableFeeds()), false);
 scheduler.start();
 void discover();
 // Sentry hears of a feed still expired after 5 minutes, or 15 for Voi's Swiss feed (expiredReportDelay).

@@ -851,7 +851,7 @@ describe('Geoapify', () => {
     // Seefeld in Bavaria and Seefeld in Upper Austria, named as typed, before the towns whose names start so.
     expect(await shownRows(await POST(postRequest('Seefeld', 'de', ZURICH)))).toEqual([
       ['Seefeld', 'Zürich', true],
-      ['Seefeld', 'Bayern, Deutschland', false],
+      ['Seefeld', 'Bayern, Deutschland', true],
       ['Seefeld', 'Oberösterreich, Österreich', false],
       ['Seefelden', 'Baden-Württemberg, Deutschland', false],
       ['Seefeld in Tirol', 'Tirol, Österreich', false],
@@ -975,7 +975,7 @@ describe('Geoapify', () => {
     const results = await (await GET(request('Springfield'))).json() as { title: string; subtitle: string }[];
 
     expect(results.map(result => [result.title, result.subtitle])).toEqual([
-      ['Springfield', 'Illinois, United States'], ['Springfield', 'England, United Kingdom'],
+      ['Springfield', 'England, United Kingdom'], ['Springfield', 'Illinois, United States'],
     ]);
   });
 

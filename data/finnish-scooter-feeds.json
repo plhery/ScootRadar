@@ -390,6 +390,81 @@
       },
       "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
       "dottAppRegion": "vs4u9bThlkYaxjqRy724"
+    },
+    {
+      "id": "voi_fi_app_136",
+      "provider": "voi",
+      "city": "Tampere",
+      "center": [
+        61.4917,
+        23.7624
+      ],
+      "bounds": {
+        "south": 61.439752329021,
+        "north": 61.54364147555,
+        "west": 23.6171722412109,
+        "east": 23.9076232910156
+      },
+      "timeZone": "Europe/Helsinki",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=136&include_suggestion=false",
+      "voiAppZone": "136"
+    },
+    {
+      "id": "voi_fi_app_122",
+      "provider": "voi",
+      "city": "Turku",
+      "center": [
+        60.43921,
+        22.24697
+      ],
+      "bounds": {
+        "south": 60.3775571287457,
+        "north": 60.5008635236931,
+        "west": 22.0763397216797,
+        "east": 22.4176025390625
+      },
+      "timeZone": "Europe/Helsinki",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=122&include_suggestion=false",
+      "voiAppZone": "122"
+    },
+    {
+      "id": "voi_fi_app_275",
+      "provider": "voi",
+      "city": "Jyväskylä",
+      "center": [
+        62.24067,
+        25.7444
+      ],
+      "bounds": {
+        "south": 62.1706311981245,
+        "north": 62.3107081604266,
+        "west": 25.5150604248047,
+        "east": 25.9737396240234
+      },
+      "timeZone": "Europe/Helsinki",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=275&include_suggestion=false",
+      "voiAppZone": "275",
+      "aliases": [
+        "Jyvaskyla"
+      ]
+    },
+    {
+      "id": "voi_fi_app_49",
+      "provider": "voi",
+      "city": "Helsinki",
+      "center": [
+        60.19311,
+        24.93672
+      ],
+      "bounds": {
+        "south": 59.995685,
+        "north": 60.39054,
+        "west": 24.347465,
+        "east": 25.525976
+      },
+      "timeZone": "Europe/Helsinki",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=49&include_suggestion=false",
+      "voiAppZone": "49"
     }
   ]
 }

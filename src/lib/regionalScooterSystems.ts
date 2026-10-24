@@ -42,6 +42,10 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   discoveryUrl: string;
   /** Anonymous app map region, collected over HTTP/2 by the Node cache instead of GBFS. */
   dottAppRegion?: string;
+  /** Rider app region, read by the Node cache using its private Voi session. */
+  voiAppZone?: string;
+  /** Bounded scooter viewports, collected completely using the cache's private Lime session. */
+  limeAppMap?: true;
   /** Published subregions of a shared feed; fetched once, routed per city. */
   areas?: ScooterServiceArea[];
   /**
@@ -64,8 +68,12 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   stationScooters?: boolean;
 }
 
-// Reviewed public endpoints, never an unvalidated runtime registry download.
+// Reviewed service regions and endpoints, never an unvalidated runtime registry download.
 export const REGIONAL_SCOOTER_SYSTEMS = CATALOG_SYSTEMS as RegionalScooterSystem[];
+
+export function isAppMapSystem(system: RegionalScooterSystem) {
+  return Boolean(system.dottAppRegion || system.voiAppZone || system.limeAppMap);
+}
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {
   return system.areas ?? [system];

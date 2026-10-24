@@ -10,6 +10,7 @@ import britishCatalog from '../../data/british-scooter-feeds.json';
 import portugueseCatalog from '../../data/portuguese-scooter-feeds.json';
 import spanishCatalog from '../../data/spanish-scooter-feeds.json';
 import icelandicCatalog from '../../data/icelandic-scooter-feeds.json';
+import danishCatalog from '../../data/danish-scooter-feeds.json';
 import swedishCatalog from '../../data/swedish-scooter-feeds.json';
 import latvianCatalog from '../../data/latvian-scooter-feeds.json';
 import polishCatalog from '../../data/polish-scooter-feeds.json';
@@ -40,6 +41,7 @@ export const CATALOG_SYSTEMS = [
   ...portugueseCatalog.systems.map(system => ({ ...system, country: 'PT' as const })),
   ...spanishCatalog.systems.map(system => ({ ...system, country: 'ES' as const })),
   ...icelandicCatalog.systems.map(system => ({ ...system, country: 'IS' as const })),
+  ...danishCatalog.systems.map(system => ({ ...system, country: 'DK' as const })),
   ...swedishCatalog.systems.map(system => ({ ...system, country: 'SE' as const })),
   ...latvianCatalog.systems.map(system => ({ ...system, country: 'LV' as const })),
   ...polishCatalog.systems.map(system => ({ ...system, country: 'PL' as const })),

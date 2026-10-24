@@ -199,6 +199,45 @@
       },
       "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
       "dottAppRegion": "zd6S6vkwjWk8hMgZxtIm"
+    },
+    {
+      "id": "voi_at_app_381",
+      "provider": "voi",
+      "city": "Innsbruck",
+      "center": [
+        47.27186,
+        11.40271
+      ],
+      "bounds": {
+        "south": 47.15953685076627,
+        "north": 47.38419043001886,
+        "west": 11.228975654139106,
+        "east": 11.57644596129552
+      },
+      "timeZone": "Europe/Vienna",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=381&include_suggestion=false",
+      "voiAppZone": "381"
+    },
+    {
+      "id": "voi_at_app_317",
+      "provider": "voi",
+      "city": "Wien",
+      "center": [
+        48.19277,
+        16.40137
+      ],
+      "bounds": {
+        "south": 48.04584185842637,
+        "north": 48.339707387160644,
+        "west": 16.11420143738522,
+        "east": 16.688542048345653
+      },
+      "timeZone": "Europe/Vienna",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=317&include_suggestion=false",
+      "voiAppZone": "317",
+      "aliases": [
+        "Vienna"
+      ]
     }
   ]
 }

@@ -15,7 +15,7 @@ import {
 } from '@/lib/feedCoverage';
 import { boundsContainPoint, boundsIntersection, haversineM } from '@/lib/geo';
 import { listedPricing } from '@/lib/listedPrices';
-import { COUNTRY_SOURCES, REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas, type RegionalScooterSystem, type ScooterCountry } from '@/lib/regionalScooterSystems';
+import { COUNTRY_SOURCES, REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource, serviceAreas, type RegionalScooterSystem, type ScooterCountry } from '@/lib/regionalScooterSystems';
 import { skippedSources, type FeedSourceStatus, type ScooterSource } from '@/lib/scooterSources';
 import { feedPaused } from '@/lib/seasonalPauses';
 import { isElectricScooter, type GbfsVehicleType } from '@/lib/scooterTypes';
@@ -307,7 +307,7 @@ export function independentCollectableFeeds(): CollectableScooterFeed[] {
       id: `${regionalSource(system)}:${system.id}`, source: regionalSource(system), provider: system.provider,
       coverage: serviceAreas(system).map(area => area.bounds),
       collect: () => fetchRegionalSystemVehicles(system, { bounds: system.bounds, minBattery: 0 }),
-      ...(!system.dottAppRegion ? {
+      ...(!isAppMapSystem(system) ? {
         zoneSource: { discoveryUrl: system.discoveryUrl, baseUrl: new URL('.', system.discoveryUrl).toString() },
       } : {}),
     })),
@@ -1297,7 +1297,7 @@ async function fetchRegionalSystemVehicles(
   system: RegionalScooterSystem,
   query: FeedQuery
 ): Promise<SourceVehicles> {
-  if (system.dottAppRegion) throw new Error('Dott app regions require the Node snapshot collector');
+  if (isAppMapSystem(system)) throw new Error('App map regions require the Node snapshot collector');
   const bounds = boundsIntersection(system.bounds, query.bounds);
   if (!bounds) return { vehicles: [], stale: false, skipped: true };
   return fetchRegionalSystemFeeds(system, query, bounds).catch(skipPausedDottRegion);

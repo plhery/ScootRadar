@@ -2591,6 +2591,442 @@
         "east": 7.1516
       },
       "discoveryUrl": "https://www.mobilitaetsdaten.nrw/api/systemadapter-gbfs-provider/feed/v3.0/voi-nrw/source-voi-essen/gbfs.json"
+    },
+    {
+      "id": "voi_de_app_150",
+      "provider": "voi",
+      "city": "München",
+      "center": [
+        48.15002,
+        11.56242
+      ],
+      "bounds": {
+        "south": 47.9255452234188,
+        "north": 48.3744967168233,
+        "west": 11.1703491210938,
+        "east": 11.9544982910156
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=150&include_suggestion=false",
+      "voiAppZone": "150",
+      "aliases": [
+        "Munich"
+      ]
+    },
+    {
+      "id": "voi_de_app_361",
+      "provider": "voi",
+      "city": "Schwerin",
+      "center": [
+        53.61888,
+        11.40799
+      ],
+      "bounds": {
+        "south": 53.50118693001041,
+        "north": 53.73805436614699,
+        "west": 11.180565993281183,
+        "east": 11.62999014469931
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=361&include_suggestion=false",
+      "voiAppZone": "361"
+    },
+    {
+      "id": "voi_de_app_365",
+      "provider": "voi",
+      "city": "Würzburg",
+      "center": [
+        49.84459,
+        9.99714
+      ],
+      "bounds": {
+        "south": 49.59438795057588,
+        "north": 50.09741775872257,
+        "west": 9.647576391929467,
+        "east": 10.343510459340342
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=365&include_suggestion=false",
+      "voiAppZone": "365"
+    },
+    {
+      "id": "voi_de_app_169",
+      "provider": "voi",
+      "city": "Nürnberg",
+      "center": [
+        49.48218,
+        11.20616
+      ],
+      "bounds": {
+        "south": 49.1953468350688,
+        "north": 49.7690097902586,
+        "west": 10.6919663057816,
+        "east": 11.7203467479068
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=169&include_suggestion=false",
+      "voiAppZone": "169",
+      "aliases": [
+        "Nuremberg"
+      ]
+    },
+    {
+      "id": "voi_de_app_182",
+      "provider": "voi",
+      "city": "Rostock",
+      "center": [
+        54.11706,
+        12.08359
+      ],
+      "bounds": {
+        "south": 53.9528531996685,
+        "north": 54.2812619308271,
+        "west": 11.7869567871094,
+        "east": 12.3802185058594
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=182&include_suggestion=false",
+      "voiAppZone": "182"
+    },
+    {
+      "id": "voi_de_app_360",
+      "provider": "voi",
+      "city": "Flensburg",
+      "center": [
+        54.78775,
+        9.42712
+      ],
+      "bounds": {
+        "south": 54.736947921648124,
+        "north": 54.84332146888549,
+        "west": 9.32485827632354,
+        "east": 9.532999087961745
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=360&include_suggestion=false",
+      "voiAppZone": "360"
+    },
+    {
+      "id": "voi_de_app_382",
+      "provider": "voi",
+      "city": "Magdeburg",
+      "center": [
+        52.15753,
+        11.65951
+      ],
+      "bounds": {
+        "south": 51.91202302178859,
+        "north": 52.42622268230737,
+        "west": 11.210910807618658,
+        "east": 12.15325949173283
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=382&include_suggestion=false",
+      "voiAppZone": "382"
+    },
+    {
+      "id": "voi_de_app_151",
+      "provider": "voi",
+      "city": "Hamburg",
+      "center": [
+        53.56514,
+        10.02529
+      ],
+      "bounds": {
+        "south": 53.35187788260681,
+        "north": 53.7802844117601,
+        "west": 9.656523897434674,
+        "east": 10.394393931884132
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=151&include_suggestion=false",
+      "voiAppZone": "151"
+    },
+    {
+      "id": "voi_de_app_145",
+      "provider": "voi",
+      "city": "Berlin",
+      "center": [
+        52.5623,
+        13.35407
+      ],
+      "bounds": {
+        "south": 52.13666385481394,
+        "north": 52.90186135994416,
+        "west": 12.601229331022722,
+        "east": 13.905921424498281
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=145&include_suggestion=false",
+      "voiAppZone": "145"
+    },
+    {
+      "id": "voi_de_app_378",
+      "provider": "voi",
+      "city": "Osnabrück",
+      "center": [
+        52.30539,
+        8.0752
+      ],
+      "bounds": {
+        "south": 52.16868682934638,
+        "north": 52.443396171197,
+        "west": 7.825808742511623,
+        "east": 8.336312202190538
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=378&include_suggestion=false",
+      "voiAppZone": "378",
+      "aliases": [
+        "Osnabruck"
+      ]
+    },
+    {
+      "id": "voi_de_app_147",
+      "provider": "voi",
+      "city": "Potsdam",
+      "center": [
+        52.33411,
+        12.87146
+      ],
+      "bounds": {
+        "south": 52.141481911281275,
+        "north": 52.53966716354237,
+        "west": 12.619117304499001,
+        "east": 13.207903201789064
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=147&include_suggestion=false",
+      "voiAppZone": "147"
+    },
+    {
+      "id": "voi_de_app_364",
+      "provider": "voi",
+      "city": "Braunschweig",
+      "center": [
+        52.2707,
+        10.51881
+      ],
+      "bounds": {
+        "south": 52.18091169285216,
+        "north": 52.360484871521294,
+        "west": 10.338107665613677,
+        "east": 10.699520921206044
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=364&include_suggestion=false",
+      "voiAppZone": "364"
+    },
+    {
+      "id": "voi_de_app_368",
+      "provider": "voi",
+      "city": "Regensburg",
+      "center": [
+        49.00355,
+        12.10205
+      ],
+      "bounds": {
+        "south": 48.90090174566317,
+        "north": 49.10323589689486,
+        "west": 11.9249269981186,
+        "east": 12.271586420039228
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=368&include_suggestion=false",
+      "voiAppZone": "368"
+    },
+    {
+      "id": "voi_de_app_404",
+      "provider": "voi",
+      "city": "Heidelberg",
+      "center": [
+        49.37852,
+        8.79426
+      ],
+      "bounds": {
+        "south": 49.25901779678085,
+        "north": 49.49783733196581,
+        "west": 8.56430459193761,
+        "east": 9.023205481851134
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=404&include_suggestion=false",
+      "voiAppZone": "404"
+    },
+    {
+      "id": "voi_de_app_305",
+      "provider": "voi",
+      "city": "Mainz / Wiesbaden",
+      "center": [
+        50.02747,
+        8.1666
+      ],
+      "bounds": {
+        "south": 49.8629916997857,
+        "north": 50.191938680772,
+        "west": 7.94021781950754,
+        "east": 8.39298161072504
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=305&include_suggestion=false",
+      "voiAppZone": "305",
+      "areas": [
+        {
+          "city": "Mainz",
+          "center": [
+            50,
+            8.27
+          ],
+          "bounds": {
+            "south": 49.8629916997857,
+            "north": 50.025,
+            "west": 7.94021781950754,
+            "east": 8.39298161072504
+          }
+        },
+        {
+          "city": "Wiesbaden",
+          "center": [
+            50.077,
+            8.2347
+          ],
+          "bounds": {
+            "south": 50.025,
+            "north": 50.191938680772,
+            "west": 7.94021781950754,
+            "east": 8.39298161072504
+          }
+        }
+      ]
+    },
+    {
+      "id": "voi_de_app_162",
+      "provider": "voi",
+      "city": "Augsburg",
+      "center": [
+        48.37796,
+        10.89844
+      ],
+      "bounds": {
+        "south": 48.2411382384804,
+        "north": 48.5147849720974,
+        "west": 10.65673828125,
+        "east": 11.14013671875
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=162&include_suggestion=false",
+      "voiAppZone": "162"
+    },
+    {
+      "id": "voi_de_app_292",
+      "provider": "voi",
+      "city": "Hannover",
+      "center": [
+        52.39063,
+        9.64841
+      ],
+      "bounds": {
+        "south": 52.202975,
+        "north": 52.578291,
+        "west": 9.265968,
+        "east": 10.030858
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=292&include_suggestion=false",
+      "voiAppZone": "292",
+      "aliases": [
+        "Hanover"
+      ]
+    },
+    {
+      "id": "voi_de_app_192",
+      "provider": "voi",
+      "city": "Frankfurt",
+      "center": [
+        50.13068,
+        8.73158
+      ],
+      "bounds": {
+        "south": 50.02177904841051,
+        "north": 50.2395825267524,
+        "west": 8.433982597851667,
+        "east": 9.029169329130355
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=192&include_suggestion=false",
+      "voiAppZone": "192"
+    },
+    {
+      "id": "voi_de_app_247",
+      "provider": "voi",
+      "city": "Leipzig",
+      "center": [
+        51.34104,
+        12.36769
+      ],
+      "bounds": {
+        "south": 51.2177592669659,
+        "north": 51.464315824471,
+        "west": 12.139831975626,
+        "east": 12.595557430528
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=247&include_suggestion=false",
+      "voiAppZone": "247"
+    },
+    {
+      "id": "voi_de_app_306",
+      "provider": "voi",
+      "city": "Darmstadt",
+      "center": [
+        49.85607,
+        8.66371
+      ],
+      "bounds": {
+        "south": 49.7244748082939,
+        "north": 49.987662962682,
+        "west": 8.45072655515728,
+        "east": 8.87669813339172
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=306&include_suggestion=false",
+      "voiAppZone": "306"
+    },
+    {
+      "id": "voi_de_app_157",
+      "provider": "voi",
+      "city": "Lübeck",
+      "center": [
+        53.87019,
+        10.68888
+      ],
+      "bounds": {
+        "south": 53.63491483484561,
+        "north": 54.10546451711241,
+        "west": 10.319019787929623,
+        "east": 11.058746731289023
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=157&include_suggestion=false",
+      "voiAppZone": "157"
+    },
+    {
+      "id": "voi_de_app_181",
+      "provider": "voi",
+      "city": "Kiel",
+      "center": [
+        54.32665,
+        10.15514
+      ],
+      "bounds": {
+        "south": 54.2415568529537,
+        "north": 54.4117378402846,
+        "west": 9.98725891113281,
+        "east": 10.3230285644531
+      },
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=181&include_suggestion=false",
+      "voiAppZone": "181"
     }
   ]
 }

@@ -366,6 +366,344 @@
         "east": -1.1045
       },
       "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/nottingham/gbfs.json"
+    },
+    {
+      "id": "voi_gb_app_219",
+      "provider": "voi",
+      "city": "Kettering",
+      "center": [
+        52.39219,
+        -0.71516
+      ],
+      "bounds": {
+        "south": 52.35028,
+        "north": 52.43409,
+        "west": -0.77627,
+        "east": -0.654055871022936
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=219&include_suggestion=false",
+      "voiAppZone": "219"
+    },
+    {
+      "id": "voi_gb_app_231",
+      "provider": "voi",
+      "city": "Wellingborough",
+      "center": [
+        52.3045,
+        -0.7015
+      ],
+      "bounds": {
+        "south": 52.28,
+        "north": 52.329,
+        "west": -0.751,
+        "east": -0.652
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=231&include_suggestion=false",
+      "voiAppZone": "231"
+    },
+    {
+      "id": "voi_gb_app_324",
+      "provider": "voi",
+      "city": "Cheltenham / Gloucester",
+      "center": [
+        51.88881,
+        -2.14664
+      ],
+      "bounds": {
+        "south": 51.802125353332514,
+        "north": 51.976019433793624,
+        "west": -2.359735850790898,
+        "east": -1.9274823780819745
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=324&include_suggestion=false",
+      "voiAppZone": "324",
+      "areas": [
+        {
+          "city": "Cheltenham",
+          "center": [
+            51.9,
+            -2.08
+          ],
+          "bounds": {
+            "south": 51.802125353332514,
+            "north": 51.976019433793624,
+            "west": -2.15,
+            "east": -1.9274823780819745
+          }
+        },
+        {
+          "city": "Gloucester",
+          "center": [
+            51.864,
+            -2.238
+          ],
+          "bounds": {
+            "south": 51.802125353332514,
+            "north": 51.976019433793624,
+            "west": -2.359735850790898,
+            "east": -2.15
+          }
+        }
+      ]
+    },
+    {
+      "id": "voi_gb_app_232",
+      "provider": "voi",
+      "city": "Rushden & Higham Ferrers",
+      "center": [
+        52.297,
+        -0.597
+      ],
+      "bounds": {
+        "south": 52.266,
+        "north": 52.328,
+        "west": -0.642,
+        "east": -0.552
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=232&include_suggestion=false",
+      "voiAppZone": "232",
+      "aliases": [
+        "Rushden",
+        "Higham Ferrers"
+      ]
+    },
+    {
+      "id": "voi_gb_app_229",
+      "provider": "voi",
+      "city": "Oxford",
+      "center": [
+        51.7564,
+        -1.24198
+      ],
+      "bounds": {
+        "south": 51.65752,
+        "north": 51.85516,
+        "west": -1.35811,
+        "east": -1.12534
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=229&include_suggestion=false",
+      "voiAppZone": "229"
+    },
+    {
+      "id": "voi_gb_app_340",
+      "provider": "voi",
+      "city": "Isle of Wight",
+      "center": [
+        50.66404,
+        -1.31078
+      ],
+      "bounds": {
+        "south": 50.535367023678354,
+        "north": 50.792267403779235,
+        "west": -1.654052658845761,
+        "east": -1.0340508111103688
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=340&include_suggestion=false",
+      "voiAppZone": "340"
+    },
+    {
+      "id": "voi_gb_app_211",
+      "provider": "voi",
+      "city": "Cambridge",
+      "center": [
+        52.18816,
+        0.11933
+      ],
+      "bounds": {
+        "south": 52.0942173949546,
+        "north": 52.27488998377251,
+        "west": -0.01478658747473105,
+        "east": 0.2705901847699579
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=211&include_suggestion=false",
+      "voiAppZone": "211"
+    },
+    {
+      "id": "voi_gb_app_349",
+      "provider": "voi",
+      "city": "Aylesbury",
+      "center": [
+        51.8354,
+        -0.82327
+      ],
+      "bounds": {
+        "south": 51.75143574538053,
+        "north": 51.925731156124236,
+        "west": -1.0259084965180603,
+        "east": -0.6372224109644254
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=349&include_suggestion=false",
+      "voiAppZone": "349"
+    },
+    {
+      "id": "voi_gb_app_390",
+      "provider": "voi",
+      "city": "Braintree",
+      "center": [
+        51.88476,
+        0.54181
+      ],
+      "bounds": {
+        "south": 51.842084429902044,
+        "north": 51.92795220891488,
+        "west": 0.4733700577157839,
+        "east": 0.609286891627528
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=390&include_suggestion=false",
+      "voiAppZone": "390"
+    },
+    {
+      "id": "voi_gb_app_350",
+      "provider": "voi",
+      "city": "High Wycombe",
+      "center": [
+        51.62756,
+        -0.7478
+      ],
+      "bounds": {
+        "south": 51.57373959030601,
+        "north": 51.68184581972984,
+        "west": -0.8645395546969359,
+        "east": -0.6284906648417216
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=350&include_suggestion=false",
+      "voiAppZone": "350"
+    },
+    {
+      "id": "voi_gb_app_348",
+      "provider": "voi",
+      "city": "Slough",
+      "center": [
+        51.51806,
+        -0.60217
+      ],
+      "bounds": {
+        "south": 51.461967823955305,
+        "north": 51.57999246444064,
+        "west": -0.7024455566334863,
+        "east": -0.5100853796062739
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=348&include_suggestion=false",
+      "voiAppZone": "348"
+    },
+    {
+      "id": "voi_gb_app_391",
+      "provider": "voi",
+      "city": "Chelmsford",
+      "center": [
+        51.73802,
+        0.45288
+      ],
+      "bounds": {
+        "south": 51.66862380002616,
+        "north": 51.80814494225751,
+        "west": 0.32576439644858224,
+        "east": 0.580091663388791
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=391&include_suggestion=false",
+      "voiAppZone": "391"
+    },
+    {
+      "id": "voi_gb_app_235",
+      "provider": "voi",
+      "city": "Portsmouth",
+      "center": [
+        50.8195,
+        -1.073
+      ],
+      "bounds": {
+        "south": 50.77,
+        "north": 50.869,
+        "west": -1.147,
+        "east": -0.999
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=235&include_suggestion=false",
+      "voiAppZone": "235"
+    },
+    {
+      "id": "voi_gb_app_230",
+      "provider": "voi",
+      "city": "Corby",
+      "center": [
+        52.48922,
+        -0.6885
+      ],
+      "bounds": {
+        "south": 52.448,
+        "north": 52.5304382962175,
+        "west": -0.787,
+        "east": -0.59
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=230&include_suggestion=false",
+      "voiAppZone": "230"
+    },
+    {
+      "id": "voi_gb_app_236",
+      "provider": "voi",
+      "city": "Southampton",
+      "center": [
+        50.91603,
+        -1.40307
+      ],
+      "bounds": {
+        "south": 50.875,
+        "north": 50.957,
+        "west": -1.482,
+        "east": -1.324
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=236&include_suggestion=false",
+      "voiAppZone": "236"
+    },
+    {
+      "id": "voi_gb_app_205",
+      "provider": "voi",
+      "city": "Northampton",
+      "center": [
+        52.24358,
+        -0.89584
+      ],
+      "bounds": {
+        "south": 52.190351431892886,
+        "north": 52.29672861135593,
+        "west": -0.9908294677734375,
+        "east": -0.800628662109375
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=205&include_suggestion=false",
+      "voiAppZone": "205"
+    },
+    {
+      "id": "voi_gb_app_327",
+      "provider": "voi",
+      "city": "London",
+      "center": [
+        51.48426,
+        -0.1286
+      ],
+      "bounds": {
+        "south": 51.30515851278135,
+        "north": 51.6669733453627,
+        "west": -0.4506786666871926,
+        "east": 0.19414977493520894
+      },
+      "timeZone": "Europe/London",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=327&include_suggestion=false",
+      "voiAppZone": "327"
     }
   ]
 }

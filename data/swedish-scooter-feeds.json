@@ -43,6 +43,288 @@
         "Upsala",
         "Uppsalir"
       ]
+    },
+    {
+      "id": "voi_se_app_425",
+      "provider": "voi",
+      "city": "Trollhättan",
+      "center": [
+        58.28631,
+        12.30538
+      ],
+      "bounds": {
+        "south": 58.22198604038249,
+        "north": 58.350640965615526,
+        "west": 12.178586968862646,
+        "east": 12.432170960613973
+      },
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=425&include_suggestion=false",
+      "voiAppZone": "425",
+      "aliases": [
+        "trollhattan"
+      ]
+    },
+    {
+      "id": "voi_se_app_184",
+      "provider": "voi",
+      "city": "Linköping",
+      "center": [
+        58.41244,
+        15.62333
+      ],
+      "bounds": {
+        "south": 58.32391453794888,
+        "north": 58.50051103764058,
+        "west": 15.38360595703125,
+        "east": 15.864257812499998
+      },
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=184&include_suggestion=false",
+      "voiAppZone": "184"
+    },
+    {
+      "id": "voi_se_app_127",
+      "provider": "voi",
+      "city": "Helsingborg",
+      "center": [
+        56.03922,
+        12.71702
+      ],
+      "bounds": {
+        "south": 55.9878199697891,
+        "north": 56.0906186777103,
+        "west": 12.6459503173828,
+        "east": 12.7880859375
+      },
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=127&include_suggestion=false",
+      "voiAppZone": "127"
+    },
+    {
+      "id": "voi_se_app_296",
+      "provider": "voi",
+      "city": "Gävle",
+      "center": [
+        60.67245,
+        17.11683
+      ],
+      "bounds": {
+        "south": 60.55196567741403,
+        "north": 60.7924380425801,
+        "west": 16.821384148535337,
+        "east": 17.407666443488193
+      },
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=296&include_suggestion=false",
+      "voiAppZone": "296"
+    },
+    {
+      "id": "voi_se_app_281",
+      "provider": "voi",
+      "city": "Lund",
+      "center": [
+        55.71252,
+        13.19599
+      ],
+      "bounds": {
+        "south": 55.66383765593185,
+        "north": 55.76112258901995,
+        "west": 13.091239929199219,
+        "east": 13.301010131835936
+      },
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=281&include_suggestion=false",
+      "voiAppZone": "281"
+    },
+    {
+      "id": "voi_se_app_373",
+      "provider": "voi",
+      "city": "Växjö",
+      "center": [
+        56.88874,
+        14.8062
+      ],
+      "bounds": {
+        "south": 56.78393274747651,
+        "north": 56.99355104735682,
+        "west": 14.6345498644896,
+        "east": 14.977844230643655
+      },
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=373&include_suggestion=false",
+      "voiAppZone": "373"
+    },
+    {
+      "id": "voi_se_app_48",
+      "provider": "voi",
+      "city": "Uppsala",
+      "center": [
+        59.85435,
+        17.66207
+      ],
+      "bounds": {
+        "south": 59.8037426244997,
+        "north": 59.9049511141442,
+        "west": 17.5266265869141,
+        "east": 17.7975082397461
+      },
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=48&include_suggestion=false",
+      "voiAppZone": "48"
+    },
+    {
+      "id": "voi_se_app_238",
+      "provider": "voi",
+      "city": "Norrköping",
+      "center": [
+        58.57866,
+        16.2325
+      ],
+      "bounds": {
+        "south": 58.419637,
+        "north": 58.737686,
+        "west": 15.889286,
+        "east": 16.575714
+      },
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=238&include_suggestion=false",
+      "voiAppZone": "238"
+    },
+    {
+      "id": "voi_se_app_1",
+      "provider": "voi",
+      "city": "Stockholm",
+      "center": [
+        59.33022,
+        18.07568
+      ],
+      "bounds": {
+        "south": 59.204953,
+        "north": 59.455496,
+        "west": 17.795002,
+        "east": 18.356363
+      },
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=1&include_suggestion=false",
+      "voiAppZone": "1"
+    },
+    {
+      "id": "voi_se_app_185",
+      "provider": "voi",
+      "city": "Örebro",
+      "center": [
+        59.27537,
+        15.24203
+      ],
+      "bounds": {
+        "south": 59.23252752806556,
+        "north": 59.318126631430424,
+        "west": 15.140533447265625,
+        "east": 15.343780517578123
+      },
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=185&include_suggestion=false",
+      "voiAppZone": "185",
+      "aliases": [
+        "Orebro"
+      ]
+    },
+    {
+      "id": "voi_se_app_5",
+      "provider": "voi",
+      "city": "Göteborg",
+      "center": [
+        57.70169,
+        11.98838
+      ],
+      "bounds": {
+        "south": 57.633271,
+        "north": 57.770117,
+        "west": 11.851058,
+        "east": 12.125706
+      },
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=5&include_suggestion=false",
+      "voiAppZone": "5",
+      "aliases": [
+        "Gothenburg"
+      ]
+    },
+    {
+      "id": "voi_se_app_282",
+      "provider": "voi",
+      "city": "Borås",
+      "center": [
+        57.72917,
+        12.95149
+      ],
+      "bounds": {
+        "south": 57.67887906685692,
+        "north": 57.7794562167397,
+        "west": 12.829605193225632,
+        "east": 13.073384591047272
+      },
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=282&include_suggestion=false",
+      "voiAppZone": "282"
+    },
+    {
+      "id": "voi_se_app_283",
+      "provider": "voi",
+      "city": "Halmstad",
+      "center": [
+        56.67152,
+        12.97145
+      ],
+      "bounds": {
+        "south": 56.48372869256887,
+        "north": 56.857982669693584,
+        "west": 12.56561279296875,
+        "east": 13.38134765625
+      },
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=283&include_suggestion=false",
+      "voiAppZone": "283"
+    },
+    {
+      "id": "voi_se_app_171",
+      "provider": "voi",
+      "city": "Västerås",
+      "center": [
+        59.62134,
+        16.5418
+      ],
+      "bounds": {
+        "south": 59.559431,
+        "north": 59.683119,
+        "west": 16.411313,
+        "east": 16.672767
+      },
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=171&include_suggestion=false",
+      "voiAppZone": "171",
+      "aliases": [
+        "Vasteras"
+      ]
+    },
+    {
+      "id": "voi_se_app_7",
+      "provider": "voi",
+      "city": "Malmö",
+      "center": [
+        55.5825,
+        12.98844
+      ],
+      "bounds": {
+        "south": 55.503978,
+        "north": 55.661015,
+        "west": 12.809006,
+        "east": 13.167879
+      },
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=7&include_suggestion=false",
+      "voiAppZone": "7"
     }
   ]
 }

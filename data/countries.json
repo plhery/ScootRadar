@@ -41,12 +41,13 @@
       "anchor": [51.1, 10.4],
       "featuredCities": ["de:Berlin", "de:München", "de:Köln", "de:Frankfurt", "de:Stuttgart", "de:Düsseldorf"],
       "credits": {
-        "attribution": "Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW; Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified; Dott anonymous app map",
+        "attribution": "Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW; Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified; Dott anonymous app map; Voi authenticated rider map",
         "gbfs": ["Dott", "Bolt", "Hopp", "Lime", "Voi", "Zeus", "Yoio"],
         "links": [
           { "label": "MobiData BW", "href": "https://www.mobidata-bw.de/" },
-          { "label": "Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified", "href": "https://creativecommons.org/licenses/by-sa/4.0/" },
-          { "label": "DE: Dott map", "href": "https://ridedott.com/" }
+          {"label": "Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified", "href": "https://creativecommons.org/licenses/by-sa/4.0/"},
+          { "label": "DE: Dott map", "href": "https://ridedott.com/" },
+          { "label": "DE: Voi map", "href": "https://www.voi.com/" }
         ]
       }
     },
@@ -84,8 +85,10 @@
         "at:Klagenfurt"
       ],
       "credits": {
-        "attribution": "Austria: Dott anonymous app map",
-        "links": [{ "label": "AT: Dott map", "href": "https://ridedott.com/" }]
+        "attribution": "Austria: Dott anonymous app map; Voi authenticated rider map",
+        "links": [{ "label": "AT: Dott map", "href": "https://ridedott.com/" },
+          { "label": "AT: Voi map", "href": "https://www.voi.com/" }
+        ]
       }
     },
     {
@@ -98,9 +101,11 @@
       "anchor": [43, 12.5],
       "featuredCities": ["it:Roma", "it:Palermo", "it:Napoli", "it:Catania"],
       "credits": {
-        "attribution": "Italy: Bird, Elerent GBFS; Dott anonymous app map",
+        "attribution": "Italy: Bird, Elerent GBFS; Dott anonymous app map; Voi authenticated rider map",
         "gbfs": ["Bird", "Elerent"],
-        "links": [{ "label": "IT: Dott map", "href": "https://ridedott.com/" }]
+        "links": [{ "label": "IT: Dott map", "href": "https://ridedott.com/" },
+          { "label": "IT: Voi map", "href": "https://www.voi.com/" }
+        ]
       }
     },
     {
@@ -130,10 +135,11 @@
       "anchor": [61, 9.5],
       "featuredCities": ["no:Oslo", "no:Trondheim", "no:Stavanger", "no:Kristiansand", "no:Bærum", "no:Tromsø"],
       "credits": {
-        "attribution": "Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS",
+        "attribution": "Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; Voi authenticated rider map",
         "links": [
           { "label": "NO: Entur AS · NLOD", "href": "https://data.norge.no/nlod/en/2.0" },
-          { "label": "NO: Kartverket boundaries · CC BY 4.0", "href": "https://creativecommons.org/licenses/by/4.0/" }
+          { "label": "NO: Kartverket boundaries · CC BY 4.0", "href": "https://creativecommons.org/licenses/by/4.0/" },
+          { "label": "NO: Voi map", "href": "https://www.voi.com/" }
         ]
       }
     },
@@ -158,11 +164,12 @@
       "featuredCities": ["gb:Bristol", "gb:Liverpool", "gb:Nottingham", "gb:Leeds", "gb:Brighton", "gb:Bournemouth"],
       "credits": {
         "code": "UK",
-        "attribution": "United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS",
+        "attribution": "United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Voi authenticated rider map",
         "gbfs": ["Bolt", "Dott"],
         "links": [
           { "label": "UK: Beryl · CDLA-Permissive-2.0", "href": "https://cdla.dev/permissive-2-0/" },
-          { "label": "UK: ONS boundaries · OGL v3.0", "href": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" }
+          { "label": "UK: ONS boundaries · OGL v3.0", "href": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" },
+          { "label": "GB: Voi map", "href": "https://www.voi.com/" }
         ]
       }
     },
@@ -217,6 +224,50 @@
       }
     },
     {
+      "code": "DK",
+      "continent": "europe",
+      "catalog": "data/danish-scooter-feeds.json",
+      "source": "denmark",
+      "names": {
+        "en": "Denmark",
+        "de": "Dänemark",
+        "fr": "Danemark",
+        "it": "Danimarca",
+        "nl": "Denemarken",
+        "nb": "Danmark",
+        "pt": "Dinamarca",
+        "es": "Dinamarca",
+        "is": "Danmörk"
+      },
+      "searchWords": [
+        "denmark",
+        "danmark",
+        "danemark",
+        "danimarca",
+        "denemarken",
+        "dinamarca",
+        "danmork"
+      ],
+      "anchor": [
+        56,
+        10
+      ],
+      "featuredCities": [
+        "dk:Aarhus",
+        "dk:Odense",
+        "dk:Aalborg"
+      ],
+      "credits": {
+        "attribution": "Denmark: Voi authenticated rider map",
+        "links": [
+          {
+            "label": "DK: Voi map",
+            "href": "https://www.voi.com/"
+          }
+        ]
+      }
+    },
+    {
       "code": "SE",
       "continent": "europe",
       "catalog": "data/swedish-scooter-feeds.json",
@@ -227,7 +278,7 @@
       "anchorNote": "Inland, between Uppsala and Kiruna, and clear of Norway's total.",
       "featuredCities": ["se:Uppsala", "se:Kiruna"],
       "credits": {
-        "attribution": "Sweden: Lime, Hopp GBFS",
+        "attribution": "Sweden: Lime, Hopp GBFS; Voi authenticated rider map",
         "gbfs": ["Lime", "Hopp"]
       }
     },
@@ -261,7 +312,8 @@
         "gbfs": ["Dott", "Hopp"],
         "links": [
           { "label": "PL: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
-          { "label": "PL: Dott map", "href": "https://ridedott.com/" }
+          { "label": "PL: Dott map", "href": "https://ridedott.com/" },
+          { "label": "SE: Voi map", "href": "https://www.voi.com/" }
         ]
       }
     },
@@ -323,9 +375,11 @@
       "anchorNote": "Inland in the south-west, between Turku and Tampere: on the mainland, so it isn't read as Stockholm's, and near the largest Dott fleets in Helsinki and Tampere.",
       "featuredCities": ["fi:Mariehamn"],
       "credits": {
-        "attribution": "Finland: Hopp GBFS; Dott anonymous app map",
+        "attribution": "Finland: Hopp GBFS; Dott anonymous app map; Voi authenticated rider map",
         "gbfs": ["Hopp"],
-        "links": [{ "label": "FI: Dott map", "href": "https://ridedott.com/" }, { "label": "FI: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }]
+        "links": [{ "label": "FI: Dott map", "href": "https://ridedott.com/" }, { "label": "FI: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
+          { "label": "FI: Voi map", "href": "https://www.voi.com/" }
+        ]
       }
     },
     {

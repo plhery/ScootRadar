@@ -1,0 +1,60 @@
+{
+  "verifiedOn": "2026-10-24",
+  "catalogSource": "https://www.voi.com/",
+  "systems": [
+    {
+      "id": "voi_dk_app_59",
+      "provider": "voi",
+      "city": "Aarhus",
+      "center": [
+        56.15119,
+        10.19325
+      ],
+      "bounds": {
+        "south": 56.0639863543046,
+        "north": 56.2383895039888,
+        "west": 10.0751495361328,
+        "east": 10.3113555908203
+      },
+      "timeZone": "Europe/Copenhagen",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=59&include_suggestion=false",
+      "voiAppZone": "59"
+    },
+    {
+      "id": "voi_dk_app_146",
+      "provider": "voi",
+      "city": "Odense",
+      "center": [
+        55.39032,
+        10.38345
+      ],
+      "bounds": {
+        "south": 55.3010107944959,
+        "north": 55.4796317138773,
+        "west": 10.2351379394531,
+        "east": 10.5317687988281
+      },
+      "timeZone": "Europe/Copenhagen",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=146&include_suggestion=false",
+      "voiAppZone": "146"
+    },
+    {
+      "id": "voi_dk_app_187",
+      "provider": "voi",
+      "city": "Aalborg",
+      "center": [
+        57.05741,
+        9.90555
+      ],
+      "bounds": {
+        "south": 56.9610753568483,
+        "north": 57.15374754486,
+        "west": 9.678955078125,
+        "east": 10.1321411132812
+      },
+      "timeZone": "Europe/Copenhagen",
+      "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=187&include_suggestion=false",
+      "voiAppZone": "187"
+    }
+  ]
+}
