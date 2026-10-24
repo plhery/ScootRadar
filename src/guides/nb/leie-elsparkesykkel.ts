@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Hvordan leie elsparkesykkel: fra appen til du avslutter turen',
   lede: 'Å leie elsparkesykkel går slik: Du laster ned appen til operatøren, registrerer deg med mobilnummer og betalingskort, skanner QR-koden på styret og kjører, og til slutt parkerer du lovlig, avslutter turen og tar bilde av parkeringen. Ryde og Bolt leier ut fra 16 år, og Voi fra 16 i Oslo. Du betaler for å låse opp og per minutt: I Oslo publiserte Voi og Bolt 10 kr pluss 2,50 kr per minutt 12. oktober 2026, så ti minutter koster 35 kr. Mange byer stenger utleien om natten, Oslo hver natt fra kl. 23 til 05.',
   published: '2026-10-12',
-  updated: '2026-10-17',
+  updated: '2026-10-24',
   sections: [
     {
       heading: 'Hvordan leie elsparkesykkel? Steg for steg',
@@ -50,7 +50,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Bolts 16 år står både i Ruters oversikt og i Bolts vilkår for Norge fra 1. november 2026. Voi oppgir 16 år for Oslo; i andre byer ser du grensen i appen. Regjeringen har foreslått 16 år som nasjonal aldersgrense, men forslaget er ikke vedtatt.',
+        'Bolts 16 år står både i Ruters oversikt og i Bolts vilkår for Norge fra 1. desember 2026. Voi oppgir 16 år for Oslo; i andre byer ser du grensen i appen. Regjeringen har foreslått 16 år som nasjonal aldersgrense, men forslaget er ikke vedtatt.',
         '**Vipps** fant vi bare hos Ryde. Der trekkes turene samlet dagen etter, med et standard tak på 400 kr per dag.',
       ],
     },

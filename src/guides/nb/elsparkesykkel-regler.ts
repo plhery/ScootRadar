@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Regler for elsparkesykkel i Norge: alder, hjelm, promille og bøter',
   lede: 'Reglene for elsparkesykkel i Norge er enkle å huske: Du må ha fylt 12 år, du må ha hjelm hvis du er under 15, og promillegrensen er 0,2, den samme som for bil. En aldersgrense på 16 år er foreslått, men ikke vedtatt, og operatørene som leier ut, har ofte høyere grense enn loven. Du kjører på veien, i sykkelfeltet eller på sykkelveien, og på fortauet når det er lite folk, men forbi gående holder du gangfart. Bare én person får stå på sparkesykkelen, og i Oslo er utleien stengt hver natt fra kl. 23 til 05.',
   published: '2026-10-12',
-  updated: '2026-10-23',
+  updated: '2026-10-24',
   city: 'no:Oslo',
   sections: [
     {
@@ -123,7 +123,7 @@ const guide: Guide = {
         {
           list: [
             '**Ryde:** minst 16 år, etter vilkårene for Norge (oktober 2026; i august 2026 var grensen 15 år). Kontoen er personlig, og Ryde kan kontrollere opplysningene dine. På kveldstid i helgene må du ta en reaksjonstest før turen.',
-            '**Bolt:** fra 1. november 2026 minst 16 år, etter Bolts nye vilkår for Norge. Hvilken grense som gjelder før det, ser du i appen. Bolt kan be om bilde av førerkortet eller annen legitimasjon, og for å låse opp i topptimer må du bestå en kognitiv reaksjonstest.',
+            '**Bolt:** fra 1. desember 2026 minst 16 år, etter Bolts nye vilkår for Norge. Hvilken grense som gjelder før det, ser du i appen. Bolt kan be om bilde av førerkortet eller annen legitimasjon, og for å låse opp i topptimer må du bestå en kognitiv reaksjonstest.',
             '**Voi og Dott:** sjekk appen for aldersgrense og eventuell ID-kontroll.',
           ],
         },
@@ -151,7 +151,7 @@ const guide: Guide = {
     {
       heading: 'Bergen, Trondheim og andre byer',
       blocks: [
-        'Lovdata har over hundre lokale forskrifter om utleie av små elektriske kjøretøy, og de fleste byene i tabellen stenger utleien om natten, i alle fall natt til helg. Bergen har ikke forbudt elsparkesykler.',
+        'Lovdata har over hundre lokale forskrifter om utleie av små elektriske kjøretøy, og de fleste byene i tabellen stenger utleien om natten, i alle fall natt til helg. Bergen har ikke forbudt elsparkesykler. Når operatørene stenger by for by, står i guiden [åpningstider for elsparkesykkel](guide:opening-hours).',
         {
           table: {
             caption: 'Utleieregler i utvalgte byer, per oktober 2026',
@@ -165,9 +165,9 @@ const guide: Guide = {
               ['Skien og Porsgrunn', 'Porsgrunn: 23–05 hver natt i hele kommunen. Skien: ikke stengt', 'Maks 12 km/t i sentrum fra kl. 00 til 05. Ingen utleie fra 15. desember til det er snø- og isfritt om våren.'],
               ['Tønsberg', '23–05 natt til lørdag, søndag og bevegelige helligdager, ellers 01–05', 'Maks 300 kjøretøy, elsykler medregnet. Tas inn ved fare for snø og is.'],
               ['Fredrikstad og Sarpsborg', 'Ikke stengt', 'Maks 10 km/t kl. 23–05 natt til lørdag og søndag. Voi og Ryde har felles tillatelse til 31. mars 2027, med 1500 kjøretøy til sammen. Sparkesyklene tas inn når det snør.'],
-              ['Arendal', 'Forskriften: 00–05 hver natt. Kommunens side sier at du ikke kan leie mellom kl. 23 og 06', 'Tillatelsene gjelder for to sesonger.'],
-              ['Sandefjord', '01–05', 'Alle kvalifiserte operatører får ettårig tillatelse.'],
-              ['Asker', 'Stengt hele vinteren', 'Opptil to operatører.'],
+              ['Arendal', 'Forskriften: 00–05 hver natt. Kommunens side sier at du ikke kan leie mellom kl. 23 og 06. Vois åpne data: 23–05', 'Tillatelsene gjelder for to sesonger.'],
+              ['Sandefjord', '01–05', 'Alle kvalifiserte operatører får ettårig tillatelse. Sparkesyklene skal bort innen første snøfall, senest 1. november (politisk vedtak 29. oktober 2025).'],
+              ['Asker', 'Ikke stengt. Vois åpne data: 00–05 natt til søndag', 'Opptil to operatører. Vinterstengt etter forskriften, uten fast dato.'],
             ],
           },
         },
@@ -182,7 +182,7 @@ const guide: Guide = {
     },
     {
       question: 'Hvor gammel må du være for å leie elsparkesykkel?',
-      answer: 'Loven sier 12 år, men operatørene setter egne grenser. Ryde krever 16 år, og Bolts vilkår for Norge krever 16 år fra 1. november 2026. Oslo kommune ber alle under 15 la være å leie. Hos Voi og Dott ser du grensen i appen.',
+      answer: 'Loven sier 12 år, men operatørene setter egne grenser. Ryde krever 16 år, og Bolts vilkår for Norge krever 16 år fra 1. desember 2026. Oslo kommune ber alle under 15 la være å leie. Hos Voi og Dott ser du grensen i appen.',
     },
     {
       question: 'Må bilene stoppe for meg i gangfeltet?',

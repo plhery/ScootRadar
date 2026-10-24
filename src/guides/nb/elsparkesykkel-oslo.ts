@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Elsparkesykkel i Oslo: operatører, priser, nattestenging og soner',
   lede: 'Vil du leie elsparkesykkel i Oslo, velger du mellom Bolt, Ryde og Voi, som har tillatelse fra kommunen. Det koster 10 kr å låse opp (10,90 kr hos Ryde) og 2,50 kr per minutt, så ti minutter kommer på rundt 35 kr med prisene fra 12. oktober 2026. Du må ha fylt 16 år hos alle tre, og utleien er stengt hver natt fra kl. 23 til 05. På mange torg, i parker og ved stasjoner er det parkeringsforbud eller kjøreforbud, og feilparkering kan koste 900 kr.',
   published: '2026-10-12',
-  updated: '2026-10-17',
+  updated: '2026-10-24',
   city: 'no:Oslo',
   sections: [
     {
@@ -58,7 +58,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Ruter oppgir fortsatt 15 år for Ryde, men Rydes vilkår for Norge krever 16 år (17. oktober 2026). Bolts nye vilkår for Norge, som gjelder fra 1. november 2026, krever også 16 år. Bolt kan be om legitimasjon, og i topptimer må du bestå en reaksjonstest for å låse opp. Ryde har reaksjonstest på kveldstid i helgene.',
+        'Ruter oppgir fortsatt 15 år for Ryde, men Rydes vilkår for Norge krever 16 år (17. oktober 2026). Bolts nye vilkår for Norge, som gjelder fra 1. desember 2026, krever også 16 år. Bolt kan be om legitimasjon, og i topptimer må du bestå en reaksjonstest for å låse opp. Ryde har reaksjonstest på kveldstid i helgene.',
         'Regjeringen foreslo 5. oktober 2026 å heve den nasjonale aldersgrensen fra 12 til 16 år. Forslaget skal på høring og er **ikke vedtatt**.',
       ],
     },
@@ -67,7 +67,7 @@ const guide: Guide = {
       blocks: [
         'Du kan ikke leie elsparkesykkel i Oslo mellom kl. 23 og 05. Det gjelder hver natt, også i helgene, og står i kommunens utleieforskrift. Byrådet kan korte inn eller oppheve stengingen, men har ikke gjort det (oktober 2026).',
         'Stengingen kom i september 2021, og den første måneden ble det registrert 8 skader på elsparkesykkel om natten, mot knapt 100 i august.',
-        'Nabokommunene har egne åpningstider. Ifølge Ruter er Ryde og Voi døgnåpne i [Bærum](map:no:Bærum), og i Lørenskog og Lillestrøm er utleien åpen hele natten på de fleste hverdager. Skal du videre etter kl. 23 i Oslo, kan du ta Oslo Bysykkel fram til kl. 01.',
+        'Nabokommunene har egne åpningstider. [Bærum](map:no:Bærum) har ingen nattestenging, og ifølge Ruter er Ryde og Voi døgnåpne der, men Vois åpne data viste stengt fra midnatt til kl. 05 natt til søndag (24. oktober 2026). I Lørenskog og Lillestrøm er utleien åpen hele natten på de fleste hverdager. Skal du videre etter kl. 23 i Oslo, kan du ta Oslo Bysykkel fram til kl. 01. Tidene i resten av landet finner du i guiden [åpningstider for elsparkesykkel](guide:opening-hours).',
         'På 17. mai og ved store arrangementer kan kommunen slå av sparkesyklene i sentrum. Under kvartfinalen i fotball-VM mellom Norge og England 11. juli 2026 var det kjøreforbud fra Jernbanetorget til Uranienborg og fra Tjuvholmen til Hausmannskvartalet, de samme sonene som på 17. mai. Sonene varsles hver gang, og appen viser dem.',
       ],
     },
@@ -187,7 +187,7 @@ const guide: Guide = {
     { title: 'Ruter: Kjør elsparkesykkel og bysykkel i appen', url: 'https://ruter.no/flere-transporttilbud/sykkel-og-elsparkesykkel/kjore-i-appen' },
     { title: 'Ruter: Parkering av elsparkesykkel', url: 'https://ruter.no/flere-transporttilbud/sykkel-og-elsparkesykkel/parkering' },
     { title: 'Voi: Elsparkesykler i Oslo, priser og aldersgrense', url: 'https://www.voi.com/nb/by/oslo' },
-    { title: 'Bolt: Vilkår for elektriske kjøretøy i Norge (fra 1. november 2026)', url: 'https://bolt.eu/en-no/legal/micromobility/tnc-e-vehicles/' },
+    { title: 'Bolt: Vilkår for elektriske kjøretøy i Norge (fra 1. desember 2026)', url: 'https://bolt.eu/en-no/legal/micromobility/tnc-e-vehicles/' },
     { title: 'Oslo Bysykkel: priser og åpningstider', url: 'https://oslobysykkel.no/' },
     { title: 'Statens vegvesen: Flere skader seg på elsparkesykkel i Oslo (januar 2026)', url: 'https://www.vegvesen.no/om-oss/presse/aktuelt/2026/01/flere-skader-seg-pa-elsparkesykkel-i-oslo/' },
     { title: 'Ryde: Vilkår for Norge', url: 'https://www.ryde-technology.com/terms-conditions-norway' },

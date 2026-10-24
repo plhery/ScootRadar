@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Elsparkesykkel i Lillestrøm: operatører, priser, sesong og parkering',
   lede: 'Vil du leie elsparkesykkel i Lillestrøm, velger du mellom Voi og Ryde, som har kommunens tillatelse fram til 30. november 2027. Bolt har ikke tillatelse her. Hos Voi koster det 10 kr å låse opp og 2,50 kr per minutt (17. oktober 2026), og både Voi og Ryde krever at du har fylt 16 år. Kommunen stenger utleien kl. 00–05 natt til lørdag og natt til søndag, og Voi stenger allerede kl. 23 de to nettene. Utleien er bare åpen fra mars til og med november: Om vinteren finnes det ingen sparkesykler å leie.',
   published: '2026-10-17',
-  updated: '2026-10-22',
+  updated: '2026-10-24',
   city: 'no:Lillestrøm',
   sections: [
     {
@@ -52,7 +52,7 @@ const guide: Guide = {
             rows: [
               ['Lillestrøm', 'Stengt kl. 00–05 natt til lørdag og natt til søndag', 'Voi stenger kl. 23, Ryde kl. 00'],
               ['Rælingen', 'Stengt kl. 23–05 natt til lørdag og natt til søndag', 'Voi stenger kl. 23. Hos Ryde: sjekk appen'],
-              ['Lørenskog', 'Ingen nattestenging', 'Voi og Ryde stenger selv natt til lørdag og natt til søndag, fra kl. 23 eller 00 til 05'],
+              ['Lørenskog', 'Ingen nattestenging', 'Ifølge Ruter stenger Voi og Ryde selv natt til lørdag og natt til søndag, fra kl. 23 eller 00 til 05. Operatørenes åpne data (24. oktober 2026): Voi 23–05 de samme nettene, Ryde døgnåpent'],
               ['Oslo', 'Stengt kl. 23–05 hver natt', 'Bolt, Ryde og Voi er åpne kl. 05–23'],
             ],
           },
@@ -93,7 +93,7 @@ const guide: Guide = {
     {
       heading: 'Over grensen til Lørenskog, Rælingen og Oslo',
       blocks: [
-        'Voi og Ryde kjører også i [Lørenskog](map:no:Lørenskog) og Rælingen, ifølge Ruter. Lørenskog har sin egen forskrift: Der er utleien åpen hele døgnet fra mars til og med november, men operatørene stenger selv natt til lørdag og natt til søndag, som tabellen over viser. Operatørene skal sørge for minst 2 meter fri passasje på fortau og gang- og sykkelveier. På kartet sto det rundt 390 Voi-sparkesykler i Lørenskog kl. 19.25 den 17. oktober 2026, og siden 22. oktober viser kartet også Rydes, rundt 880 i Rydes åpne data for Lørenskog den dagen.',
+        'Voi og Ryde kjører også i [Lørenskog](map:no:Lørenskog) og Rælingen, ifølge Ruter. Lørenskog har sin egen forskrift: Der er utleien åpen hele døgnet fra mars til og med november, men ifølge Ruter stenger operatørene selv natt til lørdag og natt til søndag. Rydes åpne data viser likevel døgnåpent, som tabellen over viser. Operatørene skal sørge for minst 2 meter fri passasje på fortau og gang- og sykkelveier. På kartet sto det rundt 390 Voi-sparkesykler i Lørenskog kl. 19.25 den 17. oktober 2026, og siden 22. oktober viser kartet også Rydes, rundt 880 i Rydes åpne data for Lørenskog den dagen.',
         'I Rælingen stenger forskriften utleien kl. 23–05 natt til lørdag og natt til søndag, en time tidligere enn i Lillestrøm. Voi-sparkesyklene i Rælingen telles under Lillestrøm på kartet.',
         'Vest for Skjetten grenser Lillestrøm mot [Oslo](map:no:Oslo). Der har Bolt, Ryde og Voi tillatelse, og du kan ikke leie mellom kl. 23 og 05. Oslo har egne parkeringsforbud og saktesoner, og alt står i [guiden om Oslo](guide:oslo). Om du kan avslutte turen på den andre siden av kommunegrensen, ser du i appen før du kjører.',
       ],

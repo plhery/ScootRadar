@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Elsparkesykkel i Trondheim: operatører, priser, sesong og soner',
   lede: 'Vil du leie elsparkesykkel i Trondheim, velger du mellom Dott, Voi og Ryde, som har tillatelse fra kommunen for 2025 og 2026. Det koster 10 kr å låse opp hos Voi og 10,90 kr hos Ryde og Dott, pluss 2,50 kr per minutt (13. oktober 2026), og du må ha fylt 16 år hos Ryde og Voi og 18 hos Dott. Sesongen varer fra 15. mars til senest 1. desember. Etter forskriften er utleien stengt kl. 23–05 hver natt, men i 2026 har Voi og Ryde bare stengt natt til lørdag og natt til søndag, så sjekk appen.',
   published: '2026-10-13',
-  updated: '2026-10-17',
+  updated: '2026-10-24',
   city: 'no:Trondheim',
   sections: [
     {
@@ -49,7 +49,7 @@ const guide: Guide = {
         {
           list: [
             '**Forskriften og kommunen:** Utleien skal være stengt mellom kl. 23 og 05, og kommunens nettside (oppdatert 19. mai 2026) sier det samme, uten unntak.',
-            '**Voi og Ryde i 2026:** Ifølge åpningstidene de publiserte 13. oktober 2026, har de åpent hele natten fra søndag kveld til fredag morgen og stenger kl. 23–05 bare natt til lørdag og natt til søndag. Dott har ikke publisert åpningstider.',
+            '**Voi og Ryde i 2026:** Ifølge åpningstidene de publiserte 13. oktober 2026, har de åpent hele natten fra søndag kveld til fredag morgen og stenger kl. 23–05 bare natt til lørdag og natt til søndag. Dott oppgir i sine åpne data at den har åpent hele døgnet (24. oktober 2026), men forskriften gjelder alle operatører.',
           ],
         },
         'Forskriften lar kommunen prøve ut nattåpen utleie fra søndag kveld til fredag morgen. Det har kommunen gjort hvert år siden 2022, sist fra mai til oktober 2025, men et vedtak for 2026 er ikke publisert (oktober 2026). Sommeren 2023 ble det kjørt over 48 000 turer om natten, og bare to ulykker ble registrert i lovlig åpningstid, ifølge kommunen.',
@@ -175,7 +175,7 @@ const guide: Guide = {
     },
     {
       question: 'Kan jeg leie elsparkesykkel om natten i Trondheim?',
-      answer: 'Etter forskriften og kommunens nettside er utleien stengt kl. 23–05 hver natt. Men i 2026 har Voi og Ryde hatt åpent hele natten fra søndag kveld til fredag morgen og bare stengt natt til lørdag og natt til søndag. Et vedtak om prøveordning for 2026 er ikke publisert. Dott har ikke publisert åpningstider, så sjekk appen.',
+      answer: 'Etter forskriften og kommunens nettside er utleien stengt kl. 23–05 hver natt. Men i 2026 har Voi og Ryde hatt åpent hele natten fra søndag kveld til fredag morgen og bare stengt natt til lørdag og natt til søndag. Et vedtak om prøveordning for 2026 er ikke publisert. Dott oppgir døgnåpent i sine åpne data (24. oktober 2026), så sjekk appen.',
     },
     {
       question: 'Kan jeg kjøre elsparkesykkel til Værnes?',
