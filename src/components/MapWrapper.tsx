@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import type { MapViewport } from '@/lib/geo';
-import type { ParkingLocation, Vehicle } from '@/lib/types';
+import type { ParkingLocation, ScooterCluster, Vehicle } from '@/lib/types';
 import type { CityGroup } from '@/lib/clustering';
 import type { AddressResult } from '@/components/AddressSearch';
 import type { MapStyleName, ThemeName } from '@/lib/clientParams';
@@ -19,6 +19,8 @@ interface MapWrapperProps {
   vehicles: Vehicle[];
   clusters: CityGroup[];
   clustered: boolean;
+  lastSeenVehicles?: Vehicle[];
+  lastSeenClusters?: ScooterCluster[];
   origin: [number, number];
   initialZoom: number;
   distanceOrigin: [number, number] | null;

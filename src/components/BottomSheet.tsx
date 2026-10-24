@@ -68,6 +68,7 @@ function StatusText({ status }: { status: DockStatus }) {
   return (
     <div className={`sheet-sub ${status.kind === 'failure' ? 'sheet-sub-warning' : ''}`}>
       {status.kind === 'live' && <span className="freshness-dot" aria-hidden="true" />}
+      {status.kind === 'updating' && <span className="mini-spinner" aria-hidden="true" />}
       {status.kind === 'failure' && <Icon name="warning" size={13} strokeWidth={2.2} />}
       <span>{formatUiText(status.text, i18n)}</span>
     </div>

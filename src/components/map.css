@@ -390,6 +390,48 @@
   transform: scale(1.08);
 }
 
+/* ---------- Where scooters were last seen ---------- */
+/* While an app map is collected again, its scooters stand where they were last seen,
+   faded and breathing, under the others, until its sweep reaches them and they come
+   as the others do (scooterSnapshots.ts). A press goes through them to the map. */
+.last-seen-wrap {
+  display: grid !important;
+  place-items: center;
+  background: transparent;
+  border: 0;
+  pointer-events: none;
+}
+
+.last-seen-light {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--marker-color);
+  box-shadow: 0 0 0 1.5px var(--light-ring);
+  animation: last-seen 1.6s ease-in-out infinite alternate;
+}
+
+.last-seen-cluster {
+  width: var(--cluster-size, 40px);
+  height: var(--cluster-size, 40px);
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 2px dashed var(--cluster-glow);
+  background: color-mix(in srgb, var(--map-bg) 80%, transparent);
+  color: var(--ink);
+  font: 800 13px/1 var(--font-display, inherit);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  animation: last-seen 1.6s ease-in-out infinite alternate;
+}
+
+@keyframes last-seen {
+  from { opacity: 0.35; }
+  to { opacity: 0.65; }
+}
+
 .destination-marker {
   position: relative;
   width: 38px;
@@ -512,6 +554,8 @@
   .walk-route { transition: none; }
   .scooter-marker,
   .scooter-name { animation: none !important; }
+  .last-seen-light,
+  .last-seen-cluster { animation: none; opacity: 0.5; }
 }
 
 /* Touch screens zoom with two fingers, and need the compass only to undo a rotation. */

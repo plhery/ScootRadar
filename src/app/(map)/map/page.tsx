@@ -357,6 +357,8 @@ export default function Home() {
   const {
     vehicles,
     clusters,
+    lastSeenVehicles,
+    lastSeenClusters,
     parking,
     meta: responseMeta,
     lastUpdated,
@@ -492,6 +494,30 @@ export default function Home() {
     vehicles,
     viewportBounds,
   ]);
+
+  // Where scooters still being collected again were last seen, filtered as those above but counted nowhere.
+  const lastSeenData = useMemo(() => {
+    const visibleVehicles: Vehicle[] = [];
+    const visibleClusters: ScooterCluster[] = [];
+    if (!viewportBounds) return { visibleVehicles, visibleClusters, count: 0 };
+    for (const vehicle of lastSeenVehicles) {
+      if (!viewportContainsPoint(viewportBounds, vehicle.lat, vehicle.lng) || !enabledProviders.has(vehicle.provider)) continue;
+      if (minBattery > 0 && (vehicle.battery === null || vehicle.battery < minBattery)) continue;
+      visibleVehicles.push(vehicle);
+    }
+    if (responseMeta?.mode === 'clusters') {
+      for (const cluster of lastSeenClusters) {
+        if (!viewportContainsPoint(viewportBounds, cluster.lat, cluster.lng)) continue;
+        const providers = Object.fromEntries(
+          Object.entries(cluster.providers).filter(([provider]) => enabledProviders.has(provider))
+        );
+        const count = Object.values(providers).reduce((total, value) => total + value, 0);
+        if (count > 0) visibleClusters.push({ ...cluster, count, providers });
+      }
+    }
+    const count = visibleVehicles.length + visibleClusters.reduce((total, cluster) => total + cluster.count, 0);
+    return { visibleVehicles, visibleClusters, count };
+  }, [enabledProviders, lastSeenClusters, lastSeenVehicles, minBattery, responseMeta?.mode, viewportBounds]);
 
   // Zoomed out, a country, a state or province, or neighbouring cities are drawn as one total.
   const mapClusters = useMemo(() => {
@@ -688,6 +714,7 @@ export default function Home() {
 
   const dockInput: DockInput = {
     count: viewportData.totalCount,
+    lastSeenCount: lastSeenData.count,
     originInViewport: originInViewport(walkOrigin?.point ?? null, viewportBounds),
     nearest: nearestVehicle && {
       provider: nearestVehicle.vehicle.provider,
@@ -959,6 +986,8 @@ export default function Home() {
         vehicles={mapVehicles}
         clusters={mapClusters}
         clustered={responseMeta?.mode === 'clusters'}
+        lastSeenVehicles={lastSeenData.visibleVehicles}
+        lastSeenClusters={lastSeenData.visibleClusters}
         origin={initialCenter}
         initialZoom={initialZoom}
         distanceOrigin={walkOrigin?.point ?? null}

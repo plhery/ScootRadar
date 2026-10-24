@@ -36,6 +36,9 @@ export function scooterQueryKey(query: ScooterDataQuery): string {
 export interface ScooterDataState {
   vehicles: Vehicle[];
   clusters: ScooterCluster[];
+  /** Where scooters still being collected again were last seen (response.lastSeen), drawn faded. */
+  lastSeenVehicles: Vehicle[];
+  lastSeenClusters: ScooterCluster[];
   parking: ParkingLocation[];
   /** Of the last successful response. Kept when the scooters go out of date. */
   meta: ScooterResponseMeta | null;
@@ -67,6 +70,8 @@ export interface ScooterDataState {
 export const INITIAL_SCOOTER_DATA_STATE: ScooterDataState = {
   vehicles: [],
   clusters: [],
+  lastSeenVehicles: [],
+  lastSeenClusters: [],
   parking: [],
   meta: null,
   lastUpdated: null,
@@ -106,12 +111,18 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
       const expiry = responseExpiry(response.meta, now, clockOffsetMs);
       const generated = deviceTime(response.meta.generatedAt, clockOffsetMs);
       const refreshAfter = response.meta.refreshAfterSeconds;
-      // The server is collecting feeds of this answer again: ask once more soon, but only once in a row.
+      // The server is collecting feeds of this answer again: ask once more soon, but only once in a row,
+      // unless scooters stand where they were last seen, which its sweeps replace as they go.
       const refreshing = response.meta.refreshing === true;
-      const followUp = refreshing && state.followedUpKey !== event.key;
+      const lastSeenVehicles = response.lastSeen?.vehicles ?? [];
+      const lastSeenClusters = response.lastSeen?.clusters ?? [];
+      const filling = lastSeenVehicles.length > 0 || lastSeenClusters.length > 0;
+      const followUp = refreshing && (filling || state.followedUpKey !== event.key);
       return {
         vehicles: response.vehicles,
         clusters: response.clusters ?? [],
+        lastSeenVehicles,
+        lastSeenClusters,
         parking: isExpired(expiry.parking, now) ? [] : response.parking ?? [],
         meta: response.meta,
         lastUpdated: Number.isFinite(generated) ? Math.min(generated, now) : now,
@@ -137,7 +148,7 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
       const next = { ...state, lastAttemptAt: event.now, requestInFlight: false, failure: event.failure,
         attemptGapMs: MIN_ATTEMPT_GAP_MS };
       if (failedRequestOutcome(state, event.now) !== 'out-of-date') return next;
-      return { ...next, vehicles: [], clusters: [], hasData: false, dataKey: null, outOfDate: true };
+      return { ...next, vehicles: [], clusters: [], lastSeenVehicles: [], lastSeenClusters: [], hasData: false, dataKey: null, outOfDate: true };
     }
 
     case 'aborted':

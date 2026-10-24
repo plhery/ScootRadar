@@ -34,6 +34,9 @@ const REQUEST_TIMEOUT_MS = 20_000;
 export interface ScooterData {
   vehicles: Vehicle[];
   clusters: ScooterCluster[];
+  /** Where scooters still being collected again were last seen: drawn faded, counted nowhere. */
+  lastSeenVehicles: Vehicle[];
+  lastSeenClusters: ScooterCluster[];
   parking: ParkingLocation[];
   /** Of the last successful response; kept in the out-of-date state. */
   meta: ScooterResponseMeta | null;
@@ -263,6 +266,8 @@ export function useScooterData(query: ScooterDataQuery | null, options: ScooterD
   return useMemo(() => ({
     vehicles: state.vehicles,
     clusters: state.clusters,
+    lastSeenVehicles: state.lastSeenVehicles,
+    lastSeenClusters: state.lastSeenClusters,
     parking: state.parking,
     meta: state.meta,
     lastUpdated: state.lastUpdated,

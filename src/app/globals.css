@@ -626,6 +626,11 @@ svg {
 .sheet-sub-warning {
   color: var(--warning-ink);
 }
+.sheet-sub > .mini-spinner {
+  width: 10px;
+  height: 10px;
+  border-width: 1.5px;
+}
 .freshness-dot {
   width: 6px;
   height: 6px;

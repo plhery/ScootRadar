@@ -122,6 +122,29 @@ describe('scooterDataReducer', () => {
     expect(schedule(scooterDataReducer(first, { type: 'failed', failure: 'failed', now: T0 + 3_000 }))).toBe(T0 + 13_000);
   });
 
+  it('keeps asking every few seconds while scooters stand where they were last seen, and draws them apart', () => {
+    const seen = { provider: 'lime', vehicle_id: 'seen', lat: 47.378, lng: 8.543, battery: 70, range_m: null, distance_m: null, deep_link: null };
+    const filling = { ...response({ refreshing: true, refreshAfterSeconds: 3 }), lastSeen: { vehicles: [seen], clusters: [] } };
+    const schedule = (state: ScooterDataState) => nextRefreshAt({ lastSuccessAt: state.lastSuccessAt, lastAttemptAt: state.lastAttemptAt,
+      refreshAfterMs: state.refreshAfterMs, expiresAt: state.expiresAt, attemptGapMs: state.attemptGapMs });
+    const first = scooterDataReducer(loaded, { type: 'succeeded', key: 'a', response: filling, now: T0 });
+    const second = scooterDataReducer(first, { type: 'succeeded', key: 'a', response: filling, now: T0 + 3_000 });
+    expect(schedule(second)).toBe(T0 + 6_000);
+    expect(second.lastSeenVehicles).toEqual([seen]);
+    expect(second.vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(['one']);
+    // The sweep has reached them all: the usual gap while it ends.
+    const reached = scooterDataReducer(second, { type: 'succeeded', key: 'a', response: response({ refreshing: true, refreshAfterSeconds: 3 }), now: T0 + 6_000 });
+    expect(reached.lastSeenVehicles).toEqual([]);
+    expect(schedule(reached)).toBe(T0 + 16_000);
+    // Gone with the others when they expire.
+    const expired = run([
+      { type: 'failed', failure: 'failed', now: T0 + 269_000 },
+      { type: 'started', key: 'a' },
+      { type: 'failed', failure: 'offline', now: T0 + 279_000 },
+    ], second);
+    expect(expired.lastSeenVehicles).toEqual([]);
+  });
+
   it('never dates the data later than it was received', () => {
     const ahead = scooterDataReducer(loaded, { type: 'succeeded', key: 'a', response: response({ generatedAt: iso(T0 + 90_000) }), now: T0 });
     const invalid = scooterDataReducer(loaded, { type: 'succeeded', key: 'a', response: response({ generatedAt: 'now' }), now: T0 });

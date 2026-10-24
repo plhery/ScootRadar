@@ -712,6 +712,40 @@ test('an empty covered area keeps the count and the chips and says what to do', 
   await expect(page.getByRole('button', { name: /^Lime, 0\./ })).toBeVisible();
 });
 
+test('scooters being collected again stand faded where they were last seen until the server has them again', async ({ page }) => {
+  let stage: 'none' | 'some' | 'all' = 'none';
+  const seenAt = Date.now() - 40 * 60_000;
+  const seen = (id: string, lat: number, lng: number) => ({ ...scooterResponse.vehicles[0], vehicle_id: id, lat, lng });
+  await page.route('**/api/scooters?**', async route => {
+    const zoom = Number(new URL(route.request().url()).searchParams.get('zoom'));
+    if (zoom <= 15) return route.fallback();
+    const sweeping = { stale: true, refreshing: true, refreshAfterSeconds: 3, lastSeenAt: new Date(seenAt).toISOString() };
+    await route.fulfill({ json: stage === 'none' ? {
+      ...scooterResponse, vehicles: [], providers: {}, lastSeen: { vehicles: [seen('lime-2', 47.3775, 8.5427), seen('lime-3', 47.3763, 8.5405)], clusters: [] },
+      meta: { ...scooterResponse.meta, ...sweeping, totalVehicles: 0, mode: 'vehicles', zoom },
+    } : stage === 'some' ? {
+      ...scooterResponse, lastSeen: { vehicles: [seen('lime-3', 47.3763, 8.5405)], clusters: [] },
+      meta: { ...scooterResponse.meta, ...sweeping, mode: 'vehicles', zoom },
+    } : { ...scooterResponse, meta: { ...scooterResponse.meta, mode: 'vehicles', zoom } } });
+  });
+  await page.goto('/map?origin=47.3769,8.5417');
+  await expect(page.locator('.last-seen-light')).toHaveCount(2);
+  // None counted yet: the dock is still finding them, and does not call the area empty.
+  await expect(page.locator('.sheet-count')).toHaveText('Finding scooters…');
+  await expect(page.getByText('No scooters here right now. Zoom out or move the map.')).toHaveCount(0);
+  // A press goes through them to the map.
+  await expect(page.locator('.last-seen-wrap').first()).toHaveCSS('pointer-events', 'none');
+
+  // The next answers, a few seconds apart, bring the scooters the sweep has found.
+  stage = 'some';
+  await expect(page.locator('.scooter-marker')).toHaveCount(3, { timeout: 10_000 });
+  await expect(page.locator('.last-seen-light')).toHaveCount(1);
+  await expect(page.locator('.sheet .sheet-sub')).toHaveText(/^Updating · faded ones seen at \d\d:\d\d$/);
+  stage = 'all';
+  await expect(page.locator('.last-seen-light')).toHaveCount(0, { timeout: 10_000 });
+  await expect(page.locator('.sheet-count')).toHaveText(/^3\s*scooters on this map$/);
+});
+
 test('installs the production service worker and reloads offline', async ({
   page,
   context,

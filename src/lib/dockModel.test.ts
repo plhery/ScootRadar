@@ -195,6 +195,21 @@ describe('dock status', () => {
       .toEqual({ kind: 'delayed', text: { key: 'dock.delayed', time: NOW - 30_000 } });
   });
 
+  it('says scooters are being updated while faded ones stand where they were last seen', () => {
+    const seenAt = NOW - 40 * 60_000;
+    const filling = { meta: meta({ stale: true, refreshing: true, lastSeenAt: new Date(seenAt).toISOString() }), lastSeenCount: 12 };
+    expect(summary({ ...filling, count: 3 })).toMatchObject({
+      phase: 'ready', count: { value: 3 }, status: { kind: 'updating', text: { key: 'dock.lastSeen', time: seenAt } },
+    });
+    // None counted yet: still finding them, the faded ones and the chips on screen, and the notices kept.
+    const curfew = summary({ ...filling, count: 0, providerCounts: {}, viewportCenter: [59.91, 10.75], now: Date.parse('2026-10-03T23:30:00.000Z') });
+    expect(curfew).toMatchObject({ phase: 'finding', count: { value: null, label: { key: 'dock.finding' } }, hint: null });
+    expect(curfew.notices.map(notice => notice.kind)).toContain('curfew');
+    // Delayed once the server stops collecting them, or with nothing faded in view.
+    expect(summary({ ...filling, meta: meta({ stale: true }) }).status?.kind).toBe('delayed');
+    expect(summary({ ...filling, lastSeenCount: 0 }).status?.kind).toBe('delayed');
+  });
+
   it('describes the city overview without an age', () => {
     const overview = meta({ overview: true, mode: 'clusters', zoom: 8 });
     expect(summary({ meta: overview, lastUpdated: NOW - 50 * 60_000 }).status)

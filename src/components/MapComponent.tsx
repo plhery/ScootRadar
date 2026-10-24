@@ -207,11 +207,35 @@ function createClusterIcon(cluster: ScooterCluster, count: string): L.DivIcon {
   const largest = entries.reduce<[string, number] | null>((best, entry) => (!best || entry[1] > best[1] ? entry : best), null);
   const glow = largest ? colorOf(largest[0]) : '#999';
   const ring = entries.length > 1 ? `conic-gradient(${segments.join(',')})` : glow;
-  const size = cluster.count < 10 ? 34 : cluster.count < 100 ? 40 : cluster.count < 1000 ? 46 : cluster.count < 10_000 ? 52 : 58;
 
   return L.divIcon({
     className: 'cluster-marker-wrap',
-    html: `<div class="cluster-marker" style="--cluster-ring:${ring};--cluster-glow:${glow};--cluster-size:${size}px"><span>${count}</span></div>`,
+    html: `<div class="cluster-marker" style="--cluster-ring:${ring};--cluster-glow:${glow};--cluster-size:${clusterSize(cluster.count)}px"><span>${count}</span></div>`,
+    iconSize: [58, 58],
+    iconAnchor: [29, 29],
+  });
+}
+
+const clusterSize = (count: number) => count < 10 ? 34 : count < 100 ? 40 : count < 1000 ? 46 : count < 10_000 ? 52 : 58;
+
+/** A scooter where it was last seen, while it is collected again: a faded light in the colour of its app. */
+function createLastSeenIcon(provider: string): L.DivIcon {
+  const color = providerSurfaceColor(provider, PROVIDERS[provider]?.color ?? '#999');
+  return L.divIcon({
+    className: 'last-seen-wrap',
+    html: `<div class="last-seen-light" style="--marker-color:${color}" aria-hidden="true"></div>`,
+    iconSize: [14, 14],
+    iconAnchor: [7, 7],
+  });
+}
+
+/** A group of them: their number in a dashed ring, in the colour of the app with most of them. */
+function createLastSeenClusterIcon(cluster: ScooterCluster, count: string): L.DivIcon {
+  const largest = Object.entries(cluster.providers).reduce<[string, number] | null>((best, entry) => (!best || entry[1] > best[1] ? entry : best), null);
+  const glow = largest ? providerSurfaceColor(largest[0], '#999') : '#999';
+  return L.divIcon({
+    className: 'last-seen-wrap',
+    html: `<div class="last-seen-cluster" style="--cluster-glow:${glow};--cluster-size:${clusterSize(cluster.count)}px" aria-hidden="true"><span>${count}</span></div>`,
     iconSize: [58, 58],
     iconAnchor: [29, 29],
   });
@@ -317,6 +341,10 @@ function MapZoomControls({ mapRef }: { mapRef: { current: L.Map | null } }) {
   );
 }
 
+// The same empty lists on every render, so that a map without faded scooters does not draw them again.
+const NO_VEHICLES: Vehicle[] = [];
+const NO_CLUSTERS: ScooterCluster[] = [];
+
 interface MapComponentProps {
   parking?: ParkingLocation[];
   /** The operators' zones, drawn under everything else when turned on. */
@@ -324,6 +352,9 @@ interface MapComponentProps {
   vehicles: Vehicle[];
   clusters: CityGroup[];
   clustered: boolean;
+  /** Where scooters still being collected again were last seen: drawn faded under the others, and never pressed. */
+  lastSeenVehicles?: Vehicle[];
+  lastSeenClusters?: ScooterCluster[];
   origin: [number, number];
   initialZoom: number;
   distanceOrigin: [number, number] | null;
@@ -393,6 +424,8 @@ export default function MapComponent({
   vehicles,
   clusters,
   clustered,
+  lastSeenVehicles = NO_VEHICLES,
+  lastSeenClusters = NO_CLUSTERS,
   origin,
   initialZoom,
   distanceOrigin,
@@ -435,6 +468,7 @@ export default function MapComponent({
   // What each total stands for now: a group gains and loses cities as the map zooms.
   const clusterDataRef = useRef<Map<string, CityGroup>>(new Map());
   const parkingMarkersRef = useRef<Map<string, { marker: L.Marker; signature: string }>>(new Map());
+  const lastSeenMarkersRef = useRef<Map<string, { marker: L.Marker; signature: string }>>(new Map());
   const markerSignaturesRef = useRef<Map<string, string>>(new Map());
   const vehicleDataRef = useRef<Map<string, Vehicle>>(new Map());
   const parkingDataRef = useRef<Map<string, ParkingLocation>>(new Map());
@@ -554,6 +588,7 @@ export default function MapComponent({
     const clusterMarkers = clusterMarkersRef.current;
     const clusterData = clusterDataRef.current;
     const parkingMarkers = parkingMarkersRef.current;
+    const lastSeenMarkers = lastSeenMarkersRef.current;
     const markerSignatures = markerSignaturesRef.current;
     const lights = lightsRef.current;
 
@@ -626,6 +661,7 @@ export default function MapComponent({
       clusterMarkers.clear();
       clusterData.clear();
       parkingMarkers.clear();
+      lastSeenMarkers.clear();
       markerSignatures.clear();
       vehicleDataRef.current.clear();
       parkingDataRef.current.clear();
@@ -674,6 +710,41 @@ export default function MapComponent({
       markers.set(id, { marker, signature });
     }
   }, [frameLng, readyMap, parking, selectedParkingId, t]);
+
+  // Where scooters still being collected again were last seen: faded, under the others, until the
+  // collection reaches them and the server sends them as the others. A press goes through them.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!readyMap || !map) return;
+    const markers = lastSeenMarkersRef.current;
+    const wanted = new Map<string, { at: [number, number]; signature: string; icon: () => L.DivIcon }>();
+    for (const vehicle of lastSeenVehicles) {
+      wanted.set(`v:${vehicleMarkerKey(vehicle)}`, {
+        at: [vehicle.lat, lngNear(vehicle.lng, frameLng)], signature: vehicle.provider, icon: () => createLastSeenIcon(vehicle.provider),
+      });
+    }
+    for (const cluster of clustered ? lastSeenClusters : []) {
+      const count = formatNumber(cluster.count);
+      wanted.set(`c:${cluster.id}`, {
+        at: [cluster.lat, lngNear(cluster.lng, frameLng)], signature: JSON.stringify([cluster.providers, count]),
+        icon: () => createLastSeenClusterIcon(cluster, count),
+      });
+    }
+    for (const [key, entry] of markers) {
+      if (!wanted.has(key)) { entry.marker.remove(); markers.delete(key); }
+    }
+    for (const [key, { at, signature, icon }] of wanted) {
+      const existing = markers.get(key);
+      if (existing) {
+        if (!existing.marker.getLatLng().equals(at)) existing.marker.setLatLng(at);
+        if (existing.signature !== signature) { existing.marker.setIcon(icon()); existing.signature = signature; }
+        continue;
+      }
+      // Under every other marker, whatever its latitude.
+      const marker = L.marker(at, { icon: icon(), interactive: false, keyboard: false, zIndexOffset: -100_000 }).addTo(map);
+      markers.set(key, { marker, signature });
+    }
+  }, [clustered, formatNumber, frameLng, lastSeenClusters, lastSeenVehicles, readyMap]);
 
   // The zones are drawn under the rest of what is drawn on the ground, in panes inside the
   // one that turns with the map: each kind's fills in a pane of its own that is translucent

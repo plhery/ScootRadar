@@ -90,6 +90,8 @@ export type DockStatus =
   | { kind: 'delayed'; text: UiText }
   /** With the green dot. */
   | { kind: 'live'; text: UiText }
+  /** With a spinner: scooters stand faded where they were last seen while they are collected again. */
+  | { kind: 'updating'; text: UiText }
   | { kind: 'updated'; text: UiText };
 
 export interface DockNotice {
@@ -175,6 +177,8 @@ export type DockModel =
 export interface DockInput {
   /** Scooters shown in the viewport with the current filters, markers and cluster totals together. */
   count: number;
+  /** Scooters drawn faded in the viewport where they were last seen, counted apart (response.lastSeen). */
+  lastSeenCount?: number;
   /** The origin for walking times (your location or the chosen place) lies inside the viewport. */
   originInViewport: boolean;
   /**
@@ -207,7 +211,10 @@ export interface DockInput {
   unfilteredCount: number | null;
 }
 
-type StatusInput = Pick<DockInput, 'failure' | 'meta' | 'lastUpdated' | 'now'>;
+type StatusInput = Pick<DockInput, 'failure' | 'meta' | 'lastUpdated' | 'now' | 'lastSeenCount'>;
+
+/** Scooters stand faded where they were last seen while the server collects them again. */
+const filling = (input: StatusInput) => input.meta?.refreshing === true && (input.lastSeenCount ?? 0) > 0 && !input.failure;
 
 function dockStatus(input: StatusInput): { status: DockStatus | null; retry: boolean } {
   const { failure, meta, lastUpdated, now } = input;
@@ -217,6 +224,11 @@ function dockStatus(input: StatusInput): { status: DockStatus | null; retry: boo
       status: { kind: 'failure', text: { key: failure === 'offline' ? 'dock.offline' : 'dock.refreshFailed', time: lastUpdated } },
       retry: true,
     };
+  }
+  // Rather than delayed: the faded scooters are the old positions, and the others are coming in.
+  const seenAt = meta?.lastSeenAt ? Date.parse(meta.lastSeenAt) : NaN;
+  if (filling(input) && Number.isFinite(seenAt)) {
+    return { status: { kind: 'updating', text: { key: 'dock.lastSeen', time: seenAt } }, retry: false };
   }
   // Delayed data says so at every zoom, city totals included.
   if (meta?.stale) return { status: { kind: 'delayed', text: { key: 'dock.delayed', time: lastUpdated } }, retry: false };
@@ -309,8 +321,8 @@ export function dockModel(input: DockInput): DockModel {
     };
   }
 
-  // No count yet: one line, without a status, notices or a hint.
-  const pending = (phase: 'waiting' | 'finding', chips: DockChips | null): DockModel => ({
+  // No count yet: one line, without a status or a hint, and without notices unless it lasts.
+  const pending = (phase: 'waiting' | 'finding', chips: DockChips | null, notices: DockNotice[] = []): DockModel => ({
     kind: 'summary',
     phase,
     count: { value: null, label: { key: phase === 'waiting' ? 'dock.waiting' : 'dock.finding' } },
@@ -318,7 +330,7 @@ export function dockModel(input: DockInput): DockModel {
     status: null,
     retry: false,
     busy,
-    notices: [],
+    notices,
     chips,
     hint: null,
   });
@@ -362,6 +374,8 @@ export function dockModel(input: DockInput): DockModel {
   const chips = providerChips.providers.length > 0 ? providerChips : null;
   // A failure already explains an empty view, so it never reads "Finding scooters…".
   if (input.loading === 'load' && input.count === 0 && !input.failure) return pending('finding', chips);
+  // None counted yet, only faded ones: the server's sweep is finding them, which may take a minute or two.
+  if (filling(input) && input.count === 0) return pending('finding', chips, dockNotices(input, health));
 
   const scope = input.originInViewport ? 'nearby' : 'onMap';
   // Every provider here is down: the notice explains the empty map, which is then
