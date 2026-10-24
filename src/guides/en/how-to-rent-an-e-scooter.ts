@@ -107,7 +107,7 @@ const guide: Guide = {
             head: ['Operator', 'Bad parking', 'Other charges'],
             rows: [
               ['Voi', 'CHF 25 in Switzerland', 'Fees for repeated bad photos'],
-              ['Bolt', 'Up to £40 in the UK; €15 in Germany under its terms from 1 November 2026', 'Up to £100, €100 or CHF 100 to fetch one left outside the area'],
+              ['Bolt', 'Up to £40 in the UK; €15 in Germany under its terms from 1 December 2026', 'Up to £100, €100 or CHF 100 to fetch one left outside the area'],
               ['Dott', 'Up to €300', '£50 or €50 to pass on a fine'],
               ['Beryl', '£5 or £10 outside a bay', '£80 if not back within 24 hours'],
               ['Lime', 'A penalty, amount not published', 'Pick-up and handling up to CHF 125 each in Switzerland'],

@@ -83,7 +83,7 @@ const guide: Guide = {
             rows: [
               ['Dott', 'Up to €300 to collect the scooter if you ignore parking or locking instructions; official fines plus a €50 handling fee'],
               ['Voi', '€25 for breaking parking rules, though Voi says it tries to warn you first; official fines and fees passed on'],
-              ['Bolt', '€15 if badly parked without a clear end-of-ride photo; up to €100 to fetch one left outside the area; fines plus a handling fee of up to €30 (terms from 1 November 2026)'],
+              ['Bolt', '€15 if badly parked without a clear end-of-ride photo; up to €100 to fetch one left outside the area; fines plus a handling fee of up to €30 (terms from 1 December 2026)'],
               ['Lime', 'No fixed fee; fines, towing and impound costs passed on'],
             ],
           },
