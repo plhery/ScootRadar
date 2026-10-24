@@ -91,7 +91,13 @@ The read sequence is the same as Qick's:
 
 The settings do not expose a cross-brand account selector. Reby and wer2
 explicitly enable Google and Apple sign-in, and Silk Road Samarkand enables
-Apple sign-in. Alternative sign-in methods were not exercised. Reby also
+Apple sign-in. ATOM describes these as
+[alternatives to phone verification](https://www.atommobility.com/blog/sign-up-made-easy-atom-mobility-adds-apple-and-google-login-options),
+including signup without verifying a phone number. Reby is therefore a
+candidate for access without a new test number; a Google or Apple identity
+is still needed, and its complete sign-in flow has not been exercised.
+MoVe and Zippy's settings do not enable those alternative buttons; their
+available native sign-in is the phone/SMS flow. Reby also
 enables document verification in settings; whether it restricts map access
 after login remains unverified.
 
