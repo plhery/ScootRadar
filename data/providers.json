@@ -206,5 +206,16 @@
         "luup"
       ]
     }
+  },
+  {
+    "key": "jet",
+    "name": "JET",
+    "color": "#7b2cff",
+    "initial": "J",
+    "systemIds": {
+      "prefixes": [
+        "jet_"
+      ]
+    }
   }
 ]

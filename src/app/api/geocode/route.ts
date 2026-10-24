@@ -80,7 +80,12 @@ const PHOTON_LAYERS = ['house', 'street', 'locality', 'district', 'city', 'other
 // left out instead (servedPlace).
 const CONTINENT_BOXES: Record<Continent, Box[]> = {
   oceania: [{ west: 110, south: -48, east: 180, north: -9 }],
-  asia: [{ west: 34, south: 12, east: 60, north: 34 }, { west: 95, south: -11, east: 150, north: 46 }],
+  asia: [{ west: 34, south: 12, east: 60, north: 34 }, { west: 40, south: 34, east: 88, north: 56 },
+    { west: 95, south: -11, east: 150, north: 46 }],
+  'south-america': [
+    { west: -74, south: -34, east: -34, north: 6 },
+    { west: -76, south: -56, east: -66, north: -17 },
+  ],
   'north-america': [
     { west: -170, south: 14, east: -50, north: 72 },
     { west: -92.5, south: 7, east: -77.2, north: 14 },

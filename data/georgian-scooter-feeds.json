@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-10-24",
+  "source": "Go Jet signed-out app map; bounds enclose its rental polygons, with overlapping envelopes merged.",
+  "systems": [
+    {
+      "id": "jet_ge_batumi",
+      "provider": "jet",
+      "city": "Batumi",
+      "center": [
+        41.639193,
+        41.62466
+      ],
+      "bounds": {
+        "south": 41.615822,
+        "north": 41.662751,
+        "west": 41.583057,
+        "east": 41.680613
+      },
+      "timeZone": "Asia/Tbilisi",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Батуми"
+      ]
+    }
+  ]
+}

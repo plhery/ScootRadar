@@ -167,6 +167,8 @@ describe('GET /api/geocode', () => {
       { lat: 45.6952, lng: 9.6742, display_name: 'Bergamo, Italy', title: 'Bergamo', subtitle: italy, covered: true },
       { lat: 37.8715, lng: -122.273, display_name: 'Berkeley, CA, United States', title: 'Berkeley, CA', subtitle: unitedStates, covered: true },
       { lat: 52.52, lng: 13.405, display_name: 'Berlin, Germany', title: 'Berlin', subtitle: germany, covered: true },
+      { lat: -23.817937, lng: -46.077225, display_name: 'Bertioga, Brazil', title: 'Bertioga',
+        subtitle: ({ de: 'Brasilien', DE: 'Brasilien', fr: 'Brésil', it: 'Brasile', es: 'Brasil', is: 'Brasilía' } as Record<string, string>)[language ?? 'en'] ?? 'Brazil', covered: true },
     ];
 
     await expect((await GET(request('Ber', language))).json()).resolves.toEqual(expected);
@@ -362,7 +364,7 @@ describe('address search results', () => {
       [{ type: 'city', name: 'Burgdorf', state: 'Bern', country: 'Schweiz', countrycode: 'CH' }, 47.0559, 7.6271],
       [{ type: 'city', name: 'Bergdietikon', state: 'Aargau', country: 'Schweiz', countrycode: 'CH' }, 47.3898, 8.3865],
       [{ type: 'street', name: 'Bernerstrasse', city: 'Zürich', countrycode: 'CH' }, 47.3889, 8.4986],
-    ])).toEqual(['Bergamo', 'Berkeley, CA', 'Berlin', 'Bern', 'Bergdietikon']);
+    ])).toEqual(['Bergamo', 'Berkeley, CA', 'Berlin', 'Bern', 'Bertioga']);
   });
 });
 
@@ -474,7 +476,7 @@ describe('cities and towns', () => {
 
     expect(asked(fetchMock, GEOAPIFY_HOST).map(geoapifyRequest)).toEqual(['towns', 'nearby']);
     // Five at most, so Bernerstrasse, a place, is left out.
-    expect(await titles(response)).toEqual(['Bergamo', 'Berkeley, CA', 'Berlin', 'Bern', 'Bergdietikon']);
+    expect(await titles(response)).toEqual(['Bergamo', 'Berkeley, CA', 'Berlin', 'Bern', 'Bertioga']);
   });
 
   it('takes a town of the name typed close to a city of our list for that city, ranked as that town', async () => {
@@ -540,7 +542,7 @@ describe('cities and towns', () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get('x-geocoding-data-source')).toBe('Verified scooter city catalog');
-    expect(await titles(response)).toEqual(['Bergamo', 'Berkeley, CA', 'Berlin', 'Bern']);
+    expect(await titles(response)).toEqual(['Bergamo', 'Berkeley, CA', 'Berlin', 'Bern', 'Bertioga']);
   });
 });
 
@@ -1341,7 +1343,7 @@ describe('recorded Geoapify answers', () => {
       ['Berkeley, CA', 'Vereinigte Staaten', DATA],
       ['Berlin', 'Deutschland', DATA],
       ['Bern', 'Schweiz', DATA],
-      ['Bergdietikon', 'Aargau, Schweiz', DATA],
+      ['Bertioga', 'Brasilien', DATA],
     ]],
     // Rome, which "Rom" names in German, before Romanshorn, whose name it starts.
     ['Rom', 'de', [47.37, 8.54], ['towns', 'nearby'], [

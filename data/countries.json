@@ -682,6 +682,261 @@
           }
         ]
       }
+    },
+    {
+      "code": "BR",
+      "continent": "south-america",
+      "catalog": "data/brazilian-scooter-feeds.json",
+      "source": "brazil",
+      "names": {
+        "en": "Brazil",
+        "de": "Brasilien",
+        "fr": "Brésil",
+        "it": "Brasile",
+        "nl": "Brazilië",
+        "nb": "Brasil",
+        "pt": "Brasil",
+        "es": "Brasil",
+        "is": "Brasilía"
+      },
+      "searchWords": [
+        "brazil",
+        "brasil",
+        "brasilien",
+        "bresil",
+        "brasile",
+        "brazilie",
+        "brasilia"
+      ],
+      "anchor": [
+        -14.2,
+        -51.9
+      ],
+      "credits": {
+        "attribution": "Brazil: JET signed-out Go Jet app map",
+        "links": [
+          {
+            "label": "BR: JET map",
+            "href": "https://jetshr.com/"
+          }
+        ]
+      },
+      "featuredCities": [
+        "br:São Paulo",
+        "br:Florianópolis",
+        "br:Salvador",
+        "br:Recife",
+        "br:Porto Alegre",
+        "br:Fortaleza"
+      ]
+    },
+    {
+      "code": "CL",
+      "continent": "south-america",
+      "catalog": "data/chilean-scooter-feeds.json",
+      "source": "chile",
+      "names": {
+        "en": "Chile",
+        "de": "Chile",
+        "fr": "Chili",
+        "it": "Cile",
+        "nl": "Chili",
+        "nb": "Chile",
+        "pt": "Chile",
+        "es": "Chile",
+        "is": "Síle"
+      },
+      "searchWords": [
+        "chile",
+        "chili",
+        "cile",
+        "sile"
+      ],
+      "anchor": [
+        -33.45,
+        -70.67
+      ],
+      "credits": {
+        "attribution": "Chile: JET signed-out Go Jet app map",
+        "links": [
+          {
+            "label": "CL: JET map",
+            "href": "https://jetshr.com/"
+          }
+        ]
+      },
+      "featuredCities": [
+        "cl:Santiago",
+        "cl:Temuco"
+      ]
+    },
+    {
+      "code": "MX",
+      "continent": "north-america",
+      "catalog": "data/mexican-scooter-feeds.json",
+      "source": "mexico",
+      "names": {
+        "en": "Mexico",
+        "de": "Mexiko",
+        "fr": "Mexique",
+        "it": "Messico",
+        "nl": "Mexico",
+        "nb": "Mexico",
+        "pt": "México",
+        "es": "México",
+        "is": "Mexíkó"
+      },
+      "searchWords": [
+        "mexico",
+        "mexiko",
+        "mexique",
+        "messico"
+      ],
+      "anchor": [
+        23.6,
+        -102.5
+      ],
+      "credits": {
+        "attribution": "Mexico: JET signed-out Go Jet app map",
+        "links": [
+          {
+            "label": "MX: JET map",
+            "href": "https://jetshr.com/"
+          }
+        ]
+      },
+      "featuredCities": [
+        "mx:Monterrey"
+      ]
+    },
+    {
+      "code": "KZ",
+      "continent": "asia",
+      "catalog": "data/kazakh-scooter-feeds.json",
+      "source": "kazakhstan",
+      "names": {
+        "en": "Kazakhstan",
+        "de": "Kasachstan",
+        "fr": "Kazakhstan",
+        "it": "Kazakistan",
+        "nl": "Kazachstan",
+        "nb": "Kasakhstan",
+        "pt": "Cazaquistão",
+        "es": "Kazajistán",
+        "is": "Kasakstan"
+      },
+      "searchWords": [
+        "kazakhstan",
+        "kasachstan",
+        "kazakistan",
+        "kazachstan",
+        "kasakhstan",
+        "cazaquistao",
+        "kazajistan",
+        "kasakstan",
+        "казахстан",
+        "казакстан"
+      ],
+      "anchor": [
+        43.3,
+        76.94
+      ],
+      "credits": {
+        "attribution": "Kazakhstan: JET signed-out Go Jet app map",
+        "links": [
+          {
+            "label": "KZ: JET map",
+            "href": "https://jetshr.com/"
+          }
+        ]
+      },
+      "featuredCities": [
+        "kz:Almaty"
+      ]
+    },
+    {
+      "code": "AZ",
+      "continent": "asia",
+      "catalog": "data/azerbaijani-scooter-feeds.json",
+      "source": "azerbaijan",
+      "names": {
+        "en": "Azerbaijan",
+        "de": "Aserbaidschan",
+        "fr": "Azerbaïdjan",
+        "it": "Azerbaigian",
+        "nl": "Azerbeidzjan",
+        "nb": "Aserbajdsjan",
+        "pt": "Azerbaijão",
+        "es": "Azerbaiyán",
+        "is": "Aserbaídsjan"
+      },
+      "searchWords": [
+        "azerbaijan",
+        "aserbaidschan",
+        "azerbaidjan",
+        "azerbaigian",
+        "azerbeidzjan",
+        "aserbajdsjan",
+        "azerbaijao",
+        "azerbaiyan",
+        "aserbaidsjan",
+        "азербаиджан"
+      ],
+      "anchor": [
+        40.4,
+        49.87
+      ],
+      "credits": {
+        "attribution": "Azerbaijan: JET signed-out Go Jet app map",
+        "links": [
+          {
+            "label": "AZ: JET map",
+            "href": "https://jetshr.com/"
+          }
+        ]
+      },
+      "featuredCities": [
+        "az:Baku"
+      ]
+    },
+    {
+      "code": "GE",
+      "continent": "asia",
+      "catalog": "data/georgian-scooter-feeds.json",
+      "source": "georgia",
+      "names": {
+        "en": "Georgia",
+        "de": "Georgien",
+        "fr": "Géorgie",
+        "it": "Georgia",
+        "nl": "Georgië",
+        "nb": "Georgia",
+        "pt": "Geórgia",
+        "es": "Georgia",
+        "is": "Georgía"
+      },
+      "searchWords": [
+        "georgia",
+        "georgien",
+        "georgie",
+        "грузия"
+      ],
+      "anchor": [
+        41.65,
+        41.64
+      ],
+      "credits": {
+        "attribution": "Georgia: JET signed-out Go Jet app map",
+        "links": [
+          {
+            "label": "GE: JET map",
+            "href": "https://jetshr.com/"
+          }
+        ]
+      },
+      "featuredCities": [
+        "ge:Batumi"
+      ]
     }
   ]
 }

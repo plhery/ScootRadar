@@ -50,6 +50,8 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   atomAppAccount?: string;
   /** LUUP's reviewed rider-map city ids; station counts are collected by the Node cache. */
   luupAppCities?: string[];
+  /** Go Jet's signed-out scooter map, signed privately by the Node cache. */
+  jetAppMap?: true;
   /** Published subregions of a shared feed; fetched once, routed per city. */
   areas?: ScooterServiceArea[];
   /**
@@ -76,7 +78,7 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
 export const REGIONAL_SCOOTER_SYSTEMS = CATALOG_SYSTEMS as RegionalScooterSystem[];
 
 export function isAppMapSystem(system: RegionalScooterSystem) {
-  return Boolean(system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount || system.luupAppCities);
+  return Boolean(system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount || system.luupAppCities || system.jetAppMap);
 }
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {

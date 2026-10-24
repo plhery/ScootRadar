@@ -5,8 +5,8 @@ import { readFileSync } from 'node:fs';
 
 // The languages the apps are shown in, as GEOCODE_LANGUAGES in src/app/api/geocode/cities.ts.
 export const LANGUAGES = ['en', 'de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is'];
-// The Middle East is Asia's. South America comes with its first country.
-export const CONTINENTS = ['europe', 'north-america', 'asia', 'oceania'];
+// The Middle East and the Caucasus are Asia's.
+export const CONTINENTS = ['europe', 'north-america', 'south-america', 'asia', 'oceania'];
 // The feed sources that are not a country's catalog.
 const OTHER_SOURCES = ['national', 'hopp', 'publibike'];
 

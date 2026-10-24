@@ -411,3 +411,10 @@ Neither is a Worker or build variable. ID tokens stay in memory; refresh-token
 rotations are saved mode 0600 in `/data/luup-session.json` (`LUUP_SESSION_PATH`
 overrides the path). A replacement runtime token supersedes a previous login's
 saved rotation. See [coverage, renewal and verification](docs/luup-app-map.md).
+
+JET's Go Jet map needs no rider account. Its app signing configuration lives
+in mode-0600 `/data/jet-config.json`, owned by the cache's `node` user
+(`JET_CONFIG_PATH` overrides the path), never in Git, Worker or build variables.
+The Node collector uses TLS 1.2 and spaces map requests 500 ms apart across
+all regions. Every city's tiles must succeed before its snapshot is replaced.
+See [the configuration format and verified coverage](docs/gojet-app-map.md).

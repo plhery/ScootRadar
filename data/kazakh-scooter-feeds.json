@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-10-24",
+  "source": "Go Jet signed-out app map; bounds enclose its rental polygons, with overlapping envelopes merged.",
+  "systems": [
+    {
+      "id": "jet_kz_almaty",
+      "provider": "jet",
+      "city": "Almaty",
+      "center": [
+        43.298812,
+        76.939435
+      ],
+      "bounds": {
+        "south": 43.178739,
+        "north": 43.356878,
+        "west": 76.774937,
+        "east": 77.013148
+      },
+      "timeZone": "Asia/Almaty",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Алматы"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-10-24",
+  "source": "Go Jet signed-out app map; bounds enclose its rental polygons, with overlapping envelopes merged.",
+  "systems": [
+    {
+      "id": "jet_az_baku",
+      "provider": "jet",
+      "city": "Baku",
+      "center": [
+        40.406212,
+        49.883767
+      ],
+      "bounds": {
+        "south": 40.335093,
+        "north": 40.440305,
+        "west": 49.790085,
+        "east": 49.987929
+      },
+      "timeZone": "Asia/Baku",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Баку"
+      ]
+    }
+  ]
+}

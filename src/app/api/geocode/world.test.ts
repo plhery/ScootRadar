@@ -359,9 +359,9 @@ describe('the search in Central America and the Caribbean', () => {
     const atHome = await rows(await search('Cartagena', { country: 'US' }));
     const inCostaRica = await rows(await search('Cartagena', { country: 'CR' }));
 
-    // Spain's, a town, before the street of Texas, as before Central America was searched.
-    expect(nearAustin).toEqual([['Cartagena', 'Región de Murcia, España'], ['Cartagena', 'Bexar, TX']]);
-    expect(atHome).toEqual([['Cartagena', 'Región de Murcia, España'], ['Cartagena', 'Bexar, TX']]);
+    // Spain's and Chile's towns precede the street of Texas; Colombia remains outside the searched areas.
+    expect(nearAustin).toEqual([['Cartagena', 'Región de Murcia, España'], ['Cartagena', 'Región de Valparaíso, Chile'], ['Cartagena', 'Bexar, TX']]);
+    expect(atHome).toEqual([['Cartagena', 'Región de Murcia, España'], ['Cartagena', 'Región de Valparaíso, Chile'], ['Cartagena', 'Bexar, TX']]);
     expect(inCostaRica).toEqual(nearAustin);
   });
 

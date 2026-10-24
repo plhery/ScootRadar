@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-10-24",
+  "source": "Go Jet signed-out app map; bounds enclose its rental polygons, with overlapping envelopes merged.",
+  "systems": [
+    {
+      "id": "jet_cl_santiago",
+      "provider": "jet",
+      "city": "Santiago",
+      "center": [
+        -33.506119,
+        -70.654009
+      ],
+      "bounds": {
+        "south": -33.764879,
+        "north": -33.336412,
+        "west": -70.787597,
+        "east": -70.490242
+      },
+      "timeZone": "America/Santiago",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_cl_temuco",
+      "provider": "jet",
+      "city": "Temuco",
+      "center": [
+        -38.736777,
+        -72.616194
+      ],
+      "bounds": {
+        "south": -38.758488,
+        "north": -38.700512,
+        "west": -72.671215,
+        "east": -72.547196
+      },
+      "timeZone": "America/Santiago",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    }
+  ]
+}

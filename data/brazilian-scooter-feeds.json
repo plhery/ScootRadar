@@ -1,0 +1,915 @@
+{
+  "checkedAt": "2026-10-24",
+  "source": "Go Jet signed-out app map; bounds enclose its rental polygons, with overlapping envelopes merged.",
+  "systems": [
+    {
+      "id": "jet_br_anchieta",
+      "provider": "jet",
+      "city": "Anchieta",
+      "center": [
+        -20.818486,
+        -40.633099
+      ],
+      "bounds": {
+        "south": -20.842135,
+        "north": -20.793475,
+        "west": -40.657602,
+        "east": -40.615198
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_aracaju",
+      "provider": "jet",
+      "city": "Aracaju",
+      "center": [
+        -10.968051,
+        -37.056069
+      ],
+      "bounds": {
+        "south": -11.027778,
+        "north": -10.918502,
+        "west": -37.111293,
+        "east": -37.033944
+      },
+      "timeZone": "America/Maceio",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_balneario-camboriu",
+      "provider": "jet",
+      "city": "Balneário Camboriú",
+      "center": [
+        -26.990802,
+        -48.636422
+      ],
+      "bounds": {
+        "south": -27.013175,
+        "north": -26.900558,
+        "west": -48.675304,
+        "east": -48.601548
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Itajaí",
+        "Balneario-Camboriu"
+      ]
+    },
+    {
+      "id": "jet_br_belo-horizonte",
+      "provider": "jet",
+      "city": "Belo Horizonte",
+      "center": [
+        -19.889785,
+        -43.963375
+      ],
+      "bounds": {
+        "south": -19.941846,
+        "north": -19.836743,
+        "west": -44.007746,
+        "east": -43.917018
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_belem",
+      "provider": "jet",
+      "city": "Belém",
+      "center": [
+        -1.290568,
+        -48.47202
+      ],
+      "bounds": {
+        "south": -1.475859,
+        "north": -1.113471,
+        "west": -48.508042,
+        "east": -48.428043
+      },
+      "timeZone": "America/Belem",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Belem"
+      ]
+    },
+    {
+      "id": "jet_br_bertioga",
+      "provider": "jet",
+      "city": "Bertioga",
+      "center": [
+        -23.817937,
+        -46.077225
+      ],
+      "bounds": {
+        "south": -23.856664,
+        "north": -23.782008,
+        "west": -46.146502,
+        "east": -45.99955
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_blumenau",
+      "provider": "jet",
+      "city": "Blumenau",
+      "center": [
+        -26.91194,
+        -49.076018
+      ],
+      "bounds": {
+        "south": -26.946332,
+        "north": -26.884235,
+        "west": -49.102315,
+        "east": -49.053597
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_brasilia",
+      "provider": "jet",
+      "city": "Brasília",
+      "center": [
+        -15.828275,
+        -47.96773
+      ],
+      "bounds": {
+        "south": -15.880949,
+        "north": -15.731449,
+        "west": -48.059861,
+        "east": -47.858235
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Brasilia"
+      ]
+    },
+    {
+      "id": "jet_br_campinas",
+      "provider": "jet",
+      "city": "Campinas",
+      "center": [
+        -22.892123,
+        -47.056802
+      ],
+      "bounds": {
+        "south": -22.915281,
+        "north": -22.869931,
+        "west": -47.076842,
+        "east": -47.038723
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_campo-grande",
+      "provider": "jet",
+      "city": "Campo Grande",
+      "center": [
+        -20.452704,
+        -54.585296
+      ],
+      "bounds": {
+        "south": -20.470476,
+        "north": -20.425641,
+        "west": -54.621646,
+        "east": -54.550904
+      },
+      "timeZone": "America/Campo_Grande",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_campos-do-jordao",
+      "provider": "jet",
+      "city": "Campos do Jordão",
+      "center": [
+        -22.73363,
+        -45.585672
+      ],
+      "bounds": {
+        "south": -22.756085,
+        "north": -22.714865,
+        "west": -45.61246,
+        "east": -45.562328
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_caraguatatuba",
+      "provider": "jet",
+      "city": "Caraguatatuba",
+      "center": [
+        -23.625299,
+        -45.406822
+      ],
+      "bounds": {
+        "south": -23.661268,
+        "north": -23.608924,
+        "west": -45.440281,
+        "east": -45.370625
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_caruaru",
+      "provider": "jet",
+      "city": "Caruaru",
+      "center": [
+        -8.276504,
+        -35.969982
+      ],
+      "bounds": {
+        "south": -8.292565,
+        "north": -8.25595,
+        "west": -35.991677,
+        "east": -35.95617
+      },
+      "timeZone": "America/Recife",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_curitiba",
+      "provider": "jet",
+      "city": "Curitiba",
+      "center": [
+        -25.430608,
+        -49.286673
+      ],
+      "bounds": {
+        "south": -25.453714,
+        "north": -25.409825,
+        "west": -49.319163,
+        "east": -49.253681
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_florianopolis",
+      "provider": "jet",
+      "city": "Florianópolis",
+      "center": [
+        -27.596832,
+        -48.584596
+      ],
+      "bounds": {
+        "south": -27.620655,
+        "north": -27.570229,
+        "west": -48.599688,
+        "east": -48.491279
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Florianopolis",
+        "Florianopolis (Centro)"
+      ]
+    },
+    {
+      "id": "jet_br_florianopolis-campeche",
+      "provider": "jet",
+      "city": "Florianópolis",
+      "center": [
+        -27.708436,
+        -48.526138
+      ],
+      "bounds": {
+        "south": -27.769255,
+        "north": -27.651882,
+        "west": -48.576079,
+        "east": -48.47473
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Florianopolis (Campeche)"
+      ]
+    },
+    {
+      "id": "jet_br_florianopolis-ingleses",
+      "provider": "jet",
+      "city": "Florianópolis",
+      "center": [
+        -27.440337,
+        -48.438698
+      ],
+      "bounds": {
+        "south": -27.470802,
+        "north": -27.415975,
+        "west": -48.51714,
+        "east": -48.374651
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Florianopolis (Ingleses)"
+      ]
+    },
+    {
+      "id": "jet_br_fortaleza",
+      "provider": "jet",
+      "city": "Fortaleza",
+      "center": [
+        -3.736919,
+        -38.514842
+      ],
+      "bounds": {
+        "south": -3.771152,
+        "north": -3.70551,
+        "west": -38.587129,
+        "east": -38.436192
+      },
+      "timeZone": "America/Fortaleza",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_gramado",
+      "provider": "jet",
+      "city": "Gramado",
+      "center": [
+        -29.382415,
+        -50.876731
+      ],
+      "bounds": {
+        "south": -29.397954,
+        "north": -29.366945,
+        "west": -50.885509,
+        "east": -50.867998
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_guarapari",
+      "provider": "jet",
+      "city": "Guarapari",
+      "center": [
+        -20.659707,
+        -40.496656
+      ],
+      "bounds": {
+        "south": -20.68965,
+        "north": -20.631935,
+        "west": -40.518664,
+        "east": -40.470637
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_guaratuba",
+      "provider": "jet",
+      "city": "Guaratuba",
+      "center": [
+        -25.887266,
+        -48.571947
+      ],
+      "bounds": {
+        "south": -25.91086,
+        "north": -25.865841,
+        "west": -48.58504,
+        "east": -48.558699
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_guaruja",
+      "provider": "jet",
+      "city": "Guarujá",
+      "center": [
+        -23.99129,
+        -46.245689
+      ],
+      "bounds": {
+        "south": -24.016906,
+        "north": -23.9742,
+        "west": -46.291572,
+        "east": -46.194503
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Guaruja"
+      ]
+    },
+    {
+      "id": "jet_br_ilhabela",
+      "provider": "jet",
+      "city": "Ilhabela",
+      "center": [
+        -23.814959,
+        -45.364341
+      ],
+      "bounds": {
+        "south": -23.83297,
+        "north": -23.767882,
+        "west": -45.392932,
+        "east": -45.349393
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_ilheus",
+      "provider": "jet",
+      "city": "Ilhéus",
+      "center": [
+        -14.802129,
+        -39.036281
+      ],
+      "bounds": {
+        "south": -14.845977,
+        "north": -14.775448,
+        "west": -39.06076,
+        "east": -39.023183
+      },
+      "timeZone": "America/Bahia",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_itanhaem",
+      "provider": "jet",
+      "city": "Itanhaém",
+      "center": [
+        -24.187737,
+        -46.794216
+      ],
+      "bounds": {
+        "south": -24.204152,
+        "north": -24.171195,
+        "west": -46.822681,
+        "east": -46.766093
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Itanhaem"
+      ]
+    },
+    {
+      "id": "jet_br_itapema",
+      "provider": "jet",
+      "city": "Itapema",
+      "center": [
+        -27.108775,
+        -48.596325
+      ],
+      "bounds": {
+        "south": -27.169478,
+        "north": -27.085856,
+        "west": -48.619451,
+        "east": -48.528392
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Porto Belo"
+      ]
+    },
+    {
+      "id": "jet_br_jaboatao-dos-guararapes",
+      "provider": "jet",
+      "city": "Jaboatão dos Guararapes",
+      "center": [
+        -8.192915,
+        -34.920569
+      ],
+      "bounds": {
+        "south": -8.222971,
+        "north": -8.159607,
+        "west": -34.929777,
+        "east": -34.910859
+      },
+      "timeZone": "America/Recife",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Jaboatao dos Guararapes"
+      ]
+    },
+    {
+      "id": "jet_br_joinville",
+      "provider": "jet",
+      "city": "Joinville",
+      "center": [
+        -26.270188,
+        -48.866831
+      ],
+      "bounds": {
+        "south": -26.325474,
+        "north": -26.230107,
+        "west": -48.892455,
+        "east": -48.837308
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_londrina",
+      "provider": "jet",
+      "city": "Londrina",
+      "center": [
+        -23.292444,
+        -51.188514
+      ],
+      "bounds": {
+        "south": -23.354938,
+        "north": -23.25601,
+        "west": -51.230723,
+        "east": -51.134939
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_maceio",
+      "provider": "jet",
+      "city": "Maceió",
+      "center": [
+        -9.645789,
+        -35.711892
+      ],
+      "bounds": {
+        "south": -9.686505,
+        "north": -9.606097,
+        "west": -35.760168,
+        "east": -35.684825
+      },
+      "timeZone": "America/Maceio",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Maceio"
+      ]
+    },
+    {
+      "id": "jet_br_matinhos",
+      "provider": "jet",
+      "city": "Matinhos",
+      "center": [
+        -25.831209,
+        -48.539125
+      ],
+      "bounds": {
+        "south": -25.850742,
+        "north": -25.813225,
+        "west": -48.550056,
+        "east": -48.528326
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_natal",
+      "provider": "jet",
+      "city": "Natal",
+      "center": [
+        -5.828488,
+        -35.187784
+      ],
+      "bounds": {
+        "south": -5.895927,
+        "north": -5.758028,
+        "west": -35.214735,
+        "east": -35.161687
+      },
+      "timeZone": "America/Fortaleza",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_novo-hamburgo",
+      "provider": "jet",
+      "city": "Novo Hamburgo",
+      "center": [
+        -29.689448,
+        -51.12657
+      ],
+      "bounds": {
+        "south": -29.703312,
+        "north": -29.677942,
+        "west": -51.137771,
+        "east": -51.113943
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_palhoca",
+      "provider": "jet",
+      "city": "Palhoça",
+      "center": [
+        -27.638326,
+        -48.676258
+      ],
+      "bounds": {
+        "south": -27.681937,
+        "north": -27.616051,
+        "west": -48.707164,
+        "east": -48.637159
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_paulista",
+      "provider": "jet",
+      "city": "Paulista",
+      "center": [
+        -7.927582,
+        -34.857939
+      ],
+      "bounds": {
+        "south": -7.956795,
+        "north": -7.878679,
+        "west": -34.904784,
+        "east": -34.819158
+      },
+      "timeZone": "America/Recife",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_peruibe",
+      "provider": "jet",
+      "city": "Peruíbe",
+      "center": [
+        -24.299767,
+        -46.969324
+      ],
+      "bounds": {
+        "south": -24.331899,
+        "north": -24.268912,
+        "west": -47.005426,
+        "east": -46.929831
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_porto-alegre",
+      "provider": "jet",
+      "city": "Porto Alegre",
+      "center": [
+        -30.038528,
+        -51.215162
+      ],
+      "bounds": {
+        "south": -30.096349,
+        "north": -30.013725,
+        "west": -51.251672,
+        "east": -51.178965
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_praia-grande",
+      "provider": "jet",
+      "city": "Praia Grande",
+      "center": [
+        -24.029522,
+        -46.473947
+      ],
+      "bounds": {
+        "south": -24.099362,
+        "north": -23.990364,
+        "west": -46.626644,
+        "east": -46.392123
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Mongaguá"
+      ]
+    },
+    {
+      "id": "jet_br_recife",
+      "provider": "jet",
+      "city": "Recife",
+      "center": [
+        -8.07754,
+        -34.892936
+      ],
+      "bounds": {
+        "south": -8.157131,
+        "north": -8.024373,
+        "west": -34.921892,
+        "east": -34.857121
+      },
+      "timeZone": "America/Recife",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_ribeirao-pires",
+      "provider": "jet",
+      "city": "Ribeirão Pires",
+      "center": [
+        -23.712534,
+        -46.413734
+      ],
+      "bounds": {
+        "south": -23.723048,
+        "north": -23.702558,
+        "west": -46.427204,
+        "east": -46.396294
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_salvador",
+      "provider": "jet",
+      "city": "Salvador",
+      "center": [
+        -12.946962,
+        -38.4275
+      ],
+      "bounds": {
+        "south": -13.021698,
+        "north": -12.907894,
+        "west": -38.540352,
+        "east": -38.309914
+      },
+      "timeZone": "America/Bahia",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_serra",
+      "provider": "jet",
+      "city": "Serra",
+      "center": [
+        -20.175586,
+        -40.220907
+      ],
+      "bounds": {
+        "south": -20.208172,
+        "north": -20.11835,
+        "west": -40.270367,
+        "east": -40.172515
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_sorocaba",
+      "provider": "jet",
+      "city": "Sorocaba",
+      "center": [
+        -23.49639,
+        -47.448656
+      ],
+      "bounds": {
+        "south": -23.540498,
+        "north": -23.465076,
+        "west": -47.476888,
+        "east": -47.400918
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_sao-jose-dos-campos",
+      "provider": "jet",
+      "city": "São José dos Campos",
+      "center": [
+        -23.214048,
+        -45.896674
+      ],
+      "bounds": {
+        "south": -23.254195,
+        "north": -23.163122,
+        "west": -45.925783,
+        "east": -45.869345
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Sao Jose dos Campos"
+      ]
+    },
+    {
+      "id": "jet_br_sao-paulo",
+      "provider": "jet",
+      "city": "São Paulo",
+      "center": [
+        -23.605043,
+        -46.633866
+      ],
+      "bounds": {
+        "south": -23.712152,
+        "north": -23.509931,
+        "west": -46.747762,
+        "east": -46.493185
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "Santo André",
+        "Sao Paulo"
+      ]
+    },
+    {
+      "id": "jet_br_torres",
+      "provider": "jet",
+      "city": "Torres",
+      "center": [
+        -29.336607,
+        -49.726905
+      ],
+      "bounds": {
+        "south": -29.347669,
+        "north": -29.325042,
+        "west": -49.741659,
+        "east": -49.712762
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_ubatuba",
+      "provider": "jet",
+      "city": "Ubatuba",
+      "center": [
+        -23.447472,
+        -45.072997
+      ],
+      "bounds": {
+        "south": -23.481581,
+        "north": -23.414899,
+        "west": -45.093139,
+        "east": -45.049957
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    },
+    {
+      "id": "jet_br_vila-velha",
+      "provider": "jet",
+      "city": "Vila Velha",
+      "center": [
+        -20.361785,
+        -40.308233
+      ],
+      "bounds": {
+        "south": -20.422664,
+        "north": -20.323335,
+        "west": -40.339696,
+        "east": -40.266473
+      },
+      "timeZone": "America/Sao_Paulo",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true
+    }
+  ]
+}

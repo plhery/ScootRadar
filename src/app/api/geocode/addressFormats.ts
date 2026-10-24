@@ -37,6 +37,13 @@ export const ADDRESS_FORMATS: Readonly<Record<string, AddressFormat>> = {
   CW: { townLine: '{town}' },
   // Japan Post's Latin-script order: block number and neighborhood, town/prefecture, seven-digit postcode.
   JP: { numberFirst: true, townLine: '{town}, {region} {postcode}', postcode: /\d{3}-?\d{4}/ },
+  // Correios writes the municipality and state before the eight-digit CEP.
+  BR: { townLine: '{town}, {region} {postcode}', postcode: /\d{5}-?\d{3}/ },
+  CL: {},
+  MX: { townLine: '{postcode} {town}, {region}', postcode: /\d{5}/ },
+  KZ: {},
+  AZ: {},
+  GE: {},
 };
 
 /** A street with its house number, as the country writes it. A street named in Hebrew or Arabic keeps its number after it, as it is written there: "שדרות רוטשילד 22". */

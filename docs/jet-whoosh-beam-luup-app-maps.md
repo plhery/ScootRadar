@@ -1,16 +1,17 @@
 # JET, Whoosh, Beam and LUUP app map investigation
 
-Checked 24 October 2026 by statically inspecting the Play-distributed Android
-apps of JET (two apps), Whoosh, Beam and LUUP, and making bounded, signed-out
-requests from the Mac, from 15:44 to 16:12 Paris time. None of the five maps
-returns vehicles signed out: each needs a rider account, and none offers a
-guest session. No account was created, no SMS code was requested, and no
-collector or country entry was added. Each app got a few dozen requests at
-most.
+Initial checks on 24 October 2026, from 15:44 to 16:12 Paris time, inspected
+JET's two Android apps, Whoosh, Beam and LUUP and made bounded, signed-out
+requests. No account was created in that investigation. Those checks stopped
+at Go Jet's signing gate and incorrectly inferred that its map needed a rider
+account. **The follow-up reproduced signing and retrieved its scooters signed
+out**: see [the integrated Go Jet adapter and live evidence](gojet-app-map.md).
+LUUP's subsequent phone sign-in and integration are documented
+[separately](luup-app-map.md).
 
 | App | Vehicle route | Signed-out reply | Sign-in | Beyond the rider token |
 | --- | --- | --- | --- | --- |
-| JET's Go Jet (Brazil, Chile, Mexico, Georgia, Azerbaijan) | `GET api.gojet.app/api/v1/geo/transports` | 401 `GW-21`, "Request signature validation failed" | Phone and SMS code | Every request is signed with a key compiled into the app; the code also has an App Check header |
+| JET's Go Jet (Brazil, Chile, Mexico, Kazakhstan, Georgia, Azerbaijan) | `GET api.gojet.app/api/v1/geo/transports` | 200 with individual scooters after app signing | Not needed for the map | Signed app requests; TLS 1.2 on Netcup. App Check is not required for map reads |
 | JET (Kazakhstan, Georgia, Uzbekistan, Mongolia) | `GET service.jetscooters.fun/gatewayclient/api/v6/transports` | 401, `WWW-Authenticate: Bearer` | Phone and SMS code, the request behind an hCaptcha | None found |
 | Whoosh | `POST api.whoosh.bike/client/devices/searches` | 401 `{"message":"Unauthorized"}` | Google or Apple outside Russia | None found |
 | Beam | GraphQL `vehiclesByH3` at `gateway.ridebeam.com/query` | 200 with an `Unauthorized` error | Phone and SMS code, or Google, Apple, Facebook, Kakao or Microsoft | Its SMS request is signed, and its login probably checks an encrypted fraud header |
@@ -88,13 +89,12 @@ then checks the request itself. Live at 16:11:
 - a timestamp in milliseconds and a wrong signature: 401 `GW-21`, "Request
   signature validation failed".
 
-So every request, signed in or not, carries `X-Timestamp`, `X-Signature`,
-`X-App-Version` and `X-Device-Id`. The decompiled Dart code computes the
-signature as an HMAC-SHA256 over the request, with a key compiled into the
-app, and also has an `X-Firebase-AppCheck` header (Play Integrity); whether
-the gateway checks it wasn't reached. A rider token is not enough here: a
-collector would have to reproduce the app's signature, and perhaps its
-attestation.
+The follow-up established that bodyless GET requests sign the full URL and
+millisecond timestamp with base64 HMAC-SHA256. With the app's signing string,
+`geo/cities`, `geo/zones` and the zoom-18 vehicle map all return data without a
+rider token or App Check. Linux Node needs TLS 1.2 to pass Cloudflare. The
+[Go Jet collector](gojet-app-map.md) now covers 54 reviewed regions in six
+countries; the private signing configuration is kept outside Git.
 
 ### JET in Central Asia: a bearer token only
 

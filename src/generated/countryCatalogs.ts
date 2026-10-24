@@ -29,6 +29,12 @@ import newZealandCatalog from '../../data/new-zealand-scooter-feeds.json';
 import costaRicanCatalog from '../../data/costa-rican-scooter-feeds.json';
 import caribbeanNetherlandsCatalog from '../../data/caribbean-netherlands-scooter-feeds.json';
 import japaneseCatalog from '../../data/japanese-scooter-feeds.json';
+import brazilianCatalog from '../../data/brazilian-scooter-feeds.json';
+import chileanCatalog from '../../data/chilean-scooter-feeds.json';
+import mexicanCatalog from '../../data/mexican-scooter-feeds.json';
+import kazakhCatalog from '../../data/kazakh-scooter-feeds.json';
+import azerbaijaniCatalog from '../../data/azerbaijani-scooter-feeds.json';
+import georgianCatalog from '../../data/georgian-scooter-feeds.json';
 
 /** Every catalog's systems, each with its country, in the order of data/countries.json. */
 export const CATALOG_SYSTEMS = [
@@ -61,4 +67,10 @@ export const CATALOG_SYSTEMS = [
   ...costaRicanCatalog.systems.map(system => ({ ...system, country: 'CR' as const })),
   ...caribbeanNetherlandsCatalog.systems.map(system => ({ ...system, country: 'BQ' as const })),
   ...japaneseCatalog.systems.map(system => ({ ...system, country: 'JP' as const })),
+  ...brazilianCatalog.systems.map(system => ({ ...system, country: 'BR' as const })),
+  ...chileanCatalog.systems.map(system => ({ ...system, country: 'CL' as const })),
+  ...mexicanCatalog.systems.map(system => ({ ...system, country: 'MX' as const })),
+  ...kazakhCatalog.systems.map(system => ({ ...system, country: 'KZ' as const })),
+  ...azerbaijaniCatalog.systems.map(system => ({ ...system, country: 'AZ' as const })),
+  ...georgianCatalog.systems.map(system => ({ ...system, country: 'GE' as const })),
 ];

@@ -59,10 +59,10 @@ describe('the address formats', () => {
 
   it('read a postcode typed after the town, and no house number', () => {
     for (const typed of ['Austin, TX 78701', 'Austin TX 78701-1234', 'Toronto, ON M5V 2T6', 'Sydney NSW 2000',
-      'Auckland 1010', 'Tel Aviv 6688218', 'Riyadh 12271', 'Tamarindo 50309']) {
+      'Auckland 1010', 'Tel Aviv 6688218', 'Riyadh 12271', 'Tamarindo 50309', 'São Paulo 01311-000']) {
       expect(typed.replace(POSTCODE_AFTER_TOWN, ''), typed).not.toBe(typed);
     }
-    for (const typed of ['8001 Zürich', 'Langstrasse 120', 'Tel Aviv 66882181', 'Riyadh 12271a']) {
+    for (const typed of ['8001 Zürich', 'Langstrasse 120', 'Tel Aviv 668821811', 'Riyadh 12271a']) {
       expect(typed.replace(POSTCODE_AFTER_TOWN, ''), typed).toBe(typed);
     }
   });

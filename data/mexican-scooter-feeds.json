@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-10-24",
+  "source": "Go Jet signed-out app map; bounds enclose its rental polygons, with overlapping envelopes merged.",
+  "systems": [
+    {
+      "id": "jet_mx_monterrey-san-pedro",
+      "provider": "jet",
+      "city": "Monterrey",
+      "center": [
+        25.660313,
+        -100.378108
+      ],
+      "bounds": {
+        "south": 25.644225,
+        "north": 25.686349,
+        "west": -100.419239,
+        "east": -100.281766
+      },
+      "timeZone": "America/Monterrey",
+      "discoveryUrl": "https://api.gojet.app/api/v1/geo/transports",
+      "jetAppMap": true,
+      "aliases": [
+        "San Pedro Garza García",
+        "Monterrey - San Pedro"
+      ]
+    }
+  ]
+}
