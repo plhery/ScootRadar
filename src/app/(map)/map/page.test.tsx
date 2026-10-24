@@ -218,6 +218,8 @@ it('waits for the request that is running when Try again is tapped again', async
 });
 
 it('keeps the scooters and says so in the dock when a refresh fails, then shows the out-of-date card once they expire', async () => {
+  // Mid-minute, so that the scooters are fetched in the minute the test reads now.
+  vi.setSystemTime(new Date('2026-10-24T10:43:30Z'));
   const fetcher = vi.fn().mockResolvedValueOnce(Response.json(response())).mockRejectedValue(new Error('down'));
   vi.stubGlobal('fetch', fetcher);
   mount();
