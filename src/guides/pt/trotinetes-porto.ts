@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trotinetes no Porto: Bird e Lime, onde pode andar e onde estacionar',
   lede: 'Pode alugar trotinetes no Porto à Bird e à Lime, as duas empresas licenciadas pela Câmara em 2025; ambas têm também bicicletas elétricas na mesma app. Não encontrámos tarifas publicadas para o Porto: a app mostra o preço antes de desbloquear. A viagem termina sempre num ponto de partilha, marcado a azul no chão, e é proibido andar em passeios, praças, ruas pedonais, corredores BUS e no tabuleiro superior da Ponte Luís I. Desde novembro de 2025, o serviço pode funcionar 24 horas por dia.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-24',
   city: 'pt:Porto',
   sections: [
     {
@@ -120,7 +120,7 @@ const guide: Guide = {
             '**Comboio.** Termine a viagem antes de entrar em São Bento ou em Campanhã: a Bird tem pontos de partilha perto das duas estações, e lá dentro não se anda de trotinete. Uma trotinete própria viaja de graça na CP, uma por passageiro; no Alfa Pendular e no Intercidades, vai dobrada, como bagagem de mão.',
             '**Metro.** Uma trotinete partilhada nunca entra no metro, e as condições de transporte da Metro do Porto não falam de trotinetes: não conte com levar a sua.',
             '**Aeroporto.** O Aeroporto Francisco Sá Carneiro fica na Maia, dentro da zona da Bird, mas na manhã de 13 de outubro de 2026 só havia quatro veículos da Bird a menos de 500 m do terminal. São cerca de 11 km até ao centro, onde a viagem tem de acabar num ponto de partilha: vá de metro.',
-            '**Matosinhos e Maia.** A Bird também opera nos dois concelhos: com pontos de estacionamento em [Matosinhos](map:pt:Matosinhos), como no Porto, e sem eles na [Maia](map:pt:Maia). Da Foz, siga a marginal para norte, pelo Castelo do Queijo, até à praia de Matosinhos, sem entrar no Parque da Cidade.',
+            '**Matosinhos e Maia.** A Bird também opera nos dois concelhos, com frotas próprias: com pontos de estacionamento em [Matosinhos](map:pt:Matosinhos), como no Porto, e sem eles na [Maia](map:pt:Maia). Da Foz, siga a marginal para norte, pelo Castelo do Queijo, até à praia de Matosinhos, sem entrar no Parque da Cidade. Para terminar a viagem, volte a um ponto do Porto: os dados abertos da Bird do Porto não têm nenhum em Matosinhos. Mais nas [trotinetes em Matosinhos](guide:matosinhos).',
             '**Bicicletas.** O Porto não tem uma rede municipal de bicicletas partilhadas com estações; a alternativa são as bicicletas elétricas da Bird e da Lime, na mesma app.',
           ],
         },

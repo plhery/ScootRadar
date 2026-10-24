@@ -158,6 +158,7 @@ import phoenixEn from './en/e-scooters-phoenix';
 import villingenSchwenningenDe from './de/e-scooter-villingen-schwenningen';
 import openingHoursNb from './nb/elsparkesykkel-apningstider';
 import oeirasPt from './pt/trotinetes-oeiras';
+import matosinhosPt from './pt/trotinetes-matosinhos';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -316,4 +317,5 @@ export const GUIDES: readonly Guide[] = [
   villingenSchwenningenDe,
   openingHoursNb,
   oeirasPt,
+  matosinhosPt,
 ];
