@@ -57,7 +57,12 @@ The Node-only adapter is [server/whooshApp.ts](../server/whooshApp.ts).
   ([Reporte Minero](https://www.reporteminero.cl/noticia/noticias/2023/11/e-scooters-temuco)).
   Villarrica's region (`SCVI`) holds the Pucón and Villarrica polygons, and
   all its 172 scooters on the evening of 24 October 2026 were in Pucón; it is now
-  two service areas, Pucón and Villarrica.
+  two service areas, Pucón and Villarrica. Minsk and Borisov shared one box
+  around both towns, and Santiago, Rancagua and Viña del Mar one around all
+  three. Each is now the box around its own polygons, the ones its scooters
+  were in that evening: three in Santiago, one each in Rancagua, Minsk and
+  Borisov, and Viña del Mar's region also holds Limache's polygon, so it has
+  two service areas, Viña del Mar and Limache.
 - `POST /client/devices/searches` returns `devices`, with the request below.
   Despite the field names, the app sends southwest as `upperLeft` and northeast
   as `bottomRight`, rounded to six decimals.

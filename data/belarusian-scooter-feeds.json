@@ -13,9 +13,9 @@
         28.504081
       ],
       "bounds": {
-        "south": 53.8326,
-        "north": 54.25149,
-        "west": 27.4068,
+        "south": 54.18871,
+        "north": 54.25148,
+        "west": 28.45654,
         "east": 28.53523
       },
       "discoveryUrl": "https://api.whoosh.bike/",
@@ -36,10 +36,10 @@
         27.561831
       ],
       "bounds": {
-        "south": 53.8326,
-        "north": 54.25149,
-        "west": 27.4068,
-        "east": 28.53523
+        "south": 53.83261,
+        "north": 54.01826,
+        "west": 27.40681,
+        "east": 27.72876
       },
       "discoveryUrl": "https://api.whoosh.bike/",
       "whooshAppRegion": "4fdfbd10-3459-46cc-8eea-cfd35935e7d5",

@@ -126,16 +126,44 @@
         -71.5500508
       ],
       "bounds": {
-        "south": -33.57098,
-        "north": -32.96499,
+        "south": -33.0351,
+        "north": -32.965,
         "west": -71.5704,
-        "east": -70.49203
+        "east": -71.24916
       },
       "discoveryUrl": "https://api.whoosh.bike/",
       "whooshAppRegion": "32e1a3e0-de88-4474-a517-9c7ca45fd26e",
       "aliases": [
         "Viña del Mar",
         "SCVM"
+      ],
+      "areas": [
+        {
+          "city": "Viña del Mar",
+          "center": [
+            -33.0153009,
+            -71.5500508
+          ],
+          "bounds": {
+            "south": -33.0351,
+            "north": -32.99056,
+            "west": -71.5704,
+            "east": -71.53132
+          }
+        },
+        {
+          "city": "Limache",
+          "center": [
+            -32.99449,
+            -71.2832
+          ],
+          "bounds": {
+            "south": -33.02399,
+            "north": -32.965,
+            "west": -71.31724,
+            "east": -71.24916
+          }
+        }
       ]
     },
     {
@@ -195,10 +223,10 @@
         -70.697146
       ],
       "bounds": {
-        "south": -34.19857,
-        "north": -33.3159,
-        "west": -70.77326,
-        "east": -70.49203
+        "south": -34.19856,
+        "north": -34.12064,
+        "west": -70.76981,
+        "east": -70.63991
       },
       "discoveryUrl": "https://api.whoosh.bike/",
       "whooshAppRegion": "f60e9f72-0041-4857-a3b4-8ff121d96529",
@@ -218,9 +246,9 @@
         -70.653881
       ],
       "bounds": {
-        "south": -34.19857,
-        "north": -32.96499,
-        "west": -71.5704,
+        "south": -33.57097,
+        "north": -33.31591,
+        "west": -70.77325,
         "east": -70.49203
       },
       "discoveryUrl": "https://api.whoosh.bike/",
