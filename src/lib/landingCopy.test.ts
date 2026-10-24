@@ -3,7 +3,7 @@ import {
   LANDING_COPY, LANDING_LOCALES, LANGUAGE_NAMES, isLandingLocale, landingLocaleOf, landingPath, linkedParts, makerLinks,
 } from '@/lib/landingCopy';
 import { PROVIDERS } from '@/generated/providers';
-import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL } from '@/lib/coveredCities';
+import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, COVERED_PROVIDER_TOTAL } from '@/lib/coveredCities';
 import { LANDING_NEAREST } from '@/lib/landingSnapshot';
 import { DEFAULT_RIDE_DURATION, RIDE_DURATIONS } from '@/lib/ridePrice';
 
@@ -61,9 +61,9 @@ describe('the languages of the landing page', () => {
 });
 
 describe('the cities of the landing page', () => {
-  /** The first sentence of the lede, which counts the countries. */
-  const opening = (locale: (typeof LANDING_LOCALES)[number], countries: number) =>
-    LANDING_COPY[locale].cities.lede(countries).split('. ')[0];
+  /** The first sentence of the lede, which counts the providers and the countries. */
+  const opening = (locale: (typeof LANDING_LOCALES)[number], providers: number, countries: number) =>
+    LANDING_COPY[locale].cities.lede(providers, countries).split('. ')[0];
   /** A sentence as written here, each count held to its noun by a no-break space. */
   const held = (sentence: string) => sentence.replace(/(\d) /g, '$1\u00a0');
 
@@ -78,50 +78,59 @@ describe('the cities of the landing page', () => {
     expect([21, 22, 11].map(count => LANDING_COPY.is.cities.title(count))).toEqual(['21 staður.', '22 staðir.', '11 staðir.'].map(held));
   });
 
-  it('counts the countries rather than naming them, the noun in the form its count takes', () => {
-    expect(LANDING_LOCALES.map(locale => opening(locale, 17))).toEqual([
-      'Shared e-scooters in 17 countries',
-      'E-Scooter in 17 Ländern',
-      'Des trottinettes en libre-service dans 17 pays',
-      'Monopattini in sharing in 17 paesi',
-      'Deelsteps in 17 landen',
-      'Elsparkesykler til leie i 17 land',
-      'Trotinetes elétricas partilhadas em 17 países',
-      'Patinetes eléctricos compartidos en 17 países',
-      'Rafskútur til leigu í 17 löndum',
+  it('counts the providers and the countries rather than naming them, each noun in the form its count takes', () => {
+    expect(LANDING_LOCALES.map(locale => opening(locale, 23, 17))).toEqual([
+      'Shared e-scooters from 23 providers in 17 countries',
+      'E-Scooter von 23 Anbietern in 17 Ländern',
+      'Des trottinettes en libre-service de 23 opérateurs dans 17 pays',
+      'Monopattini in sharing di 23 operatori in 17 paesi',
+      'Deelsteps van 23 aanbieders in 17 landen',
+      'Elsparkesykler til leie fra 23 operatører i 17 land',
+      'Trotinetes elétricas partilhadas de 23 operadores em 17 países',
+      'Patinetes eléctricos compartidos de 23 operadores en 17 países',
+      'Rafskútur til leigu frá 23 fyrirtækjum í 17 löndum',
     ].map(held));
-    expect(LANDING_LOCALES.map(locale => opening(locale, 1))).toEqual([
-      'Shared e-scooters in 1 country',
-      'E-Scooter in 1 Land',
-      'Des trottinettes en libre-service dans 1 pays',
-      'Monopattini in sharing in 1 paese',
-      'Deelsteps in 1 land',
-      'Elsparkesykler til leie i 1 land',
-      'Trotinetes elétricas partilhadas em 1 país',
-      'Patinetes eléctricos compartidos en 1 país',
-      'Rafskútur til leigu í 1 landi',
+    expect(LANDING_LOCALES.map(locale => opening(locale, 1, 1))).toEqual([
+      'Shared e-scooters from 1 provider in 1 country',
+      'E-Scooter von 1 Anbieter in 1 Land',
+      'Des trottinettes en libre-service de 1 opérateur dans 1 pays',
+      'Monopattini in sharing di 1 operatore in 1 paese',
+      'Deelsteps van 1 aanbieder in 1 land',
+      'Elsparkesykler til leie fra 1 operatør i 1 land',
+      'Trotinetes elétricas partilhadas de 1 operador em 1 país',
+      'Patinetes eléctricos compartidos de 1 operador en 1 país',
+      'Rafskútur til leigu frá 1 fyrirtæki í 1 landi',
     ].map(held));
     // Icelandic takes the singular for a count ending in 1, but not 11.
-    expect([21, 22, 11, 31].map(count => opening('is', count)))
-      .toEqual(['Rafskútur til leigu í 21 landi', 'Rafskútur til leigu í 22 löndum', 'Rafskútur til leigu í 11 löndum', 'Rafskútur til leigu í 31 landi'].map(held));
-    expect(opening('en', 21)).toBe(held('Shared e-scooters in 21 countries'));
+    expect([21, 22, 11, 31].map(count => opening('is', count, count))).toEqual([
+      'Rafskútur til leigu frá 21 fyrirtæki í 21 landi',
+      'Rafskútur til leigu frá 22 fyrirtækjum í 22 löndum',
+      'Rafskútur til leigu frá 11 fyrirtækjum í 11 löndum',
+      'Rafskútur til leigu frá 31 fyrirtæki í 31 landi',
+    ].map(held));
+    expect(opening('en', 21, 21)).toBe(held('Shared e-scooters from 21 providers in 21 countries'));
   });
 
   it('keeps each count on the line of its noun, in every language', () => {
     for (const locale of LANDING_LOCALES) {
       const { title } = LANDING_COPY[locale].cities;
-      for (const text of [title(COVERED_CITY_TOTAL), opening(locale, COVERED_COUNTRY_TOTAL), title(1200), opening(locale, 1)]) {
+      for (const [text, counts] of [
+        [title(COVERED_CITY_TOTAL), 1],
+        [title(1200), 1],
+        [opening(locale, COVERED_PROVIDER_TOTAL, COVERED_COUNTRY_TOTAL), 2],
+        [opening(locale, 1, 1), 2],
+      ] as const) {
         expect(text, locale).not.toMatch(/\d /);
-        expect(text.match(/\d\u00a0\p{L}/gu), `${locale}: ${text}`).toHaveLength(1);
+        expect(text.match(/\d\u00a0\p{L}/gu), `${locale}: ${text}`).toHaveLength(counts);
       }
     }
   });
 
   it('keeps what the lede says after the count', () => {
-    expect(LANDING_COPY.en.cities.lede(17)).toBe(held(
-      'Shared e-scooters in 17 countries. Where no provider publishes its data, the map says so and points you to the closest cities that have it. Pick a city to open the map there.'
+    expect(LANDING_COPY.en.cities.lede(23, 17)).toBe(held(
+      'Shared e-scooters from 23 providers in 17 countries. Where no provider publishes its data, the map says so and points you to the closest cities that have it. Pick a city to open the map there.'
     ));
-    for (const locale of LANDING_LOCALES) expect(LANDING_COPY[locale].cities.lede(17).split('. ')).toHaveLength(3);
+    for (const locale of LANDING_LOCALES) expect(LANDING_COPY[locale].cities.lede(23, 17).split('. ')).toHaveLength(3);
   });
 });
 

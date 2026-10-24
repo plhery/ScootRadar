@@ -8,7 +8,7 @@ import StageDepth from '@/components/StageDepth';
 import { APP_STORE_QR } from '@/generated/appStoreQr';
 import { PROVIDERS } from '@/generated/providers';
 import { appStoreUrl, smartAppBanner, SMART_APP_BANNER } from '@/lib/appStore';
-import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL } from '@/lib/coveredCities';
+import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, COVERED_PROVIDER_TOTAL } from '@/lib/coveredCities';
 import { formatLocale } from '@/lib/formatLocale';
 import type { TranslationKey } from '@/lib/i18n';
 import { landingCountries } from '@/lib/landingCities';
@@ -476,7 +476,7 @@ function LandingPage({ locale }: { locale: LandingLocale }) {
         <section className="cities" id="cities">
           <div className="cities-copy">
             <h2 className="title">{copy.cities.title(COVERED_CITY_TOTAL)}</h2>
-            <p className="lede">{copy.cities.lede(COVERED_COUNTRY_TOTAL)}</p>
+            <p className="lede">{copy.cities.lede(COVERED_PROVIDER_TOTAL, COVERED_COUNTRY_TOTAL)}</p>
             <dl className="countries">
               {landingCountries().map(({ country, total, featured, more }) => (
                 <div className="country" key={country}>

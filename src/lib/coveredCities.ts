@@ -1,4 +1,5 @@
 import type { CountryCode } from '@/generated/countries';
+import { PROVIDERS, SWISS_PROVIDER_KEYS } from '@/generated/providers';
 import { SWISS_SCOOTER_AREAS } from '@/lib/feedCoverage';
 import { boundsContainPoint, haversineM } from '@/lib/geo';
 import {
@@ -53,6 +54,15 @@ export const COVERED_CITIES: CoveredCity[] = [
  */
 export const COVERED_CITY_TOTAL = COVERED_CITIES.length;
 export const COVERED_COUNTRY_TOTAL = new Set(COVERED_CITIES.map(city => city.country)).size;
+
+/**
+ * How many providers run the scooters of those cities, by the name riders see
+ * on them, as the landing page lists them: Bolt's Hopp in Washington and the
+ * Icelandic Hopp are two companies, but one name, so one provider here.
+ */
+export const COVERED_PROVIDER_TOTAL = new Set(
+  [...SWISS_PROVIDER_KEYS, ...REGIONAL_SCOOTER_SYSTEMS.map(system => system.provider)].map(key => PROVIDERS[key].name)
+).size;
 
 // The operators' own envelopes rather than the merged city boxes, so a covered
 // point always has at least one provider in providersForViewport.

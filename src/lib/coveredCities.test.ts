@@ -1,8 +1,9 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { COUNTRY_CODES } from '@/generated/countries';
+import { SWISS_PROVIDER_KEYS } from '@/generated/providers';
 import { describe, expect, it } from 'vitest';
 import {
-  COVERED_CITIES, COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, isPointCovered, nearestCoveredCities,
+  COVERED_CITIES, COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL, COVERED_PROVIDER_TOTAL, isPointCovered, nearestCoveredCities,
 } from '@/lib/coveredCities';
 import { SWISS_SCOOTER_AREAS } from '@/lib/feedCoverage';
 import { boundsContainPoint } from '@/lib/geo';
@@ -144,6 +145,18 @@ describe('the count of covered cities and countries', () => {
     expect({ cities: COVERED_CITY_TOTAL, countries: COVERED_COUNTRY_TOTAL }).toEqual(fromCatalogs());
     expect(COVERED_CITY_TOTAL).toBe(COVERED_CITIES.length);
     expect(COVERED_COUNTRY_TOTAL).toBe(new Set(COVERED_CITIES.map(city => city.country)).size);
+  });
+
+  it('counts the providers of the catalogs by the name riders see', () => {
+    // Bolt's Hopp in Washington is named Hopp, as the Icelandic Hopp is: one name, counted once.
+    const providers = new Map<string, string>((JSON.parse(readFileSync('data/providers.json', 'utf8')) as { key: string; name: string }[])
+      .map(({ key, name }) => [key, name]));
+    const names = new Set(SWISS_PROVIDER_KEYS.map(key => providers.get(key)));
+    for (const file of readdirSync('data').filter(name => name.endsWith('-scooter-feeds.json'))) {
+      for (const { provider } of JSON.parse(readFileSync(`data/${file}`, 'utf8')).systems) names.add(providers.get(provider));
+    }
+    expect(names).not.toContain(undefined);
+    expect(COVERED_PROVIDER_TOTAL).toBe(names.size);
   });
 
   it('counts each town of a feed shared by several, and a town with several operators once', () => {

@@ -159,8 +159,8 @@ export interface LandingCopy {
   };
   cities: {
     title: (cities: number) => string;
-    /** Opens with the number of countries; the title above gives the cities'. */
-    lede: (countries: number) => string;
+    /** Opens with the number of providers and countries; the title above gives the cities'. */
+    lede: (providers: number, countries: number) => string;
     countries: Record<LandingCountry, string>;
     more: (count: number) => string;
     alt: string;
@@ -260,8 +260,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${counted('en', cities, 'city', 'cities')}.`,
-      lede: countries =>
-        `Shared e-scooters in ${counted('en', countries, 'country', 'countries')}. Where no provider publishes its data, the map says so and points you to the closest cities that have it. Pick a city to open the map there.`,
+      lede: (providers, countries) =>
+        `Shared e-scooters from ${counted('en', providers, 'provider', 'providers')} in ${counted('en', countries, 'country', 'countries')}. Where no provider publishes its data, the map says so and points you to the closest cities that have it. Pick a city to open the map there.`,
       countries: countryNames('en'),
       more: count => `and ${count} more`,
       alt: 'The map at night, zoomed out over Europe, with the number of scooters on each city.',
@@ -391,8 +391,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${counted('de', cities, 'Stadt', 'Städte')}.`,
-      lede: countries =>
-        `E-Scooter in ${counted('de', countries, 'Land', 'Ländern')}. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten. Wähle eine Stadt, um die Karte dort zu öffnen.`,
+      lede: (providers, countries) =>
+        `E-Scooter von ${counted('de', providers, 'Anbieter', 'Anbietern')} in ${counted('de', countries, 'Land', 'Ländern')}. Wo kein Anbieter Daten veröffentlicht, sagt die Karte das und nennt die nächsten Städte mit Daten. Wähle eine Stadt, um die Karte dort zu öffnen.`,
       countries: countryNames('de'),
       more: count => `und ${count} weitere`,
       alt: 'Die Karte bei Nacht, herausgezoomt über Europa, mit der Zahl der Scooter in jeder Stadt.',
@@ -522,8 +522,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${counted('fr', cities, 'ville', 'villes')}.`,
-      lede: countries =>
-        `Des trottinettes en libre-service dans ${counted('fr', countries, 'pays', 'pays')}. Là où aucun opérateur ne publie de données, la carte le dit et indique les villes les plus proches qui en ont. Choisissez une ville pour y ouvrir la carte.`,
+      lede: (providers, countries) =>
+        `Des trottinettes en libre-service de ${counted('fr', providers, 'opérateur', 'opérateurs')} dans ${counted('fr', countries, 'pays', 'pays')}. Là où aucun opérateur ne publie de données, la carte le dit et indique les villes les plus proches qui en ont. Choisissez une ville pour y ouvrir la carte.`,
       countries: countryNames('fr'),
       more: count => (count === 1 ? 'et une autre' : `et ${count} autres`),
       alt: 'La carte de nuit à l’échelle de l’Europe, avec le nombre de trottinettes dans chaque ville.',
@@ -653,8 +653,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${counted('it', cities, 'città', 'città')}.`,
-      lede: countries =>
-        `Monopattini in sharing in ${counted('it', countries, 'paese', 'paesi')}. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno. Scegli una città per aprire lì la mappa.`,
+      lede: (providers, countries) =>
+        `Monopattini in sharing di ${counted('it', providers, 'operatore', 'operatori')} in ${counted('it', countries, 'paese', 'paesi')}. Dove nessun operatore pubblica dati, la mappa lo dice e indica le città più vicine che ne hanno. Scegli una città per aprire lì la mappa.`,
       countries: countryNames('it'),
       more: count => (count === 1 ? 'e un’altra' : `e altre ${count}`),
       alt: 'La mappa dell’Europa vista da lontano, di notte, con il numero di monopattini in ogni città.',
@@ -784,8 +784,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${counted('nb', cities, 'by', 'byer')}.`,
-      lede: countries =>
-        `Elsparkesykler til leie i ${counted('nb', countries, 'land', 'land')}. Der ingen operatør publiserer data, sier kartet ifra og peker deg til de nærmeste byene som har det. Velg en by for å åpne kartet der.`,
+      lede: (providers, countries) =>
+        `Elsparkesykler til leie fra ${counted('nb', providers, 'operatør', 'operatører')} i ${counted('nb', countries, 'land', 'land')}. Der ingen operatør publiserer data, sier kartet ifra og peker deg til de nærmeste byene som har det. Velg en by for å åpne kartet der.`,
       countries: countryNames('nb'),
       more: count => (count === 1 ? 'og én til' : `og ${count} til`),
       alt: 'Kartet om natten, zoomet ut over Europa, med antall elsparkesykler i hver by.',
@@ -915,8 +915,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${counted('nl', cities, 'stad', 'steden')}.`,
-      lede: countries =>
-        `Deelsteps in ${counted('nl', countries, 'land', 'landen')}. Waar geen enkele aanbieder zijn data publiceert, zegt de kaart dat en krijg je de dichtstbijzijnde steden die wel data hebben. Kies een stad om de kaart daar te openen.`,
+      lede: (providers, countries) =>
+        `Deelsteps van ${counted('nl', providers, 'aanbieder', 'aanbieders')} in ${counted('nl', countries, 'land', 'landen')}. Waar geen enkele aanbieder zijn data publiceert, zegt de kaart dat en krijg je de dichtstbijzijnde steden die wel data hebben. Kies een stad om de kaart daar te openen.`,
       countries: countryNames('nl'),
       more: count => (count === 1 ? 'en nog één' : `en nog ${count}`),
       alt: 'De kaart ’s nachts, uitgezoomd over Europa, met het aantal deelsteps op elke stad.',
@@ -1045,8 +1045,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${counted('pt', cities, 'cidade', 'cidades')}.`,
-      lede: countries =>
-        `Trotinetes elétricas partilhadas em ${counted('pt', countries, 'país', 'países')}. Onde nenhum operador publica os dados, o mapa avisa e indica-lhe as cidades mais próximas que os têm. Escolha uma cidade para abrir lá o mapa.`,
+      lede: (providers, countries) =>
+        `Trotinetes elétricas partilhadas de ${counted('pt', providers, 'operador', 'operadores')} em ${counted('pt', countries, 'país', 'países')}. Onde nenhum operador publica os dados, o mapa avisa e indica-lhe as cidades mais próximas que os têm. Escolha uma cidade para abrir lá o mapa.`,
       countries: countryNames('pt'),
       more: count => (count === 1 ? 'e mais uma' : `e mais ${count}`),
       alt: 'O mapa à noite, a mostrar toda a Europa, com o número de trotinetes de cada cidade.',
@@ -1175,8 +1175,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${counted('es', cities, 'ciudad', 'ciudades')}.`,
-      lede: countries =>
-        `Patinetes eléctricos compartidos en ${counted('es', countries, 'país', 'países')}. Donde ningún operador publica sus datos, el mapa te lo dice y te indica las ciudades más cercanas que sí los tienen. Elige una ciudad para abrir allí el mapa.`,
+      lede: (providers, countries) =>
+        `Patinetes eléctricos compartidos de ${counted('es', providers, 'operador', 'operadores')} en ${counted('es', countries, 'país', 'países')}. Donde ningún operador publica sus datos, el mapa te lo dice y te indica las ciudades más cercanas que sí los tienen. Elige una ciudad para abrir allí el mapa.`,
       countries: countryNames('es'),
       more: count => (count === 1 ? 'y otra más' : `y ${count} más`),
       alt: 'El mapa de noche, alejado sobre Europa, con el número de patinetes de cada ciudad.',
@@ -1308,8 +1308,8 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     },
     cities: {
       title: cities => `${counted('is', cities, 'staður', 'staðir')}.`,
-      lede: countries =>
-        `Rafskútur til leigu í ${counted('is', countries, 'landi', 'löndum')}. Þar sem ekkert fyrirtæki birtir gögn segir kortið frá því og bendir þér á næstu staði sem hafa þau. Veldu stað til að opna kortið þar.`,
+      lede: (providers, countries) =>
+        `Rafskútur til leigu frá ${counted('is', providers, 'fyrirtæki', 'fyrirtækjum')} í ${counted('is', countries, 'landi', 'löndum')}. Þar sem ekkert fyrirtæki birtir gögn segir kortið frá því og bendir þér á næstu staði sem hafa þau. Veldu stað til að opna kortið þar.`,
       countries: countryNames('is'),
       more: count => `og ${count} til viðbótar`,
       alt: 'Kortið að nóttu til, yfir allri Evrópu, með tölu sem sýnir hve margar rafskútur eru á hverjum stað.',
