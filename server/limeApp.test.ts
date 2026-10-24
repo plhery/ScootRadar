@@ -195,6 +195,14 @@ describe('complete Lime scooter maps', () => {
     expect(reports[0]).toEqual({ found: [`lime_cz_test:${first.south}:${first.west}`], swept: [first] });
     expect(result.vehicles).toHaveLength(api.pins.mock.calls.length);
   });
+  it('reads a registered market\'s own polygons by its region and town', async () => {
+    const api = { pins: vi.fn(async () => map()) };
+    const registered = { ...system, limeAppRegion: 'E7CO5RS5CDCVW', city: 'Deva', limeServiceAreas: undefined,
+      limeMapTiles: [{ south: 45.87, north: 45.88, west: 22.89, east: 22.9 }] };
+    await expect(new LimeMapCollector(api).collect(registered)).resolves.toMatchObject({ vehicles: [] });
+    // Another town of the same region has polygons of its own, not Deva's.
+    await expect(new LimeMapCollector(api).collect({ ...registered, city: 'Hunedoara' })).rejects.toThrow('verified service outlines');
+  });
   it('uses a capped nearest set only when its radius covers every cell corner with a margin', () => {
     const near = parseLimePins(map(...Array.from({ length: 200 }, (_, i) => pin(String(i)))));
     expect(limeCellCovered(near, system.bounds)).toBe(false);

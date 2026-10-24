@@ -14,7 +14,8 @@ import { Pacer, SweepProgress, takeNearest } from './sweeps';
 const ORIGIN = 'https://web-production.lime.bike';
 const RETRY_MS = 60_000;
 const PIN_LIMIT = 200;
-const serviceOutlines = new Map(limeRegions.markets.map(market => [market.regionToken, market.serviceAreas.map(area => area.polygon)]));
+// One Lime region can hold several towns' markets, as Düsseldorf's holds Neuss and Hilden: each keeps its own polygons.
+const serviceOutlines = new Map(limeRegions.markets.map(market => [`${market.regionToken}|${market.city}`, market.serviceAreas.map(area => area.polygon)]));
 export const limeMapRequests = { status: 0, metadata: 0 };
 interface Session {
   version: 1; accessToken: string; refreshToken: string; deviceToken: string; privateKey: string;
@@ -232,7 +233,7 @@ export class LimeMapCollector {
   async collect(system: RegionalScooterSystem): Promise<SourceVehicles> {
     if (!system.limeAppMap || system.provider !== 'lime') throw new Error('Not a Lime app map region');
     const started = Date.now();
-    const areas = (system.limeServiceAreas ?? serviceOutlines.get(system.limeAppRegion ?? ''))?.map(decodeLimeArea);
+    const areas = (system.limeServiceAreas ?? serviceOutlines.get(`${system.limeAppRegion}|${system.city}`))?.map(decodeLimeArea);
     if (!areas?.length) throw new Error('Lime map requires verified service outlines');
     const cells: Cell[] = [...(this.plans.get(system.id) ?? (system.limeMapTiles ?? limeAreaTiles(areas)).map(bounds => ({ bounds, depth: 0 })))];
     if (cells.length > this.limits.requests) throw new Error('Lime service area exceeds the collection budget');

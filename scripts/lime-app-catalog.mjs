@@ -22,7 +22,7 @@ export function limeAppCatalogs(source, countries, readCatalog, geometry) {
     }
     catalog.limeServiceAreaSources.push(...market.sourceDocuments);
     catalog.systems.push({ id: `lime_${market.country.toLowerCase()}_app_${slug(market.city)}`,
-      provider: 'lime', city: market.city, center: market.center,
+      provider: 'lime', city: market.city, ...(market.region ? { region: market.region } : {}), center: market.center,
       ...(market.aliases?.length ? { aliases: market.aliases } : {}),
       timeZone: market.timeZone, discoveryUrl: 'https://web-production.lime.bike/api/rider/v2/map/bike_pins',
       limeAppMap: true, limeAppRegion: market.regionToken, limeMapGrid: grid });
