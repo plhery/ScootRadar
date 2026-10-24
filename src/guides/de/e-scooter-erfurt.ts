@@ -6,11 +6,11 @@ const guide: Guide = {
   topic: 'erfurt',
   name: 'E-Scooter Erfurt: Anbieter, Preise, Parkverbote',
   title: 'E-Scooter Erfurt 2026: Yoio, Dott, Preise, Parkverbote',
-  description: 'E-Scooter Erfurt: was Yoio pro Minute kostet, warum Dott auf der Karte fehlt, wo du in der Altstadt weder fährst noch parkst und was in der Strassenbahn gilt.',
+  description: 'E-Scooter Erfurt: was Yoio kostet, wo Yoio und Dott auf der Karte stehen, wo du in der Altstadt weder fährst noch parkst und was in der Strassenbahn gilt.',
   headline: 'E-Scooter Erfurt: Yoio und Dott, Preise, Parkverbotszonen und was in der Altstadt gilt',
   lede: 'Einen E-Scooter in Erfurt leihst du ab 18 und ohne Führerschein bei Yoio oder bei Dott, das früher Tier hiess. Laut Yoios Datenfeed vom 23. Oktober 2026 kostet das Entsperren 1,09 € und die Minute 0,25 €, bei einzelnen Scootern 0,21 €; zehn Minuten kosten also 3,59 € oder 3,19 €. Du fährst auf dem Radweg oder der Fahrbahn, nie auf dem Gehweg und nie in der Fussgängerzone der Altstadt. Abstellen darfst du im Gebiet der App, aber nicht am Anger, auf der Krämerbrücke, am Fischmarkt, Wenigemarkt, Domplatz und Benediktsplatz und in «Venedig». In Strassenbahn und Bus der EVAG darf kein E-Scooter mit.',
   published: '2026-10-23',
-  updated: '2026-10-23',
+  updated: '2026-10-24',
   city: 'de:Erfurt',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Im Oktober 2026 vermieten zwei Anbieter E-Scooter in Erfurt: **Yoio** und **Dott**. Yoio gehört der YourCar GmbH aus Göttingen und kam laut Stadt im Mai 2021, angekündigt mit rund 200 Scootern. Tier folgte im Mai 2022 mit rund 150. Tier heisst heute Dott: Im Oktober 2024 kündigte das Unternehmen an, alle Tier-Scooter auf die Dott-App umzustellen, und Dott führt Erfurt auf seiner Städteliste. Bolt bietet in Erfurt laut eigener Website nur Fahrten mit Fahrer und Taxis an. Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Zur Flottengrösse sagt die Stadt nur: 2025 nannte sie für die beiden Anbieter 130 und 280 Fahrzeuge im durchschnittlichen täglichen Einsatz.',
-        '**Dott fehlt auf unserer Karte.** ScootRadar zeigt auf der [Karte von Erfurt](map:de:Erfurt) nur Yoio, weil Dott für Erfurt keinen offenen Datenfeed veröffentlicht. Am Freitag, 23. Oktober 2026, standen dort um 15:18 Uhr rund 200 Yoio-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Dott-Scooter zeigt dir in Erfurt nur die Dott-App; in Städten mit offenem Feed, etwa [Leipzig](map:de:Leipzig), siehst du sie auch bei uns.',
+        '**Yoio und Dott auf unserer Karte.** Die [Karte von Erfurt](map:de:Erfurt) zeigt beide Anbieter, Dott seit dem 24. Oktober 2026. An diesem Samstag standen dort um 13:26 Uhr rund 280 Dott- und rund 210 Yoio-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Einen Preis für Erfurt nennt Dott nicht: Den siehst du nur in der Dott-App.',
       ],
     },
     {
@@ -131,7 +131,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Erfurt?',
-      answer: 'Yoio und Dott, das früher Tier hiess. Du brauchst die App des Anbieters und musst 18 sein, einen Führerschein brauchst du nicht. Freie Yoio-Scooter zeigt auch die [Live-Karte von Erfurt](map:de:Erfurt), Dott-Scooter nur die Dott-App.',
+      answer: 'Yoio und Dott, das früher Tier hiess. Du brauchst die App des Anbieters und musst 18 sein, einen Führerschein brauchst du nicht. Freie Scooter beider Anbieter zeigt auch die [Live-Karte von Erfurt](map:de:Erfurt).',
     },
     {
       question: 'Was kostet Yoio in Erfurt?',

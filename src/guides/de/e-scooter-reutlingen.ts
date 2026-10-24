@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Reutlingen 2026: Voi, Bolt, Preise, Parken',
   description: 'E-Scooter Reutlingen: Voi und Bolt kosten laut Datenfeed 0,20 € pro Minute ohne Entsperrgebühr. Wo du in der Altstadt abstellen darfst und was im Bus gilt.',
   headline: 'E-Scooter Reutlingen: Preise, Sperrzonen und Abstellregeln von der Wilhelmstrasse bis zur Pomologie',
-  lede: 'Einen E-Scooter in Reutlingen leihst du ab 18 und ohne Führerschein bei Voi oder Bolt. Beide verlangten laut ihren Datenfeeds am 23. und 24. Oktober 2026 keine Entsperrgebühr und 0,20 € pro Minute, zehn Minuten kosten also 2,00 €. Du fährst auf dem Radweg, sonst auf der Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In der Altstadt rund um Wilhelmstrasse und Marktplatz, in Pomologie und Volkspark beendest du keine Fahrt, am Hauptbahnhof schon.',
+  lede: 'Einen E-Scooter in Reutlingen leihst du ab 18 und ohne Führerschein bei Voi, Bolt oder Dott. Voi und Bolt verlangten laut ihren Datenfeeds am 23. und 24. Oktober 2026 keine Entsperrgebühr und 0,20 € pro Minute, zehn Minuten kosten also 2,00 €. Du fährst auf dem Radweg, sonst auf der Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In der Altstadt rund um Wilhelmstrasse und Marktplatz, in Pomologie und Volkspark beendest du keine Fahrt, am Hauptbahnhof schon.',
   published: '2026-10-24',
   updated: '2026-10-24',
   city: 'de:Reutlingen',
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Leih-Scooter gibt es in Reutlingen laut Stadt seit Mitte Dezember 2020. Heute vermieten hier **Voi** und **Bolt**, beide mit offenem Datenfeed im Landesportal MobiData BW. Voi kam laut eigener Mitteilung am 21. März 2025 dazu. Gemietet wird in der App des Anbieters: [So mietest du einen E-Scooter](guide:how-to-rent).',
         '[Auf der ScootRadar-Karte](map:de:Reutlingen) standen am Freitag, 23. Oktober 2026, um 15:18 Uhr rund 340 freie Scooter in Reutlingen: rund 180 von Voi und rund 165 von Bolt. Das ist eine Momentaufnahme, nicht die Grösse der Flotten. Die Selbstverpflichtung der Anbieter nennt «zunächst höchstens 150» Scooter je Anbieter, mehr nur «in beiderseitigem Einvernehmen»; im Januar 2026 nannte die Verwaltung eine «Obergrenze von 150 Rollern je Verleihfirma». Eine Anhebung hat die Stadt nicht veröffentlicht.',
-        'Im Januar 2026 schrieb die Verwaltung dem Gemeinderat: «Aktuell gibt es in Reutlingen fünf Anbieter mit insgesamt bis zu 750 E-Scootern»; welche, sagt sie nicht. **Dott** führt Reutlingen und Pfullingen in seiner Standortliste, hat für Reutlingen aber keinen offenen Datenfeed. Ob Dott hier im Oktober 2026 vermietet, konnten wir nicht prüfen; auf unserer Karte fehlt er.',
+        'Im Januar 2026 schrieb die Verwaltung dem Gemeinderat: «Aktuell gibt es in Reutlingen fünf Anbieter mit insgesamt bis zu 750 E-Scootern»; welche, sagt sie nicht. **Dott** führt Reutlingen und Pfullingen in seiner Standortliste, hat hier aber keinen offenen Datenfeed. Unsere Karte zeigt seine Scooter seit dem 24. Oktober 2026: an diesem Samstag um 13:26 Uhr rund 140. Den Preis zeigt nur die Dott-App.',
         '**Zeus** hat einen Datenfeed für Reutlingen, doch keiner der 17 Scooter darin war am 24. Oktober 2026 mietbar; die letzte Meldung stammt vom Juni 2025. Limes Feed bei MobiData BW zeigte am selben Tag kein Fahrzeug in der Stadt.',
       ],
     },
@@ -140,7 +140,7 @@ const guide: Guide = {
     },
     {
       question: 'Welche E-Scooter-Anbieter gibt es in Reutlingen?',
-      answer: 'Voi und Bolt, beide auf der Karte. Dott führt Reutlingen in seiner Standortliste, hat aber keinen offenen Datenfeed. Die Stadt sprach im Januar 2026 von fünf Anbietern, ohne sie zu nennen.',
+      answer: 'Voi, Bolt und Dott, alle drei auf der Karte. Die Stadt sprach im Januar 2026 von fünf Anbietern, ohne sie zu nennen.',
     },
     {
       question: 'Darf ich mit dem E-Scooter durch die Wilhelmstrasse fahren?',

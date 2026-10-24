@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Noleggio monopattino elettrico: come noleggiare un monopattino in sharing',
   lede: 'Il noleggio di un monopattino elettrico in sharing funziona così: scarichi l’app dell’operatore, ti iscrivi con numero di telefono e carta, inquadri il QR code sul manubrio e parti; a fine corsa parcheggi dove l’app lo consente e scatti una foto. Quasi tutti gli operatori chiedono 18 anni e, in Italia come in Svizzera, nessuna patente; in Italia però serve il casco, e lo porti tu. Paghi uno sblocco più una tariffa al minuto: il 12 ottobre 2026 Voi pubblicava a Zurigo 1 franco più 0,42 al minuto, cioè 5,20 franchi per 10 minuti.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-24',
   sections: [
     {
       heading: 'Noleggio monopattino elettrico: come funziona, passo per passo',
@@ -147,7 +147,7 @@ const guide: Guide = {
             '**App in cui prenoti e paghi.** In alcune città, Zurigo compresa, noleggi i Lime dall’app di Uber; a Berlino, Monaco e Oslo lo fanno le app dei trasporti pubblici, per alcuni operatori. Lì i pass dell’operatore di solito non valgono.',
           ],
         },
-        'In Italia la mappa copre [Roma](map:it:Roma), dove il 12 ottobre 2026 mostrava circa 3.700 monopattini Bird (Dott e Lime li trovi nelle loro app), i Bird di [Napoli](map:it:Napoli) e [Palermo](map:it:Palermo) e, a [Catania](map:it:Catania), i monopattini di Elerent. In Ticino, intorno a [Locarno](map:ch:locarno), mostra i mezzi PubliBike, che prendi e riconsegni in una stazione. [Apri la mappa](/map) per vedere chi ha un monopattino vicino a te.',
+        'In Italia la mappa copre [Roma](map:it:Roma) e [Palermo](map:it:Palermo), con Bird e Dott (Lime lo trovi nella sua app), i Bird di [Napoli](map:it:Napoli), i monopattini di Elerent a [Catania](map:it:Catania) e, dal 24 ottobre 2026, i Dott di altre città, come [Milano](map:it:Milano) e [Torino](map:it:Torino). In Ticino, intorno a [Locarno](map:ch:locarno), mostra i mezzi PubliBike, che prendi e riconsegni in una stazione. [Apri la mappa](/map) per vedere chi ha un monopattino vicino a te.',
       ],
     },
   ],

@@ -8,17 +8,17 @@ const guide: Guide = {
   title: 'E-Scooter Karlsruhe 2026: Anbieter, Preise, Parken, KVV',
   description: 'E-Scooter Karlsruhe: Voi, Bolt und Dott, was zehn Minuten kosten, wo du an Kaiserstrasse und Hauptbahnhof parkst und welcher Scooter in Bahn und Bus darf.',
   headline: 'E-Scooter Karlsruhe: Anbieter, Preise, Abstellflächen und warum du auf der Kaiserstrasse schiebst',
-  lede: 'Einen E-Scooter in Karlsruhe leihst du ab 18 und ohne Führerschein bei Voi oder Bolt, laut Stadt auch bei Dott. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 14. Oktober 2026) 3,29 € bei Bolt und 3,49 € bei Voi. Auf der Kaiserstrasse zwischen Europaplatz und Kronenplatz und auf dem Marktplatz darfst du nicht fahren, und rund um die Kaiserstrasse und am Hauptbahnhof stellst du nur auf markierten Flächen ab. Im KVV zählt dein eigener Scooter als Fahrrad; einen Leih-Scooter stellst du vor der Fahrt mit Bus oder Bahn ab.',
+  lede: 'Einen E-Scooter in Karlsruhe leihst du ab 18 und ohne Führerschein bei Voi, Bolt oder Dott. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 14. Oktober 2026) 3,29 € bei Bolt und 3,49 € bei Voi. Auf der Kaiserstrasse zwischen Europaplatz und Kronenplatz und auf dem Marktplatz darfst du nicht fahren, und rund um die Kaiserstrasse und am Hauptbahnhof stellst du nur auf markierten Flächen ab. Im KVV zählt dein eigener Scooter als Fahrrad; einen Leih-Scooter stellst du vor der Fahrt mit Bus oder Bahn ab.',
   published: '2026-10-14',
-  updated: '2026-10-14',
+  updated: '2026-10-24',
   city: 'de:Karlsruhe',
   sections: [
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Karlsruhe?',
       blocks: [
         'Die Stadt nennt drei Anbieter: **Voi**, **Bolt** und **Dott**, das früher TIER hiess. Gemietet wird in der App des Anbieters, ab 18. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte von Karlsruhe](map:de:Karlsruhe) Voi und Bolt: am Nachmittag des 14. Oktober 2026 rund 1200 Scooter, etwa zur Hälfte von jedem. Das ist eine Momentaufnahme der offenen Datenfeeds, keine Flottengrösse.',
-        '**Dott fehlt auf unserer Karte.** Dott nennt Karlsruhe weiter auf seiner Website, hat seinen offenen Datenfeed für die Stadt aber im September 2026 abgeschaltet. Willst du Dott fahren, öffne die Dott-App: Nur dort siehst du, ob und wo Dott-Scooter stehen.',
+        'ScootRadar zeigt auf der [Karte von Karlsruhe](map:de:Karlsruhe) alle drei Anbieter: am Samstag, 24. Oktober 2026, um 13:26 Uhr rund 1900 Scooter, je rund 620 von Voi, Bolt und Dott. Das ist eine Momentaufnahme, keine Flottengrösse.',
+        '**Dott ohne Preis auf der Karte.** Dott hat seinen offenen Datenfeed für Karlsruhe im September 2026 abgeschaltet. Seit dem 24. Oktober 2026 zeigt unsere Karte seine Scooter trotzdem, aber keinen Preis: Was eine Fahrt bei Dott kostet, siehst du nur in der App.',
         '**Lime** gibt es in Karlsruhe nicht mehr: Die Stadt fehlt auf Limes Städteliste, und sein Datenfeed zeigte dort am 14. Oktober 2026 keinen Scooter.',
       ],
     },
@@ -150,7 +150,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App brauche ich in Karlsruhe?',
-      answer: 'Die von Voi oder Bolt; laut Stadt vermietet auch Dott, früher TIER. Du musst 18 sein, einen Führerschein brauchst du nicht. Voi und Bolt zeigt auch die [Live-Karte von Karlsruhe](map:de:Karlsruhe), Dott nur seine App.',
+      answer: 'Die von Voi, Bolt oder Dott, früher TIER. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Scooter aller drei zeigt auch die [Live-Karte von Karlsruhe](map:de:Karlsruhe).',
     },
     {
       question: 'Wie viel kostet Voi in Karlsruhe?',

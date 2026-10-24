@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Tübingen: Anbieter, Preise und Verbotszonen von der Altstadt bis auf den Schnarrenberg',
   lede: 'Einen E-Scooter in Tübingen leihst du ab 18 und ohne Führerschein bei Voi, Bolt oder Dott. Voi und Bolt kosten laut ihren Datenfeeds 0,20 € pro Minute ohne Entsperrgebühr (Stand 17. Oktober 2026). In der Fussgängerzone der Altstadt fährst du nicht, und an Marktplatz, Holzmarkt, Neckarfront und Platanenallee beendest du keine Fahrt. Ein Nachtverbot gibt es nicht.',
   published: '2026-10-18',
-  updated: '2026-10-18',
+  updated: '2026-10-24',
   city: 'de:Tübingen',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Seit Frühjahr 2022 stehen in Tübingen Leih-Scooter. Im Oktober 2026 vermieten **Voi**, **Bolt** und **Dott**, das früher TIER hiess, E-Scooter in der Stadt; alle drei nennt auch die Stadt. Jeder Anbieter darf laut Stadt höchstens 200 Scooter aufstellen, im Umkreis von 100 Metern höchstens fünf an einem Ort. Gemietet wird in der App des Anbieters; Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Am 17. Oktober 2026 um 19:25 Uhr zeigte die [Karte von Tübingen](map:de:Tübingen) rund 380 Scooter: rund 200 von Voi und rund 180 von Bolt. Das ist eine Momentaufnahme der offenen Datenfeeds, keine Flottengrösse. Voi ist seit 20. März 2025 in der Stadt und startete mit 200 Scootern.',
-        '**Dott fehlt auf unserer Karte.** Dott nennt Tübingen, Reutlingen und Pfullingen als Standorte, veröffentlicht für die Gegend aber keinen offenen Datenfeed; auch MobiData BW, die Datenplattform des Landes, führt keinen. Wo Dott-Scooter stehen und was sie kosten, siehst du nur in der App.',
+        '**Dott auf unserer Karte.** Dott nennt Tübingen, Reutlingen und Pfullingen als Standorte, veröffentlicht für die Gegend aber keinen offenen Datenfeed. Seit dem 24. Oktober 2026 zeigt unsere Karte die Dott-Scooter trotzdem: an diesem Samstag um 13:26 Uhr rund 130 in Tübingen. Was sie kosten, siehst du nur in der App.',
         '**Zeus** nennt die Stadt ebenfalls (Stand Oktober 2026). Im Datenfeed von Zeus für Tübingen ist aber keiner der 51 Scooter mietbar, die letzte Meldung stammt vom Oktober 2025, und auf der Städteliste von Zeus fehlt Tübingen. Ein Ende hat Zeus nicht mitgeteilt, soweit wir sehen; auf unserer Karte erscheint Zeus nicht. **Lime** hat Tübingen laut Stadt Mitte 2023 verlassen.',
       ],
     },
@@ -136,7 +136,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App brauche ich in Tübingen?',
-      answer: 'Die von Voi, Bolt oder Dott; TIER heisst heute Dott. Du musst 18 sein, einen Führerschein brauchst du nicht. Die [Live-Karte von Tübingen](map:de:Tübingen) zeigt Voi und Bolt; Dott siehst du nur in seiner App.',
+      answer: 'Die von Voi, Bolt oder Dott; TIER heisst heute Dott. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Scooter aller drei zeigt auch die [Live-Karte von Tübingen](map:de:Tübingen).',
     },
     {
       question: 'Was kostet ein E-Scooter in Tübingen?',

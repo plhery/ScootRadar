@@ -10,14 +10,14 @@ const guide: Guide = {
   headline: 'Monopattini sharing a Roma: operatori, prezzi, casco, parcheggio e multe nel 2026',
   lede: 'I monopattini sharing a Roma, a ottobre 2026, sono quelli di Bird, Dott e Lime: gli unici tre operatori autorizzati dal Comune, che lavorano in proroga mentre è in corso il nuovo bando. Per noleggiarli servono 18 anni e un documento d’identità, e il casco lo porti tu: è obbligatorio per tutti e nessun operatore lo fornisce. Il prezzo lo vedi solo nell’app, e al Colosseo, a Fontana di Trevi o in piazza San Pietro l’app di Bird non ti fa chiudere il noleggio.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-24',
   city: 'it:Roma',
   sections: [
     {
       heading: 'Quali monopattini in sharing ci sono a Roma',
       blocks: [
         'A Roma possono offrire monopattini in sharing solo gli operatori autorizzati dal Comune: a ottobre 2026 sono **Bird**, **Dott** e **Lime**, secondo Roma Servizi per la Mobilità.',
-        'Il 12 ottobre 2026 sulla [mappa intorno a Roma](map:it:Roma) c’erano circa 3.700 monopattini Bird. ScootRadar mostra Bird; Dott e Lime non pubblicano dati che possiamo leggere: li trovi nelle loro app.',
+        'Sabato 24 ottobre 2026 alle 13:26 sulla [mappa intorno a Roma](map:it:Roma) c’erano circa 4.200 monopattini Bird e altrettanti Dott, che la mappa mostra da quel giorno: una fotografia, non la flotta. Lime non pubblica dati che possiamo leggere: lo trovi nella sua app.',
         'In centro ne trovi pochi per scelta del Comune: ogni operatore può tenerne al massimo 30 nella ZTL Tridente, tra piazza del Popolo, via del Corso e piazza di Spagna, 300 nella ZTL Centro Storico e 70 in quella di Trastevere. Se la mappa è vuota, spostati di qualche strada.',
       ],
     },
@@ -34,7 +34,7 @@ const guide: Guide = {
       blocks: [
         {
           steps: [
-            'Trova il monopattino più vicino sulla [mappa di Roma](map:it:Roma), o nelle app di Dott e Lime.',
+            'Trova il Bird o il Dott più vicino sulla [mappa di Roma](map:it:Roma), o un Lime nella sua app.',
             'Iscriviti nell’app con un documento d’identità e una carta: servono **18 anni**, non la patente.',
             'Metti il casco e controlla il contrassegno, sul parafango posteriore o davanti al piantone dello sterzo.',
             'Inquadra il QR code e guida su strada o su pista ciclabile, mai sul marciapiede.',

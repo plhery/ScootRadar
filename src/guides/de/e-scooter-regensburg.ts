@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Regensburg 2026: Preise, Parken, Altstadt',
   description: 'E-Scooter Regensburg: was Zeus pro Minute kostet, wo du in Altstadt und Stadtamhof abstellen musst und was an Uni, OTH, Bahnhof und im RVV-Bus gilt.',
   headline: 'E-Scooter Regensburg: Preise, Abstellflächen in der Altstadt und was an Uni und Bahnhof gilt',
-  lede: 'Einen E-Scooter in Regensburg leihst du ab 18 und ohne Führerschein, laut Stadt (Stand November 2025) bei Lime, Voi, Dott oder Zeus; unsere Karte zeigt nur Zeus. Zeus verlangte laut Datenfeed am 23. Oktober 2026 je nach Scooter 0 €, 0,50 € oder 1 € fürs Entsperren und immer 0,23 € pro Minute. In der Altstadt, auf den Wöhrden, in Stadtamhof und am Bahnhof stellst du einen Leih-Scooter seit Juli 2024 nur auf einer der rund 40 markierten Abstellflächen ab, und durch die Fussgängerzone fährst du bis Ende Februar 2027 nicht. Ein Nachtverbot nennen weder die Stadt noch Zeus.',
+  lede: 'Einen E-Scooter in Regensburg leihst du ab 18 und ohne Führerschein, laut Stadt (Stand November 2025) bei Lime, Voi, Dott oder Zeus; unsere Karte zeigt Zeus und Dott. Zeus verlangte laut Datenfeed am 23. Oktober 2026 je nach Scooter 0 €, 0,50 € oder 1 € fürs Entsperren und immer 0,23 € pro Minute. In der Altstadt, auf den Wöhrden, in Stadtamhof und am Bahnhof stellst du einen Leih-Scooter seit Juli 2024 nur auf einer der rund 40 markierten Abstellflächen ab, und durch die Fussgängerzone fährst du bis Ende Februar 2027 nicht. Ein Nachtverbot nennen weder die Stadt noch Zeus.',
   published: '2026-10-23',
   updated: '2026-10-24',
   city: 'de:Regensburg',
@@ -17,8 +17,8 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Regensburg?',
       blocks: [
         'Leih-Scooter gibt es in Regensburg seit 2019. Laut Stadt stellen vier Firmen zusammen über 1100 Scooter auf: **Lime**, **Voi**, **Dott** (früher TIER) und **Zeus**. Diese Liste ist vom November 2025. Zeus fährt hier laut einer Vorlage der Stadt seit 2020, Voi laut eigener Mitteilung seit 1. Mai 2025, zum Start mit rund 250 Scootern. Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Die [Karte von Regensburg](map:de:Regensburg) zeigt nur Zeus: Am 23. Oktober 2026 um 15:18 Uhr waren es rund 190 Scooter. Das ist eine Momentaufnahme, keine Flottengrösse.',
-        'Die anderen drei fehlen auf der Karte, weil wir für Regensburg keine offenen Daten von ihnen finden: Dott führt die Stadt auf seiner Standortliste, sein öffentlicher Datenfeed kennt Regensburg aber nicht, und von Lime und Voi gibt es keinen. Ihre Scooter und Preise siehst du nur in ihren Apps.',
+        'Die [Karte von Regensburg](map:de:Regensburg) zeigt Zeus und seit dem 24. Oktober 2026 auch Dott: An diesem Samstag standen dort um 13:26 Uhr rund 250 Dott- und rund 190 Zeus-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse.',
+        'Lime und Voi fehlen auf der Karte, weil wir für Regensburg keine offenen Daten von ihnen finden: Ihre Scooter und Preise siehst du nur in ihren Apps. Dotts öffentlicher Datenfeed kennt Regensburg nicht; seine Scooter zeigt unsere Karte trotzdem, seinen Preis nur die Dott-App.',
       ],
     },
     {
@@ -142,7 +142,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App brauche ich in Regensburg?',
-      answer: 'Die von Zeus, Lime, Voi oder Dott: Diese vier nennt die Stadt (Stand November 2025). Die [Live-Karte von Regensburg](map:de:Regensburg) zeigt nur Zeus, weil wir von den anderen keine offenen Daten für Regensburg finden. Du musst 18 sein, einen Führerschein brauchst du nicht.',
+      answer: 'Die von Zeus, Lime, Voi oder Dott: Diese vier nennt die Stadt (Stand November 2025). Die [Live-Karte von Regensburg](map:de:Regensburg) zeigt Zeus und Dott; Lime und Voi siehst du nur in ihren Apps. Du musst 18 sein, einen Führerschein brauchst du nicht.',
     },
     {
       question: 'Was kostet ein Zeus-Scooter in Regensburg?',
