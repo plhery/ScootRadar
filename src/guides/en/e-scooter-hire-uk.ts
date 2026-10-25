@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter hire in the UK: where you can rent one, who runs it and what it costs',
   lede: 'E-scooter hire in the UK is legal only in 21 government trial areas, all in England, and the trials are due to run until May 2028. Voi, Beryl, Lime, Dott and Bolt run the schemes. You need a full or provisional driving licence, and every operator we checked rents only to riders aged 18 or over. Pay as you go, unlocking costs £0 to £1 and riding 20p to 29p a minute, so 15 minutes cost £3.75 to £4.75 at the rates published on 12 October 2026. In London, Lime and Voi hire out e-scooters in 11 boroughs, and every ride ends in a marked bay.',
   published: '2026-10-12',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   sections: [
     {
       heading: 'E-scooter hire in the UK: the 21 trial areas and who runs them',
@@ -117,7 +117,7 @@ const guide: Guide = {
     {
       heading: 'E-scooter parking bays, and what parking outside them costs',
       blocks: [
-        'In most areas, Liverpool included, a ride can end only in a bay or parking spot shown in the app. Voi in Northampton, Kettering and Corby is the exception: there you leave the scooter on the street.',
+        'In most areas, Liverpool included, a ride can end only in a bay or parking spot shown in the app. Voi in Northamptonshire is the exception: in May 2024 the councils said you may leave its scooters on the pavement, wheeled on and off it, except in no-ride and no-park zones.',
         {
           table: {
             caption: 'Where to end a ride, and what the operators charge, October 2026',
@@ -128,7 +128,7 @@ const guide: Guide = {
               ['Dott', 'In the West of England, only in a parking bay; in Nottingham, at one of about 300 parking locations; elsewhere where the app allows', 'In the West of England, £10 outside a bay (£15 outside the area); Dott’s UK terms allow a £50 charge for breaking them'],
               ['Bolt, Liverpool', 'In one of about 1,500 bays shown in the app; your end-of-ride photo is checked by AI', 'Up to £40 under Bolt’s UK terms, and up to £100 to fetch a scooter left outside the area'],
               ['Lime, West Midlands', 'In a designated area shown in the app', 'Charges apply; amounts not published'],
-              ['Voi, outside London', 'At a parking spot in most towns; in Northampton, Kettering and Corby, parallel to and close to a wall', 'Not published'],
+              ['Voi, outside London', 'At a parking spot in most towns; in Northamptonshire, on the pavement but not in a no-ride or no-park zone (the councils, May 2024)', 'Not published; in West Northamptonshire, the council says ending a ride in a no-park zone brings a fine'],
             ],
           },
         },
@@ -146,7 +146,7 @@ const guide: Guide = {
             '**Pavements:** never, not even for a few metres: a £50 fixed penalty.',
             '**Passengers:** one rider only; in the West of England, Dott bans riders caught riding two up.',
             '**Phone and drink:** using a phone in your hand costs £200 and 6 points, and the drink-drive limit for cars applies. In Liverpool, Bolt’s app can ask for a reaction test first.',
-            '**Speed:** 15.5 mph at most; 12.5 mph in London, Brighton and the West of England, and in Norwich and the BCP area (Bournemouth, Christchurch and Poole) according to Beryl’s help page. In Cornwall, Beryl’s page says 15.5 mph (October 2026), though the council’s page still says 12.5 mph; in each Cornish town’s pedestrianised Go Slow Zone it’s 7.5 mph.',
+            '**Speed:** 15.5 mph at most; 12.5 mph in London, Brighton, Oxford and the West of England, and in Norwich and the BCP area (Bournemouth, Christchurch and Poole) according to Beryl’s help page. In Cornwall, Beryl’s page says 15.5 mph (October 2026), though the council’s page still says 12.5 mph; in each Cornish town’s pedestrianised Go Slow Zone it’s 7.5 mph.',
             '**Hours:** many areas run around the clock, but Beryl’s e-scooters can’t be hired from 10pm to 5am in Bournemouth, Christchurch and Poole or from midnight to 5am in Brighton, Voi’s in Northampton are available from 4am to 11pm, and in Aylesbury and High Wycombe Voi listed 5am to 11pm on Mondays.',
           ],
         },
@@ -209,6 +209,8 @@ const guide: Guide = {
     { title: 'Leeds City Council: LNER Beryl Bikes', url: 'https://www.leeds.gov.uk/parking-roads-and-travel/connecting-leeds-and-transforming-travel/cycling/lner-beryl-bikes' },
     { title: 'Cornwall Council: Beryl bikes and scooters in Cornwall', url: 'https://www.cornwall.gov.uk/transport-parking-and-streets/sustainable-transport/active-travel-walking-and-cycling/beryl-bikes-and-scooters-in-cornwall/' },
     { title: 'Norfolk County Council: Extension of Norwich e-scooter trial (March 2026)', url: 'https://norfolkcc.cmis.uk.com/norfolkcc/DelegatedDecisions/tabid/67/ctl/ViewCMIS_DecisionDetails/mid/391/Id/2006/Default.aspx' },
+    { title: 'West Northamptonshire Council: Stay off the pavement if you’re riding an e-scooter (24 May 2024, archived)', url: 'https://web.archive.org/web/20251220001448/https://www.westnorthants.gov.uk/news/stay-pavement-if-youre-riding-e-scooter' },
+    { title: 'Oxfordshire County Council: E-scooter trial in Oxford', url: 'https://www.oxfordshire.gov.uk/transport-and-travel/local-transport-and-connectivity-plan/active-travel/e-scooter-trial' },
   ],
 };
 
