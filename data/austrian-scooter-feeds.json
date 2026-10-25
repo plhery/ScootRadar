@@ -238,6 +238,124 @@
       "aliases": [
         "Vienna"
       ]
+    },
+    {
+      "id": "lime_at_app_innsbruck",
+      "provider": "lime",
+      "city": "Innsbruck",
+      "center": [
+        47.2651,
+        11.3988
+      ],
+      "timeZone": "Europe/Vienna",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "EG6WUUE4GU2CX",
+      "limeMapGrid": {
+        "south": 47.24778,
+        "west": 11.30806,
+        "north": 47.29095,
+        "east": 11.46579,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01984986455834625,
+        "cells": "0-6,8-15,19-23,29-31"
+      }
+    },
+    {
+      "id": "lime_at_app_klagenfurt",
+      "provider": "lime",
+      "city": "Klagenfurt",
+      "center": [
+        46.6207,
+        14.3109
+      ],
+      "timeZone": "Europe/Vienna",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "YAMYEY5U73Y3B",
+      "limeMapGrid": {
+        "south": 46.58162,
+        "west": 14.24161,
+        "north": 46.66989,
+        "east": 14.37836,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01960463358452261,
+        "cells": "0-4,7-27,29-34,37-39,44-46"
+      }
+    },
+    {
+      "id": "lime_at_app_linz",
+      "provider": "lime",
+      "city": "Linz",
+      "center": [
+        48.2962,
+        14.2939
+      ],
+      "timeZone": "Europe/Vienna",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "PUYE3LYNIOU7F",
+      "limeMapGrid": {
+        "south": 48.23554,
+        "west": 14.26394,
+        "north": 48.34653,
+        "east": 14.38547,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.0202301094872438,
+        "cells": "0-5,7-16,18-19,21-23,28-30,35-37,42-44,49-52,57"
+      }
+    },
+    {
+      "id": "lime_at_app_wels",
+      "provider": "lime",
+      "city": "Wels",
+      "center": [
+        48.1645,
+        14.019
+      ],
+      "timeZone": "Europe/Vienna",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "XPC2ALDIT32AI",
+      "limeMapGrid": {
+        "south": 48.14025,
+        "west": 13.98199,
+        "north": 48.18357,
+        "east": 14.04405,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020192530318367742,
+        "cells": "0-2,4-10,13-14"
+      }
+    },
+    {
+      "id": "lime_at_app_wien",
+      "provider": "lime",
+      "city": "Wien",
+      "center": [
+        48.19277,
+        16.40137
+      ],
+      "timeZone": "Europe/Vienna",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "GUHWNKTOD63UF",
+      "limeMapGrid": {
+        "south": 48.10279,
+        "west": 16.2016,
+        "north": 48.31091,
+        "east": 16.54712,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020177810823040186,
+        "cells": "4-5,20,22-24,37-47,56-67,74-85,92-102,110-119,121,126-142,144-161,164-178,183-196,201-214,222-230,241-249,259-263,265-266,279-280"
+      }
     }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Innsbruck_69_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Klagenfurt_181_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Linz_242_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Wels_1792_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Vienna_2131_exclude_new_type.json"
   ]
 }

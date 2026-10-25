@@ -1523,6 +1523,117 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Wroclaw_256_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "AT",
+      "city": "Innsbruck",
+      "center": [
+        47.2651,
+        11.3988
+      ],
+      "timeZone": "Europe/Vienna",
+      "regionToken": "EG6WUUE4GU2CX",
+      "serviceAreas": [
+        {
+          "name": "SZ - Innsbruck 2.0[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "sqn_Hu|edAhCbJnNFPtKy@rNpAhF`BlDy@|Rr@LAvFlDpUpAfFjBfEvEtBfHFjDpAgB~GKxIz@fE^zMoAhKErUxDc@vDeChBrG|L{GcCyy@`EkEq@uJOcGoAiDTaJz@gGdHhC~DhAJ~Ea@pHxC`Q`DzMlAGdB}BeAsH{AgEm@cEoBwNWaJlBf@b@|K|AtAh@gLUeCN}GFiELwDsEkOg@gO{CS[_EoAuBUkOYqExB_P?gHdB_U_@oZn@ua@_@wk@Q{N_@{CzCzDrCqCLqFcAwL{DwPgHjFiCcHwCpCsBuHuHsc@cDeRkFTj@wNtDcXe@{RtCA`RlDb@wDsHyA_@oWdKeCrA}DxAhEZvBNnF^~EpAzFn@Q|@v@fGCa@gFuBoAmA}EZkBeBsEtAsB}@sDU_F_IjBm@`@g@n@{@uJmC_KsBm@kAqByB_GyDuc@y@yOsJsh@fEoDcAiE{DhCyEyUxBkBgAsH~A_C}@cJm@{FsAoGdC{GaCeJcC\\z@xGyH|DwJu@yBiL}FaD[kNwB_NeFkNPaB}CcGiI{GuFzAaDuT{CcLwLsUwCjE}BqFeTqAD|G_FcAgBgS_IW]zJyHsH{`@ce@sC|GxDfYjAPTvAaBzGb@`CsCbAaH`HhAzFdCjA|@}GdDk@nBlHkNtTVvEl@lCsBtWm@rFLhFtBzFjCiCpF{AfJ{FxDgB`A}OgBuJ|HiFzMib@`KbBdEz^|Bv@pC~h@wGdCa@la@pAr[gDDmBcBsDdBkIzFaCaI_BiGgAoGSiHeAYyHfDuEbQz@pJpCpLbBhCzDkHx@|GiB`JzClF|Bi@_AtI|DnLnDnV{@hHiEvDi@zEgHgBwE{B{GuBsCRqAkF_HdAt@fCyBlGrDz@x@jHjHCt@pF~LjXeAxEdIhMlHrAxAnDZhLeCjCn@bFlHvHfGbHbFzCdC|HlAcBbBxBeCbDFvEjBjCsA`JpFbKtFjKdEjBlEnJaErJwKLeDfMdK_BvJkCzCbPjG_DfC~MtE{AdAtP_DdBl@rDkEvHwJPoJWdAvDxNbCzB|JaCfH~G~DQjMaCfIPnGd@|DKfMjBbHc@`JlAlHzFdE@zFt@jNzBfEdC~@ObGrExU??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Innsbruck_69_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "AT",
+      "city": "Klagenfurt",
+      "center": [
+        46.6207,
+        14.3109
+      ],
+      "timeZone": "Europe/Vienna",
+      "regionToken": "YAMYEY5U73Y3B",
+      "serviceAreas": [
+        {
+          "name": "[Klagenfurt][SZ][SZ Klagenfurt]new[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "akw{GagovAwyAz~Bxw@fkC|gA`bAbeAnd@nUfQb^pfBxE|u@bGpo@xkAmp@|tAba@xkAabBxf@e`AzBaw@wFwg@cVej@qRuWmQy_@uP_UdKseCyXo|Buv@ktDuhAtm@oq@y{@g{@nI}CvdAcJ`gBqLbaAaHpm@{@f~@iYjGwt@}nB"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Klagenfurt_181_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "AT",
+      "city": "Linz",
+      "center": [
+        48.2962,
+        14.2939
+      ],
+      "timeZone": "Europe/Vienna",
+      "regionToken": "PUYE3LYNIOU7F",
+      "serviceAreas": [
+        {
+          "name": "New SZ 2.0 Linz[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "w`_fHsylvAqLxUaBqDuAeEaLoCQ~GdHpCpBvFmAr[l@jLrA~DgEv@eGIrAzH|AnChAfClAzNJdImAhAd@rHcCrIoCbBsC`@}FCwAxI_Bx@y@zLgB`GsE|GwFOgBhBqF`@iB~AFxEt[}@dGpBfDP|AnK|FoCxBFvA`KcCxAgDjEyB`BcCv@{Cm@iDP_@|AdAbGlAhBbBdA~JzBbEvAKjFd@lChFiD`J{UxDcZbA|AShLvCxBy@dLzDnBfD_V~FvFkExNMfDaBhDp@fEDbItDvCrGtAlEg@n@pGpCfBzF`@lQxFvF{DvIoEE|GhMTcBpMdCbMoEtLpA~IMtJj@r@xAgBlAvAlAhD|A_JZqWdHaEh@qIfCrBvGFGdRnCnFbDQ`AgBhAkAbBKhBr@j@yKu@uE`@}GUmEq@sD{C~DaAE`@qEjBqJdBfG|FwFYiC}@uDa@oGeAkFcA_KgAgFjK{Gl@pCl@lDzBi@IfF~AcAhBGdA\\n@jH}@p@p@dGuB|@XdEbFhHhClOz@bNMzOtD|JxLtDnPwDdJoMfJ}ApIfHxEdMpEuBvAgCh@iBzHhEpCeLbBjB|EdIrD{MSgWtNgX~CcD~BjFgAtCxArEb@bFrClInEkJ~DeFzA{DfFoJpBgAtI|SbDyB|GaA~D`BxIwGzB{B~BnGl_@wBEmIi@kEkAiEiGmIjBqEAiCzAyCpGvGbDZxDuDnO_DxBtPvGyChA|GvIuCzMmEhCtPpAYxDxIxFeAdZ{SwFoVvCFuAuJzGZvAe@JeH\\eHfAuF}BkD_D}C}L{@qOa@iEnBgCiDuLV\\sTmAoMdEoAvHa@pMwF~E}IcGqJiLub@oDkE_DoKZyAWoA|@mLBoBe@eD{@}Af@yCByCdLL@l@OrAbA|J\\zJt@jCx@pEjBlGdGjIvAB@uBaBmFcBkDfDoEwHe\\wBeCuB{LfAiAlIgQnBwCbAkChFeGdA|@gA~COvB|@ZnD@JuErF`BbCrAjAlCtCdNdApHdAdFtE_Ft@qFp@c@xEsCc@aB_DdBqAsF{BeIWe@gE~AmBf@m@eC\\yDbAMdDNtEk@TrAUvACbBPjAzAxDrFoFb@I`DiF\\cAJ{@SmA{@kNo@aHyAmIk@wHeAoEuTjNqByFpBuFeGuFj@aEmKkF^mCcC{@AsGl@}HxByIz@_K\\sVMmFJaBhFod@\\iFWwAoD{JE_BWiCh@UlDwJkCuF|DuHdAxC`B_CuAcEV_Ar@a@tOsYoAaAeF]eF^e@gAe@gIDkEwByDiOyLuEm@yDhCmBQuNiLaM{JaKd]uCcCgIhX_ApAeBfFxAle@_GA_FxG_AwBUuD{BcEoAeH_QpRiAd@mBhSzGbBn@pFdCk@zD\\yEnKpBjGaEbKfKnWbD[`EhFbFBf@rHfCnEB~EpA`FTdHgKbCfB~HzJzXxF`KqNra@iG`L{@|DvInIoCdIyDdItEbTutAbh@wQ~EmD_BaAHqF~HyElDuGzGoCaMeIdE|BhNkF~BsDbGcO~YeBo]?yXy]~IgAcL~FkDcD}Ri@oGyAeCkJtDgXbMiH~Bc@xBwKxA[{HaEy\\aLtJsq@l\\_WtJ_MlIwCxAc@xAuBd@PzDnDhXfCgAdBrInL~M{@dCwC{CqDzJbC~CiLrYeCkF{OaVoFaL_EoL_AwDcEq\\iCs\\iBKiMfG_@qIS_Nx@sTtCeQiAwCkHqEkB~Aa@dE{DeCoDbUgCSmEiExIaT{A}B??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Linz_242_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "AT",
+      "city": "Wels",
+      "center": [
+        48.1645,
+        14.019
+      ],
+      "timeZone": "Europe/Vienna",
+      "regionToken": "XPC2ALDIT32AI",
+      "serviceAreas": [
+        {
+          "name": "[Wels][SZ][SZ WELS] New[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "kf_eH_lotA}HxOyA{AuCzF_B{B_KzFfDzJo@p@|C|LxFsEiB{GnGdGpA_GdBcDlB}@|G|L~AuGvDaGxF|LyA~HeC~H_FwGuKzNdEnNtDzFfIqMmBiCpEcLpDh_@qEhH}A}BgEnIrCjI~DrEpEoHmCkFtH{K|@dFrCWR`CK|Be@xAYtL`KuMzFrIbGbHrNlNgGtJzEtIfAzFdGsErGmIcGkJaD}GtGyGmBoKyFuZfBcBpFxMxFd`@h@xN|KeKxHfCdEyEnDiG~@rCtC}DxH~DtFlHvDcAxC`HnAh@~H_W}DiHiKtO}DyHqH}SpBa@pGvSpF{Gc@wB~DwGtAkGkHsI_ApCKkKwFqSsFwLcDjFg\\}f@nH}A~PqLiAmEaNzHuA{BBgBoCaMi@eF|HcJeDkEqCcBoDkHgKqPrCiFeDwKiE}SiHc`@}B_Py@cG[}E@aVuDOuErCeApD}@lEeHyHcD`E~DpIuA~AuCbJj@dF}Wl^pFlS}HfFkFcXyDhC_G`GeN@eAjSf@dKoIjCkDoWsFVkDc@iDO{@IoDf@yFpCuInFxHje@{GlI[qGwGbF~Ghd@`]e^~A|EpBdFtAtB{@xC~FnKpEmF|BbFpCdCnEgDxD_EH~Dx@hF"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Wels_1792_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "AT",
+      "city": "Wien",
+      "center": [
+        48.19277,
+        16.40137
+      ],
+      "timeZone": "Europe/Vienna",
+      "regionToken": "GUHWNKTOD63UF",
+      "serviceAreas": [
+        {
+          "name": "RZ + SZ Vienna Impoundment Place[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ui`eH_plcBxYlIrHoe@ySoHsNpd@??"
+        },
+        {
+          "name": "Service Zone Vienna Sept 10th 2025[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "auteHqr{bBjhAyz@yBmR|CyBfCkD`DmIjP`wAj@bFVzBdA`JlHjLzD~RCbb@sJ|]nBNrBgHlL`ChAy@~AoIyFpm@wh@nw@oFjU`B`BxFoPlNuNpCaBxCkHjFhDrFw@hBd@eJnTgDtEqF`Ch@dGnG{BzPa\\tCm@vAfHUfj@|CGb@cf@hDaVxD|C|BBjAmDvChBsCzJ}DjKnFtEYrAvCpD]jOuE~PfC~C_AbDiD~AgE~Dz@`EjEsDrEoBnBuFdN}MsAnKuBjDgCtBmCnHgCjKdAv@_CpBuEhHuCfHl@lAdA}@dFzs@~M|DaGx}@{Ln@Sr\\lE~_Ay@fTlCv]bQc@?qI_GoHjFiVo@eq@bLodAl@qUlCiLVnIg@vKdBfW`Dw@uBmUXqKi@wTvDTtBj~@xOMm@kED_WaAiPGoJfBmGvKwQnI~m@lAu@^qHr@zHhDPxB`FhGAwErAkDrDiBdGMdMoIjBUbM~KCTcHfAzQbBgDdFbLiFnJuGrUoKtN_Q`JHbDzGhAlEfOfFeVbMmVnD_MzEyJlBYFnGqEbEqFzRGpMdEaGpCfGjBkMlF`FNaDkDsThAwBBgGlBMbNiN`FkKxDaHKnCgBfOmHjMtCdPaIh\\zDnMrGtBdNk@jEiPvIqEx@qTfBeB|FsG`FkTpQjKjDH}AzWrCtBy@tNdG|GhBzHoAbMHbUyGxPRtGwDlTZvIuE~G_A~I~CzSE|Fd@lB|EjFWj@kA_AcB\\yAlAmB~BwAmAsD{BmAdCpGfVrCfD?~BaGpEsP|CwF`DmCxKN~EdGjG~EfCnHtP~IoNpGeP|FsDzCuFxAHUvC|BlPaCuAiBj@gJf\\pDhFlFlClDfK`BVu@fJ~Ab@dD`Cr@mArBnBwAxIsFuEeAACyAcDC{BcN{@h@nBrLuK?e@|I|@hBZyIh@FLpJgAzAuDTAjBjEMj@nAoBvSnDhAhJiDIcDzAfBbBhGmEfIcFdFv@`BlFkFhFmItBk@bIhKd@nCs@vPqClVMn]lA@h@s[hAgSd@qBRDIv[r@dFlBsAt@cKx@]\\tFxFlWnJzKxAnClBrLl@hLbBYKgDeAiLmB{JeBgDiImJeEsQjGm@vF{IkBmD|CyYHaHyEKHoBgAsHqG_FbFiRDkW^kBzHoGfGgPGyHdDoQtAiOPgJr@Ed@{DRcMoAsDcBNa@yWbB}EnDeGxAuF~OtNzBzFhJsFhAuBfC_MhA{AxBdBUlBXxDz\\e[nCsE~ADjAbENhED`F`AtEBdD\\xEAtEzM~@A_a@~AaA|C`BjF_@ZXfEc@ExEuDRIpDdEWh@lNt@Ug@wOLyJdEi@bCp@x@aAm@cAiBa@ImRjDo@jDZvBbEf@|CkA`KFdMrBfFv@dFZzHjNk@EqC`A]zDuDpAgQVsJtBsAT}AqJmTmA{Es@uFfDaAbBaIeHbB[oHqDyVng@q\\tBqD|BuHxEdm@C~FoCAq@`@qC~FkGtt@bAnO~AdKdAn@hBHbB{@jC{EIlHhAv@dAcEjObJhPoJ~EeAUkEvAaXdE{QfIvC|@bBeBpMpGrGU`IRjErBc@o@dIlJVNoGlCp@AzKpKjCd@cLzFfAeAnJfKjItAsLtIlMz@{HvIxCfBcITiIrAuHdPvCN~Lh@tJdCzMh@vNrBjX{P|NjCQhHmEbBcDzA?AzMy@rAwBbAu@xHdAbC~@bT|EQd@`UoBnDFrSt@vBlC?Ioi@y@wLcEFbBe_@?uUlDcAbFCVgK|BcRqFEhBa]{GkA}Bt@w@}IxNfApIlAx@gG~GyA~IR~@sGmBcDY_FcIgM}HuW]gS~AyRpEcTbA{O`IwU_BoVxG}_AvG}b@p@yKrBq]rDsWbEsYpBqUf@mFb@{Ega@uPaKrAa|Ayr@zBvKaTqNdEqf@lXfMnIwO|DeVwd@uSdFgNl{@hd@Z{CaGcDvD_VsSqJtK{y@uo@_]bHyd@fGcm@pPdGdC~DoN|f@fU|JmB|EnCbAjAiCB{Ac@cRjBg^dAmb@jFaTtV`Hp@sFqUcIgNuC_CrOsBQF_EaAgRbGkTjd@lJw@aGiMcDxAwp@|EkXzIsr@bAua@tG_bA}CsMeGLqApBxDxEgDxeAyLfg@jCbAcHbb@}FxAs@gLqG~N}@bQyK{EnI}n@_KgCkJ|qAgRjJoZbI}IkBKu]}Gea@iTtDmb@wh@rTaXuWqG`CuJzUeIjNi]sUoW`c@}_AlRigAzYkfAaS_PPoW_ToGoHGkOcLiLrAgOv`@aC|x@lKRaDlhAmFzOcSzoA_U_BhAiU_k@mYmTjmAce@cWkAf@iAlGp@lCpCjEUzDm@~EqFj[on@hmAmAiCfFsJeC}DcBgIcAk\\aBwCoDGaJvSx@v@oDnJkI_FiEwAkCWcEBuAUy@i@xCmHkXeb@uBxBcD_HjEqG_C_ExImNfEvGG\\bBxC|EuIvCjEt@sAz@x@|DqE_D_FgCqA{E\\KmAZGl@i@XkAAyAUuAeCiIgRa[eDzF{Ev@oDfBk@Cc@]yEaIP}@H_AbAsBnA{@cAsBkBiGeEJaGoSfAiClBkMWyElAaEPiCvC?hY}Cf@sAnALpAu@dCmG`EpDbCoT|@aFzBo]jAiGvJiSlHiKvFoDfEaBfDeBbA{AhB}Dx@eE{Vk]m@zAqQgXeChQoCnH_EWuAGvDmG|AwKj@gW~BgOkHiDrBeOoBeA{BtOum@_UjGed@nLbApDye@vGz@xEwm@~[|EWwNNwO{AsLDyJwAK@_KoBP@wCfBk@@oLqBJIwCi@iCKgIm\\uBzLox@mQsMnDeNsQaNkQ_K}MwE}S}CmAvsAotAg_@]zYdQnF_A~x@oYaJOwUomAoSz@aHyEe@nAiJm_@gL}@|Rs_AcZOrHjB`P|CzLzXrJdBg\\~YpIUhDb[pKHdDyFdeAXpOuA~MqA~jAuBAEiA]k@_Go@]rBcDWUpPcBBF_MiF{CcBbEg@zB{@vAaBfH`K|FcRx^aJgFwHjKrMvIhCwDxOjJoCbSt`@xRXd_@{@jTb@hYgr@iYoLlt@g]gM_J|LdJhIoAnFvMvXfCjDeAbFgJoIuLmEm]uEed@wM`@cFjCuLhQg`@~HgFiA}Eo@sHvE}Pj@sCdUxEjFsUqIyGxBqQmNeLmHaEsEiA{Ege@iFga@eExBmLt^uRkP~DaNeIeGgDhLgGcKtFqG{EwM_KhKvJdYni@jf@_Vp\\aLgJ_D`LhDxCu@dCjBjB{@vFqGlD_FnGwHa@yTkJdAi]uCa@eAxd@pVvHjL~AlHcIbLeBz@iCjFzDlA_FzFlCrAyL{KuInSsYbOjLxD[XjE`QpHdMhI}A`NkPnFyAfTeH|VfAdHwEk@q@fD}CzFyHvUiK`TfB~Q_K_C}Sdn@kQnd@fF`UzJhBiAtEl_@xDzCdTf\\zDAyC}VelBcD}Tv[tNmAhOyNeArGdf@WrApOfkAtf@bG[zBgAzMs^iEyDfBkHaAiApW_J{A_@tGoPuCw@rIoG}DrBae@sPyCzA_Z}WeDuAtXjDt@EtBs@~AeAbPrKrAS`GzEf^cMiGeLxDpDph@qBrHw`@gRnD_T_NoK|A_`@fZU\\{EwNiJyOiBeCnh@iYhAmAaNsEhA|@pM}E`@lChm@kC~N`Gn@u@nIsKz@o@rX|HhCsBrViCnA_KtEoTzOuC`AXxDxHoD|PsL|JoFg@xDlPu@WiIpH~OVcDVoNhDk[lMiJbTzK`AiGzSjIjZvE`VnSeGnJyRkNcIzM~ZvUtAeEzAt@kBhQhHbBqDrQbA`AkF`CyKbJmDfFc`@cO_A|GyJyDiBp@eDw@wa@{Sj@l\\eCnLkBd`@}Bz[~LtGnBT@}CdFcUjBcDbDlAhFMcG`EuDpE}DnKhBnAjD_J`R}PzA~OvBzE`CtBhU@zCnA~JaOvKn]bJjk@fCoBiIui@eKe_@kE{GfOeHrToHmHrGbDfMbFuBzBiB~AfNmAj@mAxLvFfWaB`Y}G~Rp@fBdAT"
+        },
+        {
+          "name": "Service Zone Vienna - Klosterneuburg[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "onqeHgv{bBq@b@eAEu@VqGdEmHzFwSlOgCdCyK~OwAvA{@w@YfAOOUt@Xp@{DlDqCxDcF~GmF~DgGhCcCrBwGrHcFtDcHrFCzDqJ~HeOnEyD|AZ|BnG{CxAWaDlEj@fAjBcCrEoEhCq@jA_AvAk@l@i@n@oASWbD_C\\o@@qC^o@~LyJlK}KvFmCzDeCvA}AvJqKZ~AiAh@YhAj@p@z@Vn@]rD}C~DgGvA{ErCgDCgBaEtEmAlEqDzFkCl@m@_DtCcCxFgGrGkHvNkMdQcP~FwDjC{@~AKW{B"
+        },
+        {
+          "name": "SCS SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "udwdHognbBvqAnQhIKz`AwmAhCyh@Cg_@{r@kCmpAcYyAnQ}AzQiDvUeBtLmB|Ms@hLmBh\\aGl`@^J"
+        },
+        {
+          "name": "[Vienna][[SZ] Vienna-Korneuburg][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "eexeHghxbBbtByxAhuAelAoFee@aDlIgCjD}CxBxBlRkhAxz@_sBxeBzBnB"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Vienna_2131_exclude_new_type.json"
+      ]
     }
   ]
 }

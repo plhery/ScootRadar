@@ -125,6 +125,9 @@ Chorzów, Kielce, Kołobrzeg, Koszalin, Łeba, Legnica, Mielno, Olsztyn, Płock,
 Toruń, Władysławowo and Zamość. Kołobrzeg, Łeba, Mielno and Władysławowo are
 Baltic seaside resorts; check them again in summer.
 
+In Austria, Lime's Salzburg region held no scooter in its whole scooter zone
+on 25 October 2026.
+
 - Zones named as demos, tests, warehouses, events or temporary areas are left
   out, as Rome's three temporary areas and Dortmund's warehouses. So is the
   Tempe zone of Lime's Phoenix region: Lime's public Tempe feed holds it.
@@ -155,6 +158,7 @@ stationary reference scooter, country by country:
 | 25 October 2026 | Germany: 39 markets, Berlin, Munich, Hamburg and Cologne the largest | 2,318 | 594 | 58,459 | 1,595 |
 | 25 October 2026 | Italy: 10 markets, Rome, Milan, Turin and Catania the largest | 738 | 188 | 12,534 | 658 |
 | 25 October 2026 | Poland: Warsaw, Poznań, the Tricity, Kraków, Łódź, Wrocław | 525 | 133 | 14,834 | 504 |
+| 25 October 2026 | Austria: Vienna, Linz, Innsbruck, Klagenfurt, Wels | 276 | 70 | 2,987 | 140 |
 
 When the audit and the cache's sweeps shared an account, they shared its limit,
 about one request every five seconds. On 24 and 25 October 2026, before the cache's

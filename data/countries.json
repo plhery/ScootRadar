@@ -91,9 +91,10 @@
         "at:Klagenfurt"
       ],
       "credits": {
-        "attribution": "Austria: Dott anonymous app map; Voi authenticated rider map",
+        "attribution": "Austria: Dott anonymous app map; Voi authenticated rider map; Lime authenticated rider map",
         "links": [{ "label": "AT: Dott map", "href": "https://ridedott.com/" },
-          { "label": "AT: Voi map", "href": "https://www.voi.com/" }
+          { "label": "AT: Voi map", "href": "https://www.voi.com/" },
+          { "label": "AT: Lime map", "href": "https://www.li.me/" }
         ]
       }
     },

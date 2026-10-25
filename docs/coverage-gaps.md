@@ -12,8 +12,9 @@ polygons in Deva, České Budějovice, Querétaro, Naha, Doha, Santiago and Bris
 including their disconnected service areas, and since 25 October 2026 in
 London, Birmingham, Coventry, Milton Keynes and Salford, in 39 German
 markets, from Berlin and Munich to Waiblingen, in ten Italian ones, from
-Roma and Milano to Rimini, and in six Polish ones, from Warszawa to Wrocław.
-The other markets its rider map lists, 155 found so far, are added country by
+Roma and Milano to Rimini, in six Polish ones, from Warszawa to Wrocław, and
+in five Austrian ones, from Wien to Wels.
+The other markets its rider map lists, 149 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -52,7 +53,9 @@ record:
 
 Dott's anonymous app map supplements GBFS in eight countries since 24 October
 2026 ([evidence and limitations](dott-app-map.md)). Austria now covers 11 Dott
-regions. The [Voi rider map](voi-app-map.md) now supplies Vienna and Innsbruck without a public feed.
+regions. The [Voi rider map](voi-app-map.md) now supplies Vienna and Innsbruck without a public feed,
+and Lime's [rider map](lime-app-map.md) Vienna, Linz, Innsbruck, Klagenfurt and Wels
+since 25 October 2026; Lime's Salzburg region held no scooter that day.
 
 Operators that run there but publish nothing the map can read, cities that
 banned shared scooters, and feeds that were empty when checked.

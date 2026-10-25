@@ -1144,6 +1144,91 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Wroclaw_256_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "AT",
+      "city": "Innsbruck",
+      "regionToken": "EG6WUUE4GU2CX",
+      "fingerprint": "fbf258c3011d522ce982d85f90858e858a5526215d9b17539dc6c2e9362652d7",
+      "groups": 6,
+      "localCells": 23,
+      "coldMapRequests": 23,
+      "warmMapRequests": 23,
+      "scooters": 266,
+      "stationaryReferences": 33,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T17:23:25.406Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Innsbruck_69_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "AT",
+      "city": "Klagenfurt",
+      "regionToken": "YAMYEY5U73Y3B",
+      "fingerprint": "49db6099946d971bb1182b9a0970ef3351530a6945e7d407844e3e86a0174407",
+      "groups": 10,
+      "localCells": 38,
+      "coldMapRequests": 38,
+      "warmMapRequests": 38,
+      "scooters": 165,
+      "stationaryReferences": 29,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T17:28:05.730Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Klagenfurt_181_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "AT",
+      "city": "Linz",
+      "regionToken": "PUYE3LYNIOU7F",
+      "fingerprint": "feee6a8cfe3d9484e0b3bd36ce5fd2022fe3a4994145c45bf3f07a08c41b1ff6",
+      "groups": 9,
+      "localCells": 35,
+      "coldMapRequests": 35,
+      "warmMapRequests": 35,
+      "scooters": 506,
+      "stationaryReferences": 45,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T17:32:24.454Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Linz_242_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "AT",
+      "city": "Wels",
+      "regionToken": "XPC2ALDIT32AI",
+      "fingerprint": "abc89ff44eec742cc499f41b718c68df7e92cb3469562abe506d12956c4a9d44",
+      "groups": 3,
+      "localCells": 12,
+      "coldMapRequests": 12,
+      "warmMapRequests": 12,
+      "scooters": 101,
+      "stationaryReferences": 28,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T17:37:53.351Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Wels_1792_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "AT",
+      "city": "Wien",
+      "regionToken": "GUHWNKTOD63UF",
+      "fingerprint": "ef820ac9138f365b9bdb49d936dcb639fef6d9427051285bf001d7c5c36fc47d",
+      "groups": 42,
+      "localCells": 168,
+      "coldMapRequests": 172,
+      "warmMapRequests": 172,
+      "scooters": 1949,
+      "stationaryReferences": 5,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T17:58:11.385Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Vienna_2131_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {
