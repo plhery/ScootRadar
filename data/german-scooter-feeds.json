@@ -212,7 +212,7 @@
         "west": 8.6176,
         "east": 8.7379
       },
-      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/heidelberg/gbfs.json",
+      "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/dott_heidelberg/gbfs",
       "areas": [
         {
           "city": "Heidelberg",
@@ -257,7 +257,7 @@
         "west": 9.0868,
         "east": 9.3189
       },
-      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/heilbronn/gbfs.json",
+      "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/dott_heilbronn/gbfs",
       "areas": [
         {
           "city": "Heilbronn",
@@ -328,7 +328,7 @@
         "west": 7.6348,
         "east": 7.8377
       },
-      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/kaiserslautern/gbfs.json"
+      "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/dott_kaiserslautern/gbfs"
     },
     {
       "id": "dott_de_langenfeld",
@@ -469,7 +469,7 @@
         "west": 9.0659,
         "east": 9.2723
       },
-      "discoveryUrl": "https://gbfs.api.ridedott.com/public/v2/stuttgart/gbfs.json"
+      "discoveryUrl": "https://api.mobidata-bw.de/sharing/gbfs/v3/dott_stuttgart/gbfs"
     },
     {
       "id": "hopp_de_konstanz",

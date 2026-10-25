@@ -46,6 +46,16 @@ available scooters in 18 towns. Bolt's and Lime's feeds there wait for their
 data to update again; see
 [Voi in North Rhine-Westphalia, October 2026](#voi-in-north-rhine-westphalia-october-2026).
 
+Dott's Heidelberg, Heilbronn, Kaiserslautern and Stuttgart scooters are read
+from MobiData BW since 25 October 2026, which republishes them as GBFS 3.0 under the
+[Datenlizenz Deutschland Namensnennung 2.0](https://www.govdata.de/dl-de/by-2-0)
+([dataset](https://mobidata-bw.de/dataset/escootch)). Dott's own feeds there come under its
+[API licence](https://ridedott.com/api-licence/), which restricts redistribution. At about 04:00 CET
+both held the same fleets (Stuttgart 1,316 and 1,316), prices and app links; MobiData BW
+prefixes the ids (`DOJ:Vehicle:…`) and ran about two minutes behind. Its dataset page still
+calls Dott "currently not available (25.09.2026)", though the four feeds update. Dott's
+other German regions are not on MobiData BW, so they stay on Dott's feeds.
+
 Italy grew from Rome to three cities on 13 October 2026, with Bird Palermo and
 Bird Napoli; see [Italy, October 2026](#italy-october-2026). Elerent's
 scooters in Catania followed on 14 October 2026; see
@@ -53,7 +63,7 @@ scooters in Catania followed on 14 October 2026; see
 
 | Country | Operator | Enabled feeds | Coverage |
 | --- | --- | ---: | --- |
-| Germany | Dott | 15 | Aachen, Berlin, Düsseldorf, Essen, Hannover, Heidelberg, Heilbronn, Kaiserslautern, Köln, Langenfeld, Leipzig, München, Münster, Potsdam and Stuttgart |
+| Germany | Dott | 15 | Aachen, Berlin, Düsseldorf, Essen, Hannover, Köln, Langenfeld, Leipzig, München, Münster and Potsdam; Heidelberg, Heilbronn, Kaiserslautern and Stuttgart (MobiData BW) |
 | Germany | Bolt | 3 | Karlsruhe, Stuttgart, Reutlingen / Tübingen |
 | Germany | Hopp | 1 | Konstanz |
 | Germany | Lime | 3 | Frankfurt, Wuppertal, Stuttgart / Konstanz |

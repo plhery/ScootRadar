@@ -43,6 +43,7 @@ const hostHeaders = { 'api.entur.io': { 'ET-Client-Name': 'scootradar-map' } };
 // Dott's listing of a country names only the regions it still serves publicly. Its CDN
 // keeps a 404 for hours and an unknown query parameter answers 400: no cache busting.
 const DOTT = 'https://gbfs.api.ridedott.com';
+const MOBIDATA_BW = 'https://api.mobidata-bw.de';
 
 // At most two requests a second to one host, whatever the number of feeds it serves.
 const pacer = hostPacer(500);
@@ -89,8 +90,10 @@ const scooterTypes = (types, provider) => new Set(types.data.vehicle_types.filte
   (type.propulsion_type === 'electric' || (type.propulsion_type === 'electric_assist' && provider === 'zeus'))
 )).map(type => type.vehicle_type_id));
 
+// MobiData BW republishes some of Dott's German regions, as dott_<region>; the catalog reads those there.
 const dottRegion = url => {
   const { origin, pathname } = new URL(url);
+  if (origin === MOBIDATA_BW) return pathname.match(/^\/sharing\/gbfs\/v3\/dott_([^/]+)\/gbfs$/)?.[1];
   return origin === DOTT ? pathname.match(/^\/public\/v2\/([^/]+)\/[^/]+\.json$/)?.[1] : undefined;
 };
 

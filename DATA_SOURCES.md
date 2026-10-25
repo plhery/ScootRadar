@@ -514,8 +514,9 @@ tested Italian scooter feeds were empty, stale or unavailable. See the [coverage
 Sources: [MobilityData's GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
 [Dott Germany](https://gbfs.api.ridedott.com/public/v2/countries/de/gbfs.json),
 [MobiData BW](https://www.mobidata-bw.de/) and the individual public operator feeds.
-MobiData BW supplies the reviewed Bolt, Hopp, Lime and Voi GBFS 3.0 systems and
-ten of the fourteen Zeus systems; its Voi feed covers eight Baden-Württemberg
+MobiData BW supplies the reviewed Bolt, Hopp, Lime and Voi GBFS 3.0 systems,
+ten of the fourteen Zeus systems and, since 25 October 2026, Dott's Heidelberg,
+Heilbronn, Kaiserslautern and Stuttgart; its Voi feed covers eight Baden-Württemberg
 cities, not all of Germany. Zeus's own feeds supply Bamberg, Ludwigsburg,
 Regensburg and Schweinfurt.
 
