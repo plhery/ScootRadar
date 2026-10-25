@@ -310,6 +310,109 @@
         "Pireás",
         "Πειραιάς"
       ]
+    },
+    {
+      "id": "lime_gr_app_athens",
+      "provider": "lime",
+      "city": "Athens",
+      "center": [
+        37.98376,
+        23.72784
+      ],
+      "aliases": [
+        "Αθήνα"
+      ],
+      "timeZone": "Europe/Athens",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "2P3BV6VNODYR4",
+      "limeMapGrid": {
+        "south": 37.80738,
+        "west": 23.62693,
+        "north": 38.03335,
+        "east": 23.78795,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.017054899274369897,
+        "cells": "8-9,18-19,27-28,37-38,74-76,80-81,83-86,90-97,100-108,111-118,124-128,134-138,144-148,155-158,165-168"
+      }
+    },
+    {
+      "id": "lime_gr_app_heraklion",
+      "provider": "lime",
+      "city": "Heraklion",
+      "center": [
+        35.33336,
+        25.136665
+      ],
+      "aliases": [
+        "Irákleion"
+      ],
+      "timeZone": "Europe/Athens",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "7BBVLLV5P4HUQ",
+      "limeMapGrid": {
+        "south": 35.32062,
+        "west": 25.10845,
+        "north": 35.3461,
+        "east": 25.16488,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01651449837921683,
+        "cells": "0-2,4-7"
+      }
+    },
+    {
+      "id": "lime_gr_app_kifisia",
+      "provider": "lime",
+      "city": "Kifisia",
+      "center": [
+        38.07438,
+        23.81106
+      ],
+      "aliases": [
+        "Κηφισιά"
+      ],
+      "timeZone": "Europe/Athens",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "2P3BV6VNODYR4",
+      "limeMapGrid": {
+        "south": 38.06383,
+        "west": 23.79246,
+        "north": 38.09859,
+        "east": 23.83423,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.017114505506394498,
+        "cells": "0-8"
+      }
+    },
+    {
+      "id": "lime_gr_app_thessaloniki",
+      "provider": "lime",
+      "city": "Thessaloniki",
+      "center": [
+        40.627,
+        22.9512
+      ],
+      "timeZone": "Europe/Athens",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "GONJN7YHVDWTK",
+      "limeMapGrid": {
+        "south": 40.56226,
+        "west": 22.89796,
+        "north": 40.67771,
+        "east": 22.98231,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01773683188764513,
+        "cells": "2-4,7-9,12-14,17-19,22-28,30-33,35-38,40-42"
+      }
     }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Athens_580_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Heraklion_90_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Thessaloniki_371_exclude_new_type.json"
   ]
 }

@@ -378,9 +378,11 @@
       "anchorNote": "Inland, about the middle of the mainland, west of Lamia.",
       "featuredCities": ["gr:Rhodes", "gr:Faliraki", "gr:Kos", "gr:Piraeus", "gr:Argostoli", "gr:Ioannina"],
       "credits": {
-        "attribution": "Greece: Hopp, Hoppy GBFS; Dott anonymous app map",
+        "attribution": "Greece: Hopp, Hoppy GBFS; Dott anonymous app map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
         "gbfs": ["Hopp", "Hoppy"],
-        "links": [{ "label": "GR: Dott map", "href": "https://ridedott.com/" }]
+        "links": [{ "label": "GR: Dott map", "href": "https://ridedott.com/" },
+          { "label": "GR: Lime map", "href": "https://www.li.me/" },
+          { "label": "GR: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }]
       }
     },
     {

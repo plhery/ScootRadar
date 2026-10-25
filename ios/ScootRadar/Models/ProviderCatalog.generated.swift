@@ -1726,6 +1726,35 @@ enum ScooterProviderCoverage {
         systems.append((.hoppy, GeoBounds(south: 36.2372, west: 28.1335, north: 36.271, east: 28.1787)))
         systems.append((.dott, GeoBounds(south: 40.5586, west: 22.8837, north: 40.7779, east: 23.1412)))
         systems.append((.dott, GeoBounds(south: 37.904, west: 23.6145, north: 38.0306, east: 23.7848)))
+        systems.append((.lime, GeoBounds(south: 37.80738, west: 23.76336919, north: 37.82085467, east: 23.78795)))
+        systems.append((.lime, GeoBounds(south: 37.82085467, west: 23.76336919, north: 37.83432934, east: 23.78795)))
+        systems.append((.lime, GeoBounds(south: 37.83432934, west: 23.74631429, north: 37.847804, east: 23.78042409)))
+        systems.append((.lime, GeoBounds(south: 37.847804, west: 23.74631429, north: 37.86127867, east: 23.78042409)))
+        systems.append((.lime, GeoBounds(south: 37.90170267, west: 23.6951496, north: 37.91517734, east: 23.74631429)))
+        systems.append((.lime, GeoBounds(south: 37.91517734, west: 23.62693, north: 37.92865201, east: 23.6610398)))
+        systems.append((.lime, GeoBounds(south: 37.91517734, west: 23.6780947, north: 37.92865201, east: 23.74631429)))
+        systems.append((.lime, GeoBounds(south: 37.92865201, west: 23.62693, north: 37.94212668, east: 23.76336919)))
+        systems.append((.lime, GeoBounds(south: 37.94212668, west: 23.62693, north: 37.95560134, east: 23.78042409)))
+        systems.append((.lime, GeoBounds(south: 37.95560134, west: 23.6439849, north: 37.96907601, east: 23.78042409)))
+        systems.append((.lime, GeoBounds(south: 37.96907601, west: 23.6951496, north: 37.98255068, east: 23.78042409)))
+        systems.append((.lime, GeoBounds(south: 37.98255068, west: 23.6951496, north: 37.99602535, east: 23.78042409)))
+        systems.append((.lime, GeoBounds(south: 37.99602535, west: 23.6951496, north: 38.00950001, east: 23.78042409)))
+        systems.append((.lime, GeoBounds(south: 38.00950001, west: 23.7122045, north: 38.02297468, east: 23.78042409)))
+        systems.append((.lime, GeoBounds(south: 38.02297468, west: 23.7122045, north: 38.03335, east: 23.78042409)))
+        systems.append((.lime, GeoBounds(south: 35.32062, west: 25.10845, north: 35.33409467, east: 25.1579935)))
+        systems.append((.lime, GeoBounds(south: 35.33409467, west: 25.10845, north: 35.3461, east: 25.16488)))
+        systems.append((.lime, GeoBounds(south: 38.06383, west: 23.79246, north: 38.07730467, east: 23.83423)))
+        systems.append((.lime, GeoBounds(south: 38.07730467, west: 23.79246, north: 38.09077934, east: 23.83423)))
+        systems.append((.lime, GeoBounds(south: 38.09077934, west: 23.79246, north: 38.09859, east: 23.83423)))
+        systems.append((.lime, GeoBounds(south: 40.56226, west: 22.93343366, north: 40.57573467, east: 22.98231)))
+        systems.append((.lime, GeoBounds(south: 40.57573467, west: 22.93343366, north: 40.58920934, east: 22.98231)))
+        systems.append((.lime, GeoBounds(south: 40.58920934, west: 22.93343366, north: 40.602684, east: 22.98231)))
+        systems.append((.lime, GeoBounds(south: 40.602684, west: 22.93343366, north: 40.61615867, east: 22.98231)))
+        systems.append((.lime, GeoBounds(south: 40.61615867, west: 22.93343366, north: 40.62963334, east: 22.98231)))
+        systems.append((.lime, GeoBounds(south: 40.62963334, west: 22.89796, north: 40.64310801, east: 22.96890733)))
+        systems.append((.lime, GeoBounds(south: 40.64310801, west: 22.89796, north: 40.65658267, east: 22.96890733)))
+        systems.append((.lime, GeoBounds(south: 40.65658267, west: 22.89796, north: 40.67005734, east: 22.96890733)))
+        systems.append((.lime, GeoBounds(south: 40.67005734, west: 22.89796, north: 40.67771, east: 22.9511705)))
         systems.append((.hopp, GeoBounds(south: 34.7243, west: 32.3084, north: 34.9182, east: 32.4919)))
         systems.append((.hopp, GeoBounds(south: 34.6397, west: 32.9752, north: 34.7227, east: 33.1875)))
         systems.append((.bolt, GeoBounds(south: 35.1166, west: 33.2918, north: 35.1986, east: 33.4231)))
@@ -2612,7 +2641,7 @@ enum ScooterCityCatalog {
     // checker over 30 GB, and CI's Macs, which have 7, killed the compiler (24 Oct 2026).
     private static func makeCities() -> [ScooterCity] {
         var cities: [ScooterCity] = []
-        cities.reserveCapacity(980)
+        cities.reserveCapacity(983)
         cities.append(ScooterCity(id: "ch:amriswil", name: "Amriswil", countryCode: "CH", center: GeoPoint(latitude: 47.547, longitude: 9.2959), bounds: GeoBounds(south: 47.513, west: 9.234, north: 47.5773, east: 9.3262)))
         cities.append(ScooterCity(id: "ch:basel", name: "Basel", countryCode: "CH", center: GeoPoint(latitude: 47.5596, longitude: 7.5886), bounds: GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82)))
         cities.append(ScooterCity(id: "ch:bern", name: "Bern", countryCode: "CH", center: GeoPoint(latitude: 46.948, longitude: 7.4474), bounds: GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7)))
@@ -3125,7 +3154,10 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "gr:Ialysos", name: "Ialysos", countryCode: "GR", center: GeoPoint(latitude: 36.4156, longitude: 28.1582), bounds: GeoBounds(south: 36.4062, west: 28.1137, north: 36.4278, east: 28.1869), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_rhodes")]))
         cities.append(ScooterCity(id: "gr:Afantou", name: "Afantou", countryCode: "GR", center: GeoPoint(latitude: 36.2845, longitude: 28.1735), bounds: GeoBounds(south: 36.2745, west: 28.1567, north: 36.2952, east: 28.1895), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_rhodes")]))
         cities.append(ScooterCity(id: "gr:Kolymbia", name: "Kolymbia", countryCode: "GR", center: GeoPoint(latitude: 36.2532, longitude: 28.1611), bounds: GeoBounds(south: 36.2372, west: 28.1335, north: 36.271, east: 28.1787), feeds: [ScooterCityFeed(id: "greece:hoppy_gr_rhodes")]))
-        cities.append(ScooterCity(id: "gr:Thessaloniki", name: "Thessaloniki", countryCode: "GR", center: GeoPoint(latitude: 40.627, longitude: 22.9512), bounds: GeoBounds(south: 40.5586, west: 22.8837, north: 40.7779, east: 23.1412), feeds: [ScooterCityFeed(id: "greece:dott_gr_thessaloniki")]))
+        cities.append(ScooterCity(id: "gr:Thessaloniki", name: "Thessaloniki", countryCode: "GR", center: GeoPoint(latitude: 40.627, longitude: 22.9512), bounds: GeoBounds(south: 40.5586, west: 22.8837, north: 40.7779, east: 23.1412), feeds: [ScooterCityFeed(id: "greece:dott_gr_thessaloniki"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_000"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_001"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_002"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_003"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_004"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_005"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_006"), ScooterCityFeed(id: "greece:lime_gr_app_thessaloniki_007")]))
+        cities.append(ScooterCity(id: "gr:Athens", name: "Athens", countryCode: "GR", center: GeoPoint(latitude: 37.98376, longitude: 23.72784), bounds: GeoBounds(south: 37.80738, west: 23.62693, north: 38.03335, east: 23.78795), feeds: [ScooterCityFeed(id: "greece:lime_gr_app_athens_000"), ScooterCityFeed(id: "greece:lime_gr_app_athens_001"), ScooterCityFeed(id: "greece:lime_gr_app_athens_002"), ScooterCityFeed(id: "greece:lime_gr_app_athens_003"), ScooterCityFeed(id: "greece:lime_gr_app_athens_004"), ScooterCityFeed(id: "greece:lime_gr_app_athens_005"), ScooterCityFeed(id: "greece:lime_gr_app_athens_006"), ScooterCityFeed(id: "greece:lime_gr_app_athens_007"), ScooterCityFeed(id: "greece:lime_gr_app_athens_008"), ScooterCityFeed(id: "greece:lime_gr_app_athens_009"), ScooterCityFeed(id: "greece:lime_gr_app_athens_010"), ScooterCityFeed(id: "greece:lime_gr_app_athens_011"), ScooterCityFeed(id: "greece:lime_gr_app_athens_012"), ScooterCityFeed(id: "greece:lime_gr_app_athens_013"), ScooterCityFeed(id: "greece:lime_gr_app_athens_014"), ScooterCityFeed(id: "greece:lime_gr_app_athens_015"), ScooterCityFeed(id: "greece:lime_gr_app_athens_016")]))
+        cities.append(ScooterCity(id: "gr:Heraklion", name: "Heraklion", countryCode: "GR", center: GeoPoint(latitude: 35.33336, longitude: 25.136665), bounds: GeoBounds(south: 35.32062, west: 25.10845, north: 35.3461, east: 25.16488), feeds: [ScooterCityFeed(id: "greece:lime_gr_app_heraklion_000"), ScooterCityFeed(id: "greece:lime_gr_app_heraklion_001")]))
+        cities.append(ScooterCity(id: "gr:Kifisia", name: "Kifisia", countryCode: "GR", center: GeoPoint(latitude: 38.07438, longitude: 23.81106), bounds: GeoBounds(south: 38.06383, west: 23.79246, north: 38.09859, east: 23.83423), feeds: [ScooterCityFeed(id: "greece:lime_gr_app_kifisia_000"), ScooterCityFeed(id: "greece:lime_gr_app_kifisia_001"), ScooterCityFeed(id: "greece:lime_gr_app_kifisia_002")]))
         cities.append(ScooterCity(id: "cy:Paphos", name: "Paphos", countryCode: "CY", center: GeoPoint(latitude: 34.7756, longitude: 32.4243), bounds: GeoBounds(south: 34.7243, west: 32.3084, north: 34.9182, east: 32.4919), feeds: [ScooterCityFeed(id: "cyprus:hopp_cy_paphos")]))
         cities.append(ScooterCity(id: "cy:Limassol", name: "Limassol", countryCode: "CY", center: GeoPoint(latitude: 34.6727, longitude: 33.0418), bounds: GeoBounds(south: 34.6397, west: 32.9752, north: 34.7227, east: 33.1875), feeds: [ScooterCityFeed(id: "cyprus:hopp_cy_cyprus")]))
         cities.append(ScooterCity(id: "cy:Nicosia", name: "Nicosia", countryCode: "CY", center: GeoPoint(latitude: 35.17284, longitude: 33.35397), bounds: GeoBounds(south: 35.1166, west: 33.2918, north: 35.1986, east: 33.4231), feeds: [ScooterCityFeed(id: "cyprus:bolt_cy_app_261")]))
@@ -3598,7 +3630,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 980
+    static let cityCount = 983
     static let countryCount = 56
 
     /// Cities by distance from the point to their centre, nearest first.
@@ -4008,7 +4040,7 @@ enum ScooterCountryCatalog {
         ("BR/CL/MX/KZ/AZ/GE: JET map", "https://jetshr.com/"),
         ("BR/CL/MX/KZ/CO/BY: Whoosh map", "https://whoosh.bike/"),
         ("ZA: Zippy rider map", "https://zippyride.app.link/"),
-        ("DE/AT/IT/UK/DK/SE/PL/HU/JP/CL/MX/RO/CZ/QA/AU: Lime map", "https://www.li.me/"),
+        ("DE/AT/IT/UK/DK/SE/PL/HU/GR/JP/CL/MX/RO/CZ/QA/AU: Lime map", "https://www.li.me/"),
         ("AU/TR/MY/KR: Beam map", "https://www.ridebeam.com/"),
         ("US/KR: GCOO map", "https://gcoo.io/"),
         ("KR: Kickgoing map", "https://kickgoing.io/"),
@@ -4016,7 +4048,7 @@ enum ScooterCountryCatalog {
         ("CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
         ("DE/BE/PT/IS/SE/LV/PL/CY/UA/KZ/RO/EE/LT/SK/BG/MD/SI/IE: Bolt map", "https://bolt.eu/"),
         ("TR/MK/BA/XK: BinBin map", "https://www.binbin.tech/"),
-        ("DE/IT/BE/UK/PT/DK/LV/PL/HU/CY/UA/JP/CL/MX/RO/CZ/QA/AU/EE/LT/SK/BG/MD/SI/IE/MK/BA/XK: GeoNames · CC BY 4.0", "https://www.geonames.org/about.html"),
+        ("DE/IT/BE/UK/PT/DK/LV/PL/HU/GR/CY/UA/JP/CL/MX/RO/CZ/QA/AU/EE/LT/SK/BG/MD/SI/IE/MK/BA/XK: GeoNames · CC BY 4.0", "https://www.geonames.org/about.html"),
     ]
 
     /// The countries whose totals, zoomed out, are their states' or provinces', and those by code.

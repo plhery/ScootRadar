@@ -2181,6 +2181,143 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Targu_Mures_87_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "GR",
+      "city": "Athens",
+      "center": [
+        37.98376,
+        23.72784
+      ],
+      "timeZone": "Europe/Athens",
+      "regionToken": "2P3BV6VNODYR4",
+      "serviceAreas": [
+        {
+          "name": "Service Zone - Voula[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}h`fFiy}oCh\\sI~PwFhPgQ|OeT`RiVhAiCvAqGpLc\\jOy@di@hAfWjHz_Ae`@aGiEmEcOHyGj@mEt@iDrA_C`Bs@vLEfI}HPy@~Am@VaBaU{SwdB~j@gu@lQ{{@vp@{p@bRC~S[`oA"
+        },
+        {
+          "name": " [Athens-Piraeus][Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "m|pfF_efoCz^lGtBPfDfEtElAdFcBjFgEzBiDsD_Fl@g@vI{@lAgBVm\\_DsBy@iCQmCvCyG{AyJ@sDu@oE_QcUuFL{Bg@kGsJq@VqAXcDrA_BfCk@`ESx@UXi@\\q@Hm@@w@_@{@YyAm@iCwEe@sDRoDxAqDbDmAnGLAnClDrAfFqIqJeL_@oGNuEr@qKBkGkBHgCj@cBK}Ao@cCiE_@iBPwAbAuAdAsCsHuGcC`DsE`AcFxCcBwBiBcEaEix@x@cPd@eSnEcTtN}b@fSsWbB_IxFsF~J~GfAnNhCdQdPrDrF}AdEiLrFsFvEsDxDmCtDqD|IeQ~HqR~BiFfJ{FbEsQdGmJ`ScT`c@cn@sEqcANg^gMsb@_Nac@ijBb@}|@u|@y`@{h@sh@wFeN_c@mb@xYyj@aj@wBe@mBxV}JrP_OzZuKeTnTaaAqBwNgSwJcWpU}Wq@q_@vX{T}FsPqc@eLsLm_@bNqOhfA~CrEfRl\\wAv[d@rNaJ`EaGd@u`@yo@in@_Fek@ei@w_AtFdOvt@hT~i@qUvx@he@pLkF|m@||@hx@xo@p[hb@pc@rP~^fMkOfXcQnf@bT~P{Vb\\bXj]nf@rY~^|FiBrKfVhe@nk@fSdtCmFpYPbKhRxKt]l_@wP|l@QrNe@~[|_@~EIqk@pKGxFp@fEyJhE_@fI`I|J~G`AzBt@`GrL~@?nOmHlPCtQ"
+        },
+        {
+          "name": "[Athens][Monastiraki][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "kgxfF}dyoChFV?|Ab@Nk@lJiBYo@rIoDwAfBuU"
+        },
+        {
+          "name": "A-LSZ 4[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "igxfF_gzoC]|GCpBSbE[tFQ~Br@DN_@jARb@kCZ_Bf@wEZqEX{FeBYcBW"
+        },
+        {
+          "name": "A-NPZ 1[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ejwfF{bxoC~C}@z@gBVgDp@mJf@_Ht@uKMsAEcKkH{E}BmEmPgAg@dP{BnOnAzEA|Ad@Nk@lJm@E]G]Oo@vIQrAa@jBe@hCCl@b@l@l@vBn@lAdBNdAe@jBqAZUdOyE"
+        },
+        {
+          "name": "NPZ Monastiraki[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "oixfFy}xoC`@BHgAc@EGhA"
+        },
+        {
+          "name": "NPZ Parliament[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "mexfFo|zoCzF`AjAaK}GgAi@fK"
+        },
+        {
+          "name": "Theatro Vrachon Vyronas NPZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "uysfFen_pCpAlEpFv@iA`NnG~BxFa@~BkDd@eGpCcFqEeFdCaGL{BsLuAoDQyKzO"
+        },
+        {
+          "name": "Chalikaki Park NPZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "akrfFk_~oCpFxBv@gDbCv@nBgLaKmD{CjQ"
+        },
+        {
+          "name": "Navarinou Park NPZ1[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "skqfFco}oChW|QpN`Dp@nDpCa@y@wKkH_C_DiJwG_C_BaGaQtJ"
+        },
+        {
+          "name": "Navarinou Park NPZ2[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}aqfFcz}oC`IeEIyCiEoF}DmGnA|Y"
+        },
+        {
+          "name": "Alsos Ilision Park NPZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "wgxfF_t~oCzKrV~W_SiJyToBuCoGyDsHmEeLzXfGfH"
+        },
+        {
+          "name": "Veikou Park NPZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "aacgF}y`pC~UfJxn@dj@rNy]a_@{^ku@fG"
+        },
+        {
+          "name": "[Athens][Zeas][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "{kpfFyfjoC`E{GpCjDqB|Dq@r@WFWC_CeC"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Athens_580_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Αθήνα"
+      ]
+    },
+    {
+      "country": "GR",
+      "city": "Heraklion",
+      "center": [
+        35.33336,
+        25.136665
+      ],
+      "timeZone": "Europe/Athens",
+      "regionToken": "7BBVLLV5P4HUQ",
+      "serviceAreas": [
+        {
+          "name": "Heraklion Ops Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "_ytvEkkgxCfe@sBtEdO~T}Hs@{NdDmF|_@ea@TayAmEqh@yb@vM{Fp@c_@oSvHqUsM_oAsBch@eOwDuCrWiKzBaKnCgMf@cEpI{AtOvL|BbCfDzEhYCdI`Fzb@Av@sDfVo@~Am@`Au@pBfAfEmCzDtBv\\|CNl@vACfEFh@Un@w@|@o@lAtBjKUtBk@xAhDtz@|IzMv@`F`IjC"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Heraklion_90_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Irákleion"
+      ]
+    },
+    {
+      "country": "GR",
+      "city": "Kifisia",
+      "center": [
+        38.07438,
+        23.81106
+      ],
+      "timeZone": "Europe/Athens",
+      "regionToken": "2P3BV6VNODYR4",
+      "serviceAreas": [
+        {
+          "name": "Kifisia service zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ukngF{}epC`dCoJt[}{AYs{Ck{BhF}iA~McPv{@zDnfAzEvp@zKbh@z\\rN"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Athens_580_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Κηφισιά"
+      ]
+    },
+    {
+      "country": "GR",
+      "city": "Thessaloniki",
+      "center": [
+        40.627,
+        22.9512
+      ],
+      "timeZone": "Europe/Athens",
+      "regionToken": "GONJN7YHVDWTK",
+      "serviceAreas": [
+        {
+          "name": "[Thessaloniki][Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "i|_wFk}|jClFif@bCsHrIwM@k@xP{]fTc^zKaBjLiPbLoFx|BvOhETlCd@~C~JnYeEf@oEte@tp@hHrOxFfGdHjDjPyCxJoQpDqPbaAonA|See@jIaYe`@kX}JsT}n@rWy}@}J_e@iGi\\_MsOgGma@oe@aQfLuHxCmInLkEMcHcBeD_AaPtGqMlDqD\\CxI{SbHoG|NuHj@oG|E_p@ve@sp@_Ke_@tWa]o@uI_KyHoVsNeFeD|}@}UhYiH}@}KrKiMvY_BnLoPjEqE{EuKr\\xBj^uAngAgB|~Bx}Ap`@bDqzC`h@r|Ah`ApEn{@slBmKcP"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Thessaloniki_371_exclude_new_type.json"
+      ]
     }
   ]
 }

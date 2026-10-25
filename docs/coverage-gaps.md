@@ -15,9 +15,9 @@ markets, from Berlin and Munich to Waiblingen, in ten Italian ones, from
 Roma and Milano to Rimini, in six Polish ones, from Warszawa to Wrocław, and
 in five Austrian ones, from Wien to Wels, in Göteborg and Malmö, in
 København and Odense, in Brno and Ostrava, in 15 Hungarian markets, from
-Budapest to Szigetszentmiklós, and in seven Romanian ones, from București to
-Târgoviște.
-The other markets its rider map lists, 100 found so far, are added country by
+Budapest to Szigetszentmiklós, in seven Romanian ones, from București to
+Târgoviște, and in Athens, Kifisia, Thessaloniki and Heraklion.
+The other markets its rider map lists, 96 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -365,9 +365,10 @@ banned shared scooters, and feeds that were empty when checked.
   Piraeus, Argostoli and Ioannina, and Hoppy on Rhodes, on Kos, in Rethymno
   and on Zakynthos, are covered.
   - Dott now covers Thessaloniki and Piraeus through its anonymous app map.
-    Its Voula region was empty; central Athens remains a gap. Lime's address
-    answers 404 for Athens and Thessaloniki, and Bolt has no scooter area in
-    either (25 October 2026).
+    Its Voula region was empty. Lime's public address answers 404 for Athens
+    and Thessaloniki, but its rider map covers Athens, Kifisia, Thessaloniki
+    and Heraklion since 25 October 2026. Bolt has no scooter area in Athens
+    or Thessaloniki (25 October 2026).
   - Hopp Nafplio listed 17 or 18 available scooters, but none moved, left or
     came back in 35 polls from 12:03 to 16:47 Athens time on a Tuesday, while
     Faliraki, Piraeus, Argostoli and Ioannina had rides, nor in 22 polls from

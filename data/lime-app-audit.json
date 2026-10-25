@@ -1705,6 +1705,74 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Targu_Mures_87_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "GR",
+      "city": "Athens",
+      "regionToken": "2P3BV6VNODYR4",
+      "fingerprint": "44e4ae44a66e018a4dd08d3e3611fbcdf7f2aca9d22e2b58f79920ab48098b71",
+      "groups": 17,
+      "localCells": 65,
+      "coldMapRequests": 113,
+      "warmMapRequests": 113,
+      "scooters": 3776,
+      "stationaryReferences": 132,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T21:54:04.684Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Athens_580_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "GR",
+      "city": "Heraklion",
+      "regionToken": "7BBVLLV5P4HUQ",
+      "fingerprint": "03ac3268dca5a30aa5c2504c284349ce476252d17b2c07bab624432f29c1a5a9",
+      "groups": 2,
+      "localCells": 7,
+      "coldMapRequests": 7,
+      "warmMapRequests": 7,
+      "scooters": 262,
+      "stationaryReferences": 66,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T21:55:07.620Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Heraklion_90_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "GR",
+      "city": "Kifisia",
+      "regionToken": "2P3BV6VNODYR4",
+      "fingerprint": "764ca0fa4299476957de64c92d91965c75be8cb56345cbbdf1c978bc0861fedc",
+      "groups": 3,
+      "localCells": 9,
+      "coldMapRequests": 9,
+      "warmMapRequests": 9,
+      "scooters": 47,
+      "stationaryReferences": 12,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T21:56:24.602Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Athens_580_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "GR",
+      "city": "Thessaloniki",
+      "regionToken": "GONJN7YHVDWTK",
+      "fingerprint": "6e4d55b5ed1d21fdb25413c40232ddbce05ef0ff1959747760f3734067b281fd",
+      "groups": 8,
+      "localCells": 30,
+      "coldMapRequests": 30,
+      "warmMapRequests": 30,
+      "scooters": 357,
+      "stationaryReferences": 42,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T22:00:08.657Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Thessaloniki_371_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

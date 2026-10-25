@@ -4,6 +4,18 @@ Update, 24 October 2026: additional Dott regions now use its anonymous app
 map. The audit below records the original GBFS investigation; the current
 catalog and [Dott adapter evidence](dott-app-map.md) supersede its Dott gaps.
 
+Update, 25 October 2026: Lime's authenticated rider map supplies **Athens**,
+**Kifisia**, **Thessaloniki** and **Heraklion**, each registered after a clean
+full-area audit, with about 3,780, 50, 360 and 260 scooters. Kifisia, a
+zone of Lime's Athens region, is a municipality apart, so the map lists it
+as a town. Only scooter pins inside the published service polygons are
+included; see [Lime's map](lime-app-map.md) for the collection and checks.
+The regions and their public outline documents:
+
+- Athens and Kifisia, `2P3BV6VNODYR4`: [publisher service polygons](https://assets.lime.bike/zones_attributes/Athens_580_exclude_new_type.json)
+- Thessaloniki, `GONJN7YHVDWTK`: [publisher service polygons](https://assets.lime.bike/zones_attributes/Thessaloniki_371_exclude_new_type.json)
+- Heraklion, `7BBVLLV5P4HUQ`: [publisher service polygons](https://assets.lime.bike/zones_attributes/Heraklion_90_exclude_new_type.json)
+
 
 Verified 13 October 2026. The
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
@@ -249,7 +261,7 @@ No Greek law or covered town bans renting at night, so
   15 August 2026).
 - **Hopp's terms** ([hopp.bike](https://hopp.bike/tos)) set an age of 18 and
   no hours, and nothing specific to Greece.
-- **Athens**, which has no scooter on the map, adopted rules on 18 May 2026
+- **Athens**, where Lime's scooters are on the map, adopted rules on 18 May 2026
   that deal almost only with parking, after the regional authority struck
   out most of an earlier draft as beyond the city's powers
   ([Dimokratiki](https://www.dimokratiki.gr/19-05-2026/ilektrika-patinia-koftis-apo-tin-apokentromeni-gia-tous-periorismous-i-telikes-rythmisis/),
@@ -279,9 +291,10 @@ No Greek law or covered town bans renting at night, so
   - Nafplio's council discussed rental scooters on 8 May 2026
     ([Anagnostis](https://www.anagnostis.org/2026/05/05/synedriasi-dimotikou-symvouliou-nafpliou-me-6-themata/),
     press); no decision followed in Diavgeia. Check it before adding the town.
-- **Athens** has no scooter on the map. **Dott**'s Athens and Thessaloniki
-  regions in the registry answer 404 (`ERR_REGION_NOT_FOUND`), **Lime**'s
-  address answers 404 for both cities, and **Bolt** publishes no feed.
+- **Athens** has only Lime's scooters on the map, from its rider map.
+  **Dott**'s Athens and Thessaloniki regions in the registry answer 404
+  (`ERR_REGION_NOT_FOUND`), **Lime**'s public address answers 404 for both
+  cities, and **Bolt** publishes no feed.
 - **Hopp, other towns:** Athens (Kifisia, `gr-athens`) listed 4 scooters,
   Voula 7, Zakynthos 3 and Lefkada 1, all of them disabled, in each of the
   seven polls from 12:03 to 12:33 that included them, and the same scooters,
