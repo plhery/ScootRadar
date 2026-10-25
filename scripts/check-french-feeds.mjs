@@ -10,8 +10,9 @@ const countries = JSON.parse(readFileSync(new URL('../data/countries.json', impo
 const catalogs = Object.fromEntries(countries.map(country => [country.code, country.catalog]));
 const usage = `Usage: node scripts/check-french-feeds.mjs [--countries=CODES] [--except=CODES] [--fail-on=any|gone] [--apps=collect|cache] [--json]
 Reads each catalog feed live, France's unless --countries= names others: country codes (FR,DE), a continent
-(${[...new Set(countries.map(country => country.continent))].join(', ')}) or all. --apps=cache reads the app maps' states
-from the scooter cache instead of collecting them here, as the weekly workflow does.`;
+(${[...new Set(countries.map(country => country.continent))].join(', ')}) or all. --apps=cache reads the app maps' states,
+and those of the feeds that need the cache's tokens, from the scooter cache instead of collecting them here, as the
+weekly workflow does.`;
 const args = process.argv.slice(2);
 if (args.some(arg => arg === '--help' || arg === '-h')) {
   console.log(usage);
@@ -54,8 +55,10 @@ const hostHeaders = { 'api.entur.io': { 'ET-Client-Name': 'scootradar-map' } };
 const DOTT = 'https://gbfs.api.ridedott.com';
 const MOBIDATA_BW = 'https://api.mobidata-bw.de';
 // As HOST_AUTH in src/lib/scooterFeeds.ts: NRW.Mobidrom answers only with an OAuth token, which the
-// scooter cache holds and this check doesn't, so its 401 says nothing about the feed.
+// scooter cache holds and this check doesn't, so its 401 says nothing about the feed; --apps=cache reads
+// its feeds' states there.
 const TOKEN_HOSTS = new Set(['www.mobilitaetsdaten.nrw']);
+const behindToken = system => TOKEN_HOSTS.has(new URL(system.discoveryUrl).hostname);
 // The scooter cache's origin (SCOOTER_SNAPSHOT_API_URL in wrangler.jsonc), whose /feeds gives each feed's
 // state, as `${country source}:${system id}`.
 const CACHE = 'https://scooter-data.plhery.com';
@@ -119,7 +122,7 @@ const dottRegion = url => {
 function state(system, error) {
   if (!error) return 'ok';
   if (dottRegion(system.discoveryUrl) && error.status === 403 && error.code === 'ERR_REGION_OFFLINE') return 'paused';
-  if (error.status === 401 && TOKEN_HOSTS.has(new URL(system.discoveryUrl).hostname)) return 'failed';
+  if (error.status === 401 && behindToken(system)) return 'failed';
   if ([401, 404, 410].includes(error.status)) return 'gone';
   return 'failed';
 }
@@ -147,9 +150,10 @@ function cachedFeeds(system) {
   return [...cacheFeeds.byId.values()].filter(feed => feed.id.startsWith(`${id}_`) && /^\d{3}$/.test(feed.id.slice(id.length + 1)));
 }
 
-// An app map as the scooter cache last collected it: paused when the operator has closed the region or
-// ended its season, failed when the cache's collections fail; never gone, which only the app could say.
-function cachedAppMap(system, result) {
+// An app map, or a feed behind the cache's token, as the scooter cache last collected it: paused when the
+// operator has closed the region or ended its season, failed when the cache's collections fail; never gone,
+// which only the operator could say.
+function cachedFeed(system, result, version) {
   if (cacheFeeds.error) throw new Error(`Scooter cache feeds unreadable: ${cacheFeeds.error}`);
   const feeds = cachedFeeds(system);
   if (!feeds.length) throw new Error('Not among the scooter cache\'s feeds');
@@ -158,7 +162,7 @@ function cachedAppMap(system, result) {
     ageSeconds: Math.max(0, Math.round((Date.now() - observedAt) / 1000)) };
   const paused = feed => feed.state === 'skipped' || feed.seasonOver;
   if (feeds.every(paused)) {
-    return { ...result, state: 'paused', version: 'app-map (cache)', ...age,
+    return { ...result, state: 'paused', version, ...age,
       error: feeds.some(feed => feed.seasonOver) ? 'Season over, says the operator' : 'Closed by the operator for now' };
   }
   const failing = feeds.filter(feed => feed.state !== 'ok' && !paused(feed));
@@ -166,14 +170,15 @@ function cachedAppMap(system, result) {
     throw new Error(`The scooter cache's collection is ${[...new Set(failing.map(feed => feed.state))].join(', ')}` +
       (feeds.length > 1 ? ` for ${failing.length} of its ${feeds.length} groups` : ''));
   }
-  return { ...result, state: 'ok', version: 'app-map (cache)', availableScooters: feeds.reduce((sum, feed) => sum + feed.vehicles, 0),
+  return { ...result, state: 'ok', version, availableScooters: feeds.reduce((sum, feed) => sum + feed.vehicles, 0),
     withBattery: null, withRange: null, withRentalLink: 0, ...age };
 }
 
 async function inspect(system) {
   const result = { system: system.id, country: system.country, city: system.city, provider: system.provider, discoveryUrl: system.discoveryUrl };
   try {
-    if (isAppMap(system) && apps === 'cache') return cachedAppMap(system, result);
+    if (isAppMap(system) && apps === 'cache') return cachedFeed(system, result, 'app-map (cache)');
+    if (behindToken(system) && apps === 'cache') return cachedFeed(system, result, 'gbfs (cache)');
     if (isAppMap(system)) {
       const collect = await appCollector(system.atomAppAccount ? 'atom' : system.kickgoingAppMap ? 'kickgoing' : system.provider);
       const snapshot = await collect(system);
@@ -259,7 +264,7 @@ const listings = Object.fromEntries(await Promise.all(dottCountries.map(async co
   }
 })));
 
-const cacheFeeds = apps === 'cache' && catalog.systems.some(isAppMap) ? await (async () => {
+const cacheFeeds = apps === 'cache' && catalog.systems.some(system => isAppMap(system) || behindToken(system)) ? await (async () => {
   try {
     const response = await fetch(`${CACHE}/feeds`, { headers, signal: AbortSignal.timeout(30_000) });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
