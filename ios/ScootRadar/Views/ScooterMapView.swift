@@ -1237,7 +1237,7 @@ struct ScooterMapView: UIViewRepresentable {
                 isStreetLevel: clusteringEnabled == false,
                 usesServerClusters: parent.usesServerClusters,
                 scaleStep: Int((log(metresPerPoint) / Self.scaleStep).rounded()),
-                headingStep: Int((mapView.camera.heading / 3).rounded()),
+                headingStep: Int((Self.heading(of: mapView) / 3).rounded()),
                 language: parent.language
             )
             guard inputs != appliedLook else { return }
@@ -1295,7 +1295,7 @@ struct ScooterMapView: UIViewRepresentable {
             // directions are right, which is all that spreading needs.
             let scale = exp(Double(inputs.scaleStep) * Self.scaleStep)
             let pointsPerMapPoint = MKMetersPerMapPointAtLatitude(mapView.centerCoordinate.latitude) / scale
-            let turn = -mapView.camera.heading * .pi / 180
+            let turn = -Self.heading(of: mapView) * .pi / 180
             var looks: [String: ScooterDotLook] = [:]
             var dots: [ScooterSpreadDot] = []
             looks.reserveCapacity(annotations.count)
@@ -1391,6 +1391,14 @@ struct ScooterMapView: UIViewRepresentable {
             let metres = MKMapPoint(left).distance(to: MKMapPoint(right))
             guard metres.isFinite, metres > 0 else { return nil }
             return metres / 100
+        }
+
+        /// The way the camera faces, or north while MapKit has no number for
+        /// it: the look counts in whole steps, and a whole number can't be
+        /// made of one that isn't there.
+        private static func heading(of mapView: MKMapView) -> CLLocationDirection {
+            let heading = mapView.camera.heading
+            return heading.isFinite ? heading : 0
         }
 
         /// Chooses a side for each name. Returns the scooters whose name moved.
