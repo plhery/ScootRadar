@@ -278,3 +278,90 @@ it('rejects invalid HTTP 200 data before it can replace a good cached document',
   now = 31_000;
   await expect(cache.fetch('https://test.example/feed', { ...options, validate })).resolves.toEqual({ data: { version: 1 }, stale: true, fetchedAt: 0 });
 });
+
+describe('a host whose data may be kept 15 minutes', () => {
+  const MINUTE = 60_000;
+  // As scooterFeeds.ts reads status documents: fresh for 30 seconds, then stale for 15 minutes on an error.
+  const status = { ...options, staleIfErrorSeconds: 900 };
+  const metadata = { ...options, freshSeconds: 3_600, staleIfErrorSeconds: 86_400 };
+  const bird = 'https://mds.bird.co/gbfs/v2/public/agen/free_bike_status.json';
+  const lyft = 'https://gbfs.lyft.com/gbfs/2.3/pdx/en/free_bike_status.json';
+  const birdMetadata = 'https://mds.bird.co/gbfs/v2/public/agen/system_information.json';
+
+  function cappedCache(failing: () => boolean, now: () => number) {
+    // Each document says it was updated a minute before it was fetched.
+    const fetcher = vi.fn(async () => {
+      if (failing()) throw new Error('upstream unavailable');
+      return jsonResponse({ last_updated: Math.floor((now() - MINUTE) / 1000), data: { bikes: [] } });
+    });
+    const cache = new UpstreamJsonCache({ fetcher, now, errorRetrySeconds: 1 });
+    cache.capHost('mds.bird.co', 15 * MINUTE);
+    return { cache, fetcher };
+  }
+
+  it('never serves its status documents, stale-if-error included, past 15 minutes after their last_updated', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    let now = 10 * MINUTE;
+    let failing = false;
+    const { cache } = cappedCache(() => failing, () => now);
+    for (const url of [bird, lyft]) await cache.fetch(url, status);
+    await cache.fetch(birdMetadata, metadata);
+    failing = true;
+    now = 23 * MINUTE + 59_000;
+    await expect(cache.fetch(bird, status)).resolves.toMatchObject({ stale: true });
+    now = 24 * MINUTE;
+    await expect(cache.fetch(bird, status)).rejects.toThrow('upstream unavailable');
+    // The others' are served stale as long as before, as is its metadata.
+    await expect(cache.fetch(lyft, status)).resolves.toMatchObject({ stale: true });
+    now = 10 * MINUTE + 3 * 3_600_000;
+    await expect(cache.fetch(birdMetadata, metadata)).resolves.toMatchObject({ stale: true });
+  });
+
+  it('keeps a document from the fetch when its last_updated is later or missing', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    let now = 0;
+    let failing = false;
+    const fetcher = vi.fn(async () => {
+      if (failing) throw new Error('upstream unavailable');
+      return jsonResponse({ last_updated: 'soon', data: { bikes: [] } });
+    });
+    const cache = new UpstreamJsonCache({ fetcher, now: () => now, errorRetrySeconds: 1 });
+    cache.capHost('mds.bird.co', 15 * MINUTE);
+    await cache.fetch(bird, status);
+    failing = true;
+    now = 15 * MINUTE - 1;
+    await expect(cache.fetch(bird, status)).resolves.toMatchObject({ stale: true });
+    now = 15 * MINUTE;
+    await expect(cache.fetch(bird, status)).rejects.toThrow('upstream unavailable');
+  });
+
+  it('drops its status documents, even under a request, before they pass their cap', async () => {
+    let now = 10 * MINUTE;
+    const { cache, fetcher } = cappedCache(() => false, () => now);
+    for (const url of [bird, lyft]) await cache.fetch(url, status);
+    await cache.fetch(birdMetadata, metadata);
+    now = 24 * MINUTE - 5_001;
+    cache.evictExpired(5_000);
+    expect(cache.size).toBe(3);
+    now += 1;
+    cache.evictExpired(5_000);
+    expect(cache.size).toBe(2);
+
+    // A request under way when its document must go keeps its entry, but cannot fall back on it,
+    // though it could still have served it stale for a few seconds.
+    now = 24 * MINUTE;
+    await cache.fetch(bird, status);
+    let fail: ((error: Error) => void) | undefined;
+    fetcher.mockImplementationOnce(() => new Promise<Response>((_resolve, reject) => { fail = reject; }));
+    vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    now = 24 * MINUTE + 31_000;
+    const pending = cache.fetch(bird, status);
+    now = 38 * MINUTE - 2_000;
+    cache.evictExpired(5_000);
+    // Its metadata and the entry under way: the other host's status is past its stale window.
+    expect(cache.size).toBe(2);
+    await vi.waitFor(() => expect(fail).toBeDefined());
+    fail!(new Error('upstream unavailable'));
+    await expect(pending).rejects.toThrow('upstream unavailable');
+  });
+});

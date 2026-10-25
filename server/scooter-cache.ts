@@ -2,7 +2,7 @@ import { mkdir, rename, rm } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { discoverCollectableFeeds, independentCollectableFeeds, planRefreshCounts, type CollectableScooterFeed } from '../src/lib/scooterFeeds';
-import { buildCityOverview, overviewNeedsRefresh, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
+import { joinCityOverviews, refreshedOverview, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
 import type { MapBounds, Vehicle } from '../src/lib/types';
 import { feedCurfewed, snapshotPaused } from '../src/lib/seasonalPauses';
@@ -17,7 +17,7 @@ import { createFeedStateLog, expiredReportDelay, feedState, waitOutCurfew, type 
 import { createSnapshotMetrics } from './metrics';
 import { registerFeedDefinitions } from './feedDefinitions';
 import { initErrorReporting, reportError, reportFeedExpired } from './errorReporting';
-import { cadenceFromEnv, ownIdleExpiries } from './cadence';
+import { cadenceFromEnv, ownIdleExpiries, RETENTION_CAPS_MS, retained, retentionCaps, withRetentionCaps } from './cadence';
 import { answerZones, createZoneStore } from './zoneStore';
 import { createStrayHold } from './strayHold';
 import { dottMapRequests, withDottAppCollectors } from './dottApp';
@@ -51,6 +51,8 @@ upstreamJsonCache.paceHost('www.mobilitaetsdaten.nrw', 150);
 for (const host of new Set(REGIONAL_SCOOTER_SYSTEMS.map(system => new URL(system.discoveryUrl).hostname))) {
   if (host.endsWith('.rideatom.com')) upstreamJsonCache.paceHost(host, 500);
 }
+// Bird's, Spin's and Bolt's vehicles are not kept, nor served stale, past their licences' 15 minutes.
+for (const [host, capMs] of RETENTION_CAPS_MS) upstreamJsonCache.capHost(host, capMs);
 const snapshotPath = process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json';
 // Each save is written to a temporary file and renamed over the snapshot. The temporary file sits in
 // its own folder beside the snapshot, on the same volume so the rename stays atomic, which lets the
@@ -60,6 +62,9 @@ const temporaryDirectory = join(dirname(snapshotPath), 'tmp');
 // a restart loses at most a minute of collections, which it makes again. Saved whole every five
 // seconds, 150,000 vehicles took 0.6 s of every five, and 300,000 a gigabyte of memory each time.
 const SAVE_EVERY_MS = 60_000;
+// The snapshot's checks run every five seconds; each drops the capped data that would pass its cap
+// before the next.
+const TICK_MS = 5_000;
 let snapshot: MobilitySnapshot | undefined;
 let stopping = false;
 let dirty = false;
@@ -88,12 +93,14 @@ const scheduler = new FeedScheduler(collect, { ...schedule,
   onStart: (_feed, reason) => metrics.recordCollectionStart(reason) });
 // The expiry of the feeds collected less often on purpose (Lime, BinBin, GCOO), from their definitions.
 let ownIdleExpiry = ownIdleExpiries([]);
+// How long the data of Bird's, Spin's and Bolt's own feeds may be kept, from their definitions.
+let retentionCap = retentionCaps([]);
 const cadence: FeedCadence = { fastSince: (id, now) => scheduler.fastSince(id, now), idleExpiryMs: schedule.idleExpiryMs,
   idleExpiryMsForFeed: id => ownIdleExpiry(id) };
 // A scooter a feed puts far away for a while, as 3electra puts Kyiv's in Lima, keeps its last place
 // for ten minutes, or until the feed's next collection when that is later.
 const holdStrays = createStrayHold((id, now) => scheduler.fastSince(id, now) === undefined
-  ? schedule.idleIntervalMs : schedule.activeIntervalMs);
+  ? schedule.idleIntervalMs : schedule.activeIntervalMs, undefined, id => retentionCap(id) === undefined);
 // City totals count the feeds collected on time, whatever the age of their positions.
 const countedAt = (now: number) => (feed: FeedSnapshot) => feedState(feed, now, cadence) !== 'expired';
 const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
@@ -108,11 +115,17 @@ const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
 const server = createSnapshotServer({ snapshot: () => snapshot,
   token: process.env.SCOOTER_SNAPSHOT_API_TOKEN, production: process.env.NODE_ENV === 'production',
   version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler,
-  zones: query => answerZones(zoneStore, collectable, query, COLD_WAIT_MS) });
+  zones: query => answerZones(zoneStore, collectable, query, COLD_WAIT_MS), retention: id => retentionCap(id) });
+// The city totals, built in two parts (cityOverview): those of the feeds without a retention cap, and
+// those of the capped feeds. The file keeps the first only.
+let baseOverview: MobilitySnapshot['overview'] | undefined;
+let cappedOverview: MobilitySnapshot['overview'] | undefined;
 try {
   const persisted = await readSnapshot(snapshotPath);
   if (persisted) {
+    // Its capped feeds' data past its cap goes as soon as their definitions say which they are (setDefinitions).
     snapshot = persisted;
+    baseOverview = persisted.overview;
     for (const feed of persisted.feeds) records.set(feed.id, feed);
   }
 } catch (error) {
@@ -125,9 +138,40 @@ try {
 function publish() {
   const now = Date.now();
   const feeds = [...records.values()];
-  snapshot = { version: 1, updatedAt: now, feeds,
-    overview: snapshot?.overview ?? buildCityOverview(feeds, now, countedAt(now)) };
+  // Once built, the city totals are rebuilt on the tick (persistenceTimer).
+  snapshot = { version: 1, updatedAt: now, feeds, overview: cappedOverview && snapshot ? snapshot.overview : cityOverview(feeds, now) };
   dirty = true;
+}
+
+/**
+ * The city totals, rebuilt in the parts that need it. Those of the feeds without a retention cap take
+ * seconds over 760,000 scooters: rebuilt hourly, or when a failed feed recovers (overviewNeedsRefresh).
+ * Those of the capped feeds, a tenth of a second for some 66,000, are rebuilt as well on the last tick
+ * before the oldest data they count passes its cap: two or three times a minute, as one feed or another
+ * comes to it. No feed without a cap lists Bird's, Spin's or Bolt's scooters in a country where their
+ * own feeds do, so none counts twice.
+ */
+function cityOverview(feeds: FeedSnapshot[], now: number): MobilitySnapshot['overview'] {
+  const part = (built: MobilitySnapshot['overview'] | undefined, of: FeedSnapshot[]) =>
+    refreshedOverview(built, of, now, countedAt(now), retentionCap, TICK_MS);
+  const base = part(baseOverview, feeds.filter(feed => retentionCap(feed.id) === undefined));
+  const capped = part(cappedOverview, feeds.filter(feed => retentionCap(feed.id) !== undefined));
+  if (snapshot && base === baseOverview && capped === cappedOverview) return snapshot.overview;
+  baseOverview = base;
+  cappedOverview = capped;
+  return joinCityOverviews(base, capped);
+}
+
+/** Drops the capped feeds' data that would pass its cap before the next tick: whether it dropped any. */
+function dropExpiredData(now: number) {
+  let dropped = false;
+  for (const [id, record] of records) {
+    const kept = retained(record, now + TICK_MS, retentionCap(id));
+    if (kept === record) continue;
+    records.set(id, kept);
+    dropped = true;
+  }
+  return dropped;
 }
 
 async function collect(definition: CollectableScooterFeed, attention: CollectionAttention) {
@@ -166,15 +210,19 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
   return { failed };
 }
 
-function setDefinitions(definitions: CollectableScooterFeed[], retireMissing: boolean) {
+function setDefinitions(collected: CollectableScooterFeed[], retireMissing: boolean) {
+  // Capped feeds are collected every 13 minutes while nobody looks, but expire as the others do.
+  const definitions = withRetentionCaps(collected, schedule.idleIntervalMs);
   collectable = definitions;
-  ownIdleExpiry = ownIdleExpiries(definitions);
+  ownIdleExpiry = ownIdleExpiries(definitions, schedule.idleExpiryMs);
+  retentionCap = retentionCaps(definitions);
   if (retireMissing) {
     const active = new Set(definitions.map(feed => feed.id));
     for (const id of records.keys()) if (!active.has(id)) records.delete(id);
     for (const id of lastErrors.keys()) if (!active.has(id)) lastErrors.delete(id);
   }
   registerFeedDefinitions(records, definitions);
+  dropExpiredData(Date.now());
   publish();
   // Every feed's documents stay in memory between its collections, however many countries are added.
   upstreamJsonCache.reserve(upstreamCacheEntriesFor(definitions.length));
@@ -185,9 +233,6 @@ async function persist(final = false) {
   if (persisting) return persisting;
   if (!snapshot || !dirty) return;
   const now = Date.now();
-  if (overviewNeedsRefresh(snapshot, snapshot.feeds, now, countedAt(now))) {
-    snapshot = { ...snapshot, overview: buildCityOverview(snapshot.feeds, now, countedAt(now)) };
-  }
   if (now - lastHealthLogAt >= 60_000) {
     lastHealthLogAt = now;
     const relevant = snapshot.feeds.filter(feed => !feed.skipped);
@@ -209,7 +254,11 @@ async function persist(final = false) {
   if (!final && now - savedAt < SAVE_EVERY_MS) return;
   dirty = false;
   savedAt = now;
-  const saved = snapshot;
+  // Saved at most every minute, the file holds no capped data that would pass its cap before the next
+  // save, a minute and the time it takes later, could replace it; nor the capped feeds' city totals,
+  // which a restart builds again from what it holds.
+  const saved = { ...snapshot, overview: baseOverview ?? snapshot.overview,
+    feeds: snapshot.feeds.map(feed => retained(feed, now + 2 * SAVE_EVERY_MS, retentionCap(feed.id))) };
   persisting = (async () => {
     const temporaryPath = join(temporaryDirectory, `scooters.${randomUUID()}.json.tmp`);
     try {
@@ -255,9 +304,17 @@ const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afte
     if (!snapshotPaused(feed, Date.now())) reportFeedExpired(change, feed, lastErrors.get(feed.id));
   } });
 const persistenceTimer = setInterval(() => {
-  if (snapshot) logFeedStates(snapshot.feeds);
+  const now = Date.now();
+  if (dropExpiredData(now)) publish();
+  upstreamJsonCache.evictExpired(TICK_MS);
+  if (snapshot) {
+    // Checked on every tick, saved or not, the capped feeds' city totals never outlive their data.
+    const overview = cityOverview(snapshot.feeds, now);
+    if (overview !== snapshot.overview) snapshot = { ...snapshot, overview };
+    logFeedStates(snapshot.feeds);
+  }
   void persist();
-}, 5_000);
+}, TICK_MS);
 server.listen(Number(process.env.PORT ?? 3001), '0.0.0.0', () => console.log('Scooter snapshot API listening'));
 for (const signal of ['SIGTERM', 'SIGINT'] as const) {
   process.on(signal, () => {

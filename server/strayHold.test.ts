@@ -86,3 +86,11 @@ it('holds nothing for a skipped feed, or from the old scooters a failed feed kee
   expect(hold('ukraine:zelectra_ua_kyiv', strayed, failed, now).vehicles).toEqual([]);
   expect(hold('ukraine:zelectra_ua_kyiv', strayed, undefined, now).vehicles).toEqual([]);
 });
+
+it("holds nothing for a feed whose data may be kept only 15 minutes, as Bird's", () => {
+  const hold = createStrayHold(watched, STRAY_HOLD_MS, id => id !== 'ukraine:zelectra_ua_kyiv');
+  const now = Date.now();
+  const lima = scooter('lima', 50.4447, 30.4991);
+  const strayed = { vehicles: [], stale: false, strayIds: [lima.vehicle_id] };
+  expect(hold('ukraine:zelectra_ua_kyiv', strayed, record([lima], now - 60_000), now).vehicles).toEqual([]);
+});

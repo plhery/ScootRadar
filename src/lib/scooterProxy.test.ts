@@ -156,6 +156,58 @@ describe('last good answer', () => {
     expect(expired.headers.get('Retry-After')).toBe('30');
   });
 
+  it("keeps an answer holding Bird's, Spin's or Bolt's data no longer than the cache allows, and says so to no browser", async () => {
+    const { entries, store, settled } = memory();
+    const now = vi.spyOn(Date, 'now').mockReturnValue(Date.parse('2026-10-22T00:00:00Z'));
+    const capped = (seconds: string) => {
+      const response = answer({ stale: false });
+      response.headers.set('X-Scooter-Keep-Seconds', seconds);
+      return response;
+    };
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(capped('120'));
+    const fresh = await proxyScooterSnapshot(request(), env, store);
+    expect(fresh.headers.has('X-Scooter-Keep-Seconds')).toBe(false);
+    expect(fresh.headers.get('Cache-Control')).toBe('public, max-age=30');
+    await settled();
+    const stored = entries.values().next().value!;
+    expect(stored.headers.get('Cache-Control')).toBe('public, max-age=120');
+    expect(stored.headers.get('X-Scooter-Keep-Seconds')).toBe('120');
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    fetcher.mockRejectedValue(new TypeError('Network connection lost.'));
+    now.mockReturnValue(Date.parse('2026-10-22T00:02:00Z'));
+    const stale = await proxyScooterSnapshot(request(), env, store);
+    expect(stale.status).toBe(200);
+    expect(stale.headers.has('X-Scooter-Keep-Seconds')).toBe(false);
+    // Past the limit stored with it, though the scooters' 15 minutes are not.
+    now.mockReturnValue(Date.parse('2026-10-22T00:02:01Z'));
+    expect((await proxyScooterSnapshot(request(), env, store)).status).toBe(503);
+
+    // An answer it may not keep at all, or with a limit that makes no sense, is not kept.
+    entries.clear();
+    fetcher.mockReset();
+    fetcher.mockResolvedValueOnce(capped('0')).mockResolvedValueOnce(capped('soon')).mockResolvedValueOnce(capped('-5'));
+    for (let i = 0; i < 3; i++) expect((await proxyScooterSnapshot(request(), env, store)).status).toBe(200);
+    await settled();
+    expect(entries.size).toBe(0);
+  });
+
+  it('keeps an answer up to 15 minutes, as before, from a cache that sets no limit', async () => {
+    const { entries, store, settled } = memory();
+    vi.spyOn(globalThis, 'fetch').mockResolvedValueOnce(answer({ stale: false }));
+    await proxyScooterSnapshot(request(), env, store);
+    await settled();
+    const stored = entries.values().next().value!;
+    expect(stored.headers.get('Cache-Control')).toBe('public, max-age=900');
+    // One kept by a Worker that set no limit is read as before.
+    stored.headers.delete('X-Scooter-Keep-Seconds');
+    const now = vi.spyOn(Date, 'now').mockReturnValue(Number(stored.headers.get('X-Scooter-Stored-At')) + 900_000);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(globalThis, 'fetch').mockRejectedValue(new TypeError('Network connection lost.'));
+    expect((await proxyScooterSnapshot(request(), env, store)).status).toBe(200);
+    now.mockReturnValue(Number(stored.headers.get('X-Scooter-Stored-At')) + 901_000);
+    expect((await proxyScooterSnapshot(request(), env, store)).status).toBe(503);
+  });
+
   it('keeps only answers the public may keep, and none of another view', async () => {
     const { entries, store, settled } = memory();
     vi.spyOn(globalThis, 'fetch')

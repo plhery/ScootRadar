@@ -58,7 +58,8 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   serving its last positions: Sentry and "feed stopped" hear of it only if it is still
   expired 30 minutes after the ban.
 - `scootradar_feed_vehicles`: available standing scooters held, 0 once expired, or while
-  the operator lists none.
+  the operator lists none, or for Bird's, Spin's and Bolt's own feeds once their data is
+  fifteen minutes old and dropped (which "feed empty", over 3 days, ignores).
 - `scootradar_feed_priced_vehicles`: of those, the scooters with a price. The others
   name no plan (Bird, PubliBike), a plan the feed's plans don't list, or one the app
   cannot show as an unlock fee and a minute price.
@@ -120,7 +121,10 @@ looks:
   requests its one account may send ([guide](lime-app-map.md#cache-behaviour)). Each
   expires 10 minutes after its own interval and waits up to half of it between
   retries. The app maps read in a few requests keep the 20 minutes, so that one that
-  stops answering is reported within half an hour.
+  stops answering is reported within half an hour. Bird's, Spin's and Bolt's own feeds
+  are collected every 13 minutes, as their licences let their data be kept 15
+  (`RETENTION_CAPS_MS` in `server/cadence.ts`); the cache drops it then, but they
+  expire after 30 minutes without a successful collection, as the others.
 
 A request whose feeds hold positions over 15 minutes old waits up to 3 seconds for
 their collection, then answers. When a collection it started is still under way, the

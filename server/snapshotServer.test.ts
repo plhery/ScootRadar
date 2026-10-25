@@ -82,6 +82,41 @@ describe('snapshot origin boundary', () => {
     expect(totals.clusters.map(cluster => [cluster.id, cluster.count])).toEqual([['city:nz:bop:Tauranga', 2]]);
   });
 
+  it("tells the Worker how long it may keep an answer holding Bird's, Spin's or Bolt's data, and only then", async () => {
+    const now = Date.now();
+    const MINUTE = 60_000;
+    const agen = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'bird_fr_agen')!;
+    const lyon = REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === 'dott_fr_lyon')!;
+    const feed = (system: typeof agen, observedAt: number): FeedSnapshot => ({ id: `${regionalSource(system)}:${system.id}`,
+      source: regionalSource(system), provider: system.provider, coverage: [system.bounds], observedAt, attemptedAt: now,
+      stale: false, failed: false, skipped: false, vehicles: [{ vehicle_id: system.id, provider: system.provider, battery: 70,
+        lat: (system.bounds.south + system.bounds.north) / 2, lng: (system.bounds.west + system.bounds.east) / 2,
+        range_m: null, distance_m: null, deep_link: null }] });
+    // Bird's last updated four minutes ago, the city totals counting it as it was a minute before.
+    const feeds = [feed(agen, now - 4 * MINUTE), feed(lyon, now - 10 * MINUTE)];
+    const retention = (id: string) => id === feeds[0].id ? 15 * MINUTE : undefined;
+    const counted = [{ ...feeds[0], observedAt: now - 5 * MINUTE }, feeds[1]];
+    const snapshot = { version: 1 as const, updatedAt: now, feeds, overview: buildCityOverview(counted, now, () => true, retention) };
+    const view = (port: number, { south, west, north, east }: typeof agen.bounds, zoom: number) =>
+      `http://127.0.0.1:${port}/api/scooters?south=${south}&west=${west}&north=${north}&east=${east}&zoom=${zoom}`;
+    const keep = async (url: string) => {
+      const response = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+      expect(response.status).toBe(200);
+      await response.text();
+      return response.headers.get('X-Scooter-Keep-Seconds');
+    };
+    const { port } = await start(snapshot, { retention });
+    expect(Number(await keep(view(port, agen.bounds, 16)))).toBeOneOf([659, 660]);
+    expect(Number(await keep(view(port, agen.bounds, 8)))).toBeOneOf([599, 600]);
+    expect(await keep(view(port, lyon.bounds, 16))).toBeNull();
+    // City totals past the cap, which the cache never serves, may not be kept at all.
+    const old = await start({ ...snapshot, overview: { ...snapshot.overview, keepUntil: now - 1_000 } }, { retention });
+    expect(await keep(view(old.port, agen.bounds, 8))).toBe('0');
+    // Without the caps, as before.
+    const uncapped = await start(snapshot);
+    expect(await keep(view(uncapped.port, agen.bounds, 16))).toBeNull();
+  });
+
   it('rate limits authenticated clients, separates readiness, and prevents caching at the public origin', async () => {
     const now = Date.now();
     const snapshot: MobilitySnapshot = { version: 1, updatedAt: now, feeds: [], overview: buildCityOverview([], now) };

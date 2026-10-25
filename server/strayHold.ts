@@ -23,16 +23,19 @@ interface Collected {
 /**
  * Keeps, for a while, a feed's vehicles that it puts far away at their last place in its town.
  * `intervalMs` is how often the feed is collected now: every minute when someone looks, else
- * every 20 minutes (feedScheduler.ts).
+ * every 20 minutes (feedScheduler.ts). `holds` is false for a feed whose data may be kept only so
+ * long (retentionCaps in cadence.ts): a place held is older than the feed's last collection, and
+ * would outlive the cap until the next.
  */
-export function createStrayHold(intervalMs: (feedId: string, now: number) => number, holdMs = STRAY_HOLD_MS) {
+export function createStrayHold(intervalMs: (feedId: string, now: number) => number, holdMs = STRAY_HOLD_MS,
+  holds: (feedId: string) => boolean = () => true) {
   // For each feed, until when each vehicle held now is held.
   const heldUntil = new Map<string, Map<string, number>>();
   return function hold<T extends Collected>(feedId: string, collected: T, old: FeedSnapshot | undefined, now: number): T {
     const until = heldUntil.get(feedId);
     heldUntil.delete(feedId);
     // A failed feed's last scooters may be hours old: none is held from them.
-    if (!collected.strayIds?.length || collected.skipped || !old || old.failed) return collected;
+    if (!collected.strayIds?.length || collected.skipped || !old || old.failed || !holds(feedId)) return collected;
     const strays = new Set(collected.strayIds);
     const present = new Set(collected.vehicles.map(vehicle => vehicle.vehicle_id));
     let firstFound: number | undefined;

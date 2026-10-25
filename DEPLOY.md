@@ -295,7 +295,8 @@ opened while two idle Lime sweeps ran waited for one to end, then shared Lime's
 one request every five seconds with the other. A restart goes on with the feeds longest overdue, then those with no
 record yet; it once took them in the catalog's order, and after that stall
 feeds 29 minutes old waited behind ones of 21 and expired.
-Switzerland is collected every minute; any other feed every 20 minutes, or every
+Switzerland is collected every minute; any other feed every 20 minutes (Bird's,
+Spin's and Bolt's own every 13, `RETENTION_CAPS_MS` in `server/cadence.ts`), or every
 minute for 10 minutes after a map request covers it, the request starting a
 collection at once when the last is over a minute old (see
 [docs/OBSERVABILITY.md](docs/OBSERVABILITY.md#collection-cadence)). To collect
@@ -312,7 +313,10 @@ plan the cached plans don't list (Lime's rate changes through the day under new
 plan ids) has that feed's plans fetched again, at most every two minutes or
 their ttl if longer, and backing off for a plan still missing. The map shows
 positions only while their timestamp is within fifteen minutes; failed feeds
-retain vehicles only until that observation expires. A request for a feed whose
+retain vehicles only until that observation expires. Bird's, Spin's and Bolt's
+own feeds' positions and parking leave memory, the snapshot file and the upstream
+document cache before they are fifteen minutes old; a restart drops older ones
+from the file it reads. A request for a feed whose
 positions are older waits up to three seconds for the collection it starts. An
 app map's positions up to three hours old are shown faded meanwhile, and its
 sweep publishes each part as it finishes, so such a request waits a second (see
@@ -322,7 +326,10 @@ vehicle timestamps advancing.
 Both clients honor response expiry times, including parking expiry, during outages. Snapshots
 are written atomically and restored after restarts. City totals are rebuilt
 hourly, marked as an overview in the API, and rejected after three hours without
-a replacement. Unknown battery values count only when no minimum is selected.
+a replacement. Those of Bird's, Spin's and Bolt's own feeds are built apart, in
+about a tenth of a second, and again on the five-second tick before the data
+they count is fifteen minutes old, two or three times a minute; the file keeps
+only the others' (rebuilding all of them takes several seconds). Unknown battery values count only when no minimum is selected.
 
 Zoom 0–10 returns one count per city; 11–15 returns spatial clusters; 16–22
 returns individual scooters. Old clients understand the same `clusters` and
@@ -348,7 +355,9 @@ Alloy keeps these lines in Loki for 30 days under `app="scootradar-cache"`; in
 Grafana: `{app="scootradar-cache", event="snapshot_feed_state"} | json | feed="national:voiscooters.com"`.
 When the origin fails, the Worker answers again with the last good answer to
 the same request that its Cloudflare data centre keeps, up to 15 minutes old
-for scooters and a day for zones (`src/lib/scooterProxy.ts`): `meta.stale` is
+for scooters and a day for zones (`src/lib/scooterProxy.ts`), or less where the
+cache's `X-Scooter-Keep-Seconds` says when Bird's, Spin's or Bolt's data in it
+turns fifteen minutes old (0: not kept; the browser never sees it): `meta.stale` is
 true, which the apps show as delayed, and `X-Scooter-Last-Good-Age` gives its
 age in seconds. Without one, the map shows its "temporarily unavailable"
 banner. Either way the Worker logs `scooter_origin_failure` with the origin

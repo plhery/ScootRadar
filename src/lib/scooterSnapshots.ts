@@ -10,7 +10,7 @@ import { scooterResponse } from '@/lib/scooterResponse';
 import { snapshotPaused } from '@/lib/seasonalPauses';
 import { skippedSources } from '@/lib/scooterSources';
 import { outlinedTown } from '@/lib/townOutlines';
-import { ScooterFeedsUnavailableError, type FeedQuery, type ScooterFetchMetadata } from '@/lib/scooterFeeds';
+import { ScooterFeedsUnavailableError, type FeedQuery, type FeedSourceStatus, type ScooterFetchMetadata } from '@/lib/scooterFeeds';
 import type { MapBounds, ScooterCluster, ScooterResponse, ScooterResponseMeta, Vehicle } from '@/lib/types';
 import { LAST_SEEN_MAX_AGE_MS, VEHICLE_MAX_AGE_MS } from './dataFreshness';
 
@@ -61,8 +61,9 @@ export interface MobilitySnapshot {
   version: 1;
   updatedAt: number;
   feeds: FeedSnapshot[];
-  // feedIds lists the feeds the city totals were built from.
-  overview: { generatedAt: number; feedIds: string[]; cities: CityTotals[] };
+  // feedIds lists the feeds the city totals were built from. keepUntil: when the oldest data they
+  // count of a feed whose data may be kept only so long passes its cap (buildCityOverview).
+  overview: { generatedAt: number; feedIds: string[]; cities: CityTotals[]; keepUntil?: number };
 }
 
 function emptyHealth(): ScooterFetchMetadata {
@@ -148,7 +149,7 @@ const regionalCities = REGIONAL_SCOOTER_CITIES;
  * positions the map shows; the cache also counts an idle feed whose positions
  * are older but whose collections are on time, as totals are not positions.
  */
-export function overviewNeedsRefresh(snapshot: MobilitySnapshot | undefined, feeds: FeedSnapshot[], now: number,
+export function overviewNeedsRefresh(snapshot: Pick<MobilitySnapshot, 'overview'> | undefined, feeds: FeedSnapshot[], now: number,
   counts: (feed: FeedSnapshot) => boolean = feed => showsPositions(feed, now)): boolean {
   if (!snapshot || snapshot.overview.cities.length !== regionalCities.length + SWISS_SCOOTER_AREAS.length ||
     now - snapshot.overview.generatedAt >= OVERVIEW_REFRESH_MS) return true;
@@ -207,8 +208,13 @@ function townOf<T extends OverviewTown>(vehicle: Vehicle, towns: T[], own: Set<s
   return nearestTown(vehicle, owned.length ? owned : holding.length ? holding : towns);
 }
 
+/**
+ * `retention` gives the cap of a feed whose data may be kept only so long (server/cadence.ts): the
+ * totals say, as keepUntil, when the oldest data they count of such a feed passes it.
+ */
 export function buildCityOverview(feeds: FeedSnapshot[], now: number,
-  counts: (feed: FeedSnapshot) => boolean = feed => showsPositions(feed, now)): MobilitySnapshot['overview'] {
+  counts: (feed: FeedSnapshot) => boolean = feed => showsPositions(feed, now),
+  retention?: (feedId: string) => number | undefined): MobilitySnapshot['overview'] {
   const totals = new Map<string, CityTotals>();
   for (const city of [...regionalCities, ...SWISS_SCOOTER_AREAS]) {
     const country = regionalCities.find(candidate => candidate.id === city.id)?.country;
@@ -219,11 +225,14 @@ export function buildCityOverview(feeds: FeedSnapshot[], now: number,
       batteries: {}, sources: health.sources, failedSources: health.failedSources });
   }
   const seen = new Set<string>();
+  let keepUntil = Infinity;
   for (const feed of feeds) {
     if (feed.skipped || !counts(feed)) continue;
     const cities = isRegionalSource(feed.source)
       ? regionalCities.filter(city => COUNTRY_SOURCES[city.country] === feed.source) : SWISS_SCOOTER_AREAS;
     if (!cities.length) continue;
+    const cap = feed.vehicles.length ? retention?.(feed.id) : undefined;
+    if (cap !== undefined) keepUntil = Math.min(keepUntil, feed.observedAt + cap);
     const own = ownTowns(feed);
     for (const vehicle of feed.vehicles) {
       const key = vehicleKey(vehicle);
@@ -235,7 +244,50 @@ export function buildCityOverview(feeds: FeedSnapshot[], now: number,
       bins[vehicle.battery ?? 101]++;
     }
   }
-  return { generatedAt: now, feedIds: feeds.map(feed => feed.id), cities: [...totals.values()].sort((a, b) => a.id.localeCompare(b.id)) };
+  return { generatedAt: now, feedIds: feeds.map(feed => feed.id), cities: [...totals.values()].sort((a, b) => a.id.localeCompare(b.id)),
+    ...(keepUntil < Infinity ? { keepUntil } : {}) };
+}
+
+/**
+ * The city totals `built` before, or built again when they need it (overviewNeedsRefresh), or when the
+ * oldest data they count of a feed with a retention cap would pass it within `aheadMs`.
+ */
+export function refreshedOverview(built: MobilitySnapshot['overview'] | undefined, feeds: FeedSnapshot[], now: number,
+  counts: (feed: FeedSnapshot) => boolean, retention: (feedId: string) => number | undefined, aheadMs: number): MobilitySnapshot['overview'] {
+  return built && !overviewNeedsRefresh({ overview: built }, feeds, now, counts) && (built.keepUntil ?? Infinity) > now + aheadMs
+    ? built : buildCityOverview(feeds, now, counts, retention);
+}
+
+/** A source's state over two cities, or two sets of feeds, from each one's: as healthFor would give it over both. */
+function joinStatus(previous: FeedSourceStatus, status: FeedSourceStatus): FeedSourceStatus {
+  return previous === 'skipped' || previous === status ? status
+    : status === 'skipped' ? previous
+      : previous === 'failed' || status === 'failed' || previous === 'partial' || status === 'partial' ? 'partial'
+        : previous === 'stale' || status === 'stale' ? 'stale' : 'fresh';
+}
+
+/**
+ * The city totals of two sets of feeds built apart, joined: the same as built together, provided no
+ * scooter is listed in both sets. As old as the older.
+ */
+export function joinCityOverviews(a: MobilitySnapshot['overview'], b: MobilitySnapshot['overview']): MobilitySnapshot['overview'] {
+  const others = new Map(b.cities.map(city => [city.id, city]));
+  const keepUntil = Math.min(a.keepUntil ?? Infinity, b.keepUntil ?? Infinity);
+  return { generatedAt: Math.min(a.generatedAt, b.generatedAt), feedIds: [...a.feedIds, ...b.feedIds],
+    cities: a.cities.map(city => {
+      const other = others.get(city.id);
+      if (!other) return city;
+      const batteries = { ...city.batteries };
+      for (const [provider, bins] of Object.entries(other.batteries)) {
+        batteries[provider] = batteries[provider]?.map((count, bin) => count + bins[bin]) ?? bins;
+      }
+      const sources = { ...city.sources };
+      for (const source of Object.keys(sources) as Array<keyof typeof sources>) {
+        sources[source] = joinStatus(sources[source], other.sources[source] ?? 'skipped');
+      }
+      return { ...city, batteries, sources, failedSources: [...city.failedSources, ...other.failedSources] };
+    }),
+    ...(keepUntil < Infinity ? { keepUntil } : {}) };
 }
 
 function overviewResponse(snapshot: MobilitySnapshot, query: FeedQuery, zoom: number, now: number): ScooterResponse {
@@ -259,12 +311,7 @@ function overviewResponse(snapshot: MobilitySnapshot, query: FeedQuery, zoom: nu
     const count = Object.values(counts).reduce((a, b) => a + b, 0);
     if (count) clusters.push({ id: `city:${city.id}`, city: city.city, lat: city.lat, lng: city.lng, count, providers: counts });
     for (const source of Object.keys(meta.sources) as Array<keyof typeof meta.sources>) {
-      const status = city.sources[source] ?? 'skipped';
-      const previous = meta.sources[source];
-      if (status === 'skipped') continue;
-      meta.sources[source] = previous === 'skipped' || previous === status ? status
-        : previous === 'failed' || status === 'failed' || previous === 'partial' || status === 'partial' ? 'partial'
-          : previous === 'stale' || status === 'stale' ? 'stale' : 'fresh';
+      meta.sources[source] = joinStatus(meta.sources[source], city.sources[source] ?? 'skipped');
     }
     meta.failedSources.push(...city.failedSources);
   }
@@ -296,6 +343,22 @@ export function feedsForQuery(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   return snapshot.feeds.filter(feed => (
     (!query.providers || query.providers.has(feed.provider)) && coverageIntersects(feed.coverage, query.bounds)
   ));
+}
+
+/**
+ * Until when an answer to the query may be kept (X-Scooter-Keep-Seconds): until the oldest data
+ * it holds of a feed whose data may be kept only so long (`retention`, server/cadence.ts) passes
+ * its cap; for the zoomed-out map, that of the city totals. undefined for an answer holding none.
+ */
+export function answerKeepUntil(snapshot: MobilitySnapshot, query: FeedQuery, zoom: number | null, now: number,
+  retention: (feedId: string) => number | undefined): number | undefined {
+  if (query.outsideCoverage) return undefined;
+  if (zoom !== null && zoom <= CITY_OVERVIEW_MAX_ZOOM) return snapshot.overview.keepUntil;
+  const until = feedsForQuery(snapshot, query, zoom).flatMap(feed => {
+    const cap = retention(feed.id);
+    return cap !== undefined && !feed.skipped && feed.vehicles.length && showsPositions(feed, now) ? [feed.observedAt + cap] : [];
+  });
+  return until.length ? Math.min(...until) : undefined;
 }
 
 export interface SnapshotQueryOptions {

@@ -21,12 +21,24 @@ export interface LastGoodStore {
 // zones, which rarely change, for a day.
 const LAST_GOOD_SECONDS = { scooters: VEHICLE_MAX_AGE_MS / 1000, zones: 86_400 };
 const STORED_AT = 'X-Scooter-Stored-At';
+// The cache sets it on an answer holding data of a feed whose licence lets it be kept only so long
+// (Bird's, Spin's, Bolt's): the seconds until the oldest such data passes its cap, 0 to keep it not
+// at all. The answer is kept no longer, and the limit is stored with it. Without it, as from a cache
+// that predates it, LAST_GOOD_SECONDS alone.
+const KEEP_SECONDS = 'X-Scooter-Keep-Seconds';
+
+/** The seconds a header allows, at most `seconds`: none for a value that is not a count of them. */
+function keepSeconds(value: string | null, seconds: number) {
+  if (value === null) return seconds;
+  const allowed = Number(value);
+  return Number.isInteger(allowed) && allowed >= 0 ? Math.min(seconds, allowed) : 0;
+}
 
 async function lastGoodAnswer(store: LastGoodStore, kept: { key: string; seconds: number }, headers: Record<string, string>) {
   try {
     const stored = await store.cache.match(kept.key);
     const age = stored ? Math.max(0, Math.floor((Date.now() - Number(stored.headers.get(STORED_AT))) / 1000)) : Number.NaN;
-    if (!stored || !(age <= kept.seconds)) return null;
+    if (!stored || !(age <= keepSeconds(stored.headers.get(KEEP_SECONDS), kept.seconds))) return null;
     const body = await stored.json() as { meta?: Record<string, unknown> };
     // The apps already show a stale answer as delayed (dockModel.ts, ScooterMapModel.swift).
     if (body.meta) body.meta.stale = true;
@@ -85,14 +97,16 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
       return await unavailable({ status: response.status });
     }
     const publicPolicy = response.headers.get('X-Scooter-Public-Cache-Control');
+    const seconds = keepSeconds(response.headers.get(KEEP_SECONDS), kept.seconds);
     const result = new Response(response.body, response);
     result.headers.set('Cache-Control', publicPolicy ?? 'private, no-store');
     result.headers.delete('X-Scooter-Public-Cache-Control');
+    result.headers.delete(KEEP_SECONDS);
     for (const [key, value] of Object.entries(securityHeaders)) result.headers.set(key, value);
     // Not an answer the cache is still collecting feeds or zones for: the one after it is kept.
-    if (lastGood && response.status === 200 && publicPolicy?.startsWith('public')) {
+    if (lastGood && response.status === 200 && publicPolicy?.startsWith('public') && seconds > 0) {
       lastGood.waitUntil(lastGood.cache.put(kept.key, new Response(result.clone().body, { headers: { 'Content-Type': 'application/json',
-        'Cache-Control': `public, max-age=${kept.seconds}`, [STORED_AT]: String(Date.now()) } })).catch(() => {}));
+        'Cache-Control': `public, max-age=${seconds}`, [STORED_AT]: String(Date.now()), [KEEP_SECONDS]: String(seconds) } })).catch(() => {}));
     }
     return result;
   } catch (error) {

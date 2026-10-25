@@ -2,7 +2,8 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { isIP } from 'node:net';
 import { parseScooterQuery } from '../src/lib/scooterQuery';
-import { feedsForQuery, querySnapshot, showsLastSeen, showsPositions, VEHICLE_MAX_AGE_MS, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
+import { answerKeepUntil, feedsForQuery, querySnapshot, showsLastSeen, showsPositions, VEHICLE_MAX_AGE_MS,
+  type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { ScooterFeedsUnavailableError } from '../src/lib/scooterFeeds';
 import { scooterResponseHeaders } from '../src/lib/scooterResponse';
 import { collectsParking } from '../src/lib/regionalScooterSystems';
@@ -55,6 +56,8 @@ interface ServerOptions {
   lastSeenWaitMs?: number;
   /** Answers /api/zones, the zones of the feeds in the area; it answers 404 without. */
   zones?: (query: FeedQuery) => Promise<ZoneResponse>;
+  /** How long a feed's data may be kept, for those with a cap (retentionCaps in cadence.ts). */
+  retention?: (feedId: string) => number | undefined;
 }
 
 // The Worker's address searches report here how many requests they sent to Geoapify.
@@ -172,10 +175,14 @@ export function createSnapshotServer(options: ServerOptions) {
       }
       refreshing = new Set(watched.filter(feed => refresher.refreshing(feed.id)).map(feed => feed.id));
     }
-    const body = querySnapshot(snapshot, parsed.query, parsed.zoom, Date.now(), { refreshing });
-    // The origin only serves authenticated traffic. Public caching is set at the Worker.
+    const answeredAt = Date.now();
+    const body = querySnapshot(snapshot, parsed.query, parsed.zoom, answeredAt, { refreshing });
+    const keepUntil = options.retention && answerKeepUntil(snapshot, parsed.query, parsed.zoom, answeredAt, options.retention);
+    // The origin only serves authenticated traffic. Public caching is set at the Worker, which keeps
+    // an answer holding a capped feed's data no longer than X-Scooter-Keep-Seconds (0: not at all).
     response.writeHead(200, { ...scooterResponseHeaders(body), 'Cache-Control': 'private, no-store',
-      'X-Scooter-Public-Cache-Control': scooterResponseHeaders(body)['Cache-Control'] });
+      'X-Scooter-Public-Cache-Control': scooterResponseHeaders(body)['Cache-Control'],
+      ...(keepUntil !== undefined ? { 'X-Scooter-Keep-Seconds': String(Math.max(0, Math.floor((keepUntil - answeredAt) / 1000))) } : {}) });
     response.end(JSON.stringify(body));
   }
   const server = createServer((request, response) => {

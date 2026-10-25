@@ -190,7 +190,14 @@ only on data.gouv.fr, where Lime publishes it under the Licence Ouverte 2.0.
 
 Production collects each system independently on Netcup, with at most six
 systems in flight: Switzerland every minute, the others every twenty minutes, or
-every minute for ten minutes after someone looks at them. Map requests read only
+every minute for ten minutes after someone looks at them. Bird's, Spin's and
+Bolt's own feeds, whose licences let their data be kept fifteen minutes, are
+collected every thirteen minutes while nobody looks: the cache drops their
+positions, in memory and in its saved copy, the documents it read them from and
+the city totals counting them before they are fifteen minutes old by their
+source timestamp, and the Worker keeps an answer holding them no longer. Read
+through Entur, MobiData BW, NRW.Mobidrom or the Swiss national platform, the
+same operators come under those platforms' licences instead. Map requests read only
 the relevant cached systems; one for a system whose data is over a minute old
 starts its collection, and waits up to three seconds for it when its positions
 are over fifteen minutes old. The local direct-feed fallback selects by viewport
@@ -207,7 +214,9 @@ again, its positions up to three hours old stand faded where they were last
 seen, counted nowhere, until the sweep reaches them. The national
 platform publishes Voi every eight to nine minutes, about ninety seconds after
 the timestamp it carries, so a shorter limit blanks Voi whenever it is a little
-late. City totals are aggregated hourly. Each scooter counts under the
+late. City totals are aggregated hourly, and those of Bird's, Spin's and Bolt's
+own feeds again whenever the oldest data they count is about to turn fifteen
+minutes old, two or three times a minute. Each scooter counts under the
 nearest town whose bounds hold it; outside Switzerland the towns its own
 feed serves come first, so a scooter in east Oslo is Oslo's, though
 Lørenskog's centre is nearer. Where a town's municipal boundary is listed in

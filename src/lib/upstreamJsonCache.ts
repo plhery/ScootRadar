@@ -60,6 +60,8 @@ interface CacheEntry {
   fetchedAt: number;
   freshUntil: number;
   staleUntil: number;
+  /** A capped host's status document goes then, if still held (capHost). */
+  keepUntil: number;
   retryAfter: number;
   hasValue: boolean;
   value?: unknown;
@@ -87,6 +89,16 @@ export interface UpstreamJsonOptions {
   maxAgeSeconds?: number;
 }
 
+/** A status document, kept a minute or less, holds the vehicles or the parking; metadata is kept longer. */
+const documentKind = (options: UpstreamJsonOptions) => options.freshSeconds <= 60 ? 'status' : 'metadata';
+
+/** When a GBFS document says its data dates from: seconds in version 2, a date in version 3. */
+function lastUpdated(data: unknown) {
+  const value = (data as { last_updated?: unknown } | null)?.last_updated;
+  const at = typeof value === 'number' ? value * 1000 : typeof value === 'string' ? Date.parse(value) : NaN;
+  return Number.isFinite(at) ? at : undefined;
+}
+
 interface UpstreamJsonCacheOptions {
   fetcher?: Fetcher;
   maxEntries?: number;
@@ -97,6 +109,7 @@ interface UpstreamJsonCacheOptions {
 export class UpstreamJsonCache {
   private readonly entries = new Map<string, CacheEntry>();
   private readonly hostIntervals = new Map<string, number>();
+  private readonly hostCaps = new Map<string, number>();
   private readonly nextRequests = new Map<string, number>();
   private readonly fetcher: Fetcher;
   private maxEntries: number;
@@ -161,6 +174,24 @@ export class UpstreamJsonCache {
     this.hostIntervals.set(hostname, Math.max(0, intervalMs));
   }
 
+  /**
+   * A host whose licence lets its data be kept only so long (RETENTION_CAPS_MS in server/cadence.ts):
+   * its status documents, which hold the vehicles, are served, fresh or stale, only until `maxAgeMs`
+   * after their last_updated, or after they were fetched if that is earlier, and evictExpired drops
+   * them then. Its metadata is kept as any other.
+   */
+  capHost(hostname: string, maxAgeMs: number): void {
+    this.hostCaps.set(hostname, Math.max(0, maxAgeMs));
+  }
+
+  /**
+   * Drops the documents past their stale window, which nothing may serve any more, and those of
+   * capped hosts that pass their cap within `aheadMs`: run that often, it holds none past its cap.
+   */
+  evictExpired(aheadMs = 0): void {
+    this.removeExpiredEntries(this.now(), aheadMs);
+  }
+
   clear(): void {
     this.entries.clear();
     this.nextRequests.clear();
@@ -193,7 +224,7 @@ export class UpstreamJsonCache {
         if (this.hostIntervals.size) await this.waitForHost(url);
         answered = false;
         const authorization = options.auth ? await options.auth.authorization() : undefined;
-        this.requests[options.freshSeconds <= 60 ? 'status' : 'metadata']++;
+        this.requests[documentKind(options)]++;
         const response = await this.fetcher(url, {
           headers: authorization ? { ...options.headers, Authorization: authorization } : options.headers,
           cache: 'no-store',
@@ -225,8 +256,10 @@ export class UpstreamJsonCache {
       entry.fetchedAt = completedAt;
       entry.value = data;
       entry.hasValue = true;
-      entry.freshUntil = completedAt + options.freshSeconds * 1000;
-      entry.staleUntil = entry.freshUntil + options.staleIfErrorSeconds * 1000;
+      const cap = documentKind(options) === 'status' ? this.hostCaps.get(new URL(url).hostname) : undefined;
+      entry.keepUntil = cap === undefined ? Infinity : Math.min(completedAt, lastUpdated(data) ?? completedAt) + cap;
+      entry.freshUntil = Math.min(entry.keepUntil, completedAt + options.freshSeconds * 1000);
+      entry.staleUntil = Math.min(entry.keepUntil, entry.freshUntil + options.staleIfErrorSeconds * 1000);
       entry.retryAfter = 0;
       return { data, stale: false, fetchedAt: completedAt };
     } catch (error) {
@@ -266,6 +299,7 @@ export class UpstreamJsonCache {
       fetchedAt: 0,
       freshUntil: 0,
       staleUntil: 0,
+      keepUntil: Infinity,
       retryAfter: 0,
       hasValue: false,
     };
@@ -273,11 +307,12 @@ export class UpstreamJsonCache {
     return entry;
   }
 
-  private removeExpiredEntries(now: number): void {
+  private removeExpiredEntries(now: number, aheadMs = 0): void {
     for (const [key, entry] of this.entries) {
-      if (!entry.pending && (!entry.hasValue || entry.staleUntil <= now)) {
-        this.entries.delete(key);
-      }
+      if (entry.hasValue && entry.staleUntil > now && entry.keepUntil > now + aheadMs) continue;
+      // A request under way keeps its entry, but not a document it may no longer serve.
+      if (!entry.pending) this.entries.delete(key);
+      else if (entry.hasValue) { entry.hasValue = false; entry.value = undefined; }
     }
   }
 }
