@@ -354,7 +354,9 @@ banned shared scooters, and feeds that were empty when checked.
     [Infostart](https://infostart.hu/belfold/2025/05/16/sebessegsapka-uj-tilalmak-es-egyeb-szabalyok-erzsebetvarosban),
     16 May 2025, press). It sets terms for the district's future contracts;
     no report says it is enforced, and none was found on 25 October 2026
-    either. The Dott and Lime apps supply the currently available vehicles.
+    either. At 22:08 that evening the apps still offered 48 Dott and 60 Lime
+    scooters inside the ring. The Dott and Lime apps supply the currently
+    available vehicles.
   - MOL Bubi and Donkey Republic are bikes only. The national access point
     (napportal.kozut.hu) lists timetables and road data, no shared mobility,
     and BKK's FUTÁR API needs a key and carries bike stations, not scooters.

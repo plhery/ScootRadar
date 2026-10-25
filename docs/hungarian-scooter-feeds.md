@@ -138,8 +138,10 @@ Neither Pécs nor Békéscsaba bans renting at night, so
   ([resolution 149/2025](https://www.erzsebetvaros.hu/uploads/files/php2YGu2i-1746011602-2025_04_29_KT_kivonat_ny%C3%ADlt.pdf);
   [Infostart](https://infostart.hu/belfold/2025/05/16/sebessegsapka-uj-tilalmak-es-egyeb-szabalyok-erzsebetvarosban),
   press). It sets terms for the district's future contracts with operators;
-  no report says it is enforced, and none was found on 25 October 2026 either,
-  so Budapest has no entry in `rental-curfews.json`.
+  no report says it is enforced, and none was found on 25 October 2026 either.
+  At 22:08 that evening Dott's app still offered 48 scooters inside the ring,
+  as many as at 21:42, and Lime's 60, so Budapest has no entry in
+  `rental-curfews.json`.
 - **Public data:** MOL Bubi and Donkey Republic are bikes only. The national
   access point ([napportal.kozut.hu](https://napportal.kozut.hu/)) lists
   timetables and road data, no shared mobility, and BKK's FUTÁR API needs a
