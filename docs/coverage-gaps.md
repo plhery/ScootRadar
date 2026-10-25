@@ -87,7 +87,8 @@ banned shared scooters, and feeds that were empty when checked.
   - Central Paris has no shared scooters (banned in 2023).
   - Dott GPSEO answers 404; Dott OL Vallée was empty.
   - Lime Nice and Sophia Antipolis, Pony Nice, Limoges and Pays Basque, and Voi
-    V'Lônes held no scooters.
+    V'Lônes held no scooters. Lime Nice still listed e-bikes only on 25 October
+    2026 (1,050), though Lime publishes it under the Licence Ouverte.
   - West of Paris, Lime's scooters run in eight towns of Saint Germain Boucles
     de Seine, now on the map; Bezons, Carrières-sur-Seine, Chambourcy, Chatou,
     L'Étang-la-Ville, Louveciennes and Mareil-Marly have its e-bikes only
