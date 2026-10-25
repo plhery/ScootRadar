@@ -136,6 +136,37 @@ describe('the United States', () => {
     })]);
   });
 
+  it('reads Lime\'s Washington feed, its standing scooters only, in the District\'s three boxes', async () => {
+    const lime = system('lime_us_washington');
+    expect(lime).toMatchObject({ country: 'US', provider: 'lime', city: 'Washington', region: 'DC', timeZone: 'America/New_York' });
+    expect(serviceAreas(lime)).toEqual(serviceAreas(system('bolt_hopp_us_washington')));
+    const base = 'https://data.lime.bike/api/partners/v2/gbfs/washington_dc/';
+    // As Lime published it on 25 October 2026: GBFS 2.2, scooters and e-bikes, no prices and no links.
+    const scooter = { bike_id: '195291e1-f4a0-4c4e-9d4e-0d3f1c2b7a10', lat: 38.878676, lon: -76.970962, is_reserved: false,
+      is_disabled: false, current_range_meters: 17461, vehicle_type_id: '2', last_reported: Math.floor(Date.now() / 1000),
+      vehicle_type: 'scooter' };
+    vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+      if (url === lime.discoveryUrl) return response({ version: '2.2', ttl: 0, data: { en: { feeds: ['system_information',
+        'station_information', 'station_status', 'free_bike_status', 'vehicle_types'].map(name => ({ name, url: `${base}${name}` })) } } });
+      if (url === `${base}vehicle_types`) return response({ data: { vehicle_types: [
+        { vehicle_type_id: '1', form_factor: 'scooter', propulsion_type: 'electric', max_range_meters: 24140 },
+        { vehicle_type_id: '2', form_factor: 'scooter', propulsion_type: 'electric', max_range_meters: 40233 },
+        { vehicle_type_id: '3', form_factor: 'bicycle', propulsion_type: 'electric_assist', max_range_meters: 85000 },
+      ] } });
+      if (url === `${base}free_bike_status`) return response({ version: '2.2', ttl: 60, last_updated: Math.floor(Date.now() / 1000),
+        data: { bikes: [scooter, { ...scooter, bike_id: 'e-bike', vehicle_type_id: '3', vehicle_type: 'e-bike' },
+          { ...scooter, bike_id: 'reserved', is_reserved: true }, { ...scooter, bike_id: 'disabled', is_disabled: true }] } });
+      throw new Error(`Unexpected upstream ${url}`);
+    }));
+    // East of Lime's Arlington feed, whose box reaches across the Potomac to 77.028° W.
+    const result = await fetchScooters({ bounds: { south: 38.85, west: -77.02, north: 38.95, east: -76.95 }, minBattery: 0,
+      providers: new Set(['lime']) });
+    expect(result.meta.sources.us).toBe('fresh');
+    expect(result.vehicles).toEqual([expect.objectContaining({
+      provider: 'lime', vehicle_id: `lime_us_washington:${scooter.bike_id}`, range_m: 17461,
+    })]);
+  });
+
   describe('Lyft in Chicago', () => {
     const lyftChicago = system('lyft_us_chicago');
     const base = 'https://gbfs.lyft.com/gbfs/2.3/chi/en/';

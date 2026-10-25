@@ -445,9 +445,10 @@ banned shared scooters, and feeds that were empty when checked.
     Oakland are left out.
   - **Lime Grand Rapids** lists no scooter. The city now names Veo its
     exclusive operator ([Mobile GR](https://www.grandrapidsmi.gov/departments/mobile-gr/mobility/shared-micromobility/)).
-  - **Washington, DC:** Lime's feed answers 404; Bird's lists no available
-    scooter in the District, Spin's and Lyft's none at all. Veo's `arl` feed is
-    the same fleet as `xdc`, which is covered.
+  - **Washington, DC:** Bird's feed lists no available scooter in the
+    District, Spin's and Lyft's none at all. Veo's `arl` feed is the same fleet
+    as `xdc`, which is covered. Lime's, which answered 404 in mid-October, has
+    been covered since 25 October 2026.
   - **Dormant Bird feeds:** 51 of Bird's American feeds list no available
     scooter, most with a `last_updated` of 0: Akron, Albuquerque, Alexandria,
     Ann Arbor, Athens (GA), Baltimore, Beaumont, Champaign, Charlottesville,

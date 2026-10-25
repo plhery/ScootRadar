@@ -780,11 +780,12 @@ recheck command.
 
 ## United States
 
-The reviewed catalog lives in `data/american-scooter-feeds.json`: 106 feeds
-in 88 towns. In Washington, DC, Hopp (Bolt) and Veo; Bird in 24 towns and Lime in
-17, from Seattle to Norfolk, their New York feeds each in the Bronx and Queens;
-Veo in 39 more, Spin in 29 and Lyft in Chicago and Portland. Each is the
-operator's own public GBFS feed: Bolt's system 23 at `mds.bolt.eu`, which Bolt
+The reviewed catalog lives in `data/american-scooter-feeds.json`: 107 feeds
+in 88 towns. In Washington, DC, Hopp (Bolt), Lime and Veo; Bird in 24 towns and
+Lime in 17 more, from Seattle to Norfolk, their New York feeds each in the
+Bronx and Queens; Veo in 39 more, Spin in 29 and Lyft in Chicago and Portland.
+Each is the operator's own public GBFS feed: Bolt's system 23 at
+`mds.bolt.eu`, which Bolt
 runs in Washington under the name Hopp, Veo's at `cluster-prod.veoride.com`,
 Bird's at `mds.bird.co`, Lime's at `data.lime.bike`, Spin's at `gbfs.spin.pm`
 and Lyft's at `gbfs.lyft.com`. All were found through

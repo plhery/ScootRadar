@@ -30,12 +30,24 @@ state's centre of population (US Census Bureau, 2020).
 | --- | --- | ---: | --- |
 | Hopp (Bolt) | `mds.bolt.eu/gbfs/3/23` | 1,366 to 1,379 | 16:34 to 16:54 EDT, 14 October |
 | Veo | `veoride.com/…/xdc` | 265 to 269 | 16:34 to 16:54 EDT, 14 October |
+| Lime | `data.lime.bike/…/washington_dc` | 4,581 to 4,597 | 19:54 to 19:58 EDT, 24 October |
 
-Both were also polled six times from 11:27 to 12:09 and three times from 16:13
-to 16:23 that day, in the survey. Between 16:34 and 16:54, 195 Hopp scooters
-left the feed and 190 came back under new ids: Bolt gives a scooter a new id
-after each ride. Veo keeps its ids, and 56 of its scooters moved more than
+Hopp and Veo were also polled six times from 11:27 to 12:09 and three times
+from 16:13 to 16:23 that day, in the survey. Between 16:34 and 16:54, 195 Hopp
+scooters left the feed and 190 came back under new ids: Bolt gives a scooter a
+new id after each ride. Veo keeps its ids, and 56 of its scooters moved more than
 300 m between two polls, up to 1.8 km.
+
+**Lime** answered 404 in the survey; on 24 October its feed was back, GBFS 2.2
+and a minute old, with about 3,200 e-bikes, which the map leaves out, and no
+prices or links. In the four minutes between the first and third polls, 106 of
+its scooters left the feed and 90 came in, and six kept their id while moving
+more than 300 m, up to 2.5 km. At 19:58, 4,531 of its 4,589 scooters stood in
+the District, by its OpenStreetMap outline, and 50 more inside the three boxes
+below, in Maryland towns along the District line, none of which had 20.
+None stood in Arlington or Alexandria: Lime's Arlington feed is another fleet,
+414 scooters that evening, all in Virginia, with no id or position in common.
+So Lime takes the same three boxes as Hopp and Veo, and needs no town outline.
 
 **Hopp is Bolt.** In Washington, Bolt rents its scooters under the name Hopp:
 its feed's links open `bolt-hopp://`, the app `ee.hopp.client`, and its site,
@@ -71,6 +83,10 @@ Their outer box is the one above. Left out, in the poll of 16 October 2026:
 
 - Hopp: none. Earlier, one scooter, disabled, at 38.881° N 76.860° W in
   Landover, Maryland, 4 km east of the District.
+- Lime, at 19:58 EDT on 24 October: 8 of 4,589, all in Maryland, 2 in
+  Montgomery County and 6 in Prince George's, up to 7 km east of the District.
+  One of them is in College Park's outline, which keeps only its own
+  operators' scooters.
 - Veo: 11 scooters in Alexandria, 8 of them standing within 30 m of one another
   at 38.808° N 77.097° W, by Eisenhower Avenue, as at a depot. Too few, and too
   still, for an Alexandria area of their own; Alexandria's riders see Bird's and
