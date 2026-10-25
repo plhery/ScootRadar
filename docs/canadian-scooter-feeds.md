@@ -188,7 +188,8 @@ Leduc publishes no season, but Bird took its scooters in on 20 and 21 October
 that evening (02:30 UTC on the 22nd, the scooter cache's counts). From then it lists no
 vehicle, with `last_updated` 0. So that "feed empty" doesn't report it, the
 catalog pauses Leduc from 22 October until 1 May, Edmonton time: the map says
-the scooters are back in May, and the alerts are muted. Bird's
+the scooters are back in May, the alerts are muted, and the recheck command
+below, as the weekly catalog check, lists the feed as paused. Bird's
 [release of 4 May 2022](https://www.businesswire.com/news/home/20220504005452/en/More-Cities-in-Alberta-Adopt-Micromobility-Leduc-Medicine-Hat-and-St.-Albert-Welcome-Bird-Canada-e-Scooters)
 had Leduc "kicking off the scooting season in the coming weeks"; the window's
 dates are 2026's, so check in late April 2027 when the scooters come back
