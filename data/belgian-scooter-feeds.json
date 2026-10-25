@@ -132,6 +132,57 @@
       "discoveryUrl": "https://gbfs.getapony.com/v1/Charleroi/en/gbfs.json?key=AIzaSyA2roqgVo5gwx28uHcK4zr413B2fTsCkrU"
     },
     {
+      "id": "pony_be_liege",
+      "country": "BE",
+      "provider": "pony",
+      "city": "Liège",
+      "center": [
+        50.6326,
+        5.5797
+      ],
+      "bounds": {
+        "south": 50.552,
+        "north": 50.7117,
+        "west": 5.5093,
+        "east": 5.6894
+      },
+      "discoveryUrl": "https://gbfs.getapony.com/v1/Liege/en/gbfs.json?key=AIzaSyB1MHfaNxg1BBpHh1NRH-c3w8jOtdwnApk",
+      "areas": [
+        {
+          "city": "Liège",
+          "center": [
+            50.6326,
+            5.5797
+          ],
+          "bounds": {
+            "south": 50.552,
+            "north": 50.7117,
+            "west": 5.5093,
+            "east": 5.6894
+          },
+          "aliases": [
+            "Luik",
+            "Lüttich",
+            "Liegi",
+            "Lieja"
+          ]
+        },
+        {
+          "city": "Herstal",
+          "center": [
+            50.665,
+            5.63
+          ],
+          "bounds": {
+            "south": 50.6458,
+            "north": 50.7117,
+            "west": 5.5414,
+            "east": 5.6715
+          }
+        }
+      ]
+    },
+    {
       "id": "hoppy_be_blankenberge",
       "country": "BE",
       "provider": "hoppy",

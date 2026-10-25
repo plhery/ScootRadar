@@ -553,8 +553,8 @@ Supported city names and aliases are resolved locally before address search.
 
 Reviewed catalogs live in `data/belgian-scooter-feeds.json`,
 `data/norwegian-scooter-feeds.json` and `data/british-scooter-feeds.json`.
-Belgium has 11 feeds across 10 cities: Bolt and Dott in Bruxelles, Dott and Pony
-in Charleroi, Dott in Liège and Herstal, Voi in Antwerpen and Hoppy in
+Belgium has 12 feeds across 10 cities: Bolt and Dott in Bruxelles, Dott and Pony
+in Charleroi and in Liège and Herstal, Voi in Antwerpen and Hoppy in
 Blankenberge, Kortrijk, Mechelen, Oostende and Sint-Niklaas. The United Kingdom has 11
 feeds across 18 towns: Beryl, Dott and Bolt. Both come from the operators' own
 public GBFS feeds, found through
@@ -563,7 +563,7 @@ public GBFS feeds, found through
 [Beryl's index](https://beryl-gbfs-production.web.app/v2_2/gbfs.json) and, for
 Pony, Belgium's national access point
 [transportdata.be](https://transportdata.be/dataset/pony_charleroi), which
-lists its feed with the key the URL needs.
+lists its Charleroi and Liège feeds with the key each URL needs.
 
 Norway's 28 feeds across 22 towns (Voi, Ryde, Bolt and Dott) all come from
 [Entur's Mobility API](https://developer.entur.no/docs/open-services/mobility),

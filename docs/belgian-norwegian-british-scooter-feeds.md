@@ -17,12 +17,14 @@ Ryde's scooters in Asker, Bærum, Bodø, Lillestrøm and Lørenskog were added o
 [Ryde's five Entur systems, October 2026](#rydes-five-entur-systems-october-2026).
 Dott's scooters in Liège and Herstal were added on 24 October 2026; see
 [Dott Liège and Herstal, October 2026](#dott-liège-and-herstal-october-2026).
+Pony's scooters there followed on 25 October 2026; see
+[Pony Liège, October 2026](#pony-liège-october-2026).
 
 | Country | Operator | Enabled feeds | Coverage | Available scooters |
 | --- | --- | ---: | --- | ---: |
 | Belgium | Bolt | 1 | Bruxelles | 2,750 |
 | Belgium | Dott | 3 | Bruxelles, Charleroi, Liège (with Herstal) | 4,240 |
-| Belgium | Pony | 1 | Charleroi | 220 |
+| Belgium | Pony | 2 | Charleroi, Liège (with Herstal) | 795 |
 | Belgium | Voi | 1 | Antwerpen | 925 |
 | Belgium | Hoppy | 5 | Blankenberge, Kortrijk, Mechelen, Oostende (with Bredene), Sint-Niklaas | 1,225 |
 | Norway | Voi | 9 | Oslo, Bærum / Asker, Lillestrøm / Lørenskog, Trondheim, Stavanger / Sandnes, Kristiansand / Vennesla, Arendal, Moss, Fredrikstad / Sarpsborg | 13,850 |
@@ -148,6 +150,31 @@ its directory.
 - **Night rules:** the feed gives no hours, and no rule or report found
   names a night ban in Liège or Herstal. No curfew was added.
 
+## Pony Liège, October 2026
+
+Pony's Liège feed, left out on 13 October 2026 with 8 or 9 available
+scooters, listed 577 on 25 October. It is the GBFS 2.2 feed Belgium's access
+point publishes, [transportdata.be](https://transportdata.be/dataset/pony_liege),
+open under "Other (Attribution)" as Charleroi's, with the key the URL needs;
+the catalog reads it at the address its discovery file gives,
+`/v1/Liege/en/`. No news report of the launch was found.
+
+- **Liveness:** in 16 polls a minute apart from 04:06 to 04:21 on Sunday
+  25 October 2026, the feed's `last_updated` moved on every 60 seconds and it
+  listed 571 to 576 available scooters. Ids change on every read, as in
+  Charleroi. 47 of the 49 positions that changed moved 16 m or less, GPS
+  drift; two scooters moved 281 m and 651 m.
+- **Scooters:** all are e-scooters, each with its battery (10 to 100 %), its
+  range and Pony's app link. They stood at 144 of the feed's 873 parking
+  spots.
+- **Towns:** the feed's two areas are Dott's, Liège and Herstal, with the
+  same outlines and bounds. At 04:05, 541 stood in Liège, 34 in Herstal and
+  2 outside both.
+- **Zones and prices:** an operating zone and two kinds of red zone, one
+  where parking is forbidden and one where riding is too. EUR 1 to unlock,
+  then EUR 0.26 a minute.
+- **Night rules:** none, as for Dott in Liège.
+
 ## Ryde's five Entur systems, October 2026
 
 Entur's manifest listed 81 systems on 22 October 2026, against 76 on
@@ -204,9 +231,9 @@ directory.
   [transportdata.be](https://transportdata.be/dataset/pony_charleroi), with
   the key each feed URL needs (added 12 October 2026). The key in MobilityData's
   registry answers 400. Pony's discovery file lists its feeds under
-  `/v1/Charleroi/en/`, not the `/v1/charleroi/fr/` the access point names, so
-  the catalog uses the address the file gives, to keep the same-directory
-  rule. Most of its scooters stand in Pony's parking zones, as in France.
+  `/v1/Charleroi/en/`, not the `/v1/charleroi/fr/` the access point names
+  (Liège's under `/v1/Liege/en/`), so the catalog uses the address the file
+  gives, to keep the same-directory rule. Most of its scooters stand in Pony's parking zones, as in France.
 - **Beryl** regenerates its feeds every eight to ten minutes, despite a
   declared ttl of 120 s. It was 5–12 minutes old on every read, which leaves
   about three minutes before the fifteen-minute cut-off. Its vehicles carry
@@ -439,10 +466,7 @@ stays open at night.
   - Brussels bans shared e-scooters from 1 January 2027, when Bolt's and
     Dott's permits end ([La Libre, 11 June 2026](https://www.lalibre.be/belgique/mobilite/2026/06/11/grand-changement-dans-le-secteur-de-la-mobilite-bruxelles-interdit-les-trottinettes-partagees-sur-son-territoire-IRS4BZDEPFFS3H6MJT23AUASK4/)).
     Their Brussels feeds should empty then.
-  - Pony's Liège feed held 2 scooters on 12 October 2026, and 8 or 9
-    available in six polls on 13 October, under ten, and most never moved,
-    so it is left out; check it again in April 2027.
-    Pony publishes no feed for Brussels; read with the key the French access
+  - Pony publishes no feed for Brussels; read with the key the French access
     point publishes for La Roche-sur-Yon, its Brussels region listed 4
     scooters, all disabled.
   - Lime Brussels and Kortrijk, Dott Ghent and Mons, and Bolt Ghent publish

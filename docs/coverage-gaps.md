@@ -182,9 +182,7 @@ banned shared scooters, and feeds that were empty when checked.
 - **Belgium** ([guide](belgian-norwegian-british-scooter-feeds.md#known-gaps)):
   - Brussels bans shared scooters from 1 January 2027, so Bolt's and Dott's
     feeds there should empty.
-  - Pony Liège held 8 or 9 available scooters on 13 October 2026, under ten,
-    and most never moved; check it again in April 2027.
-    Pony publishes nothing for Brussels; its Brussels region, read with the
+  - Pony publishes nothing for Brussels; its Brussels region, read with the
     key published for La Roche-sur-Yon, listed 4 scooters, all disabled.
   - Lime Brussels and Kortrijk, Dott Ghent and Mons and Bolt Ghent list
     e-bikes only, as do Hoppy's Vervoerregio West-Vlaanderen, Kempen, Dender
@@ -1034,9 +1032,7 @@ Bonaire had feeds to add. Survey files are in
   day, as the map says they are back in May even while they stand on it; if
   they are not back by 1 May, "feed empty" reports the feed about 4 May. In
   October 2027, move `from` to the day each feed empties, if it differs.
-- **April 2027:** Pony Liège held 8 or 9 available scooters on 13 October
-  2026, most of which never moved; add it if it holds ten or more and they
-  are ridden. The season starts in Belarus, Georgia, Armenia, Azerbaijan and
+- **April 2027:** the season starts in Belarus, Georgia, Armenia, Azerbaijan and
   Kazakhstan too (Minsk's runs from about 15 March to 15 November): check
   Bolt's ids, Whoosh, the registry, ATOM Mobility and the national portals
   again.
