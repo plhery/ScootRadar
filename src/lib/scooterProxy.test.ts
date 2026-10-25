@@ -156,6 +156,34 @@ describe('last good answer', () => {
     expect(expired.headers.get('Retry-After')).toBe('30');
   });
 
+  it('marks the iPhone app\'s requests to the cache, and keeps its answers apart from the website\'s', async () => {
+    const { entries, store, settled } = memory();
+    const fetcher = vi.spyOn(globalThis, 'fetch').mockImplementation(async () => answer({ stale: false }));
+    const asking = (userAgent: string) => new Request(request(), { headers: { 'User-Agent': userAgent, 'cf-connecting-ip': '192.0.2.1' } });
+    const web = { Accept: 'application/json', Authorization: 'Bearer test-service-token', 'X-Scooter-Client-IP': '192.0.2.1' };
+    const key = 'https://map.example/api/scooters?east=4.9&north=45.8&south=45.72&west=4.79&zoom=13';
+    for (const userAgent of ['Mozilla/5.0 (iPhone; CPU iPhone OS 18_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.4 Mobile/15E148 Safari/604.1',
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36',
+      // The app's analytics speak as its web view; a name alone is not URLSession's.
+      'Mozilla/5.0 (iPhone; CPU iPhone OS 18_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148', 'ScootRadar/1.0']) {
+      await proxyScooterSnapshot(asking(userAgent), env, store);
+      expect(fetcher).toHaveBeenLastCalledWith(expect.any(URL), expect.objectContaining({ headers: web }));
+    }
+    await settled();
+    expect([...entries.keys()]).toEqual([key]);
+    await proxyScooterSnapshot(asking('ScootRadar/42 CFNetwork/3826.500.111.2.2 Darwin/24.4.0'), env, store);
+    expect(fetcher).toHaveBeenLastCalledWith(expect.any(URL), expect.objectContaining({ headers: { ...web, 'X-Scooter-Client': 'ios' } }));
+    await settled();
+    expect([...entries.keys()]).toEqual([key, 'https://map.example/ios/api/scooters?east=4.9&north=45.8&south=45.72&west=4.79&zoom=13']);
+
+    // Neither is given the other's when the origin fails.
+    entries.delete(key);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    fetcher.mockImplementation(async () => new Response(null, { status: 502 }));
+    expect((await proxyScooterSnapshot(asking('Mozilla/5.0'), env, store)).status).toBe(503);
+    expect((await proxyScooterSnapshot(asking('ScootRadar/42.1 CFNetwork/3826.500.111.2.2 Darwin/24.4.0'), env, store)).status).toBe(200);
+  });
+
   it('keeps only answers the public may keep, and none of another view', async () => {
     const { entries, store, settled } = memory();
     vi.spyOn(globalThis, 'fetch')

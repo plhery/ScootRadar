@@ -2,16 +2,19 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { isIP } from 'node:net';
 import { parseScooterQuery } from '../src/lib/scooterQuery';
-import { feedsForQuery, querySnapshot, showsLastSeen, showsPositions, VEHICLE_MAX_AGE_MS, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
+import { buildCityOverview, feedsForQuery, querySnapshot, showsLastSeen, showsPositions, VEHICLE_MAX_AGE_MS, type FeedSnapshot,
+  type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { ScooterFeedsUnavailableError } from '../src/lib/scooterFeeds';
 import { scooterResponseHeaders } from '../src/lib/scooterResponse';
 import { collectsParking } from '../src/lib/regionalScooterSystems';
+import { coverageIntersects } from '../src/lib/feedCoverage';
 import { zoneQueryError, type ZoneResponse } from '../src/lib/zones';
 import type { FeedQuery } from '../src/lib/scooterFeeds';
 import type { MapBounds } from '../src/lib/types';
 import type { SnapshotMetrics } from './metrics';
 import { reportError } from './errorReporting';
 import { ALWAYS_FAST, feedState, parkingUp, type FeedCadence } from './feedStateLog';
+import { sourceClass, type SourceClass } from './sourceClasses';
 
 /** Collects feeds on demand: the scheduler. */
 export interface FeedRefresher {
@@ -53,14 +56,23 @@ interface ServerOptions {
   coldWaitMs?: number;
   /** LAST_SEEN_WAIT_MS by default. */
   lastSeenWaitMs?: number;
-  /** Answers /api/zones, the zones of the feeds in the area; it answers 404 without. */
-  zones?: (query: FeedQuery) => Promise<ZoneResponse>;
+  /** Answers /api/zones, the zones of the feeds in the area, of those `shown` when given; it answers 404 without. */
+  zones?: (query: FeedQuery, shown?: (id: string) => boolean) => Promise<ZoneResponse>;
+  /**
+   * The classes of sources the iPhone app is not shown (sourceClasses.ts): a request the Worker
+   * marks as the app's is answered from the other feeds alone. None by default.
+   */
+  iosHidden?: ReadonlySet<SourceClass>;
+  /** Builds city totals as the cache builds its own, for the app's: buildCityOverview by default. */
+  buildOverview?: (feeds: FeedSnapshot[], now: number) => MobilitySnapshot['overview'];
 }
 
 // The Worker's address searches report here how many requests they sent to Geoapify.
 const GEOCODE_USAGE_PATH = '/api/geocode-usage';
 const ZONES_PATH = '/api/zones';
 const ROUTES = new Set(['/api/scooters', ZONES_PATH, GEOCODE_USAGE_PATH, '/health', '/ready', '/metrics']);
+/** The Worker marks the iPhone app's requests with it (src/lib/scooterProxy.ts). */
+const CLIENT_HEADER = 'x-scooter-client';
 
 export function createSnapshotServer(options: ServerOptions) {
   if (options.production && (!options.token || options.token.length < 32)) {
@@ -77,6 +89,30 @@ export function createSnapshotServer(options: ServerOptions) {
   const fromWorker = (request: IncomingMessage) => tokenHash
     ? timingSafeEqual(tokenHash, createHash('sha256').update(request.headers.authorization ?? '').digest())
     : ['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(request.socket.remoteAddress ?? '');
+  const iosHidden = options.iosHidden ?? new Set<SourceClass>();
+  const iosShown = (id: string) => !iosHidden.has(sourceClass(id));
+  // The app's city totals, rebuilt when the cache rebuilds its own, hourly, rather than for each request.
+  let iosOverview: { base: MobilitySnapshot['overview']; overview: MobilitySnapshot['overview'] } | undefined;
+  /** The snapshot the iPhone app is answered from: the feeds of the classes not hidden from it, and city totals of those alone. */
+  const forIos = (snapshot: MobilitySnapshot): MobilitySnapshot => {
+    const feeds = snapshot.feeds.filter(feed => iosShown(feed.id));
+    return { ...snapshot, feeds,
+      // Built when first read: only the zoomed-out map's answer reads the totals.
+      get overview() {
+        if (iosOverview?.base !== snapshot.overview) {
+          const built = (options.buildOverview ?? buildCityOverview)(feeds, Date.now());
+          // As old as the cache's, which they stand for: they expire with it.
+          iosOverview = { base: snapshot.overview, overview: { ...built, generatedAt: snapshot.overview.generatedAt } };
+        }
+        return iosOverview.overview;
+      } };
+  };
+  /** The providers listed in view, less those whose every feed there is hidden from the app: their switches would show nothing. */
+  const iosProviders = (snapshot: MobilitySnapshot, listed: string[], bounds: MapBounds) => {
+    const inView = snapshot.feeds.filter(feed => coverageIntersects(feed.coverage, bounds));
+    const kept = new Set(inView.filter(feed => iosShown(feed.id)).map(feed => feed.provider));
+    return listed.filter(provider => kept.has(provider) || !inView.some(feed => feed.provider === provider));
+  };
   async function handle(request: IncomingMessage, response: ServerResponse) {
     response.setHeader('Content-Type', 'application/json; charset=utf-8');
     response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -143,10 +179,12 @@ export function createSnapshotServer(options: ServerOptions) {
     response.once('close', () => activeResponses--);
     const parsed = parseScooterQuery(url.searchParams);
     if (!parsed.ok) { response.writeHead(400); response.end(JSON.stringify({ error: parsed.error })); return; }
+    // The Worker's mark of the iPhone app, heeded only when some sources are hidden from it.
+    const ios = iosHidden.size > 0 && request.headers[CLIENT_HEADER] === 'ios';
     if (zones) {
       const error = zoneQueryError(parsed.zoom, parsed.query.bounds);
       if (error) { response.writeHead(400); response.end(JSON.stringify({ error })); return; }
-      const body = await zones(parsed.query);
+      const body = await (ios ? zones(parsed.query, iosShown) : zones(parsed.query));
       // Zones change rarely: a complete answer may be kept for five minutes.
       response.writeHead(200, { 'Cache-Control': 'private, no-store',
         'X-Scooter-Public-Cache-Control': body.meta.pending ? 'private, no-store' : 'public, max-age=300' });
@@ -154,11 +192,12 @@ export function createSnapshotServer(options: ServerOptions) {
       return;
     }
     if (!snapshot) { response.writeHead(503, { 'Retry-After': '5' }); response.end('{"error":"Scooter data is warming up."}'); return; }
+    let answered = ios ? forIos(snapshot) : snapshot;
     let refreshing: Set<string> | undefined;
     const refresher = options.refresher;
     if (refresher) {
       // The feeds this answer uses are watched for a while, and collected again now if their data is over a minute old.
-      const watched = feedsForQuery(snapshot, parsed.query, parsed.zoom).filter(feed => !feed.skipped);
+      const watched = feedsForQuery(answered, parsed.query, parsed.zoom).filter(feed => !feed.skipped);
       refresher.demand(watched.map(feed => feed.id), now, parsed.query.bounds);
       // Positions too old to show would leave the map empty: wait a moment for those likely to come back,
       // less long when all of them have something to show meanwhile.
@@ -169,10 +208,14 @@ export function createSnapshotServer(options: ServerOptions) {
         options.metrics?.recordWait(await refresher.wait(cold.map(feed => feed.id),
           bare ? options.coldWaitMs ?? COLD_WAIT_MS : options.lastSeenWaitMs ?? LAST_SEEN_WAIT_MS));
         snapshot = options.snapshot() ?? snapshot;
+        answered = ios ? forIos(snapshot) : snapshot;
       }
       refreshing = new Set(watched.filter(feed => refresher.refreshing(feed.id)).map(feed => feed.id));
     }
-    const body = querySnapshot(snapshot, parsed.query, parsed.zoom, Date.now(), { refreshing });
+    const body = querySnapshot(answered, parsed.query, parsed.zoom, Date.now(), { refreshing });
+    if (ios && body.meta.availableProviders) {
+      body.meta.availableProviders = iosProviders(snapshot, body.meta.availableProviders, parsed.query.bounds);
+    }
     // The origin only serves authenticated traffic. Public caching is set at the Worker.
     response.writeHead(200, { ...scooterResponseHeaders(body), 'Cache-Control': 'private, no-store',
       'X-Scooter-Public-Cache-Control': scooterResponseHeaders(body)['Cache-Control'] });

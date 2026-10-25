@@ -19,6 +19,7 @@ import { registerFeedDefinitions } from './feedDefinitions';
 import { initErrorReporting, reportError, reportFeedExpired } from './errorReporting';
 import { cadenceFromEnv, ownIdleExpiries } from './cadence';
 import { answerZones, createZoneStore } from './zoneStore';
+import { iosHiddenSourceClasses } from './sourceClasses';
 import { createStrayHold } from './strayHold';
 import { dottMapRequests, withDottAppCollectors } from './dottApp';
 import { voiMapRequests, withVoiAppCollectors } from './voiApp';
@@ -77,6 +78,7 @@ const zoneStore = createZoneStore({ onError: (feed, error) => console.warn(JSON.
 
 // Validate configuration before doing any network collection.
 const schedule = cadenceFromEnv();
+const iosHidden = iosHiddenSourceClasses(process.env.IOS_HIDDEN_SOURCE_CLASSES);
 // Always-fast sources every minute; the others every idle interval, and every minute while someone looks.
 const scheduler = new FeedScheduler(collect, { ...schedule,
   alwaysFast: feed => schedule.alwaysFastSources.has(feed.source),
@@ -108,7 +110,8 @@ const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
 const server = createSnapshotServer({ snapshot: () => snapshot,
   token: process.env.SCOOTER_SNAPSHOT_API_TOKEN, production: process.env.NODE_ENV === 'production',
   version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler,
-  zones: query => answerZones(zoneStore, collectable, query, COLD_WAIT_MS) });
+  zones: (query, shown) => answerZones(zoneStore, shown ? collectable.filter(feed => shown(feed.id)) : collectable, query, COLD_WAIT_MS),
+  iosHidden, buildOverview: (feeds, now) => buildCityOverview(feeds, now, countedAt(now)) });
 try {
   const persisted = await readSnapshot(snapshotPath);
   if (persisted) {
@@ -259,6 +262,7 @@ const persistenceTimer = setInterval(() => {
   void persist();
 }, 5_000);
 server.listen(Number(process.env.PORT ?? 3001), '0.0.0.0', () => console.log('Scooter snapshot API listening'));
+if (iosHidden.size) console.log(JSON.stringify({ event: 'ios_sources_hidden', classes: [...iosHidden] }));
 for (const signal of ['SIGTERM', 'SIGINT'] as const) {
   process.on(signal, () => {
     stopping = true;

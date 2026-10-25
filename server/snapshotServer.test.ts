@@ -7,7 +7,8 @@ import { createSnapshotMetrics } from './metrics';
 import { FeedScheduler } from './feedScheduler';
 import { buildCityOverview, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import type { ScooterResponse } from '../src/lib/types';
-import { REGIONAL_SCOOTER_SYSTEMS, regionalSource } from '../src/lib/regionalScooterSystems';
+import { REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas } from '../src/lib/regionalScooterSystems';
+import { sourceClass, type SourceClass } from './sourceClasses';
 
 const token = 'a-test-origin-token-with-at-least-32-characters';
 const servers: Server[] = [];
@@ -276,5 +277,116 @@ describe('collection on demand', () => {
     expect(zones).toHaveBeenCalledWith(expect.objectContaining({ bounds: { south: 47.36, west: 8.53, north: 47.38, east: 8.55 } }));
     pending = true;
     expect((await fetch(url(`${view}&zoom=15`), { headers })).headers.get('X-Scooter-Public-Cache-Control')).toBe('private, no-store');
+  });
+});
+
+describe('sources hidden from the iPhone app', () => {
+  // Münster has a feed of three classes: Voi's from NRW.Mobidrom, Dott's GBFS feed and Qick's app map.
+  const ids = ['germany:voi_de_muenster', 'germany:dott_de_munster', 'germany:qick_de_munster'];
+  const hidden = new Set<SourceClass>(['rider-app', 'restricted']);
+  const center = [51.9607, 7.6261];
+  const feed = (id: string, now: number): FeedSnapshot => {
+    const system = REGIONAL_SCOOTER_SYSTEMS.find(candidate => `${regionalSource(candidate)}:${candidate.id}` === id)!;
+    return { id, source: regionalSource(system), provider: system.provider, coverage: serviceAreas(system).map(area => area.bounds),
+      vehicles: [{ provider: system.provider, vehicle_id: `${id}-1`, lat: center[0], lng: center[1], battery: 80, range_m: null,
+        distance_m: null, deep_link: null }], observedAt: now, attemptedAt: now, collectedAt: now, stale: false, failed: false, skipped: false };
+  };
+  const snapshotOf = (now = Date.now()): MobilitySnapshot => {
+    const feeds = ids.map(id => feed(id, now));
+    return { version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) };
+  };
+  const street = (port: number) => `http://127.0.0.1:${port}/api/scooters?south=51.95&west=7.61&north=51.97&east=7.64&zoom=16`;
+  const country = (port: number) => `http://127.0.0.1:${port}/api/scooters?south=47&west=5&north=55&east=15&zoom=6`;
+  const web = { Authorization: `Bearer ${token}` };
+  const ios = { ...web, 'X-Scooter-Client': 'ios' };
+  const read = async (url: string, headers: Record<string, string>) => {
+    const response = await fetch(url, { headers });
+    expect(response.status).toBe(200);
+    return await response.json() as ScooterResponse;
+  };
+  const munster = (body: ScooterResponse) => body.clusters.find(cluster => cluster.id === 'city:de:Münster');
+
+  it('has a feed of each class it tests', () => {
+    expect(ids.map(sourceClass)).toEqual(['licensed', 'restricted', 'rider-app']);
+  });
+
+  it('answers the app as the website while no class is hidden', async () => {
+    // A street view's parking expiry is counted from the time of the request.
+    vi.spyOn(Date, 'now').mockReturnValue(Date.now());
+    const snapshot = snapshotOf();
+    const { port } = await start(snapshot);
+    for (const url of [street(port), country(port)]) expect(await read(url, ios)).toEqual(await read(url, web));
+    expect((await read(street(port), ios)).vehicles).toHaveLength(3);
+  });
+
+  it('answers the website as before when classes are hidden from the app', async () => {
+    vi.spyOn(Date, 'now').mockReturnValue(Date.now());
+    const snapshot = snapshotOf();
+    const before = (await start(snapshot)).port;
+    const { port } = await start(snapshot, { iosHidden: hidden });
+    for (const [url, unfiltered] of [[street(port), street(before)], [country(port), country(before)]]) {
+      expect(await read(url, web)).toEqual(await read(unfiltered, web));
+    }
+  });
+
+  it('leaves the hidden classes out of the app\'s scooters, totals and providers', async () => {
+    const { port } = await start(snapshotOf(), { iosHidden: hidden });
+    const [shown, all] = [await read(street(port), ios), await read(street(port), web)];
+    expect(shown.vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(['germany:voi_de_muenster-1']);
+    expect(shown.meta).toMatchObject({ totalVehicles: 1, failedSources: [], partial: false });
+    expect(shown.meta.sources.germany).toBe('fresh');
+    expect(all.meta.availableProviders).toEqual(expect.arrayContaining(['dott', 'qick', 'voi']));
+    expect(shown.meta.availableProviders).toEqual(all.meta.availableProviders!.filter(provider => provider !== 'dott' && provider !== 'qick'));
+    const [totals, allTotals] = [await read(country(port), ios), await read(country(port), web)];
+    expect(munster(allTotals)).toMatchObject({ count: 3, providers: { dott: 1, qick: 1, voi: 1 } });
+    expect(munster(totals)).toMatchObject({ count: 1, providers: { voi: 1 } });
+    expect(totals.providers).toEqual({ voi: 1 });
+    expect(totals.meta).toMatchObject({ totalVehicles: 1, overview: true, generatedAt: allTotals.meta.generatedAt });
+    expect(totals.meta.availableProviders).not.toContain('qick');
+  });
+
+  it('builds the app\'s city totals again only when the cache has built its own again', async () => {
+    let snapshot = snapshotOf();
+    const buildOverview = vi.fn((feeds: FeedSnapshot[], now: number) => buildCityOverview(feeds, now));
+    const { port } = await start(undefined, { snapshot: () => snapshot, iosHidden: hidden, buildOverview });
+    await read(street(port), ios);
+    expect(buildOverview).not.toHaveBeenCalled();
+    await read(country(port), ios);
+    await read(country(port), ios);
+    expect(buildOverview).toHaveBeenCalledOnce();
+    expect(buildOverview.mock.calls[0][0].map(candidate => candidate.id)).toEqual(['germany:voi_de_muenster']);
+    // A collection publishes a new snapshot with the same totals; an hourly rebuild, new ones.
+    snapshot = { ...snapshot, updatedAt: Date.now() };
+    await read(country(port), ios);
+    expect(buildOverview).toHaveBeenCalledOnce();
+    snapshot = { ...snapshot, overview: buildCityOverview(snapshot.feeds, Date.now()) };
+    await read(country(port), ios);
+    expect(buildOverview).toHaveBeenCalledTimes(2);
+  });
+
+  it('collects for the app only the feeds it may be shown', async () => {
+    const demanded: string[][] = [];
+    const { port } = await start(snapshotOf(), { iosHidden: hidden,
+      refresher: { demand: ids => { demanded.push(ids); }, refreshing: () => false, wait: async () => true } });
+    await read(street(port), ios);
+    await read(street(port), web);
+    expect(demanded).toEqual([['germany:voi_de_muenster'], ids]);
+  });
+
+  it('asks for the zones of the feeds the app may be shown alone', async () => {
+    const zones = vi.fn<NonNullable<Parameters<typeof createSnapshotServer>[0]['zones']>>(async () => ({ zones: [],
+      meta: { generatedAt: new Date().toISOString(), pending: false, truncated: false } }));
+    const url = (port: number) => `http://127.0.0.1:${port}/api/zones?south=51.95&west=7.61&north=51.97&east=7.64&zoom=15`;
+    const off = (await start(undefined, { zones })).port;
+    await (await fetch(url(off), { headers: ios })).text();
+    expect(zones.mock.calls[0]).toHaveLength(1);
+    const { port } = await start(undefined, { zones, iosHidden: hidden });
+    await (await fetch(url(port), { headers: web })).text();
+    expect(zones.mock.calls[1]).toHaveLength(1);
+    const response = await fetch(url(port), { headers: ios });
+    expect(response.headers.get('X-Scooter-Public-Cache-Control')).toBe('public, max-age=300');
+    const shown = zones.mock.calls[2][1]!;
+    expect(ids.map(id => shown(id))).toEqual([true, false, false]);
+    expect(shown('national:bolt_winterthur')).toBe(true);
   });
 });

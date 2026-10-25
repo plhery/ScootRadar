@@ -21,6 +21,9 @@ export interface LastGoodStore {
 // zones, which rarely change, for a day.
 const LAST_GOOD_SECONDS = { scooters: VEHICLE_MAX_AGE_MS / 1000, zones: 86_400 };
 const STORED_AT = 'X-Scooter-Stored-At';
+// The iPhone app asks with URLSession's own user agent, "ScootRadar/<build> CFNetwork/<version>
+// Darwin/<version>". The cache may show it fewer sources than the website (server/sourceClasses.ts).
+const IOS_APP = /^ScootRadar\/[\d.]+ CFNetwork\//;
 
 async function lastGoodAnswer(store: LastGoodStore, kept: { key: string; seconds: number }, headers: Record<string, string>) {
   try {
@@ -74,12 +77,15 @@ export async function proxyScooterSnapshot(request: Request, env: SnapshotProxyE
     // The apps ask in different orders.
     const search = new URLSearchParams(url.search);
     search.sort();
-    kept = { key: `${url.origin}${url.pathname}?${search}`, seconds: LAST_GOOD_SECONDS[zones ? 'zones' : 'scooters'] };
+    const ios = IOS_APP.test(request.headers.get('User-Agent') ?? '');
+    // The app's answers are kept apart from the website's, under a path no request can ask for.
+    kept = { key: `${url.origin}${ios ? '/ios' : ''}${url.pathname}?${search}`, seconds: LAST_GOOD_SECONDS[zones ? 'zones' : 'scooters'] };
     if (!env.SCOOTER_SNAPSHOT_API_TOKEN) throw new Error('Missing origin credential');
     const upstream = new URL(zones ? '/api/zones' : '/api/scooters', env.SCOOTER_SNAPSHOT_API_URL);
     upstream.search = url.search;
     const response = await fetch(upstream, { headers: { Accept: 'application/json', Authorization: `Bearer ${env.SCOOTER_SNAPSHOT_API_TOKEN}`,
-      'X-Scooter-Client-IP': request.headers.get('cf-connecting-ip') ?? 'unknown' }, redirect: 'manual', signal: AbortSignal.timeout(5000) });
+      'X-Scooter-Client-IP': request.headers.get('cf-connecting-ip') ?? 'unknown', ...(ios && { 'X-Scooter-Client': 'ios' }) },
+      redirect: 'manual', signal: AbortSignal.timeout(5000) });
     // Workers support manual redirects; never forward the service credential to a redirect target.
     if ((response.status >= 300 && response.status < 400) || response.status >= 500 || response.status === 401 || response.status === 403) {
       return await unavailable({ status: response.status });

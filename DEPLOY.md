@@ -34,6 +34,17 @@ The cache also reads `METRICS_TOKEN` (at least 32 characters in production), whi
 opens `/metrics` to Prometheus, and `SENTRY_DSN`, which turns on Sentry. Both are
 optional Coolify secrets; see [docs/OBSERVABILITY.md](docs/OBSERVABILITY.md).
 
+`IOS_HIDDEN_SOURCE_CLASSES`, unset by default, keeps classes of sources from the
+iPhone app alone: a comma-separated list of `rider-app`, `restricted` and
+`public` ([server/sourceClasses.ts](server/sourceClasses.ts) classes each feed).
+Licensed sources are always shown; any other value stops the cache at startup.
+The Worker marks the app's requests, which carry URLSession's user agent,
+`ScootRadar/<build> CFNetwork/…`, with `X-Scooter-Client: ios`, and keeps their
+last good answers apart from the website's. The cache answers them from the
+other feeds alone: scooters, city totals, zones and the providers in view. The
+website is answered as before. Set it in the application's Coolify environment
+and redeploy; remove it and redeploy to show the app every source again.
+
 The authenticated rider adapters use private files beside the snapshot:
 `voi-session.json` and `lime-session.json` by default, overridden with
 `VOI_SESSION_PATH` and `LIME_SESSION_PATH`. They must be owned by the cache
