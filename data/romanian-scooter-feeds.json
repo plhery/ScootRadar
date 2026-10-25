@@ -210,10 +210,171 @@
         "lngStep": 0.01934736925528568,
         "cells": "0-4"
       }
+    },
+    {
+      "id": "lime_ro_app_alba_iulia",
+      "provider": "lime",
+      "city": "Alba Iulia",
+      "center": [
+        46.06667,
+        23.58333
+      ],
+      "timeZone": "Europe/Bucharest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "PPQAWHY2QM4UO",
+      "limeMapGrid": {
+        "south": 46.05359,
+        "west": 23.54251,
+        "north": 46.10522,
+        "east": 23.59534,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01941636018665333,
+        "cells": "0-9"
+      }
+    },
+    {
+      "id": "lime_ro_app_bucuresti",
+      "provider": "lime",
+      "city": "București",
+      "center": [
+        44.43225,
+        26.10626
+      ],
+      "timeZone": "Europe/Bucharest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "CLBTWPN2EOPQM",
+      "limeMapGrid": {
+        "south": 44.35719,
+        "west": 25.97626,
+        "north": 44.50121,
+        "east": 26.23233,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.018845814147791795,
+        "cells": "7-10,20-24,34-37,43-44,46-55,57-80,84-95,98-99,101-107,115-120,127-134,141-148"
+      }
+    },
+    {
+      "id": "lime_ro_app_cluj_napoca",
+      "provider": "lime",
+      "city": "Cluj-Napoca",
+      "center": [
+        46.76667,
+        23.6
+      ],
+      "timeZone": "Europe/Bucharest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "VMRYUZOKWPZAR",
+      "limeMapGrid": {
+        "south": 46.7461,
+        "west": 23.54211,
+        "north": 46.7994,
+        "east": 23.64365,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01966437128991137,
+        "cells": "0-4,6-10,12-23"
+      }
+    },
+    {
+      "id": "lime_ro_app_iasi",
+      "provider": "lime",
+      "city": "Iași",
+      "center": [
+        47.16667,
+        27.6
+      ],
+      "timeZone": "Europe/Bucharest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "UAINLXSBV27YD",
+      "limeMapGrid": {
+        "south": 47.12405,
+        "west": 27.52514,
+        "north": 47.19943,
+        "east": 27.64187,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01980365047493206,
+        "cells": "2-3,8-11,13-22,25-27,31"
+      }
+    },
+    {
+      "id": "lime_ro_app_sibiu",
+      "provider": "lime",
+      "city": "Sibiu",
+      "center": [
+        45.8,
+        24.15
+      ],
+      "timeZone": "Europe/Bucharest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "LJAN7IUWKHLZH",
+      "limeMapGrid": {
+        "south": 45.75407,
+        "west": 24.11537,
+        "north": 45.81459,
+        "east": 24.18654,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019311886691292315,
+        "cells": "0-1,4-15,17-19"
+      }
+    },
+    {
+      "id": "lime_ro_app_targoviste",
+      "provider": "lime",
+      "city": "Târgoviște",
+      "center": [
+        44.92543,
+        25.4567
+      ],
+      "timeZone": "Europe/Bucharest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "KGBBKPKB7DAUM",
+      "limeMapGrid": {
+        "south": 44.90926,
+        "west": 25.4361,
+        "north": 44.93898,
+        "east": 25.48299,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019025949955294573,
+        "cells": "0-7"
+      }
+    },
+    {
+      "id": "lime_ro_app_targu_mures",
+      "provider": "lime",
+      "city": "Târgu Mureș",
+      "center": [
+        46.54245,
+        24.55747
+      ],
+      "timeZone": "Europe/Bucharest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "YC7SFAV36U6BY",
+      "limeMapGrid": {
+        "south": 46.51946,
+        "west": 24.52926,
+        "north": 46.57316,
+        "east": 24.6022,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01958219394946264,
+        "cells": "0-10,12-14"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
   "limeServiceAreaSources": [
-    "https://assets.lime.bike/zones_attributes/Deva_250_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Deva_250_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Alba_Iulia_768_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Bucharest_3363_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Cluj-Napoca_1222_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Iasi_140_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Sibiu_867_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Targoviste_851_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Targu_Mures_87_exclude_new_type.json"
   ]
 }

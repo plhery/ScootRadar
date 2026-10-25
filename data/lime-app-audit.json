@@ -1586,6 +1586,125 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Veszprem_109_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "RO",
+      "city": "Alba Iulia",
+      "regionToken": "PPQAWHY2QM4UO",
+      "fingerprint": "b837288a08688f8d346952124008eed28173a15f14af0388989467a4e7f4977f",
+      "groups": 3,
+      "localCells": 10,
+      "coldMapRequests": 14,
+      "warmMapRequests": 14,
+      "scooters": 369,
+      "stationaryReferences": 12,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T20:50:36.888Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Alba_Iulia_768_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "RO",
+      "city": "București",
+      "regionToken": "CLBTWPN2EOPQM",
+      "fingerprint": "6daac2c319dd191545b43304d0d66702a0afdd75050952acb8c71731dae9adeb",
+      "groups": 23,
+      "localCells": 92,
+      "coldMapRequests": 148,
+      "warmMapRequests": 148,
+      "scooters": 4954,
+      "stationaryReferences": 157,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T21:13:21.870Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Bucharest_3363_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "RO",
+      "city": "Cluj-Napoca",
+      "regionToken": "VMRYUZOKWPZAR",
+      "fingerprint": "bce3a39dbc195b7015985d338fc6eb2c10e6f8b7333f1721bd5db4d2a8d38671",
+      "groups": 6,
+      "localCells": 22,
+      "coldMapRequests": 26,
+      "warmMapRequests": 26,
+      "scooters": 687,
+      "stationaryReferences": 67,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T21:16:37.780Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Cluj-Napoca_1222_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "RO",
+      "city": "Iași",
+      "regionToken": "UAINLXSBV27YD",
+      "fingerprint": "23ce5f34ffcb9159c7bc97f2e6518aacb0c9adc1873ce20ef408ce2290ba7048",
+      "groups": 5,
+      "localCells": 20,
+      "coldMapRequests": 20,
+      "warmMapRequests": 20,
+      "scooters": 387,
+      "stationaryReferences": 9,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T21:22:42.020Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Iasi_140_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "RO",
+      "city": "Sibiu",
+      "regionToken": "LJAN7IUWKHLZH",
+      "fingerprint": "1b5bcdf72b909a33e11008bd5b202809e007930b731534b8f4eec87266605846",
+      "groups": 5,
+      "localCells": 17,
+      "coldMapRequests": 17,
+      "warmMapRequests": 17,
+      "scooters": 281,
+      "stationaryReferences": 13,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T21:26:54.003Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Sibiu_867_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "RO",
+      "city": "Târgoviște",
+      "regionToken": "KGBBKPKB7DAUM",
+      "fingerprint": "173760bec3281a46ca91b454a929fe65d19ab40769f0195f9b30abfb2815bb19",
+      "groups": 2,
+      "localCells": 8,
+      "coldMapRequests": 8,
+      "warmMapRequests": 8,
+      "scooters": 84,
+      "stationaryReferences": 35,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T21:28:03.643Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Targoviste_851_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "RO",
+      "city": "Târgu Mureș",
+      "regionToken": "YC7SFAV36U6BY",
+      "fingerprint": "a3b8dcc417d8ac56aadd094a5987ae608c18a0b5df49295b9cca6c527a7ed05f",
+      "groups": 4,
+      "localCells": 14,
+      "coldMapRequests": 14,
+      "warmMapRequests": 14,
+      "scooters": 233,
+      "stationaryReferences": 58,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T21:29:56.003Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Targu_Mures_87_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

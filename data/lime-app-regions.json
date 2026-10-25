@@ -2048,6 +2048,139 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Veszprem_109_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "RO",
+      "city": "Alba Iulia",
+      "center": [
+        46.06667,
+        23.58333
+      ],
+      "timeZone": "Europe/Bucharest",
+      "regionToken": "PPQAWHY2QM4UO",
+      "serviceAreas": [
+        {
+          "name": "[Alba Iulia][SZ][SZ Alba][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}`gxG}mznCwNfV]fOgX_H|Ff_@q|Adt@iLxI}G~E{DlEjAbHjGuHpTwMj{A_o@dHb]tWaZ~d@nUhs@bt@LxGx_@zDIgBoXmEi@_DO{Tnd@ovC\\d@n[tMf@gBy\\cMtJmSa|AquBoLs@wY`w@gQoB}OxE{LyEeNyc@qHrb@rF|JtPzIdOrNyFpD}BnAoC^Mb@\\TvCKxJeFhNdz@}FxBIrE~G{AC@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Alba_Iulia_768_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "RO",
+      "city": "București",
+      "center": [
+        44.43225,
+        26.10626
+      ],
+      "timeZone": "Europe/Bucharest",
+      "regionToken": "CLBTWPN2EOPQM",
+      "serviceAreas": [
+        {
+          "name": "[Bucharest][SZ][[Bucharest][Service Zone]][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "asdnGcjs}CoGu_@}Asj@~c@~ZbNFfb@kFo@qP{C_d@pGsA~CWxAi@fAGj[eEyDc{@xR}f@eZm]wHw{AiH{c@qF{XvCyArBjA`IdAlAsd@bBcOrHcOtF_JxG{Iya@wp@vQ{TtSq]lOwq@xP}HpL_@bdAx_@ncAnF`Sk`C`~@yCdAib@hTxQl@gDiWiUsCs`@|@gEhA^hr@gj@uGkrBcNw@sXwNqa@aXpKsj@{`@qXme@_Fe@|q@mDnm@c]npAsa@x\\iUviAwaAnKdCmUwVqJxN{u@{MuGvRe`AqNoEoSO}MoXpDyY|UwM`GoQvUvHjZawArHen@wz@}VhE}m@~Hgx@nDo`@c@gPqFqc@yBiOWwVf@eX{F}OaBiJqb@|DHjBt`@{B`GbUi@xa@GnMf@|MfBr`@KVw@E_XuO}Bd@gp@rDcG|f@uFjh@lPzJyLvfAgLvw@eRgM}|@taAqVejB{B|SoAc@uR`BwApJhFfN|EjOm@tGcRjd@fJfQoAll@yE|DmHfOaHzEm[|NwHbMaDbL}Cv[gF`SiJvMmRtPqQl_@xNzg@iAfAzBzJad@|OqMnKye@~B}BmeA}hBaTW`@`i@fbBl[vf@gBdCcFdXsk@ZChYsPCs@|pA~FKqCra@u@pEoIGwKmA_N~wAbNxBhQqh@hc@sQiBqWvBcEd@f@rU~HvNry@zMxJ}Qvg@i@gAit@nc@[bt@tSh{AdbAmbAu]dhAwZhaAaTiFcJtw@fBnDjPpPfL{\\zOck@vPgj@bS{u@tl@msA`bBcoA}Dde@uS`n@uQvc@oBxC`[`F~[rJrWqVnGqClFxNdBxBlBfAbSpQkOlf@j`@`^yXbj@gElDyLtOoYtRwGpHmGzMiGpOl@lBnEIjE~DbNnUkDfWiHoE_Bs@IsJmFOkFgOqGrJnIzRkKdL|CfQhPkNlJbFiEb[?hIrLhLbEtFhHrMhF}@h@x\\`ReCQy`@xJAJh^xE_CEe`@rHWnLfKt[e@fCkZN`CdHXb@cN|IkAI_HpBQe@oFpCY"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Bucharest_3363_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "RO",
+      "city": "Cluj-Napoca",
+      "center": [
+        46.76667,
+        23.6
+      ],
+      "timeZone": "Europe/Bucharest",
+      "regionToken": "VMRYUZOKWPZAR",
+      "serviceAreas": [
+        {
+          "name": "[Cluj-Napoca][SZ][operational zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "err|Gar`oCr_@bjC|JzJhUnxBsEjR_B~H}@hJoKzM_B_CuB[iExCsBhJlC`FvBaHnBnCxFuJlGkJbBk@To@jAyI`CuMvEgQnJ_YpCLC_A{EyBuDnPyImY_PebBb]qGpJp_CdXtHjG}JbE_@xAf@`@SrT`lAj_@zPnj@|VbFiErIdE`XoBtLkv@gC}sAuEe@gBa_@vI}CxIkX{CiEiGhFsEs@zBqTtYaxAcCm@eR{tAc[_\\eNgj@r[k}AaCs@{Zf~@UxZqW`_@qRa`BiXp@m{@}vAcv@nM_XdsCePhjAiAoA}MhJeM}R]gAnGiZdMcH@_BwKdGoAMmI~^`\\xg@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Cluj-Napoca_1222_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "RO",
+      "city": "Iași",
+      "center": [
+        47.16667,
+        27.6
+      ],
+      "timeZone": "Europe/Bucharest",
+      "regionToken": "UAINLXSBV27YD",
+      "serviceAreas": [
+        {
+          "name": "[Iasi][SZ][Service zone updated][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "msa_H{_dgDjGlV~hCyn@m@tOKzPfBvn@~HtMzGbwA|RcrApXe_@kDgBf@mpAbKqUnSxLzMi`@nD{a@bQlN|HhGxb@gn@vKeE~Bb@lEuDnKaVxf@|o@bk@b[pYAw@uEcAu@uP_Bj@_F~@uDig@cu@mKgY`AwSvG_k@vGgCcD{a@wO?kSaZck@edAzC{\\}d@sKzFsp@iD{ShBuHmKmEnDqGWgQyDyJ_NzKqEpd@iNnQ{Ls@_AaDoNnFbB~X`YpRoVjD?vIvAnFwR|WjF|Xsx@vlAoHheA{T`Dp@`s@kj@rt@ipAnhAkGtm@??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Iasi_140_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "RO",
+      "city": "Sibiu",
+      "center": [
+        45.8,
+        24.15
+      ],
+      "timeZone": "Europe/Bucharest",
+      "regionToken": "LJAN7IUWKHLZH",
+      "serviceAreas": [
+        {
+          "name": "[Sibiu][SZ][Service Zone final] updated[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "wnqvGc}lrCdAnEfAnEv@hDZxBiBLmNrA_Mn\\eMfXqL|QdFhUtIlHxHyVzEaK|FfLtFfN|Jda@fl@vm@mH`FxGbTbKm@tAeKdIpIlCaEnFfBtJhHbHxH~HlFk@cQ{AiHgHyHNaMeGcMyCqIfC}Mf_AdPrn@BfXd\\fCuKhFpBxEoSiCuCkJ}B}S{G~Nqg@oTkfAjIdEx[jH|gA`LWuBgIuBeOqBqUcCLjAiDIWiB_j@cLmC}OsAkFsGfAgCeIaJ{I]si@{Xeo@fRsPgC}Gm_@x_@}`@a|@qExGaDaK|EcPWk^uTDuCzJcNoIiBnHqClU_HmDWtAk@~DaA`FiBs@_B{@{@gB_Bm@}BcA_@aHqADsCdCaEjUaAbJmBhHkA`DmGxLeO{NwAbDcA`H_@bE{@jIGhJjDfWt@~CrBrJz@lDfCpOxBfK"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Sibiu_867_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "RO",
+      "city": "Târgoviște",
+      "center": [
+        44.92543,
+        25.4567
+      ],
+      "timeZone": "Europe/Bucharest",
+      "regionToken": "KGBBKPKB7DAUM",
+      "serviceAreas": [
+        {
+          "name": "[Targoviste][SZ][Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "mqgqGqyjzC}GrSmAzDgAdIqCxNzLbb@Kj@jHpGpExCdGPbK`@]xJnHBI~E~IEnEaBnG{BtFgDdI}JfDuHp[m`A|Raj@`KqW`QwOyDiVgBwJeAwFe@gCi@yCc@cCe@cC{Scp@mM`LgG`IoL_Ga@pLoBbGAvBAnBkBoEuBi@oCh@oDfCwAtCeAlBOzDiDpOy@dDeCtCgAEaB`D{KaPeHwWcBx@tAvVvQ|X[t@_@fAeArCOf@O^[x@Yt@]`AsONeNdMeJpYxBtN"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Targoviste_851_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "RO",
+      "city": "Târgu Mureș",
+      "center": [
+        46.54245,
+        24.55747
+      ],
+      "timeZone": "Europe/Bucharest",
+      "regionToken": "YC7SFAV36U6BY",
+      "serviceAreas": [
+        {
+          "name": "[Targu Mures][SZ][Interior][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "mnc{GatztCxLiImXlg@g{@ae@eZlf@gDbHdRbe@`MlI|`@yGzt@stArFlH_@z@^d@\\aAf@h@n@xApB~FzA`Fl@`CZzBxKe@tIzN~@`H]lN_EtQxIje@fd@mk@hAD~SgUxNv`@zIiLt[pm@tMbW~N_UqVc|@zFoBkGyUyOeX`IaKiFkX_EqJwDmGeUwQeH_NK_MtByRvFePb@qN|AqN?{SdAkSdDwP_GuYhNy[}KqDqKnYsFnVoCu@sIi_@iA{FyI_c@x@bl@yIhRw@lH}BfTsDh]h@bWdDtN{B~H{GfCmHzBoKlLcL}LaZwN`BuJwLqMtBuG`CuDwU_YqTzVeC`FoCvJg@rCtCxGDzE{@n@j@rB|DfKo@zMm@vOogAcs@aHlAwAfJ?hMpYi@fDJbGdApF|EnZ|J`RrPUz@hBxB}BxNlS|g@rHbM"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Targu_Mures_87_exclude_new_type.json"
+      ]
     }
   ]
 }

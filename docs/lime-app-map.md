@@ -132,7 +132,9 @@ from 1 July 2026. In Denmark, neither did its Aarhus region. In Czechia,
 neither did its Praha, Liberec and Olomouc regions: Prague has banned shared
 scooters since 1 January 2026. In Hungary, neither did its Balaton region, 17
 zones on the lake's south shore from Siófok to Balatonberény, nor Fót, Göd and
-Zalaegerszeg; check the Balaton resorts again in summer.
+Zalaegerszeg; check the Balaton resorts again in summer. In Romania, neither
+did its Arad, Brașov, Constanța and Galați regions, and Oradea's held a single
+scooter; check Constanța, on the Black Sea, again in summer.
 
 - Zones named as demos, tests, warehouses, events or temporary areas are left
   out, as Rome's three temporary areas and Dortmund's warehouses. So is the
@@ -169,6 +171,7 @@ stationary reference scooter, country by country:
 | 25 October 2026 | Denmark: Copenhagen, Odense | 107 | 28 | 1,291 | 29 |
 | 25 October 2026 | Czechia: Brno, Ostrava | 66 | 17 | 807 | 178 |
 | 25 October 2026 | Hungary: 15 markets, Budapest, Szeged and Székesfehérvár the largest | 470 | 122 | 7,760 | 465 |
+| 25 October 2026 | Romania: 7 markets, Bucharest, Cluj-Napoca and Iași the largest | 183 | 48 | 6,995 | 351 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was
