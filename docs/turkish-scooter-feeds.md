@@ -86,8 +86,9 @@ no Turkish city's rules on riding at night have been checked.
 ## Licences
 
 - **BinBin:** publishes no data licence. The app's credits link its site as
-  "TR: BinBin map", and the API names the source "Turkey: BinBin anonymous
-  app map".
+  "TR/MK/BA/XK: BinBin map", one line with
+  [the Balkans'](north-macedonian-bosnian-kosovar-scooter-feeds.md), and the
+  API names the source "Turkey: BinBin anonymous app map".
 
 ## Known gaps
 
@@ -95,10 +96,6 @@ no Turkish city's rules on riding at night have been checked.
   without a rider session. See [the app investigation](turkish-app-maps.md).
 - **İstanbul Airport:** BinBin's area there, İGA, is not swept. It held two
   scooters on 24 October 2026.
-- **BinBin in the Balkans:** Skopje, Sarajevo, Mostar, Pristina and Tirana
-  are in the same geofences and would be swept the same way, but each is a
-  new country. On 24 October 2026 a request at each found ten scooters in
-  all but Mostar.
 
 ## Search
 

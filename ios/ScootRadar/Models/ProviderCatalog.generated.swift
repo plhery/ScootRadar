@@ -2043,6 +2043,9 @@ enum ScooterProviderCoverage {
         systems.append((.bolt, GeoBounds(south: 46.9663, west: 28.7537, north: 47.0692, east: 28.9047)))
         systems.append((.bolt, GeoBounds(south: 46.0203, west: 14.4499, north: 46.1037, east: 14.5664)))
         systems.append((.bolt, GeoBounds(south: 52.294, west: -6.5239, north: 52.362, east: -6.4371)))
+        systems.append((.binbin, GeoBounds(south: 41.96769, west: 21.35828, north: 42.0227, east: 21.48485)))
+        systems.append((.binbin, GeoBounds(south: 43.8064, west: 18.27265, north: 43.8825, east: 18.43433)))
+        systems.append((.binbin, GeoBounds(south: 42.62866, west: 21.10128, north: 42.68756, east: 21.22488)))
         return systems
     }
 
@@ -2103,7 +2106,7 @@ enum ScooterCityCatalog {
     // checker over 30 GB, and CI's Macs, which have 7, killed the compiler (24 Oct 2026).
     private static func makeCities() -> [ScooterCity] {
         var cities: [ScooterCity] = []
-        cities.reserveCapacity(951)
+        cities.reserveCapacity(954)
         cities.append(ScooterCity(id: "ch:amriswil", name: "Amriswil", countryCode: "CH", center: GeoPoint(latitude: 47.547, longitude: 9.2959), bounds: GeoBounds(south: 47.513, west: 9.234, north: 47.5773, east: 9.3262)))
         cities.append(ScooterCity(id: "ch:basel", name: "Basel", countryCode: "CH", center: GeoPoint(latitude: 47.5596, longitude: 7.5886), bounds: GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82)))
         cities.append(ScooterCity(id: "ch:bern", name: "Bern", countryCode: "CH", center: GeoPoint(latitude: 46.948, longitude: 7.4474), bounds: GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7)))
@@ -3055,13 +3058,16 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "md:Chișinău", name: "Chișinău", countryCode: "MD", center: GeoPoint(latitude: 47.00902, longitude: 28.85938), bounds: GeoBounds(south: 46.9663, west: 28.7537, north: 47.0692, east: 28.9047), feeds: [ScooterCityFeed(id: "moldova:bolt_md_app_331")]))
         cities.append(ScooterCity(id: "si:Ljubljana", name: "Ljubljana", countryCode: "SI", center: GeoPoint(latitude: 46.05108, longitude: 14.50513), bounds: GeoBounds(south: 46.0203, west: 14.4499, north: 46.1037, east: 14.5664), feeds: [ScooterCityFeed(id: "slovenia:bolt_si_app_359")]))
         cities.append(ScooterCity(id: "ie:Wexford", name: "Wexford", countryCode: "IE", center: GeoPoint(latitude: 52.33417, longitude: -6.4575), bounds: GeoBounds(south: 52.294, west: -6.5239, north: 52.362, east: -6.4371), feeds: [ScooterCityFeed(id: "ireland:bolt_ie_app_1561")]))
+        cities.append(ScooterCity(id: "mk:Skopje", name: "Skopje", countryCode: "MK", center: GeoPoint(latitude: 41.99646, longitude: 21.43141), bounds: GeoBounds(south: 41.96769, west: 21.35828, north: 42.0227, east: 21.48485), feeds: [ScooterCityFeed(id: "northmacedonia:binbin_mk_skopje")]))
+        cities.append(ScooterCity(id: "ba:Sarajevo", name: "Sarajevo", countryCode: "BA", center: GeoPoint(latitude: 43.84864, longitude: 18.35644), bounds: GeoBounds(south: 43.8064, west: 18.27265, north: 43.8825, east: 18.43433), feeds: [ScooterCityFeed(id: "bosnia:binbin_ba_sarajevo")]))
+        cities.append(ScooterCity(id: "xk:Pristina", name: "Pristina", countryCode: "XK", center: GeoPoint(latitude: 42.67272, longitude: 21.16688), bounds: GeoBounds(south: 42.62866, west: 21.10128, north: 42.68756, east: 21.22488), feeds: [ScooterCityFeed(id: "kosovo:binbin_xk_pristina")]))
         return cities
     }
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 951
-    static let countryCount = 53
+    static let cityCount = 954
+    static let countryCount = 56
 
     /// Cities by distance from the point to their centre, nearest first.
     static func nearest(to point: GeoPoint, count: Int) -> [ScooterCityDistance] {
@@ -3438,6 +3444,12 @@ enum ScooterCountryCatalog {
         "si": (46.1, 14.8),
         // In the Midlands, near Athlone, about the middle of the country.
         "ie": (53.4, -8),
+        // About the middle of the country, near Veles, south-east of Skopje.
+        "mk": (41.65, 21.75),
+        // About the middle of the country, near Travnik, north-west of Sarajevo.
+        "ba": (44.17, 17.79),
+        // About the middle of the country, near Drenas, west of Pristina.
+        "xk": (42.6, 20.9),
     ]
 
     /// The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences.
@@ -3465,13 +3477,13 @@ enum ScooterCountryCatalog {
         ("BR/CL/MX/KZ/CO/BY: Whoosh map", "https://whoosh.bike/"),
         ("ZA: Zippy rider map", "https://zippyride.app.link/"),
         ("DE/UK/JP/CL/MX/RO/CZ/QA/AU: Lime map", "https://www.li.me/"),
-        ("TR: BinBin map", "https://www.binbin.tech/"),
         ("AU/TR/MY/KR: Beam map", "https://www.ridebeam.com/"),
         ("US/KR: GCOO map", "https://gcoo.io/"),
         ("KR: Kickgoing map", "https://kickgoing.io/"),
         ("CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
         ("DE/BE/PT/IS/SE/LV/PL/CY/UA/KZ/RO/EE/LT/SK/BG/MD/SI/IE: Bolt map", "https://bolt.eu/"),
-        ("DE/BE/UK/PT/LV/PL/CY/UA/JP/CL/MX/RO/CZ/QA/AU/EE/LT/SK/BG/MD/SI/IE: GeoNames · CC BY 4.0", "https://www.geonames.org/about.html"),
+        ("TR/MK/BA/XK: BinBin map", "https://www.binbin.tech/"),
+        ("DE/BE/UK/PT/LV/PL/CY/UA/JP/CL/MX/RO/CZ/QA/AU/EE/LT/SK/BG/MD/SI/IE/MK/BA/XK: GeoNames · CC BY 4.0", "https://www.geonames.org/about.html"),
     ]
 
     /// The countries whose totals, zoomed out, are their states' or provinces', and those by code.

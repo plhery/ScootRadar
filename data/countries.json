@@ -1640,6 +1640,60 @@
           { "label": "IE: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
         ]
       }
+    },
+    {
+      "code": "MK",
+      "continent": "europe",
+      "catalog": "data/north-macedonian-scooter-feeds.json",
+      "source": "northmacedonia",
+      "names": { "en": "North Macedonia", "de": "Nordmazedonien", "fr": "Macédoine du Nord", "it": "Macedonia del Nord", "nl": "Noord-Macedonië", "nb": "Nord-Makedonia", "pt": "Macedónia do Norte", "es": "Macedonia del Norte", "is": "Norður-Makedónía" },
+      "searchWords": ["north macedonia", "macedonia", "nordmazedonien", "mazedonien", "macedoine du nord", "macedoine", "macedonia del nord", "noord macedonie", "nord makedonia", "makedonia", "macedonia do norte", "macedonia del norte", "nordur makedonia", "severna makedonija", "makedonija"],
+      "anchor": [41.65, 21.75],
+      "anchorNote": "About the middle of the country, near Veles, south-east of Skopje.",
+      "featuredCities": ["mk:Skopje"],
+      "credits": {
+        "attribution": "North Macedonia: BinBin anonymous app map; city centres from GeoNames",
+        "links": [
+          { "label": "MK: BinBin map", "href": "https://www.binbin.tech/" },
+          { "label": "MK: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
+        ]
+      }
+    },
+    {
+      "code": "BA",
+      "continent": "europe",
+      "catalog": "data/bosnian-scooter-feeds.json",
+      "source": "bosnia",
+      "names": { "en": "Bosnia and Herzegovina", "de": "Bosnien und Herzegowina", "fr": "Bosnie-Herzégovine", "it": "Bosnia ed Erzegovina", "nl": "Bosnië en Herzegovina", "nb": "Bosnia-Hercegovina", "pt": "Bósnia e Herzegovina", "es": "Bosnia y Herzegovina", "is": "Bosnía og Hersegóvína" },
+      "searchWords": ["bosnia and herzegovina", "bosnia", "herzegovina", "bosnien und herzegowina", "bosnien", "bosnie herzegovine", "bosnie", "bosnia ed erzegovina", "bosnie en herzegovina", "bosnia hercegovina", "bosnia e herzegovina", "bosnia y herzegovina", "bosnia og hersegovina", "bosna i hercegovina", "bosna"],
+      "anchor": [44.17, 17.79],
+      "anchorNote": "About the middle of the country, near Travnik, north-west of Sarajevo.",
+      "featuredCities": ["ba:Sarajevo"],
+      "credits": {
+        "attribution": "Bosnia and Herzegovina: BinBin anonymous app map; city centres from GeoNames",
+        "links": [
+          { "label": "BA: BinBin map", "href": "https://www.binbin.tech/" },
+          { "label": "BA: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
+        ]
+      }
+    },
+    {
+      "code": "XK",
+      "continent": "europe",
+      "catalog": "data/kosovar-scooter-feeds.json",
+      "source": "kosovo",
+      "names": { "en": "Kosovo", "de": "Kosovo", "fr": "Kosovo", "it": "Kosovo", "nl": "Kosovo", "nb": "Kosovo", "pt": "Kosovo", "es": "Kosovo", "is": "Kósovó" },
+      "searchWords": ["kosovo", "kosova", "kosove"],
+      "anchor": [42.6, 20.9],
+      "anchorNote": "About the middle of the country, near Drenas, west of Pristina.",
+      "featuredCities": ["xk:Pristina"],
+      "credits": {
+        "attribution": "Kosovo: BinBin anonymous app map; city centres from GeoNames",
+        "links": [
+          { "label": "XK: BinBin map", "href": "https://www.binbin.tech/" },
+          { "label": "XK: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
+        ]
+      }
     }
   ]
 }

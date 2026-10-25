@@ -3,6 +3,7 @@ import { BINBIN_IDLE_INTERVAL_MS, BINBIN_PAGE, BinbinClient, collectBinbinArea, 
 import { haversineM, polygonContainsPoint } from '../src/lib/geo';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
 import { REGIONAL_SCOOTER_SYSTEMS } from '../src/lib/regionalScooterSystems';
+import { COUNTRY_SOURCES } from '../src/generated/countries';
 
 interface Scooter { id: string; lat: number; lng: number }
 const vehicle = (scooter: Scooter, lat: number, lng: number, extra: Record<string, unknown> = {}) => ({
@@ -196,7 +197,7 @@ describe('BinBin areas in the cache', () => {
       { provider: 'binbin', vehicle_id: 'binbin_tr_eskisehir:7002', lat: 39.7801, lng: 30.5102, battery: 64, range_m: null, deep_link: null, distance_m: null },
     ]);
     expect(wrapped.filter((candidate, i) => candidate !== feeds[i]).map(candidate => candidate.id))
-      .toEqual(REGIONAL_SCOOTER_SYSTEMS.filter(system => system.binbinAppArea).map(system => `turkey:${system.id}`));
+      .toEqual(REGIONAL_SCOOTER_SYSTEMS.filter(system => system.binbinAppArea).map(system => `${COUNTRY_SOURCES[system.country]}:${system.id}`));
     expect(BINBIN_IDLE_INTERVAL_MS).toBe(2 * 60 * 60_000);
     expect(wrapped.filter((candidate, i) => candidate !== feeds[i]).every(candidate => candidate.idleIntervalMs === BINBIN_IDLE_INTERVAL_MS))
       .toBe(true);

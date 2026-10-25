@@ -1,0 +1,30 @@
+{
+  "verifiedOn": "2026-10-25",
+  "catalogSource": "https://www.binbin.tech/lokasyonlar/",
+  "systems": [
+    {
+      "id": "binbin_xk_pristina",
+      "provider": "binbin",
+      "city": "Pristina",
+      "center": [
+        42.67272,
+        21.16688
+      ],
+      "bounds": {
+        "south": 42.62866,
+        "north": 42.68756,
+        "west": 21.10128,
+        "east": 21.22488
+      },
+      "discoveryUrl": "https://gatewayapi-sp.binbinapp.com/binbin/api/v1/vehicles/list",
+      "binbinAppArea": "89",
+      "aliases": [
+        "Prishtina",
+        "Prishtinë",
+        "Priština",
+        "Приштина",
+        "Priştine"
+      ]
+    }
+  ]
+}

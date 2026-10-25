@@ -1,0 +1,28 @@
+{
+  "verifiedOn": "2026-10-25",
+  "catalogSource": "https://www.binbin.tech/lokasyonlar/",
+  "systems": [
+    {
+      "id": "binbin_mk_skopje",
+      "provider": "binbin",
+      "city": "Skopje",
+      "center": [
+        41.99646,
+        21.43141
+      ],
+      "bounds": {
+        "south": 41.96769,
+        "north": 42.0227,
+        "west": 21.35828,
+        "east": 21.48485
+      },
+      "discoveryUrl": "https://gatewayapi-sp.binbinapp.com/binbin/api/v1/vehicles/list",
+      "binbinAppArea": "68",
+      "aliases": [
+        "Скопје",
+        "Shkup",
+        "Üsküp"
+      ]
+    }
+  ]
+}

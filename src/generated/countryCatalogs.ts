@@ -52,6 +52,9 @@ import bulgarianCatalog from '../../data/bulgarian-scooter-feeds.json';
 import moldovanCatalog from '../../data/moldovan-scooter-feeds.json';
 import slovenianCatalog from '../../data/slovenian-scooter-feeds.json';
 import irishCatalog from '../../data/irish-scooter-feeds.json';
+import northMacedonianCatalog from '../../data/north-macedonian-scooter-feeds.json';
+import bosnianCatalog from '../../data/bosnian-scooter-feeds.json';
+import kosovarCatalog from '../../data/kosovar-scooter-feeds.json';
 
 /** Every catalog's systems, each with its country, in the order of data/countries.json. */
 export const CATALOG_SYSTEMS = [
@@ -107,4 +110,7 @@ export const CATALOG_SYSTEMS = [
   ...moldovanCatalog.systems.map(system => ({ ...system, country: 'MD' as const })),
   ...slovenianCatalog.systems.map(system => ({ ...system, country: 'SI' as const })),
   ...irishCatalog.systems.map(system => ({ ...system, country: 'IE' as const })),
+  ...northMacedonianCatalog.systems.map(system => ({ ...system, country: 'MK' as const })),
+  ...bosnianCatalog.systems.map(system => ({ ...system, country: 'BA' as const })),
+  ...kosovarCatalog.systems.map(system => ({ ...system, country: 'XK' as const })),
 ];

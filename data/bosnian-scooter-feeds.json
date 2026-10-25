@@ -1,0 +1,27 @@
+{
+  "verifiedOn": "2026-10-25",
+  "catalogSource": "https://www.binbin.tech/lokasyonlar/",
+  "systems": [
+    {
+      "id": "binbin_ba_sarajevo",
+      "provider": "binbin",
+      "city": "Sarajevo",
+      "center": [
+        43.84864,
+        18.35644
+      ],
+      "bounds": {
+        "south": 43.8064,
+        "north": 43.8825,
+        "west": 18.27265,
+        "east": 18.43433
+      },
+      "discoveryUrl": "https://gatewayapi-sp.binbinapp.com/binbin/api/v1/vehicles/list",
+      "binbinAppArea": "36",
+      "aliases": [
+        "Сарајево",
+        "Saraybosna"
+      ]
+    }
+  ]
+}

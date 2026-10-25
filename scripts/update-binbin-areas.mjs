@@ -3,8 +3,8 @@ import { resolve } from 'node:path';
 import { simplifyRing, writeCatalog } from './boundaries.mjs';
 
 // Fills data/binbin-areas.json with the service areas of BinBin's app map, its public geofences of
-// type 2, for each area a system of data/turkish-scooter-feeds.json names by its binbinAppArea,
-// and sets that system's bounds to its outline's. The cache sweeps an area's outline and keeps the
+// type 2, for each area a system of a country catalog names by its binbinAppArea, from Turkey to
+// Kosovo, and sets that system's bounds to its outline's. The cache sweeps an area's outline and keeps the
 // scooters inside it (server/binbinApp.ts). BinBin redraws its areas every few weeks, İzmir's and
 // Samsun's on 23 October 2026: run this, check the diff, then npm run generate:providers, which
 // checks each outline against its system. --check only says which outlines changed, and fails if
@@ -18,9 +18,12 @@ const TOLERANCE_M = 5;
 const check = process.argv.includes('--check');
 const path = resolve(process.cwd(), 'data/binbin-areas.json');
 const catalog = JSON.parse(readFileSync(path, 'utf8'));
-const feedsPath = resolve(process.cwd(), 'data/turkish-scooter-feeds.json');
-const feeds = JSON.parse(readFileSync(feedsPath, 'utf8'));
-const wanted = new Set(feeds.systems.flatMap(system => system.binbinAppArea ? [system.binbinAppArea] : []));
+const countries = JSON.parse(readFileSync(resolve(process.cwd(), 'data/countries.json'), 'utf8')).countries;
+const catalogs = countries.filter(country => country.catalog).map(country => {
+  const feedsPath = resolve(process.cwd(), country.catalog);
+  return { feedsPath, feeds: JSON.parse(readFileSync(feedsPath, 'utf8')) };
+}).filter(({ feeds }) => feeds.systems.some(system => system.binbinAppArea));
+const wanted = new Set(catalogs.flatMap(({ feeds }) => feeds.systems.flatMap(system => system.binbinAppArea ? [system.binbinAppArea] : [])));
 
 const response = await fetch(GEOFENCES_URL, {
   method: 'POST', body: JSON.stringify({ geofenceTypes: SERVICE_AREA }),
@@ -54,11 +57,13 @@ if (check) {
   for (const area of areas) console.log(`${area.id} ${area.title}: ${area.rings.map(ring => ring.length).join(' + ')} points`);
   writeCatalog(path, { ...catalog, verifiedOn: new Date().toISOString().slice(0, 10), areas });
   const byId = new Map(areas.map(area => [area.id, area]));
-  for (const system of feeds.systems) {
-    const points = byId.get(system.binbinAppArea)?.rings.flat();
-    if (!points) continue;
-    const lats = points.map(([lat]) => lat), lngs = points.map(([, lng]) => lng);
-    system.bounds = { south: Math.min(...lats), north: Math.max(...lats), west: Math.min(...lngs), east: Math.max(...lngs) };
+  for (const { feedsPath, feeds } of catalogs) {
+    for (const system of feeds.systems) {
+      const points = byId.get(system.binbinAppArea)?.rings.flat();
+      if (!points) continue;
+      const lats = points.map(([lat]) => lat), lngs = points.map(([, lng]) => lng);
+      system.bounds = { south: Math.min(...lats), north: Math.max(...lats), west: Math.min(...lngs), east: Math.max(...lngs) };
+    }
+    writeFileSync(feedsPath, `${JSON.stringify(feeds, null, 2)}\n`);
   }
-  writeFileSync(feedsPath, `${JSON.stringify(feeds, null, 2)}\n`);
 }

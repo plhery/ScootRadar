@@ -323,10 +323,11 @@ brands require their own verified app/account access.
 ## BinBin guest app map
 
 Since 24 October 2026, BinBin's scooters in 12 Turkish cities come from the map
-its official app shows riders who have not signed in. The user authorized it
-that day. No rider account, token or device id is used. Each reply lists the
+its official app shows riders who have not signed in, and since 25 October in
+Skopje, Sarajevo and Pristina. The user authorized it on 24 October. No rider
+account, token or device id is used. Each reply lists the
 ten scooters nearest a point, with their distances, so the Node cache sweeps
-each of BinBin's 13 service areas until every point of it lies within a reply
+each of BinBin's 16 service areas until every point of it lies within a reply
 that listed every scooter that near it, planning each sweep from the positions
 of the last. One client serves every area, at most four requests a second; a
 sweep that fails keeps the area's last snapshot under the usual expiry rules.
@@ -1015,8 +1016,9 @@ feed: none from BinBin, Martı or Hop, none in
 and İstanbul's, İzmir's and Konya's open-data portals hold parking and
 routes, not scooters.
 
-BinBin publishes no data licence. The map's credits link its site as "TR:
-BinBin map", and the API names the source "Turkey: BinBin anonymous app map".
+BinBin publishes no data licence. The map's credits link its site as
+"TR/MK/BA/XK: BinBin map", and the API names the source "Turkey: BinBin
+anonymous app map".
 See the [coverage audit](docs/turkish-scooter-feeds.md) for the systems, the
 town names, the gaps and the recheck command, and
 [the app investigation](docs/turkish-app-maps.md) for Martı and Hop.
@@ -1045,3 +1047,20 @@ kickgoing.io. Beam's regions are named after the municipalities they stand
 in, Beam's own names kept as aliases. Town outlines are OpenStreetMap
 municipalities (ODbL). See the [coverage audit](docs/south-korean-scooter-feeds.md)
 for the request plans, the load, the survey, the gaps and the recheck command.
+
+## North Macedonia, Bosnia and Herzegovina and Kosovo
+
+The reviewed catalogs live in `data/north-macedonian-scooter-feeds.json`,
+`data/bosnian-scooter-feeds.json` and `data/kosovar-scooter-feeds.json`: one
+system each, BinBin's service area in Skopje, Sarajevo and Pristina, read from
+its guest app map since 25 October 2026 (see
+[BinBin guest app map](#binbin-guest-app-map)). None of the three countries
+has a public scooter feed. Kosovo is `XK`, the user-assigned code browsers and
+iOS name; its towns, like the others in Europe, give no time zone.
+
+BinBin publishes no data licence. The map's credits link its site as
+"TR/MK/BA/XK: BinBin map", and the API names each country's source, as
+"Kosovo: BinBin anonymous app map; city centres from GeoNames". The city
+centres are GeoNames's, under CC BY 4.0. See the
+[coverage audit](docs/north-macedonian-bosnian-kosovar-scooter-feeds.md) for
+the systems, the town names, the gaps and the recheck command.

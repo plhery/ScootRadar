@@ -795,7 +795,7 @@ final class ScooterFilteringTests: XCTestCase {
         XCTAssertTrue(sources.contains { $0.title == "NZ: Flamingo · CC BY 4.0" })
         XCTAssertTrue(sources.contains { $0.title == "BR/CL/MX/KZ/AZ/GE: JET map" })
         XCTAssertTrue(sources.contains { $0.title == "BR/CL/MX/KZ/CO/BY: Whoosh map" })
-        XCTAssertTrue(sources.contains { $0.title == "TR: BinBin map" })
+        XCTAssertTrue(sources.contains { $0.title == "TR/MK/BA/XK: BinBin map" })
         XCTAssertTrue(sources.contains { $0.title == "Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified" })
         // MobiData BW's licence, dl-de/by-2-0, asks for the dataset and the licence to be named.
         XCTAssertTrue(sources.contains { $0.title == "DE: MobiData BW · dl-de/by-2-0, modified" && $0.url.host() == "www.govdata.de" })

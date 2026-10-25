@@ -1,11 +1,13 @@
 # BinBin guest app map
 
 Since 24 October 2026, BinBin's scooters in 12 Turkish cities come from the
-map its official app shows riders who have not signed in. The user asked for
-it that day, after [the app investigation](turkish-app-maps.md#binbin-working-guest-read-incomplete-selection)
+map its official app shows riders who have not signed in, and since 25
+October in Skopje, Sarajevo and Pristina. The user asked for it on 24
+October, after [the app investigation](turkish-app-maps.md#binbin-working-guest-read-incomplete-selection)
 found that the map needs no account. No rider account, token or device id is
-used. `server/binbinApp.ts` collects it in the Node cache, and
-[the country guide](turkish-scooter-feeds.md) lists the cities.
+used. `server/binbinApp.ts` collects it in the Node cache, and the country
+guides list the cities: [Turkey's](turkish-scooter-feeds.md) and
+[North Macedonia's, Bosnia and Herzegovina's and Kosovo's](north-macedonian-bosnian-kosovar-scooter-feeds.md).
 
 ## The request
 
@@ -88,7 +90,8 @@ On 24 October 2026, from the Mac:
 | **All 13** | **14,960** | **4,947** | **3,577** | **916** |
 
 Each area was swept from nothing, then again straight after, planned from that
-sweep's positions. The planned sweeps asked 28% fewer times, about 4.2
+sweep's positions. On 25 October, from nothing, Sarajevo took 236 requests for
+767 scooters, Skopje 200 for 591 and Pristina 126 for 372. The planned sweeps asked 28% fewer times, about 4.2
 scooters a request; a reply lists ten at most. Their plans took 33 to
 1,175 ms of wall time. Piles, ten scooters within a few metres, were found in
 İzmir (3), Konya (3) and İstanbul Anadolu (2).
@@ -113,9 +116,10 @@ sweep is tried again after 1, 2, 4… minutes, an hour apart at most.
 
 An area nobody looks at is swept every two hours
 (`BINBIN_IDLE_INTERVAL_MS`), where other feeds are collected every 20 minutes.
-The 13 areas take 3,600 to 4,900 requests a round, by the numbers above: half
-a request a second to two thirds on average, where every 20 minutes would be
-three, close to the client's four. The street view shows no live position over
+The 16 areas take about 4,000 to 5,500 requests a round, by the numbers above:
+a little over half a request a second to three quarters on average, where
+every 20 minutes would take three to four and a half, past the client's
+four. The street view shows no live position over
 15 minutes old, so the first person to look at an idle area waits for its
 sweep, which the request starts at once: under a minute in Eskişehir, a few
 minutes in İstanbul. Meanwhile the area's last positions, up to three hours
@@ -135,8 +139,9 @@ with its scooters, requests, planned points, piles and seconds.
 
 ## Service areas
 
-`data/binbin-areas.json` holds the outline of each area a system names by its
-`binbinAppArea`, from BinBin's public geofences of type 2:
+`data/binbin-areas.json` holds the outline of each area a system of any
+country names by its `binbinAppArea`, from BinBin's public geofences of type
+2:
 
 ```http
 POST https://gatewayapi-sp.binbinapp.com/binbin/api/v1/geofences/get-by-type
@@ -159,9 +164,11 @@ area in İstanbul, **Etkinlik** ("event"), is a polygon of 10 by 20 m inside
   outline: two scooters, 1.8 km from its middle.
 - Two test areas, **Test**, in the Black Sea, and **Test_Erik**, and
   **Şanlıurfa**, marked inactive.
-- The Balkans: **Skopje**, **Saraybosna** (Sarajevo), **Mostar**,
-  **Pristina** and **Tirana**, and **Banja Luka**, inactive. Each would be a
-  new country: North Macedonia, Bosnia and Herzegovina, Kosovo and Albania.
+- In the Balkans, **Mostar**, which held no scooter on 25 October 2026,
+  **Tirana**, which held 14, and **Banja Luka**, inactive. **Skopje**,
+  **Saraybosna** (Sarajevo) and **Pristina** are swept since that day, each
+  in a country of its own; see
+  [their guide](north-macedonian-bosnian-kosovar-scooter-feeds.md#known-gaps).
 
 ## Checks
 
@@ -174,5 +181,5 @@ areas:
 
 ```sh
 node scripts/update-binbin-areas.mjs --check
-node scripts/check-french-feeds.mjs --countries=TR
+node scripts/check-french-feeds.mjs --countries=TR,MK,BA,XK
 ```
