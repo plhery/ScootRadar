@@ -34,7 +34,11 @@ The Node-only adapter is [server/whooshApp.ts](../server/whooshApp.ts).
   operator runs (Astana and Zapopan, not Almaty, which has JET). The region
   info is read again each hour, and the pause ends as soon as it says the
   season is open. Almaty, Astana and Zapopan closed on 24 October 2026, and so
-  was the region listed as Temuco (`ZPC`), where Go Jet runs.
+  was the region listed as Temuco (`ZPC`), where Go Jet runs. Go Jet won
+  Temuco's tender and has run the city's scooters and e-bikes since 1
+  September 2026, for two years
+  ([Municipalidad de Temuco, 17 August 2026](https://www.temuco.cl/nueva-empresa-de-electromovilidad-desembarca-en-temuco-con-bicicletas-y-scooters-de-ultima-generacion-y-a-mitad-de-precio/)),
+  so Whoosh's season there may not open again.
 - `GET /regions/location/{id}/areas` supplies ride polygons. The app's
   `MapAreaUiAssembler` uses enabled `LIMITED` polygons as holes in the global
   out-of-ride-area mask. These are the collection areas. Forbidden polygons
@@ -92,6 +96,22 @@ A token rejected with 401 gets one renewal/retry before authentication backs off
 Cold sweeps and watched regions can take longer than the normal minute interval.
 A region nobody looks at is swept every two hours (`APP_MAP_IDLE_INTERVAL_MS`),
 not every 20 minutes.
+
+## Night rules
+
+On 25 October 2026 no town of a Whoosh region outside Europe had a night ban
+on renting that we could find, in a municipal rule or a published permit, so
+none is in `data/rental-curfews.json`. The map leaves out scooters that can't
+be hired, and every region's sweeps from midnight to 5:00 local on the night of
+24 to 25 October found at least 82% of the day's scooters (Minsk 4,466,
+Santiago 4,564). San Pedro Garza García's service runs 24 hours
+([Players of Life, April 2026](https://playersoflife.com/monterrey/san-pedro-acelera-hacia-el-mundial-2026-asi-funciona-su-innovador-sistema-con-scooters-electricos/)).
+Minsk rents scooters from mid-March to mid-November, as agreed with the city
+([Myfin, 12 January 2024](https://myfin.by/article/zhizn/v-minske-ustanovili-sroki-prokata-elektrosamokatov-spojler-zimy-tam-net)),
+so expect its region to close then. Its Upper Town was closed to sharing
+scooters from Friday 20:00 to Monday 08:00 from June 2023, a zone rule not
+confirmed for 2026. Chilean comunas' permits aren't published, so one of them
+may still set hours.
 
 ## Private session
 

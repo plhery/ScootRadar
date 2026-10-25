@@ -42,6 +42,21 @@ Santiago at 3,013 and Almaty at 4,544. Respectively 4, 9 and 3 matched
 scooters had moved at least 20 metres, and 17, 9 and 11 had changed charge.
 These are live readings, with HTTP `cf-cache-status: DYNAMIC`.
 
+## Night rules
+
+By 25 October 2026 none of Go Jet's towns had a night ban on renting that we
+could find, in national rules (Brazil's CONTRAN 996/2023, Chile's DS
+102/2019, Kazakhstan's of 1 July 2026) or in a municipal rule or a published
+permit, so none is in `data/rental-curfews.json`. Many Brazilian permits and
+Chilean comunas' agreements aren't published, so one of them may still set
+hours. São José dos Campos says its service runs 24 hours
+([city, 28 June 2024](https://www.sjc.sp.gov.br/noticias/2024/junho/28/patinetes-voltam-a-ser-opcao-de-mobilidade-em-sao-jose/)).
+The map leaves out only scooters on a ride, not those that can't be hired, so
+its night counts can't show a ban; from midnight to 5:00 local on the night of
+24 to 25 October every region kept at least 82% of the day's scooters.
+Marília (São Paulo) limits its scooter service to 6:00–22:00 by Decree 15.120
+of 21 October 2026, but none of the scooters we show runs there.
+
 ## App provenance and protocol
 
 The [Google Play listing](https://play.google.com/store/apps/details?id=com.gojet.app)
