@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { skippedSources } from '@/lib/scooterSources';
-import { buildCityOverview, demandedFeeds, feedsForQuery, LIME_GROUPS_PER_REQUEST, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS,
+import { buildCityOverview, demandedFeeds, feedsForQuery, LIME_GROUPS_PER_REQUEST, OVERVIEW_RECOVERY_MS, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS,
   type FeedSnapshot, type MobilitySnapshot } from './scooterSnapshots';
 import { scooterResponseHeaders } from './scooterResponse';
 import { ScooterFeedsUnavailableError } from './scooterFeeds';
@@ -37,19 +37,24 @@ describe('persistent map snapshots', () => {
     const initial = snapshot([unavailable]);
     expect(overviewNeedsRefresh(initial, [unavailable], now)).toBe(false);
     const healthy = feed();
-    expect(overviewNeedsRefresh(initial, [healthy], now)).toBe(true);
-    const refreshed = { ...initial, feeds: [healthy], overview: buildCityOverview([healthy], now) };
-    expect(querySnapshot(refreshed, { bounds: lyon, minBattery: 0 }, 8, now).meta.totalVehicles).toBe(2);
-    expect(overviewNeedsRefresh(refreshed, [healthy], now + 60_000)).toBe(false);
+    expect(overviewNeedsRefresh(initial, [healthy], now)).toBe(false);
+    const later = now + OVERVIEW_RECOVERY_MS;
+    expect(overviewNeedsRefresh(initial, [healthy], later)).toBe(true);
+    const refreshed = { ...initial, feeds: [healthy], overview: buildCityOverview([healthy], later) };
+    expect(querySnapshot(refreshed, { bounds: lyon, minBattery: 0 }, 8, later).meta.totalVehicles).toBe(2);
+    expect(overviewNeedsRefresh(refreshed, [healthy], later + OVERVIEW_RECOVERY_MS)).toBe(false);
   });
 
   it('counts a feed discovered after the city totals were built', () => {
     // Discovery adds it as a failed placeholder before its first collection.
     const placeholder = { ...voi, vehicles: [], observedAt: 0, attemptedAt: 0, failed: true, stale: true };
-    let cached = persistCycle(snapshot([feed()]), [feed(), placeholder], now + 60_000);
-    cached = persistCycle(cached, [feed(), voi], now + 120_000);
-    expect(querySnapshot(cached, query, 8, now + 120_000).providers).toEqual({ dott: 2, voi: 1 });
-    expect(overviewNeedsRefresh(cached, [feed(), voi], now + 180_000)).toBe(false);
+    const discovered = now + 60_000, counted = discovered + OVERVIEW_RECOVERY_MS;
+    let cached = persistCycle(snapshot([feed()]), [feed(), placeholder], discovered);
+    cached = persistCycle(cached, [feed(), voi], counted - 1);
+    expect(querySnapshot(cached, query, 8, counted - 1).providers).toEqual({ dott: 2 });
+    cached = persistCycle(cached, [feed(), voi], counted);
+    expect(querySnapshot(cached, query, 8, counted).providers).toEqual({ dott: 2, voi: 1 });
+    expect(overviewNeedsRefresh(cached, [feed(), voi], counted + OVERVIEW_RECOVERY_MS)).toBe(false);
   });
 
   it('drops the counts of a retired feed from the city totals', () => {

@@ -17,6 +17,12 @@ import { LAST_SEEN_MAX_AGE_MS, VEHICLE_MAX_AGE_MS } from './dataFreshness';
 export { LAST_SEEN_MAX_AGE_MS, VEHICLE_MAX_AGE_MS } from './dataFreshness';
 export const OVERVIEW_REFRESH_MS = 60 * 60_000;
 const OVERVIEW_MAX_AGE_MS = 3 * OVERVIEW_REFRESH_MS;
+/**
+ * A failed feed that recovers rebuilds the city totals at most this often. On 25 October 2026, as
+ * Italy's 188 Lime groups each came in for the first time, every one rebuilt them, seconds over 935,000
+ * scooters, and the cache spent most of its processor on it while other operators' requests timed out.
+ */
+export const OVERVIEW_RECOVERY_MS = 5 * 60_000;
 /** The delay a response suggests while the feeds it asked for are being collected again. */
 export const REFRESHING_RETRY_SECONDS = 3;
 
@@ -157,6 +163,7 @@ export function overviewNeedsRefresh(snapshot: Pick<MobilitySnapshot, 'overview'
   // Totals saved before feedIds existed list none, so they refresh once.
   const built = new Set(snapshot.overview.feedIds);
   if (built.size !== feeds.length || feeds.some(feed => !built.has(feed.id))) return true;
+  if (now - snapshot.overview.generatedAt < OVERVIEW_RECOVERY_MS) return false;
   const recovered = new Set(feeds.filter(feed => !feed.failed && counts(feed)).map(feed => feed.id));
   return snapshot.overview.cities.some(city => city.failedSources.some(id => recovered.has(id)));
 }

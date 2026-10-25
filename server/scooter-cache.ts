@@ -149,7 +149,8 @@ function publish() {
 
 /**
  * The city totals, rebuilt in the parts that need it. Those of the feeds without a retention cap take
- * seconds over 760,000 scooters: rebuilt hourly, or when a failed feed recovers (overviewNeedsRefresh).
+ * seconds over 935,000 scooters: rebuilt hourly, or when a failed feed recovers, at most every five
+ * minutes (overviewNeedsRefresh).
  * Those of the capped feeds, a tenth of a second for some 66,000, are rebuilt as well on the last tick
  * before the oldest data they count passes its cap: two or three times a minute, as one feed or another
  * comes to it. No feed without a cap lists Bird's, Spin's or Bolt's scooters in a country where their
