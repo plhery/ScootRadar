@@ -124,6 +124,32 @@ it('waits 15 minutes for Voi\'s Swiss feed, which Voi stalls for up to 21 minute
   expect(reported).toEqual([['national:dott_zurich', now + minutes(21)], ['national:voiscooters.com', now + minutes(56)]]);
 });
 
+it('waits 30 minutes for a feed swept slowly on purpose, as the app maps every two hours', () => {
+  const reported: [string, number][] = [];
+  const minutes = (count: number) => count * 60_000;
+  const ownIdleExpiry = (id: string) => id === 'brazil:whoosh_br_rec' ? minutes(130) : undefined;
+  const cadence: FeedCadence = { fastSince: () => undefined, idleExpiryMs: minutes(30), idleExpiryMsForFeed: ownIdleExpiry };
+  const logStates = createFeedStateLog(() => {}, undefined, cadence,
+    { afterMs: current => expiredReportDelay(current, ownIdleExpiry(current.id)),
+      report: (change, current) => reported.push([change.feed, current.attemptedAt]) });
+  const now = 1_000_000_000;
+  const recife = (observedAt: number, attemptedAt: number) => feed({ id: 'brazil:whoosh_br_rec', provider: 'whoosh', observedAt, attemptedAt });
+  logStates([recife(now, now)], now);
+  // As on 25 October 2026: the sweep due at two hours runs about 20 minutes late, while watched
+  // views hold Whoosh's queue, and the feed is back 9 minutes after expiring.
+  for (let minute = 1; minute < 140; minute++) logStates([recife(now, now)], now + minutes(minute));
+  logStates([recife(now + minutes(140), now + minutes(140))], now + minutes(140));
+  expect(reported).toEqual([]);
+
+  // Gone for good: told 30 minutes after it expires, and a feed with the usual cadence after 5.
+  const dott = (observedAt: number, attemptedAt: number) => feed({ id: 'national:dott_zurich', provider: 'dott', observedAt, attemptedAt });
+  const start = now + minutes(140);
+  for (let minute = 0; minute <= 200; minute++) {
+    logStates([recife(start, start + minutes(minute)), dott(start, start + minutes(minute))], start + minutes(minute));
+  }
+  expect(reported).toEqual([['national:dott_zurich', start + minutes(36)], ['brazil:whoosh_br_rec', start + minutes(161)]]);
+});
+
 it('holds the report while told to wait, and tells once if the feed is still expired after', () => {
   const reported: number[] = [];
   const minutes = (count: number) => count * 60_000;

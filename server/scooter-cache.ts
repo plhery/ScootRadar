@@ -302,8 +302,9 @@ async function discover() {
 setDefinitions(withAppCollectors(independentCollectableFeeds()), false);
 scheduler.start();
 void discover();
-// Sentry hears of a feed still expired after 5 minutes, or 15 for Voi's Swiss feed (expiredReportDelay).
-const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afterMs: expiredReportDelay,
+// Sentry hears of a feed still expired after 5 minutes, 15 for Voi's Swiss feed, or 30 for one
+// swept slowly on purpose, as the app maps (expiredReportDelay).
+const logFeedStates = createFeedStateLog(console.log, undefined, cadence, { afterMs: feed => expiredReportDelay(feed, ownIdleExpiry(feed.id)),
   // Under a night ban, an operator may take its feed down until morning, as Dott did in Trondheim
   // on 16 October 2026: Sentry hears of it only if it is not back 15 minutes after the ban.
   wait: waitOutCurfew(feedCurfewed),

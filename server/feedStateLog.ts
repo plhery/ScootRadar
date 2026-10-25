@@ -90,9 +90,23 @@ export const EXPIRED_REPORT_DELAY_MS = 5 * 60_000;
  */
 const EXPIRED_REPORT_DELAYS_MS: Readonly<Record<string, number>> = { 'national:voiscooters.com': 15 * 60_000 };
 
-/** How long this feed stays expired before Sentry hears of it. */
-export function expiredReportDelay(feed: FeedSnapshot): number {
-  return EXPIRED_REPORT_DELAYS_MS[feed.id] ?? EXPIRED_REPORT_DELAY_MS;
+/** A feed whose own idle expiry is this long or longer is swept slowly on purpose, as the app maps every two hours. */
+const SLOW_SWEEP_EXPIRY_MS = 60 * 60_000;
+
+/**
+ * Longer for a feed swept slowly on purpose. Its sweep waits while views someone watches take its
+ * client's turns, and runs late after a deploy; a new feed's first collection may fail and be
+ * retried. On 25 October 2026 Whoosh's Recife sweep ran 9 minutes past its grace while São Paulo
+ * and Santiago were watched, BinBin's Sakarya 6 after a restart, and a Lime group in Rome added
+ * that day failed its first collection: each was back within 10 minutes. Lime's Berlin groups,
+ * starved by a watched view for up to 53 minutes the same day, are still told.
+ */
+export const SLOW_SWEEP_REPORT_DELAY_MS = 30 * 60_000;
+
+/** How long this feed stays expired before Sentry hears of it, given its own idle expiry if it has one. */
+export function expiredReportDelay(feed: FeedSnapshot, ownIdleExpiryMs = 0): number {
+  return EXPIRED_REPORT_DELAYS_MS[feed.id] ??
+    (ownIdleExpiryMs >= SLOW_SWEEP_EXPIRY_MS ? SLOW_SWEEP_REPORT_DELAY_MS : EXPIRED_REPORT_DELAY_MS);
 }
 
 /**

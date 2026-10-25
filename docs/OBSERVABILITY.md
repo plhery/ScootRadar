@@ -294,7 +294,11 @@ Tracing is off, and no trace headers go to the operators' feeds.
   still expired 5 minutes later (15 for Voi Switzerland, whose feed runs 2 or 3 minutes
   short of expiring: on some weekday mornings sharedmobility.ch cuts most of its downloads off
   (see Logs), and it expired 3 times on 17 October 2026 and 9 on the 22nd, back within 8
-  minutes each time but once, after 16 minutes on the 22nd), outside its seasonal pause. Under a night ban at all its
+  minutes each time but once, after 16 minutes on the 22nd; 30 for a feed collected less
+  often on purpose for an hour or more, as the app maps: its sweep runs late while views
+  someone watches take its client's turns, or after a deploy, and a new feed's first
+  collection may fail, as Whoosh's Recife, BinBin's Sakarya and a new Lime group in Rome
+  did on 25 October 2026, each back within 10 minutes), outside its seasonal pause. Under a night ban at all its
   service areas, it waits for the ban to end and tells only if the feed is still expired
   30 minutes after: Dott takes Trondheim's feed down on Friday and Saturday nights, which
   Entur keeps serving as it last was, and brought it back 7.5 minutes after the ban on
