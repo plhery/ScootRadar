@@ -176,6 +176,7 @@ import turinIt from './it/monopattini-sharing-torino';
 import duisburgDe from './de/e-scooter-duisburg';
 import saarbrueckenDe from './de/e-scooter-saarbruecken';
 import moenchengladbachDe from './de/e-scooter-moenchengladbach';
+import kasselDe from './de/e-scooter-kassel';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -352,4 +353,5 @@ export const GUIDES: readonly Guide[] = [
   duisburgDe,
   saarbrueckenDe,
   moenchengladbachDe,
+  kasselDe,
 ];
