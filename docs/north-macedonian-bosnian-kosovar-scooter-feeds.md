@@ -84,7 +84,24 @@ one client paces with Turkey's (see
 ## Night bans
 
 [`rental-curfews.json`](../data/rental-curfews.json) has no entry for the three
-countries: their cities' rules on riding at night have not been checked yet.
+countries: on 25 October 2026 no rule was found that stops riding at night, in
+the three countries' laws or in Skopje's, Sarajevo's and Pristina's decisions.
+The night rules are about what a rider wears or carries: a reflective vest in
+North Macedonia, lights and reflectors in Kosovo.
+
+## Rules
+
+- **North Macedonia:** since 14 July 2026 riders must be 18 or older and wear
+  a helmet, and ride at 20 km/h at most on cycle lanes and 6 km/h on
+  pavements ([TVM, 14 July 2026](https://tvm.mk/news/makedonija/maloletnici-ne-smeta-da-vozat-elektricni-trotineti/)).
+  In Skopje BinBin rents its stations from the city's car-park company.
+- **Bosnia and Herzegovina:** no state law on e-scooters yet; a proposal is
+  pending. Sarajevo Canton bans them from pedestrian areas
+  ([Raport.ba, 11 September 2026](https://raport.ba/policija-pojacala-kontrole-elektricnih-romobila-u-sarajevu-evo-gdje-ih-je-zabranjeno-voziti)).
+- **Kosovo:** Law 08/L-186, of March 2024, bars riders under 16 and
+  pavements, and sets 25 km/h at most
+  ([Kallxo, 28 March 2024](https://kallxo.com/lajm/cka-parasheh-ligji-i-ri-i-trafikut-rrugor-per-ngasesit-e-trotinetit-elektrik/)).
+  Pristina keeps scooters off its squares and pedestrian areas.
 
 ## Licences
 
@@ -97,12 +114,21 @@ countries: their cities' rules on riding at night have not been checked yet.
 
 - **Tirana**, in Albania: BinBin's area there held 14 scooters on 25 October
   2026, seven of them with a flat battery, and none moved, left or joined the
-  list between the two sweeps. Albania would be a country for them alone, so
-  it is left out. Check again in April 2027.
+  list between the two sweeps. Albania has banned e-scooters from urban roads
+  and pavements since 13 October 2025, by a ministry's Instruction
+  169, with no end date; the Constitutional Court refused a challenge to it on
+  4 June 2026 ([Timoni](https://timoni.al/gjykata-kushtetuese-nuk-pranon-per-shqyrtim-kerkesen-per-anulimin-e-udhezimit-qe-ndalon-qarkullimin-e-patinave-elektrike/)),
+  and the minister said the rules to follow would allow personal use only,
+  not rental. So Albania is left out until the ban is lifted.
 - **Mostar**, in Bosnia and Herzegovina: BinBin's area there held no scooter
-  that day. It would be a second system in the Bosnian catalog.
+  that day, for no reason found. It would be a second system in the Bosnian
+  catalog.
 - **Banja Luka**: BinBin's locations page lists it, but its area is marked
-  inactive.
+  inactive: BinBin left the city on 17 August 2026
+  ([Klix](https://www.klix.ba/biznis/ekonomija/elektricni-romobili-binbin-nakon-tri-godine-napustaju-banju-luku/260817076)).
+- **E-Enjoy**, in Skopje: its app is Joyride's (`com.joyride.eenjoy`), whose
+  feed hosts no longer resolve. No other operator was found in the three
+  countries.
 - **Sofia**: BinBin's locations page lists it too, but its geofences hold no
   service area there, and a request at the city centre found no BinBin
   scooter. Bolt's scooters in Sofia are on the map

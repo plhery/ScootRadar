@@ -700,8 +700,9 @@ banned shared scooters, and feeds that were empty when checked.
   ([guide](north-macedonian-bosnian-kosovar-scooter-feeds.md#known-gaps)):
   BinBin in Skopje, Sarajevo and Pristina is covered, from its guest app map
   since 25 October 2026.
-  - BinBin's Mostar area held no scooter that day, and its Banja Luka area
-    is inactive.
+  - BinBin's Mostar area held no scooter that day, and BinBin left Banja
+    Luka on 17 August 2026. E-Enjoy, in Skopje, runs on Joyride, whose feed
+    hosts no longer resolve.
 
 ## Countries not covered yet
 
@@ -817,7 +818,7 @@ a licence. Neither is published by its operator:
 | Taiwan, Hong Kong, Singapore, Thailand, Indonesia, the Philippines, Vietnam, India | No registry row, and no guessed address answers. Beam, in Indonesia and Thailand (Bangkok's at Chulalongkorn University's Samyan campus), answers 401, and its signed-in map samples returned no scooters on 24 October 2026 (see [the Beam integration](beam-app-map.md)); Moovr, in Manila's BGC and Makati, runs on Joyride, whose feed hosts no longer resolve. Taiwan's shared fleets are seated mopeds, with stand-up scooters only in local pilots; Hong Kong bans e-scooters and Singapore shared ones; India's Yulu runs seated vehicles |
 | Uzbekistan, Mongolia, Kyrgyzstan | JET, which runs in Uzbekistan and Mongolia and in Kazakhstan, Georgia, Armenia and Azerbaijan, publishes no feed, and its app map needs a rider sign-in (see [the app investigation](jet-whoosh-beam-luup-app-maps.md)), nor do Whoosh, Urent, SunRent and E-motion in Bishkek. Ulaanbaatar is the biggest: JET put 3,000 scooters there in 2023 and planned 6,000 more. Silk Road Sharing, in Samarkand (ATOM Mobility system 1976), and IZZY, in Tashkent (1918), still answer "GBFS disabled" on 18 October 2026. Check again on 1 April 2027 |
 | Pacific islands | Pineapple, in Samoa (ATOM Mobility system 1359), answers "GBFS disabled" and its site is down; Kai Ride (2118), whose place is unknown, too. France's access point (transport.data.gouv.fr) has nothing for Nouméa or Papeete |
-| Montenegro, Albania, Andorra, San Marino, Gibraltar, Faroe Islands | No scooter feed found (Hopp Tórshavn held 13, all disabled, at night and on the evening of 13 October 2026). BinBin's guest app map held 14 scooters in Tirana on 25 October 2026, seven of them flat, and none was ridden in 17 minutes that Sunday afternoon, so Albania is left out (see [the Balkan guide](north-macedonian-bosnian-kosovar-scooter-feeds.md#known-gaps)). Check again in April 2027 |
+| Montenegro, Albania, Andorra, San Marino, Gibraltar, Faroe Islands | No scooter feed found (Hopp Tórshavn held 13, all disabled, at night and on the evening of 13 October 2026). Albania has banned e-scooters from urban roads and pavements since 13 October 2025 (Instruction 169, upheld when the Constitutional Court refused a challenge on 4 June 2026). BinBin's guest app map still held 14 scooters in Tirana on 25 October 2026, seven of them flat, and none was ridden in 17 minutes that Sunday afternoon (see [the Balkan guide](north-macedonian-bosnian-kosovar-scooter-feeds.md#known-gaps)). Check again in April 2027 |
 | Colombia | Lime `bogota` answers but lists no vehicle (16:11 to 17:04 Bogotá time, 15 October 2026, and again at 15:51 on Saturday 24 October). Whoosh's [authenticated Medellín map](whoosh-app-map.md) is integrated; its GBFS feeds remain private. Yango, in Valledupar (400+) and licensed in Medellín, publishes no feed; its Bogotá launch waits for the city's rules. datos.gov.co has nothing. Check again on 1 March 2027 |
 | Brazil, Chile | The [signed-out Go Jet adapter](gojet-app-map.md) now supplies 48 Brazilian collection regions (32,263 available scooters) and Santiago and Temuco in Chile (3,713 combined). Brazil has about 45,000 to 55,000 scooters in 50 or more towns, most of them JET's (it claims 40,000 to 50,000 vehicles in 53 cities), with Whoosh in São Paulo, Curitiba and Florianópolis. Chile has about 14,000 in about 20 towns: Whoosh 8,000+, Lime 3,500, JET 2,000+. Whoosh's [authenticated collector](whoosh-app-map.md) now lists nine Brazilian and seven Chilean regions; its GBFS feeds remain private; Go Jet's app signing is reproduced by the Node collector, without a rider account; Lime Chile answers 404 for about 75 slugs. Lime has left Brazil. São Paulo and Rio receive live data for the city's use only, and datos.gob.cl and dados.gov.br have no scooter data. Check again on 1 April 2027 |
 | Peru | No fleet. The scooters 3electra's feed places in Lima at night are Kyiv's, moved there by its mask, with the same codes (see the [Ukrainian guide](ukrainian-scooter-feeds.md)). Whoosh's Lima feed is private, like its others, and on 24 October 2026 its app had no active region there |
@@ -1122,9 +1123,10 @@ Bonaire had feeds to add. Survey files are in
   a Tuesday in October 2026 and 4 on Saturday 24 October, and none was
   ridden while it was polled: none moved from 08:36 to 16:47 that Saturday.
   Poll it on a weekend afternoon, and add it if its scooters are ridden.
-- **April 2027:** BinBin in Tirana: sweep its area twice, a quarter of an
-  hour apart on a weekend afternoon, and add Albania if its scooters are
-  ridden (`binbinAppArea` 74). Mostar's area (41) too, which was empty on 25
+- **April 2027:** Albania's ban on e-scooters, Instruction 169 of October
+  2025: if it is lifted for rental fleets, sweep BinBin's Tirana area (74)
+  twice, a quarter of an hour apart on a weekend afternoon, and add Albania
+  if its scooters are ridden. Mostar's area (41) too, which was empty on 25
   October 2026.
 - **April 2027:** Turkey's season. Check for public GBFS from Martı and Hop
   and new data on İstanbul's, İzmir's and Konya's open-data portals, and run

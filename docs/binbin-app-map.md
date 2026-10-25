@@ -165,7 +165,8 @@ area in İstanbul, **Etkinlik** ("event"), is a polygon of 10 by 20 m inside
 - Two test areas, **Test**, in the Black Sea, and **Test_Erik**, and
   **Şanlıurfa**, marked inactive.
 - In the Balkans, **Mostar**, which held no scooter on 25 October 2026,
-  **Tirana**, which held 14, and **Banja Luka**, inactive. **Skopje**,
+  **Tirana**, which held 14 under Albania's ban on e-scooters, and **Banja
+  Luka**, inactive since BinBin left it in August 2026. **Skopje**,
   **Saraybosna** (Sarajevo) and **Pristina** are swept since that day, each
   in a country of its own; see
   [their guide](north-macedonian-bosnian-kosovar-scooter-feeds.md#known-gaps).
