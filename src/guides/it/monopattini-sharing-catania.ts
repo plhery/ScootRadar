@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Monopattini in sharing a Catania: Elerent e Lime, prezzi, zone e regole nel 2026',
   lede: 'I monopattini in sharing a Catania, a ottobre 2026, sono quelli di Elerent e Lime; Bolt è autorizzato ma, per quanto risulta, non ha avviato il servizio. Elerent costa 1 euro di sblocco più 0,26 euro al minuto, Lime mostra il prezzo nell’app. Ti servono un documento d’identità, una carta e il casco, obbligatorio per tutti, che porti tu. Su via Etnea, chiusa al traffico privato, nel tratto pedonale si va a 6 km/h, e tra piazza Duomo e piazza Università con Elerent la corsa non si chiude.',
   published: '2026-10-14',
-  updated: '2026-10-14',
+  updated: '2026-10-25',
   city: 'it:Catania',
   sections: [
     {
@@ -23,13 +23,13 @@ const guide: Guide = {
             head: ['Operatore', 'In strada', 'Sulla mappa di ScootRadar'],
             rows: [
               ['Elerent', 'Sì, a qualunque ora', 'Sì'],
-              ['Lime', 'Sì', 'No: apri l’app di Lime'],
+              ['Lime', 'Sì', 'Sì, dal 25 ottobre 2026'],
               ['Bolt', 'Autorizzato ma non attivo, per quanto risulta', 'No'],
               ['Helbiz e Dott', 'Non più', 'No'],
             ],
           },
         },
-        'Il 14 ottobre 2026 sulla [mappa di Catania](map:it:Catania) c’erano circa 130 monopattini Elerent liberi: una fotografia di quel momento, non la flotta. Lime non pubblica dati aperti, quindi i suoi mezzi, il prezzo e le zone li vedi solo nella sua app.',
+        'Il 14 ottobre 2026 sulla [mappa di Catania](map:it:Catania) c’erano circa 130 monopattini Elerent liberi: una fotografia di quel momento, non la flotta. Dal 25 ottobre la mappa mostra anche i Lime liberi, letti dalla mappa della sua app; il prezzo e le zone di Lime li vedi nell’app.',
         'Helbiz e Dott non ci sono più, e Bird qui non c’è mai stata. La pagina «Monopattini» del portale turistico del Comune, che li cita ancora, è ferma al 2022.',
       ],
     },
@@ -38,7 +38,7 @@ const guide: Guide = {
       blocks: [
         {
           steps: [
-            'Scarica le app di Elerent e di Lime; gli Elerent liberi li vedi anche sulla [mappa di Catania](map:it:Catania).',
+            'Scarica le app di Elerent e di Lime; i monopattini liberi di entrambe li vedi anche sulla [mappa di Catania](map:it:Catania).',
             'Su Elerent ti registri con carta d’identità, passaporto o patente e con una carta di credito o prepagata. Elerent chiede **18 anni** nelle FAQ; le sue condizioni ammettono anche chi ne ha almeno 14, se è un genitore o il tutore a registrare l’account e a dare il consenso. Per Lime, guarda l’app.',
             'Metti il casco e controlla freni, luci e batteria.',
             'Inquadra il QR code, spingi con il piede fino a circa 5 km/h e solo allora accelera, come spiega Elerent. Sale una persona sola, fino a 110 kg.',
@@ -166,7 +166,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quale app scaricare per i monopattini a Catania?',
-      answer: 'Elerent e Lime: a ottobre 2026 sono loro ad avere monopattini in strada, mentre Bolt, pure autorizzato, non risulta attivo. Sulla mappa di ScootRadar vedi gli Elerent; Lime non pubblica i suoi dati, quindi apri anche la sua app.',
+      answer: 'Elerent e Lime: a ottobre 2026 sono loro ad avere monopattini in strada, mentre Bolt, pure autorizzato, non risulta attivo. Sulla mappa di ScootRadar vedi sia gli Elerent sia i Lime.',
     },
     {
       question: 'Helbiz e Dott ci sono ancora a Catania?',

@@ -533,6 +533,237 @@
       "aliases": [
         "Reggio Emilia"
       ]
+    },
+    {
+      "id": "lime_it_app_bari",
+      "provider": "lime",
+      "city": "Bari",
+      "center": [
+        41.1166,
+        16.8625
+      ],
+      "timeZone": "Europe/Rome",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "RGOCBECKYC5WN",
+      "limeMapGrid": {
+        "south": 41.02887,
+        "west": 16.7316,
+        "north": 41.16952,
+        "east": 17.03358,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.017861935714911657,
+        "cells": "6-7,23-24,40-42,56-60,65-67,73-84,89-98,104-113,120-127,137-142,153-156,170-171"
+      }
+    },
+    {
+      "id": "lime_it_app_catania",
+      "provider": "lime",
+      "city": "Catania",
+      "center": [
+        37.5023,
+        15.0873
+      ],
+      "timeZone": "Europe/Rome",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "2LB6QIHBTIVBL",
+      "limeMapGrid": {
+        "south": 37.44183,
+        "west": 15.04208,
+        "north": 37.54276,
+        "east": 15.12701,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.0169712343943095,
+        "cells": "1-2,6-8,12-14,19-20,24-27,30-34,36-41,43-46"
+      }
+    },
+    {
+      "id": "lime_it_app_ciampino",
+      "provider": "lime",
+      "city": "Ciampino",
+      "center": [
+        41.80064,
+        12.60158
+      ],
+      "timeZone": "Europe/Rome",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "Q6SSMNLHGJAYB",
+      "limeMapGrid": {
+        "south": 41.77554,
+        "west": 12.58239,
+        "north": 41.83443,
+        "east": 12.62793,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.018068358401510127,
+        "cells": "1-10,12"
+      }
+    },
+    {
+      "id": "lime_it_app_milano",
+      "provider": "lime",
+      "city": "Milano",
+      "center": [
+        45.4771,
+        9.2001
+      ],
+      "timeZone": "Europe/Rome",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "HQQEWTJGCSMPK",
+      "limeMapGrid": {
+        "south": 45.38672,
+        "west": 9.00648,
+        "north": 45.6322,
+        "east": 9.34497,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01918599029640965,
+        "cells": "8-13,25-33,42-52,56-57,59-71,73-89,91-106,111-124,128-141,145-159,162-177,180-195,198-213,217-223,227-230,236-241,245-250,263-268,281-286,300-303,320-321,338-339"
+      }
+    },
+    {
+      "id": "lime_it_app_monterotondo",
+      "provider": "lime",
+      "city": "Monterotondo",
+      "center": [
+        42.05159,
+        12.61969
+      ],
+      "timeZone": "Europe/Rome",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "Q6SSMNLHGJAYB",
+      "limeMapGrid": {
+        "south": 42.03742,
+        "west": 12.57087,
+        "north": 42.08814,
+        "east": 12.63683,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01814262652311063,
+        "cells": "0-15"
+      }
+    },
+    {
+      "id": "lime_it_app_palermo",
+      "provider": "lime",
+      "city": "Palermo",
+      "center": [
+        38.1157,
+        13.3613
+      ],
+      "timeZone": "Europe/Rome",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "PFBFEI2VV76TS",
+      "limeMapGrid": {
+        "south": 38.09348,
+        "west": 13.28664,
+        "north": 38.21093,
+        "east": 13.39391,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.017121446038867828,
+        "cells": "1-6,9-12,16-18,23-25,29-33,35-39,42-46,49-53,56-58"
+      }
+    },
+    {
+      "id": "lime_it_app_rimini",
+      "provider": "lime",
+      "city": "Rimini",
+      "center": [
+        44.05755,
+        12.56528
+      ],
+      "timeZone": "Europe/Rome",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "WEDZSRY3HSUZM",
+      "limeMapGrid": {
+        "south": 44.02097,
+        "west": 12.42574,
+        "north": 44.16182,
+        "east": 12.63146,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.018738616523221036,
+        "cells": "6-10,17-21,27-31,37-41,48-52,59-61,70-71,79-81,89-91,99-101,110-111"
+      }
+    },
+    {
+      "id": "lime_it_app_roma",
+      "provider": "lime",
+      "city": "Roma",
+      "center": [
+        41.9028,
+        12.4964
+      ],
+      "timeZone": "Europe/Rome",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "Q6SSMNLHGJAYB",
+      "limeMapGrid": {
+        "south": 41.70612,
+        "west": 12.25598,
+        "north": 42.09263,
+        "east": 12.65317,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.018048836102727766,
+        "cells": "2-6,23-30,46-53,70-76,94-98,117-122,141-148,169-171,173-174,177,191-197,200-204,215-220,223-228,238-252,261-274,282-295,305-318,329-341,352-364,376-389,399-412,421-431,444-453,467-469,472-475,489-492,495-496,511-513,518-519,534,601-603,624-626,648-649"
+      }
+    },
+    {
+      "id": "lime_it_app_torino",
+      "provider": "lime",
+      "city": "Torino",
+      "center": [
+        45.0678,
+        7.6825
+      ],
+      "timeZone": "Europe/Rome",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "Q3UJ3RCVBA4OU",
+      "limeMapGrid": {
+        "south": 45.00845,
+        "west": 7.60282,
+        "north": 45.12491,
+        "east": 7.75378,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019058868718905036,
+        "cells": "0-4,8-12,16-20,24-29,32-38,40-47,49-55,57-63,65-66,69-70"
+      }
+    },
+    {
+      "id": "lime_it_app_verona",
+      "provider": "lime",
+      "city": "Verona",
+      "center": [
+        45.4379,
+        10.9919
+      ],
+      "timeZone": "Europe/Rome",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "5OT7ZMM6OZVIC",
+      "limeMapGrid": {
+        "south": 45.3903,
+        "west": 10.92101,
+        "north": 45.48497,
+        "east": 11.06192,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019187205497801757,
+        "cells": "2-5,8-12,16-20,22-38,41-43,48-49,57"
+      }
     }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Bari_462_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Catania_255_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Rome_4351_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Milan_10576_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Palermo_4036_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Rimini_2288_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Turin_2625_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Verona_820_exclude_new_type.json"
   ]
 }

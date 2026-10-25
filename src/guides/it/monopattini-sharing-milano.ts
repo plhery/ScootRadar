@@ -10,14 +10,14 @@ const guide: Guide = {
   headline: 'Monopattini sharing a Milano: operatori, prezzi, parcheggio, metro e multe nel 2026',
   lede: 'I monopattini sharing a Milano, a ottobre 2026, sono quelli di Dott e Lime: dopo la revoca di Bird, a luglio, sono gli unici due operatori autorizzati dal Comune, con 4.000 mezzi in tutto, secondo la stampa. Per noleggiarli servono 18 anni e, con Dott, un documento d’identità; il casco lo porti tu, perché è obbligatorio per tutti. Il prezzo lo vedi nell’app, e la corsa si chiude solo negli stalli per bici e moto, mai sul marciapiede.',
   published: '2026-10-24',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'it:Milano',
   sections: [
     {
       heading: 'Quali monopattini in sharing ci sono a Milano',
       blocks: [
         'A ottobre 2026 gli operatori autorizzati dal Comune sono due, **Dott** e **Lime**, «con un totale di 4.000 mezzi disponibili in città»: lo riportavano il 16 luglio 2026 MilanoPost e Il Giornale, riprendendo la nota del Comune sulla revoca di Bird.',
-        'Sabato 24 ottobre 2026 alle 13:26 sulla [mappa intorno a Milano](map:it:Milano), Sesto San Giovanni compreso, c’erano circa 1.500 monopattini Dott, che la mappa mostra da quel giorno: una fotografia di quel momento, non la flotta. Lime non pubblica dati che possiamo leggere: lo trovi solo nella sua app. Dott e Lime noleggiano anche bici elettriche, che sulla mappa non compaiono.',
+        'Sabato 24 ottobre 2026 alle 13:26 sulla [mappa intorno a Milano](map:it:Milano), Sesto San Giovanni compreso, c’erano circa 1.500 monopattini Dott, che la mappa mostra da quel giorno. Da domenica 25 ottobre mostra anche i Lime, letti dalla mappa della sua app: quel giorno verso le 15 erano circa 2.700, sulla stessa area. Sono fotografie di quei momenti, non le flotte. Dott e Lime noleggiano anche bici elettriche, che sulla mappa non compaiono.',
         'Il quadro è un avviso pubblico del Comune del 2023: al massimo 6.000 monopattini, in offerte da 2.000 per operatore, per tre anni (MilanoToday, dicembre 2023), con autorizzazioni dal 16 dicembre 2023 a dicembre 2026 (Il Giorno, marzo 2024). Per dopo non abbiamo trovato annunci: da dicembre controlla l’app prima di uscire.',
         {
           table: {
@@ -38,7 +38,7 @@ const guide: Guide = {
       blocks: [
         {
           steps: [
-            'Trova il Dott più vicino sulla [mappa di Milano](map:it:Milano), o un Lime nella sua app.',
+            'Trova il Dott o il Lime più vicino sulla [mappa di Milano](map:it:Milano).',
             'Iscriviti nell’app con una carta: Dott e Lime chiedono **18 anni**, non la patente. Dott vuole anche un documento d’identità: a Milano è obbligatorio.',
             'Metti il casco e controlla il contrassegno, sul parafango posteriore o davanti al piantone dello sterzo.',
             'Inquadra il QR code e guida su strada o su pista ciclabile, mai sul marciapiede.',

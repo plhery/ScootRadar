@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Monopattino elettrico, regole 2026 in Italia: casco, targa, assicurazione e multe',
   lede: 'Le regole del monopattino elettrico in Italia, nel 2026, si riassumono così: casco obbligatorio per tutti dal 14 dicembre 2024, contrassegno (la «targa») dal 17 maggio 2026 e assicurazione dal 16 luglio 2026. Si può guidare dai 14 anni, senza patente, a 20 km/h al massimo (6 nelle aree pedonali), solo su strade urbane con limite fino a 50 km/h e mai sul marciapiede. In sharing contrassegno e assicurazione spettano all’operatore, il casco lo porti tu.',
   published: '2026-10-12',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'it:Roma',
   sections: [
     {
@@ -157,7 +157,7 @@ const guide: Guide = {
         'Le autorizzazioni dei tre operatori scadevano il 31 agosto 2026. Il Comune le ha prorogate per il tempo necessario a scegliere i nuovi: secondo la stampa, fino al **31 ottobre 2026**.',
         'Le domande per il nuovo bando si chiudono il **26 ottobre 2026** alle 15. Il Comune sceglierà fino a tre operatori di monopattini per tre anni, e chi vince avrà fino a 150 giorni per avviare il servizio. Il bando premia chi mette su ogni monopattino un casco sbloccabile dall’app.',
         'Al 12 ottobre 2026 non abbiamo trovato annunci su cosa succederà dopo il 31 ottobre: da novembre, controlla l’app prima di uscire.',
-        'ScootRadar mostra a Roma i monopattini Bird e, dal 24 ottobre 2026, quelli di Dott: quel sabato alle 13:26 sulla mappa intorno a Roma ce n’erano circa 4.200 per operatore. Lime c’è anche lui, ma sulla mappa non compare: lo trovi nella sua app. [Apri la mappa su Roma](map:it:Roma). In Italia la mappa mostra anche i monopattini di [Palermo](map:it:Palermo) e [Napoli](map:it:Napoli), quelli di Elerent a [Catania](map:it:Catania) e, dal 24 ottobre 2026, i Dott di altre città, come [Milano](map:it:Milano) e [Torino](map:it:Torino).',
+        'ScootRadar mostra a Roma i monopattini Bird e, dal 24 ottobre 2026, quelli di Dott: quel sabato alle 13:26 sulla mappa intorno a Roma ce n’erano circa 4.200 per operatore. Dal 25 ottobre mostra anche i Lime: quella domenica verso le 16 erano circa 4.300. [Apri la mappa su Roma](map:it:Roma). In Italia la mappa mostra anche i monopattini di [Palermo](map:it:Palermo) e [Napoli](map:it:Napoli), quelli di Elerent e Lime a [Catania](map:it:Catania) e, dal 24 ottobre 2026, i Dott di altre città, come [Milano](map:it:Milano) e [Torino](map:it:Torino), dove dal 25 ottobre ci sono anche i Lime.',
       ],
     },
   ],

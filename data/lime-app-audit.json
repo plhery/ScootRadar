@@ -872,6 +872,176 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Dortmund_9341_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "IT",
+      "city": "Bari",
+      "regionToken": "RGOCBECKYC5WN",
+      "fingerprint": "9d41d96d03d4cbbb371e3dbc4b0b4683cc98de5c192ce109ce17916d4638c25e",
+      "groups": 17,
+      "localCells": 67,
+      "coldMapRequests": 67,
+      "warmMapRequests": 67,
+      "scooters": 818,
+      "stationaryReferences": 70,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T13:19:00.479Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Bari_462_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "IT",
+      "city": "Catania",
+      "regionToken": "2LB6QIHBTIVBL",
+      "fingerprint": "1d8458d9c5d7b05ecfc9375fa66308f6b033100c45cb3473c7833baeee3c824f",
+      "groups": 8,
+      "localCells": 29,
+      "coldMapRequests": 45,
+      "warmMapRequests": 45,
+      "scooters": 1369,
+      "stationaryReferences": 118,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T13:36:30.443Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Catania_255_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "IT",
+      "city": "Ciampino",
+      "regionToken": "Q6SSMNLHGJAYB",
+      "fingerprint": "96bba677da596cfc3d5b0ecdfc09b813d53da26c2939a576143c42369031f295",
+      "groups": 3,
+      "localCells": 11,
+      "coldMapRequests": 11,
+      "warmMapRequests": 11,
+      "scooters": 82,
+      "stationaryReferences": 6,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T13:38:01.251Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Rome_4351_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "IT",
+      "city": "Milano",
+      "regionToken": "HQQEWTJGCSMPK",
+      "fingerprint": "a228d6fb9c7e30fd7e194df37e5ce04584f59570a510b020f3328032b635193a",
+      "groups": 52,
+      "localCells": 208,
+      "coldMapRequests": 224,
+      "warmMapRequests": 224,
+      "scooters": 2709,
+      "stationaryReferences": 48,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T14:18:16.558Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Milan_10576_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "IT",
+      "city": "Monterotondo",
+      "regionToken": "Q6SSMNLHGJAYB",
+      "fingerprint": "2870097d975c3f677b6f014e653087418798e13525ee169d29d09365e540ae28",
+      "groups": 4,
+      "localCells": 16,
+      "coldMapRequests": 16,
+      "warmMapRequests": 16,
+      "scooters": 75,
+      "stationaryReferences": 3,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T14:20:22.371Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Rome_4351_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "IT",
+      "city": "Palermo",
+      "regionToken": "PFBFEI2VV76TS",
+      "fingerprint": "b8190d78f9625ec93bf077c1e9cd357f4677b03a7507e372200b256762844573",
+      "groups": 10,
+      "localCells": 39,
+      "coldMapRequests": 51,
+      "warmMapRequests": 51,
+      "scooters": 849,
+      "stationaryReferences": 88,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T14:26:33.834Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Palermo_4036_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "IT",
+      "city": "Rimini",
+      "regionToken": "WEDZSRY3HSUZM",
+      "fingerprint": "83b286ac8a99f4c065cbe9b53e95a94112eccbdbf258b23cf1b83ef043b80713",
+      "groups": 11,
+      "localCells": 41,
+      "coldMapRequests": 41,
+      "warmMapRequests": 41,
+      "scooters": 607,
+      "stationaryReferences": 49,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T14:44:03.487Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Rimini_2288_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "IT",
+      "city": "Roma",
+      "regionToken": "Q6SSMNLHGJAYB",
+      "fingerprint": "70cfa5af1ee588cb78f181aeeea0bfbe3b7997fafc6540479a4354b015786632",
+      "groups": 59,
+      "localCells": 236,
+      "coldMapRequests": 248,
+      "warmMapRequests": 248,
+      "scooters": 4263,
+      "stationaryReferences": 27,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T15:13:13.507Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Rome_4351_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "IT",
+      "city": "Torino",
+      "regionToken": "Q3UJ3RCVBA4OU",
+      "fingerprint": "95127c17ef162ecf49c8b81288eadff36034a17db290f690196b7b111635b6c3",
+      "groups": 14,
+      "localCells": 54,
+      "coldMapRequests": 62,
+      "warmMapRequests": 62,
+      "scooters": 1405,
+      "stationaryReferences": 107,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T15:22:12.517Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Turin_2625_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "IT",
+      "city": "Verona",
+      "regionToken": "5OT7ZMM6OZVIC",
+      "fingerprint": "95058572591074bbe212464e1169fba2b1b1cdb2b943eb40c099980161d38efc",
+      "groups": 10,
+      "localCells": 37,
+      "coldMapRequests": 37,
+      "warmMapRequests": 37,
+      "scooters": 357,
+      "stationaryReferences": 142,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T15:26:45.472Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Verona_820_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

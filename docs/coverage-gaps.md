@@ -10,9 +10,10 @@ out, and remove an entry once it's added or settled for good.
 The authenticated Lime adapter covers the complete published operating
 polygons in Deva, České Budějovice, Querétaro, Naha, Doha, Santiago and Brisbane,
 including their disconnected service areas, and since 25 October 2026 in
-London, Birmingham, Coventry, Milton Keynes and Salford and in 39 German
-markets, from Berlin and Munich to Waiblingen.
-The other markets its rider map lists, 193 found so far, are added country by
+London, Birmingham, Coventry, Milton Keynes and Salford, in 39 German
+markets, from Berlin and Munich to Waiblingen, and in ten Italian ones, from
+Roma and Milano to Rimini.
+The other markets its rider map lists, 176 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -159,7 +160,9 @@ banned shared scooters, and feeds that were empty when checked.
   - Dott now covers 16 Italian regions through its anonymous app map, including
     Roma, Milano, Palermo and Torino. Genoa, Porto Torres, Viadanica and
     Vigliatore had no available scooter in the app sweep. Lime (Roma, Milano,
-    Palermo) answers 404 everywhere. BIT Mobility (Napoli, Bari and others) is behind a login, and
+    Palermo) answers 404 everywhere; its scooters in ten Italian towns, from
+    Roma and Milano to Rimini, come from its [rider map](lime-app-map.md) since
+    25 October 2026. BIT Mobility (Napoli, Bari and others) is behind a login, and
     RideMovi answers 401. Bolt and Lime, which hold Catania's other permits,
     publish no feed.
   - Elerent Bologna listed one scooter on 13 October 2026. Elerent's Ragusa
@@ -170,13 +173,16 @@ banned shared scooters, and feeds that were empty when checked.
     neighbours were still empty on 25 October 2026, while Bird Roma listed
     about 4,500.
   - Torino: Voi publishes no feed for Italy, and Lime's `torino` and `turin`
-    answer 404 (25 October 2026). Torino's rules send operators' feeds only to
+    answer 404 (25 October 2026); Lime's Torino scooters come from its rider
+    map since that day. Torino's rules send operators' feeds only to
     the Comune and 5T. The Città metropolitana's new service, from about
     5 November 2026 at the latest, authorises only Dott (EM Transit) and Voi
     for scooters ([DD 3782, 7 August 2026](https://www.cittametropolitana.torino.it/sites/default/files/pagina/allegati/trasporti/SHARING/DD%20n.3782%20del%2007.08.2026_Autorizzazione%20al%20servizio%20in%20sharing.pdf));
     Bird and Lime run only until it starts.
   - Firenze banned shared scooters from 1 April 2026, and BIT's service in
-    Prato ended on 31 December 2025.
+    Prato ended on 31 December 2025. Lime's Firenze region held no scooter in
+    its scooter zones on 25 October 2026, nor did its regions of Bergamo,
+    Brescia, Lago di Garda, Parma and Livorno, which serves Pisa.
   - Zeus's Italian feeds are stale or empty (Anzio, Augusta, Mazara, Teramo,
     Modena, Reggio Emilia). Hopp Como held no scooters at night on 13 October
     2026 or that evening; check it in spring, and add it if it has some.

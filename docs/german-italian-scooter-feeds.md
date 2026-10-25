@@ -7,7 +7,8 @@ catalog and [Dott adapter evidence](dott-app-map.md) supersede its Dott gaps.
 Qick's [authenticated ATOM map](atom-app-map.md) also now supplies Kassel,
 Münster and Göttingen, and since 25 October 2026 Lime's
 [authenticated rider map](lime-app-map.md) supplies 39 German markets, among
-them Berlin, Hamburg, München, Köln and the Ruhr. Those app-map systems are
+them Berlin, Hamburg, München, Köln and the Ruhr, and ten Italian ones, among
+them Roma, Milano, Torino and Catania. Those app-map systems are
 separate from this GBFS audit.
 
 
@@ -389,7 +390,8 @@ and every feed URL is https, on the discovery's origin and under its
 directory. Catania awarded its new scooter permits to Bolt (400 scooters), Lime
 (300) and Elerent Ragusa (300), after Bit Mobility, ranked first, withdrew
 ([Mobilita Catania, 16 February 2026](https://catania.mobilita.org/2026/02/16/catania-punta-ancora-sui-monopattini-in-sharing-in-arrivo-mille-mezzi-e-nuove-regole-piu-rigide/)).
-Bolt and Lime publish no Italian feed.
+Bolt and Lime publish no Italian feed; Lime's Catania scooters come from its
+[rider map](lime-app-map.md) since 25 October 2026.
 
 - **Liveness:** ATOM stamps `last_updated` with the time of the request and
   gives no `last_reported`, and a scooter's `vehicle_id` changes after each
@@ -547,7 +549,7 @@ an hour, so no interval was changed for ATOM.
   contained no city feeds, and Dott's API now needs authentication. Dott still
   runs in Roma, Milano, Palermo and other cities.
 - Lime's Italian endpoints all returned 404, though Lime runs in Roma, Milano
-  and Palermo.
+  and Palermo. Lime's rider map supplies them since 25 October 2026.
 - Bird Milano, Firenze, Torino, Moncalieri, Collegno, Rivoli, Nichelino and
   Sesto Fiorentino were empty, with a timestamp of 0, and so were Bird München
   and Ulm on 16 October 2026. Bird left Ulm and Neu-Ulm around 2022

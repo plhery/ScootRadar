@@ -10,14 +10,14 @@ const guide: Guide = {
   headline: 'E-scooters in Rome: who rents them, the helmet rule, no-parking zones and fines',
   lede: 'To rent an e-scooter in Rome, use the app of Bird, Dott or Lime, the three operators the city authorises as of October 2026. You must be 18, sign up with an identity document and bring your own helmet: Italian law requires one for every rider, and no operator supplies it. The price is shown only in the app, and at the big sights, from the Colosseum to the Trevi Fountain and St Peter’s Square, Bird’s app won’t let you end a ride.',
   published: '2026-10-12',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'it:Roma',
   sections: [
     {
       heading: 'Which e-scooters can you rent in Rome?',
       blocks: [
         'Only operators authorised by the city may rent out e-scooters in Rome, and as of October 2026 there are three: **Bird**, **Dott** and **Lime**, according to the city’s transport agency, Roma Servizi per la Mobilità. Dott and Lime also rent e-bikes.',
-        'At 1:26 pm on Saturday 24 October 2026 the [map around Rome](map:it:Roma) showed about 4,200 Bird scooters and as many Dott, which the map has shown since that day: a snapshot, not the fleets. Lime publishes no data we can read, so open its app to see its scooters.',
+        'At 1:26 pm on Saturday 24 October 2026 the [map around Rome](map:it:Roma) showed about 4,200 Bird scooters and as many Dott, which the map has shown since that day. Since Sunday 25 October it also shows Lime’s, read from the map in its app: about 4,300 at around 4 pm that day. These are snapshots, not the fleets.',
         'The old centre has few by design: each operator may keep only 30 scooters in the Tridente, around Piazza del Popolo, Via del Corso and Piazza di Spagna, 300 in the historic-centre ZTL and 70 in Trastevere. If the map looks empty, walk a few streets out.',
       ],
     },
@@ -26,7 +26,7 @@ const guide: Guide = {
       blocks: [
         {
           steps: [
-            'Find the nearest Bird or Dott on the [live map of Rome](map:it:Roma), or a Lime in its app.',
+            'Find the nearest Bird, Dott or Lime on the [live map of Rome](map:it:Roma).',
             'Sign up in the operator’s app with an identity document and a card; you must be 18.',
             'Put on your helmet and check the identification sticker, on the rear mudguard or the front of the steering column.',
             'Scan the QR code and ride on the road or a cycle path, never on the pavement.',

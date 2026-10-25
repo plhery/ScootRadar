@@ -114,6 +114,11 @@ Pforzheim, Böblingen, Sindelfingen and Waiblingen; its Stuttgart zone is left
 out, as Lime's MobiData BW feed, which the map already reads, held 1,410 of
 the 1,470 scooters inside it.
 
+In Italy, Lime's regions of Bergamo, Brescia, Firenze, Lago di Garda, Parma
+and Livorno, which serves Pisa, held no scooter in their whole scooter zones
+on 25 October 2026, and neither did Stromboli's zone in Catania's region.
+Firenze has banned shared scooters since 1 April 2026.
+
 - Zones named as demos, tests, warehouses, events or temporary areas are left
   out, as Rome's three temporary areas and Dortmund's warehouses. So is the
   Tempe zone of Lime's Phoenix region: Lime's public Tempe feed holds it.
@@ -142,6 +147,7 @@ stationary reference scooter, country by country:
 | --- | --- | ---: | ---: | ---: | ---: |
 | 25 October 2026 | United Kingdom: London, Birmingham, Coventry, Milton Keynes, Salford | 336 | 86 | 4,895 | 264 |
 | 25 October 2026 | Germany: 39 markets, Berlin, Munich, Hamburg and Cologne the largest | 2,318 | 594 | 58,459 | 1,595 |
+| 25 October 2026 | Italy: 10 markets, Rome, Milan, Turin and Catania the largest | 738 | 188 | 12,534 | 658 |
 
 When the audit and the cache's sweeps shared an account, they shared its limit,
 about one request every five seconds. On 24 and 25 October 2026, before the cache's

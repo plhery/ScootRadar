@@ -107,11 +107,13 @@
       "anchor": [43, 12.5],
       "featuredCities": ["it:Roma", "it:Palermo", "it:Napoli", "it:Catania"],
       "credits": {
-        "attribution": "Italy: Bird, Elerent GBFS; Dott anonymous app map; Voi authenticated rider map",
+        "attribution": "Italy: Bird, Elerent GBFS; Dott anonymous app map; Voi authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
         "gbfs": ["Bird", "Elerent"],
         "links": [{ "label": "IT: Dott map", "href": "https://ridedott.com/" },
           { "label": "IT: Voi map", "href": "https://www.voi.com/" },
-          { "label": "IT: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
+          { "label": "IT: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
+          { "label": "IT: Lime map", "href": "https://www.li.me/" },
+          { "label": "IT: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
         ]
       }
     },

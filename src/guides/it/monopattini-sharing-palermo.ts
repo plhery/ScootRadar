@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Monopattini in sharing a Palermo: operatori, orari in centro, parcheggio e multe nel 2026',
   lede: 'I monopattini sharing a Palermo, a ottobre 2026, sono quelli di Bird, Dott e Lime, gli unici tre operatori autorizzati dal Comune. Per noleggiarli servono 18 anni e un documento d’identità; il casco, obbligatorio per tutti, lo porti tu, e il prezzo lo vedi nell’app prima di sbloccare. In centro conta l’ora: su via Maqueda, tra via Cavour e piazza Bellini, e sul Cassaro i monopattini passano solo dalle 5 alle 10 del mattino, anche se l’app di Bird non te lo impedisce.',
   published: '2026-10-13',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'it:Palermo',
   sections: [
     {
@@ -24,11 +24,11 @@ const guide: Guide = {
             rows: [
               ['Bird', 'Sì', 'Nell’app: nessuna tariffa pubblicata'],
               ['Dott', 'Sì, dal 24 ottobre 2026', 'Nell’app'],
-              ['Lime', 'No: apri l’app di Lime', 'Nell’app'],
+              ['Lime', 'Sì, dal 25 ottobre 2026', 'Nell’app'],
             ],
           },
         },
-        'Il 13 ottobre 2026 sulla [mappa di Palermo](map:it:Palermo) c’erano circa 1.160 monopattini Bird: una fotografia di quel momento, non la flotta ufficiale. Il giorno dopo quasi la metà era tra il Politeama, via Libertà e via Notarbartolo. Dal 24 ottobre la mappa mostra anche Dott, circa 580 quel giorno alle 13:26; Lime non pubblica dati che possiamo leggere.',
+        'Il 13 ottobre 2026 sulla [mappa di Palermo](map:it:Palermo) c’erano circa 1.160 monopattini Bird: una fotografia di quel momento, non la flotta ufficiale. Il giorno dopo quasi la metà era tra il Politeama, via Libertà e via Notarbartolo. Dal 24 ottobre la mappa mostra anche Dott, circa 580 quel giorno alle 13:26, e dal 25 ottobre Lime, circa 850 quel giorno verso le 15:20, letti dalla mappa della sua app.',
         'Il Comune prevede da 500 a 1.000 monopattini per operatore, 3.000 in tutto, e può alzare il tetto fino a 1.500 ciascuno: quanti ne abbia concessi a ognuno non l’ha pubblicato. Nella ZTL del centro ogni operatore può tenerne al massimo 100. Il servizio funziona giorno e notte.',
       ],
     },
@@ -37,7 +37,7 @@ const guide: Guide = {
       blocks: [
         {
           steps: [
-            'Cerca un Bird o un Dott sulla [mappa](map:it:Palermo), o un Lime nella sua app.',
+            'Cerca un Bird, un Dott o un Lime sulla [mappa](map:it:Palermo).',
             'Iscriviti nell’app con un documento d’identità e una carta. Servono **18 anni**: lo chiedono il Comune e Bird, nelle condizioni per l’Italia aggiornate il 20 aprile 2026. La patente non serve.',
             'Metti il casco, controlla freni, campanello e batteria, e verifica che ci siano il contrassegno e la targhetta metallica con il QR code che il Comune impone sui mezzi in sharing.',
             'Inquadra il QR code e guida su strada o su pista ciclabile, mai sul marciapiede, e senza passeggeri.',
@@ -166,7 +166,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quale monopattino scegliere a Palermo: Bird, Dott o Lime?',
-      answer: 'Le regole sono le stesse per tutti: contano il mezzo più vicino e il prezzo, che vedi solo nelle app. La mappa di ScootRadar mostra Bird e Dott: conviene avere tutte e tre le app.',
+      answer: 'Le regole sono le stesse per tutti: contano il mezzo più vicino e il prezzo, che vedi solo nelle app. La mappa di ScootRadar li mostra tutti e tre: conviene avere le tre app.',
     },
     {
       question: 'Si può andare in monopattino in via Maqueda?',
