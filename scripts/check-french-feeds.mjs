@@ -2,12 +2,26 @@ import { readFileSync } from 'node:fs';
 import { holdOffMs, hostPacer } from './host-pacing.mjs';
 
 // The catalogs of data/countries.json. --countries= takes country codes (FR,DE), a continent
-// (europe, north-america, asia, oceania) or all; --except= leaves countries out: check:europe
-// skips France, which check:france covers.
+// (--help lists them) or all; --except= leaves countries out: check:europe skips France,
+// which check:france covers.
 const countries = JSON.parse(readFileSync(new URL('../data/countries.json', import.meta.url), 'utf8')).countries
   .filter(country => country.catalog);
 const catalogs = Object.fromEntries(countries.map(country => [country.code, country.catalog]));
-const option = name => process.argv.find(arg => arg.startsWith(`--${name}=`))?.split('=')[1].split(',');
+const usage = `Usage: node scripts/check-french-feeds.mjs [--countries=CODES] [--except=CODES] [--fail-on=any|gone] [--json]
+Reads each catalog feed live, France's unless --countries= names others: country codes (FR,DE), a continent
+(${[...new Set(countries.map(country => country.continent))].join(', ')}) or all.`;
+const args = process.argv.slice(2);
+if (args.some(arg => arg === '--help' || arg === '-h')) {
+  console.log(usage);
+  process.exit(0);
+}
+// An unknown option would otherwise run the whole check without it.
+const unknown = args.filter(arg => !['--countries=', '--except=', '--fail-on='].some(name => arg.startsWith(name)) && arg !== '--json');
+if (unknown.length) {
+  console.error(`Unknown option ${unknown.join(' ')}\n${usage}`);
+  process.exit(2);
+}
+const option =name => process.argv.find(arg => arg.startsWith(`--${name}=`))?.split('=')[1].split(',');
 const except = option('except') ?? [];
 const requested = (option('countries') ?? ['FR']).flatMap(name => name === 'all'
   ? countries.map(country => country.code)
