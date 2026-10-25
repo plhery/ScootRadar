@@ -40,6 +40,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     case kickgoing
     case xingxing
     case swing
+    case deer
     case alpaca
 
     var id: String { rawValue }
@@ -82,6 +83,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .kickgoing: "Kickgoing"
         case .xingxing: "Xingxing"
         case .swing: "Swing"
+        case .deer: "Deer"
         case .alpaca: "Alpaca"
         }
     }
@@ -124,6 +126,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .kickgoing: "K"
         case .xingxing: "X"
         case .swing: "Sw"
+        case .deer: "De"
         case .alpaca: "A"
         }
     }
@@ -148,6 +151,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .binbin: OperatorApp(link: URL(string: "https://binbin.tech/")!, appStore: URL(string: "https://apps.apple.com/app/id1483635924")!)
         case .gcoo: OperatorApp(link: URL(string: "https://open.gbike.io/")!, appStore: URL(string: "https://apps.apple.com/app/id1501264071")!)
         case .swing: OperatorApp(link: URL(string: "https://tswm.link/")!, appStore: URL(string: "https://apps.apple.com/app/id1459344011")!)
+        case .deer: OperatorApp(link: URL(string: "https://deer.tswm.link/")!, appStore: URL(string: "https://apps.apple.com/app/id1455718957")!)
         case .alpaca: OperatorApp(link: URL(string: "https://alpaca.kr/")!, appStore: URL(string: "https://apps.apple.com/app/id1328860619")!)
         default: nil
         }
@@ -193,6 +197,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .kickgoing: UIColor(red: 0.000000, green: 0.760784, blue: 0.670588, alpha: 1)
         case .xingxing: UIColor(red: 0.850980, green: 0.603922, blue: 0.000000, alpha: 1)
         case .swing: UIColor(red: 0.066667, green: 0.066667, blue: 0.066667, alpha: 1)
+        case .deer: UIColor(red: 0.780392, green: 0.690196, blue: 0.000000, alpha: 1)
         case .alpaca: UIColor(red: 1.000000, green: 0.431373, blue: 0.207843, alpha: 1)
         }
     }
@@ -218,6 +223,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         (.move, [], ["move_"]),
         (.beam, [], ["beam_"]),
         (.gcoo, [], ["gcoo_"]),
+        (.deer, [], ["deer_"]),
         (.bolt, [], ["bolt"]),
         (.bird, [], ["bird"]),
         (.dott, [], ["dott"]),

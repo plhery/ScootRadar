@@ -338,7 +338,17 @@ clusters point to once, and the table above is their scooters by town.
   map gives Deer's scooters `vendor: "DEER"` (model S9). Swing's systems
   hold them: about 13,123 in 39 of its 82 towns on 25 October, Cheongju's
   2,585 (all of Swing's there), Gyeongsan's 2,143, Daegu's 1,633, Paju's
-  1,568 and Goyang's 1,231. They are shown as Swing's.
+  1,568 and Goyang's 1,231. They are shown as Swing's for now. Riders know
+  them as Deer's: Swing still publishes the Deer app (4.6.8, 7 October
+  2026), its own app says "now you can ride Deer in the Swing app", and its
+  map draws them with a Deer marker. So `deer` is in the provider catalog
+  since 25 October 2026, opening Deer's app (`deer.tswm.link`, which it
+  claims on both platforms). Without the app, the iPhone app opens Deer's
+  App Store page, but a phone's browser lands on that host's "page not
+  found": unlike `tswm.link`, its root sends no one to a store. Its scooters take its name, in towns of their
+  own read from Swing's map as Xingxing's are from Kickgoing's, once an App
+  Store build that knows Deer is live. The builds before leave a provider
+  they don't know out of the totals, and Cheongju would look empty in them.
 - **DART** (`kr.co.dartapp` 2.3.0) opens its map only after a phone number
   and SMS sign-in. `POST https://app.dartsharing.com:8443/app/vehicle/main_v2`
   answers with user_no 0 and an empty token, but the app never asks it

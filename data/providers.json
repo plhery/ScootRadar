@@ -342,6 +342,21 @@
     }
   },
   {
+    "key": "deer",
+    "name": "Deer",
+    "color": "#c7b000",
+    "initial": "De",
+    "systemIds": {
+      "prefixes": [
+        "deer_"
+      ]
+    },
+    "app": {
+      "link": "https://deer.tswm.link/",
+      "appStoreId": 1455718957
+    }
+  },
+  {
     "key": "alpaca",
     "name": "Alpaca",
     "color": "#ff6e35",
