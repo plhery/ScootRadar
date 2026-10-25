@@ -133,7 +133,7 @@ const guide: Guide = {
       heading: 'Solna, Sundbyberg, Nacka and the rest of Sweden',
       blocks: [
         'The cap, bays and no-parking areas above are the City of Stockholm’s; its neighbours set their own terms. **Solna** has one-year agreements with Voi and Bolt, whose scooters stand at 52 marked stations (2 July 2026). **Nacka** has an agreement with Voi, for western Sicklaön up to Nacka Forum and Kvarnholmen (10 July 2026), and decided in May 2022 to charge companies SEK 1,400 a scooter a year. For **Sundbyberg** we found no current list; on 25 October the map showed only Voi there.',
-        'Elsewhere in Sweden the map shows, among other towns, Voi and Lime in [Uppsala](map:se:Uppsala), Voi and Bolt in [Malmö](map:se:Malmö) and Lund, and Voi in [Gothenburg](map:se:Göteborg). Unlike Stockholm, [Oslo](guide:oslo) stops rentals every night and [Helsinki](guide:helsinki) on weekend nights.',
+        'Elsewhere in Sweden the map shows, among other towns, Voi and Lime in [Uppsala](map:se:Uppsala) and [Gothenburg](map:se:Göteborg), Voi, Bolt and Lime in [Malmö](map:se:Malmö), and Voi and Bolt in Lund. Unlike Stockholm, [Oslo](guide:oslo) stops rentals every night and [Helsinki](guide:helsinki) on weekend nights.',
       ],
     },
     {
