@@ -119,5 +119,8 @@ Bolt scooter market. The total stands in the Midlands, near Athlone
 - Ride Mobility runs scooters in Estonia and Lithuania and publishes no
   feed; its ATOM ids 1 to 400 answer for Riga only.
 - Dott runs in Slovakia, Bulgaria and Moldova with no public feed.
+- Lime's rider map lists Sofia, Plovdiv, Varna, Burgas, Ruse and Stara
+  Zagora, but none held a Lime scooter in its full-area audit of
+  25 October 2026 (see [Lime's map](lime-app-map.md)).
 - A Bolt market that fills again needs its system added; one Bolt closes
   fails as "another market" or stays empty.

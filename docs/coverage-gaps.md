@@ -17,7 +17,7 @@ in five Austrian ones, from Wien to Wels, in Göteborg and Malmö, in
 København and Odense, in Brno and Ostrava, in 15 Hungarian markets, from
 Budapest to Szigetszentmiklós, and in seven Romanian ones, from București to
 Târgoviște.
-The other markets its rider map lists, 106 found so far, are added country by
+The other markets its rider map lists, 100 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -711,6 +711,9 @@ banned shared scooters, and feeds that were empty when checked.
   - Dott publishes no feed in any of the three. Bolt's Trenčín market was
     empty that day, and its Košice, Žilina, Banská Bystrica and Martin
     markets have no scooters.
+  - Lime's rider map lists six Bulgarian markets, Sofia, Plovdiv, Varna,
+    Burgas, Ruse and Stara Zagora; none held a scooter in its full-area audit
+    that day, while Bolt's map showed about 620 in Sofia.
 - **Slovenia** ([guide](bolt-country-scooter-feeds.md#slovenia)): Bolt in
   Ljubljana is covered, from its rider map since 25 October 2026.
   - Kvik's feed exists only as a relay scraping its app (see

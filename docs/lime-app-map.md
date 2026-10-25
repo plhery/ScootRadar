@@ -134,7 +134,9 @@ scooters since 1 January 2026. In Hungary, neither did its Balaton region, 17
 zones on the lake's south shore from Siófok to Balatonberény, nor Fót, Göd and
 Zalaegerszeg; check the Balaton resorts again in summer. In Romania, neither
 did its Arad, Brașov, Constanța and Galați regions, and Oradea's held a single
-scooter; check Constanța, on the Black Sea, again in summer.
+scooter; check Constanța, on the Black Sea, again in summer. In Bulgaria,
+neither did any of its six regions, Sofia, Plovdiv, Varna, Burgas, Ruse and
+Stara Zagora; check Varna and Burgas, on the Black Sea, again in summer.
 
 - Zones named as demos, tests, warehouses, events or temporary areas are left
   out, as Rome's three temporary areas and Dortmund's warehouses. So is the
