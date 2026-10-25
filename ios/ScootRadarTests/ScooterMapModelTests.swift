@@ -32,7 +32,7 @@ final class ScooterMapModelTests: XCTestCase {
         let model = makeModel(api: StubScooterAPI(response: ScooterResponse(vehicles: [])))
         let selected = model.enabledProviders
         model.viewport = GeoBounds(south: 52.49, west: 13.37, north: 52.55, east: 13.44)
-        XCTAssertEqual(model.availableProviders, [.bolt, .dott, .voi])
+        XCTAssertEqual(model.availableProviders, [.bolt, .dott, .lime, .voi])
         model.viewport = GeoBounds(south: 41.88, west: 12.46, north: 41.93, east: 12.53)
         XCTAssertEqual(model.availableProviders, [.bird, .dott])
         XCTAssertEqual(model.enabledProviders, selected)
