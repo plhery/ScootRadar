@@ -191,6 +191,7 @@ import padovaIt from './it/monopattini-sharing-padova';
 import portlandEn from './en/e-scooters-portland';
 import bremenDe from './de/e-scooter-bremen';
 import rostockDe from './de/e-scooter-rostock';
+import paderbornDe from './de/e-scooter-paderborn';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -382,4 +383,5 @@ export const GUIDES: readonly Guide[] = [
   portlandEn,
   bremenDe,
   rostockDe,
+  paderbornDe,
 ];
