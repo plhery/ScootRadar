@@ -23,7 +23,10 @@ jobs:
       # Fails when an entry of a country's catalog is gone (HTTP 401, 404 or 410). NRW.Mobidrom's
       # 401s are only logged: its feeds need the cache's OAuth token, which this job doesn't hold.
       # A paused Dott region (403 ERR_REGION_OFFLINE) and other failures are only in the log.
-      - run: npm run check:catalogs -- --fail-on=gone
+      # The app maps' states come from the scooter cache's /feeds (--apps=cache): only the cache
+      # holds their sessions, which rotate on renewal, so this job runs no app map client. A failing
+      # one is only logged, as the cache's own alerts already report it.
+      - run: npm run check:catalogs -- --fail-on=gone --apps=cache
       # Fails when a hand-kept price of data/listed-prices.json is due a recheck, or its page is gone.
       - if: ${{ !cancelled() }}
         run: npm run check:listed-prices -- --fail-on=stale

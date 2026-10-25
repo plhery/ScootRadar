@@ -65,6 +65,31 @@ describe('snapshot origin boundary', () => {
     expect(ready).toMatchObject({ ready: true, usableFeeds: 1, failedFeeds: [], warmingFeeds: ['france:dott_fr_paris'] });
   });
 
+  it('lists each feed with its state and scooters for the weekly check, without its error', async () => {
+    const now = Date.now();
+    const scooter = { vehicle_id: 'a', lat: 48.85, lng: 2.35, provider: 'dott', battery: 70, range_m: null, distance_m: null, deep_link: null };
+    const feed = { source: 'france' as const, provider: 'dott' as const, coverage: [], vehicles: [scooter],
+      observedAt: now, attemptedAt: now, stale: false, failed: false, skipped: false };
+    const feeds = [{ ...feed, id: 'france:dott_fr_paris' },
+      { ...feed, id: 'france:dott_fr_lyon', vehicles: [], failed: true, stale: true },
+      { ...feed, id: 'france:dott_fr_tignes', vehicles: [], skipped: true },
+      { ...feed, id: 'france:dott_fr_nice', vehicles: [], seasonOver: true },
+      { ...feed, id: 'france:dott_fr_lille', vehicles: [], observedAt: 0, attemptedAt: 0, stale: true, failed: true }];
+    const { port } = await start({ version: 1, updatedAt: now, feeds, overview: buildCityOverview([], now) });
+    const response = await fetch(`http://127.0.0.1:${port}/feeds`);
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ updatedAt: now, feeds: [
+      { id: 'france:dott_fr_paris', state: 'ok', vehicles: 1, observedAt: now },
+      { id: 'france:dott_fr_lyon', state: 'failing', vehicles: 0, observedAt: now },
+      { id: 'france:dott_fr_tignes', state: 'skipped', vehicles: 0, observedAt: now },
+      { id: 'france:dott_fr_nice', state: 'ok', seasonOver: true, vehicles: 0, observedAt: now },
+      { id: 'france:dott_fr_lille', state: 'warming', vehicles: 0, observedAt: null },
+    ] });
+    // Before the first snapshot, as /health.
+    const { port: empty } = await start();
+    expect((await fetch(`http://127.0.0.1:${empty}/feeds`)).status).toBe(503);
+  });
+
   it('answers a view across the 180° line with the scooters on its west side', async () => {
     const now = Date.now();
     const scooter = (id: string, lng: number) => ({ vehicle_id: id, lat: -37.69, lng, provider: 'flamingo', battery: 70,

@@ -7,16 +7,17 @@ import { holdOffMs, hostPacer } from './host-pacing.mjs';
 const countries = JSON.parse(readFileSync(new URL('../data/countries.json', import.meta.url), 'utf8')).countries
   .filter(country => country.catalog);
 const catalogs = Object.fromEntries(countries.map(country => [country.code, country.catalog]));
-const usage = `Usage: node scripts/check-french-feeds.mjs [--countries=CODES] [--except=CODES] [--fail-on=any|gone] [--json]
+const usage = `Usage: node scripts/check-french-feeds.mjs [--countries=CODES] [--except=CODES] [--fail-on=any|gone] [--apps=collect|cache] [--json]
 Reads each catalog feed live, France's unless --countries= names others: country codes (FR,DE), a continent
-(${[...new Set(countries.map(country => country.continent))].join(', ')}) or all.`;
+(${[...new Set(countries.map(country => country.continent))].join(', ')}) or all. --apps=cache reads the app maps' states
+from the scooter cache instead of collecting them here, as the weekly workflow does.`;
 const args = process.argv.slice(2);
 if (args.some(arg => arg === '--help' || arg === '-h')) {
   console.log(usage);
   process.exit(0);
 }
 // An unknown option would otherwise run the whole check without it.
-const unknown = args.filter(arg => !['--countries=', '--except=', '--fail-on='].some(name => arg.startsWith(name)) && arg !== '--json');
+const unknown = args.filter(arg => !['--countries=', '--except=', '--fail-on=', '--apps='].some(name => arg.startsWith(name)) && arg !== '--json');
 if (unknown.length) {
   console.error(`Unknown option ${unknown.join(' ')}\n${usage}`);
   process.exit(2);
@@ -34,6 +35,13 @@ if (requested.some(country => !catalogs[country]) || except.some(country => !cat
 // --fail-on=gone fails the run only for an entry its operator no longer serves, as the weekly workflow does.
 const failOn = process.argv.find(arg => arg.startsWith('--fail-on='))?.split('=')[1] ?? 'any';
 if (!['any', 'gone'].includes(failOn)) throw new Error('Use --fail-on=any or --fail-on=gone');
+// The app maps are collected here, with the sessions of the environment, or read from the scooter
+// cache, which alone holds them all: a second client would spend sessions that rotate on renewal.
+const apps = option('apps')?.[0] ?? 'collect';
+if (!['collect', 'cache'].includes(apps)) {
+  console.error(`Use --apps=collect or --apps=cache\n${usage}`);
+  process.exit(2);
+}
 const catalog = { systems: requested.flatMap(country => JSON.parse(readFileSync(
   new URL(`../${catalogs[country]}`, import.meta.url), 'utf8')).systems.map(system => ({ ...system, country }))) };
 const results = [];
@@ -47,6 +55,10 @@ const MOBIDATA_BW = 'https://api.mobidata-bw.de';
 // As HOST_AUTH in src/lib/scooterFeeds.ts: NRW.Mobidrom answers only with an OAuth token, which the
 // scooter cache holds and this check doesn't, so its 401 says nothing about the feed.
 const TOKEN_HOSTS = new Set(['www.mobilitaetsdaten.nrw']);
+// The scooter cache's origin (SCOOTER_SNAPSHOT_API_URL in wrangler.jsonc), whose /feeds gives each feed's
+// state, as `${country source}:${system id}`.
+const CACHE = 'https://scooter-data.plhery.com';
+const sources = Object.fromEntries(countries.map(country => [country.code, country.source]));
 
 // At most two requests a second to one host, whatever the number of feeds it serves.
 const pacer = hostPacer(500);
@@ -121,11 +133,32 @@ async function appCollector(provider) {
   const adapter = await appModules.get(provider);
   return adapter[`collect${provider[0].toUpperCase() + provider.slice(1)}Region`];
 }
+const isAppMap = system => system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount ||
+  system.luupAppCities || system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.beamAppCity ||
+  system.gcooAppMap || system.kickgoingAppMap || system.swingAppMap;
+
+// An app map as the scooter cache last collected it: paused when the operator has closed the region or
+// ended its season, failed when the cache's collections fail; never gone, which only the app could say.
+function cachedAppMap(system, result) {
+  if (cacheFeeds.error) throw new Error(`Scooter cache feeds unreadable: ${cacheFeeds.error}`);
+  const feed = cacheFeeds.byId.get(`${sources[system.country]}:${system.id}`);
+  if (!feed) throw new Error('Not among the scooter cache\'s feeds');
+  const age = feed.observedAt && { updatedAt: new Date(feed.observedAt).toISOString(),
+    ageSeconds: Math.max(0, Math.round((Date.now() - feed.observedAt) / 1000)) };
+  if (feed.state === 'skipped' || feed.seasonOver) {
+    return { ...result, state: 'paused', version: 'app-map (cache)', ...age,
+      error: feed.seasonOver ? 'Season over, says the operator' : 'Closed by the operator for now' };
+  }
+  if (feed.state !== 'ok') throw new Error(`The scooter cache's collection is ${feed.state}`);
+  return { ...result, state: 'ok', version: 'app-map (cache)', availableScooters: feed.vehicles,
+    withBattery: null, withRange: null, withRentalLink: 0, ...age };
+}
+
 async function inspect(system) {
   const result = { system: system.id, country: system.country, city: system.city, provider: system.provider, discoveryUrl: system.discoveryUrl };
   try {
-    if (system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount || system.luupAppCities || system.jetAppMap ||
-      system.whooshAppRegion || system.binbinAppArea || system.beamAppCity || system.gcooAppMap || system.kickgoingAppMap || system.swingAppMap) {
+    if (isAppMap(system) && apps === 'cache') return cachedAppMap(system, result);
+    if (isAppMap(system)) {
       const collect = await appCollector(system.atomAppAccount ? 'atom' : system.kickgoingAppMap ? 'kickgoing' : system.provider);
       const snapshot = await collect(system);
       return { ...result, state: 'ok', version: 'app-map', availableScooters: snapshot.vehicles.length,
@@ -200,6 +233,16 @@ const listings = Object.fromEntries(await Promise.all(dottCountries.map(async co
     return [country, { error: error.message }];
   }
 })));
+
+const cacheFeeds = apps === 'cache' && catalog.systems.some(isAppMap) ? await (async () => {
+  try {
+    const response = await fetch(`${CACHE}/feeds`, { headers, signal: AbortSignal.timeout(30_000) });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return { byId: new Map((await response.json()).feeds.map(feed => [feed.id, feed])) };
+  } catch (error) {
+    return { error: error.message };
+  }
+})() : {};
 
 let next = 0;
 await Promise.all(Array.from({ length: 4 }, async () => {

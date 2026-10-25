@@ -63,7 +63,7 @@ interface ServerOptions {
 // The Worker's address searches report here how many requests they sent to Geoapify.
 const GEOCODE_USAGE_PATH = '/api/geocode-usage';
 const ZONES_PATH = '/api/zones';
-const ROUTES = new Set(['/api/scooters', ZONES_PATH, GEOCODE_USAGE_PATH, '/health', '/ready', '/metrics']);
+const ROUTES = new Set(['/api/scooters', ZONES_PATH, GEOCODE_USAGE_PATH, '/health', '/ready', '/feeds', '/metrics']);
 
 export function createSnapshotServer(options: ServerOptions) {
   if (options.production && (!options.token || options.token.length < 32)) {
@@ -119,6 +119,19 @@ export function createSnapshotServer(options: ServerOptions) {
         // The app maps collect no parking, so only the feeds that do can miss it.
         failedParkingFeeds: attempted.filter(feed => collectsParking(feed) && !parkingUp(feed, now, cadence)).map(feed => feed.id),
         cities: snapshot?.overview.cities.length, version: options.version ?? 'local' }));
+      return;
+    }
+    if (url.pathname === '/feeds') {
+      // Each feed's state and scooters, which the weekly catalog check reads for the app maps
+      // (--apps=cache): only the cache holds their sessions. No error text, which can name a key.
+      response.writeHead(snapshot ? 200 : 503);
+      response.end(JSON.stringify({ updatedAt: snapshot?.updatedAt, feeds: (snapshot?.feeds ?? []).map(feed => ({
+        id: feed.id,
+        state: feed.skipped ? 'skipped' : feed.attemptedAt === 0 ? 'warming' : feedState(feed, now, cadence),
+        ...(feed.seasonOver && { seasonOver: true }),
+        vehicles: feed.vehicles.length,
+        observedAt: feed.observedAt || null,
+      })) }));
       return;
     }
     if (url.pathname === '/metrics' && metricsTokenHash && options.metrics) {

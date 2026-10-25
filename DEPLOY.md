@@ -72,6 +72,8 @@ For the first release requiring authenticated origin access, use this order:
    requests to the public origin without it must return 401, while requests through
    `https://scootradar.com/api/scooters` must succeed.
 4. Check `/health` for collector liveness and `/ready` for usable live feeds.
+   `/feeds` lists each feed's state and scooters, without errors; the weekly
+   catalog check reads the app maps there (`--apps=cache`).
    Grafana alerts on the cache's metrics (see [docs/OBSERVABILITY.md](docs/OBSERVABILITY.md)).
    Keep the container's restart health check on `/health` so operator outages do
    not cause a restart loop.
