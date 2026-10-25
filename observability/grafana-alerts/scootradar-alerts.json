@@ -81,17 +81,17 @@
       "severity": "warning",
       "noDataState": "KeepLast",
       "summary": "One build of the cache has restarted more than three times in an hour.",
-      "description": "A deploy starts another build and is not counted. Restarts of one build are a crash loop: out of heap, killed above its 2048 MiB, or a startup failure. Its last logs are in Loki ({app=\"scootradar-cache\"}) and an exception in Sentry's scootradar-cache project."
+      "description": "A deploy starts another build and is not counted. Restarts of one build are a crash loop: out of heap, killed above its 3072 MiB, or a startup failure. Its last logs are in Loki ({app=\"scootradar-cache\"}) and an exception in Sentry's scootradar-cache project."
     },
     {
       "uid": "scootradar-cache-memory",
       "title": "ScootRadar cache memory high",
-      "expr": "(max(process_resident_memory_bytes{job=\"scootradar-cache\"}) > bool 1800000000) + (max(nodejs_heap_used_bytes{job=\"scootradar-cache\"}) > bool 1000000000)",
+      "expr": "(max(process_resident_memory_bytes{job=\"scootradar-cache\"}) > bool 2700000000) + (max(nodejs_heap_used_bytes{job=\"scootradar-cache\"}) > bool 1500000000)",
       "for": "15m",
       "severity": "warning",
       "noDataState": "KeepLast",
-      "summary": "The cache has used over 1.8 GB, or its V8 heap over 1 GB, for 15 minutes.",
-      "description": "The container is limited to 2048 MiB and is killed above it. Node gives the V8 heap 1072 MiB of that, and the heap runs out first (DEPLOY.md). A catalog that grew, or a leak: compare with the feed count on the dashboard."
+      "summary": "The cache has used over 2.7 GB, or its V8 heap over 1.5 GB, for 15 minutes.",
+      "description": "The container is limited to 3072 MiB and is killed above it. Node gives the V8 heap 1632 MiB of that, and the heap runs out first (DEPLOY.md). A catalog that grew, or a leak: compare with the feed count on the dashboard."
     },
     {
       "uid": "scootradar-geoapify-quota",

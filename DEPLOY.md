@@ -255,7 +255,7 @@ app name and canonical domain are ScootRadar and `scootradar.com`.
 - Repository: `plhery/ScootRadar`, branch `production-cache`, Dockerfile `/server/Dockerfile`.
 - Origin: `https://scooter-data.plhery.com`, container port 3001.
 - Persistent named volume: `mouc13tsnvylg0v9ee9wp5v5-scooter-snapshots`, mounted at `/data`.
-- Resource limits: 1 CPU, 2048 MiB. No host port is exposed.
+- Resource limits: 1 CPU, 3072 MiB. No host port is exposed.
 - Network alias `scootradar-cache` on the `coolify` network, where Prometheus scrapes
   `scootradar-cache:3001/metrics` for the gauges and `up` (job `scootradar-cache`), and
   each container the alias resolves to for the counters (job
@@ -426,8 +426,8 @@ and `meta.parkingStatus`; zoom 15 and below omit individual parking locations.
 
 
 The Germany/Italy catalog expands the collector to approximately 80 feeds.
-Allocate 2048 MiB to the cache container. Node 26 gives its heap 1072 MiB of
-that (816 MiB of 1536 MiB), and the heap is what runs out first. With 1536 MiB
+Allocate 3072 MiB to the cache container. Node 26 gives its heap 1632 MiB of
+that (1072 MiB of 2048 MiB, 816 MiB of 1536 MiB), and the heap is what runs out first. With 1536 MiB
 and 594 feeds, the heap peaked at 704 MB in the day before Beam and South
 Korea's three signed-out app maps were added, on 24 October 2026. GCOO's,
 Kickgoing's and Swing's Korean feeds hold about 187,000 scooters at night,
@@ -435,7 +435,9 @@ neighbouring towns' feeds each holding those where their bounds overlap, and
 take about 120 MB more; Beam's 54 regions held about 45,000 in their first
 samples, about 28 MB. The limit went up to 2048 MiB with them. That evening,
 with 777,000 vehicles in all feeds (Korea's 225,000 at night), the heap stayed
-around 790 MB between collections and peaked at 925 MB, of 1,124 MB. In October
+around 790 MB between collections and peaked at 925 MB, of 1,124 MB. On 25 October,
+with Lime's app maps in the UK, Germany and Italy, about 935,000 vehicles in all, it peaked at
+964 MB, and the limit went up to 3072 MiB (a heap of 1,711 MB) before more countries were added. In October
 2026, with Europe's 128,000 vehicles, the heap peaked around 575 MiB and the process around 900 MiB while
 the snapshot was saved whole every five seconds: each save built its JSON as
 one string, two bytes a character as one city name is outside Latin-1, then a
