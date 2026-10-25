@@ -35,7 +35,7 @@ const guide: Guide = {
       heading: 'How much does an e-scooter cost in the Tricity?',
       blocks: [
         'Bolt’s Polish page advertises scooters “from PLN 0.22 a minute” and says unlock fees and rates vary by place. It also sells unlimited unlocks from €0.99 a month, and weekly and monthly passes. Dott and Lime show their prices in the app.',
-        'At weekends Bolt makes you pass a reaction-time test in the app before you unlock a scooter; its page gives no hours. The terms set the extra charges:',
+        'Bolt may ask for a reaction-time test in the app before you unlock: at weekends, says its Polish page, or at peak hours, says its English one. The terms set the extra charges:',
         {
           table: {
             caption: 'Extra charges in Bolt’s and Dott’s terms for Poland (read 25 October 2026)',
@@ -76,13 +76,13 @@ const guide: Guide = {
               ['On the pavement', 'Walking pace, give way, don’t obstruct', 'PLN 300 each'],
               ['Riding', 'One rider; no passenger, animal, load or towing; not side by side on the road; a hand on the handlebar', 'PLN 50 for side by side or no hands'],
               ['Phone', 'Don’t hold it while riding', 'PLN 500'],
-              ['Alcohol, 0.2‰ to 0.5‰', '“After drinking” (stan po użyciu alkoholu)', 'PLN 1,000 ticket; in court up to PLN 5,000 or arrest, and a riding ban'],
-              ['Alcohol, over 0.5‰', '“Drunk” (stan nietrzeźwości)', 'PLN 2,500 ticket; in court up to PLN 5,000 or arrest, and a riding ban'],
+              ['Alcohol, 0.2‰ to 0.5‰', '“After drinking” (stan po użyciu alkoholu)', 'PLN 1,000 ticket; in court up to PLN 5,000 or arrest, and possibly a riding ban'],
+              ['Alcohol, over 0.5‰', '“Drunk” (stan nietrzeźwości)', 'PLN 2,500 ticket; in court up to PLN 5,000 or arrest, and possibly a riding ban'],
               ['Parking on the pavement', 'In a marked place, else at the outer edge, parallel to it, leaving 1.5 m for pedestrians', 'Removal at the owner’s cost if it blocks the way'],
             ],
           },
         },
-        'All are national rules; the tickets come from the government’s fines tariff in force since 1 January 2022.',
+        'All are national rules. The tickets come from the government’s fines tariff in force since 1 January 2022, and the helmet fine from the Code of Petty Offences.',
       ],
     },
     {
@@ -93,7 +93,6 @@ const guide: Guide = {
         '**Parking bays.** From 1 May 2023, under updated agreements, marked bays became the only places to end a ride in the Main Town, along al. Grunwaldzka through Wrzeszcz and Oliwa, and along the seaside; the city then had 350 bay locations. The app shows where you may park now; elsewhere, follow the national pavement rule.',
         '**Towing.** Since 1 January 2026, under a city council resolution, a badly parked scooter can be towed for PLN 179, plus PLN 35 for each day in the pound, charged to the owner: for a rental, the operator, whose terms let it pass the cost on.',
         '**Checks.** Gdańsk’s municipal police (Straż Miejska) wrote 1,450 tickets to cyclists and e-scooter riders from January to mid-August 2026, and the city’s “Give way to pedestrians” campaign (24 September to 30 November 2026) adds joint checks with the police.',
-        'At about 15:30 on 25 October the map showed about 150 Bolt and Dott scooters within 300 metres of Gdańsk Główny, the main station, and 13 within 200 metres of Długi Targ.',
       ],
     },
     {
@@ -144,7 +143,7 @@ const guide: Guide = {
     },
     {
       question: 'Do you need a helmet on an e-scooter in Poland?',
-      answer: 'Only under 16, since 3 June 2026; the parent or carer can be fined up to PLN 100. For adults it’s your choice.',
+      answer: 'Only under 16, since 3 June 2026; the parent or carer can be fined up to PLN 100. From 16 it’s your choice.',
     },
     {
       question: 'Can you ride an e-scooter on the pavement in Poland?',
