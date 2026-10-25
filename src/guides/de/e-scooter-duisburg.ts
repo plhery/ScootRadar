@@ -19,7 +19,7 @@ const guide: Guide = {
         'Fünf Anbieter vermieten 2026 E-Scooter in Duisburg: **Voi**, **Dott** (früher Tier), **Bolt**, **Lime** und **Ryde**. Dott, Bolt, Lime und Ryde nennt die Stadt auf ihrer Seite zum E-Scooter-Verleih (Stand Juli 2026). Voi fehlt dort, fährt aber laut eigener Mitteilung seit dem 1. August 2025 in Duisburg und Oberhausen. Dott und Ryde führen Duisburg auf ihren Websites (Stand 24. Oktober 2026); NRW.Mobidrom, das Mobilitätsdatenportal des Landes, führt seit Juli 2026 Bolt als Anbieter in Essen und Duisburg.',
         'Dott und Bolt fahren laut Stadt (Juli 2026) in der Innenstadt und den Vierteln ringsum, von Neuenkamp bis Wanheimerort und Buchholz und links des Rheins etwa in Rheinhausen; Lime reicht weiter. Vois Gebiet umfasst laut Karte den grössten Teil der rechten Rheinseite von Walsum bis Buchholz, dazu Homberg, aber nicht Rheinhausen (Stand 24. Oktober 2026).',
         'Gemietet wird in der App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Auf der [Karte von Duisburg](map:de:Duisburg) zeigt ScootRadar Voi und Dott: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 1030 Voi- und 300 Dott-Scooter, zusammen rund 1330. Die Zahl umfasst das ganze Stadtgebiet mit Rheinhausen und Homberg, aber nicht Oberhausen, Mülheim oder Moers. Das ist eine Momentaufnahme, keine Flottengrösse; die Stadt sprach im Oktober 2025 von mehr als 2000 Leih-Scootern. Seit dem 25. Oktober zeigt die Karte auch Lime: am Sonntagvormittag rund 2650 Scooter in Limes Duisburger Fahrgebiet. Für Voi zeigt die Karte auch Preis, Abstellverbote, Parkplätze und Fahrgebiet, für Dott nur die Standorte. Bolt und Ryde fehlen auf der Karte; ihre Scooter findest du nur in ihren Apps. E-Bikes und Leihräder zeigt die Karte nicht.',
+        'Auf der [Karte von Duisburg](map:de:Duisburg) zeigt ScootRadar Voi und Dott: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 1030 Voi- und 300 Dott-Scooter, zusammen rund 1330. Die Zahl umfasst das ganze Stadtgebiet mit Rheinhausen und Homberg, aber nicht Oberhausen, Mülheim oder Moers. Das ist eine Momentaufnahme, keine Flottengrösse; die Stadt sprach im Oktober 2025 von mehr als 2000 Leih-Scootern. Seit dem 25. Oktober zeigt die Karte auch Lime, am Sonntagvormittag rund 2650 Scooter in Limes Duisburger Fahrgebiet, und Bolt. Für Voi zeigt die Karte auch Preis, Abstellverbote, Parkplätze und Fahrgebiet, für Dott nur die Standorte. Ryde fehlt auf der Karte. E-Bikes und Leihräder zeigt die Karte nicht.',
       ],
     },
     {
@@ -126,7 +126,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-Apps kann ich in Duisburg nutzen?',
-      answer: 'Die von Voi, Dott, Bolt, Lime und Ryde (Stand 2026). Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Voi-, Dott- und Lime-Scooter zeigt auch die ScootRadar-Karte, die von Bolt und Ryde nur deren Apps.',
+      answer: 'Die von Voi, Dott, Bolt, Lime und Ryde (Stand 2026). Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Voi-, Dott-, Lime- und Bolt-Scooter zeigt auch die ScootRadar-Karte, die von Ryde nur dessen App.',
     },
     {
       question: 'Was kosten zehn Minuten E-Scooter in Duisburg?',

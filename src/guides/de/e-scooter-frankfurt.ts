@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Frankfurt: Anbieter, Preise, Parkzonen und Verbote',
   lede: 'E-Scooter in Frankfurt leihst du seit dem 1. Juli 2026 nur noch bei Bolt, Lime und Voi, ab 18 und ohne Führerschein. Voi verlangt nichts fürs Entsperren und 0,27 € pro Minute, zehn Minuten kosten also 2,70 € (Stand 13. Oktober 2026); bei Lime und Bolt zeigt die App den Preis. In der Innenstadt, im Bahnhofsviertel, in Bockenheim, in Höchst und an der Berger Strasse beendest du die Fahrt nur auf einer markierten Abstellfläche, auf den Mainbrücken, in Fussgängerzonen und in Parks gar nicht. In U-Bahn und Strassenbahn sind E-Scooter seit Oktober 2024 verboten.',
   published: '2026-10-13',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'de:Frankfurt',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Seit dem 1. Juli 2026 verleihen in Frankfurt nur noch drei Anbieter E-Scooter: **Bolt** (dunkelgrün), **Lime** (grün-weiss) und **Voi** (rot). Die Stadt hat die Genehmigungen in einem Auswahlverfahren vergeben, befristet bis zum 30. Juni 2028. Wer den Zuschlag bekam, nennt sie selbst nicht und verweist auf laufende verwaltungsrechtliche Verfahren; alle drei Anbieter bestätigten der hessenschau, dass sie eine Genehmigung haben.',
         'Jeder Anbieter darf im Tagesdurchschnitt höchstens 3500 Scooter aufstellen, zusammen also 10 500 statt bisher 12 000, davon je höchstens 800 im zentralen Innenstadtbereich. Dott, Ryde und RideMovi gingen leer aus und haben den Verleih eingestellt. Tier heisst seit 2024 Dott und ist damit ebenfalls weg, Bird schon länger.',
-        'ScootRadar zeigt auf der [Karte von Frankfurt](map:de:Frankfurt) Lime und seit dem 24. Oktober 2026 auch Voi: an jenem Samstag kurz vor 16 Uhr rund 3300 Lime- und 3150 Voi-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse; Bolt findest du nur in seiner App.',
+        'ScootRadar zeigt auf der [Karte von Frankfurt](map:de:Frankfurt) Lime, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Bolt: an jenem Samstag kurz vor 16 Uhr rund 3300 Lime- und 3150 Voi-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse.',
         'Gemietet wird in der App des Anbieters, laut den Bedingungen aller drei erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
       ],
     },
@@ -143,7 +143,7 @@ const guide: Guide = {
       blocks: [
         '**Messe Frankfurt:** Die Hausordnung verbietet das Fahren mit E-Scootern während Veranstaltungen in den Hallen und in den Veranstaltungsbereichen im Freigelände; auf dem übrigen Gelände gilt die Strassenverkehrsordnung. Bei Veranstaltungen kann die Stadt die Anbieter anweisen, Ansammlungen von Scootern binnen drei Stunden wegzuräumen. Zur Buchmesse im Oktober und zu anderen grossen Messen kommst du am bequemsten mit U4 oder S-Bahn.',
         '**Hauptbahnhof:** Er liegt in der Parkverbotszone des Bahnhofsviertels, dort parkst du nur auf markierten Flächen. Wo gerade Lime- und Voi-Scooter stehen, zeigt die [Live-Karte von Frankfurt](map:de:Frankfurt).',
-        '**Flughafen:** Am Nachmittag des 24. Oktober 2026 stand im Umkreis von einem Kilometer um Terminal 1, Terminal 2, Gateway Gardens und The Squaire kein einziger Lime- oder Voi-Scooter; für Bolt haben wir keine Daten. Rechne am Flughafen also nicht mit einem Leih-Scooter und nimm vom Regionalbahnhof unter Terminal 1 die S8 oder S9: In rund zwölf Minuten bist du am Hauptbahnhof.',
+        '**Flughafen:** Am Nachmittag des 24. Oktober 2026 stand im Umkreis von einem Kilometer um Terminal 1, Terminal 2, Gateway Gardens und The Squaire kein einziger Lime- oder Voi-Scooter; für Bolt hatten wir keine Daten. Rechne am Flughafen also nicht mit einem Leih-Scooter und nimm vom Regionalbahnhof unter Terminal 1 die S8 oder S9: In rund zwölf Minuten bist du am Hauptbahnhof.',
       ],
     },
     {
@@ -167,7 +167,7 @@ const guide: Guide = {
     },
     {
       question: 'Wie viele E-Scooter gibt es in Frankfurt?',
-      answer: 'Erlaubt sind höchstens 10 500 Leih-Scooter, 3500 pro Anbieter, davon je höchstens 800 in der Innenstadt. Am 24. Oktober 2026 standen rund 3300 Lime- und 3150 Voi-Scooter auf unserer Karte; Bolt fehlt darauf.',
+      answer: 'Erlaubt sind höchstens 10 500 Leih-Scooter, 3500 pro Anbieter, davon je höchstens 800 in der Innenstadt. Am 24. Oktober 2026 standen rund 3300 Lime- und 3150 Voi-Scooter auf unserer Karte; Bolt folgte am 25. Oktober.',
     },
     {
       question: 'Darf ich mit dem E-Scooter über die Zeil fahren?',
@@ -179,7 +179,7 @@ const guide: Guide = {
     },
     {
       question: 'Gibt es Leih-E-Scooter am Frankfurter Flughafen?',
-      answer: 'Rechne nicht damit: Am Nachmittag des 24. Oktober 2026 stand im Umkreis von einem Kilometer um die Terminals kein Lime- oder Voi-Scooter, und für Bolt haben wir keine Daten. Nimm die S8 oder S9 in die Stadt und steig dort um.',
+      answer: 'Rechne nicht damit: Am Nachmittag des 24. Oktober 2026 stand im Umkreis von einem Kilometer um die Terminals kein Lime- oder Voi-Scooter, und für Bolt hatten wir keine Daten. Nimm die S8 oder S9 in die Stadt und steig dort um.',
     },
   ],
   sources: [

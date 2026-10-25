@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'In Wiesbaden verleihen laut Stadt «aktuell» drei Anbieter E-Scooter: **Bolt**, **Dott** und **Voi** (undatierte Seite, gelesen am 24. Oktober 2026). Lime steht nicht darauf. Gemietet wird in der App des Anbieters, laut deren Bedingungen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Jeder Anbieter braucht eine Sondernutzungserlaubnis der Stadt, die er laut Stadt «quartalsweise» beantragt und die an Auflagen gebunden ist. Dafür zahlt er laut Gebührenverzeichnis der Sondernutzungssatzung (Fassung seit 1. Januar 2024) für die «gewerbliche Nutzung von E-Tretrollern» 7,50 € «pro Quartal und Roller». Eine feste Obergrenze für die Zahl der Scooter nennt die Stadt nicht.',
-        'Die [Karte von Wiesbaden](map:de:Wiesbaden) zeigt Dott und Voi, mit Standort und Akkustand: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 1650 Scooter, gut 1200 von Dott und rund 400 von Voi. Das ist eine Momentaufnahme, keine Flottengrösse. Die Zahl umfasst Wiesbaden samt Kastel, Kostheim und Amöneburg und kaum Scooter aus Mainz, mit einer Ausnahme: Die Voi-Scooter in Kastel und Kostheim zählt die Karte bei Mainz mit, am Abend rund 90. Preise, Zonen und Abstellflächen zeigt nur die App des Anbieters; Bolt findest du nur in seiner App.',
+        'Die [Karte von Wiesbaden](map:de:Wiesbaden) zeigt Dott, Voi und seit dem 25. Oktober Bolt, mit Standort und Akkustand: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 1650 Scooter, gut 1200 von Dott und rund 400 von Voi, am Sonntag kurz vor 14 Uhr rund 400 von Bolt. Das sind Momentaufnahmen, keine Flottengrössen. Die Zahl umfasst Wiesbaden samt Kastel, Kostheim und Amöneburg und kaum Scooter aus Mainz, mit einer Ausnahme: Die Voi-Scooter in Kastel und Kostheim zählt die Karte bei Mainz mit, am Abend rund 90. Preise, Zonen und Abstellflächen zeigt nur die App des Anbieters.',
         'Nicht verwechseln: Die «Wies-e»-Roller von Süwag2GO sind Elektro-Mopeds bis 45 km/h, für die du einen Führerschein der Klasse B oder AM brauchst.',
       ],
     },
@@ -102,7 +102,7 @@ const guide: Guide = {
       blocks: [
         'Mainz-Kastel, Mainz-Kostheim und Mainz-Amöneburg gehören trotz ihres Namens zu Wiesbaden; dort gelten die Wiesbadener Regeln. Jenseits der Theodor-Heuss-Brücke beginnt Mainz, und dort gelten andere.',
         'Mainz begrenzt Leih-Scooter laut seiner Richtlinie vom 2. Juli 2025 auf höchstens 1200; seit dem 1. März 2026 verleihen dort drei Anbieter, mit Genehmigungen für 24 Monate. In der Innenstadt, also Alt- und Neustadt, dürfen Leih-Scooter nur auf 25 Abstellflächen stehen, zusammen höchstens 300; in Teilen der Altstadt ist das Abstellen ganz verboten. Welche Anbieter fahren, nennt die Stadt Mainz nicht; Bolt und Dott führen Mainz auf ihren Websites.',
-        'Ob ein in Wiesbaden geliehener Scooter nach Mainz darf und die Fahrt dort enden kann, sagt kein Anbieter offen; Bolt und Dott verbieten in ihren Bedingungen, das Gebiet zu verlassen, das die App zeigt. Die [Karte von Mainz](map:de:Mainz) zeigt Voi, am 24. Oktober kurz vor 16 Uhr rund 470 Scooter, die Voi-Scooter in Kastel und Kostheim eingeschlossen, und seit dem 25. Oktober Lime: am Sonntagmittag rund 290 Scooter.',
+        'Ob ein in Wiesbaden geliehener Scooter nach Mainz darf und die Fahrt dort enden kann, sagt kein Anbieter offen; Bolt und Dott verbieten in ihren Bedingungen, das Gebiet zu verlassen, das die App zeigt. Die [Karte von Mainz](map:de:Mainz) zeigt Voi, am 24. Oktober kurz vor 16 Uhr rund 470 Scooter, die Voi-Scooter in Kastel und Kostheim eingeschlossen, und seit dem 25. Oktober Lime (am Sonntagmittag rund 290 Scooter) und Bolt.',
       ],
     },
     {
@@ -126,14 +126,14 @@ const guide: Guide = {
         '**Kurhaus und Kurpark:** Hinter dem Kurhaus zieht sich der Kurpark über 5 km bis nach Sonnenberg. Den Scooter stellst du ausserhalb ab und gehst zu Fuss weiter. Der Park ist von Mai bis September von 5 bis 23 Uhr offen, von Oktober bis April von 5 bis 20 Uhr.',
         '**Neroberg:** Die Nerobergbahn fährt seit 1888 mit Wasserballast hinauf; Fahrräder nimmt sie aus Sicherheitsgründen nicht mit, RMV-Tickets gelten dort nicht. Oben sind die Wege laut ESWE durchweg mit Kopfsteinpflaster belegt, für die kleinen Räder eines Scooters keine gute Strecke.',
         '**Theatrium:** Beim Wilhelmstrassenfest, das nächste Mal vom 11. bis 13. Juni 2027, wird die Wilhelmstrasse zur kilometerlangen Festmeile. Eine eigene Scooter-Regel nennt die Stadt dafür nicht; durch die Menge schiebst du.',
-        '**Hauptbahnhof:** Die Fahrt endet nur auf einer markierten Fläche. Freie Dott- und Voi-Scooter zeigt die [Live-Karte von Wiesbaden](map:de:Wiesbaden).',
+        '**Hauptbahnhof:** Die Fahrt endet nur auf einer markierten Fläche. Freie Scooter zeigt die [Live-Karte von Wiesbaden](map:de:Wiesbaden).',
       ],
     },
   ],
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Wiesbaden?',
-      answer: 'Bolt, Dott und Voi: Diese drei Anbieter nennt die Stadt (Stand Oktober 2026). Du mietest in ihrer App, ab 18 und ohne Führerschein. Dott und Voi zeigt auch unsere Live-Karte, Bolt nur seine App.',
+      answer: 'Bolt, Dott und Voi: Diese drei Anbieter nennt die Stadt (Stand Oktober 2026). Du mietest in ihrer App, ab 18 und ohne Führerschein. Alle drei zeigt auch unsere Live-Karte.',
     },
     {
       question: 'Was kostet ein E-Scooter in Wiesbaden?',

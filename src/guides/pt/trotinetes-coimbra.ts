@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trotinetes em Coimbra: Bird e Bolt, onde andar, onde estacionar e o que a Câmara prepara',
   lede: 'As trotinetes partilhadas em Coimbra são da Bird e da Bolt, em outubro de 2026, e nenhuma das duas publica preços para a cidade: a app mostra-os antes de desbloquear. Pelo acordo com a Câmara, há zonas onde a viagem só termina num hotspot indicado na app, e nos dados da Bird é o caso de todo o centro. A Bird não deixa andar nas ruas pedonais da Baixa, na Ponte Rainha Santa Isabel nem à volta da estação de Coimbra-B. A Câmara prepara uma concessão com regras novas, ainda sem data.',
   published: '2026-10-17',
-  updated: '2026-10-23',
+  updated: '2026-10-25',
   city: 'pt:Coimbra',
   sections: [
     {
@@ -23,11 +23,11 @@ const guide: Guide = {
             head: ['Quem', 'Em Coimbra', 'Preço publicado', 'No nosso mapa'],
             rows: [
               ['Bird', 'Trotinetes', 'Nenhum: veja na app', 'Sim: cerca de 450 trotinetes'],
-              ['Bolt', 'Trotinetes e bicicletas elétricas', 'Em Portugal, «a partir de 0,15 € por minuto»; o de Coimbra, na app', 'Não: sem dados abertos'],
+              ['Bolt', 'Trotinetes e bicicletas elétricas', 'Em Portugal, «a partir de 0,15 € por minuto»; o de Coimbra, na app', 'Sim, desde 25 de outubro de 2026'],
             ],
           },
         },
-        'O ScootRadar mostra as trotinetes da Bird, com a bateria de cada uma: cerca de 450 no [mapa de Coimbra](map:pt:Coimbra) na madrugada de 17 de outubro de 2026. São as que estavam paradas e livres, não a frota da Bird. A Bolt não publica dados abertos em Portugal e não aparece no mapa: abra também a app da Bolt.',
+        'O ScootRadar mostra as trotinetes da Bird, com a bateria de cada uma: cerca de 450 no [mapa de Coimbra](map:pt:Coimbra) na madrugada de 17 de outubro de 2026. São as que estavam paradas e livres, não a frota da Bird. Desde 25 de outubro de 2026, o mapa mostra também a Bolt: cerca de 340 trotinetes às 12h50 desse dia, com a posição e a bateria.',
         'A Bolt diz que o preço por minuto «pode variar consoante a tua localização» e vende passes de desbloqueios ilimitados a partir de 0,99 € por mês. A certas horas, a app da Bolt pode pedir um teste de reação antes de desbloquear. A Bird só aluga a maiores de 18 anos. Nunca alugou uma? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
       ],
     },

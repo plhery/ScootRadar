@@ -17,8 +17,8 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Göttingen?',
       blocks: [
         'Im Oktober 2026 vermietet **Yoio** E-Scooter in Göttingen. Yoio gehört der YourCar GmbH mit Sitz in Göttingen; ausser hier fährt Yoio laut Website in Freiburg und [Erfurt](guide:erfurt). Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        '**Bolt** führt Göttingen auf seiner Website mit der Kategorie «E-Scooter» (Stand 23. Oktober 2026). Die Stadt nennt keine Anbieter, einen offenen Bolt-Datenfeed für Göttingen gibt es nicht. Ob Bolt-Scooter in deiner Nähe stehen und was sie kosten, zeigt nur die Bolt-App.',
-        '**Qick** aus Schweden und **Lime** haben ebenfalls E-Scooter in Göttingen; Lime führt die Stadt auf seiner Städteseite (gelesen am 25. Oktober 2026). Die [Karte von Göttingen](map:de:Göttingen) zeigt Yoio, seit dem 24. Oktober 2026 auch Qick und seit dem 25. Oktober Lime: in der Nacht zum 25. Oktober rund 250 Yoio- und 340 Qick-Scooter, am Sonntagvormittag rund 620 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Die Preise von Qick und Lime zeigen nur ihre Apps; Bolt fehlt auf der Karte. Weitere Anbieter konnten wir nicht prüfen.',
+        '**Bolt** führt Göttingen auf seiner Website mit der Kategorie «E-Scooter» (Stand 23. Oktober 2026). Die Stadt nennt keine Anbieter. Bolts Preise zeigt nur seine App, seine Scooter seit dem 25. Oktober 2026 auch unsere Karte.',
+        '**Qick** aus Schweden und **Lime** haben ebenfalls E-Scooter in Göttingen; Lime führt die Stadt auf seiner Städteseite (gelesen am 25. Oktober 2026). Die [Karte von Göttingen](map:de:Göttingen) zeigt Yoio, seit dem 24. Oktober 2026 auch Qick und seit dem 25. Oktober Lime und Bolt: in der Nacht zum 25. Oktober rund 250 Yoio- und 340 Qick-Scooter, am Sonntagvormittag rund 620 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Die Preise von Qick und Lime zeigen nur ihre Apps. Weitere Anbieter konnten wir nicht prüfen.',
       ],
     },
     {
@@ -135,7 +135,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Göttingen?',
-      answer: 'Yoio, Qick oder Lime; freie Scooter aller drei zeigt auch die [Live-Karte von Göttingen](map:de:Göttingen). Bolt führt Göttingen auf seiner Website ebenfalls mit E-Scootern, ob dort welche stehen, zeigt nur die Bolt-App. Du musst 18 sein, einen Führerschein brauchst du nicht.',
+      answer: 'Yoio, Qick, Lime oder Bolt, das Göttingen auf seiner Website mit E-Scootern führt; freie Scooter aller vier zeigt auch die [Live-Karte von Göttingen](map:de:Göttingen). Du musst 18 sein, einen Führerschein brauchst du nicht.',
     },
     {
       question: 'Was kostet Yoio in Göttingen pro Minute?',

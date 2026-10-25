@@ -26,7 +26,7 @@ const guide: Guide = {
         },
         'Bird no longer runs in Berlin. Inside the S-Bahn ring, the circle line around the centre, the city allows at most 19,000 rental e-scooters, split evenly among the four operators there; outside it there is no cap.',
         'At the end of every ride you take a photo of the parked scooter: Berlin’s permits require proof like this. Step-by-step help is in [how to rent an e-scooter](guide:how-to-rent).',
-        'ScootRadar shows Dott, Voi since 24 October 2026 and Lime since 25 October on the [map around Berlin](map:de:Berlin): at 15:55 on Saturday 24 October, about 4,800 Dott and 14,400 Voi scooters, and on Sunday morning, 25 October, about 15,400 Lime scooters, a snapshot, not the fleets. Find Bolt and Zeus in their own apps.',
+        'ScootRadar shows Dott, Voi since 24 October 2026 and Lime and Bolt since 25 October on the [map around Berlin](map:de:Berlin): at 15:55 on Saturday 24 October, about 4,800 Dott and 14,400 Voi scooters, and on Sunday 25 October about 15,400 Lime scooters in the morning and 9,100 Bolt scooters at 13:50, snapshots, not the fleets. Find Zeus in its own app.',
       ],
     },
     {

@@ -10,14 +10,14 @@ const guide: Guide = {
   headline: 'E-scooters in Porto: Bird and Lime, where you can ride and where to park',
   lede: 'You can rent an e-scooter in Porto from Bird or Lime, the two companies the city licensed in 2025; both also rent out e-bikes in the same app. We found no published Porto prices for either: the app shows the price before you unlock. You must end every ride at a municipal sharing point, marked in blue on the ground, and may not ride on pavements, squares, pedestrian streets, bus lanes or the upper deck of the Dom Luís I bridge. Since November 2025 the service may run 24 hours a day.',
   published: '2026-10-13',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'pt:Porto',
   sections: [
     {
       heading: 'Renting an e-scooter in Porto: Bird and Lime',
       blocks: [
         'In May 2025 Porto auctioned two licences for shared scooters and e-bikes, and **Bird** and **Lime** were the only bidders. Each lasts five years, can’t be renewed and covers 700 vehicles (up to 900 with the city’s written agreement), at least 40% of them e-bikes.',
-        'Bird has run in Porto since the service began in 2020; Lime started in September 2025 with 700 scooters and e-bikes. Bolt ran scooters in Porto from 2022, but on 13 October 2026 its own Porto page listed none.',
+        'Bird has run in Porto since the service began in 2020; Lime started in September 2025 with 700 scooters and e-bikes. Bolt ran scooters in Porto from 2022; its Porto page listed none on 13 October 2026, but our map showed about 550 on 25 October.',
         {
           table: {
             caption: 'E-scooters in Porto: who rents them and what they cost (13 October 2026)',
@@ -44,7 +44,7 @@ const guide: Guide = {
             'tunnels.',
           ],
         },
-        'Shared scooters are electronically limited to 25 km/h. On the streets of the old town’s restricted-traffic zones (ZAAC), such as Ribeira, Flores, Santa Catarina, Carmelitas, Cedofeita and Tito Fontes, they slow to 10 km/h by themselves.',
+        'Shared scooters are electronically limited to 25 km/h. On the streets of the old town’s restricted-traffic zones (ZAAC), such as Ribeira, Flores and Cedofeita, they slow to 10 km/h by themselves.',
         {
           table: {
             caption: 'Riding past Porto’s landmarks on a shared scooter: our reading of the rules (October 2026)',
@@ -98,7 +98,7 @@ const guide: Guide = {
             ],
           },
         },
-        'The helmet may come back: on 30 September 2026 Parliament approved, at first reading, two bills making it compulsory (proposed fine: €30–150). They are not law yet: they still need committee work and a final vote.',
+        'The helmet may come back: on 30 September 2026 Parliament approved, at first reading, two bills making it compulsory (proposed fine: €30–150). They still need committee work and a final vote.',
         'Insurance isn’t compulsory for riders, and Porto obliges operators to insure their users. Lisbon has rules of its own: see [e-scooters in Lisbon](guide:lisbon).',
       ],
     },

@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Lisbon: Lime, Bolt and Bird, the no-go zones, and why your ride ends only at a hotspot',
   lede: 'You can rent an e-scooter in Lisbon from Lime, Bolt or Bird in their apps, which show the price before you unlock: none of them publishes a Lisbon rate. Shared scooters are capped at 20 km/h, banned from pavements, bus lanes, parks and big squares such as Praça do Comércio and Rossio, and a ride can only end at a designated parking spot, a “hotspot”. Free minutes with the Navegante pass are for Lisbon residents only; visitors pay the app price, or ride Gira bikes for €2 a day. On 21 October 2026 the city council voted to end shared e-scooters: the operators have 60 days to remove them.',
   published: '2026-10-13',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'pt:Lisboa',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'As of October 2026, three operators run shared e-scooters in Lisbon: **Lime**, **Bolt** and **Bird**. Lime also rents e-bikes. LINK, still listed in many older guides, left Portugal in early 2024.',
         'Lisbon has no bylaw for them. Since 9 January 2023 the rules have come from a collaboration agreement between the city council and the operators, amended on 23 June 2025, which applies until the city adopts the regulation it began drafting in 2022. The agreement also caps each operator’s fleet by season: up to 1,750 vehicles from 1 April to 31 October and 1,500 from 1 November to 31 March.',
-        'On the morning of 13 October 2026 the [map of Lisbon](map:pt:Lisboa) showed about 2,200 Lime and 1,350 Bird scooters, in an area reaching a little beyond the city limits: a snapshot, not official fleet sizes. Bolt publishes no open data and isn’t on the map: open the Bolt app.',
+        'On the morning of 13 October 2026 the [map of Lisbon](map:pt:Lisboa) showed about 2,200 Lime and 1,350 Bird scooters, in an area reaching a little beyond the city limits: a snapshot, not official fleet sizes. Bolt joined the map on 25 October 2026: about 3,200 scooters at 12:50.',
       ],
     },
     {
@@ -30,7 +30,7 @@ const guide: Guide = {
             caption: 'E-scooter prices in Lisbon, as the operators publish them (13 October 2026)',
             head: ['Operator', 'Unlock', 'Per minute', 'Passes', 'On the map, 13 Oct 2026'],
             rows: [
-              ['Bolt', 'A small fee, amount not published', 'From €0.15 (Bolt’s rate for Portugal, not a Lisbon rate)', 'Unlimited unlocks from €0.99 a month; weekly and monthly passes', 'Not shown: no open data'],
+              ['Bolt', 'A small fee, amount not published', 'From €0.15 (Bolt’s rate for Portugal, not a Lisbon rate)', 'Unlimited unlocks from €0.99 a month; weekly and monthly passes', 'Since 25 Oct: about 3,200'],
               ['Lime', 'In the app', 'In the app', 'Not published', 'About 2,200'],
               ['Bird', 'In the app', 'In the app', 'Not published', 'About 1,350'],
             ],

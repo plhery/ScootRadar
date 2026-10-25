@@ -8,9 +8,9 @@ const guide: Guide = {
   title: 'Trotinetes em Matosinhos 2026: Bird, pontos e horário',
   description: 'Trotinetes em Matosinhos: a Bird e a Bolt, o preço, os pontos de partilha onde a viagem acaba, o horário das 6h00 às 22h00, a marginal, Leça e o metro.',
   headline: 'Trotinetes em Matosinhos: operadoras, preço, pontos de partilha e onde andar na marginal e em Leça da Palmeira',
-  lede: 'As trotinetes em Matosinhos alugam-se na app da Bird, a única operadora que o nosso mapa mostra no concelho; a Bolt ficou com a segunda licença municipal em 2024, mas não publica dados abertos, e não confirmámos se ainda opera. A Bird não publica tarifas: a app mostra o preço antes de desbloquear. Pelas regras da Câmara, a viagem acaba sempre num ponto de partilha sinalizado, o serviço só pode funcionar das 6h00 às 22h00 e as trotinetes partilhadas não circulam em passeios, praças, jardins nem ruas pedonais, salvo na Rua de Brito Capelo.',
+  lede: 'As trotinetes em Matosinhos alugam-se nas apps da Bird e da Bolt, as duas operadoras com licença municipal desde 2024; o nosso mapa mostra ambas. A Bird não publica tarifas: a app mostra o preço antes de desbloquear. Pelas regras da Câmara, a viagem acaba sempre num ponto de partilha sinalizado, o serviço só pode funcionar das 6h00 às 22h00 e as trotinetes partilhadas não circulam em passeios, praças, jardins nem ruas pedonais, salvo na Rua de Brito Capelo.',
   published: '2026-10-24',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'pt:Matosinhos',
   sections: [
     {
@@ -23,11 +23,11 @@ const guide: Guide = {
             head: ['Quem', 'Em Matosinhos', 'Preço', 'No nosso mapa'],
             rows: [
               ['Bird', 'Licença desde 2024; trotinetes e bicicletas elétricas, em 185 estações', 'Não publicado: veja na app', 'Sim: cerca de 240 trotinetes'],
-              ['Bolt', 'Licença desde 2024; se ainda opera, por confirmar', 'Em Portugal, a partir de 0,15 € por minuto, mais o desbloqueio', 'Não: sem dados abertos'],
+              ['Bolt', 'Licença desde 2024', 'Em Portugal, a partir de 0,15 € por minuto, mais o desbloqueio', 'Sim, desde 25 de outubro de 2026'],
             ],
           },
         },
-        'O ScootRadar mostra as trotinetes da Bird, com a bateria de cada uma: cerca de 240 no [mapa de Matosinhos](map:pt:Matosinhos) às 10h13 de sábado, 24 de outubro de 2026. É o que o mapa mostrava nesse momento, não o tamanho da frota; as bicicletas não aparecem. A Bolt não publica dados abertos nem tem uma página de Matosinhos no seu site: se estiver a operar, as trotinetes aparecem na app da Bolt. Nunca alugou uma? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
+        'O ScootRadar mostra as trotinetes da Bird, com a bateria de cada uma: cerca de 240 no [mapa de Matosinhos](map:pt:Matosinhos) às 10h13 de sábado, 24 de outubro de 2026. É o que o mapa mostrava nesse momento, não o tamanho da frota; as bicicletas não aparecem. A Bolt não tem uma página de Matosinhos no seu site, mas o mapa mostra-a desde 25 de outubro de 2026: cerca de 140 trotinetes às 12h50 desse dia. Nunca alugou uma? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
         '**O preço da Bird.** O contrato de aluguer da Bird para Portugal (atualizado a 8 de dezembro de 2021) diz que o preço aparece no ecrã de desbloqueio, antes da viagem, e pode incluir uma taxa de início e uma tarifa por minuto. Exige 18 anos e cativa 5 € no cartão antes de cada viagem. Se se esquecer de terminar a viagem, paga no máximo 100 € por 24 horas.',
       ],
     },
@@ -126,7 +126,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quanto custa uma trotinete em Matosinhos?',
-      answer: 'A Bird não publica tarifas: a app mostra o preço no ecrã de desbloqueio, antes da viagem, e cativa 5 € no cartão. A Bolt anuncia trotinetes em Portugal a partir de 0,15 € por minuto, mais o desbloqueio, mas não confirmámos se ainda opera em Matosinhos.',
+      answer: 'A Bird não publica tarifas: a app mostra o preço no ecrã de desbloqueio, antes da viagem, e cativa 5 € no cartão. A Bolt anuncia trotinetes em Portugal a partir de 0,15 € por minuto, mais o desbloqueio.',
     },
     {
       question: 'Onde posso deixar a trotinete em Matosinhos?',

@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Laut Connected Mobility Düsseldorf (CMD), der städtischen Mobilitätsgesellschaft, vermieten vier Anbieter E-Scooter: **Bolt**, **Dott**, **Lime** und **Voi**. Dott hiess früher TIER; wer TIER fuhr, nutzt seit Oktober 2024 die Dott-App.',
         'Gemietet wird in der App des Anbieters, ab 18, obwohl das Gesetz E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Auf der [Karte rund um Düsseldorf](map:de:Düsseldorf) zeigt ScootRadar Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Lime: am Samstag, 24. Oktober, kurz nach 15 Uhr rund 1700 Dott- und 2000 Voi-Scooter, am Sonntagvormittag, 25. Oktober, rund 2000 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse; die Stadt erlaubt allen Anbietern zusammen bis zu 8400. Bolt findest du nur in seiner App.',
+        'Auf der [Karte rund um Düsseldorf](map:de:Düsseldorf) zeigt ScootRadar Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Lime und Bolt: am Samstag, 24. Oktober, kurz nach 15 Uhr rund 1700 Dott- und 2000 Voi-Scooter, am Sonntag, 25. Oktober, vormittags rund 2000 Lime- und kurz vor 14 Uhr rund 1850 Bolt-Scooter. Das sind Momentaufnahmen, keine Flottengrössen; die Stadt erlaubt allen Anbietern zusammen bis zu 8400.',
         'Mit «E-Roller» sind oft auch Elektro-Mopeds zum Sitzen gemeint: Für die brauchst du Führerschein und Helm, um sie geht es hier nicht.',
       ],
     },
@@ -163,7 +163,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App kann ich in Düsseldorf nutzen?',
-      answer: 'Die von Bolt, Dott (früher TIER), Lime oder Voi, den vier Anbietern in der Stadt. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Dott-, Voi- und Lime-Scooter zeigt auch die [Live-Karte von Düsseldorf](map:de:Düsseldorf), die von Bolt nur seine App.',
+      answer: 'Die von Bolt, Dott (früher TIER), Lime oder Voi, den vier Anbietern in der Stadt. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Scooter aller vier zeigt auch die [Live-Karte von Düsseldorf](map:de:Düsseldorf).',
     },
     {
       question: 'Wie viel kosten zehn Minuten E-Scooter in Düsseldorf?',

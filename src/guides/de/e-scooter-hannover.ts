@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Laut Stadt vermieten fünf Anbieter in Hannover E-Scooter: **Bolt**, **Dott**, **Lime**, **Voi** und **Ryde**. Dott hiess früher Tier; wer Tier fuhr, nutzt heute die Dott-App. Ryde aus Norwegen ist erst seit Mai 2026 in der Stadt.',
         'Du leihst den Scooter in der App des Anbieters, laut Stadt ab 18, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte rund um Hannover](map:de:Hannover) Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Lime: am Samstag, 24. Oktober, kurz vor 16 Uhr rund 2150 Dott- und 2750 Voi-Scooter, am Sonntagvormittag, 25. Oktober, rund 2200 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Bolt und Ryde fehlen auf der Karte; ihre Scooter findest du nur in ihren Apps.',
+        'ScootRadar zeigt auf der [Karte rund um Hannover](map:de:Hannover) Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Lime und Bolt: am Samstag, 24. Oktober, kurz vor 16 Uhr rund 2150 Dott- und 2750 Voi-Scooter, am Sonntag, 25. Oktober, vormittags rund 2200 Lime- und kurz vor 14 Uhr rund 900 Bolt-Scooter. Das sind Momentaufnahmen, keine Flottengrössen. Ryde fehlt auf der Karte.',
         'Dotts Gebiet reicht über die Stadtgrenze hinaus bis Langenhagen, Laatzen und Garbsen; Voi fährt laut eigener Mitteilung auch in Garbsen und Ronnenberg.',
       ],
     },
@@ -172,7 +172,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App kann ich in Hannover nutzen?',
-      answer: 'Die von Bolt, Dott, Lime, Voi oder Ryde: Diese fünf Anbieter vermieten laut Stadt in Hannover E-Scooter. Du musst mindestens 18 sein, einen Führerschein brauchst du nicht. Freie Dott-, Voi- und Lime-Scooter zeigt auch die [Live-Karte von Hannover](map:de:Hannover).',
+      answer: 'Die von Bolt, Dott, Lime, Voi oder Ryde: Diese fünf Anbieter vermieten laut Stadt in Hannover E-Scooter. Du musst mindestens 18 sein, einen Führerschein brauchst du nicht. Freie Scooter aller ausser Ryde zeigt auch die [Live-Karte von Hannover](map:de:Hannover).',
     },
     {
       question: 'Welcher E-Scooter-Anbieter ist in Hannover am günstigsten?',

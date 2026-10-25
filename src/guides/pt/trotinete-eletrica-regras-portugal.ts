@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trotinete elétrica: as regras em Portugal, as coimas e o que pode mudar com o capacete',
   lede: 'As regras da trotinete elétrica em Portugal são as da bicicleta, desde que o motor não ultrapasse 0,25 kW e a trotinete não passe dos 25 km/h. Não precisa de carta nem de seguro, a lei não fixa idade mínima e o capacete não é obrigatório. Circula-se na estrada ou na ciclovia, nunca no passeio, sem passageiro, sem auriculares nos dois ouvidos e com o limite de álcool dos automobilistas, 0,5 g/l. O capacete pode voltar a ser obrigatório: o Parlamento aprovou na generalidade dois projetos de lei nesse sentido a 30 de setembro de 2026, mas ainda não são lei.',
   published: '2026-10-13',
-  updated: '2026-10-17',
+  updated: '2026-10-25',
   sections: [
     {
       heading: 'Trotinete elétrica no Código da Estrada: as regras essenciais',
@@ -145,7 +145,7 @@ const guide: Guide = {
         'Numa trotinete partilhada, a app aplica também as regras da cidade. Os passos estão no guia [como alugar uma trotinete elétrica](guide:how-to-rent).',
         '**Lisboa**: as trotinetes partilhadas não passam dos 20 km/h, só se estacionam nos hotspots, os lugares autorizados, e não podem circular em vias BUS, jardins e parques, zonas de monumentos e praças, túneis, viadutos e pontes, nem no eixo central da Avenida da Liberdade. Mais no guia das [trotinetes em Lisboa](guide:lisbon).',
         '**Porto**: só se estacionam nos pontos de partilha, marcados com tinta azul no chão e um sinal vertical, e não podem circular em passeios, ruas pedonais, praças, jardins, vias BUS, na Circunvalação, na VCI, em túneis nem em algumas pontes. Mais no guia das [trotinetes no Porto](guide:porto).',
-        'A 13 de outubro de 2026, o ScootRadar mostrava trotinetes da Bird em 11 zonas do país, de Matosinhos a Olhão, e da Lime em 4, incluindo Lisboa. A Bolt, que também opera em Lisboa, não publica dados abertos e não aparece no mapa. Abra o mapa em [Lisboa](map:pt:Lisboa), no [Porto](map:pt:Porto) ou [à sua volta](/map): um botão abre a app do operador, onde desbloqueia e paga.',
+        'A 13 de outubro de 2026, o ScootRadar mostrava trotinetes da Bird em 11 zonas do país, de Matosinhos a Olhão, e da Lime em 4, incluindo Lisboa. A 25 de outubro juntou-se a Bolt, em 7 zonas, de Matosinhos a Faro. Abra o mapa em [Lisboa](map:pt:Lisboa), no [Porto](map:pt:Porto) ou [à sua volta](/map): um botão abre a app do operador, onde desbloqueia e paga.',
       ],
     },
   ],

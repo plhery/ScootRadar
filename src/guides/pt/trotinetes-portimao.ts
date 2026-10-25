@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trotinetes em Portimão: a Bird, a Praia da Rocha, Alvor e as regras que a Câmara prepara',
   lede: 'As trotinetes partilhadas em Portimão são da Bird, em outubro de 2026, e o preço só aparece na app, antes de desbloquear. A zona da Bird vai do centro à Praia da Rocha e a Alvor, mas não se termina a viagem junto às praias da Rocha e do Vau, nem se anda nas zonas pedonais do centro, junto ao rio e em Alvor. Nos passadiços das praias, as trotinetes são proibidas, e a Câmara começou em agosto de 2026 a preparar regras próprias.',
   published: '2026-10-18',
-  updated: '2026-10-18',
+  updated: '2026-10-25',
   city: 'pt:Portimão',
   sections: [
     {
@@ -112,7 +112,7 @@ const guide: Guide = {
     {
       heading: 'E no resto do Algarve? Faro, Lagos, Lagoa, Albufeira e Olhão',
       blocks: [
-        '**Faro.** Em fevereiro de 2025, a Câmara de Faro atribuiu duas licenças em exclusividade, em vigor desde 15 de abril de 2025, por dois anos renováveis até quatro: uma à Lime, com 350 trotinetes e 100 bicicletas, e outra à Bolt, com 350 trotinetes. Sem dados abertos, Faro não está no nosso mapa, e não conseguimos confirmar o serviço em outubro de 2026: a página da Bolt para Faro não mostra trotinetes.',
+        '**Faro.** Em fevereiro de 2025, a Câmara de Faro atribuiu duas licenças em exclusividade, em vigor desde 15 de abril de 2025, por dois anos renováveis até quatro: uma à Lime, com 350 trotinetes e 100 bicicletas, e outra à Bolt, com 350 trotinetes. A página da Bolt para Faro não mostrava trotinetes em outubro de 2026, mas o [mapa de Faro](map:pt:Faro) mostra-as desde 25 de outubro: cerca de 150 às 12h50.',
         '**Lagos, Lagoa e Albufeira.** Não encontrámos trotinetes partilhadas em outubro de 2026.',
         '**Olhão.** O [mapa de Olhão](map:pt:Olhão) mostrava cerca de 160 trotinetes da Bird às 18h25 de 17 de outubro de 2026.',
       ],

@@ -10,15 +10,15 @@ const guide: Guide = {
   headline: 'Rafskútur í Reykjavík: Hopp, verð, reglur borgarinnar og hvar má leggja',
   lede: 'Rafskútur í Reykjavík leigirðu hjá Hopp, sem er með þær um allt höfuðborgarsvæðið, en Bolt hefur einnig verið með rafskútur í borginni frá 2024, svo kíktu líka í Bolt-appið. Hjá Hopp kostar ferðin 115 kr. í upphafsgjald og 45 kr. á mínútu, svo tíu mínútur kosta 565 kr. (verð birt 13. október 2026), og þú þarft að vera 18 ára, þótt lögin leyfi akstur frá 13 ára aldri. Frá 4. febrúar 2026 gilda nýjar reglur borgarinnar: fyrirtækin eiga að takmarka hraðann við 10 km/klst. á grunnskólalóðum og í göngugötum, á sumum svæðum má hvorki aka né leggja og þú tekur mynd af rafskútunni eftir hverja ferð.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-25',
   city: 'is:Reykjavík',
   sections: [
     {
       heading: 'Hver leigir út rafskútur í Reykjavík? Hopp og Bolt',
       blocks: [
         '**Hopp** hefur leigt út rafskútur í Reykjavík frá því í september 2019. Nú nær þjónustusvæðið yfir allt höfuðborgarsvæðið, frá Mosfellsbæ til Hafnarfjarðar, og í sama appi eru líka deilibílar og leigubílar Hopp.',
-        '**Bolt** hóf að leigja út 800 rafskútur í Reykjavík 9. ágúst 2024, og borgin nefndi Hopp og Bolt sem rekstraraðila í júlí 2025. Bolt birtir engin opin gögn og sést því ekki á kortinu okkar, og við höfum ekki fengið staðfest að það sé enn með rafskútur í október 2026: kíktu í Bolt-appið. **Zolo** hætti starfsemi í byrjun árs 2025.',
-        'Á [kortinu yfir höfuðborgarsvæðið](map:is:Reykjavík) voru um 2.200 Hopp-rafskútur að morgni 13. október 2026. Það er staðan á einu augnabliki, ekki stærð flotans, og rafskútur Bolt eru ekki taldar með. Hvernig þú leigir rafskútu stendur í [leiðarvísinum um rafskútuleigu](guide:how-to-rent).',
+        '**Bolt** hóf að leigja út 800 rafskútur í Reykjavík 9. ágúst 2024, og borgin nefndi Hopp og Bolt sem rekstraraðila í júlí 2025. Frá 25. október 2026 sýnir kortið okkar líka rafskútur Bolt: upp úr hádegi þann dag voru þær um 850. **Zolo** hætti starfsemi í byrjun árs 2025.',
+        'Á [kortinu yfir höfuðborgarsvæðið](map:is:Reykjavík) voru um 2.200 Hopp-rafskútur að morgni 13. október 2026. Það er staðan á einu augnabliki, ekki stærð flotans. Hvernig þú leigir rafskútu stendur í [leiðarvísinum um rafskútuleigu](guide:how-to-rent).',
       ],
     },
     {
@@ -163,7 +163,7 @@ const guide: Guide = {
     },
     {
       question: 'Er Bolt enn með rafskútur á Íslandi?',
-      answer: 'Bolt hóf að leigja út rafskútur í Reykjavík í ágúst 2024, og borgin nefndi fyrirtækið sem rekstraraðila í júlí 2025. Við fundum engar fréttir um að það hefði hætt, en staðan í október 2026 er óstaðfest, svo kíktu í appið.',
+      answer: 'Já. Upp úr hádegi 25. október 2026 sýndi kortið okkar um 850 rafskútur frá Bolt á höfuðborgarsvæðinu. Fyrirtækið hóf að leigja út rafskútur í Reykjavík í ágúst 2024, og borgin nefndi það sem rekstraraðila í júlí 2025.',
     },
     {
       question: 'Má taka rafskútu með í strætó?',

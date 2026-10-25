@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Laut Stadt Braunschweig (undatierte Seite, gelesen am 25. Oktober 2026) sind vier Verleiher im Stadtgebiet tätig: **Bolt**, **Ryde**, **TIER**, das heute Dott heisst, und **Voi**. Bolt, Dott und Ryde führen Braunschweig auch auf ihren eigenen Seiten. Voi kam laut seiner Mitteilung vom März 2025 am 1. April 2025 mit rund 800 Scootern dazu, «bis in die Aussenbezirke». Lime steht nicht auf der Liste der Stadt.',
         'Du leihst den Scooter in der App des Anbieters, ab 18 und ohne Führerschein. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte von Braunschweig](map:de:Braunschweig) Dott und Voi: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 1150 Scooter, knapp 600 von Dott und gut 550 von Voi. Sie standen im ganzen Stadtgebiet, in den äusseren Stadtbezirken dünner; in Wolfenbüttel stand in der Nacht darauf keiner. Das ist eine Momentaufnahme, keine Flottengrösse. Die Karte zeigt nur, wo die Scooter stehen, keine Preise, Zonen oder Stationen. Bolt und Ryde fehlen; ihre Scooter findest du nur in ihren Apps.',
+        'ScootRadar zeigt auf der [Karte von Braunschweig](map:de:Braunschweig) Dott und Voi: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 1150 Scooter, knapp 600 von Dott und gut 550 von Voi. Sie standen im ganzen Stadtgebiet, in den äusseren Stadtbezirken dünner; in Wolfenbüttel stand in der Nacht darauf keiner. Das ist eine Momentaufnahme, keine Flottengrösse. Die Karte zeigt, wo die Scooter stehen, keine Preise, Zonen oder Stationen. Seit dem 25. Oktober zeigt sie auch Bolt; Ryde findest du nur in seiner App.',
         'Eine Genehmigung der Stadt braucht ein Verleih laut Stadt grundsätzlich nicht. Stattdessen sollen Anbieter und Stadt eine Qualitätsvereinbarung unterzeichnen (Vorlage von Dezember 2021), laut ihrem § 12 «für keine Partei verbindlich». Sie sieht höchstens 100 Scooter je Anbieter innerhalb der Okerumflut (Zone A1) vor und höchstens fünf je Standort (100 m Umkreis), wenn der Anbieter sie aufstellt. Liegen seine Scooter ein Jahr lang unter 2 bis 3 Fahrten am Tag, soll er ihre Zahl anpassen.',
       ],
     },
@@ -31,7 +31,7 @@ const guide: Guide = {
             caption: 'Was die Anbieter offen zu Preisen sagen (gelesen am 25. Oktober 2026)',
             head: ['Anbieter', 'Preis laut offener Quelle', 'Pässe', 'Auf der ScootRadar-Karte'],
             rows: [
-              ['Bolt', 'Bundesweit «ab 0,15 € pro Minute» plus Freischaltgebühr, je nach Ort verschieden', 'Wochen- und Monatspässe; unbegrenzt Freischalten ab 0,99 € im Monat', 'Nein, nur in der Bolt-App'],
+              ['Bolt', 'Bundesweit «ab 0,15 € pro Minute» plus Freischaltgebühr, je nach Ort verschieden', 'Wochen- und Monatspässe; unbegrenzt Freischalten ab 0,99 € im Monat', 'Ja, seit dem 25. Oktober 2026'],
               ['Dott', 'Nur in der App', 'Pässe laut AGB, Preise in der App', 'Ja'],
               ['Ryde', 'Nur in der App; angefangene Minuten zählen voll', 'Gilt nur in der Stadt, in der du ihn kaufst', 'Nein, nur in der Ryde-App'],
               ['Voi', 'Nur in der App', 'Laut Startmitteilung vom März 2025: Tages-, Wochen- und Monatspässe ab 3,49 €', 'Ja'],
@@ -135,7 +135,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Braunschweig?',
-      answer: 'Laut Stadt Bolt, Ryde, Dott (früher TIER) und Voi. Die ScootRadar-Karte zeigt Dott und Voi; Bolt und Ryde findest du nur in ihren Apps.',
+      answer: 'Laut Stadt Bolt, Ryde, Dott (früher TIER) und Voi. Die ScootRadar-Karte zeigt Dott, Voi und Bolt; Ryde findest du nur in seiner App.',
     },
     {
       question: 'Was kostet ein E-Scooter in Braunschweig?',

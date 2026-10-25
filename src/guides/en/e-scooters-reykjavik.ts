@@ -10,15 +10,15 @@ const guide: Guide = {
   headline: 'E-scooters in Reykjavik: Hopp prices, the rules, parking and winter',
   lede: 'You can rent an e-scooter in Reykjavik with the Hopp app, which covers the whole capital area; Bolt has also run scooters here since 2024, so check its app too. Hopp charges ISK 115 to start and ISK 45 a minute, so a 10-minute ride costs ISK 565 (published rate on 13 October 2026), and you must be 18. Ride on cycle paths, on pavements with pedestrians first, or on roads with a limit of 30 km/h or less; Hopp won’t let you end a ride at Harpa or on Hallgrímskirkja’s square (October 2026), and no scooter will take you from Keflavík Airport, 50 km away.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-25',
   city: 'is:Reykjavík',
   sections: [
     {
       heading: 'Electric scooter rental in Reykjavik: Hopp and Bolt',
       blocks: [
         '**Hopp**, an Icelandic company, has rented e-scooters in Reykjavik since September 2019. Its area now covers the whole capital region, Reykjavik plus Kópavogur, Hafnarfjörður, Garðabær, Mosfellsbær and Seltjarnarnes, so one ride can cross from town to town. The same app books Hopp’s taxis and shared cars.',
-        '**Bolt** has also run e-scooters in Reykjavik since 9 August 2024, and the city named it as an operator in July 2025. It publishes no public data, so it isn’t on our map, and we couldn’t confirm that it still runs them in October 2026: check the Bolt app. **Zolo** stopped in early 2025.',
-        'On the morning of 13 October 2026 the [map of Reykjavik](map:is:Reykjavík) showed about 2,200 Hopp scooters across the capital area: one moment, not the size of the fleet, and without Bolt. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
+        '**Bolt** has also run e-scooters in Reykjavik since 9 August 2024, and the city named it as an operator in July 2025. Our map has shown its scooters since 25 October 2026: about 850 at 12:50 that day. **Zolo** stopped in early 2025.',
+        'On the morning of 13 October 2026 the [map of Reykjavik](map:is:Reykjavík) showed about 2,200 Hopp scooters across the capital area: one moment, not the size of the fleet. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
         'Under city rules in force since 4 February 2026, each company needs a contract with the city, and there’s no cap on scooter numbers. The city may limit rental hours but hadn’t by October 2026, so you can rent around the clock.',
       ],
     },

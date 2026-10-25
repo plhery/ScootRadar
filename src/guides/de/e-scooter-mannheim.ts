@@ -10,15 +10,15 @@ const guide: Guide = {
   headline: 'E-Scooter Mannheim: Anbieter, Preise, feste Abstellflächen und Verbotszonen von den Quadraten bis Ludwigshafen',
   lede: 'Einen E-Scooter in Mannheim leihst du ab 18 und ohne Führerschein bei Voi, Dott oder Bolt, den drei Anbietern mit einer Erlaubnis der Stadt bis Ende 2026. Voi kostet 0,49 € fürs Entsperren und 0,22 € pro Minute, zehn Minuten also 2,69 € (Stand 17. Oktober 2026). Rund um Hauptbahnhof und Wasserturm stellst du nur auf markierten Flächen ab, auf Brücken, am Neckarufer und in Parks gar nicht. In Strassenbahn und Bus nimmst du nur einen kleinen, zusammengeklappten Scooter mit, keinen Leih-Scooter.',
   published: '2026-10-17',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'de:Mannheim',
   sections: [
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Mannheim?',
       blocks: [
         'Die Stadt hat zum 1. Januar 2025 drei Anbieter zugelassen: **Dott**, das früher TIER hiess, **Voi** und **Bolt**. Ihre Erlaubnisse laufen bis Ende 2026. Gemietet wird in der App des Anbieters, ab 18 und ohne Führerschein. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte rund um Mannheim](map:de:Mannheim) Voi und Dott. Der Kartenausschnitt reicht über den Rhein bis Ludwigshafen; am Samstag, 24. Oktober 2026, kurz vor 16 Uhr standen darin rund 650 Voi- und 780 Dott-Scooter, davon rund 500 Voi- und 650 Dott-Scooter auf der Mannheimer Seite. Das ist eine Momentaufnahme, keine Flottengrösse.',
-        '**Bolt fehlt auf unserer Karte.** Bolt veröffentlicht in Deutschland nur für Karlsruhe, Stuttgart und Reutlingen/Tübingen einen offenen Datenfeed, führt Mannheim aber auf seiner Website. Wo seine Scooter stehen, siehst du nur in der Bolt-App.',
+        'ScootRadar zeigt auf der [Karte rund um Mannheim](map:de:Mannheim) Voi, Dott und seit dem 25. Oktober 2026 Bolt. Der Kartenausschnitt reicht über den Rhein bis Ludwigshafen; am Samstag, 24. Oktober 2026, kurz vor 16 Uhr standen darin rund 650 Voi- und 780 Dott-Scooter, davon rund 500 Voi- und 650 Dott-Scooter auf der Mannheimer Seite. Das ist eine Momentaufnahme, keine Flottengrösse.',
+        'Für Bolt zählte die Karte am Sonntag, 25. Oktober, kurz vor 14 Uhr rund 550 Scooter in Mannheim, auch das eine Momentaufnahme. Sie zeigt Standort und Akkustand; Preise und Zonen zeigt nur die Bolt-App.',
         '**Lime** gibt es in Mannheim nicht; die Stadt fehlt auf Limes Städteliste. Nebenan zeigt die [Karte von Heidelberg](map:de:Heidelberg) Dott und Voi.',
       ],
     },
@@ -144,7 +144,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App brauche ich in Mannheim?',
-      answer: 'Die von Voi, Dott oder Bolt; TIER heisst heute Dott. Du musst 18 sein, einen Führerschein brauchst du nicht. Die [Live-Karte rund um Mannheim](map:de:Mannheim) zeigt Voi und Dott; Bolt siehst du nur in seiner App.',
+      answer: 'Die von Voi, Dott oder Bolt; TIER heisst heute Dott. Du musst 18 sein, einen Führerschein brauchst du nicht. Die [Live-Karte rund um Mannheim](map:de:Mannheim) zeigt alle drei.',
     },
     {
       question: 'Was kostet Voi in Mannheim?',

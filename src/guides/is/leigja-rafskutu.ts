@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Hvernig á að leigja rafskútu (rafhlaupahjól): frá appinu þar til ferðinni lýkur',
   lede: 'Til að leigja rafskútu sækirðu Hopp-appið, skráir þig með símanúmeri, Apple ID eða Google og bætir við greiðslukorti. Svo skannarðu QR-kóðann á stýrinu og ferð af stað, og í lok ferðar leggurðu skútunni þar sem appið leyfir og tekur mynd af henni. Hopp leigir aðeins þeim sem eru orðnir 18 ára, þótt lögin leyfi 13 ára börnum að keyra rafskútu. Ferðin kostar 115 kr. í upphafsgjald og 45 kr. á mínútu (birt verð Hopp 13. október 2026), svo tíu mínútur kosta 565 kr.',
   published: '2026-10-13',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   sections: [
     {
       heading: 'Hvernig leigi ég rafskútu? Skref fyrir skref',
@@ -28,7 +28,7 @@ const guide: Guide = {
             '**Skoðaðu kvittunina.** Heimildin sem Hopp tók á kortinu losnar um leið og ferðinni lýkur.',
           ],
         },
-        'Bolt opnaði rafskútuleigu í Reykjavík 9. ágúst 2024 með 800 rafskútum, en við höfum ekki fengið staðfest að Bolt sé enn með rafskútur í borginni í október 2026. Zolo, sem einnig var í Reykjavík, hætti starfsemi í byrjun árs 2025.',
+        'Bolt opnaði rafskútuleigu í Reykjavík 9. ágúst 2024 með 800 rafskútum, og 25. október 2026 sýndi kortið okkar um 850 rafskútur frá Bolt á höfuðborgarsvæðinu. Zolo, sem einnig var í Reykjavík, hætti starfsemi í byrjun árs 2025.',
       ],
     },
     {
@@ -162,8 +162,8 @@ const guide: Guide = {
       heading: 'Hvernig finn ég næstu rafskútu?',
       blocks: [
         'Í júní 2024 fór Strætó að sýna rafskútur á rauntímakortinu á vefnum og í Klappinu, og með því að smella á skútu opnaðist hún í appi fyrirtækisins; hvort það virkar enn höfum við ekki fengið staðfest.',
-        '[ScootRadar](/map) sýnir á einu korti rafskútur margra fyrirtækja, með hleðslu, göngutíma og áætluðu verði, ókeypis og án skráningar. Á Íslandi á það við um Hopp: 13. október 2026 voru um 2.800 Hopp-skútur á kortinu, um 2.200 á [höfuðborgarsvæðinu](map:is:Reykjavík), um 180 á [Akureyri](map:is:Akureyri) og hinar í 15 öðrum bæjum: Selfossi, Reykjanesbæ, Akranesi, Vestmannaeyjum, Sauðárkróki, Stykkishólmi, Borgarnesi, Ólafsvík, Vík, Húsavík, Dalvík, Hellissandi, Sandgerði, Vogum og Garði.',
-        'Bolt birtir engin opin gögn og sést því ekki. Kortið getur hvorki tekið frá né aflæst skútu: hnappur opnar Hopp-appið, þar sem þú aflæsir og borgar, og staðsetningarnar geta verið nokkurra mínútna gamlar.',
+        '[ScootRadar](/map) sýnir á einu korti rafskútur margra fyrirtækja, með hleðslu, göngutíma og áætluðu verði, ókeypis og án skráningar. Á Íslandi á það við um Hopp og frá 25. október 2026 líka Bolt: 13. október 2026 voru um 2.800 Hopp-skútur á kortinu, um 2.200 á [höfuðborgarsvæðinu](map:is:Reykjavík), um 180 á [Akureyri](map:is:Akureyri) og hinar í 15 öðrum bæjum: Selfossi, Reykjanesbæ, Akranesi, Vestmannaeyjum, Sauðárkróki, Stykkishólmi, Borgarnesi, Ólafsvík, Vík, Húsavík, Dalvík, Hellissandi, Sandgerði, Vogum og Garði.',
+        'Hjá Bolt sýnir kortið aðeins staðsetningu og hleðslu, ekki verð. Kortið getur hvorki tekið frá né aflæst skútu: hnappur opnar Hopp-appið, þar sem þú aflæsir og borgar, og staðsetningarnar geta verið nokkurra mínútna gamlar.',
       ],
     },
   ],
@@ -174,7 +174,7 @@ const guide: Guide = {
     },
     {
       question: 'Hopp eða Bolt: hvort er ódýrara?',
-      answer: 'Það er ekki hægt að bera þau saman á vefnum. Hopp birti 13. október 2026 verðið 115 kr. í upphafsgjald og 45 kr. á mínútu, en núverandi verð Bolt fundum við hvergi birt, og óvíst er hvort Bolt sé enn með rafskútur í Reykjavík. Berðu verðin saman í báðum öppunum áður en þú aflæsir.',
+      answer: 'Það er ekki hægt að bera þau saman á vefnum. Hopp birti 13. október 2026 verðið 115 kr. í upphafsgjald og 45 kr. á mínútu, en núverandi verð Bolt fundum við hvergi birt. Berðu verðin saman í báðum öppunum áður en þú aflæsir.',
     },
     {
       question: 'Þarf ég hjálm á leigðri rafskútu?',

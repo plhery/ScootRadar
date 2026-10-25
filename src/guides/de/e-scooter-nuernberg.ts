@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Betrieb und Abstellen regelt die Stadt in einem Sondernutzungsvertrag mit jedem Anbieter. Im April 2024 schloss sie solche Verträge mit den fünf Anbietern, die damals in Nürnberg vermieteten: Bolt, Lime, Superpedestrian, TIER und Voi. Heute nennt das Verkehrsplanungsamt vier Ansprechpartner: **Voi**, **Dott** (TIER heisst heute Dott), **Lime** und **Bolt**.',
         'Dott führt auf seiner Website neben Nürnberg auch Fürth und Erlangen, Bolt nennt E-Scooter auf seiner Nürnberg-Seite. Gemietet wird in der App des Anbieters, Voi auch in **NürnbergMOBIL**, der App der VAG. Alle vier vermieten laut ihren Bedingungen nur ab 18. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Die [Karte rund um Nürnberg](map:de:Nürnberg) zeigt seit dem 24. Oktober 2026 Dott und Voi und seit dem 25. Oktober Lime: am Samstag, 24. Oktober, kurz vor 16 Uhr zusammen rund 2500 Dott- und Voi-Scooter, am Sonntagmittag, 25. Oktober, rund 1150 Lime-Scooter. Die Zahl von Dott und Voi umfasst nicht nur die Stadt, sondern auch Fürth, Zirndorf und bei Voi Erlangen. Das ist eine Momentaufnahme, keine Flottengrösse. Die Dott-Scooter in Erlangen zeigt die [Karte von Erlangen](map:de:Erlangen). Preise, Zonen und Sammelparkplätze von Dott, Voi und Lime zeigen nur ihre Apps. Bolt fehlt auf der Karte, seine Scooter siehst du nur in seiner App; Leihräder zeigt die Karte nicht.',
+        'Die [Karte rund um Nürnberg](map:de:Nürnberg) zeigt seit dem 24. Oktober 2026 Dott und Voi und seit dem 25. Oktober Lime und Bolt: am Samstag, 24. Oktober, kurz vor 16 Uhr zusammen rund 2500 Dott- und Voi-Scooter, am Sonntagmittag, 25. Oktober, rund 1150 Lime- und 500 Bolt-Scooter. Die Zahl von Dott und Voi umfasst nicht nur die Stadt, sondern auch Fürth, Zirndorf und bei Voi Erlangen. Das ist eine Momentaufnahme, keine Flottengrösse. Die Dott-Scooter in Erlangen zeigt die [Karte von Erlangen](map:de:Erlangen). Preise, Zonen und Sammelparkplätze zeigen nur die Apps; Leihräder zeigt die Karte nicht.',
       ],
     },
     {
@@ -32,7 +32,7 @@ const guide: Guide = {
             rows: [
               ['Voi', 'In der App; Freiminuten mit Deutschlandticket', 'Voi-App, NürnbergMOBIL', 'Ja'],
               ['Dott', 'In der App', 'Dott-App', 'Ja'],
-              ['Bolt', 'Ab 0,15 € pro Minute plus kleine Entsperrgebühr (für Deutschland)', 'Bolt-App', 'Nein'],
+              ['Bolt', 'Ab 0,15 € pro Minute plus kleine Entsperrgebühr (für Deutschland)', 'Bolt-App', 'Ja, seit dem 25. Oktober 2026'],
               ['Lime', 'In der App', 'Lime-App', 'Ja'],
             ],
           },
@@ -127,7 +127,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter kann ich in Nürnberg mieten?',
-      answer: 'Die von Voi, Dott, Lime und Bolt; diese vier nennt die Stadt. Die [Live-Karte von Nürnberg](map:de:Nürnberg) zeigt Dott, Voi und Lime, Bolt siehst du nur in seiner App. Du musst 18 sein, einen Führerschein brauchst du nicht.',
+      answer: 'Die von Voi, Dott, Lime und Bolt; diese vier nennt die Stadt. Die [Live-Karte von Nürnberg](map:de:Nürnberg) zeigt alle vier. Du musst 18 sein, einen Führerschein brauchst du nicht.',
     },
     {
       question: 'Wo darf ich in Nürnberg einen E-Scooter abstellen?',

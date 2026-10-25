@@ -26,7 +26,7 @@ const guide: Guide = {
         },
         'Im S-Bahn-Ring dürfen höchstens 19 000 Leih-Scooter stehen, gleichmässig verteilt auf die vier Anbieter der Innenstadt; ausserhalb gibt es keine Obergrenze. Bird fährt in Berlin nicht mehr.',
         'Am Ende jeder Fahrt fotografierst du den abgestellten Scooter: Einen solchen Nachweis verlangt die Berliner Genehmigung. Alles Schritt für Schritt erklärt der Ratgeber [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte rund um Berlin](map:de:Berlin) Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Lime: am Samstag, 24. Oktober, kurz vor 16 Uhr rund 4800 Dott- und 14 400 Voi-Scooter, am Sonntagmorgen, 25. Oktober, rund 15 400 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Bolt und Zeus findest du nur in ihren Apps.',
+        'ScootRadar zeigt auf der [Karte rund um Berlin](map:de:Berlin) Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Lime und Bolt: am Samstag, 24. Oktober, kurz vor 16 Uhr rund 4800 Dott- und 14 400 Voi-Scooter, am Sonntag, 25. Oktober, morgens rund 15 400 Lime- und kurz vor 14 Uhr rund 9100 Bolt-Scooter. Das sind Momentaufnahmen, keine Flottengrössen. Zeus findest du nur in seiner App.',
       ],
     },
     {

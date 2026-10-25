@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Laut der Behörde für Verkehr und Mobilitätswende (BVM) vermieten fünf Anbieter in Hamburg E-Scooter: **Bolt**, **Dott**, **Lime**, **Ryde** und **Voi**. Dott hiess früher Tier; wer Tier fuhr, nutzt heute die Dott-App. Ryde ist neu: Im Februar 2025 nannte die Stadt erst vier Anbieter.',
         'Du leihst den Scooter in der App des Anbieters, laut ihren Bedingungen ab 18, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt. Voi buchst du auch in **hvv switch**, der Mobilitäts-App der Hochbahn, in Hamburg und Pinneberg. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte von Hamburg](map:de:Hamburg) Dott, Voi und seit dem 25. Oktober 2026 Lime: am Samstag, 24. Oktober, kurz vor 16 Uhr rund 3500 Dott- und 6800 Voi-Scooter, am Sonntagvormittag, 25. Oktober, rund 5900 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Bolt und Ryde fehlen auf der Karte; ihre Scooter findest du nur in ihren eigenen Apps.',
+        'ScootRadar zeigt auf der [Karte von Hamburg](map:de:Hamburg) Dott, Voi und seit dem 25. Oktober 2026 Lime und Bolt: am Samstag, 24. Oktober, kurz vor 16 Uhr rund 3500 Dott- und 6800 Voi-Scooter, am Sonntag, 25. Oktober, vormittags rund 5900 Lime- und kurz vor 14 Uhr rund 5600 Bolt-Scooter. Das sind Momentaufnahmen, keine Flottengrössen. Ryde fehlt auf der Karte.',
         'Auch E-Bikes zeigt die Karte nicht. Bolt nennt auf seiner Hamburg-Seite neben E-Scootern auch E-Bikes; Leih-E-Bikes von Lime nennt eine ältere, undatierte Seite von hamburg.de.',
         'Laut Vertrag dürfen alle Anbieter zusammen innerhalb des Ring 2 höchstens 5000 E-Scooter und 5000 E-Bikes aufstellen. Die Stadt teilt sie gleichmässig auf: Bei vier Anbietern nennt der Vertrag je 1250, bei fünf wären es rechnerisch je 1000. Ausserhalb gibt es keine Obergrenze, und die Stadt wünscht sich ausdrücklich Scooter in Vierteln, in denen Bus und Bahn seltener fahren.',
       ],
@@ -144,7 +144,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Hamburg?',
-      answer: 'Bolt, Dott (früher Tier), Lime, Ryde und Voi, laut Stadt. Voi buchst du auch in hvv switch. Die ScootRadar-Karte zeigt Dott, Voi und Lime; Bolt und Ryde findest du in ihren Apps.',
+      answer: 'Bolt, Dott (früher Tier), Lime, Ryde und Voi, laut Stadt. Voi buchst du auch in hvv switch. Die ScootRadar-Karte zeigt Dott, Voi, Lime und Bolt; Ryde findest du in seiner App.',
     },
     {
       question: 'Was kostet ein E-Scooter in Hamburg?',

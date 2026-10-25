@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Seit dem 1. April 2026 lässt die Stadt Kassel nur noch Anbieter zu, die mit ihr einen Sondernutzungsvertrag haben. Als Ansprechpartner nennt sie vier: **Qick**, **Bolt**, **Dott** (früher TIER) und **Zeus**. Laut HNA waren im Juli 2026 rund 2950 Leih-Scooter von Bolt, Qick und Dott unterwegs; Zeus hatte nach Angaben der Stadt eine Erlaubnis, aber noch keine Scooter aufgestellt (HNA, 23. Juli 2026). Ob Zeus inzwischen fährt, wissen wir nicht.',
         'Qick kommt aus Schweden und verleiht auch in Göttingen: [E-Scooter in Göttingen](guide:goettingen). Bolt führt Kassel im Oktober 2026 auf seiner Stadtseite mit E-Scootern, Dott in seiner Liste der Standorte. Gemietet wird in der App des Anbieters, bei allen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Die [Karte von Kassel](map:de:Kassel) zeigt Qick, mit Standort und Akkustand: in der Nacht zum Sonntag, 25. Oktober 2026, rund 1500 Scooter, um 0 und um 1 Uhr gezählt. Das ist eine nächtliche Momentaufnahme, keine Flottengrösse. Preise, Zonen und Abstellorte zeigt nur die Qick-App; Bolt, Dott und Zeus findest du nur in ihren eigenen Apps.',
+        'Die [Karte von Kassel](map:de:Kassel) zeigt Qick und seit dem 25. Oktober 2026 auch Bolt, mit Standort und Akkustand: in der Nacht zum Sonntag, 25. Oktober, rund 1500 Qick-Scooter, um 0 und um 1 Uhr gezählt, am Sonntag kurz vor 14 Uhr rund 200 von Bolt. Das sind Momentaufnahmen, keine Flottengrössen. Preise, Zonen und Abstellorte zeigen nur die Apps; Dott und Zeus findest du nur dort.',
       ],
     },
     {
@@ -132,7 +132,7 @@ const guide: Guide = {
             '**Welterbe seit 2013.** Der Bergpark Wilhelmshöhe gehört seit Juni 2013 zum UNESCO-Welterbe.',
           ],
         },
-        'Freie Qick-Scooter in deiner Nähe zeigt die [Live-Karte von Kassel](map:de:Kassel).',
+        'Freie Qick- und Bolt-Scooter in deiner Nähe zeigt die [Live-Karte von Kassel](map:de:Kassel).',
       ],
     },
   ],

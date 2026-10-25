@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Kiel: Anbieter, Preise, Stationen und warum kein Scooter in Bus oder Fähre darf',
   lede: 'E-Scooter in Kiel leihst du ab 18 und ohne Führerschein bei Bolt, Dott oder Voi. Einen Kieler Tarif fanden wir bei keinem der drei offen; Bolt wirbt deutschlandweit mit «ab 0,15 € pro Minute» plus Entsperrgebühr, verbindlich ist die App. Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone Holstenstrasse; durch städtische Parks schiebst du, so lesen wir die Grünflächensatzung. Steht eine E-Scooter-Station in unmittelbarer Nähe, beendest du die Fahrt laut Stadt dort. In KVG-Busse und auf die Fördefähren darf kein E-Scooter.',
   published: '2026-10-24',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'de:Kiel',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Laut Landeshauptstadt Kiel bieten «zurzeit» drei Unternehmen E-Scooter an: **Dott**, **Bolt** und **Voi**. Die Seite der Stadt ist undatiert; wir haben sie am 24. Oktober 2026 gelesen. Bolt und Dott führen Kiel auch auf ihren eigenen Seiten. Leih-Scooter gibt es in Kiel seit August 2020.',
         'Du leihst den Scooter in der App des Anbieters, ab 18 und ohne Führerschein. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte von Kiel](map:de:Kiel) Dott und Voi: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 2000 Scooter, gut 1400 von Voi und gut 550 von Dott. Die Zahl schliesst den Nachbarort Kronshagen ein, wo am selben Abend rund 85 standen, und einzelne Scooter in Schwentinental, Mönkeberg und Schönkirchen. Das ist eine Momentaufnahme, keine Flottengrösse. Die Karte zeigt Standort und Akkustand; Preise, Zonen und Abstellflächen zeigt nur die App des Anbieters. Bolt fehlt auf der Karte; seine Scooter findest du nur in der Bolt-App.',
+        'ScootRadar zeigt auf der [Karte von Kiel](map:de:Kiel) Dott, Voi und seit dem 25. Oktober Bolt: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 2000 Scooter, gut 1400 von Voi und gut 550 von Dott, am Sonntag kurz vor 14 Uhr rund 850 von Bolt. Die Zahl schliesst den Nachbarort Kronshagen ein, wo am selben Abend rund 85 standen, und einzelne Scooter in Schwentinental, Mönkeberg und Schönkirchen. Das sind Momentaufnahmen, keine Flottengrössen. Die Karte zeigt Standort und Akkustand; Preise, Zonen und Abstellflächen zeigt nur die App des Anbieters.',
         'Grundsätzlich verbieten kann die Stadt Leih-Scooter laut eigener Aussage nicht. Vor jedem Start schliesst sie mit dem Anbieter eine freiwillige Vereinbarung, laut Stadt «rechtlich nur eingeschränkt wirksam». In der veröffentlichten Vorlage von 2021 behält sie sich vor, die Zahl der Scooter je Anbieter bei Bedarf zu begrenzen; eine Obergrenze oder Gebühr steht darin nicht, und die Sondernutzungssatzung vom Mai 2025 nennt keinen Tarif für Leih-Scooter.',
       ],
     },
@@ -31,7 +31,7 @@ const guide: Guide = {
             caption: 'Was die Anbieter offen zu Preisen sagen (Stand 24. Oktober 2026)',
             head: ['Anbieter', 'Preis laut offener Quelle', 'Pässe', 'Auf der ScootRadar-Karte'],
             rows: [
-              ['Bolt', 'Deutschland: ab 0,15 € pro Minute plus kleine Entsperrgebühr, je nach Ort verschieden', 'Wochen- und Monatspässe; unbegrenzt Entsperren ab 0,99 € im Monat', 'Nein, nur in der Bolt-App'],
+              ['Bolt', 'Deutschland: ab 0,15 € pro Minute plus kleine Entsperrgebühr, je nach Ort verschieden', 'Wochen- und Monatspässe; unbegrenzt Entsperren ab 0,99 € im Monat', 'Ja, seit dem 25. Oktober 2026'],
               ['Dott', 'Nur in der App, «der Preis, der in deiner Region gilt»', 'Pässe für Tag, Woche oder Monat', 'Ja'],
               ['Voi', 'Nur in der App', 'Nicht offen angegeben', 'Ja'],
             ],
@@ -137,7 +137,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Kiel?',
-      answer: 'Laut Stadt Dott, Bolt und Voi. Die ScootRadar-Karte zeigt Dott und Voi; Bolt findest du nur in der Bolt-App.',
+      answer: 'Laut Stadt Dott, Bolt und Voi. Die ScootRadar-Karte zeigt alle drei.',
     },
     {
       question: 'Was kostet ein E-Scooter in Kiel?',

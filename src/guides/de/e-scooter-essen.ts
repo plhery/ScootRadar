@@ -19,7 +19,7 @@ const guide: Guide = {
         'Mindestens fünf Anbieter vermieten 2026 E-Scooter in Essen: **Dott** (früher TIER), **Bolt**, **Lime**, **Voi** und **Ryde** aus Norwegen. Dott, Bolt und Lime gaben Radio Essen im Oktober 2026 Auskunft, Voi war im Januar 2026 beim Parktest des Senders dabei. Dott und Ryde führen Essen auf ihren Websites (Stand 23. Oktober 2026). Ryde fährt laut Radio Bochum spätestens seit Juni 2026 auch in Essen. **Ridemovi** nannte die Stadt im Dezember 2024 mit 400 Scootern; eine neuere Quelle dazu gibt es nicht.',
         'Ende 2024 waren laut Stadt 3100 Leih-Scooter zugelassen, im November 2025 knapp 3800. Radio Essen sprach im Oktober 2026 von mehr als 2000.',
         'Gemietet wird in der App des Anbieters. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Auf der [Karte von Essen](map:de:Essen) zeigt ScootRadar Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Lime: am Samstag, 24. Oktober, kurz nach 15 Uhr rund 400 Dott- und 1250 Voi-Scooter, am Sonntagvormittag, 25. Oktober, rund 1650 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Im Süden endet Dotts Gebiet laut Datenfeed auf Höhe der Messe: In Bredeney, Werden, Kettwig und am Baldeneysee hat Dott keine Zone. Bolt und Ryde fehlen auf der Karte; ihre Scooter findest du nur in ihren Apps.',
+        'Auf der [Karte von Essen](map:de:Essen) zeigt ScootRadar Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Lime und Bolt: am Samstag, 24. Oktober, kurz nach 15 Uhr rund 400 Dott- und 1250 Voi-Scooter, am Sonntagvormittag, 25. Oktober, rund 1650 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Im Süden endet Dotts Gebiet laut Datenfeed auf Höhe der Messe: In Bredeney, Werden, Kettwig und am Baldeneysee hat Dott keine Zone. Ryde fehlt auf der Karte.',
       ],
     },
     {
@@ -156,7 +156,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-Apps kann ich in Essen nutzen?',
-      answer: 'Die von Dott, Bolt, Lime, Voi und Ryde (Stand 2026). Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Dott-, Voi- und Lime-Scooter zeigt auch die [Live-Karte von Essen](map:de:Essen), die von Bolt und Ryde nur deren Apps.',
+      answer: 'Die von Dott, Bolt, Lime, Voi und Ryde (Stand 2026). Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Dott-, Voi-, Lime- und Bolt-Scooter zeigt auch die [Live-Karte von Essen](map:de:Essen), die von Ryde nur dessen App.',
     },
     {
       question: 'Was kosten zehn Minuten E-Scooter in Essen?',

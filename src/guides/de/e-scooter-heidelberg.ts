@@ -10,15 +10,15 @@ const guide: Guide = {
   headline: 'E-Scooter Heidelberg: Anbieter, Preise, Abstellflächen und Verbotszonen von der Altstadt bis ins Neuenheimer Feld',
   lede: 'Einen E-Scooter in Heidelberg leihst du ab 18 und ohne Führerschein bei Dott, Voi oder Bolt, den drei Anbietern mit einer Erlaubnis der Stadt bis März 2028. Voi kostet 0,25 € pro Minute ohne Entsperrgebühr, Dott 1 € plus 0,31 € pro Minute (Stand 17. Oktober 2026). In der Altstadt beendest du die Fahrt nur auf markierten Abstellflächen, auf der Neckarwiese gar nicht. In Strassenbahn, Bus und Bergbahn nimmst du keinen Leih-Scooter mit.',
   published: '2026-10-17',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'de:Heidelberg',
   sections: [
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Heidelberg?',
       blocks: [
         'Seit 1. April 2026 dürfen in Heidelberg nur noch drei Anbieter Leih-Scooter aufstellen: **Dott**, das früher TIER hiess, **Bolt** und, neu in der Stadt, **Voi**. Die Stadt hat sie in einem Auswahlverfahren bestimmt; ihre Erlaubnisse laufen bis 31. März 2028. Gemietet wird in der App des Anbieters; Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte von Heidelberg](map:de:Heidelberg) Dott und seit dem 24. Oktober 2026 auch Voi: An jenem Samstag kurz vor 16 Uhr standen dort rund 360 Dott- und 300 Voi-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse.',
-        '**Bolt fehlt auf unserer Karte.** Für Heidelberg veröffentlicht Bolt keinen offenen Datenfeed, in Baden-Württemberg nur für Karlsruhe, Stuttgart und Reutlingen/Tübingen. Wo seine Scooter stehen, siehst du nur in seiner App.',
+        'ScootRadar zeigt auf der [Karte von Heidelberg](map:de:Heidelberg) Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Bolt: An jenem Samstag kurz vor 16 Uhr standen dort rund 360 Dott- und 300 Voi-Scooter, am Sonntag kurz vor 14 Uhr rund 370 von Bolt. Das sind Momentaufnahmen, keine Flottengrössen.',
+        'Bei Bolt zeigt die Karte Standort und Akkustand; Preise und Zonen zeigt nur seine App.',
         '**Lime und Zeus** gehören seit April 2026 nicht mehr zu den Heidelberger Anbietern, auch wenn ihre Websites die Stadt noch nennen. Zeus-Scooter stehen laut dem offenen Datenfeed von Zeus südlich von Heidelberg, vor allem in Leimen: Die [Karte von Leimen](map:de:Leimen) zeigte am selben Nachmittag rund 70 Scooter, 60 davon von Zeus, den Rest von Dott, dessen Heidelberger Gebiet bis in den Norden Leimens reicht. Weitere Zeus-Scooter standen in Walldorf und Wiesloch.',
       ],
     },
@@ -134,7 +134,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App brauche ich in Heidelberg?',
-      answer: 'Die von Dott, Voi oder Bolt; TIER heisst heute Dott. Lime und Zeus gehören seit April 2026 nicht mehr dazu. Du musst 18 sein, einen Führerschein brauchst du nicht. Die [Live-Karte von Heidelberg](map:de:Heidelberg) zeigt Dott und Voi; Bolt siehst du nur in seiner App.',
+      answer: 'Die von Dott, Voi oder Bolt; TIER heisst heute Dott. Lime und Zeus gehören seit April 2026 nicht mehr dazu. Du musst 18 sein, einen Führerschein brauchst du nicht. Die [Live-Karte von Heidelberg](map:de:Heidelberg) zeigt alle drei.',
     },
     {
       question: 'Was kostet ein E-Scooter in Heidelberg?',

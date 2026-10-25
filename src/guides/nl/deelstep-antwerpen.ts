@@ -10,14 +10,14 @@ const guide: Guide = {
   headline: 'Deelstep Antwerpen: Voi, Lime en Bolt, wat een rit kost, dropzones binnen de Leien en waar je step stilvalt',
   lede: 'Een deelstep in Antwerpen huur je bij Voi, Lime of Bolt, de drie aanbieders met een vergunning van de stad. Voi vraagt € 0,99 om te ontgrendelen en € 0,25 per minuut, Lime € 0,99 en € 0,27 per minuut, en Bolt € 1,13 per kilometer (tarieven op 13 oktober 2026). Binnen de Leien beëindig je je rit alleen in een dropzone, in het station Antwerpen-Centraal valt de step stil, en op de Meir rijdt hij overdag hooguit 8 km/u. De Belgische wet laat je vanaf 16 jaar steppen: bij Voi kan dat, bij Lime en Bolt moet je 18 zijn.',
   published: '2026-10-13',
-  updated: '2026-10-14',
+  updated: '2026-10-25',
   city: 'be:Antwerpen',
   sections: [
     {
       heading: 'Een deelstep huren in Antwerpen: Voi, Lime en Bolt',
       blocks: [
         '**Voi**, **Lime** en **Bolt** hebben de drie vergunningen die de stad voor deelsteps verleent, elk voor 500 tot 1700 steps. Lime rijdt er sinds maart 2021, Voi sinds oktober 2024 en Bolt sinds maart 2025, in de plaats van Poppy.',
-        'Op de kaart van Slim naar Antwerpen, de mobiliteitssite van de stad, stonden er op de avond van 13 oktober 2026 zo’n 2330 van de drie samen: een momentopname, geen officieel vlootcijfer. Op [onze kaart van Antwerpen](map:be:Antwerpen) zie je alleen de steps van Voi, die ochtend ongeveer 820. Lime en Bolt rijden ook in Antwerpen, maar publiceren er geen open data. Meer dan de helft van de deelsteps staat dus niet op onze kaart: kijk ook in de apps van Lime en Bolt.',
+        'Op de kaart van Slim naar Antwerpen, de mobiliteitssite van de stad, stonden er op de avond van 13 oktober 2026 zo’n 2330 van de drie samen: een momentopname, geen officieel vlootcijfer. Op [onze kaart van Antwerpen](map:be:Antwerpen) zie je de steps van Voi, die ochtend ongeveer 820, en sinds 25 oktober 2026 ook die van Bolt, die dag om 13.50 uur ongeveer 900. Lime publiceert er geen open data en staat niet op onze kaart: kijk daarvoor in de app van Lime.',
         'Hoe huren werkt, lees je stap voor stap in [een deelstep huren](guide:how-to-rent).',
       ],
     },
@@ -32,7 +32,7 @@ const guide: Guide = {
             rows: [
               ['Voi', '€ 0,99', '€ 0,25 per minuut', '10 minuten: € 3,49; 20 minuten: € 5,99', 'Ja'],
               ['Lime', '€ 0,99', '€ 0,27 per minuut', '10 minuten: € 3,69; 20 minuten: € 6,39', 'Nee: kijk in de app'],
-              ['Bolt', '€ 0,99 volgens de stad; kijk in de app', '€ 1,13 per km', '2 km: € 3,25; 3 km: € 4,38', 'Nee: kijk in de app'],
+              ['Bolt', '€ 0,99 volgens de stad; kijk in de app', '€ 1,13 per km', '2 km: € 3,25; 3 km: € 4,38', 'Ja, sinds 25 oktober 2026'],
             ],
           },
         },
@@ -130,7 +130,7 @@ const guide: Guide = {
       blocks: [
         '**Velo**, het fietsdeelsysteem van de stad, heeft meer dan 300 stations: je neemt een fiets aan het ene station en zet hem terug aan om het even welk ander. Op 13 oktober 2026 kostte een dagpas € 5, een weekpas € 12 en een jaarkaart € 58. Elke rit tot 30 minuten zit erin; tot een uur betaal je € 0,50 extra.',
         'Een dagpas kost dus minder dan één rit van 20 minuten op een Voi-step. De concessie van Velo loopt eind februari 2027 af en de stad bereidt een nieuwe aanbesteding voor: prijzen en uitbater kunnen dan veranderen.',
-        'Toch liever een step? Op de [kaart van Antwerpen](map:be:Antwerpen) zie je de dichtstbijzijnde Voi; voor Lime en Bolt open je hun app.',
+        'Toch liever een step? Op de [kaart van Antwerpen](map:be:Antwerpen) zie je de dichtstbijzijnde Voi of Bolt; voor Lime open je de app van Lime.',
       ],
     },
     {
@@ -164,8 +164,8 @@ const guide: Guide = {
       answer: 'Alleen een opvouwbare step, gratis, als je hem volledig opplooit voor je opstapt en hij de hele rit geplooid blijft. Een deelstep mag nooit mee.',
     },
     {
-      question: 'Waarom zie ik Lime en Bolt niet op de kaart van ScootRadar?',
-      answer: 'Lime en Bolt publiceren voor Antwerpen geen open data, dus onze kaart toont daar alleen Voi. Ze rijden er wel, en volgens de kaart van de stad hadden ze op 13 oktober 2026 samen meer steps op straat dan Voi. Open hun apps om de dichtstbijzijnde te vinden.',
+      question: 'Waarom zie ik Lime niet op de kaart van ScootRadar?',
+      answer: 'Lime publiceert voor Antwerpen geen open data, dus onze kaart toont daar alleen Voi en, sinds 25 oktober 2026, Bolt. Lime rijdt er wel: open de app van Lime om de dichtstbijzijnde step te vinden.',
     },
   ],
   sources: [

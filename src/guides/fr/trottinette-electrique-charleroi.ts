@@ -6,11 +6,11 @@ const guide: Guide = {
   topic: 'charleroi',
   name: 'Louer une trottinette électrique à Charleroi',
   title: 'Trottinette électrique Charleroi : Dott, Pony, prix, zones',
-  description: 'Trottinette électrique à Charleroi : prix de Dott et Pony, Bolt absent de la carte, où se garer, Ville Basse au ralenti, gare, aéroport et règles belges.',
+  description: 'Trottinette électrique à Charleroi : Dott, Pony et Bolt, prix, où se garer, Ville Basse au ralenti, gare, aéroport et règles belges.',
   headline: 'Trottinette électrique à Charleroi : Dott, Pony et Bolt, prix, stationnement, zones lentes et aéroport en 2026',
-  lede: 'Pour louer une trottinette électrique à Charleroi, vous avez **Dott** et **Pony**, visibles sur notre carte, et **Bolt**, que la Ville et la Région citent aussi mais qui ne publie pas ses données. Le 17 octobre 2026, Dott affichait 1 € au déverrouillage et 0,35 € la minute, Pony 0,50 € et 0,26 €. Chez Dott, la location se termine sur un de ses emplacements ; dans plusieurs rues de la Ville Basse, les apps brident les trottinettes à 7 ou 8 km/h, et Dott interdit de rouler autour de la gare de Charleroi-Central et des terminaux de l’aéroport.',
+  lede: 'Pour louer une trottinette électrique à Charleroi, vous avez **Dott**, **Pony** et **Bolt**, tous trois cités par la Ville et la Région et visibles sur notre carte. Le 17 octobre 2026, Dott affichait 1 € au déverrouillage et 0,35 € la minute, Pony 0,50 € et 0,26 €. Chez Dott, la location se termine sur un de ses emplacements ; dans plusieurs rues de la Ville Basse, les apps brident les trottinettes à 7 ou 8 km/h, et Dott interdit de rouler autour de la gare de Charleroi-Central et des terminaux de l’aéroport.',
   published: '2026-10-17',
-  updated: '2026-10-17',
+  updated: '2026-10-25',
   city: 'be:Charleroi',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Sur sa page trottinette, mise à jour en août 2024, la Ville de Charleroi cite trois opérateurs autorisés : **Dott**, présent depuis juin 2021, **Pony** et **Bolt**. Tous trois détiennent une licence wallonne, et la carte du cyclopartage du SPW Mobilité (données de janvier 2026) les place toujours à Charleroi. La charte de la Ville limite le total à 1 500 engins partagés, vélos compris, et à 500 par opérateur.',
         'Vers 3 h 30 dans la nuit du 17 octobre 2026, notre [carte de Charleroi](map:be:Charleroi) montrait environ 660 trottinettes garées, dont quelque 430 Dott et 230 Pony : un relevé d’une seule nuit, pas la taille des flottes.',
-        { note: 'Bolt n’apparaît pas sur notre carte, faute de données ouvertes pour Charleroi : ses prix et ses zones ne se voient que dans son app, et aucune source publique ne dit combien il en fait rouler.' },
+        { note: 'Depuis le 25 octobre 2026, la carte montre aussi Bolt, avec l’emplacement et le niveau de batterie de chaque trottinette : environ 120 ce dimanche-là vers 13 h 50, là encore un simple relevé. Ses prix et ses zones ne se voient que dans son app.' },
         'Pour louer une trottinette :',
         {
           steps: [
@@ -146,7 +146,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Quelles trottinettes partagées peut-on louer à Charleroi ?',
-      answer: 'Dott et Pony, visibles sur notre carte, et Bolt, cité par la Ville (2024) et la Région (janvier 2026), mais absent de nos données : vérifiez dans son app. Dott et Bolt demandent 18 ans, Pony 16 ans.',
+      answer: 'Dott, Pony et Bolt, cités par la Ville (2024) et la Région (janvier 2026) et visibles sur notre carte, Bolt depuis le 25 octobre 2026. Dott et Bolt demandent 18 ans, Pony 16 ans.',
     },
     {
       question: 'Combien coûte une trottinette à Charleroi ?',

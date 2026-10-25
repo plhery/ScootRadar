@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Bielefeld 2026: Dott, Bolt, Preise, Parken',
   description: 'E-Scooter Bielefeld: Dott und Bolt, Preise, wo du fährst und parkst, was in Parks und im Wald gilt und warum dein Roller nicht in die Stadtbahn darf.',
   headline: 'E-Scooter Bielefeld: Anbieter, Preise, Parken und Verbote',
-  lede: 'E-Scooter in Bielefeld leihst du laut Stadt bei Dott und Bolt; beide vermieten erst ab 18, einen Führerschein brauchst du nicht. Unsere Karte zeigt nur Dott. Für Dott nennt moBiel, der städtische Verkehrsbetrieb und Partner von Dott, 1,20 € fürs Entsperren und 0,29 € pro Minute (Stand 25. Oktober 2026); verbindlich ist der Preis in der App, und Bolts Tarif zeigt nur die Bolt-App. Du fährst auf dem Radweg, sonst auf der Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzonen um Bahnhofstrasse und Altstadt. Abstellen darfst du am Gehwegrand, wenn 1,80 m frei bleiben, aber nicht in den Verbotszonen der Stadt, zu denen Parks und der Teutoburger Wald gehören. Deinen eigenen E-Scooter darfst du seit 1. April 2024 nicht mehr in die Busse und die Stadtbahn von moBiel mitnehmen.',
+  lede: 'E-Scooter in Bielefeld leihst du laut Stadt bei Dott und Bolt; beide vermieten erst ab 18, einen Führerschein brauchst du nicht. Unsere Karte zeigt beide. Für Dott nennt moBiel, der städtische Verkehrsbetrieb und Partner von Dott, 1,20 € fürs Entsperren und 0,29 € pro Minute (Stand 25. Oktober 2026); verbindlich ist der Preis in der App, und Bolts Tarif zeigt nur die Bolt-App. Du fährst auf dem Radweg, sonst auf der Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzonen um Bahnhofstrasse und Altstadt. Abstellen darfst du am Gehwegrand, wenn 1,80 m frei bleiben, aber nicht in den Verbotszonen der Stadt, zu denen Parks und der Teutoburger Wald gehören. Deinen eigenen E-Scooter darfst du seit 1. April 2024 nicht mehr in die Busse und die Stadtbahn von moBiel mitnehmen.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Bielefeld',
@@ -18,8 +18,8 @@ const guide: Guide = {
       blocks: [
         'Die Stadt nennt auf ihrer Scooter-Seite zwei Anbieter: **Dott** mit «ca. 750» und **Bolt** mit «ca. 550 E-Scooter im Stadtgebiet» (Seite undatiert, Stand 25. Oktober 2026). Eine Obergrenze oder Gebühr für Leih-Scooter fanden wir bei der Stadt nicht, auch nicht in ihrer Sondernutzungssatzung (Fassung vom 24. März 2025). Gemietet wird in der App des Anbieters, laut den Bedingungen von Dott und Bolt erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt; einen Führerschein brauchst du nicht. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         '**Dott** führt Bielefeld auf seiner Standortseite und arbeitet mit moBiel zusammen: Standorte und Akkustände der Dott-Scooter zeigt auch die moBiel YOU App, und aus den früheren TIER-Rollern sind Dott-Roller geworden.',
-        '**Bolt** fährt laut Radio Bielefeld (13. Mai 2026) seit 2021 mit E-Scootern in der Stadt. Bolts eigene Bielefeld-Seite nennt aber nur Fahrdienst und Taxi (Stand 25. Oktober 2026); ob Bolt-Scooter in deiner Nähe stehen, zeigt nur die Bolt-App. Weitere Anbieter nennt die Stadt nicht, und Ryde führt Bielefeld nicht unter seinen Standorten.',
-        'Die [Karte von Bielefeld](map:de:Bielefeld) zeigt Dott: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 850 freie Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. In der Nacht zum Sonntag, gegen halb fünf, standen alle knapp 890 innerhalb der Stadtgrenze, gut die Hälfte im Bezirk Mitte; in Sennestadt, Senne und Jöllenbeck zusammen nur vier. Die Karte zeigt nur Standorte, keine Preise, Zonen, Parkregeln oder Reichweiten. **Bolt fehlt auf unserer Karte**, ebenso die Leihräder von meinSiggi.',
+        '**Bolt** fährt laut Radio Bielefeld (13. Mai 2026) seit 2021 mit E-Scootern in der Stadt. Bolts eigene Bielefeld-Seite nennt aber nur Fahrdienst und Taxi (Stand 25. Oktober 2026); seine Scooter zeigt seit dem 25. Oktober auch unsere Karte. Weitere Anbieter nennt die Stadt nicht, und Ryde führt Bielefeld nicht unter seinen Standorten.',
+        'Die [Karte von Bielefeld](map:de:Bielefeld) zeigt Dott, seit dem 25. Oktober 2026 auch Bolt: am Samstag, 24. Oktober, kurz vor 16 Uhr rund 850 freie Dott-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. In der Nacht zum Sonntag, gegen halb fünf, standen alle knapp 890 Dott-Scooter innerhalb der Stadtgrenze, gut die Hälfte im Bezirk Mitte; in Sennestadt, Senne und Jöllenbeck zusammen nur vier. Die Karte zeigt Standorte, keine Preise, Zonen, Parkregeln oder Reichweiten. Die Leihräder von meinSiggi fehlen.',
       ],
     },
     {
@@ -123,7 +123,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Bielefeld?',
-      answer: 'Laut Stadt Dott (rund 750) und Bolt (rund 550). Du mietest in der App des Anbieters, laut deren Bedingungen ab 18, ohne Führerschein. Unsere Live-Karte zeigt nur Dott; Bolt-Scooter siehst du nur in der Bolt-App.',
+      answer: 'Laut Stadt Dott (rund 750) und Bolt (rund 550). Du mietest in der App des Anbieters, laut deren Bedingungen ab 18, ohne Führerschein. Unsere Live-Karte zeigt beide, Bolt seit dem 25. Oktober 2026.',
     },
     {
       question: 'Was kostet ein E-Scooter in Bielefeld?',

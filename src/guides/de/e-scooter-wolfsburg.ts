@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'In Wolfsburg fahren **Dott** und **Bolt**. «Die e-Scooter-Dienste von Bolt und Dott findest du im markierten Parkbereich», schreibt die Stadt auf ihrer Seite zu den mobiSTATIONEN (neueste Meldung dort vom 17. August 2026). Dott führt Wolfsburg auf seiner Standortseite, Bolt hat eine eigene Wolfsburg-Seite, die als Kategorie nur E-Scooter nennt (beides gelesen am 25. Oktober 2026). Mieten kannst du laut den Bedingungen beider ab 18. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Die undatierte E-Mobilitäts-Seite der Stadt nennt **Lime** noch als Kontakt, die Seite zu den mobiSTATIONEN nur Bolt und Dott; ob Lime heute in Wolfsburg verleiht, konnten wir nicht prüfen. **TIER** ist mit Dott fusioniert: Laut regionalHeute vom 1. Oktober 2024 sollten alle TIER-Scooter in den folgenden Wochen das Dott-Logo bekommen.',
-        'Die [Karte von Wolfsburg](map:de:Wolfsburg) zeigt nur Dott: am Sonntag, 25. Oktober 2026, kurz vor 9 Uhr rund 600 Scooter, eine Momentaufnahme, keine Flottengrösse. Gegen 11 Uhr standen rund 600 in der Stadt, gut zwei Drittel davon in der Gemarkung Wolfsburg, keiner in Almke, Barnstorf, Brackstedt, Heiligendorf, Neindorf, Neuhaus und Velstove (Gemarkungsgrenzen des LGLN). **Bolt fehlt auf der Karte**, seine Scooter siehst du nur in der Bolt-App. Lime zeigt die Karte ebenfalls nicht. Preise, Zonen und Abstellflächen zeigt die Karte nicht.',
+        'Die [Karte von Wolfsburg](map:de:Wolfsburg) zeigt Dott und seit dem 25. Oktober 2026 auch Bolt: am Sonntag, 25. Oktober, kurz vor 9 Uhr rund 600 Dott-Scooter und kurz vor 14 Uhr rund 430 von Bolt, Momentaufnahmen, keine Flottengrössen. Gegen 11 Uhr standen rund 600 Dott-Scooter in der Stadt, gut zwei Drittel davon in der Gemarkung Wolfsburg, keiner in Almke, Barnstorf, Brackstedt, Heiligendorf, Neindorf, Neuhaus und Velstove (Gemarkungsgrenzen des LGLN). Lime zeigt die Karte nicht, ebenso wenig Preise, Zonen und Abstellflächen.',
         'Der Betrieb eines Verleihs ist laut Stadt «grundsätzlich» nicht genehmigungspflichtig. Geschäftsgebiet und Parkverbotszonen legen die Anbieter laut Stadt mit ihr fest. Dazu hat die Stadt eine freiwillige Selbstverpflichtung für die Anbieter formuliert (Vorlage von 2020); wer sie unterschrieben hat, veröffentlicht sie nicht. Eine Obergrenze nennt die Vorlage nicht, eine Erhöhung der Flotte «bedarf der Absprache mit der Stadt Wolfsburg». Falsch abgestellte Scooter soll der Anbieter binnen 24 Stunden umstellen oder entfernen. Diese Pflichten treffen die Anbieter, nicht dich.',
       ],
     },
@@ -137,7 +137,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Wolfsburg?',
-      answer: 'Dott und Bolt; beide nennt die Stadt an ihren mobiSTATIONEN (August 2026). Die ScootRadar-Karte zeigt Dott, Bolt findest du nur in der Bolt-App. Ob Lime noch verleiht, konnten wir nicht prüfen.',
+      answer: 'Dott und Bolt; beide nennt die Stadt an ihren mobiSTATIONEN (August 2026). Die ScootRadar-Karte zeigt beide. Ob Lime noch verleiht, konnten wir nicht prüfen.',
     },
     {
       question: 'Was kostet ein E-Scooter in Wolfsburg?',

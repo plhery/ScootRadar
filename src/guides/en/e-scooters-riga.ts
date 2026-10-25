@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Riga: Ride and Bolt, what a ride costs, the licence rule and where to park in the Old Town',
   lede: 'You can rent an e-scooter in Riga with Ride, which took over Tuul’s scooters, or with Bolt. Ride charges €0.29 to unlock plus €0.22 a minute (published rate, 14 October 2026); Bolt shows its price in the app. Latvian law asks every e-scooter rider, adults included, for a driving or bicycle licence, and the apps rent only to adults. In the Old Town you can park only at marked spots, and Ride’s scooters don’t reach the airport.',
   published: '2026-10-14',
-  updated: '2026-10-15',
+  updated: '2026-10-25',
   city: 'lv:Rīga',
   sections: [
     {
@@ -24,7 +24,7 @@ const guide: Guide = {
             '**SKOK** rents only e-mopeds, which need a driving licence, and e-bikes.',
           ],
         },
-        'On the afternoon of 14 October 2026 the [map of Riga](map:lv:Rīga) showed 649 Ride scooters: a count of what’s on the map, not the fleet. Bolt publishes no open data, so it isn’t on the map: check its app. Ride’s app also rents seated e-bikes at the same price, which our map doesn’t count.',
+        'On the afternoon of 14 October 2026 the [map of Riga](map:lv:Rīga) showed 649 Ride scooters: a count of what’s on the map, not the fleet. Bolt joined the map on 25 October 2026: about 4,000 scooters at 14:50 that day. Ride’s app also rents seated e-bikes at the same price, which our map doesn’t count.',
         'New to shared e-scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
@@ -137,7 +137,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Does Riga have e-scooters, and which apps work there?',
-      answer: 'Yes: Ride, which runs the former Tuul scooters, and Bolt. Ride charges €0.29 to unlock plus €0.22 a minute; Bolt shows its price in the app. [Our map](map:lv:Rīga) shows Ride’s scooters but not Bolt’s.',
+      answer: 'Yes: Ride, which runs the former Tuul scooters, and Bolt. Ride charges €0.29 to unlock plus €0.22 a minute; Bolt shows its price in the app. [Our map](map:lv:Rīga) shows both, Bolt since 25 October 2026.',
     },
     {
       question: 'Is Tuul still in Riga?',

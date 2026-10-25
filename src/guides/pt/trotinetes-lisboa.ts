@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trotinetes em Lisboa: operadores, zonas proibidas, hotspots e minutos grátis com o Navegante',
   lede: 'As trotinetes em Lisboa alugam-se nas apps da Bolt, da Lime e da Bird, que mostram o preço antes de desbloquear: nenhuma publica uma tarifa para a cidade. As regras vêm de um acordo entre a Câmara e os operadores: 20 km/h no máximo, nada de passeios, vias BUS, jardins ou praças, e a viagem só termina num hotspot, um local de estacionamento autorizado. Quem vive em Lisboa e tem o passe Navegante mensal tem até 200 minutos grátis por mês, no máximo 10 por viagem. A 21 de outubro de 2026, a Câmara aprovou o fim das trotinetes partilhadas: os operadores têm 60 dias para as retirar.',
   published: '2026-10-13',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'pt:Lisboa',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Em outubro de 2026, há três operadores de trotinetes partilhadas em Lisboa: a **Bolt**, a **Lime** e a **Bird**. A Lime também aluga bicicletas elétricas.',
         'Lisboa não tem um regulamento para as trotinetas partilhadas: as regras vêm de um acordo de colaboração entre a Câmara e os operadores, de 9 de janeiro de 2023, alterado por uma adenda a 23 de junho de 2025. O acordo fixa também um limite sazonal por operador: até 1750 veículos de 1 de abril a 31 de outubro e até 1500 de 1 de novembro a 31 de março.',
-        'Segundo o vice-presidente da Câmara, Gonçalo Reis, a cidade passou de 15 mil trotinetes para cerca de cinco mil (abril de 2026). Na manhã de 13 de outubro de 2026, o [mapa de Lisboa](map:pt:Lisboa) mostrava cerca de 2200 trotinetes da Lime e 1350 da Bird, numa área que vai um pouco além do concelho: um retrato do momento, não a frota oficial. A Bolt não publica dados abertos e não aparece no mapa: abra a app da Bolt.',
+        'Segundo o vice-presidente da Câmara, Gonçalo Reis, a cidade passou de 15 mil trotinetes para cerca de cinco mil (abril de 2026). Na manhã de 13 de outubro de 2026, o [mapa de Lisboa](map:pt:Lisboa) mostrava cerca de 2200 trotinetes da Lime e 1350 da Bird, numa área que vai um pouco além do concelho: um retrato do momento, não a frota oficial. A Bolt entrou no mapa a 25 de outubro: cerca de 3200 trotinetes às 12h50.',
       ],
     },
     {
@@ -30,7 +30,7 @@ const guide: Guide = {
             caption: 'Preços das trotinetes em Lisboa publicados pelos operadores (13 de outubro de 2026)',
             head: ['Operador', 'Desbloqueio', 'Por minuto', 'Passes', 'No mapa a 13 de outubro'],
             rows: [
-              ['Bolt', 'Um pequeno valor, não indicado', 'A partir de 0,15 € (tarifa da Bolt para Portugal, não de Lisboa)', 'Desbloqueios ilimitados a partir de 0,99 € por mês; passes semanais e mensais', 'Não aparece: sem dados abertos'],
+              ['Bolt', 'Um pequeno valor, não indicado', 'A partir de 0,15 € (tarifa da Bolt para Portugal, não de Lisboa)', 'Desbloqueios ilimitados a partir de 0,99 € por mês; passes semanais e mensais', 'Só desde 25 de outubro'],
               ['Lime', 'Na app', 'Na app', 'Não publicados', 'Cerca de 2200'],
               ['Bird', 'Na app', 'Na app', 'Não publicados', 'Cerca de 1350'],
             ],

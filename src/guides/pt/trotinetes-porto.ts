@@ -10,14 +10,14 @@ const guide: Guide = {
   headline: 'Trotinetes no Porto: Bird e Lime, onde pode andar e onde estacionar',
   lede: 'Pode alugar trotinetes no Porto à Bird e à Lime, as duas empresas licenciadas pela Câmara em 2025; ambas têm também bicicletas elétricas na mesma app. Não encontrámos tarifas publicadas para o Porto: a app mostra o preço antes de desbloquear. A viagem termina sempre num ponto de partilha, marcado a azul no chão, e é proibido andar em passeios, praças, ruas pedonais, corredores BUS e no tabuleiro superior da Ponte Luís I. Desde novembro de 2025, o serviço pode funcionar 24 horas por dia.',
   published: '2026-10-13',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'pt:Porto',
   sections: [
     {
       heading: 'Que empresas têm trotinetes partilhadas no Porto?',
       blocks: [
         'Na hasta pública de maio de 2025 havia duas licenças e só duas concorrentes, a **Bird** e a **Lime**. Cada licença é válida por cinco anos, não é renovável e dá direito a 700 veículos (até 900 com acordo escrito do Município), pelo menos 40% deles bicicletas elétricas.',
-        'A Bird está no Porto desde o arranque do serviço, em 2020; a Lime começou em setembro de 2025, com 700 trotinetes e bicicletas. A Bolt teve trotinetes no Porto a partir de 2022, mas a 13 de outubro de 2026 não as incluía na página do Porto.',
+        'A Bird está no Porto desde o arranque do serviço, em 2020; a Lime começou em setembro de 2025, com 700 trotinetes e bicicletas. A Bolt teve trotinetes no Porto a partir de 2022; a 13 de outubro de 2026 não as incluía na página do Porto, mas a 25 o nosso mapa mostrava cerca de 550.',
         {
           table: {
             caption: 'Trotinetes partilhadas no Porto: operadores e preços (13 de outubro de 2026)',
@@ -44,7 +44,7 @@ const guide: Guide = {
             'túneis.',
           ],
         },
-        'As trotinetes estão limitadas eletronicamente a 25 km/h. Nas ruas das zonas de acesso automóvel condicionado (ZAAC) do centro, como Carmelitas, Cedofeita, Flores, Ribeira, Santa Catarina e Tito Fontes, abrandam sozinhas para 10 km/h.',
+        'As trotinetes estão limitadas eletronicamente a 25 km/h. Nas ruas das zonas de acesso automóvel condicionado (ZAAC) do centro, como Cedofeita, Flores e Ribeira, abrandam sozinhas para 10 km/h.',
         {
           table: {
             caption: 'De trotinete partilhada em alguns sítios do Porto: a nossa leitura das regras (outubro de 2026)',
@@ -98,7 +98,7 @@ const guide: Guide = {
             ],
           },
         },
-        'O capacete pode voltar a ser obrigatório: a 30 de setembro de 2026, a Assembleia da República aprovou na generalidade dois projetos de lei nesse sentido, com coima prevista de 30 a 150 €. Ainda não são lei: faltam a discussão na especialidade e a votação final global.',
+        'O capacete pode voltar a ser obrigatório: a 30 de setembro de 2026, a Assembleia da República aprovou na generalidade dois projetos de lei nesse sentido, com coima prevista de 30 a 150 €. Faltam a discussão na especialidade e a votação final global.',
         'O seguro não é obrigatório para quem conduz, e o regulamento do Porto obriga os operadores a segurar os utilizadores. Mais pormenores nas [regras da trotinete elétrica em Portugal](guide:portuguese-rules); para Lisboa, que tem regras próprias, veja [trotinetes em Lisboa](guide:lisbon).',
       ],
     },

@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Laut Stadt vermieten vier Anbieter in Münster E-Scooter: **Dott**, **Bolt**, **Voi** und **Qick**. Dott hiess früher TIER; wer TIER fuhr, nutzt heute die Dott-App. Qick aus Schweden ist seit März 2026 mit gelben Scootern in der Stadt und wird oft «Quick» geschrieben. Lime hat sich laut Stadt zurückgezogen, Bird ist ebenfalls weg.',
         'Du leihst den Scooter in der App des Anbieters, ab 18, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte rund um Münster](map:de:Münster) Dott und seit dem 24. Oktober 2026 auch Voi und Qick: an jenem Samstag kurz nach 15 Uhr rund 1300 Dott- und 1050 Voi-Scooter, kurz nach Mitternacht rund 1750 Qick-Scooter. Das sind Momentaufnahmen, keine Flottengrössen. Bolt-Scooter siehst du nur in der App.',
+        'ScootRadar zeigt auf der [Karte rund um Münster](map:de:Münster) Dott, seit dem 24. Oktober 2026 auch Voi und Qick und seit dem 25. Oktober Bolt: an jenem Samstag kurz nach 15 Uhr rund 1300 Dott- und 1050 Voi-Scooter, kurz nach Mitternacht rund 1750 Qick-Scooter, am Sonntag kurz vor 14 Uhr rund 1000 von Bolt. Das sind Momentaufnahmen, keine Flottengrössen.',
         'Handorf, Wolbeck, Roxel, Amelsbüren und das Zentrum von Kinderhaus liegen laut Dotts Datenfeed ausserhalb seines Gebiets; ob die anderen dort fahren, zeigt nur deren App.',
       ],
     },
@@ -179,7 +179,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App brauche ich in Münster?',
-      answer: 'Die von Dott (früher TIER), Bolt, Voi oder Qick, den vier Anbietern laut Stadt; die gelben Scooter gehören zu Qick. Freie Dott-, Voi- und Qick-Scooter zeigt auch die [Live-Karte von Münster](map:de:Münster), die von Bolt nur dessen App.',
+      answer: 'Die von Dott (früher TIER), Bolt, Voi oder Qick, den vier Anbietern laut Stadt; die gelben Scooter gehören zu Qick. Freie Scooter aller vier zeigt auch die [Live-Karte von Münster](map:de:Münster).',
     },
     {
       question: 'Wie viel kosten zehn Minuten E-Scooter in Münster?',

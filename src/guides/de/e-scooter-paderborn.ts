@@ -19,7 +19,7 @@ const guide: Guide = {
         'Die Stadt nennt auf ihrer Seite «Mobilitätsangebote in Paderborn» (Stand 8. April 2026) drei Anbieter: **TIER**, das heute **Dott** heisst, seit Dezember 2019; **Bolt** seit Dezember 2021, in der Kernstadt und in Schloss Neuhaus; **Voi** seit April 2025. «Insgesamt dürfen 1.200 E-Scooter in Paderborn fahren», schreibt sie; ihr Serviceportal nennt Tier/Dott, Bolt und Voi. Voi startete laut eigener Mitteilung am 10. April 2025 mit rund 400 Scootern. Bolt nennt auf seiner Paderborn-Seite als Kategorien «E-Scooter» und «E-Scooter auf Abruf», keine E-Bikes. Lime nannte die Stadt im Januar 2024 noch, heute nicht mehr.',
         'Gemietet wird in der App des Anbieters, laut deren Bedingungen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Die Sondernutzungssatzung der Stadt (Fassung ab 1. März 2026) verlangt von Verleihern eine Erlaubnis und begrenzt die Zahl der Leih-Scooter im Stadtgebiet «auf maximal 1.200» (§ 2); je Scooter und angefangenem Kalendermonat zahlt der Anbieter 3,80 € (Gebührentarif Nr. 15). Obergrenze und Gebühr binden die Anbieter, nicht dich.',
-        'Die [Karte von Paderborn](map:de:Paderborn) zeigt Voi und Dott: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 710 freie Scooter, rund 420 von Voi und knapp 300 von Dott, kurz nach Mitternacht knapp 700. Das ist eine Momentaufnahme, keine Flottengrösse. Am Sonntagmorgen standen alle in der Stadt: rund 600 in der Kernstadt, gut 80 in Schloss Neuhaus, gut 20 in Elsen. Für Voi zeigt die Karte auch Fahrgebiet, Parkverbots- und Abstellzonen, für Dott nur Standorte. **Bolt fehlt auf unserer Karte**; seine Scooter siehst du nur in der Bolt-App.',
+        'Die [Karte von Paderborn](map:de:Paderborn) zeigt Voi, Dott und seit dem 25. Oktober Bolt: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 710 freie Scooter, rund 420 von Voi und knapp 300 von Dott, kurz nach Mitternacht knapp 700. Das ist eine Momentaufnahme, keine Flottengrösse. Am Sonntagmorgen standen alle Voi- und Dott-Scooter in der Stadt: rund 600 in der Kernstadt, gut 80 in Schloss Neuhaus, gut 20 in Elsen. Für Voi zeigt die Karte auch Fahrgebiet, Parkverbots- und Abstellzonen, für Dott nur Standorte. Von Bolt zeigte die Karte am Sonntag kurz vor 14 Uhr knapp 300 Scooter, mit Standort und Akkustand.',
       ],
     },
     {
@@ -125,14 +125,14 @@ const guide: Guide = {
             '**Flughafen Paderborn/Lippstadt:** rund 20 km entfernt, ausserhalb von Vois Gebiet; zum Hauptbahnhof fahren laut Uni die Busse S60 und 460.',
           ],
         },
-        'Wie es in Bielefeld mit Dott und Bolt läuft, steht im Ratgeber [E-Scooter in Bielefeld](guide:bielefeld). Freie Voi- und Dott-Scooter in deiner Nähe zeigt die [Live-Karte von Paderborn](map:de:Paderborn).',
+        'Wie es in Bielefeld mit Dott und Bolt läuft, steht im Ratgeber [E-Scooter in Bielefeld](guide:bielefeld). Freie Voi-, Dott- und Bolt-Scooter in deiner Nähe zeigt die [Live-Karte von Paderborn](map:de:Paderborn).',
       ],
     },
   ],
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Paderborn?',
-      answer: 'Laut Stadt Voi, Dott (früher TIER) und Bolt, jeweils in der App des Anbieters, ab 18 und ohne Führerschein. Unsere Live-Karte zeigt Voi und Dott, Bolt nur die Bolt-App.',
+      answer: 'Laut Stadt Voi, Dott (früher TIER) und Bolt, jeweils in der App des Anbieters, ab 18 und ohne Führerschein. Unsere Live-Karte zeigt alle drei.',
     },
     {
       question: 'Was kostet ein E-Scooter in Paderborn?',
