@@ -296,12 +296,13 @@
       "anchorNote": "Inland, between Uppsala and Kiruna, and clear of Norway's total.",
       "featuredCities": ["se:Stockholm", "se:Uppsala", "se:Malmö", "se:Lund", "se:Kiruna"],
       "credits": {
-        "attribution": "Sweden: Lime, Hopp GBFS; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map",
+        "attribution": "Sweden: Lime, Hopp GBFS; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map; Lime authenticated rider map",
         "gbfs": ["Lime", "Hopp"],
         "links": [
           { "label": "SE: Voi map", "href": "https://www.voi.com/" },
           { "label": "SE: Qick map", "href": "https://www.qickscooters.com/" },
-          { "label": "SE: Bolt map", "href": "https://bolt.eu/" }
+          { "label": "SE: Bolt map", "href": "https://bolt.eu/" },
+          { "label": "SE: Lime map", "href": "https://www.li.me/" }
         ]
       }
     },

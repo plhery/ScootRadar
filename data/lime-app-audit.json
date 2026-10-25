@@ -1229,6 +1229,40 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Vienna_2131_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "SE",
+      "city": "Göteborg",
+      "regionToken": "XU6YQUL2JCYK6",
+      "fingerprint": "b99f9e2bb0f6d2709975b1a4ecefb228bc62aa6052c7271a8c3f36f702daaf5c",
+      "groups": 19,
+      "localCells": 76,
+      "coldMapRequests": 96,
+      "warmMapRequests": 96,
+      "scooters": 2303,
+      "stationaryReferences": 126,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T18:09:37.439Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Gothenburg_410_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "SE",
+      "city": "Malmö",
+      "regionToken": "ANAAMO7H43UD4",
+      "fingerprint": "b2d26f3d51f8608aa97591bfb4b114f3c90c388fab62ec7baee1986ff8fb6e6a",
+      "groups": 28,
+      "localCells": 112,
+      "coldMapRequests": 112,
+      "warmMapRequests": 112,
+      "scooters": 447,
+      "stationaryReferences": 18,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T18:22:55.306Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Malmo_269_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

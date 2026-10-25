@@ -13,8 +13,8 @@ including their disconnected service areas, and since 25 October 2026 in
 London, Birmingham, Coventry, Milton Keynes and Salford, in 39 German
 markets, from Berlin and Munich to Waiblingen, in ten Italian ones, from
 Roma and Milano to Rimini, in six Polish ones, from Warszawa to Wrocław, and
-in five Austrian ones, from Wien to Wels.
-The other markets its rider map lists, 149 found so far, are added country by
+in five Austrian ones, from Wien to Wels, and in Göteborg and Malmö.
+The other markets its rider map lists, 145 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -277,7 +277,10 @@ banned shared scooters, and feeds that were empty when checked.
     empty that day. Ryde's and Dott's remain gaps.
   - Dott's 12 Swedish regions in the registry (Göteborg, Eskilstuna,
     Helsingborg and others) answer 404, and its Swedish listing is empty.
-  - Lime Stockholm, Göteborg and Malmö answer 404.
+  - Lime Stockholm, Göteborg and Malmö answer 404. Lime's Göteborg and
+    Malmö scooters come from its [rider map](lime-app-map.md) since
+    25 October 2026; its Stockholm region held none that day, as Stockholm's
+    permits went to Voi and Bolt alone from 1 July 2026.
   - Zeus Borlänge, Falun, Halmstad, Karlstad and Gävle list only disabled
     scooters, last reported in 2022 and 2023.
   - Qick's GBFS systems 5, 10, 53 and 104 answer "GBFS disabled", but its

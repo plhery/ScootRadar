@@ -98,7 +98,7 @@ describe('the countries of data/countries.json', () => {
       'DE/SE: Qick map',
       'DE/AT/IT/ES/PL/HU/GR/FI: Dott map',
       'DE/AT/IT/NO/UK/DK/SE/FI: Voi map',
-      'CH/FR/DE/IT/BE/PT/ES/PL/FI/UA: OpenStreetMap boundaries · ODbL', 'BY: Whoosh map', 'DE/AT/IT/UK/PL/RO/CZ: Lime map', 'TR: Beam map',
+      'CH/FR/DE/IT/BE/PT/ES/PL/FI/UA: OpenStreetMap boundaries · ODbL', 'BY: Whoosh map', 'DE/AT/IT/UK/SE/PL/RO/CZ: Lime map', 'TR: Beam map',
       'DE/BE/PT/IS/SE/LV/PL/CY/UA/RO/EE/LT/SK/BG/MD/SI/IE: Bolt map', 'TR/MK/BA/XK: BinBin map',
       'DE/IT/BE/UK/PT/LV/PL/CY/UA/RO/CZ/EE/LT/SK/BG/MD/SI/IE/MK/BA/XK: GeoNames · CC BY 4.0',
       'CA: City of Toronto · OGL Toronto',

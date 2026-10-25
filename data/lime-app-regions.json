@@ -1634,6 +1634,44 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Vienna_2131_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "SE",
+      "city": "Göteborg",
+      "center": [
+        57.70169,
+        11.98838
+      ],
+      "timeZone": "Europe/Stockholm",
+      "regionToken": "XU6YQUL2JCYK6",
+      "serviceAreas": [
+        {
+          "name": "Latest Service Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "_pe_J{hogAPed@yByL_EzCmAoClB_Hr@yJfGcJnGoWtCb@?BvDp@^oE~IzEKlKrAbE`GfCv@eMHs@NSgG}ZxEaJDaRxFoL|EtNj_@}JzFdRzLmSpLfHrLI|FvQd@bIMdGlCfLq@~RcOtPsGyRaDt@hDdc@tCuExRdRc@nGBjPs@|LkCrFTjCfBnBhEaCvB~a@~DhQbGlGnOzCSdIaQs@_@tLi@lFxHn@t@xHvBnGQfIJpErCaArDXvCrJjA~IxCvFrGtFtCeH`C~FoBxG|DrF`AT~@]l@_GP_RdHPa@lNpBdBx@~FDtE]nJrAzAlA_DlCgB~FwAIgIeFaAW}F`AyEpJvJ|@nDD`DMtP`@zQhE`LtGg@vEmKu@aSuDaO_GmE{@qDyCuC}KcKcG{H{GmAuGVwD{Am@iFJ{CxAmJxM]MyP~E_BdR{AlOJi@tI|@|KlBgBgAsGpAkJrM|AhAhJnGzBrBeGfNvD~GtGhG~N\\rKNjI`DeDsAwGfF}WxEqF`HVpCaJoGsE}BiVvEqP{GeJbAaFbBsJt@}M|BsGV`Fr@zBxCkDXbFn@h@nAiCrDeAdCjKnA~Hq@lIhARbAaKlDiB`IbQxAiBxC_d@p@_KIiIpB{L|DcJzDs[oAyK{@oQC}JFgBd@K`@cHAgI}AuZ{@uKeByImDqIeGuTeIoOuLqEuI{Io@gGrNS]mHsPj@eCq^wFgCjBx_@iMlBHqLqDkIvAw[oG{@JqEXkK|MKOqkA^qh@e`@R{RtDoMhM}EhAiFnVmGKoTwC{H}CT`NoB~McHzCs@lEge@yIeFs@mEsDoD_G_@kHAmDC{Es@qJaA_JmEqDeCQcCCoETeGkHqAa@SgGdOc`@|Eo`@xCsOv@iBfGoKPq@ZoCJLVcCyAsbAQaBKgFWoAMuAQqA?aAHKRgEuAsx@McN\\mAbAiEn@K~@Fv@_@qCm`@eCdCqA{PyA|@Y_FrBiAa@kH{@yGtCcE|D_E]}DeBgEyBwBnJqLjOg^qFLTqOMCi@sFbAqIqKbBoc@bZKFt@p]wSxa@cd@`Yi@G_FDg@eAyAqBgB]qEHwDXwEKiDCSO[i@So@kAwQiFoXoBgPm@sG`EaECmQeCaMvEoKlI}KbFqBzF^lGk@xDgCfEBjBfEjEj@f@gNoJwCeEXoFnD}EJmJZ_K|FuGjK}@_@}DmA]}BuA_LyAgHeAgAgCP{BxJc@tIQpFoAzCqAnA[d@yXeHE_B}@kMMcL_DgGoCaDyAeI^wKoBmO@}@sAwL{CePmBkGQuJHsKOyAjFyFtBE`OzNj@WJ{FwLeLcAeGoD}CqEwA@EqAs@{CqCcDqMC@s@sCaDjBeBdAaAj@_BrCcGlEgSdKkMfJ}EnB{FxEoEhBgIpAuOvAScEK_I?cBQ}Da@aEO{BQcHAcDGeCYqDO}DKgFMeCEY?_HBm@IoDFaELgDAcCG_AGiCFqCEkAQsBHaELwAZqBOQWsEm@oDC?O_@]sB]q@g@m@GWMuAu_@~JRzBi@B{Ad@{@Vr@zXiA~Bu@lFkCdAQxDhBbEzD`FCnHgCdEi@hU}AhMzB|Ic@xKuBrI_CrC}B~JkAZg@_B{Ba@n@{GbB}Hg@kAo@l@yB|Pe@`@iDsB}IqW}JaFKcGn@gGXqNjAkI`B{DnF{HxAyEnAgNbC_AbHk@p@oBx@ySsG`B}@DcAnFFpJkAzAy@CeDoSgDuE{DeBuFGsJeBgMlCuDzK}RbDa@sRxL_FtKiTiAoGc[nVkFnc@yCj]aGne@s@zR`CrVfGrZpMbKpBoNnCu@xMnIrJlL~KvDo@eStJoAzAmJvJxW|EnEeC|Phb@jJxSlQ_AbK{Apf@gDbH_W_VtEM@gHgGeDeHeH?qBvHsBOcCaDoA{KKg@zP|@nBrAf@SzAiK}GuQ_IcHwJ_TsX_HcDwG|DyByBaTaVC~EwBrBMaDiA{DqBVmB`CMyCe@{@}EjHlDbSnCxExA|HaCdCOjRfCnHlFvDoCjFp@zDfC`A|@aIpBCHdD|C[IhHxIAnAdLjDl@vB_@vAr@s@lGhDhHvFIp@z@?vG}Bj@SzKdCnD`Bx@_@hDmAw@gAX[bDfAhAjQbVng@`y@b\\hQlh@vOjNxH|FzFtAfAjHlDtAv@{Kxe@uGtAwKyLio@{Om[_JqZwEu_@pKyGB^le@VhWjDfY|Fj^tUqHvU`HnF`ImFdeA~NpSxCh{@xKeBnE~nAjq@gFh@jCbNvPu@`FwDSlAbItHvJy@fNoAlAaC~@a@dGHxFiAxRH~D{@f@v@dFqBtDf@rIPj@rEwJtD|LmDpm@r@lu@oFxLaHeDiKkANnEwLmAuIqRg@pBuGvLvApOvHj@hApQ~E|W|ChBdGfMfDtErGnBnHo@h@uHzQvAjRjDzD}DvPt@zL`AzLpAzF}EpE?pDdFbEaAxChEtCrEzAbA|DiH`DtFvMln@xK`p@~Bp|@oGjc@uMpa@sHfKeMjLwKuM}LcM_UcHwSjA{CmLwA}C}@qFJkDj@kErEeEjDuNnHuf@_E{Cqh@sa@ap@sUy\\dYgG|^zWpb@hF{Ur]sThGfd@eRzL{G``@bg@xs@p@rt@th@^c^hwAhf@b@fUsSxGwU`RccAzNrBtVua@hMqb@zKa]{Eiz@aKu|A"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Gothenburg_410_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "SE",
+      "city": "Malmö",
+      "center": [
+        55.5825,
+        12.98844
+      ],
+      "timeZone": "Europe/Stockholm",
+      "regionToken": "ANAAMO7H43UD4",
+      "serviceAreas": [
+        {
+          "name": "[Malmo][SZ][[Malmo][Main SZ] Service Zone Dec 2025][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "qxtrIkzqnA~DbgHnlAdzApd@rVvNlq@xWnUfn@vXb\\lq@vQpd@y@fjBzjBheDvh@~b@bIrVb_@lh@lVvVlr@`Ez~Af}@b~@c^ra@ip@~O`@~O|[tg@jStx@xJ`x@kSxp@mlBhf@}b@cp@wgEm]gmA|I_jAxAoFgAmj@wHakAoEYe@sjAOoS|@mL~@gb@fCiEx@cW|@uUe@wTkH{ZyPgsBkIpEcNmpAo@yEqQkUyCuC_BMuOkHrBmq@IqCoK_lCp@iHg@uZ?eOlB{XeAuLeBuMu@wFY}DGwAJmBP@a@wIyKqBkBBoI~@}ERgD|AcAIgAe@mAWUO}Ak@e@{Cm@wD[eC[oDMoBg@yEIsC[yBs@uGw@gIy@kIuDwO{BaMaWm|@mJgNYjB]^SSKAWb@aA~BWf@Eb@i@xAE~AE`@KXKPcA\\ILK|@Ux@HdCU|B{AhDgBxGShCWvBNrAq@zD[KqBd@i@dCw@X_AhAi@fCaB|@d@dBWr@iA^yAw@i@nCa@v@i@Pe@Ae@VYMGm@M[OEc@\\e@k@qAASYYsBY_A_C{AiCiAOJS^wCfRGfBp@zC@xAYpAw@tBGB{B|BkAq@cD|EqApEa@TaA}@sCaA]h@{@b@yB{Cy@kF?gAg@mBqAuJB]A[a@s@CgCq@qFSqA?k@qBuIeAmBRoNo@mC_AqA_BaCWuBFwOj@_B?k@Oy@cAsBAc@z@uSNyDkA_CmHeOuFqPiBmB?u@s@cGo@eAo@}AkFqByCMkHp@w@fGiDbDcB`Ew@dEyDhMq@^m@tBu@bBk@`@G_A{Ac@yCoEmCs@[uF}BuBwAaDuGcNgIaFuH^cIySy@gAqUrTjBhPyFpNsAYmAuAaBTsArB}G`@yMdLiGYgF_JsKdPgJ`D_OmMmWuFqC|QuBu@qGz~@uC`ZGlWRrb@_@LOIiAZXt@DXCZIZYn@jAp@x@j@~@z@hA`BvA~CtDxIfBbEhBdDrA|BaD~UOpDHdLPjFNbMMdK{ATgBn@kBjAgBfB_JnJeJfEBxCFlBLxATrA\\rAf@`AkFFgE?v@fHg@TXXB^pBzT]t@aNrF`BpMo@vLpApJlDrIBnD@nAl@xIn@~FL\\Bj@d@~BAv@M\\g@@IfBWv@_@\\OJMd@?La@Vu@KwAwASFiEsDa@KgBFoAX}@LYHuBIkC|@qDOs@q@_AKsAFi@}GsDr@}ARsGzA@vHwE_@eEzDoFaDkIe@_E_BkBh@iBr@Qj@PRw@Ru@Mo@q@g@MsErCDZpEnI?Vn@r@`BnBQn@dDzDl@jAbEjFwCpKqDeGDUqAuBe@i@sAoCy@tCkGgLwGfUoQnq@mC`V{AjPw@rGoC|XkElUiBza@}Or^_eAcyA"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Malmo_269_exclude_new_type.json"
+      ]
     }
   ]
 }

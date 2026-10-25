@@ -5,6 +5,12 @@ Linköping, Norrköping, Jönköping, Eskilstuna, Falun and Borlänge. See the
 [ATOM adapter evidence](atom-app-map.md). The following audit describes
 the original public GBFS feeds; Qick is a separate source with its own credit.
 
+Update, 25 October 2026: Lime's scooters in Göteborg and Malmö, about 2,750,
+come from its [authenticated rider map](lime-app-map.md), each market after a
+clean full-area audit. Its Stockholm region, with Bromma and Solna and
+Sundbyberg, held no scooter that day: Stockholm's permits went to Voi and
+Bolt alone from 1 July 2026.
+
 Verified 13 October 2026. The audit started from the
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
 and Dott's Swedish listing, then probed the URL patterns of Lime, Hopp and Bolt
@@ -112,7 +118,8 @@ No covered Swedish town bans renting at night, so
   Varberg, Värnamo, Växjö) answer 404 `ERR_REGION_NOT_FOUND`, and Dott's
   Swedish listing names no region.
 - **Lime** Göteborg and Malmö answer 404, as do the other Swedish towns
-  guessed.
+  guessed. Their scooters come from Lime's rider map since 25 October 2026
+  (see the update above).
 - **Zeus** Borlänge (35 scooters), Falun (13), Halmstad (14), Karlstad (1) and
   Gävle (0) list only disabled scooters, last reported in 2022 and 2023.
 - **Hopp** answers 404 for every other Swedish town tried, Gällivare and Visby

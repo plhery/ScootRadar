@@ -519,6 +519,55 @@
       "boltAppCategories": [
         "480"
       ]
+    },
+    {
+      "id": "lime_se_app_goteborg",
+      "provider": "lime",
+      "city": "Göteborg",
+      "center": [
+        57.70169,
+        11.98838
+      ],
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "XU6YQUL2JCYK6",
+      "limeMapGrid": {
+        "south": 57.63395,
+        "west": 11.82219,
+        "north": 57.76687,
+        "east": 12.08228,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.025170937837626965,
+        "cells": "1-5,11-16,22-26,29,34-41,46-52,55-64,66-75,77-87,89,92-98,105-109"
+      }
+    },
+    {
+      "id": "lime_se_app_malmo",
+      "provider": "lime",
+      "city": "Malmö",
+      "center": [
+        55.5825,
+        12.98844
+      ],
+      "timeZone": "Europe/Stockholm",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "ANAAMO7H43UD4",
+      "limeMapGrid": {
+        "south": 55.49435,
+        "west": 12.86961,
+        "north": 55.65337,
+        "east": 13.15153,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.023786345812421762,
+        "cells": "0-6,12-19,24-34,36-83,85-95,97-107,111-116,123-128,136-139"
+      }
     }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Gothenburg_410_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Malmo_269_exclude_new_type.json"
   ]
 }
