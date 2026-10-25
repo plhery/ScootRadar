@@ -428,7 +428,7 @@
       "id": 6,
       "type": "stat",
       "title": "Memory",
-      "description": "Resident memory. The container is limited to 1536 MiB.",
+      "description": "Resident memory. The container is limited to 2048 MiB, of which Node gives the V8 heap 1072 MiB.",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -468,11 +468,11 @@
               },
               {
                 "color": "orange",
-                "value": 1000000000
+                "value": 1400000000
               },
               {
                 "color": "red",
-                "value": 1300000000
+                "value": 1800000000
               }
             ]
           }

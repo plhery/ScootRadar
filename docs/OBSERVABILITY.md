@@ -196,7 +196,7 @@ The alert rules:
 | ScootRadar feed empty | a feed has listed no available scooter for 3 days, outside its seasonal pause (see [Empty feeds](#empty-feeds)); a warning, repeated once a day |
 | ScootRadar feed discovery stale | no successful discovery for 2 hours |
 | ScootRadar cache restarting | one build has restarted more than three times in an hour (a deploy is not counted) |
-| ScootRadar cache memory high | over 1.3 GB for 15 minutes (the limit is 1536 MiB) |
+| ScootRadar cache memory high | over 1.8 GB, or a V8 heap over 1 GB, for 15 minutes (the container's limit is 2048 MiB, of which Node gives the heap 1072 MiB, and the heap runs out first) |
 | ScootRadar Geoapify near its daily limit | address searches sent Geoapify over 2,400 requests in 24 hours (its free plan allows 3,000 a day); a rolling day, so it fires no later than the calendar day does |
 
 While the cache cannot be scraped, as for a moment during a deploy, every rule but
