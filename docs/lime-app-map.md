@@ -137,6 +137,8 @@ did its Arad, Brașov, Constanța and Galați regions, and Oradea's held a singl
 scooter; check Constanța, on the Black Sea, again in summer. In Bulgaria,
 neither did any of its six regions, Sofia, Plovdiv, Varna, Burgas, Ruse and
 Stara Zagora; check Varna and Burgas, on the Black Sea, again in summer.
+In Belgium, neither did its Brussels region: Lime's public Brussels feed
+lists e-bikes only, and Brussels bans shared scooters from 1 January 2027.
 
 - Zones named as demos, tests, warehouses, events or temporary areas are left
   out, as Rome's three temporary areas and Dortmund's warehouses. So is the
@@ -175,6 +177,7 @@ stationary reference scooter, country by country:
 | 25 October 2026 | Hungary: 15 markets, Budapest, Szeged and Székesfehérvár the largest | 470 | 122 | 7,760 | 465 |
 | 25 October 2026 | Romania: 7 markets, Bucharest, Cluj-Napoca and Iași the largest | 183 | 48 | 6,995 | 351 |
 | 25 October 2026 | Greece: Athens, Kifisia, Thessaloniki, Heraklion | 111 | 30 | 4,442 | 252 |
+| 25 October 2026 | Belgium: Antwerp | 42 | 11 | 880 | 19 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

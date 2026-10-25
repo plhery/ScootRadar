@@ -128,13 +128,14 @@
       "anchor": [50.6, 4.6],
       "featuredCities": ["be:Bruxelles", "be:Antwerpen", "be:Oostende", "be:Charleroi", "be:Kortrijk", "be:Mechelen"],
       "credits": {
-        "attribution": "Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Bolt authenticated rider map; city centres from GeoNames",
+        "attribution": "Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map",
         "gbfs": ["Bolt", "Dott", "Voi", "Hoppy"],
         "links": [
           { "label": "BE: Pony · transportdata.be", "href": "https://transportdata.be/dataset/pony_charleroi" },
           { "label": "BE: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
           { "label": "BE: Bolt map", "href": "https://bolt.eu/" },
-          { "label": "BE: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
+          { "label": "BE: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" },
+          { "label": "BE: Lime map", "href": "https://www.li.me/" }
         ]
       }
     },

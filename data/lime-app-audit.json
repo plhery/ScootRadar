@@ -1773,6 +1773,23 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Thessaloniki_371_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "BE",
+      "city": "Antwerpen",
+      "regionToken": "DCQCNILUA3CFP",
+      "fingerprint": "b3036f54c23b05461eb88922cab5328d2ce05919a760021df5289870f5cbfeb7",
+      "groups": 11,
+      "localCells": 42,
+      "coldMapRequests": 42,
+      "warmMapRequests": 42,
+      "scooters": 880,
+      "stationaryReferences": 19,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T22:05:16.676Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Antwerp_762_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

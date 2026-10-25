@@ -24,6 +24,8 @@ the University of Warwick), Milton Keynes and Salford were added on
 25 October 2026 from its authenticated rider map, which covers each
 of these markets whole; see
 [the Lime guide](lime-app-map.md#every-market-the-map-lists-october-2026).
+Lime's scooters in Antwerpen, about 880, followed the same way that day;
+its Brussels market held no scooter.
 The table lists the public feeds.
 
 | Country | Operator | Enabled feeds | Coverage | Available scooters |
@@ -477,7 +479,9 @@ stays open at night.
     scooters, all disabled.
   - Lime Brussels and Kortrijk, Dott Ghent and Mons, and Bolt Ghent publish
     e-bikes only.
-  - Lime Antwerp answers 404.
+  - Lime Antwerp's public address answers 404; its scooters come from Lime's
+    rider map since 25 October 2026. That map's Brussels market held no
+    scooter in its full-area audit that day.
   - Bird Antwerp has been empty for years.
   - Dott Kortrijk answers 404.
   - Hoppy's Vervoerregio West-Vlaanderen (ATOM id 2010), Kempen (1973) and

@@ -2318,6 +2318,28 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Thessaloniki_371_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "BE",
+      "city": "Antwerpen",
+      "center": [
+        51.22047,
+        4.40026
+      ],
+      "timeZone": "Europe/Brussels",
+      "regionToken": "DCQCNILUA3CFP",
+      "serviceAreas": [
+        {
+          "name": "[Antwerp] [Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "mqiwHmmaZ??{UqOgD{BuEjIw@r@}HjHm]su@{V}Oa@cSw\\gKjAo_@wFoK`CkJo@w[qvAco@oPop@m\\oNyV|A_WxIuUtBeg@h@k_@rKrAxh@kEdTdClu@c]fSwLsDyOhIol@g`@qCt|AqDnShAns@a\\jj@}MvDs@nUSfRSxQ`AhKnb@f@dIxAtOJxJdKlPqGfHnF`@fStI|L|NkAe@q@pD}XmGwNEkCvCcMpCgEhFwCvISdF@bQJzH@nDBnC@CvEC|DLpD@fRoBBqHIyBB_D@CkFe@IW?QA]DB|EEzGFtLAfH_AD_AB_@Ai@@mB?Ca[BkSDoDPu@AMCMKAWEk@Gg@Ku@CgA]eBK{@n@q@r@s@l@w@xCaA`IaAfIm@rIHf@?rA[nCi@~F]dE?vBDdEAvGTbDhApD~@`DzAhDvC`GpA|BFFn@pA~@`AdAs@hCwC`BqAx@QrAi@v@[p@W~@s@DgG@_CpA?J\\v@l@h@Nf@Pf@`@n@\\|@JbBP`DDzBX|Bb@nBLf@R`@Cp@NnAPv@@bBKf@FLF?l@Fz@d@bBhBtA@bA@zFO~JDxHEjF?jBClCeG}Ci@N}@fHoWKFyP_@s@oE`Ay@AoClL}CxZu@j^U|\\Rf^~@vXde@~Blj@s@HxnCpFhAxT_FT{@zAgFjBiGJkPnLu[`LwWlO_YvLkK~\\{_@|b@trC~FmH{@sGBkFRwCrh@gj@RrBEjBZn@~@x@pEiFrg@|~AlaAxCn[sk@}UylD~AkLsBexA]{wBiFgsBuAgT"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Antwerp_762_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Antwerp"
+      ]
     }
   ]
 }

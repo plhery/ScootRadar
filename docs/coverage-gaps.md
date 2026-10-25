@@ -16,8 +16,8 @@ Roma and Milano to Rimini, in six Polish ones, from Warszawa to Wrocław, and
 in five Austrian ones, from Wien to Wels, in Göteborg and Malmö, in
 København and Odense, in Brno and Ostrava, in 15 Hungarian markets, from
 Budapest to Szigetszentmiklós, in seven Romanian ones, from București to
-Târgoviște, and in Athens, Kifisia, Thessaloniki and Heraklion.
-The other markets its rider map lists, 96 found so far, are added country by
+Târgoviște, in Athens, Kifisia, Thessaloniki and Heraklion, and in Antwerpen.
+The other markets its rider map lists, 94 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -206,7 +206,9 @@ banned shared scooters, and feeds that were empty when checked.
     and Genk systems. Bolt's scooters in Antwerpen, Liège, Charleroi, Namur
     and Dinant come from its [rider map](bolt-app-map.md) since 25 October
     2026.
-  - Lime Antwerp and Dott Kortrijk answer 404. Bird Antwerp is empty.
+  - Lime Antwerp and Dott Kortrijk answer 404. Bird Antwerp is empty. Lime's
+    scooters in Antwerpen come from its rider map since 25 October 2026; the
+    map's Brussels market held no scooter that day.
 - **Norway** ([guide](belgian-norwegian-british-scooter-feeds.md#known-gaps)):
   - Bergen (~9,000 scooters: Ryde, Lime, RideMovi), Drammen and Larvik have
     no public source.

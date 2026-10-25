@@ -1173,6 +1173,14 @@ enum ScooterProviderCoverage {
         systems.append((.bolt, GeoBounds(south: 50.2319, west: 4.8801, north: 50.2814, east: 4.9489)))
         systems.append((.bolt, GeoBounds(south: 51.1456, west: 4.3295, north: 51.2926, east: 4.5027)))
         systems.append((.bolt, GeoBounds(south: 50.5655, west: 5.5182, north: 50.6906, east: 5.6787)))
+        systems.append((.lime, GeoBounds(south: 51.16671, west: 4.34353, north: 51.18018467, east: 4.45097381)))
+        systems.append((.lime, GeoBounds(south: 51.18018467, west: 4.34353, north: 51.19365934, east: 4.47246257)))
+        systems.append((.lime, GeoBounds(south: 51.19365934, west: 4.34353, north: 51.207134, east: 4.48443)))
+        systems.append((.lime, GeoBounds(south: 51.207134, west: 4.34353, north: 51.22060867, east: 4.48443)))
+        systems.append((.lime, GeoBounds(south: 51.22060867, west: 4.34353, north: 51.23408334, east: 4.48443)))
+        systems.append((.lime, GeoBounds(south: 51.23408334, west: 4.36501876, north: 51.24755801, east: 4.48443)))
+        systems.append((.lime, GeoBounds(south: 51.24755801, west: 4.40799628, north: 51.26103267, east: 4.47246257)))
+        systems.append((.lime, GeoBounds(south: 51.26103267, west: 4.40799628, north: 51.26382, east: 4.42948504)))
         systems.append((.bolt, GeoBounds(south: 59.8134, west: 10.6189, north: 59.9862, east: 10.9552)))
         systems.append((.dott, GeoBounds(south: 63.4299, west: 10.8165, north: 63.5147, east: 10.997)))
         systems.append((.dott, GeoBounds(south: 63.3797, west: 10.3315, north: 63.4618, east: 10.5549)))
@@ -2904,7 +2912,7 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "be:Mechelen", name: "Mechelen", countryCode: "BE", center: GeoPoint(latitude: 51.0281, longitude: 4.4794), bounds: GeoBounds(south: 50.9977, west: 4.445, north: 51.0485, east: 4.5283), feeds: [ScooterCityFeed(id: "belgium:hoppy_be_mechelen")]))
         cities.append(ScooterCity(id: "be:Oostende", name: "Oostende", countryCode: "BE", center: GeoPoint(latitude: 51.2253, longitude: 2.9197), bounds: GeoBounds(south: 51.187, west: 2.8483, north: 51.2612, east: 2.9994), feeds: [ScooterCityFeed(id: "belgium:hoppy_be_oostende")]))
         cities.append(ScooterCity(id: "be:Sint-Niklaas", name: "Sint-Niklaas", countryCode: "BE", center: GeoPoint(latitude: 51.165, longitude: 4.1395), bounds: GeoBounds(south: 51.1416, west: 4.1029, north: 51.1882, east: 4.1829), feeds: [ScooterCityFeed(id: "belgium:hoppy_be_sint_niklaas")]))
-        cities.append(ScooterCity(id: "be:Antwerpen", name: "Antwerpen", countryCode: "BE", center: GeoPoint(latitude: 51.2211, longitude: 4.3997), bounds: GeoBounds(south: 51.1456, west: 4.3295, north: 51.2926, east: 4.5027), feeds: [ScooterCityFeed(id: "belgium:voi_be_antwerpen"), ScooterCityFeed(id: "belgium:bolt_be_app_1413")]))
+        cities.append(ScooterCity(id: "be:Antwerpen", name: "Antwerpen", countryCode: "BE", center: GeoPoint(latitude: 51.2211, longitude: 4.3997), bounds: GeoBounds(south: 51.1456, west: 4.3295, north: 51.2926, east: 4.5027), feeds: [ScooterCityFeed(id: "belgium:voi_be_antwerpen"), ScooterCityFeed(id: "belgium:bolt_be_app_1413"), ScooterCityFeed(id: "belgium:lime_be_app_antwerpen_000"), ScooterCityFeed(id: "belgium:lime_be_app_antwerpen_001"), ScooterCityFeed(id: "belgium:lime_be_app_antwerpen_002"), ScooterCityFeed(id: "belgium:lime_be_app_antwerpen_003"), ScooterCityFeed(id: "belgium:lime_be_app_antwerpen_004"), ScooterCityFeed(id: "belgium:lime_be_app_antwerpen_005"), ScooterCityFeed(id: "belgium:lime_be_app_antwerpen_006"), ScooterCityFeed(id: "belgium:lime_be_app_antwerpen_007"), ScooterCityFeed(id: "belgium:lime_be_app_antwerpen_008"), ScooterCityFeed(id: "belgium:lime_be_app_antwerpen_009"), ScooterCityFeed(id: "belgium:lime_be_app_antwerpen_010")]))
         cities.append(ScooterCity(id: "be:Namur", name: "Namur", countryCode: "BE", center: GeoPoint(latitude: 50.4669, longitude: 4.86746), bounds: GeoBounds(south: 50.4239, west: 4.7998, north: 50.511, east: 4.9156), feeds: [ScooterCityFeed(id: "belgium:bolt_be_app_290")]))
         cities.append(ScooterCity(id: "be:Dinant", name: "Dinant", countryCode: "BE", center: GeoPoint(latitude: 50.25807, longitude: 4.91166), bounds: GeoBounds(south: 50.2319, west: 4.8801, north: 50.2814, east: 4.9489), feeds: [ScooterCityFeed(id: "belgium:bolt_be_app_1393")]))
         cities.append(ScooterCity(id: "no:Oslo", name: "Oslo", countryCode: "NO", center: GeoPoint(latitude: 59.9109, longitude: 10.7528), bounds: GeoBounds(south: 59.8134, west: 10.6158, north: 59.9871, east: 10.9574), feeds: [ScooterCityFeed(id: "norway:bolt_no_oslo"), ScooterCityFeed(id: "norway:ryde_no_oslo"), ScooterCityFeed(id: "norway:voi_no_oslo")]))
@@ -4040,7 +4048,7 @@ enum ScooterCountryCatalog {
         ("BR/CL/MX/KZ/AZ/GE: JET map", "https://jetshr.com/"),
         ("BR/CL/MX/KZ/CO/BY: Whoosh map", "https://whoosh.bike/"),
         ("ZA: Zippy rider map", "https://zippyride.app.link/"),
-        ("DE/AT/IT/UK/DK/SE/PL/HU/GR/JP/CL/MX/RO/CZ/QA/AU: Lime map", "https://www.li.me/"),
+        ("DE/AT/IT/BE/UK/DK/SE/PL/HU/GR/JP/CL/MX/RO/CZ/QA/AU: Lime map", "https://www.li.me/"),
         ("AU/TR/MY/KR: Beam map", "https://www.ridebeam.com/"),
         ("US/KR: GCOO map", "https://gcoo.io/"),
         ("KR: Kickgoing map", "https://kickgoing.io/"),

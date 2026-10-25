@@ -410,6 +410,35 @@
       "boltAppCategories": [
         "1067"
       ]
+    },
+    {
+      "id": "lime_be_app_antwerpen",
+      "provider": "lime",
+      "city": "Antwerpen",
+      "center": [
+        51.22047,
+        4.40026
+      ],
+      "aliases": [
+        "Antwerp"
+      ],
+      "timeZone": "Europe/Brussels",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "DCQCNILUA3CFP",
+      "limeMapGrid": {
+        "south": 51.16671,
+        "west": 4.34353,
+        "north": 51.26382,
+        "east": 4.48443,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02148876100975776,
+        "cells": "0-4,7-12,14-34,36-41,45-47,52"
+      }
     }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Antwerp_762_exclude_new_type.json"
   ]
 }
