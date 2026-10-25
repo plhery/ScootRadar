@@ -273,3 +273,46 @@ it('serves older requested areas before areas a polling client requests again', 
     scheduler.stop();
   }
 });
+
+it('warms a deploy\'s new feeds up a stage at a time, so the feeds the cache holds keep their turns', async () => {
+  // 30 new feeds on three hosts, 20 seconds a first collection; Lyon, restored, is due 25 seconds in.
+  // All due at once, the new feeds would hold every slot until 100 seconds.
+  const added = Array.from({ length: 30 }, (_, i) => ({ id: `new-${'abc'[i % 3]}-${Math.floor(i / 3)}`, host: `host-${'abc'[i % 3]}` }));
+  const { scheduler, calls, times } = schedule([{ id: 'lyon', host: 'fr' }, ...added],
+    { lastCollectedAt: feed => feed.id === 'lyon' ? T0 - 19 * MINUTE : undefined,
+      phase: feed => feed.id === 'lyon' ? 25_000 / (20 * MINUTE) : 0 },
+    () => new Promise(resolve => setTimeout(resolve, 20_000)));
+  try {
+    await vi.advanceTimersByTimeAsync(0);
+    // The first stage: six, two on each host.
+    expect(calls.map(call => call.id).sort()).toEqual(['new-a-0', 'new-a-1', 'new-b-0', 'new-b-1', 'new-c-0', 'new-c-1']);
+    scheduler.demand(['new-c-9'], Date.now());
+    await vi.advanceTimersByTimeAsync(20_000);
+    // A new feed someone looks at goes first, its stage notwithstanding.
+    expect(calls.find(call => call.id === 'new-c-9')).toEqual({ id: 'new-c-9', at: 20_000, reason: 'wake' });
+    await vi.advanceTimersByTimeAsync(20_000);
+    expect(times('lyon')).toEqual([40_000 / MINUTE]);
+    await vi.advanceTimersByTimeAsync(3 * MINUTE);
+    expect(new Set(calls.map(call => call.id)).size).toBe(31);
+  } finally { scheduler.stop(); }
+});
+
+it('collects every feed at once on a cold start, and an always-fast new feed at once beside restored ones', async () => {
+  const cold = schedule(Array.from({ length: 12 }, (_, i) => ({ id: `feed-${i}`, host: `host-${i}` })), {},
+    () => new Promise(resolve => setTimeout(resolve, 20_000)));
+  try {
+    await vi.advanceTimersByTimeAsync(20_000);
+    expect(cold.calls.map(call => call.at / 1000)).toEqual([...Array(6).fill(0), ...Array(6).fill(20)]);
+  } finally { cold.scheduler.stop(); }
+  vi.setSystemTime(T0);
+  const restored = schedule([{ id: 'lyon', host: 'fr' }, ...Array.from({ length: 12 }, (_, i) => ({ id: `new-${i}`, host: `host-${i}` })),
+    { id: 'basel', host: 'ch', fast: true }], { lastCollectedAt: feed => feed.id === 'lyon' ? T0 - 5 * MINUTE : undefined });
+  try {
+    await vi.advanceTimersByTimeAsync(0);
+    expect(restored.times('basel')).toEqual([0]);
+    // The new idle feeds: the first stage now, the second 15 seconds later.
+    expect(restored.calls.filter(call => call.id.startsWith('new-'))).toHaveLength(6);
+    await vi.advanceTimersByTimeAsync(15_000);
+    expect(restored.calls.filter(call => call.id.startsWith('new-')).map(call => call.at / 1000)).toEqual([...Array(6).fill(0), ...Array(6).fill(15)]);
+  } finally { restored.scheduler.stop(); }
+});

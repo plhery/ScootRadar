@@ -56,6 +56,9 @@ export interface SchedulerOptions<T extends ScheduledFeed> {
 export const DEFAULT_SCHEDULE = { activeIntervalMs: 60_000, idleIntervalMs: 20 * 60_000, watchMs: 10 * 60_000, retryMs: 60_000 };
 const MAX_RUNNING = 6;
 const MAX_RUNNING_PER_HOST = 2;
+// New feeds joining a catalog the cache holds come due this many at a time, a stage this far apart.
+const WARM_UP_STAGE_SIZE = MAX_RUNNING;
+const WARM_UP_STAGE_MS = 15_000;
 
 /** A stable fraction in [0, 1) from the feed id (FNV-1a). */
 export function idPhase(id: string): number {
@@ -101,19 +104,43 @@ export class FeedScheduler<T extends ScheduledFeed> {
       for (const id of map.keys()) if (!ids.has(id)) map.delete(id);
     }
     for (const id of this.woken) if (!ids.has(id) && !this.running.has(id)) this.settle(id);
+    const added: T[] = [];
     for (const feed of definitions) {
       this.byId.set(feed.id, feed);
       if (this.due.has(feed.id) || this.running.has(feed.id)) continue;
       const last = this.options.lastCollectedAt?.(feed);
       // A feed without a record waits behind the restored ones already overdue: it has no positions to lose.
-      if (!last) { this.due.set(feed.id, now); continue; }
+      if (!last) { added.push(feed); continue; }
       this.startedAt.set(feed.id, last);
       // A restored feed keeps its turn, even one gone by, so a restart goes on with the longest overdue
       // rather than in the catalog's order. After the stall of 24 October 2026, feeds 29 minutes old
       // waited behind ones of 21, and expired (30) on the restart at 19:59.
       this.due.set(feed.id, this.nextDue(feed, last, last, false));
     }
+    this.warmUp(added, now, added.length < definitions.length);
     this.pump();
+  }
+
+  /**
+   * Feeds without a record joining feeds the cache already holds come due a stage at a time, taking
+   * their hosts in turn. A deploy on 24 October 2026 added 202 feeds, all due at once, and the
+   * feeds already on the map waited behind their slow first collections for over half an hour, some
+   * until they expired. An always-fast feed, any feed of a cold start (`staged` false) and a feed a
+   * request asks for (demand) are collected at once.
+   */
+  private warmUp(added: T[], now: number, staged: boolean): void {
+    const byHost = new Map<string, T[]>();
+    for (const feed of added) {
+      if (!staged || this.options.alwaysFast(feed)) { this.due.set(feed.id, now); continue; }
+      const queue = byHost.get(feed.host);
+      if (queue) queue.push(feed); else byHost.set(feed.host, [feed]);
+    }
+    const queues = [...byHost.values()];
+    for (let turn = 0, index = 0; queues.some(queue => queue.length > turn); turn++) {
+      for (const queue of queues) {
+        if (turn < queue.length) this.due.set(queue[turn].id, now + Math.floor(index++ / WARM_UP_STAGE_SIZE) * WARM_UP_STAGE_MS);
+      }
+    }
   }
 
   start(): void { this.stopped = false; this.pump(); }

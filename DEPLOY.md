@@ -294,7 +294,12 @@ client gives it the next turn before idle sweeps: until 25 October 2026 a town
 opened while two idle Lime sweeps ran waited for one to end, then shared Lime's
 one request every five seconds with the other. A restart goes on with the feeds longest overdue, then those with no
 record yet; it once took them in the catalog's order, and after that stall
-feeds 29 minutes old waited behind ones of 21 and expired.
+feeds 29 minutes old waited behind ones of 21 and expired. Feeds with no record
+that join feeds the cache already holds come due six at a time, 15 seconds
+apart, taking their hosts in turn (`warmUp` in `server/feedScheduler.ts`): the
+202 feeds added that day, all due at once, held back the feeds already on the
+map for over half an hour. A cold start's feeds, an always-fast one and any a
+request asks for are collected at once.
 Switzerland is collected every minute; any other feed every 20 minutes (Bird's,
 Spin's and Bolt's own every 13, `RETENTION_CAPS_MS` in `server/cadence.ts`), or every
 minute for 10 minutes after a map request covers it, the request starting a
