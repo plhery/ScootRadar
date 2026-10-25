@@ -23,6 +23,8 @@ interface MetricsSources {
   cadenceModes?: (now: number) => Record<FeedCadenceMode, number>;
   /** Requests sent to operators since the start, by kind. */
   upstreamRequests?: () => Record<string, number>;
+  /** Lime requests by a manifest's non-secret account id, including idle accounts at zero. */
+  limeAccountRequests?: () => readonly { account: string; status: number; metadata: number }[];
   /** Pricing plans fetched again for scooters naming plans they did not list, by outcome. */
   planRefreshes?: () => Record<string, number>;
   /** How full the cache of operators' documents is, and how many it dropped to make room. */
@@ -146,6 +148,11 @@ export function createSnapshotMetrics(version = 'local', sources: MetricsSources
         metric('scootradar_upstream_requests_total', 'counter',
           'Requests sent to operators, by kind: status (positions, parking) or metadata (kept an hour or more).',
           Object.entries(sources.upstreamRequests()).map(([kind, count]) => [{ kind }, count]));
+      }
+      if (sources.limeAccountRequests) {
+        metric('scootradar_lime_account_requests_total', 'counter',
+          'Lime requests sent by independently paced production account and request kind.',
+          sources.limeAccountRequests().flatMap(row => (['status', 'metadata'] as const).map((kind): [Labels, number] => [{ account: row.account, kind }, row[kind]])));
       }
       if (sources.planRefreshes) {
         metric('scootradar_pricing_plan_refreshes_total', 'counter',

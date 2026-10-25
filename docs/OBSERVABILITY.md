@@ -79,6 +79,9 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   the collection of feeds whose positions were over 15 minutes old.
 - `scootradar_upstream_requests_total{kind="status|metadata"}`: requests sent to
   operators; status covers positions and parking, metadata what is kept an hour or more.
+- `scootradar_lime_account_requests_total{account,kind="status|metadata"}`:
+  requests per independently paced Lime production account, including each
+  account's renewals. The account label is its non-secret manifest id.
 - `scootradar_pricing_plan_refreshes_total{outcome="listed|unlisted"}`: a feed's
   pricing plans fetched again because a scooter named a plan they did not list, as
   Lime's do when its rate changes; `unlisted` if one is still missing afterwards or the
@@ -118,7 +121,8 @@ looks:
   they take (`APP_MAP_IDLE_INTERVAL_MS` in `server/appMapCadence.ts`): BinBin's
   ([guide](binbin-app-map.md#pace-and-failures)), GCOO's, ATOM's and Whoosh's. Lime's
   are every three days, so that sweeping all its markets takes at most half of the
-  requests its one account may send ([guide](lime-app-map.md#cache-behaviour)). Each
+  requests a single account may send, even with several configured production
+  accounts ([guide](lime-app-map.md#cache-behaviour)). Each
   expires 10 minutes after its own interval and waits up to half of it between
   retries. The app maps read in a few requests keep the 20 minutes, so that one that
   stops answering is reported within half an hour. Bird's, Spin's and Bolt's own feeds

@@ -27,7 +27,7 @@ import { luupMapRequests, withLuupAppCollectors } from './luupApp';
 import { jetMapRequests, withJetAppCollectors } from './jetApp';
 import { whooshMapRequests, withWhooshAppCollectors } from './whooshApp';
 import { beamMapRequests, withBeamAppCollectors } from './beamApp';
-import { limeMapRequests, withLimeAppCollectors } from './limeApp';
+import { limeAccountRequests, limeMapRequests, withLimeAppCollectors } from './limeApp';
 import { binbinMapRequests, withBinbinAppCollectors } from './binbinApp';
 import { gcooMapRequests, withGcooAppCollectors } from './gcooApp';
 import { kickgoingMapRequests, withKickgoingAppCollectors } from './kickgoingApp';
@@ -110,6 +110,7 @@ const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
     metadata: upstreamJsonCache.requests.metadata + voiMapRequests.metadata + atomMapRequests.metadata + luupMapRequests.metadata + whooshMapRequests.metadata + limeMapRequests.metadata + beamMapRequests.metadata,
   }),
   planRefreshes: () => planRefreshCounts,
+  limeAccountRequests,
   upstreamCache: () => ({ entries: upstreamJsonCache.size, capacity: upstreamJsonCache.capacity,
     evictions: upstreamJsonCache.evictions }) });
 const server = createSnapshotServer({ snapshot: () => snapshot,

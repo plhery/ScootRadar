@@ -131,11 +131,12 @@ stationary reference scooter, country by country:
 | --- | --- | ---: | ---: | ---: | ---: |
 | 25 October 2026 | United Kingdom: London, Birmingham, Coventry, Milton Keynes, Salford | 336 | 86 | 4,895 | 264 |
 
-The audit and the cache's sweeps share the account's limit, about one
-request every five seconds. On 24 and 25 October 2026, before the cache's
+When the audit and the cache's sweeps shared an account, they shared its limit,
+about one request every five seconds. On 24 and 25 October 2026, before the cache's
 idle sweeps were slowed to every three days, an audit beside them made the
 cache's own Lime feeds fail with 429 for minutes at a time, Doha's and
-Santiago's among them: the audit now stops at its first 429.
+Santiago's among them. Research now uses a separate account and still stops
+at its first 429.
 
 ## Cache behaviour
 
@@ -176,8 +177,8 @@ finishes, the requested one first, replaces them as it goes. Country totals fill
 they describe the latest completed inventory, up to three days old where
 nobody looks, not simultaneous fleet counts.
 
-Calls start at most once every five seconds across Lime feeds. HTTP 429 pauses
-the shared client for Retry-After, with a minimum one-minute cooldown. The
+Calls start at most once every five seconds per configured account across its
+Lime feeds. HTTP 429 pauses that account's client for Retry-After, with a minimum one-minute cooldown. The
 limit is the account's, not one client's: a second client beside the cache's
 sweeps, starting a call every six seconds and then every nine, received 429
 after 142 and 42 calls on 25 October 2026, without Retry-After. Requests
@@ -185,6 +186,36 @@ have a 20-second deadline and an 8 MiB response limit. Native requests to
 `web-production.lime.bike` use TLS 1.2: the production Linux Node 26 client
 received 403 with its default TLS 1.3 handshake, while TLS 1.2 succeeded.
 The setting is specific to this provider.
+
+### Production accounts
+
+An optional private `/data/lime-accounts.json` manifest (`LIME_ACCOUNTS_PATH`)
+assigns refresh groups to independent accounts:
+
+```json
+{"version":1,"accounts":[{"id":"primary","sessionPath":"lime-session.json"},{"id":"lime2","sessionPath":"lime2-session.json"},{"id":"lime3","sessionPath":"lime3-session.json"}]}
+```
+
+Paths resolve beside the manifest. Account ids and resolved session paths must
+be distinct; up to eight accounts are supported. A missing default manifest
+keeps the original `LIME_SESSION_PATH` behaviour. An explicit missing manifest
+or malformed configuration is an error. The cache reads the manifest when it
+first wraps Lime feeds; restart through the normal deployment to change it.
+
+Each account has one client with its own five-second pacer, renewal, cooldown,
+collection slots, and cached query plans. Each refresh group is assigned by
+its id, consistently across restarts and manifest reordering. Removing an
+account reassigns its groups on restart. A failed or throttled request stays
+on its assigned account; it does not retry through the other accounts.
+Requested groups keep priority within their account. The network host,
+vehicle ids, coverage, and freshness rules are unchanged. The three-day idle
+cadence and the catalog's conservative single-account budget remain in place.
+
+The original account, `lime2`, and `lime3` serve production. `lime1` is reserved
+for research, whose session has a separate renewal owner. Never share a
+refresh-token file between the local research process and production. The
+protected metric `scootradar_lime_account_requests_total{account,kind}` shows
+requests from each production account using only its manifest id.
 
 Only actual scooter pins are retained. Battery is a percentage; range, fares,
 vehicle-specific rental links, parking and zone overlays are not supplied by

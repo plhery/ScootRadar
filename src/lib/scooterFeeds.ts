@@ -264,6 +264,8 @@ export interface CollectableScooterFeed {
   idleIntervalMs?: number;
   /** An app-map sweep whose client spaces every request to its host (FeedScheduler). */
   paced?: boolean;
+  /** Independent Node scheduler slots for an account whose client enforces its own pace. */
+  concurrencyKey?: string;
   /** Its GBFS documents, for the zones the map draws when asked (zoneFeeds.ts). */
   zoneSource?: ZoneSource;
 }

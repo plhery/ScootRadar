@@ -1,7 +1,8 @@
-import { createPrivateKey, createPublicKey, randomUUID, sign } from 'node:crypto';
+import { createHash, createPrivateKey, createPublicKey, randomUUID, sign } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { request } from 'node:https';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { boundsContainPoint, haversineM, polygonContainsPoint } from '../src/lib/geo';
 import { decodeLimeArea, limeAreaTiles, LIME_QUERY_INTERVAL_MS, LIME_IDLE_INTERVAL_MS } from './limeAreas';
 export { LIME_IDLE_INTERVAL_MS } from './limeAreas';
@@ -23,6 +24,10 @@ interface Session {
 }
 interface Reply { status: number; retryAfter?: string; body: unknown }
 type Transport = (path: string, headers: Record<string, string>, body?: string) => Promise<Reply>;
+interface LimeClientOptions {
+  sessionPath?: string; now?: () => number; intervalMs?: number; transport?: Transport;
+  onRequest?: (kind: 'status' | 'metadata') => void;
+}
 const object = (v: unknown): Record<string, unknown> | undefined =>
   v !== null && typeof v === 'object' && !Array.isArray(v) ? v as Record<string, unknown> : undefined;
 const text = (v: unknown): v is string => typeof v === 'string' && v.length > 0 && v.length < 16_384;
@@ -86,7 +91,7 @@ export class LimeClient {
   private readonly sessionPath: string;
   private readonly now: () => number;
   private readonly transport: Transport;
-  constructor(options: { sessionPath?: string; now?: () => number; intervalMs?: number; transport?: Transport } = {}) {
+  constructor(private readonly options: LimeClientOptions = {}) {
     this.sessionPath = options.sessionPath ?? process.env.LIME_SESSION_PATH ??
       join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'lime-session.json');
     this.now = options.now ?? Date.now;
@@ -122,7 +127,9 @@ export class LimeClient {
     if (this.now() < this.blockedUntil) throw new Error('Lime is temporarily rate limited');
     await this.pace.turn();
     if (this.now() < this.blockedUntil) throw new Error('Lime is temporarily rate limited');
-    limeMapRequests[body === undefined ? 'status' : 'metadata']++;
+    const kind = body === undefined ? 'status' : 'metadata';
+    limeMapRequests[kind]++;
+    this.options.onRequest?.(kind);
     let reply: Reply;
     const headers = this.headers(session);
     if (path === '/api/auth/v2/oauth/token') delete headers.Authorization;
@@ -271,12 +278,76 @@ export class LimeMapCollector {
     return { observedAt: started, stale: false, vehicles: [...vehicles.values()].map(published) };
   }
 }
-const collector = new LimeMapCollector(new LimeClient());
-export const collectLimeRegion = (system: RegionalScooterSystem) => collector.collect(system);
-export function withLimeAppCollectors(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[]) {
+export interface LimeAccount { id: string; sessionPath: string }
+export interface LimeAccountRequests { account: string; status: number; metadata: number }
+
+/** Optional private manifest; an absent default keeps the original single-account setup. */
+export function readLimeAccounts(options: { accountsPath?: string; sessionPath?: string } = {}): LimeAccount[] {
+  const sessionPath = options.sessionPath ?? process.env.LIME_SESSION_PATH ??
+    join(dirname(process.env.SCOOTER_SNAPSHOT_PATH ?? '/data/scooters.json'), 'lime-session.json');
+  const explicit = options.accountsPath ?? process.env.LIME_ACCOUNTS_PATH;
+  const path = explicit ?? join(dirname(sessionPath), 'lime-accounts.json');
+  let manifest: Record<string, unknown> | undefined;
+  try { manifest = object(JSON.parse(readFileSync(path, 'utf8'))); }
+  catch (error) {
+    if (!explicit && (error as NodeJS.ErrnoException).code === 'ENOENT') return [{ id: 'primary', sessionPath }];
+    throw new Error('Lime account configuration is missing or unreadable');
+  }
+  if (manifest?.version !== 1 || !Array.isArray(manifest.accounts) || !manifest.accounts.length || manifest.accounts.length > 8) {
+    throw new Error('Lime account configuration is invalid');
+  }
+  return validateAccounts(manifest.accounts.map(value => {
+    const account = object(value);
+    if (!text(account?.sessionPath) || !text(account?.id)) throw new Error('Lime account configuration is invalid');
+    return { id: account.id, sessionPath: resolve(dirname(path), account.sessionPath) };
+  }));
+}
+
+function validateAccounts(accounts: readonly LimeAccount[]): LimeAccount[] {
+  if (!accounts.length || accounts.length > 8 || accounts.some(account => !/^[a-z0-9][a-z0-9-]{0,31}$/.test(account.id) || !account.sessionPath) ||
+      new Set(accounts.map(account => account.id)).size !== accounts.length ||
+      new Set(accounts.map(account => resolve(account.sessionPath))).size !== accounts.length) throw new Error('Lime accounts must have unique ids and session files');
+  return accounts.map(account => ({ ...account }));
+}
+
+/** A feed stays on its account during failures; no retry switches it to another quota. */
+export class LimeAccountPool {
+  readonly accounts: readonly LimeAccount[];
+  readonly requests: LimeAccountRequests[];
+  private readonly collectors: Map<string, LimeMapCollector>;
+  constructor(accounts: readonly LimeAccount[], options: Omit<LimeClientOptions, 'sessionPath' | 'onRequest'> = {}) {
+    this.accounts = validateAccounts(accounts).sort((a, b) => a.id.localeCompare(b.id));
+    this.requests = this.accounts.map(account => ({ account: account.id, status: 0, metadata: 0 }));
+    this.collectors = new Map(this.accounts.map((account, index) => [account.id, new LimeMapCollector(new LimeClient({
+      ...options, sessionPath: account.sessionPath, onRequest: kind => { this.requests[index][kind]++; },
+    }))]));
+  }
+  accountFor(feedId: string): LimeAccount {
+    // Rendezvous hashing keeps assignments stable when the manifest is reordered, and moves
+    // only an added or removed account's share when the pool changes.
+    let chosen = this.accounts[0], best = -1;
+    for (const account of this.accounts) {
+      const score = createHash('sha256').update(feedId + '\0' + account.id).digest().readUInt32BE(0);
+      if (score > best) { chosen = account; best = score; }
+    }
+    return chosen;
+  }
+  collect(system: RegionalScooterSystem): Promise<SourceVehicles> {
+    return this.collectors.get(this.accountFor(system.id).id)!.collect(system);
+  }
+}
+
+let productionPool: LimeAccountPool | undefined;
+const pool = () => productionPool ??= new LimeAccountPool(readLimeAccounts());
+export const limeAccountRequests = () => productionPool?.requests ?? [];
+export const collectLimeRegion = (system: RegionalScooterSystem) => pool().collect(system);
+export function withLimeAppCollectors(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[], accounts?: LimeAccountPool) {
   const regions = new Map(systems.filter(s => s.limeAppMap).map(s => [s.id, s]));
   return feeds.map(feed => {
     const s = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
-    return s ? { ...feed, idleIntervalMs: LIME_IDLE_INTERVAL_MS, paced: true, collect: () => collectLimeRegion(s) } : feed;
+    if (!s) return feed;
+    const selected = accounts ?? pool();
+    return { ...feed, idleIntervalMs: LIME_IDLE_INTERVAL_MS, paced: true,
+      concurrencyKey: `lime-account:${selected.accountFor(s.id).id}`, collect: () => selected.collect(s) };
   });
 }

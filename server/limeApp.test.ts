@@ -5,7 +5,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
-import { LimeClient, limeClientAssertion, LimeMapCollector, parseLimePins, limeCellCovered } from './limeApp';
+import { LimeClient, LimeAccountPool, readLimeAccounts, withLimeAppCollectors, limeClientAssertion, LimeMapCollector, parseLimePins, limeCellCovered } from './limeApp';
+import type { CollectableScooterFeed } from '../src/lib/scooterFeeds';
 import { withinCollection } from './sweeps';
 
 const http = vi.hoisted(() => ({ request: vi.fn() }));
@@ -23,10 +24,10 @@ const map = (...pins: unknown[]) => ({ data: { attributes: { bike_pins: pins, cu
 const system: RegionalScooterSystem = { id: 'lime_cz_test', country: 'CZ' as RegionalScooterSystem['country'], provider: 'lime',
   city: 'Test', center: [.005, .005], bounds: { south: 0, north: .01, west: 0, east: .01 },
   discoveryUrl: 'https://web-production.lime.bike/api/rider/v2/map/bike_pins', limeAppMap: true, limeServiceAreas: ['???o}@o}@??n}@n}@?'] };
-async function fixture() {
+async function fixture(suffix = '') {
   const directory = await mkdtemp(join(tmpdir(), 'lime-client-')); directories.push(directory);
   const sessionPath = join(directory, 'lime-session.json');
-  const seed = { version: 1, accessToken: 'access-private', refreshToken: 'refresh-private', deviceToken: 'device-private', privateKey,
+  const seed = { version: 1, accessToken: 'access-private' + suffix, refreshToken: 'refresh-private' + suffix, deviceToken: 'device-private' + suffix, privateKey,
     expiresAt: initialTime + 10 * 3600_000, refreshExpiresAt: initialTime + 180 * 86400_000, renewalWindow: 900 };
   await writeFile(sessionPath, JSON.stringify(seed), { mode: 0o600 });
   let now = initialTime;
@@ -141,6 +142,120 @@ describe('Lime portable rider session', () => {
     await expect(other.pins(system.bounds)).rejects.toThrow('missing or unreadable');
     const g = await fixture(); g.advance(10 * 3600_000); g.transport.mockResolvedValue(response({ access_token: 'incomplete' }));
     await expect(g.client.pins(system.bounds)).rejects.toThrow('session response is invalid');
+  });
+});
+
+describe('independent Lime production accounts', () => {
+  it('keeps the legacy session by default, resolves private manifest paths, and rejects duplicate accounts or files', async () => {
+    const f = await fixture();
+    expect(readLimeAccounts({ sessionPath: f.sessionPath })).toEqual([{ id: 'primary', sessionPath: f.sessionPath }]);
+    const path = join(f.directory, 'lime-accounts.json');
+    const put = (accounts: unknown[]) => writeFile(path, JSON.stringify({ version: 1, accounts }));
+    await put([{ id: 'primary', sessionPath: 'lime-session.json' }, { id: 'second', sessionPath: 'second.json' }]);
+    expect(readLimeAccounts({ accountsPath: path })).toEqual([
+      { id: 'primary', sessionPath: f.sessionPath }, { id: 'second', sessionPath: join(f.directory, 'second.json') },
+    ]);
+    await put([{ id: 'primary', sessionPath: 'one.json' }, { id: 'primary', sessionPath: 'two.json' }]);
+    expect(() => readLimeAccounts({ accountsPath: path })).toThrow('unique');
+    await put([{ id: 'one', sessionPath: 'same.json' }, { id: 'two', sessionPath: './same.json' }]);
+    expect(() => readLimeAccounts({ accountsPath: path })).toThrow('unique');
+    await put([{ id: 'email@example.com', sessionPath: 'one.json' }]);
+    expect(() => readLimeAccounts({ accountsPath: path })).toThrow('unique');
+    await put([]);
+    expect(() => readLimeAccounts({ accountsPath: path })).toThrow('invalid');
+    expect(() => readLimeAccounts({ accountsPath: join(f.directory, 'missing.json') })).toThrow('missing or unreadable');
+    await writeFile(path, 'not json');
+    expect(() => readLimeAccounts({ accountsPath: path })).toThrow('missing or unreadable');
+  });
+
+  it('keeps feed assignments through manifest reordering and adds scheduler slots only to rider feeds', () => {
+    const accounts = ['primary', 'second', 'third'].map(id => ({ id, sessionPath: `/private/${id}.json` }));
+    const pool = new LimeAccountPool(accounts);
+    const reordered = new LimeAccountPool([...accounts].reverse());
+    const reduced = new LimeAccountPool(accounts.slice(0, 2));
+    const systems = Array.from({ length: 100 }, (_, i) => ({ ...system, id: `lime_test_${i}` }));
+    expect(new Set(systems.map(s => pool.accountFor(s.id).id)).size).toBe(3);
+    for (const s of systems) {
+      expect(reordered.accountFor(s.id).id).toBe(pool.accountFor(s.id).id);
+      if (pool.accountFor(s.id).id !== 'third') expect(reduced.accountFor(s.id).id).toBe(pool.accountFor(s.id).id);
+    }
+    const publicFeed = { id: 'test:public', host: 'public.example' } as CollectableScooterFeed;
+    const bare = [...systems.map(s => ({ id: `test:${s.id}`, host: 'web-production.lime.bike' } as CollectableScooterFeed)), publicFeed];
+    const feeds = withLimeAppCollectors(bare, systems, pool);
+    expect(feeds.at(-1)).toBe(publicFeed);
+    for (const [index, feed] of feeds.slice(0, -1).entries()) {
+      expect(feed).toMatchObject({ host: 'web-production.lime.bike', paced: true,
+        concurrencyKey: `lime-account:${pool.accountFor(systems[index].id).id}` });
+    }
+  });
+
+  it('isolates a 429 and its Retry-After without moving the feed onto another account', async () => {
+    const a = await fixture('-a'), b = await fixture('-b');
+    let now = initialTime;
+    const transport = vi.fn(async (_path: string, headers: Record<string, string>) => headers['X-Device-Token'] === a.seed.deviceToken
+      ? { ...response({}, 429), retryAfter: '120' } : response(map(pin())));
+    const pool = new LimeAccountPool([{ id: 'a', sessionPath: a.sessionPath }, { id: 'b', sessionPath: b.sessionPath }],
+      { transport, now: () => now, intervalMs: 0 });
+    const candidates = Array.from({ length: 100 }, (_, i) => ({ ...system, id: `lime_test_${i}` }));
+    const one = candidates.find(s => pool.accountFor(s.id).id === 'a')!;
+    const two = candidates.find(s => pool.accountFor(s.id).id === 'b')!;
+    await expect(pool.collect(one)).rejects.toThrow('HTTP 429');
+    await expect(pool.collect(two)).resolves.toMatchObject({ vehicles: [expect.anything()] });
+    await expect(pool.collect(one)).rejects.toThrow('temporarily rate limited');
+    expect(transport).toHaveBeenCalledTimes(2);
+    expect(pool.requests).toEqual([{ account: 'a', status: 1, metadata: 0 }, { account: 'b', status: 1, metadata: 0 }]);
+    now += 120_000;
+    transport.mockImplementation(async () => response(map()));
+    await expect(pool.collect(one)).resolves.toMatchObject({ stale: false });
+    expect(transport.mock.lastCall?.[1]['X-Device-Token']).toBe(a.seed.deviceToken);
+  });
+
+  it('spaces requests within each account while another account can start immediately', async () => {
+    const a = await fixture('-a'), b = await fixture('-b');
+    vi.useFakeTimers(); vi.setSystemTime(initialTime);
+    try {
+      const times: { device: string; at: number }[] = [];
+      const pool = new LimeAccountPool([{ id: 'a', sessionPath: a.sessionPath }, { id: 'b', sessionPath: b.sessionPath }],
+        { intervalMs: 5000, transport: async (_path, headers) => {
+          times.push({ device: headers['X-Device-Token'], at: Date.now() - initialTime });
+          return response(map(pin()));
+        } });
+      const candidates = Array.from({ length: 100 }, (_, i) => ({ ...system, id: `lime_test_${i}` }));
+      const one = candidates.filter(s => pool.accountFor(s.id).id === 'a');
+      const two = candidates.find(s => pool.accountFor(s.id).id === 'b')!;
+      await pool.collect(one[0]);
+      const waiting = pool.collect(one[1]);
+      await pool.collect(two);
+      expect(times).toEqual([{ device: a.seed.deviceToken, at: 0 }, { device: b.seed.deviceToken, at: 0 }]);
+      await vi.advanceTimersByTimeAsync(4999);
+      expect(times).toHaveLength(2);
+      await vi.advanceTimersByTimeAsync(1); await waiting;
+      expect(times.at(-1)).toEqual({ device: a.seed.deviceToken, at: 5000 });
+    } finally { vi.useRealTimers(); }
+  });
+
+  it('renews only the due account once, persists its rotation, and leaves another session untouched', async () => {
+    const a = await fixture('-a'), b = await fixture('-b');
+    await writeFile(a.sessionPath, JSON.stringify({ ...a.seed, expiresAt: initialTime + 1 }));
+    const beforeB = await readFile(b.sessionPath, 'utf8');
+    const transport = vi.fn(async (path: string, headers: Record<string, string>, body?: string) => {
+      if (path.endsWith('/token')) {
+        expect(headers['X-Device-Token']).toBe(a.seed.deviceToken);
+        expect(JSON.parse(body!).refresh_token).toBe(a.seed.refreshToken);
+        return a.renewed();
+      }
+      return response(map(pin()));
+    });
+    const pool = new LimeAccountPool([{ id: 'a', sessionPath: a.sessionPath }, { id: 'b', sessionPath: b.sessionPath }],
+      { transport, now: () => initialTime, intervalMs: 0 });
+    const candidates = Array.from({ length: 100 }, (_, i) => ({ ...system, id: `lime_test_${i}` }));
+    const one = candidates.filter(s => pool.accountFor(s.id).id === 'a');
+    const two = candidates.find(s => pool.accountFor(s.id).id === 'b')!;
+    await Promise.all([pool.collect(one[0]), pool.collect(one[1]), pool.collect(two)]);
+    expect(transport.mock.calls.filter(([path]) => path.endsWith('/token'))).toHaveLength(1);
+    expect(JSON.parse(await readFile(a.sessionPath, 'utf8')).refreshToken).toBe('new-refresh');
+    expect(await readFile(b.sessionPath, 'utf8')).toBe(beforeB);
+    expect(pool.requests).toEqual([{ account: 'a', status: 2, metadata: 1 }, { account: 'b', status: 1, metadata: 0 }]);
   });
 });
 

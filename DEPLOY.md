@@ -42,6 +42,14 @@ volume, never in Git, command arguments or Worker variables. Token rotation
 is saved atomically under that volume. See [Voi](docs/voi-app-map.md) and
 [Lime](docs/lime-app-map.md) for the file schemas and renewal requirements.
 
+Lime can use several production accounts through private `/data/lime-accounts.json`
+(`LIME_ACCOUNTS_PATH` overrides it). Its version-1 manifest lists non-secret ids
+and distinct session filenames; each session keeps the schema above and is
+renewed separately. Without the default manifest, the original single session
+still works. See [Lime account configuration](docs/lime-app-map.md#production-accounts).
+Install the manifest and sessions mode `0600`, owned by Node UID 1000, in the
+persistent volume before the code deploys. Research uses its own account.
+
 ## Validate locally
 
 ```bash

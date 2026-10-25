@@ -11,6 +11,8 @@ export interface ScheduledFeed {
    * not on the cache, so it takes one of its host's slots but none of the shared ones.
    */
   paced?: boolean;
+  /** An independently paced account within the host has its own collection slots. */
+  concurrencyKey?: string;
 }
 
 /** What a collection reports back: a failed one is retried sooner than an idle feed is due. */
@@ -276,9 +278,10 @@ export class FeedScheduler<T extends ScheduledFeed> {
    * host, so a town opened while idle sweeps hold the others starts at once.
    */
   private hostFull(feed: T): boolean {
+    const key = (candidate: T) => candidate.paced ? candidate.concurrencyKey ?? candidate.host : candidate.host;
     const own = feed.paced && this.woken.has(feed.id)
       ? (running: T) => this.woken.has(running.id) : () => true;
-    return [...this.running.values()].filter(running => running.host === feed.host && own(running)).length >= MAX_RUNNING_PER_HOST;
+    return [...this.running.values()].filter(running => key(running) === key(feed) && own(running)).length >= MAX_RUNNING_PER_HOST;
   }
 
   private run(feed: T, now: number): void {

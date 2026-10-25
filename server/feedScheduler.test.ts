@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { FeedScheduler, idPhase, type CollectionAttention, type CollectionReason, type SchedulerOptions } from './feedScheduler';
 
-interface Feed { id: string; host: string; fast?: boolean; paced?: boolean }
+interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string }
 const MINUTE = 60_000;
 // A whole number of idle intervals, so a phase of 0 falls on it.
 const T0 = 1_800_000_000_000;
@@ -72,6 +72,30 @@ it('runs paced sweeps on their hosts\' two slots, beside six other collections',
     expect(calls.filter(call => call.id.startsWith('sweep'))).toHaveLength(8);
     expect(calls.filter(call => call.id.startsWith('feed'))).toHaveLength(6);
   } finally { scheduler.stop(); }
+});
+
+it('gives separately paced accounts on one host their own slots, keeping requested towns first within each account', async () => {
+  const accounts = ['primary', 'second', 'third'];
+  const feeds = accounts.flatMap(account => Array.from({ length: 4 }, (_, index) => ({
+    id: `${account}-${index}`, host: 'web-production.lime.bike', paced: true, concurrencyKey: `lime:${account}`,
+  })));
+  const { scheduler, calls } = schedule(feeds, {}, () => new Promise(() => {}));
+  try {
+    await vi.advanceTimersByTimeAsync(0);
+    for (const account of accounts) expect(calls.filter(call => call.id.startsWith(account))).toHaveLength(2);
+    scheduler.demand(['primary-2', 'primary-3', 'second-2'], Date.now());
+    expect(calls.filter(call => call.id.startsWith('primary'))).toHaveLength(4);
+    expect(calls.filter(call => call.id.startsWith('second'))).toHaveLength(3);
+    expect(calls.filter(call => call.id.startsWith('third'))).toHaveLength(2);
+  } finally { scheduler.stop(); }
+});
+
+it('keeps the host limit for unpaced clients even if a concurrency key is supplied', async () => {
+  const { scheduler, calls } = schedule(Array.from({ length: 4 }, (_, i) => ({
+    id: String(i), host: 'unpaced', concurrencyKey: String(i),
+  })), {}, () => new Promise(() => {}));
+  try { await vi.advanceTimersByTimeAsync(0); expect(calls).toHaveLength(2); }
+  finally { scheduler.stop(); }
 });
 
 it('starts a paced town someone opens while idle sweeps hold its host, and tells it where they look', async () => {

@@ -139,6 +139,7 @@ it('judges feeds by their cadence and shows what the cadence costs', () => {
     cadence: { fastSince: id => id.startsWith('national:') ? 0 : undefined, idleExpiryMs: 30 * 60_000 },
     cadenceModes: () => ({ always: 20, watched: 2, idle: 150 }),
     upstreamRequests: () => requests,
+    limeAccountRequests: () => [{ account: 'primary', status: 4, metadata: 1 }, { account: 'second', status: 0, metadata: 0 }],
     upstreamCache: () => ({ entries: 1_900, capacity: 2_322, evictions: 4 }),
   });
   metrics.recordCollectionStart('idle');
@@ -162,6 +163,9 @@ it('judges feeds by their cadence and shows what the cadence costs', () => {
   expect(sample(text, 'scootradar_request_waits_total{outcome="collected"}')).toBe('1');
   expect(sample(text, 'scootradar_request_waits_total{outcome="timeout"}')).toBe('0');
   expect(sample(text, 'scootradar_upstream_requests_total{kind="status"}')).toBe('12');
+  expect(sample(text, 'scootradar_lime_account_requests_total{account="primary",kind="status"}')).toBe('4');
+  expect(sample(text, 'scootradar_lime_account_requests_total{account="primary",kind="metadata"}')).toBe('1');
+  expect(sample(text, 'scootradar_lime_account_requests_total{account="second",kind="status"}')).toBe('0');
   expect(sample(text, 'scootradar_upstream_cache_entries{kind="used"}')).toBe('1900');
   expect(sample(text, 'scootradar_upstream_cache_entries{kind="capacity"}')).toBe('2322');
   expect(sample(text, 'scootradar_upstream_cache_evictions_total')).toBe('4');
