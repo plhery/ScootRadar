@@ -186,6 +186,7 @@ import ingolstadtDe from './de/e-scooter-ingolstadt';
 import bielefeldDe from './de/e-scooter-bielefeld';
 import southamptonEn from './en/e-scooters-southampton';
 import cambridgeEn from './en/e-scooters-cambridge';
+import cheltenhamEn from './en/e-scooters-cheltenham';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -372,4 +373,5 @@ export const GUIDES: readonly Guide[] = [
   bielefeldDe,
   southamptonEn,
   cambridgeEn,
+  cheltenhamEn,
 ];
