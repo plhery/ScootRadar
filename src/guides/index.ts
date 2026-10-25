@@ -205,6 +205,7 @@ import saoPauloEn from './en/e-scooters-sao-paulo';
 import helsinkiEn from './en/e-scooters-helsinki';
 import gdanskEn from './en/e-scooters-gdansk';
 import warsawEn from './en/e-scooters-warsaw';
+import stockholmEn from './en/e-scooters-stockholm';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -410,4 +411,5 @@ export const GUIDES: readonly Guide[] = [
   helsinkiEn,
   gdanskEn,
   warsawEn,
+  stockholmEn,
 ];
