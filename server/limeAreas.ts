@@ -11,6 +11,12 @@ export const LIME_QUERY_INTERVAL_MS = 5_000;
  * half (scripts/generate-lime-app-feeds.mjs checks it): the rest is for the towns people look at.
  */
 export const LIME_IDLE_INTERVAL_MS = 72 * 60 * 60_000;
+/**
+ * How long a request keeps a Lime group watched: three minutes, not the cache's ten. The map asks
+ * again every minute while it is open, so a view keeps its groups; a group panned past is collected
+ * every minute for three minutes, not ten, on the 36 requests a minute every Lime town shares.
+ */
+export const LIME_WATCH_MS = 3 * 60_000;
 export { LIME_TILE_GROUP_SIZE, limeGridGroups } from '../src/lib/limeGrid';
 
 export type LimeArea = [number, number][];

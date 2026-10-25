@@ -5,9 +5,9 @@ import type { Server } from 'node:http';
 import { createSnapshotServer } from './snapshotServer';
 import { createSnapshotMetrics } from './metrics';
 import { FeedScheduler } from './feedScheduler';
-import { buildCityOverview, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
+import { buildCityOverview, LIME_GROUPS_PER_REQUEST, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import type { ScooterResponse } from '../src/lib/types';
-import { REGIONAL_SCOOTER_SYSTEMS, regionalSource } from '../src/lib/regionalScooterSystems';
+import { REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas } from '../src/lib/regionalScooterSystems';
 
 const token = 'a-test-origin-token-with-at-least-32-characters';
 const servers: Server[] = [];
@@ -238,6 +238,24 @@ describe('collection on demand', () => {
       refresher: { demand: ids => { demanded.push(ids); }, refreshing: () => false, wait: async () => true } });
     for (const extra of ['&zoom=16', '&zoom=8', '&zoom=16&provider=voi']) await (await fetch(lyonUrl(port, extra), { headers })).text();
     expect(demanded).toEqual([['france:dott_fr_lyon'], [], []]);
+  });
+
+  it('asks for the Lime groups nearest the middle of a wide view, and shows the others where last seen', async () => {
+    const now = Date.now();
+    const groups = REGIONAL_SCOOTER_SYSTEMS.filter(system => system.id.startsWith('lime_de_app_berlin_')).map(system => {
+      const coverage = serviceAreas(system).map(area => area.bounds);
+      return feed(`${regionalSource(system)}:${system.id}`, coverage[0], now - minutes(40), { source: 'germany', provider: 'lime', coverage,
+        vehicles: [{ ...vehicle(system.id), provider: 'lime', lat: (coverage[0].south + coverage[0].north) / 2,
+          lng: (coverage[0].west + coverage[0].east) / 2 }] });
+    });
+    const demanded = new Set<string>();
+    const { port } = await start({ version: 1, updatedAt: now, feeds: groups, overview: buildCityOverview(groups, now) }, {
+      refresher: { demand: ids => { for (const id of ids) demanded.add(id); }, refreshing: id => demanded.has(id), wait: async () => true } });
+    const body = await (await fetch(`http://127.0.0.1:${port}/api/scooters?south=52.34&west=13.0&north=52.68&east=13.76&zoom=16`,
+      { headers })).json() as ScooterResponse;
+    expect(demanded.size).toBe(LIME_GROUPS_PER_REQUEST);
+    expect(body.lastSeen?.vehicles).toHaveLength(groups.length);
+    expect(body.meta).toMatchObject({ refreshing: true, failedSources: [], partial: false });
   });
 
   it('answers at once from positions still shown, and says a refresh is under way', async () => {

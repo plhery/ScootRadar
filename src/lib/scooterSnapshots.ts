@@ -1,9 +1,9 @@
 import { SWISS_SCOOTER_AREAS, coverageIntersects } from '@/lib/feedCoverage';
 import {
-  REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, COUNTRY_SOURCES, collectsParking, isAppMapFeed, isRegionalSource, regionalCityId,
-  serviceAreas,
+  REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, COUNTRY_SOURCES, collectsParking, isAppMapFeed, isLimeGroupFeed, isRegionalSource,
+  regionalCityId, serviceAreas,
 } from '@/lib/regionalScooterSystems';
-import { boundsContainPoint, haversineM } from '@/lib/geo';
+import { boundsCenter, boundsContainPoint, haversineM } from '@/lib/geo';
 import { CITY_OVERVIEW_MAX_ZOOM, providersForViewport } from '@/lib/mapCoverage';
 import { PARKING_MAX_AGE_MS, PARKING_MIN_ZOOM, type ParkingSnapshot } from '@/lib/parking';
 import { scooterResponse } from '@/lib/scooterResponse';
@@ -85,7 +85,7 @@ const shownSweep = (feed: FeedSnapshot, now: number) =>
  * Whether an app map's last positions stand, faded, where its scooters were last seen: those too
  * old to show, of three hours at most, while a request has it collected again. Its slow sweeps
  * would otherwise leave the map empty of it for minutes. Only the app maps, which no licence
- * binds to fifteen minutes.
+ * binds to fifteen minutes. A Lime group a wide view leaves idle shows so too (idleInView).
  */
 export const showsLastSeen = (feed: FeedSnapshot, now: number, refreshing?: ReadonlySet<string>) =>
   !feed.skipped && isAppMapFeed(feed) && !showsPositions(feed, now) && now - feed.observedAt <= LAST_SEEN_MAX_AGE_MS &&
@@ -346,6 +346,36 @@ export function feedsForQuery(snapshot: MobilitySnapshot, query: FeedQuery, zoom
 }
 
 /**
+ * How many of Lime's refresh groups a request collects again: those nearest the middle of the view,
+ * which cover a phone's view at zoom 14. A request keeps its groups collected every minute, at four
+ * or five Lime requests each, and Lime's accounts make 36 a minute for every Lime town. On 25
+ * October 2026 a view of Berlin asked for its 128 groups: the other Lime towns people looked at
+ * waited a quarter of an hour for theirs, and expired, and new towns' first collections stalled.
+ */
+export const LIME_GROUPS_PER_REQUEST = 6;
+
+/** How far the feed's coverage is from a point, in degrees of latitude: 0 for one that holds it. */
+function offPoint(feed: FeedSnapshot, [lat, lng]: [number, number]): number {
+  const scale = Math.cos(lat * Math.PI / 180);
+  return Math.min(...feed.coverage.map(area => Math.hypot(Math.max(area.south - lat, lat - area.north, 0),
+    Math.max(area.west - lng, lng - area.east, 0) * scale)));
+}
+
+/**
+ * The feeds in view that a request collects again: all but the Lime groups past the
+ * LIME_GROUPS_PER_REQUEST nearest the middle of the view. Those stay idle, and the answer shows them
+ * as they are (idleInView).
+ */
+export function demandedFeeds(feeds: FeedSnapshot[], bounds: MapBounds): FeedSnapshot[] {
+  const groups = feeds.filter(isLimeGroupFeed);
+  if (groups.length <= LIME_GROUPS_PER_REQUEST) return feeds;
+  const middle = boundsCenter(bounds);
+  const nearest = new Set(groups.map((feed, index) => ({ feed, index, off: offPoint(feed, middle) }))
+    .sort((a, b) => a.off - b.off || a.index - b.index).slice(0, LIME_GROUPS_PER_REQUEST).map(({ feed }) => feed));
+  return feeds.filter(feed => !isLimeGroupFeed(feed) || nearest.has(feed));
+}
+
+/**
  * Until when an answer to the query may be kept (X-Scooter-Keep-Seconds): until the oldest data
  * it holds of a feed whose data may be kept only so long (`retention`, server/cadence.ts) passes
  * its cap; for the zoomed-out map, that of the city totals. undefined for an answer holding none.
@@ -367,6 +397,11 @@ export interface SnapshotQueryOptions {
    * wait for. It says so with meta.refreshing and asks to be polled again soon.
    */
   refreshing?: ReadonlySet<string>;
+  /**
+   * Feeds in view the request left idle (demandedFeeds). One whose positions are too old to show
+   * stands faded where its scooters were last seen, and counts neither as served nor as failed.
+   */
+  idleInView?: ReadonlySet<string>;
 }
 
 export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom: number | null, now = Date.now(),
@@ -374,10 +409,11 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   if (query.outsideCoverage) return scooterResponse({ vehicles: [], meta: emptyHealth() }, zoom, { availableProviders: [] });
   if (zoom !== null && zoom <= CITY_OVERVIEW_MAX_ZOOM) return overviewResponse(snapshot, query, zoom, now);
   const relevant = feedsForQuery(snapshot, query, zoom);
-  const meta = healthFor(relevant, now, undefined, options.refreshing);
+  const counted = relevant.filter(feed => !options.idleInView?.has(feed.id) || showsPositions(feed, now));
+  const meta = healthFor(counted, now, undefined, options.refreshing);
   const refreshing = relevant.some(feed => !feed.skipped && options.refreshing?.has(feed.id));
   // A city whose every feed is in its seasonal pause has nothing to show, which is no failure.
-  const asked = relevant.filter(feed => !feed.skipped && !quietInPause(feed, now, candidate => showsPositions(candidate, now), options.refreshing));
+  const asked = counted.filter(feed => !feed.skipped && !quietInPause(feed, now, candidate => showsPositions(candidate, now), options.refreshing));
   // Nothing to show is unavailable only while the cache is behind or starting. When an operator's
   // feed fails, the answer names it, and the map says who is not sharing data rather than
   // that it could not refresh.
@@ -409,8 +445,9 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   // Each scooter last seen where the sweep under way has yet to look, unless it has been seen since.
   const lastSeen = new Map<string, Vehicle>();
   const lastSeenTimes: number[] = [];
+  const fading = new Set([...options.refreshing ?? [], ...options.idleInView ?? []]);
   for (const feed of relevant) {
-    if (!showsLastSeen(feed, now, options.refreshing)) continue;
+    if (!showsLastSeen(feed, now, fading)) continue;
     const swept = shownSweep(feed, now)?.swept ?? [];
     const before = lastSeen.size;
     pick(lastSeen, feed.vehicles, (vehicle, key) => unique.has(key) ||

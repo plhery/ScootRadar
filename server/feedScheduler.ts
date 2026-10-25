@@ -6,6 +6,8 @@ export interface ScheduledFeed {
   host: string;
   /** An upstream with a lower request quota can scan idle areas less often. */
   idleIntervalMs?: number;
+  /** How long a request keeps it watched, when not the scheduler's watchMs: less long under a tight quota. */
+  watchMs?: number;
   /**
    * Its client spaces every request on the host, whatever the collection: it waits on that pace,
    * not on the cache, so it takes one of its host's slots but none of the shared ones.
@@ -160,7 +162,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
       const feed = this.byId.get(id);
       if (!feed) continue;
       if (!this.watched(id, now)) this.watchedSince.set(id, now);
-      this.watchedUntil.set(id, now + this.options.watchMs);
+      this.watchedUntil.set(id, now + (feed.watchMs ?? this.options.watchMs));
       if (focus) this.focusOf.set(id, focus);
       if (this.options.alwaysFast(feed) || this.woken.has(id)) continue;
       // A collection already under way answers the request.

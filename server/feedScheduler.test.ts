@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { FeedScheduler, idPhase, type CollectionAttention, type CollectionReason, type SchedulerOptions } from './feedScheduler';
 
-interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string }
+interface Feed { id: string; host: string; fast?: boolean; paced?: boolean; concurrencyKey?: string; watchMs?: number }
 const MINUTE = 60_000;
 // A whole number of idle intervals, so a phase of 0 falls on it.
 const T0 = 1_800_000_000_000;
@@ -278,6 +278,18 @@ it('uses an upstream-specific idle interval while watched areas still refresh ev
     scheduler.demand(['lime-area']);
     await vi.advanceTimersByTimeAsync(2 * MINUTE);
     expect(times('lime-area')).toEqual([0, 41, 42, 43]);
+  } finally { scheduler.stop(); }
+});
+
+it('keeps a feed with a watch of its own watched only that long', async () => {
+  const { scheduler, times } = schedule([{ id: 'lime-group', host: 'lime', watchMs: 3 * MINUTE }, { id: 'lyon', host: 'fr' }]);
+  try {
+    await vi.advanceTimersByTimeAsync(5 * MINUTE);
+    scheduler.demand(['lime-group', 'lyon']);
+    await vi.advanceTimersByTimeAsync(9.5 * MINUTE);
+    expect(times('lime-group')).toEqual([0, 5, 6, 7, 8]);
+    expect(times('lyon')).toEqual([0, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+    expect(scheduler.mode({ id: 'lime-group', host: 'lime' })).toBe('idle');
   } finally { scheduler.stop(); }
 });
 

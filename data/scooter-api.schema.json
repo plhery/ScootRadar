@@ -20,7 +20,7 @@
       "items": { "$ref": "#/$defs/ScooterCluster" }
     },
     "lastSeen": {
-      "description": "Where scooters of app maps being collected again stood when last seen, up to three hours ago: shown faded until the collection reaches them.",
+      "description": "Where scooters of app maps being collected again, or of Lime groups a wide view leaves idle, stood when last seen, up to three hours ago: shown faded until a collection reaches them.",
       "$ref": "#/$defs/LastSeen"
     },
     "providers": {

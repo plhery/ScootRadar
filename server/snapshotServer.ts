@@ -2,7 +2,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { isIP } from 'node:net';
 import { parseScooterQuery } from '../src/lib/scooterQuery';
-import { answerKeepUntil, feedsForQuery, querySnapshot, showsLastSeen, showsPositions, VEHICLE_MAX_AGE_MS,
+import { answerKeepUntil, demandedFeeds, feedsForQuery, querySnapshot, showsLastSeen, showsPositions, VEHICLE_MAX_AGE_MS,
   type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { ScooterFeedsUnavailableError } from '../src/lib/scooterFeeds';
 import { scooterResponseHeaders } from '../src/lib/scooterResponse';
@@ -171,11 +171,16 @@ export function createSnapshotServer(options: ServerOptions) {
     }
     if (!snapshot) { response.writeHead(503, { 'Retry-After': '5' }); response.end('{"error":"Scooter data is warming up."}'); return; }
     let refreshing: Set<string> | undefined;
+    let idleInView: Set<string> | undefined;
     const refresher = options.refresher;
     if (refresher) {
-      // The feeds this answer uses are watched for a while, and collected again now if their data is over a minute old.
-      const watched = feedsForQuery(snapshot, parsed.query, parsed.zoom).filter(feed => !feed.skipped);
-      refresher.demand(watched.map(feed => feed.id), now, parsed.query.bounds);
+      // The feeds this answer uses are watched for a while, and collected again now if their data is over a minute old:
+      // all but the Lime groups past the few nearest the middle of the view, which Lime's pace could not keep up.
+      const inView = feedsForQuery(snapshot, parsed.query, parsed.zoom).filter(feed => !feed.skipped);
+      const watched = demandedFeeds(inView, parsed.query.bounds);
+      const demanded = new Set(watched.map(feed => feed.id));
+      idleInView = new Set(inView.filter(feed => !demanded.has(feed.id)).map(feed => feed.id));
+      refresher.demand([...demanded], now, parsed.query.bounds);
       // Positions too old to show would leave the map empty: wait a moment for those likely to come back,
       // less long when all of them have something to show meanwhile.
       const coming = new Set(watched.filter(feed => refresher.refreshing(feed.id)).map(feed => feed.id));
@@ -189,7 +194,7 @@ export function createSnapshotServer(options: ServerOptions) {
       refreshing = new Set(watched.filter(feed => refresher.refreshing(feed.id)).map(feed => feed.id));
     }
     const answeredAt = Date.now();
-    const body = querySnapshot(snapshot, parsed.query, parsed.zoom, answeredAt, { refreshing });
+    const body = querySnapshot(snapshot, parsed.query, parsed.zoom, answeredAt, { refreshing, idleInView });
     const keepUntil = options.retention && answerKeepUntil(snapshot, parsed.query, parsed.zoom, answeredAt, options.retention);
     // The origin only serves authenticated traffic. Public caching is set at the Worker, which keeps
     // an answer holding a capped feed's data no longer than X-Scooter-Keep-Seconds (0: not at all).

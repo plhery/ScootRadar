@@ -149,6 +149,12 @@ An app map's sweep can take minutes, so while one runs for a request:
   count them nowhere, and keep asking every 3 seconds while they stand. The request
   then waits 1 second rather than 3 (`LAST_SEEN_WAIT_MS`).
 
+A request collects again only the six Lime groups nearest the middle of its view,
+and keeps them watched for 3 minutes rather than `SCOOTER_WATCH_SECONDS`: every Lime
+town shares 36 requests a minute. The other groups in view stay idle; their old
+positions stand faded the same way, outside the answer's state
+([lime-app-map.md](lime-app-map.md)).
+
 The cadence comes from the cache's environment, every value with a default:
 
 | Variable | Default | |

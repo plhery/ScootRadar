@@ -173,7 +173,14 @@ groups are served in arrival order so repeated polling cannot postpone an
 area still waiting for its first refresh. Viewed groups
 are selected by their individual assigned cells, including where a group's
 enclosing rectangle spans a gap between rows or disconnected polygons. They
-use the normal active cadence. Idle groups are swept every three days
+use the normal active cadence, but a request collects again only the six
+nearest the middle of its view (`LIME_GROUPS_PER_REQUEST`, enough for a phone at
+zoom 14), and keeps them watched for three minutes (`LIME_WATCH_MS`) rather than
+ten: the map asks every minute while it is open. Every Lime town shares the
+accounts' 36 requests a minute, four or five a group. On 25 October 2026 a view
+of Berlin asked for its 128 groups; Santiago's, watched meanwhile, waited a
+quarter of an hour for theirs and expired, and the new German towns' first
+collections stalled, some past their 15-minute budget. Idle groups are swept every three days
 (`LIME_IDLE_INTERVAL_MS`), not every two hours as the other app maps: every
 market Lime's rider map lists takes about 17,500 requests, a day at that pace,
 so the idle sweeps take about a third of the requests, and may take half
@@ -185,7 +192,9 @@ interval plus ten minutes, while the
 active 15-minute expiry remains unchanged. Street-level positions older than
 15 minutes are not shown live: while a group is swept again for a request, they
 stand faded where they were, up to three hours old, and each view the sweep
-finishes, the requested one first, replaces them as it goes. Country totals fill as the background scan completes;
+finishes, the requested one first, replaces them as it goes. The groups a wide
+view leaves idle stand faded the same way, and count in the answer's state
+neither as served nor as failed. Country totals fill as the background scan completes;
 they describe the latest completed inventory, up to three days old where
 nobody looks, not simultaneous fleet counts.
 

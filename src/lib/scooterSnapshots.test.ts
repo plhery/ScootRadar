@@ -1,13 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import { skippedSources } from '@/lib/scooterSources';
-import { buildCityOverview, feedsForQuery, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from './scooterSnapshots';
+import { buildCityOverview, demandedFeeds, feedsForQuery, LIME_GROUPS_PER_REQUEST, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS,
+  type FeedSnapshot, type MobilitySnapshot } from './scooterSnapshots';
 import { scooterResponseHeaders } from './scooterResponse';
 import { ScooterFeedsUnavailableError } from './scooterFeeds';
 import { providersForViewport, mapRepresentationsMatch } from './mapCoverage';
 import type { Vehicle } from './types';
 import { providerHealth, providersDownNotice } from './dataHealth';
 import { PARKING_MAX_AGE_MS } from './dataFreshness';
-import { REGIONAL_SCOOTER_SYSTEMS, regionalSource } from './regionalScooterSystems';
+import { REGIONAL_SCOOTER_SYSTEMS, regionalSource, serviceAreas } from './regionalScooterSystems';
 
 const now = Date.parse('2026-09-08T12:00:00Z');
 const lyon = { south: 45.70, west: 4.7, north: 45.9, east: 5.0 };
@@ -278,6 +279,47 @@ describe('feeds collected on demand', () => {
       expect(response.lastSeen?.clusters.map(cluster => [cluster.count, cluster.providers])).toEqual([[2, { lime: 2 }]]);
       expect(response.lastSeen?.clusters[0].id).toBe(`seen:${response.clusters[0].id}`);
       expect(response.lastSeen?.vehicles.map(item => item.vehicle_id)).toEqual(['c']);
+    });
+  });
+
+  describe('Lime\'s groups in a wide view', () => {
+    const berlin = { south: 52.34, west: 13.0, north: 52.68, east: 13.76 };
+    const wide = { bounds: berlin, minBattery: 0 };
+    const groups = REGIONAL_SCOOTER_SYSTEMS.filter(system => system.id.startsWith('lime_de_app_berlin_')).map(system => {
+      const coverage = serviceAreas(system).map(area => area.bounds);
+      return feed({ id: `${regionalSource(system)}:${system.id}`, source: 'germany', provider: 'lime', coverage,
+        vehicles: [{ ...vehicle(system.id), provider: 'lime', lat: (coverage[0].south + coverage[0].north) / 2,
+          lng: (coverage[0].west + coverage[0].east) / 2 }], observedAt: now - minutes(40) });
+    });
+    const holds = (item: FeedSnapshot, [lat, lng]: [number, number]) => item.coverage.some(area =>
+      area.south <= lat && lat <= area.north && area.west <= lng && lng <= area.east);
+
+    it('has a request collect again only the few nearest the middle of the view', () => {
+      const dott = feed({ id: 'germany:dott_de_berlin', source: 'germany', coverage: [berlin] });
+      const demanded = demandedFeeds([dott, ...groups], berlin);
+      expect(groups.length).toBeGreaterThan(100);
+      expect(demanded).toHaveLength(LIME_GROUPS_PER_REQUEST + 1);
+      expect(demanded[0]).toBe(dott);
+      expect(demanded.some(item => holds(item, [52.51, 13.38]))).toBe(true);
+      expect(demanded).not.toContain(groups[0]);
+      // A street view meets fewer, and has them all.
+      const street = groups.filter(item => holds(item, [52.51, 13.38]) || holds(item, [52.52, 13.39]));
+      expect(demandedFeeds(street, berlin)).toEqual(street);
+    });
+
+    it('shows the others where their scooters were last seen, neither served nor failed', () => {
+      const [near, far] = [{ ...groups[60], observedAt: now - 30_000 }, groups[0]];
+      const response = querySnapshot(snapshot([near, far]), wide, 16, now, { idleInView: new Set([far.id]) });
+      expect(response.vehicles.map(item => item.vehicle_id)).toEqual([near.vehicles[0].vehicle_id]);
+      expect(response.lastSeen?.vehicles.map(item => item.vehicle_id)).toEqual([far.vehicles[0].vehicle_id]);
+      expect(response.meta).toMatchObject({ failedSources: [], partial: false, lastSeenAt: new Date(now - minutes(40)).toISOString() });
+      expect(response.meta.refreshing).toBeUndefined();
+      expect(response.meta.sources.germany).toBe('fresh');
+      // Asked for, and not collected, it would have failed.
+      expect(querySnapshot(snapshot([near, far]), wide, 16, now).meta.failedSources).toEqual([far.id]);
+      // Its positions recent enough to show count as any feed's.
+      const recent = { ...far, observedAt: now - minutes(5) };
+      expect(querySnapshot(snapshot([near, recent]), wide, 16, now, { idleInView: new Set([far.id]) }).vehicles).toHaveLength(2);
     });
   });
 

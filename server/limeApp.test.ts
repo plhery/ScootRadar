@@ -184,7 +184,7 @@ describe('independent Lime production accounts', () => {
     const feeds = withLimeAppCollectors(bare, systems, pool);
     expect(feeds.at(-1)).toBe(publicFeed);
     for (const [index, feed] of feeds.slice(0, -1).entries()) {
-      expect(feed).toMatchObject({ host: 'web-production.lime.bike', paced: true,
+      expect(feed).toMatchObject({ host: 'web-production.lime.bike', paced: true, watchMs: 3 * 60_000,
         concurrencyKey: `lime-account:${pool.accountFor(systems[index].id).id}` });
     }
   });

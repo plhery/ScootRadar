@@ -4,7 +4,7 @@ import { mkdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { request } from 'node:https';
 import { dirname, join, resolve } from 'node:path';
 import { boundsContainPoint, haversineM, polygonContainsPoint } from '../src/lib/geo';
-import { decodeLimeArea, limeAreaTiles, LIME_QUERY_INTERVAL_MS, LIME_IDLE_INTERVAL_MS } from './limeAreas';
+import { decodeLimeArea, limeAreaTiles, LIME_QUERY_INTERVAL_MS, LIME_IDLE_INTERVAL_MS, LIME_WATCH_MS } from './limeAreas';
 export { LIME_IDLE_INTERVAL_MS } from './limeAreas';
 import limeRegions from '../data/lime-app-regions.json';
 import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
@@ -347,7 +347,7 @@ export function withLimeAppCollectors(feeds: CollectableScooterFeed[], systems: 
     const s = regions.get(feed.id.slice(feed.id.indexOf(':') + 1));
     if (!s) return feed;
     const selected = accounts ?? pool();
-    return { ...feed, idleIntervalMs: LIME_IDLE_INTERVAL_MS, paced: true,
+    return { ...feed, idleIntervalMs: LIME_IDLE_INTERVAL_MS, watchMs: LIME_WATCH_MS, paced: true,
       concurrencyKey: `lime-account:${selected.accountFor(s.id).id}`, collect: () => selected.collect(s) };
   });
 }
