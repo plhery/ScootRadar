@@ -93,7 +93,7 @@ const guide: Guide = {
           },
         },
         'A rental doesn’t protect you from the phone, pavement and drink-drive rules: you’re still riding a motor vehicle. Operators add their own penalties too. Dott, for example, can charge £50 for breaking its terms, fines riders for bad parking in Nottingham and the West of England, and in the West of England bans riders caught riding two up.',
-        '**Since 29 June 2026** police can seize a vehicle ridden in a way that causes alarm, distress or annoyance straight away, without giving a warning first. The Crime and Policing Act 2026 removed the old warning step, and the Home Office says the change targets the misuse of e-scooters and modified e-bikes, among other things. Since July 2026 a seized vehicle can be disposed of after seven days.',
+        '**Since 29 June 2026** police can seize a vehicle ridden in a way that causes alarm, distress or annoyance straight away, without giving a warning first. The Crime and Policing Act 2026 removed the old warning step, and the Home Office says the change targets the misuse of e-scooters and modified e-bikes, among other things. A vehicle seized from 22 July 2026 can be disposed of after seven days rather than 14.',
       ],
     },
     {
@@ -214,6 +214,7 @@ const guide: Guide = {
     { title: 'GOV.UK: Penalty points (endorsements)', url: 'https://www.gov.uk/penalty-points-endorsements' },
     { title: 'The Fixed Penalty Order 2000, Schedule 1', url: 'https://www.legislation.gov.uk/uksi/2000/2792/schedule' },
     { title: 'Crime and Policing Act 2026, section 8', url: 'https://www.legislation.gov.uk/ukpga/2026/20/section/8/enacted' },
+    { title: 'The Removal, Storage and Disposal of Motor Vehicles Timeframes (Amendment) Regulations 2026', url: 'https://www.legislation.gov.uk/uksi/2026/704/made' },
     { title: 'GOV.UK: The drink drive limit', url: 'https://www.gov.uk/drink-drive-limit' },
     { title: 'Transport for London: E-scooter rental trial', url: 'https://tfl.gov.uk/modes/driving/electric-scooter-rental-trial' },
     { title: 'Norfolk County Council: Extension of Norwich e-scooter trial (March 2026)', url: 'https://norfolkcc.cmis.uk.com/norfolkcc/DelegatedDecisions/tabid/67/ctl/ViewCMIS_DecisionDetails/mid/391/Id/2006/Default.aspx' },
