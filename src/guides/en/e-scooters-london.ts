@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooter hire in London: Lime and Voi, the 11 boroughs, and where you can ride and park',
   lede: 'You can hire an e-scooter in London from Lime or Voi, but only in the 11 boroughs of Transport for London’s rental trial, from Richmond to Tower Hamlets. You must be 18 or over with a full or provisional driving licence, the scooters are capped at 12.5 mph, and every ride ends in a marked parking bay. On 12 October 2026 Voi’s London page listed no unlock fee and 27p a minute; Lime shows its price only in its app. A privately owned e-scooter is illegal on London’s roads, pavements and cycle lanes, and no e-scooter is allowed on the Tube or buses.',
   published: '2026-10-24',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'gb:London',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Two companies, **Lime** and **Voi**, rent out e-scooters in London. They run them in Transport for London’s (TfL) rental trial, which TfL manages with London Councils and the boroughs taking part, under the Department for Transport’s national trials. London’s began on 7 June 2021; Dott, a third operator, left in April 2024.',
         'A third phase began in September 2026, again with Lime and Voi, under contracts TfL signed on 24 July 2026 for up to two years, as far as national law allows; TfL may extend them by up to four years. TfL’s trial page still describes the second phase, and says the national trials that make hire e-scooters legal can run until 31 May 2028.',
-        'Since 24 October 2026 the [map of London](map:gb:London) has shown Voi’s e-scooters: about 1,600 at 14:55 that Saturday, a snapshot, not the fleet size. It shows their positions and battery, not prices, zones or bays. Lime’s scooters aren’t on it, so use the Lime app for those. Lime, Voi and Forest also rent e-bikes in London, which the map doesn’t show.',
+        'Since 24 October 2026 the [map of London](map:gb:London) has shown Voi’s e-scooters, about 1,600 at 14:55 that Saturday, and since 25 October Lime’s, about 1,500 on Lime’s own map in the early hours: snapshots, not the fleet sizes. It shows their positions and battery, not prices, zones or bays. Lime, Voi and Forest also rent e-bikes in London, which the map doesn’t show.',
         'TfL counted more than 4,000 hire e-scooters and about 1,900 parking bays in September 2026, in a trial area of about 300 km². From late June to September 2026 the two could run up to 5,350 scooters, a cap TfL, London Councils and the boroughs set.',
       ],
     },
@@ -160,8 +160,8 @@ const guide: Guide = {
       answer: 'You mustn’t: a hire e-scooter is legal only inside the trial area, and you can end a ride only in a marked bay inside it. Turn back to the nearest bay, which the app shows.',
     },
     {
-      question: 'Why can’t I see Lime scooters on ScootRadar?',
-      answer: 'Our [London map](map:gb:London) shows Voi’s e-scooters, not Lime’s. To find a Lime scooter, open the Lime app.',
+      question: 'Can I see Lime scooters on ScootRadar?',
+      answer: 'Yes, since 25 October 2026: our [London map](map:gb:London) shows Lime’s e-scooters beside Voi’s. Where nobody has looked for a while, Lime’s fill in as the map reads them, where you look first, which takes seconds for a few streets and longer for all of London. To ride one, open the Lime app.',
     },
   ],
   sources: [

@@ -19,6 +19,12 @@ Dott's scooters in Liège and Herstal were added on 24 October 2026; see
 [Dott Liège and Herstal, October 2026](#dott-liège-and-herstal-october-2026).
 Pony's scooters there followed on 25 October 2026; see
 [Pony Liège, October 2026](#pony-liège-october-2026).
+Lime publishes no UK feed; its scooters in London, Birmingham, Coventry (at
+the University of Warwick), Milton Keynes and Salford were added on
+25 October 2026 from its authenticated rider map, which covers each
+of these markets whole; see
+[the Lime guide](lime-app-map.md#every-market-the-map-lists-october-2026).
+The table lists the public feeds.
 
 | Country | Operator | Enabled feeds | Coverage | Available scooters |
 | --- | --- | ---: | --- | ---: |
@@ -506,8 +512,12 @@ stays open at night.
     public feed. Access is asked from nap@voiapp.io, under a
     [licence](https://www.voi.com/voi-licencing-agreement) that allows showing
     the vehicles but forbids storing the data, which the scooter cache does.
-  - Lime (London, West Midlands since April 2025, Salford, Milton Keynes)
-    publishes no UK feed.
+  - Lime publishes no UK feed; its rider map's markets are on the map since
+    25 October 2026 (see above). Its Derby, Sheffield, Stoke-on-Trent and York
+    regions have scooter zones but held no scooter near their centres on
+    25 October 2026, and none is a trial area. Its Nottingham and Oxford
+    regions held no scooter in their whole scooter zones that day: there Lime
+    rents e-bikes, and Dott and Voi run the e-scooter schemes.
   - Neither DfT, TfL, the UK's access point for transport data nor any local
     portal publishes scooter positions.
   - Zeus's UK feeds hold disabled scooters from 2023.

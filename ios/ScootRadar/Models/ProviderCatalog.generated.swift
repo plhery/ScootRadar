@@ -629,6 +629,50 @@ enum ScooterProviderCoverage {
         systems.append((.voi, GeoBounds(south: 50.875, west: -1.482, north: 50.957, east: -1.324)))
         systems.append((.voi, GeoBounds(south: 52.190351431892886, west: -0.9908294677734375, north: 52.29672861135593, east: -0.800628662109375)))
         systems.append((.voi, GeoBounds(south: 51.30515851278135, west: -0.4506786666871926, north: 51.6669733453627, east: 0.19414977493520894)))
+        systems.append((.lime, GeoBounds(south: 52.41383, west: -1.94780871, north: 52.42730467, east: -1.88153485)))
+        systems.append((.lime, GeoBounds(south: 52.42730467, west: -1.9699, north: 52.44077934, east: -1.85944356)))
+        systems.append((.lime, GeoBounds(south: 52.44077934, west: -1.9699, north: 52.454254, east: -1.75498)))
+        systems.append((.lime, GeoBounds(south: 52.454254, west: -1.9699, north: 52.46772867, east: -1.75498)))
+        systems.append((.lime, GeoBounds(south: 52.46772867, west: -1.9699, north: 52.48120334, east: -1.75498)))
+        systems.append((.lime, GeoBounds(south: 52.48120334, west: -1.9699, north: 52.49467801, east: -1.75498)))
+        systems.append((.lime, GeoBounds(south: 52.49467801, west: -1.92571742, north: 52.50815267, east: -1.75498)))
+        systems.append((.lime, GeoBounds(south: 52.50815267, west: -1.92571742, north: 52.51987, east: -1.83735227)))
+        systems.append((.lime, GeoBounds(south: 52.50815267, west: -1.81526098, north: 52.51987, east: -1.79316969)))
+        systems.append((.lime, GeoBounds(south: 52.37344, west: -1.5747, north: 52.38691467, east: -1.54933)))
+        systems.append((.lime, GeoBounds(south: 52.38691467, west: -1.5747, north: 52.39132, east: -1.55262892)))
+        systems.append((.lime, GeoBounds(south: 51.39184, west: -0.354607, north: 51.40531467, east: -0.289824)))
+        systems.append((.lime, GeoBounds(south: 51.40531467, west: -0.39779567, north: 51.41878934, east: -0.289824)))
+        systems.append((.lime, GeoBounds(south: 51.40531467, west: -0.16025799, north: 51.41878934, east: -0.11706933)))
+        systems.append((.lime, GeoBounds(south: 51.41878934, west: -0.39779567, north: 51.432264, east: -0.24663533)))
+        systems.append((.lime, GeoBounds(south: 51.41878934, west: -0.20344666, north: 51.432264, east: -0.05228633)))
+        systems.append((.lime, GeoBounds(south: 51.432264, west: -0.39779567, north: 51.44573867, east: -0.05228633)))
+        systems.append((.lime, GeoBounds(south: 51.44573867, west: -0.39779567, north: 51.45921334, east: -0.03069199)))
+        systems.append((.lime, GeoBounds(south: 51.45921334, west: -0.33301266, north: 51.47268801, east: -0.03069199)))
+        systems.append((.lime, GeoBounds(south: 51.47268801, west: -0.33301266, north: 51.48616267, east: -0.05228633)))
+        systems.append((.lime, GeoBounds(south: 51.47268801, west: -0.03069199, north: 51.48616267, east: 0.00993)))
+        systems.append((.lime, GeoBounds(south: 51.48616267, west: -0.41939, north: 51.49963734, east: 0.00993)))
+        systems.append((.lime, GeoBounds(south: 51.49963734, west: -0.41939, north: 51.51311201, east: 0.00993)))
+        systems.append((.lime, GeoBounds(south: 51.51311201, west: -0.39779567, north: 51.52658668, east: 0.00993)))
+        systems.append((.lime, GeoBounds(south: 51.52658668, west: -0.41939, north: 51.54006134, east: 0.00993)))
+        systems.append((.lime, GeoBounds(south: 51.54006134, west: -0.41939, north: 51.55353601, east: -0.289824)))
+        systems.append((.lime, GeoBounds(south: 51.54006134, west: -0.225041, north: 51.55353601, east: -0.11706933)))
+        systems.append((.lime, GeoBounds(south: 51.54006134, west: -0.05228633, north: 51.55353601, east: -0.00909766)))
+        systems.append((.lime, GeoBounds(south: 51.55353601, west: -0.39779567, north: 51.56701068, east: -0.31141833)))
+        systems.append((.lime, GeoBounds(south: 51.55353601, west: -0.225041, north: 51.56701068, east: -0.11706933)))
+        systems.append((.lime, GeoBounds(south: 51.56701068, west: -0.20344666, north: 51.57296, east: -0.13866366)))
+        systems.append((.lime, GeoBounds(south: 51.96982, west: -0.77193302, north: 51.98329467, east: -0.70631778)))
+        systems.append((.lime, GeoBounds(south: 51.98329467, west: -0.81567651, north: 51.99676934, east: -0.68444604)))
+        systems.append((.lime, GeoBounds(south: 51.99676934, west: -0.81567651, north: 52.010244, east: -0.66257429)))
+        systems.append((.lime, GeoBounds(south: 52.010244, west: -0.83754825, north: 52.02371867, east: -0.65217)))
+        systems.append((.lime, GeoBounds(south: 52.02371867, west: -0.85942, north: 52.03719334, east: -0.65217)))
+        systems.append((.lime, GeoBounds(south: 52.03719334, west: -0.85942, north: 52.05066801, east: -0.65217)))
+        systems.append((.lime, GeoBounds(south: 52.05066801, west: -0.85942, north: 52.06414267, east: -0.66257429)))
+        systems.append((.lime, GeoBounds(south: 52.06414267, west: -0.83754825, north: 52.07761734, east: -0.68444604)))
+        systems.append((.lime, GeoBounds(south: 52.07761734, west: -0.77193302, north: 52.09109201, east: -0.68444604)))
+        systems.append((.lime, GeoBounds(south: 52.09109201, west: -0.77193302, north: 52.0938, east: -0.72818953)))
+        systems.append((.lime, GeoBounds(south: 53.46557, west: -2.37517, north: 53.47904467, east: -2.24502)))
+        systems.append((.lime, GeoBounds(south: 53.47904467, west: -2.37517, north: 53.49251934, east: -2.24502)))
+        systems.append((.lime, GeoBounds(south: 53.49251934, west: -2.32990026, north: 53.49751, east: -2.26199565)))
         systems.append((.bird, GeoBounds(south: 38.6461, west: -9.205, north: 38.6941, east: -9.1394)))
         systems.append((.bird, GeoBounds(south: 38.6051, west: -9.2506, north: 38.6795, east: -9.2051)))
         systems.append((.bird, GeoBounds(south: 38.6716, west: -9.4824, north: 38.7592, east: -9.3048)))
@@ -1524,7 +1568,7 @@ enum ScooterCityCatalog {
     // checker over 30 GB, and CI's Macs, which have 7, killed the compiler (24 Oct 2026).
     private static func makeCities() -> [ScooterCity] {
         var cities: [ScooterCity] = []
-        cities.reserveCapacity(846)
+        cities.reserveCapacity(849)
         cities.append(ScooterCity(id: "ch:amriswil", name: "Amriswil", countryCode: "CH", center: GeoPoint(latitude: 47.547, longitude: 9.2959), bounds: GeoBounds(south: 47.513, west: 9.234, north: 47.5773, east: 9.3262)))
         cities.append(ScooterCity(id: "ch:basel", name: "Basel", countryCode: "CH", center: GeoPoint(latitude: 47.5596, longitude: 7.5886), bounds: GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82)))
         cities.append(ScooterCity(id: "ch:bern", name: "Bern", countryCode: "CH", center: GeoPoint(latitude: 46.948, longitude: 7.4474), bounds: GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7)))
@@ -1808,7 +1852,7 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "gb:Bath", name: "Bath", countryCode: "GB", center: GeoPoint(latitude: 51.3814, longitude: -2.359), bounds: GeoBounds(south: 51.3473, west: -2.4118, north: 51.4195, east: -2.291), feeds: [ScooterCityFeed(id: "uk:dott_gb_bath")]))
         cities.append(ScooterCity(id: "gb:Bristol", name: "Bristol", countryCode: "GB", center: GeoPoint(latitude: 51.4536, longitude: -2.5974), bounds: GeoBounds(south: 51.3973, west: -2.7053, north: 51.5499, east: -2.4519), feeds: [ScooterCityFeed(id: "uk:dott_gb_bristol")]))
         cities.append(ScooterCity(id: "gb:Yate", name: "Yate", countryCode: "GB", center: GeoPoint(latitude: 51.5405, longitude: -2.418), bounds: GeoBounds(south: 51.5197, west: -2.4504, north: 51.5649, east: -2.3796), feeds: [ScooterCityFeed(id: "uk:dott_gb_bristol")]))
-        cities.append(ScooterCity(id: "gb:Milton Keynes", name: "Milton Keynes", countryCode: "GB", center: GeoPoint(latitude: 52.0406, longitude: -0.7594), bounds: GeoBounds(south: 51.9723, west: -0.8446, north: 52.0904, east: -0.6559), feeds: [ScooterCityFeed(id: "uk:dott_gb_milton_keynes")]))
+        cities.append(ScooterCity(id: "gb:Milton Keynes", name: "Milton Keynes", countryCode: "GB", center: GeoPoint(latitude: 52.0406, longitude: -0.7594), bounds: GeoBounds(south: 51.96982, west: -0.85942, north: 52.0938, east: -0.65217), feeds: [ScooterCityFeed(id: "uk:dott_gb_milton_keynes"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_000"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_001"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_002"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_003"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_004"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_005"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_006"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_007"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_008"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_009"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_010"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_011"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_012"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_013"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_014"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_015"), ScooterCityFeed(id: "uk:lime_gb_app_milton_keynes_016")]))
         cities.append(ScooterCity(id: "gb:Nottingham", name: "Nottingham", countryCode: "GB", center: GeoPoint(latitude: 52.9529, longitude: -1.1498), bounds: GeoBounds(south: 52.8911, west: -1.2505, north: 53.0217, east: -1.1045), feeds: [ScooterCityFeed(id: "uk:dott_gb_nottingham")]))
         cities.append(ScooterCity(id: "gb:Kettering", name: "Kettering", countryCode: "GB", center: GeoPoint(latitude: 52.39219, longitude: -0.71516), bounds: GeoBounds(south: 52.35028, west: -0.77627, north: 52.43409, east: -0.654055871022936), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_219")]))
         cities.append(ScooterCity(id: "gb:Wellingborough", name: "Wellingborough", countryCode: "GB", center: GeoPoint(latitude: 52.3045, longitude: -0.7015), bounds: GeoBounds(south: 52.28, west: -0.751, north: 52.329, east: -0.652), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_231")]))
@@ -1827,7 +1871,10 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "gb:Corby", name: "Corby", countryCode: "GB", center: GeoPoint(latitude: 52.48922, longitude: -0.6885), bounds: GeoBounds(south: 52.448, west: -0.787, north: 52.5304382962175, east: -0.59), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_230")]))
         cities.append(ScooterCity(id: "gb:Southampton", name: "Southampton", countryCode: "GB", center: GeoPoint(latitude: 50.91603, longitude: -1.40307), bounds: GeoBounds(south: 50.875, west: -1.482, north: 50.957, east: -1.324), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_236")]))
         cities.append(ScooterCity(id: "gb:Northampton", name: "Northampton", countryCode: "GB", center: GeoPoint(latitude: 52.24358, longitude: -0.89584), bounds: GeoBounds(south: 52.190351431892886, west: -0.9908294677734375, north: 52.29672861135593, east: -0.800628662109375), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_205")]))
-        cities.append(ScooterCity(id: "gb:London", name: "London", countryCode: "GB", center: GeoPoint(latitude: 51.48426, longitude: -0.1286), bounds: GeoBounds(south: 51.30515851278135, west: -0.4506786666871926, north: 51.6669733453627, east: 0.19414977493520894), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_327")]))
+        cities.append(ScooterCity(id: "gb:London", name: "London", countryCode: "GB", center: GeoPoint(latitude: 51.48426, longitude: -0.1286), bounds: GeoBounds(south: 51.30515851278135, west: -0.4506786666871926, north: 51.6669733453627, east: 0.19414977493520894), feeds: [ScooterCityFeed(id: "uk:voi_gb_app_327"), ScooterCityFeed(id: "uk:lime_gb_app_london_000"), ScooterCityFeed(id: "uk:lime_gb_app_london_001"), ScooterCityFeed(id: "uk:lime_gb_app_london_002"), ScooterCityFeed(id: "uk:lime_gb_app_london_003"), ScooterCityFeed(id: "uk:lime_gb_app_london_004"), ScooterCityFeed(id: "uk:lime_gb_app_london_005"), ScooterCityFeed(id: "uk:lime_gb_app_london_006"), ScooterCityFeed(id: "uk:lime_gb_app_london_007"), ScooterCityFeed(id: "uk:lime_gb_app_london_008"), ScooterCityFeed(id: "uk:lime_gb_app_london_009"), ScooterCityFeed(id: "uk:lime_gb_app_london_010"), ScooterCityFeed(id: "uk:lime_gb_app_london_011"), ScooterCityFeed(id: "uk:lime_gb_app_london_012"), ScooterCityFeed(id: "uk:lime_gb_app_london_013"), ScooterCityFeed(id: "uk:lime_gb_app_london_014"), ScooterCityFeed(id: "uk:lime_gb_app_london_015"), ScooterCityFeed(id: "uk:lime_gb_app_london_016"), ScooterCityFeed(id: "uk:lime_gb_app_london_017"), ScooterCityFeed(id: "uk:lime_gb_app_london_018"), ScooterCityFeed(id: "uk:lime_gb_app_london_019"), ScooterCityFeed(id: "uk:lime_gb_app_london_020"), ScooterCityFeed(id: "uk:lime_gb_app_london_021"), ScooterCityFeed(id: "uk:lime_gb_app_london_022"), ScooterCityFeed(id: "uk:lime_gb_app_london_023"), ScooterCityFeed(id: "uk:lime_gb_app_london_024"), ScooterCityFeed(id: "uk:lime_gb_app_london_025"), ScooterCityFeed(id: "uk:lime_gb_app_london_026"), ScooterCityFeed(id: "uk:lime_gb_app_london_027"), ScooterCityFeed(id: "uk:lime_gb_app_london_028"), ScooterCityFeed(id: "uk:lime_gb_app_london_029"), ScooterCityFeed(id: "uk:lime_gb_app_london_030"), ScooterCityFeed(id: "uk:lime_gb_app_london_031"), ScooterCityFeed(id: "uk:lime_gb_app_london_032"), ScooterCityFeed(id: "uk:lime_gb_app_london_033"), ScooterCityFeed(id: "uk:lime_gb_app_london_034"), ScooterCityFeed(id: "uk:lime_gb_app_london_035"), ScooterCityFeed(id: "uk:lime_gb_app_london_036"), ScooterCityFeed(id: "uk:lime_gb_app_london_037"), ScooterCityFeed(id: "uk:lime_gb_app_london_038"), ScooterCityFeed(id: "uk:lime_gb_app_london_039"), ScooterCityFeed(id: "uk:lime_gb_app_london_040"), ScooterCityFeed(id: "uk:lime_gb_app_london_041"), ScooterCityFeed(id: "uk:lime_gb_app_london_042"), ScooterCityFeed(id: "uk:lime_gb_app_london_043"), ScooterCityFeed(id: "uk:lime_gb_app_london_044"), ScooterCityFeed(id: "uk:lime_gb_app_london_045"), ScooterCityFeed(id: "uk:lime_gb_app_london_046"), ScooterCityFeed(id: "uk:lime_gb_app_london_047")]))
+        cities.append(ScooterCity(id: "gb:Birmingham", name: "Birmingham", countryCode: "GB", center: GeoPoint(latitude: 52.48142, longitude: -1.89983), bounds: GeoBounds(south: 52.41383, west: -1.9699, north: 52.51987, east: -1.75498), feeds: [ScooterCityFeed(id: "uk:lime_gb_app_birmingham_000"), ScooterCityFeed(id: "uk:lime_gb_app_birmingham_001"), ScooterCityFeed(id: "uk:lime_gb_app_birmingham_002"), ScooterCityFeed(id: "uk:lime_gb_app_birmingham_003"), ScooterCityFeed(id: "uk:lime_gb_app_birmingham_004"), ScooterCityFeed(id: "uk:lime_gb_app_birmingham_005"), ScooterCityFeed(id: "uk:lime_gb_app_birmingham_006"), ScooterCityFeed(id: "uk:lime_gb_app_birmingham_007"), ScooterCityFeed(id: "uk:lime_gb_app_birmingham_008"), ScooterCityFeed(id: "uk:lime_gb_app_birmingham_009"), ScooterCityFeed(id: "uk:lime_gb_app_birmingham_010"), ScooterCityFeed(id: "uk:lime_gb_app_birmingham_011"), ScooterCityFeed(id: "uk:lime_gb_app_birmingham_012"), ScooterCityFeed(id: "uk:lime_gb_app_birmingham_013"), ScooterCityFeed(id: "uk:lime_gb_app_birmingham_014"), ScooterCityFeed(id: "uk:lime_gb_app_birmingham_015")]))
+        cities.append(ScooterCity(id: "gb:Coventry", name: "Coventry", countryCode: "GB", center: GeoPoint(latitude: 52.38238, longitude: -1.56202), bounds: GeoBounds(south: 52.37344, west: -1.5747, north: 52.39132, east: -1.54933), feeds: [ScooterCityFeed(id: "uk:lime_gb_app_coventry_000")]))
+        cities.append(ScooterCity(id: "gb:Salford", name: "Salford", countryCode: "GB", center: GeoPoint(latitude: 53.48771, longitude: -2.29042), bounds: GeoBounds(south: 53.46557, west: -2.37517, north: 53.49751, east: -2.24502), feeds: [ScooterCityFeed(id: "uk:lime_gb_app_salford_000"), ScooterCityFeed(id: "uk:lime_gb_app_salford_001"), ScooterCityFeed(id: "uk:lime_gb_app_salford_002"), ScooterCityFeed(id: "uk:lime_gb_app_salford_003")]))
         cities.append(ScooterCity(id: "pt:Almada", name: "Almada", countryCode: "PT", center: GeoPoint(latitude: 38.6831, longitude: -9.1576), bounds: GeoBounds(south: 38.6461, west: -9.205, north: 38.6941, east: -9.1394), feeds: [ScooterCityFeed(id: "portugal:bird_pt_almada"), ScooterCityFeed(id: "portugal:lime_pt_almada")]))
         cities.append(ScooterCity(id: "pt:Costa da Caparica", name: "Costa da Caparica", countryCode: "PT", center: GeoPoint(latitude: 38.6445, longitude: -9.2336), bounds: GeoBounds(south: 38.6033, west: -9.2516, north: 38.6798, east: -9.2051), feeds: [ScooterCityFeed(id: "portugal:bird_pt_almada"), ScooterCityFeed(id: "portugal:lime_pt_almada")]))
         cities.append(ScooterCity(id: "pt:Cascais", name: "Cascais", countryCode: "PT", center: GeoPoint(latitude: 38.6969, longitude: -9.4204), bounds: GeoBounds(south: 38.6716, west: -9.4824, north: 38.7592, east: -9.3048), feeds: [ScooterCityFeed(id: "portugal:bird_pt_cascais")]))
@@ -2376,7 +2423,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 846
+    static let cityCount = 849
     static let countryCount = 46
 
     /// Cities by distance from the point to their centre, nearest first.
@@ -2765,8 +2812,8 @@ enum ScooterCountryCatalog {
         ("BR/CL/MX/KZ/AZ/GE: JET map", "https://jetshr.com/"),
         ("BR/CL/MX/KZ/CO/BY: Whoosh map", "https://whoosh.bike/"),
         ("ZA: Zippy rider map", "https://zippyride.app.link/"),
-        ("JP/CL/MX/RO/CZ/QA/AU: Lime map", "https://www.li.me/"),
-        ("JP/CL/MX/RO/CZ/QA/AU: GeoNames · CC BY 4.0", "https://www.geonames.org/about.html"),
+        ("UK/JP/CL/MX/RO/CZ/QA/AU: Lime map", "https://www.li.me/"),
+        ("UK/JP/CL/MX/RO/CZ/QA/AU: GeoNames · CC BY 4.0", "https://www.geonames.org/about.html"),
         ("TR: BinBin map", "https://www.binbin.tech/"),
         ("AU/TR/MY/KR: Beam map", "https://www.ridebeam.com/"),
         ("US/KR: GCOO map", "https://gcoo.io/"),

@@ -168,12 +168,14 @@
       "featuredCities": ["gb:Bristol", "gb:Liverpool", "gb:Nottingham", "gb:Leeds", "gb:Brighton", "gb:Bournemouth"],
       "credits": {
         "code": "UK",
-        "attribution": "United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Voi authenticated rider map",
+        "attribution": "United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Voi authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
         "gbfs": ["Bolt", "Dott"],
         "links": [
           { "label": "UK: Beryl · CDLA-Permissive-2.0", "href": "https://cdla.dev/permissive-2-0/" },
           { "label": "UK: ONS boundaries · OGL v3.0", "href": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" },
-          { "label": "UK: Voi map", "href": "https://www.voi.com/" }
+          { "label": "UK: Voi map", "href": "https://www.voi.com/" },
+          { "label": "UK: Lime map", "href": "https://www.li.me/" },
+          { "label": "UK: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
         ]
       }
     },

@@ -213,6 +213,107 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Brisbane_2639_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "GB",
+      "city": "Birmingham",
+      "center": [
+        52.48142,
+        -1.89983
+      ],
+      "timeZone": "Europe/London",
+      "regionToken": "WHBJLYY7IQQGQ",
+      "serviceAreas": [
+        {
+          "name": "[Birmingham][Birmingham Scooter Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "{bd_Ixd_KhO{A|SbEvIqw@nFaKFy`A|FqFvMhGzTjt@fCtr@tC^zGmIbW}ZxOg\\tGgb@dRkPvcAePgAc]~BaUiAyY}r@e`BqJyKiG_TeCuUcEsJsBcd@jAgT|EiYyEkG_Len@qZwy@uAoC_@o@o@OgFu@wBh@{DnAsIhIyGbCsXoDg]_UeFuUuUlPaGpEeG|DRcHzAmFlCsPbC{OnAuKtJmZoA}c@|@or@zFuf@dc@g~@Y_^hQge@ei@we@aZSwXub@v_@}v@pP_kAkDaqB{_@_d@in@ns@eMhAwEiJAuQaIjC_TmTeSjQ_p@UiKtNoFkCiCnPoF_PgJzG_UoHqc@s^}MhbBfCr`AiHl~AsL~JwIq^}MgDNzbAlW~vDTpt@S~`@uDhQyIdb@aEpRc@hBaD`Nea@rlCkOla@eGr]kAhLgBbj@vBbQhi@r]xUzTnh@{Gns@jEdn@|b@wR~tAyKrVUd]xHrDw@pKzO`F[bE`ChA[~F~HfE~@mFdKxFxA~CkBvDpEvUoBfRZdOtEzO~NxMvFlJVy@|DzBdHyU|ExIhDoG|HzUfh@gS`NzGfRoBzSqGvGjD"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/West_Midlands_295_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "GB",
+      "city": "Coventry",
+      "center": [
+        52.38238,
+        -1.56202
+      ],
+      "timeZone": "Europe/London",
+      "regionToken": "WHBJLYY7IQQGQ",
+      "serviceAreas": [
+        {
+          "name": "[Birmingham][UoW - Scooter Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "w_v~HnbrH|JhMZ@ZGnCyArG_EbEm@pD}ImBcI|B_@pAcCFmJ@wD@wDGkJG_KPmCv@_C_EcJxCeH`F}MpAx@d@mCn@eCx@gC`A_CcEcMeDuA]jIO`H{ErLaE`MsVsUkAeA{A^m@P[r@aAlCcCbFqKjCkAwNiObA_C`Ns@xCm@zC_BnFwA`L}AdOu@tLhHjBlEpCtB?zC|@fCMjBq@tCd@`BlD\\I~DtAhBtAzB~DYrN"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/West_Midlands_295_exclude_new_type.json"
+      ],
+      "aliases": [
+        "University of Warwick"
+      ]
+    },
+    {
+      "country": "GB",
+      "city": "London",
+      "center": [
+        51.48426,
+        -0.1286
+      ],
+      "timeZone": "Europe/London",
+      "regionToken": "GBCBZA76TXEJS",
+      "serviceAreas": [
+        {
+          "name": "London Scooter SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "mqxxHz{[_Bea@rMgt@eEue@oi@mq@wZ{k@zCc}BzRaf@}E{o@kc@_[aJfD_J`@uOqM_Lkh@gR_OkRtBmA`DwDoCeFuAqGBaHiB}H}EoP_[tH{Z_GoWh@gRe_@yZcK`[aQeE_VlBaW~a@sa@|G{^GyBbI}LqEsa@cAwHpEnAqGoBoMwDnH_Iy^zBqVoEsO{CtCeAeE{BzAe@wDbB}Fh@}AyFup@vd@s_@|Oui@gG{nAkLcUuRaF{f@|UoQfE_MqBsL{K{H}Z@qKjFeUwF}GyGaDsDtCcCdQ{NoIoJ`BM`I|TfJ[pIyVqJkFxGoLl]\\fGpDdDx@lF[f@eDd@mFbEcApB{AnE_@v@yDv@cLsFcBr@oJ_@iEuAqFfEiEfI_E|BkBzQwBhE}DzNyDdD{Cg@eC~@m@rBwH`DiC`GaDx@kBiBuBmF_F_C_CmD{Cm@gBkEcFaCuDtAc@tIBdXTzCNbNnAdE|BvNqCvAiB|H{ExJGdArElGhAzC~GrMjAuBLTBTd@`@pU|Vh@`AhDzJCP?^HNdBdCTl@d@xDPzBPzCU~CG\\S~@Un@eAnB_@lASnAItBDxARfBj@nBd@n@vAdAlBXg@|ECdCD^HrAxApHZz@r@pDJx@L`C@xBUtBs@lBmClDeAdDrBhBpBM|EwBd@vGXdFFt@m@TBTxJlEv@n`@PnBvB~IjQzS`@cE~]Sh@h]vRd_@kXlhAnLw@lLtn@sUtImH~_@md@fUuE~h@gm@r@cx@zXqq@n~@u_@nWau@bGiMvo@yGbjBbVjk@yFjV``@~fAfSbE~Gdf@dZnNfEdwAbuBshCfs@r]_^`h@pHblAnTtCmKtgA}Oth@hDtv@oUtyAf\\dt@rMfwAyShw@eTsgAkUh\\th@n}BqJ|U{fAtCcWda@ee@v~AgMb}A_Lr[bNt{AnFZlQprAaI`JhUho@dSfrAl`@kTJv{@nNlyAbd@un@x_@{}EfSu@~j@dd@`_@bt@pd@bP|Wb~@jVdVj^y`CgKur@he@sd@ql@kuAgGql@vQ{s@tEclAoDyg@Asn@rWgWiY{d@`G_s@wZpR_Lie@|Bcv@}K{]fs@{}@_Bm~Au]uOhQiUeE}\\|n@lFzM_M|`@|i@zn@`IbQfUtDpt@}Jxa@m`Azv@}Qlc@mD~o@hIj]fcAzfAdW`_A~`@pKzXde@nQ_GvUbfAkT|b@dGpc@cIps@tDdcBfbAnqAlYcq@mFw^xKkf@b]pcA`GsIlSbk@tYr_@la@sYpRjUp^yHK`YxUaClLkf@Ku~@oTiqArt@isBrgAwsAgHuz@ii@qu@yyA_Foh@oNwZrS}Nn_@wWsVxKoY_Gc]z]gr@qNkPzu@yWoIaf@yn@cz@go@ahBj\\mQ_b@a{BmCij@`Fyt@iVm_Dvs@hE[e`@vs@uVl]c~BePwIj]k_ByHgYhg@fo@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/London_15298_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "GB",
+      "city": "Milton Keynes",
+      "center": [
+        52.0406,
+        -0.7594
+      ],
+      "timeZone": "Europe/London",
+      "regionToken": "FSDG7ONYXRAIA",
+      "serviceAreas": [
+        {
+          "name": "[Milton Keynes][SZ][Milton Keynes - Service Area][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "_t||H~lrCr]yZZfUz@cAvEmBlGd@|IhEnHnCzDKzIhWrDfSnGhd@iB~G@jSlEvh@xa@lbAzApe@s@`XaHv]G~Ar@|B_W`j@pGxiAfW`h@`O~\\vIja@lJtf@uCvVUxVt@vMx@xD|GgC~QgBvByAfHmKhMcPdHyC~a@hKjZ}@xb@g_AnXsm@x[_{@zr@_~@|iAiV~]sZ~a@yOly@iGiMohBk@{eAle@ga@gRav@jZie@pb@{gA~JzSjUkj@ip@ueDuYzVmMeLy^}KgZ_Kp@qc@jJyVxFeKkD_PSkB\\yFkAmDcAgBm`@\\wEgFc@iFc@h@}@qBsApEaCAeDKgJIgFI{FuBqHiScHmLyGcU{Oqj@mWoeAoAuS_Gao@{@qGqK~UcY`[wB~]_PvN_VDuFsf@ua@fF}FCuBp@cGtBcG}@uI`@mPjOmVzbAyq@f`Ca]nIk]pGaYdHgE`@qDfBiGr@yJQ{JuWco@jnAiCj_AtE|UcC|TlF`HoKfa@sOvTyNzh@f\\`u@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Milton_Keynes_450_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "GB",
+      "city": "Salford",
+      "center": [
+        53.48771,
+        -2.29042
+      ],
+      "timeZone": "Europe/London",
+      "regionToken": "UCHNLLCBAELSZ",
+      "serviceAreas": [
+        {
+          "name": "[Manchester][SZ][Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "gzjeInh`M}AgGbAsA^_Aa@mC?UIuBD}@PiAdG_EEm@Wa@wAiKBo@fCoCG}@nAkAhCg@iHgf@bBaArC[xLpBtCvQRJPI`DoM~AwK_EsJfGaK{EyJiD~B{b@u`AkOmUyMkTgB_EcAeBuAcBuA}@_DmAcAgAfA{IeJa\\wBaIcHyPaBeE{EyEkKnXqEb@_@d@e@t@a@lA{@bEo@rHUdb@lPhf@hC~BnS~@ZjKq@pHyAxBkGfAgApAhAXGnBUnCo@NOd@{GhA{AVGXCr@?p@eBmAs@c@UYKGMIYuHKqD_@oBS[[E_@NU\\IXCd@?hB?hCCrD@`Bg@h@c@`@uAe@aB}@aB_@gBIaArEiAhBsC}HuQzCqD`WbN~ZpArAfBlB~DjFxMmXtJzCn@f@QrCwExFeAlCmAfEe@rBHtFMv@aBv@qBdJkApIa@zDFhl@^zVyAdMg@zO^tM|@rL|B`NtLdWf@lp@IrRsAvR~AxRpHpf@_AhR{Y~y@rBzi@`Llr@fGtXvRrKtYR`c@gSb_@oTqS}|@cI_d@yHkm@uJkn@yGac@aDqX[{U|Bi_@nFsSbKkZjIcRjGuSnAiJjF}O??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Manchester_200_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Manchester"
+      ]
     }
   ]
 }

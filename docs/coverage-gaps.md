@@ -5,13 +5,15 @@ country's guide has the evidence and the details; this page lists every gap in
 one place. Started 12 October 2026. Add to it when an audit leaves something
 out, and remove an entry once it's added or settled for good.
 
-## Lime operating areas added on 24 October 2026
+## Lime operating areas added since 24 October 2026
 
 The authenticated Lime adapter covers the complete published operating
 polygons in Deva, České Budějovice, Querétaro, Naha, Doha, Santiago and Brisbane,
-including their disconnected service areas. The adapter adds Lime coverage in Romania,
-Czechia, Mexico, Japan, Qatar, Chile and Australia; other Lime markets remain
-gaps. See [the collection and validation evidence](lime-app-map.md).
+including their disconnected service areas, and since 25 October 2026 in
+London, Birmingham, Coventry, Milton Keynes and Salford.
+The other markets its rider map lists, 206 of them, are added country by
+country, each once its full-area audit is clean; until then they remain gaps. See
+[the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
 ## Found, not added yet
 
@@ -205,8 +207,14 @@ banned shared scooters, and feeds that were empty when checked.
     Skaun (6 or 7) are too small.
 - **United Kingdom** ([guide](belgian-norwegian-british-scooter-feeds.md#known-gaps)):
   - Voi (London, Oxford, Cambridge, Essex, Northamptonshire and more) and Lime
-    (London, West Midlands, Salford) publish no public feed. TfL publishes no
-    scooter positions.
+    (London, the West Midlands, Salford and more) publish no public feed; both
+    are on the map from their rider maps, Voi since 24 October 2026 and Lime
+    since 25 October. TfL publishes no scooter positions.
+  - Lime's Derby, Sheffield, Stoke-on-Trent and York regions have scooter
+    zones but held no scooter near their centres on 25 October 2026, and none
+    is a trial area. Check them again in April 2027. Its Nottingham and Oxford
+    regions held no scooter in their whole scooter zones that day: Lime rents
+    e-bikes there, and Dott and Voi run the two e-scooter schemes.
   - Zeus's UK feeds are stale; several Beryl and Dott schemes list bikes only.
 - **Portugal** ([guide](portuguese-spanish-icelandic-scooter-feeds.md#known-gaps)):
   - Bolt (Lisboa, Porto, Faro, Coimbra) offers its GBFS only on request, on

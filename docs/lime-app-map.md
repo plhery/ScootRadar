@@ -13,7 +13,8 @@ polygons and their public source documents. The first markets are Deva,
 České Budějovice, Querétaro, Naha, Doha, Santiago and Brisbane. Coverage includes
 all the recorded operating polygons, including Brisbane's separate
 Wynnum/Manly and Sandgate/Shorncliffe areas and Doha's outlying tracks.
-These are seven complete market footprints, not every Lime market worldwide.
+These seven were the first complete market footprints; the markets
+added since are under [every market the map lists](#every-market-the-map-lists-october-2026).
 
 The app's `GET /api/rider/v2/map/static_elements` returns the outline-document
 URLs under `zones_physical_attributes.region_zones`. Each public
@@ -78,6 +79,63 @@ The Lime catalog's reference point is inside its main service polygon, while
 the collector covers every recorded polygon. The shared Santiago destination
 keeps the city centre already registered by the other operators. City coordinates elsewhere include
 [GeoNames data, CC BY 4.0](https://www.geonames.org/about.html).
+
+## Every market the map lists, October 2026
+
+On 25 October 2026 the rider map's static elements were read once for each
+town [Lime's locations page](https://www.li.me/locations) lists. Besides the
+seven above, they name 186 regions. Fourteen have no scooter zone, only
+e-bikes: Burnaby, Estérel Côte d'Azur, Nice, Paris, Dresden, Heidelberg,
+Castlebar, Naples, Delft, Rotterdam, Tilburg, Utrecht, Zwolle and Barcelona.
+Oostende's one scooter zone is a demo. New York's zones, the Bronx and
+Queens, hold all 5,130 scooters of Lime's public New York feed, which the map
+already reads, so it is left out too. The other 170 regions make 211 markets,
+14,980 local cells, about 17,500 requests a sweep.
+
+The locations page is not the whole list: it names no town in the West
+Midlands, where Lime's region has scooters in Birmingham and at the
+University of Warwick. The static elements name the region nearest the view,
+even one far from it (Slough's is London's, Telford's the West Midlands'), so
+each large city no known polygon or public Lime feed covers is read once too.
+In the United Kingdom, its 54 cities of 150,000 people or more found 16
+regions besides: ten list e-bikes only, Bristol's and Edinburgh's only
+scooter zones are a test and a demo, and Derby, Sheffield, Stoke-on-Trent and
+York have scooter zones but no scooter near their centres, and none is a
+trial area. Nottingham's and Oxford's, on the locations page, held no scooter
+in their whole scooter zones: Lime rents e-bikes in both.
+
+- Zones named as demos, tests, warehouses, events or temporary areas are left
+  out, as Rome's three temporary areas and Dortmund's warehouses. So is the
+  Tempe zone of Lime's Phoenix region: Lime's public Tempe feed holds it.
+- Each town a region serves is a market of its own, named after it: a town
+  of its own by GeoNames' municipality codes, or a city the map already
+  lists. Lime's Düsseldorf region also serves Neuss and Hilden, and Munich's
+  Dachau. A zone over 10 km from every other zone of its region is a town of
+  its own too, as Newport, WA in Spokane's region, Stromboli in Catania's,
+  Madinat Zayed and Al Mirfa in Abu Dhabi's, and the University of Warwick,
+  in Coventry, in the West Midlands'.
+- A market takes the city the map already lists for its town, with its
+  centre, region and time zone. A new town's come from
+  [GeoNames, CC BY 4.0](https://www.geonames.org/about.html), and its centre
+  is moved into the polygons where GeoNames' lies outside them, as Montréal's:
+  Lime's only scooter zone there is Parc Jean-Drapeau, as the city bans shared
+  scooters from its streets.
+- No public Lime scooter lies inside the markets' polygons: Lime's public
+  feeds in Tempe (805 scooters), New York (5,171), Lisbon (2,737) and
+  Frankfurt (3,630) were checked against them.
+
+Each market is registered once its full-area audit, as above, finds every
+stationary reference scooter, country by country:
+
+| Registered | Markets | Local cells | Refresh groups | Scooters | Stationary references |
+| --- | --- | ---: | ---: | ---: | ---: |
+| 25 October 2026 | United Kingdom: London, Birmingham, Coventry, Milton Keynes, Salford | 336 | 86 | 4,895 | 264 |
+
+The audit and the cache's sweeps share the account's limit, about one
+request every five seconds. On 24 and 25 October 2026, before the cache's
+idle sweeps were slowed to every three days, an audit beside them made the
+cache's own Lime feeds fail with 429 for minutes at a time, Doha's and
+Santiago's among them: the audit now stops at its first 429.
 
 ## Cache behaviour
 

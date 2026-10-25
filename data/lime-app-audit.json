@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-24",
+  "verifiedOn": "2026-10-25",
   "clientVersion": "3.286.0",
   "protocol": "whole-service-local-nearest-v1",
   "queryIntervalMs": 5000,
@@ -123,6 +123,91 @@
       "finishedAt": "2026-10-24T15:38:06.378Z",
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Brisbane_2639_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "GB",
+      "city": "Birmingham",
+      "regionToken": "WHBJLYY7IQQGQ",
+      "fingerprint": "d52c8a76e816598187347a90265ca408a390fabac7363e3eb20dfe89d4014e22",
+      "groups": 16,
+      "localCells": 61,
+      "coldMapRequests": 65,
+      "warmMapRequests": 65,
+      "scooters": 1323,
+      "stationaryReferences": 66,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T00:23:41.779Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/West_Midlands_295_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "GB",
+      "city": "Coventry",
+      "regionToken": "WHBJLYY7IQQGQ",
+      "fingerprint": "ea0663c1ab6bcf127651af75f65cec857428af4c514035c89d20cb2ef1bd945f",
+      "groups": 1,
+      "localCells": 3,
+      "coldMapRequests": 3,
+      "warmMapRequests": 3,
+      "scooters": 135,
+      "stationaryReferences": 72,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T00:24:41.576Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/West_Midlands_295_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "GB",
+      "city": "London",
+      "regionToken": "GBCBZA76TXEJS",
+      "fingerprint": "fd4cdee096366b88512392189a25f8cb82ddca0e2fc4f200186aaba1cb1f6344",
+      "groups": 48,
+      "localCells": 190,
+      "coldMapRequests": 190,
+      "warmMapRequests": 190,
+      "scooters": 1508,
+      "stationaryReferences": 13,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-24T23:45:02.927Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/London_15298_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "GB",
+      "city": "Milton Keynes",
+      "regionToken": "FSDG7ONYXRAIA",
+      "fingerprint": "0622f82f93d60b60674ce5bc78312162fe291cf8a6a51a9e268956e42b9ad365",
+      "groups": 17,
+      "localCells": 67,
+      "coldMapRequests": 67,
+      "warmMapRequests": 67,
+      "scooters": 1118,
+      "stationaryReferences": 27,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T04:45:36.714Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Milton_Keynes_450_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "GB",
+      "city": "Salford",
+      "regionToken": "UCHNLLCBAELSZ",
+      "fingerprint": "a49dc945e0536dcf9ca716d0e54dc57d118442054befcc2f525e7cf508d826b6",
+      "groups": 4,
+      "localCells": 15,
+      "coldMapRequests": 23,
+      "warmMapRequests": 23,
+      "scooters": 811,
+      "stationaryReferences": 86,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T05:04:06.793Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Manchester_200_exclude_new_type.json"
       ]
     }
   ],

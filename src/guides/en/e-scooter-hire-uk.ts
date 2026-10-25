@@ -52,8 +52,8 @@ const guide: Guide = {
     {
       heading: 'E-scooter hire near me: which towns are on the live map?',
       blocks: [
-        'ScootRadar shows live Beryl, Bolt, Dott and, since 24 October 2026, Voi e-scooters in 19 of the 21 areas: [Bournemouth, Christchurch and Poole](map:gb:Bournemouth), Brighton, Cornwall, Leeds, Liverpool, Milton Keynes (Dott only), Norwich, Nottingham, Plymouth, and Bristol, Bath and Yate, plus Voi’s nine areas, [London](map:gb:London) included. It doesn’t show Lime, so **Birmingham and Salford aren’t on the map**, nor are Lime’s London scooters; use the Lime app there.',
-        'At 14:55 on Saturday 24 October 2026 the map showed about 2,400 vehicles around [Bristol](map:gb:Bristol), 1,900 around [Liverpool](map:gb:Liverpool), 1,600 Voi in London, 1,200 around [Northampton](map:gb:Northampton) and 820 around [Nottingham](map:gb:Nottingham). Tap one to open the operator’s app, where you unlock and pay; positions can be a few minutes old.',
+        'ScootRadar shows live e-scooters in all 21 areas: Beryl’s, Bolt’s and Dott’s in [Bournemouth, Christchurch and Poole](map:gb:Bournemouth), Brighton, Cornwall, Leeds, Liverpool, Milton Keynes, Norwich, Nottingham, Plymouth, and Bristol, Bath and Yate; Voi’s, since 24 October 2026, in its nine areas, [London](map:gb:London) included; and Lime’s, since 25 October 2026, in London, Milton Keynes, [Salford](map:gb:Salford), [Birmingham](map:gb:Birmingham) and at the University of Warwick.',
+        'At 14:55 on Saturday 24 October 2026 the map showed about 2,400 vehicles around [Bristol](map:gb:Bristol), 1,900 around [Liverpool](map:gb:Liverpool), 1,600 Voi in London, 1,200 around [Northampton](map:gb:Northampton) and 820 around [Nottingham](map:gb:Nottingham). Lime’s own map held about 1,500 of its scooters in London and 1,300 in Birmingham in the early hours of 25 October. Tap one to open the operator’s app, where you unlock and pay; positions can be a few minutes old.',
       ],
     },
     {
