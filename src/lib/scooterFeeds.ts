@@ -15,7 +15,7 @@ import {
 } from '@/lib/feedCoverage';
 import { boundsContainPoint, boundsIntersection, haversineM } from '@/lib/geo';
 import { listedPricing } from '@/lib/listedPrices';
-import { COUNTRY_SOURCES, REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource, serviceAreas, type RegionalScooterSystem, type ScooterCountry } from '@/lib/regionalScooterSystems';
+import { COUNTRY_SOURCES, REGIONAL_SCOOTER_SYSTEMS, feedBase, isAppMapSystem, regionalSource, serviceAreas, type RegionalScooterSystem, type ScooterCountry } from '@/lib/regionalScooterSystems';
 import { skippedSources, type FeedSourceStatus, type ScooterSource } from '@/lib/scooterSources';
 import { feedPaused } from '@/lib/seasonalPauses';
 import { isElectricScooter, type GbfsVehicleType } from '@/lib/scooterTypes';
@@ -314,7 +314,7 @@ export function independentCollectableFeeds(): CollectableScooterFeed[] {
       coverage: serviceAreas(system).map(area => area.bounds),
       collect: () => fetchRegionalSystemVehicles(system, { bounds: system.bounds, minBattery: 0 }),
       ...(!isAppMapSystem(system) ? {
-        zoneSource: { discoveryUrl: system.discoveryUrl, baseUrl: new URL('.', system.discoveryUrl).toString() },
+        zoneSource: { discoveryUrl: system.discoveryUrl, baseUrl: feedBase(system) },
       } : {}),
     })),
   ];
@@ -1314,7 +1314,7 @@ async function fetchRegionalSystemFeeds(
   query: FeedQuery,
   bounds: MapBounds
 ): Promise<SourceVehicles> {
-  const baseUrl = new URL('.', system.discoveryUrl).toString();
+  const baseUrl = feedBase(system);
   const discovery = await fetchJson<DiscoveryFeed>(system.discoveryUrl, {
     validate: validateDiscovery,
     revalidate: METADATA_REVALIDATE_SECONDS,

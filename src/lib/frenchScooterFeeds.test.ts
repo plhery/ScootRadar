@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { skippedSources } from '@/lib/scooterSources';
 import { fetchScooters, independentCollectableFeeds, ScooterFeedsUnavailableError } from '@/lib/scooterFeeds';
 import { FRENCH_SCOOTER_SYSTEMS, searchFrenchScooterCities } from '@/lib/frenchScooterSystems';
-import { serviceAreas } from '@/lib/regionalScooterSystems';
+import { feedBase, serviceAreas } from '@/lib/regionalScooterSystems';
 import { upstreamJsonCache } from '@/lib/upstreamJsonCache';
 import { parseScooterQuery } from '@/lib/scooterQuery';
 import { boundsIntersect } from '@/lib/geo';
@@ -22,7 +22,7 @@ function fixture(
   options: { v3?: boolean; vehicles?: object[]; ageSeconds?: number; statusUrl?: string } = {}
 ) {
   const system = FRENCH_SCOOTER_SYSTEMS.find(system => system.id === systemId)!;
-  const base = new URL('.', system.discoveryUrl).toString();
+  const base = feedBase(system);
   const status = options.v3 ? 'vehicle_status' : 'free_bike_status';
   return (url: string): Response | undefined => {
     if (url === system.discoveryUrl) {
@@ -158,30 +158,65 @@ describe('French scooter feeds', () => {
     });
   });
 
-  it('shows Naolib Micromob\'s scooters as Naolib\'s, in Nantes and Saint-Herblain, with Naolib\'s published price and without Pony\'s price or app', async () => {
+  it('reads Naolib Micromob\'s scooters from Nantes Métropole\'s feed, whose feeds sit on another host of Ecovelo\'s, with Naolib\'s published price', async () => {
+    const discovery = 'https://api.gbfs.ecovelo.mobi/chantrerie/gbfs.json';
+    const feeds = 'https://api.gbfs.v3.0.ecovelo.mobi/';
     const scooter = {
-      bike_id: 'pony_1', vehicle_type_id: 'scooter', lat: 47.2818, lon: -1.5169, current_fuel_percent: 0.8,
-      pricing_plan_id: 'standard', rental_uris: { ios: 'https://getapony.com/app/scan', android: 'https://getapony.com/app/scan' },
+      vehicle_id: 'vhcl_1', vehicle_type_id: 'pony', lat: 47.2818, lon: -1.5169, current_fuel_percent: 0.8,
+      current_range_meters: 48000, is_disabled: false, is_reserved: false, station_id: 'stn_chantrerie',
+      last_reported: new Date().toISOString(), rental_uris: { web: 'https://micromob.naolib.fr//#/trip/start' },
     };
-    const serve = fixture('naolib_fr_nantes', { vehicles: [
-      scooter,
-      { ...scooter, bike_id: 'pony_2', lat: 47.2225, lon: -1.6394 },
-      // In the centre of Nantes, between the two: Naolib has no station there.
-      { ...scooter, bike_id: 'pony_3', lat: 47.2109, lon: -1.5774 },
-    ] });
-    const fetchMock = vi.fn(async (url: string) => serve(String(url))!);
+    const documents: Record<string, unknown> = {
+      [discovery]: { version: '3.0', data: { feeds: [
+        { name: 'vehicle_types', url: `${feeds}vehicle_types.json` },
+        { name: 'vehicle_status', url: `${feeds}chantrerie/vehicle_status.json` },
+        { name: 'system_pricing_plans', url: `${feeds}chantrerie/system_pricing_plans.json` },
+      ] } },
+      [`${feeds}vehicle_types.json`]: { data: { vehicle_types: [
+        { vehicle_type_id: 'pony', form_factor: 'scooter_standing', propulsion_type: 'electric', max_range_meters: 60000 },
+        { vehicle_type_id: 'knot', form_factor: 'scooter_standing', propulsion_type: 'electric', max_range_meters: 35000 },
+        { vehicle_type_id: 'x2', form_factor: 'bicycle', propulsion_type: 'electric_assist' },
+      ] } },
+      [`${feeds}chantrerie/vehicle_status.json`]: { last_updated: new Date().toISOString(), data: { vehicles: [
+        scooter,
+        { ...scooter, vehicle_id: 'vhcl_2', lat: 47.2225, lon: -1.6394, station_id: 'stn_mitterrand' },
+        // In the centre of Nantes, between the two: Naolib has no station there.
+        { ...scooter, vehicle_id: 'vhcl_3', lat: 47.2109, lon: -1.5774, station_id: undefined },
+        { ...scooter, vehicle_id: 'vhcl_4', vehicle_type_id: 'knot', is_disabled: true },
+        { ...scooter, vehicle_id: 'vhcl_5', vehicle_type_id: 'x2' },
+      ] } },
+      [`${feeds}chantrerie/system_pricing_plans.json`]: { data: { plans: [{ plan_id: 'forf_default', currency: 'EUR', price: 0,
+        is_taxable: false, name: [{ language: 'fr', text: 'Tarification par défaut' }],
+        per_min_pricing: [{ start: 0, rate: 10, interval: 1 }] }] } },
+    };
+    const fetchMock = vi.fn(async (url: string) => {
+      if (!(String(url) in documents)) throw new Error(`Unexpected request: ${url}`);
+      return response(documents[String(url)]);
+    });
     vi.stubGlobal('fetch', fetchMock);
 
     const result = await fetchScooters({ bounds: { south: 47.2, west: -1.67, north: 47.31, east: -1.48 }, minBattery: 0 });
     expect(result.vehicles.map(vehicle => vehicle.vehicle_id).sort())
-      .toEqual(['naolib_fr_nantes:pony_1', 'naolib_fr_nantes:pony_2']);
+      .toEqual(['naolib_fr_nantes:vhcl_1', 'naolib_fr_nantes:vhcl_2']);
     for (const vehicle of result.vehicles) {
-      expect(vehicle).toMatchObject({ provider: 'naolib', battery: 80, deep_link: null,
+      // Naolib lists no host of its own, so the city's link to its web app is not kept.
+      expect(vehicle).toMatchObject({ provider: 'naolib', battery: 80, range_m: 48000, deep_link: null,
         rental_uris: { ios: null, android: null, web: null } });
       // The price Nantes Métropole publishes for Naolib, until it gets too old to show.
       expect(vehicle.pricing).toEqual(listedPricing('naolib_fr_nantes', vehicle.lat, vehicle.lng, Date.now()));
     }
-    expect(fetchMock.mock.calls.map(([url]) => String(url))).not.toContainEqual(expect.stringContaining('pricing'));
+  });
+
+  it('still refuses a feed of Nantes Métropole\'s discovery outside the host the catalog names', async () => {
+    const discovery = 'https://api.gbfs.ecovelo.mobi/chantrerie/gbfs.json';
+    vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+      if (String(url) !== discovery) throw new Error(`Unexpected request: ${url}`);
+      return response({ version: '3.0', data: { feeds: [
+        { name: 'vehicle_types', url: 'https://api.gbfs.ecovelo.mobi/vehicle_types.json' },
+        { name: 'vehicle_status', url: 'https://example.com/chantrerie/vehicle_status.json' },
+      ] } });
+    }));
+    await expect(collector('naolib_fr_nantes').collect()).rejects.toThrow('naolib_fr_nantes discovery contains no supported scooter feeds');
   });
 
   it('retains unknown battery percentages and honors provider and battery filters', async () => {

@@ -71,8 +71,9 @@ function feedEntries(discovery) {
   return data?.feeds ?? Object.values(data ?? {}).find(value => Array.isArray(value?.feeds))?.feeds;
 }
 
-function feedUrl(entries, names, discoveryUrl) {
-  const base = new URL('.', discoveryUrl);
+// As feedBase in src/lib/regionalScooterSystems.ts: the discovery's directory, unless the catalog names another.
+function feedUrl(entries, names, system) {
+  const base = new URL(system.feedBaseUrl ?? '.', system.discoveryUrl);
   const entry = names.map(name => entries.find(entry => entry.name === name)).find(Boolean);
   if (!entry) throw new Error(`Missing ${names.join('/')} feed`);
   const url = new URL(entry.url);
@@ -128,8 +129,8 @@ async function inspect(system) {
     const entries = feedEntries(discovery);
     if (!Array.isArray(entries)) throw new Error('Invalid GBFS discovery');
     const [types, status] = await Promise.all([
-      json(feedUrl(entries, ['vehicle_types'], system.discoveryUrl)),
-      json(feedUrl(entries, ['vehicle_status', 'free_bike_status'], system.discoveryUrl)),
+      json(feedUrl(entries, ['vehicle_types'], system)),
+      json(feedUrl(entries, ['vehicle_status', 'free_bike_status'], system)),
     ]);
     const scooters = scooterTypes(types, system.provider);
     const vehicles = status.data?.vehicles ?? status.data?.bikes;

@@ -178,13 +178,13 @@ apart from La Roche-sur-Yon: its dataset, published by La Roche-sur-Yon
 Agglomération under the Licence Ouverte 2.0, links Pony's own feed with the key
 the address needs, and the catalog uses that address, key included. The key was
 published for La Roche-sur-Yon only; it was decided on 13 October 2026 that it
-may be used for Pony's other towns too. Of the others tried, only Nantes
-qualifies: its feed lists the scooters of Naolib Micromob', the service of
-Nantes Métropole's Naolib network at Chantrerie and in Saint-Herblain. Riders
-rent them in Naolib's app at Naolib's price, so the map shows them as Naolib
-Micromob's, without Pony's price or its link to Pony's app. Nantes Métropole
-publishes the same scooters under the Licence Ouverte, but its feeds sit on
-another host. The other feeds are served directly by their operators. Lime's
+may be used for Pony's other towns too, but no other is in the catalog. The
+scooters of Naolib Micromob', the service of Nantes Métropole's Naolib network
+at Chantrerie and in Saint-Herblain, come since 25 October 2026 from Nantes
+Métropole's own feed, which it publishes under the Licence Ouverte 2.0; they
+were read from Pony's with that key before. Its feeds sit on another host of
+Ecovelo's, which runs the service, and the catalog names that host. The other
+feeds are served directly by their operators. Lime's
 feed west of Paris, in eight towns of Saint Germain Boucles de Seine, is listed
 only on data.gouv.fr, where Lime publishes it under the Licence Ouverte 2.0.
 

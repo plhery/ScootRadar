@@ -1,5 +1,5 @@
 import { statusObservedAt, validateDiscovery, validateTypes, validateStations, validateStationStatus } from './feedValidation';
-import type { RegionalScooterSystem } from './regionalScooterSystems';
+import { feedBase, type RegionalScooterSystem } from './regionalScooterSystems';
 import { discoveryFeedEntries, discoveredFeedUrl, fetchJson } from './scooterFeeds';
 import { filterReturningParking, nextParkingRuleChange, normalizeParkingLocations,
   type ParkingStationsFeed, type ParkingStatusFeed, type ParkingTypesFeed, type ParkingZonesFeed } from './parking';
@@ -13,7 +13,7 @@ export async function fetchRegionalParking(system: RegionalScooterSystem) {
   if (system.id === 'lime_fr_lille') return fetchLilleParking(system);
   const discovery = await fetchJson<Parameters<typeof discoveryFeedEntries>[0]>(system.discoveryUrl, { revalidate: 3600, validate: validateDiscovery });
   const entries = discoveryFeedEntries(discovery.data);
-  const base = new URL('.', system.discoveryUrl).toString();
+  const base = feedBase(system);
   const informationUrl = discoveredFeedUrl(entries, 'station_information', base);
   const typesUrl = discoveredFeedUrl(entries, 'vehicle_types', base);
   if (!informationUrl || !typesUrl) return { locations: [], stale: discovery.stale, observedAt: Date.now() };

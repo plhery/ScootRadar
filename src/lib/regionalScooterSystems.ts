@@ -82,9 +82,9 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   /** Published subregions of a shared feed; fetched once, routed per city. */
   areas?: ScooterServiceArea[];
   /**
-   * The operator whose feed this is, when it is not the provider's own: Pony's
-   * feed lists Naolib Micromob's scooters in Nantes. Its prices are that
-   * operator's, so none is shown, and the provider's link policy drops its links.
+   * The operator whose feed this is, when it is not the provider's own, as Pony's
+   * feed was for Naolib Micromob's scooters in Nantes until 25 October 2026. Its prices
+   * are that operator's, so none is shown, and the provider's link policy drops its links.
    */
   feedOperator?: ProviderKey;
   /**
@@ -99,7 +99,16 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
    * its station, with no charge or range.
    */
   stationScooters?: boolean;
+  /**
+   * Where the discovery's feeds may be, when not under the discovery's own directory: Nantes
+   * Métropole's Naolib feed lists them on another host of Ecovelo's, its vehicle types at the root.
+   */
+  feedBaseUrl?: string;
 }
+
+/** The directory every feed of a system's discovery must be under: its own, unless the catalog names another. */
+export const feedBase = (system: Pick<RegionalScooterSystem, 'discoveryUrl' | 'feedBaseUrl'>) =>
+  new URL(system.feedBaseUrl ?? '.', system.discoveryUrl).toString();
 
 // Reviewed service regions and endpoints, never an unvalidated runtime registry download.
 export const REGIONAL_SCOOTER_SYSTEMS = (CATALOG_SYSTEMS as RegionalScooterSystem[]).flatMap(limeGridGroups);

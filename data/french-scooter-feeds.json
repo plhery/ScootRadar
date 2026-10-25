@@ -513,7 +513,6 @@
     {
       "id": "naolib_fr_nantes",
       "provider": "naolib",
-      "feedOperator": "pony",
       "city": "Nantes Métropole",
       "center": [
         47.2873,
@@ -525,7 +524,8 @@
         "north": 47.3,
         "east": -1.492
       },
-      "discoveryUrl": "https://gbfs.getapony.com/v1/Nantes/en/gbfs.json?key=AIzaSyB1I8b8Kj_3wc2Svv7GThGiecJTkrf8_qc",
+      "discoveryUrl": "https://api.gbfs.ecovelo.mobi/chantrerie/gbfs.json",
+      "feedBaseUrl": "https://api.gbfs.v3.0.ecovelo.mobi/",
       "areas": [
         {
           "city": "Nantes",
