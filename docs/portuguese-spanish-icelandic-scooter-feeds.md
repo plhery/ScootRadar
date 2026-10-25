@@ -322,7 +322,8 @@ the dock and each scooter's card state the ban and when renting resumes.
     "on request, case by case", with possible costs. Porto's FIWARE broker
     (`broker.fiware.urbanplatform.portodigital.pt`) holds about 1,000 Bolt
     scooters, but it is unlicensed and hadn't been updated since 8 October
-    2026 when polled on the 16th. Lime has no feed for Porto or Faro (404),
+    2026 when polled on the 16th, nor on the 25th (927 Bolt, 494 Bird and 20
+    Circ scooters). Lime has no feed for Porto or Faro (404),
     and Link and Whoosh have left Portugal.
   - Lisboa is ending shared scooters. Mayor Moedas announced it on 15 October
     2026 ([Observador](https://observador.pt/2026/10/15/camara-de-lisboa-avanca-com-suspensao-do-sistema-de-trotinetes-partilhadas-ate-ao-final-do-ano/),
