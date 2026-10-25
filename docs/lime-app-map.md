@@ -104,6 +104,16 @@ York have scooter zones but no scooter near their centres, and none is a
 trial area. Nottingham's and Oxford's, on the locations page, held no scooter
 in their whole scooter zones: Lime rents e-bikes in both.
 
+In Germany, 49 large cities were read: 12, Leipzig among them, found no
+region, 20 regions without a scooter zone, as Mannheim's, Karlsruhe's and
+Kassel's, and 11 a region already known. Of the six new regions with scooter
+zones, Ludwigshafen am Rhein's, Osnabrück's, Paderborn's, Reutlingen's and
+Ulm's held no scooter in their whole scooter zones, Reutlingen's in Sankt
+Johann and Münsingen neither, on 25 October 2026. Stuttgart's region serves
+Pforzheim, Böblingen, Sindelfingen and Waiblingen; its Stuttgart zone is left
+out, as Lime's MobiData BW feed, which the map already reads, held 1,410 of
+the 1,470 scooters inside it.
+
 - Zones named as demos, tests, warehouses, events or temporary areas are left
   out, as Rome's three temporary areas and Dortmund's warehouses. So is the
   Tempe zone of Lime's Phoenix region: Lime's public Tempe feed holds it.
@@ -121,8 +131,9 @@ in their whole scooter zones: Lime rents e-bikes in both.
   Lime's only scooter zone there is Parc Jean-Drapeau, as the city bans shared
   scooters from its streets.
 - No public Lime scooter lies inside the markets' polygons: Lime's public
-  feeds in Tempe (805 scooters), New York (5,171), Lisbon (2,737) and
-  Frankfurt (3,630) were checked against them.
+  feeds in Tempe (805 scooters), New York (5,171), Lisbon (2,737),
+  Frankfurt (3,630), Wuppertal (947) and MobiData BW's, outside Stuttgart's
+  zone, were checked against them.
 
 Each market is registered once its full-area audit, as above, finds every
 stationary reference scooter, country by country:
@@ -130,6 +141,7 @@ stationary reference scooter, country by country:
 | Registered | Markets | Local cells | Refresh groups | Scooters | Stationary references |
 | --- | --- | ---: | ---: | ---: | ---: |
 | 25 October 2026 | United Kingdom: London, Birmingham, Coventry, Milton Keynes, Salford | 336 | 86 | 4,895 | 264 |
+| 25 October 2026 | Germany: 39 markets, Berlin, Munich, Hamburg and Cologne the largest | 2,318 | 594 | 58,459 | 1,595 |
 
 When the audit and the cache's sweeps shared an account, they shared its limit,
 about one request every five seconds. On 24 and 25 October 2026, before the cache's

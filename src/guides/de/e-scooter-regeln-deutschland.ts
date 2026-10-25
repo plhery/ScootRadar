@@ -152,7 +152,7 @@ const guide: Guide = {
           },
         },
         'Karlsruhe nennt auf seiner Website noch eine Mietsperre in den Nächten auf Samstag und Sonntag von 23 bis 6 Uhr. Dem Gemeinderat sagte die Stadt aber schon 2021, diese Nachtsperre sei seit der Corona-Pandemie ausgesetzt, und Voi und Bolt vermieten laut ihren Angaben heute rund um die Uhr.',
-        'ScootRadar zeigt auf der [Live-Karte](/map) je nach Stadt andere Anbieter. In Berlin sind es Dott und seit dem 24. Oktober 2026 auch Voi: Die [Karte rund um Berlin](map:de:Berlin) zeigte an jenem Samstag kurz vor 16 Uhr rund 4800 Dott- und 14 400 Voi-Scooter. Bolt, Lime und Zeus sind dort ebenfalls zugelassen, fehlen aber auf der Karte. Anbieter, Preise und Parkzonen erklären unsere Ratgeber [E-Scooter in Berlin](guide:berlin) und [E-Scooter in München](guide:munich).',
+        'ScootRadar zeigt auf der [Live-Karte](/map) je nach Stadt andere Anbieter. In Berlin sind es Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Lime: Die [Karte rund um Berlin](map:de:Berlin) zeigte am Samstag, 24. Oktober, kurz vor 16 Uhr rund 4800 Dott- und 14 400 Voi-Scooter, am Sonntagmorgen, 25. Oktober, rund 15 400 Lime-Scooter. Bolt und Zeus sind dort ebenfalls zugelassen, fehlen aber auf der Karte. Anbieter, Preise und Parkzonen erklären unsere Ratgeber [E-Scooter in Berlin](guide:berlin) und [E-Scooter in München](guide:munich).',
       ],
     },
     {

@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Bremen 2026: Anbieter, Preise, Parken, BSAG',
   description: 'E-Scooter Bremen: wer verleiht, was eine Fahrt kostet, wo du fährst und parkst, warum der Bürgerpark tabu ist und was in Bahn und Bus der BSAG gilt.',
   headline: 'E-Scooter Bremen: Anbieter, Preise, Parken und die Regeln der Stadt',
-  lede: 'E-Scooter in Bremen leihst du ab 18 und ohne Führerschein. Die Stadt lässt höchstens zwei Anbieter zu und hat die Erlaubnisse im Juni 2025 für drei Jahre ab 1. August 2025 verlost: an Tier Mobility, heute Dott, und an LimeBike Germany. Unsere Karte zeigt Dott, am Sonntagmorgen, 25. Oktober 2026, rund 650 Scooter; Lime-Scooter zeigt sie nicht. Einen Bremer Tarif fanden wir nicht offen, den Preis zeigt die App. Du fährst auf dem Radweg, nicht durch Bürgerpark und Stadtwald, und in Grünanlagen kannst du die Fahrt nicht beenden. In Strassenbahn und Bus der BSAG darf kein E-Scooter mit, auch kein zusammengeklappter.',
+  lede: 'E-Scooter in Bremen leihst du ab 18 und ohne Führerschein. Die Stadt lässt höchstens zwei Anbieter zu und hat die Erlaubnisse im Juni 2025 für drei Jahre ab 1. August 2025 verlost: an Tier Mobility, heute Dott, und an LimeBike Germany. Unsere Karte zeigt beide: am Sonntagmorgen, 25. Oktober 2026, rund 650 Dott- und 1250 Lime-Scooter. Einen Bremer Tarif fanden wir nicht offen, den Preis zeigt die App. Du fährst auf dem Radweg, nicht durch Bürgerpark und Stadtwald, und in Grünanlagen kannst du die Fahrt nicht beenden. In Strassenbahn und Bus der BSAG darf kein E-Scooter mit, auch kein zusammengeklappter.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Bremen',
@@ -17,8 +17,8 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Bremen?',
       blocks: [
         'Wer in Bremen Leih-Scooter auf die Strasse stellt, braucht eine Sondernutzungserlaubnis des Ordnungsamts. Seit einem Konzept von 2021 vergibt die Stadt höchstens zwei. Nach dem neuen Konzept, das der Senat im Oktober 2024 beschloss, entscheidet unter den geeigneten Bewerbern das Los. Am 5. Juni 2025 zog die Stadt laut Senat unter sechs geeigneten Bewerbern **Tier Mobility** und **LimeBike Germany**. Ihre Erlaubnisse gelten drei Jahre ab dem 1. August 2025. Neu vergeben wird laut Innenbehörde erst im Sommer 2028 (Landesteilhabebeirat, 19. November 2025).',
-        'Im April 2025 waren es noch **Bolt** und **Lime** (Beirat Neustadt). Bolts Bremen-Seite nennt heute nur Fahrten mit Fahrer und Taxis, keine E-Scooter (Stand 25. Oktober 2026). **Lime** bot im Oktober 2025 dem Beirat Hemelingen ein Gespräch an. Ob Lime heute noch Scooter auf der Strasse hat, zeigt nur die Lime-App; unsere Karte zeigt Lime nicht.',
-        'Tier ist mit Dott fusioniert; Dotts Bedingungen nennen die TIER Mobility SE als Vertragspartner. Die [Karte von Bremen](map:de:Bremen) zeigt **Dott**: Am Samstag, 24. Oktober 2026, standen dort gegen 15:55 Uhr rund 620 Dott-Scooter, am Sonntag um 7:47 Uhr rund 650. Das ist eine Momentaufnahme der freien Scooter, keine Flottengrösse. Die Karte zeigt nur, wo sie stehen: keine Preise, Zonen oder Abstellflächen.',
+        'Im April 2025 waren es noch **Bolt** und **Lime** (Beirat Neustadt). Bolts Bremen-Seite nennt heute nur Fahrten mit Fahrer und Taxis, keine E-Scooter (Stand 25. Oktober 2026). **Lime** bot im Oktober 2025 dem Beirat Hemelingen ein Gespräch an und hat heute Scooter auf der Strasse: Seit dem 25. Oktober 2026 zeigt sie auch unsere Karte.',
+        'Tier ist mit Dott fusioniert; Dotts Bedingungen nennen die TIER Mobility SE als Vertragspartner. Die [Karte von Bremen](map:de:Bremen) zeigt **Dott** und seit dem 25. Oktober **Lime**: Am Samstag, 24. Oktober 2026, standen dort gegen 15:55 Uhr rund 620 Dott-Scooter, am Sonntag um 7:47 Uhr rund 650; am Sonntag gegen 9 Uhr standen rund 1250 Lime-Scooter in Limes Fahrgebiet. Das ist eine Momentaufnahme der freien Scooter, keine Flottengrösse. Die Karte zeigt nur, wo sie stehen: keine Preise, Zonen oder Abstellflächen.',
         'Gemietet wird in der App, bei Dott laut Bedingungen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
       ],
     },
@@ -39,7 +39,7 @@ const guide: Guide = {
           },
         },
         'Für Bremen-Nord hob die Stadt die Grenze um 200 Scooter an, weil Scooter dort «insbesondere in den Abendstunden» gut als Anschluss an Bus und Bahn angenommen würden und Bremen-Nord «bisher nicht vollständig erschlossen» sei.',
-        'Am Sonntag gegen 8:30 Uhr standen bis auf zwei alle Dott-Scooter der Karte innerhalb der Stadtgrenze; die zwei standen knapp nördlich von Burglesum in Ritterhude. Knapp 100 standen in Burglesum und Vegesack. Die Karte deckt allerdings nicht die ganze Stadt ab: Blumenthal, der Osten ab Oberneuland und Osterholz und der äusserste Süden fehlen. Ob dort Scooter stehen, siehst du in der Dott-App. Bremerhaven ist auf der [Karte von Bremerhaven](map:de:Bremerhaven) eine eigene Stadt, am Sonntag um 7:47 Uhr mit rund 280 Dott-Scootern, und zählt nicht zu Bremen.',
+        'Am Sonntag gegen 8:30 Uhr standen bis auf zwei alle Dott-Scooter der Karte innerhalb der Stadtgrenze; die zwei standen knapp nördlich von Burglesum in Ritterhude. Knapp 100 standen in Burglesum und Vegesack. Dotts Scooter zeigt die Karte allerdings nicht in der ganzen Stadt: Blumenthal, der Osten ab Oberneuland und Osterholz und der äusserste Süden fehlen. Ob dort Dott-Scooter stehen, siehst du in der Dott-App. Limes Fahrgebiet auf der Karte reicht im Norden bis Blumenthal. Bremerhaven ist auf der [Karte von Bremerhaven](map:de:Bremerhaven) eine eigene Stadt, am Sonntag um 7:47 Uhr mit rund 280 Dott-Scootern, und zählt nicht zu Bremen.',
       ],
     },
     {
@@ -158,14 +158,14 @@ const guide: Guide = {
             '**Flughafen:** einer im Umkreis von 1 km, der nächste gut 600 m vom Terminal entfernt.',
           ],
         },
-        'Freie Dott-Scooter in deiner Nähe zeigt die [Live-Karte von Bremen](map:de:Bremen).',
+        'Freie Dott- und Lime-Scooter in deiner Nähe zeigt die [Live-Karte von Bremen](map:de:Bremen).',
       ],
     },
   ],
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Bremen?',
-      answer: 'Die Stadt hat ihre zwei Erlaubnisse ab 1. August 2025 für drei Jahre an Tier Mobility, heute Dott, und LimeBike Germany verlost. Unsere Karte zeigt Dott, am 25. Oktober 2026 rund 650 Scooter; ob Lime fährt, zeigt die Lime-App. Bolt nennt für Bremen keine E-Scooter mehr.',
+      answer: 'Die Stadt hat ihre zwei Erlaubnisse ab 1. August 2025 für drei Jahre an Tier Mobility, heute Dott, und LimeBike Germany verlost. Unsere Karte zeigt beide, am Morgen des 25. Oktober 2026 rund 650 Dott- und 1250 Lime-Scooter. Bolt nennt für Bremen keine E-Scooter mehr.',
     },
     {
       question: 'Was kostet ein E-Scooter in Bremen?',
@@ -185,7 +185,7 @@ const guide: Guide = {
     },
     {
       question: 'Gibt es in Bremen-Nord E-Scooter?',
-      answer: 'Ja, die Stadt erlaubt dort bis zu 700. Am 25. Oktober 2026 standen auf unserer Karte knapp 100 Dott-Scooter in Burglesum und Vegesack. Blumenthal deckt unsere Karte nicht ab.',
+      answer: 'Ja, die Stadt erlaubt dort bis zu 700. Am 25. Oktober 2026 standen auf unserer Karte knapp 100 Dott-Scooter in Burglesum und Vegesack. Dott-Scooter in Blumenthal zeigt unsere Karte nicht, Limes Fahrgebiet reicht seit dem 25. Oktober bis dorthin.',
     },
   ],
   sources: [

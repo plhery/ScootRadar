@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Hamburg: Anbieter, Preise, Parkverbotszonen und was im hvv gilt',
   lede: 'E-Scooter in Hamburg leihst du ab 18 und ohne Führerschein bei Bolt, Dott (früher Tier), Lime, Ryde oder Voi. Einen Hamburger Tarif fanden wir bei keinem der fünf; Bolt wirbt deutschlandweit mit «ab 0,15 € pro Minute» plus Entsperrgebühr, verbindlich ist die App. Du fährst auf dem Radweg, nie auf dem Gehweg. Am Jungfernstieg, am Hauptbahnhof, an der Elbphilharmonie und in Parks beendest du keine Fahrt; nimm die markierten oder digitalen Abstellflächen in der Nähe. In die U-Bahn darf kein E-Scooter.',
   published: '2026-10-24',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'de:Hamburg',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Laut der Behörde für Verkehr und Mobilitätswende (BVM) vermieten fünf Anbieter in Hamburg E-Scooter: **Bolt**, **Dott**, **Lime**, **Ryde** und **Voi**. Dott hiess früher Tier; wer Tier fuhr, nutzt heute die Dott-App. Ryde ist neu: Im Februar 2025 nannte die Stadt erst vier Anbieter.',
         'Du leihst den Scooter in der App des Anbieters, laut ihren Bedingungen ab 18, obwohl das Gesetz eigene E-Scooter schon ab 14 erlaubt. Voi buchst du auch in **hvv switch**, der Mobilitäts-App der Hochbahn, in Hamburg und Pinneberg. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte von Hamburg](map:de:Hamburg) Dott und Voi: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 3500 Dott- und 6800 Voi-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Bolt, Lime und Ryde fehlen auf der Karte; ihre Scooter findest du nur in ihren eigenen Apps.',
+        'ScootRadar zeigt auf der [Karte von Hamburg](map:de:Hamburg) Dott, Voi und seit dem 25. Oktober 2026 Lime: am Samstag, 24. Oktober, kurz vor 16 Uhr rund 3500 Dott- und 6800 Voi-Scooter, am Sonntagvormittag, 25. Oktober, rund 5900 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Bolt und Ryde fehlen auf der Karte; ihre Scooter findest du nur in ihren eigenen Apps.',
         'Auch E-Bikes zeigt die Karte nicht. Bolt nennt auf seiner Hamburg-Seite neben E-Scootern auch E-Bikes; Leih-E-Bikes von Lime nennt eine ältere, undatierte Seite von hamburg.de.',
         'Laut Vertrag dürfen alle Anbieter zusammen innerhalb des Ring 2 höchstens 5000 E-Scooter und 5000 E-Bikes aufstellen. Die Stadt teilt sie gleichmässig auf: Bei vier Anbietern nennt der Vertrag je 1250, bei fünf wären es rechnerisch je 1000. Ausserhalb gibt es keine Obergrenze, und die Stadt wünscht sich ausdrücklich Scooter in Vierteln, in denen Bus und Bahn seltener fahren.',
       ],
@@ -42,7 +42,7 @@ const guide: Guide = {
         },
         'Wer oft fährt, spart womöglich mit Pässen: Bolt nennt Wochen- und Monatspässe, Dott Pässe und Abos in einigen Städten.',
         'Teuer wird Falschparken. Ein Verwarnungsgeld der Stadt müssen die Anbieter laut ihrem Vertrag mit Hamburg voll an dich weitergeben. Lässt die Stadt einen Scooter umstellen oder abschleppen, zahlt der Anbieter 30 € oder 100 €; laut Verbraucherzentrale Hamburg verlangen die Anbieter das je nach Aufwand von dir zurück. Dott berechnet laut seinen Bedingungen bis zu 300 €, wenn er einen falsch abgestellten Scooter zurückholen muss.',
-        'Den nächsten Dott oder Voi findest du auf der [Live-Karte von Hamburg](map:de:Hamburg).',
+        'Den nächsten Dott, Voi oder Lime findest du auf der [Live-Karte von Hamburg](map:de:Hamburg).',
       ],
     },
     {
@@ -144,7 +144,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Hamburg?',
-      answer: 'Bolt, Dott (früher Tier), Lime, Ryde und Voi, laut Stadt. Voi buchst du auch in hvv switch. Die ScootRadar-Karte zeigt Dott und Voi; die anderen findest du in ihren Apps.',
+      answer: 'Bolt, Dott (früher Tier), Lime, Ryde und Voi, laut Stadt. Voi buchst du auch in hvv switch. Die ScootRadar-Karte zeigt Dott, Voi und Lime; Bolt und Ryde findest du in ihren Apps.',
     },
     {
       question: 'Was kostet ein E-Scooter in Hamburg?',

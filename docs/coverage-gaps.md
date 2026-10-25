@@ -10,8 +10,9 @@ out, and remove an entry once it's added or settled for good.
 The authenticated Lime adapter covers the complete published operating
 polygons in Deva, České Budějovice, Querétaro, Naha, Doha, Santiago and Brisbane,
 including their disconnected service areas, and since 25 October 2026 in
-London, Birmingham, Coventry, Milton Keynes and Salford.
-The other markets its rider map lists, 206 of them, are added country by
+London, Birmingham, Coventry, Milton Keynes and Salford and in 39 German
+markets, from Berlin and Munich to Waiblingen.
+The other markets its rider map lists, 193 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -35,7 +36,7 @@ Kosovo and Albania.
 | **Voi official GBFS access** | The user authorized an authenticated rider-map adapter on 24 October 2026; it adds 72 regions, including 17 in the UK ([evidence](voi-app-map.md)). Official access is asked from nap@voiapp.io, under a [licence](https://www.voi.com/voi-licencing-agreement) that forbids storing the data, which the scooter cache does |
 | **Fintraffic** in Finland | Its national GBFS feed (`mobility-api.mobility-database.fintraffic.fi/gbfs/v2/gbfs.json`) answers 403 without a free key, ordered with an account on the Mobility Database site, which answered 403 from Switzerland. Seen through Transitous, which has a key, it listed 10,570 Dott scooters in 27 towns on 18 October 2026 (Helsinki 1,720, Tampere 1,347, Lahti 894, Vantaa 826, Espoo 768), Donkey Republic's bikes, and no Voi, Ryde or Bolt. But no scooter moved from 04:55 to 09:00 on that Sunday morning, and it lists scooters in towns Dott reports as paused, so the data looks frozen. Test it with a key of our own before adding; Helsinki's season runs from 1 April to 30 November. Data under CC BY 4.0 ("Fintraffic / Digitraffic"), though some third parties' data may need a permit |
 | **Rider sign-in for JET** | JET's separate Central Asian app needs a rider account, with phone and SMS verification, for Almaty, Ulaanbaatar, Tashkent and Tbilisi. No guest session was found (24 October 2026). Beam's Google sign-in is complete, with a [54-region collector](beam-app-map.md) across Australia, Malaysia, South Korea and Türkiye. LUUP's [19-city collector](luup-app-map.md) and Whoosh's [25-region collector](whoosh-app-map.md) are integrated too. Go Jet's [signed-out adapter](gojet-app-map.md) supplies 54 regions in six countries without a rider sign-in. See [the evidence](jet-whoosh-beam-luup-app-maps.md) |
-| **NRW.Mobidrom** in North Rhine-Westphalia | Voi's 12 systems are on the map since 24 October 2026, read with the shared client login the datasets publish (see [the audit](german-italian-scooter-feeds.md#voi-in-north-rhine-westphalia-october-2026)). Lime's two systems (Essen, Dortmund; dl-de/by-2-0) answer, but NRW.Mobidrom updates them, with Bolt's four (Köln-Bonn, Düsseldorf-Mönchengladbach, Essen-Duisburg, Dortmund-Bochum; CC BY 4.0), about once an hour: at 13:52, 13:55, 14:12, 14:54 and 15:54 that day, while the map shows no position older than 15 minutes. Lime's go on the map once they update as often as Voi's. Bolt's scooters there come from its [rider map](bolt-app-map.md) since 25 October 2026, so its NRW.Mobidrom feeds are not needed |
+| **NRW.Mobidrom** in North Rhine-Westphalia | Voi's 12 systems are on the map since 24 October 2026, read with the shared client login the datasets publish (see [the audit](german-italian-scooter-feeds.md#voi-in-north-rhine-westphalia-october-2026)). Lime's two systems (Essen, Dortmund; dl-de/by-2-0) answer, but NRW.Mobidrom updates them, with Bolt's four (Köln-Bonn, Düsseldorf-Mönchengladbach, Essen-Duisburg, Dortmund-Bochum; CC BY 4.0), about once an hour: at 13:52, 13:55, 14:12, 14:54 and 15:54 that day, while the map shows no position older than 15 minutes. Both operators' scooters there come from their rider maps since 25 October 2026, [Bolt's](bolt-app-map.md) and [Lime's](lime-app-map.md), so their NRW.Mobidrom feeds are not needed |
 
 It was decided on 13 October 2026 not to ask Lime, Bird or Hopp for a written
 licence, so their terms block nothing and their feeds stay on the map. For the
@@ -122,14 +123,16 @@ banned shared scooters, and feeds that were empty when checked.
     transport bodies and municipalities may use it. The state's other
     platform, NRW.Mobidrom, offers Voi's, Bolt's and Lime's feeds after a
     free registration: Voi's are on the map since 24 October 2026, and Bolt's
-    scooters come from its rider map since 25 October; Lime's wait (see
-    [Waiting on a decision](#waiting-on-a-decision)).
-  - Lime Hamburg answers 404; Lime Dresden, Oberhausen and Solingen (6
-    scooters) were too small or empty.
+    and Lime's scooters come from their rider maps since 25 October.
+  - Lime's public Hamburg feed answers 404, and its Dresden, Oberhausen and
+    Solingen feeds (6 scooters) were too small or empty. Hamburg's and
+    Oberhausen's Lime scooters come from Lime's rider map since 25 October
+    2026; there Lime's Dresden region lists only e-bikes, and its Solingen
+    region has no scooter zone.
   - Duisburg: Bolt's scooters there are on the map since 25 October 2026,
     from its rider map. Ryde's and Lime's Duisburg feeds are only on the
     closed NRW hub (Ryde's answers 401), and Lime's own `duisburg` answers
-    404.
+    404; Lime's scooters there come from its rider map since 25 October 2026.
   - Zeus is moving its towns to ATOM Mobility. Rüsselsheim, Straubing,
     Kempten, Pforzheim, Göppingen, Schwäbisch Gmünd, Tübingen, Hagen,
     Hattingen and Heilbronn list only disabled scooters on `zeus.city`, and
@@ -142,7 +145,8 @@ banned shared scooters, and feeds that were empty when checked.
   - Voi publishes eight Baden-Württemberg cities only, through MobiData BW.
   - Operators the city guides name that publish no feed, checked on 23
     October 2026: Lime in Regensburg (404), Voi in Regensburg and Bolt in
-    Potsdam (neither publishes outside Baden-Württemberg). Dott in Erfurt and
+    Potsdam (neither publishes outside Baden-Württemberg). Lime's Regensburg
+    scooters come from its rider map since 25 October 2026. Dott in Erfurt and
     Regensburg now comes from its app map; Erfurt also shows Yoio and Regensburg
     Zeus. Potsdam shows Dott, and Bolt's from its rider map since 25 October
     2026. Zeus Heilbronn still lists

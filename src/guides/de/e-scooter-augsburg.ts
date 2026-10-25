@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Augsburg 2026: Anbieter, Preise, Parken, Tram',
   description: 'E-Scooter Augsburg: wer verleiht, was eine Fahrt kostet, wo du fahren und parken darfst, was in Innenstadt und Parks gilt und warum die Tram tabu ist.',
   headline: 'E-Scooter Augsburg: Anbieter, Preise, Parken und Regeln',
-  lede: 'E-Scooter in Augsburg leihst du bei Voi, ohne Führerschein und erst ab 18: Das verlangen die Anbieter, das Gesetz erlaubt einen eigenen E-Scooter schon ab 14. Auch Bolt und Hopp führen Augsburg auf ihren Websites, fehlen aber auf unserer Karte. Den Preis von Voi und Bolt zeigt die App; Hopp nennt 0,50 € zum Start und 0,20 € pro Minute (Stand 25. Oktober 2026). Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In der Innenstadt stellst du Leih-Scooter nur auf markierten Flächen ab. In Tram und Bus darf kein E-Scooter mit, auch zusammengeklappt nicht, und durch städtische Parks fährst du nach unserer Lesart der Grünanlagensatzung nicht.',
+  lede: 'E-Scooter in Augsburg leihst du bei Voi, Lime oder Bolt, ohne Führerschein und erst ab 18: Das verlangen die Anbieter, das Gesetz erlaubt einen eigenen E-Scooter schon ab 14. Auch Hopp führt Augsburg auf seiner Website, fehlt aber auf unserer Karte. Den Preis von Voi, Lime und Bolt zeigt die App; Hopp nennt 0,50 € zum Start und 0,20 € pro Minute (Stand 25. Oktober 2026). Du fährst auf dem Radweg, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In der Innenstadt stellst du Leih-Scooter nur auf markierten Flächen ab. In Tram und Bus darf kein E-Scooter mit, auch zusammengeklappt nicht, und durch städtische Parks fährst du nach unserer Lesart der Grünanlagensatzung nicht.',
   published: '2026-10-25',
   updated: '2026-10-25',
   city: 'de:Augsburg',
@@ -16,16 +16,16 @@ const guide: Guide = {
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Augsburg?',
       blocks: [
-        'In Augsburg verleiht **Voi** E-Scooter; im April 2025 zählte Voi Augsburg zu seinen sieben Städten in Bayern. **Bolt** nennt auf seiner Augsburg-Seite unter «Verfügbare Dienste in Augsburg» «E-Scooter auf Abruf». **Hopp** führt auf seiner Standortseite den Franchise-Betrieb «Hopp Augsburg» mit E-Scootern; der Eintrag wurde im Juni 2026 zuletzt geändert. Dott, früher TIER, führt Augsburg nicht unter seinen Standorten (alle gelesen am 25. Oktober 2026).',
+        'In Augsburg verleihen **Voi** und **Lime** E-Scooter; im April 2025 zählte Voi Augsburg zu seinen sieben Städten in Bayern, und Lime führt Augsburg auf seiner Städteseite. **Bolt** nennt auf seiner Augsburg-Seite unter «Verfügbare Dienste in Augsburg» «E-Scooter auf Abruf». **Hopp** führt auf seiner Standortseite den Franchise-Betrieb «Hopp Augsburg» mit E-Scootern; der Eintrag wurde im Juni 2026 zuletzt geändert. Dott, früher TIER, führt Augsburg nicht unter seinen Standorten (alle gelesen am 25. Oktober 2026).',
         'Eine Anbieterliste, Obergrenze, Gebühr oder Erlaubnispflicht der Stadt haben wir nicht gefunden; Umparkaufträge schickt sie «an alle Anbieter». Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Die [Karte von Augsburg](map:de:Augsburg) zeigt Voi: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 680 Scooter, in der Nacht darauf kurz nach Mitternacht knapp 690. Das sind Momentaufnahmen, keine Flottengrösse. Die Zahl schliesst Nachbarorte wie Friedberg, Stadtbergen, Neusäss und Königsbrunn ein, dort stand aber kaum einer: Am Sonntagmorgen gegen 9 Uhr waren es 6 von rund 680.',
-        'Die Karte zeigt Standort und Akkustand der Voi-Scooter, aber keine Preise, Abstellflächen oder Verbotszonen; die zeigt die Voi-App. **Bolt und Hopp fehlen auf unserer Karte:** Ihre Scooter siehst du nur in deren Apps.',
+        'Die [Karte von Augsburg](map:de:Augsburg) zeigt Voi und seit dem 25. Oktober 2026 auch Lime und Bolt. Von Voi standen dort am Samstag, 24. Oktober, kurz vor 16 Uhr rund 680 Scooter, in der Nacht darauf kurz nach Mitternacht knapp 690. Das sind Momentaufnahmen, keine Flottengrösse. Die Zahl schliesst Nachbarorte wie Friedberg, Stadtbergen, Neusäss und Königsbrunn ein, dort stand aber kaum einer: Am Sonntagmorgen gegen 9 Uhr waren es 6 von rund 680. Am Sonntag, 25. Oktober, zeigte die Karte gegen 7 Uhr rund 960 Lime-Scooter in Limes Fahrgebiet und um 14 Uhr rund 790 Bolt-Scooter.',
+        'Die Karte zeigt, wo die Scooter stehen, bei Voi und Lime auch den Akkustand, aber keine Preise, Abstellflächen oder Verbotszonen; die zeigen die Apps. **Hopp fehlt auf unserer Karte:** Seine Scooter siehst du nur in der Hopp-App.',
       ],
     },
     {
       heading: 'Was kostet ein E-Scooter in Augsburg?',
       blocks: [
-        'Einen offenen Augsburger Tarif fanden wir bei Voi und Bolt nicht; verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Hopp nennt auf seiner Standortseite für Augsburg 0,50 € zum Start und 0,20 € pro Minute (Stand 25. Oktober 2026); eine Fahrt von 15 Minuten kostet damit 3,50 €. Teuer wird es, wenn du falsch parkst:',
+        'Einen offenen Augsburger Tarif fanden wir bei Voi, Lime und Bolt nicht; verbindlich ist der Preis, den die App vor dem Entsperren zeigt. Hopp nennt auf seiner Standortseite für Augsburg 0,50 € zum Start und 0,20 € pro Minute (Stand 25. Oktober 2026); eine Fahrt von 15 Minuten kostet damit 3,50 €. Teuer wird es, wenn du falsch parkst:',
         {
           table: {
             caption: 'Preise und Gebühren fürs Falschparken (Stand 25. Oktober 2026)',
@@ -119,18 +119,18 @@ const guide: Guide = {
           ],
         },
         'Steht kein Scooter in der Nähe, gibt es **swabi**, das Leihrad der swa: rund 700 Räder und 320 E-Bikes an über 500 Standorten, ab 8 Cent pro Minute plus 10 Cent fürs Entsperren (Stand 25. Oktober 2026).',
-        'Freie Voi-Scooter in deiner Nähe zeigt die [Live-Karte von Augsburg](map:de:Augsburg).',
+        'Freie Voi-, Lime- und Bolt-Scooter in deiner Nähe zeigt die [Live-Karte von Augsburg](map:de:Augsburg).',
       ],
     },
   ],
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Augsburg?',
-      answer: 'Voi verleiht E-Scooter; Bolt nennt auf seiner Augsburg-Seite «E-Scooter auf Abruf», Hopp führt «Hopp Augsburg» mit E-Scootern (Stand 25. Oktober 2026). Dott führt Augsburg nicht. Unsere [Live-Karte](map:de:Augsburg) zeigt Voi; Bolt und Hopp fehlen dort.',
+      answer: 'Voi und Lime verleihen E-Scooter; Bolt nennt auf seiner Augsburg-Seite «E-Scooter auf Abruf», Hopp führt «Hopp Augsburg» mit E-Scootern (Stand 25. Oktober 2026). Dott führt Augsburg nicht. Unsere [Live-Karte](map:de:Augsburg) zeigt Voi, Lime und Bolt; Hopp fehlt dort.',
     },
     {
       question: 'Was kostet ein E-Scooter in Augsburg?',
-      answer: 'Bei Voi und Bolt zeigt den Preis nur die App, verbindlich vor dem Entsperren. Hopp nennt auf seiner Website 0,50 € zum Start und 0,20 € pro Minute (Stand 25. Oktober 2026).',
+      answer: 'Bei Voi, Lime und Bolt zeigt den Preis nur die App, verbindlich vor dem Entsperren. Hopp nennt auf seiner Website 0,50 € zum Start und 0,20 € pro Minute (Stand 25. Oktober 2026).',
     },
     {
       question: 'Wo darf ich den E-Scooter in der Augsburger Innenstadt abstellen?',
@@ -165,6 +165,7 @@ const guide: Guide = {
     { title: 'Deutschlandtarif: Tarifbedingungen, Teil A, Stand 14. Juni 2026 (PDF)', url: 'https://www.deutschlandtarifverbund.de/wp-content/uploads/2026/06/20260528_A-1-TB-DT-Grundsaetze_Juni2026.pdf' },
     { title: 'Deutsche Bahn: E-Scooter im Fernverkehr', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
     { title: 'Bayerische Regiobahn: Fahrradmitnahme', url: 'https://www.brb.de/de/tickets/fahrradmitnahme' },
+    { title: 'Lime: Locations (gelesen am 25. Oktober 2026)', url: 'https://www.li.me/locations' },
     { title: 'Voi: Voi startet in Regensburg (29. April 2025, PDF)', url: 'https://storage.mfn.se/7985fb60-e679-4774-acb8-42a86e1b5711/e-scooter-anbieter-voi-startet-in-regensburg.pdf' },
     { title: 'Bolt: Augsburg', url: 'https://bolt.eu/de-de/cities/augsburg/' },
     { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },

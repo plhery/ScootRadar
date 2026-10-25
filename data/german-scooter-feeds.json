@@ -4210,6 +4210,888 @@
         "648",
         "1225"
       ]
+    },
+    {
+      "id": "lime_de_app_augsburg",
+      "provider": "lime",
+      "city": "Augsburg",
+      "center": [
+        48.37154,
+        10.89851
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "L7S4CKCYKEOTW",
+      "limeMapGrid": {
+        "south": 48.30784,
+        "west": 10.83082,
+        "north": 48.40414,
+        "east": 10.95397,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02025875307602115,
+        "cells": "2-4,8-11,15-20,22-33,35-40,42-47,51-52"
+      }
+    },
+    {
+      "id": "lime_de_app_berlin",
+      "provider": "lime",
+      "city": "Berlin",
+      "center": [
+        52.52,
+        13.405
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "H56ROKYLNBCYA",
+      "limeMapGrid": {
+        "south": 52.3378,
+        "west": 13.00677,
+        "north": 52.67503,
+        "east": 13.75657,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.022053288624493503,
+        "cells": "28-29,37-40,62-64,68,71-74,85-86,95-99,102-108,118-121,125-133,136-154,157-168,170-202,205-237,239-240,242-271,276-305,310-337,344-369,379-403,414-437,447-471,481-505,515-538,549-570,583-604,617-637,652-668,688-702,723-737,759-761,764-771,794-795,799,801-804,836-837,871"
+      }
+    },
+    {
+      "id": "lime_de_app_boblingen",
+      "provider": "lime",
+      "city": "Böblingen",
+      "center": [
+        48.685,
+        9.0113
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "RJRSMXTOPZ6EI",
+      "limeMapGrid": {
+        "south": 48.66396,
+        "west": 8.96746,
+        "north": 48.69747,
+        "east": 9.05134,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020401508138605536,
+        "cells": "0-8,11-13"
+      }
+    },
+    {
+      "id": "lime_de_app_bochum",
+      "provider": "lime",
+      "city": "Bochum",
+      "center": [
+        51.4695,
+        7.1963
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "F2OUJ2OPVEER5",
+      "limeMapGrid": {
+        "south": 51.43545,
+        "west": 7.11751,
+        "north": 51.52506,
+        "east": 7.3448,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02161494301714485,
+        "cells": "3-6,11-53,58-59,62-64,69-70"
+      }
+    },
+    {
+      "id": "lime_de_app_bonn",
+      "provider": "lime",
+      "city": "Bonn",
+      "center": [
+        50.7214,
+        7.1155
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "J7XEKZI4INMFF",
+      "limeMapGrid": {
+        "south": 50.65115,
+        "west": 7.0296,
+        "north": 50.77034,
+        "east": 7.20751,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.021252064286703422,
+        "cells": "6-8,14-16,22-25,27-33,36-43,45-51,54-60,63-69,72-75"
+      }
+    },
+    {
+      "id": "lime_de_app_bremen",
+      "provider": "lime",
+      "city": "Bremen",
+      "center": [
+        53.0971,
+        8.7907
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "WB6QRZBISG4IA",
+      "limeMapGrid": {
+        "south": 53.04032,
+        "west": 8.5413,
+        "north": 53.19801,
+        "east": 8.91373,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02241098296409211,
+        "cells": "10-13,15-16,27-33,43-50,59-67,76-83,93-100,110-112,127-128,143,155-161,170-178,187-188,190-191"
+      }
+    },
+    {
+      "id": "lime_de_app_dachau",
+      "provider": "lime",
+      "city": "Dachau",
+      "center": [
+        48.26,
+        11.43402
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "436RDWOPIKUG5",
+      "limeMapGrid": {
+        "south": 48.23652,
+        "west": 11.41346,
+        "north": 48.2781,
+        "east": 11.47761,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020230496983811904,
+        "cells": "0-2,4-11,14"
+      }
+    },
+    {
+      "id": "lime_de_app_darmstadt",
+      "provider": "lime",
+      "city": "Darmstadt",
+      "center": [
+        49.8719,
+        8.6468
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "BJBH4UYPK6VC2",
+      "limeMapGrid": {
+        "south": 49.80205,
+        "west": 8.61532,
+        "north": 49.93474,
+        "east": 8.69869,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02087702791091554,
+        "cells": "0-2,4-6,9,12-14,16-27,29-31,33-34,37-38"
+      }
+    },
+    {
+      "id": "lime_de_app_dortmund",
+      "provider": "lime",
+      "city": "Dortmund",
+      "center": [
+        51.5129,
+        7.4649
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "6DVCQJWHIFDER",
+      "limeMapGrid": {
+        "south": 51.46756,
+        "west": 7.31501,
+        "north": 51.57557,
+        "east": 7.57517,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02163015076743062,
+        "cells": "4-11,13-24,26-50,54-59,61-63,67-69,71-72,75-76,80-81,83-86,93-94,107"
+      }
+    },
+    {
+      "id": "lime_de_app_duisburg",
+      "provider": "lime",
+      "city": "Duisburg",
+      "center": [
+        51.4154,
+        6.7249
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "O7HURFOJKLBVM",
+      "limeMapGrid": {
+        "south": 51.34365,
+        "west": 6.64268,
+        "north": 51.55153,
+        "east": 6.82322,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.021571620276994396,
+        "cells": "1-4,6,10-15,18-43,46-52,55-61,64-70,73-79,83-88,91-98,100,103-107,109,112-116,119-123,128-131,138"
+      }
+    },
+    {
+      "id": "lime_de_app_dusseldorf",
+      "provider": "lime",
+      "city": "Düsseldorf",
+      "center": [
+        51.2213,
+        6.7886
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "JCTE7UTGKR3JN",
+      "limeMapGrid": {
+        "south": 51.12659,
+        "west": 6.68335,
+        "north": 51.33936,
+        "east": 6.91568,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.021470090083981715,
+        "cells": "9-10,19-21,29-31,38-42,48-52,57-75,77-85,88-96,100-105,111-117,122-126,133-137,145-146,156-158,166-167,169-170"
+      }
+    },
+    {
+      "id": "lime_de_app_elmshorn",
+      "provider": "lime",
+      "city": "Elmshorn",
+      "center": [
+        53.74912,
+        9.66176
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "6QSZWSVEIB3AB",
+      "limeMapGrid": {
+        "south": 53.72975,
+        "west": 9.63305,
+        "north": 53.7796,
+        "east": 9.71265,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.022776859161910957,
+        "cells": "0-10,12-14"
+      }
+    },
+    {
+      "id": "lime_de_app_essen",
+      "provider": "lime",
+      "city": "Essen",
+      "center": [
+        51.4508,
+        7.0085
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "VCJ5NAAKJXRZ7",
+      "limeMapGrid": {
+        "south": 51.35055,
+        "west": 6.90488,
+        "north": 51.53172,
+        "east": 7.12909,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02157486860057348,
+        "cells": "0-2,11-13,15-16,22-23,25-31,36-42,45-54,57-65,68-75,77-86,88-97,99-107,110-117,123-127,136-137,147-148"
+      }
+    },
+    {
+      "id": "lime_de_app_frechen",
+      "provider": "lime",
+      "city": "Frechen",
+      "center": [
+        50.91485,
+        6.8118
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "5AXKMEVHH7RO4",
+      "limeMapGrid": {
+        "south": 50.88969,
+        "west": 6.73942,
+        "north": 50.95129,
+        "east": 6.8473,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.021360713030232473,
+        "cells": "0-4,6-16,18-21,24-26"
+      }
+    },
+    {
+      "id": "lime_de_app_furstenfeldbruck",
+      "provider": "lime",
+      "city": "Fürstenfeldbruck",
+      "center": [
+        48.17904,
+        11.2547
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "436RDWOPIKUG5",
+      "limeMapGrid": {
+        "south": 48.15535,
+        "west": 11.21904,
+        "north": 48.20034,
+        "east": 11.26968,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020198472214962612,
+        "cells": "0,3-8,10"
+      }
+    },
+    {
+      "id": "lime_de_app_germering",
+      "provider": "lime",
+      "city": "Germering",
+      "center": [
+        48.1339,
+        11.3765
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "436RDWOPIKUG5",
+      "limeMapGrid": {
+        "south": 48.09231,
+        "west": 11.34025,
+        "north": 48.1455,
+        "east": 11.39178,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020173698206226772,
+        "cells": "0-1,3-4,6-11"
+      }
+    },
+    {
+      "id": "lime_de_app_gottingen",
+      "provider": "lime",
+      "city": "Göttingen",
+      "center": [
+        51.5413,
+        9.9158
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "UPMJJRT6IB6QM",
+      "limeMapGrid": {
+        "south": 51.50682,
+        "west": 9.85913,
+        "north": 51.57042,
+        "east": 9.98855,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.021648783208143077,
+        "cells": "0-1,3-16,18-23,25-29"
+      }
+    },
+    {
+      "id": "lime_de_app_hagen",
+      "provider": "lime",
+      "city": "Hagen",
+      "center": [
+        51.36081,
+        7.47168
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "LVB2DCBZNZSM5",
+      "limeMapGrid": {
+        "south": 51.3001,
+        "west": 7.38972,
+        "north": 51.41425,
+        "east": 7.58736,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.021551147931663767,
+        "cells": "6,20,23-25,28,30-38,40-45,47-56,60-65,73-74,83-84"
+      }
+    },
+    {
+      "id": "lime_de_app_hamburg",
+      "provider": "lime",
+      "city": "Hamburg",
+      "center": [
+        53.5718,
+        9.9948
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "6QSZWSVEIB3AB",
+      "limeMapGrid": {
+        "south": 53.42063,
+        "west": 9.73448,
+        "north": 53.68199,
+        "east": 10.24005,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.022610939369147976,
+        "cells": "9-11,31-35,51,54-57,72-80,88-89,95-99,104,110-114,126-127,133-137,149-152,156-159,171-176,178-182,192,194-202,209-225,231-247,253-271,276-295,302-318,327-341,351-355,357-364,375-387,398-399,402-411,425-427,429-433,448-450,453-454"
+      }
+    },
+    {
+      "id": "lime_de_app_hannover",
+      "provider": "lime",
+      "city": "Hannover",
+      "center": [
+        52.3903,
+        9.7399
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "WIUEIMOAE6RE7",
+      "limeMapGrid": {
+        "south": 52.2678,
+        "west": 9.63464,
+        "north": 52.43275,
+        "east": 9.86632,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.022018452240699402,
+        "cells": "8-9,18-20,29-30,39-41,44-47,49-53,55-64,66-98,100-130,139-140"
+      }
+    },
+    {
+      "id": "lime_de_app_herne",
+      "provider": "lime",
+      "city": "Herne",
+      "center": [
+        51.5407,
+        7.2061
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "F2OUJ2OPVEER5",
+      "limeMapGrid": {
+        "south": 51.5094,
+        "west": 7.14078,
+        "north": 51.56524,
+        "east": 7.26738,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02165000913299188,
+        "cells": "1-4,6-17,21-23,29"
+      }
+    },
+    {
+      "id": "lime_de_app_hilden",
+      "provider": "lime",
+      "city": "Hilden",
+      "center": [
+        51.1692,
+        6.9372
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "JCTE7UTGKR3JN",
+      "limeMapGrid": {
+        "south": 51.14452,
+        "west": 6.89884,
+        "north": 51.19081,
+        "east": 6.98249,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.021478428980828263,
+        "cells": "0-2,4-13"
+      }
+    },
+    {
+      "id": "lime_de_app_koln",
+      "provider": "lime",
+      "city": "Köln",
+      "center": [
+        50.9375,
+        6.9603
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "5AXKMEVHH7RO4",
+      "limeMapGrid": {
+        "south": 50.83894,
+        "west": 6.81499,
+        "north": 50.99974,
+        "east": 7.11123,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.021337473795736216,
+        "cells": "12-13,23-27,38-41,49-55,60-68,71-82,84-95,98-109,112-122,126-138,142-152,156-160"
+      }
+    },
+    {
+      "id": "lime_de_app_langenfeld",
+      "provider": "lime",
+      "city": "Langenfeld",
+      "center": [
+        51.1188,
+        6.9563
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "JCTE7UTGKR3JN",
+      "limeMapGrid": {
+        "south": 51.08033,
+        "west": 6.91145,
+        "north": 51.14209,
+        "east": 6.99864,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02144861501783366,
+        "cells": "1-3,6-7,10-13,15-19,21-24"
+      }
+    },
+    {
+      "id": "lime_de_app_lubeck",
+      "provider": "lime",
+      "city": "Lübeck",
+      "center": [
+        53.87019,
+        10.68888
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "PCLR2KWDFMYAH",
+      "limeMapGrid": {
+        "south": 53.82184,
+        "west": 10.59615,
+        "north": 53.97731,
+        "east": 10.88426,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02282688911942672,
+        "cells": "2-6,13-19,26-32,39-45,53-57,59-61,67-71,73-74,84-88,100-101,127-128,140-142,154-155"
+      }
+    },
+    {
+      "id": "lime_de_app_mainz",
+      "provider": "lime",
+      "city": "Mainz",
+      "center": [
+        50,
+        8.27
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "4TY3SQGYVUTZT",
+      "limeMapGrid": {
+        "south": 49.95633,
+        "west": 8.19895,
+        "north": 50.02858,
+        "east": 8.31016,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020943843499247595,
+        "cells": "1-4,7-21,24-27,31"
+      }
+    },
+    {
+      "id": "lime_de_app_meerbusch",
+      "provider": "lime",
+      "city": "Meerbusch",
+      "center": [
+        51.25268,
+        6.68807
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "JCTE7UTGKR3JN",
+      "limeMapGrid": {
+        "south": 51.2355,
+        "west": 6.60753,
+        "north": 51.32167,
+        "east": 6.7235,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02152087456948583,
+        "cells": "3-6,8-15,18-21,25-29,32-35,39-41"
+      }
+    },
+    {
+      "id": "lime_de_app_mulheim_an_der_ruhr",
+      "provider": "lime",
+      "city": "Mülheim an der Ruhr",
+      "center": [
+        51.4273,
+        6.8829
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "O7HURFOJKLBVM",
+      "limeMapGrid": {
+        "south": 51.363,
+        "west": 6.81834,
+        "north": 51.46865,
+        "east": 6.95898,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.021580732973937273,
+        "cells": "1-4,8-9,15-17,21-25,28-46,50-53"
+      }
+    },
+    {
+      "id": "lime_de_app_munchen",
+      "provider": "lime",
+      "city": "München",
+      "center": [
+        48.15002,
+        11.56242
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "436RDWOPIKUG5",
+      "limeMapGrid": {
+        "south": 48.06816,
+        "west": 11.38869,
+        "north": 48.24524,
+        "east": 11.75353,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02016423008327237,
+        "cells": "0,4-8,13-14,19-20,22-33,38-55,58-92,95-111,114-128,133-146,152-164,173-183,192-201,212-218,231-232,251"
+      }
+    },
+    {
+      "id": "lime_de_app_neuss",
+      "provider": "lime",
+      "city": "Neuss",
+      "center": [
+        51.2035,
+        6.6837
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "JCTE7UTGKR3JN",
+      "limeMapGrid": {
+        "south": 51.11851,
+        "west": 6.62568,
+        "north": 51.23524,
+        "east": 6.79468,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.021466335034995652,
+        "cells": "4-5,10-14,17-38,41-44,49-52,56-59,65-66"
+      }
+    },
+    {
+      "id": "lime_de_app_nurnberg",
+      "provider": "lime",
+      "city": "Nürnberg",
+      "center": [
+        49.4527,
+        11.0761
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "YPLZ4CAHSLTNL",
+      "limeMapGrid": {
+        "south": 49.3923,
+        "west": 10.9425,
+        "north": 49.49753,
+        "east": 11.18083,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02070234952070917,
+        "cells": "4,6-11,15-23,27-33,38-45,48-58,60-75,77-81,84-87,91-93"
+      }
+    },
+    {
+      "id": "lime_de_app_oberhausen",
+      "provider": "lime",
+      "city": "Oberhausen",
+      "center": [
+        51.4696,
+        6.8514
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "O7HURFOJKLBVM",
+      "limeMapGrid": {
+        "south": 51.44923,
+        "west": 6.78014,
+        "north": 51.55976,
+        "east": 6.90458,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.021621465968135585,
+        "cells": "1-4,7-11,13-17,19-40,42-45,50-51"
+      }
+    },
+    {
+      "id": "lime_de_app_pforzheim",
+      "provider": "lime",
+      "city": "Pforzheim",
+      "center": [
+        48.8926,
+        8.6946
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "RJRSMXTOPZ6EI",
+      "limeMapGrid": {
+        "south": 48.87564,
+        "west": 8.64809,
+        "north": 48.92191,
+        "east": 8.76071,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020487697009272818,
+        "cells": "0-4,6-11,14-17,22-23"
+      }
+    },
+    {
+      "id": "lime_de_app_pinneberg",
+      "provider": "lime",
+      "city": "Pinneberg",
+      "center": [
+        53.65887,
+        9.79698
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "6QSZWSVEIB3AB",
+      "limeMapGrid": {
+        "south": 53.63261,
+        "west": 9.76871,
+        "north": 53.67946,
+        "east": 9.8207,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.022724386279155424,
+        "cells": "0-10"
+      }
+    },
+    {
+      "id": "lime_de_app_regensburg",
+      "provider": "lime",
+      "city": "Regensburg",
+      "center": [
+        49.0134,
+        12.1016
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "UO2NFI4TLMJXB",
+      "limeMapGrid": {
+        "south": 48.97244,
+        "west": 12.03789,
+        "north": 49.06744,
+        "east": 12.18378,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020527447398765452,
+        "cells": "2,4-7,9-14,16-22,24-30,32-37,42-44,52,60"
+      }
+    },
+    {
+      "id": "lime_de_app_sindelfingen",
+      "provider": "lime",
+      "city": "Sindelfingen",
+      "center": [
+        48.7084,
+        9.0035
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "RJRSMXTOPZ6EI",
+      "limeMapGrid": {
+        "south": 48.69417,
+        "west": 8.95791,
+        "north": 48.73435,
+        "east": 9.04113,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020413747203230692,
+        "cells": "1-8,10-13"
+      }
+    },
+    {
+      "id": "lime_de_app_unterschlei_heim",
+      "provider": "lime",
+      "city": "Unterschleißheim",
+      "center": [
+        48.28038,
+        11.57684
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "436RDWOPIKUG5",
+      "limeMapGrid": {
+        "south": 48.2583,
+        "west": 11.54954,
+        "north": 48.29486,
+        "east": 11.5971,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020239114258521047,
+        "cells": "0-7"
+      }
+    },
+    {
+      "id": "lime_de_app_waiblingen",
+      "provider": "lime",
+      "city": "Waiblingen",
+      "center": [
+        48.83241,
+        9.31641
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "RJRSMXTOPZ6EI",
+      "limeMapGrid": {
+        "south": 48.81567,
+        "west": 9.28777,
+        "north": 48.89663,
+        "east": 9.35644,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020463177055867407,
+        "cells": "0-6,8-10,12-14,17,20-21,25"
+      }
+    },
+    {
+      "id": "lime_de_app_witten",
+      "provider": "lime",
+      "city": "Witten",
+      "center": [
+        51.437,
+        7.3351
+      ],
+      "timeZone": "Europe/Berlin",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "6DVCQJWHIFDER",
+      "limeMapGrid": {
+        "south": 51.41277,
+        "west": 7.26992,
+        "north": 51.46088,
+        "east": 7.41804,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.021604218414951686,
+        "cells": "0-3,7-12,14-20,23-25,27"
+      }
     }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Augsburg_373_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Berlin_5573_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Stuttgart_4578_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Bochum_4555_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Bonn_1386_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Bremen_506_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Munich_9229_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Darmstadt_367_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Dortmund_9341_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Duisburg_14579_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Dusseldorf_16052_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Hamburg_2121_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Essen_42236_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Cologne_4657_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Goettingen_197_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Hagen_228_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Hannover_494_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Lubeck_186_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Mainz_14676_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Nuremberg_4154_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Regensburg_216_exclude_new_type.json"
   ]
 }

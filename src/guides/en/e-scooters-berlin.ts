@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Berlin: apps, prices, parking zones and the rules',
   lede: 'To rent an e-scooter in Berlin, use the Lime, Bolt, Voi or Dott app (Zeus in Spandau and Reinickendorf): you must be 18 and have a payment card, but need no driving licence. Dott charges €0.75 to unlock plus €0.29 a minute, about €3.65 for ten minutes (published rate on 12 October 2026); the others show their price in the app. Ride on the bike lane, never on the pavement or through a park, and around the sights of Mitte end your ride only at a marked bay such as a Jelbi point.',
   published: '2026-10-12',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'de:Berlin',
   sections: [
     {
@@ -26,7 +26,7 @@ const guide: Guide = {
         },
         'Bird no longer runs in Berlin. Inside the S-Bahn ring, the circle line around the centre, the city allows at most 19,000 rental e-scooters, split evenly among the four operators there; outside it there is no cap.',
         'At the end of every ride you take a photo of the parked scooter: Berlin’s permits require proof like this. Step-by-step help is in [how to rent an e-scooter](guide:how-to-rent).',
-        'ScootRadar shows Dott and, since 24 October 2026, Voi on the [map around Berlin](map:de:Berlin): at 15:55 that Saturday, about 4,800 Dott and 14,400 Voi scooters, a snapshot, not the fleets. Find Lime, Bolt and Zeus in their own apps.',
+        'ScootRadar shows Dott, Voi since 24 October 2026 and Lime since 25 October on the [map around Berlin](map:de:Berlin): at 15:55 on Saturday 24 October, about 4,800 Dott and 14,400 Voi scooters, and on Sunday morning, 25 October, about 15,400 Lime scooters, a snapshot, not the fleets. Find Bolt and Zeus in their own apps.',
       ],
     },
     {

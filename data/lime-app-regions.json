@@ -314,6 +314,879 @@
       "aliases": [
         "Manchester"
       ]
+    },
+    {
+      "country": "DE",
+      "city": "Augsburg",
+      "center": [
+        48.37154,
+        10.89851
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "L7S4CKCYKEOTW",
+      "serviceAreas": [
+        {
+          "name": "Service Zone May 2025[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "qrifHskbaAnN{A_@{SpDi@Y{Ff@GOkG|@KS{FvAMNRLbFVbA|E_@IaDjCa@]mHvBQ@cCeAgBb@wBl@IAsAO]iABUaDk@{@QkGH]A]]KyB`@JcB|Iy@pDO@oAhAM}@gTv@s@|C_A`U|GVoAzC{Vv@sMf@w@FeCxKjBpO|Er|@hTnDl@~DU|DwA|CcCxBgDn@oAHiEoc@kDBaO`f@xDnCq@|HsWgA}Lu\\}[FsAfGX\\yKo@oEyGVAy@Qu@wAMKmHeBgE}CiCmJaHoFoDiDaAmIO}AqIrAwAp@cAn@g@rASnF\\nEWpAHpAP|Aj@zA`BrApDdCeEgBsCwAiBs@wAAc@a@_Cw@mCq@m@kAo@CUTqMDeNReBf@iAXCjDdDg@`CoAvE~A|Am@|AP`ArBFlA\\fDnGbEfCdDbBRvVxCtFlFfFvB{BfJbFw@bH[fEd@??dARbErOhANsAnIjE]vB_@rAi@lHtDP?tEvARjAEEyJpFaA`@pYh@t@zBnA`Bn@WfFxHfKpN`XbHvHlAXtIeEfFqA~AgArAiAd@qCm@oDt@o@YcAXMnBO]aD?g@}@[@gAmB]RiCkAUh@yIgAO?{A~AW`CEbEzBrBdETnBJbDRhBCrCVtAd@rAtEKEkE{C@m@oEk@?Us@AyA|Cd@fB{McAW@s@cBWLuBh@DDoArAL?iGkCsE`@eAkGyH`@}ABo@pCsC`BqCvAmDwAcBbDsJ}AcB^iAkEoEqEbM[UlBoKSy@qCmC\\eBgIaIwCfOOI@mFq@G@uOu@@IfH}BCEtI}Fs@KqPtAq@N{NmBgAHmBQAD{U?eWpBKpBx@zCzFtD|DKaElI?bBeCpAkJlBJE}ErBVdAjCpBbBhFVfBkB|BA]nNwBxA\\hK~AJJnLnBJzAqEvAsAlB?AhFO|JUbGB\\GZ}Ada@|J~Gt\\jP\\cYi@i@BeE}KyAbB_k@vX`Fv^hK~M`CzLadCJeE{v@eXcPuLeAaQuRwCyCn_@gl@pD_GtFeJmBeH|@Y|CyFOgEd@aGnBaCh@lC_S}HgHkBl@{CfEiDz@mJbG_MrFuGtD`A`Iq@XaDQJg@a@yD\\uCq@DEeBz@WNkBSsCcFhAGy@}@^w@a@c@FvA|Nt@a@fD}@d@xCiDrBk@p@LfBJ~Ek@L{@WkB}BsAq@oBq@MkBtA}@{AgOiB_@kAv@r@zCmC|Ay@_AXiCp@_RrA|@f@KfB?RYRwGUaZpBFAqBjE}@`A~G}AXV|TvAhAfBUrAeDgBkRj@{@d@KVjCpI_CXxBrC_@k@{JBaEKg@mCx@uXnG[ItPwLiJme@AiEp@sB}KyWc@~Ca@d@s@?Fm\\LiRxBm@`Ai@tAwAtCd@pBAvDuBhGgApAaAJw@hFBN~BbCh@vAf@v@Wv@g@xBExVgQvEwDUgDjGkAh@aBToC_AuQg@{RvAUOaE}s@tHmDtABg@iABFc@aAIRuGrGOG}DgZ`CwZ|C@~B}HjA_E\\eL^kBRKbCq@IsDrAU`@yC|AkKtC?bCuCNoAjBeBzF`FlIBdDn@zDiA~Ba@bG?lHdDfKkAbAcA}BiAt@MxDe@h@aSjOmKlJsGqIpJc[cCsEoBsFoTdCoQ`HwNrEkBaAkBwGmKnF{C}BiDmAkCb@yMlJsDeI}FtC}HtCm^nOqG|CyJvDtKv|@`K{@BtNvEzHhJrPeAfB_IwAuKxB{@v@vArLlHsCvRaFxAhCnMpMjQtNkJfGs@Bwz@zg@gZxKzCje@dKcEba@oXzf@kh@jFjRxT_J`FqC~BnHeAhBqa@dk@?jJdKbb@rAdCu@lEg\\_@{Zk@WdJ~Gl@B|KwY`@rAaO_BeLeEk@yXo@|B~X`BlP}CnE}C|Gi@bMxL|Be@lH`G|A[dLdKnCrCkg@dH`CbDl@jOlArEh@Z_UzJ\\JkE|Dp@_@xEvGtB_@bBGrAj@zGAz@S`AYx@k@h@gAvA]bA_D|Of@VC^_RdAgMnD}GvIqFxNuBvNYrGAdGdA~P~H|x@rAFTpBtHv@B~AvE~@tAuBtFhBvHdAdT|EA~Gl@fDB|@eDr`A?t@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Augsburg_373_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Berlin",
+      "center": [
+        52.52,
+        13.405
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "H56ROKYLNBCYA",
+      "serviceAreas": [
+        {
+          "name": "[Berlin][SZ] Inner Jun 2026[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "knx~Hm`eoAgG{SyB}K`DmCmA}IIoHlBuHfHgeAiAuKFcG}@mQj@{KyMO{BiW}D}TkAuNTi^_CaD_BtBwKkKbEwMzByO`CkVh@yNdHD`Esw@eEkAzCe@CwAbBkCcC_`@kNjDmCh@MkIgCoMq@}_@O_PaEw@_AgFvNu@rEmC`GoBmF{j@aIm^oFjFkBwHyAgOOcIeCaRiCyPq@ylAtBmHlCaTF_K{Ekh@_K}[ew@yfB|IbD`KgJ|Bm@zAgDEy@blAmpA_HiKa^qpAkXcbAyI}`@zOBbFa@|w@{cBnZsqA~b@|L_AgjBxcAmExF{jEg{@wg@gcC`{@sPa@kOi|Aem@_mCmFkm@nEgYtgBe}@fh@{KoY}kEiDqTx@eGhAoEv@{Hj@gFhAZrC_Sh@yBxAwIbIgSoNkh@PkIjGpDx@_@j@fDrBw@dOjFfHd@bOxAvAa@dFoArBaoCY_Zm@mUcA}LgF{XsPw~AcGok@r`CucAcn@ihCnZe_@wBoy@z\\k@tIxDvAsLfBwO|Y~Atd@|q@r{AnHvj@ecA{_@}e@}vAs~@il@_dAiPikBu}@{w@mApYsLcDw[zfAwN_]yrAkhCwzBsnBmyB{{A_Qu`Ag`@xEqn@tcJ{p@rHuaBzbI|`@fyBt_@~@aLzsA}Uo[lAcLi\\igAua@{@uI_PaUnm@uTmY_Gnb@cw@_\\vLusBtE~BrBiKsIwE{NpaCst@sZ}^_i@cs@coBwYhF`@|gA_BbQqArb@b@|q@JfOkS~C}AmE_XnDnBgQYcB_AuAdAaJa@}@e@eCf@aFMiBh@_CkAw@ReAaB_AHw@wNoNcHdBSjKsAbHoF`yAcPx~AsRvlB{EcBkBIiDiBsD}@gGDwHlAgHlD_K`KiIj@yHdBgDWyEtBiFl@uCw@gEF}ShJCvMLz@{YlZdFvg@iKdGeM|L_SrZ_Whl@oLvc@cAuA{SnbBgA|AmBrRqBd_@tBpyAkpAjx@JvFa[nAuz@gd@qDqLg@h@oDCQ[oCI}VeA_DeKsBiIeJce@aCmMeL}Bkk@kSgN}CwVkBXhOyKfFbDlXtA|Gr@pDc@lA@`@gGdNkF~LyGtQkPlr@aPza@eZlc@qdA}UbVlyAwq@u_@UjYtq@j~@wJpa@|e@fw@h_@cgAhFihAvJeDvh@t~AuLbr@~@tz@jZbK|Br]tQrGdNlr@tRl@nAfCya@p_AoFiCyEnMfCl[{`@nz@dDjSbd@b^bU`@pRd|@pd@bUf`@nmBSjp@nEbyA}Ovg@eFzd@_Af]gHhg@bAnEnBhz@_AeAgAyCgCsNuC{V}BqCyL~BaYnTsEh@_@oF{KxCaCmIcNiGyF`@my@lu@eXsx@uKbPHppAcHddAlr@zDUwQdeAfAbF|n@KvOpBnS{Chw@tW_NhNyDti@xDoA`lC@pE?znBC`MftBdhBvWtIxoAgjBj[rMgB~y@lGfBcUtaB}Qre@kK|gAmVnr@bHtt@~i@d}@lVvpBfo@wXkZkkBl[{Thp@jApWnQcRllBzUyCzg@`b@zu@vs@bH{t@jYpKpFfBRcCrC~@h[vGbNjElJtHjJp@`MfIntA~MgBi~@kLm}AfC}LlIgCpk@{`CvDsOzAlEv_A~`BxxB|`DxGfv@v[dBhSzRnFNrQ|SjN}EnVzD|BiK`\\vBhSbPt^se@lJsWfE?bHkDnIePrm@|aAtPmEv]rt@sAja@`_@f~@xBzVTlWehBleCoAzo@fIfWxKl[`B{FpWb@zWxLf{@p}@fD|@[lP_A|CeRjt@|GfCdHn@|Km@rBZhBfA~@vArAdC~IzO~HvQiFrN_@|CzHhJ|HAN{DvEWhk@eUnWrDvNsBhH}@x\\oPt@lGZLr@HhEuAlAu@k@qI|FwBpALf@Oh@_AhA|BnCpExClHjCoKLu@dA{C`BuBYq@_@gLuKoNiYsG}Yuj@{AaDsGmW_AeBvBkN\\mFg@yGmKsG_IuB@mJ`Awm@vC}s@pHdCxKxAnCbEpA`Hx@RtCrFx@lC|YSIgAsCkHs@_AcFwDmAkAm@}@_@w@uAwEwAsHuAmJQm@]q@c@i@_@QFiA`@OfBmATs@`AuAnCuCa@kDXKd@In@Av@OdBDJu@wBAqAJaErAaAz@yBjCcAd@uRe@IWbAkBh@YxLmULgAvJ_Px@_AnFoEjCeB`c@ys@zNmPhIiKpKwFvBQlCcBhAAdSsMfBvKe@`@fB|KtDcCh@xCnJkGiGw\\~KwE|LmGvBeH_B}BTI|AeASw@mBpA{a@m_@t@eB^z@fFzCh@yAzDe@jDR|IvIV@vD{MrE_JxCfKxI{_@r@gDwIkz@nIw_A[qs@ycA}L_GiUke@cLs|@iHiQfs@w[lx@y[uj@mAwA"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Berlin_5573_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Böblingen",
+      "center": [
+        48.685,
+        9.0113
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "RJRSMXTOPZ6EI",
+      "serviceAreas": [
+        {
+          "name": "Stuttgart[Boeblingen][SZ][Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "wybhHsmvu@zZm`@Xm@FeACgAs@}E??IgA??FiA??TgA????~BoD@y@sCoI??_CaKUQ??????aIwd@?u@q@cE??@_@oAqGaAyB??????FeAcC{J????????????`LsI????????????????lAzGdGuCKg@????????????tBgA??????PJ|@Q??????????f@rAn@_@Ru@Aw@????b@mB??????p@S??????????????????IZWpIxBbA^cHo@Y??????????\\iG??????????`Cw@h@{B????????nAW????????????vAdGrBzFx@jBbE|BxE`BpAq@p@yB\\qFNaNAK??@G???G??Ny@Jm@??\\kBv@yG????????????fAQXK??VCl@Kv@KjCc@~BUx@M@uFOiFYkF[uD[_B_@uAcCuJ??????f@}AyV_TmECkDLaIX?????????????????_Nq@aKs@gF{@oAeBy@yBe@??_@U????????????AcCUoFS}A??]wD??OaD??S}\\??dAyH??rAyF??xAqF??nC{H??`RwV??????????????????hCpXb@RMgR????h@sA??vCmDaAyH??????????rDwD??bDqB??????????????rHla@|KkEsCcUcEwTeCc@??????????mAyPuCoO??uAkW{Hz@D~L`Gdw@????????_XxVuRzSoC`IsBfI??????????????{CgB??????????????lFcQ??fE}L??xByC????????vDJhBgAoAoCoZeJyDQ}CH??}@Au@L??g@D??S?a@@??KAc@V??????IGKd@????????????}@?iAl@????????????????A{Bw@Lw@`@????mLsBoIgA??????i@{A??Qw@??K{@??SuB??MwB??S{EQ_DEeAIaAWVJtA??h@nKVhER`BNj@??d@nBnArCvA|B|AhC`BvB??tAdC??p@vB??ZtA??HxA??C|A??????????????qNwE??????????IsB}LAE~G??YbF????????????????????g@cAy@D??????????????Q}AQeAe@m@w@M??o@Q??e@]????[i@??????McB[}@c@_@WOEvAE`S??M`F`@d@??????v@bJlAvGjBvE????????????????????}LuDk@CiEh@y@X??????????oAgDkC}E??Me@??WqBMk@_BtAg@n@[~@_BnKeAnKj@hB????`@vHfA`IxAk@??????????????XtB??????????QP??cGpD??????i@S??????Qc@??YaBUYo@Bw@bACA?FB@d@pA??????CZhIjV??|AdG??tDlR??^fFj@~A????@|D??????????_@NHv@XM??v@U??~@O??hAI??????????HvAtB|O??h@jGDV??????????kDdCeBfCJvAxBcC????????????rAhC??n@hB??TzAjBbG??lBbK??T|C????????????uLxDp@rJ~AzJhBtHhBzFj@lAnHfNjBe@????zJxF??????????NpE??qAxIcCdQc@vI@vB?@???@?B@@pCP????d@l@??????^~BlAdCfANzBkA????????????rEhUfCaB????????????vAtEvK~EPEFG@e@MyA??????????????n@b@|AZ|@GrA_ArIuKh@sALoAHgB????????????????XV????Xn@????`@~D????????kQfXm@vDPvFNtA`ArC"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Stuttgart_4578_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Bochum",
+      "center": [
+        51.4695,
+        7.1963
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "F2OUJ2OPVEER5",
+      "serviceAreas": [
+        {
+          "name": "[Ruhrpott][SZ][Service Zone 19102023][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ejjyHga{j@|UnBxNds@bUeTpDsKvG_d@uAwNfWi~ApM`e@tEnXxAjZ~O[vGxG}Dpa@RrZaFdXqPnYoHnTeA~Y`Flk@g]vViD~PTpeANbKZfOdINtBlUCpF_FnG|Epg@xIwJ|FiL`Hdt@a@j@nBpObA_@kCsOaHot@n\\pAFxUnFt_@b[gKeGaX`QqJjEtf@rFeAMeHwCed@MmFoDk_Ajj@ee@dOi[`HpN`YleA|QkToJcc@_JqXsG{WxEoDdCsOiBoViOv@qDPFzWoEaUsOlTkWcq@{D~BzRdg@}SnPsT|y@sOhHuBkOuD{Qf@eFl@_Y{BaWkLq|@McZeMcOjGaPtE{InA{Fv@oG|HwNpPaLrCPbEiXoOqjAxNoQ|NkSdDvIhEoF~EbHnKhLvVfs@tCtVzBxPnr@bGzIwE}@kHfj@_Lg@uAmGG_BiLfE_HyA]oGlJyEaHwE~FgE_GmGmEiDaAuCuDkDkI}DsXdDqNrDkApKgM_@mAaKbLaHFVlH}BlIe@dLwJwQcEkA{ExC~@`HrBlCm@fAeEu@cD_N_BkKsRpJSuFzIsJbT~@fGiTm@kGaEkH{BeQTwH|]}XlTvGb[`bBgCvQtr@lBTap@tKsb@|Nek@{HiPi[~ReYgTcIeNCk\\c@yi@|IyHxCeHBo@kEyEkBkGz@qAhJl@~@aGqNeGfB_`@_Dqh@mSyf@gEgXaJku@iIoQkJ_t@aE}TaJeKkBaBo@{FzJwAcE_xAsBg]QiWtJoIgKmoAwDiEuHsMeJ}T{ApB}@dLCjERhDyGx@Ov@vA`EpBzEsCbIgC~Fe@lUiKlTsPoR}BrBoF}SsBiI{QmMmGfJ`BrGj@tAVxAx@vDFhDsAdBf@~EkDrZmE`M_C{MaGqCw@\\ZnBhJ`QUrOhARdG{OtCx^|Bfe@aa@bRyDpIuDaDcI`FDuKeHh@iYzJkE{[cUfD`Gv{@xZn@}@eJpWyLfKbHlKn_@mLrx@|a@jm@hV_p@@gaArFfB|MjJbH~AmQnQHbIhX}[`Eo@zDiA|G~ZzWqBq@{b@~BKbFpDrDpDdFlJpDbMbBzLxAjM~ErZdAhI[~N}KxQkHsEmCbBiChCmGlIvFrHp@~RlSfRzE~Nx_@jYfDtMbAbKc@rM}GH}d@}~@aFlQtIjS~@fNeNmGuEvQnMzRrNr[}Mlg@s[hZsIzNgA_S|KoRoIml@yM|\\}Dk`@f@uD]wAeBrEePw@WgTcEoLgFoFyBPw@j@cAfBgB`GwAhFoA~DeBlAgShJc@Bc@I{CkCmAq@yAUwAIaGUoKiEpDlMpDbElCjOxArKSxEtAh_@}HmA_AtHeCbA_DgB_F_LuQ~L}Msh@qIod@qDqRaAkGw@}`AgDmW]mOZiA~Bi@bI\\q@gM~@cNiAaPkIfG_BAoAwCl@sDvAeq@yFGaAlAmJfAuNcNEcTiLw^aAgUeJyd@j@aQn@{Cp@oACe\\gCgFc@eH|A}Fh@kJbCqM|DiJIgDkDbHaDiBkN`DwCrb@dB~T|@pKjDnFfEpIaBrVzIh`@~@rYrLfa@sFxEgId@[pAdAbF~BpMhGv]hE`LpArD|C{B|Afb@lAMnDkFfB_OOmM`LbInB|FWdQGrJ}@dB~Blo@`@rXGvQm@~]{@xm@e@vBhEhYXbLu@lIdAhGnBX?|AoGh@uEjHuI`VeCjWOj^n@rOfD|B}jCqBvA~Jp@jI{VnMjAjPx@xOPjF_E~FtAfIoErd@Fr@uHxO|XaDrP`@|GBzZf@rPl@[rAvCtNb@lFkATDfBhGNhVoR"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Bochum_4555_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Bonn",
+      "center": [
+        50.7214,
+        7.1155
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "J7XEKZI4INMFF",
+      "serviceAreas": [
+        {
+          "name": "[Bonn][SZ]Dec2024[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "irxtHw~oj@}@raBvIbcAkFtm@qMjZaWrm@_d@bjAcD`bAbG}D|`@jp@hPrV`Ujx@bXb^lE`OlY{K|JuId^QrPiYbn@jEnw@jb@vO{ZrVfi@bTx`@hb@oBk@{|@tCcTnLs_@bI_KcA{QRkZgMi_Aqx@qs@mm@_c@pv@ov@mHsUkO{FlCoSdEeLjNlFy@iIaEwDm@eNfHkCx@vBpIfAnGQhMcGvIkGvHk@zDmBeTnf@{BvVlDl[z^~Q~QuWgAs`@|SwOaPod@e]^pHqVr[go@xTqd@j[ykAlTbf@ha@{e@r^rKrE{]qPck@t]oFt^vLlE_rBpLe`A|Umn@xa@_Y|Jqk@Hs{@}QeO{gBdfBmT~Ni~@~~@gM~JsM|HqKvE_q@hSmYdL{E_T_B{FmBqI{M{PwAyKgK^oKlGyp@zo@qaAztAav@pc@cg@eyBqSu^mMeHBbSa@dKiAdKiFbJkC|HmDtH~Mhk@}Cve@|Adi@mD``AcWtK"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Bonn_1386_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Bremen",
+      "center": [
+        53.0971,
+        8.7907
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "WB6QRZBISG4IA",
+      "serviceAreas": [
+        {
+          "name": "[Bremen][SZ][Bremen-Nord][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}iocIihbt@p@iErq@iGzB}DQuIoCBao@~Kv@cHWsSwFmXeGaEmMcmByIx]wM~GuIma@wOvEu@fk@wCvGyC~SkDdOnLdFlNxEpB|NrTxYwI|F_BpAgMdQ{PhTiDrAxFda@tJxPrDdQ|AzRJlPlCvFdFyGrF|WuCz@o@~]hC~WiA~Bh@zJ_J~^aErOy]dPuXhi@ga@nhBnJp{Al@XO`AxOnM~K`nAfFzHhEb`@~TpQcVxp@w]|VuHdp@g[lh@oQhqAl[zk@|SbJxb@myA`q@}mCyb@kNhLw]~@gP`NxOdI{NvJgCxB_r@p@_HvFciA~Eg`@nK{a@vNia@yCqNY{WlAeU`Iij@hA_ZrBeZvB}Z_Aq]gBi_@m@uSeDy[mC{i@oDiNqDeIsAgMbDgEb@oGaBeFwAkA_@wDiAwDC}E|Cw^"
+        },
+        {
+          "name": "[Bremen][SZ][Bremen - 08.2025]][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "uj|bI{lxt@bEkWlD}^h@mf@|@k^|@yJxC}TfBeA|Ja{@pAkZvOesA_@eCd@mSlEoQnBiGpDtEbAyEV_E]qFGwErAcM~c@kNlXeBzR{GtNkDxDmWcE}Br@}PmF~@wOpUyCeHvHuF|VcPrHah@oEuIeLfEaV_PoB`Hu]xRyBsGaRbg@iK`}@eMtS}\\rUcMjb@gJ`VoM~c@qL|x@oM_FkPeBeN`@~f@}gAxDaKaB{CxVgb@|QgQxVg\\pZsnAHeJ~EjE{DyqAaC]i@|{@kRgEa@}GmHEki@vC`@hoAgXpJFqcDqQhNwn@naAsA|cArAr_AMzh@qKtJmP{@uMnCuDHf@yYcFkUuCkHcGQnAac@c@wJ|TmRxk@qdASoPqkAbp@cM|tA_BvAmBxA}l@ak@_AhGdi@zi@uEfGgNzYmJpe@JjWmRhJ}Kz_@eIrp@bMzMnh@bg@vd@fY`wAj`AlFbM_Wbr@yIxLo[aq@}VmXqGcFcGm@qHxRap@}CyBvG_CrCeN{M}G|Ll@|x@x^ln@cJjAwHbHsDr_@~|@x\\dE~o@VvB{a@vi@_KbMyOnb@uDwAuQz\\cNwGwZ~j@yCqEiVdp@oOje@l@vSmLbKoMya@iTpg@~I~JbMbFaEbWzKzHlK_e@~LqOfE|QbIcBxGaIj`@em@pEmIjJgE|JfAnGhGpIH?b]dUsSrHaMgCyDqBi^tC{G~GwM`ADfFqHdVa\\pXko@vAlCuW|r@{O~UsKnXvJhQ|AhJf@vKvd@s{@lUmg@bj@uwAhKjLtDSjIuPz@_ZbCiTtDgTjEwSxGyTrLyRzOkT`HgVbEuW"
+        },
+        {
+          "name": "[Bremen][SZ][[Bremen][SZ][Bremen-Neustadt]][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ob~bIalst@rVnOcGjHkSxd@_P~b@_OvYsKpM}\\~XoKdQjCxVoHrXmKfRuByFiPiJoKfPqd@bg@WXYl@Sp@Qz@En@Ar@D~@Jh@Tt@Xl@l@\\l@nARHdCmAFMBW_AoH?a@H_@zDkGbHyD|@Lh]o_@tDGtFvFnFhT~EhFvAu@fA`AtEnB`JjBjQaEtrAarBrn@qwBv`@}m@bJfPpMuAlGlMjFvHtFTKiHpEqE|BmH_PgOmCnDyBtAY}@GiL[gGaFeRnRo\\jJkUbd@}oBeHoi@aB{ZwAcEw@gN]uFKyBOuB{KWMFGhAxCb@xBP~@N|@v@VLLbCZfGx@hOU~JPvEqCCmAsEoBtBEjCuGE?iBmNMkNtt@{Lnb@uGtPsUbVqLjIkFjLmMfJqKlE{Av@yDrFwH|L{FzM}@rEwD|PcDvQ"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Bremen_506_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Dachau",
+      "center": [
+        48.26,
+        11.43402
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "436RDWOPIKUG5",
+      "serviceAreas": [
+        {
+          "name": "[SZ][Dachauee][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "_kpeHcetdAnKUGkRnAmArB~Bc@rCLtCh@G`C}NvCgAgEeSs@o@UzG_Bf@P|B_Cx@Go@cA`@cBoAQcBp@_B?wImEwGm@uDpAgBQiKxAe@aAc`@lB{EhBxFVtBr@G^eDOoGeAeCnAcCzI|UkC|KmFtLxHlLt@eA{AyNLiAtBfCP{Bt@BhAgD?j@jFlEbG`TfALzCiBlDDhC~RhIqFzDUXsBsG_DFgAdDMCmArAOO{O{PLGyC{AS{@sYrB_@hB_H|A?nDCxDJTdIhFMF_JdB}Q`@Qd@eCx@oBlDAvItDtKhCjLX{Cqb@aGe@UeJfFQaLySqGhByAyMqEuAkD@sAn@K{AlAiDo@yAuCiIsC}Cg\\cDy]yAoDOh@uUaC}@V{FfCpAB}BbA@lBeBh@yEfDKC}PyJu@gEa@\\mX_FWw@o@u@yBeEEcAg@s@mA[eBBmBnDuPkT_IwGF}Bl@sW}@uG~Ba@WwLlFcHjEeQvNuAeCcChBr@nCcFfCnDfKoDpKj@^vHeAfJ_HnF}BdH]|QiBv@fTtF[NrE{Fl@Br@yDtC}EfKkHrV_NcNiBbEzQlSu@pBfAfAO|AwAmA}AbGfCbAgAjE|ApApAoFp@S|D`B~CjEC|Hb@xC~AhElEdD`GsC`@zH}AJcCdEw@dEkOlDNtFoAk@eG|@m@bDfChGXzDu@b@i@y@{@b@Fr@aCtALlLpJNi@_DzDu@CjBf@KtDvA_@zHpBNNyBpK|FU~Ks@D@bK]A@jEd@Di@lCn@bAg@lCjAr@OdAfAR@|CbALVtD~D`KId@oChBf@nDlAzDrJw@P|L`BEjDsAQiK\\aIfHVF`Ep@BXrEd@GE}BzD[f@dIbCk@d@pE^~Ik@vNBpJ"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Munich_9229_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Darmstadt",
+      "center": [
+        49.8719,
+        8.6468
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "BJBH4UYPK6VC2",
+      "serviceAreas": [
+        {
+          "name": "[Darmstadt][SZ][Darmstadt Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}zkoHgurs@zw@uSlApT~MdBrHJxPaCf^{Np]~n@lC_`@~BwAlBwE@uIi@mFBeO^qPaJqAaC`@_Fsj@wQdFwCuKh@qI{BqEoCsAd@}Eh@sExGrApGv@FxCfIF|BcBrBtH~FGFyJxBP^nRtIjBbEgd@p}@fDf^bA`RpAeEd[vSbO~IxNaEhR`RpG`Nq@lHxYtAf@RgCgDiBkFqSpKiJ`G{Eq@yYmFcZrKwFpN|L`Dza@d[rHtAeRxCFzB{UjBa@Fog@}Fd@_AxIwRa@gCuEeV}AtRg\\kDqGdBsDwAiCxD_JjPeOoDiEmK|HwDaGuQdMmB|L_GtAcAdReD^NlIaON}Bn@oHow@_FGxBdT{IxElEtMqG|FmVK?pGw]qBSgNmGcH_HQN`X_No@mUwDyMoFgAha@sy@qBxAoSNcPnFwAlLgE\\GrDm]kH_ByB\\gD|Y}IgStF_A}@w]mG~GaFlA_BaPqCuJh@mNjLwAy@oG}@iM{EkD}DmHuImEsPyY_CoHeDIBmLqICA|KkG`@K`FwMRmFpFiFsToB|BqAlJuBU]lAs@[gGPHcHwNoBkBf]hA|LeExGkG~DuGkOmP\\uIoj@qGsQwJ|NqLf\\}ClA`@jKEtEzLtGnDf\\kFoCkCEeM_J_CuCi@i@kAzt@m@rBwGfJfJhSrCn[mNaBo@mJcBsI_Ae@eF`Ai@fBMpEeCDuKuBYoQ?{E^_NMsKFcGbAmDyE{GJsCg@wGnPu@\\u@zESbK{WaKcOcCyWzBuLOiM`D_Hg@yUaF\\DxGi@nAeFP}EKSvPeDvH\\`TiE}EkEeCaAsD|DsFkH{RpO}LfDmYuL}U{GtHlGzMwBbSsEzQkDhA{^fv@uFVmPjp@kIoAx@hKwCPrBxXwFz@[iGcQX|AnQj@hRaEFv@j^_XJmQ|QeNwI_QcHv@oOJmd@_Ka@HiG{QmCF~b@xFlCa@zHG|GXpk@YpDC|@IdB}D[mBzVdD~@gBzKSjOhOvHvEiTdEf@pD}S|Zko@lRgRnAlKzS~MmG~XrZ|Hrw@nBnBg\\|PeB}@~_@lIfDbj@tEtIrg@|JrZrKfMnOnJ}B|\\MhBH|VvFIRjIzDcAfAdDjJwBt@tFnMkEjFv@b\\eKDaN??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Darmstadt_367_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Dortmund",
+      "center": [
+        51.5129,
+        7.4649
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "6DVCQJWHIFDER",
+      "serviceAreas": [
+        {
+          "name": "Dortmund_Westerfilde_SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "aesyH{eal@_HgMQxDtAbAnAbCxB|F~ApDiBxCsIVTqIyG`DcDrJCrChAdIvD_ChAGxASHgJfI?rDoF`GdNoMxDeInLFfDUhFuBd@kHfNyCdIoBdDcFhDyJbPhCxFsE~D~@lCoDzCpA`JbKcFgAeFlImC[eKlF_CnDf@xB}ApKeF~MuIj\\mFj@|EhBpDtAxIdAy@sAaKeC}HnWzLr@_@eDgS{FyYkD}IoDcGaF|D_AuBoJrEyJgX|@kBMwB{AhCeGyM"
+        },
+        {
+          "name": "Dortmund_Eving_SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "eauyHkjrl@jVmHaBrWuSzBf@zTl@zJnCxHrKcDr@rKf@hDrAzBe@xAz@~KgHf@|@nTfBpIfAlQc@`Gb@vB`@hDw@fB]bNr@@VwI~A|@~D_@fAwB^cGK_EqAo@|Lwk@vN_k@nt@b^VmDoi@{XcAeU_BaAoIt@qBcRqCoGw@y\\hGPFoDy@oW~BwA{A{[iDt@eBsKlDwCdJaC_FuMuCsHs@s@s@|A_DqCkBLs@v@u@`@hAxIhAvC}BtFqGe]VaNcHV}ArFOpD`I|@RtAwCnAoBDeAbB@bh@}EfByDwb@xBoAAoDOuCcDnBg@{BaDlC@hCeD|@rA~QgBz@`ArJfAtNpA~~@"
+        },
+        {
+          "name": "Dortmund_Brackel_SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "_iqyHur_m@tEdPk@p@jAxAd@sCaEmNjKoHy@gFhFeFdB{Iu@yNaCaQxBuD`K~Bb@`@oAdJ`AFFrAG`CbC`SqBlA\\pC~BuAlDyB\\dCw@`AF|FnAbK~CdJe_@nPTnBb]sN`K_J~Bld@zPeEnB`c@l@xGgJbDjC|Y~EnS|BzFtCDtCsCv@?dBl@vCa@`@eB{AwIr@UUcBq@DoBqXbDoBtAjYlBUu@oGhBqC`BvJ~ArKpJoCiDiZsJxCgAoJgAaU_B{a@nQ_E{C}Z{PbEmBoQt@eSjAn@hAdDtE`KlDpF\\tEz@Wo@cHqCkD}@{B{DmI~EhDLsBiLgGOyD~JmCrP}ExCcDdEsFtBeF~VsKY}C_Cj@{@gKbEgBzCqCv@c@oAgJvIuDuCcEb@gAkOqQ}GiSaDgEgCxM}EjOzDvFdJzL~A~GmK~EGrKtCbOtJoDGr@_IvCuFfEgCzDyAg@gInHsBo\\vAmH_BuPtCgDa@yAgHxGg@wCpDyDeAqI_BmAkOxH|BzYkEzGeEbK{Bkr@kDwZgLnCn@dJoFlCdAzJeHzEj@vJlBbJrAxNlA~@HxH_Bp@_FeJad@wk@cAiH}@{Cs@yJ_A_DmDiIuL~OrBdGoCjAwF|GhBlF}DdET|@dJuHzDcBdF{B|F}DtDfVMdHuCcA_B|NpCtA}@tFmGjDxHjl@g@zGaIjGdAnHeKdH"
+        },
+        {
+          "name": "Dortmund_Applerbeck_SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "{ojyHi~`m@lHaFbGyGzNkPbMeMlD{@`LmDfA`LtB~UvBGs@xUeInBz@hJ`ExQcHpFj@fBnNqJxIj[wByCcDgAqFxCkBbBo@hCh@nFO|D{BnCgCIkFvAeCFRuIm@cUlBgAuBuIwAgPH_IqAwGsAyUwDsSw@t@rD|R`@zK^bIsBb@_EzEeDhGPhEjAdJxChLrCt@xBdMv@lGpBvAMdH`Ap@zFy@IhLv@tCuBtCVdJc@hA_B`@_Eb@qCv@yCrEmAl@F_KlB?HmNkF^iIZBhL~AXJpJiCEDmMqBH?bRdBWhCS?`FrIYDqEdCwArAaDdBeApIaAfBmCPiFpA_Bt@|ClAe@aEiNM_Gb@aEzBL`@fBbIvBdElFpFm@dFFxDkEm@oAoFrCoJ^gCqEUuCAuBP_CmB}NhDmC`BW`At@lH~I`F|SbApAj@qBuOep@jGoJdCaBxHwBv@qGnBuJ|@kAx@Wj@bFdHxIw@zEOdHPpK|@|@e@bW?vBbI~HPm\\p@@DyBLoQhH`IfGrJXy@kG{JsHoIi@yCb@sMN}Eq@eJ_AJf@fDH~J{DgAk@bGyBqCeF_HYwDhB{A`BsDfGgKvAnO`AMcBcVh@mGbLdTdLtTlApNxAtIx@mByCwUzGzB`EjKkE`PcF|MkAbEiDcC[t@tCxDCfCZpEzBEDqB~AoCp@qJtAgCpAjNkDbCoCtEb@zA~AqD|EmDrAbAxAnJbBnHdAYpHsCdFzM_A`Gu@n@_ADyBbAiBlBf@vA~AmBnDs@dBcBp@yEdF|LdAk@yCcJkIkRw@uEoAyJuAKn@dFj@|GkHzCmBmHmAcJgBkAe@_Gu@oHlF}DnA{Cm@qGyAqI}H_MaJiU{C{FyAiFhCe@w@iFw@gHcBVy@Bo@dBHgBmAeJdCgNbAkMhMsCg@yH|DQz@vEhBdW`JqAhFbE|EhEhFxEl@mBJkBHkCOsCi@mJsCsHwBqGuHpBuIpBoCVgAgJ{BwAkDXaJtAuOrDg@sJcCiFkAwEiCkGc@uH_OzFcJcF}@dBdExYwLIkRfLcA_GfDaChBiDBgEjCcJxB}IKgBkH~CgCpFyFfDqBzBgC~BsEoCuEwPmFsQoDsJcDwCaBvBqA`HtC`UyF`G_HbByEaA}FaBeA}ELoCz@HpAk@q@aITgCh@{ArBu@LORhDYFc@Zd@f@n@SLo@YoD]yCe@@CtA_Ar@mAbA]fBO|D\\pEmAVd@gB}@o@WnBc@`F\\~F|CbDlFnAdGnArGgDnEwEj@uCuCcT\\iC`AgCrD|F~DdMjH~WeJfFyGKqGpCwHlDuHnCiDxAmBlAm@hAc@_@eARiCi@q@~FjAl@UjA}A`@WvArG`NgErD}RbJVpDbKeEnGyE`CoCrImC`EzNsAtB`CvF~GnR~AhDoAlA{EyLyAyCgAZsCz@{DePgC}Jk@^tMrj@zA~K"
+        },
+        {
+          "name": "Dortmund_Hörde_SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "_`fyHi~vl@hStFzO`OzA|IhAjJhLdN|HbLp@hCjAmAsBkF{CuDyDmIsDkCbA{A`DiCfDuD`AjKpBzMfB~EzBfAvF{BdEOKwESaByL}e@OoCKwD{@_Hi@gDc@wCm@aCU`Bt@nCd@xCd@hFj@`Hg@F{Cr@{BgD}BA}HrDeH|AmE{RzAmAdG}BdB}CjAcGj@wDhC`Ht@t@dAAd@a@d@o@f@mA^JZbC`AlBTeBu@cDVoGg@wIoAmDlMmB_Dc]aEZwOfEkCgIkAiKEwEk@sEgBwF{BuIOuGvNwIwCwOu@oA|BoCjDyEuDyMqIiXyEiOqAsEgAN@{As@BAbAyB~UoKbRfBpGfBnCzE~@`B`Cp@jERxGb@hHPfF~@hF~A|CTnDgKKVxAxJVbGlUXdJuGnBqAkCaBkHsFgZ_DBsCbCkEnI}DtGVxFYnI^jFdF~TbFzVw@H@tAFjB@xB_@fEwA_@~@sKd@MAy@a@Ao@WwBe@InArBn@u@tKkBi@O`BnFzASrCkFyAI`BfFvAWhD}EkASnB"
+        },
+        {
+          "name": "Dortmund_Hombruch_SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ggcyH_rjl@mJyi@qGyWkE[aAcGaJR`@wNsHl@?iB_@mCa\\pXdKsToAwAmSpd@gIoGuOdAc@iAuN_EwCpQyCvJ}IqGeXg`@yBlEvVt]|R`QrNjPl^mYeBdk@jJ|AhKQlI|AnEZ~CgA\\wDvDCGsGbIxBfW~CbGcB"
+        },
+        {
+          "name": "Dortmund_Zentrum_SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "c}oyHagnl@fOiBe@aLzIqAn@fMtWwA_A`~@|C@n[iJpG_D`FqItEmC~KqBN`j@fBfQmDv@CcDOAmBnEBh@bBc@NxElBIjBVfAbOpBhSnBDmAuL|Cw@d@}JeAmGrCeAjDaY|SxA~RwFbP|FExDhA|HjC`GoHjByGM?lBfIF`HoCp@eAaFcSVoDsBeBIoDoD_UwDuOq@uVrH_AfDvHzNjQlCrOxBmEuBgNyB}Et@go@nGqD`Fa@rXfID_TsHwAPiJcFJwQdCeJtDaBk]lN?_A~VdRqC}Aay@cEz@iDrIoALiNeDmD}ZgA{McCe`@i@aHsJmn@_Fyh@]yISwyAl@?CgDmX~CcM}IwA{DiBo[?yDq@qDvGoAZxCfCo@mIuaA`IkAPgCe_@zJzOf~@X`GkGc@SjAkJhEpApU_AhBtLbe@nDhEyC|@aG~C[iQyBcDgDf@qLfFmNoTgEuOs@}IDsQmBTLd[hF`UnNnQyNjFxA`MhDvGxBjBtD`ACtDl@xJHjEw@hO`GZfEY^zAp@tGU|SDzJr@dE_BRqFCAjEVzDcLTkBQwHsDuAOHzAdJhF|CTjJm@dKEv@zABzBeBlVkCrj@s@Od@gHaGi@mAfNaFB[aA{@b@Kt@sJfD}H}X`DaNs@aMoBdAkAsQ{@yAm@Ys@CsA`@q@aKqI|AoHg@gCl\\zKfDeArOdGtAsAdFeFt_@eBjA_DXmr@qRMlD|^tKSrEhNvDE~EkFl@LvPzEMBjHjHwALxAsW|e@_CwG{@{Ei@wR\\wFs@U]~G@vQj@ZfAbJ~AtEmBfEiEjAu@k@oGid@w@nArFld@qCFcBq@uLqAcJwVkH|IzEdJvEsEdB`IoKo@gCiAWlDDtFlClGdB\\zAOtIiDhLmCtEG|@d@tB|Z"
+        },
+        {
+          "name": "Dortmund _Phönixsee_SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "qriyHkltl@dDuFpSko@t@uC`CeD`GmF~@_FSsEyCe]dHD`Cx@`Ez[n@dB|BMnHwQEpIzA`JGpB`AzA`Eld@yMbESjBKhGrMzzAt@WgDk`@dOoDn@`Ol@rDUpBDxInA[p@_JpEqFrAyGkA}BuBoYe@{O`DaDxDHYwf@j@}Zn@uBnCwb@yHwAgDp@}F{@oE}VzCkChBShBLbCbAnFtCdF|@k@cC}FgBeEkCsHa@cE~BeCjDuE|A[yCfA}LtDmU~@sM`HgWpD{]}@kPsBuAqCoIoCaNeEkFcCa@_@rBxBn@fCjDlChM{StCeAcEaGmJcANtInV~CpKcAnPcCZmHxCsCBcFsFyCAj@|O~@b@j@rGIlYiAnNPrBfBfKAxBuFbRe@xKm@nBbCpf@q@jCqGrFeNza@yIrTeAl@f@`H"
+        },
+        {
+          "name": "Dortmund_Mengede_SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}ixyHi|`l@|AzHdEhJlD|GlBpAWlDcDzh@|A\\|Dom@`FtItDnBhBMz@rF`At@aGhDTn^{I|EuAxKbA|AlDaA~T@vL}K`HuGtD}FvO{ZcEqJwAsIsBuCbFyE~HoE~EmCdEkChX_Q~OmGRiEkUnMcDqw@t@qWuMqCi@g@yUbBaIpDkAdA}@fB[rBCpCd@zFoExAo@wCmFpK_@nBCfC@jE{Az@{EeB{DlCa@mEdIyDeCoHxEeFpDaIiA{@wI`OsDmOKoE{BwFaHzVaCtP?lJoCtKyTv@`@`MUpK"
+        },
+        {
+          "name": "Dortmund_West_SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "arlyHgy_l@oDzJvCfDzGlInAiBsJaO`T_F|F}JxB|ARhFzAtDfEvEdBpKnEfMxJvX~CzVrBxMbAzPkBpOSzIf@rLd@nIClGYvGXfLbIff@yDwAcBqAqD}HwIyDiFkCuA{Am@lBpBjB[rFz@rD`@rA`ApAx@~@vApA~Al@|BAxCwA~@k@bCdBlE~Av@rGf@xDu@dE_Dn@sNfWqJd@aAf@b@vF}CfAwEbDdBpL}Ck@_QnETrAnMyCzBk@dCh@jAdHLCIYvG{Cn\\sCt@aHn@gBzBoBbD{Dj@cBJ_RxBKp@a@pI~]\\tH`B_@fE^fKr`AhAOsGu|@kBcw@a@eMmD}MaAk\\fR{ZdAoDZsEC}FgLsVcBsGgAgHu@}DyFqH^wDjMy]bHfC^IdCpBfGt@xJzAdBVj@}FeCJJqGiT}GmEfCQw@xKoOlDiHxGsWpIsMq@|r@t@aElBwo@vCcEdHsXfE{J~@gHwEKeZnHiAsEmJg^iBsAyDbDwCkWHiXeBqMdZ?hDF_@{_@cBqSrJwBM_EkKlD{Bk^b@oGvGuB`H?lC_DhEFfAdBtB`BhBzFfFbO`ItWmC`c@Ct@aFu@wAL_EBuCcAD_BnAWoAyKcCzAnAlHKzDzCnBlDfEHrA`Gv@ZkB^{ExBV`Ds^NqUm@s_@oPoKuBsAyAF_ChAsCm@y@Lu@j@aBfCkIV_NnCsF~CeHbBeCq\\yAr@`Cx\\uH|AgOqHdBoMgC}_@}D{EwK|DeDl@nAlNpAvJkJKgCkDcS_HmLaDsBc@LoMeBaNw@cMoBEu@dOpDxO}@|HoUoFmGJkHvDkIrLoJhZkOlQs@mE`CsKS{CgAy@kDHfDmMd@}E}@}EoDg@MsDL}AeG~AgU~NwSvUyHdAqK`BkJtGwFxFmAxEc@lCoHfQ`@zCfEnIpUjcBzc@}SvR{HbJsIfCtG_@~FvEfWIrWaGTQyD}@u@i@uEu@eFyF}C_ChC|CPtCvAv@dExArLyBfA}HrDo@fCLjIDvEe@lJs@dBoAXCnBl@@tA{@bAeCfLbEnE@nC_@|C_Ae@uIvEy@lAqANmUoBcLc@Hk@yCiBmAT{G{@yGyBsQi@aKkD_KkCsWkCkc@iBsFkAePxJApO_EpPaRbFkPbCfBhFd@uAvMiAdJe@jKcA`Io@zG{A@w@~CfBlEzAgBSuEv@_A`C~Ga@rBVh@lAcC[oBmB_EsAeBRwBd@e@J}BrA_HJeItDqY|LsBnMyBfAhF|@zE_C`Ov@vR~C|^fHbf@xDv`@zCfRgB`G^fFmCfSo@nRc@bPgDtAgCfEyB`D}P~C"
+        },
+        {
+          "name": "Westfaliastr._SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "manyHwakl@hCyCr@U@cAoBz@A@sA|@DvB"
+        },
+        {
+          "name": "Franziusstr._SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "e`pyHobjl@r@DL_Nq@CO|M"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Dortmund_9341_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Duisburg",
+      "center": [
+        51.4154,
+        6.7249
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "O7HURFOJKLBVM",
+      "serviceAreas": [
+        {
+          "name": "[Duisburg][SZ][Duisburg_SUD][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "y`|xH_oeh@jHvMvLxPfYvSpIhLxN}U~MiSrOa[pl@`Gjk@lFvUkKxVy@~[hWvVds@xSzRzm@dZnQxOzBlJzUraA|Nrl@C`TqPnm@tD~JlQpYQjPgL~Ed@xFxVzc@rXxBjMeDrL_^uBgRk\\zHqGoIcBc_@w\\gOhI{a@sBko@_Tmz@lJcE}@yQbXsK`]uWvHl|@fYfjB|CdAtPsEsFqVnIkGT}HeKzBaC{`@oMia@iRum@|AeV`Aal@eGsVqHdM_TvNoTw@gByQ~E_OdLzPjLsG`BqQu@{F}]aQjBuJtGeHnA_Ly@mE_Zmn@_Vx`AyToHeTu_@hNgJhMkt@mD_a@~IrOlb@j\\~IaFxXmb@tEwTlQq@j@vNtIgAtCxO|XZ|BsB]sq@fEkj@nHcLiAsAgJxLuXwDcE{AyGjLaIlA}VpAFxWsFeGoBwW}HrAegACcUh`@sO|ACae@iOfC_FxXy\\eGcRa_B`OkLlUod@r@}d@a~@gCgYtNlLhbBpHvr@iSvW_ThTu^~[{BkKgL~MrB~HcDrBaFoRMaBb@gE~DaKmA{As@tBb@x@aCtGJqCYwHu@wEgBaEwHcN[vB`@z@dCtCtCrEvA~Cv@rEVbFChFkBhGn@x@^y@jFtScKqFmI{C}`@wf@v_@}p@dNqu@}c@nm@iM}OuNg@eaAud@aTzDnBzS{rAcD_Alj@eDhh@|J|m@|WdmBtBnYcEdg@|Ll}@zdA{kA"
+        },
+        {
+          "name": "Duisburg SZ West[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "_qbyHwoxg@p\\{GvPoAy@np@dMoJda@d@|Zv[xKuJtD_q@`QivApDgo@dh@Knc@d{@k`@xn@~\\rm@|Fcd@rB}q@nFbFKn_A}Yx~@qIn[hY`FvT{QbU{Dv@aErFtIhRhSxIhEf@mD`DwpAfXaZb`@mw@~Xvc@aMrz@xBtn@sK|Tcd@tq@m@rr@dLjp@|K}r@tUzSbN`h@~[mDlEgdApe@xLnB{M{mAc\\`@q^bPeCfCm]fEyYu@mk@}Uy_@fIyNbFyYdAyn@|ImDj]mLzR~XwSdo@lNdAxGzl@hWrz@~N`RyAqUa\\cpCwK}~A{YggAkg@ad@sYfQo\\t]cQ}fAcVlP}MfMsGUcQyD~Gh[{HlI|J|L}@tHsLfS}Vd^qOtHgKjPv@bTbBfc@{BkLmUq]cUqOeQ|@uFaDyOdDif@gJmSmR_Sua@kQeB}Brt@}GpFqLrc@oAfSuIzQoDyHuOfWiHfRbMjs@"
+        },
+        {
+          "name": "Duisburg SZ NW[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "upkyHg`ug@hi@x@nLgDfL{HnDyDxDE^vFzC\\`RgGp@j[rq@cAp@{C}BqFlD_CvFyFuJwGoFQiHwD{Gg@qKuVuBg[eNma@eCrRvC|IgGpSoBnKsZdYkOdLsStGcZh@lBpE"
+        },
+        {
+          "name": "Duisburg SZ North[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "uosyHga~g@hT_DpB`FlHnB|OvKtJtLjK~IlNbDjKd@jRaBv@cJ{AkRyBrAyBySsAwBe@kKwByX|HqCnBt@nIqHl@fDr@Gy@eEzH}AdOsEe@~Nq@bm@t@pXjAq@a@}UhAeHa@w\\bAwWtJ_LbMjFZaOEiL|H}[|ImBV`MhGb@mAoa@|TwXlIgFDuIdJoKBtGdGgFxKwM`IrM|LdK}CxFlAhGdGiLtFaPjImG~[jT~Ov\\~WbW`ZrVxH~A|DvKpD`P{@`ZfBf_@~Abo@sC`^~BlJ|H~GyFhWaCra@FdDnLiB\\qH_EiBLcAtGbAt@wIrAH`DqM[KbCkJ_AoAXcHrBoGz@aJn@{OKyFaBm@xHsh@tGkX|GaJhCrAnLaJxn@md@jFoe@dF|Ca@tZrEnCzKsErLoHrHsEtAeWZgIm@kHqB}FsHjJuEwD{HsHYkL_KaQwQcZaB}LnBkZuUygBbF{CfEiFjChI~EoApCqFh@eRfLvH|MvJlEjFr@uDmAi@iNmK}PaNXoNj@eYdEmBpBbOvA`PrBhNnABqCuWcE_X`@ElA@rAd@BaBsEWwFnAeDql@qCq@fCbV`Adb@aAnb@gBtVmDbCmC}HmCiIqGiGkSoHiCuQdCiH|@qQxCm@hBwMrJlHlBeSfBb@r@_IBkGeBPzA{JeErAiAiFkLuCsAdEaAiA_EvXmD_Z_EyM_Y|OuMuc@vNkMpA`HdHsExFjQdE|AxE]nV{f@tIxGfGnJeCdMxB|CzCcM}@aKuRwRrAsMj@aFy@HuBjQQgJiAqKsA]~AlQK`JwWnh@mBu@kDm@iTiy@oGxQzGnRcOpKeAwDMaRgLaCq@zKcTyFyAlGsCxRrA~GpWbOiJtf@kLcCTiIOaIgBEe@wKOiBeDX`@tGh@jCpAX@hBbCJ]jQ{EgCiQaIwP_c@kD{^uDgy@lBgZsA{@iE^KqCuEUqLyAi@xLCbZcV^sDzCmKz\\ZrH}Lhi@kCkGLmx@mBaOtKoEmA{G~UgJiC{PgA^pA~LwBt@}@oJ{P`DwMtFxHpn@cB|p@|DzP`@jVc@dMaGSAyPyIiPVwc@sIiOuAlBbH`RJjZcA~I]TcB]}EaA}CxO{CgBm@hAbD|E_BHaDmAMrI`AvAWfOtCvFc\\~_@_KiD}C\\_@Dm@Fa@xAn@D^@bOvFtCt]hDlMcNa@oK|FqRzJk_@jShMut@u@}C_GxAnBhKwA~GuDjRcBhNa@lJw@cCyH@w@pCgMHeIi@?hBbHhAeDvL?tG~C~FXvFr[LNfRz@~UiMbF{HrJuFcE_Jvg@qA^gAbLP|TqGlEwAgMyGpCu@yFk@mAuHxD}HvFzAdHoDzAcEw@s@`Q|@`Q_B~@^bF[rVkLSQzFuJf@w@fNoBVj@bOdC^PrE{HGsCzB`@pKsGfCtB`WTvE"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Duisburg_14579_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Düsseldorf",
+      "center": [
+        51.2213,
+        6.7886
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "JCTE7UTGKR3JN",
+      "serviceAreas": [
+        {
+          "name": "[Dusseldorf][SZ][[Dusseldorf][Service Zone] Updated 04012021][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}c}wH}ofh@mD~@qA|VkAhEh@AlAoEbAiSlFjTdFh]}O|Iu@cQsBrAjA~O{Hw@mZxVePtB_\\fJy~@wSZaNfCgATmBP{HgIPdAuX|J{LdCiKuHkJf@kPoCqIkGyDcm@tFub@rBqcAkw@gDuJfOsSuBiRiDTyAeq@sAqHqIuIuGlf@eJNmCiQSeR{AyGwD}@yH~NoCqEYuS~U_KkBmJ_JhFiDEiDb@u`@hMa@rQiCvUBd\\dHqF~KgAmA{RxAoOzEiJxCoLzBGt@rViGvCeB~BuAxEdBvLdDpLhQ[DnCgF\\jG|N~DGmCxf@}BlPlDsOz@{RvFqNvCtGdIzRjEtFbDlPpFwDrArBT]pcAjw@bEpLb\\t@rFZrLjC_@tIn@nFa@xNeKjA}Bvo@wQg@qVPtBg\\oIcIzKig@{^qMaf@`oAmTng@eq@tfAApHbLtF{CfLsNn\\dDjD`Pm`@tEiStHqMlWc\\jTyZb^c\\nDwGnPxAjXzCnLpBlGtBtV~NcC~Q~KhL`MrGpE{LvtAzrA`Kid@dNvJzJ__@nIaVl@kLtHp@vBvBvGgB?gEkIU|@of@[mD~OaG~CxChSx`BzC~PxBlBdBn@xBDlDMhCcBrKlJ`DZrCvLnd@mIpLdI|OxN~OxNf_@dl@nRfZtFre@oCng@n@dLrCjk@t@IzIeClDaAlDaAtTiGpj@oOzCu@bAyhAaC_JpBsvBmo@lGIo\\IgY|RxTxSsBl|@w\\~XmJ~Hh@|H}B`JqFlA}@hPw]{@{Ume@kRcIabA`XpEnJjAr@oWpNwE~BbC|EiDp@iBpCeFnF{BiDgZd@]PuAuAmNsErAiCaTYmMhOuFwFya@jRwJfN}W|IeLxSe]|Pqc@xBgE|GaJrNkh@cGyLyS}WvIyRc@aKxGsDvOa\\vK_LtU~`@lAuClBoVKsv@xBoMfj@omAhF_VBiUWosAv@u@jJLrDlFxWMdGlPrJlCi@lDkKoCWtEfAd`@hStJtVsCdJsNmG}EfCwQt@wOA_d@aUhMkGqW`MoDnQmH~AoKn@oKpLum@wH{WnEqEbD`N~DtBfDQFmDjLgLjQqFDqNiA}H_D}BsMtDeGxJuCyN`NgMjLmIzOiOjDnLuE`F@dJpEl@DhShKhInJB~Gy@FiSpBeCaNoc@{JbAkGpGwD_Lc@m@qGlHqG|F_AsE`@yGx@iB`BuAhF}BtAwDrB_G_D{MsBG{C|BgL~K}@rMnCvIlBhBx@bHk[tSmEmU}GaA{BkVBdWuBv@yAvGcArH~A~LrBjIwGtHsDuKiFIwNxCwFpFuIxLkHlNkFvDgA|BlBfB`G{@|AgHdNqC~JcElJb^eIdNgAvC~AdFcFrQsD{M}CgOoH`GsKxQbBhIiQbNh@~PyQCSgjAePvBWlO_HeFwEtCcJ`HuOpF_Zrm@_CgE|BeE{AeHvAyA}A{GuBoDmBqA{@{G}Ptx@sAoBsUfXj@vCaBbAuBaFqGhF{EhLPrCkKrS_@zQdIlHnAhZfj@ki@rFnX|Mz_@tGr`@o`@fOwh@yBsSzr@aWa@eLgBaC|Aa@qO|DmHbAaT}AuXpBaTlCkJvI{HkAwEaQbUuIve@Y_GaBqE_Cq@wA|CebAgsAgT{RcAsE~LcTrL{XjLwTdh@aj@|HcQxEcYzGan@_FsG}FqUeEcHn@uCx@g@x@ak@SsCaDcC{AQYvFZpQrEXk@|UaCjDkOhg@_AtKNvEwAk@qCrN{CtHzAfDmA|CtB~G@vFvDjBs@dEw[b`@iOpl@dAdFmKjW{I`K_^|DuMb@so@rc@e`@cLOaHcKf@ZdSkMiEg`@fZiDtDtAdGrMr]zKnk@vBhQjFfPkOjj@oBhm@yb@yCuFwf@eDxBY{HwCp@cBoCmGxBfEvc@O~@m@US|BRjCuj@a@{XkP_XiQyc@m`@mBxD`UlUzNxK}Mji@s\\j|AifApKyUj_@}CvXPzVzPrb@zsAlmAmF|D{l@m^yH}QNSSk@OVi@f@xArDjFfOTvCQdAeA|A`@fA~AsCBcE~i@z[yClBwK~GI}@yA|@F|@NfBzAs@CYjNeHrG`]bF~SlGrg@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Dusseldorf_16052_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Elmshorn",
+      "center": [
+        53.74912,
+        9.66176
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "6QSZWSVEIB3AB",
+      "serviceAreas": [
+        {
+          "name": "[Hamburg][SZ][Elmshorm SZ][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "qpegIip~y@_A~IgBxCgKiHoA`L}SrtAt@nq@vZlLbQv@I{`@fKVnIx@tOzCyGfX~FbUzc@y[xPvWnUxCz@oq@nBc\\|Lk@tOcGzMhVqHrJsLn`@nLzUvUkb@zXf`@nm@sqC~BTjAqTxDgScFqiA}Pmj@_k@uR\\aaCeF{f@yXjEuZhSvZtKnBnYgGfL{GsFwPvKrMbZeIl_@ma@~Xwa@nXoUdMmWqw@iOrCiEqXwIuNa@~p@|Dv@fHlQrHaCnJtb@oh@|k@lAlYtIfL"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Hamburg_2121_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Essen",
+      "center": [
+        51.4508,
+        7.0085
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "VCJ5NAAKJXRZ7",
+      "serviceAreas": [
+        {
+          "name": "[Essen][SZ][Essen_Zentrum][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "{imyHcvti@va@pEa@}wAhLsArDth@vu@yIhPc@lPkEtC~\\a@pQuDlR{Gt]gGlBsChD?h[mH`@cM~IDzClM_JfGChBr_@tAh^uC~Kl@|HxY~z@Px[zGnJ`B~I`A~EiFbEoG`RHzDbArHiArIrArFbTlF?jJk\\sHg@fGIvObA|ObHrAlHqBbCiFdSnJvEk@`BrS`@~v@fBfU~D`d@pDaArL}LnFf@|C|J|BoD|DdAxE}BdH`IpBaLhDdBjD}AzFkH{@v]zFNpHpDfFeUzAwKnD}DdAwH_@aOcEuSrD`BjSyFrNoS`I}PpK_Dhq@l}@`DmDkp@q{@jJ_@jGiKnEuRvIaRhH_[hGcKt@qYyB{E{@l[yEpKkJvBkDmIgFoBqImHkLZx@`HzJrN_@dAxIhMyBfm@aP}}@q@xAD|Dm@vG|J`s@wJlCmFaGfCqLgDcDbBkGo@wEcA}JIsLsBLO{EvDFC{B{C?j@_OjDl@Z{C|M}}@nl@`VjDoMjCaCHoEjDyHNiM`M_Bb\\k`@yBaWjLxKhfA|KGxBq\\zZV|GdNjCaBfFaInKd@lCjJaO|AkGfi@tGrU`VzLhDdHeOdHlE~Hpg@`Qit@~NxFiXud@lBa[pQ}HiO}Rg@ay@f_@`R|QwTpLqR}F}NsCs@CcFx@iEEaDpCXLkDfGxFhHnFfInInBwK~@}M}BcH{@LgMb@iLcBgIJvBfOLxDoA`FEzFiCh@mFbF_DuKwI|DsPwWlSmOwD{SReEmAoDmCe@ByB{EcL}MpDc@lFqGv@S_AdBaCpBqGd@cJc@_E}JfCs@uBfLkM{CoK{IoIiEpL}E{^}HpEmF~YnMnOtJlAfFt^mi@wc@tBaFcBcZkEmF_DdDt@jKh@lNaCkBgEsA^}HyUeKj@{@}AqIuAkDMuDzA}MjB_JzA`@~@bFrDvKzGRzFgF}@uBC{AmAuCkAeAmAaDbGuDOsBwFwIsBkCcBBiBlBm@bNwHVaAcPqByIk@aFgCqAe@bGObI|E~Rm@dAaBuAeCYkCd@{GzGiAgF`CqE}BmUuBsCiAITuA_BaCcOGyA}Ob@aGdArBpH`ShByA{I_RPyHxC`Cd@zCdQ`TlEs@rAeDx@yAZyEf@oO~B{I`G`JfCmBfDoB^uCbCgRzAeAlDyDu@nDwKr`@QrHxBrExE{@~IhBr@tFdCpBvKxHdB`KvBbOt@kXWgHnCeChN|MnD}@sQkN`H~@vKlJxCu@sM_JtBgAhGgN}@eCmJdO~CcO_AsC_IcBLyD}HwLqBuEoBoNeF}LqEgKkUyYrBmSjEySl@}FJ}HoB{Huh@WuWcQqVsM_Qkd@oHyj@iB{s@jCyE~Vm]vBeh@tCwBxF@lSoNzCf@zEqBnKsFdBiRoHqHsGqP?iHmC_PlEeCaBkFjCsC~@qNiDcEgHxJkJi]sDbAiCq@mBhKaBiIgEgCuAK_@~@rG`ElAvGq@HsBuDaBd@_Dd@[hAcC~FeDuHqGlOiCwK}ErChEpXvFbCa@~Kce@gf@ef@`Z}CxJw]vj@_FrGoF`LuBuA~FiR_Mq]{Er@uNXo@bJlCdCpK|ToMR{BpHr@nHyHsCsCnRiLwDiH`Al@dRfGzQtK~_@uf@l_@mb@sNA|Evd@dR`IgFfJvaAsEFwZdXsDgTiUeb@{@ZzCbI|DnGqBl@}Gc@{CZ@kBaAb@`@zEyFxBi@nNnEfJyA`@wJc@wC}LaRmc@eEgDiLfKhL|^iIlD{OHtIfa@rEtU~@|OwDGqCoE}KeEcCyDiBPi@bHmBhNgFaAkLjC?uGwD\\kBzN^dd@zG|[bPf}@lG|d@`EpPiItCd@nBdDq@dDi@fAfRlHhPfF~Uu]TeFtAaCiAjGmI{@sQiEjAuBh@mDyQxRoKq@yBwNbHuEjCd@mKiBaHuPrGsBtJiGgNaCsSpY{K[wEo^vPeCq]rZsSEwImQbLsNvFrFfj@xFrd@i@zq@yFqEyLwCxAlXiMv@eZoaAmJrGsPzKyXrUsXiFVbYlCflApk@a@uDip@ha@rhA"
+        },
+        {
+          "name": "Essen_Werden_SZ_Neu[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "{|txHklxi@gAf@aH`F_CrDqBgHm@lAzEzNdD~DoDhJgF{HcAfArKvNbBvBfBbAbEIg@xE{Ao@}DqDYxAtEjFhBZt@tCzBhB|QgMv@vIlC[pAXrDCnAhAf@lAFtEg@hCgBxEmFzHuBtE|@lBxAqFjDiFcBnR|@Xh@iGlC`H|JzJnEfMb@_AeA}EbCiGvBzIhBbJzB~Sf@fQiDCyDeBwCtDy@nJD~BnCb@|DbD`Bc@r@qDA}D~GdWb@{AaDyUMuWeEc_@aFkT}BgHs@kHoAqJ~KhN`F`[p@mAkCwWcDwEwGiJcNeHu@eH`BR~Ca@|Cy@bGMxG~A`DzAbB`CDeAuJsLgJyGaG_@RuESsEbCWlC{DQsBuDIoA}F|AcAdGjBlAwA|C~@|Ag@vD_DjDeAhDPrCtFlBlCnC{OfCcJ~GcJ~@hAfFcDjCxLlAzAdEcB\\sAi@iHkDaMbRe@[wCcPZyFkSwDmI}C~CuAoI_EoTkBUoBrA{BqKTgA{BoK_Dl@xDvJjMtq@oBxBgBvImGcKaKqN_VqXjE_Ou@sBeDjH[mBsGeQeEcQsCgKwAoAgANQnB\\lDvBnDfAzDpAh@x@~EoCzLiCmQsCxBzDzTuAxG_EkCcGw@mEcRgByLa@jDxA|LhF`QcCbHwMlO^jCxGaHjA~WzBhJn@nUMpRcCwAkAwHcFD_@|L"
+        },
+        {
+          "name": "Essen_Heisingen_SZ_Neu[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "wtxxH}zaj@lAnPfC`IdDnFgAbEd@dEfBvE`AdCpA|BjARgG}Oi@_EvBmDlB|AjEtGrEsIDkGqAuGwBkEzH{M`FrPvAKjFoJtG|SdJnOjE}JhIiHnKgI~BmAlGeGhGeHpHkNa@oCaN~VcKhKpIsKeG}FpKoEfL}LcBoAbD_MQwDaCgAfAmI_A{CoBuCyLuEyLmGgIhBaH`GiApGuIcCy@|Ad@~D]`LkGd@eDeCkCiFcAcAiAs@wCyL}@jAjBlFj@hEc@AgEiL{C|AwAfB}ArFqGpFeGfIwAdGk@|Um@tR"
+        },
+        {
+          "name": "Essen_Kupferdreh_SZ_Neu[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ap}xHeoej@v@|GvBbN~GpJlLn@|FdErFxEnJbGzPlDtHaI`H_P`Os@~Y{JrDVbCcB~C_IhFuGcBcDyEeAIdEeEnAoDkEhEkGqDcNwCaEiEDoEhI_CkFbFuJpEkEhA]k@}LvPib@~G_DjGkEtCsMoRmm@p@aCpQzDx@vItBtSqAtAi@hBbAH|EjLx@q@[qHtAD`BS`FzQlFhR_@jHL`KlCpGtAkAuCqGJsDR{LsBsQzAuErFnk@pBFtCtMfGVd@zGjVxJdBqDrF~BSzGdGdLxBzAjGrADfEmA~@\\hC|CsCDiCfGiC~BdHhD}B|@`F`Ak@QuGbDs@xHmBxAdB{BhCc@jC{CnAb@nHzAxAfIlBxGz@cApSvEh@lAyR~DSx@uCfFaUyR}YnR?~AnFbE`BAqD{CmBo@kH_HfAmEN~CcAhEaFdGuKnDgVL_M}F}]iCOkGoVkKnCyAgTeAbCzAdVfLqChFhUbCJ`Fz\\_AlQkCpN}IjOcJp@bJmXaGJePvPgJbI}A{IgGiFRiCwBsMoJa_@mBmG{@oNgGcNv@cC{BgCwAnAkArF]`J\\tEeErE{EaJsCfBjEpUkC|ApBdMqHnNgDnRmEa@}BzBQuSNcGQwGvEcTmAcBuBrCiBlSTbJwAa@yAoAs@uGf@gENgJAaCaCbDeC}B{BaDcFcHZyCz@gDi@iLcBqAqBjAsDbAc@jFaD~AkEnB_AfAf@rGkCkGw@aCzD_EnBcF|@}FvC}EpAyGeDtEeLxDeAuDNoDtHaPgAmBcB?sH{L}JqTyEyCw@jCy@_@oE{XhMVfTlKDiNqGuVdFuFu@cBgH`IdHpWFtFaImG_WcBi@aOpDgHrGoRxGcLwEc@uGrMuJ`XoAi@o@wJHuFkJoD_BnAb@zBY~GbBzDdDpC^hEiArQmGhKlA`CtB~AtBxBxH_LjAiIxH~r@GzToFfCoGaHVyCiEyH{DaEaBbAKjMVjQo@dDAdMoBlLHpQjAjSqJdCkAfFiB`Fz@~WsBtCmCaO{DlG[hDzBdJ_F`E{I|O_FcMsAgKyU`LuEvHwHz@{OfGo@|I"
+        },
+        {
+          "name": "Essen_Kettwig_SZ_Neu[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "yjrxHcvfi@dHjKzAgAtBmMjCuDfBp@|AcAbCkAfC_EVwEnFgJvBRVqFbCkS`Qa_@LbInJrVzE_CvSiQ~Ly\\GhGhEdPiAhAoDtApBrCKxAaFvG_FfJb@ZhGvGzAeAPiJ|@PSpPvAxZ~AgBsA_RTyTzB\\`CwLzBk@jL~Ma@pDnCi@fBYpDfArB[v@Gn@^Rw@_Cy@SmBx@eE|DlCfMf@iAqDkEYoLeCcDdByDdDsEqDmC_EdCsJEoI_@uFtCMlBYxB|KhA\\n@Uv@}CdCuD^{BvB}Db@pCmA~EvA\\x@wG_AeFdDmCr@wCbAkF_@wDO_DaAuEoBeB{BXiD}Cw@KaCy@yA`KlA~KvAf@nB`ZyDrI[ZoHu[qB_PiAd@k@|RaCbK}AvI[`HyEiC_@@u@j@qD{MPkBhBcBLkYkFmUgAoJwFuc@_H}N_BpDhLb_@wA|@{AoK{DyAkFoKoBjCoA_B}BrC}DyHiH{Hy@xOsG|A{H~FmFjEyC`AHp@tA[B`B_AjAZtIi@fFqFhEmBsDvAoIqB~Bq@zE`@tDlEbMrAo@yA_IpD}BpAlHvA|Fa@`AcAnFwBiB{CcFuFyKmCyDeBMnD~FvDhInBvD~A~AtDjDt@lLdEnJnAhA}AjFaDnAIxC?dE}A[uAkCoByL}JyGkEmD{@tAaFjK{EeM{@hAnG~OlDuEtCyGbN|JbDxOdEvAhHZ`AnAsBxGgCdXsHdMqCXeFiAiT`\\"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Essen_42236_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Frechen",
+      "center": [
+        50.91485,
+        6.8118
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "5AXKMEVHH7RO4",
+      "serviceAreas": [
+        {
+          "name": "Cologne[Frechen][SZ][[Frechen] [SZ] Updated 07/08/2021][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "g~xuHetwh@iFaDuBqAy@g@]S]S_PlfAgGpnAwt@ze@sF\\|Fl~Coh@|XpFxq@_n@d]fa@fw@`@lc@tPzd@tLoNPcJpXwAzGoEnY~r@jTrq@`[}v@x~@j~@bIeMk@_]`t@~@rXkq@_[cfA}Iar@JgZrSq~@uFe_Azg@ch@zg@y`Aur@}aBm]xd@mYcdAaWibA{NlHwNjGeKxE}IpBmJS{JcD??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Cologne_4657_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Fürstenfeldbruck",
+      "center": [
+        48.17904,
+        11.2547
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "436RDWOPIKUG5",
+      "serviceAreas": [
+        {
+          "name": "[Munich][SZ][Fuerstenfeldbruck][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "mj|dH_fncA@KF{@@[?sB?KI_D?{@J}B?K@}A?IAIkA}JCMCKyT_c@CCqKwT??mBwD[}@k@kCCKGCaKyDKCyGmAKC{JoC[OaCuAWSoCiCOKqAo@ECcA_@[Gc@O_@Y[e@Wk@Os@Gu@Aw@JaE?KCkM?C?eJ?G?QRIXa@Xk@Ns@JwAC}@ScA]eAc@g@w@]AOAKuBiPI]m@oBQs@Iy@MgD?Ig@wR@q@Dq@Jm@Pi@Te@x@kADG?KG_D?S?s@Bu@Hs@Pm@Vi@@Af@eADI@KNcA@I?I?s@?IAIOcAAKEIa@_AIOMSSe@Mi@Gm@Co@AcB?CA_F??AyD?MIGII[c@Ui@Mo@Is@?OAAA?KG??AAAAAAA?AAAAA?AA??EEAAA?????AA????AAA??A??A????AA?CEAAA???CC????QS?AA?AA?AA??A??A??A??ACAAA??A?AEHWf@[^_@Tc@Ja@@c@Ga@Q][Ye@Si@GUEIGOQ[??MUSi@g@sBEKICu@OQCgA?G@GF]^_@Zc@Pg@Du@?G@CJI|@Kl@Oj@Ud@Y\\]V_@L_@HGB?Jb@fFDr@Ar@Ir@Ml@Uh@Y`@]Z_@Pa@Fc@Ca@K??]U]]Ue@Sk@ESo@_CSeAY{CAKEIa@i@GEG@mCx@??c@Fe@Ac@M_@Y]a@Wk@Qe@CIGBkEtCGDoCzAGD?LDpCAp@Gn@Kl@??Qh@W`@YZIFCFM`@]f@_@\\e@R}A^MD}EdCCBuFhCGDALEv@?L@LDd@Fp@?r@Gr@Kn@Wf@Sf@_@^YNc@NIKyBeAKEK|@gDcBsBgByA_EaCuMaJbFoEx@|@fLTzGAhGGdJDjE~@bEtPo@xAc@JlBbA\\?lAwBHGnKv@lOkCPs@gScCNqGsCaHJ@`F}GBIuHyV}ADpNjU`Cm@~UjMoD~G}B~OgAjElMuFrH|BjFpCgBdDxDz@^n@i@xCvHiAbPvC\\b@y]zAqDhGaOrDw@fC{@PrAp@pF_Bv@BZX|AV?Zd@jB~BGTc@~@k@x@oAr@}@XwBNVfEX`@N\\FLtFxHLTb@v@FHzR|XBBbBrBVd@Rh@Nn@Dr@@r@Er@Kp@ABK`@?B[zACNUlB?FS`CQvB?FIbB?BCj@AVG`A??IrA??GlAMbAELCRAHAJ?J@P?^A`@?REx@?JOjC?B?FAJN?DAd@DTH??NDF@rBFB?r@DTAB?\\@\\J@?VDz@DJ?~@GN?|@@^Bp@NJ@rBH@?pCFVC@?FE?KEmC?GAqABw@Hs@Pq@Vk@\\a@v@q@^Wb@Md@Ab@Hb@R\\^Xf@Rl@Lr@PdB@JFEr@m@HInA{ABCHK^[`@Q`@Eb@@`@L^VZ^Vf@f@vADFHB\\RZXV`@Rf@Lj@Fn@@LFBlCf@FBz@R^NZVX^Td@Nj@Hn@Bn@?p@Cn@AJDFNTTf@Nj@Hp@Dp@Ap@Ex@AJF@bHvAB?rK|AJ@`C?~FAF?tCHZDxAZ^N|BlA^VX`@`@n@PRxCdCDBF@vB?N?bCNRBhATl@VbAr@@?p@`@FB"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Munich_9229_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Germering",
+      "center": [
+        48.1339,
+        11.3765
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "436RDWOPIKUG5",
+      "serviceAreas": [
+        {
+          "name": "[Munich][SZ][Germering]+[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}dxdHq{edA??????????????????????????????????????????????????????????????NeE??AYCs@??Gu@?u@Dw@Lq@Rm@Xg@jAyADEn@s@RSnAaA????????JK????????`AiA????BG??????????BG????????????f@wATe@V_@BCLMTQPM`Ag@??????????????@AtFsC????????DC????????z@k@`@Q`@G`@?`@J^THH????????????????????????@?DC????????????\\M??????????FE????????????????????????JSXe@^[^Qb@Gb@@`@L`@VZ^Vf@Pl@Hr@L|A??BH????????????????????????????????????????????????????????????????????????????????DA????????rC}A??????LK??????????TU??????????DG??????????????????DQRm@Xe@\\]p@e@^S^I`@?`@HpDhA??????????F@????????????????????????????????????FG??????T_@??????????????DIRW??????????????????????????????????????????????????????????????????IIgAaCIW??????????m@yAWs@Mg@??????????????Q]G]????????IQ????????K[I]????????Qk@Yy@Y{@g@mB??iAeDiAsD??????????qCoIbCwBjBkBbBwApAW??x@SXpB????????????????????b@rAXx@|FtP????????????????????????????????????????????????????????????????????????????????????????????J[nH}Hr@bB????????????????????|B`Cz@lC??????????r@~A}@hC????????????????????????????IxA?@????????????????????????????????????????????????????????????????p@?L@pBN??P???hCW??B?vB[??@?rCxMlCtMDtDOlP??????????????????????????????????????????????????????????????????tSkG??????????????????dMkL??????????????????????????????????????IkB??gGqb@????????????????aEeRcBwHo@qCKm@E[????????????cBkIAIeAeGdmB_M|@fADT????Tf@??????Z`@????^X????VHpHfJzCnD]|@GB??Y`@??CDcB_C??????????????????????????????????aBV????????????????????????????????????????????wBvE?????????????????????@????????????????????????????????????tKnOO|C??????????????????????????????????????????????????????????????`AD????????????????????????????????????????????????????????????JwCJkEB???`@O??\\W??Za@??Ti@??@E`@S??????????????????????????????????????????????????Mk@BY??Bs@?ACs@??Iq@??Om@??Ui@??[a@??]WuM_n@????????????????????????????????????????????????????????????????????????????w@x@??????qAdB??????cAnB??????aEjI??????????????????????????????????????????????????????????????PRO@??????????????????????????????????????????????????????????????????????????????N?hArAcmBlLUsA??????????????ACo@cD???????????????????AA??A?A?C????????cDiPIk@Em@?Y??AK??AI????????eAoF??????????????GU??????q@oBK[YiAI_@o@oEACwAcKAAa@yC????????AKcBkIKu@Cy@?O?M??AI??AG??AG????????????CK??????????????EK??????????????SS??????????????????AAYc@Ui@Oo@Is@Aa@??????????????????????????????????????????????????????????CAIGIIGKGOCOCOAK??AK?A????????????AG??AG???AAI??????????????AEAC????????ACIUAGAGa@_C?A????????????????A??G??AG???AAI????????????????????AE??????????????????????????????????GC]W???????????????????????A????????????????????????A?WY??????????????AA????????KG??????????OG[M???????????A??GC????????????????GC??YG??G???????????GB??????????e@TC@e@R??????GD????????????????????????????????AH????????EVMp@Sj@Wd@]\\a@Ra@HA?S@??cBZE@sEtAA?sA^a@Fa@A_@I_@U[[Wc@Qk@Mm@QwA?A??i@kE????????AI??????????????????????????????????????????????A?c@S_@][g@So@??Ms@?CGw@@u@@K??@U?A?K??GuA??CY??Ea@CM_@mD???AeAsI??AIi@iD??????????CI????????????????????????????????????????G@??????????????oCjAa@Ja@@a@Ga@O][Yc@Si@????????????????????????????????????????Om@O_AAI{AuL??????????CI??????????????????CI??????????????Sg@cA{B????????GI??????????????????????????????????GC?????????????AsHiB??IA}C]??G???I@?@????????????u@d@kANa@Hc@Ac@K_@U]_@Wg@Uk@????EI??????????????????????????????????????G@??????????wFfB_@Fa@?_@I_@Q[YWa@Si@cAgD????CI????????????????????????????????????G@u@{D????????????????????????????????????????????????????????????????wC~A???????????????????????????????????????????????????????@X`B????????????????????????????????????????????????????????????????????x@_@PhAy@d@cB\\??????????????E@??????eBv@YJ[BM???IB????????????_M`G????ED??????????????????????????????????????????AH??AP?L??????????BL??????????????l@rB??????FP????????l@pADJ\\x@Nf@b@fBDTbAxF???????????????@`AfFBP\\fC@DVjBBX`@jF@n@DdE?D??DhB??@PBp@Cr@Ip@Ol@Uf@[^]X{I|E??????GD??????????????????????????????????????????????@J????????????????b@hBLl@Dr@??????????Jh@??????????Pt@\\|AkA\\??????????e@Xe@J??????????????????]T_Bl@????????????ED????????????????????????????????????????????????@JDfAwBl@????????????????????????????????????????????????????DfF????????????????????????????????????????????????????????????????nCUNzAIp@K`@????????????AJ??AH??RfA????????????????????????????????????????????????????????????????????????????d@WfAlGgAr@????????????????????????????????????????????J~BqHzD????????????????????????????????????????????????UzF????????????????????????????????????????????????????????????????????????pCcAn@p@??????????????????????????????????????????????nEqBLx@@D????????????????|BjLJp@Hp@N|@t@xEc@N??????????aAb@]Pq@^}Av@m@V??????????s@\\e@V]R??????k@^a@sBWmAWuA??????????SaAQy@??????????????Oi@??????????????????????????KI??????????????????A?????????????????????KJON??????????GL????????????????????????C|M?LWjOAXs@jO??LlB??????????????????????????????????????t@r@??????????????????????d@HRJo@bCiBlCcC`C????????????mFtF?????????????????????????????????@????????????J\\??????????????NP????????????????????????????????????????????????????????????????lKaL??????????????dAaB??????????????l@{Bd@c@??????????Tc@R[jBsB??????????|A}B\\Y??????????????????NU^[????VW`@Y????????dAaAd@nA??????????????????????????????????????????????????????~@k@|@e@??????????????`@a@^Yl@[??????^UVQ????????PORV????????????????????????????????????????????????????RMNK????????????????????BGTfA??????????????????\\j@????V^d@t@^p@??????\\p@f@nAHV`@xA????JV`@dA????????^v@n@|ARh@b@hA??????\\n@Zh@Pb@????????HLZj@W^????GL??????????????????????????B^??Fn@@f@??@h@@\\????????????????^hAg@d@??????????????????????????????????????????????Rx@????Vr@??????????????????????????????????????????????????????????????^U??????????nAeAbB}ATS@BFNPd@????????????????????????????????????????????????????????PM??????~AsAl@k@??????????V[LF`@Zh@^n@j@p@v@|EpF|@hBpBlGw@h@????????????????????????????????????????????????l@zCc@Z_Bn@??????_Bv@????eBxA????????????????oAhDwBtBaAt@??????????????????aBtB??????q@|@??aArA??????????w@|A????????????????????????????BlAGxG??????????????????????????????????????????????????????rB\\??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Munich_9229_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Göttingen",
+      "center": [
+        51.5413,
+        9.9158
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "UPMJJRT6IB6QM",
+      "serviceAreas": [
+        {
+          "name": "[Goettingen][SZ][Service_Area][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "u{uyH}mx{@aAxa@e@dc@wVz|AwJb@QrIjEhJlFh@|@|T}FfA`@n`@r_@bBp[lp@wi@lZtCvz@}L|UJv_Ab\\_I~f@aIpDhY~B~QF~LNvCbI~NcCfTyG`AtAbOx@~ExC[jFqGjIhMtItJj@uKpFaChDMbLsFVsPuAiNcEyBaV~CmCyQsJgE{Lm@M}M}AoNvCq@~S`Fdi@fDTqNeCg\\zB_JxcAz^bDdZ|B{B~JkSxE}CtM`o@xK|h@bAxPtAfQqGjAb@lHxIqBjECbCrJE`FmAt@[lG\\tBbAGpAc@rC_JnIcD`EwB{C{[g@qJm@iLcDLqBY{C`CuBnBqCrAiAyI?oFoBeKqCkIqAkAiDnCgAwFcGcZtGmBbCz@pDwEnD~JbEPbDYfBuCP{BsGoVbBsBkGuVvG{i@QqmA_Aiz@Ye_@bDmUBe^z]zClIcw@tQzA|@qG`@_AnDmBCeC|@_A~@tAh@ExB}VxBem@w@__@|Ayg@mG|BeAs@kAk@mAyEgBcOyCsGeL_A{KSaKhAoA}NgBqSkBqMw@o@q@NiD`DcN`K^jP}@lL~AvPaD`A|@`KgBrU}AnFgCYqP`K{CtM?rEsAjAu]LkR}WuZqToBtJuNhCcNsCuQeScc@L{@zAuInYwBjAgC^oDaAcDwCcCcDc@uCe@mGzA_W~@oQmAm^}AqIfD}BdFT`@k@yDkURkJ}Ci@l@wQoBu@Gc@WQy@PyFqAc^kDSzIh@jIs@j@PrF}IbEj@fHaJpC`@xEnHeBd@zBfEGfGqDrAnFX|DzB|DnDbDz@y@rEvLkElPtSz`@e@jK`@rKjAbDvA`CmAx@mEqD{DcEuDpH"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Goettingen_197_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Hagen",
+      "center": [
+        51.36081,
+        7.47168
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "LVB2DCBZNZSM5",
+      "serviceAreas": [
+        {
+          "name": "City SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "m`lxHkqdl@lI~Wb@v@xMyPbCfOfG|EfDlA`JoBtHxc@TvChCm@sCwOwIyn@W}AcDx@eBeIeCkJqGoOuBeKo@_D{AgNIKKAEECGCC?EBKL]VeATIbDnWdE~MxItS^hNzC{@sBkLf@q@m^mvAQoBByBdBwFbDoOb@mDEeCsA_LaDoSkCcLkCyNC{BeAyJwAkJ_AuLgCwNlBsBTc@L_AiA{NwAmS{D{]yDmNe@aBsBgJkBaKqD{FsBkFPYsEqIiCrEoBaH?wAOk@RqI\\m@h@{AvDsEr@Kf@Mz@wGJiBEwBWeBWqAxDgMk@}@_BqDrK{MnAzBf@LxAkDhA|A|@~AbEeAzGsElE{I?kFNkBZ_BT]tCz@v@h@bB|@d@Kf@e@z@eAt@u@j@U^Ab@PJc@Bu@qCyH]{Bq@_C{@uAb@aCsCmDqDwHy@wC_AsDg@CC{@x@u@lA~BpAwA|@nGf@rBt@rB`AjBz@jAbDfCj@lChAjDdAzBvAjDnAhDxFrNvDvEtMlVvKxK`CpKfDlQ~BnIhCpEh@qAsDqGwCyN{BuKw@qDeAiDoAoAaIoJgYqf@gCkGqBkFoAyCkAoDSeA`AiBx@rB|Al@`BMzCm@hBqBfAmBT_BGgBSaAa@]aCw@gADo@PuAl@}C~AKy@USuA}@c@k@c@kBUsBDuBPkAz@gB^n@d@Np@jEvOeIk@qDLSTmAkA_Lg@aCkAqB}@{@_Ay@qMoDs@Fi@f@i@|AiAaC}BpGa@QmAjL}BxJ}@kAyC`Ha@lIlAp@_@`CXtP}I~Ym@ToA^cLsA{FrHqBoJeBqNk@wSr@Cb@`Ax@fEr@tAtAp@d@Rr@ChAo@b@kADiBa@cAlAeCGs@aDpAdFgTBpFX~Ar@h@`@KDyEr@mFkAkAOyD\\wEaBwHt@}Cn@Cd@u@\\qBv@m@~@Q~BIz@aCi@eFoJk@IyG|EaAnBkDdDuAfEmDa@cJsE}EqAHlA{D_@cCgBwBoC~AqDz@a@w@Fw@jDuE`E}C}DwKwBqKiGoGwHjCsDClCpTPbGkG[kAkAuAT]n@gB~CsEjIsOjXeDfDyEiN]Ec@]uAaDi@oDs@mD]a@k@QgADk@b@Yo@eAsAaAk@gBsAcAeAw@}BE^VjANn@XTlCnBdCxBRz@i@j@}@r@w@rA]jC`@|Cv@lEnAzHPnBzBrIcM|b@yDvDsA{EgGcKkEoPiKeZ`@qZEu^kBQ~@oFiF{@}D]iErBaF{Cz@zWeI_N}@fBn@dAe@~AcDpKA`GlPrZjKrYaC|L?dP|JfX{VlOkOd]}Ylh@}AeB{LoxAcCkHy@nA|PjaBfBnB{ErJ{Two@sb@qj@jM}\\jHiIdHuHjBmE|HkFlGqIjJrNdAeD}HcLxKoQhJgQxCuK}AcFkLd\\{OfTkTfW_G}DePkV~GsRw@uAqJnWpQjVjGpFiLjLqFhJySji@uCbBeOjJyInKrGpJmMdQmFhBmBmFq@`BnCdGsChAi@KwBDUPKRCX{i@fB[c@}IlJw@hFjAfR|e@dHVwBAsRnEiOtPvY^xFtGrGrF|AIpIvPtK~Ch@lEtL|D|CzDl@`Fo@zF}AnVxT~@pDb@lCr@|Ph@nHbAzDf@tAX`ADNBHbG~UVdH}BhKwKvNyBbI`Kf_@yCtXqDfCgAsBk@vAjEdQcB`AH~BmBhAtErYy@h^hA`Px@]{@uHp@kk@yAo@sBwPzAuA[{ApBo@oCyQ~JmGrBvJxDpVfBo@nSbw@~Ezb@aKlX_BGwB}AcAcEStAF`B~EpFgFnL@`B^\\^BxTyl@}CgZfOsNHaNoFqI_FaWo@yPyEcVcCm@gQxHgDeLeBoJmBwHyEwPLsF|@iEzKwMbCiIfAwK|Gd@lAHhC{Ff@{EdAV`A~@~@r@jTcAGcHzVkKzMwIS_DsRvFgRpL{@aPl@sMhf@oKjVk@rBEpIvEvPr@xCh@hMvCpBnBdCl@tCz@q@rGsEtHcEtNgRx`@qAlu@pAzIzByZhSeIPuEpEkG{Fed@`OuRlD~ClAhBv@nB\\xB]rD`AhApArG~@`I|AfMvCzMxExJfBrFf@~EUzE@rDn@fVMxBgBzCElBuAV}Bz@yApAoCdAByAaBo@?zHgAdIDdDPpCx@hEr@~FmE~KzBlFiBdJrEtDh@pAu@dWyA`NiC~JhFj\\vCjIrNmXrFeFjTlWyRlT"
+        },
+        {
+          "name": "Dahl SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}ubxHs|}l@hDgCoD}Lj@_HN{GaBaC_D`AuB`DaDt@}CvDBdGyB|VaBqLiG_BmEvDcIx[}C|JvFlFvP{]t@mFvPdXnMxFoAiPdAoFoAyL??"
+        },
+        {
+          "name": "Hohenlimburg SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "egoxHevcm@tK`e@jCcEjHaY~MsLq@eHvOcCpDxAdNsTdOd`@xGwj@bYhg@vDbG~F`Cn@sEmDoIgKsL}GyPvNmCi@wH{AlClAhBqFdBkLoCs@kCbGcQfHk[fCu@jPdTrDxCZyA}B{AyRgYwDhEqCeAmNfHmJuAaCzW{CjPgGzNsItKgHeSsB}AqBgDiFqN`DiWg@q[eALgPqNiIl@kEaWyKzC~OvxAmLdfA??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Hagen_228_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Hamburg",
+      "center": [
+        53.5718,
+        9.9948
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "6QSZWSVEIB3AB",
+      "serviceAreas": [
+        {
+          "name": "[Hamburg][SZ][Hamburg Main SZ][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "{~`fI}th{@sNzRqDeJaA_H?qGu@cIyMdDqCeCCfFqf@vAk\\wg@a}@vnBjAdC|XxFrKpg@~LdFpPpQhXg@J^O`M}@|QkArOiBtUi@pIc@|Mk@vGo@xEo@bE_BUCz@@\\J@R~BMH@l@ZlAc@vBaBjGGhA@z@DZ@D?FLnAR~AdA`JVFbB@HBr@pCa@PMh@EACCGGqAaAuCeBcCoB_BpDcBfFs@vC{AtE{@nDs@~CPv@xEzCyAtSq@hJs@zEw@dEG\\gAYK~DbAfKE~C?v@pI_Af@vC`AdIx@xFdKcCfAcHj@aDY{EZeBfBVf@wB`@DbAuCZF`@mAbAfBnA|Bx@cCbAsDAUXwDz@F~CZ~@mAi@aEwAwQlCKdAEj@KLGhAYbAe@dBy@xAo@`A[nBc@vCs@Ey@g@mIIaCAgB@aED_IFsWOsAg@cB{KgEmIqCiCkAw@a@_Au@iJ}GwIUXcCr@mENqAHaAJmAFkCXyHB_CJqBr@_HlAwOpEZ`IcGlI_O\\o@vFb@OzI_AfHcCxR|UfArCJrGDBkH`FRE|GlGF?yOno@IlErAjBaBM`EbE|BrLPdAtB}Bzk@}XpkCqOmAuApf@iIz^ZnIR~Nl@nX@vOxDoEtBmADp|@dIYx@{k@~Eo[XgNxJ_SzAyC`IqLdHaE~OmE`CwDzGpZfCtm@_JpXfAtA`GzA~@qFv@eVfHgCfGfA|A~@jBOqCbYrb@qw@|AyQv@}OyErQeD|JsFcDz@_FvAVvAJPANGJGZ]`@i@DMBOB[B_A@q@C{@E_@a@aCgAiEEw@Aw@BoBFaBC}FpDO@sPoIrEmE}RoA_RhBPpBgLgEmJzF}G~Va{@xGeU`S}XhHaw@|Cgd@nFkd@cBwHo@}F^_LnAeKhCqc@v@o^Bgw@e@_FRiMdGkbAiB}[pFkTEsDnAcI@wI@kf@oAia@Vop@lDsAGwb@wBmBa@{M@gUa@oJ_AF{GkeADoHXk@\\wQ^iHCsGMm@TwBr@yCp@qMpFoR?ga@Oi@bD_G~@sA`@tAd@|DnAP]sPbCMPxHZ?pCsIiAwn@pFDFtXpA{F~BwNb@}F\\i[gDwPiJnFt@}JjDwCGm\\dG_ECzH`@xKvB?f@eHp@}LnCu\\pI{q@]kBb@wDv@Hr@mEmBoB{BaAqCCsCX}AvAiEzJ{IvfAaGcBwGfHeAqDvE}PiN}XzJm^vCi`@pZOpOqUhLgU~E{R^}Uu_@sDsHoLoC|B_FvRnB~WoCnT}RyK}EwYReT`Ewq@yLsp@yHoLeJs`@qEpAfCe_@vFmYpAmGjm@}kBnEm[xMnE?p]yBbOsDvO{AbOf@rLrFPdVnJh_@_hDy@uEuIyKmBrBkEKwFf@wStiAcLwEg@eBhMwa@pq@{wBfJkSbg@g|BpVuUhMNxPsc@l^a`Bd^|Rxg@i\\ba@tNkGjwAyCvgArAdLnf@lOzJmUdFsS`BwV|L}[fOwl@t^a~B}YexCiFcyAcK{b@kDiCyJf`@|QikAcSmOwAtHwkAjMmIgDsSxjBab@y^kyAlyAdg@|~BfJtBmx@prDouA|JsJxdBcVqN{XaJmMjTsDpsAnEbc@tF~n@}Mvt@_wAklA_w@k\\U_q@fAaf@~Bqe@yEkG_E`E}EYm@_CiFtCaNx[_IxiAov@lYkk@ccA}z@~y@kRhs@_g@ge@uc@kFok@zStKd|@uKtPtM~bCcPmDoE`UaZtYZbWnQ~pAu[tJ{Vdd@uVi_Aw^{RoIcWsT|S~Kvs@cAna@sInaC_Q`v@sL{^sMbFoQdNQeg@{IcAc@l@m^qCc@uX`NR?mFkSFf@vc@HzIgJ}CmZcG_JyQmYk][~@nCtlFt@tGI`Fa@nEi@jCg@dDjGxLvWh_@jF[lc@rOvPqF|I~ArVuDvNv@nKrOlJbElASjD{CrFyPpFgBzFjQtDzD`KcAzVsObO_SzCgLf@sKs@{MeCmNc@oHj@_H`B}HhEuIbK}DjE{CvNvF~UfFb@aVtZzJ|DvCxTfH`^xe@fhAf|A}@tD{B~GwOg@{K|EyMpQIqXqBZgGjHvD`|@g@~MPnk@^~f@AdFaHfBwHjBaFhRsEf@DmBwBiIuGcDl@aKeAcNfDsC_EgTsIqVsIgKkJiFiJsE{Bnc@kE{FuB}NwK`Ae[g_@oFwIw@eb@aM^oSvCgRrPrDfRDzJtNxf@uEtYyNkGuPxqAvO|BpHnHzBbLlJji@xXtRhMqI|N~K`RhHv@xKnC`FcJrPgQdZdd@hKfIrDhI~G|CoC^mUu@c^zB}HQc\\bHzFhAdP`KQjJqx@Va\\jEq^tQuEWdMbFdRdOsG|CoQfI|LdFnw@jInB`JHbHiDt@{c@jKdErAh\\RtIkExOuBbSk^tBqGb@oAxO{O~HOlPpBv\\}AvOeFvCeJtH_LrQwK`PwA`@c[ar@_KsLgNeLgK_FsUgFmTiDoNqHmSkNwIuCwEbSgD}CmDe@mKmGoAkGiFoCaDrTkHnA_A~o@fJbaArSlBld@dGbRvPhMrNbWwKlb@{BfDh_@xTuFkEjj@o@zLjG~[gAfCxGjUvA@pFxO~@iDhT`d@t\\og@dOs`@jPs[`d@vq@df@m@|@y}Ape@fL`DucAfWcaAlEfBxJnGvHtNfKlUvIub@hLuHlG_FlAjJfB|A|DlY{S`DbAf[eIlEcEhg@i@hYgHvLa_AvcA"
+        },
+        {
+          "name": "[Hamburg][SZ][Harburg][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "sjieIsh|{@jDnEaEhQoJpc@oN|_@aGzt@}DhiAn@zf@MxeAGt|@uAzkAYvRoIhCSqXD}Xi]uAiGzcAxNjB}ExnAIbMvEdt@v@lMnChSUlGsAzHP~s@|IxtBf@haAhB|y@eBE?fC|A|@`@xHbO~@hK{LjMwYjEw_@u@}v@bJwh@xDsPdFwFVqJnKyGfCuPsC}FaDo[~`@mE|U_l@oYxAm{@zDyQdKkCgMiC`AgBgh@u@cvB|Aq_@~@mV~AkrAY_l@uAk~Ai@cs@np@wX|Idm@bBto@vViFvEfR~@m@fBbGq@tCzBrH|DrCbCdVnUhSvOgn@fFwQlp@uXgGyOeBwh@SmIpP_d@_AkKjA{n@xEhBlEeFxAiBDqJxCCdIjD|H{CJsJ}@kI~BgAeB}IdFwF`E{GfD|LnBqDn@mKtAo@h@nLsCx[_@t@uEi@cA~KkAhAeAfCoAx_@|NpAdJ_b@b@_LRaMvAsUzAwNi@cGhByQu@aCVcCzPwA~@sCO{MoBCaFwR}CGqGpF}AqKO{BxIobA}Bq@mC_B}GzXr@bZdBzIa@jFFlClClM_EjJqBfKgFqA~@iSzBi@xBmLuv@wMaGc@Q}[dBsKd@eTyH_Y_CiIaCkH{FaTsYte@gDv\\}DxHaByCsChA{Ap@ud@xf@oEiMaImGkCOsBhTVnNmAvAs@iOqKvGcHnQeA^}Y_HcBnPhB`@QdCsBa@sBxOnAfAO|AoAy@UnAvNfJ"
+        },
+        {
+          "name": "[Hamburg][SZ][Vedel][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "myueI}zc|@fTfSrIbFlGEnBE`A@Ld@K`AMlAAnBFFjHvD\\oPqHsBy@xBgCHgAF]_AO}VAySqEXzAmD~{@qlD_WuRme@fhBeYnrAs@tIuBtR"
+        },
+        {
+          "name": "[Hamburg][SZ][Wilhelmsburg][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "yateIqe|{@zP|FvEek@~^x@zXh@zPXtOoa@~BoBEwAnEqWjFqZhGg^h@aIxm@bG`Og}@hG|@hEtOdAwAuEkNhC}VeB_a@gK}@eBn^iA]}Ey@aHt@_B|AkFyB^kGdAwQiM{P_C`Si_@eZqHnQqRjy@lChb@vE|ViAhQrGlFzJvNaCzIhBvCwAzGwEkCmHp@eU|C{^aCq[yDe@rIwCz\\yBxNyF]gMzX|E|Y??"
+        },
+        {
+          "name": "Hamburg East Service Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "_ylfIowm|@x^zRtVh_AzVed@t[uJmHsh@w@wFo@{Ea@{CwC{S]cWlIkItOiOnEaUbPlDuM_cCtKuPuKe|@nk@{Stc@`F~f@pe@jRis@|z@_z@jk@bcA~b@mQ~IiAfGsDdI{iA_h@gbAsGy_@eAsQkCBsDlCeE}LkDmCeA{E{@bAAsFSeMnKa\\sAiS}GecAqToCgGlB_Ers@}[zhCqGfHwJuPqCs@qBoAKsD`BwJmDoLsDoOhByZjEop@dGq_@mZwKqi@~o@iH`Ow@dKhGpy@uFvIkFnM{OsUsRmX}DwDoHqLkMmVsZ{t@uQnTfPhcAad@`V{UtYeR{Sp_@kpAjA_Lf@od@_cAuNkKyRmDS}GoCaBGoKbTwShUqC`ZzAzJ}Bpa@bAlMiEbNoEg@uElJsGfALfPcJlNy@vWwPxJec@bZ}AnZ[rSqYrUi@vHbDxf@nMl_@xCnDwA`JcBz@gAjCf@d[xw@}q@eFmMyEg@lFyk@ph@sz@n{@co@bGn^kLph@wM|^rCtwAcF~[oSTe@`BMpBxDpFnB|C|J~SjRbe@qBdKaV^cBhQaW{PkGlg@r`@nZlCdB|EvRUtBm@|FxAnHbDfLrCdFlEvDpB|NhCrMfF`XrT}SnIbW"
+        },
+        {
+          "name": "Hamburg Capped Weekend Pricing Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "q}xeIihw{@{E{u@nDob@~F{k@Ca]zCYpBm@xE}@xCoU`@uBr@qDrH}`@nAef@cDkS|GcPzJgqAdEwWfDiIlNgk@zLyf@xXueEeIeEg^ccA{b@aRsq@vBqHoCyImMyLzHmW~BwkAln@yEfQwe@~TkNeAiSpBkLfKgZ|PiMbTeGlOmGrOkIlWsLxZ{Sbe@eM~b@[jKhEn_@KtIo@hc@Rv[xBnXbAxe@oFnOeE`TgB`REpZeGp`@{H~qAwb@d|AmWpk@}VdFcRfi@plBnoCwzAhbAba@nvB|PvH`JiFpCdg@nIpUjXmy@|QrTvc@nZdZle@dTnx@xuAsAaBf_@I|Un@pAG~SgDrm@KhTiDzg@NncDrTdsDx|@ln@rcAixIfa@m_I|AcgE|GwgB_QszC"
+        },
+        {
+          "name": "SZ Transgourmet[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}xqeIalh|@rS}E_Duy@i@m@qRdDKld@z@`KvBjK"
+        },
+        {
+          "name": "Mechelnbusch Service Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "y~_fIu~uz@eBcFqDxJiBhF{CbJoE~JXjc@c@jGAhBqB`CqAzDWdD?lI_IaKyGs@mBbBiBnBmC{G}CpA?|Ku@rFJpK{BJWpQg@@gAQk@zLzFUlFY~E[tCja@bAxAF|@rAtUGjJu@fPe@`F?bHjSj[~EtHbF`GtCcFhEsFo@cUnTyLnGsAfIm@nTrIb@cBQgIHoe@DiWpAoXjBaWEyI~BaHnAkG`CoIJgEW}OJsF~CeWbEyLGWcKhJkD~H}ExHoMmGcEUeKkI}Ih_@gA}@iEaTiCaIoAwBWwFQuGGuVi@?"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Hamburg_2121_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Hannover",
+      "center": [
+        52.3903,
+        9.7399
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "WIUEIMOAE6RE7",
+      "serviceAreas": [
+        {
+          "name": "[Hannover][SZ][Hannover_SZnew][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "sqo~Hceoz@wMm\\_@eFhf@a^bLf^c@\\FXf@n@zCMzBaAGyDoHwd@bHyGfFt[jCcBjAhHjHyAlDaBfB`BbB|CvEgE|GyFr@wDjF_ElBw@[sFu@sEm@iC|Is[`O}d@zBb@nD}AfDkDp@xBjAHlLsK{AoJnBcFO{BxQiEbEhOzPdK~OcMrEuBtK}GfFaGtBaNW{FoIiIuEuWbBsKrJqFnBfOlF}A_@_H^wEjPyHlG}AhKuAhF~DxC{@rBbArBvAVmA?{HQsH^}Hg@yFn@{ClFi@zEj@jB~B|@dVhDz@pG}AzFwLpC}KnBaHfEuGhDcP~Bo[sCaEjScQJkC|F{GrRuOn@sAA{HrH[|BoEeDwE|AyRsBq@l@aC|BoD~BcBj@`GpD~@pDlAfAaDnBn@~BgOdBcHdB`BhC`C`AlG~Em@eAsPjBgAI}@zBcB|EcM|DDXkFzCcD_CiWcByYwn@~VaxA~oAiRjM_KrCeM~AsBbKwB`LcBoCs@aAy@AaEgIqJ\\eKbDaH|GsGpN_JpTkJrUoBqDuFcf@uB_AyMjGkAiHwCsXmHiAyh@eMyUkFLkHc@}AeEqDqWiSaJyFkFsDsImHiRgMmInb@{@uA}H{Fs@pEo@lHeEzNqI_E_NkGoKcFsGaCSu\\}Bgj@uCg`@c@wKoATaL{j@oAw@uLrKiMpKcIpIoMlM{GrJYzK_A`KnCZ^`JhCGF`BbArEdLcQxDrLnEpIW`DfCr@p@qA`C]tE|ISrCqDfO_EtIWvUYvML|JqHdM{Br@n@hE|@pGdBtZ[v@qBpBaCtFmCjGO|DjCrOiAvAaEdEIlDi@bJtDV~ClYjCzNtIlNaBpNH`Kp@z@dCrE|Ujc@wJbj@w\\zPgLhH}Fb@oMf@s@iOpM_w@XcTo@cGt@a[x@MTu[Z}El@yVc@}GoC|As@uEcPxGM_JyLYoAoBaAk@cDiOb@{FU}H[yGyCiLsBa]uA^eJhC{Cip@QoEyDac@kOdPo@kVcIuIf@qUyAk{@bCuHrGwEfAsN}CcJcCr@iCcFyGzEQdF{BtBoA_@}BiGwDbAqBS{GtHsAeEuEiEaEgUmGfDuDhCgHlb@gC`N{EcLaEZiNtN|Jlm@fGbCn[jf@_ItViJx\\cHP_DJgA?oAMs@^QpDQtF_BxBwOzE{Kv@JhKr@lJRbFj@fC_BVQfCwCrIgEgJuEhBgEoH}E}HbBoDgByMkEyDcCpEsGkPqEfIsRic@_GtKiKjTiJzWWtKpCjIzM}FxAdXdHnNvRqSfQeHlH~JiEj@aFtHzAzq@gA~HaJJ}FAy@uLwBkDaBsLoLkKkIsBgMSsEkC_BzEwA`DiDzEsCzDoDdBcAfEBnCpC|X{@vRSzCyHoAeFUwBfB]fKrG~]vDx@nZaRvKi@vHxK}@tE\\|V{[oCFlDK~Ch@hE`AdNf@nCb@vCKp@hBjPp@`LzX_C^be@DdSkSBv@nWfENHpM}@g@ObMc@jAtAfXbL`J}@rGq@z_AjDnhAeIrAkI`@kESiDg@MzH?^IdFiCdH_AtS_Dxb@_Djf@N`ZtLpNRnQ~GfQ}@hNzHdYxBr_@Ttp@bBrhAfArxAdAtk@vDdl@|D`e@tHcAnPej@xDqK`DoQxO_WpKuO`KsKjHcKvI_NhUqWxJmPfH{ShEsQtGiP~HqKdCiEfCgIxAgJrEeZZmIt@g_@gJuDtEaeA|Yk`@dKaM~NmV|CkFxK}U`@rAt@lNbDnOpLsGzIa@pCdFgV`VyGhR_DbThE|i@T|J]bI{CzReFrMwHzKmBlH}Mpf@p@nAxPSUfFRhFqCbEsCnEsFrDaFdF|ApDyEvM{B`NcCzKwDjDsCxIaB}@eBeBe@eBUfAClA\\d@`@`@f@Lh@Zd@VjAv@i@hCh@lWnA`Dc@nC]hFfPnG`AaU`@aTbAu@nDns@bAv@~DiBs@sT~Eh@@`KbH|A~BkEMqObIMpH{@bL{CP_LhBUvNJjBfMzCyB~GmIvAmDu@aCj@qA`BxFzDnLvKh\\tE~@bAk@jEmCtBSJgE@_NwA?K{ESqJuBen@`F[jBlMdJmAxAr]`IaBbCpZuAdGyGn_@l@xH|@@dNaElCeE`HcHZ_Pn@yELwH|HeC~@}@?fEErFm@xHlG~I~G~@iEng@dA`@bCmXpRpItF|DhHgCb@ySpQgE|FdAtTy@EqFOwUnA{@?_KEuI`Bl@nKo@a@wL{Cg]_EiMl@sEcCo@oC}H_TfF{Kk@KqTGaCCqEOyUxAcHrBcStEpGJ`KrFJHmHnE]sAnTh`@hCvJuRdDfEjPpLtKw@~AwTAkm@eEwBq@iGmBcDTyJyBcO{BDnBoK`@a]~DqQx@kNk\\oCa@aPuMcR_IDuDXwDUwAUYEVwGiAk@[bHcBo@kDsBe@{@OcBa[Js@eOxRTjDxAfBqCXeQY}DoCpAeAsHrB}AsG_S_I|E{@{EwGwBwIpDgEjBkRtFmCwBsH`IaBGcBzN{DTsK|EoRtCgBkGcNpDVwH|g@wMzAiAl@cBb@qCi@uHeAaJqC}IkDyH{BeCsBRqCjEcAzDiBdD{EtA{BtBsGpCgH{]fg@k^li@oc@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Hannover_494_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Herne",
+      "center": [
+        51.5407,
+        7.2061
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "F2OUJ2OPVEER5",
+      "serviceAreas": [
+        {
+          "name": "Herne Service Zone 181223[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "gcnyHsd`k@eTob@yAgHvGyCfGqJtWiLKsBcZpLeFvJuJzEoEkI{DaUdYgQlJoJY_Bmf@xViEgW_Sq\\cLyG\\{YQ{YVcRt@uFnHkS~@mJbBnBpAbGrCtNZSoCsNyAeGqBiCSyGiAaHHMmDwJdAUn@Ip@zBN]y@eCcCr@kCoFiD{CsEmBmN_BmCMqT_FaU{EyCl^cEvXxm@tMfCInNwIkAxKaJnb@aE\\i@rr@aRaDcW|AvArd@iFnDiF`@sAiN}Kka@oa@ufA_KwBcO{e@kB_D_BqDc@\\rAfEdB|CtOhh@bKxBfAfAtOhh@wFxRpGfSyHtCeCl@eCG{Gm@W|f@m@xIxCzFhDzEzIeCzIyCbF{EvA~K^T`FWxIrj@o_@tcAsJ~Jh@pDrHyEbZuSlWmI~Uf}@vMpJoKtd@`Idi@wRnfAiFpz@`Cht@rD`HPjx@zQvx@hSaD`DaAeBqHyCkM}EoThMh@zFb@vFf@dr@gV{Cm^oEkIbD_GfLyx@jQhk@pc@ye@zJu`@~BClI{b@tZ_aAgfAeCmYxCtHyOGq@lEgd@DHyA}I~DaGk@yNi@cJcAwMzVeMo@}ImAyHeVoB"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Bochum_4555_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Hilden",
+      "center": [
+        51.1692,
+        6.9372
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "JCTE7UTGKR3JN",
+      "serviceAreas": [
+        {
+          "name": "Dusseldorf[Hilden][SZ][Hilden SZ][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "elfwHqkci@yEoaAmJurAdyAg`@{FcnBwEyQoGuHaeBqXoAq{Aul@yq@qBx`EkoBtpB``@vwBxi@_@vf@p~Azq@kNzq@mN??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Dusseldorf_16052_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Köln",
+      "center": [
+        50.9375,
+        6.9603
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "5AXKMEVHH7RO4",
+      "serviceAreas": [
+        {
+          "name": "[Cologne][SZ][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "abuuHglri@e^l]i\\zVeRjJeKyq@h]i[dQuRbGgBrMuGfEw@dLmJb@WtGeHh@gCua@_i@gFFuLiNnJsRhEq@r@yBQcBkDjAfM}i@x@sRzB}BnPc`@~FzHuG~POdIjArCpDRdK{NjRnOeA_EXeKy@_y@~@}k@bAsUzIgh@tC{MrGqHjQcXdFmFlE{BlFcBdM_B`LWxJfAhCrC`FpBlMpH|GzHdIjGnM~TfFnRbAWxElFP{@tJrQNdIlBYjTx`@r@gAdMvQxNpYxByDkSod@pHoLoQqi@__@cm@n@eC|C`DzDuJfBrCpAhFrEeLuCkFpAoCy@mArDwJcIeKmLmIkItYaCDsAcCwBxBaDwF[R]YcF~_@sLkC]uAfCiKzAkSi@yAj@mJ{GwJgDsBqFz@kCjAgAap@aKtEgGq_@|I{A[yCv@k@v@vFl@{@qBsSfIyDI_BzIeFeCqUjBiADpAdDi@rLzDf@vAZpF`BpErCfB`BIKgGqCyAiBwGTwMfp@_@fAdPt@|BnDdChEx@fECjB`AhQeIfTgObWs\\aEqWfXgQ_DgSxMwKdDbMz[wToQg}@}h@`j@gDmAJgXlKuLiAuA{UzKqa@nA_ElCotApCwD_Bwa@xAgK`D_AzBuEfAzBbXmGnAG|Yf@nIt@jBB~AaHnMaCAIbNfBln@qQpEo@gK`AIGsDwAL@lCkAEuJvK}AcMy@kA_BMaDl@_InFc@mDmAR@tFgHZk@{Ni@uGb@w@T@?Uk@Cc@^GhA_B_AeDAe@yDyXhh@_SPaXdn@yCzBiDs@ef@lb@k`Ah}@qNfKom@~p@bEpT}QtD`Bn[eArXiNhMgs@bcAwJ{d@oSdGfDh^aEzLqVmo@kGyJmKmWuYa{@}H}iAgHgSbFsKOms@rOuRlB{QeQ{HuX{HoQcBdJkgAsdAiBpAvp@bJpgAg_@zChJvj@zYcUlw@~}HeLmAy@dD@fA[l@eGqIaN`MgSjWeKpVdDhXfFhOxW{Zjz@{Bz@|FbTzJxCaAuPfw@_DtBkF|FuKjCCrKcAjUiCn^iUn[KtUsSnB{ZtMgRdd@{AfLdErbA{c@fZsSzK}JrHkDzPcKhjA_Drj@FngAbDdWxQhY|Zzh@jXbpA~Uc`@zi@zLuBgs@`m@QiDf\\dl@xl@wIrp@~F|AY~FhDx@lRyDd@tQn@xCPjPy@d\\tKtBjGqOnGtD|QvHjEj}AcXpfAr@rIq[q@\\aEEiCA{Bu@iFdE_GaHsUpPaQeFoQy@DmCsJyEpEgCyH_G|GuC}K}a@n]_[x\\`BbFaAhBm@bLld@bz@pQ_ZtApJvIrW|@gAvAwGJoSzC{Cd@mF`ElA`\\rAlW~j@|\\za@lo@bDzt@we@fGqnAhP{fA~MjItJ|C|IZ`JkB`WkNpRoH{Mkf@{Kmr@gc@pIcKuiAoI}s@~A_s@aAgNmBa`@zDo@nFEfHs@bLsD|I_BlDcGjZss@gKaOuA}Cg@bAkDgHnCkFbDiGdGaLhApBpAQd@eAtC|CjAC~BnA\\Kj@iA~FdHmAtCHnBzF`J`Oo\\fIec@x@}LcBwFc_@_ZxKya@nNzLzH~GdB{JnAyMjEgm@vAa^Z_GjMmFz@TVoUrAeg@i@q_@h]eD_Bed@aYif@aKwVtOoWdLpOhLmD|BjDzc@yUUwIp^_TL{QsIy^eNo^sYwVkOyDgDtx@a\\rjAuOv`@uUpV"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Cologne_4657_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Langenfeld",
+      "center": [
+        51.1188,
+        6.9563
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "JCTE7UTGKR3JN",
+      "serviceAreas": [
+        {
+          "name": "[Langenfeld][SZ][ServiceZone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "aucwH_pui@ZxFtSe@~Hxe@dRhWzIzXfLhRzEvXiQzGkc@`XaXrP`TjaAoPxHbEbcAhRQzQmBrEzXlFtCfGR|a@yNlLsFxCbIjEba@oMnAwMxQbEvPmAja@eCpCv@|GjBlF|DtE|F_DUkCb\\wa@jAvI`@zEiAv@NlCiDdBHrCkEbGjGlThHm@UaFfMsL`BnOnF}ANbEgKnOhCtNpAc@jFs]a@aGk@sSoAoJfHsFiAuIdDyFyC}O|^u[nW{UrEfLlEoIxMgGw@uMd_@yPnIsEuByK_BmHqCR^oEzBc@vWoCnGeFYoH_DF_@oNz@MhAcNpKuTaGcKjPsj@`Ixe@zLzNhCyKq@oF_O_UzDoLwGyNdQkl@i^{CsN|C{JfSvFtRWlZeT~@d@`My\\hSq@lGcC`D}BmIkBeBaByC]sA]VPtApC~EjArAdBzIbBp@p@bA\\lC@lCvKxVqHnJeGuZeQhGy@g_@{EiCwJtEgCAiMhJwB{RcFqk@kOzB_EuPoFfFjCdOoNoC{ArBf@}pAkNe@iJjOkWkaA_FgR}m@{_@_H{@{q@nK"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Dusseldorf_16052_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Lübeck",
+      "center": [
+        53.87019,
+        10.68888
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "PCLR2KWDFMYAH",
+      "serviceAreas": [
+        {
+          "name": "Lubeck Service Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "misgIi{y_ApVuQ`Kbt@`HbSlBwD_AeIM_GiKudAhFbDsF}mA_GsCyPaAkGyGlIqUzBgNnH_Vvc@bUhJdMnXa{@e\\o`@__@_u@vGiVm@oK_GmH~D}OpB~B`GyR]qY~XtEdCzG~I`h@tPqGtBaEnEtEbE_AtHyRcJsL_LyHkFfKoGuJ{CkRnB{K{@oy@yHgBcPxJYo`@]_]_CiW|EeDvGaDtGxAhCnJfAjIhIlM|EuM~EgLfH|HbBeBrAoKqAig@}BaIqMq`@iMs]mDyAiNpa@wN~j@kAnc@kJcAeBgB_@qEkB}JcAaAeBk@qF_G`EuFmBcIqBzDuBzBkDEgApLk@bKfCrC`@zCGdI~AfFnBrFJxE{AhC_OQc@qNoHm[{MwT_F~TqHtb@}HUiItCg@_JrBuPr@kXoF|Bm@lH}@tIk@|IP`]pA`L|CjG~CvSH`IADwTy_@uAcOyFeW_A_Bn@s_@}Pms@`D}H|BiKzHuNnDtOdFpDfFaDlCgC^uMxHcLvRfPpIdDdGkCx@gOpK_FHsUpHuPmE}RoOgPiQ{NyEpSqKtEaEyBeByFiUlQgaAyP}d@pDtB|[h@bQhD~V}Ozr@sHyAg@rD{@nSuAbWs@jHShF_@~KUxKYdG[nIaOVkZeEcCgFpEwM}IwIa@e@g@YoAqAmQi^kMso@kGiEwItGx@dc@r@fo@cLzL[tPwRvRkA~NlDtJxOsDtY_ClOeEhI|SbKr`@`KbXmInk@qSsHs|@_g@_JrAwCzPdItWrEvVsChOzBbFsEpMiHbQ`J|NtHwM~C~DjEvI`FnJjGnMdH~_@lI`CxHdIzL|WxMjQrJjQlIba@bGni@|Nb\\jE|_@`Hlf@bRpg@xGtY|ApPfKha@`NbXl\\uQbVpd@xPaXum@{mBjGkTtDsDrBoJfCqDnAgDhEeLjGuObIiYdPhTdHiGxDg^[}QjAiUkDoQpBoDxJsVlDo^jFYxEYfFvSp@zTuBvKoEjKyCrJmDzEcEjJVfx@pBlU~Da@GvIZdGkCnFPb@hInF"
+        },
+        {
+          "name": "Travemunde Service Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "q~lhIemiaAhK}C|DrFtKtd@jAzRxC|HpIbHnRmNpa@yNgFhViBh_Ab@rSn\\lEw@g\\`AePrEeE~DrKpFsHxHhG~LLI}QnAkOyIsHsOtA}EuAiI{H_CwIUeWjDs@kAcL_AsOaIqSmCcHo@cBcE{OgEoVeDo`@kXtP{C`@gI]}OwFYjDiRgFSrBwLuGq@sDoGzRvHnLsB~IhEfUdAxh@"
+        },
+        {
+          "name": "[Lubeck][SZ][Schlutup Service Zone\n]",
+          "polygon": "ow~gIqzo`AdHqChA|@|BBz@bAnAc@hCyErAaDjBbAFeA{BkAaDWwCHsA}@b@gXgD_Gd@sCpA[dDDpB\\Hs@?wQf@iEo@uLgAyIeG_DkCqAaGcBsCsCiA|Ao@i@s@}FsAaD{ExD|BjH@hHUpFyDqAWuEqByHU\\JdAl@jC~@hHQ|@}@dH|@n@v@yG`ErBu@dKpGdIzCrFzEw@GnF_BhJ?xVK~Mj@pI??"
+        },
+        {
+          "name": "[Lubeck][SZ][Israelsdorf Service Zone\n][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}s{gIg`x`AlE~BtFyGxHf[fPkIlDdFtDcBdGgIbAgFCka@gGBe@tIhAtFe@`QmIvCoEkToAyDcAwGeCG}HqLcDeIyBeIxFyC{EiMeDiOeDeKkHcDi@wD[mEz@gEx@V`@o@G{BzEgIpAD|@NjA~AjAfC|KtIpEpCtE|CzGvJ|AjJzA~DhGkLMgFvAmR|@gF{AmHaD_FkBjEyKcSwGe@qJ{JD{Cw@Z{A`HUdDgJbQaAlBuFzIcE_Bs@ZCnDiAGiBw@yDKMx@eD}AkGy@kDg@UbDEbEHdIxB~GtGxHz@jCbNvk@f@\\hCDAzMiDdk@nPcE"
+        },
+        {
+          "name": "[Lubeck][SZ][Kucknitz Service Zone\n][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "gj~gIca{`AhCfBhBgPi@k@kWo^vBgIyBsJkAiAo@c[r@eGTyOiDk@_DReBD{H~GoA|q@{KmBPqLsDk@M}PCsF]mFr@yi@q@kOcAwQg@s@mAtD}AwAe@q@}AnQwLiBoJq@RmNCwCU}CkBIw@|@k@u@mAwBqH?UrBk@p@uBmCm@a@cAOeAxBqD}@eB`@kA|B|ArDF~BgChKoB[]hDrBzSdNpYvMlPhDfF`BfAbB@b@yOsAg@NsBrCx@pAl@j@dAn@xAb@lCRtC@`Dw@nOKxAVtBjEbJx@zAh@pDCnFi@~Go@fIyAdH_CbJz@pC`CjMdCfNtDbJyC~FPn@xC}DvAtAhHrEnDoDh@y@lKha@tA}ApBch@d@eAt@_\\_CyAgHiNmDiA}Df@sG_E_CgG{BqDyCuHE}RrNzArIvAw@pQb@FbAqQ`UnCQlEgChFpIjS`FrDtCb@rD?ZgAtGdKv@tBRfE??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Lubeck_186_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Mainz",
+      "center": [
+        50,
+        8.27
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "4TY3SQGYVUTZT",
+      "serviceAreas": [
+        {
+          "name": "[Mainz][SZ][Mainz Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ecipHwldq@pJeBzKSzYpKxWxJLnSdIbs@xCzO|D_C~FfW~CeDbIkJjMwNxNsOzFqEjLsCqBc\\Dc]td@gJfVeJfBbLdRkTcMsp@~XiPhMsD~F[hIfBnRpQ~Wrd@zQygAeJa]evAujBwSxWiDcHhJkNuBuOaBqIzHoIjMcA~KpE|B|G~H`@`CnD|JcC`Kwl@vi@n_A~Hf[~@@b\\{MxCvX|GaBmIkz@uB{GeDuCtAmMf@gDpFaGjEuGr@yDc@wI[}IyCf@eAeP{@aNsAkGaCcA_BmCeCwByEgAoGvOyB{Wi@e@mNlD}@oJoDcFaOtDgCXMoKiJz@UzBmB_GeBuCyBmAmGy@sCcLxHsHhHqK{FqMoCeGwEcIiCoVuFqIE}EkCyJmAeCgVj\\}BlFaF~K]rAaIxR_E|J_Pza@aAJmAdCkZjh@}E`Fux@~w@{i@rl@qFnI_NnVua@f|@lBjh@ym@jmCla@`J??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Mainz_14676_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Meerbusch",
+      "center": [
+        51.25268,
+        6.68807
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "JCTE7UTGKR3JN",
+      "serviceAreas": [
+        {
+          "name": "[Dusseldorf][SZ][Service zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "{|uwH_l{g@uFse@oRgZg_@el@_PyN}OyNwEaDyEcD_A|UaE|LyA~k@uTdY|P|u@mLlZaKni@_L|TqTjRzCdXeJnOod@fi@gKvL{^|IqI{X{ZqUsEuLmGag@kCkDoF_o@s@aR{De~@kFcNuBkb@bJoRyTmTgd@oc@qCvF}MeFqE_@GdDjEjAbHrAhCrEWnGuDjB{IlG{GzCaFcAsEgBuIcH_Do@sBDaDZmCKyC_BRwEyAN}DgYqB{BaJ|OuKxTcJlPqI~JvGvUtEeIdG{KzEoLbI``@|GjVfNbPtHzNfAlDdBpJ~CtJdAtF`BpFwAxBr@vD}AfB`@hBwBfB{I~DyDzA?|PsGfF{@mFWkIwGw@m@bLb@lEcJxC_@}BeFbCdChQQhKK`JbCHfK|C~LnI?vCfBlHhDyBRlAs@jDrCfHxGdDfHhC~CoLlDtAX_@nEtCz@sCnAqFrCbCjMbPff@fx@xHrHfWiAhA@VrLgApBeKqDeDnWbEjHwEzJaBxFbAp@lP~@xDw@nIfUYrMs@tDc@vIvDxLvVwOv@gAfDqArCdf@dCfInHlH|CpCcFpReDvBJpAdAq@dAzI`Az@{@pMuGq@uC|Dl@~EeItD{AiDq@f@v@xDqNzHaDb@_DlHrAbNp@pGaEdDfB|PtCuBfFgG~PeR|@e@h@dB|RuS|BTlD|PrPnTtH_Vd@|@`@dS^`CtIoC^tC~BB|GoBJsDzJk@Wsa@lK`AeAlGEjEf@GpHgKw@gNrHkEWwDwP}Dl@iGwBwAp@yRbFyIqDoG_GSRyZdKM]go@}@iL{CjCsFHuIuANgCoILqAr@NgElAuAtAr@~FIVuGtIqArCvEpAoIqAmGxAaP{DgDqFXjCihAWkNff@~EbB|CvJjAvGyD{Fm[mAyb@iGyQfAoHjP~AnKAlDpM|HhErElCfDeFcHcG^iRjKyT~CcSjDsHtJ\\zKd@mErZhC|@`GgYdM]dTs^nCog@??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Dusseldorf_16052_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Mülheim an der Ruhr",
+      "center": [
+        51.4273,
+        6.8829
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "O7HURFOJKLBVM",
+      "serviceAreas": [
+        {
+          "name": "[Mulheim][SZ a][Servicezone_2023][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ks|xHgqsh@MrZ`GQ|JmG~H^`G~@lDkBv@}JiMuF]_]tA{B`G~G`C}F`M~DdMjM~Z|O|PaBsCuGeHrCxDiU{@aUaFaInFb@nXvKLq[QsMf@oFuQoXqVqNqHuJFGpLnJfG}DbAeU~KrDmLog@hFqGl@hKfDzK~MbLfHkPd\\bSbFpFrKq[tB_NxDlBnJvHfKdLzQc`@jJcKpSsLtDs_@~g@jMpUxHlk@_ExAzSr@|LlWqAzArK{@nPrInIv@iTlEmGiBuh@rBuF}DyFsHg@oBca@}DoG_EHge@cbD~G_FlCiBnBmC?iGtIyKfFzCRuFw@YSzCcCaBwDOeGkB}@eEcI`A_IxBEvCjBbVkIjKTfMjBjBd@{A@}CxGeGde@bbDGdNsCzCInLkKpUwb@XkMoAwUiL_XqG{NmCkSiXsa@_[gLuG_KsMbPiUaB}HgB~Bn@fCiBjCw@uBqInEmA`ECfByLlHr@~DeCpE{@`EqCV_FrI}BbF]fAjEpSc`@xCsXjBuM}M_KsHca@qGJcXr@aBbFcCxMrGvCkHnIbDdBoJjRpGt@GrHxChCqFBga@qAeQqH{ZfTfH|D}E~CmPvBo@bF|DlFiDfRaPvHqFkBsLuDcK{EmDkGq@kCqDsLuHwOeFwLyHdAc[uBm@mAxZgTwKcLeHoLyKsAoHmBo@|BaH|AeEzBoJeBaBcE~Ik@}E}CqGsF_UaAoK@m`@KsKg@o@bAuDlA_A|D{W~CiGlB_G`BmJN{OX_HvByFr@sE{Cq@cBkIaCg@e@eC{E~EiB~FgG_CgGmCwJpFDtCoDTuBe@eDF_@}BhAy@oB_TmAuBaCS{DxA{Ih@]{Ea@m@q@gFcAeEuCEqB\\{F~Dk@dD}Ak@JxElAj@bB~LaNdOdAtNeC~GnAbFx_@ta@r@vJ_Bu@qFtAm@kEmDtEgGfF}Cz@{BDDvMpB|IdDjM`@|e@jBo@G__@oBsMqDoKnFzE~EbOvKbN|DuR|AzP{ItMaA|RcJbDmAuLeB^v@dMaU`H}KbDmB|FoBpYoBnGcJiW{AtExLv_@_ElUsJgOgA~@jJpPeSlYuEq\\zA_b@|MkLhBmEyAwAgB~DuCzAwIhJsB@}H?aAtIkIfFyK{QyAPzIjPyZoDbBkIkAaCaBjLqB_CsAnCgDuFiD{CqAjAdKlMzDDa@bEuAx@\\vA_GfFgGr@LtG{EVEzClFlYcAp\\rBlEwArIaDgIgAg@mELh@`C|BWlArBvEdH|CxMuGdFh@|AjGwA`IfB|@`IpEbKoFnMrA`DjE{KfF~FtA~LeCu@gFh@bAtA|InArB`GjBhHyAhF|@zBzGcRlIwL~WTjGhd@sSpEaC~DkBrP\\hMpBv^zAbI_SeBmAlVWz\\CpCdVhBtBtIoHw@YdJu@bHjA\\dFxAmAbCz@^|@_CtFbAOpCjAl@\\}H|@gLaAyAkEcD_BwIfLzAzE{FvD~DjI~OiBlEaDhKQzM~B`WErNkAfGPvDhBqBdAcYbDqUdIcH~P_lAzOgw@|Omo@fg@_Yd[gFSjWa_A|~@cR|iAwH`gDpUpItX~@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Duisburg_14579_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "München",
+      "center": [
+        48.15002,
+        11.56242
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "436RDWOPIKUG5",
+      "serviceAreas": [
+        {
+          "name": "[Munich][SZ] Service Zone August 2026[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "km`eHijodAnGeTlC_M{CcEaBwVaCkVG}C|AAq@eYrEk@nOfFxImCtByCRNTJXFR@P?VENEnBdDzBo@U_CjIqCe@yGrAe@d@nDhJmCdItKr`@uHrBTvFxKth@~P`PcHL?Ll@DNLZNXHJFHRPHFTJJDVDV?HAJAPCxD`WrWwGkBaWzBcF`C{Bz@fFuAr@V|DnDaB_AuIfCmAbBpIrGuCl@nBxFcC~@|Dz]yPyDuSiJp@yAyJkUnC`@nCsBd@G]^SQmAw@\\b@dBsAZGg@j@YYmBcAd@h@lC]H@`@uDfAaAcEyI`Au@kI~Be@m@aLrTeD|JmCzGk@s@eXwGj@{DzCkOxAkIcBDQF_@Da@@Q?c@?QAOAQEY~BaAtAE?l@`[gBx@wE?A@CPJzFv@tI_S~AqBdBu@hDxCXaArCjBY`AfL|OtI~Q_ElNvAvBfGqJfUb\\fElCxRtGjBw@|BuLjBzBrEpAhAGpFs@TOCw@pIwAx@aCn@QvRxOIVjDnDf@|@d@`@h@u@bXlTcA~Bo@k@uHd_@eAjIbAlDnI`DtCiDzDjB\\dA@?fHnTlFgXtR`QgAzDhDjDzDkNXRdAmD`GnHbEgMjA@r@iG{@c@YiBpAeFx@c@XhGfEdOrDfCbSdFtKca@s@iCaAoA}DkAqDaEc@wAuCkB_EiGWsCwA}CsGmGcCxFy@{@Sd@}@_Ai@tAwAaBlFcOoCgCiFmCH]o@e@Ul@i@[KTy@eA??qE}FsEsJuIcLwGeGxAkCeFqHgIxRmIwRx@}AyCiG{BmN`@oD`AaB|EsDnEe@h@wAeAkIeCb@gBxAgBrCg@kAG{AeB|BuDyAoBwCg@iBFoFZkAKmCn@cGoFBNgC{@_@L}D_B[i@`EaHmAg@dGxA`@C|Dv@R@bMtBnBm@`D}GkEb@}DgKgLgDlKyC}AwFvPsEiGbNc_@oAa@pAmLe@i@dA_HmAo@JmAqJoCxByYePcInAiBnFzAxHxFjg@dUxBdBjAkAvCDlFcKcMgKpBuUxAuKoDu@\\sH_aAMy@zOqC~EiRdDa`@iT}FzQiCr@wCi@uQiIgS_LmBeGVsQ_AqD_My@iBeEd@kFfB{C{CuJmIeI{J{G}AoDu@oH_CmI_AiHaBgF@oEpAeT|AgE`CU`FzEzO}BMaQfBuFdCG~RnHvJz@rA`DbAjMiAtDiBhApC`Po@hGb@~Eo@hCgEjHzAvA|Fr@tCbEhEI@@Ld@Pd@T^XXZR\\JN@f@?^E\\KLIXWV]HQPe@FWzGLh@{J~BsChEClBx@jLvNlAdHLj@BBN^JPVZb@`@NH`@LtAtAjV~k@l@nRbaAHz@uPqB{[eTeB}Aw@cA{ELaOfTwn@~@oG~CeEjBgaAAG]M@a@Ay@My@W{@Yi@YYa@Q_AQk@N]R_@^Wb@Qj@WKm@_AwHsE?KCm@Kq@Sq@Ue@W[[U[MWG[Am@N]Tc@d@uBkAeOmNqAeFJg`@LeBhDaDbc@dAzOhEtLdJtI|QhW~b@t@vEaFriBkBC?|BsDAUrN~F|E]rLlA`t@hC|OjBdAv@pDdCzF~LbBzUTLyE`D{@fDhIlBm@uA}L`K}bA_@oWTsCbXgbAx@j@tOqh@yAk@b@}ArDyDnGwVuFoJgG}FyVcKuA}A_@kErEiKvCmAh@FDt@zPrAr@yc@bAaElB}@rBbAbDmVpA{BdEyCjAF^}MrEoAxBkApEwExDkMf@kIDqEWkIw@wJQeBz@wFrB{IwQmQyKuEsBbBeJjAwEqAa^yX@ERo@DUFk@BW?o@AWGm@Ki@Qg@Ua@OQYU[O]IOA]B_@H[RMJY\\Sb@Sf@ERKh@Ej@?l@Bl@Fh@Lf@Pd@X`@b@`@iCzJuAnAeCW_LwIeVsUaWuQiEiBP_@L]Lk@BWDm@?WAo@Im@Mk@GSIQWa@_@_@KK]O]I_@AWBmDiEyH}B?[wIuEwA_@[_@]WWIUEW?Q@gTkQu@Q}AvGaF}BTeAeXkNgB{AAg@Gq@Oo@Ui@Ya@WUc@YWIMCW{@cCqy@d@{DbCP@b@BTBTLj@HPRb@X\\JJ\\R\\H^Bn@I\\KZUXYTa@Ne@Jk@Fk@@m@lIhDL^HRV^TTJHBDbEpDvDrMnD~IlDj@rDuLfHjDoDtMjExBvAd@\\gAB?PL`@Ll@Dd@C\\M\\[Ze@Vk@Nk@@AfCMfBwEnGrDnAoErD~CIj@Gh@?j@?`@B\\Hl@Lh@Rb@T^XV\\P\\H^@PAVE\\OZURW@?dN|Q[A_@F]N[TY\\Sd@Od@Kh@En@?l@Bn@Hl@Nh@Rb@V^LLZR\\NLD^B^C\\KLGZWV]Ra@FSNo@Fk@@m@Am@C[h[nTpVhLBbABTHh@Nf@FPJNT\\LJ\\TLH^JN@^?\\GPGrGdGzO~BlDkDrKvCpE]jEkD`MaAxBaF_~A{l@yBaG?yBb@MdCa\\aDe@@oFl@eGkBkJ{Riu@NSRe@Lg@Hk@Dm@?o@Eo@EUEUQi@Sc@KOMM[UKI[M[GM?M?]D]Le@^uZ}fA?aGjAmBnr@se@gG{g@NuEfAmC}@q\\bAAm@aSU_BiDr@k@eIJeEcA}JqiA~QaCi@qC~@qOs@gDpGiFOq]wSoA{AZuBvJL~MjBdA[jBqBiAcBfBcDdAHvEfO`@DBp@nKxApFJ?kAOCtBi}@X_BhFJNuCtx@bGJmJxBiDbKd@vB}a@dD_JxD_EpMoiApNedAfDiNlFyXiCMlB}Oj@uvA~@cOsSpF_EtFcBrAcHrAyFFI|EcFvTgAk@cAN{Ebb@dBvDaR~w@kF|OaSwQ}B`A?g@}B_BgEAuFkCi@nAwGkKeDmBjUmxArEe_@sFqZcCmI{J|UuHse@yK}_@nW{\\oHyZkRwa@e\\}GiB{C@k@|K_@DuFbGMj@vADbAtAGQiI|SoG`HaSv@QdB_ESkEqDdBeAtAiCHCGAa@Kq@Om@Ug@[a@]Ya@Mg@EoAgGGcC`PkJsAuPtAe@yCmY}LW_BXqBeC{DgCjNwiAo@[x@eHcCs@q@tFyMgDeM~_A|@pDp@r@?FKv@Cr@Br@Hr@Nl@Vf@X`@^V`@N`@DOtBkBrG_HXqCxB[pBeIqC^kF}@@PuCrAsAn@Ft@gEa@yCoAKeApFmB}CjD_I~@^x@}DvCwHtCgF{DoEWn@Ue@Ya@_@YA?QuBmP{PeAmGAaGkIoIk@cE{A@c@wBuG~@TbHgAz@cBjEJlBc@~CnAdBGdLYv@}@W{@bDaCQe@dGMlKz@^p@nAFfB~@lBzDw@a@}JfKIQ^Ol@Ir@Cr@Br@Hp@Nn@Tf@Z`@^V^Nb@D\\EFB|ErNaKvMeIvD\\|BtOr`@XZfAqA@DAXBt@Hp@Nl@Th@Z^\\X`@Nb@B`@C`@O^YX_@Vi@Nm@Hq@Bu@Cs@Iq@Oi@AKZiAlIdDiDdZPNgN`bAcQrwAuAzCAu@BUBu@Cs@Iq@Om@Ui@[a@]Wa@Oc@Ca@Ba@N_@VORoC}EkCwNgRv_@DzNfGfKjK}Rl@xB~DhFuAjEzEjFqF|_@}MlgAwA|CiDC}K_JmGgIaGlNaE@qIcI}ChHgJj\\_Ch@eHeAiC_DEq_@_@iRnHH~EzBzH~FzEuPnGa@hDkAnDiDGorBSa\\wIcHeQHIiNo@gGiB{FaEaG}Bu@gBC??YAeCp@gDtBwDlEtA~EdAzJLvEMdJq@lGmHde@yD|B[zDvAfGYpK|B`P`DfLlDtIjE|f@b@xJ@dZIfAeIK{EdCe@b_@iAb[qCsH}CuL}DgTD_AlIsRfDoMxA@lJ{NaDiMa@cF{AyBgEiOqPzL{Ed@cBi@mAcDiCcZ_BiAeWxTgEHoJ|h@|p@zItCjEzB~WmDfIgRk@kC|g@xGbEqE`Wk@nGkC~BiHo@iQtA}BlLmAbCkCrBw@[cFnEZt@gOxNuDhY{YlGmNtBgG}Ep@_JRsQeKwEfCyR~BqFAhO`SH\\qCx[}m@w_@iEeFlPsCYgKzd@sArM_HzFxBnG}AzGo_@\\y@lPiPbCaNxQaFjq@S@a@N_@V[`@Uh@Ol@Ip@Ct@Br@Hp@Nn@Tf@Z`@^V^Nb@Db@E`@O\\WZa@Tg@No@Hq@Bs@?G|A|@yBhJy@dR_S~o@m@xDyCbByBaBaAyBuVaNjC{OrAoOlUrAzF_M{\\yXuGvLxEbRsAfNiCsEsCmS{JwJ_ImAoJpG}CxJ{@nAYOWGUAW?WDUHIFUNMLq@@yIfi@{@vB_Df@qSoHmGdLiCSaL_IcDzShDxDMvIMFKDSNIHIHGJOXGLK\\I^CNC`@El@?N?b@B`@F`@H^BNFLLZPVFHNL[|H~JzAhCtCAhDOPQVMZM\\G^G^AVC`@@b@@N@PD`@H^J\\NZFJFJNNAtBe@dG|MzDdCyJjC`@xBlDl@nFw@`LiBzAu@oGuHu@e@dHsBAV{JkGy@aAnScCzWsAhDeB`@oHOk@|Mg@fCqEvAq@xMeDdDkY@cD}COqByDOs@lLdg@OnCbBLvXbCfA??D@B?nBbB^m@dAl@AbCvBlAIrBkFg@Gr@EnAtC\\?DwHtCnEt^~Bf[iEZDvBaBE@l@b@ADxAnPuABd@_ApAB`Ag@j@B~A_BLFnC{AJH~D{@F@n@[BB~Ae@BFpCiBLGiCn@GFqCn@GC}Ad@EJqC|@IC}A~@IGmCfAKC{AoM|@DrBkAG@l@b@ADxA_@BDvBsBA@j@b@ADxAo@DDvBiAG\\|Fg@dCuBzAaOz@aMaEaA|DgIiKsC^e@pA{FN@|@}AHCfHi@B?nAjE~h@jBEf@bIjKqAn@t^~IhCnA|FwA~f@SAaBt^nHvEcAdJcBbCkCE]tNs@`EhBzLSbJbFpCnEFYgObAgF~Aw@np@_DlEmAhd@nStB|F?hRiAbFuIl}@q@|BeCdAY|KpFf@|BtDH|BpLvd@TvC{ArEag@j`@iJpEqAbCd@nDiCzE[}DcE|H}EdEa@x@a@iBuD|Ce@aBy@}Rz@I]eK_C\\a@p@gCTIcDiCV@jBgEZLdJyBi@DwAc@?kC~[s@jC}RxDeD_VuAkJqN`CiFrAoEe@sEYwE]yGjBQnd@@jCwC\\oFhCoDzBMfExJfCHnO{Ra@@jQoGsFcFcEEaDcEFa@WcALsCY}C@iCM[IEiE_AcJv@USeDbEkBjEaCoAoSeGrBcCz@oBmCiC`@QDQ_GsI`C^bHnA?fAdh@v@JrFVhDXjB\\fCN~CCrC\\bBdCxElBjAn@zC~CQbG`@?CzBxC`@GxBvF\\P{CfKtKbFbGpAdB~@pBmDhF\\~A_DhDn@l@XIV?@OfAADkAvAmBpBeDfAzCbFtNkCzEgDrDwMpBoH`C}BvBwA`A{I~GkAsLmG^uM|E}EjD|CtOoBl@Lv@`AIfDgBnCgAh@xAlG~BlD`BnALrGH{AaSrIwCz@hE`DcCXMj@rAl@WScBb@StCfAvB_@CeEzBYOiH`Cc@PtCfDe@a@sJnF}ETBrD~Dr@f@xEcJe@m@cA_BKSh@aDFiCcAoB~BgEb@y@zI~MzAqCuBuFdByC}BmDtBwCzFxJsAvCv@|Bx@q@pByBZ?p@hDeHbGQdQfAbIDd@b@KRrDkDKOwAmAf@PfBZbD|@xNvXiIfd@cNVbCge@lM~@nNlAOlAtTrJ}@Tp@tEQKgAhID`IQz@v]HdAh@QEk@]Sv@mBn@qAIgC?wRlEjBt@f@gAgp@lOdG_BrJZlEdCu@S}HaAM`@cDjAeAvBNvA?@aAfFVpCnA~DPHo@VKjEo@bLDWdHcRtBAbA_Ad@FdL|HILtEs@r@zAlKx@NnAnGyFlAbBpSxCfFxI{AhEuKU}HqEcCoFvAgAmG|G_J?gBcDcJbCmDbCpGzFpIf@mCw@mCkDiEoAeKzDqAh@gAtE~S`DrVrIoChBC~BlDhJgC~Cr@tJbN~UxNlFnMjGM`@\\IjKjNyL~GiDb@xW|KgShTa]fC`K|AhN`BrD|BtCbA~CFlBUrAeDtEhCvH|P~VhDVdImElFbN~AtFp@tGUvCqBdCwMrU}AfBlBtCf@|Da@hC{N`_@jEzGH~BgF`BeAvAG`J{@x@GQKWSe@OUIKs@yG|@}@kDqVeDvBwDqDaD~G~@rAsEdJu@gAkEfJ}@iApGaP}G}FdAqPyMd@_De@f@tOlNzA}A~LqLu@K~BvB\\rA|ByC`MOxEz@`A}If@eC~AiBkFyA[iGzCmJyAQ`A`BfKBtCiB?h@pKfBlAtF`@|JrCP`E_KfU~@fA~EBfJoAzH~CJvIyCg@eErDE~KfBcAfJ|CiDjQvD`B"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Munich_9229_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Neuss",
+      "center": [
+        51.2035,
+        6.6837
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "JCTE7UTGKR3JN",
+      "serviceAreas": [
+        {
+          "name": "[Dusseldorf][SZ]Neuss Service[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "g{uwHyixg@`@l@zXbc@fRCnMxRgPx]xBpj@kK`UbF|a@zEvOjS@pf@~^rc@igA`r@au@bK|`@zVrM~@jOvq@_d@tQgUna@jcAlV`gA}Drg@vXn}@|_@yCz@mt@sN_XzL{sArUcc@vVjMrTwK`Qwc@OcVsHqUuQmQcI{LiByg@cGy[hKsG|RcC`SvFnTq^~Bi^~K_GdGpQfn@lLhI~m@wAlTyCtOmKjJ|A`Rnl@dD~EcKsE_LcQ`AuCsNvAmNsGgCtAiOeHwk@m@c{@pNcHc@aPmRjH{EkBuHr@kFf@_JvAf@dJaNjDWeMsCjABr_@cFvD{FpAcOki@uJyVmg@t[`Izd@mH~Jz@|k@_MpIuQqR_Yi~@cMgu@qG{g@_EoL~DeGnIsAdJ{B|OoLbSgHlRg[dUp_@nHnRdBpRz[yAbNgCvOcG`[|NtMwU_DgKkOkJ_SvTeTlMuYr@qBwQzRdBrK_y@tJ_UoFe]xa@u[zGlRnKiEdO|HdG|a@eDzJnAdk@bT_ElUMfNkTbP|rAn^qNvDka@oIuc@{Rkd@iLzBaMo`@wJlNwInU?bj@gKBuHok@|BiHbFiLf@g^wDi_@yF{N{VeRmJoUmIyB_O|V{EwHwExFzQhi@hAzWi`@tYkTtUuUmHjN}TgUih@qb@v`@kZbc@cIjMlDp[yAh@gCmAaDxA[dJgD~Mb@bRuDvD_T~DuDjE{Ty^?_PaFuG}CeEqCa@MwEkAyBx@qL`NcEfH{PtRWrAoMnGm@~D}BtCoOi@qN{FuQrIqWxHiU}BntA~Kt@vEuG`OcVcAoCnUs_@vT{]|[mh@_Wgg@`HgMYaFzT_b@_JwS{QhYoUee@kL_LtSyKa@_DiTk@gSuSiX``@zIjSvDeCrGpP|IqKfN~]zQ~j@iMzSf^|t@wMvSq^mx@uOp[{j@zkAyYwc@}Btf@{K|`AqIfYyBzWhBvBRlD{L_BeJ|b@gP~eAy_AgZ_@_i@wo@`RnAjx@|o@jmBwp@da@wYwJkl@ef@oFcEy@t{@e{Ala@w@D"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Dusseldorf_16052_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Nürnberg",
+      "center": [
+        49.4527,
+        11.0761
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "YPLZ4CAHSLTNL",
+      "serviceAreas": [
+        {
+          "name": "Service Zone+[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "co~lHsexaA|PcPvNiNvLiLrSgc@vZ}e@|TqH|AoOpDgh@dQij@xQau@nC\\|AThEj@r\\jEfHiBtBYvE{AtFwAlVsOeN_i@Ee@EBES{TuIkd@hC_BqD_@}@uDsIWk@KSEKaCqFAWBu@Hs@No@Vi@Xa@^Y`@M`@Eb@D`@L\\XZ`@Th@Nn@Hr@Bt@ARpBsCjW|OxLa@fOgLmCyHmDm_@~AU|AwR}@uHhBeAeFcZnGcBTuKlA{EbDbBNa@HiDpAk@r@fBj@Jr@qAFF^~CrAtKb@nD?D?????????????@????@???????????pKhI??????????????fYav@??bAgE????TcHbGdU????????????????r]{eA`DlCm_@ngA????????xL|k@??pLde@????????????vIo@bD|A????f@G????????vDsH????????_A_F~BuH????{@gK~HiN????|DcP??????????????[M_@YYa@Wi@Oo@Is@Cu@Bu@Hq@No@Vi@Xc@^W`@O`@Eb@D`@N\\VV\\????????????????hGeVxEcE??l@w@xGyGl@`DhCjSaB~PoCtQ????????????fAn@??????????nIcKlBpD????????????????vEqI`AdB????????????????vCgF????pBmL~GiJ~G_EpIo@tGjF??????????rC_C`JcHjGvC??????rJ{A??????????????VoK??oCel@????????????yOx@cFJ??iFh@??????????w@jD??m@rF????????????ZJ^XX`@Vh@Nn@Hr@Bt@Ct@Ir@On@Wh@Y`@_@Xa@La@Dc@Ea@M]Y[a@Ui@Oo@Is@Cu@Bu@Fo@????y@iCFyF??????qDcI??cC}Db@aU?A????????????yEb@kA}E????????qHoD??mGeBmHiB_EoA??sHaB????????????????{@nReBtMoDfS??}BtQ??????vFzKyBJ??????????????a@rJ_KPnBuM??????????????wDeA|@yI??L_J??OqFpC{@????????????gCiP????????{FaE????sGWA?_FbA??????????cMnj@uDkDf@{BPe@??????Ae@pD{M??tAuN????????????mEuAyCsCNqF`@oD??bAsO??HoE??GwF??????????_UiHdCuFlFeIfFeG??|EqG????x@qD??b@eCzATg@zP??VrC??n@vDPlC????|@lCzBnH????bFlE????????????????fQqk@????WwP??{@eNNgL??EyO??????????????kM{@tIgH??????????QyBpD_CTX????????????|J}G????Ry@bLuG??xBqCtNeMbIaG`Dq@fNiDtg@oN????????????HuKPoFt@_Z??????????uDgCDiG??o@aE????????{AmA??????????iErCyBiG????kFyF????gQyExGi_@fIcT????fAsH??[yGFqC????????cOiUh^}d@??lHoN??????????aDeHtGoHlRqN????????~DsW??oAi]??????g}@e}BrIiNdA]????|Yi_@dH}F??????????_AmMtCqBjCg@????????bCcJjBL????????????????XeUx@k@??????????CmK????????????qCaB????yV`AEcS????????????iB[??????????aF~Ps]s\\????????????_DnDok@lX????eHtKkFzI??????????~C`McVxd@????????xBhHeBnD??????????vMz]????????????????zMeZ|K}L????????????gC_H~@cBhA|B??????????????|EcFh_@vz@ggAjyA??????wA`Mce@dp@????????????pRzf@mcAbtA}CwC????????????mNbQeFmT}F}XvAaHjC_F????????eAuDr@eAvG{H????tK}[pKvL??????????????????dA_FnJ_FbDDjE|E????????????????z@iC??????????gFkI??????iDk@??????}HhDcEaIlFmJrHyFdDiAbDc@|FJlC|@pDpD????????????|AuB??????????????iEwE??wC{A????gJg@??eEj@wGsI??????????????cJnSeE{CuFqI??????????????????sArE??}B|Ju@c@kR}M??kCsA??????????}DlD??????yCxNoHxVoFsL??????????????eCbC??Yb@}Bl@k@cDzAyA??????????mAgG????aEgI????????????????y@bA????????@NCt@Ir@On@Uh@[`@_@Xa@Na@Ba@CUI??????????u@|@??mAxB??_B`FaUiJ??q@M??}CScOcQoBwFxBaD??????????}DgO????????????????sAhA{CyK??mEqM{C_K??{FgO??cB{D??????????????uG`G[DaBqF??sCkIf@m@??????r@mD??pBeOhAmH~AcE????`@}C??{@sI????????????s@O?eI??????qAyC??????aBw@T_M??a@eD????????i@g@mAi`@d@O????????????oAiO????????????????mHpA??????????????IvCaEd@aE_@??{HT????o@BoBCsF_@KtQOhJPbIZvGtAtOv@pF|@|A~EjHd@rRp@hO^bKQtGcDbVOl@kEvQeBnBLjKbCbGSvJnG~Ad@cBjD^dAvApAhFhB`AlAaIrC|CMlB|BzD~CpMfAfAfAgDxL~TbDnUp@vJGR`@Ob@E`@D`@N^XX`@P`@??DFNn@Hr@Bt@?D??Cn@Ir@On@Wf@Yb@_@Xa@La@Dc@E_@MGGt@zHBt@kCjCiCxDi@lCgAxBWSoJuEnC_Ew@sJw@iHeGm[cCgGHyBx@gCkFwLq@p@OvFmC~@eD}C{BhBkYsa@mEyNVuA}AyI_BfBAhIaKxDoEdI{M|MkFpEwLxGqGiCuCyQqKa@wLpJ_G|^`U|UeDvSYhCyD]i@}CuJuA~CdUT~KcIn@hDhSvDK`@vBpD~Yd@tCgBsB{CuCaAaIEeDUcA]u@_AP`@nK_Bq@mBcGeBs@yBUrCnCUjLeBVOj^pCtTdLlAPgDhM|E_@zDo@lEm@vB_C`R`EpCz@yEfGjCrCsa@`@m\\x\\gASzL|Wk@M~JFxCdCvAf@jMoC]mAnB@pAWlOWxSsJr^rBn`A_OTcMyDiAvM\\tUhBhDJzFfEGBnUqNlI_K|DsDbEaCrInA~[pB|PxBaB^oE`K{QxPyQxDoAfCtOdP]lE}ApH|AdCHbDb\\hIsDw@{JhBOjCi@QaGfBc@lAg@vCkJnBmBRTLMFAzCzG`A`BI\\Wh@Y`@_@Xa@Na@Dc@Ea@O[WADgBzEaANo@hRt@nCiDzLxAvP`DlQt@pAt@_Aj@kG`EiUdFqUjCcLJ]xQtVlI~OoB`Hw@pDaBfGhDrC{DtQmC|UcCtRoBjOmAdMId@WjCiAfKCRsIzf@aXkC{PeWAM@eCECAq@cIoFu@q@EBCAcJnBgHcCMmAa@v@a@MWRECsKzIkDtHi@fAcBlC{M`C_@R_@F_PrI}GzC?CkCnA]NSJkNjGgBTkGvE{HnEqBnQeKbJ]pUBfJVnOAlMQPGzTJJA^nItHNlTeDvjAMHI`QCjCvV|h@?v@EDArTBB?h@xIz_@dKr]@@?PxApAvGzH|MjMr@x@tMNzOzDxCvC~IdJ"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Nuremberg_4154_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Oberhausen",
+      "center": [
+        51.4696,
+        6.8514
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "O7HURFOJKLBVM",
+      "serviceAreas": [
+        {
+          "name": "[Oberhausen][SZ a][Servicezone 5_23][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "iotyHubuh@fj@|k@nPnQxTbHgDzK}IiGq@P_CuEiKbNzDbLzWf^yBvS_XqHaOed@gBCjPjh@jXjH_CdQ~KrDzCJhKpDrKfDkK|\\wLzXoJjSaOd^`B@vg@gO|EuAaBwp@oBsHz`@opA~HdWxGnQrDl\\pDrN_N`Mx@nBjP{MdJlMgV`b@wAdMnA\\~A_M`GcHpHePx@pAqFfMlNfW@vNbAnEh@{IAuIrD{GfDxMdAuBcB{FtBmBr@gDr@oH~PzGb@_BmHiEqLiEoHqAyFcOgIcLaJcTjGiHbIm[`Qgq@nGgWjFd@lFu@|Cn@pJ}CzEa[xC[jD|@bBjBxFrUzHx]s[beAoCxJuB|LuE~[p@`@hGwc@`Pyh@fS_o@xAeAd@gPfEid@[_KvKwFo@iR`GcDr@fQjBlNjA_AuAgJjT}JbCdPrQ}DeHgl@f[nIs@`]tZhIpCb@jB_UbOfBdGkCjEyDbD@HhKzC@v@jIr@v@tCYx@vKdSpArDg\\~BSmFen@fIwGxh@rnAgHzWrApFvAx@|@QtDcMD}LrH`RzQbRxBd@`El@@vBr@IFgB|@oVvDhIx@iBe@g@zA}CeAeCt@eBoAcCjAmBlAIzD|GhBXz@kBoBiAdBuElFrAnCgPhDoPJcQrDsFjEDlBmP|F~E~Cz@pBeBfDeG|AWK}@kBj@qAvCuAvBeAjAc@RaB}@~AaJ[}E_CqHmFzGc@{F|A}MrAcO}AUvBeIaMkEuCpA\\sHmA]SxDeEcA]dCuI}CbAwHGgOEwINuTqCk@DoK|Au`@oCoDSwTyV_LzIiVfEiLrDdK~@wA_ByGcDqCoCtHkGqF_AdDwN{NtBsIaAeB}CxJgOeWoIuUdCyCbK_EpA`Mh@V\\e@uAqMuAgL{OdG}@eSjE_D|GmEpEsDy@gAiJjHaHvDIuGmFyXq@iFkK`FmCnHoBtJZyGqIDi@nBuSiMgAzGoO{Em@lFbH~@ObKw@tKyCzWeHfS]cImC{n@yBq`@y@l@zB`l@tC`l@}DdNmD}FEyG]eC}HmVmFmEbFkVpGca@mAd@sNdx@|DjEm@lGgHaFgOuKcb@cGGmO`FeIpBaIm@kq@qK|Av@xu@z@dDcAlDEvPeGhADsKaFao@o@Pr@xIiB^JfGeAtAs@eCiEtByGsNoQbTfBvBlErBxAdGzJfKyEdPgGaPwAs@{AoFgCmDiAKiAvFuOcIcMe@yBBv@lV}XdEoA{L}AaJgGy@kFjH|DhKvAi@fGjc@|F`D`@|CaGuDsCk@qBj@oFwEcGUiAz@Vx@~DYrC|McOfMnEjLbEgCbEtNuJfFyFbFkKqVyHzC}CnEoHcJsDFmDxCi]en@wAzCdPdZmKzPyGbRyWro@si@jlAqWhf@eLsZaYvWlDxIpMxQsCjKgBr]yDxS}DbHoDnI@zGbWmR"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Duisburg_14579_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Pforzheim",
+      "center": [
+        48.8926,
+        8.6946
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "RJRSMXTOPZ6EI",
+      "serviceAreas": [
+        {
+          "name": "[Stuttgart][Stuttgart[Pforzheim][SZ][Service Zone]][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "caliHqaxs@~Ii@vBCrEiY??~Az@??dBdGj@f@lDtJzJeG?G??LEQwCOmOxEiFaMc]aEqKvAc@~CbBfDZlJ{GuHkb@fF}FjF_GxDmDtMuMMmF}EiWbFePjN}[@_A?A_AE????`@sENoFaC]????NuSe@mFsAiF_JoK?????W_LT???AIaK??u@N?K??rKuF[kArAqJb@cLB}Ey@qC|AgFhAkEiHqXuGrB_AwI|Bg@jAkAnBwDvGkEz@g@??CSS{HsAqEeFdCeLbKuDkMkBkCgCmBvBqGlAn@nBtHbEdAdGaCbEk@b@aAxAwKBgC}CqU?AbHw_@~@{o@qHwNkLeKcDxAsLfBsGfTAD?BsAlGk@`D?@AB}GNsDdMWvo@jDxMlFgAdDfs@}AnHsUhEuGyRAICE{CoKkGsS}DsMCIGO}DdBGSEKwMc^oIoTCGEM_A~@mHqLyK}K????BCoGyG{@cB?ApLaQx@|Av@rA|FxJXd@DF|AaAh@w@iAwFvh@yi@}FgSyZbQc@^eD}Ay@jAGjCcDrHuEpGyAtB}EkEcA|BfGxFhBpD??qL`QaH{Qo@s@iAAgCsDaAgCoAaCeBsAaBuCaC_C}AmDe@iDw@_Co@s@kIoGqB_EiEqNmBnAoA_LcGg[wBdBdBjI??qAt@????O_Ak@VSsAoA~@}@uCGDCDmOtQA@ABgD`F`@jAj@YtAwAp@pBf@c@m@wB??@A??hFcE@A@?pNeHIg@CM????pAw@??FTb@vB~@tHcAThI`f@yCNwEoV_BoEoAr@`CfMk@VLz@w@TMw@uA`@vAlOs@\\HrAi@FcAsFeCn@Dj@?rMbA@?jAoADGxFtA?D`G}D@DtDtAxA~AB|Ay@b@jB~@w@WuAlBSL`DMxCDv@}BrBjBpHzArBhCl@jCsAnAyCRsCs@qGZ[OqAa@XCOAGuAmJ?A?E?oEv@mDx@iBl@P|@gAb@B^f@Rz@?~ASlEV`KJXDJrHnRJXVn@t@q@n@dB`AMbAdBv@t@RlJd@pHn@|E^\\h@lBxAeAk@uCa@Ri@}DUsKb@oA@_BRWbAzBp@oBbAN|@^zBdDh@w@z@zBq@tA\\rBpC_EfKbSjHxT{GnHvAhN~G|h@aC^C???m@HiF`AuGbDX`J????PfG[~f@mBnRjJ{AzNm@~Dd]tLcChAlYhAhYAB??Y`DGv@aBtC?B??KL??NnH\\rI??D~BLtIPhGH\\h@~O?X@pCR|BTtJ@lAKfCGhA?HCd@eAfCs@vA]pE?@sEpOjGhC|Co@r@|E??`GiB??|@sInIbGTVhFnD????nBxMh@lL??GJFD@~Ei@x@h@rA@zCg@h@h@lD?LX`Bv@hFNtB??oCzCnF`PV?Kj@tFt@??C\\ObCGfCuAh\\_@bE"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Stuttgart_4578_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Pinneberg",
+      "center": [
+        53.65887,
+        9.79698
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "6QSZWSVEIB3AB",
+      "serviceAreas": [
+        {
+          "name": "[Hamburg][SZ][Pinneberg SZ_070325][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "wtqfI}wsz@jNyObBkCvRpIX_LeAmFbAcSdDgL~GwL~F~BbBtWhGps@f\\~MjUjB`IvClIH~Ca@`HgB|FuFVwCuHsDzCg@TyRrFuAtAeZtJzDtAsTdAoI_Ck_@rAwHx@aJtK|KpCz]`VzQ|Iy\\aSeWnGwTjDkScGeEaRmd@eNnE_DWsB{Gi@_G`D{CfDkVyFsFVcEHgDB{BCMjAuG^aFi@o@c@_BeBl@sO|@mFm@kAvI^TcHjDbDfRmJnHc@tOyCzC[|J{FtLaHpJh@jPyHT{@kFDqCoMrPmLiIt@qDyCgG_EuEtH_SvCQbFbBrDwQuD{Fr_@ibAi[bDe^lGgGzDjGb_@_EzDqCZmCjD_EnNxCbRaUfx@ePYqGmP_M_h@cF_Am@{EyVxY~CpRmC~H{B|CyC~C\\bNJdGdDKzAAk@nJvBtP~D`OfLbKdHzEpAb@lLlKcAbDqAlF}FxPhFrL"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Hamburg_2121_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Regensburg",
+      "center": [
+        49.0134,
+        12.1016
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "UO2NFI4TLMJXB",
+      "serviceAreas": [
+        {
+          "name": "Service Zone Regensburg [service_zone_MIGRATED_FROM_V2]",
+          "polygon": "azjjHqb{hAi@N????~A|EcAvHc@|D????@?bDb@KnF??????lGlB???Ab@cBpCcHh@a@xCO~BLhN|CjEb@|AeBhDiCdF{B@BBJDJBLBN@P@P@T@T?T?X?X?ZA\\A^C^A`@Cb@Ed@Cd@Ef@Eh@Eh@Ef@KhAEb@K`AK|@Kx@EXCXEVETETCREPEPCNENELCJEJCHEFCDCFEBCBC@E?K@K@G?G?I?EAEAEAGECCCECGCG??CAEAA@EB??CDCDEHEJEN??AF??AFAF?D@B?@??@@DBH?H?NAJAJATEXEDALAJ?H?H@HBBBd@fJ??t@~@dBd@XzA??rFkChCeDl@]z@_Bl@aAHE`@W`@U^ULIf@r@??nBgB`FcB??f@{B\\sA`Ak@????VmAh@]??ZkAb@S??^mAtBcAv@?bAEQbAc@tC??JdB????xB?WtIc@\\????@lKqEIA?i@hDLhLt@nGOxE@zC????v@vDV|AS~I??pA@V@B@HHJFp@jKUxHzAlHDXF`@Fb@Hb@??Hb@Hb@Hb@??Jd@Hd@Ld@Jd@?@Ld@Jf@Nf@Lf@XjALd@XfAL`@J`@J`@J`@J^J\\Tz@J\\HZTt@??Rr@HVHVFTHTFTHTFRFPNb@FPDNFNDPDNDPDPBPBPBRBP@RBR@R@R@R?T?R?T?T?TAT?VATCVAVCVCVCVCXCXEVEXEXKr@EVKp@Il@EVCTETCTIh@OnAIt@CPE`@E`@E\\C\\CXALAJEt@AJCZCf@AJCZAJIpA?JCZAXALALEbACXCt@AJ?LCd@AXAV?JAd@?VAVAb@?T?l@?V?x@?T?x@?V@z@@T@z@@V@J?V@H?T@J?R@P@H@X?N@V@R@D@VB\\@NDZ@HDT??BJ??@H??DN@FFLBHFJ??BD??DBDBJBD@VDRBTDXD\\BNBN@b@FP@RBRBh@Dl@FVBXBp@Fp@DTBbAJh@DTBR@PBd@DPB`@Dn@FL@ZDGlKGfE??XxCLbB@tETvEv@bJ|@bGzAxGlAjI??jBvD??nEbHfCjE`CQFPDLDLDJFTHZFTLj@??FR??DLDLFPDJFJHN??DJFHFF??FH??JJFFHFFFHFNJHDJFNHXLXLZLZJdAZ^LF@NFXFFBNDFBPDFB`@JHBPDFBPDPBRBH@RBR@H@R@^@T?J?T?`@AVAVAJAJAHAJAHCHCJCFCHCHCFEFEFEFEFE??DGFGDG??DG??DGBIDGBIBIBI?ABIBI?A@IBK@M@K@M?K@M@K@KBW@IBSDS@GBGDOBEBGFKBCBEDCFEHEJCDAJAD?D@D?DABADCBABE??BCBE@G@G??@G@I@I@K?K?K?M?MA_@?OCe@Ee@Ek@CUEWGq@EYEWCYIm@EWCUGg@CSGe@MaAC]EYAKIs@C[AW?CCc@AOCS?AAM?GAM?SAa@?U?WAK?Y?}@AeA?Q?g@?S?U?sA?U?S?i@@U?S?}@@U?S@}@?S?U@S?S@i@B{@?S@SB{@@c@@_@BWBS@G@EBI@A@?B?@@BFDJBF@HDVBLD^Fd@@RJdAFh@@RFf@D`@Hn@FZ??DVBJ??DR??DN@FDJDH??DDD@D?HCDAHAF?H?FBD@BBBB@@B?BABA??BG??DI??BGBO??DQ??DU??BOHc@@IDQ@GFOHOHMBEJKDELIFELGFCPGFCREHARCTAJATAJ?RCHCHAHCFCFCHCFEDCFELKDG??DE??DGDGBGDIBGBIBI??BI??@I?ABI@K@K@K@K@YB[BYB]@MD]BOD]BOFa@Fa@DOHa@BQJc@He@DQRy@FS??DSDS??FQDQHe@DO??Ha@F_@??D_@BMD[@MBW@M@U?U?S?IAQAGCM??AGESAKAO?M?E?GBG@EBEDEDC@AFCFCF?HANCHALCHCHCHEHCHEHEJGLIJGHIb@]VSVQRMFGLGXQFEFCFCFADAFAD?F?D@D@DBFDDBBDDFBDBFFNFJBB??DDDDBBB@B?B?B?FEBCFEBE??DG??DGDI@C???G@G?IAK?KAMAOAQE]CSEc@AKIg@E[AMCM?MAM?K?M?K@M@K@K@MBIBKBKBKDKDIFKDIFKFIHIHIHIHIHIJIJGLILGLGZQLGJIXOJIHGJGRQFIPQ??FGNS??JQ??DGDIBIBIBGBI??BS??@I@G@I?I?I?S?S@Q@QBQBQBQDODOFOBGFOHMDGHMJMDGLKJMDG??JMJO??HOHOBGHQJY@I??FS??DQ?A@G?ABIBS@IBU@K@UB_@BQBQBO@EBMBI@EBGDG@ADC@ADAD?D@HDJHHFHHHHDFHJFJDHHLJRLZFNDLHRDNDPBFDPDR?B?@@DDF??@@??DDFDD@HBHBF@J@F@N?P@P?R?H?TAJAb@AJAXAV?J?VAV?V@V?V@V@J@J?VBVBH@VBVBTDHH@@B@BD@???AG~BxB????Jm@Fc@F[BS@I?I?KAMCQAOEW??EYCM??GUEU??CGCOAKAK?K@G@CBE@ADCBAFAH?H?L@LBDBPDFBHBFBPDRBF@H@R@P?RAH?HARCREHCHCJCHEHCHETKHEJGRMJIHEJGHGJETMTIHEJEHCJCHCVGHAJCHAVCH?JATAV@J?H?V@J@H@J@TBT?H?R?RAPAPCFCNEFCFCLGFEDCLKDEJM??JMHOHQHQDIFSDIFUBKHU?ABKFWBM??F[BM??D]F]BOD_@BODa@Dc@Ba@@O@Q@O?M@O?]?MAK?MAM?KAKCKAKAI??GU??CICICGCIEG??EGEG??EE??EGGEEEUQMKSOQQKKOOGKIIKQGIEKIOGOEQKWAEEKAGISIUWw@AGGOCIIYGQGSEQI[GYCQE[C[CYAI?QAG?Q?I?Q?Q?Q?c@?[?G?SAQ?Q?]A[?IAQ?IASCg@?GAS?QCu@AQAy@?OAO?E?O?G?M?M?[?E?E?S?Y@m@?WB]?KAGAI??AI??AECGCICC??EI??EG??CCMKIGKGIGMGMGQI]QMGMIGEMICCGGCECGAC?I?E?G@EBEDK@EFIHMBCJQJOP[DEBGJM??FOFK??BKDM??BK??@M@G@M@M?S?SA[C_@CSCSEe@Ig@EYAOCOAOCMAM?MAS?GAQ?E@O?K@I?I@IBKDIDGFGDCJEFAFCH?JAH@J?R@XDL@T@N@\\BN?^BN?X@`@?X@FAH?FCFADCFCDEFEDE??DG??DG??DIBIDKBI??BK?ADK??@M??BMBO@OBQ@Q@Q@S@S?S@U?U@W?W?Y?W?W?W?W?{A@_A?U?U@g@?S?SBy@@c@@u@Bq@@_@B_@@M?M@MBM@M@KDW@KBIFUFQFQBGHMJKDEHIFEDCJEFCDANAFAD?F?D?D@D?D@DBD@DBBBHFFJBDBFBDBF@HDP@FDT?J@J@J@J?L?L@Z?Z@L?h@?L@X?nA@V?~@An@?V?J?`@?T?R?H@NBVBL??@D??BJBH@B??DF??DBDDF@B?F@LAFAF?L?J@D@JBF@DBHBHFHFDDHFJJJHFDHDDBHBDBHBL@D@RBL@N@L@R?L?L?D?J?LADANAJEDAHCJGDEJIHIJM??HI??FKBE??FKBGBGBIBG??@E??@K?M?O@G@EfAP??bAgB??J_GuAWDCDCHCJCBCBC@?DIDGDIBKDKDMHW?ADQDQDU??Hc@BK??@KBK??DWDWDUDSBI??BSLk@@GDMBMDQBKDMDMDSDK??DS??BM@OBM?G@M@[@O@q@?a@?O?I?SAG?QAGAOAGCUAGCS??CM?AEO??CIEMEKGICGKM??EECEA?IIGEIEGCICOEIEGCEECCGIIQAEIOGKCC??GKCC??GKA?KMCECEEICIAGEG??EECAECEAIAIAEAI@E?KBMDQFSFSJSJOHMFMHGFIFGFIHCBSRGFEDKHEBE?K@U@Q?[AO?YA]AS?UAWAU?S?G?Q?G@O@G@KBKBIDC@GDGF??CFAB??AH??AH?D?N?H?HAFAFCFADCDCDEBIDEBG@K@Q@S@Q@UBmA}_@e@_L]yKfFL??r@GjCkH??x@iFJoHi@wFoAmJuC{KeA_LMcC??aB\\o@XmGp@Ce@IcBKcBIcBEq@Eq@Es@KcBEq@MeBEo@Co@Em@Ak@Ck@Ai@?g@?e@?e@@c@@a@@_@B_@B]D[D[DWFWFWHSHSHQJOJOLMLKLKNGNGPEPEPCPCPCNENGLELGLIhRoC????YsErAg@`C]TEFAFAFADCDADEDCDE??DGBE??BGDGBI@I??BI@K??BK@K@M@M@O?M?O@Q?O?SAQ?SAS?SAUAUEm@AUAg@ASASAa@Aa@?OA]?Y@K?K?U@Q@G@G@MBIBGDCDE??BE??BK??@M@O?U?W?YAOA_@Ca@E{@IaACWGq@Gs@C[E[Iu@Iq@Iq@Io@Im@Kk@??Ii@Kg@??Kg@CQKa@?AEOM_@K_@K[EMMYEKGKEKGGGI??EG??GGGGGEGEGCGCGCIAGAIAG?I?G@I@I@IBIBIBIDIDIDKFIFKHIHURKHSNSNGDQJIDOFMDMBG@K?I?KCCAGGCCEIEKCECM?GCO?G?O?O@G@QBQBQBIDQBIHSFUDIDIJUDKZk@FIJSXm@P[JSDKFMDI@I??@C?A?C@GBUBODYF[@I?E??Jm@BKBUFYBM?K@I?OAKASAOAOAQCSE]G_@EWEYEWEWGk@CQCQAWAM?M?O@G@G@E@CBCJELEZMLGJEBAXMBAHCFAH?F?JBFBHDBBFDFHFHBDFJDJBFFNBFFNH\\FRFTBHDVFVFXHh@DZF\\D^F^BPD`@Db@BNF`@F^??H\\BL?@DLBJJXHVDJFHDHDH??DHFF??DH??FFFFFDDFFDHDFBFDFBHBXHVJPFLDNFDBLFLFRHJFJFNJLJLJFFFFJJHLDFFLFLBBBHDLBLBH@NHl@?BF`@BLBL??@HDLDFBFDFBD??BD??HFFDF@D@D?BADAFAHGDCFI??JMFKBGBI@G?ADO@K@O@Q?K@I?IBGBMBIFMDIHMBCFILMBENMJIJGHITOHEJGFEFCJEJCFAB?F?B@J@D?DAB?DCBA??DE??DGBEBGDKDM??@I@M@O@K?MAI?OCSCU??ESCKCQAMAM?GAU?K@M@I@IDIDGBEFELGDCJCNEJAHAJAJALCDAFCFEHGBCFG??HM??DGDIBI@E??BK?ABM@Q?E@O?Q?MAOAQAI??AK??CGCIEG??EG??EEIEGEKEGCMCOCEAECCCAEAC?E?C?E@IBEBGBCFCBABAHAHAPCFANEJCJGDADEBCFG??BGBEDM??@I@I@K?E@U?S?K?OAKAKAI??AE??CICIEGCC??EEGGMGECGCEAGCIAC?I?C?ECECACAECE?CAG?I?G@C@E?CBC@CBADCBAFAB?LA@?V?RCD?JCFC@A??BC@E@E??@I?I?O?ICK??CGACCC??CCCCEAEAGAI?E?U@I?I?GACAEACCCCAECG?I?I@G@E@EBGBEBEFGFGLIJGJILKDE??DG??BI??@EBI??BM??BG??BU@I@I?K?G?IAK??AE??CICECGEGEG??EEGGGGGCKGEAKEMAEAE?I?K?M@KDIBEBEBCBE@C?A?CACEEICIAIEOAGAM?G?M@G?GBI@GBEBGBEDGFGLKJKFI??HKFKBKBG??@I@I?GAK?KAE?AAECECG??GGAAGCCAEAE?I@C?GBC@GDKFGFOLGDGDC@IBE?G?ECACCECGACAI?E@I?C@EDIDG@CFGHIHI??DGFI??BGDGBIBM??BM@E@O?E@O?E?OAKAO?KCK??AK??CG??CMCGGKCE??CE??EEECCAEAEAG?K?KBG@IBE@IDIDKHEBIHIJ??ED??KN???@EBEAIECCEEKMGGEGOUGIbA}AfBoBpBsB??Ka@hHcHNZbCsCTwAcIaQyB_DfBeD??_BkG~UsU~a@w]pCeC??dA_EhAg}@}x@_o@oAuA??i@jHFdFb@`F^dEAx@k@TmASgBYoBM??y@r@_DzG{AvC_DYHoCRC??ByA??UC}@kA??iDD????FhNQ`BuC???uB~Iu@O??yEfNq@n@??vBlDlDrCzCvH`ArAmDnF??hCxB??VFaArKeFj^}HiCg@hE}Bu@??YxD_E|@uBuU??mL|CsDqe@mBgTiBgT????iDo@aE^E}d@eDoBkDU_ASaA}@_BhA{AdGOHyG_Gw@Og@DmBhA_@`@iEiAyEuA??_AtFwAz@k@bFGtF??vGJ??f@E{EpYyMbi@oGhRsChIeNkJ??{A|MaDvZ}Bu@??sUu@yGi@x@g[????gMqA??UzB{@B???zB]vLwH@??H|C^fHcBhA_@oA??aCZm@i@qA~@Bj@@`B??|@`DF|Em@~ENxBZ`BHjDh@hD??t@ARj@Q`@??T`@Ft@J|A[vB??Av@D`DG|@??ZpEXrC@?vBOk@jCqAjD}ClHwAlCqAxB}KrOA@C@EBEBCDA?ORIJORQPKLQPKJYVKJMJSPMJo@f@EDYTa@\\UR_@ZWRCB_@\\YVMJIFIF[T]VIFKDMFMDODODG@QD]F_@FWBK@c@D[Bw@DM@M@[@M@[@[@M@M@sADM@M?M@M@i@@M?[@[@M@Y@M?K?Q?LgAH_FIgASs@q@oAa@e@w@]s@CQAiA??E?U@U?I?g@@Q?Y@W?G?O?E@U?K@Y?WAQ?QAKAUCYAOCG?AAG??CMEKEIEE??GGECECGAGCIAI?GAM?K?GAKCICEEGEEICGAIAMAMAICU??EO??CM??EOCI??AEA?CE??ECCAEAC@E?G@EBGBKFMJIFGHOLONSPUPIFOLKFIDUNOHUJKDCBc@RWJA@ODKDGBEBED??CB??EHCF??CFCJ??EP??CN??EVAJE`@ALC\\ALCh@AP?FAPAd@?ZAZAVAJ?JAHAFAFCBABC@AAECAECEEI??EI??GECEEAGCGCE?IAE?G@I@KBGBMFKDIDSJEB[PWNa@XGDQLSLQNIFQNGFOP??MN??EFKP??EHIPEFCHGPAH??ER??ER?HCR?RAJ@RAJ?HCJAHEHCJGJEHIJGHIJKJKJMJMHOJOJQJQJSJSJSJWJULq@VYJ[J[L[J}@X]L]L]L[NMHg@D??{B|@gFN??WtAa@`IiAjLgAzEiHHkF_K??oF}HmG{GlAcH??s@a@_DuA_K{H??_@ViI_L??A?qBhEcTqOcM}H_EeAmAH??????lHbS~MrWoBtBq@b@_AvC??GdE?@hBzLGbE~@rCEv@^pA[pC??~@|CjBhFdD`EOtEPxA??~BRxAM??nDsC|@o@??n@kA??`EeO~BqJjC`B@???P_AtZjNhDtB??N???p@oAjAa@h@Gj@S`@pC??p@tApBvFxB`Jl@fDWJcBh@??k@l@??xBrJ??`B_AfC}@hAz[oCoB??_@F??DfF??????~AABdG??v@`Bo@`FwBE??????WdG??????dHHr@pOw@B????IfA??KtBoCu@DaB??????cAa@????WbCs@S"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Regensburg_216_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Sindelfingen",
+      "center": [
+        48.7084,
+        9.0035
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "RJRSMXTOPZ6EI",
+      "serviceAreas": [
+        {
+          "name": "Stuttgart[Sindelfingen][SZ][Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "kujhH}qtu@`IcDhGEbIhBxCVzBat@C}U}A{O_HdHG_@kDzB}GbFcDvAaEd@iCKiIiBF{@bDhAdDl@|BL~BUpFyB`O}QGaKs@KZkJ???OL?zAh\\pG}HfJsLlDkJtCuIf@s@BgAVa@dCjAnChAv@gEvAgH????????dE}S_GqC??????????LeG????pEgW`@uCHsB??????????????rEo@????????????????w@xECpDBdF??c@tVT~BdBxLtIbItBm@??vEc@DGD_@??P_A??H[Lm@??Lc@Fc@??Nu@??f@wBQK??USYU[vAg@`CMv@??Qr@????[X??g@N??eEv@??????}CkD??mBoC??gAkD????cAe\\??j@sR????tGk]??~B}Hn@kC??jAqE|AsG????tE{H??lB}B??fBgA????nCO??nCB??????????xCxI????????[fAQpBTvAtArAbBTzDg@??dGvB????~B`CV{@aEeDiGiAmDj@????oBkA????????OkA??NaA????????r@W??????fCpB`Ct@xC`@xCGfCu@vBsCaF|B??mCV??kCS????yHwE??????????????????????~W{BA}@yXvB??????{BkH??????????????????|HLxDe@hAw@dFeE??`DsBOaF??BcAQ_DGu@_AmKoHc[yIqV??????????tAwDYi@??????????????????^G????@CIYsB^????????}Ni^??eGqT??aGw]cD}AyHm@??????????????l@kF??tDgR~@wGHcBkDXmF`@gLhNsFlT??aHpNtJvX??????????????aCdByAnM??????_BhC??????aAX??????eDkDsAUyAzD`AzEnAnA??????????iAtJ??iBjJ????????_BfA??????????????sBoM??MwAiE_A????????????Ey@??????????jC_CW_BqCvB[zGjHjJ??????????????gDtEr@dB??????????????a@B??????????Wm@_@?Rh@b@D`@C??????????v@jB??????????????????eBD????{B{@??uCgB??gD{BkB[_ABwBxC??????}@R??u@E????s@_@??i@a@????????aBkAu@Qy@Te@r@Q~A@bGMnE{@hJ[YmA_@}D}GeLeX{QlaAo]bLeJtKfHps@lbA}h@vEb[bBEc@hFzI~\\ZxHHXqAjFuApBHt@fA`EjCnCbIiG~CaGhCuAbBBl@Fj@jDtA`HExIaBlCoAfF_I`GmJfH_@`]d@?CnA@?qAzVe@z@UzFoBQ`A{NnAB|@gPkMUgMY~@dNI`OoAvGsC_CgBkEkAyE\\mMh@_F^wOu@aKpd@{Dy@{PwA{Qyc@qE_YgQXxq@N`QCpE}BhCpF`Q{@`QqBD{AnW?dChELfAfZVlDH@D@vDXxDdBnDpDnFzCxHxJpAbEfLnB"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Stuttgart_4578_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Unterschleißheim",
+      "center": [
+        48.28038,
+        11.57684
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "436RDWOPIKUG5",
+      "serviceAreas": [
+        {
+          "name": "[Munich][SZ][Geschaeftsgebiet][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "s{ueHswneAdAIbA_@|@q@t@aAl@qA^}AReBFgBGiBSeBYgATi@vCwF~AoCFHxP`VhDfE??GmL^aC@?t@aAh@mA@C??`@}A??LkABG@G??@W@??????????Q???????????MAWVILC?AfA]????YuA??DIDG????@K??n@qM\\t@????v@bA|@p@bA\\????dAJnM`HbIqBzCE????~CsPrEx@???An@aE??????mBgApA{I??????_DkA~B_Q??????gAs@~CcJ????nAkG?At@aA??j@qA????`@}A??RcBFiBGiBSeB??a@{A????k@qA??u@cA_Aq@A?f@_@t@cA??j@qA????`@{A??ReBFiBGiBScB??a@}A????k@qA??u@cA}@q@cA]eAIeAHKD@mAvEoCdBu@????p@i@~@FdAI`A]|@q@@?t@cA??j@qA`@}A??RcBf@`@??hAw@??m@wCvBsAbDlN??xDwB^H??f@]^rA??pE{D??jBcJ\\}@h@C????z@kCrD_D??p@{K`BfA??lGsN??Qa@oEeGgFpL[r@IGCw@Mw@Gk@??_@yA??m@sA]i@a@c@]WbIaTHK??gEiI?A??GB??qfAt_@G_@m@{@??uAc@cCiC_EwEmEvE?@`BtEu@n@??bBpFmE|AAGm@qAu@aA??}@q@cA_@eAIeAHcA^}@p@??u@`Ak@pAa@|AAH??}@q@cA_@eAIeAH_AR]Bg@Do@VIe@GY??e@B??{H~@{J|CoA~@CDa@X[TmEdDk@E??iAlAiAnA}GzHoDfG??A?_GnLOV_F`HILeE|E??A?EF????????CXIl@Oj@Sf@W^]V]NSF??GB?????????LH|D??@J????BHvIhUUd@?@a@zA??SdB??GhBFfBRdB????`@|A??j@pA??t@bA~@p@`A\\??dAHdAIx@YnBdFBF??`JhSBDt@tABV??`@|A??j@pA??t@bA????~@p@jGhNjOlWC@eGdL[q@u@aA}@q@cA_@eAIeAHcA^}@p@u@`Am@pA_@|ASdBGhBFfBRdB^|Al@pAt@`A|@p@bA^dAH"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Munich_9229_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Waiblingen",
+      "center": [
+        48.83241,
+        9.31641
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "RJRSMXTOPZ6EI",
+      "serviceAreas": [
+        {
+          "name": "Waiblingen SZ staget2[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "mdeiHq_uw@zHyA`Ni]lCoYlo@ih@`PoIdRhIhFvDfIWpJoApEhBoCz^bA^^tNzQjAp@oLjH{Bh@bCtFcDcAgMl@e@|@wB`Du@l@BhGcBxAxFgFzA?t@dBxSrFoAvAfOxHwBj@cDxSg@xCqO`@}T?}Pf@AiAgJwCgNaE}JKm@_AiAUiIzAH[oDaCr@c@kAsE~Bs@yIn@qB_AqLCmHf@{IjAk^m@wKi@uCiDp@cAvCeDnBwBaIhEuP|NeWg@{RsA}AdCcMnEkXn@qI??????tBmX????`B}E}QkG??????????gA_@mOpO{Ee^iKjHgEhYhGbKD`g@s@dYWr^eWbQ}@e@iC_@cKv@uAcEMYi@wAa@uAOeAC[CU\\?cBiLgH}RcBjAcFiRqCuB{O`CtCd`AiFnC^xDyIjGxGzQLdCj@bc@}Jk@cFgRcLoRqDa`@aD_IyVvLgEsDaCqRuGtG{Hg^ex@ro@`Erg@{FlAmB_NaGhCaFxFisBoEiGfEwR]gAtSaMkFmJ~XuBtIJZP~@JdA@j@nFpU|FxM`J~Ipb@{YrW{Zr_@kQds@rb@tCxVlIbd@nJ`Rte@ll@hOnX"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Stuttgart_4578_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Witten",
+      "center": [
+        51.437,
+        7.3351
+      ],
+      "timeZone": "Europe/Berlin",
+      "regionToken": "6DVCQJWHIFDER",
+      "serviceAreas": [
+        {
+          "name": "Witten_SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "_p_yHiswk@aHna@iBrRyTcEiG_K{BiPMbCdA`MfBdIqDhEH~BlFsF~L`Mr@zQfI}@CxQCjDxChBV|@hDCnApEvHyCrAhHz@|G`BtEbHlKlBzFsMpOpH|VRNv@_@dEnLZjAdC{@pG_CzAqArCaGvChPfANtBpRa@pJ}ArJcEhNStILxC\\zCvB|IbAfCy@xKYfBs@|GFnBV|ArCpJf@H`@iB@Og@z@kDoJIy@?cAFkBVuCXiBl@iC\\mEJgAbFyBPj@VeEoGjBwE}UdJ{`@xFjFdBiBHcDpGqBlEdEvERhM~XcB`JhN}O~Ub|@RlDi@nFbF|CxDfHjOtO`AtA~L`Tz@uAn@c@vC`BxCtH`EyCkDkL{DwHbCmBxAwBy@eByFzGBfB~@hH|EhD~@`D_BjAoBcGcCuAw@}GiB_Bw@}FkAPfAlGxCvHwBCoJkR~@_Dz@iHrBhDj@NnFMj@aCbDlJr@w@wDoJ~AqF^yIuAgKqBkBOiCB_DPsDWoGNuGvL}PbFgHfBcAg@eE_CeGgGgKyD|B]fAI|Ar@rDz@bAjBmAjArIwDjIqCyKiCsH{BdCiEzE{CpHuA|IG`CgCCo@n@[fCD~JNjBrD{@CvHzB|JqCgCmG}IyCqAaDd@sGpD}C~FiRyr@xBkC`GiDz@}A{F}FaIuZg@yAqEcAyDcD{@jCrAlEdC`FwB^uDmCI|AqAzOiGw@cCiDsCD{BlAmB^HeUnCaMFsGvAtCxGvPbHvFHuAwDiDaFoJ_G{NMiRXyBb@rB~GtQVcAkGuP{CyOQyJP}Iy@{C}AeFZ}GBcG|CdHh@cA_JsTeA_h@tIwEdHaIfBc@dCwFcD}EyBaKBsM`DKdFdDLfD_AzAwElLbDxEzJmWrKHpQrHqEhX~LbVfD{DgAkK|CmE_EwQlFyHbEbLjFs@rAmFOiEvLlFlDE|DxLdBcA_FaQnFsAnAcCpFbPfBcBmByIAeDkEiHbAoFqK}WsF_KuA}LcDsDwDJwGpByGjQ{AxHkA~HmClScAxHkDzFcOmD}NXgKoI{@wGbAoBrEfAFaKmBmP_CzCwBiOaEaQkC{DmCkItAwFd@yHM}S{ByNeD}MvCmz@|@wRbIkDzA{EbCQbDzC^wBPgDwEc\\yBfAyDiTyGxBkCpUkL|FqK~EsG?uB^YiAzG}JrBeEfBiBvFcEoA{L{IrCm@aCu@gCaAwJ_FoQ}C]a@Le@qCa@vAb@|A_FlEnJzSaIxGuGeQiAuHrB~BlEeBa@cAeDxA{A_DkAFqCwJg@}F~Ae@z@oFQ}FgAaIhFp@rCrVhGrK^wAuFkK]wD{ByOgBqK@sQZqIQcEe@eCy@cAuBs@}@kDgAsD{DsB\\wDbBeI_FmSiE}IOfArB|GfBpI~BnIs@vEc@~EyKzA_Fo@McDq@cIuB`@OcNcBoMrEtDtB`LvALfA{AdAwB~AqMP}@eBwCaEDmB_AaAgAuDdHcK|FuEb@{IKq@xQeEhNjDtOrCnLxAwAwFgPV_CtJfHo@dD{BfC\\fArCwCx@gD`DnBoB~JoDxF^nB`EcGxBuLjD~BbKnKjKhKUjHxAvKr@tKCpFtAdDrEbWpA`WbDhYsTy@cBhRfBPIbMyDsASwAsLpDsBxAhBjHoBlBoClAeNlDi@}Dm@G]vIlAfCpG{GxP}E|I{D|AkBzHqBbA`YvArTpAzLcOqNSxIk@xFsEnL[`@kCkBGnBnD~AdFuKdD|D`MEv@c@bDbM|AnJLfPgK~BfBzMbFpT]|OqIe@sF}GbAyHkFe_@wCfBg@yPaFRx@nOkC{BuAsHcAzAn@tC?dBf@UBrAOhE_@KsB~MaEzTp@tAzAz@pGMjQqAd@OfDzFtB|AG~GpF~HKbQuGrD}JcCeBP~KbFKdBmD{@wB\\mFvB{MxCxFrO~@n@tTqBxCbB`B|@pFx@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Dortmund_9341_exclude_new_type.json"
+      ]
     }
   ]
 }

@@ -10,15 +10,15 @@ const guide: Guide = {
   headline: 'E-Scooter Pforzheim: Preise, Abstellflächen und Sperrzonen von der Innenstadt bis an Enz und Nagold',
   lede: 'Einen E-Scooter in Pforzheim leihst du ab 18 und ohne Führerschein bei Voi oder Lime, den beiden Anbietern, die die Stadt nennt. Laut Vois Datenfeed kostete eine Fahrt am 23. Oktober 2026 0,49 € fürs Entsperren plus 0,24 € pro Minute, zehn Minuten also 2,89 €. Du fährst auf dem Radweg, sonst auf der Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone. In der Innenstadt beendest du die Fahrt seit 21. September 2026 nur auf einer der markierten Abstellflächen, sonst läuft die Uhr weiter.',
   published: '2026-10-24',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'de:Pforzheim',
   sections: [
     {
       heading: 'Welche E-Scooter gibt es in Pforzheim?',
       blocks: [
         'Laut Stadt bieten in Pforzheim derzeit **Voi** und **Lime** E-Scooter an. Die ersten Leih-Scooter brachte im Dezember 2020 Zeus. Im Oktober 2024 nannte die Verwaltung vier Betreiber: Tier-Dott (bis 10. November 2024), Lime, Voi und Zeus; im Juli 2025 waren es Lime, Voi und Bolt mit zusammen rund 450 Scootern. Gemietet wird in der App des Anbieters: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        '[Auf der ScootRadar-Karte](map:de:Pforzheim) standen am Freitag, 23. Oktober 2026, um 15:18 Uhr rund 190 Voi-Scooter in Pforzheim. Das ist eine Momentaufnahme der freien Fahrzeuge, nicht die Grösse der Flotte.',
-        '**Lime fehlt auf der Karte**, weil kein offener Datenfeed Lime in Pforzheim zeigt: In Limes Feed im Landesportal MobiData BW stand am 23. Oktober 2026 kein Fahrzeug in der Stadt. Dass Lime hier fährt, sagen die Seite der Stadt und ein Bericht der Pforzheimer Zeitung vom 2. September 2026. Bolt, das in [Karlsruhe](map:de:Karlsruhe) fährt, und Dott führen Pforzheim nicht unter ihren Städten, und das Landesportal zeigte von beiden dort kein Fahrzeug.',
+        '[Auf der ScootRadar-Karte](map:de:Pforzheim) standen am Freitag, 23. Oktober 2026, um 15:18 Uhr rund 190 Voi-Scooter in Pforzheim, am Sonntagmittag, 25. Oktober, rund 200 Lime-Scooter. Das ist eine Momentaufnahme der freien Fahrzeuge, nicht die Grösse der Flotte.',
+        '**Lime zeigt die Karte seit dem 25. Oktober 2026**, obwohl in Limes offenem Feed im Landesportal MobiData BW am 23. Oktober kein Fahrzeug in der Stadt stand. Dass Lime hier fährt, sagen auch die Seite der Stadt und ein Bericht der Pforzheimer Zeitung vom 2. September 2026. Bolt, das in [Karlsruhe](map:de:Karlsruhe) fährt, und Dott führen Pforzheim nicht unter ihren Städten, und das Landesportal zeigte von beiden dort kein Fahrzeug.',
       ],
     },
     {
@@ -140,7 +140,7 @@ const guide: Guide = {
     },
     {
       question: 'Welche E-Scooter-Anbieter gibt es in Pforzheim?',
-      answer: 'Laut Stadt Voi und Lime. Die Karte zeigt nur Voi, weil kein offener Datenfeed Lime in Pforzheim zeigt. Bolt und Dott führen Pforzheim nicht unter ihren Städten (Stand 23. Oktober 2026).',
+      answer: 'Laut Stadt Voi und Lime; unsere Karte zeigt seit dem 25. Oktober 2026 beide. Bolt und Dott führen Pforzheim nicht unter ihren Städten (Stand 23. Oktober 2026).',
     },
     {
       question: 'Wo darf ich in der Pforzheimer Innenstadt einen E-Scooter abstellen?',

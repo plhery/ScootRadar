@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Bonn: Anbieter, Preise, Parkverbote und was in Parks, am Rhein und in Bus und Bahn gilt',
   lede: 'Einen E-Scooter in Bonn leihst du ohne Führerschein und in der Regel ab 18 bei Dott, Lime, RideMovi, Ryde oder Voi. Zehn Minuten kosten bei Voi nach seinem veröffentlichten Bonner Tarif (Stand 24. Oktober 2026) 1,80 €, bei den anderen zeigt die App den Preis. Du fährst auf dem Radweg oder der Fahrbahn, durch Grünanlagen wie Hofgarten und Rheinaue nur, wo es ausdrücklich erlaubt ist. Abstellen darfst du nicht in der Fussgängerzone rund um Markt und Münsterplatz, am Rheinufer, in Hofgarten, Stadtgarten und Rheinaue und auf Friedhöfen. In Bahnen und Bussen der SWB sind E-Scooter seit März 2024 verboten.',
   published: '2026-10-24',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'de:Bonn',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Laut Stadt vermieten fünf Anbieter in Bonn E-Scooter: **Dott**, **Lime**, **RideMovi**, **Ryde** und **Voi**. Dott und Ryde führen Bonn auch auf ihren eigenen Websites; für Lime und RideMovi ist die Liste der Stadt unsere Quelle. **Bolt** nennt Bonn auf seiner Website als E-Scooter-Stadt, steht aber nicht auf der Liste der Stadt; ob dort Bolt-Scooter stehen, zeigt nur die Bolt-App.',
         'Du leihst den Scooter in der App des Anbieters, laut deren Bedingungen ab 18, obwohl das Gesetz E-Scooter schon ab 14 erlaubt. Nur RideMovi lässt laut seinen deutschen AGB auch Jugendliche ab 16 fahren, wenn ein Elternteil das Konto für sie anlegt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte rund um Bonn](map:de:Bonn) seit dem 24. Oktober 2026 Dott und Voi: an jenem Samstag kurz vor 16 Uhr rund 700 Dott- und 1450 Voi-Scooter, fast alle im Bonner Stadtgebiet. Das ist eine Momentaufnahme, keine Flottengrösse. Lime, RideMovi, Ryde und Bolt findest du nur in ihren Apps.',
+        'ScootRadar zeigt auf der [Karte rund um Bonn](map:de:Bonn) seit dem 24. Oktober 2026 Dott und Voi und seit dem 25. Oktober Lime: am Samstag, 24. Oktober, kurz vor 16 Uhr rund 700 Dott- und 1450 Voi-Scooter, fast alle im Bonner Stadtgebiet, am Sonntagmorgen, 25. Oktober, rund 920 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. RideMovi, Ryde und Bolt findest du nur in ihren Apps.',
         'Auch im Umland findest du dieselben Apps: Dott vermietet laut eigener Website in Sankt Augustin, Siegburg, Troisdorf und Hennef, Voi laut seinem Datenfeed in Sankt Augustin und Siegburg. Die Karte zählt diese Orte getrennt, etwa [Siegburg](map:de:Siegburg).',
         'Mit «E-Roller» sind in Bonn oft die roten Elektroroller zum Sitzen gemeint, laut Stadt 50 Stück, die SWB Bus und Bahn als Clara-Sharing vermietet. Für die brauchst du einen Führerschein; um sie geht es hier nicht.',
       ],
@@ -38,7 +38,7 @@ const guide: Guide = {
           },
         },
         'Eine Viertelstunde kostet bei Voi damit 2,70 €. Das ist deutlich weniger als in Köln, wo Voi am selben Tag 0,30 € pro Minute verlangte. Laut Datenfeed gilt der Bonner Tarif auch in Sankt Augustin und Siegburg. Verbindlich ist der Preis, den die App vor dem Entsperren zeigt.',
-        'Mit einem VRS-Abo, auch einem Deutschlandticket mit VRS-Chipkarte, fährst du kurze Wege oft billiger mit dem Leihrad Welo: Mit dem normalen Rad sind die ersten 30 Minuten dann gratis (siehe unten). Den nächsten Dott oder Voi und für Voi eine Preisschätzung für deinen Weg zeigt die [Live-Karte von Bonn](map:de:Bonn).',
+        'Mit einem VRS-Abo, auch einem Deutschlandticket mit VRS-Chipkarte, fährst du kurze Wege oft billiger mit dem Leihrad Welo: Mit dem normalen Rad sind die ersten 30 Minuten dann gratis (siehe unten). Den nächsten Dott, Voi oder Lime und für Voi eine Preisschätzung für deinen Weg zeigt die [Live-Karte von Bonn](map:de:Bonn).',
       ],
     },
     {

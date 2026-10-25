@@ -209,6 +209,669 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Manchester_200_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "DE",
+      "city": "Augsburg",
+      "regionToken": "L7S4CKCYKEOTW",
+      "fingerprint": "613ddb37dea48d85a3b103afa1639d48293b59c85d345c5e56788556ccb577f9",
+      "groups": 10,
+      "localCells": 39,
+      "coldMapRequests": 39,
+      "warmMapRequests": 39,
+      "scooters": 959,
+      "stationaryReferences": 24,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T05:57:52.711Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Augsburg_373_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Berlin",
+      "regionToken": "H56ROKYLNBCYA",
+      "fingerprint": "79564f62e861d69228e091c69439adeb1d28f157de41638707f2db1fa89edf9b",
+      "groups": 128,
+      "localCells": 510,
+      "coldMapRequests": 630,
+      "warmMapRequests": 630,
+      "scooters": 15424,
+      "stationaryReferences": 62,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T07:43:12.782Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Berlin_5573_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Böblingen",
+      "regionToken": "RJRSMXTOPZ6EI",
+      "fingerprint": "11a31e1c67a92750a84bada56fba6dd10269c18854b61aa0606af8c6f5b9da9e",
+      "groups": 3,
+      "localCells": 12,
+      "coldMapRequests": 12,
+      "warmMapRequests": 12,
+      "scooters": 116,
+      "stationaryReferences": 25,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T07:45:32.662Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Stuttgart_4578_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Bochum",
+      "regionToken": "F2OUJ2OPVEER5",
+      "fingerprint": "09a4bbd2eebfe43104b01af51a230865377b8e6df7ac98d25dae0f794f208d91",
+      "groups": 14,
+      "localCells": 54,
+      "coldMapRequests": 54,
+      "warmMapRequests": 54,
+      "scooters": 524,
+      "stationaryReferences": 5,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T07:54:52.593Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Bochum_4555_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Bonn",
+      "regionToken": "J7XEKZI4INMFF",
+      "fingerprint": "e1f65f052d3fd905090442aa6e98c7d543af43da696aac77cd20b002b63e63fe",
+      "groups": 13,
+      "localCells": 50,
+      "coldMapRequests": 54,
+      "warmMapRequests": 54,
+      "scooters": 918,
+      "stationaryReferences": 19,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T08:04:12.778Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Bonn_1386_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Bremen",
+      "regionToken": "WB6QRZBISG4IA",
+      "fingerprint": "c83e4118bca762d1f08ef73b643f92aa3c17405e35b4b586e80332b65fa54db3",
+      "groups": 18,
+      "localCells": 72,
+      "coldMapRequests": 72,
+      "warmMapRequests": 72,
+      "scooters": 1255,
+      "stationaryReferences": 62,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T08:16:32.697Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Bremen_506_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Dachau",
+      "regionToken": "436RDWOPIKUG5",
+      "fingerprint": "d796f151f06b6e78d43a1632f2adc8d853e94cdc4adafd88878f8017fbc451f9",
+      "groups": 3,
+      "localCells": 12,
+      "coldMapRequests": 12,
+      "warmMapRequests": 12,
+      "scooters": 172,
+      "stationaryReferences": 21,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T08:18:52.695Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Munich_9229_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Darmstadt",
+      "regionToken": "BJBH4UYPK6VC2",
+      "fingerprint": "8d0cb7387f8ef7a74c836f5667544913ece7cfca26dc6addf04568574e4d42da",
+      "groups": 8,
+      "localCells": 29,
+      "coldMapRequests": 29,
+      "warmMapRequests": 29,
+      "scooters": 532,
+      "stationaryReferences": 29,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T08:24:02.749Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Darmstadt_367_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Dortmund",
+      "regionToken": "6DVCQJWHIFDER",
+      "fingerprint": "63fad4d489dcbc46cb3b5aebbaaad0abde02a38c6c58ac91d3fae1e4a5cd8dd7",
+      "groups": 18,
+      "localCells": 70,
+      "coldMapRequests": 94,
+      "warmMapRequests": 94,
+      "scooters": 1810,
+      "stationaryReferences": 169,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T08:42:59.261Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Dortmund_9341_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Duisburg",
+      "regionToken": "O7HURFOJKLBVM",
+      "fingerprint": "76afa1a5cb4459e93caa9c705d377839cd75218d6145fb8448825ca6ae982638",
+      "groups": 26,
+      "localCells": 101,
+      "coldMapRequests": 113,
+      "warmMapRequests": 113,
+      "scooters": 2642,
+      "stationaryReferences": 1,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T09:27:01.276Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Duisburg_14579_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Düsseldorf",
+      "regionToken": "JCTE7UTGKR3JN",
+      "fingerprint": "f01389688f15ff8cf1daf4f605c6c2d7827de130191d72e31c7a40dc1ac21d28",
+      "groups": 22,
+      "localCells": 87,
+      "coldMapRequests": 103,
+      "warmMapRequests": 103,
+      "scooters": 1983,
+      "stationaryReferences": 185,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T09:44:55.991Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Dusseldorf_16052_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Elmshorn",
+      "regionToken": "6QSZWSVEIB3AB",
+      "fingerprint": "76b9ff01f660085f8602b674d85088dcaa4a06682326a2fa18706be89aa31243",
+      "groups": 4,
+      "localCells": 14,
+      "coldMapRequests": 14,
+      "warmMapRequests": 14,
+      "scooters": 552,
+      "stationaryReferences": 25,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T09:47:36.378Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Hamburg_2121_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Essen",
+      "regionToken": "VCJ5NAAKJXRZ7",
+      "fingerprint": "d6199d9261b7df091bca56f3bd074a768dabb38302032431c93a776452ce801d",
+      "groups": 25,
+      "localCells": 97,
+      "coldMapRequests": 97,
+      "warmMapRequests": 97,
+      "scooters": 1633,
+      "stationaryReferences": 71,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T10:04:25.212Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Essen_42236_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Frechen",
+      "regionToken": "5AXKMEVHH7RO4",
+      "fingerprint": "6406bd082ad454d26d8e8802807e05d2008ee1a1ad0200d6eda3c3a523beec56",
+      "groups": 6,
+      "localCells": 23,
+      "coldMapRequests": 23,
+      "warmMapRequests": 23,
+      "scooters": 39,
+      "stationaryReferences": 3,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T10:05:49.605Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Cologne_4657_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Fürstenfeldbruck",
+      "regionToken": "436RDWOPIKUG5",
+      "fingerprint": "2dcbf02ccd1a3eb6b8badf39f7eea7e27d1b287a7512548d1745e0c8fbb617c3",
+      "groups": 2,
+      "localCells": 8,
+      "coldMapRequests": 8,
+      "warmMapRequests": 8,
+      "scooters": 76,
+      "stationaryReferences": 15,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T10:06:05.101Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Munich_9229_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Germering",
+      "regionToken": "436RDWOPIKUG5",
+      "fingerprint": "1829f937bc16203ae86db5b8eb85203134c336a61ee1ca93862ee6da2c457714",
+      "groups": 3,
+      "localCells": 10,
+      "coldMapRequests": 10,
+      "warmMapRequests": 10,
+      "scooters": 158,
+      "stationaryReferences": 38,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T10:08:07.095Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Munich_9229_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Göttingen",
+      "regionToken": "UPMJJRT6IB6QM",
+      "fingerprint": "fb1a71eb6737584297309ef385ac0ae4c804fea74096858054800a3cccb0e2ef",
+      "groups": 7,
+      "localCells": 27,
+      "coldMapRequests": 31,
+      "warmMapRequests": 31,
+      "scooters": 622,
+      "stationaryReferences": 14,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T10:12:20.540Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Goettingen_197_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Hagen",
+      "regionToken": "LVB2DCBZNZSM5",
+      "fingerprint": "c380c6ab62de9a39eabab680dbfdf5efde921b50573c24aca4b598df354f1cd4",
+      "groups": 11,
+      "localCells": 41,
+      "coldMapRequests": 49,
+      "warmMapRequests": 49,
+      "scooters": 847,
+      "stationaryReferences": 120,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T10:18:17.328Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Hagen_228_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Hamburg",
+      "regionToken": "6QSZWSVEIB3AB",
+      "fingerprint": "2b73a14d39b4ed1cc407a13ae51cb56dd66450c9d52e1c013f8b5b197e8c7462",
+      "groups": 57,
+      "localCells": 227,
+      "coldMapRequests": 239,
+      "warmMapRequests": 239,
+      "scooters": 5905,
+      "stationaryReferences": 11,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T10:46:24.370Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Hamburg_2121_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Hannover",
+      "regionToken": "WIUEIMOAE6RE7",
+      "fingerprint": "423964c49ef5274570f9742343596ba90cad5f1cbb7f0c24c944d45def83bafa",
+      "groups": 24,
+      "localCells": 95,
+      "coldMapRequests": 103,
+      "warmMapRequests": 103,
+      "scooters": 2185,
+      "stationaryReferences": 49,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T10:58:39.394Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Hannover_494_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Herne",
+      "regionToken": "F2OUJ2OPVEER5",
+      "fingerprint": "0a37c13787f91065cfa2889664e4ea267e348e120b871ea34aea1c2b2927b631",
+      "groups": 5,
+      "localCells": 20,
+      "coldMapRequests": 20,
+      "warmMapRequests": 20,
+      "scooters": 170,
+      "stationaryReferences": 5,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T11:01:13.350Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Bochum_4555_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Hilden",
+      "regionToken": "JCTE7UTGKR3JN",
+      "fingerprint": "8183dbcc20afff8caafcb4b738afd3648146fe92ff681cc8e3b808a34a6dd567",
+      "groups": 4,
+      "localCells": 13,
+      "coldMapRequests": 13,
+      "warmMapRequests": 13,
+      "scooters": 67,
+      "stationaryReferences": 7,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T11:02:58.299Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Dusseldorf_16052_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Köln",
+      "regionToken": "5AXKMEVHH7RO4",
+      "fingerprint": "a42353036818d7c8af5a19fbfd931d29008267f81a5a36bfabea588ab67e3083",
+      "groups": 26,
+      "localCells": 103,
+      "coldMapRequests": 135,
+      "warmMapRequests": 135,
+      "scooters": 4686,
+      "stationaryReferences": 66,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T11:18:57.341Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Cologne_4657_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Langenfeld",
+      "regionToken": "JCTE7UTGKR3JN",
+      "fingerprint": "63dc184f6cc6dca5fbc85c91d64bf6d81c9516853b919ea19d8e3fa460c731d9",
+      "groups": 5,
+      "localCells": 18,
+      "coldMapRequests": 18,
+      "warmMapRequests": 18,
+      "scooters": 202,
+      "stationaryReferences": 13,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T11:21:17.363Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Dusseldorf_16052_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Lübeck",
+      "regionToken": "PCLR2KWDFMYAH",
+      "fingerprint": "aee1785119981ce068042448bba80caca3fbe01bc8364335adc3fbec82528af7",
+      "groups": 14,
+      "localCells": 55,
+      "coldMapRequests": 55,
+      "warmMapRequests": 55,
+      "scooters": 413,
+      "stationaryReferences": 21,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T11:27:56.347Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Lubeck_186_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Mainz",
+      "regionToken": "4TY3SQGYVUTZT",
+      "fingerprint": "020037c0821f69e98e15624bc431e77ac9ff94a83588061c6e574b44513d888e",
+      "groups": 6,
+      "localCells": 24,
+      "coldMapRequests": 24,
+      "warmMapRequests": 24,
+      "scooters": 293,
+      "stationaryReferences": 40,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T11:35:10.266Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Mainz_14676_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Meerbusch",
+      "regionToken": "JCTE7UTGKR3JN",
+      "fingerprint": "0b6a7ddbf62d2176edd39a227bb0e363f19ddec4df22b0c527554e8f9984f8b9",
+      "groups": 7,
+      "localCells": 28,
+      "coldMapRequests": 28,
+      "warmMapRequests": 28,
+      "scooters": 338,
+      "stationaryReferences": 45,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T11:38:40.314Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Dusseldorf_16052_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Mülheim an der Ruhr",
+      "regionToken": "O7HURFOJKLBVM",
+      "fingerprint": "781a4d8c1698dd995b2b463cf058b026a49b57c69df5c589a86f972612c856c5",
+      "groups": 10,
+      "localCells": 37,
+      "coldMapRequests": 37,
+      "warmMapRequests": 37,
+      "scooters": 529,
+      "stationaryReferences": 53,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T11:43:13.309Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Duisburg_14579_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "München",
+      "regionToken": "436RDWOPIKUG5",
+      "fingerprint": "33f575801cf1da8d6cef4b639e19ec6b57f12a6b6262f1b063fb051c1fd97d6d",
+      "groups": 42,
+      "localCells": 165,
+      "coldMapRequests": 253,
+      "warmMapRequests": 253,
+      "scooters": 10044,
+      "stationaryReferences": 23,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T12:12:58.370Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Munich_9229_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Neuss",
+      "regionToken": "JCTE7UTGKR3JN",
+      "fingerprint": "280b7d31168afc6c30eb5c50eb67fa3f24d3ea9dfa3db7d93009c33d5e5bde4b",
+      "groups": 11,
+      "localCells": 43,
+      "coldMapRequests": 43,
+      "warmMapRequests": 43,
+      "scooters": 395,
+      "stationaryReferences": 10,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T12:19:16.314Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Dusseldorf_16052_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Nürnberg",
+      "regionToken": "YPLZ4CAHSLTNL",
+      "fingerprint": "a8774af33257cea03154704b3ddd56a46f80ed54919e2e59c93b9c103bc660aa",
+      "groups": 18,
+      "localCells": 70,
+      "coldMapRequests": 70,
+      "warmMapRequests": 70,
+      "scooters": 1133,
+      "stationaryReferences": 79,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T12:27:40.419Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Nuremberg_4154_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Oberhausen",
+      "regionToken": "O7HURFOJKLBVM",
+      "fingerprint": "689f96459b3557116d71ebbc68d253d3ad0f1f62a019b9c793d36dd5f114cf5f",
+      "groups": 11,
+      "localCells": 42,
+      "coldMapRequests": 42,
+      "warmMapRequests": 42,
+      "scooters": 357,
+      "stationaryReferences": 67,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T12:32:48.389Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Duisburg_14579_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Pforzheim",
+      "regionToken": "RJRSMXTOPZ6EI",
+      "fingerprint": "1bf10820a5de83c2aae010dbb2a6e59d15de519c7193790b1d40ab6bde80a947",
+      "groups": 5,
+      "localCells": 17,
+      "coldMapRequests": 17,
+      "warmMapRequests": 17,
+      "scooters": 205,
+      "stationaryReferences": 33,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T12:42:22.584Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Stuttgart_4578_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Pinneberg",
+      "regionToken": "6QSZWSVEIB3AB",
+      "fingerprint": "c2725321a36350e81c61709f67e9ca09beb41fac8da3826949517ef925a56ca6",
+      "groups": 3,
+      "localCells": 11,
+      "coldMapRequests": 11,
+      "warmMapRequests": 11,
+      "scooters": 499,
+      "stationaryReferences": 109,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T12:43:53.402Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Hamburg_2121_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Regensburg",
+      "regionToken": "UO2NFI4TLMJXB",
+      "fingerprint": "2d0799683c8cbc243a02e3f47e1ce1db8704433dd8266aca490c8d921865a8f8",
+      "groups": 9,
+      "localCells": 36,
+      "coldMapRequests": 36,
+      "warmMapRequests": 36,
+      "scooters": 302,
+      "stationaryReferences": 11,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T12:48:19.380Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Regensburg_216_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Sindelfingen",
+      "regionToken": "RJRSMXTOPZ6EI",
+      "fingerprint": "42d56a12e262c8e7cbf3fe948d9fb0c7e6ca27d4d7b3d49cf47229787f1b2db6",
+      "groups": 3,
+      "localCells": 12,
+      "coldMapRequests": 12,
+      "warmMapRequests": 12,
+      "scooters": 114,
+      "stationaryReferences": 15,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T12:59:17.300Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Stuttgart_4578_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Unterschleißheim",
+      "regionToken": "436RDWOPIKUG5",
+      "fingerprint": "d8f26b1aae5b47f293acf1a870b4902dce9c131c1f8c7cea7d8f0a13f90d857f",
+      "groups": 2,
+      "localCells": 8,
+      "coldMapRequests": 8,
+      "warmMapRequests": 8,
+      "scooters": 140,
+      "stationaryReferences": 14,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T13:06:03.334Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Munich_9229_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Waiblingen",
+      "regionToken": "RJRSMXTOPZ6EI",
+      "fingerprint": "fedbb15fa500e80c0c288fa56f60ff7e9720d60734561857283ba83d4b3590e3",
+      "groups": 5,
+      "localCells": 17,
+      "coldMapRequests": 17,
+      "warmMapRequests": 17,
+      "scooters": 85,
+      "stationaryReferences": 12,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T13:08:16.236Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Stuttgart_4578_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DE",
+      "city": "Witten",
+      "regionToken": "6DVCQJWHIFDER",
+      "fingerprint": "c96230e88380ffebefb91d5be1aabf14b118aaebcf145f856f37f85be15f4047",
+      "groups": 6,
+      "localCells": 21,
+      "coldMapRequests": 21,
+      "warmMapRequests": 21,
+      "scooters": 135,
+      "stationaryReferences": 24,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T13:10:57.255Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Dortmund_9341_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

@@ -5,7 +5,10 @@ map. The audit below records the original GBFS investigation; the current
 catalog and [Dott adapter evidence](dott-app-map.md) supersede its Dott gaps.
 
 Qick's [authenticated ATOM map](atom-app-map.md) also now supplies Kassel,
-Münster and Göttingen. Those app-map systems are separate from this GBFS audit.
+Münster and Göttingen, and since 25 October 2026 Lime's
+[authenticated rider map](lime-app-map.md) supplies 39 German markets, among
+them Berlin, Hamburg, München, Köln and the Ruhr. Those app-map systems are
+separate from this GBFS audit.
 
 
 Verified 8 September 2026. The audit checked 156 scooter candidates from the
@@ -42,8 +45,9 @@ moved publish no feed with scooters; see
 
 Voi's 12 feeds in North Rhine-Westphalia joined the map on 24 October 2026,
 read from the state's data platform NRW.Mobidrom with a token: about 16,500
-available scooters in 18 towns. Bolt's and Lime's feeds there wait for their
-data to update again; see
+available scooters in 18 towns. Bolt's and Lime's feeds there update about
+once an hour, and both operators' scooters come from their rider maps since
+25 October 2026; see
 [Voi in North Rhine-Westphalia, October 2026](#voi-in-north-rhine-westphalia-october-2026).
 
 Dott's Heidelberg, Heilbronn, Kaiserslautern and Stuttgart scooters are read
@@ -500,7 +504,8 @@ Bolt and Lime publish no Italian feed.
   Neuss, Solingen, Monheim am Rhein and Hilden, and in Köln and Brühl.
   Overnight to 25 October they still updated once an hour, every 59 to 61
   minutes from 16:54 to 23:55; Bolt Essen-Duisburg listed 1,143 available
-  scooters, and again none moved between updates.
+  scooters, and again none moved between updates. Since 25 October 2026
+  both operators' scooters there come from their rider maps instead.
 
 ## ATOM's request rate, October 2026
 
@@ -568,7 +573,8 @@ an hour, so no interval was changed for ATOM.
   stale or empty: Anzio, Augusta and Mazara listed no available scooter, and
   Teramo, Modena and Reggio Emilia none at all.
 - German Lime Dresden and Oberhausen contained no available standing scooters;
-  the Hamburg and older Stuttgart discovery URLs returned 404.
+  the Hamburg and older Stuttgart discovery URLs returned 404. Lime's rider
+  map supplies Hamburg and Oberhausen since 25 October 2026.
 - Voi's reviewed German proxy covers eight cities in Baden-Württemberg; it is
   not a nationwide Voi feed. Other operator/city combinations remain unverified.
 - Outside Baden-Württemberg, the operators' feeds reach regional hubs but not

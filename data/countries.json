@@ -41,7 +41,7 @@
       "anchor": [51.1, 10.4],
       "featuredCities": ["de:Berlin", "de:München", "de:Köln", "de:Frankfurt", "de:Stuttgart", "de:Düsseldorf"],
       "credits": {
-        "attribution": "Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW, https://mobidata-bw.de/dataset/escootch, dl-de/by-2-0 (https://www.govdata.de/dl-de/by-2-0), modified; Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified; Dott anonymous app map; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map; city centres from GeoNames",
+        "attribution": "Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW, https://mobidata-bw.de/dataset/escootch, dl-de/by-2-0 (https://www.govdata.de/dl-de/by-2-0), modified; Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified; Dott anonymous app map; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map",
         "gbfs": ["Dott", "Bolt", "Hopp", "Lime", "Voi", "Zeus", "Yoio"],
         "links": [
           { "label": "DE: MobiData BW e-scooter data", "href": "https://mobidata-bw.de/dataset/escootch" },
@@ -52,7 +52,8 @@
           { "label": "DE: Qick map", "href": "https://www.qickscooters.com/" },
           { "label": "DE: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
           { "label": "DE: Bolt map", "href": "https://bolt.eu/" },
-          { "label": "DE: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
+          { "label": "DE: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" },
+          { "label": "DE: Lime map", "href": "https://www.li.me/" }
         ]
       }
     },

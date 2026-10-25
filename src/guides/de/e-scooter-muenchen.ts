@@ -10,14 +10,14 @@ const guide: Guide = {
   headline: 'E-Scooter München: Anbieter, Preise, Abstellflächen und was auf der Wiesn gilt',
   lede: 'Einen E-Scooter in München mietest du ab 18 und ohne Führerschein bei Dott, Lime, Voi oder Bolt. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 12. Oktober 2026) bei Dott 4 € und bei Voi 3,59 €; bei Lime und Bolt zeigt die App den Preis. Innerhalb des Altstadtrings beendest du die Fahrt nur auf ausgewiesenen Abstellflächen, im Englischen Garten sind E-Scooter verboten, und in U-Bahn, Tram und Bus der MVG darfst du sie nicht mitnehmen.',
   published: '2026-10-12',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'de:München',
   sections: [
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in München?',
       blocks: [
         'In München vermieten **Dott**, **Lime**, **Voi** und **Bolt** E-Scooter; diese vier Anbieter nennen die Stadt und der Verkehrsverbund MVV. TIER heisst heute Dott.',
-        'ScootRadar zeigt auf der [Karte rund um München](map:de:München) Dott und seit dem 24. Oktober 2026 auch Voi: an jenem Samstag kurz vor 16 Uhr rund 3600 Dott- und 6800 Voi-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Lime und Bolt sind ebenfalls in München unterwegs, fehlen aber auf der Karte.',
+        'ScootRadar zeigt auf der [Karte rund um München](map:de:München) Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Lime: am Samstag, 24. Oktober, kurz vor 16 Uhr rund 3600 Dott- und 6800 Voi-Scooter, am Sonntagmittag, 25. Oktober, rund 10 000 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Bolt ist ebenfalls in München unterwegs, fehlt aber auf der Karte.',
         'Gemietet wird in der App des Anbieters, bei Dott und Voi auch in der MVGO-App der MVG: registrieren, Zahlungsart hinterlegen, QR-Code scannen. Alle vier vermieten laut ihren Bedingungen nur ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
       ],
     },
@@ -123,7 +123,7 @@ const guide: Guide = {
             '**Mit MVG-Abo (nicht dem 365-Euro-Ticket für Schüler) oder einem Deutschlandticket aus der MVV-App:** die ersten 30 Minuten auf dem Fahrrad gratis, auf dem E-Bike für 1,50 €.',
           ],
         },
-        'Gebucht wird in der MVV-App, der nextbike-App oder in **MVGO**, wo du mit deinem M-Login auch Scooter von Dott und Voi mietest (Lime und Bolt nicht). Wo gerade ein Dott oder Voi in deiner Nähe steht, zeigt die [Live-Karte von München](map:de:München).',
+        'Gebucht wird in der MVV-App, der nextbike-App oder in **MVGO**, wo du mit deinem M-Login auch Scooter von Dott und Voi mietest (Lime und Bolt nicht). Wo gerade ein Dott, Voi oder Lime in deiner Nähe steht, zeigt die [Live-Karte von München](map:de:München).',
       ],
     },
     {

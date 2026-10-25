@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Köln: Anbieter, Preise, Parkzonen und was an Karneval gilt',
   lede: 'Einen E-Scooter in Köln leihst du ab 18 und ohne Führerschein bei Bolt, Dott, Lime, RideMovi, Ryde oder Voi. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 13. Oktober 2026) bei Dott 4 € und bei Voi 3 €, bei den anderen zeigt die App den Preis. In der Altstadt beendest du die Fahrt nur an Stationen, am Rheinufer, auf Brücken und in Parks gar nicht, und an Karneval sperrt die Stadt Ausleihe und Rückgabe in den Feierzonen. In Bahnen und Bussen der KVB sind E-Scooter verboten.',
   published: '2026-10-13',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'de:Köln',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Sechs Anbieter vermieten in Köln E-Scooter: **Bolt**, **Dott**, **Lime**, **RideMovi**, **Ryde** und **Voi**, laut Stadt 2026 zusammen fast 20 000 Scooter. Tier heisst heute Dott: Wer früher Tier fuhr, nutzt seit Oktober 2024 die Dott-App.',
         'Du leihst den Scooter in der App des Anbieters, laut Stadt ab 18, obwohl das Gesetz E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte rund um Köln](map:de:Köln) Dott und seit dem 24. Oktober 2026 auch Voi: an jenem Samstag kurz nach 15 Uhr rund 2850 Dott- und 4100 Voi-Scooter. Bolt, Lime, RideMovi und Ryde findest du nur in ihren Apps.',
+        'ScootRadar zeigt auf der [Karte rund um Köln](map:de:Köln) Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Lime: am Samstag, 24. Oktober, kurz nach 15 Uhr rund 2850 Dott- und 4100 Voi-Scooter, am Sonntagmittag, 25. Oktober, rund 4700 Lime-Scooter. Bolt, RideMovi und Ryde findest du nur in ihren Apps.',
       ],
     },
     {
@@ -178,7 +178,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App kann ich in Köln nutzen?',
-      answer: 'Die von Bolt, Dott, Lime, RideMovi, Ryde oder Voi: Diese sechs Anbieter vermieten laut Stadt in Köln E-Scooter. Einen Führerschein brauchst du nicht, aber du musst 18 sein. Freie Dott- und Voi-Scooter zeigt auch die [Live-Karte von Köln](map:de:Köln).',
+      answer: 'Die von Bolt, Dott, Lime, RideMovi, Ryde oder Voi: Diese sechs Anbieter vermieten laut Stadt in Köln E-Scooter. Einen Führerschein brauchst du nicht, aber du musst 18 sein. Freie Dott-, Voi- und Lime-Scooter zeigt auch die [Live-Karte von Köln](map:de:Köln).',
     },
     {
       question: 'Wie viel kosten zehn Minuten E-Scooter in Köln?',

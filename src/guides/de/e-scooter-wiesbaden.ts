@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Wiesbaden: Anbieter, Preise, Parkzonen und Verbote',
   lede: 'E-Scooter in Wiesbaden leihst du bei Bolt, Dott oder Voi, ab 18 und ohne Führerschein. Einen Wiesbadener Tarif veröffentlicht keiner der drei: Bolt wirbt deutschlandweit mit «ab 0,15 € pro Minute» plus Freischaltgebühr, bei Dott und Voi zeigt die App den Preis (Stand 24. Oktober 2026). Du fährst auf Radweg oder Fahrbahn, nicht durch die Fussgängerzone und nicht durch den Kurpark. Am Hauptbahnhof und im Historischen Fünfeck beendest du die Fahrt nur auf einer markierten Abstellfläche, sonst meist am Rand des Gehwegs.',
   published: '2026-10-24',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'de:Wiesbaden',
   sections: [
     {
@@ -102,7 +102,7 @@ const guide: Guide = {
       blocks: [
         'Mainz-Kastel, Mainz-Kostheim und Mainz-Amöneburg gehören trotz ihres Namens zu Wiesbaden; dort gelten die Wiesbadener Regeln. Jenseits der Theodor-Heuss-Brücke beginnt Mainz, und dort gelten andere.',
         'Mainz begrenzt Leih-Scooter laut seiner Richtlinie vom 2. Juli 2025 auf höchstens 1200; seit dem 1. März 2026 verleihen dort drei Anbieter, mit Genehmigungen für 24 Monate. In der Innenstadt, also Alt- und Neustadt, dürfen Leih-Scooter nur auf 25 Abstellflächen stehen, zusammen höchstens 300; in Teilen der Altstadt ist das Abstellen ganz verboten. Welche Anbieter fahren, nennt die Stadt Mainz nicht; Bolt und Dott führen Mainz auf ihren Websites.',
-        'Ob ein in Wiesbaden geliehener Scooter nach Mainz darf und die Fahrt dort enden kann, sagt kein Anbieter offen; Bolt und Dott verbieten in ihren Bedingungen, das Gebiet zu verlassen, das die App zeigt. Die [Karte von Mainz](map:de:Mainz) zeigt nur Voi, am 24. Oktober kurz vor 16 Uhr rund 470 Scooter, die Voi-Scooter in Kastel und Kostheim eingeschlossen.',
+        'Ob ein in Wiesbaden geliehener Scooter nach Mainz darf und die Fahrt dort enden kann, sagt kein Anbieter offen; Bolt und Dott verbieten in ihren Bedingungen, das Gebiet zu verlassen, das die App zeigt. Die [Karte von Mainz](map:de:Mainz) zeigt Voi, am 24. Oktober kurz vor 16 Uhr rund 470 Scooter, die Voi-Scooter in Kastel und Kostheim eingeschlossen, und seit dem 25. Oktober Lime: am Sonntagmittag rund 290 Scooter.',
       ],
     },
     {

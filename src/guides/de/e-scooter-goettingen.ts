@@ -8,7 +8,7 @@ const guide: Guide = {
   title: 'E-Scooter Göttingen 2026: Yoio, Qick, Preise, Parkzonen',
   description: 'E-Scooter Göttingen: was Yoio pro Minute kostet, wo du in der Innenstadt fahren darfst, wo du am Wall und am Bahnhof parkst und was im Bus gilt.',
   headline: 'E-Scooter Göttingen: Yoio, Preise, Parkverbotszonen und was in der Innenstadt gilt',
-  lede: 'Einen E-Scooter in Göttingen leihst du ab 18 und ohne Führerschein bei Yoio, einem Anbieter aus Göttingen, oder Qick; auch Bolt führt die Stadt auf seiner Website mit E-Scootern. Laut Yoios Datenfeed vom 23. Oktober 2026 kostet das Entsperren 1 € und die Minute je nach Scooter 0,25 € oder 0,21 €; zehn Minuten kosten also 3,50 € oder 3,10 €. Du fährst auf dem Radweg oder der Fahrbahn, nie auf dem Gehweg und nie in der Fussgängerzone um Weender Strasse und Markt. Eine Yoio-Fahrt beendest du im Gebiet der App, aber nicht in der Fussgängerzone, auf weiten Teilen des Walls, im Leinepark und direkt vor dem Bahnhofsgebäude.',
+  lede: 'Einen E-Scooter in Göttingen leihst du ab 18 und ohne Führerschein bei Yoio, einem Anbieter aus Göttingen, bei Qick oder bei Lime; auch Bolt führt die Stadt auf seiner Website mit E-Scootern. Laut Yoios Datenfeed vom 23. Oktober 2026 kostet das Entsperren 1 € und die Minute je nach Scooter 0,25 € oder 0,21 €; zehn Minuten kosten also 3,50 € oder 3,10 €. Du fährst auf dem Radweg oder der Fahrbahn, nie auf dem Gehweg und nie in der Fussgängerzone um Weender Strasse und Markt. Eine Yoio-Fahrt beendest du im Gebiet der App, aber nicht in der Fussgängerzone, auf weiten Teilen des Walls, im Leinepark und direkt vor dem Bahnhofsgebäude.',
   published: '2026-10-24',
   updated: '2026-10-25',
   city: 'de:Göttingen',
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Im Oktober 2026 vermietet **Yoio** E-Scooter in Göttingen. Yoio gehört der YourCar GmbH mit Sitz in Göttingen; ausser hier fährt Yoio laut Website in Freiburg und [Erfurt](guide:erfurt). Wie das Mieten geht: [So mietest du einen E-Scooter](guide:how-to-rent).',
         '**Bolt** führt Göttingen auf seiner Website mit der Kategorie «E-Scooter» (Stand 23. Oktober 2026). Die Stadt nennt keine Anbieter, einen offenen Bolt-Datenfeed für Göttingen gibt es nicht. Ob Bolt-Scooter in deiner Nähe stehen und was sie kosten, zeigt nur die Bolt-App.',
-        '**Qick** aus Schweden hat ebenfalls E-Scooter in Göttingen. Die [Karte von Göttingen](map:de:Göttingen) zeigt Yoio und seit dem 24. Oktober 2026 auch Qick: in der Nacht zum 25. Oktober rund 250 Yoio- und 340 Qick-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Qicks Preis zeigt nur die App; Bolt fehlt auf der Karte. Weitere Anbieter konnten wir nicht prüfen.',
+        '**Qick** aus Schweden und **Lime** haben ebenfalls E-Scooter in Göttingen; Lime führt die Stadt auf seiner Städteseite (gelesen am 25. Oktober 2026). Die [Karte von Göttingen](map:de:Göttingen) zeigt Yoio, seit dem 24. Oktober 2026 auch Qick und seit dem 25. Oktober Lime: in der Nacht zum 25. Oktober rund 250 Yoio- und 340 Qick-Scooter, am Sonntagvormittag rund 620 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Die Preise von Qick und Lime zeigen nur ihre Apps; Bolt fehlt auf der Karte. Weitere Anbieter konnten wir nicht prüfen.',
       ],
     },
     {
@@ -83,7 +83,7 @@ const guide: Guide = {
             '**Land Niedersachsen:** das Niedersächsische Strassengesetz, Grundlage der städtischen Sondernutzungssatzungen.',
             '**Stadt Göttingen:** Fussgängerzone, Fahrradstrassen, Verkehrsschilder und die markierten Abstellflächen.',
             '**Universität und Universitätsmedizin:** die E-Scooter-Plätze auf dem Zentralcampus und die Hausordnung auf dem Klinikgelände.',
-            '**Yoio und Qick:** Geschäftsgebiet, Park- und Fahrverbotszonen in der App, Preise und Gebühren.',
+            '**Yoio, Qick und Lime:** Geschäftsgebiet, Park- und Fahrverbotszonen in der App, Preise und Gebühren.',
             '**Verkehrsverbund Süd-Niedersachsen (VSN):** die Mitnahme in Bus und Bahn, auch in den Bussen der GöVB.',
           ],
         },
@@ -135,7 +135,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter gibt es in Göttingen?',
-      answer: 'Yoio oder Qick; freie Scooter beider zeigt auch die [Live-Karte von Göttingen](map:de:Göttingen). Bolt führt Göttingen auf seiner Website ebenfalls mit E-Scootern, ob dort welche stehen, zeigt nur die Bolt-App. Du musst 18 sein, einen Führerschein brauchst du nicht.',
+      answer: 'Yoio, Qick oder Lime; freie Scooter aller drei zeigt auch die [Live-Karte von Göttingen](map:de:Göttingen). Bolt führt Göttingen auf seiner Website ebenfalls mit E-Scootern, ob dort welche stehen, zeigt nur die Bolt-App. Du musst 18 sein, einen Führerschein brauchst du nicht.',
     },
     {
       question: 'Was kostet Yoio in Göttingen pro Minute?',
@@ -161,6 +161,7 @@ const guide: Guide = {
     { title: 'Stadt Göttingen: Sondernutzungsgebührensatzung, Fassung ab 1. Januar 2025 (PDF)', url: 'https://www.goettingen.de/downloads/datei/N2Q2YTMwNTBhNDQwNWQ1Nk5td1VLZmdWSDh2aUZVVTZPSEVMVGtXeDNoQ2pMMU9nbGFjQkNvQUozZDZZZ05zZFI3U0x3OXBNWlVpYUFjNHZMQmp2OXA1Q0FFNXhMZFBQS3BpTnhRRGRwUTNjWm45bU1VVW1HaXR0RDU1ZWtjdDlsS0kxWFIzTG5uM2h6RnJUOEtYNkt4c3BHY2RWeU5qcHBFWmFLeWtxQzgxZ240aTROc2RkTXVjc3VBTVZFV2pCcUhhZlU2RU80dk5ORVVCcTVzTVFHWGNYaGVhZlpxOFJ3V2hOaVlNS2lrMlZ4KytUMkdNcHlnbVNMV2diNTBJK2I0ejRaYUJiWkMwTURGMHM5eHA2Q3pPQW1vZnkzMWEvU2tDZUU0YjhkRFA1QlpVSXZncTVZdkZneXUwPQ' },
     { title: 'Universität Göttingen: Elektromobilität', url: 'https://www.uni-goettingen.de/de/668179.html' },
     { title: 'Universitätsmedizin Göttingen: Hausordnung, Kurzfassung vom 23. April 2019 (PDF)', url: 'https://www.umg.eu/fileadmin/user_upload/UMG-HAUSORDNUNG_Kurzfassung__2__Hausschrift__003_.pdf' },
+    { title: 'Lime: Locations (gelesen am 25. Oktober 2026)', url: 'https://www.li.me/locations' },
     { title: 'Yoio: Datenfeed für Göttingen (GBFS)', url: 'https://yoio.rideatom.com/gbfs/9/v3.0/gbfs' },
     { title: 'Yoio: E-Scooter-Sharing in Göttingen, Freiburg und Erfurt', url: 'https://yoio.app/' },
     { title: 'Yoio: Gebührenordnung (PDF)', url: 'https://yourcar-carsharing.de/images/Yoio-Gebuehrenordnung.pdf' },

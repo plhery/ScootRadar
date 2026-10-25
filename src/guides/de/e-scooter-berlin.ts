@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Berlin: Anbieter, Preise, Parkzonen und was du wissen musst',
   lede: 'E-Scooter in Berlin mietest du bei Lime, Bolt, Voi oder Dott, in Spandau und Reinickendorf auch bei Zeus: App laden, ab 18 und ohne Führerschein registrieren, QR-Code scannen. Dott verlangt 0,75 € fürs Entsperren und 0,29 € pro Minute, zehn Minuten kosten also rund 3,65 € (veröffentlichter Tarif vom 12. Oktober 2026); die anderen zeigen den Preis in der App. Du fährst auf dem Radweg, nie auf dem Gehweg oder durch Parks, und rund um die Sehenswürdigkeiten in Mitte beendest du die Fahrt nur an markierten Flächen wie den Jelbi-Punkten.',
   published: '2026-10-12',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'de:Berlin',
   sections: [
     {
@@ -26,7 +26,7 @@ const guide: Guide = {
         },
         'Im S-Bahn-Ring dürfen höchstens 19 000 Leih-Scooter stehen, gleichmässig verteilt auf die vier Anbieter der Innenstadt; ausserhalb gibt es keine Obergrenze. Bird fährt in Berlin nicht mehr.',
         'Am Ende jeder Fahrt fotografierst du den abgestellten Scooter: Einen solchen Nachweis verlangt die Berliner Genehmigung. Alles Schritt für Schritt erklärt der Ratgeber [E-Scooter mieten](guide:how-to-rent).',
-        'ScootRadar zeigt auf der [Karte rund um Berlin](map:de:Berlin) Dott und seit dem 24. Oktober 2026 auch Voi: an jenem Samstag kurz vor 16 Uhr rund 4800 Dott- und 14 400 Voi-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Lime, Bolt und Zeus findest du nur in ihren Apps.',
+        'ScootRadar zeigt auf der [Karte rund um Berlin](map:de:Berlin) Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Lime: am Samstag, 24. Oktober, kurz vor 16 Uhr rund 4800 Dott- und 14 400 Voi-Scooter, am Sonntagmorgen, 25. Oktober, rund 15 400 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Bolt und Zeus findest du nur in ihren Apps.',
       ],
     },
     {
@@ -102,7 +102,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Jeder Anbieter setzt die Zonen selbst um, und sie ändern sich oft: Massgeblich ist die Karte in deiner App. Wo gerade Dott- und Voi-Scooter stehen, zeigt die [Live-Karte von Berlin](map:de:Berlin).',
+        'Jeder Anbieter setzt die Zonen selbst um, und sie ändern sich oft: Massgeblich ist die Karte in deiner App. Wo gerade Dott-, Voi- und Lime-Scooter stehen, zeigt die [Live-Karte von Berlin](map:de:Berlin).',
       ],
     },
     {

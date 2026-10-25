@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Düsseldorf: Anbieter, Preise, Sharingstationen und was an Karneval und zur Kirmes gilt',
   lede: 'Einen E-Scooter in Düsseldorf leihst du ab 18 und ohne Führerschein bei Bolt, Dott (früher TIER), Lime oder Voi. Zehn Minuten kosten nach den veröffentlichten Tarifen (Stand 24. Oktober 2026) bei Voi 3 € und bei Dott 4,20 €, bei Lime und Bolt zeigt die App den Preis. In Altstadt, Carlstadt, Stadtmitte und auf der Kö beendest du die Fahrt nur an einer markierten Sharingstation, sonst zahlst du weiter. In Bussen und Bahnen der Rheinbahn sind E-Scooter seit dem 1. März 2024 verboten, auch zusammengeklappt.',
   published: '2026-10-13',
-  updated: '2026-10-24',
+  updated: '2026-10-25',
   city: 'de:Düsseldorf',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Laut Connected Mobility Düsseldorf (CMD), der städtischen Mobilitätsgesellschaft, vermieten vier Anbieter E-Scooter: **Bolt**, **Dott**, **Lime** und **Voi**. Dott hiess früher TIER; wer TIER fuhr, nutzt seit Oktober 2024 die Dott-App.',
         'Gemietet wird in der App des Anbieters, ab 18, obwohl das Gesetz E-Scooter schon ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Auf der [Karte rund um Düsseldorf](map:de:Düsseldorf) zeigt ScootRadar Dott und seit dem 24. Oktober 2026 auch Voi: an jenem Samstag kurz nach 15 Uhr rund 1700 Dott- und 2000 Voi-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse; die Stadt erlaubt allen Anbietern zusammen bis zu 8400. Bolt und Lime findest du nur in ihren Apps.',
+        'Auf der [Karte rund um Düsseldorf](map:de:Düsseldorf) zeigt ScootRadar Dott, seit dem 24. Oktober 2026 auch Voi und seit dem 25. Oktober Lime: am Samstag, 24. Oktober, kurz nach 15 Uhr rund 1700 Dott- und 2000 Voi-Scooter, am Sonntagvormittag, 25. Oktober, rund 2000 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse; die Stadt erlaubt allen Anbietern zusammen bis zu 8400. Bolt findest du nur in seiner App.',
         'Mit «E-Roller» sind oft auch Elektro-Mopeds zum Sitzen gemeint: Für die brauchst du Führerschein und Helm, um sie geht es hier nicht.',
       ],
     },
@@ -163,7 +163,7 @@ const guide: Guide = {
   faq: [
     {
       question: 'Welche E-Scooter-App kann ich in Düsseldorf nutzen?',
-      answer: 'Die von Bolt, Dott (früher TIER), Lime oder Voi, den vier Anbietern in der Stadt. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Dott- und Voi-Scooter zeigt auch die [Live-Karte von Düsseldorf](map:de:Düsseldorf), die von Bolt und Lime nur deren Apps.',
+      answer: 'Die von Bolt, Dott (früher TIER), Lime oder Voi, den vier Anbietern in der Stadt. Du musst 18 sein, einen Führerschein brauchst du nicht. Freie Dott-, Voi- und Lime-Scooter zeigt auch die [Live-Karte von Düsseldorf](map:de:Düsseldorf), die von Bolt nur seine App.',
     },
     {
       question: 'Wie viel kosten zehn Minuten E-Scooter in Düsseldorf?',
