@@ -93,7 +93,7 @@ const guide: Guide = {
       blocks: [
         'Sur le domaine universitaire du Sart-Tilman, l’ULiège fixe ses propres règles. Selon sa page du 14 octobre 2022, les trottinettes partagées roulent dans la partie nord du campus (Village, Agora, Polytech, Urbanistes) et la location ne s’y termine qu’à un point de stationnement. Certaines zones très fréquentées sont limitées à 6 km/h ; les boulevards et la réserve naturelle sont interdits.',
         'Pour monter de la ville, l’ULiège indique que les opérateurs autorisent la rue de la Belle Jardinière. Le 25 octobre 2026, Dott comptait une cinquantaine d’emplacements sur le plateau, dont un nommé « CHU », et Pony une trentaine autour de l’Agora ; selon ses données, la zone de Pony n’atteint pas ce « CHU ». Nous n’avons trouvé aucune règle du CHU de Liège sur les trottinettes.',
-        'Selon le SPW (5 juillet 2022), un moins de 16 ans peut rouler en trottinette électrique sur le RAVeL, le réseau wallon de voies lentes, ou dans une rue réservée au jeu. Ralentissez en croisant les piétons.',
+        'Selon le SPW (5 juillet 2022), les moins de 16 ans peuvent rouler en trottinette électrique sur le RAVeL, le réseau wallon de voies lentes, ou dans une rue réservée au jeu. Ralentissez en croisant les piétons.',
       ],
     },
     {

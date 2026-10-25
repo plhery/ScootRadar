@@ -80,7 +80,7 @@ const guide: Guide = {
               ['Stad Antwerpen', 'GAS-boete van € 58, sinds 3 maart 2026 uitdrukkelijk ook voor steps; politie of stadsdiensten mogen de step meteen weghalen'],
               ['Voi', '€ 25 als Voi de step als achtergelaten beschouwt'],
               ['Lime (voorwaarden van januari 2023)', 'Tot € 50 als je de step in een verboden zone gebruikt; € 100 om de step op te halen als hij buiten het toegelaten gebied staat'],
-              ['Bolt (voorwaarden vanaf 1 november 2026)', '€ 20 automatisch buiten een toegelaten parkeerplek; tot € 100 om de step op te halen'],
+              ['Bolt (voorwaarden vanaf 1 december 2026)', '€ 20 automatisch buiten een toegelaten parkeerplek; tot € 100 om de step op te halen'],
             ],
           },
         },

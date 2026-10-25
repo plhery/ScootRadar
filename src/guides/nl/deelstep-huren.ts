@@ -103,7 +103,7 @@ const guide: Guide = {
             caption: 'Wat aanbieders in België aanrekenen voor fout parkeren (voorwaarden, oktober 2026)',
             head: ['Aanbieder', 'Fout geparkeerd', 'Andere kosten'],
             rows: [
-              ['Bolt (vanaf 1 november 2026)', '€ 20 automatisch buiten een toegelaten zone', 'Tot € 100 om de step op te halen; boetes doorgerekend, plus tot € 30 kosten'],
+              ['Bolt (vanaf 1 december 2026)', '€ 20 automatisch buiten een toegelaten zone', 'Tot € 100 om de step op te halen; boetes doorgerekend, plus tot € 30 kosten'],
               ['Dott (voorwaarden van 23 september 2025)', 'Tot € 300 om de step op te halen', '€ 50 per inbreuk op de voorwaarden; boetes doorgerekend, plus € 50 kosten'],
               ['Hoppy (voorwaarden van 27 juli 2026)', '€ 100 als je de step buiten het toegelaten gebied achterlaat; tot € 100 als Hoppy er niet bij kan', 'Tot € 100 om hem op te halen; € 150 als je hem zonder melding achterlaat'],
             ],
@@ -181,7 +181,7 @@ const guide: Guide = {
     },
   ],
   sources: [
-    { title: 'Bolt: Voorwaarden voor e-voertuigen in België (vanaf 1 november 2026)', url: 'https://bolt.eu/nl-be/legal/micromobility/new-terms-for-e-vehicles/' },
+    { title: 'Bolt: Voorwaarden voor e-voertuigen in België (vanaf 1 december 2026)', url: 'https://bolt.eu/nl-be/legal/micromobility/new-terms-for-e-vehicles/' },
     { title: 'Dott: Algemene voorwaarden België (23 september 2025)', url: 'https://ridedott.com/nl/algemene-voorwaarden/belgie/' },
     { title: 'Dott Help: betaalmethoden (Engels)', url: 'https://help.ridedott.com/en/articles/209' },
     { title: 'Dott: gratis reserveren (Engels)', url: 'https://ridedott.com/reservations/' },

@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Deelstep Brussel: huren tot eind 2026, prijzen, dropzones en het verbod vanaf 2027',
   lede: 'Een deelstep huren in Brussel kan nog tot en met 31 december 2026: Bolt en Dott rijden er onder een overgangsregeling, voor € 0,99 of € 1 om te ontgrendelen en € 0,31 of € 0,37 per minuut (gepubliceerde tarieven op 12 oktober 2026). Je moet 18 zijn, een identiteitsbewijs scannen en je rit in een dropzone beëindigen. De Brusselse regering heeft beslist dat de deelsteps op 1 januari 2027 verdwijnen en dat deelfietsen hun plaats innemen; je eigen elektrische step blijft toegelaten.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-25',
   city: 'be:Bruxelles',
   sections: [
     {
@@ -83,7 +83,7 @@ const guide: Guide = {
             caption: 'Wat Bolt en Dott aanrekenen voor fout parkeren in België',
             head: ['Aanbieder', 'Wat je kan betalen'],
             rows: [
-              ['Bolt (voorwaarden vanaf 1 november 2026)', '€ 20 automatisch buiten een toegelaten zone; tot € 100 om de step op te halen, tot € 120 om hem te zoeken, tot € 500 als hij na 48 uur niet terug is; boetes doorgerekend, plus tot € 30 kosten'],
+              ['Bolt (voorwaarden vanaf 1 december 2026)', '€ 20 automatisch buiten een toegelaten zone; tot € 100 om de step op te halen, tot € 120 om hem te zoeken, tot € 500 als hij na 48 uur niet terug is; boetes doorgerekend, plus tot € 30 kosten'],
               ['Dott (voorwaarden van 23 september 2025)', 'Tot € 300 om een fout geparkeerde step op te halen; € 50 per inbreuk op de voorwaarden; boetes doorgerekend, plus € 50 kosten'],
             ],
           },
@@ -183,7 +183,7 @@ const guide: Guide = {
     { title: 'Brussel Mobiliteit: Strengere regels voor steps in Brussel (1 juli 2022)', url: 'https://mobilite-mobiliteit-brussels.prezly.com/strengere-regels-voor-steps-in-brussel' },
     { title: 'Brussel Mobiliteit, observatorium: parkeren van deelmobiliteit (in het Frans)', url: 'https://be.brussels/fr/transport-mobilite/enjeux-de-la-mobilite/observatoire-thematique/stationnement/stationnement-de-la-mobilite-partagee' },
     { title: 'BX1: Identiteitscontrole verplicht voor deelsteps in Brussel (3 december 2025, in het Frans)', url: 'https://bx1.be/categories/news/verification-didentite-obligatoire-pour-les-trottinettes-partagees-a-bruxelles-des-aujourdhui/' },
-    { title: 'Bolt: Voorwaarden voor e-voertuigen in België (vanaf 1 november 2026)', url: 'https://bolt.eu/nl-be/legal/micromobility/new-terms-for-e-vehicles/' },
+    { title: 'Bolt: Voorwaarden voor e-voertuigen in België (vanaf 1 december 2026)', url: 'https://bolt.eu/nl-be/legal/micromobility/new-terms-for-e-vehicles/' },
     { title: 'Dott: Algemene voorwaarden België (23 september 2025)', url: 'https://ridedott.com/nl/algemene-voorwaarden/belgie/' },
     { title: 'Dott Help: waarom moet ik mijn identiteit verifiëren? Aanvaarde documenten in Brussel (in het Engels)', url: 'https://help.ridedott.com/en/articles/187' },
     { title: 'Wegcode.be: Code van de openbare weg, wat verandert er voor steppers', url: 'https://www.wegcode.be/nl/code-van-de-openbare-weg/wat-verandert-er-voor-jou/wat-verandert-er-voor-steppers' },

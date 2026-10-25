@@ -61,7 +61,7 @@ const guide: Guide = {
       heading: 'Waar mag je je step parkeren?',
       blocks: [
         'Je eigen step zet je niet op de rijbaan of op een parkeerstrook, tenzij een bord het toelaat. Op het voetpad of in de berm mag hij staan, zolang hij niemand hindert of in gevaar brengt. De onderborden M21, M22 en M24 duiden plaatsen aan voor steps en deelsteps.',
-        'Bij een deelstep beslist de app mee: in Brussel en binnen de Antwerpse Leien beëindig je je rit alleen in een dropzone. Laat je hem fout achter, dan kan de aanbieder kosten aanrekenen. Volgens de voorwaarden van Bolt die vanaf 1 november 2026 gelden, is dat automatisch € 20 als de step niet op een toegelaten plek staat; Dott kan € 50 aanrekenen per inbreuk op zijn voorwaarden.',
+        'Bij een deelstep beslist de app mee: in Brussel en binnen de Antwerpse Leien beëindig je je rit alleen in een dropzone. Laat je hem fout achter, dan kan de aanbieder kosten aanrekenen. Volgens de voorwaarden van Bolt die vanaf 1 december 2026 gelden, is dat automatisch € 20 als de step niet op een toegelaten plek staat; Dott kan € 50 aanrekenen per inbreuk op zijn voorwaarden.',
       ],
     },
     {

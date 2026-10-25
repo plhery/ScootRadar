@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Brussels: renting until 31 December 2026, prices, drop zones and the 2027 ban',
   lede: 'You can still rent an e-scooter in Brussels until 31 December 2026, from Bolt (€0.99 to unlock, then €0.31 a minute) or Dott (€1, then €0.37 a minute), under a transitional arrangement (rates published on 12 October 2026). You must be 18, scan an ID document in the app and end every ride in a drop zone. The Brussels government has decided there will be no shared e-scooters from 1 January 2027, only shared bikes; your own e-scooter stays legal.',
   published: '2026-10-13',
-  updated: '2026-10-13',
+  updated: '2026-10-25',
   city: 'be:Bruxelles',
   sections: [
     {
@@ -83,7 +83,7 @@ const guide: Guide = {
             caption: 'What Bolt and Dott charge for bad parking in Belgium',
             head: ['Operator', 'What you may pay'],
             rows: [
-              ['Bolt (terms in force from 1 November 2026)', '€20 automatic fee if you leave it outside an authorised area; up to €100 to collect the scooter, up to €120 to search for it, up to €500 if it isn’t back within 48 hours; fines passed on, plus up to €30 in fees'],
+              ['Bolt (terms in force from 1 December 2026)', '€20 automatic fee if you leave it outside an authorised area; up to €100 to collect the scooter, up to €120 to search for it, up to €500 if it isn’t back within 48 hours; fines passed on, plus up to €30 in fees'],
               ['Dott (terms of 23 September 2025)', 'Up to €300 to recover a badly parked scooter; €50 per breach of the terms; fines passed on, plus €50 in fees'],
             ],
           },
@@ -195,7 +195,7 @@ const guide: Guide = {
     { title: 'Brussels Mobility observatory: parking for shared mobility (French)', url: 'https://be.brussels/fr/transport-mobilite/enjeux-de-la-mobilite/observatoire-thematique/stationnement/stationnement-de-la-mobilite-partagee' },
     { title: 'BX1: ID checks compulsory for shared e-scooters in Brussels (3 December 2025, French)', url: 'https://bx1.be/categories/news/verification-didentite-obligatoire-pour-les-trottinettes-partagees-a-bruxelles-des-aujourdhui/' },
     { title: 'Dott Help: why do I need to verify my ID? (documents accepted in Brussels)', url: 'https://help.ridedott.com/en/articles/187' },
-    { title: 'Bolt: terms for e-vehicles in Belgium, in force from 1 November 2026 (French)', url: 'https://bolt.eu/fr-be/legal/micromobility/new-terms-for-e-vehicles/' },
+    { title: 'Bolt: terms for e-vehicles in Belgium, in force from 1 December 2026 (French)', url: 'https://bolt.eu/fr-be/legal/micromobility/new-terms-for-e-vehicles/' },
     { title: 'Dott: terms and conditions for Belgium, 23 September 2025 (French)', url: 'https://ridedott.com/fr/conditions-generales/belgique/' },
     { title: 'The Brussels Times: helmet requirement for e-scooters in Belgium takes effect (1 September 2026)', url: 'https://www.brusselstimes.com/belgium/2296512/helmet-requirement-for-e-scooters-in-belgium-takes-effect' },
     { title: 'wegcode.be: traffic offences by degree, 2026 fines (Dutch)', url: 'https://www.wegcode.be/nl/verkeersovertredingen/overtredingen-per-graad' },

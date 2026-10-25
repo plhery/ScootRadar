@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trottinette électrique à Bruxelles : louer jusqu’au 31 décembre 2026, tarifs, dropzones et fin en 2027',
   lede: 'Louer une trottinette électrique à Bruxelles reste possible jusqu’au 31 décembre 2026 : Bolt et Dott roulent sous un régime transitoire, pour 0,99 ou 1 € au déverrouillage et 0,31 ou 0,37 € la minute (tarifs publiés le 12 octobre 2026). Il faut avoir 18 ans, scanner une pièce d’identité et terminer la location dans une dropzone. Le gouvernement bruxellois a décidé de mettre fin aux trottinettes partagées le 1er janvier 2027, au profit des vélos partagés ; votre trottinette personnelle reste autorisée.',
   published: '2026-10-12',
-  updated: '2026-10-12',
+  updated: '2026-10-25',
   city: 'be:Bruxelles',
   sections: [
     {
@@ -82,7 +82,7 @@ const guide: Guide = {
             caption: 'Ce que Bolt et Dott facturent pour un mauvais stationnement en Belgique',
             head: ['Opérateur', 'Ce que vous risquez de payer'],
             rows: [
-              ['Bolt (conditions à partir du 1er novembre 2026)', '20 € d’office hors zone autorisée ; jusqu’à 100 € de récupération, 120 € de recherche, 500 € sans retour sous 48 heures ; amendes répercutées, plus 30 € de frais au maximum'],
+              ['Bolt (conditions à partir du 1er décembre 2026)', '20 € d’office hors zone autorisée ; jusqu’à 100 € de récupération, 120 € de recherche, 500 € sans retour sous 48 heures ; amendes répercutées, plus 30 € de frais au maximum'],
               ['Dott (conditions du 23 septembre 2025)', 'Jusqu’à 300 € pour récupérer une trottinette mal garée ; 50 € par manquement aux conditions ; amendes répercutées, plus 50 € de frais'],
             ],
           },
@@ -186,7 +186,7 @@ const guide: Guide = {
     { title: 'Bruxelles Mobilité : Des règles plus strictes pour les trottinettes à Bruxelles (1er juillet 2022)', url: 'https://mobilite-mobiliteit-brussels.prezly.com/des-regles-plus-strictes-pour-les-trottinettes-a-bruxelles' },
     { title: 'Bruxelles Mobilité, observatoire thématique : stationnement de la mobilité partagée', url: 'https://be.brussels/fr/transport-mobilite/enjeux-de-la-mobilite/observatoire-thematique/stationnement/stationnement-de-la-mobilite-partagee' },
     { title: 'BX1 : Vérification d’identité obligatoire pour les trottinettes partagées à Bruxelles (3 décembre 2025)', url: 'https://bx1.be/categories/news/verification-didentite-obligatoire-pour-les-trottinettes-partagees-a-bruxelles-des-aujourdhui/' },
-    { title: 'Bolt : Conditions applicables aux véhicules électriques en Belgique (à partir du 1er novembre 2026)', url: 'https://bolt.eu/fr-be/legal/micromobility/new-terms-for-e-vehicles/' },
+    { title: 'Bolt : Conditions applicables aux véhicules électriques en Belgique (à partir du 1er décembre 2026)', url: 'https://bolt.eu/fr-be/legal/micromobility/new-terms-for-e-vehicles/' },
     { title: 'Dott : Conditions générales Belgique (23 septembre 2025)', url: 'https://ridedott.com/fr/conditions-generales/belgique/' },
     { title: 'Dott : documents d’identité acceptés à Bruxelles (en anglais)', url: 'https://help.ridedott.com/en/articles/187' },
   ],
