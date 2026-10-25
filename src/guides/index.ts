@@ -177,6 +177,7 @@ import duisburgDe from './de/e-scooter-duisburg';
 import saarbrueckenDe from './de/e-scooter-saarbruecken';
 import moenchengladbachDe from './de/e-scooter-moenchengladbach';
 import kasselDe from './de/e-scooter-kassel';
+import braunschweigDe from './de/e-scooter-braunschweig';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -354,4 +355,5 @@ export const GUIDES: readonly Guide[] = [
   saarbrueckenDe,
   moenchengladbachDe,
   kasselDe,
+  braunschweigDe,
 ];
