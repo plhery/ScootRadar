@@ -16,8 +16,9 @@ Roma and Milano to Rimini, in six Polish ones, from Warszawa to Wrocław, and
 in five Austrian ones, from Wien to Wels, in Göteborg and Malmö, in
 København and Odense, in Brno and Ostrava, in 15 Hungarian markets, from
 Budapest to Szigetszentmiklós, in seven Romanian ones, from București to
-Târgoviște, in Athens, Kifisia, Thessaloniki and Heraklion, and in Antwerpen.
-The other markets its rider map lists, 94 found so far, are added country by
+Târgoviște, in Athens, Kifisia, Thessaloniki and Heraklion, in Antwerpen,
+and in Porto, Faro and Oeiras.
+The other markets its rider map lists, 91 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -239,7 +240,8 @@ banned shared scooters, and feeds that were empty when checked.
   - Bolt (Lisboa, Porto, Faro, Coimbra) offers its GBFS only on request, on
     Portugal's access point; its scooters there and in Matosinhos and
     Santarém come from its [rider map](bolt-app-map.md) since 25 October
-    2026. Lime has no feed for Porto or Faro.
+    2026. Lime has no public feed for Porto or Faro; its scooters there and
+    in Oeiras come from its rider map since the same day.
   - Lisboa is ending shared scooters: its council approved on 21 October 2026
     ending its agreement with the operators and banning their scooters from
     the municipality, with 60 days to remove them, by the end of 2026. Bird and

@@ -1790,6 +1790,57 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Antwerp_762_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "PT",
+      "city": "Faro",
+      "regionToken": "NR7UL5QKBL2BW",
+      "fingerprint": "aeadfe9d6df4a411b5a39b149dc0d4ed4437503b3b3dc2e63f3efa84b0753a2c",
+      "groups": 4,
+      "localCells": 14,
+      "coldMapRequests": 14,
+      "warmMapRequests": 14,
+      "scooters": 283,
+      "stationaryReferences": 45,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T22:21:40.244Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Faro_39_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "PT",
+      "city": "Oeiras",
+      "regionToken": "ZHNAP72623NP3",
+      "fingerprint": "707479a1fb22050892a5bc09ebeba98af95ac208c5c542b94a1e4c5e18b59a3d",
+      "groups": 5,
+      "localCells": 19,
+      "coldMapRequests": 19,
+      "warmMapRequests": 19,
+      "scooters": 179,
+      "stationaryReferences": 3,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T22:24:07.059Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Oeiras_878_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "PT",
+      "city": "Porto",
+      "regionToken": "FTSCOWKMOI7CG",
+      "fingerprint": "9d45e61089f0ca70db6f597440f2480022e77089621580a074130ca6a4d8dd4f",
+      "groups": 7,
+      "localCells": 26,
+      "coldMapRequests": 26,
+      "warmMapRequests": 26,
+      "scooters": 431,
+      "stationaryReferences": 80,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T22:27:23.236Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Porto_126_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

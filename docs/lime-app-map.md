@@ -178,6 +178,7 @@ stationary reference scooter, country by country:
 | 25 October 2026 | Romania: 7 markets, Bucharest, Cluj-Napoca and Iași the largest | 183 | 48 | 6,995 | 351 |
 | 25 October 2026 | Greece: Athens, Kifisia, Thessaloniki, Heraklion | 111 | 30 | 4,442 | 252 |
 | 25 October 2026 | Belgium: Antwerp | 42 | 11 | 880 | 19 |
+| 25 October 2026 | Portugal: Porto, Faro, Oeiras | 59 | 16 | 893 | 128 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

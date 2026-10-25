@@ -2340,6 +2340,63 @@
       "aliases": [
         "Antwerp"
       ]
+    },
+    {
+      "country": "PT",
+      "city": "Faro",
+      "center": [
+        37.01869,
+        -7.92716
+      ],
+      "timeZone": "Europe/Lisbon",
+      "regionToken": "NR7UL5QKBL2BW",
+      "serviceAreas": [
+        {
+          "name": "[SZ Inner] - Faro[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "wj}`Fdtvo@qLix@LsGlDwa@`E}_@\\kDyCuGaBwCkFgHii@mQiXgIlFmHvj@qYt@gEzO_F|@cEmAgEV[r@vBtFqGhByAP_AiAwDEkAlFgG~MwL`WeP`DkBp@_@hBwNaAoHkFsJyBkN}Cak@}DuSaNuIaNl[wQjI}R}W_[vXiRfg@iMbQxBlTl]nZtAdl@}X`LkObWmQpEaDzJmElE{DxJkKpVkV|n@~Jza@~UXjAsOfLpAh_A|P`i@tIfN~x@nItMrGd@tCDzF|@zC`An\\n]tCfDeJlRo@rGlApF`Qw]dFyHjy@qsAyIgLm]xq@q[bi@yQiRsPsSeGc@kCt@eCTwDSyCmB{CcF"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Faro_39_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "PT",
+      "city": "Oeiras",
+      "center": [
+        38.6926,
+        -9.3123
+      ],
+      "timeZone": "Europe/Lisbon",
+      "regionToken": "ZHNAP72623NP3",
+      "serviceAreas": [
+        {
+          "name": "Operational Territory - SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "{bakFxs|w@tGTrAC`@d@f@JNPLDl@a@n@_@Jm@CODe@WWE]JOf@?`Ap@HH^uB@sAEs@Mw@Zq@TYQc@Ga@KMh@Mf@AHUCQiAy@W_@UFaA|Ce@?YIe@Ne@c@gAeBq@kBY_BOiCWuBF]t@q@^_@`@qAHuABeAJuAR{BOqByAiCkBeCc@UW^C`@LXTB\\Zv@dApAvBL`Ai@|GuCYKoDe@aAmD_@f@cFTL|A`@p@??WwBo@Kw@D_@EWY]OC[ZaBhBN{@My@q@Iy@?w@Ig@WyBg@qBcBcA_AwAo@y@}Ai@QuDg@gCBiA|@eAqBBUz@sB_@K]p@eAoAqBgHw@cJs@{PCeF|@IR_@Ea@mBKUyCm@[_@CYgB}@yD]w@g@}@Iq@iAgAg@iAgA_AsB}DoCcCoC_Ek@_B{@mEeAmG\\eA?_BB[g@eBo@gBONbAjCTnAGzA_Az@m@_Ac@Ko@uAr@k@Yw@q@h@cAyBCQp@o@n@Up@HHACSe@E_@Dk@TYCuA_EyB_GqAcBQEY\\YdB}@p@Y@{@a@iAwBuAmBMo@DGCQFG^BN[oBAgAeDQwA[kES{@s@_BuAwBcAuIBs@KoDWwCcCa@Ye@Uw@a@cBYmBQqEIoCnAsKf@m@jBn@dBy@ScCsA_ANgBUeBAWWWS^u@?Km@EqDKk@NU^eBJ_AAiDIYVy@y@cB[LUu@o@_D_@sAQuCPw@JmEC]OUE_CGi@UaBQ{@Es@]iBcAoDUcBFoEXeBPsCCqEOmEq@eF^eGNwFZmHpCeL`DRDw@{AAYi@{@QiBe@NwDGcE`Aqb@hF_SjE}LnQeROqA_Ag@oFtEk@kC\\uBe@YaAqEhDwJvAjAZ_@_DeFYl@wKeFnBaHyCeDsAfDs@Q[d@a@RQ@ME}@y@KKe@MwBW_Fi@}H{@mIw@uAm@cD}JqDwGqA}Ak@CoFrCeFpAyBPyCQqHmA_HoAqDiCcEkCoBgAJnUb@`]gAbPmHn]oK`SgDnQDjOjBbLbIhNpBbBjDtDdBlBn@\\\\XXb@r@|@fA|@|AvAh@f@\\^VT`@b@dAbAhAvBx@~Ul@nBhEbAkDzExIjF`JdIA`@Cl@B^H^qCh@mB~BKdDeCPiNrDYbHoGrIoCtGj@|L`F`l@~AbQnCx[~@dT]b^RzRdAlEzBnAfFD|HQjGqGzCQhAjFfAhExFl@vCbBnAXn@tCg@r@H|CrAxF`HrHrN`MbM|JpM`ClDrBf@~@d@d@d@d@Tr@q@`AEb@A~@?rAApABfAB|CA`BEh@_@|Dg@jEu@pIu@tI[jD[lDCXCZIr@MrBe@tAG\\Hb@@Te@xFWzC`@FSdEpBAvIaD~Gd@j@OYmCtUwISsFvQyClI?Eo@xEz@rAo@`AyChA{@dAY|GfBWtAbOdDEbKTF"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Oeiras_878_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "PT",
+      "city": "Porto",
+      "center": [
+        41.1502,
+        -8.6103
+      ],
+      "timeZone": "Europe/Lisbon",
+      "regionToken": "FTSCOWKMOI7CG",
+      "serviceAreas": [
+        {
+          "name": "Porto Service Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "mlhzFhr`t@vw@}Qbq@wf@l`AoU{CgQyC_wAuDuu@YurAlVi~@xGib@lNgP?qbAmF_r@JeLfBgI`F}o@gWka@e@wRE_B@YP{@E_Bq@_Ba@kDgGsE_GtG}@IkCxEq@dAYi@OBIAA?A?ABILQx@o@bCoF{A_BaDkBiJiHnCyJ{AiP}EqJzAcd@`JqYh_@cb@mLeQsSwQdJsAfCwDnJlHlNx@dEq@tP_Kza@q@fCm@jCgA~GoCxPsDxTWvAKxAYrDq@fJ~GtXrA`[nKdVrD~TvClq@qUfi@sHfPLxB~FlMbZfr@~@fFAD@H@LDXJp@ZhBx@hE\\fBP~@Jh@BPBJ@HBL?OrBxUW~DmKlI_AjKhC`FlIxDxCnLxHfHpOpU|AnWaLv_@XdVy@bACnDrHdN"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Porto_126_exclude_new_type.json"
+      ]
     }
   ]
 }

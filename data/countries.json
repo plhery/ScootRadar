@@ -199,13 +199,14 @@
       "anchor": [39.6, -8],
       "featuredCities": ["pt:Lisboa", "pt:Porto", "pt:Cascais", "pt:Almada", "pt:Matosinhos", "pt:Oeiras"],
       "credits": {
-        "attribution": "Portugal: Bird, Lime GBFS; Bolt authenticated rider map; city centres from GeoNames",
+        "attribution": "Portugal: Bird, Lime GBFS; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map",
         "gbfs": ["Bird", "Lime"],
         "links": [
           { "label": "PT: DGT boundaries · CC BY 4.0", "href": "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop" },
           { "label": "PT: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
           { "label": "PT: Bolt map", "href": "https://bolt.eu/" },
-          { "label": "PT: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
+          { "label": "PT: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" },
+          { "label": "PT: Lime map", "href": "https://www.li.me/" }
         ]
       }
     },

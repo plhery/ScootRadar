@@ -1324,6 +1324,18 @@ enum ScooterProviderCoverage {
         systems.append((.bolt, GeoBounds(south: 40.1771, west: -8.4526, north: 40.2376, east: -8.3901)))
         systems.append((.bolt, GeoBounds(south: 36.9832, west: -8.0113, north: 37.0521, east: -7.9084)))
         systems.append((.bolt, GeoBounds(south: 39.2063, west: -8.7047, north: 39.2562, east: -8.6675)))
+        systems.append((.lime, GeoBounds(south: 36.99733, west: -8.00072, north: 37.01080467, east: -7.96697696)))
+        systems.append((.lime, GeoBounds(south: 37.01080467, west: -8.00072, north: 37.02427934, east: -7.91477)))
+        systems.append((.lime, GeoBounds(south: 37.02427934, west: -7.98384848, north: 37.037754, east: -7.9163624)))
+        systems.append((.lime, GeoBounds(south: 37.037754, west: -7.98384848, north: 37.04795, east: -7.95010544)))
+        systems.append((.lime, GeoBounds(south: 38.67315, west: -9.3296, north: 38.68662467, east: -9.29508158)))
+        systems.append((.lime, GeoBounds(south: 38.68662467, west: -9.3296, north: 38.70009934, east: -9.22604474)))
+        systems.append((.lime, GeoBounds(south: 38.70009934, west: -9.31234079, north: 38.713574, east: -9.22068)))
+        systems.append((.lime, GeoBounds(south: 38.713574, west: -9.29508158, north: 38.72063, east: -9.22068)))
+        systems.append((.lime, GeoBounds(south: 41.13894, west: -8.69173, north: 41.15241467, east: -8.57775)))
+        systems.append((.lime, GeoBounds(south: 41.15241467, west: -8.69173, north: 41.16588934, east: -8.57775)))
+        systems.append((.lime, GeoBounds(south: 41.16588934, west: -8.69173, north: 41.179364, east: -8.57775)))
+        systems.append((.lime, GeoBounds(south: 41.179364, west: -8.65594624, north: 41.18459, east: -8.57775)))
         systems.append((.bird, GeoBounds(south: 28.3622, west: -13.8857, north: 28.4199, east: -13.8442)))
         systems.append((.bird, GeoBounds(south: 40.3098, west: -3.7197, north: 40.3377, east: -3.6545)))
         systems.append((.bird, GeoBounds(south: 43.5042, west: -5.7134, north: 43.5546, east: -5.5986)))
@@ -2990,11 +3002,11 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "pt:Lisboa", name: "Lisboa", countryCode: "PT", center: GeoPoint(latitude: 38.7078, longitude: -9.1366), bounds: GeoBounds(south: 38.6709, west: -9.3361, north: 38.8017, east: -9.0836), feeds: [ScooterCityFeed(id: "portugal:bird_pt_lisboa"), ScooterCityFeed(id: "portugal:lime_pt_lisboa"), ScooterCityFeed(id: "portugal:bolt_pt_app_386")]))
         cities.append(ScooterCity(id: "pt:Maia", name: "Maia", countryCode: "PT", center: GeoPoint(latitude: 41.233, longitude: -8.6222), bounds: GeoBounds(south: 41.1957, west: -8.6761, north: 41.2748, east: -8.5498), feeds: [ScooterCityFeed(id: "portugal:bird_pt_maia")]))
         cities.append(ScooterCity(id: "pt:Matosinhos", name: "Matosinhos", countryCode: "PT", center: GeoPoint(latitude: 41.1807, longitude: -8.6822), bounds: GeoBounds(south: 41.1675, west: -8.7233, north: 41.2315, east: -8.5906), feeds: [ScooterCityFeed(id: "portugal:bird_pt_matosinhos"), ScooterCityFeed(id: "portugal:bolt_pt_app_437")]))
-        cities.append(ScooterCity(id: "pt:Oeiras", name: "Oeiras", countryCode: "PT", center: GeoPoint(latitude: 38.6926, longitude: -9.3123), bounds: GeoBounds(south: 38.6708, west: -9.3567, north: 38.7512, east: -9.2033), feeds: [ScooterCityFeed(id: "portugal:bird_pt_oeiras"), ScooterCityFeed(id: "portugal:bolt_pt_app_386")]))
+        cities.append(ScooterCity(id: "pt:Oeiras", name: "Oeiras", countryCode: "PT", center: GeoPoint(latitude: 38.6926, longitude: -9.3123), bounds: GeoBounds(south: 38.6708, west: -9.3567, north: 38.7512, east: -9.2033), feeds: [ScooterCityFeed(id: "portugal:bird_pt_oeiras"), ScooterCityFeed(id: "portugal:bolt_pt_app_386"), ScooterCityFeed(id: "portugal:lime_pt_app_oeiras_000"), ScooterCityFeed(id: "portugal:lime_pt_app_oeiras_001"), ScooterCityFeed(id: "portugal:lime_pt_app_oeiras_002"), ScooterCityFeed(id: "portugal:lime_pt_app_oeiras_003"), ScooterCityFeed(id: "portugal:lime_pt_app_oeiras_004")]))
         cities.append(ScooterCity(id: "pt:Olhão", name: "Olhão", countryCode: "PT", center: GeoPoint(latitude: 37.027, longitude: -7.8411), bounds: GeoBounds(south: 37.0174, west: -7.8629, north: 37.0559, east: -7.8152), feeds: [ScooterCityFeed(id: "portugal:bird_pt_olhao")]))
         cities.append(ScooterCity(id: "pt:Portimão", name: "Portimão", countryCode: "PT", center: GeoPoint(latitude: 37.1376, longitude: -8.5368), bounds: GeoBounds(south: 37.1099, west: -8.6041, north: 37.1623, east: -8.5214), feeds: [ScooterCityFeed(id: "portugal:bird_pt_portimao")]))
-        cities.append(ScooterCity(id: "pt:Porto", name: "Porto", countryCode: "PT", center: GeoPoint(latitude: 41.1502, longitude: -8.6103), bounds: GeoBounds(south: 41.1348, west: -8.7345, north: 41.2781, east: -8.5741), feeds: [ScooterCityFeed(id: "portugal:bird_pt_porto"), ScooterCityFeed(id: "portugal:bolt_pt_app_437")]))
-        cities.append(ScooterCity(id: "pt:Faro", name: "Faro", countryCode: "PT", center: GeoPoint(latitude: 37.01869, longitude: -7.92716), bounds: GeoBounds(south: 36.9832, west: -8.0113, north: 37.0521, east: -7.9084), feeds: [ScooterCityFeed(id: "portugal:bolt_pt_app_828")]))
+        cities.append(ScooterCity(id: "pt:Porto", name: "Porto", countryCode: "PT", center: GeoPoint(latitude: 41.1502, longitude: -8.6103), bounds: GeoBounds(south: 41.1348, west: -8.7345, north: 41.2781, east: -8.5741), feeds: [ScooterCityFeed(id: "portugal:bird_pt_porto"), ScooterCityFeed(id: "portugal:bolt_pt_app_437"), ScooterCityFeed(id: "portugal:lime_pt_app_porto_000"), ScooterCityFeed(id: "portugal:lime_pt_app_porto_001"), ScooterCityFeed(id: "portugal:lime_pt_app_porto_002"), ScooterCityFeed(id: "portugal:lime_pt_app_porto_003"), ScooterCityFeed(id: "portugal:lime_pt_app_porto_004"), ScooterCityFeed(id: "portugal:lime_pt_app_porto_005"), ScooterCityFeed(id: "portugal:lime_pt_app_porto_006")]))
+        cities.append(ScooterCity(id: "pt:Faro", name: "Faro", countryCode: "PT", center: GeoPoint(latitude: 37.01869, longitude: -7.92716), bounds: GeoBounds(south: 36.9832, west: -8.0113, north: 37.0521, east: -7.9084), feeds: [ScooterCityFeed(id: "portugal:bolt_pt_app_828"), ScooterCityFeed(id: "portugal:lime_pt_app_faro_000"), ScooterCityFeed(id: "portugal:lime_pt_app_faro_001"), ScooterCityFeed(id: "portugal:lime_pt_app_faro_002"), ScooterCityFeed(id: "portugal:lime_pt_app_faro_003")]))
         cities.append(ScooterCity(id: "pt:Santarém", name: "Santarém", countryCode: "PT", center: GeoPoint(latitude: 39.23379, longitude: -8.68617), bounds: GeoBounds(south: 39.2063, west: -8.7047, north: 39.2562, east: -8.6675), feeds: [ScooterCityFeed(id: "portugal:bolt_pt_app_837")]))
         cities.append(ScooterCity(id: "es:Caleta de Fuste", name: "Caleta de Fuste", countryCode: "ES", center: GeoPoint(latitude: 28.3983, longitude: -13.8602), bounds: GeoBounds(south: 28.3622, west: -13.8885, north: 28.4207, east: -13.8412), feeds: [ScooterCityFeed(id: "spain:bird_es_caleta_de_fuste"), ScooterCityFeed(id: "spain:hoppy_es_caleta_de_fuste")]))
         cities.append(ScooterCity(id: "es:Getafe", name: "Getafe", countryCode: "ES", center: GeoPoint(latitude: 40.3179, longitude: -3.6871), bounds: GeoBounds(south: 40.3098, west: -3.7197, north: 40.3377, east: -3.6545), feeds: [ScooterCityFeed(id: "spain:bird_es_getafe")]))
@@ -4048,7 +4060,7 @@ enum ScooterCountryCatalog {
         ("BR/CL/MX/KZ/AZ/GE: JET map", "https://jetshr.com/"),
         ("BR/CL/MX/KZ/CO/BY: Whoosh map", "https://whoosh.bike/"),
         ("ZA: Zippy rider map", "https://zippyride.app.link/"),
-        ("DE/AT/IT/BE/UK/DK/SE/PL/HU/GR/JP/CL/MX/RO/CZ/QA/AU: Lime map", "https://www.li.me/"),
+        ("DE/AT/IT/BE/UK/PT/DK/SE/PL/HU/GR/JP/CL/MX/RO/CZ/QA/AU: Lime map", "https://www.li.me/"),
         ("AU/TR/MY/KR: Beam map", "https://www.ridebeam.com/"),
         ("US/KR: GCOO map", "https://gcoo.io/"),
         ("KR: Kickgoing map", "https://kickgoing.io/"),

@@ -14,6 +14,11 @@ Lanzarote, then on Tenerife, Fuerteventura and the Costa Blanca; see
 [Hoppy on Tenerife, Fuerteventura and the Costa Blanca](#hoppy-on-tenerife-fuerteventura-and-the-costa-blanca-october-2026).
 Hopp's scooters in Egilsstaðir and Hveragerði, Iceland, were added the same
 day; see [Hopp in Egilsstaðir and Hveragerði, October 2026](#hopp-in-egilsstaðir-and-hveragerði-october-2026).
+Lime's scooters in Porto, Faro and Oeiras, about 430, 280 and 180, were added
+on 25 October 2026 from its authenticated rider map, each market whole after
+a clean full-area audit; see
+[the Lime guide](lime-app-map.md#every-market-the-map-lists-october-2026).
+The table lists the public feeds.
 
 | Country | Operator | Enabled feeds | Coverage | Available scooters |
 | --- | --- | ---: | --- | ---: |
@@ -325,8 +330,9 @@ the dock and each scooter's card state the ban and when renting resumes.
     2026 when polled on the 16th, nor on the 25th (927 Bolt, 494 Bird and 20
     Circ scooters). Since 25 October 2026 Bolt's scooters in Lisboa with
     Oeiras, Porto with Matosinhos, Coimbra, Faro and Santarém come from its
-    authenticated [rider map](bolt-app-map.md). Lime has no feed for Porto or
-    Faro (404), and Link and Whoosh have left Portugal.
+    authenticated [rider map](bolt-app-map.md). Lime has no public feed for
+    Porto or Faro (404); its scooters there and in Oeiras come from its rider
+    map since the same day. Link and Whoosh have left Portugal.
   - Lisboa is ending shared scooters. Mayor Moedas announced it on 15 October
     2026 ([Observador](https://observador.pt/2026/10/15/camara-de-lisboa-avanca-com-suspensao-do-sistema-de-trotinetes-partilhadas-ate-ao-final-do-ano/),
     [ECO](https://eco.sapo.pt/2026/10/16/moedas-anuncia-suspensao-de-trotinetes-partilhadas-em-lisboa/)),
