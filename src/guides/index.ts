@@ -199,6 +199,7 @@ import miltonKeynesEn from './en/e-scooters-milton-keynes';
 import wolfsburgDe from './de/e-scooter-wolfsburg';
 import ulmDe from './de/e-scooter-ulm';
 import salfordEn from './en/e-scooters-salford';
+import liegeFr from './fr/trottinette-electrique-liege';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -398,4 +399,5 @@ export const GUIDES: readonly Guide[] = [
   wolfsburgDe,
   ulmDe,
   salfordEn,
+  liegeFr,
 ];
