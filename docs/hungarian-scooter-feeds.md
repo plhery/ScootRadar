@@ -4,6 +4,12 @@ Update, 24 October 2026: additional Dott regions now use its anonymous app
 map. The audit below records the original GBFS investigation; the current
 catalog and [Dott adapter evidence](dott-app-map.md) supersede its Dott gaps.
 
+Update, 25 October 2026: Lime's scooters in Budapest and 14 other towns, about
+7,760, come from its [authenticated rider map](lime-app-map.md), each market
+after a clean full-area audit. Its Balaton region, 17 zones on the lake's south
+shore from Siófok to Balatonberény, held no scooter that day, nor did Fót, Göd
+or Zalaegerszeg; check the Balaton resorts again in summer.
+
 
 Verified 13 October 2026. The
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv)
@@ -104,6 +110,8 @@ Neither Pécs nor Békéscsaba bans renting at night, so
   helmets. The press reports a draft that was open for consultation until 9
   September 2026; nothing has been published in the official gazette since.
 - **Budapest:** see the 7th district's ban under [Known gaps](#known-gaps).
+- **Dott's and Lime's other towns** have not been checked for local rules on
+  hours yet.
 
 ## Licences
 
@@ -113,10 +121,10 @@ Neither Pécs nor Békéscsaba bans renting at night, so
 
 ## Known gaps
 
-- **Budapest** has no scooter on the map. **Lime** (Budapest and 16 other
-  places, Szeged, Eger, Sopron and Veszprém among them) and **Dott**
-  (Budapest, Győr, Miskolc, Siófok and four other towns) publish no public
-  feed: Dott's 8 Hungarian regions in the registry answer 404, its Hungarian
+- **Lime** (Budapest and 16 other places, Szeged, Eger, Sopron and Veszprém
+  among them) and **Dott** (Budapest, Győr, Miskolc, Siófok and four other
+  towns) publish no public feed; both are now on the map from their apps (see
+  the updates above): Dott's 8 Hungarian regions in the registry answer 404, its Hungarian
   listing names none, and Lime's address answers 404 for each town tried.
   **blinkee** (2 towns) publishes nothing either, and **Bolt** runs taxis only
   in Hungary.
@@ -130,7 +138,8 @@ Neither Pécs nor Békéscsaba bans renting at night, so
   ([resolution 149/2025](https://www.erzsebetvaros.hu/uploads/files/php2YGu2i-1746011602-2025_04_29_KT_kivonat_ny%C3%ADlt.pdf);
   [Infostart](https://infostart.hu/belfold/2025/05/16/sebessegsapka-uj-tilalmak-es-egyeb-szabalyok-erzsebetvarosban),
   press). It sets terms for the district's future contracts with operators;
-  no report says it is enforced. Check it before adding Budapest.
+  no report says it is enforced, and none was found on 25 October 2026 either,
+  so Budapest has no entry in `rental-curfews.json`.
 - **Public data:** MOL Bubi and Donkey Republic are bikes only. The national
   access point ([napportal.kozut.hu](https://napportal.kozut.hu/)) lists
   timetables and road data, no shared mobility, and BKK's FUTÁR API needs a

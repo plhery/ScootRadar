@@ -1331,6 +1331,261 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Ostrava_111_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "HU",
+      "city": "Ajka",
+      "regionToken": "47Y6VLCIWZKUH",
+      "fingerprint": "286a9b8721a44f667143010f828b63baabcf70347efd72b909bf04253b7ad316",
+      "groups": 8,
+      "localCells": 29,
+      "coldMapRequests": 29,
+      "warmMapRequests": 29,
+      "scooters": 187,
+      "stationaryReferences": 32,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T19:15:46.536Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Ajka_451_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Budapest",
+      "regionToken": "4CEFZGJ64RRY6",
+      "fingerprint": "b68f8829d858bf57f2ea5ef416eed494e2e6433b236fbf595ea826db3210d917",
+      "groups": 27,
+      "localCells": 106,
+      "coldMapRequests": 150,
+      "warmMapRequests": 150,
+      "scooters": 4640,
+      "stationaryReferences": 172,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T20:48:50.810Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Budapest_203797_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Dunakeszi",
+      "regionToken": "56DHQLU6KJFNA",
+      "fingerprint": "2a16790c9fcd119ac70fa9837b90d1a59b783bac948ea4a2a91bea8f64a2a8d1",
+      "groups": 4,
+      "localCells": 15,
+      "coldMapRequests": 15,
+      "warmMapRequests": 15,
+      "scooters": 195,
+      "stationaryReferences": 17,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T19:45:59.541Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Pest_North_1735_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Eger",
+      "regionToken": "ZNV7N4JK26DM4",
+      "fingerprint": "80ff01e3857d9206951f12a0a23cab28ea6080bf3a32c4e46eeb59b6083a6ad7",
+      "groups": 9,
+      "localCells": 36,
+      "coldMapRequests": 36,
+      "warmMapRequests": 36,
+      "scooters": 162,
+      "stationaryReferences": 5,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T19:50:25.395Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Eger_32_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Gyömrő",
+      "regionToken": "GJHKO6VIIBKYR",
+      "fingerprint": "089d71a21ace68060d44590c9e0ad9d7d763407e4e7fe2bccf9be3b085f5dc35",
+      "groups": 2,
+      "localCells": 7,
+      "coldMapRequests": 7,
+      "warmMapRequests": 7,
+      "scooters": 95,
+      "stationaryReferences": 14,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T19:53:41.230Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Gyomro_168_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Hódmezővásárhely",
+      "regionToken": "D7Y6LKYS623V6",
+      "fingerprint": "02db1ae4c505df033db2a8a25b1c3cd2d1fad2211ac51228d4a9a89095209686",
+      "groups": 5,
+      "localCells": 19,
+      "coldMapRequests": 19,
+      "warmMapRequests": 19,
+      "scooters": 159,
+      "stationaryReferences": 11,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T19:56:08.430Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Hodmezovasarhely_42_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Miskolc",
+      "regionToken": "LB5HNG73EJ3OI",
+      "fingerprint": "e731e650e6342cd19427c179e7c2f83266b240f874a70ef9d4ee773753fb7d6e",
+      "groups": 12,
+      "localCells": 45,
+      "coldMapRequests": 45,
+      "warmMapRequests": 45,
+      "scooters": 288,
+      "stationaryReferences": 9,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T20:01:37.213Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Miskolc_86_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Nyíregyháza",
+      "regionToken": "W25Z7LGQXJKFS",
+      "fingerprint": "fc13601a330de3685757318253cc0ecc098a66c38602a1aaf4c1b77f20ce509e",
+      "groups": 8,
+      "localCells": 31,
+      "coldMapRequests": 31,
+      "warmMapRequests": 31,
+      "scooters": 286,
+      "stationaryReferences": 41,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T20:05:28.491Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Nyiregyhaza_110_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Sopron",
+      "regionToken": "YRMHBW67UKD5S",
+      "fingerprint": "18468af3b3fa9f839581e68891d0b93101bab364ec0f13b3300f63a2602d45f2",
+      "groups": 5,
+      "localCells": 20,
+      "coldMapRequests": 20,
+      "warmMapRequests": 20,
+      "scooters": 270,
+      "stationaryReferences": 24,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T20:08:02.316Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Sopron_267_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Szeged",
+      "regionToken": "3BUIHLKZJTDLB",
+      "fingerprint": "d2dce5ab2b920607222cb26a7684066046bc82cc7fe40257332d824a09c76cf1",
+      "groups": 9,
+      "localCells": 36,
+      "coldMapRequests": 36,
+      "warmMapRequests": 36,
+      "scooters": 398,
+      "stationaryReferences": 32,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T20:12:28.619Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Szeged_262_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Székesfehérvár",
+      "regionToken": "S3W7JOOBHZPIG",
+      "fingerprint": "4d5fc4fbec6870e776b0ba3ba1c4d95488c3e2801338dd212642d727f7589023",
+      "groups": 10,
+      "localCells": 39,
+      "coldMapRequests": 39,
+      "warmMapRequests": 39,
+      "scooters": 383,
+      "stationaryReferences": 37,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T20:17:15.327Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Szekesfehervar_171_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Szigetszentmiklós",
+      "regionToken": "RWWC2YKWTOV2U",
+      "fingerprint": "3d281631ae9de59e0251da3aa7ad731fb86760b66270bc31cf0f9177fbe19069",
+      "groups": 7,
+      "localCells": 26,
+      "coldMapRequests": 26,
+      "warmMapRequests": 26,
+      "scooters": 64,
+      "stationaryReferences": 13,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T20:20:31.256Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Szigetszentmiklos_59_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Szolnok",
+      "regionToken": "JHGZS7LLNP26V",
+      "fingerprint": "bd3d4d6b92523a077eee67b63cf75aa92cd4cb51e5f95a089b53107e8d187e9d",
+      "groups": 4,
+      "localCells": 14,
+      "coldMapRequests": 14,
+      "warmMapRequests": 14,
+      "scooters": 179,
+      "stationaryReferences": 16,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T20:22:23.400Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Szolnok_114_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Szombathely",
+      "regionToken": "FBWDODYH5GXLV",
+      "fingerprint": "c11b6b6e9dae23521d46d966495bb0cc856091272fb6669c076454ad62dbc407",
+      "groups": 8,
+      "localCells": 32,
+      "coldMapRequests": 32,
+      "warmMapRequests": 32,
+      "scooters": 262,
+      "stationaryReferences": 19,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T20:26:21.383Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Szombathely_134_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Veszprém",
+      "regionToken": "RHGTYR6IQNK2J",
+      "fingerprint": "90d760386402a8a822e59ae2bdc02ad8a94281473487a1aa0d5fa7341eb782c2",
+      "groups": 4,
+      "localCells": 15,
+      "coldMapRequests": 15,
+      "warmMapRequests": 15,
+      "scooters": 192,
+      "stationaryReferences": 23,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T20:28:20.330Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Veszprem_109_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

@@ -133,6 +133,354 @@
       },
       "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
       "dottAppRegion": "LCPKce22QCyFQUlAmKp1"
+    },
+    {
+      "id": "lime_hu_app_ajka",
+      "provider": "lime",
+      "city": "Ajka",
+      "center": [
+        47.10196,
+        17.55892
+      ],
+      "timeZone": "Europe/Budapest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "47Y6VLCIWZKUH",
+      "limeMapGrid": {
+        "south": 47.04334,
+        "west": 17.51686,
+        "north": 47.14719,
+        "east": 17.596,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019773670080847648,
+        "cells": "1-2,5-8,10-18,20-23,25-28,31-33,36-38"
+      }
+    },
+    {
+      "id": "lime_hu_app_budapest",
+      "provider": "lime",
+      "city": "Budapest",
+      "center": [
+        47.5016,
+        19.0626
+      ],
+      "timeZone": "Europe/Budapest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "4CEFZGJ64RRY6",
+      "limeMapGrid": {
+        "south": 47.38009,
+        "west": 18.96107,
+        "north": 47.61908,
+        "east": 19.16605,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01989962550655618,
+        "cells": "0-1,6-7,11-12,37-40,47-52,57-63,68-76,79-87,90-98,101-109,112-119,124-130,134-141,146-151,157-161,168-173,180-184,193-194"
+      }
+    },
+    {
+      "id": "lime_hu_app_dunakeszi",
+      "provider": "lime",
+      "city": "Dunakeszi",
+      "center": [
+        47.63268,
+        19.139635
+      ],
+      "timeZone": "Europe/Budapest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "56DHQLU6KJFNA",
+      "limeMapGrid": {
+        "south": 47.59996,
+        "west": 19.11054,
+        "north": 47.6654,
+        "east": 19.16873,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019983107832496586,
+        "cells": "0-14"
+      }
+    },
+    {
+      "id": "lime_hu_app_eger",
+      "provider": "lime",
+      "city": "Eger",
+      "center": [
+        47.90265,
+        20.37329
+      ],
+      "timeZone": "Europe/Budapest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "ZNV7N4JK26DM4",
+      "limeMapGrid": {
+        "south": 47.85993,
+        "west": 20.31809,
+        "north": 47.95268,
+        "east": 20.42624,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020083107302051366,
+        "cells": "0-28,30-33,37-39"
+      }
+    },
+    {
+      "id": "lime_hu_app_gyomro",
+      "provider": "lime",
+      "city": "Gyömrő",
+      "center": [
+        47.42733,
+        19.40133
+      ],
+      "timeZone": "Europe/Budapest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "GJHKO6VIIBKYR",
+      "limeMapGrid": {
+        "south": 47.40568,
+        "west": 19.37525,
+        "north": 47.44028,
+        "east": 19.4197,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019909290816456118,
+        "cells": "0-1,3-7"
+      }
+    },
+    {
+      "id": "lime_hu_app_hodmezovasarhely",
+      "provider": "lime",
+      "city": "Hódmezővásárhely",
+      "center": [
+        46.41667,
+        20.33333
+      ],
+      "timeZone": "Europe/Budapest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "D7Y6LKYS623V6",
+      "limeMapGrid": {
+        "south": 46.38326,
+        "west": 20.27489,
+        "north": 46.43737,
+        "east": 20.36903,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019533285376105734,
+        "cells": "0-1,5-14,16-19,21-23"
+      }
+    },
+    {
+      "id": "lime_hu_app_miskolc",
+      "provider": "lime",
+      "city": "Miskolc",
+      "center": [
+        48.10327,
+        20.77806
+      ],
+      "timeZone": "Europe/Budapest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "LB5HNG73EJ3OI",
+      "limeMapGrid": {
+        "south": 48.04983,
+        "west": 20.64911,
+        "north": 48.14813,
+        "east": 20.83871,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02015705203937785,
+        "cells": "4-8,13-19,22-28,31-38,40-48,50-51,55-57,65-66,75-76"
+      }
+    },
+    {
+      "id": "lime_hu_app_nyiregyhaza",
+      "provider": "lime",
+      "city": "Nyíregyháza",
+      "center": [
+        47.95539,
+        21.71671
+      ],
+      "timeZone": "Europe/Budapest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "W25Z7LGQXJKFS",
+      "limeMapGrid": {
+        "south": 47.94019,
+        "west": 21.67338,
+        "north": 48.02178,
+        "east": 21.78273,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020114266316051687,
+        "cells": "0-4,6-10,13-15,19-23,25-29,31-35,37-39"
+      }
+    },
+    {
+      "id": "lime_hu_app_sopron",
+      "provider": "lime",
+      "city": "Sopron",
+      "center": [
+        47.68501,
+        16.59049
+      ],
+      "timeZone": "Europe/Budapest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "YRMHBW67UKD5S",
+      "limeMapGrid": {
+        "south": 47.65901,
+        "west": 16.52966,
+        "north": 47.71543,
+        "east": 16.62579,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020005698243978104,
+        "cells": "1-14,16-19,22-23"
+      }
+    },
+    {
+      "id": "lime_hu_app_szeged",
+      "provider": "lime",
+      "city": "Szeged",
+      "center": [
+        46.253,
+        20.14824
+      ],
+      "timeZone": "Europe/Budapest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "3BUIHLKZJTDLB",
+      "limeMapGrid": {
+        "south": 46.21615,
+        "west": 20.06059,
+        "north": 46.29484,
+        "east": 20.21526,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019473759866525404,
+        "cells": "2-3,5-7,9-15,17-23,25-38,44-46"
+      }
+    },
+    {
+      "id": "lime_hu_app_szekesfehervar",
+      "provider": "lime",
+      "city": "Székesfehérvár",
+      "center": [
+        47.18995,
+        18.41034
+      ],
+      "timeZone": "Europe/Budapest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "S3W7JOOBHZPIG",
+      "limeMapGrid": {
+        "south": 47.13317,
+        "west": 18.33823,
+        "north": 47.22035,
+        "east": 18.50065,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019807046364786727,
+        "cells": "3-4,11-14,20-23,29-34,36-43,45-55,57-60"
+      }
+    },
+    {
+      "id": "lime_hu_app_szigetszentmiklos",
+      "provider": "lime",
+      "city": "Szigetszentmiklós",
+      "center": [
+        47.34382,
+        19.04335
+      ],
+      "timeZone": "Europe/Budapest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "RWWC2YKWTOV2U",
+      "limeMapGrid": {
+        "south": 47.31292,
+        "west": 18.98141,
+        "north": 47.38449,
+        "east": 19.09795,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019874318913905592,
+        "cells": "1-3,6-9,12-16,18-29,31,35"
+      }
+    },
+    {
+      "id": "lime_hu_app_szolnok",
+      "provider": "lime",
+      "city": "Szolnok",
+      "center": [
+        47.18066,
+        20.19835
+      ],
+      "timeZone": "Europe/Budapest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "JHGZS7LLNP26V",
+      "limeMapGrid": {
+        "south": 47.15211,
+        "west": 20.16507,
+        "north": 47.20799,
+        "east": 20.22588,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019814104120426772,
+        "cells": "0-10,12-13,17"
+      }
+    },
+    {
+      "id": "lime_hu_app_szombathely",
+      "provider": "lime",
+      "city": "Szombathely",
+      "center": [
+        47.23088,
+        16.62155
+      ],
+      "timeZone": "Europe/Budapest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "FBWDODYH5GXLV",
+      "limeMapGrid": {
+        "south": 47.18023,
+        "west": 16.57035,
+        "north": 47.27033,
+        "east": 16.67726,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019824595968800665,
+        "cells": "2,7-11,13-22,24-39"
+      }
+    },
+    {
+      "id": "lime_hu_app_veszprem",
+      "provider": "lime",
+      "city": "Veszprém",
+      "center": [
+        47.09327,
+        17.91149
+      ],
+      "timeZone": "Europe/Budapest",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "RHGTYR6IQNK2J",
+      "limeMapGrid": {
+        "south": 47.07667,
+        "west": 17.8721,
+        "north": 47.12108,
+        "east": 17.93944,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019786035015501142,
+        "cells": "0-14"
+      }
     }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Ajka_451_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Budapest_203797_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Pest_North_1735_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Eger_32_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Gyomro_168_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Hodmezovasarhely_42_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Miskolc_86_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Nyiregyhaza_110_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Sopron_267_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Szeged_262_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Szekesfehervar_171_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Szigetszentmiklos_59_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Szolnok_114_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Szombathely_134_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Veszprem_109_exclude_new_type.json"
   ]
 }

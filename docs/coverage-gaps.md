@@ -14,8 +14,9 @@ London, Birmingham, Coventry, Milton Keynes and Salford, in 39 German
 markets, from Berlin and Munich to Waiblingen, in ten Italian ones, from
 Roma and Milano to Rimini, in six Polish ones, from Warszawa to Wrocław, and
 in five Austrian ones, from Wien to Wels, in Göteborg and Malmö, in
-København and Odense, and in Brno and Ostrava.
-The other markets its rider map lists, 137 found so far, are added country by
+København and Odense, in Brno and Ostrava, and in 15 Hungarian markets, from
+Budapest to Szigetszentmiklós.
+The other markets its rider map lists, 118 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -335,9 +336,11 @@ banned shared scooters, and feeds that were empty when checked.
 - **Hungary** ([guide](hungarian-scooter-feeds.md#known-gaps)): Hopp in Pécs
   and Békéscsaba is covered.
   - Dott now covers Budapest, Győr, Hatvan, Pápa and Dunaújváros through its
-    anonymous app map. Lime (Budapest and 16 other places,
-    Szeged, Eger, Sopron and Veszprém among them) and Dott (Budapest, Győr,
-    Miskolc, Siófok and four other towns) publish no public feed: Dott's 8
+    anonymous app map, and Lime 15 markets, Budapest, Szeged and
+    Székesfehérvár the largest, through its authenticated rider map since 25
+    October 2026. Lime's Balaton region, on the lake's south shore, and Fót,
+    Göd and Zalaegerszeg held no scooter that day. Lime and Dott (Budapest,
+    Győr, Miskolc, Siófok and four other towns) publish no public feed: Dott's 8
     Hungarian regions in the registry answer 404, its Hungarian listing names
     none, and Lime's address answers 404 for each town tried. blinkee (2
     towns) publishes nothing either, and Bolt runs taxis only in Hungary.
@@ -350,8 +353,8 @@ banned shared scooters, and feeds that were empty when checked.
     ([resolution 149/2025](https://www.erzsebetvaros.hu/uploads/files/php2YGu2i-1746011602-2025_04_29_KT_kivonat_ny%C3%ADlt.pdf);
     [Infostart](https://infostart.hu/belfold/2025/05/16/sebessegsapka-uj-tilalmak-es-egyeb-szabalyok-erzsebetvarosban),
     16 May 2025, press). It sets terms for the district's future contracts;
-    no report says it is enforced; this remains unconfirmed. The Dott app
-    supplies the currently available vehicles.
+    no report says it is enforced, and none was found on 25 October 2026
+    either. The Dott and Lime apps supply the currently available vehicles.
   - MOL Bubi and Donkey Republic are bikes only. The national access point
     (napportal.kozut.hu) lists timetables and road data, no shared mobility,
     and BKK's FUTÁR API needs a key and carries bike stations, not scooters.

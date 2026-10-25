@@ -360,9 +360,11 @@
       "anchorNote": "About the middle of the country, south-east of Budapest.",
       "featuredCities": ["hu:Pécs", "hu:Békéscsaba"],
       "credits": {
-        "attribution": "Hungary: Hopp GBFS; Dott anonymous app map",
+        "attribution": "Hungary: Hopp GBFS; Dott anonymous app map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
         "gbfs": ["Hopp"],
-        "links": [{ "label": "HU: Dott map", "href": "https://ridedott.com/" }]
+        "links": [{ "label": "HU: Dott map", "href": "https://ridedott.com/" },
+          { "label": "HU: Lime map", "href": "https://www.li.me/" },
+          { "label": "HU: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }]
       }
     },
     {

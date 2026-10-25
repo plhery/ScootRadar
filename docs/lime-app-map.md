@@ -130,7 +130,9 @@ on 25 October 2026. In Sweden, neither did its Stockholm region, in Stockholm,
 Bromma or Solna and Sundbyberg: Stockholm's permits went to Voi and Bolt alone
 from 1 July 2026. In Denmark, neither did its Aarhus region. In Czechia,
 neither did its Praha, Liberec and Olomouc regions: Prague has banned shared
-scooters since 1 January 2026.
+scooters since 1 January 2026. In Hungary, neither did its Balaton region, 17
+zones on the lake's south shore from Siófok to Balatonberény, nor Fót, Göd and
+Zalaegerszeg; check the Balaton resorts again in summer.
 
 - Zones named as demos, tests, warehouses, events or temporary areas are left
   out, as Rome's three temporary areas and Dortmund's warehouses. So is the
@@ -166,6 +168,12 @@ stationary reference scooter, country by country:
 | 25 October 2026 | Sweden: Göteborg, Malmö | 188 | 47 | 2,750 | 144 |
 | 25 October 2026 | Denmark: Copenhagen, Odense | 107 | 28 | 1,291 | 29 |
 | 25 October 2026 | Czechia: Brno, Ostrava | 66 | 17 | 807 | 178 |
+| 25 October 2026 | Hungary: 15 markets, Budapest, Szeged and Székesfehérvár the largest | 470 | 122 | 7,760 | 465 |
+
+Budapest's first audit missed one of its 171 stationary references, 6 m inside
+the edge of the local view that should have held it: most likely it was
+reported just across that edge, in the neighbouring view, when each was
+read. Budapest was audited again that evening, from scratch, and found all 172.
 
 When the audit and the cache's sweeps shared an account, they shared its limit,
 about one request every five seconds. On 24 and 25 October 2026, before the cache's

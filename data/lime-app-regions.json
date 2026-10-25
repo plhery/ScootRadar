@@ -1751,6 +1751,303 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Ostrava_111_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "HU",
+      "city": "Ajka",
+      "center": [
+        47.10196,
+        17.55892
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "47Y6VLCIWZKUH",
+      "serviceAreas": [
+        {
+          "name": "[Ajka][SZ][Üzemelési zóna][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "yec~GqwdjBah@qm@i_@c`@m|@mVyyAivBkwAxMacB|{@kb@bz@se@hBytBgs@_YxxAgNpbB`Odf@~eAn_@dpAvZbp@bJl]vJdR~_BniAua@tz@vCf{AurAd~Agn@l{@oy@}@ys@??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Ajka_451_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Budapest",
+      "center": [
+        47.5016,
+        19.0626
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "4CEFZGJ64RRY6",
+      "serviceAreas": [
+        {
+          "name": "Budapest_Pest South_SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "cbi`Hqf|rBr]vhDbLtB`LnBfY|Ex]~C{o@yiE_`A|L??"
+        },
+        {
+          "name": "Budapest_Szigetszentmiklos_SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "yvf`HumqsB`l@`g@bBkX`IeAmn@cb@wBgAaFzW??"
+        },
+        {
+          "name": "Budapest_SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "iqpaHklgsBpZ~Q~Y`A|BkBzAaEhl@rZlg@di@zE_N?}d@hCeYzIDte@vDnUmFnZjGuBbGgAxL{CdI_Jf`@eFna@je@|HxDpVu`@xP^tGzs@}WxN~GnEnJjF_GnDxQnFmCzD_Hk@qEbEkOsEkCfFaIb\\wEjb@cKnXkRt@|D`KzA|DnLbMoJnl@bI|IoIrQlE~KlNpEzd@`MxKaNvZwZj[wI`WlKnVnOrV`f@a@tB_MnLyd@zSi[he@yOnEtKfFjJpFnGhKoFdCmSbTcf@`LzDzImExRuAz@eOwGgFmJ{Iz@iG~|@nc@mGaz@tCcAjCdf@jCxU|CxFpe@~DhIsDbBuDmDy@~@aNjI~AhV|M~Ab@nCo@xF~AlA_@fAtDShIeKc@aMhAsKfDwEp@gFL_Io@eDpPpCrGt^h[~V_w@dFlEtDkPk@sSl\\qXfp@a`@tAey@qZyAcXeGeiAeVI_DzMyr@yPcf@~]tM`i@l_@hXtK|e@tJncAdOhMhAy@{}AzA}dCae@jn@qD]aF{Tl`@s_AwHst@ic@siAwx@kyAwx@zrAsz@ywAiC`Ge@k@y@uH^cD|BjA`@aCdGqg@jEy[dBag@aCcBpA_JoCoCT_B_EoDqPgO_bAchAoT~[_v@}UqG|dB}p@p`AaKhBaLglB{Eck@ey@zgAeBmE_B`CnBxDyw@jfAoJ`a@mQzk@gP{SyAg@wToZd@gAgCmMyDkOeFfCcIaOjDcH_JiLtCyGqCcLy@z@kIs[oYvj@}Zab@w]hu@nY~a@s`@bz@cKwPqe@pz@CrXxCz\\yi@_G}c@iPs]sFsSEyq@{Rqd@oJeDib@q@HwFv[_RVmXjZqcAls@lg@nUhLja@nZ|_@rz@he@b`@z`@yJj\\dZzRcFj_@sMrDEpFwLLsf@wC{PeIgBrMFxy@xc@bZ]rAuQmLcF~SOjKyDfS"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Budapest_203797_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Dunakeszi",
+      "center": [
+        47.63268,
+        19.139635
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "56DHQLU6KJFNA",
+      "serviceAreas": [
+        {
+          "name": "[Budapest][SZ][[Pest North][SZ][Dunakeszi_modositott_j]][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "oovaHmavsBj]mOf`@vg@|[fx@dbAar@lY_[|QSrF{ZoBcBwBeBoAiApBaRnBiR}u@qi@gRbv@ucAuW|Qin@|e@}EnOopBmJgPed@}A}ZjBcGxB}HrAgY{QmGlBewA``Bi}@cQke@dzBrHre@g\\hQz[r{@`aC_SxCqSn_@M"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Pest_North_1735_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Eger",
+      "center": [
+        47.90265,
+        20.37329
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "ZNV7N4JK26DM4",
+      "serviceAreas": [
+        {
+          "name": "SZ_Eger[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "_|ocHqma{B~y@eApyAtcAtoEefCdaAkmGmWwfFwlAjp@_cB_wAkzCvaByw@ppAsc@rcAofBfQqTjp@sBxUlRdwBnO|f@nfBbu@xNxv@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Eger_32_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Gyömrő",
+      "center": [
+        47.42733,
+        19.40133
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "GJHKO6VIIBKYR",
+      "serviceAreas": [
+        {
+          "name": "[Budapest][SZ][[Gyomro][SZ][Budapest_Gyomro_j]]]",
+          "polygon": "emp`HqdiuBdIhCjXnk@xPqNfN~[hO_\\tOoMjCiKtOlE~JeP`LwXaDv_@hO`GfFuWlHlE|Nok@m@{K_GqGtCcOxTwg@}Rse@sJtWiOqNgJeIuGhR_x@{_AiWbAaPza@{ImEef@feAzYn\\wT~y@`HhKsE|L??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Gyomro_168_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Hódmezővásárhely",
+      "center": [
+        46.41667,
+        20.33333
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "D7Y6LKYS623V6",
+      "serviceAreas": [
+        {
+          "name": "Hodmezovasarhely[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}mczGggwzBpf@{{@y_@ukAsb@v\\afAcuDua@agAlY}N`Rs_AaJce@vQwPsTkd@kUki@kEd@zAfz@m[rUee@dDyIsBkItAmEkAkDr@s[he@hRb]oZjv@gYkZ_FjNdAzaB`CnV~PdVgSpDeBlXQrKhNn`A`a@eOhDwHfQsGf]pN}@nPdnAte@pNyHd_@`cBli@gi@|Lbq@xLeI??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Hodmezovasarhely_42_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Miskolc",
+      "center": [
+        48.10327,
+        20.77806
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "LB5HNG73EJ3OI",
+      "serviceAreas": [
+        {
+          "name": "Miskolc_SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "yqkdHims}BmQhDxe@hz@{C`XxK`Y~Gg@oJ}_@rQ}r@|Ul@oEid@d\\}\\xJmPjLgF`DeJ_CsS~CaOoEkb@}IeP|GeLuMm_@_HgIdCgZtHk@hCzHxCuBn@oAvHy_@wNg_@kGiI}BofAuWv@oKv_As_@wP{@wwBvUcQoGm^mJbBqPew@oZzIkXnUjFrW{ZjZa_@r[aaA{QqCjyBeFnCyBs@WoQiEgj@yGzAcDmXmc@nJtJrxAw\\pEa`@lMuvAvo@~BnXqwBj{@~Fb`@fLrb@lb@wT_Ga]jiAec@`|A{x@l]rHqF~g@eDjF{FLuDb@cFn@yHjM|AjBmSv_@z@pKnDbJ~OiKzH_A`JoHqMv_@sFhGyFlId_@jm@rHwTtSxFoErTaB~b@dA|k@tDjy@gAnu@bIzv@cCpWjA|NgGdFr@dM`GP`G|J|BzNcF|d@iUh]aVb}AwKnToRuY}CzKtTl[aAlIgDhLwBcBcMeAeAzJv@jEiGtBaFpQwDvBaQrEpEnH^j\\bZ\\dSvCzLqUcFkK\\kPdSwt@|WuHxJyPhCqFvKb@vHiApDcB~HwHzB{DhFgW?yHaFiPVcs@fCyDdC{H|J`DlHsXn[gr@xH{m@pXpMjf@w}@TkKlK_CzEuHkCyGiJjJkKqB~F{t@kFuPqGuGaN~j@_KtMgKpIuQsEeMmLiR^oIqSoS~@kEwwAhZ{GcBmlAbJqN|QgTrHhFbEsHrGsDdPsBxD~@_DdMfCvPlP`MrY{AlL@pJfKhRf^{@dc@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Miskolc_86_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Nyíregyháza",
+      "center": [
+        47.95539,
+        21.71671
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "W25Z7LGQXJKFS",
+      "serviceAreas": [
+        {
+          "name": "SZ_Nyíregyháza",
+          "polygon": "kdbdHkivcCwAbnFxlGfZfl@tPln@re@v`@oFhCnmBj{@`]dg@yz@UsfAnH_wBiHshDoFgh@}dAqy@um@`bAox@|Lqb@pGiVbWepAuuFyuAq\\kxAtbF??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Nyiregyhaza_110_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Sopron",
+      "center": [
+        47.68501,
+        16.59049
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "YRMHBW67UKD5S",
+      "serviceAreas": [
+        {
+          "name": "[Sopron][SZ][Üzemelési zóna][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "mlfbHachdBv^r_CnL~rAjhAnv@tEmTdLh@pS{E~F|B~@tcA]tr@|QUfCrMhPhYvSGbT}k@NeFnFkFAeCe@mBiDiEgKdFaBuBaBiFSqHf@kJrAKdHsIdB{BrAuCf@yFl@sAa@qIuElAkF{ACkK`BmGz@aPnC_DxC_HjGsFvBb@`Am@vF_IhC_MkMuMxDkJhCeKzHmPtAkFzJ}EdDuB^uLeP_LxFk[vA}AzE@fB[rPgKvBoAxCjAdG|NrGz@yKmc@mKaW}AK}A\\eCtDiKsEoAAWd@yDVu@gDq@E_AwCkAqB|[_e@|N_HNm]qHiV_Jio@kZxQkYoFeQ_g@cGnFeRaFyY^oRbE}D|@kU|LsQhN{bA|vAws@lcA"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Sopron_267_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Szeged",
+      "center": [
+        46.253,
+        20.14824
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "3BUIHLKZJTDLB",
+      "serviceAreas": [
+        {
+          "name": "[Szeged][SZ][[Szeged][SZ][Ebike_sz]][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "iemyGuamyBdGgBrHia@n@wsA~UucA`M{uAvB{K`P`@bBsHpNrHvPrHlMmBjEvhAdHgAzLcg@TaLkC_ByRpA_A_SxAub@|BoYn{@eJpDfT_Lh[jHvb@pThn@hf@aWgEg^hGyKn_@JfRoe@kJ}q@cJ{bAyIg`@eMm[eMqLwGkDlMyc@pv@ieCuPsKvt@q{BzR}eA{rAkd@al@heBmNhI}FjMuNsCeEdD_zBqpCwX|f@pJrQoLtX`Eze@uN`XccAfa@X|LfX~XuO`TmMcIkDbH}C_JaXxDMp^oNzS^tPs]xJS|LxMy@kPls@j_BdiBtnArgCsgAp|H~OpU"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Szeged_262_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Székesfehérvár",
+      "center": [
+        47.18995,
+        18.41034
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "S3W7JOOBHZPIG",
+      "serviceAreas": [
+        {
+          "name": "Szekesfehervar_SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "kzc_HsqhoBnUnlA}dA~aCnd@zm@}MtRyDgQc\\pd@bJ~MrUc[jG`KkPbt@dChBj^|]p\\sNdf@gr@xTeyBwB_bC`^v@dl@}b@_BrfApT|@jBom@x`@sFxQaApFrQ~a@`z@jC`Il_Aaj@t_@qXQiA_CkH{Wo\\rD}Qb@iDhHrGxLaRrLcb@xuAsL~@qL{m@klAmSia@aS_\\k{@glAy[|HqZpa@o\\mIe^aGoRgiA~Bc{C_^_wAawAxo@ib@u`B{WxV`Kdk@jHrDgLxbAqjAjcAhK|oBxi@dzAsTrj@{Oxg@dB~^`U`gB"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Szekesfehervar_171_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Szigetszentmiklós",
+      "center": [
+        47.34382,
+        19.04335
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "RWWC2YKWTOV2U",
+      "serviceAreas": [
+        {
+          "name": "Szigetszentmiklos[SZ][Szigetszentmiklos_ja[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "wxw_HigdsBea@{h@_g@mj@ah@eIcd@yCuSwPkKsHoa@knAeUmLgKwHkG}FyWgl@wQqYmW_Yy^e]kt@yg@yB{AmHdAeB|Xrw@hq@f{@l|@~j@to@fUpRi]|nAuc@v_CitA~lC{RwWoOwTkHvFJ`AhLhZfVpUnPnYhcAfoAznArp@bJ_TbLc[bSag@`@iGpIbAnY{Kr^kLpi@se@j[o\\de@mgAlTiw@??"
+        },
+        {
+          "name": "[Szigetszentmiklos][SZ][Szigetszentmiklos_bicikli_ut]a[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "o}b`HmggsB|EnKrIaIdp@nGnBiKehA{Gs@|IpCU??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Szigetszentmiklos_59_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Szolnok",
+      "center": [
+        47.18066,
+        20.19835
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "JHGZS7LLNP26V",
+      "serviceAreas": [
+        {
+          "name": "Szolnok SZ Uzemelesi zona[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "og|~GunazBfAsDjEeB`T}a@]wQhc@nF{Euu@vb@}p@xWip@uGiMsHeGcKJcUbBImJru@sDhB}aAga@{p@og@gQ_y@xo@}q@_YgNlXgW|i@kG`bAoXr@ac@aNaD`@cDAeDEmGGkHfCoJ`IaF~JkB~I_@bNbo@rFv@dE[~G_@xRxArDhB_JrOj@qDv`BbLza@zX}i@va@xDhByWq@sRrJbOrY~c@jSbEbYh`@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Szolnok_114_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Szombathely",
+      "center": [
+        47.23088,
+        16.62155
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "FBWDODYH5GXLV",
+      "serviceAreas": [
+        {
+          "name": "Üzemelési zóna[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "{zj_HaztdB}bAtaDwnA~j@nLnvAzFds@rMhFoDdRo@zLDjElFj{@tAbGlBnDdCnCrCjBzBn@z`@vDtFnAbHjExDxEtCvF`AxCjA~D`AzFpB~OhB~Ob_A{h@e@_ItFoEeAeBw@qCMwGyBwGqA_KNaKrFeKhAMHxD|@vAY~C~AtLvDvJfL|a@`j@eWsBmQxHcD_B{K]yGMqGnTyGhTuIgDgVf^yNfB|Kj`@}K`EvDhE`Q`JzX`Le^p]}]iFiPVaNgBc]aMpCgC}`@bVyHnM]de@mGfK`@hSQ`Kxo@t\\mHuNo|@kHr@yN|H{^GySbCu]fCej@tKcFo@bMcyCjQwj@lGyx@zImlBcv@{DqHn`AqNkD{Cdl@fHfO}K`Yge@oc@g`AnFuoAoFeW{sAeL~HtPphA"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Szombathely_134_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "HU",
+      "city": "Veszprém",
+      "center": [
+        47.09327,
+        17.91149
+      ],
+      "timeZone": "Europe/Budapest",
+      "regionToken": "RHGTYR6IQNK2J",
+      "serviceAreas": [
+        {
+          "name": "[Balaton][SZ][Balaton_Veszprem]",
+          "polygon": "c|p~GssalBrzAsO~w@sVhrAewBgIqnBkRiw@eXw_@wwAs^eF]cXgZof@fLiA~{@c`@da@wYft@nHz|Dbc@hdA??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Veszprem_109_exclude_new_type.json"
+      ]
     }
   ]
 }
