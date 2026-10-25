@@ -518,7 +518,13 @@ MobiData BW supplies the reviewed Bolt, Hopp, Lime and Voi GBFS 3.0 systems,
 ten of the fourteen Zeus systems and, since 25 October 2026, Dott's Heidelberg,
 Heilbronn, Kaiserslautern and Stuttgart; its Voi feed covers eight Baden-Württemberg
 cities, not all of Germany. Zeus's own feeds supply Bamberg, Ludwigsburg,
-Regensburg and Schweinfurt.
+Regensburg and Schweinfurt. MobiData BW licenses its
+[e-scooter dataset](https://mobidata-bw.de/dataset/escootch) under
+[dl-de/by-2-0](https://www.govdata.de/dl-de/by-2-0), which asks for the
+provider, the licence and the dataset to be named, and for changed data to be
+marked: the map's credits link "DE: MobiData BW e-scooter data" to the dataset
+and "DE: MobiData BW · dl-de/by-2-0, modified" to the licence, and the API's
+`X-Mobility-Data-Source` header names all three.
 
 [NRW.Mobidrom](https://www.mobilitaetsdaten.nrw), North Rhine-Westphalia's
 mobility data platform, supplies Voi's 12 feeds there, in 18 towns from Köln

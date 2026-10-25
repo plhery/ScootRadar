@@ -212,7 +212,7 @@ describe('ControlSheet settings', () => {
     expect(within(dialog).getAllByRole('heading', { level: 3 }).map(heading => heading.textContent))
       .toEqual(['Appearance', 'Map', 'Language', 'About']);
     // The sources live in the credits; nothing is left of the English-only footer.
-    expect(within(dialog).queryByRole('link', { name: 'MobiData BW' })).toBeNull();
+    expect(within(dialog).queryByRole('link', { name: /MobiData BW/ })).toBeNull();
     expect(within(dialog).queryByRole('button', { name: 'Reset' })).toBeNull();
   });
 
@@ -434,7 +434,8 @@ describe('ControlSheet settings', () => {
       'US/CA/CR/BQ: Bird, Bolt, Lime, Veo, Spin, Lyft, Hopp',
       'AE/SA/IL: Dott, SAHAM, Bird, Lime',
       'NZ: Flamingo, JOLT',
-      'MobiData BW',
+      'DE: MobiData BW e-scooter data',
+      'DE: MobiData BW · dl-de/by-2-0, modified',
       'Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified',
       'BE: Pony · transportdata.be',
       'NO: Entur AS · NLOD',

@@ -92,7 +92,7 @@ describe('the countries of data/countries.json', () => {
     expect(countryCreditLinks([...europe.countries, canada]).map(link => link.label)).toEqual([
       'DE/IT/BE/UK/PT/ES/IS/SE/LV/PL/HU/GR/CY/FI/HR/UA: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio, Bird, Elerent, Hoppy, Ride Mobility, 3electra',
       'CA: Bird, Neuron',
-      'MobiData BW', 'Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified', 'BE: Pony · transportdata.be', 'NO: Entur AS · NLOD', 'NO: Kartverket boundaries · CC BY 4.0',
+      'DE: MobiData BW e-scooter data', 'DE: MobiData BW · dl-de/by-2-0, modified', 'Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified', 'BE: Pony · transportdata.be', 'NO: Entur AS · NLOD', 'NO: Kartverket boundaries · CC BY 4.0',
       'UK: Beryl · CDLA-Permissive-2.0', 'UK: ONS boundaries · OGL v3.0', 'PT: DGT boundaries · CC BY 4.0',
       // OpenStreetMap's boundaries, which several countries give, are credited once.
       'DE/SE: Qick map',
@@ -117,7 +117,8 @@ describe('the countries of data/countries.json', () => {
     }
     expect(() => generate(withCanada({ featuredCities: ['ca:Montréal'] }))).toThrow('CA: featured cities not in its catalog: ca:Montréal');
     expect(() => generate(withCanada({ credits: { ...canada.credits,
-      links: [{ label: 'MobiData BW', href: 'https://www.mobidata-bw.de/' }] } }))).toThrow('share a label');
+      links: [{ label: 'Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified',
+        href: 'https://creativecommons.org/licenses/by-sa/4.0/' }] } }))).toThrow('share a label');
     expect(() => generate(withCanada({ credits: { ...canada.credits,
       links: [{ label: 'US: Bird map', href: 'https://www.bird.co/' }] } }))).toThrow('CA: the credit US: Bird map names another code than CA');
   });
