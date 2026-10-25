@@ -139,6 +139,8 @@ neither did any of its six regions, Sofia, Plovdiv, Varna, Burgas, Ruse and
 Stara Zagora; check Varna and Burgas, on the Black Sea, again in summer.
 In Belgium, neither did its Brussels region: Lime's public Brussels feed
 lists e-bikes only, and Brussels bans shared scooters from 1 January 2027.
+In Spain, neither did its Madrid, Alcorcón, Málaga and Sevilla regions:
+Madrid revoked Lime's, Dott's and Tier's scooter licences in September 2024.
 
 - Zones named as demos, tests, warehouses, events or temporary areas are left
   out, as Rome's three temporary areas and Dortmund's warehouses. So is the

@@ -352,6 +352,11 @@ the dock and each scooter's card state the ban and when renting resumes.
 - **Spain:**
   - Madrid, Barcelona, Valencia, Sevilla, Málaga, Zaragoza and the Basque
     Country have no shared scooters: banned, revoked or never licensed.
+  - Lime's rider map still lists Madrid, Alcorcón, Málaga and Sevilla. A
+    full-area audit on the night of 25 October 2026 found no Lime scooter in
+    any of them. Madrid revoked Lime's, Dott's and Tier's licences in
+    September 2024
+    ([Ayuntamiento de Madrid, 5 September 2024](https://diario.madrid.es/blog/notas-de-prensa/madrid-revoca-las-autorizaciones-de-patinetes-de-alquiler-y-ya-no-podran-circular-por-sus-calles/)).
   - Dott runs Santa Cruz de Tenerife alone, with 646 scooters, and lists
     Lanzarote, Murcia, Tarragona, Lorca, La Manga and Estepona. Its public API
     names no Spanish region: `ibiza`, `murcia`, `tarragona`, `lorca` and

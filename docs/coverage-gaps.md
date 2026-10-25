@@ -18,7 +18,7 @@ København and Odense, in Brno and Ostrava, in 15 Hungarian markets, from
 Budapest to Szigetszentmiklós, in seven Romanian ones, from București to
 Târgoviște, in Athens, Kifisia, Thessaloniki and Heraklion, in Antwerpen,
 and in Porto, Faro and Oeiras.
-The other markets its rider map lists, 91 found so far, are added country by
+The other markets its rider map lists, 87 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -251,6 +251,8 @@ banned shared scooters, and feeds that were empty when checked.
 - **Spain** ([guide](portuguese-spanish-icelandic-scooter-feeds.md#known-gaps)):
   - Madrid, Barcelona, Valencia, Sevilla, Málaga, Zaragoza and the Basque
     Country have no shared scooters.
+  - Lime's rider map still lists Madrid, Alcorcón, Málaga and Sevilla; none
+    held a scooter in its full-area audit on the night of 25 October 2026.
   - Dott now covers Marbella, Playa de las Américas and Santa Cruz de Tenerife
     through its app map. Its other discovered Spanish regions had no available
     scooter. Bird in Oviedo and Las Palmas's public Sítyneta scooters have no
