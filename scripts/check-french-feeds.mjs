@@ -139,20 +139,34 @@ const isAppMap = system => system.dottAppRegion || system.voiAppZone || system.l
   system.luupAppCities || system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.beamAppCity ||
   system.gcooAppMap || system.kickgoingAppMap || system.swingAppMap;
 
+// A system's feeds in the scooter cache: itself, or a Lime market's refresh groups, `${id}_000` and on
+// (limeGridGroups in src/lib/limeGrid.ts).
+function cachedFeeds(system) {
+  const id = `${sources[system.country]}:${system.id}`;
+  if (!system.limeMapGrid) return cacheFeeds.byId.has(id) ? [cacheFeeds.byId.get(id)] : [];
+  return [...cacheFeeds.byId.values()].filter(feed => feed.id.startsWith(`${id}_`) && /^\d{3}$/.test(feed.id.slice(id.length + 1)));
+}
+
 // An app map as the scooter cache last collected it: paused when the operator has closed the region or
 // ended its season, failed when the cache's collections fail; never gone, which only the app could say.
 function cachedAppMap(system, result) {
   if (cacheFeeds.error) throw new Error(`Scooter cache feeds unreadable: ${cacheFeeds.error}`);
-  const feed = cacheFeeds.byId.get(`${sources[system.country]}:${system.id}`);
-  if (!feed) throw new Error('Not among the scooter cache\'s feeds');
-  const age = feed.observedAt && { updatedAt: new Date(feed.observedAt).toISOString(),
-    ageSeconds: Math.max(0, Math.round((Date.now() - feed.observedAt) / 1000)) };
-  if (feed.state === 'skipped' || feed.seasonOver) {
+  const feeds = cachedFeeds(system);
+  if (!feeds.length) throw new Error('Not among the scooter cache\'s feeds');
+  const observedAt = Math.min(...feeds.map(feed => feed.observedAt || Infinity));
+  const age = Number.isFinite(observedAt) && { updatedAt: new Date(observedAt).toISOString(),
+    ageSeconds: Math.max(0, Math.round((Date.now() - observedAt) / 1000)) };
+  const paused = feed => feed.state === 'skipped' || feed.seasonOver;
+  if (feeds.every(paused)) {
     return { ...result, state: 'paused', version: 'app-map (cache)', ...age,
-      error: feed.seasonOver ? 'Season over, says the operator' : 'Closed by the operator for now' };
+      error: feeds.some(feed => feed.seasonOver) ? 'Season over, says the operator' : 'Closed by the operator for now' };
   }
-  if (feed.state !== 'ok') throw new Error(`The scooter cache's collection is ${feed.state}`);
-  return { ...result, state: 'ok', version: 'app-map (cache)', availableScooters: feed.vehicles,
+  const failing = feeds.filter(feed => feed.state !== 'ok' && !paused(feed));
+  if (failing.length) {
+    throw new Error(`The scooter cache's collection is ${[...new Set(failing.map(feed => feed.state))].join(', ')}` +
+      (feeds.length > 1 ? ` for ${failing.length} of its ${feeds.length} groups` : ''));
+  }
+  return { ...result, state: 'ok', version: 'app-map (cache)', availableScooters: feeds.reduce((sum, feed) => sum + feed.vehicles, 0),
     withBattery: null, withRange: null, withRentalLink: 0, ...age };
 }
 
