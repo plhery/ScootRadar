@@ -200,6 +200,8 @@ import wolfsburgDe from './de/e-scooter-wolfsburg';
 import ulmDe from './de/e-scooter-ulm';
 import salfordEn from './en/e-scooters-salford';
 import liegeFr from './fr/trottinette-electrique-liege';
+import santiagoEs from './es/scooters-electricos-santiago-chile';
+import saoPauloEn from './en/e-scooters-sao-paulo';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -400,4 +402,6 @@ export const GUIDES: readonly Guide[] = [
   ulmDe,
   salfordEn,
   liegeFr,
+  santiagoEs,
+  saoPauloEn,
 ];
