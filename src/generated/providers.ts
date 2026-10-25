@@ -45,6 +45,7 @@ const PROVIDER_DEFINITIONS = {
   kickgoing: { name: "Kickgoing", color: "#00c2ab", initial: "K" },
   xingxing: { name: "Xingxing", color: "#d99a00", initial: "X" },
   swing: { name: "Swing", color: "#111111", initial: "Sw", app: { link: "https://tswm.link/", appStoreId: 1459344011 } },
+  alpaca: { name: "Alpaca", color: "#ff6e35", initial: "A", app: { link: "https://alpaca.kr/", appStoreId: 1328860619 } },
 } as const;
 
 export type ProviderKey = keyof typeof PROVIDER_DEFINITIONS;
@@ -66,6 +67,7 @@ const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: str
   flamingo: {"prefixes":["flamingo"]},
   elerent: {"prefixes":["elerent"]},
   whoosh: {"prefixes":["whoosh_"]},
+  alpaca: {"prefixes":["alpaca_"]},
   naolib: {"prefixes":["naolib"]},
   zippy: {"prefixes":["zippy_"]},
   binbin: {"prefixes":["binbin"]},

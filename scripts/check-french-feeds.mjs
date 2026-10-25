@@ -140,7 +140,7 @@ async function appCollector(provider) {
 }
 const isAppMap = system => system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount ||
   system.luupAppCities || system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.beamAppCity ||
-  system.gcooAppMap || system.kickgoingAppMap || system.swingAppMap || system.boltAppCity;
+  system.gcooAppMap || system.kickgoingAppMap || system.swingAppMap || system.alpacaAppMap || system.boltAppCity;
 
 // A system's feeds in the scooter cache: itself, or a Lime market's refresh groups, `${id}_000` and on
 // (limeGridGroups in src/lib/limeGrid.ts).

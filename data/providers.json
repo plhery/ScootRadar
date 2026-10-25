@@ -340,5 +340,20 @@
       "link": "https://tswm.link/",
       "appStoreId": 1459344011
     }
+  },
+  {
+    "key": "alpaca",
+    "name": "Alpaca",
+    "color": "#ff6e35",
+    "initial": "A",
+    "systemIds": {
+      "prefixes": [
+        "alpaca_"
+      ]
+    },
+    "app": {
+      "link": "https://alpaca.kr/",
+      "appStoreId": 1328860619
+    }
   }
 ]

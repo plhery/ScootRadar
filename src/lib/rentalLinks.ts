@@ -130,6 +130,8 @@ const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
     schemes: [],
     httpsHosts: ['binbin.tech'],
   },
+  // Alpaca's map links no scooter, and its app claims no https host, only its alpaca:// and sbike://.
+  alpaca: { schemes: [], httpsHosts: [] },
 };
 
 // Links that open an operator's app elsewhere than on a scooter. Bird's and Spin's feeds give

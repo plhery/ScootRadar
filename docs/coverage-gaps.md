@@ -34,6 +34,7 @@ were added.
 | **Fintraffic** in Finland | Its national GBFS feed (`mobility-api.mobility-database.fintraffic.fi/gbfs/v2/gbfs.json`) answers 403 without a free key, ordered with an account on the Mobility Database site, which answered 403 from Switzerland. Seen through Transitous, which has a key, it listed 10,570 Dott scooters in 27 towns on 18 October 2026 (Helsinki 1,720, Tampere 1,347, Lahti 894, Vantaa 826, Espoo 768), Donkey Republic's bikes, and no Voi, Ryde or Bolt. But no scooter moved from 04:55 to 09:00 on that Sunday morning, and it lists scooters in towns Dott reports as paused, so the data looks frozen. Test it with a key of our own before adding; Helsinki's season runs from 1 April to 30 November. Data under CC BY 4.0 ("Fintraffic / Digitraffic"), though some third parties' data may need a permit |
 | **Rider sign-in for JET** | JET's separate Central Asian app needs a rider account, with phone and SMS verification, for Almaty, Ulaanbaatar, Tashkent and Tbilisi. No guest session was found (24 October 2026). Beam's Google sign-in is complete, with a [54-region collector](beam-app-map.md) across Australia, Malaysia, South Korea and Türkiye. LUUP's [19-city collector](luup-app-map.md) and Whoosh's [25-region collector](whoosh-app-map.md) are integrated too. Go Jet's [signed-out adapter](gojet-app-map.md) supplies 54 regions in six countries without a rider sign-in. See [the evidence](jet-whoosh-beam-luup-app-maps.md) |
 | **NRW.Mobidrom** in North Rhine-Westphalia | Voi's 12 systems are on the map since 24 October 2026, read with the shared client login the datasets publish (see [the audit](german-italian-scooter-feeds.md#voi-in-north-rhine-westphalia-october-2026)). Lime's two systems (Essen, Dortmund; dl-de/by-2-0) answer, but NRW.Mobidrom updates them, with Bolt's four (Köln-Bonn, Düsseldorf-Mönchengladbach, Essen-Duisburg, Dortmund-Bochum; CC BY 4.0), about once an hour: at 13:52, 13:55, 14:12, 14:54 and 15:54 that day, while the map shows no position older than 15 minutes. Both operators' scooters there come from their rider maps since 25 October 2026, [Bolt's](bolt-app-map.md) and [Lime's](lime-app-map.md), so their NRW.Mobidrom feeds are not needed |
+| **DART** in South Korea | Its app (`kr.co.dartapp` 2.3.0) opens its map only after a phone number and SMS sign-in. `POST https://app.dartsharing.com:8443/app/vehicle/main_v2` answers with user_no 0 and an empty token, but the app never makes that request signed out, so it is not read until the user decides; nothing calls it. About 1,431 scooters on 25 October 2026: Yeosu 473, Incheon 383, Siheung 192, Gimhae 147, Osan 107, Gimpo 98, Anseong 26 and Pyeongtaek 5 ([guide](south-korean-scooter-feeds.md#known-gaps)). |
 
 It was decided on 13 October 2026 not to ask Lime, Bird or Hopp for a written
 licence, so their terms block nothing and their feeds stay on the map. For the
@@ -656,16 +657,24 @@ banned shared scooters, and feeds that were empty when checked.
   - **BinBin at İstanbul Airport** (İGA) is not swept: two scooters on 24
     October 2026, 15 km north of İstanbul Avrupa.
 - **South Korea** ([guide](south-korean-scooter-feeds.md#known-gaps)): GCOO in
-  76 towns, Swing in 82, Xingxing in 32 and Kickgoing in 9 are covered, read
-  from their apps' signed-out maps, Swing's with its app's one-time code, and
-  Beam's 28 regions, in 36 towns, from its rider map.
-  - **No feed and no map read:** Deer, DART and Alpaca; their apps haven't
-    been looked at. None of the eight operators publishes a feed, and Seoul, Busan and Daejeon publish only parking, towing and
-    statistics. Seoul had 18,548 shared scooters in December 2025, down from
-    43,417 in October 2023.
+  76 towns, Swing in 82, Xingxing in 32, Alpaca in 29 and Kickgoing in 9 are
+  covered, read from their apps' signed-out maps, Swing's with its app's
+  one-time code, and Beam's 28 regions, in 36 towns, from its rider map.
+  None of the operators publishes a feed, and Seoul, Busan and Daejeon
+  publish only parking, towing and statistics. Seoul had 18,548 shared
+  scooters in December 2025, down from 43,417 in October 2023.
+  - **Deer** is covered inside Swing, which bought Deer's business in July
+    2024: Deer's app talks to Swing's server, and Swing's map gives Deer's
+    scooters `vendor: "DEER"`, about 13,123 in 39 of Swing's 82 towns on 25
+    October 2026, Cheongju's 2,585 among them.
+  - **No map read: DART.** Its app opens its map only after a phone number
+    and SMS sign-in. Its vehicle route answers with user 0 and an empty
+    token, but the app never asks it signed out, so it waits for the user's
+    decision. Its fleet was about 1,431, the most in Yeosu (473), Incheon
+    (383) and Siheung (192).
   - **TAGO:** the government's API (data.go.kr dataset 15117668) lists
     scooters with their battery, but not as GBFS, and only in Sejong: GCOO's
-    2,800 or so, and ALPACA's 1,368, frozen. It needs a personal key, which
+    2,800 or so, and Alpaca's 1,368, frozen. It needs a personal key, which
     only Korean nationals and businesses registered in Korea can get. See
     [Dates to check again](#dates-to-check-again).
   - **Bikes:** GCOO's and Swing's maps hold bicycles and e-bikes too, Swing's
@@ -1045,7 +1054,7 @@ Bonaire had feeds to add. Survey files are in
   If it adds Seoul or another big city, the key is still the obstacle: only
   Korean nationals and businesses registered in Korea can get one. Beam's,
   GCOO's, Kickgoing's and Swing's own app maps are on the map since 24 October
-  2026 ([guide](south-korean-scooter-feeds.md)).
+  2026, Alpaca's since 25 October ([guide](south-korean-scooter-feeds.md)).
 - **1 March 2027:** Flamingo `sydney`
   (`data.rideflamingo.com/gbfs/3/sydney/gbfs.json`), a static test feed on
   15 October 2026, and Neuron's, Beam's and Lime's Australian feeds. Add

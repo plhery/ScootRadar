@@ -187,7 +187,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'E-scooter map: Lime, Bolt, Bird, Voi, Dott and more | ScootRadar',
       description: (providers, cities, countries) =>
-        `Every shared e-scooter near you on one live map: ${counted('en', providers, 'provider', 'providers')} in ${counted('en', cities, 'city', 'cities')} and ${counted('en', countries, 'country', 'countries')}. Free, no account. Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing and Swing.`,
+        `Every shared e-scooter near you on one live map: ${counted('en', providers, 'provider', 'providers')} in ${counted('en', cities, 'city', 'cities')} and ${counted('en', countries, 'country', 'countries')}. Free, no account. Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing and Alpaca.`,
       share: {
         title: 'Every e-scooter on one map.',
         alt: 'Every e-scooter on one map: the app at night by Zürich main station, beside the initials of twelve providers.',
@@ -272,7 +272,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Is there one app for Lime, Bolt, Bird, Voi and Dott?',
-          answer: 'ScootRadar is one map for all of them, and for Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing and Swing too. It shows every shared e-scooter whose provider publishes where it is, so you no longer open one app after another to find the nearest.',
+          answer: 'ScootRadar is one map for all of them, and for Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing and Alpaca too. It shows every shared e-scooter whose provider publishes where it is, so you no longer open one app after another to find the nearest.',
         },
         {
           question: 'How do I find the nearest e-scooter?',
@@ -318,7 +318,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'E-Scooter-Karte: Lime, Bolt, Bird, Voi, Dott und mehr | ScootRadar',
       description: (providers, cities, countries) =>
-        `Alle E-Scooter und E-Trottinette in deiner Nähe auf einer Live-Karte: ${counted('de', providers, 'Anbieter', 'Anbieter')} in ${counted('de', cities, 'Stadt', 'Städten')} und ${counted('de', countries, 'Land', 'Ländern')}. Gratis, ohne Konto. Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing und Swing.`,
+        `Alle E-Scooter und E-Trottinette in deiner Nähe auf einer Live-Karte: ${counted('de', providers, 'Anbieter', 'Anbieter')} in ${counted('de', cities, 'Stadt', 'Städten')} und ${counted('de', countries, 'Land', 'Ländern')}. Gratis, ohne Konto. Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing und Alpaca.`,
       share: {
         title: 'Alle E-Scooter auf einer Karte.',
         alt: 'Alle E-Scooter auf einer Karte: die App bei Nacht am Zürcher Hauptbahnhof, daneben die Initialen von zwölf Anbietern.',
@@ -403,7 +403,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Gibt es eine einzige App für Lime, Bolt, Bird, Voi und Dott?',
-          answer: 'ScootRadar ist eine Karte für alle fünf und auch für Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing und Swing. Sie zeigt jeden Sharing-E-Scooter, dessen Anbieter den Standort veröffentlicht. So musst du nicht mehr eine App nach der anderen öffnen, um den nächsten zu finden.',
+          answer: 'ScootRadar ist eine Karte für alle fünf und auch für Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing und Alpaca. Sie zeigt jeden Sharing-E-Scooter, dessen Anbieter den Standort veröffentlicht. So musst du nicht mehr eine App nach der anderen öffnen, um den nächsten zu finden.',
         },
         {
           question: 'Wie finde ich den nächsten E-Scooter oder das nächste E-Trottinett?',
@@ -449,7 +449,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'Carte des trottinettes électriques en libre-service | ScootRadar',
       description: (providers, cities, countries) =>
-        `Toutes les trottinettes électriques en libre-service autour de vous sur une carte en direct : ${counted('fr', providers, 'opérateur', 'opérateurs')} dans ${counted('fr', cities, 'ville', 'villes')} et ${counted('fr', countries, 'pays', 'pays')}. Gratuit, sans compte. Lime, Dott, Bolt, Voi, Bird, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing et Swing.`,
+        `Toutes les trottinettes électriques en libre-service autour de vous sur une carte en direct : ${counted('fr', providers, 'opérateur', 'opérateurs')} dans ${counted('fr', cities, 'ville', 'villes')} et ${counted('fr', countries, 'pays', 'pays')}. Gratuit, sans compte. Lime, Dott, Bolt, Voi, Bird, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing et Alpaca.`,
       share: {
         title: 'Toutes les trottinettes sur une seule carte.',
         alt: 'Toutes les trottinettes sur une seule carte : l’app, de nuit, près de la gare centrale de Zurich, à côté des initiales de douze opérateurs.',
@@ -534,7 +534,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Existe-t-il une app qui regroupe Lime, Bolt, Bird, Voi et Dott ?',
-          answer: 'ScootRadar les réunit tous sur une seule carte, avec en plus Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing et Swing. Elle montre chaque trottinette électrique en libre-service dont l’opérateur publie la position : plus besoin d’ouvrir les apps une à une pour trouver la plus proche.',
+          answer: 'ScootRadar les réunit tous sur une seule carte, avec en plus Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing et Alpaca. Elle montre chaque trottinette électrique en libre-service dont l’opérateur publie la position : plus besoin d’ouvrir les apps une à une pour trouver la plus proche.',
         },
         {
           question: 'Comment trouver la trottinette électrique la plus proche ?',
@@ -580,7 +580,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'Monopattini elettrici in sharing su una sola mappa | ScootRadar',
       description: (providers, cities, countries) =>
-        `Tutti i monopattini elettrici in sharing intorno a te su una mappa in tempo reale: ${counted('it', providers, 'operatore', 'operatori')} in ${counted('it', cities, 'città', 'città')} e ${counted('it', countries, 'paese', 'paesi')}. Gratis, senza account. Lime, Bolt, Dott, Voi, Bird, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing e Swing.`,
+        `Tutti i monopattini elettrici in sharing intorno a te su una mappa in tempo reale: ${counted('it', providers, 'operatore', 'operatori')} in ${counted('it', cities, 'città', 'città')} e ${counted('it', countries, 'paese', 'paesi')}. Gratis, senza account. Lime, Bolt, Dott, Voi, Bird, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing e Alpaca.`,
       share: {
         title: 'Tutti i monopattini su una sola mappa.',
         alt: 'Tutti i monopattini su una sola mappa: l’app di notte vicino alla stazione centrale di Zurigo, accanto alle iniziali di dodici operatori.',
@@ -665,7 +665,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Esiste un’unica app per Lime, Bolt, Bird, Voi e Dott?',
-          answer: 'ScootRadar li mette tutti su una sola mappa, insieme a Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing e Swing. Mostra ogni monopattino elettrico in sharing il cui operatore pubblica la posizione: non serve più aprire un’app dopo l’altra per trovare quello più vicino.',
+          answer: 'ScootRadar li mette tutti su una sola mappa, insieme a Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing e Alpaca. Mostra ogni monopattino elettrico in sharing il cui operatore pubblica la posizione: non serve più aprire un’app dopo l’altra per trovare quello più vicino.',
         },
         {
           question: 'Come trovo il monopattino elettrico più vicino?',
@@ -711,7 +711,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'Kart over elsparkesykler: Lime, Bolt, Bird, Voi, Dott og flere | ScootRadar',
       description: (providers, cities, countries) =>
-        `Alle elsparkesykler til leie nær deg på ett kart i sanntid: ${counted('nb', providers, 'operatør', 'operatører')} i ${counted('nb', cities, 'by', 'byer')} og ${counted('nb', countries, 'land', 'land')}. Gratis, uten konto. Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing og Swing.`,
+        `Alle elsparkesykler til leie nær deg på ett kart i sanntid: ${counted('nb', providers, 'operatør', 'operatører')} i ${counted('nb', cities, 'by', 'byer')} og ${counted('nb', countries, 'land', 'land')}. Gratis, uten konto. Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing og Alpaca.`,
       share: {
         title: 'Alle elsparkesykler på ett kart.',
         alt: 'Alle elsparkesykler på ett kart: appen om natten ved Zürich hovedstasjon, ved siden av initialene til tolv operatører.',
@@ -796,7 +796,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Finnes det én app for Lime, Bolt, Bird, Voi og Dott?',
-          answer: 'ScootRadar er ett kart for alle sammen, og for Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing og Swing også. Det viser alle elsparkesykler til leie der operatøren publiserer hvor de står, så du slipper å åpne den ene appen etter den andre for å finne den nærmeste.',
+          answer: 'ScootRadar er ett kart for alle sammen, og for Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing og Alpaca også. Det viser alle elsparkesykler til leie der operatøren publiserer hvor de står, så du slipper å åpne den ene appen etter den andre for å finne den nærmeste.',
         },
         {
           question: 'Hvordan finner jeg nærmeste elsparkesykkel?',
@@ -842,7 +842,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'Deelsteps op één kaart: Lime, Bolt, Bird, Voi, Dott en meer | ScootRadar',
       description: (providers, cities, countries) =>
-        `Alle elektrische deelsteps bij jou in de buurt, live op één kaart: ${counted('nl', providers, 'aanbieder', 'aanbieders')} in ${counted('nl', cities, 'stad', 'steden')} en ${counted('nl', countries, 'land', 'landen')}. Gratis, zonder account. Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing en Swing.`,
+        `Alle elektrische deelsteps bij jou in de buurt, live op één kaart: ${counted('nl', providers, 'aanbieder', 'aanbieders')} in ${counted('nl', cities, 'stad', 'steden')} en ${counted('nl', countries, 'land', 'landen')}. Gratis, zonder account. Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing en Alpaca.`,
       share: {
         title: 'Alle deelsteps op één kaart.',
         alt: 'Alle deelsteps op één kaart: de app ’s nachts bij het centraal station van Zürich, naast de initialen van twaalf aanbieders.',
@@ -927,7 +927,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Is er één app voor Lime, Bolt, Bird, Voi en Dott?',
-          answer: 'ScootRadar is één kaart voor ze allemaal, en ook voor Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing en Swing. De kaart toont elke deelstep waarvan de aanbieder publiceert waar hij staat, zodat je niet meer de ene app na de andere hoeft te openen om de dichtstbijzijnde te vinden.',
+          answer: 'ScootRadar is één kaart voor ze allemaal, en ook voor Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing en Alpaca. De kaart toont elke deelstep waarvan de aanbieder publiceert waar hij staat, zodat je niet meer de ene app na de andere hoeft te openen om de dichtstbijzijnde te vinden.',
         },
         {
           question: 'Hoe vind ik de dichtstbijzijnde elektrische step?',
@@ -972,7 +972,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'Mapa de trotinetes elétricas: Lime, Bolt, Bird, Voi, Dott e mais | ScootRadar',
       description: (providers, cities, countries) =>
-        `Todas as trotinetes elétricas partilhadas perto de si num mapa em tempo real: ${counted('pt', providers, 'operador', 'operadores')} em ${counted('pt', cities, 'cidade', 'cidades')} e ${counted('pt', countries, 'país', 'países')}. Grátis, sem conta. Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing e Swing.`,
+        `Todas as trotinetes elétricas partilhadas perto de si num mapa em tempo real: ${counted('pt', providers, 'operador', 'operadores')} em ${counted('pt', cities, 'cidade', 'cidades')} e ${counted('pt', countries, 'país', 'países')}. Grátis, sem conta. Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing e Alpaca.`,
       share: {
         title: 'Todas as trotinetes num só mapa.',
         alt: 'Todas as trotinetes num só mapa: a app à noite junto à estação central de Zurique, ao lado das iniciais de doze operadores.',
@@ -1057,7 +1057,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Existe uma app que junte Lime, Bolt, Bird, Voi e Dott?',
-          answer: 'O ScootRadar reúne-as todas num só mapa, e ainda Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing e Swing. Mostra todas as trotinetes elétricas partilhadas cujo operador publica a localização, para que deixe de abrir uma app atrás da outra à procura da mais próxima.',
+          answer: 'O ScootRadar reúne-as todas num só mapa, e ainda Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing e Alpaca. Mostra todas as trotinetes elétricas partilhadas cujo operador publica a localização, para que deixe de abrir uma app atrás da outra à procura da mais próxima.',
         },
         {
           question: 'Como encontro a trotinete elétrica mais próxima?',
@@ -1102,7 +1102,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'Mapa de patinetes eléctricos: Lime, Bolt, Bird, Voi, Dott y más | ScootRadar',
       description: (providers, cities, countries) =>
-        `Todos los patinetes eléctricos de alquiler cerca de ti, en tiempo real y en un solo mapa: ${counted('es', providers, 'operador', 'operadores')} en ${counted('es', cities, 'ciudad', 'ciudades')} y ${counted('es', countries, 'país', 'países')}. Gratis, sin registro. Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing y Swing.`,
+        `Todos los patinetes eléctricos de alquiler cerca de ti, en tiempo real y en un solo mapa: ${counted('es', providers, 'operador', 'operadores')} en ${counted('es', cities, 'ciudad', 'ciudades')} y ${counted('es', countries, 'país', 'países')}. Gratis, sin registro. Lime, Bolt, Bird, Voi, Dott, Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing y Alpaca.`,
       share: {
         title: 'Todos los patinetes en un solo mapa.',
         alt: 'Todos los patinetes en un solo mapa: la app de noche junto a la estación central de Zúrich, con las iniciales de doce operadores al lado.',
@@ -1187,7 +1187,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: '¿Hay una sola app para Lime, Bolt, Bird, Voi y Dott?',
-          answer: 'ScootRadar es un único mapa para todos ellos, y también para Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing y Swing. Muestra cada patinete eléctrico compartido cuyo operador publica dónde está, para que no tengas que abrir una app tras otra hasta dar con el más cercano.',
+          answer: 'ScootRadar es un único mapa para todos ellos, y también para Hopp, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing y Alpaca. Muestra cada patinete eléctrico compartido cuyo operador publica dónde está, para que no tengas que abrir una app tras otra hasta dar con el más cercano.',
         },
         {
           question: '¿Cómo encuentro un patinete eléctrico de alquiler cerca de mí?',
@@ -1232,7 +1232,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
     meta: {
       title: 'Rafskútur á einu korti: Hopp, Lime, Bolt, Voi, Dott og fleiri | ScootRadar',
       description: (providers, cities, countries) =>
-        `Allar rafskútur (rafhlaupahjól) til leigu nálægt þér, á einu korti í rauntíma: ${counted('is', providers, 'fyrirtæki', 'fyrirtæki')} á ${counted('is', cities, 'stað', 'stöðum')} í ${counted('is', countries, 'landi', 'löndum')}. Ókeypis og án skráningar. Hopp, Lime, Bolt, Bird, Voi, Dott, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing og Swing.`,
+        `Allar rafskútur (rafhlaupahjól) til leigu nálægt þér, á einu korti í rauntíma: ${counted('is', providers, 'fyrirtæki', 'fyrirtæki')} á ${counted('is', cities, 'stað', 'stöðum')} í ${counted('is', countries, 'landi', 'löndum')}. Ókeypis og án skráningar. Hopp, Lime, Bolt, Bird, Voi, Dott, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing og Alpaca.`,
       share: {
         title: 'Allar rafskútur á einu korti.',
         alt: 'Allar rafskútur á einu korti: appið að nóttu til við aðallestarstöðina í Zürich, við hlið upphafsstafa tólf fyrirtækja.',
@@ -1320,7 +1320,7 @@ export const LANDING_COPY: Record<LandingLocale, LandingCopy> = {
       items: [
         {
           question: 'Er til eitt app fyrir Hopp, Lime, Bolt, Voi og Dott?',
-          answer: 'ScootRadar er eitt kort fyrir þau öll, og líka fyrir Bird, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing og Swing. Það sýnir allar rafskútur til leigu sem fyrirtækin birta staðsetningu á, svo þú þarft ekki lengur að opna eitt appið á fætur öðru til að finna þá næstu.',
+          answer: 'ScootRadar er eitt kort fyrir þau öll, og líka fyrir Bird, Pony, PubliBike, Zeus, Beryl, Ryde, Hoppy, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, Spin, Veo, Lyft, SAHAM, Flamingo, JOLT, Qick, MoVe, Zippy, Whoosh, Beam, LUUP, JET, BinBin, GCOO, Kickgoing, Xingxing, Swing og Alpaca. Það sýnir allar rafskútur til leigu sem fyrirtækin birta staðsetningu á, svo þú þarft ekki lengur að opna eitt appið á fætur öðru til að finna þá næstu.',
         },
         {
           question: 'Hvernig finn ég næstu rafskútu eða næsta rafhlaupahjól?',

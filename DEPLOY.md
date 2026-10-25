@@ -295,7 +295,7 @@ The collector schedules each feed independently, with six concurrent systems
 and at most two per host. A slow host cannot monopolize collection slots, and a
 feed collected every minute takes the next free slot before any idle feed, so a
 deploy that adds hundreds of feeds does not hold Switzerland back. An app-map
-sweep whose client spaces every request to its host (BinBin, Beam, GCOO,
+sweep whose client spaces every request to its host (Alpaca, BinBin, Beam, GCOO,
 Kickgoing, Lime, Qick, Swing and Whoosh) takes one of its host's two slots but none of
 the six: it waits on that pace, not on the cache. On 24 October 2026 such
 sweeps held all six, and idle feeds elsewhere went uncollected for over half an
@@ -525,10 +525,10 @@ Swing's Korean app map reads `SWING_TOTP_SECRET`, the Base32 key of the app's
 one-time code, from a private, runtime-only Coolify environment secret on the
 Node cache. It is never a Worker or build variable, and never in Git: the
 repository is public. Without it every Swing feed fails with "Swing one-time
-code secret is missing or invalid". GCOO's and Kickgoing's maps need no
-credential. See [the Korean catalog](docs/south-korean-scooter-feeds.md#swing).
+code secret is missing or invalid". GCOO's, Kickgoing's and Alpaca's maps
+need no credential. See [the Korean catalog](docs/south-korean-scooter-feeds.md#swing).
 A GCOO town nobody looks at is collected every two hours (`GCOO_IDLE_INTERVAL_MS`),
 not every 20 minutes, and expires after two hours and ten minutes without one: a
-feed that sets its own idle interval, as GCOO, ATOM, Whoosh and BinBin do
+feed that sets its own idle interval, as GCOO, Alpaca, ATOM, Whoosh and BinBin do
 (`APP_MAP_IDLE_INTERVAL_MS`) and Lime (`LIME_IDLE_INTERVAL_MS`, three days), expires
 ten minutes after it, read from the feed itself.

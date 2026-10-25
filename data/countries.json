@@ -1496,7 +1496,7 @@
         "kr:Ulsan"
       ],
       "credits": {
-        "attribution": "South Korea: Beam authenticated rider map; GCOO anonymous app map; Kickgoing anonymous app map, Xingxing's scooters included; Swing anonymous app map",
+        "attribution": "South Korea: Beam authenticated rider map; GCOO anonymous app map; Kickgoing anonymous app map, Xingxing's scooters included; Swing anonymous app map; Alpaca anonymous app map",
         "links": [
           {
             "label": "KR: Beam map",
@@ -1509,6 +1509,10 @@
           {
             "label": "KR: Kickgoing map",
             "href": "https://kickgoing.io/"
+          },
+          {
+            "label": "KR: Alpaca map",
+            "href": "https://alpaca.kr/"
           },
           {
             "label": "KR: OpenStreetMap boundaries · ODbL",

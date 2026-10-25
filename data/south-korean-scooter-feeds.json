@@ -4,6 +4,8 @@
   "notes": "Beam entries use reviewed authenticated rider-map regions, each named after the municipalities it stands in, with the app's region name kept as an alias. Empty, test and retired Beam regions are omitted; rider credentials remain private to the Node cache.",
   "beamVerifiedOn": "2026-10-24",
   "beamCatalogSource": "https://www.ridebeam.com/",
+  "alpacaVerifiedOn": "2026-10-25",
+  "alpacaCatalogSource": "https://alpaca.kr/",
   "systems": [
     {
       "id": "gcoo_kr_busan",
@@ -224,6 +226,28 @@
       },
       "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
       "swingAppMap": true
+    },
+    {
+      "id": "alpaca_kr_ulsan",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Ulsan",
+      "aliases": [
+        "울산광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.548,
+        129.3395
+      ],
+      "bounds": {
+        "south": 35.3913,
+        "north": 35.5966,
+        "west": 129.0892,
+        "east": 129.3788
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
     },
     {
       "id": "gcoo_kr_daejeon",
@@ -534,6 +558,28 @@
       "swingAppMap": true
     },
     {
+      "id": "alpaca_kr_cheongju",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Cheongju",
+      "aliases": [
+        "청주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.6337,
+        127.463
+      ],
+      "bounds": {
+        "south": 36.5851,
+        "north": 36.7571,
+        "west": 127.2855,
+        "east": 127.5384
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
+    },
+    {
       "id": "gcoo_kr_hwaseong",
       "country": "KR",
       "provider": "gcoo",
@@ -598,6 +644,28 @@
       },
       "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
       "swingAppMap": true
+    },
+    {
+      "id": "alpaca_kr_hwaseong",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Hwaseong",
+      "aliases": [
+        "화성시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.201,
+        126.9487
+      ],
+      "bounds": {
+        "south": 37.0606,
+        "north": 37.3041,
+        "west": 126.7194,
+        "east": 127.0193
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
     },
     {
       "id": "gcoo_kr_gwangju",
@@ -686,6 +754,28 @@
       },
       "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
       "swingAppMap": true
+    },
+    {
+      "id": "alpaca_kr_seongnam",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Seongnam",
+      "aliases": [
+        "성남시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3899,
+        127.1248
+      ],
+      "bounds": {
+        "south": 37.3307,
+        "north": 37.3754,
+        "west": 127.0854,
+        "east": 127.1394
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
     },
     {
       "id": "gcoo_kr_suwon",
@@ -952,6 +1042,28 @@
       "swingAppMap": true
     },
     {
+      "id": "alpaca_kr_namyangju",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Namyangju",
+      "aliases": [
+        "남양주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.6493,
+        127.1852
+      ],
+      "bounds": {
+        "south": 37.5818,
+        "north": 37.7395,
+        "west": 127.0909,
+        "east": 127.3631
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
+    },
+    {
       "id": "gcoo_kr_asan",
       "country": "KR",
       "provider": "gcoo",
@@ -1040,6 +1152,28 @@
       "swingAppMap": true
     },
     {
+      "id": "alpaca_kr_sejong",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Sejong",
+      "aliases": [
+        "세종특별자치시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.5045,
+        127.255
+      ],
+      "bounds": {
+        "south": 36.5724,
+        "north": 36.6379,
+        "west": 127.2648,
+        "east": 127.3204
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
+    },
+    {
       "id": "gcoo_kr_ansan",
       "country": "KR",
       "provider": "gcoo",
@@ -1104,6 +1238,28 @@
       },
       "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
       "swingAppMap": true
+    },
+    {
+      "id": "alpaca_kr_ansan",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Ansan",
+      "aliases": [
+        "안산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3127,
+        126.8374
+      ],
+      "bounds": {
+        "south": 37.2654,
+        "north": 37.3777,
+        "west": 126.7511,
+        "east": 126.9222
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
     },
     {
       "id": "gcoo_kr_cheonan",
@@ -1260,6 +1416,28 @@
       "swingAppMap": true
     },
     {
+      "id": "alpaca_kr_yongin",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Yongin",
+      "aliases": [
+        "용인시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.2662,
+        127.1531
+      ],
+      "bounds": {
+        "south": 37.2803,
+        "north": 37.3622,
+        "west": 127.0399,
+        "east": 127.1534
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
+    },
+    {
       "id": "gcoo_kr_pyeongtaek",
       "country": "KR",
       "provider": "gcoo",
@@ -1302,6 +1480,28 @@
       },
       "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
       "swingAppMap": true
+    },
+    {
+      "id": "alpaca_kr_pyeongtaek",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Pyeongtaek",
+      "aliases": [
+        "평택시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.0414,
+        127.0548
+      ],
+      "bounds": {
+        "south": 36.9604,
+        "north": 37.1015,
+        "west": 127.0058,
+        "east": 127.1594
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
     },
     {
       "id": "gcoo_kr_paju",
@@ -1678,6 +1878,28 @@
       "swingAppMap": true
     },
     {
+      "id": "alpaca_kr_siheung",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Siheung",
+      "aliases": [
+        "시흥시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.3667,
+        126.7358
+      ],
+      "bounds": {
+        "south": 37.3279,
+        "north": 37.4075,
+        "west": 126.7645,
+        "east": 126.8858
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
+    },
+    {
       "id": "xingxing_kr_hanam",
       "country": "KR",
       "provider": "xingxing",
@@ -1830,6 +2052,28 @@
       },
       "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
       "swingAppMap": true
+    },
+    {
+      "id": "alpaca_kr_icheon",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Icheon",
+      "aliases": [
+        "이천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.2789,
+        127.4499
+      ],
+      "bounds": {
+        "south": 37.0996,
+        "north": 37.1394,
+        "west": 127.5938,
+        "east": 127.6387
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
     },
     {
       "id": "gcoo_kr_gimpo",
@@ -2294,6 +2538,28 @@
       "swingAppMap": true
     },
     {
+      "id": "alpaca_kr_anseong",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Anseong",
+      "aliases": [
+        "안성시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.0077,
+        127.2319
+      ],
+      "bounds": {
+        "south": 36.975,
+        "north": 37.0346,
+        "west": 127.1189,
+        "east": 127.2901
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
+    },
+    {
       "id": "gcoo_kr_iksan",
       "country": "KR",
       "provider": "gcoo",
@@ -2382,6 +2648,28 @@
       "swingAppMap": true
     },
     {
+      "id": "alpaca_kr_yangju",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Yangju",
+      "aliases": [
+        "양주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.8179,
+        127.0873
+      ],
+      "bounds": {
+        "south": 37.7702,
+        "north": 37.9043,
+        "west": 126.9387,
+        "east": 127.1243
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
+    },
+    {
       "id": "swing_kr_guri",
       "country": "KR",
       "provider": "swing",
@@ -2402,6 +2690,28 @@
       },
       "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
       "swingAppMap": true
+    },
+    {
+      "id": "alpaca_kr_guri",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Guri",
+      "aliases": [
+        "구리시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.6024,
+        127.1356
+      ],
+      "bounds": {
+        "south": 37.5691,
+        "north": 37.6488,
+        "west": 127.0975,
+        "east": 127.1701
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
     },
     {
       "id": "gcoo_kr_yangsan",
@@ -2446,6 +2756,28 @@
       },
       "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
       "swingAppMap": true
+    },
+    {
+      "id": "alpaca_kr_yangsan",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Yangsan",
+      "aliases": [
+        "양산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.3294,
+        129.0143
+      ],
+      "bounds": {
+        "south": 35.3567,
+        "north": 35.4339,
+        "west": 129.1272,
+        "east": 129.1957
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
     },
     {
       "id": "xingxing_kr_geoje",
@@ -3020,6 +3352,28 @@
       "swingAppMap": true
     },
     {
+      "id": "alpaca_kr_eumseong",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Eumseong",
+      "aliases": [
+        "음성군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.9192,
+        127.5582
+      ],
+      "bounds": {
+        "south": 37.093,
+        "north": 37.157,
+        "west": 127.618,
+        "east": 127.6673
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
+    },
+    {
       "id": "swing_kr_yeongju",
       "country": "KR",
       "provider": "swing",
@@ -3040,6 +3394,28 @@
       },
       "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
       "swingAppMap": true
+    },
+    {
+      "id": "alpaca_kr_yeongju",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Yeongju",
+      "aliases": [
+        "영주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.8232,
+        128.6054
+      ],
+      "bounds": {
+        "south": 36.7886,
+        "north": 36.8972,
+        "west": 128.505,
+        "east": 128.6586
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
     },
     {
       "id": "swing_kr_andong",
@@ -3194,6 +3570,28 @@
       },
       "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
       "swingAppMap": true
+    },
+    {
+      "id": "alpaca_kr_dongducheon",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Dongducheon",
+      "aliases": [
+        "동두천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.8973,
+        127.0563
+      ],
+      "bounds": {
+        "south": 37.8636,
+        "north": 37.9489,
+        "west": 127.0155,
+        "east": 127.1009
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
     },
     {
       "id": "swing_kr_namwon",
@@ -3416,6 +3814,28 @@
       "swingAppMap": true
     },
     {
+      "id": "alpaca_kr_jincheon",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Jincheon",
+      "aliases": [
+        "진천군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.8991,
+        127.5133
+      ],
+      "bounds": {
+        "south": 36.8285,
+        "north": 36.8865,
+        "west": 127.4145,
+        "east": 127.4742
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
+    },
+    {
       "id": "swing_kr_jeungpyeong",
       "country": "KR",
       "provider": "swing",
@@ -3568,6 +3988,28 @@
       },
       "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
       "gcooAppMap": true
+    },
+    {
+      "id": "alpaca_kr_geochang",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Geochang",
+      "aliases": [
+        "거창군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.6886,
+        127.911
+      ],
+      "bounds": {
+        "south": 35.6598,
+        "north": 35.7124,
+        "west": 127.8746,
+        "east": 127.9582
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
     },
     {
       "id": "swing_kr_yeosu",
@@ -3856,6 +4298,28 @@
       "swingAppMap": true
     },
     {
+      "id": "alpaca_kr_yeoncheon",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Yeoncheon",
+      "aliases": [
+        "연천군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        38.0264,
+        127.0703
+      ],
+      "bounds": {
+        "south": 37.9933,
+        "north": 38.0617,
+        "west": 127.0385,
+        "east": 127.0951
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
+    },
+    {
       "id": "swing_kr_hongcheon",
       "country": "KR",
       "provider": "swing",
@@ -3920,6 +4384,28 @@
       },
       "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
       "swingAppMap": true
+    },
+    {
+      "id": "alpaca_kr_miryang",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Miryang",
+      "aliases": [
+        "밀양시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.4871,
+        128.7514
+      ],
+      "bounds": {
+        "south": 35.435,
+        "north": 35.5221,
+        "west": 128.7224,
+        "east": 128.8199
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
     },
     {
       "id": "gcoo_kr_hwasun",
@@ -4164,6 +4650,28 @@
       "swingAppMap": true
     },
     {
+      "id": "alpaca_kr_okcheon",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Okcheon",
+      "aliases": [
+        "옥천군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.2983,
+        127.5706
+      ],
+      "bounds": {
+        "south": 36.2684,
+        "north": 36.3361,
+        "west": 127.5386,
+        "east": 127.6072
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
+    },
+    {
       "id": "swing_kr_imsil",
       "country": "KR",
       "provider": "swing",
@@ -4250,6 +4758,28 @@
       },
       "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
       "swingAppMap": true
+    },
+    {
+      "id": "alpaca_kr_geumsan",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Geumsan",
+      "aliases": [
+        "금산군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.1927,
+        127.4522
+      ],
+      "bounds": {
+        "south": 36.0792,
+        "north": 36.1277,
+        "west": 127.4475,
+        "east": 127.5215
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
     },
     {
       "id": "swing_kr_wando",
@@ -4382,6 +4912,117 @@
       },
       "discoveryUrl": "https://api.kickgoing.io/v4/kickscooters",
       "kickgoingAppMap": true
+    },
+    {
+      "id": "alpaca_kr_nonsan",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Nonsan",
+      "aliases": [
+        "논산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.1868,
+        127.0988
+      ],
+      "bounds": {
+        "south": 36.1632,
+        "north": 36.2262,
+        "west": 127.0544,
+        "east": 127.1316
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
+    },
+    {
+      "id": "alpaca_kr_pocheon",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Pocheon",
+      "aliases": [
+        "포천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.8948,
+        127.2007
+      ],
+      "bounds": {
+        "south": 37.7954,
+        "north": 37.9212,
+        "west": 127.109,
+        "east": 127.2301
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
+    },
+    {
+      "id": "alpaca_kr_gwangyang",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Gwangyang",
+      "aliases": [
+        "[Franchise] Gwangyang",
+        "광양"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        34.940037,
+        127.679565
+      ],
+      "bounds": {
+        "south": 34.9105,
+        "north": 34.999,
+        "west": 127.5446,
+        "east": 127.7476
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
+    },
+    {
+      "id": "alpaca_kr_gyeryong",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Gyeryong",
+      "aliases": [
+        "계룡시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.2755,
+        127.2473
+      ],
+      "bounds": {
+        "south": 36.2458,
+        "north": 36.3153,
+        "west": 127.2164,
+        "east": 127.2948
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
+    },
+    {
+      "id": "alpaca_kr_hamyang",
+      "country": "KR",
+      "provider": "alpaca",
+      "city": "Hamyang",
+      "aliases": [
+        "함양군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.5204,
+        127.7253
+      ],
+      "bounds": {
+        "south": 35.4981,
+        "north": 35.543,
+        "west": 127.6958,
+        "east": 127.7514
+      },
+      "discoveryUrl": "https://alpaca.maasasia.com/graphql",
+      "alpacaAppMap": true
     },
     {
       "id": "beam_kr_ansan",

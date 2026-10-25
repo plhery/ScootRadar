@@ -456,6 +456,7 @@ describe('ControlSheet settings', () => {
       'AU/TR/MY/KR: Beam map',
       'US/KR: GCOO map',
       'KR: Kickgoing map',
+      'KR: Alpaca map',
       'CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL',
       'DE/BE/PT/IS/SE/LV/PL/CY/UA/KZ/RO/EE/LT/SK/BG/MD/SI/IE: Bolt map',
       'TR/MK/BA/XK: BinBin map',
