@@ -4,6 +4,11 @@ Update, 24 October 2026: additional Dott regions now use its anonymous app
 map. The audit below records the original GBFS investigation; the current
 catalog and [Dott adapter evidence](dott-app-map.md) supersede its Dott gaps.
 
+Update, 25 October 2026: Lime's scooters in Warsaw, Kraków, Łódź, Poznań,
+Wrocław and the Tricity, about 14,800, come from its
+[authenticated rider map](lime-app-map.md), each market after a clean
+full-area audit. Its 15 other Polish markets held no scooter that day.
+
 
 Verified 13 October 2026. The audit started from the
 [MobilityData GBFS registry](https://github.com/MobilityData/gbfs/blob/master/systems.csv),
@@ -198,7 +203,8 @@ No covered Polish town bans renting at night, so
     feed address was found for either.
 - **Lime** (14 places, Warsaw, Kraków, Łódź, Poznań, Wrocław and the Tricity
   among them), **Bolt** (about 20 towns) and **blinkee** publish no public
-  feed. **Voi** doesn't run in Poland.
+  feed. Lime's six markets with scooters come from its rider map since
+  25 October 2026 (see the update above). **Voi** doesn't run in Poland.
 - **Public data:** Poland's national access point register,
   [dane.gov.pl dataset 1739](https://dane.gov.pl/dataset/1739), links Bolt's
   scooter page and blinkee's site, with no API. Its only GBFS feed is MEVO's,

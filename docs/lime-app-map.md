@@ -119,6 +119,12 @@ and Livorno, which serves Pisa, held no scooter in their whole scooter zones
 on 25 October 2026, and neither did Stromboli's zone in Catania's region.
 Firenze has banned shared scooters since 1 April 2026.
 
+In Poland, 15 of Lime's 21 markets held no scooter in their whole scooter
+zones on 25 October 2026: Bielsko-Biała, Bydgoszcz, Gliwice, Katowice and
+Chorzów, Kielce, Kołobrzeg, Koszalin, Łeba, Legnica, Mielno, Olsztyn, Płock,
+Toruń, Władysławowo and Zamość. Kołobrzeg, Łeba, Mielno and Władysławowo are
+Baltic seaside resorts; check them again in summer.
+
 - Zones named as demos, tests, warehouses, events or temporary areas are left
   out, as Rome's three temporary areas and Dortmund's warehouses. So is the
   Tempe zone of Lime's Phoenix region: Lime's public Tempe feed holds it.
@@ -148,6 +154,7 @@ stationary reference scooter, country by country:
 | 25 October 2026 | United Kingdom: London, Birmingham, Coventry, Milton Keynes, Salford | 336 | 86 | 4,895 | 264 |
 | 25 October 2026 | Germany: 39 markets, Berlin, Munich, Hamburg and Cologne the largest | 2,318 | 594 | 58,459 | 1,595 |
 | 25 October 2026 | Italy: 10 markets, Rome, Milan, Turin and Catania the largest | 738 | 188 | 12,534 | 658 |
+| 25 October 2026 | Poland: Warsaw, Poznań, the Tricity, Kraków, Łódź, Wrocław | 525 | 133 | 14,834 | 504 |
 
 When the audit and the cache's sweeps shared an account, they shared its limit,
 about one request every five seconds. On 24 and 25 October 2026, before the cache's

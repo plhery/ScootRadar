@@ -1398,6 +1398,147 @@
       "aliases": [
         "Tarnow"
       ]
+    },
+    {
+      "id": "lime_pl_app_gdansk_gdynia_sopot",
+      "provider": "lime",
+      "city": "Gdańsk / Gdynia / Sopot",
+      "center": [
+        54.3823,
+        18.5811
+      ],
+      "timeZone": "Europe/Warsaw",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "CA6WOXEYBJZ7Y",
+      "limeMapGrid": {
+        "south": 54.33763,
+        "west": 18.47942,
+        "north": 54.54032,
+        "east": 18.67674,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.023112330768648888,
+        "cells": "4-8,13-17,22-25,30-34,39-44,47-52,57-59,65-67,74-76,83-84,91-93,99-102,109-111,117-120,126-128,135"
+      }
+    },
+    {
+      "id": "lime_pl_app_krakow",
+      "provider": "lime",
+      "city": "Kraków",
+      "center": [
+        50.0653,
+        19.9407
+      ],
+      "timeZone": "Europe/Warsaw",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "HV4BAM5AVTF55",
+      "limeMapGrid": {
+        "south": 49.99564,
+        "west": 19.87364,
+        "north": 50.10689,
+        "east": 20.059,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020960960633921052,
+        "cells": "0-1,9-11,13,18-24,27-33,36-43,45-62,65-70,75-76,78"
+      }
+    },
+    {
+      "id": "lime_pl_app_odz",
+      "provider": "lime",
+      "city": "Łódź",
+      "center": [
+        51.77058,
+        19.47395
+      ],
+      "timeZone": "Europe/Warsaw",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "PKGJ4HUBDYTTD",
+      "limeMapGrid": {
+        "south": 51.69805,
+        "west": 19.34752,
+        "north": 51.81791,
+        "east": 19.55539,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.021740146541758303,
+        "cells": "5-6,13-17,21-27,31-38,41-49,51-58,60-66,70-76,83-85"
+      }
+    },
+    {
+      "id": "lime_pl_app_poznan",
+      "provider": "lime",
+      "city": "Poznań",
+      "center": [
+        52.40692,
+        16.92993
+      ],
+      "timeZone": "Europe/Warsaw",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "WGUF3VEUD22QV",
+      "limeMapGrid": {
+        "south": 52.3569,
+        "west": 16.8315,
+        "north": 52.47009,
+        "east": 17.01913,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.022062818854577573,
+        "cells": "1-5,9-16,18-43,45-51,56-60,65-68,75-77"
+      }
+    },
+    {
+      "id": "lime_pl_app_warszawa",
+      "provider": "lime",
+      "city": "Warszawa",
+      "center": [
+        52.2336,
+        21.0025
+      ],
+      "timeZone": "Europe/Warsaw",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "ATBTOCRY4OIRM",
+      "limeMapGrid": {
+        "south": 52.04772,
+        "west": 20.77658,
+        "north": 52.42506,
+        "east": 21.23071,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.021909852294013963,
+        "cells": "8-11,29-32,50-55,71-76,92-97,113-118,126-127,136-139,147-149,152-161,166-171,173-183,185-188,190-209,212-229,234-249,255-270,278-290,296-311,317-329,342-352,363-373,384-385,387-394,405-415,427-429,431-436,448-450,455-457,469-470,489-490,510-511,530-533,551-554,572-574,594-595"
+      }
+    },
+    {
+      "id": "lime_pl_app_wroc_aw",
+      "provider": "lime",
+      "city": "Wrocław",
+      "center": [
+        51.10286,
+        17.03006
+      ],
+      "timeZone": "Europe/Warsaw",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "AUMSB4HLUOGSN",
+      "limeMapGrid": {
+        "south": 51.07156,
+        "west": 16.94535,
+        "north": 51.13348,
+        "east": 17.11476,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.021444550180112296,
+        "cells": "2-6,9-38"
+      }
     }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Tricity_270_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Krakow_538_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Lodz_167_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Poznan_199_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Warsaw_9845_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Wroclaw_256_exclude_new_type.json"
   ]
 }

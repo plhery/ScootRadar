@@ -11,9 +11,9 @@ The authenticated Lime adapter covers the complete published operating
 polygons in Deva, České Budějovice, Querétaro, Naha, Doha, Santiago and Brisbane,
 including their disconnected service areas, and since 25 October 2026 in
 London, Birmingham, Coventry, Milton Keynes and Salford, in 39 German
-markets, from Berlin and Munich to Waiblingen, and in ten Italian ones, from
-Roma and Milano to Rimini.
-The other markets its rider map lists, 176 found so far, are added country by
+markets, from Berlin and Munich to Waiblingen, in ten Italian ones, from
+Roma and Milano to Rimini, and in six Polish ones, from Warszawa to Wrocław.
+The other markets its rider map lists, 155 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -308,7 +308,9 @@ banned shared scooters, and feeds that were empty when checked.
     app map now supplies 37 more Polish regions, including those large fleets;
     Brzeg Dolny was empty on 24 October.
   - Lime (14 places, Warsaw and Kraków among them), Bolt and blinkee publish
-    no public feed. Bolt's scooters in 25 towns come from its
+    no public feed. Lime's scooters in Warsaw, Kraków, Łódź, Poznań, Wrocław
+    and the Tricity come from its [rider map](lime-app-map.md) since
+    25 October 2026; its 15 other Polish markets held none that day. Bolt's scooters in 25 towns come from its
     [rider map](bolt-app-map.md) since 25 October 2026; its Radom market was
     empty that day, and its Słupsk and Suwałki markets held no scooter. Dott now puts Warsaw, Kraków and the other
     large cities on the map. Voi doesn't run in Poland.

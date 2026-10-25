@@ -1409,6 +1409,120 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Verona_820_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "PL",
+      "city": "Gdańsk / Gdynia / Sopot",
+      "center": [
+        54.3823,
+        18.5811
+      ],
+      "timeZone": "Europe/Warsaw",
+      "regionToken": "CA6WOXEYBJZ7Y",
+      "serviceAreas": [
+        {
+          "name": "[Tricity][SZ][19.10.2026][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ectjImrypBvB{OtB}ApAsDgEyEm@uLvBcGuE{CoB}Hn@uDYwEiS}PqCrImBsBgA{JkC{JyGaCyGkFcBaRc@uRcLbIyGpNmLpe@ePpYeHiB_G~BeJb\\qDsBsFh`@nCrKmHbOzA|T__AxfAoNn@ag@_y@aVulAgIvBo|@_qAwAgNdH}[oUqNoBzKmAjMcBtYaCdZcHbUa@~PR|KrCla@MdDyAhEwCjEuBbHgHrb@iAw@k@|F_@RqD}B}QfdAg]niAqXlt@yPz_@mHnOqK`WoUhb@uMtUqVja@iUnYew@|t@yVhVym@nRkRtAEhCmXoFua@zCaH{BuE}G_KmDk_@wHxMt[}Gnb@yJgEsCtSqKhT{GaQb@_LnGyEOyAiFzBqFwMmG~EoOyD{Qn_@ip@pWsBoh@dHcL|Em@t@sC?{@_AuHaRpHy[rZwa@bW{Ct@SiEaB^g@z@eDmAEez@wFVyBtdAwKp@w@c^mFTHl_@wt@nDmEoCcBHXbMbAbIlh@dfBkMtw@{g@xhAsSxT}JzWxChl@hg@tWjU`b@|KpQvTckA_Rec@xi@cwCrH|c@dMiKyCgPzKkQzWbCnHrc@p]~UxQ}@dQ`YgAlR`@pTz@rg@`C?m@m`@e@__@jBsGdAiBjAwBv@gBxLai@Oe[tSap@~MrH`NvuAfUqNsFe`AlW}\\uKma@nN{K`F~JpLyIjFqUqDsa@pb@gh@`VsCtS~FeEtH`BbZnNnQzGcE|GbhBtTdPLmq@dHe[tJ{PhFmRRoe@hRhAkDxW\\h`AxO_XoFs[`Ckd@tQ{UoE~f@bB|AdB_W~DqR`G~Sx@nu@jQuExM_h@eD_l@`\\qLpH_IrVuDrEeCjGCvr@tj@dYhJsB~u@Sjl@{EhNh@vCtFuD~A}K]qi@tA{Q|a@cIzB_v@zoAoaAjGfKxEkInSi[kBcRpI_MdAdDnHpBpBm@bBaFvByCtB_@nCTFeGo@_HtLaI?kJmCmSvBcFlAih@pAuPhCgI`Jya@`Iw_@~S`It@mV`m@dS`Lbn@nZt|@jc@iF|Tus@}Giq@@w{AsJubAdLsT~Cs[nNe@bOhE|Ngi@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Tricity_270_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "PL",
+      "city": "Kraków",
+      "center": [
+        50.0653,
+        19.9407
+      ],
+      "timeZone": "Europe/Warsaw",
+      "regionToken": "HV4BAM5AVTF55",
+      "serviceAreas": [
+        {
+          "name": "Krakow [SZ][15.12.25][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "yutpHizkxB?l|@tZxCxI{MbBk`@`Z{BnFgCzGo@|Bac@zEqk@dVr@|BjDxBeCzH|FfIvKqK|[yGvXs]z_BfFfAdWiqApk@aRdFoEbGcFh@mDqCaVDuQJyEfV{LnCvZhFuAq@sIOyB_DjAYkH~DUtB_D]w@oEcFcBkC~AwIpGdCvF~@rGdInCvEtG`EzE|BdFxGtAtA`EpBfDvJF|HpBrMr@lULtD~@LDqKLsIsAqWb@u@fFsN~ByKKaGpF_O~I}`@b@h@HhI|BdDiBfJnPxTtCjCBdL^vEdKcEzDoE`@{BbGhDfHpJoInOhFlh@tFld@|LaDp@eUzERlCr[pDhc@by@{GNsBNmDBmNW}N~@uNCcMfBP~Bh@vCr@xEr@rSxItPgVhIk_@_As|@uGh@d@`SyXoJqi@qOoBgD}A|BwBA{DmGcO_a@bDyDNcR}CoOjAsX`EJz@FxAiIfAgi@@qBoKw@oZ{BmFo@uAbScOqFvBiKaCzAKnDqBAOiG^iEw@Mm@jDLxEaPoBgU_MbCkUnQaEOeD@iO_@iF{JfBy@uDo@_HfEsA|CmDnCmMhA{EzDwJlAgFEkX~N\\zBa@[iKsZkfAx@ah@mKugCuXnFqj@_DEq_@iKXYbHaBSmIqD[hBW|OaCbIqEyHcTfNv@~Ggd@|d@uPoo@x@mPmc@e{B`G}C`QpGlI{y@_OeJ}d@jgAcDvIr@xb@c@l@gHpJ}PuJoIaOsFqEHaFxDuz@cDqBjCwq@`Cf@tFwLpKcIrBeRnDe_@RmXgRN_ZkFyBLiLlG{Iqd@y\\tk@pI`OyNd[iFa@q@b[}Ds@_BrGsBt_@oDtHuGpLeW~HyTpHiXzLMdKeGPiLf\\{OtB_Ara@dIJa@p[dHRJaWdGn@S`WrCxUbOlGtExPyAlV_@~PrB`L~AfQtMf@Ev\\pCdUeGvNmPjKeIjEuRv[KhRkJlDuBpaA|SdSbTfAy@fSHz@?~@fSpAfQzMbLjBcGnZ`EbCc@tRz@fYFf`@pA|RjIfq@`@j[EvNFzLhCtZ|Hny@~[xBDvB"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Krakow_538_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "PL",
+      "city": "Łódź",
+      "center": [
+        51.77058,
+        19.47395
+      ],
+      "timeZone": "Europe/Warsaw",
+      "regionToken": "PKGJ4HUBDYTTD",
+      "serviceAreas": [
+        {
+          "name": "Lodz[SZ][2026][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ygpzHa~{uBocAgm@eCw\\{BQaPBaBcUgDyEo]|H{C{q@wYfB`Drn@cKdDuLsKKmYkBC{NsOg\\}CiEk@uJdAkSh@yDjB_SxCqCan@mF`B_IcF{D_CkFcv@eDmq@t@en@rEm]{KcFoCvG}KeEzJ_i@|@aMgDeEwVwJmMqC}Fbx@mDhOc@bFRdE{E|k@zAnt@wM`XgEnuAcBd@qWdEgATGcUqUq[yEnQyGlvA_CR}MxCs@xCL~EoLz@sBnQ\\`OrAt^k\\kHe_@{Vgd@hGqCqAs@bFqPxz@aVjb@yBiKoFfF~E~g@yDhh@p@bOqa@nMuVvJyDf\\~Fbd@tQna@bAdKnGzc@n^hNbHnFx^|L~h@vMgs@feEgQrzBpElRnGKxd@vg@frAdkA|Ek`BvJ{tAdShEvXyCxAs`@kAe~@|q@qUgIql@xYuLpj@p_C`Yot@tUpnA`^iLxj@g[uWkyAre@MpG{l@o^k@yl@kfArIPlRtAxMih@la@eEo@pYf~@`BfMek@dAm\\nFuWrN{uAmB}`@ncBwqAbHy~@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Lodz_167_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "PL",
+      "city": "Poznań",
+      "center": [
+        52.40692,
+        16.92993
+      ],
+      "timeZone": "Europe/Warsaw",
+      "regionToken": "WGUF3VEUD22QV",
+      "serviceAreas": [
+        {
+          "name": "Poznan[SZ][26.09.25][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "aag_IwagfBt@|LrShInAvCSjRnE`v@~L|H`AtHvFzIzEuFzIrEZfSpHzVzKtLzImg@lV`T|r@dU~v@iOhBnBpM}b@zK`@bBeRfNdHbVpIwMzvAqJjgAwOrp@g\\rp@fQrOvEg@hS`OzRiz@oXuQxKad@hLjIxOhAlC_LmF{XxAiKpQlJhSrB~ArZA|j@vO{H^}Q|YaK}G|[~JtF}F|PaFva@|APhNym@tHpQ|HzJlIwWfFhFjGnQnOvReIvKfKvb@iErGnCbH}HdM|Fr\\rb@ml@|NwMfJgOeBsQcEqRxRu`@zOa[GeGrFUtNyTpF|G|IoDrB}EvHtGdCeB`Oi_@aUy]`NiHWcBhg@iPfGlJxGo@dGoHvDuU_EuVtFgOjBaXyMmEwHgGoPqGvAuL_OmCJiXrJW@vRdT`I|F}]vGY|B}D}Zkb@qz@_f@aDuCgdAua@fEu`@yA_A`Bg[|CcZrFgVht@lq@OtIlKpF`A_Dr\\p\\`C}R|P?[yPiGcCyEtIzDei@mA{DaZzr@oFmHhM{jAmAgKgJqYwJpJec@cr@`Ke_@kGcY{HwTvGgCkLi`@lSmVvHuNyGgS_BgMqQi_@gG|JaGoR{Ng_@_TzWoGgTmElBwEsFh@kJjDtAxFsJ`@sZiCmIqDz@iGhKuGe@iEex@kt@cOeHfIgLyL_RjCmLoC_CbIvA`UjEr`BkGbH}@rVmRjDZ|xAme@hH}LcB_Fw}@eBTvBlf@sTnF_@bBeZsFM|CzZhEaGrmAar@~aAuCn@yA{UgKa[uCdAcGtsAaPeFtH{y@yQiJz@iWuUjEuEzeAoAtIgVuLn@}[}Bi\\eIlIwHnUiPngB_MIc`@mLJ`RyHIoBxRhRdNoRhkB"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Poznan_199_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "PL",
+      "city": "Warszawa",
+      "center": [
+        52.2336,
+        21.0025
+      ],
+      "timeZone": "Europe/Warsaw",
+      "regionToken": "ATBTOCRY4OIRM",
+      "serviceAreas": [
+        {
+          "name": "[Warsaw][SZ][Service zone][14.10.2026][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ijf~H{lb_Cnn@kl@`Z}IlD~EhUr{@@Am_@|bA`HjGj@|BfNyKfF`YxCfKbBfIbCzItFzSnHd]ol@hl@_cAf}@cGbH{MrKq\\b|@vNhS|CmHfRy]lGwDvEeKdq@j_AtJmZli@|t@oG|f@bDlAjEqg@r`@tk@~SxMh\\qiCnJvFpEvRvJxCgIp}AlK_ACgCfNoBf@mJxIWd\\pe@_^ddAsPQUxKnL`@oCzH|Ld@gBh]zr@j@_OhnBjVbUyE~s@eHeG_Cve@vInEkAff@_t@}i@{R`mAhEzCsB~MxV~LqFfLj~@bt@|Iiw@bCrBrQgwAi@qIeIgD~Mms@tRe}BzDaXhA{^h@uSbk@fRz_@bM~BmPvJyMtVkY|IbLbLoAOfbCrUlGhQbpAt\\fc@pYbj@b[i_@`@pd@pZb@oCvdA@nb@fl@{BMp_@`NEt[lNlBeSjGaIvhA~~Eb[bsAza@y^r@{K_D{LxTuSnBp@v@oDxTXpQc`@}Anc@na@ua@qKkt@sPqt@{MuGfGkv@whAoRtBg]sLcDgJfo@_I_B}AxFcGc@X~G|FpGnAeC|@|@oBnHwNwTtV_gCez@kb@cE}I`Cws@jC|AwBoZsDcXyEoZcFoYaCoNsCmNgC_QwCwQuBiMqBeM~E_a@zB_VhBcOnDi^QuJ`@mNzB_NfHgE|GvElBdOnCnF~EhDlKzEhTdLNgOvQfFDlMhKlLdIw\\lQ|LbDiCbLoc@n@yRxB_J}BqCtFgUgCy\\zGq~@cBuEaEyd@_OnB}CkV_@k^gBuIkLh@}Cri@qFdLmClTeW|~@el@ao@_Yoa@{~@y|@pRwzAhS{t@bZ{Dt]bLbDcFhHub@Bm[d_AyC~a@yBrJuhBlzAtLrCwd@~k@{Er{AmNtCfbByx@jtAtQzt@eCrt@di@tu@fUaq@|a@vBvGao@jt@rNleBfa@hXvF`Qtc@rrAsz@}TseAb`Aqv@}WycBz\\kEmYqdB_DyMsLjSgOhOkLoJBkJyGie@`DqZDo_@a_BzF{DuImEbDs_@ac@eh@{u@lKi~@gFcBeJ~q@e@|RmFgTmMgGfDc[wMwDmAy@nHuSiWqe@}]pt@}Q~c@OtHb]xl@qP|\\}D_CgWdb@|@~pA}gAq@o`CU`D}KSyt@X{MfCgBfIu@tB`AfEqCrLct@lTlP|Y}dA|FiiBgPlJ{AuNpF_EcEa_@y{A~aAmh@bd@qN{{@`IgpBdHv_@dWmReIs^oIvEu^xEsQqXcGkKcNlZq@kXHqo@w@oPuRuLmNiHmYofAst@hr@`O|q@bJ|@rE}DdLxEpE|Dlc@yOhPvPt@pKBxi@pC|XmEdZyKbGoKA}EfCq@kEq@kMk^~CySzOeDnz@}MvQm`@{s@fUop@uGcDeO{QuM}RiHwIcQ{CiOkFcHnAjAhLdCbHdCnRn@rCvAxGNdCq@lDaE~E}@tAeAoDaCiI{AEiEpF`DtKhA`DcB|BeArA[KwBfDc@rCs@qB_AC{DvEdCtI\\fAo@rBXz@t@lA^_AfAxAZuCj@}CcB}BZ_B`AyDj@sBzBiD~AoBpAcBlEeF|@cAjAbGr@zGf@vB|@jAzCxAlKnDMpe@gFje@eGw@uDjOcFlAm@v_@vDvA_@lSuF`\\wG`CsHiG}FiOiEgUmKsmBwX{n@gt@ufA|_AqpAzj@ci@jp@a]fwAisBtXikAhViKdQsNlNy[v@xHhN{HdAfGdCyAm@uCnOwJsBcMsFxCyFs\\mGpN{W}cE~NuObRgH`Ebf@bQqGeBiX~RqDkDgv@vHeH_Lsg@wE~EoOqo@}B?gEaWmGl@cIx\\qUZnB|Z{UpGbEdj@cQzDyb@lv@s^sMZc^et@|v@s[fk@cAx_B__@|^aCoGIg`@iBoIu`@dl@gLaJuKxWvDtKcC`RynD~`AaHej@aQvJlY`}Bia@pPrc@lu@mHpP_m@bjBit@reEE|d@dOnj@uBLgHiQgCkD~Gtb@~Ij\\dBUmGwc@hB[lJfs@`BzIuKm@sSoy@kRcAsF{DrEgX{@el@gJeNca@jc@cNib@mVo~@oCgDuCN_^ng@e\\~AuEk[pAwbArPyJjKm[e@uKtBa@eBa[ji@e`@yBw_@yD?}MotBy_A|KlCzeAkBpEkLtAmFma@qN|BwIx{@{CF}BbZPlCcBhV`@lKaD~Eg@rIaIiC}PbH}VzFui@yd@|JmXkV{QpR}m@ySqj@k`At[iFuz@cLbEmFyCvBzb@wB{ByAdHqDsCeBtHaBwAsAnJ|@lCaE~cAaLvbAtMvDhJpy@pH_ChIvXhGnF`h@sNfE|DjF}WxE_Ofs@jk@cRzd@lLdrAmExB_HvCJ|Af@lATx@dAjERx@m@~GqBnEgAm@aTcE{]lEwQsAwDnKy@~Lx@~RzChQsBtLb@zKcA`Gj@`CzKpLp]cBnc@gJr`@HbUx_CeuAyAo@mRo{@|EJbLbu@aChC~z@d`@kDxL`s@rW{Pn@dEhHp`@f@zCiw@dl@oD~Bla@zqBgWvZ}U~Qi^fXgBkKmLm]sIfKiTw_@wHbOtC`F{_@~e@nA|KdL~O|AbI_Q`VkNaSwC|A_SfNiOfX{AdTb@zTmsBz}A_O~B}MWsWvJ}YuZed@v}@k{AouBbc@um@yG_QiIjMuCcHsAlBmHyU}`@`j@aMwIeFdT{Ti[sZdmA}DuHmA|IkOuMyJwIeFdX}[ptAhQvNsJ`a@xV`KbFvHnXvH`D`QjKiEcFv_A`KdCpBfw@_CbOfFH~AoNjQ{VzD_OFuFdE@lR}H`GoJzAnEnWa[xZie@nCbHbHbGjCmAtGmJgCcKrYm[bLdI`M|JvEdGtEhCdDgS|FqYpRiQrcAgx@tcAo|@`FhT|h@~IlCiAvA~Gf{@vV`f@iIh^mShZqlAjc@oo@eIy`@tIo\\fy@{u@tAu@nErLtDeGkF}MdA}C_Uul@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Warsaw_9845_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "PL",
+      "city": "Wrocław",
+      "center": [
+        51.10286,
+        17.03006
+      ],
+      "timeZone": "Europe/Warsaw",
+      "regionToken": "AUMSB4HLUOGSN",
+      "serviceAreas": [
+        {
+          "name": "Wroclaw [SZ][24.10.2026][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}}vvHgbfgBaCcJqI}\\yWtd@qQpYaPsD{Yrl@eLb[eFrMaB}qB}FuPqFeEtFw[jEylAuIWzEwi@yBwj@}CiPkr@t_@m[?iPjZ_n@ps@wIri@{OlW_BhtAxL?l{@{@h@dL_Li@ArVmMtc@mHqH}Kr\\_HmIwCbF}FwFaRra@iS|i@`Ll}@|Btx@bVjHhGG`TnIoAz^kQhG}Y~q@d@jt@nNlLuA~_@oO|d@wDzd@nQvOgR|dAoOjgA|e@bXr]qi@pBbF~P\\wFdj@NpOjDzMbK`Edb@g]jCeV~EgGxHgKcB{FRkJxOyD?{BpNmHsH_k@nr@yX|Fxa@jFaBdKkl@lRozBzXmDnTsLbg@_f@|FwH|KeYdAobC]a`CcFa_AqSy_@aDck@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Wroclaw_256_exclude_new_type.json"
+      ]
     }
   ]
 }

@@ -334,13 +334,14 @@
       "anchorNote": "About the middle of the country, near Łódź.",
       "featuredCities": ["pl:Warszawa", "pl:Kraków", "pl:Wrocław", "pl:Poznań", "pl:Łódź", "pl:Sosnowiec"],
       "credits": {
-        "attribution": "Poland: Dott, Hopp GBFS; Dott anonymous app map; Bolt authenticated rider map; city centres from GeoNames",
+        "attribution": "Poland: Dott, Hopp GBFS; Dott anonymous app map; Bolt authenticated rider map; city centres from GeoNames; Lime authenticated rider map",
         "gbfs": ["Dott", "Hopp"],
         "links": [
           { "label": "PL: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
           { "label": "PL: Dott map", "href": "https://ridedott.com/" },
           { "label": "PL: Bolt map", "href": "https://bolt.eu/" },
-          { "label": "PL: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
+          { "label": "PL: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" },
+          { "label": "PL: Lime map", "href": "https://www.li.me/" }
         ]
       }
     },

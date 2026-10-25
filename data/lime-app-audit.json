@@ -1042,6 +1042,108 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Verona_820_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "PL",
+      "city": "Gdańsk / Gdynia / Sopot",
+      "regionToken": "CA6WOXEYBJZ7Y",
+      "fingerprint": "fd785dd55a55af9c80fe00ac260e9a1191cd4220ec59b22f36a98175d38f5446",
+      "groups": 15,
+      "localCells": 60,
+      "coldMapRequests": 72,
+      "warmMapRequests": 72,
+      "scooters": 1468,
+      "stationaryReferences": 1,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T15:40:10.311Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Tricity_270_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "PL",
+      "city": "Kraków",
+      "regionToken": "HV4BAM5AVTF55",
+      "fingerprint": "1574044e9bd27b4a149e1df3bd02a2ff59e8d03415461240f34b8c1a4ece8c12",
+      "groups": 14,
+      "localCells": 55,
+      "coldMapRequests": 67,
+      "warmMapRequests": 67,
+      "scooters": 1285,
+      "stationaryReferences": 120,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T16:07:00.435Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Krakow_538_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "PL",
+      "city": "Łódź",
+      "regionToken": "PKGJ4HUBDYTTD",
+      "fingerprint": "fd933c41b78184524fab2458c654e2e7e7713d62e3aa1c866cbc924fe0b77ced",
+      "groups": 14,
+      "localCells": 56,
+      "coldMapRequests": 64,
+      "warmMapRequests": 64,
+      "scooters": 1161,
+      "stationaryReferences": 64,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T16:17:23.516Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Lodz_167_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "PL",
+      "city": "Poznań",
+      "regionToken": "WGUF3VEUD22QV",
+      "fingerprint": "4174abd3e80c874dff4f4dba999fcbabb066f3917792e2bd9407311ae8546a82",
+      "groups": 15,
+      "localCells": 58,
+      "coldMapRequests": 66,
+      "warmMapRequests": 66,
+      "scooters": 1509,
+      "stationaryReferences": 115,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T16:32:33.627Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Poznan_199_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "PL",
+      "city": "Warszawa",
+      "regionToken": "ATBTOCRY4OIRM",
+      "fingerprint": "d3a5389cb22ffe7f6e7f69f6c84c87bd3688cc5001ddc8544d543be4e3365c42",
+      "groups": 66,
+      "localCells": 261,
+      "coldMapRequests": 309,
+      "warmMapRequests": 309,
+      "scooters": 8304,
+      "stationaryReferences": 133,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T17:12:27.852Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Warsaw_9845_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "PL",
+      "city": "Wrocław",
+      "regionToken": "AUMSB4HLUOGSN",
+      "fingerprint": "b25637706db51955d84fa0c1e604a8cd29f5cf4e6fdbef98881c92a01a740a8e",
+      "groups": 9,
+      "localCells": 35,
+      "coldMapRequests": 39,
+      "warmMapRequests": 39,
+      "scooters": 1107,
+      "stationaryReferences": 71,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T17:19:06.636Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Wroclaw_256_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {
