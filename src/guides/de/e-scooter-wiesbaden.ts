@@ -31,7 +31,7 @@ const guide: Guide = {
             caption: 'E-Scooter-Anbieter in Wiesbaden: Preis, Gebühren und Hotline (Stand 24. Oktober 2026)',
             head: ['Anbieter', 'Preis', 'Falsch geparkt (laut Bedingungen)', 'Hotline laut Stadt'],
             rows: [
-              ['Bolt', 'ab 0,15 € pro Minute plus Freischaltgebühr (für Deutschland)', '15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs (Bedingungen gültig ab 1. Dezember 2026)', '+49 30 568 373 989'],
+              ['Bolt', 'ab 0,15 € pro Minute plus Freischaltgebühr (für Deutschland)', '15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs (Bedingungen seit 2023, auch ab 1. Dezember 2026)', '+49 30 568 373 989'],
               ['Dott', 'in der App', 'bis 300 € Rückholkosten, wenn du Park- und Sperranweisungen nicht befolgst; 50 € Verwaltungsgebühr, wenn Dott ein Bussgeld für dich zahlt (Bedingungen vom September 2025)', '+49 30 466 90 493'],
               ['Voi', 'in der App', 'in den Bedingungen in der Voi-App', '+49 157 35993270'],
             ],
@@ -64,7 +64,7 @@ const guide: Guide = {
       blocks: [
         'Am Hauptbahnhof und im **Historischen Fünfeck**, der Kerninnenstadt, gibst du einen Leih-Scooter laut Stadt «ausschliesslich» auf den farbig markierten Abstellflächen zurück, die sie eingerichtet hat; ausserhalb davon lässt sich die Miete nicht beenden. Das Fünfeck liegt zwischen Rheinstrasse, Schwalbacher Strasse, Röderstrasse, Taunusstrasse und Wilhelmstrasse. Die ersten Flächen entstanden 2023 am Hauptbahnhof, Ende 2024 kamen rund 30 im Fünfeck dazu.',
         'Es wirkt: Die Beschwerden über falsch abgestellte Scooter in den Zonen sind laut Magistrat «nahezu vollständig zurückgegangen» (Antwort auf eine Anfrage der SPD, September 2025).',
-        'Ausserhalb der Zonen parkst du frei, meist auf dem Gehweg, parallel am Rand, sodass niemand behindert wird; Bolt verlangt laut seinen Bedingungen ab 1. Dezember 2026 mindestens 1,60 m freien Gehweg. Nicht abstellen darfst du laut Stadt:',
+        'Ausserhalb der Zonen parkst du frei, meist auf dem Gehweg, parallel am Rand, sodass niemand behindert wird; Bolt verlangt laut seinen Bedingungen (seit 2023, auch ab 1. Dezember 2026) mindestens 1,60 m freien Gehweg. Nicht abstellen darfst du laut Stadt:',
         {
           list: [
             'auf Radwegen, an Kreuzungen und in Ein- und Ausfahrten;',

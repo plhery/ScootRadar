@@ -108,7 +108,7 @@ const guide: Guide = {
             caption: 'E-Scooter-Bussgeldkatalog: heute und ab 1. März 2027',
             head: ['Verstoss', 'Heute', 'Ab 1. März 2027'],
             rows: [
-              ['Auf dem Gehweg gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
+              ['Auf Gehweg oder in Fussgängerzone gefahren', '15 €, bis 30 € mit Behinderung, Gefährdung oder Schaden', '25 €, bis 40 €'],
               ['Radweg nicht benutzt, wo Pflicht', '15 €', '25 €, bis 40 €'],
               ['Nebeneinander gefahren', '15 €, bis 30 €', 'Erlaubt, wenn niemand behindert wird'],
               ['Zu zweit gefahren', '10 € (Tatbestandskatalog des KBA)', '25 €'],
@@ -134,7 +134,7 @@ const guide: Guide = {
     {
       heading: 'E-Scooter-Sharing: was in Berlin, Hamburg, München, Köln & Co. gilt',
       blocks: [
-        'Einen Führerschein verlangen die Anbieter nicht. Bolt kann laut seinen ab 1. Dezember 2026 gültigen Bedingungen aber ein Foto deines Führerscheins als Identitätsnachweis fordern, Voi eine Identitätsprüfung, etwa nach einem Unfall oder wegen eines Bussgelds. Bei Dott, Bolt und Voi kannst du mit einem Konto Scooter für eine Gruppe entsperren; dann musst du dafür sorgen, dass alle mindestens 18 sind. TIER heisst heute Dott.',
+        'Einen Führerschein verlangen die Anbieter nicht. Bolt kann laut seinen Bedingungen (seit 2023, auch ab 1. Dezember 2026) aber ein Foto deines Führerscheins als Identitätsnachweis fordern, Voi eine Identitätsprüfung, etwa nach einem Unfall oder wegen eines Bussgelds. Bei Dott, Bolt und Voi kannst du mit einem Konto Scooter für eine Gruppe entsperren; dann musst du dafür sorgen, dass alle mindestens 18 sind. TIER heisst heute Dott.',
         '**Parken:** Es gelten die Regeln für Fahrräder. Abstellen auf dem Gehweg ist erlaubt, solange niemand behindert oder gefährdet wird. Ab 1. März 2027 steht das ausdrücklich in der StVO, und Falschparken auf Geh- oder Radweg kostet dann ab 55 €. Stellt ein Anbieter seine Leih-Scooter auf, gilt das dann nicht als Parken; stellst du einen nach der Fahrt ab, schon. Wo Leih-Scooter stehen dürfen, regelt jede Stadt selbst; in Verbotszonen sperrt die App das Beenden der Fahrt.',
         {
           table: {

@@ -82,7 +82,7 @@ const guide: Guide = {
             rows: [
               ['Dott', 'Bis 300 € fürs Einsammeln, wenn du Anweisungen zum Abstellen oder Abschliessen missachtest; Bussgelder der Behörden plus 50 € Bearbeitungsgebühr'],
               ['Voi', '25 € bei einem Verstoss gegen die Parkregeln, wobei Voi möglichst zuerst mahnen will; Bussgelder und Gebühren der Behörden gibt Voi an dich weiter'],
-              ['Bolt', '15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs; Bussgelder plus bis 30 € Bearbeitungsgebühr (Bedingungen gültig ab 1. Dezember 2026)'],
+              ['Bolt', '15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs; Bussgelder plus bis 30 € Bearbeitungsgebühr (Bedingungen seit 2023, auch ab 1. Dezember 2026)'],
               ['Lime', 'Keine feste Gebühr; Bussgelder, Abschlepp- und Verwahrkosten, die du verursachst, gibt Lime weiter'],
             ],
           },

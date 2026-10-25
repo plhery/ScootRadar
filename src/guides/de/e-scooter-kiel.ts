@@ -37,7 +37,7 @@ const guide: Guide = {
             ],
           },
         },
-        'Teuer wird Falschparken. Bolt verlangt laut seinen ab 1. Dezember 2026 gültigen Bedingungen 15 € Parkgebühr, wenn der Scooter falsch steht und kein deutliches Foto am Fahrtende das Gegenteil zeigt, bis zu 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs und bis zu 30 € Verwaltungsgebühr auf Bussgelder. Dott berechnet laut seinen Bedingungen vom September 2025 bis zu 300 €, wenn er einen falsch abgestellten Scooter zurückholen muss, und 50 € Verwaltungsgebühr auf Bussgelder, die er für dich zahlt.',
+        'Teuer wird Falschparken. Bolt verlangt laut seinen Bedingungen (seit 2023, auch ab 1. Dezember 2026) 15 € Parkgebühr, wenn der Scooter falsch steht und kein deutliches Foto am Fahrtende das Gegenteil zeigt, bis zu 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs und bis zu 30 € Verwaltungsgebühr auf Bussgelder. Dott berechnet laut seinen Bedingungen vom September 2025 bis zu 300 €, wenn er einen falsch abgestellten Scooter zurückholen muss, und 50 € Verwaltungsgebühr auf Bussgelder, die er für dich zahlt.',
         'Den nächsten Dott oder Voi findest du auf der [Live-Karte von Kiel](map:de:Kiel).',
       ],
     },

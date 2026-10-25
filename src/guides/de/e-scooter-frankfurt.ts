@@ -98,7 +98,7 @@ const guide: Guide = {
         {
           list: [
             '**Voi:** 25 € bei einem Verstoss gegen die Parkregeln; Bussgelder der Behörden gibt Voi an dich weiter.',
-            '**Bolt:** 15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs (Bedingungen gültig ab 1. Dezember 2026).',
+            '**Bolt:** 15 €, wenn der Scooter falsch steht und kein klares Abstellfoto da ist; bis 100 € Abholgebühr ausserhalb des erlaubten Parkbereichs (Bedingungen seit 2023, auch ab 1. Dezember 2026).',
             '**Lime:** erst eine Verwarnung, dann eine Strafgebühr, bei Wiederholung die Sperre; Bussgelder und Abschleppkosten gibt Lime weiter.',
           ],
         },
