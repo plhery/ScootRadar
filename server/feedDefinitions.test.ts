@@ -1,6 +1,6 @@
-import { expect, it } from 'vitest';
+import { expect, it, vi } from 'vitest';
 import { feedsForQuery, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
-import { registerFeedDefinitions } from './feedDefinitions';
+import { discoverOnceMore, registerFeedDefinitions } from './feedDefinitions';
 
 const definition = { id: 'romania:test', source: 'romania' as const, provider: 'lime' as const, coverage: [
   { south: 0, north: .5, west: 0, east: .5 },
@@ -30,4 +30,34 @@ it('keeps an unseen feed unavailable until its first successful collection', () 
   registerFeedDefinitions(records, [definition]);
   expect(records.get(definition.id)).toMatchObject({ coverage: definition.coverage, vehicles: [],
     observedAt: 0, attemptedAt: 0, stale: true, failed: true, skipped: false });
+});
+
+it('asks for the catalog once more after a pause before a failure counts', async () => {
+  vi.useFakeTimers();
+  try {
+    const gatewayTimeout = new Error('GBFS request failed with HTTP 504');
+    const discover = vi.fn().mockRejectedValueOnce(gatewayTimeout).mockResolvedValueOnce(['catalog']);
+    const retried: unknown[] = [];
+    const result = discoverOnceMore(discover, 5_000, error => retried.push(error));
+    await vi.advanceTimersByTimeAsync(4_999);
+    expect(discover).toHaveBeenCalledTimes(1);
+    await vi.advanceTimersByTimeAsync(1);
+    await expect(result).resolves.toEqual(['catalog']);
+    expect(discover).toHaveBeenCalledTimes(2);
+    expect(retried).toEqual([gatewayTimeout]);
+  } finally {
+    vi.useRealTimers();
+  }
+});
+
+it('throws the second failure, and asks only once when the first try succeeds', async () => {
+  const second = new Error('GBFS request failed with HTTP 502');
+  const failing = vi.fn().mockRejectedValueOnce(new Error('GBFS request failed with HTTP 504')).mockRejectedValueOnce(second);
+  await expect(discoverOnceMore(failing, 0, () => {})).rejects.toBe(second);
+  expect(failing).toHaveBeenCalledTimes(2);
+  const working = vi.fn().mockResolvedValue(['catalog']);
+  const onRetry = vi.fn();
+  await expect(discoverOnceMore(working, 0, onRetry)).resolves.toEqual(['catalog']);
+  expect(working).toHaveBeenCalledTimes(1);
+  expect(onRetry).not.toHaveBeenCalled();
 });

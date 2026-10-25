@@ -14,3 +14,19 @@ export function registerFeedDefinitions(records: Map<string, FeedSnapshot>, defi
     });
   }
 }
+
+/**
+ * The catalog, asked for again after `pauseMs` if the first try fails, as a fetch is when its body
+ * comes back cut off. sharedmobility.ch's registry answered a single 504 as the cache started on
+ * 25 October 2026, and the next try, a minute later, took it. A second failure is thrown, for the
+ * caller to report.
+ */
+export async function discoverOnceMore<T>(discover: () => Promise<T>, pauseMs: number, onRetry: (error: unknown) => void): Promise<T> {
+  try {
+    return await discover();
+  } catch (error) {
+    onRetry(error);
+    await new Promise(resolve => setTimeout(resolve, pauseMs));
+    return discover();
+  }
+}

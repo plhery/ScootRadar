@@ -302,7 +302,9 @@ Tracing is off, and no trace headers go to the operators' feeds.
 - **Unexpected errors**: snapshot restore and persistence, feed discovery, a request
   answered 500, and a collection that threw outside the feed's own error handling. Each
   is reported at most once an hour, so a failure repeating every few seconds stays one
-  event an hour; the logs keep every occurrence.
+  event an hour; the logs keep every occurrence. A failed discovery is tried once more
+  5 seconds later and reported only if that fails too: sharedmobility.ch's registry
+  answered a single 504 as the cache started on 25 October 2026.
 
 Routine feed failures are not sent; the metrics and logs cover them.
 

@@ -15,7 +15,7 @@ import { readSnapshot, writeSnapshot } from './snapshotFile';
 import { collectSnapshotFeed } from './collectFeed';
 import { createFeedStateLog, expiredReportDelay, feedState, waitOutCurfew, type FeedCadence } from './feedStateLog';
 import { createSnapshotMetrics } from './metrics';
-import { registerFeedDefinitions } from './feedDefinitions';
+import { discoverOnceMore, registerFeedDefinitions } from './feedDefinitions';
 import { initErrorReporting, reportError, reportFeedExpired } from './errorReporting';
 import { cadenceFromEnv, ownIdleExpiries, RETENTION_CAPS_MS, retained, retentionCaps, withRetentionCaps } from './cadence';
 import { answerZones, createZoneStore } from './zoneStore';
@@ -280,7 +280,8 @@ let discoveryTimer: ReturnType<typeof setTimeout>;
 async function discover() {
   let retryMs = 3600_000;
   try {
-    const definitions = withAppCollectors(await discoverCollectableFeeds());
+    const definitions = withAppCollectors(await discoverOnceMore(discoverCollectableFeeds, 5_000,
+      error => console.warn('Feed discovery failed; trying once more in 5 seconds', error)));
     if (!stopping) setDefinitions(definitions, true);
     metrics.recordDiscovery();
   } catch (error) {
