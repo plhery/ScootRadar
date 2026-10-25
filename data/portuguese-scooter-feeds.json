@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-12",
+  "verifiedOn": "2026-10-25",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -298,6 +298,182 @@
         "Lisbonne",
         "Lissabon",
         "Lisbona"
+      ]
+    },
+    {
+      "id": "bolt_pt_app_386",
+      "country": "PT",
+      "provider": "bolt",
+      "city": "Lisboa / Oeiras",
+      "center": [
+        38.72509,
+        -9.1498
+      ],
+      "bounds": {
+        "south": 38.6709,
+        "north": 38.8017,
+        "west": -9.3361,
+        "east": -9.0852
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "386",
+      "boltAppCategories": [
+        "96",
+        "198",
+        "621",
+        "919",
+        "990",
+        "993",
+        "1203"
+      ],
+      "areas": [
+        {
+          "city": "Lisboa",
+          "center": [
+            38.7078,
+            -9.1366
+          ],
+          "bounds": {
+            "south": 38.6709,
+            "north": 38.8017,
+            "west": -9.3361,
+            "east": -9.0852
+          }
+        },
+        {
+          "city": "Oeiras",
+          "center": [
+            38.6926,
+            -9.3123
+          ],
+          "bounds": {
+            "south": 38.6709,
+            "north": 38.7512,
+            "west": -9.3361,
+            "east": -9.2033
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_pt_app_437",
+      "country": "PT",
+      "provider": "bolt",
+      "city": "Porto / Matosinhos",
+      "center": [
+        41.1485,
+        -8.61097
+      ],
+      "bounds": {
+        "south": 41.1348,
+        "north": 41.2781,
+        "west": -8.7345,
+        "east": -8.5751
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "437",
+      "boltAppCategories": [
+        "772",
+        "852",
+        "1119",
+        "61231"
+      ],
+      "areas": [
+        {
+          "city": "Porto",
+          "center": [
+            41.1502,
+            -8.6103
+          ],
+          "bounds": {
+            "south": 41.1348,
+            "north": 41.2781,
+            "west": -8.7345,
+            "east": -8.5751
+          }
+        },
+        {
+          "city": "Matosinhos",
+          "center": [
+            41.1807,
+            -8.6822
+          ],
+          "bounds": {
+            "south": 41.1675,
+            "north": 41.2315,
+            "west": -8.7233,
+            "east": -8.5906
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_pt_app_687",
+      "country": "PT",
+      "provider": "bolt",
+      "city": "Coimbra",
+      "center": [
+        40.20686,
+        -8.41996
+      ],
+      "bounds": {
+        "south": 40.1771,
+        "north": 40.2376,
+        "west": -8.4526,
+        "east": -8.3901
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "687",
+      "boltAppCategories": [
+        "258",
+        "522",
+        "91231"
+      ]
+    },
+    {
+      "id": "bolt_pt_app_828",
+      "country": "PT",
+      "provider": "bolt",
+      "city": "Faro",
+      "center": [
+        37.01869,
+        -7.92716
+      ],
+      "bounds": {
+        "south": 36.9832,
+        "north": 37.0521,
+        "west": -8.0113,
+        "east": -7.9084
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "828",
+      "boltAppCategories": [
+        "1149"
+      ]
+    },
+    {
+      "id": "bolt_pt_app_837",
+      "country": "PT",
+      "provider": "bolt",
+      "city": "Santarém",
+      "center": [
+        39.23379,
+        -8.68617
+      ],
+      "bounds": {
+        "south": 39.2063,
+        "north": 39.2562,
+        "west": -8.7047,
+        "east": -8.6675
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "837",
+      "boltAppCategories": [
+        "805",
+        "806"
+      ],
+      "aliases": [
+        "Santarem"
       ]
     }
   ]

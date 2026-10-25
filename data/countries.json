@@ -41,7 +41,7 @@
       "anchor": [51.1, 10.4],
       "featuredCities": ["de:Berlin", "de:München", "de:Köln", "de:Frankfurt", "de:Stuttgart", "de:Düsseldorf"],
       "credits": {
-        "attribution": "Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW, https://mobidata-bw.de/dataset/escootch, dl-de/by-2-0 (https://www.govdata.de/dl-de/by-2-0), modified; Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified; Dott anonymous app map; Voi authenticated rider map; Qick authenticated ATOM rider map",
+        "attribution": "Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW, https://mobidata-bw.de/dataset/escootch, dl-de/by-2-0 (https://www.govdata.de/dl-de/by-2-0), modified; Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified; Dott anonymous app map; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map; city centres from GeoNames",
         "gbfs": ["Dott", "Bolt", "Hopp", "Lime", "Voi", "Zeus", "Yoio"],
         "links": [
           { "label": "DE: MobiData BW e-scooter data", "href": "https://mobidata-bw.de/dataset/escootch" },
@@ -50,7 +50,9 @@
           { "label": "DE: Dott map", "href": "https://ridedott.com/" },
           { "label": "DE: Voi map", "href": "https://www.voi.com/" },
           { "label": "DE: Qick map", "href": "https://www.qickscooters.com/" },
-          { "label": "DE: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
+          { "label": "DE: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
+          { "label": "DE: Bolt map", "href": "https://bolt.eu/" },
+          { "label": "DE: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
         ]
       }
     },
@@ -122,11 +124,13 @@
       "anchor": [50.6, 4.6],
       "featuredCities": ["be:Bruxelles", "be:Antwerpen", "be:Oostende", "be:Charleroi", "be:Kortrijk", "be:Mechelen"],
       "credits": {
-        "attribution": "Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be)",
+        "attribution": "Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Bolt authenticated rider map; city centres from GeoNames",
         "gbfs": ["Bolt", "Dott", "Voi", "Hoppy"],
         "links": [
           { "label": "BE: Pony · transportdata.be", "href": "https://transportdata.be/dataset/pony_charleroi" },
-          { "label": "BE: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
+          { "label": "BE: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
+          { "label": "BE: Bolt map", "href": "https://bolt.eu/" },
+          { "label": "BE: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
         ]
       }
     },
@@ -190,11 +194,13 @@
       "anchor": [39.6, -8],
       "featuredCities": ["pt:Lisboa", "pt:Porto", "pt:Cascais", "pt:Almada", "pt:Matosinhos", "pt:Oeiras"],
       "credits": {
-        "attribution": "Portugal: Bird, Lime GBFS",
+        "attribution": "Portugal: Bird, Lime GBFS; Bolt authenticated rider map; city centres from GeoNames",
         "gbfs": ["Bird", "Lime"],
         "links": [
           { "label": "PT: DGT boundaries · CC BY 4.0", "href": "https://www.dgterritorio.gov.pt/cartografia/cartografia-tematica/caop" },
-          { "label": "PT: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
+          { "label": "PT: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
+          { "label": "PT: Bolt map", "href": "https://bolt.eu/" },
+          { "label": "PT: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
         ]
       }
     },
@@ -226,8 +232,9 @@
       "anchor": [64.9, -18.6],
       "featuredCities": ["is:Reykjavík", "is:Reykjanesbær", "is:Akureyri", "is:Selfoss", "is:Akranes", "is:Vestmannaeyjar"],
       "credits": {
-        "attribution": "Iceland: Hopp GBFS",
-        "gbfs": ["Hopp"]
+        "attribution": "Iceland: Hopp GBFS; Bolt authenticated rider map",
+        "gbfs": ["Hopp"],
+        "links": [{ "label": "IS: Bolt map", "href": "https://bolt.eu/" }]
       }
     },
     {
@@ -283,13 +290,14 @@
       "searchWords": ["sweden", "schweden", "suede", "svezia", "zweden", "sverige", "suecia", "svithjod"],
       "anchor": [63.6, 17.8],
       "anchorNote": "Inland, between Uppsala and Kiruna, and clear of Norway's total.",
-      "featuredCities": ["se:Uppsala", "se:Kiruna"],
+      "featuredCities": ["se:Stockholm", "se:Uppsala", "se:Malmö", "se:Lund", "se:Kiruna"],
       "credits": {
-        "attribution": "Sweden: Lime, Hopp GBFS; Voi authenticated rider map; Qick authenticated ATOM rider map",
+        "attribution": "Sweden: Lime, Hopp GBFS; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map",
         "gbfs": ["Lime", "Hopp"],
         "links": [
           { "label": "SE: Voi map", "href": "https://www.voi.com/" },
-          { "label": "SE: Qick map", "href": "https://www.qickscooters.com/" }
+          { "label": "SE: Qick map", "href": "https://www.qickscooters.com/" },
+          { "label": "SE: Bolt map", "href": "https://bolt.eu/" }
         ]
       }
     },
@@ -302,10 +310,14 @@
       "searchWords": ["latvia", "lettland", "lettonie", "lettonia", "letland", "letonia", "latvija"],
       "anchor": [56.9, 24.6],
       "anchorNote": "Inland, east of Rīga, about the middle of the country.",
-      "featuredCities": ["lv:Rīga"],
+      "featuredCities": ["lv:Rīga", "lv:Liepāja", "lv:Daugavpils", "lv:Jelgava", "lv:Valmiera", "lv:Jūrmala"],
       "credits": {
-        "attribution": "Latvia: Ride Mobility GBFS",
-        "gbfs": ["Ride Mobility"]
+        "attribution": "Latvia: Ride Mobility GBFS; Bolt authenticated rider map; city centres from GeoNames",
+        "gbfs": ["Ride Mobility"],
+        "links": [
+          { "label": "LV: Bolt map", "href": "https://bolt.eu/" },
+          { "label": "LV: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
+        ]
       }
     },
     {
@@ -317,13 +329,15 @@
       "searchWords": ["poland", "polen", "pologne", "polonia", "polland", "polska"],
       "anchor": [52.1, 19.4],
       "anchorNote": "About the middle of the country, near Łódź.",
-      "featuredCities": ["pl:Sosnowiec", "pl:Wołomin", "pl:Oświęcim", "pl:Radzymin", "pl:Kobyłka", "pl:Knurów"],
+      "featuredCities": ["pl:Warszawa", "pl:Kraków", "pl:Wrocław", "pl:Poznań", "pl:Łódź", "pl:Sosnowiec"],
       "credits": {
-        "attribution": "Poland: Dott, Hopp GBFS; Dott anonymous app map",
+        "attribution": "Poland: Dott, Hopp GBFS; Dott anonymous app map; Bolt authenticated rider map; city centres from GeoNames",
         "gbfs": ["Dott", "Hopp"],
         "links": [
           { "label": "PL: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
-          { "label": "PL: Dott map", "href": "https://ridedott.com/" }
+          { "label": "PL: Dott map", "href": "https://ridedott.com/" },
+          { "label": "PL: Bolt map", "href": "https://bolt.eu/" },
+          { "label": "PL: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
         ]
       }
     },
@@ -368,10 +382,14 @@
       "searchWords": ["cyprus", "zypern", "chypre", "cipro", "kypros", "chipre", "kypur", "κυπροσ", "kibris"],
       "anchor": [34.9, 32.9],
       "anchorNote": "Inland, in the Troodos mountains, between Paphos and Limassol.",
-      "featuredCities": ["cy:Paphos", "cy:Limassol"],
+      "featuredCities": ["cy:Nicosia", "cy:Limassol", "cy:Paphos"],
       "credits": {
-        "attribution": "Cyprus: Hopp GBFS",
-        "gbfs": ["Hopp"]
+        "attribution": "Cyprus: Hopp GBFS; Bolt authenticated rider map; city centres from GeoNames",
+        "gbfs": ["Hopp"],
+        "links": [
+          { "label": "CY: Bolt map", "href": "https://bolt.eu/" },
+          { "label": "CY: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
+        ]
       }
     },
     {
@@ -415,13 +433,15 @@
       "names": { "en": "Ukraine", "de": "Ukraine", "fr": "Ukraine", "it": "Ucraina", "nl": "Oekraïne", "nb": "Ukraina", "pt": "Ucrânia", "es": "Ucrania", "is": "Úkraína" },
       "searchWords": ["ukraine", "ucraina", "oekraine", "ukraina", "ucrania", "ukrajina", "ukrayina", "украіна", "украина"],
       "anchor": [49, 31],
-      "anchorNote": "Inland, in the middle of the country, near Zvenyhorodka: a little north of its geographic centre, towards Kyiv, where all its scooters are.",
-      "featuredCities": ["ua:Kyiv"],
+      "anchorNote": "Inland, in the middle of the country, near Zvenyhorodka, a little north of its geographic centre.",
+      "featuredCities": ["ua:Kyiv", "ua:Lviv", "ua:Vinnytsia", "ua:Ivano-Frankivsk", "ua:Odesa"],
       "credits": {
-        "attribution": "Ukraine: 3electra GBFS",
+        "attribution": "Ukraine: 3electra GBFS; Bolt authenticated rider map; city centres from GeoNames",
         "gbfs": ["3electra"],
         "links": [
-          { "label": "UA: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
+          { "label": "UA: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
+          { "label": "UA: Bolt map", "href": "https://bolt.eu/" },
+          { "label": "UA: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
         ]
       }
     },
@@ -897,7 +917,7 @@
         76.94
       ],
       "credits": {
-        "attribution": "Kazakhstan: JET signed-out Go Jet app map; Whoosh authenticated rider map",
+        "attribution": "Kazakhstan: JET signed-out Go Jet app map; Whoosh authenticated rider map; Bolt authenticated rider map",
         "links": [
           {
             "label": "KZ: JET map",
@@ -906,6 +926,10 @@
           {
             "label": "KZ: Whoosh map",
             "href": "https://whoosh.bike/"
+          },
+          {
+            "label": "KZ: Bolt map",
+            "href": "https://bolt.eu/"
           }
         ]
       },
@@ -1158,14 +1182,23 @@
         24.9
       ],
       "featuredCities": [
+        "ro:București",
+        "ro:Cluj-Napoca",
+        "ro:Iași",
+        "ro:Arad",
+        "ro:Sibiu",
         "ro:Deva"
       ],
       "credits": {
-        "attribution": "Romania: Lime authenticated rider map; city centres from GeoNames",
+        "attribution": "Romania: Lime authenticated rider map; Bolt authenticated rider map; city centres from GeoNames",
         "links": [
           {
             "label": "RO: Lime map",
             "href": "https://www.li.me/"
+          },
+          {
+            "label": "RO: Bolt map",
+            "href": "https://bolt.eu/"
           },
           {
             "label": "RO: GeoNames · CC BY 4.0",
@@ -1478,6 +1511,132 @@
             "label": "KR: OpenStreetMap boundaries · ODbL",
             "href": "https://opendatacommons.org/licenses/odbl/"
           }
+        ]
+      }
+    },
+    {
+      "code": "EE",
+      "continent": "europe",
+      "catalog": "data/estonian-scooter-feeds.json",
+      "source": "estonia",
+      "names": { "en": "Estonia", "de": "Estland", "fr": "Estonie", "it": "Estonia", "nl": "Estland", "nb": "Estland", "pt": "Estónia", "es": "Estonia", "is": "Eistland" },
+      "searchWords": ["estonia", "estland", "estonie", "eistland", "eesti", "ee"],
+      "anchor": [58.7, 25.4],
+      "anchorNote": "Inland, about the middle of the country, between Tallinn and Tartu.",
+      "featuredCities": ["ee:Tallinn", "ee:Tartu", "ee:Pärnu", "ee:Narva"],
+      "credits": {
+        "attribution": "Estonia: Bolt authenticated rider map; city centres from GeoNames",
+        "links": [
+          { "label": "EE: Bolt map", "href": "https://bolt.eu/" },
+          { "label": "EE: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
+        ]
+      }
+    },
+    {
+      "code": "LT",
+      "continent": "europe",
+      "catalog": "data/lithuanian-scooter-feeds.json",
+      "source": "lithuania",
+      "names": { "en": "Lithuania", "de": "Litauen", "fr": "Lituanie", "it": "Lituania", "nl": "Litouwen", "nb": "Litauen", "pt": "Lituânia", "es": "Lituania", "is": "Litháen" },
+      "searchWords": ["lithuania", "litauen", "lituanie", "lituania", "litouwen", "lithaen", "lietuva", "lt"],
+      "anchor": [55.3, 23.9],
+      "anchorNote": "Inland, near Kėdainiai, about the middle of the country.",
+      "featuredCities": ["lt:Vilnius", "lt:Kaunas", "lt:Klaipėda", "lt:Šiauliai", "lt:Panevėžys"],
+      "credits": {
+        "attribution": "Lithuania: Bolt authenticated rider map; city centres from GeoNames",
+        "links": [
+          { "label": "LT: Bolt map", "href": "https://bolt.eu/" },
+          { "label": "LT: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
+        ]
+      }
+    },
+    {
+      "code": "SK",
+      "continent": "europe",
+      "catalog": "data/slovak-scooter-feeds.json",
+      "source": "slovakia",
+      "names": { "en": "Slovakia", "de": "Slowakei", "fr": "Slovaquie", "it": "Slovacchia", "nl": "Slowakije", "nb": "Slovakia", "pt": "Eslováquia", "es": "Eslovaquia", "is": "Slóvakía" },
+      "searchWords": ["slovakia", "slowakei", "slovaquie", "slovacchia", "slowakije", "eslovaquia", "slovensko", "sk"],
+      "anchor": [48.7, 19.5],
+      "anchorNote": "About the middle of the country, east of Banská Bystrica.",
+      "featuredCities": ["sk:Bratislava", "sk:Nitra"],
+      "credits": {
+        "attribution": "Slovakia: Bolt authenticated rider map; city centres from GeoNames",
+        "links": [
+          { "label": "SK: Bolt map", "href": "https://bolt.eu/" },
+          { "label": "SK: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
+        ]
+      }
+    },
+    {
+      "code": "BG",
+      "continent": "europe",
+      "catalog": "data/bulgarian-scooter-feeds.json",
+      "source": "bulgaria",
+      "names": { "en": "Bulgaria", "de": "Bulgarien", "fr": "Bulgarie", "it": "Bulgaria", "nl": "Bulgarije", "nb": "Bulgaria", "pt": "Bulgária", "es": "Bulgaria", "is": "Búlgaría" },
+      "searchWords": ["bulgaria", "bulgarien", "bulgarie", "bulgarije", "българия", "bg"],
+      "anchor": [42.7, 25.3],
+      "anchorNote": "About the middle of the country, north of Kazanlak.",
+      "featuredCities": ["bg:Sofia", "bg:Varna", "bg:Burgas"],
+      "credits": {
+        "attribution": "Bulgaria: Bolt authenticated rider map; city centres from GeoNames",
+        "links": [
+          { "label": "BG: Bolt map", "href": "https://bolt.eu/" },
+          { "label": "BG: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
+        ]
+      }
+    },
+    {
+      "code": "MD",
+      "continent": "europe",
+      "catalog": "data/moldovan-scooter-feeds.json",
+      "source": "moldova",
+      "names": { "en": "Moldova", "de": "Moldau", "fr": "Moldavie", "it": "Moldavia", "nl": "Moldavië", "nb": "Moldova", "pt": "Moldávia", "es": "Moldavia", "is": "Moldóva" },
+      "searchWords": ["moldova", "moldau", "moldawien", "moldavie", "moldavia"],
+      "anchor": [47.2, 28.5],
+      "anchorNote": "About the middle of the country, north-west of Chișinău.",
+      "featuredCities": ["md:Chișinău"],
+      "credits": {
+        "attribution": "Moldova: Bolt authenticated rider map; city centres from GeoNames",
+        "links": [
+          { "label": "MD: Bolt map", "href": "https://bolt.eu/" },
+          { "label": "MD: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
+        ]
+      }
+    },
+    {
+      "code": "SI",
+      "continent": "europe",
+      "catalog": "data/slovenian-scooter-feeds.json",
+      "source": "slovenia",
+      "names": { "en": "Slovenia", "de": "Slowenien", "fr": "Slovénie", "it": "Slovenia", "nl": "Slovenië", "nb": "Slovenia", "pt": "Eslovénia", "es": "Eslovenia", "is": "Slóvenía" },
+      "searchWords": ["slovenia", "slowenien", "slovenie", "eslovenia", "slovenija"],
+      "anchor": [46.1, 14.8],
+      "anchorNote": "About the middle of the country, east of Ljubljana.",
+      "featuredCities": ["si:Ljubljana"],
+      "credits": {
+        "attribution": "Slovenia: Bolt authenticated rider map; city centres from GeoNames",
+        "links": [
+          { "label": "SI: Bolt map", "href": "https://bolt.eu/" },
+          { "label": "SI: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
+        ]
+      }
+    },
+    {
+      "code": "IE",
+      "continent": "europe",
+      "catalog": "data/irish-scooter-feeds.json",
+      "source": "ireland",
+      "names": { "en": "Ireland", "de": "Irland", "fr": "Irlande", "it": "Irlanda", "nl": "Ierland", "nb": "Irland", "pt": "Irlanda", "es": "Irlanda", "is": "Írland" },
+      "searchWords": ["ireland", "irland", "irlande", "irlanda", "ierland", "eire", "ie"],
+      "anchor": [53.4, -8],
+      "anchorNote": "In the Midlands, near Athlone, about the middle of the country.",
+      "featuredCities": ["ie:Wexford"],
+      "credits": {
+        "attribution": "Ireland: Bolt authenticated rider map; city centres from GeoNames",
+        "links": [
+          { "label": "IE: Bolt map", "href": "https://bolt.eu/" },
+          { "label": "IE: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
         ]
       }
     }

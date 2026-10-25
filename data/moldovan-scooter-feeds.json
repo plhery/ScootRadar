@@ -1,0 +1,31 @@
+{
+  "verifiedOn": "2026-10-25",
+  "catalogSource": "https://bolt.eu/en/cities/",
+  "systems": [
+    {
+      "id": "bolt_md_app_331",
+      "country": "MD",
+      "provider": "bolt",
+      "city": "Chișinău",
+      "center": [
+        47.00902,
+        28.85938
+      ],
+      "bounds": {
+        "south": 46.9663,
+        "north": 47.0692,
+        "west": 28.7537,
+        "east": 28.9047
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "331",
+      "boltAppCategories": [
+        "525"
+      ],
+      "aliases": [
+        "Chisinau",
+        "Kishinev"
+      ]
+    }
+  ]
+}

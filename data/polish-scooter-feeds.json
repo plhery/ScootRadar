@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-24",
+  "verifiedOn": "2026-10-25",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -845,6 +845,559 @@
       },
       "discoveryUrl": "https://rider.api.ridedott.com/ridedott.rider.v1.Vehicles/WatchAvailableVehicles",
       "dottAppRegion": "aBWLXbg1SjZagOrrw2vJ"
+    },
+    {
+      "id": "bolt_pl_app_159",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Gdańsk / Gdynia / Sopot",
+      "center": [
+        54.35227,
+        18.64912
+      ],
+      "bounds": {
+        "south": 54.3337,
+        "north": 54.4688,
+        "west": 18.5224,
+        "east": 18.6812
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "159",
+      "boltAppCategories": [
+        "117"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_211",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Kraków",
+      "center": [
+        50.06143,
+        19.93658
+      ],
+      "bounds": {
+        "south": 49.9906,
+        "north": 50.1211,
+        "west": 19.8388,
+        "east": 20.0641
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "211",
+      "boltAppCategories": [
+        "64"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_307",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Warszawa",
+      "center": [
+        52.22977,
+        21.01178
+      ],
+      "bounds": {
+        "south": 52.1438,
+        "north": 52.307,
+        "west": 20.8881,
+        "east": 21.1367
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "307",
+      "boltAppCategories": [
+        "61"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_344",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Wrocław",
+      "center": [
+        51.10286,
+        17.03006
+      ],
+      "bounds": {
+        "south": 51.0405,
+        "north": 51.1586,
+        "west": 16.9279,
+        "east": 17.1261
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "344",
+      "boltAppCategories": [
+        "72"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_350",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Poznań",
+      "center": [
+        52.40692,
+        16.92993
+      ],
+      "bounds": {
+        "south": 52.3613,
+        "north": 52.4668,
+        "west": 16.8366,
+        "east": 16.9996
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "350",
+      "boltAppCategories": [
+        "90"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_351",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Łódź",
+      "center": [
+        51.77058,
+        19.47395
+      ],
+      "bounds": {
+        "south": 51.7208,
+        "north": 51.8234,
+        "west": 19.3997,
+        "east": 19.5604
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "351",
+      "boltAppCategories": [
+        "1038"
+      ],
+      "aliases": [
+        "Lodz"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_352",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Katowice / Chorzów / Zabrze / Tychy / Gliwice",
+      "center": [
+        50.2597,
+        19.02173
+      ],
+      "bounds": {
+        "south": 50.0814,
+        "north": 50.3392,
+        "west": 18.6291,
+        "east": 19.0706
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "352",
+      "boltAppCategories": [
+        "93"
+      ],
+      "areas": [
+        {
+          "city": "Katowice / Chorzów",
+          "center": [
+            50.2849,
+            18.9938
+          ],
+          "bounds": {
+            "south": 50.188,
+            "north": 50.3328,
+            "west": 18.8997,
+            "east": 19.0706
+          }
+        },
+        {
+          "city": "Zabrze",
+          "center": [
+            50.32492,
+            18.78576
+          ],
+          "bounds": {
+            "south": 50.2763,
+            "north": 50.3392,
+            "west": 18.7284,
+            "east": 18.8109
+          }
+        },
+        {
+          "city": "Tychy",
+          "center": [
+            50.13717,
+            18.96641
+          ],
+          "bounds": {
+            "south": 50.0814,
+            "north": 50.1531,
+            "west": 18.9466,
+            "east": 19.0324
+          }
+        },
+        {
+          "city": "Gliwice",
+          "center": [
+            50.29761,
+            18.67658
+          ],
+          "bounds": {
+            "south": 50.268,
+            "north": 50.3199,
+            "west": 18.6291,
+            "east": 18.7382
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_pl_app_464",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Szczecin",
+      "center": [
+        53.42894,
+        14.55302
+      ],
+      "bounds": {
+        "south": 53.3898,
+        "north": 53.4798,
+        "west": 14.4745,
+        "east": 14.5854
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "464",
+      "boltAppCategories": [
+        "270"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_465",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Lublin / Świdnik",
+      "center": [
+        51.25058,
+        22.57009
+      ],
+      "bounds": {
+        "south": 51.1977,
+        "north": 51.283,
+        "west": 22.483,
+        "east": 22.7338
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "465",
+      "boltAppCategories": [
+        "69"
+      ],
+      "areas": [
+        {
+          "city": "Lublin",
+          "center": [
+            51.25058,
+            22.57009
+          ],
+          "bounds": {
+            "south": 51.2032,
+            "north": 51.283,
+            "west": 22.483,
+            "east": 22.6002
+          }
+        },
+        {
+          "city": "Świdnik",
+          "center": [
+            51.21898,
+            22.69621
+          ],
+          "bounds": {
+            "south": 51.1977,
+            "north": 51.2331,
+            "west": 22.6693,
+            "east": 22.7338
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_pl_app_467",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Bydgoszcz",
+      "center": [
+        53.1235,
+        18.00762
+      ],
+      "bounds": {
+        "south": 53.0904,
+        "north": 53.1535,
+        "west": 17.9475,
+        "east": 18.0915
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "467",
+      "boltAppCategories": [
+        "555"
+      ],
+      "aliases": [
+        "Bromberg"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_468",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Toruń",
+      "center": [
+        53.01375,
+        18.59814
+      ],
+      "bounds": {
+        "south": 52.983,
+        "north": 53.0608,
+        "west": 18.5492,
+        "east": 18.71
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "468",
+      "boltAppCategories": [
+        "264"
+      ],
+      "aliases": [
+        "Torun"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_469",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Białystok",
+      "center": [
+        53.13333,
+        23.16433
+      ],
+      "bounds": {
+        "south": 53.0966,
+        "north": 53.1615,
+        "west": 23.086,
+        "east": 23.2059
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "469",
+      "boltAppCategories": [
+        "156"
+      ],
+      "aliases": [
+        "Bialystok"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_470",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Rzeszów",
+      "center": [
+        50.04132,
+        21.99901
+      ],
+      "bounds": {
+        "south": 49.9903,
+        "north": 50.0743,
+        "west": 21.9404,
+        "east": 22.0781
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "470",
+      "boltAppCategories": [
+        "267",
+        "459"
+      ],
+      "aliases": [
+        "Rzeszow"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_557",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Częstochowa",
+      "center": [
+        50.79646,
+        19.12409
+      ],
+      "bounds": {
+        "south": 50.7739,
+        "north": 50.8546,
+        "west": 19.0755,
+        "east": 19.1569
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "557",
+      "boltAppCategories": [
+        "303"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_559",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Kielce",
+      "center": [
+        50.87033,
+        20.62752
+      ],
+      "bounds": {
+        "south": 50.8354,
+        "north": 50.904,
+        "west": 20.5742,
+        "east": 20.6824
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "559",
+      "boltAppCategories": [
+        "357"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_560",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Olsztyn",
+      "center": [
+        53.78376,
+        20.49272
+      ],
+      "bounds": {
+        "south": 53.7256,
+        "north": 53.8018,
+        "west": 20.4486,
+        "east": 20.5219
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "560",
+      "boltAppCategories": [
+        "237"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_561",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Bielsko-Biała",
+      "center": [
+        49.82245,
+        19.04686
+      ],
+      "bounds": {
+        "south": 49.7834,
+        "north": 49.852,
+        "west": 18.9882,
+        "east": 19.0872
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "561",
+      "boltAppCategories": [
+        "681"
+      ],
+      "aliases": [
+        "Bielsko-Biala"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_563",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Elbląg",
+      "center": [
+        54.1522,
+        19.40884
+      ],
+      "bounds": {
+        "south": 54.1386,
+        "north": 54.1955,
+        "west": 19.3818,
+        "east": 19.4508
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "563",
+      "boltAppCategories": [
+        "734"
+      ],
+      "aliases": [
+        "Elblag",
+        "Elbing"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_564",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Opole",
+      "center": [
+        50.67119,
+        17.92604
+      ],
+      "bounds": {
+        "south": 50.6396,
+        "north": 50.7005,
+        "west": 17.8666,
+        "east": 17.9977
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "564",
+      "boltAppCategories": [
+        "252"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_567",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Zielona Góra",
+      "center": [
+        51.93548,
+        15.50643
+      ],
+      "bounds": {
+        "south": 51.9002,
+        "north": 51.9817,
+        "west": 15.4586,
+        "east": 15.5422
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "567",
+      "boltAppCategories": [
+        "360",
+        "827"
+      ],
+      "aliases": [
+        "Zielona Gora"
+      ]
+    },
+    {
+      "id": "bolt_pl_app_569",
+      "country": "PL",
+      "provider": "bolt",
+      "city": "Tarnów",
+      "center": [
+        50.01381,
+        20.98698
+      ],
+      "bounds": {
+        "south": 49.9857,
+        "north": 50.0424,
+        "west": 20.9333,
+        "east": 21.0277
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "569",
+      "boltAppCategories": [
+        "732"
+      ],
+      "aliases": [
+        "Tarnow"
+      ]
     }
   ]
 }

@@ -79,6 +79,13 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   kickgoingAppMap?: true;
   /** Swing's app map, read by the Node cache with the app's one-time code. */
   swingAppMap?: true;
+  /**
+   * Bolt's rider-app market id, its operating areas' city_id: the Node cache reads the market whole
+   * with its private Bolt session, in one request from the system's centre.
+   */
+  boltAppCity?: string;
+  /** The market's scooter search categories; one must answer, or the centre landed in another market. */
+  boltAppCategories?: string[];
   /** Published subregions of a shared feed; fetched once, routed per city. */
   areas?: ScooterServiceArea[];
   /**
@@ -116,7 +123,7 @@ export const REGIONAL_SCOOTER_SYSTEMS = (CATALOG_SYSTEMS as RegionalScooterSyste
 export function isAppMapSystem(system: RegionalScooterSystem) {
   return Boolean(system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount || system.luupAppCities ||
     system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.beamAppCity || system.gcooAppMap || system.kickgoingAppMap ||
-    system.swingAppMap);
+    system.swingAppMap || system.boltAppCity);
 }
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {

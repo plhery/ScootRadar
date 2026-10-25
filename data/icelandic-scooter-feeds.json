@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-12",
+  "verifiedOn": "2026-10-25",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -426,6 +426,27 @@
         "Vik",
         "Vík í Mýrdal",
         "Vik i Myrdal"
+      ]
+    },
+    {
+      "id": "bolt_is_app_1310",
+      "country": "IS",
+      "provider": "bolt",
+      "city": "Reykjavík",
+      "center": [
+        64.13548,
+        -21.89541
+      ],
+      "bounds": {
+        "south": 64.0871,
+        "north": 64.1665,
+        "west": -22.0113,
+        "east": -21.7244
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1310",
+      "boltAppCategories": [
+        "1062"
       ]
     }
   ]

@@ -45,6 +45,13 @@ import australianCatalog from '../../data/australian-scooter-feeds.json';
 import turkishCatalog from '../../data/turkish-scooter-feeds.json';
 import malaysianCatalog from '../../data/malaysian-scooter-feeds.json';
 import southKoreanCatalog from '../../data/south-korean-scooter-feeds.json';
+import estonianCatalog from '../../data/estonian-scooter-feeds.json';
+import lithuanianCatalog from '../../data/lithuanian-scooter-feeds.json';
+import slovakCatalog from '../../data/slovak-scooter-feeds.json';
+import bulgarianCatalog from '../../data/bulgarian-scooter-feeds.json';
+import moldovanCatalog from '../../data/moldovan-scooter-feeds.json';
+import slovenianCatalog from '../../data/slovenian-scooter-feeds.json';
+import irishCatalog from '../../data/irish-scooter-feeds.json';
 
 /** Every catalog's systems, each with its country, in the order of data/countries.json. */
 export const CATALOG_SYSTEMS = [
@@ -93,4 +100,11 @@ export const CATALOG_SYSTEMS = [
   ...turkishCatalog.systems.map(system => ({ ...system, country: 'TR' as const })),
   ...malaysianCatalog.systems.map(system => ({ ...system, country: 'MY' as const })),
   ...southKoreanCatalog.systems.map(system => ({ ...system, country: 'KR' as const })),
+  ...estonianCatalog.systems.map(system => ({ ...system, country: 'EE' as const })),
+  ...lithuanianCatalog.systems.map(system => ({ ...system, country: 'LT' as const })),
+  ...slovakCatalog.systems.map(system => ({ ...system, country: 'SK' as const })),
+  ...bulgarianCatalog.systems.map(system => ({ ...system, country: 'BG' as const })),
+  ...moldovanCatalog.systems.map(system => ({ ...system, country: 'MD' as const })),
+  ...slovenianCatalog.systems.map(system => ({ ...system, country: 'SI' as const })),
+  ...irishCatalog.systems.map(system => ({ ...system, country: 'IE' as const })),
 ];

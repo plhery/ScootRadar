@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-11",
+  "verifiedOn": "2026-10-25",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -301,6 +301,114 @@
         "Antwerp",
         "Anvers",
         "Anversa"
+      ]
+    },
+    {
+      "id": "bolt_be_app_290",
+      "country": "BE",
+      "provider": "bolt",
+      "city": "Namur",
+      "center": [
+        50.4669,
+        4.86746
+      ],
+      "bounds": {
+        "south": 50.4239,
+        "north": 50.511,
+        "west": 4.7998,
+        "east": 4.9156
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "290",
+      "boltAppCategories": [
+        "438",
+        "884",
+        "1185"
+      ]
+    },
+    {
+      "id": "bolt_be_app_787",
+      "country": "BE",
+      "provider": "bolt",
+      "city": "Charleroi",
+      "center": [
+        50.41136,
+        4.44448
+      ],
+      "bounds": {
+        "south": 50.3511,
+        "north": 50.4834,
+        "west": 4.3461,
+        "east": 4.5131
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "787",
+      "boltAppCategories": [
+        "1081",
+        "1083"
+      ]
+    },
+    {
+      "id": "bolt_be_app_1393",
+      "country": "BE",
+      "provider": "bolt",
+      "city": "Dinant",
+      "center": [
+        50.25807,
+        4.91166
+      ],
+      "bounds": {
+        "south": 50.2319,
+        "north": 50.2814,
+        "west": 4.8801,
+        "east": 4.9489
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1393",
+      "boltAppCategories": [
+        "738"
+      ]
+    },
+    {
+      "id": "bolt_be_app_1413",
+      "country": "BE",
+      "provider": "bolt",
+      "city": "Antwerpen",
+      "center": [
+        51.22047,
+        4.40026
+      ],
+      "bounds": {
+        "south": 51.1456,
+        "north": 51.2926,
+        "west": 4.3295,
+        "east": 4.5027
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1413",
+      "boltAppCategories": [
+        "1045"
+      ]
+    },
+    {
+      "id": "bolt_be_app_2047",
+      "country": "BE",
+      "provider": "bolt",
+      "city": "Liège",
+      "center": [
+        50.63373,
+        5.56749
+      ],
+      "bounds": {
+        "south": 50.5655,
+        "north": 50.6906,
+        "west": 5.5182,
+        "east": 5.6787
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "2047",
+      "boltAppCategories": [
+        "1067"
       ]
     }
   ]

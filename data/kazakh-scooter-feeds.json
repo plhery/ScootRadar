@@ -68,6 +68,29 @@
         "Astana",
         "NQZ"
       ]
+    },
+    {
+      "id": "bolt_kz_app_122",
+      "country": "KZ",
+      "provider": "bolt",
+      "city": "Almaty",
+      "center": [
+        43.25249,
+        76.9115
+      ],
+      "bounds": {
+        "south": 43.1775,
+        "north": 43.3038,
+        "west": 76.8164,
+        "east": 76.9769
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "122",
+      "boltAppCategories": [
+        "1151"
+      ],
+      "timeZone": "Asia/Almaty"
     }
-  ]
+  ],
+  "verifiedOn": "2026-10-25"
 }

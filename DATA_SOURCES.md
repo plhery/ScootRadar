@@ -336,6 +336,30 @@ observation time is the sweep's start. The outlines are BinBin's public
 service areas, in `data/binbin-areas.json`. See [the request, the proof of
 completeness and the load](docs/binbin-app-map.md).
 
+## Bolt rider app
+
+Since 25 October 2026, Bolt's authenticated rider map supplies 118 markets
+where no open feed shows Bolt, about 111,000 scooters: Germany (22 markets),
+Poland (21), Ukraine (13), Latvia (12), Estonia (10), Romania (8), Lithuania
+(8), Belgium (5), Portugal (5), Sweden (3), Bulgaria (3), Slovakia (2),
+Kazakhstan, Cyprus, Iceland, Moldova, Slovenia and Ireland (1 each). Estonia,
+Lithuania, Slovakia, Bulgaria, Moldova, Slovenia and Ireland are new
+countries. The user authorized the
+rider account; its refresh token and device id stay in a mode-0600 file on
+the cache's persistent volume, and the one-hour access token in memory.
+
+One request reads a whole market, on the usual watched/idle schedule, with
+all markets sharing one request every half second. Only scooters are kept,
+inside the system's bounds and only when the answer holds the market's own
+scooter categories, with stable ids, positions and percentage charge unless
+Bolt hides it. There is no range, price, rental link or position timestamp;
+the observation time is the read. Markets other sources already cover
+(MobiData BW's Stuttgart, Karlsruhe and Reutlingen/Tübingen, Bolt's GBFS in
+Brussels and Liverpool, Entur's Oslo, the Swiss platform's Zürich and Basel)
+are left out. Town centres new to the catalogs are GeoNames' (CC BY 4.0), credited
+with the map. See [the requests, the session, the completeness checks and the
+markets left out](docs/bolt-app-map.md).
+
 ## Address data
 
 Supported city names and aliases are found in the local, reviewed
@@ -535,8 +559,9 @@ token in memory for every NRW feed. Voi Technology Germany GmbH licenses this
 data under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). The
 map credits it as "Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0,
 modified", and the Voi data of North Rhine-Westphalia that our API serves is
-offered under CC BY-SA 4.0 as well. Bolt's and Lime's NRW feeds (CC BY 4.0 and
-dl-de/by-2-0) are not read yet; see the
+offered under CC BY-SA 4.0 as well. Lime's NRW feeds (dl-de/by-2-0) are not
+read yet, nor Bolt's (CC BY 4.0), whose scooters come from Bolt's rider map
+since 25 October 2026 (below); see the
 [coverage audit](docs/german-italian-scooter-feeds.md#voi-in-north-rhine-westphalia-october-2026).
 
 Zeus is moving its towns from `zeus.city` to ATOM Mobility
@@ -599,7 +624,9 @@ transportdata.be marks Pony's dataset open, under attribution. Dott, Voi and
 Hoppy publish no licence in these feeds. The map's credits list Entur, the
 NLOD, Beryl's licence and Pony's dataset. See the
 [coverage audit](docs/belgian-norwegian-british-scooter-feeds.md) for the
-systems, the gaps and the recheck command.
+systems, the gaps and the recheck command. Since 25 October 2026 Bolt's rider
+map adds Antwerpen, Liège, Charleroi, Namur and Dinant in Belgium; see
+[Bolt rider app](#bolt-rider-app).
 
 Night bans on renting, in `data/rental-curfews.json`, come from each town's
 rules: Lovdata for Norway, except Arendal, whose regulation and city page
@@ -646,7 +673,9 @@ only where local law requires it and data no older than ten minutes, as in
 France and Germany. Hopp links its privacy policy, not a licence, and Hoppy
 publishes none. The map's credits name all four. See the
 [coverage audit](docs/portuguese-spanish-icelandic-scooter-feeds.md) for the
-systems, the gaps and the recheck command.
+systems, the gaps and the recheck command. Since 25 October 2026 Bolt's rider
+map adds Lisboa with Oeiras, Porto with Matosinhos, Coimbra, Faro and Santarém
+in Portugal, and Reykjavík in Iceland; see [Bolt rider app](#bolt-rider-app).
 
 ## Sweden
 
@@ -665,6 +694,9 @@ licence. The map's credits name both under the GBFS line. See the
 [coverage audit](docs/swedish-scooter-feeds.md) for the systems, the gaps and
 the recheck command.
 
+Since 25 October 2026 Bolt's rider map adds 3 markets, Stockholm, Malmö and Lund; see
+[Bolt rider app](#bolt-rider-app).
+
 ## Latvia
 
 The reviewed catalog lives in `data/latvian-scooter-feeds.json`: 1 feed,
@@ -678,6 +710,9 @@ Ride Mobility publishes no licence in its feed, as Voi in Antwerpen and Hoppy
 don't. The map's credits name it under the GBFS line. See the
 [coverage audit](docs/latvian-scooter-feeds.md) for the system, the gaps and
 the recheck command.
+
+Since 25 October 2026 Bolt's rider map adds 12 markets, Rīga and 11 other towns; see
+[Bolt rider app](#bolt-rider-app).
 
 ## Poland
 
@@ -698,6 +733,9 @@ noted for France above. Hopp links its privacy policy, not a licence. The
 map's credits name both under the GBFS line. See the
 [coverage audit](docs/polish-scooter-feeds.md) for the systems, the gaps and
 the recheck command.
+
+Since 25 October 2026 Bolt's rider map adds 21 markets in 25 towns, Warszawa, Kraków and Gdańsk among them; see
+[Bolt rider app](#bolt-rider-app).
 
 ## Hungary
 
@@ -740,7 +778,8 @@ own public GBFS feeds. They are not in
 and answer at the address Hopp uses for its other towns. Cyprus's national
 access point, [traffic4cyprus.org.cy](https://traffic4cyprus.org.cy/), offers
 Bolt's 255 e-scooter stations in Nicosia under CC BY 4.0, in DATEX II, with
-no vehicles or availability, so the map doesn't use it.
+no vehicles or availability, so the map doesn't use it. Since 25 October 2026
+Bolt's rider map shows Nicosia's scooters; see [Bolt rider app](#bolt-rider-app).
 
 Hopp links its privacy policy, not a licence. The map's credits name it under
 the GBFS line. See the [coverage audit](docs/cypriot-scooter-feeds.md) for the
@@ -793,6 +832,9 @@ doesn't move Kyiv's count. The cache paces
 GBFS line. See the [coverage audit](docs/ukrainian-scooter-feeds.md) for the
 system, the scooters in Lima, the city name, the curfew, the gaps and the
 recheck command.
+
+Since 25 October 2026 Bolt's rider map adds 13 markets, Kyiv, Lviv and Odesa among them; see
+[Bolt rider app](#bolt-rider-app).
 
 ## United States
 

@@ -1,0 +1,83 @@
+{
+  "verifiedOn": "2026-10-25",
+  "catalogSource": "https://bolt.eu/en/cities/",
+  "systems": [
+    {
+      "id": "bolt_bg_app_328",
+      "country": "BG",
+      "provider": "bolt",
+      "city": "Sofia",
+      "center": [
+        42.69751,
+        23.32415
+      ],
+      "bounds": {
+        "south": 42.6144,
+        "north": 42.7339,
+        "west": 23.2607,
+        "east": 23.3921
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "328",
+      "boltAppCategories": [
+        "1057",
+        "1108",
+        "1154",
+        "1184"
+      ],
+      "aliases": [
+        "София",
+        "Sofiya"
+      ]
+    },
+    {
+      "id": "bolt_bg_app_2098",
+      "country": "BG",
+      "provider": "bolt",
+      "city": "Varna",
+      "center": [
+        43.21912,
+        27.91024
+      ],
+      "bounds": {
+        "south": 43.1903,
+        "north": 43.2327,
+        "west": 27.8827,
+        "east": 27.9664
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "2098",
+      "boltAppCategories": [
+        "1079"
+      ],
+      "aliases": [
+        "Варна"
+      ]
+    },
+    {
+      "id": "bolt_bg_app_2127",
+      "country": "BG",
+      "provider": "bolt",
+      "city": "Burgas",
+      "center": [
+        42.50651,
+        27.46886
+      ],
+      "bounds": {
+        "south": 42.4837,
+        "north": 42.5372,
+        "west": 27.4407,
+        "east": 27.4894
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "2127",
+      "boltAppCategories": [
+        "1118"
+      ],
+      "aliases": [
+        "Bourgas",
+        "Бургас"
+      ]
+    }
+  ]
+}

@@ -3,11 +3,11 @@
 // countries' names or credits don't load every city.
 
 /** Every country with scooter data, in the order of data/countries.json. */
-export const COUNTRY_CODES = ["CH", "FR", "DE", "AT", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "DK", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ", "CR", "BQ", "JP", "BR", "CL", "MX", "KZ", "AZ", "GE", "CO", "BY", "ZA", "RO", "CZ", "QA", "AU", "TR", "MY", "KR"] as const;
+export const COUNTRY_CODES = ["CH", "FR", "DE", "AT", "IT", "BE", "NO", "GB", "PT", "ES", "IS", "DK", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ", "CR", "BQ", "JP", "BR", "CL", "MX", "KZ", "AZ", "GE", "CO", "BY", "ZA", "RO", "CZ", "QA", "AU", "TR", "MY", "KR", "EE", "LT", "SK", "BG", "MD", "SI", "IE"] as const;
 export type CountryCode = typeof COUNTRY_CODES[number];
 
 /** The countries with a catalog of their own, data/<adjective>-scooter-feeds.json: all but Switzerland. */
-export type CatalogCountry = 'FR' | 'DE' | 'AT' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'DK' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR' | 'UA' | 'US' | 'CA' | 'AE' | 'SA' | 'IL' | 'NZ' | 'CR' | 'BQ' | 'JP' | 'BR' | 'CL' | 'MX' | 'KZ' | 'AZ' | 'GE' | 'CO' | 'BY' | 'ZA' | 'RO' | 'CZ' | 'QA' | 'AU' | 'TR' | 'MY' | 'KR';
+export type CatalogCountry = 'FR' | 'DE' | 'AT' | 'IT' | 'BE' | 'NO' | 'GB' | 'PT' | 'ES' | 'IS' | 'DK' | 'SE' | 'LV' | 'PL' | 'HU' | 'GR' | 'CY' | 'FI' | 'HR' | 'UA' | 'US' | 'CA' | 'AE' | 'SA' | 'IL' | 'NZ' | 'CR' | 'BQ' | 'JP' | 'BR' | 'CL' | 'MX' | 'KZ' | 'AZ' | 'GE' | 'CO' | 'BY' | 'ZA' | 'RO' | 'CZ' | 'QA' | 'AU' | 'TR' | 'MY' | 'KR' | 'EE' | 'LT' | 'SK' | 'BG' | 'MD' | 'SI' | 'IE';
 
 export type CountryNameLanguage = 'en' | 'de' | 'fr' | 'it' | 'nl' | 'nb' | 'pt' | 'es' | 'is';
 
@@ -60,6 +60,13 @@ export const COUNTRY_SOURCES = {
   TR: 'turkey',
   MY: 'malaysia',
   KR: 'korea',
+  EE: 'estonia',
+  LT: 'lithuania',
+  SK: 'slovakia',
+  BG: 'bulgaria',
+  MD: 'moldova',
+  SI: 'slovenia',
+  IE: 'ireland',
 } as const;
 
 export const COUNTRY_CONTINENTS: Record<CountryCode, Continent> = {
@@ -109,6 +116,13 @@ export const COUNTRY_CONTINENTS: Record<CountryCode, Continent> = {
   TR: 'europe',
   MY: 'asia',
   KR: 'asia',
+  EE: 'europe',
+  LT: 'europe',
+  SK: 'europe',
+  BG: 'europe',
+  MD: 'europe',
+  SI: 'europe',
+  IE: 'europe',
 };
 
 /**
@@ -166,6 +180,13 @@ export const COUNTRY_NAMES: Record<CountryCode, Readonly<Record<CountryNameLangu
   TR: { en: "Turkey", de: "Türkei", fr: "Turquie", it: "Turchia", nl: "Turkije", nb: "Tyrkia", pt: "Turquia", es: "Turquía", is: "Tyrkland" },
   MY: { en: "Malaysia", de: "Malaysia", fr: "Malaisie", it: "Malesia", nl: "Maleisië", nb: "Malaysia", pt: "Malásia", es: "Malasia", is: "Malasía" },
   KR: { en: "South Korea", de: "Südkorea", fr: "Corée du Sud", it: "Corea del Sud", nl: "Zuid-Korea", nb: "Sør-Korea", pt: "Coreia do Sul", es: "Corea del Sur", is: "Suður-Kórea" },
+  EE: { en: "Estonia", de: "Estland", fr: "Estonie", it: "Estonia", nl: "Estland", nb: "Estland", pt: "Estónia", es: "Estonia", is: "Eistland" },
+  LT: { en: "Lithuania", de: "Litauen", fr: "Lituanie", it: "Lituania", nl: "Litouwen", nb: "Litauen", pt: "Lituânia", es: "Lituania", is: "Litháen" },
+  SK: { en: "Slovakia", de: "Slowakei", fr: "Slovaquie", it: "Slovacchia", nl: "Slowakije", nb: "Slovakia", pt: "Eslováquia", es: "Eslovaquia", is: "Slóvakía" },
+  BG: { en: "Bulgaria", de: "Bulgarien", fr: "Bulgarie", it: "Bulgaria", nl: "Bulgarije", nb: "Bulgaria", pt: "Bulgária", es: "Bulgaria", is: "Búlgaría" },
+  MD: { en: "Moldova", de: "Moldau", fr: "Moldavie", it: "Moldavia", nl: "Moldavië", nb: "Moldova", pt: "Moldávia", es: "Moldavia", is: "Moldóva" },
+  SI: { en: "Slovenia", de: "Slowenien", fr: "Slovénie", it: "Slovenia", nl: "Slovenië", nb: "Slovenia", pt: "Eslovénia", es: "Eslovenia", is: "Slóvenía" },
+  IE: { en: "Ireland", de: "Irland", fr: "Irlande", it: "Irlanda", nl: "Ierland", nb: "Irland", pt: "Irlanda", es: "Irlanda", is: "Írland" },
 };
 
 /** Typed beside a city to say which one is meant: "Lindau Deutschland". */
@@ -216,6 +237,13 @@ export const COUNTRY_SEARCH_WORDS: Record<CountryCode, readonly string[]> = {
   TR: ["turkey", "turkiye", "turkei", "turquie", "turchia", "turkije", "tyrkia", "turquia", "tyrkland"],
   MY: ["malaysia", "malaisie", "malesia", "maleisie", "malasia"],
   KR: ["south korea", "korea", "republic of korea", "sudkorea", "coree du sud", "coree", "corea del sud", "corea del sur", "corea", "zuid korea", "sor korea", "coreia do sul", "coreia", "sudur korea", "한국", "대한민국", "남한"],
+  EE: ["estonia", "estland", "estonie", "eistland", "eesti", "ee"],
+  LT: ["lithuania", "litauen", "lituanie", "lituania", "litouwen", "lithaen", "lietuva", "lt"],
+  SK: ["slovakia", "slowakei", "slovaquie", "slovacchia", "slowakije", "eslovaquia", "slovensko", "sk"],
+  BG: ["bulgaria", "bulgarien", "bulgarie", "bulgarije", "българия", "bg"],
+  MD: ["moldova", "moldau", "moldawien", "moldavie", "moldavia"],
+  SI: ["slovenia", "slowenien", "slovenie", "eslovenia", "slovenija"],
+  IE: ["ireland", "irland", "irlande", "irlanda", "ierland", "eire", "ie"],
 };
 
 /** Where a country's total stands, zoomed out: inland and about the middle of the country. */
@@ -251,8 +279,8 @@ export const COUNTRY_ANCHORS: Record<CountryCode, readonly [number, number]> = {
   // would read as Slovenia's or Trieste's, and about 50 points from Italy's and Hungary's totals at
   // zoom 4, between which Croatia lies.
   HR: [45.2, 15.5],
-  // Inland, in the middle of the country, near Zvenyhorodka: a little north of its geographic
-  // centre, towards Kyiv, where all its scooters are.
+  // Inland, in the middle of the country, near Zvenyhorodka, a little north of its geographic
+  // centre.
   UA: [49, 31],
   // Near Lebanon, Kansas, the geographic centre of the 48 contiguous states. Zoomed in, each state
   // has its own total at its centre of population (US Census Bureau, 2020).
@@ -300,6 +328,20 @@ export const COUNTRY_ANCHORS: Record<CountryCode, readonly [number, number]> = {
   // Inland in North Chungcheong, between Daejeon and Gumi: on land at every zoom, midway between
   // Seoul's and Busan's scooters, and far from Japan's total.
   KR: [36.4, 127.9],
+  // Inland, about the middle of the country, between Tallinn and Tartu.
+  EE: [58.7, 25.4],
+  // Inland, near Kėdainiai, about the middle of the country.
+  LT: [55.3, 23.9],
+  // About the middle of the country, east of Banská Bystrica.
+  SK: [48.7, 19.5],
+  // About the middle of the country, north of Kazanlak.
+  BG: [42.7, 25.3],
+  // About the middle of the country, north-west of Chișinău.
+  MD: [47.2, 28.5],
+  // About the middle of the country, east of Ljubljana.
+  SI: [46.1, 14.8],
+  // In the Midlands, near Athlone, about the middle of the country.
+  IE: [53.4, -8],
 };
 
 /** A state or province of a country that has them. */
@@ -426,15 +468,15 @@ export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {
   ES: ["es:Gijón", "es:Getafe", "es:Torrevieja", "es:Playa de las Américas", "es:Jávea", "es:Pilar de la Horadada"],
   IS: ["is:Reykjavík", "is:Reykjanesbær", "is:Akureyri", "is:Selfoss", "is:Akranes", "is:Vestmannaeyjar"],
   DK: ["dk:Aarhus", "dk:Odense", "dk:Aalborg"],
-  SE: ["se:Uppsala", "se:Kiruna"],
-  LV: ["lv:Rīga"],
-  PL: ["pl:Sosnowiec", "pl:Wołomin", "pl:Oświęcim", "pl:Radzymin", "pl:Kobyłka", "pl:Knurów"],
+  SE: ["se:Stockholm", "se:Uppsala", "se:Malmö", "se:Lund", "se:Kiruna"],
+  LV: ["lv:Rīga", "lv:Liepāja", "lv:Daugavpils", "lv:Jelgava", "lv:Valmiera", "lv:Jūrmala"],
+  PL: ["pl:Warszawa", "pl:Kraków", "pl:Wrocław", "pl:Poznań", "pl:Łódź", "pl:Sosnowiec"],
   HU: ["hu:Pécs", "hu:Békéscsaba"],
   GR: ["gr:Rhodes", "gr:Faliraki", "gr:Kos", "gr:Piraeus", "gr:Argostoli", "gr:Ioannina"],
-  CY: ["cy:Paphos", "cy:Limassol"],
+  CY: ["cy:Nicosia", "cy:Limassol", "cy:Paphos"],
   FI: ["fi:Mariehamn"],
   HR: ["hr:Rijeka"],
-  UA: ["ua:Kyiv"],
+  UA: ["ua:Kyiv", "ua:Lviv", "ua:Vinnytsia", "ua:Ivano-Frankivsk", "ua:Odesa"],
   US: ["us:dc:Washington", "us:ca:Los Angeles", "us:il:Chicago", "us:wa:Seattle", "us:ca:San Francisco", "us:ga:Atlanta"],
   CA: ["ca:bc:Vancouver", "ca:ab:Calgary", "ca:ab:Edmonton", "ca:on:Ottawa", "ca:bc:Kelowna", "ca:on:Hamilton"],
   AE: ["ae:Dubai", "ae:Abu Dhabi"],
@@ -453,20 +495,27 @@ export const FEATURED_CITIES: Record<CountryCode, readonly string[]> = {
   CO: ["co:Medellín"],
   BY: ["by:Minsk", "by:Borisov", "by:Soligorsk"],
   ZA: ["za:Langebaan"],
-  RO: ["ro:Deva"],
+  RO: ["ro:București", "ro:Cluj-Napoca", "ro:Iași", "ro:Arad", "ro:Sibiu", "ro:Deva"],
   CZ: ["cz:České Budějovice"],
   QA: ["qa:Doha"],
   AU: ["au:Brisbane"],
   TR: ["tr:İstanbul", "tr:Antalya", "tr:İzmir", "tr:Samsun"],
   MY: ["my:Kuala Lumpur", "my:Selangor", "my:Johor", "my:Penang", "my:Sarawak", "my:Perak"],
   KR: ["kr:Seoul", "kr:Busan", "kr:Incheon", "kr:Daegu", "kr:Daejeon", "kr:Ulsan"],
+  EE: ["ee:Tallinn", "ee:Tartu", "ee:Pärnu", "ee:Narva"],
+  LT: ["lt:Vilnius", "lt:Kaunas", "lt:Klaipėda", "lt:Šiauliai", "lt:Panevėžys"],
+  SK: ["sk:Bratislava", "sk:Nitra"],
+  BG: ["bg:Sofia", "bg:Varna", "bg:Burgas"],
+  MD: ["md:Chișinău"],
+  SI: ["si:Ljubljana"],
+  IE: ["ie:Wexford"],
 };
 
 /** The order of the countries on the landing page. */
-export const LANDING_COUNTRY_ORDER: readonly CountryCode[] = ["CH", "DE", "FR", "IT", "AT", "BE", "NO", "GB", "PT", "ES", "IS", "DK", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ", "CR", "BQ", "JP", "BR", "CL", "MX", "KZ", "AZ", "GE", "CO", "BY", "ZA", "RO", "CZ", "QA", "AU", "TR", "MY", "KR"];
+export const LANDING_COUNTRY_ORDER: readonly CountryCode[] = ["CH", "DE", "FR", "IT", "AT", "BE", "NO", "GB", "PT", "ES", "IS", "DK", "SE", "LV", "PL", "HU", "GR", "CY", "FI", "HR", "UA", "US", "CA", "AE", "SA", "IL", "NZ", "CR", "BQ", "JP", "BR", "CL", "MX", "KZ", "AZ", "GE", "CO", "BY", "ZA", "RO", "CZ", "QA", "AU", "TR", "MY", "KR", "EE", "LT", "SK", "BG", "MD", "SI", "IE"];
 
 /** Whose data the map shows, country by country, for the X-Mobility-Data-Source header. */
-export const COUNTRY_DATA_ATTRIBUTION = "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW, https://mobidata-bw.de/dataset/escootch, dl-de/by-2-0 (https://www.govdata.de/dl-de/by-2-0), modified; Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified; Dott anonymous app map; Voi authenticated rider map; Qick authenticated ATOM rider map; Austria: Dott anonymous app map; Voi authenticated rider map; Italy: Bird, Elerent GBFS; Dott anonymous app map; Voi authenticated rider map; Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; Voi authenticated rider map; United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Voi authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Portugal: Bird, Lime GBFS; Spain: Bird, Hopp, Hoppy GBFS; Dott anonymous app map; Iceland: Hopp GBFS; Denmark: Voi authenticated rider map; Sweden: Lime, Hopp GBFS; Voi authenticated rider map; Qick authenticated ATOM rider map; Latvia: Ride Mobility GBFS; Poland: Dott, Hopp GBFS; Dott anonymous app map; Hungary: Hopp GBFS; Dott anonymous app map; Greece: Hopp, Hoppy GBFS; Dott anonymous app map; Cyprus: Hopp GBFS; Finland: Hopp GBFS; Dott anonymous app map; Voi authenticated rider map; Croatia: Hoppy GBFS; Ukraine: 3electra GBFS; United States: Bird, Bolt, Lime, Veo, Spin, Lyft GBFS; GCOO anonymous app map; Canada: Bird, Lime GBFS; MoVe app; United Arab Emirates: Dott GBFS; Saudi Arabia: SAHAM, Dott GBFS; Israel: Bird, Dott, Lime GBFS; New Zealand: Flamingo GBFS (CC BY 4.0), JOLT GBFS; Costa Rica: Hopp GBFS; Caribbean Netherlands: Hopp GBFS; Japan: LUUP authenticated rider map, standing scooters counted at their ports; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Brazil: JET signed-out Go Jet app map; Whoosh authenticated rider map; Chile: JET signed-out Go Jet app map; Whoosh authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Mexico: JET signed-out Go Jet app map; Whoosh authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Kazakhstan: JET signed-out Go Jet app map; Whoosh authenticated rider map; Azerbaijan: JET signed-out Go Jet app map; Georgia: JET signed-out Go Jet app map; Colombia: Whoosh authenticated rider map; Belarus: Whoosh authenticated rider map; South Africa: Zippy rider map; Romania: Lime authenticated rider map; city centres from GeoNames; Czechia: Lime authenticated rider map; city centres from GeoNames; Qatar: Lime authenticated rider map; city centres from GeoNames; Australia: Lime authenticated rider map; city centres from GeoNames; Beam authenticated rider map; Turkey: BinBin anonymous app map; Beam authenticated rider map; Malaysia: Beam authenticated rider map; South Korea: Beam authenticated rider map; GCOO anonymous app map; Kickgoing anonymous app map, Xingxing's scooters included; Swing anonymous app map";
+export const COUNTRY_DATA_ATTRIBUTION = "Open data platform mobility Switzerland; Hopp GBFS; PubliBike Velospot public app feed; France: Dott, Bird, Lime, Voi, Pony, Naolib Micromob GBFS (transport.data.gouv.fr); Germany: Dott, Bolt, Hopp, Lime, Voi, Zeus, Yoio GBFS; MobiData BW, https://mobidata-bw.de/dataset/escootch, dl-de/by-2-0 (https://www.govdata.de/dl-de/by-2-0), modified; Voi Technology Germany GmbH via NRW.Mobidrom, CC BY-SA 4.0, modified; Dott anonymous app map; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map; city centres from GeoNames; Austria: Dott anonymous app map; Voi authenticated rider map; Italy: Bird, Elerent GBFS; Dott anonymous app map; Voi authenticated rider map; Belgium: Bolt, Dott, Voi, Hoppy GBFS, Pony GBFS (transportdata.be); Bolt authenticated rider map; city centres from GeoNames; Norway: contains data under the Norwegian licence for Open Government data (NLOD) distributed by Entur AS; Voi authenticated rider map; United Kingdom: Beryl GBFS (CDLA-Permissive-2.0), Bolt, Dott GBFS; Voi authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Portugal: Bird, Lime GBFS; Bolt authenticated rider map; city centres from GeoNames; Spain: Bird, Hopp, Hoppy GBFS; Dott anonymous app map; Iceland: Hopp GBFS; Bolt authenticated rider map; Denmark: Voi authenticated rider map; Sweden: Lime, Hopp GBFS; Voi authenticated rider map; Qick authenticated ATOM rider map; Bolt authenticated rider map; Latvia: Ride Mobility GBFS; Bolt authenticated rider map; city centres from GeoNames; Poland: Dott, Hopp GBFS; Dott anonymous app map; Bolt authenticated rider map; city centres from GeoNames; Hungary: Hopp GBFS; Dott anonymous app map; Greece: Hopp, Hoppy GBFS; Dott anonymous app map; Cyprus: Hopp GBFS; Bolt authenticated rider map; city centres from GeoNames; Finland: Hopp GBFS; Dott anonymous app map; Voi authenticated rider map; Croatia: Hoppy GBFS; Ukraine: 3electra GBFS; Bolt authenticated rider map; city centres from GeoNames; United States: Bird, Bolt, Lime, Veo, Spin, Lyft GBFS; GCOO anonymous app map; Canada: Bird, Lime GBFS; MoVe app; United Arab Emirates: Dott GBFS; Saudi Arabia: SAHAM, Dott GBFS; Israel: Bird, Dott, Lime GBFS; New Zealand: Flamingo GBFS (CC BY 4.0), JOLT GBFS; Costa Rica: Hopp GBFS; Caribbean Netherlands: Hopp GBFS; Japan: LUUP authenticated rider map, standing scooters counted at their ports; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Brazil: JET signed-out Go Jet app map; Whoosh authenticated rider map; Chile: JET signed-out Go Jet app map; Whoosh authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Mexico: JET signed-out Go Jet app map; Whoosh authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0; Kazakhstan: JET signed-out Go Jet app map; Whoosh authenticated rider map; Bolt authenticated rider map; Azerbaijan: JET signed-out Go Jet app map; Georgia: JET signed-out Go Jet app map; Colombia: Whoosh authenticated rider map; Belarus: Whoosh authenticated rider map; South Africa: Zippy rider map; Romania: Lime authenticated rider map; Bolt authenticated rider map; city centres from GeoNames; Czechia: Lime authenticated rider map; city centres from GeoNames; Qatar: Lime authenticated rider map; city centres from GeoNames; Australia: Lime authenticated rider map; city centres from GeoNames; Beam authenticated rider map; Turkey: BinBin anonymous app map; Beam authenticated rider map; Malaysia: Beam authenticated rider map; South Korea: Beam authenticated rider map; GCOO anonymous app map; Kickgoing anonymous app map, Xingxing's scooters included; Swing anonymous app map; Estonia: Bolt authenticated rider map; city centres from GeoNames; Lithuania: Bolt authenticated rider map; city centres from GeoNames; Slovakia: Bolt authenticated rider map; city centres from GeoNames; Bulgaria: Bolt authenticated rider map; city centres from GeoNames; Moldova: Bolt authenticated rider map; city centres from GeoNames; Slovenia: Bolt authenticated rider map; city centres from GeoNames; Ireland: Bolt authenticated rider map; city centres from GeoNames";
 
 /** The countries' own credits, after Switzerland's and France's: their GBFS feeds, then their licences. */
 export const COUNTRY_CREDIT_LINKS: readonly { label: string; href: string }[] = [
@@ -493,10 +542,11 @@ export const COUNTRY_CREDIT_LINKS: readonly { label: string; href: string }[] = 
   { label: "BR/CL/MX/KZ/CO/BY: Whoosh map", href: "https://whoosh.bike/" },
   { label: "ZA: Zippy rider map", href: "https://zippyride.app.link/" },
   { label: "UK/JP/CL/MX/RO/CZ/QA/AU: Lime map", href: "https://www.li.me/" },
-  { label: "UK/JP/CL/MX/RO/CZ/QA/AU: GeoNames · CC BY 4.0", href: "https://www.geonames.org/about.html" },
   { label: "TR: BinBin map", href: "https://www.binbin.tech/" },
   { label: "AU/TR/MY/KR: Beam map", href: "https://www.ridebeam.com/" },
   { label: "US/KR: GCOO map", href: "https://gcoo.io/" },
   { label: "KR: Kickgoing map", href: "https://kickgoing.io/" },
   { label: "CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL", href: "https://opendatacommons.org/licenses/odbl/" },
+  { label: "DE/BE/PT/IS/SE/LV/PL/CY/UA/KZ/RO/EE/LT/SK/BG/MD/SI/IE: Bolt map", href: "https://bolt.eu/" },
+  { label: "DE/BE/UK/PT/LV/PL/CY/UA/JP/CL/MX/RO/CZ/QA/AU/EE/LT/SK/BG/MD/SI/IE: GeoNames · CC BY 4.0", href: "https://www.geonames.org/about.html" },
 ];

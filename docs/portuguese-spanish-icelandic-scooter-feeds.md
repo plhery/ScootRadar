@@ -323,8 +323,10 @@ the dock and each scooter's card state the ban and when renting resumes.
     (`broker.fiware.urbanplatform.portodigital.pt`) holds about 1,000 Bolt
     scooters, but it is unlicensed and hadn't been updated since 8 October
     2026 when polled on the 16th, nor on the 25th (927 Bolt, 494 Bird and 20
-    Circ scooters). Lime has no feed for Porto or Faro (404),
-    and Link and Whoosh have left Portugal.
+    Circ scooters). Since 25 October 2026 Bolt's scooters in Lisboa with
+    Oeiras, Porto with Matosinhos, Coimbra, Faro and Santarém come from its
+    authenticated [rider map](bolt-app-map.md). Lime has no feed for Porto or
+    Faro (404), and Link and Whoosh have left Portugal.
   - Lisboa is ending shared scooters. Mayor Moedas announced it on 15 October
     2026 ([Observador](https://observador.pt/2026/10/15/camara-de-lisboa-avanca-com-suspensao-do-sistema-de-trotinetes-partilhadas-ate-ao-final-do-ano/),
     [ECO](https://eco.sapo.pt/2026/10/16/moedas-anuncia-suspensao-de-trotinetes-partilhadas-em-lisboa/)),
@@ -367,7 +369,9 @@ the dock and each scooter's card state the ban and when renting resumes.
     de Mar (2223), Magic World Resort (1393) and Cabo de Gata - Níjar (2272)
     were empty.
 - **Iceland:**
-  - Bolt has run in the capital area since 2024, with no public feed.
+  - Bolt has run in the capital area since 2024, with no public feed. Its
+    Reykjavík market, 851 scooters on 25 October 2026, comes from its
+    [rider map](bolt-app-map.md) since that day.
   - Hopp's Hella / Hvolsvöllur feed (5 available of 17 on 13 October 2026)
     and Ísafjörður's (3 of 16) held under ten available scooters, and
     Grindavík, Höfn, Seyðisfjörður, Blönduós, Ólafsfjörður and Þorlákshöfn

@@ -147,8 +147,9 @@ No Cypriot law or covered town bans renting at night, so
 
 ## Known gaps
 
-- **Nicosia** has no scooter on the map. **Bolt** runs e-scooters there,
-  parked at fixed stations: in January 2024 Nicosia told its two operators,
+- **Nicosia**'s scooters come from **Bolt**'s authenticated
+  [rider map](bolt-app-map.md) since 25 October 2026, 444 that day, not from
+  a feed. Bolt runs e-scooters there, parked at fixed stations: in January 2024 Nicosia told its two operators,
   Bolt and Scroll, that the municipalities, not the operators, would decide
   where scooters are left, at pick-up stations
   ([Cyprus Mail](https://cyprus-mail.com/2024/01/16/clamp-down-on-anarchy-of-electric-scooters),

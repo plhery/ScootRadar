@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-13",
+  "verifiedOn": "2026-10-25",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -42,6 +42,32 @@
       "aliases": [
         "Lemesos",
         "Λεμεσός"
+      ]
+    },
+    {
+      "id": "bolt_cy_app_261",
+      "country": "CY",
+      "provider": "bolt",
+      "city": "Nicosia",
+      "center": [
+        35.17284,
+        33.35397
+      ],
+      "bounds": {
+        "south": 35.1166,
+        "north": 35.1986,
+        "west": 33.2918,
+        "east": 33.4231
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "261",
+      "boltAppCategories": [
+        "849"
+      ],
+      "aliases": [
+        "Lefkosia",
+        "Λευκωσία",
+        "Lefkoşa"
       ]
     }
   ]

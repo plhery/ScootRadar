@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-24",
+  "verifiedOn": "2026-10-25",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -3113,6 +3113,1103 @@
       },
       "discoveryUrl": "https://app.rideatom.com/api/v1/user/vehicles",
       "atomAppAccount": "qick-de"
+    },
+    {
+      "id": "bolt_de_app_32",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "München",
+      "center": [
+        48.13743,
+        11.57549
+      ],
+      "bounds": {
+        "south": 48.0662,
+        "north": 48.2251,
+        "west": 11.3973,
+        "east": 11.7281
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "32",
+      "boltAppCategories": [
+        "402",
+        "1089"
+      ]
+    },
+    {
+      "id": "bolt_de_app_329",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Berlin / Potsdam",
+      "center": [
+        52.52437,
+        13.41053
+      ],
+      "bounds": {
+        "south": 52.3481,
+        "north": 52.6421,
+        "west": 12.9811,
+        "east": 13.6455
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "329",
+      "boltAppCategories": [
+        "345",
+        "770",
+        "853",
+        "1192"
+      ],
+      "areas": [
+        {
+          "city": "Berlin",
+          "center": [
+            52.52,
+            13.405
+          ],
+          "bounds": {
+            "south": 52.3481,
+            "north": 52.6421,
+            "west": 12.9811,
+            "east": 13.6455
+          }
+        },
+        {
+          "city": "Potsdam",
+          "center": [
+            52.395,
+            13.0639
+          ],
+          "bounds": {
+            "south": 52.3481,
+            "north": 52.5397,
+            "west": 12.9811,
+            "east": 13.2079
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_de_app_712",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Köln / Brühl",
+      "center": [
+        50.93333,
+        6.95
+      ],
+      "bounds": {
+        "south": 50.792,
+        "north": 51.0451,
+        "west": 6.8206,
+        "east": 7.0996
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "712",
+      "boltAppCategories": [
+        "321",
+        "1169"
+      ],
+      "areas": [
+        {
+          "city": "Köln",
+          "center": [
+            50.9375,
+            6.9603
+          ],
+          "bounds": {
+            "south": 50.8214,
+            "north": 51.0451,
+            "west": 6.8206,
+            "east": 7.0996
+          }
+        },
+        {
+          "city": "Brühl",
+          "center": [
+            50.82928,
+            6.90499
+          ],
+          "bounds": {
+            "south": 50.792,
+            "north": 50.8529,
+            "west": 6.8643,
+            "east": 6.9341
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_de_app_713",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Dortmund / Bochum / Herne",
+      "center": [
+        51.51494,
+        7.466
+      ],
+      "bounds": {
+        "south": 51.4318,
+        "north": 51.5655,
+        "west": 7.1153,
+        "east": 7.5651
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "713",
+      "boltAppCategories": [
+        "1211"
+      ],
+      "areas": [
+        {
+          "city": "Dortmund",
+          "center": [
+            51.5129,
+            7.4649
+          ],
+          "bounds": {
+            "south": 51.4318,
+            "north": 51.5655,
+            "west": 7.2884,
+            "east": 7.5651
+          }
+        },
+        {
+          "city": "Bochum",
+          "center": [
+            51.4695,
+            7.1963
+          ],
+          "bounds": {
+            "south": 51.4318,
+            "north": 51.5404,
+            "west": 7.1153,
+            "east": 7.3633
+          }
+        },
+        {
+          "city": "Herne",
+          "center": [
+            51.5407,
+            7.2061
+          ],
+          "bounds": {
+            "south": 51.4941,
+            "north": 51.5655,
+            "west": 7.1153,
+            "east": 7.3105
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_de_app_714",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Frankfurt / Darmstadt / Mühlheim am Main / Eschborn / Weiterstadt",
+      "center": [
+        50.11552,
+        8.68417
+      ],
+      "bounds": {
+        "south": 49.8328,
+        "north": 50.1985,
+        "west": 8.5196,
+        "east": 8.8786
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "714",
+      "boltAppCategories": [
+        "309",
+        "755",
+        "1085",
+        "1145"
+      ],
+      "areas": [
+        {
+          "city": "Frankfurt",
+          "center": [
+            50.1155,
+            8.6683
+          ],
+          "bounds": {
+            "south": 49.9311,
+            "north": 50.1985,
+            "west": 8.5196,
+            "east": 8.8786
+          }
+        },
+        {
+          "city": "Darmstadt",
+          "center": [
+            49.8719,
+            8.6468
+          ],
+          "bounds": {
+            "south": 49.8328,
+            "north": 49.9877,
+            "west": 8.5196,
+            "east": 8.8767
+          }
+        },
+        {
+          "city": "Mühlheim am Main",
+          "center": [
+            50.11667,
+            8.83333
+          ],
+          "bounds": {
+            "south": 50.0862,
+            "north": 50.1369,
+            "west": 8.805,
+            "east": 8.8786
+          }
+        },
+        {
+          "city": "Eschborn",
+          "center": [
+            50.14328,
+            8.57111
+          ],
+          "bounds": {
+            "south": 50.0909,
+            "north": 50.1483,
+            "west": 8.5196,
+            "east": 8.5916
+          }
+        },
+        {
+          "city": "Weiterstadt",
+          "center": [
+            49.9039,
+            8.58874
+          ],
+          "bounds": {
+            "south": 49.8441,
+            "north": 49.9089,
+            "west": 8.5386,
+            "east": 8.6026
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_de_app_715",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Oldenburg",
+      "center": [
+        53.14039,
+        8.21479
+      ],
+      "bounds": {
+        "south": 53.0872,
+        "north": 53.2018,
+        "west": 8.1447,
+        "east": 8.2653
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "715",
+      "boltAppCategories": [
+        "408",
+        "1020",
+        "1163"
+      ]
+    },
+    {
+      "id": "bolt_de_app_716",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Hamburg",
+      "center": [
+        53.55073,
+        9.99302
+      ],
+      "bounds": {
+        "south": 53.4314,
+        "north": 53.6669,
+        "west": 9.7989,
+        "east": 10.1716
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "716",
+      "boltAppCategories": [
+        "384",
+        "1008",
+        "1198",
+        "1228"
+      ]
+    },
+    {
+      "id": "bolt_de_app_717",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Düsseldorf / Solingen / Neuss / Hilden / Monheim am Rhein",
+      "center": [
+        51.22319,
+        6.77927
+      ],
+      "bounds": {
+        "south": 51.0671,
+        "north": 51.3109,
+        "west": 6.6413,
+        "east": 7.11
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "717",
+      "boltAppCategories": [
+        "393",
+        "723",
+        "1086"
+      ],
+      "areas": [
+        {
+          "city": "Düsseldorf",
+          "center": [
+            51.2213,
+            6.7886
+          ],
+          "bounds": {
+            "south": 51.1154,
+            "north": 51.3109,
+            "west": 6.6748,
+            "east": 6.9539
+          }
+        },
+        {
+          "city": "Solingen",
+          "center": [
+            51.1688,
+            7.0646
+          ],
+          "bounds": {
+            "south": 51.1314,
+            "north": 51.2187,
+            "west": 6.9535,
+            "east": 7.11
+          }
+        },
+        {
+          "city": "Neuss",
+          "center": [
+            51.2035,
+            6.6837
+          ],
+          "bounds": {
+            "south": 51.1078,
+            "north": 51.2446,
+            "west": 6.6413,
+            "east": 6.8124
+          }
+        },
+        {
+          "city": "Hilden",
+          "center": [
+            51.1692,
+            6.9372
+          ],
+          "bounds": {
+            "south": 51.1328,
+            "north": 51.1941,
+            "west": 6.8934,
+            "east": 6.9892
+          }
+        },
+        {
+          "city": "Monheim am Rhein",
+          "center": [
+            51.0924,
+            6.8909
+          ],
+          "bounds": {
+            "south": 51.0671,
+            "north": 51.14,
+            "west": 6.8725,
+            "east": 6.9184
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_de_app_720",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Essen / Oberhausen / Duisburg / Mülheim an der Ruhr",
+      "center": [
+        51.50508,
+        7.09654
+      ],
+      "bounds": {
+        "south": 51.3515,
+        "north": 51.5424,
+        "west": 6.6773,
+        "east": 7.0823
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "720",
+      "boltAppCategories": [
+        "1191"
+      ],
+      "areas": [
+        {
+          "city": "Essen",
+          "center": [
+            51.4508,
+            7.0085
+          ],
+          "bounds": {
+            "south": 51.3515,
+            "north": 51.5424,
+            "west": 6.8803,
+            "east": 7.0823
+          }
+        },
+        {
+          "city": "Oberhausen",
+          "center": [
+            51.4696,
+            6.8514
+          ],
+          "bounds": {
+            "south": 51.4397,
+            "north": 51.5424,
+            "west": 6.7633,
+            "east": 6.9445
+          }
+        },
+        {
+          "city": "Duisburg",
+          "center": [
+            51.4154,
+            6.7249
+          ],
+          "bounds": {
+            "south": 51.3515,
+            "north": 51.5424,
+            "west": 6.6773,
+            "east": 6.8443
+          }
+        },
+        {
+          "city": "Mülheim an der Ruhr",
+          "center": [
+            51.4273,
+            6.8829
+          ],
+          "bounds": {
+            "south": 51.4043,
+            "north": 51.4804,
+            "west": 6.7978,
+            "east": 6.9324
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_de_app_742",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Dresden",
+      "center": [
+        51.05089,
+        13.73832
+      ],
+      "bounds": {
+        "south": 50.9692,
+        "north": 51.1842,
+        "west": 13.5721,
+        "east": 13.9768
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "742",
+      "boltAppCategories": [
+        "848",
+        "1226"
+      ]
+    },
+    {
+      "id": "bolt_de_app_745",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Mannheim / Ludwigshafen am Rhein / Heidelberg",
+      "center": [
+        49.4891,
+        8.46694
+      ],
+      "bounds": {
+        "south": 49.3668,
+        "north": 49.5446,
+        "west": 8.3418,
+        "east": 8.7256
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "745",
+      "boltAppCategories": [
+        "489",
+        "1205"
+      ],
+      "areas": [
+        {
+          "city": "Mannheim",
+          "center": [
+            49.4875,
+            8.466
+          ],
+          "bounds": {
+            "south": 49.4082,
+            "north": 49.5446,
+            "west": 8.3418,
+            "east": 8.589
+          }
+        },
+        {
+          "city": "Ludwigshafen am Rhein",
+          "center": [
+            49.4812,
+            8.4464
+          ],
+          "bounds": {
+            "south": 49.4212,
+            "north": 49.5446,
+            "west": 8.3418,
+            "east": 8.576
+          }
+        },
+        {
+          "city": "Heidelberg",
+          "center": [
+            49.4037,
+            8.6752
+          ],
+          "bounds": {
+            "south": 49.3668,
+            "north": 49.4978,
+            "west": 8.5643,
+            "east": 8.7256
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_de_app_746",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Nürnberg / Fürth / Erlangen / Schwabach / Stein / Roth",
+      "center": [
+        49.45421,
+        11.07752
+      ],
+      "bounds": {
+        "south": 49.1836,
+        "north": 49.6192,
+        "west": 10.9026,
+        "east": 11.2121
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "746",
+      "boltAppCategories": [
+        "396",
+        "1172"
+      ],
+      "areas": [
+        {
+          "city": "Nürnberg",
+          "center": [
+            49.4527,
+            11.0761
+          ],
+          "bounds": {
+            "south": 49.1953,
+            "north": 49.6192,
+            "west": 10.9026,
+            "east": 11.2121
+          }
+        },
+        {
+          "city": "Fürth",
+          "center": [
+            49.47593,
+            10.98856
+          ],
+          "bounds": {
+            "south": 49.4509,
+            "north": 49.5009,
+            "west": 10.9486,
+            "east": 11.0286
+          }
+        },
+        {
+          "city": "Erlangen",
+          "center": [
+            49.5917,
+            11.012
+          ],
+          "bounds": {
+            "south": 49.5347,
+            "north": 49.6192,
+            "west": 10.9411,
+            "east": 11.0567
+          }
+        },
+        {
+          "city": "Schwabach",
+          "center": [
+            49.33047,
+            11.02346
+          ],
+          "bounds": {
+            "south": 49.3081,
+            "north": 49.3769,
+            "west": 10.9889,
+            "east": 11.0733
+          }
+        },
+        {
+          "city": "Stein",
+          "center": [
+            49.41581,
+            11.01599
+          ],
+          "bounds": {
+            "south": 49.3824,
+            "north": 49.4235,
+            "west": 11.011,
+            "east": 11.0685
+          }
+        },
+        {
+          "city": "Roth",
+          "center": [
+            49.24762,
+            11.09111
+          ],
+          "bounds": {
+            "south": 49.1836,
+            "north": 49.293,
+            "west": 11.0429,
+            "east": 11.2121
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_de_app_748",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Wiesbaden / Mainz / Rüsselsheim",
+      "center": [
+        50.08601,
+        8.24435
+      ],
+      "bounds": {
+        "south": 49.9521,
+        "north": 50.0985,
+        "west": 8.1744,
+        "east": 8.4706
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "748",
+      "boltAppCategories": [
+        "603",
+        "1120",
+        "1140"
+      ],
+      "areas": [
+        {
+          "city": "Wiesbaden",
+          "center": [
+            50.077,
+            8.2347
+          ],
+          "bounds": {
+            "south": 49.9521,
+            "north": 50.0985,
+            "west": 8.1744,
+            "east": 8.393
+          }
+        },
+        {
+          "city": "Mainz",
+          "center": [
+            50,
+            8.27
+          ],
+          "bounds": {
+            "south": 49.9521,
+            "north": 50.0345,
+            "west": 8.1744,
+            "east": 8.393
+          }
+        },
+        {
+          "city": "Rüsselsheim",
+          "center": [
+            49.9917,
+            8.4248
+          ],
+          "bounds": {
+            "south": 49.9521,
+            "north": 50.0104,
+            "west": 8.3567,
+            "east": 8.4706
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_de_app_1232",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Braunschweig / Wolfsburg",
+      "center": [
+        52.26594,
+        10.52673
+      ],
+      "bounds": {
+        "south": 52.1972,
+        "north": 52.4637,
+        "west": 10.4602,
+        "east": 10.868
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1232",
+      "boltAppCategories": [
+        "1187",
+        "1218"
+      ],
+      "areas": [
+        {
+          "city": "Braunschweig",
+          "center": [
+            52.2627,
+            10.5257
+          ],
+          "bounds": {
+            "south": 52.1972,
+            "north": 52.3605,
+            "west": 10.4602,
+            "east": 10.6995
+          }
+        },
+        {
+          "city": "Wolfsburg",
+          "center": [
+            52.4223,
+            10.7873
+          ],
+          "bounds": {
+            "south": 52.3645,
+            "north": 52.4637,
+            "west": 10.6754,
+            "east": 10.868
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_de_app_1234",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Halle (Saale) / Merseburg",
+      "center": [
+        51.48158,
+        11.97947
+      ],
+      "bounds": {
+        "south": 51.3169,
+        "north": 51.5329,
+        "west": 11.897,
+        "east": 12.0388
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1234",
+      "boltAppCategories": [
+        "450",
+        "1007"
+      ],
+      "areas": [
+        {
+          "city": "Halle (Saale)",
+          "aliases": [
+            "Halle"
+          ],
+          "center": [
+            51.48158,
+            11.97947
+          ],
+          "bounds": {
+            "south": 51.4409,
+            "north": 51.5329,
+            "west": 11.897,
+            "east": 12.0388
+          }
+        },
+        {
+          "city": "Merseburg",
+          "center": [
+            51.35478,
+            11.98923
+          ],
+          "bounds": {
+            "south": 51.3169,
+            "north": 51.3867,
+            "west": 11.9556,
+            "east": 12.025
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_de_app_1235",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Hannover / Hildesheim / Laatzen",
+      "center": [
+        52.37052,
+        9.73322
+      ],
+      "bounds": {
+        "south": 52.1131,
+        "north": 52.4305,
+        "west": 9.6606,
+        "east": 10.0025
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1235",
+      "boltAppCategories": [
+        "537",
+        "749",
+        "1210"
+      ],
+      "areas": [
+        {
+          "city": "Hannover",
+          "center": [
+            52.3903,
+            9.7399
+          ],
+          "bounds": {
+            "south": 52.203,
+            "north": 52.4305,
+            "west": 9.6606,
+            "east": 10.0025
+          }
+        },
+        {
+          "city": "Hildesheim",
+          "center": [
+            52.1517,
+            9.9584
+          ],
+          "bounds": {
+            "south": 52.1131,
+            "north": 52.184,
+            "west": 9.8954,
+            "east": 10.0025
+          }
+        },
+        {
+          "city": "Laatzen",
+          "center": [
+            52.31506,
+            9.79739
+          ],
+          "bounds": {
+            "south": 52.2901,
+            "north": 52.3401,
+            "west": 9.7574,
+            "east": 9.8374
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_de_app_1242",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Münster",
+      "center": [
+        51.96236,
+        7.62571
+      ],
+      "bounds": {
+        "south": 51.8882,
+        "north": 52.0142,
+        "west": 7.5174,
+        "east": 7.745
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1242",
+      "boltAppCategories": [
+        "447",
+        "1018"
+      ]
+    },
+    {
+      "id": "bolt_de_app_1266",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Kiel",
+      "center": [
+        54.32133,
+        10.13489
+      ],
+      "bounds": {
+        "south": 54.2687,
+        "north": 54.373,
+        "west": 10.0378,
+        "east": 10.2102
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1266",
+      "boltAppCategories": [
+        "534",
+        "1014"
+      ]
+    },
+    {
+      "id": "bolt_de_app_1274",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Paderborn / Bielefeld",
+      "center": [
+        51.71905,
+        8.75439
+      ],
+      "bounds": {
+        "south": 51.6903,
+        "north": 52.0676,
+        "west": 8.4729,
+        "east": 8.8167
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1274",
+      "boltAppCategories": [
+        "546",
+        "743",
+        "1000",
+        "1164"
+      ],
+      "areas": [
+        {
+          "city": "Paderborn",
+          "center": [
+            51.7199,
+            8.7528
+          ],
+          "bounds": {
+            "south": 51.6903,
+            "north": 51.8098,
+            "west": 8.6223,
+            "east": 8.8167
+          }
+        },
+        {
+          "city": "Bielefeld",
+          "center": [
+            52.024,
+            8.5372
+          ],
+          "bounds": {
+            "south": 51.9368,
+            "north": 52.0676,
+            "west": 8.4729,
+            "east": 8.6263
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_de_app_1276",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Herford",
+      "center": [
+        52.11457,
+        8.67343
+      ],
+      "bounds": {
+        "south": 52.0879,
+        "north": 52.1469,
+        "west": 8.617,
+        "east": 8.7181
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1276",
+      "boltAppCategories": [
+        "914",
+        "1011"
+      ]
+    },
+    {
+      "id": "bolt_de_app_1291",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Kassel / Göttingen",
+      "center": [
+        51.31667,
+        9.5
+      ],
+      "bounds": {
+        "south": 51.2918,
+        "north": 51.5743,
+        "west": 9.4294,
+        "east": 9.9778
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1291",
+      "boltAppCategories": [
+        "636",
+        "1216"
+      ],
+      "areas": [
+        {
+          "city": "Kassel",
+          "center": [
+            51.3127,
+            9.4797
+          ],
+          "bounds": {
+            "south": 51.2918,
+            "north": 51.3531,
+            "west": 9.4294,
+            "east": 9.5665
+          }
+        },
+        {
+          "city": "Göttingen",
+          "center": [
+            51.5413,
+            9.9158
+          ],
+          "bounds": {
+            "south": 51.4953,
+            "north": 51.5743,
+            "west": 9.8716,
+            "east": 9.9778
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_de_app_1311",
+      "country": "DE",
+      "provider": "bolt",
+      "city": "Augsburg",
+      "center": [
+        48.37154,
+        10.89851
+      ],
+      "bounds": {
+        "south": 48.2891,
+        "north": 48.4093,
+        "west": 10.8371,
+        "east": 10.9607
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1311",
+      "boltAppCategories": [
+        "648",
+        "1225"
+      ]
     }
   ]
 }

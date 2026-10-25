@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-13",
+  "verifiedOn": "2026-10-25",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -451,6 +451,74 @@
       },
       "discoveryUrl": "https://app.rideatom.com/api/v1/user/vehicles",
       "atomAppAccount": "qick-se"
+    },
+    {
+      "id": "bolt_se_app_11",
+      "country": "SE",
+      "provider": "bolt",
+      "city": "Stockholm",
+      "center": [
+        59.32938,
+        18.06871
+      ],
+      "bounds": {
+        "south": 59.2524,
+        "north": 59.3931,
+        "west": 17.8644,
+        "east": 18.1616
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "11",
+      "boltAppCategories": [
+        "55",
+        "748",
+        "1195",
+        "1213",
+        "31231",
+        "31232"
+      ]
+    },
+    {
+      "id": "bolt_se_app_575",
+      "country": "SE",
+      "provider": "bolt",
+      "city": "Malmö",
+      "center": [
+        55.60587,
+        13.00073
+      ],
+      "bounds": {
+        "south": 55.4999,
+        "north": 55.6509,
+        "west": 12.8676,
+        "east": 13.1529
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "575",
+      "boltAppCategories": [
+        "477"
+      ]
+    },
+    {
+      "id": "bolt_se_app_578",
+      "country": "SE",
+      "provider": "bolt",
+      "city": "Lund",
+      "center": [
+        55.70584,
+        13.19321
+      ],
+      "bounds": {
+        "south": 55.682,
+        "north": 55.7368,
+        "west": 13.145,
+        "east": 13.2369
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "578",
+      "boltAppCategories": [
+        "480"
+      ]
     }
   ]
 }

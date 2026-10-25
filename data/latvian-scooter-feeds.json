@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-13",
+  "verifiedOn": "2026-10-25",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -20,6 +20,290 @@
       "discoveryUrl": "https://rideride.rideatom.com/gbfs/27/v3.0/gbfs",
       "aliases": [
         "Riga"
+      ]
+    },
+    {
+      "id": "bolt_lv_app_3",
+      "country": "LV",
+      "provider": "bolt",
+      "city": "Rīga",
+      "center": [
+        56.946,
+        24.10589
+      ],
+      "bounds": {
+        "south": 56.8716,
+        "north": 57.0871,
+        "west": 23.9562,
+        "east": 24.3426
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "3",
+      "boltAppCategories": [
+        "25",
+        "468",
+        "920"
+      ]
+    },
+    {
+      "id": "bolt_lv_app_4",
+      "country": "LV",
+      "provider": "bolt",
+      "city": "Valmiera",
+      "center": [
+        57.54108,
+        25.42751
+      ],
+      "bounds": {
+        "south": 57.5094,
+        "north": 57.5638,
+        "west": 25.3286,
+        "east": 25.4589
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "4",
+      "boltAppCategories": [
+        "333",
+        "960"
+      ]
+    },
+    {
+      "id": "bolt_lv_app_97",
+      "country": "LV",
+      "provider": "bolt",
+      "city": "Jūrmala",
+      "center": [
+        56.968,
+        23.77038
+      ],
+      "bounds": {
+        "south": 56.9501,
+        "north": 57.0027,
+        "west": 23.6589,
+        "east": 23.9071
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "97",
+      "boltAppCategories": [
+        "126",
+        "953"
+      ],
+      "aliases": [
+        "Jurmala"
+      ]
+    },
+    {
+      "id": "bolt_lv_app_278",
+      "country": "LV",
+      "provider": "bolt",
+      "city": "Daugavpils",
+      "center": [
+        55.88333,
+        26.53333
+      ],
+      "bounds": {
+        "south": 55.8555,
+        "north": 55.9268,
+        "west": 26.4846,
+        "east": 26.5921
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "278",
+      "boltAppCategories": [
+        "120",
+        "950"
+      ]
+    },
+    {
+      "id": "bolt_lv_app_279",
+      "country": "LV",
+      "provider": "bolt",
+      "city": "Liepāja",
+      "center": [
+        56.50474,
+        21.01085
+      ],
+      "bounds": {
+        "south": 56.4747,
+        "north": 56.5693,
+        "west": 20.9844,
+        "east": 21.0616
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "279",
+      "boltAppCategories": [
+        "129",
+        "954"
+      ],
+      "aliases": [
+        "Liepaja"
+      ]
+    },
+    {
+      "id": "bolt_lv_app_528",
+      "country": "LV",
+      "provider": "bolt",
+      "city": "Jelgava",
+      "center": [
+        56.65,
+        23.71278
+      ],
+      "bounds": {
+        "south": 56.6151,
+        "north": 56.6976,
+        "west": 23.637,
+        "east": 23.8124
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "528",
+      "boltAppCategories": [
+        "273",
+        "952"
+      ]
+    },
+    {
+      "id": "bolt_lv_app_653",
+      "country": "LV",
+      "provider": "bolt",
+      "city": "Ventspils",
+      "center": [
+        57.39485,
+        21.56121
+      ],
+      "bounds": {
+        "south": 57.3546,
+        "north": 57.415,
+        "west": 21.5242,
+        "east": 21.6231
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "653",
+      "boltAppCategories": [
+        "336",
+        "961"
+      ]
+    },
+    {
+      "id": "bolt_lv_app_654",
+      "country": "LV",
+      "provider": "bolt",
+      "city": "Rēzekne",
+      "center": [
+        56.51028,
+        27.34
+      ],
+      "bounds": {
+        "south": 56.4864,
+        "north": 56.5378,
+        "west": 27.3095,
+        "east": 27.3781
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "654",
+      "boltAppCategories": [
+        "570",
+        "1092"
+      ],
+      "aliases": [
+        "Rezekne"
+      ]
+    },
+    {
+      "id": "bolt_lv_app_793",
+      "country": "LV",
+      "provider": "bolt",
+      "city": "Jēkabpils",
+      "center": [
+        56.49903,
+        25.85735
+      ],
+      "bounds": {
+        "south": 56.4693,
+        "north": 56.5284,
+        "west": 25.8339,
+        "east": 25.9098
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "793",
+      "boltAppCategories": [
+        "873",
+        "951"
+      ],
+      "aliases": [
+        "Jekabpils"
+      ]
+    },
+    {
+      "id": "bolt_lv_app_797",
+      "country": "LV",
+      "provider": "bolt",
+      "city": "Cēsis",
+      "center": [
+        57.31188,
+        25.27456
+      ],
+      "bounds": {
+        "south": 57.2764,
+        "north": 57.3294,
+        "west": 25.227,
+        "east": 25.3735
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "797",
+      "boltAppCategories": [
+        "872",
+        "949",
+        "1219"
+      ],
+      "aliases": [
+        "Cesis"
+      ]
+    },
+    {
+      "id": "bolt_lv_app_804",
+      "country": "LV",
+      "provider": "bolt",
+      "city": "Ogre",
+      "center": [
+        56.8162,
+        24.61401
+      ],
+      "bounds": {
+        "south": 56.7856,
+        "north": 56.8517,
+        "west": 24.4687,
+        "east": 24.6582
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "804",
+      "boltAppCategories": [
+        "342",
+        "955"
+      ]
+    },
+    {
+      "id": "bolt_lv_app_1810",
+      "country": "LV",
+      "provider": "bolt",
+      "city": "Ādaži",
+      "center": [
+        57.0708,
+        24.33678
+      ],
+      "bounds": {
+        "south": 57.0459,
+        "north": 57.1099,
+        "west": 24.307,
+        "east": 24.3802
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1810",
+      "boltAppCategories": [
+        "987",
+        "1090"
+      ],
+      "aliases": [
+        "Adazi"
       ]
     }
   ]

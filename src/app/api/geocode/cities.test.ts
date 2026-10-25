@@ -10,6 +10,7 @@ describe('searchCoveredCities', () => {
     expect(searchCoveredCities('Biel')).toEqual([
       { lat: 47.1368, lng: 7.2468, display_name: 'Biel/Bienne, Switzerland', title: 'Biel/Bienne', subtitle: 'Switzerland', covered: true },
       { lat: 52.024, lng: 8.5372, display_name: 'Bielefeld, Germany', title: 'Bielefeld', subtitle: 'Germany', covered: true },
+      { lat: 49.82245, lng: 19.04686, display_name: 'Bielsko-Biała, Poland', title: 'Bielsko-Biała', subtitle: 'Poland', covered: true },
     ]);
     expect(searchCoveredCities('Roma')).toEqual([
       { lat: 41.9028, lng: 12.4964, display_name: 'Roma, Italy', title: 'Roma', subtitle: 'Italy', covered: true },

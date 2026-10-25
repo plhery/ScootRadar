@@ -221,8 +221,10 @@ describe('iOS city catalogue', () => {
     }
 
     expect(generated).toEqual(expected);
-    // Jet runs in Almaty besides Whoosh.
-    expect(generated.get('kz:Almaty')).toEqual([{ id: 'kazakhstan:jet_kz_almaty' }, { id: 'kazakhstan:whoosh_kz_ala' }]);
+    // Jet and Bolt run in Almaty besides Whoosh.
+    expect(generated.get('kz:Almaty')).toEqual([
+      { id: 'kazakhstan:jet_kz_almaty' }, { id: 'kazakhstan:whoosh_kz_ala' }, { id: 'kazakhstan:bolt_kz_app_122' },
+    ]);
   });
 
   it('is generated with the same count of cities and countries', () => {

@@ -122,6 +122,7 @@ describe('GET /api/geocode', () => {
     await expect(response.json()).resolves.toEqual([
       { lat: 47.1368, lng: 7.2468, display_name: 'Biel/Bienne, Switzerland', title: 'Biel/Bienne', subtitle: 'Switzerland', covered: true },
       { lat: 52.024, lng: 8.5372, display_name: 'Bielefeld, Germany', title: 'Bielefeld', subtitle: 'Germany', covered: true },
+      { lat: 49.82245, lng: 19.04686, display_name: 'Bielsko-Biała, Poland', title: 'Bielsko-Biała', subtitle: 'Poland', covered: true },
     ]);
     // The centre of the city, not of its canton or district.
     await expect((await GET(request('Zürich'))).json()).resolves.toEqual([
@@ -340,7 +341,7 @@ describe('address search results', () => {
     };
 
     expect(await titles('Mailand', [{ type: 'city', name: 'Milan', country: 'Italy' }, 45.4642, 9.1896])).toEqual(['Milano']);
-    expect(await titles('Lodz', [{ type: 'city', name: 'Łódź', country: 'Polska' }, 51.7592, 19.456])).toEqual(['Łódź', 'Lodzweg']);
+    expect(await titles('Slupsk', [{ type: 'city', name: 'Słupsk', country: 'Polska' }, 54.4641, 17.0287])).toEqual(['Słupsk', 'Slupskweg']);
     // Not what is found for a street of its name.
     expect(await titles('Rue de Lyon', [{ type: 'city', name: 'Lyon', country: 'France' }, 45.7578, 4.832])).toEqual(['Rue de Lyonweg', 'Lyon']);
   });
@@ -991,10 +992,10 @@ describe('Geoapify', () => {
       [{ result_type: 'city', name: 'Rheinwald', state: 'Graubünden', country: 'Schweiz', country_code: 'ch', rank: { confidence: 0.7 } }, 46.5317, 9.2579],
       [{ result_type: 'city', name: 'Neuhausen am Rheinfall', state: 'Schaffhausen', country: 'Schweiz', country_code: 'ch', rank: { confidence: 1 } }, 47.6812, 8.6197],
     ])).toEqual(['Neuhausen am Rheinfall', 'Rheinwald']);
-    expect(await titles('Lodz', [
-      [{ result_type: 'street', name: 'Lodzweg', city: 'Zürich', country_code: 'ch', rank: { confidence: 1 } }, ...ZURICH],
-      [{ result_type: 'city', name: 'Łódź', state: 'Woiwodschaft Łódź', country: 'Polen', country_code: 'pl', rank: { confidence: 1 } }, 51.7592, 19.456],
-    ])).toEqual(['Łódź', 'Lodzweg']);
+    expect(await titles('Slupsk', [
+      [{ result_type: 'street', name: 'Slupskweg', city: 'Zürich', country_code: 'ch', rank: { confidence: 1 } }, ...ZURICH],
+      [{ result_type: 'city', name: 'Słupsk', state: 'Woiwodschaft Pommern', country: 'Polen', country_code: 'pl', rank: { confidence: 1 } }, 54.4641, 17.0287],
+    ])).toEqual(['Słupsk', 'Slupskweg']);
     expect(await titles('Mailand', [
       [{ result_type: 'street', name: 'Mailandweg', city: 'Zürich', country_code: 'ch' }, ...ZURICH],
       [{ result_type: 'city', name: 'Milan', state: 'Lombardei', country: 'Italien', country_code: 'it', rank: { confidence: 1 } }, 45.4642, 9.1896],

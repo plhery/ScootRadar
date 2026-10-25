@@ -1,0 +1,195 @@
+{
+  "verifiedOn": "2026-10-25",
+  "catalogSource": "https://bolt.eu/en/cities/",
+  "systems": [
+    {
+      "id": "bolt_lt_app_9",
+      "country": "LT",
+      "provider": "bolt",
+      "city": "Vilnius",
+      "center": [
+        54.68916,
+        25.2798
+      ],
+      "bounds": {
+        "south": 54.6376,
+        "north": 54.7587,
+        "west": 25.1687,
+        "east": 25.3497
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "9",
+      "boltAppCategories": [
+        "31",
+        "835"
+      ]
+    },
+    {
+      "id": "bolt_lt_app_13",
+      "country": "LT",
+      "provider": "bolt",
+      "city": "Kaunas",
+      "center": [
+        54.90156,
+        23.90909
+      ],
+      "bounds": {
+        "south": 54.8569,
+        "north": 54.9619,
+        "west": 23.7957,
+        "east": 24.0295
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "13",
+      "boltAppCategories": [
+        "37",
+        "836"
+      ]
+    },
+    {
+      "id": "bolt_lt_app_250",
+      "country": "LT",
+      "provider": "bolt",
+      "city": "Klaipėda",
+      "center": [
+        55.7068,
+        21.13912
+      ],
+      "bounds": {
+        "south": 55.6451,
+        "north": 55.7735,
+        "west": 21.0727,
+        "east": 21.2277
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "250",
+      "boltAppCategories": [
+        "66",
+        "838"
+      ],
+      "aliases": [
+        "Klaipeda",
+        "Memel"
+      ]
+    },
+    {
+      "id": "bolt_lt_app_251",
+      "country": "LT",
+      "provider": "bolt",
+      "city": "Šiauliai",
+      "center": [
+        55.93333,
+        23.31667
+      ],
+      "bounds": {
+        "south": 55.8883,
+        "north": 55.9627,
+        "west": 23.2238,
+        "east": 23.3771
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "251",
+      "boltAppCategories": [
+        "132",
+        "839"
+      ],
+      "aliases": [
+        "Siauliai"
+      ]
+    },
+    {
+      "id": "bolt_lt_app_252",
+      "country": "LT",
+      "provider": "bolt",
+      "city": "Alytus",
+      "center": [
+        54.39574,
+        24.03885
+      ],
+      "bounds": {
+        "south": 54.3722,
+        "north": 54.4489,
+        "west": 23.963,
+        "east": 24.1021
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "252",
+      "boltAppCategories": [
+        "225",
+        "840"
+      ]
+    },
+    {
+      "id": "bolt_lt_app_340",
+      "country": "LT",
+      "provider": "bolt",
+      "city": "Jonava",
+      "center": [
+        55.08014,
+        24.27544
+      ],
+      "bounds": {
+        "south": 55.0588,
+        "north": 55.107,
+        "west": 24.2381,
+        "east": 24.303
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "340",
+      "boltAppCategories": [
+        "865",
+        "921"
+      ]
+    },
+    {
+      "id": "bolt_lt_app_455",
+      "country": "LT",
+      "provider": "bolt",
+      "city": "Panevėžys",
+      "center": [
+        55.73186,
+        24.35983
+      ],
+      "bounds": {
+        "south": 55.694,
+        "north": 55.7648,
+        "west": 24.3021,
+        "east": 24.4113
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "455",
+      "boltAppCategories": [
+        "135",
+        "842"
+      ],
+      "aliases": [
+        "Panevezys"
+      ]
+    },
+    {
+      "id": "bolt_lt_app_665",
+      "country": "LT",
+      "provider": "bolt",
+      "city": "Kėdainiai",
+      "center": [
+        55.28782,
+        23.97275
+      ],
+      "bounds": {
+        "south": 55.2527,
+        "north": 55.3297,
+        "west": 23.9381,
+        "east": 24.0278
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "665",
+      "boltAppCategories": [
+        "573",
+        "845"
+      ],
+      "aliases": [
+        "Kedainiai"
+      ]
+    }
+  ]
+}

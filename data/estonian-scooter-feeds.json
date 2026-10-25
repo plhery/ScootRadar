@@ -1,0 +1,268 @@
+{
+  "verifiedOn": "2026-10-25",
+  "catalogSource": "https://bolt.eu/en/cities/",
+  "systems": [
+    {
+      "id": "bolt_ee_app_1",
+      "country": "EE",
+      "provider": "bolt",
+      "city": "Tallinn",
+      "center": [
+        59.43696,
+        24.75353
+      ],
+      "bounds": {
+        "south": 59.234,
+        "north": 59.6211,
+        "west": 24.4644,
+        "east": 25.1363
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1",
+      "boltAppCategories": [
+        "1",
+        "540",
+        "582",
+        "918",
+        "1112",
+        "1123",
+        "1158",
+        "1170",
+        "1200",
+        "1221"
+      ]
+    },
+    {
+      "id": "bolt_ee_app_2",
+      "country": "EE",
+      "provider": "bolt",
+      "city": "Tartu",
+      "center": [
+        58.38062,
+        26.72509
+      ],
+      "bounds": {
+        "south": 58.2879,
+        "north": 58.4395,
+        "west": 26.6131,
+        "east": 26.8201
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "2",
+      "boltAppCategories": [
+        "75",
+        "1040",
+        "1082",
+        "1222"
+      ]
+    },
+    {
+      "id": "bolt_ee_app_6",
+      "country": "EE",
+      "provider": "bolt",
+      "city": "Pärnu",
+      "center": [
+        58.38588,
+        24.49711
+      ],
+      "bounds": {
+        "south": 58.3175,
+        "north": 58.4271,
+        "west": 24.4257,
+        "east": 24.6635
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "6",
+      "boltAppCategories": [
+        "28"
+      ],
+      "aliases": [
+        "Parnu"
+      ]
+    },
+    {
+      "id": "bolt_ee_app_16",
+      "country": "EE",
+      "provider": "bolt",
+      "city": "Narva",
+      "center": [
+        59.37722,
+        28.19028
+      ],
+      "bounds": {
+        "south": 59.3473,
+        "north": 59.4349,
+        "west": 28.0773,
+        "east": 28.2172
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "16",
+      "boltAppCategories": [
+        "255"
+      ]
+    },
+    {
+      "id": "bolt_ee_app_27",
+      "country": "EE",
+      "provider": "bolt",
+      "city": "Haapsalu",
+      "center": [
+        58.93937,
+        23.54127
+      ],
+      "bounds": {
+        "south": 58.8984,
+        "north": 58.9719,
+        "west": 23.41,
+        "east": 23.6494
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "27",
+      "boltAppCategories": [
+        "81"
+      ]
+    },
+    {
+      "id": "bolt_ee_app_28",
+      "country": "EE",
+      "provider": "bolt",
+      "city": "Viljandi",
+      "center": [
+        58.36319,
+        25.59159
+      ],
+      "bounds": {
+        "south": 58.3204,
+        "north": 58.4122,
+        "west": 25.518,
+        "east": 25.6815
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "28",
+      "boltAppCategories": [
+        "78"
+      ]
+    },
+    {
+      "id": "bolt_ee_app_164",
+      "country": "EE",
+      "provider": "bolt",
+      "city": "Kuressaare",
+      "center": [
+        58.25382,
+        22.49217
+      ],
+      "bounds": {
+        "south": 58.2055,
+        "north": 58.2974,
+        "west": 22.362,
+        "east": 22.5941
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "164",
+      "boltAppCategories": [
+        "576"
+      ]
+    },
+    {
+      "id": "bolt_ee_app_273",
+      "country": "EE",
+      "provider": "bolt",
+      "city": "Rakvere",
+      "center": [
+        59.34808,
+        26.35784
+      ],
+      "bounds": {
+        "south": 59.3148,
+        "north": 59.3747,
+        "west": 26.3209,
+        "east": 26.4446
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "273",
+      "boltAppCategories": [
+        "84"
+      ]
+    },
+    {
+      "id": "bolt_ee_app_477",
+      "country": "EE",
+      "provider": "bolt",
+      "city": "Kohtla-Järve / Jõhvi",
+      "center": [
+        59.39861,
+        27.27306
+      ],
+      "bounds": {
+        "south": 59.3009,
+        "north": 59.4199,
+        "west": 27.233,
+        "east": 27.4745
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "477",
+      "boltAppCategories": [
+        "276"
+      ],
+      "areas": [
+        {
+          "city": "Kohtla-Järve",
+          "aliases": [
+            "Kohtla-Jarve"
+          ],
+          "center": [
+            59.39861,
+            27.27306
+          ],
+          "bounds": {
+            "south": 59.3753,
+            "north": 59.4199,
+            "west": 27.233,
+            "east": 27.3228
+          }
+        },
+        {
+          "city": "Jõhvi",
+          "aliases": [
+            "Johvi"
+          ],
+          "center": [
+            59.35917,
+            27.42111
+          ],
+          "bounds": {
+            "south": 59.3009,
+            "north": 59.3774,
+            "west": 27.359,
+            "east": 27.4745
+          }
+        }
+      ]
+    },
+    {
+      "id": "bolt_ee_app_530",
+      "country": "EE",
+      "provider": "bolt",
+      "city": "Võru",
+      "center": [
+        57.83389,
+        27.01944
+      ],
+      "bounds": {
+        "south": 57.7999,
+        "north": 57.8649,
+        "west": 26.9711,
+        "east": 27.0563
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "530",
+      "boltAppCategories": [
+        "543"
+      ],
+      "aliases": [
+        "Voru"
+      ]
+    }
+  ]
+}

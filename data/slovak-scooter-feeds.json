@@ -1,0 +1,48 @@
+{
+  "verifiedOn": "2026-10-25",
+  "catalogSource": "https://bolt.eu/en/cities/",
+  "systems": [
+    {
+      "id": "bolt_sk_app_326",
+      "country": "SK",
+      "provider": "bolt",
+      "city": "Bratislava",
+      "center": [
+        48.14816,
+        17.10674
+      ],
+      "bounds": {
+        "south": 48.108,
+        "north": 48.1815,
+        "west": 17.0895,
+        "east": 17.185
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "326",
+      "boltAppCategories": [
+        "43"
+      ]
+    },
+    {
+      "id": "bolt_sk_app_434",
+      "country": "SK",
+      "provider": "bolt",
+      "city": "Nitra",
+      "center": [
+        48.30763,
+        18.08453
+      ],
+      "bounds": {
+        "south": 48.2822,
+        "north": 48.3281,
+        "west": 18.0442,
+        "east": 18.1218
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "434",
+      "boltAppCategories": [
+        "249"
+      ]
+    }
+  ]
+}

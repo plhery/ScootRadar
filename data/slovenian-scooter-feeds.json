@@ -1,0 +1,27 @@
+{
+  "verifiedOn": "2026-10-25",
+  "catalogSource": "https://bolt.eu/en/cities/",
+  "systems": [
+    {
+      "id": "bolt_si_app_359",
+      "country": "SI",
+      "provider": "bolt",
+      "city": "Ljubljana",
+      "center": [
+        46.05108,
+        14.50513
+      ],
+      "bounds": {
+        "south": 46.0203,
+        "north": 46.1037,
+        "west": 14.4499,
+        "east": 14.5664
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "359",
+      "boltAppCategories": [
+        "783"
+      ]
+    }
+  ]
+}

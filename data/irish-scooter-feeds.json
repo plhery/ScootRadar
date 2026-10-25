@@ -1,0 +1,28 @@
+{
+  "verifiedOn": "2026-10-25",
+  "catalogSource": "https://bolt.eu/en/cities/",
+  "systems": [
+    {
+      "id": "bolt_ie_app_1561",
+      "country": "IE",
+      "provider": "bolt",
+      "city": "Wexford",
+      "center": [
+        52.33417,
+        -6.4575
+      ],
+      "bounds": {
+        "south": 52.294,
+        "north": 52.362,
+        "west": -6.5239,
+        "east": -6.4371
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1561",
+      "boltAppCategories": [
+        "866",
+        "1070"
+      ]
+    }
+  ]
+}

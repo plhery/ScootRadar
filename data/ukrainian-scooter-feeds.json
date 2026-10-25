@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-14",
+  "verifiedOn": "2026-10-25",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -24,6 +24,324 @@
         "Kiew",
         "Київ",
         "Киев"
+      ]
+    },
+    {
+      "id": "bolt_ua_app_158",
+      "country": "UA",
+      "provider": "bolt",
+      "city": "Kyiv",
+      "center": [
+        50.45466,
+        30.5238
+      ],
+      "bounds": {
+        "south": 50.359,
+        "north": 50.5298,
+        "west": 30.3519,
+        "east": 30.6785
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "158",
+      "boltAppCategories": [
+        "46",
+        "150"
+      ]
+    },
+    {
+      "id": "bolt_ua_app_496",
+      "country": "UA",
+      "provider": "bolt",
+      "city": "Lviv",
+      "center": [
+        49.83826,
+        24.02324
+      ],
+      "bounds": {
+        "south": 49.7692,
+        "north": 49.8878,
+        "west": 23.9392,
+        "east": 24.0928
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "496",
+      "boltAppCategories": [
+        "288"
+      ],
+      "aliases": [
+        "Lwów",
+        "Lemberg",
+        "Львів"
+      ]
+    },
+    {
+      "id": "bolt_ua_app_498",
+      "country": "UA",
+      "provider": "bolt",
+      "city": "Odesa",
+      "center": [
+        46.48572,
+        30.74383
+      ],
+      "bounds": {
+        "south": 46.3779,
+        "north": 46.5025,
+        "west": 30.6886,
+        "east": 30.7788
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "498",
+      "boltAppCategories": [
+        "291"
+      ],
+      "aliases": [
+        "Odessa",
+        "Одеса"
+      ]
+    },
+    {
+      "id": "bolt_ua_app_500",
+      "country": "UA",
+      "provider": "bolt",
+      "city": "Zaporizhzhia",
+      "center": [
+        47.85167,
+        35.11714
+      ],
+      "bounds": {
+        "south": 47.7982,
+        "north": 47.8709,
+        "west": 35.0834,
+        "east": 35.195
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "500",
+      "boltAppCategories": [
+        "1055"
+      ],
+      "aliases": [
+        "Zaporizhzhya",
+        "Zaporozhye",
+        "Запоріжжя"
+      ]
+    },
+    {
+      "id": "bolt_ua_app_501",
+      "country": "UA",
+      "provider": "bolt",
+      "city": "Vinnytsia",
+      "center": [
+        49.2322,
+        28.46871
+      ],
+      "bounds": {
+        "south": 49.1962,
+        "north": 49.2738,
+        "west": 28.3827,
+        "east": 28.538
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "501",
+      "boltAppCategories": [
+        "240"
+      ],
+      "aliases": [
+        "Вінниця"
+      ]
+    },
+    {
+      "id": "bolt_ua_app_990",
+      "country": "UA",
+      "provider": "bolt",
+      "city": "Ivano-Frankivsk",
+      "center": [
+        48.92312,
+        24.71248
+      ],
+      "bounds": {
+        "south": 48.8935,
+        "north": 48.9557,
+        "west": 24.6717,
+        "east": 24.7584
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "990",
+      "boltAppCategories": [
+        "801"
+      ],
+      "aliases": [
+        "Івано-Франківськ"
+      ]
+    },
+    {
+      "id": "bolt_ua_app_1079",
+      "country": "UA",
+      "provider": "bolt",
+      "city": "Bila Tserkva",
+      "center": [
+        49.7994,
+        30.1165
+      ],
+      "bounds": {
+        "south": 49.7648,
+        "north": 49.8281,
+        "west": 30.0594,
+        "east": 30.1941
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1079",
+      "boltAppCategories": [
+        "1153"
+      ],
+      "aliases": [
+        "Біла Церква"
+      ]
+    },
+    {
+      "id": "bolt_ua_app_1081",
+      "country": "UA",
+      "provider": "bolt",
+      "city": "Khmelnytskyi",
+      "center": [
+        49.41835,
+        26.97936
+      ],
+      "bounds": {
+        "south": 49.3967,
+        "north": 49.4639,
+        "west": 26.9317,
+        "east": 27.0353
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1081",
+      "boltAppCategories": [
+        "889"
+      ],
+      "aliases": [
+        "Хмельницький"
+      ]
+    },
+    {
+      "id": "bolt_ua_app_1083",
+      "country": "UA",
+      "provider": "bolt",
+      "city": "Zhytomyr",
+      "center": [
+        50.26235,
+        28.67913
+      ],
+      "bounds": {
+        "south": 50.2308,
+        "north": 50.2875,
+        "west": 28.6224,
+        "east": 28.7334
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1083",
+      "boltAppCategories": [
+        "1042"
+      ],
+      "aliases": [
+        "Zhitomir",
+        "Житомир"
+      ]
+    },
+    {
+      "id": "bolt_ua_app_1084",
+      "country": "UA",
+      "provider": "bolt",
+      "city": "Chernivtsi",
+      "center": [
+        48.29045,
+        25.93241
+      ],
+      "bounds": {
+        "south": 48.2455,
+        "north": 48.3289,
+        "west": 25.9048,
+        "east": 26.0081
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1084",
+      "boltAppCategories": [
+        "752"
+      ],
+      "aliases": [
+        "Чернівці",
+        "Czernowitz"
+      ]
+    },
+    {
+      "id": "bolt_ua_app_1086",
+      "country": "UA",
+      "provider": "bolt",
+      "city": "Rivne",
+      "center": [
+        50.62036,
+        26.23695
+      ],
+      "bounds": {
+        "south": 50.5858,
+        "north": 50.6501,
+        "west": 26.1862,
+        "east": 26.3039
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1086",
+      "boltAppCategories": [
+        "910"
+      ],
+      "aliases": [
+        "Рівне"
+      ]
+    },
+    {
+      "id": "bolt_ua_app_1087",
+      "country": "UA",
+      "provider": "bolt",
+      "city": "Cherkasy",
+      "center": [
+        49.44452,
+        32.05738
+      ],
+      "bounds": {
+        "south": 49.3998,
+        "north": 49.4734,
+        "west": 32.018,
+        "east": 32.1137
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1087",
+      "boltAppCategories": [
+        "1043"
+      ],
+      "aliases": [
+        "Cherkassy",
+        "Черкаси"
+      ]
+    },
+    {
+      "id": "bolt_ua_app_1131",
+      "country": "UA",
+      "provider": "bolt",
+      "city": "Uzhhorod",
+      "center": [
+        48.6242,
+        22.2947
+      ],
+      "bounds": {
+        "south": 48.5844,
+        "north": 48.6527,
+        "west": 22.247,
+        "east": 22.323
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1131",
+      "boltAppCategories": [
+        "927"
+      ],
+      "aliases": [
+        "Ужгород"
       ]
     }
   ]

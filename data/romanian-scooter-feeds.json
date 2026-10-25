@@ -1,7 +1,194 @@
 {
-  "verifiedOn": "2026-10-24",
+  "verifiedOn": "2026-10-25",
   "catalogSource": "https://www.li.me/locations",
   "systems": [
+    {
+      "id": "bolt_ro_app_297",
+      "country": "RO",
+      "provider": "bolt",
+      "city": "Cluj-Napoca",
+      "center": [
+        46.76667,
+        23.6
+      ],
+      "bounds": {
+        "south": 46.7386,
+        "north": 46.8046,
+        "west": 23.5368,
+        "east": 23.6513
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "297",
+      "boltAppCategories": [
+        "147"
+      ],
+      "aliases": [
+        "Cluj"
+      ]
+    },
+    {
+      "id": "bolt_ro_app_325",
+      "country": "RO",
+      "provider": "bolt",
+      "city": "București",
+      "center": [
+        44.43225,
+        26.10626
+      ],
+      "bounds": {
+        "south": 44.3454,
+        "north": 44.5192,
+        "west": 25.9667,
+        "east": 26.2167
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "325",
+      "boltAppCategories": [
+        "114",
+        "615",
+        "1103"
+      ],
+      "aliases": [
+        "Bucharest",
+        "Bucuresti"
+      ]
+    },
+    {
+      "id": "bolt_ro_app_463",
+      "country": "RO",
+      "provider": "bolt",
+      "city": "Iași",
+      "center": [
+        47.16667,
+        27.6
+      ],
+      "bounds": {
+        "south": 47.1181,
+        "north": 47.2001,
+        "west": 27.5311,
+        "east": 27.6419
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "463",
+      "boltAppCategories": [
+        "348",
+        "1102"
+      ],
+      "aliases": [
+        "Iasi"
+      ]
+    },
+    {
+      "id": "bolt_ro_app_803",
+      "country": "RO",
+      "provider": "bolt",
+      "city": "Sibiu",
+      "center": [
+        45.8,
+        24.15
+      ],
+      "bounds": {
+        "south": 45.7496,
+        "north": 45.8206,
+        "west": 24.1095,
+        "east": 24.1922
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "803",
+      "boltAppCategories": [
+        "579"
+      ]
+    },
+    {
+      "id": "bolt_ro_app_1048",
+      "country": "RO",
+      "provider": "bolt",
+      "city": "Arad",
+      "center": [
+        46.18333,
+        21.31667
+      ],
+      "bounds": {
+        "south": 46.1395,
+        "north": 46.2185,
+        "west": 21.2601,
+        "east": 21.3747
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1048",
+      "boltAppCategories": [
+        "420"
+      ]
+    },
+    {
+      "id": "bolt_ro_app_1049",
+      "country": "RO",
+      "provider": "bolt",
+      "city": "Oradea",
+      "center": [
+        47.0458,
+        21.91833
+      ],
+      "bounds": {
+        "south": 47.0228,
+        "north": 47.088,
+        "west": 21.8823,
+        "east": 21.9685
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1049",
+      "boltAppCategories": [
+        "330"
+      ]
+    },
+    {
+      "id": "bolt_ro_app_1053",
+      "country": "RO",
+      "provider": "bolt",
+      "city": "Târgu Mureș",
+      "center": [
+        46.54245,
+        24.55747
+      ],
+      "bounds": {
+        "south": 46.5145,
+        "north": 46.5714,
+        "west": 24.523,
+        "east": 24.6024
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1053",
+      "boltAppCategories": [
+        "802"
+      ],
+      "aliases": [
+        "Targu Mures"
+      ]
+    },
+    {
+      "id": "bolt_ro_app_1059",
+      "country": "RO",
+      "provider": "bolt",
+      "city": "Botoșani",
+      "center": [
+        47.75,
+        26.66667
+      ],
+      "bounds": {
+        "south": 47.7254,
+        "north": 47.7626,
+        "west": 26.619,
+        "east": 26.6867
+      },
+      "discoveryUrl": "https://user.live.boltsvc.net/micromobility/search/getVehicles/v2",
+      "boltAppCity": "1059",
+      "boltAppCategories": [
+        "558"
+      ],
+      "aliases": [
+        "Botosani"
+      ]
+    },
     {
       "id": "lime_ro_app_deva",
       "provider": "lime",

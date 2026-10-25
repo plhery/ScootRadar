@@ -32,6 +32,7 @@ import { binbinMapRequests, withBinbinAppCollectors } from './binbinApp';
 import { gcooMapRequests, withGcooAppCollectors } from './gcooApp';
 import { kickgoingMapRequests, withKickgoingAppCollectors } from './kickgoingApp';
 import { swingMapRequests, withSwingAppCollectors } from './swingApp';
+import { boltMapRequests, withBoltAppCollectors } from './boltApp';
 
 const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
   withDottAppCollectors, withVoiAppCollectors, withAtomAppCollectors, withLuupAppCollectors,
@@ -39,7 +40,7 @@ const withAppCollectors = (feeds: CollectableScooterFeed[]) => [
   // BinBin's sweeps start from where its scooters stood at the last one.
   (current: CollectableScooterFeed[], systems: typeof REGIONAL_SCOOTER_SYSTEMS) =>
     withBinbinAppCollectors(current, systems, id => records.get(id)?.vehicles),
-  withGcooAppCollectors, withKickgoingAppCollectors, withSwingAppCollectors,
+  withGcooAppCollectors, withKickgoingAppCollectors, withSwingAppCollectors, withBoltAppCollectors,
 ].reduce((current, wrap) => wrap(current, REGIONAL_SCOOTER_SYSTEMS), feeds);
 
 initErrorReporting();
@@ -106,8 +107,10 @@ const countedAt = (now: number) => (feed: FeedSnapshot) => feedState(feed, now, 
 const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
   cadenceModes: now => scheduler.modes(now), upstreamRequests: () => ({
     status: upstreamJsonCache.requests.status + dottMapRequests.status + voiMapRequests.status + atomMapRequests.status + luupMapRequests.status + jetMapRequests.status + whooshMapRequests.status + limeMapRequests.status +
-      binbinMapRequests.status + beamMapRequests.status + gcooMapRequests.status + kickgoingMapRequests.status + swingMapRequests.status,
-    metadata: upstreamJsonCache.requests.metadata + voiMapRequests.metadata + atomMapRequests.metadata + luupMapRequests.metadata + whooshMapRequests.metadata + limeMapRequests.metadata + beamMapRequests.metadata,
+      binbinMapRequests.status + beamMapRequests.status + gcooMapRequests.status + kickgoingMapRequests.status + swingMapRequests.status +
+      boltMapRequests.status,
+    metadata: upstreamJsonCache.requests.metadata + voiMapRequests.metadata + atomMapRequests.metadata + luupMapRequests.metadata + whooshMapRequests.metadata + limeMapRequests.metadata + beamMapRequests.metadata +
+      boltMapRequests.metadata,
   }),
   planRefreshes: () => planRefreshCounts,
   limeAccountRequests,
