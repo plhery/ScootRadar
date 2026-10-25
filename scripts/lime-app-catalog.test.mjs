@@ -50,3 +50,17 @@ it('keeps geometry audit evidence valid across label changes and invalidates it 
   expect(limeAuditFingerprint('protocol', market, [{ limeMapTiles: [] }])).not.toBe(fingerprint);
   expect(limeAuditFingerprint('changed-protocol', market, systems)).not.toBe(fingerprint);
 });
+
+it('keeps the catalog grid when the same grid computed on another processor differs in its last bit', () => {
+  const market = { country: 'RO', city: 'Deva', center: [.015, .015], timeZone: 'Europe/Bucharest', regionToken: 'region',
+    serviceAreas: [{ polygon: '???ozDozD??nzDnzD?' }], sourceDocuments: ['https://assets.lime.bike/zones_attributes/example.json'] };
+  const grid = limeAreaGrid([decodeLimeArea(market.serviceAreas[0].polygon)]);
+  const step = new Float64Array([grid.lngStep]);
+  new BigUint64Array(step.buffer)[0] += 1n;
+  const generate = lngStep => limeAppCatalogs({ verifiedOn: '2026-10-25', markets: [market] }, [{ code: 'RO', catalog: 'ro.json' }],
+    () => ({ systems: [{ id: 'lime_ro_app_deva', limeAppMap: true, limeMapGrid: { ...grid, lngStep } }] }), { decodeLimeArea, limeAreaGrid })
+    .get('ro.json').systems[0].limeMapGrid.lngStep;
+  expect(step[0]).not.toBe(grid.lngStep);
+  expect(generate(step[0])).toBe(step[0]);
+  expect(generate(grid.lngStep * 1.001)).toBe(grid.lngStep);
+});
