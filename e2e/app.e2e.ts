@@ -1639,9 +1639,10 @@ test('the address search itself finds a typed city with scooter data first, with
     // display_name stays English for older apps.
     { lat: 47.1368, lng: 7.2468, display_name: 'Biel/Bienne, Switzerland', title: 'Biel/Bienne', subtitle: 'Schweiz', covered: true },
     { lat: 52.024, lng: 8.5372, display_name: 'Bielefeld, Germany', title: 'Bielefeld', subtitle: 'Deutschland', covered: true },
+    { lat: 49.82245, lng: 19.04686, display_name: 'Bielsko-Biała, Poland', title: 'Bielsko-Biała', subtitle: 'Polen', covered: true },
   ]);
   const options = page.getByRole('listbox', { name: 'Vorschläge' }).getByRole('option');
-  await expect(options).toHaveText(['Biel/BienneSchweiz', 'BielefeldDeutschland']);
+  await expect(options).toHaveText(['Biel/BienneSchweiz', 'BielefeldDeutschland', 'Bielsko-BiałaPolen']);
 
   // Enter takes the first row, and the map goes to Biel.
   await page.keyboard.press('Enter');

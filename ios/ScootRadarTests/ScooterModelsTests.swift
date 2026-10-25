@@ -1888,13 +1888,13 @@ extension ScooterModelsTests {
         XCTAssertEqual(payload.model.seasonOver, ["kazakhstan:whoosh_kz_nqz"])
         XCTAssertEqual(ScooterResponseMetadata(partial: false, failedSources: []).seasonOver, [])
 
-        // Whoosh closed these three on 24 October 2026; Jet still runs in Almaty.
+        // Whoosh closed these three on 24 October 2026; Jet and Bolt still run in Almaty.
         let almaty = GeoPoint(latitude: 43.298812, longitude: 76.939435)
         let astana = GeoPoint(latitude: 51.143975, longitude: 71.43581)
         let zapopan = GeoPoint(latitude: 20.721331, longitude: -103.391882)
         XCTAssertEqual(
             ScooterCityCatalog.cities.first { $0.id == "kz:Almaty" }?.feeds.map(\.id),
-            ["kazakhstan:jet_kz_almaty", "kazakhstan:whoosh_kz_ala"]
+            ["kazakhstan:jet_kz_almaty", "kazakhstan:whoosh_kz_ala", "kazakhstan:bolt_kz_app_122"]
         )
         XCTAssertNil(ScooterSeasonalPause.active(at: almaty, on: now, seasonOver: ["kazakhstan:whoosh_kz_ala"]))
         XCTAssertEqual(
@@ -1908,9 +1908,12 @@ extension ScooterModelsTests {
         // Open again, or another town's feed closed: no pause.
         XCTAssertNil(ScooterSeasonalPause.active(at: astana, on: now))
         XCTAssertNil(ScooterSeasonalPause.active(at: astana, on: now, seasonOver: ["mexico:whoosh_mx_zap"]))
-        // Almaty too once Jet closes as well.
+        // Almaty too once Jet and Bolt close as well, and not while Bolt runs.
+        XCTAssertNil(ScooterSeasonalPause.active(at: almaty, on: now, seasonOver: ["kazakhstan:whoosh_kz_ala", "kazakhstan:jet_kz_almaty"]))
         XCTAssertEqual(
-            ScooterSeasonalPause.active(at: almaty, on: now, seasonOver: ["kazakhstan:whoosh_kz_ala", "kazakhstan:jet_kz_almaty"]),
+            ScooterSeasonalPause.active(at: almaty, on: now, seasonOver: [
+                "kazakhstan:whoosh_kz_ala", "kazakhstan:jet_kz_almaty", "kazakhstan:bolt_kz_app_122",
+            ]),
             ScooterSeasonalPause.Active(city: "Almaty", back: .seasonOver)
         )
 
