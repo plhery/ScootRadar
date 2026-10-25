@@ -44,6 +44,9 @@ const hostHeaders = { 'api.entur.io': { 'ET-Client-Name': 'scootradar-map' } };
 // keeps a 404 for hours and an unknown query parameter answers 400: no cache busting.
 const DOTT = 'https://gbfs.api.ridedott.com';
 const MOBIDATA_BW = 'https://api.mobidata-bw.de';
+// As HOST_AUTH in src/lib/scooterFeeds.ts: NRW.Mobidrom answers only with an OAuth token, which the
+// scooter cache holds and this check doesn't, so its 401 says nothing about the feed.
+const TOKEN_HOSTS = new Set(['www.mobilitaetsdaten.nrw']);
 
 // At most two requests a second to one host, whatever the number of feeds it serves.
 const pacer = hostPacer(500);
@@ -102,6 +105,7 @@ const dottRegion = url => {
 function state(system, error) {
   if (!error) return 'ok';
   if (dottRegion(system.discoveryUrl) && error.status === 403 && error.code === 'ERR_REGION_OFFLINE') return 'paused';
+  if (error.status === 401 && TOKEN_HOSTS.has(new URL(system.discoveryUrl).hostname)) return 'failed';
   if ([401, 404, 410].includes(error.status)) return 'gone';
   return 'failed';
 }
