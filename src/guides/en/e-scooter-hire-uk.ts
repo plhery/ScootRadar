@@ -167,7 +167,7 @@ const guide: Guide = {
     },
     {
       question: 'Can a 16- or 17-year-old hire an e-scooter?',
-      answer: 'No. The law would allow it from 16, but every operator we checked rents e-scooters only to riders aged 18 or over. Voi and Dott do rent e-bikes from 16, in the same app.',
+      answer: 'No. The law would allow it from 16, but every operator we checked rents e-scooters only to riders aged 18 or over. Voi and Dott do rent e-bikes from 16, in the same app, though in Cambridge the county council says you must be 18 to use any part of Voi’s scheme.',
     },
     {
       question: 'Will the app accept my foreign driving licence?',
@@ -211,6 +211,7 @@ const guide: Guide = {
     { title: 'Norfolk County Council: Extension of Norwich e-scooter trial (March 2026)', url: 'https://norfolkcc.cmis.uk.com/norfolkcc/DelegatedDecisions/tabid/67/ctl/ViewCMIS_DecisionDetails/mid/391/Id/2006/Default.aspx' },
     { title: 'West Northamptonshire Council: Stay off the pavement if you’re riding an e-scooter (24 May 2024, archived)', url: 'https://web.archive.org/web/20251220001448/https://www.westnorthants.gov.uk/news/stay-pavement-if-youre-riding-e-scooter' },
     { title: 'Oxfordshire County Council: E-scooter trial in Oxford', url: 'https://www.oxfordshire.gov.uk/transport-and-travel/local-transport-and-connectivity-plan/active-travel/e-scooter-trial' },
+    { title: 'Cambridgeshire County Council: Cycling', url: 'https://www.cambridgeshire.gov.uk/residents/travel-roads-and-parking/active-travel-in-cambridgeshire/getting-started/cycling' },
   ],
 };
 
