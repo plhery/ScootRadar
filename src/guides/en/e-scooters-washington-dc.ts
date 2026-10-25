@@ -20,11 +20,11 @@ const guide: Guide = {
         {
           list: [
             '**Hopp**, Bolt’s scooter brand, in its own Hopp app. DDOT caps it at 2,290 scooters.',
-            '**Lime**, in DC since 2017, with up to 5,000 scooters and 3,775 e-bikes, the e-bikes also in the Uber app. **Our map doesn’t show Lime’s DC scooters yet**, so look for one in the Lime app.',
+            '**Lime**, in DC since 2017, with up to 5,000 scooters and 3,775 e-bikes, the e-bikes also in the Uber app. Since 25 October 2026 our map shows Lime’s DC scooters too.',
             '**Veo**, mostly seated, throttle-powered Cosmo and Apollo e-bikes (DDOT counts them as bikes), plus a few hundred stand-up scooters in its open data.',
           ],
         },
-        'On the afternoon of 16 October 2026 the [map of Washington](map:us:dc:Washington) showed about 1,300 Hopp and 270 Veo scooters inside the District: what’s on the map, not the fleets. E-bikes aren’t shown. The Washington view also takes in Arlington, Virginia, across the Potomac, and College Park, Maryland, to the north-east. Its Lime and Bird scooters are all but a handful on the Virginia side, and the Veo scooters at $0.32 a minute are College Park’s, not DC’s.',
+        'On the morning of Sunday 25 October 2026 the [map of Washington](map:us:dc:Washington) showed about 4,600 Lime, 1,500 Hopp and 280 Veo scooters in the city: what’s on the map, not the fleets. E-bikes aren’t shown. The map counts the scooters across the Potomac in Arlington, Virginia, and in College Park, Maryland, to the north-east, under those towns: Arlington’s Lime, Bird and GCOO scooters, and College Park’s Veo scooters at $0.32 a minute.',
         'The 2025–2026 permits end on 31 December 2026. DDOT tells applicants for 2027–2028 by 30 November, so the line-up may change in January.',
         '**Visiting?** Get the app before you go. You need no driving licence: DDOT doesn’t make operators check one, as that can shut out foreign visitors. Expect an age check instead, which DDOT says now covers all users. New to this? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
@@ -134,7 +134,7 @@ const guide: Guide = {
             '**Night.** There’s no curfew: DDOT encourages round-the-clock service and Hopp runs 24/7, but East Potomac Park closes to everyone from 1 to 5 am. DDOT’s draft operator agreement for 2027–2028, open for comment until 2 November 2026, would add in-app sobriety tests from midnight to 4 am.',
           ],
         },
-        'The [Washington map](map:us:dc:Washington) shows the nearest Hopp or Veo scooter and the walk to it.',
+        'The [Washington map](map:us:dc:Washington) shows the nearest Hopp, Lime or Veo scooter and the walk to it.',
       ],
     },
     {
