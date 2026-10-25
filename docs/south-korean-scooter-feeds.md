@@ -1,11 +1,12 @@
 # South Korean scooter feeds
 
-South Korea is on the map since 24 October 2026, read from five operators'
+South Korea is on the map since 24 October 2026, read from six operators'
 app maps: Beam's authenticated rider map, and the signed-out maps of GCOO,
 Kickgoing, which carries Xingxing's scooters too, Swing, which answers
-only with its app's one-time code, and, since 25 October, Alpaca. The user
-asked for GCOO's, Kickgoing's and Swing's that day, Swing's one-time code
-included, and for Alpaca's the next. No operator publishes a GBFS feed, and
+only with its app's one-time code, and, since 25 October, Alpaca and DART,
+whose app shows its map only after a phone sign-in but whose server answers
+without one. The user asked for GCOO's, Kickgoing's and Swing's that day,
+Swing's one-time code included, and for Alpaca's and DART's the next. No operator publishes a GBFS feed, and
 the government's TAGO API lists Sejong only and needs a key only Korean
 residents and companies can get (see [the coverage gaps](coverage-gaps.md)).
 The signed-out maps' routes, the apps' provenance and the first samples are
@@ -18,9 +19,9 @@ Memphis, with 10 scooters in four areas, is left out.
 
 ## Catalog
 
-`data/south-korean-scooter-feeds.json` lists 256 systems in 121 towns: Swing
-in 82, GCOO in 76, Xingxing in 32, Alpaca in 29, Kickgoing in 9 and Beam's 28
-regions in 36 (see [Beam](#beam)). A town is a municipality:
+`data/south-korean-scooter-feeds.json` lists 257 systems in 121 towns: Swing
+in 82, GCOO in 76, Xingxing in 32, Alpaca in 29, Kickgoing in 9, DART's one
+system in 6 (see [DART](#dart)) and Beam's 28 regions in 36 (see [Beam](#beam)). A town is a municipality:
 Seoul, the six metropolitan cities, Sejong, and the cities and counties of the
 provinces. Each has its usual romanized name and its official Korean name as
 an alias, so a search finds 서울 as well as Seoul. Gyeonggi's Gwangju is
@@ -38,7 +39,10 @@ when most scooters stand idle:
   outward until no new scooter came back;
 - Alpaca's, a day later, from 01:23 to 01:30 Korea time on 26 October (17:23
   to 17:30 Paris on 25 October), as its collector reads the country: every
-  cell where the map's clusters said vehicles stood (see [Alpaca](#alpaca)).
+  cell where the map's clusters said vehicles stood (see [Alpaca](#alpaca));
+- DART's, from three reads of its whole fleet, at 00:38, 00:49 and 02:17
+  Korea time on 26 October: the towns from the last, the bounds from all
+  three. Its towns are the areas of its one system.
 
 Each scooter was placed in its municipality by its OpenStreetMap boundary. An
 operator has a system in a town where the sweep found 30 scooters or more.
@@ -52,22 +56,26 @@ within the municipality's own box widened by 300 m.
 | Xingxing | 18,924 | 32 | Seoul 4,902, Ulsan 2,833, Hanam 1,276, Jeonju 1,233 |
 | Kickgoing | 11,365 | 9 | Seoul 4,863, Busan 4,614, Anyang 720, Bucheon 543 |
 | Alpaca | 7,908 | 29 | Cheongju 892, Ulsan 830, Yongin 734, Pyeongtaek 586 |
+| DART | 1,391 | 6 | Yeosu 473, Incheon 374, Siheung 194, Gimhae 146 |
 
 The biggest towns are Busan (10,386), Seoul (10,310), Ulsan (6,650), Daejeon
 (6,397), Daegu (5,391), Jeonju (5,390) and Incheon (5,349), before Alpaca's
-830 in Ulsan. Seoul has no GCOO
+830 in Ulsan and DART's 374 in Incheon. Seoul has no GCOO
 system and only 545 Swing scooters: both run mostly bikes there, Swing about
 1,500 e-bikes around Gangnam station alone. Alpaca is in none of the
 metropolitan cities but Ulsan: most of its towns are the capital area's outer
-cities, Cheongju and smaller towns further south.
+cities, Cheongju and smaller towns further south. DART's other two towns are
+Osan (104) and Gimpo (100); its Gimhae scooters are all in Jinyeong, its
+Incheon ones in Geomdan, Namdong, Seohae and Seo.
 
 Every town has its municipal boundary in `data/town-outlines.json`, from
 OpenStreetMap, as the towns of the capital area and around Busan touch and
 their boxes overlap. A scooter counts under the town it stands in, and
 GCOO's, Kickgoing's, Xingxing's and Swing's feeds drop the few standing in a
 town where their operator has no system: GCOO's Suncheon feed one, in
-Gwangyang, on 24 October, and Alpaca's feeds 12, in Gunpo, Uiwang and Suwon,
-on 26 October. Nonsan, Pocheon, Gyeryong and Hamyang are Alpaca's alone; they
+Gwangyang, on 24 October, Alpaca's feeds 12, in Gunpo, Uiwang and Suwon,
+on 26 October, and DART's feed 34, in Anseong (25), Pyeongtaek (8) and
+Hwaseong (1), that night. Nonsan, Pocheon, Gyeryong and Hamyang are Alpaca's alone; they
 have their outlines too (relations 7580853, 2409178, 7580846 and 7833356). OpenStreetMap maps Gwangju inside 전남광주통합특별시
 (relation 21039457) and has no relation for the city itself, so its outline
 joins its five districts (relations 4162635, 7348583, 7348741, 7348758 and
@@ -189,6 +197,57 @@ phone's "Open in Alpaca" opens `https://alpaca.kr/`, whose page links both
 stores, and the iPhone app opens Alpaca's App Store page (`app` in
 `data/providers.json`).
 
+## DART
+
+`server/dartApp.ts` reads the map of DART (다트, of 주식회사 다트쉐어링, DART
+Sharing), `POST https://app.dartsharing.com:8443/app/vehicle/main_v2`, as its
+app (`kr.co.dartapp` 2.3.0, App Store id 1458076636) asks for it: form fields
+`zoomLevel`, `user_no`, `luLat` (north), `ldLat` (south), `luLong` (west) and
+`ruLong` (east), and the headers `token` and `app-version: 2.3.0`, which the
+app's interceptor adds. The app shows its map only after a phone number and
+SMS sign-in. The server answers the map request without one, as user 0 with
+an empty token, from here and from Netcup alike: nginx with no signature,
+certificate pinning or Cloudflare in front. The user chose on 25 October 2026
+to read it so, and to send `scootradar` as the token, which the server
+answered just as it answers an empty one.
+
+One view of the whole country at zoom 14 lists the whole fleet: 1,425
+scooters, 850 kB, at 02:17 Korea time on 26 October, answered in about 3
+seconds. At zoom 5 and below the map lists franchise points instead. So a
+round is one request, whatever the number of towns: DART has one system,
+`dart_kr_nationwide`, whose areas are its six towns. Its feed keeps the
+scooters in those areas, each once, and the map counts each in the town
+whose outline holds it. The read fails if the reply is not `result: true`
+with a list of vehicles, or lists no scooter to ride, rather than empty
+every town.
+
+A vehicle gives its `reg_no`, a stable number, its position,
+`power_percent` and `remaining_range`, the range the app shows, in
+kilometres: about half the battery level, 50 km at 100%. Its `status`, the
+app's marker status, is 1 (normal) or 8 (free to unlock) for a scooter that
+can be ridden; 3 is reserved, 7 and 9 held, and 0 a franchise point. Only 1
+(1,326) and 8 (99) came back. There is no vehicle type: DART rents
+kickboards only. The collector reads nothing else of a vehicle: neither its
+address, its QR code nor its parking photo, which the reply holds too, nor
+`region`, the franchise's label (서울 for most of Yeosu's and Incheon's,
+충북 for 28 of Gimpo's), nor `mod_date`, 20:32 that evening for 1,280 of the
+1,425, not a position's time.
+
+`/app/user/getGeoJson` answers signed out too, with 1,139 polygons, 1,112 of
+them with no name or category, so no zone is shown from it. Two reads 10.7
+minutes apart, at 00:38 and 00:49 Korea time on 26 October, went from 1,431
+scooters to 1,433: 5 gone, 7 new, 12 moved, 51 battery levels changed. Two
+reads 15 minutes apart, at 02:17 and 02:32, went from 1,425 to 1,429: 3
+gone, 7 new, 17 moved more than 20 m, 53 battery levels changed. The fleet
+stood ready at all those hours; no town of DART's has a night ban in
+`data/rental-curfews.json`, and its terms set no hours.
+
+The map links no scooter, and the app claims no link at all: its Android
+manifest has no scheme or host. Its site, www.dartsharing.com, answers only
+over http behind a cookie script, and its certificate expired in July 2020.
+So DART has no `app` in `data/providers.json`, and its card no "Open in"
+button, as Beam's and Kickgoing's.
+
 ## Beam
 
 Verified 24 October 2026 through Beam's authenticated rider map in the
@@ -264,9 +323,10 @@ keeping road numbers after Hangul street names and before Roman ones.
 ## Load
 
 The cache collects each Kickgoing, Xingxing and Swing town every 20 minutes,
-each GCOO and Alpaca town every two hours (`GCOO_IDLE_INTERVAL_MS`,
-`APP_MAP_IDLE_INTERVAL_MS`), and any town every minute while someone looks at
-it. A round of every town takes about:
+each GCOO and Alpaca town, and DART's whole fleet, every two hours
+(`GCOO_IDLE_INTERVAL_MS`, `APP_MAP_IDLE_INTERVAL_MS`), and any town every
+minute while someone looks at it, DART's whole fleet while someone looks at
+one of its towns. A round of every town takes about:
 
 - GCOO: 3,300 requests in Korea, over 636 tiles and their parts, and about
   250 in the US, starting at least 250 ms apart. A town waits for each reply
@@ -279,9 +339,10 @@ it. A round of every town takes about:
   country's clusters for each town that finds none from the last 50
   seconds, starting at least 500 ms apart. The server answered in 0.3 s at
   night (0.34 s at the 95th percentile), in 1.2 to 2.3 s that evening, so a
-  round takes 4 to 8 minutes. Ulsan, the biggest, is 47 cells.
+  round takes 4 to 8 minutes. Ulsan, the biggest, is 47 cells;
+- DART: one request, of about 850 kB, answered in 2.5 to 3.5 seconds.
 
-Each client spaces the requests of all its towns, so the scheduler runs their
+Each of the first four clients spaces the requests of all its towns, so the scheduler runs their
 collections on two slots of their host and none of its six shared ones (see
 `DEPLOY.md`): the first rounds, on the shared slots, held back every other
 feed for over half an hour.
@@ -291,18 +352,20 @@ than the 146,000 or so different ones, as the feeds of neighbouring towns each
 hold the scooters where their bounds overlap; the map shows and counts each
 once. That is about 120 MB of heap at about 630 bytes each; see the memory
 limits in `DEPLOY.md`. Alpaca's 29 feeds would have held 9,347 from its
-sweep of 26 October, 7,908 different, about 6 MB. A 429 from any of the four stops its requests for the
-time its `Retry-After` asks, a minute at least and an hour at most. Beam's
+sweep of 26 October, 7,908 different, about 6 MB; DART's feed holds about
+1,400, under 1 MB. A 429 from any of the five stops its requests for the time
+its `Retry-After` asks, a minute at least and an hour at most. Beam's
 reads and their pace are in [the Beam collector guide](beam-app-map.md).
 
 ## Terms and credits
 
-None of the five publishes a licence or terms for this data. The map's
+None of the six publishes a licence or terms for this data. The map's
 credits name the source for each country, "Beam authenticated rider map",
 "GCOO anonymous app map", "Kickgoing anonymous app map, Xingxing's scooters
-included", "Swing anonymous app map" and "Alpaca anonymous app map", and link
-to ridebeam.com, gcoo.io, kickgoing.io and alpaca.kr. Swing's site,
-swingmobility.com, did not answer from here, so it has no link.
+included", "Swing anonymous app map", "Alpaca anonymous app map" and "DART
+anonymous app map", and link to ridebeam.com, gcoo.io, kickgoing.io and
+alpaca.kr. DART's site has no working https, and Swing's, swingmobility.com,
+did not answer from here, so neither has a link.
 
 Alpaca's [rider terms](https://alpaca.kr/terms/html/term_01.html)
 (회원이용약관), of 주식회사 알파모빌리티 (Alpha Mobility, in Ansan), in force
@@ -311,6 +374,17 @@ publish, distribute or broadcast for profit what they obtain through the
 service, or let others do so, without the company's prior consent.
 ScootRadar reads the map signed out, as no member, and charges nothing; the
 clause is the user's to weigh. Alpaca's contact is help@maasasia.com.
+
+DART's [service terms](https://app.dartsharing.com:8443/app/policy?type=service)
+(서비스 이용약관), of 주식회사 다트쉐어링, in force since 1 May 2019, hold the
+same clause, in article 23(2). Article 15(13) goes further for members: they
+may not copy or distribute what the company posts, the app's content among
+it, without its written permission (item 25), nor use the service from an
+access point or with a device they have no authority for (items 29 and 30).
+ScootRadar has no account and charges nothing, but it reads a map that the
+app shows only to members; these clauses are the user's to weigh. DART's
+rental and location terms (`type=rental`, `type=location`) say nothing of
+the map.
 
 ## Recheck
 
@@ -325,10 +399,13 @@ answered, none with fewer than 30 scooters (Xingxing in
 Seongju). From 01:39 to 01:43 Korea time on 26 October all 29 of Alpaca's
 answered, collected one after another by its collector: 413 requests in 3
 minutes 29 seconds, 9,340 scooters in the feeds, none fewer than 30 (Icheon
-34). To review the catalog, sweep the service areas again as above,
-place the scooters by municipality, and compare with the table above. For
-Alpaca, its systems' collections read the whole country, every cell its
-clusters point to once, and the table above is their scooters by town.
+34). At 02:32 Korea time on 26 October DART's one system answered, through
+its collector: one request, in 2.6 seconds, 1,395 scooters in its six towns,
+the fewest in Gimpo (100). To review the catalog, sweep the service areas
+again as above, place the scooters by municipality, and compare with the
+table above. For Alpaca, its systems' collections read the whole country,
+every cell its clusters point to once, and the table above is their
+scooters by town; DART's one read is its whole fleet.
 
 ## Known gaps
 
@@ -349,12 +426,12 @@ clusters point to once, and the table above is their scooters by town.
   own read from Swing's map as Xingxing's are from Kickgoing's, once an App
   Store build that knows Deer is live. The builds before leave a provider
   they don't know out of the totals, and Cheongju would look empty in them.
-- **DART** (`kr.co.dartapp` 2.3.0) opens its map only after a phone number
-  and SMS sign-in. `POST https://app.dartsharing.com:8443/app/vehicle/main_v2`
-  answers with user_no 0 and an empty token, but the app never asks it
-  signed out, so it is not read until the user decides. Its fleet was about
-  1,431: Yeosu 473, Incheon 383, Siheung 192, Gimhae 147, Osan 107, Gimpo 98,
-  Anseong 26 and Pyeongtaek 5.
+- **DART could close its map** at any time by checking the token: its app
+  asks for a phone sign-in before it shows the map, and the server answers
+  user 0 with an empty token or ours (see [DART](#dart)). Its feed would
+  then fail.
+- **DART's smaller towns:** its 34 scooters in Anseong (25), Pyeongtaek (8)
+  and Hwaseong (1) on 26 October, under 30 a town, are not shown.
 - **Alpaca's e-bikes, and its empty areas:** see [Alpaca](#alpaca).
 - **Zones:** GCOO's polygons and Swing's geofence file hold service areas
   and no-parking zones, but they are not published on the map yet.

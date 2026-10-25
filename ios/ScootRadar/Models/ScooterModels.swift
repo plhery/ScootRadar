@@ -439,6 +439,8 @@ enum ScooterRentalLinkPolicy {
         ),
         // Alpaca's map links no scooter, and its app claims no https host, only its alpaca:// and sbike://.
         "alpaca": ProviderPolicy(schemes: [], httpsHosts: []),
+        // DART's map links no scooter, and its app claims no link at all, neither a scheme nor an https host.
+        "dart": ProviderPolicy(schemes: [], httpsHosts: []),
         "publibike": ProviderPolicy(
             schemes: ["publibike", "velospot"],
             httpsHosts: ["publibike.ch", "velospot.info"]

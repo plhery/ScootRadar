@@ -1025,15 +1025,18 @@ town names, the gaps and the recheck command, and
 
 ## South Korea
 
-The reviewed catalog lives in `data/south-korean-scooter-feeds.json`: 256
+The reviewed catalog lives in `data/south-korean-scooter-feeds.json`: 257
 systems in 121 towns, Swing in 82, GCOO in 76, Xingxing in 32, Alpaca in 29,
-Kickgoing in 9, and Beam's 28 regions in 36, read from Beam's rider map (see
-[Beam rider app](#beam-rider-app)). No operator publishes a feed. The other
-five come from the operators' signed-out app maps, with no rider account:
-GCOO's, Kickgoing's and Alpaca's with no credential, and Kickgoing's with its
-ally Xingxing's scooters; Swing's with the one-time code its app computes,
-from a key compiled into the app. The user asked for GCOO's, Kickgoing's and
-Swing's maps on 24 October 2026, and for Alpaca's on 25 October. Deer's
+Kickgoing in 9, DART's one system in 6, and Beam's 28 regions in 36, read
+from Beam's rider map (see [Beam rider app](#beam-rider-app)). No operator
+publishes a feed. The other six come from the operators' signed-out app
+maps, with no rider account: GCOO's, Kickgoing's and Alpaca's with no
+credential, and Kickgoing's with its ally Xingxing's scooters; Swing's with
+the one-time code its app computes, from a key compiled into the app; DART's
+as user 0 with the token "scootradar", though its app shows the map only
+after a phone sign-in. The user asked for GCOO's, Kickgoing's and Swing's
+maps on 24 October 2026, and for Alpaca's and DART's on 25 October, DART's
+knowing its app asks for that sign-in first. Deer's
 scooters are on Swing's map: Swing bought Deer's business in 2024. Swing's key is a runtime-only secret of the cache, never in Git; the
 IMEI that identifies a Swing scooter is neither stored nor shown, only a keyed
 hash of it.
@@ -1042,13 +1045,17 @@ Each collection reads its town whole, on a bounded request plan, and fails
 rather than publish part of it. Alpaca's reads the country's clusters first,
 then every cell of a fixed grid, within 0.017 degrees of its centre, that
 meets a square where they say vehicles stand: 456 cells for its 29 towns on
-26 October, every two hours while nobody looks. Bicycles, e-bikes and mopeds
-are left out. Alpaca, Beam, GCOO and Kickgoing give a battery level, GCOO a
-range too; Swing gives only a band, so its battery stays unknown. None of the
-signed-out maps gives a position's time. None of the five operators publishes
-a licence for this data. Alpaca's rider terms forbid members to reuse for
-profit, without consent, what they obtain through the service (article
-27(2)); ScootRadar reads its map signed out and charges nothing. The map's
+26 October, every two hours while nobody looks. DART's lists its whole fleet
+in one reply, so one request a round serves its six towns. Bicycles, e-bikes
+and mopeds are left out. Alpaca, Beam, DART, GCOO and Kickgoing give a
+battery level, DART and GCOO a range too; Swing gives only a band, so its
+battery stays unknown. None of the signed-out maps gives a position's time.
+None of the six operators publishes a licence for this data. Alpaca's rider
+terms forbid members to reuse for profit, without consent, what they obtain
+through the service (article 27(2)), and DART's the same (article 23(2)),
+and also, without written permission, to copy or distribute what DART posts
+in its app (article 15(13), item 25); ScootRadar reads both maps signed out
+and charges nothing. The map's
 credits name them, and link to ridebeam.com, gcoo.io, kickgoing.io and
 alpaca.kr. Beam's regions are named after the municipalities they stand
 in, Beam's own names kept as aliases. Town outlines are OpenStreetMap

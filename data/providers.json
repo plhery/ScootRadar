@@ -370,5 +370,16 @@
       "link": "https://alpaca.kr/",
       "appStoreId": 1328860619
     }
+  },
+  {
+    "key": "dart",
+    "name": "DART",
+    "color": "#0a84ff",
+    "initial": "Da",
+    "systemIds": {
+      "prefixes": [
+        "dart_"
+      ]
+    }
   }
 ]

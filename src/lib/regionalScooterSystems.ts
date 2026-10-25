@@ -82,6 +82,11 @@ export interface RegionalScooterSystem extends ScooterServiceArea {
   /** Alpaca's open app map, read point by point where its clusters say vehicles stand, by the Node cache. */
   alpacaAppMap?: true;
   /**
+   * DART's app map, which lists the whole fleet in one reply: the Node cache reads it once a round,
+   * without the phone sign-in the app asks for, and keeps the scooters in the system's areas, its towns.
+   */
+  dartAppMap?: true;
+  /**
    * Bolt's rider-app market id, its operating areas' city_id: the Node cache reads the market whole
    * with its private Bolt session, in one request from the system's centre.
    */
@@ -125,7 +130,7 @@ export const REGIONAL_SCOOTER_SYSTEMS = (CATALOG_SYSTEMS as RegionalScooterSyste
 export function isAppMapSystem(system: RegionalScooterSystem) {
   return Boolean(system.dottAppRegion || system.voiAppZone || system.limeAppMap || system.atomAppAccount || system.luupAppCities ||
     system.jetAppMap || system.whooshAppRegion || system.binbinAppArea || system.beamAppCity || system.gcooAppMap || system.kickgoingAppMap ||
-    system.swingAppMap || system.alpacaAppMap || system.boltAppCity);
+    system.swingAppMap || system.alpacaAppMap || system.dartAppMap || system.boltAppCity);
 }
 
 export function serviceAreas(system: RegionalScooterSystem): ScooterServiceArea[] {

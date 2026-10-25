@@ -6,6 +6,8 @@
   "beamCatalogSource": "https://www.ridebeam.com/",
   "alpacaVerifiedOn": "2026-10-25",
   "alpacaCatalogSource": "https://alpaca.kr/",
+  "dartVerifiedOn": "2026-10-25",
+  "dartCatalogSource": "https://apps.apple.com/kr/app/id1458076636",
   "systems": [
     {
       "id": "gcoo_kr_busan",
@@ -5023,6 +5025,123 @@
       },
       "discoveryUrl": "https://alpaca.maasasia.com/graphql",
       "alpacaAppMap": true
+    },
+    {
+      "id": "dart_kr_nationwide",
+      "country": "KR",
+      "provider": "dart",
+      "city": "Yeosu / Incheon / Siheung / Gimhae / Osan / Gimpo",
+      "timeZone": "Asia/Seoul",
+      "center": [
+        34.7637,
+        127.6782
+      ],
+      "bounds": {
+        "south": 34.7167,
+        "north": 37.6441,
+        "west": 126.5874,
+        "east": 128.7608
+      },
+      "discoveryUrl": "https://app.dartsharing.com:8443/app/vehicle/main_v2",
+      "dartAppMap": true,
+      "areas": [
+        {
+          "city": "Yeosu",
+          "aliases": [
+            "여수시"
+          ],
+          "center": [
+            34.7637,
+            127.6782
+          ],
+          "bounds": {
+            "south": 34.7167,
+            "north": 34.7927,
+            "west": 127.6192,
+            "east": 127.7645
+          }
+        },
+        {
+          "city": "Incheon",
+          "aliases": [
+            "인천광역시"
+          ],
+          "center": [
+            37.4568,
+            126.6534
+          ],
+          "bounds": {
+            "south": 37.3713,
+            "north": 37.6341,
+            "west": 126.598,
+            "east": 126.7764
+          }
+        },
+        {
+          "city": "Siheung",
+          "aliases": [
+            "시흥시"
+          ],
+          "center": [
+            37.3667,
+            126.7358
+          ],
+          "bounds": {
+            "south": 37.3767,
+            "north": 37.4661,
+            "west": 126.7177,
+            "east": 126.8335
+          }
+        },
+        {
+          "city": "Gimhae",
+          "aliases": [
+            "김해시"
+          ],
+          "center": [
+            35.2377,
+            128.8671
+          ],
+          "bounds": {
+            "south": 35.2845,
+            "north": 35.3288,
+            "west": 128.6948,
+            "east": 128.7608
+          }
+        },
+        {
+          "city": "Osan",
+          "aliases": [
+            "오산시"
+          ],
+          "center": [
+            37.1625,
+            127.056
+          ],
+          "bounds": {
+            "south": 37.1226,
+            "north": 37.1961,
+            "west": 127.0252,
+            "east": 127.1071
+          }
+        },
+        {
+          "city": "Gimpo",
+          "aliases": [
+            "김포시"
+          ],
+          "center": [
+            37.6428,
+            126.6716
+          ],
+          "bounds": {
+            "south": 37.5797,
+            "north": 37.6441,
+            "west": 126.5874,
+            "east": 126.8039
+          }
+        }
+      ]
     },
     {
       "id": "beam_kr_ansan",

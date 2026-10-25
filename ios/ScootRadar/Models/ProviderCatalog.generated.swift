@@ -42,6 +42,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
     case swing
     case deer
     case alpaca
+    case dart
 
     var id: String { rawValue }
 
@@ -85,6 +86,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .swing: "Swing"
         case .deer: "Deer"
         case .alpaca: "Alpaca"
+        case .dart: "DART"
         }
     }
 
@@ -128,6 +130,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .swing: "Sw"
         case .deer: "De"
         case .alpaca: "A"
+        case .dart: "Da"
         }
     }
 
@@ -199,6 +202,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         case .swing: UIColor(red: 0.066667, green: 0.066667, blue: 0.066667, alpha: 1)
         case .deer: UIColor(red: 0.780392, green: 0.690196, blue: 0.000000, alpha: 1)
         case .alpaca: UIColor(red: 1.000000, green: 0.431373, blue: 0.207843, alpha: 1)
+        case .dart: UIColor(red: 0.039216, green: 0.517647, blue: 1.000000, alpha: 1)
         }
     }
 
@@ -224,6 +228,7 @@ enum ScooterProvider: String, CaseIterable, Identifiable, Sendable {
         (.beam, [], ["beam_"]),
         (.gcoo, [], ["gcoo_"]),
         (.deer, [], ["deer_"]),
+        (.dart, [], ["dart_"]),
         (.bolt, [], ["bolt"]),
         (.bird, [], ["bird"]),
         (.dott, [], ["dott"]),
@@ -2226,6 +2231,12 @@ enum ScooterProviderCoverage {
         systems.append((.alpaca, GeoBounds(south: 34.9105, west: 127.5446, north: 34.999, east: 127.7476)))
         systems.append((.alpaca, GeoBounds(south: 36.2458, west: 127.2164, north: 36.3153, east: 127.2948)))
         systems.append((.alpaca, GeoBounds(south: 35.4981, west: 127.6958, north: 35.543, east: 127.7514)))
+        systems.append((.dart, GeoBounds(south: 34.7167, west: 127.6192, north: 34.7927, east: 127.7645)))
+        systems.append((.dart, GeoBounds(south: 37.3713, west: 126.598, north: 37.6341, east: 126.7764)))
+        systems.append((.dart, GeoBounds(south: 37.3767, west: 126.7177, north: 37.4661, east: 126.8335)))
+        systems.append((.dart, GeoBounds(south: 35.2845, west: 128.6948, north: 35.3288, east: 128.7608)))
+        systems.append((.dart, GeoBounds(south: 37.1226, west: 127.0252, north: 37.1961, east: 127.1071)))
+        systems.append((.dart, GeoBounds(south: 37.5797, west: 126.5874, north: 37.6441, east: 126.8039)))
         systems.append((.beam, GeoBounds(south: 37.274819, west: 126.764024, north: 37.354352000000006, east: 126.88072199999999)))
         systems.append((.beam, GeoBounds(south: 37.462637, west: 126.726346, north: 37.53491497327775, east: 126.828007)))
         systems.append((.beam, GeoBounds(south: 35.19047, west: 128.603013, north: 35.270655000000005, east: 128.724589)))
@@ -3175,7 +3186,7 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "kr:Daejeon", name: "Daejeon", countryCode: "KR", center: GeoPoint(latitude: 36.3493, longitude: 127.3877), bounds: GeoBounds(south: 36.2583, west: 127.274, north: 36.4671, east: 127.4909), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_daejeon"), ScooterCityFeed(id: "korea:swing_kr_daejeon"), ScooterCityFeed(id: "korea:beam_kr_daejeon")]))
         cities.append(ScooterCity(id: "kr:Daegu", name: "Daegu", countryCode: "KR", center: GeoPoint(latitude: 35.85, longitude: 128.5491), bounds: GeoBounds(south: 35.6267, west: 128.381, north: 35.9735, east: 128.861211), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_daegu"), ScooterCityFeed(id: "korea:xingxing_kr_daegu"), ScooterCityFeed(id: "korea:swing_kr_daegu"), ScooterCityFeed(id: "korea:beam_kr_daegu")]))
         cities.append(ScooterCity(id: "kr:Jeonju", name: "Jeonju", countryCode: "KR", center: GeoPoint(latitude: 35.8318, longitude: 127.1281), bounds: GeoBounds(south: 35.7683, west: 127.0344, north: 35.8994, east: 127.1991), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_jeonju"), ScooterCityFeed(id: "korea:xingxing_kr_jeonju"), ScooterCityFeed(id: "korea:swing_kr_jeonju")]))
-        cities.append(ScooterCity(id: "kr:Incheon", name: "Incheon", countryCode: "KR", center: GeoPoint(latitude: 37.4568, longitude: 126.6534), bounds: GeoBounds(south: 37.3448, west: 126.4499, north: 37.7665, east: 126.7766), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_incheon"), ScooterCityFeed(id: "korea:kickgoing_kr_incheon"), ScooterCityFeed(id: "korea:swing_kr_incheon"), ScooterCityFeed(id: "korea:beam_kr_incheon")]))
+        cities.append(ScooterCity(id: "kr:Incheon", name: "Incheon", countryCode: "KR", center: GeoPoint(latitude: 37.4568, longitude: 126.6534), bounds: GeoBounds(south: 37.3448, west: 126.4499, north: 37.7665, east: 126.7766), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_incheon"), ScooterCityFeed(id: "korea:kickgoing_kr_incheon"), ScooterCityFeed(id: "korea:swing_kr_incheon"), ScooterCityFeed(id: "korea:dart_kr_nationwide"), ScooterCityFeed(id: "korea:beam_kr_incheon")]))
         cities.append(ScooterCity(id: "kr:Cheongju", name: "Cheongju", countryCode: "KR", center: GeoPoint(latitude: 36.6337, longitude: 127.463), bounds: GeoBounds(south: 36.5807, west: 127.2843, north: 36.7571, east: 127.5744), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_cheongju"), ScooterCityFeed(id: "korea:xingxing_kr_cheongju"), ScooterCityFeed(id: "korea:swing_kr_cheongju"), ScooterCityFeed(id: "korea:alpaca_kr_cheongju"), ScooterCityFeed(id: "korea:beam_kr_cheongju")]))
         cities.append(ScooterCity(id: "kr:Hwaseong", name: "Hwaseong", countryCode: "KR", center: GeoPoint(latitude: 37.201, longitude: 126.9487), bounds: GeoBounds(south: 37.0606, west: 126.7194, north: 37.3041, east: 127.1641), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_hwaseong"), ScooterCityFeed(id: "korea:xingxing_kr_hwaseong"), ScooterCityFeed(id: "korea:swing_kr_hwaseong"), ScooterCityFeed(id: "korea:alpaca_kr_hwaseong"), ScooterCityFeed(id: "korea:beam_kr_dongtan")]))
         cities.append(ScooterCity(id: "kr:Gwangju", name: "Gwangju", countryCode: "KR", center: GeoPoint(latitude: 35.173, longitude: 126.8824), bounds: GeoBounds(south: 35.0702, west: 126.738, north: 35.2475, east: 126.9605), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gwangju"), ScooterCityFeed(id: "korea:beam_kr_gwangju")]))
@@ -3197,14 +3208,14 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "kr:Pohang", name: "Pohang", countryCode: "KR", center: GeoPoint(latitude: 36.0226, longitude: 129.3617), bounds: GeoBounds(south: 35.93, west: 129.2922, north: 36.1314, east: 129.4723), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_pohang"), ScooterCityFeed(id: "korea:swing_kr_pohang")]))
         cities.append(ScooterCity(id: "kr:Anyang", name: "Anyang", countryCode: "KR", center: GeoPoint(latitude: 37.396, longitude: 126.9571), bounds: GeoBounds(south: 37.3561, west: 126.8668, north: 37.4524, east: 126.9862), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_anyang"), ScooterCityFeed(id: "korea:kickgoing_kr_anyang"), ScooterCityFeed(id: "korea:xingxing_kr_anyang"), ScooterCityFeed(id: "korea:swing_kr_anyang")]))
         cities.append(ScooterCity(id: "kr:Uijeongbu", name: "Uijeongbu", countryCode: "KR", center: GeoPoint(latitude: 37.7399, longitude: 127.0461), bounds: GeoBounds(south: 37.684, west: 126.9983, north: 37.7779, east: 127.1372), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_uijeongbu"), ScooterCityFeed(id: "korea:swing_kr_uijeongbu")]))
-        cities.append(ScooterCity(id: "kr:Siheung", name: "Siheung", countryCode: "KR", center: GeoPoint(latitude: 37.3667, longitude: 126.7358), bounds: GeoBounds(south: 37.3122, west: 126.6638, north: 37.4751, east: 126.8858), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_siheung"), ScooterCityFeed(id: "korea:xingxing_kr_siheung"), ScooterCityFeed(id: "korea:swing_kr_siheung"), ScooterCityFeed(id: "korea:alpaca_kr_siheung")]))
+        cities.append(ScooterCity(id: "kr:Siheung", name: "Siheung", countryCode: "KR", center: GeoPoint(latitude: 37.3667, longitude: 126.7358), bounds: GeoBounds(south: 37.3122, west: 126.6638, north: 37.4751, east: 126.8858), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_siheung"), ScooterCityFeed(id: "korea:xingxing_kr_siheung"), ScooterCityFeed(id: "korea:swing_kr_siheung"), ScooterCityFeed(id: "korea:alpaca_kr_siheung"), ScooterCityFeed(id: "korea:dart_kr_nationwide")]))
         cities.append(ScooterCity(id: "kr:Hanam", name: "Hanam", countryCode: "KR", center: GeoPoint(latitude: 37.5552, longitude: 127.1979), bounds: GeoBounds(south: 37.4661, west: 127.1366, north: 37.5941, east: 127.2544), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_hanam"), ScooterCityFeed(id: "korea:swing_kr_hanam"), ScooterCityFeed(id: "korea:beam_kr_hanam"), ScooterCityFeed(id: "korea:beam_kr_wirye")]))
-        cities.append(ScooterCity(id: "kr:Osan", name: "Osan", countryCode: "KR", center: GeoPoint(latitude: 37.1625, longitude: 127.056), bounds: GeoBounds(south: 37.1226, west: 126.9915, north: 37.2032, east: 127.1064), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_osan"), ScooterCityFeed(id: "korea:swing_kr_osan"), ScooterCityFeed(id: "korea:beam_kr_dongtan")]))
+        cities.append(ScooterCity(id: "kr:Osan", name: "Osan", countryCode: "KR", center: GeoPoint(latitude: 37.1625, longitude: 127.056), bounds: GeoBounds(south: 37.1226, west: 126.9915, north: 37.2032, east: 127.1071), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_osan"), ScooterCityFeed(id: "korea:swing_kr_osan"), ScooterCityFeed(id: "korea:dart_kr_nationwide"), ScooterCityFeed(id: "korea:beam_kr_dongtan")]))
         cities.append(ScooterCity(id: "kr:Icheon", name: "Icheon", countryCode: "KR", center: GeoPoint(latitude: 37.2789, longitude: 127.4499), bounds: GeoBounds(south: 37.0987, west: 127.3266, north: 37.3283, east: 127.6412), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_icheon"), ScooterCityFeed(id: "korea:xingxing_kr_icheon"), ScooterCityFeed(id: "korea:swing_kr_icheon"), ScooterCityFeed(id: "korea:alpaca_kr_icheon")]))
-        cities.append(ScooterCity(id: "kr:Gimpo", name: "Gimpo", countryCode: "KR", center: GeoPoint(latitude: 37.6428, longitude: 126.6716), bounds: GeoBounds(south: 37.577268, west: 126.5712, north: 37.711, east: 126.8021), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gimpo"), ScooterCityFeed(id: "korea:swing_kr_gimpo"), ScooterCityFeed(id: "korea:beam_kr_gimpo")]))
+        cities.append(ScooterCity(id: "kr:Gimpo", name: "Gimpo", countryCode: "KR", center: GeoPoint(latitude: 37.6428, longitude: 126.6716), bounds: GeoBounds(south: 37.577268, west: 126.5712, north: 37.711, east: 126.8039), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gimpo"), ScooterCityFeed(id: "korea:swing_kr_gimpo"), ScooterCityFeed(id: "korea:dart_kr_nationwide"), ScooterCityFeed(id: "korea:beam_kr_gimpo")]))
         cities.append(ScooterCity(id: "kr:Gangneung", name: "Gangneung", countryCode: "KR", center: GeoPoint(latitude: 37.7622, longitude: 128.8787), bounds: GeoBounds(south: 37.714, west: 128.8031, north: 37.9184, east: 128.9672), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gangneung"), ScooterCityFeed(id: "korea:xingxing_kr_gangneung")]))
         cities.append(ScooterCity(id: "kr:Chuncheon", name: "Chuncheon", countryCode: "KR", center: GeoPoint(latitude: 37.8689, longitude: 127.7411), bounds: GeoBounds(south: 37.821, west: 127.6843, north: 37.9353, east: 127.7902), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_chuncheon"), ScooterCityFeed(id: "korea:swing_kr_chuncheon")]))
-        cities.append(ScooterCity(id: "kr:Gimhae", name: "Gimhae", countryCode: "KR", center: GeoPoint(latitude: 35.2377, longitude: 128.8671), bounds: GeoBounds(south: 35.1507, west: 128.6888, north: 35.3427, east: 128.9396), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gimhae"), ScooterCityFeed(id: "korea:xingxing_kr_gimhae"), ScooterCityFeed(id: "korea:swing_kr_gimhae"), ScooterCityFeed(id: "korea:beam_kr_gimhae")]))
+        cities.append(ScooterCity(id: "kr:Gimhae", name: "Gimhae", countryCode: "KR", center: GeoPoint(latitude: 35.2377, longitude: 128.8671), bounds: GeoBounds(south: 35.1507, west: 128.6888, north: 35.3427, east: 128.9396), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gimhae"), ScooterCityFeed(id: "korea:xingxing_kr_gimhae"), ScooterCityFeed(id: "korea:swing_kr_gimhae"), ScooterCityFeed(id: "korea:dart_kr_nationwide"), ScooterCityFeed(id: "korea:beam_kr_gimhae")]))
         cities.append(ScooterCity(id: "kr:Jinju", name: "Jinju", countryCode: "KR", center: GeoPoint(latitude: 35.1642, longitude: 128.1043), bounds: GeoBounds(south: 35.1269, west: 128.0221, north: 35.2318, east: 128.1862), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_jinju"), ScooterCityFeed(id: "korea:xingxing_kr_jinju"), ScooterCityFeed(id: "korea:swing_kr_jinju")]))
         cities.append(ScooterCity(id: "kr:Wonju", name: "Wonju", countryCode: "KR", center: GeoPoint(latitude: 37.3344, longitude: 127.9385), bounds: GeoBounds(south: 37.2422, west: 127.7686, north: 37.406, east: 128.0103), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_wonju"), ScooterCityFeed(id: "korea:swing_kr_wonju")]))
         cities.append(ScooterCity(id: "kr:Gunsan", name: "Gunsan", countryCode: "KR", center: GeoPoint(latitude: 35.9641, longitude: 126.7055), bounds: GeoBounds(south: 35.9208, west: 126.6481, north: 36.0233, east: 126.8932), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_gunsan"), ScooterCityFeed(id: "korea:swing_kr_gunsan")]))
@@ -3246,7 +3257,7 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "kr:Wanju", name: "Wanju", countryCode: "KR", center: GeoPoint(latitude: 35.91, longitude: 127.0659), bounds: GeoBounds(south: 35.8151, west: 127.0333, north: 35.9778, east: 127.1833), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_wanju"), ScooterCityFeed(id: "korea:swing_kr_wanju")]))
         cities.append(ScooterCity(id: "kr:Yesan", name: "Yesan", countryCode: "KR", center: GeoPoint(latitude: 36.6711, longitude: 126.8459), bounds: GeoBounds(south: 36.6443, west: 126.648, north: 36.7446, east: 126.8863), feeds: [ScooterCityFeed(id: "korea:xingxing_kr_yesan"), ScooterCityFeed(id: "korea:swing_kr_yesan")]))
         cities.append(ScooterCity(id: "kr:Geochang", name: "Geochang", countryCode: "KR", center: GeoPoint(latitude: 35.6886, longitude: 127.911), bounds: GeoBounds(south: 35.6598, west: 127.8746, north: 35.7124, east: 127.9582), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_geochang"), ScooterCityFeed(id: "korea:alpaca_kr_geochang")]))
-        cities.append(ScooterCity(id: "kr:Yeosu", name: "Yeosu", countryCode: "KR", center: GeoPoint(latitude: 34.7637, longitude: 127.6782), bounds: GeoBounds(south: 34.7049, west: 127.6138, north: 34.8015, east: 127.772), feeds: [ScooterCityFeed(id: "korea:swing_kr_yeosu")]))
+        cities.append(ScooterCity(id: "kr:Yeosu", name: "Yeosu", countryCode: "KR", center: GeoPoint(latitude: 34.7637, longitude: 127.6782), bounds: GeoBounds(south: 34.7049, west: 127.6138, north: 34.8015, east: 127.772), feeds: [ScooterCityFeed(id: "korea:swing_kr_yeosu"), ScooterCityFeed(id: "korea:dart_kr_nationwide")]))
         cities.append(ScooterCity(id: "kr:Naju", name: "Naju", countryCode: "KR", center: GeoPoint(latitude: 35.0289, longitude: 126.775), bounds: GeoBounds(south: 34.9835, west: 126.6895, north: 35.0685, east: 126.8217), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_naju")]))
         cities.append(ScooterCity(id: "kr:Sokcho", name: "Sokcho", countryCode: "KR", center: GeoPoint(latitude: 38.1917, longitude: 128.5833), bounds: GeoBounds(south: 38.1632, west: 128.5422, north: 38.2335, east: 128.6182), feeds: [ScooterCityFeed(id: "korea:gcoo_kr_sokcho")]))
         cities.append(ScooterCity(id: "kr:Uljin", name: "Uljin", countryCode: "KR", center: GeoPoint(latitude: 36.9922, longitude: 129.4012), bounds: GeoBounds(south: 36.9433, west: 129.3688, north: 37.0776, east: 129.4439), feeds: [ScooterCityFeed(id: "korea:swing_kr_uljin")]))

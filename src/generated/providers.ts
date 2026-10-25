@@ -47,6 +47,7 @@ const PROVIDER_DEFINITIONS = {
   swing: { name: "Swing", color: "#111111", initial: "Sw", app: { link: "https://tswm.link/", appStoreId: 1459344011 } },
   deer: { name: "Deer", color: "#c7b000", initial: "De", app: { link: "https://deer.tswm.link/", appStoreId: 1455718957 } },
   alpaca: { name: "Alpaca", color: "#ff6e35", initial: "A", app: { link: "https://alpaca.kr/", appStoreId: 1328860619 } },
+  dart: { name: "DART", color: "#0a84ff", initial: "Da" },
 } as const;
 
 export type ProviderKey = keyof typeof PROVIDER_DEFINITIONS;
@@ -80,6 +81,7 @@ const SYSTEM_ID_MATCHERS: Record<ProviderKey, { exact?: string[]; prefixes?: str
   beam: {"prefixes":["beam_"]},
   gcoo: {"prefixes":["gcoo_"]},
   deer: {"prefixes":["deer_"]},
+  dart: {"prefixes":["dart_"]},
   bolt: {"prefixes":["bolt"]},
   bird: {"prefixes":["bird"]},
   dott: {"prefixes":["dott"]},

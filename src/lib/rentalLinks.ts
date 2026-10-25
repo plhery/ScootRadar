@@ -132,6 +132,8 @@ const PROVIDER_LINK_POLICIES: Record<string, ProviderRentalLinkPolicy> = {
   },
   // Alpaca's map links no scooter, and its app claims no https host, only its alpaca:// and sbike://.
   alpaca: { schemes: [], httpsHosts: [] },
+  // DART's map links no scooter, and its app claims no link at all, neither a scheme nor an https host.
+  dart: { schemes: [], httpsHosts: [] },
 };
 
 // Links that open an operator's app elsewhere than on a scooter. Bird's and Spin's feeds give
