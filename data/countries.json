@@ -276,12 +276,14 @@
         "dk:Aalborg"
       ],
       "credits": {
-        "attribution": "Denmark: Voi authenticated rider map",
+        "attribution": "Denmark: Voi authenticated rider map; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
         "links": [
           {
             "label": "DK: Voi map",
             "href": "https://www.voi.com/"
-          }
+          },
+          { "label": "DK: Lime map", "href": "https://www.li.me/" },
+          { "label": "DK: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
         ]
       }
     },

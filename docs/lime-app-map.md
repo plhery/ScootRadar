@@ -128,7 +128,7 @@ Baltic seaside resorts; check them again in summer.
 In Austria, Lime's Salzburg region held no scooter in its whole scooter zone
 on 25 October 2026. In Sweden, neither did its Stockholm region, in Stockholm,
 Bromma or Solna and Sundbyberg: Stockholm's permits went to Voi and Bolt alone
-from 1 July 2026.
+from 1 July 2026. In Denmark, neither did its Aarhus region.
 
 - Zones named as demos, tests, warehouses, events or temporary areas are left
   out, as Rome's three temporary areas and Dortmund's warehouses. So is the
@@ -162,6 +162,7 @@ stationary reference scooter, country by country:
 | 25 October 2026 | Poland: Warsaw, Poznań, the Tricity, Kraków, Łódź, Wrocław | 525 | 133 | 14,834 | 504 |
 | 25 October 2026 | Austria: Vienna, Linz, Innsbruck, Klagenfurt, Wels | 276 | 70 | 2,987 | 140 |
 | 25 October 2026 | Sweden: Göteborg, Malmö | 188 | 47 | 2,750 | 144 |
+| 25 October 2026 | Denmark: Copenhagen, Odense | 107 | 28 | 1,291 | 29 |
 
 When the audit and the cache's sweeps shared an account, they shared its limit,
 about one request every five seconds. On 24 and 25 October 2026, before the cache's

@@ -1263,6 +1263,40 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Malmo_269_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "DK",
+      "city": "København",
+      "regionToken": "WGX6TENEMALGY",
+      "fingerprint": "3f9ea23cd948e384af0f873f7022717aad8222a8c244606004e2505d28e12cdb",
+      "groups": 18,
+      "localCells": 70,
+      "coldMapRequests": 70,
+      "warmMapRequests": 70,
+      "scooters": 574,
+      "stationaryReferences": 1,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T18:48:28.329Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Copenhagen_390_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "DK",
+      "city": "Odense",
+      "regionToken": "VNV5DUPYTT7OQ",
+      "fingerprint": "c9e4c7d4fd030c1c9513cc34b738dd435d56e60d5730a290de14316467cf807c",
+      "groups": 10,
+      "localCells": 37,
+      "coldMapRequests": 41,
+      "warmMapRequests": 41,
+      "scooters": 717,
+      "stationaryReferences": 28,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T18:53:29.380Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Odense_126_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

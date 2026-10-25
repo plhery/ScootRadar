@@ -1362,6 +1362,23 @@ enum ScooterProviderCoverage {
         systems.append((.voi, GeoBounds(south: 56.0639863543046, west: 10.0751495361328, north: 56.2383895039888, east: 10.3113555908203)))
         systems.append((.voi, GeoBounds(south: 55.3010107944959, west: 10.2351379394531, north: 55.4796317138773, east: 10.5317687988281)))
         systems.append((.voi, GeoBounds(south: 56.9610753568483, west: 9.678955078125, north: 57.15374754486, east: 10.1321411132812)))
+        systems.append((.lime, GeoBounds(south: 55.61511, west: 12.52090866, north: 55.62858467, east: 12.64020642)))
+        systems.append((.lime, GeoBounds(south: 55.62858467, west: 12.52090866, north: 55.64205934, east: 12.64979)))
+        systems.append((.lime, GeoBounds(south: 55.64205934, west: 12.49704911, north: 55.655534, east: 12.64979)))
+        systems.append((.lime, GeoBounds(south: 55.655534, west: 12.47318955, north: 55.66900867, east: 12.64979)))
+        systems.append((.lime, GeoBounds(south: 55.66900867, west: 12.44933, north: 55.68248334, east: 12.64979)))
+        systems.append((.lime, GeoBounds(south: 55.68248334, west: 12.44933, north: 55.69595801, east: 12.64979)))
+        systems.append((.lime, GeoBounds(south: 55.69595801, west: 12.44933, north: 55.70943267, east: 12.64020642)))
+        systems.append((.lime, GeoBounds(south: 55.70943267, west: 12.44933, north: 55.72290734, east: 12.64020642)))
+        systems.append((.lime, GeoBounds(south: 55.72290734, west: 12.44933, north: 55.73638201, east: 12.64020642)))
+        systems.append((.lime, GeoBounds(south: 55.73638201, west: 12.56862776, north: 55.74985668, east: 12.59248732)))
+        systems.append((.lime, GeoBounds(south: 55.74985668, west: 12.56862776, north: 55.75021, east: 12.59248732)))
+        systems.append((.lime, GeoBounds(south: 55.35614, west: 10.31138, north: 55.36961467, east: 10.45359943)))
+        systems.append((.lime, GeoBounds(south: 55.36961467, west: 10.31138, north: 55.38308934, east: 10.45359943)))
+        systems.append((.lime, GeoBounds(south: 55.38308934, west: 10.31138, north: 55.396564, east: 10.45359943)))
+        systems.append((.lime, GeoBounds(south: 55.396564, west: 10.31138, north: 55.41003867, east: 10.46076)))
+        systems.append((.lime, GeoBounds(south: 55.41003867, west: 10.31138, north: 55.42351334, east: 10.45359943)))
+        systems.append((.lime, GeoBounds(south: 55.42351334, west: 10.33508324, north: 55.43019, east: 10.46076)))
         systems.append((.hopp, GeoBounds(south: 67.8205, west: 20.1797, north: 67.8801, east: 20.3641)))
         systems.append((.lime, GeoBounds(south: 59.8076, west: 17.5747, north: 59.9021, east: 17.7203)))
         systems.append((.voi, GeoBounds(south: 58.22198604038249, west: 12.178586968862646, north: 58.350640965615526, east: 12.432170960613973)))
@@ -2437,7 +2454,7 @@ enum ScooterCityCatalog {
     // checker over 30 GB, and CI's Macs, which have 7, killed the compiler (24 Oct 2026).
     private static func makeCities() -> [ScooterCity] {
         var cities: [ScooterCity] = []
-        cities.reserveCapacity(961)
+        cities.reserveCapacity(962)
         cities.append(ScooterCity(id: "ch:amriswil", name: "Amriswil", countryCode: "CH", center: GeoPoint(latitude: 47.547, longitude: 9.2959), bounds: GeoBounds(south: 47.513, west: 9.234, north: 47.5773, east: 9.3262)))
         cities.append(ScooterCity(id: "ch:basel", name: "Basel", countryCode: "CH", center: GeoPoint(latitude: 47.5596, longitude: 7.5886), bounds: GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82)))
         cities.append(ScooterCity(id: "ch:bern", name: "Bern", countryCode: "CH", center: GeoPoint(latitude: 46.948, longitude: 7.4474), bounds: GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7)))
@@ -2822,8 +2839,9 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "is:Vestmannaeyjar", name: "Vestmannaeyjar", countryCode: "IS", center: GeoPoint(latitude: 63.4401, longitude: -20.2786), bounds: GeoBounds(south: 63.4233, west: -20.3143, north: 63.454, east: -20.2472), feeds: [ScooterCityFeed(id: "iceland:hopp_is_vestmannaeyjar")]))
         cities.append(ScooterCity(id: "is:Vík", name: "Vík", countryCode: "IS", center: GeoPoint(latitude: 63.4188, longitude: -19.0055), bounds: GeoBounds(south: 63.4101, west: -19.029, north: 63.4284, east: -18.9801), feeds: [ScooterCityFeed(id: "iceland:hopp_is_vik")]))
         cities.append(ScooterCity(id: "dk:Aarhus", name: "Aarhus", countryCode: "DK", center: GeoPoint(latitude: 56.15119, longitude: 10.19325), bounds: GeoBounds(south: 56.0639863543046, west: 10.0751495361328, north: 56.2383895039888, east: 10.3113555908203), feeds: [ScooterCityFeed(id: "denmark:voi_dk_app_59")]))
-        cities.append(ScooterCity(id: "dk:Odense", name: "Odense", countryCode: "DK", center: GeoPoint(latitude: 55.39032, longitude: 10.38345), bounds: GeoBounds(south: 55.3010107944959, west: 10.2351379394531, north: 55.4796317138773, east: 10.5317687988281), feeds: [ScooterCityFeed(id: "denmark:voi_dk_app_146")]))
+        cities.append(ScooterCity(id: "dk:Odense", name: "Odense", countryCode: "DK", center: GeoPoint(latitude: 55.39032, longitude: 10.38345), bounds: GeoBounds(south: 55.3010107944959, west: 10.2351379394531, north: 55.4796317138773, east: 10.5317687988281), feeds: [ScooterCityFeed(id: "denmark:voi_dk_app_146"), ScooterCityFeed(id: "denmark:lime_dk_app_odense_000"), ScooterCityFeed(id: "denmark:lime_dk_app_odense_001"), ScooterCityFeed(id: "denmark:lime_dk_app_odense_002"), ScooterCityFeed(id: "denmark:lime_dk_app_odense_003"), ScooterCityFeed(id: "denmark:lime_dk_app_odense_004"), ScooterCityFeed(id: "denmark:lime_dk_app_odense_005"), ScooterCityFeed(id: "denmark:lime_dk_app_odense_006"), ScooterCityFeed(id: "denmark:lime_dk_app_odense_007"), ScooterCityFeed(id: "denmark:lime_dk_app_odense_008"), ScooterCityFeed(id: "denmark:lime_dk_app_odense_009")]))
         cities.append(ScooterCity(id: "dk:Aalborg", name: "Aalborg", countryCode: "DK", center: GeoPoint(latitude: 57.05741, longitude: 9.90555), bounds: GeoBounds(south: 56.9610753568483, west: 9.678955078125, north: 57.15374754486, east: 10.1321411132812), feeds: [ScooterCityFeed(id: "denmark:voi_dk_app_187")]))
+        cities.append(ScooterCity(id: "dk:København", name: "København", countryCode: "DK", center: GeoPoint(latitude: 55.67594, longitude: 12.56553), bounds: GeoBounds(south: 55.61511, west: 12.44933, north: 55.75021, east: 12.64979), feeds: [ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_000"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_001"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_002"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_003"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_004"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_005"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_006"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_007"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_008"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_009"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_010"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_011"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_012"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_013"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_014"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_015"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_016"), ScooterCityFeed(id: "denmark:lime_dk_app_k_benhavn_017")]))
         cities.append(ScooterCity(id: "se:Kiruna", name: "Kiruna", countryCode: "SE", center: GeoPoint(latitude: 67.8496, longitude: 20.3063), bounds: GeoBounds(south: 67.8205, west: 20.1797, north: 67.8801, east: 20.3641), feeds: [ScooterCityFeed(id: "sweden:hopp_se_kiruna")]))
         cities.append(ScooterCity(id: "se:Uppsala", name: "Uppsala", countryCode: "SE", center: GeoPoint(latitude: 59.8586, longitude: 17.6387), bounds: GeoBounds(south: 59.8037426244997, west: 17.5266265869141, north: 59.9049511141442, east: 17.7975082397461), feeds: [ScooterCityFeed(id: "sweden:lime_se_uppsala"), ScooterCityFeed(id: "sweden:voi_se_app_48")]))
         cities.append(ScooterCity(id: "se:Trollhättan", name: "Trollhättan", countryCode: "SE", center: GeoPoint(latitude: 58.28631, longitude: 12.30538), bounds: GeoBounds(south: 58.22198604038249, west: 12.178586968862646, north: 58.350640965615526, east: 12.432170960613973), feeds: [ScooterCityFeed(id: "sweden:voi_se_app_425")]))
@@ -3404,7 +3422,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 961
+    static let cityCount = 962
     static let countryCount = 56
 
     /// Cities by distance from the point to their centre, nearest first.
@@ -3814,7 +3832,7 @@ enum ScooterCountryCatalog {
         ("BR/CL/MX/KZ/AZ/GE: JET map", "https://jetshr.com/"),
         ("BR/CL/MX/KZ/CO/BY: Whoosh map", "https://whoosh.bike/"),
         ("ZA: Zippy rider map", "https://zippyride.app.link/"),
-        ("DE/AT/IT/UK/SE/PL/JP/CL/MX/RO/CZ/QA/AU: Lime map", "https://www.li.me/"),
+        ("DE/AT/IT/UK/DK/SE/PL/JP/CL/MX/RO/CZ/QA/AU: Lime map", "https://www.li.me/"),
         ("AU/TR/MY/KR: Beam map", "https://www.ridebeam.com/"),
         ("US/KR: GCOO map", "https://gcoo.io/"),
         ("KR: Kickgoing map", "https://kickgoing.io/"),
@@ -3822,7 +3840,7 @@ enum ScooterCountryCatalog {
         ("CH/FR/DE/IT/BE/PT/ES/PL/FI/UA/IL/NZ/KR: OpenStreetMap boundaries · ODbL", "https://opendatacommons.org/licenses/odbl/"),
         ("DE/BE/PT/IS/SE/LV/PL/CY/UA/KZ/RO/EE/LT/SK/BG/MD/SI/IE: Bolt map", "https://bolt.eu/"),
         ("TR/MK/BA/XK: BinBin map", "https://www.binbin.tech/"),
-        ("DE/IT/BE/UK/PT/LV/PL/CY/UA/JP/CL/MX/RO/CZ/QA/AU/EE/LT/SK/BG/MD/SI/IE/MK/BA/XK: GeoNames · CC BY 4.0", "https://www.geonames.org/about.html"),
+        ("DE/IT/BE/UK/PT/DK/LV/PL/CY/UA/JP/CL/MX/RO/CZ/QA/AU/EE/LT/SK/BG/MD/SI/IE/MK/BA/XK: GeoNames · CC BY 4.0", "https://www.geonames.org/about.html"),
     ]
 
     /// The countries whose totals, zoomed out, are their states' or provinces', and those by code.

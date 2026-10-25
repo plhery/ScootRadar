@@ -55,6 +55,58 @@
       "timeZone": "Europe/Copenhagen",
       "discoveryUrl": "https://api.voiapp.io/v2/rides/vehicles?zone_id=187&include_suggestion=false",
       "voiAppZone": "187"
+    },
+    {
+      "id": "lime_dk_app_k_benhavn",
+      "provider": "lime",
+      "city": "København",
+      "center": [
+        55.67594,
+        12.56553
+      ],
+      "aliases": [
+        "Copenhagen"
+      ],
+      "timeZone": "Europe/Copenhagen",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "WGX6TENEMALGY",
+      "limeMapGrid": {
+        "south": 55.61511,
+        "west": 12.44933,
+        "north": 55.75021,
+        "east": 12.64979,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02385955252291014,
+        "cells": "3-7,12-17,20-26,28-61,63-70,72-79,86,95"
+      }
+    },
+    {
+      "id": "lime_dk_app_odense",
+      "provider": "lime",
+      "city": "Odense",
+      "center": [
+        55.39032,
+        10.38345
+      ],
+      "timeZone": "Europe/Copenhagen",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "VNV5DUPYTT7OQ",
+      "limeMapGrid": {
+        "south": 55.35614,
+        "west": 10.31138,
+        "north": 55.43019,
+        "east": 10.46076,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.023703238770952817,
+        "cells": "0-5,7-12,14-19,21-33,36-41"
+      }
     }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Copenhagen_390_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Odense_126_exclude_new_type.json"
   ]
 }

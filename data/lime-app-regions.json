@@ -1672,6 +1672,47 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Malmo_269_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "DK",
+      "city": "København",
+      "center": [
+        55.67594,
+        12.56553
+      ],
+      "timeZone": "Europe/Copenhagen",
+      "regionToken": "WGX6TENEMALGY",
+      "serviceAreas": [
+        {
+          "name": "SERVICE ZONE 2025[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}ucsIkftkAqFfOvBlNxHiAhEdc@xHxMpMvLAt]}JpCaKpe@NteAjItk@p^~RJZ_@|HcB`HsApEaDpKqXja@aTt~C`cA`gChiBrUnzBcjBx`Akl@sC_l@hYdDpBj@hCBfFHnGv@hAy@t@eCxBuGNuATcCd@uEVyED{FxJ}m@hLs^lUkv@lJ{UdL}S|Yq^vSe]jIwd@tOgExIbA|Hh@nYwBaMiV_Mq_@mEqJe@{@Uw@]q@a@cA[u@gCeJkEmPzw@ry@~RwWdA{`ClAgLdhAd^Jmi@IeS}DaRcByHoBwGUqwAecAkOkbAoYiCwtBbk@uSvJmBbd@oO~F{DwAvcEvK~A}@kyEok@lQ?mcBhBwx@}FRkInV~Afi@}\\bMjKjaBab@rPoAiV}CgXqEq[uAmPgRehAwb@jPub@dTco@pQqLaD}KgTaL_QsGaSeJuKwFgCsC\\wCtAkDnBiDhC_EbKmDxDqDhEeDvGkC~EeBvFyAlDyBjDgB~CaAfCsAhBmAvBeB^iAw@q@mAw@sA}@wA_BbAuApCwCtAaEjDwBfI~EnMnB|FYhCyFxEec@tMeNtd@fBfUlGrj@esA~N{F~d@pKceA}Jw[kOnlApEpCoEx_@sLwJhXwqB{Mo`@kl@chBqSln@}@fzDz]zElE{ZzH|DiF`s@f\\~TvAbAtHrE`AUzJoJ`B`EpAvKkh@h\\eB`F}CvA{GjAcCpA{BnAkGJgDQgD\\eIjD}AcTmAd@pErj@qChAgDcd@}Cz@p@rIyAxCaDhB{@}HyCMuHpBgD[IxDYAUhI}DES{HZmHsJ]c@di@mHHeUaKo_@aj@kOuOiF}GeBgDoBwHgBdIfIjJ~TtUh_@pj@tVvKpI_@hPcDJ`DsD`n@bAt@Z`@b@^VNXJ`@Th@d@Ph@DbAqCrKCxNz@zDfCmDt@GVHj@Rb@@d@TR`@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Copenhagen_390_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Copenhagen"
+      ]
+    },
+    {
+      "country": "DK",
+      "city": "Odense",
+      "center": [
+        55.39032,
+        10.38345
+      ],
+      "timeZone": "Europe/Copenhagen",
+      "regionToken": "VNV5DUPYTT7OQ",
+      "serviceAreas": [
+        {
+          "name": "[Odense][SZ][Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "qihqIm}r~@c[bl@hIxv@bS~qCbH|LwH`{@Bx^lEvBkCzr@}P{F[vH_Bn_A~_@jJpFrIhEx^}Cxf@zJpb@tIzp@nT`b@hSlMnNu[xMccA~Owy@hJzA|C}T~FB^`X|GjDO|ZnIpVbZdKxDi@rUJ~CkN_FaNKwx@_Eky@rBoFtKnc@|Sk_@rFdQ~]|[`P`_AoFtNh@pLrNmIzl@nk@nJwr@xF{dAxByZ{Nm]jBmE|MzT~Hyc@yUed@`Pg`@iXe|@bl@iCfGcAn@epEwXvBmDaNqDpCfAggA{CwSa@mQIuJ{HP_FPwAw_@ed@vBnBys@jGkt@og@}L}Fn|AyYfTuJyu@mh@lE{g@h~@}Dum@mOpFtO_r@G_z@gf@iGaTxLsTfi@cVra@ch@|L_^k~B{ExMfZxkBjVn}AxCb\\mQrVwYqh@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Odense_126_exclude_new_type.json"
+      ]
     }
   ]
 }
