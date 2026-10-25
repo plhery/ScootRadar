@@ -180,6 +180,7 @@ import kasselDe from './de/e-scooter-kassel';
 import braunschweigDe from './de/e-scooter-braunschweig';
 import wienDe from './de/e-scooter-wien';
 import osnabrueckDe from './de/e-scooter-osnabrueck';
+import northamptonEn from './en/e-scooters-northampton';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -360,4 +361,5 @@ export const GUIDES: readonly Guide[] = [
   braunschweigDe,
   wienDe,
   osnabrueckDe,
+  northamptonEn,
 ];
