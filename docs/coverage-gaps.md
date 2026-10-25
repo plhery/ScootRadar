@@ -13,9 +13,9 @@ including their disconnected service areas, and since 25 October 2026 in
 London, Birmingham, Coventry, Milton Keynes and Salford, in 39 German
 markets, from Berlin and Munich to Waiblingen, in ten Italian ones, from
 Roma and Milano to Rimini, in six Polish ones, from Warszawa to Wrocław, and
-in five Austrian ones, from Wien to Wels, in Göteborg and Malmö, and in
-København and Odense.
-The other markets its rider map lists, 142 found so far, are added country by
+in five Austrian ones, from Wien to Wels, in Göteborg and Malmö, in
+København and Odense, and in Brno and Ostrava.
+The other markets its rider map lists, 137 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -807,7 +807,7 @@ a licence. Neither is published by its operator:
 
 | Netherlands | No shared standing scooters: the national data hub (CROW) lists 27,000 shared vehicles and no scooter. They need type approval and, since July 2025, a plate. Check and Felyx run mopeds, and 7 Felyx feeds answer 410 |
 | Denmark | Voi’s authenticated map now supplies Aarhus, Odense and Aalborg, and Lime's authenticated rider map København and Odense since 25 October 2026. Lime's Aarhus market held no scooter in its full-area audit that day; Hopp Roskilde held 1 disabled scooter on 13 October 2026 |
-| Czechia | Lime České Budějovice is now mapped through its full operating polygons. Other markets remain gaps. Prague banned shared scooters from 1 January 2026; Golemio's feed needs a token. Bolt's rider map still has a Prague market, with no scooter on 25 October 2026, and none for Brno, Ostrava, Olomouc or České Budějovice |
+| Czechia | Lime České Budějovice is now mapped through its full operating polygons, and Brno and Ostrava since 25 October 2026. Lime's Praha, Liberec and Olomouc markets held no scooter in their full-area audits that day. Prague banned shared scooters from 1 January 2026; Golemio's feed needs a token. Bolt's rider map still has a Prague market, with no scooter on 25 October 2026, and none for Brno, Ostrava, Olomouc or České Budějovice |
 | Romania | Lime Deva is now covered, and Bolt's eight markets come from its [rider map](bolt-app-map.md) since 25 October 2026; Romania's other markets remain gaps. Its PBSC bike-share feeds list a scooter type with no scooters. Hopp's `ro-bucharest` feed answers but held no scooter at night or in 7 polls from 08:30 to 09:30 on Sunday 18 October 2026, and Hopp's site no longer lists Bucharest; check it again in April 2027 |
 | Serbia | Belgrade suspended its call for 2,000 scooters on 15 July 2026, a day after opening it; check again in January 2027 |
 | Malta | Rental scooters banned since March 2024 |

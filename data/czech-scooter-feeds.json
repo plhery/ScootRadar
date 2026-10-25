@@ -26,10 +26,56 @@
         "lngStep": 0.02051772423951151,
         "cells": "1-2,4-14"
       }
+    },
+    {
+      "id": "lime_cz_app_brno",
+      "provider": "lime",
+      "city": "Brno",
+      "center": [
+        49.19522,
+        16.60796
+      ],
+      "timeZone": "Europe/Prague",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "4GBGQCKC4FGYQ",
+      "limeMapGrid": {
+        "south": 49.17359,
+        "west": 16.54589,
+        "north": 49.24657,
+        "east": 16.66318,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.02061073260064281,
+        "cells": "1-16,18-22,25-28,31"
+      }
+    },
+    {
+      "id": "lime_cz_app_ostrava",
+      "provider": "lime",
+      "city": "Ostrava",
+      "center": [
+        49.83465,
+        18.28204
+      ],
+      "timeZone": "Europe/Prague",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "LIF6QZBU2XHV3",
+      "limeMapGrid": {
+        "south": 49.7692,
+        "west": 18.13813,
+        "north": 49.85749,
+        "east": 18.3026,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.020862875748267975,
+        "cells": "3-6,11-14,19-22,24-30,32-50,54-55"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
   "limeServiceAreaSources": [
-    "https://assets.lime.bike/zones_attributes/Ceske_Budejovice_108_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Ceske_Budejovice_108_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Brno_95_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Ostrava_111_exclude_new_type.json"
   ]
 }

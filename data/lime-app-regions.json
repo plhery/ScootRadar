@@ -1713,6 +1713,44 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Odense_126_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "CZ",
+      "city": "Brno",
+      "center": [
+        49.19522,
+        16.60796
+      ],
+      "timeZone": "Europe/Prague",
+      "regionToken": "4GBGQCKC4FGYQ",
+      "serviceAreas": [
+        {
+          "name": "[Brno][SZ][13/2/23][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "yyjkHaa`dBnEjh@fT~AB@~Lx@Ker@dXcdAhe@tB|ScLnUanBlf@{a@bYq@z\\_PwOsnAci@wNePk|@gTwrA\\g[xOypA}NgDzFudAwa@iL_b@x_@vMdbA}YU_XlJe_@f_@kMjZkHyDiJfZkw@fZ{Jmf@iy@`LdQfjB~o@t@_DxkAqOtPmy@|t@qr@`sBkBfOlDnI|f@_Qby@uDbh@ea@tMzb@EvVbYbOaH`Xu[`PqSwAiEhg@fIjMvP~Pr~@_c@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Brno_95_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CZ",
+      "city": "Ostrava",
+      "center": [
+        49.83465,
+        18.28204
+      ],
+      "timeZone": "Europe/Prague",
+      "regionToken": "LIF6QZBU2XHV3",
+      "serviceAreas": [
+        {
+          "name": "[Ostrava][SZ][27/2/23][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "qqboHk`dnB}}@vcAefAzYs_AboB~Pr~Drf@~a@vwDtZ|[epGs@_tElyAaj@`Ji_@|PlEvO~\\x_@rIvS`o@~\\sPde@}o@dWqaCWwLiDmy@wS{z@wFgIg@{Wy`BoDsa@}Bk_@uGu\\kKwpAor@ug@~Z_CerAAcu@mXqCgR`CeGkD}o@je@?AyYfF}E|D_W`IqUld@dJp[eP|\\xq@bkBnrA~jCf\\ld@h[xyB"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Ostrava_111_exclude_new_type.json"
+      ]
     }
   ]
 }

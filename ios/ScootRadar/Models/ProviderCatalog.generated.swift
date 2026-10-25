@@ -2001,6 +2001,20 @@ enum ScooterProviderCoverage {
         systems.append((.lime, GeoBounds(south: 48.96228467, west: 14.43596, north: 48.97575934, east: 14.50798)))
         systems.append((.lime, GeoBounds(south: 48.97575934, west: 14.43596, north: 48.989234, east: 14.50798)))
         systems.append((.lime, GeoBounds(south: 48.989234, west: 14.43596, north: 49.00077, east: 14.49751317)))
+        systems.append((.lime, GeoBounds(south: 49.17359, west: 16.56650073, north: 49.18706467, east: 16.66318)))
+        systems.append((.lime, GeoBounds(south: 49.18706467, west: 16.54589, north: 49.20053934, east: 16.66318)))
+        systems.append((.lime, GeoBounds(south: 49.20053934, west: 16.54589, north: 49.214014, east: 16.64894366)))
+        systems.append((.lime, GeoBounds(south: 49.214014, west: 16.54589, north: 49.22748867, east: 16.64894366)))
+        systems.append((.lime, GeoBounds(south: 49.22748867, west: 16.56650073, north: 49.24096334, east: 16.64894366)))
+        systems.append((.lime, GeoBounds(south: 49.24096334, west: 16.56650073, north: 49.24657, east: 16.58711147)))
+        systems.append((.lime, GeoBounds(south: 49.7692, west: 18.20071863, north: 49.78267467, east: 18.28417013)))
+        systems.append((.lime, GeoBounds(south: 49.78267467, west: 18.20071863, north: 49.79614934, east: 18.28417013)))
+        systems.append((.lime, GeoBounds(south: 49.79614934, west: 18.20071863, north: 49.809624, east: 18.28417013)))
+        systems.append((.lime, GeoBounds(south: 49.809624, west: 18.13813, north: 49.82309867, east: 18.28417013)))
+        systems.append((.lime, GeoBounds(south: 49.82309867, west: 18.13813, north: 49.83657334, east: 18.3026)))
+        systems.append((.lime, GeoBounds(south: 49.83657334, west: 18.13813, north: 49.85004801, east: 18.3026)))
+        systems.append((.lime, GeoBounds(south: 49.85004801, west: 18.13813, north: 49.85749, east: 18.20071863)))
+        systems.append((.lime, GeoBounds(south: 49.85004801, west: 18.26330725, north: 49.85749, east: 18.3026)))
         systems.append((.lime, GeoBounds(south: 25.11408, west: 51.58014497, north: 25.12755467, east: 51.60065)))
         systems.append((.lime, GeoBounds(south: 25.12755467, west: 51.56526347, north: 25.14102934, east: 51.60065)))
         systems.append((.lime, GeoBounds(south: 25.14102934, west: 51.50573748, north: 25.154504, east: 51.52061898)))
@@ -2454,7 +2468,7 @@ enum ScooterCityCatalog {
     // checker over 30 GB, and CI's Macs, which have 7, killed the compiler (24 Oct 2026).
     private static func makeCities() -> [ScooterCity] {
         var cities: [ScooterCity] = []
-        cities.reserveCapacity(962)
+        cities.reserveCapacity(964)
         cities.append(ScooterCity(id: "ch:amriswil", name: "Amriswil", countryCode: "CH", center: GeoPoint(latitude: 47.547, longitude: 9.2959), bounds: GeoBounds(south: 47.513, west: 9.234, north: 47.5773, east: 9.3262)))
         cities.append(ScooterCity(id: "ch:basel", name: "Basel", countryCode: "CH", center: GeoPoint(latitude: 47.5596, longitude: 7.5886), bounds: GeoBounds(south: 47.42, west: 7.38, north: 47.7, east: 7.82)))
         cities.append(ScooterCity(id: "ch:bern", name: "Bern", countryCode: "CH", center: GeoPoint(latitude: 46.948, longitude: 7.4474), bounds: GeoBounds(south: 46.82, west: 7.2, north: 47.08, east: 7.7)))
@@ -3227,6 +3241,8 @@ enum ScooterCityCatalog {
         cities.append(ScooterCity(id: "ro:Botoșani", name: "Botoșani", countryCode: "RO", center: GeoPoint(latitude: 47.75, longitude: 26.66667), bounds: GeoBounds(south: 47.7254, west: 26.619, north: 47.7626, east: 26.6867), feeds: [ScooterCityFeed(id: "romania:bolt_ro_app_1059")]))
         cities.append(ScooterCity(id: "ro:Deva", name: "Deva", countryCode: "RO", center: GeoPoint(latitude: 45.88333, longitude: 22.9), bounds: GeoBounds(south: 45.85633, west: 22.89478, north: 45.89326, east: 22.92735), feeds: [ScooterCityFeed(id: "romania:lime_ro_app_deva_000"), ScooterCityFeed(id: "romania:lime_ro_app_deva_001")]))
         cities.append(ScooterCity(id: "cz:České Budějovice", name: "České Budějovice", countryCode: "CZ", center: GeoPoint(latitude: 48.97447, longitude: 14.47434), bounds: GeoBounds(south: 48.94881, west: 14.43596, north: 49.00077, east: 14.50798), feeds: [ScooterCityFeed(id: "czechia:lime_cz_app_ceske_budejovice_000"), ScooterCityFeed(id: "czechia:lime_cz_app_ceske_budejovice_001"), ScooterCityFeed(id: "czechia:lime_cz_app_ceske_budejovice_002"), ScooterCityFeed(id: "czechia:lime_cz_app_ceske_budejovice_003")]))
+        cities.append(ScooterCity(id: "cz:Brno", name: "Brno", countryCode: "CZ", center: GeoPoint(latitude: 49.19522, longitude: 16.60796), bounds: GeoBounds(south: 49.17359, west: 16.54589, north: 49.24657, east: 16.66318), feeds: [ScooterCityFeed(id: "czechia:lime_cz_app_brno_000"), ScooterCityFeed(id: "czechia:lime_cz_app_brno_001"), ScooterCityFeed(id: "czechia:lime_cz_app_brno_002"), ScooterCityFeed(id: "czechia:lime_cz_app_brno_003"), ScooterCityFeed(id: "czechia:lime_cz_app_brno_004"), ScooterCityFeed(id: "czechia:lime_cz_app_brno_005"), ScooterCityFeed(id: "czechia:lime_cz_app_brno_006")]))
+        cities.append(ScooterCity(id: "cz:Ostrava", name: "Ostrava", countryCode: "CZ", center: GeoPoint(latitude: 49.83465, longitude: 18.28204), bounds: GeoBounds(south: 49.7692, west: 18.13813, north: 49.85749, east: 18.3026), feeds: [ScooterCityFeed(id: "czechia:lime_cz_app_ostrava_000"), ScooterCityFeed(id: "czechia:lime_cz_app_ostrava_001"), ScooterCityFeed(id: "czechia:lime_cz_app_ostrava_002"), ScooterCityFeed(id: "czechia:lime_cz_app_ostrava_003"), ScooterCityFeed(id: "czechia:lime_cz_app_ostrava_004"), ScooterCityFeed(id: "czechia:lime_cz_app_ostrava_005"), ScooterCityFeed(id: "czechia:lime_cz_app_ostrava_006"), ScooterCityFeed(id: "czechia:lime_cz_app_ostrava_007"), ScooterCityFeed(id: "czechia:lime_cz_app_ostrava_008"), ScooterCityFeed(id: "czechia:lime_cz_app_ostrava_009")]))
         cities.append(ScooterCity(id: "qa:Doha", name: "Doha", countryCode: "QA", center: GeoPoint(latitude: 25.28545, longitude: 51.53096), bounds: GeoBounds(south: 25.11408, west: 51.43133, north: 25.39361, east: 51.60065), feeds: [ScooterCityFeed(id: "qatar:lime_qa_app_doha_000"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_001"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_002"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_003"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_004"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_005"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_006"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_007"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_008"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_009"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_010"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_011"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_012"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_013"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_014"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_015"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_016"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_017"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_018"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_019"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_020"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_021"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_022"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_023"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_024"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_025"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_026"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_027"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_028"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_029"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_030"), ScooterCityFeed(id: "qatar:lime_qa_app_doha_031")]))
         cities.append(ScooterCity(id: "au:Adelaide", name: "Adelaide", countryCode: "AU", center: GeoPoint(latitude: -34.9285, longitude: 138.6007), bounds: GeoBounds(south: -34.943739, west: 138.57500639999998, north: -34.887522999999995, east: 138.6435044), feeds: [ScooterCityFeed(id: "australia:beam_au_adelaide")]))
         cities.append(ScooterCity(id: "au:Broome", name: "Broome", countryCode: "AU", center: GeoPoint(latitude: -17.94932, longitude: 122.217464), bounds: GeoBounds(south: -18.0055940869565, west: 122.1985178444571, north: -17.918882, east: 122.24731657644007), feeds: [ScooterCityFeed(id: "australia:beam_au_broome")]))
@@ -3422,7 +3438,7 @@ enum ScooterCityCatalog {
 
     /// How many cities the app covers, and in how many countries, for the card outside coverage:
     /// the entries above and their countries, as COVERED_CITY_TOTAL and COVERED_COUNTRY_TOTAL count them on the web.
-    static let cityCount = 962
+    static let cityCount = 964
     static let countryCount = 56
 
     /// Cities by distance from the point to their centre, nearest first.

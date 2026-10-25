@@ -1297,6 +1297,40 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Odense_126_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "CZ",
+      "city": "Brno",
+      "regionToken": "4GBGQCKC4FGYQ",
+      "fingerprint": "f7b3b373a935791930f89b6e22fb7f8784a879ce3b0041b80fd947b012d0652a",
+      "groups": 7,
+      "localCells": 26,
+      "coldMapRequests": 26,
+      "warmMapRequests": 26,
+      "scooters": 509,
+      "stationaryReferences": 137,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T18:56:45.569Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Brno_95_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "CZ",
+      "city": "Ostrava",
+      "regionToken": "LIF6QZBU2XHV3",
+      "fingerprint": "0ea8c3a7f6d4ed91f8d17b9dc380d486b7b90a2fdd9151c4107a3264443793d4",
+      "groups": 10,
+      "localCells": 40,
+      "coldMapRequests": 40,
+      "warmMapRequests": 40,
+      "scooters": 298,
+      "stationaryReferences": 41,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T19:04:06.432Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Ostrava_111_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {
