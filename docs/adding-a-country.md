@@ -65,8 +65,8 @@
    another, as Flamingo's Porirua feed does into Tawa, which is in Wellington.
    List each town's municipal boundary in `data/town-outlines.json` (its city
    id and where to read it: an OpenStreetMap relation, a Norwegian kommune at
-   Kartverket, a British district at the ONS or an American place's GEOID at
-   the Census Bureau) and run `node scripts/update-town-outlines.mjs`, which
+   Kartverket, a British district at the ONS, an American place's GEOID at
+   the Census Bureau or a Brazilian municipality's IBGE code) and run `node scripts/update-town-outlines.mjs`, which
    fetches and simplifies it. A scooter inside a town's outline then counts
    under that town, under the smaller where two nest, as Roubaix's inside
    Lille Métropole's; and a feed keeps no scooter inside the outline of a town

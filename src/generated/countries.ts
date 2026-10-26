@@ -560,6 +560,7 @@ export const COUNTRY_CREDIT_LINKS: readonly { label: string; href: string }[] = 
   { label: "CA: MoVe rider map", href: "https://move-mobility.app.link/" },
   { label: "NZ: Flamingo · CC BY 4.0", href: "https://creativecommons.org/licenses/by/4.0/" },
   { label: "JP: LUUP map", href: "https://luup.sc/" },
+  { label: "BR: IBGE boundaries", href: "https://geoportal.sgb.gov.br/server/rest/services/cartografia/divisao_politica/MapServer" },
   { label: "BR/CL/MX/KZ/AZ/GE: JET map", href: "https://jetshr.com/" },
   { label: "BR/CL/MX/KZ/CO/BY: Whoosh map", href: "https://whoosh.bike/" },
   { label: "ZA: Zippy rider map", href: "https://zippyride.app.link/" },

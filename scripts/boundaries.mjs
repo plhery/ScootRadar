@@ -82,6 +82,9 @@ const ONS_DISTRICTS = 'https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest
 // Incorporated places as TIGERweb's current layer draws them.
 const TIGERWEB_PLACES = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Places_CouSub_ConCity_SubMCD/MapServer/4/query';
 
+// Brazil's municipalities from IBGE's municipal mesh, as the Geological Survey of Brazil (SGB) serves it.
+const SGB_MUNICIPALITIES = 'https://geoportal.sgb.gov.br/server/rest/services/cartografia/divisao_politica/MapServer/0/query';
+
 // Each source's URL for an id, and where its answer keeps the geometry.
 const BOUNDARIES = {
   kartverket: {
@@ -101,6 +104,11 @@ const BOUNDARIES = {
   // reprojected by the server to lon/lat.
   census: {
     url: id => `${TIGERWEB_PLACES}?where=${encodeURIComponent(`GEOID='${id}'`)}&returnGeometry=true&outSR=4326&f=geojson`,
+    geometry: body => body.features?.[0]?.geometry,
+  },
+  // A municipality by its IBGE code, reprojected by the server to lon/lat.
+  ibge: {
+    url: id => `${SGB_MUNICIPALITIES}?where=${encodeURIComponent(`id=${Number(id)}`)}&returnGeometry=true&outSR=4326&f=geojson`,
     geometry: body => body.features?.[0]?.geometry,
   },
   // An OpenStreetMap relation by id, through Nominatim, whose policy asks each

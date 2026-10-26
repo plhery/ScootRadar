@@ -771,6 +771,10 @@
         "attribution": "Brazil: JET signed-out Go Jet app map; Whoosh authenticated rider map",
         "links": [
           {
+            "label": "BR: IBGE boundaries",
+            "href": "https://geoportal.sgb.gov.br/server/rest/services/cartografia/divisao_politica/MapServer"
+          },
+          {
             "label": "BR: JET map",
             "href": "https://jetshr.com/"
           },

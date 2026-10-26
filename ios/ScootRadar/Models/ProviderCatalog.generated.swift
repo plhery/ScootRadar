@@ -4147,6 +4147,7 @@ enum ScooterCountryCatalog {
         ("CA: MoVe rider map", "https://move-mobility.app.link/"),
         ("NZ: Flamingo · CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/"),
         ("JP: LUUP map", "https://luup.sc/"),
+        ("BR: IBGE boundaries", "https://geoportal.sgb.gov.br/server/rest/services/cartografia/divisao_politica/MapServer"),
         ("BR/CL/MX/KZ/AZ/GE: JET map", "https://jetshr.com/"),
         ("BR/CL/MX/KZ/CO/BY: Whoosh map", "https://whoosh.bike/"),
         ("ZA: Zippy rider map", "https://zippyride.app.link/"),

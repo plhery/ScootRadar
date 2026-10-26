@@ -5,8 +5,9 @@ import { boundary, outerRings, writeCatalog } from './boundaries.mjs';
 // Fills the areas of data/town-outlines.json with each town's boundary,
 // simplified to within TOLERANCE_M, or its country's COUNTRY_TOLERANCE_M:
 // OpenStreetMap's municipalities (ODbL), Norway's from Kartverket, the 2018
-// districts of Bournemouth, Christchurch and Poole from the ONS, and American
-// towns from the Census Bureau's TIGERweb. Every piece is kept but those too
+// districts of Bournemouth, Christchurch and Poole from the ONS, American
+// towns from the Census Bureau's TIGERweb, and Brazilian municipalities from
+// IBGE's municipal mesh, as the Geological Survey of Brazil serves it. Every piece is kept but those too
 // small to keep a shape, islets that simplify to a line. Run it after adding a
 // town, then npm run generate:providers, which checks the file. Name countries
 // to refresh only their towns: node scripts/update-town-outlines.mjs il

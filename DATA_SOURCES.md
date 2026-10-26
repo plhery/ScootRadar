@@ -223,12 +223,15 @@ nearest town whose bounds hold it; outside Switzerland the towns its own
 feed serves come first, so a scooter in east Oslo is Oslo's, though
 Lørenskog's centre is nearer. Where a town's municipal boundary is listed in
 `data/town-outlines.json`, as in Gush Dan, around Lille, Liège, Oslo, Heilbronn, Düsseldorf and Torino, in the Ruhr,
-or in west Los Angeles, a scooter inside it counts under that town first, under the
+in west Los Angeles or between Recife and Jaboatão dos Guararapes, a scooter inside it counts under that town first, under the
 smaller of two outlines that nest. The outlines are OpenStreetMap's (ODbL),
 Kartverket's for Norway (CC BY 4.0), the ONS's for Bournemouth, Christchurch
-and Poole (OGL v3.0) and the Census Bureau's for American towns (public
-domain), simplified to within 20 m, Israel's to within 10 m; the credits
-link the licences. On the
+and Poole (OGL v3.0), the Census Bureau's for American towns (public
+domain) and IBGE's municipal mesh for Brazil's, as the Geological Survey of
+Brazil's map service serves it, simplified to within 20 m, Israel's to within 10 m; the credits
+link the licences and IBGE. JET's Recife area runs past the town line into
+Jaboatão, where on 25 October 2026 about 40 of its scooters stood, 39 at one
+spot a few dozen metres past it: by the outlines they count under Jaboatão. On the
 evening of 15 October 2026, over two polls of every feed, they cut the
 scooters counted under the wrong town from about 950 a poll to about 70,
 most of those in Rhodes, Gush Dan and Bath, where no outline was added or

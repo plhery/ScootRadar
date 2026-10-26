@@ -185,3 +185,28 @@ describe("Beam's Antalya region in the town totals", () => {
     expect(counts['city:tr:Alanya']).toEqual({ beam: 1 });
   });
 });
+
+describe('Recife and Jaboatão dos Guararapes by their IBGE outlines', () => {
+  const now = Date.parse('2026-10-25T20:40:00Z');
+  const scooter = (provider: string, id: string, lat: number, lng: number): Vehicle => ({
+    vehicle_id: id, lat, lng, provider, battery: 70, range_m: null, distance_m: null, deep_link: null,
+  });
+  const regional = (id: string, provider: string, vehicles: Vehicle[]): FeedSnapshot => ({
+    id: `brazil:${id}`, source: 'brazil', provider, vehicles, observedAt: now, attemptedAt: now, stale: false, failed: false, skipped: false,
+    coverage: serviceAreas(REGIONAL_SCOOTER_SYSTEMS.find(system => system.id === id)!).map(area => area.bounds),
+  });
+  // JET's Recife box runs past the town line: on 25 October 2026, 39 of its scooters stood at one spot in Jaboatão.
+  const feeds = [
+    regional('jet_br_recife', 'jet', [scooter('jet', 'boa-viagem', -8.1185, -34.9002), scooter('jet', 'line', -8.1433, -34.9183)]),
+    regional('whoosh_br_rec', 'whoosh', [scooter('whoosh', 'pina', -8.0905, -34.8862)]),
+    regional('jet_br_jaboatao-dos-guararapes', 'jet', [scooter('jet', 'piedade', -8.1700, -34.9160)]),
+  ];
+  const counts = Object.fromEntries(querySnapshot({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) },
+    { bounds: { south: -8.4, west: -35.1, north: -7.8, east: -34.7 }, minBattery: 0 }, 8, now).clusters
+    .map(cluster => [cluster.id, cluster.providers]));
+
+  it('counts JET Recife\'s scooters past the line under Jaboatão', () => {
+    expect(counts['city:br:Recife']).toEqual({ jet: 1, whoosh: 1 });
+    expect(counts['city:br:Jaboatão dos Guararapes']).toEqual({ jet: 2 });
+  });
+});
