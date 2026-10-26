@@ -32,5 +32,6 @@ describe('outlinedTown', () => {
     }
     expect(misplaced).toEqual([]);
     expect(held).toBeGreaterThan(towns.length * 15);
-  });
+    // Testing every edge of every outline is slow by design: 6.7 s on CI on 26 October 2026.
+  }, 30_000);
 });
