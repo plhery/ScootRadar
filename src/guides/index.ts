@@ -220,6 +220,7 @@ import wroclawEn from './en/e-scooters-wroclaw';
 import antalyaEn from './en/e-scooters-antalya';
 import recifeEn from './en/e-scooters-recife';
 import bariIt from './it/monopattini-sharing-bari';
+import darmstadtDe from './de/e-scooter-darmstadt';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -440,4 +441,5 @@ export const GUIDES: readonly Guide[] = [
   antalyaEn,
   recifeEn,
   bariIt,
+  darmstadtDe,
 ];
