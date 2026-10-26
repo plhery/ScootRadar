@@ -33,7 +33,7 @@ describe('the United States', () => {
   });
   // "IN", "NE" and "OK" are words too; after a city, they are its state.
   it.each([['Indianapolis IN', 'Indianapolis, IN'], ['Lincoln, NE', 'Lincoln, NE'], ['Kansas City MO', 'Kansas City, MO'],
-    ['Arlington, VA', 'Arlington, VA'], ['Richmond Virginia', 'Richmond, VA']])('reads the state in "%s"', (query, title) => {
+    ['Arlington, VA', 'Arlington, VA'], ['Richmond Virginia', 'Richmond, VA'], ['Cincinnati OH', 'Cincinnati, OH']])('reads the state in "%s"', (query, title) => {
     expect(namedCities(query).map(({ city }) => city.title)).toEqual([title]);
   });
 
@@ -45,6 +45,17 @@ describe('the United States', () => {
     expect(system('lime_us_detroit').timeZone).toBe('America/Detroit');
     expect(system('lime_us_louisville').timeZone).toBe('America/Kentucky/Louisville');
     expect(system('bird_us_indianapolis').timeZone).toBe('America/Indiana/Indianapolis');
+  });
+
+  it('reads Lime\'s rider map where Lime publishes no feed, each market under the town the map lists', () => {
+    // Lime's towns with no public feed: its rider map, read in small groups, since 26 October 2026.
+    const lime = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'US' && entry.limeAppMap);
+    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Cincinnati', 'Fairfax', 'Indianapolis', 'Raleigh']);
+    for (const id of ['us:nc:Raleigh', 'us:in:Indianapolis', 'us:va:Fairfax', 'us:oh:Cincinnati']) {
+      expect(REGIONAL_SCOOTER_CITIES.filter(city => city.id === id), id).toHaveLength(1);
+    }
+    expect(lime.find(entry => entry.city === 'Indianapolis')?.timeZone).toBe('America/Indiana/Indianapolis');
+    expect(lime.find(entry => entry.city === 'Cincinnati')).toMatchObject({ region: 'OH', timeZone: 'America/New_York' });
   });
 
   it('keeps Spin\'s University of Utah scooters, on the campus inside Salt Lake City\'s outline, under Salt Lake City', () => {

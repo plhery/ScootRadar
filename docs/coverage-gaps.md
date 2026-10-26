@@ -456,8 +456,9 @@ banned shared scooters, and feeds that were empty when checked.
   - Systems 65, 67 and 68 on 3electra's host answer 400.
 
 - **United States** ([guide](american-scooter-feeds.md)): Hopp (Bolt) and Veo
-  in Washington, DC, Bird in 24 towns, Lime in 17, Veo in 39 more, Spin in 29
-  and Lyft in Chicago and Portland are covered.
+  in Washington, DC, Bird in 24 towns, Lime in 21 (4 of them from its rider
+  map since 26 October 2026), Veo in 39 more, Spin in 29 and Lyft in Chicago
+  and Portland are covered.
   - **No public feed:** a survey on 16 October 2026 found no unread US feed.
     Fleet sizes are from [Ride Report](https://public.ridereport.com/)'s
     public dashboards and the Bureau of Transportation Statistics'
@@ -468,7 +469,9 @@ banned shared scooters, and feeds that were empty when checked.
       Dallas (up to 1,750, beside Bird), Charlotte, Spokane, Sacramento,
       Phoenix (beside Spin), Boise, Minneapolis (beside Spin), Alexandria,
       St. Petersburg, Albuquerque, Tucson, Boulder, Oklahoma City, Los Angeles,
-      Long Beach, Cincinnati, and smaller towns.
+      Long Beach, and smaller towns. Its rider map has supplied Raleigh,
+      Indianapolis, Cincinnati and Fairfax since 26 October 2026
+      ([guide](american-scooter-feeds.md#lime-supplement--26-october-2026)).
     - **Bird and Lime** together in Austin (about 5,400).
     - **Bird** in Charlotte, Sacramento, Oklahoma City and Bloomington, IN
       (about 220).
@@ -500,7 +503,10 @@ banned shared scooters, and feeds that were empty when checked.
     Culver City, Lime Oakland's 1 in Emeryville and Veo Berkeley's 1 in
     Oakland are left out.
   - **Lime Grand Rapids** lists no scooter. The city now names Veo its
-    exclusive operator ([Mobile GR](https://www.grandrapidsmi.gov/departments/mobile-gr/mobility/shared-micromobility/)).
+    exclusive operator ([Mobile GR](https://www.grandrapidsmi.gov/departments/mobile-gr/mobility/shared-micromobility/)),
+    and Lime's rider map held none there in a full-area audit on the evening
+    of 25 October 2026. Nor did it in Charleston, where Lime runs e-bikes
+    with MUSC Health.
   - **Washington, DC:** Bird's feed lists no available scooter in the
     District, Spin's and Lyft's none at all. Veo's `arl` feed is the same fleet
     as `xdc`, which is covered. Lime's, which answered 404 in mid-October, has

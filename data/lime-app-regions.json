@@ -2742,6 +2742,86 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Vaughan,_ON_431_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Cincinnati",
+      "center": [
+        39.12711,
+        -84.51439
+      ],
+      "region": "OH",
+      "timeZone": "America/New_York",
+      "regionToken": "DKLT5CPO5UUVJ",
+      "serviceAreas": [
+        {
+          "name": "Cincinnati Service Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "cbwmFjx}cOv{Ae}@rYa{@nAmoAnKcm@l`BojCfXgr@bQw}@SaOD{OD{KMsSE{K{@oMcBsKqCqJoKaV}K}t@_Imu@}Gke@eIkSmNkS{UwXaZ}SyXyY_IcWXen@~Msl@x_@khAkM}`BcI_[nRcGdh@bIrPsIxM{MjyAsuAw`@orCqbBaiAu|BdaEMzNtArGU|@ti@xe@uE`KmGuEql@yb@s^o^mc@mgAoAid@rDec@hFyUjHaVhLoQrYe_@hVgUpNmE~M{Kpn@cRnbB`@i~IirV{uMnvIqyAx`Oh}@|hRrgR~g\\"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Cincinnati_4275_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Fairfax",
+      "center": [
+        38.8462,
+        -77.3064
+      ],
+      "region": "VA",
+      "timeZone": "America/New_York",
+      "regionToken": "MF7YCCS3SVBW6",
+      "serviceAreas": [
+        {
+          "name": "Fairfax SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ycglFbewvMjMnaA~@Pnb@dIt@~N}SfPeBrYPpNbLljAvDbBrXtKbl@hUhGu@kAeSjYiEjBg\\`ZqU~B}T~b@I?BeNbe@EvLfm@dQzGc\\aXab@vAgElGlAxGyR~@{@dPlBfL}W`IkN@oJRcAoJuf@w~@{]aF`@tEa{@iOr@f@yFu@`@}P?rHaw@iJxFbFkp@o@i@gOoB{^jI{NaCcC}I}OqB}F|Ee`@_Js_@nNu@~BwF~}B}Q{DeC~BoAvI??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Fairfax_281_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Indianapolis",
+      "center": [
+        39.7684,
+        -86.1581
+      ],
+      "region": "IN",
+      "timeZone": "America/Indiana/Indianapolis",
+      "regionToken": "QDNXH5XL3XTEL",
+      "serviceAreas": [
+        {
+          "name": "Indianapolis Service Area",
+          "polygon": "eutrFbq{mO|_x@p@me@cbhAsbl@~J_BobB}mDAcwDHdRxwjA??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Indianapolis_3054_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Raleigh",
+      "center": [
+        35.7796,
+        -78.6382
+      ],
+      "region": "NC",
+      "timeZone": "America/New_York",
+      "regionToken": "WBC776RC6THJG",
+      "serviceAreas": [
+        {
+          "name": "[Raleigh/Durham][SZ_20240521][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "c|oyEbzh_N~IkBnQ~BtI`C~AC~KtChDX~BhAfANvC|Ar@JPBp@PRDdCb@zMdBrZhKde@rj@`Svc@|Qbo@f[pfAfDfD~S~CjKiGfI}L|NkkAzU{hAwC}OxCu\\sEmy@mGwf@qH_k@kJqg@mDyMp@}GUqBl@sGHyAvQkf@~HmyD}Roq@oOuUrEqOv@}OxIqc@hGog@pGwa@wA}s@{h@sd@aqAyDmkA{AkVnWcHrKm@`Ek@dLkFpFyFb@}DlFob@zj@o_@h`@qObRcH~DwHlGwClGtM`^uAx@wBkEkIqIyGcByGc@wQbPsDdKsn@d|AyQfSmG|PeHx^gHxeB|CrnA~q@f|AleAno@lZlNjOtBjOq@hKpA"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Raleigh_2802_exclude_new_type.json"
+      ]
     }
   ]
 }

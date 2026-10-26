@@ -38,6 +38,8 @@ const MINNEAPOLIS: [number, number] = [44.9778, -93.265];
 const ST_PAUL: [number, number] = [44.9537, -93.09];
 const NC_STATE: [number, number] = [35.7847, -78.6821];
 const BIRMINGHAM_AL: [number, number] = [33.5186, -86.8104];
+const CINCINNATI: [number, number] = [39.1031, -84.512];
+const COVINGTON_KY: [number, number] = [39.0837, -84.5086];
 const ILE_SAINTE_HELENE: [number, number] = [45.5146, -73.534];
 const ILE_NOTRE_DAME: [number, number] = [45.505, -73.525];
 const MONTREAL: [number, number] = [45.5017, -73.5673];
@@ -206,6 +208,11 @@ describe('activeCurfew', () => {
     expect(activeCurfew(NC_STATE, at('2026-10-15T03:00:00Z'))).toEqual({ city: 'Raleigh', until: at('2026-10-15T10:00:00Z'), timeZone: 'America/New_York' });
     // Birmingham from 23:00 to 06:00, Central time.
     expect(activeCurfew(BIRMINGHAM_AL, at('2026-10-15T04:00:00Z'))).toEqual({ city: 'Birmingham', until: at('2026-10-15T11:00:00Z'), timeZone: 'America/Chicago' });
+    // Cincinnati from 23:00 to 06:00, Eastern time, and not across the river in Covington.
+    expect(activeCurfew(CINCINNATI, at('2026-10-27T02:59:00Z'))).toBeNull();
+    expect(activeCurfew(CINCINNATI, at('2026-10-27T03:00:00Z'))).toEqual({ city: 'Cincinnati', until: at('2026-10-27T10:00:00Z'), timeZone: 'America/New_York' });
+    expect(activeCurfew(CINCINNATI, at('2026-11-10T04:00:00Z'))?.until).toBe(at('2026-11-10T11:00:00Z'));
+    expect(activeCurfew(COVINGTON_KY, at('2026-10-27T03:00:00Z'))).toBeNull();
   });
 
   it('closes Parc Jean-Drapeau from 23:00 to 06:00, on both its islands, and not Montréal\'s streets', () => {

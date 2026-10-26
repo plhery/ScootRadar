@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-14",
+  "verifiedOn": "2026-10-24",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -2599,6 +2599,105 @@
       },
       "discoveryUrl": "https://live.api.gbike-api.com/api/v1/locations/markers",
       "gcooAppMap": true
+    },
+    {
+      "id": "lime_us_app_cincinnati",
+      "provider": "lime",
+      "city": "Cincinnati",
+      "region": "OH",
+      "center": [
+        39.12711,
+        -84.51439
+      ],
+      "timeZone": "America/New_York",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "DKLT5CPO5UUVJ",
+      "limeMapGrid": {
+        "south": 39.06664,
+        "west": -84.6991,
+        "north": 39.22593,
+        "east": -84.31314,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.017355015012769058,
+        "cells": "3-6,11-13,15,25-39,46-64,69-89,92-113,116-137,140-159,164-182,189-204,213-227,237-249,261-270"
+      }
+    },
+    {
+      "id": "lime_us_app_fairfax",
+      "provider": "lime",
+      "city": "Fairfax",
+      "region": "VA",
+      "center": [
+        38.8462,
+        -77.3064
+      ],
+      "timeZone": "America/New_York",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "MF7YCCS3SVBW6",
+      "limeMapGrid": {
+        "south": 38.82377,
+        "west": -77.3351,
+        "north": 38.87181,
+        "east": -77.26764,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.017295660546816787,
+        "cells": "0-2,4-15"
+      }
+    },
+    {
+      "id": "lime_us_app_indianapolis",
+      "provider": "lime",
+      "city": "Indianapolis",
+      "region": "IN",
+      "center": [
+        39.7684,
+        -86.1581
+      ],
+      "timeZone": "America/Indiana/Indianapolis",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "QDNXH5XL3XTEL",
+      "limeMapGrid": {
+        "south": 39.6322,
+        "west": -86.32635,
+        "north": 39.92726,
+        "east": -85.93808,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01749604888035513,
+        "cells": "0-21,23-44,46-67,69-90,92-113,115-136,138-159,161-182,184-205,207-228,230-251,253-274,276-297,299-320,322-343,345-366,368-389,391-505"
+      }
+    },
+    {
+      "id": "lime_us_app_raleigh",
+      "provider": "lime",
+      "city": "Raleigh",
+      "region": "NC",
+      "center": [
+        35.7796,
+        -78.6382
+      ],
+      "timeZone": "America/New_York",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "WBC776RC6THJG",
+      "limeMapGrid": {
+        "south": 35.75302,
+        "west": -78.73266,
+        "north": 35.83552,
+        "east": -78.57519,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01660375918748952,
+        "cells": "0-19,21-29,32-38,42-48,52-57,63-65"
+      }
     }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Cincinnati_4275_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Fairfax_281_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Indianapolis_3054_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Raleigh_2802_exclude_new_type.json"
   ]
 }

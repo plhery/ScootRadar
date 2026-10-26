@@ -2113,6 +2113,74 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Vaughan,_ON_431_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Cincinnati",
+      "regionToken": "DKLT5CPO5UUVJ",
+      "fingerprint": "11d8ec02d1abc972c88f1dcc12ebf021b3ebc4109e85d6d21abb258a3ecb340a",
+      "groups": 50,
+      "localCells": 200,
+      "coldMapRequests": 200,
+      "warmMapRequests": 200,
+      "scooters": 236,
+      "stationaryReferences": 2,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T02:52:35.310Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Cincinnati_4275_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Fairfax",
+      "regionToken": "MF7YCCS3SVBW6",
+      "fingerprint": "a3bdf1f64a534fc1798d7c0c72b0222e70f60172c38450c2d11248e6b5b00b53",
+      "groups": 4,
+      "localCells": 15,
+      "coldMapRequests": 15,
+      "warmMapRequests": 15,
+      "scooters": 75,
+      "stationaryReferences": 7,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T02:54:34.334Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Fairfax_281_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Indianapolis",
+      "regionToken": "QDNXH5XL3XTEL",
+      "fingerprint": "8250808bd3445023a48693a0c888bf7ef5a399cb252a2cd82e8b3471451c408c",
+      "groups": 123,
+      "localCells": 489,
+      "coldMapRequests": 497,
+      "warmMapRequests": 497,
+      "scooters": 984,
+      "stationaryReferences": 135,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T03:56:45.949Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Indianapolis_3054_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Raleigh",
+      "regionToken": "WBC776RC6THJG",
+      "fingerprint": "7b2d0e075b200490fea96426f15c00ba4c3c04f440c0e6ec4eaf5230ce227c8c",
+      "groups": 13,
+      "localCells": 52,
+      "coldMapRequests": 52,
+      "warmMapRequests": 52,
+      "scooters": 566,
+      "stationaryReferences": 69,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T02:05:54.807Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Raleigh_2802_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

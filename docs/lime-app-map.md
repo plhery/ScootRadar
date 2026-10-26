@@ -149,7 +149,10 @@ its Ciudad de México and León regions: SEMOVI's Mexico City scooter pilot
 ended on 31 August 2026. In Canada, neither did its New Westminster and
 Victoria regions, on the evening of 25 October 2026, local time: Lime rents
 only e-bikes in both, and New Westminster isn't in British Columbia's e-scooter
-pilot.
+pilot. In the United States, neither did its Charleston and Grand Rapids
+regions, on the evening of 25 October 2026, local time: Lime runs e-bikes in
+Charleston, with MUSC Health, and Grand Rapids made Veo its only operator from
+1 September 2026.
 
 - Zones named as demos, tests, warehouses, events or temporary areas are left
   out, as Rome's three temporary areas and Dortmund's warehouses. So is the
@@ -195,6 +198,7 @@ stationary reference scooter, country by country:
 | 26 October 2026 | New Zealand: Auckland, Christchurch, Hamilton, Wellington, Palmerston North | 311 | 79 | 4,104 | 392 |
 | 26 October 2026 | Mexico: Monterrey and Guadalupe | 29 | 8 | 2,912 | 68 |
 | 26 October 2026 | Canada: Ajax, Coquitlam, Laval, Montréal (Parc Jean-Drapeau), Port Moody, Richmond, Vaughan | 190 | 50 | 1,876 | 345 |
+| 26 October 2026 | United States: Indianapolis, Raleigh, Cincinnati, Fairfax | 756 | 190 | 1,861 | 213 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

@@ -6,23 +6,39 @@ and from the addresses the operators use for their other towns: Bird
 (`mds.bird.co`), Lime (`data.lime.bike`), Spin, Veo
 (`cluster-prod.veoride.com`), Lyft (`gbfs.lyft.com`) and Bolt
 (`mds.bolt.eu`). 215 systems were surveyed. Every feed URL is https, on the
-discovery's origin and under its directory. No account credentials are used,
-and no rider app's API but GCOO's signed-out map, in three towns since 24
-October 2026 (see [GCOO](#gcoo)). The catalog is
+discovery's origin and under its directory. Two rider apps' maps add the
+towns that publish nothing: GCOO's, signed out, in three towns since 24
+October 2026 (see [GCOO](#gcoo)), and Lime's, signed in, in more since 26
+October 2026 (see [Lime supplement](#lime-supplement--26-october-2026)). No
+other account credentials are used. The catalog is
 [`american-scooter-feeds.json`](../data/american-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
-The map covers 88 towns in 32 states and the District: Washington, DC (Hopp
-and Veo), 24 towns of Bird's, 17 of Lime's, 39 more of Veo's, 29 of Spin's,
-Lyft's Chicago and Portland, and GCOO's Los Angeles, Arlington and
-Alexandria, Virginia. In 23 of them, from Tempe and the Bronx to
-Chicago and Columbus, two or three operators run, and the map counts their
-scooters as one town's. Ten of the towns ban renting at night; see
-[Night bans](#night-bans).
+The map covers 89 towns in 32 states and the District: Washington, DC (Hopp,
+Veo and Lime), 24 towns of Bird's, 21 of Lime's (4 from its rider map), 39
+more of Veo's, 29 of Spin's, Lyft's Chicago and Portland, and GCOO's Los
+Angeles, Arlington and Alexandria, Virginia. In 26 of them, from Tempe and
+the Bronx to Chicago and Columbus, two or three operators run, and the map
+counts their scooters as one town's. Eleven of the towns ban renting at
+night; see [Night bans](#night-bans).
 
 Each town is named with its state, "Washington, DC", as the United States has
 many towns of one name. Zoomed out, the map shows a total per state, at the
 state's centre of population (US Census Bureau, 2020).
+
+## Lime supplement — 26 October 2026
+
+Lime publishes no feed for most of its American markets, so its authenticated
+rider map supplies them, each market whole after a clean full-area audit on
+the evening of 25 October 2026, local time: Raleigh (566 scooters, beside
+Spin's), Indianapolis (984, beside Bird's), Cincinnati (236) and Fairfax (75,
+beside Bird's, around George Mason University), every stationary reference
+found. Cincinnati rents Bird's and Lime's scooters only from 06:00
+to 23:00, so the map holds a night ban there (see [Night bans](#night-bans)).
+Lime's Charleston region held no scooter: Lime runs an e-bike programme there
+with MUSC Health. Nor did Grand Rapids', where the city made Veo its only
+shared scooter and bike operator from 1 September 2026. See
+[the Lime guide](lime-app-map.md#every-market-the-map-lists-october-2026).
 
 ## Washington, DC
 
@@ -576,7 +592,7 @@ of Bird's 284 stood there, nor any of Lime's 495.
 
 ## Night bans
 
-Ten covered towns ban renting at night, by ordinance, in the rules of
+Eleven covered towns ban renting at night, by ordinance, in the rules of
 their permits or on the city's own program page. While a ban holds, the dock
 tells of it, with a moon, for the town in view, and a scooter's card says
 when it can be rented again. Web and iOS read the same
@@ -584,8 +600,8 @@ when it can be rented again. Web and iOS read the same
 its source and the town's boundary: the Census Bureau's incorporated place
 from TIGERweb (public domain), simplified to within 100 m by
 `scripts/update-curfew-areas.mjs`. Hours are the town's own. Each ban rests
-on the city's own rule, in force and read again on 15 October 2026; none
-rests on news or an operator's notice.
+on the city's own rule, in force and read again on 15 October 2026,
+Cincinnati's on 26 October; none rests on news or an operator's notice.
 
 | Town | Nights | Source |
 | --- | --- | --- |
@@ -599,6 +615,7 @@ rests on news or an operator's notice.
 | Minneapolis, MN | Every night, 00:00–04:00 | [Rent a scooter](https://www.minneapolismn.gov/getting-around/scooters/rent-a-scooter/), updated 30 June 2026 |
 | Raleigh, NC | Every night, 23:00–06:00 | [E-Scooter Program](https://raleighnc.gov/transportation/services/e-scooter-program) |
 | Birmingham, AL | Every night, 23:00–06:00 | [City Code § 12-22-6(c)(20)](https://library.municode.com/al/birmingham/codes/code_of_ordinances?nodeId=PT1THCOGEOR_TIT12LIRE_CH22SHMIDESY) |
+| Cincinnati, OH | Every night, 23:00–06:00 | [Electric Scooters](https://www.cincinnati-oh.gov/dote/dote-projects/electric-scooters/), Department of Transportation & Engineering |
 
 - A night is named after its evening: Friday's runs into Saturday morning.
 - **Dallas:** "Units may only be available to users to start a ride from
@@ -666,6 +683,12 @@ rests on news or an operator's notice.
   change is published, and Veo's fleet keeps to these. Its ids hold from
   poll to poll: 24 and then 28 scooters moved more than 250 m in the two
   hours before 23:00 on 14 October, 3 in the hour after and 1 in the next.
+- **Cincinnati:** the department's page says Bird's and Lime's scooters are
+  "available for rent" from 6:00 a.m. to 11:00 p.m., seven days a week. It
+  was read in its copy of 18 May 2026 in the Internet Archive, as the city's
+  site refuses connections from Europe. WCPO reported the end of the day
+  moving back to 23:00 in January 2023. Lime's map there was audited before
+  23:00.
 
 Spin and Veo keep listing scooters as available through a ban, Gainesville's
 and Cleveland's too, so only rides stopping can show one in their feeds.
