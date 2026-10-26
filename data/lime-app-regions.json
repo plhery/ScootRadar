@@ -2435,6 +2435,29 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Tokyo_1355_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "AU",
+      "city": "Port Phillip",
+      "center": [
+        -37.8676,
+        144.9808
+      ],
+      "timeZone": "Australia/Melbourne",
+      "regionToken": "DSWYPCAYY423J",
+      "serviceAreas": [
+        {
+          "name": "Port Phillip - E-Scooter Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "|y}eFcjnsZfA[h@[dAs@_GkIiBoGyB_KKyJLgLNcCvA{CLoAcAwHd@uD`@_@N}Aa@M|@kH`@q@CaArA{K|EdABSZS?[To@LaADq@Da@HgAB]qBk@ZqDt@cEDaAb@}AnBiELK`AHf@u@a@o@bCmHpAwBlAo@jE}QnAyDLsARk@`@c@^kBbFiOnCmGlHaVdAuBdCgHp@gC\\k@XsAxCsHb@cBlGaO~CeIRy@jB}DzAyBpHoH~D{FTk@lBwAV}A@y@g@aA`@L^r@fC}E~AyBbEuARV@_@`Cw@nCO~En@^jFJFbF}HdDoDjAmBdCwC|L_KrAk@bAQ`B@~A^\\b@`@zA\\dCP\\hEcKhL{@LdDNA@t@{DX?Ni@BAMcEX@Lg@VCMuDlEm@dAHTjA@Vd@?i@h@y@`DeC~Ea@bGD`C]zKyDd@u@p@Ef@NnLi@bBx@b@C`@_@tAsCh@b@Bi@f@m@bB_DtHaLxQqR~FyE|@o@jAa@tBgBhBs@Rr@DAk@sAUmA~Be^{s@}HbBmXFgC_At@oiBqSbFax@wj@mEsFzw@{Fbw@eE`KgE`m@y`@wD}@vN{m@~O}h@nNaGbDmAjAiAtAaAzAmA|Bg@r@}AvAiC~AqAR{ItA`CtMpDhRyOhOVd@Q\\GHMn@UZIGQ\\EPKb@CNARAV@VHXDl@Jn@d@~BBfAH`AF`ABrCCzBEvAKpBw@hG{A~KcCfWe@jGD?MhC^d@i@jCUZK^W`CA~@eB~RChA@d@F|@@FMHAhJIj@?nAAx@JnCGJDFCDBbAPXKLRfHb@~CINDDN^?H`@hL`AdGnDrVrCdXp@hCP~@REl@~Ap@zAv@vA`ASVvB`F`Dx@rAxCtDfBtI`EhMv@rDpEkDtAo@`H{AAIlImBRrAzAa@t@QJBfHhP"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Melbourne_3245_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Melbourne",
+        "St Kilda"
+      ]
     }
   ]
 }

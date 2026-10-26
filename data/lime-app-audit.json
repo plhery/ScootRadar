@@ -1875,6 +1875,23 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Tokyo_1355_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "AU",
+      "city": "Port Phillip",
+      "regionToken": "DSWYPCAYY423J",
+      "fingerprint": "06d735ba6006102cc04e5b1c0c49003a7f2eaa6b5a799aab52e4bdc255821e6c",
+      "groups": 5,
+      "localCells": 18,
+      "coldMapRequests": 18,
+      "warmMapRequests": 18,
+      "scooters": 239,
+      "stationaryReferences": 16,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T00:35:09.355Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Melbourne_3245_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

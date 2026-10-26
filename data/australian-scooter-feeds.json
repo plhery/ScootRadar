@@ -235,11 +235,38 @@
         "lngStep": 0.015161434232795295,
         "cells": "2-6,15-21,30-36,45-51,60-66,73-81,88-89,91-97,102-104,107-111,117-118,123-125,132,215-217,230-232,245-246,260-261,275-276"
       }
+    },
+    {
+      "id": "lime_au_app_port_phillip",
+      "provider": "lime",
+      "city": "Port Phillip",
+      "center": [
+        -37.8676,
+        144.9808
+      ],
+      "aliases": [
+        "Melbourne",
+        "St Kilda"
+      ],
+      "timeZone": "Australia/Melbourne",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "DSWYPCAYY423J",
+      "limeMapGrid": {
+        "south": -37.89166,
+        "west": 144.91314,
+        "north": -37.826,
+        "east": 145.01029,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01705920161215994,
+        "cells": "3-4,9-11,14-22,24-27"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
   "limeServiceAreaSources": [
-    "https://assets.lime.bike/zones_attributes/Brisbane_2639_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Brisbane_2639_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Melbourne_3245_exclude_new_type.json"
   ],
   "notes": "Beam entries use reviewed authenticated rider-map regions. Empty, test and retired Beam regions are omitted; rider credentials remain private to the Node cache.",
   "beamVerifiedOn": "2026-10-24",

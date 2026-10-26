@@ -142,7 +142,9 @@ lists e-bikes only, and Brussels bans shared scooters from 1 January 2027.
 In Spain, neither did its Madrid, Alcorcón, Málaga and Sevilla regions:
 Madrid revoked Lime's, Dott's and Tier's scooter licences in September 2024.
 In Japan, neither did the Chiba and Kawasaki (Takatsu) zones of its Tokyo
-region, on the morning of 26 October 2026, so they are left out.
+region, on the morning of 26 October 2026, so they are left out. In
+Australia, neither did its Gold Coast region, where Lime rents e-bikes, nor
+its Sydney region, a single small zone in St Peters.
 
 - Zones named as demos, tests, warehouses, events or temporary areas are left
   out, as Rome's three temporary areas and Dortmund's warehouses. So is the
@@ -184,6 +186,7 @@ stationary reference scooter, country by country:
 | 25 October 2026 | Belgium: Antwerp | 42 | 11 | 880 | 19 |
 | 25 October 2026 | Portugal: Porto, Faro, Oeiras | 59 | 16 | 893 | 128 |
 | 26 October 2026 | Japan: Tokyo, Yokohama | 263 | 66 | 2,334 | 23 |
+| 26 October 2026 | Australia: Port Phillip | 18 | 5 | 239 | 16 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

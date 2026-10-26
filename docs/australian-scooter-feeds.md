@@ -9,6 +9,18 @@ The region is `GDXLUXEILIOHF`. Its public outline document is:
 
 - [Publisher service polygons](https://assets.lime.bike/zones_attributes/Brisbane_2639_exclude_new_type.json)
 
+Lime's scooters in Port Phillip, about 240, were added on 26 October 2026 the
+same way, after a clean full-area audit of its e-scooter zone that morning;
+see [the Lime guide](lime-app-map.md#every-market-the-map-lists-october-2026).
+The region is `DSWYPCAYY423J`, named Melbourne in Lime's app, and searching
+Melbourne or St Kilda finds it. Its public outline document is:
+
+- [Melbourne region service polygons](https://assets.lime.bike/zones_attributes/Melbourne_3245_exclude_new_type.json)
+
+Lime's Gold Coast region, where it rents e-bikes, held no scooter in its
+audit that morning, nor did its Sydney region, a single small zone in
+St Peters.
+
 The market uses `Australia/Brisbane`. Only scooter pins inside the recorded
 service polygons are included. Bikes, fares and vehicle-specific rental links
 are excluded. Public feeds remain preferred wherever available.
