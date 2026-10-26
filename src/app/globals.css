@@ -2050,6 +2050,14 @@ svg {
 .zone-legend-note {
   color: var(--ink-2);
 }
+/* A city's rule: who says so can be opened, and outside its hours its swatch is dimmer, as on the map. */
+.zone-legend-rule a {
+  color: inherit;
+  pointer-events: auto;
+}
+.zone-legend-rule[data-in-force='false'] .zone-swatch {
+  opacity: 0.35;
+}
 /* Each as on the map, so that the edge and the hatching tell them apart without the colour. */
 .zone-swatch {
   width: 16px;

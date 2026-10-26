@@ -532,6 +532,25 @@ Hopp's towns and the regional GBFS systems publish in `geofencing_zones`:
   view. Shapes are simplified to 2 m; one answer carries at most 60,000 points,
   slow zones left out first, then no-parking zones.
 
+Streets where a city or its police forbids riding, in `data/rule-zones.json`,
+are drawn as no riding's zones are, from zoom 14 whether the layer is on or
+not, dimmer outside their hours; the legend gives the hours and names who
+forbids it, linked to where they say so. So far Seoul's three kickboard-free
+streets, 12:00 to 23:00 every day: Hongdae's Red Road (sections R1 to R6) and
+Banpo's academy street since 16 May 2025
+([Seoul and the Seoul police](https://news.seoul.go.kr/traffic/archives/514266)),
+and Daechi-dong's academy street since 30 September 2026
+([Gangnam-gu](https://www.gangnam.go.kr/board/B_000031/1075336/view.do?mid=ID01_0313)).
+Each was traced from its authority's map, [Seoul's](https://mediahub.seoul.go.kr/archives/2014422)
+and the one in Gangnam's notice, laid over OpenFreeMap's roads: Hongdae's and
+Daechi-dong's lines follow the line drawn, Banpo's are the roads under it,
+© OpenStreetMap contributors under the ODbL. The pages are under KOGL Type 4
+(credit, no commercial use, no changes): only where and when the rule holds is
+taken from them, not their maps or words. Yeonsinnae's and Wirye's streets,
+which the press reports from 30 September 2026, wait for an official page, and
+Antalya's ban on Yaşar Sobutay Bulvarı (UKOME decision 374) for an official
+line of which road it means.
+
 ## Germany and Italy
 
 Reviewed catalogs live in `data/german-scooter-feeds.json` and

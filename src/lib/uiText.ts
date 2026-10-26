@@ -49,11 +49,21 @@ export interface UiTextFormatter {
  */
 export function formatClockTime(time: number, locale: AppLocale, region?: string, timeZone?: string, weekday = false): string {
   const tag = formatLocale(locale, region);
-  const { hourCycle } = new Intl.DateTimeFormat(tag, { hour: 'numeric' }).resolvedOptions();
-  const twelveHour = hourCycle === 'h11' || hourCycle === 'h12';
   const zone = timeZone && clockDiffers(time, timeZone) ? { timeZone, timeZoneName: 'short' as const } : {};
-  return new Date(time).toLocaleTimeString(tag, { hour: twelveHour ? 'numeric' : '2-digit', minute: '2-digit',
+  return new Date(time).toLocaleTimeString(tag, { hour: clockHour(tag), minute: '2-digit',
     ...(weekday ? { weekday: 'short' as const } : {}), ...zone });
+}
+
+/** A rule's local "HH:MM", as formatClockTime writes clock times, by no device's clock: "23:00", "11:00 PM". */
+export function formatWallTime(time: string, locale: AppLocale, region?: string): string {
+  const tag = formatLocale(locale, region);
+  const [hours, minutes] = time.split(':').map(Number);
+  return new Date(Date.UTC(2001, 0, 1, hours, minutes)).toLocaleTimeString(tag, { hour: clockHour(tag), minute: '2-digit', timeZone: 'UTC' });
+}
+
+function clockHour(tag: string): 'numeric' | '2-digit' {
+  const { hourCycle } = new Intl.DateTimeFormat(tag, { hour: 'numeric' }).resolvedOptions();
+  return hourCycle === 'h11' || hourCycle === 'h12' ? 'numeric' : '2-digit';
 }
 
 /** Whether a time zone's clock reads otherwise than the device's at that instant; not for one the browser does not know. */

@@ -33,6 +33,7 @@ import { nearestCoveredCities, type NearbyCoveredCity } from '@/lib/coveredCitie
 import { providerForFailedSource, providerHealth, providersInView } from '@/lib/dataHealth';
 import { dockIssue, dockModel, originInViewport, type DockInput } from '@/lib/dockModel';
 import { activeCurfew } from '@/lib/rentalCurfews';
+import { ruleZonesInView } from '@/lib/ruleZones';
 import { useI18n } from '@/lib/i18n';
 import { failureSurface } from '@/lib/loadFailure';
 import { unfilteredCountInView } from '@/lib/nothingToShow';
@@ -375,6 +376,8 @@ export default function Home() {
     () => zoneData.zones.filter(zone => enabledProviders.has(zone.provider)),
     [enabledProviders, zoneData.zones]
   );
+  // Streets a city forbids riding on: the law, so drawn whether or not the zones are on.
+  const ruleZones = useMemo(() => ruleZonesInView(mapQuery, now), [mapQuery, now]);
 
   const handleProviderToggle = (provider: string) => {
     track('provider_filter', { provider, enabled: !enabledProviders.has(provider), source: 'filters' });
@@ -983,6 +986,7 @@ export default function Home() {
       <MapWrapper
         parking={mapParking}
         zones={mapZones}
+        ruleZones={ruleZones}
         vehicles={mapVehicles}
         clusters={mapClusters}
         clustered={responseMeta?.mode === 'clusters'}
@@ -1024,7 +1028,7 @@ export default function Home() {
 
         <MapCredits />
 
-        {!searchExpanded && <ZoneLegend state={zoneData.state} count={mapZones.length} />}
+        {!searchExpanded && <ZoneLegend state={zoneData.state} count={mapZones.length} rules={ruleZones} />}
       </div>
 
       {desktop && <KeyHints />}

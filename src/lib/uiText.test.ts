@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { TranslationKey } from '@/lib/i18n';
-import { formatClockTime, formatUiText, isSingular, type UiTextFormatter } from '@/lib/uiText';
+import { formatClockTime, formatUiText, formatWallTime, isSingular, type UiTextFormatter } from '@/lib/uiText';
 
 // Echoes the key and its values, so the test shows what reaches the dictionary.
 const i18n: UiTextFormatter = {
@@ -44,6 +44,14 @@ describe('formatClockTime', () => {
     const elsewhere = new Date(AT).getTimezoneOffset() === -840 ? 'Pacific/Pago_Pago' : 'Pacific/Kiritimati';
     expect(formatUiText({ key: 'dock.curfew', values: { city: 'Oslo' }, time: AT, timeZone: elsewhere }, i18n))
       .toBe(`dock.curfew city=Oslo time=${formatClockTime(AT, 'de', undefined, elsewhere)}`);
+  });
+});
+
+describe('formatWallTime', () => {
+  it('writes a rule\'s local time as the region writes clock times, whatever the device\'s time zone', () => {
+    expect(formatWallTime('23:00', 'de')).toBe('23:00');
+    expect(formatWallTime('12:00', 'en', 'CH')).toBe('12:00');
+    expect(formatWallTime('23:00', 'en', 'US').replace(/\s/g, ' ')).toBe('11:00 PM');
   });
 });
 

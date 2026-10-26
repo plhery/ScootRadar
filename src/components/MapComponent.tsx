@@ -49,6 +49,7 @@ import { scooterTip } from '@/lib/scooterTip';
 import { formatDistance as formatWalkingDistance, measurementSystem, walkingMinutes, type DistanceFormatter } from '@/lib/walking';
 import { createRouteLayer, type Frame, type RouteLayer } from '@/lib/walkRouteLayer';
 import type { WalkView } from '@/lib/walkState';
+import type { RuleZoneShape } from '@/lib/ruleZones';
 import type { MapZone } from '@/lib/zones';
 import { mergeZones } from '@/lib/zoneShapes';
 import { ZONE_EDGE_CLEARANCE, ZONE_STYLES } from './ZoneLegend';
@@ -56,6 +57,17 @@ import './map.css';
 
 /** The panes of the zones' fills are made in this order, the strongest rule on top. */
 const ZONE_KINDS_BELOW_FIRST: MapZone['kind'][] = ['slow', 'noParking', 'noRide'];
+/** How strongly a street a city forbids riding on is drawn outside its hours, of how strongly within them. */
+const RULE_ZONE_DIMMED = 0.35;
+
+/** Polygons of [lat, lng] points, each moved by whole turns of the globe to the copy of the world the map frames. */
+function polygonsNear(polygons: [number, number][][][], frameLng: number): [number, number][][][] {
+  return polygons.map(polygon => {
+    const first = polygon[0]?.[0];
+    const shift = first ? lngNear(first[1], frameLng) - first[1] : 0;
+    return polygon.map(ring => ring.map(([lat, lng]): [number, number] => [lat, lng + shift]));
+  });
+}
 
 type Translate = (key: TranslationKey, values?: Record<string, string | number>) => string;
 type FormatNumber = (value: number, options?: Intl.NumberFormatOptions) => string;
@@ -344,11 +356,14 @@ function MapZoomControls({ mapRef }: { mapRef: { current: L.Map | null } }) {
 // The same empty lists on every render, so that a map without faded scooters does not draw them again.
 const NO_VEHICLES: Vehicle[] = [];
 const NO_CLUSTERS: ScooterCluster[] = [];
+const NO_RULE_ZONES: RuleZoneShape[] = [];
 
 interface MapComponentProps {
   parking?: ParkingLocation[];
   /** The operators' zones, drawn under everything else when turned on. */
   zones?: MapZone[];
+  /** Streets a city forbids riding on, drawn as no riding's zones are, whether or not those are on. */
+  ruleZones?: RuleZoneShape[];
   vehicles: Vehicle[];
   clusters: CityGroup[];
   clustered: boolean;
@@ -421,6 +436,7 @@ export interface MapPopover {
 export default function MapComponent({
   parking = [],
   zones = [],
+  ruleZones = NO_RULE_ZONES,
   vehicles,
   clusters,
   clustered,
@@ -767,11 +783,7 @@ export default function MapComponent({
     const layer = L.layerGroup();
     const drawn = new Map<MapZone['kind'], { shape: [number, number][][][]; edge: L.Polygon }>();
     for (const { kind, polygons } of zoneShapes) {
-      const shape = polygons.map(polygon => {
-        const first = polygon[0]?.[0];
-        const shift = first ? lngNear(first[1], frameLng) - first[1] : 0;
-        return polygon.map(ring => ring.map(([lat, lng]): [number, number] => [lat, lng + shift]));
-      });
+      const shape = polygonsNear(polygons, frameLng);
       L.polygon(shape, { renderer: fills[kind], className: `zone-fill-${kind}`, interactive: false, stroke: false, fillOpacity: 1 }).addTo(layer);
       const edge = L.polygon(shape, { ...ZONE_STYLES[kind].edge, renderer: edges, className: `zone-edge-${kind}`, interactive: false, fill: false }).addTo(layer);
       drawn.set(kind, { shape, edge });
@@ -803,6 +815,28 @@ export default function MapComponent({
     }
     return () => { layer.remove(); for (const renderer of [...Object.values(fills), edges]) renderer.remove(); };
   }, [frameLng, readyMap, zoneShapes]);
+
+  // The streets a city forbids riding on, with no riding's hatching and edge, in a pane of
+  // their own; outside their hours, dimmer.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!readyMap || !map || !ruleZones.length) return;
+    const element = map.getPane('rule-zones') ?? map.createPane('rule-zones', map.getPane('overlayPane'));
+    element.style.zIndex = '-1';
+    const renderer = L.svg({ pane: 'rule-zones', padding: 0.5 });
+    const layer = L.layerGroup();
+    for (const zone of ruleZones) {
+      const shape = polygonsNear(zone.polygons, frameLng);
+      const { fillOpacity, edge } = ZONE_STYLES[zone.rule];
+      const strength = zone.inForce ? 1 : RULE_ZONE_DIMMED;
+      L.polygon(shape, { renderer, className: `zone-fill-${zone.rule}`, interactive: false, stroke: false,
+        fillOpacity: fillOpacity * strength }).addTo(layer);
+      L.polygon(shape, { ...edge, opacity: (edge.opacity ?? 1) * strength, renderer, className: `zone-edge-${zone.rule}`,
+        interactive: false, fill: false }).addTo(layer);
+    }
+    layer.addTo(map);
+    return () => { layer.remove(); renderer.remove(); };
+  }, [frameLng, readyMap, ruleZones]);
 
   // The ground: one layer, drawn here from vector tiles in the colours of the
   // appearance. Its address is asked for first; until it is known, and whenever
@@ -1327,7 +1361,7 @@ export default function MapComponent({
         <MapCompass map={readyMap} />
         <MapZoomControls mapRef={mapRef} />
       </div>
-      {zones.length > 0 && (
+      {(zones.length > 0 || ruleZones.length > 0) && (
         // No riding's hatching, which its zones are filled with (map.css).
         <svg className="zone-patterns" aria-hidden="true" focusable="false">
           <defs>
