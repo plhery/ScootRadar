@@ -22,6 +22,7 @@ import { cadenceFromEnv, ownIdleExpiries, RETENTION_CAPS_MS, retained, retention
 import { answerZones, createZoneStore } from './zoneStore';
 import { createStrayHold } from './strayHold';
 import { runInSlices } from './inSlices';
+import { watchStalls } from './stallLog';
 import { dottMapRequests, withDottAppCollectors } from './dottApp';
 import { voiMapRequests, withVoiAppCollectors } from './voiApp';
 import { atomMapRequests, withAtomAppCollectors } from './atomApp';
@@ -85,6 +86,7 @@ const regionalSystems = new Map(REGIONAL_SCOOTER_SYSTEMS.map(system => [`${regio
 let collectable: CollectableScooterFeed[] = [];
 const zoneStore = createZoneStore({ onError: (feed, error) => console.warn(JSON.stringify({ event: 'zones_feed_failed', feed,
   error: (error instanceof Error ? error.message : String(error)).slice(0, 300) })) });
+const stalls = watchStalls(console.warn);
 
 // Validate configuration before doing any network collection.
 const schedule = cadenceFromEnv();
@@ -246,7 +248,8 @@ async function collect(definition: CollectableScooterFeed, attention: Collection
     if (stopping || !records.has(definition.id)) return;
     records.set(definition.id, record);
     publish();
-  }, system && !isAppMapSystem(system) ? () => fetchRegionalParking(system) : undefined);
+  }, system && !isAppMapSystem(system) ? () => fetchRegionalParking(system) : undefined)
+    .finally(() => stalls.ended(definition.id));
   return { failed };
 }
 
@@ -370,6 +373,7 @@ for (const signal of ['SIGTERM', 'SIGINT'] as const) {
     scheduler.stop();
     clearTimeout(discoveryTimer);
     clearInterval(persistenceTimer);
+    stalls.stop();
     server.close();
     void (async () => { await persisting; await persist(true); })();
   });
