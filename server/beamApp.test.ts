@@ -70,6 +70,11 @@ describe('Beam H3 collection', () => {
     for (const payload of [undefined, { errors: ['Unauthorized'] }, [scooter({ id: '91' })],
       [scooter({ formFactor: undefined })], [scooter({ cityId: undefined })], [scooter({ batteryLevel: 101 })],
       [scooter({ longitude: NaN })]]) expect(() => parseBeamVehicles(payload, region)).toThrow('Invalid Beam');
+    // The error says which field Beam sent wrong, as the logs and Sentry show only the message.
+    expect(() => parseBeamVehicles([scooter({ batteryLevel: 101 })], region)).toThrow('Invalid Beam scooter batteryLevel 101');
+    expect(() => parseBeamVehicles([scooter({ batteryLevel: null })], region)).toThrow('Invalid Beam scooter batteryLevel null');
+    expect(() => parseBeamVehicles([scooter({ longitude: NaN })], region)).toThrow('Invalid Beam scooter longitude null');
+    expect(() => parseBeamVehicles([scooter({ id: '91' })], region)).toThrow('Invalid Beam scooter id "91"');
     expect(parseBeamVehicles([], region)).toEqual([]);
   });
 

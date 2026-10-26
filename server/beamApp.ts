@@ -211,6 +211,13 @@ export class BeamClient {
 }
 
 type BeamScooter = Vehicle & { vehicle_id: string };
+/** The first field of a scooter Beam sent that fails parseBeamVehicles' checks, and its value, for the error. */
+function invalidBeamField(v: Record<string, unknown>) {
+  const field = !Number.isSafeInteger(v.id) || (v.id as number) <= 0 ? 'id' : !Number.isSafeInteger(v.cityId) ? 'cityId'
+    : typeof v.latitude !== 'number' || !Number.isFinite(v.latitude) || Math.abs(v.latitude) > 85 ? 'latitude'
+    : typeof v.longitude !== 'number' || !Number.isFinite(v.longitude) || Math.abs(v.longitude) > 180 ? 'longitude' : 'batteryLevel';
+  return `${field} ${String(JSON.stringify(v[field])).slice(0, 20)}`;
+}
 export function parseBeamVehicles(payload: unknown, system: RegionalScooterSystem): BeamScooter[] {
   if (!Array.isArray(payload) || payload.length > 30_000) throw new Error('Invalid Beam vehicle list');
   const vehicles = new Map<string, BeamScooter>();
@@ -221,7 +228,9 @@ export function parseBeamVehicles(payload: unknown, system: RegionalScooterSyste
     if (!Number.isSafeInteger(v.id) || (v.id as number) <= 0 || !Number.isSafeInteger(v.cityId) ||
       typeof v.latitude !== 'number' || typeof v.longitude !== 'number' || !Number.isFinite(v.latitude) ||
       !Number.isFinite(v.longitude) || Math.abs(v.latitude) > 85 || Math.abs(v.longitude) > 180 ||
-      !Number.isInteger(v.batteryLevel) || (v.batteryLevel as number) < 0 || (v.batteryLevel as number) > 100) throw new Error('Invalid Beam scooter');
+      !Number.isInteger(v.batteryLevel) || (v.batteryLevel as number) < 0 || (v.batteryLevel as number) > 100) {
+      throw new Error(`Invalid Beam scooter ${invalidBeamField(v)}`);
+    }
     if (v.cityId !== system.beamAppCity || !boundsContainPoint(system.bounds, v.latitude, v.longitude)) continue;
     const id = `beam:${v.id}`;
     vehicles.set(id, { provider: 'beam', vehicle_id: id, lat: v.latitude, lng: v.longitude,
