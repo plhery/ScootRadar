@@ -652,7 +652,8 @@ under CC BY 4.0 (Informação geográfica cedida pela Direção-Geral do
 Território). Kyiv's is its OpenStreetMap boundary (relation 421866), read
 through Nominatim, © OpenStreetMap contributors, under the
 [ODbL](https://opendatacommons.org/licenses/odbl/); simplified, it stays under
-the ODbL. The credits list all four. American towns are the Census Bureau's
+the ODbL. So does East Lansing's, which leaves out Michigan State's campus
+(relation 13708038). The credits list all four. American towns are the Census Bureau's
 incorporated places, read from
 [TIGERweb](https://tigerweb.geo.census.gov/tigerwebmain/TIGERweb_main.html);
 as works of the federal government they are in the public domain and need no
@@ -869,7 +870,7 @@ map's credits name all six under the GBFS line.
 
 Since 24 October 2026, GCOO's fleets in Los Angeles, Alexandria and Arlington
 come from its app's signed-out map, read as in South Korea (below). GCOO
-publishes no licence for it; the credits link to gcoo.io. Ten towns ban renting at
+publishes no licence for it; the credits link to gcoo.io. Eleven towns ban renting at
 night, by their codes, permit rules or program pages. See the
 [coverage audit](docs/american-scooter-feeds.md) for the systems, the brand
 Hopp, the bounds, the night bans, the gaps and the recheck command.

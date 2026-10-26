@@ -1,4 +1,5 @@
 import { writeFileSync } from 'node:fs';
+import polygonClipping from 'polygon-clipping';
 
 // Towns' boundaries, fetched from the sources below and simplified, for the
 // night bans (scripts/update-curfew-areas.mjs) and the town outlines
@@ -126,9 +127,11 @@ const lastRequest = new Map();
 /**
  * The boundary as GeoJSON polygons of [lng, lat] rings. A town no source draws whole, as
  * Gwangju, whose five districts OpenStreetMap has placed under the Jeonnam-Gwangju special
- * city since 2026, lists its parts' `ids`.
+ * city since 2026, lists its parts' `ids`. Land the town's rule does not reach is cut out with
+ * `minus`, another boundary: Michigan State's campus, which sets its own rules, out of East Lansing.
  */
-export async function boundary({ source, id, ids }) {
+export async function boundary({ source, id, ids, minus }) {
+  if (minus) return polygonClipping.difference(await boundary({ source, id, ids }), await boundary(minus));
   if (ids) {
     const polygons = [];
     for (const part of ids) polygons.push(...await boundary({ source, id: part }));

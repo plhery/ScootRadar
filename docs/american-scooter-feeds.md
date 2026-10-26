@@ -19,7 +19,7 @@ Veo and Lime), 24 towns of Bird's, 26 of Lime's (9 from its rider map), 39
 more of Veo's, 29 of Spin's, Lyft's Chicago and Portland, and GCOO's Los
 Angeles, Arlington and Alexandria, Virginia. In 27 of them, from Tempe and
 the Bronx to Chicago and Columbus, two or three operators run, and the map
-counts their scooters as one town's. Ten of the towns ban renting at
+counts their scooters as one town's. Eleven of the towns ban renting at
 night; see [Night bans](#night-bans).
 
 Each town is named with its state, "Washington, DC", as the United States has
@@ -35,8 +35,10 @@ time: Raleigh (566 scooters, beside Spin's), Indianapolis (984, beside
 Bird's), Cincinnati (236) and Fairfax (75, beside Bird's, around George Mason
 University). Just after midnight on 26 October: Tampa (1,393, beside Spin's),
 Orlando (765), St. Petersburg (586, downtown), Winston-Salem (241) and
-Lansing (173, with East Lansing and Michigan State's campus). Cincinnati rents Bird's and Lime's scooters only from 06:00
-to 23:00, so the map holds a night ban there (see [Night bans](#night-bans)).
+Lansing (173, with East Lansing and Michigan State's campus). Cincinnati
+rents Bird's and Lime's scooters only from 06:00 to 23:00, and East Lansing
+has Lime take its scooters off the city's streets from 03:00 to 06:00, so the
+map holds a night ban in both (see [Night bans](#night-bans)).
 Lime's Charleston region held no scooter: Lime runs an e-bike programme there
 with MUSC Health. Nor did Grand Rapids', where the city made Veo its only
 shared scooter and bike operator from 1 September 2026. See
@@ -596,16 +598,18 @@ of Bird's 284 stood there, nor any of Lime's 495.
 
 ## Night bans
 
-Ten covered towns ban renting at night, by ordinance, in the rules of
+Eleven covered towns ban renting at night, by ordinance, in the rules of
 their permits or on the city's own program page. While a ban holds, the dock
 tells of it, with a moon, for the town in view, and a scooter's card says
 when it can be rented again. Web and iOS read the same
 [`rental-curfews.json`](../data/rental-curfews.json). It holds each rule,
 its source and the town's boundary: the Census Bureau's incorporated place
-from TIGERweb (public domain), simplified to within 100 m by
+from TIGERweb (public domain), East Lansing's without Michigan State's campus
+from OpenStreetMap (ODbL), simplified to within 100 m by
 `scripts/update-curfew-areas.mjs`. Hours are the town's own. Each ban rests
 on the city's own rule, in force and read again on 15 October 2026,
-Cincinnati's on 26 October; none rests on news or an operator's notice.
+Cincinnati's and East Lansing's on 26 October; none rests on news or an
+operator's notice.
 
 | Town | Nights | Source |
 | --- | --- | --- |
@@ -619,6 +623,7 @@ Cincinnati's on 26 October; none rests on news or an operator's notice.
 | Raleigh, NC | Every night, 23:00–06:00 | [E-Scooter Program](https://raleighnc.gov/transportation/services/e-scooter-program) |
 | Birmingham, AL | Every night, 23:00–06:00 | [City Code § 12-22-6(c)(20)](https://library.municode.com/al/birmingham/codes/code_of_ordinances?nodeId=PT1THCOGEOR_TIT12LIRE_CH22SHMIDESY) |
 | Cincinnati, OH | Every night, 23:00–06:00 | [Electric Scooters](https://www.cincinnati-oh.gov/dote/dote-projects/electric-scooters/), Department of Transportation & Engineering |
+| East Lansing, MI | Every night, 03:00–06:00, outside Michigan State's campus | [City Code § 8-610(13)](https://library.municode.com/mi/east_lansing/codes/code_of_ordinances?nodeId=PTIIICOOR_CH8BU_ARTXELSKCO) |
 
 - A night is named after its evening: Friday's runs into Saturday morning.
 - **Dallas:** "Units may only be available to users to start a ride from
@@ -686,6 +691,19 @@ Cincinnati's on 26 October; none rests on news or an operator's notice.
   site refuses connections from Europe. WCPO reported the end of the day
   moving back to 23:00 in January 2023. Lime's map there was audited before
   23:00.
+- **East Lansing:** a licensee must "Remove all electric skateboards from the
+  public rights-of-way within the city between the hours of 3:00 a.m. and
+  6:00 a.m. each day" (Ord. 1453, 5 March 2019, as Municode carried it on 5
+  May 2026). Michigan law calls stand-up e-scooters electric skateboards, and
+  the city's [Electric Scooters page](https://www.cityofeastlansing.com/2035/Electric-Scooters)
+  names Lime its only approved scooter company. Michigan State's campus,
+  inside the city, is university land under the trustees'
+  [Ordinance 33.00](https://trustees.msu.edu/governance/ordinances/ordinance-33)
+  (amended 6 September 2024), which sets no hours, so the ban's area is the
+  city without the campus (OpenStreetMap relation 13708038): Spin's campus
+  fleet and Lime's scooters there stay rentable. Lime's map still listed
+  scooters on the city's streets through the ban on 26 October 2026: 9 of
+  the 15 positions read at 03:41 EDT were in the city, off the campus.
 
 Spin and Veo keep listing scooters as available through a ban, Gainesville's
 too, so only rides stopping can show one in their feeds.
@@ -758,10 +776,6 @@ Rules that read like bans but are not, or that no primary source confirms:
   force today repeats either, and the city's
   [Veo page](https://toledo.oh.gov/residents/community/veo-scooters) gives
   no hours.
-- **East Lansing:** the code makes licensees take scooters off the city's
-  streets from 03:00 to 06:00 (§ 8-610(13)). The town on the map is
-  Michigan State's campus fleet, on university land, whose rules set no
-  hours; the city's own feed is left out (see above).
 - **Baltimore:** the Director's regulations, effective 18 June 2025, set no
   hours. A 23:00–04:00 window in summaries of the 2019 rules isn't in them.
 - **Louisville:** only scooters without working lights stop after dark.

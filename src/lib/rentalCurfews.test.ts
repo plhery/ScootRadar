@@ -40,6 +40,9 @@ const NC_STATE: [number, number] = [35.7847, -78.6821];
 const BIRMINGHAM_AL: [number, number] = [33.5186, -86.8104];
 const CINCINNATI: [number, number] = [39.1031, -84.512];
 const COVINGTON_KY: [number, number] = [39.0837, -84.5086];
+const EAST_LANSING: [number, number] = [42.7471, -84.483];
+const MSU_CAMPUS: [number, number] = [42.7318, -84.4822];
+const LANSING: [number, number] = [42.7337, -84.5555];
 const ILE_SAINTE_HELENE: [number, number] = [45.5146, -73.534];
 const ILE_NOTRE_DAME: [number, number] = [45.505, -73.525];
 const MONTREAL: [number, number] = [45.5017, -73.5673];
@@ -213,6 +216,12 @@ describe('activeCurfew', () => {
     expect(activeCurfew(CINCINNATI, at('2026-10-27T03:00:00Z'))).toEqual({ city: 'Cincinnati', until: at('2026-10-27T10:00:00Z'), timeZone: 'America/New_York' });
     expect(activeCurfew(CINCINNATI, at('2026-11-10T04:00:00Z'))?.until).toBe(at('2026-11-10T11:00:00Z'));
     expect(activeCurfew(COVINGTON_KY, at('2026-10-27T03:00:00Z'))).toBeNull();
+    // East Lansing's streets from 03:00 to 06:00, Eastern time, but not Michigan State's campus nor Lansing.
+    expect(activeCurfew(EAST_LANSING, at('2026-10-27T06:59:00Z'))).toBeNull();
+    expect(activeCurfew(EAST_LANSING, at('2026-10-27T07:00:00Z'))).toEqual({ city: 'East Lansing', until: at('2026-10-27T10:00:00Z'), timeZone: 'America/Detroit' });
+    expect(activeCurfew(EAST_LANSING, at('2026-11-10T08:00:00Z'))?.until).toBe(at('2026-11-10T11:00:00Z'));
+    expect(activeCurfew(MSU_CAMPUS, at('2026-10-27T07:00:00Z'))).toBeNull();
+    expect(activeCurfew(LANSING, at('2026-10-27T07:00:00Z'))).toBeNull();
   });
 
   it('closes Parc Jean-Drapeau from 23:00 to 06:00, on both its islands, and not Montréal\'s streets', () => {
