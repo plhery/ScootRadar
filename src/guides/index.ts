@@ -240,6 +240,7 @@ import oldenburgDe from './de/e-scooter-oldenburg';
 import dresdenDe from './de/e-scooter-dresden';
 import magdeburgDe from './de/e-scooter-magdeburg';
 import halleDe from './de/e-scooter-halle';
+import hammDe from './de/e-scooter-hamm';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -480,4 +481,5 @@ export const GUIDES: readonly Guide[] = [
   dresdenDe,
   magdeburgDe,
   halleDe,
+  hammDe,
 ];
