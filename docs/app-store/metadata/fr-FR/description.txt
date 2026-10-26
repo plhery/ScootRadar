@@ -15,7 +15,7 @@ LA BONNE APP, EN UN GESTE
 « Ouvrir dans » vous mène à l’app de l’opérateur, où vous déverrouillez la trottinette et payez comme d’habitude. ScootRadar ne loue ni ne réserve de trottinettes.
 
 OÙ ÇA MARCHE
-Les trottinettes de 35 opérateurs, dans plus de 800 villes et communes de 46 pays : en Suisse, en France, en Allemagne, en Italie, au Royaume-Uni, en Belgique, en Espagne, en Pologne, en Norvège, en Suède, en Finlande et ailleurs en Europe ; aux États-Unis et au Canada ; au Brésil, au Chili et au Mexique ; au Japon, en Corée du Sud et en Australie ; en Israël, en Turquie, en Nouvelle-Zélande et dans d’autres pays. Parmi elles, Bruxelles, Berlin, Oslo, Tokyo, Chicago, Santiago, Rome, São Paulo, Stockholm, Séoul et Zurich. Là où aucun opérateur ne publie de données, la carte le dit et indique les villes les plus proches qui en ont.
+Les trottinettes de 37 opérateurs, dans plus de 1 000 villes et communes de 56 pays : en Suisse, en France, en Allemagne, en Italie, au Royaume-Uni, en Belgique, en Espagne, en Pologne, en Norvège, en Suède, en Finlande et ailleurs en Europe ; aux États-Unis et au Canada ; au Brésil, au Chili et au Mexique ; au Japon, en Corée du Sud et en Australie ; en Israël, en Turquie, en Nouvelle-Zélande et dans d’autres pays. Parmi elles, Bruxelles, Berlin, Oslo, Tokyo, Chicago, Santiago, Rome, São Paulo, Stockholm, Séoul et Zurich. Là où aucun opérateur ne publie de données, la carte le dit et indique les villes les plus proches qui en ont.
 
 CONFIDENTIALITÉ DÈS LA CONCEPTION
 Sans compte et sans pub. Votre position est utilisée sur votre iPhone, pour centrer la carte et calculer les temps de marche ; le serveur ne reçoit que la partie de la carte que vous regardez. Les statistiques d’utilisation anonymes peuvent être désactivées dans les Réglages.
@@ -26,6 +26,6 @@ ET AUSSI
 • Dynamic Type, VoiceOver et Réduire les animations
 • Français, allemand, italien, anglais, néerlandais, norvégien, portugais, espagnol et islandais
 
-Les positions proviennent des opérateurs et des autorités, et peuvent dater de quelques minutes. Selon la ville, la carte montre notamment Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Xingxing, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe et Zippy.
+Les positions proviennent des opérateurs et des autorités, et peuvent dater de quelques minutes. Selon la ville, la carte montre notamment Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Xingxing, Alpaca, DART, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe et Zippy.
 
 ScootRadar est indépendant et n’est pas affilié aux opérateurs ; leurs noms sont des marques de leurs propriétaires respectifs. ScootRadar est open source.

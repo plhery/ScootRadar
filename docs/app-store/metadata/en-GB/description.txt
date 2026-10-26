@@ -15,7 +15,7 @@ ONE TAP TO THE RIGHT APP
 "Open in" takes you to the operator's own app, where you unlock and pay as usual. ScootRadar doesn't hire out or reserve scooters.
 
 WHERE IT WORKS
-The scooters of 35 operators, in more than 800 towns and cities in 46 countries: Switzerland, France, Germany, Italy, the United Kingdom, Belgium, Spain, Poland, Norway, Sweden, Finland and more of Europe; the United States and Canada; Brazil, Chile and Mexico; Japan, South Korea and Australia; Israel, Turkey, New Zealand and others. Among them are Berlin, Oslo, Tokyo, Chicago, Santiago, Rome, São Paulo, Stockholm, Seoul and Zürich. Where no operator publishes its data, the map says so and shows the closest cities that do.
+The scooters of 37 operators, in more than 1,000 towns and cities in 56 countries: Switzerland, France, Germany, Italy, the United Kingdom, Belgium, Spain, Poland, Norway, Sweden, Finland and more of Europe; the United States and Canada; Brazil, Chile and Mexico; Japan, South Korea and Australia; Israel, Turkey, New Zealand and others. Among them are Berlin, Oslo, Tokyo, Chicago, Santiago, Rome, São Paulo, Stockholm, Seoul and Zürich. Where no operator publishes its data, the map says so and shows the closest cities that do.
 
 PRIVATE BY DESIGN
 No account and no ads. Your location is used on your iPhone to centre the map and work out walking times; the server only receives the part of the map you are looking at. Anonymous usage statistics can be turned off in Settings.
@@ -26,6 +26,6 @@ ALSO
 • Dynamic Type, VoiceOver and Reduce Motion
 • English, German, French, Italian, Dutch, Norwegian, Portuguese, Spanish and Icelandic
 
-Positions come from the operators and public authorities, and can be a few minutes old. Operators on the map include Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Xingxing, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe and Zippy, depending on the city.
+Positions come from the operators and public authorities, and can be a few minutes old. Operators on the map include Lime, Bolt, Bird, Voi, Dott, Hopp, Beam, Whoosh, JET, LUUP, Spin, Veo, Lyft, Pony, Zeus, Ryde, Qick, BinBin, GCOO, Kickgoing, Swing, Xingxing, Alpaca, DART, Beryl, Hoppy, PubliBike, Ride Mobility, Yoio, Naolib Micromob’, Elerent, 3electra, SAHAM, Flamingo, JOLT, MoVe and Zippy, depending on the city.
 
 ScootRadar is independent and not affiliated with the operators; their names are trademarks of their owners. ScootRadar is open source.
