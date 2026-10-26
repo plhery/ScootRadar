@@ -222,6 +222,7 @@ import recifeEn from './en/e-scooters-recife';
 import bariIt from './it/monopattini-sharing-bari';
 import darmstadtDe from './de/e-scooter-darmstadt';
 import bochumDe from './de/e-scooter-bochum';
+import mainzDe from './de/e-scooter-mainz';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -444,4 +445,5 @@ export const GUIDES: readonly Guide[] = [
   bariIt,
   darmstadtDe,
   bochumDe,
+  mainzDe,
 ];
