@@ -1977,6 +1977,23 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Wellington_285_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "MX",
+      "city": "Monterrey",
+      "regionToken": "OCZC3MAHZCAEW",
+      "fingerprint": "8c7e58afa6ba5407ee34e282c5b2f167ddfabfcb898dda72f0d6742ae92bfff5",
+      "groups": 8,
+      "localCells": 29,
+      "coldMapRequests": 73,
+      "warmMapRequests": 73,
+      "scooters": 2912,
+      "stationaryReferences": 68,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T01:31:51.104Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Monterrey_340_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

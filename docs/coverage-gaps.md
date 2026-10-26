@@ -18,9 +18,9 @@ København and Odense, in Brno and Ostrava, in 15 Hungarian markets, from
 Budapest to Szigetszentmiklós, in seven Romanian ones, from București to
 Târgoviște, in Athens, Kifisia, Thessaloniki and Heraklion, in Antwerpen,
 in Porto, Faro and Oeiras, and since 26 October 2026 in Tokyo and Yokohama,
-in Port Phillip, and in Auckland, Christchurch, Hamilton, Wellington and
-Palmerston North.
-The other markets its rider map lists, 76 found so far, are added country by
+in Port Phillip, in Auckland, Christchurch, Hamilton, Wellington and
+Palmerston North, and in Monterrey and Guadalupe.
+The other markets its rider map lists, 73 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -782,8 +782,10 @@ Its public GBFS gaps remain below. Check again on 1 March 2027.
   and Guadalupe (since September 2025), with no public feed: about 40 slugs
   tried (`queretaro`, `monterrey`, `guadalupe`, `san_pedro_garza_garcia`,
   `nuevo_leon` and others) answer 404. Querétaro is covered through Lime's
-  [rider app map](lime-app-map.md) since 24 October 2026 (56f6ec6);
-  Monterrey and Guadalupe are not.
+  [rider app map](lime-app-map.md) since 24 October 2026 (56f6ec6), and
+  Monterrey and Guadalupe, one zone, since 26 October 2026. Its rider map
+  also lists Ciudad de México and León; neither held a scooter on the
+  evening of 25 October 2026, Mexico City time.
 - **Whoosh** is integrated through its [authenticated rider map](whoosh-app-map.md):
   Monterrey/San Pedro, plus Zapopan, whose region reported its season over
   on 24 October 2026: the map shows Zapopan paused for the season until

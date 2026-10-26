@@ -144,7 +144,9 @@ Madrid revoked Lime's, Dott's and Tier's scooter licences in September 2024.
 In Japan, neither did the Chiba and Kawasaki (Takatsu) zones of its Tokyo
 region, on the morning of 26 October 2026, so they are left out. In
 Australia, neither did its Gold Coast region, where Lime rents e-bikes, nor
-its Sydney region, a single small zone in St Peters.
+its Sydney region, a single small zone in St Peters. In Mexico, neither did
+its Ciudad de México and León regions: SEMOVI's Mexico City scooter pilot
+ended on 31 August 2026.
 
 - Zones named as demos, tests, warehouses, events or temporary areas are left
   out, as Rome's three temporary areas and Dortmund's warehouses. So is the
@@ -188,6 +190,7 @@ stationary reference scooter, country by country:
 | 26 October 2026 | Japan: Tokyo, Yokohama | 263 | 66 | 2,334 | 23 |
 | 26 October 2026 | Australia: Port Phillip | 18 | 5 | 239 | 16 |
 | 26 October 2026 | New Zealand: Auckland, Christchurch, Hamilton, Wellington, Palmerston North | 311 | 79 | 4,104 | 392 |
+| 26 October 2026 | Mexico: Monterrey and Guadalupe | 29 | 8 | 2,912 | 68 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

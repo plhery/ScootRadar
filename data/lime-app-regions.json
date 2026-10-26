@@ -2558,6 +2558,32 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Wellington_285_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "MX",
+      "city": "Monterrey",
+      "center": [
+        25.686613,
+        -100.316116
+      ],
+      "timeZone": "America/Mexico_City",
+      "regionToken": "OCZC3MAHZCAEW",
+      "serviceAreas": [
+        {
+          "name": "Guadalupe[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}l{{CbghcRTrpErvCpD{EcHrPeF~G~GjD|@hCe@rFgFhAeE|F`BzM{w@n@wRBwQtIlBLuB~WkiChBg@pE~B~Dz@s@nJbBb@lRfCpL}nAfEj@jkAmcAfA}Ar\\}W}G_O{CwHuDmKsDkK_B}Cm@E]Ik@w@c@eAYiAQcAGyN[KgAVkCj@kHrAaMg@eE?{ALy@b@gI`HaErBk@i@K{AwElC{c@lZ{[`KcP|AXmRnCgV?wc@xA?QmN`g@qtAeq@_sAvGjXwRdAuDcA}I{Igs@q@Z|eAoRd@?lIfI|W~DxHlBzJh@nLdB~CiD|YfF~F|OgHd@zHrVtZiB~BnB|PmO`Ap@tGzO}AdXlcA|JzVfC`TdCrFfGjGnAb@nDjG~DxSTvD@`MeLw@eC{AlAyC?iGmH{RwFiGCu@aDaJeG_LmBoEo@_Da@k@wCwLi@qC_GgT}IuV[\\sKdNaY}AmInDeFgdAzAwH_AGwFrUr@lXYhd@s`CzdAe@r|A"
+        },
+        {
+          "name": "[Monterrey][New SZ Monterrey][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}l{{CbghcRTrpErvCpD{EcHrPeF~G~GjD|@hCe@rFgFhAeE|F`BzM{w@n@wRBwQtIlBLuB~WkiChBg@pE~B~Dz@s@nJbBb@lRfCpL}nAfEj@jkAmcAfA}Ar\\}W}G_O{CwHuDmKsDkK_B}Cm@E]Ik@w@c@eAYiAQcAGyN[KgAVkCj@kHrAaMg@eE?{ALy@b@gI`HaErBk@i@K{AwElC{c@lZ{[`KcP|AXmRnCgV?wc@xA?QmN`g@qtAeq@_sADHC?hGxWkSvAeDiAwIuI{DOam@k@Z|eAoRd@?lIfI|W~DxHlBzJh@nLdB~CiD|YfF~F|OgHd@zHrVtZiB~BnB|PmO`Ap@tGzO}AdXlcA|JzVfC`TdCrFfGjGnAb@nDjG~DxSTvD@`MeLw@eC{AlAyC?iGmH{RwFiGCu@aDaJeG_LmBoEo@_Da@k@wCwLi@qC_GgT}IuV[\\sKdNaY}AmInDeFgdAzAwH_AGwFrUr@lXYhd@s`CzdAe@r|A"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Monterrey_340_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Guadalupe"
+      ]
     }
   ]
 }
