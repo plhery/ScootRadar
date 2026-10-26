@@ -115,8 +115,8 @@ export function reportError(key: string, error: unknown, now = Date.now()) {
  * someone looked. Being idle is not enough: an idle feed expires only after its
  * interval and ten minutes (half an hour by default) without a successful collection.
  * One issue per host the feed is collected from, as an outage there stops its feeds
- * together: Voi's app map stopped ten German towns' within twelve minutes on
- * 25 October 2026, each its own issue then. Each feed is an event of its host's,
+ * together: Voi's twelve feeds from NRW.Mobidrom stopped between 22:21 and 22:37
+ * UTC on 25 October 2026, each its own issue then. Each feed is an event of its host's,
  * tagged with the feed, at most one an hour, so a feed that keeps expiring between
  * updates stays quiet; `alsoExpired` lists the host's other feeds expired by then.
  */
