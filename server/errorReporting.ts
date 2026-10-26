@@ -46,7 +46,11 @@ export function initErrorReporting(env: Record<string, string | undefined> = pro
     // Otherwise every request to an operator's feed carries Sentry's trace headers.
     tracePropagationTargets: [],
     // Sentry only warns by default; Node exits on an unhandled rejection, and so does the cache.
-    integrations: [Sentry.onUnhandledRejectionIntegration({ mode: 'strict' })],
+    // Its Dedupe drops an event that repeats the one before it: of a host's feeds expiring one after
+    // another only the first arrived, one event for NRW.Mobidrom's thirteen on 26 October 2026.
+    // Both reporters below limit themselves instead.
+    integrations: defaults => [...defaults.filter(integration => integration.name !== 'Dedupe'),
+      Sentry.onUnhandledRejectionIntegration({ mode: 'strict' })],
   });
   return true;
 }

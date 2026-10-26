@@ -29,8 +29,11 @@ it('stays off without a DSN, and sends a request\'s URL but never its headers', 
   expect(Sentry.init).not.toHaveBeenCalled();
   expect(initErrorReporting({ SENTRY_DSN: 'https://key@o1.ingest.sentry.io/1', NODE_ENV: 'production', SOURCE_COMMIT: 'abc123' })).toBe(true);
   const options = vi.mocked(Sentry.init).mock.calls[0][0]!;
-  expect(options).toMatchObject({ environment: 'production', release: 'abc123', tracePropagationTargets: [],
-    integrations: [{ name: 'OnUnhandledRejection', options: { mode: 'strict' } }] });
+  expect(options).toMatchObject({ environment: 'production', release: 'abc123', tracePropagationTargets: [] });
+  // Without Dedupe, which would drop all but the first of a host's feeds expiring one after another.
+  const integrations = options.integrations as (defaults: { name: string }[]) => { name: string }[];
+  expect(integrations([{ name: 'Dedupe' }, { name: 'Http' }])).toEqual([{ name: 'Http' },
+    { name: 'OnUnhandledRejection', options: { mode: 'strict' } }]);
   expect(options).toMatchObject({ includeLocalVariables: false, dataCollection: { userInfo: false } });
   const event = { request: { method: 'GET', url: 'http://localhost/api/scooters', query_string: 'south=47.3&zoom=16',
     headers: { 'x-scooter-client-ip': '192.0.2.1', authorization: 'Bearer secret' }, cookies: { a: 'b' } },
