@@ -19,7 +19,7 @@ Veo and Lime), 24 towns of Bird's, 21 of Lime's (4 from its rider map), 39
 more of Veo's, 29 of Spin's, Lyft's Chicago and Portland, and GCOO's Los
 Angeles, Arlington and Alexandria, Virginia. In 26 of them, from Tempe and
 the Bronx to Chicago and Columbus, two or three operators run, and the map
-counts their scooters as one town's. Eleven of the towns ban renting at
+counts their scooters as one town's. Ten of the towns ban renting at
 night; see [Night bans](#night-bans).
 
 Each town is named with its state, "Washington, DC", as the United States has
@@ -592,7 +592,7 @@ of Bird's 284 stood there, nor any of Lime's 495.
 
 ## Night bans
 
-Eleven covered towns ban renting at night, by ordinance, in the rules of
+Ten covered towns ban renting at night, by ordinance, in the rules of
 their permits or on the city's own program page. While a ban holds, the dock
 tells of it, with a moon, for the town in view, and a scooter's card says
 when it can be rented again. Web and iOS read the same
@@ -609,7 +609,6 @@ Cincinnati's on 26 October; none rests on news or an operator's notice.
 | Lincoln, NE | Every night, 23:00–06:00 | [ScooterLNK](https://www.lincoln.ne.gov/City/Departments/LTU/Transportation/Traffic-Engineering/Active-Transportation/ScooterLNK) |
 | Atlanta, GA | Every night, 02:00–04:00 | [ATLDOT Administrative Regulations](https://atldot.atlantaga.gov/wp-content/uploads/2025/11/Administrative-Regulations-November-2024.pdf), updated 27 November 2024, § VI(d)(1)(i) |
 | Richmond, VA | Every night, 01:00–05:00 | City Code § 24-131(3), as amended by [Ord. 2023-029](https://legistar2.granicus.com/richmondva/attachments/87666009-0d3e-4a81-b6c7-8d74ec1700c1.pdf) |
-| Cleveland, OH | Every night, 00:00–03:00 | [Shared Mobility Device and Bicycle Vendor Rules](https://www.clevelandcitycouncil.gov/sites/default/files/2024-07/CITY%20RECORD%207-5-2024.pdf), City Record of 5 July 2024, § VIII |
 | Nashville, TN | Every night, 00:00–05:00 | [Metropolitan Transportation Licensing Commission Rules](https://www.nashville.gov/sites/default/files/2026-10/TLC_Rules_9-16-2026.pdf), filed 16 September 2026, § 905.L |
 | Gainesville, FL | Every night, 00:00–06:00 | [City Code § 26-196(e)](https://library.municode.com/fl/gainesville/codes/code_of_ordinances?nodeId=PTIICOOR_CH26TRMOVE_ARTVIIMISE) |
 | Minneapolis, MN | Every night, 00:00–04:00 | [Rent a scooter](https://www.minneapolismn.gov/getting-around/scooters/rent-a-scooter/), updated 30 June 2026 |
@@ -644,12 +643,6 @@ Cincinnati's on 26 October; none rests on news or an operator's notice.
   It took force on adoption, and the city's Legistar holds no later
   ordinance on the section. Municode's online code and the city's e-scooter
   FAQ still give the old 05:00–21:00.
-- **Cleveland:** "E-scooters shall not be available for rent between 12 a.m.
-  and 3 a.m., 7 days a week." The rules, published for the permits of 2024
-  to 2027, are linked from the city's
-  [shared mobility page](https://clevelandohio.gov/transportation-mobility/shared-mobility),
-  which agrees: "E-scooters are available for use daily from 3 a.m. to 12
-  a.m. and e-bikes are available 24 hours a day."
 - **Nashville:** "Operation of SUMDs is prohibited after midnight and before
   5:00 am, except for bicycles and electric bicycles", across Metro
   Nashville-Davidson County. The commission's rules were filed with the
@@ -691,7 +684,7 @@ Cincinnati's on 26 October; none rests on news or an operator's notice.
   23:00.
 
 Spin and Veo keep listing scooters as available through a ban, Gainesville's
-and Cleveland's too, so only rides stopping can show one in their feeds.
+too, so only rides stopping can show one in their feeds.
 
 Rules that read like bans but are not, or that no primary source confirms:
 
@@ -701,6 +694,17 @@ Rules that read like bans but are not, or that no primary source confirms:
   Scooter Sharing Business Rules (2025 update, Rule 7.4) let operators rent
   "at all hours of the day upon implementation of in-app impairment testing",
   which riders take from midnight to 05:00 (Rule 11.1). A test, not a ban.
+- **Cleveland:** the vendor rules republished in the
+  [City Record of 27 March 2026](https://www.clevelandcitycouncil.gov/sites/default/files/2026-03/City%20Record%203-27-26.pdf),
+  in force seven days later, say "E-scooters may be available for rent for
+  24 hours a day, 7 days a week" (§ VIII(c)). Those of July 2024 kept them
+  from being rented from midnight to 03:00, and the map held that ban until
+  26 October 2026. The city's
+  [shared mobility page](https://clevelandohio.gov/transportation-mobility/shared-mobility)
+  still gives the old hours; Cuyahoga County's
+  [program page](https://www.cuyahogacounty.gov/sustainability/initiatives/bike-and-scooter-share)
+  gives 24 hours, except in the Flats East Bank from 23:00 to 03:00: a
+  district rule.
 - **St. Louis:** the city's release of 4 June 2021 set a curfew from 21:00 to
   08:00 in Downtown and Downtown West, "indefinitely". The 2025 permit keeps
   the city's power to draw curfew areas but holds no map of one, and nothing
