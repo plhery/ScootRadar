@@ -19,7 +19,7 @@ The map covers 100 towns in 32 states and the District: Washington, DC
 map), 39 more of Veo's, 29 of Spin's, Lyft's Chicago and Portland, and GCOO's
 Los Angeles, Arlington and Alexandria, Virginia. In 28 of them, from Tempe and
 the Bronx to Chicago and Columbus, two or three operators run, and the map
-counts their scooters as one town's. Eleven of the towns ban renting at
+counts their scooters as one town's. Twelve of the towns ban renting at
 night; see [Night bans](#night-bans). South Lake Tahoe's fleet goes away for
 the winter; see [Lime supplement](#lime-supplement--26-october-2026).
 
@@ -37,9 +37,10 @@ Bird's), Cincinnati (236) and Fairfax (75, beside Bird's, around George Mason
 University). Just after midnight on 26 October: Tampa (1,393, beside Spin's),
 Orlando (765), St. Petersburg (586, downtown), Winston-Salem (241) and
 Lansing (173, with East Lansing and Michigan State's campus). Cincinnati
-rents Bird's and Lime's scooters only from 06:00 to 23:00, and East Lansing
-has Lime take its scooters off the city's streets from 03:00 to 06:00, so the
-map holds a night ban in both (see [Night bans](#night-bans)).
+rents Bird's and Lime's scooters only from 06:00 to 23:00, East Lansing
+has Lime take its scooters off the city's streets from 03:00 to 06:00, and
+St. Petersburg's program stops from 02:00 to 05:00, so the map holds a night
+ban in all three (see [Night bans](#night-bans)).
 
 On the night of 25 to 26 October, Pacific time: Los Angeles (10,040, beside
 Bird's and GCOO's), Portland (2,162, beside Lyft's), Spokane (1,749),
@@ -615,7 +616,7 @@ of Bird's 284 stood there, nor any of Lime's 495.
 
 ## Night bans
 
-Eleven covered towns ban renting at night, by ordinance, in the rules of
+Twelve covered towns ban renting at night, by ordinance, in the rules of
 their permits or on the city's own program page. While a ban holds, the dock
 tells of it, with a moon, for the town in view, and a scooter's card says
 when it can be rented again. Web and iOS read the same
@@ -626,7 +627,9 @@ from OpenStreetMap (ODbL), simplified to within 100 m by
 `scripts/update-curfew-areas.mjs`. Hours are the town's own. Each ban rests
 on the city's own rule, in force and read again on 15 October 2026,
 Cincinnati's and East Lansing's on 26 October; none rests on news or an
-operator's notice.
+operator's notice. St. Petersburg publishes no rule with its hours: its ban
+rests on the city's own report of its program's hours, which Lime's map bore
+out on 26 October.
 
 | Town | Nights | Source |
 | --- | --- | --- |
@@ -641,6 +644,7 @@ operator's notice.
 | Birmingham, AL | Every night, 23:00–06:00 | [City Code § 12-22-6(c)(20)](https://library.municode.com/al/birmingham/codes/code_of_ordinances?nodeId=PT1THCOGEOR_TIT12LIRE_CH22SHMIDESY) |
 | Cincinnati, OH | Every night, 23:00–06:00 | [Electric Scooters](https://www.cincinnati-oh.gov/dote/dote-projects/electric-scooters/), Department of Transportation & Engineering |
 | East Lansing, MI | Every night, 03:00–06:00, outside Michigan State's campus | [City Code § 8-610(13)](https://library.municode.com/mi/east_lansing/codes/code_of_ordinances?nodeId=PTIIICOOR_CH8BU_ARTXELSKCO) |
+| St. Petersburg, FL | Every night, 02:00–05:00 | [Scooter Share program report](https://cms5.revize.com/revize/stpete/2025-05-08%20HLUT%20Agenda%20Packet.pdf), Housing, Land Use and Transportation Committee, 8 May 2025 |
 
 - A night is named after its evening: Friday's runs into Saturday morning.
 - **Dallas:** "Units may only be available to users to start a ride from
@@ -721,6 +725,18 @@ operator's notice.
   fleet and Lime's scooters there stay rentable. Lime's map still listed
   scooters on the city's streets through the ban on 26 October 2026: 9 of
   the 15 positions read at 03:41 EDT were in the city, off the campus.
+- **St. Petersburg:** the city's report on its Scooter Share program to the
+  Housing, Land Use and Transportation Committee
+  ([packet](https://cms5.revize.com/revize/stpete/2025-05-08%20HLUT%20Agenda%20Packet.pdf),
+  8 May 2025) charts the curfew: 22:00 to 06:00 at first, then midnight to
+  05:00 from 2022, then 02:00 to 05:00 from 2023. A request for proposals of
+  January 2025 (RFP 25-002, since cancelled) still gave "between 5am and
+  midnight daily". The agreements signed with Lime and Spin in June 2025
+  aren't published, and the city's
+  [Scooter Safety page](https://www.stpete.org/visitors/scooter_safety.php)
+  gives no hours. Lime's map bore the report out on 26 October 2026: its 585
+  scooters there, listed until 02:22 EDT, were gone at 02:24, the map was
+  still empty at 03:32 and 04:32, and they were back by 05:08.
 
 Spin and Veo keep listing scooters as available through a ban, Gainesville's
 too, so only rides stopping can show one in their feeds.
@@ -827,15 +843,6 @@ Rules that read like bans but are not, or that no primary source confirms:
   no-ride and no-park zone for shared bikes and scooters from 20:00 to 04:00
   on Fridays, Saturdays and Sundays: a district rule. City Code § 10.05 lets
   the director set hours when scooters may not be ridden; none is published.
-- **St. Petersburg:** a request for proposals of January 2025 (RFP 25-002,
-  since cancelled) says the program "has operational hours that are between
-  5am and midnight daily", while a staff packet for the city's
-  transportation committee of 8 May 2025 says the curfew moved to 02:00,
-  with a 05:00 start, in 2023. The agreements signed with Lime and Spin in
-  June 2025 aren't published, and the city's
-  [Scooter Safety page](https://www.stpete.org/visitors/scooter_safety.php)
-  gives no hours. Lime's map held 586 scooters there from 00:58 to 01:01 EDT
-  on 26 October 2026. Left out: no rule in force found.
 - **Winston-Salem:** [Ordinance 2024-4](https://www.cityofws.org/DocumentCenter/View/43552/Appendix-A---2024-4)
   (4 March 2024) dropped the 2019 code's 21:00–06:00 hours, and the code's
   micromobility article (Chapter 78, Article XIV, read on 26 October 2026)

@@ -43,6 +43,8 @@ const COVINGTON_KY: [number, number] = [39.0837, -84.5086];
 const EAST_LANSING: [number, number] = [42.7471, -84.483];
 const MSU_CAMPUS: [number, number] = [42.7318, -84.4822];
 const LANSING: [number, number] = [42.7337, -84.5555];
+const ST_PETERSBURG: [number, number] = [27.7709, -82.6386];
+const GULFPORT_FL: [number, number] = [27.7484, -82.7034];
 const ILE_SAINTE_HELENE: [number, number] = [45.5146, -73.534];
 const ILE_NOTRE_DAME: [number, number] = [45.505, -73.525];
 const MONTREAL: [number, number] = [45.5017, -73.5673];
@@ -222,6 +224,11 @@ describe('activeCurfew', () => {
     expect(activeCurfew(EAST_LANSING, at('2026-11-10T08:00:00Z'))?.until).toBe(at('2026-11-10T11:00:00Z'));
     expect(activeCurfew(MSU_CAMPUS, at('2026-10-27T07:00:00Z'))).toBeNull();
     expect(activeCurfew(LANSING, at('2026-10-27T07:00:00Z'))).toBeNull();
+    // St. Petersburg from 02:00 to 05:00, Eastern time, and not next door in Gulfport.
+    expect(activeCurfew(ST_PETERSBURG, at('2026-10-27T05:59:00Z'))).toBeNull();
+    expect(activeCurfew(ST_PETERSBURG, at('2026-10-27T06:00:00Z'))).toEqual({ city: 'St. Petersburg', until: at('2026-10-27T09:00:00Z'), timeZone: 'America/New_York' });
+    expect(activeCurfew(ST_PETERSBURG, at('2026-11-10T07:00:00Z'))?.until).toBe(at('2026-11-10T10:00:00Z'));
+    expect(activeCurfew(GULFPORT_FL, at('2026-10-27T06:00:00Z'))).toBeNull();
   });
 
   it('closes Parc Jean-Drapeau from 23:00 to 06:00, on both its islands, and not Montréal\'s streets', () => {
