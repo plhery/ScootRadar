@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Dortmund: Anbieter, Preise, Parkzonen, Sperrzonen und was bei DSW21 gilt',
   lede: 'Einen E-Scooter in Dortmund leihst du ab 18 und ohne Führerschein bei Voi, Dott, Bolt, Lime oder Ryde. Voi verlangt in Dortmund laut seinem veröffentlichten Tarif 0,18 € pro Minute und nichts fürs Entsperren, zehn Minuten kosten also 1,80 € (Stand 24. Oktober 2026); die anderen zeigen ihren Preis in der App. In der Innenstadt-West leihst du seit dem 1. Oktober 2026 nur noch auf einer der 86 markierten Parkzonen aus und gibst dort auch zurück. In Bussen und Stadtbahnen von DSW21 sind E-Scooter seit dem 1. März 2024 verboten.',
   published: '2026-10-24',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'de:Dortmund',
   sections: [
     {
@@ -119,7 +119,7 @@ const guide: Guide = {
         '**Mit der Stadtbahn zum Spiel:** An Heimspieltagen fährt die U45 laut DSW21 ab rund 3 Stunden vor Anpfiff mindestens alle 5 Minuten vom Hauptbahnhof zum Stadion. Deine BVB-Eintrittskarte gilt am Spieltag als KombiTicket für Hin- und Rückfahrt mit Bus, Bahn und Nahverkehrszug in ganz NRW.',
         '**Westfalenhallen, Dortmunder U, Fussballmuseum:** Alle drei liegen in der Innenstadt-West; du gibst den Leih-Scooter also auf einer Parkzone zurück. Für das Fussballmuseum liegt die Zone am Königswall 42 direkt daneben.',
         '**TU und Fachhochschule:** Campus Nord, Campus Süd und die S-Bahn-Station Dortmund Universität gehören laut Voi zum Fahrgebiet. Dort stellst du frei ab, solange 2 m Gehweg frei bleiben.',
-        '**Nachbarstädte:** In Bochum, Herne und Witten zeigt die Karte ebenfalls Voi und seit dem 25. Oktober 2026 Lime, in Bochum und Herne auch Dott: [Karte von Bochum](map:de:Bochum). Wie es im Westen des Ruhrgebiets läuft, steht in [E-Scooter in Essen](guide:essen).',
+        '**Nachbarstädte:** In Bochum, Herne und Witten zeigt die Karte ebenfalls Voi und seit dem 25. Oktober 2026 Lime, in Bochum und Herne auch Dott, in Bochum auch Bolt: [Karte von Bochum](map:de:Bochum). Wie es im Westen des Ruhrgebiets läuft, steht in [E-Scooter in Essen](guide:essen).',
       ],
     },
     {

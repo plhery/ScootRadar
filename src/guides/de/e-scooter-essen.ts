@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Essen: Anbieter, Preise, Abstellflächen, Sperrzonen und was in der Ruhrbahn gilt',
   lede: 'Einen E-Scooter in Essen leihst du ab 18 und ohne Führerschein bei Dott, Bolt, Lime, Voi oder Ryde. Zehn Minuten kosten laut den Datenfeeds bei Voi 1,80 € und bei Dott 3,50 € (Stand 24. Oktober 2026); die anderen zeigen ihren Preis in der App. In der Innenstadt beendest du die Fahrt seit dem 1. Januar 2026 nur auf einer der rund 54 markierten Abstellflächen, sonst läuft die Miete weiter. In Bussen und Bahnen der Ruhrbahn ist die Mitnahme von E-Scootern seit dem 1. März 2024 untersagt.',
   published: '2026-10-17',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'de:Essen',
   sections: [
     {
@@ -133,10 +133,10 @@ const guide: Guide = {
           list: [
             '**Mülheim an der Ruhr:** Leih-Scooter seit März 2021, laut Ruhrbahn im Juli 2026 unter anderem von Dott. Die Stadt erlaubt höchstens 1000 Scooter insgesamt. Im Zentrum und in den Stadtteilzentren mietest du nur an Stationen, in Sperrzonen wie der MüGa beendest du keine Fahrt.',
             '**Gelsenkirchen:** Keine Leih-Scooter, Stand November 2025. Die Stadt verlangt seit 1. April 2024 eine einmalige Prüfung von Ausweis oder Führerschein; Bolt und TIER lehnten ab und zogen ihre Scooter ab.',
-            '**Bochum:** Ryde startete am 1. Juni 2026 nach eigenen Angaben mit rund 900 Scootern, laut Radio Bochum zu 0,18 € pro Minute.',
+            '**Bochum:** Ryde startete laut Radio Bochum am 1. Juni 2026, nach eigenen Angaben mit rund 900 Scootern; den Preis zeigt die App.',
           ],
         },
-        'Auf der Karte siehst du seit dem 24. Oktober 2026 Dott und Voi in [Bochum](map:de:Bochum) und Oberhausen, Dott auch in Mülheim, und seit dem 25. Oktober in allen dreien Lime; in Gelsenkirchen zeigt sie keine Scooter.',
+        'Auf der Karte siehst du seit dem 24. Oktober 2026 Dott und Voi in [Bochum](map:de:Bochum) und Oberhausen, Dott auch in Mülheim, und seit dem 25. Oktober in allen dreien Lime, in Bochum und Oberhausen auch Bolt; in Gelsenkirchen zeigt sie keine Scooter.',
       ],
     },
     {
