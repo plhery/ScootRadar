@@ -216,6 +216,7 @@ import poznanEn from './en/e-scooters-poznan';
 import tallinnEn from './en/e-scooters-tallinn';
 import curitibaEn from './en/e-scooters-curitiba';
 import monterreyEs from './es/scooters-electricos-monterrey';
+import wroclawEn from './en/e-scooters-wroclaw';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -432,4 +433,5 @@ export const GUIDES: readonly Guide[] = [
   tallinnEn,
   curitibaEn,
   monterreyEs,
+  wroclawEn,
 ];
