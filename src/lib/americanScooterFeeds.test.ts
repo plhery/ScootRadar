@@ -70,7 +70,7 @@ describe('the United States', () => {
     expect(lime.find(entry => entry.city === 'Scottsdale')).toMatchObject({ region: 'AZ', timeZone: 'America/Phoenix' });
     expect(lime.find(entry => entry.city === 'Boise')).toMatchObject({ region: 'ID', timeZone: 'America/Boise' });
     expect(lime.find(entry => entry.city === 'Spokane')).toMatchObject({ region: 'WA', timeZone: 'America/Los_Angeles' });
-    // Lime's region is the county's, from Silver Spring and Bethesda to Rockville: one market, named as Lime names it.
+    // Lime's region is the county's, from Silver Spring to Wheaton and Rockville: one market, named as Lime names it.
     expect(lime.find(entry => entry.city === 'Montgomery County')).toMatchObject({ region: 'MD', timeZone: 'America/New_York' });
   });
 

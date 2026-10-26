@@ -74,7 +74,8 @@ shared scooter and bike operator from 1 September 2026. See
 In the morning of 26 October, local time: Dallas (1,686, beside Bird's),
 Minneapolis (1,543, beside Spin's), St. Paul (901, beside Spin's), Charlotte
 (767), Nashville (738, beside Bird's and Spin's), Omaha (677), Montgomery
-County, Maryland (213, in Silver Spring, Bethesda and Rockville),
+County, Maryland (213, most in Silver Spring, the rest as far as Wheaton,
+North Bethesda and Rockville; downtown Bethesda is outside Lime's zone),
 Jacksonville (212, downtown), Richmond (112, beside Bird's and Spin's) and
 St. Louis Park (42). The bans already held in Dallas, Minneapolis,
 Nashville and Richmond now stop Lime's scooters there too. Charlotte's

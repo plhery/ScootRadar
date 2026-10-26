@@ -3246,7 +3246,7 @@
       "aliases": [
         "Rockville",
         "Silver Spring",
-        "Bethesda"
+        "Wheaton"
       ],
       "timeZone": "America/New_York",
       "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
