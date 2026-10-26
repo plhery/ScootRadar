@@ -9,7 +9,7 @@ import { VEHICLE_MAX_AGE_MS } from './dataFreshness';
 export const MOBILITY_SOURCE = `${COUNTRY_DATA_ATTRIBUTION}; Lille parking: Metropole Europeenne de Lille`;
 
 /**
- * `lastSeen`: scooters of app maps being collected again, where they were last seen. They are
+ * `lastSeen`: scooters of slow feeds being collected again, where they were last seen. They are
  * grouped as the others are, in groups of their own, within what is left of the result limit, and
  * counted nowhere: the map shows them faded until the sweep under way reaches them.
  */

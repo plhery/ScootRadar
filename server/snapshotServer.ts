@@ -2,7 +2,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from 'node:ht
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { isIP } from 'node:net';
 import { parseScooterQuery } from '../src/lib/scooterQuery';
-import { answerKeepUntil, demandedFeeds, feedsForQuery, querySnapshot, showsLastSeen, showsPositions, VEHICLE_MAX_AGE_MS,
+import { answerKeepUntil, collectsSlowly, demandedFeeds, feedsForQuery, querySnapshot, showsPositions, VEHICLE_MAX_AGE_MS,
   type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { ScooterFeedsUnavailableError } from '../src/lib/scooterFeeds';
 import { scooterResponseHeaders } from '../src/lib/scooterResponse';
@@ -23,21 +23,23 @@ export interface FeedRefresher {
   demand(ids: string[], now: number, focus?: MapBounds): void;
   /** A collection a request asked for is queued or under way. */
   refreshing(id: string): boolean;
-  /** Resolves with true once the feeds' collections have finished, or with false after timeoutMs. */
-  wait(ids: string[], timeoutMs: number): Promise<boolean>;
+  /**
+   * Resolves with true once the feeds' collections have finished, or the first of them with `first`,
+   * or with false after timeoutMs.
+   */
+  wait(ids: string[], timeoutMs: number, first?: boolean): Promise<boolean>;
 }
 
 /**
- * How long a request waits for feeds whose positions are too old to show. The
- * Worker gives the origin 5 seconds (src/lib/scooterProxy.ts).
+ * How long a request waits at most for feeds quick to collect whose positions are too old to show.
+ * The Worker gives the origin 5 seconds (src/lib/scooterProxy.ts).
  */
 export const COLD_WAIT_MS = 3_000;
 /**
- * How long it waits instead when every such feed can show where its scooters were last seen,
- * faded, or what its sweep under way has found: long enough for the quick app maps, as Dott's and
- * Voi's, to answer at once, without holding up a slow sweep's.
+ * Once the first of them is in, how long the answer waits for the others to join it, rather than
+ * each coming in on a request of its own.
  */
-export const LAST_SEEN_WAIT_MS = 1_000;
+export const JOIN_WAIT_MS = 300;
 
 interface ServerOptions {
   snapshot: () => MobilitySnapshot | undefined;
@@ -52,8 +54,10 @@ interface ServerOptions {
   refresher?: FeedRefresher;
   /** COLD_WAIT_MS by default. */
   coldWaitMs?: number;
-  /** LAST_SEEN_WAIT_MS by default. */
-  lastSeenWaitMs?: number;
+  /** JOIN_WAIT_MS by default. */
+  joinWaitMs?: number;
+  /** How old a slow feed's last positions may be to stand faded: LAST_SEEN_MAX_AGE_MS by default. */
+  lastSeenMaxAgeMs?: (feedId: string) => number | undefined;
   /** Answers /api/zones, the zones of the feeds in the area; it answers 404 without. */
   zones?: (query: FeedQuery) => Promise<ZoneResponse>;
   /** How long a feed's data may be kept, for those with a cap (retentionCaps in cadence.ts). */
@@ -172,6 +176,7 @@ export function createSnapshotServer(options: ServerOptions) {
     if (!snapshot) { response.writeHead(503, { 'Retry-After': '5' }); response.end('{"error":"Scooter data is warming up."}'); return; }
     let refreshing: Set<string> | undefined;
     let idleInView: Set<string> | undefined;
+    let comingSoon: Set<string> | undefined;
     const refresher = options.refresher;
     if (refresher) {
       // The feeds this answer uses are watched for a while, and collected again now if their data is over a minute old:
@@ -181,20 +186,24 @@ export function createSnapshotServer(options: ServerOptions) {
       const demanded = new Set(watched.map(feed => feed.id));
       idleInView = new Set(inView.filter(feed => !demanded.has(feed.id)).map(feed => feed.id));
       refresher.demand([...demanded], now, parsed.query.bounds);
-      // Positions too old to show would leave the map empty: wait a moment for those likely to come back,
-      // less long when all of them have something to show meanwhile.
-      const coming = new Set(watched.filter(feed => refresher.refreshing(feed.id)).map(feed => feed.id));
-      const cold = watched.filter(feed => !feed.failed && !showsPositions(feed, now) && coming.has(feed.id));
-      if (cold.length) {
-        const bare = cold.some(feed => !feed.sweep && !showsLastSeen(feed, now, coming));
-        options.metrics?.recordWait(await refresher.wait(cold.map(feed => feed.id),
-          bare ? options.coldWaitMs ?? COLD_WAIT_MS : options.lastSeenWaitMs ?? LAST_SEEN_WAIT_MS));
+      // Positions too old to show would leave the map empty of a feed quick to collect: the answer waits
+      // for the first such feed to come back, and the others that come with it. A slow feed's sweep is
+      // not waited for: its last positions stand faded, and its sweep's finds come in on the next requests.
+      const quick = watched.filter(feed => !feed.failed && !showsPositions(feed, now) && !collectsSlowly(feed) &&
+        refresher.refreshing(feed.id)).map(feed => feed.id);
+      if (quick.length) {
+        const coldWaitMs = options.coldWaitMs ?? COLD_WAIT_MS;
+        const came = await refresher.wait(quick, coldWaitMs, true);
+        if (came) await refresher.wait(quick, Math.max(0, Math.min(options.joinWaitMs ?? JOIN_WAIT_MS, now + coldWaitMs - Date.now())));
+        options.metrics?.recordWait(came);
         snapshot = options.snapshot() ?? snapshot;
       }
       refreshing = new Set(watched.filter(feed => refresher.refreshing(feed.id)).map(feed => feed.id));
+      comingSoon = new Set(quick.filter(id => refreshing!.has(id)));
     }
     const answeredAt = Date.now();
-    const body = querySnapshot(snapshot, parsed.query, parsed.zoom, answeredAt, { refreshing, idleInView });
+    const body = querySnapshot(snapshot, parsed.query, parsed.zoom, answeredAt, { refreshing, idleInView, comingSoon,
+      lastSeenMaxAgeMs: options.lastSeenMaxAgeMs });
     const keepUntil = options.retention && answerKeepUntil(snapshot, parsed.query, parsed.zoom, answeredAt, options.retention);
     // The origin only serves authenticated traffic. Public caching is set at the Worker, which keeps
     // an answer holding a capped feed's data no longer than X-Scooter-Keep-Seconds (0: not at all).

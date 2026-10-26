@@ -796,6 +796,9 @@ struct ScooterResponseMetadata: Sendable {
     let refreshAfterSeconds: Int?
     /// The server is collecting feeds of this answer again: ask once more after `refreshAfterSeconds`.
     let refreshing: Bool
+    /// While refreshing, when to ask again, in milliseconds: 0 while a feed quick to collect
+    /// is on its way, which the next request waits for. Nil from a server that does not say.
+    let followUpMs: Int?
     /// When the oldest of the last-seen scooters were seen, while there are any.
     let lastSeenAt: String?
     let parkingStatus: String?
@@ -818,6 +821,7 @@ struct ScooterResponseMetadata: Sendable {
         overview: Bool = false,
         refreshAfterSeconds: Int? = nil,
         refreshing: Bool = false,
+        followUpMs: Int? = nil,
         lastSeenAt: String? = nil,
         parkingStatus: String? = nil,
         expiresAt: String? = nil,
@@ -836,6 +840,7 @@ struct ScooterResponseMetadata: Sendable {
         self.overview = overview
         self.refreshAfterSeconds = refreshAfterSeconds
         self.refreshing = refreshing
+        self.followUpMs = followUpMs
         self.lastSeenAt = lastSeenAt
         self.parkingStatus = parkingStatus
         self.expiresAt = expiresAt
@@ -905,6 +910,7 @@ extension ScooterResponseMetadataPayload {
             overview: overview ?? false,
             refreshAfterSeconds: refreshAfterSeconds,
             refreshing: refreshing ?? false,
+            followUpMs: followUpMs,
             lastSeenAt: lastSeenAt,
             parkingStatus: parkingStatus?.rawValue,
             expiresAt: expiresAt,
@@ -1480,8 +1486,19 @@ struct ScooterRefreshPolicy: Equatable, Sendable {
     var minimumAttemptGap: TimeInterval = 10
     /// The shortest gap before the one follow-up a refreshing response asks for.
     var followUpGap: TimeInterval = 2
+    /// The shortest gap before a follow-up a response asks for with `followUpMs`. Asked for at once
+    /// while a quick feed is on its way, the server holds the request until it is in: the gap only
+    /// spaces the requests should it not.
+    var minimumFollowUp: TimeInterval = 0.2
 
     static let standard = ScooterRefreshPolicy()
+
+    /// The gap before the follow-up a refreshing response asks for with `followUpMs`, which also
+    /// takes the place of its `refreshAfterSeconds`; nil when it asks for none.
+    func askedFollowUp(_ meta: ScooterResponseMetadata?) -> TimeInterval? {
+        guard let meta, meta.refreshing, let milliseconds = meta.followUpMs, milliseconds >= 0 else { return nil }
+        return max(minimumFollowUp, TimeInterval(milliseconds) / 1000)
+    }
 
     /// When the data is due for a refresh, before the gap between requests is
     /// applied: at the server's interval or shortly before the data expires,
@@ -1747,7 +1764,7 @@ enum ScooterDockStatus: Equatable, Sendable {
         case let .delayed(date):
             String(format: String(localized: "Data delayed · showing %@"), Self.clockTime(date))
         case let .updating(date):
-            String(format: String(localized: "Updating · faded ones seen at %@"), Self.clockTime(date))
+            String(format: String(localized: "Updating · faded ones seen at %@"), Self.seenTime(date))
         case .live:
             String(localized: "Live")
         case let .updatedMinutesAgo(minutes):
@@ -1779,6 +1796,15 @@ enum ScooterDockStatus: Equatable, Sendable {
         }
         return date.formatted(
             Date.FormatStyle(locale: locale, timeZone: zone).hour().minute().timeZone(.specificName(.short))
+        )
+    }
+
+    /// When faded scooters were seen: "14:02", or "Fri 14:02" on another day, as a slow feed
+    /// collected less often, as Lime's, may have been seen days ago (as on the web, dockModel.ts).
+    static func seenTime(_ date: Date, now: Date = .now, calendar: Calendar = .current) -> String {
+        guard !calendar.isDate(date, inSameDayAs: now) else { return clockTime(date) }
+        return date.formatted(
+            Date.FormatStyle(date: .omitted, time: .shortened, locale: ScooterLanguage.current.locale).weekday(.abbreviated)
         )
     }
 

@@ -228,7 +228,9 @@ function dockStatus(input: StatusInput): { status: DockStatus | null; retry: boo
   // Rather than delayed: the faded scooters are the old positions, and the others are coming in.
   const seenAt = meta?.lastSeenAt ? Date.parse(meta.lastSeenAt) : NaN;
   if (filling(input) && Number.isFinite(seenAt)) {
-    return { status: { kind: 'updating', text: { key: 'dock.lastSeen', time: seenAt } }, retry: false };
+    // A slow feed collected less often, as Lime's, may have been seen days ago.
+    const weekday = new Date(seenAt).toDateString() !== new Date(now).toDateString();
+    return { status: { kind: 'updating', text: { key: 'dock.lastSeen', time: seenAt, ...(weekday ? { weekday } : {}) } }, retry: false };
   }
   // Delayed data says so at every zoom, city totals included.
   if (meta?.stale) return { status: { kind: 'delayed', text: { key: 'dock.delayed', time: lastUpdated } }, retry: false };

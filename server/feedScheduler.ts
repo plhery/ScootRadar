@@ -183,12 +183,15 @@ export class FeedScheduler<T extends ScheduledFeed> {
   /** A collection a request asked for is queued or under way. */
   refreshing(id: string): boolean { return this.woken.has(id); }
 
-  /** Resolves with true once the feeds' current collections have finished, or with false after timeoutMs. */
-  wait(ids: Iterable<string>, timeoutMs: number): Promise<boolean> {
+  /**
+   * Resolves with true once the feeds' current collections have finished, or the first of them with
+   * `first`, or with false after timeoutMs.
+   */
+  wait(ids: Iterable<string>, timeoutMs: number, first = false): Promise<boolean> {
     const pending = [...ids].filter(id => this.woken.has(id) || this.running.has(id));
     if (!pending.length) return Promise.resolve(true);
     return new Promise(resolve => {
-      let left = pending.length;
+      let left = first ? 1 : pending.length;
       const callbacks = new Map<string, () => void>();
       const finish = (collected: boolean) => {
         clearTimeout(timer);

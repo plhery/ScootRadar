@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { collectSnapshotFeed } from './collectFeed';
+import { collectSnapshotFeed, smoothedCollectionMs } from './collectFeed';
 import { buildCityOverview, querySnapshot, type FeedSnapshot } from '../src/lib/scooterSnapshots';
 import type { ParkingSnapshot } from '../src/lib/parking';
 
@@ -60,4 +60,17 @@ it('keeps a region closed for the season closed through a failed collection', as
   await collectSnapshotFeed({ ...definition, collect: async () => ({ vehicles: [], observedAt: now, stale: false }) },
     published[1], record => published.push(record));
   expect(published[2].seasonOver).toBeUndefined();
+});
+
+it('times its collections, smoothed, and keeps the time through a failure', async () => {
+  expect(smoothedCollectionMs(undefined, 900)).toBe(900);
+  expect(smoothedCollectionMs(900, 30_000)).toBe(10_600);
+  const definition = { id: 'national:lime_zurich', provider: 'lime' as const, source: 'national' as const, host: 'test', coverage: [],
+    collect: async () => { await new Promise(resolve => setTimeout(resolve, 60)); return { vehicles: [], observedAt: Date.now(), stale: false }; } };
+  const published: FeedSnapshot[] = [];
+  await collectSnapshotFeed(definition, undefined, record => published.push(record));
+  expect(published[0].collectionMs).toBeGreaterThanOrEqual(55);
+  await collectSnapshotFeed({ ...definition, collect: async () => { throw new Error('down'); } }, { ...published[0], collectionMs: 4_000 },
+    record => published.push(record));
+  expect(published[1]).toMatchObject({ failed: true, collectionMs: 4_000 });
 });

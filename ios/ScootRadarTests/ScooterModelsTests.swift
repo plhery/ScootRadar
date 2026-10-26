@@ -828,6 +828,33 @@ extension ScooterModelsTests {
             """.utf8))
         XCTAssertEqual(payload?.model.refreshing, true)
         XCTAssertEqual(payload?.model.refreshAfterSeconds, 3)
+        XCTAssertNil(policy.askedFollowUp(payload?.model))
+    }
+
+    func testARefreshingResponseIsAskedAgainWhenTheServerSays() throws {
+        let policy = ScooterRefreshPolicy.standard
+        let decode = { (json: String) in
+            try JSONDecoder().decode(ScooterResponseMetadataPayload.self, from: Data("""
+                {"partial":false,"stale":false,"failedSources":[],"sources":{},"generatedAt":"2026-10-26T02:00:00.000Z",
+                 "truncated":false,"totalVehicles":0,"mode":"vehicles","zoom":16,"refreshAfterSeconds":3,\(json)}
+                """.utf8)).model
+        }
+        // At once, after the shortest gap, while a quick feed is on its way; every three seconds while a sweep fills.
+        let coming = try decode(#""refreshing":true,"followUpMs":0"#)
+        XCTAssertEqual(coming.followUpMs, 0)
+        XCTAssertEqual(policy.askedFollowUp(coming), policy.minimumFollowUp)
+        XCTAssertEqual(policy.askedFollowUp(try decode(#""refreshing":true,"followUpMs":3000"#)), 3)
+        // Only while refreshing.
+        XCTAssertNil(policy.askedFollowUp(try decode(#""followUpMs":0"#)))
+        let loaded = Date(timeIntervalSince1970: 1_790_000_000)
+        let asked = try XCTUnwrap(policy.askedFollowUp(coming))
+        XCTAssertEqual(
+            policy.nextAttempt(
+                lastSuccess: loaded, refreshAfter: asked, expiresAt: loaded.addingTimeInterval(300),
+                lastAttempt: loaded, attemptGap: asked
+            ),
+            loaded.addingTimeInterval(0.2)
+        )
     }
 
     func testFailedSourcesBecomeDownProvidersOperatingInTheViewport() {
@@ -991,7 +1018,7 @@ extension ScooterModelsTests {
         XCTAssertTrue(ScooterDockNotice.curfew(farCurfew).text.contains(there))
     }
 
-    func testDockStatusPrefersFailureThenDelayThenCityTotalsThenAge() {
+    func testDockStatusPrefersFailureThenDelayThenCityTotalsThenAge() throws {
         let updated = Date(timeIntervalSince1970: 1_790_000_000)
         func summary(
             failure: ScooterLoadFailure? = nil,
@@ -1053,6 +1080,15 @@ extension ScooterModelsTests {
         updatingFailed.lastSeenAt = seenAt
         XCTAssertEqual(updatingFailed.status(at: later), .refreshFailed(showing: updated))
         XCTAssertEqual(ScooterDockStatus.live.isUpdating, false)
+
+        // Seen on another day, as a Lime group swept days ago: with the day of the week.
+        var utc = Calendar(identifier: .gregorian)
+        utc.timeZone = try XCTUnwrap(TimeZone(identifier: "UTC"))
+        XCTAssertEqual(ScooterDockStatus.seenTime(seenAt, now: later, calendar: utc), ScooterDockStatus.clockTime(seenAt))
+        let daysAgo = updated.addingTimeInterval(-50 * 3_600)
+        let withDay = ScooterDockStatus.seenTime(daysAgo, now: updated, calendar: utc)
+        XCTAssertNotEqual(withDay, ScooterDockStatus.clockTime(daysAgo))
+        XCTAssertTrue(withDay.hasSuffix(ScooterDockStatus.clockTime(daysAgo)), withDay)
     }
 
     func testEveryLanguageSaysWhenTheFadedScootersWereSeen() throws {

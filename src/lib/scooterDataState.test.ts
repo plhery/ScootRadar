@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { nextRefreshAt } from '@/lib/autoRefresh';
+import { MIN_FOLLOW_UP_MS, nextRefreshAt } from '@/lib/autoRefresh';
 import { isExpired } from '@/lib/dataExpiry';
 import {
   INITIAL_SCOOTER_DATA_STATE,
@@ -120,6 +120,24 @@ describe('scooterDataReducer', () => {
     // Another area gets its own follow-up; a failed request goes back to the usual gap.
     expect(schedule(scooterDataReducer(second, { type: 'succeeded', key: 'b', response: refreshing, now: T0 + 3_000 }))).toBe(T0 + 6_000);
     expect(schedule(scooterDataReducer(first, { type: 'failed', failure: 'failed', now: T0 + 3_000 }))).toBe(T0 + 13_000);
+  });
+
+  it('asks again when the server says, at once while a quick feed is on its way', () => {
+    const schedule = (state: ScooterDataState) => nextRefreshAt({ lastSuccessAt: state.lastSuccessAt, lastAttemptAt: state.lastAttemptAt,
+      refreshAfterMs: state.refreshAfterMs, expiresAt: state.expiresAt, attemptGapMs: state.attemptGapMs });
+    const coming = response({ refreshing: true, refreshAfterSeconds: 3, followUpMs: 0 });
+    const first = scooterDataReducer(loaded, { type: 'succeeded', key: 'a', response: coming, now: T0 });
+    expect(schedule(first)).toBe(T0 + MIN_FOLLOW_UP_MS);
+    // Not only once in a row: as often as it asks.
+    const second = scooterDataReducer(first, { type: 'succeeded', key: 'a', response: coming, now: T0 + 1_000 });
+    expect(schedule(second)).toBe(T0 + 1_000 + MIN_FOLLOW_UP_MS);
+    const sweeping = response({ refreshing: true, refreshAfterSeconds: 3, followUpMs: 3_000 });
+    const third = scooterDataReducer(second, { type: 'succeeded', key: 'a', response: sweeping, now: T0 + 2_000 });
+    expect(schedule(third)).toBe(T0 + 5_000);
+    expect(schedule(scooterDataReducer(third, { type: 'succeeded', key: 'a', response: sweeping, now: T0 + 5_000 }))).toBe(T0 + 8_000);
+    // Done: back to the server's minute, whatever followUpMs a response not refreshing carries.
+    const done = scooterDataReducer(third, { type: 'succeeded', key: 'a', response: response({ followUpMs: 0 }), now: T0 + 8_000 });
+    expect(schedule(done)).toBe(T0 + 68_000);
   });
 
   it('keeps asking every few seconds while scooters stand where they were last seen, and draws them apart', () => {

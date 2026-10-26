@@ -1010,6 +1010,7 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     }
 
     private var refreshAfter: TimeInterval {
+        if let asked = refreshPolicy.askedFollowUp(responseMetadata) { return asked }
         guard let seconds = responseMetadata?.refreshAfterSeconds, seconds > 0 else {
             return refreshPolicy.defaultRefreshAfter
         }
@@ -1474,12 +1475,14 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
                     .map { min($0, receivedAt) }
                 lastSuccessAt = receivedAt
                 lastAttemptAt = receivedAt
-                // The server is collecting feeds of this answer again: ask once more soon, but only once in a row,
-                // unless scooters stand where they were last seen, which its sweeps replace as they go.
+                // The server is collecting feeds of this answer again: ask again when it says (followUpMs), at
+                // once while a quick feed is on its way. A server that does not say is asked once more soon, but
+                // only once in a row, unless scooters stand where they were last seen, which its sweeps replace.
                 let query = ScooterFollowUpQuery(bounds: bounds, zoom: zoom, minimumBattery: requestMinimumBattery)
                 let refreshing = response.meta?.refreshing == true
                 let filling = !response.lastSeenVehicles.isEmpty || !response.lastSeenClusters.isEmpty
-                followUpGap = refreshing && (filling || followedUpQuery != query) ? refreshPolicy.followUpGap : nil
+                followUpGap = refreshPolicy.askedFollowUp(response.meta)
+                    ?? (refreshing && (filling || followedUpQuery != query) ? refreshPolicy.followUpGap : nil)
                 followedUpQuery = refreshing ? query : nil
                 loadIssue = nil
                 scheduleDataExpiry(response.meta, receivedAt: receivedAt, clockOffset: response.clockOffset)

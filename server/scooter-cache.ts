@@ -2,7 +2,7 @@ import { mkdir, rename, rm } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { discoverCollectableFeeds, independentCollectableFeeds, planRefreshCounts, type CollectableScooterFeed } from '../src/lib/scooterFeeds';
-import { joinCityOverviews, refreshedOverview, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
+import { joinCityOverviews, LAST_SEEN_MAX_AGE_MS, refreshedOverview, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
 import type { MapBounds, Vehicle } from '../src/lib/types';
 import { feedCurfewed, snapshotPaused } from '../src/lib/seasonalPauses';
@@ -122,7 +122,9 @@ const metrics = createSnapshotMetrics(process.env.SOURCE_COMMIT, { cadence,
 const server = createSnapshotServer({ snapshot: () => snapshot,
   token: process.env.SCOOTER_SNAPSHOT_API_TOKEN, production: process.env.NODE_ENV === 'production',
   version: process.env.SOURCE_COMMIT, metrics, metricsToken: process.env.METRICS_TOKEN, cadence, refresher: scheduler,
-  zones: query => answerZones(zoneStore, collectable, query, COLD_WAIT_MS), retention: id => retentionCap(id) });
+  zones: query => answerZones(zoneStore, collectable, query, COLD_WAIT_MS), retention: id => retentionCap(id),
+  // A slow feed's last positions stand faded until it is due again while nobody looks: Lime's for three days.
+  lastSeenMaxAgeMs: id => Math.max(LAST_SEEN_MAX_AGE_MS, ownIdleExpiry(id) ?? 0) });
 // The city totals, built in two parts (cityOverview): those of the feeds without a retention cap, and
 // those of the capped feeds. The file keeps the first only.
 let baseOverview: MobilitySnapshot['overview'] | undefined;

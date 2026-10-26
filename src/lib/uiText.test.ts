@@ -21,6 +21,12 @@ describe('formatClockTime', () => {
     expect(formatClockTime(new Date(2026, 9, 3, 7, 5).getTime(), 'en')).toBe('07:05');
   });
 
+  it('puts the day of the week before a time of another day', () => {
+    // 3 October 2026 is a Saturday.
+    expect(formatClockTime(AT, 'en', 'CH', undefined, true)).toBe('Sat 14:02');
+    expect(formatUiText({ key: 'dock.lastSeen', time: AT, weekday: true }, i18n)).toBe('dock.lastSeen time=Sa., 14:02');
+  });
+
   it('tells the time of a place by its clock, and names its time zone where the device\'s clock reads otherwise', () => {
     const device = Intl.DateTimeFormat().resolvedOptions().timeZone;
     // Fourteen hours ahead of UTC, or eleven behind where the device is fourteen ahead.

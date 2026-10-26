@@ -212,11 +212,13 @@ describe('collection on demand', () => {
   const minutes = (count: number) => count * 60_000;
 
   /** A scheduler whose collections take `delayMs` (forever when null) and then bring fresh positions. */
-  function cache(feeds: FeedSnapshot[], delayMs: number | null) {
+  // Each feed's collection takes delayMs, or its own; null never ends.
+  function cache(feeds: FeedSnapshot[], delayMs: number | null | Record<string, number | null>) {
     let snapshot: MobilitySnapshot = { version: 1, updatedAt: Date.now(), feeds, overview: buildCityOverview(feeds, Date.now()) };
     const scheduler = new FeedScheduler<{ id: string; host: string }>(async definition => {
-      if (delayMs === null) return new Promise(() => {});
-      await new Promise(resolve => setTimeout(resolve, delayMs));
+      const delay = delayMs !== null && typeof delayMs === 'object' ? delayMs[definition.id] : delayMs;
+      if (delay === null) return new Promise(() => {});
+      await new Promise(resolve => setTimeout(resolve, delay));
       const now = Date.now();
       snapshot = { ...snapshot, updatedAt: now, feeds: snapshot.feeds.map(candidate => candidate.id === definition.id
         ? { ...candidate, vehicles: [vehicle(`${candidate.id}-new`)], observedAt: now, attemptedAt: now, collectedAt: now }
@@ -300,18 +302,50 @@ describe('collection on demand', () => {
     expect(body.meta.sources.france).toBe('stale');
   });
 
-  it('answers an app map\'s last-seen positions within a second while its sweep goes on', async () => {
+  it('answers a slow feed\'s last-seen positions at once while its sweep goes on, with a quick feed beside it', async () => {
     const lime = REGIONAL_SCOOTER_SYSTEMS.find(system => system.limeAppMap)!;
     const id = `${regionalSource(lime)}:${lime.id}`;
-    const { scheduler, snapshot } = cache([feed(id, lyon, Date.now() - minutes(40), { provider: 'lime' })], null);
+    const { scheduler, snapshot } = cache([feed(id, lyon, Date.now() - minutes(40), { provider: 'lime' }),
+      feed('france:dott_fr_lyon', lyon, Date.now() - minutes(20))], { [id]: null, 'france:dott_fr_lyon': 50 });
     stops.push(() => scheduler.stop());
-    const { port } = await start(undefined, { snapshot, refresher: scheduler, coldWaitMs: 5_000, lastSeenWaitMs: 100 });
+    const { port } = await start(undefined, { snapshot, refresher: scheduler, coldWaitMs: 4_000 });
     const started = Date.now();
     const body = await (await fetch(lyonUrl(port), { headers })).json() as ScooterResponse;
     expect(Date.now() - started).toBeLessThan(1_000);
-    expect(body.vehicles).toEqual([]);
+    expect(body.vehicles.map(item => item.vehicle_id)).toEqual(['france:dott_fr_lyon-new']);
     expect(body.lastSeen?.vehicles.map(item => item.vehicle_id)).toEqual([`${id}-old`]);
-    expect(body.meta).toMatchObject({ refreshing: true, refreshAfterSeconds: 3, failedSources: [] });
+    expect(body.meta).toMatchObject({ refreshing: true, refreshAfterSeconds: 3, followUpMs: 3_000, failedSources: [] });
+    // Alone, it is not waited for at all.
+    const alone = Date.now();
+    await (await fetch(lyonUrl(port), { headers })).json();
+    expect(Date.now() - alone).toBeLessThan(200);
+  });
+
+  it('answers with the first quick feed in, and holds the follow-up it asks for until the next', async () => {
+    const { scheduler, snapshot } = cache([feed('france:dott_fr_lyon', lyon, Date.now() - minutes(20)),
+      feed('france:voi_fr_lyon', lyon, Date.now() - minutes(20))], { 'france:dott_fr_lyon': 50, 'france:voi_fr_lyon': 800 });
+    stops.push(() => scheduler.stop());
+    const { port } = await start(undefined, { snapshot, refresher: scheduler, coldWaitMs: 4_000, joinWaitMs: 100 });
+    const started = Date.now();
+    const first = await (await fetch(lyonUrl(port), { headers })).json() as ScooterResponse;
+    expect(Date.now() - started).toBeLessThan(500);
+    expect(first.vehicles.map(item => item.vehicle_id)).toEqual(['france:dott_fr_lyon-new']);
+    expect(first.meta).toMatchObject({ refreshing: true, followUpMs: 0 });
+    const second = await (await fetch(lyonUrl(port), { headers })).json() as ScooterResponse;
+    expect(Date.now() - started).toBeGreaterThanOrEqual(750);
+    expect(second.vehicles.map(item => item.vehicle_id).sort()).toEqual(['france:dott_fr_lyon-new', 'france:voi_fr_lyon-new']);
+    expect(second.meta.refreshing).toBeUndefined();
+    expect(second.meta.followUpMs).toBeUndefined();
+  });
+
+  it('waits for the quick feeds that come in with the first', async () => {
+    const { scheduler, snapshot } = cache([feed('france:dott_fr_lyon', lyon, Date.now() - minutes(20)),
+      feed('france:voi_fr_lyon', lyon, Date.now() - minutes(20))], { 'france:dott_fr_lyon': 50, 'france:voi_fr_lyon': 150 });
+    stops.push(() => scheduler.stop());
+    const { port } = await start(undefined, { snapshot, refresher: scheduler, coldWaitMs: 4_000, joinWaitMs: 300 });
+    const body = await (await fetch(lyonUrl(port), { headers })).json() as ScooterResponse;
+    expect(body.vehicles).toHaveLength(2);
+    expect(body.meta.refreshing).toBeUndefined();
   });
 
   it('does not wait for a feed whose last collection failed', async () => {

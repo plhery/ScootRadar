@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { skippedSources } from '@/lib/scooterSources';
-import { buildCityOverview, demandedFeeds, feedsForQuery, LIME_GROUPS_PER_REQUEST, OVERVIEW_RECOVERY_MS, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS,
+import { buildCityOverview, collectsSlowly, demandedFeeds, feedsForQuery, LIME_GROUPS_PER_REQUEST, OVERVIEW_RECOVERY_MS, overviewNeedsRefresh, querySnapshot, VEHICLE_MAX_AGE_MS,
   type FeedSnapshot, type MobilitySnapshot } from './scooterSnapshots';
 import { scooterResponseHeaders } from './scooterResponse';
 import { ScooterFeedsUnavailableError } from './scooterFeeds';
@@ -228,7 +228,7 @@ describe('feeds collected on demand', () => {
       .toEqual([added.id]);
   });
 
-  describe('an app map being collected again', () => {
+  describe('a feed slow to collect being collected again', () => {
     const system = REGIONAL_SCOOTER_SYSTEMS.find(item => item.limeAppMap)!;
     const scooter = (id: string, lat = 45.75, lng = 4.85): Vehicle => ({ ...vehicle(id), provider: 'lime', lat, lng });
     const lime = (values: Partial<FeedSnapshot> = {}) => feed({ id: `${regionalSource(system)}:${system.id}`, provider: 'lime',
@@ -245,17 +245,35 @@ describe('feeds collected on demand', () => {
       expect(response.providers).toEqual({ voi: 1 });
       // Alone in view, it answers with them rather than empty.
       expect(querySnapshot(snapshot([old]), query, 16, now, refreshing(old)).lastSeen?.vehicles).toHaveLength(2);
-      // Not while nothing collects it, nor once older than three hours.
+      // Not while nothing collects it, nor once older than three hours, unless the cache keeps it longer.
       expect(querySnapshot(snapshot([old, voi]), query, 16, now).lastSeen).toBeUndefined();
       const older = lime({ observedAt: now - minutes(181) });
       expect(querySnapshot(snapshot([older, voi]), query, 16, now, refreshing(older)).lastSeen).toBeUndefined();
+      const days = lime({ observedAt: now - 50 * minutes(60) });
+      expect(querySnapshot(snapshot([days, voi]), query, 16, now, { ...refreshing(days),
+        lastSeenMaxAgeMs: () => 72 * minutes(60) + minutes(10) }).meta.lastSeenAt).toBe(new Date(days.observedAt).toISOString());
     });
 
-    it('keeps the fifteen minutes of a licensed feed', () => {
-      const old = feed({ observedAt: now - minutes(40) });
-      const response = querySnapshot(snapshot([old, voi]), query, 16, now, refreshing(old));
+    it('is slow by how long its collections take, whatever its source', () => {
+      expect(collectsSlowly(lime())).toBe(true);
+      expect(collectsSlowly(feed())).toBe(false);
+      // A GBFS feed timed at 20 seconds stands faded; an app map timed at 800 ms is waited for instead.
+      const slowFeed = feed({ observedAt: now - minutes(40), collectionMs: 20_000 });
+      expect(querySnapshot(snapshot([slowFeed, voi]), query, 16, now, refreshing(slowFeed)).lastSeen?.vehicles).toHaveLength(2);
+      const quick = lime({ collectionMs: 800 });
+      const response = querySnapshot(snapshot([quick, voi]), query, 16, now, refreshing(quick));
       expect(response.lastSeen).toBeUndefined();
       expect(response.meta.lastSeenAt).toBeUndefined();
+    });
+
+    it('asks to be polled again soon, and at once while a quick feed is on its way', () => {
+      const old = lime();
+      expect(querySnapshot(snapshot([old, voi]), query, 16, now, refreshing(old)).meta)
+        .toMatchObject({ refreshing: true, refreshAfterSeconds: 3, followUpMs: 3_000 });
+      const cold = feed({ observedAt: now - minutes(40) });
+      expect(querySnapshot(snapshot([old, cold]), query, 16, now, { refreshing: new Set([old.id, cold.id]),
+        comingSoon: new Set([cold.id]) }).meta.followUpMs).toBe(0);
+      expect(querySnapshot(snapshot([old, voi]), query, 16, now).meta.followUpMs).toBeUndefined();
     });
 
     it('shows its sweep under way, and last-seen scooters only where the sweep has yet to look', () => {
@@ -320,6 +338,9 @@ describe('feeds collected on demand', () => {
       expect(response.meta).toMatchObject({ failedSources: [], partial: false, lastSeenAt: new Date(now - minutes(40)).toISOString() });
       expect(response.meta.refreshing).toBeUndefined();
       expect(response.meta.sources.germany).toBe('fresh');
+      // Whatever its pace: nothing collects it for this request.
+      const quick = { ...far, collectionMs: 800 };
+      expect(querySnapshot(snapshot([near, quick]), wide, 16, now, { idleInView: new Set([far.id]) }).lastSeen?.vehicles).toHaveLength(1);
       // Asked for, and not collected, it would have failed.
       expect(querySnapshot(snapshot([near, far]), wide, 16, now).meta.failedSources).toEqual([far.id]);
       // Its positions recent enough to show count as any feed's.

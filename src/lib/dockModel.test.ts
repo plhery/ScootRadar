@@ -208,6 +208,10 @@ describe('dock status', () => {
     // Delayed once the server stops collecting them, or with nothing faded in view.
     expect(summary({ ...filling, meta: meta({ stale: true }) }).status?.kind).toBe('delayed');
     expect(summary({ ...filling, lastSeenCount: 0 }).status?.kind).toBe('delayed');
+    // Seen on another day, as a Lime group swept days ago: with the day of the week.
+    const daysAgo = NOW - 50 * 3_600_000;
+    expect(summary({ ...filling, count: 3, meta: meta({ refreshing: true, lastSeenAt: new Date(daysAgo).toISOString() }) }).status)
+      .toEqual({ kind: 'updating', text: { key: 'dock.lastSeen', time: daysAgo, weekday: true } });
   });
 
   it('describes the city overview without an age', () => {

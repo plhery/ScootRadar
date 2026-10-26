@@ -5,6 +5,12 @@ export const MIN_ATTEMPT_GAP_MS = 10_000;
  * meta.refreshing, while the server collects its feeds again.
  */
 export const FOLLOW_UP_GAP_MS = 2_000;
+/**
+ * The shortest gap before a follow-up a response asks for with meta.followUpMs. Asked for at once
+ * (0) while a quick feed is on its way, the server holds the request until it is in: the gap only
+ * spaces the requests should it not.
+ */
+export const MIN_FOLLOW_UP_MS = 200;
 /** Refresh this long before the scooters on screen expire. */
 export const EXPIRY_LEAD_MS = 5_000;
 export const DEFAULT_REFRESH_AFTER_MS = 60_000;

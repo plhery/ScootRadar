@@ -201,6 +201,24 @@ it('lets a request wait for the collection it started, up to its timeout', async
   } finally { scheduler.stop(); }
 });
 
+it('waits for the first of several collections a request asked for', async () => {
+  let finish!: () => void;
+  const { scheduler } = schedule([{ id: 'lyon', host: 'fr' }, { id: 'stuck', host: 'it' }], {},
+    feed => feed.id === 'stuck' && Date.now() > T0 ? new Promise(() => {})
+      : Date.now() > T0 ? new Promise(resolve => { finish = () => resolve(); }) : Promise.resolve());
+  try {
+    await vi.advanceTimersByTimeAsync(5 * MINUTE);
+    scheduler.demand(['lyon', 'stuck']);
+    const first = scheduler.wait(['lyon', 'stuck'], 3_000, true);
+    const all = scheduler.wait(['lyon', 'stuck'], 3_000);
+    await vi.advanceTimersByTimeAsync(500);
+    finish();
+    expect(await first).toBe(true);
+    await vi.advanceTimersByTimeAsync(2_500);
+    expect(await all).toBe(false);
+  } finally { scheduler.stop(); }
+});
+
 it('retries a failed idle feed after a minute, backing off to half the idle interval', async () => {
   let failing = true;
   const { scheduler, times, calls } = schedule([{ id: 'lyon', host: 'fr' }], {},

@@ -1,4 +1,4 @@
-import { DEFAULT_REFRESH_AFTER_MS, FOLLOW_UP_GAP_MS, MIN_ATTEMPT_GAP_MS } from '@/lib/autoRefresh';
+import { DEFAULT_REFRESH_AFTER_MS, FOLLOW_UP_GAP_MS, MIN_ATTEMPT_GAP_MS, MIN_FOLLOW_UP_MS } from '@/lib/autoRefresh';
 import { deviceTime, failedRequestOutcome, isExpired, responseExpiry } from '@/lib/dataExpiry';
 import type { LoadFailure } from '@/lib/loadFailure';
 import type {
@@ -54,7 +54,7 @@ export interface ScooterDataState {
   /** When the previous request finished, whatever its outcome. */
   lastAttemptAt: number | null;
   refreshAfterMs: number;
-  /** The gap before the next request: short once when the server says it is refreshing the data. */
+  /** The gap before the next request: short while the server says it is refreshing the data. */
   attemptGapMs: number;
   /** The query whose refreshing response already had its quick follow-up; null when the last response was not refreshing. */
   followedUpKey: string | null;
@@ -111,12 +111,15 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
       const expiry = responseExpiry(response.meta, now, clockOffsetMs);
       const generated = deviceTime(response.meta.generatedAt, clockOffsetMs);
       const refreshAfter = response.meta.refreshAfterSeconds;
-      // The server is collecting feeds of this answer again: ask once more soon, but only once in a row,
-      // unless scooters stand where they were last seen, which its sweeps replace as they go.
+      // The server is collecting feeds of this answer again: ask again when it says (meta.followUpMs), at
+      // once while a quick feed is on its way. A server that does not say is asked once more soon, but
+      // only once in a row, unless scooters stand where they were last seen, which its sweeps replace.
       const refreshing = response.meta.refreshing === true;
       const lastSeenVehicles = response.lastSeen?.vehicles ?? [];
       const lastSeenClusters = response.lastSeen?.clusters ?? [];
       const filling = lastSeenVehicles.length > 0 || lastSeenClusters.length > 0;
+      const asked = response.meta.followUpMs;
+      const followUpMs = refreshing && typeof asked === 'number' && asked >= 0 ? Math.max(MIN_FOLLOW_UP_MS, asked) : null;
       const followUp = refreshing && (filling || state.followedUpKey !== event.key);
       return {
         vehicles: response.vehicles,
@@ -132,10 +135,10 @@ export function scooterDataReducer(state: ScooterDataState, event: ScooterDataEv
         parkingExpiresAt: expiry.parking,
         lastSuccessAt: now,
         lastAttemptAt: now,
-        refreshAfterMs: typeof refreshAfter === 'number' && refreshAfter > 0
+        refreshAfterMs: followUpMs ?? (typeof refreshAfter === 'number' && refreshAfter > 0
           ? refreshAfter * 1000
-          : DEFAULT_REFRESH_AFTER_MS,
-        attemptGapMs: followUp ? FOLLOW_UP_GAP_MS : MIN_ATTEMPT_GAP_MS,
+          : DEFAULT_REFRESH_AFTER_MS),
+        attemptGapMs: followUpMs ?? (followUp ? FOLLOW_UP_GAP_MS : MIN_ATTEMPT_GAP_MS),
         followedUpKey: refreshing ? event.key : null,
         requestKey: event.key,
         requestInFlight: false,

@@ -20,7 +20,7 @@
       "items": { "$ref": "#/$defs/ScooterCluster" }
     },
     "lastSeen": {
-      "description": "Where scooters of app maps being collected again, or of Lime groups a wide view leaves idle, stood when last seen, up to three hours ago: shown faded until a collection reaches them.",
+      "description": "Where scooters of feeds slow to collect (an app map's sweep) being collected again, or of Lime groups a wide view leaves idle, stood when last seen, up to three hours ago or, for a feed collected less often, as Lime's, up to three days: shown faded until a collection reaches them.",
       "$ref": "#/$defs/LastSeen"
     },
     "providers": {
@@ -285,6 +285,11 @@
         "refreshing": {
           "description": "Feeds of this answer are being collected again; poll once more after refreshAfterSeconds.",
           "type": "boolean"
+        },
+        "followUpMs": {
+          "description": "Feeds of this answer are still being collected: poll again after this many milliseconds, sooner than refreshAfterSeconds. 0 while a feed quick to collect is on its way: the next request waits for it.",
+          "type": "integer",
+          "minimum": 0
         },
         "lastSeenAt": {
           "description": "When the oldest of the lastSeen scooters were seen.",

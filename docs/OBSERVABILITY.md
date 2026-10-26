@@ -130,13 +130,24 @@ looks:
   (`RETENTION_CAPS_MS` in `server/cadence.ts`); the cache drops it then, but they
   expire after 30 minutes without a successful collection, as the others.
 
-A request whose feeds hold positions over 15 minutes old waits up to 3 seconds for
-their collection, then answers. When a collection it started is still under way, the
-answer carries `meta.refreshing: true` with `refreshAfterSeconds: 3`, is not cached,
-and the web and iOS apps ask once more 3 seconds later. Older apps ask again after
-their usual 10 seconds.
+Feeds are sorted by how long a collection takes, timed on each (`collectionMs` on the
+feed's record, smoothed over the last few; until it is timed, an app map's counts as
+slow). One that takes over 3 seconds (`SLOW_COLLECTION_MS`), as an app map's sweep of
+a town, is slow: a request never waits for it. A quick one is waited for when its
+positions are over 15 minutes old: the request answers as soon as the first such feed
+is in, with those that come within 300 ms of it (`JOIN_WAIT_MS`), and after 3 seconds
+at most (`COLD_WAIT_MS`).
 
-An app map's sweep can take minutes, so while one runs for a request:
+When a collection it started is still under way, the answer carries
+`meta.refreshing: true` with `refreshAfterSeconds: 3`, is not cached, and says when
+to ask again in `meta.followUpMs`: 0 while a quick feed is still on its way, whose
+next request the cache holds until the next such feed is in, so each operator's
+scooters show as soon as it answers; 3000 while only slow feeds are. The web app
+asks again then, as often as it is told, at least 200 ms apart; the iOS app from
+the build after 26 October 2026. Older apps ask once more 3 seconds later, or every 3
+seconds while scooters stand faded, and otherwise after their usual 10 seconds.
+
+A slow feed's sweep can take minutes, so while one runs for a request:
 
 - it starts where the request looked, and follows the view when the next request
   looks elsewhere; its client gives a town someone looks at the next turn before
@@ -144,10 +155,13 @@ An app map's sweep can take minutes, so while one runs for a request:
   gives it two slots of its own on its host;
 - each part it finishes is published at once (at most every 2 seconds), and the
   answer shows the scooters found so far;
-- the answer carries `lastSeen`, the feed's previous positions up to 3 hours old
-  where the sweep has not looked yet, and `meta.lastSeenAt`; the apps draw them faded,
-  count them nowhere, and keep asking every 3 seconds while they stand. The request
-  then waits 1 second rather than 3 (`LAST_SEEN_WAIT_MS`).
+- the answer carries `lastSeen`, the feed's previous positions where the sweep has
+  not looked yet, and `meta.lastSeenAt`; the apps draw them faded, count them nowhere,
+  and keep asking every 3 seconds while they stand. They stand up to 3 hours old, or
+  until the feed is due again while nobody looks for one collected less often: three
+  days and 10 minutes for Lime's groups (`lastSeenMaxAgeMs` in
+  `server/scooter-cache.ts`). The dock gives the day of the week of a time on
+  another day. A feed quick to collect has none: it is waited for instead.
 
 A request collects again only the six Lime groups nearest the middle of its view,
 and keeps them watched for 3 minutes rather than `SCOOTER_WATCH_SECONDS`: every Lime

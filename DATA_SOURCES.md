@@ -199,19 +199,21 @@ source timestamp, and the Worker keeps an answer holding them no longer. Read
 through Entur, MobiData BW, NRW.Mobidrom or the Swiss national platform, the
 same operators come under those platforms' licences instead. Map requests read only
 the relevant cached systems; one for a system whose data is over a minute old
-starts its collection, and waits up to three seconds for it when its positions
-are over fifteen minutes old. The local direct-feed fallback selects by viewport
+starts its collection, and, when its positions are over fifteen minutes old and
+it collects in under three seconds, waits for it, up to three seconds, answering
+as soon as the first such system is in. The local direct-feed fallback selects by viewport
 and allows four concurrent French systems. Individual scooter positions remain
 usable for at most fifteen minutes from their source timestamp, including when a
 refresh fails; missing timestamps and older data are rejected. The operators'
-app maps, which no licence holds to fifteen minutes, differ in three ways
-since 25 October 2026. Those read in slow paced sweeps (Whoosh, GCOO, ATOM
-and BinBin) are collected every two hours while nobody looks, and Lime's many
-markets every three days. A sweep
+app maps read in slow paced sweeps differ in three ways since 25 October 2026.
+Those of Whoosh, GCOO, ATOM and BinBin are collected every two hours while
+nobody looks, and Lime's many markets every three days. A sweep
 starts where the request looked and publishes each part of its area as it
-finishes it, so the map fills in as it goes. And while one is collected
-again, its positions up to three hours old stand faded where they were last
-seen, counted nowhere, until the sweep reaches them. The national
+finishes it, so the map fills in as it goes. And since 26 October, any feed whose
+collection takes over three seconds, timed on each, is not waited for: while it
+is collected again, its positions up to three hours old, or three days for
+Lime's, stand faded where they were last seen, counted nowhere, until the sweep
+reaches them. The national
 platform publishes Voi every eight to nine minutes, about ninety seconds after
 the timestamp it carries, so a shorter limit blanks Voi whenever it is a little
 late. City totals are aggregated hourly, and those of Bird's, Spin's and Bolt's

@@ -42,6 +42,8 @@ export interface FeedSnapshot {
   attemptedAt: number;
   /** When the last successful collection finished; absent from snapshots saved before it existed. */
   collectedAt?: number;
+  /** How long its successful collections take, smoothed (collectFeed.ts); absent until one is timed. */
+  collectionMs?: number;
   stale: boolean;
   failed: boolean;
   skipped: boolean;
@@ -88,14 +90,26 @@ const shownSweep = (feed: FeedSnapshot, now: number) =>
   !showsPositions(feed, now) && feed.sweep && now - feed.sweep.startedAt <= VEHICLE_MAX_AGE_MS ? feed.sweep : undefined;
 
 /**
- * Whether an app map's last positions stand, faded, where its scooters were last seen: those too
- * old to show, of three hours at most, while a request has it collected again. Its slow sweeps
- * would otherwise leave the map empty of it for minutes. Only the app maps, which no licence
- * binds to fifteen minutes. A Lime group a wide view leaves idle shows so too (idleInView).
+ * A feed whose collection takes longer than a request can wait for it (COLD_WAIT_MS in
+ * server/snapshotServer.ts), as an app map's sweep of a whole town: Lime's, Whoosh's or BinBin's
+ * take from 25 seconds to 3 minutes, Dott's or a GBFS feed's under one. Until a collection is timed,
+ * an app map's is taken to be.
  */
-export const showsLastSeen = (feed: FeedSnapshot, now: number, refreshing?: ReadonlySet<string>) =>
-  !feed.skipped && isAppMapFeed(feed) && !showsPositions(feed, now) && now - feed.observedAt <= LAST_SEEN_MAX_AGE_MS &&
-  feed.vehicles.length > 0 && refreshing?.has(feed.id) === true;
+export const SLOW_COLLECTION_MS = 3_000;
+export const collectsSlowly = (feed: FeedSnapshot) =>
+  feed.collectionMs !== undefined ? feed.collectionMs > SLOW_COLLECTION_MS : isAppMapFeed(feed);
+
+/**
+ * Whether a slow feed's last positions stand, faded, where its scooters were last seen: those too
+ * old to show, of `maxAgeMs` at most, while a request has it collected again. Its sweep would
+ * otherwise leave the map empty of it for up to minutes. A feed quick to collect is waited for
+ * instead. A Lime group a wide view leaves idle (idleInView), which nothing collects for it, shows so
+ * whatever its pace.
+ */
+export const showsLastSeen = (feed: FeedSnapshot, now: number,
+  { refreshing, idle }: { refreshing?: ReadonlySet<string>; idle?: ReadonlySet<string> }, maxAgeMs = LAST_SEEN_MAX_AGE_MS) =>
+  !feed.skipped && !showsPositions(feed, now) && now - feed.observedAt <= maxAgeMs && feed.vehicles.length > 0 &&
+  (idle?.has(feed.id) === true || (collectsSlowly(feed) && refreshing?.has(feed.id) === true));
 
 /**
  * Whether the operator's feed failed its last collection (an error, a missing
@@ -409,6 +423,13 @@ export interface SnapshotQueryOptions {
    * stands faded where its scooters were last seen, and counts neither as served nor as failed.
    */
   idleInView?: ReadonlySet<string>;
+  /**
+   * Of the feeds refreshing, those quick to collect with no positions to show yet: the response
+   * asks to be polled again at once (followUpMs 0), and the next request waits for them.
+   */
+  comingSoon?: ReadonlySet<string>;
+  /** How old a slow feed's last positions may be to stand faded: LAST_SEEN_MAX_AGE_MS when not given. */
+  lastSeenMaxAgeMs?: (feedId: string) => number | undefined;
 }
 
 export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom: number | null, now = Date.now(),
@@ -452,9 +473,9 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
   // Each scooter last seen where the sweep under way has yet to look, unless it has been seen since.
   const lastSeen = new Map<string, Vehicle>();
   const lastSeenTimes: number[] = [];
-  const fading = new Set([...options.refreshing ?? [], ...options.idleInView ?? []]);
+  const fading = { refreshing: options.refreshing, idle: options.idleInView };
   for (const feed of relevant) {
-    if (!showsLastSeen(feed, now, fading)) continue;
+    if (!showsLastSeen(feed, now, fading, options.lastSeenMaxAgeMs?.(feed.id))) continue;
     const swept = shownSweep(feed, now)?.swept ?? [];
     const before = lastSeen.size;
     pick(lastSeen, feed.vehicles, (vehicle, key) => unique.has(key) ||
@@ -469,7 +490,8 @@ export function querySnapshot(snapshot: MobilitySnapshot, query: FeedQuery, zoom
     generatedAt: new Date(observedAt).toISOString(),
     expiresAt: new Date(observedAt + VEHICLE_MAX_AGE_MS).toISOString(),
     refreshAfterSeconds: refreshing ? REFRESHING_RETRY_SECONDS : 60,
-    ...(refreshing ? { refreshing: true } : {}),
+    ...(refreshing ? { refreshing: true, followUpMs: relevant.some(feed => options.comingSoon?.has(feed.id))
+      ? 0 : REFRESHING_RETRY_SECONDS * 1000 } : {}),
     ...(lastSeenTimes.length ? { lastSeenAt: new Date(Math.min(...lastSeenTimes)).toISOString() } : {}),
     availableProviders: providersForViewport(query.bounds),
     ...seasonOverIn(snapshot, query.bounds),

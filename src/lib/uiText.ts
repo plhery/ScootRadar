@@ -12,6 +12,8 @@ export interface UiText {
   time?: number;
   /** The time zone of a place {time} is told for, by whose clock it is told: see formatClockTime. */
   timeZone?: string;
+  /** {time} is of another day: the day of the week stands before it, "Fri 14:05". */
+  weekday?: boolean;
   /** 1 for January, substituted for {month} as the month's name: "April", "avril". */
   month?: number;
   /** A day of the year, "MM-DD", substituted for {date} as the day and the month's name: "15 December", "15. Dezember". */
@@ -45,12 +47,13 @@ export interface UiTextFormatter {
  * the time by the place's clock, named after it where the device's clock reads
  * otherwise: Oslo's night ban ends at "05:00 GMT+2" seen from New York.
  */
-export function formatClockTime(time: number, locale: AppLocale, region?: string, timeZone?: string): string {
+export function formatClockTime(time: number, locale: AppLocale, region?: string, timeZone?: string, weekday = false): string {
   const tag = formatLocale(locale, region);
   const { hourCycle } = new Intl.DateTimeFormat(tag, { hour: 'numeric' }).resolvedOptions();
   const twelveHour = hourCycle === 'h11' || hourCycle === 'h12';
   const zone = timeZone && clockDiffers(time, timeZone) ? { timeZone, timeZoneName: 'short' as const } : {};
-  return new Date(time).toLocaleTimeString(tag, { hour: twelveHour ? 'numeric' : '2-digit', minute: '2-digit', ...zone });
+  return new Date(time).toLocaleTimeString(tag, { hour: twelveHour ? 'numeric' : '2-digit', minute: '2-digit',
+    ...(weekday ? { weekday: 'short' as const } : {}), ...zone });
 }
 
 /** Whether a time zone's clock reads otherwise than the device's at that instant; not for one the browser does not know. */
@@ -91,7 +94,7 @@ export function formatUiText(text: UiText, formatter: UiTextFormatter): string {
   const { locale, region, t, formatNumber } = formatter;
   const values: Record<string, string | number> = { ...text.values };
   for (const [name, value] of Object.entries(text.numbers ?? {})) values[name] = formatNumber(value);
-  if (text.time !== undefined) values.time = formatClockTime(text.time, locale, region, text.timeZone);
+  if (text.time !== undefined) values.time = formatClockTime(text.time, locale, region, text.timeZone, text.weekday);
   if (text.month !== undefined) values.month = formatMonth(text.month, locale, region);
   if (text.date !== undefined) values.date = formatDayOfYear(text.date, locale, region);
   for (const [name, part] of Object.entries(text.parts ?? {})) values[name] = formatUiText(part, formatter);

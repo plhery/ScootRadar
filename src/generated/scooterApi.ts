@@ -68,6 +68,7 @@ export interface ScooterResponseMeta {
   overview?: boolean;
   refreshAfterSeconds?: number;
   refreshing?: boolean;
+  followUpMs?: number;
   lastSeenAt?: string;
   availableProviders?: string[];
   seasonOver?: string[];
