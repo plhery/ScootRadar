@@ -162,7 +162,7 @@ const guide: Guide = {
         {
           list: [
             '**Deutsche Bahn, Fernverkehr:** Zusammengeklappt und sicher verstaut fährt er kostenlos als Handgepäck mit. Den Akku darfst du nicht herausnehmen oder laden. Lässt er sich nicht klappen, gilt er als Traglast und darf nur mit, wenn du ihn sicher unterbringst, etwa im Gepäckregal.',
-            '**S-Bahn und Regionalzug:** Kein bundesweites Verbot. In den Verbünden von Berlin, Hamburg, München, Stuttgart, Leipzig, Dresden, Hannover und Rhein-Ruhr (VRR) darf er zusammengeklappt mit, in München mit höchstens 90 × 80 cm und 25 kg; im VRR darf ihn jedes Verkehrsunternehmen ausschliessen. Im VGN rund um Nürnberg ist er in S-Bahn und Regionalzug erlaubt.',
+            '**S-Bahn und Regionalzug:** Kein bundesweites Verbot. In den Verbünden von Berlin, Hamburg, München, Stuttgart, Leipzig, Dresden und Hannover darf er zusammengeklappt mit, in München mit höchstens 90 × 80 cm und 25 kg. In ganz Nordrhein-Westfalen, im VRR wie im Westfalentarif, zählt er nach den Beförderungsbedingungen Nahverkehr NRW (gültig ab 1. Januar 2026) zusammengeklappt als Handgepäck; jedes Verkehrsunternehmen darf ihn per Hausrecht ausschliessen. Im VGN rund um Nürnberg ist er in S-Bahn und Regionalzug erlaubt.',
             '**U-Bahn, Tram und Stadtbus:** Viele Betriebe haben E-Tretroller seit 2023 verbannt, meist wegen der Brandgefahr der Akkus, oft auch zusammengeklappt: die BVG in Berlin, die Hamburger U-Bahn, die MVG in München, die KVB in Köln, die VGF in Frankfurt, die Rheinbahn in Düsseldorf, die SWB in Bonn, die ÜSTRA in Hannover, die LVB in Leipzig und die HAVAG in Halle (beide seit Mai 2024), in Schleswig-Holstein laut SH-Tarif fast alle Busse samt den Kieler Fördefähren (ausser im hvv-Gebiet, wo dessen Regeln gelten), die VAG in Nürnberg (seit Mai 2024 im ganzen VGN), moBiel in Bielefeld, PaderSprinter in Paderborn, die STOAG in Oberhausen und laut ADAC die BOGESTRA in Bochum (alle 2024) sowie die swa in Augsburg samt den AVV-Regionalbussen (seit Januar 2025); im VBN, also auch in Bus und Strassenbahn der BSAG in Bremen, fährt er laut den Beförderungsbedingungen von 2026 nur im Zug mit; bei der HEAG mobilo in Darmstadt ist er laut Stadt derzeit nicht gestattet (Juli 2025). In Stuttgart und im VVO rund um Dresden, also auch in Strassenbahn und Bus der DVB, fährt er zusammengeklappt kostenlos mit.',
           ],
         },
@@ -209,6 +209,7 @@ const guide: Guide = {
     { title: 'hvv switch: Fragen und Antworten zu E-Scootern', url: 'https://www.hvv-switch.de/de/faq/kategorie/e-scooter/' },
     { title: 'MDV: Anlage 2 zu den Beförderungsbedingungen, gültig ab 1. August 2026 (PDF)', url: 'https://www.mdv.de/media/file/f68fe637' },
     { title: 'VVO: Das Kleingedruckte, Beförderungsbedingungen und Tarifbestimmungen (Stand 1. August 2026, PDF)', url: 'https://www.vvo-online.de/doc/VVO-Broschuere-VVO-Kleingedrucktes.pdf' },
+    { title: 'Beförderungsbedingungen Nahverkehr NRW, gültig ab 1. Januar 2026 (PDF)', url: 'https://www.westfalentarif.de/fileadmin/documents/Tarifbestimmungen_und_Bef%C3%B6rderungsbedingungen_Preise/BB_Nahverkehr_NRW_zum_01.01.2026.pdf' },
   ],
 };
 
