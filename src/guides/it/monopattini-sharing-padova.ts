@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Monopattini sharing a Padova: operatore, prezzi, parcheggio, tram e multe nel 2026',
   lede: 'I monopattini sharing a Padova, a ottobre 2026, sono quelli di Dott: il nuovo servizio del Comune ammette un solo operatore per bici e monopattini, a Padova e in 11 Comuni vicini, e lo gestisce Dott. Servono 18 anni e un documento d’identità, e il casco lo porti tu. Il prezzo, sblocco più minuti, lo vedi nell’app; per i residenti c’è un pass mensile. Si guida su strada e sulle piste ciclabili, mai sul marciapiede, e in centro storico la corsa si chiude solo nelle aree di sosta previste dal Comune.',
   published: '2026-10-25',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'it:Padova',
   sections: [
     {
@@ -135,7 +135,7 @@ const guide: Guide = {
       blocks: [
         'Il servizio di Dott copre anche Albignasego, Cadoneghe, Casalserugo, Legnaro, Limena, Mestrino, Ponte San Nicolò, Rubano, Selvazzano Dentro, Vigonza e Vigodarzere. La delibera del Comune vi distribuisce 1.165 mezzi in più, ma monopattini ne assegna solo a quattro: Legnaro 100, Rubano 50, Selvazzano Dentro 30 e Mestrino 20. Negli altri la delibera prevede solo bici ed e-bike.',
         'Dal 30 luglio 2026, annunciava il Comune di Rubano, Dott c’è anche a Rubano, Selvazzano Dentro, Albignasego, Mestrino e Casalserugo. A Rubano tutto il territorio è una «no parking zone»: lasci il mezzo solo nei punti di sosta, 49 a luglio 2026, e fuori da quelli continui a pagare.',
-        'Più lontano, la mappa mostra i Dott anche a [Verona](map:it:Verona) e a [Ferrara](map:it:Ferrara); per Milano c’è la guida ai [monopattini sharing a Milano](guide:milan).',
+        'Più lontano, la mappa mostra i Dott a [Ferrara](map:it:Ferrara) e i Dott e i Lime a [Verona](map:it:Verona); per Milano c’è la guida ai [monopattini sharing a Milano](guide:milan).',
       ],
     },
     {
