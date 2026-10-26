@@ -450,7 +450,9 @@ polls after, to 22:14 EDT, found nothing more outside them.
 - Veo Syracuse: DeWitt (2), East Syracuse and Lyncourt.
 - Veo Berkeley: Albany (2) and Oakland (1).
 - Veo Columbus: Upper Arlington, Dublin, Bexley and Marble Cliff, 1 or 2
-  each. Veo Newark: East Orange (2), Silver Lake and Ampere North. Veo Salt
+  each. Veo Newark: East Orange (2), at times Silver Lake and Ampere North;
+  on 26 October 2026 (01:55 UTC, three polls) also Orange (3, at one corner,
+  40.770° N 74.228° W), a township, not a Census place. Veo Salt
   Lake City: West Valley City (1 or 2). Veo College Park: Adelphi (1). Veo
   West Lafayette: Lafayette (1 or 2).
 - Spin Davis and Veo Charlottesville: most scooters stand on the campuses of
@@ -477,8 +479,8 @@ evening's polls:
 - Veo New Haven: 1 to 3 at one spot in Woodbridge, 41.339° N 72.982° W, 2 km
   west of the box.
 - One scooter in every poll: Veo Syracuse's in Salina, north of the city; Veo
-  Newark's in Englewood, 25 km north-east; Veo Columbus's in the north of
-  Toledo, 200 km away.
+  Newark's in Englewood, 25 km north-east (gone by 26 October 2026); Veo
+  Columbus's in the north of Toledo, 200 km away.
 - Veo College Park's feed listed one scooter at 33.993° N 118.164° W, in Bell,
   California, in 26 polls, and Veo Sarasota's one at the same spot in 2. Veo
   Manhattan (KS) listed one in Wichita in 2 polls.
