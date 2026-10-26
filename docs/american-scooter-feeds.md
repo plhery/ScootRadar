@@ -809,10 +809,9 @@ Rules that read like bans but are not, or that no primary source confirms:
   from being rented from midnight to 03:00, and the map held that ban until
   26 October 2026. The city's
   [shared mobility page](https://clevelandohio.gov/transportation-mobility/shared-mobility)
-  still gives the old hours; Cuyahoga County's
-  [program page](https://www.cuyahogacounty.gov/sustainability/initiatives/bike-and-scooter-share)
-  gives 24 hours, except in the Flats East Bank from 23:00 to 03:00: a
-  district rule.
+  still gave the old hours, 3 a.m. to midnight, on 26 October 2026.
+  Cuyahoga County's program page, cited here before, refused that day, so
+  its Flats East Bank hours are left out.
 - **St. Louis:** the city's release of 4 June 2021 set a curfew from 21:00 to
   08:00 in Downtown and Downtown West, "indefinitely". The 2025 permit keeps
   the city's power to draw curfew areas but holds no map of one, and nothing
