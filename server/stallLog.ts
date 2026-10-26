@@ -4,7 +4,8 @@ import { PerformanceObserver, performance } from 'node:perf_hooks';
  * Logs the event loop held for `thresholdMs` or more, with the collections that ended around it, and
  * any garbage collection half that long. The cache held it for about 3.5 seconds every 20 minutes, at
  * minute 11 of the idle cycle, from 22 October 2026 on, and Prometheus could not say which feed or
- * whether the collector did it.
+ * whether the collector did it. Each collection ended around it comes with when, in milliseconds from
+ * the moment the loop was let go: one whose own work held it ends just after.
  */
 export function watchStalls(log: (line: string) => void, thresholdMs = 1_000, checkMs = 250) {
   const ended: { id: string; at: number }[] = [];
@@ -18,7 +19,8 @@ export function watchStalls(log: (line: string) => void, thresholdMs = 1_000, ch
     const from = now - heldMs - 2_000;
     const until = now + 2_000;
     setTimeout(() => log(JSON.stringify({ event: 'event_loop_held', ms: Math.round(heldMs),
-      ended: ended.filter(entry => entry.at >= from && entry.at <= until).map(entry => entry.id) })), 2_000).unref();
+      ended: ended.filter(entry => entry.at >= from && entry.at <= until)
+        .map(entry => ({ id: entry.id, ms: Math.round(entry.at - now) })) })), 2_000).unref();
   }, checkMs);
   timer.unref();
   const collections = new PerformanceObserver(list => {

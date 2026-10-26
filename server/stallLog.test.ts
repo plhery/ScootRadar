@@ -19,5 +19,8 @@ it('logs the event loop held, with the collections that ended around it', async 
   const held = lines.map(line => JSON.parse(line)).filter(line => line.event === 'event_loop_held');
   expect(held).toHaveLength(1);
   expect(held[0].ms).toBeGreaterThanOrEqual(150);
-  expect(held[0].ended).toEqual(['norway:voi_no_oslo', 'france:dott_fr_bordeaux']);
+  expect(held[0].ended.map((entry: { id: string }) => entry.id)).toEqual(['norway:voi_no_oslo', 'france:dott_fr_bordeaux']);
+  // Oslo's ended before the loop was held, Bordeaux's after it was let go.
+  expect(held[0].ended[0].ms).toBeLessThan(-150);
+  expect(held[0].ended[1].ms).toBeGreaterThan(0);
 });
