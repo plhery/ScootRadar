@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter-Regeln in Deutschland: was heute gilt und was sich am 1. März 2027 ändert',
   lede: 'Die E-Scooter-Regeln in Deutschland ändern sich in zwei Schritten: Seit dem 1. April 2026 gelten neue Bauvorschriften für neue Fahrzeuge, ab dem 1. März 2027 neue Verkehrsregeln und Bussgelder. Heute gilt: Ab 14 Jahren darfst du ohne Führerschein fahren, auf dem Radweg statt auf dem Gehweg, nur allein und mit denselben Promillegrenzen wie im Auto. Leih-Scooter bekommst du bei Lime, Voi, Bolt, Dott und Zeus erst ab 18.',
   published: '2026-10-12',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   sections: [
     {
       heading: 'E-Scooter-Regeln heute und ab 1. März 2027',
@@ -163,7 +163,7 @@ const guide: Guide = {
           list: [
             '**Deutsche Bahn, Fernverkehr:** Zusammengeklappt und sicher verstaut fährt er kostenlos als Handgepäck mit. Den Akku darfst du nicht herausnehmen oder laden. Lässt er sich nicht klappen, gilt er als Traglast und darf nur mit, wenn du ihn sicher unterbringst, etwa im Gepäckregal.',
             '**S-Bahn und Regionalzug:** Kein bundesweites Verbot. In den Verbünden von Berlin, Hamburg, München, Stuttgart, Leipzig, Hannover und Rhein-Ruhr (VRR) darf er zusammengeklappt mit, in München mit höchstens 90 × 80 cm und 25 kg; im VRR darf ihn jedes Verkehrsunternehmen ausschliessen. Im VGN rund um Nürnberg ist er in S-Bahn und Regionalzug erlaubt.',
-            '**U-Bahn, Tram und Stadtbus:** Viele Betriebe haben E-Tretroller seit 2023 verbannt, meist wegen der Brandgefahr der Akkus, oft auch zusammengeklappt: die BVG in Berlin, die Hamburger U-Bahn, die MVG in München, die KVB in Köln, die VGF in Frankfurt, die Rheinbahn in Düsseldorf, die SWB in Bonn, die ÜSTRA in Hannover, die KVG in Kiel samt den Fördefähren, die VAG in Nürnberg (seit Mai 2024 im ganzen VGN), Aktiv Bus in Flensburg, moBiel in Bielefeld und PaderSprinter in Paderborn (alle 2024) sowie die swa in Augsburg samt den AVV-Regionalbussen (seit Januar 2025). In Stuttgart fährt er zusammengeklappt kostenlos mit.',
+            '**U-Bahn, Tram und Stadtbus:** Viele Betriebe haben E-Tretroller seit 2023 verbannt, meist wegen der Brandgefahr der Akkus, oft auch zusammengeklappt: die BVG in Berlin, die Hamburger U-Bahn, die MVG in München, die KVB in Köln, die VGF in Frankfurt, die Rheinbahn in Düsseldorf, die SWB in Bonn, die ÜSTRA in Hannover, die KVG in Kiel samt den Fördefähren, die VAG in Nürnberg (seit Mai 2024 im ganzen VGN), Aktiv Bus in Flensburg, moBiel in Bielefeld, PaderSprinter in Paderborn und laut ADAC die BOGESTRA in Bochum (alle 2024) sowie die swa in Augsburg samt den AVV-Regionalbussen (seit Januar 2025); bei der HEAG mobilo in Darmstadt ist er laut Stadt derzeit nicht gestattet (Juli 2025). In Stuttgart fährt er zusammengeklappt kostenlos mit.',
           ],
         },
         'Die Akkunorm, die die Verkehrsbetriebe gefordert hatten, ist für neue E-Scooter ab 2027 Pflicht. Die genannten Verbote gelten trotzdem weiter, Stand Oktober 2026.',
@@ -198,6 +198,8 @@ const guide: Guide = {
     { title: 'Strassenverkehrsgesetz § 24a: 0,5 Promille und Cannabis', url: 'https://www.gesetze-im-internet.de/stvg/__24a.html' },
     { title: 'Strassenverkehrsgesetz § 8: Halterhaftung seit 1. Oktober 2026', url: 'https://www.gesetze-im-internet.de/stvg/__8.html' },
     { title: 'Deutsche Bahn: Mitnahme von E-Tretrollern und E-Scootern', url: 'https://www.bahn.de/faq/15was-muss-ich-bei-der-mitnahme-meines-e-tretrollers-oder-e-scooter-beachten' },
+    { title: 'ADAC: E-Scooter im Nahverkehr, wo die Mitnahme verboten ist (17. November 2025)', url: 'https://www.adac.de/news/verkehr-e-scooter-mitnahmeverbot-nahverkehr/' },
+    { title: 'Magistrat Darmstadt: Antwort zu Scootern in Fussgängerzonen (1. Juli 2025)', url: 'https://darmstadt.gremien.info/petition?id=2114' },
     { title: 'MVV: Scootersharing in München', url: 'https://www.mvv-muenchen.de/vernetzte-mobilitaet/shared-mobility/scootersharing/' },
     { title: 'Statistisches Bundesamt: Unfälle mit E-Scootern 2025', url: 'https://www.destatis.de/DE/Presse/Pressemitteilungen/2026/07/PD26_N049_462.html' },
     { title: 'Bolt: Nutzungsbedingungen für E-Fahrzeuge in Deutschland (gültig ab 1. Dezember 2026)', url: 'https://bolt.eu/de-de/legal/micromobility/tnc-e-vehicles/' },
