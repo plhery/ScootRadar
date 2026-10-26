@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Wiesbaden: Anbieter, Preise, Parkzonen und Verbote',
   lede: 'E-Scooter in Wiesbaden leihst du bei Bolt, Dott oder Voi, ab 18 und ohne Führerschein. Einen Wiesbadener Tarif veröffentlicht keiner der drei: Bolt wirbt deutschlandweit mit «ab 0,15 € pro Minute» plus Freischaltgebühr, bei Dott und Voi zeigt die App den Preis (Stand 24. Oktober 2026). Du fährst auf Radweg oder Fahrbahn, nicht durch die Fussgängerzone und nicht durch den Kurpark. Am Hauptbahnhof und im Historischen Fünfeck beendest du die Fahrt nur auf einer markierten Abstellfläche, sonst meist am Rand des Gehwegs.',
   published: '2026-10-24',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'de:Wiesbaden',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'In Wiesbaden verleihen laut Stadt «aktuell» drei Anbieter E-Scooter: **Bolt**, **Dott** und **Voi** (undatierte Seite, gelesen am 24. Oktober 2026). Lime steht nicht darauf. Gemietet wird in der App des Anbieters, laut deren Bedingungen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Jeder Anbieter braucht eine Sondernutzungserlaubnis der Stadt, die er laut Stadt «quartalsweise» beantragt und die an Auflagen gebunden ist. Dafür zahlt er laut Gebührenverzeichnis der Sondernutzungssatzung (Fassung seit 1. Januar 2024) für die «gewerbliche Nutzung von E-Tretrollern» 7,50 € «pro Quartal und Roller». Eine feste Obergrenze für die Zahl der Scooter nennt die Stadt nicht.',
-        'Die [Karte von Wiesbaden](map:de:Wiesbaden) zeigt Dott, Voi und seit dem 25. Oktober Bolt, mit Standort und Akkustand: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 1650 Scooter, gut 1200 von Dott und rund 400 von Voi, am Sonntag kurz vor 14 Uhr rund 400 von Bolt. Das sind Momentaufnahmen, keine Flottengrössen. Die Zahl umfasst Wiesbaden samt Kastel, Kostheim und Amöneburg und kaum Scooter aus Mainz, mit einer Ausnahme: Die Voi-Scooter in Kastel und Kostheim zählt die Karte bei Mainz mit, am Abend rund 90. Preise, Zonen und Abstellflächen zeigt nur die App des Anbieters.',
+        'Die [Karte von Wiesbaden](map:de:Wiesbaden) zeigt Dott, Voi und seit dem 25. Oktober Bolt, mit Standort und Akkustand: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 1650 Scooter, gut 1200 von Dott und rund 400 von Voi, am Sonntag kurz vor 14 Uhr rund 400 von Bolt. Das sind Momentaufnahmen, keine Flottengrössen. Die Zahl umfasst Wiesbaden samt Kastel, Kostheim und Amöneburg und kaum Scooter aus Mainz, mit einer Ausnahme: Die Voi- und Bolt-Scooter in Kastel und Kostheim zählt die Karte bei Mainz mit, in der Nacht zum 26. Oktober rund 130. Preise, Zonen und Abstellflächen zeigt nur die App des Anbieters.',
         'Nicht verwechseln: Die «Wies-e»-Roller von Süwag2GO sind Elektro-Mopeds bis 45 km/h, für die du einen Führerschein der Klasse B oder AM brauchst.',
       ],
     },
@@ -101,8 +101,8 @@ const guide: Guide = {
       heading: 'Über den Rhein: Kastel, Kostheim und Mainz',
       blocks: [
         'Mainz-Kastel, Mainz-Kostheim und Mainz-Amöneburg gehören trotz ihres Namens zu Wiesbaden; dort gelten die Wiesbadener Regeln. Jenseits der Theodor-Heuss-Brücke beginnt Mainz, und dort gelten andere.',
-        'Mainz begrenzt Leih-Scooter laut seiner Richtlinie vom 2. Juli 2025 auf höchstens 1200; seit dem 1. März 2026 verleihen dort drei Anbieter, mit Genehmigungen für 24 Monate. In der Innenstadt, also Alt- und Neustadt, dürfen Leih-Scooter nur auf 25 Abstellflächen stehen, zusammen höchstens 300; in Teilen der Altstadt ist das Abstellen ganz verboten. Welche Anbieter fahren, nennt die Stadt Mainz nicht; Bolt und Dott führen Mainz auf ihren Websites.',
-        'Ob ein in Wiesbaden geliehener Scooter nach Mainz darf und die Fahrt dort enden kann, sagt kein Anbieter offen; Bolt und Dott verbieten in ihren Bedingungen, das Gebiet zu verlassen, das die App zeigt. Die [Karte von Mainz](map:de:Mainz) zeigt Voi, am 24. Oktober kurz vor 16 Uhr rund 470 Scooter, die Voi-Scooter in Kastel und Kostheim eingeschlossen, und seit dem 25. Oktober Lime (am Sonntagmittag rund 290 Scooter) und Bolt.',
+        'Mainz begrenzt Leih-Scooter laut seiner Richtlinie vom 2. Juli 2025 auf höchstens 1200; seit dem 1. März 2026 verleihen dort drei Anbieter, mit Genehmigungen für 24 Monate. In der Innenstadt, also Alt- und Neustadt, dürfen Leih-Scooter nur auf 25 Abstellflächen stehen, zusammen höchstens 300; in Teilen der Altstadt ist das Abstellen ganz verboten. Eine Genehmigung haben laut Stadt Mainz Bolt, Lime und Voi (20. März 2026); Dott führt Mainz auf seiner Website, hat aber keine.',
+        'Ob ein in Wiesbaden geliehener Scooter nach Mainz darf und die Fahrt dort enden kann, sagt kein Anbieter offen; Bolt und Dott verbieten in ihren Bedingungen, das Gebiet zu verlassen, das die App zeigt. Die [Karte von Mainz](map:de:Mainz) zeigt Voi, am 24. Oktober kurz vor 16 Uhr rund 470 Scooter, die Voi-Scooter in Kastel und Kostheim eingeschlossen, und seit dem 25. Oktober Lime (am Sonntagmittag rund 290 Scooter) und Bolt, dessen Scooter in Kastel und Kostheim sie ebenfalls bei Mainz zählt.',
       ],
     },
     {
