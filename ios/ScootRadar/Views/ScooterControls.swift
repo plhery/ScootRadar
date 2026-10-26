@@ -2840,15 +2840,23 @@ struct FloatingMapControls: View {
 /// (ZoneLegend.tsx). Taps go through it to the map.
 struct ZoneLegend: View {
     let state: ScooterZoneState
-    /// The zones drawn.
+    /// The operators' zones drawn.
     let count: Int
+    /// The streets over the map where a city forbids riding, each a line of
+    /// its own whether or not the zones are on: its hours, and who forbids it,
+    /// linked to where they say so (as on the web, ZoneLegend.tsx).
+    var rules: [CityRuleZone.Shown] = []
 
     var body: some View {
-        Group {
+        let lines = ruleLines
+        let note = note(rules: !lines.isEmpty)
+        VStack(alignment: .leading, spacing: 4) {
             if let note {
                 Text(note)
                     .foregroundStyle(ScooterPalette.dockSecondary)
-            } else {
+                    .accessibilityLabel(String(localized: "Zones"))
+                    .accessibilityValue(note)
+            } else if showsKinds {
                 FlowLayout(spacing: 12, lineSpacing: 4) {
                     ForEach(ScooterZoneKind.allCases, id: \.self) { kind in
                         HStack(spacing: 6) {
@@ -2859,25 +2867,67 @@ struct ZoneLegend: View {
                     }
                 }
                 .foregroundStyle(ScooterPalette.dockText)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(String(localized: "Zones"))
+                .accessibilityValue(ScooterZoneKind.allCases.map(\.label).joined(separator: ", "))
+            }
+            ForEach(lines, id: \.key) { line in
+                HStack(spacing: 6) {
+                    ZoneSwatch(kind: .noRide)
+                        .opacity(line.inForce ? 1 : CityRuleZone.dimmed)
+                    Text(line.text)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .foregroundStyle(ScooterPalette.dockText)
+                .tint(ScooterPalette.dockText)
+                .accessibilityElement(children: .combine)
             }
         }
         .font(.caption.weight(.medium))
         .padding(.horizontal, 12)
         .padding(.vertical, 7)
         .chromeGlass(in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .allowsHitTesting(false)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(String(localized: "Zones"))
-        .accessibilityValue(note ?? ScooterZoneKind.allCases.map(\.label).joined(separator: ", "))
+        // Only a city's line has anything to tap: who forbids it.
+        .allowsHitTesting(!lines.isEmpty)
     }
 
-    private var note: String? {
+    private var showsKinds: Bool {
+        state != .off && !(state == .shown && count == 0)
+    }
+
+    private func note(rules: Bool) -> String? {
         switch state {
         case .zoomIn: String(localized: "Zoom in to see the zones")
         case .failed: String(localized: "Zones unavailable right now")
-        case .shown where count == 0: String(localized: "No zones published here")
+        case .shown where count == 0 && !rules: String(localized: "No zones published here")
         default: nil
         }
+    }
+
+    /// One line for each authority, hours and whether they hold now.
+    private var ruleLines: [(key: String, inForce: Bool, text: AttributedString)] {
+        var lines: [(key: String, inForce: Bool, text: AttributedString)] = []
+        for shown in rules {
+            let hours = shown.rule.hours.map { "\(Self.wallTime($0.fromMinute))–\(Self.wallTime($0.untilMinute))" }
+                .joined(separator: ", ")
+            let key = "\(shown.rule.authority) \(hours) \(shown.inForce)"
+            guard !lines.contains(where: { $0.key == key }) else { continue }
+            var text = AttributedString("\(ScooterZoneKind.noRide.label) \(hours) · ")
+            var authority = AttributedString(shown.rule.authority)
+            authority.link = shown.rule.source
+            authority.underlineStyle = .single
+            text += authority
+            if !shown.inForce { text += AttributedString(" (\(String(localized: "not now")))") }
+            lines.append((key, shown.inForce, text))
+        }
+        return lines
+    }
+
+    /// "23:00" or "11:00 PM", a time on the place's clock in the user's format (formatWallTime on the web).
+    private static func wallTime(_ minute: Int) -> String {
+        Date(timeIntervalSince1970: TimeInterval(minute * 60)).formatted(
+            Date.FormatStyle(date: .omitted, time: .shortened, locale: ScooterLanguage.current.locale, timeZone: .gmt)
+        )
     }
 }
 

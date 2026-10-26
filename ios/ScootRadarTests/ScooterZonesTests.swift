@@ -61,7 +61,7 @@ final class ScooterZonesTests: XCTestCase {
     func testEveryLanguageNamesTheZones() throws {
         let keys = [
             "Ride and parking zones", "Zones", "No riding", "No parking", "Slow",
-            "Zoom in to see the zones", "No zones published here", "Zones unavailable right now"
+            "Zoom in to see the zones", "No zones published here", "Zones unavailable right now", "not now"
         ]
         for language in ["de", "fr", "it", "nl", "nb", "pt", "es", "is"] {
             let strings = try XCTUnwrap(Bundle.main.path(forResource: language, ofType: "lproj").flatMap(Bundle.init(path:)))
@@ -259,8 +259,35 @@ final class ScooterZonesModelTests: XCTestCase {
         XCTAssertTrue(model.mapZones.isEmpty)
     }
 
-    private func makeModel(api: any ScooterAPIClient, defaults: UserDefaults? = nil) -> ScooterMapModel {
-        ScooterMapModel(api: api, locationManager: CLLocationManager(), defaults: defaults ?? isolatedDefaults())
+    func testACitysRulesAreDrawnFromZoom14WithTheZonesOffAndDimmerOutsideTheirHours() {
+        let hongdae = MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: 37.5545, longitude: 126.9245),
+            span: MKCoordinateSpan(latitudeDelta: 0.008, longitudeDelta: 0.008)
+        )
+        // Noon in Seoul, then 23:00.
+        var now = Date(timeIntervalSince1970: 1_792_983_600)
+        let model = makeModel(api: ZoneStubAPI(), now: { now })
+        model.updateViewport(hongdae, zoom: 16)
+
+        XCTAssertEqual(model.zoneState, .off)
+        XCTAssertEqual(model.mapRuleZones.map(\.rule.id), ["seoul-hongdae-red-road"])
+        XCTAssertEqual(model.mapZones.map(\.id), ["rule:seoul-hongdae-red-road"])
+        XCTAssertEqual(model.mapZones.map(\.strength), [1])
+        let revision = model.mapZonesRevision
+
+        now = now.addingTimeInterval(11 * 3600)
+        model.autoRefreshIfNeeded()
+        XCTAssertEqual(model.mapRuleZones.map(\.inForce), [false])
+        XCTAssertEqual(model.mapZones.map(\.strength), [CityRuleZone.dimmed])
+        XCTAssertGreaterThan(model.mapZonesRevision, revision)
+
+        model.updateViewport(MKCoordinateRegion(center: hongdae.center, span: MKCoordinateSpan(latitudeDelta: 0.08, longitudeDelta: 0.08)), zoom: 13)
+        XCTAssertTrue(model.mapRuleZones.isEmpty)
+        XCTAssertTrue(model.mapZones.isEmpty)
+    }
+
+    private func makeModel(api: any ScooterAPIClient, defaults: UserDefaults? = nil, now: @escaping () -> Date = Date.init) -> ScooterMapModel {
+        ScooterMapModel(api: api, locationManager: CLLocationManager(), defaults: defaults ?? isolatedDefaults(), now: now)
     }
 
     private func isolatedDefaults() -> UserDefaults {
@@ -320,5 +347,83 @@ private actor ZoneNetworkSession: ScooterNetworkSession {
         lastRequest = request
         let response = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: nil)!
         return (data, response)
+    }
+}
+
+final class CityRuleZoneTests: XCTestCase {
+    // Seoul is UTC+9 all year: noon there on 26 October 2026.
+    private let seoulNoon = Date(timeIntervalSince1970: 1_792_983_600)
+    private let hongdae = GeoBounds(south: 37.55, west: 126.918, north: 37.558, east: 126.93)
+    private let daechi = GeoBounds(south: 37.493, west: 127.05, north: 37.5, east: 127.058)
+
+    func testARuleHoldsWithinItsHoursByThePlacesClockFromItsFirstDay() throws {
+        let rule = try XCTUnwrap(CityRuleZone.all.first { $0.id == "seoul-daechi-academy-street" })
+        XCTAssertTrue(rule.inForce(at: seoulNoon))
+        XCTAssertTrue(rule.inForce(at: seoulNoon.addingTimeInterval(11 * 3600 - 60)))
+        XCTAssertFalse(rule.inForce(at: seoulNoon.addingTimeInterval(11 * 3600)))
+        XCTAssertFalse(rule.inForce(at: seoulNoon.addingTimeInterval(-60)))
+        // 29 September, 23:59 in Seoul: the day before it started.
+        XCTAssertFalse(rule.inForce(at: Date(timeIntervalSince1970: 1_790_693_940)))
+        XCTAssertTrue(rule.inForce(at: Date(timeIntervalSince1970: 1_790_694_000 + 12 * 3600)))
+    }
+
+    func testHoursPastMidnightHoldUntilTheyEnd() {
+        let night = CityRuleZone.Hours(fromMinute: 22 * 60, untilMinute: 6 * 60)
+        XCTAssertTrue(night.holds(atMinute: 23 * 60))
+        XCTAssertTrue(night.holds(atMinute: 5 * 60))
+        XCTAssertFalse(night.holds(atMinute: 12 * 60))
+    }
+
+    func testTheRulesOverTheViewAreShownFromZoom14() {
+        let shown = CityRuleZone.shown(over: hongdae, zoom: 15, at: seoulNoon)
+        XCTAssertEqual(shown.map(\.rule.id), ["seoul-hongdae-red-road"])
+        XCTAssertEqual(shown.map(\.inForce), [true])
+        XCTAssertTrue(CityRuleZone.shown(over: hongdae, zoom: 13, at: seoulNoon).isEmpty)
+        XCTAssertEqual(CityRuleZone.shown(over: daechi, zoom: 16, at: seoulNoon).map(\.rule.authority), ["Gangnam-gu"])
+        for rule in CityRuleZone.all {
+            XCTAssertEqual(rule.source.scheme, "https")
+            XCTAssertFalse(rule.band.isEmpty)
+        }
+    }
+
+    func testAStreetsBandReachesHalfItsWidthEitherSideOfItsLine() {
+        // About 200 m east, then 100 m north.
+        let line = [
+            GeoPoint(latitude: 37.5, longitude: 127), GeoPoint(latitude: 37.5, longitude: 127.00226),
+            GeoPoint(latitude: 37.5009, longitude: 127.00226)
+        ]
+        let band = CityRuleZone.band(of: [line], widthMeters: 14)
+        let covers = { (latitude: Double, longitude: Double) in
+            band.contains { Self.ring($0[0], contains: GeoPoint(latitude: latitude, longitude: longitude)) }
+        }
+        XCTAssertTrue(covers(37.5 + 5 / 110_540, 127.001))
+        XCTAssertFalse(covers(37.5 + 9 / 110_540, 127.001))
+        XCTAssertTrue(covers(37.50045, 127.00226))
+    }
+
+    func testARuleOutsideItsHoursIsDrawnApartAndDimmer() throws {
+        let rule = try XCTUnwrap(CityRuleZone.all.first { $0.id == "seoul-hongdae-red-road" })
+        let ring = rule.band[0][0]
+        let overlay = ScooterZoneOverlay(zones: [
+            CityRuleZone.Shown(rule: rule, inForce: false).mapZone,
+            ScooterZone(id: "lime:0", provider: "lime", kind: .noRide, maxSpeedKph: nil, polygons: [[ring]])
+        ], isDark: false)
+        XCTAssertEqual(Set(overlay.shapes.map(\.strength)), [CityRuleZone.dimmed, 1])
+        XCTAssertTrue(overlay.shapes.allSatisfy { $0.kind == .noRide })
+    }
+
+    /// Ray casting.
+    private static func ring(_ ring: [GeoPoint], contains point: GeoPoint) -> Bool {
+        var inside = false
+        var previous = ring[ring.count - 1]
+        for corner in ring {
+            if (corner.latitude > point.latitude) != (previous.latitude > point.latitude),
+               point.longitude < (previous.longitude - corner.longitude) * (point.latitude - corner.latitude)
+                / (previous.latitude - corner.latitude) + corner.longitude {
+                inside.toggle()
+            }
+            previous = corner
+        }
+        return inside
     }
 }

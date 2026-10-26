@@ -218,9 +218,13 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     }
     /// What the zones' legend says.
     private(set) var zoneState = ScooterZoneState.off
-    /// The zones drawn on the map: those of the providers shown, from zoom 14.
+    /// The zones drawn on the map: those of the providers shown, from zoom 14,
+    /// and the streets where a city forbids riding, which show whether or not
+    /// the zones are on.
     private(set) var mapZones: [ScooterZone] = []
     private(set) var mapZonesRevision = 0
+    /// The streets where a city forbids riding over the map, for the legend.
+    private(set) var mapRuleZones: [CityRuleZone.Shown] = []
 
     var appearance: ScooterAppearance {
         didSet {
@@ -1006,6 +1010,8 @@ final class ScooterMapModel: NSObject, @MainActor CLLocationManagerDelegate {
     /// the scooters are fetched again once they are due or have expired.
     func autoRefreshIfNeeded() {
         expireParkingIfNeeded()
+        // A city's rules start and end with their hours.
+        rebuildMapZones()
         refreshIfDue(respectingAttemptGap: true)
     }
 
@@ -2312,13 +2318,16 @@ extension ScooterMapModel {
     }
 
     /// Like the scooters: only the zones of the providers switched on, and
-    /// none further out than zoom 14.
+    /// none further out than zoom 14; and the city's rules over the map.
     fileprivate func rebuildMapZones() {
         let shown = zoneState == .off || zoneState == .zoomIn ? [] : (zoneAnswer?.zones ?? []).filter { zone in
             ScooterProvider(rawValue: zone.provider).map { enabledProviders.contains($0) } ?? false
         }
-        guard shown != mapZones else { return }
-        mapZones = shown
+        let rules = CityRuleZone.shown(over: viewport, zoom: viewportZoom, at: clock())
+        if rules != mapRuleZones { mapRuleZones = rules }
+        let drawn = rules.map(\.mapZone) + shown
+        guard drawn != mapZones else { return }
+        mapZones = drawn
         mapZonesRevision += 1
     }
 }

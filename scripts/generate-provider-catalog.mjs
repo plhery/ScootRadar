@@ -29,6 +29,7 @@ const { landingFirst, countries } = readJson('data/countries.json');
 // Every catalog's systems, in the order of data/countries.json, each with its country.
 const regionalSystems = catalogSystems(countries, readCatalog);
 const curfews = readJson('data/rental-curfews.json').curfews;
+const ruleZones = readJson('data/rule-zones.json').zones;
 
 function validateCatalog() {
   if (!Array.isArray(providers) || providers.length === 0) {
@@ -410,6 +411,52 @@ ${areas.join('\n')}
 `;
 }
 
+function swiftRuleZones() {
+  const time = value => {
+    if (!/^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(value)) throw new Error(`Invalid rule zone time: ${value}`);
+    const [hours, minutes] = value.split(':').map(Number);
+    return hours * 60 + minutes;
+  };
+  // Each street's lines go in a property of their own, as bare numbers, as the curfews' rings do.
+  const linesName = id => `${id.replace(/-([a-z0-9])/g, (_, letter) => letter.toUpperCase())}Lines`;
+  const ids = new Set();
+  const lines = [];
+  const entries = ruleZones.map(zone => {
+    if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(zone.id) || ids.has(zone.id)) throw new Error(`Invalid rule zone id: ${zone.id}`);
+    ids.add(zone.id);
+    if (zone.rule !== 'noRide') throw new Error(`Unknown rule: ${zone.rule} (${zone.id})`);
+    if (!/^\d{4}-\d\d-\d\d$/.test(zone.from)) throw new Error(`Invalid rule zone start: ${zone.id}`);
+    if (!/^https:\/\//.test(zone.source?.url) || !zone.authority) throw new Error(`Rule zone without a source: ${zone.id}`);
+    if (!zone.lines.length || zone.lines.some(line => line.length < 2 ||
+      !line.every(point => point.length === 2 && point.every(Number.isFinite)))) {
+      throw new Error(`Invalid rule zone line: ${zone.id}`);
+    }
+    const hours = (zone.hours ?? []).map(({ from, until }) => `.init(fromMinute: ${time(from)}, untilMinute: ${time(until)})`);
+    lines.push(`    private static let ${linesName(zone.id)}: [[Double]] = [${zone.lines.map(line => `[${line.flat().join(', ')}]`).join(', ')}]`);
+    return `        CityRuleZone(\n            id: ${JSON.stringify(zone.id)}, authority: ${JSON.stringify(zone.authority)},\n` +
+      `            timeZone: ${JSON.stringify(zone.timeZone)}, firstDay: ${JSON.stringify(zone.from)}, hours: [${hours.join(', ')}],\n` +
+      `            source: URL(string: ${JSON.stringify(zone.source.url)})!,\n            lines: points(${linesName(zone.id)})\n        ),`;
+  }).join('\n');
+
+  return `
+/// Streets where a city forbids riding, as src/lib/ruleZones.ts reads data/rule-zones.json.
+extension CityRuleZone {
+    static let all: [CityRuleZone] = [
+${entries}
+    ]
+
+    /// Each line as latitude, longitude, latitude, longitude…
+    private static func points(_ coordinates: [[Double]]) -> [[GeoPoint]] {
+        coordinates.map { line in
+            stride(from: 0, to: line.count, by: 2).map { GeoPoint(latitude: line[$0], longitude: line[$0 + 1]) }
+        }
+    }
+
+${lines.join('\n')}
+}
+`;
+}
+
 validateCatalog();
 validateCountries({ landingFirst, countries }, readCatalog, scooterCities(swissAreas, regionalSystems, countries));
 // Read by src/lib/townOutlines.ts as it is; the apps have no copy.
@@ -421,4 +468,4 @@ if (binbinProblem) throw new Error(binbinProblem);
 writeOrCheck(typescriptPath, typescriptCatalog());
 writeOrCheck(countriesPath, typescriptCountries({ landingFirst, countries }));
 writeOrCheck(catalogsPath, typescriptCatalogs(countries));
-writeOrCheck(swiftPath, swiftCatalog() + swiftCoverage() + swiftCities() + swiftCurfews() + swiftCountries(countries));
+writeOrCheck(swiftPath, swiftCatalog() + swiftCoverage() + swiftCities() + swiftCurfews() + swiftRuleZones() + swiftCountries(countries));

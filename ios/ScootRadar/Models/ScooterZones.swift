@@ -30,6 +30,8 @@ struct ScooterZone: Equatable, Sendable, Identifiable {
     let maxSpeedKph: Double?
     /// Polygons, each its outer ring and then its holes.
     let polygons: [[[GeoPoint]]]
+    /// How strongly it is drawn: a city's rule outside its hours is dimmer (CityRuleZone).
+    var strength: Double = 1
 }
 
 struct ScooterZoneResponse: Equatable, Sendable {
@@ -199,6 +201,129 @@ enum ScooterZoneLook {
         case (.noRide, true): UIColor(red: 1, green: 0.412, blue: 0.38, alpha: 1)
         case (.noParking, true): UIColor(red: 1, green: 0.702, blue: 0.251, alpha: 1)
         case (.slow, true): UIColor(red: 0.486, green: 0.612, blue: 1, alpha: 1)
+        }
+    }
+}
+
+/// A street where a city or its police forbids riding, from data/rule-zones.json, as on the
+/// web (src/lib/ruleZones.ts): Seoul's kickboard-free streets so far. Unlike the operators'
+/// zones they are the law, so the map draws them from zoom 14 whether or not the zones are on,
+/// as no riding's zones are and dimmer outside their hours, and the legend gives their hours
+/// and who forbids it, linked to where they say so. CityRuleZone.all is generated.
+struct CityRuleZone: Equatable, Sendable, Identifiable {
+    struct Hours: Equatable, Sendable {
+        /// Local minutes since midnight; hours past midnight start after they end.
+        let fromMinute: Int
+        let untilMinute: Int
+
+        func holds(atMinute local: Int) -> Bool {
+            fromMinute <= untilMinute
+                ? local >= fromMinute && local < untilMinute
+                : local >= fromMinute || local < untilMinute
+        }
+    }
+
+    /// A rule over the map, with whether it holds now.
+    struct Shown: Equatable, Sendable {
+        let rule: CityRuleZone
+        let inForce: Bool
+
+        /// As the map draws it: a zone of no riding, dimmer outside its hours.
+        var mapZone: ScooterZone {
+            ScooterZone(
+                id: "rule:\(rule.id)", provider: "city", kind: .noRide, maxSpeedKph: nil, polygons: rule.band,
+                strength: inForce ? 1 : CityRuleZone.dimmed
+            )
+        }
+    }
+
+    /// How wide a street's band is drawn: the street and its pavements, so that it shows from zoom 14.
+    static let bandWidthMeters = 14.0
+    /// How strongly a rule is drawn outside its hours, of how strongly within them.
+    static let dimmed = 0.35
+    /// The corners of the disc each bend and end of a band is rounded with.
+    private static let roundCorners = 12
+
+    let id: String
+    /// Who forbids it, as the legend names them: "Seoul", "Gangnam-gu".
+    let authority: String
+    let timeZone: String
+    /// The local day it starts, "YYYY-MM-DD".
+    let firstDay: String
+    /// Every day; all day when empty.
+    let hours: [Hours]
+    /// Where they say so.
+    let source: URL
+    /// The street's centrelines.
+    let lines: [[GeoPoint]]
+    let bounds: GeoBounds
+    /// The street as pieces of its band, a disc at each corner and a strip along each piece,
+    /// which the zones' overlay merges into one shape.
+    let band: [[[GeoPoint]]]
+
+    init(id: String, authority: String, timeZone: String, firstDay: String, hours: [Hours], source: URL, lines: [[GeoPoint]]) {
+        self.id = id
+        self.authority = authority
+        self.timeZone = timeZone
+        self.firstDay = firstDay
+        self.hours = hours
+        self.source = source
+        self.lines = lines
+        let points = lines.flatMap { $0 }
+        bounds = GeoBounds(
+            south: points.map(\.latitude).min() ?? 0, west: points.map(\.longitude).min() ?? 0,
+            north: points.map(\.latitude).max() ?? 0, east: points.map(\.longitude).max() ?? 0
+        )
+        band = Self.band(of: lines, widthMeters: Self.bandWidthMeters)
+    }
+
+    /// Whether it holds at that instant: from its first day there, within its hours.
+    func inForce(at date: Date) -> Bool {
+        guard let zone = TimeZone(identifier: timeZone) else { return false }
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = zone
+        let clock = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+        let day = String(format: "%04d-%02d-%02d", clock.year ?? 0, clock.month ?? 0, clock.day ?? 0)
+        guard day >= firstDay else { return false }
+        let local = (clock.hour ?? 0) * 60 + (clock.minute ?? 0)
+        return hours.isEmpty || hours.contains { $0.holds(atMinute: local) }
+    }
+
+    /// The rules over the view, from zoom 14 in, each with whether it holds at that instant.
+    static func shown(over view: GeoBounds, zoom: Int, at date: Date, among rules: [CityRuleZone] = all) -> [Shown] {
+        guard zoom >= ScooterZoneArea.minimumZoom else { return [] }
+        return rules.filter { $0.bounds.intersects(view) }.map { Shown(rule: $0, inForce: $0.inForce(at: date)) }
+    }
+
+    /// bandPolygons in src/lib/ruleZones.ts.
+    static func band(of lines: [[GeoPoint]], widthMeters: Double) -> [[[GeoPoint]]] {
+        let metersPerDegreeLatitude = 110_540.0
+        let half = widthMeters / 2
+        return lines.flatMap { line -> [[[GeoPoint]]] in
+            guard let first = line.first else { return [] }
+            let metersPerDegreeLongitude = 111_320 * cos(first.latitude * .pi / 180)
+            let discs = line.map { point in
+                [(0...roundCorners).map { index in
+                    let angle = Double(index % roundCorners) / Double(roundCorners) * 2 * .pi
+                    return GeoPoint(
+                        latitude: point.latitude + half * sin(angle) / metersPerDegreeLatitude,
+                        longitude: point.longitude + half * cos(angle) / metersPerDegreeLongitude
+                    )
+                }]
+            }
+            let strips = zip(line, line.dropFirst()).compactMap { start, end -> [[GeoPoint]]? in
+                let dx = (end.longitude - start.longitude) * metersPerDegreeLongitude
+                let dy = (end.latitude - start.latitude) * metersPerDegreeLatitude
+                let length = (dx * dx + dy * dy).squareRoot()
+                guard length > 0 else { return nil }
+                // Half the width across the piece, in degrees.
+                let across = (latitude: dx / length * half / metersPerDegreeLatitude, longitude: -dy / length * half / metersPerDegreeLongitude)
+                let corner = { (point: GeoPoint, side: Double) in
+                    GeoPoint(latitude: point.latitude + side * across.latitude, longitude: point.longitude + side * across.longitude)
+                }
+                return [[corner(start, 1), corner(end, 1), corner(end, -1), corner(start, -1), corner(start, 1)]]
+            }
+            return discs + strips
         }
     }
 }

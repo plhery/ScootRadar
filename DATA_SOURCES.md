@@ -535,7 +535,8 @@ Hopp's towns and the regional GBFS systems publish in `geofencing_zones`:
 Streets where a city or its police forbids riding, in `data/rule-zones.json`,
 are drawn as no riding's zones are, from zoom 14 whether the layer is on or
 not, dimmer outside their hours; the legend gives the hours and names who
-forbids it, linked to where they say so. So far Seoul's three kickboard-free
+forbids it, linked to where they say so. The iOS app has them as built
+(ProviderCatalog.generated.swift). So far Seoul's three kickboard-free
 streets, 12:00 to 23:00 every day: Hongdae's Red Road (sections R1 to R6) and
 Banpo's academy street since 16 May 2025
 ([Seoul and the Seoul police](https://news.seoul.go.kr/traffic/archives/514266)),

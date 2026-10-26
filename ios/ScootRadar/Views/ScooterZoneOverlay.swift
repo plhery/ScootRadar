@@ -6,12 +6,14 @@ import UIKit
 /// zones are merged into one shape, as on the web (zoneShapes.ts): where
 /// several operators forbid the same over a street, it is drawn once, within
 /// one edge. Only the zones handed in are merged, those of the providers
-/// shown, so a filter on one provider leaves its own.
+/// shown, so a filter on one provider leaves its own. Zones drawn dimmer, a
+/// city's rules outside their hours, are merged apart from the others.
 final class ScooterZoneOverlay: NSObject, MKOverlay, @unchecked Sendable {
     /// One piece of a kind's merged zones, its outline and its holes, in map
     /// points from the corner of the overlay.
     struct Shape {
         let kind: ScooterZoneKind
+        let strength: CGFloat
         let path: CGPath
         let bounds: MKMapRect
     }
@@ -26,9 +28,10 @@ final class ScooterZoneOverlay: NSObject, MKOverlay, @unchecked Sendable {
 
     init(zones: [ScooterZone], isDark: Bool) {
         let polygons = zones.map { zone in
-            (zone.kind, zone.polygons.map { polygon in polygon.map { ring in ring.map { MKMapPoint($0.coordinate) } } })
+            (kind: zone.kind, strength: CGFloat(zone.strength),
+             points: zone.polygons.map { polygon in polygon.map { ring in ring.map { MKMapPoint($0.coordinate) } } })
         }
-        let points = polygons.flatMap { $0.1.flatMap { $0.flatMap { $0 } } }
+        let points = polygons.flatMap { $0.points.flatMap { $0.flatMap { $0 } } }
         let corner = MKMapPoint(x: points.map(\.x).min() ?? 0, y: points.map(\.y).min() ?? 0)
         boundingMapRect = points.isEmpty ? .null : MKMapRect(
             x: corner.x, y: corner.y,
@@ -36,21 +39,24 @@ final class ScooterZoneOverlay: NSObject, MKOverlay, @unchecked Sendable {
         )
         // Near the corner, where a CGFloat has its centimetres to spare.
         shapes = ScooterZoneKind.allCases.flatMap { kind -> [Shape] in
-            let paths = polygons.filter { $0.0 == kind }.flatMap(\.1).map { polygon in
-                let path = CGMutablePath()
-                for ring in polygon {
-                    path.addLines(between: ring.map { CGPoint(x: $0.x - corner.x, y: $0.y - corner.y) })
-                    path.closeSubpath()
+            let ofKind = polygons.filter { $0.kind == kind }
+            return Set(ofKind.map(\.strength)).sorted().flatMap { strength -> [Shape] in
+                let paths = ofKind.filter { $0.strength == strength }.flatMap(\.points).map { polygon in
+                    let path = CGMutablePath()
+                    for ring in polygon {
+                        path.addLines(between: ring.map { CGPoint(x: $0.x - corner.x, y: $0.y - corner.y) })
+                        path.closeSubpath()
+                    }
+                    return path as CGPath
                 }
-                return path as CGPath
-            }
-            guard let merged = Self.union(paths) else { return [] }
-            return merged.componentsSeparated(using: .evenOdd).map { piece in
-                let box = piece.boundingBoxOfPath
-                return Shape(
-                    kind: kind, path: piece,
-                    bounds: MKMapRect(x: corner.x + box.minX, y: corner.y + box.minY, width: box.width, height: box.height)
-                )
+                guard let merged = Self.union(paths) else { return [] }
+                return merged.componentsSeparated(using: .evenOdd).map { piece in
+                    let box = piece.boundingBoxOfPath
+                    return Shape(
+                        kind: kind, strength: strength, path: piece,
+                        bounds: MKMapRect(x: corner.x + box.minX, y: corner.y + box.minY, width: box.width, height: box.height)
+                    )
+                }
             }
         }
         self.isDark = isDark
@@ -71,12 +77,14 @@ final class ScooterZoneOverlay: NSObject, MKOverlay, @unchecked Sendable {
 }
 
 /// Draws the zones as the web does (MapComponent.tsx): each kind's fills as
-/// one translucent layer, the strongest rule on top; then every edge. MapKit
+/// one translucent layer, the strongest rule on top, those drawn dimmer in a
+/// fainter layer of their own; then every edge. MapKit
 /// draws tiles of it on several threads at once: all it reads is made when
 /// it is.
 final class ScooterZoneRenderer: MKOverlayRenderer, @unchecked Sendable {
     private struct Shape {
         let kind: ScooterZoneKind
+        let strength: CGFloat
         let path: CGPath
         let bounds: MKMapRect
     }
@@ -98,7 +106,10 @@ final class ScooterZoneRenderer: MKOverlayRenderer, @unchecked Sendable {
             a: step.x - corner.x, b: 0, c: 0, d: step.y - corner.y, tx: corner.x, ty: corner.y
         )
         shapes = overlay.shapes.map { shape in
-            Shape(kind: shape.kind, path: shape.path.copy(using: &transform) ?? shape.path, bounds: shape.bounds)
+            Shape(
+                kind: shape.kind, strength: shape.strength,
+                path: shape.path.copy(using: &transform) ?? shape.path, bounds: shape.bounds
+            )
         }
     }
 
@@ -111,23 +122,25 @@ final class ScooterZoneRenderer: MKOverlayRenderer, @unchecked Sendable {
         let tile = rect(for: mapRect)
 
         for kind in ScooterZoneKind.belowFirst {
-            let fills = near.filter { $0.kind == kind }
-            guard !fills.isEmpty, let color = colors[kind] else { continue }
-            context.saveGState()
-            context.setAlpha(ScooterZoneLook.fillOpacity(kind))
-            context.beginTransparencyLayer(auxiliaryInfo: nil)
-            for shape in fills {
-                if kind == .noRide {
-                    hatch(shape.path, in: tile, color: color, unit: unit, context: context)
-                } else {
-                    context.addPath(shape.path)
-                    context.setFillColor(color)
-                    // Even-odd, so a hole is one whichever way its ring turns.
-                    context.fillPath(using: .evenOdd)
+            let ofKind = near.filter { $0.kind == kind }
+            guard let color = colors[kind] else { continue }
+            for strength in Set(ofKind.map(\.strength)).sorted() {
+                context.saveGState()
+                context.setAlpha(ScooterZoneLook.fillOpacity(kind) * strength)
+                context.beginTransparencyLayer(auxiliaryInfo: nil)
+                for shape in ofKind where shape.strength == strength {
+                    if kind == .noRide {
+                        hatch(shape.path, in: tile, color: color, unit: unit, context: context)
+                    } else {
+                        context.addPath(shape.path)
+                        context.setFillColor(color)
+                        // Even-odd, so a hole is one whichever way its ring turns.
+                        context.fillPath(using: .evenOdd)
+                    }
                 }
+                context.endTransparencyLayer()
+                context.restoreGState()
             }
-            context.endTransparencyLayer()
-            context.restoreGState()
         }
 
         // Where riding is forbidden, nothing more needs saying: no parking's
@@ -159,7 +172,7 @@ final class ScooterZoneRenderer: MKOverlayRenderer, @unchecked Sendable {
         guard let color = colors[shape.kind] else { return }
         let edge = ScooterZoneLook.edge(shape.kind)
         context.saveGState()
-        context.setAlpha(ScooterZoneLook.edgeOpacity)
+        context.setAlpha(ScooterZoneLook.edgeOpacity * shape.strength)
         context.setStrokeColor(color)
         context.setLineWidth(edge.width * unit)
         context.setLineJoin(.round)
