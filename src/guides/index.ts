@@ -223,6 +223,7 @@ import newarkEn from './en/e-scooters-newark';
 import campoGrandeEn from './en/e-scooters-campo-grande';
 import fayettevilleEn from './en/e-scooters-fayetteville';
 import indianapolisEn from './en/e-scooters-indianapolis';
+import tampaEn from './en/e-scooters-tampa';
 import bariIt from './it/monopattini-sharing-bari';
 import darmstadtDe from './de/e-scooter-darmstadt';
 import bochumDe from './de/e-scooter-bochum';
@@ -456,6 +457,7 @@ export const GUIDES: readonly Guide[] = [
   campoGrandeEn,
   fayettevilleEn,
   indianapolisEn,
+  tampaEn,
   bariIt,
   darmstadtDe,
   bochumDe,
