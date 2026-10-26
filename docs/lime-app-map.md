@@ -213,6 +213,7 @@ stationary reference scooter, country by country:
 | 26 October 2026 | Israel: Ashdod, Eilat | 45 | 12 | 711 | 146 |
 | 26 October 2026 | United Arab Emirates: Dubai, Abu Dhabi, Al Ain | 266 | 67 | 2,589 | 69 |
 | 26 October 2026 | United States: Dallas, Minneapolis, St. Paul, Nashville, Omaha, Montgomery County, Jacksonville, Richmond, St. Louis Park | 1,318 | 333 | 6,124 | 319 |
+| 26 October 2026 | United States: Charlotte | 143 | 36 | 767 | 79 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

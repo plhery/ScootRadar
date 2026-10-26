@@ -3633,6 +3633,26 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/St._Paul,_MN_1829_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Charlotte",
+      "center": [
+        35.22709,
+        -80.84313
+      ],
+      "region": "NC",
+      "timeZone": "America/New_York",
+      "regionToken": "AXW5C6RLHRGT5",
+      "serviceAreas": [
+        {
+          "name": "[Charlotte][SZ][Charlotte Service Zone]][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}xjvEzm`lNwZtd@}tAcjA}h@~e@aaAdbBdlAddCpPhJ~BfLmR`VzI`Vfb@mBnfAug@xt@`jAfv@hHmCx|@qnBhk@y}AkPfGlp@hDvV{Ljy@nQnQdMrSdi@qWrf@af@lZ`DhkAoMpVrj@`s@jk@m{@`|@}RhbAySn~EjaA|Tza@oB`h@rIh_@uYp~@lHhKp[da@pNhPsqBdfAqb@rQhe@|[Ft^X|V`G~hBv_CvaAmYt~@uj@zs@w|Acq@alCkHkyAo[{y@q[wuCad@qdMmw@qtE{DudA|GuZ~}@}bAguDiaHwRwFkqBbgFsGhjCss@`xC}Oj~@oLhi@qNxf@sb@zSw\\gUm`@wm@_`A{L_a@gEka@bRqMr]ePz]"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Charlotte_626_exclude_new_type.json"
+      ]
     }
   ]
 }

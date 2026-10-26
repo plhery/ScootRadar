@@ -2759,6 +2759,23 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/St._Paul,_MN_1829_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Charlotte",
+      "regionToken": "AXW5C6RLHRGT5",
+      "fingerprint": "569b5b6722054094da3372b0644dd2787eae0ec587f33d188d92a2b1b8469e2f",
+      "groups": 36,
+      "localCells": 143,
+      "coldMapRequests": 143,
+      "warmMapRequests": 143,
+      "scooters": 767,
+      "stationaryReferences": 79,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T14:32:11.526Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Charlotte_626_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

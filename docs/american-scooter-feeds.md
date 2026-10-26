@@ -14,12 +14,12 @@ other account credentials are used. The catalog is
 [`american-scooter-feeds.json`](../data/american-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
-The map covers 108 towns in 33 states and the District: Washington, DC
-(Hopp, Veo and Lime), 24 towns of Bird's, 50 of Lime's (33 from its rider
+The map covers 109 towns in 33 states and the District: Washington, DC
+(Hopp, Veo and Lime), 24 towns of Bird's, 51 of Lime's (34 from its rider
 map), 39 more of Veo's, 29 of Spin's, Lyft's Chicago and Portland, and GCOO's
 Los Angeles, Arlington and Alexandria, Virginia. In 32 of them, from Tempe and
 the Bronx to Chicago and Columbus, two or three operators run, and the map
-counts their scooters as one town's. Thirteen of the towns ban renting at
+counts their scooters as one town's. Fourteen of the towns ban renting at
 night; see [Night bans](#night-bans). South Lake Tahoe's fleet goes away for
 the winter; see [Lime supplement](#lime-supplement--26-october-2026).
 
@@ -72,14 +72,17 @@ shared scooter and bike operator from 1 September 2026. See
 [the Lime guide](lime-app-map.md#every-market-the-map-lists-october-2026).
 
 In the morning of 26 October, local time: Dallas (1,686, beside Bird's),
-Minneapolis (1,543, beside Spin's), St. Paul (901, beside Spin's), Nashville
-(738, beside Bird's and Spin's), Omaha (677), Montgomery County, Maryland
-(213, in Silver Spring, Bethesda and Rockville), Jacksonville (212,
-downtown), Richmond (112, beside Bird's and Spin's) and St. Louis Park (42).
-The bans already held in Dallas, Minneapolis, Nashville and Richmond now
-stop Lime's scooters there too, and Jacksonville's downtown program rents
-them only from 05:00 to midnight, so the map holds a night ban there (see
-[Night bans](#night-bans)). Omaha's and Montgomery County's hours are
+Minneapolis (1,543, beside Spin's), St. Paul (901, beside Spin's), Charlotte
+(767), Nashville (738, beside Bird's and Spin's), Omaha (677), Montgomery
+County, Maryland (213, in Silver Spring, Bethesda and Rockville),
+Jacksonville (212, downtown), Richmond (112, beside Bird's and Spin's) and
+St. Louis Park (42). The bans already held in Dallas, Minneapolis,
+Nashville and Richmond now stop Lime's scooters there too. Charlotte's
+permit rules let no trip start from 01:30 to 05:00, and Jacksonville's
+downtown program rents scooters only from 05:00 to midnight, so the map
+holds a night ban in both (see [Night bans](#night-bans)). Charlotte's
+first audit, on the evening of 25 October, missed one stationary scooter;
+the second, from scratch, found all 79. Omaha's and Montgomery County's hours are
 unconfirmed, so the map holds none. Lime's region in Montgomery County meets
 Washington's at the District line; a scooter of Lime's Washington fleet,
 just over the line in Silver Spring, can show in both, as Lime's public
@@ -639,7 +642,7 @@ of Bird's 284 stood there, nor any of Lime's 495.
 
 ## Night bans
 
-Thirteen covered towns ban renting at night, by ordinance, in the rules of
+Fourteen covered towns ban renting at night, by ordinance, in the rules of
 their permits or on the city's own program page. While a ban holds, the dock
 tells of it, with a moon, for the town in view, and a scooter's card says
 when it can be rented again. Web and iOS read the same
@@ -649,8 +652,8 @@ from TIGERweb (public domain), East Lansing's without Michigan State's campus
 from OpenStreetMap (ODbL), simplified to within 100 m by
 `scripts/update-curfew-areas.mjs`. Hours are the town's own. Each ban rests
 on the city's own rule, in force and read again on 15 October 2026,
-Cincinnati's, East Lansing's and Jacksonville's on 26 October; none rests
-on news or an operator's notice. St. Petersburg publishes no rule with its
+Cincinnati's, East Lansing's, Jacksonville's and Charlotte's on 26 October;
+none rests on news or an operator's notice. St. Petersburg publishes no rule with its
 hours: its ban rests on the city's own report of its program's hours, which
 Lime's map bore out on 26 October.
 
@@ -669,6 +672,7 @@ Lime's map bore out on 26 October.
 | East Lansing, MI | Every night, 03:00–06:00, outside Michigan State's campus | [City Code § 8-610(13)](https://library.municode.com/mi/east_lansing/codes/code_of_ordinances?nodeId=PTIIICOOR_CH8BU_ARTXELSKCO) |
 | St. Petersburg, FL | Every night, 02:00–05:00 | [Scooter Share program report](https://cms5.revize.com/revize/stpete/2025-05-08%20HLUT%20Agenda%20Packet.pdf), Housing, Land Use and Transportation Committee, 8 May 2025 |
 | Jacksonville, FL | Every night, 00:00–05:00 | [Dockless Mobility Program](https://dia.jacksonville.gov/resources/dockless-mobility-program), Downtown Investment Authority |
+| Charlotte, NC | Every night, 01:30–05:00 | [Shared-Use Mobility System Permit Requirements](https://www.charlottenc.gov/files/sharedassets/city/v/1/city-government/departments/documents/cdot/smp/charlotte-shared-use-mobility-system-permit-requirements_07_01_25.pdf), 1 July 2025, § 5.C |
 
 - A night is named after its evening: Friday's runs into Saturday morning.
 - **Dallas:** "Units may only be available to users to start a ride from
@@ -769,6 +773,14 @@ Lime's map bore out on 26 October.
   authority's release of 7 March 2023, which made the pilot's rules
   permanent, gives the same hours. The ban's area is the city's, which
   takes in the zone.
+- **Charlotte:** "No E-Scooter and E-bike trips may be initiated outside
+  permitted operating hours (currently 5:00am – 1:30am but subject to
+  change)." An operator pays $25 for each trip started outside them
+  (§ 6.B). The Department of Transportation's
+  [program page](https://www.charlottenc.gov/City-Government/Departments/Charlotte-Department-of-Transportation-CDOT/Mobility-Planning/Shared-Mobility-Program)
+  links the requirements, gives "Operation Hours: 5 a.m. to 1:30 a.m." and
+  names Bird and Lime as the operators authorised; Bird publishes no feed
+  there.
 
 Spin and Veo keep listing scooters as available through a ban, Gainesville's
 too, so only rides stopping can show one in their feeds.

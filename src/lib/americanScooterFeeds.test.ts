@@ -51,7 +51,7 @@ describe('the United States', () => {
   it('reads Lime\'s rider map where Lime publishes no feed, each market under the town the map lists', () => {
     // Lime's towns with no public feed: its rider map, read in small groups, since 26 October 2026.
     const lime = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'US' && entry.limeAppMap);
-    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Arvada', 'Boise', 'Boulder', 'Cincinnati', 'Dallas', 'Fairfax',
+    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Arvada', 'Boise', 'Boulder', 'Charlotte', 'Cincinnati', 'Dallas', 'Fairfax',
       'Indianapolis', 'Isla Vista', 'Jacksonville', 'Lansing', 'Los Angeles', 'Minneapolis', 'Montgomery County', 'Nashville', 'Omaha',
       'Orlando', 'Phoenix', 'Portland', 'Raleigh', 'Richmond', 'Sacramento', 'Salt Lake City', 'Scottsdale', 'South Lake Tahoe', 'Spokane',
       'Spokane Valley', 'St. Louis Park', 'St. Paul', 'St. Petersburg', 'Tampa', 'Tualatin', 'West Sacramento', 'Winston-Salem']);
@@ -60,7 +60,7 @@ describe('the United States', () => {
       'us:ca:West Sacramento', 'us:wa:Spokane', 'us:wa:Spokane Valley', 'us:or:Tualatin', 'us:ca:Isla Vista', 'us:ca:South Lake Tahoe',
       'us:ut:Salt Lake City', 'us:id:Boise', 'us:az:Phoenix', 'us:co:Boulder', 'us:az:Scottsdale', 'us:co:Arvada', 'us:tx:Dallas',
       'us:fl:Jacksonville', 'us:mn:Minneapolis', 'us:md:Montgomery County', 'us:tn:Nashville', 'us:ne:Omaha', 'us:va:Richmond',
-      'us:mn:St. Louis Park', 'us:mn:St. Paul']) {
+      'us:mn:St. Louis Park', 'us:mn:St. Paul', 'us:nc:Charlotte']) {
       expect(REGIONAL_SCOOTER_CITIES.filter(city => city.id === id), id).toHaveLength(1);
     }
     expect(lime.find(entry => entry.city === 'Indianapolis')?.timeZone).toBe('America/Indiana/Indianapolis');

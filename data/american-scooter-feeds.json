@@ -3379,6 +3379,29 @@
         "lngStep": 0.019018728013915482,
         "cells": "0-3,8-14,19-90"
       }
+    },
+    {
+      "id": "lime_us_app_charlotte",
+      "provider": "lime",
+      "city": "Charlotte",
+      "region": "NC",
+      "center": [
+        35.22709,
+        -80.84313
+      ],
+      "timeZone": "America/New_York",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "AXW5C6RLHRGT5",
+      "limeMapGrid": {
+        "south": 35.15302,
+        "west": -80.94911,
+        "north": 35.32154,
+        "east": -80.67144,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01648040969460933,
+        "cells": "0-4,17-27,30-31,34-49,51-67,69-100,102-114,119-129,136-146,153-154,157-164,174-175,177-180,191-197,212-213"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
@@ -3410,6 +3433,7 @@
     "https://assets.lime.bike/zones_attributes/Nashville_4466_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Omaha_591_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Richmond,_VA_1800_exclude_new_type.json",
-    "https://assets.lime.bike/zones_attributes/St._Paul,_MN_1829_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/St._Paul,_MN_1829_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Charlotte_626_exclude_new_type.json"
   ]
 }
