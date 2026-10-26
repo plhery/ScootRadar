@@ -466,10 +466,55 @@
         "lngStep": 0.015016133103938178,
         "cells": "0-18,20-22"
       }
+    },
+    {
+      "id": "lime_jp_app_tokyo",
+      "provider": "lime",
+      "city": "Tokyo",
+      "center": [
+        35.704335,
+        139.67753
+      ],
+      "timeZone": "Asia/Tokyo",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "MDH3CPXCIE5F3",
+      "limeMapGrid": {
+        "south": 35.54001,
+        "west": 139.56583,
+        "north": 35.79893,
+        "east": 139.85496,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01655954916122116,
+        "cells": "8-11,24-29,42-49,59-67,75-85,91-104,109-124,127-142,145-160,163-178,181-197,199-250,252-267,270-285,288-299,306-316,324-334,345-349"
+      }
+    },
+    {
+      "id": "lime_jp_app_yokohama",
+      "provider": "lime",
+      "city": "Yokohama",
+      "center": [
+        35.463171,
+        139.603245
+      ],
+      "timeZone": "Asia/Tokyo",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "MDH3CPXCIE5F3",
+      "limeMapGrid": {
+        "south": 35.43764,
+        "west": 139.61109,
+        "north": 35.47106,
+        "east": 139.65437,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.016538467201617463,
+        "cells": "1-7"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
   "limeServiceAreaSources": [
-    "https://assets.lime.bike/zones_attributes/Naha_188_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Naha_188_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Tokyo_1355_exclude_new_type.json"
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-25",
+  "verifiedOn": "2026-10-26",
   "clientVersion": "3.286.0",
   "protocol": "whole-service-local-nearest-v1",
   "queryIntervalMs": 5000,
@@ -1840,6 +1840,40 @@
       "finishedAt": "2026-10-25T22:27:23.236Z",
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Porto_126_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "JP",
+      "city": "Tokyo",
+      "regionToken": "MDH3CPXCIE5F3",
+      "fingerprint": "d93e439f71b9ed60891b6fd7fe1ac21ccf56d8d61df0ebf942730782308975e7",
+      "groups": 64,
+      "localCells": 256,
+      "coldMapRequests": 256,
+      "warmMapRequests": 256,
+      "scooters": 2283,
+      "stationaryReferences": 19,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T00:32:49.118Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Tokyo_1355_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "JP",
+      "city": "Yokohama",
+      "regionToken": "MDH3CPXCIE5F3",
+      "fingerprint": "279e2eb6686b1d803dc13bf0e0406943eec7071f81c49721200554a532064b28",
+      "groups": 2,
+      "localCells": 7,
+      "coldMapRequests": 7,
+      "warmMapRequests": 7,
+      "scooters": 51,
+      "stationaryReferences": 4,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-25T23:52:19.803Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Tokyo_1355_exclude_new_type.json"
       ]
     }
   ],
