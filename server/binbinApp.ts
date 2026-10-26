@@ -4,7 +4,7 @@ import type { RegionalScooterSystem } from '../src/lib/regionalScooterSystems';
 import type { CollectableScooterFeed, SourceVehicles } from '../src/lib/scooterFeeds';
 import type { MapBounds, Vehicle } from '../src/lib/types';
 import { APP_MAP_IDLE_INTERVAL_MS } from './appMapCadence';
-import { Pacer, SweepProgress } from './sweeps';
+import { Pacer, SweepProgress, takeNearest } from './sweeps';
 
 const ORIGIN = 'https://gatewayapi-sp.binbinapp.com';
 const LIST_PATH = '/binbin/api/v1/vehicles/list';
@@ -442,8 +442,21 @@ export async function sweepBinbinArea(api: Pick<BinbinClient, 'nearest'>, rings:
       } catch (error) { failed = true; throw error; }
     }));
   };
+  // The plan's points are asked whatever the replies before them found, so they need no lanes: they
+  // go in turn, the nearest to where people look first (takeNearest). Each in its own run, as cells
+  // go, a part of town someone opened waited its run's turn: on 26 October 2026 a first visit to
+  // Kadıköy saw 10 of its 113 scooters fresh after 20 seconds.
+  const inTurn = async (items: readonly [number, number][], run: (item: [number, number]) => Promise<void>) => {
+    const queue = [...items];
+    await Promise.all(Array.from({ length: Math.min(IN_FLIGHT, queue.length) }, async () => {
+      try {
+        for (let item = take(queue); item && !failed; item = take(queue)) await run(item);
+      } catch (error) { failed = true; throw error; }
+    }));
+  };
+  const take = (queue: [number, number][]) => takeNearest(queue, ([lat, lng]) => ({ south: lat, north: lat, west: lng, east: lng }));
   const plan = await planBinbinSweep(rings, previous);
-  await inLanes(plan, ([lat, lng]) => ask(lat, lng));
+  await inTurn(plan, ([lat, lng]) => ask(lat, lng));
   let cells = openCells(rings, startCells(rings), discs, piles);
   while (cells.length) {
     await inLanes(cells, async cell => {

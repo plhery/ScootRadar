@@ -4,6 +4,7 @@ import { haversineM, polygonContainsPoint } from '../src/lib/geo';
 import { independentCollectableFeeds } from '../src/lib/scooterFeeds';
 import { REGIONAL_SCOOTER_SYSTEMS } from '../src/lib/regionalScooterSystems';
 import { COUNTRY_SOURCES } from '../src/generated/countries';
+import { withinCollection } from './sweeps';
 
 interface Scooter { id: string; lat: number; lng: number }
 const vehicle = (scooter: Scooter, lat: number, lng: number, extra: Record<string, unknown> = {}) => ({
@@ -156,6 +157,24 @@ describe('BinBin area sweeps', () => {
     const refused = { nearest: vi.fn(api.nearest).mockRejectedValueOnce(new Error('BinBin map HTTP 403')) };
     await expect(sweepBinbinArea(refused, [L], [], noLimits)).rejects.toThrow('HTTP 403');
     await expect(sweepBinbinArea(api, [L], [], { ...noLimits, requests: 3 })).rejects.toThrow('exceeded its limits');
+  });
+
+  it('asks the points it plans nearest first to where people look', async () => {
+    const before = fleet(400).filter(inL);
+    const { api } = simulated(() => before);
+    const focus = { south: 39.751, west: 30.531, north: 39.752, east: 30.532 };
+    const asked: [number, number][] = [];
+    const watched = { nearest: (lat: number, lng: number, radiusM?: number) => { asked.push([lat, lng]); return api.nearest(lat, lng, radiusM); } };
+    const sweep = await withinCollection({ urgent: () => true, focus: () => focus, progress: () => {} },
+      () => sweepBinbinArea(watched, [L], before, noLimits));
+    expect(sweep.scooters).toHaveLength(before.length);
+    const off = ([lat, lng]: [number, number]) => haversineM(lat, lng, 39.7515, 30.5315);
+    const planned = asked.slice(0, sweep.planned).map(off);
+    expect(planned[0]).toBe(Math.min(...planned));
+    // Three in flight, so not strictly in order, but the first quarter is nearer than the last.
+    const mean = (values: number[]) => values.reduce((sum, value) => sum + value, 0) / values.length;
+    const quarter = Math.ceil(planned.length / 4);
+    expect(mean(planned.slice(0, quarter))).toBeLessThan(mean(planned.slice(-quarter)) / 2);
   });
 
   it('asks three at a time', async () => {
