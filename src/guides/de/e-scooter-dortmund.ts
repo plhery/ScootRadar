@@ -19,7 +19,7 @@ const guide: Guide = {
         'Fünf Anbieter vermieten im Oktober 2026 E-Scooter in Dortmund: **Voi**, **Dott** (früher Tier), **Bolt**, **Lime** und **Ryde** aus Norwegen. Dott, Bolt und Ryde führen Dortmund auf ihren Websites (Stand 24. Oktober 2026). Lime führt NRW.Mobidrom, das Mobilitätsdatenportal des Landes, seit April 2026 als E-Scooter-Anbieter in Dortmund.',
         'Im Dezember 2023 zählte die Stadt bei Bolt, Voi, Lime und Tier zusammen 3650 Leih-Scooter; jeder wurde im Schnitt zwei- bis dreimal am Tag ausgeliehen.',
         'Gemietet wird in der App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Auf der [Karte von Dortmund](map:de:Dortmund) zeigt ScootRadar Voi, Dott und seit dem 25. Oktober 2026 Lime und Bolt: am Samstag, 24. Oktober, kurz vor 16 Uhr rund 1400 Voi- und 360 Dott-Scooter, alle im Stadtgebiet von Dortmund, am Sonntagvormittag, 25. Oktober, rund 1800 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Für Voi zeigt die Karte auch Preis, Parkzonen und Sperrzonen, für Dott nur die Standorte. Ryde findest du nur in seiner App. E-Bikes zeigt die Karte nicht.',
+        'Auf der [Karte von Dortmund](map:de:Dortmund) zeigt ScootRadar Voi, Dott und seit dem 25. Oktober 2026 Lime und Bolt: am Samstag, 24. Oktober, kurz vor 16 Uhr rund 1400 Voi- und 360 Dott-Scooter, alle im Stadtgebiet von Dortmund, am Sonntagvormittag, 25. Oktober, rund 1800 Lime-Scooter. Das ist eine Momentaufnahme, keine Flottengrösse. Für Voi zeigt die Karte auch Preis und Parkzonen, mit der Einstellung «Fahr- und Parkzonen» auch Sperrzonen; für Dott nur Standorte. Ryde findest du nur in seiner App. E-Bikes zeigt die Karte nicht.',
       ],
     },
     {
@@ -69,14 +69,14 @@ const guide: Guide = {
       heading: 'Wo darf man in Dortmund mit dem E-Scooter fahren? Sperrzonen',
       blocks: [
         'Du fährst auf dem Radweg, dem Radfahr- oder Schutzstreifen und nur dort, wo es keinen gibt, auf der Fahrbahn. Gehwege und Fussgängerzonen sind tabu, auch mit ausgeschaltetem Motor, ausser ein Zusatzschild «Elektrokleinstfahrzeuge frei» erlaubt es. Auf Westenhellweg und Ostenhellweg steigst du also ab und schiebst.',
-        'Für die City zeigt Voi nur ein Abstellverbot, keine Fahrverbotszone. Das Fahrverbot in der Fussgängerzone gilt trotzdem, und einhalten musst du es selbst.',
+        'Voi sperrt dort laut seinen Daten nur das Abstellen, nicht das Fahren (Stand 24. Oktober 2026); das Fahrverbot der Fussgängerzone gilt trotzdem.',
         'Dazu kommen die Regeln von Parks und Anbietern:',
         {
           list: [
             '**Westfalenpark:** Die Besuchsordnung der Stadt (Stand Oktober 2024) verbietet, Roller und Scooter zu nutzen oder auch nur mitzuführen. Bei Voi ist der Park eine Abstellverbotszone.',
             '**Botanischer Garten Rombergpark:** In ihren Verhaltensregeln bittet die Stadt, auf Zweiräder und ähnliche Fortbewegungsmittel zu verzichten; Radfahren ist dort nicht gestattet.',
-            '**Phoenix-See:** Am See gilt laut Stadt ein Abstellverbot. Bei Voi reicht die Abstellverbotszone über See und Ufer bis zur Hörder Burg; beende die Fahrt ausserhalb.',
-            '**Ausserhalb des Voi-Gebiets:** Rombergpark mit Zoo, Fredenbaumpark und Hauptfriedhof gehören laut Voi nicht zum Fahrgebiet (Stand 24. Oktober 2026).',
+            '**Phoenix-See:** Am See gilt laut Stadt ein Abstellverbot. In Vois Daten umfasst die Abstellverbotszone See und Ufer bis zur Hörder Burg; beende die Fahrt ausserhalb.',
+            '**Ausserhalb des Voi-Gebiets:** Rombergpark mit Zoo, Fredenbaumpark und Hauptfriedhof, laut Vois Daten (Stand 24. Oktober 2026).',
           ],
         },
         'Wo Dott, Bolt, Lime und Ryde fahren und parken lassen, zeigen nur ihre Apps. Eine nächtliche Sperrzeit nennt die Stadt nicht.',
@@ -118,7 +118,7 @@ const guide: Guide = {
         '**Signal Iduna Park:** Mit Leih-Scootern kommst du nicht direkt ans Stadion: «Rund um den Signal Iduna Park ist eine Sperrzone eingerichtet», schreibt die Stadt (August 2026), ohne zu sagen, ob sie das Fahren oder das Abstellen betrifft. Das Stadion liegt in der Innenstadt-West, zurückgeben kannst du also nur auf einer Parkzone; die nächste von Voi lag am 24. Oktober rund 500 m entfernt. Den eigenen Scooter stellst du an einer der vier Fahrradwachen des ADFC ab, mit zusammen 1000 Plätzen: an der Strobelallee Ecke Rabenloh, gegenüber der Helmut-Körnig-Halle, neben den Rosenterrassen oder am Bolmker Weg Ecke Schwimmweg. Sie öffnen rund 100 Minuten vor Anpfiff und schliessen spätestens 60 Minuten nach Abpfiff.',
         '**Mit der Stadtbahn zum Spiel:** An Heimspieltagen fährt die U45 laut DSW21 ab rund 3 Stunden vor Anpfiff mindestens alle 5 Minuten vom Hauptbahnhof zum Stadion. Deine BVB-Eintrittskarte gilt am Spieltag als KombiTicket für Hin- und Rückfahrt mit Bus, Bahn und Nahverkehrszug in ganz NRW.',
         '**Westfalenhallen, Dortmunder U, Fussballmuseum:** Alle drei liegen in der Innenstadt-West; du gibst den Leih-Scooter also auf einer Parkzone zurück. Für das Fussballmuseum liegt die Zone am Königswall 42 direkt daneben.',
-        '**TU und Fachhochschule:** Campus Nord, Campus Süd und die S-Bahn-Station Dortmund Universität gehören laut Voi zum Fahrgebiet. Dort stellst du frei ab, solange 2 m Gehweg frei bleiben.',
+        '**TU und Fachhochschule:** Campus Nord, Campus Süd und die S-Bahn-Station Dortmund Universität gehören laut Vois Daten zum Fahrgebiet. Dort stellst du frei ab, solange 2 m Gehweg frei bleiben.',
         '**Nachbarstädte:** In Bochum, Herne und Witten zeigt die Karte ebenfalls Voi und seit dem 25. Oktober 2026 Lime, in Bochum und Herne auch Dott, in Bochum auch Bolt: [Karte von Bochum](map:de:Bochum). Wie es im Westen des Ruhrgebiets läuft, steht in [E-Scooter in Essen](guide:essen).',
       ],
     },

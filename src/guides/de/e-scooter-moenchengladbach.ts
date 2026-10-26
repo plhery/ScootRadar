@@ -8,18 +8,18 @@ const guide: Guide = {
   title: 'E-Scooter Mönchengladbach 2026: Anbieter, Preise, Sperrzonen',
   description: 'E-Scooter Mönchengladbach: Voi, Dott und Bolt, was Voi pro Minute kostet, wo du in Parks nicht abstellst und was in den Bussen der NEW gilt.',
   headline: 'E-Scooter Mönchengladbach: Anbieter, Preise, Parken, Sperrzonen und was in Bus und Bahn gilt',
-  lede: 'Einen E-Scooter in Mönchengladbach leihst du ab 18 und ohne Führerschein bei Voi, Dott oder Bolt. Voi verlangt in Mönchengladbach laut seinem veröffentlichten Tarif 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten kosten also 2,89 € (Stand 25. Oktober 2026); Dott und Bolt zeigen ihren Preis in der App. In Parks und Grünanlagen verbietet die Stadt, Fahrzeuge abzustellen, und Voi sperrt die Rückgabe laut Karte unter anderem im Bunten Garten, hinter dem Hauptbahnhof und am Borussia-Park. Ein Mitnahmeverbot für E-Scooter hat die NEW für ihre Busse nicht veröffentlicht.',
+  lede: 'Einen E-Scooter in Mönchengladbach leihst du ab 18 und ohne Führerschein bei Voi, Dott oder Bolt. Voi verlangt in Mönchengladbach laut seinem veröffentlichten Tarif 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten kosten also 2,89 € (Stand 25. Oktober 2026); Dott und Bolt zeigen ihren Preis in der App. In Parks und Grünanlagen verbietet die Stadt, Fahrzeuge abzustellen, und Voi sperrt die Rückgabe laut seinen Daten unter anderem im Bunten Garten, hinter dem Hauptbahnhof und am Borussia-Park. Ein Mitnahmeverbot für E-Scooter hat die NEW für ihre Busse nicht veröffentlicht.',
   published: '2026-10-25',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'de:Mönchengladbach',
   sections: [
     {
       heading: 'Welche E-Scooter-Anbieter gibt es in Mönchengladbach?',
       blocks: [
         'Drei Anbieter vermieten im Oktober 2026 E-Scooter in Mönchengladbach: **Voi**, **Dott** (früher Tier) und **Bolt**. Alle drei nennt die Stadt auf ihrer Seite mit den Beschwerdeadressen für E-Scooter. Voi fährt laut eigener Mitteilung seit dem 24. März 2025 in der Stadt, Dott führt Mönchengladbach auf seiner Standortliste, und Bolt nennt auf seiner Stadtseite E-Scooter als Angebot (Stand 25. Oktober 2026). NRW.Mobidrom, das Mobilitätsdatenportal des Landes, führt Voi in Mönchengladbach seit September 2025 und Bolt seit Juli 2026.',
-        'Vois Gebiet umfasst laut Karte Gladbach und Rheydt mit den Vierteln ringsum, im Norden bis Neuwerk, im Süden bis Odenkirchen und Wickrath. Rheindahlen, Hardt, Wanlo und der Flughafen liegen ausserhalb, und über die Stadtgrenze reicht es nirgends (Stand 25. Oktober 2026). Wo du mit Dott und Bolt fahren darfst, zeigen ihre Apps.',
+        'Vois Gebiet umfasst laut seinen Daten Gladbach und Rheydt mit den Vierteln ringsum, im Norden bis Neuwerk, im Süden bis Odenkirchen und Wickrath. Rheindahlen, Hardt, Wanlo und der Flughafen liegen ausserhalb, und über die Stadtgrenze reicht es nirgends (Stand 25. Oktober 2026). Wo du mit Dott und Bolt fahren darfst, zeigen ihre Apps.',
         'Gemietet wird in der App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Auf der [Karte von Mönchengladbach](map:de:Mönchengladbach) zeigt ScootRadar Voi und Dott: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 830 Voi- und 490 Dott-Scooter, zusammen gut 1300. Die Zahl umfasst das ganze Stadtgebiet mit Rheydt, Wickrath und Odenkirchen, aber nicht Neuss, Viersen oder Korschenbroich. Das ist eine Momentaufnahme, keine Flottengrösse. Für Voi zeigt die Karte auch Preis, Abstellverbote und Fahrgebiet, für Dott nur die Standorte. Bolt fehlt auf der Karte; seine Scooter findest du nur in der Bolt-App. E-Bikes und die Leihräder von nextbike zeigt die Karte nicht.',
+        'Auf der [Karte von Mönchengladbach](map:de:Mönchengladbach) zeigt ScootRadar Voi und Dott: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 830 Voi- und 490 Dott-Scooter, zusammen gut 1300. Die Zahl umfasst das ganze Stadtgebiet mit Rheydt, Wickrath und Odenkirchen, aber nicht Neuss, Viersen oder Korschenbroich. Das ist eine Momentaufnahme, keine Flottengrösse. Für Voi zeigt die Karte auch den Preis und, mit der Einstellung «Fahr- und Parkzonen», Sperrzonen; für Dott nur Standorte. Bolt fehlt auf der Karte; seine Scooter findest du nur in der Bolt-App. E-Bikes und die Leihräder von nextbike zeigt die Karte nicht.',
       ],
     },
     {
@@ -43,17 +43,17 @@ const guide: Guide = {
       blocks: [
         '«E-Scooter werden abgestellt wie Fahrräder, ohne Behinderung anderer Menschen», schreibt die Polizei Mönchengladbach (Juli 2025). Feste Parkzonen der Stadt gibt es bisher nicht (Stand 25. Oktober 2026).',
         '**Parks und Grünanlagen:** Hier gilt eine Regel der Stadt. Ihre Strassen- und Anlagenverordnung vom 17. Dezember 2015 erfasst alle öffentlich zugänglichen Park- und Grünanlagen, Gärten, Friedhöfe und Spielplätze, gleich wem sie gehören. Dort ist verboten, «Fahrzeuge abzustellen» und «ausserhalb der hierfür zugelassenen Wege zu fahren»; die Geldbusse reicht bis 1000 €. E-Scooter nennt die Verordnung nicht eigens, doch laut Polizei ist ein E-Scooter ein Kraftfahrzeug. Nach unserer Lesart gilt das Verbot also auch für ihn.',
-        'Bei Voi beendest du die Fahrt laut [Live-Karte](map:de:Mönchengladbach) nicht (Stand 25. Oktober 2026):',
+        'Laut Vois Daten beendest du eine Voi-Fahrt nicht (Stand 25. Oktober 2026):',
         {
           list: [
-            '**am Hauptbahnhof:** im Bahnhofsbereich und auf dem Platz der Republik hinter dem Bahnhof; auf dem Europaplatz davor zeigt die Karte kein Verbot;',
+            '**am Hauptbahnhof:** im Bahnhofsbereich und auf dem Platz der Republik hinter dem Bahnhof; auf dem Europaplatz davor nennen sie kein Verbot;',
             '**in den Parks der Innenstadt:** im Bunten Garten mit Botanischem Garten und Kaiserpark, im Geropark am Geroweiher, im Abteigarten und im Hans-Jonas-Park;',
             '**in Rheydt:** rund um Grenzlandstadion und Jahnstadion, im Hugo-Junkers-Park und im Schmölderpark;',
             '**am Borussia-Park** und im SparkassenPark nebenan;',
             '**im Süden:** im Schlosspark Wickrath und auf einem breiten Streifen entlang der Niers, der bis an den Bahnhof Wickrath reicht.',
           ],
         },
-        'Kein Voi-Abstellverbot zeigt die Karte in der Fussgängerzone der Hindenburgstrasse, am Alten Markt, am Rheydter Marktplatz und am Hauptbahnhof Rheydt. Dort gilt die Regel für Fahrräder: Der Weg bleibt frei. Wo Dott und Bolt das Abstellen sperren, zeigen nur ihre Apps.',
+        'Vois Daten nennen kein Abstellverbot in der Fussgängerzone der Hindenburgstrasse, am Alten Markt, am Rheydter Marktplatz und am Hauptbahnhof Rheydt. Dort gilt die Regel für Fahrräder: Der Weg bleibt frei. Wo Dott und Bolt das Abstellen sperren, zeigen nur ihre Apps.',
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, stehst du in einer Sperrzone, und die Miete läuft weiter. Schieb den Scooter aus dem Park oder vom Platz hinter dem Bahnhof hinaus und versuch es dort.',
         },
@@ -64,7 +64,7 @@ const guide: Guide = {
       blocks: [
         'Du fährst auf dem Radweg, dem Radfahrstreifen oder in der Fahrradstrasse und nur dort, wo es nichts davon gibt, auf der Fahrbahn. Gehweg und Fussgängerzone sind tabu, auch mit ausgeschaltetem Motor, ausser ein Schild «Elektrokleinstfahrzeuge frei» erlaubt es; ohne ein solches Schild schiebst du durch die Fussgängerzonen der Hindenburgstrasse und der Rheydter Hauptstrasse. Gegen die Fahrtrichtung einer Einbahnstrasse mit «Radverkehr frei» ist die Lage bis Ende Februar 2027 widersprüchlich: Die Strassenverkehrs-Ordnung lässt dich mitfahren, die E-Scooter-Verordnung verlangt «Elektrokleinstfahrzeuge frei». Ab 1. März 2027 ist es dort erlaubt. Diese Regeln setzt der Bund. Die Polizei Mönchengladbach nennt Gehwege, Fussgängerzonen und Busspuren als verboten (Juli 2025).',
         'In Parks, Gärten und auf Friedhöfen fährst du nach der Anlagenverordnung der Stadt nur auf den dafür zugelassenen Wegen.',
-        'Ausserhalb des Voi-Gebiets liegen nach Vois eigener Regel laut Karte (Stand 25. Oktober 2026):',
+        'Ausserhalb des Voi-Gebiets liegen laut Vois Daten (Stand 25. Oktober 2026):',
         {
           list: [
             'der Volksgarten;',
@@ -109,10 +109,10 @@ const guide: Guide = {
     {
       heading: 'Borussia-Park, Rheydt, Hochschule: Tipps für Mönchengladbach',
       blocks: [
-        '**Borussia-Park:** Das Stadion heisst seit der Saison 2026/27 ista-Borussia-Park. Einen Voi stellst du laut Karte am Stadion nicht ab (Stand 25. Oktober 2026). Die Stadionordnung (Fassung vom 1. August 2026) verbietet, das umfriedete Stadiongelände ohne Erlaubnis mit Kraftfahrzeugen zu befahren oder dort ausserhalb der dafür ausgewiesenen Flächen zu parken; E-Scooter nennt sie nicht eigens, eine Spieltagsregel für E-Scooter auch die Stadt nicht. Der Stadion-Shuttle der NEW fährt laut NEW ab drei Stunden vor Spielbeginn alle fünf Minuten von beiden Hauptbahnhöfen, der letzte 20 Minuten vor Anpfiff; du brauchst ein gültiges Stadionticket. Am Gladbacher Hauptbahnhof hält er auf dem Platz der Republik hinter dem Bahnhof, in Vois Abstellverbotszone: Beende die Voi-Fahrt vorher, etwa auf dem Europaplatz.',
-        '**Rheydt:** Hauptbahnhof, Marktplatz und Rathaus liegen laut Karte im Voi-Gebiet ohne Abstellverbot (Stand 25. Oktober 2026).',
-        '**Wickrath:** Der Ortskern liegt im Voi-Gebiet. Im Schlosspark und entlang der Niers stellst du einen Voi laut Karte aber nicht ab, auch am Bahnhof nicht.',
-        '**Hochschule Niederrhein:** Der Campus Mönchengladbach an Webschulstrasse und Richard-Wagner-Strasse liegt laut Karte im Voi-Gebiet, ohne Abstellverbot (Stand 25. Oktober 2026).',
+        '**Borussia-Park:** Das Stadion heisst seit der Saison 2026/27 ista-Borussia-Park. Am Stadion sperrt Voi laut seinen Daten die Rückgabe (Stand 25. Oktober 2026). Die Stadionordnung (Fassung vom 1. August 2026) verbietet, das umfriedete Stadiongelände ohne Erlaubnis mit Kraftfahrzeugen zu befahren oder dort ausserhalb der dafür ausgewiesenen Flächen zu parken; E-Scooter nennt sie nicht eigens, eine Spieltagsregel für E-Scooter auch die Stadt nicht. Der Stadion-Shuttle der NEW fährt laut NEW ab drei Stunden vor Spielbeginn alle fünf Minuten von beiden Hauptbahnhöfen, der letzte 20 Minuten vor Anpfiff; du brauchst ein gültiges Stadionticket. Am Gladbacher Hauptbahnhof hält er auf dem Platz der Republik hinter dem Bahnhof, in Vois Abstellverbotszone: Beende die Voi-Fahrt vorher, etwa auf dem Europaplatz.',
+        '**Rheydt:** Hauptbahnhof, Marktplatz und Rathaus liegen laut Vois Daten in seinem Gebiet ohne Abstellverbot (Stand 25. Oktober 2026).',
+        '**Wickrath:** Laut Vois Daten liegt der Ortskern in seinem Gebiet, doch im Schlosspark, entlang der Niers und am Bahnhof sperrt Voi die Rückgabe.',
+        '**Hochschule Niederrhein:** Der Campus Mönchengladbach an Webschulstrasse und Richard-Wagner-Strasse liegt laut Vois Daten in seinem Gebiet, ohne Abstellverbot (Stand 25. Oktober 2026).',
       ],
     },
     {
@@ -135,7 +135,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich den E-Scooter im Bunten Garten oder im Volksgarten abstellen?',
-      answer: 'Nach unserer Lesart nicht. Die Strassen- und Anlagenverordnung der Stadt verbietet, in Parks und Grünanlagen «Fahrzeuge abzustellen», und ein E-Scooter ist laut Polizei ein Kraftfahrzeug. Voi sperrt zudem laut Karte die Rückgabe im Bunten Garten, und der Volksgarten liegt ganz ausserhalb des Voi-Gebiets (Stand 25. Oktober 2026). Beende die Fahrt vor dem Park.',
+      answer: 'Nach unserer Lesart nicht. Die Strassen- und Anlagenverordnung der Stadt verbietet, in Parks und Grünanlagen «Fahrzeuge abzustellen», und ein E-Scooter ist laut Polizei ein Kraftfahrzeug. Voi sperrt zudem laut seinen Daten die Rückgabe im Bunten Garten, und der Volksgarten liegt ganz ausserhalb des Voi-Gebiets (Stand 25. Oktober 2026). Beende die Fahrt vor dem Park.',
     },
     {
       question: 'Darf ich einen E-Scooter in den Bus der NEW mitnehmen?',
@@ -143,7 +143,7 @@ const guide: Guide = {
     },
     {
       question: 'Komme ich mit dem E-Scooter zum Borussia-Park?',
-      answer: 'Ja, das Stadion liegt im Voi-Gebiet, doch direkt am Stadion beendest du eine Voi-Fahrt laut Karte nicht (Stand 25. Oktober 2026), und aufs umfriedete Stadiongelände darfst du laut Stadionordnung ohne Erlaubnis nicht mit Kraftfahrzeugen fahren. Stell den Scooter vorher ab und geh die letzten Meter, oder nimm an Spieltagen den Stadion-Shuttle der NEW.',
+      answer: 'Ja, laut Vois Daten liegt das Stadion in seinem Gebiet, doch direkt am Stadion beendest du eine Voi-Fahrt nicht (Stand 25. Oktober 2026), und aufs umfriedete Stadiongelände darfst du laut Stadionordnung ohne Erlaubnis nicht mit Kraftfahrzeugen fahren. Stell den Scooter vorher ab und geh die letzten Meter, oder nimm an Spieltagen den Stadion-Shuttle der NEW.',
     },
   ],
   sources: [

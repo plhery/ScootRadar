@@ -17,9 +17,9 @@ const guide: Guide = {
       heading: 'Welche E-Scooter-Anbieter gibt es in Duisburg?',
       blocks: [
         'Fünf Anbieter vermieten 2026 E-Scooter in Duisburg: **Voi**, **Dott** (früher Tier), **Bolt**, **Lime** und **Ryde**. Dott, Bolt, Lime und Ryde nennt die Stadt auf ihrer Seite zum E-Scooter-Verleih (Stand Juli 2026). Voi fehlt dort, fährt aber laut eigener Mitteilung seit dem 1. August 2025 in Duisburg und Oberhausen. Dott und Ryde führen Duisburg auf ihren Websites (Stand 24. Oktober 2026); NRW.Mobidrom, das Mobilitätsdatenportal des Landes, führt seit Juli 2026 Bolt als Anbieter in Essen und Duisburg.',
-        'Dott und Bolt fahren laut Stadt (Juli 2026) in der Innenstadt und den Vierteln ringsum, von Neuenkamp bis Wanheimerort und Buchholz und links des Rheins etwa in Rheinhausen; Lime reicht weiter. Vois Gebiet umfasst laut Karte den grössten Teil der rechten Rheinseite von Walsum bis Buchholz, dazu Homberg, aber nicht Rheinhausen (Stand 24. Oktober 2026).',
+        'Dott und Bolt fahren laut Stadt (Juli 2026) in der Innenstadt und den Vierteln ringsum, von Neuenkamp bis Wanheimerort und Buchholz und links des Rheins etwa in Rheinhausen; Lime reicht weiter. Vois Gebiet umfasst laut seinen Daten den grössten Teil der rechten Rheinseite von Walsum bis Buchholz, dazu Homberg, aber nicht Rheinhausen (Stand 24. Oktober 2026).',
         'Gemietet wird in der App. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
-        'Auf der [Karte von Duisburg](map:de:Duisburg) zeigt ScootRadar Voi und Dott: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 1030 Voi- und 300 Dott-Scooter, zusammen rund 1330. Die Zahl umfasst das ganze Stadtgebiet mit Rheinhausen und Homberg, aber nicht Oberhausen, Mülheim oder Moers. Das ist eine Momentaufnahme, keine Flottengrösse; die Stadt sprach im Oktober 2025 von mehr als 2000 Leih-Scootern. Seit dem 25. Oktober zeigt die Karte auch Lime, am Sonntagvormittag rund 2650 Scooter in Limes Duisburger Fahrgebiet, und Bolt. Für Voi zeigt die Karte auch Preis, Abstellverbote, Parkplätze und Fahrgebiet, für Dott nur die Standorte. Ryde fehlt auf der Karte. E-Bikes und Leihräder zeigt die Karte nicht.',
+        'Auf der [Karte von Duisburg](map:de:Duisburg) zeigt ScootRadar Voi und Dott: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 1030 Voi- und 300 Dott-Scooter, zusammen rund 1330. Die Zahl umfasst das ganze Stadtgebiet mit Rheinhausen und Homberg, aber nicht Oberhausen, Mülheim oder Moers. Das ist eine Momentaufnahme, keine Flottengrösse; die Stadt sprach im Oktober 2025 von mehr als 2000 Leih-Scootern. Seit dem 25. Oktober zeigt die Karte auch Lime, am Sonntagvormittag rund 2650 Scooter in Limes Duisburger Fahrgebiet, und Bolt. Für Voi zeigt die Karte auch den Preis und, mit der Einstellung «Fahr- und Parkzonen», Sperrzonen; für Dott nur Standorte. Ryde fehlt auf der Karte. E-Bikes und Leihräder zeigt die Karte nicht.',
       ],
     },
     {
@@ -42,7 +42,7 @@ const guide: Guide = {
       heading: 'E-Scooter in Duisburg parken: Innenstadt, Hauptbahnhof, Innenhafen',
       blocks: [
         'Einen E-Scooter stellst du in Duisburg ab wie ein Fahrrad, solange er niemanden behindert oder gefährdet: «Wie Fahrräder dürfen sie so gut wie überall abgestellt werden», schreibt die Stadt (Stand Juli 2026). Feste Parkzonen der Stadt gibt es nicht. Stattdessen sperren die Anbieter nach einer Vereinbarung mit der Stadt Bereiche, in denen du die Fahrt nicht beenden kannst; nach Beschwerden kamen laut Stadt (Oktober 2025) viele dazu.',
-        'Bei Voi beendest du die Fahrt laut Karte nicht (Stand 24. Oktober 2026):',
+        'Laut Vois Daten beendest du eine Voi-Fahrt nicht (Stand 24. Oktober 2026):',
         {
           list: [
             '**in der Innenstadt:** in der Fussgängerzone mit Königstrasse, König-Heinrich-Platz, Kuhstrasse, Sonnenwall und Münzstrasse, auf dem Dellplatz und im Kantpark;',
@@ -63,7 +63,7 @@ const guide: Guide = {
         'Du fährst auf dem Radweg, dem Radfahrstreifen oder in der Fahrradstrasse und nur dort, wo es nichts davon gibt, auf der Fahrbahn. Gehweg und Fussgängerzone sind tabu, auch mit ausgeschaltetem Motor, ausser ein Schild «Elektrokleinstfahrzeuge frei» erlaubt es; durch die Fussgängerzone der Königstrasse schiebst du also. Gegen die Fahrtrichtung einer Einbahnstrasse mit «Radverkehr frei» ist die Lage bis Ende Februar 2027 widersprüchlich: Die Strassenverkehrs-Ordnung lässt dich mitfahren, die E-Scooter-Verordnung verlangt «Elektrokleinstfahrzeuge frei». Ab 1. März 2027 ist es dort erlaubt. Diese Regeln setzt der Bund. Die Stadt Duisburg schreibt, gegen die Fahrtrichtung sei es auch dort verboten, wo Radfahrende dürfen.',
         'Neben falsch abgestellten Scootern nennt die Stadt das Fahren in der Fussgängerzone der Innenstadt als Missstand (Oktober 2025); kontrolliert wird es von der Polizei. Eine technische Fahrsperre lässt das Kraftfahrt-Bundesamt laut Stadt nicht zu, und Voi sperrt dort nur das Abstellen. Das Verbot einhalten musst du selbst.',
         '**Parks und Ufer:** Die Sicherheits- und Ordnungsverordnung der Stadt gilt für alle öffentlich zugänglichen Grün-, Erholungs- und Sportflächen, Wälder, Friedhöfe und Gewässer samt Ufern, gleich wem sie gehören. Dort ist verboten, Rasen zu befahren und Wege mit Fahrzeugen, «soweit sie nicht durch Hinweisschilder als Fahrwege gekennzeichnet sind». Ohne solches Schild schiebst du also.',
-        'Ausserhalb des Voi-Gebiets liegen laut Karte (Stand 24. Oktober 2026):',
+        'Ausserhalb des Voi-Gebiets liegen laut Vois Daten (Stand 24. Oktober 2026):',
         {
           list: [
             'der Sportpark Wedau mit dem MSV-Stadion, der Regattabahn, dem Bertasee und der Sechs-Seen-Platte;',
@@ -71,7 +71,7 @@ const guide: Guide = {
             'die Mühlenweide und die Mercatorinsel in Ruhrort.',
           ],
         },
-        'Drei Bezirksvertretungen haben die Verwaltung um weitere Fahrverbote gebeten: Meiderich/Beeck im Juni 2026 für Leih-Scooter auf der Von-der-Mark-Strasse, Hamborn im September 2026 für alle E-Scooter auf Jägerstrasse, Holtener Strasse und Kaiser-Wilhelm-Strasse, Walsum für den Kometenplatz, dort als Prüfauftrag. Eine Umsetzung hat die Stadt bis zum 24. Oktober 2026 nicht veröffentlicht, und Voi zeigte dort keine Fahrverbotszone; achte vor Ort auf Schilder.',
+        'Drei Bezirksvertretungen haben die Verwaltung um weitere Fahrverbote gebeten: Meiderich/Beeck im Juni 2026 für Leih-Scooter auf der Von-der-Mark-Strasse, Hamborn im September 2026 für alle E-Scooter auf Jägerstrasse, Holtener Strasse und Kaiser-Wilhelm-Strasse, Walsum für den Kometenplatz, dort als Prüfauftrag. Eine Umsetzung hat die Stadt bis zum 24. Oktober 2026 nicht veröffentlicht, und Vois Daten nannten dort keine Fahrverbotszone; achte vor Ort auf Schilder.',
         'Eine nächtliche Sperrzeit oder Regeln für Feste nennt die Stadt nicht.',
       ],
     },
@@ -108,10 +108,10 @@ const guide: Guide = {
     {
       heading: 'Innenhafen, Landschaftspark, Uni: Tipps für Duisburg',
       blocks: [
-        '**Innenhafen:** Die Promenade an der Marina, der Garten der Erinnerung und das Museum Küppersmühle liegen laut Karte in Vois Abstellverbotszone am Wasser. Beende die Fahrt vorher und geh die letzten Meter.',
-        '**Landschaftspark Duisburg-Nord:** Der Park ist laut Betreiber das ganze Jahr rund um die Uhr offen, Eintritt frei; abends leuchtet die Lichtinstallation. Eine eigene Regel für E-Scooter nennt der Park nicht, einen Voi stellst du dort laut Karte aber nicht ab.',
+        '**Innenhafen:** Die Promenade an der Marina und der Garten der Erinnerung liegen in Vois Abstellverbotszone am Wasser. Beende die Fahrt vorher und geh die letzten Meter.',
+        '**Landschaftspark Duisburg-Nord:** Der Park ist laut Betreiber das ganze Jahr rund um die Uhr offen, Eintritt frei; abends leuchtet die Lichtinstallation. Eine eigene Regel für E-Scooter nennt der Park nicht; Voi sperrt dort aber die Rückgabe.',
         '**MSV-Spiele und Zoo:** Stadion und Zoo liegen ausserhalb des Voi-Gebiets. Mit Voi beendest du die Fahrt also vorher. Aufs Zoogelände darfst du laut Zooordnung keinen E-Scooter mitnehmen.',
-        '**Universität Duisburg-Essen:** Die Gebäude an Lotharstrasse und Bismarckstrasse in Neudorf liegen laut Karte im Voi-Gebiet, ohne Abstellverbot (Stand 24. Oktober 2026).',
+        '**Universität Duisburg-Essen:** Die Gebäude an Lotharstrasse und Bismarckstrasse in Neudorf liegen laut Vois Daten in seinem Gebiet, ohne Abstellverbot (Stand 24. Oktober 2026).',
         '**Oberhausen und Mülheim:** Voi hat für Duisburg und Oberhausen ein gemeinsames Gebiet: Von Meiderich oder Hamborn fährst du ohne neue Miete bis zum Centro. Mülheim liegt ausserhalb. Freie Voi-, Dott-, Bolt- und Lime-Scooter in Oberhausen zeigt die [Karte von Oberhausen](map:de:Oberhausen); was dort gilt, steht in [E-Scooter in Oberhausen](guide:oberhausen). Wie es in Essen läuft, steht in [E-Scooter in Essen](guide:essen).',
       ],
     },
@@ -134,7 +134,7 @@ const guide: Guide = {
     },
     {
       question: 'Warum kann ich meine Fahrt auf der Königstrasse oder am Innenhafen nicht beenden?',
-      answer: 'Weil Voi dort die Rückgabe sperrt: laut Karte in der Fussgängerzone der Innenstadt, am Innenhafen und auf einem Streifen entlang von Rhein und Häfen (Stand 24. Oktober 2026). Die Stadt selbst verbietet das Abstellen dort nicht; die anderen Anbieter zeigen ihre Sperrbereiche in der App. Schieb den Scooter hinaus und beende die Fahrt dort, sonst läuft die Miete weiter.',
+      answer: 'Weil Voi dort die Rückgabe sperrt, laut seinen Daten in der Fussgängerzone der Innenstadt, am Innenhafen und auf einem Streifen entlang von Rhein und Häfen (Stand 24. Oktober 2026). Die Stadt selbst verbietet das Abstellen dort nicht; die anderen Anbieter zeigen ihre Sperrbereiche in der App. Schieb den Scooter hinaus und beende die Fahrt dort, sonst läuft die Miete weiter.',
     },
     {
       question: 'Darf ich einen E-Scooter in Bus oder Bahn der DVG mitnehmen?',

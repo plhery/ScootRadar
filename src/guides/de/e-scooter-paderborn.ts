@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-Scooter Paderborn: Anbieter, Preise, Parken und Verbote',
   lede: 'E-Scooter in Paderborn leihst du laut Stadt bei Voi, Dott und Bolt; sie vermieten erst ab 18, einen Führerschein brauchst du nicht. Voi verlangt laut seinem veröffentlichten Tarif 0,49 € fürs Entsperren und 0,24 € pro Minute, zehn Minuten kosten also 2,89 € (Stand 25. Oktober 2026); Dott und Bolt zeigen ihren Preis in der App. Du fährst auf dem Radweg, sonst auf der Fahrbahn, nicht auf dem Gehweg und nicht durch die Fussgängerzone um Westernstrasse und Marienplatz. Abstellen dürfen die Verleiher laut Stadt nicht in Fussgängerzonen und Parks, an Haltestellen, auf Brücken und auf dem Vorplatz des Hauptbahnhofs; im Inneren Ring gelten die Abstellzonen der App. In die Busse von PaderSprinter darfst du seit 1. April 2024 keinen E-Scooter mehr mitnehmen.',
   published: '2026-10-25',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'de:Paderborn',
   sections: [
     {
@@ -19,7 +19,7 @@ const guide: Guide = {
         'Die Stadt nennt auf ihrer Seite «Mobilitätsangebote in Paderborn» (Stand 8. April 2026) drei Anbieter: **TIER**, das heute **Dott** heisst, seit Dezember 2019; **Bolt** seit Dezember 2021, in der Kernstadt und in Schloss Neuhaus; **Voi** seit April 2025. «Insgesamt dürfen 1.200 E-Scooter in Paderborn fahren», schreibt sie; ihr Serviceportal nennt Tier/Dott, Bolt und Voi. Voi startete laut eigener Mitteilung am 10. April 2025 mit rund 400 Scootern. Bolt nennt auf seiner Paderborn-Seite als Kategorien «E-Scooter» und «E-Scooter auf Abruf», keine E-Bikes. Lime nannte die Stadt im Januar 2024 noch, heute nicht mehr.',
         'Gemietet wird in der App des Anbieters, laut deren Bedingungen erst ab 18, obwohl das Gesetz E-Scooter ab 14 erlaubt. Schritt für Schritt: [So mietest du einen E-Scooter](guide:how-to-rent).',
         'Die Sondernutzungssatzung der Stadt (Fassung ab 1. März 2026) verlangt von Verleihern eine Erlaubnis und begrenzt die Zahl der Leih-Scooter im Stadtgebiet «auf maximal 1.200» (§ 2); je Scooter und angefangenem Kalendermonat zahlt der Anbieter 3,80 € (Gebührentarif Nr. 15). Obergrenze und Gebühr binden die Anbieter, nicht dich.',
-        'Die [Karte von Paderborn](map:de:Paderborn) zeigt Voi, Dott und seit dem 25. Oktober Bolt: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 710 freie Scooter, rund 420 von Voi und knapp 300 von Dott, kurz nach Mitternacht knapp 700. Das ist eine Momentaufnahme, keine Flottengrösse. Am Sonntagmorgen standen alle Voi- und Dott-Scooter in der Stadt: rund 600 in der Kernstadt, gut 80 in Schloss Neuhaus, gut 20 in Elsen. Für Voi zeigt die Karte auch Fahrgebiet, Parkverbots- und Abstellzonen, für Dott nur Standorte. Von Bolt zeigte die Karte am Sonntag kurz vor 14 Uhr knapp 300 Scooter, mit Standort und Akkustand.',
+        'Die [Karte von Paderborn](map:de:Paderborn) zeigt Voi, Dott und seit dem 25. Oktober Bolt: am Samstag, 24. Oktober 2026, kurz vor 16 Uhr rund 710 freie Scooter, rund 420 von Voi und knapp 300 von Dott, kurz nach Mitternacht knapp 700. Das ist eine Momentaufnahme, keine Flottengrösse. Am Sonntagmorgen standen alle Voi- und Dott-Scooter in der Stadt: rund 600 in der Kernstadt, gut 80 in Schloss Neuhaus, gut 20 in Elsen. Für Voi zeigt die Karte auch Abstellzonen, mit der Einstellung «Fahr- und Parkzonen» auch Parkverbotszonen; für Dott nur Standorte. Von Bolt zeigte die Karte am Sonntag kurz vor 14 Uhr knapp 300 Scooter, mit Standort und Akkustand.',
       ],
     },
     {
@@ -60,7 +60,7 @@ const guide: Guide = {
               ['Fussgängerzone mit Westernstrasse, Königsplatz, Marienplatz, Rathausplatz, Schildern, Kamp und Markt', 'Absteigen und schieben; Leih-Scooter nicht abstellen', 'Bund; Stadt, Auflagen für Verleiher (2023)'],
               ['Paderquellgebiet, Inselspitzweg, Geisselscher Garten, Haxthausenhof, Belleville-Promenade, Bürgerpark, Fischteiche, Wilhelmsberg, Schützenplatz', 'Leih-Scooter nicht abstellen', 'Stadt, Auflagen für Verleiher (2023)'],
               ['Alle übrigen Parks und Grünanlagen', 'Fahren «ausschliesslich auf den für Radfahrer gekennzeichneten Wegen»; Leih-Scooter nicht abstellen', 'Stadt, Auflagen für Verleiher (2023)'],
-              ['Ausserhalb von Vois Fahrgebiet, etwa Marienloh, Benhausen, Neuenbeken, Dahl, Bad Lippspringe, Flughafen', 'Mit Voi nicht fahren und keine Fahrt beenden', 'Voi, laut Karte'],
+              ['Ausserhalb von Vois Fahrgebiet, etwa Marienloh, Benhausen, Neuenbeken, Dahl, Bad Lippspringe, Flughafen', 'Mit Voi nicht fahren und keine Fahrt beenden', 'Voi, laut seinen Daten'],
             ],
           },
         },
@@ -80,7 +80,7 @@ const guide: Guide = {
             'auf Brücken.',
           ],
         },
-        'Wo die Anbieter Scooter aufstellen, stehen «maximal 5 E-Roller», 50 m vom nächsten Standort entfernt. Im Inneren Ring musst du laut Stadt die Abstellzonen der App einhalten. Bei Voi ist laut [Karte](map:de:Paderborn) die ganze Innenstadt zwischen Westerntor, Dom, Paderquellgebiet und Maspernplatz Parkverbotszone, ebenso der Hauptbahnhof; dort beendest du die Fahrt nur in einer der gut 20 Voi-Abstellzonen, etwa am Westerntor, am Marienplatz oder an der Zone Hauptbahnhof Nord. Weitere Voi-Parkverbotszonen liegen in den Paderauen, im Schlosspark von Schloss Neuhaus, am Lippesee, im Bürgerpark und am Sportgelände der Universität. Das sind Vois eigene Regeln, Stand 25. Oktober 2026.',
+        'Wo die Anbieter Scooter aufstellen, stehen «maximal 5 E-Roller», 50 m vom nächsten Standort entfernt. Im Inneren Ring musst du laut Stadt die Abstellzonen der App einhalten. Bei Voi ist laut seinen Daten vom 25. Oktober 2026 die ganze Innenstadt zwischen Westerntor, Dom, Paderquellgebiet und Maspernplatz Parkverbotszone, ebenso der Hauptbahnhof; dort beendest du die Fahrt nur in einer der gut 20 Voi-Abstellzonen, etwa am Westerntor, am Marienplatz oder an der Zone Hauptbahnhof Nord. Weitere Voi-Parkverbotszonen liegen in den Paderauen, im Schlosspark von Schloss Neuhaus, am Lippesee, im Bürgerpark und am Sportgelände der Universität.',
         {
           note: 'Lässt dich die App die Fahrt nicht beenden, fahr zur nächsten Abstellzone: Solange die Fahrt läuft, zahlst du weiter.',
         },
@@ -118,8 +118,8 @@ const guide: Guide = {
         {
           list: [
             '**Hauptbahnhof:** gut 60 Scooter im Umkreis von 500 m; auf dem Vorplatz dürfen die Verleiher nicht abstellen.',
-            '**Universität:** gut 30 Scooter im Umkreis von 500 m um den Campus an der Warburger Strasse; dort zeigt die Karte kein Voi-Parkverbot. Vom Hauptbahnhof fahren laut Uni die Buslinien 1, 4, 6 und 100.',
-            '**Schloss Neuhaus:** knapp 20 Scooter im Umkreis von 1 km ums Schloss. Im Schlosspark beendest du laut Karte keine Voi-Fahrt.',
+            '**Universität:** gut 30 Scooter im Umkreis von 500 m um den Campus an der Warburger Strasse; dort nennen Vois Daten kein Parkverbot. Vom Hauptbahnhof fahren laut Uni die Buslinien 1, 4, 6 und 100.',
+            '**Schloss Neuhaus:** knapp 20 Scooter im Umkreis von 1 km ums Schloss. Im Schlosspark sperrt Voi die Rückgabe.',
             '**Libori:** Das grosse Fest füllt vom 23. Juli bis 1. August 2027 die Innenstadt, mit Kirmes und Pottmarkt. Eine Scooter-Regel dafür nennen weder Stadt noch PaderSprinter.',
             '**Home Deluxe Arena:** Die Stadionordnung verbietet, das Gelände ohne Erlaubnis mit Kraftfahrzeugen zu befahren; E-Scooter nennt sie nicht eigens. Die Arena hat 2000 Fahrradstellplätze, und die Eintrittskarte gilt zwei Stunden vor und nach dem Spiel in den Bussen von PaderSprinter.',
             '**Flughafen Paderborn/Lippstadt:** rund 20 km entfernt, ausserhalb von Vois Gebiet; zum Hauptbahnhof fahren laut Uni die Busse S60 und 460.',
@@ -144,7 +144,7 @@ const guide: Guide = {
     },
     {
       question: 'Darf ich mit dem E-Scooter durch die Paderauen oder den Schlosspark fahren?',
-      answer: 'Eine Satzung, die das für dich regelt, fanden wir nicht. In ihren Auflagen für die Verleiher schreibt die Stadt, in Parks sei das Fahren «ausschliesslich auf den für Radfahrer gekennzeichneten Wegen gestattet»; halte dich daran. Eine Voi-Fahrt beendest du dort laut Karte nicht.',
+      answer: 'Eine Satzung, die das für dich regelt, fanden wir nicht. In ihren Auflagen für die Verleiher schreibt die Stadt, in Parks sei das Fahren «ausschliesslich auf den für Radfahrer gekennzeichneten Wegen gestattet»; halte dich daran. Voi sperrt dort laut seinen Daten die Rückgabe (Stand 25. Oktober 2026).',
     },
     {
       question: 'Darf ich meinen E-Scooter im PaderSprinter-Bus mitnehmen?',
