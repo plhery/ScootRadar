@@ -439,6 +439,10 @@ it:
 
 - Veo Cleveland: Cleveland, Cleveland Heights, University Heights and South
   Euclid.
+- Bird Cleveland, since 26 October 2026: the same four and East Cleveland,
+  each a zone of its GBFS geofencing where rides may end. Veo's boxes, and East
+  Cleveland's outline plus 1 km. That afternoon (16:16 UTC) 9 of its scooters
+  stood in Cleveland Heights, 5 in South Euclid and 1 in University Heights.
 - Veo College Park: College Park and University Park.
 - Veo's Rutgers feed (`rut`): New Brunswick, Piscataway and Highland Park.
 - Veo's East Bay feed (`xeb`): Berkeley and Emeryville.
@@ -463,9 +467,10 @@ town, whichever feed lists it, so Bird's Los Angeles feed keeps its scooters
 in Santa Monica and they count under Santa Monica. After: 5 and 4 a poll, two
 within 2 m of a town line and three between Arlington and Washington or St.
 Paul and Minneapolis, left as boxes for so few. A feed keeps no scooter in an
-outlined town where its operator has no area: Bird Cleveland's 2 in
-Cleveland Heights, Veo Santa Monica's 1 or 2 in Culver City, Lime Oakland's 1
-in Emeryville and Veo Berkeley's 1 in Oakland are left out. Elsewhere,
+outlined town where its operator has no area: Veo Santa Monica's 1 or 2 in
+Culver City, Lime Oakland's 1 in Emeryville and Veo Berkeley's 1 in Oakland
+are left out (and Bird Cleveland's 2 in Cleveland Heights were, until its
+areas there on 26 October 2026). Elsewhere,
 including Canada (1 a poll, an Edmonton scooter under St. Albert), the
 boxes name nearly every scooter's town, and have no outlines.
 

@@ -505,9 +505,10 @@ banned shared scooters, and feeds that were empty when checked.
     and UCF are checked on 15 January 2027, and East Lansing on 15 April 2027.
   - **Outside their operator's towns:** since 15 October 2026 a feed keeps no
     scooter inside the outline of a town where its operator has no area, so
-    Bird Cleveland's 2 in Cleveland Heights, Veo Santa Monica's 1 or 2 in
-    Culver City, Lime Oakland's 1 in Emeryville and Veo Berkeley's 1 in
-    Oakland are left out.
+    Veo Santa Monica's 1 or 2 in Culver City, Lime Oakland's 1 in Emeryville
+    and Veo Berkeley's 1 in Oakland are left out. Bird Cleveland's in
+    Cleveland Heights, University Heights, South Euclid and East Cleveland
+    count there since 26 October 2026, where its zones let rides end.
   - **Lime Grand Rapids** lists no scooter. The city now names Veo its
     exclusive operator ([Mobile GR](https://www.grandrapidsmi.gov/departments/mobile-gr/mobility/shared-micromobility/)),
     and Lime's rider map held none there in a full-area audit on the evening

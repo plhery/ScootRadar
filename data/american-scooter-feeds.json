@@ -555,7 +555,77 @@
         "west": -81.89,
         "east": -81.5219
       },
-      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/cleveland/gbfs.json"
+      "discoveryUrl": "https://mds.bird.co/gbfs/v2/public/cleveland/gbfs.json",
+      "areas": [
+        {
+          "city": "Cleveland",
+          "center": [
+            41.4993,
+            -81.6944
+          ],
+          "bounds": {
+            "south": 41.3826,
+            "north": 41.6067,
+            "west": -81.89,
+            "east": -81.5219
+          }
+        },
+        {
+          "city": "Cleveland Heights",
+          "center": [
+            41.5201,
+            -81.5562
+          ],
+          "bounds": {
+            "south": 41.4869,
+            "north": 41.5454,
+            "west": -81.6067,
+            "east": -81.5204
+          }
+        },
+        {
+          "city": "University Heights",
+          "center": [
+            41.4978,
+            -81.5376
+          ],
+          "bounds": {
+            "south": 41.4799,
+            "north": 41.5091,
+            "west": -81.5607,
+            "east": -81.5152
+          },
+          "aliases": [
+            "John Carroll University"
+          ]
+        },
+        {
+          "city": "South Euclid",
+          "center": [
+            41.5231,
+            -81.5185
+          ],
+          "bounds": {
+            "south": 41.4924,
+            "north": 41.5469,
+            "west": -81.5532,
+            "east": -81.494
+          }
+        },
+        {
+          "city": "East Cleveland",
+          "center": [
+            41.5307,
+            -81.5785
+          ],
+          "bounds": {
+            "south": 41.5065,
+            "north": 41.557,
+            "west": -81.6106,
+            "east": -81.5439
+          }
+        }
+      ]
     },
     {
       "id": "bird_us_memphis",

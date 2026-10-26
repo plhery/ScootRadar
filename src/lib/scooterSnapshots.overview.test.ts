@@ -136,13 +136,15 @@ describe('the scooters a feed keeps', () => {
 
   it('are those in its areas and in no outlined town where its operator has none', () => {
     // Bird's Los Angeles feed keeps its scooters in Santa Monica, a town of Bird's own Santa Monica feed,
-    // and Ryde Stavanger's those over the line in Sandnes, at Forus, where it has an area.
+    // Ryde Stavanger's those over the line in Sandnes, at Forus, where it has an area, and Bird Cleveland's
+    // those in Cleveland Heights, where its zones let rides end.
     expect(systemServesPoint(system('bird_us_los_angeles'), 34.02194, -118.44807)).toBe(true);
     expect(systemServesPoint(system('ryde_no_stavanger'), 58.8879, 5.7091)).toBe(true);
+    expect(systemServesPoint(system('bird_us_cleveland'), 41.50636, -81.58994)).toBe(true);
     // Positions of 15 October 2026 inside the feeds' boxes, in towns where their operator has no area.
     for (const [id, town, lat, lng] of [
       ['bolt_no_oslo', 'Lørenskog', 59.94426, 10.94555], ['bolt_no_oslo', 'Bærum', 59.90797, 10.63792],
-      ['bird_us_cleveland', 'Cleveland Heights', 41.50636, -81.58994], ['veo_us_santa_monica', 'Culver City', 33.99147, -118.44615],
+      ['veo_us_santa_monica', 'Culver City', 33.99147, -118.44615],
       ['lime_us_oakland', 'Emeryville', 37.8285, -122.27838], ['veo_us_berkeley', 'Oakland', 37.84414, -122.28228],
     ] as const) {
       expect(serviceAreas(system(id)).some(area => area.bounds.south <= lat && lat <= area.bounds.north &&
