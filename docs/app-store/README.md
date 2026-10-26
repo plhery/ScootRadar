@@ -158,8 +158,8 @@ user in App Store Connect.
 The storefronts are the account holder's choice, set with the `availability`
 command below or on the web (Pricing and Availability).
 
-Since 26 October 2026 the app is offered in 126 of Apple's 175 storefronts.
-That is every storefront except the 49 where shared scooters or bikes are
+Since 26 October 2026 the app is offered in 140 of Apple's 175 storefronts.
+That is every storefront except the 35 where shared scooters or bikes are
 known to run but the map shows them poorly or not at all, so a local rider
 would find it thin or empty there. Countries with no known shared scooters or bikes
 are in, since there is nothing there for the map to miss. "New territories"
@@ -167,19 +167,17 @@ stays off, so Apple adds no storefront on its own.
 
 Left out, from the markets lane's readiness summary (in its notes, outside
 this public repository), as of 24 October 2026:
-- **Europe, thin on the map:** Portugal (Lisboa ends shared scooters by the
-  end of 2026, and Bolt publishes no feed), Greece, Latvia, Croatia, Cyprus,
-  Ukraine, Denmark (no Copenhagen), Czechia and Romania.
-- **Europe, nothing on the map:** the Netherlands, Slovakia, Bulgaria,
-  Lithuania, Estonia, Slovenia, Luxembourg, Ireland and Russia.
-- **Middle East and Africa:** the United Arab Emirates and Saudi Arabia (one
-  or two operators of several on the map), Qatar, Kuwait, Oman, Bahrain,
-  Jordan, Egypt, South Africa and Rwanda.
+- **Europe, thin on the map:** Croatia and Czechia.
+- **Europe, nothing on the map:** the Netherlands, Luxembourg, Ireland and
+  Russia.
+- **Middle East and Africa:** Saudi Arabia (one or two operators of several
+  on the map), Qatar, Kuwait, Oman, Bahrain, Jordan, Egypt, South Africa and
+  Rwanda.
 - **Asia:** China, Taiwan, Hong Kong, Singapore, Malaysia, Indonesia,
   Thailand, the Philippines, Vietnam, India, Armenia, Kyrgyzstan, Uzbekistan
   and Mongolia.
-- **Oceania and the Americas:** Australia, Mexico, Colombia, Peru,
-  Argentina, Costa Rica and the Dominican Republic.
+- **Oceania and the Americas:** Australia, Colombia, Peru, Argentina, Costa
+  Rica and the Dominican Republic.
 
 Added on 24 October 2026, once the app maps put them at "Almost": the United
 Kingdom, Italy, Sweden, Finland, Austria and Hungary, Japan, Brazil and Chile.
@@ -187,10 +185,15 @@ Kingdom, Italy, Sweden, Finland, Austria and Hungary, Japan, Brazil and Chile.
 Added on 26 October 2026, once version 1.1.0 knew their operators: South
 Korea, Turkey, Poland, Kazakhstan, Azerbaijan, Georgia and Belarus.
 
+Added on 26 October 2026, once version 1.2.0 (build 960) knew the towns of
+Bolt's and Lime's rider maps: Estonia, Lithuania, Latvia, Slovakia, Bulgaria,
+Slovenia, Romania, Portugal, Cyprus, Ukraine, Greece, Denmark, the United
+Arab Emirates and Mexico.
+
 A country joins once the map covers it, by adding its code to the list:
 
 ```
---territories AFG,AGO,AIA,ALB,ATG,AUT,AZE,BEL,BEN,BFA,BHS,BIH,BLR,BLZ,BMU,BOL,BRA,BRB,BRN,BTN,BWA,CAN,CHE,CHL,CIV,CMR,COD,COG,CPV,CYM,DEU,DMA,DZA,ECU,ESP,FIN,FJI,FRA,FSM,GAB,GBR,GEO,GHA,GMB,GNB,GRD,GTM,GUY,HND,HUN,IRQ,ISL,ISR,ITA,JAM,JPN,KAZ,KEN,KHM,KNA,KOR,LAO,LBN,LBR,LBY,LCA,LKA,MAC,MAR,MDA,MDG,MDV,MKD,MLI,MLT,MMR,MNE,MOZ,MRT,MSR,MUS,MWI,NAM,NER,NGA,NIC,NOR,NPL,NRU,NZL,PAK,PAN,PLW,PNG,POL,PRY,SEN,SLB,SLE,SLV,SRB,STP,SUR,SWE,SWZ,SYC,TCA,TCD,TJK,TKM,TON,TTO,TUN,TUR,TZA,UGA,URY,USA,VCT,VEN,VGB,VUT,XKS,YEM,ZMB,ZWE
+--territories AFG,AGO,AIA,ALB,ARE,ATG,AUT,AZE,BEL,BEN,BFA,BGR,BHS,BIH,BLR,BLZ,BMU,BOL,BRA,BRB,BRN,BTN,BWA,CAN,CHE,CHL,CIV,CMR,COD,COG,CPV,CYM,CYP,DEU,DMA,DNK,DZA,ECU,ESP,EST,FIN,FJI,FRA,FSM,GAB,GBR,GEO,GHA,GMB,GNB,GRC,GRD,GTM,GUY,HND,HUN,IRQ,ISL,ISR,ITA,JAM,JPN,KAZ,KEN,KHM,KNA,KOR,LAO,LBN,LBR,LBY,LCA,LKA,LTU,LVA,MAC,MAR,MDA,MDG,MDV,MEX,MKD,MLI,MLT,MMR,MNE,MOZ,MRT,MSR,MUS,MWI,NAM,NER,NGA,NIC,NOR,NPL,NRU,NZL,PAK,PAN,PLW,PNG,POL,PRT,PRY,ROU,SEN,SLB,SLE,SLV,SRB,STP,SUR,SVK,SVN,SWE,SWZ,SYC,TCA,TCD,TJK,TKM,TON,TTO,TUN,TUR,TZA,UGA,UKR,URY,USA,VCT,VEN,VGB,VUT,XKS,YEM,ZMB,ZWE
 ```
 
 Apple has no storefront for Bonaire (Caribbean Netherlands), so it cannot be
