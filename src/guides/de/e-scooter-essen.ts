@@ -131,12 +131,12 @@ const guide: Guide = {
         'Die Zentren von Mülheim, Oberhausen, Gelsenkirchen und Bochum liegen ausserhalb des Dott-Gebiets von Essen. Mit Dott beendest du die Fahrt also in Essen und mietest drüben neu, falls es dort Scooter gibt.',
         {
           list: [
-            '**Mülheim an der Ruhr:** Leih-Scooter seit März 2021, laut Ruhrbahn im Juli 2026 unter anderem von Dott. Die Stadt erlaubt höchstens 1000 Scooter insgesamt. Im Zentrum und in den Stadtteilzentren mietest du nur an Stationen, in Sperrzonen wie der MüGa beendest du keine Fahrt.',
+            '**Mülheim an der Ruhr:** Leih-Scooter seit März 2021, laut Ruhrbahn im Juli 2026 unter anderem von Dott. Die Stadt erlaubt höchstens 1000 Scooter insgesamt. Im Zentrum und in den Stadtteilzentren mietest du nur an Stationen und gibst dort auch zurück; in Sperrzonen wie der MüGa beendest du keine Fahrt. Mehr dazu in [E-Scooter in Mülheim an der Ruhr](guide:muelheim).',
             '**Gelsenkirchen:** Keine Leih-Scooter, Stand November 2025. Die Stadt verlangt seit 1. April 2024 eine einmalige Prüfung von Ausweis oder Führerschein; Bolt und TIER lehnten ab und zogen ihre Scooter ab.',
             '**Bochum:** Ryde startete laut Radio Bochum am 1. Juni 2026, nach eigenen Angaben mit rund 900 Scootern; den Preis zeigt die App.',
           ],
         },
-        'Auf der Karte siehst du seit dem 24. Oktober 2026 Dott und Voi in [Bochum](map:de:Bochum) und Oberhausen, Dott auch in [Mülheim](map:de:Mülheim an der Ruhr), und seit dem 25. Oktober in allen dreien Lime, in Bochum und Oberhausen auch Bolt; in Gelsenkirchen zeigt sie keine Scooter.',
+        'Auf der Karte siehst du seit dem 24. Oktober 2026 Dott und Voi in [Bochum](map:de:Bochum) und Oberhausen, Dott auch in [Mülheim](map:de:Mülheim an der Ruhr), und seit dem 25. Oktober in allen dreien Lime und Bolt; in Gelsenkirchen zeigt sie keine Scooter.',
       ],
     },
     {
