@@ -21,9 +21,9 @@ in Porto, Faro and Oeiras, and since 26 October 2026 in Tokyo and Yokohama,
 in Port Phillip, in Auckland, Christchurch, Hamilton, Wellington and
 Palmerston North, in Monterrey and Guadalupe, in Ajax, Coquitlam,
 Laval, Montréal's Parc Jean-Drapeau, Port Moody, Richmond and Vaughan, in
-45 American towns, from Los Angeles and Austin to Milwaukee and Tampa, in
+51 American towns, from Los Angeles and Austin to Milwaukee and Tampa, in
 Ashdod and Eilat, and in Dubai, Abu Dhabi and Al Ain.
-The other markets its rider map lists, 27 found so far, are added country by
+The other markets its rider map lists, 21 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -458,7 +458,7 @@ banned shared scooters, and feeds that were empty when checked.
   - Systems 65, 67 and 68 on 3electra's host answer 400.
 
 - **United States** ([guide](american-scooter-feeds.md)): Hopp (Bolt) and Veo
-  in Washington, DC, Bird in 24 towns, Lime in 62 (45 of them from its rider
+  in Washington, DC, Bird in 24 towns, Lime in 68 (51 of them from its rider
   map since 26 October 2026), Veo in 39 more, Spin in 29 and Lyft in Chicago
   and Portland are covered.
   - **No public feed:** a survey on 16 October 2026 found no unread US feed.
@@ -466,20 +466,20 @@ banned shared scooters, and feeds that were empty when checked.
     public dashboards and the Bureau of Transportation Statistics'
     [2026 list](https://data.bts.gov/d/cqdc-cm7d).
     - **Lime** publishes nothing for most of its American towns. Its rider
-      map has supplied 45 of them since 26 October 2026, about 42,700
+      map has supplied 51 of them since 26 October 2026, about 45,900
       scooters: Los Angeles, Austin, Milwaukee, Portland, OR (beside Lyft),
-      Salt Lake City (beside Spin and Veo), Spokane, Dallas (beside Bird),
-      Minneapolis (beside Spin), Boise, Tampa, Sacramento, Phoenix (beside
-      Spin), Indianapolis, St. Paul (beside Spin), Boulder, Charlotte, Orlando,
-      Nashville (beside Bird and Spin), Omaha, Tulsa, St. Petersburg, Oklahoma
-      City, Raleigh, Mobile, Corpus Christi, Lubbock, Little Rock, Rochester,
-      MN, Winston-Salem, Cincinnati, South Lake Tahoe, Montgomery County, MD,
-      Jacksonville, Isla Vista, Lansing, Scottsdale, Arvada, Spokane Valley,
-      West Sacramento, Richmond (beside Bird and Spin), Edmond, Fairfax, St.
-      Louis Park, Jenks and Tualatin
+      Salt Lake City (beside Spin and Veo), Spokane, Dallas (beside Bird), Long
+      Beach, Minneapolis (beside Spin), Boise, Tampa, Sacramento, Phoenix
+      (beside Spin), Indianapolis, Albuquerque, St. Paul (beside Spin),
+      Boulder, Charlotte, Orlando, Nashville (beside Bird and Spin), Omaha,
+      Tulsa, St. Petersburg, Oklahoma City, Raleigh, Mobile, Corpus Christi,
+      Lubbock, Little Rock, Rochester, MN, Grand Junction, Winston-Salem,
+      Cincinnati, South Lake Tahoe, Montgomery County, MD, Jacksonville,
+      Knoxville, Isla Vista, Lansing, Scottsdale, Arvada, Spokane Valley, West
+      Sacramento, Richmond (beside Bird and Spin), Edmond, Clearfield,
+      Fairfax, St. Louis Park, Jenks, North Salt Lake and Tualatin
       ([guide](american-scooter-feeds.md#lime-supplement--26-october-2026)).
-      Still without one: Alexandria, Albuquerque, Tucson, Long Beach and
-      smaller towns.
+      Still without one: Alexandria, Tucson and smaller towns.
     - **Bird** in Austin, beside Lime's 3,282 scooters (the two had about
       5,400 together), and in Charlotte, Sacramento, Oklahoma City and Bloomington, IN
       (about 220).

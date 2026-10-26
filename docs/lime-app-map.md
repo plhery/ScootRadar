@@ -218,6 +218,7 @@ stationary reference scooter, country by country:
 | 26 October 2026 | United States: Dallas, Minneapolis, St. Paul, Nashville, Omaha, Montgomery County, Jacksonville, Richmond, St. Louis Park | 1,318 | 333 | 6,124 | 319 |
 | 26 October 2026 | United States: Charlotte | 143 | 36 | 767 | 79 |
 | 26 October 2026 | United States: Austin, Milwaukee, Tulsa, Oklahoma City, Mobile, Corpus Christi, Lubbock, Little Rock, Rochester, Edmond, Jenks | 1,902 | 462 | 9,235 | 725 |
+| 26 October 2026 | United States: Long Beach, Albuquerque, Grand Junction, Knoxville, Clearfield, North Salt Lake | 619 | 158 | 3,150 | 208 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

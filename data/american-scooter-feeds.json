@@ -3725,6 +3725,144 @@
         "lngStep": 0.01665823755010836,
         "cells": "4-10,14-22,25-34,37-46,49-95,97-107,109-140,145-152,157-160,169-170"
       }
+    },
+    {
+      "id": "lime_us_app_albuquerque",
+      "provider": "lime",
+      "city": "Albuquerque",
+      "region": "NM",
+      "center": [
+        35.08449,
+        -106.65114
+      ],
+      "timeZone": "America/Denver",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "CMD5QBCUJJPRC",
+      "limeMapGrid": {
+        "south": 34.94712,
+        "west": -106.87279,
+        "north": 35.21795,
+        "east": -106.47118,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.016438915303601493,
+        "cells": "12-18,38-43,63-68,84,88-93,109-110,115-118,132-134,139-142,156-159,162-167,181-184,187-193,195-198,207-223,231-249,256-274,281-299,307-323,325-348,350-412,415-421,425-438,440-445,456-463,466-470,482-489,491-492,508-512"
+      }
+    },
+    {
+      "id": "lime_us_app_clearfield",
+      "provider": "lime",
+      "city": "Clearfield",
+      "region": "UT",
+      "center": [
+        41.11078,
+        -112.02605
+      ],
+      "timeZone": "America/Denver",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "6XZLNX7U6SX6C",
+      "limeMapGrid": {
+        "south": 41.05624,
+        "west": -112.1162,
+        "north": 41.17441,
+        "east": -111.93992,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.017869365657540544,
+        "cells": "1-4,10-16,20-39,41-49,53-59,64-68,74-77,85-86"
+      }
+    },
+    {
+      "id": "lime_us_app_grand_junction",
+      "provider": "lime",
+      "city": "Grand Junction",
+      "region": "CO",
+      "center": [
+        39.06387,
+        -108.55065
+      ],
+      "timeZone": "America/Denver",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "C2XQTGOXASM2W",
+      "limeMapGrid": {
+        "south": 39.01948,
+        "west": -108.6827,
+        "north": 39.15338,
+        "east": -108.45946,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01734343343538655,
+        "cells": "6-11,14-17,19-24,27-89,92-102,105-108,110-114,118-120,123-125"
+      }
+    },
+    {
+      "id": "lime_us_app_knoxville",
+      "provider": "lime",
+      "city": "Knoxville",
+      "region": "TN",
+      "center": [
+        35.96064,
+        -83.92074
+      ],
+      "timeZone": "America/New_York",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "AFBHZUVA2KHHS",
+      "limeMapGrid": {
+        "south": 35.94176,
+        "west": -83.95538,
+        "north": 35.99483,
+        "east": -83.87828,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.016643322402773615,
+        "cells": "0-2,5-8,10-19"
+      }
+    },
+    {
+      "id": "lime_us_app_long_beach",
+      "provider": "lime",
+      "city": "Long Beach",
+      "region": "CA",
+      "center": [
+        33.76696,
+        -118.18923
+      ],
+      "timeZone": "America/Los_Angeles",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "ZYJJ72EMTLKEL",
+      "limeMapGrid": {
+        "south": 33.70449,
+        "west": -118.32091,
+        "north": 33.88545,
+        "east": -118.06354,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.016197253638315156,
+        "cells": "0-3,16-19,32-34,38-40,44,48-51,54-56,58-61,64-77,80-94,96-110,117-127,133-143,150-158,166-172,183-186,199-202,215-218"
+      }
+    },
+    {
+      "id": "lime_us_app_north_salt_lake",
+      "provider": "lime",
+      "city": "North Salt Lake",
+      "region": "UT",
+      "center": [
+        40.84856,
+        -111.90688
+      ],
+      "timeZone": "America/Denver",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "6XZLNX7U6SX6C",
+      "limeMapGrid": {
+        "south": 40.82278,
+        "west": -111.96349,
+        "north": 40.86667,
+        "east": -111.86033,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01780631789942095,
+        "cells": "0-4,6-22"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
@@ -3767,6 +3905,9 @@
     "https://assets.lime.bike/zones_attributes/Milwaukee_6280_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Mobile_1847_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Oklahoma_City_38422_exclude_new_type.json",
-    "https://assets.lime.bike/zones_attributes/Rochester_1233_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Rochester_1233_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Albuquerque_597_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Grand_Junction_768_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Knoxville_1467_exclude_new_type.json"
   ]
 }

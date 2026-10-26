@@ -14,8 +14,8 @@ other account credentials are used. The catalog is
 [`american-scooter-feeds.json`](../data/american-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
-The map covers 120 towns in 33 states and the District: Washington, DC
-(Hopp, Veo and Lime), 24 towns of Bird's, 62 of Lime's (45 from its rider
+The map covers 126 towns in 34 states and the District: Washington, DC
+(Hopp, Veo and Lime), 24 towns of Bird's, 68 of Lime's (51 from its rider
 map), 39 more of Veo's, 29 of Spin's, Lyft's Chicago and Portland, and GCOO's
 Los Angeles, Arlington and Alexandria, Virginia. In 32 of them, from Tempe and
 the Bronx to Chicago and Columbus, two or three operators run, and the map
@@ -62,10 +62,10 @@ In the early hours of 26 October, Mountain time: Salt Lake City (1,942,
 beside Spin's and Veo's), Boise (1,415), Phoenix (1,074, beside Spin's),
 Boulder (800), Scottsdale (162) and Arvada (139). None of these towns' rules
 sets riding hours; Boulder's 2021 pilot did, and Lime's map held its 800
-scooters at 03:18 (see [Night bans](#night-bans)). Albuquerque, Clearfield,
-Farmington, Grand Junction and North Salt Lake wait for another audit by day:
-the night's left no stationary scooter to check against, or, in Albuquerque,
-mixed in a scan from the evening before.
+scooters at 03:18 (see [Night bans](#night-bans)). The night's audits left
+Albuquerque, Clearfield, Farmington, Grand Junction and North Salt Lake no
+stationary scooter to check against, or, in Albuquerque, mixed in a scan from
+the evening before; all but Farmington passed by day (below).
 Lime's Charleston region held no scooter: Lime runs an e-bike programme there
 with MUSC Health. Nor did Grand Rapids', where the city made Veo its only
 shared scooter and bike operator from 1 September 2026, nor Carthage,
@@ -102,6 +102,17 @@ operator offer its scooters 24 hours a day, and Austin's director rules,
 Oklahoma City's, Tulsa's, Jenks's and Little Rock's codes, Corpus Christi's
 licence agreements and Lubbock's ordinance set no hours. Rochester's season
 runs from spring until the snow; Lime came back on 13 April 2026.
+
+Audited again on the afternoon of 26 October, local time: Long Beach (1,676),
+Albuquerque (919), Grand Junction (251), Knoxville (208), Clearfield (76) and
+North Salt Lake (20). Long Beach's program regulations (August 2026) and
+Albuquerque's permit (revised 9 August 2024) set no riding hours, and none
+was found for the others. Long Beach's first audit, by night, missed one
+stationary scooter. In Knoxville, Lime's map held no scooter at 00:30 that
+night; its 2020 pilot let scooters run from 07:00 to 21:00, and guides give
+07:00 to 23:00, but the city's scooter pages are gone from its new website,
+so the map holds no night ban there. Farmington, Utah, showed 2 scooters and
+none stationary to check against, and waits for another audit.
 
 ## Washington, DC
 

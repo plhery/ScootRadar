@@ -2963,6 +2963,108 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Tulsa_848_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Albuquerque",
+      "regionToken": "CMD5QBCUJJPRC",
+      "fingerprint": "354261ae81f5dcb67954892d0f2860f56931fbdaf9ccdb4b8261b19380a14934",
+      "groups": 75,
+      "localCells": 297,
+      "coldMapRequests": 297,
+      "warmMapRequests": 297,
+      "scooters": 919,
+      "stationaryReferences": 65,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T21:39:44.886Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Albuquerque_597_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Clearfield",
+      "regionToken": "6XZLNX7U6SX6C",
+      "fingerprint": "c8dc9a7f6f79c2a4ef7c36318cb0e63a342cb101f139c60095a6aaac58a4fb4c",
+      "groups": 15,
+      "localCells": 58,
+      "coldMapRequests": 58,
+      "warmMapRequests": 58,
+      "scooters": 76,
+      "stationaryReferences": 3,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T21:46:44.750Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Salt_Lake_City_6050_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Grand Junction",
+      "regionToken": "C2XQTGOXASM2W",
+      "fingerprint": "1893412f7ac116759ed32e89c2d50332d8e9da612e5207cff649cd948bcd912e",
+      "groups": 27,
+      "localCells": 105,
+      "coldMapRequests": 105,
+      "warmMapRequests": 105,
+      "scooters": 251,
+      "stationaryReferences": 3,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T22:03:32.843Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Grand_Junction_768_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Knoxville",
+      "regionToken": "AFBHZUVA2KHHS",
+      "fingerprint": "1031678640b94e77d3ae66f47fecc4664c79e707385913a306e50e308cdc46aa",
+      "groups": 5,
+      "localCells": 17,
+      "coldMapRequests": 17,
+      "warmMapRequests": 17,
+      "scooters": 208,
+      "stationaryReferences": 62,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T22:05:45.985Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Knoxville_1467_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Long Beach",
+      "regionToken": "ZYJJ72EMTLKEL",
+      "fingerprint": "a6a83146b0e05c2369cbf3b7c7ef1c9473ac50808d32daa2e3f461be1cf44c78",
+      "groups": 30,
+      "localCells": 120,
+      "coldMapRequests": 120,
+      "warmMapRequests": 120,
+      "scooters": 1676,
+      "stationaryReferences": 73,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T22:19:59.882Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Los_Angeles_12090_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "North Salt Lake",
+      "regionToken": "6XZLNX7U6SX6C",
+      "fingerprint": "a4facfa969101cd05f8a654862099d126ee048074b9d711c6520886439352631",
+      "groups": 6,
+      "localCells": 22,
+      "coldMapRequests": 22,
+      "warmMapRequests": 22,
+      "scooters": 20,
+      "stationaryReferences": 2,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T22:22:54.750Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Salt_Lake_City_6050_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

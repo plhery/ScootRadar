@@ -51,18 +51,20 @@ describe('the United States', () => {
   it('reads Lime\'s rider map where Lime publishes no feed, each market under the town the map lists', () => {
     // Lime's towns with no public feed: its rider map, read in small groups, since 26 October 2026.
     const lime = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'US' && entry.limeAppMap);
-    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Arvada', 'Austin', 'Boise', 'Boulder', 'Charlotte', 'Cincinnati',
-      'Corpus Christi', 'Dallas', 'Edmond', 'Fairfax', 'Indianapolis', 'Isla Vista', 'Jacksonville', 'Jenks', 'Lansing', 'Little Rock',
-      'Los Angeles', 'Lubbock', 'Milwaukee', 'Minneapolis', 'Mobile', 'Montgomery County', 'Nashville', 'Oklahoma City', 'Omaha', 'Orlando',
-      'Phoenix', 'Portland', 'Raleigh', 'Richmond', 'Rochester', 'Sacramento', 'Salt Lake City', 'Scottsdale', 'South Lake Tahoe', 'Spokane',
-      'Spokane Valley', 'St. Louis Park', 'St. Paul', 'St. Petersburg', 'Tampa', 'Tualatin', 'Tulsa', 'West Sacramento', 'Winston-Salem']);
+    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Albuquerque', 'Arvada', 'Austin', 'Boise', 'Boulder', 'Charlotte',
+      'Cincinnati', 'Clearfield', 'Corpus Christi', 'Dallas', 'Edmond', 'Fairfax', 'Grand Junction', 'Indianapolis', 'Isla Vista',
+      'Jacksonville', 'Jenks', 'Knoxville', 'Lansing', 'Little Rock', 'Long Beach', 'Los Angeles', 'Lubbock', 'Milwaukee', 'Minneapolis',
+      'Mobile', 'Montgomery County', 'Nashville', 'North Salt Lake', 'Oklahoma City', 'Omaha', 'Orlando', 'Phoenix', 'Portland', 'Raleigh',
+      'Richmond', 'Rochester', 'Sacramento', 'Salt Lake City', 'Scottsdale', 'South Lake Tahoe', 'Spokane', 'Spokane Valley',
+      'St. Louis Park', 'St. Paul', 'St. Petersburg', 'Tampa', 'Tualatin', 'Tulsa', 'West Sacramento', 'Winston-Salem']);
     for (const id of ['us:nc:Raleigh', 'us:in:Indianapolis', 'us:va:Fairfax', 'us:oh:Cincinnati', 'us:fl:Tampa', 'us:fl:Orlando',
       'us:fl:St. Petersburg', 'us:nc:Winston-Salem', 'us:mi:Lansing', 'us:ca:Los Angeles', 'us:or:Portland', 'us:ca:Sacramento',
       'us:ca:West Sacramento', 'us:wa:Spokane', 'us:wa:Spokane Valley', 'us:or:Tualatin', 'us:ca:Isla Vista', 'us:ca:South Lake Tahoe',
       'us:ut:Salt Lake City', 'us:id:Boise', 'us:az:Phoenix', 'us:co:Boulder', 'us:az:Scottsdale', 'us:co:Arvada', 'us:tx:Dallas',
       'us:fl:Jacksonville', 'us:mn:Minneapolis', 'us:md:Montgomery County', 'us:tn:Nashville', 'us:ne:Omaha', 'us:va:Richmond',
       'us:mn:St. Louis Park', 'us:mn:St. Paul', 'us:nc:Charlotte', 'us:tx:Austin', 'us:tx:Corpus Christi', 'us:ok:Edmond', 'us:ok:Jenks',
-      'us:ar:Little Rock', 'us:tx:Lubbock', 'us:wi:Milwaukee', 'us:al:Mobile', 'us:ok:Oklahoma City', 'us:mn:Rochester', 'us:ok:Tulsa']) {
+      'us:ar:Little Rock', 'us:tx:Lubbock', 'us:wi:Milwaukee', 'us:al:Mobile', 'us:ok:Oklahoma City', 'us:mn:Rochester', 'us:ok:Tulsa',
+      'us:nm:Albuquerque', 'us:ut:Clearfield', 'us:co:Grand Junction', 'us:tn:Knoxville', 'us:ca:Long Beach', 'us:ut:North Salt Lake']) {
       expect(REGIONAL_SCOOTER_CITIES.filter(city => city.id === id), id).toHaveLength(1);
     }
     expect(lime.find(entry => entry.city === 'Indianapolis')?.timeZone).toBe('America/Indiana/Indianapolis');
