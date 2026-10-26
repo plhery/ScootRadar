@@ -67,14 +67,25 @@ describe('Beam H3 collection', () => {
       scooter({ id: 5, latitude: -20 }), scooter({ id: 6, formFactor: '' })], region);
     expect(vehicles).toEqual([{ provider: 'beam', vehicle_id: 'beam:91', lat: -12.46, lng: 130.85, battery: 80,
       range_m: null, deep_link: null, distance_m: null }]);
-    for (const payload of [undefined, { errors: ['Unauthorized'] }, [scooter({ id: '91' })],
-      [scooter({ formFactor: undefined })], [scooter({ cityId: undefined })],
-      [scooter({ longitude: NaN })]]) expect(() => parseBeamVehicles(payload, region)).toThrow('Invalid Beam');
-    // The error says which field Beam sent wrong, as the logs and Sentry show only the message.
-    expect(() => parseBeamVehicles([scooter({ latitude: 91 })], region)).toThrow('Invalid Beam scooter latitude 91');
-    expect(() => parseBeamVehicles([scooter({ longitude: NaN })], region)).toThrow('Invalid Beam scooter longitude null');
-    expect(() => parseBeamVehicles([scooter({ id: '91' })], region)).toThrow('Invalid Beam scooter id "91"');
+    for (const payload of [undefined, { errors: ['Unauthorized'] }, [scooter({ formFactor: undefined })]]) {
+      expect(() => parseBeamVehicles(payload, region)).toThrow('Invalid Beam');
+    }
     expect(parseBeamVehicles([], region)).toEqual([]);
+  });
+
+  it('leaves out a malformed scooter, and fails the collection only when every one is', async () => {
+    // Each says which field Beam sent wrong, as the logs and Sentry show only the message.
+    const malformed: string[] = [];
+    expect(parseBeamVehicles([scooter({ latitude: 91 }), scooter({ id: 92, longitude: NaN }), scooter({ id: '93' }),
+      scooter({ id: 94, cityId: undefined }), scooter({ id: 95 })], region, malformed).map(vehicle => vehicle.vehicle_id)).toEqual(['beam:95']);
+    expect(malformed).toEqual(['latitude 91', 'longitude null', 'id "93"', 'cityId undefined']);
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const kept = await collectBeamRegion(region, { vehicles: async () => [scooter({ latitude: 91 }), scooter({ id: 95 })] });
+    expect(kept.vehicles.map(vehicle => vehicle.vehicle_id)).toEqual(['beam:95']);
+    expect(JSON.parse(String(warn.mock.calls[0][0]))).toEqual({ event: 'beam_scooters_malformed', system: region.id, count: 1, first: 'latitude 91' });
+    warn.mockRestore();
+    await expect(collectBeamRegion(region, { vehicles: async () => [scooter({ latitude: 91 })] }))
+      .rejects.toThrow('Invalid Beam scooter latitude 91');
   });
 
   it('keeps a scooter whose charge Beam does not know, with none', () => {

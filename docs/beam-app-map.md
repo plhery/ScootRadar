@@ -39,8 +39,12 @@ observed unclassified empty form factor are excluded. Markers use stable
 `beam:<numeric id>` identities, coordinates and percentage charge. Range,
 price and per-vehicle rental links remain unknown. Each response is filtered
 by the reviewed `cityId` and bounds, because overlapping H3 cells also contain
-neighboring regions' scooters. An unknown nonempty form factor or malformed
-standing scooter fails the collection instead of silently replacing its map.
+neighboring regions' scooters. An unknown nonempty form factor fails the
+collection instead of silently replacing its map. A standing scooter whose id,
+city or position is malformed is left out and logged as
+`beam_scooters_malformed`, with its first wrong field; the collection fails
+only when every scooter is, as a change of Beam's format would make them. A
+charge outside 0 to 100 is unknown.
 
 Each city's reviewed envelope is covered by overlapping resolution-8 H3 cells,
 including cells crossing its boundary. Batches contain at most 500 cells. Eight

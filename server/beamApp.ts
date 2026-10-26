@@ -217,7 +217,12 @@ function invalidBeamField(v: Record<string, unknown>) {
     : typeof v.latitude !== 'number' || !Number.isFinite(v.latitude) || Math.abs(v.latitude) > 85 ? 'latitude' : 'longitude';
   return `${field} ${String(JSON.stringify(v[field])).slice(0, 20)}`;
 }
-export function parseBeamVehicles(payload: unknown, system: RegionalScooterSystem): BeamScooter[] {
+/**
+ * The standing scooters of a reply in the system's city and bounds. A scooter whose id, city or
+ * position fails the checks is left out, its first wrong field added to `malformed`: one such
+ * scooter used to fail its whole region's collection.
+ */
+export function parseBeamVehicles(payload: unknown, system: RegionalScooterSystem, malformed: string[] = []): BeamScooter[] {
   if (!Array.isArray(payload) || payload.length > 30_000) throw new Error('Invalid Beam vehicle list');
   const vehicles = new Map<string, BeamScooter>();
   for (const entry of payload) {
@@ -227,7 +232,8 @@ export function parseBeamVehicles(payload: unknown, system: RegionalScooterSyste
     if (!Number.isSafeInteger(v.id) || (v.id as number) <= 0 || !Number.isSafeInteger(v.cityId) ||
       typeof v.latitude !== 'number' || typeof v.longitude !== 'number' || !Number.isFinite(v.latitude) ||
       !Number.isFinite(v.longitude) || Math.abs(v.latitude) > 85 || Math.abs(v.longitude) > 180) {
-      throw new Error(`Invalid Beam scooter ${invalidBeamField(v)}`);
+      malformed.push(invalidBeamField(v));
+      continue;
     }
     if (v.cityId !== system.beamAppCity || !boundsContainPoint(system.bounds, v.latitude, v.longitude)) continue;
     const id = `beam:${v.id}`;
@@ -247,9 +253,15 @@ export async function collectBeamRegion(system: RegionalScooterSystem,
   if (!Number.isSafeInteger(system.beamAppCity) || system.beamAppCity! <= 0) throw new Error('Not a Beam app map region');
   const observedAt = Date.now(), cells = beamRegionCells(system);
   const vehicles = new Map<string, BeamScooter>();
+  const malformed: string[] = [];
   for (let index = 0; index < cells.length; index += BATCH_SIZE) {
     const batch = await api.vehicles(cells.slice(index, index + BATCH_SIZE), system.center, observedAt + 90_000);
-    for (const vehicle of parseBeamVehicles(batch, system)) vehicles.set(vehicle.vehicle_id, vehicle);
+    for (const vehicle of parseBeamVehicles(batch, system, malformed)) vehicles.set(vehicle.vehicle_id, vehicle);
+  }
+  // Every scooter malformed is Beam's format changing, not one scooter's record: the map is kept.
+  if (malformed.length && !vehicles.size) throw new Error(`Invalid Beam scooter ${malformed[0]}`);
+  if (malformed.length) {
+    console.warn(JSON.stringify({ event: 'beam_scooters_malformed', system: system.id, count: malformed.length, first: malformed[0] }));
   }
   // Any failed batch aborts the sweep, preserving the city's previous complete snapshot.
   return { observedAt, stale: false, vehicles: [...vehicles.values()] };
