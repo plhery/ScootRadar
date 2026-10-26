@@ -1,5 +1,5 @@
 import catalog from '../../data/town-outlines.json';
-import { boundsContainPoint, boundsIntersect, polygonContainsPoint } from '@/lib/geo';
+import { boundsContainPoint, boundsIntersect } from '@/lib/geo';
 import { REGIONAL_SCOOTER_SYSTEMS, regionalCityId, serviceAreas, type RegionalScooterSystem } from '@/lib/regionalScooterSystems';
 import type { MapBounds } from '@/lib/types';
 
@@ -17,8 +17,8 @@ import type { MapBounds } from '@/lib/types';
 interface TownOutline {
   /** The city's id, "il:Tel Aviv". */
   city: string;
-  /** One ring of [lat, lng] points a piece, each with its box. */
-  areas: { ring: [number, number][]; bounds: MapBounds }[];
+  /** One ring of [lat, lng] points a piece, each with its box and its edges by band of latitude (banded). */
+  areas: { ring: [number, number][]; bounds: MapBounds; bands: Bands }[];
   bounds: MapBounds;
   /** In square degrees of latitude, for telling a town from the larger outline around it. */
   size: number;
@@ -33,6 +33,35 @@ function envelope(points: [number, number][]): MapBounds {
   return { south, west, north, east };
 }
 
+/** The edges of a ring (each by the index of its end, which polygonContainsPoint pairs with the point before it) by band of latitude. */
+interface Bands { south: number; step: number; edges: number[][] }
+
+// The city totals test each scooter against the outlines whose box holds it, and Korea's towns have a
+// thousand points each: tested against every edge, those tests took most of a rebuild of the totals.
+// The ray from a point crosses only edges that span its latitude, and each of those is in its band.
+function banded(ring: [number, number][], bounds: MapBounds): Bands {
+  const count = Math.max(1, Math.ceil(ring.length / 4));
+  const bands: Bands = { south: bounds.south, step: (bounds.north - bounds.south) / count || 1, edges: Array.from({ length: count }, () => []) };
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const last = bandOf(bands, Math.max(ring[i][0], ring[j][0]));
+    for (let band = bandOf(bands, Math.min(ring[i][0], ring[j][0])); band <= last; band++) bands.edges[band].push(i);
+  }
+  return bands;
+}
+
+const bandOf = (bands: Bands, lat: number) => Math.min(bands.edges.length - 1, Math.max(0, Math.floor((lat - bands.south) / bands.step)));
+
+/** As polygonContainsPoint, edge for edge, over the edges of the point's band only. */
+function ringContainsPoint(ring: [number, number][], bands: Bands, lat: number, lng: number): boolean {
+  let inside = false;
+  for (const i of bands.edges[bandOf(bands, lat)]) {
+    const [latI, lngI] = ring[i];
+    const [latJ, lngJ] = ring[i === 0 ? ring.length - 1 : i - 1];
+    if ((latI > lat) !== (latJ > lat) && lng < ((lngJ - lngI) * (lat - latI)) / (latJ - latI) + lngI) inside = !inside;
+  }
+  return inside;
+}
+
 function ringSize(ring: [number, number][]): number {
   const cosLat = Math.cos((ring[0][0] * Math.PI) / 180);
   let sum = 0;
@@ -44,7 +73,7 @@ function ringSize(ring: [number, number][]): number {
 const OUTLINES: TownOutline[] = (catalog.towns as unknown as { city: string; areas: [number, number][][] }[])
   .map(({ city, areas }) => ({
     city, bounds: envelope(areas.flat()), size: areas.reduce((sum, ring) => sum + ringSize(ring), 0),
-    areas: areas.map(ring => ({ ring, bounds: envelope(ring) })),
+    areas: areas.map(ring => { const bounds = envelope(ring); return { ring, bounds, bands: banded(ring, bounds) }; }),
   }))
   .sort((a, b) => a.size - b.size);
 
@@ -57,7 +86,7 @@ for (const outline of OUTLINES) {
 
 function holds(outline: TownOutline, lat: number, lng: number): boolean {
   return boundsContainPoint(outline.bounds, lat, lng) &&
-    outline.areas.some(area => boundsContainPoint(area.bounds, lat, lng) && polygonContainsPoint(area.ring, lat, lng));
+    outline.areas.some(area => boundsContainPoint(area.bounds, lat, lng) && ringContainsPoint(area.ring, area.bands, lat, lng));
 }
 
 /** The smallest of the outlines that holds the point, if any does. */

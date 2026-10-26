@@ -3,7 +3,7 @@ import {
   REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, COUNTRY_SOURCES, collectsParking, isAppMapFeed, isLimeGroupFeed, isRegionalSource,
   regionalCityId, serviceAreas,
 } from '@/lib/regionalScooterSystems';
-import { boundsCenter, boundsContainPoint, haversineM } from '@/lib/geo';
+import { boundsCenter, boundsContainPoint, crossesDateLine, haversineM } from '@/lib/geo';
 import { CITY_OVERVIEW_MAX_ZOOM, providersForViewport } from '@/lib/mapCoverage';
 import { PARKING_MAX_AGE_MS, PARKING_MIN_ZOOM, type ParkingSnapshot } from '@/lib/parking';
 import { scooterResponse } from '@/lib/scooterResponse';
@@ -213,6 +213,47 @@ function nearestTown<T extends OverviewTown>(vehicle: Vehicle, towns: T[]): T {
   ));
 }
 
+// The towns whose box holds a point are found through a grid of tenth-degree cells, each listing the
+// towns whose box meets it in their order: the city totals ask for every scooter, among up to a few
+// hundred towns a country. None for a list with a town across the 180° line: all are tested.
+const TOWN_GRIDS = new WeakMap<readonly OverviewTown[], Map<number, OverviewTown[]> | null>();
+const GRID_CELLS_PER_DEGREE = 10;
+const cellOf = (degrees: number) => Math.floor(degrees * GRID_CELLS_PER_DEGREE);
+// Unique for every latitude and for longitudes within 500° either side; undefined past them, or for NaN.
+function cellKey(lat: number, lng: number): number | undefined {
+  const [row, column] = [cellOf(lat), cellOf(lng)];
+  return Math.abs(row) < 1000 && Math.abs(column) < 5000 ? (row + 1000) * 10_000 + column + 5000 : undefined;
+}
+
+function townGrid(towns: readonly OverviewTown[]): Map<number, OverviewTown[]> | null {
+  if (towns.some(town => crossesDateLine(town.bounds) || cellKey(town.bounds.south, town.bounds.west) === undefined ||
+    cellKey(town.bounds.north, town.bounds.east) === undefined)) return null;
+  const grid = new Map<number, OverviewTown[]>();
+  for (const town of towns) {
+    for (let row = cellOf(town.bounds.south); row <= cellOf(town.bounds.north); row++) {
+      for (let column = cellOf(town.bounds.west); column <= cellOf(town.bounds.east); column++) {
+        const key = (row + 1000) * 10_000 + column + 5000;
+        grid.set(key, [...grid.get(key) ?? [], town]);
+      }
+    }
+  }
+  return grid;
+}
+
+/** The towns whose box holds the point, in their order: as filtering them all would give them. */
+function townsHolding<T extends OverviewTown>(towns: readonly T[], lat: number, lng: number): T[] {
+  let grid = TOWN_GRIDS.get(towns);
+  if (grid === undefined) TOWN_GRIDS.set(towns, grid = townGrid(towns));
+  const key = cellKey(lat, lng);
+  const candidates = grid && key !== undefined ? (grid.get(key) ?? []) as T[] : towns;
+  return candidates.filter(town => boundsContainPoint(town.bounds, lat, lng));
+}
+
+// Each catalog source's towns, the same list each time, so its grid is built once.
+const TOWNS_OF_SOURCE = new Map<string, typeof regionalCities>();
+const townsOfSource = (source: string) => TOWNS_OF_SOURCE.get(source) ?? TOWNS_OF_SOURCE.set(source,
+  regionalCities.filter(city => COUNTRY_SOURCES[city.country] === source)).get(source)!;
+
 /**
  * The town a scooter counts under: the town whose outline holds it, where the
  * towns' bounds overlap too much to tell them apart, as around Tel Aviv or
@@ -224,7 +265,7 @@ function nearestTown<T extends OverviewTown>(vehicle: Vehicle, towns: T[]): T {
 function townOf<T extends OverviewTown>(vehicle: Vehicle, towns: T[], own: Set<string>): T {
   const outlined = outlinedTown(towns, vehicle.lat, vehicle.lng);
   if (outlined) return outlined;
-  const holding = towns.filter(town => boundsContainPoint(town.bounds, vehicle.lat, vehicle.lng));
+  const holding = townsHolding(towns, vehicle.lat, vehicle.lng);
   const owned = holding.filter(town => own.has(town.id));
   return nearestTown(vehicle, owned.length ? owned : holding.length ? holding : towns);
 }
@@ -249,8 +290,7 @@ export function buildCityOverview(feeds: FeedSnapshot[], now: number,
   let keepUntil = Infinity;
   for (const feed of feeds) {
     if (feed.skipped || !counts(feed)) continue;
-    const cities = isRegionalSource(feed.source)
-      ? regionalCities.filter(city => COUNTRY_SOURCES[city.country] === feed.source) : SWISS_SCOOTER_AREAS;
+    const cities = isRegionalSource(feed.source) ? townsOfSource(feed.source) : SWISS_SCOOTER_AREAS;
     if (!cities.length) continue;
     const cap = feed.vehicles.length ? retention?.(feed.id) : undefined;
     if (cap !== undefined) keepUntil = Math.min(keepUntil, feed.observedAt + cap);
