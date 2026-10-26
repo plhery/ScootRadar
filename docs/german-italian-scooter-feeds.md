@@ -454,7 +454,15 @@ Bolt and Lime publish no Italian feed; Lime's Catania scooters come from its
   they are not on the map yet. NRW.Mobidrom sometimes stops updating Voi's
   documents: on 25 October 2026 for about 20 minutes before 20:30 UTC, and
   from about 21:50 to 00:10 UTC, when all twelve feeds expired and Sentry
-  reported each. They came back on their own.
+  reported each. They came back on their own. On 26 October it stopped
+  twice more, from about 08:15 to 10:40 UTC and from about 15:35, still
+  down at 17:55: Voi's documents stopped updating, then all twelve systems
+  answered 404 ("File gbfs.json for source-voi-koeln not available"). At
+  17:50 the platform's own bundles said the same of nearly all its GBFS
+  sources, Bolt's, Lime's, nextbike's, cambio's and SIGO's too: 52 of its
+  58 manifests answered 503 ("Required Feed 'source-voi-koeln' is missing")
+  or 500. The cache changed nothing in how it reads them; Sentry groups
+  these stops as SCOOTRADAR-CACHE-5V.
 - **Scooters:** through the cache's own code at 14:12, Voi had 16,455
   available scooters: Köln 4,074, Düsseldorf / Neuss 2,192, Bonn / Siegburg /
   Sankt Augustin 1,803, Dortmund 1,393, Duisburg / Oberhausen 1,293, Essen
