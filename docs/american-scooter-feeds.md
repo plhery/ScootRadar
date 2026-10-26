@@ -579,9 +579,12 @@ and 6 gained, one where none had stood. Every scooter stood in Spin's ride
 zone and inside Salt Lake City's outline, its last report a median two
 minutes old.
 
-- **Bounds.** The feed's one zone where a ride may end is the campus,
-  40.751° N to 40.774° N and 111.852° W to 111.817° W; its other zones, in
-  and around it, forbid riding or parking. The bounds are that zone plus
+- **Bounds.** The feed's ride area is the campus, 40.751° N to 40.774° N
+  and 111.852° W to 111.817° W; its other zones, in and around it, forbid
+  riding or parking. Two zones cover the campus: the first forbids ending a
+  ride there and the second allows it, and GBFS lets the earlier of two
+  clashing rules win, so the map shades the campus no-parking. Rides end in
+  the white boxes the app shows, as the University says. The bounds are that zone plus
   1 km, 40.7418° N to 40.7834° N and 111.8643° W to 111.8051° W.
 - **Town.** The campus is in Salt Lake City, whose outline the map already
   holds for Veo's feed (see **Town outlines** above). The feed's area is
@@ -594,7 +597,7 @@ minutes old.
   The city's [Shared Mobility page](https://www.slc.gov/transportation/sharedmobility)
   names Veo and Lime as its operators; Commuter Services says Spin's
   scooters "are licensed to operate in Salt Lake City", but the zones in
-  Spin's feed let a ride end only on the campus.
+  Spin's feed allow riding only on the campus.
 - **The other Salt Lake City feeds** stay out (see
   [Coverage gaps](coverage-gaps.md)): Spin's city feed (`salt_lake_city`)
   listed 2 scooters that evening, 420 m and 590 m from any of the
