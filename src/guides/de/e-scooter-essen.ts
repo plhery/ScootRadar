@@ -136,7 +136,7 @@ const guide: Guide = {
             '**Bochum:** Ryde startete laut Radio Bochum am 1. Juni 2026, nach eigenen Angaben mit rund 900 Scootern; den Preis zeigt die App.',
           ],
         },
-        'Auf der Karte siehst du seit dem 24. Oktober 2026 Dott und Voi in [Bochum](map:de:Bochum) und Oberhausen, Dott auch in Mülheim, und seit dem 25. Oktober in allen dreien Lime, in Bochum und Oberhausen auch Bolt; in Gelsenkirchen zeigt sie keine Scooter.',
+        'Auf der Karte siehst du seit dem 24. Oktober 2026 Dott und Voi in [Bochum](map:de:Bochum) und Oberhausen, Dott auch in [Mülheim](map:de:Mülheim an der Ruhr), und seit dem 25. Oktober in allen dreien Lime, in Bochum und Oberhausen auch Bolt; in Gelsenkirchen zeigt sie keine Scooter.',
       ],
     },
     {

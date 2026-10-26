@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Monopattini sharing a Torino: operatori, prezzi, parcheggio, GTT e multe nel 2026',
   lede: 'I monopattini sharing a Torino, a ottobre 2026, sono in proroga: Bird, Dott, Lime e Voi, autorizzati dal Comune nel 2024, restano fino all’avvio del nuovo servizio della Città metropolitana, che per tre anni autorizza solo Dott e Voi. Servono 18 anni e un documento d’identità, e il casco lo porti tu. Il prezzo, sblocco più minuti, lo vedi nell’app. Si guida su strada e sulle piste ciclabili, mai sul marciapiede, e la corsa si chiude nelle aree di sosta del Comune o dove l’app lo consente.',
   published: '2026-10-24',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'it:Torino',
   sections: [
     {
@@ -18,7 +18,7 @@ const guide: Guide = {
       blocks: [
         'Dal 16 aprile 2024 il Comune autorizza quattro operatori di monopattini, **Bird**, **Dott**, **Lime** e **Voi**, con al massimo 750 mezzi ciascuno (determinazione 1635/2024), e la sua pagina, aggiornata al 10 febbraio 2026, li elenca ancora. Le autorizzazioni sono scadute il 31 ottobre 2025 e sono state prorogate alle stesse condizioni fino all’avvio del nuovo servizio (determinazione 6850/2025).',
         'Il nuovo servizio della Città metropolitana copre Torino e altri 15 Comuni per 36 mesi: il 7 agosto 2026 ha autorizzato per i monopattini i primi due in graduatoria, EM Transit, cioè Dott, e Voi; Lime e Bird, terzo e quarto, restano fuori. Il suo disciplinare prevede 3.000 monopattini a Torino e 1.580 negli altri Comuni, metà per operatore: 2.290 a testa. Ogni operatore deve partire entro 90 giorni, con date concordate Comune per Comune: per Torino una data non l’abbiamo trovata.',
-        'Sabato 24 ottobre 2026 alle 13:26 sulla [mappa intorno a Torino](map:it:Torino) c’erano circa 1.950 monopattini Dott. La cifra copre tutta la zona di Dott, da Rivoli a Settimo Torinese e Moncalieri, non solo il Comune, ed è una fotografia di quel momento, non la flotta. Da domenica 25 ottobre la mappa mostra anche i Lime, letti dalla mappa della sua app: quel giorno verso le 16:20 erano circa 1.400, sulla zona di Lime. Voi e Bird non pubblicano dati che possiamo leggere: li trovi solo nelle loro app. Le bici di Dott sulla mappa non compaiono.',
+        'Lunedì 26 ottobre 2026 alle 9:37 la [mappa di Torino](map:it:Torino) mostrava circa 1.370 monopattini Dott nel Comune. Altri 690 circa erano nei Comuni della cintura, che la mappa conta a parte: [Collegno](map:it:Collegno) 130, [Moncalieri](map:it:Moncalieri) 130, Settimo Torinese e Nichelino 120 ciascuno, Rivoli 70, Grugliasco 60 e Borgaro Torinese 50. È una fotografia di quel momento, non la flotta. Da domenica 25 ottobre la mappa mostra anche i Lime, letti dalla mappa della sua app: quel giorno verso le 16:20 erano circa 1.400, sulla zona di Lime. Voi e Bird non pubblicano dati che possiamo leggere: li trovi solo nelle loro app. Le bici di Dott sulla mappa non compaiono.',
         {
           table: {
             caption: 'Gli operatori di monopattini a Torino, a ottobre 2026',
