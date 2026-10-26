@@ -68,14 +68,22 @@ describe('Beam H3 collection', () => {
     expect(vehicles).toEqual([{ provider: 'beam', vehicle_id: 'beam:91', lat: -12.46, lng: 130.85, battery: 80,
       range_m: null, deep_link: null, distance_m: null }]);
     for (const payload of [undefined, { errors: ['Unauthorized'] }, [scooter({ id: '91' })],
-      [scooter({ formFactor: undefined })], [scooter({ cityId: undefined })], [scooter({ batteryLevel: 101 })],
+      [scooter({ formFactor: undefined })], [scooter({ cityId: undefined })],
       [scooter({ longitude: NaN })]]) expect(() => parseBeamVehicles(payload, region)).toThrow('Invalid Beam');
     // The error says which field Beam sent wrong, as the logs and Sentry show only the message.
-    expect(() => parseBeamVehicles([scooter({ batteryLevel: 101 })], region)).toThrow('Invalid Beam scooter batteryLevel 101');
-    expect(() => parseBeamVehicles([scooter({ batteryLevel: null })], region)).toThrow('Invalid Beam scooter batteryLevel null');
+    expect(() => parseBeamVehicles([scooter({ latitude: 91 })], region)).toThrow('Invalid Beam scooter latitude 91');
     expect(() => parseBeamVehicles([scooter({ longitude: NaN })], region)).toThrow('Invalid Beam scooter longitude null');
     expect(() => parseBeamVehicles([scooter({ id: '91' })], region)).toThrow('Invalid Beam scooter id "91"');
     expect(parseBeamVehicles([], region)).toEqual([]);
+  });
+
+  it('keeps a scooter whose charge Beam does not know, with none', () => {
+    // Beam sent 255 for one scooter in Cheongju on 26 October 2026.
+    for (const batteryLevel of [255, 101, -1, 50.5, null, undefined]) {
+      expect(parseBeamVehicles([scooter({ batteryLevel })], region).map(vehicle => vehicle.battery), String(batteryLevel)).toEqual([null]);
+    }
+    expect(parseBeamVehicles([scooter({ batteryLevel: 0 }), scooter({ id: 92, batteryLevel: 100 })], region)
+      .map(vehicle => vehicle.battery)).toEqual([0, 100]);
   });
 
   it('collects all cells in batches and never returns a partial sweep on failure', async () => {

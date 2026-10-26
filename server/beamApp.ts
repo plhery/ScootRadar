@@ -214,8 +214,7 @@ type BeamScooter = Vehicle & { vehicle_id: string };
 /** The first field of a scooter Beam sent that fails parseBeamVehicles' checks, and its value, for the error. */
 function invalidBeamField(v: Record<string, unknown>) {
   const field = !Number.isSafeInteger(v.id) || (v.id as number) <= 0 ? 'id' : !Number.isSafeInteger(v.cityId) ? 'cityId'
-    : typeof v.latitude !== 'number' || !Number.isFinite(v.latitude) || Math.abs(v.latitude) > 85 ? 'latitude'
-    : typeof v.longitude !== 'number' || !Number.isFinite(v.longitude) || Math.abs(v.longitude) > 180 ? 'longitude' : 'batteryLevel';
+    : typeof v.latitude !== 'number' || !Number.isFinite(v.latitude) || Math.abs(v.latitude) > 85 ? 'latitude' : 'longitude';
   return `${field} ${String(JSON.stringify(v[field])).slice(0, 20)}`;
 }
 export function parseBeamVehicles(payload: unknown, system: RegionalScooterSystem): BeamScooter[] {
@@ -227,14 +226,17 @@ export function parseBeamVehicles(payload: unknown, system: RegionalScooterSyste
     if (v.formFactor !== 'ESCOOTER') continue;
     if (!Number.isSafeInteger(v.id) || (v.id as number) <= 0 || !Number.isSafeInteger(v.cityId) ||
       typeof v.latitude !== 'number' || typeof v.longitude !== 'number' || !Number.isFinite(v.latitude) ||
-      !Number.isFinite(v.longitude) || Math.abs(v.latitude) > 85 || Math.abs(v.longitude) > 180 ||
-      !Number.isInteger(v.batteryLevel) || (v.batteryLevel as number) < 0 || (v.batteryLevel as number) > 100) {
+      !Number.isFinite(v.longitude) || Math.abs(v.latitude) > 85 || Math.abs(v.longitude) > 180) {
       throw new Error(`Invalid Beam scooter ${invalidBeamField(v)}`);
     }
     if (v.cityId !== system.beamAppCity || !boundsContainPoint(system.bounds, v.latitude, v.longitude)) continue;
     const id = `beam:${v.id}`;
+    // A charge Beam does not know is unknown, as for the other app maps: on 26 October 2026 one
+    // scooter's 255 in Cheongju failed the region's every collection.
+    const battery = Number.isInteger(v.batteryLevel) && (v.batteryLevel as number) >= 0 && (v.batteryLevel as number) <= 100
+      ? v.batteryLevel as number : null;
     vehicles.set(id, { provider: 'beam', vehicle_id: id, lat: v.latitude, lng: v.longitude,
-      battery: v.batteryLevel as number, range_m: null, deep_link: null, distance_m: null });
+      battery, range_m: null, deep_link: null, distance_m: null });
   }
   return [...vehicles.values()];
 }
