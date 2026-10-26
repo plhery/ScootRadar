@@ -121,6 +121,32 @@ it('starts a paced town someone opens while idle sweeps hold its host, and tells
   } finally { scheduler.stop(); }
 });
 
+it('wakes the paced town longest past its interval while polled towns hold its host, one at a time', async () => {
+  // A client polling five GCOO towns near Seoul held both of the host's slots from 11:57 to 13:05 on 26 October
+  // 2026, and the other 74 towns expired (SCOOTRADAR-CACHE-5W).
+  const polled = ['near-a', 'near-b', 'near-c', 'near-d', 'near-e'];
+  const feeds = [...polled, 'far-a', 'far-b', 'far-c'].map(id => ({ id, host: 'gcoo', paced: true }));
+  const started = new Map([['far-a', 19], ['far-b', 18], ['far-c', 1]].map(([id, ago]) => [id as string, T0 - (ago as number) * MINUTE]));
+  // The far towns' turns come a minute in, once the polled ones hold the host.
+  const { scheduler, calls } = schedule(feeds, { lastCollectedAt: feed => started.get(feed.id) ?? T0 - 30_000,
+    phase: feed => feed.id.startsWith('far') ? 1 / 20 : 0 }, () => new Promise(resolve => setTimeout(resolve, 50_000)));
+  const poll = setInterval(() => scheduler.demand(polled), 20_000);
+  try {
+    scheduler.demand(polled);
+    await vi.advanceTimersByTimeAsync(10 * MINUTE);
+    // Five minutes past its interval, five before it would expire, it queues with the polled towns.
+    expect(calls.filter(call => call.id.startsWith('far') && call.reason !== 'late')).toEqual([]);
+    const late = calls.filter(call => call.reason === 'late');
+    expect(late.map(call => call.id)).toEqual(['far-a', 'far-b']);
+    expect(late[0].at / MINUTE).toBeGreaterThanOrEqual(6);
+    expect(late[0].at / MINUTE).toBeLessThan(8);
+    // The next waits for it to finish: the polled towns keep a slot.
+    expect(late[1].at - late[0].at).toBeGreaterThanOrEqual(50_000);
+    const meanwhile = calls.filter(call => polled.includes(call.id) && call.at >= late[0].at && call.at < late[1].at + 50_000);
+    expect(meanwhile.length).toBeGreaterThanOrEqual(2);
+  } finally { clearInterval(poll); scheduler.stop(); }
+});
+
 it('collects always-fast feeds every minute and idle ones every idle interval', async () => {
   const { scheduler, times, calls } = schedule([
     { id: 'zurich', host: 'ch', fast: true }, { id: 'lyon', host: 'fr' },

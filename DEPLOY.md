@@ -302,7 +302,11 @@ sweeps held all six, and idle feeds elsewhere went uncollected for over half an
 hour. A sweep a request asked for has two slots of its own on its host, and its
 client gives it the next turn before idle sweeps: until 25 October 2026 a town
 opened while two idle Lime sweeps ran waited for one to end, then shared Lime's
-one request every five seconds with the other. A restart goes on with the feeds longest overdue, then those with no
+one request every five seconds with the other. Those requested sweeps cannot hold a host for
+good: on such a host, the idle feed longest past its interval is woken once it is five minutes
+past it, five before it would expire, and takes its turn with them, one feed per host at a time
+(`wakeLate`). From 11:57 to 13:05 on 26 October 2026 a client polling five GCOO towns near Seoul
+held both of GCOO's slots and all its turns, and the other 74 towns expired. A restart goes on with the feeds longest overdue, then those with no
 record yet; it once took them in the catalog's order, and after that stall
 feeds 29 minutes old waited behind ones of 21 and expired. Feeds with no record
 that join feeds the cache already holds come due six at a time, 15 seconds

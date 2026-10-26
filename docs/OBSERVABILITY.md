@@ -75,7 +75,8 @@ those not from sharedmobility.ch (see [Empty feeds](#empty-feeds)):
   parking; `/ready`'s `failedParkingFeeds` leaves them out likewise.
 - `scootradar_feeds_by_cadence{cadence="always|watched|idle"}`: feeds on each cadence now.
 - `scootradar_collections_started_total{reason}`: `always`, `watched`, `wake` (a request
-  found the data over a minute old), `idle` and `retry` (an idle feed that failed).
+  found the data over a minute old), `late` (an idle feed on a paced host, woken five minutes
+  before it would expire), `idle` and `retry` (an idle feed that failed).
 - `scootradar_request_waits_total{outcome="collected|timeout"}`: requests that waited for
   the collection of feeds whose positions were over 15 minutes old.
 - `scootradar_upstream_requests_total{kind="status|metadata"}`: requests sent to

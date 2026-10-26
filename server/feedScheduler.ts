@@ -25,10 +25,11 @@ export interface CollectionOutcome {
 /**
  * Why a collection started. always: a source collected every active interval.
  * wake: a request asked for a feed collected over an active interval ago.
+ * late: an idle feed on a paced host, about to expire, woken as if asked for.
  * watched: a feed someone has looked at recently. idle: nobody has. retry: an
  * idle feed whose last collection failed.
  */
-export type CollectionReason = 'always' | 'wake' | 'watched' | 'idle' | 'retry';
+export type CollectionReason = 'always' | 'wake' | 'late' | 'watched' | 'idle' | 'retry';
 export type FeedCadenceMode = 'always' | 'watched' | 'idle';
 
 /** What a collection under way can ask of the scheduler (sweeps.ts). */
@@ -63,6 +64,9 @@ const MAX_RUNNING_PER_HOST = 2;
 // New feeds joining a catalog the cache holds come due this many at a time, a stage this far apart.
 const WARM_UP_STAGE_SIZE = MAX_RUNNING;
 const WARM_UP_STAGE_MS = 15_000;
+// An idle feed on a paced host this long past its interval is woken: five minutes later, its interval
+// plus ten, it would expire (cadence.ts).
+const LATE_MS = 5 * 60_000;
 
 /** A stable fraction in [0, 1) from the feed id (FNV-1a). */
 export function idPhase(id: string): number {
@@ -90,6 +94,8 @@ export class FeedScheduler<T extends ScheduledFeed> {
   private readonly focusOf = new Map<string, MapBounds>();
   // Collections a request asked for, until they finish.
   private readonly woken = new Set<string>();
+  // Of those, the idle feeds woken because they were late, one per paced host at a time.
+  private readonly late = new Set<string>();
   private readonly waiters = new Map<string, Set<() => void>>();
   private readonly options: SchedulerOptions<T>;
   private timer?: ReturnType<typeof setTimeout>;
@@ -250,6 +256,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
     if (this.stopped) return;
     clearTimeout(this.timer);
     const now = Date.now();
+    this.wakeLate(now);
     const rank = (feed: T) => this.woken.has(feed.id) ? -Infinity : this.due.get(feed.id) ?? 0;
     // A feed on the active interval goes before an idle one. A deploy on 24 October 2026 added 202
     // feeds, due at once; slow sweeps on three hosts held every slot, and Zürich's feeds, due a
@@ -278,19 +285,43 @@ export class FeedScheduler<T extends ScheduledFeed> {
   }
 
   /**
+   * Wakes, on each paced host, the idle feed longest past its interval once it is LATE_MS past it,
+   * one at a time: it then shares the turns and slots of the towns requests asked for, which keep
+   * the other slot. From 11:57 to 13:05 on 26 October 2026, a client polling five GCOO towns near
+   * Seoul held both of the host's slots and all its turns, and the other 74 towns expired
+   * (SCOOTRADAR-CACHE-5W).
+   */
+  private wakeLate(now: number): void {
+    const busy = new Set([...this.late].flatMap(id => {
+      const feed = this.byId.get(id);
+      return feed ? [this.slotKey(feed)] : [];
+    }));
+    const late = this.definitions.filter(feed => feed.paced && !this.woken.has(feed.id) && !this.running.has(feed.id) &&
+      now - (this.startedAt.get(feed.id) ?? now) >= (feed.idleIntervalMs ?? this.options.idleIntervalMs) + LATE_MS &&
+      this.mode(feed, now) === 'idle').sort((a, b) => this.startedAt.get(a.id)! - this.startedAt.get(b.id)!);
+    for (const feed of late) {
+      if (busy.has(this.slotKey(feed))) continue;
+      busy.add(this.slotKey(feed));
+      this.late.add(feed.id);
+      this.woken.add(feed.id);
+    }
+  }
+
+  private slotKey(feed: T): string { return feed.paced ? feed.concurrencyKey ?? feed.host : feed.host; }
+
+  /**
    * A paced client spaces its host's requests whatever runs, and gives a feed someone looks at
    * its turns first (sweeps.ts): such a feed asked for by a request has slots of its own on the
    * host, so a town opened while idle sweeps hold the others starts at once.
    */
   private hostFull(feed: T): boolean {
-    const key = (candidate: T) => candidate.paced ? candidate.concurrencyKey ?? candidate.host : candidate.host;
     const own = feed.paced && this.woken.has(feed.id)
       ? (running: T) => this.woken.has(running.id) : () => true;
-    return [...this.running.values()].filter(running => key(running) === key(feed) && own(running)).length >= MAX_RUNNING_PER_HOST;
+    return [...this.running.values()].filter(running => this.slotKey(running) === this.slotKey(feed) && own(running)).length >= MAX_RUNNING_PER_HOST;
   }
 
   private run(feed: T, now: number): void {
-    const reason: CollectionReason = this.options.alwaysFast(feed) ? 'always' : this.woken.has(feed.id) ? 'wake'
+    const reason: CollectionReason = this.options.alwaysFast(feed) ? 'always' : this.late.has(feed.id) ? 'late' : this.woken.has(feed.id) ? 'wake'
       : this.watched(feed.id, now) ? 'watched' : this.failures.has(feed.id) ? 'retry' : 'idle';
     this.running.set(feed.id, feed);
     this.startedAt.set(feed.id, now);
@@ -318,6 +349,7 @@ export class FeedScheduler<T extends ScheduledFeed> {
 
   private settle(id: string): void {
     this.woken.delete(id);
+    this.late.delete(id);
     const waiting = this.waiters.get(id);
     this.waiters.delete(id);
     for (const callback of waiting ?? []) callback();
