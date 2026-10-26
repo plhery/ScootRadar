@@ -11,9 +11,15 @@ minutes from 10:27 to 10:54, 16:26 to 16:52 and 18:30 to 20:56 (to 21:37 for
 Abu Dhabi), every 20 minutes between, and 16 times more five minutes apart
 from 21:44 to 23:01, before the commit. Every feed URL is https, on the
 discovery's origin and under its directory. No account credentials or private
-rider APIs are used. The catalog is
+rider APIs are used for them. The catalog is
 [`emirati-scooter-feeds.json`](../data/emirati-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
+
+Lime's scooters in Dubai, about 1,900, Abu Dhabi, about 650, and Al Ain,
+about 40, were added on 26 October 2026 from its authenticated rider map,
+each market whole after a clean full-area audit in the afternoon, Gulf time;
+see [the Lime guide](lime-app-map.md#every-market-the-map-lists-october-2026).
+On the map, Al Ain is Lime's alone. The table lists the public feeds.
 
 | Operator | Feed | City | Available scooters, last poll (lowest–highest) |
 | --- | --- | --- | ---: |
@@ -53,18 +59,20 @@ stood across the island and its neighbours, in the emirate-wide zone alone.
 So the bounds join the 14 small zones and the scooters' extent, each widened
 by about 1 km. The same feed holds 16 to 18 scooters in Al Ain, which had 2
 rides in the day and are left out, and a stray or two in Al Quoz, Dubai; both
-stand outside Abu Dhabi's bounds.
+stand outside Abu Dhabi's bounds. Lime's Al Ain, from its rider map, is on
+the map since 26 October 2026; Dott's scooters there still aren't.
 
 ## City names
 
-The map names the cities Dubai and Abu Dhabi, as the feeds do, and search
-also finds them in Arabic. Arabic is matched without its hamza and marks, so
+The map names the cities Dubai and Abu Dhabi, as the feeds do, and Al Ain,
+as Lime's rider map does, and search also finds them in Arabic. Arabic is matched without its hamza and marks, so
 أبوظبي is also found typed as ابوظبي.
 
 | City | Also found as |
 | --- | --- |
 | Dubai | دبي |
 | Abu Dhabi | أبوظبي, أبو ظبي, Abu Zabi |
+| Al Ain | العين, Al Ain City |
 
 Zoomed out, the Emirates' total stands inland between Abu Dhabi and Dubai,
 south of Ghantoot (24.7° N, 54.9° E), halfway between the two cities'
@@ -127,7 +135,7 @@ zoom 3.
 
 ## Rules
 
-No source sets hours for renting or riding a scooter in either city, so
+No source sets hours for renting or riding a scooter in any of these cities, so
 [`rental-curfews.json`](../data/rental-curfews.json) has no entry for the
 Emirates.
 
@@ -160,7 +168,8 @@ Emirates.
   administrative decision; Abu Dhabi Police give 16, with no passenger and
   20 km/h at most
   ([Gulf News](https://gulfnews.com/uae/transport/abu-dhabi-police-warn-e-scooter-riders-over-unsafe-use-1.500689146),
-  26 September 2026, press). Neither sets hours.
+  26 September 2026, press). Neither sets hours. The guideline holds for the
+  whole emirate, Al Ain among it.
 
 ## Licences
 
@@ -180,8 +189,13 @@ Emirates.
 - **Ras Al Khaimah and Al Ain:** Dott's `ras-al-khaimah` (32 to 34 scooters)
   and the Al Ain part of `abu-dhabi` (16 to 18) had about 2 rides each. Check
   again in December 2026.
-- **Lime, Skurtt and Arnab,** which the RTA also licenses in Dubai, publish no
-  feed: about 40 of Lime's slugs for Dubai and its districts answer 404.
+- **Skurtt and Arnab,** which the RTA also licenses in Dubai, publish no
+  feed. Lime publishes none either (about 40 of its slugs for Dubai and its
+  districts answer 404); its scooters come from its rider map since 26
+  October 2026.
+- **Lime's Al Mirfa and Madinat Zayed** zones, in Abu Dhabi's Al Dhafra
+  region, held no scooter in their full-area audits on the afternoon of 26
+  October 2026.
 - **Bird** `abu-dhabi` answers, but lists no vehicle and gives a time of 0.
 - **Yaldi** is gone: its ATOM Mobility host, `yaldi.rideatom.com`, no longer
   resolves, and yaldi.ae rents cars.

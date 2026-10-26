@@ -9,9 +9,16 @@ Every feed was polled about every 12 minutes from 09:27 to 18:49 Israel
 time on 15 October, then every five minutes from 20:43 to 21:50, just before
 the commit: 62 polls of Bird and Dott, 64 of Lime. Every feed URL is https,
 on the discovery's origin and under its directory. No account
-credentials or private rider APIs are used. The catalog is
+credentials or private rider APIs are used for them. The catalog is
 [`israeli-scooter-feeds.json`](../data/israeli-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
+
+Lime's scooters in Ashdod, about 390, beside Bird's, and in Eilat, about
+320, were added on 26 October 2026 from its authenticated rider map, each
+market whole after a clean full-area audit at midday, Israel time; see
+[the Lime guide](lime-app-map.md#every-market-the-map-lists-october-2026).
+Lime's public `tel_aviv` feed has neither town. The table lists the public
+feeds.
 
 | Operator | Town | Available scooters, last poll (lowest–highest) |
 | --- | --- | ---: |
@@ -74,7 +81,7 @@ the wrong town, and even the best boxes found named 368.
 So each town's municipal boundary is in
 [`town-outlines.json`](../data/town-outlines.json): OpenStreetMap's (relation
 ids in the file, read through Nominatim), simplified to within 10 m, 1,443
-points for 13 towns. Ashdod stands alone and needs none. A scooter inside a
+points for 13 towns. Ashdod and Eilat stand alone and need none. A scooter inside a
 town's outline counts under that town; one outside every outline, under the
 nearest town whose box holds it, its own feed's first. A feed keeps no scooter
 inside the outline of a town where its operator runs no service: Dott's
@@ -110,9 +117,10 @@ Replayed over every poll, against the municipal boundaries:
 bounds are the part of the operator's ride zones inside the town, plus 1 km
 on every side. Lime publishes no zones, so each Lime town's bounds are where
 its scooters stood in the town over every poll, plus 500 m (Or Yehuda's
-widened to take in the town's centre). Every box is inside Israel's pre-1967 lines: the
-easternmost edge, Dott's Petah Tikva at 34.9304° E, is about 5 km west of
-the nearest point of the West Bank, at Oranit; no feed had a scooter in the
+widened to take in the town's centre). Lime's rider map does draw its zones,
+and the map keeps its Ashdod and Eilat scooters inside them. Every box is inside Israel's pre-1967 lines: the
+edge nearest the West Bank, Dott's Petah Tikva at 34.9304° E, is about 5 km
+west of its nearest point, at Oranit; no feed had a scooter in the
 West Bank or in East Jerusalem.
 
 **Search** finds Tel Aviv as Tel Aviv-Yafo, Tel Aviv-Jaffa, Jaffa, Yafo, TLV,
@@ -169,6 +177,10 @@ even from Eilat the two would overlap.
   decide at sign-up. The map says nothing of it, as elsewhere.
 - **Night bans:** none found, at the city or the ministry, so
   [`rental-curfews.json`](../data/rental-curfews.json) has no Israeli entry.
+  Eilat's scooters came with the city's tourism corporation's tender, which
+  Bird and Lime won in 2021
+  ([Globes](https://en.globes.co.il/en/article-1001366190)); no hours were
+  found for them either.
 - **Holon** decided to ban shared scooters from 17 September 2026
   ([ice, 9 August 2026](https://www.ice.co.il/local-news/news/article/1124736)).
   On the operators' petition, the court froze the ban until the city decides

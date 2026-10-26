@@ -933,7 +933,10 @@ Dott publishes no licence in these feeds; its
 [API terms](https://ridedott.com/api-licence/) restrict distribution, as
 noted for France above. The map's credits name Dott under the GBFS line. Dubai's
 permit and Abu Dhabi's rules come from the RTA's and AD Mobility's own pages;
-neither sets hours. See the [coverage audit](docs/emirati-scooter-feeds.md)
+neither sets hours. Since 26 October 2026, Lime's scooters in Dubai, Abu Dhabi
+and Al Ain, where it publishes no feed, come from its rider map, signed in, as
+in Europe (see [the Lime catalog](docs/lime-app-map.md)). See the
+[coverage audit](docs/emirati-scooter-feeds.md)
 for the systems, the bounds, the rules, the gaps and the recheck command.
 
 ## Saudi Arabia
@@ -979,8 +982,10 @@ Bird's feed points to its 2018 GBFS Data License Agreement, whose PDF answers
 its [GBFS terms](https://www.li.me/legal/public-gbfs-terms). Dott publishes no
 licence in its feed; its [API terms](https://ridedott.com/api-licence/)
 restrict distribution, as noted for France above. The map's credits name all
-three under the GBFS line for Asia. See the
-[coverage audit](docs/israeli-scooter-feeds.md) for the systems, the towns,
+three under the GBFS line for Asia. Since 26 October 2026, Lime's scooters in
+Ashdod and Eilat, which its `tel_aviv` feed leaves out, come from its rider
+map, signed in, as in Europe (see [the Lime catalog](docs/lime-app-map.md)).
+See the [coverage audit](docs/israeli-scooter-feeds.md) for the systems, the towns,
 the rules, the parking, the gaps and the recheck command.
 
 ## New Zealand

@@ -17,23 +17,26 @@ afterEach(() => { upstreamJsonCache.clear(); vi.unstubAllGlobals(); });
 describe('Israel', () => {
   it('reads Bird, Dott and Lime around Tel Aviv, one area per town, all in Israel\'s time zone', () => {
     const israeli = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'IL');
+    const feeds = israeli.filter(entry => !entry.limeAppMap);
     // Not Bird's tel-aviv feed: the same scooters as its israel feed, under other ids.
-    expect(israeli.map(entry => [entry.id, entry.discoveryUrl])).toEqual([
+    expect(feeds.map(entry => [entry.id, entry.discoveryUrl])).toEqual([
       ['bird_il_israel', 'https://mds.bird.co/gbfs/v2/public/israel/gbfs.json'],
       ['dott_il_tel_aviv', 'https://gbfs.api.ridedott.com/public/v2/tel-aviv/gbfs.json'],
       ['lime_il_tel_aviv', 'https://data.lime.bike/api/partners/v2/gbfs/tel_aviv/gbfs.json'],
     ]);
-    expect(Object.fromEntries(israeli.map(entry => [entry.provider, serviceAreas(entry).map(area => area.city)]))).toEqual({
+    expect(Object.fromEntries(feeds.map(entry => [entry.provider, serviceAreas(entry).map(area => area.city)]))).toEqual({
       bird: ['Tel Aviv', 'Ramat Gan', 'Holon', 'Bat Yam', 'Givatayim', 'Herzliya', 'Rishon LeZion', 'Ashdod', 'Bnei Brak', 'Ramat HaSharon'],
       dott: ['Tel Aviv', 'Ramat Gan', 'Petah Tikva', 'Holon', 'Bat Yam', 'Givatayim', 'Herzliya', 'Bnei Brak'],
       lime: ['Tel Aviv', 'Ramat Gan', 'Petah Tikva', 'Holon', 'Givatayim', 'Herzliya', 'Kiryat Ono', 'Bnei Brak', 'Givat Shmuel', 'Or Yehuda'],
     });
+    // Lime's tel_aviv feed has neither town: its rider map, read in small groups, since 26 October 2026.
+    expect([...new Set(israeli.filter(entry => entry.limeAppMap).map(entry => entry.city))]).toEqual(['Ashdod', 'Eilat']);
     // Bird's feed says Asia/Tel_Aviv, an older name the app never reads.
     for (const entry of israeli) {
       for (const area of serviceAreas(entry)) expect(area.timeZone ?? entry.timeZone, `${entry.id} in ${area.city}`).toBe('Asia/Jerusalem');
     }
     expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'IL').map(entry => entry.id).sort()).toEqual([
-      'il:Ashdod', 'il:Bat Yam', 'il:Bnei Brak', 'il:Givat Shmuel', 'il:Givatayim', 'il:Herzliya', 'il:Holon', 'il:Kiryat Ono',
+      'il:Ashdod', 'il:Bat Yam', 'il:Bnei Brak', 'il:Eilat', 'il:Givat Shmuel', 'il:Givatayim', 'il:Herzliya', 'il:Holon', 'il:Kiryat Ono',
       'il:Or Yehuda', 'il:Petah Tikva', 'il:Ramat Gan', 'il:Ramat HaSharon', 'il:Rishon LeZion', 'il:Tel Aviv',
     ]);
   });
@@ -44,6 +47,7 @@ describe('Israel', () => {
     ['Rishon LeZion', 'Rishon LeZion'], ['Rishon Lezion', 'Rishon LeZion'], ['Rishon le-Zion', 'Rishon LeZion'], ['ראשון לציון', 'Rishon LeZion'],
     ['Petach Tikva', 'Petah Tikva'], ['פתח תקוה', 'Petah Tikva'], ['Herzlia', 'Herzliya'], ['Givataim', 'Givatayim'],
     ['Ramat Hasharon', 'Ramat HaSharon'], ['רמת השרון', 'Ramat HaSharon'], ['בני ברק', 'Bnei Brak'], ['קרית אונו', 'Kiryat Ono'],
+    ['Eilat', 'Eilat'], ['אילת', 'Eilat'],
   ])('finds "%s" as %s', (query, title) => {
     expect(namedCities(query)[0]).toMatchObject({ city: { title, subtitle: 'Israel' } });
   });
@@ -132,7 +136,7 @@ describe('Israel', () => {
       ...expected });
   });
 
-  it('keeps no scooter in a town its feed does not serve, nor beyond Gush Dan and Ashdod', () => {
+  it('keeps no scooter in a town its feed does not serve, nor beyond Gush Dan, Ashdod and Eilat', () => {
     for (const [provider, town, lat, lng] of [
       ['dott', 'Givat Shmuel', 32.08594, 34.8539], ['dott', 'Kiryat Ono', 32.04917, 34.85717], ['dott', 'Ramat HaSharon', 32.12427, 34.81465],
       ['lime', 'Bat Yam', 32.01535, 34.76161], ['lime', 'Ramat HaSharon', 32.15479, 34.8135], ['bird', 'Petah Tikva', 32.09284, 34.8502],
@@ -142,7 +146,8 @@ describe('Israel', () => {
       expect(systemServesPoint(system(ids[provider]), lat, lng), `${provider} in ${town}`).toBe(false);
     }
     // No town reaches the West Bank: its nearest point to any of them, by Oranit, is about 5 km east of Petah Tikva's.
-    for (const entry of REGIONAL_SCOOTER_SYSTEMS.filter(candidate => candidate.country === 'IL')) {
+    // Eilat, on the Red Sea, is far south of it.
+    for (const entry of REGIONAL_SCOOTER_SYSTEMS.filter(candidate => candidate.country === 'IL' && candidate.city !== 'Eilat')) {
       expect(entry.bounds.east).toBeLessThan(34.94);
     }
   });

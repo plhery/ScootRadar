@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-15",
+  "verifiedOn": "2026-10-24",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -559,6 +559,58 @@
           ]
         }
       ]
+    },
+    {
+      "id": "lime_il_app_ashdod",
+      "provider": "lime",
+      "city": "Ashdod",
+      "center": [
+        31.7977,
+        34.653
+      ],
+      "timeZone": "Asia/Jerusalem",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "DQ7OXIZS3YT4R",
+      "limeMapGrid": {
+        "south": 31.76161,
+        "west": 34.60202,
+        "north": 31.84185,
+        "east": 34.67574,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01584797139991473,
+        "cells": "0-19,21-24,26-29"
+      }
+    },
+    {
+      "id": "lime_il_app_eilat",
+      "provider": "lime",
+      "city": "Eilat",
+      "center": [
+        29.532044999999997,
+        34.939
+      ],
+      "aliases": [
+        "אילת"
+      ],
+      "timeZone": "Asia/Jerusalem",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "C3PIM5KQXXOQT",
+      "limeMapGrid": {
+        "south": 29.49094,
+        "west": 34.90274,
+        "north": 29.57315,
+        "east": 34.97526,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.015480409295035441,
+        "cells": "0-1,5-6,11-12,17-19,22-24,27-29,33-34"
+      }
     }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Ashdod_194_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Eilat_135_exclude_new_type.json"
   ]
 }

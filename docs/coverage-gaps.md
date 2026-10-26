@@ -19,9 +19,11 @@ Budapest to Szigetszentmiklós, in seven Romanian ones, from București to
 Târgoviște, in Athens, Kifisia, Thessaloniki and Heraklion, in Antwerpen,
 in Porto, Faro and Oeiras, and since 26 October 2026 in Tokyo and Yokohama,
 in Port Phillip, in Auckland, Christchurch, Hamilton, Wellington and
-Palmerston North, in Monterrey and Guadalupe, and in Ajax, Coquitlam,
-Laval, Montréal's Parc Jean-Drapeau, Port Moody, Richmond and Vaughan.
-The other markets its rider map lists, 64 found so far, are added country by
+Palmerston North, in Monterrey and Guadalupe, in Ajax, Coquitlam,
+Laval, Montréal's Parc Jean-Drapeau, Port Moody, Richmond and Vaughan, in
+24 American towns, from Los Angeles and Phoenix to Tampa and Raleigh, in
+Ashdod and Eilat, and in Dubai, Abu Dhabi and Al Ain.
+The other markets its rider map lists, 50 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -578,7 +580,9 @@ banned shared scooters, and feeds that were empty when checked.
     rides must end in designated spots, and Bird and Lime none in Edmonton's
     Mill Woods (see the guide's [parking](canadian-scooter-feeds.md#parking)).
 - **United Arab Emirates** ([guide](emirati-scooter-feeds.md#known-gaps)):
-  Dott in Dubai, with its Dubai Hills fleet, and in Abu Dhabi is covered.
+  Dott in Dubai, with its Dubai Hills fleet, and in Abu Dhabi, and Lime in
+  Dubai, Abu Dhabi and Al Ain, from its rider map since 26 October 2026, are
+  covered.
   - **Too few rides yet:** Dott's Dubai feed holds 12 or 13 scooters in Hatta,
     which none rode in 10.5 hours on Thursday 15 October 2026; Hatta is a
     weekend and cool-season place. Dott Sharjah (93 to 96 scooters at
@@ -586,10 +590,13 @@ banned shared scooters, and feeds that were empty when checked.
     34, about 2 rides) and Al Ain, in Dott's Abu Dhabi feed (16 to 18, about
     2 rides), are left out until they are ridden more. See
     [Dates to check again](#dates-to-check-again).
-  - **No public feed:** Lime, Skurtt and Arnab, which the RTA also licenses in
-    Dubai: about 40 of Lime's slugs (`dubai`, `dubai_uae`, `uae` and the
-    districts) answer 404. Bird's `abu-dhabi` feed answers with no vehicle and
-    a time of 0.
+  - **No public feed:** Skurtt and Arnab, which the RTA also licenses in
+    Dubai. Lime publishes none either: about 40 of its slugs (`dubai`,
+    `dubai_uae`, `uae` and the districts) answer 404, so its scooters come
+    from its rider map. Bird's `abu-dhabi` feed answers with no vehicle and a
+    time of 0.
+  - **Lime's Al Mirfa and Madinat Zayed zones,** in Al Dhafra, held no
+    scooter in their full-area audits on 26 October 2026.
   - **Gone:** Yaldi's ATOM host (`yaldi.rideatom.com`, system 511) no longer
     resolves, and yaldi.ae now rents cars.
   - **Bikes only:** Careem BIKE, docked bikes in Dubai and Abu Dhabi.
@@ -610,7 +617,8 @@ banned shared scooters, and feeds that were empty when checked.
     ATOM Mobility, has no host that answers.
   - **open.data.gov.sa** did not answer.
 - **Israel** ([guide](israeli-scooter-feeds.md#known-gaps)): Bird, Dott and
-  Lime in 13 towns of Gush Dan and in Ashdod are covered.
+  Lime in 13 towns of Gush Dan, Bird and Lime in Ashdod, and Lime in Eilat,
+  Lime's two from its rider map since 26 October 2026, are covered.
   - **Left out:** Bird in Caesarea, 49 to 52 scooters with only 5 new
     positions in 9 hours on 15 October 2026, and 41, 40 then 37 on the
     morning of Sunday 18 October, three leaving and none arriving in 20

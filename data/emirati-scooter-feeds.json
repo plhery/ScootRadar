@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-15",
+  "verifiedOn": "2026-10-24",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -66,6 +66,82 @@
         "ابو ظبي",
         "Abu Zabi"
       ]
+    },
+    {
+      "id": "lime_ae_app_abu_dhabi",
+      "provider": "lime",
+      "city": "Abu Dhabi",
+      "center": [
+        24.4539,
+        54.3773
+      ],
+      "timeZone": "Asia/Dubai",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "B7VPZPR3HUNCH",
+      "limeMapGrid": {
+        "south": 24.39574,
+        "west": 54.30935,
+        "north": 24.51406,
+        "east": 54.63474,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.014795712051930214,
+        "cells": "16-20,37-43,47-48,59-65,69-74,83-94,107-108,110-117,132-139,156-161,179-183"
+      }
+    },
+    {
+      "id": "lime_ae_app_al_ain",
+      "provider": "lime",
+      "city": "Al Ain",
+      "center": [
+        24.20426,
+        55.76014
+      ],
+      "aliases": [
+        "Al Ain City",
+        "العين"
+      ],
+      "timeZone": "Asia/Dubai",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "JMSVQXVBZMXYP",
+      "limeMapGrid": {
+        "south": 24.20336,
+        "west": 55.71214,
+        "north": 24.27206,
+        "east": 55.78848,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.014773298545380967,
+        "cells": "1-5,7-16,18-20,24-26,30-32"
+      }
+    },
+    {
+      "id": "lime_ae_app_dubai",
+      "provider": "lime",
+      "city": "Dubai",
+      "center": [
+        25.2048,
+        55.2708
+      ],
+      "timeZone": "Asia/Dubai",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "L2W7TYFCTFTMC",
+      "limeMapGrid": {
+        "south": 25.05531,
+        "west": 55.12455,
+        "north": 25.31855,
+        "east": 55.50719,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.014874353285571636,
+        "cells": "0-1,6-8,26-28,31-34,52-58,78-84,94-95,106-110,119-123,133-136,146-150,160-163,174,176,186-189,200-202,213-215,217-218,226-228,240-246,252-254,266-272,274-275,278-282,293-295,300-301,304-308,320-322,326-327,331-337,347-350,352-354,359-363,373-379,381-382,387-388,400-409,411-414,427-438,456-461,482-483,485,508-509"
+      }
     }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Abu_Dhabi_245_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Al_Ain_10_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Dubai_500_exclude_new_type.json"
   ]
 }

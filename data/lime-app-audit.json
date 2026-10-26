@@ -2521,6 +2521,91 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Phoenix_740_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "IL",
+      "city": "Ashdod",
+      "regionToken": "DQ7OXIZS3YT4R",
+      "fingerprint": "25e8ebc33994a8b6c37f490f997604629cd6b0a84bd60535c9b90b3dab95493e",
+      "groups": 7,
+      "localCells": 28,
+      "coldMapRequests": 28,
+      "warmMapRequests": 28,
+      "scooters": 388,
+      "stationaryReferences": 15,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T10:54:00.068Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Ashdod_194_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "IL",
+      "city": "Eilat",
+      "regionToken": "C3PIM5KQXXOQT",
+      "fingerprint": "069042dc2973d69e092c6d1eee1e5b34a4e4bcb2391171c81b0c63661a3e6199",
+      "groups": 5,
+      "localCells": 17,
+      "coldMapRequests": 21,
+      "warmMapRequests": 21,
+      "scooters": 323,
+      "stationaryReferences": 131,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T10:56:48.109Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Eilat_135_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "AE",
+      "city": "Abu Dhabi",
+      "regionToken": "B7VPZPR3HUNCH",
+      "fingerprint": "7f7a0535de0c51b74db72eacb8e3c9c4c3a1f02875aa656181ab6f33b1190a02",
+      "groups": 17,
+      "localCells": 68,
+      "coldMapRequests": 68,
+      "warmMapRequests": 68,
+      "scooters": 647,
+      "stationaryReferences": 1,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T11:04:57.991Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Abu_Dhabi_245_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "AE",
+      "city": "Al Ain",
+      "regionToken": "JMSVQXVBZMXYP",
+      "fingerprint": "dbb2744402ad2371e69f837003289f5bc98900808ad257d1b5bc34656934add6",
+      "groups": 6,
+      "localCells": 24,
+      "coldMapRequests": 24,
+      "warmMapRequests": 24,
+      "scooters": 44,
+      "stationaryReferences": 8,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T11:08:20.962Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Al_Ain_10_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "AE",
+      "city": "Dubai",
+      "regionToken": "L2W7TYFCTFTMC",
+      "fingerprint": "5321ca18fc24fa768009b1a73e7339539269e30223a38c51ac6a0db23b9532db",
+      "groups": 44,
+      "localCells": 174,
+      "coldMapRequests": 206,
+      "warmMapRequests": 206,
+      "scooters": 1898,
+      "stationaryReferences": 60,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T11:36:07.050Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Dubai_500_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

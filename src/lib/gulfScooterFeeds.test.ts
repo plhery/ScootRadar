@@ -74,13 +74,17 @@ const sahamScooter = (id: string, lat: number, lon: number) => ({
 describe('the United Arab Emirates and Saudi Arabia', () => {
   it('lists Dott\'s two Dubai fleets, Abu Dhabi, SAHAM in Riyadh and Dott in Jeddah, each by its own clock', () => {
     const gulf = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'AE' || entry.country === 'SA');
-    expect(gulf.map(entry => [entry.id, entry.timeZone])).toEqual([
+    expect(gulf.filter(entry => !entry.limeAppMap).map(entry => [entry.id, entry.timeZone])).toEqual([
       ['dott_ae_dubai', 'Asia/Dubai'], ['dott_ae_dubai_hills', 'Asia/Dubai'], ['dott_ae_abu_dhabi', 'Asia/Dubai'],
       ['saham_sa_riyadh', 'Asia/Riyadh'], ['dott_sa_jeddah', 'Asia/Riyadh'],
     ]);
+    // Lime publishes no feed here: its rider map, read in small groups, since 26 October 2026.
+    const lime = gulf.filter(entry => entry.limeAppMap);
+    expect([...new Set(lime.map(entry => entry.city))]).toEqual(['Abu Dhabi', 'Al Ain', 'Dubai']);
+    for (const entry of lime) expect(entry.timeZone, entry.id).toBe('Asia/Dubai');
     // Dubai Hills is a fleet of its own, inside Dubai: one town, one total.
     expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'AE' || entry.country === 'SA').map(entry => entry.id))
-      .toEqual(['ae:Dubai', 'ae:Abu Dhabi', 'sa:Riyadh', 'sa:Jeddah']);
+      .toEqual(['ae:Dubai', 'ae:Abu Dhabi', 'ae:Al Ain', 'sa:Riyadh', 'sa:Jeddah']);
     const dubai = system('dott_ae_dubai').bounds;
     const hills = system('dott_ae_dubai_hills').bounds;
     expect(hills.south >= dubai.south && hills.north <= dubai.north && hills.west >= dubai.west && hills.east <= dubai.east).toBe(true);
@@ -139,7 +143,7 @@ describe('the United Arab Emirates and Saudi Arabia', () => {
     ['Dubai', 'Dubai'], ['دبي', 'Dubai'], ['Dubai UAE', 'Dubai'], ['دبي الإمارات', 'Dubai'], ['Abu Dhabi', 'Abu Dhabi'],
     ['أبوظبي', 'Abu Dhabi'], ['أبو ظبي', 'Abu Dhabi'], ['Abu Dhabi Emirates', 'Abu Dhabi'], ['Riyadh', 'Riyadh'], ['الرياض', 'Riyadh'],
     ['Riyadh KSA', 'Riyadh'], ['Jeddah', 'Jeddah'], ['Jiddah', 'Jeddah'], ['جدة', 'Jeddah'], ['Jeddah Saudi Arabia', 'Jeddah'],
-    ['جدة السعودية', 'Jeddah'],
+    ['جدة السعودية', 'Jeddah'], ['Al Ain', 'Al Ain'], ['العين', 'Al Ain'], ['Al Ain City', 'Al Ain'],
   ])('finds "%s" as %s', (query, title) => {
     expect(namedCities(query).map(({ city }) => city.title)).toEqual([title]);
   });

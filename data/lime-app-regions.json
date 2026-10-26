@@ -3243,6 +3243,204 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Phoenix_740_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "IL",
+      "city": "Ashdod",
+      "center": [
+        31.7977,
+        34.653
+      ],
+      "timeZone": "Asia/Jerusalem",
+      "regionToken": "DQ7OXIZS3YT4R",
+      "serviceAreas": [
+        {
+          "name": "[Ashdod][SZ][Ashdod service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "qbjaE}nlrE|mExtBrqEnrB|rAifD_s@wmF}x@oBgVqRexCvBwrBkb@kbBlbF??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Ashdod_194_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "IL",
+      "city": "Eilat",
+      "center": [
+        29.532044999999997,
+        34.939
+      ],
+      "timeZone": "Asia/Jerusalem",
+      "regionToken": "C3PIM5KQXXOQT",
+      "serviceAreas": [
+        {
+          "name": "[Eilat][SZ][[Eilat][SZ][service zone]][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}cksD}wmtEeK`g@gKbg@_n@iYcj@yUuGz`@dCjb@d@tNjGnQxVlUxFkDAeE|Me@bDSxF]nEdC|CQxCv@fB`BtCr@jHhFfHMdI~CdKzLdBhCtFnDzJtFPYxAt@^u@Xs@bEkDjFuCpDiBtCmCd@u@f@[r@}@bRrQn^x`@bu@x`@by@hs@`e@`Rbd@za@|XvMph@j_AbM_H}s@wjA{c@sVum@wg@_XgFcjAmoA}aBgsAgWyH`ZekBqu@eMgBlI"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Eilat_135_exclude_new_type.json"
+      ],
+      "aliases": [
+        "אילת"
+      ]
+    },
+    {
+      "country": "AE",
+      "city": "Abu Dhabi",
+      "center": [
+        24.4539,
+        54.3773
+      ],
+      "timeZone": "Asia/Dubai",
+      "regionToken": "B7VPZPR3HUNCH",
+      "serviceAreas": [
+        {
+          "name": "MZ1 - Corniche &amp; Hamdan to Falah[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "{zltCgbpjIcCk@qHlLnArHpf@v]~JkB`Uu]hFeNnCwQ~BG`AuB`ESpZkAfPfHjI~^uHpUo_@nOjMIvWeHpPqEjDcFdCiFrBoIrCaN}Qor@iCgDlDqRhCcVbAqB|V`E~HrFwBi`@wAkG{SwDbAyNxLkv@phCedCcsCwzDo{Cf`Bui@he@sW_a@aXjKsPnMoA{Gq@qMgCkAuDgBmH{D{DnEuHg@NfMfCjSnIrMyInGwDvAeC@kDjBaNuGuUzAwG|CpNlLpFrHzHnG~MjNx^r`@fz@zzAjhBzx@rWne@hJtUvEtKnMp\\yRjCcMIw]}n@iC}GuHeHeCkBkChJx@zEpWp^yOsK{AwCSpAiMbJ}GjEwBfJeGpJ?jMxJpMtOrEdAgA~IeHvI`FwFjIcJxJ_a@aXrBsE??"
+        },
+        {
+          "name": "[Abu Dhabi][SZ][MZ4 Reem][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "gzltCy{dkIul@nDgBvJqG`Occ@zY}AbP}WiEx@SnAsM~A{EuFiGgEiCwIlMiPpS\\b@ke@de@rOpd@lh@iWtJ_If]}LNrOcPvBzCfQtMfCEdAyJdEqKyAeXYiREaYlFb@dPxFdGbPtG`QpAxN`B?lGsv@cOyEtHvk@~e@pT~AzDoElHzD|HrDtRcClW_N|sA_uBy@kApGmFr[iUsHo\\cXm\\}_@gN??"
+        },
+        {
+          "name": "[Abu Dhabi][SZ][MZ5 Khalifa City][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "saatC{j|kIfhD{s@aIgbAc[seCaRg|AqHs~@_IiF{kD`w@CbAeRfDmLpCuOjFjz@buEjh@pvCb\\cU??"
+        },
+        {
+          "name": "[Abu Dhabi][SZ][MZ7 Al Raha Beach][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "a{dtC}h`lIpd@oMyh@}lC_f@coCkf@y`@gLnGkJb]|c@lU``@dtBfd@b{C??"
+        },
+        {
+          "name": "[Abu Dhabi][SZ][MZ8 Masdar][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "arctCwuglIxlDkw@rJ{]im@qa@c|@ap@_j@oXe[dy@}n@t_@{`@|Q`CjEjU{E`HdDzL{@lChNdTlcA??"
+        },
+        {
+          "name": "Al Gurm Service Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ikgtCsv`kI?B@@@?@@B?@ApP}I@AxNuL@AfIcN?A`DaLnIw[|FgT@AzBoL?ATqK?AkB_V?A{A}OoCm`@\\qHNkAPcBjA{G?A?CAAAAAAC?A@sBt@A@A@?@uAlJ?@KtT?@`ChVvAfSn@bGn@rMmCvTgK`^_Jj]uN|QeXfLA?ABA@UfD@@ZlC??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Abu_Dhabi_245_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "AE",
+      "city": "Al Ain",
+      "center": [
+        24.20426,
+        55.76014
+      ],
+      "timeZone": "Asia/Dubai",
+      "regionToken": "JMSVQXVBZMXYP",
+      "serviceAreas": [
+        {
+          "name": "Al Ain Service Area[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "sb_sCmh`sIph@PlDcmClu@XhgD`@dKglA?kgAtA{h@uA_GkCkhCetCdWeNxCwJtqHku@YfCcpBmn@iDkCloAylCaGmAfnCjjCvB_@fg@jEN??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Al_Ain_10_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Al Ain City",
+        "العين"
+      ]
+    },
+    {
+      "country": "AE",
+      "city": "Dubai",
+      "center": [
+        25.2048,
+        55.2708
+      ],
+      "timeZone": "Asia/Dubai",
+      "regionToken": "L2W7TYFCTFTMC",
+      "serviceAreas": [
+        {
+          "name": "Al Shandgha Musuem CT\n[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "w~fyCmunpIyBTaAlG|Bv@XoB~BNrCtJxCdGpZzO|IkF_GmMs@\\kC~@}CMwC{@}DmBoC{C_CaDq@oBcBqCgDuAwAT"
+        },
+        {
+          "name": "Al Tawar 1\n[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "etgyCwb|pI|I`K~EnFjCr@lX`@n@eT~F{VlXwj@g^uTcDjLim@ziA"
+        },
+        {
+          "name": "Al Tawar 2\n[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "a`fyCgb_qI^hCn^nUbl@glAoGmAkK_CmP}Hif@xaA"
+        },
+        {
+          "name": "Al Tawar 4\n[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "exdyCckaqIpe@o}@cm@wn@aIn@aHtCsC~FsBvMwH|OsJrSf@xFhDlBhT~Ll[nQ"
+        },
+        {
+          "name": "Muhaisnah 3\n[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ushyCivbqIxD|AfXh@x\\GfX_k@tA}LhMaVcd@ia@_aAhnB"
+        },
+        {
+          "name": "Al Garhoud\n[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "skcyCgwwpIxQnNve@yDpJu\\vAwB`_@se@zS{B`Q{a@ez@}nAsKxYO~[mZvn@cj@nlA"
+        },
+        {
+          "name": "Al Safa 2[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}{rxCqtapIfzAvhA~Xuf@sC_Nye@}WgQgMsSoQmHj@oXfd@"
+        },
+        {
+          "name": "Al Barsha South Second  Arjan [service_zone_MIGRATED_FROM_V2]",
+          "polygon": "qs_xCkp_pI`Z_PkHyRgKkJlLeQlMoQhF}GvMmCbMqPjSNcA}ZgEmB?_GjNsFcl@_i@mhAaAFtKlKnBlHvLVtGw@|NtLMRjISjNKpGcfAxAUls@dJzOzn@xl@"
+        },
+        {
+          "name": "SZ Connectivity deira[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}ucyCgotpIjIsGrEmHfA}MkM{EfSq_@eXq@`D}S_JjVuD|S{Dl`@pCtC~KnK"
+        },
+        {
+          "name": "DubaiFinal[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}puxCoykpIuCiMwEgHeAoCuGgDyMaCcHiBx@qIyDyAoAeAcI_L`AyAjG~Iu@`AfBtBxCj@tADzC`AlApCKzGdEp@hHz@vCnBvCj@jF~LvAbCtBrJYxRyDfN}@zGbAxDjC`FrBpBvAfBl@hAh@fHWjKWrFcAbMqCzNeBrGuA`DsG`KoBpDGhCSnHRtNeB~IoLvPuE~JmJ`FtFMvRpMjUg]pK{Wc@gDiGmI_GoFnAuC~BlBnGzE~Bc@fEqD~BfAxG}JaDsCiD`F_G}@yCeCfAaCwCiDlOyWoAsAbJwQlCcUJyPyNiObQnMbFkGeIuSp]l\\_ByEs[g]_LvOhHqOqKgR{Pug@iG}AwB}Aj@sBmCyB{@jAwN}IyC_Cb@kA|BeDfGrAzGx@vEhBmCjGpAdAtDkHg@}HmHoJsP`FqD|AyCp@wNiHrTmz@sD{P}RuGu]{JY_F`Xc@dWcECgAkw@pGr@xGtAtIvo@nS{OfbAeY|x@dP|OhQh\\sDnFiDrCiCdBqDdAiAK{Af@y@Rc@Vs@Aa@CeBJmDUmGq^qB_AuK`VwC~FjAzJvBhJbVvPvM`IpYnUnCcFkLaM[uDkCiDl@aApC~BtHpB~FtEbBjHnFrGgH|LpNvNsC`G`EzDqIpTbBhHuHhAqQtZcYaPpf@o_AvNvLr@kAqg@oe@{g@s`@kGmD}DeBqClCeIiDse@hhAqP_JwApE~WrOhC}GcAqB~F{O~@Cj`@fVqIfP}CiBcEzGlBfAdAaB~EbDzRib@tR}a@~h@~c@yc@dx@ii@sZeA|B`Y`RmGfMq_@yVdDgJmBgA_Lx[_VoPrJeZaB{@uv@g`@iHnGws@ie@zBiH_DyA`@cB`BeNxHcUsS{NeCuI{IuE`MqVhHwXiOgJ`DsJ_N_Iw[_O{@`Cbg@pUcDhI{GlAwCvAXtKsDbIyL{D}GjWmKqDcScLrJ{MtVok@dAm@`AeCGStYys@wQmKJqA{u@cq@oC}Js@{Pme@{]|Ri_@}EiBcOoBlQkYvAoEqAkACgDhOoAhC[hMoDFyDzQsGm@uXbGCUgOdK]IsHpLWrD_JlU{k@l_@zk@uc@|XpDnLxUoGr}By[cHbi@bv@|QhWaaAikAqa@k~@|KyAwYkOiKmVtc@sKxJ_C_Cm|@sqAu@cAGDIL}JtWZ~PyLfXGlNsPdWiCdCiFXck@~kAqJl_@eDjXiZ{PmBpBaJeBeLsAiMcA}B_Nm^e`Bm\\ki@lKwUbGwLzDgHbGoK|b@s~@lHgOyz@wi@owAc~@baAmtBldAiqDePwcBt]klAxiAdNjGsCnI\\jVT~tB~XzE`E_T|mCxQGqAvdBdk@bWja@w`@r[~]fWnH|W|FoQlaApZfQho@b[`r@nObSw[bMe[qFkI}@mp@an@ve@aXyj@{pAsXr]kcBjl@fy@vvA|NpOoGjUZeIz}@ZnDlDmIjJmgA}\\i@w\\rDy`AkKeq@az@}AlAyGsE}]plAap@sQbUsg@iv@m_@yu@gBbMmnAnThHvV{m@h`Cd[_SbhBzFlExV}uBcvCk]IgCwMkBbAyNyGg@mDs\\lDwj@xBcl@pRkkBcp@aAo}@gQaUzgCujB_UyhAlzDdMj}AgbAjvDciAfgCkKrXoGnNkDxKeAfGYtG`DdSpFzMF|BtBxDkCvGQvAuAtTkCbb@AlD|EjBr[`DtLgKbEaS`Br@mD|QnHfNbN~CjLjEbLrKaBlBsOkLiS}DeJhD}DxDyAvKcAN}AbG_QzVsPcQc@gMaDkJeGeHrEiNy@wAmA]mFbPeL{@eJpG_YlYuHjJeMpMuIHyNtBeGd@{B~DeA~EtApGn@bKvKpHbc@dWfQoJbUnLrHaA|l@}hAb[`\\jYs^pj@xj@fNiEl@NhHwB`O|o@lDvSrApNkJrAo@zAwH|BfFj}@RfHo@xFs_@dGmA`H?nMcB|FOfBoDzE{@jBDfAR~B~@nFtZ|v@zDtNf@YoCwMdQ|Ap`@~YnG_C|A_LkHySMoVyAFq@BZrVTrC~@pB~FpJiExKgc@wc@{CdDeGySAy@Ss@aGgPnDiCgG[iMa\\pC}Ec@iOh@uBvg@eGP~\\lAbDlAhGcQbFf@zAcKnEt@fClUuHtKu@Vc@dBwB{A}_@fKq@r@jCnB`OwFzHwEjCuBzCgC\\NrNnApGjBS~AvF`Hk@LwArB}RtQ}Zp]o_@mBqItXyb@d^`Y|BpF`ArFNlFyAPiBpIyF`JqGtByKiDiKn@`FfGzEoBfJpGwFnO{JkFeDcFdFuEu@Oe\\pYyNta@h@nPkGbA|BlUwEbAqA`KuJjFcNyGqIeOcEb@k@|HsI{@eEuHg@PxErLlExDpOfGzUrLr\\rRbDh@`CmB|Tq@`h@b[_GjQdCxI~k@z^vl@da@`QjUhcAvr@ntCtzBbr@di@`fCxhBdeCphBxRjMbHcIrc@r^f^eA~oBdlBfc@`b@rNpMrj@xi@~QlPhUbUcG|HNtLeTzYw`@}^cH`KiGnHfSfNna@|h@~V|w@lSuHk_@wkAfU{ZhGrGzHiJxCnF`Oq@zPfPfPnSfJhG|CzH~DbFrFlApCd@lB`Cn@~C?tJj@lEoAbEiFvAyHoB[dFlKvBnGuDxDmFz@x@oGhHfBlB~HcH~FyIdCyDz@eBhAwIUcKqDqKiEeEtEcDxVU~Hc@fH_F_LgKjAsCqRyVoT}PkCnDc]iYiJsZaCaKsD~AmC`CmBrAaA~AaCnCi@`DQtL]bLyKgFaD`@_GWgDn@qDpAe@{GsLoFrKmNql@_v@aDdDsBbGmGuFxI_KaOkThAyA~QrSro@}p@y[mUkPuQuGkIfBeG~[qU|hAg~ByiB}|Ama@nl@}Au@qA}@ck@od@uNtTaXbe@pk@`b@rCjC~BbBlA~@dFzFCvTbBvw@rD|Mbh@`a@tCnDpa@la@k^z`@cI`IqClAah@qj@wYh`@ipAavA}NmRmNqN{CiCaF_DaTlBkThAkfF}vDd[_m@tvA`fAg\\fj@~AlAz\\ok@`Zch@mCmKgp@a`@i_@oY_Fq@aYhd@w@w@}]rp@wfAwv@lNoZmVuM`HmPaYeT_GNyCHdMmGtJmP`H{KzAuGF_MAqOdA?|@_BkBwBfLwO`CwFh@{BpByLr@y\\iI{T_DmFWgE`IwWVaP"
+        },
+        {
+          "name": "Satwa[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "az}xCgkhpIfLiVmCcBxH}WfXyj@h@sB|AcD`AuB}@q@{D_C{FbL_t@}e@iNcJoFrOcBnDeAzCpLxJbd@zZ{FjMzO~KiMbb@rBlAyGhLlEdD"
+        },
+        {
+          "name": "[Dubai][LSZ][La Mer Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "kz|xCilfpI`MuLgtEkbDwOhU|vEvyC"
+        },
+        {
+          "name": "MBR Library CT[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "qq|xC_jwpIdBaBiBsCpAoHQuAmD}@eGc@FoAcC[u@`E`Hv@hDZb@rAkAvHnB~DTW"
+        },
+        {
+          "name": "International City [service_zone_MIGRATED_FROM_V2]",
+          "polygon": "m|sxCa|bqIhSlE`\\dIxByLfShDxF?pEaAn@a@bGgN|Hsb@^aAxCn@vFfAn@qFvEc^_CwByDS_JQeYvToHjFiSmEDoAbAeP|A_BhBuAbEcDjUcRpEmc@aEj@iEhC{KpIgWpRaKvAmCMoBIuAFyATqBb@iAl@cCjC`AgIrJgr@sKnAoI`@cCvQcD|U}Ftd@nMfCdDh@`@F]~HsBbO}CdXjC|Y"
+        },
+        {
+          "name": "Mall of Emirates - Barsha 1st[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ckixCg_|oI~MzOzPlX`NrTv_@~l@Xf@hGiApSyDvMuL`R~QbBcAwNkOu^eTcFqPwAso@NkQCkI_CwDcCcBmu@qj@ic@jt@nGhX"
+        },
+        {
+          "name": "Al Qouz 3rd [service_zone_MIGRATED_FROM_V2]",
+          "polygon": "wgixCiq}oIrAcCgCUwAnC{AgAgCmB{OiLcb@uZyo@yf@ia@{\\q`@oZ`JiOoE_DaKtNea@s[aI|M{GvM|OvIpj@tZ~hAnl@fQpJhPxLrErDvD|DhHtHbGxItKpPjGrCzG^~IyN"
+        },
+        {
+          "name": "International City Phase 2[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "cznxCmpdqIkStp@r[~JrKxD~QkKzH{Efm@nNhD{OfFuRa_@mBiWuCsJa@kNm@cCwEaTyH"
+        },
+        {
+          "name": "Dubai Silicon Oasis [service_zone_MIGRATED_FROM_V2]",
+          "polygon": "gcgxC{n~pIpIyGxCiOn@qEqC}Fgn@_aAww@olAuRuFmD|CsIlI}J~PsU~}@nL|GuJxUeA`Ee@`Dh]dSjYlN{BdM`JbLhUnXzDxEhMl@v\\eUpG_GmEqJ`MgJfJzF"
+        },
+        {
+          "name": "Liwan[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "gxexCes|pI~VkPkLqTmHaN{D_DaJViHNgGpAmEbEoFxDyFhEuDbDmG|FuMbMoF`FWvJWvDSjFrDxGhg@aa@v]uWxOvZ"
+        },
+        {
+          "name": "Academic City[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}ejxCu_eqIxQoP}A}IUgLD_GOeFwIuJnF_OoMSdG}Q{LaFwCfHaXmS}Em@{Ek@kCg@gD~BqD~DmErDnA|BrB~DpDzFjCnD~LpTvj@|`A"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Dubai_500_exclude_new_type.json"
+      ]
     }
   ]
 }

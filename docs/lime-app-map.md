@@ -154,7 +154,9 @@ regions, on the evening of 25 October 2026, local time: Lime runs e-bikes in
 Charleston, with MUSC Health, and Grand Rapids made Veo its only operator from
 1 September 2026. Nor did Newport, WA, in Spokane's region, on the night of
 25 to 26 October, Pacific time: its city council had Lime take its scooters
-away on 3 June 2024.
+away on 3 June 2024. In the United Arab Emirates, neither did Al Mirfa and
+Madinat Zayed, in Al Dhafra, the two far zones of its Abu Dhabi region, in the
+afternoon of 26 October 2026, Gulf time.
 
 - Zones named as demos, tests, warehouses, events or temporary areas are left
   out, as Rome's three temporary areas and Dortmund's warehouses. So is the
@@ -204,6 +206,8 @@ stationary reference scooter, country by country:
 | 26 October 2026 | United States: Tampa, Orlando, St. Petersburg, Winston-Salem, Lansing | 503 | 127 | 3,158 | 253 |
 | 26 October 2026 | United States: Los Angeles, Portland, Spokane, Sacramento, South Lake Tahoe, Isla Vista, Spokane Valley, West Sacramento, Tualatin | 1,314 | 332 | 16,042 | 555 |
 | 26 October 2026 | United States: Salt Lake City, Boise, Phoenix, Boulder, Scottsdale, Arvada | 766 | 194 | 5,532 | 475 |
+| 26 October 2026 | Israel: Ashdod, Eilat | 45 | 12 | 711 | 146 |
+| 26 October 2026 | United Arab Emirates: Dubai, Abu Dhabi, Al Ain | 266 | 67 | 2,589 | 69 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was
