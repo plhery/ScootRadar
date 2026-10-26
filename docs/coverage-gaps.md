@@ -456,23 +456,25 @@ banned shared scooters, and feeds that were empty when checked.
   - Systems 65, 67 and 68 on 3electra's host answer 400.
 
 - **United States** ([guide](american-scooter-feeds.md)): Hopp (Bolt) and Veo
-  in Washington, DC, Bird in 24 towns, Lime in 26 (9 of them from its rider
+  in Washington, DC, Bird in 24 towns, Lime in 35 (18 of them from its rider
   map since 26 October 2026), Veo in 39 more, Spin in 29 and Lyft in Chicago
   and Portland are covered.
   - **No public feed:** a survey on 16 October 2026 found no unread US feed.
     Fleet sizes are from [Ride Report](https://public.ridereport.com/)'s
     public dashboards and the Bureau of Transportation Statistics'
     [2026 list](https://data.bts.gov/d/cqdc-cm7d).
-    - **Lime** publishes nothing for about 40 towns where it runs, about
-      25,000 scooters in all: Washington, DC (about 4,700, beside the Bolt and
-      Veo on the map), Milwaukee (2,400), Portland, OR (2,300, beside Lyft),
-      Dallas (up to 1,750, beside Bird), Charlotte, Spokane, Sacramento,
-      Phoenix (beside Spin), Boise, Minneapolis (beside Spin), Alexandria,
-      Albuquerque, Tucson, Boulder, Oklahoma City, Los Angeles, Long Beach,
-      and smaller towns. Its rider map has supplied Raleigh, Indianapolis,
-      Cincinnati, Fairfax, Tampa, Orlando, St. Petersburg, Winston-Salem and
-      Lansing since 26 October 2026
+    - **Lime** publishes nothing for about 40 towns where it runs. Its rider
+      map has supplied 18 of them since 26 October 2026, about 21,000
+      scooters: Los Angeles, Portland, OR (beside Lyft), Spokane, Tampa,
+      Sacramento, Indianapolis, Orlando, St. Petersburg, Raleigh, Winston-Salem,
+      Cincinnati, South Lake Tahoe, Isla Vista, Lansing, Spokane Valley, West
+      Sacramento, Fairfax and Tualatin
       ([guide](american-scooter-feeds.md#lime-supplement--26-october-2026)).
+      Still without one: Washington, DC (about 4,700, beside the Bolt and Veo
+      on the map), Milwaukee (2,400), Dallas (up to 1,750, beside Bird),
+      Charlotte, Phoenix (beside Spin), Boise, Minneapolis (beside Spin),
+      Alexandria, Albuquerque, Tucson, Boulder, Oklahoma City, Long Beach and
+      smaller towns.
     - **Bird and Lime** together in Austin (about 5,400).
     - **Bird** in Charlotte, Sacramento, Oklahoma City and Bloomington, IN
       (about 220).

@@ -2922,6 +2922,203 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Winston-Salem_247_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Isla Vista",
+      "center": [
+        34.41333,
+        -119.86097
+      ],
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "regionToken": "FF5QETKEO3SZ7",
+      "serviceAreas": [
+        {
+          "name": "Isla Vista SZ",
+          "polygon": "ynbqEtcrzUz^K]|\\@lTpJG@xCrCs@ph@p_@bBxM~HkHxCyB`AwFe@oDaHiPw@kVPw`@{@_PpE_u@`C@xUkw@RwH_}@ke@uHNnB`HgHy@uC~UmC\\kN~k@qLjRkEaD}EmAWluA??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Santa_Barbara_1235_exclude_new_type.json"
+      ],
+      "aliases": [
+        "UC Santa Barbara",
+        "UCSB"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "South Lake Tahoe",
+      "center": [
+        38.93324,
+        -119.98435
+      ],
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "regionToken": "JEU7G7JKIWDYJ",
+      "serviceAreas": [
+        {
+          "name": "[Lake Tahoe][SZ][South Lake Tahoe ][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "qpylFjub{UxNGN`CVJzCVjEp@Eo@Zi@~I~CvBz@SdAnBhA`@Cn@X\\Qd@V@h@r@p@nCpAtD~C~FlFdG|FzF`IjErGj@AL\\b@`C|ArEdDfHpBtFt@~A\\Ed@MPTORK@QZX`AXnAf@hC`A|E\\OX~@RbBYVf@lCl@pCzFh_@fArKp@hLMrBjAzWf@dRhBzOrC|OzF|a@jDzb@dJnVlCnGzDxIhB`O|@rGH`KCln@qCd{@}XzgClzKi}Ig}PcrUapAbyEymAdaCl}@rtAl@rJvS{ItIoAfFy@d[gKvJOrKy@jGWhE?"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Lake_Tahoe_310_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Lake Tahoe",
+        "Stateline"
+      ],
+      "seasonal": {
+        "from": "11-01",
+        "until": "05-01",
+        "timeZone": "America/Los_Angeles"
+      }
+    },
+    {
+      "country": "US",
+      "city": "Los Angeles",
+      "center": [
+        33.985,
+        -118.4695
+      ],
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "regionToken": "ZYJJ72EMTLKEL",
+      "serviceAreas": [
+        {
+          "name": "[Los Angeles][Los Angeles - Operation Zone ][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "{`opEjadrUvr@t_Ct~B`Wd`BH~HnjDxSz}Ot{EwA~`@twD|wLxAj_AkfCmf@yzBoEe~LzmAesJzeDpsBnxEuX|{AtoDv{Dl_Kvd@kh@t|AqwIyb@y_@yVaSyLoPMuCaLqCuJdCmMZaE}GuCoJu@}LuY}VaYsVsEcEvw@ybAi`@mf@z_B{pBo@aIzJyB`DeJtEiNfDaCvSgP~YoV`TuOnn@x{AxtA`fDjuKkvGsAuwKs`JeDtAamH?ug@fiDcCIaiN}fCvBJya@cmEx\\zKm_HkpHIfAweDqsA}[{yCsMUbvBc}@w@ws@m`A}iAzbBih@fMwvAgOf@hrAgQ~Cv`@tsAgPb{Arg@nc@`fBlFpl@bgCwhExvBmf@x^{ZvfDtMpZt`@xJhJ~KCtr@feAxjC{xBpj@}uEhr@cFlz@uXSFco@{b@tD~EsnCi`B_UmpIlrJymBhxByuCt`Dun@ft@y@~kE"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Los_Angeles_12090_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Portland",
+      "center": [
+        45.5152,
+        -122.6784
+      ],
+      "region": "OR",
+      "timeZone": "America/Los_Angeles",
+      "regionToken": "KKBQJNGHUHDIU",
+      "serviceAreas": [
+        {
+          "name": "[Portland][SZ][Portland City Limits]",
+          "polygon": "}ssuGhkhlVro@xk@fb@jw@xi@~r@fRlInVtDvh@yAvAfi@sBvXj`@E}ApCjDtAc@~EjAyBfA`BsAbCoCeBsAhGgF}@iFrMdH~LfNlFAl^tz@f@Yb}@eMt@Cjh@_KA?rJwGBCfJvmBj@EypBvF?DqKtMgABiXuCzAuAwOvEt@tA_JfCfE|H}FeEkLxGUiAmEnJqKvAxBlMwU@~CvNAk@oRlG_DAeFdX?bFmK\\kMvJ{BfMpCd@pWx\\UEk_@~k@C?k_@fc@C?qEnG?`@g`@xMN`DaIhBhBgHrTlV_GqKrZ~KyH?pM`s@PLeV|VANae@wVJGkw@jO@HkOhH{@PfM~G~BbAcIvE@yBgLjHkBnUuRqDYqSlS{@oNiPBPrC_C?cA}MtBaEwEiNtB_`@qk@fDV`ZbTZ?zHoCE{@nG{C{BHrDiElC]mGaDhOoIoC?cCjAgEz@zDjC]~AwUqTi@?jIeRPvBt]_SlIcAtXiLtTwFhCoIej@tVJPqv@vWoAiAyBoU[Ky}@~l@D~NgZCuJxExKCoSzE@FhUvBhAC{OrC?~@lQhBgJrNoOoCiJcD@?gLgE@jCig@lCsD|GCxApGuDxDvFCj@lr@zB_LvPeFAvHtF?BqP_F_@a@iLzL?@uIiLcTfNAvEz^`L?PtLuLAEfaAmUCjBrVmC`IxGbBhZ{SnZJlChKTeRmCuQhE`I`CoHtAxHtNZRuThIVcCxS~@y@~FyH}@zXxKC~@iF`L[BaL{MuSJ_OgBBj@uJrO_CAsBiFuAbByHcOtBiCmT~DaRqAaA_CyKcAzDuAiAyAhChArBkA|DaHmJeDvEdCbFgBjBaJwE_AdD{@cKxKjJtAaAgMsJqCLv@yHzCzFzDmCaC_Iz`@QbAbFgCl@?\\dBh@d@vG|PFb@pQjFA?`GtBAsBlWxBnG`DGuA~E~IL@wFbDMhAeGhEn@wBmD?}BpGUF_[aDrD{F@WqDbFAxAsJ`P|C?aD~FE~A|yAoB|d@tMArIbEJcElQGvBhK`@iKjv@MoAbTlLl@cCkCbCeFmD?f@wEvETkAgDbEj@?|EjDc@KcFl_@@f@zGxIWRfLhEnDg@xD{GNeBrDjVb[nCyI}EsBpFeFeEm@rAyGoBgBjGuBB_D_KAF}Uzm@AKlOrF@z@oOxy@@wBlJfLjAlE?uBwLdjAFPk_AiF?Fs_@uQwIcRtBNq|@jLD@yLaLQBiL``@C`AqJOmCqa@ADiO|OBAlB`OiBzEch@tCvDBiTtAFb@{DwUsAkAq~@yCFnOwREcLgJCB{f@~TPX{y@sCx@\\`PgG_Di@`FcHkDnBxCmBfEuBF@oNiQtGqAyHcFrDaAmDkBvA|DnEcDdCl@fIsA~BsF_IzDvLT?`JkMnAF?fNwMUcGM\\eSuJE?kC`Ia@YgBiOcEBdK{CAcBgMeGLkAqJwFxE~@}DsHRiF_GgEyMzIaHkAiL}\\|P}A{n@`Q}B@{e@sSbBByb@qPbADs~AjQJwCcKrCqJeQy@AcT`DIz@wFaFyCrC{SuD{CnAwLhCeDlDpBbBuHoMQ@uJrBAsBeEFuq@~B{@_Cy@nB}CqB}CrCgAsC]Kqg@iDg@?sBfDlA@sF_AmC}GjCA_NvD??tEnDhBEsd@}E?CaE~E@Zkw@bT|G`Bma@sPEaEoCpJwA[{GoIdCh@ab@_UCWs_AzUGlFu[rQiN@id@qFA@uPzECBiOeEAPsKkE?@tD}C??vVoIRJmbBtJ@DwL{JF?wVwGCAeTuDAAfGmNvJtDqR}LiBhDeFkDqLbGyGBiGf^jBGtCzj@El@u]ok@SIdOgHEoDe_@iC?wAdOwu@ETk]{M[Eag@u_@CrOrPmBnIdPxRqQpB}OoBJdDmXkd@aCK?dL_VUAqV~C@?eGaDD@}ImUEAmTkJA@h_@iJADsOuVTB|FiIxAmKoD{a@pAu@eD{BhDyn@a@@nHrBP}AjOnBABnLeDdC|@xe@iHbGuME?tBkXuGA`FcGvCFwF_K]{@sDsFnGsKiFa@mD{w@]GuVqk@cArGeyAkCAkAo\\mGlAy@NmBmD?lD{l@@RrMmKAcLrjBmX~mBoL`aBon@tpBgoBhzEkSdTeLrf@y_@@gQltB_IfaFyr@haEyi@pdBn{@r`As`@|vAdDiAkFjMsd@xiAwtCtkEwMzI??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Portland_3599_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Sacramento",
+      "center": [
+        38.58157,
+        -121.4944
+      ],
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "regionToken": "LD5RY5PKX6XAZ",
+      "serviceAreas": [
+        {
+          "name": "Sacramento SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "uebkFhepdViQlqKzyAB?yo@v}A|AxD|m@hiA{{@zaBsQzeAuaAbdBhmAeYax@uA_eBrTu~@dzAc`@~lBjnA~gDuf@~tAlpB~j@ge@bk@biDhcA~_An~C}vBl[ytEltAgo@fGmsBgYcwCt{@}Vbo@q{@fd@mv@vC}hEa|FpkBei@tnEacAp_@{xAgWb@i`Bxn@mj@bAi_@Qa]oAoEKaPzNc@jHeDzDsF`JcBCqm@un@NCgeFgj@wKySkm@gYD@`_@{_C`RcZ~~AyWsr@mZQidAlXI`jBoq@eOez@`{AslFzWyf@?ckBgsHtFlgFwg@`n@}a@|fA_a@qj@oaAA{_@vmLvoAlFt[yv@|gA_B`a@plAyN~xA}l@CWwz@wnEdA??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Sacramento_370_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Spokane",
+      "center": [
+        47.65966,
+        -117.42908
+      ],
+      "region": "WA",
+      "timeZone": "America/Los_Angeles",
+      "regionToken": "E6U2NZJR7I3DG",
+      "serviceAreas": [
+        {
+          "name": "[Spokane][SZ][Spokane] [service_zone_MIGRATED_FROM_V2]",
+          "polygon": "}_obHlm{kUWn{NhgCuIflAs`B|r@{KcAyv@tYgBzcCc_@gF{`CVyh@|SkSpJps@|m@tCvo@cJ|JkDlZePh_AaO~XgQhz@re@pfAeBd_BnFnhR`xX}IuCvCr`FpeFhcGjhCgmKnbAme@hIw\\c]weAqRsfCayBq_PkoUklHlb@imAeAgtOqt@hCjCssFerA{KwYwdAyhA|LyIztAk_AdBqRp`BseCdBOx`CirBuAb@e_@cNwp@ak@}i@ie@a@cAha@idAa@?zh@gyDvJwk@`gBsgBaO`D{aCwnBeAyDpd@{`@nc@cA~MnJvg@cAnoAi]bArBx`Ce`@?zAliCll@roBv^j_ApBfiB`bAlE`^mE"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Spokane_2080_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Spokane Valley",
+      "center": [
+        47.67323,
+        -117.23937
+      ],
+      "region": "WA",
+      "timeZone": "America/Los_Angeles",
+      "regionToken": "E6U2NZJR7I3DG",
+      "serviceAreas": [
+        {
+          "name": "[Spokane][SZ][Spokane Valley]",
+          "polygon": "swabHtgbkUhe@`@`k@|i@bNvp@c@d_@hrBtANy`CreCeBpRq`B~RgmG~Kha@~|AwIl@mjC}h@iCjCurA{rAi~Fl@uyD{lBo{BiqHcAgSha@bVr}Bmg@trAe`@jwC|KhfD~e@lElMxeAbV`]_Lrt@l@nyCqJnTlZjuDta@ha@kOvY??"
+        },
+        {
+          "name": "[Spokane][Whimsical pig][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "gd~aHxgojUrGGOcXNyFwDU{Az`@??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Spokane_2080_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Tualatin",
+      "center": [
+        45.38401,
+        -122.76399
+      ],
+      "region": "OR",
+      "timeZone": "America/Los_Angeles",
+      "regionToken": "KKBQJNGHUHDIU",
+      "serviceAreas": [
+        {
+          "name": "[Portland][SZ][Tualatin SZ]",
+          "polygon": "sb`tGh|plVXjPc@lTi@pEArK|XL`@zA|CZ_@oBhz@wT@uH_EkGtBm@rAxEnJsF_@uG`DOL|CrUoDcA}Sz]B?}VgTODyJdG@AaBzKAC}w@hbAd^DyfAfFhAAmYgF?Pk^nR?fF~@xLGCoj@ih@oOKaFcC@{g@iMO_QyWFuh@uWa@kAtDmGr@uH]wG{PmgAaAgRDoj@_JA`A}DTaYaEkEuODuIgEkC|BsFGw@rMk@nRoAfXo@vOkJtl@sDxWkAfIuAfIm@|CAZmFs@gCyH{FuKyCeDcA_AuHuFyIaGyLeM}AoBuAcAwAy@iAMg@Gi@CiAHqAPkAb@{@vA_DvGSp@sDdLExBL`C_@zAc@|DDzWp@bNnH|NvSZtB]~W`DvC?dC^zBPz@NrBHt@p@NzAF`c@yRjEwAdB@nKTzAiA|AY^mCJwAPiAhCS~BAjBhA`DnIfP\\xA_@v@m@b@uFRaCVeCv@cD~CQt[_DcF~C|JbBaDfZQ?fEgMBi@ANnLwJD}@o@_@m@mEq@?k@FmFcCBIjKNhEbBnS~@UMqBt@NnIAA`CO`IvHAtB~^PxFJnF}FBtFxWj@~Kt@lGfAjFfC~BrNPrE~K_@XoBD??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Portland_3599_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "West Sacramento",
+      "center": [
+        38.58046,
+        -121.53023
+      ],
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "regionToken": "LD5RY5PKX6XAZ",
+      "serviceAreas": [
+        {
+          "name": "West Sac[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "g{mjF|vaeVrbEjLx{@dUv_FyE|Ck]{ReT~E}kBicA_`Ack@ciD_k@fe@auA{oB}gDbf@_mBgnAczAb`@uTp~@tA~dBdY`x@wPlu@hk@zvB|l@yJpi@zA`Pn{@??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Sacramento_370_exclude_new_type.json"
+      ]
     }
   ]
 }

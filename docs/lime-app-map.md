@@ -152,7 +152,9 @@ only e-bikes in both, and New Westminster isn't in British Columbia's e-scooter
 pilot. In the United States, neither did its Charleston and Grand Rapids
 regions, on the evening of 25 October 2026, local time: Lime runs e-bikes in
 Charleston, with MUSC Health, and Grand Rapids made Veo its only operator from
-1 September 2026.
+1 September 2026. Nor did Newport, WA, in Spokane's region, on the night of
+25 to 26 October, Pacific time: its city council had Lime take its scooters
+away on 3 June 2024.
 
 - Zones named as demos, tests, warehouses, events or temporary areas are left
   out, as Rome's three temporary areas and Dortmund's warehouses. So is the
@@ -200,6 +202,7 @@ stationary reference scooter, country by country:
 | 26 October 2026 | Canada: Ajax, Coquitlam, Laval, Montréal (Parc Jean-Drapeau), Port Moody, Richmond, Vaughan | 190 | 50 | 1,876 | 345 |
 | 26 October 2026 | United States: Indianapolis, Raleigh, Cincinnati, Fairfax | 756 | 190 | 1,861 | 213 |
 | 26 October 2026 | United States: Tampa, Orlando, St. Petersburg, Winston-Salem, Lansing | 503 | 127 | 3,158 | 253 |
+| 26 October 2026 | United States: Los Angeles, Portland, Spokane, Sacramento, South Lake Tahoe, Isla Vista, Spokane Valley, West Sacramento, Tualatin | 1,314 | 332 | 16,042 | 555 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import BottomSheet from '@/components/BottomSheet';
 import { COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL } from '@/lib/coveredCities';
 import { dockIssue, dockModel, type DockInput } from '@/lib/dockModel';
+import { formatLocale } from '@/lib/formatLocale';
 import { I18nProvider } from '@/lib/i18n';
 import { PROVIDERS, type ParkingLocation, type ScooterResponseMeta, type Vehicle } from '@/lib/types';
 import { formatClockTime } from '@/lib/uiText';
@@ -400,7 +401,8 @@ describe('BottomSheet', () => {
     }) });
 
     expect(screen.getByRole('heading', { name: 'No scooter data here yet' })).toBeVisible();
-    expect(screen.getByText(`ScootRadar covers ${COVERED_CITY_TOTAL} cities in ${COVERED_COUNTRY_TOTAL} countries.`)).toBeVisible();
+    const cityTotal = new Intl.NumberFormat(formatLocale('en')).format(COVERED_CITY_TOTAL);
+    expect(screen.getByText(`ScootRadar covers ${cityTotal} cities in ${COVERED_COUNTRY_TOTAL} countries.`)).toBeVisible();
     expect(count()).not.toBeInTheDocument();
     const cities = within(screen.getByRole('group', { name: 'Closest cities' })).getAllByRole('button');
     expect(cities).toHaveLength(3);

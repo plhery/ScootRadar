@@ -1179,9 +1179,11 @@ extension ScooterModelsTests {
 
         defer { ScooterLanguage.current = .atLaunch }
         ScooterLanguage.current = .en
+        // Over a thousand, the count takes the region's grouping: 1,005 or 1'005.
+        let cities = ScooterCityCatalog.cityCount.formatted(.number.locale(ScooterLanguage.current.locale))
         XCTAssertEqual(
             ScooterCoverageSummary.text(),
-            held("ScootRadar covers \(ScooterCityCatalog.cityCount) cities in \(ScooterCityCatalog.countryCount) countries.")
+            held("ScootRadar covers \(cities) cities in \(ScooterCityCatalog.countryCount) countries.")
         )
     }
 

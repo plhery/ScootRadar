@@ -227,7 +227,8 @@ describe('searchCoveredCities', () => {
       expect(search('NC State')).toEqual(['Raleigh, NC, United States']);
       expect(search('Kansas State')).toEqual(['Manhattan, KS, United States']);
       expect(search('Purdue')).toEqual(['West Lafayette, IN, United States']);
-      expect(search('UC')).toEqual(['Berkeley, CA, United States', 'Davis, CA, United States', 'San Diego, CA, United States']);
+      expect(search('UC')).toEqual(['Berkeley, CA, United States', 'Davis, CA, United States', 'Isla Vista, CA, United States',
+        'San Diego, CA, United States']);
       expect(search('NYC')).toEqual(['Bronx, NY, United States', 'Queens, NY, United States']);
       // University Heights and University Park, by their own names, before the towns found by a university's.
       expect(search('Uni').slice(0, 2)).toEqual(['University Heights, OH, United States', 'University Park, MD, United States']);

@@ -2806,6 +2806,226 @@
         "lngStep": 0.01666874095888214,
         "cells": "0-38,40-45,51"
       }
+    },
+    {
+      "id": "lime_us_app_isla_vista",
+      "provider": "lime",
+      "city": "Isla Vista",
+      "region": "CA",
+      "center": [
+        34.41333,
+        -119.86097
+      ],
+      "aliases": [
+        "UC Santa Barbara",
+        "UCSB"
+      ],
+      "timeZone": "America/Los_Angeles",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "FF5QETKEO3SZ7",
+      "limeMapGrid": {
+        "south": 34.40356,
+        "west": -119.88128,
+        "north": 34.42429,
+        "east": -119.83707,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01633137861346577,
+        "cells": "0-5"
+      }
+    },
+    {
+      "id": "lime_us_app_south_lake_tahoe",
+      "provider": "lime",
+      "city": "South Lake Tahoe",
+      "region": "CA",
+      "center": [
+        38.93324,
+        -119.98435
+      ],
+      "aliases": [
+        "Lake Tahoe",
+        "Stateline"
+      ],
+      "timeZone": "America/Los_Angeles",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "seasonal": {
+        "from": "11-01",
+        "until": "05-01",
+        "timeZone": "America/Los_Angeles"
+      },
+      "limeAppMap": true,
+      "limeAppRegion": "JEU7G7JKIWDYJ",
+      "limeMapGrid": {
+        "south": 38.87572,
+        "west": -120.05516,
+        "north": 38.99318,
+        "east": -119.88341,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01730829620588791,
+        "cells": "2-4,11-15,21-26,30-37,40-48,53-59,65-69,75-79,85-87"
+      }
+    },
+    {
+      "id": "lime_us_app_los_angeles",
+      "provider": "lime",
+      "city": "Los Angeles",
+      "region": "CA",
+      "center": [
+        33.985,
+        -118.4695
+      ],
+      "timeZone": "America/Los_Angeles",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "ZYJJ72EMTLKEL",
+      "limeMapGrid": {
+        "south": 33.92971,
+        "west": -118.65065,
+        "north": 34.32478,
+        "east": -118.15965,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.016239959895230225,
+        "cells": "12-17,42-48,73-79,82-87,103-110,113-118,134-149,165-180,193-194,198-214,221-225,228-245,252-276,284-308,317-340,349-371,381-402,412-432,443-463,474-488,490-493,496-498,503-519,521-524,527-545,547-549,558-576,589-607,620-639,651-670,682-701,714-731,745-761,776-791,814-821,845-851,876-881,908-911"
+      }
+    },
+    {
+      "id": "lime_us_app_portland",
+      "provider": "lime",
+      "city": "Portland",
+      "region": "OR",
+      "center": [
+        45.5152,
+        -122.6784
+      ],
+      "timeZone": "America/Los_Angeles",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "KKBQJNGHUHDIU",
+      "limeMapGrid": {
+        "south": 45.43243,
+        "west": -122.83675,
+        "north": 45.65327,
+        "east": -122.47202,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01920152338651102,
+        "cells": "4-8,23-30,32-36,42-55,61-75,80-94,99-113,117-132,135-150,154-170,173-189,191-206,209-223,228-241,247-259,268-274,287-290,307-308"
+      }
+    },
+    {
+      "id": "lime_us_app_sacramento",
+      "provider": "lime",
+      "city": "Sacramento",
+      "region": "CA",
+      "center": [
+        38.58157,
+        -121.4944
+      ],
+      "timeZone": "America/Los_Angeles",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "LD5RY5PKX6XAZ",
+      "limeMapGrid": {
+        "south": 38.43789,
+        "west": -121.56227,
+        "north": 38.6856,
+        "east": -121.36274,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.017202819315323085,
+        "cells": "6-9,15-20,25-32,36-44,48-71,73-83,86-95,98-106,110-118,122-129,134-140,144-152,157-164,168-200,204-212,216-219"
+      }
+    },
+    {
+      "id": "lime_us_app_spokane",
+      "provider": "lime",
+      "city": "Spokane",
+      "region": "WA",
+      "center": [
+        47.65966,
+        -117.42908
+      ],
+      "timeZone": "America/Los_Angeles",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "E6U2NZJR7I3DG",
+      "limeMapGrid": {
+        "south": 47.44628,
+        "west": -117.68592,
+        "north": 47.78859,
+        "east": -117.2934,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019924652824298464,
+        "cells": "3-6,21-29,40-50,60-70,81-90,101-110,124-131,145-151,166-171,187-192,208-219,229-239,249-259,270-279,290-298,310-318,330-337,350-358,369-378,388-397,408-417,427-437,447-457,467-477,491-497,513-516"
+      }
+    },
+    {
+      "id": "lime_us_app_spokane_valley",
+      "provider": "lime",
+      "city": "Spokane Valley",
+      "region": "WA",
+      "center": [
+        47.67323,
+        -117.23937
+      ],
+      "timeZone": "America/Los_Angeles",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "E6U2NZJR7I3DG",
+      "limeMapGrid": {
+        "south": 47.61245,
+        "west": -117.34677,
+        "north": 47.70956,
+        "east": -117.14304,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01998788003306296,
+        "cells": "3-6,12-20,23-65,67-76,82-84"
+      }
+    },
+    {
+      "id": "lime_us_app_tualatin",
+      "provider": "lime",
+      "city": "Tualatin",
+      "region": "OR",
+      "center": [
+        45.38401,
+        -122.76399
+      ],
+      "timeZone": "America/Los_Angeles",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "KKBQJNGHUHDIU",
+      "limeMapGrid": {
+        "south": 45.34703,
+        "west": -122.81784,
+        "north": 45.40286,
+        "east": -122.72193,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019172533172527706,
+        "cells": "1-2,6-10,12-22,27-28"
+      }
+    },
+    {
+      "id": "lime_us_app_west_sacramento",
+      "provider": "lime",
+      "city": "West Sacramento",
+      "region": "CA",
+      "center": [
+        38.58046,
+        -121.53023
+      ],
+      "timeZone": "America/Los_Angeles",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "LD5RY5PKX6XAZ",
+      "limeMapGrid": {
+        "south": 38.50082,
+        "west": -121.58904,
+        "north": 38.60436,
+        "east": -121.50629,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.017217838718092047,
+        "cells": "0-2,5-8,10-39"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
@@ -2818,6 +3038,12 @@
     "https://assets.lime.bike/zones_attributes/Orlando_7346_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/St._Petersburg,_FL_473_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Tampa_2979_exclude_new_type.json",
-    "https://assets.lime.bike/zones_attributes/Winston-Salem_247_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Winston-Salem_247_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Santa_Barbara_1235_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Lake_Tahoe_310_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Los_Angeles_12090_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Portland_3599_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Sacramento_370_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Spokane_2080_exclude_new_type.json"
   ]
 }

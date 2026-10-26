@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fetchScooters, unlinkedScooterPlan } from './scooterFeeds';
 import { upstreamJsonCache } from './upstreamJsonCache';
 import { REGIONAL_SCOOTER_CITIES, REGIONAL_SCOOTER_SYSTEMS, searchRegionalScooterCities, serviceAreas } from './regionalScooterSystems';
+import { activeSeasonalPause } from './seasonalPauses';
 import { outlinedTown, systemServesPoint } from './townOutlines';
 import { namedCities } from '@/app/api/geocode/cities';
 import { providerKeyForSystemId } from '@/generated/providers';
@@ -50,15 +51,27 @@ describe('the United States', () => {
   it('reads Lime\'s rider map where Lime publishes no feed, each market under the town the map lists', () => {
     // Lime's towns with no public feed: its rider map, read in small groups, since 26 October 2026.
     const lime = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'US' && entry.limeAppMap);
-    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Cincinnati', 'Fairfax', 'Indianapolis', 'Lansing', 'Orlando',
-      'Raleigh', 'St. Petersburg', 'Tampa', 'Winston-Salem']);
+    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Cincinnati', 'Fairfax', 'Indianapolis', 'Isla Vista', 'Lansing',
+      'Los Angeles', 'Orlando', 'Portland', 'Raleigh', 'Sacramento', 'South Lake Tahoe', 'Spokane', 'Spokane Valley', 'St. Petersburg',
+      'Tampa', 'Tualatin', 'West Sacramento', 'Winston-Salem']);
     for (const id of ['us:nc:Raleigh', 'us:in:Indianapolis', 'us:va:Fairfax', 'us:oh:Cincinnati', 'us:fl:Tampa', 'us:fl:Orlando',
-      'us:fl:St. Petersburg', 'us:nc:Winston-Salem', 'us:mi:Lansing']) {
+      'us:fl:St. Petersburg', 'us:nc:Winston-Salem', 'us:mi:Lansing', 'us:ca:Los Angeles', 'us:or:Portland', 'us:ca:Sacramento',
+      'us:ca:West Sacramento', 'us:wa:Spokane', 'us:wa:Spokane Valley', 'us:or:Tualatin', 'us:ca:Isla Vista', 'us:ca:South Lake Tahoe']) {
       expect(REGIONAL_SCOOTER_CITIES.filter(city => city.id === id), id).toHaveLength(1);
     }
     expect(lime.find(entry => entry.city === 'Indianapolis')?.timeZone).toBe('America/Indiana/Indianapolis');
     expect(lime.find(entry => entry.city === 'Cincinnati')).toMatchObject({ region: 'OH', timeZone: 'America/New_York' });
     expect(lime.find(entry => entry.city === 'Lansing')).toMatchObject({ region: 'MI', timeZone: 'America/Detroit' });
+    expect(lime.find(entry => entry.city === 'Spokane')).toMatchObject({ region: 'WA', timeZone: 'America/Los_Angeles' });
+  });
+
+  it('pauses South Lake Tahoe from 1 November until 1 May, by its clock', () => {
+    // City Code § 4.185.090(A)(11): operators take their devices away from 1 November through 30 April.
+    const tahoe: [number, number] = [38.93324, -119.98435];
+    expect(activeSeasonalPause(tahoe, Date.UTC(2026, 10, 1, 6, 30))).toBeNull();
+    expect(activeSeasonalPause(tahoe, Date.UTC(2026, 10, 1, 7, 30))).toEqual({ city: 'South Lake Tahoe, CA', month: 5 });
+    expect(activeSeasonalPause(tahoe, Date.UTC(2027, 3, 30, 12))).toEqual({ city: 'South Lake Tahoe, CA', month: 5 });
+    expect(activeSeasonalPause(tahoe, Date.UTC(2027, 4, 1, 7, 30))).toBeNull();
   });
 
   it('keeps Spin\'s University of Utah scooters, on the campus inside Salt Lake City\'s outline, under Salt Lake City', () => {
@@ -313,6 +326,8 @@ describe('the United States', () => {
     ['Rutgers', 'New Brunswick, NJ'], ['University of Maryland', 'College Park, MD'], ['Michigan State University', 'East Lansing, MI'],
     ['NC State', 'Raleigh, NC'], ['Saint Paul', 'St. Paul, MN'], ['NYC', 'Bronx, NY'], ['New York', 'Bronx, NY'],
     ['University of Utah', 'Salt Lake City, UT'], ['U of U', 'Salt Lake City, UT'], ['UofU', 'Salt Lake City, UT'],
+    ['UCSB', 'Isla Vista, CA'], ['UC Santa Barbara', 'Isla Vista, CA'], ['Lake Tahoe', 'South Lake Tahoe, CA'],
+    ['Stateline', 'South Lake Tahoe, CA'],
   ])('finds the town of a campus or a borough by its other name: "%s"', (query, title) => {
     expect(namedCities(query)[0].city.title).toBe(title);
   });

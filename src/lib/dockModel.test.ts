@@ -552,7 +552,7 @@ describe('dock cards', () => {
     const locales = ['en', 'de', 'fr', 'it', 'nl', 'nb', 'pt', 'es', 'is'] as const;
     expect(new Set(locales)).toEqual(new Set(SUPPORTED_LOCALES));
     expect(say('en', COVERED_CITY_TOTAL, COVERED_COUNTRY_TOTAL))
-      .toBe(held(`ScootRadar covers ${COVERED_CITY_TOTAL} cities in ${COVERED_COUNTRY_TOTAL} countries.`));
+      .toBe(held(`ScootRadar covers ${new Intl.NumberFormat('en-CH').format(COVERED_CITY_TOTAL)} cities in ${COVERED_COUNTRY_TOTAL} countries.`));
     expect(locales.map(locale => say(locale, 186, 17))).toEqual([
       'ScootRadar covers 186 cities in 17 countries.',
       'ScootRadar deckt 186 Städte in 17 Ländern ab.',

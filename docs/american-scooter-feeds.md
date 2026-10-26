@@ -14,13 +14,14 @@ other account credentials are used. The catalog is
 [`american-scooter-feeds.json`](../data/american-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
-The map covers 93 towns in 32 states and the District: Washington, DC (Hopp,
-Veo and Lime), 24 towns of Bird's, 26 of Lime's (9 from its rider map), 39
-more of Veo's, 29 of Spin's, Lyft's Chicago and Portland, and GCOO's Los
-Angeles, Arlington and Alexandria, Virginia. In 27 of them, from Tempe and
+The map covers 100 towns in 32 states and the District: Washington, DC
+(Hopp, Veo and Lime), 24 towns of Bird's, 35 of Lime's (18 from its rider
+map), 39 more of Veo's, 29 of Spin's, Lyft's Chicago and Portland, and GCOO's
+Los Angeles, Arlington and Alexandria, Virginia. In 28 of them, from Tempe and
 the Bronx to Chicago and Columbus, two or three operators run, and the map
 counts their scooters as one town's. Eleven of the towns ban renting at
-night; see [Night bans](#night-bans).
+night; see [Night bans](#night-bans). South Lake Tahoe's fleet goes away for
+the winter; see [Lime supplement](#lime-supplement--26-october-2026).
 
 Each town is named with its state, "Washington, DC", as the United States has
 many towns of one name. Zoomed out, the map shows a total per state, at the
@@ -39,6 +40,22 @@ Lansing (173, with East Lansing and Michigan State's campus). Cincinnati
 rents Bird's and Lime's scooters only from 06:00 to 23:00, and East Lansing
 has Lime take its scooters off the city's streets from 03:00 to 06:00, so the
 map holds a night ban in both (see [Night bans](#night-bans)).
+
+On the night of 25 to 26 October, Pacific time: Los Angeles (10,040, beside
+Bird's and GCOO's), Portland (2,162, beside Lyft's), Spokane (1,749),
+Sacramento (1,392), South Lake Tahoe (232), Isla Vista (206, around UC Santa
+Barbara), Spokane Valley (125), West Sacramento (121) and Tualatin (15). None
+of these towns' rules sets riding hours. South Lake Tahoe's code has
+operators "remove all shared mobility devices from operation within the
+city" from 1 November through 30 April (City Code
+[§ 4.185.090(A)(11)](https://ecode360.com/47753919#51656368), as amended to
+19 May 2026), so the map pauses Lime's zone there from 1 November until
+1 May, by the town's clock. The zone reaches into Stateline, Nevada, which
+the city's rule does not; whether Lime keeps scooters there in winter is
+checked on 1 November 2026. Lime's Newport, Washington zone held no scooter:
+the city council had Lime take its scooters away on 3 June 2024. Long
+Beach's audit missed one stationary scooter, so the market waits for
+another.
 Lime's Charleston region held no scooter: Lime runs an e-bike programme there
 with MUSC Health. Nor did Grand Rapids', where the city made Veo its only
 shared scooter and bike operator from 1 September 2026. See
@@ -781,8 +798,10 @@ Rules that read like bans but are not, or that no primary source confirms:
 - **Louisville:** only scooters without working lights stop after dark.
 - **Washington, DC, Los Angeles, Santa Monica, Culver City, San Francisco,
   Oakland, San Jose, Seattle, Colorado Springs, Tempe, Indianapolis, Kansas
-  City, Lexington, San Antonio, Arlington, Fairfax, Norfolk and Eau Claire:**
-  no hours in their rules. San Antonio's 2019 curfew is gone.
+  City, Lexington, San Antonio, Arlington, Fairfax, Norfolk, Eau Claire,
+  Sacramento and Spokane Valley:** no hours in their rules. San Antonio's
+  2019 curfew is gone. Los Angeles' 07:00–22:00 is when operators must fix
+  badly parked scooters, not when they may rent them.
 - **Greensboro:** since 1 March 2026 a ride started after 22:00 needs
   a "Safe Start Cognitive test", and "the device will remain locked for
   riders who are unable to pass the test"; downtown, speed drops to 10 mph
@@ -823,10 +842,14 @@ Rules that read like bans but are not, or that no primary source confirms:
   sets none. New permits start on 5 November 2026.
 - **Denver, Portland, Columbus, Berkeley, Emeryville, Davis, Tampa, Lansing,
   Fayetteville, Wichita, Manhattan, Charlottesville, Hartford, New Haven,
-  Rochester, Syracuse, Akron, Cedar Rapids, West Lafayette and Carbondale:**
-  no hours in what was read of their rules; SIU's page says Veo runs "24
-  hours per day, seven days per week." College Park, like Durham, limits
-  only its university's campus.
+  Rochester, Syracuse, Akron, Cedar Rapids, West Lafayette, Carbondale,
+  Spokane, West Sacramento, Tualatin and South Lake Tahoe:** no hours in
+  what was read of their rules; SIU's page says Veo runs "24 hours per day,
+  seven days per week." College Park, like Durham, limits only its
+  university's campus.
+- **Isla Vista:** the Isla Vista Community Services District's board
+  recommended in 2018 that scooters stop at 22:00 from Thursday to
+  Saturday: a recommendation, not a rule.
 - **Salt Lake City and the University of Utah:** read on 22 October 2026,
   no rule sets hours. The City Code's chapters on shared mobility programs
   ([5.67](https://codelibrary.amlegal.com/codes/saltlakecityut/latest/saltlakecity_ut/0-0-0-76867),
@@ -846,9 +869,12 @@ Rules that read like bans but are not, or that no primary source confirms:
   University Park, South Salt Lake, Sarasota, Asbury Park, New Brunswick,
   Piscataway, Highland Park and New Rochelle.
 
-None of these towns' rules sets a season, so no Bird or Lime area pauses for
-winter. Chicago and Detroit license scooters all year, and Lincoln's code has
-no winter clause.
+Of these towns' rules, only South Lake Tahoe's sets a season, from 1
+November through 30 April, so Lime's area there is the only Bird or Lime area
+that pauses for winter (see
+[Lime supplement](#lime-supplement--26-october-2026)). Chicago and Detroit
+license scooters all year, Lincoln's code has no winter clause, and Spokane
+said on 29 October 2025 that Lime would run through the winter.
 
 ## Reading the feeds
 

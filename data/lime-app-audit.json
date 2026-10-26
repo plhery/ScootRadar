@@ -2266,6 +2266,159 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Winston-Salem_247_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Isla Vista",
+      "regionToken": "FF5QETKEO3SZ7",
+      "fingerprint": "b880187ef0265e9e33962630988dc4820b599a968c9f293fd960219b78c38082",
+      "groups": 2,
+      "localCells": 6,
+      "coldMapRequests": 6,
+      "warmMapRequests": 6,
+      "scooters": 206,
+      "stationaryReferences": 134,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T05:35:56.433Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Santa_Barbara_1235_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "South Lake Tahoe",
+      "regionToken": "JEU7G7JKIWDYJ",
+      "fingerprint": "76f0a15508f41e85670a28a6476a8e1b56f87a07300fc24151514786e4e19204",
+      "groups": 13,
+      "localCells": 51,
+      "coldMapRequests": 51,
+      "warmMapRequests": 51,
+      "scooters": 232,
+      "stationaryReferences": 6,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T05:42:07.456Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Lake_Tahoe_310_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Los Angeles",
+      "regionToken": "ZYJJ72EMTLKEL",
+      "fingerprint": "6e2e4a0470220fb6ed58659916d19ea9889cfba1db14b73118f98ee5eee00963",
+      "groups": 129,
+      "localCells": 514,
+      "coldMapRequests": 614,
+      "warmMapRequests": 614,
+      "scooters": 10040,
+      "stationaryReferences": 86,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T07:08:13.517Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Los_Angeles_12090_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Portland",
+      "regionToken": "KKBQJNGHUHDIU",
+      "fingerprint": "2bcdabc52a5aec59af16bf5853c3ced991b50c8808d3a11827087a831b7c1667",
+      "groups": 54,
+      "localCells": 214,
+      "coldMapRequests": 234,
+      "warmMapRequests": 234,
+      "scooters": 2162,
+      "stationaryReferences": 153,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T07:36:27.449Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Portland_3599_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Sacramento",
+      "regionToken": "LD5RY5PKX6XAZ",
+      "fingerprint": "360506e0d833a242fba73ed65c0f19fc796f6a70a1c5b448b32ab920961c23c0",
+      "groups": 42,
+      "localCells": 168,
+      "coldMapRequests": 180,
+      "warmMapRequests": 180,
+      "scooters": 1392,
+      "stationaryReferences": 79,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T07:57:41.778Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Sacramento_370_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Spokane",
+      "regionToken": "E6U2NZJR7I3DG",
+      "fingerprint": "dd41ef60fefcfe2c69256aed3f3a4036efa69f1268900bb7a9d6ff4ae169f19f",
+      "groups": 59,
+      "localCells": 235,
+      "coldMapRequests": 243,
+      "warmMapRequests": 243,
+      "scooters": 1749,
+      "stationaryReferences": 76,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T08:26:16.467Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Spokane_2080_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Spokane Valley",
+      "regionToken": "E6U2NZJR7I3DG",
+      "fingerprint": "110c289907df79ec2d0e94e810954221c453fa9ff0fe350a72f7f988dafb23bd",
+      "groups": 18,
+      "localCells": 69,
+      "coldMapRequests": 69,
+      "warmMapRequests": 69,
+      "scooters": 125,
+      "stationaryReferences": 3,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T08:34:33.286Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Spokane_2080_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Tualatin",
+      "regionToken": "KKBQJNGHUHDIU",
+      "fingerprint": "f70cb7e017cb68acda944b584aa543d8062a21d9df277132a88de942dcb1a66e",
+      "groups": 5,
+      "localCells": 20,
+      "coldMapRequests": 20,
+      "warmMapRequests": 20,
+      "scooters": 15,
+      "stationaryReferences": 2,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T08:37:07.294Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Portland_3599_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "West Sacramento",
+      "regionToken": "LD5RY5PKX6XAZ",
+      "fingerprint": "01261734dbd4851576f28699625fc8d294f2d3698f11b99b7b5139a439fb7cd7",
+      "groups": 10,
+      "localCells": 37,
+      "coldMapRequests": 37,
+      "warmMapRequests": 37,
+      "scooters": 121,
+      "stationaryReferences": 16,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T08:41:40.755Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Sacramento_370_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {
