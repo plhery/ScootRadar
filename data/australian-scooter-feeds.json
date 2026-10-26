@@ -261,12 +261,35 @@
         "lngStep": 0.01705920161215994,
         "cells": "3-4,9-11,14-22,24-27"
       }
+    },
+    {
+      "id": "lime_au_app_canberra",
+      "provider": "lime",
+      "city": "Canberra",
+      "center": [
+        -35.28346,
+        149.12807
+      ],
+      "timeZone": "Australia/Sydney",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "6UR2XJRNHWDYF",
+      "limeMapGrid": {
+        "south": -35.43239,
+        "west": 149.03022,
+        "north": -35.16736,
+        "east": 149.18764,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.016483315331009427,
+        "cells": "1-4,11-14,22-24,32-35,42-45,51-54,60-89,92-98,102-108,114-117,122,124-128,131-138,141-148,151-158,166-168,176-178,185-187,195-196"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
   "limeServiceAreaSources": [
     "https://assets.lime.bike/zones_attributes/Brisbane_2639_exclude_new_type.json",
-    "https://assets.lime.bike/zones_attributes/Melbourne_3245_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Melbourne_3245_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Canberra_249_exclude_new_type.json"
   ],
   "notes": "Beam entries use reviewed authenticated rider-map regions. Empty, test and retired Beam regions are omitted; rider credentials remain private to the Node cache.",
   "beamVerifiedOn": "2026-10-24",

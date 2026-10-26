@@ -144,7 +144,9 @@ Madrid revoked Lime's, Dott's and Tier's scooter licences in September 2024.
 In Japan, neither did the Chiba and Kawasaki (Takatsu) zones of its Tokyo
 region, on the morning of 26 October 2026, so they are left out. In
 Australia, neither did its Gold Coast region, where Lime rents e-bikes, nor
-its Sydney region, a single small zone in St Peters. In Mexico, neither did
+its Sydney region, a single small zone in St Peters, nor, on the morning of
+27 October, its Perth region: the City of Perth suspended e-scooter hire on
+5 June 2025, and its scheme ran with Beam and Neuron. In Mexico, neither did
 its Ciudad de México and León regions: SEMOVI's Mexico City scooter pilot
 ended on 31 August 2026. In Canada, neither did its New Westminster and
 Victoria regions, on the evening of 25 October 2026, local time: Lime rents
@@ -217,8 +219,9 @@ stationary reference scooter, country by country:
 | 26 October 2026 | United Arab Emirates: Dubai, Abu Dhabi, Al Ain | 266 | 67 | 2,589 | 69 |
 | 26 October 2026 | United States: Dallas, Minneapolis, St. Paul, Nashville, Omaha, Montgomery County, Jacksonville, Richmond, St. Louis Park | 1,318 | 333 | 6,124 | 319 |
 | 26 October 2026 | United States: Charlotte | 143 | 36 | 767 | 79 |
-| 26 October 2026 | United States: Austin, Milwaukee, Tulsa, Oklahoma City, Mobile, Corpus Christi, Lubbock, Little Rock, Rochester, Edmond, Jenks | 1,902 | 462 | 9,235 | 725 |
+| 26 October 2026 | United States: Austin, Milwaukee, Tulsa, Oklahoma City, Mobile, Corpus Christi, Lubbock, Little Rock, Rochester, Edmond, Jenks | 1,830 | 462 | 9,235 | 725 |
 | 26 October 2026 | United States: Long Beach, Albuquerque, Grand Junction, Knoxville, Clearfield, North Salt Lake | 619 | 158 | 3,150 | 208 |
+| 27 October 2026 | Australia: Canberra | 112 | 28 | 1,374 | 104 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

@@ -3065,6 +3065,23 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Salt_Lake_City_6050_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "AU",
+      "city": "Canberra",
+      "regionToken": "6UR2XJRNHWDYF",
+      "fingerprint": "9133bbb1f3a073d7e61308bea4e3939d64468db57e44d7e5f369de554128bf07",
+      "groups": 28,
+      "localCells": 112,
+      "coldMapRequests": 120,
+      "warmMapRequests": 120,
+      "scooters": 1374,
+      "stationaryReferences": 104,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T22:37:02.590Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Canberra_249_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

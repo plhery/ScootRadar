@@ -3993,6 +3993,49 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Salt_Lake_City_6050_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "AU",
+      "city": "Canberra",
+      "center": [
+        -35.28346,
+        149.12807
+      ],
+      "timeZone": "Australia/Sydney",
+      "regionToken": "6UR2XJRNHWDYF",
+      "serviceAreas": [
+        {
+          "name": "[Service Zone] Canberra[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "|srvE{mrl[`A_Lz@}XfAyVMyBk@sCo@eBX[DQDWHS\\OVMRUHi@KsAj@{@F_@JInEl@hEj@JtCr@dF`ClDtExAtCb@hB~A`C`E|BbChBnAzC`AfEPxB[zBq@bKaItIcHn@a@dB[|Aq@AkAYsDcB_NXaBIy@{@NEaBBmBH}@JaARaARw@j@eBh@Mf@^~@d@bCfBvBlBxBhAvFdC|CcHlDkFzAmA~As@xDw@rBOzBDxAFbB`@n@X|AhAl@`ApAiARk@p@aDJWXUb@AdDmFoBwB|A_D`KuMvEwEhAiBxA}D^{Bn@gLl@ec@_@iDu@gDiFkBG_@@Wt@aFZw@F}ACQKQqImDm@]xGGpGsAl@MNWNFHCFGBMRB`D{AT_IiDkIpA}@nIhK`E^~BkAtGcE|GsGFInEsDv@k@l@c@b@[VI|@Yf@O^[jKcI|H}D`Pu@lIlCjHoAz@_DIiDkByF[eHtAeYuAyL?Cr@_@~@o@t@K~D[xBShCMpDOdFIx@BhAPrAXl@VTb@PDXTL?XQJGN@B@HM`@Zf@N|CbCtEtFtDlHdB|EfAdENvEzAfDhAdFtDpMdBtElKhRrChEnDbFhAhCrAfEzEpR~CrInGpJvCvC`FjDnCdA|Bj@tIjAnOzAxKzDbLpFjFdArE^lEC`CW~Bk@fCkAnCiBZBf@jAf@t@nA|@vAZhCMvCm@xEyBbEuCo@oBnP_Pp@r@x@eB\\uDSiBa@sBhCyFr@`@`CAhCLV\\j@MfFpAl@Gb@Uj@y@b@eBx@sAZRXINqA@k@Cg@iByEcCmCAu@uAeBk@gCt@@l@Kp@BjF`A`BCdBg@~A{@fA_AbAgAh@{@d@qAXkANaBGuCWeCi@}Bu@eB_AeA[UeAi@cEoBoAcA{@iAg@iA[sAe@qC]iDzBcB\\eAtAsADg@w@qB}@_@e@k@o@wAMkAB{@Lw@Zo@hB}Be@eAWuAOaC_@sA_AkAoAcAaFqBw@g@s@}@i@iBcBoSNmBf@gBxDcGhJcMr@qCTwCYiC{@cEW{AyDzAwBd@gBN{BFgB?qEI{FMaHj@gBA[Oe@Iy@Xk@\\gDHuAR_F`AuDd@cERyD?cCImF_@{J{@oGQgIXwHjAiBqEcFkG_CqBuC_B_DaAmBDeHk@PtBsJtB{BpA_RhDcNpJsF~AaLjJsCwAyNbSoGlTs@rBc@a@c@X@XCPGLKJQPQCOKGEOWmBs@sB[cAE_BDcHPkETuHn@e@NmAp@AuAAmDZgPo@y@eHHaBmAv@eBw@e@S@?CN]b@@h@FbAAv@UFu@FEDI@KZ?~AyBY_AdAu@^_@lCdBhBUhEqDpAoApBcDpA_HtAyBxE_CxEaB~A}Aq@{Lm@iGEcCV_DA}FgB{ImOC_DsBoEn@q@h@_AhByCjFWb@yDpEsBxBqAkC{DrBuFpAsF`@aEDmEb@eE`AkDrA_d@dSmGtCyAr@iBjAy@n@iAbAsBtBiDbD}AbAaB|@wB`AaCr@mDj@gDVqJHqFF]@IuBWaD{@_FsBkDy@k@e@^wD_I{CaG}HuOu@oBsAcEwC`BkB{Gr@u@x@gFNgBG{@iAoFe@_@Sd@mAYyBxE_Bo@{AFcCaAaBh@CzBmBTiIX}@|AgAlAmVbB}EyFiCyEgBlAl@jEyB`@pAtFhKvPjTsC|CnDh@vG^`QKpDp@pEe@La@Nk@XqBzAsBcDsFeAoGuCqBmAcEw@yALy@|@Z`L_@lBmAX}@oNyDLsA`MgB~AsBn@aBtL`@bBQxJ]|FiEsAaGoCeMmFqHaC@iArE@`@wDuAmD@kDe@wBN}E`CwI}AwDcEtBW{@@qAaH{FHU@u@mBiFYSmAmDU}BP_MOaAa@c@z@{GhJ_Pr@r@bDoEjDcD~GsFbFmCxGgClLuA[}Dz@OTlCpShAfKUAiBtLK@hBl\\G|DmGW_A~KwLnKeLyDsFsC_E_AuBq@gC}@iJBwBy@iGsBaQWqCnCeBp@cFrBsHx@{E^cFuBe@gBZqFlC{BqNoQ}^jTaQi@qCsExD_FkMaARl@vCuDj@kHdAu@qNw@_H|AiAnBc@^_Bw@eBqDLk@xA`@lBWtAC|@|@~Gp@pM_D`@|@uKQiC{@mBgBeAyAQeBy@w@_At@eBfA{@fA[h@}Bn@sBYa@s@]Pq@`Ae@t@cAGsA|VvCsAwO_BhAyK~CgBw@_AZQ|@mDThEeN`@e@f@mCgDeAp@eDl@aAtBaBsF{KeDwDrMe\\HcDxByHlB}LzI{ScCeAcBSiACm@Yg@FyCa@_Bj@uBpEsB}AcQpa@_IuAhBqMmFeBpI_Tb@aBXuMyO_A}DCaDTuCh@}Bp@qCnAaC~A{@r@wAXgJxIiGzFyB|GgA|@g@jDgAxBcAzD]rHbBzGxBzCjBzFv@jE~@fEnBtGHhCRr@An@q@lB_FrJkAxAmAdA}A~@qLrEi@`@eE|AeB\\mDXkDPaILuJqCgIwCkCuCsKsRuE{K_Av@kAaA}@m@cAe@W@_@Lm@XeArA_B`Ck@Qs@s@cAeBsAuGKgD@{@ZgB`@]Rw@sDaCmDsEqCxB_G}Gs@y@_AzAiO|PgRjSyNfFuJpLgC`Gi@?a@jAMjAcKnUiDlIaAIg@XaBMaCl@aBtBoHdSiDhE|A~@?XBTFXh@v@Rf@lCfMu@b@eBlAeAjAsAvBgAvCe@pCKxAEtBBpAF|@JpAVjAgWtL}DeNI}CcLuT}AtAyAu@eBpC}BbA_BTyDdCk@Xw@JaMgAa@yAwBCwBi@oDcBaBiAD}@{@y@B_@sCWiBeC{HsO_KyAsCB{Aw@eAwBMi@JmEoBiFyC_DtBoFz@VjAuF`GyIeDsReFcFoHkA{MoFsH]cM]eFQ_HSeC~DqAYuB^uKC{BPuAzAM|AcBpFmBjDj@~@qBtCClE_DjBkJdPaBx@sIdOsBgEtJ{PaKuIZgXkLoAmKm@eFF[mDiBkDuQ}AaFxAbTzeAlC~IdBfDrCzDxA`BzA~B?r@z@lBlCdEzGnKvInNu@z@Sr@e@l@w@bAYFoHX]C_AByF\\mZ|D{AF{AI}AUgEiAgEiA}Du@g@RoCWgBGcL[_D[qEkAiEgB{EkAmHoAeHm@qEW}Ey@nAsPnAiQtAwQ?eGk@oEy@aDmA}BwAqBkAwAkCkB_HoEsFcEoBiAaBWmBAoDToBIkAEoAYsAaAgA{AgFlFiGjEeJrDyPfEcLnCoGzA}DbA_DjAuBdAgEpDkDvEmD~FyBpEuBtFaClIyAvHg@pD_@dEw@zHuAbGeBdFwC~FqBtCaCbCaDjCsDpBaDdAcEx@_NpAoTdB^jD|@zDnArGcCtLi@|Dd@|IoCtLiB`ByDHLxBpAxBxBjA~Ex@dDnAjDnDjGbErAxDdA|ErD|Ejn@op@fNt_@zJrWvMcQqAmDiBmC_Am@NeC\\QTgESU^}HnCab@r@w@d@yArE}d@zBsSrAKnA{@~BFn^|DxCrT`@~@LvP~CpAdCv@tBs@xIvBDjOdFe@lGWhFAlE\\xJlAlFN|Rib@tm@dHxEqt@vALlAZ~Cx@vGdBrCTnBElD[fM_BhH_AvFU|IQt@a@rD{DfRzZnS~\\nC~CnFbDhCl@dCXQ|CjH`@QnDiDSSbDzBRaAbOqDUqDi@MQ[Cc@HwAAcAtC\\`JyFC`BwKoAkAuC`FkFtKaCrAuRGoAZ{D|C~@pAhDnLdAvC~EhHhBhE`C|AhDv@fCdCpGhDzFEzAhAt@dCdARR@j@k@}B}n@pBEbBdc@|AhAzMlC|Ar@nFpFvYnRxZbQUN]S_C{Ai@Im@DwB|CuA|@cIlCiB`AiDtE_BvAcCoFwCuCgDkBkE_CqIcAqOaAaFnSaIxNoBpE}@bB@@oCvEqIhPmBjFwAwAw@qBhBwI`FiF|BmLJ_Ba@}A{BgBkCeA]}JkAyFuGcVkC{EsG_HeFyC}NWNfEgDCCyBN{C}Co@FuDy@_A{Ps@_@g@y@c@o@YyENYhA{D`@eF`Ap@xFTlEr@xAXrAvA|HbA~JaI[aDJcDj@kCfB}AjCw@|C?zEv@jGzFvQtChLlAfDbC|EvBwAdBs@vBo@`BKdB?bET~Cj@bBh@rCzAvBpAbBhBzAfCnBrFrD~JlAhBzArBfBzAzBz@hIvBnF|AHhA_B~NuDxKwCpFiDrJcA|FiB`M@j@e@dCu@^i@IWVu@~EN`@qAbCaHjG_LlGwDzBgD`CiCbEsArCy@pDs@bF_@jKo@jMk@rFWjBKtCLf@h@`@rKbBjElAhDlBbJhGlG~CdPbD|XZhFl@vH~ArMbDhQf@bWVh@_Qj@uGlMuQbAi@hAOvFNfCF~BMpEc@~EZlAmIRsBDoBMkCn@g@zJmCMwABu@`AuFBsAGs@OcAq@}AuA}@}Ay@yAe@oDiA^wFuC]{JyBuDgAsLcD~C_MxCcMtEyRxC}IbB{CyFsEtDqIJaEa@mDrAy@RyCYeBq@{@kE{AqBbDwCtHiDtGuKuI`AqCToCn@mDdEw@~CoAv@eGq@_FPcAzBiFEeErAKVk@Ua^DoIa@qBwAcAGk@Pu@dA{At@{@|@m@pDkAzEeBx@g@hBqCv@CjC`Bn@BxAk@RF_AzL`F`QZS{EoPz@gLpGy@xIkDzFeGjBaAnBCzLtCl@rGnCzAzCBlPgA?kCj@iBlAu@HxCfMQpGuDnACvGgMrj@rf@dC~A|@G\\j@PnBPdAEVOt@Kr@Cx@@d@Hp@Ll@Tz@b@jATj@Vn@T`@V`@ZZd@\\^Tj@n@x@~@dAr@HJg@|FaAjBo@nBTBzA}@rBu@xCm@zAJdD^tASChBh@VCsBrAQvC@zAHzAXzBxAIdAPp@j@Lb@e@DYASDS\\?tCsAtCuAXwFc@o@o@q@yCm@iBCcCp@[g@iAFeBt@}Cz@cDh@uB@qAc@}Bs@oCK_BMQ]SSw@k@c@a@]_@_@a@SO]UUKSQUQS]Qc@MUO_@I]UaAYw@[eAIm@Dm@Jc@T_ADo@Gg@Mw@IuAEs@LA]{EbAsHbAcBv@wBrD}HvCyCxCm@tC?nFeBpFmKlFgBvFwErGePi@sD{ByBqFaB}CtJmCpGoGHoFU}ByA_A{BwDkTdBmGtA_CdBk@rUg@b@aALcAjMxAAjDbCfG~JhD\\hFvFdHwAjCl@|B~BNdCcFfBiEzBA~AjJRbGsDdDcCrDpA~DoDfEf@nEdChGo@fEwBoCiE~Ba@tDiBjCPbBmAfAi@jBX`F`ClB~DbAjC~AhC~Fm@pFCjFl@CVqAbGzAhAdBs@`DoBlCi@|BaCy@yCf@UdC|AlEwAzF{@fAKv@c@LSQkAcBuAGm@ToCtEq@|@{@H]]o@\\qB`BuE|@Ur@Hl@w@b@KrAoD|BeACoAsABwAcBsDmBmCaDw@cC~@wEsCiBFoAx@\\|DfAzAtBVtAtA~Bm@|BjCgBrDhApCz@m@n@Vh@nA?h@LZAJc@f@Ix@n@bBdAxAvB`BpAh@bCBvBRxB[l@z@Tz@`A^bBChB\\hAr@xDAx@_FOwDbFeCd@{CuAmFuAoFxAkEpAiDl@?V}@tYGd@t@vAVBzHhE`A~Eq@z@oDHaF|GdAEjFjB`@~BUdGnHfQwX_CiHxAKvBLZtCn@rFhBjKxApGpDrHtDvEzHzC|JzAdPzBjGhBdDzA|@xA~@BQ~AmCq@gK}EaJu@mFW}@@q@Ja@NcAv@e@`@o@f@o@~@e@x@EDk@zASt@a@pBc@nBGb@IdBMjCCd@GT]\\s@v@Yf@O\\G`@EbAJjARjEBv@C`@EZUn@cApB{B|E?Vt@dCb@tBn@|DpAhLnAlLh@~@nFpCvL?tGCzNUnDsE@?Ka@`IDh@i@l@r@JNXQtBmArEZ\\B`DcAt@cBFO?C?_Bl@iA@B@AZHtBOHbBnCm@lDuBnCyBLiAfCd@c@vFe@fAr@nAu@p@NVSRD|@SrEA^RbBAVc@`AG~@eCxCSdAGdB_@rECtBZfRoDAy[x@`@`HpBld@YxADzAbAbENlCPhGv@~RdAvXoEa@{E_@SPOl@e@lAHnAGb@WJc@PS^I^UPGSeGiIdD{EtA}BfAiDy@Wm@g@Wi@g@k@SO_Ak@eBgAiCaBJ]UyEM_@GKGGQMKCMCgAFa@FODMJMTg@pAcDsBmAOkBo@iAQy@?}AXcCr@vAdKNt@T^l@l@\\Xy@`Cg@jA}BlCeF`C_Ad@eBxAo@j@q@P]GyDoA{CcAgDeAoAO}BFwBNs@d@_AdC]NI`AkAfDC^B^jAhCdAxCr@rCZlAPb@b@l@fF`D\\VLf@?dDf@pAtBvEzDpJ\\`Af@|AdAjCx@pA~AnAhC^zQhCrARxKnAtOfB"
+        },
+        {
+          "name": "Bridge 9 [service_zone_MIGRATED_FROM_V2]",
+          "polygon": "vg`vEeecm[PeBPaNkA_YVwBxAgCrA{@bB_@`DKSu@_AqAiAD}BRmBv@g@MoFbBa@cAm@a@m@@kOpFwBv@y@?aDtA{LkZwE_HeCkCmCaBoIgDoDi@OmBj@eCt@iAB_BlFuLb@}D[AATk@IGp@MlAWp@yFnLK|@sAnFLjE|IrBxDnB~A`A|BdB|FbHhNr\\~D{Av@DtD}AjNkEJf@b@l@z@Xv@[j@k@rAi@_@l@]vAQjB\\jEZpFl@lLUdA?zCHpAShDYdBj@@x@d@"
+        },
+        {
+          "name": "Bridge 6[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "dfmvEeizl[jAGz@aAxGgOr@qAl@jAzEtDhHdApGGn@a@`@u@AiB|GaGfF{@n@m@xA{CRiAI}@jBeBpCqDnGqKd@L\\f@hEhIrAbAzFB~A~@zDKSs@?W|@oByCo@cA|BqAq@cFBoAeAeE{Iy@[a@K{@Hm@Tu@tAyEfIkBfC_CjCz@kFCuA}G}K{EoAyCrAuCQaBgIgEcCcBcDiDYwKnBmCyF_CuJbAcDQsDLiBg@kHAHaAf@n@jM@nAa@r@c@nBCdBbBtE`AnD|@|Ar@|A^n@t@@dCy@hAHfCg@hAa@r@^xB`EfDfB|ApFnBrC`EIvEaB`HrKBz@e@vCOvBGtCY`BqBh@gBNkI~HMxAWp@yFJaGqAsDwCUuAc@c@oAAmAh@mH`ReAj@e@W}DaEuAMy@Ge@U[aC|AuA?eBqAcCuCqD{BGkEeGmCmAI}QyCuF{BgB{CyGcCuA_B]{@_BUiBg@cAeDcAuIaGuEn@}@uDSoDLuCxAqCp@aFE{Ee@cG{@eLYoKH}DJyAPiAUCMf@UbCKzDF~FRtFd@~FRxGTjEg@bEsAvD{@zCPlDRvCtApDpFc@dGfE|Az@xAZh@fAp@vChAdAtD~AtC~GnC|BnBpDLdOV`CtKlLxBg@tCjEBl@gAZOv@dAzFf@^f@CfBP|B`CfClB"
+        },
+        {
+          "name": "[NPZ] Bridge Wanniassa - Torrens[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "lt|vEqr~l[r@_@~@o@t@K~D[xBShCMpDOdFIx@BhAPrAXl@VTb@PDXTL?XQJGN@DBn@iBc@a@c@X@XCPGLKJQPQCOKGEOWmBs@sB[cAE_BDcHPkETuHn@e@NmAp@@|@"
+        },
+        {
+          "name": "[NPZ] Bridge Weston - Lyons[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "j`tvE{yxl[vA?UgOCoCDsAb@sGX}@pBcD?q@Pu@Tq@QoBBy@eAEATA^RbBAVc@`AG~@eCxCSdAGdB_@rECtBZfR"
+        },
+        {
+          "name": "[NPZ] Bridge Waramanga - Pearce[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "nwxvE_}yl[G_@@Wt@aFZw@F}ACQKQqImDm@]}BU~@VhAn@xIvDFVE~@Wn@y@rF?XD\\^@"
+        },
+        {
+          "name": "[NPZ] Bridge Hindmarsh Dr[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "v{vvEyyyl[?w@BOHSNUNUEwA@}@a@oGEMa@e@QWGYC]?KBIPk@De@UB?JCTQb@CP@f@B^n@dAJTTfDHvA?l@Bj@@l@Yd@IRGXCf@?TX?"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Canberra_249_exclude_new_type.json"
+      ]
     }
   ]
 }

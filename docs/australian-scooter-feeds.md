@@ -21,6 +21,19 @@ Lime's Gold Coast region, where it rents e-bikes, held no scooter in its
 audit that morning, nor did its Sydney region, a single small zone in
 St Peters.
 
+Lime's scooters in Canberra, about 1,370, were added after a clean full-area
+audit on the morning of 27 October 2026, Canberra time. Lime has been the
+Territory's only shared e-scooter operator since 16 April 2026, on a
+three-year permit, and neither the government's announcements nor its
+[Dockless Shared Micromobility Policy](https://www.transport.act.gov.au/__data/assets/pdf_file/0004/2870797/Dockless-shared-micromobility-policy-June25.pdf)
+(June 2025) sets riding hours. The region is `6UR2XJRNHWDYF`, and the market
+uses `Australia/Sydney`. Its public outline document is:
+
+- [Canberra region service polygons](https://assets.lime.bike/zones_attributes/Canberra_249_exclude_new_type.json)
+
+Lime's Perth region held no scooter that morning: the City of Perth suspended
+e-scooter hire on 5 June 2025, and its scheme ran with Beam and Neuron.
+
 The market uses `Australia/Brisbane`. Only scooter pins inside the recorded
 service polygons are included. Bikes, fares and vehicle-specific rental links
 are excluded. Public feeds remain preferred wherever available.
