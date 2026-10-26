@@ -8,6 +8,7 @@
   "alpacaCatalogSource": "https://alpaca.kr/",
   "dartVerifiedOn": "2026-10-25",
   "dartCatalogSource": "https://apps.apple.com/kr/app/id1458076636",
+  "deerVerifiedOn": "2026-10-26",
   "systems": [
     {
       "id": "gcoo_kr_busan",
@@ -362,6 +363,28 @@
       "swingAppMap": true
     },
     {
+      "id": "deer_kr_daegu",
+      "country": "KR",
+      "provider": "deer",
+      "city": "Daegu",
+      "aliases": [
+        "대구광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.85,
+        128.5491
+      ],
+      "bounds": {
+        "south": 35.7775,
+        "north": 35.9735,
+        "west": 128.4541,
+        "east": 128.7588
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
       "id": "gcoo_kr_jeonju",
       "country": "KR",
       "provider": "gcoo",
@@ -494,6 +517,28 @@
       "swingAppMap": true
     },
     {
+      "id": "deer_kr_incheon",
+      "country": "KR",
+      "provider": "deer",
+      "city": "Incheon",
+      "aliases": [
+        "인천광역시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.4568,
+        126.6534
+      ],
+      "bounds": {
+        "south": 37.4004,
+        "north": 37.6373,
+        "west": 126.4499,
+        "east": 126.7764
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
       "id": "gcoo_kr_cheongju",
       "country": "KR",
       "provider": "gcoo",
@@ -538,9 +583,9 @@
       "kickgoingAppMap": true
     },
     {
-      "id": "swing_kr_cheongju",
+      "id": "deer_kr_cheongju",
       "country": "KR",
-      "provider": "swing",
+      "provider": "deer",
       "city": "Cheongju",
       "aliases": [
         "청주시"
@@ -912,6 +957,28 @@
       "swingAppMap": true
     },
     {
+      "id": "deer_kr_changwon",
+      "country": "KR",
+      "provider": "deer",
+      "city": "Changwon",
+      "aliases": [
+        "창원시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.2238,
+        128.6803
+      ],
+      "bounds": {
+        "south": 35.0689,
+        "north": 35.3542,
+        "west": 128.4751,
+        "east": 128.8465
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
       "id": "kickgoing_kr_bucheon",
       "country": "KR",
       "provider": "kickgoing",
@@ -1044,6 +1111,28 @@
       "swingAppMap": true
     },
     {
+      "id": "deer_kr_namyangju",
+      "country": "KR",
+      "provider": "deer",
+      "city": "Namyangju",
+      "aliases": [
+        "남양주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.6493,
+        127.1852
+      ],
+      "bounds": {
+        "south": 37.55,
+        "north": 37.7751,
+        "west": 127.0784,
+        "east": 127.3494
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
       "id": "alpaca_kr_namyangju",
       "country": "KR",
       "provider": "alpaca",
@@ -1110,6 +1199,28 @@
       "swingAppMap": true
     },
     {
+      "id": "deer_kr_asan",
+      "country": "KR",
+      "provider": "deer",
+      "city": "Asan",
+      "aliases": [
+        "아산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.7853,
+        127.0636
+      ],
+      "bounds": {
+        "south": 36.7124,
+        "north": 36.9449,
+        "west": 126.9045,
+        "east": 127.1138
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
       "id": "gcoo_kr_sejong",
       "country": "KR",
       "provider": "gcoo",
@@ -1132,9 +1243,9 @@
       "gcooAppMap": true
     },
     {
-      "id": "swing_kr_sejong",
+      "id": "deer_kr_sejong",
       "country": "KR",
-      "provider": "swing",
+      "provider": "deer",
       "city": "Sejong",
       "aliases": [
         "세종특별자치시"
@@ -1308,9 +1419,9 @@
       "kickgoingAppMap": true
     },
     {
-      "id": "swing_kr_cheonan",
+      "id": "deer_kr_cheonan",
       "country": "KR",
-      "provider": "swing",
+      "provider": "deer",
       "city": "Cheonan",
       "aliases": [
         "천안시"
@@ -1355,6 +1466,28 @@
       "id": "swing_kr_gyeongsan",
       "country": "KR",
       "provider": "swing",
+      "city": "Gyeongsan",
+      "aliases": [
+        "경산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.894,
+        128.8006
+      ],
+      "bounds": {
+        "south": 35.7753,
+        "north": 35.9382,
+        "west": 128.689,
+        "east": 128.8788
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "deer_kr_gyeongsan",
+      "country": "KR",
+      "provider": "deer",
       "city": "Gyeongsan",
       "aliases": [
         "경산시"
@@ -1462,9 +1595,9 @@
       "gcooAppMap": true
     },
     {
-      "id": "swing_kr_pyeongtaek",
+      "id": "deer_kr_pyeongtaek",
       "country": "KR",
-      "provider": "swing",
+      "provider": "deer",
       "city": "Pyeongtaek",
       "aliases": [
         "평택시"
@@ -1531,6 +1664,28 @@
       "id": "swing_kr_paju",
       "country": "KR",
       "provider": "swing",
+      "city": "Paju",
+      "aliases": [
+        "파주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.7249,
+        126.7458
+      ],
+      "bounds": {
+        "south": 37.6866,
+        "north": 37.8881,
+        "west": 126.6784,
+        "east": 126.8392
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "deer_kr_paju",
+      "country": "KR",
+      "provider": "deer",
       "city": "Paju",
       "aliases": [
         "파주시"
@@ -1619,6 +1774,28 @@
       "id": "swing_kr_goyang",
       "country": "KR",
       "provider": "swing",
+      "city": "Goyang",
+      "aliases": [
+        "고양시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.6595,
+        126.8744
+      ],
+      "bounds": {
+        "south": 37.58,
+        "north": 37.7384,
+        "west": 126.7252,
+        "east": 126.972
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "deer_kr_goyang",
+      "country": "KR",
+      "provider": "deer",
       "city": "Goyang",
       "aliases": [
         "고양시"
@@ -2056,6 +2233,28 @@
       "swingAppMap": true
     },
     {
+      "id": "deer_kr_icheon",
+      "country": "KR",
+      "provider": "deer",
+      "city": "Icheon",
+      "aliases": [
+        "이천시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.2789,
+        127.4499
+      ],
+      "bounds": {
+        "south": 37.186,
+        "north": 37.3283,
+        "west": 127.3266,
+        "east": 127.526
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
       "id": "alpaca_kr_icheon",
       "country": "KR",
       "provider": "alpaca",
@@ -2364,9 +2563,9 @@
       "gcooAppMap": true
     },
     {
-      "id": "swing_kr_wonju",
+      "id": "deer_kr_wonju",
       "country": "KR",
-      "provider": "swing",
+      "provider": "deer",
       "city": "Wonju",
       "aliases": [
         "원주시"
@@ -2518,9 +2717,9 @@
       "gcooAppMap": true
     },
     {
-      "id": "swing_kr_anseong",
+      "id": "deer_kr_anseong",
       "country": "KR",
-      "provider": "swing",
+      "provider": "deer",
       "city": "Anseong",
       "aliases": [
         "안성시"
@@ -2587,6 +2786,28 @@
       "id": "swing_kr_iksan",
       "country": "KR",
       "provider": "swing",
+      "city": "Iksan",
+      "aliases": [
+        "익산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.9645,
+        126.9577
+      ],
+      "bounds": {
+        "south": 35.9136,
+        "north": 35.993,
+        "west": 126.9149,
+        "east": 127.0215
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "deer_kr_iksan",
+      "country": "KR",
+      "provider": "deer",
       "city": "Iksan",
       "aliases": [
         "익산시"
@@ -2760,6 +2981,28 @@
       "swingAppMap": true
     },
     {
+      "id": "deer_kr_yangsan",
+      "country": "KR",
+      "provider": "deer",
+      "city": "Yangsan",
+      "aliases": [
+        "양산시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.3294,
+        129.0143
+      ],
+      "bounds": {
+        "south": 35.2792,
+        "north": 35.4359,
+        "west": 128.968,
+        "east": 129.1994
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
       "id": "alpaca_kr_yangsan",
       "country": "KR",
       "provider": "alpaca",
@@ -2873,6 +3116,28 @@
       "id": "swing_kr_gyeongju",
       "country": "KR",
       "provider": "swing",
+      "city": "Gyeongju",
+      "aliases": [
+        "경주시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.8528,
+        129.2117
+      ],
+      "bounds": {
+        "south": 35.8066,
+        "north": 35.9041,
+        "west": 129.1496,
+        "east": 129.2602
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "deer_kr_gyeongju",
+      "country": "KR",
+      "provider": "deer",
       "city": "Gyeongju",
       "aliases": [
         "경주시"
@@ -3178,9 +3443,9 @@
       "gcooAppMap": true
     },
     {
-      "id": "swing_kr_sacheon",
+      "id": "deer_kr_sacheon",
       "country": "KR",
-      "provider": "swing",
+      "provider": "deer",
       "city": "Sacheon",
       "aliases": [
         "사천시"
@@ -3618,6 +3883,28 @@
       "swingAppMap": true
     },
     {
+      "id": "deer_kr_namwon",
+      "country": "KR",
+      "provider": "deer",
+      "city": "Namwon",
+      "aliases": [
+        "남원시"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        35.4078,
+        127.3784
+      ],
+      "bounds": {
+        "south": 35.376,
+        "north": 35.4492,
+        "west": 127.3383,
+        "east": 127.4321
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
       "id": "gcoo_kr_sangju",
       "country": "KR",
       "provider": "gcoo",
@@ -3684,9 +3971,9 @@
       "gcooAppMap": true
     },
     {
-      "id": "swing_kr_yangpyeong",
+      "id": "deer_kr_yangpyeong",
       "country": "KR",
-      "provider": "swing",
+      "provider": "deer",
       "city": "Yangpyeong",
       "aliases": [
         "양평군"
@@ -3750,9 +4037,9 @@
       "gcooAppMap": true
     },
     {
-      "id": "swing_kr_yeongcheon",
+      "id": "deer_kr_yeongcheon",
       "country": "KR",
-      "provider": "swing",
+      "provider": "deer",
       "city": "Yeongcheon",
       "aliases": [
         "영천시"
@@ -3797,6 +4084,28 @@
       "id": "swing_kr_jincheon",
       "country": "KR",
       "provider": "swing",
+      "city": "Jincheon",
+      "aliases": [
+        "진천군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        36.8991,
+        127.5133
+      ],
+      "bounds": {
+        "south": 36.8139,
+        "north": 36.9326,
+        "west": 127.406,
+        "east": 127.5678
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
+      "id": "deer_kr_jincheon",
+      "country": "KR",
+      "provider": "deer",
       "city": "Jincheon",
       "aliases": [
         "진천군"
@@ -4080,9 +4389,9 @@
       "gcooAppMap": true
     },
     {
-      "id": "swing_kr_uljin",
+      "id": "deer_kr_uljin",
       "country": "KR",
-      "provider": "swing",
+      "provider": "deer",
       "city": "Uljin",
       "aliases": [
         "울진군"
@@ -4256,9 +4565,9 @@
       "gcooAppMap": true
     },
     {
-      "id": "swing_kr_changnyeong",
+      "id": "deer_kr_changnyeong",
       "country": "KR",
-      "provider": "swing",
+      "provider": "deer",
       "city": "Changnyeong",
       "aliases": [
         "창녕군"
@@ -4278,9 +4587,9 @@
       "swingAppMap": true
     },
     {
-      "id": "swing_kr_yeoncheon",
+      "id": "deer_kr_yeoncheon",
       "country": "KR",
-      "provider": "swing",
+      "provider": "deer",
       "city": "Yeoncheon",
       "aliases": [
         "연천군"
@@ -4344,6 +4653,28 @@
       "swingAppMap": true
     },
     {
+      "id": "deer_kr_hongcheon",
+      "country": "KR",
+      "provider": "deer",
+      "city": "Hongcheon",
+      "aliases": [
+        "홍천군"
+      ],
+      "timeZone": "Asia/Seoul",
+      "center": [
+        37.6906,
+        127.8849
+      ],
+      "bounds": {
+        "south": 37.6619,
+        "north": 37.724,
+        "west": 127.8491,
+        "east": 127.9344
+      },
+      "discoveryUrl": "https://sfr.swingmobility.dev/map/marker/vehicles",
+      "swingAppMap": true
+    },
+    {
       "id": "gcoo_kr_goseong",
       "country": "KR",
       "provider": "gcoo",
@@ -4366,9 +4697,9 @@
       "gcooAppMap": true
     },
     {
-      "id": "swing_kr_miryang",
+      "id": "deer_kr_miryang",
       "country": "KR",
-      "provider": "swing",
+      "provider": "deer",
       "city": "Miryang",
       "aliases": [
         "밀양시"
@@ -4542,9 +4873,9 @@
       "gcooAppMap": true
     },
     {
-      "id": "swing_kr_hoengseong",
+      "id": "deer_kr_hoengseong",
       "country": "KR",
-      "provider": "swing",
+      "provider": "deer",
       "city": "Hoengseong",
       "aliases": [
         "횡성군"
@@ -4674,9 +5005,9 @@
       "alpacaAppMap": true
     },
     {
-      "id": "swing_kr_imsil",
+      "id": "deer_kr_imsil",
       "country": "KR",
-      "provider": "swing",
+      "provider": "deer",
       "city": "Imsil",
       "aliases": [
         "임실군"
@@ -4784,9 +5115,9 @@
       "alpacaAppMap": true
     },
     {
-      "id": "swing_kr_wando",
+      "id": "deer_kr_wando",
       "country": "KR",
-      "provider": "swing",
+      "provider": "deer",
       "city": "Wando",
       "aliases": [
         "완도군"

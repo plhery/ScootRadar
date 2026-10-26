@@ -3,10 +3,13 @@
 South Korea is on the map since 24 October 2026, read from six operators'
 app maps: Beam's authenticated rider map, and the signed-out maps of GCOO,
 Kickgoing, which carries Xingxing's scooters too, Swing, which answers
-only with its app's one-time code, and, since 25 October, Alpaca and DART,
+only with its app's one-time code and carries Deer's scooters too, and,
+since 25 October, Alpaca and DART,
 whose app shows its map only after a phone sign-in but whose server answers
 without one. The user asked for GCOO's, Kickgoing's and Swing's that day,
-Swing's one-time code included, and for Alpaca's and DART's the next. No operator publishes a GBFS feed, and
+Swing's one-time code included, and for Alpaca's and DART's the next. Deer's
+scooters are under Deer's name since 27 October (see
+[Swing and Deer](#swing-and-deer)). No operator publishes a GBFS feed, and
 the government's TAGO API lists Sejong only and needs a key only Korean
 residents and companies can get (see [the coverage gaps](coverage-gaps.md)).
 The signed-out maps' routes, the apps' provenance and the first samples are
@@ -19,9 +22,9 @@ Memphis, with 10 scooters in four areas, is left out.
 
 ## Catalog
 
-`data/south-korean-scooter-feeds.json` lists 257 systems in 121 towns: Swing
-in 82, GCOO in 76, Xingxing in 32, Alpaca in 29, Kickgoing in 9, DART's one
-system in 6 (see [DART](#dart)) and Beam's 28 regions in 36 (see [Beam](#beam)). A town is a municipality:
+`data/south-korean-scooter-feeds.json` lists 272 systems in 121 towns: GCOO
+in 76, Swing in 66, Xingxing in 32, Deer in 31, Alpaca in 29, Kickgoing in 9,
+DART's one system in 6 (see [DART](#dart)) and Beam's 28 regions in 36 (see [Beam](#beam)). A town is a municipality:
 Seoul, the six metropolitan cities, Sejong, and the cities and counties of the
 provinces. Each has its usual romanized name and its official Korean name as
 an alias, so a search finds 서울 as well as Seoul. Gyeonggi's Gwangju is
@@ -42,25 +45,33 @@ when most scooters stand idle:
   cell where the map's clusters said vehicles stood (see [Alpaca](#alpaca));
 - DART's, from three reads of its whole fleet, at 00:38, 00:49 and 02:17
   Korea time on 26 October: the towns from the last, the bounds from all
-  three. Its towns are the areas of its one system.
+  three. Its towns are the areas of its one system;
+- Swing's and Deer's again, apart, from 06:03 to 06:11 Korea time on 27
+  October (22:03 to 22:11 Paris on 26 October): one read of the box of each
+  of Swing's 82 towns of 25 October, which then held Deer's scooters too
+  (see [Swing and Deer](#swing-and-deer)).
 
 Each scooter was placed in its municipality by its OpenStreetMap boundary. An
 operator has a system in a town where the sweep found 30 scooters or more.
 Its bounds are the envelope of those scooters, 1.5 km wider (Swing's 2 km),
-within the municipality's own box widened by 300 m.
+within the municipality's own box widened by 300 m. Swing's and Deer's keep
+the bounds of Swing's systems of 25 October, Deer's scooters among them, so
+the two systems of a town read the same box.
 
 | Operator | Scooters | Towns | Biggest |
 | --- | ---: | ---: | --- |
-| Swing | 58,741 | 82 | Busan 3,620, Ulsan 3,172, Bucheon 2,689, Hwaseong 2,602 |
 | GCOO | 57,338 | 76 | Daejeon 4,245, Incheon 4,080, Gwangju 3,665, Daegu 3,332 |
+| Swing | 45,990 | 66 | Busan 3,652, Ulsan 3,202, Bucheon 2,739, Hwaseong 2,518 |
 | Xingxing | 18,924 | 32 | Seoul 4,902, Ulsan 2,833, Hanam 1,276, Jeonju 1,233 |
+| Deer | 13,304 | 31 | Cheongju 2,325, Gyeongsan 1,575, Paju 1,447, Sejong 1,071 |
 | Kickgoing | 11,365 | 9 | Seoul 4,863, Busan 4,614, Anyang 720, Bucheon 543 |
 | Alpaca | 7,908 | 29 | Cheongju 892, Ulsan 830, Yongin 734, Pyeongtaek 586 |
 | DART | 1,391 | 6 | Yeosu 473, Incheon 374, Siheung 194, Gimhae 146 |
 
 The biggest towns are Busan (10,386), Seoul (10,310), Ulsan (6,650), Daejeon
-(6,397), Daegu (5,391), Jeonju (5,390) and Incheon (5,349), before Alpaca's
-830 in Ulsan and DART's 374 in Incheon. Seoul has no GCOO
+(6,397), Daegu (5,391), Jeonju (5,390) and Incheon (5,349), on 25 October,
+before Alpaca's 830 in Ulsan and DART's 374 in Incheon, Swing's and Deer's
+counted together. Seoul has no GCOO
 system and only 545 Swing scooters: both run mostly bikes there, Swing about
 1,500 e-bikes around Gangnam station alone. Alpaca is in none of the
 metropolitan cities but Ulsan: most of its towns are the capital area's outer
@@ -71,11 +82,13 @@ Incheon ones in Geomdan, Namdong, Seohae and Seo.
 Every town has its municipal boundary in `data/town-outlines.json`, from
 OpenStreetMap, as the towns of the capital area and around Busan touch and
 their boxes overlap. A scooter counts under the town it stands in, and
-GCOO's, Kickgoing's, Xingxing's and Swing's feeds drop the few standing in a
+GCOO's, Kickgoing's, Xingxing's, Swing's and Deer's feeds drop the few standing in a
 town where their operator has no system: GCOO's Suncheon feed one, in
 Gwangyang, on 24 October, Alpaca's feeds 12, in Gunpo, Uiwang and Suwon,
-on 26 October, and DART's feed 34, in Anseong (25), Pyeongtaek (8) and
-Hwaseong (1), that night. Nonsan, Pocheon, Gyeryong and Hamyang are Alpaca's alone; they
+on 26 October, DART's feed 34, in Anseong (25), Pyeongtaek (8) and
+Hwaseong (1), that night, Swing's feeds 50, in Pyeongtaek (26), Gwacheon
+(22), Cheongju and Cheonan, on 27 October, and Deer's 23, in Yeosu (18),
+Gimpo (2), Seoul, Yongin and Siheung. Nonsan, Pocheon, Gyeryong and Hamyang are Alpaca's alone; they
 have their outlines too (relations 7580853, 2409178, 7580846 and 7833356). OpenStreetMap maps Gwangju inside 전남광주통합특별시
 (relation 21039457) and has no relation for the city itself, so its outline
 joins its five districts (relations 4162635, 7348583, 7348741, 7348758 and
@@ -118,7 +131,7 @@ Each keeps its own operator's standing kickboards, with their battery in
 percent: Kickgoing's ids are numbers, Xingxing's hexadecimal. Bikes, and
 TMAP's vehicles, are left out.
 
-## Swing
+## Swing and Deer
 
 `server/swingApp.ts` reads
 `GET https://sfr.swingmobility.dev/map/marker/vehicles` with the app's
@@ -142,6 +155,24 @@ A vehicle's id is its device's IMEI. The collector neither stores nor shows
 it: a scooter's id is the first 16 characters of an HMAC-SHA256 of the IMEI,
 keyed with the private key. Swing gives a battery band (`FULL`, `HIGH`,
 `MIDDLE`, `LOW`), not a level, so the battery stays unknown.
+
+Deer is inside Swing: Swing bought Deer's business in July 2024
+([Unicorn Factory](https://www.unicornfactory.co.kr/article/2024071916025018991)),
+Deer's app (`co.deering.deer` 4.6.8) talks to Swing's server, and Swing's
+map gives Deer's scooters `vendor: "DEER"` (model S9); Swing's own carry no
+vendor. Riders know them as Deer's: Swing still publishes the Deer app
+(4.6.8, 7 October 2026), its own app says "now you can ride Deer in the
+Swing app", and its map draws them with a Deer marker. So since 27 October
+2026 they are Deer's, in systems of their own, as Xingxing's are read from
+Kickgoing's map: a Deer system keeps the `DEER` scooters, a Swing one the
+rest, each under its operator's name (`deer:` or `swing:` before the hashed
+IMEI). They waited for iOS 1.2.0 (build 960), live since 26 October, the
+first App Store build that knows Deer. A town's Swing and Deer systems ask
+for the same box, and a read of the last 50 seconds serves both. In 16 of
+Swing's 82 towns of 25 October, Cheongju, Sejong, Pyeongtaek and Wonju among
+them, fewer than 30 of Swing's own scooters stood on 27 October, so they
+have a Deer system and no Swing one: Cheongju's 2,325 were all Deer's but
+one.
 
 ## Alpaca
 
@@ -322,7 +353,7 @@ keeping road numbers after Hangul street names and before Roman ones.
 
 ## Load
 
-The cache collects each Kickgoing, Xingxing and Swing town every 20 minutes,
+The cache collects each Kickgoing, Xingxing, Swing and Deer town every 20 minutes,
 each GCOO and Alpaca town, and DART's whole fleet, every two hours
 (`GCOO_IDLE_INTERVAL_MS`, `APP_MAP_IDLE_INTERVAL_MS`), and any town every
 minute while someone looks at it, DART's whole fleet while someone looks at
@@ -334,7 +365,9 @@ one of its towns. A round of every town takes about:
   about 35 minutes on 24 October 2026;
 - Kickgoing and Xingxing: 1,072 cells, 747 of them different, starting at
   least 300 ms apart, about 5 minutes;
-- Swing: 82 requests, a few more where a box is split;
+- Swing and Deer: 97 requests, for 82 different boxes, a few more where a
+  box is split. A town's Swing and Deer systems share one only when they are
+  collected within 50 seconds of each other, as while someone looks at it;
 - Alpaca: 456 cells for the 29 towns, 383 different, and a read of the
   country's clusters for each town that finds none from the last 50
   seconds, starting at least 500 ms apart. The server answered in 0.3 s at
@@ -362,8 +395,8 @@ reads and their pace are in [the Beam collector guide](beam-app-map.md).
 None of the six publishes a licence or terms for this data. The map's
 credits name the source for each country, "Beam authenticated rider map",
 "GCOO anonymous app map", "Kickgoing anonymous app map, Xingxing's scooters
-included", "Swing anonymous app map", "Alpaca anonymous app map" and "DART
-anonymous app map", and link to ridebeam.com, gcoo.io, kickgoing.io and
+included", "Swing anonymous app map, Deer's scooters included", "Alpaca
+anonymous app map" and "DART anonymous app map", and link to ridebeam.com, gcoo.io, kickgoing.io and
 alpaca.kr. DART's site has no working https, and Swing's, swingmobility.com,
 did not answer from here, so neither has a link.
 
@@ -401,7 +434,11 @@ answered, collected one after another by its collector: 413 requests in 3
 minutes 29 seconds, 9,340 scooters in the feeds, none fewer than 30 (Icheon
 34). At 02:32 Korea time on 26 October DART's one system answered, through
 its collector: one request, in 2.6 seconds, 1,395 scooters in its six towns,
-the fewest in Gimpo (100). To review the catalog, sweep the service areas
+the fewest in Gimpo (100). From 06:20 to 06:22 Korea time on 27 October all
+97 of Swing's and Deer's answered, collected one after another by their
+collector: 82 requests in 85 seconds, as each town's two systems shared one,
+64,095 of Swing's scooters in its 66 feeds and 16,334 of Deer's in its 31,
+none fewer than 30 (Swing in Hongcheon, 31). To review the catalog, sweep the service areas
 again as above, place the scooters by municipality, and compare with the
 table above. For Alpaca, its systems' collections read the whole country,
 every cell its clusters point to once, and the table above is their
@@ -409,23 +446,13 @@ scooters by town; DART's one read is its whole fleet.
 
 ## Known gaps
 
-- **Deer** is inside Swing: Swing bought Deer's business in July 2024
-  ([Unicorn Factory](https://www.unicornfactory.co.kr/article/2024071916025018991)),
-  Deer's app (`co.deering.deer` 4.6.8) talks to Swing's server, and Swing's
-  map gives Deer's scooters `vendor: "DEER"` (model S9). Swing's systems
-  hold them: about 13,123 in 39 of its 82 towns on 25 October, Cheongju's
-  2,585 (all of Swing's there), Gyeongsan's 2,143, Daegu's 1,633, Paju's
-  1,568 and Goyang's 1,231. They are shown as Swing's for now. Riders know
-  them as Deer's: Swing still publishes the Deer app (4.6.8, 7 October
-  2026), its own app says "now you can ride Deer in the Swing app", and its
-  map draws them with a Deer marker. So `deer` is in the provider catalog
-  since 25 October 2026, opening Deer's app (`deer.tswm.link`, which it
-  claims on both platforms). Without the app, the iPhone app opens Deer's
-  App Store page, but a phone's browser lands on that host's "page not
-  found": unlike `tswm.link`, its root sends no one to a store. Its scooters take its name, in towns of their
-  own read from Swing's map as Xingxing's are from Kickgoing's, once an App
-  Store build that knows Deer is live. The builds before leave a provider
-  they don't know out of the totals, and Cheongju would look empty in them.
+- **Deer's link** opens Deer's app (`deer.tswm.link`, which it claims on
+  both platforms). Without the app, the iPhone app opens Deer's App Store
+  page, but a phone's browser lands on that host's "page not found": unlike
+  `tswm.link`, its root sends no one to a store.
+- **Deer in older iPhone apps:** the builds before 1.2.0 do not know Deer
+  and leave its scooters out of the totals, so Cheongju looks empty in them,
+  and Deer's other towns smaller, until the rider updates.
 - **DART could close its map** at any time by checking the token: its app
   asks for a phone sign-in before it shows the map, and the server answers
   user 0 with an empty token or ours (see [DART](#dart)). Its feed would

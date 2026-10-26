@@ -32,6 +32,8 @@ describe('Swing map', () => {
     expect(parsed.read).toEqual(bounds);
     expect(parsed.throttleMs).toBe(1500);
     expect(parsed.scooters).toHaveLength(1);
+    expect(parsed.scooters[0].vendor).toBe('NINEBOT');
+    expect(parseSwingScooters(payload([vehicle('860000000000001', { vendor: undefined })]), key).scooters[0].vendor).toBeNull();
     const [{ id }] = parsed.scooters;
     expect(id).toMatch(/^[A-Za-z0-9_-]{16}$/);
     expect(id).not.toContain('860000000000001');
@@ -51,7 +53,7 @@ describe('Swing map', () => {
     const asked: MapBounds[] = [];
     const api = { scooters: vi.fn(async (box: MapBounds) => {
       asked.push(box);
-      const scooters = [{ id: `hash${asked.length}`, lat: 35.15, lng: 129.1 }, { id: 'outside', lat: 35.3, lng: 129.1 }];
+      const scooters = [{ id: `hash${asked.length}`, vendor: null, lat: 35.15, lng: 129.1 }, { id: 'outside', vendor: null, lat: 35.3, lng: 129.1 }];
       return { at: now + asked.length, scooters, read: asked.length === 1 ? { ...box, north: box.north - 0.01 } : box };
     }) };
     const snapshot = await collectSwingRegion(region, api);
@@ -62,6 +64,20 @@ describe('Swing map', () => {
     const short = { scooters: async (box: MapBounds) => ({ at: now, scooters: [], read: { ...box, east: box.east - 0.01 } }) };
     await expect(collectSwingRegion(region, short)).rejects.toThrow('read less than the box');
     await expect(collectSwingRegion({ ...region, swingAppMap: undefined }, api)).rejects.toThrow('Not a Swing');
+    await expect(collectSwingRegion({ ...region, provider: 'gcoo' }, api)).rejects.toThrow('Not a Swing');
+  });
+
+  it("gives a Deer system Deer's scooters and a Swing system the rest, each under its own operator's id", async () => {
+    // Daegu, where both run.
+    const daegu = { ...region, city: 'Daegu', center: [35.8714, 128.6014] as [number, number],
+      bounds: { south: 35.7775, west: 128.4541, north: 35.9735, east: 128.7588 } };
+    const api = { scooters: async (box: MapBounds) => ({ at: now, read: box, scooters: [
+      { id: 'own', vendor: null, lat: 35.8714, lng: 128.6014 }, { id: 'ninebot', vendor: 'NINEBOT', lat: 35.8714, lng: 128.6014 },
+      { id: 'deer', vendor: 'DEER', lat: 35.8714, lng: 128.6014 }] }) };
+    const swing = await collectSwingRegion(daegu, api);
+    expect(swing.vehicles.map(v => [v.provider, v.vehicle_id])).toEqual([['swing', 'swing:own'], ['swing', 'swing:ninebot']]);
+    const deer = await collectSwingRegion({ ...daegu, id: 'deer_kr_test', provider: 'deer' }, api);
+    expect(deer.vehicles.map(v => [v.provider, v.vehicle_id])).toEqual([['deer', 'deer:deer']]);
   });
 
   it('wires every Swing catalog system without GBFS discovery', () => {
@@ -69,8 +85,9 @@ describe('Swing map', () => {
     expect(systems.length).toBeGreaterThan(50);
     const feeds = independentCollectableFeeds();
     const configured = withSwingAppCollectors(feeds, REGIONAL_SCOOTER_SYSTEMS);
+    expect(systems.some(system => system.provider === 'deer')).toBe(true);
     for (const system of systems) {
-      expect(system.provider).toBe('swing');
+      expect(['swing', 'deer']).toContain(system.provider);
       const feed = configured.find(f => f.id.endsWith(`:${system.id}`))!;
       expect(feed.zoneSource).toBeUndefined();
       expect(feed.collect).not.toBe(feeds.find(f => f.id === feed.id)!.collect);
@@ -107,7 +124,7 @@ describe('Swing client', () => {
       fetch.mockImplementation(async () => Response.json(payload([], bounds, { throttleMs: 5000 })));
       const client = new SwingClient({ secret, fetch, now: Date.now, intervalMs: 1000, timeoutMs: 25 });
       await client.scooters(bounds);
-      const second = client.scooters(bounds);
+      const second = client.scooters({ ...bounds, east: 129.3 });
       await vi.advanceTimersByTimeAsync(4999);
       expect(fetch).toHaveBeenCalledTimes(1);
       await vi.advanceTimersByTimeAsync(1);
@@ -116,6 +133,22 @@ describe('Swing client', () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+
+  it('answers the same box from a read of the last 50 seconds, and reads it again after', async () => {
+    let clock = now;
+    const fetch = vi.fn<typeof globalThis.fetch>(async () => Response.json(payload([vehicle('860000000000001')])));
+    const client = new SwingClient({ secret, fetch, now: () => clock, intervalMs: 0, timeoutMs: 25 });
+    const [first, again] = await Promise.all([client.scooters(bounds), client.scooters(bounds)]);
+    clock += 50_000;
+    expect(await client.scooters(bounds)).toBe(first);
+    expect(again).toBe(first);
+    expect(fetch).toHaveBeenCalledTimes(1);
+    await client.scooters({ ...bounds, east: 129.3 });
+    expect(fetch).toHaveBeenCalledTimes(2);
+    clock += 1;
+    expect((await client.scooters(bounds)).at).toBe(clock);
+    expect(fetch).toHaveBeenCalledTimes(3);
   });
 
   it('backs off after a 429 and sanitizes failures', async () => {

@@ -709,18 +709,19 @@ banned shared scooters, and feeds that were empty when checked.
   - **BinBin at İstanbul Airport** (İGA) is not swept: two scooters on 24
     October 2026, 15 km north of İstanbul Avrupa.
 - **South Korea** ([guide](south-korean-scooter-feeds.md#known-gaps)): GCOO in
-  76 towns, Swing in 82, Xingxing in 32, Alpaca in 29, Kickgoing in 9 and
-  DART in 6 are covered, read from their apps' signed-out maps, Swing's with
-  its app's one-time code, DART's without the phone sign-in its app asks for
+  76 towns, Swing in 66, Xingxing in 32, Deer in 31, Alpaca in 29, Kickgoing
+  in 9 and DART in 6 are covered, read from their apps' signed-out maps,
+  Swing's and Deer's, from Swing's map, with its app's one-time code, DART's without the phone sign-in its app asks for
   (the user's choice, 25 October 2026), and Beam's 28 regions, in 36 towns,
   from its rider map.
   None of the operators publishes a feed, and Seoul, Busan and Daejeon
   publish only parking, towing and statistics. Seoul had 18,548 shared
   scooters in December 2025, down from 43,417 in October 2023.
-  - **Deer** is covered inside Swing, which bought Deer's business in July
-    2024: Deer's app talks to Swing's server, and Swing's map gives Deer's
-    scooters `vendor: "DEER"`, about 13,123 in 39 of Swing's 82 towns on 25
-    October 2026, Cheongju's 2,585 among them.
+  - **Deer** is read from Swing's map, as Swing bought Deer's business in
+    July 2024 and its map gives Deer's scooters `vendor: "DEER"`. Its link
+    opens Deer's app, but a phone's browser without the app lands on its
+    host's "page not found", and iPhone builds before 1.2.0 leave its
+    scooters out of the totals.
   - **DART** answers its map request as user 0, with an empty token or
     ours, though its app shows the map only after a phone sign-in: it could
     close that at any time by checking the token. Its 34 scooters in Anseong, Pyeongtaek

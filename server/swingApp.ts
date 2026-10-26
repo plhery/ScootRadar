@@ -9,13 +9,15 @@ const ORIGIN = 'https://sfr.swingmobility.dev/map/marker/vehicles';
 const APP_VERSION = '4.8.1';
 const APP_BUILD = '20386';
 const RETRY_MS = 60_000;
+// A Swing and a Deer system of one town ask for the same box: a read of the last 50 seconds serves both.
+const CACHE_MS = 50_000;
 // Bounds the server did not widen the box to are read again in quarters, down to a sixteenth.
 const SPLITS = 2;
 export const swingMapRequests = { status: 0 };
 const object = (value: unknown): Record<string, unknown> | undefined =>
   value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
 
-interface SwingScooter { id: string; lat: number; lng: number }
+interface SwingScooter { id: string; vendor: string | null; lat: number; lng: number }
 type TimedScooters = { scooters: SwingScooter[]; at: number };
 interface ClientOptions { secret?: string; fetch?: typeof fetch; now?: () => number; intervalMs?: number; timeoutMs?: number }
 
@@ -66,6 +68,7 @@ export function swingOneTimeCode(key: Buffer, now: number): string {
 /**
  * The scooters of a read, by an id derived from the device's IMEI with the private
  * key, so the IMEI is neither stored nor shown. The server says which box it read.
+ * Swing's own scooters carry no vendor; Deer's, which Swing's map shows too, carry DEER.
  */
 export function parseSwingScooters(payload: unknown, key: Buffer): { scooters: SwingScooter[]; read: MapBounds; throttleMs: number } {
   const data = object(payload);
@@ -84,7 +87,8 @@ export function parseSwingScooters(payload: unknown, key: Buffer): { scooters: S
       Math.abs(lat) > 90 || Math.abs(lng) > 180 || typeof vehicle.type !== 'string') throw new Error('Invalid Swing vehicle');
     // Its e-bikes are BIKE, its bicycles NORMAL_BIKE, and its seated scooters MOPED.
     if (vehicle.type !== 'SCOOTER') continue;
-    scooters.push({ id: createHmac('sha256', key).update(vehicle.imei).digest('base64url').slice(0, 16), lat, lng });
+    scooters.push({ id: createHmac('sha256', key).update(vehicle.imei).digest('base64url').slice(0, 16),
+      vendor: typeof vehicle.vendor === 'string' ? vehicle.vendor : null, lat, lng });
   }
   return { scooters, read: read as unknown as MapBounds, throttleMs: Number.isFinite(throttle) ? Math.max(0, throttle) : 0 };
 }
@@ -98,6 +102,7 @@ export class SwingClient {
   private readonly timeoutMs: number;
   private nextStart = 0;
   private blockedUntil = 0;
+  private readonly cache = new Map<string, { at: number; scooters: Promise<TimedScooters & { read: MapBounds }> }>();
 
   constructor(options: ClientOptions = {}) {
     this.secret = options.secret ?? process.env.SWING_TOTP_SECRET;
@@ -114,16 +119,29 @@ export class SwingClient {
   }
 
   /**
-   * The scooters in the bounds. The server reads a box four times as tall and wide as the one
-   * asked for, so the box asked for is a quarter of the bounds around their centre.
+   * The scooters in the bounds, with when they were asked for: from a request of the last 50 seconds
+   * if there was one. The server reads a box four times as tall and wide as the one asked for, so
+   * the box asked for is a quarter of the bounds around their centre.
    */
-  async scooters(bounds: MapBounds): Promise<TimedScooters & { read: MapBounds }> {
-    const key = this.key();
+  scooters(bounds: MapBounds): Promise<TimedScooters & { read: MapBounds }> {
     const lat = (bounds.south + bounds.north) / 2, lng = (bounds.west + bounds.east) / 2;
     const height = (bounds.north - bounds.south) / 8, width = (bounds.east - bounds.west) / 8;
     const query = new URLSearchParams({ east: (lng + width).toFixed(6), south: (lat - height).toFixed(6),
       west: (lng - width).toFixed(6), north: (lat + height).toFixed(6), center: `${lat.toFixed(6)},${lng.toFixed(6)}`,
       mapType: 'NAVER', mapZoomLevel: '16', VEHICLE: 'SCOOTER', DISCOUNT: 'ALL', BATTERY: 'ALL', selectedOnly: 'true' });
+    const url = `${ORIGIN}?${query}`;
+    const now = this.now();
+    for (const [key, entry] of this.cache) if (now - entry.at > CACHE_MS) this.cache.delete(key);
+    const cached = this.cache.get(url);
+    if (cached) return cached.scooters;
+    const scooters = this.read(url);
+    this.cache.set(url, { at: now, scooters });
+    scooters.catch(() => { if (this.cache.get(url)?.scooters === scooters) this.cache.delete(url); });
+    return scooters;
+  }
+
+  private async read(url: string): Promise<TimedScooters & { read: MapBounds }> {
+    const key = this.key();
     if (this.now() < this.blockedUntil) throw new Error('Swing is temporarily rate limited');
     const wait = Math.max(0, this.nextStart - this.now());
     this.nextStart = this.now() + wait + this.intervalMs;
@@ -133,7 +151,7 @@ export class SwingClient {
     const at = this.now();
     let response: Response;
     try {
-      response = await this.fetch(`${ORIGIN}?${query}`, { headers: {
+      response = await this.fetch(url, { headers: {
         'X-SW-OS-PLATFORM': 'AOS', 'X-SW-OS-VERSION': '34', 'X-SW-DEVICE-MODEL': 'Pixel 7',
         'X-SW-DEVICE-LOCATION': '0.0,0.0', 'X-SW-DEVICE-GPS-ACCURACY': '0.0',
         'X-SW-APP-VERSION': APP_VERSION, 'X-SW-APP-BUILD-NUMBER': APP_BUILD, 'X-SW-APP-LANGUAGE': 'ko',
@@ -165,7 +183,8 @@ function quarters(box: MapBounds): MapBounds[] {
 
 const client = new SwingClient();
 export async function collectSwingRegion(system: RegionalScooterSystem, api: Pick<SwingClient, 'scooters'> = client): Promise<SourceVehicles> {
-  if (!system.swingAppMap) throw new Error('Not a Swing app map region');
+  if (!system.swingAppMap || (system.provider !== 'swing' && system.provider !== 'deer')) throw new Error('Not a Swing app map region');
+  const deer = system.provider === 'deer';
   const scooters = new Map<string, SwingScooter>();
   let observedAt = Infinity;
   const read = async (box: MapBounds, splits: number): Promise<void> => {
@@ -179,13 +198,14 @@ export async function collectSwingRegion(system: RegionalScooterSystem, api: Pic
       return;
     }
     observedAt = Math.min(observedAt, answer.at);
-    for (const scooter of answer.scooters) scooters.set(scooter.id, scooter);
+    // A Deer system keeps Deer's scooters, a Swing one the rest.
+    for (const scooter of answer.scooters) if ((scooter.vendor === 'DEER') === deer) scooters.set(scooter.id, scooter);
   };
   await read(system.bounds, SPLITS);
   const vehicles: Vehicle[] = [...scooters.values()].filter(scooter => systemServesPoint(system, scooter.lat, scooter.lng)).map(scooter => ({
     // By the operator's own id, so a scooter where two towns' bounds overlap is shown once. Swing gives a
     // battery band (FULL, HIGH, MIDDLE, LOW), not a level, and no range.
-    provider: system.provider, vehicle_id: `swing:${scooter.id}`, lat: scooter.lat, lng: scooter.lng,
+    provider: system.provider, vehicle_id: `${system.provider}:${scooter.id}`, lat: scooter.lat, lng: scooter.lng,
     battery: null, range_m: null, deep_link: null, distance_m: null,
   }));
   return { observedAt, stale: false, vehicles };

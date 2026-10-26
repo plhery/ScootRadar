@@ -180,7 +180,8 @@ async function inspect(system) {
     if (isAppMap(system) && apps === 'cache') return cachedFeed(system, result, 'app-map (cache)');
     if (behindToken(system) && apps === 'cache') return cachedFeed(system, result, 'gbfs (cache)');
     if (isAppMap(system)) {
-      const collect = await appCollector(system.atomAppAccount ? 'atom' : system.kickgoingAppMap ? 'kickgoing' : system.provider);
+      const collect = await appCollector(system.atomAppAccount ? 'atom' : system.kickgoingAppMap ? 'kickgoing'
+        : system.swingAppMap ? 'swing' : system.provider);
       const snapshot = await collect(system);
       return { ...result, state: 'ok', version: 'app-map', availableScooters: snapshot.vehicles.length,
         withBattery: snapshot.vehicles.filter(v => v.battery !== null).length, withRange: snapshot.vehicles.filter(v => typeof v.range_m === 'number').length, withRentalLink: 0,
