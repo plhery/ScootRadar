@@ -18,8 +18,9 @@ København and Odense, in Brno and Ostrava, in 15 Hungarian markets, from
 Budapest to Szigetszentmiklós, in seven Romanian ones, from București to
 Târgoviște, in Athens, Kifisia, Thessaloniki and Heraklion, in Antwerpen,
 in Porto, Faro and Oeiras, and since 26 October 2026 in Tokyo and Yokohama,
-and in Port Phillip.
-The other markets its rider map lists, 81 found so far, are added country by
+in Port Phillip, and in Auckland, Christchurch, Hamilton, Wellington and
+Palmerston North.
+The other markets its rider map lists, 76 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -620,8 +621,9 @@ banned shared scooters, and feeds that were empty when checked.
     and Bird's nationwide `israel` feed has no scooter in any of the three.
 - **New Zealand** ([guide](new-zealand-scooter-feeds.md#known-gaps)):
   Flamingo in Auckland, Christchurch, Wellington, Dunedin, Tauranga,
-  Palmerston North, Porirua, Rangiora and Kaiapoi, and JOLT in New Plymouth
-  and Rolleston, are covered.
+  Palmerston North, Porirua, Rangiora and Kaiapoi, JOLT in New Plymouth
+  and Rolleston, and Lime in Auckland, Christchurch, Hamilton, Wellington and
+  Palmerston North, from its rider map since 26 October 2026, are covered.
   - **JOLT `hutt_valley`:** 30 scooters in Lower Hutt and 14 in Upper Hutt
     in the median poll, none ridden in polls on the evening of Thursday 15
     October and the morning of Friday 16 October 2026, the commute included.
@@ -634,11 +636,8 @@ banned shared scooters, and feeds that were empty when checked.
     Rolleston or Rangiora.
   - **No public feed:** Beam, in Queenstown, Taupō and Whangārei, whose feed
     host answers 401 and whose signed-in map samples returned no scooters on
-    24 October 2026 (see [the Beam integration](beam-app-map.md)); Lime, with
-    about 3,000 scooters in Auckland, Christchurch, Hamilton and Palmerston
-    North (Ride Report's averages for the third quarter of 2026, less
-    Flamingo's), Hamilton's whole fleet among them. Neuron has left New
-    Zealand.
+    24 October 2026 (see [the Beam integration](beam-app-map.md)). Neuron has
+    left New Zealand.
   - **Zone curfews:** Wellington bans hiring in the Courtenay precinct from
     21:00 to 06:00 on Thursday, Friday and Saturday nights and public-holiday
     eves (its code of practice v9.0, §7.4), and Flamingo says hiring stops

@@ -1,5 +1,5 @@
 {
-  "verifiedOn": "2026-10-16",
+  "verifiedOn": "2026-10-24",
   "catalogSource": "https://github.com/MobilityData/gbfs/blob/master/systems.csv",
   "systems": [
     {
@@ -270,6 +270,129 @@
         "east": 172.4189
       },
       "discoveryUrl": "https://prod-api.joltscooters.co.nz/api/gbfs/selwyn/gbfs.json"
+    },
+    {
+      "id": "lime_nz_app_auckland",
+      "provider": "lime",
+      "city": "Auckland",
+      "region": "AUK",
+      "center": [
+        -36.8485,
+        174.7633
+      ],
+      "timeZone": "Pacific/Auckland",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "GMI2YAGYPWX4P",
+      "limeMapGrid": {
+        "south": -36.92749,
+        "west": 174.66052,
+        "north": -36.76403,
+        "east": 174.88501,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.016820053955194463,
+        "cells": "0-11,14-26,28-40,42-69,71-83,87-96,103-107,118-121,132-134,145-147,159-161,174"
+      }
+    },
+    {
+      "id": "lime_nz_app_christchurch",
+      "provider": "lime",
+      "city": "Christchurch",
+      "region": "CAN",
+      "center": [
+        -43.5309,
+        172.6366
+      ],
+      "timeZone": "Pacific/Auckland",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "OOUZTULN4VUHO",
+      "limeMapGrid": {
+        "south": -43.58687,
+        "west": 172.51969,
+        "north": -43.47302,
+        "east": 172.77075,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.018567861073521895,
+        "cells": "1-6,13,15-39,42-51,56-65,71-81,85-95,99,101-103,105,107-109,113,115-117"
+      }
+    },
+    {
+      "id": "lime_nz_app_hamilton",
+      "provider": "lime",
+      "city": "Hamilton",
+      "region": "WKO",
+      "center": [
+        -37.78333,
+        175.28333
+      ],
+      "timeZone": "Pacific/Auckland",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "ZZ5GIEQRWMRII",
+      "limeMapGrid": {
+        "south": -37.82606,
+        "west": 175.21779,
+        "north": -37.71538,
+        "east": 175.33373,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01703369994102296,
+        "cells": "2-6,8-33,35-40,42-46,50-53,58-59"
+      }
+    },
+    {
+      "id": "lime_nz_app_palmerston_north",
+      "provider": "lime",
+      "city": "Palmerston North",
+      "region": "MWT",
+      "center": [
+        -40.3564,
+        175.6111
+      ],
+      "timeZone": "Pacific/Auckland",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "3C3GERNWUUZE4",
+      "limeMapGrid": {
+        "south": -40.39503,
+        "west": 175.56744,
+        "north": -40.31726,
+        "east": 175.66899,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01767231050486936,
+        "cells": "1-3,6-10,12-16,18-22,25-29,32-35"
+      }
+    },
+    {
+      "id": "lime_nz_app_wellington",
+      "provider": "lime",
+      "city": "Wellington",
+      "region": "WGN",
+      "center": [
+        -41.2865,
+        174.7762
+      ],
+      "timeZone": "Pacific/Auckland",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "RUMSPDYO3PALC",
+      "limeMapGrid": {
+        "south": -41.3508,
+        "west": 174.71536,
+        "north": -41.25764,
+        "east": 174.8443,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.0179243550374468,
+        "cells": "2-6,10-15,18-24,26-46,50-52"
+      }
     }
+  ],
+  "limeVerifiedOn": "2026-10-24",
+  "limeServiceAreaSources": [
+    "https://assets.lime.bike/zones_attributes/Auckland_9057_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Christchurch_6570_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Hamilton_3198_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Palmerston_North_160_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Wellington_285_exclude_new_type.json"
   ]
 }

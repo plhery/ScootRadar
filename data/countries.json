@@ -628,11 +628,13 @@
       "anchorNote": "At the Centre of New Zealand, on Botanical Hill above Nelson: on land, halfway between the fleets of Auckland and Dunedin, between the two islands.",
       "featuredCities": ["nz:auk:Auckland", "nz:wgn:Wellington", "nz:can:Christchurch"],
       "credits": {
-        "attribution": "New Zealand: Flamingo GBFS (CC BY 4.0), JOLT GBFS",
+        "attribution": "New Zealand: Flamingo GBFS (CC BY 4.0), JOLT GBFS; Lime authenticated rider map; GeoNames city coordinates, CC BY 4.0",
         "gbfs": ["Flamingo", "JOLT"],
         "links": [
           { "label": "NZ: Flamingo · CC BY 4.0", "href": "https://creativecommons.org/licenses/by/4.0/" },
-          { "label": "NZ: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" }
+          { "label": "NZ: OpenStreetMap boundaries · ODbL", "href": "https://opendatacommons.org/licenses/odbl/" },
+          { "label": "NZ: Lime map", "href": "https://www.li.me/" },
+          { "label": "NZ: GeoNames · CC BY 4.0", "href": "https://www.geonames.org/about.html" }
         ]
       },
       "regions": {
@@ -645,7 +647,8 @@
           { "code": "MWT", "name": "Manawatū-Whanganui" },
           { "code": "OTA", "name": "Otago" },
           { "code": "TKI", "name": "Taranaki" },
-          { "code": "WGN", "name": "Wellington" }
+          { "code": "WGN", "name": "Wellington" },
+          { "code": "WKO", "name": "Waikato" }
         ]
       }
     },

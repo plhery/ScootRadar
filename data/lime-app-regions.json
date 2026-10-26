@@ -2458,6 +2458,106 @@
         "Melbourne",
         "St Kilda"
       ]
+    },
+    {
+      "country": "NZ",
+      "city": "Auckland",
+      "center": [
+        -36.8485,
+        174.7633
+      ],
+      "region": "AUK",
+      "timeZone": "Pacific/Auckland",
+      "regionToken": "GMI2YAGYPWX4P",
+      "serviceAreas": [
+        {
+          "name": "[Auckland][SZ][Auckland Main SZ][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "bd``Fmhci`@iIjXkNv]|AzKt\\jIvUiKlHRpIfHzJpE|NgHj^u]hMmPlMoOrRjCtI_GtFuQpBkOrDoFZaDnBO~BXtGlApIjK`J~DdW`PbOjIl[fr@|[~a@zLcDhKwC~GsAj@kCmAyBs@yDJcE|@kH@wOr@gQLcK}@sMJoLqCiGqFcMqFuK_E}Mf@wHRqF`SjFzEl@QyBcHyTcPc{@qCsLPkv@{D__@gZqYsXe_@fq@eq@fH_MrUkdA|B}FeNeOqJkG}KkP|KoSnJwZwAuJdA{BnEy@VuDeJcJFaDcDyArE_IbK_V~@iF|AiCSaRrA_C}@gTx@}Li@ee@iFqkAx@uI}BwHaC}DeX_QsGsz@g@}Nli@gd@sNye@wHqMxJy@eA{GuHd@}DwEuJm`@_|@xPu@|N_IiAoXyJkMmSeCke@hJiOxEgw@~@iG}AwQeh@rGgg@|Bub@o\\Bm\\qi@gBmLnF{Oq`@_y@dJ{SyYao@nWgXba@yIHoGtn@_L`[xV`OfD|EbKht@GvBDvBf@hDpAnFaLnr@{HtVpEtGiKne@gBLoFlQyCt@`@|GjEbCzAzCt@bDBpECvFIzBk@fFkIbG|AnFhIgIfKs@zPpWgRdTxD`Ps@~uAeDlDUXqlBoxCgoDx}@a`@xaBmwC`nAgXpa@aPdMaCvR|@vDbEvCjFQpD[`GkGjJpJnHvH|_AjeAxSuUbMuPxNuPbQqCjOmCb`Agt@hUjDzeAf_AltApf@yApkA`I~RnUjIlCxPCzKfA~DtInIn@`AfAjOvEzDvD~E`QnIzDbaCzaChcD??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Auckland_9057_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "NZ",
+      "city": "Christchurch",
+      "center": [
+        -43.5309,
+        172.6366
+      ],
+      "region": "CAN",
+      "timeZone": "Pacific/Auckland",
+      "regionToken": "OOUZTULN4VUHO",
+      "serviceAreas": [
+        {
+          "name": "Christchurch SZ Nov 2023[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "nh}hGeho}_@BvCYlH{ApGeBbG_ChEuHnJ_XrQgItRd@rWeDjSd@jC|AxAtLbI]`MsBzH_BpC{A~@_PnFgLdD{PjFuChFw@bQd@nR}EbfBtEjWrI`RaFrKyF`NkL`AgNgAsIxR}O~\\aZfo@kh@xeAyKcNoIvNuVq^kTa_@WeMuCeNcNia@}Rm]cd@u|AqLs[tDsCx@iF{DmZvCkAkEo[iB^kSdGmz@dUk_AzVr@bmAl@f~@nf@q@pk@bEoBrdBGjIp[zHjErlBsaBtINnp@tS~ExIrRfY`x@oG|GxGnu@}]bTmRtX_a@oZgg@w@oApcA[lGgD~o@gYvlA`j@bb@hi@pMpAhAxS~Qn_@`n@lPmStg@~z@oqAj}BwqAqg@cErPpKxAxZbHrb@|l@f`AgcBxKtPtJ}N`_@nRfbB|v@`I{_@v[~MpDbNkAtNyVr`@iSdP}A|IxLfGpJ`CpP`JR`@rc@|UqE`\\hPnHfBpHt\\tBhAm@iA{MfBr@`BE~Ay@tBoDhBnE|EyGyLmFjl@_y@qCeE~Ue\\vd@odAxTeIzWbQfU|Up[}e@~Tg[rAeKhMml@fS}XUeIsEKwCwK_Kob@olAqfAfV}VhNqPYiMoDiF_D}n@{Bui@mA}KePaHiFqJsAgPgFiQ{AmKi@uHeDwLpEiMzBe@hBmCpDiSfPdH~CuNsA}EdGsCpIoHeBcApAoFxGuC|UmMSqAql@|U_PlCuJ_P_IeEuOmGkCy@{@mCkAqD}I_BBgKxHmJZ{NjDcPsJsc@qHoHzFeEbHuJl@wPy@}GyHcVkHsB_H]tDsFjA{CLaEa@aQlE}JnF{Fz@wAH}Ba@}BcBcCG_Dr@gMs@MiCzScGmDyCTmBvAmAfBeI|SsH}GyBkOUwD`@oC`MuTtF_HtByFxCiNjGoj@mLyC{AcIyIuSmBoQl@oPhYgd@rAcPqC{DmJ{B{CeC?yChOuS~]cb@xIgUbA{ZoE{YrQe`@lXki@fL}VeHiJkF_B"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Christchurch_6570_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "NZ",
+      "city": "Hamilton",
+      "center": [
+        -37.78333,
+        175.28333
+      ],
+      "region": "WKO",
+      "timeZone": "Pacific/Auckland",
+      "regionToken": "ZZ5GIEQRWMRII",
+      "serviceAreas": [
+        {
+          "name": "[Hamilton][SZ][Hamilton SZ][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "hdreFuk`m`@yGnXozAyMor@vUiXtg@_j@fS|Gfd@c~Azh@or@iHiHxRcRf|@uWz~@xFbCaHz`@t@zFfERhFdCjEf@|GfD|FqF@pGpFl@Y~Wj\\mR~@nK|C~JjHzKlSdIbOeDrRuMbOuTbJnMdKze@hKpe@~@~FeNb[gLdM}GfNbD~CfKlOzL|XdGeA|J}H|EsG`VsQzDfE~P~PlNtTl]jNfZjEt@qK_IkYyHaHgHq@rVue@`AmDjE_HbJiHrB|EvHoBpGgFnCjHxCiAtLkMl\\tp@jLpC|KiF`JrD~ZhCxHoN~CmAb@iNdEuCDoHh@oH|E^~Al@fEy@hBm@NcCpI}FP}C_CmMbEqDuZa^uQ|C}EiEbFs\\xAuF`UjIpBwMxP~GlU{cAxe@KhZeEpUkGrCw@oHoVxEwBlFxGxGuAcAkQcAeQQyPnDkIhFsMmEyCaB_DuBgB`AyDfG{UgFkIiAiA{GfPu@qBqByEwFsCsLmDoL{M}FlBuI~FcDuZ}DyK`I_HsGeMfG{DgTux@ce@yBvB_CvDaIq@eVjG_DxF}HdD_XxHnHrKNhFaGuAwFmH}DiGyCeCUaCYqInCeGu@yP}H{f@}PuSxYyu@nq@sJ{DsLvJpDbMnAxL"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Hamilton_3198_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "NZ",
+      "city": "Palmerston North",
+      "center": [
+        -40.3564,
+        175.6111
+      ],
+      "region": "MWT",
+      "timeZone": "Pacific/Auckland",
+      "regionToken": "3C3GERNWUUZE4",
+      "serviceAreas": [
+        {
+          "name": "[Palmerston North][SZ][Palmy_ServiceZone_Perm]",
+          "polygon": "f{muF{fsn`@|Eq_B}EeaBtwAqiA_QqiAuh@gg@mbAr{@oLaVmAct@gz@ia@}`@tA}El[gKvI}NmEiV_iA{p@jb@mSe_@{A}[m\\_pAwwA`bAzh@~gBqVzy@rZ~_@dQrw@mRhY~OpYvb@pdArqAltBhTvJhLwDr\\fcAvk@ih@p_AeXvj@fJ?C??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Palmerston_North_160_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "NZ",
+      "city": "Wellington",
+      "center": [
+        -41.2865,
+        174.7762
+      ],
+      "region": "WGN",
+      "timeZone": "Pacific/Auckland",
+      "regionToken": "RUMSPDYO3PALC",
+      "serviceAreas": [
+        {
+          "name": "Wellington Service Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "bm~zFajki`@nJpBvRyHqCjJfD|AzNwHaAqKxLaDdBcMjFeAjHzFtMNyJsX_QgEyLkGOuMsMcGmHeNvOuDlFkLtAo[xLaJGsRkGcKiKrBiH_NkUeXv@eBpBG~Ay@`C?hC[jIR~D|AtD~B~HpGdDkC|DeEzA{PeFoO_LiDa@}BxHsMxBIt@nAlH~A`AoAdGzC^~IzFhClKjI`HK|FdD`H_@|F_Dlf@hHn_@aAvkAtC`UkDvd@aNhm@bHtJipE{JkhBj@o{A}PmY_}@i^oKqf@o_Awa@k]j\\k]xL}nBu\\saA~Za_@dm@`@be@hU`[k@t{Av[lo@zHvHbA|KoFhTnDbUiOhBh@rZs]jEmBoUuEgl@ubB|\\sYeo@iNvUrFtGyExHlClK{BxJq@lWsEfLdIrQnKdv@dFxNx\\fo@nr@dn@`Ubq@qUfZtNfs@rRn[nVMaHlSlH~Q"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Wellington_285_exclude_new_type.json"
+      ]
     }
   ]
 }

@@ -48,9 +48,9 @@ const flamingoVehicle = (id: string, lat: number, lon: number, type = 'flamingo-
 });
 
 describe('New Zealand', () => {
-  it('reads Flamingo in eight towns and JOLT in two, every area by New Zealand\'s clock', () => {
+  it('reads Flamingo in eight towns, JOLT in two and Lime in five, every area by New Zealand\'s clock', () => {
     const nz = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'NZ');
-    expect(nz.map(entry => [entry.id, entry.discoveryUrl])).toEqual([
+    expect(nz.filter(entry => !entry.limeAppMap).map(entry => [entry.id, entry.discoveryUrl])).toEqual([
       ['flamingo_nz_auckland', 'https://data.rideflamingo.com/gbfs/3/auckland/gbfs.json'],
       ['flamingo_nz_christchurch', 'https://data.rideflamingo.com/gbfs/3/christchurch/gbfs.json'],
       ['flamingo_nz_wellington', 'https://data.rideflamingo.com/gbfs/3/wellington/gbfs.json'],
@@ -62,6 +62,9 @@ describe('New Zealand', () => {
       ['jolt_nz_new_plymouth', 'https://prod-api.joltscooters.co.nz/api/gbfs/new_plymouth/gbfs.json'],
       ['jolt_nz_selwyn', 'https://prod-api.joltscooters.co.nz/api/gbfs/selwyn/gbfs.json'],
     ]);
+    // Lime publishes no feed here: its rider map, read in small groups, since 26 October 2026.
+    expect([...new Set(nz.filter(entry => entry.limeAppMap).map(entry => entry.city))])
+      .toEqual(['Auckland', 'Christchurch', 'Hamilton', 'Palmerston North', 'Wellington']);
     // Flamingo's feeds say Etc/UTC, which the app never reads.
     for (const entry of nz) {
       for (const area of serviceAreas(entry)) expect(area.timeZone ?? entry.timeZone, `${entry.id} in ${area.city}`).toBe('Pacific/Auckland');
@@ -71,7 +74,7 @@ describe('New Zealand', () => {
     expect(serviceAreas(system('flamingo_nz_waimakariri')).map(area => area.city)).toEqual(['Rangiora', 'Kaiapoi']);
     expect(REGIONAL_SCOOTER_CITIES.filter(entry => entry.country === 'NZ').map(entry => entry.id)).toEqual([
       'nz:auk:Auckland', 'nz:can:Christchurch', 'nz:wgn:Wellington', 'nz:wgn:Porirua', 'nz:ota:Dunedin', 'nz:bop:Tauranga',
-      'nz:mwt:Palmerston North', 'nz:can:Rangiora', 'nz:can:Kaiapoi', 'nz:tki:New Plymouth', 'nz:can:Rolleston',
+      'nz:mwt:Palmerston North', 'nz:can:Rangiora', 'nz:can:Kaiapoi', 'nz:tki:New Plymouth', 'nz:can:Rolleston', 'nz:wko:Hamilton',
     ]);
     // Its regions say which town is meant, but its totals are the country's and its towns go by their own names.
     expect(COUNTRY_REGIONS.NZ).toMatchObject({ showInCityNames: false, totals: false });

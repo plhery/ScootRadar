@@ -1892,6 +1892,91 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Melbourne_3245_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "NZ",
+      "city": "Auckland",
+      "regionToken": "GMI2YAGYPWX4P",
+      "fingerprint": "f0d1605f047f882038c09c6b9718e2c49cc9de6eae1d262066c7d0281b3e3a8d",
+      "groups": 27,
+      "localCells": 108,
+      "coldMapRequests": 116,
+      "warmMapRequests": 116,
+      "scooters": 1585,
+      "stationaryReferences": 123,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T00:49:16.101Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Auckland_9057_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "NZ",
+      "city": "Christchurch",
+      "regionToken": "OOUZTULN4VUHO",
+      "fingerprint": "b654cf3db160a4c9baf1152ea7b70230913bdfcc851c0e165e884eefacd0443a",
+      "groups": 22,
+      "localCells": 86,
+      "coldMapRequests": 98,
+      "warmMapRequests": 98,
+      "scooters": 1113,
+      "stationaryReferences": 173,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T01:00:56.013Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Christchurch_6570_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "NZ",
+      "city": "Hamilton",
+      "regionToken": "ZZ5GIEQRWMRII",
+      "fingerprint": "67351f326c8a3a9ba7058d138a8bf500ebafa259c47dfcad556e8f77404cc46b",
+      "groups": 12,
+      "localCells": 48,
+      "coldMapRequests": 48,
+      "warmMapRequests": 48,
+      "scooters": 715,
+      "stationaryReferences": 13,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T01:06:46.066Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Hamilton_3198_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "NZ",
+      "city": "Palmerston North",
+      "regionToken": "3C3GERNWUUZE4",
+      "fingerprint": "d2f86160edab41b5318526e2a32bd8c2333e3d2565aab0a36ce95987ffe7fc35",
+      "groups": 7,
+      "localCells": 27,
+      "coldMapRequests": 27,
+      "warmMapRequests": 27,
+      "scooters": 123,
+      "stationaryReferences": 12,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T01:10:08.951Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Palmerston_North_160_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "NZ",
+      "city": "Wellington",
+      "regionToken": "RUMSPDYO3PALC",
+      "fingerprint": "1b3d0882ea1dba43c0c24e7495e6d34227c27e5804aefae09713ebab52bb8201",
+      "groups": 11,
+      "localCells": 42,
+      "coldMapRequests": 46,
+      "warmMapRequests": 46,
+      "scooters": 568,
+      "stationaryReferences": 71,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T01:15:45.128Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Wellington_285_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

@@ -9,10 +9,17 @@ Every feed was polled every five minutes from 19:33 to 21:53 on Thursday 15
 October and from 08:00 to 09:50 on Friday 16 October, New Zealand time, then
 again from 09:59 to 10:58 on the Friday, just before the commit: 63 polls of
 each. Every feed URL is https, on the discovery's origin and under its
-directory. No account credentials or private rider APIs are used. The catalog
+directory. No account credentials or private rider APIs are used for them. The catalog
 is [`new-zealand-scooter-feeds.json`](../data/new-zealand-scooter-feeds.json);
 what is left out, and when to look again, is in
 [Coverage gaps](coverage-gaps.md#no-public-data-in-covered-countries).
+
+Lime's scooters in Auckland, Christchurch, Hamilton, Wellington and Palmerston
+North, about 1,590, 1,110, 720, 570 and 120, were added on 26 October 2026
+from its authenticated rider map, each market whole after a clean full-area
+audit that afternoon; see
+[the Lime guide](lime-app-map.md#every-market-the-map-lists-october-2026).
+The table lists the public feeds.
 
 | Operator | Feed | Town | Available scooters, median poll (lowest–highest) | Rides seen |
 | --- | --- | --- | ---: | ---: |
@@ -198,7 +205,6 @@ the South Island.
 - **Auckland's licences** for Flamingo and Lime expire in November 2026, and
   the council says it holds no new round; the operators may apply again (its
   [e-scooter page](https://www.aucklandcouncil.govt.nz/en/licences-regulations/e-scooter-licences-regulations-auckland.html)).
-  Lime publishes no feed there.
 
 ## Parking
 
@@ -243,10 +249,8 @@ schools and motorways.
   - Woodend and Pegasus, in Flamingo's `waimakariri` feed: about 5 scooters,
     none ridden.
 - **No public feed:** Beam, in Queenstown, Taupō and Whangārei, whose feed
-  host answers 401; Lime, with about 3,000 scooters in Auckland,
-  Christchurch, Hamilton (about 670, the town's whole fleet) and Palmerston
-  North, by Ride Report's averages for the third quarter of 2026. Neuron has
-  left New Zealand.
+  host answers 401. Lime publishes none either; its scooters come from its
+  rider map since 26 October 2026. Neuron has left New Zealand.
 - **Zone curfews** in Wellington, Auckland and Tauranga are not on the map
   (see [Rules](#rules)).
 

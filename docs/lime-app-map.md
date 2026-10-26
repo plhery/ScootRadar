@@ -187,6 +187,7 @@ stationary reference scooter, country by country:
 | 25 October 2026 | Portugal: Porto, Faro, Oeiras | 59 | 16 | 893 | 128 |
 | 26 October 2026 | Japan: Tokyo, Yokohama | 263 | 66 | 2,334 | 23 |
 | 26 October 2026 | Australia: Port Phillip | 18 | 5 | 239 | 16 |
+| 26 October 2026 | New Zealand: Auckland, Christchurch, Hamilton, Wellington, Palmerston North | 311 | 79 | 4,104 | 392 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was
