@@ -2,7 +2,8 @@ import { mkdir, rename, rm } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { discoverCollectableFeeds, independentCollectableFeeds, planRefreshCounts, type CollectableScooterFeed } from '../src/lib/scooterFeeds';
-import { joinCityOverviews, LAST_SEEN_MAX_AGE_MS, refreshedOverview, VEHICLE_MAX_AGE_MS, type FeedSnapshot, type MobilitySnapshot } from '../src/lib/scooterSnapshots';
+import { buildCityOverview, cityOverviewSteps, joinCityOverviews, LAST_SEEN_MAX_AGE_MS, overviewDue, refreshedOverview, VEHICLE_MAX_AGE_MS, type FeedSnapshot,
+  type MobilitySnapshot } from '../src/lib/scooterSnapshots';
 import { REGIONAL_SCOOTER_SYSTEMS, isAppMapSystem, regionalSource } from '../src/lib/regionalScooterSystems';
 import type { MapBounds, Vehicle } from '../src/lib/types';
 import { feedCurfewed, snapshotPaused } from '../src/lib/seasonalPauses';
@@ -20,6 +21,7 @@ import { initErrorReporting, reportError, reportFeedExpired } from './errorRepor
 import { cadenceFromEnv, ownIdleExpiries, RETENTION_CAPS_MS, retained, retentionCaps, withRetentionCaps } from './cadence';
 import { answerZones, createZoneStore } from './zoneStore';
 import { createStrayHold } from './strayHold';
+import { runInSlices } from './inSlices';
 import { dottMapRequests, withDottAppCollectors } from './dottApp';
 import { voiMapRequests, withVoiAppCollectors } from './voiApp';
 import { atomMapRequests, withAtomAppCollectors } from './atomApp';
@@ -129,6 +131,9 @@ const server = createSnapshotServer({ snapshot: () => snapshot,
 // those of the capped feeds. The file keeps the first only.
 let baseOverview: MobilitySnapshot['overview'] | undefined;
 let cappedOverview: MobilitySnapshot['overview'] | undefined;
+// Whether the first are being built again (rebuildBaseOverview), in slices of about this long.
+let baseRebuilding = false;
+const OVERVIEW_SLICE_MS = 20;
 try {
   const persisted = await readSnapshot(snapshotPath);
   if (persisted) {
@@ -154,22 +159,47 @@ function publish() {
 
 /**
  * The city totals, rebuilt in the parts that need it. Those of the feeds without a retention cap take
- * seconds over 935,000 scooters: rebuilt hourly, or when a failed feed recovers, at most every five
- * minutes (overviewNeedsRefresh).
+ * seconds over a million scooters: rebuilt hourly, or when a failed feed recovers, at most every five
+ * minutes (overviewNeedsRefresh), a slice at a time (rebuildBaseOverview); the totals built before
+ * stand meanwhile.
  * Those of the capped feeds, a tenth of a second for some 66,000, are rebuilt as well on the last tick
  * before the oldest data they count passes its cap: two or three times a minute, as one feed or another
  * comes to it. No feed without a cap lists Bird's, Spin's or Bolt's scooters in a country where their
  * own feeds do, so none counts twice.
  */
 function cityOverview(feeds: FeedSnapshot[], now: number): MobilitySnapshot['overview'] {
-  const part = (built: MobilitySnapshot['overview'] | undefined, of: FeedSnapshot[]) =>
-    refreshedOverview(built, of, now, countedAt(now), retentionCap, TICK_MS);
-  const base = part(baseOverview, feeds.filter(feed => retentionCap(feed.id) === undefined));
-  const capped = part(cappedOverview, feeds.filter(feed => retentionCap(feed.id) !== undefined));
+  const baseFeeds = feeds.filter(feed => retentionCap(feed.id) === undefined);
+  // The first totals, with none saved to stand meanwhile, are built at once.
+  const base = baseOverview ?? buildCityOverview(baseFeeds, now, countedAt(now), retentionCap);
+  if (baseOverview && !baseRebuilding && overviewDue(baseOverview, baseFeeds, now, countedAt(now), TICK_MS)) {
+    void rebuildBaseOverview(baseFeeds, now);
+  }
+  const capped = refreshedOverview(cappedOverview, feeds.filter(feed => retentionCap(feed.id) !== undefined), now,
+    countedAt(now), retentionCap, TICK_MS);
   if (snapshot && base === baseOverview && capped === cappedOverview) return snapshot.overview;
   baseOverview = base;
   cappedOverview = capped;
   return joinCityOverviews(base, capped);
+}
+
+// Built whole, the totals of the feeds without a cap held the event loop for 6 to 8 seconds on the
+// server, every five minutes by day on 26 October 2026, and the map's requests waited behind them.
+async function rebuildBaseOverview(feeds: FeedSnapshot[], now: number) {
+  baseRebuilding = true;
+  try {
+    const base = await runInSlices(cityOverviewSteps(feeds, now, countedAt(now), retentionCap), OVERVIEW_SLICE_MS);
+    if (stopping) return;
+    baseOverview = base;
+    if (snapshot && cappedOverview) {
+      snapshot = { ...snapshot, overview: joinCityOverviews(base, cappedOverview) };
+      dirty = true;
+    }
+  } catch (error) {
+    console.error('City totals rebuild failed', error);
+    reportError('overview', error);
+  } finally {
+    baseRebuilding = false;
+  }
 }
 
 /** Drops the capped feeds' data that would pass its cap before the next tick: whether it dropped any. */

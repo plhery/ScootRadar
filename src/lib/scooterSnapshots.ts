@@ -277,6 +277,19 @@ function townOf<T extends OverviewTown>(vehicle: Vehicle, towns: T[], own: Set<s
 export function buildCityOverview(feeds: FeedSnapshot[], now: number,
   counts: (feed: FeedSnapshot) => boolean = feed => showsPositions(feed, now),
   retention?: (feedId: string) => number | undefined): MobilitySnapshot['overview'] {
+  const steps = cityOverviewSteps(feeds, now, counts, retention);
+  for (;;) {
+    const step = steps.next();
+    if (step.done) return step.value;
+  }
+}
+
+/**
+ * buildCityOverview a step at a time: a town's sources, then a feed's scooters. Over a million
+ * scooters the whole build takes seconds, which the cache spends between steps on the map's requests.
+ */
+export function* cityOverviewSteps(feeds: FeedSnapshot[], now: number, counts: (feed: FeedSnapshot) => boolean,
+  retention?: (feedId: string) => number | undefined): Generator<void, MobilitySnapshot['overview']> {
   const totals = new Map<string, CityTotals>();
   for (const city of [...regionalCities, ...SWISS_SCOOTER_AREAS]) {
     const country = regionalCities.find(candidate => candidate.id === city.id)?.country;
@@ -285,6 +298,7 @@ export function buildCityOverview(feeds: FeedSnapshot[], now: number,
     const health = healthFor(relevant, now, counts);
     totals.set(city.id, { id: city.id, city: city.city, lat: city.center[0], lng: city.center[1],
       batteries: {}, sources: health.sources, failedSources: health.failedSources });
+    yield;
   }
   const seen = new Set<string>();
   let keepUntil = Infinity;
@@ -304,6 +318,7 @@ export function buildCityOverview(feeds: FeedSnapshot[], now: number,
       const bins = total.batteries[vehicle.provider] ??= Array<number>(102).fill(0);
       bins[vehicle.battery ?? 101]++;
     }
+    yield;
   }
   return { generatedAt: now, feedIds: feeds.map(feed => feed.id), cities: [...totals.values()].sort((a, b) => a.id.localeCompare(b.id)),
     ...(keepUntil < Infinity ? { keepUntil } : {}) };
@@ -315,8 +330,13 @@ export function buildCityOverview(feeds: FeedSnapshot[], now: number,
  */
 export function refreshedOverview(built: MobilitySnapshot['overview'] | undefined, feeds: FeedSnapshot[], now: number,
   counts: (feed: FeedSnapshot) => boolean, retention: (feedId: string) => number | undefined, aheadMs: number): MobilitySnapshot['overview'] {
-  return built && !overviewNeedsRefresh({ overview: built }, feeds, now, counts) && (built.keepUntil ?? Infinity) > now + aheadMs
-    ? built : buildCityOverview(feeds, now, counts, retention);
+  return built && !overviewDue(built, feeds, now, counts, aheadMs) ? built : buildCityOverview(feeds, now, counts, retention);
+}
+
+/** Whether the city totals `built` need building again, as refreshedOverview decides. */
+export function overviewDue(built: MobilitySnapshot['overview'], feeds: FeedSnapshot[], now: number,
+  counts: (feed: FeedSnapshot) => boolean, aheadMs: number): boolean {
+  return overviewNeedsRefresh({ overview: built }, feeds, now, counts) || (built.keepUntil ?? Infinity) <= now + aheadMs;
 }
 
 /** A source's state over two cities, or two sets of feeds, from each one's: as healthFor would give it over both. */
