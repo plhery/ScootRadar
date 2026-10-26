@@ -98,7 +98,10 @@ describe('BinBin map client', () => {
       .mockResolvedValueOnce(new Response('{}', { status: 403 }))
       .mockResolvedValueOnce(new Response('x'.repeat(70_000)));
     const client = new BinbinClient({ fetch, now: () => now, intervalMs: 0 });
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
     await expect(client.nearest(39.77, 30.52)).rejects.toThrow('BinBin map HTTP 429');
+    expect(JSON.parse(String(warn.mock.calls[0][0]))).toEqual({ event: 'binbin_rate_limited', retryAfter: '120', blockedSeconds: 120 });
+    warn.mockRestore();
     await expect(client.nearest(39.77, 30.52)).rejects.toThrow('temporarily rate limited');
     expect(fetch).toHaveBeenCalledTimes(1);
     now += 121_000;
@@ -108,6 +111,14 @@ describe('BinBin map client', () => {
     expect(forbidden).toMatchObject({ message: 'BinBin map HTTP 403' });
     expect(forbidden).not.toHaveProperty('transient');
     await expect(client.nearest(39.77, 30.52)).rejects.toThrow('exceeds the size limit');
+  });
+
+  it('holds its first request after a start, while the cache it replaces may still be sweeping', async () => {
+    let sentAt = 0;
+    const fetch = vi.fn<typeof globalThis.fetch>(async () => { sentAt = Date.now(); return Response.json({ status: 'SUCCESS', data: [] }); });
+    const started = Date.now();
+    await new BinbinClient({ fetch, intervalMs: 0, startHoldMs: 200 }).nearest(39.77, 30.52);
+    expect(sentAt - started).toBeGreaterThanOrEqual(190);
   });
 });
 

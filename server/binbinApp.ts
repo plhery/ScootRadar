@@ -16,6 +16,13 @@ export const BINBIN_PAGE = 10;
  */
 export const BINBIN_REACH_M = 15_000;
 const RETRY_MS = 60_000;
+/**
+ * A deploy runs the new cache beside the old one, for up to 90 seconds over the 55 deploys of 23
+ * to 26 October 2026, each client at its own four requests a second. On 26 October BinBin answered
+ * 429 80 seconds into one, as both swept, and refused the server for about an hour. A starting
+ * cache sends its first BinBin request after this, once the old one has stopped, as ATOM's does.
+ */
+export const BINBIN_START_HOLD_MS = 120_000;
 /** An area nobody looks at is swept every two hours: a round of all 13 takes thousands of requests. */
 export const BINBIN_IDLE_INTERVAL_MS = APP_MAP_IDLE_INTERVAL_MS;
 export const binbinMapRequests = { status: 0, metadata: 0 };
@@ -23,7 +30,7 @@ export const binbinMapRequests = { status: 0, metadata: 0 };
 export interface BinbinScooter { id: string; lat: number; lng: number; battery: number | null }
 /** A reply, and how far from its point it lists every scooter: its whole radius, or up to its tenth. */
 export interface BinbinReply { scooters: BinbinScooter[]; completeM: number }
-interface ClientOptions { fetch?: typeof fetch; now?: () => number; intervalMs?: number; timeoutMs?: number }
+interface ClientOptions { fetch?: typeof fetch; now?: () => number; intervalMs?: number; timeoutMs?: number; startHoldMs?: number }
 const object = (value: unknown): Record<string, unknown> | undefined =>
   value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
 const finite = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value);
@@ -73,7 +80,7 @@ export class BinbinClient {
   constructor(options: ClientOptions = {}) {
     this.fetch = options.fetch ?? fetch;
     this.now = options.now ?? Date.now;
-    this.pace = new Pacer(options.intervalMs ?? 250, this.now);
+    this.pace = new Pacer(options.intervalMs ?? 250, this.now, this.now() + (options.startHoldMs ?? 0));
     this.timeoutMs = options.timeoutMs ?? 15_000;
   }
 
@@ -94,6 +101,9 @@ export class BinbinClient {
       const retry = response.headers.get('retry-after');
       const milliseconds = retry && /^\d+$/.test(retry) ? Number(retry) * 1000 : retry ? Date.parse(retry) - this.now() : RETRY_MS;
       this.blockedUntil = this.now() + Math.max(RETRY_MS, Math.min(3_600_000, milliseconds || RETRY_MS));
+      // What BinBin asked, which only the failed feeds' state showed on 26 October 2026.
+      console.warn(JSON.stringify({ event: 'binbin_rate_limited', retryAfter: retry?.slice(0, 40) ?? null,
+        blockedSeconds: Math.round((this.blockedUntil - this.now()) / 1000) }));
     }
     if (!response.ok) {
       await response.body?.cancel();
@@ -509,9 +519,10 @@ export async function collectBinbinArea(system: RegionalScooterSystem, previous:
   return { observedAt: sweep.startedAt, stale: false, vehicles: published(sweep.scooters) };
 }
 
-const client = new BinbinClient();
-/** A sweep from nothing known, as scripts/check-french-feeds.mjs makes. */
-export const collectBinbinRegion = (system: RegionalScooterSystem) => collectBinbinArea(system, [], client);
+const client = new BinbinClient({ startHoldMs: BINBIN_START_HOLD_MS });
+let scriptClient: BinbinClient | undefined;
+/** A sweep from nothing known, as scripts/check-french-feeds.mjs makes: it replaces no cache, so it waits for none. */
+export const collectBinbinRegion = (system: RegionalScooterSystem) => collectBinbinArea(system, [], scriptClient ??= new BinbinClient());
 /** Each area's sweep is planned from the positions the cache last published for it. */
 export function withBinbinAppCollectors(feeds: CollectableScooterFeed[], systems: readonly RegionalScooterSystem[],
   previous: PreviousPositions, api: Pick<BinbinClient, 'nearest'> = client) {

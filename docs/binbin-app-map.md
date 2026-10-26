@@ -108,7 +108,19 @@ Three taking from one queue would ask a cell's four quarters at once, before
 any reply could spare the others: in simulation, they asked half as many
 times again. The scheduler runs at most two sweeps on BinBin's host at a time. A timeout, a 5xx or a reply cut off is asked again
 after 3 s, then 6 s; a third failure fails the sweep. HTTP 429 stops every
-BinBin request for its `Retry-After`, a minute at least and an hour at most.
+BinBin request for its `Retry-After`, a minute at least and an hour at most,
+and logs `binbin_rate_limited` with the header as BinBin sent it.
+
+A deploy runs the new cache beside the old one, for up to 90 seconds over
+the 55 deploys of 23 to 26 October 2026, and each paces only its own
+requests. On 26 October, 80 seconds into the 06:22 UTC deploy, with both
+sweeping at four a second, BinBin answered 429 and refused the server for
+about an hour: eight areas expired, and came back from 07:27 to 07:36. Two
+overlaps on 25 October, with both sweeping at that pace for about a minute,
+had passed, so BinBin's limit lies near it. A starting cache now sends its first
+BinBin request two minutes after it starts (`BINBIN_START_HOLD_MS`), once the
+old one has stopped, as ATOM's does. The catalog check's sweeps do not wait.
+
 A sweep that needs over 3,000 requests or 20 minutes fails. A failed sweep
 publishes nothing, so the cache keeps the area's last sweep, under the usual
 expiry rules, and the next plans from what it saw. An idle area's failed
