@@ -701,8 +701,10 @@ Lime's map bore out on 26 October.
 - **Dallas:** "Units may only be available to users to start a ride from
   5:00 am to 8:45 pm daily. All rides must end by 9:00 pm." The rules took
   effect on 28 April 2026, and the city's program page says the same. They
-  let the city trial one more hour for 30 days in a permit cycle; none was
-  announced.
+  let the city trial one more hour for 30 days in a permit cycle: it ran one
+  for the World Cup, 15 June to 15 July 2026, rides from 5:00 to 22:00 and
+  none starting after 21:45 ([City memo](https://dallascityhall.com/government/citymanager/Documents/FY25-26%20Memos/Dockless%20Vehicle%20Program%20FIFA%20World%20Cup%20Provisions.pdf),
+  12 June 2026), then went back to 21:00. The map keeps the usual window.
 - **Lincoln:** the city's page: "E-scooters are allowed to operate from 6
   a.m. to 11 p.m., seven days a week. Users will not be able to start any
   trips outside of that operating window." And: "E-scooters will not be
@@ -722,8 +724,8 @@ Lime's map bore out on 26 October.
 - **Richmond:** the ordinance moved the end of the day from 21:00 to 01:00 in
   February 2023: devices "are only operated from 5:00 a.m. to 1:00 a.m."
   It took force on adoption, and the city's Legistar holds no later
-  ordinance on the section. Municode's online code and the city's e-scooter
-  FAQ still give the old 05:00–21:00.
+  ordinance on the section. The city's e-scooter FAQ still gives the old
+  05:00–21:00.
 - **Nashville:** "Operation of SUMDs is prohibited after midnight and before
   5:00 am, except for bicycles and electric bicycles", across Metro
   Nashville-Davidson County. The commission's rules were filed with the
