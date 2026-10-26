@@ -231,6 +231,7 @@ import luebeckDe from './de/e-scooter-luebeck';
 import oberhausenDe from './de/e-scooter-oberhausen';
 import neussDe from './de/e-scooter-neuss';
 import muelheimDe from './de/e-scooter-muelheim';
+import linzDe from './de/e-scooter-linz';
 
 export const GUIDES: readonly Guide[] = [
   swissRulesEn,
@@ -462,4 +463,5 @@ export const GUIDES: readonly Guide[] = [
   oberhausenDe,
   neussDe,
   muelheimDe,
+  linzDe,
 ];
