@@ -210,11 +210,12 @@ describe('searchCoveredCities', () => {
     }
     // Swiss cities take their place among them by name.
     expect(names('St')).toEqual([
-      'St. Albert, AB, Canada', 'St. Gallen, Switzerland', 'St. George, UT, United States', 'St. Louis, MO, United States', 'St. Paul, MN, United States',
+      'St. Albert, AB, Canada', 'St. Gallen, Switzerland', 'St. George, UT, United States', 'St. Louis Park, MN, United States',
+      'St. Louis, MO, United States',
     ]);
     expect(searchRegionalScooterCities('St').map(city => city.display_name)).toEqual([
-      'St. Albert, AB, Canada', 'St. George, UT, United States', 'St. Louis, MO, United States', 'St. Paul, MN, United States',
-      'St. Petersburg, FL, United States',
+      'St. Albert, AB, Canada', 'St. George, UT, United States', 'St. Louis Park, MN, United States', 'St. Louis, MO, United States',
+      'St. Paul, MN, United States',
     ]);
   });
 

@@ -3164,6 +3164,221 @@
         "lngStep": 0.01614706432209462,
         "cells": "0-1,4-7,19-27,38-47,57-67,76-92,97-111,117-130,136-149,155-168,174-187,192-207,211-226,230-246,250-265,269-284,288-302,307-315,326-334,345-353,364-372,383-391,402-410,421-429,441-447"
       }
+    },
+    {
+      "id": "lime_us_app_dallas",
+      "provider": "lime",
+      "city": "Dallas",
+      "region": "TX",
+      "center": [
+        32.7767,
+        -96.797
+      ],
+      "timeZone": "America/Chicago",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "7QNI2ZXWSQMZC",
+      "limeMapGrid": {
+        "south": 32.61333,
+        "west": -97.00054,
+        "north": 33.01668,
+        "east": -96.55526,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01599695507633094,
+        "cells": "0-3,14-16,28-31,35-39,41-44,49-50,56-59,62-73,77-82,84-88,90-101,104-110,112-195,197-218,224-246,252-274,284-302,312-330,340-357,369-384,397-412,425-441,454-470,481-498,508-525,536-552,564-579,593-607,621-634,653-662,683-687,711-714,738-742,763-771,791-799,820-825"
+      }
+    },
+    {
+      "id": "lime_us_app_jacksonville",
+      "provider": "lime",
+      "city": "Jacksonville",
+      "region": "FL",
+      "center": [
+        30.33218,
+        -81.65565
+      ],
+      "timeZone": "America/New_York",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "ZSCTTJIG63I7F",
+      "limeMapGrid": {
+        "south": 30.31092,
+        "west": -81.68146,
+        "north": 30.33945,
+        "east": -81.62195,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.015608337018882147,
+        "cells": "0-9"
+      }
+    },
+    {
+      "id": "lime_us_app_minneapolis",
+      "provider": "lime",
+      "city": "Minneapolis",
+      "region": "MN",
+      "center": [
+        44.9778,
+        -93.265
+      ],
+      "timeZone": "America/Chicago",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "ILAIS5BHM2ILY",
+      "limeMapGrid": {
+        "south": 44.89071,
+        "west": -93.3291,
+        "north": 45.05125,
+        "east": -93.19433,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019019812598402422,
+        "cells": "0-6,8-22,24-30,32-38,40-46,48-54,56-62,64-70,72-77,80-85,88-90"
+      }
+    },
+    {
+      "id": "lime_us_app_montgomery_county",
+      "provider": "lime",
+      "city": "Montgomery County",
+      "region": "MD",
+      "center": [
+        39.084,
+        -77.15276
+      ],
+      "aliases": [
+        "Rockville",
+        "Silver Spring",
+        "Bethesda"
+      ],
+      "timeZone": "America/New_York",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "5GNLPJDTKYL45",
+      "limeMapGrid": {
+        "south": 38.97489,
+        "west": -77.253,
+        "north": 39.19835,
+        "east": -76.98804,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.017332508001133354,
+        "cells": "10-14,26-31,36-39,42-47,52-63,68-78,83-94,98-110,112-125,128-141,144-156,160-171,176-185,192-199,208-214,225-229,241-245,258-261"
+      }
+    },
+    {
+      "id": "lime_us_app_nashville",
+      "provider": "lime",
+      "city": "Nashville",
+      "region": "TN",
+      "center": [
+        36.1627,
+        -86.7816
+      ],
+      "timeZone": "America/Chicago",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "L6NMOZ57PFSJS",
+      "limeMapGrid": {
+        "south": 36.08046,
+        "west": -86.86993,
+        "north": 36.22738,
+        "east": -86.67904,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.01667263230906204,
+        "cells": "4-9,14-22,24-34,36-118,122-130"
+      }
+    },
+    {
+      "id": "lime_us_app_omaha",
+      "provider": "lime",
+      "city": "Omaha",
+      "region": "NE",
+      "center": [
+        41.25626,
+        -95.94043
+      ],
+      "timeZone": "America/Chicago",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "32NCII4B4VAHY",
+      "limeMapGrid": {
+        "south": 41.19043,
+        "west": -96.2677,
+        "north": 41.39292,
+        "east": -95.77974,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.017905942119331116,
+        "cells": "3-19,30-47,58-75,86-108,112-137,140-166,168-223,228-246,258-273,286,291-298,319-325,347-348,352-354,374-376,380-381,403-404,431-432"
+      }
+    },
+    {
+      "id": "lime_us_app_richmond",
+      "provider": "lime",
+      "city": "Richmond",
+      "region": "VA",
+      "center": [
+        37.5407,
+        -77.436
+      ],
+      "timeZone": "America/New_York",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "SMA7LAU2GTRFX",
+      "limeMapGrid": {
+        "south": 37.45549,
+        "west": -77.60135,
+        "north": 37.60824,
+        "east": -77.39569,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.016974333637649316,
+        "cells": "5-6,8-10,17-23,30-35,42-49,55-63,68-76,78-102,104-114,119-127,132-140,149-151"
+      }
+    },
+    {
+      "id": "lime_us_app_st_louis_park",
+      "provider": "lime",
+      "city": "St. Louis Park",
+      "region": "MN",
+      "center": [
+        44.9483,
+        -93.34801
+      ],
+      "aliases": [
+        "Saint Louis Park"
+      ],
+      "timeZone": "America/Chicago",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "ILAIS5BHM2ILY",
+      "limeMapGrid": {
+        "south": 44.90612,
+        "west": -93.42953,
+        "north": 44.97862,
+        "east": -93.32895,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019024910652473512,
+        "cells": "0-1,6-31"
+      }
+    },
+    {
+      "id": "lime_us_app_st_paul",
+      "provider": "lime",
+      "city": "St. Paul",
+      "region": "MN",
+      "center": [
+        44.9537,
+        -93.09
+      ],
+      "timeZone": "America/Chicago",
+      "discoveryUrl": "https://web-production.lime.bike/api/rider/v2/map/bike_pins",
+      "limeAppMap": true,
+      "limeAppRegion": "RWCCMYTDD3ZVN",
+      "limeMapGrid": {
+        "south": 44.88743,
+        "west": -93.20736,
+        "north": 44.99903,
+        "east": -93.00432,
+        "latStep": 0.013474667624865252,
+        "lngStep": 0.019018728013915482,
+        "cells": "0-3,8-14,19-90"
+      }
     }
   ],
   "limeVerifiedOn": "2026-10-24",
@@ -3187,6 +3402,14 @@
     "https://assets.lime.bike/zones_attributes/Boise_2701_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Boulder_1150_exclude_new_type.json",
     "https://assets.lime.bike/zones_attributes/Phoenix_740_exclude_new_type.json",
-    "https://assets.lime.bike/zones_attributes/Salt_Lake_City_6050_exclude_new_type.json"
+    "https://assets.lime.bike/zones_attributes/Salt_Lake_City_6050_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Dallas_2912_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Jacksonville,_FL_1516_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Minneapolis,_MN_2518_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Montgomery_County_68618_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Nashville_4466_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Omaha_591_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/Richmond,_VA_1800_exclude_new_type.json",
+    "https://assets.lime.bike/zones_attributes/St._Paul,_MN_1829_exclude_new_type.json"
   ]
 }

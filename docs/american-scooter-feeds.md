@@ -14,12 +14,12 @@ other account credentials are used. The catalog is
 [`american-scooter-feeds.json`](../data/american-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
-The map covers 104 towns in 33 states and the District: Washington, DC
-(Hopp, Veo and Lime), 24 towns of Bird's, 41 of Lime's (24 from its rider
+The map covers 108 towns in 33 states and the District: Washington, DC
+(Hopp, Veo and Lime), 24 towns of Bird's, 50 of Lime's (33 from its rider
 map), 39 more of Veo's, 29 of Spin's, Lyft's Chicago and Portland, and GCOO's
-Los Angeles, Arlington and Alexandria, Virginia. In 29 of them, from Tempe and
+Los Angeles, Arlington and Alexandria, Virginia. In 32 of them, from Tempe and
 the Bronx to Chicago and Columbus, two or three operators run, and the map
-counts their scooters as one town's. Twelve of the towns ban renting at
+counts their scooters as one town's. Thirteen of the towns ban renting at
 night; see [Night bans](#night-bans). South Lake Tahoe's fleet goes away for
 the winter; see [Lime supplement](#lime-supplement--26-october-2026).
 
@@ -70,6 +70,20 @@ Lime's Charleston region held no scooter: Lime runs an e-bike programme there
 with MUSC Health. Nor did Grand Rapids', where the city made Veo its only
 shared scooter and bike operator from 1 September 2026. See
 [the Lime guide](lime-app-map.md#every-market-the-map-lists-october-2026).
+
+In the morning of 26 October, local time: Dallas (1,686, beside Bird's),
+Minneapolis (1,543, beside Spin's), St. Paul (901, beside Spin's), Nashville
+(738, beside Bird's and Spin's), Omaha (677), Montgomery County, Maryland
+(213, in Silver Spring, Bethesda and Rockville), Jacksonville (212,
+downtown), Richmond (112, beside Bird's and Spin's) and St. Louis Park (42).
+The bans already held in Dallas, Minneapolis, Nashville and Richmond now
+stop Lime's scooters there too, and Jacksonville's downtown program rents
+them only from 05:00 to midnight, so the map holds a night ban there (see
+[Night bans](#night-bans)). Omaha's and Montgomery County's hours are
+unconfirmed, so the map holds none. Lime's region in Montgomery County meets
+Washington's at the District line; a scooter of Lime's Washington fleet,
+just over the line in Silver Spring, can show in both, as Lime's public
+Washington feed reaches 39.0046° N.
 
 ## Washington, DC
 
@@ -625,7 +639,7 @@ of Bird's 284 stood there, nor any of Lime's 495.
 
 ## Night bans
 
-Twelve covered towns ban renting at night, by ordinance, in the rules of
+Thirteen covered towns ban renting at night, by ordinance, in the rules of
 their permits or on the city's own program page. While a ban holds, the dock
 tells of it, with a moon, for the town in view, and a scooter's card says
 when it can be rented again. Web and iOS read the same
@@ -635,10 +649,10 @@ from TIGERweb (public domain), East Lansing's without Michigan State's campus
 from OpenStreetMap (ODbL), simplified to within 100 m by
 `scripts/update-curfew-areas.mjs`. Hours are the town's own. Each ban rests
 on the city's own rule, in force and read again on 15 October 2026,
-Cincinnati's and East Lansing's on 26 October; none rests on news or an
-operator's notice. St. Petersburg publishes no rule with its hours: its ban
-rests on the city's own report of its program's hours, which Lime's map bore
-out on 26 October.
+Cincinnati's, East Lansing's and Jacksonville's on 26 October; none rests
+on news or an operator's notice. St. Petersburg publishes no rule with its
+hours: its ban rests on the city's own report of its program's hours, which
+Lime's map bore out on 26 October.
 
 | Town | Nights | Source |
 | --- | --- | --- |
@@ -654,6 +668,7 @@ out on 26 October.
 | Cincinnati, OH | Every night, 23:00–06:00 | [Electric Scooters](https://www.cincinnati-oh.gov/dote/dote-projects/electric-scooters/), Department of Transportation & Engineering |
 | East Lansing, MI | Every night, 03:00–06:00, outside Michigan State's campus | [City Code § 8-610(13)](https://library.municode.com/mi/east_lansing/codes/code_of_ordinances?nodeId=PTIIICOOR_CH8BU_ARTXELSKCO) |
 | St. Petersburg, FL | Every night, 02:00–05:00 | [Scooter Share program report](https://cms5.revize.com/revize/stpete/2025-05-08%20HLUT%20Agenda%20Packet.pdf), Housing, Land Use and Transportation Committee, 8 May 2025 |
+| Jacksonville, FL | Every night, 00:00–05:00 | [Dockless Mobility Program](https://dia.jacksonville.gov/resources/dockless-mobility-program), Downtown Investment Authority |
 
 - A night is named after its evening: Friday's runs into Saturday morning.
 - **Dallas:** "Units may only be available to users to start a ride from
@@ -746,6 +761,14 @@ out on 26 October.
   gives no hours. Lime's map bore the report out on 26 October 2026: its 585
   scooters there, listed until 02:22 EDT, were gone at 02:24, the map was
   still empty at 03:32 and 04:32, and they were back by 05:08.
+- **Jacksonville:** the Downtown Investment Authority's program page, under
+  "Program Rules of Operation": "Hours of operation: 5 a.m. - midnight".
+  The program runs only downtown, with Bird and Lime, and Lime's zone is
+  downtown's. The page was read in its copy of 17 May 2026 in the Internet
+  Archive, as the city's site refuses connections from Europe; the
+  authority's release of 7 March 2023, which made the pilot's rules
+  permanent, gives the same hours. The ban's area is the city's, which
+  takes in the zone.
 
 Spin and Veo keep listing scooters as available through a ban, Gainesville's
 too, so only rides stopping can show one in their feeds.
@@ -818,6 +841,19 @@ Rules that read like bans but are not, or that no primary source confirms:
   force today repeats either, and the city's
   [Veo page](https://toledo.oh.gov/residents/community/veo-scooters) gives
   no hours.
+- **Omaha:** Park Omaha's scooter page, run by the city's Parking and
+  Mobility Division, gave "Scooter Operating Hours: 5:00 a.m. - 10:30 p.m."
+  in its copy of 18 January 2025 in the Internet Archive, as news did in
+  2019 and 2020. Every copy since, and the live page from Europe, answers
+  403, and the city's agreements with Lime aren't published, so whether the
+  hours hold in 2026 is unconfirmed. Left out until Lime's map is read there
+  after 22:30.
+- **Montgomery County, MD:** the 2019 pilot's sample agreement kept riders
+  from starting a trip "before 5 a.m. or after 10 p.m.", and a council staff
+  memo of 20 July 2022 still lists "Hours of operation 5 am -10 pm". The
+  county's [program page](https://www.montgomerycountymd.gov/dot-dir/commuter/bikesharingCSS.html)
+  sets no hours and names no operator, and the agreement in force isn't
+  published. Left out: unconfirmed.
 - **Baltimore:** the Director's regulations, effective 18 June 2025, set no
   hours. A 23:00–04:00 window in summaries of the 2019 rules isn't in them.
 - **Louisville:** only scooters without working lights stop after dark.

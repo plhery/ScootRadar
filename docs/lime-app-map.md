@@ -177,7 +177,11 @@ afternoon of 26 October 2026, Gulf time.
 - No public Lime scooter lies inside the markets' polygons: Lime's public
   feeds in Tempe (805 scooters), New York (5,171), Lisbon (2,737),
   Frankfurt (3,630), Wuppertal (947) and MobiData BW's, outside Stuttgart's
-  zone, were checked against them.
+  zone, were checked against them. One edge is shared: Montgomery County's
+  region meets Washington's at the District line, and Lime's public
+  Washington feed reaches 39.0046° N, so a scooter of its Washington fleet
+  parked just over the line, as one was in Silver Spring, 53 m north of it,
+  shows in both.
 
 Each market is registered once its full-area audit, as above, finds every
 stationary reference scooter, country by country:
@@ -208,6 +212,7 @@ stationary reference scooter, country by country:
 | 26 October 2026 | United States: Salt Lake City, Boise, Phoenix, Boulder, Scottsdale, Arvada | 766 | 194 | 5,532 | 475 |
 | 26 October 2026 | Israel: Ashdod, Eilat | 45 | 12 | 711 | 146 |
 | 26 October 2026 | United Arab Emirates: Dubai, Abu Dhabi, Al Ain | 266 | 67 | 2,589 | 69 |
+| 26 October 2026 | United States: Dallas, Minneapolis, St. Paul, Nashville, Omaha, Montgomery County, Jacksonville, Richmond, St. Louis Park | 1,318 | 333 | 6,124 | 319 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

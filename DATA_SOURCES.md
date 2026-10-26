@@ -890,9 +890,9 @@ map's credits name all six under the GBFS line.
 Since 24 October 2026, GCOO's fleets in Los Angeles, Alexandria and Arlington
 come from its app's signed-out map, read as in South Korea (below). GCOO
 publishes no licence for it; the credits link to gcoo.io. Since 26 October
-2026, Lime's scooters in 24 towns where it publishes no feed, from Los Angeles
-and Phoenix to Tampa and Raleigh, come from its rider map, signed in, as in
-Europe (see [the Lime catalog](docs/lime-app-map.md)). Twelve towns ban renting at
+2026, Lime's scooters in 33 towns where it publishes no feed, from Los Angeles
+and Dallas to Minneapolis and Tampa, come from its rider map, signed in, as in
+Europe (see [the Lime catalog](docs/lime-app-map.md)). Thirteen towns ban renting at
 night, by their codes, permit rules or program pages, and South Lake Tahoe's
 code takes shared scooters off its streets from 1 November through 30 April,
 so the map pauses Lime's market there until 1 May. See the

@@ -2606,6 +2606,159 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Dubai_500_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Dallas",
+      "regionToken": "7QNI2ZXWSQMZC",
+      "fingerprint": "f47c6f80a002bc4b71c9013da44b31a58d905684cce4e44e49278589787875b6",
+      "groups": 122,
+      "localCells": 488,
+      "coldMapRequests": 492,
+      "warmMapRequests": 492,
+      "scooters": 1686,
+      "stationaryReferences": 66,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T12:34:20.557Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Dallas_2912_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Jacksonville",
+      "regionToken": "ZSCTTJIG63I7F",
+      "fingerprint": "cb345ab2ddc42df9c23ddc95d492ed53553a06a09c5e5cf683401483b4b84b89",
+      "groups": 3,
+      "localCells": 10,
+      "coldMapRequests": 10,
+      "warmMapRequests": 10,
+      "scooters": 212,
+      "stationaryReferences": 35,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T12:35:44.570Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Jacksonville,_FL_1516_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Minneapolis",
+      "regionToken": "ILAIS5BHM2ILY",
+      "fingerprint": "c7e93333a42ef57cda319b856878c66407ec5462bcfaa26b563baf2e85dd5744",
+      "groups": 20,
+      "localCells": 79,
+      "coldMapRequests": 87,
+      "warmMapRequests": 87,
+      "scooters": 1543,
+      "stationaryReferences": 18,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T12:46:07.602Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Minneapolis,_MN_2518_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Montgomery County",
+      "regionToken": "5GNLPJDTKYL45",
+      "fingerprint": "2d341aea1683f4b78d085308ae1f16d45f5e4c6ec9698e98b7f11afbfbe47aa9",
+      "groups": 41,
+      "localCells": 161,
+      "coldMapRequests": 161,
+      "warmMapRequests": 161,
+      "scooters": 213,
+      "stationaryReferences": 2,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T13:05:08.401Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Montgomery_County_68618_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Nashville",
+      "regionToken": "L6NMOZ57PFSJS",
+      "fingerprint": "1cdec550f5e3fb1336e93c9d761306b1ed059467da53fe610eb0a268f4d96621",
+      "groups": 30,
+      "localCells": 118,
+      "coldMapRequests": 122,
+      "warmMapRequests": 122,
+      "scooters": 738,
+      "stationaryReferences": 99,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T13:19:36.592Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Nashville_4466_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Omaha",
+      "regionToken": "32NCII4B4VAHY",
+      "fingerprint": "70b4d127dae7647a75cdc3f3b545992a410508672fff686dae01caa935e9b7be",
+      "groups": 63,
+      "localCells": 250,
+      "coldMapRequests": 258,
+      "warmMapRequests": 258,
+      "scooters": 677,
+      "stationaryReferences": 74,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T13:49:56.507Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Omaha_591_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Richmond",
+      "regionToken": "SMA7LAU2GTRFX",
+      "fingerprint": "a5c66d95e436948ec32bd830ec003c6ab0542c744a44e2e227c2cbba35f7a62c",
+      "groups": 26,
+      "localCells": 101,
+      "coldMapRequests": 101,
+      "warmMapRequests": 101,
+      "scooters": 112,
+      "stationaryReferences": 2,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T14:01:57.548Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Richmond,_VA_1800_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "St. Louis Park",
+      "regionToken": "ILAIS5BHM2ILY",
+      "fingerprint": "750f11e7b426d540df9424fe49016d13ed99d69d9c308f5455134a1f40cec722",
+      "groups": 7,
+      "localCells": 28,
+      "coldMapRequests": 28,
+      "warmMapRequests": 28,
+      "scooters": 42,
+      "stationaryReferences": 1,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T14:05:27.374Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Minneapolis,_MN_2518_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "St. Paul",
+      "regionToken": "RWCCMYTDD3ZVN",
+      "fingerprint": "519d2fc4fe28a3df2c67622353a71fa268dc6318c6087c21fa4f92380d2e65a4",
+      "groups": 21,
+      "localCells": 83,
+      "coldMapRequests": 83,
+      "warmMapRequests": 83,
+      "scooters": 901,
+      "stationaryReferences": 22,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T14:15:22.515Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/St._Paul,_MN_1829_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

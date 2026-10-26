@@ -51,14 +51,16 @@ describe('the United States', () => {
   it('reads Lime\'s rider map where Lime publishes no feed, each market under the town the map lists', () => {
     // Lime's towns with no public feed: its rider map, read in small groups, since 26 October 2026.
     const lime = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'US' && entry.limeAppMap);
-    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Arvada', 'Boise', 'Boulder', 'Cincinnati', 'Fairfax',
-      'Indianapolis', 'Isla Vista', 'Lansing', 'Los Angeles', 'Orlando', 'Phoenix', 'Portland', 'Raleigh', 'Sacramento', 'Salt Lake City',
-      'Scottsdale', 'South Lake Tahoe', 'Spokane', 'Spokane Valley', 'St. Petersburg', 'Tampa', 'Tualatin', 'West Sacramento',
-      'Winston-Salem']);
+    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Arvada', 'Boise', 'Boulder', 'Cincinnati', 'Dallas', 'Fairfax',
+      'Indianapolis', 'Isla Vista', 'Jacksonville', 'Lansing', 'Los Angeles', 'Minneapolis', 'Montgomery County', 'Nashville', 'Omaha',
+      'Orlando', 'Phoenix', 'Portland', 'Raleigh', 'Richmond', 'Sacramento', 'Salt Lake City', 'Scottsdale', 'South Lake Tahoe', 'Spokane',
+      'Spokane Valley', 'St. Louis Park', 'St. Paul', 'St. Petersburg', 'Tampa', 'Tualatin', 'West Sacramento', 'Winston-Salem']);
     for (const id of ['us:nc:Raleigh', 'us:in:Indianapolis', 'us:va:Fairfax', 'us:oh:Cincinnati', 'us:fl:Tampa', 'us:fl:Orlando',
       'us:fl:St. Petersburg', 'us:nc:Winston-Salem', 'us:mi:Lansing', 'us:ca:Los Angeles', 'us:or:Portland', 'us:ca:Sacramento',
       'us:ca:West Sacramento', 'us:wa:Spokane', 'us:wa:Spokane Valley', 'us:or:Tualatin', 'us:ca:Isla Vista', 'us:ca:South Lake Tahoe',
-      'us:ut:Salt Lake City', 'us:id:Boise', 'us:az:Phoenix', 'us:co:Boulder', 'us:az:Scottsdale', 'us:co:Arvada']) {
+      'us:ut:Salt Lake City', 'us:id:Boise', 'us:az:Phoenix', 'us:co:Boulder', 'us:az:Scottsdale', 'us:co:Arvada', 'us:tx:Dallas',
+      'us:fl:Jacksonville', 'us:mn:Minneapolis', 'us:md:Montgomery County', 'us:tn:Nashville', 'us:ne:Omaha', 'us:va:Richmond',
+      'us:mn:St. Louis Park', 'us:mn:St. Paul']) {
       expect(REGIONAL_SCOOTER_CITIES.filter(city => city.id === id), id).toHaveLength(1);
     }
     expect(lime.find(entry => entry.city === 'Indianapolis')?.timeZone).toBe('America/Indiana/Indianapolis');
@@ -68,6 +70,8 @@ describe('the United States', () => {
     expect(lime.find(entry => entry.city === 'Scottsdale')).toMatchObject({ region: 'AZ', timeZone: 'America/Phoenix' });
     expect(lime.find(entry => entry.city === 'Boise')).toMatchObject({ region: 'ID', timeZone: 'America/Boise' });
     expect(lime.find(entry => entry.city === 'Spokane')).toMatchObject({ region: 'WA', timeZone: 'America/Los_Angeles' });
+    // Lime's region is the county's, from Silver Spring and Bethesda to Rockville: one market, named as Lime names it.
+    expect(lime.find(entry => entry.city === 'Montgomery County')).toMatchObject({ region: 'MD', timeZone: 'America/New_York' });
   });
 
   it('pauses South Lake Tahoe from 1 November until 1 May, by its clock', () => {

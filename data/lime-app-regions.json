@@ -3441,6 +3441,198 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Dubai_500_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Dallas",
+      "center": [
+        32.7767,
+        -96.797
+      ],
+      "region": "TX",
+      "timeZone": "America/Chicago",
+      "regionToken": "7QNI2ZXWSQMZC",
+      "serviceAreas": [
+        {
+          "name": "[Dallas][SZ][Dallas Proper]",
+          "polygon": "aqnhEndfnQjs@Eh@|@vGZZhCiArDkA@LxQhkApVR}{B`OH^upASmRKq}@pa@p@`EE|FuAtIyHnNoSfLgJdOKfREtHz@zHRfMiAjK_Bre@fFFawAfFUjCt@z@?~GcB|A~A~Bh@pEpDlGXtGC{AlKAjB^t@aAlGtBvEeJfG_QbHXzN{@~StYG`JmCzBk@jA?@uCr~@F?dCr`@wJDrAaBBWHFh@jA[`DlGz@jCTfCHdWD`GHz_@`@nLh@lG^|Bh@zAx@fD|DzJlO`h@jIvUxEvQdIzT`TrjA`@nHbKvn@d@hI~D`UrBhO|@~JfAjJeWEiLn@n@`R~DgAE|YnBAIpQZbFdBtMlHgAOvSjnAlODm@pUnC@bjBdAx@jAs@^?jAuA|@e@xAeAjA]pC?lAPvAdAr@pAN`ABjCIdC^`Dv@xAvBh@fAMhBi@rAu@pAY~A}@t@QnAFhAn@dBnBrAzBp@t@jClA~@LjBEhDqB`@q@^sALaBBcBiAoFDk@l@{@f@SfBChCvBpArB~@d@lBXhBDfCEdFq@lHX|D`ArCtAxBfBfDlAhGdAhCWdBy@rAiBZyAj@oB|AiEf@gCBc@YqDm@{@eC{B{ByClP@VhApDpG`CZxBe@z@q@b@w@Bq@[{BaAmCBm@Vw@t@Sj@BdAl@~DvC~@Tl@?|@c@h@kAP_APyDdAqDnAkAx@KdAFhAl@nAjB^hCv@`Cj@xBdAfAf@Rv@Gr@Yf@y@`@oBd@iG`@mAr@mDdAuMQwC_@u@kDcEEw@f@_Az@]x@B`Bb@tBLpAc@f@kATsEKoAYkAc@cA{@q@sCAwBu@g@aBAgA^aAh@_@lGo@xAi@^]fA{Ab@wAw@qEq@_Ai@sBE{@DoARiAb@_Ap@k@n@OlAGzAw@v@gAh@mBJeBIuAc@_DGgB~@_@pCAv@_@~@_BbAkEIsA]uAoDgBaA_BIsCXmApBmChB_AbBBlB~BfAt@vAa@Xy@TqEuAcI_@cA?gCjBoC~Ao@rAFlBV|@A|@_@fBsBnAgCd@cDMqA}C}Ee@}ANiAfCyAdD`@pFxCr@NxD_@hGRBxLf]SzBW?gCcSLE}G~ETnC_@~HLlBr@fDCtDeB~AGtEv@rCIzDJ~DrCrHhGdS~SxB~ErAtDbPjOb[~\\zD~CpDlBzG^r^T_@vO~BH`@uP|Dg@|L_GgLaNrBsCv@qBnN~OfUqJpDmDdGkIhAmDd@dO]zHA|ITnCdBtI|EjGdIfDdJpFrFzA`GL`DA~F`BxCbAtDjBdFzBhAv@zCrF`@hCSrFeG~KBvDjS~g@h@pAd@VtB\\|BKlIHfA\\xB@dAg@zBK|@BhA\\bAJdDu@lACvIdArA@~A^~EV|AC~Cc@|BiAh@IjAH`B\\`An@z@~AV|@t@h@d@KLw@h@i@|BX~DzAvArAx@BjCsAnFyDt@iBDyAg@uAl@eBdAOfCqClBh@lAxAz@MxEzBzLvBdy@tB`AhAbBUdAJhBlApCt@hAtCC~GNl@hJnGm@nWq@AG`L|DjFM|[zT`@Exa@|KBaFrIYpEwDDZli@uo@_@jFhvDtk@VDuUdTEAv`@pKBCdKqKCAdJbSAAhEp@?Pa@QiBbEoCi@uFzHwJvGqAxA`D`IJDyNsJEd@cOiKyL?_FfPK^qY~y@FbBn@zAbBjDpKvAzBbCv@vS\\JaLlQFEpErIBC~HvGzSfCnAvy@WMlc@jj@^@mf@rr@J?{H`d@k@lNnBzJfXnC~B~Ka@fJh@hGlGdG_DrQld@du@gd@bD@pJgAfCoBp@pC`BbCbKPnHlCo@fCErDfRfU~\\`DnKT~GEvIYvCpDpC~BxCfBdGxB|Ft@rDDn@ZhBLrCtBz@fB~n@s_@pF{Ik@aCs@s@gEi@CjB{DV_CbD{B_@c@iCt@uFuBcEaBeCa@Wq@wAHqBw@YMm@iAs@K~MHz@Qj@R~@YRqB^g@ZuCOg@W{@gAmAAStAcBp@oDGk@kAS_Ak@Je@z@Az@m@bBc@n@gBBaAmAq@sBKsDo@qBqAyB?a@a@k@Lc@MUu@mCKmDbA{@Gc@e@?SaAg@o@j@eDpAqCdBmBTcAz@a@vCyBpAsBIUa@TYa@s@b@eBcAWPk@OMa@a@QWLi@Qg@Z{@CcANo@f@u@Am@n@yBhCoE~DmB~A}AaCmA_Ew@cAGgAYe@w@Gw@^KdFcBvAyAkEtCyJD_AMUk@?gHNe@iCoAL}H|EaEoBgAsF]I}EbFaBoDr@yFcAaEhB}JvHuXdCZtd@lO~`@`G|O^gLwWal@c|AqF~CKiZzd@?je@}YpAwTcV{OsAHsAR{Ah@kATcBNwA??Mca@AwMwAgnDt@WekBgwAETmkBhDBBaPuDZQ}oAdUIAuHp_DOQkeArD?BsGbV?EyY|h@@Bgt@hRFAc|DjA?CkXaB?But@_m@UeEuWUg[oe@AI}t@gH_RtI}xAlNx@nh@g[sRug@pi@aXlbAa]d_@wPAq}BwZoCoe@koAqd@}Le`@bVuHcSqXlPsIiUuOjJmL{[kAr@kAuCca@bVqBoDuBoKaGuNkC{DwBcEWsB_f@zPsE{@|AaC|BsHXeDBgGWgDeAiEubAgdCs@eTbIhDfDxCzDh@zGeDdAcClFkEvJuCdBwCDmKwHy\\uKsSaDoIScH`@yBbAkBjBoAfDSvA`@vBpA`GlGvIxDjGo@Tim@|F`BpP{SfWvCbJbErfA}vApVp\\zRis@~RfVdD_JgM{QfAkQ|KwUupBufC{@gJ~Q}Djl@nOiZk_@_D{B|CwKyG_IoCrF}DmFyI|JiDcDkFnG{ZyAy\\oa@`UaXoN}Rl_@ex@vAcEjLoN@cIfOhS~c@ah@{DoFeVoN}j@vq@uAtMkE~JuMoPgJtKwLqOiSpj@kK}MnSwj@sj@ks@fCaH}PgUkEjFqHuJfDyDuDacAie@mf@oJpL_QsTs`@ne@gV|HaD|_AoGxH_Bph@pNzjEz\\TGvStG@Th[l[zBHzq@wUxg@ccAiJExPy{HrB}SfWoX~Eu_BtoB}s@lcAw[LEd[}A?Whh@yHu@kKeIcGaCy@uAqEul@}s@}@Gis@ot@O@sQkc@oBDoUsz@`@?`MaWE~@oGcSgWbMkOsTaY~EcG{Koa@RiK}U{YsMnGol@rs@ozAxnCeLzWsDb]yDjNuMlW}PtRiDfFyAvEgD`GQai@sj@CSpl@}Y@IxR_X?@mKq|@GnIhc@yf@FArPeAABjA}k@a@Mp_@mzAIMfmAfc@BKfnBlJpD|@thAgfAil@_A~WfFTm@hQkc@k@d@`aCmwEOmL_CuH[_^R^abA{HiD_`Ak@yDi@sEiD}A~DcRKbEjZn@|WaAtUgGh^sNj[oh@bv@{GvScFvw@UjxBwDAcAfTgJt{@aEfjApQJzG|[pA|w@dAzt@??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Dallas_2912_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Jacksonville",
+      "center": [
+        30.33218,
+        -81.65565
+      ],
+      "region": "FL",
+      "timeZone": "America/New_York",
+      "regionToken": "ZSCTTJIG63I7F",
+      "serviceAreas": [
+        {
+          "name": "[Jacksonville Service zone}[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "m~`xDzkpqNDF`FIrBy@nF_I`Kk[hLws@ByLdHGFwWqHOaCoe@h@wFnCiGtMiSaRwM_UiN|P_`BmVmd@cu@rUB~x@lA`GqG|WwLdr@yHzHc@jBkRttAoVwEaCdX`TFeCtDzXfUnSdVnK|OrFvDpRbD|MlIFC??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Jacksonville,_FL_1516_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Minneapolis",
+      "center": [
+        44.9778,
+        -93.265
+      ],
+      "region": "MN",
+      "timeZone": "America/Chicago",
+      "regionToken": "ILAIS5BHM2ILY",
+      "serviceAreas": [
+        {
+          "name": "[Minneapolis/St.Paul][SZ][Minneapolis]",
+          "polygon": "g~pqGxw}wPDadAghCAJtd@HzXkl@NJ`w@okCPn@j`JaCWaAQ_ASkBk@o@Ws@YwAi@_Bk@wAg@}By@qAe@uAe@iA]e@My@Q{@OsAU_AKw@IwAIoAE}BMw@A}A@eBLeCZyALoAJmAD{BJaAB{CRcEZeE`@@lQAd|AQzy@C|aA~n@KtHIkD`WfOIPaWp\\Y?oA`fAu@b`@Qzl@?bxCHd|@F@ln@@dO~aFx@nwBR`dB_@Vg~@dyA@TugLQC?~JiJM@~FiJG?rCcBC?J}BC?jCgIE?oCeCCC}f@v@??aC~GF?aOwDC?UY??aBh@??uCgA?AmBu@AAaBnB@?YK?@SW??gBU??gBn@?HkWP?Gy]LIvCA@~N|E@CkPoA??qByG?EuZU??{ZC?AACIA_MU?sB}FGUhE@?j@c@fA?rFb@~@AvF|C@vE{L@cFkEA?eLpLHjAqEAi_@oPEAwRex@QAuj@A_SFgRoDxGaE`Iw@pA_AvA{@fAcAjA_A|@eA`AkAz@cAn@aBz@}@`@oAd@sA^eATkAR{ANoETqEN_DFgCBaBB{B?qB?cECkDEsBGeBE{AGqBI{AIwBM{AKsFc@yD_@oEg@mEm@kEq@uJ`AgHh@}Jj@mHVkEJaKJsLAqIMeFOwBCwB@qCJmDZeEn@mBb@uBl@uAf@kAj@oAv@gAv@eAz@cChCiBdCaAbBu@vAgAjCw@~Bg@dBc@fByfCG_@lh@C~FjKs@mExNnA`AaHnU`ElChD{LlEpDoGv[~Kj@BaRxLPd@D|@NpAhAJrCgLXC`QnFT|Jd@Yj@iAxDwBtI}@|DW~Ac@fEcBxOkFdPlEdHdA|FhIMmMba@}EBS^Sh@IJGJKK}@mCUqBaVBEcId@kC`BqCjAi@|E{IvAUgAoJeHr@kNxFwCrFiBvHQhB_@DY`DaAo@yFdg@uC{CnGel@sGqFhGwSyAoXy^{U?{GfGUvE\\vIuPo@iY}NGIiR??"
+        },
+        {
+          "name": "[Minneapolis/St.Paul][SZ][UofMN - Minneapolis]",
+          "polygon": "egpqGl~cxPPoAxAuMpAaLZsC`@eD`Ap@HmBNo@`@iAn@gEn@sC|@cB`BaDbDcBnA_@|Aq@bDiAlCW`DIhAvJ{ATc@v@w@xAs@rAkAtBkAh@aBnCe@dC?Z@|A@rC@t@dA?n@?|A?xD?pICVtB|@jCHJNWTi@R_@|ECjM_a@kIPcAaGoEgHnAyD|CmJt@cH\\aDr@_HX}Ah@iCv@cDZoA\\qA|@_DNe@Pm@BIVe@oRw@BoQdLWIiCoAgAaBUmBCmBEwEEE|QiLk@pGy[gEiDkDvLeEsC`HmUqAcAjEsNgKt@`@up@{QWuf@NFdwAzNDp@rYyI~P{Ea@cGRBnG`FbDpWzPzArXeCfIeCjIrGrFeClUaAlJa@rDe@tDpCpC??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Minneapolis,_MN_2518_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Montgomery County",
+      "center": [
+        39.084,
+        -77.15276
+      ],
+      "region": "MD",
+      "timeZone": "America/New_York",
+      "regionToken": "5GNLPJDTKYL45",
+      "serviceAreas": [
+        {
+          "name": "Montgomery County - Service Area[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "aqfmFtjnuMcAwcAgCDf@oTdFuP~RpGg@rI|FgHjE`R~PgQr_@lR}BbQrFzGnM~BfVeRtO}FdCsO{OyAuKmGnDqLg@aEdFeCtT_AhPQrXvI|RbHrRd@`e@oQpEQ~JuCLcS|BsBgEiNaEkSgy@ijAp[yb@zqAgfB|Uk[`AkS}f@el@gGcO_Xia@{XgQu^FqqAfb@oP{_A{_@vCigAliAkR~]kz@wu@qOnn@ZfTmNcKeDlR}L~BsQwBoSdE}Nz@mJzMsInXhFrMuCb\\}IpG}L~RaJxAmNkMqLiGeHmLgQyWsAfA|LjXqeAiPmDh]}VxJg^vTwL|[mOtm@iVnc@uj@~y@wP~QGZkHxIoOrj@eH~u@kRxk@kMnk@oGrl@jWzZrTlArDwXbR|LzUdElOpGmI|i@nPxJtKxJiFdf@tFqGxHbLjVhL_BRyLCuPgFmOvMcVfQ{EgJyfAz@gUoMwGng@cHiCkNqCcMwIqC}HoFpCeIzOcWbx@_d@vg@wW~_@i\\lf@qHpJ_^_Ueh@iYqb@mIgt@qCuk@hKiRzDz@pd@ExUrOnQhMxYcMtm@}GxNoGza@gPph@xTrOkNvIsJ~XxCtL|RxJj^wQjXpd@vBzbA~SyJzPeXpHri@hLlElJxJt@xJzJuEjNr@jIzK`KrZbMPnKfJfUec@|JteAzB`BEtCnDhEv@cHrOlAfK|Av@eIpOn@xKdCnCjOnIlCbGxJlJoFnD~Bp@cHbDr@eAdI`IlCf@mEhAn@oAtCrIzBf@oBrDoOhIwKzTva@dCw@nNrSvJrIbLpE|LpJbWT`RyAhNgA~HuApKrBpKdCdHcAfKkDtHC`H\\tEcD|BsDnCiCxI_CrD~@~EvIne@cNf@~BbGlArDlAjCyUbBySeA{XxNePzCrDzE}FkCkDdAyEi]mf@yFpCgMmf@ReRrBgAhG_FpCkF`F{DbDyH\\{D~UzDdPfDxHyEnKaE~FkBnCoDlJqChFsBxKaChEeAxC?xC^lBiBw@mGfF}RzHe_AdFaj@|AaMf@}LlDiH\\cM`EoYvAmAhPoKtXiPVn@pAdCvAfBfAv@nAtAdCdCjBlBjCzAhCp@dCa@`Eq@xCZdEdAlBbA`Br@rAp@nCx@lBDjDe@nD]xCm@fC_@~Ba@hBc@|Bg@jAg@~AmAlAkAj@uAd@{BnAeCfBiBdEgDzC{BdByA~@OtB`@lCv@~AX|H}BvEjRnfAyVsAaGi@cDc@{DgAiBcBaF_AcDc@eFUsB[wB[aBk@yCF_BDsBb@gBOwe@gB}Cc@}Bi@wFLuG@_JDkDB{FAgEDaO?eFHsD?iJMuDGsEW}CYkFWcBa@gFm@}Dm@qDy@aEOyAm@gCc@kBO_Ci@qCc@wD]cDOcEIuFGkES_FIqBEaBCqBEiBOcEOqDSeCUwBoA}E_AgBm@y@oGal@um@as@mAsAIoCe@eEEoDmAwCaAoBeBaFuAqCkA_BsAg@eBOsAiB_Aa@uAmBoAuByAs@sA_@}Ai@CwH??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Montgomery_County_68618_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Rockville",
+        "Silver Spring",
+        "Bethesda"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Nashville",
+      "center": [
+        36.1627,
+        -86.7816
+      ],
+      "region": "TN",
+      "timeZone": "America/Chicago",
+      "regionToken": "L6NMOZ57PFSJS",
+      "serviceAreas": [
+        {
+          "name": "Nashville Service Zone",
+          "polygon": "ctb|EzetpOvaDpyOlyIrVpjDurAx{BkmGtoBysGe_A}kKk{IgdDsrMtcAae@dqP??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Nashville_4466_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Omaha",
+      "center": [
+        41.25626,
+        -95.94043
+      ],
+      "region": "NE",
+      "timeZone": "America/Chicago",
+      "regionToken": "32NCII4B4VAHY",
+      "serviceAreas": [
+        {
+          "name": "OMAHA SERVICE ZONE NEW 12[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "yo_{Fx}chQO`B_HsDyo@cAefAl]qn@vdAiNfsAfHhyAeC`l@kSxr@wq@xtAgq@pz@}j@xQkRgB}_@{_@qTssA_d@mi@b@pfDoz@k^kPlZdEzOkCvg@vQMIgk@lJCBvMtdBw@CbKuIBCdPrYKqCdl@hm@LaBfNi\\je@`H?AldAfN@pEnuBpR`k@zBdf@bMpQsMf@?n{@qUBcU{Ic@hg@dVPtDlFsDhJzOhF@~Myl@xJePuUsIvUoOOaEqM_c@oNC`d@mSP?nFqUDuDnFsDmFe[FeDqFwvAHSjYpXrB?`N~OiJ~OArDfJhJqFzg@xBjCzIz`@yFBfMwU|]?|\\hJCt`@a|@Gk^bJzMdK|@AhJpUmP@fr@rUD?k\\`UDb@aK`UcJ`F?lCpVnUIAw]l`@AXig@`Mu@~Jph@|e@xz@vA`[hWNo@ttDbOt@`Fg|@bUB?fz@vj@tAZvT{v@lL@rUfJdSB~f@_a@DAtc@tUrz@sKnJ@bQ{G?mKfU}I}@iCzP}\\r]n@xUlTm[|Ht@|B_JpFCZgNfOoMbKzE~Og]hJ?xTfTjJb@?nzAfm@?BptB`U|ANfXvR|@@``@oi@q@C`]tj@Rj@xfGg_@RTfz@}DfEdNxq@fMhGyGtTs@x`AxQCPuh@h\\?FeQrb@?cRyq@dJkdAtJ?_@~KrVhC]tgAfx@GKre@hJDDeR~UeAjF|Jz]lAnq@tf@lQ~AvDslAuTvAFapDxi@KrAoz@twACT_{@nk@YAh|@|`@AFa_@xICCu[~dC`AZy`]qUAAgv@_oBmBMoyAzQCbBc[rpBq@m@{sRcVbW}SvDylAeEod@k[wl@wq@ot@kTyAoeKlGkn@?}a@yPkd@wQwGc[uQiIgEiIu[yPuQgh@}f@me@ch@a\\mP{OoP_a@el@?KICg@q@?Nqd@yYmVuLeh@mUuBl~P??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Omaha_591_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Richmond",
+      "center": [
+        37.5407,
+        -77.436
+      ],
+      "region": "VA",
+      "timeZone": "America/New_York",
+      "regionToken": "SMA7LAU2GTRFX",
+      "serviceAreas": [
+        {
+          "name": "[Richmond, VA][SZ][Richmond Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "iy}cFramwMe~@c@mMo`@{q@ph@g^mT~Esa@ci@mE_Jvj@khArSoQviBc_@}Tyc@zi@ePy]cR}DqNvBeZfQmZYoKdj@|CfaAvAn@qYzs@qFgFoLiC{HPaJvDcJpLmKtCgHa@mIiLPx\\KzVYlKe@pd@jMcAz@baAyP~@`DdMsAh~@j_AvKpr@ub@bK{FzE{ClZl|@yz@lcAlm@vi@om@|nAvDrRwaA|dBze@xCnFr@dLxPrJt`@h_@j`@tVlEb_@exA_Dgv@ts@p]Shd@mDv\\}B|ZzFx]lLti@pE`XwIjm@gBfXbCrOfCnF~CjHdFlHvEhGjI~I~k@ve@bPrF`MbB|MaCjEkApEqJlFwFhGNzCa@rEaRjBoXoDcWoJ{l@e]_z@_V}WlFuHbnA{t@oN{xA|zBa@dq@wI|{@sfAxkB{p@pp@oNtd@e_@tu@og@Zyk@}J_N_V{h@oMqo@aGyYq@gSoBac@bQ}g@dA}LaB}L[sTbuAwuC}d@gFeV`CulAlPc[hDosAaDef@`DoQpC{McEo^mWuh@oFm]Qk_@H|@kZhb@aGfCwMfWuAdLkp@pRaf@??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Richmond,_VA_1800_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "St. Louis Park",
+      "center": [
+        44.9483,
+        -93.34801
+      ],
+      "region": "MN",
+      "timeZone": "America/Chicago",
+      "regionToken": "ILAIS5BHM2ILY",
+      "serviceAreas": [
+        {
+          "name": "[Minneapolis, MN][SLP Hopkins SZ][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "cpdqGxw{xPI}^YAAoR?iA?wQFsY@o@?_C?Y?YBkE?W?]B??O?O?K?IDgJBcE?g@BaE?M?GxCB?y@?M?G?mD?yF?yF?aG?{_@?Me@?o@?UsAIByAh@CQeEzAc@N@FcA\\IDAAkAb@?@??MDmBp@KACA?w@?qB?QG?sF?g@?aD?yC?_B?G?eD?oDAuA?u@?kFC@_G?{F@}F?wA?sC?_@@gF?U?E@wN@uB?_@?a@?[?AW?uIBuG?oLAsI?}FCcJ?uHAuIEoFCoDBiBEqA?eDAkB?_CA}CB_HEkCA}JAmJCmC@eECoECy@@eBCgBA}@@aJCwIAiC?yBCiAAiGB?f@?jE?pHCrSAzQAfB?|AA~BC|A?ZC|DAf@?RArACrDAfBCbCY?yC@uC?[?_A@wF?g@@Sz`@wA?M@M?O?I?I??J@|HP??J?zB?V@J?F?B?N?D?R?`A?P?B?R?D?P?h@?T?dA?H?tA?F?|A?F@vG?J?B?D?^?xM?D?h@?pAE?E?E??lC?|@?fG?vF?bE?Z?^?v@?dM?~F?pJA~C?h@?J?b@@v@?N?P?~J?jC?vI?tA?hG?\\?~B?R?D@nA?~AAnCAR?R?xA?H?LATAxE?vD@rAC\\?nA?VA`AAjA?L?rBCjD]`z@?H?@AdCAbDCpGArAAxB?B?L?V?B?B?^???T?d@?^iGIoEGaGGsHM_GImCEMbq@CpL~PEjMAL?k@cf@`MB?dA`@?zEA?rD?HlM@?I?mDrB??lD?FzQA?M?Q@sH?qJ?aE?E?c@?_@|R?fcABpQ?R?rD?h@@xE?N?P?L?tC@j@?d@?vB?|@@\\??qD?g@HEd@WNILGv@e@dA[`@ML?D?F?NAnACAV?|E?bBjJC?v^sA?}A?G@kA?aB@Af_@mJKoMDcG@eE?oNDbAb`@|@~\\v@AHrGDp@LvA\\dCRtABLDXDVt@fE|IJ?k@nGqAIqBOsBEk@iCJWgLOyAjC@xFB`GIRq^xRKB|TfHGvCCAbIrBBVA^?fAAP?fB?`DBpBBpBBx@@@pBFnBJnBNnBRzAZ|BZoAlCyG@rED|NlA~C~HNIbN|@@dA[tAy@fB{BfCqBtBqAz@Qx@_@CsBvHXIxEtELB[zHZRsAJmBtBJBaC@cBf@?v@@EkRxSj@o@}D|LPfHHpFMdFCbIEdDEjFGlCCnDEj@q_A?mI@_D?mA?{C?}Gc@??iPb@?CeNoUWkJMaFCeC@eBB{ERs@@g@@y@@yFPoJHoIT?y@C}F?cGA}B?cCCaGm@A?uE@mD?cC@}B?cCDqf@?M|@AGyFAkACmDB{FFqE@s@?YC_C?w@A[EeGMiNCcEJ{N"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Minneapolis,_MN_2518_exclude_new_type.json"
+      ],
+      "aliases": [
+        "Saint Louis Park"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "St. Paul",
+      "center": [
+        44.9537,
+        -93.09
+      ],
+      "region": "MN",
+      "timeZone": "America/Chicago",
+      "regionToken": "RWCCMYTDD3ZVN",
+      "serviceAreas": [
+        {
+          "name": "St. Paul Service Zone NEW[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "{|bqGj{{vP`l@aRll@gm@lVg~@xSq[CgaBswRtCWxo\\FvL?lVDtMHrJKl^iSE?}FkH??}LsKED~v@li@f@@pl@mi@Hs@dkCda@d@h`@\\zqEj@vIgUxGcMpNeInz@sHh`@jCzUwB~NqE`p@zKno@{GlJbJ|h@e{@|Rf@hTkIlHoMdHk[fBk\\~Ag@fJfEtLh@`D{@dBqE`AgUcCaV_C_I_IyUuB}PsKao@gJsL_RsNge@w`AwF_LuUwPyd@yJoFoBsUeOE_kEqUFBy^nUE`@_}F|k@y^??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/St._Paul,_MN_1829_exclude_new_type.json"
+      ]
     }
   ]
 }
