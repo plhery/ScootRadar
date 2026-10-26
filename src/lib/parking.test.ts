@@ -52,6 +52,16 @@ describe('published scooter parking', () => {
     expect(normalize([station], { data: { global_rules: [{ vehicle_type_ids: ['bike'], station_parking: true }] } })[0].mandatory).toBe(false);
     expect(normalize([station], { data: { global_rules: [{ vehicle_type_ids: ['scooter'], station_parking: true }] } })[0].mandatory).toBe(true);
   });
+  it('keeps rule order between a zone spanning the region and the small ones near a station', () => {
+    const wide = { geometry: { type: 'Polygon', coordinates: [[[4, 45], [5.5, 45], [5.5, 46.5], [4, 46.5], [4, 45]]] },
+      properties: { rules: [{ vehicle_type_id: ['scooter'], station_parking: false }] } };
+    const fencing = (...features: object[]) => ({ data: { geofencing_zones: { features } } }) as ParkingZonesFeed;
+    expect(normalize([station], fencing(wide, zone))[0].mandatory).toBe(false);
+    expect(normalize([station], fencing(zone, wide))[0].mandatory).toBe(true);
+    const away = [[5, 46], [5.1, 46], [5.1, 46.1], [5, 46.1], [5, 46]];
+    const parts = { ...zone, geometry: { type: 'MultiPolygon', coordinates: [[away], [square]] } };
+    expect(normalize([station], fencing(parts, wide))[0].mandatory).toBe(true);
+  });
   it("reads a bay's rule from the street around it, not from a zone that is only the bay", () => {
     // Voi Duisburg (25 Oct 2026): a zone per bay, the bay's own area, with station_parking true.
     const around = (d: number) => [[4.85 - d, 45.75 - d], [4.85 + d, 45.75 - d], [4.85 + d, 45.75 + d], [4.85 - d, 45.75 + d], [4.85 - d, 45.75 - d]];

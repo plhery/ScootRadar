@@ -49,6 +49,31 @@ function boundsWithin(inner: MapBounds, outer: MapBounds, margin = 0.00001): boo
   return inner.west >= outer.west - margin && inner.east <= outer.east + margin &&
     inner.south >= outer.south - margin && inner.north <= outer.north + margin;
 }
+const ZONE_CELL_DEGREES = 0.01;
+const MAX_ZONE_CELLS = 2_500;
+/**
+ * The zones whose bounds reach a point's grid cell, in feed order, so the first matching rule still
+ * wins. Voi's 3,061 stations in Oslo, each tried against all 4,109 of its zones, held the cache's
+ * event loop for 3.5 seconds on 26 October 2026. A zone wider than MAX_ZONE_CELLS is tried everywhere.
+ */
+function zonesNear(zones: readonly { bounds: MapBounds }[]): (lat: number, lng: number) => number[] {
+  const cell = (degrees: number) => Math.floor(degrees / ZONE_CELL_DEGREES);
+  const cells = new Map<string, number[]>();
+  const everywhere: number[] = [];
+  zones.forEach(({ bounds }, index) => {
+    const [west, east, south, north] = [cell(bounds.west), cell(bounds.east), cell(bounds.south), cell(bounds.north)];
+    if ((east - west + 1) * (north - south + 1) > MAX_ZONE_CELLS) { everywhere.push(index); return; }
+    for (let x = west; x <= east; x++) for (let y = south; y <= north; y++) {
+      const key = `${x},${y}`;
+      const near = cells.get(key);
+      if (near) near.push(index); else cells.set(key, [index]);
+    }
+  });
+  return (lat, lng) => {
+    const near = cells.get(`${cell(lng)},${cell(lat)}`) ?? [];
+    return everywhere.length && near.length ? [...near, ...everywhere].sort((a, b) => a - b) : near.length ? near : everywhere;
+  };
+}
 function timestamp(value: number | string | undefined, fallback: number) {
   return value === undefined ? fallback : typeof value === 'number' ? value * 1000 : Date.parse(value);
 }
@@ -81,8 +106,10 @@ export function normalizeParkingLocations(system: RegionalScooterSystem, types: 
     if (timestamp(zone.properties?.start, -Infinity) > now || timestamp(zone.properties?.end, Infinity) <= now) return [];
     const parts = polygons(zone.geometry);
     const bounds = polygonBounds(parts);
-    return bounds ? [{ zone, parts, bounds }] : [];
+    // Each part keeps its own bounds: Voi's no-parking zone in Oslo has 218.
+    return bounds ? [{ zone, bounds, parts: parts.map(rings => ({ rings, bounds: polygonBounds([rings]) ?? bounds })) }] : [];
   });
+  const near = zonesNear(zones);
   const ruleFor = (rules: Rule[] | undefined, type: string) => rules?.find(rule => {
     const ids = rule.vehicle_type_ids ?? rule.vehicle_type_id;
     return !ids || ids.includes(type);
@@ -103,14 +130,26 @@ export function normalizeParkingLocations(system: RegionalScooterSystem, types: 
     // bay one, with station_parking true. Whether the bay is the only place to stop is the rule of
     // the street around it (25 Oct 2026: Duisburg's 39 bays were all required, in a free-floating area).
     const area = station.station_area ? polygonBounds(polygons(station.station_area as Geometry)) : undefined;
+    const candidates = near(station.lat, station.lon);
+    // Each zone is tried once for all the station's types: Oslo's five scooter types share its rules.
+    const inside = new Map<number, boolean>();
+    const contains = (index: number) => {
+      let hit = inside.get(index);
+      if (hit === undefined) {
+        hit = zones[index].parts.some(({ rings, bounds }) => rings[0] && boundsContainPoint(bounds, station.lat!, station.lon!) &&
+          ringContains(rings[0], station.lon!, station.lat!) && !rings.slice(1).some(hole => ringContains(hole, station.lon!, station.lat!)));
+        inside.set(index, hit);
+      }
+      return hit;
+    };
     // GBFS rules are ordered: the first matching polygon/rule wins, including holes.
     const mandatory = system.stationParking === true || allowedTypes.every(type => {
-      for (const entry of zones) {
+      for (const index of candidates) {
+        const entry = zones[index];
         const rule = ruleFor(entry.zone.properties?.rules, type);
         if (!rule || !boundsContainPoint(entry.bounds, station.lat!, station.lon!) ||
           (area && boundsWithin(entry.bounds, area))) continue;
-        if (entry.parts.some(part => part[0] && ringContains(part[0], station.lon!, station.lat!) &&
-          !part.slice(1).some(hole => ringContains(hole, station.lon!, station.lat!)))) return rule.station_parking === true;
+        if (contains(index)) return rule.station_parking === true;
       }
       return ruleFor(geofencing.data?.global_rules, type)?.station_parking === true;
     });
