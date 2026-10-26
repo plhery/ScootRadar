@@ -2419,6 +2419,108 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Sacramento_370_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Arvada",
+      "regionToken": "42IZAUDES32OZ",
+      "fingerprint": "6db353f81b060fef29cd52c7b0a2f87964913a9a4f376d4609672e7a468a4298",
+      "groups": 6,
+      "localCells": 24,
+      "coldMapRequests": 24,
+      "warmMapRequests": 24,
+      "scooters": 139,
+      "stationaryReferences": 5,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T08:53:21.449Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Arvada_20_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Boise",
+      "regionToken": "EVVYGCZGQ2V6O",
+      "fingerprint": "9604ba4a62642e322c6c2eaa8461517a64ab7fa69da906a94474fc431478d663",
+      "groups": 38,
+      "localCells": 150,
+      "coldMapRequests": 170,
+      "warmMapRequests": 170,
+      "scooters": 1415,
+      "stationaryReferences": 178,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T09:13:25.606Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Boise_2701_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Boulder",
+      "regionToken": "YP3QKU34ZN35O",
+      "fingerprint": "ac38ad8a069f57d505413e57cd16dbe52a2ed57e9d816e806886c61ed76352a8",
+      "groups": 11,
+      "localCells": 43,
+      "coldMapRequests": 43,
+      "warmMapRequests": 43,
+      "scooters": 800,
+      "stationaryReferences": 30,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T09:18:40.655Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Boulder_1150_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Phoenix",
+      "regionToken": "OZTYDMBICM2JH",
+      "fingerprint": "1648a699f89bccc92658e2d1f522f8eaf54e64b9c6e47e4109931ec6d36028f8",
+      "groups": 18,
+      "localCells": 69,
+      "coldMapRequests": 77,
+      "warmMapRequests": 77,
+      "scooters": 1074,
+      "stationaryReferences": 170,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T09:53:12.563Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Phoenix_740_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Salt Lake City",
+      "regionToken": "6XZLNX7U6SX6C",
+      "fingerprint": "3fe9087936e3770517ab1dd19c19e446b4757d88544b6d2736ddb30c50a83205",
+      "groups": 48,
+      "localCells": 190,
+      "coldMapRequests": 198,
+      "warmMapRequests": 198,
+      "scooters": 1942,
+      "stationaryReferences": 90,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T10:16:32.955Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Salt_Lake_City_6050_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Scottsdale",
+      "regionToken": "OZTYDMBICM2JH",
+      "fingerprint": "e7d768b3a568f5fe384d0a164321b6d1f5d312de0ad99ef3a8018c64250294a4",
+      "groups": 73,
+      "localCells": 290,
+      "coldMapRequests": 290,
+      "warmMapRequests": 290,
+      "scooters": 162,
+      "stationaryReferences": 2,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T10:50:36.393Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Phoenix_740_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

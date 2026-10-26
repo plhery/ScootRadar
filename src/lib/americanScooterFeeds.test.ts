@@ -51,17 +51,22 @@ describe('the United States', () => {
   it('reads Lime\'s rider map where Lime publishes no feed, each market under the town the map lists', () => {
     // Lime's towns with no public feed: its rider map, read in small groups, since 26 October 2026.
     const lime = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'US' && entry.limeAppMap);
-    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Cincinnati', 'Fairfax', 'Indianapolis', 'Isla Vista', 'Lansing',
-      'Los Angeles', 'Orlando', 'Portland', 'Raleigh', 'Sacramento', 'South Lake Tahoe', 'Spokane', 'Spokane Valley', 'St. Petersburg',
-      'Tampa', 'Tualatin', 'West Sacramento', 'Winston-Salem']);
+    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Arvada', 'Boise', 'Boulder', 'Cincinnati', 'Fairfax',
+      'Indianapolis', 'Isla Vista', 'Lansing', 'Los Angeles', 'Orlando', 'Phoenix', 'Portland', 'Raleigh', 'Sacramento', 'Salt Lake City',
+      'Scottsdale', 'South Lake Tahoe', 'Spokane', 'Spokane Valley', 'St. Petersburg', 'Tampa', 'Tualatin', 'West Sacramento',
+      'Winston-Salem']);
     for (const id of ['us:nc:Raleigh', 'us:in:Indianapolis', 'us:va:Fairfax', 'us:oh:Cincinnati', 'us:fl:Tampa', 'us:fl:Orlando',
       'us:fl:St. Petersburg', 'us:nc:Winston-Salem', 'us:mi:Lansing', 'us:ca:Los Angeles', 'us:or:Portland', 'us:ca:Sacramento',
-      'us:ca:West Sacramento', 'us:wa:Spokane', 'us:wa:Spokane Valley', 'us:or:Tualatin', 'us:ca:Isla Vista', 'us:ca:South Lake Tahoe']) {
+      'us:ca:West Sacramento', 'us:wa:Spokane', 'us:wa:Spokane Valley', 'us:or:Tualatin', 'us:ca:Isla Vista', 'us:ca:South Lake Tahoe',
+      'us:ut:Salt Lake City', 'us:id:Boise', 'us:az:Phoenix', 'us:co:Boulder', 'us:az:Scottsdale', 'us:co:Arvada']) {
       expect(REGIONAL_SCOOTER_CITIES.filter(city => city.id === id), id).toHaveLength(1);
     }
     expect(lime.find(entry => entry.city === 'Indianapolis')?.timeZone).toBe('America/Indiana/Indianapolis');
     expect(lime.find(entry => entry.city === 'Cincinnati')).toMatchObject({ region: 'OH', timeZone: 'America/New_York' });
     expect(lime.find(entry => entry.city === 'Lansing')).toMatchObject({ region: 'MI', timeZone: 'America/Detroit' });
+    // Arizona keeps standard time all year.
+    expect(lime.find(entry => entry.city === 'Scottsdale')).toMatchObject({ region: 'AZ', timeZone: 'America/Phoenix' });
+    expect(lime.find(entry => entry.city === 'Boise')).toMatchObject({ region: 'ID', timeZone: 'America/Boise' });
     expect(lime.find(entry => entry.city === 'Spokane')).toMatchObject({ region: 'WA', timeZone: 'America/Los_Angeles' });
   });
 

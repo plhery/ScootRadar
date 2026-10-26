@@ -14,10 +14,10 @@ other account credentials are used. The catalog is
 [`american-scooter-feeds.json`](../data/american-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
-The map covers 100 towns in 32 states and the District: Washington, DC
-(Hopp, Veo and Lime), 24 towns of Bird's, 35 of Lime's (18 from its rider
+The map covers 104 towns in 33 states and the District: Washington, DC
+(Hopp, Veo and Lime), 24 towns of Bird's, 41 of Lime's (24 from its rider
 map), 39 more of Veo's, 29 of Spin's, Lyft's Chicago and Portland, and GCOO's
-Los Angeles, Arlington and Alexandria, Virginia. In 28 of them, from Tempe and
+Los Angeles, Arlington and Alexandria, Virginia. In 29 of them, from Tempe and
 the Bronx to Chicago and Columbus, two or three operators run, and the map
 counts their scooters as one town's. Twelve of the towns ban renting at
 night; see [Night bans](#night-bans). South Lake Tahoe's fleet goes away for
@@ -57,6 +57,15 @@ checked on 1 November 2026. Lime's Newport, Washington zone held no scooter:
 the city council had Lime take its scooters away on 3 June 2024. Long
 Beach's audit missed one stationary scooter, so the market waits for
 another.
+
+In the early hours of 26 October, Mountain time: Salt Lake City (1,942,
+beside Spin's and Veo's), Boise (1,415), Phoenix (1,074, beside Spin's),
+Boulder (800), Scottsdale (162) and Arvada (139). None of these towns' rules
+sets riding hours; Boulder's 2021 pilot did, and Lime's map held its 800
+scooters at 03:18 (see [Night bans](#night-bans)). Albuquerque, Clearfield,
+Farmington, Grand Junction and North Salt Lake wait for another audit by day:
+the night's left no stationary scooter to check against, or, in Albuquerque,
+mixed in a scan from the evening before.
 Lime's Charleston region held no scooter: Lime runs an e-bike programme there
 with MUSC Health. Nor did Grand Rapids', where the city made Veo its only
 shared scooter and bike operator from 1 September 2026. See
@@ -850,13 +859,24 @@ Rules that read like bans but are not, or that no primary source confirms:
 - **Denver, Portland, Columbus, Berkeley, Emeryville, Davis, Tampa, Lansing,
   Fayetteville, Wichita, Manhattan, Charlottesville, Hartford, New Haven,
   Rochester, Syracuse, Akron, Cedar Rapids, West Lafayette, Carbondale,
-  Spokane, West Sacramento, Tualatin and South Lake Tahoe:** no hours in
-  what was read of their rules; SIU's page says Veo runs "24 hours per day,
-  seven days per week." College Park, like Durham, limits only its
+  Spokane, West Sacramento, Tualatin, South Lake Tahoe and Arvada:** no
+  hours in what was read of their rules; SIU's page says Veo runs "24 hours
+  per day, seven days per week." College Park, like Durham, limits only its
   university's campus.
 - **Isla Vista:** the Isla Vista Community Services District's board
   recommended in 2018 that scooters stop at 22:00 from Thursday to
   Saturday: a recommendation, not a rule.
+- **Boulder:** the 2021 pilot rented scooters from 06:00 to 23:00 only, but
+  the city's
+  [Shared Micromobility Program page](https://bouldercolorado.gov/services/shared-micromobility-program)
+  gives no hours now, and Lime's map held 800 scooters there at 03:18 MDT on
+  26 October 2026.
+- **Boise:** scooters slow to 10 mph downtown from 18:00 to 03:00
+  ([city news, October 2025](https://www.cityofboise.org/news/planning-and-development-services/2025/october/city-of-boise-strengthens-greenbelt-downtown-pedestrian-and-rider-safety-efforts/)):
+  a speed limit, not a ban.
+- **Scottsdale:** the city's
+  [bikes and scooters page](https://www.scottsdaleaz.gov/codes-and-ordinances/bikes-scooters)
+  sets no hours; an Old Town rule for 23:30 to 05:00 was only proposed.
 - **Salt Lake City and the University of Utah:** read on 22 October 2026,
   no rule sets hours. The City Code's chapters on shared mobility programs
   ([5.67](https://codelibrary.amlegal.com/codes/saltlakecityut/latest/saltlakecity_ut/0-0-0-76867),

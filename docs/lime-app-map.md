@@ -203,6 +203,7 @@ stationary reference scooter, country by country:
 | 26 October 2026 | United States: Indianapolis, Raleigh, Cincinnati, Fairfax | 756 | 190 | 1,861 | 213 |
 | 26 October 2026 | United States: Tampa, Orlando, St. Petersburg, Winston-Salem, Lansing | 503 | 127 | 3,158 | 253 |
 | 26 October 2026 | United States: Los Angeles, Portland, Spokane, Sacramento, South Lake Tahoe, Isla Vista, Spokane Valley, West Sacramento, Tualatin | 1,314 | 332 | 16,042 | 555 |
+| 26 October 2026 | United States: Salt Lake City, Boise, Phoenix, Boulder, Scottsdale, Arvada | 766 | 194 | 5,532 | 475 |
 
 Budapest's first audit missed one of its 171 stationary references, 6 m inside
 the edge of the local view that should have held it: most likely it was

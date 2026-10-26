@@ -3119,6 +3119,130 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Sacramento_370_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Arvada",
+      "center": [
+        39.80276,
+        -105.08748
+      ],
+      "region": "CO",
+      "timeZone": "America/Denver",
+      "regionToken": "42IZAUDES32OZ",
+      "serviceAreas": [
+        {
+          "name": "Arvada Service Zone post split[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ky|qFxwu`SvZRGxDnOxTlWTNaLqF[GgFuGFT_HnG\\LwBfEQ@gFkDIyBkCkHI@eDtEH{AiJ?aCmAqFhOJEsCwO]?_J~f@DCq\\mOyGyC{RzIs\\dH|ArIEwEu^qJ}x@nINEuNqBAi@iNgAP?fFaCF@cIbB??eBkB?Gos@nNJHzXk@~@LbGjL|AZbG~@?CkReEyX|AmB_AoKfCkGNgJaBgv@AKgGA}GFSeT}J[`BqFuLePg@kH}LgSaAtGuCAGnKaCAJnXqB?kBlBmA?M}AMaEFw@zAY?iAcBAq@w@mD{AC{RpE{D?}AmE?JyNbAJfAkD@eKiINYgHq@?iC~@{CAc@sCBwVoCKCma@kEID}PUi@Uc@sIPFjKh@dG{@GsnAb@^`BAxFo@p@o@pDA|@mBfI}BHm@hAAbAVl@@fCcBjD}A@_@hI{UBGfGl@AAvLdJA@p]jB?DjCbA@?`Bmg@_@@hz@wT@s@ay@qj@FAwBhC?v@ObAk@Za@[}Cc@_BmAoD}AaFu@AAgCs@_C[u@yGC?_Qc@iAwC{@i]?LhfABzLI`AG`ACnAA`A?|ABrAJtBRlB\\vBbAdHZfDJhECtCWfEi@~DgAlEeArC}B`Fi@dCo@hGuBpRoFpe@?v@VrA`A`AlADze@qCvyAaBvwAZjTBcIhg@CdPzJOVz\\sTjFbF`JtJnTeQ`Ty@tDOrkCtXFL_a@\\aC@oCOaCd^sIfEM`CDVlw@??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Arvada_20_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Boise",
+      "center": [
+        43.6135,
+        -116.20345
+      ],
+      "region": "ID",
+      "timeZone": "America/Boise",
+      "regionToken": "EVVYGCZGQ2V6O",
+      "serviceAreas": [
+        {
+          "name": "[Boise][SZ][Boise Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "{|niGr|feUnUeB?{KdbAG?m[lPa@tAeBVcA`DiKfC_Ntd@a@?{ZhVa@Jw}@txAa@byAr@xD~MfXqNll@dIdLsHvp@?tJxCpUsH_VfeAnJmC~BYvRuE~Ly]dMma@te@m|ClrBokD~m@{aHvrAw{HbhBgfEr{Ay^aJogCk`AchAsj@u@w]|s@uj@e]wHqmE__Awj@a`@w`@sgAeBsXrLi_@x`@sF`eAyJdg@{o@rnAyGpJoJaTyZxPeA~GfQzd@yfAdwBc@~~@q[pHwVfi@uNwNwLjY{CvS{MkTzLoa@mSmWsf@?mBxCmCpEaIfTkTpj@~ZboBeo@ri@iP_ZiOc}@wHq@sC~G_PfAwIjBwKzS_QzPeJ~EuCfB{@L]h@O@k@_A}Isp@cYyr@aeA~d@iB`d@}WxlAzC`iAkUns@aZ~xA}m@bkAu^f\\iWbtAaBf]k@bO_G`b@wDrbAf@v[eCvUsF|H~HxY}Azt@dBhTwAdZsDzk@bs@fFjkAjt@hAd_@|`AbAkDplE"
+        },
+        {
+          "name": "Grove Center LSZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ereiGpegdUFHDDL[NHFBD?H@JAHEFEDGFFDBHSMM@E@G@I?MAMEOEIIMOIOCQCE?KXGCEEIRFFDDBF@n@Wj@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Boise_2701_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Boulder",
+      "center": [
+        40.01499,
+        -105.27055
+      ],
+      "region": "CO",
+      "timeZone": "America/Denver",
+      "regionToken": "YP3QKU34ZN35O",
+      "serviceAreas": [
+        {
+          "name": "[Boulder][SZ][Boulder Program Boundary][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "wiksFdmhaSk@dRFrY{CvA}DKoIgEqEzDbHtOmo@HLf{@Ev_@irAbhCoAnA}D`DkKzEcJjr@gUCmYx@Ls]q@qhAgBchALae@Hoc@|@mn@^}Xm@gTbCyMlNyq@xZo|AhBpBja@|d@jO|QtOdRvV~Y`@mk@N_]gLCaA{RcGTHjQiTBAku@zSYa@yRgAsDcF{AkAmB[LyAlJmDHgBkOyAqDgCwDq@{J~CoGtFGGeDI_DuFoFaOjS@ha@cGD{AhBmBcC_FOBoUuGkEaG{CmEnAqCfEeAxBaD`IgAfCcHvJAjEvf@rj@on@l_DVtXcCtnCv@ji@zAzf@B~@BtABbDQztAzq@s@zAkKdVxGMqOv^_AAlOrUWnBfBtD`@dGC~IpCEq[pFeEAyV`JHNpSDtBdCJNzk@jQjEdK|@zEY|CaBhDgBpIsEbDHfDHnIP~Sf@|HNjJThTd@BcLfIDDlLrI`@pHZBwA`FcIlJv@jKlGvDpFxDjF~EeCLI{@oKpIuEtAaIEyFxGYBFfBj@zL]h]zALyV`IORuPh@CAc@j@G`C[vF[rN_@EuBmLwH?aB_D{BF{I`Qq@GeUyDDF}NdD_A@}c@bMz@~HvOxGtLfEfLbTv@PmNbFiCHwJ|A{@lMJ~g@[jGhM`B~C`d@o~@GcGbPFd@w|@af@aQLs}@w{AgHt@uMfJo[sK}KkBhHuEAAse@kIAoE?{CkQ{PDL|f@yi@hB_@{dAggAxCgeA}Tqf@dA^`e@zOzOiI~RwDtJ?uDmMaEaC}B{@[{JZu@aBkBx@xBpDeLmB?gKqJ?DwJyI}AEj~A@N??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Boulder_1150_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Phoenix",
+      "center": [
+        33.4484,
+        -112.074
+      ],
+      "region": "AZ",
+      "timeZone": "America/Phoenix",
+      "regionToken": "OZTYDMBICM2JH",
+      "serviceAreas": [
+        {
+          "name": "[PHX-SZ][PHX 2025 Program Boundary][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "urekEl`gkTtJHzq@MtTPfe@B~d@_AfmANnkAjAnv@Kh|BCE`FjGDpGQdr@d@rBDhOBjBBEqLe@uI?sHh@uEP}y@IwlA_@k{ARsjBk~@ImGIsCeB}BeCgCk@uED@iu@kJDcEGy_@Owi@DuXUmPKyk@i@yiFcD\\kqCJ}cDhAki@gVtEgVpCyRXqq@X_N{F{BmCJyMkADcIOoCk@_CO{BDyBGa}@C}@lmAIhu@ItrAPvbAH~[B`QMrJyWd_@oCvEqC~F_SzLeNpEmn@r@wSEoj@~AKp{ADjICbr@Mt\\C~KG|YEpMK`LUvLAvg@QjLLfEChHO`PZhADrk@QbV~@w@jd@rDds@Rh~@H~ZWxWFrC?xP{AnWoHdb@cSvKoAvLj@pJlA"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Phoenix_740_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Salt Lake City",
+      "center": [
+        40.7608,
+        -111.891
+      ],
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "regionToken": "6XZLNX7U6SX6C",
+      "serviceAreas": [
+        {
+          "name": "[Salt Lake City][SZ][SLC Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "_n|wFzauiTqHbTs`@|iA?xtAfBflAwiAflAwb@ha@}lAhCiG}GuAbd@et@pyDamC~sBbuAv[fxK?d|@}AuAmkBf`@{Aj]uKdsAvD_P|gGhTzaBnBbjBlmGk@teKn@frCaBloCnAhu@~A~~@{BvbErzBzb@cyAqRioFyHy}CaYytAnEe~E_L_fBnEkfDcJwMuVd@uR\\gQn@yf@tBcx@[o~Bi@ey@h@@xz@nFrz@igBs@is@uBo@hiCiBjpNejBuAWg^cpGu@@{|DH{_BkAu]iImViCgYkNo_ApBghB}AyzCRmQPwnJicC}@}`@}nAidCpGyvAhCkrAl~@o`BpGfBx}Cg\\vv@mFnO"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Salt_Lake_City_6050_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Scottsdale",
+      "center": [
+        33.50921,
+        -111.89903
+      ],
+      "region": "AZ",
+      "timeZone": "America/Phoenix",
+      "regionToken": "OZTYDMBICM2JH",
+      "serviceAreas": [
+        {
+          "name": "Scottsdale SZ[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ipflEfmshTixAv_C}GlwOwhRmEkoBprLfhBdjMjvPj@r_IGw@byAlcDbAx@cyAddEnBxfEXp@~y@tm@Yj@diCrlAe@pACDlA?tAM~A{@lGcAnFeErLuFpPdgAr@DxX|a@AvIRxQc@z}@v@zSQoErZll@[bRCnEyv@lCyc@fAcOkc@CDc\\f@kCr@_DxByFfF_FghBysA`j@X_AatArm@`BDciBpxAp@|AmgB}eB}uFkuCs}BsrAwnCyKakRm_HQsj@tH_z@Am]@s_@yJ}yJy{D"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Phoenix_740_exclude_new_type.json"
+      ]
     }
   ]
 }
