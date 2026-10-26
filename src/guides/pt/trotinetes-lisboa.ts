@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trotinetes em Lisboa: operadores, zonas proibidas, hotspots e minutos grátis com o Navegante',
   lede: 'As trotinetes em Lisboa alugam-se nas apps da Bolt, da Lime e da Bird, que mostram o preço antes de desbloquear: nenhuma publica uma tarifa para a cidade. As regras vêm de um acordo entre a Câmara e os operadores: 20 km/h no máximo, nada de passeios, vias BUS, jardins ou praças, e a viagem só termina num hotspot, um local de estacionamento autorizado. Quem vive em Lisboa e tem o passe Navegante mensal tem até 200 minutos grátis por mês, no máximo 10 por viagem. A 21 de outubro de 2026, a Câmara aprovou o fim das trotinetes partilhadas: os operadores têm 60 dias para as retirar.',
   published: '2026-10-13',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'pt:Lisboa',
   sections: [
     {
@@ -112,7 +112,7 @@ const guide: Guide = {
             '**Aeroporto.** A Bird tem hotspots junto ao Terminal 1, na Rua Interior ao Aeroporto da Portela, e na manhã de 13 de outubro havia cerca de 20 trotinetes da Lime e da Bird a menos de 500 m. Junto ao Terminal 2 não havia hotspots da Bird.',
             '**Barco para Cacilhas.** Nos barcos da TTSL só embarcam trotinetes dobráveis, como bagagem de mão, por isso uma partilhada não pode ir. Termine a viagem perto do Cais do Sodré, atravesse até Cacilhas e procure uma Lime ou uma Bird no [mapa de Almada](map:pt:Almada). As pontes 25 de Abril e Vasco da Gama são autoestradas e estão vedadas às trotinetes.',
             '**Metro e comboio.** Uma trotinete partilhada também não entra no Metro nem na CP: termine a viagem num hotspot perto da estação.',
-            '**Fora de Lisboa.** A Bird também opera em [Oeiras](guide:oeiras) e em [Cascais](guide:cascais), com cerca de 390 e 640 trotinetes no mapa na manhã de 24 de outubro de 2026. A Lime chegou a Oeiras em 2024, mas não aparece lá no mapa. O acordo de Lisboa e os minutos do Navegante não se aplicam lá. Para o Porto, veja o guia das [trotinetes no Porto](guide:porto).',
+            '**Fora de Lisboa.** A Bird também opera em [Oeiras](guide:oeiras) e em [Cascais](guide:cascais), com cerca de 390 e 640 trotinetes no mapa na manhã de 24 de outubro de 2026. A Lime chegou a Oeiras em 2024 e, desde 26 de outubro de 2026, aparece lá no mapa. O acordo de Lisboa e os minutos do Navegante não se aplicam lá. Para o Porto, veja o guia das [trotinetes no Porto](guide:porto).',
           ],
         },
       ],

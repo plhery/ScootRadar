@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trotinetes em Oeiras: a Bird, os pontos move, o passeio marítimo e as fronteiras com Lisboa e Cascais',
   lede: 'As trotinetes em Oeiras alugam-se sobretudo na app da Bird, a única operadora que o nosso mapa mostra no concelho, e cada viagem começa e acaba num ponto move, um lugar sinalizado para as trotinetes. A Bird não publica tarifas para Oeiras: a app mostra o preço antes de desbloquear. No passeio marítimo, as trotinetes só podem circular nos horários definidos pela Câmara, e nos espaços verdes públicos é proibido entrar com veículos motorizados.',
   published: '2026-10-24',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'pt:Oeiras',
   sections: [
     {
@@ -23,12 +23,12 @@ const guide: Guide = {
             head: ['Quem', 'Em Oeiras', 'Preço', 'No nosso mapa'],
             rows: [
               ['Bird', 'Trotinetes e bicicletas elétricas, em 400 estações', 'Não publicado: veja na app', 'Sim: cerca de 390 trotinetes'],
-              ['Lime', 'Chegou em junho de 2024; hoje, por confirmar', 'Veja na app', 'Não, em Oeiras'],
+              ['Lime', 'Chegou em junho de 2024', 'Veja na app', 'Sim, desde 26 de outubro'],
               ['Bolt', 'Chegou em novembro de 2022', 'Em Portugal, a partir de 0,15 € por minuto, mais o desbloqueio', 'Sim, desde 25 de outubro'],
             ],
           },
         },
-        'O ScootRadar mostra as trotinetes da Bird com a bateria de cada uma: cerca de 390 no [mapa de Oeiras](map:pt:Oeiras) às 10h13 de sábado, 24 de outubro de 2026. É o que o mapa mostrava nesse momento, não o tamanho da frota. As bicicletas da Bird não aparecem. As trotinetes da Lime mais próximas estavam em Belém, no [mapa de Lisboa](map:pt:Lisboa). A Bolt aparece desde 25 de outubro: cerca de 45 trotinetes às 12h50 desse dia.',
+        'O ScootRadar mostra as trotinetes da Bird com a bateria de cada uma: cerca de 390 no [mapa de Oeiras](map:pt:Oeiras) às 10h13 de sábado, 24 de outubro de 2026. É o que o mapa mostrava nesse momento, não o tamanho da frota. As bicicletas da Bird não aparecem. A Lime aparece desde 26 de outubro: uma contagem completa da sua zona em Oeiras, terminada às 22h24 de 25 de outubro, encontrou cerca de 180. A Bolt aparece desde 25 de outubro: cerca de 45 trotinetes às 12h50 desse dia.',
         '**O preço da Bird.** O contrato de aluguer da Bird para Portugal (de 8 de dezembro de 2021, o ainda publicado) diz que o preço aparece no ecrã de desbloqueio, antes da viagem, e pode incluir uma taxa de início e uma tarifa por minuto. Exige 18 anos, cativa 5 € no cartão antes de cada viagem e limita o preço a 100 € por dia.',
       ],
     },
@@ -124,7 +124,7 @@ const guide: Guide = {
     },
     {
       question: 'Há trotinetes Lime ou Bolt em Oeiras?',
-      answer: 'Da Bolt, sim: às 12h50 de 25 de outubro de 2026, o nosso mapa mostrava cerca de 45 em Oeiras. A Lime chegou em junho de 2024, mas não conseguimos confirmar se ainda opera lá, e não aparece no nosso mapa: veja na app.',
+      answer: 'Da Bolt, sim: às 12h50 de 25 de outubro de 2026, o nosso mapa mostrava cerca de 45 em Oeiras. Da Lime também: chegou em junho de 2024 e aparece no mapa desde 26 de outubro.',
     },
     {
       question: 'Posso ir de trotinete partilhada de Oeiras para Lisboa?',

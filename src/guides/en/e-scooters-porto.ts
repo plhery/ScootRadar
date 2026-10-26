@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'E-scooters in Porto: Bird and Lime, where you can ride and where to park',
   lede: 'You can rent an e-scooter in Porto from Bird or Lime, the two companies the city licensed in 2025; both also rent out e-bikes in the same app. We found no published Porto prices for either: the app shows the price before you unlock. You must end every ride at a municipal sharing point, marked in blue on the ground, and may not ride on pavements, squares, pedestrian streets, bus lanes or the upper deck of the Dom Luís I bridge. Since November 2025 the service may run 24 hours a day.',
   published: '2026-10-13',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'pt:Porto',
   sections: [
     {
@@ -24,11 +24,11 @@ const guide: Guide = {
             head: ['Operator', 'Unlock', 'Per minute', '10 / 20 minutes', 'On our map'],
             rows: [
               ['Bird', 'Not published', 'Not published', 'Price in the app', 'Yes: about 480 scooters'],
-              ['Lime', 'Not published', 'Not published', 'Price in the app', 'No: no public data feed'],
+              ['Lime', 'Not published', 'Not published', 'Price in the app', 'Yes, since 26 October 2026'],
             ],
           },
         },
-        'ScootRadar shows Bird’s e-scooters with their battery level: about 480 on the [map around Porto](map:pt:Porto) on 13 October 2026. The area spills into Matosinhos, so that isn’t Bird’s fleet size. Lime publishes no open data in Porto and isn’t on the map: check its app too. New to shared scooters? Read [how to rent an e-scooter](guide:how-to-rent).',
+        'ScootRadar shows Bird’s e-scooters with their battery level: about 480 on the [map around Porto](map:pt:Porto) on 13 October 2026. The area spills into Matosinhos, so that isn’t Bird’s fleet size. Since 26 October the map also shows Lime’s, with their battery level: a full scan of Lime’s Porto zone, finished at 22:27 on 25 October, found about 430, counted separately from Bird’s. New to shared scooters? Read [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },
     {

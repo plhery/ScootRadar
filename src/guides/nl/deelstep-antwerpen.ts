@@ -8,16 +8,16 @@ const guide: Guide = {
   title: 'Deelstep Antwerpen 2026: prijzen, dropzones en no-go zones',
   description: 'Deelstep Antwerpen: wat Voi, Lime en Bolt kosten, dropzones binnen de Leien, 8 km/u op de Meir, no-go zones en de Belgische regels voor leeftijd en helm.',
   headline: 'Deelstep Antwerpen: Voi, Lime en Bolt, wat een rit kost, dropzones binnen de Leien en waar je step stilvalt',
-  lede: 'Een deelstep in Antwerpen huur je bij Voi, Lime of Bolt, de drie aanbieders met een vergunning van de stad. Voi vraagt € 0,99 om te ontgrendelen en € 0,25 per minuut, Lime € 0,99 en € 0,27 per minuut, en Bolt € 1,13 per kilometer (tarieven op 13 oktober 2026). Binnen de Leien beëindig je je rit alleen in een dropzone, in het station Antwerpen-Centraal valt de step stil, en op de Meir rijdt hij overdag hooguit 8 km/u. De Belgische wet laat je vanaf 16 jaar steppen: bij Voi kan dat, bij Lime en Bolt moet je 18 zijn.',
+  lede: 'Een deelstep in Antwerpen huur je bij Voi, Lime of Bolt, de drie aanbieders met een vergunning van de stad. Voi vraagt € 0,99 om te ontgrendelen en € 0,25 per minuut, Lime € 0,99 en € 0,27 per minuut, en Bolt € 1,13 per kilometer (tarieven op 13 oktober 2026). Binnen de Leien beëindig je je rit alleen in een dropzone, in het station Antwerpen-Centraal valt de step stil, en op de Meir rijdt hij overdag hooguit 8 km/u. De Belgische wet laat je vanaf 16 jaar steppen, maar Bolt verhuurt pas vanaf 18.',
   published: '2026-10-13',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'be:Antwerpen',
   sections: [
     {
       heading: 'Een deelstep huren in Antwerpen: Voi, Lime en Bolt',
       blocks: [
         '**Voi**, **Lime** en **Bolt** hebben de drie vergunningen die de stad voor deelsteps verleent, elk voor 500 tot 1700 steps. Lime rijdt er sinds maart 2021, Voi sinds oktober 2024 en Bolt sinds maart 2025, in de plaats van Poppy.',
-        'Op de kaart van Slim naar Antwerpen, de mobiliteitssite van de stad, stonden er op de avond van 13 oktober 2026 zo’n 2330 van de drie samen: een momentopname, geen officieel vlootcijfer. Op [onze kaart van Antwerpen](map:be:Antwerpen) zie je de steps van Voi, die ochtend ongeveer 820, en sinds 25 oktober 2026 ook die van Bolt, die dag om 13.50 uur ongeveer 900. Lime publiceert er geen open data en staat niet op onze kaart: kijk daarvoor in de app van Lime.',
+        'Op de kaart van Slim naar Antwerpen, de mobiliteitssite van de stad, stonden er op de avond van 13 oktober 2026 zo’n 2330 van de drie samen: een momentopname, geen officieel vlootcijfer. Op [onze kaart van Antwerpen](map:be:Antwerpen) zie je de steps van Voi, die ochtend ongeveer 820, en sinds 25 oktober 2026 ook die van Bolt, die dag om 13.50 uur ongeveer 900. Sinds 26 oktober 2026 staat ook Lime erop, met de plek en de batterijlading van elke step. Een volledige scan van de Lime-zone, afgerond op 25 oktober om 23.05 uur, vond er zo’n 880: een aparte telling, los van Voi en Bolt.',
         'Hoe huren werkt, lees je stap voor stap in [een deelstep huren](guide:how-to-rent).',
       ],
     },
@@ -31,13 +31,13 @@ const guide: Guide = {
             head: ['Aanbieder', 'Ontgrendelen', 'Per minuut of per km', 'Voorbeeld', 'Op onze kaart'],
             rows: [
               ['Voi', '€ 0,99', '€ 0,25 per minuut', '10 minuten: € 3,49; 20 minuten: € 5,99', 'Ja'],
-              ['Lime', '€ 0,99', '€ 0,27 per minuut', '10 minuten: € 3,69; 20 minuten: € 6,39', 'Nee: kijk in de app'],
+              ['Lime', '€ 0,99', '€ 0,27 per minuut', '10 minuten: € 3,69; 20 minuten: € 6,39', 'Ja, sinds 26 oktober 2026'],
               ['Bolt', '€ 0,99 volgens de stad; kijk in de app', '€ 1,13 per km', '2 km: € 3,25; 3 km: € 4,38', 'Ja, sinds 25 oktober 2026'],
             ],
           },
         },
         'Bolt startte in maart 2025 zonder ontgrendelprijs. De stad vermeldt nu € 0,99, en daarmee rekenen de voorbeelden; kijk in de app voor je vertrekt.',
-        'Voi en Bolt hebben ook passen, met de prijzen in de app. Volgens de Belgische voorwaarden van Voi duurt een rit hooguit een uur: daarna beëindigt Voi hem zelf.',
+        'Bolt heeft ook dag-, week- en maandpassen, met de prijzen in de app.',
       ],
     },
     {
@@ -49,7 +49,7 @@ const guide: Guide = {
             caption: 'Regels voor een deelstep in Antwerpen, oktober 2026',
             head: ['Onderwerp', 'Wat geldt'],
             rows: [
-              ['Leeftijd', 'De wet zegt 16 jaar. Voi verhuurt vanaf 16, Lime en Bolt pas vanaf 18'],
+              ['Leeftijd', 'De wet zegt 16 jaar. Bolt verhuurt pas vanaf 18; Voi en Lime: zie de voorwaarden in hun app'],
               ['Snelheid', 'Een deelstep rijdt in Antwerpen hooguit 20 km/u, in trage zones 8 km/u'],
               ['Helm', 'Verplicht als je step sneller kan dan 20 km/u, sinds 1 september 2026; deelsteps zijn in Antwerpen op 20 km/u begrensd, dus daarop niet'],
               ['Waar rijden', 'Fietspad of rijbaan; binnen de bebouwde kom nooit op het voetpad'],
@@ -71,20 +71,19 @@ const guide: Guide = {
         'In 2025 waren er 129 binnen de Leien: in winkelgebieden ligt er een binnen 150 meter, elders binnen 250 meter. Je vindt ze onder meer op de Groenplaats, de Grote Markt, de Meir en de Eiermarkt, aan het Steenplein en op de Sint-Jansvliet, bij de Sint-Annatunnel. De app toont de dichtstbijzijnde.',
         { note: 'Zolang de app je rit niet beëindigt, betaal je. Binnen de Leien loopt je rit door tot je de step in een dropzone zet, en in een no-go zone tot je hem eruit duwt.' },
         'Buiten de Leien zet je de step in een dropzone of op een plek waar hij niemand hindert, behalve in een no park zone: drukke plekken, natuurgebieden, begraafplaatsen, sportterreinen, speelpleinen en de bruggen over de Ring. Bij Bolt kijkt software je parkeerfoto na: staat de step fout, dan kan je je rit niet beëindigen.',
-        'Een step die een ingang, een doorgang of een zebrapad verspert, staat hinderlijk geparkeerd. Dat kost geld:',
+        'Zet je step buiten de rijbaan, zonder dat hij iemand hindert of in gevaar brengt. Anders kost het geld:',
         {
           table: {
             caption: 'Wat een fout geparkeerde deelstep kan kosten in Antwerpen (oktober 2026)',
             head: ['Wie', 'Wat je kan betalen'],
             rows: [
-              ['Stad Antwerpen', 'GAS-boete van € 58, sinds 3 maart 2026 uitdrukkelijk ook voor steps; politie of stadsdiensten mogen de step meteen weghalen'],
-              ['Voi', '€ 25 als Voi de step als achtergelaten beschouwt'],
-              ['Lime (voorwaarden van januari 2023)', 'Tot € 50 als je de step in een verboden zone gebruikt; € 100 om de step op te halen als hij buiten het toegelaten gebied staat'],
+              ['Stad Antwerpen', 'GAS-boete van € 58 als je meerderjarig bent'],
+              ['Voi en Lime', 'Eigen kosten: zie de voorwaarden in hun app'],
               ['Bolt (voorwaarden vanaf 1 december 2026)', '€ 20 automatisch buiten een toegelaten parkeerplek; tot € 100 om de step op te halen'],
             ],
           },
         },
-        'De aanbieder moet aan de politie kunnen doorgeven wie er reed, en rekent boetes door aan jou.',
+        'Elke aanbieder moet weten wie er reed, en geeft je uiterlijk de tweede keer dat je hinderlijk parkeert een boete.',
       ],
     },
     {
@@ -130,7 +129,7 @@ const guide: Guide = {
       blocks: [
         '**Velo**, het fietsdeelsysteem van de stad, heeft meer dan 300 stations: je neemt een fiets aan het ene station en zet hem terug aan om het even welk ander. Op 13 oktober 2026 kostte een dagpas € 5, een weekpas € 12 en een jaarkaart € 58. Elke rit tot 30 minuten zit erin; tot een uur betaal je € 0,50 extra.',
         'Een dagpas kost dus minder dan één rit van 20 minuten op een Voi-step. De concessie van Velo loopt eind februari 2027 af en de stad bereidt een nieuwe aanbesteding voor: prijzen en uitbater kunnen dan veranderen.',
-        'Toch liever een step? Op de [kaart van Antwerpen](map:be:Antwerpen) zie je de dichtstbijzijnde Voi of Bolt; voor Lime open je de app van Lime.',
+        'Toch liever een step? Op de [kaart van Antwerpen](map:be:Antwerpen) zie je de dichtstbijzijnde Voi, Lime of Bolt.',
       ],
     },
     {
@@ -153,7 +152,7 @@ const guide: Guide = {
     },
     {
       question: 'Hoe oud moet je zijn om een deelstep te huren in Antwerpen?',
-      answer: 'De Belgische wet laat je vanaf 16 jaar steppen, maar elke aanbieder kiest zijn eigen grens. Voi verhuurt in Antwerpen vanaf 16 jaar, Lime en Bolt pas vanaf 18. Met 16 of 17 kan je dus alleen een Voi huren.',
+      answer: 'De Belgische wet laat je vanaf 16 jaar steppen, maar elke aanbieder kiest zijn eigen grens. Bolt verhuurt pas vanaf 18. De grens van Voi en Lime lees je in de voorwaarden in hun app: ben je 16 of 17, kijk dan daar.',
     },
     {
       question: 'Is een helm verplicht op een deelstep in Antwerpen?',
@@ -164,21 +163,21 @@ const guide: Guide = {
       answer: 'Alleen een opvouwbare step, gratis, als je hem volledig opplooit voor je opstapt en hij de hele rit geplooid blijft. Een deelstep mag nooit mee.',
     },
     {
-      question: 'Waarom zie ik Lime niet op de kaart van ScootRadar?',
-      answer: 'Lime publiceert voor Antwerpen geen open data, dus onze kaart toont daar alleen Voi en, sinds 25 oktober 2026, Bolt. Lime rijdt er wel: open de app van Lime om de dichtstbijzijnde step te vinden.',
+      question: 'Staat Lime op de kaart van ScootRadar?',
+      answer: 'Ja, sinds 26 oktober 2026: je ziet waar elke Lime-step staat en hoe vol zijn batterij is. Prijs en zones toont de app van Lime. Een volledige scan van de Lime-zone vond er op 25 oktober 2026 om 23.05 uur zo’n 880: een momentopname, geen officieel vlootcijfer.',
     },
   ],
   sources: [
     { title: 'Slim naar Antwerpen: Deelsteps', url: 'https://www.slimnaarantwerpen.be/nl/deelmobiliteit/deelsteps' },
     { title: 'Slim naar Antwerpen: Uitbreiding no park zone voor deelsteps binnen de Leien (20 juni 2025)', url: 'https://www.slimnaarantwerpen.be/nl/nieuws/uitbreiding-no-park-zone-voor-deelsteps-binnen-leien' },
     { title: 'Slim naar Antwerpen: Bolt lanceert elektrische deelsteps in Antwerpen', url: 'https://www.slimnaarantwerpen.be/nl/nieuws/bolt-lanceert-elektrische-deelsteps-in-antwerpen' },
-    { title: 'Stad Antwerpen: Politiecodex', url: 'https://www.antwerpen.be/info/politiecodex' },
+    { title: 'Slim naar Antwerpen: Voi lanceert elektrische deelsteps in Antwerpen (9 oktober 2024)', url: 'https://www.slimnaarantwerpen.be/nl/nieuws/voi-lanceert-elektrische-deelsteps-in-antwerpen' },
+    { title: 'Slim naar Antwerpen: Reglement deelsystemen zonder vaste stallingsinfrastructuur', url: 'https://www.slimnaarantwerpen.be/nl/mobiliteitsaanbieders/reglement-micromobiliteit' },
+    { title: 'Belgisch Staatsblad: KB van 9 maart 2014 over GAS-boetes voor stilstaan en parkeren', url: 'https://www.ejustice.just.fgov.be/eli/besluit/2014/03/09/2014014326/justel' },
     { title: 'Slim naar Antwerpen: Nieuwe helmplicht voor elektrische steps sinds 1 september 2026', url: 'https://www.slimnaarantwerpen.be/nl/nieuws/nieuwe-helmplicht-voor-elektrische-steps-sinds-1-september-2026' },
     { title: 'Slim naar Antwerpen: Voetgangers- en fietstunnel onder de Schelde', url: 'https://www.slimnaarantwerpen.be/nl/fiets/voetgangers-en-fietstunnel-onder-de-schelde' },
     { title: 'Slim naar Antwerpen: Asbest vertraagt de renovatie van de premetrotunnel (29 september 2026)', url: 'https://www.slimnaarantwerpen.be/nl/nieuws/bijkomende-asbestverwijdering-zorgt-voor-vertraging-renovatiewerken-aan-antwerpse-metrotunnel' },
     { title: 'De Lijn: Algemene reisvoorwaarden', url: 'https://www.delijn.be/nl/content/algemene-reisvoorwaarden' },
-    { title: 'Voi: Algemene voorwaarden voor het gebruik, België', url: 'https://www.voi.com/nl/juridisch/algemene-voorwaarden-voor-het-gebruik/belgie' },
-    { title: 'Lime: Gebruikersovereenkomst België', url: 'https://www.li.me/nl-be/user-agreement' },
     { title: 'Velo Antwerpen: Tarieven', url: 'https://www.velo-antwerpen.be/nl/tarieven' },
   ],
 };

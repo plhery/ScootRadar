@@ -10,7 +10,7 @@ const guide: Guide = {
   headline: 'Trotinetes no Porto: Bird e Lime, onde pode andar e onde estacionar',
   lede: 'Pode alugar trotinetes no Porto à Bird e à Lime, as duas empresas licenciadas pela Câmara em 2025; ambas têm também bicicletas elétricas na mesma app. Não encontrámos tarifas publicadas para o Porto: a app mostra o preço antes de desbloquear. A viagem termina sempre num ponto de partilha, marcado a azul no chão, e é proibido andar em passeios, praças, ruas pedonais, corredores BUS e no tabuleiro superior da Ponte Luís I. Desde novembro de 2025, o serviço pode funcionar 24 horas por dia.',
   published: '2026-10-13',
-  updated: '2026-10-25',
+  updated: '2026-10-26',
   city: 'pt:Porto',
   sections: [
     {
@@ -24,11 +24,11 @@ const guide: Guide = {
             head: ['Operador', 'Desbloqueio', 'Por minuto', '10 / 20 minutos', 'No nosso mapa'],
             rows: [
               ['Bird', 'Não publicado', 'Não publicado', 'Preço na app', 'Sim: cerca de 480 trotinetes'],
-              ['Lime', 'Não publicado', 'Não publicado', 'Preço na app', 'Não: sem dados abertos'],
+              ['Lime', 'Não publicado', 'Não publicado', 'Preço na app', 'Sim, desde 26 de outubro de 2026'],
             ],
           },
         },
-        'O ScootRadar mostra as trotinetes da Bird, com a bateria de cada uma: cerca de 480 no [mapa do Porto](map:pt:Porto) a 13 de outubro de 2026, numa área que entra por Matosinhos; não é, portanto, a frota da Bird. A Lime não publica dados abertos no Porto e não aparece no mapa: abra também a app da Lime. Nunca alugou uma trotinete? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
+        'O ScootRadar mostra as trotinetes da Bird, com a bateria de cada uma: cerca de 480 no [mapa do Porto](map:pt:Porto) a 13 de outubro de 2026, numa área que entra por Matosinhos; não é, portanto, a frota da Bird. Desde 26 de outubro, o mapa mostra também as da Lime, com a bateria: uma contagem completa da zona da Lime no Porto, terminada às 22h27 de 25 de outubro, encontrou cerca de 430, que não se somam às da Bird. Nunca alugou uma trotinete? Veja [como alugar uma trotinete elétrica](guide:how-to-rent).',
       ],
     },
     {
