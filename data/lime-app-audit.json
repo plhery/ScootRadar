@@ -2776,6 +2776,193 @@
       "footprintSources": [
         "https://assets.lime.bike/zones_attributes/Charlotte_626_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Austin",
+      "regionToken": "GVLCE6EOFE4L4",
+      "fingerprint": "2d072e2300817ecf68f30e4b57afeacd094fe88ee2ff89f3f8546a95a3852bf8",
+      "groups": 39,
+      "localCells": 153,
+      "coldMapRequests": 193,
+      "warmMapRequests": 193,
+      "scooters": 3282,
+      "stationaryReferences": 101,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T14:54:50.683Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Austin_8094_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Corpus Christi",
+      "regionToken": "ZS6GQSYU3MZG4",
+      "fingerprint": "7e633a5b75bb4493cd17b309939a60c6ee64bccb4ef35d30bc5f4ce66672d343",
+      "groups": 156,
+      "localCells": 624,
+      "coldMapRequests": 624,
+      "warmMapRequests": 624,
+      "scooters": 405,
+      "stationaryReferences": 98,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T16:13:07.149Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Corpus_Christi_459_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Edmond",
+      "regionToken": "BHSTG546LJYTZ",
+      "fingerprint": "fcfa1b5be1c150b5d2203706aebb146d0983aef2a6fb730c7f637cc6c9468cd1",
+      "groups": 7,
+      "localCells": 25,
+      "coldMapRequests": 25,
+      "warmMapRequests": 25,
+      "scooters": 99,
+      "stationaryReferences": 4,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T16:16:16.091Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Edmond_804_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Jenks",
+      "regionToken": "IOKKGGHD2XWFG",
+      "fingerprint": "e01a7b35630c224d9863c549fc3831ac6703078dba74b5bf52112bb7a494a474",
+      "groups": 3,
+      "localCells": 11,
+      "coldMapRequests": 11,
+      "warmMapRequests": 11,
+      "scooters": 27,
+      "stationaryReferences": 7,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T16:17:47.091Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Tulsa_848_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Little Rock",
+      "regionToken": "7KAR23JV5Q3DK",
+      "fingerprint": "3ab6f97d221a5ffa36c273c349693d0e80fd7295d717dbfdb696e2ab2521c78b",
+      "groups": 15,
+      "localCells": 57,
+      "coldMapRequests": 57,
+      "warmMapRequests": 57,
+      "scooters": 374,
+      "stationaryReferences": 10,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T16:24:40.267Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Little_Rock_431_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Lubbock",
+      "regionToken": "24NS52PQMH4CA",
+      "fingerprint": "d0c82f2903f5620ba103ef7997345e85e5b813cffeedf068a08d1a98318c7ccb",
+      "groups": 106,
+      "localCells": 422,
+      "coldMapRequests": 426,
+      "warmMapRequests": 426,
+      "scooters": 393,
+      "stationaryReferences": 4,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T17:14:36.211Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Lubbock_684_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Milwaukee",
+      "regionToken": "XZTSEXP4LYW3T",
+      "fingerprint": "db84b55bed23ded487fe93855fb8d4133e9a3b94f5b693df2ad5fc3e804475c0",
+      "groups": 47,
+      "localCells": 186,
+      "coldMapRequests": 198,
+      "warmMapRequests": 198,
+      "scooters": 2717,
+      "stationaryReferences": 82,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T17:37:56.167Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Milwaukee_6280_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Mobile",
+      "regionToken": "34T5I5JPRNEFP",
+      "fingerprint": "b3ace51679c2f5aded45c86dab4e7c2ac6059748de1ca7a9f746cad81578e596",
+      "groups": 1,
+      "localCells": 4,
+      "coldMapRequests": 16,
+      "warmMapRequests": 16,
+      "scooters": 498,
+      "stationaryReferences": 199,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T17:40:02.190Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Mobile_1847_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Oklahoma City",
+      "regionToken": "FQBTFBZWAS4CO",
+      "fingerprint": "a3808c301a5bd75ae0fc4bdef88024e53d8a583fcb4566d0f19d3607fa46590a",
+      "groups": 26,
+      "localCells": 103,
+      "coldMapRequests": 107,
+      "warmMapRequests": 107,
+      "scooters": 585,
+      "stationaryReferences": 136,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T18:11:04.207Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Oklahoma_City_38422_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Rochester",
+      "regionToken": "CM7NRHUK7L2TH",
+      "fingerprint": "68f7951f1cceca034c28c4e65cb7edc16188d4179dd791a5ae69c4af36f2c741",
+      "groups": 27,
+      "localCells": 105,
+      "coldMapRequests": 105,
+      "warmMapRequests": 105,
+      "scooters": 263,
+      "stationaryReferences": 31,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T18:23:33.163Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Rochester_1233_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Tulsa",
+      "regionToken": "IOKKGGHD2XWFG",
+      "fingerprint": "b886c26e9b719916eb75dfc751aaa89aa6c5969c0dc98479627951f2a052b4a1",
+      "groups": 35,
+      "localCells": 140,
+      "coldMapRequests": 140,
+      "warmMapRequests": 140,
+      "scooters": 592,
+      "stationaryReferences": 53,
+      "missingStationaryReferences": 0,
+      "finishedAt": "2026-10-26T18:40:07.209Z",
+      "footprintSources": [
+        "https://assets.lime.bike/zones_attributes/Tulsa_848_exclude_new_type.json"
+      ]
     }
   ],
   "performanceSample": {

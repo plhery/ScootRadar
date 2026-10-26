@@ -21,9 +21,9 @@ in Porto, Faro and Oeiras, and since 26 October 2026 in Tokyo and Yokohama,
 in Port Phillip, in Auckland, Christchurch, Hamilton, Wellington and
 Palmerston North, in Monterrey and Guadalupe, in Ajax, Coquitlam,
 Laval, Montréal's Parc Jean-Drapeau, Port Moody, Richmond and Vaughan, in
-34 American towns, from Los Angeles and Dallas to Minneapolis and Tampa, in
+45 American towns, from Los Angeles and Austin to Milwaukee and Tampa, in
 Ashdod and Eilat, and in Dubai, Abu Dhabi and Al Ain.
-The other markets its rider map lists, 40 found so far, are added country by
+The other markets its rider map lists, 27 found so far, are added country by
 country, each once its full-area audit is clean; until then they remain gaps. See
 [the collection and validation evidence](lime-app-map.md#every-market-the-map-lists-october-2026).
 
@@ -458,7 +458,7 @@ banned shared scooters, and feeds that were empty when checked.
   - Systems 65, 67 and 68 on 3electra's host answer 400.
 
 - **United States** ([guide](american-scooter-feeds.md)): Hopp (Bolt) and Veo
-  in Washington, DC, Bird in 24 towns, Lime in 51 (34 of them from its rider
+  in Washington, DC, Bird in 24 towns, Lime in 62 (45 of them from its rider
   map since 26 October 2026), Veo in 39 more, Spin in 29 and Lyft in Chicago
   and Portland are covered.
   - **No public feed:** a survey on 16 October 2026 found no unread US feed.
@@ -466,20 +466,22 @@ banned shared scooters, and feeds that were empty when checked.
     public dashboards and the Bureau of Transportation Statistics'
     [2026 list](https://data.bts.gov/d/cqdc-cm7d).
     - **Lime** publishes nothing for most of its American towns. Its rider
-      map has supplied 34 of them since 26 October 2026, about 33,500
-      scooters: Los Angeles, Portland, OR (beside Lyft), Salt Lake City
-      (beside Spin and Veo), Spokane, Dallas (beside Bird), Minneapolis
-      (beside Spin), Boise, Tampa, Sacramento, Phoenix (beside Spin),
-      Indianapolis, St. Paul (beside Spin), Boulder, Charlotte, Orlando, Nashville
-      (beside Bird and Spin), Omaha, St. Petersburg, Raleigh, Winston-Salem,
-      Cincinnati, South Lake Tahoe, Montgomery County, MD, Jacksonville, Isla
-      Vista, Lansing, Scottsdale, Arvada, Spokane Valley, West Sacramento,
-      Richmond (beside Bird and Spin), Fairfax, St. Louis Park and Tualatin
+      map has supplied 45 of them since 26 October 2026, about 42,700
+      scooters: Los Angeles, Austin, Milwaukee, Portland, OR (beside Lyft),
+      Salt Lake City (beside Spin and Veo), Spokane, Dallas (beside Bird),
+      Minneapolis (beside Spin), Boise, Tampa, Sacramento, Phoenix (beside
+      Spin), Indianapolis, St. Paul (beside Spin), Boulder, Charlotte, Orlando,
+      Nashville (beside Bird and Spin), Omaha, Tulsa, St. Petersburg, Oklahoma
+      City, Raleigh, Mobile, Corpus Christi, Lubbock, Little Rock, Rochester,
+      MN, Winston-Salem, Cincinnati, South Lake Tahoe, Montgomery County, MD,
+      Jacksonville, Isla Vista, Lansing, Scottsdale, Arvada, Spokane Valley,
+      West Sacramento, Richmond (beside Bird and Spin), Edmond, Fairfax, St.
+      Louis Park, Jenks and Tualatin
       ([guide](american-scooter-feeds.md#lime-supplement--26-october-2026)).
-      Still without one: Milwaukee (2,400), Alexandria, Albuquerque, Tucson,
-      Oklahoma City, Long Beach and smaller towns.
-    - **Bird and Lime** together in Austin (about 5,400).
-    - **Bird** in Charlotte, Sacramento, Oklahoma City and Bloomington, IN
+      Still without one: Alexandria, Albuquerque, Tucson, Long Beach and
+      smaller towns.
+    - **Bird** in Austin, beside Lime's 3,282 scooters (the two had about
+      5,400 together), and in Charlotte, Sacramento, Oklahoma City and Bloomington, IN
       (about 220).
     - **GCOO** in Memphis, 10 scooters in four areas on 24 October 2026. Its
       Los Angeles, Alexandria and Arlington fleets are on the map since that
@@ -513,7 +515,11 @@ banned shared scooters, and feeds that were empty when checked.
     exclusive operator ([Mobile GR](https://www.grandrapidsmi.gov/departments/mobile-gr/mobility/shared-micromobility/)),
     and Lime's rider map held none there in a full-area audit on the evening
     of 25 October 2026. Nor did it in Charleston, where Lime runs e-bikes
-    with MUSC Health.
+    with MUSC Health, or on 26 October in Carthage, Missouri, whose city
+    council voted on 26 May 2026 not to bring Lime's scooters back for the
+    summer, and Norman, Oklahoma, where the city lists only Veo among the
+    companies licensed to rent e-scooters
+    ([e-scooters](https://www.normanok.gov/residents-visitors/transit-parking/e-scooters)).
   - **Washington, DC:** Bird's feed lists no available scooter in the
     District, Spin's and Lyft's none at all. Veo's `arl` feed is the same fleet
     as `xdc`, which is covered. Lime's, which answered 404 in mid-October, has

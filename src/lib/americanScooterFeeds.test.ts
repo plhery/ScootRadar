@@ -51,21 +51,25 @@ describe('the United States', () => {
   it('reads Lime\'s rider map where Lime publishes no feed, each market under the town the map lists', () => {
     // Lime's towns with no public feed: its rider map, read in small groups, since 26 October 2026.
     const lime = REGIONAL_SCOOTER_SYSTEMS.filter(entry => entry.country === 'US' && entry.limeAppMap);
-    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Arvada', 'Boise', 'Boulder', 'Charlotte', 'Cincinnati', 'Dallas', 'Fairfax',
-      'Indianapolis', 'Isla Vista', 'Jacksonville', 'Lansing', 'Los Angeles', 'Minneapolis', 'Montgomery County', 'Nashville', 'Omaha',
-      'Orlando', 'Phoenix', 'Portland', 'Raleigh', 'Richmond', 'Sacramento', 'Salt Lake City', 'Scottsdale', 'South Lake Tahoe', 'Spokane',
-      'Spokane Valley', 'St. Louis Park', 'St. Paul', 'St. Petersburg', 'Tampa', 'Tualatin', 'West Sacramento', 'Winston-Salem']);
+    expect([...new Set(lime.map(entry => entry.city))].sort()).toEqual(['Arvada', 'Austin', 'Boise', 'Boulder', 'Charlotte', 'Cincinnati',
+      'Corpus Christi', 'Dallas', 'Edmond', 'Fairfax', 'Indianapolis', 'Isla Vista', 'Jacksonville', 'Jenks', 'Lansing', 'Little Rock',
+      'Los Angeles', 'Lubbock', 'Milwaukee', 'Minneapolis', 'Mobile', 'Montgomery County', 'Nashville', 'Oklahoma City', 'Omaha', 'Orlando',
+      'Phoenix', 'Portland', 'Raleigh', 'Richmond', 'Rochester', 'Sacramento', 'Salt Lake City', 'Scottsdale', 'South Lake Tahoe', 'Spokane',
+      'Spokane Valley', 'St. Louis Park', 'St. Paul', 'St. Petersburg', 'Tampa', 'Tualatin', 'Tulsa', 'West Sacramento', 'Winston-Salem']);
     for (const id of ['us:nc:Raleigh', 'us:in:Indianapolis', 'us:va:Fairfax', 'us:oh:Cincinnati', 'us:fl:Tampa', 'us:fl:Orlando',
       'us:fl:St. Petersburg', 'us:nc:Winston-Salem', 'us:mi:Lansing', 'us:ca:Los Angeles', 'us:or:Portland', 'us:ca:Sacramento',
       'us:ca:West Sacramento', 'us:wa:Spokane', 'us:wa:Spokane Valley', 'us:or:Tualatin', 'us:ca:Isla Vista', 'us:ca:South Lake Tahoe',
       'us:ut:Salt Lake City', 'us:id:Boise', 'us:az:Phoenix', 'us:co:Boulder', 'us:az:Scottsdale', 'us:co:Arvada', 'us:tx:Dallas',
       'us:fl:Jacksonville', 'us:mn:Minneapolis', 'us:md:Montgomery County', 'us:tn:Nashville', 'us:ne:Omaha', 'us:va:Richmond',
-      'us:mn:St. Louis Park', 'us:mn:St. Paul', 'us:nc:Charlotte']) {
+      'us:mn:St. Louis Park', 'us:mn:St. Paul', 'us:nc:Charlotte', 'us:tx:Austin', 'us:tx:Corpus Christi', 'us:ok:Edmond', 'us:ok:Jenks',
+      'us:ar:Little Rock', 'us:tx:Lubbock', 'us:wi:Milwaukee', 'us:al:Mobile', 'us:ok:Oklahoma City', 'us:mn:Rochester', 'us:ok:Tulsa']) {
       expect(REGIONAL_SCOOTER_CITIES.filter(city => city.id === id), id).toHaveLength(1);
     }
     expect(lime.find(entry => entry.city === 'Indianapolis')?.timeZone).toBe('America/Indiana/Indianapolis');
     expect(lime.find(entry => entry.city === 'Cincinnati')).toMatchObject({ region: 'OH', timeZone: 'America/New_York' });
     expect(lime.find(entry => entry.city === 'Lansing')).toMatchObject({ region: 'MI', timeZone: 'America/Detroit' });
+    // Lime's Rochester is Minnesota's; Veo's, in New York, has a feed of its own.
+    expect(lime.find(entry => entry.city === 'Rochester')).toMatchObject({ region: 'MN', timeZone: 'America/Chicago' });
     // Arizona keeps standard time all year.
     expect(lime.find(entry => entry.city === 'Scottsdale')).toMatchObject({ region: 'AZ', timeZone: 'America/Phoenix' });
     expect(lime.find(entry => entry.city === 'Boise')).toMatchObject({ region: 'ID', timeZone: 'America/Boise' });

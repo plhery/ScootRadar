@@ -38,13 +38,14 @@ describe('searchCoveredCities', () => {
 
   it('lists the cities a few letters could become, a city typed in full first and the others by name', () => {
     expect(names('Ber')).toEqual(['Bergamo, Italy', 'Berkeley, CA, United States', 'Berlin, Germany', 'Bern, Switzerland', 'Bertioga, Brazil']);
-    // La Roche-sur-Yon, Le Chesnay-Rocquencourt, Marly-le-Roi and New Rochelle by a later word; five at most, so
-    // Rochester, Roma and Romanshorn wait for a third letter, and Portimão, found by its beach, Praia da Rocha, and
-    // Rhodes, by its Greek name, Rodos, come after the cities found by their own names.
+    // La Roche-sur-Yon, Le Chesnay-Rocquencourt, Little Rock, Marly-le-Roi and New Rochelle by a later word; five at
+    // most, so Roanoke, Rochester, Roma and Romanshorn wait for a third letter, and Portimão, found by its beach, Praia
+    // da Rocha, and Rhodes, by its Greek name, Rodos, come after the cities found by their own names.
     expect(names('Ro')).toEqual([
-      'La Roche-sur-Yon, France', 'Le Chesnay-Rocquencourt, France', 'Marly-le-Roi, France', 'New Rochelle, NY, United States',
-      'Roanoke, VA, United States',
+      'La Roche-sur-Yon, France', 'Le Chesnay-Rocquencourt, France', 'Little Rock, AR, United States', 'Marly-le-Roi, France',
+      'New Rochelle, NY, United States',
     ]);
+    expect(names('Rochester')).toEqual(['Rochester, MN, United States', 'Rochester, NY, United States']);
     expect(names('Rod')).toEqual(['Rhodes, Greece']);
     expect(names('Praia')).toEqual(['Praia Grande, Brazil', 'Portimão, Portugal']);
     expect(names('Rom')).toEqual(['Roma, Italy', 'Romanshorn, Switzerland']);

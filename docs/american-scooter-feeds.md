@@ -14,8 +14,8 @@ other account credentials are used. The catalog is
 [`american-scooter-feeds.json`](../data/american-scooter-feeds.json); what is
 left out, and when to look again, is in [Coverage gaps](coverage-gaps.md).
 
-The map covers 109 towns in 33 states and the District: Washington, DC
-(Hopp, Veo and Lime), 24 towns of Bird's, 51 of Lime's (34 from its rider
+The map covers 120 towns in 33 states and the District: Washington, DC
+(Hopp, Veo and Lime), 24 towns of Bird's, 62 of Lime's (45 from its rider
 map), 39 more of Veo's, 29 of Spin's, Lyft's Chicago and Portland, and GCOO's
 Los Angeles, Arlington and Alexandria, Virginia. In 32 of them, from Tempe and
 the Bronx to Chicago and Columbus, two or three operators run, and the map
@@ -68,7 +68,10 @@ the night's left no stationary scooter to check against, or, in Albuquerque,
 mixed in a scan from the evening before.
 Lime's Charleston region held no scooter: Lime runs an e-bike programme there
 with MUSC Health. Nor did Grand Rapids', where the city made Veo its only
-shared scooter and bike operator from 1 September 2026. See
+shared scooter and bike operator from 1 September 2026, nor Carthage,
+Missouri's, whose city council voted on 26 May 2026 not to bring Lime's
+scooters back for the summer, nor Norman, Oklahoma's, where the city lists
+only Veo among the companies licensed to rent e-scooters. See
 [the Lime guide](lime-app-map.md#every-market-the-map-lists-october-2026).
 
 In the morning of 26 October, local time: Dallas (1,686, beside Bird's),
@@ -88,6 +91,17 @@ unconfirmed, so the map holds none. Lime's region in Montgomery County meets
 Washington's at the District line; a scooter of Lime's Washington fleet,
 just over the line in Silver Spring, can show in both, as Lime's public
 Washington feed reaches 39.0046° N.
+
+From the morning to the early afternoon of 26 October, Central time: Austin
+(3,282, beside Bird's, which publishes no feed), Milwaukee (2,717), Tulsa
+(592), Oklahoma City (585), Mobile (498), Corpus Christi (405), Lubbock
+(393), Little Rock (374), Rochester, Minnesota (263), Edmond (99) and Jenks
+(27). None of these towns' rules sets riding hours: Mobile's franchise lets
+Lime run 24 hours a day, seven days a week, Milwaukee's ordinance lets an
+operator offer its scooters 24 hours a day, and Austin's director rules,
+Oklahoma City's, Tulsa's, Jenks's and Little Rock's codes, Corpus Christi's
+licence agreements and Lubbock's ordinance set no hours. Rochester's season
+runs from spring until the snow; Lime came back on 13 April 2026.
 
 ## Washington, DC
 

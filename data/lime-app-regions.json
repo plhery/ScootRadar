@@ -3653,6 +3653,226 @@
       "sourceDocuments": [
         "https://assets.lime.bike/zones_attributes/Charlotte_626_exclude_new_type.json"
       ]
+    },
+    {
+      "country": "US",
+      "city": "Austin",
+      "center": [
+        30.26715,
+        -97.74306
+      ],
+      "region": "TX",
+      "timeZone": "America/Chicago",
+      "regionToken": "GVLCE6EOFE4L4",
+      "serviceAreas": [
+        {
+          "name": "Austin Service Zone 092923[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "sutxDj{isQ|LjC|JxBbLtE`HzF|PrSbE|LlAjMlH~b@dZxj@~e@p\\~w@xNdb@jKraAxXdUnGbl@zM~vCf_AhpApEnj@Xt^dClFdBbAdM}[fr@~FfP|DrO~@bDxJzDdVdCxg@ze@vc@tFt^kDj^jQrBxIjLxIve@rX_Khd@jMvHvUbQvm@n`@~c@fUvl@ue@lPt@~KlCnKbNlLlZ|Tnq@hAzDdLjA|g@tX~[`[~YlUpXqJvPwTxh@t]|~@zg@db@`Urb@~[fIk@dl@}~AvBg\\tLwRx@uXk@y_AMqc@Bw\\jDoI`FmGxMmQ|KmQnAsu@eiAoo@iXwMiKoGoTwN}@{MnTibAhW{d@|Ik[uD}Eug@}Xo_@uQlLe`@qWak@q[wPoPyNuLgUgLuIof@kUXkBaAuP{Luf@}XooA}DhCsSz`@u^`gA}JaFsCq@sJo@sGgDmSuKg@iBpNg^uWkO{KgGmE{CsCeEcAcMiZ|CsEqAiCUkAiBWqAu@}DoBqJiCsO_HsRwCsEgCsCmC{B_S}JaI}DsUoL_WcOe^_Lqd@qGcfAkT}qAcT_i@xAyUzE}XbDwQlKeTrYed@to@sX`q@gh@}U}_@cX}b@{Imn@e^uZeMkNuCoQLuUuKcJk[sQ{RgIwR_`@o\\mKqX}MdKyIbNiItHi_AlSu[ps@_Dde@sKpb@gDl`@gc@tnAiVzl@sMf]??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Austin_8094_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Corpus Christi",
+      "center": [
+        27.80058,
+        -97.39638
+      ],
+      "region": "TX",
+      "timeZone": "America/Chicago",
+      "regionToken": "ZS6GQSYU3MZG4",
+      "serviceAreas": [
+        {
+          "name": "[Corpus Christi][SZ][Corpus Christi Proper]",
+          "polygon": "yggiDdk{rQzAvB`BjArBn@zBLxBUrB{@nQuLrDaBbJuBlGi@xBw@dD]`Bi@rEkBfId@tJRvKtBxGz@pD@jALjBh@|A~@hF|E`D~DdKpQnD|EdBhDlF~GZ`ANdADfBI|AgAbBwB~@gHx@gEbB}F~DqExFuBlE]xAs@rJUnJjAlYHdIo@rIgArHiEnO_CvFaDdJrAhBpxAA@}@lBAA|@lF?B@FZ[zJYxMcBba@cBn\\F@SjBYjBWxAWhAs@lCkAjDjOdHxW~CzDme@nS~BjEkf@lOdBfAcMee@_FpGgw@wPuBxBij@bYbDhIs~BzaApKA_VUiJEcf@_FkDuBy@sDiC_C}@gBsAeBgAqBaA}@]sAa@]KEVsBa@|@_B]E`KyPvAMbFeJpCuIr]ql@ho@gVqBlDfPoFlsCa~ExpAsiBnPA@jAh@AHtUvF@I}`@|b@af@h\\[vGoAbGOBdSjGA@lIiG@@tD~UGGic@rNA@uVgG??fIyd@NcCRCcIeIB~uDyeE?e@|m@s_BR~@~@ONaBjIkT@xFzFCvNi_@uFsCN_@AsBh]kz@xZoz@fzA~w@CcGLcBOm@OkDp`AdW[smAtXnHIcc@eVaHt@oGS_JR}FHmGvBgMy@UtHyYfF_Kj@eGJqIJ}Bf@qCvBuEnBkBtPgKxCyA~DcIfD}DzBsEhBsCjAw@hAQxDH|CCpEStEg@~BI~BDtBPrHzAjEIfGkCrIsKd`FgAQcjCjFaBxCaC|BmDvAeNb@sKDeKgBeJM_Cx@yH`AeOJ}GCiECkAAiDHaEN{Cp@_AtAkDP{@`@_D^sEJcEAkCE}BKgBOmB]kCEg@EgACw@?gABwADgADo@D_@Ho@Hm@F]Hg@Ps@Pm@f@gBl@aCd@wB^yB^gCLiAPcBLcBPeDJoDxz@}p@fcDurIp@@^IEo@tFlBdKlKjHfFfL`LrDlGbCxCzBdFnEhB`QtDrUvGt`@~P`dAd_@_sAkzHoj@ycD~g@e{Bjq@gdJybM}wFgjAmr@q_SgtLs}AarA{pAqiAmT}oAc]sq@ua@_x@_Vg\\kQ_P}_AvpBayBh_FvrE~iD~G|IpE|Nj@`O_BzKsEjNuGbFz~ChbCt`DptBsa@l|@wu@sd@mM`X{eE{lClCcFgp@yp@{IdPyb@uXkc@|x@ayAzWaMe_A_GhEiF~AphBztQ}KhMMnDh@zH~DzKu@`LiBxd@A`JyAxg@uB_A_A`EwFlSO~BZ`BeCrIuAt@cClCmAxD_E|CgThJkEiLyAwLgAy@wFIk@W{D@iHwDeFeEaAKy@R_Az@GRP`@GTy@LIMGBeCjCeAZoD~CwClD_DlB{DpCaBj@wB\\o@?A{ByKsHeB`D}EyGiAsCyB{B}FiAxCdGHtAnO`VgBnBtA~BuBxHQz@?v@HfAc@vDw@hBqHhFgDfFtA~E_m@hUyDfFuExGwPvFuDz@{HJMuA{GHAhDyElAj@z@m@jAg@UsC@_BRcGrAoJbDuVzUs@@u@z@c@tANrBoDdKsPnt@qAfHuErj@e@|KRbTvArVpBpSlCjTjD`Yr@bIm@~B~Gv[pAjO|CjKpZo]b}BbaH_\\`_@l@rBCXlG|MlEpGlE`E|@r@pFzHk@DaA`DOvBeAp@Er@XrB`@zANhAf@`Ar@hBa@jAeAj@oAYgA}AYm@c@k@m@iAsAk@sAk@eBgAgAgBoA{BgKiOcxCoAfDb[bJxDtGs@`J|M`AxRlArGiEdThBrZrCzNd@~Hb@~DaAhHq@lPv@tKm@tN{AzIQbV`@tI}BtUm@bGd@bLv@zDNbCbB|Eh@hHjCxI`BzFPfEzFvNvFhQtCjL?vJb@bDj@`VcEvXcBlUpDnf@yC|Vp@tHnDfKhFA~GhOmE~KcJdNYjBjB`Cl@dA_HfJoMJ{IpDiCfJ}HdD[zBlF~Dh@PrFHjD{FjDoCzI_E|BfBfDyChDgGvC[xN|Bj@fBhJxKjEhF~CzBmApIy@`BcFtAyCrBy@vAiMhFq@fBiI~DmB|CtB~HrAtAtD{AhAhCtARzC{B`C{G\\Q|BhC`EbFlGpB~BtEnApJEvCbDhJnBtJFlBt@xCh@jHOdAmA^QlAMvDgB|Bk@zA_@pDr@lA_A|AsBiBoB^aFc@iDwB_B_D}Ci@eFwBsFGuI_AwP|G{HlOqWbNuIlF_HtF{BzGFjCxA`ELtCxAjGzB`En@bDSdCJxBtIhQxBrI|@j@hAuAjDb@bBjAgIpAmBnBYdDJvBv@tAnA]nA{BxAOpHjD`LtMzBjIzDvIu@|AYpGxBfEbEsHbDFtAtB~CnDtDp@zEzFfDJlHpEe@bAfGjF`B}ChCz@hC|@rAB`qAu@Y~LXnJVhPuB`MgArJHvGb@zOu@pDmNbQiI~DcPxBeBX}DrAaDlB}FbGsBzG_Cxc@iEn_@zCnt@YfHMvG{AhK_@xGsAbGaArIF~GjA~Fb@jMpBvObAdF|AvEtBhEvDdFxAnCfDpDx@dE?vD}@xI}@`DsBtDkI|JoOtGsZzNmOfOoCxGYzGt@|Ia@nDaBnEgBhD_CjBoNxEyQrAgi@_EuQm@wO]aFf@aCx@yGdM{A~FQzNdAb]Q|KsA~OwApE{@v@qBn@_BjAoBbDOnEfBpH??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Corpus_Christi_459_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Edmond",
+      "center": [
+        35.65283,
+        -97.4781
+      ],
+      "region": "OK",
+      "timeZone": "America/Chicago",
+      "regionToken": "BHSTG546LJYTZ",
+      "serviceAreas": [
+        {
+          "name": "[Edmond][SZ][Edmond][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "euhxErt}qQo@eBaW_vAqPsYRmjByg@g@{gCzCorD}A_NHc@lyGLxiDvAPvfEiBd|ABrwBcB]g_F"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Edmond_804_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Jenks",
+      "center": [
+        36.02287,
+        -95.96833
+      ],
+      "region": "OK",
+      "timeZone": "America/Chicago",
+      "regionToken": "IOKKGGHD2XWFG",
+      "serviceAreas": [
+        {
+          "name": "[Tulsa][SZ][Jenks SZ][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "uzyzEvpshQ}x@lTuo@ns@gQrdA}@~e@e@pK~i@rKv_@FfBjHxPClBuH`HqC~OnOtBSlRg\\l_@ft@zB`Th}B\\h@otBsuCiCS{aCfCg`@ke@`T"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Tulsa_848_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Little Rock",
+      "center": [
+        34.74648,
+        -92.28959
+      ],
+      "region": "AR",
+      "timeZone": "America/Chicago",
+      "regionToken": "7KAR23JV5Q3DK",
+      "serviceAreas": [
+        {
+          "name": "[Little Rock][SZ][Little Rock Service Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "uudsE|~brPC~t@xDbLjHxKvI`Te@nLz`@|Nkt@~y@e\\|[{}@~}@fJrU]PwBvB{@bAaB`B}@zAeFhJsOpc@eMnpAgLvg@{FOiAl]mAfIMvGaM`s@rEvQeYp~A_On[h@~e@~YrUfJ~ArErH`JzEfh@pAp~FfQfe@rb@x}BnExBszApQ}[wHu}@cg@u_C}BejAhNq@_QwCoHua@ec@eaBd@{c@LwFTmM?o@@w@@g@@w@DyDFiFTmLna@gQp[aXfj@{kAgE}Yai@sCue@ajAmM}LmW}FeSoG@kVqJ]TaSfAoBvCazAyf@hAgHF}Ee@gBm@yAmAkLaC}MlKeArMwNxlAcWy@eCxOd@b[w}@o@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Little_Rock_431_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Lubbock",
+      "center": [
+        33.57786,
+        -101.85517
+      ],
+      "region": "TX",
+      "timeZone": "America/Chicago",
+      "regionToken": "24NS52PQMH4CA",
+      "serviceAreas": [
+        {
+          "name": "Lubbock, TX",
+          "polygon": "wzslEpj~mRzPmsjApmi@`{@adBlsjAkzf@a{@??"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Lubbock_684_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Milwaukee",
+      "center": [
+        43.0389,
+        -87.90647
+      ],
+      "region": "WI",
+      "timeZone": "America/Chicago",
+      "regionToken": "XZTSEXP4LYW3T",
+      "serviceAreas": [
+        {
+          "name": "New Service Zone April 25[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "i|yeGvfgwODrz@}BgJaJeAk[eX{UVFlOql@|WAbm@|WRGv[yWa@Cnw@oVrIoDjD}KvT{JfLqKdFmJq@aHj@mFjIeEzTwFvIpx@`@Khu@eLG_E|A_JhJL|e@{BjBq_@vQP{TkIIwDdE_Ox@yDrGqBbPyDhBoFoEeIkPJmHaEwIiF~@eKmAsWoQ[ri@hLJ~@_BjFHQfc@{UnEe@jeA_JPAhCol@i@}}Btu@Vey@u_A{@}Ylb@Itl@bDDArLlg@mPK|n@nl@v@@l}@_zAyBMj{BmvDuBtAjoL|_LxJKf^tWzCnDwa@l_B|Bn}@V|cAfAdtANf[j@lkAXj]MnpBX??pyAp@zsA~AvgCnDRefA@o|@sU[Cy]sUWC}]byAlAUenCfW?a@yaB}Vae@CqPbJLB`OpJLAuGbCeJAoGpQBA_^sDGA_]tDD?}CcYY?yTiQKIix@qGEAc\\mFCAcK_HE?eBiKGgB}BCiVjJLjCdDdCyDnL|PEwLzEBA_a@`|D|BAtq@iFjD?hL~HHAlR_II?tFbl@p@H}_Bhl@ZJux@xy@dAL{|@}y@cAl@qxFzl@dA@sHqyBwTcwA}M_PCEdg@__@MuJvZqk@I?uLnJ@?vEzB?L_ToAjFyB??}GmHA@sDnG?@wJm\\I?~BgLCA~IoJENqwAk[YwImRrD{FwC{EHaiAgbNjS"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Milwaukee_6280_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Mobile",
+      "center": [
+        30.69436,
+        -88.04305
+      ],
+      "region": "AL",
+      "timeZone": "America/Chicago",
+      "regionToken": "34T5I5JPRNEFP",
+      "serviceAreas": [
+        {
+          "name": "[Mobile][SZ][Mobile Operational Zone][service_zone_MIGRATED_FROM_V2]",
+          "polygon": "svjzDrqjxO_KpW`Tr{@yFxXuIx]`NdEf\\z@r|@pGxFn@cHoq@`B_^r_@jDrA}PfCqZtGgG`@wGuk@kIo]iBiCs\\qUuAmZtIgGdCwHxH"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Mobile_1847_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Oklahoma City",
+      "center": [
+        35.46756,
+        -97.51643
+      ],
+      "region": "OK",
+      "timeZone": "America/Chicago",
+      "regionToken": "FQBTFBZWAS4CO",
+      "serviceAreas": [
+        {
+          "name": "OKC Service Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "wuixEnerrQkDhQyyBj{Ezvb@gRv@awFgN{`Hv^}@J_aEk_Ax@}`@c`DwvHa@eEn`FqFCyIVeSH_PbB_e@}@S|V{VScNa@mE}GyZ`BiNcEidAm@e^kC_bAlA{k@d@yV[mk@vBqMoCoIoBmHeFwy@{f@gk@pkEePv}G"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Oklahoma_City_38422_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Rochester",
+      "center": [
+        44.02163,
+        -92.4699
+      ],
+      "region": "MN",
+      "timeZone": "America/Chicago",
+      "regionToken": "CM7NRHUK7L2TH",
+      "serviceAreas": [
+        {
+          "name": "Rochester Service Zone 25[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ifakGx{usPEe[~G@fB?xE@d@?|D@lP@x@?nj@F@eK@oH@qFFoa@vl@H?p@?DA`IjLFhU`NnF`D\\RdC?rh@E@y]mUADu^_QCiDAHo}AmUC@{OoUaG@_En@PF_@pMB}EeHzB}BkCiDtBoDeCgDtAeCqDqEqA~BeB{BAvGm@@}EsI_DpIcYDC~QuDaAAfB}TgGQE@_KsCpBmDy@{EqAm@a@CXmI{BaCiA}J}H[?_N@kCo@AOgA[?S{Aa@mIuBqHiB@kBgC?@}]qP?gUC@w^oUFiNDkD@aApAkG?AqAw\\CwEABuP?{J@uAgC?qO@?KDi\\rOBBwPB}PpWrLAoHlELxPVZy~@kVDkULDuWvEB@uH@yGwCCuHEGvL{MGBc\\{THA|[wTJo@ACv\\j@?`TGEf]kUO?`W?bGz@?lj@CInw@AL@h@?L?bAG?S?W?[@a@?C?ig@CFa]um@JO?i\\F?fJ?bS}MD@cR?gKul@DBwVsEJDwFsTF{OD?mOnA?AvAZ@\\pBxF??_BbBAbEiB@{N`Ea@A_DlI{@hBmBAe@`CSAnApB?BsKsB\\?U?aFDmVsUE@}E@gM@_EByH??|BA~FAbPEfAAhJCRmFLwC\\eGj@oLLaBl@qGf@kFt@qHqVEyC??e@@uSDa[@oKA_@gUBIh@F}\\vIE?iA@y\\bJeJAvIh@?hEAzMCzFCDkS`B]C[s@N?mA{A?@oEi@gAcAwBlBaCxCsDAqDcFpJ_CzBwDoJqBj@m@nGpDtEoFAyGAC}LI?uIC@sEc@?Eh_@_DABmR{D@?xA_E@CdLC|IwEA@iJBoHcC@AnFiD?AxI?fM}B?kFBm`@J?\\gW@iT?E?s@?uH@o`@D@_SFuHEa@?E?E?E?m@@cE@eR?gCoL?uE?}@?ArCIrNAbDiGS]`HuLA?xBS@eBHmKd@WTgDxCqGbGwGfGOr@m@Zc@CaAASn|Am@?eSGS?_@?gAAqAAmB?qHByIDAx@?jA?hA@jA?jABhABjAB`AFrADjAFfAFjALdBBRDr@JhAP~AH|@PfBw@?}LB}BACvTOFkHbDwHzCkBv@wEhAuCl@kDl@wMfCsJ`CEbX?b@`CvBAfGAnJu@m@oDyC@w@B}HuAjBeBuBpB_EkEqG{A~AmB}DbAeAyBaFW?@aD{Di@eAuAg@eLEaA@yLV?nD?~B?F?@iH?i@dF?xB?^?bB?AtAjArB?TAnE?fDbFxD~HdGbAV~Bc@?s@nGkADr@nEaAPAbFsAxFeC?kE~@AhAbDnGuC?QgGlCkAyCEAFsSvBA@kIF??cA}@cEw@XmAkAcC[mCdA{H|CmCyEwC@{@?L_[F}MBcHi@?wD?kS?mU?cL?K?kB?BR\\vD}Dz@q@h@l@dE]LZpEBb@kAA_KABcGv@kD}BLGpQkCdG@|IpE~BzCkDdAAd@ACtOqL?sH?aM?AzG?tCAxLAzC}OCoQA{GAAfAEjLEvM_A?uKEuEAd@lJ{Hl@AlG[?aL?@HFfKAhNlD?xC?AvB|GA?lBp@??xCqU@@cN@oD?uCAwa@qPA}@?iA?kJAaB}Am@IWt@S~AXzCe@zCsFlIkBXcBe@s@pB\\xA_@tDkApAj@zAzGgFrDEtI}JVzBGbR_AfCwMzF@jEvLZjDzD`ApF_Cn@aD@IlYfEhA`EFj@bBpBD\\`BXWv@o@|@aBnAsAf@g@zAmA~D@DoQjFACnQlFHA|LZ?Ah@?zAjATtA\\tBd@rSEAvCAbLrAbAxA`AbAp@@@rB~@n@VtAl@hAZtBh@DtIkE@?mGiA?cGGsBAi@iIKKKaA@}@wAmAwCyBsEcCiAa@uAe@sA]ApO[?gB@A`Ai@B?nAq@@@rE`F?Or]B~@|V?i@t@[b@eAtBwAtCCHmAnECJcAvD_@dD?r@f@?|@?|FB@dIS@WAk@U_CkC]e@[K[AMJ\\dGBjE?xCMvBGbAIjAgM?_A?qX@uF?fEfHvA~B|@lAvA~@zBlAnRrIaDAuRIaEAgM?Ac]mH@cB@U?iHBE`OArJcACErO[zlA{i@A?`BCxSAjG?FqN?tAuD~A_FrAsDb@oBNqBBsCmA?ArCMpASjAg@xAoAdDsDrKgUByB??v@Ed\\|A@AfE}Al@?`F~B@xAf@gAxBs@hCuA~FmFCqWGiLCB~]{h@K_A?N`AAzYA~E?dHCfQlNK?qDHqC^gCj@cBbAcBhB}AnEgA`M_D?rDA~DCjTfk@BJJj@uAlEM?J?jMaE@K?i@?LpP@vS@dH@pFBj\\?xC?zC@|IElC?dAh@DpAAJc@~@Ad@?vB?J?@j@@|G_F@?cDU?M?oA?E?O??~ACzM?n@sMCyB@CrVArMdFBpI@A|F?jGAjFFhY?nA?`A?X@VA|AH?H?J?L??i@@qIAsD@}J?wD?yCEoD@oLL?jTA?zC?dG?pPx@AvGyN?~B_EzJvg@C?hN?xE?fF~TA?LA~H?z@AjIKndAj@?Ju{@rO?jD?hC?r@?A_^|aAM?a@DaXnFCCfXbHAL?DwJhC@C~L|GE?cBbDiDpC??j@\\?BgUqV@?aKrVDAcD@yH@oG?oK@mN|g@D?dCjBA?zEhCB~E{Il@@pI?@kR`OC?yBzCA@zBt@??oNIwO?GKiYrCC?m@AgM`IUYhDSbDKpDCZOlEGfDAnB?fAA~CBxED~CFhDV`FfA@CmBAqAAuBBoD@{@D}BLuDDm@b@kHNwAWIZmCb@uDvAaLpD?\\?yBzOc@~E_@bEYrEa@EYpGGjDCrED`E@VfFBpFBt@@?~K~K?`EA`@@t@yLh@?fJCbDAtJCn@?j@??rJAzA?fF?~ElEC|CAhEC?|@rC?AyT?eD?wB?_F?cWxNI|A?|AA@kM@oCBmBFgAJaAJm@Le@Nm@Vs@v@kCgCC@gFB}]lIACa@?IMmCoBgPs@qFNk@bDt@tCp@xF`BdC`@@j@@lE@pC@hAp@rCTE|BdOBPJvCiAvGoBdC?xIh@jA?bBtB?`E@?sH@yFjEA?{ApCA?|A`F??mCeHA@_QqC@Iw_@~BAB}J?iGhCCl@AhA_ERcBp@}A@?DQJYVo@^w@`@w@`@k@?Cn@y@b@k@j@o@RUTUVUr@k@p@a@RKr@[DCPIhAa@XIjBc@k@|Dd@Vq@|A`IlC?v@?^CdQzGLFtBJfEqGFCpN?l@AjA?~AAhFEtV~GlCHKLALFFN@VDTp@x@b@p@Z^X^h@d@v@b@b@XpBjApAv@lBfA|BxAZTVF\\F`@@f@@v@CfEDNAHANCp@g@{B{IdOGB_OmT?[uAt^GCSwAeMuAaMq@o@_DeB_SQgDkU~DAbDARac@tN@a@bGu@bLS~HeC@q@bFMfDbGrF`K`GnIFfA@Ck@?cFB_D?ApDiGPs@DeF|A@@wBl@?BmC`Ca@`Aa[R_An@{ALw@R_Cl@cFAaBfCJxCGk@xGAPhGv@rDjO~@sFTqA\\wA~@_D`F|ExJxJ~@n@`Ad@dAXHiWB}JnP@lAEpAG?O?{\\tE`IjKhBtBP|KqA~BcCfDoFGpBnQoBzZ??c@@qY?uS@gG@mF_A@eTDAsMxICc@o@_@@EkBwA??IBob@?{D`GArB?bCA?lDx@A?kDpHChFAzo@M?TAdG?jPAv`@?vXDnD@tAG|I?D@dB@hDHhICzWMhFEhXPzI?pYEx]?P`@?@o^?w\\?yEMuGXkPrk@F?a^bI@|NBdNDvXH?mL}KAg@eFhMwAHof@J?xC@fE@|CBd\\JAdH?tDAtG?RAnEvl@PQz|AwUBEtq@?fHsBtDx@lA~BaEbD@Z?lD@xAlB`CrHPdBH|B@lG`A@"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Rochester_1233_exclude_new_type.json"
+      ]
+    },
+    {
+      "country": "US",
+      "city": "Tulsa",
+      "center": [
+        36.15398,
+        -95.99277
+      ],
+      "region": "OK",
+      "timeZone": "America/Chicago",
+      "regionToken": "IOKKGGHD2XWFG",
+      "serviceAreas": [
+        {
+          "name": "Tulsa Service Zone[service_zone_MIGRATED_FROM_V2]",
+          "polygon": "ox}{Exx|hQf`Ahf@be@fDpt@_Wk@`z@zy@vCnh@|APll@`XpDpMHtIuAxXk@xBel@zR_m@fZrPjEdCz]uCbb@lAnbAxBhWdL`TxQ|Q~XdRrK~Mfv@jg@Lvh@x@B{s@?qSPaMAsGFgFrAkONe_@vrHrMtAq_BvDwqBtQsfA|n@sp@p|@iVdb@{RGmu@ujAaCnDcqP{TkA_\\wBsy@nAyXoAwF?}{AuAqp@{@c_@p@Wum@W}n@kQ^gAnQeElJgKtOwEXuGMoGGe\\^L{r@w{ADw_AFkfDbDyk@Ky@boBuk@h@Dh_Eq_@bARpKHvHmeB~@m@vdBZbfCi@|oABxt@Rhc@H|RNlFCvEFt@Wz@?l@Dp@gCh@OhI|DZn@rtAeB_CqAsB}DaH_b@cu@uLqGwZ{I`@b{Amh@~@s\\t|C"
+        }
+      ],
+      "sourceDocuments": [
+        "https://assets.lime.bike/zones_attributes/Tulsa_848_exclude_new_type.json"
+      ]
     }
   ]
 }

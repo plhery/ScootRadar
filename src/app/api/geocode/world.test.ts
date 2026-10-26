@@ -7,7 +7,8 @@ import { searchText } from '@/lib/searchText';
 // scripts/generate-provider-catalog.mjs would write for it, beside the real countries of Europe, North
 // America, West Asia and Oceania: the United Arab Emirates, Saudi Arabia, Israel (Tel Aviv with the
 // other names its catalog gives it, in English and in its own scripts) and New Zealand are the
-// catalog's own.
+// catalog's own. Austin, Texas, on the map since Lime's rider map, is left out, so that "Austin TX"
+// is asked of the geocoders.
 const fixture = vi.hoisted(() => {
   const box = (lat: number, lng: number) => ({ center: [lat, lng] as [number, number],
     bounds: { south: lat - 0.1, west: lng - 0.1, north: lat + 0.1, east: lng + 0.1 } });
@@ -34,7 +35,8 @@ const fixture = vi.hoisted(() => {
 
 vi.mock('@/generated/countryCatalogs', async importOriginal => {
   const original = await importOriginal<typeof import('@/generated/countryCatalogs')>();
-  return { CATALOG_SYSTEMS: [...original.CATALOG_SYSTEMS, ...fixture.systems] };
+  const austin = (system: { country: string; city: string }) => system.country === 'US' && system.city === 'Austin';
+  return { CATALOG_SYSTEMS: [...original.CATALOG_SYSTEMS.filter(system => !austin(system)), ...fixture.systems] };
 });
 vi.mock('@/generated/countries', async importOriginal => {
   const original = await importOriginal<typeof import('@/generated/countries')>();
