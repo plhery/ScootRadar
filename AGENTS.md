@@ -14,6 +14,10 @@ When a change is done and the checks pass, commit it and push straight to `main`
 
 The scooter cache is not deployed between 23:00 and 05:30 Paris time. Norway's night bans run 23:00–05:00, and Sentry watches for 30 minutes after them. A restart takes each feed's state at that moment as its baseline, so a feed its operator took down for the ban (Dott in Trondheim) would not be reported if it never came back. CI's Deploy job holds back a change to the cache (a path matched by `server/deploy-watch-paths.txt`; see DEPLOY.md) whose CI passes in those hours, and the next commit that passes after 05:30 carries it; `[skip cd]` in every commit message holds it back the same way at any hour. So don't deploy the cache by hand then, from Coolify or with a push to `production-cache`. The website's own changes are not affected.
 
+# iOS tests
+
+Run the simulator tests with `-parallel-testing-enabled NO`, or `-parallel-testing-worker-count 2` at most (the command is in ios/README.md, "Tests"). The scheme otherwise tests on clones of the shared simulator, each downloading about 1.9 GB of Siri and Apple Intelligence assets: on 26 October 2026 one run made five, 9 GB in ten minutes, and left the Mac 256 MB.
+
 # Map layers
 
 Draw shapes on the map with SVG (`L.svg`), not `L.canvas`. leaflet-rotate 0.2.4 patches `L.Renderer.prototype.onAdd` to read the map it is handed, and Leaflet 1.9.4's canvas calls it without one, so adding a canvas layer throws. The walk's route and the zones are SVG for this reason.

@@ -292,5 +292,11 @@ or from the repository root:
 
 ```sh
 xcodebuild test -project ios/ScootRadar.xcodeproj -scheme ScootRadar \
-  -destination 'platform=iOS Simulator,name=iPhone 17' CODE_SIGNING_ALLOWED=NO
+  -destination 'platform=iOS Simulator,name=iPhone 17' \
+  -parallel-testing-enabled NO CODE_SIGNING_ALLOWED=NO
 ```
+
+Keep `-parallel-testing-enabled NO` (or `-parallel-testing-worker-count 2` at most).
+The scheme tests in parallel on clones of the simulator, and each clone downloads
+about 1.9 GB of Siri and Apple Intelligence assets: on 26 October 2026 a run made
+five and filled 9 GB of the Mac's disk in ten minutes. CI runs without them too.
