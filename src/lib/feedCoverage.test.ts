@@ -5,6 +5,7 @@ import {
   knownSystemCoverage,
   PUBLIBIKE_STATION_COVERAGE,
 } from '@/lib/feedCoverage';
+import { REGIONAL_SCOOTER_SYSTEMS, serviceAreas } from '@/lib/regionalScooterSystems';
 import { buildCityOverview, querySnapshot, type FeedSnapshot } from '@/lib/scooterSnapshots';
 import type { MapBounds, Vehicle } from '@/lib/types';
 
@@ -156,5 +157,31 @@ describe('Swiss towns in the city totals', () => {
     for (const [lat, lng] of [[47.4412, 8.5631], [47.4603, 8.5963]]) {
       expect(coverageIntersects(knownSystemCoverage('bird-kloten')!, { south: lat, west: lng, north: lat, east: lng })).toBe(true);
     }
+  });
+});
+
+describe("Beam's Antalya region in the town totals", () => {
+  const now = Date.parse('2026-10-26T01:00:00Z');
+  const scooter = (id: string, lat: number, lng: number): Vehicle => ({
+    vehicle_id: id, lat, lng, provider: 'beam', battery: 70, range_m: null, distance_m: null, deep_link: null,
+  });
+  const system = REGIONAL_SCOOTER_SYSTEMS.find(entry => entry.id === 'beam_tr_antalya')!;
+  const feeds: FeedSnapshot[] = [{
+    id: 'turkey:beam_tr_antalya', source: 'turkey', provider: 'beam', coverage: serviceAreas(system).map(area => area.bounds),
+    vehicles: [
+      scooter('lara', 36.8601, 30.7944), scooter('goynuk', 36.6655, 30.5533), scooter('manavgat', 36.7866, 31.4421),
+      scooter('side', 36.7752, 31.3925), scooter('alanya', 36.5512, 31.9966),
+    ],
+    observedAt: now, attemptedAt: now, stale: false, failed: false, skipped: false,
+  }];
+  const counts = Object.fromEntries(querySnapshot({ version: 1, updatedAt: now, feeds, overview: buildCityOverview(feeds, now) },
+    { bounds: { south: 36.3, west: 30.3, north: 37.1, east: 32.4 }, minBattery: 0 }, 8, now).clusters
+    .map(cluster => [cluster.id, cluster.providers]));
+
+  it('counts Beam in Kemer, Manavgat and Alanya under those towns, not Antalya', () => {
+    expect(counts['city:tr:Antalya']).toEqual({ beam: 1 });
+    expect(counts['city:tr:Kemer']).toEqual({ beam: 1 });
+    expect(counts['city:tr:Manavgat']).toEqual({ beam: 2 });
+    expect(counts['city:tr:Alanya']).toEqual({ beam: 1 });
   });
 });

@@ -26,7 +26,7 @@ const guide: Guide = {
           ],
         },
         'At 22:40 on Sunday 25 October 2026 the [Antalya map](map:tr:Antalya) showed about 3,500 scooters: about 2,330 BinBin in the city and about 1,190 Beam across the province. That is a snapshot, not the fleet. In a night count at about 03:00 on Monday 26 October, on the state land registry’s district boundaries, Muratpaşa had about 1,360, Kepez 750 and Konyaaltı 720. Manavgat had 125, all Beam and about 50 of them in Side, and Kemer 46, all Beam, though Beam’s website doesn’t list Kemer. None stood in Aksu, which takes in Kundu, or in Döşemealtı.',
-        'Alanya had about 980 that night: about 530 BinBin, which make up [Alanya’s map](map:tr:Alanya), and about 460 Beam, which the map counts in Antalya’s total.',
+        'Alanya had about 980 that night: about 530 BinBin and about 460 Beam. Since 26 October [Alanya’s map](map:tr:Alanya) counts both, and Beam’s scooters in Manavgat and Kemer count under those towns, not in Antalya’s total.',
         'The map shows BinBin’s and Beam’s scooters with their position and battery: no prices, zones, parking or hours. Martı’s and Hop’s scooters are only in their apps, and it shows no e-bikes or mopeds. New to shared scooters? See [how to rent an e-scooter](guide:how-to-rent).',
       ],
     },

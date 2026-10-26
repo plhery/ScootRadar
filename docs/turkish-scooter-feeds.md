@@ -117,3 +117,13 @@ on 24 October 2026: Ankara, Antalya, Fethiye, Marmaris and Mersin, initially
 guest map. The [shared Beam collector](beam-app-map.md) verifies complete H3
 sweeps, filters standing scooters by city id and bounds, and renews its
 private rider session. All five regions use Europe/Istanbul.
+
+Beam's Antalya region reaches along the coast, so its scooters count under
+the town they stand in, as the Korean regions' do (26 October 2026): Antalya
+itself (Muratpaşa, Konyaaltı, Kepez), Kemer (Beam's area in Göynük, a Kemer
+[mahalle](https://www.kemer.bel.tr/tr)), Manavgat (with Side, also found as
+Side) and Alanya, where BinBin runs too. Each town's bounds are the envelope of
+Beam's operating areas there, about 1 km wider for the H3 cells that cross
+their edges. At 04:24 Turkish time on 26 October the map
+counted all 1,200 of Beam's in Antalya; a count by district boundaries at
+about 03:00 put about 460 in Alanya, 125 in Manavgat and 46 in Kemer.
